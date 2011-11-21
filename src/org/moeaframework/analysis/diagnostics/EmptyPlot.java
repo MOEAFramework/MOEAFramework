@@ -20,7 +20,7 @@ package org.moeaframework.analysis.diagnostics;
 import java.awt.Color;
 
 /**
- * Placeholder in a {@link GridLayout} for unoccupied grid locations.
+ * Placeholder in a layout for unoccupied grid locations.
  */
 public class EmptyPlot extends ResultPlot {
 

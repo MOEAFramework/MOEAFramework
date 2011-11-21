@@ -12,6 +12,9 @@ any changes.
  Easy
 ------
 
+  - Instrumenter is failing with a ConcurrentModificationException if the
+    problem is wrapped in DistributedProblem.
+
   - Need to make PropertiesProblems case insensititive, similar to how 
     PISAAlgorithms was modified.
 

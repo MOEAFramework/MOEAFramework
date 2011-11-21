@@ -22,6 +22,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.TreeSet;
 
+import javax.swing.ListModel;
 import javax.swing.AbstractListModel;
 
 /**

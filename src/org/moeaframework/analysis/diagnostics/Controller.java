@@ -34,8 +34,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
-import java.util.concurrent.Executors;
-
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -55,7 +53,6 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.util.Listeners;
-import org.moeaframework.util.distributed.DistributedProblem;
 
 /**
  * The controller manages the underlying data model, performs the evaluation
@@ -547,9 +544,6 @@ public class Controller {
 					try {
 						problem = ProblemFactory.getInstance().getProblem(
 								problemName);
-						
-						problem = new DistributedProblem(problem, 
-								Executors.newFixedThreadPool(8));
 						
 						Instrumenter instrumenter = new Instrumenter()
 								.withFrequency(100)
