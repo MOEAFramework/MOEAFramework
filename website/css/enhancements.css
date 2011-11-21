@@ -1,0 +1,45 @@
+/* ------------------------------------------------------------------------------
+    E N H A N C E M E N T S
+--------------------------------------------------------------------------------- */
+
+/* css3 design enhancements */
+a:link.more, a:visited.more {
+   -moz-border-radius: 4px;
+   -webkit-border-radius: 4px;
+   border-radius: 4px;
+
+	text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+}
+img {
+  	-moz-border-radius: 4px;
+   -webkit-border-radius: 4px;
+   border-radius: 4px;
+}
+#header h1#logo-text a {
+   text-shadow: 1px 1px 0 #fff;
+}
+#header #nav ul,
+#header p#rss a {
+  text-shadow: 1px 2px 0 rgba(0,0,0,0.9);
+}
+#footer-outer,
+#footer-bottom {
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.6);
+}
+p.thumbs img {
+   -moz-box-shadow: 1px 1px 3px #184569 ;
+	-webkit-box-shadow: 1px 1px 3px #184569;
+	box-shadow: 1px 1px 3px #184569;
+}
+.right .image-section img {
+  	-moz-border-radius: 4px;
+   -webkit-border-radius: 4px;
+   border-radius: 4px;
+
+   -moz-box-shadow: 3px 3px 3px #F3F4F5, -3px -3px 3px #F3F4F5;
+	-webkit-box-shadow: 3px 3px 3px #F3F4F5, -3px -3px 3px#F3F4F5;
+	box-shadow: 3px 3px 3px#F3F4F5, -3px -3px 3px #F3F4F5;
+}
+.left p.dateinfo { text-shadow: 0 1px 1px rgba(0, 0, 0, 0.6); }
+.left p.dateinfo span { text-shadow: none; }
+

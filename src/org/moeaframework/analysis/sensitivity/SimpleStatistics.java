@@ -1,0 +1,216 @@
+/* Copyright 2009-2011 David Hadka
+ * 
+ * This file is part of the MOEA Framework.
+ * 
+ * The MOEA Framework is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by 
+ * the Free Software Foundation, either version 3 of the License, or (at your 
+ * option) any later version.
+ * 
+ * The MOEA Framework is distributed in the hope that it will be useful, but 
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY 
+ * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public 
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License 
+ * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package org.moeaframework.analysis.sensitivity;
+
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.OptionBuilder;
+import org.apache.commons.cli.Options;
+import org.apache.commons.math.stat.descriptive.SummaryStatistics;
+import org.moeaframework.util.CommandLineUtility;
+import org.moeaframework.util.OptionCompleter;
+import org.moeaframework.util.io.CommentedLineReader;
+
+ /**
+ * Command line utility for computing statistics across multiple data files.
+ * The data files should only contain numeric values, and each file must
+ * contain the same number of rows and columns.
+ */
+public class SimpleStatistics extends CommandLineUtility {
+	
+	/**
+	 * Private constructor to prevent instantiation.
+	 */
+	private SimpleStatistics() {
+		super();
+	}
+
+	@SuppressWarnings("static-access")
+	@Override
+	public Options getOptions() {
+		Options options = super.getOptions();
+		
+		options.addOption(OptionBuilder
+				.withLongOpt("mode")
+				.hasArg()
+				.withDescription("Either minimum, maximum, average, stdev, count")
+				.create('m'));
+		options.addOption(OptionBuilder
+				.withLongOpt("output")
+				.hasArg()
+				.withArgName("file")
+				.withDescription("Output file")
+				.isRequired()
+				.create('o'));
+		
+		return options;
+	}
+	
+	/**
+	 * Loads the data from the specified file.
+	 * 
+	 * @param file the file containing numeric data
+	 * @return the data from the specified file
+	 * @throws IOException if an I/O error occurred
+	 */
+	private double[][] load(File file) throws IOException {
+		CommentedLineReader reader = null;
+		
+		try {
+			reader = new CommentedLineReader(new FileReader(file));
+			String line = null;
+			List<double[]> data = new ArrayList<double[]>();
+			
+			while ((line = reader.readLine()) != null) {
+				String[] tokens = line.split("\\s+");
+				double[] entries = new double[tokens.length];
+				
+				for (int i=0; i<tokens.length; i++) {
+					entries[i] = Double.parseDouble(tokens[i]);
+				}
+				
+				data.add(entries);
+			}
+			
+			return data.toArray(new double[0][]);
+		} finally {
+			if (reader != null) {
+				reader.close();
+			}
+		}
+	}
+
+	@Override
+	public void run(CommandLine commandLine) throws Exception {
+		String mode = null;
+		PrintStream out = null;
+		List<double[][]> entries = new ArrayList<double[][]>();
+		SummaryStatistics statistics = new SummaryStatistics();
+		OptionCompleter completer = new OptionCompleter("minimum", "maximum", 
+				"average", "stdev", "count");
+		
+		//load data from all input files
+		for (String filename : commandLine.getArgs()) {
+			entries.add(load(new File(filename)));
+		}
+		
+		//validate the inputs
+		if (entries.isEmpty()) {
+			throw new IllegalArgumentException("requires at least one file");
+		}
+		
+		int numberOfRows = -1;
+		int numberOfColumns = -1;
+		
+		for (int i=0; i<entries.size(); i++) {
+			if (numberOfRows == -1) {
+				numberOfRows = entries.get(i).length;
+				
+				if (numberOfRows == 0) {
+					throw new IllegalArgumentException("empty file: " + 
+							commandLine.getArgs()[i]);
+				}
+			} else if (numberOfRows != entries.get(i).length) {
+				throw new IllegalArgumentException("unbalanced rows: " +
+						commandLine.getArgs()[i]);
+			}
+			
+			if (numberOfColumns == -1) {
+				numberOfColumns = entries.get(i)[0].length;
+			} else if (numberOfColumns != entries.get(i)[0].length) {
+				throw new IllegalArgumentException("unbalanced columns: " + 
+						commandLine.getArgs()[i]);
+			}
+		}
+
+		//setup the mode
+		if (commandLine.hasOption("mode")) {
+			mode = completer.lookup(commandLine.getOptionValue("mode"));
+			
+			if (mode == null) {
+				throw new IllegalArgumentException("invalid mode");
+			}
+		} else {
+			mode = "average";
+		}
+		
+		try {
+			//instantiate the writer
+			if (commandLine.hasOption("output")) {
+				out = new PrintStream(commandLine.getOptionValue("output"));
+			} else {
+				out = System.out;
+			}
+		
+			//compute the statistics
+			for (int i=0; i<numberOfRows; i++) {
+				for (int j=0; j<numberOfColumns; j++) {
+					statistics.clear();
+					
+					for (int k=0; k<entries.size(); k++) {
+						double value = entries.get(k)[i][j];
+						if (!Double.isInfinite(value) && !Double.isNaN(value)) {
+							statistics.addValue(value);
+						}
+					}
+					
+					if (j > 0) {
+						out.print(' ');
+					}
+					
+					if (mode.equals("minimum")) {
+						out.print(statistics.getMin());
+					} else if (mode.equals("maximum")) {
+						out.print(statistics.getMax());
+					} else if (mode.equals("average")) {
+						out.print(statistics.getMean());
+					} else if (mode.equals("stdev")) {
+						out.print(statistics.getStandardDeviation());
+					} else if (mode.equals("count")) {
+						out.print(statistics.getN());
+					} else {
+						throw new IllegalStateException();
+					}
+				}
+				
+				out.println();
+			}
+		} finally {
+			if ((out != null) && (out != System.out)) {
+				out.close();
+			}
+		}
+	}
+	
+	/**
+	 * Starts the command line utility for computing statistics across multiple
+	 * data files.
+	 * 
+	 * @param args the command line arguments
+	 */
+	public static void main(String[] args) {
+		new SimpleStatistics().start(args);
+	}
+
+}

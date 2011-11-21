@@ -1,0 +1,158 @@
+Here are some ways to contribute to the MOEA Framework.  We ask that all
+contributions are licensed under the GNU Lesser General Public License and
+are complete with any necessary documentation, tests and data files.
+
+These tasks are organized by their level of difficulty.  Easy tasks provide an
+excellent starting point for beginners and should require only a few hours of 
+development effort.  More difficult tasks may take days or weeks of development
+effort, and may require interaction with other contributors to plan and discuss
+any changes.
+
+------
+ Easy
+------
+
+  - Need to make PropertiesProblems case insensititive, similar to how 
+    PISAAlgorithms was modified.
+
+  - The DifferentialEvolution operator is not type-safe, and thus can not be
+    used on mixed-type encodings.  This can be corrected by skipping any
+    non-real decision variables.
+
+  - The javadoc comments for the various operators could use more content.  In
+    addition, the package-info.java files could be expanded.
+
+  - PISA's ECEA algorithm attempts to restart when a run complete, causing an
+    exception because the MOEA Framework does not support restarts.  Can we
+    instead put ECEA into a state causing it to terminate?
+
+  - Need to ensure that constrained solutions are appropriately handled when
+    constructing approximation sets or used in code that does not handled
+    constraints (i.e., indicators).
+
+  - To provide consistent output, use of YAML is preferred.  YAML is preferred
+    over formats like XML and JSON due to its very simple and human-readable
+    syntax.  Find and upgrade output code which is not yet in a YAML format.
+
+  - Get rid of EpsilonHelper, as it only helps on several of the built-in
+    problems.  The epsilons should be provided via the epsilon property.  If
+    not, throw an exception.
+
+  - When restarting a file, ResultFileWriter and MetricFileWriter first move
+    the unclean file to a temporary location and copy the clean contents to the
+    original location.  If this process is interrupted for any reason, the
+    original file is no longer at its original location, and thus data may be
+    lost.  A better approach is to create a temporary file, copy the clean
+    contents to the temporary file, then move the temporary file to the original
+    location.  This way, if the process is interrupted, the original file
+    remains unchanged.  An alternative approach is to detect that the
+    temporary file exists and exit with an exception, requiring the user to
+    intervene.
+
+  - Executor and Analyzer, when given a specific problem class, currently only
+    support problems with an empty constructor.  Providing a second argument
+    specifying the constructor arguments will broaden the scope of problems
+    supported by the Executor and Analyzer.
+    
+  - Van Veldhuizen's dissertation lists 30 multiobjective test problems from
+    the literature in Appendix B (all known MOP problems up to 1999).  Implement
+    any or all of these test problems.
+    
+  - Develop an interface for defining stopping conditions.  Executor should
+    provide the necessary functionality for defining stopping conditions.
+    
+  - PISA selections require a parameter file.  Determine if any of the PISA
+    selectors have useful parameters and, if so, add support for writing
+    custom parameter files.
+    
+  - While by default PISA does not support constraints, its specification does
+    claim additional data such as constraints can be supported.  Determine if
+    any PISA selectors support constraints.  If so, identify how the selector
+    represents constraints in the data files.
+    
+  - Scan the source code for errors, exceptions and warnings which are not
+    documented in the HELP file.
+    
+  - Identify public facing API methods and functions which are not protected
+    against invalid inputs, such as null or out-of-bounds values.  Ideally,
+    an invalid input which would cause an error should be detected as soon as
+    possible in order to provide meaningful feedback to developers (i.e.,
+    identify and report a null pointer ASAP rather than wait until dereferenced
+    by internal code.
+    
+  - ExternalProblem only supports real-valued decision variables.  More recent
+    work on ResultFileReader and ResultFileWriter added human-readable binary
+    and permutation formats.  Extend ExternalProblem to support binary and
+    permutation encodings using the same format.
+    
+  - Add support for integer encodings.  The preferred method would involve
+    extending the RealVariable class and simply rounding/truncating the values.
+    However, this would need to ensure that no bias is introduced.  For
+    instance, all integer values in the range must be representable with
+    equal probability.
+    
+    
+--------
+ Medium
+--------
+
+  - The org.moeaframework.core.fitness package contains code for supporting
+    indicator-based methods, but is currently unused.  These should be used to
+    implement native indicator-based MOEAs.
+
+  - With the addition of the Executor and Analyzer, it is no longer necessary
+    to provide numerous examples of the various features.  Instead, the
+    examples folder should be phased out.  Any problems defined in the examples
+    folder should be moved to the main source folder and included in 
+    StandardProblems.  The website and documentation should be updated with one
+    or two representative examples.
+    
+  - Add the R* indicators.  Open source implementations are available in PISA,
+    but will need to be converted to Java.
+    
+  - The MOEA Framework is primarily a single-threaded library, and currently
+    only supports multithreaded evaluation of problems.  This limitation is
+    caused by: 1) shared instances which are not thread safe, such as PRNG;
+    and 2) the current requirement for reproducibility, which is affected if 
+    PRNG is accessed by multiple concurrent threads.  Identify any other 
+    limiting factors that would hinder modifying the code to support 
+    multi-threaded execution.  Write a report detailing the necessary changes,
+    but do NOT implement any changes.
+    
+  - The MOEA Framework is currently standardized for minimization problems,
+    requiring any maximized objectives to be converted to minimization
+    objectives (i.e., through negation).  This has several advantages, such as
+    standardizing the file representation.  While a more flexible approach
+    would allow the problem to define both minimization and maximization
+    objectives, this may impact codes which only work on minimized objectives.
+    Write a report detailing the necessary changes, but do NOT implement any
+    changes.
+    
+
+------
+ Hard
+------
+
+  - While basic support for grammatical evolution is provided, several other
+    Java-based evolutionary computing frameworks provide significantly better
+    support for genetic programming and grammatical evolution.  One such
+    example is ECJ <http://cs.gmu.edu/~eclab/projects/ecj/>.  Develop
+    comprehensive support for genetic programming and grammatical evolution in
+    the MOEA Framework (possibly reusing an existing library with a compatible
+    license).
+
+  - Develop a GUI that simplifies the use of the framework, allowing users to
+    quickly design, run and view the results of experiments.  This should
+    support high-dimensional (3D) visualization of Pareto sets, detailed
+    runtime and end-of-run performance analysis, a code editor for defining new
+    problems in one of the supported scripting languages, etc.
+    
+  - Internationalization and localization.  This involves translating and
+    providing the necessary conversions to allow users of any nationality and
+    language to use these tools.
+    
+  - Product branding.  As the adoption of the MOEA Framework grows, it is
+    critical to establish its identity in the open-source market.  A clean,
+    modern website design, logo and other materials are necessary to establish
+    a web presence and product brand.
+    

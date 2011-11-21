@@ -1,0 +1,59 @@
+    </div>
+      
+
+    <!-- sidebar -->
+    <div id="sidebar">
+      <div class="sidemenu downloads">
+        <h3>Downloads</h3>
+        <p>
+          Current Release: <b>Version %VERSION%</b>
+          <ul>
+            <li><a href="http://downloads.sourceforge.net/project/moeaframework/MOEAFramework-%VERSION%.tar.gz">Compiled Binaries</a></li>
+            <li><a href="http://downloads.sourceforge.net/project/moeaframework/MOEAFramework-%VERSION%-source.tar.gz">Source Code</a></li>
+            <li><a href="http://downloads.sourceforge.net/project/moeaframework/MOEAFramework-%VERSION%-javadoc.tar.gz">Documentation</a></li>
+          </ul>
+        </p>
+        <p>
+          Looking for a <a href="downloads.html#previous">previous release</a>?
+        </p>
+      </div>
+
+      <div class="sidemenu">
+        <h3>License</h3>
+        <p>
+          Licensed under the <a href="http://www.gnu.org/licenses/lgpl.html">GNU Lesser General Public License</a>.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+		
+<!-- footer -->
+<div id="footer-bottom">
+  <p class="bottom-left">
+    &copy; 2009-2011 <strong>MOEA Framework</strong>&nbsp; &nbsp; &nbsp;
+    Website template by <a href="http://www.styleshout.com/">styleshout</a>
+  </p>
+
+  <p class="bottom-right">
+    <a href="index.html">Home</a> |
+    <a href="credits.html">Credits</a> |
+    <strong><a href="#top">Back to Top</a></strong>
+ </p>
+</div>
+
+<!-- Piwik -->
+<script type="text/javascript">
+var pkBaseURL = (("https:" == document.location.protocol) ? "https://sourceforge.net/apps/piwik/moeaframework/" : "http://sourceforge.net/apps/piwik/moeaframework/");
+document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
+</script><script type="text/javascript">
+try {
+var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 1);
+piwikTracker.trackPageView();
+piwikTracker.enableLinkTracking();
+} catch( err ) {}
+</script><noscript><p><img src="http://sourceforge.net/apps/piwik/moeaframework/piwik.php?idsite=1" style="border:0" alt=""/></p></noscript>
+<!-- End Piwik Tag -->
+
+</body>
+</html>

@@ -1,0 +1,123 @@
+The following is from an e-mail exchange with Qingfu Zhang on June 01, 2011
+obtaining permission to include derived versions of the CEC 2009 and LZ test
+problem source codes licensed under the GNU Lesser General Public License (LGPL)
+in the MOEA Framework.
+    
+From POPmail Wed Jun  1 07: 19:48 2011
+Status: 
+Return-Path: <qfzhang2008@googlemail.com>
+Received: from tr11n05.aset.psu.edu (r02n08-fddi.cac.psu.edu [146.186.157.8])	
+	by tr26n15.aset.psu.edu (8.14.1/8.14.1) with ESMTP id p517afLs2261200	
+	for <dmh309@email.psu.edu>; Wed, 1 Jun 2011 03:36:41 -0400
+Received: from mail-qy0-f181.google.com (mail-qy0-f181.google.com [209.85.216.181])	
+	by tr11n05.aset.psu.edu (8.13.6/8.13.2) with ESMTP id p517aewa2023532	
+	for <dmh309@psu.edu>; Wed, 1 Jun 2011 03:36:40 -0400
+Received: by qyg14 with SMTP id 14so2826881qyg.19        
+	for <dmh309@psu.edu>; Wed, 01 Jun 2011 00:36:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;       
+	d=googlemail.com; s=gamma;       
+	h=domainkey-signature:mime-version:sender:in-reply-to:references:date      
+	  :x-google-sender-auth:message-id:subject:from:to:cc:content-type;       
+	bh=m/Cjv9FuMxf1GTbPz7QBMgYAB3XwHiqXOf0qbk5zEro=;       
+	b=JdX+TGsx+Az6Kv5bB1I5yAJVhurNUpz75qj+nF2VT4Uq5MrG12vMWBtKstnvQUaXh9       
+	 TWxvFTmCM8YWOemVT8muIsgSATCeOtnU63miHKaxEW31+tzCHLdTlNm5FJmMLVWwYgjF      
+	  zvlzcdpoReUX1RhaztNWPK6poBmmgUzEMnCFs=
+DomainKey-Signature: a=rsa-sha1; c=nofws;        d=googlemail.com; s=gamma; 
+	      h=mime-version:sender:in-reply-to:references:date        
+	:x-google-sender-auth:message-id:subject:from:to:cc:content-type;       
+	b=xlRjaMe6cQg68e1QXMSVlSK49oqaJSJkH3VGpvRgh5q4wc2FOWduleSdKNmmK85c9/       
+	 Z2Y4eX2atXm2qPdBbHwdPvETq9LkW9RDYKTDDdNeud7qzNyYHx41zG2P6bKSYaiokxaV      
+	  2P5WtUauHpbupBBbcAspBrqS+bFJfw2uIP9zg=
+Received: by 10.229.42.73 with SMTP id r9mr4984168qce.189.1306913800038;
+	Wed, 01 Jun 2011 00:36:40 -0700 (PDT)
+Sender: qfzhang2008@googlemail.com
+Received: by 10.229.217.15 with HTTP; Wed, 1 Jun 2011 00:36:39 -0700 (PDT)
+In-Reply-To: <1306886724l.544878l.0l@psu.edu>
+References: <1306886724l.544878l.0l@psu.edu>
+Date: Wed, 1 Jun 2011 08:36:39 +0100
+X-Google-Sender-Auth: I6WUvND1FRPwaq84JXx34wq-LoQ
+Message-ID: <BANLkTinCh589bvBMhHdxoEatWKzzeYYh8w@mail.gmail.com>
+Subject: Re: CEC 2009 and Complicated Pareto Set Code License
+From: Qingfu Zhang <qzhang@essex.ac.uk>
+To: David Hadka <dmh309@psu.edu>
+Cc: =?UTF-8?B?5p2O6L6J?= <lihui10@mail.xjtu.edu.cn>,        Wudong Liu
+	<wudong.liu@gmail.com>
+X-Greylist: Default is to whitelist mail, not delayed by
+	milter-greylist-3.1.8 (tr11n05.aset.psu.edu [146.186.157.8]); Wed, 01 Jun
+	2011 03:36:40 -0400 (EDT)
+X-Virus-Scanned: amavisd-sophos
+X-PSU-Spam-Flag: NO
+X-PSU-Spam-Hits: -0.365
+MIME-Version: 1.0
+Content-Type: multipart/alternative; boundary=00163683249ccda95604a4a194bc
+
+--00163683249ccda95604a4a194bc
+Content-Type: text/plain; charset=ISO-8859-1
+
+Dear Dav id,
+Thanks for your interest in our work. No problem with us.
+But we only have C++ and matlab codes of CEC2009 test instances.
+We have Java code of our MOEA/D (TEVC 2007).
+
+Regards
+Qingfu
+
+
+On 1 June 2011 01:05, David Hadka <dmh309@psu.edu> wrote:
+
+> Dr. Zhang and Dr. Li:
+>
+> I am preparing to release a Java-based MOEA library and would like to
+> include
+> your CEC 2009 and complicated Pareto set codes available on your website.
+>  I
+> plan on releasing the Java library under the GNU LGPL, and would like to
+> obtain
+> your consent prior to including your source codes.  Could you please
+> provide
+> the license terms, or would you be willing to consent to release them under
+> the
+> GNU LGPL license?
+>
+> The GNU LGPL license terms are available at
+> <http://www.gnu.org/copyleft/lesser.html>.
+>
+> Thank you,
+> David Hadka
+>
+>
+>
+
+--00163683249ccda95604a4a194bc
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+<div>Dear Dav id,=A0</div>
+<div>Thanks for your interest in our work. No problem with=A0us.=A0=A0</div=
+>
+<div>But we only have C++ and matlab codes=A0of CEC2009 test instances. </d=
+iv>
+<div>We have Java code=A0of our MOEA/D (TEVC 2007).</div>
+<div>=A0</div>
+<div>Regards</div>
+<div>Qingfu </div>
+<div><br>=A0</div>
+<div class=3D"gmail_quote">On 1 June 2011 01:05, David Hadka <span dir=3D"l=
+tr"><<a href=3D"mailto:dmh309@psu.edu">dmh309@psu.edu</a>></span> wro=
+te:<br>
+<blockquote style=3D"BORDER-LEFT: #ccc 1px solid; MARGIN: 0px 0px 0px 0.8ex=
+; PADDING-LEFT: 1ex" class=3D"gmail_quote">Dr. Zhang and Dr. Li:<br><br>I a=
+m preparing to release a Java-based MOEA library and would like to include<=
+br>
+your CEC 2009 and complicated Pareto set codes available on your website. =
+=A0I<br>plan on releasing the Java library under the GNU LGPL, and would li=
+ke to obtain<br>your consent prior to including your source codes. =A0Could=
+ you please provide<br>
+the license terms, or would you be willing to consent to release them under=
+ the<br>GNU LGPL license?<br><br>The GNU LGPL license terms are available a=
+t<br><<a href=3D"http://www.gnu.org/copyleft/lesser.html" target=3D"_bla=
+nk">http://www.gnu.org/copyleft/lesser.html</a>>.<br>
+<br>Thank you,<br><font color=3D"#888888">David Hadka<br><br><br></font></b=
+lockquote></div><br>
+
+--00163683249ccda95604a4a194bc--

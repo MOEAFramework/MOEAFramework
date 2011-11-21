@@ -1,0 +1,165 @@
+The MOEA Framework - <http://www.moeaframework.org/>
+====================================================
+Version: %VERSION%
+Release Date: %DATE%
+
+
+----------
+ Contents
+----------
+  1. Introduction
+  2. Copyright and Licensing Information
+  3. Installation Instructions
+  4. Support, Bug Reports, Feature Requests
+  5. Contributing
+  6. Credits
+
+
+-----------------
+ 1. Introduction
+-----------------
+The MOEA Framework is a Java library for developing and experimenting with
+multiobjective evolutionary algorithms (MOEAs) and other general-purpose
+optimization algorithms and metaheuristics.  The MOEA Framework comes with 
+built-in support for many state-of-the-art algorithms, including the Borg MOEA,
+GDE3, NSGA-II, Epsilon-NSGA-II, Epsilon-MOEA and MOEA/D.  Additional algorithms
+can be constructed by extending or composing existing components, or imported
+from third-party libraries like JMetal <http://jmetal.sourceforge.net/> and 
+PISA <http://www.tik.ee.ethz.ch/pisa/>.
+
+The MOEA Framework is academic in nature, and every effort is taken to maintain
+the quality, validity and openness of this project.  To support its academic
+role, the MOEA Framework comes equipped with a number of tools to statistically
+test and analyze MOEAs.
+
+
+----------------------------------------
+ 2. Copyright and Licensing Information
+----------------------------------------
+Copyright 2009-2011 David Hadka and other contributors.  All rights reserved.
+
+The MOEA Framework is free software: you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License as published by 
+the Free Software Foundation, either version 3 of the License, or (at your 
+option) any later version.
+
+The MOEA Framework is distributed in the hope that it will be useful, but 
+WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY 
+or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public 
+License for more details.
+
+You should have received a copy of the GNU Lesser General Public License 
+along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
+
+The MOEA Framework is distributed with software governed by licenses other than
+the GNU Lesser General Public License, but which are compatible with the terms
+of the GNU Lesser General Public License.  Please see LICENSE for details.
+
+
+------------------------------
+ 3. Installation Instructions
+------------------------------
+The MOEA Framework is available in source code and binary distributions.  Java
+5.0 or later is required to be accessible on the host system.  For source code
+distributions, the Java Development Kit (JDK) is required to compile the code.
+For binary distributions, only the Java Runtime Environment (JRE) is necessary.
+Depending on your platform, the JRE or JDK can be obtained from the following
+vendors:
+
+  Oracle <http://www.oracle.com/technetwork/java/javase/>
+    * Windows, Linux and Solaris
+    
+  JRockit JDK <http://www.oracle.com/technetwork/middleware/jrockit/>
+    * Windows, Linux and Solaris
+    * May provide better performance and scalability on Intel 32 and 64-bit
+      architectures
+      
+  OpenJDK <http://openjdk.java.net/>
+    * Ubuntu 8.04 (or later), Fedora 9 (or later), Red Hat Enterprise Linux 5, 
+      openSUSE 11.1, Debian GNU/Linux 5.0 and OpenSolaris
+ 
+  IBM <http://developer.apple.com/java/>
+    * AIX, Linux and z/OS
+    
+  Apple <http://developer.apple.com/java/>
+
+The MOEA Framework is distributed with all required third-party libraries
+located in the lib/ directory.  These libraries must be made accessible to the
+JRE in order to compile and run the MOEA Framework and any applications that
+import or link to the MOEA Framework.  The following provides two alternative
+methods for referencing the libraries:
+
+  * Specify JARs on classpath (Unix/Linux only)
+      java -classpath $(echo lib/*.jar | sed 's/ /:/g'):. <command>
+
+  * Specify JARs in extension directories
+      java -Djava.ext.dirs=lib <command>
+
+An Ant build script is provided to automatically compile the source code and
+package the compiled classes in a JAR file.  Ant binaries can be obtained from
+<http://ant.apache.org/>.  As an example, the compiled JAR is produced with
+the following command: 
+
+  ant package-binary       (for Unix/Linux)
+  ant.bat package-binary   (for Windows)
+    
+The latest version of the MOEA Framework can be downloaded from 
+<http://www.moeaframework.org/>.
+
+
+-------------------------------------------
+ 4. Support, Bug Reports, Feature Requests
+-------------------------------------------
+Visit <http://www.moeaframework.org/> to receive support, report bugs, request
+new features or keep up-to-date with the latest copy of the MOEA Framework.
+
+The developers can be contacted at <admin@moeaframework.org> if you have
+any direct questions, comments or concerns.
+
+
+-----------------
+ 5. Contributing
+-----------------
+The MOEA Framework is free and open source.  While no contributions of any
+kind are necessary to use this library, contributions of all kinds are
+appreciated: new feature additions, bug fixes, testing, documentation, user 
+support, translations, promotions, etc.  Even the smallest contribution can
+make a huge difference.
+
+Financial contributions are accepted to help finance the hosting and 
+distribution of the MOEA Framework.  Donation links are available online at
+<http://www.moeaframework.org/>.
+
+All contributions of source codes are expected to follow software development 
+best practices, be well documented and thoroughly tested, and adhere to the GNU 
+Lesser General Public License.  See TODO for suggested ways to contribute.
+
+
+------------
+ 6. Credits
+------------
+Special thanks to all individuals and organizations who have contributed to
+this and other free and open source projects.
+
+  Lead Developer - David Hadka
+  
+  Third-Party Libraries (see LICENSE for more details):
+    Apache Commons CLI <http://commons.apache.org/cli/>
+    Apache Commons Codec <http://commons.apache.org/codec/>
+    Apache Commons Math <http://commons.apache.org/math/>
+    JCommon <http://www.jfree.org/jcommon/>
+    JFreeChart <http://www.jfree.org/jfreechart/>
+    JUnit <http://www.junit.org/>
+    JMetal <http://jmetal.sourceforge.net/>
+    PISA <http://www.tik.ee.ethz.ch/pisa/>
+    CEC 2009 test problems <http://www.cec-2009.org/>
+    Walking Fish Group (WFG) test problems <http://www.wfg.csse.uwa.edu.au/>
+    Sobol Sequence Generator <http://web.maths.unsw.edu.au/~fkuo/sobol/>
+
+  The Unsung Heros (Software Tools Used by the Developers):
+    Eclipse <http://www.eclipse.org/>
+    EclEmma <http://www.eclemma.org/>
+    FindBugs <http://findbugs.sourceforge.net/>
+    Ant <http://ant.apache.org/>
+    Subversion <http://subversion.apache.org/>
+    CLOC <http://cloc.sourceforge.net/>

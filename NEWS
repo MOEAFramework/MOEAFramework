@@ -1,0 +1,200 @@
+This file documents the major changes implemented in each release of the MOEA
+Framework.
+
+---------------------------
+ Version 1.8 (21 Nov 2011)
+---------------------------
+
+  * Adds a new diagnostics GUI for analyzing the runtime dynamics of algorithms.
+
+  * Removed PolynomialStepMutation operator as it was indifferent from PM.
+    All uses of PolynomialStepMutation should be switched to PM.
+
+  * Updates to the webpage, getting it ready for public release.  This includes
+    the addition of an examples page with several simple examples.
+
+  * ProblemFactory and AlgorithmFactory now handle service provider
+    configuration and instantiation errors, preventing an errant problem
+    or algorithm provider from crashing the application.  The code now
+    determines if any other problem or algorithm providers are available prior 
+    to throwing ProviderNotFoundException.
+
+  * Includes a manifest file which records the specification and implementation
+    version, which will help improve bug tracking.
+
+  * Adds the new Instrumenter and collector classes, allowing the
+    instrumentation of algorithms to collect information concerning their
+    runtime dynamics.
+
+  * Updated the global.properties configuration file to refer to the new PISA
+    package.  All applications must change org.moeaframework.util.pisa to 
+    org.moeaframework.algorithm.pisa to function properly.
+
+  * Added support for PISA algorithms with any alpha (number of parents).
+    Previous versions only supported two parents.
+
+  * Adds RandomSearch for comparing the performance of algorithms against
+    random sampling.
+
+  * Adds ScriptedProblem, allowing the implementation of problems in one of the
+    many available JSR 223 Scripting API languages.  This supports the use of
+    problems written in Python, Ruby, JavaScript, Scheme, Groovy, Scala, 
+    Smalltalk, PHP, OCaml, etc.
+
+  * Miscellaneous bug fixes and enhancements.
+   
+
+----------------------------
+ Version 1.7 (29 Sept 2011)
+----------------------------
+
+  * Adds Analyzer class, similar in nature to Executor, to reduce the amount of
+    boilerplate code necessary to analyze end-of-run results.
+   
+  * Moves the Executor class to reside in the top-level org.moeaframework
+    package alongside the Analyzer.
+   
+  * Adds the Contribution indicator for measuring the percentage of the
+    reference set which is produced by a given algorithm.
+   
+  * Removes the deprecated BooleanVariable class, which has been replaced by
+    BinaryVariable.
+   
+  * Adds the SetGenerator command line utility for generating reference sets
+    for problems whose solutions are known analytically (i.e., implement 
+    AnalyticalProblem).
+   
+  * AdditiveEpsilonIndicator is normalized by default.  Subsequently, reversing
+    the change in v1.4, the metric file no longer contains both the unnormalized
+    and normalized additive epsilon indicator values.
+
+
+---------------------------------
+ Version 1.6 (10 September 2011)
+---------------------------------
+
+  * New result file format enables storing additional data alongside end-of-run
+    approximation sets.  The new format is backwards compatible.  
+
+  * ExtractData command line utility for extracting the additional data stored
+    in the new result files.  Also supports "+ commands", such as +hypervolume,
+    to evaluate performance measures.  (Note: the old ResultFileEvaluator is 
+    still preferred if all performance measures are to be evaluated.)
+
+  * Enhanced Executor features, including:
+      - specifying the problem by its class name (allowing the introduction of 
+        new problems without using the ProblemFactory)
+      - accumulating the result from multiple seeds
+   
+  * Adds OperatorFactory, allowing the construction of operators using encoded
+    names.  For example, "sbx+pm" constructs an operator consisting of
+    simulated binary crossover (SBX) and polynomial mutation (PM).
+   
+  * Providers and factories moved to org.moeaframework.core.spi.  This places
+    the service provider codes in a centralized, standardized location.  The
+    factories have also been converted from static factories to object 
+    factories, allowing the default factories to be replaced at runtime.
+   
+
+------------------------------
+ Version 1.5 (28 August 2011)
+------------------------------
+
+  * Fixes bug in SinglePointCrossover and TwoPointCrossover causing an exception
+    when operating on decision variables of length <= 1.
+
+  * Adds Executor class for convenient, programmtic execution of algorithms.
+
+  * Adds SetHypervolume command line utility for calculating the hypervolume of
+    reference or approximation sets.
+   
+  * Improved support for PISA selectors, including the download-pisa-windows
+    Ant script to automatically download and install all windows PISA selectors.
+
+
+------------------------------
+ Version 1.4 (10 August 2011)
+------------------------------
+
+  * Adds RotatedProblems problem provider to allow instantiating rotated
+    instances of any available problems by prefixing their names with UNROT_ and
+    ROT_.
+   
+  * Visibility of static evaluate(...) methods in several indicators have been
+    changed to package-private to prevent unintentionally passing unnormalized
+    sets.  The constructor instead enforces any necessary normalization.
+   
+  * MetricFileWriter and impacted codes updated to include a header line
+    identifying the metric contained in each column.  Metric files now also
+    include the normalized epsilon-indicator metric.
+   
+  * Adds ResultFileSeedMerger to combine reference sets across multiple seeds.
+    Unlike the current codes which evaluate each seed independently,
+    preprocessing with ResultFileSeedMerger allows evaluating the result of
+    combining multiple seeds.
+
+
+----------------------------
+ Version 1.3 (26 July 2011)
+----------------------------
+
+  * All problems now implement the close() method to free any underlying
+    resources.  This is in contrast to previous versions where only
+    ExternalProblem supported the close() method.  This change provides a more 
+    consistent mechanism for releasing resources.
+   
+  * Fixed resource loading in several command line utilities to ensure safe
+    and complete shutdown (including ensuring Problem#close() is invoked).
+   
+  * The MetricFileStatistics utility has been renamed to SimpleStatistics and 
+    now works on any set of files containing a matrix (equal rows and columns) 
+    of numeric values.
+
+  * Problems can now be defined in the global.properties file with
+      org.moeaframework.problem.NAME.class = ...
+    and optionally
+      org.moeaframework.problem.NAME.referenceSet = ...
+
+  * ReferenceSetMerger now emits a warning if duplicate solutions exist.
+ 
+  * Adds RotationMatrixBuilder and RotatedProblem to support the new rotated
+    test problem suite.  These tools allow constructing arbitrary or random
+    rotation matrices and applying such rotations to arbitrary real-valued test
+    problems.
+
+
+---------------------------
+ Version 1.2 (5 July 2011)
+---------------------------
+
+  * Adds SetContribution class to determine the percentage of a reference set 
+    that individual algorithms contributed.  Unlike ReferenceSetMerger, this 
+    percentage accounts for duplicate solutions.
+
+  * Fixes an issue when Evaluator, ResultFileInfo and ResultFileEvaluator fail 
+    to close an ExternalProblem, thus keeping the external process alive and the
+    JVM active.
+   
+  * Miscellaneous bug fixes.
+
+
+----------------------------
+ Version 1.1 (24 June 2011)
+----------------------------
+
+  * Adds global.properties file to store configuration data.  The Settings
+    class facilitates access to the properties.
+
+  * Adds support for PISA algorithms.  This uses the new global.properties file
+    to enumerate and configure the available PISA selectors.
+   
+  * Includes the ResultFileInfo command line utility to count the number of 
+    valid entries in a result file.
+
+
+----------------------------
+ Version 1.0 (14 June 2011)
+----------------------------
+
+  * Initial public release.  Several versions have been distributed prior to
+    this date, but this marks the first public conveyance of the code.

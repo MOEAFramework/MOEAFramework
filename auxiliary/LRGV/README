@@ -1,0 +1,8 @@
+LRGV problem provided by Joe Kasprzyk on 09 Sept 2011.
+
+Compiled on x86_64 architecture for Linux 2.6.9.
+
+PBS jobs should be submitted to Intel nodes using, for example:
+  #PBS -l nodes=1:nehalem:ppn=1
+  
+Epsilons: 0.0009,0.002,0.03,0.004,0.004

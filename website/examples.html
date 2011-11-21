@@ -1,0 +1,230 @@
+%HEADER%
+
+<div id="nav">
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li id="current"><a href="examples.html">Examples</a></li>
+    <li><a href="downloads.html">Downloads</a></li>
+    <li><a href="javadoc/index.html">Documentation</a></li>
+    <li><a href="support.html">Support</a></li>
+    <li><a href="contribute.html">Contribute</a></li>
+  </ul>
+</div>
+
+%BODY%
+
+<h3>Examples</h3>
+
+<p>
+  The following examples demonstrate the basic functionality provided by the
+  MOEA Framework.  Links to the full source code are provided alongside each
+  code snippet.
+</p>
+
+<div class="section">
+<h4>Setup</h4>
+
+<p>
+  In order to run these examples or use the MOEA Framework, Java 1.6 (or a later
+  version) must be installed on your computer.  To obtain the latest version
+  of Java, visit <a href="http://www.java.com">http://www.java.com</a>.
+</p>
+
+<p>
+  To run these examples, first create a folder called 
+  <code>MOEAFrameworkDemo</code>.  Download and extract the latest compiled 
+  binaries from the <a href="downloads.html">downloads</a> page to this folder.
+  Next, download one of the examples below to the same folder.  For example, if
+  you downloaded <a href="Example1.java">Example1.java</a>, the folder contents
+  should look similar to:
+</p>
+
+<p>
+  <div class="files">
+  <ul>
+    <li class="folder">MOEAFrameworkDemo/
+    <li class="empty">
+      <ul>
+        <li class="folder">lib/
+        <li class="empty">
+          <ul>
+            <li>commons-cli-1.2.jar
+            <li>commons-codec-1.5.jar
+            <li>commons-math-2.2.jar
+            <li>JMetal-3.1.jar
+            <li>MOEAFramework-%VERSION%.jar
+          </ul>
+        <li>Example1.java
+      </ul>
+    </ul>
+  </div>
+</p>
+  
+<p>
+  Lastly, compile and run the program using the following commands.  For
+  Windows users, run these commands in the Command Prompt from the 
+  MOEAFrameworkDemo folder.
+</p>
+
+<p>
+  <pre>
+              javac -Djava.ext.dirs=lib Example1.java
+              java -Djava.ext.dirs=lib Example1</pre>
+</p>
+</div>
+
+<div class="section">
+<h4>Example 1: Simple Run</h4>
+
+<div class="files">
+  <ul>
+    <li><a href="Example1.java">Example1.java</a>
+  </ul>
+</div>
+
+<p>
+  The Executor provides all the necessary features to execute an algorithm on
+  a specific problem.  For example, the following runs NSGA-II on the UF1 test
+  problem.  The executor provides many useful functions, such as enabling
+  distributed evaluations across multiple cores or computers, checkpoints,
+  instrumentation, etc.
+</p>
+
+<div class="code">
+  <pre class="brush: java; toolbar: false;">
+NondominatedPopulation result = new Executor()
+    .withProblem("UF1")
+    .withAlgorithm("NSGAII")
+    .withMaxEvaluations(10000)
+    .distributeOnAllCores()
+    .run();
+  </pre>
+</div>
+</div>
+
+<div class="section">
+<h4>Example 2: Statistical Comparison of Algorithms</h4>
+
+<div class="files">
+  <ul>
+    <li><a href="Example2.java">Example2.java</a>
+  </ul>
+</div>
+
+<p>
+  Statistical analyses are provided by the Analyzer.  The Analyzer can display
+  the min, median, max and aggregate values for multiple performance indicators,
+  including hypervolume, generational distance, inverted generational distance,
+  additive &epsilon;-indicator, spacing and contribution.  Additionally,
+  Kruskal-Wallis and Mann-Whitney U tests provide statistical significance
+  results.
+</p>
+
+<div class="code">
+  <pre class="brush: java; toolbar: false;">
+String problem = "UF1";
+String[] algorithms = { "NSGAII", "GDE3", "eMOEA" };
+		
+//setup the experiment
+Executor executor = new Executor()
+    .withProblem(problem)
+    .withMaxEvaluations(10000);
+		
+Analyzer analyzer = new Analyzer()
+    .withProblem(problem)
+    .includeAllMetrics()
+    .showStatisticalSignificance();
+
+//run each algorithm for 50 seeds
+for (String algorithm : algorithms) {
+    analyzer.addAll(algorithm, 
+        executor.withAlgorithm(algorithm).runSeeds(50));
+}
+
+//print the results
+analyzer.printAnalysis();
+  </pre>
+</div>
+</div>
+
+<div class="section">
+<h4>Example 3: Defining New Problems</h4>
+
+<div class="files">
+  <ul>
+    <li><a href="Example3.java">Example3.java</a>
+  </ul>
+</div>
+
+<p>
+  A number of methods are available to provide custom, user-defined problems
+  that cleanly integrate with all other components of the MOEA Framework.  The
+  following demonstrates the single-objective 
+  <a href="http://en.wikipedia.org/wiki/Rosenbrock_function">Rosenbrock</a>
+  function.
+</p>
+
+<div class="code">
+  <pre class="brush: java; toolbar: false;">
+public class Rosenbrock extends AbstractProblem {
+
+	public Rosenbrock() {
+		super(2, 1);
+	}
+
+	@Override
+	public void evaluate(Solution solution) {
+		double sum = 0.0;
+		double[] x = CoreUtils.castVariablesToDoubleArray(solution);
+
+		for (int i = 0; i < numberOfVariables - 1; i++) {
+			sum += Math.pow(1.0 - x[i], 2.0) + 100.0
+					* Math.pow(x[i + 1] - Math.pow(x[i], 2.0), 2.0);
+		}
+
+		solution.setObjective(0, sum);
+	}
+
+	@Override
+	public Solution newSolution() {
+		Solution solution = new Solution(numberOfVariables, 1);
+
+		for (int i = 0; i < numberOfVariables; i++) {
+			solution.setVariable(i, new RealVariable(-10.0, 10.0));
+		}
+
+		return solution;
+	}
+
+}
+  </pre>
+</div>
+
+<p>
+  This can subsequently be used with the Executor.
+</p>
+
+<div class="code">
+  <pre class="brush: java; toolbar: false;">
+NondominatedPopulation result = new Executor()
+    .withProblemClass(Rosenbrock.class)
+    .withAlgorithm("GDE3")
+    .withMaxEvaluations(100000)
+    .distributeOnAllCores()
+    .run();
+  </pre>
+</div>
+</div>
+
+<div class="section">
+<h4>Concluding Remarks</h4>
+
+<p>
+  We hope that you find the MOEA Framework useful.  We strive to make this
+  framework reliable and easy-to-use, and feedback from users like yourself
+  help us meet these goals.  If you encounter any issues using this software,
+  please <a href="support.html">notify us</a>.
+</p>
+</div>
+ 
+%FOOTER%

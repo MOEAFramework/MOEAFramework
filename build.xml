@@ -1,0 +1,257 @@
+<?xml version="1.0"?>
+<project name="MOEA Framework" basedir=".">
+
+	<property file="META-INF/build.properties" />
+	<property environment="env" />
+
+	<path id="classpath">
+		<fileset dir="lib" includes="*.jar" />
+	</path>
+
+	<path id="requiredfiles">
+		<fileset file="README" />
+		<fileset file="LICENSE" />
+		<fileset file="TODO" />
+		<fileset file="NEWS" />
+		<fileset file="HELP" />
+	</path>
+
+	<target name="package-proprietary" 
+			description="Creates the binary distribution with proprietary data files">
+		<delete dir="build" />
+		<mkdir dir="build" />
+
+		<javac destdir="build" srcdir="proprietary" debug="${java.debug}" 
+				target="${java.target}">
+			<classpath>
+				<path refid="classpath" />
+				<pathelement location="dist/${shortname}-${version}.jar" />
+			</classpath>
+		</javac>
+
+		<copy todir="build">
+			<fileset excludes="**/*.java" dir="proprietary" />
+		</copy>
+
+		<jar basedir="build" jarfile="dist/${shortname}-${version}-proprietary.jar" />
+	</target>
+
+	<target name="javadoc" description="Generates javadoc files">
+		<javadoc sourcepath="src" destdir="javadoc" notree="true"
+				noindex="true" nohelp="true" nodeprecated="true"
+				overview="src/overview.html"
+				windowtitle="MOEA Framework ${version}">
+			<header><![CDATA[${javadoc.title}]]></header>
+			<doctitle><![CDATA[${javadoc.title}]]></doctitle>
+			<footer><![CDATA[${javadoc.title}]]></footer>
+			<bottom><![CDATA[${javadoc.bottom}]]></bottom>
+			<classpath>
+				<path refid="classpath" />
+			</classpath>
+			<link href="http://download.oracle.com/javase/6/docs/api/" />
+		</javadoc>
+	</target>
+
+	<target name="package-binary" 
+			description="Creates the binary distribution file">
+		<tstamp />
+
+		<delete dir="build" />
+		<mkdir dir="build" />
+
+		<javac destdir="build" srcdir="src" debug="${java.debug}"
+				target="${java.target}"
+				excludes="**/package-info.java"
+				includeantruntime="false">
+			<classpath refid="classpath" />
+		</javac>
+
+		<copy todir="build/META-INF">
+			<fileset dir="META-INF" />
+			<path refid="requiredfiles" />
+		</copy>
+
+		<replace file="build/META-INF/README">
+			<replacefilter token="%VERSION%" value="${version}" />
+			<replacefilter token="%DATE%" value="${TODAY}" />
+		</replace>
+
+		<exec executable="svnversion" outputproperty="svn.version"
+				failifexecutionfails="false"/>
+
+		<manifest file="build/META-INF/MANIFEST.MF">
+			<section name="org/moeaframework/">
+				<attribute name="Specification-Title" value="MOEA Framework" />
+				<attribute name="Specification-Version" value="${version}" />
+				<attribute name="Specification-Vendor" value="http://www.moeaframework.org" />
+				<attribute name="Implementation-Title" value="org.moeaframework" />
+				<attribute name="Implementation-Version" value="${svn.version}" />
+				<attribute name="Implementation-Vendor" value="http://www.moeaframework.org" />
+			</section>
+		</manifest>
+
+		<copy todir="build">
+			<fileset excludes="**/*.java,overview.html" dir="src" />
+		</copy>
+
+		<jar basedir="build" manifest="build/META-INF/MANIFEST.MF"
+				jarfile="dist/${shortname}-${version}.jar" />
+	</target>
+
+	<target name="package-test" 
+			description="Creates the binary distribution file for tests">
+		<delete dir="build" />
+		<mkdir dir="build" />
+
+		<javac destdir="build" srcdir="test" debug="${java.debug}" 
+				target="${java.target}">
+			<classpath>
+				<path refid="classpath" />
+				<pathelement location="dist/${shortname}-${version}.jar" />
+				<pathelement location="dist/${shortname}-${version}-proprietary.jar" />
+			</classpath>
+		</javac>
+
+		<copy todir="build/META-INF">
+			<path refid="requiredfiles" />
+		</copy>
+
+		<copy todir="build">
+			<fileset excludes="**/*.java" dir="test" />
+		</copy>
+
+		<jar basedir="build" 
+			jarfile="dist/${shortname}-${version}-test.jar" />
+	</target>
+
+	<target name="package-source" 
+			description="Creates the source code distribution file">
+		<delete dir="build" />
+		<mkdir dir="build" />
+
+		<copy todir="build">
+			<fileset file="build.xml" />
+			<fileset file="codetemplates.xml" />
+			<fileset file="format.xml" />
+			<path refid="requiredfiles" />
+		</copy>
+
+		<copy todir="build/src">
+			<fileset dir="src" />
+		</copy>
+
+		<copy todir="build/examples">
+			<fileset dir="examples" />
+		</copy>
+
+		<copy todir="build/test">
+			<fileset dir="test" />
+		</copy>
+
+		<copy todir="build/lib">
+			<fileset dir="lib" />
+		</copy>
+
+		<copy todir="build/META-INF">
+			<fileset dir="META-INF" />
+		</copy>
+
+		<copy todir="build/pf">
+			<fileset dir="pf" />
+		</copy>
+
+		<copy todir="build/website">
+			<fileset dir="website" />
+		</copy>
+
+		<tar destfile="dist/${shortname}-${version}.tar.gz" 
+				basedir="build" compression="gzip" />
+	</target>
+
+	<target name="package-documentation" 
+			description="Creates the documentation distribution file"
+			depends="javadoc">
+		<tar destfile="dist/${shortname}-${version}-javadoc.tar.gz" 
+				basedir="javadoc" compression="gzip" />
+	</target>
+	
+	<target name="package-website" depends="javadoc"
+			description="Creates the website">
+		<delete dir="build" />
+		<mkdir dir="build" />
+		
+		<copy todir="build">
+			<fileset dir="website" excludes="*.partial" />
+		</copy>
+		
+		<loadfile property="website.header" srcFile="website/header.partial" />
+		<loadfile property="website.body" srcFile="website/body.partial" />
+		<loadfile property="website.footer" srcFile="website/footer.partial" />
+		
+		<replace dir="build" includes="*.html">
+			<replacefilter token="%HEADER%" value="${website.header}" />
+			<replacefilter token="%BODY%" value="${website.body}" />
+			<replacefilter token="%FOOTER%" value="${website.footer}" />
+			<replacefilter token="%VERSION%" value="${version}" />
+		</replace>
+		
+		<copy todir="build/javadoc">
+			<fileset dir="javadoc" />
+		</copy>
+		
+		<copy todir="build">
+			<fileset dir="examples" includes="*.java" />
+		</copy>
+	</target>
+
+	<target name="download-pisa-windows" 
+			description="Downloads all PISA selectors for Windows">
+		<delete dir="build" />
+		<mkdir dir="build" />
+
+		<!-- download PISA binaries -->
+		<get src="http://www.tik.ee.ethz.ch/pisa/selectors/spam/spam_win.zip" dest="build/spam_win.zip" />
+		<get src="http://www.tik.ee.ethz.ch/pisa/selectors/shv/shv_win.zip" dest="build/shv_win.zip" />
+		<get src="http://www.tik.ee.ethz.ch/pisa/selectors/sibea/sibea_binary.zip" dest="build/sibea_win.zip" />
+		<get src="http://www.tik.ee.ethz.ch/pisa/selectors/hype/hype_win.zip" dest="build/hype_win.zip" />
+		<get src="http://www.tik.ee.ethz.ch/pisa/lotz_semo/semo_win.zip" dest="build/semo_win.zip" />
+		<get src="http://www.tik.ee.ethz.ch/pisa/selectors/semo2/semo2_win.zip" dest="build/semo2_win.zip" />
+		<get src="http://www.tik.ee.ethz.ch/pisa/selectors/femo/femo_win.zip" dest="build/femo_win.zip" />
+		<get src="http://www.tik.ee.ethz.ch/pisa/selectors/spea2/spea2_win.zip" dest="build/spea2_win.zip" />
+		<get src="http://www.tik.ee.ethz.ch/pisa/selectors/nsga2/nsga2_win.zip" dest="build/nsga2_win.zip" />
+		<get src="http://www.tik.ee.ethz.ch/pisa/selectors/ecea/ecea_win.zip" dest="build/ecea_win.zip" />
+		<get src="http://www.tik.ee.ethz.ch/pisa/selectors/ibea/ibea_win.zip" dest="build/ibea_win.zip" />
+		<get src="http://www.tik.ee.ethz.ch/pisa/selectors/msops/msops_win.zip" dest="build/msops_win.zip" />
+		<get src="http://www.tik.ee.ethz.ch/pisa/selectors/epsmoea/epsmoea_win.tar.gz" dest="build/epsmoea_win.tar.gz" />
+
+		<!-- extract PISA binaries -->
+		<unzip src="build/spam_win.zip" dest="build" />
+		<unzip src="build/shv_win.zip" dest="build/shv_win/" />
+		<unzip src="build/sibea_win.zip" dest="build/sibea_win/" />
+		<unzip src="build/hype_win.zip" dest="build/hype_win/" />
+		<unzip src="build/semo_win.zip" dest="build" />
+		<unzip src="build/semo2_win.zip" dest="build" />
+		<unzip src="build/femo_win.zip" dest="build" />
+		<unzip src="build/spea2_win.zip" dest="build" />
+		<unzip src="build/nsga2_win.zip" dest="build" />
+		<unzip src="build/ecea_win.zip" dest="build" />
+		<unzip src="build/ibea_win.zip" dest="build" />
+		<unzip src="build/msops_win.zip" dest="build" />
+		<gunzip src="build/epsmoea_win.tar.gz" dest="build" />
+		<untar src="build/epsmoea_win.tar" dest="build" />
+
+		<!-- delete compressed files -->
+		<delete>
+			<fileset includes="*.zip,*.tar,*.gz" dir="build" />
+		</delete>
+
+		<!-- move PISA binaries to pisa folder -->
+		<delete dir="pisa" />
+		<mkdir dir="pisa" />
+
+		<move todir="pisa">
+			<fileset includes="**/*" dir="build" />
+		</move>
+	</target>
+
+</project>

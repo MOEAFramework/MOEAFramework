@@ -1,0 +1,4 @@
+org.moeaframework.algorithm.StandardAlgorithms
+org.moeaframework.algorithm.Borg2Provider
+org.moeaframework.algorithm.jmetal.JMetalAlgorithms
+org.moeaframework.algorithm.pisa.PISAAlgorithms

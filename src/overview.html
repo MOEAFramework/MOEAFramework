@@ -1,0 +1,288 @@
+<html>
+<body>
+<p>
+This document is the API specification for the MOEA Framework.  The MOEA 
+Framework is a Java library for developing and experimenting with multiobjective
+evolutionary algorithms (MOEAs) and other general-purpose optimization 
+algorithms and metaheuristics.
+<p>
+For most users, the {@link org.moeaframework.Executor} and
+{@link org.moeaframework.Analyzer} classes provide sufficient functionality
+to execute and analyze MOEAs.  The following table lists the algorithms
+provided by the MOEA Framework and supported third-party libraries.
+<table width="100%" border="1" cellpadding="3" cellspacing="0">
+  <tr class="TableHeadingColor">
+    <th width="15%" align="left">Algorithm</th>
+    <th width="25%" align="left">Type</th>
+    <th width="10%" align="center">Real</th>
+    <th width="10%" align="center">Binary</th>
+    <th width="10%" align="center">Permutation</th>
+    <th width="10%" align="center">Grammar</th>
+    <th width="10%" align="center">Constraints</th>
+    <th width="10%" align="left">Provider</th>
+  </tr>
+  <tr>
+    <td>AbYSS</td>
+    <td>Scatter Search</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#FF9090">No</td>
+    <td align="center" bgcolor="#FF9090">No</td>
+    <td align="center" bgcolor="#FF9090">No</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td>JMetal</td>
+  </tr>
+  <tr>
+    <td>Borg</td>
+    <td>Multioperator, &epsilon;-Dominance</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#FF9090">No</td>
+    <td align="center" bgcolor="#FF9090">No</td>
+    <td align="center" bgcolor="#FF9090">No</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td>Native</td>
+  </tr>
+  <tr>
+    <td>CellDE</td>
+    <td>Differential Evolution</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#FF9090">No</td>
+    <td align="center" bgcolor="#FF9090">No</td>
+    <td align="center" bgcolor="#FF9090">No</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td>JMetal</td>
+  </tr>
+  <tr>
+    <td>DENSEA</td>
+    <td>Genetic Algorithm</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#FF9090">No</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td>JMetal</td>
+  </tr>
+  <tr>
+    <td>ECEA</td>
+    <td>Genetic Algorithm</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#FF9090">No</td>
+    <td>PISA</td>
+  </tr>
+  <tr>
+    <td>eMOEA</td>
+    <td>&epsilon;-Dominance</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td>Native</td>
+  </tr>
+  <tr>
+    <td>eNSGAII</td>
+    <td>&epsilon;-Dominance</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td>Native</td>
+  </tr>
+  <tr>
+    <td>FastPGA</td>
+    <td>Genetic Algorithm</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#FF9090">No</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td>JMetal</td>
+  </tr>
+  <tr>
+    <td>FEMO</td>
+    <td>Genetic Algorithm</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#FF9090">No</td>
+    <td>PISA</td>
+  </tr>
+  <tr>
+    <td>GDE3</td>
+    <td>Differential Evolution</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#FF9090">No</td>
+    <td align="center" bgcolor="#FF9090">No</td>
+    <td align="center" bgcolor="#FF9090">No</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td>Native</td>
+  </tr>
+  <tr>
+    <td>HypE</td>
+    <td>Indicator-Based</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#FF9090">No</td>
+    <td>PISA</td>
+  </tr>
+  <tr>
+    <td>IBEA</td>
+    <td>Indicator-Based</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#FF9090">No</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td>JMetal</td>
+  </tr>
+  <tr>
+    <td>MOCell</td>
+    <td>Cellular</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#FF9090">No</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td>JMetal</td>
+  </tr>
+  <tr>
+    <td>MOCHC</td>
+    <td>CHC Algorithm</td>
+    <td align="center" bgcolor="#FF9090">No</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#FF9090">No</td>
+    <td align="center" bgcolor="#FF9090">No</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td>JMetal</td>
+  </tr>
+  <tr>
+    <td>MOEAD</td>
+    <td>Decomposition</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#FF9090">No</td>
+    <td align="center" bgcolor="#FF9090">No</td>
+    <td align="center" bgcolor="#FF9090">No</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td>Native</td>
+  </tr>
+  <tr>
+    <td>NSGAII</td>
+    <td>Genetic Algorithm</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td>Native</td>
+  </tr>
+  <tr>
+    <td>OMOPSO</td>
+    <td>Particle Swarm</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#FF9090">No</td>
+    <td align="center" bgcolor="#FF9090">No</td>
+    <td align="center" bgcolor="#FF9090">No</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td>JMetal</td>
+  </tr>
+  <tr>
+    <td>PAES</td>
+    <td>Evolutionary Strategy</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#FF9090">No</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td>JMetal</td>
+  </tr>
+  <tr>
+    <td>PESA2</td>
+    <td>Genetic Algorithm</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#FF9090">No</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td>JMetal</td>
+  </tr>
+  <tr>
+    <td>SEMO2</td>
+    <td>Genetic Algorithm</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#FF9090">No</td>
+    <td>PISA</td>
+  </tr>
+  <tr>
+    <td>SHV</td>
+    <td>Indicator-Based</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#FF9090">No</td>
+    <td>PISA</td>
+  </tr>
+  <tr>
+    <td>SMPSO</td>
+    <td>Particle Swarm</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#FF9090">No</td>
+    <td align="center" bgcolor="#FF9090">No</td>
+    <td align="center" bgcolor="#FF9090">No</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td>JMetal</td>
+  </tr>
+  <tr>
+    <td>SMSEMOA</td>
+    <td>Indicator-Based</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#FF9090">No</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td>JMetal</td>
+  </tr>
+  <tr>
+    <td>SPAM</td>
+    <td>Indicator-Based</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#FF9090">No</td>
+    <td>PISA</td>
+  </tr>
+  <tr>
+    <td>SPEA2</td>
+    <td>Genetic Algorithm</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#FF9090">No</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td>JMetal</td>
+  </tr>
+</table>
+<p>
+While the MOEA Framework provides a large collection of built-in algorithms,
+operators and problems, advanced users can take advantage of its object-oriented
+design to extend existing features or add new functionality.  In addition, the
+service provider interface allows extending the software with algorithms and
+problems provided by third-party libraries.  Any algorithms and problems working
+within the MOEA Framework can take advantage of its suite of diagnostic and
+statistical testing tools.  As this project is academic in nature, every effort
+is taken to ensure the correctness, quality and openness of the codes.
+<p>
+The latest source code and binaries can be obtained from 
+<a href="http://www.moeaframework.org/">http://www.moeaframework.org/</a>.
+</body>
+</html>
