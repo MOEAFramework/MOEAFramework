@@ -24,7 +24,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
-import java.awt.Paint;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -59,81 +58,125 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 
-import org.jfree.chart.ChartColor;
-import org.jfree.chart.PaintMap;
 import org.moeaframework.analysis.collector.Accumulator;
 import org.moeaframework.core.Settings;
 
 /**
  * The main window of the diagnostic tool.
  */
-public class DiagnosticTool extends JFrame implements ListSelectionListener, ControllerListener {
+public class DiagnosticTool extends JFrame implements ListSelectionListener, 
+ControllerListener {
 
 	private static final long serialVersionUID = -8770087330810075627L;
 
-	private final Controller controller;
+	/**
+	 * The controller which stores the underlying data model and notifies this
+	 * diagnostic tool of any changes.
+	 */
+	private Controller controller;
 
+	/**
+	 * The list of all available metrics.
+	 */
 	private JList metricList;
 	
+	/**
+	 * The underlying data model storing all available results.
+	 */
 	private SortedListModel<ResultKey> resultListModel;
 	
+	/**
+	 * The underlying data model storing all available metrics.
+	 */
 	private SortedListModel<String> metricListModel;
 	
+	/**
+	 * The container of all plots.
+	 */
 	private JPanel chartContainer;
 	
-	private PaintMap paintMap;
-	
-	private int nextPaintIndex;
-	
+	/**
+	 * The table for displaying all available results.
+	 */
 	private JTable resultTable;
 	
+	/**
+	 * The table model that allows {@code resultListModel} to be displayed in a
+	 * table.
+	 */
 	private AbstractTableModel resultTableModel;
 	
+	/**
+	 * The button for selecting all results.
+	 */
 	private JButton selectAll;
 	
+	/**
+	 * The button for displaying a statistical comparison of selected results.
+	 */
 	private JButton showStatistics;
 	
-	public static final String[] algorithms = new String[] { "NSGAII", "GDE3", 
-		"eMOEA", "Borg", "eNSGAII", "MOEAD", "Random" };
-	
-	public static final String[] problems = new String[] { 
-		"DTLZ1_2", "DTLZ2_2", "DTLZ3_2", "DTLZ4_2", "DTLZ7_2", 
-		"ROT_DTLZ1_2", "ROT_DTLZ2_2", "ROT_DTLZ3_2", "ROT_DTLZ4_2", "ROT_DTLZ7_2", 
-		"UF1", "UF2", "UF3", "UF4", "UF5", "UF6", "UF7", "UF8", "UF9", "UF10", "UF11", "UF12", "UF13",
-		"CF1", "CF2", "CF3", "CF4", "CF5", "CF6", "CF7", "CF8", "CF9", "CF10",
-		"LZ1", "LZ2", "LZ3", "LZ4", "LZ5", "LZ6", "LZ7", "LZ8", "LZ9",
-		"WFG1_2", "WFG2_2", "WFG3_2", "WFG4_2", "WFG5_2", "WFG6_2", "WFG7_2", "WFG8_2", "WFG9_2",
-		"ZDT1", "ZDT2", "ZDT3", "ZDT4", "ZDT5", "ZDT6" };
-	
+	/**
+	 * The control for setting the algorithm used by evaluation jobs.
+	 */
 	private JComboBox algorithm;
 	
+	/**
+	 * The control for setting the problem used by evaluation jobs.
+	 */
 	private JComboBox problem;
 	
+	/**
+	 * The control for setting the number of seeds used by evaluation jobs.
+	 */
 	private JSpinner numberOfSeeds;
 	
+	/**
+	 * The control for setting the number of evaluations used by evaluation
+	 * jobs.
+	 */
 	private JSpinner numberOfEvaluations;
 	
+	/**
+	 * The button for starting a new evaluation job.
+	 */
 	private JButton run;
 	
+	/**
+	 * The button for canceling the current evaluation job.
+	 */
 	private JButton cancel;
 	
+	/**
+	 * The button for clearing all results contained in this diagnostic tool.
+	 */
 	private JButton clear;
 	
+	/**
+	 * The progress bar displaying the individual run progress.
+	 */
 	private JProgressBar runProgress;
 	
-	private JProgressBar seedProgress;
+	/**
+	 * The progress bar displaying the overall progress.
+	 */
+	private JProgressBar overallProgress;
 	
-	private final ActionFactory actionFactory;
-	
-	private static final Paint[] COLORS = ChartColor.createDefaultPaintArray();
-	
+	/**
+	 * The factory for the actions supported in this diagnostic tool window.
+	 */
+	private ActionFactory actionFactory;
+
+	/**
+	 * Maintains a mapping from series key to paints displayed in the plot.
+	 */
+	private PaintHelper paintHelper;
+
+	/**
+	 * Constructs a new diagnostic tool window.
+	 */
 	public DiagnosticTool() {
 		super("MOEA Diagnostic Tool");
-		
-		controller = new Controller(this);
-		controller.addControllerListener(this);
-		
-		actionFactory = new ActionFactory(this, controller);
 
 		setSize(800, 600);
 		setMinimumSize(new Dimension(800, 600));
@@ -141,56 +184,28 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
 		initialize();
-		setupMenu();
+		layoutMenu();
 		layoutComponents();
 	}
 	
-	protected void setupMenu() {
-		JMenu file = new JMenu("File");
-		file.add(new JMenuItem(actionFactory.getSaveAction()));
-		file.add(new JMenuItem(actionFactory.getLoadAction()));
-		file.addSeparator();
-		file.add(new JMenuItem(actionFactory.getExitAction()));
-		
-		JMenu metrics = new JMenu("Collect");
-		metrics.add(new JCheckBoxMenuItem(actionFactory.getIncludeHypervolumeAction()));
-		metrics.add(new JCheckBoxMenuItem(actionFactory.getIncludeGenerationalDistanceAction()));
-		metrics.add(new JCheckBoxMenuItem(actionFactory.getIncludeInvertedGenerationalDistanceAction()));
-		metrics.add(new JCheckBoxMenuItem(actionFactory.getIncludeSpacingAction()));
-		metrics.add(new JCheckBoxMenuItem(actionFactory.getIncludeAdditiveEpsilonIndicatorAction()));
-		metrics.add(new JCheckBoxMenuItem(actionFactory.getIncludeContributionAction()));
-		metrics.addSeparator();
-		metrics.add(new JCheckBoxMenuItem(actionFactory.getIncludeEpsilonProgressAction()));
-		metrics.add(new JCheckBoxMenuItem(actionFactory.getIncludeAdaptiveMultimethodVariationAction()));
-		metrics.add(new JCheckBoxMenuItem(actionFactory.getIncludeAdaptiveTimeContinuationAction()));
-		metrics.add(new JCheckBoxMenuItem(actionFactory.getIncludeElapsedTimeAction()));
-		metrics.add(new JCheckBoxMenuItem(actionFactory.getIncludePopulationSizeAction()));
-		metrics.add(new JCheckBoxMenuItem(actionFactory.getIncludeApproximationSetAction()));
-		
-		JMenu help = new JMenu("Help");
-		help.add(new JMenuItem(actionFactory.getAboutDialogAction()));
-		
-		JMenu usage = new JMenu(actionFactory.getMemoryUsageAction());
-		
-		JMenuBar menuBar = new JMenuBar();
-		menuBar.add(file);
-		menuBar.add(metrics);
-		menuBar.add(help);
-		menuBar.add(Box.createHorizontalGlue());
-		menuBar.add(usage);
-		
-		setJMenuBar(menuBar);
-	}
-	
+	/**
+	 * Initializes this window.  This method is invoked by the constructor, and
+	 * should not be invoked again.
+	 */
 	protected void initialize() {
+		controller = new Controller(this);
+		controller.addControllerListener(this);
+		
+		actionFactory = new ActionFactory(this, controller);
 		resultListModel = new SortedListModel<ResultKey>();
 		metricListModel = new SortedListModel<String>();
 		metricList = new JList(metricListModel);
-		paintMap = new PaintMap();
+		paintHelper = new PaintHelper();
 		chartContainer = new JPanel();
 		
 		metricList.addListSelectionListener(this);
 		
+		//initialize the table containing all available results
 		resultTableModel = new AbstractTableModel() {
 
 			private static final long serialVersionUID = -4148463449906184742L;
@@ -267,9 +282,10 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 		selectAll = new JButton(actionFactory.getSelectAllAction(resultTable));
 		showStatistics = new JButton(actionFactory.getShowStatisticsAction());
 		
+		//initialize the sorted list of algorithms
 		Set<String> algorithmNames = new HashSet<String>();
 		
-		for (String algorithm : algorithms) {
+		for (String algorithm : Settings.getDiagnosticToolAlgorithms()) {
 			algorithmNames.add(algorithm);
 		}
 		
@@ -277,24 +293,101 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 			algorithmNames.add(algorithm);
 		}
 		
-		List<String> sortedAlgorithmNames = new ArrayList<String>(algorithmNames);
+		List<String> sortedAlgorithmNames = new ArrayList<String>(
+				algorithmNames);
 		Collections.sort(sortedAlgorithmNames);
 		
 		algorithm = new JComboBox(sortedAlgorithmNames.toArray());
-		problem = new JComboBox(problems);
-		numberOfSeeds = new JSpinner(new SpinnerNumberModel(10, 1, Integer.MAX_VALUE, 10));
-		numberOfEvaluations = new JSpinner(new SpinnerNumberModel(10000, 500, Integer.MAX_VALUE, 1000));
+		
+		//initialize the sorted list of problems
+		Set<String> problemNames = new HashSet<String>();
+		
+		for (String problem : Settings.getDiagnosticToolProblems()) {
+			problemNames.add(problem);
+		}
+		
+		for (String problem : Settings.getProblems()) {
+			problemNames.add(problem);
+		}
+		
+		List<String> sortedProblemNames = new ArrayList<String>(problemNames);
+		Collections.sort(sortedProblemNames);
+		
+		problem = new JComboBox(sortedProblemNames.toArray());
+		
+		//initialize miscellaneous components
+		numberOfSeeds = new JSpinner(new SpinnerNumberModel(10, 1, 
+				Integer.MAX_VALUE, 10));
+		numberOfEvaluations = new JSpinner(new SpinnerNumberModel(10000, 500, 
+				Integer.MAX_VALUE, 1000));
 		run = new JButton(actionFactory.getRunAction());
 		cancel = new JButton(actionFactory.getCancelAction());
 		clear = new JButton(actionFactory.getClearAction());
 		
 		runProgress = new JProgressBar();
-		seedProgress = new JProgressBar();
+		overallProgress = new JProgressBar();
 		
 		algorithm.setEditable(true);
 		problem.setEditable(true);
 	}
 	
+	/**
+	 * Lays out the menu on this window.  This method is invoked by the
+	 * constructor, and should not be invoked again.
+	 */
+	protected void layoutMenu() {
+		JMenu file = new JMenu("File");
+		file.add(new JMenuItem(actionFactory.getSaveAction()));
+		file.add(new JMenuItem(actionFactory.getLoadAction()));
+		file.addSeparator();
+		file.add(new JMenuItem(actionFactory.getExitAction()));
+		
+		JMenu metrics = new JMenu("Collect");
+		metrics.add(new JCheckBoxMenuItem(
+				actionFactory.getIncludeHypervolumeAction()));
+		metrics.add(new JCheckBoxMenuItem(
+				actionFactory.getIncludeGenerationalDistanceAction()));
+		metrics.add(new JCheckBoxMenuItem(
+				actionFactory.getIncludeInvertedGenerationalDistanceAction()));
+		metrics.add(new JCheckBoxMenuItem(
+				actionFactory.getIncludeSpacingAction()));
+		metrics.add(new JCheckBoxMenuItem(
+				actionFactory.getIncludeAdditiveEpsilonIndicatorAction()));
+		metrics.add(new JCheckBoxMenuItem(
+				actionFactory.getIncludeContributionAction()));
+		metrics.addSeparator();
+		metrics.add(new JCheckBoxMenuItem(
+				actionFactory.getIncludeEpsilonProgressAction()));
+		metrics.add(new JCheckBoxMenuItem(
+				actionFactory.getIncludeAdaptiveMultimethodVariationAction()));
+		metrics.add(new JCheckBoxMenuItem(
+				actionFactory.getIncludeAdaptiveTimeContinuationAction()));
+		metrics.add(new JCheckBoxMenuItem(
+				actionFactory.getIncludeElapsedTimeAction()));
+		metrics.add(new JCheckBoxMenuItem(
+				actionFactory.getIncludePopulationSizeAction()));
+		metrics.add(new JCheckBoxMenuItem(
+				actionFactory.getIncludeApproximationSetAction()));
+		
+		JMenu help = new JMenu("Help");
+		help.add(new JMenuItem(actionFactory.getAboutDialogAction()));
+		
+		JMenu usage = new JMenu(actionFactory.getMemoryUsageAction());
+		
+		JMenuBar menuBar = new JMenuBar();
+		menuBar.add(file);
+		menuBar.add(metrics);
+		menuBar.add(help);
+		menuBar.add(Box.createHorizontalGlue());
+		menuBar.add(usage);
+		
+		setJMenuBar(menuBar);
+	}
+	
+	/**
+	 * Lays out the components on this window.  This method is invoked by the
+	 * constructor, and should not be invoked again.
+	 */
 	protected void layoutComponents() {
 		GridBagConstraints label = new GridBagConstraints();
 		label.gridx = 0;
@@ -320,13 +413,15 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 		analysisPane.add(showStatistics);
 		
 		JPanel resultPane = new JPanel(new BorderLayout());
-		resultPane.setBorder(BorderFactory.createTitledBorder("Displayed Results"));
+		resultPane.setBorder(BorderFactory.createTitledBorder(
+				"Displayed Results"));
 		resultPane.add(new JScrollPane(resultTable), BorderLayout.CENTER);
 		resultPane.add(analysisPane, BorderLayout.SOUTH);
 		resultPane.setMinimumSize(new Dimension(100, 100));
 		
 		JPanel metricPane = new JPanel(new BorderLayout());
-		metricPane.setBorder(BorderFactory.createTitledBorder("Displayed Metrics"));
+		metricPane.setBorder(BorderFactory.createTitledBorder(
+				"Displayed Metrics"));
 		metricPane.add(new JScrollPane(metricList), BorderLayout.CENTER);
 		metricPane.setMinimumSize(new Dimension(100, 100));
 		
@@ -354,7 +449,7 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 		controlPane.add(new JLabel("Run Progress:"), label);
 		controlPane.add(runProgress, field);
 		controlPane.add(new JLabel("Overall Progress:"), label);
-		controlPane.add(seedProgress, field);
+		controlPane.add(overallProgress, field);
 		
 		JPanel controls = new JPanel();
 		controls.setLayout(new BoxLayout(controls, BoxLayout.Y_AXIS));
@@ -371,7 +466,11 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 		getContentPane().add(splitPane, BorderLayout.CENTER);
 	}
 	
-	protected void updateResultList() {
+	/**
+	 * Updates the models underlying the GUI components as a result of model
+	 * changes.  This method must only be invoked on the event dispatch thread.
+	 */
+	protected void updateModel() {
 		//determine selection mode
 		List<ResultKey> selectedResults = getSelectedResults();
 		List<String> selectedMetrics = getSelectedMetrics();
@@ -404,7 +503,8 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 		} else {
 			for (String metric : selectedMetrics) {
 				int index = metricListModel.getIndexOf(metric);
-				metricList.getSelectionModel().addSelectionInterval(index, index);
+				metricList.getSelectionModel().addSelectionInterval(index, 
+						index);
 			}
 		}
 		
@@ -414,30 +514,41 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 		resultTable.getSelectionModel().removeListSelectionListener(this);
 		resultTableModel.fireTableDataChanged();
 		
-		if (selectAllResults && (selectedResults.size() < resultListModel.getSize())) {
-			resultTable.getSelectionModel().addSelectionInterval(0, resultListModel.getSize()-1);
+		if (selectAllResults && (selectedResults.size() < 
+				resultListModel.getSize())) {
+			resultTable.getSelectionModel().addSelectionInterval(0, 
+					resultListModel.getSize()-1);
 		} else {
 			for (ResultKey key : selectedResults) {
 				int index = resultListModel.getIndexOf(key);
-				resultTable.getSelectionModel().addSelectionInterval(index, index);
+				resultTable.getSelectionModel().addSelectionInterval(index, 
+						index);
 			}
 		}
 
 		resultTable.getSelectionModel().addListSelectionListener(this);
 	}
 	
+	/**
+	 * Returns the controller used by this diagnostic tool instance.  This
+	 * controller provides access to the underlying data model displayed in
+	 * this window.
+	 * 
+	 * @return the controller used by this diagnostic tool instance
+	 */
 	public Controller getController() {
 		return controller;
 	}
 	
-	protected Paint getPaint(Comparable<?> key) {
-		if (paintMap.containsKey(key)) {
-			return paintMap.getPaint(key);
-		} else {
-			Paint paint = COLORS[(nextPaintIndex++) % COLORS.length];
-			paintMap.put(key, paint);
-			return paint;
-		}
+	/**
+	 * Returns the paint helper used by this diagnostic tool instance.  This
+	 * paint helper contains the mapping from series to paints displayed in this
+	 * window.
+	 * 
+	 * @return the paint helper used by this diagnostic tool instance
+	 */
+	public PaintHelper getPaintHelper() {
+		return paintHelper;
 	}
 	
 	@Override
@@ -449,20 +560,28 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 		controller.fireViewChangedEvent();
 	}
 	
+	/**
+	 * Invoked when the underlying data model is cleared, resulting in the GUI
+	 * removing and resetting all components.  This method must only be invoked
+	 * on the event dispatch thread.
+	 */
 	protected void clear() {
 		resultListModel.clear();
 		resultTable.getSelectionModel().clearSelection();
 		resultTableModel.fireTableDataChanged();
 		metricListModel.clear();
 		metricList.getSelectionModel().clearSelection();
-		paintMap.clear();
-		nextPaintIndex = 0;
+		paintHelper.clear();
 		
 		chartContainer.removeAll();
 		chartContainer.revalidate();
 		chartContainer.repaint();
 	}
 	
+	/**
+	 * Updates the chart layout when the user changes which metrics to plot.
+	 * This method must only be invoked on the event dispatch thread.
+	 */
 	protected void updateChartLayout() {
 		chartContainer.removeAll();
 		
@@ -478,7 +597,8 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 			} else if (selectedMetrics.size() <= 6) {
 				chartContainer.setLayout(new GridLayout(3, 2));
 			} else {
-				chartContainer.setLayout(new GridLayout((int)Math.ceil(selectedMetrics.size()/3.0), 3));
+				chartContainer.setLayout(new GridLayout(
+						(int)Math.ceil(selectedMetrics.size()/3.0), 3));
 			}
 			
 			GridLayout layout = (GridLayout)chartContainer.getLayout();
@@ -496,6 +616,11 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 		chartContainer.revalidate();
 	}
 
+	/**
+	 * Returns a list of the selected metrics.
+	 * 
+	 * @return a list of the selected metrics
+	 */
 	protected List<String> getSelectedMetrics() {
 		List<String> selectedMetrics = new ArrayList<String>();
 		
@@ -506,22 +631,11 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 		return selectedMetrics;
 	}
 	
-	protected String getAlgorithm() {
-		return (String)algorithm.getSelectedItem();
-	}
-	
-	protected String getProblem() {
-		return (String)problem.getSelectedItem();
-	}
-	
-	protected int getNumberOfEvaluations() {
-		return (Integer)numberOfEvaluations.getValue();
-	}
-	
-	protected int getNumberOfSeeds() {
-		return (Integer)numberOfSeeds.getValue();
-	}
-	
+	/**
+	 * Returns a list of the selected results.
+	 * 
+	 * @return a list of the selected results
+	 */
 	protected List<ResultKey> getSelectedResults() {
 		List<ResultKey> selectedResults = new ArrayList<ResultKey>();
 		
@@ -532,6 +646,48 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 		return selectedResults;
 	}
 	
+	/**
+	 * Returns the algorithm selected in the run control pane.
+	 * 
+	 * @return the algorithm selected for the next evaluation job
+	 */
+	protected String getAlgorithm() {
+		return (String)algorithm.getSelectedItem();
+	}
+	
+	/**
+	 * Returns the problem selected in the run control pane.
+	 * 
+	 * @return the problem selected in the run control pane
+	 */
+	protected String getProblem() {
+		return (String)problem.getSelectedItem();
+	}
+	
+	/**
+	 * Returns the number of evaluations set in the run control pane.
+	 * 
+	 * @return the number of evaluations set in the run control pane
+	 */
+	protected int getNumberOfEvaluations() {
+		return (Integer)numberOfEvaluations.getValue();
+	}
+	
+	/**
+	 * Returns the number of seeds set in the run control pane.
+	 * 
+	 * @return the number of seeds set in the run control pane
+	 */
+	protected int getNumberOfSeeds() {
+		return (Integer)numberOfSeeds.getValue();
+	}
+	
+	/**
+	 * Creates and returns the GUI component for plotting the specified metric.
+	 * 
+	 * @param metric the metric to plot
+	 * @return the GUI component for plotting the specified metric
+	 */
 	protected ResultPlot createChart(String metric) {
 		if (metric.equals("Approximation Set")) {
 			return new ApproximationSetPlot(this, metric);
@@ -546,11 +702,12 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 			if (controller.getKeys().isEmpty()) {
 				clear();
 			} else {
-				updateResultList();
+				updateModel();
 			}
-		} else if (event.getType().equals(ControllerEvent.Type.PROGRESS_CHANGED)) {
+		} else if (event.getType().equals(
+				ControllerEvent.Type.PROGRESS_CHANGED)) {
 			runProgress.setValue(controller.getRunProgress());
-			seedProgress.setValue(controller.getOverallProgress());
+			overallProgress.setValue(controller.getOverallProgress());
 		} else if (event.getType().equals(ControllerEvent.Type.VIEW_CHANGED)) {
 			updateChartLayout();
 		}

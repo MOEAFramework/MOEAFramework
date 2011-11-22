@@ -46,11 +46,9 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import org.jfree.chart.ChartColor;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.PaintMap;
 import org.jfree.chart.event.ChartChangeEvent;
 import org.jfree.chart.event.ChartChangeListener;
 import org.jfree.chart.plot.PlotOrientation;
@@ -72,53 +70,117 @@ ActionListener, ChartChangeListener, ListSelectionListener {
 
 	private static final long serialVersionUID = -7556845366893802202L;
 
+	/**
+	 * The accumulators which contain {@code "Approximation Set"} entries.
+	 */
 	private List<Accumulator> accumulators;
 	
+	/**
+	 * The container of the plot.
+	 */
 	private JPanel chartContainer;
 	
+	/**
+	 * The slider controlling the current NFE.
+	 */
 	private JSlider slider;
 	
+	/**
+	 * The x-axis bounds of the initial approximation set(s).
+	 */
 	private Range initialRangeBounds;
 	
+	/**
+	 * The y-axis bounds of the initial approximation set(s).
+	 */
 	private Range initialDomainBounds;
 	
+	/**
+	 * The x-axis bounds for zooming; or {@code null} if the user has not yet
+	 * set zoom bounds.
+	 */
 	private Range zoomRangeBounds;
 	
+	/**
+	 * The y-axis bounds for zooming; or {@code null} if the user has not yet
+	 * set zoom bounds.
+	 */
 	private Range zoomDomainBounds;
 	
+	/**
+	 * The x-axis bounds of the reference set.
+	 */
 	private Range referenceRangeBounds;
 	
+	/**
+	 * The y-axis bounds of the reference set.
+	 */
 	private Range referenceDomainBounds;
 	
+	/**
+	 * The control for choosing to scale the plot using the initial
+	 * approximation set bounds.
+	 */
 	private JRadioButton useInitialBounds;
 	
+	/**
+	 * The control for choosing to scale the plot using the reference set
+	 * bounds.
+	 */
 	private JRadioButton useReferenceSetBounds;
 	
+	/**
+	 * The control for choosing to scale the plot dynamically at each NFE.
+	 */
 	private JRadioButton useDynamicBounds;
 	
+	/**
+	 * The control for choosing to scale the plot using the user-specified zoom.
+	 */
 	private JRadioButton useZoomBounds;
 	
+	/**
+	 * The reference set.
+	 */
 	private NondominatedPopulation referenceSet;
 	
+	/**
+	 * The control for selecting which seeds to display in the plot.
+	 */
 	private JList seedList;
 	
-	private int minimumNFE;
-	
-	private int maximumNFE;
-	
-	private PaintMap paintMap;
-	
-	private int nextPaintIndex;
-	
+	/**
+	 * The control for selecting all seeds.
+	 */
 	private JButton selectAll;
 	
+	/**
+	 * The control for selecting which objective, constraint or decision
+	 * variable will be displayed on the x-axis.
+	 */
 	private JComboBox xAxisSelection;
 	
+	/**
+	 * The control for selecting which objective, constraint or decision
+	 * variable will be displayed on the y-axis.
+	 */
 	private JComboBox yAxisSelection;
 	
-	private static final Paint[] COLORS = ChartColor.createDefaultPaintArray();
+	/**
+	 * Maintains a mapping from series key to paints displayed in the plot.
+	 */
+	private PaintHelper paintHelper;
 	
-	public ApproximationSetViewer(String name, List<Accumulator> accumulators, NondominatedPopulation referenceSet) {
+	/**
+	 * Constructs a new window for displaying approximation set dynamics.  This
+	 * constructor must only be invoked on the event dispatch thread.
+	 * 
+	 * @param name the name or title for the data
+	 * @param accumulators the accumulators containing approximation set data
+	 * @param referenceSet the reference set for the problem
+	 */
+	public ApproximationSetViewer(String name, List<Accumulator> accumulators, 
+			NondominatedPopulation referenceSet) {
 		super("Approximation Set for " + name);
 		this.accumulators = accumulators;
 		this.referenceSet = referenceSet;
@@ -130,9 +192,13 @@ ActionListener, ChartChangeListener, ListSelectionListener {
 		initialize();
 		layoutComponents();
 		
+		//this results in a call to update()
 		selectAll.doClick();
 	}
 	
+	/**
+	 * Initializes the reference set bounds.
+	 */
 	protected void initializeReferenceSetBounds() {
 		if (referenceSet == null) {
 			return;
@@ -157,16 +223,34 @@ ActionListener, ChartChangeListener, ListSelectionListener {
 		referenceDomainBounds = new Range(domainMin, domainMax);
 	}
 	
+	/**
+	 * Initializes this window.  This method is invoked in the constructor, and
+	 * should not be invoked again.
+	 */
 	protected void initialize() {
-		minimumNFE = Integer.MAX_VALUE;
-		maximumNFE = Integer.MIN_VALUE;
+		//initialize the NFE slider
+		int minimumNFE = Integer.MAX_VALUE;
+		int maximumNFE = Integer.MIN_VALUE;
 		
 		for (Accumulator accumulator : accumulators) {
-			minimumNFE = Math.min(minimumNFE, (Integer)accumulator.get("NFE", 0));
-			maximumNFE = Math.max(maximumNFE, (Integer)accumulator.get("NFE", accumulator.size("NFE")-1));
+			minimumNFE = Math.min(minimumNFE, 
+					(Integer)accumulator.get("NFE", 0));
+			maximumNFE = Math.max(maximumNFE, 
+					(Integer)accumulator.get("NFE", accumulator.size("NFE")-1));
 		}
 		
-		Solution solution = (Solution)((List<?>)accumulators.get(0).get("Approximation Set", 0)).get(0);
+		slider = new JSlider(minimumNFE, maximumNFE, minimumNFE);
+		slider.setPaintTicks(true);
+		slider.setMinorTickSpacing(100);
+		slider.setMajorTickSpacing(1000);
+		slider.addChangeListener(this);
+		
+		//initialize the reference set bounds
+		initializeReferenceSetBounds();
+		
+		//initializes the options available for axis plotting
+		Solution solution = (Solution)((List<?>)accumulators.get(0).get(
+				"Approximation Set", 0)).get(0);
 		Vector<String> objectives = new Vector<String>();
 		
 		for (int i=0; i<solution.getNumberOfObjectives(); i++) {
@@ -190,17 +274,7 @@ ActionListener, ChartChangeListener, ListSelectionListener {
 		xAxisSelection.addActionListener(this);
 		yAxisSelection.addActionListener(this);
 		
-		initializeReferenceSetBounds();
-		
-		paintMap = new PaintMap();
-		chartContainer = new JPanel(new BorderLayout());
-		
-		slider = new JSlider(minimumNFE, maximumNFE, minimumNFE);
-		slider.setPaintTicks(true);
-		slider.setMinorTickSpacing(100);
-		slider.setMajorTickSpacing(1000);
-		slider.addChangeListener(this);
-		
+		//initialize plotting controls
 		useInitialBounds = new JRadioButton("Use Initial Bounds");
 		useReferenceSetBounds = new JRadioButton("Use Reference Set Bounds");
 		useDynamicBounds = new JRadioButton("Use Dynamic Bounds");
@@ -222,6 +296,7 @@ ActionListener, ChartChangeListener, ListSelectionListener {
 		useDynamicBounds.addActionListener(this);
 		useZoomBounds.addActionListener(this);
 		
+		//initialize the seed list
 		String[] seeds = new String[accumulators.size()];
 		
 		for (int i=0; i<accumulators.size(); i++) {
@@ -237,29 +312,23 @@ ActionListener, ChartChangeListener, ListSelectionListener {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				seedList.getSelectionModel().setSelectionInterval(0, seedList.getModel().getSize()-1);
+				seedList.getSelectionModel().setSelectionInterval(0, 
+						seedList.getModel().getSize()-1);
 			}
 			
 		});
+		
+		//initialize miscellaneous components
+		paintHelper = new PaintHelper();
+		paintHelper.set("Reference Set", Color.BLACK);
+		
+		chartContainer = new JPanel(new BorderLayout());
 	}
 	
-	private Paint getPaint(Comparable<?> key) {
-		if (paintMap.containsKey(key)) {
-			return paintMap.getPaint(key);
-		} else {
-			Paint paint = null;
-			
-			if (((String)key).equals("Reference Set")) {
-				paint = Color.BLACK;
-			} else {
-				paint = COLORS[(nextPaintIndex++) % COLORS.length];
-			}
-			
-			paintMap.put(key, paint);
-			return paint;
-		}
-	}
-	
+	/**
+	 * Lays out the components on this window.  This method is invoked by the
+	 * constructor, and should not be invoked again.
+	 */
 	protected void layoutComponents() {
 		setLayout(new BorderLayout());
 		
@@ -296,8 +365,19 @@ ActionListener, ChartChangeListener, ListSelectionListener {
 		add(splitPane, BorderLayout.CENTER);
 	}
 	
-	private double getValue(Solution solution, int axis) {
-		int selection = axis == 0 ? xAxisSelection.getSelectedIndex() : yAxisSelection.getSelectedIndex();
+	/**
+	 * Returns the x- or y-axis value for the specified solution.  The returned
+	 * value changes based on the user's preferences, and may return the value
+	 * stored in an objective, constraint or variable.  Returns {@code 0.0} if
+	 * the value could not be parsed.
+	 * 
+	 * @param solution the solution whose x- or y-axis value is returned
+	 * @param axis {@code 0} for x-axis, {@code 1} for y-axis
+	 * @return the x- or y-axis value for the specified solution
+	 */
+	protected double getValue(Solution solution, int axis) {
+		int selection = axis == 0 ? xAxisSelection.getSelectedIndex() : 
+				yAxisSelection.getSelectedIndex();
 		
 		if (selection < solution.getNumberOfObjectives()) {
 			return solution.getObjective(selection);
@@ -313,7 +393,8 @@ ActionListener, ChartChangeListener, ListSelectionListener {
 		
 		if (selection < solution.getNumberOfVariables()) {
 			if (solution.getVariable(selection) instanceof RealVariable) {
-				return ((RealVariable)solution.getVariable(selection)).getValue();
+				return ((RealVariable)solution.getVariable(selection))
+						.getValue();
 			} else {
 				return 0.0;
 			}
@@ -322,7 +403,11 @@ ActionListener, ChartChangeListener, ListSelectionListener {
 		}
 	}
 	
-	protected void refresh() {
+	/**
+	 * Updates the display.  This method must only be invoked on the event
+	 * dispatch thread.
+	 */
+	protected void update() {
 		XYSeriesCollection dataset = new XYSeriesCollection();
 		
 		//generate approximation set
@@ -335,12 +420,14 @@ ActionListener, ChartChangeListener, ListSelectionListener {
 			}
 				
 			while ((index < accumulator.size("NFE")-1) && 
-					((Integer)accumulator.get("NFE", index) < slider.getValue())) {
+					((Integer)accumulator.get("NFE", index) < 
+							slider.getValue())) {
 				index++;
 			}
 				
 			List<?> list = (List<?>)accumulator.get("Approximation Set", index);
-			XYSeries series = new XYSeries("Seed " + (seedIndex+1), false, true);
+			XYSeries series = new XYSeries("Seed " + (seedIndex+1), false, 
+					true);
 				
 			for (Object object : list) {
 				Solution solution = (Solution)object;
@@ -349,7 +436,6 @@ ActionListener, ChartChangeListener, ListSelectionListener {
 			
 			dataset.addSeries(series);
 		}
-		
 		
 		//generate reference set
 		if (referenceSet != null) {
@@ -362,19 +448,29 @@ ActionListener, ChartChangeListener, ListSelectionListener {
 			dataset.addSeries(series);
 		}
 		
-		JFreeChart chart = ChartFactory.createScatterPlot(getTitle() + " @ " + 
-				slider.getValue() + " NFE", (String)xAxisSelection.getSelectedItem(),
-				(String)yAxisSelection.getSelectedItem(), dataset, PlotOrientation.VERTICAL, true, true,
+		JFreeChart chart = ChartFactory.createScatterPlot(
+				getTitle() + " @ " + slider.getValue() + " NFE", 
+				(String)xAxisSelection.getSelectedItem(),
+				(String)yAxisSelection.getSelectedItem(), 
+				dataset, 
+				PlotOrientation.VERTICAL, 
+				true, 
+				true,
 				false);
 		
+		//set the renderer to only display shapes
 		XYPlot plot = chart.getXYPlot();
-		XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer(false, true);
+		XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer(false, 
+				true);
 		
 		for (int i=0; i<dataset.getSeriesCount(); i++) {
-			Paint paint = getPaint(dataset.getSeriesKey(i));
+			Paint paint = paintHelper.get(dataset.getSeriesKey(i));
 			renderer.setSeriesPaint(i, paint);
 		}
 		
+		plot.setRenderer(renderer);
+		
+		//set the zoom based on the user's preferences
 		if ((initialRangeBounds == null) || (initialDomainBounds == null)) {
 			initialRangeBounds = plot.getRangeAxis().getRange();
 			initialDomainBounds = plot.getDomainAxis().getRange();
@@ -396,8 +492,7 @@ ActionListener, ChartChangeListener, ListSelectionListener {
 			plot.getDomainAxis().setRange(referenceDomainBounds);
 		}
 		
-		plot.setRenderer(renderer);
-		
+		//register with the chart to receive zoom events
 		chart.addChangeListener(this);
 		
 		chartContainer.removeAll();
@@ -408,18 +503,19 @@ ActionListener, ChartChangeListener, ListSelectionListener {
 
 	@Override
 	public void stateChanged(ChangeEvent e) {
-		refresh();
+		update();
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if ((e.getSource() == xAxisSelection) || (e.getSource() == yAxisSelection)) {
+		if ((e.getSource() == xAxisSelection) || 
+				(e.getSource() == yAxisSelection)) {
 			initialRangeBounds = null;
 			initialDomainBounds = null;
 			initializeReferenceSetBounds();
 		}
 		
-		refresh();
+		update();
 	}
 
 	@Override
@@ -435,7 +531,7 @@ ActionListener, ChartChangeListener, ListSelectionListener {
 			return;
 		}
 		
-		refresh();
+		update();
 	}
 
 }

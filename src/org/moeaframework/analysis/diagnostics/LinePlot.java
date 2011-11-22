@@ -179,7 +179,7 @@ public class LinePlot extends ResultPlot {
 		DeviationRenderer renderer = new DeviationRenderer(true, false);
 
 		for (int i=0; i<dataset.getSeriesCount(); i++) {
-			Paint paint = frame.getPaint(dataset.getSeriesKey(i));
+			Paint paint = frame.getPaintHelper().get(dataset.getSeriesKey(i));
 
 			renderer.setSeriesStroke(i, new BasicStroke(3f, 1, 1));
 			renderer.setSeriesPaint(i, paint);

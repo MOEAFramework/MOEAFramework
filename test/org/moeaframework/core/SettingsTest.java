@@ -100,5 +100,15 @@ public class SettingsTest {
 	public void testPBSJobIdRegex() {
 		Assert.assertNotNull(Settings.getPBSJobIdRegex());
 	}
+	
+	@Test
+	public void testDiagnosticToolAlgorithms() {
+		Assert.assertNotNull(Settings.getDiagnosticToolAlgorithms());
+	}
+	
+	@Test
+	public void testDiagnosticToolProblems() {
+		Assert.assertNotNull(Settings.getDiagnosticToolProblems());
+	}
 
 }

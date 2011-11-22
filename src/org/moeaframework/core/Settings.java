@@ -168,6 +168,18 @@ public class Settings {
 			"util.io.file_protection_format";
 	
 	/**
+	 * The property key for the algorithms available in the diagnostic tool.
+	 */
+	public static final String KEY_DIAGNOSTIC_TOOL_ALGORITHMS = KEY_PREFIX +
+			"analysis.diagnostics.algorithms";
+	
+	/**
+	 * The property key for the problems available in the diagnostic tool.
+	 */
+	public static final String KEY_DIAGNOSTIC_TOOL_PROBLEMS = KEY_PREFIX +
+			"analysis.diagnostics.problems";
+	
+	/**
 	 * Loads the properties.
 	 */
 	static {
@@ -459,6 +471,24 @@ public class Settings {
 	public static String getFileProtectionFormat() {
 		return PROPERTIES.getString(KEY_FILE_PROTECTION_FORMAT, 
 				".{0}.md5");
+	}
+	
+	public static String[] getDiagnosticToolAlgorithms() {
+		return PROPERTIES.getStringArray(KEY_DIAGNOSTIC_TOOL_ALGORITHMS, 
+				new String[] { "NSGAII", "GDE3", "eMOEA", "Borg", "eNSGAII", 
+				"MOEAD", "Random" });
+	}
+	
+	public static String[] getDiagnosticToolProblems() {
+		return PROPERTIES.getStringArray(KEY_DIAGNOSTIC_TOOL_PROBLEMS, 
+				new String[] { 
+				"DTLZ1_2", "DTLZ2_2", "DTLZ3_2", "DTLZ4_2", "DTLZ7_2", 
+				"ROT_DTLZ1_2", "ROT_DTLZ2_2", "ROT_DTLZ3_2", "ROT_DTLZ4_2", "ROT_DTLZ7_2", 
+				"UF1", "UF2", "UF3", "UF4", "UF5", "UF6", "UF7", "UF8", "UF9", "UF10", "UF11", "UF12", "UF13",
+				"CF1", "CF2", "CF3", "CF4", "CF5", "CF6", "CF7", "CF8", "CF9", "CF10",
+				"LZ1", "LZ2", "LZ3", "LZ4", "LZ5", "LZ6", "LZ7", "LZ8", "LZ9",
+				"WFG1_2", "WFG2_2", "WFG3_2", "WFG4_2", "WFG5_2", "WFG6_2", "WFG7_2", "WFG8_2", "WFG9_2",
+				"ZDT1", "ZDT2", "ZDT3", "ZDT4", "ZDT5", "ZDT6" });
 	}
 	
 }
