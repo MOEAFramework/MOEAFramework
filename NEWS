@@ -1,6 +1,13 @@
 This file documents the major changes implemented in each release of the MOEA
 Framework.
 
+-------------------
+ Version 1.9 (TBD)
+-------------------
+
+  * PropertiesProblems is now case-insensitive, which is now consistent with
+    other built-in problem providers.
+
 ---------------------------
  Version 1.8 (21 Nov 2011)
 ---------------------------

@@ -24,6 +24,7 @@ import org.moeaframework.core.PopulationIO;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.spi.ProblemProvider;
+import org.moeaframework.core.spi.ProviderNotFoundException;
 
 /**
  * Problem provider for problems enumerated in {@code global.properties}.
@@ -42,36 +43,62 @@ public class PropertiesProblems extends ProblemProvider {
 	public PropertiesProblems() {
 		super();
 	}
+	
+	/**
+	 * Returns the case-sensitive version of the problem name.  If the problem
+	 * name was not specifically listed in the
+	 * {@code org.moeaframework.problem.problems} property, {@code name} is
+	 * returned unchanged.
+	 * 
+	 * @param name the case-insensitive name
+	 * @return the case-sensitive name
+	 */
+	protected String getCaseSensitiveProblemName(String name) {
+		for (String problem : Settings.getProblems()) {
+			if (problem.equalsIgnoreCase(name)) {
+				return problem;
+			}
+		}
+		
+		return name;
+	}
 
 	@Override
 	public Problem getProblem(String name) {
-		try {
-			String className = Settings.getProblemClass(name);
-					
-			if (className != null) {
-				return (Problem)Class.forName(className).newInstance();
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
+		name = getCaseSensitiveProblemName(name);
 		
+		if (name != null) {
+			String className = Settings.getProblemClass(name);
+			
+			if (className != null) {
+				try {
+					return (Problem)Class.forName(className).newInstance();
+				} catch (Exception e) {
+					throw new ProviderNotFoundException(name, e);
+				}
+			}
+		}
+
 		return null;
 	}
 
 	@Override
 	public NondominatedPopulation getReferenceSet(String name) {
-		try {
-			String fileName = Settings.getProblemReferenceSet(name);
-					
-			if (fileName != null) {
-				return new NondominatedPopulation(PopulationIO.readObjectives(
-						new File(fileName)));
-			}
-		} catch (Exception e) {
-			return null;
-		}
+		name = getCaseSensitiveProblemName(name);
 		
+		if (name != null) {
+			String fileName = Settings.getProblemReferenceSet(name);
+			
+			if (fileName != null) {
+				try {
+					return new NondominatedPopulation(
+							PopulationIO.readObjectives(new File(fileName)));
+				} catch (Exception e) {
+					return null;
+				}
+			}
+		}
+
 		return null;
 	}
 

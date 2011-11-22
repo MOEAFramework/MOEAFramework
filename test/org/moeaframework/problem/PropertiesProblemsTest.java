@@ -64,5 +64,23 @@ public class PropertiesProblemsTest {
 		
 		ProblemFactory.getInstance().getProblem("TestNoEmptyConstructor");
 	}
+	
+	@Test
+	public void testCaseSensitivity() {
+		Settings.PROPERTIES.setString(
+				"org.moeaframework.problem.problems", 
+				"TestCaseSensitivity");
+		Settings.PROPERTIES.setString(
+				"org.moeaframework.problem.TestCaseSensitivity.class", 
+				"org.moeaframework.problem.ZDT.ZDT1");
+		Settings.PROPERTIES.setString(
+				"org.moeaframework.problem.TestCaseSensitivity.referenceSet", 
+				"./pf/ZDT1.pf");
+		
+		Assert.assertNotNull(ProblemFactory.getInstance().getProblem(
+				"testcasesensitivity"));
+		Assert.assertNotNull(ProblemFactory.getInstance().getReferenceSet(
+				"TESTCASESENSITIVITY"));
+	}
 
 }

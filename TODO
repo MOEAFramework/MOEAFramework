@@ -13,17 +13,12 @@ any changes.
 ------
 
   - Instrumenter is failing with a ConcurrentModificationException if the
-    problem is wrapped in DistributedProblem.
-
-  - Need to make PropertiesProblems case insensititive, similar to how 
-    PISAAlgorithms was modified.
+    problem is wrapped in DistributedProblem.  This is likely a result of the
+    Instrumenter traversing a collection in the ExecutorService.
 
   - The DifferentialEvolution operator is not type-safe, and thus can not be
     used on mixed-type encodings.  This can be corrected by skipping any
     non-real decision variables.
-
-  - The javadoc comments for the various operators could use more content.  In
-    addition, the package-info.java files could be expanded.
 
   - PISA's ECEA algorithm attempts to restart when a run complete, causing an
     exception because the MOEA Framework does not support restarts.  Can we
