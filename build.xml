@@ -11,7 +11,6 @@
 	<path id="requiredfiles">
 		<fileset file="README" />
 		<fileset file="LICENSE" />
-		<fileset file="TODO" />
 		<fileset file="NEWS" />
 		<fileset file="HELP" />
 	</path>
@@ -46,7 +45,7 @@
 		</javac>
 
 		<copy todir="build/META-INF">
-			<fileset dir="META-INF" />
+			<fileset dir="META-INF" excludes="ZHANG-LICENSE" />
 			<path refid="requiredfiles" />
 		</copy>
 
@@ -112,10 +111,12 @@
 		<mkdir dir="${base}" />
 		<mkdir dir="${base}/lib" />
 		<mkdir dir="${base}/pf" />
+		<mkdir dir="${base}/licenses" />
 		
 		<copy todir="${base}">
 			<path refid="requiredfiles" />
 			<fileset file="global.properties" />
+			<fileset file="test.xml" />
 			<fileset dir="auxiliary/windows" includes="*" />
 		</copy>
 		
@@ -123,10 +124,21 @@
 			<replacefilter token="%VERSION%" value="${version}" />
 			<replacefilter token="%DATE%" value="${TODAY}" />
 		</replace>
+		
+		<replace file="${base}/test.xml">
+			<replacefilter token="$${shortname}" value="${shortname}" />
+			<replacefilter token="$${version}" value="${version}" />
+		</replace>
+		
+		<copy todir="${base}/licenses">
+			<fileset dir="META-INF" includes="*-LICENSE" 
+					excludes="ZHANG-LICENSE" />
+		</copy>
 			
 		<copy todir="${base}/lib">
 			<fileset file="dist/${shortname}-${version}.jar" />
-			<fileset dir="lib" includes="*.jar" excludes="junit-4.8.1.jar" />
+			<fileset file="dist/${shortname}-${version}-test.jar" />
+			<fileset dir="lib" />
 		</copy>
 		
 		<copy todir="${base}/pf">

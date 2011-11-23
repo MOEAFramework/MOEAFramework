@@ -1,7 +1,14 @@
 <?xml version="1.0"?>
+
+<!-- 
+  If Apache Ant is installed, the framework can be tested using the command
+      ant -f test.xml
+      
+  See <http://ant.apache.org/> for instructions on installing Apache Ant.
+-->
+ 
 <project name="MOEA Framework Testing" basedir="." default="test">
 
-	<property file="build.properties" />
 	<property environment="env" />
 	
 	<path id="classpath">
