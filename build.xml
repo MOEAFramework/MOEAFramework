@@ -15,17 +15,49 @@
 		<fileset file="NEWS" />
 		<fileset file="HELP" />
 	</path>
+	
+	<target name="package-binary" depends="build-binary"
+			description="Creates the binary distribution file">
+		<delete dir="build" />
+		<mkdir dir="build" />
+		<mkdir dir="build/${shortname}-${version}" />
+		<mkdir dir="build/${shortname}-${version}/lib" />
+		<mkdir dir="build/${shortname}-${version}/pf" />
+		
+		<copy todir="build/${shortname}-${version}">
+			<path refid="requiredfiles" />
+			<fileset file="global.properties" />
+			<fileset dir="auxiliary/windows" includes="*" />
+		</copy>
+		
+		<replace file="build/${shortname}-${version}/README">
+			<replacefilter token="%VERSION%" value="${version}" />
+			<replacefilter token="%DATE%" value="${TODAY}" />
+		</replace>
+			
+		<copy todir="build/${shortname}-${version}/lib">
+			<fileset file="dist/${shortname}-${version}.jar" />
+			<fileset dir="lib" includes="*.jar" excludes="junit-4.8.1.jar" />
+		</copy>
+		
+		<copy todir="build/${shortname}-${version}/pf">
+			<fileset dir="pf" />
+		</copy>
+		
+		<tar destfile="dist/${shortname}-${version}.tar.gz" 
+				basedir="build" compression="gzip" />
+	</target>
 
-	<target name="package-proprietary" 
-			description="Creates the binary distribution with proprietary data files">
+	<target name="build-proprietary">
 		<delete dir="build" />
 		<mkdir dir="build" />
 
 		<javac destdir="build" srcdir="proprietary" debug="${java.debug}" 
-				target="${java.target}">
+				target="${java.target}" includeantruntime="false">
 			<classpath>
 				<path refid="classpath" />
 				<pathelement location="dist/${shortname}-${version}.jar" />
+				<pathelement location="dist/${shortname}-${version}-test.jar" />
 			</classpath>
 		</javac>
 
@@ -36,7 +68,7 @@
 		<jar basedir="build" jarfile="dist/${shortname}-${version}-proprietary.jar" />
 	</target>
 
-	<target name="javadoc" description="Generates javadoc files">
+	<target name="build-javadoc">
 		<javadoc sourcepath="src" destdir="javadoc" notree="true"
 				noindex="true" nohelp="true" nodeprecated="true"
 				overview="src/overview.html"
@@ -52,8 +84,7 @@
 		</javadoc>
 	</target>
 
-	<target name="package-binary" 
-			description="Creates the binary distribution file">
+	<target name="build-binary">
 		<tstamp />
 
 		<delete dir="build" />
@@ -98,17 +129,17 @@
 				jarfile="dist/${shortname}-${version}.jar" />
 	</target>
 
-	<target name="package-test" 
-			description="Creates the binary distribution file for tests">
+	<target name="build-test">
 		<delete dir="build" />
 		<mkdir dir="build" />
 
-		<javac destdir="build" srcdir="test" debug="${java.debug}" 
-				target="${java.target}">
+		<javac destdir="build" debug="${java.debug}" 
+				target="${java.target}" includeantruntime="false">
+			<src path="test" />
+			<src path="examples" />
 			<classpath>
 				<path refid="classpath" />
 				<pathelement location="dist/${shortname}-${version}.jar" />
-				<pathelement location="dist/${shortname}-${version}-proprietary.jar" />
 			</classpath>
 		</javac>
 
@@ -133,6 +164,8 @@
 			<fileset file="build.xml" />
 			<fileset file="codetemplates.xml" />
 			<fileset file="format.xml" />
+			<fileset file="test.xml" />
+			<fileset file="global.properties" />
 			<path refid="requiredfiles" />
 		</copy>
 
@@ -164,18 +197,17 @@
 			<fileset dir="website" />
 		</copy>
 
-		<tar destfile="dist/${shortname}-${version}.tar.gz" 
+		<tar destfile="dist/${shortname}-${version}-source.tar.gz" 
 				basedir="build" compression="gzip" />
 	</target>
 
-	<target name="package-documentation" 
-			description="Creates the documentation distribution file"
-			depends="javadoc">
+	<target name="package-documentation" depends="build-javadoc"
+			description="Creates the documentation distribution file">
 		<tar destfile="dist/${shortname}-${version}-javadoc.tar.gz" 
 				basedir="javadoc" compression="gzip" />
 	</target>
 	
-	<target name="package-website" depends="javadoc"
+	<target name="package-website" depends="build-javadoc"
 			description="Creates the website">
 		<delete dir="build" />
 		<mkdir dir="build" />

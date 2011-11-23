@@ -20,23 +20,25 @@
 				<formatter type="xml" />
 				<zipfileset src="lib/${shortname}-${version}-test.jar">
 					<include name="**/*Test.class" />
-					<exclude name="**/DistributionVariationTest.class" />
-					<exclude name="**/MeanCentricVariationTest.class" />
-					<exclude name="**/ParentCentricVariationTest.class" />
-					<exclude name="**/ParentImmutabilityTest.class" />
-					<exclude name="**/IndicatorTest.class" />
-					<exclude name="**/PointCrossoverTest.class" />
-					<exclude name="**/TypeSafetyTest.class" />
-					<exclude name="**/ProblemTest.class" />
-					<exclude name="**/SequenceTest.class" />
-					<exclude name="**/IntervalRatioStatisticalTest.class" />
-					<exclude name="**/KruskalWallisTest.class" />
-					<exclude name="**/MannWhitneyUTest.class" />
-					<exclude name="**/OrdinalStatisticalTest.class" />
-					<exclude name="**/SingleSampleTTest.class" />
-					<exclude name="**/StatisticalTest.class" />
-					<exclude name="**/TwoSampleTTest.class" />
-					<exclude name="**/WilcoxonSignedRanksTest.class" />
+					<exclude name="org/moeaframework/algorithm/AlgorithmTest.class" />
+					<exclude name="org/moeaframework/core/indicator/IndicatorTest.class" />
+					<exclude name="org/moeaframework/analysis/collector/CollectorTest.class" />
+					<exclude name="org/moeaframework/core/operator/DistributionVariationTest.class" />
+					<exclude name="org/moeaframework/core/operator/MeanCentricVariationTest.class" />
+					<exclude name="org/moeaframework/core/operator/ParentCentricVariationTest.class" />
+					<exclude name="org/moeaframework/core/operator/ParentImmutabilityTest.class" />
+					<exclude name="org/moeaframework/core/operator/PointCrossoverTest.class" />
+					<exclude name="org/moeaframework/core/operator/TypeSafetyTest.class" />
+					<exclude name="org/moeaframework/problem/ProblemTest.class" />
+					<exclude name="org/moeaframework/util/sequence/SequenceTest.class" />
+					<exclude name="org/moeaframework/util/statistics/IntervalRatioStatisticalTest.class" />
+					<exclude name="org/moeaframework/util/statistics/KruskalWallisTest.class" />
+					<exclude name="org/moeaframework/util/statistics/MannWhitneyUTest.class" />
+					<exclude name="org/moeaframework/util/statistics/OrdinalStatisticalTest.class" />
+					<exclude name="org/moeaframework/util/statistics/SingleSampleTTest.class" />
+					<exclude name="org/moeaframework/util/statistics/StatisticalTest.class" />
+					<exclude name="org/moeaframework/util/statistics/TwoSampleTTest.class" />
+					<exclude name="org/moeaframework/util/statistics/WilcoxonSignedRanksTest.class" />
 				</zipfileset>
 			</batchtest>
 		</junit>

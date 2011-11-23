@@ -38,7 +38,7 @@ import org.moeaframework.core.variable.RealVariable;
 public class ScriptedProblemTest {
 	
 	private static final String RESOURCE_JAVASCRIPT = 
-			"org/moeaframework/problem/TestJavascript.js";
+			"/org/moeaframework/problem/TestJavascript.js";
 	
 	@Test(expected = ScriptException.class)
 	public void testNoExtension() throws ScriptException, IOException {
@@ -64,8 +64,8 @@ public class ScriptedProblemTest {
 	@Test
 	public void testJavascriptFile() throws ScriptException, IOException, 
 	URISyntaxException {
-		File file = new File(getClass().getClassLoader().getResource(
-				RESOURCE_JAVASCRIPT).toURI());
+		File file = new File(getClass().getResource(RESOURCE_JAVASCRIPT)
+				.toURI());
 		
 		test(new ScriptedProblem(file));
 	}
@@ -75,8 +75,8 @@ public class ScriptedProblemTest {
 		Reader reader = null;
 		
 		try {
-			reader = new InputStreamReader(getClass().getClassLoader()
-					.getResourceAsStream(RESOURCE_JAVASCRIPT));
+			reader = new InputStreamReader(getClass().getResourceAsStream(
+					RESOURCE_JAVASCRIPT));
 			
 			test(new ScriptedProblem(reader, "rhino"));
 		} finally {
