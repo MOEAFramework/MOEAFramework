@@ -15,58 +15,6 @@
 		<fileset file="NEWS" />
 		<fileset file="HELP" />
 	</path>
-	
-	<target name="package-binary" depends="build-binary"
-			description="Creates the binary distribution file">
-		<delete dir="build" />
-		<mkdir dir="build" />
-		<mkdir dir="build/${shortname}-${version}" />
-		<mkdir dir="build/${shortname}-${version}/lib" />
-		<mkdir dir="build/${shortname}-${version}/pf" />
-		
-		<copy todir="build/${shortname}-${version}">
-			<path refid="requiredfiles" />
-			<fileset file="global.properties" />
-			<fileset dir="auxiliary/windows" includes="*" />
-		</copy>
-		
-		<replace file="build/${shortname}-${version}/README">
-			<replacefilter token="%VERSION%" value="${version}" />
-			<replacefilter token="%DATE%" value="${TODAY}" />
-		</replace>
-			
-		<copy todir="build/${shortname}-${version}/lib">
-			<fileset file="dist/${shortname}-${version}.jar" />
-			<fileset dir="lib" includes="*.jar" excludes="junit-4.8.1.jar" />
-		</copy>
-		
-		<copy todir="build/${shortname}-${version}/pf">
-			<fileset dir="pf" />
-		</copy>
-		
-		<tar destfile="dist/${shortname}-${version}.tar.gz" 
-				basedir="build" compression="gzip" />
-	</target>
-
-	<target name="build-proprietary">
-		<delete dir="build" />
-		<mkdir dir="build" />
-
-		<javac destdir="build" srcdir="proprietary" debug="${java.debug}" 
-				target="${java.target}" includeantruntime="false">
-			<classpath>
-				<path refid="classpath" />
-				<pathelement location="dist/${shortname}-${version}.jar" />
-				<pathelement location="dist/${shortname}-${version}-test.jar" />
-			</classpath>
-		</javac>
-
-		<copy todir="build">
-			<fileset excludes="**/*.java" dir="proprietary" />
-		</copy>
-
-		<jar basedir="build" jarfile="dist/${shortname}-${version}-proprietary.jar" />
-	</target>
 
 	<target name="build-javadoc">
 		<javadoc sourcepath="src" destdir="javadoc" notree="true"
@@ -154,7 +102,46 @@
 		<jar basedir="build" 
 			jarfile="dist/${shortname}-${version}-test.jar" />
 	</target>
+	
+	<target name="package-binary" 
+			depends="build-binary, build-test, build-javadoc"
+			description="Creates the binary distribution file">
+		<property name="base" value="build/${shortname}-${version}" />
+		
+		<delete dir="build" />
+		<mkdir dir="${base}" />
+		<mkdir dir="${base}/lib" />
+		<mkdir dir="${base}/pf" />
+		
+		<copy todir="${base}">
+			<path refid="requiredfiles" />
+			<fileset file="global.properties" />
+			<fileset dir="auxiliary/windows" includes="*" />
+		</copy>
+		
+		<replace file="${base}/README">
+			<replacefilter token="%VERSION%" value="${version}" />
+			<replacefilter token="%DATE%" value="${TODAY}" />
+		</replace>
+			
+		<copy todir="${base}/lib">
+			<fileset file="dist/${shortname}-${version}.jar" />
+			<fileset dir="lib" includes="*.jar" excludes="junit-4.8.1.jar" />
+		</copy>
+		
+		<copy todir="${base}/pf">
+			<fileset dir="pf" />
+		</copy>
+		
+		<copy todir="${base}/javadoc">
+			<fileset dir="javadoc" />
+		</copy>
+		
+		<tar destfile="dist/${shortname}-${version}.tar.gz" 
+				basedir="build" compression="gzip" />
+	</target>
 
+	<!--
 	<target name="package-source" 
 			description="Creates the source code distribution file">
 		<delete dir="build" />
@@ -167,6 +154,10 @@
 			<fileset file="test.xml" />
 			<fileset file="global.properties" />
 			<path refid="requiredfiles" />
+		</copy>
+		
+		<copy todir="build/auxiliary">
+			<fileset dir="auxiliary" />
 		</copy>
 
 		<copy todir="build/src">
@@ -200,12 +191,7 @@
 		<tar destfile="dist/${shortname}-${version}-source.tar.gz" 
 				basedir="build" compression="gzip" />
 	</target>
-
-	<target name="package-documentation" depends="build-javadoc"
-			description="Creates the documentation distribution file">
-		<tar destfile="dist/${shortname}-${version}-javadoc.tar.gz" 
-				basedir="javadoc" compression="gzip" />
-	</target>
+	-->
 	
 	<target name="package-website" depends="build-javadoc"
 			description="Creates the website">

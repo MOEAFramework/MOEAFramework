@@ -18,36 +18,36 @@
 package org.moeaframework.problem;
 
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.variable.RealVariable;
+import org.moeaframework.core.variable.Permutation;
 
 /**
- * Problem mimicking a CPU intensive task, intended for benchmarking the
- * distributed computing capabilities of this framework.
+ * A mock problem with a permutation variable.  The objective of this problem
+ * is to find the ordered permutation.
  */
-public class CPUDemo extends AbstractProblem {
-
-	/**
-	 * Constructs a CPU intensive problem.
-	 */
-	public CPUDemo() {
+public class MockPermutationProblem extends AbstractProblem {
+	
+	public MockPermutationProblem() {
 		super(1, 1);
 	}
 
 	@Override
 	public void evaluate(Solution solution) {
-		long count = 0;
-
-		for (long i = 0; i < 400000000; i++) {
-			count++;
+		int sum = 0;
+		Permutation permutation = (Permutation)solution.getVariable(0);
+		
+		for (int i=0; i<9; i++) {
+			if (permutation.get(i) > permutation.get(i+1)) {
+				sum++;
+			}
 		}
-
-		solution.setObjective(0, (double)count);
+		
+		solution.setObjective(0, sum);
 	}
 
 	@Override
 	public Solution newSolution() {
 		Solution solution = new Solution(1, 1);
-		solution.setVariable(0, new RealVariable(0, 1));
+		solution.setVariable(0, new Permutation(10));
 		return solution;
 	}
 

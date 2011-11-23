@@ -17,41 +17,16 @@
  */
 package org.moeaframework.problem;
 
-import org.moeaframework.core.Solution;
-import org.moeaframework.core.variable.Permutation;
+import org.moeaframework.problem.DTLZ.DTLZ2;
 
 /**
- * A example problem using permutations.  The goal is to find the permutation
- * that is in increasing order.
+ * A mock problem with real variables.  This problem is equivalent to the 2D
+ * DTLZ2 problem.
  */
-public class OrderProblem extends AbstractProblem {
-	
-	private final int size;
-	
-	public OrderProblem(int size) {
-		super(1, 1);
-		this.size = size;
-	}
+public class MockRealProblem extends DTLZ2 {
 
-	@Override
-	public void evaluate(Solution solution) {
-		int sum = 0;
-		Permutation permutation = (Permutation)solution.getVariable(0);
-		
-		for (int i=0; i<size-1; i++) {
-			if (permutation.get(i) > permutation.get(i+1)) {
-				sum++;
-			}
-		}
-		
-		solution.setObjective(0, sum);
-	}
-
-	@Override
-	public Solution newSolution() {
-		Solution solution = new Solution(1, 1);
-		solution.setVariable(0, new Permutation(size));
-		return solution;
+	public MockRealProblem() {
+		super(2);
 	}
 
 }

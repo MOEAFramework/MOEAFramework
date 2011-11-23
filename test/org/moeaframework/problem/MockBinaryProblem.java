@@ -15,39 +15,32 @@
  * You should have received a copy of the GNU Lesser General Public License 
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.studies.multioperator;
+package org.moeaframework.problem;
 
-import org.moeaframework.core.Population;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.variable.RealVariable;
-import org.moeaframework.problem.AbstractProblem;
+import org.moeaframework.core.variable.BinaryVariable;
 
-public abstract class MultioperatorTestProblem extends AbstractProblem {
-	
-	public MultioperatorTestProblem() {
-		super(2, 1);
+/**
+ * A mock problem with binary variables.  The objective of this problem is to
+ * maximize the number of 1 bits in the binary string.
+ */
+public class MockBinaryProblem extends AbstractProblem {
+
+	public MockBinaryProblem() {
+		super(1, 1);
+	}
+
+	@Override
+	public void evaluate(Solution solution) {
+		BinaryVariable binary = (BinaryVariable)solution.getVariable(0);
+		solution.setObjective(0, 10 - binary.cardinality());
 	}
 
 	@Override
 	public Solution newSolution() {
-		Solution solution = new Solution(2, 1);
-		solution.setVariable(0, new RealVariable(0, 1));
-		solution.setVariable(1, new RealVariable(0, 1));
+		Solution solution = new Solution(1, 1);
+		solution.setVariable(0, new BinaryVariable(10));
 		return solution;
-	}
-	
-	public abstract boolean isOptimum(Solution solution, double epsilon);
-	
-	public boolean isAtOptimum(Population population, double epsilon) {
-		int count = 0;
-		
-		for (Solution solution : population) {
-			if (isOptimum(solution, epsilon)) {
-				count++;
-			}
-		}
-		
-		return (count >= population.size()) && (count > 0);
 	}
 
 }

@@ -27,10 +27,10 @@ import org.junit.Test;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.spi.AlgorithmFactory;
-import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.core.spi.ProviderNotFoundException;
-import org.moeaframework.problem.OneMax;
-import org.moeaframework.problem.OrderProblem;
+import org.moeaframework.problem.MockBinaryProblem;
+import org.moeaframework.problem.MockPermutationProblem;
+import org.moeaframework.problem.MockRealProblem;
 
 /**
  * Tests the {@link StandardAlgorithms} class.
@@ -64,9 +64,9 @@ public class StandardAlgorithmsTest {
 	 */
 	@Before
 	public void setUp() throws IOException {
-		realProblem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
-		binaryProblem = new OneMax(100);
-		permutationProblem = new OrderProblem(10);
+		realProblem = new MockRealProblem();
+		binaryProblem = new MockBinaryProblem();
+		permutationProblem = new MockPermutationProblem();
 		properties = new Properties();
 		
 		properties.setProperty("maxEvaluations", "1000");
