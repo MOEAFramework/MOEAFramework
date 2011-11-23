@@ -18,19 +18,26 @@ Release Date: %DATE%
 -----------------
  1. Introduction
 -----------------
-The MOEA Framework is a Java library for developing and experimenting with
-multiobjective evolutionary algorithms (MOEAs) and other general-purpose
-optimization algorithms and metaheuristics.  The MOEA Framework comes with 
-built-in support for many state-of-the-art algorithms, including the Borg MOEA,
-GDE3, NSGA-II, Epsilon-NSGA-II, Epsilon-MOEA and MOEA/D.  Additional algorithms
-can be constructed by extending or composing existing components, or imported
-from third-party libraries like JMetal <http://jmetal.sourceforge.net/> and 
-PISA <http://www.tik.ee.ethz.ch/pisa/>.
+The MOEA Framework is an open source Java library for developing and 
+experimenting with multiobjective evolutionary algorithms (MOEAs) and other 
+general-purpose optimization algorithms and metaheuristics.  A number of
+algorithms are provided out-of-the-box, including NSGA-II, e-MOEA, GDE3 and 
+MOEA/D.  In addition, third-party tools like JMetal and PISA directly integrate
+with the MOEA Framework.
 
-The MOEA Framework is academic in nature, and every effort is taken to maintain
-the quality, validity and openness of this project.  To support its academic
-role, the MOEA Framework comes equipped with a number of tools to statistically
-test and analyze MOEAs.
+The MOEA Framework targets an academic audience, providing the resources
+necessary to rapidly design, develop, execute and statistically test 
+optimization algorithms.  This includes over 40 test problems from the
+literature, and a suite of statistical tools for comparing and analyzing
+algorithm performance.
+
+Its key features includes:
+  * Fast, reliable implementations of many state-of-the-art algorithms
+  * Extensible with custom algorithms, problems and operators
+  * Modular design for constructing new algorithms from existing components
+  * Permissive open source license
+  * Fully documented source code
+  * Over 900 test cases to ensure validity
 
 
 ----------------------------------------
@@ -60,7 +67,7 @@ of the GNU Lesser General Public License.  Please see LICENSE for details.
  3. Installation Instructions
 ------------------------------
 The MOEA Framework is available in source code and binary distributions.  Java
-5.0 or later is required to be accessible on the host system.  For source code
+6.0 or later is required to be accessible on the host system.  For source code
 distributions, the Java Development Kit (JDK) is required to compile the code.
 For binary distributions, only the Java Runtime Environment (JRE) is necessary.
 Depending on your platform, the JRE or JDK can be obtained from the following

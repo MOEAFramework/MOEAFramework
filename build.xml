@@ -153,57 +153,20 @@
 				basedir="build" compression="gzip" />
 	</target>
 
-	<!--
 	<target name="package-source" 
 			description="Creates the source code distribution file">
-		<delete dir="build" />
-		<mkdir dir="build" />
-
-		<copy todir="build">
-			<fileset file="build.xml" />
-			<fileset file="codetemplates.xml" />
-			<fileset file="format.xml" />
-			<fileset file="test.xml" />
-			<fileset file="global.properties" />
-			<path refid="requiredfiles" />
-		</copy>
+		<property name="base" value="build/${shortname}-${version}" />
 		
-		<copy todir="build/auxiliary">
-			<fileset dir="auxiliary" />
-		</copy>
-
-		<copy todir="build/src">
-			<fileset dir="src" />
-		</copy>
-
-		<copy todir="build/examples">
-			<fileset dir="examples" />
-		</copy>
-
-		<copy todir="build/test">
-			<fileset dir="test" />
-		</copy>
-
-		<copy todir="build/lib">
-			<fileset dir="lib" />
-		</copy>
-
-		<copy todir="build/META-INF">
-			<fileset dir="META-INF" />
-		</copy>
-
-		<copy todir="build/pf">
-			<fileset dir="pf" />
-		</copy>
-
-		<copy todir="build/website">
-			<fileset dir="website" />
+		<delete dir="build" />
+		<mkdir dir="${base}" />
+		
+		<copy todir="${base}">
+			<fileset dir="." excludes="\.*,\.*/**,bin/**,build/**,dist/**,javadoc/**" />	
 		</copy>
 
 		<tar destfile="dist/${shortname}-${version}-source.tar.gz" 
 				basedir="build" compression="gzip" />
 	</target>
-	-->
 	
 	<target name="package-website" depends="build-javadoc"
 			description="Creates the website">
