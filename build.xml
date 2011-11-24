@@ -230,12 +230,84 @@
 		<unzip src="build/ecea_win.zip" dest="build" />
 		<unzip src="build/ibea_win.zip" dest="build" />
 		<unzip src="build/msops_win.zip" dest="build" />
-		<gunzip src="build/epsmoea_win.tar.gz" dest="build" />
-		<untar src="build/epsmoea_win.tar" dest="build" />
+		<untar src="build/epsmoea_win.tar.gz" compression="gzip" dest="build" />
 
 		<!-- delete compressed files -->
 		<delete>
-			<fileset includes="*.zip,*.tar,*.gz" dir="build" />
+			<fileset includes="*.zip,*.tar.gz" dir="build" />
+		</delete>
+
+		<!-- move PISA binaries to pisa folder -->
+		<delete dir="pisa" />
+		<mkdir dir="pisa" />
+
+		<move todir="pisa">
+			<fileset includes="**/*" dir="build" />
+		</move>
+	</target>
+	
+	<target name="download-pisa-linux" 
+			description="Downloads all PISA selectors for Linux">
+		<delete dir="build" />
+		<mkdir dir="build" />
+		
+		<!-- download PISA binaries -->
+		<get src="http://www.tik.ee.ethz.ch/pisa/selectors/spam/spam_linux_32.tar.gz" dest="build" />
+		<!--<get src="http://www.tik.ee.ethz.ch/pisa/selectors/shv/shv_linux32.rar" dest="build" />-->
+		<get src="http://www.tik.ee.ethz.ch/pisa/selectors/sibea/sibea_binary.zip" dest="build" />
+		<get src="http://www.tik.ee.ethz.ch/pisa/selectors/hype/hype_linux_32.tar.gz" dest="build" />
+		<get src="http://www.tik.ee.ethz.ch/pisa/lotz_semo/semo_linux.tar.gz" dest="build" />
+		<get src="http://www.tik.ee.ethz.ch/pisa/selectors/semo2/semo2_linux.tar.gz" dest="build" />
+		<get src="http://www.tik.ee.ethz.ch/pisa/selectors/femo/femo_linux.tar.gz" dest="build" />
+		<get src="http://www.tik.ee.ethz.ch/pisa/selectors/spea2/spea2_linux.tar.gz" dest="build" />
+		<get src="http://www.tik.ee.ethz.ch/pisa/selectors/nsga2/nsga2_linux.tar.gz" dest="build" />
+		<get src="http://www.tik.ee.ethz.ch/pisa/selectors/ecea/ecea_linux.tar.gz" dest="build" />
+		<get src="http://www.tik.ee.ethz.ch/pisa/selectors/ibea/ibea_linux.tar.gz" dest="build" />
+		<get src="http://www.tik.ee.ethz.ch/pisa/selectors/msops/msops_linux.tar.gz" dest="build" />
+		<get src="http://www.tik.ee.ethz.ch/pisa/selectors/epsmoea/epsmoea_linux.tar.gz" dest="build" />
+
+		<!-- extract PISA binaries -->
+		<untar src="build/spam_linux_32.tar.gz" compression="gzip" dest="build/spam_linux" />
+		<unzip src="build/sibea_binary.zip" dest="build/sibea_linux" />
+		<untar src="build/hype_linux_32.tar.gz" compression="gzip" dest="build/hype_linux" />
+		<untar src="build/semo_linux.tar.gz" compression="gzip" dest="build" />
+		<untar src="build/semo2_linux.tar.gz" compression="gzip" dest="build" />
+		<untar src="build/femo_linux.tar.gz" compression="gzip" dest="build" />
+		<untar src="build/spea2_linux.tar.gz" compression="gzip" dest="build" />
+		<untar src="build/nsga2_linux.tar.gz" compression="gzip" dest="build" />
+		<untar src="build/ecea_linux.tar.gz" compression="gzip" dest="build" />
+		<untar src="build/ibea_linux.tar.gz" compression="gzip" dest="build" />
+		<untar src="build/msops_linux.tar.gz" compression="gzip" dest="build" />
+		<untar src="build/epsmoea_linux.tar.gz" compression="gzip" dest="build" />
+		
+		<echo message="Note: SHV must be manually extracted" />
+		
+		<!--
+		<exec executable="unrar" failifexecutionfails="false">
+			<arg value="build/shv_linux32.rar" />
+			<arg value="build/shv_linux" />
+		</exec>
+		-->
+		
+		<chmod perm="+x">
+			<fileset dir="build" includes="**/*.sh" />
+			<fileset file="build/spam_linux/spam" />
+			<fileset file="build/hype_linux/hype" />
+			<fileset file="build/semo_linux/semo" />
+			<fileset file="build/semo2_linux/semo2" />
+			<fileset file="build/femo_linux/femo" />
+			<fileset file="build/spea2_linux/spea2" />
+			<fileset file="build/nsga2_linux/nsga2" />
+			<fileset file="build/ecea_linux/ecea" />
+			<fileset file="build/ibea_linux/ibea" />
+			<fileset file="build/msops_linux/msops" />
+			<fileset file="build/epsmoea_linux/epsmoea" />
+			<!--<fileset file="build/shv_linux/shv" />-->
+		</chmod>
+
+		<!-- delete compressed files -->
+		<delete>
+			<fileset includes="*.zip,*.tar.gz" dir="build" />
 		</delete>
 
 		<!-- move PISA binaries to pisa folder -->
