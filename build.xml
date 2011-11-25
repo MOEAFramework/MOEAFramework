@@ -196,6 +196,39 @@
 			<fileset dir="examples" includes="*.java" />
 		</copy>
 	</target>
+	
+	<target name="package-jnlp" 
+			depends="build-binary"
+			description="Creates the JNLP Web Start distribution">
+		<property name="base" value="build/${shortname}-${version}" />
+		
+		<delete dir="build" />
+		<mkdir dir="${base}" />
+		<mkdir dir="${base}/lib" />
+		
+		<copy todir="${base}">
+			<fileset dir="auxiliary/jnlp" />
+		</copy>
+		
+		<replace dir="${base}" includes="README,DiagnosticTool.jnlp">
+			<replacefilter token="%VERSION%" value="${version}" />
+			<replacefilter token="%DATE%" value="${TODAY}" />
+		</replace>
+
+		<copy todir="${base}/lib">
+			<fileset file="dist/${shortname}-${version}.jar" />
+			<fileset dir="lib" />
+		</copy>
+		
+		<jar basedir="." includes="pf/*" 
+				jarfile="${base}/lib/${shortname}-${version}-pf.jar" />
+		
+		<signjar alias="moeaframework" storepass="secret">
+			<path>
+				<fileset dir="${base}/lib" includes="*.jar" />
+			</path>
+		</signjar>
+	</target>
 
 	<target name="download-pisa-windows" 
 			description="Downloads all PISA selectors for Windows">

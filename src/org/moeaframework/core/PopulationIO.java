@@ -27,6 +27,8 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
@@ -50,6 +52,33 @@ public class PopulationIO {
 	private PopulationIO() {
 		super();
 	}
+	
+	/**
+	 * Parses the objective vectors contained in the specified reader, returning
+	 * the resulting population.  This method does not close the reader.
+	 * 
+	 * @param reader the reader containing the objective vectors
+	 * @return a population containing all objective vectors read
+	 * @throws IOException if an I/O error occurred
+	 */
+	private static Population readObjectives(BufferedReader reader) throws
+	IOException {
+		Population population = new Population();
+		String line = null;
+		
+		while ((line = reader.readLine()) != null) {
+			String[] tokens = line.trim().split("\\s+");
+			double[] values = new double[tokens.length];
+
+			for (int i = 0; i < tokens.length; i++) {
+				values[i] = Double.parseDouble(tokens[i]);
+			}
+
+			population.add(new Solution(values));
+		}
+		
+		return population;
+	}
 
 	/**
 	 * Reads a set of objective vectors from the specified file. Files read
@@ -63,31 +92,49 @@ public class PopulationIO {
 	 */
 	public static Population readObjectives(File file) throws IOException {
 		BufferedReader reader = null;
-		Population population = new Population();
 
 		try {
 			reader = new CommentedLineReader(new FileReader(file));
 
-			String line = null;
-			while ((line = reader.readLine()) != null) {
-				String[] tokens = line.trim().split("\\s+");
-				double[] values = new double[tokens.length];
-
-				for (int i = 0; i < tokens.length; i++) {
-					values[i] = Double.parseDouble(tokens[i]);
-				}
-
-				population.add(new Solution(values));
-			}
+			return readObjectives(reader);
 		} finally {
 			if (reader != null) {
 				reader.close();
 			}
 		}
-
-		return population;
 	}
 
+	/**
+	 * Reads a set of objective vectors from a named resource.  This is similar
+	 * to {@link #readObjectives(File)}, but loads from a resource available on
+	 * the class path.
+	 * 
+	 * @param stream the input stream containing the objective vectors
+	 * @return a population containing all objective vectors in the resource
+	 * @throws IOException if an I/O exception occurred
+	 */
+	public static Population readObjectivesFromResource(String resource) throws
+	IOException {
+		BufferedReader reader = null;
+		
+		try {
+			InputStream stream = PopulationIO.class.getResourceAsStream(
+					resource);
+			
+			if (stream == null) {
+				throw new IOException("could not locate resource " + resource);
+			}
+			
+			reader = new CommentedLineReader(new InputStreamReader(stream));
+
+			return readObjectives(reader);
+		} finally {
+			if (reader != null) {
+				reader.close();
+			}
+		}
+	}
+	
 	/**
 	 * Writes the objective vectors of all solutions in the specified population
 	 * to the specified file. Files created using this method should only be

@@ -90,6 +90,11 @@ public class Settings {
 			"core.indicator.hypervolume_enabled";
 	
 	/**
+	 * The property key for the JNLP Web Start flag.
+	 */
+	public static final String KEY_JNLP_ENABLED = KEY_PREFIX + "jnlp_enabled";
+	
+	/**
 	 * The prefix for all problem property keys.
 	 */
 	public static final String KEY_PROBLEM_PREFIX = KEY_PREFIX + "problem.";
@@ -285,6 +290,18 @@ public class Settings {
 	 */
 	public static boolean isHypervolumeEnabled() {
 		return PROPERTIES.getBoolean(KEY_HYPERVOLUME_ENABLED, true);
+	}
+	
+	/**
+	 * Returns [@code true} if JNLP Web Start mode is enabled; {@code false}
+	 * otherwise.  When enabled, built-in files must be treated as resources,
+	 * and accessed through a {@link ClassLoader}.
+	 * 
+	 * @return [@code true} if JNLP Web Start mode is enabled; {@code false}
+	 *         otherwise
+	 */
+	public static boolean isJNLPEnabled() {
+		return PROPERTIES.getBoolean(KEY_JNLP_ENABLED, false);
 	}
 	
 	/**

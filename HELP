@@ -267,6 +267,11 @@ requires two or more groups
   Attempted to use one of the n-ary statistical tests which require at least
   two groups.  Either add a second group to compare against, or remove the
   statistical test.
+  
+could not locate resource <name>
+  Thrown when attempting to access a resource packages within the MOEA
+  Framework, but the resource could not be located.  This is an error with the
+  distribution.  Please contact the distributor to correct this issue.
 
 
 ----------

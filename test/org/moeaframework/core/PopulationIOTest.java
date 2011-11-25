@@ -71,6 +71,15 @@ public class PopulationIOTest {
 	public void tearDown() {
 		population = null;
 	}
+	
+	@Test
+	public void testReadFromResource() throws IOException {
+		Population population = PopulationIO.readObjectivesFromResource(
+				"/org/moeaframework/core/ResourceReferenceSet.pf");
+		
+		Assert.assertNotNull(population);
+		Assert.assertTrue(population.size() > 0);
+	}
 
 	/**
 	 * Tests the {@link PopulationIO#writeObjectives} and

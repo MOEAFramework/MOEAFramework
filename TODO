@@ -97,13 +97,6 @@ any changes.
   - The org.moeaframework.core.fitness package contains code for supporting
     indicator-based methods, but is currently unused.  These should be used to
     implement native indicator-based MOEAs.
-
-  - With the addition of the Executor and Analyzer, it is no longer necessary
-    to provide numerous examples of the various features.  Instead, the
-    examples folder should be phased out.  Any problems defined in the examples
-    folder should be moved to the main source folder and included in 
-    StandardProblems.  The website and documentation should be updated with one
-    or two representative examples.
     
   - Add the R* indicators.  Open source implementations are available in PISA,
     but will need to be converted to Java.

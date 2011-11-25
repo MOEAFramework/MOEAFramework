@@ -245,9 +245,6 @@ ActionListener, ChartChangeListener, ListSelectionListener {
 		slider.setMajorTickSpacing(1000);
 		slider.addChangeListener(this);
 		
-		//initialize the reference set bounds
-		initializeReferenceSetBounds();
-		
 		//initializes the options available for axis plotting
 		Solution solution = (Solution)((List<?>)accumulators.get(0).get(
 				"Approximation Set", 0)).get(0);
@@ -273,6 +270,9 @@ ActionListener, ChartChangeListener, ListSelectionListener {
 		
 		xAxisSelection.addActionListener(this);
 		yAxisSelection.addActionListener(this);
+		
+		//initialize the reference set bounds
+		initializeReferenceSetBounds();
 		
 		//initialize plotting controls
 		useInitialBounds = new JRadioButton("Use Initial Bounds");

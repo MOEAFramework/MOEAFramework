@@ -19,10 +19,10 @@ package org.moeaframework.problem;
 
 import java.io.File;
 import java.io.IOException;
-
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PopulationIO;
 import org.moeaframework.core.Problem;
+import org.moeaframework.core.Settings;
 import org.moeaframework.core.spi.ProblemProvider;
 import org.moeaframework.problem.CEC2009.CF1;
 import org.moeaframework.problem.CEC2009.CF10;
@@ -546,128 +546,133 @@ public class StandardProblems extends ProblemProvider {
 		try {
 			if (name.startsWith("DTLZ1")) {
 				int numberOfObjectives = Integer.parseInt(name.substring(6));
-				filename = "./pf/DTLZ1." + numberOfObjectives + "D.pf";
+				filename = "DTLZ1." + numberOfObjectives + "D.pf";
 			} else if (name.startsWith("DTLZ2")) {
 				int numberOfObjectives = Integer.parseInt(name.substring(6));
-				filename = "./pf/DTLZ2." + numberOfObjectives + "D.pf";
+				filename = "DTLZ2." + numberOfObjectives + "D.pf";
 			} else if (name.startsWith("DTLZ3")) {
 				int numberOfObjectives = Integer.parseInt(name.substring(6));
-				filename = "./pf/DTLZ3." + numberOfObjectives + "D.pf";
+				filename = "DTLZ3." + numberOfObjectives + "D.pf";
 			} else if (name.startsWith("DTLZ4")) {
 				int numberOfObjectives = Integer.parseInt(name.substring(6));
-				filename = "./pf/DTLZ4." + numberOfObjectives + "D.pf";
+				filename = "DTLZ4." + numberOfObjectives + "D.pf";
 			} else if (name.startsWith("DTLZ7")) {
 				int numberOfObjectives = Integer.parseInt(name.substring(6));
-				filename = "./pf/DTLZ7." + numberOfObjectives + "D.pf";
+				filename = "DTLZ7." + numberOfObjectives + "D.pf";
 			} else if (name.startsWith("WFG1")) {
 				int numberOfObjectives = Integer.parseInt(name.substring(5));
-				filename = "./pf/WFG1." + numberOfObjectives + "D.pf";
+				filename = "WFG1." + numberOfObjectives + "D.pf";
 			} else if (name.startsWith("WFG2")) {
 				int numberOfObjectives = Integer.parseInt(name.substring(5));
-				filename = "./pf/WFG2." + numberOfObjectives + "D.pf";
+				filename = "WFG2." + numberOfObjectives + "D.pf";
 			} else if (name.startsWith("WFG3")) {
 				int numberOfObjectives = Integer.parseInt(name.substring(5));
-				filename = "./pf/WFG3." + numberOfObjectives + "D.pf";
+				filename = "WFG3." + numberOfObjectives + "D.pf";
 			} else if (name.startsWith("WFG4")) {
 				int numberOfObjectives = Integer.parseInt(name.substring(5));
-				filename = "./pf/WFG4." + numberOfObjectives + "D.pf";
+				filename = "WFG4." + numberOfObjectives + "D.pf";
 			} else if (name.startsWith("WFG5")) {
 				int numberOfObjectives = Integer.parseInt(name.substring(5));
-				filename = "./pf/WFG5." + numberOfObjectives + "D.pf";
+				filename = "WFG5." + numberOfObjectives + "D.pf";
 			} else if (name.startsWith("WFG6")) {
 				int numberOfObjectives = Integer.parseInt(name.substring(5));
-				filename = "./pf/WFG6." + numberOfObjectives + "D.pf";
+				filename = "WFG6." + numberOfObjectives + "D.pf";
 			} else if (name.startsWith("WFG7")) {
 				int numberOfObjectives = Integer.parseInt(name.substring(5));
-				filename = "./pf/WFG7." + numberOfObjectives + "D.pf";
+				filename = "WFG7." + numberOfObjectives + "D.pf";
 			} else if (name.startsWith("WFG8")) {
 				int numberOfObjectives = Integer.parseInt(name.substring(5));
-				filename = "./pf/WFG8." + numberOfObjectives + "D.pf";
+				filename = "WFG8." + numberOfObjectives + "D.pf";
 			} else if (name.startsWith("WFG9")) {
 				int numberOfObjectives = Integer.parseInt(name.substring(5));
-				filename = "./pf/WFG9." + numberOfObjectives + "D.pf";
+				filename = "WFG9." + numberOfObjectives + "D.pf";
 			} else if (name.equals("ZDT1")) {
-				filename = "./pf/ZDT1.pf";
+				filename = "ZDT1.pf";
 			} else if (name.equals("ZDT2")) {
-				filename = "./pf/ZDT2.pf";
+				filename = "ZDT2.pf";
 			} else if (name.equals("ZDT3")) {
-				filename = "./pf/ZDT3.pf";
+				filename = "ZDT3.pf";
 			} else if (name.equals("ZDT4")) {
-				filename = "./pf/ZDT4.pf";
+				filename = "ZDT4.pf";
 			} else if (name.equals("ZDT5")) {
-				filename = "./pf/ZDT5.pf";
+				filename = "ZDT5.pf";
 			} else if (name.equals("ZDT6")) {
-				filename = "./pf/ZDT6.pf";
+				filename = "ZDT6.pf";
 			} else if (name.equals("UF1")) {
-				filename = "./pf/UF1.dat";
+				filename = "UF1.dat";
 			} else if (name.equals("UF2")) {
-				filename = "./pf/UF2.dat";
+				filename = "UF2.dat";
 			} else if (name.equals("UF3")) {
-				filename = "./pf/UF3.dat";
+				filename = "UF3.dat";
 			} else if (name.equals("UF4")) {
-				filename = "./pf/UF4.dat";
+				filename = "UF4.dat";
 			} else if (name.equals("UF5")) {
-				filename = "./pf/UF5.dat";
+				filename = "UF5.dat";
 			} else if (name.equals("UF6")) {
-				filename = "./pf/UF6.dat";
+				filename = "UF6.dat";
 			} else if (name.equals("UF7")) {
-				filename = "./pf/UF7.dat";
+				filename = "UF7.dat";
 			} else if (name.equals("UF8")) {
-				filename = "./pf/UF8.dat";
+				filename = "UF8.dat";
 			} else if (name.equals("UF9")) {
-				filename = "./pf/UF9.dat";
+				filename = "UF9.dat";
 			} else if (name.equals("UF10")) {
-				filename = "./pf/UF10.dat";
+				filename = "UF10.dat";
 			} else if (name.equals("UF11")) {
-				filename = "./pf/R2_DTLZ2_M5.dat";
+				filename = "R2_DTLZ2_M5.dat";
 			} else if (name.equals("UF12")) {
-				filename = "./pf/R3_DTLZ3_M5.dat";
+				filename = "R3_DTLZ3_M5.dat";
 			} else if (name.equals("UF13")) {
-				filename = "./pf/WFG1_M5.dat";
+				filename = "WFG1_M5.dat";
 			} else if (name.equals("CF1")) {
-				filename = "./pf/CF1.dat";
+				filename = "CF1.dat";
 			} else if (name.equals("CF2")) {
-				filename = "./pf/CF2.dat";
+				filename = "CF2.dat";
 			} else if (name.equals("CF3")) {
-				filename = "./pf/CF3.dat";
+				filename = "CF3.dat";
 			} else if (name.equals("CF4")) {
-				filename = "./pf/CF4.dat";
+				filename = "CF4.dat";
 			} else if (name.equals("CF5")) {
-				filename = "./pf/CF5.dat";
+				filename = "CF5.dat";
 			} else if (name.equals("CF6")) {
-				filename = "./pf/CF6.dat";
+				filename = "CF6.dat";
 			} else if (name.equals("CF7")) {
-				filename = "./pf/CF7.dat";
+				filename = "CF7.dat";
 			} else if (name.equals("CF8")) {
-				filename = "./pf/CF8.dat";
+				filename = "CF8.dat";
 			} else if (name.equals("CF9")) {
-				filename = "./pf/CF9.dat";
+				filename = "CF9.dat";
 			} else if (name.equals("CF10")) {
-				filename = "./pf/CF10.dat";
+				filename = "CF10.dat";
 			} else if (name.equals("LZ1")) {
-				filename = "./pf/LZ07_F1.pf";
+				filename = "LZ07_F1.pf";
 			} else if (name.equals("LZ2")) {
-				filename = "./pf/LZ07_F2.pf";
+				filename = "LZ07_F2.pf";
 			} else if (name.equals("LZ3")) {
-				filename = "./pf/LZ07_F3.pf";
+				filename = "LZ07_F3.pf";
 			} else if (name.equals("LZ4")) {
-				filename = "./pf/LZ07_F4.pf";
+				filename = "LZ07_F4.pf";
 			} else if (name.equals("LZ5")) {
-				filename = "./pf/LZ07_F5.pf";
+				filename = "LZ07_F5.pf";
 			} else if (name.equals("LZ6")) {
-				filename = "./pf/LZ07_F6.pf";
+				filename = "LZ07_F6.pf";
 			} else if (name.equals("LZ7")) {
-				filename = "./pf/LZ07_F7.pf";
+				filename = "LZ07_F7.pf";
 			} else if (name.equals("LZ8")) {
-				filename = "./pf/LZ07_F8.pf";
+				filename = "LZ07_F8.pf";
 			} else if (name.equals("LZ9")) {
-				filename = "./pf/LZ07_F9.pf";
+				filename = "LZ07_F9.pf";
 			} else {
 				return null;
 			}
-
-			return new NondominatedPopulation(PopulationIO
-					.readObjectives(new File(filename)));
+			
+			if (Settings.isJNLPEnabled()) {
+				return new NondominatedPopulation(PopulationIO
+						.readObjectivesFromResource("/pf/" + filename));
+			} else {
+				return new NondominatedPopulation(PopulationIO.readObjectives(
+						new File("./pf/", filename)));
+			}
 		} catch (NumberFormatException e) {
 			return null;
 		} catch (IOException e) {
