@@ -533,6 +533,9 @@ public class ActionFactory implements ControllerListener {
 							"GNU LGPL", null));
 					info.addLibrary(new Library("JMetal", "3.1", "GNU LGPL", 
 							null));
+					info.addLibrary(new Library("MOEAFramework", 
+							properties.getProperty("version"), "GNU LGPL", 
+							null));
 						
 					AboutDialog dialog = new AboutDialog(frame, "About", info);
 					dialog.setLocationRelativeTo(frame);
