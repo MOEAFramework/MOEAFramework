@@ -109,7 +109,7 @@ public class PopulationIO {
 	 * to {@link #readObjectives(File)}, but loads from a resource available on
 	 * the class path.
 	 * 
-	 * @param stream the input stream containing the objective vectors
+	 * @param resource the name of the resource containing the objective vectors
 	 * @return a population containing all objective vectors in the resource
 	 * @throws IOException if an I/O exception occurred
 	 */

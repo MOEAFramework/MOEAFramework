@@ -12,10 +12,6 @@ any changes.
  Easy
 ------
 
-  - Instrumenter is failing with a ConcurrentModificationException if the
-    problem is wrapped in DistributedProblem.  This is likely a result of the
-    Instrumenter traversing a collection in the ExecutorService.
-
   - The DifferentialEvolution operator is not type-safe, and thus can not be
     used on mixed-type encodings.  This can be corrected by skipping any
     non-real decision variables.

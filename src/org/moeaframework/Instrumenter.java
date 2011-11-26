@@ -456,16 +456,18 @@ public class Instrumenter extends ProblemBuilder {
 				instrument(algorithm, collectors, visited, parents, element, 
 						null);
 			}
+		} else if ((type.getPackage() != null) && 
+				!type.getPackage().getName().startsWith("org.moeaframework")) {
+			//do not visit objects which are not within this framework
+			return;
 		}
 		
 		if (!visited.contains(object)) {
 			//attach any matching collectors
 			for (Collector collector : collectors) {
-				//if (!algorithm.getCollectors().contains(collector)) {
-					if (collector.getAttachPoint().matches(parents, object)) {
-						algorithm.addCollector(collector.attach(object));
-					}
-				//}
+				if (collector.getAttachPoint().matches(parents, object)) {
+					algorithm.addCollector(collector.attach(object));
+				}
 			}
 			
 			visited.add(object);
