@@ -100,7 +100,6 @@ public class State {
 				break;
 			} catch (IOException e) {
 				retriesRemaining--;
-				Thread.sleep(pollRate);
 				
 				if (retriesRemaining <= 0) {
 					throw e;
@@ -110,6 +109,8 @@ public class State {
 					writer.close();
 				}
 			}
+			
+			Thread.sleep(pollRate);
 		}
 	}
 
@@ -140,9 +141,9 @@ public class State {
 	public int waitWhile(int state) throws IOException, InterruptedException {
 		int current;
 
-		while (!file.exists() || ((current = get()) == state)) {
+		do {
 			Thread.sleep(pollRate);
-		}
+		} while (!file.exists() || ((current = get()) == state));
 
 		return current;
 	}
