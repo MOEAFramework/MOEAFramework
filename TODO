@@ -12,11 +12,7 @@ any changes.
  Easy
 ------
 
-  - The DifferentialEvolution operator is not type-safe, and thus can not be
-    used on mixed-type encodings.  This can be corrected by skipping any
-    non-real decision variables.
-
-  - PISA's ECEA algorithm attempts to restart when a run complete, causing an
+  - PISA's ECEA algorithm attempts to restart when a run completes, causing an
     exception because the MOEA Framework does not support restarts.  Can we
     instead put ECEA into a state causing it to terminate?
 
