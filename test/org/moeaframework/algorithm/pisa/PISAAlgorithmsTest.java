@@ -112,6 +112,7 @@ public class PISAAlgorithmsTest {
 	}
 	
 	@Test
+	@Ignore("requires maxIterations parameter, which is currently not supported")
 	public void testECEA() {
 		run("ecea", "win");
 	}

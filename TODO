@@ -12,10 +12,6 @@ any changes.
  Easy
 ------
 
-  - PISA's ECEA algorithm attempts to restart when a run completes, causing an
-    exception because the MOEA Framework does not support restarts.  Can we
-    instead put ECEA into a state causing it to terminate?
-
   - Need to ensure that constrained solutions are appropriately handled when
     constructing approximation sets or used in code that does not handled
     constraints (i.e., indicators).

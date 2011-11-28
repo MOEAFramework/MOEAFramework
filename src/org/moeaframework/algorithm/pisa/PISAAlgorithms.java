@@ -100,8 +100,8 @@ public class PISAAlgorithms extends AlgorithmProvider {
 				
 				//This is slightly unsafe since the actual files used by 
 				//PISA add the arc, cfg, ini, sel and sta extensions.  This
-				//dependency on files for communication is an unfortunate part
-				//of PISA's design.
+				//dependency on files for communication is part of PISA's 
+				//design.
 				File prefix = File.createTempFile("pisa", "");
 				
 				if (command == null) {
@@ -119,7 +119,8 @@ public class PISAAlgorithms extends AlgorithmProvider {
 				Variation variation = OperatorFactory.getInstance()
 						.getVariation(null, properties, problem);
 
-				int alpha = (int)typedProperties.getDouble("populationSize", 100);
+				int alpha = (int)typedProperties.getDouble("populationSize", 
+						100);
 				
 				while (alpha % variation.getArity() != 0) {
 					alpha++;
