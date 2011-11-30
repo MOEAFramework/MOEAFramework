@@ -502,7 +502,7 @@ public class SobolAnalysis extends CommandLineUtility {
 				.withLongOpt("input")
 				.hasArg()
 				.withArgName("file")
-				.withDescription("Metric input file")
+				.withDescription("Model output file")
 				.isRequired()
 				.create('i'));
 		options.addOption(OptionBuilder

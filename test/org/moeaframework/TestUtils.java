@@ -413,5 +413,17 @@ public class TestUtils {
 		assertEquals(min, statistics.getMin());
 		assertEquals(max, statistics.getMax());
 	}
+	
+	/**
+	 * Returns the regular expression pattern for detecting any number of 
+	 * numeric values separated by whitespace.
+	 * 
+	 * @param n the number of numeric values to detect
+	 * @return  the regular expression pattern for detecting any number of 
+	 *          numeric values separated by whitespace
+	 */
+	public static String getNumericPattern(int n) {
+		return "(-?[0-9]+\\.[0-9]+(E-?[0-9]+)?\\b\\s*){" + n + "}";
+	}
 
 }
