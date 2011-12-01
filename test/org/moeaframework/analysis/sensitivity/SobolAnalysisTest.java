@@ -16,13 +16,15 @@ import org.moeaframework.TestThresholds;
 import org.moeaframework.TestUtils;
 import org.moeaframework.util.sequence.Saltelli;
 
+/**
+ * Tests the {@link SobolAnalysis} class.
+ */
 public class SobolAnalysisTest {
 	
 	@Test
-	public void testNoInteraction1() throws FunctionEvaluationException, IOException {
-		File outputFile = TestUtils.createTempFile();
-		
-		test(outputFile, new MultivariateRealFunction() {
+	public void testNoInteraction1() throws FunctionEvaluationException, 
+	IOException {
+		File outputFile = test(new MultivariateRealFunction() {
 
 			@Override
 			public double value(double[] variables)
@@ -32,19 +34,23 @@ public class SobolAnalysisTest {
 			
 		});
 		
-		assertEntryEquals(outputFile, "Variable1", 1.0);
-		assertEntryEquals(outputFile, "Variable2", 0.0);
-		assertEntryEquals(outputFile, "Variable3", 0.0);
-		assertEntryEquals(outputFile, "Variable1 \\* Variable2", 0.0);
-		assertEntryEquals(outputFile, "Variable1 \\* Variable3", 0.0);
-		assertEntryEquals(outputFile, "Variable2 \\* Variable3", 0.0);
+		assertEntryEquals(outputFile, "Variable1", 0, 1.0);
+		assertEntryEquals(outputFile, "Variable2", 0, 0.0);
+		assertEntryEquals(outputFile, "Variable3", 0, 0.0);
+		
+		assertEntryEquals(outputFile, "Variable1", 1, 1.0);
+		assertEntryEquals(outputFile, "Variable2", 1, 0.0);
+		assertEntryEquals(outputFile, "Variable3", 1, 0.0);
+		
+		assertEntryEquals(outputFile, "Variable1 \\* Variable2", 0, 0.0);
+		assertEntryEquals(outputFile, "Variable1 \\* Variable3", 0, 0.0);
+		assertEntryEquals(outputFile, "Variable2 \\* Variable3", 0, 0.0);
 	}
 	
 	@Test
-	public void testNoInteraction12() throws FunctionEvaluationException, IOException {
-		File outputFile = TestUtils.createTempFile();
-		
-		test(outputFile, new MultivariateRealFunction() {
+	public void testNoInteraction12() throws FunctionEvaluationException, 
+	IOException {
+		File outputFile = test(new MultivariateRealFunction() {
 
 			@Override
 			public double value(double[] variables)
@@ -54,19 +60,23 @@ public class SobolAnalysisTest {
 			
 		});
 		
-		assertEntryEquals(outputFile, "Variable1", 0.5);
-		assertEntryEquals(outputFile, "Variable2", 0.5);
-		assertEntryEquals(outputFile, "Variable3", 0.0);
-		assertEntryEquals(outputFile, "Variable1 \\* Variable2", 0.0);
-		assertEntryEquals(outputFile, "Variable1 \\* Variable3", 0.0);
-		assertEntryEquals(outputFile, "Variable2 \\* Variable3", 0.0);
+		assertEntryEquals(outputFile, "Variable1", 0, 0.5);
+		assertEntryEquals(outputFile, "Variable2", 0, 0.5);
+		assertEntryEquals(outputFile, "Variable3", 0, 0.0);
+		
+		assertEntryEquals(outputFile, "Variable1", 1, 0.5);
+		assertEntryEquals(outputFile, "Variable2", 1, 0.5);
+		assertEntryEquals(outputFile, "Variable3", 1, 0.0);
+		
+		assertEntryEquals(outputFile, "Variable1 \\* Variable2", 0, 0.0);
+		assertEntryEquals(outputFile, "Variable1 \\* Variable3", 0, 0.0);
+		assertEntryEquals(outputFile, "Variable2 \\* Variable3", 0, 0.0);
 	}
 	
 	@Test
-	public void testNoInteraction123() throws FunctionEvaluationException, IOException {
-		File outputFile = TestUtils.createTempFile();
-		
-		test(outputFile, new MultivariateRealFunction() {
+	public void testNoInteraction123() throws FunctionEvaluationException, 
+	IOException {
+		File outputFile = test(new MultivariateRealFunction() {
 
 			@Override
 			public double value(double[] variables)
@@ -76,19 +86,23 @@ public class SobolAnalysisTest {
 			
 		});
 		
-		assertEntryEquals(outputFile, "Variable1", 0.333);
-		assertEntryEquals(outputFile, "Variable2", 0.333);
-		assertEntryEquals(outputFile, "Variable3", 0.333);
-		assertEntryEquals(outputFile, "Variable1 \\* Variable2", 0.0);
-		assertEntryEquals(outputFile, "Variable1 \\* Variable3", 0.0);
-		assertEntryEquals(outputFile, "Variable2 \\* Variable3", 0.0);
+		assertEntryEquals(outputFile, "Variable1", 0, 0.333);
+		assertEntryEquals(outputFile, "Variable2", 0, 0.333);
+		assertEntryEquals(outputFile, "Variable3", 0, 0.333);
+		
+		assertEntryEquals(outputFile, "Variable1", 1, 0.333);
+		assertEntryEquals(outputFile, "Variable2", 1, 0.333);
+		assertEntryEquals(outputFile, "Variable3", 1, 0.333);
+		
+		assertEntryEquals(outputFile, "Variable1 \\* Variable2", 0, 0.0);
+		assertEntryEquals(outputFile, "Variable1 \\* Variable3", 0, 0.0);
+		assertEntryEquals(outputFile, "Variable2 \\* Variable3", 0, 0.0);
 	}
 	
 	@Test
-	public void testInteraction() throws FunctionEvaluationException, IOException {
-		File outputFile = TestUtils.createTempFile();
-		
-		test(outputFile, new MultivariateRealFunction() {
+	public void testInteraction12() throws FunctionEvaluationException, 
+	IOException {
+		File outputFile = test(new MultivariateRealFunction() {
 
 			@Override
 			public double value(double[] variables)
@@ -98,19 +112,79 @@ public class SobolAnalysisTest {
 			
 		});
 		
-		assertEntryNotEquals(outputFile, "Variable1", 0.0);
-		assertEntryNotEquals(outputFile, "Variable2", 0.0);
-		assertEntryNotEquals(outputFile, "Variable3", 0.0);
-		assertEntryNotEquals(outputFile, "Variable1 \\* Variable2", 0.0);
-		assertEntryEquals(outputFile, "Variable1 \\* Variable3", 0.0);
-		assertEntryEquals(outputFile, "Variable2 \\* Variable3", 0.0);
+		assertEntryNotEquals(outputFile, "Variable1", 0, 0.0);
+		assertEntryEquals(outputFile, "Variable1", 0, 
+				getEntryValue(outputFile, "Variable2", 0));
+		assertEntryNotEquals(outputFile, "Variable3", 0, 0.0);
+		
+		assertEntryEquals(outputFile, "Variable1", 1, 
+				getEntryValue(outputFile, "Variable1", 0) + 
+				getEntryValue(outputFile, "Variable1 \\* Variable2", 0));
+		assertEntryEquals(outputFile, "Variable2", 1, 
+				getEntryValue(outputFile, "Variable2", 0) + 
+				getEntryValue(outputFile, "Variable1 \\* Variable2", 0));
+		assertEntryEquals(outputFile, "Variable3", 1, 
+				getEntryValue(outputFile, "Variable3", 0));
+		
+		assertEntryNotEquals(outputFile, "Variable1 \\* Variable2", 0, 0.0);
+		assertEntryEquals(outputFile, "Variable1 \\* Variable3", 0, 0.0);
+		assertEntryEquals(outputFile, "Variable2 \\* Variable3", 0, 0.0);
 	}
 	
-	protected void test(File outputFile, MultivariateRealFunction function) throws
+	@Test
+	public void testInteraction123() throws FunctionEvaluationException, 
+	IOException {
+		File outputFile = test(new MultivariateRealFunction() {
+
+			@Override
+			public double value(double[] variables)
+					throws FunctionEvaluationException {
+				return variables[0]*variables[1]*variables[2];
+			}
+			
+		});
+		
+		assertEntryNotEquals(outputFile, "Variable1", 0, 0.0);
+		assertEntryEquals(outputFile, "Variable1", 0, 
+				getEntryValue(outputFile, "Variable2", 0));
+		assertEntryEquals(outputFile, "Variable1", 0, 
+				getEntryValue(outputFile, "Variable3", 0));
+		
+		assertEntryEquals(outputFile, "Variable1", 1, 
+				getEntryValue(outputFile, "Variable1", 0) + 
+				getEntryValue(outputFile, "Variable1 \\* Variable2", 0) + 
+				getEntryValue(outputFile, "Variable1 \\* Variable3", 0));
+		assertEntryEquals(outputFile, "Variable2", 1, 
+				getEntryValue(outputFile, "Variable2", 0) + 
+				getEntryValue(outputFile, "Variable1 \\* Variable2", 0) + 
+				getEntryValue(outputFile, "Variable2 \\* Variable3", 0));
+		assertEntryEquals(outputFile, "Variable3", 1, 
+				getEntryValue(outputFile, "Variable3", 0) + 
+				getEntryValue(outputFile, "Variable1 \\* Variable3", 0) + 
+				getEntryValue(outputFile, "Variable2 \\* Variable3", 0));
+		
+		assertEntryNotEquals(outputFile, "Variable1 \\* Variable2", 0, 0.0);
+		assertEntryEquals(outputFile, "Variable1 \\* Variable2", 0, 
+				getEntryValue(outputFile, "Variable1 \\* Variable3", 0));
+		assertEntryEquals(outputFile, "Variable1 \\* Variable2", 0, 
+				getEntryValue(outputFile, "Variable2 \\* Variable3", 0));
+	}
+	
+	/**
+	 * Runs Sobol analysis on the given function.
+	 * 
+	 * @param function the function to evaluate
+	 * @return the file containing the output from Sobol analysis
+	 * @throws FunctionEvaluationException if an error occurred when evaluating
+	 *         the function
+	 * @throws IOException if an I/O error occurred
+	 */
+	protected File test(MultivariateRealFunction function) throws 
 	FunctionEvaluationException, IOException {
-		double[][] input = new Saltelli().generate(10000*6, 3);
+		double[][] input = new Saltelli().generate(1000*8, 3);
 		double[] output = evaluate(function, input);
 		
+		File outputFile = TestUtils.createTempFile();
 		File parameterFile = TestUtils.createTempFile();
 		File inputFile = TestUtils.createTempFile();
 		
@@ -123,22 +197,59 @@ public class SobolAnalysisTest {
 			"--metric", "0",
 			"--output", outputFile.getPath()
 		});
+		
+		return outputFile;
 	}
 	
-	protected void assertEntryEquals(File file, String key, double expected) 
-			throws IOException {
-		Assert.assertEquals(expected, getEntryValue(file, key), 
+	/**
+	 * Asserts that an entry in the Sobol results is equals an expected value.
+	 * 
+	 * @param file the file containing the output from Sobol analysis
+	 * @param key the regular expression for identifying the desired entry in
+	 *        the output file
+	 * @param skip set to {@code 0} for first-order or second-order effects,
+	 *        {@code 1} for total-order effects
+	 * @param expected the expected sensitivity value
+	 * @throws IOException if an I/O error occurred
+	 */
+	protected void assertEntryEquals(File file, String key, int skip,
+			double expected) throws IOException {
+		Assert.assertEquals(expected, getEntryValue(file, key, skip), 
 				TestThresholds.STATISTICS_EPS);
 	}
 	
-	protected void assertEntryNotEquals(File file, String key, double expected)
-			throws IOException {
-		Assert.assertTrue(Math.abs(expected - getEntryValue(file, key)) > 
+	/**
+	 * Asserts that an entry in the Sobol results is not equal to an expected
+	 * value.
+	 * 
+	 * @param file the file containing the output from Sobol analysis
+	 * @param key the regular expression for identifying the desired entry in
+	 *        the output file
+	 * @param skip set to {@code 0} for first-order or second-order effects,
+	 *        {@code 1} for total-order effects
+	 * @param expected the expected sensitivity value
+	 * @throws IOException if an I/O error occurred
+	 */
+	protected void assertEntryNotEquals(File file, String key, int skip,
+			double expected) throws IOException {
+		Assert.assertTrue(Math.abs(expected - getEntryValue(file, key, skip)) > 
 				TestThresholds.STATISTICS_EPS);
 	}
 	
-	protected double getEntryValue(File file, String key) throws 
-	NumberFormatException, IOException {
+	/**
+	 * Parses the specified Sobol output file, returning the sensitivity for
+	 * the given key.
+	 * 
+	 * @param file the file containing the output from Sobol analysis
+	 * @param key the regular expression for identifying the desired entry in 
+	 *        the output file
+	 * @param skip set to {@code 0} for first-order or second-order effects,
+	 *        {@code 1} for total-order effects
+	 * @return the sensitivity for the given key
+	 * @throws IOException if an I/O error occurred
+	 */
+	protected double getEntryValue(File file, String key, int skip) throws 
+	IOException {
 		BufferedReader reader = null;
 		String line = null;
 		Pattern pattern = Pattern.compile("^\\s*" + key + "\\s+" + 
@@ -152,7 +263,9 @@ public class SobolAnalysisTest {
 				Matcher matcher = pattern.matcher(line);
 				
 				if (matcher.matches()) {
-					return Double.parseDouble(matcher.group(1));
+					if (skip-- == 0) {
+						return Double.parseDouble(matcher.group(1));
+					}
 				}
 			}
 			
@@ -164,7 +277,19 @@ public class SobolAnalysisTest {
 		}
 	}
 	
-	protected double[] evaluate(MultivariateRealFunction function, double[][] input) throws FunctionEvaluationException { 
+	/**
+	 * Evaluates the given function on each input entry, returning the array of
+	 * outputs.
+	 * 
+	 * @param function the function
+	 * @param input the array of inputs, where the outer index references each
+	 *        set of input to the function
+	 * @return the array of outputs
+	 * @throws FunctionEvaluationException if an error occurred when evaluating
+	 *         the function
+	 */
+	protected double[] evaluate(MultivariateRealFunction function, 
+			double[][] input) throws FunctionEvaluationException { 
 		double[] output = new double[input.length];
 		
 		for (int i=0; i<input.length; i++) {
@@ -174,6 +299,14 @@ public class SobolAnalysisTest {
 		return output;
 	}
 	
+	/**
+	 * Saves the test data to the input file compatible with the input to the
+	 * Sobol analysis utility.
+	 * 
+	 * @param file the file to create
+	 * @param data the array of model outputs
+	 * @throws IOException if an I/O error occurred
+	 */
 	protected void save(File file, double[] data) throws IOException {
 		PrintWriter writer = null;
 		
@@ -197,7 +330,18 @@ public class SobolAnalysisTest {
 		}
 	}
 	
-	protected void createParameterFile(File file, int dimension) throws IOException {
+	/**
+	 * Creates the parameter file with entries of the form
+	 * <pre>
+	 *   VariableN 0.0 1.0
+	 * </pre>
+	 * 
+	 * @param file the parameter file to create
+	 * @param dimension the number of variables
+	 * @throws IOException if an I/O error occurred
+	 */
+	protected void createParameterFile(File file, int dimension) throws 
+	IOException {
 		PrintWriter writer = null;
 		
 		try {
