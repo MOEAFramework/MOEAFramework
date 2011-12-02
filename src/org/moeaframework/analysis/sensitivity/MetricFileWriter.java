@@ -93,7 +93,7 @@ public class MetricFileWriter implements OutputWriter {
 		writer = new PrintWriter(new BufferedWriter(new FileWriter(file)), 
 				true);
 		
-		writer.println("#Hypervolume GenerationalDistance InvertedGenerationalDistance Spacing EpsilonIndicator MaximumParetoFrontError NormalizedEpsilonIndicator");
+		writer.println("#Hypervolume GenerationalDistance InvertedGenerationalDistance Spacing EpsilonIndicator MaximumParetoFrontError");
 
 		// if the file already existed, copy all complete entries
 		if (existingFile != null) {
