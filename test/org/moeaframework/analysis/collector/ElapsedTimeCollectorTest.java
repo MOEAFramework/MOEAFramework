@@ -26,11 +26,6 @@ import org.moeaframework.analysis.collector.ElapsedTimeCollector;
 public class ElapsedTimeCollectorTest extends CollectorTest {
 	
 	@Test
-	public void testBorg() {
-		test("Borg", new ElapsedTimeCollector(), true);
-	}
-	
-	@Test
 	public void testNSGAII() {
 		test("NSGAII", new ElapsedTimeCollector(), true);
 	}

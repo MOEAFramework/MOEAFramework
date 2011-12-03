@@ -40,22 +40,22 @@ public class StandardAlgorithmsTest {
 	/**
 	 * The real encoded test problem.
 	 */
-	private Problem realProblem;
+	protected Problem realProblem;
 	
 	/**
 	 * The binary encoded test problem.
 	 */
-	private Problem binaryProblem;
+	protected Problem binaryProblem;
 	
 	/**
 	 * The permutation test problem.
 	 */
-	private Problem permutationProblem;
+	protected Problem permutationProblem;
 	
 	/**
 	 * The properties for controlling the test problems.
 	 */
-	private Properties properties;
+	protected Properties properties;
 
 	/**
 	 * Creates the shared problem.
@@ -99,11 +99,6 @@ public class StandardAlgorithmsTest {
 	}
 	
 	@Test
-	public void testBorg_Real() {
-		test("Borg", realProblem);
-	}
-	
-	@Test
 	public void testGDE3_Real() {
 		test("GDE3", realProblem);
 	}
@@ -131,11 +126,6 @@ public class StandardAlgorithmsTest {
 	@Test(expected = ProviderNotFoundException.class)
 	public void testMOEAD_Binary() {
 		test("MOEAD", binaryProblem);
-	}
-	
-	@Test(expected = ProviderNotFoundException.class)
-	public void testBorg_Binary() {
-		test("Borg", binaryProblem);
 	}
 	
 	@Test(expected = ProviderNotFoundException.class)
@@ -169,11 +159,6 @@ public class StandardAlgorithmsTest {
 	}
 	
 	@Test(expected = ProviderNotFoundException.class)
-	public void testBorg_Permutation() {
-		test("Borg", permutationProblem);
-	}
-	
-	@Test(expected = ProviderNotFoundException.class)
 	public void testGDE3_Permutation() {
 		test("GDE3", permutationProblem);
 	}
@@ -193,7 +178,7 @@ public class StandardAlgorithmsTest {
 	 * 
 	 * @param algorithm the algorithm
 	 */
-	private void test(String name, Problem problem) {
+	protected void test(String name, Problem problem) {
 		Algorithm algorithm = AlgorithmFactory.getInstance().getAlgorithm(name, 
 				properties, problem);
 		

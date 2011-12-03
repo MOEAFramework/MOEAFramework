@@ -26,11 +26,6 @@ import org.moeaframework.analysis.collector.AdaptiveTimeContinuationCollector;
 public class AdaptiveTimeContinuationCollectorTest extends CollectorTest {
 	
 	@Test
-	public void testBorg() {
-		test("Borg", new AdaptiveTimeContinuationCollector(), true);
-	}
-	
-	@Test
 	public void testNSGAII() {
 		test("NSGAII", new AdaptiveTimeContinuationCollector(), false);
 	}

@@ -205,7 +205,7 @@ public class InstrumenterTest {
 		
 		Executor executor = new Executor()
 				.withProblem("DTLZ2_2")
-				.withAlgorithm("Borg")
+				.withAlgorithm("NSGAII")
 				.withMaxEvaluations(1000)
 				.withInstrumenter(instrumenter);
 		
@@ -213,8 +213,7 @@ public class InstrumenterTest {
 		
 		Accumulator accumulator = instrumenter.getLastAccumulator();
 		
-		//6 operators, 6 indicators, 7 from other collectors, 1 for NFE = 20
-		Assert.assertEquals(20, accumulator.keySet().size());
+		Assert.assertEquals(10, accumulator.keySet().size());
 	}
 	
 }

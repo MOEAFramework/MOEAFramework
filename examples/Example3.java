@@ -1,3 +1,20 @@
+/* Copyright 2009-2011 David Hadka
+ * 
+ * This file is part of the MOEA Framework.
+ * 
+ * The MOEA Framework is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by 
+ * the Free Software Foundation, either version 3 of the License, or (at your 
+ * option) any later version.
+ * 
+ * The MOEA Framework is distributed in the hope that it will be useful, but 
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY 
+ * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public 
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License 
+ * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
+ */
 import org.moeaframework.Executor;
 import org.moeaframework.core.CoreUtils;
 import org.moeaframework.core.NondominatedPopulation;
@@ -35,9 +52,11 @@ public class Example3 {
 			double sum = 0.0;
 			double[] x = CoreUtils.castVariablesToDoubleArray(solution);
 
+			for (int j=0; j<100; j++) {
 			for (int i = 0; i < numberOfVariables - 1; i++) {
 				sum += Math.pow(1.0 - x[i], 2.0) + 100.0
 						* Math.pow(x[i + 1] - Math.pow(x[i], 2.0), 2.0);
+			}
 			}
 
 			solution.setObjective(0, sum);

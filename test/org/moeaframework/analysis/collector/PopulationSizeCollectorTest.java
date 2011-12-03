@@ -26,11 +26,6 @@ import org.moeaframework.analysis.collector.PopulationSizeCollector;
 public class PopulationSizeCollectorTest extends CollectorTest {
 	
 	@Test
-	public void testBorg() {
-		test("Borg", new PopulationSizeCollector(), true);
-	}
-	
-	@Test
 	public void testNSGAII() {
 		test("NSGAII", new PopulationSizeCollector(), true);
 	}

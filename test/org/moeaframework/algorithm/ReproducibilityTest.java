@@ -44,14 +44,6 @@ public class ReproducibilityTest {
 	}
 
 	/**
-	 * Tests the Borg MOEA for reproducibility.
-	 */
-	@Test
-	public void testBorg() {
-		test("Borg");
-	}
-
-	/**
 	 * Tests MOEA/D for reproducibility.
 	 */
 	@Test

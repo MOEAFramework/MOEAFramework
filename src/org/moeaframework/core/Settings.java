@@ -492,7 +492,7 @@ public class Settings {
 	
 	public static String[] getDiagnosticToolAlgorithms() {
 		return PROPERTIES.getStringArray(KEY_DIAGNOSTIC_TOOL_ALGORITHMS, 
-				new String[] { "NSGAII", "GDE3", "eMOEA", "Borg", "eNSGAII", 
+				new String[] { "NSGAII", "GDE3", "eMOEA", "eNSGAII", 
 				"MOEAD", "Random" });
 	}
 	

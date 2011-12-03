@@ -46,7 +46,7 @@ public class ParameterizationTest {
 	/**
 	 * The algorithms being tested.
 	 */
-	private final String[] algorithms = { "Borg", "eMOEA", "eNSGAII", "GDE3",
+	private final String[] algorithms = { "eMOEA", "eNSGAII", "GDE3",
 			"IBEA", "MOEAD", "NSGAII", "OMOPSO", "SPEA2" };
 	
 	/**

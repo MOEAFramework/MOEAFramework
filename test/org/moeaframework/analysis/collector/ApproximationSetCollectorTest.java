@@ -26,11 +26,6 @@ import org.moeaframework.analysis.collector.ApproximationSetCollector;
 public class ApproximationSetCollectorTest extends CollectorTest {
 	
 	@Test
-	public void testBorg() {
-		test("Borg", new ApproximationSetCollector(), true);
-	}
-	
-	@Test
 	public void testNSGAII() {
 		test("NSGAII", new ApproximationSetCollector(), true);
 	}

@@ -27,11 +27,6 @@ public class EpsilonProgressCollectorTest extends
 CollectorTest {
 	
 	@Test
-	public void testBorg() {
-		test("Borg", new EpsilonProgressCollector(), true);
-	}
-	
-	@Test
 	public void testNSGAII() {
 		test("NSGAII", new EpsilonProgressCollector(), true);
 	}

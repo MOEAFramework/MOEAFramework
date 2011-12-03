@@ -37,7 +37,6 @@ import org.moeaframework.core.comparator.CrowdingComparator;
 import org.moeaframework.core.comparator.DominanceComparator;
 import org.moeaframework.core.comparator.EpsilonBoxConstraintComparator;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
-import org.moeaframework.core.operator.AdaptiveMultimethodVariation;
 import org.moeaframework.core.operator.RandomInitialization;
 import org.moeaframework.core.operator.TournamentSelection;
 import org.moeaframework.core.operator.UniformSelection;
@@ -80,15 +79,6 @@ import org.moeaframework.util.TypedProperties;
  *         updateUtility}</td>
  *   </tr>
  *   <tr>
- *     <td>Borg</td>
- *     <td>Real</td>
- *     <td>{@code initialPopulationSize, epsilon, selectionRatio, sbx.rate,
- *         sbx.distributionIndex, de.crossoverRate, de.stepSize, pcx.parents,
- *         pcx.offspring, pcx.eta, pcx.zeta, spx.parents, spx.offspring,
- *         spx.epsilon, undx.parents, undx.offspring, undx.zeta, undx.eta,
- *         um.rate, pm.rate, pm.distributionIndex, injectionRate}</td>
- *   </tr>
- *   <tr>
  *     <td>GDE3</td>
  *     <td>Real</td>
  *     <td>{@code populationSize, de.crossoverRate, de.stepSize}</td>
@@ -122,9 +112,7 @@ public class StandardAlgorithms extends AlgorithmProvider {
 		TypedProperties typedProperties = new TypedProperties(properties);
 
 		try {
-			if (name.equalsIgnoreCase("Borg")) {
-				return newBorg(typedProperties, problem);
-			} else if (name.equalsIgnoreCase("MOEAD")) {
+			if (name.equalsIgnoreCase("MOEAD")) {
 				return newMOEAD(typedProperties, problem);
 			} else if (name.equalsIgnoreCase("GDE3")) {
 				return newGDE3(typedProperties, problem);
@@ -272,91 +260,6 @@ public class StandardAlgorithms extends AlgorithmProvider {
 				Math.max(1, (int)(properties.getDouble("eta", 0.01) 
 						* populationSize)),
 				(int)properties.getDouble("updateUtility", 50));
-
-		return algorithm;
-	}
-
-	/**
-	 * Returns the selection size for tournament selection.
-	 * 
-	 * @param selectionRatio the selection ratio
-	 * @param populationSize the size of the population
-	 * @return the selection size for tournament selection
-	 */
-	private int getSelectionSize(double selectionRatio, int populationSize) {
-		return Math.max((int)(populationSize * selectionRatio), 2);
-	}
-
-	/**
-	 * Returns a new {@link Borg} instance.  Only real encodings are supported.
-	 * 
-	 * @param properties the properties for customizing the new {@code Borg}
-	 *        instance
-	 * @param problem the problem
-	 * @return a new {@code Borg} instance
-	 * @throws FrameworkException if the decision variables are not real valued
-	 */
-	private Algorithm newBorg(final TypedProperties properties, Problem problem) {
-		if (!checkType(RealVariable.class, problem)) {
-			throw new FrameworkException("unsupported decision variable type");
-		}
-		
-		int initialPopulationSize = (int)properties.getDouble(
-				"initialPopulationSize", 100);
-
-		Initialization initialization = new RandomInitialization(problem,
-				initialPopulationSize);
-
-		Population population = new Population();
-
-		DominanceComparator comparator = new ChainedComparator(
-				new AggregateConstraintComparator(),
-				new ParetoDominanceComparator());
-
-		EpsilonBoxDominanceArchive archive = new EpsilonBoxDominanceArchive(
-				new EpsilonBoxConstraintComparator(properties.getDoubleArray(
-						"epsilon", new double[] { EpsilonHelper
-								.getEpsilon(problem) })));
-
-		final TournamentSelection selection = new TournamentSelection(
-				getSelectionSize(properties.getDouble("selectionRatio", 0.02),
-						initialPopulationSize), comparator);
-		
-		AdaptiveMultimethodVariation variation = new AdaptiveMultimethodVariation(
-				archive);
-		variation.addOperator(OperatorFactory.getInstance().getVariation(
-				"sbx+pm", properties, problem));
-		variation.addOperator(OperatorFactory.getInstance().getVariation(
-				"de+pm", properties, problem));
-		variation.addOperator(OperatorFactory.getInstance().getVariation(
-				"pcx", properties, problem));
-		variation.addOperator(OperatorFactory.getInstance().getVariation(
-				"spx", properties, problem));
-		variation.addOperator(OperatorFactory.getInstance().getVariation(
-				"undx",properties, problem));
-		variation.addOperator(OperatorFactory.getInstance().getVariation(
-				"um", properties, problem));
-
-		EpsilonMOEA emoea = new EpsilonMOEA(problem, population, archive,
-				selection, variation, initialization, comparator);
-
-		final EpsilonProgressContinuation algorithm = new EpsilonProgressContinuation(
-				emoea, 100, 10000, 
-				1.0 / properties.getDouble("injectionRate", 0.25), 
-				100, 10000,
-				new UniformSelection(), 
-				new UM(1.0 / problem.getNumberOfVariables()));
-
-		algorithm.addRestartListener(new RestartListener() {
-
-			@Override
-			public void restarted(RestartEvent event) {
-				selection.setSize(getSelectionSize(
-						properties.getDouble("selectionRatio", 0.02), 
-						algorithm.getPopulation().size()));
-			}
-
-		});
 
 		return algorithm;
 	}

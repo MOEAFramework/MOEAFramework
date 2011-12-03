@@ -37,11 +37,6 @@ public class IndicatorCollectorTest extends CollectorTest {
 	}
 	
 	@Test
-	public void testBorg() {
-		test("Borg", new IndicatorCollector(new MockIndicator()), true);
-	}
-	
-	@Test
 	public void testNSGAII() {
 		test("NSGAII", new IndicatorCollector(new MockIndicator()), true);
 	}

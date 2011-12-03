@@ -26,11 +26,6 @@ import org.moeaframework.analysis.collector.AdaptiveMultimethodVariationCollecto
 public class AdaptiveMultimethodVariationCollectorTest extends CollectorTest {
 	
 	@Test
-	public void testBorg() {
-		test("Borg", new AdaptiveMultimethodVariationCollector(), true);
-	}
-	
-	@Test
 	public void testNSGAII() {
 		test("NSGAII", new AdaptiveMultimethodVariationCollector(), false);
 	}
