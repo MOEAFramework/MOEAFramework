@@ -8,8 +8,8 @@
         <p>
           Current Release: <b>Version %VERSION%</b>
           <ul>
-            <li><a href="http://downloads.sourceforge.net/project/moeaframework/MOEAFramework-%VERSION%.tar.gz">Compiled Binaries</a></li>
-            <li><a href="http://downloads.sourceforge.net/project/moeaframework/MOEAFramework-%VERSION%-source.tar.gz">Source Code</a></li>
+            <li><a href="http://downloads.sourceforge.net/project/moeaframework/MOEAFramework-%VERSION%/MOEAFramework-%VERSION%.tar.gz">Compiled Binaries</a></li>
+            <li><a href="http://downloads.sourceforge.net/project/moeaframework/MOEAFramework-%VERSION%/MOEAFramework-%VERSION%-source.tar.gz">Source Code</a></li>
             <!-- <li><a href="http://downloads.sourceforge.net/project/moeaframework/MOEAFramework-%VERSION%-javadoc.tar.gz">Documentation</a></li> -->
           </ul>
         </p>
