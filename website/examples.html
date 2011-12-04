@@ -25,9 +25,10 @@
 <h4>Setup</h4>
 
 <p>
-  In order to run these examples or use the MOEA Framework, Java 1.6 (or a later
-  version) must be installed on your computer.  To obtain the latest version
-  of Java, visit <a href="http://www.java.com">http://www.java.com</a>.
+  In order to run these examples or use the MOEA Framework, Java 6 (or a later
+  version) must be installed on your computer.  The Java 6 development kit for
+  Windows and Linux can be downloaded 
+  <a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk-6u29-download-513648.html">here</a>.
 </p>
 
 <p>
@@ -45,20 +46,15 @@
     <li class="folder">MOEAFrameworkDemo/
     <li class="empty">
       <ul>
+        <li class="folder">javadoc/
         <li class="folder">lib/
-        <li class="empty">
-          <ul>
-            <li>commons-cli-1.2.jar
-            <li>commons-codec-1.5.jar
-            <li>commons-math-2.2.jar
-            <li>jcommon-1.0.16.jar
-            <li>jfreechart-1.0.13.jar
-            <li>JMetal-3.1.jar
-            <li>junit-4.8.1.jar
-            <li>MOEAFramework-%VERSION%.jar
-            <li>MOEAFramework-%VERSION%-test.jar
-          </ul>
-        <li>Example1.java
+        <li class="folder">licenses/
+        <li class="folder">pf/
+        <li><b>Example1.java</b>
+        <li>global.properties
+        <li>LICENSE
+        <li>NEWS
+        <li>README
       </ul>
     </ul>
   </div>
@@ -74,6 +70,14 @@
   <pre>
               javac -Djava.ext.dirs=lib Example1.java
               java -Djava.ext.dirs=lib Example1</pre>
+</p>
+
+<p>
+  If you receive the message <i>'javac' is not recognized as an internal or
+  external command, operable program or batch file</i>, try the following steps
+  to setup your environment on 
+  <a href="http://vietpad.sourceforge.net/javaonwindows.html">Windows</a> or
+  <a href="http://vietpad.sourceforge.net/javaonlinux.html">Linux</a>
 </p>
 </div>
 
