@@ -24,7 +24,7 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * Absract class for implementing ordinal (rank-based) statistical tests.
+ * Abstract class for implementing ordinal (rank-based) statistical tests.
  * Methods are provided for storing {@link RankedObservation} objects and
  * updating their ranks.
  */

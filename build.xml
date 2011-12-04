@@ -180,17 +180,21 @@
 		<loadfile property="website.header" srcFile="website/header.partial" />
 		<loadfile property="website.body" srcFile="website/body.partial" />
 		<loadfile property="website.footer" srcFile="website/footer.partial" />
-		
-		<replace dir="build" includes="*.html">
-			<replacefilter token="%HEADER%" value="${website.header}" />
-			<replacefilter token="%BODY%" value="${website.body}" />
-			<replacefilter token="%FOOTER%" value="${website.footer}" />
-			<replacefilter token="%VERSION%" value="${version}" />
-		</replace>
+		<loadfile property="website.tracker" srcFile="website/tracker.partial" />
 		
 		<copy todir="build/javadoc">
 			<fileset dir="javadoc" />
 		</copy>
+		
+		<replace dir="build" includes="**/*.html">
+			<replacefilter token="%HEADER%" value="${website.header}" />
+			<replacefilter token="%BODY%" value="${website.body}" />
+			<replacefilter token="%FOOTER%" value="${website.footer}" />
+			<replacefilter token="%VERSION%" value="${version}" />
+			<replacefilter value="${website.tracker}">
+			    <replacetoken><![CDATA[<!-- %TRACKER% -->]]></replacetoken> 
+			</replacefilter>
+		</replace>
 		
 		<copy todir="build">
 			<fileset dir="examples" includes="*.java" />
