@@ -12,6 +12,13 @@ any changes.
  Easy
 ------
 
+  - SobolAnalysis currently can only read inputs formatted as a metric file.
+    This should be modified so it can read any tabular real-valued data.
+    
+  - Analysis should allow command line options to configure which analytical
+    calculations are performed.  This is intended to allow users to skip
+    time consuming calculations (i.e., controllability) if they are not needed.
+
   - Need to ensure that constrained solutions are appropriately handled when
     constructing approximation sets or used in code that does not handled
     constraints (i.e., indicators).

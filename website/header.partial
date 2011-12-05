@@ -5,7 +5,8 @@
 <head>
   <title>The MOEA Framework</title>
 
-  <meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8" />
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-language" content="en-US" />
   <meta name="author" content="David Hadka" />
   <meta name="description" content="An Open Source Java Framework for Multiobjective Optimization" />
   <meta name="keywords" content="multiobjective, optimization, evolutionary, genetic, algorithm, java, lgpl" />
