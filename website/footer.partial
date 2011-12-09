@@ -45,8 +45,11 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 <!-- footer -->
 <div id="footer-bottom">
   <p class="bottom-left">
-    &copy; 2009-2011 <strong>MOEA Framework</strong>&nbsp; &nbsp; &nbsp;
+    &copy; 2009-2011 <strong>MOEA Framework</strong>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     Website template by <a href="http://www.styleshout.com/">styleshout</a>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <!-- %TRACKER% -->
   </p>
 
   <p class="bottom-right">
@@ -55,8 +58,6 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
     <strong><a href="#top">Back to Top</a></strong>
  </p>
 </div>
-
-<!-- %TRACKER% -->
 
 </body>
 </html>
