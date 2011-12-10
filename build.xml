@@ -173,6 +173,10 @@
 		<delete dir="build" />
 		<mkdir dir="build" />
 		
+		<tstamp>
+			<format pattern="yyyy-MM-dd" property="lastmod" />
+		</tstamp>
+		
 		<copy todir="build">
 			<fileset dir="website" excludes="*.partial" />
 		</copy>
@@ -194,6 +198,10 @@
 			<replacefilter value="${website.tracker}">
 			    <replacetoken><![CDATA[<!-- %TRACKER% -->]]></replacetoken> 
 			</replacefilter>
+		</replace>
+		
+		<replace file="build/sitemap.xml">
+			<replacefilter token="%LASTMOD%" value="${lastmod}" />
 		</replace>
 		
 		<copy todir="build">
