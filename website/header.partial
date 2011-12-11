@@ -3,6 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 
 <head>
+  <link rel="shortcut icon" href="/favicon.ico" />
   <title>The MOEA Framework, a Java library for multiobjective optimization</title>
 
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -17,6 +18,7 @@
   <script type="text/javascript" src="scripts/prototype.js"></script>
   <script type="text/javascript" src="scripts/scriptaculous.js?load=effects,builder"></script>
   <script type="text/javascript" src="scripts/lightbox.js"></script>
+  <link rel="stylesheet" type="text/css" media="screen" href="css/lightbox.css" />
   
   <!-- include SyntaxHighlighter files for displaying source codes -->
   <script type="text/javascript" src="scripts/shCore.js"></script>
@@ -24,8 +26,8 @@
   <link type="text/css" rel="stylesheet" href="styles/shCoreEclipse.css"/>
   <script type="text/javascript">SyntaxHighlighter.all();</script>
 
+  
   <link rel="stylesheet" type="text/css" media="screen" href="css/screen.css" />
-  <link rel="stylesheet" type="text/css" media="screen" href="css/lightbox.css" />
 </head>
 
 <body>
