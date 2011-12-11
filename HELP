@@ -10,7 +10,7 @@ are included.
 
 Errors halt the execution of the program and produce an error message to the
 standard error stream (i.e., the console).  Most errors can be corrected by the
-user
+user.
 
 Exception in thread "main" java.lang.NoClassDefFoundError: <class>
   Thrown when Java is starting but is unable to find the specified class.
