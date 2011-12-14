@@ -1,18 +1,14 @@
-%HEADER%
+<?xml version="1.0"?>
+<!DOCTYPE some_name [ 
+<!ENTITY nbsp "&#160;">
+<!ENTITY copy "&#169;">
+<!ENTITY epsilon "&#949;">
+]>
 
-<div id="nav">
-  <ul>
-    <li><a href="index.html">Home</a></li>
-    <li><a href="examples.html">Examples</a></li>
-    <li id="current"><a href="downloads.html">Downloads</a></li>
-    <li><a href="javadoc/index.html">Documentation</a></li>
-    <li><a href="support.html">Support</a></li>
-    <li><a href="contribute.html">Contribute</a></li>
-  </ul>
-</div>
-
-%BODY%
-
+<page>
+  <title>Download the MOEA Framework</title>
+  <description>Download the current of previous versions of the MOEA Framework</description>
+  <content>
 <h3>Downloads</h3>
 
 <p>
@@ -52,20 +48,6 @@
       </span>
       <div class="fix"></div>
     </li>
-    <!--
-    <li>
-      <a href="http://downloads.sourceforge.net/project/moeaframework/MOEAFramework-%VERSION%/MOEAFramework-%VERSION%-javadoc.tar.gz">
-        <img src="images/tgz.png" class="float-left" />
-        <strong>Documentation</strong>
-      </a>
-      <br />
-      <span>
-        Download the javadoc documentation.  This material is available online 
-        in the documentation section of this website.
-      </span>
-      <div class="fix"></div>
-    </li>
-    -->
   </ul>
 </div>
 
@@ -160,5 +142,5 @@
 </table>
 -->
 </div>
-
-%FOOTER%
+  </content>
+</page>

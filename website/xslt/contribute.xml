@@ -1,18 +1,14 @@
-%HEADER%
+<?xml version="1.0"?>
+<!DOCTYPE some_name [ 
+<!ENTITY nbsp "&#160;">
+<!ENTITY copy "&#169;">
+<!ENTITY epsilon "&#949;">
+]>
 
-<div id="nav">
-  <ul>
-    <li><a href="index.html">Home</a></li>
-    <li><a href="examples.html">Examples</a></li>
-    <li><a href="downloads.html">Downloads</a></li>
-    <li><a href="javadoc/index.html">Documentation</a></li>
-    <li><a href="support.html">Support</a></li>
-    <li id="current"><a href="contribute.html">Contribute</a></li>
-  </ul>
-</div>
-
-%BODY%
-
+<page>
+  <title>Contribute to the MOEA Framework</title>
+  <description>Learn how to contribute to the MOEA Framework</description>
+  <content>
 <h3>Contribute</h3>
   
 <p>
@@ -82,5 +78,5 @@
   contact us at this e-mail.
 </p>
 </div>
- 
-%FOOTER%
+  </content>
+</page>

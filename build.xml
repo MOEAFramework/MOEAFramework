@@ -19,7 +19,7 @@
 		<javadoc sourcepath="src" destdir="javadoc" notree="true"
 				noindex="true" nohelp="true" nodeprecated="true"
 				overview="src/overview.html"
-				windowtitle="MOEA Framework ${version}">
+				windowtitle="MOEA Framework ${version} API">
 			<header><![CDATA[${javadoc.title}]]></header>
 			<doctitle><![CDATA[${javadoc.title}]]></doctitle>
 			<footer><![CDATA[${javadoc.title}]]></footer>
@@ -178,22 +178,25 @@
 		</tstamp>
 		
 		<copy todir="build">
-			<fileset dir="website" excludes="*.partial" />
+			<fileset dir="website" excludes="*.partial,xslt/**" />
 		</copy>
-		
-		<loadfile property="website.header" srcFile="website/header.partial" />
-		<loadfile property="website.body" srcFile="website/body.partial" />
-		<loadfile property="website.footer" srcFile="website/footer.partial" />
-		<loadfile property="website.tracker" srcFile="website/tracker.partial" />
-		
+
 		<copy todir="build/javadoc">
 			<fileset dir="javadoc" />
 		</copy>
 		
+		<loadfile property="website.tracker" srcFile="website/tracker.partial" />
+		
+		<xslt basedir="website/xslt" destdir="build" 
+				style="website/xslt/stylesheet.xsl" 
+				includes="*.xml" filenameparameter="filename">
+			<param name="version" expression="${version}" />
+			<param name="tracker" expression="${website.tracker}" />
+		</xslt>
+		
+		
+		
 		<replace dir="build" includes="**/*.html">
-			<replacefilter token="%HEADER%" value="${website.header}" />
-			<replacefilter token="%BODY%" value="${website.body}" />
-			<replacefilter token="%FOOTER%" value="${website.footer}" />
 			<replacefilter token="%VERSION%" value="${version}" />
 			<replacefilter value="${website.tracker}">
 			    <replacetoken><![CDATA[<!-- %TRACKER% -->]]></replacetoken> 

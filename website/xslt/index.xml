@@ -1,18 +1,14 @@
-%HEADER%
+<?xml version="1.0"?>
+<!DOCTYPE some_name [ 
+<!ENTITY nbsp "&#160;">
+<!ENTITY copy "&#169;">
+<!ENTITY epsilon "&#949;">
+]>
 
-<div id="nav">
-  <ul>
-    <li id="current"><a href="index.html">Home</a></li>
-    <li><a href="examples.html">Examples</a></li>
-    <li><a href="downloads.html">Downloads</a></li>
-    <li><a href="javadoc/index.html">Documentation</a></li>
-    <li><a href="support.html">Support</a></li>
-    <li><a href="contribute.html">Contribute</a></li>
-  </ul>
-</div>
-
-%BODY%
-
+<page>
+  <title>MOEA Framework, a Java library for multiobjective evolutionary algorithms</title>
+  <description>MOEA Framework, a Java library for multiobjective evolutionary algorithms</description>
+  <content>
 <h3>A Framework for Innovation</h3>
   
 <p>
@@ -38,12 +34,12 @@
   
 <p>
   <ul>
-    <li>Fast, reliable implementations of many state-of-the-art algorithms
-    <li>Extensible with custom algorithms, problems and operators
-    <li>Modular design for constructing new algorithms from existing components
-    <li>Permissive open source license
-    <li>Fully documented source code
-    <li>Over 900 test cases to ensure validity
+    <li>Fast, reliable implementations of many state-of-the-art algorithms</li>
+    <li>Extensible with custom algorithms, problems and operators</li>
+    <li>Modular design for constructing new algorithms from existing components</li>
+    <li>Permissive open source license</li>
+    <li>Fully documented source code</li>
+    <li>Over 900 test cases to ensure validity</li>
   </ul>
 </p>
   
@@ -70,5 +66,5 @@
     <img src="images/screenshot-4-small.png" class="float-left" height="70px" />
   </a>
 </p>
- 
-%FOOTER%
+  </content>
+</page>

@@ -1,18 +1,14 @@
-%HEADER%
+<?xml version="1.0"?>
+<!DOCTYPE some_name [ 
+<!ENTITY nbsp "&#160;">
+<!ENTITY copy "&#169;">
+<!ENTITY epsilon "&#949;">
+]>
 
-<div id="nav">
-  <ul>
-    <li><a href="index.html">Home</a></li>
-    <li><a href="examples.html">Examples</a></li>
-    <li><a href="downloads.html">Downloads</a></li>
-    <li><a href="javadoc/index.html">Documentation</a></li>
-    <li id="current"><a href="support.html">Support</a></li>
-    <li><a href="contribute.html">Contribute</a></li>
-  </ul>
-</div>
-
-%BODY%
-
+<page>
+  <title>Support for the MOEA Framework</title>
+  <description>Submit bugs or request new features for the MOEA Framework</description>
+  <content>
 <h3>Support</h3>
 
 <p>
@@ -35,12 +31,12 @@
 <p>
   <ul>
     <li>
-      <a href="http://sourceforge.net/tracker/?group_id=352635&atid=1473409">
+      <a href="http://sourceforge.net/tracker/?group_id=352635&amp;atid=1473409">
         Browse Bug Reports
       </a>
     </li>
     <li>
-      <a href="http://sourceforge.net/tracker/?func=add&group_id=352635&atid=1473409">
+      <a href="http://sourceforge.net/tracker/?func=add&amp;group_id=352635&amp;atid=1473409">
         Submit Bug
       </a>
     </li>
@@ -61,12 +57,12 @@
 <p>
   <ul>
     <li>
-      <a href="http://sourceforge.net/tracker/?group_id=352635&atid=1473412">
+      <a href="http://sourceforge.net/tracker/?group_id=352635&amp;atid=1473412">
         Browse Feature Requests
       </a>
     </li>
     <li>
-      <a href="http://sourceforge.net/tracker/?func=add&group_id=352635&atid=1473412">
+      <a href="http://sourceforge.net/tracker/?func=add&amp;group_id=352635&amp;atid=1473412">
         Submit New Feature Request
       </a>
     </li>
@@ -82,5 +78,5 @@
   <a href="mailto:admin@moeaframework.org">admin@moeaframework.org</a>.
 </p>
 </div>
-      
-%FOOTER%
+  </content>
+</page>

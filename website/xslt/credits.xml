@@ -1,18 +1,14 @@
-%HEADER%
+<?xml version="1.0"?>
+<!DOCTYPE some_name [ 
+<!ENTITY nbsp "&#160;">
+<!ENTITY copy "&#169;">
+<!ENTITY epsilon "&#949;">
+]>
 
-<div id="nav">
-  <ul>
-    <li><a href="index.html">Home</a></li>
-    <li><a href="examples.html">Examples</a></li>
-    <li><a href="downloads.html">Downloads</a></li>
-    <li><a href="javadoc/index.html">Documentation</a></li>
-    <li><a href="support.html">Support</a></li>
-    <li><a href="contribute.html">Contribute</a></li>
-  </ul>
-</div>
-
-%BODY%
-
+<page>
+  <title>MOEA Framework credits</title>
+  <description>List of contributors to the MOEA Framework</description>
+  <content>
 <h3>Credits</h3>
 
 <p>
@@ -47,6 +43,7 @@
       and
       <a href="http://script.aculo.us/">script.aculo.us</a>, used by Lightbox 2
       (<a href="http://www.opensource.org/licenses/mit-license.php">MIT License</a>)
+    </li>
     <li>
       Syntax highlighting with
       <a href="http://alexgorbatchev.com/SyntaxHighlighter/">SyntaxHighlighter</a>
@@ -58,5 +55,5 @@
     </li>
   </ul>
 </p>
-
-%FOOTER%
+  </content>
+</page>

@@ -1,18 +1,14 @@
-%HEADER%
+<?xml version="1.0"?>
+<!DOCTYPE some_name [ 
+<!ENTITY nbsp "&#160;">
+<!ENTITY copy "&#169;">
+<!ENTITY epsilon "&#949;">
+]>
 
-<div id="nav">
-  <ul>
-    <li><a href="index.html">Home</a></li>
-    <li id="current"><a href="examples.html">Examples</a></li>
-    <li><a href="downloads.html">Downloads</a></li>
-    <li><a href="javadoc/index.html">Documentation</a></li>
-    <li><a href="support.html">Support</a></li>
-    <li><a href="contribute.html">Contribute</a></li>
-  </ul>
-</div>
-
-%BODY%
-
+<page>
+  <title>Examples using the MOEA Framework</title>
+  <description>Walk through introductory examples using the MOEA Framework</description>
+  <content>
 <h3>Examples</h3>
 
 <p>
@@ -43,20 +39,21 @@
 <p>
   <div class="files">
   <ul>
-    <li class="folder">MOEAFrameworkDemo/
+    <li class="folder">MOEAFrameworkDemo/</li>
     <li class="empty">
       <ul>
-        <li class="folder">javadoc/
-        <li class="folder">lib/
-        <li class="folder">licenses/
-        <li class="folder">pf/
-        <li><b>Example1.java</b>
-        <li>global.properties
-        <li>LICENSE
-        <li>NEWS
-        <li>README
+        <li class="folder">javadoc/</li>
+        <li class="folder">lib/</li>
+        <li class="folder">licenses/</li>
+        <li class="folder">pf/</li>
+        <li><b>Example1.java</b></li>
+        <li>global.properties</li>
+        <li>LICENSE</li>
+        <li>NEWS</li>
+        <li>README</li>
       </ul>
-    </ul>
+    </li>
+  </ul>
   </div>
 </p>
   
@@ -86,7 +83,7 @@
 
 <div class="files">
   <ul>
-    <li><a href="Example1.java">Example1.java</a>
+    <li><a href="Example1.java">Example1.java</a></li>
   </ul>
 </div>
 
@@ -115,7 +112,7 @@ NondominatedPopulation result = new Executor()
 
 <div class="files">
   <ul>
-    <li><a href="Example2.java">Example2.java</a>
+    <li><a href="Example2.java">Example2.java</a></li>
   </ul>
 </div>
 
@@ -130,6 +127,7 @@ NondominatedPopulation result = new Executor()
 
 <div class="code">
   <pre class="brush: java; toolbar: false;">
+<![CDATA[
 String problem = "UF1";
 String[] algorithms = { "NSGAII", "GDE3", "eMOEA" };
 		
@@ -151,6 +149,7 @@ for (String algorithm : algorithms) {
 
 //print the results
 analyzer.printAnalysis();
+]]>
   </pre>
 </div>
 </div>
@@ -160,7 +159,7 @@ analyzer.printAnalysis();
 
 <div class="files">
   <ul>
-    <li><a href="Example3.java">Example3.java</a>
+    <li><a href="Example3.java">Example3.java</a></li>
   </ul>
 </div>
 
@@ -174,6 +173,7 @@ analyzer.printAnalysis();
 
 <div class="code">
   <pre class="brush: java; toolbar: false;">
+<![CDATA[
 public class Rosenbrock extends AbstractProblem {
 
 	public Rosenbrock() {
@@ -205,6 +205,7 @@ public class Rosenbrock extends AbstractProblem {
 	}
 
 }
+]]>
   </pre>
 </div>
 
@@ -214,12 +215,14 @@ public class Rosenbrock extends AbstractProblem {
 
 <div class="code">
   <pre class="brush: java; toolbar: false;">
+<![CDATA[
 NondominatedPopulation result = new Executor()
     .withProblemClass(Rosenbrock.class)
     .withAlgorithm("GDE3")
     .withMaxEvaluations(100000)
     .distributeOnAllCores()
     .run();
+]]>
   </pre>
 </div>
 </div>
@@ -234,5 +237,5 @@ NondominatedPopulation result = new Executor()
   please <a href="support.html">notify us</a>.
 </p>
 </div>
- 
-%FOOTER%
+  </content>
+</page>
