@@ -6,49 +6,49 @@
             http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 
 <url>
-  <loc>http://moeaframework.org/</loc>
+  <loc>http://www.moeaframework.org/</loc>
   <lastmod>%LASTMOD%</lastmod>
   <changefreq>weekly</changefreq>
   <priority>1.00</priority>
 </url>
 <url>
-  <loc>http://moeaframework.org/index.html</loc>
+  <loc>http://www.moeaframework.org/index.html</loc>
   <lastmod>%LASTMOD%</lastmod>
   <changefreq>weekly</changefreq>
   <priority>0.80</priority>
 </url>
 <url>
-  <loc>http://moeaframework.org/examples.html</loc>
+  <loc>http://www.moeaframework.org/examples.html</loc>
   <lastmod>%LASTMOD%</lastmod>
   <changefreq>weekly</changefreq>
   <priority>0.80</priority>
 </url>
 <url>
-  <loc>http://moeaframework.org/downloads.html</loc>
+  <loc>http://www.moeaframework.org/downloads.html</loc>
   <lastmod>%LASTMOD%</lastmod>
   <changefreq>weekly</changefreq>
   <priority>0.80</priority>
 </url>
 <url>
-  <loc>http://moeaframework.org/javadoc/index.html</loc>
+  <loc>http://www.moeaframework.org/javadoc/index.html</loc>
   <lastmod>%LASTMOD%</lastmod>
   <changefreq>weekly</changefreq>
   <priority>0.80</priority>
 </url>
 <url>
-  <loc>http://moeaframework.org/support.html</loc>
+  <loc>http://www.moeaframework.org/support.html</loc>
   <lastmod>%LASTMOD%</lastmod>
   <changefreq>weekly</changefreq>
   <priority>0.60</priority>
 </url>
 <url>
-  <loc>http://moeaframework.org/contribute.html</loc>
+  <loc>http://www.moeaframework.org/contribute.html</loc>
   <lastmod>%LASTMOD%</lastmod>
   <changefreq>weekly</changefreq>
   <priority>0.60</priority>
 </url>
 <url>
-  <loc>http://moeaframework.org/credits.html</loc>
+  <loc>http://www.moeaframework.org/credits.html</loc>
   <lastmod>%LASTMOD%</lastmod>
   <changefreq>weekly</changefreq>
   <priority>0.20</priority>

@@ -85,6 +85,11 @@ public class MaximumParetoFrontErrorTest {
 		Assert.assertEquals(0.0, mpfe.evaluate(approximationSet), Settings.EPS);
 		
 		approximationSet.clear();
+		approximationSet.add(TestUtils.newSolution(0.0, 1.0));
+		approximationSet.add(TestUtils.newSolution(1.0, 0.0));
+		Assert.assertEquals(0.0, mpfe.evaluate(approximationSet), Settings.EPS);
+		
+		approximationSet.clear();
 		approximationSet.add(TestUtils.newSolution(1.0, 1.0));
 		Assert.assertEquals(1.0, mpfe.evaluate(approximationSet), Settings.EPS);
 		

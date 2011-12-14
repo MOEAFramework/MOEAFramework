@@ -87,6 +87,11 @@ public class GenerationalDistanceTest extends IndicatorTest {
 		Assert.assertEquals(0.0, gd.evaluate(approximationSet), Settings.EPS);
 		
 		approximationSet.clear();
+		approximationSet.add(TestUtils.newSolution(0.0, 1.0));
+		approximationSet.add(TestUtils.newSolution(1.0, 0.0));
+		Assert.assertEquals(0.0, gd.evaluate(approximationSet), Settings.EPS);
+		
+		approximationSet.clear();
 		approximationSet.add(TestUtils.newSolution(1.0, 1.0));
 		Assert.assertEquals(1.0, gd.evaluate(approximationSet), 
 				Settings.EPS);

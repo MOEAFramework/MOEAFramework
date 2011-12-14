@@ -98,6 +98,11 @@ public class AdditiveEpsilonIndicatorTest extends IndicatorTest {
 		approximationSet.clear();
 		approximationSet.add(TestUtils.newSolution(0.0, 0.0));
 		Assert.assertEquals(0.0, aei.evaluate(approximationSet), Settings.EPS);
+		
+		approximationSet.clear();
+		approximationSet.add(TestUtils.newSolution(0.0, 1.0));
+		approximationSet.add(TestUtils.newSolution(1.0, 0.0));
+		Assert.assertEquals(0.0, aei.evaluate(approximationSet), Settings.EPS);
 
 		approximationSet.clear();
 		approximationSet.add(TestUtils.newSolution(2.0, 0.0));

@@ -12,6 +12,16 @@ any changes.
  Easy
 ------
 
+  - The efficiency calculation in Analysis is incorrect.  The parameters are
+    scaled for the controllability metric, but efficiency expects the unscaled
+    values.
+
+  - Change the meta description and title elements on the webpage.
+  
+  - Possibly convert the current website code to be generated using XSLT.
+  
+  - Add unit tests for the examples.
+
   - SobolAnalysis currently can only read inputs formatted as a metric file.
     This should be modified so it can read any tabular real-valued data.
     
