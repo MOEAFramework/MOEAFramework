@@ -9,61 +9,50 @@
   <title>MOEA Framework, a Java library for multiobjective evolutionary algorithms</title>
   <description>MOEA Framework, a Java library for multiobjective evolutionary algorithms</description>
   <content>
-<h3>A Framework for Innovation</h3>
+<h2>A Framework for Innovation</h2>
   
 <p>
   The MOEA Framework is an open source Java library for developing and 
   experimenting with multiobjective evolutionary algorithms (MOEAs) and
-  other general-purpose optimization algorithms and metaheuristics.
+  other general-purpose multiobjective optimization algorithms.
   A number of algorithms are provided out-of-the-box, including NSGA-II,
-  &epsilon;-MOEA, GDE3 and MOEA/D.  In addition, third-party tools like
-  <a href="http://jmetal.sourceforge.net/">JMetal</a> and
-  <a href="http://www.tik.ee.ethz.ch/pisa/">PISA</a> directly integrate
-  with the MOEA Framework.
-</p>
-  
-<p>
-  The MOEA Framework targets an academic audience, providing the resources
+  &epsilon;-MOEA, GDE3 and MOEA/D.  In addition, the MOEA Framework provides the tools
   necessary to rapidly design, develop, execute and statistically test
-  optimization algorithms.  This includes over 40 test problems from the
-  literature, and a suite of statistical tools for comparing and analyzing
-  algorithm performance.
+  optimization algorithms.
 </p>
   
-<h4>Key Features</h4>
+<h3>Key Features</h3>
   
-<p>
   <ul>
-    <li>Fast, reliable implementations of many state-of-the-art algorithms</li>
+    <li>Fast, reliable implementations of many state-of-the-art multiobjective optimization algorithms</li>
     <li>Extensible with custom algorithms, problems and operators</li>
-    <li>Modular design for constructing new algorithms from existing components</li>
+    <li>Modular design for constructing new optimization algorithms from existing components</li>
     <li>Permissive open source license</li>
     <li>Fully documented source code</li>
     <li>Over 900 test cases to ensure validity</li>
   </ul>
-</p>
   
-<h4>Gallery</h4>
+<h3>Gallery</h3>
 
 <p>
   <a href="images/screenshot-1.png" rel="lightbox[main]"
-      title="Comparison of three algorithms on the UF1 problem">
-    <img src="images/screenshot-1-small.png" class="float-left" height="70px" />
+      title="Comparison of three MOEAs on the UF1 problem">
+    <img src="images/screenshot-1-small.png" class="float-left" width="114" height="70" alt="Comparison of three MOEAs on the UF1 problem" />
    </a>
   
   <a href="images/screenshot-3.png" rel="lightbox[main]"
       title="Multiple plots can be shown side-by-side">
-    <img src="images/screenshot-3-small.png" class="float-left" height="70px" />
+    <img src="images/screenshot-3-small.png" class="float-left" width="114" height="70" alt="Multiple plots can be shown side-by-side" />
   </a>
   
   <a href="images/screenshot-2.png" rel="lightbox[main]"
       title="The convergence of the approximation set to the reference set">
-    <img src="images/screenshot-2-small.png" class="float-left" height="70px" />
+    <img src="images/screenshot-2-small.png" class="float-left" width="93" height="70" alt="The convergence of the approximation set to the reference set" />
   </a>
   
   <a href="images/screenshot-4.png" rel="lightbox[main]"
-      title="Example code and the corresponding output">
-    <img src="images/screenshot-4-small.png" class="float-left" height="70px" />
+      title="Example code for running the MOEA Framework and the corresponding output">
+    <img src="images/screenshot-4-small.png" class="float-left" width="167" height="70" alt="Example code for running the MOEA Framework and the corresponding output" />
   </a>
 </p>
   </content>

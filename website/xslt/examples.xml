@@ -9,7 +9,7 @@
   <title>Examples using the MOEA Framework</title>
   <description>Walk through introductory examples using the MOEA Framework</description>
   <content>
-<h3>Examples</h3>
+<h2>Examples</h2>
 
 <p>
   The following examples demonstrate the basic functionality provided by the
@@ -18,7 +18,7 @@
 </p>
 
 <div class="section">
-<h4>Setup</h4>
+<h3>Setup</h3>
 
 <p>
   In order to run these examples or use the MOEA Framework, Java 6 (or a later
@@ -36,7 +36,6 @@
   should look similar to:
 </p>
 
-<p>
   <div class="files">
   <ul>
     <li class="folder">MOEAFrameworkDemo/</li>
@@ -55,7 +54,6 @@
     </li>
   </ul>
   </div>
-</p>
   
 <p>
   Lastly, compile and run the program using the following commands.  For
@@ -63,11 +61,9 @@
   MOEAFrameworkDemo folder.
 </p>
 
-<p>
-  <pre>
+<pre>
               javac -Djava.ext.dirs=lib Example1.java
               java -Djava.ext.dirs=lib Example1</pre>
-</p>
 
 <p>
   If you receive the message <i>'javac' is not recognized as an internal or
@@ -79,7 +75,7 @@
 </div>
 
 <div class="section">
-<h4>Example 1: Simple Run</h4>
+<h3>Example 1: Simple Run</h3>
 
 <div class="files">
   <ul>
@@ -108,7 +104,7 @@ NondominatedPopulation result = new Executor()
 </div>
 
 <div class="section">
-<h4>Example 2: Statistical Comparison of Algorithms</h4>
+<h3>Example 2: Statistical Comparison of Algorithms</h3>
 
 <div class="files">
   <ul>
@@ -155,7 +151,7 @@ analyzer.printAnalysis();
 </div>
 
 <div class="section">
-<h4>Example 3: Defining New Problems</h4>
+<h3>Example 3: Defining New Problems</h3>
 
 <div class="files">
   <ul>
@@ -228,7 +224,7 @@ NondominatedPopulation result = new Executor()
 </div>
 
 <div class="section">
-<h4>Concluding Remarks</h4>
+<h3>Concluding Remarks</h3>
 
 <p>
   We hope that you find the MOEA Framework useful.  We strive to make this

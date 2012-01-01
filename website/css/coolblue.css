@@ -51,9 +51,9 @@ h1, h2, h3, h4 {
 	margin: 8px 25px;
 }
 h1 { font-size: 3.7em; font-weight: normal; letter-spacing: -2px; }
-h2 { font-size: 2.8em; font-weight: normal; }
-h3 { font-size: 2.2em; font-weight: normal; letter-spacing: -0.5px; padding-top: 15px; }
-h4 { font-size: 1.5em; }
+h2 { font-size: 2.2em; font-weight: normal; letter-spacing: -0.5px; padding-top: 15px; }
+h3 { font-size: 1.5em; }
+h4 { font-size: 1em; font-weight: normal; }
 
 /* lists */
 ul, ol {
@@ -243,47 +243,6 @@ input.button {
 }
 #header p#rss a:hover { color: #fff; }
 
-/* Quick Search */
-form#quick-search {
-  	position: absolute;
-  	top: 95px; right: 12px;
-  	background: transparent;
-  	border: none;
-  	margin: 0; padding: 0;
-  	width: 250px;
-}
-fieldset.search {
-	border: none;
-   width: 250px; height: 40px;
-   padding: 0; margin: 0;
-   background: url(../images/search.gif) no-repeat;
-}
-.search input {
-  	border: none;
-  	float: left;
- 	padding: 0; margin: 0;
-}
-.search button {
-  	border: none;
-  	float: right;
-  	padding: 0; margin: 0;
-}
-.search label { display: none; }
-.search input.tbox {
-  	color: #7d8285;
-  	font-weight: bold;
-  	margin: 15px 0 10px 10px;
-  	background: transparent;
-  	width: 200px;
-}
-.search button.btn {
-  	width: 40px;
-  	height: 40px;
-  	cursor: pointer;
-  	text-indent: -9999px;
-  	background: #fbc900 url(../images/search.gif) no-repeat top right;
-}
-
 /*  navigation  */
 #header #nav {
 	position: absolute;
@@ -419,14 +378,6 @@ fieldset.search {
    font-size: .95em;
 }
 
-#main h2 {
-	font: bold 3.2em/1em 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, Sans-Serif;
-   color: #333;
-	letter-spacing: -2.0px;
-	margin-bottom: 0;
-	padding-bottom: 0;
-}
-#main h2 a { color: #333; }
 #sidebar h3 {
 	font: bold 1.7em 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, Sans-Serif;
    letter-spacing: .2px;
@@ -650,7 +601,7 @@ ul.subscribe-stuff li img {
 #footer-bottom a { color: #fff; }
 #footer-bottom a:hover { color: #99CCFF; }
 
-#footer-bottom p.bottom-left {
+#footer-bottom .bottom-left {
 	float: left;
    display: inline;
 	margin: 0 0 30px 20px;
@@ -658,7 +609,7 @@ ul.subscribe-stuff li img {
    width: 600px;
    text-align: left;
 }
-#footer-bottom p.bottom-right {
+#footer-bottom .bottom-right {
 	float: right;
    display: inline;
 	margin: 0 30px 30px 0;

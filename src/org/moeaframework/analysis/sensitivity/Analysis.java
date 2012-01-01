@@ -392,10 +392,10 @@ public class Analysis extends CommandLineUtility {
 				output.println(calculateBest());
 				output.print("  Attainment: ");
 				output.println(calculateAttainment());
-				output.print("  Controllability: ");
-				output.println(calculateControllability());
-				output.print("  Efficiency: ");
-				output.println(calculateEfficiency());
+				//output.print("  Controllability: ");
+				//output.println(calculateControllability());
+				//output.print("  Efficiency: ");
+				//output.println(calculateEfficiency());
 			}
 		} finally {
 			if ((output != null) && (output != System.out)) {

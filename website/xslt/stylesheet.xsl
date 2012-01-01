@@ -8,27 +8,26 @@
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
+	<xsl:output method="html" indent="yes" />
+
 	<xsl:param name="filename"></xsl:param>
 	<xsl:param name="version"></xsl:param>
 	<xsl:param name="tracker"></xsl:param>
-	
-	<xsl:strip-space elements="/page/content" />
 	
 	<xsl:template match="comment()">
     	<xsl:copy-of select="." />
  	</xsl:template>
 
 	<xsl:template match="/page">
-		<html>
+		<xsl:text disable-output-escaping="yes">&lt;!DOCTYPE html></xsl:text>
+
+		<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 			<head>
-				<meta http-equiv="Content-language" content="en-US" />
 				<meta name="author" content="David Hadka" />
 				<meta name="description">
-					<xsl:attribute name="content">
-						<xsl:value-of select="description" />
-					</xsl:attribute>
+					<xsl:attribute name="content"><xsl:value-of select="description" /></xsl:attribute>
 				</meta>
-				<meta name="keywords" content="multiobjective, optimization, evolutionary, genetic, algorithm, moea, framework java, lgpl, open, source, download, free" />
+				<meta name="keywords" content="multiobjective, optimization, evolutionary, genetic, algorithm, moea, framework, java, lgpl, open, source, download, free" />
 				<meta name="robots" content="index, follow, noarchive" />
 				<meta name="googlebot" content="noarchive" />
 
@@ -55,7 +54,7 @@
 				<div id="header-wrap">
 					<div id="header">
 						<a name="top"></a>
-						<img id="logo" src="images/logo2_small.png" />
+						<img id="logo" src="images/logo2_small.png" alt="MOEA Framework logo" width="103" height="100" />
 						<h1 id="logo-text">
 							<a href="index.html" title="">MOEA Framework</a>
 						</h1>
@@ -105,7 +104,7 @@
 				<div id="content-wrap" class="clear">
 					<div id="content">
 						<div id="main">
-							<xsl:copy-of select="content" />
+							<xsl:copy-of select="content/node()" />
 						</div>
 
 						<!-- sidebar -->
@@ -115,25 +114,21 @@
 								<p>
 									Current Release:
 									<b>Version <xsl:value-of select="$version" /></b>
-									<ul>
-										<li>
-											<a>
-												<xsl:attribute name="href">
-													http://downloads.sourceforge.net/project/moeaframework/MOEAFramework-<xsl:value-of select="$version" />/MOEAFramework-<xsl:value-of select="$version" />.tar.gz
-												</xsl:attribute>
-												Compiled Binaries
-											</a>
-										</li>
-										<li>
-											<a>
-												<xsl:attribute name="href">
-													http://downloads.sourceforge.net/project/moeaframework/MOEAFramework-<xsl:value-of select="$version" />/MOEAFramework-<xsl:value-of select="$version" />-source.tar.gz
-												</xsl:attribute>
-												Source Code
-											</a>
-										</li>
-									</ul>
 								</p>
+								<ul>
+									<li>
+										<a>
+											<xsl:attribute name="href">http://downloads.sourceforge.net/project/moeaframework/MOEAFramework-<xsl:value-of select="$version" />/MOEAFramework-<xsl:value-of select="$version" />.tar.gz</xsl:attribute>
+											Compiled Binaries
+										</a>
+									</li>
+									<li>
+										<a>
+											<xsl:attribute name="href">http://downloads.sourceforge.net/project/moeaframework/MOEAFramework-<xsl:value-of select="$version" />/MOEAFramework-<xsl:value-of select="$version" />-source.tar.gz</xsl:attribute>
+											Source Code
+										</a>
+									</li>
+								</ul>
 								<p>
 									Looking for a <a href="downloads.html#previous">previous release</a>?
 								</p>
@@ -145,7 +140,6 @@
 									Licensed under the <a href="http://www.gnu.org/licenses/lgpl.html">GNU Lesser General Public License</a>.
 								</p>
 							</div>
-
 							<div class="sidemenu">
 								<h3></h3>
 								<p>
@@ -166,19 +160,19 @@
 
 				<!-- footer -->
 				<div id="footer-bottom">
-					<p class="bottom-left">
+					<div class="bottom-left">
 						&copy; 2009-2011 <strong>MOEA Framework</strong>
     					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 						Website template by <a href="http://www.styleshout.com/">styleshout</a>
     					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 						<xsl:comment> %TRACKER% </xsl:comment>
-					</p>
+					</div>
 
-					<p class="bottom-right">
+					<div class="bottom-right">
 						<a href="index.html">Home</a> |
 						<a href="credits.html">Credits</a> |
 						<b><a href="#top">Back to Top</a></b>
-					</p>
+					</div>
 				</div>
 			</body>
 		</html>

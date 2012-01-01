@@ -12,6 +12,20 @@ any changes.
  Easy
 ------
 
+  - Use different e-mails on the website and in contact info, as all get
+    forwarded to the same account.
+
+  - Checkpoints not working for algorithms wrapped in restarts (eNSGAII)
+  
+  - Phase out resumable interface and make all algorithms provide the methods in
+    Resumable.  Then, an algorithm which does not support resuming would throw an
+    exception, such as NotResumableException, similar to NotSerializableException.
+  
+  - Add reporting function to Executor which periodically outputs progress reports.
+
+  - Some changes to the website - remove links to JMetal and PISA from homepage,
+    remove name from javadoc footer.
+
   - The efficiency calculation in Analysis is incorrect.  The parameters are
     scaled for the controllability metric, but efficiency expects the unscaled
     values.

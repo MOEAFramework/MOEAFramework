@@ -9,14 +9,13 @@
   <title>MOEA Framework credits</title>
   <description>List of contributors to the MOEA Framework</description>
   <content>
-<h3>Credits</h3>
+<h2>Credits</h2>
 
 <p>
   Special thanks to the following individuals and projects for their open
   source contributions that are used by this project and website.
 </p>
       
-<p>
   <ul>
     <li>
       Website template adapted from the CoolBlue template by 
@@ -54,6 +53,5 @@
       source code contributions.
     </li>
   </ul>
-</p>
   </content>
 </page>

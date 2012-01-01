@@ -9,7 +9,7 @@
   <title>Support for the MOEA Framework</title>
   <description>Submit bugs or request new features for the MOEA Framework</description>
   <content>
-<h3>Support</h3>
+<h2>Support</h2>
 
 <p>
   Support is provided through our 
@@ -20,7 +20,7 @@
 </p>
 
 <div class="section">
-<h4>Report Bugs</h4>
+<h3>Report Bugs</h3>
 
 <p>
   The MOEA Framework is not bug-free, nor is any other software application,
@@ -28,7 +28,6 @@
   reliability of software.  Critical bugs will often be addressed within days.
 </p>
 
-<p>
   <ul>
     <li>
       <a href="http://sourceforge.net/tracker/?group_id=352635&amp;atid=1473409">
@@ -41,11 +40,10 @@
       </a>
     </li>
   </ul>
-</p>
 </div>
 
 <div class="section">
-<h4>Request New Features</h4>
+<h3>Request New Features</h3>
 
 <p>
   We welcome input from the user community when deciding if any new features or
@@ -54,7 +52,6 @@
   development ideas.
 </p>
 
-<p>
   <ul>
     <li>
       <a href="http://sourceforge.net/tracker/?group_id=352635&amp;atid=1473412">
@@ -67,11 +64,10 @@
       </a>
     </li>
   </ul>
-</p>
 </div>
 
 <div class="section">
-<h4>Extended Support</h4>
+<h3>Extended Support</h3>
 
 <p>
   For extended support options or other inquiries, please contact

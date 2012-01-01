@@ -9,7 +9,7 @@
   <title>Contribute to the MOEA Framework</title>
   <description>Learn how to contribute to the MOEA Framework</description>
   <content>
-<h3>Contribute</h3>
+<h2>Contribute</h2>
   
 <p>
   Contributions from the community are the backbone of open source projects.
@@ -18,12 +18,13 @@
 </p>
 
 <div class="section">
-<h4>Requirements</h4>
+<h3>Requirements</h3>
 
 <p>
   In order to maintain a quality product, it is necessary to mandate certain
   requirements on source code contributions (including associated data files and
   other resources).
+</p>
   
   <ul>
     <li>
@@ -54,11 +55,10 @@
       structure of existing code.
     </li>
   </ul>
-</p>
 </div>
 
 <div class="section">
-<h4>Where to Start</h4>
+<h3>Where to Start</h3>
 
 <p>
   The TODO document distributed with the source code is an excellent starting
@@ -69,7 +69,7 @@
 </div>
 
 <div class="section">
-<h4>Submitting Contributions</h4>
+<h3>Submitting Contributions</h3>
 
 <p>
   Please submit contributions you would like included in the main release to

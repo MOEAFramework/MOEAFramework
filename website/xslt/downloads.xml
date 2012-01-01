@@ -7,9 +7,9 @@
 
 <page>
   <title>Download the MOEA Framework</title>
-  <description>Download the current of previous versions of the MOEA Framework</description>
+  <description>Download the current and previous versions of the MOEA Framework</description>
   <content>
-<h3>Downloads</h3>
+<h2>Downloads</h2>
 
 <p>
   This page contains downloads for the current and prior releases of the MOEA 
@@ -18,13 +18,13 @@
   <a href="http://www.7-zip.org/">7-zip</a> program.
 </p>
 
-<h4>Current Release: Version %VERSION%</h4>
+<h3>Current Release: Version %VERSION%</h3>
       
 <div class="listing">
   <ul>
     <li>
       <a href="http://downloads.sourceforge.net/project/moeaframework/MOEAFramework-%VERSION%/MOEAFramework-%VERSION%.tar.gz">
-        <img src="images/java_jar.png" class="float-left" />
+        <img src="images/java_jar.png" class="float-left" width="22" height="22" alt="Download compiled binaries" />
         <strong>Compiled Binaries</strong>
       </a>
       <br />
@@ -37,7 +37,7 @@
     </li>
     <li>
       <a href="http://downloads.sourceforge.net/project/moeaframework/MOEAFramework-%VERSION%/MOEAFramework-%VERSION%-source.tar.gz">
-        <img src="images/tgz.png" class="float-left" />
+        <img src="images/tgz.png" class="float-left" width="22" height="22" alt="Download source code" />
         <strong>Source Code</strong>
       </a>
       <br />
@@ -52,7 +52,7 @@
 </div>
 
 <div class="section">
-<h4>Previous Releases</h4>
+<h3>Previous Releases</h3>
 <a name="previous"></a>
 
 <p>
