@@ -12,6 +12,10 @@ any changes.
  Easy
 ------
 
+  - Upgrade to JMetal 4.0.  Some work is required since some packages changed
+    between version 3.1 and 4.0.  This change will likely have to wait until a
+    major revision as backwards compatibility will likely break.
+
   - Use different e-mails on the website and in contact info, as all get
     forwarded to the same account.
 
@@ -25,10 +29,6 @@ any changes.
 
   - Some changes to the website - remove links to JMetal and PISA from homepage,
     remove name from javadoc footer.
-
-  - The efficiency calculation in Analysis is incorrect.  The parameters are
-    scaled for the controllability metric, but efficiency expects the unscaled
-    values.
 
   - Add unit tests for the examples.
 

@@ -209,6 +209,16 @@ public class IntegrationTest {
 				"-o", analysisFile.getPath(),
 				averageMetrics.getPath()});
 		
+		Assert.assertEquals(3, TestUtils.lineCount(analysisFile));
+		
+		Analysis.main(new String[] {
+				"-p", parameterDescriptionFile.getPath(),
+				"-i", parameterFile.getPath(),
+				"-c", "-e",
+				"-m", "1",
+				"-o", analysisFile.getPath(),
+				averageMetrics.getPath()});
+		
 		Assert.assertEquals(5, TestUtils.lineCount(analysisFile));
 	}
 	

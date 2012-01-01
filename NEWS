@@ -5,8 +5,18 @@ Framework.
  Version 1.9 (TBD)
 -------------------
 
+  * Several changes to the Analysis command line utility:
+      - Efficiency and controllability calculations are now optional, and are
+        enabled by a command line flag
+      - The band width and threshold value can be set using command line
+        arguments
+      - Fixes a scaling issue, where efficiency requires the unscaled parameter
+        values but controllability requires scaled parameter values
+
   * PropertiesProblems is now case-insensitive, which is now consistent with
     other built-in problem providers.
+    
+  * Updated copyright notices for 2012.
   
 
 ---------------------------

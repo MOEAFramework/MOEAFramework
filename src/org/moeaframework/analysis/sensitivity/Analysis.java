@@ -28,6 +28,7 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.MissingOptionException;
 import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
+import org.moeaframework.core.FrameworkException;
 import org.moeaframework.util.CommandLineUtility;
 
 /**
@@ -43,11 +44,6 @@ import org.moeaframework.util.CommandLineUtility;
  * </ol>
  */
 public class Analysis extends CommandLineUtility {
-	
-	/**
-	 * The width of NFE bands when calculating efficiency.
-	 */
-	private static final int BAND = 10000;
 	
 	/**
 	 * The parameter description file.
@@ -72,7 +68,12 @@ public class Analysis extends CommandLineUtility {
 	/**
 	 * The threshold value.
 	 */
-	private double threshold;
+	private double threshold = 0.75;
+	
+	/**
+	 * The width of NFE bands when calculating efficiency.
+	 */
+	private int bandWidth = 10000;
 	
 	/**
 	 * Private constructor to prevent instantiation.
@@ -152,16 +153,7 @@ public class Analysis extends CommandLineUtility {
 			reader = new SampleReader(file, parameterFile);
 			
 			while (reader.hasNext()) {
-				double[] parameters = toArray(reader.next());
-				
-				//normalize parameters to be in [0, 1]
-				for (int i = 0; i < parameters.length; i++) {
-					Parameter parameter = parameterFile.get(i);
-					parameters[i] = (parameters[i] - parameter.getLowerBound())
-							/ (parameter.getUpperBound() - parameter.getLowerBound());
-				}
-				
-				parameterList.add(parameters);
+				parameterList.add(toArray(reader.next()));
 			}
 		} finally {
 			if (reader != null) {
@@ -170,6 +162,28 @@ public class Analysis extends CommandLineUtility {
 		}
 		
 		return parameterList.toArray(new double[0][]);
+	}
+	
+	/**
+	 * Normalizes the parameters, bounding all entries inside the unit 
+	 * hypervolume.  The parameters are normalized in place, modifying the
+	 * array passed as an argument.
+	 * 
+	 * @param parameters the parameters to normalize
+	 * @return the normalized parameters
+	 */
+	private double[][] normalize(double[][] parameters) {
+		for (int i = 0; i < parameters.length; i++) {
+			for (int j = 0; j < parameters[i].length; j++) {
+				Parameter parameter = parameterFile.get(j);
+				
+				parameters[i][j] = 
+						(parameters[i][j] - parameter.getLowerBound()) / 
+						(parameter.getUpperBound() - parameter.getLowerBound());
+			}
+		}
+		
+		return parameters;
 	}
 	
 	/**
@@ -247,7 +261,7 @@ public class Analysis extends CommandLineUtility {
 	private double calculateControllability() {
 		double[][] attainmentVolume = threshold(metric, threshold);
 
-		return FractalDimension.computeDimension(attainmentVolume) / 
+		return FractalDimension.computeDimension(normalize(attainmentVolume)) /
 				FractalDimension.computeDimension(parameters);
 	}
 	
@@ -260,7 +274,7 @@ public class Analysis extends CommandLineUtility {
 	 */
 	private double calculateEfficiency() {
 		//find the max evaluations parameter index
-		int max = 1000000;
+		int max = -1;
 		int evalIndex = -1;
 
 		for (int i=0; i<parameterFile.size(); i++) {
@@ -274,19 +288,19 @@ public class Analysis extends CommandLineUtility {
 		}
 		
 		if (evalIndex == -1) {
-			return -1;
+			throw new FrameworkException("no maxEvaluations parameter");
 		}
 
 		//find lowest band reaching attainment
 		int band = max;
 
-		for (int i=0; i<=max-BAND; i+=BAND) {
+		for (int i=0; i<=max-bandWidth; i+=bandWidth) {
 			int count = 0;
 			int total = 0;
 			
 			for (int j=0; j<metrics.length; j++) {
 				if ((parameters[j][evalIndex] >= i) && 
-						(parameters[j][evalIndex] <= i+BAND-1)) {
+						(parameters[j][evalIndex] <= i+bandWidth-1)) {
 					total++;
 					
 					if (metrics[j][metric] > threshold) {
@@ -342,6 +356,26 @@ public class Analysis extends CommandLineUtility {
 				.withArgName("file")
 				.withDescription("Output file")
 				.create('o'));
+		options.addOption(OptionBuilder
+				.withLongOpt("efficiency")
+				.withDescription("Include efficiency calculation")
+				.create('e'));
+		options.addOption(OptionBuilder
+				.withLongOpt("band")
+				.hasArg()
+				.withArgName("width")
+				.withDescription("NFE band width for calculating efficiency")
+				.create('b'));
+		options.addOption(OptionBuilder
+				.withLongOpt("controllability")
+				.withDescription("Include controllability calculation")
+				.create('c'));
+		options.addOption(OptionBuilder
+				.withLongOpt("threshold")
+				.hasArg()
+				.withArgName("percent")
+				.withDescription("Attainment threshold")
+				.create('t'));
 		
 		return options;
 	}
@@ -350,21 +384,30 @@ public class Analysis extends CommandLineUtility {
 	public void run(CommandLine commandLine) throws Exception {
 		PrintStream output = null;
 		
-		//setup the parameters
+		//parse required parameters
 		parameterFile = new ParameterFile(new File(
 				commandLine.getOptionValue("parameterFile")));
 		parameters = loadParameters(new File(
 				commandLine.getOptionValue("parameters")));
 		metric = Integer.parseInt(commandLine.getOptionValue("metric"));
-		threshold = 0.75;
+		
+		//parse optional parameters
+		if (commandLine.hasOption("band")) {
+			bandWidth = Integer.parseInt(commandLine.getOptionValue("band"));
+		}
+		
+		if (commandLine.hasOption("threshold")) {
+			threshold = Double.parseDouble(commandLine.getOptionValue(
+					"threshold"));
+		}
 		
 		//if analyzing hypervolume, require the hypervolume option
 		if (metric == 0) {
 			if (commandLine.hasOption("hypervolume")) {
-				threshold = 0.75 * Double.parseDouble(
-						commandLine.getOptionValue("hypervolume"));
+				threshold *= Double.parseDouble(commandLine.getOptionValue(
+						"hypervolume"));
 			} else {
-				throw new MissingOptionException("requires hypervolume option");	
+				throw new MissingOptionException("requires hypervolume option");
 			}
 		}
 		
@@ -387,15 +430,22 @@ public class Analysis extends CommandLineUtility {
 				
 				metrics = loadMetrics(new File(filenames[i]));
 				
-				output.println(filenames[i]);
+				output.print(filenames[i]);
+				output.println(":");
 				output.print("  Best: ");
 				output.println(calculateBest());
 				output.print("  Attainment: ");
 				output.println(calculateAttainment());
-				//output.print("  Controllability: ");
-				//output.println(calculateControllability());
-				//output.print("  Efficiency: ");
-				//output.println(calculateEfficiency());
+				
+				if (commandLine.hasOption("controllability")) {
+					output.print("  Controllability: ");
+					output.println(calculateControllability());
+				}
+				
+				if (commandLine.hasOption("efficiency")) {
+					output.print("  Efficiency: ");
+					output.println(calculateEfficiency());
+				}
 			}
 		} finally {
 			if ((output != null) && (output != System.out)) {
