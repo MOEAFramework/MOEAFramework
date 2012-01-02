@@ -18,7 +18,6 @@
 package org.moeaframework.analysis.sensitivity;
 
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
@@ -30,7 +29,6 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.math.stat.descriptive.SummaryStatistics;
 import org.moeaframework.util.CommandLineUtility;
 import org.moeaframework.util.OptionCompleter;
-import org.moeaframework.util.io.CommentedLineReader;
 
  /**
  * Command line utility for computing statistics across multiple data files.
@@ -75,22 +73,14 @@ public class SimpleStatistics extends CommandLineUtility {
 	 * @throws IOException if an I/O error occurred
 	 */
 	private double[][] load(File file) throws IOException {
-		CommentedLineReader reader = null;
+		MatrixReader reader = null;
 		
 		try {
-			reader = new CommentedLineReader(new FileReader(file));
-			String line = null;
+			reader = new MatrixReader(file);
 			List<double[]> data = new ArrayList<double[]>();
 			
-			while ((line = reader.readLine()) != null) {
-				String[] tokens = line.split("\\s+");
-				double[] entries = new double[tokens.length];
-				
-				for (int i=0; i<tokens.length; i++) {
-					entries[i] = Double.parseDouble(tokens[i]);
-				}
-				
-				data.add(entries);
+			while (reader.hasNext()) {
+				data.add(reader.next());
 			}
 			
 			return data.toArray(new double[0][]);

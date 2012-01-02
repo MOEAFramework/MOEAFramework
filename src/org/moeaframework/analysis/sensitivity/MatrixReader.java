@@ -37,7 +37,9 @@ import org.moeaframework.util.io.CommentedLineReader;
  * The file can contain commented lines starting with '#' characters.
  * <p>
  * Parsing stops at the first error.  Check the {@code error} flag to determine
- * if an error was encountered.
+ * if an error was encountered.  An exception may or may not be thrown,
+ * depending on the type of error and the value of the 
+ * {@code suppressExceptions} flag.
  */
 class MatrixReader implements Iterable<double[]>, Iterator<double[]>, 
 Closeable {
@@ -196,7 +198,7 @@ Closeable {
 			if (supressExceptions) {
 				return null;
 			} else {
-				throw e;
+				throw new IOException("invalid entry in row", e);
 			}
 		}
 
