@@ -5,8 +5,11 @@ Framework.
  Version 1.9 (TBD)
 -------------------
 
-  * The SobolAnalysis command line utility no longer requires metric files for
-    input, but now supports any kind of tabular data file.
+  * Several changes to the SobolAnalysis command line utility:
+      - No longer restricted to only loading metric files, can support any
+        number columns in the model output file
+      - The number of resamples for bootstrap confidence intervals can be set
+        using a command line argument
 
   * Several changes to the Analysis command line utility:
       - Efficiency and controllability calculations are now optional, and are

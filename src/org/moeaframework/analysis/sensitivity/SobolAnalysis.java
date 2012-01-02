@@ -50,7 +50,7 @@ public class SobolAnalysis extends CommandLineUtility {
 	/**
 	 * Number of resamples used to bootstrap the 50% confidence intervals.
 	 */
-	private static int nresample = 1000;
+	private int resamples = 1000;
 
 	/**
 	 * Parameters being analyzed.
@@ -165,7 +165,7 @@ public class SobolAnalysis extends CommandLineUtility {
 			output.print(' ');
 			output.print(computeFirstOrder(a0, a1, a2, N));
 			output.print(" [");
-			output.print(computeFirstOrderConfidence(a0, a1, a2, N, nresample));
+			output.print(computeFirstOrderConfidence(a0, a1, a2, N, resamples));
 			output.println(']');
 		}
 
@@ -186,7 +186,7 @@ public class SobolAnalysis extends CommandLineUtility {
 			output.print(' ');
 			output.print(computeTotalOrder(a0, a1, a2, N));
 			output.print(" [");
-			output.print(computeTotalOrderConfidence(a0, a1, a2, N, nresample));
+			output.print(computeTotalOrderConfidence(a0, a1, a2, N, resamples));
 			output.println(']');
 		}
 
@@ -215,7 +215,7 @@ public class SobolAnalysis extends CommandLineUtility {
 				output.print(computeSecondOrder(a0, a1, a2, a3, a4, N));
 				output.print(" [");
 				output.print(computeSecondOrderConfidence(a0, a1, a2, a3, a4, N,
-								nresample));
+								resamples));
 				output.println(']');
 			}
 		}
@@ -526,6 +526,12 @@ public class SobolAnalysis extends CommandLineUtility {
 				.withArgName("file")
 				.withDescription("Output file")
 				.create('o'));
+		options.addOption(OptionBuilder
+				.withLongOpt("resamples")
+				.hasArg()
+				.withArgName("number")
+				.withDescription("Number of resamples when computing bootstrap confidence intervals")
+				.create('r'));
 
 		return options;
 	}
@@ -539,6 +545,11 @@ public class SobolAnalysis extends CommandLineUtility {
 				commandLine.getOptionValue("parameterFile")));
 		index = Integer.parseInt(commandLine.getOptionValue("metric"));
 		P = parameterFile.size();
+		
+		if (commandLine.hasOption("resamples")) {
+			resamples = Integer.parseInt(commandLine.getOptionValue(
+					"resamples"));
+		}
 
 		//load and validate the model output file
 		File input = new File(commandLine.getOptionValue("input"));
