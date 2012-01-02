@@ -35,6 +35,9 @@ import org.moeaframework.util.io.CommentedLineReader;
  * whitespace.
  * <p>
  * The file can contain commented lines starting with '#' characters.
+ * <p>
+ * Parsing stops at the first error.  Check the {@code error} flag to determine
+ * if an error was encountered.
  */
 class MatrixReader implements Iterable<double[]>, Iterator<double[]>, 
 Closeable {

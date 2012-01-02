@@ -23,7 +23,8 @@ any changes.
     nested/wrapped algorithms.
   
   - Add reporting function to Executor which periodically outputs progress
-    reports.
+    reports.  It would probably be a good design to provide functionality
+    similar to SwingWorker's progress notifications.
 
   - Add unit tests for the examples.
 
