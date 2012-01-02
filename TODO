@@ -16,9 +16,6 @@ any changes.
     between version 3.1 and 4.0.  This change will likely have to wait until a
     major revision as backwards compatibility will likely break.
 
-  - Use different e-mails on the website and in contact info, as all get
-    forwarded to the same account.
-
   - Checkpoints not working for algorithms wrapped in restarts (eNSGAII)
   
   - Phase out resumable interface and make all algorithms provide the methods in

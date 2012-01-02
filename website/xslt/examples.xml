@@ -224,6 +224,34 @@ NondominatedPopulation result = new Executor()
 </div>
 
 <div class="section">
+<h3>Example 4: Diagnostic Tool</h3>
+
+<p>
+  A graphical tool is distributed with the MOEA Framework for comparing multiple
+  algorithms on a number of test problems.  Windows users may launch this tool
+  by running the <code>launch-diagnostic-tool.bat</code> file.  The screenshots
+  below demonstrate the functionality provided by this tool.
+</p>
+
+<p>
+  <a href="images/screenshot-1.png" rel="lightbox[main]"
+      title="Comparison of three MOEAs on the UF1 problem">
+    <img src="images/screenshot-1-small.png" class="float-left" width="114" height="70" alt="Comparison of three MOEAs on the UF1 problem" />
+   </a>
+  
+  <a href="images/screenshot-3.png" rel="lightbox[main]"
+      title="Multiple plots can be shown side-by-side">
+    <img src="images/screenshot-3-small.png" class="float-left" width="114" height="70" alt="Multiple plots can be shown side-by-side" />
+  </a>
+  
+  <a href="images/screenshot-2.png" rel="lightbox[main]"
+      title="The convergence of the approximation set to the reference set">
+    <img src="images/screenshot-2-small.png" class="float-left" width="93" height="70" alt="The convergence of the approximation set to the reference set" />
+  </a>
+</p>
+</div>
+
+<div class="section">
 <h3>Concluding Remarks</h3>
 
 <p>
