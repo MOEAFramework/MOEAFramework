@@ -66,7 +66,7 @@ public class MatrixReaderTest {
 		Assert.assertFalse(reader.hasNext());
 	}
 	
-	@Test
+	@Test(expected = Exception.class)
 	public void testFixed3() {
 		MatrixReader reader = new MatrixReader(new StringReader(FIXED), 2);
 		
@@ -89,7 +89,7 @@ public class MatrixReaderTest {
 		Assert.assertFalse(reader.hasNext());
 	}
 	
-	@Test
+	@Test(expected = Exception.class)
 	public void testVariable2() {
 		MatrixReader reader = new MatrixReader(new StringReader(VARIABLE), 3);
 		
@@ -99,14 +99,14 @@ public class MatrixReaderTest {
 		Assert.assertFalse(reader.hasNext());
 	}
 	
-	@Test
+	@Test(expected = Exception.class)
 	public void testVariable3() {
 		MatrixReader reader = new MatrixReader(new StringReader(VARIABLE), 2);
 		
 		Assert.assertFalse(reader.hasNext());
 	}
 
-	@Test
+	@Test(expected = Exception.class)
 	public void testUnparseable1() {
 		MatrixReader reader = new MatrixReader(new StringReader(UNPARSEABLE));
 		
@@ -116,7 +116,7 @@ public class MatrixReaderTest {
 		Assert.assertFalse(reader.hasNext());
 	}
 	
-	@Test
+	@Test(expected = Exception.class)
 	public void testUnparseable2() {
 		MatrixReader reader = new MatrixReader(new StringReader(UNPARSEABLE), 
 				3);

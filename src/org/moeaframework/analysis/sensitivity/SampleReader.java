@@ -19,15 +19,12 @@ package org.moeaframework.analysis.sensitivity;
 
 import java.io.Closeable;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.Iterator;
-import java.util.NoSuchElementException;
 import java.util.Properties;
 
 import org.moeaframework.core.FrameworkException;
-import org.moeaframework.util.io.CommentedLineReader;
 
 /**
  * Reads the parameter samples from the output of {@link SampleGenerator}. The
@@ -44,7 +41,7 @@ public class SampleReader implements Iterable<Properties>,
 	/**
 	 * The underlying reader.
 	 */
-	private final CommentedLineReader reader;
+	private final MatrixReader reader;
 
 	/**
 	 * The parameter definition file.
@@ -52,27 +49,16 @@ public class SampleReader implements Iterable<Properties>,
 	private final ParameterFile parameterFile;
 
 	/**
-	 * The next parameters to be returned; or {@code null} if the next
-	 * parameters has not yet been read.
-	 */
-	private Properties nextParameters;
-
-	/**
-	 * {@code true} if an error occurred parsing the parameter sample file;
-	 * {@code false} otherwise.
-	 */
-	private boolean error;
-
-	/**
 	 * Constructs a sample reader for reading parameter samples from the
 	 * specified file.
 	 * 
 	 * @param file the parameter sample file
+	 * @param parameterFile the parameter definition file
 	 * @throws IOException if an I/O error occurred
 	 */
 	public SampleReader(File file, ParameterFile parameterFile)
 			throws IOException {
-		this(new FileReader(file), parameterFile);
+		this(new MatrixReader(file, parameterFile.size()), parameterFile);
 	}
 
 	/**
@@ -80,16 +66,23 @@ public class SampleReader implements Iterable<Properties>,
 	 * underlying reader.
 	 * 
 	 * @param reader the underlying reader
+	 * @param parameterFile the parameter definition file
 	 */
 	public SampleReader(Reader reader, ParameterFile parameterFile) {
+		this(new MatrixReader(reader, parameterFile.size()), parameterFile);
+	}
+	
+	/**
+	 * Constructs a sample reader for reading parameter samples from the
+	 * underlying reader.
+	 * 
+	 * @param reader the underlying reader
+	 * @param parameterFile the parameter definition file
+	 */
+	private SampleReader(MatrixReader reader, ParameterFile parameterFile) {
 		super();
+		this.reader = reader;
 		this.parameterFile = parameterFile;
-
-		if (reader instanceof CommentedLineReader) {
-			this.reader = (CommentedLineReader)reader;
-		} else {
-			this.reader = new CommentedLineReader(reader);
-		}
 	}
 
 	@Override
@@ -99,74 +92,26 @@ public class SampleReader implements Iterable<Properties>,
 
 	@Override
 	public boolean hasNext() {
-		try {
-			if (error) {
-				return false;
-			}
-
-			if (nextParameters == null) {
-				nextParameters = readNextParameters();
-			}
-
-			return nextParameters != null;
-		} catch (IOException e) {
-			throw new FrameworkException(e);
-		}
+		return reader.hasNext();
 	}
 
 	@Override
 	public Properties next() {
-		if (!hasNext()) {
-			throw new NoSuchElementException();
-		}
-
-		Properties parameters = nextParameters;
-		nextParameters = null;
-		return parameters;
-	}
-
-	/**
-	 * Returns the next parameter set from the parameter sample file; or
-	 * {@code null} if the end-of-file was reached.
-	 * 
-	 * @return the next parameter set from the parameter sample file; or
-	 *         {@code null} if the end-of-file was reached
-	 * @throws IOException if an I/O error occurred
-	 */
-	private Properties readNextParameters() throws IOException {
-		String line = reader.readLine();
-
-		if (line == null) {
-			return null;
-		}
-
-		String[] tokens = line.split("\\s+");
-
-		if (tokens.length != parameterFile.size()) {
-			error = true;
-			throw new IOException("insufficient number of entries");
-		}
-
+		double[] values = reader.next();
 		Properties parameters = new Properties();
 
-		try {
-			for (int i = 0; i < tokens.length; i++) {
-				double value = Double.parseDouble(tokens[i]);
-				Parameter parameter = parameterFile.get(i);
+		for (int i = 0; i < values.length; i++) {
+			Parameter parameter = parameterFile.get(i);
 
-				if ((value < parameter.getLowerBound())
-						|| (value > parameter.getUpperBound())) {
-					throw new IOException("parameter out of bounds");
-				}
-
-				parameters.setProperty(parameterFile.get(i).getName(),
-						tokens[i]);
+			if ((values[i] < parameter.getLowerBound())
+					|| (values[i] > parameter.getUpperBound())) {
+				throw new FrameworkException("parameter out of bounds");
 			}
-		} catch (NumberFormatException e) {
-			error = true;
-			throw e;
-		}
 
+			parameters.setProperty(parameterFile.get(i).getName(),
+					Double.toString(values[i]));
+		}
+		
 		return parameters;
 	}
 

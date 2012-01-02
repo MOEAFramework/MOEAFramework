@@ -64,6 +64,12 @@ Closeable {
 	 * otherwise.
 	 */
 	private boolean error;
+	
+	/**
+	 * {@code true} if errors are suppressed; {@code false} otherwise.  I/O
+	 * errors will still be thrown.
+	 */
+	private boolean supressExceptions;
 
 	/**
 	 * Constructs a reader for loading a matrix contained in the specified file.
@@ -170,7 +176,12 @@ Closeable {
 
 		if ((numberOfColumns >= 0) && (tokens.length != numberOfColumns)) {
 			error = true;
-			return null;
+			
+			if (supressExceptions) {
+				return null;
+			} else {
+				throw new IOException("insufficient number of entries in row");
+			}
 		}
 
 		double[] entry = new double[tokens.length];
@@ -181,7 +192,12 @@ Closeable {
 			}
 		} catch (NumberFormatException e) {
 			error = true;
-			return null;
+			
+			if (supressExceptions) {
+				return null;
+			} else {
+				throw e;
+			}
 		}
 
 		return entry;
@@ -195,6 +211,28 @@ Closeable {
 	@Override
 	public void close() throws IOException {
 		reader.close();
+	}
+
+	/**
+	 * Returns {@code true} if exceptions are suppressed; {@code false}
+	 * otherwise.  Low-level I/O exceptions will still be thrown.  
+	 * 
+	 * @return {@code true} if exceptions are suppressed; {@code false}
+	 *         otherwise
+	 */
+	public boolean isSupressExceptions() {
+		return supressExceptions;
+	}
+
+	/**
+	 * Set to {@code true} to suppress exceptions; {@code false} otherwise.
+	 * Low-level I/O exceptions will still be thrown.
+	 * 
+	 * @param supressExceptions {@code true} if exceptions are suppressed; 
+	 *        {@code false} otherwise
+	 */
+	public void setSupressExceptions(boolean supressExceptions) {
+		this.supressExceptions = supressExceptions;
 	}
 
 }

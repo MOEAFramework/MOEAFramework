@@ -120,7 +120,7 @@ public class SampleReaderTest {
 		properties = reader.next();
 		Assert.assertEquals(3, properties.size());
 		Assert.assertEquals("0.0", properties.getProperty("entry1"));
-		Assert.assertEquals("100", properties.getProperty("entry2"));
+		Assert.assertEquals("100.0", properties.getProperty("entry2"));
 		Assert.assertEquals("0.0", properties.getProperty("entry3"));
 
 		Assert.assertTrue(reader.hasNext());
@@ -128,7 +128,7 @@ public class SampleReaderTest {
 		properties = reader.next();
 		Assert.assertEquals(3, properties.size());
 		Assert.assertEquals("1.0", properties.getProperty("entry1"));
-		Assert.assertEquals("10000", properties.getProperty("entry2"));
+		Assert.assertEquals("10000.0", properties.getProperty("entry2"));
 		Assert.assertEquals("1.0", properties.getProperty("entry3"));
 
 		Assert.assertFalse(reader.hasNext());
@@ -144,7 +144,8 @@ public class SampleReaderTest {
 	public void validateInvalid(SampleReader reader) {
 		Assert.assertTrue(reader.hasNext());
 		reader.next();
-		reader.hasNext(); // should cause an exception
+		Assert.assertTrue(reader.hasNext());
+		reader.next(); // should cause an exception
 	}
 
 	/**
