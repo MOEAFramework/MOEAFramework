@@ -17,8 +17,6 @@
  */
 package org.moeaframework.problem;
 
-import junit.framework.Assert;
-
 import org.moeaframework.TestThresholds;
 import org.moeaframework.TestUtils;
 import org.moeaframework.algorithm.jmetal.JMetalProblemAdapter;

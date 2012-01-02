@@ -56,10 +56,6 @@ any changes.
     specifying the constructor arguments will broaden the scope of problems
     supported by the Executor and Analyzer.
     
-  - Van Veldhuizen's dissertation lists 30 multiobjective test problems from
-    the literature in Appendix B (all known MOP problems up to 1999).  Implement
-    any or all of these test problems.
-    
   - Develop an interface for defining stopping conditions.  Executor should
     provide the necessary functionality for defining stopping conditions.
     

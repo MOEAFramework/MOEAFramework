@@ -5,6 +5,12 @@ Framework.
  Version 1.9 (TBD)
 -------------------
 
+  * Adds 31 test problems to the misc package.  This includes Belegundu, Binh,
+    Binh2, Binh3, Binh4, Fonseca, Fonseca2, Jimenez, Kita, Kursawe, Laumanns,
+    Lis, Murata, Obayashi, OKA1, OKA2, Osyczka, Osyczka2, Poloni, Quagliarella,
+    Rendon, Rendon2, Schaffer, Schaffer2, Srinivas, Tamaki, Tanaka, Viennet,
+    Viennet2, Viennet3, Viennet4.
+
   * Several changes to the SobolAnalysis command line utility:
       - No longer restricted to only loading metric files, can support any
         number columns in the model output file
