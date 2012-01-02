@@ -16,13 +16,14 @@ any changes.
     between version 3.1 and 4.0.  This change will likely have to wait until a
     major revision as backwards compatibility will likely break.
 
-  - Checkpoints not working for algorithms wrapped in restarts (eNSGAII)
-  
   - Phase out resumable interface and make all algorithms provide the methods in
-    Resumable.  Then, an algorithm which does not support resuming would throw an
-    exception, such as NotResumableException, similar to NotSerializableException.
+    Resumable.  Then, an algorithm which does not support resuming would throw
+    an exception, such as NotResumableException, similar to 
+    NotSerializableException.  This will also enable checkpoint support for
+    nested/wrapped algorithms.
   
-  - Add reporting function to Executor which periodically outputs progress reports.
+  - Add reporting function to Executor which periodically outputs progress
+    reports.
 
   - Add unit tests for the examples.
 
