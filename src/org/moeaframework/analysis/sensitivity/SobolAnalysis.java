@@ -18,7 +18,6 @@
 package org.moeaframework.analysis.sensitivity;
 
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintStream;
 
@@ -110,9 +109,10 @@ public class SobolAnalysis extends CommandLineUtility {
 	 * @throws IOException if an I/O error occurred
 	 */
 	private void load(File metricFile) throws IOException {
-		MetricFileReader reader = null;
+		MatrixReader reader = null;
+		
 		try {
-			reader = new MetricFileReader(new FileReader(metricFile));
+			reader = new MatrixReader(metricFile);
 
 			A = new double[N];
 			B = new double[N];
@@ -463,14 +463,18 @@ public class SobolAnalysis extends CommandLineUtility {
 	 * @throws IOException
 	 */
 	private int validate(File metricFile) throws IOException {
-		MetricFileReader reader = null;
+		MatrixReader reader = null;
+		
 		try {
-			reader = new MetricFileReader(new FileReader(metricFile));
+			reader = new MatrixReader(metricFile);
 			int count = 0;
 
 			while (reader.hasNext()) {
-				reader.next();
-				count++;
+				if (reader.next().length > index) {
+					count++;
+				} else {
+					break;
+				}
 			}
 
 			if (count % (2 * P + 2) != 0) {

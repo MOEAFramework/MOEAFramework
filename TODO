@@ -26,9 +26,6 @@ any changes.
 
   - Add unit tests for the examples.
 
-  - SobolAnalysis currently can only read inputs formatted as a metric file.
-    This should be modified so it can read any tabular real-valued data.
-
   - Need to ensure that constrained solutions are appropriately handled when
     constructing approximation sets or used in code that does not handle
     constraints (i.e., indicators).

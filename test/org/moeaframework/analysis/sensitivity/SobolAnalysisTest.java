@@ -314,14 +314,7 @@ public class SobolAnalysisTest {
 			writer = new PrintWriter(file);
 			
 			for (int i=0; i<data.length; i++) {
-				writer.print(data[i]);
-				
-				//pad with 0's to look like metric file
-				for (int j=1; j<MetricFileWriter.NUMBER_OF_METRICS; j++) {
-					writer.print(" 0.0");
-				}
-				
-				writer.println();
+				writer.println(data[i]);
 			}
 		} finally {
 			if (writer != null) {
