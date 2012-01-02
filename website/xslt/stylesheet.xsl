@@ -12,6 +12,7 @@
 
 	<xsl:param name="filename"></xsl:param>
 	<xsl:param name="version"></xsl:param>
+	<xsl:param name="today"></xsl:param>
 	<xsl:param name="tracker"></xsl:param>
 	
 	<xsl:template match="comment()">
@@ -112,8 +113,8 @@
 							<div class="sidemenu downloads">
 								<h3>Downloads</h3>
 								<p>
-									Current Release:
-									<b>Version <xsl:value-of select="$version" /></b>
+									Current Version: <b><xsl:value-of select="$version" /></b><br />
+									Released: <xsl:value-of select="$today" />
 								</p>
 								<ul>
 									<li>

@@ -28,17 +28,17 @@
 </p>
 
 <p>
-  To run these examples, first create a folder called 
-  <code>MOEAFrameworkDemo</code>.  Download and extract the latest compiled 
-  binaries from the <a href="downloads.html">downloads</a> page to this folder.
-  Next, download one of the examples below to the same folder.  For example, if
+  To run these examples, first download and extract the latest compiled 
+  binaries from the <a href="downloads.html">downloads</a> page.  The files
+  will extract to a folder called MOEAFramework-%VERSION%.
+  Next, download one of the examples below to this folder.  For example, if
   you downloaded <a href="Example1.java">Example1.java</a>, the folder contents
   should look similar to:
 </p>
 
   <div class="files">
   <ul>
-    <li class="folder">MOEAFrameworkDemo/</li>
+    <li class="folder">MOEAFramework-%VERSION%/</li>
     <li class="empty">
       <ul>
         <li class="folder">javadoc/</li>
@@ -47,9 +47,13 @@
         <li class="folder">pf/</li>
         <li><b>Example1.java</b></li>
         <li>global.properties</li>
+        <li>HELP</li>
+        <li>launch-diagnostic-tool.bat</li>
+        <li>launch-tests.bat</li>
         <li>LICENSE</li>
         <li>NEWS</li>
         <li>README</li>
+        <li>test.xml</li>
       </ul>
     </li>
   </ul>
@@ -70,7 +74,7 @@
   external command, operable program or batch file</i>, try the following steps
   to setup your environment on 
   <a href="http://vietpad.sourceforge.net/javaonwindows.html">Windows</a> or
-  <a href="http://vietpad.sourceforge.net/javaonlinux.html">Linux</a>
+  <a href="http://vietpad.sourceforge.net/javaonlinux.html">Linux</a>.
 </p>
 </div>
 
