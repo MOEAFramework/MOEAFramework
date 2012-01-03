@@ -34,7 +34,7 @@ public class Tanaka extends AbstractProblem {
 	public void evaluate(Solution solution) {
 		double x = ((RealVariable)solution.getVariable(0)).getValue();
 		double y = ((RealVariable)solution.getVariable(1)).getValue();
-		double c1 = -Math.pow(x,  2.0) - Math.pow(y, 2.0) + 2.0 +
+		double c1 = -Math.pow(x,  2.0) - Math.pow(y, 2.0) + 1.0 +
 				0.1*Math.cos(16.0*Math.atan(x / y));
 		double c2 = Math.pow(x - 0.5, 2.0) + Math.pow(y - 0.5, 2.0) - 0.5;
 		

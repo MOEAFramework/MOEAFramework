@@ -54,6 +54,13 @@ public class Kursawe extends AbstractProblem {
 	 * The upper bound for decision variables.
 	 */
 	private final double upperBound;
+	
+	/**
+	 * Constructs the Kursawe problem with {@code 3} decision variables.
+	 */
+	public Kursawe() {
+		this(3);
+	}
 
 	/**
 	 * Constructs the Kursawe problem with the specified number of decision

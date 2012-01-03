@@ -761,13 +761,13 @@ public class StandardProblems extends ProblemProvider {
 			} else if (name.equals("Fonseca")) {
 				return new Fonseca();
 			} else if (name.equals("Fonseca2")) {
-				return new Fonseca2(3);
+				return new Fonseca2();
 			} else if (name.equals("Jimenez")) {
 				return new Jimenez();
 			} else if (name.equals("Kita")) {
 				return new Kita();
 			} else if (name.equals("Kursawe")) {
-				return new Kursawe(3);
+				return new Kursawe();
 			} else if (name.equals("Laumanns")) {
 				return new Laumanns();
 			} else if (name.equals("Lis")) {

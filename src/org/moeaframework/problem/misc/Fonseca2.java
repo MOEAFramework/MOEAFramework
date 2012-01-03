@@ -22,6 +22,13 @@ import org.moeaframework.problem.AbstractProblem;
  * </ol>
  */
 public class Fonseca2 extends AbstractProblem {
+	
+	/**
+	 * Constructs the Fonseca (2) problem with {@code 3} decision variables.
+	 */
+	public Fonseca2() {
+		this(3);
+	}
 
 	/**
 	 * Constructs the Fonseca (2) problem with the specified number of decision

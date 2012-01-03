@@ -54,8 +54,8 @@ public class Jimenez extends AbstractProblem {
 	public Solution newSolution() {
 		Solution solution = new Solution(2, 2, 4);
 		
-		solution.setVariable(0, new RealVariable(0.0, Double.POSITIVE_INFINITY));
-		solution.setVariable(1, new RealVariable(0.0, Double.POSITIVE_INFINITY));
+		solution.setVariable(0, new RealVariable(0.0, 50.0));
+		solution.setVariable(1, new RealVariable(0.0, 50.0));
 		
 		return solution;
 	}

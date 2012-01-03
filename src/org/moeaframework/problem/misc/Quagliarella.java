@@ -19,6 +19,10 @@ import org.moeaframework.problem.AbstractProblem;
  *   <li>Van Veldhuizen, D. A (1999).  "Multiobjective Evolutionary Algorithms: 
  *       Classifications, Analyses, and New Innovations."  Air Force Institute
  *       of Technology, Ph.D. Thesis, Appendix B.
+ *   <li>Quagliarella, D., and Vicini, A. (1998).  "Sub-population Policies for
+ *       a Parallel Multiobjective Genetic Algorithm with Applications to Wing
+ *       Design."  In proceedings of the 1998 IEEE International Conference on
+ *       Systems, Man, and Cybernetics, pp. 3142-3147.
  * </ol>
  */
 public class Quagliarella extends AbstractProblem {

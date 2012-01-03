@@ -52,8 +52,8 @@ public class Kita extends AbstractProblem {
 	public Solution newSolution() {
 		Solution solution = new Solution(2, 2, 3);
 		
-		solution.setVariable(0, new RealVariable(0.0, Double.POSITIVE_INFINITY));
-		solution.setVariable(1, new RealVariable(0.0, Double.POSITIVE_INFINITY));
+		solution.setVariable(0, new RealVariable(0.0, 7.0));
+		solution.setVariable(1, new RealVariable(0.0, 7.0));
 		
 		return solution;
 	}

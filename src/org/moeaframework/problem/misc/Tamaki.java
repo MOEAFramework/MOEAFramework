@@ -48,9 +48,9 @@ public class Tamaki extends AbstractProblem {
 	public Solution newSolution() {
 		Solution solution = new Solution(3, 3, 1);
 		
-		solution.setVariable(0, new RealVariable(0.0, Double.POSITIVE_INFINITY));
-		solution.setVariable(1, new RealVariable(0.0, Double.POSITIVE_INFINITY));
-		solution.setVariable(2, new RealVariable(0.0, Double.POSITIVE_INFINITY));
+		solution.setVariable(0, new RealVariable(0.0, 1.0));
+		solution.setVariable(1, new RealVariable(0.0, 1.0));
+		solution.setVariable(2, new RealVariable(0.0, 1.0));
 		
 		return solution;
 	}

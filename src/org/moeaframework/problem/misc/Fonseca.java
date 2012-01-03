@@ -46,8 +46,8 @@ public class Fonseca extends AbstractProblem {
 	public Solution newSolution() {
 		Solution solution = new Solution(2, 2);
 		
-		solution.setVariable(0, new RealVariable(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY));
-		solution.setVariable(1, new RealVariable(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY));
+		solution.setVariable(0, new RealVariable(-4.0, 4.0));
+		solution.setVariable(1, new RealVariable(-4.0, 4.0));
 		
 		return solution;
 	}
