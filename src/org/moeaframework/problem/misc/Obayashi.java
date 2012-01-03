@@ -24,6 +24,9 @@ import org.moeaframework.problem.AbstractProblem;
  */
 public class Obayashi extends AbstractProblem {
 
+	/**
+	 * Constructs the Obayashi problem.
+	 */
 	public Obayashi() {
 		super(2, 2, 1);
 	}

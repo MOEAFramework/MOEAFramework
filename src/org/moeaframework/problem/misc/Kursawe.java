@@ -56,7 +56,8 @@ public class Kursawe extends AbstractProblem {
 	private final double upperBound;
 
 	/**
-	 * Constructs the Kursawe problem with {@code n} decision variables.
+	 * Constructs the Kursawe problem with the specified number of decision
+	 * variables.
 	 * 
 	 * @param numberOfVariables the number of decision variables
 	 */
@@ -65,14 +66,15 @@ public class Kursawe extends AbstractProblem {
 	}
 
 	/**
-	 * Constructs the Kursawe problem with {@code n} decision variables with 
-	 * the specified bounds.
+	 * Constructs the Kursawe problem with the specified number of decision
+	 * variables.
 	 * 
 	 * @param numberOfVariables the number of decision variables
 	 * @param lowerBound the lower bound for decision variables
 	 * @param upperBound the upper bound for decision variables
 	 */
-	public Kursawe(int numberOfVariables, double lowerBound, double upperBound) {
+	public Kursawe(int numberOfVariables, double lowerBound, 
+			double upperBound) {
 		super(numberOfVariables, 2);
 		this.lowerBound = lowerBound;
 		this.upperBound = upperBound;

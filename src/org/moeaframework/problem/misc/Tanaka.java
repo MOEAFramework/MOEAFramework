@@ -23,6 +23,9 @@ import org.moeaframework.problem.AbstractProblem;
  */
 public class Tanaka extends AbstractProblem {
 
+	/**
+	 * Constructs the Tanaka problem.
+	 */
 	public Tanaka() {
 		super(2, 2, 2);
 	}

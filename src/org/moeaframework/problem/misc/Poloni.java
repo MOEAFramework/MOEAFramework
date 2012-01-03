@@ -24,6 +24,9 @@ import org.moeaframework.problem.AbstractProblem;
  */
 public class Poloni extends AbstractProblem {
 
+	/**
+	 * Constructs the Poloni problem.
+	 */
 	public Poloni() {
 		super(2, 2);
 	}

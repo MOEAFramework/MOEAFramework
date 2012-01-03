@@ -22,6 +22,9 @@ import org.moeaframework.problem.AbstractProblem;
  */
 public class Rendon2 extends AbstractProblem {
 
+	/**
+	 * Constructs the Rendon (2) problem.
+	 */
 	public Rendon2() {
 		super(2, 2);
 	}

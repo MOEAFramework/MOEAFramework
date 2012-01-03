@@ -23,6 +23,9 @@ import org.moeaframework.problem.AbstractProblem;
  */
 public class Quagliarella extends AbstractProblem {
 	
+	/**
+	 * Constructs the Quagliarella problem.
+	 */
 	public Quagliarella() {
 		this(16);
 	}

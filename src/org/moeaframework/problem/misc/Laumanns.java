@@ -22,6 +22,9 @@ import org.moeaframework.problem.AbstractProblem;
  */
 public class Laumanns extends AbstractProblem {
 
+	/**
+	 * Constructs the Laumanns problem.
+	 */
 	public Laumanns() {
 		super(2, 2);
 	}

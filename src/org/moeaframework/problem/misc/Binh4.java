@@ -16,6 +16,9 @@ import org.moeaframework.problem.AbstractProblem;
  */
 public class Binh4 extends AbstractProblem {
 
+	/**
+	 * Constructs the Binh (4) problem.
+	 */
 	public Binh4() {
 		super(2, 3, 2);
 	}

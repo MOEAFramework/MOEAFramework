@@ -23,6 +23,12 @@ import org.moeaframework.problem.AbstractProblem;
  */
 public class Fonseca2 extends AbstractProblem {
 
+	/**
+	 * Constructs the Fonseca (2) problem with the specified number of decision
+	 * variables.
+	 * 
+	 * @param numberOfVariables the number of decision variables
+	 */
 	public Fonseca2(int numberOfVariables) {
 		super(numberOfVariables, 2);
 	}

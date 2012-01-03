@@ -22,6 +22,9 @@ import org.moeaframework.problem.AbstractProblem;
  */
 public class Schaffer extends AbstractProblem {
 
+	/**
+	 * Constructs the Schaffer problem.
+	 */
 	public Schaffer() {
 		super(1, 2);
 	}

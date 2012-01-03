@@ -23,6 +23,9 @@ import org.moeaframework.problem.AbstractProblem;
  */
 public class Srinivas extends AbstractProblem {
 
+	/**
+	 * Constructs the Srinivas problem.
+	 */
 	public Srinivas() {
 		super(2, 2, 2);
 	}

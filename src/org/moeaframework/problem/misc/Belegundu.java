@@ -23,6 +23,9 @@ import org.moeaframework.problem.AbstractProblem;
  */
 public class Belegundu extends AbstractProblem {
 
+	/**
+	 * Constructs the Belegundu problem.
+	 */
 	public Belegundu() {
 		super(2, 2, 2);
 	}

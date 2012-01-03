@@ -22,6 +22,9 @@ import org.moeaframework.problem.AbstractProblem;
  */
 public class Lis extends AbstractProblem {
 
+	/**
+	 * Constructs the Lis problem.
+	 */
 	public Lis() {
 		super(2, 2);
 	}

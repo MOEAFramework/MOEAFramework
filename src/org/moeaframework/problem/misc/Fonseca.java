@@ -22,6 +22,9 @@ import org.moeaframework.problem.AbstractProblem;
  */
 public class Fonseca extends AbstractProblem {
 
+	/**
+	 * Constructs the Fonseca problem.
+	 */
 	public Fonseca() {
 		super(2, 2);
 	}

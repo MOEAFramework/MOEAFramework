@@ -24,6 +24,9 @@ import org.moeaframework.problem.AbstractProblem;
  */
 public class Kita extends AbstractProblem {
 
+	/**
+	 * Constructs the Kita problem.
+	 */
 	public Kita() {
 		super(2, 2, 3);
 	}

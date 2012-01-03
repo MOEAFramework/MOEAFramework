@@ -23,6 +23,9 @@ import org.moeaframework.problem.AbstractProblem;
  */
 public class Osyczka2 extends AbstractProblem {
 
+	/**
+	 * Constructs the Osyczka (2) problem.
+	 */
 	public Osyczka2() {
 		super(6, 2, 6);
 	}

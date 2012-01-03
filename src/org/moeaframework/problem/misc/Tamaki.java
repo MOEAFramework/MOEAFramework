@@ -24,6 +24,9 @@ import org.moeaframework.problem.AbstractProblem;
  */
 public class Tamaki extends AbstractProblem {
 
+	/**
+	 * Constructs the Tamaki problem.
+	 */
 	public Tamaki() {
 		super(3, 3, 1);
 	}

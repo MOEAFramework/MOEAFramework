@@ -24,6 +24,9 @@ import org.moeaframework.problem.AbstractProblem;
  */
 public class Jimenez extends AbstractProblem {
 
+	/**
+	 * Constructs the Jimenez problem.
+	 */
 	public Jimenez() {
 		super(2, 2, 4);
 	}

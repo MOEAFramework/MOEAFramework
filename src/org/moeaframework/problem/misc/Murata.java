@@ -22,6 +22,9 @@ import org.moeaframework.problem.AbstractProblem;
  */
 public class Murata extends AbstractProblem {
 
+	/**
+	 * Constructs the Murata problem.
+	 */
 	public Murata() {
 		super(2, 2);
 	}

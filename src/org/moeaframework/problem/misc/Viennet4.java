@@ -23,6 +23,9 @@ import org.moeaframework.problem.AbstractProblem;
  */
 public class Viennet4 extends AbstractProblem {
 
+	/**
+	 * Constructs the Viennet (4) problem.
+	 */
 	public Viennet4() {
 		super(2, 3, 3);
 	}
