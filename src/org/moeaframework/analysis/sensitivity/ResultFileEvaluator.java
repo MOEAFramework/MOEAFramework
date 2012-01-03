@@ -85,6 +85,10 @@ public class ResultFileEvaluator extends CommandLineUtility {
 				.withArgName("file")
 				.withDescription("Reference set file")
 				.create('r'));
+		options.addOption(OptionBuilder
+				.withLongOpt("force")
+				.withDescription("Continue processing if the file timestamp check fails")
+				.create('f'));
 		
 		return options;
 	}
@@ -100,8 +104,9 @@ public class ResultFileEvaluator extends CommandLineUtility {
 		File outputFile = new File(commandLine.getOptionValue("output"));
 
 		// sanity check to ensure input hasn't been modified after the output
-		if ((outputFile.lastModified() > 0L)
-				&& (inputFile.lastModified() > outputFile.lastModified())) {
+		if (!commandLine.hasOption("force") &&
+				(outputFile.lastModified() > 0L) && 
+				(inputFile.lastModified() > outputFile.lastModified())) {
 			throw new FrameworkException(
 					"input appears to be newer than output");
 		}

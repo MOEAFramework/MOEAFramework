@@ -141,6 +141,10 @@ public class Evaluator extends CommandLineUtility {
 				.withLongOpt("novariables")
 				.withDescription("Do not output decision variables")
 				.create('n'));
+		options.addOption(OptionBuilder
+				.withLongOpt("force")
+				.withDescription("Continue processing if the file timestamp check fails")
+				.create('f'));
 
 		return options;
 	}
@@ -154,8 +158,9 @@ public class Evaluator extends CommandLineUtility {
 				.getOptionValue("parameterFile")));
 
 		// sanity check to ensure input hasn't been modified after the output
-		if ((outputFile.lastModified() > 0L)
-				&& (inputFile.lastModified() > outputFile.lastModified())) {
+		if (!commandLine.hasOption("force") &&
+				(outputFile.lastModified() > 0L) && 
+				(inputFile.lastModified() > outputFile.lastModified())) {
 			throw new FrameworkException(
 					"input appears to be newer than output");
 		}

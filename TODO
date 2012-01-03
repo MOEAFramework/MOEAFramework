@@ -12,11 +12,6 @@ any changes.
  Easy
 ------
 
-  - Add --force option when checking timestamps on files.
-  
-  - Add menu to the diagnostic tool to turn off all metrics.  Also add item for
-    hiding the last run.
-
   - The recently-added misc problems from Van Veldhuizen's dissertation need
     the necessary support files - unit tests, reference set files, etc.
 
