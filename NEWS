@@ -1,9 +1,9 @@
 This file documents the major changes implemented in each release of the MOEA
 Framework.
 
--------------------
- Version 1.9 (TBD)
--------------------
+---------------------------
+ Version 1.9 (03 Jan 2012)
+---------------------------
 
   * Adds 31 test problems to the misc package.  This includes Belegundu, Binh,
     Binh2, Binh3, Binh4, Fonseca, Fonseca2, Jimenez, Kita, Kursawe, Laumanns,
@@ -11,15 +11,15 @@ Framework.
     Rendon, Rendon2, Schaffer, Schaffer2, Srinivas, Tamaki, Tanaka, Viennet,
     Viennet2, Viennet3, Viennet4.
     
-  * Adds the --force command line argument to Evaluator and ResultFileEvaluator,
-    which ignores the file timestamp check.  The timestamp check helps prevent
-    working with modified or outdated files.  A failed check would normally
-    stop execution and report an error, but can now be overridden with --force.
-    
   * Adds three new menu items to the diagnostic tool, mostly for convenience:
       - Enable All Performance Indicators
       - Disable All Performance Indicators
       - Display Last Trace
+      
+  * Adds the --force command line argument to Evaluator and ResultFileEvaluator,
+    which ignores the file timestamp check.  The timestamp check helps prevent
+    working with modified or outdated files.  A failed check would normally
+    stop execution and report an error, but can now be overridden with --force.
 
   * Several changes to the SobolAnalysis command line utility:
       - No longer restricted to only loading metric files, can support any
