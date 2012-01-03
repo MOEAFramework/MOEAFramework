@@ -341,6 +341,11 @@ ControllerListener {
 		file.add(new JMenuItem(actionFactory.getExitAction()));
 		
 		JMenu metrics = new JMenu("Collect");
+		metrics.add(new JMenuItem(
+				actionFactory.getEnableAllIndicatorsAction()));
+		metrics.add(new JMenuItem(
+				actionFactory.getDisableAllIndicatorsAction()));
+		metrics.addSeparator();
 		metrics.add(new JCheckBoxMenuItem(
 				actionFactory.getIncludeHypervolumeAction()));
 		metrics.add(new JCheckBoxMenuItem(
@@ -366,6 +371,9 @@ ControllerListener {
 				actionFactory.getIncludePopulationSizeAction()));
 		metrics.add(new JCheckBoxMenuItem(
 				actionFactory.getIncludeApproximationSetAction()));
+		metrics.addSeparator();
+		metrics.add(new JCheckBoxMenuItem(
+				actionFactory.getShowLastTraceAction()));
 		
 		JMenu help = new JMenu("Help");
 		help.add(new JMenuItem(actionFactory.getAboutDialogAction()));

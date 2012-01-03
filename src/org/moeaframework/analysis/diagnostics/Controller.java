@@ -78,6 +78,12 @@ public class Controller {
 	private Accumulator lastAccumulator;
 	
 	/**
+	 * {@code true} if the last run's trace should be drawn separately;
+	 * {@code false} otherwise.
+	 */
+	private boolean showLastTrace = true;
+	
+	/**
 	 * {@code true} if the hypervolume indicator collector is included; 
 	 * {@code false} otherwise.
 	 */
@@ -677,6 +683,29 @@ public class Controller {
 	 */
 	public boolean isRunning() {
 		return thread != null;
+	}
+
+	/**
+	 * Returns {@code true} if the last run's trace is displayed; {@code false}
+	 * otherwise.
+	 * 
+	 * @return {@code true} if the last run's trace is displayed; {@code false}
+	 *         otherwise
+	 */
+	public boolean getShowLastTrace() {
+		return showLastTrace;
+	}
+
+	/**
+	 * Sets the display of the last run's trace.
+	 * 
+	 * @param showLastTrace {@code true} if the last run's trace is displayed; 
+	 *        {@code false} otherwise
+	 */
+	public void setShowLastTrace(boolean showLastTrace) {
+		this.showLastTrace = showLastTrace;
+		
+		fireViewChangedEvent();
 	}
 
 	/**

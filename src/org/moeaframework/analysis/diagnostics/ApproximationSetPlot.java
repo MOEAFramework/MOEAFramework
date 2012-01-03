@@ -113,7 +113,8 @@ public class ApproximationSetPlot extends ResultPlot {
 		plot.setRenderer(renderer);
 		
 		//add overlay
-		if ((controller.getLastAccumulator() != null) && 
+		if (controller.getShowLastTrace() &&
+				(controller.getLastAccumulator() != null) && 
 				controller.getLastAccumulator().keySet().contains(metric)) {
 			XYSeriesCollection dataset2 = new XYSeriesCollection();
 			NondominatedPopulation population = new EpsilonBoxDominanceArchive(

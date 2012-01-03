@@ -81,6 +81,21 @@ public class ActionFactory implements ControllerListener {
 	private Action exitAction;
 	
 	/**
+	 * The action to toggle the display of the last run's trace.
+	 */
+	private Action showLastTraceAction;
+	
+	/**
+	 * The action to toggle on all indicator collectors.
+	 */
+	private Action enableAllIndicatorsAction;
+	
+	/**
+	 * The action to toggle off all indicator collectors.
+	 */
+	private Action disableAllIndicatorsAction;
+	
+	/**
 	 * The action to toggle the inclusion of the hypervolume indicator
 	 * collector.
 	 */
@@ -258,6 +273,67 @@ public class ActionFactory implements ControllerListener {
 			@Override
 			public void actionPerformed(ActionEvent event) {
 				frame.dispose();
+			}
+			
+		};
+		
+		showLastTraceAction = new AbstractAction("Display Last Trace") {
+
+			private static final long serialVersionUID = -6068811236087074314L;
+			
+			{
+				putValue(Action.SELECTED_KEY, controller.getShowLastTrace());
+			}
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				controller.setShowLastTrace((Boolean)getValue(Action.SELECTED_KEY));
+			}
+			
+		};
+		
+		enableAllIndicatorsAction = new AbstractAction("Enable All Performance Indicators") {
+
+			private static final long serialVersionUID = -6068811236087074314L;
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				includeHypervolumeAction.putValue(Action.SELECTED_KEY, true);
+				includeGenerationalDistanceAction.putValue(Action.SELECTED_KEY, true);
+				includeInvertedGenerationalDistanceAction.putValue(Action.SELECTED_KEY, true);
+				includeSpacingAction.putValue(Action.SELECTED_KEY, true);
+				includeAdditiveEpsilonIndicatorAction.putValue(Action.SELECTED_KEY, true);
+				includeContributionAction.putValue(Action.SELECTED_KEY, true);
+				
+				controller.setIncludeHypervolume(true);
+				controller.setIncludeGenerationalDistance(true);
+				controller.setIncludeInvertedGenerationalDistance(true);
+				controller.setIncludeSpacing(true);
+				controller.setIncludeAdditiveEpsilonIndicator(true);
+				controller.setIncludeContribution(true);
+			}
+			
+		};
+		
+		disableAllIndicatorsAction = new AbstractAction("Disable All Performance Indicators") {
+
+			private static final long serialVersionUID = 5291581694356532809L;
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				includeHypervolumeAction.putValue(Action.SELECTED_KEY, false);
+				includeGenerationalDistanceAction.putValue(Action.SELECTED_KEY, false);
+				includeInvertedGenerationalDistanceAction.putValue(Action.SELECTED_KEY, false);
+				includeSpacingAction.putValue(Action.SELECTED_KEY, false);
+				includeAdditiveEpsilonIndicatorAction.putValue(Action.SELECTED_KEY, false);
+				includeContributionAction.putValue(Action.SELECTED_KEY, false);
+				
+				controller.setIncludeHypervolume(false);
+				controller.setIncludeGenerationalDistance(false);
+				controller.setIncludeInvertedGenerationalDistance(false);
+				controller.setIncludeSpacing(false);
+				controller.setIncludeAdditiveEpsilonIndicator(false);
+				controller.setIncludeContribution(false);
 			}
 			
 		};
@@ -658,6 +734,33 @@ public class ActionFactory implements ControllerListener {
 	 */
 	public Action getExitAction() {
 		return exitAction;
+	}
+	
+	/**
+	 * Returns the action to show the last run's trace.
+	 * 
+	 * @return the action to show the last run's trace
+	 */
+	public Action getShowLastTraceAction() {
+		return showLastTraceAction;
+	}
+	
+	/**
+	 * Returns the action to toggle on all indocator collectors.
+	 * 
+	 * @return the action to toggle on all indocator collectors
+	 */
+	public Action getEnableAllIndicatorsAction() {
+		return enableAllIndicatorsAction;
+	}
+	
+	/**
+	 * Returns the action to toggle off all indocator collectors.
+	 * 
+	 * @return the action to toggle off all indocator collectors
+	 */
+	public Action getDisableAllIndicatorsAction() {
+		return disableAllIndicatorsAction;
 	}
 
 	/**

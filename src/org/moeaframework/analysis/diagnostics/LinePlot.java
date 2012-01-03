@@ -193,7 +193,8 @@ public class LinePlot extends ResultPlot {
 		plot.setDomainAxis(domainAxis);
 		
 		//add overlay
-		if ((controller.getLastAccumulator() != null) && 
+		if (controller.getShowLastTrace() && 
+				(controller.getLastAccumulator() != null) && 
 				controller.getLastAccumulator().keySet().contains(metric)) {
 			DefaultTableXYDataset dataset2 = new DefaultTableXYDataset();
 			XYSeries series = new XYSeries("Last", false, false);
