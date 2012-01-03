@@ -287,6 +287,18 @@ could not locate resource <name>
   Thrown when attempting to access a resource packages within the MOEA
   Framework, but the resource could not be located.  This is an error with the
   distribution.  Please contact the distributor to correct this issue.
+  
+insufficient number of entries in row
+  Attempted to read a data file, but the row was missing one or more entries.
+  The exact meaning depends on the specific data file, but generally this error
+  means the file is incomplete, improperly formatted or corrupted.  See the
+  documentation on the various file types to determine if this error can be
+  corrected.
+  
+invalid entry in row
+  Attempted to read a data file, but an entry was not formatted correctly.
+  See the documentation on the various file types to determine if this error
+  can be corrected.
 
 
 ----------

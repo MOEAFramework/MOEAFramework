@@ -9,7 +9,7 @@ import org.moeaframework.problem.AbstractProblem;
  * <p>
  * Properties:
  * <ul>
- *   <li>Connected and unsymmetric Pareto set
+ *   <li>Connected and asymmetric Pareto set
  *   <li>Curved Pareto front
  *   <li>Constrained
  * </ul>
@@ -40,6 +40,9 @@ public class Viennet4 extends AbstractProblem {
 				Math.pow(2.0*y - x, 2.0) / 17.0 - 13.0;
 		double f3 = Math.pow(3.0*x - 2.0*y + 4.0, 2.0) / 8.0 +
 				Math.pow(x - y + 1.0, 2.0) / 27.0 + 15.0;
+		
+		//subtract Double.MIN_VALUE so that the constraint is satisfied only if
+		//its values is strictly greater than 0
 		double c1 = -4.0*x + 4.0 - y - Double.MIN_VALUE;
 		double c2 = x + 1 - Double.MIN_VALUE;
 		double c3 = y - x + 2.0 - Double.MIN_VALUE;

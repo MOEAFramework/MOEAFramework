@@ -42,6 +42,7 @@ import org.jfree.base.Library;
 import org.jfree.ui.about.AboutDialog;
 import org.jfree.ui.about.ProjectInfo;
 import org.moeaframework.Instrumenter;
+import org.moeaframework.core.NondominatedPopulation;
 
 /**
  * Collection of actions used by the diagnostic tool.
@@ -856,13 +857,21 @@ public class ActionFactory implements ControllerListener {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Instrumenter instrumenter = new Instrumenter()
-						.withProblem(key.getProblem());
+				NondominatedPopulation referenceSet = null;
+				
+				try {
+					Instrumenter instrumenter = new Instrumenter()
+							.withProblem(key.getProblem());
+					
+					referenceSet = instrumenter.getReferenceSet();
+				} catch (Exception ex) {
+					//silently handle if no reference set is available
+				}
 				
 				ApproximationSetViewer viewer = new ApproximationSetViewer(
 						key.toString(),
 						controller.get(key), 
-						instrumenter.getReferenceSet());
+						referenceSet);
 				viewer.setLocationRelativeTo(frame);
 				viewer.setIconImage(frame.getIconImage());
 				viewer.setVisible(true);
