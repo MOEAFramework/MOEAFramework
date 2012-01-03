@@ -12,6 +12,9 @@ any changes.
  Easy
 ------
 
+  - The recently-added misc problems from Van Veldhuizen's dissertation need
+    the necessary support files - unit tests, reference set files, etc.
+
   - Upgrade to JMetal 4.0.  Some work is required since some packages changed
     between version 3.1 and 4.0.  This change will likely have to wait until a
     major revision as backwards compatibility will likely break.

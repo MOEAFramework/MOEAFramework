@@ -76,6 +76,37 @@ import org.moeaframework.problem.ZDT.ZDT3;
 import org.moeaframework.problem.ZDT.ZDT4;
 import org.moeaframework.problem.ZDT.ZDT5;
 import org.moeaframework.problem.ZDT.ZDT6;
+import org.moeaframework.problem.misc.Belegundu;
+import org.moeaframework.problem.misc.Binh;
+import org.moeaframework.problem.misc.Binh2;
+import org.moeaframework.problem.misc.Binh3;
+import org.moeaframework.problem.misc.Binh4;
+import org.moeaframework.problem.misc.Fonseca;
+import org.moeaframework.problem.misc.Fonseca2;
+import org.moeaframework.problem.misc.Jimenez;
+import org.moeaframework.problem.misc.Kita;
+import org.moeaframework.problem.misc.Kursawe;
+import org.moeaframework.problem.misc.Laumanns;
+import org.moeaframework.problem.misc.Lis;
+import org.moeaframework.problem.misc.Murata;
+import org.moeaframework.problem.misc.OKA1;
+import org.moeaframework.problem.misc.OKA2;
+import org.moeaframework.problem.misc.Obayashi;
+import org.moeaframework.problem.misc.Osyczka;
+import org.moeaframework.problem.misc.Osyczka2;
+import org.moeaframework.problem.misc.Poloni;
+import org.moeaframework.problem.misc.Quagliarella;
+import org.moeaframework.problem.misc.Rendon;
+import org.moeaframework.problem.misc.Rendon2;
+import org.moeaframework.problem.misc.Schaffer;
+import org.moeaframework.problem.misc.Schaffer2;
+import org.moeaframework.problem.misc.Srinivas;
+import org.moeaframework.problem.misc.Tamaki;
+import org.moeaframework.problem.misc.Tanaka;
+import org.moeaframework.problem.misc.Viennet;
+import org.moeaframework.problem.misc.Viennet2;
+import org.moeaframework.problem.misc.Viennet3;
+import org.moeaframework.problem.misc.Viennet4;
 
 /**
  * Provides a standard set of test problems. The table below details the 
@@ -404,6 +435,192 @@ import org.moeaframework.problem.ZDT.ZDT6;
  *     <td>Real</td>
  *     <td></td>
  *   </tr>
+ *   <tr>
+ *     <td>{@link Belegundu}</td>
+ *     <td>{@code Belegundu}</td>
+ *     <td>Real</td>
+ *     <td></td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@link Binh}</td>
+ *     <td>{@code Binh}</td>
+ *     <td>Real</td>
+ *     <td></td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@link Binh2}</td>
+ *     <td>{@code Binh2}</td>
+ *     <td>Real</td>
+ *     <td></td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@link Binh3}</td>
+ *     <td>{@code Binh3}</td>
+ *     <td>Real</td>
+ *     <td></td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@link Binh4}</td>
+ *     <td>{@code Binh4}</td>
+ *     <td>Real</td>
+ *     <td></td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@link Fonseca}</td>
+ *     <td>{@code Fonseca}</td>
+ *     <td>Real</td>
+ *     <td></td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@link Fonseca2}</td>
+ *     <td>{@code Fonseca2}</td>
+ *     <td>Real</td>
+ *     <td></td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@link Jimenez}</td>
+ *     <td>{@code Jimenez}</td>
+ *     <td>Real</td>
+ *     <td></td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@link Kita}</td>
+ *     <td>{@code Kita}</td>
+ *     <td>Real</td>
+ *     <td></td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@link Kursawe}</td>
+ *     <td>{@code Kursawe}</td>
+ *     <td>Real</td>
+ *     <td></td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@link Laumanns}</td>
+ *     <td>{@code Laumanns}</td>
+ *     <td>Real</td>
+ *     <td></td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@link Lis}</td>
+ *     <td>{@code Lis}</td>
+ *     <td>Real</td>
+ *     <td></td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@link Murata}</td>
+ *     <td>{@code Murata}</td>
+ *     <td>Real</td>
+ *     <td></td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@link Obayashi}</td>
+ *     <td>{@code Obayashi}</td>
+ *     <td>Real</td>
+ *     <td></td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@link OKA1}</td>
+ *     <td>{@code OKA1}</td>
+ *     <td>Real</td>
+ *     <td></td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@link OKA2}</td>
+ *     <td>{@code OKA2}</td>
+ *     <td>Real</td>
+ *     <td></td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@link Osyczka}</td>
+ *     <td>{@code Osyczka}</td>
+ *     <td>Real</td>
+ *     <td></td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@link Osyczka2}</td>
+ *     <td>{@code Osyczka2}</td>
+ *     <td>Real</td>
+ *     <td></td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@link Poloni}</td>
+ *     <td>{@code Poloni}</td>
+ *     <td>Real</td>
+ *     <td></td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@link Quagliarella}</td>
+ *     <td>{@code Quagliarella}</td>
+ *     <td>Real</td>
+ *     <td></td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@link Rendon}</td>
+ *     <td>{@code Rendon}</td>
+ *     <td>Real</td>
+ *     <td></td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@link Rendon2}</td>
+ *     <td>{@code Rendon2}</td>
+ *     <td>Real</td>
+ *     <td></td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@link Schaffer}</td>
+ *     <td>{@code Schaffer}</td>
+ *     <td>Real</td>
+ *     <td></td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@link Schaffer2}</td>
+ *     <td>{@code Schaffer2}</td>
+ *     <td>Real</td>
+ *     <td></td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@link Srinivas}</td>
+ *     <td>{@code Srinivas}</td>
+ *     <td>Real</td>
+ *     <td></td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@link Tamaki}</td>
+ *     <td>{@code Tamaki}</td>
+ *     <td>Real</td>
+ *     <td></td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@link Tanaka}</td>
+ *     <td>{@code Tanaka}</td>
+ *     <td>Real</td>
+ *     <td></td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@link Viennet}</td>
+ *     <td>{@code Viennet}</td>
+ *     <td>Real</td>
+ *     <td></td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@link Viennet2}</td>
+ *     <td>{@code Viennet2}</td>
+ *     <td>Real</td>
+ *     <td></td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@link Viennet3}</td>
+ *     <td>{@code Viennet3}</td>
+ *     <td>Real</td>
+ *     <td></td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@link Viennet4}</td>
+ *     <td>{@code Viennet4}</td>
+ *     <td>Real</td>
+ *     <td></td>
+ *   </tr>
  * </table>
  */
 public class StandardProblems extends ProblemProvider {
@@ -531,6 +748,68 @@ public class StandardProblems extends ProblemProvider {
 				return new LZ8();
 			} else if (name.equals("LZ9")) {
 				return new LZ9();
+			} else if (name.equals("Belegundu")) {
+				return new Belegundu();
+			} else if (name.equals("Binh")) {
+				return new Binh();
+			} else if (name.equals("Binh2")) {
+				return new Binh2();
+			} else if (name.equals("Binh3")) {
+				return new Binh3();
+			} else if (name.equals("Binh4")) {
+				return new Binh4();
+			} else if (name.equals("Fonseca")) {
+				return new Fonseca();
+			} else if (name.equals("Fonseca2")) {
+				return new Fonseca2(3);
+			} else if (name.equals("Jimenez")) {
+				return new Jimenez();
+			} else if (name.equals("Kita")) {
+				return new Kita();
+			} else if (name.equals("Kursawe")) {
+				return new Kursawe(3);
+			} else if (name.equals("Laumanns")) {
+				return new Laumanns();
+			} else if (name.equals("Lis")) {
+				return new Lis();
+			} else if (name.equals("Murata")) {
+				return new Murata();
+			} else if (name.equals("Obayashi")) {
+				return new Obayashi();
+			} else if (name.equals("OKA1")) {
+				return new OKA1();
+			} else if (name.equals("OKA2")) {
+				return new OKA2();
+			} else if (name.equals("Osyczka")) {
+				return new Osyczka();
+			} else if (name.equals("Osyczka2")) {
+				return new Osyczka2();
+			} else if (name.equals("Poloni")) {
+				return new Poloni();
+			} else if (name.equals("Quagliarella")) {
+				return new Quagliarella();
+			} else if (name.equals("Rendon")) {
+				return new Rendon();
+			} else if (name.equals("Rendon2")) {
+				return new Rendon2();
+			} else if (name.equals("Schaffer")) {
+				return new Schaffer();
+			} else if (name.equals("Schaffer2")) {
+				return new Schaffer2();
+			} else if (name.equals("Srinivas")) {
+				return new Srinivas();
+			} else if (name.equals("Tamaki")) {
+				return new Tamaki();
+			} else if (name.equals("Tanaka")) {
+				return new Tanaka();
+			} else if (name.equals("Viennet")) {
+				return new Viennet();
+			} else if (name.equals("Viennet2")) {
+				return new Viennet2();
+			} else if (name.equals("Viennet3")) {
+				return new Viennet3();
+			} else if (name.equals("Viennet4")) {
+				return new Viennet4();
 			} else {
 				return null;
 			}

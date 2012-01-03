@@ -505,7 +505,13 @@ public class Settings {
 				"CF1", "CF2", "CF3", "CF4", "CF5", "CF6", "CF7", "CF8", "CF9", "CF10",
 				"LZ1", "LZ2", "LZ3", "LZ4", "LZ5", "LZ6", "LZ7", "LZ8", "LZ9",
 				"WFG1_2", "WFG2_2", "WFG3_2", "WFG4_2", "WFG5_2", "WFG6_2", "WFG7_2", "WFG8_2", "WFG9_2",
-				"ZDT1", "ZDT2", "ZDT3", "ZDT4", "ZDT5", "ZDT6" });
+				"ZDT1", "ZDT2", "ZDT3", "ZDT4", "ZDT5", "ZDT6",
+				"Belegundu", "Binh", "Binh2", "Binh3", "Binh4", "Fonseca", 
+				"Fonseca2", "Jimenez", "Kita", "Kursawe", "Laumanns", "Lis", 
+				"Murata", "Obayashi", "OKA1", "OKA2", "Osyczka", "Osyczka2", 
+				"Poloni", "Quagliarella", "Rendon", "Rendon2", "Schaffer", 
+				"Schaffer2", "Srinivas", "Tamaki", "Tanaka", "Viennet", 
+				"Viennet2", "Viennet3", "Viennet4"});
 	}
 	
 }
