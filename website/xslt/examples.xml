@@ -62,7 +62,7 @@
 <p>
   Lastly, compile and run the program using the following commands.  For
   Windows users, run these commands in the Command Prompt from the 
-  MOEAFrameworkDemo folder.
+  MOEAFramework-%VERSION% folder.
 </p>
 
 <pre>

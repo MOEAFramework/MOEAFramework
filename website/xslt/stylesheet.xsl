@@ -118,14 +118,14 @@
 								</p>
 								<ul>
 									<li>
-										<a>
-											<xsl:attribute name="href">http://downloads.sourceforge.net/project/moeaframework/MOEAFramework-<xsl:value-of select="$version" />/MOEAFramework-<xsl:value-of select="$version" />.tar.gz</xsl:attribute>
+										<a href="http://downloads.sourceforge.net/project/moeaframework/MOEAFramework-%VERSION%/MOEAFramework-%VERSION%.tar.gz"
+										    onclick="_gaq.push(['_trackEvent', 'Downloads', 'Binary', 'Version', '%VERSION%'])">
 											Compiled Binaries
 										</a>
 									</li>
 									<li>
-										<a>
-											<xsl:attribute name="href">http://downloads.sourceforge.net/project/moeaframework/MOEAFramework-<xsl:value-of select="$version" />/MOEAFramework-<xsl:value-of select="$version" />-source.tar.gz</xsl:attribute>
+										<a href="http://downloads.sourceforge.net/project/moeaframework/MOEAFramework-%VERSION%/MOEAFramework-%VERSION%-source.tar.gz"
+                                            onclick="_gaq.push(['_trackEvent', 'Downloads', 'Source', 'Version', '%VERSION%'])">
 											Source Code
 										</a>
 									</li>

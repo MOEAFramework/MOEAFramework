@@ -24,7 +24,7 @@
 <h3>Key Features</h3>
   
   <ul>
-    <li>Fast, reliable implementations of many state-of-the-art multiobjective optimization algorithms</li>
+    <li>Fast, reliable implementations of many state-of-the-art multiobjective evolutionary algorithms</li>
     <li>Extensible with custom algorithms, problems and operators</li>
     <li>Modular design for constructing new optimization algorithms from existing components</li>
     <li>Permissive open source license</li>

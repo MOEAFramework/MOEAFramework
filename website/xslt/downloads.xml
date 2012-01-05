@@ -23,7 +23,8 @@
 <div class="listing">
   <ul>
     <li>
-      <a href="http://downloads.sourceforge.net/project/moeaframework/MOEAFramework-%VERSION%/MOEAFramework-%VERSION%.tar.gz">
+      <a href="http://downloads.sourceforge.net/project/moeaframework/MOEAFramework-%VERSION%/MOEAFramework-%VERSION%.tar.gz"
+          onclick="_gaq.push(['_trackEvent', 'Downloads', 'Binary', 'Version', '%VERSION%'])">
         <img src="images/java_jar.png" class="float-left" width="22" height="22" alt="Download compiled binaries" />
         <strong>Compiled Binaries</strong>
       </a>
@@ -36,7 +37,8 @@
       <div class="fix"></div>
     </li>
     <li>
-      <a href="http://downloads.sourceforge.net/project/moeaframework/MOEAFramework-%VERSION%/MOEAFramework-%VERSION%-source.tar.gz">
+      <a href="http://downloads.sourceforge.net/project/moeaframework/MOEAFramework-%VERSION%/MOEAFramework-%VERSION%-source.tar.gz"
+          onclick="_gaq.push(['_trackEvent', 'Downloads', 'Source', 'Version', '%VERSION%'])">
         <img src="images/tgz.png" class="float-left" width="22" height="22" alt="Download source code" />
         <strong>Source Code</strong>
       </a>
@@ -65,8 +67,10 @@
     <td>1.8</td>
     <td>21 Nov 2011</td>
     <td>
-      <a href="http://downloads.sourceforge.net/project/moeaframework/MOEAFramework-1.8/MOEAFramework-1.8.tar.gz">Binary</a> |
-      <a href="http://downloads.sourceforge.net/project/moeaframework/MOEAFramework-1.8/MOEAFramework-1.8-source.tar.gz">Source</a>
+      <a href="http://downloads.sourceforge.net/project/moeaframework/MOEAFramework-1.8/MOEAFramework-1.8.tar.gz"
+          onclick="_gaq.push(['_trackEvent', 'Downloads', 'Binary', 'Version', '1.8'])">Binary</a> |
+      <a href="http://downloads.sourceforge.net/project/moeaframework/MOEAFramework-1.8/MOEAFramework-1.8-source.tar.gz"
+          onclick="_gaq.push(['_trackEvent', 'Downloads', 'Source', 'Version', '1.8'])">Source</a>
     </td>
   </tr>
   <tr>
