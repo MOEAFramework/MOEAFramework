@@ -22,30 +22,30 @@ source code and/or provided in the licenses folder.
 
   * Apache Commons CLI
     Copyright 2001-2009 The Apache Software Foundation
-    Licensed under the Apache License
+    Licensed under the Apache License, version 2.0
     
   * Apache Commons Codec
     Copyright 2002-2011 The Apache Software Foundation
-    Licensed under the Apache License
+    Licensed under the Apache License, version 2.0
     
   * Apache Commons Math
     See the JAR file for copyright notices
-    Licensed under the Apache License
+    Licensed under the Apache License, version 2.0
   
   * JCommon                     
     Copyright 2000-2009 Object Refinery Limited and Contributors
-    Licensed under the GNU Lesser General Public License
+    Licensed under the GNU Lesser General Public License, version 2.1 or later
   
   * JFreeChart
     Copyright 2000-2009 Object Refinery Limited and Contributors
-    Licensed under the GNU Lesser General Public License
+    Licensed under the GNU Lesser General Public License, version 2.1 or later
   
   * JMetal
-    Licensed under the GNU Lesser General Public License
+    Licensed under the GNU Lesser General Public License, version 3 or later
   
   * JUnit              
     Copyright 2000-2006 www.hamcrest.org          
-    Licensed under the BSD License
+    Licensed under the Common Public License, version 1.0
     
   * Portions derived from the Java Evolutionary Computing Framework
     Copyright 2008 David Hadka
@@ -55,7 +55,7 @@ source code and/or provided in the licenses folder.
      
   * Sobol sequence generator and data file containing direction numbers
     Copyright 2008 Frances Kuo and Stephen Joe
-    Licensed under the BSD license
+    Licensed under the modified BSD license
 
   * Hypervolume metric, indicator-based fitness evaluation codes, SBX and PM
     operators
@@ -78,8 +78,8 @@ source code and/or provided in the licenses folder.
     
   * File moving, copying and deleting codes by Chris Nokleberg
     Copyright (C) 2007 The Guava Authors
-    Licensed under the Apache License, Version 2.0
+    Licensed under the Apache License, version 2.0
     
   * List iterator implementation based on the Apache Commons Collections 3.1
-    Licensed under the Apache License, Version 2.0
+    Licensed under the Apache License, version 2.0
  
