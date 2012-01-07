@@ -21,7 +21,7 @@ import org.moeaframework.core.Settings;
 
 /* This code is based on the Walking Fish Group implementation.
  * 
- * Copyright © 2005 The Walking Fish Group (WFG).
+ * Copyright 2005 The Walking Fish Group (WFG).
  *
  * This material is provided "as is", with no warranty expressed or implied.
  * Any use is at your own risk. Permission to use or copy this software for

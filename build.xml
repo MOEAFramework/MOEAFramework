@@ -38,7 +38,6 @@
 		<mkdir dir="build" />
 
 		<javac destdir="build" srcdir="src" debug="${java.debug}"
-				target="${java.target}"
 				excludes="**/package-info.java"
 				includeantruntime="false">
 			<classpath refid="classpath" />
@@ -81,7 +80,7 @@
 		<mkdir dir="build" />
 
 		<javac destdir="build" debug="${java.debug}" 
-				target="${java.target}" includeantruntime="false">
+				includeantruntime="false">
 			<src path="test" />
 			<src path="examples" />
 			<classpath>
