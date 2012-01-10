@@ -1,6 +1,16 @@
 This file documents the major changes implemented in each release of the MOEA
 Framework.
 
+--------------------
+ Version 1.10 (TBD)
+--------------------
+
+  * Adds the --epsilon command line argument to SetHypervolume.
+
+  * Removes non-UTF characters from several source files that were preventing
+    compilation in OpenJDK 7.
+    
+
 ---------------------------
  Version 1.9 (03 Jan 2012)
 ---------------------------

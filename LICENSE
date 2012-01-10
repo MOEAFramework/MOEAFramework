@@ -46,6 +46,7 @@ source code and/or provided in the licenses folder.
   * JUnit              
     Copyright 2000-2006 www.hamcrest.org          
     Licensed under the Common Public License, version 1.0
+    Note: JUnit is only required to compile and run unit tests.
     
   * Portions derived from the Java Evolutionary Computing Framework
     Copyright 2008 David Hadka
