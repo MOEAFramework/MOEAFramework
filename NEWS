@@ -7,7 +7,7 @@ Framework.
 
   * Adds the --epsilon command line argument to SetHypervolume.
 
-  * Removes non-UTF characters from several source files that were preventing
+  * Removes non-UTF8 characters from several source files that were preventing
     compilation in OpenJDK 7.
     
 

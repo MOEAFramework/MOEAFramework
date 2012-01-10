@@ -118,14 +118,14 @@
 								</p>
 								<ul>
 									<li>
-										<a href="http://downloads.sourceforge.net/project/moeaframework/MOEAFramework-%VERSION%/MOEAFramework-%VERSION%.tar.gz"
-										    onclick="_gaq.push(['_trackEvent', 'Downloads', 'Binary', 'Version', '%VERSION%'])">
+										<a href="https://sourceforge.net/projects/moeaframework/files/MOEAFramework-%VERSION%/MOEAFramework-%VERSION%.tar.gz/download"
+										    onClick="_gaq.push(['_trackEvent', 'Downloads', 'Binary', '%VERSION%']);">
 											Compiled Binaries
 										</a>
 									</li>
 									<li>
-										<a href="http://downloads.sourceforge.net/project/moeaframework/MOEAFramework-%VERSION%/MOEAFramework-%VERSION%-source.tar.gz"
-                                            onclick="_gaq.push(['_trackEvent', 'Downloads', 'Source', 'Version', '%VERSION%'])">
+										<a href="https://sourceforge.net/projects/moeaframework/files/MOEAFramework-%VERSION%/MOEAFramework-%VERSION%-source.tar.gz/download"
+                                            onClick="_gaq.push(['_trackEvent', 'Downloads', 'Source', '%VERSION%']);">
 											Source Code
 										</a>
 									</li>
