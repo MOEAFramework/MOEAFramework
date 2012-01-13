@@ -100,54 +100,54 @@
 		<jar basedir="build" 
 			jarfile="dist/${shortname}-${version}-test.jar" />
 	</target>
-	
+
 	<target name="package-binary" 
 			depends="build-binary, build-test, build-javadoc"
 			description="Creates the binary distribution file">
 		<property name="base" value="build/${shortname}-${version}" />
-		
+
 		<delete dir="build" />
 		<mkdir dir="${base}" />
 		<mkdir dir="${base}/lib" />
 		<mkdir dir="${base}/pf" />
 		<mkdir dir="${base}/licenses" />
-		
+
 		<copy todir="${base}">
 			<path refid="requiredfiles" />
 			<fileset file="global.properties" />
 			<fileset file="test.xml" />
 			<fileset dir="auxiliary/windows" includes="*" />
 		</copy>
-		
+
 		<replace file="${base}/README">
 			<replacefilter token="%VERSION%" value="${version}" />
 			<replacefilter token="%DATE%" value="${TODAY}" />
 		</replace>
-		
+
 		<replace file="${base}/test.xml">
 			<replacefilter token="$${shortname}" value="${shortname}" />
 			<replacefilter token="$${version}" value="${version}" />
 		</replace>
-		
+
 		<copy todir="${base}/licenses">
 			<fileset dir="META-INF" includes="*-LICENSE" 
 					excludes="ZHANG-LICENSE" />
 		</copy>
-			
+
 		<copy todir="${base}/lib">
 			<fileset file="dist/${shortname}-${version}.jar" />
 			<fileset file="dist/${shortname}-${version}-test.jar" />
 			<fileset dir="lib" />
 		</copy>
-		
+
 		<copy todir="${base}/pf">
 			<fileset dir="pf" />
 		</copy>
-		
+
 		<copy todir="${base}/javadoc">
 			<fileset dir="javadoc" />
 		</copy>
-		
+
 		<tar destfile="dist/${shortname}-${version}.tar.gz" 
 				basedir="build" compression="gzip" />
 	</target>
@@ -155,28 +155,28 @@
 	<target name="package-source" 
 			description="Creates the source code distribution file">
 		<property name="base" value="build/${shortname}-${version}" />
-		
+
 		<delete dir="build" />
 		<mkdir dir="${base}" />
-		
+
 		<copy todir="${base}">
-			<fileset dir="." excludes="\.*,\.*/**,bin/**,build/**,dist/**,javadoc/**" />	
+			<fileset dir="." excludes="\.*,\.*/**,bin/**,build/**,dist/**,javadoc/**" />
 		</copy>
 
 		<tar destfile="dist/${shortname}-${version}-source.tar.gz" 
 				basedir="build" compression="gzip" />
 	</target>
-	
+
 	<target name="package-website" depends="build-javadoc"
 			description="Creates the website">
 		<delete dir="build" />
 		<mkdir dir="build" />
-		
+
 		<tstamp>
 			<format pattern="MMM dd, yyyy" property="today" />
 			<format pattern="yyyy-MM-dd" property="lastmod" />
 		</tstamp>
-		
+
 		<copy todir="build">
 			<fileset dir="website" excludes="*.partial,xslt/**" />
 		</copy>
@@ -184,9 +184,9 @@
 		<copy todir="build/javadoc">
 			<fileset dir="javadoc" />
 		</copy>
-		
+
 		<loadfile property="website.tracker" srcFile="website/tracker.partial" />
-		
+
 		<xslt basedir="website/xslt" destdir="build" 
 				style="website/xslt/stylesheet.xsl" 
 				includes="*.xml" filenameparameter="filename">
@@ -198,32 +198,32 @@
 		<replace dir="build" includes="**/*.html">
 			<replacefilter token="%VERSION%" value="${version}" />
 			<replacefilter value="${website.tracker}">
-			    <replacetoken><![CDATA[<!-- %TRACKER% -->]]></replacetoken> 
+				<replacetoken><![CDATA[<!-- %TRACKER% -->]]></replacetoken>
 			</replacefilter>
 		</replace>
-		
+
 		<replace file="build/sitemap.xml">
 			<replacefilter token="%LASTMOD%" value="${lastmod}" />
 		</replace>
-		
+
 		<copy todir="build">
 			<fileset dir="examples" includes="*.java" />
 		</copy>
 	</target>
-	
+
 	<target name="package-jnlp" 
 			depends="build-binary"
 			description="Creates the JNLP Web Start distribution">
 		<property name="base" value="build/${shortname}-${version}" />
-		
+
 		<delete dir="build" />
 		<mkdir dir="${base}" />
 		<mkdir dir="${base}/lib" />
-		
+
 		<copy todir="${base}">
 			<fileset dir="auxiliary/jnlp" />
 		</copy>
-		
+
 		<replace dir="${base}" includes="README,DiagnosticTool.jnlp">
 			<replacefilter token="%VERSION%" value="${version}" />
 			<replacefilter token="%DATE%" value="${TODAY}" />
@@ -233,10 +233,10 @@
 			<fileset file="dist/${shortname}-${version}.jar" />
 			<fileset dir="lib" />
 		</copy>
-		
+
 		<jar basedir="." includes="pf/*" 
 				jarfile="${base}/lib/${shortname}-${version}-pf.jar" />
-		
+
 		<signjar alias="moeaframework" storepass="secret">
 			<path>
 				<fileset dir="${base}/lib" includes="*.jar" />
@@ -244,8 +244,30 @@
 		</signjar>
 	</target>
 
-	<target name="download-pisa-windows" 
-			description="Downloads all PISA selectors for Windows">
+	<taskdef name="one-jar" 
+		classname="com.simontuffs.onejar.ant.OneJarTask" 
+		classpath="auxiliary/one-jar/one-jar-ant-task-0.97.jar" 
+		onerror="report" />
+
+	<target name="package-executable" depends="build-binary" description="Creates the executable JAR file">
+		<one-jar destfile="dist/${shortname}-${version}-Executable.jar">
+			<manifest>
+				<attribute name="Main-Class" value="com.simontuffs.onejar.Boot" />
+				<attribute name="One-Jar-Main-Class" value="org.moeaframework.analysis.diagnostics.LaunchDiagnosticTool" />
+			</manifest>
+			<main jar="dist/${shortname}-${version}.jar" />
+			<lib>
+				<fileset dir="lib" excludes="${shortname}-*.jar, junit-*.jar" />
+			</lib>
+			<path refid="requiredfiles" />
+			<fileset dir="." includes="pf/, global.properties" />
+			<fileset dir="META-INF" includes="*-LICENSE" excludes="ZHANG-LICENSE" />
+		</one-jar>
+
+		<chmod file="dist/${shortname}-${version}-Executable.jar" perm="+x" />
+	</target>
+
+	<target name="download-pisa-windows" description="Downloads all PISA selectors for Windows">
 		<delete dir="build" />
 		<mkdir dir="build" />
 
@@ -292,12 +314,12 @@
 			<fileset includes="**/*" dir="build" />
 		</move>
 	</target>
-	
+
 	<target name="download-pisa-linux" 
 			description="Downloads all PISA selectors for Linux">
 		<delete dir="build" />
 		<mkdir dir="build" />
-		
+
 		<!-- download PISA binaries -->
 		<get src="http://www.tik.ee.ethz.ch/pisa/selectors/spam/spam_linux_32.tar.gz" dest="build" />
 		<!--<get src="http://www.tik.ee.ethz.ch/pisa/selectors/shv/shv_linux32.rar" dest="build" />-->
@@ -326,16 +348,16 @@
 		<untar src="build/ibea_linux.tar.gz" compression="gzip" dest="build" />
 		<untar src="build/msops_linux.tar.gz" compression="gzip" dest="build" />
 		<untar src="build/epsmoea_linux.tar.gz" compression="gzip" dest="build" />
-		
+
 		<echo message="Note: SHV must be manually extracted" />
-		
+
 		<!--
 		<exec executable="unrar" failifexecutionfails="false">
 			<arg value="build/shv_linux32.rar" />
 			<arg value="build/shv_linux" />
 		</exec>
 		-->
-		
+
 		<chmod perm="+x">
 			<fileset dir="build" includes="**/*.sh" />
 			<fileset file="build/spam_linux/spam" />

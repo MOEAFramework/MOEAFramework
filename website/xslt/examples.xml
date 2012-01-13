@@ -29,8 +29,13 @@
 
 <p>
   To run these examples, first download and extract the latest compiled 
-  binaries from the <a href="downloads.html">downloads</a> page.  The files
-  will extract to a folder called MOEAFramework-%VERSION%.
+  binaries from the <a href="downloads.html">downloads</a> page.  Windows users
+  may extract the downloaded file using
+  <a href="http://www.7-zip.org/">7-zip</a>.  The files will extract to a 
+  folder called MOEAFramework-%VERSION%.  
+</p>
+
+<p>
   Next, download one of the examples below to this folder.  For example, if
   you downloaded <a href="Example1.java">Example1.java</a>, the folder contents
   should look similar to:

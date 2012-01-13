@@ -13,9 +13,8 @@
 
 <p>
   This page contains downloads for the current and prior releases of the MOEA 
-  Framework.  All downloads are available in the compressed tar (.tar.gz) 
-  format, which can be extracted using the 
-  <a href="http://www.7-zip.org/">7-zip</a> program.
+  Framework.  See the <a href="examples.html">examples page</a> for details on
+  extracting, configuring and executing the MOEA Framework.
 </p>
 
 <h3>Current Release: Version %VERSION%</h3>
@@ -25,14 +24,14 @@
     <li>
       <a href="https://sourceforge.net/projects/moeaframework/files/MOEAFramework-%VERSION%/MOEAFramework-%VERSION%.tar.gz/download"
           onClick="_gaq.push(['_trackEvent', 'Downloads', 'Binary', '%VERSION%']);">
-        <img src="images/java_jar.png" class="float-left" width="22" height="22" alt="Download compiled binaries" />
+        <img src="images/tgz.png" class="float-left" width="22" height="22" alt="Download compiled binaries" />
         <strong>Compiled Binaries</strong>
       </a>
       <br />
       <span>
         Download the compiled framework packaged in a JAR file.  Includes 
         all required libraries and supporting material necessary for using the 
-        framework.
+        MOEA framework.
       </span>
       <div class="fix"></div>
     </li>
@@ -45,8 +44,22 @@
       <br />
       <span>
         Download all source codes, unit tests and supporting material.  This 
-        download is recommended for users wanting to modify or extend the 
-        framework.
+        download is recommended for developers wanting to modify or extend the 
+        MOEA framework.
+      </span>
+      <div class="fix"></div>
+    </li>
+    <li>
+      <a href="https://sourceforge.net/projects/moeaframework/files/MOEAFramework-%VERSION%/MOEAFramework-%VERSION%-Executable.jar/download"
+          onClick="_gaq.push(['_trackEvent', 'Downloads', 'Executable', '%VERSION%']);">
+        <img src="images/java_jar.png" class="float-left" width="22" height="22" alt="Download the all-in-one executable JAR file" />
+        <strong>All-in-one Executable</strong>
+      </a>
+      <br />
+      <span>
+        Contains the entire MOEA Framework library packaged in a single,
+        executable JAR file.  Double-clicking the JAR file will
+        launch the MOEA diagnostic tool.
       </span>
       <div class="fix"></div>
     </li>
@@ -63,6 +76,7 @@
     <th>Release Date</th>
     <th>Downloads</th>
   </tr>
+  <!--
   <tr>
     <td>1.9</td>
     <td>03 Jan 2012</td>
@@ -73,6 +87,7 @@
           onClick="_gaq.push(['_trackEvent', 'Downloads', 'Source', '1.9']);">Source</a>
     </td>
   </tr>
+  -->
   <tr>
     <td>1.8</td>
     <td>21 Nov 2011</td>
