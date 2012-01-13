@@ -46,11 +46,6 @@ public class SettingsTest {
 	public void testHypervolumeEnabled() {
 		Settings.isHypervolumeEnabled();
 	}
-	
-	@Test
-	public void testJNLPEnabled() {
-		Assert.assertFalse(Settings.isJNLPEnabled());
-	}
 
 	@Test
 	public void testPISAAlgorithms() {

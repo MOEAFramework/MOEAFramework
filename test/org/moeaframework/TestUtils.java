@@ -458,6 +458,10 @@ public class TestUtils {
 		try {
 			input = TestUtils.class.getResourceAsStream(resource);
 			
+			if (input == null) {
+				throw new IOException("resource not found: " + resource);
+			}
+			
 			try {
 				output = new FileOutputStream(file);
 				

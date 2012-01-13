@@ -27,8 +27,6 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
@@ -61,7 +59,7 @@ public class PopulationIO {
 	 * @return a population containing all objective vectors read
 	 * @throws IOException if an I/O error occurred
 	 */
-	private static Population readObjectives(BufferedReader reader) throws
+	public static Population readObjectives(BufferedReader reader) throws
 	IOException {
 		Population population = new Population();
 		String line = null;
@@ -95,37 +93,6 @@ public class PopulationIO {
 
 		try {
 			reader = new CommentedLineReader(new FileReader(file));
-
-			return readObjectives(reader);
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
-		}
-	}
-
-	/**
-	 * Reads a set of objective vectors from a named resource.  This is similar
-	 * to {@link #readObjectives(File)}, but loads from a resource available on
-	 * the class path.
-	 * 
-	 * @param resource the name of the resource containing the objective vectors
-	 * @return a population containing all objective vectors in the resource
-	 * @throws IOException if an I/O exception occurred
-	 */
-	public static Population readObjectivesFromResource(String resource) throws
-	IOException {
-		BufferedReader reader = null;
-		
-		try {
-			InputStream stream = PopulationIO.class.getResourceAsStream(
-					resource);
-			
-			if (stream == null) {
-				throw new IOException("could not locate resource " + resource);
-			}
-			
-			reader = new CommentedLineReader(new InputStreamReader(stream));
 
 			return readObjectives(reader);
 		} finally {

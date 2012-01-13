@@ -18,11 +18,14 @@
 package org.moeaframework.problem;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PopulationIO;
 import org.moeaframework.core.Problem;
-import org.moeaframework.core.Settings;
 import org.moeaframework.core.spi.ProblemProvider;
 import org.moeaframework.problem.CEC2009.CF1;
 import org.moeaframework.problem.CEC2009.CF10;
@@ -107,6 +110,7 @@ import org.moeaframework.problem.misc.Viennet;
 import org.moeaframework.problem.misc.Viennet2;
 import org.moeaframework.problem.misc.Viennet3;
 import org.moeaframework.problem.misc.Viennet4;
+import org.moeaframework.util.io.CommentedLineReader;
 
 /**
  * Provides a standard set of test problems. The table below details the 
@@ -945,17 +949,35 @@ public class StandardProblems extends ProblemProvider {
 				return null;
 			}
 			
-			if (Settings.isJNLPEnabled()) {
-				return new NondominatedPopulation(PopulationIO
-						.readObjectivesFromResource("/pf/" + filename));
-			} else {
-				return new NondominatedPopulation(PopulationIO.readObjectives(
-						new File("./pf/", filename)));
-			}
+			return loadReferenceSet("pf/" + filename);
 		} catch (NumberFormatException e) {
 			return null;
 		} catch (IOException e) {
 			return null;
+		}
+	}
+	
+	private NondominatedPopulation loadReferenceSet(String resource)
+			throws IOException {
+		File file = new File(resource);
+		
+		if (file.exists()) {
+			return new NondominatedPopulation(PopulationIO.readObjectives(
+					file));
+		} else {
+			InputStream input = getClass().getResourceAsStream("/" + resource);
+			
+			if (input == null) {
+				throw new FileNotFoundException(resource);
+			} else {
+				try {
+					return new NondominatedPopulation(
+							PopulationIO.readObjectives(new CommentedLineReader(
+									new InputStreamReader(input))));
+				} finally {
+					input.close();
+				}
+			}
 		}
 	}
 

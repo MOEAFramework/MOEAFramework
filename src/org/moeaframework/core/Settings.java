@@ -21,6 +21,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.Properties;
 
@@ -88,11 +90,6 @@ public class Settings {
 	 */
 	public static final String KEY_HYPERVOLUME_ENABLED = KEY_PREFIX +
 			"core.indicator.hypervolume_enabled";
-	
-	/**
-	 * The property key for the JNLP Web Start flag.
-	 */
-	public static final String KEY_JNLP_ENABLED = KEY_PREFIX + "jnlp_enabled";
 	
 	/**
 	 * The prefix for all problem property keys.
@@ -188,17 +185,49 @@ public class Settings {
 	 * Loads the properties.
 	 */
 	static {
-		File file = new File(System.getProperty(KEY_PREFIX + "configuration", 
-				"global.properties"));
+		String resource = "global.properties";
+		Properties properties = null;
 		
-		Properties properties = new Properties(System.getProperties());
-		
-		if (file.exists()) {
-			try {
-				loadProperties(file, properties);
-			} catch (IOException e) {
-				throw new FrameworkException(e);
+		//attempt to access system properties
+		try {
+			properties = new Properties(System.getProperties());
+			
+			if (properties.containsKey(KEY_PREFIX + "configuration")) {
+				resource = properties.getProperty(KEY_PREFIX + "configuration");
 			}
+		} catch (SecurityException e) {
+			//this exception occurs in unsigned JNLP distributions
+			properties = new Properties();
+		}
+		
+		//attempt to access properties file
+		File file = new File(resource);
+		Reader reader = null;
+		
+		try {
+			try {
+				if (file.exists()) {
+					reader = new BufferedReader(new FileReader(file));
+				} else {
+					InputStream stream = Settings.class.getResourceAsStream(
+							"/" + resource);
+					
+					if (stream != null) {
+						reader = new BufferedReader(new InputStreamReader(
+								stream));
+					}
+				}
+				
+				if (reader != null) {
+					properties.load(reader);
+				}
+			} finally {
+				if (reader != null) {
+					reader.close();
+				}
+			}
+		} catch (IOException e) {
+			throw new FrameworkException(e);
 		}
 		
 		PROPERTIES = new TypedProperties(properties);
@@ -209,27 +238,6 @@ public class Settings {
 	 */
 	private Settings() {
 		super();
-	}
-	
-	/**
-	 * Loads the properties from the specified file.
-	 * 
-	 * @param file the properties file
-	 * @param properties the properties object where the properties are stored
-	 * @throws IOException if an I/O error occurred
-	 */
-	private static void loadProperties(File file, Properties properties) 
-	throws IOException {
-		Reader reader = null;
-		
-		try {
-			reader = new BufferedReader(new FileReader(file));
-			properties.load(reader);
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
-		}
 	}
 	
 	/**
@@ -290,18 +298,6 @@ public class Settings {
 	 */
 	public static boolean isHypervolumeEnabled() {
 		return PROPERTIES.getBoolean(KEY_HYPERVOLUME_ENABLED, true);
-	}
-	
-	/**
-	 * Returns [@code true} if JNLP Web Start mode is enabled; {@code false}
-	 * otherwise.  When enabled, built-in files must be treated as resources,
-	 * and accessed through a {@link ClassLoader}.
-	 * 
-	 * @return [@code true} if JNLP Web Start mode is enabled; {@code false}
-	 *         otherwise
-	 */
-	public static boolean isJNLPEnabled() {
-		return PROPERTIES.getBoolean(KEY_JNLP_ENABLED, false);
 	}
 	
 	/**
