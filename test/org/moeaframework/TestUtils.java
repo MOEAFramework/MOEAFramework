@@ -26,6 +26,8 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.Writer;
 import java.lang.reflect.Method;
@@ -424,6 +426,56 @@ public class TestUtils {
 	 */
 	public static String getNumericPattern(int n) {
 		return "(-?[0-9]+\\.[0-9]+(E-?[0-9]+)?\\b\\s*){" + n + "}";
+	}
+	
+	/**
+	 * Extracts the data stored in a resource, saving its contents to a
+	 * temporary file.  If the resource name contains an extension, the file
+	 * will be created with the extension.
+	 * 
+	 * @param resource the name of the resource to extract
+	 * @return the temporary file containing the resource data
+	 * @throws IOException if an I/O error occurred
+	 */
+	public static File extractResource(String resource) throws IOException {
+		InputStream input = null;
+		OutputStream output = null;
+		byte[] buffer = new byte[Settings.BUFFER_SIZE];
+		int len = -1;
+		
+		//determine the file extension, if any
+		File file = null;
+		int position = resource.indexOf('.', resource.lastIndexOf('/'));
+		
+		if (position < 0) {
+			file = TestUtils.createTempFile();
+		} else {
+			file = File.createTempFile("test", resource.substring(position));
+			file.deleteOnExit();
+		}
+		
+		//copy the resource contents to the file
+		try {
+			input = TestUtils.class.getResourceAsStream(resource);
+			
+			try {
+				output = new FileOutputStream(file);
+				
+				while ((len = input.read(buffer)) != -1) {
+					output.write(buffer, 0, len);
+				}
+			} finally {
+				if (output != null) {
+					output.close();
+				}
+			}
+		} finally {
+			if (input != null) {
+				input.close();
+			}
+		}
+		
+		return file;
 	}
 
 }

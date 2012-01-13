@@ -27,6 +27,7 @@ import javax.script.ScriptException;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.moeaframework.TestUtils;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
@@ -64,8 +65,7 @@ public class ScriptedProblemTest {
 	@Test
 	public void testJavascriptFile() throws ScriptException, IOException, 
 	URISyntaxException {
-		File file = new File(getClass().getResource(RESOURCE_JAVASCRIPT)
-				.toURI());
+		File file = TestUtils.extractResource(RESOURCE_JAVASCRIPT);
 		
 		test(new ScriptedProblem(file));
 	}
