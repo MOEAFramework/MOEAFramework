@@ -52,11 +52,9 @@ public class Example3 {
 			double sum = 0.0;
 			double[] x = CoreUtils.castVariablesToDoubleArray(solution);
 
-			for (int j=0; j<100; j++) {
 			for (int i = 0; i < numberOfVariables - 1; i++) {
 				sum += Math.pow(1.0 - x[i], 2.0) + 100.0
 						* Math.pow(x[i + 1] - Math.pow(x[i], 2.0), 2.0);
-			}
 			}
 
 			solution.setObjective(0, sum);
