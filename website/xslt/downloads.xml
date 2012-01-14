@@ -29,9 +29,9 @@
       </a>
       <br />
       <span>
-        Download the compiled framework packaged in a JAR file.  Includes 
-        all required libraries and supporting material necessary for using the 
-        MOEA framework.
+        Download the compiled binaries, documentation, data files and required
+        third-party libraries.  All the resources needed to start building
+        applications using the MOEA Framework are provided.
       </span>
       <div class="fix"></div>
     </li>
@@ -43,7 +43,7 @@
       </a>
       <br />
       <span>
-        Download all source codes, unit tests and supporting material.  This 
+        Download all source codes, unit tests and supporting materials.  This 
         download is recommended for developers wanting to modify or extend the 
         MOEA framework.
       </span>
@@ -58,8 +58,9 @@
       <br />
       <span>
         Contains the entire MOEA Framework library packaged in a single,
-        executable JAR file.  Double-clicking the JAR file will
-        launch the MOEA diagnostic tool.
+        executable JAR file.  Double-clicking the JAR file or running the
+        command '<code>java -jar MOEAFramework-%VERSION%-Executable.jar</code>'
+        will launch the MOEA diagnostic tool.
       </span>
       <div class="fix"></div>
     </li>
