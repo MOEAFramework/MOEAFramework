@@ -12,8 +12,6 @@ any changes.
  Easy
 ------
 
-  - Create a single-jar file distribution option.
-
   - The recently-added misc problems from Van Veldhuizen's dissertation need
     the necessary support files - unit tests, reference set files, etc.
     

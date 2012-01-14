@@ -58,8 +58,8 @@
       <br />
       <span>
         Contains the entire MOEA Framework library packaged in a single,
-        executable JAR file.  Double-clicking the JAR file or running the
-        command '<code>java -jar MOEAFramework-%VERSION%-Executable.jar</code>'
+        executable JAR file.  Double-clicking the JAR file or running
+        '<code>java -jar MOEAFramework-%VERSION%-Executable.jar</code>'
         will launch the MOEA diagnostic tool.
       </span>
       <div class="fix"></div>

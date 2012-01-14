@@ -100,7 +100,11 @@ class ProblemBuilder {
 	}
 	
 	/**
-	 * Sets the problem used by this builder.  
+	 * Sets the problem used by this builder.  Instances of the problem are
+	 * created using the {@link Class#newInstance()} method.  Ensure the problem
+	 * class satisfies all the conditions of {@code newInstance()}, otherwise
+	 * exceptions may be thrown when attempting to create an instance of the
+	 * problem.
 	 * 
 	 * @param problemClass the problem class
 	 * @return a reference to this builder
@@ -113,7 +117,11 @@ class ProblemBuilder {
 	}
 	
 	/**
-	 * Sets the problem used by this builder.  
+	 * Sets the problem used by this builder.  Instances of the problem are
+	 * created using the {@link Class#newInstance()} method.  Ensure the problem
+	 * class satisfies all the conditions of {@code newInstance()}, otherwise
+	 * exceptions may be thrown when attempting to create an instance of the
+	 * problem.
 	 * 
 	 * @param problemClassName the problem class name
 	 * @return a reference to this builder
