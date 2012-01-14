@@ -5,6 +5,9 @@ Framework.
  Version 1.10 (TBD)
 --------------------
 
+  * Adds all-in-one executable JAR file that contains the MOEA Framework
+    binaries, data files and dependencies bundled in a single JAR file.
+
   * Improved support for accessing reference sets and other resources that can
     either be located on the local file system or bundled in a JAR file.
 

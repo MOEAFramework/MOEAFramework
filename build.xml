@@ -244,27 +244,39 @@
 		</signjar>
 	</target>
 
-	<taskdef name="one-jar" 
-		classname="com.simontuffs.onejar.ant.OneJarTask" 
-		classpath="auxiliary/one-jar/one-jar-ant-task-0.97.jar" 
-		onerror="report" />
-
 	<target name="package-executable" depends="build-binary" description="Creates the executable JAR file">
-		<one-jar destfile="dist/${shortname}-${version}-Executable.jar">
-			<manifest>
-				<attribute name="Main-Class" value="com.simontuffs.onejar.Boot" />
-				<attribute name="One-Jar-Main-Class" value="org.moeaframework.analysis.diagnostics.LaunchDiagnosticTool" />
-			</manifest>
-			<main jar="dist/${shortname}-${version}.jar" />
-			<lib>
-				<fileset dir="lib" excludes="${shortname}-*.jar, junit-*.jar" />
-			</lib>
-			<path refid="requiredfiles" />
+		<delete dir="build" />
+		<mkdir dir="build" />
+		
+		<unjar dest="build" src="lib/commons-cli-1.2.jar" />
+		<move file="build/META-INF/NOTICE.txt" tofile="build/META-INF/COMMONS-CLI-NOTICE.txt" />
+		
+		<unjar dest="build" src="lib/commons-codec-1.5.jar" />
+		<move file="build/META-INF/NOTICE.txt" tofile="build/META-INF/COMMONS-CODEC-NOTICE.txt" />
+		
+		<unjar dest="build" src="lib/commons-math-2.2.jar" />
+		<move file="build/META-INF/NOTICE.txt" tofile="build/META-INF/COMMONS-MATH-NOTICE.txt" />
+		
+		<unjar dest="build" src="lib/jcommon-1.0.16.jar" />
+		<unjar dest="build" src="lib/jfreechart-1.0.13.jar" />
+		<unjar dest="build" src="lib/JMetal-3.1.jar" />
+		
+		<delete dir="build/META-INF/maven" />
+		<delete file="build/META-INF/LICENSE.txt" />
+		<delete file="build/META-INF/MANIFEST.mf" />
+		
+		<unjar dest="build" src="dist/${shortname}-${version}.jar" />
+		
+		<copy todir="build">
 			<fileset dir="." includes="pf/, global.properties" />
-			<fileset dir="META-INF" includes="*-LICENSE" excludes="ZHANG-LICENSE" />
-		</one-jar>
-
-		<chmod file="dist/${shortname}-${version}-Executable.jar" perm="+x" />
+		</copy>
+		
+		<manifest mode="update" file="build/META-INF/MANIFEST.mf">
+			<attribute name="Main-Class" value="org.moeaframework.analysis.diagnostics.LaunchDiagnosticTool" />
+		</manifest>
+		
+		<jar destfile="dist/${shortname}-${version}-Executable.jar"
+			basedir="build" manifest="build/META-INF/MANIFEST.mf" />
 	</target>
 
 	<target name="download-pisa-windows" description="Downloads all PISA selectors for Windows">
