@@ -20,7 +20,7 @@ package org.moeaframework.algorithm;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.moeaframework.core.CoreUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.EpsilonBoxEvolutionaryAlgorithm;
 import org.moeaframework.core.Initialization;
@@ -113,8 +113,9 @@ public class EpsilonMOEA extends AbstractEvolutionaryAlgorithm implements
 		if (archive.size() <= 1) {
 			parents = selection.select(variation.getArity(), population);
 		} else {
-			parents = CoreUtils.merge(archive.get(PRNG.nextInt(archive.size())),
-					selection.select(variation.getArity() - 1, population));
+			parents = ArrayUtils.add(
+					selection.select(variation.getArity() - 1, population),
+					archive.get(PRNG.nextInt(archive.size())));
 		}
 		
 		PRNG.shuffle(parents);

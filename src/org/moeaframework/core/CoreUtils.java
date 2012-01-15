@@ -110,7 +110,10 @@ public class CoreUtils {
 	 * @param solutions the tail solutions
 	 * @return an array containing the head solution followed by the tail
 	 *         solutions
+	 * @deprecated Will be removed in version 2.0; replace using
+	 *             ArrayUtils#add(T[], T)
 	 */
+	@Deprecated
 	public static Solution[] merge(Solution solution, Solution[] solutions) {
 		Solution[] result = new Solution[solutions.length + 1];
 
@@ -129,7 +132,10 @@ public class CoreUtils {
 	 * @param s1 the head solutions
 	 * @param s2 the tail solutions
 	 * @return an array containing the merger of the two specified arrays
+	 * @deprecated Will be removed in version 2.0; replace using
+	 *             ArrayUtils#addAll(T[], T...)
 	 */
+	@Deprecated
 	public static Solution[] merge(Solution[] s1, Solution[] s2) {
 		Solution[] result = new Solution[s1.length + s2.length];
 

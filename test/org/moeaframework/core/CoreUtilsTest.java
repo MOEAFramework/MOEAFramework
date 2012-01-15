@@ -108,6 +108,7 @@ public class CoreUtilsTest {
 	}
 	
 	@Test
+	@Deprecated
 	public void testMerge1() {
 		Solution s1 = new Solution(0, 0);
 		Solution s2 = new Solution(0, 0);
@@ -118,6 +119,7 @@ public class CoreUtilsTest {
 	}
 	
 	@Test
+	@Deprecated
 	public void testMerge1Empty() {
 		Solution s1 = new Solution(0, 0);
 		
@@ -126,12 +128,14 @@ public class CoreUtilsTest {
 	}
 	
 	@Test(expected = NullPointerException.class)
+	@Deprecated
 	public void testMerge1Null() {
 		Solution s1 = new Solution(0, 0);
 		CoreUtils.merge(s1, null);
 	}
 	
 	@Test
+	@Deprecated
 	public void testMerge2() {
 		Solution s1 = new Solution(0, 0);
 		Solution s2 = new Solution(0, 0);
@@ -143,6 +147,7 @@ public class CoreUtilsTest {
 	}
 	
 	@Test
+	@Deprecated
 	public void testMerge2Empty1() {
 		Solution s1 = new Solution(0, 0);
 		
@@ -151,12 +156,14 @@ public class CoreUtilsTest {
 	}
 	
 	@Test
+	@Deprecated
 	public void testMerge2Empty2() {
 		Assert.assertArrayEquals(new Solution[] { },
 				CoreUtils.merge(new Solution[] { }, new Solution[] { }));
 	}
 	
 	@Test(expected = NullPointerException.class)
+	@Deprecated
 	public void testMerge2Null() {
 		Solution s1 = new Solution(0, 0);
 		CoreUtils.merge((Solution[])null, new Solution[] { s1 });
