@@ -17,12 +17,12 @@
  */
 package org.moeaframework.problem;
 
+import org.apache.commons.math.stat.StatUtils;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.TestUtils;
 import org.moeaframework.algorithm.jmetal.JMetalProblemAdapter;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
-import org.moeaframework.util.ArrayMath;
 
 /**
  * Utilities for testing problems against their implementations in JMetal.
@@ -67,7 +67,7 @@ public abstract class ProblemTest {
 		
 		TestUtils.assertEquals(
 				Math.abs(solutionA.getOverallConstraintViolation()), 
-				Math.abs(ArrayMath.sum(solutionB.getConstraints())));
+				Math.abs(StatUtils.sum(solutionB.getConstraints())));
 	}
 
 }

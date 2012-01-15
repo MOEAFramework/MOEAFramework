@@ -5,6 +5,9 @@ Framework.
  Version 1.10 (TBD)
 --------------------
 
+  * Deprecates ArrayMath class, as its methods are already provided in 
+    Apache Commons Math in the StatUtils class.
+
   * Introduces support for instantiating problem instances using constructors
     with arguments to Executor, Analyzer and Instrumenter.  These classes now
     also provide the withSameProblemAs(...) method, allowing instances to easily

@@ -24,8 +24,8 @@ import java.io.PrintStream;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
+import org.apache.commons.math.stat.StatUtils;
 import org.moeaframework.core.PRNG;
-import org.moeaframework.util.ArrayMath;
 import org.moeaframework.util.CommandLineUtility;
 
 /**
@@ -277,7 +277,6 @@ public class SobolAnalysis extends CommandLineUtility {
 		double[] b0 = new double[nsample];
 		double[] b1 = new double[nsample];
 		double[] b2 = new double[nsample];
-
 		double[] s = new double[nresample];
 
 		for (int i = 0; i < nresample; i++) {
@@ -292,8 +291,9 @@ public class SobolAnalysis extends CommandLineUtility {
 			s[i] = computeFirstOrder(b0, b1, b2, nsample);
 		}
 
-		double ss = ArrayMath.sum(s) / nresample;
+		double ss = StatUtils.sum(s) / nresample;
 		double sss = 0.0;
+		
 		for (int i = 0; i < nresample; i++) {
 			sss += Math.pow(s[i] - ss, 2.0);
 		}
@@ -332,9 +332,11 @@ public class SobolAnalysis extends CommandLineUtility {
 	private static double computeTotalOrder(double[] a0, double[] a1,
 			double[] a2, int nsample) {
 		double c = 0.0;
+		
 		for (int i = 0; i < nsample; i++) {
 			c += a0[i];
 		}
+		
 		c /= nsample;
 
 		double tmp1 = 0.0;
@@ -359,7 +361,6 @@ public class SobolAnalysis extends CommandLineUtility {
 		double[] b0 = new double[nsample];
 		double[] b1 = new double[nsample];
 		double[] b2 = new double[nsample];
-
 		double[] s = new double[nresample];
 
 		for (int i = 0; i < nresample; i++) {
@@ -374,8 +375,9 @@ public class SobolAnalysis extends CommandLineUtility {
 			s[i] = computeTotalOrder(b0, b1, b2, nsample);
 		}
 
-		double ss = ArrayMath.sum(s) / nresample;
+		double ss = StatUtils.sum(s) / nresample;
 		double sss = 0.0;
+		
 		for (int i = 0; i < nresample; i++) {
 			sss += Math.pow(s[i] - ss, 2.0);
 		}
@@ -386,9 +388,11 @@ public class SobolAnalysis extends CommandLineUtility {
 	private static double computeSecondOrder(double[] a0, double[] a1,
 			double[] a2, double[] a3, double[] a4, int nsample) {
 		double c = 0.0;
+		
 		for (int i = 0; i < nsample; i++) {
 			c += a0[i];
 		}
+		
 		c /= nsample;
 
 		double EY = 0.0;
@@ -428,7 +432,6 @@ public class SobolAnalysis extends CommandLineUtility {
 		double[] b2 = new double[nsample];
 		double[] b3 = new double[nsample];
 		double[] b4 = new double[nsample];
-
 		double[] s = new double[nresample];
 
 		for (int i = 0; i < nresample; i++) {
@@ -445,8 +448,9 @@ public class SobolAnalysis extends CommandLineUtility {
 			s[i] = computeSecondOrder(b0, b1, b2, b3, b4, nsample);
 		}
 
-		double ss = ArrayMath.sum(s) / nresample;
+		double ss = StatUtils.sum(s) / nresample;
 		double sss = 0.0;
+		
 		for (int i = 0; i < nresample; i++) {
 			sss += Math.pow(s[i] - ss, 2.0);
 		}
@@ -479,7 +483,6 @@ public class SobolAnalysis extends CommandLineUtility {
 
 			if (count % (2 * P + 2) != 0) {
 				System.err.println(file + " is incomplete");
-				// throw new InvalidNumberOfEntries("not a multiple of 2P+2");
 			}
 
 			return count / (2 * P + 2);

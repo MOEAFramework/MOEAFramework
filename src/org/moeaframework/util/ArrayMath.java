@@ -21,12 +21,18 @@ import org.apache.commons.math.util.MathUtils;
 
 /**
  * Defines mathematical operations that are applied to arrays.
+ * 
+ * @deprecated Will be removed in version 2.0
  */
+@Deprecated
 public class ArrayMath {
 
 	/**
 	 * Private constructor to prevent instantiation.
+	 * 
+	 * @deprecated Will be removed in version 2.0
 	 */
+	@Deprecated
 	private ArrayMath() {
 		super();
 	}
@@ -38,7 +44,10 @@ public class ArrayMath {
 	 * @return the sum of all values in the specified array
 	 * @throws ArithmeticException if the result can not be represented as an
 	 *         {@code int}
+	 * @deprecated Will be removed in version 2.0; only used in one location,
+	 *             and the sum can be calculated alongside the array
 	 */
+	@Deprecated
 	public static int sum(int[] array) {
 		int sum = 0;
 
@@ -54,7 +63,10 @@ public class ArrayMath {
 	 * 
 	 * @param array the array of values
 	 * @return the sum of all values in the specified array
+	 * @deprecated Will be removed in version 2.0; should use
+	 *             StatUtils#sum(double[]) instead
 	 */
+	@Deprecated
 	public static double sum(double[] array) {
 		double sum = 0.0;
 
@@ -71,7 +83,10 @@ public class ArrayMath {
 	 * @param array the array of values
 	 * @return the minimum value in the specified array
 	 * @throws IllegalArgumentException if the array is empty
+	 * @deprecated Will be removed in version 2.0; should use 
+	 *             StatUtils#min(double[]) instead
 	 */
+	@Deprecated
 	public static double min(double[] array) {
 		if (array.length == 0) {
 			throw new IllegalArgumentException("no minimum element in empty array");
@@ -92,7 +107,10 @@ public class ArrayMath {
 	 * @param array the array of values
 	 * @return the maximum value in the specified array
 	 * @throws IllegalArgumentException if the array is empty
+	 * @deprecated Will be removed in version 2.0; should use 
+	 *             StatUtils#min(double[]) instead
 	 */
+	@Deprecated
 	public static double max(double[] array) {
 		if (array.length == 0) {
 			throw new IllegalArgumentException("no maximum element in empty array");

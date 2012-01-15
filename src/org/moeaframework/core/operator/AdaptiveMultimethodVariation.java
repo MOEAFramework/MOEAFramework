@@ -21,11 +21,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.commons.math.stat.StatUtils;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
-import org.moeaframework.util.ArrayMath;
 
 /**
  * Auto-adaptive multi-method recombination operator. Applies operators with
@@ -130,8 +130,8 @@ public class AdaptiveMultimethodVariation implements Variation {
 	 * @return the array of probabilities of applying each operator
 	 */
 	private double[] getOperatorProbabilities() {
-		int[] count = new int[operators.size()];
-		Arrays.fill(count, 1);
+		double[] count = new double[operators.size()];
+		Arrays.fill(count, 1.0);
 
 		for (Solution solution : archive) {
 			if (solution.hasAttribute(OPERATOR_ATTRIBUTE)) {
@@ -139,12 +139,11 @@ public class AdaptiveMultimethodVariation implements Variation {
 			}
 		}
 
-		int sum = ArrayMath.sum(count);
-
+		double sum = StatUtils.sum(count);
 		double[] probabilities = new double[count.length];
 
 		for (int i = 0; i < count.length; i++) {
-			probabilities[i] = count[i] / (double)sum;
+			probabilities[i] = count[i] / sum;
 		}
 
 		return probabilities;

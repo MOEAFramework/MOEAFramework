@@ -23,13 +23,19 @@ import org.moeaframework.core.Settings;
 
 /**
  * Tests the {@link ArrayMath} class.
+ * 
+ * @deprecated Will be removed in version 2.0
  */
+@Deprecated
 public class ArrayMathTest {
 
 	/**
 	 * Tests if the {@code sum} method correctly computes the sum of arrays.
+	 * 
+	 * @deprecated Will be removed in version 2.0
 	 */
 	@Test
+	@Deprecated
 	public void testIntSum() {
 		Assert.assertEquals(0, ArrayMath.sum(new int[] {}));
 		Assert.assertEquals(1, ArrayMath.sum(new int[] { 1 }));
@@ -39,24 +45,33 @@ public class ArrayMathTest {
 	/**
 	 * Tests if the {@code sum} method throws an exception if {@code null} is
 	 * passed as the argument.
+	 * 
+	 * @deprecated Will be removed in version 2.0
 	 */
 	@Test(expected = NullPointerException.class)
+	@Deprecated
 	public void testIntSumNullArray() {
 		ArrayMath.sum((int[])null);
 	}
 
 	/**
 	 * Tests if the {@code sum} method correctly detects integer overflow.
+	 * 
+	 * @deprecated Will be removed in version 2.0
 	 */
 	@Test(expected = ArithmeticException.class)
+	@Deprecated
 	public void testIntSumOverflow() {
 		ArrayMath.sum(new int[] { Integer.MAX_VALUE, 1 });
 	}
 
 	/**
 	 * Tests if the {@code sum} method correctly computes the sum of arrays.
+	 * 
+	 * @deprecated Will be removed in version 2.0
 	 */
 	@Test
+	@Deprecated
 	public void testDoubleSum() {
 		Assert.assertEquals(0.0, ArrayMath.sum(new double[] {}), Settings.EPS);
 		Assert.assertEquals(1.0, ArrayMath.sum(new double[] { 1.0 }),
@@ -68,8 +83,11 @@ public class ArrayMathTest {
 	/**
 	 * Tests if the {@code sum} method throws an exception if {@code null} is
 	 * passed as the argument.
+	 * 
+	 * @deprecated Will be removed in version 2.0
 	 */
 	@Test(expected = NullPointerException.class)
+	@Deprecated
 	public void testDoubleSumNullArray() {
 		ArrayMath.sum((double[])null);
 	}
@@ -77,8 +95,11 @@ public class ArrayMathTest {
 	/**
 	 * Tests if the {@code min} method correctly returns the minimum element in
 	 * an array.
+	 * 
+	 * @deprecated Will be removed in version 2.0
 	 */
 	@Test
+	@Deprecated
 	public void testDoubleMin() {
 		Assert.assertEquals(-5.0, ArrayMath.min(new double[] { -5.0 }),
 				Settings.EPS);
@@ -89,8 +110,11 @@ public class ArrayMathTest {
 	/**
 	 * Tests if the {@code min} method throws an exception if an empty array is
 	 * passed as the argument.
+	 * 
+	 * @deprecated Will be removed in version 2.0
 	 */
 	@Test(expected = IllegalArgumentException.class)
+	@Deprecated
 	public void testDoubleMinEmpty() {
 		ArrayMath.min(new double[] {});
 	}
@@ -98,8 +122,11 @@ public class ArrayMathTest {
 	/**
 	 * Tests if the {@code min} method throws an exception if {@code null} is
 	 * passed as the argument.
+	 * 
+	 * @deprecated Will be removed in version 2.0
 	 */
 	@Test(expected = NullPointerException.class)
+	@Deprecated
 	public void testDoubleMinNull() {
 		ArrayMath.min(null);
 	}
@@ -107,8 +134,11 @@ public class ArrayMathTest {
 	/**
 	 * Tests if the {@code max} method correctly returns the maximum element in
 	 * an array.
+	 * 
+	 * @deprecated Will be removed in version 2.0
 	 */
 	@Test
+	@Deprecated
 	public void testDoubleMax() {
 		Assert.assertEquals(-5.0, ArrayMath.max(new double[] { -5.0 }),
 				Settings.EPS);
@@ -119,8 +149,11 @@ public class ArrayMathTest {
 	/**
 	 * Tests if the {@code mixn} method throws an exception if an empty array is
 	 * passed as the argument.
+	 * 
+	 * @deprecated Will be removed in version 2.0
 	 */
 	@Test(expected = IllegalArgumentException.class)
+	@Deprecated
 	public void testDoubleMaxEmpty() {
 		ArrayMath.max(new double[] {});
 	}
@@ -128,8 +161,11 @@ public class ArrayMathTest {
 	/**
 	 * Tests if the {@code max} method throws an exception if {@code null} is
 	 * passed as the argument.
+	 * 
+	 * @deprecated Will be removed in version 2.0
 	 */
 	@Test(expected = NullPointerException.class)
+	@Deprecated
 	public void testDoubleMaxNull() {
 		ArrayMath.max(null);
 	}

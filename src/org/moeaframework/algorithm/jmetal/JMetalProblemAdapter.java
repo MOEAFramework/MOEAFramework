@@ -22,6 +22,7 @@ import jmetal.base.solutionType.BinarySolutionType;
 import jmetal.base.solutionType.PermutationSolutionType;
 import jmetal.base.solutionType.RealSolutionType;
 
+import org.apache.commons.math.stat.StatUtils;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variable;
@@ -29,7 +30,6 @@ import org.moeaframework.core.variable.BinaryVariable;
 import org.moeaframework.core.variable.Permutation;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.ProblemException;
-import org.moeaframework.util.ArrayMath;
 
 /**
  * Adapter for JMetal problems. This allows MOEA Framework {@link Problem}s to
@@ -123,8 +123,8 @@ public class JMetalProblemAdapter extends jmetal.base.Problem {
 			solution.setObjective(i, result.getObjective(i));
 		}
 
-		solution.setOverallConstraintViolation(ArrayMath.sum(result
-				.getConstraints()));
+		solution.setOverallConstraintViolation(StatUtils.sum(
+				result.getConstraints()));
 	}
 	
 	/**

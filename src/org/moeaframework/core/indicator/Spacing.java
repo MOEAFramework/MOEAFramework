@@ -17,10 +17,10 @@
  */
 package org.moeaframework.core.indicator;
 
+import org.apache.commons.math.stat.StatUtils;
 import org.moeaframework.core.Indicator;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
-import org.moeaframework.util.ArrayMath;
 
 /**
  * Spacing metric. Represents the spread of the Pareto front.
@@ -77,7 +77,7 @@ public class Spacing implements Indicator {
 			d[i] = min;
 		}
 
-		double dbar = ArrayMath.sum(d) / approximationSet.size();
+		double dbar = StatUtils.sum(d) / approximationSet.size();
 		double sum = 0.0;
 		
 		for (int i = 0; i < approximationSet.size(); i++) {

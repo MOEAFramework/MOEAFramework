@@ -17,6 +17,7 @@
  */
 package org.moeaframework.problem.DTLZ;
 
+import org.apache.commons.math.stat.StatUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.TestThresholds;
@@ -24,7 +25,6 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.problem.AnalyticalProblem;
 import org.moeaframework.problem.ProblemTest;
-import org.moeaframework.util.ArrayMath;
 
 /**
  * Tests the {@link DTLZ1} class.
@@ -132,7 +132,7 @@ public class DTLZ1Test extends ProblemTest {
 
 		for (int i = 0; i < TestThresholds.SAMPLES; i++) {
 			Solution solution = problem.generate();
-			double sum = ArrayMath.sum(solution.getObjectives());
+			double sum = StatUtils.sum(solution.getObjectives());
 
 			Assert.assertEquals(0.5, sum, TestThresholds.SOLUTION_EPS);
 		}

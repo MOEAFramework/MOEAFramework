@@ -23,6 +23,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import org.apache.commons.math.stat.StatUtils;
 import org.apache.commons.math.util.MathUtils;
 import org.moeaframework.core.Initialization;
 import org.moeaframework.core.NondominatedPopulation;
@@ -30,7 +31,6 @@ import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
-import org.moeaframework.util.ArrayMath;
 
 /**
  * Implementation of MOEA/D, the multiobjective evolutionary algorithm with
@@ -345,11 +345,13 @@ public class MOEAD extends AbstractAlgorithm {
 		// create random weights
 		for (int i = 0; i < populationSize * N; i++) {
 			double[] weight = new double[numberOfObjectives];
+			
 			for (int j = 0; j < numberOfObjectives; j++) {
 				weight[j] = PRNG.nextDouble();
 			}
-
-			double sum = ArrayMath.sum(weight);
+			
+			double sum = StatUtils.sum(weight);
+			
 			for (int j = 0; j < numberOfObjectives; j++) {
 				weight[j] /= sum;
 			}
