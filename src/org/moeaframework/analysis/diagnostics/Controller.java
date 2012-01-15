@@ -34,12 +34,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
+import org.apache.commons.lang3.event.EventListenerSupport;
 import org.moeaframework.Analyzer;
 import org.moeaframework.Instrumenter;
 import org.moeaframework.analysis.collector.Accumulator;
@@ -52,7 +54,6 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.core.spi.ProblemFactory;
-import org.moeaframework.util.Listeners;
 
 /**
  * The controller manages the underlying data model, performs the evaluation
@@ -64,7 +65,7 @@ public class Controller {
 	 * The collection of listeners which are notified when the controller state
 	 * changes.
 	 */
-	private final Listeners<ControllerListener> listeners;
+	private final EventListenerSupport<ControllerListener> listeners;
 	
 	/**
 	 * The collection of all results.
@@ -193,7 +194,7 @@ public class Controller {
 		super();
 		this.frame = frame;
 		
-		listeners = new Listeners<ControllerListener>();
+		listeners = EventListenerSupport.create(ControllerListener.class);
 		accumulators = new HashMap<ResultKey, List<Accumulator>>();
 	}
 	
@@ -203,7 +204,7 @@ public class Controller {
 	 * @param listener the listener to receive controller events
 	 */
 	public void addControllerListener(ControllerListener listener) {
-		listeners.add(listener);
+		listeners.addListener(listener);
 	}
 	
 	/**
@@ -213,7 +214,7 @@ public class Controller {
 	 * @param listener the listener to no longer receive controller events
 	 */
 	public void removeControllerListener(ControllerListener listener) {
-		listeners.remove(listener);
+		listeners.removeListener(listener);
 	}
 	
 	/**
@@ -259,9 +260,7 @@ public class Controller {
 
 			@Override
 			public void run() {
-				for (ControllerListener listener : listeners) {
-					listener.controllerStateChanged(event);
-				}
+				listeners.fire().controllerStateChanged(event);
 			}
 				
 		});

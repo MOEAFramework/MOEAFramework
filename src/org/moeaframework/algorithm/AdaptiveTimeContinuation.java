@@ -17,13 +17,13 @@
  */
 package org.moeaframework.algorithm;
 
+import org.apache.commons.lang3.event.EventListenerSupport;
 import org.moeaframework.core.EvolutionaryAlgorithm;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Selection;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
-import org.moeaframework.util.Listeners;
 
 /**
  * Decorator for {@link EvolutionaryAlgorithm}s to add time continuation
@@ -96,7 +96,7 @@ implements EvolutionaryAlgorithm {
 	/**
 	 * The collection of listeners notified when a restart occurs.
 	 */
-	private final Listeners<RestartListener> listeners;
+	private final EventListenerSupport<RestartListener> listeners;
 
 	/**
 	 * Decorates the specified algorithm with adaptive time continuation.
@@ -126,7 +126,7 @@ implements EvolutionaryAlgorithm {
 		this.selection = selection;
 		this.variation = variation;
 
-		listeners = new Listeners<RestartListener>();
+		listeners = EventListenerSupport.create(RestartListener.class);
 	}
 
 	/**
@@ -135,7 +135,7 @@ implements EvolutionaryAlgorithm {
 	 * @param listener the listener to be notified whenever a restart occurs
 	 */
 	public void addRestartListener(RestartListener listener) {
-		listeners.add(listener);
+		listeners.addListener(listener);
 	}
 
 	/**
@@ -145,7 +145,7 @@ implements EvolutionaryAlgorithm {
 	 * @param listener the listener to be removed
 	 */
 	public void removeRestartListener(RestartListener listener) {
-		listeners.remove(listener);
+		listeners.removeListener(listener);
 	}
 
 	/**
@@ -218,9 +218,7 @@ implements EvolutionaryAlgorithm {
 			iterationAtLastRestart = iteration;
 		}
 
-		for (RestartListener listener : listeners) {
-			listener.restarted(new RestartEvent(this, type));
-		}
+		listeners.fire().restarted(new RestartEvent(this, type));
 	}
 
 	@Override

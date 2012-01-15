@@ -5,9 +5,9 @@ Framework.
  Version 1.10 (TBD)
 --------------------
 
-  * Introduces support for instantiating problem instances using constructors
-    with arguments to Executor, Analyzer and Instrumenter.  These classes now
-    also provide the withSameProblemAs(...) method, allowing instances to easily
+  * Introduces support in Executor, Analyzer and Instrumenter for instantiating
+    problem instances using constructors with arguments.   These classes also
+    provide the withSameProblemAs(...) method, allowing instances to easily
     copy settings from one another.
     
   * With the inclusion of Apache Commons Lang, several methods and classes are

@@ -17,7 +17,7 @@
 
 	<target name="build-javadoc">
 		<javadoc sourcepath="src" destdir="javadoc" notree="true"
-				noindex="true" nohelp="true" nodeprecated="true"
+				noindex="true" nohelp="true"
 				overview="src/overview.html"
 				windowtitle="MOEA Framework ${version} API">
 			<header><![CDATA[${javadoc.title}]]></header>

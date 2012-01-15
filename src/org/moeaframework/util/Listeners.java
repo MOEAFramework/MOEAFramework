@@ -31,17 +31,27 @@ import javax.swing.event.EventListenerList;
  * and lightweight than {@link EventListenerList}.
  * 
  * @param <T> the type of listener; must extend {@link EventListener}
+ * @deprecated Will be removed in version 2.0; use EventListenerSupport instead
  */
+@Deprecated
 public class Listeners<T extends EventListener> implements Iterable<T> {
 
 	/**
 	 * Internal collection of listeners.
+	 * 
+	 * @deprecated Will be removed in version 2.0; use EventListenerSupport
+	 *             instead
 	 */
+	@Deprecated
 	private List<T> listeners;
 
 	/**
 	 * Constructs an empty collection of listeners.
+	 * 
+	 * @deprecated Will be removed in version 2.0; use EventListenerSupport
+	 *             instead
 	 */
+	@Deprecated
 	public Listeners() {
 		listeners = new Vector<T>();
 	}
@@ -52,8 +62,11 @@ public class Listeners<T extends EventListener> implements Iterable<T> {
 	 * modified without causing a {@code ConcurrentModificationException}.
 	 * 
 	 * @return an unmodifiable iterator over the listeners
+	 * @deprecated Will be removed in version 2.0; use EventListenerSupport
+	 *             instead
 	 */
 	@Override
+	@Deprecated
 	public Iterator<T> iterator() {
 		return Collections.unmodifiableList(new Vector<T>(listeners))
 				.iterator();
@@ -63,7 +76,10 @@ public class Listeners<T extends EventListener> implements Iterable<T> {
 	 * Adds the specified listener to this collection of listeners.
 	 * 
 	 * @param listener the listener
+	 * @deprecated Will be removed in version 2.0; use EventListenerSupport
+	 *             instead
 	 */
+	@Deprecated
 	public void add(T listener) {
 		listeners.add(listener);
 	}
@@ -72,14 +88,21 @@ public class Listeners<T extends EventListener> implements Iterable<T> {
 	 * Removes the specified listener from this collection of listeners.
 	 * 
 	 * @param listener the listener
+	 * @deprecated Will be removed in version 2.0; use EventListenerSupport
+	 *             instead
 	 */
+	@Deprecated
 	public void remove(T listener) {
 		listeners.remove(listener);
 	}
 
 	/**
 	 * Removes all listeners from this collection of listeners.
+	 * 
+	 * @deprecated Will be removed in version 2.0; use EventListenerSupport
+	 *             instead
 	 */
+	@Deprecated
 	public void clear() {
 		listeners.clear();
 	}
