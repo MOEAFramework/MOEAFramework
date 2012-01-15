@@ -183,14 +183,16 @@ public class Analyzer extends ProblemBuilder {
 	}
 	
 	@Override
-	public Analyzer withProblemClass(Class<?> problemClass) {
-		return (Analyzer)super.withProblemClass(problemClass);
+	public Analyzer withProblemClass(Class<?> problemClass, 
+			Object... problemArguments) {
+		return (Analyzer)super.withProblemClass(problemClass, problemArguments);
 	}
-	
+
 	@Override
-	public Analyzer withProblemClass(String problemClassName) 
-	throws ClassNotFoundException {
-		return (Analyzer)super.withProblemClass(problemClassName);
+	public Analyzer withProblemClass(String problemClassName, 
+			Object... problemArguments) throws ClassNotFoundException {
+		return (Analyzer)super.withProblemClass(problemClassName,
+				problemArguments);
 	}
 	
 	@Override

@@ -23,11 +23,12 @@ import java.io.IOException;
 import junit.framework.Assert;
 
 import org.junit.Test;
-import org.moeaframework.ProblemBuilder;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PopulationIO;
+import org.moeaframework.core.Problem;
 import org.moeaframework.core.spi.TestProblemFactory;
+import org.moeaframework.problem.DTLZ.DTLZ2;
 import org.moeaframework.problem.ZDT.ZDT5;
 
 /**
@@ -75,6 +76,41 @@ public class ProblemBuilderTest {
 		
 		Assert.assertNotNull(builder.withProblemClass(
 				"org.moeaframework.problem.ZDT.ZDT5").getProblemInstance());
+	}
+	
+	@Test
+	public void testConstructorArguments() throws ClassNotFoundException {
+		ProblemBuilder builder = new ProblemBuilder();
+		
+		Problem problem1 = builder.withProblemClass(DTLZ2.class, 4)
+				.getProblemInstance();
+		
+		Problem problem2 = builder
+				.withProblemClass("org.moeaframework.problem.DTLZ.DTLZ2", 6)
+				.getProblemInstance();
+		
+		Assert.assertNotNull(problem1);
+		Assert.assertNotNull(problem2);
+		Assert.assertEquals(4, problem1.getNumberOfObjectives());
+		Assert.assertEquals(6, problem2.getNumberOfObjectives());
+	}
+	
+	@Test
+	public void testConstructorArgumentsWidening() {
+		ProblemBuilder builder = new ProblemBuilder();
+		
+		Assert.assertNotNull(builder.withProblemClass(DTLZ2.class, (byte)4)
+				.getProblemInstance());
+		Assert.assertNotNull(builder.withProblemClass(DTLZ2.class, (char)4)
+				.getProblemInstance());
+		Assert.assertNotNull(builder.withProblemClass(DTLZ2.class, (short)4)
+				.getProblemInstance());
+	}
+	
+	@Test(expected = Exception.class)
+	public void testCosntructorArgumentsException() {
+		new ProblemBuilder().withProblemClass(DTLZ2.class, (long)4)
+				.getProblemInstance();
 	}
 	
 	@Test

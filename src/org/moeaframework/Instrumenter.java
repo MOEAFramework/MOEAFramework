@@ -389,14 +389,17 @@ public class Instrumenter extends ProblemBuilder {
 	}
 
 	@Override
-	public Instrumenter withProblemClass(Class<?> problemClass) {
-		return (Instrumenter)super.withProblemClass(problemClass);
+	public Instrumenter withProblemClass(Class<?> problemClass, 
+			Object... problemArguments) {
+		return (Instrumenter)super.withProblemClass(problemClass,
+				problemArguments);
 	}
 
 	@Override
-	public Instrumenter withProblemClass(String problemClassName)
-			throws ClassNotFoundException {
-		return (Instrumenter)super.withProblemClass(problemClassName);
+	public Instrumenter withProblemClass(String problemClassName, 
+			Object... problemArguments) throws ClassNotFoundException {
+		return (Instrumenter)super.withProblemClass(problemClassName,
+				problemArguments);
 	}
 
 	@Override

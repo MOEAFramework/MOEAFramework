@@ -147,6 +147,7 @@ this and other free and open source projects.
   Third-Party Libraries (see LICENSE for more details):
     Apache Commons CLI <http://commons.apache.org/cli/>
     Apache Commons Codec <http://commons.apache.org/codec/>
+    Apache Commons Lang <http://commons.apache.org/lang/>
     Apache Commons Math <http://commons.apache.org/math/>
     JCommon <http://www.jfree.org/jcommon/>
     JFreeChart <http://www.jfree.org/jfreechart/>

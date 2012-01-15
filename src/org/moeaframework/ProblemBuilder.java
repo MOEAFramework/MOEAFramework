@@ -19,6 +19,9 @@ package org.moeaframework;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+
+import org.apache.commons.lang3.reflect.ConstructorUtils;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.NondominatedPopulation;
@@ -48,6 +51,12 @@ class ProblemBuilder {
 	 * {@code problemName}.
 	 */
 	Class<?> problemClass;
+	
+	/**
+	 * The arguments used when constructing an instance of the problem class.
+	 * If {@code null}, then the nullary (empty) constructor is used.
+	 */
+	Object[] problemArguments;
 	
 	/**
 	 * The problem provider for creating problem instances; or {@code null}
@@ -107,10 +116,13 @@ class ProblemBuilder {
 	 * problem.
 	 * 
 	 * @param problemClass the problem class
+	 * @param problemArguments the arguments passed to the problem constructor
 	 * @return a reference to this builder
 	 */
-	ProblemBuilder withProblemClass(Class<?> problemClass) {
+	ProblemBuilder withProblemClass(Class<?> problemClass, 
+			Object... problemArguments) {
 		this.problemClass = problemClass;
+		this.problemArguments = problemArguments;
 		this.problemName = null;
 		
 		return this;
@@ -124,13 +136,15 @@ class ProblemBuilder {
 	 * problem.
 	 * 
 	 * @param problemClassName the problem class name
+	 * @param problemArguments the arguments passed to the problem constructor
 	 * @return a reference to this builder
 	 * @throws ClassNotFoundException if the specified problem class name could
 	 *         not be found
 	 */
-	ProblemBuilder withProblemClass(String problemClassName) 
+	ProblemBuilder withProblemClass(String problemClassName, 
+			Object... problemArguments) 
 	throws ClassNotFoundException {
-		withProblemClass(Class.forName(problemClassName));
+		withProblemClass(Class.forName(problemClassName), problemArguments);
 		
 		return this;
 	}
@@ -244,6 +258,11 @@ class ProblemBuilder {
 	 * @return a new instance of the problem used by this builder, or throws
 	 *         an exception if no problem has been defined
 	 * @throws IllegalArgumentException if no problem has been defined
+	 * @throws FrameworkException if an error occurred invoking the constructor
+	 *         caused by an {@link InstantiationException}, 
+	 *         {@link IllegalAccessException}, 
+	 *         {@link InvocationTargetException} or
+	 *         {@link NoSuchMethodException}.
 	 */
 	Problem getProblemInstance() {
 		if ((problemName == null) && (problemClass == null)) {
@@ -252,10 +271,15 @@ class ProblemBuilder {
 		
 		if (problemClass != null) {
 			try {
-				return (Problem)problemClass.newInstance();
+				return (Problem)ConstructorUtils.invokeConstructor(problemClass,
+						problemArguments);
 			} catch (InstantiationException e) {
 				throw new FrameworkException(e);
 			} catch (IllegalAccessException e) {
+				throw new FrameworkException(e);
+			} catch (InvocationTargetException e) {
+				throw new FrameworkException(e);
+			} catch (NoSuchMethodException e) {
 				throw new FrameworkException(e);
 			}
 		} else if (problemFactory == null) {

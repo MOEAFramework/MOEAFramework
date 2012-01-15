@@ -254,6 +254,9 @@
 		<unjar dest="build" src="lib/commons-codec-1.5.jar" />
 		<move file="build/META-INF/NOTICE.txt" tofile="build/META-INF/COMMONS-CODEC-NOTICE.txt" />
 		
+		<unjar dest="build" src="lib/commons-lang3-3.1.jar" />
+		<move file="build/META-INF/NOTICE.txt" tofile="build/META-INF/COMMONS-LANG3-NOTICE.txt" />
+		
 		<unjar dest="build" src="lib/commons-math-2.2.jar" />
 		<move file="build/META-INF/NOTICE.txt" tofile="build/META-INF/COMMONS-MATH-NOTICE.txt" />
 		
@@ -264,6 +267,7 @@
 		<delete dir="build/META-INF/maven" />
 		<delete file="build/META-INF/LICENSE.txt" />
 		<delete file="build/META-INF/MANIFEST.mf" />
+		<delete dir="build/templates" />
 		
 		<unjar dest="build" src="dist/${shortname}-${version}.jar" />
 		

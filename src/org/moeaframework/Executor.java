@@ -147,14 +147,16 @@ public class Executor extends ProblemBuilder {
 	}
 	
 	@Override
-	public Executor withProblemClass(Class<?> problemClass) {
-		return (Executor)super.withProblemClass(problemClass);
+	public Executor withProblemClass(Class<?> problemClass, 
+			Object... problemArguments) {
+		return (Executor)super.withProblemClass(problemClass, problemArguments);
 	}
-	
+
 	@Override
-	public Executor withProblemClass(String problemClassName) 
-	throws ClassNotFoundException {
-		return (Executor)super.withProblemClass(problemClassName);
+	public Executor withProblemClass(String problemClassName, 
+			Object... problemArguments) throws ClassNotFoundException {
+		return (Executor)super.withProblemClass(problemClassName,
+				problemArguments);
 	}
 	
 	/**
