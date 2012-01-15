@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.math.stat.descriptive.DescriptiveStatistics;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -84,14 +85,8 @@ public class LinePlot extends ResultPlot {
 		}
 	
 		@Override
-		public int compareTo(DataPoint point) {
-			if (NFE < point.NFE) {
-				return -1;
-			} else if (NFE > point.NFE) {
-				return 1;
-			} else {
-				return 0;
-			}
+		public int compareTo(DataPoint rhs) {
+			return new CompareToBuilder().append(NFE, rhs.NFE).toComparison();
 		}
 			
 	}

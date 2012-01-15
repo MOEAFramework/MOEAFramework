@@ -19,6 +19,7 @@ package org.moeaframework.analysis.diagnostics;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
@@ -71,14 +72,11 @@ public class ResultKey implements Comparable<ResultKey>, Serializable {
 	}
 
 	@Override
-	public int compareTo(ResultKey key) {
-		int result = algorithm.compareTo(key.algorithm);
-		
-		if (result == 0) {
-			result = problem.compareTo(key.problem);
-		}
-		
-		return result;
+	public int compareTo(ResultKey rhs) {
+		return new CompareToBuilder()
+				.append(algorithm, rhs.algorithm)
+				.append(problem, rhs.problem)
+				.toComparison();
 	}
 
 	@Override
