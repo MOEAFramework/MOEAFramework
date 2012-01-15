@@ -17,8 +17,8 @@
  */
 package org.moeaframework.core.variable;
 
-import java.util.Arrays;
-
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.moeaframework.core.Variable;
 import org.moeaframework.util.grammar.ContextFreeGrammar;
 
@@ -240,31 +240,23 @@ public class Grammar implements Variable {
 
 		fromArray(newCodon);
 	}
-
+	
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + Arrays.hashCode(codon);
-		return result;
+		return new HashCodeBuilder().append(codon).toHashCode();
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) {
+		if (obj == this) {
 			return true;
-		}
-		if (obj == null) {
+		} else if ((obj == null) || (obj.getClass() != getClass())) {
 			return false;
+		} else {
+			Grammar rhs = (Grammar)obj;
+			
+			return new EqualsBuilder().append(codon, rhs.codon).isEquals();
 		}
-		if (getClass() != obj.getClass()) {
-			return false;
-		}
-		Grammar other = (Grammar)obj;
-		if (!Arrays.equals(codon, other.codon)) {
-			return false;
-		}
-		return true;
 	}
 
 }

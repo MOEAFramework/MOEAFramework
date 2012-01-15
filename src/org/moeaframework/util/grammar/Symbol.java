@@ -17,6 +17,9 @@
  */
 package org.moeaframework.util.grammar;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 /**
  * A context-free grammar symbol.
  * 
@@ -67,39 +70,29 @@ public class Symbol {
 	public boolean isTerminal() {
 		return isTerminal;
 	}
-
+	
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + (isTerminal ? 1231 : 1237);
-		result = prime * result + ((value == null) ? 0 : value.hashCode());
-		return result;
+		return new HashCodeBuilder()
+				.append(isTerminal)
+				.append(value)
+				.toHashCode();
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) {
+		if (obj == this) {
 			return true;
-		}
-		if (obj == null) {
+		} else if ((obj == null) || (obj.getClass() != getClass())) {
 			return false;
+		} else {
+			Symbol rhs = (Symbol)obj;
+			
+			return new EqualsBuilder()
+					.append(isTerminal, rhs.isTerminal)
+					.append(value, rhs.value)
+					.isEquals();
 		}
-		if (getClass() != obj.getClass()) {
-			return false;
-		}
-		Symbol other = (Symbol)obj;
-		if (isTerminal != other.isTerminal) {
-			return false;
-		}
-		if (value == null) {
-			if (other.value != null) {
-				return false;
-			}
-		} else if (!value.equals(other.value)) {
-			return false;
-		}
-		return true;
 	}
 
 }

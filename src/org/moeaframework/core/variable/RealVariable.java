@@ -19,6 +19,8 @@ package org.moeaframework.core.variable;
 
 import java.text.MessageFormat;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.moeaframework.core.Variable;
 
 /**
@@ -131,46 +133,31 @@ public class RealVariable implements Variable {
 	public String toString() {
 		return Double.toString(value);
 	}
-
+	
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		long temp;
-		temp = Double.doubleToLongBits(lowerBound);
-		result = prime * result + (int)(temp ^ (temp >>> 32));
-		temp = Double.doubleToLongBits(upperBound);
-		result = prime * result + (int)(temp ^ (temp >>> 32));
-		temp = Double.doubleToLongBits(value);
-		result = prime * result + (int)(temp ^ (temp >>> 32));
-		return result;
+		return new HashCodeBuilder()
+				.append(lowerBound)
+				.append(upperBound)
+				.append(value)
+				.toHashCode();
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) {
+		if (obj == this) {
 			return true;
-		}
-		if (obj == null) {
+		} else if ((obj == null) || (obj.getClass() != getClass())) {
 			return false;
+		} else {
+			RealVariable rhs = (RealVariable)obj;
+			
+			return new EqualsBuilder()
+					.append(lowerBound, rhs.lowerBound)
+					.append(upperBound, rhs.upperBound)
+					.append(value, rhs.value)
+					.isEquals();
 		}
-		if (getClass() != obj.getClass()) {
-			return false;
-		}
-		RealVariable other = (RealVariable)obj;
-		if (Double.doubleToLongBits(lowerBound) != Double
-				.doubleToLongBits(other.lowerBound)) {
-			return false;
-		}
-		if (Double.doubleToLongBits(upperBound) != Double
-				.doubleToLongBits(other.upperBound)) {
-			return false;
-		}
-		if (Double.doubleToLongBits(value) != Double
-				.doubleToLongBits(other.value)) {
-			return false;
-		}
-		return true;
 	}
 
 }

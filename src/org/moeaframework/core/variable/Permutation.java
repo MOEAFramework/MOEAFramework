@@ -17,8 +17,8 @@
  */
 package org.moeaframework.core.variable;
 
-import java.util.Arrays;
-
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.moeaframework.core.Variable;
 
 /**
@@ -184,31 +184,24 @@ public class Permutation implements Variable {
 
 		return true;
 	}
-
+	
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + Arrays.hashCode(permutation);
-		return result;
+		return new HashCodeBuilder().append(permutation).toHashCode();
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) {
+		if (obj == this) {
 			return true;
-		}
-		if (obj == null) {
+		} else if ((obj == null) || (obj.getClass() != getClass())) {
 			return false;
+		} else {
+			Permutation rhs = (Permutation)obj;
+			
+			return new EqualsBuilder().append(permutation, rhs.permutation)
+					.isEquals();
 		}
-		if (getClass() != obj.getClass()) {
-			return false;
-		}
-		Permutation other = (Permutation)obj;
-		if (!Arrays.equals(permutation, other.permutation)) {
-			return false;
-		}
-		return true;
 	}
 
 }

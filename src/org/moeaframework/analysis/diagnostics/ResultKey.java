@@ -19,6 +19,9 @@ package org.moeaframework.analysis.diagnostics;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 /**
  * The key for a result entry, allowing distinct algorithm and problem pairings
  * in sets and maps.
@@ -80,34 +83,26 @@ public class ResultKey implements Comparable<ResultKey>, Serializable {
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result
-				+ ((algorithm == null) ? 0 : algorithm.hashCode());
-		result = prime * result + ((problem == null) ? 0 : problem.hashCode());
-		return result;
+		return new HashCodeBuilder()
+				.append(algorithm)
+				.append(problem)
+				.toHashCode();
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (obj == this) {
 			return true;
-		if (obj == null)
+		} else if ((obj == null) || (obj.getClass() != getClass())) {
 			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		ResultKey other = (ResultKey)obj;
-		if (algorithm == null) {
-			if (other.algorithm != null)
-				return false;
-		} else if (!algorithm.equals(other.algorithm))
-			return false;
-		if (problem == null) {
-			if (other.problem != null)
-				return false;
-		} else if (!problem.equals(other.problem))
-			return false;
-		return true;
+		} else {
+			ResultKey rhs = (ResultKey)obj;
+			
+			return new EqualsBuilder()
+					.append(algorithm, rhs.algorithm)
+					.append(problem, rhs.problem)
+					.isEquals();
+		}
 	}
 	
 	@Override

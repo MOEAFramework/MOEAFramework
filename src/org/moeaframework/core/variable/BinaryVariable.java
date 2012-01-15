@@ -19,6 +19,8 @@ package org.moeaframework.core.variable;
 
 import java.util.BitSet;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.moeaframework.core.Variable;
 
 /**
@@ -159,39 +161,29 @@ public class BinaryVariable implements Variable {
 		copy.bitSet.or(bitSet);
 		return copy;
 	}
-
+	
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((bitSet == null) ? 0 : bitSet.hashCode());
-		result = prime * result + numberOfBits;
-		return result;
+		return new HashCodeBuilder()
+				.append(numberOfBits)
+				.append(bitSet)
+				.toHashCode();
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) {
+		if (obj == this) {
 			return true;
-		}
-		if (obj == null) {
+		} else if ((obj == null) || (obj.getClass() != getClass())) {
 			return false;
+		} else {
+			BinaryVariable rhs = (BinaryVariable)obj;
+			
+			return new EqualsBuilder()
+					.append(numberOfBits, rhs.numberOfBits)
+					.append(bitSet, rhs.bitSet)
+					.isEquals();
 		}
-		if (getClass() != obj.getClass()) {
-			return false;
-		}
-		BinaryVariable other = (BinaryVariable)obj;
-		if (bitSet == null) {
-			if (other.bitSet != null) {
-				return false;
-			}
-		} else if (!bitSet.equals(other.bitSet)) {
-			return false;
-		}
-		if (numberOfBits != other.numberOfBits) {
-			return false;
-		}
-		return true;
 	}
 
 }
