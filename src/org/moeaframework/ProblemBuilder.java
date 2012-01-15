@@ -84,11 +84,11 @@ class ProblemBuilder {
 	}
 	
 	/**
-	 * Configures this builder to use the same problem and reference set
-	 * settings as the specified builder.
+	 * Configures this builder to use the same problem, reference set, &epsilon;
+	 * values and {@link ProblemFactory} as the specified instance.
 	 * 
-	 * @param builder the builder from which to copy the problem and reference
-	 *        set settings
+	 * @param builder the instance whose problem, reference set, &epsilon;
+	 *        values and {@code ProblemFactory} are to be copied
 	 * @return a reference to this builder
 	 */
 	ProblemBuilder withSameProblemAs(ProblemBuilder builder) {
