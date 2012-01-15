@@ -56,7 +56,9 @@ public class CoreUtils {
 	 * @param name the argument name
 	 * @param argument the object which should not be {@code null}
 	 * @throws IllegalArgumentException if the argument is {@code null}
+	 * @deprecated Will be removed in version 2.0; use Validate class instead
 	 */
+	@Deprecated
 	public static void assertNotNull(String name, Object argument) {
 		if (argument == null) {
 			throw new IllegalArgumentException(MessageFormat.format(

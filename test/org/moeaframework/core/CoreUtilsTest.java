@@ -33,11 +33,13 @@ import org.moeaframework.core.variable.RealVariable;
 public class CoreUtilsTest {
 	
 	@Test
+	@Deprecated
 	public void testAssertNotNullWithObject() {
 		CoreUtils.assertNotNull("test", 0.0);
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
+	@Deprecated
 	public void testAssertNotNullWithNull() {
 		CoreUtils.assertNotNull("test", null);
 	}
