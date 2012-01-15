@@ -82,7 +82,7 @@
 									<a href="downloads.html">Downloads</a>
 								</li>
 								<li>
-									<a href="javadoc/index.html">Documentation</a>
+									<a href="documentation.html">Documentation</a>
 								</li>
 								<li>
 									<xsl:if test="$filename = 'support.xml'">

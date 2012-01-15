@@ -351,6 +351,33 @@ input.button {
   background: none;
 }
 
+table.indented {
+  margin-left: 25px;
+}
+
+table.centered {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+table.coverage td.package {
+  padding: 0 0 0 20px;
+  margin: 0;
+  background: transparent url(../images/package.png) no-repeat 2px center;
+}
+
+table.coverage td.good {
+  background-color: #90FF90;
+}
+
+table.coverage td.okay {
+  background-color: #E9AB17;
+}
+
+table.coverage td.bad {
+  background-color: #FF9090;
+}
+
 .section {
    margin: 5px 0 10px 0;
    padding: 0;

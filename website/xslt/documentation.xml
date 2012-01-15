@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<!DOCTYPE some_name [ 
+<!ENTITY nbsp "&#160;">
+<!ENTITY copy "&#169;">
+<!ENTITY epsilon "&#949;">
+]>
+
+<page>
+  <title>Documentation for the MOEA Framework</title>
+  <description>Documentation for the MOEA Framework, including the API javadoc</description>
+  <content>
+<h2>Documentation</h2>
+
+<p>
+  This page provides links to all available documentation for the MOEA
+  Framework.  If you are encountering problems or have questions not covered
+  in the documentation, please submit a bug report through the
+  <a href="support.html">support</a> page.
+</p>
+
+<div class="listing">
+  <ul>
+    <li>
+      <a href="javadoc/index.html">
+        <img src="images/html.png" class="float-left" width="22" height="22" alt="Browse API specification" />
+        <strong>API Specification (HTML)</strong>
+      </a>
+      <br />
+      <span>
+        The API specification details all classes, constructors and methods 
+        provided by the MOEA Framework library.  The API specification is also
+        provided in the compiled binaries distribution inside the javadoc
+        folder.
+      </span>
+      <div class="fix"></div>
+    </li>
+    <li>
+      <a href="https://sourceforge.net/projects/moeaframework/files/MOEAFramework-%VERSION%/MOEAFramework-%VERSION%-Manual.pdf/download">
+        <img src="images/pdf.png" class="float-left" width="22" height="22" alt="Download user manual" />
+        <strong>User Manual (PDF)</strong>
+      </a>
+      <br />
+      <span>
+        A comprehensive user manual for the MOEA Framework.  This manual walks
+        through various uses of the MOEA Framework in detail, providing
+        step-by-step instructions and troubleshooting advice.
+      </span>
+      <div class="fix"></div>
+    </li>
+    <li>
+      <a href="quality.html">
+        <img src="images/html.png" class="float-left" width="22" height="22" alt="View the code quality metrics for the latest release" />
+        <strong>Code Quality Report (HTML)</strong>
+      </a>
+      <br />
+      <span>
+        Learn how the developers maintain the correctness, reliability and
+        overall quality of the MOEA Framework.  This report also contains
+        detailed code metrics for the latest release.
+      </span>
+      <div class="fix"></div>
+    </li>
+  </ul>
+</div>
+
+  </content>
+</page>
