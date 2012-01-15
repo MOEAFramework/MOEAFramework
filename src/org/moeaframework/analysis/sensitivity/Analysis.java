@@ -39,8 +39,8 @@ import org.moeaframework.util.CommandLineUtility;
  * References:
  * <ol>
  *   <li>Hadka, D. and Reed, P.  "Diagnostic Assessment of Search Controls and
- *       Failure Modes in Many-Objective Evolutionary Optimization."  In Review
- *       at Evolutionary Computation.
+ *       Failure Modes in Many-Objective Evolutionary Optimization."
+ *       Evolutionary Computation.
  * </ol>
  */
 public class Analysis extends CommandLineUtility {

@@ -12,7 +12,7 @@ Framework.
     
   * With the inclusion of Apache Commons Lang, several methods and classes are
     being deprecated as their functionality is redundant.  This includes the
-    ArrayMath class and several methods in CoreUtils.
+    ArrayMath class, the Listeners class and several methods in CoreUtils.
     
   * Adds Apache Commons Lang 3.1 dependency, which is required for changes in
     this release and planned changes in future releases.

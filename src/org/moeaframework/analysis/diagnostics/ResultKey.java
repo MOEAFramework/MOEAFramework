@@ -102,10 +102,5 @@ public class ResultKey implements Comparable<ResultKey>, Serializable {
 					.isEquals();
 		}
 	}
-	
-	@Override
-	public String toString() {
-		return algorithm + " " + problem;
-	}
 
 }

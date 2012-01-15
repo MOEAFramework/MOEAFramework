@@ -100,11 +100,11 @@ public class Timing {
 
 	/**
 	 * Returns the accumulated timing statistics for the timer with the
-	 * specified name.
+	 * specified name; or {@code null} if no such timer exists.
 	 * 
 	 * @param name the name of the timer
 	 * @return the accumulated timing statistics for the timer with the
-	 *         specified name
+	 *         specified name; or {@code null} if no such timer exists
 	 */
 	public static SummaryStatistics getStatistics(String name) {
 		return data.get(name);
