@@ -12,6 +12,17 @@ any changes.
  Easy
 ------
 
+  - Need to determine for which classes does value-based equals methods make
+    sense, and provide equals and hashCode implementations for these classes.
+    As an example, it doesn't make sense for Solution to provide an equals
+    method since there are many possible interpretations of equality.  Are two
+    solutions equal if they share the same objective values regardless of their
+    decision variables?  Consequently, equals methods don't make sense for
+    Populations.  However, a helper class that provides various methods of
+    comparison between solutions and populations would be useful.  For
+    consistency, use the Apache Commons Lang builder classes to implement
+    equals and hashCode.
+
   - The recently-added misc problems from Van Veldhuizen's dissertation need
     the necessary support files - unit tests, reference set files, etc.
     

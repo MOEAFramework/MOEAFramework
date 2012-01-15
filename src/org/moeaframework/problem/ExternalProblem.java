@@ -123,10 +123,10 @@ public abstract class ExternalProblem implements Problem {
 	throws ProblemException {
 		// send variables to external process
 		try {
-			writer.write(toString(solution.getVariable(0)));
+			writer.write(encode(solution.getVariable(0)));
 			for (int i = 1; i < solution.getNumberOfVariables(); i++) {
 				writer.write(" ");
-				writer.write(toString(solution.getVariable(i)));
+				writer.write(encode(solution.getVariable(i)));
 			}
 			writer.newLine();
 			writer.flush();
@@ -174,7 +174,7 @@ public abstract class ExternalProblem implements Problem {
 	 * @return the serialized version of the variable
 	 * @throws IOException if an error occurs during serialization
 	 */
-	private String toString(Variable variable) throws IOException {
+	private String encode(Variable variable) throws IOException {
 		if (variable instanceof RealVariable) {
 			return Double.toString(((RealVariable)variable).getValue());
 		} else {

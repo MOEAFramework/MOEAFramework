@@ -5,19 +5,22 @@ Framework.
  Version 1.10 (TBD)
 --------------------
 
-  * Deprecates ArrayMath class, as its methods are already provided in 
-    Apache Commons Math in the StatUtils class.
-
   * Introduces support for instantiating problem instances using constructors
     with arguments to Executor, Analyzer and Instrumenter.  These classes now
     also provide the withSameProblemAs(...) method, allowing instances to easily
     copy settings from one another.
     
+  * With the inclusion of Apache Commons Lang, several methods and classes are
+    being deprecated as their functionality is redundant.  This includes the
+    ArrayMath class and several methods in CoreUtils.
+    
   * Adds Apache Commons Lang 3.1 dependency, which is required for changes in
     this release and planned changes in future releases.
 
   * Adds all-in-one executable JAR file that contains the MOEA Framework
-    binaries, data files and dependencies bundled in a single JAR file.
+    binaries, data files and dependencies bundled in a single JAR file.  This
+    provides a single download file which launches the MOEA diagnostic tool when
+    double-clicked.
 
   * Improved support for accessing reference sets and other resources that can
     either be located on the local file system or bundled in a JAR file.
