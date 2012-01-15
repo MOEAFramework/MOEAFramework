@@ -84,6 +84,25 @@ class ProblemBuilder {
 	}
 	
 	/**
+	 * Configures this builder to use the same problem and reference set
+	 * settings as the specified builder.
+	 * 
+	 * @param builder the builder from which to copy the problem and reference
+	 *        set settings
+	 * @return a reference to this builder
+	 */
+	ProblemBuilder withSameProblemAs(ProblemBuilder builder) {
+		this.problemName = builder.problemName;
+		this.problemClass = builder.problemClass;
+		this.problemArguments = builder.problemArguments;
+		this.problemFactory = builder.problemFactory;
+		this.epsilon = builder.epsilon;
+		this.referenceSetFile = builder.referenceSetFile;
+		
+		return this;
+	}
+	
+	/**
 	 * Sets the problem factory used by this builder.
 	 * 
 	 * @param problemFactory the problem factory

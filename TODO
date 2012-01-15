@@ -35,7 +35,8 @@ any changes.
     reports.  It would probably be a good design to provide functionality
     similar to SwingWorker's progress notifications.
 
-  - Add unit tests for the examples.
+  - Add unit tests for the examples.  These tests should simulate the
+    instructions provided on the website.
 
   - Need to ensure that constrained solutions are appropriately handled when
     constructing approximation sets or used in code that does not handle
@@ -59,11 +60,6 @@ any changes.
     remains unchanged.  An alternative approach is to detect that the
     temporary file exists and exit with an exception, requiring the user to
     intervene.
-
-  - Executor and Analyzer, when given a specific problem class, currently only
-    support problems with an empty constructor.  Providing a second argument
-    specifying the constructor arguments will broaden the scope of problems
-    supported by the Executor and Analyzer.
     
   - Develop an interface for defining stopping conditions.  Executor should
     provide the necessary functionality for defining stopping conditions.

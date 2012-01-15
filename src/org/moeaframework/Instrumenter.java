@@ -379,6 +379,11 @@ public class Instrumenter extends ProblemBuilder {
 	}
 	
 	@Override
+	public Instrumenter withSameProblemAs(ProblemBuilder builder) {
+		return (Instrumenter)super.withSameProblemAs(builder);
+	}
+	
+	@Override
 	public Instrumenter usingProblemFactory(ProblemFactory problemFactory) {
 		return (Instrumenter)super.usingProblemFactory(problemFactory);
 	}

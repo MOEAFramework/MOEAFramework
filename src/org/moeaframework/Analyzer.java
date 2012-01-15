@@ -173,6 +173,11 @@ public class Analyzer extends ProblemBuilder {
 	}
 	
 	@Override
+	public Analyzer withSameProblemAs(ProblemBuilder builder) {
+		return (Analyzer)super.withSameProblemAs(builder);
+	}
+	
+	@Override
 	public Analyzer usingProblemFactory(ProblemFactory problemFactory) {
 		return (Analyzer)super.usingProblemFactory(problemFactory);
 	}

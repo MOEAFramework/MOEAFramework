@@ -5,6 +5,14 @@ Framework.
  Version 1.10 (TBD)
 --------------------
 
+  * Introduces support for instantiating problem instances using constructors
+    with arguments to Executor, Analyzer and Instrumenter.  These classes now
+    also provide the withSameProblemAs(...) method, allowing instances to easily
+    copy settings from one another.
+    
+  * Adds Apache Commons Lang 3.1 dependency, which is required for changes in
+    this release and planned changes in future releases.
+
   * Adds all-in-one executable JAR file that contains the MOEA Framework
     binaries, data files and dependencies bundled in a single JAR file.
 

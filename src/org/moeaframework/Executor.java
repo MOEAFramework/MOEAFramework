@@ -137,6 +137,11 @@ public class Executor extends ProblemBuilder {
 	}
 	
 	@Override
+	public Executor withSameProblemAs(ProblemBuilder builder) {
+		return (Executor)super.withSameProblemAs(builder);
+	}
+	
+	@Override
 	public Executor usingProblemFactory(ProblemFactory problemFactory) {
 		return (Executor)super.usingProblemFactory(problemFactory);
 	}

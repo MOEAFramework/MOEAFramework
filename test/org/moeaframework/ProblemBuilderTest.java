@@ -27,6 +27,7 @@ import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PopulationIO;
 import org.moeaframework.core.Problem;
+import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.core.spi.TestProblemFactory;
 import org.moeaframework.problem.DTLZ.DTLZ2;
 import org.moeaframework.problem.ZDT.ZDT5;
@@ -138,6 +139,34 @@ public class ProblemBuilderTest {
 				PopulationIO.readObjectives(new File("./pf/DTLZ1.2D.pf")));
 		
 		TestUtils.assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void testWithSameProblemAs() {
+		ProblemBuilder builder1 = new ProblemBuilder()
+				.withProblem("DTLZ2_2")
+				.withReferenceSet(new File("./pf/DTLZ1.2D.pf"));
+		
+		ProblemBuilder builder2 = new ProblemBuilder()
+				.withSameProblemAs(builder1);
+		
+		Assert.assertEquals(builder1.problemName, builder2.problemName);
+		Assert.assertEquals(builder1.problemArguments, 
+				builder2.problemArguments);
+		Assert.assertEquals(builder1.problemClass, builder2.problemClass);
+		Assert.assertEquals(builder1.problemFactory, builder2.problemFactory);
+		Assert.assertEquals(builder1.epsilon, builder2.epsilon);
+		
+		builder2.withProblemClass(DTLZ2.class, 4).usingProblemFactory(
+				ProblemFactory.getInstance());
+		builder1.withSameProblemAs(builder2);
+		
+		Assert.assertEquals(builder1.problemName, builder2.problemName);
+		Assert.assertEquals(builder1.problemArguments, 
+				builder2.problemArguments);
+		Assert.assertEquals(builder1.problemClass, builder2.problemClass);
+		Assert.assertEquals(builder1.problemFactory, builder2.problemFactory);
+		Assert.assertEquals(builder1.epsilon, builder2.epsilon);
 	}
 
 }
