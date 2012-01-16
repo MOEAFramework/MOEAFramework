@@ -23,7 +23,7 @@ import org.moeaframework.problem.ProblemTest;
 public class Viennet3Test extends ProblemTest {
 
 	@Test
-	public void test() throws Exception {
+	public void testJMetal() throws Exception {
 		test(new jmetal.problems.Viennet3("Real"), new Viennet3());
 	}
 

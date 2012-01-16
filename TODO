@@ -12,6 +12,9 @@ any changes.
  Easy
 ------
 
+  - CoreUtils.fillVariablesFromDoubleArray should perform bounds checks --- it
+    is working even if the array is longer than the number of variables.
+
   - Need to determine for which classes does value-based equals methods make
     sense, and provide equals and hashCode implementations for these classes.
     As an example, it doesn't make sense for Solution to provide an equals

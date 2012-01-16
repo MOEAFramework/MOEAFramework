@@ -37,7 +37,9 @@ import java.util.regex.Pattern;
 import org.apache.commons.math.linear.RealMatrix;
 import org.apache.commons.math.stat.descriptive.DescriptiveStatistics;
 import org.junit.Assert;
+import org.moeaframework.core.CoreUtils;
 import org.moeaframework.core.Population;
+import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.util.io.CommentedLineReader;
@@ -205,6 +207,23 @@ public class TestUtils {
 	 */
 	public static Solution newSolution(double... objectives) {
 		return new Solution(objectives);
+	}
+	
+	/**
+	 * Returns the solution resulting from evaluating the problem with the
+	 * specified decision variables.
+	 * 
+	 * @param problem the problem
+	 * @param variables the decision variable values
+	 * @return the solution resulting from evaluating the problem with the
+	 *         specified decision variables
+	 */
+	public static Solution evaluateAt(Problem problem, 
+			double... variables) {
+		Solution solution = problem.newSolution();
+		CoreUtils.fillVariablesFromDoubleArray(solution, variables);
+		problem.evaluate(solution);
+		return solution;
 	}
 	
 	/**

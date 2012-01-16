@@ -25,7 +25,7 @@ import org.moeaframework.problem.ProblemTest;
 public class TanakaTest extends ProblemTest {
 
 	@Test
-	public void test() throws Exception {
+	public void testJMetal() throws Exception {
 		test(new jmetal.problems.Tanaka("Real"), new Tanaka());
 	}
 

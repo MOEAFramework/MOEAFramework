@@ -23,7 +23,7 @@ import org.moeaframework.problem.ProblemTest;
 public class OKA1Test extends ProblemTest {
 
 	@Test
-	public void test() throws Exception {
+	public void testJMetal() throws Exception {
 		test(new jmetal.problems.OKA1("Real"), new OKA1());
 	}
 

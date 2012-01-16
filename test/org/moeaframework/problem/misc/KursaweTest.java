@@ -24,7 +24,7 @@ import org.moeaframework.problem.misc.Kursawe;
 public class KursaweTest extends ProblemTest {
 
 	@Test
-	public void test() throws Exception {
+	public void testJMetal() throws Exception {
 		test(new jmetal.problems.Kursawe("Real", 3), new Kursawe(3));
 	}
 

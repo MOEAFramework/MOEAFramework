@@ -18,31 +18,39 @@
 package org.moeaframework.problem.misc;
 
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.moeaframework.TestUtils;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
-import org.moeaframework.problem.ProblemTest;
 
-//@Ignore("discrepancy between this implementation and jMetal 3.1")
-public class Viennet4Test extends ProblemTest {
-
-	@Test
-	public void testJMetal() throws Exception {
-		test(new jmetal.problems.Viennet4("Real"), new Viennet4());
-	}
+public class Binh4Test {
 	
 	@Test
 	public void test() {
-		Problem problem = new Viennet4();
+		Problem problem = new Binh4();
 		
-		Assert.assertArrayEquals(new double[] { 66.0/13.0, -2266.0/175.0, 460.0/27.0 }, 
+		Assert.assertArrayEquals(new double[] { 1.5, 2.25, 2.625 }, 
 				TestUtils.evaluateAt(problem, 0.0, 0.0).getObjectives(),
 				Settings.EPS);
 		
-		Assert.assertArrayEquals(new double[] { 0.0, 0.0, 0.0 }, 
+		Assert.assertArrayEquals(new double[] { 8.75, 0.0 }, 
 				TestUtils.evaluateAt(problem, 0.0, 0.0).getConstraints(),
+				Settings.EPS);
+		
+		Assert.assertArrayEquals(new double[] { 111.5, -987.75, 10012.625 }, 
+				TestUtils.evaluateAt(problem, -10.0, -10.0).getObjectives(),
+				Settings.EPS);
+		
+		Assert.assertArrayEquals(new double[] { 0.0, 225.0 }, 
+				TestUtils.evaluateAt(problem, -10.0, -10.0).getConstraints(),
+				Settings.EPS);
+		
+		Assert.assertArrayEquals(new double[] { 91.5, 992.25, 9992.625 }, 
+				TestUtils.evaluateAt(problem, 10.0, 10.0).getObjectives(),
+				Settings.EPS);
+		
+		Assert.assertArrayEquals(new double[] { 0.0, 165.0 }, 
+				TestUtils.evaluateAt(problem, 10.0, 10.0).getConstraints(),
 				Settings.EPS);
 	}
 

@@ -17,14 +17,31 @@
  */
 package org.moeaframework.problem.misc;
 
+import org.junit.Assert;
 import org.junit.Test;
-import org.moeaframework.problem.ProblemTest;
+import org.moeaframework.TestUtils;
+import org.moeaframework.core.Problem;
+import org.moeaframework.core.Settings;
 
-public class Fonseca2Test extends ProblemTest {
-
+public class LisTest {
+	
 	@Test
-	public void testJMetal() throws Exception {
-		test(new jmetal.problems.Fonseca("Real"), new Fonseca2(3));
+	public void test() {
+		Problem problem = new Lis();
+		
+		Assert.assertArrayEquals(new double[] { 0.0, Math.pow(0.5, 1.0/4.0) }, 
+				TestUtils.evaluateAt(problem, 0.0, 0.0).getObjectives(),
+				Settings.EPS);
+		
+		Assert.assertArrayEquals(new double[] { 
+				Math.pow(50.0, 1.0/8.0), Math.pow(60.5, 1.0/4.0) }, 
+				TestUtils.evaluateAt(problem, -5.0, -5.0).getObjectives(),
+				Settings.EPS);
+		
+		Assert.assertArrayEquals(new double[] { 
+				Math.pow(200.0, 1.0/8.0), Math.pow(180.5, 1.0/4.0) }, 
+				TestUtils.evaluateAt(problem, 10.0, 10.0).getObjectives(),
+				Settings.EPS);
 	}
 
 }
