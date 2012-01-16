@@ -602,6 +602,8 @@ public class ActionFactory implements ControllerListener {
 							"Apache License", null));
 					info.addLibrary(new Library("Apache Commons Codec", "1.5", 
 							"Apache License", null));
+					info.addLibrary(new Library("Apache Commons Lang", "3.1",
+							"Apache License", null));
 					info.addLibrary(new Library("Apache Commons Math", "1.2", 
 							"Apache License", null));
 					info.addLibrary(new Library("JCommon", "1.0.16", "GNU LGPL",

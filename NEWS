@@ -5,7 +5,7 @@ Framework.
  Version 1.10 (TBD)
 --------------------
 
-  * Introduces support in Executor, Analyzer and Instrumenter for instantiating
+  * Adds support in Executor, Analyzer and Instrumenter for instantiating
     problem instances using constructors with arguments.   These classes also
     provide the withSameProblemAs(...) method, allowing instances to easily
     copy settings from one another.
