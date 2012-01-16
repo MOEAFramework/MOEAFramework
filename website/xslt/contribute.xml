@@ -61,11 +61,36 @@
 <h3>Where to Start</h3>
 
 <p>
-  The TODO document distributed with the source code is an excellent starting
-  point for individuals looking for ways to contribute.  Also check the bug
-  tracker and feature request links on the <a href="support.html">support</a>
-  page.
+  If you are interested in contributing to the MOEA Framework, first download
+  the source code for the latest version.
+  The TODO document distributed with the source code lists about 20 easy tasks
+  which newcomers can tackle.  Also check the bug and feature request trackers
+  on the <a href="support.html">support</a> page.  
 </p>
+
+<p>
+  We also encourage new contributors to sign up at our
+  <a href="https://openhatch.org/+projects/MOEA%20Framework">OpenHatch</a>
+  page by clicking the 'I want to help' button below.
+</p>
+
+<style>
+    @import url('http://openhatch.org/static/css/tipsy.css?1268950194.0');
+</style>
+
+<style type="text/css">
+#openhatch-wannahelp-button { background: #C8E29D url('http://openhatch.org/static/images/wannahelp-button-bg.png?1268950194.0') repeat-x scroll center top; display:block; -webkit-border-radius: 8px; -moz-border-radius: 8px; border-radius: 8px; padding: 10px 20px; color: #444; border: 3px solid #fff; white-space: normal; font-family: Helvetica, sans-serif; width: 250px; margin-left: auto; margin-right: auto; float: center; font-weight: normal; cursor: pointer; cursor: hand; text-align: center; text-shadow: 0px 1px 0px #fff; background-color: #c8e29d; background-repeat: repeat-x; background-position: top; font-size: 13pt; }
+#openhatch-wannahelp-button:active { background-image: url('http://openhatch.org/static/images/wannahelp-button-bg-hover-active.png?1268950194.0'); background-position: bottom; }
+#openhatch-wannahelp-button:hover, #openhatch-wannahelp-button:focus { background-image:url('http://openhatch.org/static/images/wannahelp-button-bg-hover.png?1268950194.0'); text-decoration: none; color: #222; }
+</style>
+
+<form method="POST" action="http://openhatch.org/+do/project.views.wanna_help_do" style="margin-left: auto; margin-right: auto;">
+    <input type="hidden" name="from_offsite" value="True" />
+    <input type="hidden" value="9423" name="project"/>
+    <input type="submit" value="I want to help" rel="tipsy-south" id="openhatch-wannahelp-button" original-title="Click to add yourself to the list of people who want to contribute. People of all levels are welcome!"/>
+</form>
+
+<script type="text/javascript" src="http://openhatch.org/static/packed/selections_for_widget.js?1295813773"></script>
 </div>
 
 <div class="section">
