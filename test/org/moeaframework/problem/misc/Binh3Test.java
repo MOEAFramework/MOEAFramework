@@ -18,39 +18,23 @@
 package org.moeaframework.problem.misc;
 
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.moeaframework.TestUtils;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
-import org.moeaframework.problem.ProblemTest;
 
-public class Osyczka2Test extends ProblemTest {
-
-	@Test
-	@Ignore("discrepancy between this implementation and jMetal 3.1")
-	public void testJMetal() throws Exception {
-		test(new jmetal.problems.Osyczka2("Real"), new Osyczka2());
-	}
+public class Binh3Test {
 	
 	@Test
 	public void test() {
-		Problem problem = new Osyczka2();
+		Problem problem = new Binh3();
 		
-		Assert.assertArrayEquals(new double[] { -120.0, 2.0 }, 
-				TestUtils.evaluateAt(problem, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0).getObjectives(),
+		Assert.assertArrayEquals(new double[] { 1e-6-1e6, -1e-6, 1e-12-2.0 }, 
+				TestUtils.evaluateAt(problem, 1e-6, 1e-6).getObjectives(),
 				Settings.EPS);
 		
-		Assert.assertArrayEquals(new double[] { -2.0, 0.0, 0.0, 0.0, 0.0, 0.0 }, 
-				TestUtils.evaluateAt(problem, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0).getConstraints(),
-				Settings.EPS);
-		
-		Assert.assertArrayEquals(new double[] { -1700.0, 386.0 }, 
-				TestUtils.evaluateAt(problem, 10.0, 10.0, 5.0, 6.0, 5.0, 10.0).getObjectives(),
-				Settings.EPS);
-		
-		Assert.assertArrayEquals(new double[] { 0.0, -14.0, 0.0, 0.0, -6.0, 0.0 }, 
-				TestUtils.evaluateAt(problem, 10.0, 10.0, 5.0, 6.0, 5.0, 10.0).getConstraints(),
+		Assert.assertArrayEquals(new double[] { 0.0, 1e6-2e-6, 1e12-2.0 }, 
+				TestUtils.evaluateAt(problem, 1e6, 1e6).getObjectives(),
 				Settings.EPS);
 	}
 

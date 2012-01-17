@@ -17,16 +17,49 @@
  */
 package org.moeaframework.problem.misc;
 
+import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.moeaframework.TestUtils;
+import org.moeaframework.core.Problem;
+import org.moeaframework.core.Settings;
 import org.moeaframework.problem.ProblemTest;
 
-@Ignore("discrepancy between this implementation and jMetal 3.1")
 public class SrinivasTest extends ProblemTest {
 
 	@Test
+	@Ignore("discrepancy between this implementation and jMetal 3.1")
 	public void testJMetal() throws Exception {
 		test(new jmetal.problems.Srinivas("Real"), new Srinivas());
+	}
+	
+	@Test
+	public void test() {
+		Problem problem = new Srinivas();
+		
+		Assert.assertArrayEquals(new double[] { 7.0, -1.0 }, 
+				TestUtils.evaluateAt(problem, 0.0, 0.0).getObjectives(),
+				Settings.EPS);
+		
+		Assert.assertArrayEquals(new double[] { 0.0, 10.0 }, 
+				TestUtils.evaluateAt(problem, 0.0, 0.0).getConstraints(),
+				Settings.EPS);
+		
+		Assert.assertArrayEquals(new double[] { 927.0, -621.0 }, 
+				TestUtils.evaluateAt(problem, -20.0, -20.0).getObjectives(),
+				Settings.EPS);
+		
+		Assert.assertArrayEquals(new double[] { 575.0, 50.0 }, 
+				TestUtils.evaluateAt(problem, -20.0, -20.0).getConstraints(),
+				Settings.EPS);
+		
+		Assert.assertArrayEquals(new double[] { 687.0, -181.0 }, 
+				TestUtils.evaluateAt(problem, 20.0, 20.0).getObjectives(),
+				Settings.EPS);
+		
+		Assert.assertArrayEquals(new double[] { 575.0, 0.0 }, 
+				TestUtils.evaluateAt(problem, 20.0, 20.0).getConstraints(),
+				Settings.EPS);
 	}
 
 }

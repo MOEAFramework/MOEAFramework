@@ -18,40 +18,26 @@
 package org.moeaframework.problem.misc;
 
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.moeaframework.TestUtils;
 import org.moeaframework.core.Problem;
-import org.moeaframework.core.Settings;
-import org.moeaframework.problem.ProblemTest;
 
-public class TanakaTest extends ProblemTest {
-
-	@Test
-	@Ignore("discrepancy between this implementation and jMetal 3.1")
-	public void testJMetal() throws Exception {
-		test(new jmetal.problems.Tanaka("Real"), new Tanaka());
-	}
+public class QuagliarellaTest {
 	
 	@Test
 	public void test() {
-		Problem problem = new Tanaka();
+		Problem problem = new Quagliarella(1);
 		
-		//technically 0.0, 0.0 is out of bounds, but we'll use it for simplicity
-		Assert.assertArrayEquals(new double[] { 0.1, 0.1 }, 
-				TestUtils.evaluateAt(problem, 0.1, 0.1).getObjectives(),
-				Settings.EPS);
+		Assert.assertArrayEquals(new double[] { 0.0, 4.716 }, 
+				TestUtils.evaluateAt(problem, 0.0).getObjectives(),
+				0.001);
 		
-		Assert.assertArrayEquals(new double[] { 1.08, 0.0 }, 
-				TestUtils.evaluateAt(problem, 0.1, 0.1).getConstraints(),
-				Settings.EPS);
+		Assert.assertArrayEquals(new double[] { 5.378, 7.817 }, 
+				TestUtils.evaluateAt(problem, -5.12).getObjectives(),
+				0.001);
 		
-		Assert.assertArrayEquals(new double[] { Math.PI, Math.PI }, 
-				TestUtils.evaluateAt(problem, Math.PI, Math.PI).getObjectives(),
-				Settings.EPS);
-		
-		Assert.assertArrayEquals(new double[] { 0.0, 13.456 }, 
-				TestUtils.evaluateAt(problem, Math.PI, Math.PI).getConstraints(),
+		Assert.assertArrayEquals(new double[] { 5.378, 5.513 }, 
+				TestUtils.evaluateAt(problem, 5.12).getObjectives(),
 				0.001);
 	}
 
