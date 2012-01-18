@@ -100,11 +100,11 @@
   </tr>
   <tr>
     <td>Lines of Test Code</td>
-    <td>13,043</td>
+    <td>13,585</td>
   </tr>
   <tr>
     <td>Number of Unit Tests</td>
-    <td>959</td>
+    <td>983</td>
   </tr>
   <tr>
     <td>Number of Unit Test Errors</td>
@@ -256,7 +256,7 @@
   </tr>
   <tr>
     <td class="package">org.moeaframework.problem.misc</td>
-    <td class="bad">25.6 %</td>
+    <td class="good">99.4 %</td>
     <td></td>
   </tr>
   <tr>

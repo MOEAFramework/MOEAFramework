@@ -27,7 +27,8 @@ any changes.
     equals and hashCode.
 
   - The recently-added misc problems from Van Veldhuizen's dissertation need
-    the necessary support files - unit tests, reference set files, etc.
+    reference set files.  Until reference sets are added, they can't be used
+    in the MOEA diagnostic tool.
     
   - Upgrade to Apache Commons Codec 1.6
   

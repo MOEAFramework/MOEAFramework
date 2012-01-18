@@ -20,7 +20,7 @@ public class Example4 {
 	public static class Rosenbrock extends ExternalProblem {
 
 		public Rosenbrock() throws IOException {
-			super("./auxiliary/c/Rosenbrock.exe");
+			super("./auxiliary/c/a.exe");
 		}
 
 		/**
@@ -45,7 +45,7 @@ public class Example4 {
 
 		@Override
 		public int getNumberOfVariables() {
-			return 100;
+			return 2;
 		}
 
 		@Override
@@ -66,7 +66,6 @@ public class Example4 {
 				.withProblemClass(Rosenbrock.class)
 				.withAlgorithm("GDE3")
 				.withMaxEvaluations(100000)
-				.distributeOnAllCores()
 				.run();
 				
 		//display the results

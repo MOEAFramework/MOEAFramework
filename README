@@ -18,18 +18,12 @@ Release Date: %DATE%
 -----------------
  1. Introduction
 -----------------
-The MOEA Framework is an open source Java library for developing and 
-experimenting with multiobjective evolutionary algorithms (MOEAs) and other 
+The MOEA Framework is an open source Java library for developing and
+experimenting with multiobjective evolutionary algorithms (MOEAs) and other
 general-purpose optimization algorithms and metaheuristics.  A number of
-algorithms are provided out-of-the-box, including NSGA-II, e-MOEA, GDE3 and 
-MOEA/D.  In addition, third-party tools like JMetal and PISA directly integrate
-with the MOEA Framework.
-
-The MOEA Framework targets an academic audience, providing the resources
-necessary to rapidly design, develop, execute and statistically test 
-optimization algorithms.  This includes over 40 test problems from the
-literature, and a suite of statistical tools for comparing and analyzing
-algorithm performance.
+algorithms are provided out-of-the-box, including NSGA-II, e-MOEA, GDE3 and
+MOEA/D.  In addition, the MOEA Framework provides the tools necessary to
+rapidly design, develop, execute and statistically test optimization algorithms.
 
 Its key features includes:
   * Fast, reliable implementations of many state-of-the-art algorithms
@@ -46,21 +40,22 @@ Its key features includes:
 Copyright 2009-2012 David Hadka and other contributors.  All rights reserved.
 
 The MOEA Framework is free software: you can redistribute it and/or modify
-it under the terms of the GNU Lesser General Public License as published by 
-the Free Software Foundation, either version 3 of the License, or (at your 
+it under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation, either version 3 of the License, or (at your
 option) any later version.
 
-The MOEA Framework is distributed in the hope that it will be useful, but 
-WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY 
-or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public 
+The MOEA Framework is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
 License for more details.
 
-You should have received a copy of the GNU Lesser General Public License 
+You should have received a copy of the GNU Lesser General Public License
 along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
 
 The MOEA Framework is distributed with software governed by licenses other than
 the GNU Lesser General Public License, but which are compatible with the terms
-of the GNU Lesser General Public License.  Please see LICENSE for details.
+of the GNU Lesser General Public License.  Please see the LICENSE file for
+details.
 
 
 ------------------------------
@@ -93,8 +88,8 @@ vendors:
 The MOEA Framework is distributed with all required third-party libraries
 located in the lib/ directory.  These libraries must be made accessible to the
 JRE in order to compile and run the MOEA Framework and any applications that
-import or link to the MOEA Framework.  The following provides two alternative
-methods for referencing the libraries:
+import or link to the MOEA Framework.  The following provides to methods for
+referencing the libraries when executing a <command> in the console:
 
   * Specify JARs on classpath (Unix/Linux only)
       java -classpath $(echo lib/*.jar | sed 's/ /:/g'):. <command>
@@ -144,7 +139,7 @@ this and other free and open source projects.
 
   Lead Developer - David Hadka
   
-  Third-Party Libraries (see LICENSE for more details):
+  Third-Party Libraries (see the LICENSE file for more details):
     Apache Commons CLI <http://commons.apache.org/cli/>
     Apache Commons Codec <http://commons.apache.org/codec/>
     Apache Commons Lang <http://commons.apache.org/lang/>

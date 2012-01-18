@@ -21,7 +21,7 @@
 #include <errno.h>
 #include <math.h>
 
-int nvars = 100;
+int nvars = 2;
 int nobjs = 1;
 
 /**
