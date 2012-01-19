@@ -311,6 +311,7 @@ public class Controller {
 		
 		synchronized (accumulators) {
 			accumulators.clear();
+			frame.getPaintHelper().clear();
 			lastAccumulator = null;
 		}
 		

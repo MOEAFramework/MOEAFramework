@@ -54,7 +54,7 @@ public class LinePlot extends ResultPlot {
 	 * The resolution of the line plot, controlling the number of collected
 	 * samples are included in each plotted point.
 	 */
-	private final int RESOLUTION = 2000;
+	private final int RESOLUTION = 500;
 
 	/**
 	 * A data point, storing the NFE and corresponding metric value.

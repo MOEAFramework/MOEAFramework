@@ -68,10 +68,11 @@ public class PaintHelper {
 	}
 	
 	/**
-	 * Clears all paint assigments from this paint helper.
+	 * Clears all paint assignments from this paint helper.
 	 */
 	public void clear() {
 		paintMap.clear();
+		nextPaintIndex = 0;
 	}
 
 }
