@@ -77,8 +77,8 @@ input appears to be newer than output
   modified unexpectedly, and attempting to resume with a partially evaluated
   output file may result in incorrect results.  To resolve:
   
-    1) If the input file is unchanged, update the last modified date on the
-       output file to the current time.  On Unix machines, use "touch <file>".
+    1) If the input file is unchanged, use the --force command line option to
+       override this check.
        
     2) If the input file is changed, delete the output file and restart
        evaluation from the beginning.

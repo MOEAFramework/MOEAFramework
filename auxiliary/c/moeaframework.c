@@ -25,7 +25,6 @@
 
 #define MOEA_WHITESPACE " \t"
 #define MOEA_INITIAL_BUFFER_SIZE 1024
-#define MOEA_Check(fun) { MOEA_Status status = fun; if (status != MOEA_SUCCESS) { return status; } }
 
 int MOEA_Number_objectives;
 int MOEA_Number_constraints;
@@ -38,6 +37,8 @@ void MOEA_Error_callback_default(const MOEA_Status status) {
   MOEA_Debug("%s\n", MOEA_Status_message(status));
   exit(-1);
 }
+
+void (*MOEA_Error_callback)(const MOEA_Status) = MOEA_Error_callback_default;
 
 char* MOEA_Status_message(const MOEA_Status status) {
   switch (status) {
@@ -67,7 +68,7 @@ char* MOEA_Status_message(const MOEA_Status status) {
 MOEA_Status MOEA_Error(const MOEA_Status status) {
   if ((status == MOEA_SUCCESS) || (status == MOEA_EOF)) {
     return status;
-  } else if (&MOEA_Error_callback == NULL) {
+  } else if (MOEA_Error_callback == NULL) {
     return status;
   } else {
     MOEA_Error_callback(status);
@@ -87,6 +88,7 @@ MOEA_Status MOEA_Debug(const char* format, ...) {
   
   va_start(arguments, format);
   vfprintf(stderr, format, arguments);
+  fflush(stderr);
   va_end(arguments);
   
   return MOEA_SUCCESS;
@@ -159,7 +161,7 @@ MOEA_Status MOEA_Read_token(char** token) {
 }
 
 MOEA_Status MOEA_Read_binary(const int size, int* values) {
-  int i;
+  int i = 0;
   char* token = NULL;
   
   MOEA_Status status = MOEA_Read_token(&token);
@@ -281,28 +283,6 @@ MOEA_Status MOEA_Write(const double* objectives, const double* constraints) {
   //end line and flush to push data out immediately
   printf("\n");
   fflush(stdout);
-}
-
-int main() {
-  MOEA_Init(2, 0);
   
-  double doubles[2];
-  int binary[5];
-  int permutation[3];
-  double objectives[2];
-  
-  while (MOEA_Next_solution() == MOEA_SUCCESS) {
-    MOEA_Read_doubles(2, doubles);
-    MOEA_Read_binary(5, binary);
-    MOEA_Read_permutation(3, permutation);
-    
-    //do evaluation
-    
-    MOEA_Write(objectives, NULL);
-    
-    printf("debugging:\n");
-    printf("  Doubles: %f %f\n", doubles[0], doubles[1]);
-    printf("  Binary: %d %d %d %d %d\n", binary[0], binary[1], binary[2], binary[3], binary[4]);
-    printf("  Permutation: %d %d %d\n", permutation[0], permutation[1], permutation[2]);
-  }
+  return MOEA_SUCCESS;
 }

@@ -1,2 +1,4 @@
 main:
-	gcc -O3 -o Rosenbrock.exe Rosenbrock2.c
+	gcc -Wall -o moeaframework.o -c moeaframework.c
+	ar rcs libmoea.a moeaframework.o
+	gcc -Wall -o test.exe test.c -L. -lmoea
