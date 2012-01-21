@@ -268,7 +268,7 @@ MOEA_Status MOEA_Write(const double* objectives, const double* constraints) {
       printf(" ");
     }
     
-    printf("%e", objectives[i]);
+    printf("%.17g", objectives[i]);
   }
   
   //write constraints to output
@@ -277,7 +277,7 @@ MOEA_Status MOEA_Write(const double* objectives, const double* constraints) {
       printf(" ");
     }
   
-    printf("%e", constraints[i]);
+    printf("%.17g", constraints[i]);
   }
   
   //end line and flush to push data out immediately

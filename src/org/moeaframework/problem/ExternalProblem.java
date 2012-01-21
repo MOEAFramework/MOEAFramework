@@ -28,6 +28,8 @@ import java.io.OutputStreamWriter;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variable;
+import org.moeaframework.core.variable.BinaryVariable;
+import org.moeaframework.core.variable.Permutation;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.util.io.RedirectStream;
 
@@ -175,11 +177,32 @@ public abstract class ExternalProblem implements Problem {
 	 * @throws IOException if an error occurs during serialization
 	 */
 	private String encode(Variable variable) throws IOException {
+		StringBuilder sb = new StringBuilder();
+		
 		if (variable instanceof RealVariable) {
-			return Double.toString(((RealVariable)variable).getValue());
+			RealVariable rv = (RealVariable)variable;
+			sb.append(rv.getValue());
+		} else if (variable instanceof BinaryVariable) {
+			BinaryVariable bv = (BinaryVariable)variable;
+			
+			for (int i=0; i<bv.getNumberOfBits(); i++) {
+				sb.append(bv.get(i) ? "1" : "0");
+			}
+		} else if (variable instanceof Permutation) {
+			Permutation p = (Permutation)variable;
+
+			for (int i=0; i<p.size(); i++) {
+				if (i > 0) {
+					sb.append(',');
+				}
+				
+				sb.append(p.get(i));
+			}
 		} else {
 			throw new IOException("unable to serialize variable");
 		}
+		
+		return sb.toString();
 	}
 
 }

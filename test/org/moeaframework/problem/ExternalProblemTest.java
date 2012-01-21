@@ -30,10 +30,13 @@ import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.variable.BinaryVariable;
+import org.moeaframework.core.variable.Permutation;
 import org.moeaframework.core.variable.RealVariable;
 
 /**
- * Tests the {@link ExternalProblem} class.  Needs tests for error conditions.
+ * Tests the {@link ExternalProblem} class without the need for an external
+ * executable.  No error conditions are tested.
  */
 public class ExternalProblemTest {
 	
@@ -64,7 +67,7 @@ public class ExternalProblemTest {
 
 			@Override
 			public int getNumberOfVariables() {
-				return 3;
+				return 4;
 			}
 
 			@Override
@@ -79,14 +82,15 @@ public class ExternalProblemTest {
 
 			@Override
 			public Solution newSolution() {
-				Solution solution = new Solution(3, 2, 1);
+				Solution solution = new Solution(4, 2, 1);
 				solution.setVariable(0, new RealVariable(0.5, 0.0, 1.0));
 				solution.setVariable(1, new RealVariable(0.5, 0.0, 1.0));
-				solution.setVariable(2, new RealVariable(0.5, 0.0, 1.0));
+				solution.setVariable(2, new BinaryVariable(5));
+				solution.setVariable(3, new Permutation(3));
 				return solution;
 			}
 			
-		};	
+		};
 	}
 	
 	@After
@@ -113,7 +117,7 @@ public class ExternalProblemTest {
 					while ((line = reader.readLine()) != null) {
 						String[] tokens = line.split("\\s+");
 	
-						Assert.assertEquals(3, tokens.length);
+						Assert.assertEquals(4, tokens.length);
 	
 						writer.println("0.2 0.8 0.5");
 						writer.flush();
