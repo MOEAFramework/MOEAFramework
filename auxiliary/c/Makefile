@@ -1,7 +1,15 @@
+# This make file compiles the Rosenbrock demo (see examples/Example4.java) and
+# test.exe, an executable facilitating unit testing the C/C++ interface.
+#
+# Run 'make' to build all files
+
 CC = gcc
 FLAGS = -Wall -O3
 
 main: test.exe rosenbrock.exe
+
+clean:
+	rm moeaframework.o libmoea.a test.exe rosenbrock.exe
 
 libmoea.a: moeaframework.c moeaframework.h
 	$(CC) $(FLAGS) -o moeaframework.o -c moeaframework.c
