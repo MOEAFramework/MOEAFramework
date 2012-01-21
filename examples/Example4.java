@@ -20,7 +20,7 @@ public class Example4 {
 	public static class Rosenbrock extends ExternalProblem {
 
 		public Rosenbrock() throws IOException {
-			super("./auxiliary/c/a.exe");
+			super("./auxiliary/c/rosenbrock.exe");
 		}
 
 		/**

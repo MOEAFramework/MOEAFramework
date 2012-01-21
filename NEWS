@@ -5,6 +5,13 @@ Framework.
  Version 1.10 (TBD)
 --------------------
 
+  * ExternalProblem, the class allowing the MOEA Framework to use problems
+    implemented in C/C++ and other compiled languages, now supports real-valued,
+    binary and permutation decision-variables.  The moeaframework.h library for
+    C/C++ has been provided to facilitate the communication process.  The
+    source code distribution contains these files and examples in the
+    auxiliary/c/ folder.
+
   * Adds support in Executor, Analyzer and Instrumenter for instantiating
     problem instances using constructors with arguments.   These classes also
     provide the withSameProblemAs(...) method, allowing instances to easily
@@ -21,15 +28,15 @@ Framework.
     either be located on the local file system or bundled in a JAR file.
 
   * Adds the --epsilon command line argument to SetHypervolume.
-
-  * Removes non-UTF8 characters from several source files that were preventing
-    compilation in OpenJDK 7.
   
   * Miscellaneous bug fixes:
   
       - CoreUtils#fillVariablesFromDoubleArray now throws an
         IllegalArgumentException if the size of the array does not match the
         required number of variables
+        
+      - Removes non-UTF8 characters from several source files that were
+        preventing compilation in OpenJDK 7.
     
 
 ---------------------------

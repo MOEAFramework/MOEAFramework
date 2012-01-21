@@ -95,11 +95,6 @@ any changes.
     identify and report a null pointer ASAP rather than wait until dereferenced
     by internal code.
     
-  - ExternalProblem only supports real-valued decision variables.  More recent
-    work on ResultFileReader and ResultFileWriter added human-readable binary
-    and permutation formats.  Extend ExternalProblem to support binary and
-    permutation encodings using the same format.
-    
   - Add support for integer encodings.  The preferred method would involve
     extending the RealVariable class and simply rounding/truncating the values.
     However, this would need to ensure that no bias is introduced.  For

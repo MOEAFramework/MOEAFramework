@@ -15,11 +15,13 @@
  * You should have received a copy of the GNU Lesser General Public License 
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
 #include <math.h>
+#include "moeaframework.h"
 
 int nvars = 2;
 int nobjs = 1;
@@ -27,7 +29,7 @@ int nobjs = 1;
 /**
  * Function for evaluating the Rosenbrock problem.
  */
-int evaluate(double* vars, double* objs) {
+void evaluate(double* vars, double* objs) {
   int i;
   double sum = 0.0;
 
@@ -44,40 +46,16 @@ int evaluate(double* vars, double* objs) {
  * problem and printing the objectives.
  */
 int main(int argc, char* argv[]) {
-  int i;
-  int response;
   double vars[nvars];
   double objs[nobjs];
+  
+  MOEA_Init(nobjs, 0);
 
-  while (1) {
-    //parse the decision variable inputs
-    for (i=0; i<nvars; i++) {
-      response = fscanf(stdin, "%lf", &vars[i]);
-      
-      if ((response == EOF) && (ferror(stdin) == 0) && (i == 0)) {
-        //End of stream reached, connection closed successfully
-        exit(0);
-      } else if ((response == EOF) && (ferror(stdin) == 0)) {
-        fprintf(stderr, "Unexpectedly reached end of file\n");
-        exit(-1);
-      } else if (response == EOF) {
-        fprintf(stderr, "An I/O error occurred: %s\n", strerror(errno));
-        exit(-1);
-      } else if (response == 0) {
-        fprintf(stderr, "Unable to parse decision variable\n");
-        exit(-1);
-      }
-    }
-
-    //evaluate the problem
+  while (MOEA_Next_solution() == MOEA_SUCCESS) {
+    MOEA_Read_doubles(nvars, vars);
     evaluate(vars, objs);
-    
-    //print the objectives
-    fprintf(stdout, "%e", objs[0]);
-    for (i=1; i<nobjs; i++) {
-      fprintf(stdout, " %e", objs[i]);
-    }
-    fprintf(stdout, "\n");
-    fflush(stdout);
+    MOEA_Write(objs, NULL);
   }
+  
+  return EXIT_SUCCESS;
 }
