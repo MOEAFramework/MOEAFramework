@@ -30,6 +30,7 @@ import org.moeaframework.TestThresholds;
 import org.moeaframework.core.Initialization;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.Variable;
 import org.moeaframework.core.operator.RandomInitialization;
 import org.moeaframework.core.variable.BinaryVariable;
 import org.moeaframework.core.variable.Permutation;
@@ -187,6 +188,30 @@ public class ExternalProblemWithCTest {
 	public void testError6() {
 		Solution solution = new Solution(3, 2, 1);
 		copy(solution, problem.newSolution(), 3);
+		problem.evaluate(solution);
+	}
+	
+	@Test(expected = ProblemException.class)
+	public void testReturnLength() {
+		Solution solution = new Solution(4, 2, 2);
+		copy(solution, problem.newSolution(), 4);
+		problem.evaluate(solution);
+	}
+	
+	@Test(expected = ProblemException.class)
+	public void testUnsupportedVariableType() {
+		Solution solution = new Solution(4, 2, 2);
+		copy(solution, problem.newSolution(), 3);
+		solution.setVariable(3, new Variable() {
+
+			private static final long serialVersionUID = 7614517658356868257L;
+
+			@Override
+			public Variable copy() {
+				return this;
+			}
+			
+		});
 		problem.evaluate(solution);
 	}
 	

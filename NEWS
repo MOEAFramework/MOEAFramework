@@ -17,11 +17,6 @@ Framework.
   * Adds Apache Commons Lang 3.1 dependency, which is required for changes in
     this release and planned changes in future releases.
 
-  * Adds all-in-one executable JAR file that contains the MOEA Framework
-    binaries, data files and dependencies bundled in a single JAR file.  This
-    provides a single download file which launches the MOEA diagnostic tool when
-    double-clicked.
-
   * Improved support for accessing reference sets and other resources that can
     either be located on the local file system or bundled in a JAR file.
 
@@ -29,6 +24,12 @@ Framework.
 
   * Removes non-UTF8 characters from several source files that were preventing
     compilation in OpenJDK 7.
+  
+  * Miscellaneous bug fixes:
+  
+      - CoreUtils#fillVariablesFromDoubleArray now throws an
+        IllegalArgumentException if the size of the array does not match the
+        required number of variables
     
 
 ---------------------------

@@ -25,6 +25,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.MessageFormat;
 
+import org.apache.commons.lang3.Validate;
 import org.moeaframework.core.variable.RealVariable;
 
 /**
@@ -94,9 +95,15 @@ public class CoreUtils {
 	 *        {@code RealVariable}s
 	 * @param variables the array of doubles containing the values to be stored
 	 *        in the solution's variables
+	 * @throws IllegalArgumentException if {@code (variables.length != 
+	 *         solution.getNumberOfVariables())}
 	 */
 	public static void fillVariablesFromDoubleArray(Solution solution,
 			double[] variables) {
+		Validate.isTrue(variables.length == solution.getNumberOfVariables(),
+				"invalid number of variables, expected %d", 
+				solution.getNumberOfVariables());
+		
 		for (int i = 0; i < solution.getNumberOfVariables(); i++) {
 			((RealVariable)solution.getVariable(i)).setValue(variables[i]);
 		}

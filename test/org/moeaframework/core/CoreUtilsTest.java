@@ -107,6 +107,24 @@ public class CoreUtilsTest {
 				new double[] { 0.25, 0.75 });
 	}
 	
+	@Test(expected = IllegalArgumentException.class)
+	public void testFillVariablesFromDoubleArrayInvalidLength1() {
+		Solution solution = new Solution(2, 0);
+		solution.setVariable(0, new RealVariable(0.0, 1.0));
+		solution.setVariable(1, new RealVariable(0.0, 1.0));
+		CoreUtils.fillVariablesFromDoubleArray(solution, 
+				new double[] { 0.25 });
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testFillVariablesFromDoubleArrayInvalidLength2() {
+		Solution solution = new Solution(2, 0);
+		solution.setVariable(0, new RealVariable(0.0, 1.0));
+		solution.setVariable(1, new RealVariable(0.0, 1.0));
+		CoreUtils.fillVariablesFromDoubleArray(solution, 
+				new double[] { 0.25, 0.75, 0.5 });
+	}
+	
 	@Test
 	@Deprecated
 	public void testMerge1() {
