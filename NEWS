@@ -1,9 +1,9 @@
 This file documents the major changes implemented in each release of the MOEA
 Framework.
 
---------------------
- Version 1.10 (TBD)
---------------------
+----------------------------
+ Version 1.10 (22 Jan 2012)
+----------------------------
 
   * ExternalProblem, the class allowing the MOEA Framework to use problems
     implemented in C/C++ and other compiled languages, now supports real-valued,
