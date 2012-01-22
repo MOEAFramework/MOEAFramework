@@ -139,6 +139,11 @@ public class FileProtection extends CommandLineUtility {
 			reader = new BufferedReader(new FileReader(getDigestFile(file)));
 			
 			String line = reader.readLine();
+			
+			if (line == null) {
+				throw new ValidationException(file, "invalid digest file");
+			}
+			
 			int split = line.indexOf(' ');
 			String digestHex = line.substring(0, split);
 			String fileName = line.substring(split+2);

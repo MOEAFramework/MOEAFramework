@@ -125,6 +125,9 @@ public class ExternalProblemWithCTest {
 			
 			//check the debug stream
 			String debugLine = debugReader.readLine();
+			
+			Assert.assertNotNull(debugLine);
+			
 			String[] debugTokens = debugLine.split("\\s+");
 			
 			for (int j=0; j<2; j++) {
