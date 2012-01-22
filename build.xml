@@ -108,7 +108,7 @@
 		</copy>
 
 		<copy todir="${base}/pf">
-			<fileset dir="pf" />
+			<fileset dir="pf" excludes="referenceHypervolume" />
 		</copy>
 
 		<copy todir="${base}/javadoc">
