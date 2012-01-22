@@ -102,7 +102,7 @@
 	</target>
 
 	<target name="package-binary" 
-			depends="build-binary, build-test, build-javadoc"
+			depends="build-binary, build-javadoc"
 			description="Creates the binary distribution file">
 		<property name="base" value="build/${shortname}-${version}" />
 
@@ -115,18 +115,12 @@
 		<copy todir="${base}">
 			<path refid="requiredfiles" />
 			<fileset file="global.properties" />
-			<fileset file="test.xml" />
-			<fileset dir="auxiliary/windows" includes="*" />
+			<fileset file="auxiliary/windows/launch-diagnostic-tool.bat" />
 		</copy>
 
 		<replace file="${base}/README">
 			<replacefilter token="%VERSION%" value="${version}" />
 			<replacefilter token="%DATE%" value="${TODAY}" />
-		</replace>
-
-		<replace file="${base}/test.xml">
-			<replacefilter token="$${shortname}" value="${shortname}" />
-			<replacefilter token="$${version}" value="${version}" />
 		</replace>
 
 		<copy todir="${base}/licenses">
@@ -136,8 +130,7 @@
 
 		<copy todir="${base}/lib">
 			<fileset file="dist/${shortname}-${version}.jar" />
-			<fileset file="dist/${shortname}-${version}-test.jar" />
-			<fileset dir="lib" />
+			<fileset dir="lib" excludes="junit-*.jar" />
 		</copy>
 
 		<copy todir="${base}/pf">
@@ -160,8 +153,16 @@
 		<mkdir dir="${base}" />
 
 		<copy todir="${base}">
-			<fileset dir="." excludes="\.*,\.*/**,bin/**,build/**,dist/**,javadoc/**" />
+			<fileset dir="." excludes="\.*,\.*/**,bin/**,build/**,dist/**,javadoc/**,test-results/**,pf/referenceHypervolume,examples/monalisa/**,lib/junit-*.jar" />
 		</copy>
+		
+		<copy todir="${base}">
+			<fileset dir="auxiliary/eclipse" includes="\.*" />
+		</copy>
+		
+		<replace file="${base}/.project">
+			<replacefilter token="%VERSION%" value="${version}" />
+		</replace>
 
 		<tar destfile="dist/${shortname}-${version}-Source.tar.gz" 
 				basedir="build" compression="gzip" />

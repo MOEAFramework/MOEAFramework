@@ -1,5 +1,6 @@
 The MOEA Framework - <http://www.moeaframework.org/>
 ====================================================
+
 Version: %VERSION%
 Release Date: %DATE%
 
@@ -7,6 +8,7 @@ Release Date: %DATE%
 ----------
  Contents
 ----------
+
   1. Introduction
   2. Copyright and Licensing Information
   3. Installation Instructions
@@ -18,6 +20,7 @@ Release Date: %DATE%
 -----------------
  1. Introduction
 -----------------
+
 The MOEA Framework is an open source Java library for developing and
 experimenting with multiobjective evolutionary algorithms (MOEAs) and other
 general-purpose optimization algorithms and metaheuristics.  A number of
@@ -37,6 +40,7 @@ Its key features includes:
 ----------------------------------------
  2. Copyright and Licensing Information
 ----------------------------------------
+
 Copyright 2009-2012 David Hadka and other contributors.  All rights reserved.
 
 The MOEA Framework is free software: you can redistribute it and/or modify
@@ -61,12 +65,14 @@ details.
 ------------------------------
  3. Installation Instructions
 ------------------------------
-The MOEA Framework is available in source code and binary distributions.  Java
-6.0 or later is required to be accessible on the host system.  For source code
-distributions, the Java Development Kit (JDK) is required to compile the code.
-For binary distributions, only the Java Runtime Environment (JRE) is necessary.
-Depending on your platform, the JRE or JDK can be obtained from the following
-vendors:
+
+The latest version of the MOEA Framework can be downloaded from 
+<http://www.moeaframework.org/>.  The MOEA Framework is available in source
+code and binary distributions.  Java 6.0 or later is required to be accessible
+on the host system.  For source code distributions, the Java Development Kit
+(JDK) is required to compile the code.  For binary distributions, only the Java
+Runtime Environment (JRE) is necessary.  Depending on your platform, the JRE or
+JDK can be obtained from the following vendors:
 
   Oracle <http://www.oracle.com/technetwork/java/javase/>
     * Windows, Linux and Solaris
@@ -85,11 +91,29 @@ vendors:
     
   Apple <http://developer.apple.com/java/>
 
+The source code can be imported directly into the Eclipse development
+environment <http://www.eclipse.org/>.  First, launch Eclipse.  Second, select
+the 'Import...' option from the File menu.  In the popup window, ensure the
+General > Existing Projects into Workspace item is highlighted and click Next.
+Finally, set the root directory to the extracted MOEA Framework source code
+folder and click Finish.  The MOEA Framework is now properly configured in
+Eclipse.
+
+Alternatively, an Ant build script is provided to automatically compile the 
+source code and package the compiled classes in a JAR file.  Ant binaries can 
+be obtained from <http://ant.apache.org/>.  As an example, the compiled JAR is
+produced with the following command: 
+
+  ant package-binary       (for Unix/Linux)
+  ant.bat package-binary   (for Windows)
+
 The MOEA Framework is distributed with all required third-party libraries
 located in the lib/ directory.  These libraries must be made accessible to the
 JRE in order to compile and run the MOEA Framework and any applications that
-import or link to the MOEA Framework.  The following provides to methods for
-referencing the libraries when executing a <command> in the console:
+import or link to the MOEA Framework.  If imported into Eclipse as described
+above, all libraries are automatically accessible.  Otherwise, the libraries
+must be specified manually whenever compiling or running the code using one of
+the following methods:
 
   * Specify JARs on classpath (Unix/Linux only)
       java -classpath $(echo lib/*.jar | sed 's/ /:/g'):. <command>
@@ -97,21 +121,16 @@ referencing the libraries when executing a <command> in the console:
   * Specify JARs in extension directories
       java -Djava.ext.dirs=lib <command>
 
-An Ant build script is provided to automatically compile the source code and
-package the compiled classes in a JAR file.  Ant binaries can be obtained from
-<http://ant.apache.org/>.  As an example, the compiled JAR is produced with
-the following command: 
-
-  ant package-binary       (for Unix/Linux)
-  ant.bat package-binary   (for Windows)
-    
-The latest version of the MOEA Framework can be downloaded from 
-<http://www.moeaframework.org/>.
+The only optional library, JUnit 4, is required for running unit tests.  The
+latest version of JUnit 4 can be downloaded from <http://www.junit.org/> and
+should be placed in the lib/ folder.  The unit tests themselves are located in
+the test/ folder.
 
 
 -------------------------------------------
  4. Support, Bug Reports, Feature Requests
 -------------------------------------------
+
 Visit <http://www.moeaframework.org/> to receive support, report bugs, request
 new features or keep up-to-date with the latest copy of the MOEA Framework.
 
@@ -122,6 +141,7 @@ any direct questions, comments or concerns.
 -----------------
  5. Contributing
 -----------------
+
 The MOEA Framework is free and open source.  While no contributions of any
 kind are necessary to use this library, contributions of all kinds are
 appreciated: new feature additions, bug fixes, testing, documentation, user 
@@ -134,6 +154,7 @@ Please see <http://www.moeaframework.org/contribute.html> for details.
 ------------
  6. Credits
 ------------
+
 Special thanks to all individuals and organizations who have contributed to
 this and other free and open source projects.
 
