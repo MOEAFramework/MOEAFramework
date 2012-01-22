@@ -24,17 +24,14 @@
 	</path>
 	
 	<target name="check-binary">
+		
 		<available file="dist/${shortname}-${version}.jar" 
 				property="binary-exists" />
 	</target>
 	
 	<target name="if-binary-missing" depends="check-binary" 
 			unless="binary-exists">
-		<echo>=========================================</echo>
-		<echo>These tests run on the compiled binaries.</echo>
-		<echo>Please run 'ant build-binary' first.</echo>
-		<echo>=========================================</echo>
-		<fail message="Missing compiled binaries" />	
+		<ant target="build-binary" />
 	</target>
 	
 	<target name="build-test" depends="check-binary,if-binary-missing">
@@ -63,7 +60,7 @@
 			jarfile="dist/${shortname}-${version}-test.jar" />
 	</target>
 
-	<target name="test" depends="build-test">
+	<target name="run-tests" depends="build-test">		
 		<mkdir dir="test-results" />
 		<mkdir dir="test-results/raw" />
 	
@@ -108,8 +105,20 @@
 			</fileset>
 			<report format="frames" todir="test-results"/>
 		</junitreport>
-		
-		<fail if="junit.failure" message="Unit test(s) failed.  See reports!"/>
+	</target>
+	
+	<target name="test" depends="run-tests" if="junit.failure" 
+			description="Run the unit tests">
+		<echo>==============================================================================</echo>
+		<echo> One or more unit tests failed!  Open test-results/index.html to see which</echo>
+		<echo> tests failed.</echo>
+	    <echo> </echo>
+		<echo> Note: due to the stochastic nature of the MOEA Framework, there is a small</echo>
+		<echo> chance that some correct tests will fail.  Please repeat the tests prior to</echo>
+		<echo> notifying the developers.</echo>
+		<echo>==============================================================================</echo>
+	
+	    <fail message="Unit test(s) failed.  See reports!"/>
 	</target>
 	
 </project>
