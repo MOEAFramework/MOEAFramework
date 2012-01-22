@@ -9,23 +9,75 @@
  
 <project name="MOEA Framework Testing" basedir="." default="test">
 
+	<property file="META-INF/build.properties" />
 	<property environment="env" />
 	
 	<path id="classpath">
 		<fileset dir="lib" includes="*.jar" />
 	</path>
+	
+	<path id="requiredfiles">
+		<fileset file="README" />
+		<fileset file="LICENSE" />
+		<fileset file="NEWS" />
+		<fileset file="HELP" />
+	</path>
+	
+	<target name="check-binary">
+		<available file="dist/${shortname}-${version}.jar" 
+				property="binary-exists" />
+	</target>
+	
+	<target name="if-binary-missing" depends="check-binary" 
+			unless="binary-exists">
+		<echo>=========================================</echo>
+		<echo>These tests run on the compiled binaries.</echo>
+		<echo>Please run 'ant build-binary' first.</echo>
+		<echo>=========================================</echo>
+		<fail message="Missing compiled binaries" />	
+	</target>
+	
+	<target name="build-test" depends="check-binary,if-binary-missing">
+		<delete dir="build" />
+		<mkdir dir="build" />
 
-	<target name="test">
+		<javac destdir="build" debug="${java.debug}" 
+				includeantruntime="false">
+			<src path="test" />
+			<src path="examples" />
+			<classpath>
+				<path refid="classpath" />
+				<pathelement location="dist/${shortname}-${version}.jar" />
+			</classpath>
+		</javac>
+
+		<copy todir="build">
+			<fileset excludes="**/*.java" dir="test" />
+		</copy>
+		
+		<copy todir="build/META-INF">
+			<path refid="requiredfiles" />
+		</copy>
+
+		<jar basedir="build" 
+			jarfile="dist/${shortname}-${version}-test.jar" />
+	</target>
+
+	<target name="test" depends="build-test">
 		<mkdir dir="test-results" />
 		<mkdir dir="test-results/raw" />
 	
 		<junit printsummary="on" haltonfailure="false" 
 				tempdir="test-results/raw" errorproperty="junit.failure"
 				failureproperty="junit.failure">
-			<classpath refid="classpath" />
+			<classpath>
+				<path refid="classpath" />
+				<fileset file="dist/${shortname}-${version}.jar" />
+				<fileset file="dist/${shortname}-${version}-test.jar" />
+			</classpath>
 			<batchtest todir="test-results/raw">
 				<formatter type="xml" />
-				<zipfileset src="lib/${shortname}-${version}-test.jar">
+				<zipfileset src="dist/${shortname}-${version}-test.jar">
 					<include name="**/*Test.class" />
 					<exclude name="org/moeaframework/algorithm/AlgorithmTest.class" />
 					<exclude name="org/moeaframework/core/indicator/IndicatorTest.class" />

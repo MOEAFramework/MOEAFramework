@@ -75,32 +75,6 @@
 				jarfile="dist/${shortname}-${version}.jar" />
 	</target>
 
-	<target name="build-test">
-		<delete dir="build" />
-		<mkdir dir="build" />
-
-		<javac destdir="build" debug="${java.debug}" 
-				includeantruntime="false">
-			<src path="test" />
-			<src path="examples" />
-			<classpath>
-				<path refid="classpath" />
-				<pathelement location="dist/${shortname}-${version}.jar" />
-			</classpath>
-		</javac>
-
-		<copy todir="build/META-INF">
-			<path refid="requiredfiles" />
-		</copy>
-
-		<copy todir="build">
-			<fileset excludes="**/*.java" dir="test" />
-		</copy>
-
-		<jar basedir="build" 
-			jarfile="dist/${shortname}-${version}-test.jar" />
-	</target>
-
 	<target name="package-binary" 
 			depends="build-binary, build-javadoc"
 			description="Creates the binary distribution file">

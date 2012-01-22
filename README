@@ -124,7 +124,7 @@ the following methods:
 The only optional library, JUnit 4, is required for running unit tests.  The
 latest version of JUnit 4 can be downloaded from <http://www.junit.org/> and
 should be placed in the lib/ folder.  The unit tests themselves are located in
-the test/ folder.
+the test/ folder.  Use 'ant -f test.xml' to run the unit tests.
 
 
 -------------------------------------------
