@@ -124,7 +124,7 @@
 										</a>
 									</li>
 									<li>
-										<a href="https://sourceforge.net/projects/moeaframework/files/MOEAFramework-%VERSION%/MOEAFramework-%VERSION%-source.tar.gz/download"
+										<a href="https://sourceforge.net/projects/moeaframework/files/MOEAFramework-%VERSION%/MOEAFramework-%VERSION%-Source.tar.gz/download"
                                             onClick="_gaq.push(['_trackEvent', 'Downloads', 'Source', '%VERSION%']);">
 											Source Code
 										</a>

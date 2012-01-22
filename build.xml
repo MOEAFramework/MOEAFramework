@@ -163,7 +163,7 @@
 			<fileset dir="." excludes="\.*,\.*/**,bin/**,build/**,dist/**,javadoc/**" />
 		</copy>
 
-		<tar destfile="dist/${shortname}-${version}-source.tar.gz" 
+		<tar destfile="dist/${shortname}-${version}-Source.tar.gz" 
 				basedir="build" compression="gzip" />
 	</target>
 
@@ -211,6 +211,7 @@
 		</copy>
 	</target>
 
+	<!--
 	<target name="package-jnlp" 
 			depends="build-binary"
 			description="Creates the JNLP Web Start distribution">
@@ -243,6 +244,7 @@
 			</path>
 		</signjar>
 	</target>
+	-->
 
 	<target name="package-executable" depends="build-binary" description="Creates the executable JAR file">
 		<delete dir="build" />
