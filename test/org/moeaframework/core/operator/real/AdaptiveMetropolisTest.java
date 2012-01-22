@@ -21,8 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import junit.framework.Assert;
-
 import org.apache.commons.math.linear.CholeskyDecompositionImpl;
 import org.apache.commons.math.linear.MatrixUtils;
 import org.apache.commons.math.linear.NonSquareMatrixException;
@@ -32,6 +30,7 @@ import org.apache.commons.math.linear.RealMatrix;
 import org.apache.commons.math.stat.clustering.Cluster;
 import org.apache.commons.math.stat.clustering.KMeansPlusPlusClusterer;
 import org.apache.commons.math.stat.correlation.Covariance;
+import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.AbsoluteError;
 import org.moeaframework.RelativeError;
