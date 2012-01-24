@@ -6,7 +6,7 @@
             http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 
 <url>
-  <loc>http://www.moeaframework.org/</loc>
+  <loc>http://www.moeaframework.org</loc>
   <lastmod>%LASTMOD%</lastmod>
   <changefreq>weekly</changefreq>
   <priority>1.00</priority>
