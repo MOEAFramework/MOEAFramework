@@ -24,6 +24,7 @@ import java.util.Properties;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.OptionBuilder;
+import org.apache.commons.cli.OptionGroup;
 import org.apache.commons.cli.Options;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Indicator;
@@ -31,6 +32,7 @@ import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PopulationIO;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.indicator.AdditiveEpsilonIndicator;
+import org.moeaframework.core.indicator.Contribution;
 import org.moeaframework.core.indicator.GenerationalDistance;
 import org.moeaframework.core.indicator.Hypervolume;
 import org.moeaframework.core.indicator.InvertedGenerationalDistance;
@@ -39,6 +41,7 @@ import org.moeaframework.core.indicator.Spacing;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.util.CommandLineUtility;
 import org.moeaframework.util.OptionCompleter;
+import org.moeaframework.util.TypedProperties;
 
 /**
  * Command line utility for extracting data from a result file.  The data that
@@ -51,6 +54,7 @@ import org.moeaframework.util.OptionCompleter;
  *   <li>{@code +epsilon} for {@link AdditiveEpsilonIndicator}
  *   <li>{@code +error} for {@link MaximumParetoFrontError}
  *   <li>{@code +spacing} for {@link Spacing}
+ *   <li>{@code +contribution} for {@link Contribution}
  * </ul>
  */
 public class ExtractData extends CommandLineUtility {
@@ -78,13 +82,22 @@ public class ExtractData extends CommandLineUtility {
 	public Options getOptions() {
 		Options options = super.getOptions();
 		
-		options.addOption(OptionBuilder
+		OptionGroup group = new OptionGroup();
+		group.setRequired(true);
+		group.addOption(OptionBuilder
 				.withLongOpt("problem")
 				.hasArg()
 				.withArgName("name")
 				.withDescription("Problem name")
-				.isRequired()
 				.create('b'));
+		group.addOption(OptionBuilder
+				.withLongOpt("dimension")
+				.hasArg()
+				.withArgName("number")
+				.withDescription("Number of objectives")
+				.create('d'));
+		options.addOptionGroup(group);
+		
 		options.addOption(OptionBuilder
 				.withLongOpt("input")
 				.hasArg()
@@ -97,7 +110,6 @@ public class ExtractData extends CommandLineUtility {
 				.hasArg()
 				.withArgName("file")
 				.withDescription("Output file")
-				.isRequired()
 				.create('o'));
 		options.addOption(OptionBuilder
 				.withLongOpt("separator")
@@ -105,6 +117,18 @@ public class ExtractData extends CommandLineUtility {
 				.withArgName("value")
 				.withDescription("Separator between entries")
 				.create('s'));
+		options.addOption(OptionBuilder
+				.withLongOpt("reference")
+				.hasArg()
+				.withArgName("file")
+				.withDescription("Reference set file")
+				.create('r'));
+		options.addOption(OptionBuilder
+				.withLongOpt("epsilon")
+				.hasArg()
+				.withArgName("e1,e2,...")
+				.withDescription("Epsilon values for epsilon-dominance")
+				.create('e'));
 		options.addOption(OptionBuilder
 				.withLongOpt("noheader")
 				.withDescription("Do not print header line")
@@ -125,8 +149,14 @@ public class ExtractData extends CommandLineUtility {
 		PrintStream output = null;
 
 		try {
-			problem = ProblemFactory.getInstance().getProblem(commandLine
-					.getOptionValue("problem"));
+			// setup the problem
+			if (commandLine.hasOption("problem")) {
+				problem = ProblemFactory.getInstance().getProblem(commandLine
+						.getOptionValue("problem"));
+			} else {
+				problem = new ProblemStub(Integer.parseInt(commandLine
+						.getOptionValue("dimension")));
+			}
 			
 			try {
 				input = new ResultFileReader(problem, new File(commandLine
@@ -204,7 +234,8 @@ public class ExtractData extends CommandLineUtility {
 	protected String evaluate(String command, ResultEntry entry, 
 			CommandLine commandLine) throws IOException {
 		OptionCompleter completer = new OptionCompleter("hypervolume",
-				"generational", "inverted", "epsilon", "error", "spacing");
+				"generational", "inverted", "epsilon", "error", "spacing",
+				"contribution");
 		String option = completer.lookup(command);
 		
 		if (option == null) {
@@ -242,6 +273,15 @@ public class ExtractData extends CommandLineUtility {
 			indicator = new MaximumParetoFrontError(problem, referenceSet);
 		} else if (option.equals("spacing")) {
 			indicator = new Spacing(problem);
+		} else if (option.equals("contribution")) {
+			if (commandLine.hasOption("epsilon")) {
+				double[] epsilon = TypedProperties.withProperty("epsilon",
+						commandLine.getOptionValue("epsilon")).getDoubleArray(
+						"epsilon", null);
+				indicator = new Contribution(referenceSet, epsilon);
+			} else {
+				indicator = new Contribution(referenceSet);
+			}
 		} else {
 			throw new IllegalStateException();
 		}
