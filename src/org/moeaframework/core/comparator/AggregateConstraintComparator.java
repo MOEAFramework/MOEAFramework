@@ -73,10 +73,10 @@ Comparator<Solution>, Serializable {
 		double constraints1 = getConstraints(solution1);
 		double constraints2 = getConstraints(solution2);
 
-		if ((constraints1 != 0) || (constraints2 != 0)) {
-			if (constraints1 == 0) {
+		if ((constraints1 != 0.0) || (constraints2 != 0.0)) {
+			if (constraints1 == 0.0) {
 				return -1;
-			} else if (constraints2 == 0) {
+			} else if (constraints2 == 0.0) {
 				return 1;
 			} else {
 				return Double.compare(constraints1, constraints2);

@@ -159,8 +159,8 @@ Serializable {
 		if (!dominate1 && !dominate2) {
 			setSameBox(true);
 
-			double dist1 = 0;
-			double dist2 = 0;
+			double dist1 = 0.0;
+			double dist2 = 0.0;
 
 			for (int i = 0; i < solution1.getNumberOfObjectives(); i++) {
 				double epsilon = getEpsilon(i);

@@ -169,6 +169,8 @@ public class ExtractData extends CommandLineUtility {
 
 					// optionally print header line
 					if (!commandLine.hasOption("noheader")) {
+						output.print('#');
+						
 						for (int i = 0; i < fields.length; i++) {
 							if (i > 0) {
 								output.print(separator);
