@@ -31,7 +31,7 @@
 				<meta name="keywords" content="multiobjective, optimization, evolutionary, genetic, algorithm, moea, framework, java, lgpl, open, source, download, free" />
 				<meta name="robots" content="index, follow, noarchive" />
 				<meta name="googlebot" content="noarchive" />
-				<meta http-equiv="pragma" content="no-cache">
+				<meta http-equiv="pragma" content="no-cache" />
 
 				<title><xsl:value-of select="title" /></title>
 				<link rel="shortcut icon" href="/favicon.ico" />
@@ -83,6 +83,9 @@
 									<a href="downloads.html">Downloads</a>
 								</li>
 								<li>
+									<xsl:if test="$filename = 'documentation.xml'">
+										<xsl:attribute name="id">current</xsl:attribute>
+									</xsl:if>
 									<a href="documentation.html">Documentation</a>
 								</li>
 								<li>
