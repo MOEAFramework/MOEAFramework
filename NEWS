@@ -17,6 +17,9 @@ Framework.
   
       - ExternalProblem#close would fail to close the reader if the writer 
         threw an exception.
+        
+      - The MOEA Diagnostic Tool encountered an IndexOutOfBoundsException when
+        the problem only contained one objective.
 
 ----------------------------
  Version 1.10 (22 Jan 2012)

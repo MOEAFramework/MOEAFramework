@@ -82,7 +82,7 @@ public class Controller {
 	 * {@code true} if the last run's trace should be drawn separately;
 	 * {@code false} otherwise.
 	 */
-	private boolean showLastTrace = true;
+	private boolean showLastTrace = false;
 	
 	/**
 	 * {@code true} if the hypervolume indicator collector is included; 

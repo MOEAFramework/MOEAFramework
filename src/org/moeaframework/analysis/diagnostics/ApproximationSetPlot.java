@@ -86,8 +86,13 @@ public class ApproximationSetPlot extends ResultPlot {
 				XYSeries series = new XYSeries(key, false, true);
 				
 				for (Solution solution : population) {
-					series.add(solution.getObjective(0), 
-							solution.getObjective(1));
+					if (solution.getNumberOfObjectives() == 1) {
+						series.add(solution.getObjective(0), 
+								solution.getObjective(0));
+					} else if (solution.getNumberOfObjectives() > 1) {
+						series.add(solution.getObjective(0), 
+								solution.getObjective(1));
+					}
 				}
 				
 				dataset.addSeries(series);
