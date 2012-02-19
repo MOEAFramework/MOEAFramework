@@ -133,6 +133,12 @@
 											Source Code
 										</a>
 									</li>
+									<li>
+										<a href="https://sourceforge.net/projects/moeaframework/files/MOEAFramework-%VERSION%/MOEAFramework-%VERSION%-Manual.pdf/download"
+											onClick="_gaq.push(['_trackEvent', 'Downloads', 'Manual', '%VERSION%']);">
+											User Manual	
+										</a>
+									</li>
 								</ul>
 								<p>
 									Looking for a <a href="downloads.html#previous">previous release</a>?

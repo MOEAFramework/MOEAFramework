@@ -59,10 +59,4 @@
   <changefreq>weekly</changefreq>
   <priority>0.40</priority>
 </url>
-<url>
-  <loc>http://www.moeaframework.org/credits.html</loc>
-  <lastmod>%LASTMOD%</lastmod>
-  <changefreq>weekly</changefreq>
-  <priority>0.20</priority>
-</url>
 </urlset>
