@@ -80,7 +80,7 @@ public class ExtractDataTest {
 		
 		try {
 			reader = new BufferedReader(new FileReader(output));
-			Assert.assertEquals("ElapsedTime TotalTime", reader.readLine());
+			Assert.assertEquals("#ElapsedTime TotalTime", reader.readLine());
 			Assert.assertEquals("0.0125 0.214", reader.readLine());
 			Assert.assertEquals("0.01549 0.209186", reader.readLine());
 			Assert.assertNull(reader.readLine());
@@ -135,7 +135,7 @@ public class ExtractDataTest {
 			try {
 				resultReader = new ResultFileReader(problem, input);
 				
-				Assert.assertEquals("+ge +hyp +inv +err +spa +eps", 
+				Assert.assertEquals("#+ge +hyp +inv +err +spa +eps", 
 						reader.readLine());
 				
 				NondominatedPopulation population = 
