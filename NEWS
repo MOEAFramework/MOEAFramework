@@ -23,6 +23,10 @@ Framework.
         
       - The MOEA Diagnostic Tool now correctly detects and handles cases where
         the decision variables are not specified in the reference set.
+        
+      - Fixes concurrency bug in the MOEA Diagnostic Tool, whereby a list was
+        being concurrently modified while used in an iterator.  The code now
+        uses a CopyOnWriteArrayList.
 
 ----------------------------
  Version 1.10 (22 Jan 2012)

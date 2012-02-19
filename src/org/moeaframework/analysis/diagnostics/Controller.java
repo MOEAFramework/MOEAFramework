@@ -27,13 +27,13 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintStream;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -278,7 +278,7 @@ public class Controller {
 	public void add(ResultKey key, Accumulator accumulator) {
 		synchronized (accumulators) {
 			if (!accumulators.containsKey(key)) {
-				accumulators.put(key, new ArrayList<Accumulator>());
+				accumulators.put(key, new CopyOnWriteArrayList<Accumulator>());
 			}
 			
 			accumulators.get(key).add(accumulator);
