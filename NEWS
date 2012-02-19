@@ -5,6 +5,10 @@ Framework.
  Version 1.11 (TBA)
 --------------------
 
+  * Adds ClassLoaderProblems, allowing problems to be instantiated using their
+    fully-qualified class name.  For example:
+      new Executor().withProblem("org.moeaframework.problem.misc.Kita")
+
   * Adds the current directory to the classpath used by the executable JAR 
     distribution, allowing the configuration file, data files and classes to be
     referenced outside the JAR.

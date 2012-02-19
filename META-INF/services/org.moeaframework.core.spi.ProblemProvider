@@ -1,3 +1,4 @@
 org.moeaframework.problem.StandardProblems
 org.moeaframework.problem.PropertiesProblems
+org.moeaframework.problem.ClassLoaderProblems
 org.moeaframework.problem.RotatedProblems
