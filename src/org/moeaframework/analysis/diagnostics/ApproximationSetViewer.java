@@ -488,8 +488,13 @@ ActionListener, ChartChangeListener, ListSelectionListener {
 			plot.getRangeAxis().setRange(zoomRangeBounds);
 			plot.getDomainAxis().setRange(zoomDomainBounds);
 		} else if (useReferenceSetBounds.isSelected()) {
-			plot.getRangeAxis().setRange(referenceRangeBounds);
-			plot.getDomainAxis().setRange(referenceDomainBounds);
+			if (referenceRangeBounds.getLength() > 0.0) {
+				plot.getRangeAxis().setRange(referenceRangeBounds);
+			}
+			
+			if (referenceDomainBounds.getLength() > 0.0) {
+				plot.getDomainAxis().setRange(referenceDomainBounds);
+			}
 		}
 		
 		//register with the chart to receive zoom events
