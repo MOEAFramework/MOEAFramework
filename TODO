@@ -12,9 +12,6 @@ any changes.
  Easy
 ------
 
-  - ExternalProblem#close has the potential to never close the reader if an
-    error occurs when closing the writer.
-
   - The settings loader should probably read all discovered global.properties
     rather than the first found.
 

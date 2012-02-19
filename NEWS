@@ -1,6 +1,19 @@
 This file documents the major changes implemented in each release of the MOEA
 Framework.
 
+--------------------
+ Version 1.11 (TBA)
+--------------------
+
+  * Adds the current directory to the classpath used by the executable JAR 
+    distribution, allowing the configuration file, data files and classes to be
+    referenced outside the JAR.
+
+  * Miscellaneous bug fixes:
+  
+      - ExternalProblem#close would fail to close the reader if the writer 
+        threw an exception.
+
 ----------------------------
  Version 1.10 (22 Jan 2012)
 ----------------------------

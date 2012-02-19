@@ -249,7 +249,7 @@
 		<unjar dest="build" src="dist/${shortname}-${version}.jar" />
 		
 		<copy todir="build">
-			<fileset dir="." includes="pf/, global.properties" />
+			<fileset dir="." includes="pf/" />
 		</copy>
 		
 		<manifest mode="update" file="build/META-INF/MANIFEST.mf">

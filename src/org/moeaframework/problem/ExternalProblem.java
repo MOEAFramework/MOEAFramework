@@ -110,9 +110,14 @@ public abstract class ExternalProblem implements Problem {
 	public synchronized void close() {
 		try {
 			writer.close();
-			reader.close();
 		} catch (IOException e) {
 			throw new ProblemException(this, e);
+		} finally {
+			try {
+				reader.close();
+			} catch (IOException e) {
+				throw new ProblemException(this, e);
+			}
 		}
 	}
 
