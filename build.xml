@@ -254,6 +254,7 @@
 		
 		<manifest mode="update" file="build/META-INF/MANIFEST.mf">
 			<attribute name="Main-Class" value="org.moeaframework.analysis.diagnostics.LaunchDiagnosticTool" />
+			<attribute name="Class-Path" value="." />
 		</manifest>
 		
 		<jar destfile="dist/${shortname}-${version}-Executable.jar"
