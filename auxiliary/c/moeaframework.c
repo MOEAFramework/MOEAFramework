@@ -286,3 +286,9 @@ MOEA_Status MOEA_Write(const double* objectives, const double* constraints) {
   
   return MOEA_SUCCESS;
 }
+
+MOEA_Status MOEA_Finalize() {
+  //Currently, this method is empty, but may be used in the future to release
+  //any resources (e.g., sockets).
+  return MOEA_SUCCESS;
+}

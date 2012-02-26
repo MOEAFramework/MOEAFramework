@@ -59,7 +59,8 @@ char* MOEA_Status_message(const MOEA_Status);
 /**
  * Initializes the MOEA Framework to support a problem with the specified
  * number of objectives and constraints.  This function should be invoked prior
- * to all other functions provided by this library.
+ * to all other functions provided by this library, and should only be invoked
+ * once.
  *
  * @param objectives the number of objectives defined by this problem
  * @param constraints the number of constraints defined by this problem
@@ -146,5 +147,14 @@ MOEA_Status MOEA_Write(const double*, const double*);
  *         specific error code causing failure
  */
 MOEA_Status MOEA_Debug(const char* format, ...);
+
+/**
+ * Releases any resources used by the MOEA Framework.  No other functions
+ * provided by this library should be invoked after invoking this function.
+ *
+ * @return MOEA_SUCCESS if this function call completed successfully; or the
+ *         specific error code causing failure
+ */
+MOEA_Status MOEA_Finalize();
 
 #endif
