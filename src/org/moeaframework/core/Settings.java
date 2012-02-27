@@ -201,10 +201,10 @@ public class Settings {
 		}
 		
 		//attempt to access properties file
-		File file = new File(resource);
-		Reader reader = null;
-		
 		try {
+			File file = new File(resource);
+			Reader reader = null;
+			
 			try {
 				if (file.exists()) {
 					reader = new BufferedReader(new FileReader(file));

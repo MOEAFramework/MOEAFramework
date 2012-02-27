@@ -5,6 +5,10 @@ Framework.
  Version 1.11 (TBA)
 --------------------
 
+  * Adds the MOEA_Finalize() method to the C/C++ interface code.  This method
+    will be used to release any resources (memory, sockets, etc.) used by the
+    interface.
+
   * Adds ClassLoaderProblems, allowing problems to be instantiated using their
     fully-qualified class name.  For example:
       new Executor().withProblem("org.moeaframework.problem.misc.Kita")
@@ -27,6 +31,7 @@ Framework.
       - Fixes concurrency bug in the MOEA Diagnostic Tool, whereby a list was
         being concurrently modified while used in an iterator.  The code now
         uses a CopyOnWriteArrayList.
+
 
 ----------------------------
  Version 1.10 (22 Jan 2012)
