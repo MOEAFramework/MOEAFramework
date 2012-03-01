@@ -69,11 +69,11 @@
   </tr>
   <tr>
     <td>Lines of Source Code</td>
-    <td>21,319</td>
+    <td>21,213</td>
   </tr>
   <tr>
     <td>Number of Comments</td>
-    <td>2,774</td>
+    <td>2,773</td>
   </tr>
   <tr>
     <td>Number of Packages</td>
@@ -81,7 +81,7 @@
   </tr>
   <tr>
     <td>Number of Classes</td>
-    <td>368</td>
+    <td>367</td>
   </tr>
   <tr>
     <td>Number of Constructors</td>
@@ -93,18 +93,18 @@
   </tr>
   <tr>
     <td>Average Cyclomatic Complexity</td>
-    <td>2.07</td>
+    <td>2.06</td>
   </tr>
   <tr>
     <th colspan="2">Test Statistics</th>
   </tr>
   <tr>
     <td>Lines of Test Code</td>
-    <td>13,800</td>
+    <td>13,585</td>
   </tr>
   <tr>
     <td>Number of Unit Tests</td>
-    <td>998</td>
+    <td>983</td>
   </tr>
   <tr>
     <td>Number of Unit Test Errors</td>
@@ -146,7 +146,7 @@
   </tr>
   <tr>
     <td class="package">org.moeaframework</td>
-    <td class="good">81.0 %</td>
+    <td class="good">82.3 %</td>
     <td></td>
   </tr>
   <tr>
@@ -161,7 +161,7 @@
   </tr>
   <tr>
     <td class="package">org.moeaframework.algorithm.pisa</td>
-    <td class="good">85.2 %</td>
+    <td class="good">85.8 %</td>
     <td></td>
   </tr>
   <tr>
@@ -176,7 +176,7 @@
   </tr>
   <tr>
     <td class="package">org.moeaframework.analysis.sensitivity</td>
-    <td class="good">87.7 %</td>
+    <td class="good">88.1 %</td>
     <td></td>
   </tr>
   <tr>
@@ -236,7 +236,7 @@
   </tr>
   <tr>
     <td class="package">org.moeaframework.problem</td>
-    <td class="good">88.0 %</td>
+    <td class="good">87.2 %</td>
     <td></td>
   </tr>
   <tr>
@@ -280,13 +280,8 @@
     <td></td>
   </tr>
   <tr>
-    <td class="package">org.moeaframework.util.grammar</td>
-    <td class="good">94.6 %</td>
-    <td></td>
-  </tr>
-  <tr>
     <td class="package">org.moeaframework.util.io</td>
-    <td class="good">87.6 %</td>
+    <td class="good">88.5 %</td>
     <td></td>
   </tr>
   <tr>

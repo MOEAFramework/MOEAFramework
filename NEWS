@@ -1,9 +1,9 @@
 This file documents the major changes implemented in each release of the MOEA
 Framework.
 
---------------------
- Version 1.11 (TBA)
---------------------
+----------------------------
+ Version 1.11 (29 Feb 2012)
+----------------------------
 
   * Adds the MOEA_Finalize() method to the C/C++ interface code.  This method
     will be used to release any resources (memory, sockets, etc.) used by the

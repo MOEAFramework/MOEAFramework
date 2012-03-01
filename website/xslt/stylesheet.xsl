@@ -151,6 +151,7 @@
 									Licensed under the <a href="http://www.gnu.org/licenses/lgpl.html">GNU Lesser General Public License</a>.
 								</p>
 							</div>
+							<!--
 							<div class="sidemenu">
 								<h3></h3>
 								<p>
@@ -165,6 +166,7 @@
 									</script>
 								</p>
 							</div>
+							-->
 						</div>
 					</div>
 				</div>
