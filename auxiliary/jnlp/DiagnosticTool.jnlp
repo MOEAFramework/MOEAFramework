@@ -10,14 +10,7 @@
   </security>
   <resources>
     <j2se version="1.6+"/>
-    <jar href="lib/MOEAFramework-%VERSION%.jar"/>
-    <jar href="lib/MOEAFramework-%VERSION%-pf.jar" />
-    <jar href="lib/jcommon-1.0.16.jar"/>
-    <jar href="lib/jfreechart-1.0.13.jar"/>
-    <jar href="lib/commons-cli-1.2.jar"/>
-    <jar href="lib/commons-codec-1.5.jar"/>
-    <jar href="lib/commons-math-2.2.jar"/>
-    <property name="org.moeaframework.jnlp_enabled" value="true"/>
+    <jar href="http://www.moeaframework.org/jnlp/MOEAFramework-%VERSION%-Executable.jar"/>
   </resources>
   <application-desc main-class="org.moeaframework.analysis.diagnostics.LaunchDiagnosticTool"/>
 </jnlp> 

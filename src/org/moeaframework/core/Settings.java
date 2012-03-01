@@ -196,7 +196,6 @@ public class Settings {
 				resource = properties.getProperty(KEY_PREFIX + "configuration");
 			}
 		} catch (SecurityException e) {
-			//this exception occurs in unsigned JNLP distributions
 			properties = new Properties();
 		}
 		

@@ -186,40 +186,34 @@
 		</copy>
 	</target>
 
-	<!--
+	<!-- Run keytool -genkeypair -alias moeaframework to generate the key store -->
 	<target name="package-jnlp" 
-			depends="build-binary"
+			depends="package-executable"
 			description="Creates the JNLP Web Start distribution">
 		<property name="base" value="build/${shortname}-${version}" />
 
 		<delete dir="build" />
 		<mkdir dir="${base}" />
-		<mkdir dir="${base}/lib" />
 
 		<copy todir="${base}">
 			<fileset dir="auxiliary/jnlp" />
 		</copy>
 
-		<replace dir="${base}" includes="README,DiagnosticTool.jnlp">
+		<replace dir="${base}" includes="DiagnosticTool.jnlp">
 			<replacefilter token="%VERSION%" value="${version}" />
 			<replacefilter token="%DATE%" value="${TODAY}" />
 		</replace>
 
-		<copy todir="${base}/lib">
-			<fileset file="dist/${shortname}-${version}.jar" />
-			<fileset dir="lib" />
+		<copy todir="${base}">
+			<fileset file="dist/${shortname}-${version}-Executable.jar" />
 		</copy>
-
-		<jar basedir="." includes="pf/*" 
-				jarfile="${base}/lib/${shortname}-${version}-pf.jar" />
 
 		<signjar alias="moeaframework" storepass="secret">
 			<path>
-				<fileset dir="${base}/lib" includes="*.jar" />
+				<fileset dir="${base}" includes="*.jar" />
 			</path>
 		</signjar>
 	</target>
-	-->
 
 	<target name="package-executable" depends="build-binary" description="Creates the executable JAR file">
 		<delete dir="build" />
