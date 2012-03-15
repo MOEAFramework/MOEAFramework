@@ -40,7 +40,7 @@ void MOEA_Error_callback_default(const MOEA_Status status) {
 
 void (*MOEA_Error_callback)(const MOEA_Status) = MOEA_Error_callback_default;
 
-char* MOEA_Status_message(const MOEA_Status status) {
+const char* MOEA_Status_message(const MOEA_Status status) {
   switch (status) {
   case MOEA_SUCCESS:
     return "Success";
@@ -103,7 +103,7 @@ MOEA_Status MOEA_Next_solution() {
   }
   
   while (!feof(stdin)) {
-    //increase line buffer if needed
+    /* increase line buffer if needed */
     if ((MOEA_Line_limit == 0) || (position >= MOEA_Line_limit-1)) {
       MOEA_Line_limit += MOEA_INITIAL_BUFFER_SIZE;
       
@@ -115,7 +115,7 @@ MOEA_Status MOEA_Next_solution() {
       }
     }
   
-    //process next character
+    /* process next character */
     character = fgetc(stdin);
 
     if ((character == EOF) || (character == '\r') || (character == '\n')) {
@@ -140,19 +140,19 @@ MOEA_Status MOEA_Read_token(char** token) {
     return MOEA_Error(MOEA_PARSE_NO_SOLUTION);
   }
 
-  //find start of next token (skipping any leading whitespace)
+  /* find start of next token (skipping any leading whitespace) */
   MOEA_Line_position += strspn(MOEA_Line_buffer+MOEA_Line_position,
       MOEA_WHITESPACE);
   
-  //if this is the end of the line, signal an error
+  /* if this is the end of the line, signal an error */
   if (MOEA_Line_buffer[MOEA_Line_position] == '\0') {
     return MOEA_Error(MOEA_PARSE_EOL);
   }
   
-  //find end of token
+  /* find end of token */
   size_t end = strcspn(MOEA_Line_buffer+MOEA_Line_position, MOEA_WHITESPACE);
   
-  //create token
+  /* create token */
   MOEA_Line_buffer[MOEA_Line_position+end] = '\0';
   *token = MOEA_Line_buffer+MOEA_Line_position;
   MOEA_Line_position += end + 1;
@@ -256,13 +256,13 @@ MOEA_Status MOEA_Read_doubles(const int size, double* values) {
 MOEA_Status MOEA_Write(const double* objectives, const double* constraints) {
   int i;
   
-  //validate inputs before writing results
+  /* validate inputs before writing results */
   if (((objectives == NULL) && (MOEA_Number_objectives > 0)) ||
       ((constraints == NULL) && (MOEA_Number_constraints > 0))) {
     return MOEA_Error(MOEA_NULL_POINTER_ERROR);   
   }
   
-  //write objectives to output
+  /* write objectives to output */
   for (i=0; i<MOEA_Number_objectives; i++) {
     if (i > 0) {
       printf(" ");
@@ -271,7 +271,7 @@ MOEA_Status MOEA_Write(const double* objectives, const double* constraints) {
     printf("%.17g", objectives[i]);
   }
   
-  //write constraints to output
+  /* write constraints to output */
   for (i=0; i<MOEA_Number_constraints; i++) {
     if ((MOEA_Number_objectives > 0) || (i > 0)) {
       printf(" ");
@@ -280,15 +280,9 @@ MOEA_Status MOEA_Write(const double* objectives, const double* constraints) {
     printf("%.17g", constraints[i]);
   }
   
-  //end line and flush to push data out immediately
+  /* end line and flush to push data out immediately */
   printf("\n");
   fflush(stdout);
   
-  return MOEA_SUCCESS;
-}
-
-MOEA_Status MOEA_Finalize() {
-  //Currently, this method is empty, but may be used in the future to release
-  //any resources (e.g., sockets).
   return MOEA_SUCCESS;
 }

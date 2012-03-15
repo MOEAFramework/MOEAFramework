@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<jnlp spec="1.0+" href="DiagnosticTool.jnlp">
+<jnlp spec="6.0+" codebase="http://www.moeaframework.org/jnlp/" href="DiagnosticTool.jnlp">
   <information>
     <title>Diagnostic Tool</title>
     <vendor>MOEA Framework</vendor>
-    <offline-allowed/>
+    <homepage href="http://www.moeaframework.org" />
+    <description>The MOEA Diagnostic Tool</description>
+    <icon href="/images/logo2.png" />
+    <icon kind="splash" href="/images/logo2.png" />
   </information>
   <security>
     <all-permissions/>
   </security>
   <resources>
     <j2se version="1.6+"/>
-    <jar href="http://www.moeaframework.org/jnlp/MOEAFramework-%VERSION%-Executable.jar"/>
+    <jar href="MOEAFramework-1.11-Executable.jar"/>
   </resources>
   <application-desc main-class="org.moeaframework.analysis.diagnostics.LaunchDiagnosticTool"/>
 </jnlp> 
+

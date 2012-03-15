@@ -19,6 +19,10 @@
 #ifndef MOEAFRAMEWORK_H
 #define MOEAFRAMEWORK_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * The status and error codes that are returned by functions provided by this
  * library.
@@ -54,13 +58,12 @@ extern void (*MOEA_Error_callback)(const MOEA_Status);
  * @param status the status code
  * @return a message detailing the specified status code
  */
-char* MOEA_Status_message(const MOEA_Status);
+const char* MOEA_Status_message(const MOEA_Status);
 
 /**
  * Initializes the MOEA Framework to support a problem with the specified
  * number of objectives and constraints.  This function should be invoked prior
- * to all other functions provided by this library, and should only be invoked
- * once.
+ * to all other functions provided by this library.
  *
  * @param objectives the number of objectives defined by this problem
  * @param constraints the number of constraints defined by this problem
@@ -148,13 +151,8 @@ MOEA_Status MOEA_Write(const double*, const double*);
  */
 MOEA_Status MOEA_Debug(const char* format, ...);
 
-/**
- * Releases any resources used by the MOEA Framework.  No other functions
- * provided by this library should be invoked after invoking this function.
- *
- * @return MOEA_SUCCESS if this function call completed successfully; or the
- *         specific error code causing failure
- */
-MOEA_Status MOEA_Finalize();
+#ifdef __cplusplus
+}
+#endif
 
 #endif
