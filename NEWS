@@ -1,6 +1,15 @@
 This file documents the major changes implemented in each release of the MOEA
 Framework.
 
+--------------------
+ Version 1.12 (TBD)
+--------------------
+
+  * Makes C/C++ interface ANSI C and ISO/IEC C++ 1998 compliant, allowing its
+    use in nearly any C/C++ compiler.  Also uses 'extern C' to allow linking
+    between C and C++.
+     
+
 ----------------------------
  Version 1.11 (29 Feb 2012)
 ----------------------------

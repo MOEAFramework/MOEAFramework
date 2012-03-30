@@ -12,9 +12,6 @@ any changes.
  Easy
 ------
 
-  - The settings loader should probably read all discovered global.properties
-    rather than the first found.
-
   - Need to determine for which classes does value-based equals methods make
     sense, and provide equals and hashCode implementations for these classes.
     As an example, it doesn't make sense for Solution to provide an equals
