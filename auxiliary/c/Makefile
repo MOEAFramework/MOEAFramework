@@ -4,7 +4,7 @@
 # Run 'make' to build all files
 
 CC = gcc
-FLAGS = -Wall -O3
+FLAGS = -Wall -O3 -ansi
 
 main: test.exe rosenbrock.exe
 
