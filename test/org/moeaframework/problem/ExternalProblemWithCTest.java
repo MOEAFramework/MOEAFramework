@@ -41,13 +41,15 @@ import org.moeaframework.core.variable.RealVariable;
  */
 public class ExternalProblemWithCTest {
 	
+	private File file;
+	
 	private ExternalProblem problem;
 	
 	private BufferedReader debugReader;
 	
 	@Before
 	public void setUp() throws IOException {
-		File file = new File("./auxiliary/c/test.exe");
+		file = new File("./auxiliary/c/test.exe");
 		
 		if (file.exists()) {
 			//start the process separately to intercept the error (debug) data
@@ -95,6 +97,8 @@ public class ExternalProblemWithCTest {
 	
 	@After
 	public void tearDown() throws IOException {
+		file = null;
+		
 		if (problem != null) {
 			problem.close();
 			problem = null;
@@ -108,6 +112,11 @@ public class ExternalProblemWithCTest {
 	
 	@Test
 	public void test() throws IOException {
+		if (!file.exists()) {
+			System.err.println("./auxiliary/c/test.exe does not exist, skipping test");
+			return;
+		}
+		
 		Initialization initialization = new RandomInitialization(problem, 
 				TestThresholds.SAMPLES);
 
@@ -154,6 +163,11 @@ public class ExternalProblemWithCTest {
 	
 	@Test(expected = ProblemException.class)
 	public void testError1() {
+		if (!file.exists()) {
+			System.err.println("./auxiliary/c/test.exe does not exist, skipping test");
+			throw new ProblemException(null);
+		}
+		
 		Solution solution = problem.newSolution();
 		solution.setVariable(2, new RealVariable(0.5, 0.0, 1.0));
 		problem.evaluate(solution);
@@ -161,6 +175,11 @@ public class ExternalProblemWithCTest {
 	
 	@Test(expected = ProblemException.class)
 	public void testError2() {
+		if (!file.exists()) {
+			System.err.println("./auxiliary/c/test.exe does not exist, skipping test");
+			throw new ProblemException(null);
+		}
+		
 		Solution solution = problem.newSolution();
 		solution.setVariable(3, new RealVariable(0.5, 0.0, 1.0));
 		problem.evaluate(solution);
@@ -168,6 +187,11 @@ public class ExternalProblemWithCTest {
 	
 	@Test(expected = ProblemException.class)
 	public void testError3() {
+		if (!file.exists()) {
+			System.err.println("./auxiliary/c/test.exe does not exist, skipping test");
+			throw new ProblemException(null);
+		}
+		
 		Solution solution = problem.newSolution();
 		solution.setVariable(1, new Permutation(3));
 		problem.evaluate(solution);
@@ -175,6 +199,11 @@ public class ExternalProblemWithCTest {
 	
 	@Test(expected = ProblemException.class)
 	public void testError4() {
+		if (!file.exists()) {
+			System.err.println("./auxiliary/c/test.exe does not exist, skipping test");
+			throw new ProblemException(null);
+		}
+		
 		Solution solution = new Solution(1, 2, 1);
 		copy(solution, problem.newSolution(), 1);
 		problem.evaluate(solution);
@@ -182,6 +211,11 @@ public class ExternalProblemWithCTest {
 	
 	@Test(expected = ProblemException.class)
 	public void testError5() {
+		if (!file.exists()) {
+			System.err.println("./auxiliary/c/test.exe does not exist, skipping test");
+			throw new ProblemException(null);
+		}
+		
 		Solution solution = new Solution(2, 2, 1);
 		copy(solution, problem.newSolution(), 2);
 		problem.evaluate(solution);
@@ -189,6 +223,11 @@ public class ExternalProblemWithCTest {
 	
 	@Test(expected = ProblemException.class)
 	public void testError6() {
+		if (!file.exists()) {
+			System.err.println("./auxiliary/c/test.exe does not exist, skipping test");
+			throw new ProblemException(null);
+		}
+		
 		Solution solution = new Solution(3, 2, 1);
 		copy(solution, problem.newSolution(), 3);
 		problem.evaluate(solution);
@@ -196,6 +235,11 @@ public class ExternalProblemWithCTest {
 	
 	@Test(expected = ProblemException.class)
 	public void testReturnLength() {
+		if (!file.exists()) {
+			System.err.println("./auxiliary/c/test.exe does not exist, skipping test");
+			throw new ProblemException(null);
+		}
+		
 		Solution solution = new Solution(4, 2, 2);
 		copy(solution, problem.newSolution(), 4);
 		problem.evaluate(solution);
@@ -203,6 +247,11 @@ public class ExternalProblemWithCTest {
 	
 	@Test(expected = ProblemException.class)
 	public void testUnsupportedVariableType() {
+		if (!file.exists()) {
+			System.err.println("./auxiliary/c/test.exe does not exist, skipping test");
+			throw new ProblemException(null);
+		}
+		
 		Solution solution = new Solution(4, 2, 2);
 		copy(solution, problem.newSolution(), 3);
 		solution.setVariable(3, new Variable() {
