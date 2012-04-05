@@ -5,10 +5,22 @@ Framework.
  Version 1.12 (TBD)
 --------------------
 
+  * Improved support for custom hypervolume calculators.
+
+  * Modified PopulationIO to accept Iterable<Solution> instead of Population
+    in the write and writeObjectives methods.  This allows saving solutions
+    stored in lists and other collections.
+
+  * Upgrades the C/C++ interface code to support sockets by using the
+    MOEA_Init_socket initialization method.  The ExternalProblem has also been
+    extended with a host/port constructor to connect to such remote processes.
+    
+  * Adds extern "C" to the C/C++ interface code to allow easier code mixing.
+  
   * Makes C/C++ interface ANSI C and ISO/IEC C++ 1998 compliant, allowing its
-    use in nearly any C/C++ compiler.  Also uses 'extern C' to allow linking
-    between C and C++.
-     
+    use in nearly any C/C++ compiler.  More advanced features (e.g., sockets)
+    are conditionally compiled by the _POSIX_SOURCE flag.
+
 
 ----------------------------
  Version 1.11 (29 Feb 2012)

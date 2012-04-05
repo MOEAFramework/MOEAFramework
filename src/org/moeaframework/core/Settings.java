@@ -86,6 +86,12 @@ public class Settings {
 			"core.indicator.hypervolume";
 	
 	/**
+	 * The property key for the hypervolume inversion flag.
+	 */
+	public static final String KEY_HYPERVOLUME_INVERTED = KEY_PREFIX + 
+			"core.indicator.hypervolume_inverted";
+	
+	/**
 	 * The property key for the hypervolume flag.
 	 */
 	public static final String KEY_HYPERVOLUME_ENABLED = KEY_PREFIX +
@@ -284,6 +290,18 @@ public class Settings {
 	 */
 	public static String getHypervolume() {
 		return PROPERTIES.getString(KEY_HYPERVOLUME, null);
+	}
+	
+	/**
+	 * Returns {@code true} if the approximation set is inverted prior to being
+	 * passed to the custom hypervolume implementation; otherwise {@code false}.
+	 * 
+	 * @return {@code true} if the approximation set is inverted prior to being
+	 *         passed to the custom hypervolume implementation; otherwise
+	 *         {@code false}
+	 */
+	public static boolean isHypervolumeInverted() {
+		return PROPERTIES.getBoolean(KEY_HYPERVOLUME_INVERTED, false);
 	}
 	
 	/**

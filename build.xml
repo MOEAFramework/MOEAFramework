@@ -53,8 +53,8 @@
 			<replacefilter token="%DATE%" value="${TODAY}" />
 		</replace>
 
-		<exec executable="svnversion" outputproperty="svn.version"
-				failifexecutionfails="false"/>
+		<!--<exec executable="svnversion" outputproperty="svn.version"
+				failifexecutionfails="false"/>-->
 
 		<manifest file="build/META-INF/MANIFEST.MF">
 			<section name="org/moeaframework/">

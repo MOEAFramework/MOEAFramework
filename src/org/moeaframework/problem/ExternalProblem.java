@@ -24,6 +24,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.net.Socket;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
@@ -53,6 +56,12 @@ import org.moeaframework.util.io.RedirectStream;
  * external process is shutdown cleanly.</b>
  */
 public abstract class ExternalProblem implements Problem {
+	
+	/**
+	 * The default port used by the MOEA Framework to connect to remote
+	 * evaluation processes via sockets.
+	 */
+	public static final int DEFAULT_PORT = 16801;
 
 	/**
 	 * Reader connected to the process' standard output.
@@ -73,10 +82,51 @@ public abstract class ExternalProblem implements Problem {
 	 * </pre>
 	 * 
 	 * @param command a specified system command
-	 * @throws IOException if an I/O error occurs
+	 * @throws IOException if an I/O error occured
 	 */
 	public ExternalProblem(String... command) throws IOException {
 		this(new ProcessBuilder(command).start());
+	}
+	
+	/**
+	 * Constructs an external problem that connects to a remote process via
+	 * sockets.  The remote process should be instantiated and already
+	 * listening to the designated port number prior to invoking this 
+	 * constructor.
+	 * 
+	 * @param host the host name of the remote system; or {@code null} to use
+	 *        the local host
+	 * @param port the port number
+	 * @throws UnknownHostException if the IP address of the specified host
+	 *         could not be determined
+	 * @throws IOException if an I/O error occurred
+	 */
+	public ExternalProblem(String host, int port) throws IOException {
+		this(new Socket(host, port));
+	}
+	
+	/**
+	 * Constructs an external problem that connects to a remote process via
+	 * sockets.  The remote process should be instantiated and already
+	 * listening to the designated port number prior to invoking this
+	 * constructor.
+	 * 
+	 * @param address the IP address of the remote system
+	 * @param port the port number
+	 * @throws IOException if an I/O error occurred
+	 */
+	public ExternalProblem(InetAddress address, int port) throws IOException {
+		this(new Socket(address, port));
+	}
+	
+	/**
+	 * Constructs an external problem using the specified socket.
+	 * 
+	 * @param socket the socket used to send solutions to be evaluated
+	 * @throws IOException if an I/O error occurred
+	 */
+	ExternalProblem(Socket socket) throws IOException {
+		this(socket.getInputStream(), socket.getOutputStream());
 	}
 
 	/**

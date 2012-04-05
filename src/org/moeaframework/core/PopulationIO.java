@@ -103,23 +103,23 @@ public class PopulationIO {
 	}
 	
 	/**
-	 * Writes the objective vectors of all solutions in the specified population
-	 * to the specified file. Files created using this method should only be
-	 * loaded using the {@code loadObjectives} method.
+	 * Writes the objective vectors of all solutions to the specified file. 
+	 * Files created using this method should only be loaded using the 
+	 * {@code loadObjectives} method.
 	 * 
 	 * @param file the file to which the objective vectors are written
-	 * @param population the population of solutions whose objective vectors are
-	 *        written to the specified file
+	 * @param solutions the solutions whose objective vectors are written to
+	 *        the specified file
 	 * @throws IOException if an I/O exception occurred
 	 */
-	public static void writeObjectives(File file, Population population)
+	public static void writeObjectives(File file, Iterable<Solution> solutions)
 			throws IOException {
 		BufferedWriter writer = null;
 
 		try {
 			writer = new BufferedWriter(new FileWriter(file));
 
-			for (Solution solution : population) {
+			for (Solution solution : solutions) {
 				writer.write(Double.toString(solution.getObjective(0)));
 
 				for (int i = 1; i < solution.getNumberOfObjectives(); i++) {
@@ -137,15 +137,15 @@ public class PopulationIO {
 	}
 
 	/**
-	 * Writes a population to the specified file. Files written using this
-	 * method should only be read using the {@link #read} method. This method
-	 * relies on serialization.
+	 * Writes a collection of solutions to the specified file. Files written 
+	 * using this method should only be read using the {@link #read} method. 
+	 * This method relies on serialization.
 	 * 
-	 * @param file the file to which the population is written
-	 * @param population the solutions to be written in the specified file
+	 * @param file the file to which the solutions are written
+	 * @param solutions the solutions to be written in the specified file
 	 * @throws IOException if an I/O exception occurred
 	 */
-	public static void write(File file, Population population)
+	public static void write(File file, Iterable<Solution> solutions)
 			throws IOException {
 		ObjectOutputStream oos = null;
 
@@ -154,7 +154,7 @@ public class PopulationIO {
 					new FileOutputStream(file)));
 			List<Solution> list = new ArrayList<Solution>();
 
-			for (Solution solution : population) {
+			for (Solution solution : solutions) {
 				list.add(solution);
 			}
 

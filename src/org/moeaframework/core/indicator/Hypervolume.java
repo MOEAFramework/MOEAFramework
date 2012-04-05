@@ -271,21 +271,37 @@ public class Hypervolume extends NormalizedIndicator {
 	 */
 	static double evaluate(Problem problem,
 			NondominatedPopulation approximationSet) {
-		if ((Settings.getHypervolume() != null) && 
-				(problem.getNumberOfObjectives() > 2)) {
-			return invokeNativeHypervolume(problem, approximationSet);
+		boolean isInverted = true;
+		boolean isCustomHypervolume = (Settings.getHypervolume() != null) && 
+				(problem.getNumberOfObjectives() > 2) ;
+		
+		if (isCustomHypervolume) {
+			isInverted = Settings.isHypervolumeInverted();
 		}
 
-		List<Solution> orderedSolutions = new ArrayList<Solution>();
+		List<Solution> solutions = new ArrayList<Solution>();
 
 		for (Solution solution : approximationSet) {
-			solution = solution.copy();
-			invert(problem, solution);
-			orderedSolutions.add(solution);
+			for (int i=0; i<solution.getNumberOfObjectives(); i++) {
+				//prune any solutions which exceed the Nadir point
+				if (solution.getObjective(i) <= 1.0) {
+					solution = solution.copy();
+					
+					if (isInverted) {
+						invert(problem, solution);
+					}
+					
+					solutions.add(solution);
+				}
+			}
 		}
 
-		return calculateHypervolume(orderedSolutions, orderedSolutions.size(),
-				problem.getNumberOfObjectives());
+		if (isCustomHypervolume) {
+			return invokeNativeHypervolume(problem, solutions, isInverted);
+		} else {
+			return calculateHypervolume(solutions, solutions.size(), 
+					problem.getNumberOfObjectives());
+		}
 	}
 	
 	/**
@@ -295,8 +311,10 @@ public class Hypervolume extends NormalizedIndicator {
 	 * 
 	 * @param population the population to be pruned
 	 * @return the pruned population
+	 * @deprecated Will be removed in version 2.0
 	 */
-	public static Population prune(NondominatedPopulation population) {
+	@Deprecated
+	public static Population prune(Iterable<Solution> population) {
 		Population result = new Population();
 		
 		outer: for (Solution solution : population) {
@@ -324,48 +342,87 @@ public class Hypervolume extends NormalizedIndicator {
 	 * <li>{1} approximation set size
 	 * <li>{2} file containing the approximation set
 	 * <li>{3} file containing the reference point
+	 * <li>{4} the reference point, separated by spaces
 	 * </ul>
+	 * <p>
+	 * Note: To avoid unnecessarily writing files, the command is first checked
+	 * if the above arguments are specified.  Use the exact argument string as
+	 * shown above (e.g., {@code {3}}) in the command.
 	 * 
-	 * @param normalizedApproximationSet the normalized approximation set
+	 * @param problem the problem
+	 * @param solutions the normalized and possibly inverted solutions
 	 * @return the hypervolume value
 	 */
 	private static double invokeNativeHypervolume(Problem problem,
-			NondominatedPopulation normalizedApproximationSet) {
+			List<Solution> solutions, boolean isInverted) {
 		try {
-			// create temporary files
-			File approximationSetFile = File.createTempFile("approximationSet",
-					null);
-			File referencePointFile = File.createTempFile("referencePoint",
-					null);
-
-			approximationSetFile.deleteOnExit();
-			referencePointFile.deleteOnExit();
-
-			// write contents to temporary files
-			PopulationIO.writeObjectives(approximationSetFile,
-					prune(normalizedApproximationSet));
-
-			Solution referencePoint = new Solution(new double[problem
-					.getNumberOfObjectives()]);
-
-			for (int i = 0; i < problem.getNumberOfObjectives(); i++) {
-				referencePoint.setObjective(i, 
-						1.0 + Settings.getHypervolumeDelta());
+			String command = Settings.getHypervolume();
+			
+			//compute the nadir point for minimization or maximization scenario
+			double nadirPoint;
+			
+			if (isInverted) {
+				nadirPoint = 0.0 - Settings.getHypervolumeDelta();
+			} else {
+				nadirPoint = 1.0 + Settings.getHypervolumeDelta();
 			}
+			
+			//generate approximation set file
+			File approximationSetFile = File.createTempFile(
+						"approximationSet", null);
+				
+			approximationSetFile.deleteOnExit();
+				
+			PopulationIO.writeObjectives(approximationSetFile, solutions);
+			
+			//conditionally generate reference point file
+			File referencePointFile = null;
+			
+			if (command.contains("{3}")) {
+				referencePointFile = File.createTempFile("referencePoint",
+						null);
 
-			PopulationIO.writeObjectives(referencePointFile, new Population(
-					new Solution[] { referencePoint }));
+				referencePointFile.deleteOnExit();
+
+				Solution referencePoint = new Solution(
+						new double[problem.getNumberOfObjectives()]);
+
+				for (int i = 0; i < problem.getNumberOfObjectives(); i++) {
+					referencePoint.setObjective(i, nadirPoint);
+				}
+
+				PopulationIO.writeObjectives(referencePointFile, 
+						new Population(new Solution[] { referencePoint }));
+			}
+			
+			//conditionally generate reference point argument
+			StringBuilder referencePointString = null;
+			
+			if (command.contains("{4}")) {
+				referencePointString = new StringBuilder();
+				
+				for (int i = 0; i < problem.getNumberOfObjectives(); i++) {
+					if (i > 0) {
+						referencePointString.append(' ');
+					}
+					
+					referencePointString.append(nadirPoint);
+				}
+			}
 
 			// construct the command for invoking the native process
 			Object[] arguments = new Object[] {
 					(Integer)problem.getNumberOfObjectives(),
-					(Integer)normalizedApproximationSet.size(),
+					(Integer)solutions.size(),
 					approximationSetFile.getCanonicalPath(),
-					referencePointFile.getCanonicalPath() };
+					referencePointFile == null ? "" : 
+						referencePointFile.getCanonicalPath(),
+					referencePointString == null ? "" : 
+						referencePointString.toString()};
 
 			// invoke the native process
-			return invokeNativeProcess(MessageFormat.format(
-					Settings.getHypervolume(), arguments));
+			return invokeNativeProcess(MessageFormat.format(command, 
+					arguments));
 		} catch (IOException e) {
 			throw new FrameworkException(e);
 		}
