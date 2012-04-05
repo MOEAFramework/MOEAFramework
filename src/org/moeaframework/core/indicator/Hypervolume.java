@@ -358,7 +358,6 @@ public class Hypervolume extends NormalizedIndicator {
 	private static double invokeNativeHypervolume(Problem problem,
 			List<Solution> solutions, boolean isInverted) {
 		try {
-			System.out.println(isInverted);
 			String command = Settings.getHypervolume();
 			
 			//compute the nadir point for minimization or maximization scenario
