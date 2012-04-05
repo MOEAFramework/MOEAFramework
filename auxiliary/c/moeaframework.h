@@ -37,6 +37,7 @@ typedef enum MOEA_Status {
   MOEA_PARSE_PERMUTATION_ERROR,
   MOEA_MALLOC_ERROR,
   MOEA_NULL_POINTER_ERROR,
+  MOEA_SOCKET_ERROR,
 } MOEA_Status;
 
 /**
@@ -71,6 +72,22 @@ const char* MOEA_Status_message(const MOEA_Status);
  *         specific error code causing failure
  */
 MOEA_Status MOEA_Init(const int, const int);
+
+#ifdef _POSIX_SOURCE
+/**
+ * Initializes the MOEA Framework to support a problem with the specified
+ * number of objectives and constraints.  This initializer establishes a
+ * socket at the specified port to receive and send the data.  This function
+ * should be invoked prior to all other functions provided by this library.
+ *
+ * @param objectives the number of objectives defined by this problem
+ * @param constraints the number of constraints defined by this problem
+ * @param service the port number or service name
+ * @return MOEA_SUCCESS if this function call completed successfully; or the
+ *         specific error code causing failure
+ */
+MOEA_Status MOEA_Init_socket(const int, const int, const char*);
+#endif
 
 /**
  * Begins reading the next solution from the MOEA Framework.
@@ -150,6 +167,15 @@ MOEA_Status MOEA_Write(const double*, const double*);
  *         specific error code causing failure
  */
 MOEA_Status MOEA_Debug(const char* format, ...);
+
+/**
+ * Closes the communication channel with the MOEA Framework.  No methods from
+ * this library should be invoked after being terminated.
+ *
+ * @return MOEA_SUCCESS if this function call completed successfully; or the
+ *         specific error code causing failure
+ */
+MOEA_Status MOEA_Terminate();
 
 #ifdef __cplusplus
 }
