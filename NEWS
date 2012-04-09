@@ -15,7 +15,7 @@ Framework.
     in the write and writeObjectives methods.  This allows saving solutions
     stored in lists and other collections.
 
-  * Upgrades the C/C++ interface code to support sockets by using the
+  * Upgrades the C/C++ interface code to support sockets by adding the
     MOEA_Init_socket initialization method.  The ExternalProblem has also been
     extended with a host/port constructor to connect to such remote processes.
     
@@ -24,6 +24,9 @@ Framework.
   * Makes C/C++ interface ANSI C and ISO/IEC C++ 1998 compliant, allowing its
     use in nearly any C/C++ compiler.  More advanced features (e.g., sockets)
     are conditionally compiled by the _POSIX_SOURCE flag.
+    
+  * Cleans up several build scripts and unit tests.  Uses JUnit's Assume
+    class to skip tests rather than using an ad hoc method.
 
 
 ----------------------------
@@ -238,13 +241,13 @@ Framework.
   * Fixes bug in SinglePointCrossover and TwoPointCrossover causing an exception
     when operating on decision variables of length <= 1.
 
-  * Adds Executor class for convenient, programmtic execution of algorithms.
+  * Adds Executor class for convenient, programmatic execution of algorithms.
 
   * Adds SetHypervolume command line utility for calculating the hypervolume of
     reference or approximation sets.
    
   * Improved support for PISA selectors, including the download-pisa-windows
-    Ant script to automatically download and install all windows PISA selectors.
+    Ant script to automatically download and install all Windows PISA selectors.
 
 
 ------------------------------
@@ -332,3 +335,4 @@ Framework.
 ----------------------------
 
   * First major release.
+  

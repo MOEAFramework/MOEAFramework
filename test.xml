@@ -46,7 +46,16 @@
 		<fail message="JUnit library missing"/>
 	</target>
 	
-	<target name="build-test" 
+	<target name="build-c">
+		<exec executable="make" dir="auxiliary/c/" failifexecutionfails="false">
+			<arg value="clean" />
+		</exec>
+			
+		<exec executable="make" dir="auxiliary/c/"
+				failifexecutionfails="false" />
+	</target>
+	
+	<target name="build-tests" 
 			depends="check-dependencies,check-binary,check-junit">
 		<delete dir="build" />
 		<mkdir dir="build" />
@@ -73,7 +82,7 @@
 			jarfile="dist/${shortname}-${version}-test.jar" />
 	</target>
 
-	<target name="run-tests" depends="build-test">		
+	<target name="run-tests" depends="build-tests, build-c">		
 		<mkdir dir="test-results" />
 		<mkdir dir="test-results/raw" />
 	

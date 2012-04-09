@@ -37,7 +37,7 @@ void evaluate(double* vars, double* objs) {
     sum += pow(1.0 - vars[i], 2.0) + 
         100.0 * pow(vars[i+1] - pow(vars[i], 2.0), 2.0);
   }
-  
+
   objs[0] = sum;
 }
 
@@ -48,8 +48,12 @@ void evaluate(double* vars, double* objs) {
 int main(int argc, char* argv[]) {
   double vars[nvars];
   double objs[nobjs];
-  
+
+#ifdef _SOCKET
+  MOEA_Init_socket(nobjs, 0, NULL);
+#else
   MOEA_Init(nobjs, 0);
+#endif
 
   while (MOEA_Next_solution() == MOEA_SUCCESS) {
     MOEA_Read_doubles(nvars, vars);

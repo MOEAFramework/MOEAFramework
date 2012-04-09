@@ -69,8 +69,7 @@ import org.moeaframework.util.io.RedirectStream;
  * Due to the computational burden of computing the hypervolume indicator and
  * the various estimation algorithms available, the ability to redirect the
  * hypervolume calculation to an external third-party executable is provided.
- * See {@link #invokeNativeHypervolume(Problem, NondominatedPopulation)} for
- * details.
+ * See {@link #invokeNativeHypervolume} for details.
  */
 public class Hypervolume extends NormalizedIndicator {
 
@@ -336,7 +335,7 @@ public class Hypervolume extends NormalizedIndicator {
 	 * Since hypervolume calculation is expensive, this method provides the
 	 * ability to execute a native process to calculate hypervolume. If
 	 * provided, the {@code org.moeaframework.core.indicator.native.hypervolume}
-	 * system property defines command for invoking the native hypervolume
+	 * system property defines the command for invoking the native hypervolume
 	 * executable. The command is a {@link MessageFormat} pattern with the
 	 * following arguments available for use:
 	 * <ul>
@@ -353,9 +352,11 @@ public class Hypervolume extends NormalizedIndicator {
 	 * 
 	 * @param problem the problem
 	 * @param solutions the normalized and possibly inverted solutions
+	 * @param isInverted {@code true} if the solutions are inverted;
+	 *        {@code false} otherwise
 	 * @return the hypervolume value
 	 */
-	private static double invokeNativeHypervolume(Problem problem,
+	protected static double invokeNativeHypervolume(Problem problem,
 			List<Solution> solutions, boolean isInverted) {
 		try {
 			String command = Settings.getHypervolume();
@@ -372,7 +373,6 @@ public class Hypervolume extends NormalizedIndicator {
 			//generate approximation set file
 			File approximationSetFile = File.createTempFile(
 						"approximationSet", null);
-				
 			approximationSetFile.deleteOnExit();
 				
 			PopulationIO.writeObjectives(approximationSetFile, solutions);
@@ -383,7 +383,6 @@ public class Hypervolume extends NormalizedIndicator {
 			if (command.contains("{3}")) {
 				referencePointFile = File.createTempFile("referencePoint",
 						null);
-
 				referencePointFile.deleteOnExit();
 
 				Solution referencePoint = new Solution(

@@ -37,6 +37,7 @@ import java.util.regex.Pattern;
 import org.apache.commons.math.linear.RealMatrix;
 import org.apache.commons.math.stat.descriptive.DescriptiveStatistics;
 import org.junit.Assert;
+import org.junit.Assume;
 import org.moeaframework.core.CoreUtils;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
@@ -499,6 +500,13 @@ public class TestUtils {
 		}
 		
 		return file;
+	}
+	
+	public static void assumeFileExists(File file) {
+		if (!file.exists()) {
+			System.err.println(file + " does not exist, skipping test");
+			Assume.assumeTrue(false);
+		}
 	}
 
 }

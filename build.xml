@@ -52,10 +52,12 @@
 			<replacefilter token="%VERSION%" value="${version}" />
 			<replacefilter token="%DATE%" value="${TODAY}" />
 		</replace>
+		
+		<property name="svn.version" value="Undefined" />
 
 		<exec executable="svnversion" outputproperty="svn.version"
-				failifexecutionfails="false"/>
-
+				errorproperty="svn.error" failifexecutionfails="false"/>
+		
 		<manifest file="build/META-INF/MANIFEST.MF">
 			<section name="org/moeaframework/">
 				<attribute name="Specification-Title" value="MOEA Framework" />
@@ -127,11 +129,30 @@
 		<mkdir dir="${base}" />
 
 		<copy todir="${base}">
-			<fileset dir="." excludes="\.*,\.*/**,bin/**,build/**,dist/**,javadoc/**,test-results/**,pf/referenceHypervolume,examples/monalisa/**,lib/junit-*.jar,private/**" />
+			<fileset dir="." defaultexcludes="yes">
+				<include name="auxiliary/**" />
+				<exclude name="auxiliary/c/*.exe" />
+				<exclude name="auxiliary/c/*.o" />
+				<exclude name="auxiliary/c/*.a" />
+				<include name="examples/**" />
+				<include name="lib/**" />
+				<exclude name="lib/junit-*.jar" />
+				<include name="manual/**" />
+				<include name="META-INF/**" />
+				<include name="pf/**" />
+				<include name="src/**" />
+				<include name="test/**" />
+				<include name="website/**" />
+				<include name="global.properties" />
+				<include name="build.xml" />
+				<include name="test.xml" />
+				<include name="TODO" />
+			</fileset>
+			<path refid="requiredfiles" />
 		</copy>
 		
 		<copy todir="${base}">
-			<fileset dir="auxiliary/eclipse" includes="\.*" />
+			<fileset dir="auxiliary/eclipse" includes="*" />
 		</copy>
 		
 		<replace file="${base}/.project">
@@ -375,5 +396,33 @@
 			<fileset includes="**/*" dir="build" />
 		</move>
 	</target>
+	
+	<target name="package-manual" description="Builds the user manual">
+		<tstamp />
+		
+		<delete dir="build" />
+		<mkdir dir="build" />
 
+		<copy todir="build">
+			<fileset dir="manual" />
+		</copy>
+		
+		<replace dir="build">
+			<replacefilter token="%VERSION%" value="${version}" />
+			<replacefilter token="%DATE%" value="${TODAY}" />
+		</replace>
+		
+		<exec executable="pdflatex" dir="build">
+			<arg value="manual" />
+		</exec>
+		
+		<!-- run a second time to get references and TOC correct -->
+		<exec executable="pdflatex" dir="build">
+			<arg value="manual" />
+		</exec>
+		
+		<move file="build/manual.pdf" 
+				tofile="dist/${shortname}-${version}-Manual.pdf" />
+	</target>
+	
 </project>

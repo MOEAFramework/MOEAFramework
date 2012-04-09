@@ -24,7 +24,11 @@
  * files.  See the ExternalProblemWithCTest test class for details.
  */
 int main() {
+#ifdef _SOCKET
+  MOEA_Init_socket(2, 1, NULL);
+#else
   MOEA_Init(2, 1);
+#endif
   
   double doubles[2];
   int binary[5];

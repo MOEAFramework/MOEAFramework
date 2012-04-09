@@ -26,6 +26,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.moeaframework.TestUtils;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.CoreUtils;
 import org.moeaframework.core.Problem;
@@ -73,11 +74,8 @@ public class PISAAlgorithmsTest {
 	
 	private void run(String name, String directory, String command, 
 			String configuration, Problem problem) {
-		if (!new File(directory).exists()) {
-			System.err.println(directory + " does not exist, skipping test");
-			return;
-		}
-		
+		TestUtils.assumeFileExists(new File(directory));
+
 		System.setProperty("org.moeaframework.algorithm.pisa.algorithms", name);
 		System.setProperty("org.moeaframework.algorithm.pisa." + name + 
 				".command", command);
@@ -92,7 +90,6 @@ public class PISAAlgorithmsTest {
 		String name = algorithm + "_" + os;
 		String directory = "./pisa/" + name;
 		
-		
 		run(name, directory, directory + "/" + algorithm + ".exe", 
 				directory + "/" + algorithm + "_param.txt", problem);
 	}
@@ -103,11 +100,8 @@ public class PISAAlgorithmsTest {
 	
 	@Test(expected = ProviderNotFoundException.class)
 	public void testConstraints() {
-		if (!new File("./pisa/hype_win").exists()) {
-			System.err.println("./pisa/hype_win does not exist, skipping test");
-			throw new ProviderNotFoundException("hype");
-		}
-		
+		TestUtils.assumeFileExists(new File("./pisa/hype_win"));
+
 		run("hype", "win", ProblemFactory.getInstance().getProblem("CF1"));
 	}
 	
@@ -208,11 +202,8 @@ public class PISAAlgorithmsTest {
 	
 	@Test
 	public void testCaseSensitivity() {
-		if (!new File("./pisa/hype_win").exists()) {
-			System.err.println("./pisa/hype_win does not exist, skipping test");
-			return;
-		}
-		
+		TestUtils.assumeFileExists(new File("./pisa/hype_win"));
+
 		//sets up the necessary properties for 'hype_win'
 		testHypE();
 		

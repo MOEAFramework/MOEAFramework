@@ -127,6 +127,9 @@ public class Solution implements Serializable {
 	 * {@code x} and vice versa. It is typically the case that
 	 * {@code x.copy().getClass() == x.getClass()} and
 	 * {@code x.copy().equals(x)}
+	 * <p>
+	 * Note that a solution's attributes are not copied, as the attributes are
+	 * generally specific to each instance.
 	 * 
 	 * @return an independent copy of this solution
 	 */
