@@ -1,0 +1,144 @@
+\chapter{Advanced Topics}
+
+\section{PISA Integration}
+The Platform and Programming Language Independent Interface for Search Algorithms (PISA), available at \webpage{http://www.tik.ee.ethz.ch/pisa/}, is a language-neutral programming interface for creating search and optimization algorithms.  PISA specifies three components required for search algorithms:
+
+\begin{enumerate}
+  \item selectors, which define the optimization algorithms;
+  \item variators, which define the optimization problems; and
+  \item a communication scheme using plaintext files.
+\end{enumerate}
+
+This design offers several benefits.  First, it clearly demarcates the responsibilities of algorithm experts from those of application engineers.  The algorithm experts focus on designing and improving the behavior of optimization algorithms (i.e., selectors), whereas application engineers are responsible for encoding the details of their problem (i.e., variators).  Second, the file-based communication scheme employed by PISA permits selectors and variators to be written in nearly any programming language, which may be paired with a selector/variator written in a completely different language.  Third, the standardized communication scheme enables plug-and-play integration, allowing one module to be swapped out for another with little to no effort.  For instance, one selector may be replaced by another simply by changing which executable is run.
+
+The fundamental drawback of PISA is a result of its reliance on a file-based communication scheme.  File access on modern computers remains a (relatively) slow operation, which is further exacerbated by the need to constantly poll the communication files for changes.  Nonetheless, PISA opens the door to a number of state-of-the-art optimization algorithms, including:
+
+\begin{enumerate}
+  \item Set Preference Algorithm for Multiobjective Optimization (SPAM)
+  \item Sampling-Based Hypervolume-Oriented Algorithm (SHV)
+  \item Simple Indicator-Based Evolutionary Algorithm (SIBEA)
+  \item Hypervolume Estimation Algorithm for Multiobjective Optimization (HypE)
+  \item Simple Evolutionary Multiobjective Optimizer (SEMO2)
+  \item Fair Evolutionary Multiobjective Optimizer (FEMO)
+  \item Strength Pareto Evolutionary Algorithm 2 (SPEA2)
+  \item Nondominated Sorting Genetic Algorithm 2 (NSGA2)
+  \item Epsilon-Constraint Evolutionary Algorithm (ECEA)
+  \item Indicator-Based Evolutionary Algorithm (IBEA)
+  \item Multiple Single Objective Pareto Sampling (MSOPS)
+  \item Epsilon-Dominance MOEA ($\epsilon$-MOEA)
+\end{enumerate}
+
+For this reason, the MOEA Framework provides the support necessary to integrate with the PISA library.  The \class{PISAAlgorithm} class acts as a variator, which knows how to communicate with a PISA selector using the file-based communication protocol.
+
+\subsection{Adding a PISA Selector}
+A standardized method for adding PISA selectors to the MOEA Framework is provided.  The steps required to add a new PISA selector are:
+
+\begin{enumerate}
+  \item Download and extract a PISA selector
+  \item Edit \file{global.properties}
+    \begin{enumerate}
+      \item Add the name of the selector, \plaintext{NAME}, to the comma-separated list of available PISA selectors in \plaintext{org.moeaframework.algorithm.pisa.algorithms}
+      \item Add the property \plaintext{org.moeaframework.algorithm.pisa.NAME.command}, which points to the program executable which starts the PISA selector
+      \item Add the property \plaintext{org.moeaframework.algorithm.pisa.NAME.configuration},  which points to the configuration file for the PISA selector
+    \end{enumerate}
+\end{enumerate}
+
+For example, if we install the SEMO2 selector, we would first download the SEMO2 binaries from \webpage{http://www.tik.ee.ethz.ch/pisa/}.  These binaries are typically packaged as a compressed file (.zip or .tar.gz).  Next, extract the contents of this compressed file into the MOEA Framework installation folder.  In this example, we extracted the contents to the folder \folder{pisa/SEMO2}.  Finally, add the following three lines to the \file{global.properties} file:
+
+\begin{lstlisting}[language=Plaintext]
+org.moeaframework.algorithm.pisa.algorithms=SEMO2
+org.moeaframework.algorithm.pisa.SEMO2.command=./pisa/SEMO2/semo2.exe
+org.moeaframework.algorithm.pisa.SEMO2.configuration=./pisa/SEMO2/semo2_params.txt
+\end{lstlisting}
+
+Once completed, you should be able to run the diagnostic tool and confirm that SEMO2 appears in the list of available algorithms.  Additionally, SEMO2 may be referenced throughout the MOEA Framework wherever the algorithm is specified as a string, such as:
+
+\begin{lstlisting}[language=Java]
+new Executor()
+		.withProblem("Kursawe")
+		.withAlgorithm("SEMO2")
+		.withMaxEvaluations(10000)
+		.run();
+\end{lstlisting}
+
+\subsection{Troubleshooting}
+
+\noindent
+\textit{I'm attempting to run the PISA algorithm, but nothing is happening.  The task manager shows the PISA executable is running, but shows 0\% CPU usage.}
+
+\begin{quote}
+The MOEA Framework uses your system's default temporary directory as the location of the files used to communicate with the PISA selector.  Some PISA selectors do not support paths containing spaces, and the path to the default temporary directory on older versions of Windows contains spaces.  This causes a miscommunication between the MOEA Framework and PISA, which generally causes the MOEA Framework and PISA executables to stall.
+
+The easiest workaround is to override the temporary directory location so that the space is removed.  This can be accomplished by editing the \file{global.properties} file and adding the line:
+
+\begin{lstlisting}[language=Plaintext]
+java.io.tmpdir = C:/temp/
+\end{lstlisting}
+\end{quote}
+
+\noindent
+\textit{PISA runs fine for a while, but eventually crashes with the message ``Assertion failed: fp != null''.}
+
+\begin{quote}
+Some antivirus software is known to interfere with the file-based communication protocol used by PISA.  Antivirus programs which actively monitor files for changes may lock the file during a scan, potentially blocking access by the PISA selector.  Most PISA selectors will crash with the obscure message ``Assertion failed: fp != null''.
+
+To verify this as the cause, you may temporarily disable your antivirus software and re-run the program.  Once verified, a permanent solution involves adding an exception to the antivirus software to prevent scanning the PISA communication files.  To implement this solution, first define the location of temporary files by adding the following line to the global.properties file:
+
+\begin{lstlisting}[language=Plaintext]
+java.io.tmpdir = C:/temp/
+\end{lstlisting}
+
+Then add an exception to your antivirus software to disable scanning files located in this directory.
+
+(Note: Disabling an antivirus program from scanning a folder will leave its contents unprotected.  Follow these steps at your own risk.)
+\end{quote}
+
+\subsection{Customization}
+As mentioned in troubleshooting, it is possible to change the location where the temporary files used to communicate with the PISA process are stored on your computer.
+
+Part of the PISA communication involves transferring state between the MOEA Framework and the PISA executable.  In order to detect when the state changes, both the MOEA Framework and the PISA executable must periodically poll the current state.  A faster poll rate will improve the runtime performance of PISA, but will also increase the load placed on your computer's filesystem (as the state value is saved to and read from a plaintext file).  The poll rate, in milliseconds, can be controlled with the following property:
+
+\begin{lstlisting}[language=Plaintext]
+org.moeaframework.algorithm.pisa.poll = 100
+\end{lstlisting}
+
+\section{Configuring Hypervolume Calculation}
+The hypervolume calculation is an important tool when comparing the performance of MOEAs.  This section details the available configuration options for the hypervolume calculation.
+
+The hypervolume calculation computes the volume of the space dominated between the Pareto front and the nadir point.  The nadir point is set to the extremal objective values of the reference set plus some delta.  A non-zero delta is necessary to ensure such extremal values contribute a non-zero volume.  This delta is configurable by adding the following line to \file{global.properties}:
+
+\begin{lstlisting}[language=Plaintext]
+org.moeaframework.core.indicator.hypervolume_delta = 0.01
+\end{lstlisting}
+
+The hypervolume calculation is computationally expensive.  Use of the built-in hypervolume calculator may become prohibitive on Pareto fronts with $4$ or more objectives.  For this reason, it may be beneficial to use third-party hypervolume calculators instead.  A number of researchers have released C/C++ implementations of high-performance hypervolume calculators, including those listed below.
+
+\begin{itemize}
+  \item \webpage{http://ls11-www.cs.uni-dortmund.de/rudolph/hypervolume/start}
+  \item \webpage{http://www.wfg.csse.uwa.edu.au/hypervolume/}
+\end{itemize}
+
+Such hypervolume calculators can be used by the MOEA Framework by following two steps.  First, download and compile the desired hypervolume code.  This should result in an executable file, such as \file{hyp.exe}.  Second, configure the MOEA Framework to use this executable by adding a line similar to the following to the \file{global.properties} file.
+
+\begin{lstlisting}[language=Plaintext]
+org.moeaframework.core.indicator.hypervolume = hyp.exe {0} {1} {2} {3}
+\end{lstlisting}
+
+This property is specifying the executable and any required arguments.  The arguments are configurable by using the appropriate variable, such as \{0\}.  The complete list of available variables are shown in the table below.
+
+\begin{center}
+\begin{tabular}{ll}
+  Variable & Description \\
+  \hline
+  \{0\} & Number of objectives \\
+  \{1\} & Approximation set size \\
+  \{2\} & File containing the approximation set \\
+  \{3\} & File containing the reference point
+\end{tabular}
+\end{center}
+
+If all else fails, the hypervolume calculation can be disabled.  When disabled, the hypervolume will be reported as \java{NaN}.  To disable all hypervolume calculations, add the following line to \file{global.properties}:
+
+\begin{lstlisting}[language=Plaintext]
+org.moeaframework.core.indicator.hypervolume_enabled = false
+\end{lstlisting}
