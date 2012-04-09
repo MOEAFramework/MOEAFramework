@@ -11,9 +11,7 @@ any changes.
 ------
  Easy
 ------
-    
-  - Move format.xml and codestyle.xml to auxiliary/eclipse folder.
-  
+
   - Add documentation to Example6, also move Example6 closer to the other
     problem definition examples.
 
