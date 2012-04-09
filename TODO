@@ -11,9 +11,6 @@ any changes.
 ------
  Easy
 ------
-
-  - Use JUnit's Assume feature to ignore tests when a precondition fails,
-    rather than resulting in a successful test.
     
   - Move format.xml and codestyle.xml to auxiliary/eclipse folder.
   
@@ -44,8 +41,6 @@ any changes.
   - Upgrade to Apache Commons Codec 1.6
   
   - Upgrade to JFreeChart 1.0.14, JCommon 1.0.17
-  
-  - Upgrade to JUnit 4.10
 
   - Upgrade to JMetal 4.0.  Some work is required since some packages changed
     between version 3.1 and 4.0.  This change will likely have to wait until a
