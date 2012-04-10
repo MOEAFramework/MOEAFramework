@@ -22,13 +22,14 @@
 #include <string.h>
 #include <math.h>
 #include <errno.h>
-#ifdef _POSIX_SOURCE
+#include "moeaframework.h"
+
+#ifdef MOEA_SOCKETS
 #  include <unistd.h>
 #  include <sys/types.h>
 #  include <sys/socket.h>
 #  include <netdb.h>
 #endif
-#include "moeaframework.h"
 
 #define MOEA_WHITESPACE " \t"
 #define MOEA_INITIAL_BUFFER_SIZE 1024
@@ -46,6 +47,7 @@ size_t MOEA_Line_limit = 0;
 
 void MOEA_Error_callback_default(const MOEA_Status status) {
   MOEA_Debug("%s\n", MOEA_Status_message(status));
+  MOEA_Terminate();
   exit(EXIT_FAILURE);
 }
 
@@ -99,15 +101,17 @@ MOEA_Status MOEA_Init(const int objectives, const int constraints) {
   return MOEA_SUCCESS;
 }
 
-#ifdef _POSIX_SOURCE
+#ifdef MOEA_SOCKETS
 MOEA_Status MOEA_Init_socket(const int objectives, const int constraints,
     const char* service) {
-  int status;
-  int listenfd;
-  int acceptfd;
+  int gai_errno;
+  int listenfd = -1;
+  int readfd = -1;
+  int writefd = -1;
   int yes = 1;
   struct addrinfo hints;
-  struct addrinfo *servinfo;
+  struct addrinfo *servinfo = NULL;
+  struct addrinfo *sp = NULL;
   struct sockaddr_storage their_addr;
   socklen_t addr_size = sizeof(their_addr);
 
@@ -122,49 +126,67 @@ MOEA_Status MOEA_Init_socket(const int objectives, const int constraints,
     service = MOEA_DEFAULT_PORT;
   }
 
-  if ((status = getaddrinfo(NULL, service, &hints, &servinfo)) != 0) {
-    MOEA_Debug("getaddrinfo: %s\n", gai_strerror(status));
-    return MOEA_Error(MOEA_SOCKET_ERROR);    
+  if ((gai_errno = getaddrinfo(NULL, service, &hints, &servinfo)) != 0) {
+    MOEA_Debug("getaddrinfo: %s\n", gai_strerror(gai_errno));
+    return MOEA_Error(MOEA_SOCKET_ERROR);
   }
 
-  if ((listenfd = socket(servinfo->ai_family, servinfo->ai_socktype, servinfo->ai_protocol)) == -1) {
-    MOEA_Debug("socket: %s\n", strerror(errno));
+  for (sp = servinfo; sp != NULL && listenfd == -1; sp = sp->ai_next) {
+    if ((listenfd = socket(servinfo->ai_family, servinfo->ai_socktype, servinfo->ai_protocol)) == -1) {
+      MOEA_Debug("socket: %s\n", strerror(errno));
+      continue;
+    }
+  
+    /* enable socket reuse to avoid socket already in use errors */
+    if (setsockopt(listenfd, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int)) == -1) {
+      MOEA_Debug("setsockopt: %s\n", strerror(errno));
+    } 
+
+    if (bind(listenfd, servinfo->ai_addr, servinfo->ai_addrlen) == -1) {
+      MOEA_Debug("bind: %s\n", strerror(errno));
+      close(listenfd);
+      continue;
+    }
+  }
+  
+  freeaddrinfo(servinfo);
+  
+  if (sp == NULL) {
     return MOEA_Error(MOEA_SOCKET_ERROR);
   }
   
-  /* enable socket reuse to avoid socket already in use errors */
-  if (setsockopt(listenfd, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int)) == -1) {
-    MOEA_Debug("setsockopt: %s\n", strerror(errno));
-    return MOEA_Error(MOEA_SOCKET_ERROR);
-  } 
-
-  if (bind(listenfd, servinfo->ai_addr, servinfo->ai_addrlen) == -1) {
-    MOEA_Debug("bind: %s\n", strerror(errno));
-    return MOEA_Error(MOEA_SOCKET_ERROR);
-  }
-
   if (listen(listenfd, 1) == -1) {
     MOEA_Debug("listen: %s\n", strerror(errno));
+    close(listenfd);
     return MOEA_Error(MOEA_SOCKET_ERROR);
   }
   
-  if ((acceptfd = accept(listenfd, (struct sockaddr*)&their_addr, &addr_size)) == -1) {
+  if ((readfd = accept(listenfd, (struct sockaddr*)&their_addr, &addr_size)) == -1) {
     MOEA_Debug("accept: %s\n", strerror(errno));
+    close(listenfd);
+    return MOEA_Error(MOEA_SOCKET_ERROR);
+  }
+  
+  close(listenfd);
+
+  if ((writefd = dup(readfd)) == -1) {
+    MOEA_Debug("dup: %s\n", strerror(errno));
+    close(readfd);
     return MOEA_Error(MOEA_SOCKET_ERROR);
   }
 
-  if (close(listenfd) == -1) {
-    MOEA_Debug("close: %s\n", strerror(errno));
-    return MOEA_Error(MOEA_SOCKET_ERROR);
-  }
-
-  if ((MOEA_Stream_input = fdopen(acceptfd, "r")) == NULL) {
+  if ((MOEA_Stream_input = fdopen(readfd, "r")) == NULL) {
     MOEA_Debug("fdopen: %s\n", strerror(errno));
+    close(readfd);
+    close(writefd);
     return MOEA_Error(MOEA_SOCKET_ERROR);
   }
 
-  if ((MOEA_Stream_output = fdopen(dup(acceptfd), "w")) == NULL) {
+  if ((MOEA_Stream_output = fdopen(writefd, "w")) == NULL) {
     MOEA_Debug("fdopen: %s\n", strerror(errno));
+    fclose(MOEA_Stream_input);
+    close(readfd);
+    close(writefd);
     return MOEA_Error(MOEA_SOCKET_ERROR);
   }
 

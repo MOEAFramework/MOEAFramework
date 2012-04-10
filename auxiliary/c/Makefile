@@ -22,13 +22,13 @@ test_stdio.exe: libmoea.a test.c
 	
 test_socket.exe: libmoea.a test.c
 ifeq ($(UNAME),Linux)
-	${CC} ${FLAGS} -D_SOCKET -o test_socket.exe test.c -L. -lmoea
+	${CC} ${FLAGS} -DUSE_SOCKET -o test_socket.exe test.c -L. -lmoea
 endif
 
 dtlz2_stdio.exe: libmoea.a dtlz2.c
-	${CC} ${FLAGS} -o dtlz2_stdio.exe dtlz2.c -L. -lmoea
+	${CC} ${FLAGS} -o dtlz2_stdio.exe dtlz2.c -L. -lmoea -lm
 
 dtlz2_socket.exe: libmoea.a dtlz2.c
 ifeq ($(UNAME),Linux)
-	${CC} ${FLAGS} -D_SOCKET -o dtlz2_socket.exe dtlz2.c -L. -lmoea
+	${CC} ${FLAGS} -DUSE_SOCKET -o dtlz2_socket.exe dtlz2.c -L. -lmoea -lm
 endif

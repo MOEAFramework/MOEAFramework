@@ -26,7 +26,8 @@ Framework.
   
   * Makes C/C++ interface ANSI C and ISO/IEC C++ 1998 compliant, allowing its
     use in nearly any C/C++ compiler.  More advanced features (e.g., sockets)
-    are conditionally compiled by the _POSIX_SOURCE flag.
+    are conditionally compiled by the MOEA_SOCKETS flag, which is automatically
+    enabled on POSIX systems (_POSIX_SOURCE flag).
     
   * Cleans up several build scripts and unit tests.  Uses JUnit's Assume
     class to skip tests rather than using an ad hoc method.

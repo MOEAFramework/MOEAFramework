@@ -23,6 +23,10 @@
 extern "C" {
 #endif
 
+#ifdef _POSIX_SOURCE
+#define MOEA_SOCKETS
+#endif
+
 /**
  * The status and error codes that are returned by functions provided by this
  * library.
@@ -73,7 +77,7 @@ const char* MOEA_Status_message(const MOEA_Status);
  */
 MOEA_Status MOEA_Init(const int, const int);
 
-#ifdef _POSIX_SOURCE
+#ifdef MOEA_SOCKETS
 /**
  * Initializes the MOEA Framework to support a problem with the specified
  * number of objectives and constraints.  This initializer establishes a

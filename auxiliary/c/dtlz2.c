@@ -70,7 +70,7 @@ int main(int argc, char* argv[]) {
 	double vars[nvars];
 	double objs[nobjs];
 
-#ifdef _SOCKET
+#ifdef USE_SOCKET
 	MOEA_Init_socket(nobjs, 0, NULL);
 #else
 	MOEA_Init(nobjs, 0);
