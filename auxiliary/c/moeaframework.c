@@ -105,6 +105,7 @@ MOEA_Status MOEA_Init_socket(const int objectives, const int constraints,
   int status;
   int listenfd;
   int acceptfd;
+  int yes = 1;
   struct addrinfo hints;
   struct addrinfo *servinfo;
   struct sockaddr_storage their_addr;
@@ -130,6 +131,12 @@ MOEA_Status MOEA_Init_socket(const int objectives, const int constraints,
     MOEA_Debug("socket: %s\n", strerror(errno));
     return MOEA_Error(MOEA_SOCKET_ERROR);
   }
+  
+  /* enable socket reuse to avoid socket already in use errors */
+  if (setsockopt(listener, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int)) == -1) {
+    MOEA_Debug("setsockopt: %s\n", strerror(errno));
+    return MOEA_Error(MOEA_SOCKET_ERROR);
+  } 
 
   if (bind(listenfd, servinfo->ai_addr, servinfo->ai_addrlen) == -1) {
     MOEA_Debug("bind: %s\n", strerror(errno));
