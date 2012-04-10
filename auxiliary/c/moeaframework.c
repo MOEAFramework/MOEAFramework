@@ -131,7 +131,7 @@ MOEA_Status MOEA_Init_socket(const int objectives, const int constraints,
     return MOEA_Error(MOEA_SOCKET_ERROR);
   }
 
-  for (sp = servinfo; sp != NULL && listenfd == -1; sp = sp->ai_next) {
+  for (sp = servinfo; sp != NULL; sp = sp->ai_next) {
     if ((listenfd = socket(servinfo->ai_family, servinfo->ai_socktype, servinfo->ai_protocol)) == -1) {
       MOEA_Debug("socket: %s\n", strerror(errno));
       continue;
@@ -147,6 +147,8 @@ MOEA_Status MOEA_Init_socket(const int objectives, const int constraints,
       close(listenfd);
       continue;
     }
+    
+    break;
   }
   
   freeaddrinfo(servinfo);

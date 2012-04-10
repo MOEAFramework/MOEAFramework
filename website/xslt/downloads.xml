@@ -92,6 +92,20 @@
     <th>Downloads</th>
   </tr>
   <tr>
+    <td>1.11</td>
+    <td>29 Feb 2012</td>
+    <td>
+      <a href="https://sourceforge.net/projects/moeaframework/files/MOEAFramework-1.11/MOEAFramework-1.11.tar.gz/download"
+          onClick="_gaq.push(['_trackEvent', 'Downloads', 'Binary', '1.11']);">Binary</a> |
+      <a href="https://sourceforge.net/projects/moeaframework/files/MOEAFramework-1.11/MOEAFramework-1.11-Source.tar.gz/download"
+          onClick="_gaq.push(['_trackEvent', 'Downloads', 'Source', '1.11']);">Source</a> |
+      <a href="https://sourceforge.net/projects/moeaframework/files/MOEAFramework-1.11/MOEAFramework-1.11-Executable.tar.gz/download"
+          onClick="_gaq.push(['_trackEvent', 'Downloads', 'Executable', '1.11']);">Executable</a> |
+      <a href="https://sourceforge.net/projects/moeaframework/files/MOEAFramework-1.11/MOEAFramework-1.11-Manual.tar.gz/download"
+          onClick="_gaq.push(['_trackEvent', 'Downloads', 'Manual', '1.11']);">Manual</a>
+    </td>
+  </tr>
+  <tr>
     <td>1.10</td>
     <td>22 Jan 2012</td>
     <td>
