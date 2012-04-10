@@ -10,6 +10,8 @@ Framework.
       - http://ls11-www.cs.tu-dortmund.de/people/beume/publications/hoy.cpp
       - http://iridia.ulb.ac.be/~manuel/hypervolume/
       - http://www.wfg.csse.uwa.edu.au/hypervolume/
+    See global.properties for details on configuring a custom hypervolume
+    calculator.
 
   * Modified PopulationIO to accept Iterable<Solution> instead of Population
     in the write and writeObjectives methods.  This allows saving solutions
@@ -18,6 +20,7 @@ Framework.
   * Upgrades the C/C++ interface code to support sockets by adding the
     MOEA_Init_socket initialization method.  The ExternalProblem has also been
     extended with a host/port constructor to connect to such remote processes.
+    Currently, sockets are only supported on POSIX systems.
     
   * Adds extern "C" to the C/C++ interface code to allow easier code mixing.
   
@@ -27,6 +30,10 @@ Framework.
     
   * Cleans up several build scripts and unit tests.  Uses JUnit's Assume
     class to skip tests rather than using an ad hoc method.
+    
+  * Reworked some of the examples in the examples/ folder.  The Rosenbrock
+    problem (1 objective) has been replaced by the two-objective DTLZ2
+    problem.
 
 
 ----------------------------

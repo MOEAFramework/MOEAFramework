@@ -129,7 +129,7 @@
 		<mkdir dir="${base}" />
 
 		<copy todir="${base}">
-			<fileset dir="." defaultexcludes="yes">
+			<fileset dir=".">
 				<include name="auxiliary/**" />
 				<exclude name="auxiliary/c/*.exe" />
 				<exclude name="auxiliary/c/*.o" />
@@ -152,7 +152,7 @@
 		</copy>
 		
 		<copy todir="${base}">
-			<fileset dir="auxiliary/eclipse" includes="*" />
+			<fileset dir="auxiliary/eclipse" includes=".*" />
 		</copy>
 		
 		<replace file="${base}/.project">

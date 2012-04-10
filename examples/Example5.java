@@ -19,37 +19,86 @@ import java.io.File;
 import java.io.IOException;
 
 import org.moeaframework.Executor;
-import org.moeaframework.Instrumenter;
-import org.moeaframework.analysis.collector.Accumulator;
+import org.moeaframework.core.NondominatedPopulation;
+import org.moeaframework.core.Solution;
+import org.moeaframework.core.variable.RealVariable;
+import org.moeaframework.problem.ExternalProblem;
 
 /**
- * Demonstrates the use of the {@code Instrumenter} to collect run-time
- * dynamics.  The output lists the NFE, elapsed time and generational distance
- * throughout the run.
+ * Demonstrates how problems can be defined externally to the MOEA Framework,
+ * possibly written in a different programming language.  In this case, the
+ * problem is defined in the file ./auxiliary/c/dtlz2.c using the C programming
+ * language.  Run the command 'make' in the ./auxiliary/c/ folder to compile
+ * the executable.
  */
 public class Example5 {
-	
-	public static void main(String[] args) throws IOException {
-		Instrumenter instrumenter = new Instrumenter()
-				.withReferenceSet(new File("./pf/UF1.dat"))
-				.withFrequency(100)
-				.attachElapsedTimeCollector()
-				.attachGenerationalDistanceCollector();
+
+	/**
+	 * The ExternalProblem opens a communication channel with the external
+	 * process defined in the constructor.
+	 */
+	public static class MyDTLZ2 extends ExternalProblem {
+
+		public MyDTLZ2() throws IOException {
+			super("./auxiliary/c/dtlz2_stdio.exe");
+		}
+
+		@Override
+		public String getName() {
+			return "DTLZ2";
+		}
+
+		@Override
+		public int getNumberOfVariables() {
+			return 11;
+		}
+
+		@Override
+		public int getNumberOfObjectives() {
+			return 2;
+		}
+
+		@Override
+		public int getNumberOfConstraints() {
+			return 0;
+		}
+
+		@Override
+		public Solution newSolution() {
+			Solution solution = new Solution(getNumberOfVariables(), 
+					getNumberOfObjectives());
+
+			for (int i = 0; i < getNumberOfVariables(); i++) {
+				solution.setVariable(i, new RealVariable(0.0, 1.0));
+			}
+
+			return solution;
+		}
 		
-		new Executor()
-				.withProblem("UF1")
+	}
+	
+	public static void main(String[] args) {
+		//check if the executable exists
+		File file = new File("./auxiliary/c/dtlz2_stdio.exe");
+				
+		if (!file.exists()) {
+			System.err.println("Please compile the executable by running make in the ./auxiliary/c/ folder");
+			return;
+		}
+		
+		//configure and run the DTLZ2 function
+		NondominatedPopulation result = new Executor()
+				.withProblemClass(MyDTLZ2.class)
 				.withAlgorithm("NSGAII")
 				.withMaxEvaluations(10000)
-				.withInstrumenter(instrumenter)
 				.run();
-		
-		Accumulator accumulator = instrumenter.getLastAccumulator();
-		
-		for (int i=0; i<accumulator.size("NFE"); i++) {
-			System.out.println(accumulator.get("NFE", i) + "\t" + 
-					accumulator.get("Elapsed Time", i) + "\t" +
-					accumulator.get("GenerationalDistance", i));
+				
+		//display the results
+		for (Solution solution : result) {
+			System.out.print(solution.getObjective(0));
+			System.out.print(' ');
+			System.out.println(solution.getObjective(1));
 		}
 	}
-
+	
 }

@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU Lesser General Public License 
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
+import java.io.File;
 import java.io.IOException;
 
 import org.moeaframework.Executor;
@@ -23,13 +24,22 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.ExternalProblem;
 
-
+/**
+ * Similar to Example4, sockets can be used instead of standard I/O for
+ * communicating with the external process.  Run the command 'make' in the
+ * ./auxiliary/c/ folder to compile the executable.  This example will only
+ * work on POSIX (Unix-like) systems.
+ */
 public class Example6 {
-	
-	public static class DTLZ2Remote extends ExternalProblem {
 
-		public DTLZ2Remote() throws IOException {
-			super((String)null, DEFAULT_PORT);
+	/**
+	 * Notice that the only change is in the constructor, where the hostname and
+	 * port are specified.
+	 */
+	public static class MyDTLZ2 extends ExternalProblem {
+
+		public MyDTLZ2() throws IOException {
+			super("localhost", ExternalProblem.DEFAULT_PORT);
 		}
 
 		@Override
@@ -66,22 +76,33 @@ public class Example6 {
 		
 	}
 	
-	public static void main(String[] args) {
-		//configure and run the Rosenbrock function
+	public static void main(String[] args) throws IOException, 
+	InterruptedException {
+		//check if the executable exists
+		File file = new File("./auxiliary/c/dtlz2_socket.exe");
+		
+		if (!file.exists()) {
+			System.err.println("Please compile the executable by running make in the ./auxiliary/c/ folder");
+			return;
+		}
+		
+		//run the executable and wait one second for the process to startup
+		new ProcessBuilder(file.toString()).start();
+		Thread.sleep(1000);
+		
+		//configure and run the DTLZ2 function
 		NondominatedPopulation result = new Executor()
-				.withProblemClass(DTLZ2Remote.class)
-				.withAlgorithm("GDE3")
-				.withMaxEvaluations(1000000)
+				.withProblemClass(MyDTLZ2.class)
+				.withAlgorithm("NSGAII")
+				.withMaxEvaluations(10000)
 				.run();
 				
 		//display the results
 		for (Solution solution : result) {
-			System.out.print(solution.getVariable(0));
-			System.out.print(" ");
-			System.out.print(solution.getVariable(1));
-			System.out.print(" => ");
-			System.out.println(solution.getObjective(0));
+			System.out.print(solution.getObjective(0));
+			System.out.print(' ');
+			System.out.println(solution.getObjective(1));
 		}
 	}
-
+	
 }

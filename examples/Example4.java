@@ -15,29 +15,30 @@
  * You should have received a copy of the GNU Lesser General Public License 
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-import java.io.IOException;
-
 import org.moeaframework.Executor;
+import org.moeaframework.core.CoreUtils;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.RealVariable;
-import org.moeaframework.problem.ExternalProblem;
+import org.moeaframework.problem.AbstractProblem;
 
 /**
- * Demonstrates how problems can be defined externally to the MOEA Framework,
- * possibly written in a different programming language.
+ * Demonstrates how a new problem is defined and used within the MOEA
+ * Framework.
  */
 public class Example4 {
 
 	/**
-	 * The ExternalProblem opens a communication channel with the external
-	 * process.  Some Java methods are required to correctly setup the problem
-	 * definition.
+	 * Implementation of the DTLZ2 function.
 	 */
-	public static class Rosenbrock extends ExternalProblem {
+	public static class MyDTLZ2 extends AbstractProblem {
 
-		public Rosenbrock() throws IOException {
-			super("./auxiliary/c/rosenbrock.exe");
+		/**
+		 * Constructs a new instance of the DTLZ2 function, defining it
+		 * to include 11 decision variables and 2 objectives.
+		 */
+		public MyDTLZ2() {
+			super(11, 2);
 		}
 
 		/**
@@ -46,52 +47,63 @@ public class Example4 {
 		 */
 		@Override
 		public Solution newSolution() {
-			Solution solution = new Solution(getNumberOfVariables(), 1);
+			Solution solution = new Solution(getNumberOfVariables(), 
+					getNumberOfObjectives());
 
 			for (int i = 0; i < getNumberOfVariables(); i++) {
-				solution.setVariable(i, new RealVariable(-10.0, 10.0));
+				solution.setVariable(i, new RealVariable(0.0, 1.0));
 			}
 
 			return solution;
 		}
-
+		
+		/**
+		 * Extracts the decision variables from the solution, evaluates the
+		 * Rosenbrock function, and saves the resulting objective value back to
+		 * the solution. 
+		 */
 		@Override
-		public String getName() {
-			return "Rosenbrock";
-		}
+		public void evaluate(Solution solution) {
+			double[] x = CoreUtils.castVariablesToDoubleArray(solution);
+			double[] f = new double[numberOfObjectives];
 
-		@Override
-		public int getNumberOfVariables() {
-			return 2;
-		}
+			int k = numberOfVariables - numberOfObjectives + 1;
 
-		@Override
-		public int getNumberOfObjectives() {
-			return 1;
-		}
+			double g = 0.0;
+			for (int i = numberOfVariables - k; i < numberOfVariables; i++) {
+				g += Math.pow(x[i] - 0.5, 2.0);
+			}
 
-		@Override
-		public int getNumberOfConstraints() {
-			return 0;
-		}
+			for (int i = 0; i < numberOfObjectives; i++) {
+				f[i] = 1.0 + g;
 
+				for (int j = 0; j < numberOfObjectives - i - 1; j++) {
+					f[i] *= Math.cos(0.5 * Math.PI * x[j]);
+				}
+
+				if (i != 0) {
+					f[i] *= Math.sin(0.5 * Math.PI * x[numberOfObjectives - i - 1]);
+				}
+			}
+
+			solution.setObjectives(f);
+		}
+		
 	}
 	
 	public static void main(String[] args) {
-		//configure and run the Rosenbrock function
+		//configure and run the DTLZ2 function
 		NondominatedPopulation result = new Executor()
-				.withProblemClass(Rosenbrock.class)
-				.withAlgorithm("GDE3")
-				.withMaxEvaluations(100000)
+				.withProblemClass(MyDTLZ2.class)
+				.withAlgorithm("NSGAII")
+				.withMaxEvaluations(10000)
 				.run();
 				
 		//display the results
 		for (Solution solution : result) {
-			System.out.print(solution.getVariable(0));
-			System.out.print(" ");
-			System.out.print(solution.getVariable(1));
-			System.out.print(" => ");
-			System.out.println(solution.getObjective(0));
+			System.out.print(solution.getObjective(0));
+			System.out.print(' ');
+			System.out.println(solution.getObjective(1));
 		}
 	}
 	

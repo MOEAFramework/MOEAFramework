@@ -158,56 +158,113 @@ analyzer.printAnalysis();
 </div>
 
 <div class="section">
-<h3>Example 3: Defining New Problems</h3>
+<h3>Example 3: Collecting Runtime Dynamics</h3>
 
 <div class="files">
   <ul>
-    <li><a href="Example3.java">Example3.java</a></li>
+    <li><a href="Example2.java">Example3.java</a></li>
+  </ul>
+</div>
+
+<p>
+  Runtime dynamics provide insight into the behavior of an optimization
+  algorithm throughout a run.  For instance, one can observe how solution
+  quality changes with the number of function evaluations (NFE).  The 
+  Instrumenter class collects this data and provides it to the user.
+</p>
+
+<div class="code">
+  <pre class="brush: java; toolbar: false;">
+<![CDATA[
+Instrumenter instrumenter = new Instrumenter()
+    .withReferenceSet(new File("./pf/UF1.dat"))
+    .withFrequency(100)
+    .attachElapsedTimeCollector()
+    .attachGenerationalDistanceCollector();
+		
+new Executor()
+    .withProblem("UF1")
+    .withAlgorithm("NSGAII")
+    .withMaxEvaluations(10000)
+    .withInstrumenter(instrumenter)
+    .run();
+		
+Accumulator accumulator = instrumenter.getLastAccumulator();
+		
+for (int i=0; i<accumulator.size("NFE"); i++) {
+  System.out.println(accumulator.get("NFE", i) + "\t" + 
+      accumulator.get("Elapsed Time", i) + "\t" +
+      accumulator.get("GenerationalDistance", i));
+}
+]]>
+  </pre>
+</div>
+</div>
+
+<div class="section">
+<h3>Example 4: Defining New Problems</h3>
+
+<div class="files">
+  <ul>
+    <li><a href="Example4.java">Example4.java</a></li>
   </ul>
 </div>
 
 <p>
   A number of methods are available to provide custom, user-defined problems
   that cleanly integrate with all other components of the MOEA Framework.  The
-  following demonstrates the single-objective 
-  <a href="http://en.wikipedia.org/wiki/Rosenbrock_function">Rosenbrock</a>
-  function.
+  following demonstrates the two-objective DTLZ2 problem.  The MOEA Framework
+  also provides the means to define problems in other programming languages,
+  such as C/C++.
 </p>
 
 <div class="code">
   <pre class="brush: java; toolbar: false;">
 <![CDATA[
-public class Rosenbrock extends AbstractProblem {
+	public class DTLZ2 extends AbstractProblem {
 
-	public Rosenbrock() {
-		super(2, 1);
-	}
-
-	@Override
-	public void evaluate(Solution solution) {
-		double sum = 0.0;
-		double[] x = CoreUtils.castVariablesToDoubleArray(solution);
-
-		for (int i = 0; i < numberOfVariables - 1; i++) {
-			sum += Math.pow(1.0 - x[i], 2.0) + 100.0
-					* Math.pow(x[i + 1] - Math.pow(x[i], 2.0), 2.0);
+		public MyDTLZ2() {
+			super(11, 2);
 		}
 
-		solution.setObjective(0, sum);
-	}
+		public Solution newSolution() {
+			Solution solution = new Solution(getNumberOfVariables(), 
+					getNumberOfObjectives());
 
-	@Override
-	public Solution newSolution() {
-		Solution solution = new Solution(numberOfVariables, 1);
+			for (int i = 0; i < getNumberOfVariables(); i++) {
+				solution.setVariable(i, new RealVariable(0.0, 1.0));
+			}
 
-		for (int i = 0; i < numberOfVariables; i++) {
-			solution.setVariable(i, new RealVariable(-10.0, 10.0));
+			return solution;
 		}
 
-		return solution;
-	}
+		public void evaluate(Solution solution) {
+			double[] x = CoreUtils.castVariablesToDoubleArray(solution);
+			double[] f = new double[numberOfObjectives];
 
-}
+			int k = numberOfVariables - numberOfObjectives + 1;
+
+			double g = 0.0;
+			for (int i = numberOfVariables - k; i < numberOfVariables; i++) {
+				g += Math.pow(x[i] - 0.5, 2.0);
+			}
+
+			for (int i = 0; i < numberOfObjectives; i++) {
+				f[i] = 1.0 + g;
+
+				for (int j = 0; j < numberOfObjectives - i - 1; j++) {
+					f[i] *= Math.cos(0.5 * Math.PI * x[j]);
+				}
+
+				if (i != 0) {
+					f[i] *= Math.sin(0.5 * Math.PI * x[numberOfObjectives - i - 1]);
+				}
+			}
+
+			solution.setObjectives(f);
+		}
+		
+	}
 ]]>
   </pre>
 </div>
