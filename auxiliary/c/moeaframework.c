@@ -133,7 +133,7 @@ MOEA_Status MOEA_Init_socket(const int objectives, const int constraints,
   }
   
   /* enable socket reuse to avoid socket already in use errors */
-  if (setsockopt(listener, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int)) == -1) {
+  if (setsockopt(listenfd, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int)) == -1) {
     MOEA_Debug("setsockopt: %s\n", strerror(errno));
     return MOEA_Error(MOEA_SOCKET_ERROR);
   } 

@@ -277,9 +277,9 @@ for (int i=0; i<accumulator.size("NFE"); i++) {
   <pre class="brush: java; toolbar: false;">
 <![CDATA[
 NondominatedPopulation result = new Executor()
-    .withProblemClass(Rosenbrock.class)
+    .withProblemClass(DTLZ2.class)
     .withAlgorithm("GDE3")
-    .withMaxEvaluations(100000)
+    .withMaxEvaluations(10000)
     .distributeOnAllCores()
     .run();
 ]]>
@@ -288,7 +288,7 @@ NondominatedPopulation result = new Executor()
 </div>
 
 <div class="section">
-<h3>Example 4: Diagnostic Tool</h3>
+<h3>Example 5: Diagnostic Tool</h3>
 
 <p>
   A graphical tool is distributed with the MOEA Framework for comparing multiple
