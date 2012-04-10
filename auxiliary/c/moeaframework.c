@@ -105,9 +105,9 @@ MOEA_Status MOEA_Init(const int objectives, const int constraints) {
 MOEA_Status MOEA_Init_socket(const int objectives, const int constraints,
     const char* service) {
   int gai_errno;
-  int listenfd = -1;
-  int readfd = -1;
-  int writefd = -1;
+  int listenfd;
+  int readfd;
+  int writefd;
   int yes = 1;
   struct addrinfo hints;
   struct addrinfo *servinfo = NULL;

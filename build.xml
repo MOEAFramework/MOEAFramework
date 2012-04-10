@@ -205,6 +205,10 @@
 		<copy todir="build">
 			<fileset dir="examples" includes="*.java" />
 		</copy>
+		
+		<copy todir="build">
+			<fileset file="auxiliary/c/dtlz2.c" />
+		</copy>
 	</target>
 
 	<!-- Run keytool -genkeypair -alias moeaframework to generate the key store -->

@@ -1,6 +1,8 @@
-# This make file compiles the Rosenbrock demo (see examples/Example4.java) and
-# two test executables facilitating unit testing the C/C++ interface:
-# test_stdio.exe and test_socket.exe.
+# This make file compiles the C/C++ executables used by examples/Example5.java
+# and examples/Example6.java, as well as the executables used for unit testing.
+#
+# This make file assumes it is being run on a Unix-like environment.  Windows
+# users can install MinGW/MSYS or Cygwin.
 #
 # Run 'make' to build all files
 

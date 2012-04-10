@@ -45,6 +45,7 @@
 				<!-- include SyntaxHighlighter files for displaying source codes -->
 				<script type="text/javascript" src="scripts/shCore.js"></script>
 				<script type="text/javascript" src="scripts/shBrushJava.js"></script>
+				<script type="text/javascript" src="scripts/shBrushCpp.js"></script>
 				<link type="text/css" rel="stylesheet" href="styles/shCoreEclipse.css" />
 				<script type="text/javascript">SyntaxHighlighter.all();</script>
 

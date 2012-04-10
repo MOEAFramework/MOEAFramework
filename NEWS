@@ -10,7 +10,7 @@ Framework.
       - http://ls11-www.cs.tu-dortmund.de/people/beume/publications/hoy.cpp
       - http://iridia.ulb.ac.be/~manuel/hypervolume/
       - http://www.wfg.csse.uwa.edu.au/hypervolume/
-    See global.properties for details on configuring a custom hypervolume
+    See the user manual for details on configuring a custom hypervolume
     calculator.
 
   * Modified PopulationIO to accept Iterable<Solution> instead of Population
