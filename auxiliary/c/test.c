@@ -56,5 +56,7 @@ int main() {
     MOEA_Write(objectives, constraints);
   }
   
+  MOEA_Terminate();
+  
   return EXIT_SUCCESS;
 }

@@ -81,6 +81,8 @@ int main(int argc, char* argv[]) {
 		evaluate(vars, objs);
 		MOEA_Write(objs, NULL);
 	}
+	
+	MOEA_Terminate();
 
 	return EXIT_SUCCESS;
 }
