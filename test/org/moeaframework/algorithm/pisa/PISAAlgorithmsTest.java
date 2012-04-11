@@ -30,6 +30,7 @@ import org.moeaframework.TestUtils;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.CoreUtils;
 import org.moeaframework.core.Problem;
+import org.moeaframework.core.Settings;
 import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.core.spi.ProviderNotFoundException;
@@ -76,11 +77,12 @@ public class PISAAlgorithmsTest {
 			String configuration, Problem problem) {
 		TestUtils.assumeFileExists(new File(directory));
 
-		System.setProperty("org.moeaframework.algorithm.pisa.algorithms", name);
-		System.setProperty("org.moeaframework.algorithm.pisa." + name + 
-				".command", command);
-		System.setProperty("org.moeaframework.algorithm.pisa." + name + 
-				".configuration", configuration);
+		Settings.PROPERTIES.setString(
+				"org.moeaframework.algorithm.pisa.algorithms", name);
+		Settings.PROPERTIES.setString("org.moeaframework.algorithm.pisa." +
+				name + ".command", command);
+		Settings.PROPERTIES.setString("org.moeaframework.algorithm.pisa." +
+				name + ".configuration", configuration);
 		
 		test(AlgorithmFactory.getInstance().getAlgorithm(name, properties, 
 				problem));

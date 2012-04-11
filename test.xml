@@ -79,7 +79,7 @@
 		</copy>
 
 		<jar basedir="build" 
-			jarfile="dist/${shortname}-${version}-test.jar" />
+			jarfile="dist/${shortname}-${version}-Test.jar" />
 	</target>
 
 	<target name="run-tests" depends="build-tests, build-c">		
@@ -92,11 +92,11 @@
 			<classpath>
 				<path refid="classpath" />
 				<fileset file="dist/${shortname}-${version}.jar" />
-				<fileset file="dist/${shortname}-${version}-test.jar" />
+				<fileset file="dist/${shortname}-${version}-Test.jar" />
 			</classpath>
 			<batchtest todir="test-results/raw">
 				<formatter type="xml" />
-				<zipfileset src="dist/${shortname}-${version}-test.jar">
+				<zipfileset src="dist/${shortname}-${version}-Test.jar">
 					<include name="**/*Test.class" />
 					<exclude name="org/moeaframework/algorithm/AlgorithmTest.class" />
 					<exclude name="org/moeaframework/core/indicator/IndicatorTest.class" />
