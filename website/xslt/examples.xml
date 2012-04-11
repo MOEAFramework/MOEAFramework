@@ -33,8 +33,8 @@
 
 <p>
   In order to run these examples or use the MOEA Framework, Java 6 (or a later
-  version) must be installed on your computer.  The Java 6 development kit for
-  Windows and Linux can be downloaded 
+  version) must be installed on your computer.  The Java 6 development kit (JDK)
+  for Windows and Linux can be downloaded 
   <a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk-6u29-download-513648.html">here</a>.
 </p>
 
@@ -238,7 +238,7 @@ for (int i=0; i<accumulator.size("NFE"); i++) {
 <![CDATA[
 public class DTLZ2 extends AbstractProblem {
 
-  public MyDTLZ2() {
+  public DTLZ2() {
     super(11, 2);
   }
 
@@ -323,9 +323,9 @@ NondominatedPopulation result = new Executor()
 <div class="code">
   <pre class="brush: java; toolbar: false;">
 <![CDATA[
-public static class MyDTLZ2 extends ExternalProblem {
+public static class DTLZ2 extends ExternalProblem {
 
-  public MyDTLZ2() throws IOException {
+  public DTLZ2() throws IOException {
     super("./auxiliary/c/dtlz2_stdio.exe");
   }
 
