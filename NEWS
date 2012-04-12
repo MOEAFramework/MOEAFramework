@@ -2,8 +2,13 @@ This file documents the major changes implemented in each release of the MOEA
 Framework.
 
 --------------------
- Version 1.12 (TBD)
+ Version 1.13 (TBD)
 --------------------
+
+
+----------------------------
+ Version 1.12 (10 Apr 2012)
+----------------------------
 
   * Improved support for custom hypervolume calculators.  It is known to work
     with the following implementations:

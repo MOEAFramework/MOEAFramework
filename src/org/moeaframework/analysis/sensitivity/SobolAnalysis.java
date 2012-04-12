@@ -272,6 +272,21 @@ public class SobolAnalysis extends CommandLineUtility {
 		output.println();
 	}
 
+	/**
+	 * Returns the first-order confidence interval of the i-th parameter.  The
+	 * arguments to this method mirror the arguments to
+	 * {@link #computeFirstOrder}.
+	 * 
+	 * @param a0 the output from the first independent samples
+	 * @param a1 the output from the samples produced by swapping the i-th
+	 *        parameter in the first independent samples with the i-th parameter
+	 *        from the second independent samples
+	 * @param a2 the output from the second independent samples
+	 * @param nsample the number of samples
+	 * @param nresample the number of resamples used when calculating the
+	 *        confidence interval
+	 * @return the first-order confidence interval of the i-th parameter
+	 */
 	private static double computeFirstOrderConfidence(double[] a0, double[] a1,
 			double[] a2, int nsample, int nresample) {
 		double[] b0 = new double[nsample];
@@ -301,6 +316,19 @@ public class SobolAnalysis extends CommandLineUtility {
 		return 1.96 * Math.sqrt(sss / (nresample - 1));
 	}
 
+	/**
+	 * Returns the first-order sensitivity of the i-th parameter.  Note how
+	 * the contents of the array {@code a1} specify the parameter being
+	 * analyzed.
+	 * 
+	 * @param a0 the output from the first independent samples
+	 * @param a1 the output from the samples produced by swapping the i-th
+	 *        parameter in the first independent samples with the i-th parameter
+	 *        from the second independent samples
+	 * @param a2 the output from the second independent samples
+	 * @param nsample the number of samples
+	 * @return the first-order sensitivity of the i-th parameter
+	 */
 	private static double computeFirstOrder(double[] a0, double[] a1,
 			double[] a2, int nsample) {
 		double c = 0.0;
@@ -329,6 +357,19 @@ public class SobolAnalysis extends CommandLineUtility {
 		return (U - EY2) / V;
 	}
 
+	/**
+	 * Returns the total-order sensitivity of the i-th parameter.  Note how
+	 * the contents of the array {@code a1} specify the parameter being
+	 * analyzed.
+	 * 
+	 * @param a0 the output from the first independent samples
+	 * @param a1 the output from the samples produced by swapping the i-th
+	 *        parameter in the first independent samples with the i-th parameter
+	 *        from the second independent samples
+	 * @param a2 the output from the second independent samples
+	 * @param nsample the number of samples
+	 * @return the total-order sensitivity of the i-th parameter
+	 */
 	private static double computeTotalOrder(double[] a0, double[] a1,
 			double[] a2, int nsample) {
 		double c = 0.0;
@@ -356,6 +397,21 @@ public class SobolAnalysis extends CommandLineUtility {
 		return 1.0 - ((U - EY2) / V);
 	}
 
+	/**
+	 * Returns the total-order confidence interval of the i-th parameter.  The
+	 * arguments to this method mirror the arguments to
+	 * {@link #computeTotalOrder}.
+	 * 
+	 * @param a0 the output from the first independent samples
+	 * @param a1 the output from the samples produced by swapping the i-th
+	 *        parameter in the first independent samples with the i-th parameter
+	 *        from the second independent samples
+	 * @param a2 the output from the second independent samples
+	 * @param nsample the number of samples
+	 * @param nresample the number of resamples used when calculating the
+	 *        confidence interval
+	 * @return the total-order confidence interval of the i-th parameter
+	 */
 	private static double computeTotalOrderConfidence(double[] a0, double[] a1,
 			double[] a2, int nsample, int nresample) {
 		double[] b0 = new double[nsample];
@@ -385,6 +441,27 @@ public class SobolAnalysis extends CommandLineUtility {
 		return 1.96 * Math.sqrt(sss / (nresample - 1));
 	}
 
+	/**
+	 * Returns the second-order sensitivity of the i-th and j-th parameters.  
+	 * Note how the contents of the arrays {@code a1}, {@code a2}, and
+	 * {@code a3} specify the two parameters being analyzed.
+	 * 
+	 * @param a0 the output from the first independent samples
+	 * @param a1 the output from the samples produced by swapping the i-th
+	 *        parameter in the second independent samples with the i-th
+	 *        parameter from the first independent samples
+	 * @param a2 the output from the samples produced by swapping the j-th
+	 *        parameter in the first independent samples with the j-th parameter
+	 *        from the second independent samples
+	 * @param a3 the output from the samples produced by swapping the i-th
+	 *        parameter in the first independent samples with the i-th parameter
+	 *        from the second independent samples
+	 * @param a4 the output from the second independent samples
+	 * @param nsample the number of samples
+	 * @param nresample the number of resamples used when calculating the
+	 *        confidence interval
+	 * @return the second-order sensitivity of the i-th and j-th parameters
+	 */
 	private static double computeSecondOrder(double[] a0, double[] a1,
 			double[] a2, double[] a3, double[] a4, int nsample) {
 		double c = 0.0;
@@ -424,6 +501,26 @@ public class SobolAnalysis extends CommandLineUtility {
 		return (Vij - Vi - Vj) / V;
 	}
 
+	/**
+	 * Returns the second-order confidence interval of the i-th and j-th
+	 * parameters.  The arguments to this method mirror the arguments to
+	 * {@link #computeSecondOrder}.
+	 * 
+	 * @param a0 the output from the first independent samples
+	 * @param a1 the output from the samples produced by swapping the i-th
+	 *        parameter in the second independent samples with the i-th
+	 *        parameter from the first independent samples
+	 * @param a2 the output from the samples produced by swapping the j-th
+	 *        parameter in the first independent samples with the j-th parameter
+	 *        from the second independent samples
+	 * @param a3 the output from the samples produced by swapping the i-th
+	 *        parameter in the first independent samples with the i-th parameter
+	 *        from the second independent samples
+	 * @param a4 the output from the second independent samples
+	 * @param nsample the number of samples
+	 * @return the second-order confidence interval of the i-th and j-th
+	 *         parameters
+	 */
 	private static double computeSecondOrderConfidence(double[] a0,
 			double[] a1, double[] a2, double[] a3, double[] a4, int nsample,
 			int nresample) {
