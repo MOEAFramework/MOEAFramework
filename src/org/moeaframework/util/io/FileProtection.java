@@ -217,7 +217,8 @@ public class FileProtection extends CommandLineUtility {
 				byte[] buffer = new byte[Settings.BUFFER_SIZE];
 				
 				while (read(buffer) != -1) {
-					//do nothing
+					//reading the data calculates the checksum, nothing else to
+					//do here
 				}
 				
 				super.close();

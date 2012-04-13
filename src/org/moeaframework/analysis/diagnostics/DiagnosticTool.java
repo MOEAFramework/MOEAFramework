@@ -235,7 +235,7 @@ ControllerListener {
 
 			@Override
 			public Object getValueAt(int row, int column) {
-				ResultKey key = (ResultKey)resultListModel.getElementAt(row);
+				ResultKey key = resultListModel.getElementAt(row);
 				
 				switch (column) {
 				case 0: 

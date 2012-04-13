@@ -45,8 +45,8 @@ import org.moeaframework.util.TypedProperties;
 
 /**
  * Command line utility for extracting data from a result file.  The data that
- * can be extracted includes any properties by providing its full name, 
- * metrics using one of the following special commands:
+ * can be extracted includes any properties by providing its full name, or any
+ * of the following metrics if given the designated {@code +option}.
  * <ul>
  *   <li>{@code +hypervolume} for {@link Hypervolume}
  *   <li>{@code +generational} for {@link GenerationalDistance}
