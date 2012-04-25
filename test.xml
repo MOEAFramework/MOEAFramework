@@ -26,8 +26,10 @@
 	<target name="check-dependencies">
 		<available classname="org.junit.Assert" classpathref="classpath"
 				property="junit-exists" />
-		<available file="dist/${shortname}-${version}.jar" 
-				property="binary-exists" />
+		
+		<!-- Commented to always force recompiling of the JAR -->
+		<!--<available file="dist/${shortname}-${version}.jar" 
+				property="binary-exists" />-->
 	</target>
 	
 	<target name="check-binary" depends="check-dependencies" 
