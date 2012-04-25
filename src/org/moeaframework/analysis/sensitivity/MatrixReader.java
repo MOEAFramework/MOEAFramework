@@ -41,7 +41,7 @@ import org.moeaframework.util.io.CommentedLineReader;
  * depending on the type of error and the value of the 
  * {@code suppressExceptions} flag.
  */
-class MatrixReader implements Iterable<double[]>, Iterator<double[]>, 
+public class MatrixReader implements Iterable<double[]>, Iterator<double[]>, 
 Closeable {
 
 	/**

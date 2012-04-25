@@ -5,6 +5,15 @@ Framework.
  Version 1.13 (TBD)
 --------------------
 
+  * Adds copyright and license headers to a number of Java files that were
+    missing the required header.
+    
+  * Adds the Negater command line utility for negating objectives in result
+    files.  As the MOEA Framework only operates on minimization objectives,
+    maximization objectives must be negated prior to their use.  The Negater is
+    a temporary measure for working with maximization objectives until more
+    integrated support is available.
+
 
 ----------------------------
  Version 1.12 (10 Apr 2012)

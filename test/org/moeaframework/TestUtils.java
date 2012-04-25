@@ -31,13 +31,16 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.Writer;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.BitSet;
+import java.util.List;
 import java.util.regex.Pattern;
 
 import org.apache.commons.math.linear.RealMatrix;
 import org.apache.commons.math.stat.descriptive.DescriptiveStatistics;
 import org.junit.Assert;
 import org.junit.Assume;
+import org.moeaframework.analysis.sensitivity.MatrixReader;
 import org.moeaframework.core.CoreUtils;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
@@ -61,6 +64,24 @@ public class TestUtils {
 	 */
 	private TestUtils() {
 		super();
+	}
+	
+	/**
+	 * Asserts that two double matrices are equal.
+	 * 
+	 * @param expected the expected matrix
+	 * @param actual the actual matrix
+	 */
+	public static void assertEquals(double[][] expected, double[][] actual) {
+	    Assert.assertEquals(expected.length, actual.length);
+	    
+	    for (int i=0; i<expected.length; i++) {
+	        Assert.assertEquals(expected[i].length, actual[i].length);
+	        
+	        for (int j=0; j<expected[i].length; j++) {
+	            assertEquals(expected[i][j], actual[i][j]);
+	        }
+	    }
 	}
 
 	/**
@@ -411,8 +432,62 @@ public class TestUtils {
 				fis.close();
 			}
 		}
-		
 	}
+	
+	/**
+	 * Loads the contents of the specified file, returning an array of all
+	 * lines in the file.
+	 * 
+	 * @param file the file to load
+	 * @return an array of all lines in the file
+	 * @throws IOException if an I/O error occurred
+	 */
+	public static String[] loadLines(File file) throws IOException {
+	    BufferedReader reader = null;
+	    String line = null;
+	    List<String> lines = new ArrayList<String>();
+	    
+	    try {
+	        reader = new BufferedReader(new FileReader(file));
+	        
+	        while ((line = reader.readLine()) != null) {
+	            lines.add(line);
+	        }
+	        
+	        return lines.toArray(new String[lines.size()]);
+	    } finally {
+	        if (reader != null) {
+	            reader.close();
+	        }
+	    }
+	}
+	
+	/**
+	 * Loads the contents of the specified file, returning the matrix of values
+	 * stored in the file.
+	 * 
+	 * @param file the file to load
+	 * @return the matrix of values stored in the file
+	 * @throws IOException if an I/O error occurred
+	 */
+    public static double[][] loadMatrix(File file) throws IOException {
+        MatrixReader reader = null;
+        List<double[]> data = new ArrayList<double[]>();
+        
+        try {
+            reader = new MatrixReader(file);
+            
+            while (reader.hasNext()) {
+                data.add(reader.next());
+            }
+            
+            return data.toArray(new double[data.size()][]);
+        } finally {
+            if (reader != null) {
+                reader.close();
+            }
+        }
+    }
 	
 	/**
 	 * Asserts that the statistical distribution satisfies the properties of an

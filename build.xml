@@ -106,7 +106,7 @@
 
 		<copy todir="${base}/lib">
 			<fileset file="dist/${shortname}-${version}.jar" />
-			<fileset dir="lib" excludes="junit-*.jar" />
+			<fileset dir="lib" excludes="junit-*.jar,checkstyle-*.jar" />
 		</copy>
 
 		<copy todir="${base}/pf">

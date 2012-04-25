@@ -376,3 +376,16 @@ instantiated: java.lang.NoClassDefFoundError: <class>
   JMetal library from http://jmetal.sourceforge.net/ and list it on the 
   classpath as follows:
     java -classpath $CLASSPATH:/path/to/JMetal.jar
+    
+unable to negate values in <file>, incorrect number of values in a row
+  Emitted by the Negater command line utility when one of the files it is
+  processing contains an invalid number of values in a row.  The file is
+  expected to contain the same number of values in a row as values passed to
+  the -d,--direction command line argument.  The file will not be modified if
+  this issue is detected.
+
+unable to negate values in <file>, unable to parse number
+  Emitted by the Negater command line utility when one of the files it is
+  processing encounters a value it is unable to parse.  The columns being
+  negated must be numeric values.  The file will not be modified if this issue
+  is detected.
