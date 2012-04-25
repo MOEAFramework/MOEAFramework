@@ -87,4 +87,8 @@ source code and/or provided in the licenses folder.
     
   * List iterator implementation based on the Apache Commons Collections 3.1
     Licensed under the Apache License, version 2.0
+    
+  * Checkstyle
+    Copyright (C) 2001-2011 Oliver Burn
+    Licensed under the GNU Lesser General Public License, version 2.1 or later
  

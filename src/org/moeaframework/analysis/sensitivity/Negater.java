@@ -1,4 +1,3 @@
-package org.moeaframework.analysis.sensitivity;
 /* Copyright 2009-2012 David Hadka
  * 
  * This file is part of the MOEA Framework.
@@ -16,6 +15,8 @@ package org.moeaframework.analysis.sensitivity;
  * You should have received a copy of the GNU Lesser General Public License 
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
+package org.moeaframework.analysis.sensitivity;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;

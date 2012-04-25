@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE module PUBLIC
+        "-//Puppy Crawl//DTD Check Configuration 1.1//EN"
+        "http://www.puppycrawl.com/dtds/configuration_1_1.dtd">
+
+<module name="Checker">
+	<!-- Source code files contain appropriate copyright and license notices -->
+	<module name="RegexpHeader">
+		<property name="headerFile" value="header.txt" />
+		<property name="fileExtensions" value="java,c,h" />
+	</module>
+	
+	<module name="TreeWalker">
+	
+		<!-- Override hashCode when equals is also overridden -->
+		<module name="EqualsHashCode" />
+	</module>
+</module>

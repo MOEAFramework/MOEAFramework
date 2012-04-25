@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+<project name="MOEA Framework Checkstyle" basedir="../../">
+
+	<property file="META-INF/build.properties" />
+	<property environment="env" />
+	<property name="base" value="auxiliary/checkstyle" />
+
+	<path id="classpath">
+		<fileset dir="${base}" includes="*.jar" />
+	</path>
+
+	<taskdef resource="checkstyletask.properties"
+	         classpath="${base}/checkstyle-5.5-all.jar"/>
+
+	<target name="check-style">
+		<delete dir="build" />
+		<mkdir dir="build" />
+		
+		<checkstyle config="${base}/checks.xml" failOnViolation="false"
+				classpathref="classpath">
+			<formatter type="xml" tofile="build/checkstyle-result.xml" />
+			<fileset dir="auxiliary" includes="**/*.c,**/*.h" />
+			<fileset dir="src" includes="**/*.java" />
+			<fileset dir="test" includes="**/*.java" />
+			<fileset dir="examples" includes="**/*.java" />
+		</checkstyle>
+		
+		<property name="output.dir" location="build" />
+		
+		<xslt in="build/checkstyle-result.xml"
+				out="build/checkstyle-result.html"
+				style="${base}/checkstyle-frames.xsl">
+			<param name="output.dir" expression="${output.dir}" />
+		</xslt>
+
+		<echo>Open the build/index.html file to see the Checkstyle results.</echo>
+	</target>
+
+	<target name="update-header">
+		<input message="Do you want to replace all copyright/license headers?"
+				validargs="Yes,No" defaultvalue="No" addproperty="user-input" />
+		
+		<condition property="do-update">
+			<equals arg1="Yes" arg2="${user-input}"/>
+		</condition>
+		
+		<fail unless="do-update">Build aborted by user.</fail>
+
+		<replace dir="." includes="**/*.java,**/*.c,**/*.h">
+			<replacetoken><![CDATA[/* Copyright 2009-2012 David Hadka
+ * 
+ * This file is part of the MOEA Framework.
+ * 
+ * The MOEA Framework is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by 
+ * the Free Software Foundation, either version 3 of the License, or (at your 
+ * option) any later version.
+ * 
+ * The MOEA Framework is distributed in the hope that it will be useful, but 
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY 
+ * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public 
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License 
+ * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
+ */]]></replacetoken>
+			<replacevalue><![CDATA[/* Copyright 2009-2012 David Hadka
+ *
+ * This file is part of the MOEA Framework.
+ *
+ * The MOEA Framework is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
+ *
+ * The MOEA Framework is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
+ * License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
+ */]]></replacevalue>
+		</replace>
+	</target>
+
+</project>

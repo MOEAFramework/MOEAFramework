@@ -33,7 +33,7 @@ public class NegaterTest {
     @Test
     public void testSingleNegation() throws IOException {
         File file = TestUtils.createTempFile(
-                "0.0 0.1 -0.1 -0.1\n#foo bar\n5.12e-10 -5.12e10 0.5 0.000000001");
+                "0.0 0.1 -0.1 -0.1\n#foo bar\n5.12e-10 -5.12e10 0.5 0.000001");
         
         Negater.main(new String[] {
                "-d", "1,1,0,1",
@@ -41,7 +41,7 @@ public class NegaterTest {
         });
         
         double[][] expected = { { 0.0, -0.1, -0.1, 0.1}, 
-                {-5.12e-10, 5.12e10, 0.5, -0.000000001} };
+                {-5.12e-10, 5.12e10, 0.5, -0.000001} };
         double[][] actual = TestUtils.loadMatrix(file);
         
         TestUtils.assertEquals(expected, actual);
@@ -50,7 +50,7 @@ public class NegaterTest {
     @Test
     public void testDoubleNegation() throws IOException {
         File file = TestUtils.createTempFile(
-                "0.0 0.1 -0.1 -0.1\n#foo bar\n5.12e-10 -5.12e10 0.5 0.000000001");
+                "0.0 0.1 -0.1 -0.1\n#foo bar\n5.12e-10 -5.12e10 0.5 0.000001");
         File copy = TestUtils.createTempFile();
         CoreUtils.copy(file, copy);
         
@@ -64,7 +64,8 @@ public class NegaterTest {
                 file.getPath()
         });
         
-        TestUtils.assertEquals(TestUtils.loadMatrix(copy), TestUtils.loadMatrix(file));
+        TestUtils.assertEquals(TestUtils.loadMatrix(copy),
+        		TestUtils.loadMatrix(file));
     }
     
     @Test
@@ -79,13 +80,14 @@ public class NegaterTest {
                file.getPath()
         });
         
-        Assert.assertArrayEquals(TestUtils.loadFile(copy), TestUtils.loadFile(file));
+        Assert.assertArrayEquals(TestUtils.loadFile(copy),
+        		TestUtils.loadFile(file));
     }
 
     @Test
     public void testNoOverwriteOnError2() throws IOException {
         File file = TestUtils.createTempFile(
-                "0.0 0.1 -0.1 -0.1\n#foo bar\n5.12e-10 0,1,2 0.5 0.000000001");
+                "0.0 0.1 -0.1 -0.1\n#foo bar\n5.12e-10 0,1,2 0.5 0.000001");
         File copy = TestUtils.createTempFile();
         CoreUtils.copy(file, copy);
 
@@ -94,7 +96,8 @@ public class NegaterTest {
                file.getPath()
         });
         
-        Assert.assertArrayEquals(TestUtils.loadFile(copy), TestUtils.loadFile(file));
+        Assert.assertArrayEquals(TestUtils.loadFile(copy),
+        		TestUtils.loadFile(file));
     }
 
 }

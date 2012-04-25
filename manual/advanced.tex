@@ -126,7 +126,8 @@ The hypervolume calculation is computationally expensive.  Use of the built-in h
 
 \begin{itemize}
   \item \webpage{http://ls11-www.cs.uni-dortmund.de/rudolph/hypervolume/start}
-  \item \webpage{http://www.wfg.csse.uwa.edu.au/hypervolume/}
+  \item \webpage{http://iridia.ulb.ac.be/~manuel/hypervolume/}
+  \item \webpage{http://www.wfg.csse.uwa.edu.au/hypervolume/}\footnote{Some source code editing is necessary to modify the input and output format to be compatible with the MOEA Framework.}
 \end{itemize}
 
 Such hypervolume calculators can be used by the MOEA Framework by following two steps.  First, download and compile the desired hypervolume code.  This should result in an executable file, such as \file{hyp.exe}.  Second, configure the MOEA Framework to use this executable by adding a line similar to the following to the \file{global.properties} file.
@@ -145,6 +146,7 @@ This property is specifying the executable and any required arguments.  The argu
   \{1\} & Approximation set size \\
   \{2\} & File containing the approximation set \\
   \{3\} & File containing the reference point
+  \{4\} & The reference point, separated by spaces
 \end{tabular}
 \end{center}
 
