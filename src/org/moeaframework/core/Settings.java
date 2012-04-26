@@ -126,40 +126,61 @@ public class Settings {
 	
 	/**
 	 * The prefix for PBS property keys.
+	 * 
+	 * @deprecated Will be removed in version 2.0
 	 */
+	@Deprecated
 	public static final String KEY_PBS_PREFIX = KEY_PREFIX + "util.pbs.";
 	
 	/**
 	 * The property key for the PBS qsub command.
+	 * 
+	 * @deprecated Will be removed in version 2.0
 	 */
+	@Deprecated
 	public static final String KEY_PBS_QSUB = KEY_PBS_PREFIX + "qsub";
 	
 	/**
 	 * The property key for the PBS script format.
+	 * 
+	 * @deprecated Will be removed in version 2.0
 	 */
+	@Deprecated
 	public static final String KEY_PBS_SCRIPT = KEY_PBS_PREFIX + "script";
 	
 	/**
 	 * The property key for the PBS qstat command.
+	 * 
+	 * @deprecated Will be removed in version 2.0
 	 */
+	@Deprecated
 	public static final String KEY_PBS_QSTAT = KEY_PBS_PREFIX + "qstat";
 	
 	/**
 	 * The property key for the PBS qdel command.
+	 * 
+	 * @deprecated Will be removed in version 2.0
 	 */
+	@Deprecated
 	public static final String KEY_PBS_QDEL = KEY_PBS_PREFIX + "qdel";
 
 	/**
 	 * The property key for the regular expression for identifying queued PBS
 	 * jobs.
+	 * 
+	 * @deprecated Will be removed in version 2.0
 	 */
+	@Deprecated
 	public static final String KEY_PBS_QUEUED_REGEX = KEY_PBS_PREFIX + 
 			"queued_regex";
 	
 	/**
 	 * The property key for the regular expression for extracting the PBS job
 	 * id from the qstat command.
+	 * 
+	 * @deprecated Will be removed in version 2.0
 	 */
+	@Deprecated
 	public static final String KEY_PBS_JOBID_REGEX = KEY_PBS_PREFIX + 
 			"jobid_regex";
 	
@@ -399,7 +420,9 @@ public class Settings {
 	 * piping the result to this command.
 	 * 
 	 * @return the command used for submitting PBS jobs
+	 * @deprecated Will be removed in version 2.0
 	 */
+	@Deprecated
 	public static String getPBSQsubCommand() {
 		return PROPERTIES.getString(KEY_PBS_QSUB, "qsub");
 	}
@@ -415,7 +438,9 @@ public class Settings {
 	 * </ul>
 	 *   
 	 * @return the PBS script format
+	 * @deprecated Will be removed in version 2.0
 	 */
+	@Deprecated
 	public static String getPBSScript() {
 		return PROPERTIES.getString(KEY_PBS_SCRIPT, 
 				"#PBS -N {0}\r\n" +
@@ -434,7 +459,9 @@ public class Settings {
 	 * </ul>
 	 *   
 	 * @return the command used for retrieving PBS jobs for the current user
+	 * @deprecated Will be removed in version 2.0
 	 */
+	@Deprecated
 	public static String getPBSQstatCommand() {
 		return PROPERTIES.getString(KEY_PBS_QSTAT, "qstat -u {0}");
 	}
@@ -447,7 +474,9 @@ public class Settings {
 	 * </ul>
 	 *   
 	 * @return the command used for killing PBS jobs
+	 * @deprecated Will be removed in version 2.0
 	 */
+	@Deprecated
 	public static String getPBSQdelCommand() {
 		return PROPERTIES.getString(KEY_PBS_QDEL, "qdel {0}");
 	}
@@ -457,7 +486,9 @@ public class Settings {
 	 * regular expression is applied to each output line from qstat.
 	 * 
 	 * @return the regular expression for detecting if a job is queued
+	 * @deprecated Will be removed in version 2.0
 	 */
+	@Deprecated
 	public static String getPBSQueuedRegex() {
 		return PROPERTIES.getString(KEY_PBS_QUEUED_REGEX, "^.* Q   -- $");
 	}
@@ -469,7 +500,9 @@ public class Settings {
 	 * should fail to match any line that does not contain a valid job id.
 	 * 
 	 * @return the regular expression for extracting the job id
+	 * @deprecated Will be removed in version 2.0
 	 */
+	@Deprecated
 	public static String getPBSJobIdRegex() {
 		return PROPERTIES.getString(KEY_PBS_JOBID_REGEX, "(\\d+)\\..*");
 	}

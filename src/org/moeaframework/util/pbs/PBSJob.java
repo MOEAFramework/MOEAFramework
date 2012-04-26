@@ -22,27 +22,42 @@ import java.util.List;
 
 /**
  * Representation of a PBS job.
+ * 
+ * @deprecated Will be removed in version 2.0
  */
+@Deprecated
 public class PBSJob {
 
 	/**
 	 * The name of this job.
+	 * 
+	 * @deprecated Will be removed in version 2.0
 	 */
+    @Deprecated
 	private final String name;
 
 	/**
 	 * The walltime, in hours, required by this job.
+	 * 
+	 * @deprecated Will be removed in version 2.0
 	 */
+    @Deprecated
 	private final int walltime;
 
 	/**
 	 * The number of nodes required by this job.
+	 * 
+	 * @deprecated Will be removed in version 2.0
 	 */
+    @Deprecated
 	private final int nodes;
 
 	/**
 	 * The list of commands to be executed by this job.
+	 * 
+	 * @deprecated Will be removed in version 2.0
 	 */
+    @Deprecated
 	private final List<String> commands;
 
 	/**
@@ -51,7 +66,9 @@ public class PBSJob {
 	 * 
 	 * @param name the name of this job
 	 * @param walltime the walltime, in hours, required by this job
+	 * @deprecated Will be removed in version 2.0
 	 */
+    @Deprecated
 	public PBSJob(String name, int walltime) {
 		this(name, walltime, 1);
 	}
@@ -63,7 +80,9 @@ public class PBSJob {
 	 * @param name the name of this job
 	 * @param walltime the walltime, in hours, required by this job
 	 * @param nodes the number of nodes required by this job
+	 * @deprecated Will be removed in version 2.0
 	 */
+    @Deprecated
 	public PBSJob(String name, int walltime, int nodes) {
 		this.name = name;
 		this.walltime = walltime;
@@ -81,7 +100,9 @@ public class PBSJob {
 	 * @param walltime the walltime, in hours, requried by this job
 	 * @param nodes the number of nodes required by this job
 	 * @param command the first command to be executed by this job
+	 * @deprecated Will be removed in version 2.0
 	 */
+    @Deprecated
 	public PBSJob(String name, int walltime, int nodes, String command) {
 		this(name, walltime, nodes);
 
@@ -93,7 +114,9 @@ public class PBSJob {
 	 * the sequence they are added to this job.
 	 * 
 	 * @param command the command to be executed by this job
+	 * @deprecated Will be removed in version 2.0
 	 */
+    @Deprecated
 	public void addCommand(String command) {
 		commands.add(command);
 	}
@@ -102,7 +125,9 @@ public class PBSJob {
 	 * Returns the name of this job.
 	 * 
 	 * @return the name of this job
+	 * @deprecated Will be removed in version 2.0
 	 */
+    @Deprecated
 	public String getName() {
 		return name;
 	}
@@ -111,7 +136,9 @@ public class PBSJob {
 	 * Returns the walltime, in hours, required by this job.
 	 * 
 	 * @return the walltime, in hours, requried by this job
+	 * @deprecated Will be removed in version 2.0
 	 */
+    @Deprecated
 	public int getWalltime() {
 		return walltime;
 	}
@@ -120,7 +147,9 @@ public class PBSJob {
 	 * Returns the number of nodes required by this job.
 	 * 
 	 * @return the number of nodes required by this job
+	 * @deprecated Will be removed in version 2.0
 	 */
+    @Deprecated
 	public int getNodes() {
 		return nodes;
 	}
@@ -129,7 +158,9 @@ public class PBSJob {
 	 * Returns the list of commands to be executed by this job.
 	 * 
 	 * @return the list of commands to be executed by this job
+	 * @deprecated Will be removed in version 2.0
 	 */
+    @Deprecated
 	public List<String> getCommands() {
 		return commands;
 	}

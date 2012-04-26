@@ -5,6 +5,10 @@ Framework.
  Version 1.13 (TBD)
 --------------------
 
+  * Deprecates the PBS utilities in the org.moeaframework.util.pbs package
+    as they duplicate functionality that is provided by the PBS system's
+    command line utilities.
+
   * Adds copyright and license headers to a number of Java files that were
     missing the required header.
     

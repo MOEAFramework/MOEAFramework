@@ -36,25 +36,39 @@ import org.moeaframework.util.CommandLineUtility;
  * Command line utility for killing all PBS jobs belonging to a specified user.
  * Command line options allow only queued jobs or those with job ids within a
  * user-specified range to be killed.
+ * 
+ * @deprecated Will be removed in version 2.0; use {@code qdel}, 
+ *             {@code qdel $(qselect -u <user>)} or other officially-supported
+ *             command line tools instead
  */
+@Deprecated
 public class PBSKill extends CommandLineUtility {
 
 	/**
 	 * The regular expression pattern for parsing the job id from the
 	 * {@code qstat} command.
+	 * 
+	 * @deprecated Will be removed in version 2.0
 	 */
+    @Deprecated
 	private static Pattern idPattern = Pattern.compile(
 			Settings.getPBSJobIdRegex());
 	
 	/**
 	 * The regular expression pattern for determining if the job is queued.
+	 * 
+	 * @deprecated Will be removed in version 2.0
 	 */
+    @Deprecated
 	private static Pattern queuedPattern = Pattern.compile(
 			Settings.getPBSQueuedRegex());
 
 	/**
 	 * Private constructor to prevent instantiation.
+	 * 
+	 * @deprecated Will be removed in version 2.0
 	 */
+    @Deprecated
 	private PBSKill() {
 		super();
 	}
@@ -68,7 +82,9 @@ public class PBSKill extends CommandLineUtility {
 	 *        {@code false otherwise}
 	 * @return the list of all jobs in the PBS queue for the specified user
 	 * @throws IOException if an I/O error occurred
+	 * @deprecated Will be removed in version 2.0
 	 */
+    @Deprecated
 	private List<String> getQueuedJobs(String user, boolean queued) 
 	throws IOException {
 		Process process = Runtime.getRuntime().exec(MessageFormat.format(
@@ -106,7 +122,9 @@ public class PBSKill extends CommandLineUtility {
 	 * 
 	 * @param job the job id
 	 * @throws IOException if an I/O error occurred
+	 * @deprecated Will be removed in version 2.0
 	 */
+    @Deprecated
 	private void killJob(String job) throws IOException {
 		System.out.print("Killing " + job + "...");
 
@@ -126,6 +144,7 @@ public class PBSKill extends CommandLineUtility {
 
 	@SuppressWarnings("static-access")
 	@Override
+	@Deprecated
 	public Options getOptions() {
 		Options options = super.getOptions();
 		
@@ -150,6 +169,7 @@ public class PBSKill extends CommandLineUtility {
 	}
 
 	@Override
+	@Deprecated
 	public void run(CommandLine commandLine) throws IOException {
 		String userid = null;
 		
@@ -199,7 +219,9 @@ public class PBSKill extends CommandLineUtility {
 	 * user.
 	 * 
 	 * @param args the command line arguments
+	 * @deprecated Will be removed in version 2.0
 	 */
+	@Deprecated
 	public static void main(String[] args) {
 		new PBSKill().start(args);
 	}

@@ -27,12 +27,19 @@ import org.moeaframework.util.io.RedirectStream;
 /**
  * Translates individual {@link PBSJob}s to valid PBS scripts and submits the
  * scripts using {@code qsub}.
+ * 
+ * @deprecated Will be removed in version 2.0; use shell scripts to generate
+ *             the script and submit with {@code echo -e ${SCRIPT} | qsub}
+ *             instead
  */
 public class PBSSubmitter {
 
 	/**
 	 * Constructs a PBS submitter.
+	 * 
+	 * @deprecated Will be removed in version 2.0
 	 */
+    @Deprecated
 	private PBSSubmitter() {
 		super();
 	}
@@ -43,7 +50,9 @@ public class PBSSubmitter {
 	 * 
 	 * @param job the PBS job
 	 * @return the PBS script sued to execute the specified PBS job
+	 * @deprecated Will be removed in version 2.0
 	 */
+    @Deprecated
 	protected static String toPBSScript(PBSJob job) {
 		StringBuilder sb = new StringBuilder();
 		
@@ -64,7 +73,9 @@ public class PBSSubmitter {
 	 * 
 	 * @param job the PBS job to be submitted
 	 * @throws IOException if an error occurred while invoking {@code qsub}
+	 * @deprecated Will be removed in version 2.0
 	 */
+    @Deprecated
 	public static void submit(PBSJob job) throws IOException {
 		Process process = Runtime.getRuntime().exec(
 				Settings.getPBSQsubCommand());
