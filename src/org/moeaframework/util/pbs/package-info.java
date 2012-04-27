@@ -18,9 +18,5 @@
 
 /**
  * Collection of utilities for working with PBS queues.
- * 
- * @deprecated Will be removed in version 2.0; use officially-supported command
- *             line tools instead
  */
-@Deprecated
 package org.moeaframework.util.pbs;

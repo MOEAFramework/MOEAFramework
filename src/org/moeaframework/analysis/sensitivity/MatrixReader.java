@@ -222,7 +222,7 @@ Closeable {
 	 * @return {@code true} if exceptions are suppressed; {@code false}
 	 *         otherwise
 	 */
-	protected boolean isSupressExceptions() {
+	boolean isSupressExceptions() {
 		return supressExceptions;
 	}
 
@@ -233,7 +233,7 @@ Closeable {
 	 * @param supressExceptions {@code true} if exceptions are suppressed; 
 	 *        {@code false} otherwise
 	 */
-	protected void setSupressExceptions(boolean supressExceptions) {
+	void setSupressExceptions(boolean supressExceptions) {
 		this.supressExceptions = supressExceptions;
 	}
 
