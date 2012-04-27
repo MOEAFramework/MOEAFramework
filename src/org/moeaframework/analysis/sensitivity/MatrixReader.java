@@ -41,7 +41,7 @@ import org.moeaframework.util.io.CommentedLineReader;
  * depending on the type of error and the value of the 
  * {@code suppressExceptions} flag.
  */
-public class MatrixReader implements Iterable<double[]>, Iterator<double[]>, 
+class MatrixReader implements Iterable<double[]>, Iterator<double[]>, 
 Closeable {
 
 	/**
@@ -222,7 +222,7 @@ Closeable {
 	 * @return {@code true} if exceptions are suppressed; {@code false}
 	 *         otherwise
 	 */
-	public boolean isSupressExceptions() {
+	protected boolean isSupressExceptions() {
 		return supressExceptions;
 	}
 
@@ -233,7 +233,7 @@ Closeable {
 	 * @param supressExceptions {@code true} if exceptions are suppressed; 
 	 *        {@code false} otherwise
 	 */
-	public void setSupressExceptions(boolean supressExceptions) {
+	protected void setSupressExceptions(boolean supressExceptions) {
 		this.supressExceptions = supressExceptions;
 	}
 

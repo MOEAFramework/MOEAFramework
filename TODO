@@ -19,10 +19,6 @@ any changes.
     the Evaluator/ResultFileEvaluator should include an argument that specifies
     the maximum indicator value.
 
-  - AdaptiveMultimethodVariation is permitting one additional invocation
-    prior to updating the probabilities.  E.g., if the window size is 100, it
-    is allowing 101 evaluations before updating.
-
   - Need to determine for which classes does value-based equals methods make
     sense, and provide equals and hashCode implementations for these classes.
     As an example, it doesn't make sense for Solution to provide an equals

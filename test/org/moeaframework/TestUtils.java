@@ -40,7 +40,6 @@ import org.apache.commons.math.linear.RealMatrix;
 import org.apache.commons.math.stat.descriptive.DescriptiveStatistics;
 import org.junit.Assert;
 import org.junit.Assume;
-import org.moeaframework.analysis.sensitivity.MatrixReader;
 import org.moeaframework.core.CoreUtils;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
@@ -435,34 +434,6 @@ public class TestUtils {
 	}
 	
 	/**
-	 * Loads the contents of the specified file, returning an array of all
-	 * lines in the file.
-	 * 
-	 * @param file the file to load
-	 * @return an array of all lines in the file
-	 * @throws IOException if an I/O error occurred
-	 */
-	public static String[] loadLines(File file) throws IOException {
-	    BufferedReader reader = null;
-	    String line = null;
-	    List<String> lines = new ArrayList<String>();
-	    
-	    try {
-	        reader = new BufferedReader(new FileReader(file));
-	        
-	        while ((line = reader.readLine()) != null) {
-	            lines.add(line);
-	        }
-	        
-	        return lines.toArray(new String[lines.size()]);
-	    } finally {
-	        if (reader != null) {
-	            reader.close();
-	        }
-	    }
-	}
-	
-	/**
 	 * Loads the contents of the specified file, returning the matrix of values
 	 * stored in the file.
 	 * 
@@ -471,14 +442,22 @@ public class TestUtils {
 	 * @throws IOException if an I/O error occurred
 	 */
     public static double[][] loadMatrix(File file) throws IOException {
-        MatrixReader reader = null;
         List<double[]> data = new ArrayList<double[]>();
+        CommentedLineReader reader = null;
+        String line = null;
         
         try {
-            reader = new MatrixReader(file);
+            reader = new CommentedLineReader(new FileReader(file));
             
-            while (reader.hasNext()) {
-                data.add(reader.next());
+            while ((line = reader.readLine()) != null) {
+            	String[] tokens = line.split("\\s+");
+            	double[] row = new double[tokens.length];
+            	
+            	for (int i=0; i<tokens.length; i++) {
+            		row[i] = Double.parseDouble(tokens[i]);
+            	}
+            	
+            	data.add(row);
             }
             
             return data.toArray(new double[data.size()][]);

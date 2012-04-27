@@ -5,9 +5,21 @@ Framework.
  Version 1.13 (TBD)
 --------------------
 
-  * Deprecates the PBS utilities in the org.moeaframework.util.pbs package
-    as they duplicate functionality that is provided by the PBS system's
-    command line utilities.
+  * Fixes minor bug where AdaptiveMultimethodVariation was permitting one
+    additional invocation prior to updating the operator selection
+    probabilities.  E.g., if the UPDATE_WINDOW is 100, it was allowing 101
+    invocations prior to updating the operator selection probabilities.
+
+  * Deprecates the Portable Batch System (PBS) utilities in the
+    org.moeaframework.util.pbs package.  These utilities are redundant and it
+    is much simpler to use shell scripts when submitting PBS jobs.  See the
+    user manual for example scripts.  The PBS package will be removed in
+    version 2.0.
+    
+  * Adds Checkstyle 5.5 Ant script to automatically scan code for missing
+    copyright and license headers and to ensure conformity to coding style
+    guidelines.  This Ant script is located in the auxiliary/checkstyle folder
+    in the source code distribution.
 
   * Adds copyright and license headers to a number of Java files that were
     missing the required header.

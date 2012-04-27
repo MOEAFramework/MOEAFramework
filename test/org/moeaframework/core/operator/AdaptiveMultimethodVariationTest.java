@@ -201,4 +201,55 @@ public class AdaptiveMultimethodVariationTest {
 		}
 	}
 	
+	/**
+	 * Extends {@link AdaptiveMultimethodVariation} to count the number of
+	 * invocations to {@link #getOperatorProbabilities()}.
+	 */
+	private class AdaptiveMultimethodVariationCounter extends
+	AdaptiveMultimethodVariation {
+		
+		private int count = 0;
+
+		public AdaptiveMultimethodVariationCounter(Population archive) {
+			super(archive);
+		}
+
+		@Override
+		protected double[] getOperatorProbabilities() {
+			count++;
+			return super.getOperatorProbabilities();
+		}
+		
+		public int getCount() {
+			return count;
+		}
+		
+	}
+	
+	/**
+	 * Tests if the number of invocations between probability updates matches
+	 * the UPDATE_WINDOW.
+	 */
+	@Test
+	public void testProbabilityUpdateInvocationCount() {
+		variation = new AdaptiveMultimethodVariationCounter(population);
+		variation.addOperator(new DummyVariation(2));
+		variation.addOperator(new DummyVariation(2));
+		
+		UniformSelection selection = new UniformSelection();
+		
+		//ensure sufficient number of samples to trigger off-by-one error
+		int numberOfSamples = (int)Math.pow(
+				AdaptiveMultimethodVariation.UPDATE_WINDOW, 3);
+		
+		for (int i=0; i<numberOfSamples; i++) {
+			variation.evolve(selection.select(variation.getArity(), 
+					population));
+		}
+		
+		Assert.assertEquals(
+				numberOfSamples / AdaptiveMultimethodVariation.UPDATE_WINDOW, 
+				((AdaptiveMultimethodVariationCounter)variation).getCount());
+	}
+	
 }
