@@ -55,7 +55,7 @@ public class ProblemFactory {
 	 * 
 	 * @return the default problem factory
 	 */
-	public synchronized static ProblemFactory getInstance() {
+	public static synchronized ProblemFactory getInstance() {
 		return instance;
 	}
 
@@ -64,7 +64,7 @@ public class ProblemFactory {
 	 * 
 	 * @param instance the default problem factory
 	 */
-	public synchronized static void setInstance(ProblemFactory instance) {
+	public static synchronized void setInstance(ProblemFactory instance) {
 		ProblemFactory.instance = instance;
 	}
 	

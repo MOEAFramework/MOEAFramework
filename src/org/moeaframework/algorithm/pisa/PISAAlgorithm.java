@@ -137,7 +137,7 @@ public class PISAAlgorithm extends AbstractAlgorithm {
 		super.initialize();
 
 		try {
-			setup();
+			configure();
 			state.set(0);
 			state0();
 			state.set(1);
@@ -447,7 +447,7 @@ public class PISAAlgorithm extends AbstractAlgorithm {
 	 * 
 	 * @throws IOException if an I/O error occurred
 	 */
-	private void setup() throws IOException {
+	private void configure() throws IOException {
 		CoreUtils.delete(new File(filePrefix + "arc"));
 		CoreUtils.delete(new File(filePrefix + "cfg"));
 		CoreUtils.delete(new File(filePrefix + "ini"));

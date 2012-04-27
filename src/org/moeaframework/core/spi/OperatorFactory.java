@@ -208,7 +208,7 @@ public class OperatorFactory {
 	 * 
 	 * @return the default operator factory
 	 */
-	public synchronized static OperatorFactory getInstance() {
+	public static synchronized OperatorFactory getInstance() {
 		return instance;
 	}
 
@@ -217,7 +217,7 @@ public class OperatorFactory {
 	 * 
 	 * @param instance the default operator factory
 	 */
-	public synchronized static void setInstance(OperatorFactory instance) {
+	public static synchronized void setInstance(OperatorFactory instance) {
 		OperatorFactory.instance = instance;
 	}
 	

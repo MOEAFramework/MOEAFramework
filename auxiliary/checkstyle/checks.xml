@@ -10,9 +10,193 @@
 		<property name="fileExtensions" value="java,c,h" />
 	</module>
 	
-	<module name="TreeWalker">
+	<!-- Files must end with new line character -->
+	<!-- <module name="NewlineAtEndOfFile"/> -->
 	
+	<!-- No trailing whitespace at end of line -->
+	<!-- <module name="RegexpSingleline">
+		<property name="format" value="\s+$"/>
+	</module> -->
+	
+	<!-- <module name="PackageHtml"/> -->
+	<!-- <module name="JavadocPackage" /> -->
+
+	<module name="TreeWalker">
+		<!-- Explicitly define all important classes -->
+		<module name="AvoidStarImport" />
+		
+		<!-- No unused imports -->
+		<module name="UnusedImports">
+			<property name="processJavadoc" value="true" />
+		</module>
+		
+		<!-- No redundant imports -->
+		<!-- <module name="RedundantImport" /> -->
+		
+		<!-- Prevent empty blocks that do not at least contain a comment -->
+		<module name="EmptyBlock">
+			<property name="option" value="text"/>
+		</module>
+		
+		<!-- Ensure all code blocks contain properly formatted braces -->
+		<module name="NeedBraces" />
+		<module name="LeftCurly" />
+		<module name="RightCurly" />
+		
+		<!-- Deprecation flags must appear as annotations and javadoc tags -->
+		<!-- This currently causes too many false positives when no javadoc
+		     tag exists on overridden methods -->
+		<!-- <module name="MissingDeprecated"/> -->
+		
+		<module name="MissingOverride">
+			<property name="javaFiveCompatibility" value="true"/>
+		</module>
+		
+		<!-- Package annotations should be placed in package-info.java -->
+		<module name="PackageAnnotation"/>
+
 		<!-- Override hashCode when equals is also overridden -->
 		<module name="EqualsHashCode" />
+		
+		<!-- Long constants should use primitive long and not object Long -->
+		<module name="UpperEll" />
+		
+		<!-- Array brackets should be placed immediately following the type
+		     (e.g., String[] names)  -->
+		<module name="ArrayTypeStyle" />
+		
+		<!-- Parameters to constructors and methods should be final -->
+		<!-- <module name="FinalParameters" /> -->
+		<!-- <module name="ParameterAssignment"/> -->
+
+		<!-- The class name and file name must match -->
+		<module name="OuterTypeFilename"/>
+		
+		<!-- Modifiers should be in the JLS defined order -->
+		<module name="ModifierOrder" />
+
+		<!-- Prevent unnecessary whitespace -->
+		<module name="GenericWhitespace"/>
+		<module name="MethodParamPad"/>
+		<module name="ParenPad"/>
+		<module name="TypecastParenPad"/>
+		
+		<!-- Equals methods must use Object parameter -->
+		<module name="CovariantEquals"/>
+		
+		<!-- No empty ; statements -->
+		<module name="EmptyStatement"/>
+		
+		<!-- Constructors must be explicitly defined -->
+		<!-- <module name="MissingCtor"/> -->
+		
+		<!-- Avoid the error-prone double checked locking pattern -->
+		<module name="DoubleCheckedLocking"/>
+		
+		<!-- <module name="EqualsAvoidNull"/> -->
+		<!-- <module name="MagicNumber"/> -->
+		<!-- <module name="ModifiedControlVariable"/> -->
+		
+		<!-- Do not wrap boolean return statements in conditional statement -->
+		<module name="SimplifyBooleanReturn"/>
+		
+		<!-- Never compare strings with == or != -->
+		<module name="StringLiteralEquality"/>
+		
+		<!-- Ensure clone and finalize methods call super -->
+		<module name="SuperClone"/>
+		<module name="SuperFinalize"/>
+		
+		<!-- Every package must have a package declaration -->
+		<!-- <module name="PackageDeclaration"/> -->
+		
+		<!-- JUnit test cases follow naming conventions -->
+		<module name="JUnitTestCase"/>
+		
+		<!-- Contents of a class/interface appear in a standard order -->
+		<!-- <module name="DeclarationOrder"/> -->
+		
+		<!-- Switch statements should be structured correctly -->
+		<module name="DefaultComesLast"/>
+		<module name="MissingSwitchDefault"/>
+		
+		<!-- <module name="MultipleStringLiterals"/> -->
+		
+		<!-- Only one variable declaration is allowed per line -->
+		<module name="MultipleVariableDeclarations"/>
+		
+		<!-- Only one statement is allowed per line -->
+		<module name="OneStatementPerLine"/>
+		
+		<!-- <module name="HideUtilityClassConstructor" /> -->
+		
+		<!-- All variables in an exception are final -->
+		<module name="MutableException"/>
+		
+		<!-- <module name="FinalClass"/> -->
+		
+		<module name="InterfaceIsType"/>
+
+		<!--
+		<module name="JavadocType">
+			<property name="scope" value="protected" />
+		</module>
+		<module name="JavadocMethod">
+			<property name="scope" value="protected" />
+		</module>
+		<module name="JavadocVariable">
+			<property name="scope" value="protected" />
+		</module>
+		-->
+		
+		<!-- Following naming conventions -->
+		<!--
+		<module name="AbstractClassName" />
+		<module name="ClassTypeParameterName" />
+		<module name="ConstantName" />
+		<module name="LocalFinalVariableName" />
+		<module name="LocalVariableName" />
+		<module name="MemberName" />
+		<module name="MethodName" />
+		<module name="MethodTypeParameterName" />
+		<module name="PackageName" />
+		<module name="ParameterName" />
+		<module name="StaticVariableName" />
+		<module name="TypeName" />
+		-->
+	
+		<!-- Fields should not be public -->
+		<!--
+		<module name="VisibilityModifier">
+			<property name="protectedAllowed" value="true" />
+			<property name="packageAllowed" value="true" />
+		</module>
+		-->
+		
+		<module name="IllegalInstantiation">
+            <property name="classes" value="java.lang.Boolean, java.lang.String"/>
+        </module>
+
+		<!--
+		<module name="JavaNCSS">
+			<property name="methodMaximum" value="80" />
+			<property name="classMaximum" value="300" />
+		</module>
+		<module name="ClassFanOutComplexity">
+			<property name="max" value="22" />
+		</module>
+		<module name="ClassDataAbstractionCoupling">
+			<property name="max" value="14" />
+		</module>
+		<module name="CyclomaticComplexity">
+			<property name="max" value="14" />
+		</module>
+		-->
+		
+		<!-- Avoid using these types explicitly, use their interfaces instead -->
+		<!-- <module name="IllegalType">
+			<property name="format" value="^$"/>
+			<property name="illegalClassNames" value="java.util.GregorianCalendar, java.util.Hashtable, java.util.HashSet, java.util.HashMap, java.util.ArrayList, java.util.LinkedHashMap, java.util.LinkedHashSet, java.util.TreeSet, java.util.TreeMap, java.util.Vector"/>
+        </module> -->
 	</module>
 </module>

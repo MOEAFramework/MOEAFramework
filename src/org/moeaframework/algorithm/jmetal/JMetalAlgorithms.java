@@ -598,7 +598,7 @@ public class JMetalAlgorithms extends AlgorithmProvider {
 	}
 	
 	private NSGAII newNSGAII(TypedProperties properties,
-			JMetalProblemAdapter problem ) throws JMException {
+			JMetalProblemAdapter problem) throws JMException {
 		NSGAII algorithm = new NSGAII(problem);
 
 		algorithm.setInputParameter("populationSize", 

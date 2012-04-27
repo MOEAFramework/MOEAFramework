@@ -57,8 +57,9 @@ class FractalDimension {
 		
 		for (int i=0; i<=n-2; i++) {
 			for (int j=i+1; j<=n-1; j++) {
-				if ((r - distance(points[i], points[j])) >= 0)
+				if ((r - distance(points[i], points[j])) >= 0) {
 					sum += 1.0;
+				}
 			}
 		}
 		
@@ -70,8 +71,11 @@ class FractalDimension {
 	 */
 	private static double distance(double[] p1, double[] p2) {
 		double sum = 0.0;
-		for (int i=0; i<p1.length; i++)
+		
+		for (int i=0; i<p1.length; i++) {
 			sum += Math.pow(p2[i] - p1[i], 2.0);
+		}
+		
 		return Math.sqrt(sum);
 	}
 	

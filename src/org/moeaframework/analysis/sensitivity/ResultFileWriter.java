@@ -70,9 +70,17 @@ import org.moeaframework.core.variable.RealVariable;
  */
 public class ResultFileWriter implements OutputWriter {
 	
+    /**
+     * The message displayed when an unsupported decision variable type is
+     * encountered.
+     */
 	protected static final String ENCODING_WARNING = 
 			"unsupported decision variable type, may become unstable";
 	
+	/**
+	 * The message displayed when excluding the decision variables when saving
+	 * a result file.
+	 */
 	protected static final String NO_VARIABLES_WARNING =
 			"saving result file without variables, may become unstable";
 

@@ -16,7 +16,8 @@
 	</path>
 
 	<target name="build-javadoc">
-		<javadoc sourcepath="src" destdir="javadoc" notree="true"
+		<javadoc sourcepath="src;D:\Dave H\dmh309\Java 6.0 SE\j2se\src\share\classes" destdir="javadoc" notree="true"
+				packagenames="org.moeaframework.*" maxmemory="256m"
 				noindex="true" nohelp="true"
 				overview="src/overview.html"
 				windowtitle="MOEA Framework ${version} API">

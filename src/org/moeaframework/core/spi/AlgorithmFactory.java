@@ -56,7 +56,7 @@ public class AlgorithmFactory {
 	 * 
 	 * @return the default algorithm factory
 	 */
-	public synchronized static AlgorithmFactory getInstance() {
+	public static synchronized AlgorithmFactory getInstance() {
 		return instance;
 	}
 
@@ -65,7 +65,7 @@ public class AlgorithmFactory {
 	 * 
 	 * @param instance the default algorithm factory
 	 */
-	public synchronized static void setInstance(AlgorithmFactory instance) {
+	public static synchronized void setInstance(AlgorithmFactory instance) {
 		AlgorithmFactory.instance = instance;
 	}
 	

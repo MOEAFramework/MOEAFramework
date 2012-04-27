@@ -133,7 +133,8 @@ public abstract class ExternalProblem implements Problem {
 	 *         could not be determined
 	 * @throws IOException if an I/O error occurred
 	 */
-	public ExternalProblem(String host, int port) throws IOException {
+	public ExternalProblem(String host, int port) throws IOException, 
+	UnknownHostException {
 		this(new Socket(host, port));
 	}
 	
@@ -206,6 +207,8 @@ public abstract class ExternalProblem implements Problem {
 	/**
 	 * Evaluates the specified solution using the process defined by this class'
 	 * constructor.
+	 * 
+	 * @param solution the solution to evaluate
 	 */
 	@Override
 	public synchronized void evaluate(Solution solution) 

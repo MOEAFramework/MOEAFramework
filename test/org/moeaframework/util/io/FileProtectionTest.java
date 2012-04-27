@@ -92,7 +92,9 @@ public class FileProtectionTest {
 		try {
 			is = FileProtection.openInputStream(file);
 			
-			while (is.read(buffer) != -1);
+			while (is.read(buffer) != -1) {
+			    //loop to read the data, which calculates the checksum
+			}
 		} finally {
 			if (is != null) {
 				is.close();
@@ -112,7 +114,9 @@ public class FileProtectionTest {
 		try {
 			reader = FileProtection.openReader(file);
 			
-			while (reader.read(buffer) != -1);
+			while (reader.read(buffer) != -1) {
+			    //loop to read the data, which calculates the checksum
+			}
 		} finally {
 			if (reader != null) {
 				reader.close();
