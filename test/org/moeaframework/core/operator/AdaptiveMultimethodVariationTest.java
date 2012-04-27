@@ -232,23 +232,22 @@ public class AdaptiveMultimethodVariationTest {
 	 */
 	@Test
 	public void testProbabilityUpdateInvocationCount() {
-		variation = new AdaptiveMultimethodVariationCounter(population);
+		AdaptiveMultimethodVariationCounter variation = 
+				new AdaptiveMultimethodVariationCounter(population);
 		variation.addOperator(new DummyVariation(2));
 		variation.addOperator(new DummyVariation(2));
 		
 		UniformSelection selection = new UniformSelection();
 		
 		//ensure sufficient number of samples to trigger off-by-one error
-		int numberOfSamples = (int)Math.pow(
-				AdaptiveMultimethodVariation.UPDATE_WINDOW, 3);
+		int numberOfSamples = (int)Math.pow(variation.getUpdateWindow(), 3);
 		
 		for (int i=0; i<numberOfSamples; i++) {
 			variation.evolve(selection.select(variation.getArity(), 
 					population));
 		}
 		
-		Assert.assertEquals(
-				numberOfSamples / AdaptiveMultimethodVariation.UPDATE_WINDOW, 
+		Assert.assertEquals(numberOfSamples / variation.getUpdateWindow(), 
 				((AdaptiveMultimethodVariationCounter)variation).getCount());
 	}
 	

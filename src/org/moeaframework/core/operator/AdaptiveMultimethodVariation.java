@@ -62,9 +62,9 @@ public class AdaptiveMultimethodVariation implements Variation {
 
 	/**
 	 * The number of invocations of the {@code evolve} method between updating
-	 * the probabilities.
+	 * the operator selection probabilities.
 	 */
-	public static final int UPDATE_WINDOW = 100;
+	private static final int UPDATE_WINDOW = 100;
 
 	/**
 	 * Constructs an auto-adaptive multi-method recombination operator with the
@@ -76,6 +76,17 @@ public class AdaptiveMultimethodVariation implements Variation {
 		this.archive = archive;
 
 		operators = new ArrayList<Variation>();
+	}
+	
+	/**
+	 * Returns the number of invocations of the {@code evolve} method between
+	 * updating the operator selection probabilities.
+	 * 
+	 * @return the number of invocations of the {@code evolve} method between
+	 *         updating the operator selection probabilities
+	 */
+	public int getUpdateWindow() {
+		return UPDATE_WINDOW;
 	}
 
 	/**
