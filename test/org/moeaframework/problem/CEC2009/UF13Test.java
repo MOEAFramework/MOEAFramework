@@ -58,6 +58,8 @@ public class UF13Test {
      * with the original authors.
      */
 	
+	private static final double PI = 3.1415926535897932384626433832795;
+	
 	private static final double EPSILON = 1.0e-10;
 	
 	/**
@@ -187,21 +189,21 @@ public class UF13Test {
 		double result = 1.0;
 		
 		for (int i = 1; i <= M - m; i++) {
-			result *= 1.0 - Math.cos(x[i - 1] * Math.PI / 2.0);
+			result *= 1.0 - Math.cos(x[i - 1] * PI / 2.0);
 		}
 		
 		if (m != 1) {
-			result *= 1.0 - Math.sin(x[M - m] * Math.PI / 2.0);
+			result *= 1.0 - Math.sin(x[M - m] * PI / 2.0);
 		}
 		
 		return correct_to_01(result, EPSILON);
 	}
 
 	private static double mixed(double[] x, int A, double alpha) {
-		double tmp = 2.0 * A * Math.PI;
+		double tmp = 2.0 * A * PI;
 		
 		return correct_to_01(Math.pow(1.0 - x[0]
-				- Math.cos(tmp * x[0] + Math.PI / 2.0) / tmp, alpha), EPSILON);
+				- Math.cos(tmp * x[0] + PI / 2.0) / tmp, alpha), EPSILON);
 	}
 
 	private static double min_double(double aa, double bb) {

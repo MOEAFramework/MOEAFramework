@@ -16,9 +16,6 @@ any changes.
     the length of this array (nx) as arguments.  Remove the nx argument and use
     x.length instead.
 
-  - Can CEC2009's UF13 problem and dependent methods be replaced by an alias to
-    WFG1?  If so, make this change.  Can the same be done with UF11 and UF12?
-
   - An issue is cropping up when an approximation set is empty (no feasible
     solutions).  The distance metrics result in a value of infinity.  This in
     itself is fine, but becomes problematic when averaging the values with
