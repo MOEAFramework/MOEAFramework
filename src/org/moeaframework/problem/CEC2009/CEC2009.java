@@ -17,7 +17,18 @@
  */
 package org.moeaframework.problem.CEC2009;
 
+/**
+ * Implementations for the actual function evaluations used by the CEC 2009
+ * test problem suite.
+ */
 class CEC2009 {
+	
+	/**
+	 * Private constructor to prevent instantiation.
+	 */
+	private CEC2009() {
+		super();
+	}
     
     /* 
      * The following source code is modified from the CEC 2009 test problem

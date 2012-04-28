@@ -31,6 +31,10 @@ Framework.
     maximization objectives must be negated prior to their use.  The Negater is
     a temporary measure for working with maximization objectives until more
     integrated support is available.
+    
+  * Removes over 300 lines of redundant code from UF11, UF12 and UF13 test
+    problems from the CEC 2009 test problem suite.  The redundant code was
+    replaced by calls to existing code in DTLZ2, DTLZ3 and WFG1.
 
 
 ----------------------------
