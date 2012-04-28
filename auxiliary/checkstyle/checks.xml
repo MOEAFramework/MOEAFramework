@@ -18,7 +18,9 @@
 		<property name="format" value="\s+$"/>
 	</module> -->
 	
-	<!-- <module name="PackageHtml"/> -->
+	<!-- Package info files should include javadoc comments -->
+	<!-- This does not work properly when src and test folders share the same
+	     package structure, as the package-info.java files are only in src -->
 	<!-- <module name="JavadocPackage" /> -->
 
 	<module name="TreeWalker">

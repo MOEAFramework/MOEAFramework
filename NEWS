@@ -24,6 +24,8 @@ Framework.
   * Adds copyright and license headers to a number of Java files that were
     missing the required header.
     
+  * Adds several missing entries to the API documentation.
+    
   * Adds the Negater command line utility for negating objectives in result
     files.  As the MOEA Framework only operates on minimization objectives,
     maximization objectives must be negated prior to their use.  The Negater is

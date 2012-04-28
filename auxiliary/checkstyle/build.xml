@@ -17,7 +17,7 @@
 		<mkdir dir="build" />
 		
 		<checkstyle config="${base}/checks.xml" failOnViolation="false"
-				classpathref="classpath" failureProperty="checkstyle-failed">
+				classpathref="classpath" failureProperty="checkstyle.failed">
 			<formatter type="xml" tofile="build/checkstyle-result.xml" />
 			<fileset dir="auxiliary" includes="**/*.c,**/*.h" />
 			<fileset dir="src" includes="**/*.java" />
@@ -33,7 +33,7 @@
 			<param name="output.dir" expression="${output.dir}" />
 		</xslt>
 
-		<fail if="checkstyle-failed">Checkstyle identified one or more violations!  See build/index.html for details.</fail>
+		<fail if="checkstyle.failed">Checkstyle identified one or more violations!  See build/index.html for details.</fail>
 	</target>
 
 	<target name="update-header">

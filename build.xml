@@ -3,6 +3,7 @@
 
 	<property file="META-INF/build.properties" />
 	<property environment="env" />
+	<property name="jdk.source" value="../OpenJDK6/jdk/src/share/classes" />
 
 	<path id="classpath">
 		<fileset dir="lib" includes="*.jar" />
@@ -16,11 +17,12 @@
 	</path>
 
 	<target name="build-javadoc">
-		<javadoc sourcepath="src;D:\Dave H\dmh309\Java 6.0 SE\j2se\src\share\classes" destdir="javadoc" notree="true"
-				packagenames="org.moeaframework.*" maxmemory="256m"
-				noindex="true" nohelp="true"
+		<javadoc sourcepath="src;${jdk.source}"
+				destdir="javadoc" notree="true"
+				packagenames="org.moeaframework.*"
+				maxmemory="256m" noindex="true" nohelp="true"
 				overview="src/overview.html"
-				windowtitle="MOEA Framework ${version} API">
+				windowtitle="${name} ${version} API">
 			<header><![CDATA[${javadoc.title}]]></header>
 			<doctitle><![CDATA[${javadoc.title}]]></doctitle>
 			<footer><![CDATA[${javadoc.title}]]></footer>
