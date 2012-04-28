@@ -34,14 +34,25 @@ class CEC2009 {
 		return (x > 0.0 ? 1.0 : -1.0);
 	}
 
+	/**
+	 * Evaluates the UF1 problem.
+	 * 
+	 * @param x the decision variables
+	 * @param f the objective function output
+	 * @param nx the number of decision variables
+	 */
 	public static void UF1(double[] x, double[] f, int nx) {
-		int j, count1, count2;
-		double sum1, sum2, yj;
-		sum1 = sum2 = 0.0;
-		count1 = count2 = 0;
+		int j;
+		int count1 = 0;
+		int count2 = 0;
+		double sum1 = 0.0;
+		double sum2 = 0.0;
+		double yj;
+
 		for (j = 2; j <= nx; j++) {
 			yj = x[j - 1] - Math.sin(6.0 * PI * x[0] + j * PI / nx);
 			yj = yj * yj;
+			
 			if (j % 2 == 0) {
 				sum2 += yj;
 				count2++;
@@ -50,50 +61,69 @@ class CEC2009 {
 				count1++;
 			}
 		}
+		
 		f[0] = x[0] + 2.0 * sum1 / (double)count1;
 		f[1] = 1.0 - Math.sqrt(x[0]) + 2.0 * sum2 / (double)count2;
 	}
 
+	/**
+	 * Evaluates the UF2 problem.
+	 * 
+	 * @param x the decision variables
+	 * @param f the objective function output
+	 * @param nx the number of decision variables
+	 */
 	public static void UF2(double[] x, double[] f, int nx) {
-		int j, count1, count2;
-		double sum1, sum2, yj;
-		sum1 = sum2 = 0.0;
-		count1 = count2 = 0;
+		int j;
+		int count1 = 0;
+		int count2 = 0;
+		double sum1 = 0.0;
+		double sum2 = 0.0;
+		double yj;
+
 		for (j = 2; j <= nx; j++) {
 			if (j % 2 == 0) {
-				yj = x[j - 1]
-						- 0.3
-						* x[0]
-						* (x[0]
-								* Math.cos(24.0 * PI * x[0] + 4.0 * j * PI / nx) + 2.0)
+				yj = x[j - 1] - 0.3 * x[0] * (x[0]
+						* Math.cos(24.0 * PI * x[0] + 4.0 * j * PI / nx) + 2.0)
 						* Math.sin(6.0 * PI * x[0] + j * PI / nx);
 				sum2 += yj * yj;
 				count2++;
 			} else {
-				yj = x[j - 1]
-						- 0.3
-						* x[0]
-						* (x[0]
-								* Math.cos(24.0 * PI * x[0] + 4.0 * j * PI / nx) + 2.0)
+				yj = x[j - 1] - 0.3 * x[0] * (x[0]
+						* Math.cos(24.0 * PI * x[0] + 4.0 * j * PI / nx) + 2.0)
 						* Math.cos(6.0 * PI * x[0] + j * PI / nx);
 				sum1 += yj * yj;
 				count1++;
 			}
 		}
+		
 		f[0] = x[0] + 2.0 * sum1 / (double)count1;
 		f[1] = 1.0 - Math.sqrt(x[0]) + 2.0 * sum2 / (double)count2;
 	}
 
+	/**
+	 * Evaluates the UF3 problem.
+	 * 
+	 * @param x the decision variables
+	 * @param f the objective function output
+	 * @param nx the number of decision variables
+	 */
 	public static void UF3(double[] x, double[] f, int nx) {
-		int j, count1, count2;
-		double sum1, sum2, prod1, prod2, yj, pj;
-		sum1 = sum2 = 0.0;
-		count1 = count2 = 0;
-		prod1 = prod2 = 1.0;
+		int j;
+		int count1 = 0;
+		int count2 = 0;
+		double sum1 = 0.0;
+		double sum2 = 0.0;
+		double prod1 = 1.0;
+		double prod2 = 1.0;
+		double yj;
+		double pj;
+
 		for (j = 2; j <= nx; j++) {
-			yj = x[j - 1]
-					- Math.pow(x[0], 0.5 * (1.0 + 3.0 * (j - 2.0) / (nx - 2.0)));
+			yj = x[j - 1] - Math.pow(x[0], 0.5 * (1.0 + 3.0 * (j - 2.0) / 
+					(nx - 2.0)));
 			pj = Math.cos(20.0 * yj * PI / Math.sqrt(j + 0.0));
+			
 			if (j % 2 == 0) {
 				sum2 += yj * yj;
 				prod2 *= pj;
@@ -104,19 +134,32 @@ class CEC2009 {
 				count1++;
 			}
 		}
+		
 		f[0] = x[0] + 2.0 * (4.0 * sum1 - 2.0 * prod1 + 2.0) / (double)count1;
 		f[1] = 1.0 - Math.sqrt(x[0]) + 2.0 * (4.0 * sum2 - 2.0 * prod2 + 2.0)
 				/ (double)count2;
 	}
 
+	/**
+	 * Evaluates the UF4 problem.
+	 * 
+	 * @param x the decision variables
+	 * @param f the objective function output
+	 * @param nx the number of decision variables
+	 */
 	public static void UF4(double[] x, double[] f, int nx) {
-		int j, count1, count2;
-		double sum1, sum2, yj, hj;
-		sum1 = sum2 = 0.0;
-		count1 = count2 = 0;
+		int j;
+		int count1 = 0;
+		int count2 = 0;
+		double sum1 = 0.0;
+		double sum2 = 0.0;
+		double yj;
+		double hj;
+
 		for (j = 2; j <= nx; j++) {
 			yj = x[j - 1] - Math.sin(6.0 * PI * x[0] + j * PI / nx);
 			hj = Math.abs(yj) / (1.0 + Math.exp(2.0 * Math.abs(yj)));
+			
 			if (j % 2 == 0) {
 				sum2 += hj;
 				count2++;
@@ -125,20 +168,33 @@ class CEC2009 {
 				count1++;
 			}
 		}
+		
 		f[0] = x[0] + 2.0 * sum1 / (double)count1;
 		f[1] = 1.0 - x[0] * x[0] + 2.0 * sum2 / (double)count2;
 	}
 
+	/**
+	 * Evaluates the UF5 problem.
+	 * 
+	 * @param x the decision variables
+	 * @param f the objective function output
+	 * @param nx the number of decision variables
+	 */
 	public static void UF5(double[] x, double[] f, int nx) {
-		int j, count1, count2;
-		double sum1, sum2, yj, hj, N, E;
-		sum1 = sum2 = 0.0;
-		count1 = count2 = 0;
-		N = 10.0;
-		E = 0.1;
+		int j;
+		int count1 = 0;
+		int count2 = 0;
+		double sum1 = 0.0;
+		double sum2 = 0.0;
+		double yj;
+		double hj;
+		double N = 10.0;
+		double E = 0.1;
+
 		for (j = 2; j <= nx; j++) {
 			yj = x[j - 1] - Math.sin(6.0 * PI * x[0] + j * PI / nx);
 			hj = 2.0 * yj * yj - Math.cos(4.0 * PI * yj) + 1.0;
+			
 			if (j % 2 == 0) {
 				sum2 += hj;
 				count2++;
@@ -147,22 +203,37 @@ class CEC2009 {
 				count1++;
 			}
 		}
+		
 		hj = (0.5 / N + E) * Math.abs(Math.sin(2.0 * N * PI * x[0]));
 		f[0] = x[0] + hj + 2.0 * sum1 / (double)count1;
 		f[1] = 1.0 - x[0] + hj + 2.0 * sum2 / (double)count2;
 	}
 
+	/**
+	 * Evaluates the UF6 problem.
+	 * 
+	 * @param x the decision variables
+	 * @param f the objective function output
+	 * @param nx the number of decision variables
+	 */
 	public static void UF6(double[] x, double[] f, int nx) {
-		int j, count1, count2;
-		double sum1, sum2, prod1, prod2, yj, hj, pj, N, E;
-		N = 2.0;
-		E = 0.1;
-		sum1 = sum2 = 0.0;
-		count1 = count2 = 0;
-		prod1 = prod2 = 1.0;
+		int j;
+		int count1 = 0;
+		int count2 = 0;
+		double sum1 = 0.0;
+		double sum2 = 0.0;
+		double prod1 = 1.0;
+		double prod2 = 1.0;
+		double yj;
+		double hj;
+		double pj;
+		double N = 2.0;
+		double E = 0.1;
+
 		for (j = 2; j <= nx; j++) {
 			yj = x[j - 1] - Math.sin(6.0 * PI * x[0] + j * PI / nx);
 			pj = Math.cos(20.0 * yj * PI / Math.sqrt(j + 0.0));
+			
 			if (j % 2 == 0) {
 				sum2 += yj * yj;
 				prod2 *= pj;
@@ -173,22 +244,37 @@ class CEC2009 {
 				count1++;
 			}
 		}
+		
 		hj = 2.0 * (0.5 / N + E) * Math.sin(2.0 * N * PI * x[0]);
-		if (hj < 0.0)
+		
+		if (hj < 0.0) {
 			hj = 0.0;
+		}
+		
 		f[0] = x[0] + hj + 2.0 * (4.0 * sum1 - 2.0 * prod1 + 2.0)
 				/ (double)count1;
 		f[1] = 1.0 - x[0] + hj + 2.0 * (4.0 * sum2 - 2.0 * prod2 + 2.0)
 				/ (double)count2;
 	}
 
+	/**
+	 * Evaluates the UF7 problem.
+	 * 
+	 * @param x the decision variables
+	 * @param f the objective function output
+	 * @param nx the number of decision variables
+	 */
 	public static void UF7(double[] x, double[] f, int nx) {
-		int j, count1, count2;
-		double sum1, sum2, yj;
-		sum1 = sum2 = 0.0;
-		count1 = count2 = 0;
+		int j;
+		int count1 = 0;
+		int count2 = 0;
+		double sum1 = 0.0;
+		double sum2 = 0.0;
+		double yj;
+
 		for (j = 2; j <= nx; j++) {
 			yj = x[j - 1] - Math.sin(6.0 * PI * x[0] + j * PI / nx);
+			
 			if (j % 2 == 0) {
 				sum2 += yj * yj;
 				count2++;
@@ -197,19 +283,33 @@ class CEC2009 {
 				count1++;
 			}
 		}
+		
 		yj = Math.pow(x[0], 0.2);
 		f[0] = yj + 2.0 * sum1 / (double)count1;
 		f[1] = 1.0 - yj + 2.0 * sum2 / (double)count2;
 	}
 
+	/**
+	 * Evaluates the UF8 problem.
+	 * 
+	 * @param x the decision variables
+	 * @param f the objective function output
+	 * @param nx the number of decision variables
+	 */
 	public static void UF8(double[] x, double[] f, int nx) {
-		int j, count1, count2, count3;
-		double sum1, sum2, sum3, yj;
-		sum1 = sum2 = sum3 = 0.0;
-		count1 = count2 = count3 = 0;
+		int j;
+		int count1 = 0;
+		int count2 = 0;
+		int count3 = 0;
+		double sum1 = 0.0;
+		double sum2 = 0.0;
+		double sum3 = 0.0;
+		double yj;
+
 		for (j = 3; j <= nx; j++) {
 			yj = x[j - 1] - 2.0 * x[1]
 					* Math.sin(2.0 * PI * x[0] + j * PI / nx);
+			
 			if (j % 3 == 1) {
 				sum1 += yj * yj;
 				count1++;
@@ -221,6 +321,7 @@ class CEC2009 {
 				count3++;
 			}
 		}
+		
 		f[0] = Math.cos(0.5 * PI * x[0]) * Math.cos(0.5 * PI * x[1]) + 2.0
 				* sum1 / (double)count1;
 		f[1] = Math.cos(0.5 * PI * x[0]) * Math.sin(0.5 * PI * x[1]) + 2.0
@@ -228,15 +329,28 @@ class CEC2009 {
 		f[2] = Math.sin(0.5 * PI * x[0]) + 2.0 * sum3 / (double)count3;
 	}
 
+	/**
+	 * Evaluates the UF9 problem.
+	 * 
+	 * @param x the decision variables
+	 * @param f the objective function output
+	 * @param nx the number of decision variables
+	 */
 	public static void UF9(double[] x, double[] f, int nx) {
-		int j, count1, count2, count3;
-		double sum1, sum2, sum3, yj, E;
-		E = 0.1;
-		sum1 = sum2 = sum3 = 0.0;
-		count1 = count2 = count3 = 0;
+		int j;
+		int count1 = 0;
+		int count2 = 0;
+		int count3 = 0;
+		double sum1 = 0.0;
+		double sum2 = 0.0;
+		double sum3 = 0.0;
+		double yj;
+		double E = 0.1;
+
 		for (j = 3; j <= nx; j++) {
 			yj = x[j - 1] - 2.0 * x[1]
 					* Math.sin(2.0 * PI * x[0] + j * PI / nx);
+			
 			if (j % 3 == 1) {
 				sum1 += yj * yj;
 				count1++;
@@ -248,23 +362,41 @@ class CEC2009 {
 				count3++;
 			}
 		}
+		
 		yj = (1.0 + E) * (1.0 - 4.0 * (2.0 * x[0] - 1.0) * (2.0 * x[0] - 1.0));
-		if (yj < 0.0)
+		
+		if (yj < 0.0) {
 			yj = 0.0;
+		}
+		
 		f[0] = 0.5 * (yj + 2 * x[0]) * x[1] + 2.0 * sum1 / (double)count1;
 		f[1] = 0.5 * (yj - 2 * x[0] + 2.0) * x[1] + 2.0 * sum2 / (double)count2;
 		f[2] = 1.0 - x[1] + 2.0 * sum3 / (double)count3;
 	}
 
+	/**
+	 * Evaluates the UF10 problem.
+	 * 
+	 * @param x the decision variables
+	 * @param f the objective function output
+	 * @param nx the number of decision variables
+	 */
 	public static void UF10(double[] x, double[] f, int nx) {
-		int j, count1, count2, count3;
-		double sum1, sum2, sum3, yj, hj;
-		sum1 = sum2 = sum3 = 0.0;
-		count1 = count2 = count3 = 0;
+		int j;
+		int count1 = 0;
+		int count2 = 0;
+		int count3 = 0;
+		double sum1 = 0.0;
+		double sum2 = 0.0;
+		double sum3 = 0.0;
+		double yj;
+		double hj;
+
 		for (j = 3; j <= nx; j++) {
 			yj = x[j - 1] - 2.0 * x[1]
 					* Math.sin(2.0 * PI * x[0] + j * PI / nx);
 			hj = 4.0 * yj * yj - Math.cos(8.0 * PI * yj) + 1.0;
+			
 			if (j % 3 == 1) {
 				sum1 += hj;
 				count1++;
@@ -276,6 +408,7 @@ class CEC2009 {
 				count3++;
 			}
 		}
+		
 		f[0] = Math.cos(0.5 * PI * x[0]) * Math.cos(0.5 * PI * x[1]) + 2.0
 				* sum1 / (double)count1;
 		f[1] = Math.cos(0.5 * PI * x[0]) * Math.sin(0.5 * PI * x[1]) + 2.0
@@ -283,16 +416,28 @@ class CEC2009 {
 		f[2] = Math.sin(0.5 * PI * x[0]) + 2.0 * sum3 / (double)count3;
 	}
 
+	/**
+	 * Evaluates the CF1 problem.
+	 * 
+	 * @param x the decision variables
+	 * @param f the objective function output
+	 * @param c the constraint violation output
+	 * @param nx the number of decision variables
+	 */
 	public static void CF1(double[] x, double[] f, double[] c, int nx) {
-		int j, count1, count2;
-		double sum1, sum2, yj, N, a;
-		N = 10.0;
-		a = 1.0;
-		sum1 = sum2 = 0.0;
-		count1 = count2 = 0;
+		int j;
+		int count1 = 0;
+		int count2 = 0;
+		double sum1 = 0.0;
+		double sum2 = 0.0;
+		double yj;
+		double N = 10.0;
+		double a = 1.0;
+
 		for (j = 2; j <= nx; j++) {
-			yj = x[j - 1]
-					- Math.pow(x[0], 0.5 * (1.0 + 3.0 * (j - 2.0) / (nx - 2.0)));
+			yj = x[j - 1] - Math.pow(x[0], 0.5 * (1.0 + 3.0 * (j - 2.0) / 
+					(nx - 2.0)));
+			
 			if (j % 2 == 1) {
 				sum1 += yj * yj;
 				count1++;
@@ -301,21 +446,35 @@ class CEC2009 {
 				count2++;
 			}
 		}
+		
 		f[0] = x[0] + 2.0 * sum1 / (double)count1;
 		f[1] = 1.0 - x[0] + 2.0 * sum2 / (double)count2;
 		c[0] = f[1] + f[0] - a
 				* Math.abs(Math.sin(N * PI * (f[0] - f[1] + 1.0))) - 1.0;
 	}
 
+	/**
+	 * Evaluates the CF2 problem.
+	 * 
+	 * @param x the decision variables
+	 * @param f the objective function output
+	 * @param c the constraint violation output
+	 * @param nx the number of decision variables
+	 */
 	public static void CF2(double[] x, double[] f, double[] c, int nx) {
-		int j, count1, count2;
-		double sum1, sum2, yj, N, a, t;
-		N = 2.0;
-		a = 1.0;
-		sum1 = sum2 = 0.0;
-		count1 = count2 = 0;
+		int j;
+		int count1 = 0;
+		int count2 = 0;
+		double sum1 = 0.0;
+		double sum2 = 0.0;
+		double yj;
+		double N = 2.0;
+		double a = 1.0;
+		double t;
+
 		for (j = 2; j <= nx; j++) {
 			yj = x[j - 1] - Math.sin(6.0 * PI * x[0] + j * PI / nx);
+			
 			if (j % 2 == 1) {
 				yj = x[j - 1] - Math.sin(6.0 * PI * x[0] + j * PI / nx);
 				sum1 += yj * yj;
@@ -326,6 +485,7 @@ class CEC2009 {
 				count2++;
 			}
 		}
+		
 		f[0] = x[0] + 2.0 * sum1 / (double)count1;
 		f[1] = 1.0 - Math.sqrt(x[0]) + 2.0 * sum2 / (double)count2;
 		t = f[1] + Math.sqrt(f[0]) - a
@@ -333,17 +493,31 @@ class CEC2009 {
 		c[0] = MYSIGN(t) * Math.abs(t) / (1 + Math.exp(4.0 * Math.abs(t)));
 	}
 
+	/**
+	 * Evaluates the CF3 problem.
+	 * 
+	 * @param x the decision variables
+	 * @param f the objective function output
+	 * @param c the constraint violation output
+	 * @param nx the number of decision variables
+	 */
 	public static void CF3(double[] x, double[] f, double[] c, int nx) {
-		int j, count1, count2;
-		double sum1, sum2, prod1, prod2, yj, pj, N, a;
-		N = 2.0;
-		a = 1.0;
-		sum1 = sum2 = 0.0;
-		count1 = count2 = 0;
-		prod1 = prod2 = 1.0;
+		int j;
+		int count1 = 0;
+		int count2 = 0;
+		double sum1 = 0.0;
+		double sum2 = 0.0;
+		double prod1 = 1.0;
+		double prod2 = 1.0;
+		double yj;
+		double pj;
+		double N = 2.0;
+		double a = 1.0;
+
 		for (j = 2; j <= nx; j++) {
 			yj = x[j - 1] - Math.sin(6.0 * PI * x[0] + j * PI / nx);
 			pj = Math.cos(20.0 * yj * PI / Math.sqrt(j + 0.0));
+			
 			if (j % 2 == 0) {
 				sum2 += yj * yj;
 				prod2 *= pj;
@@ -354,6 +528,7 @@ class CEC2009 {
 				count1++;
 			}
 		}
+		
 		f[0] = x[0] + 2.0 * (4.0 * sum1 - 2.0 * prod1 + 2.0) / (double)count1;
 		f[1] = 1.0 - x[0] * x[0] + 2.0 * (4.0 * sum2 - 2.0 * prod2 + 2.0)
 				/ (double)count2;
@@ -361,12 +536,24 @@ class CEC2009 {
 				* Math.sin(N * PI * (f[0] * f[0] - f[1] + 1.0)) - 1.0;
 	}
 
+	/**
+	 * Evaluates the CF4 problem.
+	 * 
+	 * @param x the decision variables
+	 * @param f the objective function output
+	 * @param c the constraint violation output
+	 * @param nx the number of decision variables
+	 */
 	public static void CF4(double[] x, double[] f, double[] c, int nx) {
 		int j;
-		double sum1, sum2, yj, t;
-		sum1 = sum2 = 0.0;
+		double sum1 = 0.0;
+		double sum2 = 0.0;
+		double yj;
+		double t;
+
 		for (j = 2; j <= nx; j++) {
 			yj = x[j - 1] - Math.sin(6.0 * PI * x[0] + j * PI / nx);
+			
 			if (j % 2 == 1) {
 				sum1 += yj * yj;
 			} else {
@@ -378,6 +565,7 @@ class CEC2009 {
 				}
 			}
 		}
+		
 		f[0] = x[0] + sum1;
 		f[1] = 1.0 - x[0] + sum2;
 		t = x[1] - Math.sin(6.0 * x[0] * PI + 2.0 * PI / nx) - 0.5 * x[0]
@@ -385,10 +573,20 @@ class CEC2009 {
 		c[0] = MYSIGN(t) * Math.abs(t) / (1 + Math.exp(4.0 * Math.abs(t)));
 	}
 
+	/**
+	 * Evaluates the CF5 problem.
+	 * 
+	 * @param x the decision variables
+	 * @param f the objective function output
+	 * @param c the constraint violation output
+	 * @param nx the number of decision variables
+	 */
 	public static void CF5(double[] x, double[] f, double[] c, int nx) {
 		int j;
-		double sum1, sum2, yj;
-		sum1 = sum2 = 0.0;
+		double sum1 = 0.0;
+		double sum2 = 0.0;
+		double yj;
+
 		for (j = 2; j <= nx; j++) {
 			if (j % 2 == 1) {
 				yj = x[j - 1] - 0.8 * x[0]
@@ -397,6 +595,7 @@ class CEC2009 {
 			} else {
 				yj = x[j - 1] - 0.8 * x[0]
 						* Math.sin(6.0 * PI * x[0] + j * PI / nx);
+				
 				if (j == 2) {
 					sum2 += yj < 1.5 - 0.75 * Math.sqrt(2.0) ? Math.abs(yj)
 							: (0.125 + (yj - 1) * (yj - 1));
@@ -405,16 +604,27 @@ class CEC2009 {
 				}
 			}
 		}
+		
 		f[0] = x[0] + sum1;
 		f[1] = 1.0 - x[0] + sum2;
 		c[0] = x[1] - 0.8 * x[0] * Math.sin(6.0 * x[0] * PI + 2.0 * PI / nx)
 				- 0.5 * x[0] + 0.25;
 	}
 
+	/**
+	 * Evaluates the CF6 problem.
+	 * 
+	 * @param x the decision variables
+	 * @param f the objective function output
+	 * @param c the constraint violation output
+	 * @param nx the number of decision variables
+	 */
 	public static void CF6(double[] x, double[] f, double[] c, int nx) {
 		int j;
-		double sum1, sum2, yj;
-		sum1 = sum2 = 0.0;
+		double sum1 = 0.0;
+		double sum2 = 0.0;
+		double yj;
+
 		for (j = 2; j <= nx; j++) {
 			if (j % 2 == 1) {
 				yj = x[j - 1] - 0.8 * x[0]
@@ -426,30 +636,39 @@ class CEC2009 {
 				sum2 += yj * yj;
 			}
 		}
+		
 		f[0] = x[0] + sum1;
 		f[1] = (1.0 - x[0]) * (1.0 - x[0]) + sum2;
 		c[0] = x[1] - 0.8 * x[0] * Math.sin(6.0 * x[0] * PI + 2.0 * PI / nx)
 				- MYSIGN((x[0] - 0.5) * (1.0 - x[0]))
 				* Math.sqrt(Math.abs((x[0] - 0.5) * (1.0 - x[0])));
-		c[1] = x[3]
-				- 0.8
-				* x[0]
-				* Math.sin(6.0 * x[0] * PI + 4.0 * PI / nx)
+		c[1] = x[3] - 0.8 * x[0] * Math.sin(6.0 * x[0] * PI + 4.0 * PI / nx)
 				- MYSIGN(0.25 * Math.sqrt(1 - x[0]) - 0.5 * (1.0 - x[0]))
 				* Math.sqrt(Math.abs(0.25 * Math.sqrt(1 - x[0]) - 0.5
 						* (1.0 - x[0])));
 	}
 
+	/**
+	 * Evaluates the CF7 problem.
+	 * 
+	 * @param x the decision variables
+	 * @param f the objective function output
+	 * @param c the constraint violation output
+	 * @param nx the number of decision variables
+	 */
 	public static void CF7(double[] x, double[] f, double[] c, int nx) {
 		int j;
-		double sum1, sum2, yj;
-		sum1 = sum2 = 0.0;
+		double sum1 = 0.0;
+		double sum2 = 0.0;
+		double yj;
+
 		for (j = 2; j <= nx; j++) {
 			if (j % 2 == 1) {
 				yj = x[j - 1] - Math.cos(6.0 * PI * x[0] + j * PI / nx);
 				sum1 += 2.0 * yj * yj - Math.cos(4.0 * PI * yj) + 1.0;
 			} else {
 				yj = x[j - 1] - Math.sin(6.0 * PI * x[0] + j * PI / nx);
+				
 				if (j == 2 || j == 4) {
 					sum2 += yj * yj;
 				} else {
@@ -457,28 +676,42 @@ class CEC2009 {
 				}
 			}
 		}
+		
 		f[0] = x[0] + sum1;
 		f[1] = (1.0 - x[0]) * (1.0 - x[0]) + sum2;
 		c[0] = x[1] - Math.sin(6.0 * x[0] * PI + 2.0 * PI / nx)
 				- MYSIGN((x[0] - 0.5) * (1.0 - x[0]))
 				* Math.sqrt(Math.abs((x[0] - 0.5) * (1.0 - x[0])));
-		c[1] = x[3]
-				- Math.sin(6.0 * x[0] * PI + 4.0 * PI / nx)
+		c[1] = x[3] - Math.sin(6.0 * x[0] * PI + 4.0 * PI / nx)
 				- MYSIGN(0.25 * Math.sqrt(1 - x[0]) - 0.5 * (1.0 - x[0]))
 				* Math.sqrt(Math.abs(0.25 * Math.sqrt(1 - x[0]) - 0.5
 						* (1.0 - x[0])));
 	}
 
+	/**
+	 * Evaluates the CF8 problem.
+	 * 
+	 * @param x the decision variables
+	 * @param f the objective function output
+	 * @param c the constraint violation output
+	 * @param nx the number of decision variables
+	 */
 	public static void CF8(double[] x, double[] f, double[] c, int nx) {
-		int j, count1, count2, count3;
-		double sum1, sum2, sum3, yj, N, a;
-		N = 2.0;
-		a = 4.0;
-		sum1 = sum2 = sum3 = 0.0;
-		count1 = count2 = count3 = 0;
+		int j;
+		int count1 = 0;
+		int count2 = 0;
+		int count3 = 0;
+		double sum1 = 0.0;
+		double sum2 = 0.0;
+		double sum3 = 0.0;
+		double yj;
+		double N = 2.0;
+		double a = 4.0;
+
 		for (j = 3; j <= nx; j++) {
 			yj = x[j - 1] - 2.0 * x[1]
 					* Math.sin(2.0 * PI * x[0] + j * PI / nx);
+			
 			if (j % 3 == 1) {
 				sum1 += yj * yj;
 				count1++;
@@ -490,31 +723,41 @@ class CEC2009 {
 				count3++;
 			}
 		}
+		
 		f[0] = Math.cos(0.5 * PI * x[0]) * Math.cos(0.5 * PI * x[1]) + 2.0
 				* sum1 / (double)count1;
 		f[1] = Math.cos(0.5 * PI * x[0]) * Math.sin(0.5 * PI * x[1]) + 2.0
 				* sum2 / (double)count2;
 		f[2] = Math.sin(0.5 * PI * x[0]) + 2.0 * sum3 / (double)count3;
-		c[0] = (f[0] * f[0] + f[1] * f[1])
-				/ (1 - f[2] * f[2])
-				- a
-				* Math.abs(Math
-						.sin(N
-								* PI
-								* ((f[0] * f[0] - f[1] * f[1])
-										/ (1 - f[2] * f[2]) + 1.0))) - 1.0;
+		c[0] = (f[0] * f[0] + f[1] * f[1]) / (1 - f[2] * f[2])
+				- a * Math.abs(Math.sin(N * PI * ((f[0] * f[0] - f[1] * f[1])
+						/ (1 - f[2] * f[2]) + 1.0))) - 1.0;
 	}
 
+	/**
+	 * Evaluates the CF9 problem.
+	 * 
+	 * @param x the decision variables
+	 * @param f the objective function output
+	 * @param c the constraint violation output
+	 * @param nx the number of decision variables
+	 */
 	public static void CF9(double[] x, double[] f, double[] c, int nx) {
-		int j, count1, count2, count3;
-		double sum1, sum2, sum3, yj, N, a;
-		N = 2.0;
-		a = 3.0;
-		sum1 = sum2 = sum3 = 0.0;
-		count1 = count2 = count3 = 0;
+		int j;
+		int count1 = 0;
+		int count2 = 0;
+		int count3 = 0;
+		double sum1 = 0.0;
+		double sum2 = 0.0;
+		double sum3 = 0.0;
+		double yj;
+		double N = 2.0;
+		double a = 3.0;
+
 		for (j = 3; j <= nx; j++) {
 			yj = x[j - 1] - 2.0 * x[1]
 					* Math.sin(2.0 * PI * x[0] + j * PI / nx);
+			
 			if (j % 3 == 1) {
 				sum1 += yj * yj;
 				count1++;
@@ -526,31 +769,43 @@ class CEC2009 {
 				count3++;
 			}
 		}
+		
 		f[0] = Math.cos(0.5 * PI * x[0]) * Math.cos(0.5 * PI * x[1]) + 2.0
 				* sum1 / (double)count1;
 		f[1] = Math.cos(0.5 * PI * x[0]) * Math.sin(0.5 * PI * x[1]) + 2.0
 				* sum2 / (double)count2;
 		f[2] = Math.sin(0.5 * PI * x[0]) + 2.0 * sum3 / (double)count3;
-		c[0] = (f[0] * f[0] + f[1] * f[1])
-				/ (1 - f[2] * f[2])
-				- a
-				* Math.sin(N
-						* PI
-						* ((f[0] * f[0] - f[1] * f[1]) / (1 - f[2] * f[2]) + 1.0))
-				- 1.0;
+		c[0] = (f[0] * f[0] + f[1] * f[1]) / (1 - f[2] * f[2])
+				- a * Math.sin(N * PI * ((f[0] * f[0] - f[1] * f[1]) / 
+						(1 - f[2] * f[2]) + 1.0)) - 1.0;
 	}
 
+	/**
+	 * Evaluates the CF10 problem.
+	 * 
+	 * @param x the decision variables
+	 * @param f the objective function output
+	 * @param c the constraint violation output
+	 * @param nx the number of decision variables
+	 */
 	public static void CF10(double[] x, double[] f, double[] c, int nx) {
-		int j, count1, count2, count3;
-		double sum1, sum2, sum3, yj, hj, N, a;
-		N = 2.0;
-		a = 1.0;
-		sum1 = sum2 = sum3 = 0.0;
-		count1 = count2 = count3 = 0;
+		int j;
+		int count1 = 0;
+		int count2 = 0;
+		int count3 = 0;
+		double sum1 = 0.0;
+		double sum2 = 0.0;
+		double sum3 = 0.0;
+		double yj;
+		double hj;
+		double N = 2.0;
+		double a = 1.0;
+
 		for (j = 3; j <= nx; j++) {
 			yj = x[j - 1] - 2.0 * x[1]
 					* Math.sin(2.0 * PI * x[0] + j * PI / nx);
 			hj = 4.0 * yj * yj - Math.cos(8.0 * PI * yj) + 1.0;
+			
 			if (j % 3 == 1) {
 				sum1 += hj;
 				count1++;
@@ -562,26 +817,31 @@ class CEC2009 {
 				count3++;
 			}
 		}
+		
 		f[0] = Math.cos(0.5 * PI * x[0]) * Math.cos(0.5 * PI * x[1]) + 2.0
 				* sum1 / (double)count1;
 		f[1] = Math.cos(0.5 * PI * x[0]) * Math.sin(0.5 * PI * x[1]) + 2.0
 				* sum2 / (double)count2;
 		f[2] = Math.sin(0.5 * PI * x[0]) + 2.0 * sum3 / (double)count3;
-		c[0] = (f[0] * f[0] + f[1] * f[1])
-				/ (1 - f[2] * f[2])
-				- a
-				* Math.sin(N
-						* PI
-						* ((f[0] * f[0] - f[1] * f[1]) / (1 - f[2] * f[2]) + 1.0))
-				- 1.0;
+		c[0] = (f[0] * f[0] + f[1] * f[1]) / (1 - f[2] * f[2])
+				- a * Math.sin(N * PI * ((f[0] * f[0] - f[1] * f[1]) / 
+						(1 - f[2] * f[2]) + 1.0)) - 1.0;
 	}
 
+	/**
+	 * Evaluates the UF11 problem.
+	 * 
+	 * @param x the decision variables
+	 * @param f the objective function output
+	 * @param nx the number of decision variables
+	 * @param n_obj the number of objectives
+	 */
 	public static void R2_DTLZ2_M5(double[] x, double[] f, int nx, int n_obj) {
 		int i = 0;
 		int j = 0;
 		int k = nx - n_obj + 1;
 		double g = 0;
-		double M_10D[][] = {
+		double[][] M_10D = {
 				{ 0.0346, -0.7523, 0.3561, -0.2958, 0.4675, 0, 0, 0, 0, 0 },
 				{ 0.8159, -0.0423, 0.4063, 0.3455, -0.2192, 0, 0, 0, 0, 0 },
 				{ -0.3499, 0.3421, 0.8227, -0.2190, -0.1889, 0, 0, 0, 0, 0 },
@@ -592,9 +852,9 @@ class CEC2009 {
 				{ 0, 0, 0, 0, 0, 0, 0, 1, 0, 0 },
 				{ 0, 0, 0, 0, 0, 0, 0, 0, 1, 0 },
 				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 } };
-		double lamda_l_10D[] = { 0.313, 0.312, 0.321, 0.316, 0.456, 1, 1, 1, 1,
+		double[] lamda_l_10D = { 0.313, 0.312, 0.321, 0.316, 0.456, 1, 1, 1, 1,
 				1 };
-		double M_30D[][] = {
+		double[][] M_30D = {
 				{ 0.0128, 0.2165, 0.4374, -0.0800, 0.0886, -0.2015, 0.1071,
 						0.2886, 0.2354, 0.2785, -0.1748, 0.2147, 0.1649,
 						-0.3043, 0.5316, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -685,21 +945,23 @@ class CEC2009 {
 						0, 0, 0, 0, 0, 0, 0, 0, 1, 0 },
 				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 						0, 0, 0, 0, 0, 0, 0, 0, 0, 1 } };
-		double lamda_l_30D[] = { 0.113, 0.105, 0.117, 0.119, 0.108, 0.110,
+		double[] lamda_l_30D = { 0.113, 0.105, 0.117, 0.119, 0.108, 0.110,
 				0.101, 0.107, 0.111, 0.109, 0.120, 0.108, 0.101, 0.105, 0.116,
 				1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000,
 				1.000, 1.000, 1.000, 1.000, 1.000, 1.000 };
-		double z[] = new double[nx];
-		double zz[] = new double[nx];
-		double p[] = new double[nx];
-		double psum[] = new double[n_obj];
-		double M[][] = new double[nx][nx];
-		double lamda_l[] = new double[nx];
+		double[] z = new double[nx];
+		double[] zz = new double[nx];
+		double[] p = new double[nx];
+		double[] psum = new double[n_obj];
+		double[][] M = new double[nx][nx];
+		double[] lamda_l = new double[nx];
+		
 		if (nx == 10) {
 			for (i = 0; i < nx; i++) {
 				for (j = 0; j < nx; j++) {
 					M[i][j] = M_10D[i][j];
 				}
+				
 				lamda_l[i] = lamda_l_10D[i];
 			}
 		} else {
@@ -707,14 +969,18 @@ class CEC2009 {
 				for (j = 0; j < nx; j++) {
 					M[i][j] = M_30D[i][j];
 				}
+				
 				lamda_l[i] = lamda_l_30D[i];
 			}
 		}
+		
 		for (i = 0; i < nx; i++) {
 			z[i] = 0;
+			
 			for (j = 0; j < nx; j++) {
 				z[i] += M[i][j] * x[j];
 			}
+			
 			if (z[i] >= 0 && z[i] <= 1) {
 				zz[i] = z[i];
 				p[i] = 0;
@@ -726,38 +992,53 @@ class CEC2009 {
 				p[i] = z[i] - 1;
 			}
 		}
+		
 		for (j = 0; j < n_obj; j++) {
 			psum[j] = 0;
 		}
+		
 		for (i = nx - k + 1; i <= nx; i++) {
 			g += Math.pow(zz[i - 1] - 0.5, 2);
+			
 			for (j = 0; j < n_obj; j++) {
 				psum[j] = Math.sqrt(Math.pow(psum[j], 2)
 						+ Math.pow(p[i - 1], 2));
 			}
 		}
+		
 		for (i = 1; i <= n_obj; i++) {
 			double ff = (1 + g);
+			
 			for (j = n_obj - i; j >= 1; j--) {
 				ff *= Math.cos(zz[j - 1] * PI / 2.0);
 				psum[i - 1] = Math.sqrt(Math.pow(psum[i - 1], 2)
 						+ Math.pow(p[j - 1], 2));
 			}
+			
 			if (i > 1) {
 				ff *= Math.sin(zz[(n_obj - i + 1) - 1] * PI / 2.0);
 				psum[i - 1] = Math.sqrt(Math.pow(psum[i - 1], 2)
 						+ Math.pow(p[(n_obj - i + 1) - 1], 2));
 			}
+			
 			f[i - 1] = 2.0 / (1 + Math.exp(-psum[i - 1])) * (ff + 1);
 		}
 	}
 
+	/**
+	 * Evaluates the UF12 problem.
+	 * 
+	 * @param x the decision variables
+	 * @param f the objective function output
+	 * @param nx the number of decision variables
+	 * @param n_obj the number of objectives
+	 */
 	public static void R3_DTLZ3_M5(double[] x, double[] f, int nx, int n_obj) {
 		int i = 0;
 		int j = 0;
 		int k = nx - n_obj + 1;
 		double g = 0;
-		double M_10D[][] = {
+		double[][] M_10D = {
 				{ -0.2861, 0.2796, -0.8507, 0.2837, 0.1893, 0, 0, 0, 0, 0 },
 				{ 0.2837, 0.8861, 0.1219, -0.3157, 0.1407, 0, 0, 0, 0, 0 },
 				{ 0.6028, 0.1119, -0.0810, 0.5963, -0.5119, 0, 0, 0, 0, 0 },
@@ -768,9 +1049,9 @@ class CEC2009 {
 				{ 0, 0, 0, 0, 0, 0, 0, 1, 0, 0 },
 				{ 0, 0, 0, 0, 0, 0, 0, 0, 1, 0 },
 				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 } };
-		double lamda_l_10D[] = { 0.313, 0.312, 0.321, 0.316, 0.456, 1, 1, 1, 1,
+		double[] lamda_l_10D = { 0.313, 0.312, 0.321, 0.316, 0.456, 1, 1, 1, 1,
 				1 };
-		double M_30D[][] = {
+		double[][] M_30D = {
 				{ -0.1565, -0.2418, 0.5427, -0.2191, 0.2522, -0.0563, 0.1991,
 						0.1166, 0.2140, -0.0973, -0.0755, 0.4073, 0.4279,
 						-0.1876, -0.0968, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -861,21 +1142,23 @@ class CEC2009 {
 						0, 0, 0, 0, 0, 0, 0, 0, 1, 0 },
 				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 						0, 0, 0, 0, 0, 0, 0, 0, 0, 1 } };
-		double lamda_l_30D[] = { 0.113, 0.105, 0.117, 0.119, 0.108, 0.110,
+		double[] lamda_l_30D = { 0.113, 0.105, 0.117, 0.119, 0.108, 0.110,
 				0.101, 0.107, 0.111, 0.109, 0.120, 0.108, 0.101, 0.105, 0.116,
 				1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000,
 				1.000, 1.000, 1.000, 1.000, 1.000, 1.000 };
-		double z[] = new double[nx];
-		double zz[] = new double[nx];
-		double p[] = new double[nx];
-		double psum[] = new double[n_obj];
-		double M[][] = new double[nx][nx];
-		double lamda_l[] = new double[nx];
+		double[] z = new double[nx];
+		double[] zz = new double[nx];
+		double[] p = new double[nx];
+		double[] psum = new double[n_obj];
+		double[][] M = new double[nx][nx];
+		double[] lamda_l = new double[nx];
+		
 		if (nx == 10) {
 			for (i = 0; i < nx; i++) {
 				for (j = 0; j < nx; j++) {
 					M[i][j] = M_10D[i][j];
 				}
+				
 				lamda_l[i] = lamda_l_10D[i];
 			}
 		} else {
@@ -883,14 +1166,18 @@ class CEC2009 {
 				for (j = 0; j < nx; j++) {
 					M[i][j] = M_30D[i][j];
 				}
+				
 				lamda_l[i] = lamda_l_30D[i];
 			}
 		}
+		
 		for (i = 0; i < nx; i++) {
 			z[i] = 0;
+			
 			for (j = 0; j < nx; j++) {
 				z[i] += M[i][j] * x[j];
 			}
+			
 			if (z[i] >= 0 && z[i] <= 1) {
 				zz[i] = z[i];
 				p[i] = 0;
@@ -902,117 +1189,165 @@ class CEC2009 {
 				p[i] = z[i] - 1;
 			}
 		}
+		
 		for (j = 0; j < n_obj; j++) {
 			psum[j] = 0;
 		}
+		
 		for (i = nx - k + 1; i <= nx; i++) {
 			g += Math.pow(zz[i - 1] - 0.5, 2)
 					- Math.cos(20 * PI * (zz[i - 1] - 0.5));
+			
 			for (j = 0; j < n_obj; j++) {
 				psum[j] = Math.sqrt(Math.pow(psum[j], 2)
 						+ Math.pow(p[i - 1], 2));
 			}
 		}
+		
 		g = 100 * (k + g);
+		
 		for (i = 1; i <= n_obj; i++) {
 			double ff = (1 + g);
+			
 			for (j = n_obj - i; j >= 1; j--) {
 				ff *= Math.cos(zz[j - 1] * PI / 2.0);
 				psum[i - 1] = Math.sqrt(Math.pow(psum[i - 1], 2)
 						+ Math.pow(p[j - 1], 2));
 			}
+			
 			if (i > 1) {
 				ff *= Math.sin(zz[(n_obj - i + 1) - 1] * PI / 2.0);
 				psum[i - 1] = Math.sqrt(Math.pow(psum[i - 1], 2)
 						+ Math.pow(p[(n_obj - i + 1) - 1], 2));
 			}
+			
 			f[i - 1] = 2.0 / (1 + Math.exp(-psum[i - 1])) * (ff + 1);
 		}
 	}
 
+	/**
+	 * Evaluates the UF13 problem.
+	 * 
+	 * @param x the decision variables
+	 * @param f the objective function output
+	 * @param nx the number of decision variables
+	 * @param M the number of objectives
+	 */
 	public static void WFG1_M5(double[] z, double[] f, int nx, int M) {
 		int i = 0;
 		int j = 0;
-		double y[] = new double[30];
-		double t1[] = new double[30];
-		double t2[] = new double[30];
-		double t3[] = new double[30];
-		double t4[] = new double[5];
+		double[] y = new double[30];
+		double[] t1 = new double[30];
+		double[] t2 = new double[30];
+		double[] t3 = new double[30];
+		double[] t4 = new double[5];
 		int k = M == 2 ? 4 : 2 * (M - 1);
+		
 		for (i = 0; i < nx; i++) {
 			y[i] = z[i] / (2.0 * (i + 1));
 		}
+		
 		for (i = 0; i < k; i++) {
 			t1[i] = y[i];
 		}
+		
 		for (i = k; i < nx; i++) {
 			t1[i] = s_linear(y[i], 0.35);
 		}
+		
 		for (i = 0; i < k; i++) {
 			t2[i] = t1[i];
 		}
+		
 		for (i = k; i < nx; i++) {
 			t2[i] = b_flat(t1[i], 0.8, 0.75, 0.85);
 		}
+		
 		for (i = 0; i < nx; i++) {
 			t3[i] = b_poly(t2[i], 0.02);
 		}
-		double w[] = new double[30];
-		double y_sub[] = new double[30];
-		double w_sub[] = new double[30];
-		double y_sub2[] = new double[30];
-		double w_sub2[] = new double[30];
+		
+		double[] w = new double[30];
+		double[] y_sub = new double[30];
+		double[] w_sub = new double[30];
+		double[] y_sub2 = new double[30];
+		double[] w_sub2 = new double[30];
+		
 		for (i = 1; i <= nx; i++) {
 			w[i - 1] = 2.0 * i;
 		}
+		
 		for (i = 1; i <= M - 1; i++) {
 			int head = (i - 1) * k / (M - 1);
 			int tail = i * k / (M - 1);
+			
 			for (j = head; j < tail; j++) {
 				y_sub[j - head] = t3[j];
 				w_sub[j - head] = w[j];
 			}
+			
 			t4[i - 1] = r_sum(y_sub, w_sub, tail - head);
 		}
+		
 		for (j = k; j < nx; j++) {
 			y_sub2[j - k] = t3[j];
 			w_sub2[j - k] = w[j];
 		}
+		
 		t4[i - 1] = r_sum(y_sub2, w_sub2, nx - k);
+		
 		int m;
-		int A[] = new int[5];
-		double x[] = new double[5];
-		double h[] = new double[5];
-		double S[] = new double[5];
+		int[] A = new int[5];
+		double[] x = new double[5];
+		double[] h = new double[5];
+		double[] S = new double[5];
+		
 		A[0] = 1;
+		
 		for (i = 1; i < M - 1; i++) {
 			A[i] = 1;
 		}
+		
 		for (i = 0; i < M - 1; i++) {
-			double tmp1;
-			tmp1 = t4[M - 1];
+			double tmp1 = t4[M - 1];
+			
 			if (A[i] > tmp1) {
 				tmp1 = A[i];
 			}
+			
 			x[i] = tmp1 * (t4[i] - 0.5) + 0.5;
 		}
+		
 		x[M - 1] = t4[M - 1];
+		
 		for (m = 1; m <= M - 1; m++) {
 			h[m - 1] = convex(x, m, M);
 		}
+		
 		h[m - 1] = mixed(x, 5, 1.0);
+		
 		for (m = 1; m <= M; m++) {
 			S[m - 1] = m * 2.0;
 		}
+		
 		for (i = 0; i < M; i++) {
 			f[i] = 1.0 * x[M - 1] + S[i] * h[i];
 		}
 	}
 
+	/**
+	 * Truncates the value to lie within the range {@code [0, 1]}.
+	 * 
+	 * @param aa the value to truncate
+	 * @param epsilon machine precision
+	 * @return the truncated value in the range {@code [0, 1]}
+	 */
 	private static double correct_to_01(double aa, double epsilon) {
-		double min = 0.0, max = 1.0;
+		double min = 0.0;
+		double max = 1.0;
 		double min_epsilon = min - epsilon;
 		double max_epsilon = max + epsilon;
+		
 		if (aa <= min && aa >= min_epsilon) {
 			return min;
 		} else if (aa >= max && aa <= max_epsilon) {
@@ -1025,17 +1360,21 @@ class CEC2009 {
 	private static double convex(double[] x, int m, int M) {
 		int i;
 		double result = 1.0;
+		
 		for (i = 1; i <= M - m; i++) {
 			result *= 1.0 - Math.cos(x[i - 1] * PI / 2.0);
 		}
+		
 		if (m != 1) {
 			result *= 1.0 - Math.sin(x[M - m] * PI / 2.0);
 		}
+		
 		return correct_to_01(result, EPSILON);
 	}
 
 	private static double mixed(double[] x, int A, double alpha) {
 		double tmp = 2.0 * A * PI;
+		
 		return correct_to_01(Math.pow(1.0 - x[0]
 				- Math.cos(tmp * x[0] + PI / 2.0) / tmp, alpha), EPSILON);
 	}
@@ -1052,6 +1391,7 @@ class CEC2009 {
 		double tmp1 = min_double(0.0, Math.floor(y - B)) * A * (B - y) / B;
 		double tmp2 = min_double(0.0, Math.floor(C - y)) * (1.0 - A) * (y - C)
 				/ (1.0 - C);
+		
 		return correct_to_01(A + tmp1 - tmp2, EPSILON);
 	}
 
@@ -1064,10 +1404,12 @@ class CEC2009 {
 		int i;
 		double numerator = 0.0;
 		double denominator = 0.0;
+		
 		for (i = 0; i < ny; i++) {
 			numerator += w[i] * y[i];
 			denominator += w[i];
 		}
+		
 		return correct_to_01(numerator / denominator, EPSILON);
 	}
 }

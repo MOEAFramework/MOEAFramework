@@ -21,7 +21,6 @@ import java.io.StringReader;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.moeaframework.analysis.sensitivity.MatrixReader;
 import org.moeaframework.core.Settings;
 
 /**

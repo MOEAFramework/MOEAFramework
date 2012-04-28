@@ -18,7 +18,6 @@
 package org.moeaframework.analysis.collector;
 
 import org.junit.Test;
-import org.moeaframework.analysis.collector.ApproximationSetCollector;
 
 /**
  * Tests the {@link ApproximationSetCollector} class.

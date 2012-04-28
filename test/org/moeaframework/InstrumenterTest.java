@@ -25,8 +25,6 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.moeaframework.Executor;
-import org.moeaframework.Instrumenter;
 import org.moeaframework.analysis.collector.Accumulator;
 import org.moeaframework.analysis.collector.AttachPoint;
 import org.moeaframework.analysis.collector.Collector;

@@ -21,9 +21,6 @@ import java.util.Properties;
 
 import org.junit.Assert;
 import org.moeaframework.Instrumenter;
-import org.moeaframework.analysis.collector.Accumulator;
-import org.moeaframework.analysis.collector.AttachPoint;
-import org.moeaframework.analysis.collector.Collector;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.spi.AlgorithmFactory;

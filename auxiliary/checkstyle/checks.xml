@@ -22,6 +22,8 @@
 	<!-- <module name="JavadocPackage" /> -->
 
 	<module name="TreeWalker">
+		<property name="tabWidth" value="4"/>
+	
 		<!-- Explicitly define all important classes -->
 		<module name="AvoidStarImport" />
 		
@@ -31,7 +33,7 @@
 		</module>
 		
 		<!-- No redundant imports -->
-		<!-- <module name="RedundantImport" /> -->
+		<module name="RedundantImport" />
 		
 		<!-- Prevent empty blocks that do not at least contain a comment -->
 		<module name="EmptyBlock">
@@ -64,10 +66,6 @@
 		<!-- Array brackets should be placed immediately following the type
 		     (e.g., String[] names)  -->
 		<module name="ArrayTypeStyle" />
-		
-		<!-- Parameters to constructors and methods should be final -->
-		<!-- <module name="FinalParameters" /> -->
-		<!-- <module name="ParameterAssignment"/> -->
 
 		<!-- The class name and file name must match -->
 		<module name="OuterTypeFilename"/>
@@ -88,13 +86,20 @@
 		<module name="EmptyStatement"/>
 		
 		<!-- Constructors must be explicitly defined -->
+		<!-- Several instances exist that should be fixed -->
 		<!-- <module name="MissingCtor"/> -->
 		
 		<!-- Avoid the error-prone double checked locking pattern -->
 		<module name="DoubleCheckedLocking"/>
 		
 		<!-- <module name="EqualsAvoidNull"/> -->
+		
+		<!-- No magic numbers -->
+		<!-- The source currently contains too many magic numbers -->
 		<!-- <module name="MagicNumber"/> -->
+		
+		<!-- Control variables in for loops should not be modified -->
+		<!-- Several instances exist that should be fixed -->
 		<!-- <module name="ModifiedControlVariable"/> -->
 		
 		<!-- Do not wrap boolean return statements in conditional statement -->
@@ -119,20 +124,20 @@
 		<!-- Switch statements should be structured correctly -->
 		<module name="DefaultComesLast"/>
 		<module name="MissingSwitchDefault"/>
-		
-		<!-- <module name="MultipleStringLiterals"/> -->
-		
+
 		<!-- Only one variable declaration is allowed per line -->
 		<module name="MultipleVariableDeclarations"/>
 		
 		<!-- Only one statement is allowed per line -->
 		<module name="OneStatementPerLine"/>
 		
+		<!-- Classes with only static methods must hide constructor -->
 		<!-- <module name="HideUtilityClassConstructor" /> -->
 		
 		<!-- All variables in an exception are final -->
 		<module name="MutableException"/>
 		
+		<!-- Classes with private constructors should be final -->
 		<!-- <module name="FinalClass"/> -->
 		
 		<module name="InterfaceIsType"/>
@@ -149,49 +154,23 @@
 		</module>
 		-->
 		
-		<!-- Following naming conventions -->
-		<!--
-		<module name="AbstractClassName" />
+		<!-- Naming conventions -->
+		<!-- More of the naming conventions should be used, but this must wait
+		     till a major release as some names are public -->
 		<module name="ClassTypeParameterName" />
-		<module name="ConstantName" />
-		<module name="LocalFinalVariableName" />
-		<module name="LocalVariableName" />
-		<module name="MemberName" />
-		<module name="MethodName" />
-		<module name="MethodTypeParameterName" />
 		<module name="PackageName" />
-		<module name="ParameterName" />
-		<module name="StaticVariableName" />
+		<module name="MethodTypeParameterName" />
 		<module name="TypeName" />
-		-->
 	
 		<!-- Fields should not be public -->
-		<!--
 		<module name="VisibilityModifier">
 			<property name="protectedAllowed" value="true" />
 			<property name="packageAllowed" value="true" />
 		</module>
-		-->
 		
 		<module name="IllegalInstantiation">
             <property name="classes" value="java.lang.Boolean, java.lang.String"/>
         </module>
-
-		<!--
-		<module name="JavaNCSS">
-			<property name="methodMaximum" value="80" />
-			<property name="classMaximum" value="300" />
-		</module>
-		<module name="ClassFanOutComplexity">
-			<property name="max" value="22" />
-		</module>
-		<module name="ClassDataAbstractionCoupling">
-			<property name="max" value="14" />
-		</module>
-		<module name="CyclomaticComplexity">
-			<property name="max" value="14" />
-		</module>
-		-->
 		
 		<!-- Avoid using these types explicitly, use their interfaces instead -->
 		<!-- <module name="IllegalType">

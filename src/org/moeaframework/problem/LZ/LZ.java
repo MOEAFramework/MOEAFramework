@@ -232,7 +232,8 @@ public abstract class LZ extends AbstractProblem {
 
 			return 2.0 * beta / dim;
 		} else if (dType == 3) {
-			double sum = 0, xx;
+			double sum = 0;
+			double xx;
 
 			for (int i = 0; i < dim; i++) {
 				xx = 2 * x[i];
@@ -241,7 +242,9 @@ public abstract class LZ extends AbstractProblem {
 
 			return 2.0 * sum / dim;
 		} else if (dType == 4) {
-			double sum = 0, prod = 1, xx;
+			double sum = 0;
+			double prod = 1;
+			double xx;
 
 			for (int i = 0; i < dim; i++) {
 				xx = 2 * x[i];

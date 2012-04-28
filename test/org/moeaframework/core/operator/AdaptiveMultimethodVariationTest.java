@@ -17,8 +17,6 @@
  */
 package org.moeaframework.core.operator;
 
-import static org.moeaframework.core.operator.AdaptiveMultimethodVariation.OPERATOR_ATTRIBUTE;
-
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -95,9 +93,9 @@ public class AdaptiveMultimethodVariationTest {
 		Solution s2 = new Solution(0, 0);
 		Solution s3 = new Solution(0, 0);
 		
-		s1.setAttribute(OPERATOR_ATTRIBUTE, 0);
-		s2.setAttribute(OPERATOR_ATTRIBUTE, 1);
-		s3.setAttribute(OPERATOR_ATTRIBUTE, 0);
+		s1.setAttribute(AdaptiveMultimethodVariation.OPERATOR_ATTRIBUTE, 0);
+		s2.setAttribute(AdaptiveMultimethodVariation.OPERATOR_ATTRIBUTE, 1);
+		s3.setAttribute(AdaptiveMultimethodVariation.OPERATOR_ATTRIBUTE, 0);
 		
 		population.add(s1);
 		population.add(s2);
@@ -162,7 +160,8 @@ public class AdaptiveMultimethodVariationTest {
 		Assert.assertEquals(2, variation.getArity());
 		
 		for (Solution solution : population) {
-			solution.removeAttribute(OPERATOR_ATTRIBUTE);
+			solution.removeAttribute(
+					AdaptiveMultimethodVariation.OPERATOR_ATTRIBUTE);
 		}
 		
 		Assert.assertEquals(0.5, variation.getOperatorProbability(0), 

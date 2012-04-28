@@ -64,12 +64,12 @@ public class LinePlot extends ResultPlot {
 		/**
 		 * The number of evaluations of this data point.
 		 */
-		public int NFE;
+		private final int NFE;
 		
 		/**
 		 * The metric value of this data point.
 		 */
-		public double value;
+		private final double value;
 	
 		/**
 		 * Constructs a data point with the specified number of evaluations and
@@ -88,7 +88,15 @@ public class LinePlot extends ResultPlot {
 		public int compareTo(DataPoint rhs) {
 			return new CompareToBuilder().append(NFE, rhs.NFE).toComparison();
 		}
-			
+
+		public int getNFE() {
+			return NFE;
+		}
+
+		public double getValue() {
+			return value;
+		}
+		
 	}
 	
 	/**
@@ -132,8 +140,8 @@ public class LinePlot extends ResultPlot {
 			while (index < dataPoints.size()) {
 				DataPoint point = dataPoints.get(index);
 
-				if (point.NFE <= currentNFE) {
-					statistics.addValue(point.value);
+				if (point.getNFE() <= currentNFE) {
+					statistics.addValue(point.getValue());
 					index++;
 				} else {
 					if (statistics.getN() > 0) {

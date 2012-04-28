@@ -18,7 +18,6 @@
 package org.moeaframework.analysis.collector;
 
 import org.junit.Test;
-import org.moeaframework.analysis.collector.EpsilonProgressCollector;
 
 /**
  * Tests the {@link EpsilonProgressCollector} class.

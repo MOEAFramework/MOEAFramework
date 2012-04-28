@@ -141,7 +141,7 @@ public class AdaptiveMetropolisTest extends ParentCentricVariationTest {
 		RealMatrix rm = MatrixUtils.createRealMatrix(points.size(), 2);
 		
 		for (int i=0; i<points.size(); i++) {
-			rm.setRow(i, points.get(i).point);
+			rm.setRow(i, points.get(i).getPoint());
 		}
 		
 		return new Covariance(rm).getCovarianceMatrix();

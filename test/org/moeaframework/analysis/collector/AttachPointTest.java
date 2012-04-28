@@ -22,7 +22,6 @@ import java.util.Stack;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.moeaframework.analysis.collector.AttachPoint;
 
 /**
  * Tests the {@link AttachPoint} class.

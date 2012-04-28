@@ -36,7 +36,7 @@ public class PRNGTest {
 	/**
 	 * The number of samples used for statistics.
 	 */
-	public static int N = 1000000;
+	private static int N = 1000000;
 
 	/**
 	 * Tests if the {@code nextFloat} method produces uniformly-distributed

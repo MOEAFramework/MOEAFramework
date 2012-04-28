@@ -44,11 +44,11 @@ public class EpsilonMOEATest {
 	
 	private TestPopulation population;
 	
-	public static class TestPopulation extends Population {
+	private static class TestPopulation extends Population {
 		
-		public int lastRemovedIndex;
+		private int lastRemovedIndex;
 		
-		public Solution lastRemovedSolution;
+		private Solution lastRemovedSolution;
 
 		@Override
 		public void remove(int index) {

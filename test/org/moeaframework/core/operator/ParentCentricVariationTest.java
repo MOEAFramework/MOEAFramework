@@ -59,7 +59,7 @@ public abstract class ParentCentricVariationTest extends
 			for (int i = 0; i < clusters.size(); i++) {
 				boolean allEqual = true;
 
-				double[] centroid = clusters.get(i).getCenter().point;
+				double[] centroid = clusters.get(i).getCenter().getPoint();
 				double[] parent = CoreUtils
 						.castVariablesToDoubleArray(solution);
 
@@ -82,7 +82,7 @@ public abstract class ParentCentricVariationTest extends
 	protected static class ClusterablePoint implements
 			Clusterable<ClusterablePoint> {
 
-		public final double[] point;
+		private final double[] point;
 
 		public ClusterablePoint(double[] point) {
 			this.point = point;
@@ -108,6 +108,10 @@ public abstract class ParentCentricVariationTest extends
 			}
 
 			return Math.sqrt(sum);
+		}
+
+		public double[] getPoint() {
+			return point;
 		}
 
 	}

@@ -18,7 +18,6 @@
 package org.moeaframework.analysis.collector;
 
 import org.junit.Test;
-import org.moeaframework.analysis.collector.AdaptiveMultimethodVariationCollector;
 
 /**
  * Tests the {@link AdaptiveMultimethodVariationCollector} class.

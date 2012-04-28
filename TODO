@@ -12,6 +12,10 @@ any changes.
  Easy
 ------
 
+  - The UF* and CF* methods in CEC2009 are passed both a double array (x) and
+    the length of this array (nx) as arguments.  Remove the nx argument and use
+    x.length instead.
+
   - An issue is cropping up when an approximation set is empty (no feasible
     solutions).  The distance metrics result in a value of infinity.  This in
     itself is fine, but becomes problematic when averaging the values with

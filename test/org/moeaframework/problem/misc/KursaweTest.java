@@ -19,7 +19,6 @@ package org.moeaframework.problem.misc;
 
 import org.junit.Test;
 import org.moeaframework.problem.ProblemTest;
-import org.moeaframework.problem.misc.Kursawe;
 
 public class KursaweTest extends ProblemTest {
 
