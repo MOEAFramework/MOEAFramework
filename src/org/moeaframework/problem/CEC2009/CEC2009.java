@@ -30,6 +30,14 @@ class CEC2009 {
 
 	private static final double EPSILON = 1.0e-10;
 
+	/**
+	 * Returns {@code 1.0} if the specified value is strictly positive;
+	 * otherwise returns {@code -1.0}.
+	 * 
+	 * @param x the value
+	 * @return {@code 1.0} if the specified value is strictly positive;
+	 *         otherwise returns {@code -1.0}
+	 */
 	private static double MYSIGN(double x) {
 		return (x > 0.0 ? 1.0 : -1.0);
 	}
@@ -42,14 +50,13 @@ class CEC2009 {
 	 * @param nx the number of decision variables
 	 */
 	public static void UF1(double[] x, double[] f, int nx) {
-		int j;
 		int count1 = 0;
 		int count2 = 0;
 		double sum1 = 0.0;
 		double sum2 = 0.0;
 		double yj;
 
-		for (j = 2; j <= nx; j++) {
+		for (int j = 2; j <= nx; j++) {
 			yj = x[j - 1] - Math.sin(6.0 * PI * x[0] + j * PI / nx);
 			yj = yj * yj;
 			
@@ -74,14 +81,13 @@ class CEC2009 {
 	 * @param nx the number of decision variables
 	 */
 	public static void UF2(double[] x, double[] f, int nx) {
-		int j;
 		int count1 = 0;
 		int count2 = 0;
 		double sum1 = 0.0;
 		double sum2 = 0.0;
 		double yj;
 
-		for (j = 2; j <= nx; j++) {
+		for (int j = 2; j <= nx; j++) {
 			if (j % 2 == 0) {
 				yj = x[j - 1] - 0.3 * x[0] * (x[0]
 						* Math.cos(24.0 * PI * x[0] + 4.0 * j * PI / nx) + 2.0)
@@ -109,7 +115,6 @@ class CEC2009 {
 	 * @param nx the number of decision variables
 	 */
 	public static void UF3(double[] x, double[] f, int nx) {
-		int j;
 		int count1 = 0;
 		int count2 = 0;
 		double sum1 = 0.0;
@@ -119,7 +124,7 @@ class CEC2009 {
 		double yj;
 		double pj;
 
-		for (j = 2; j <= nx; j++) {
+		for (int j = 2; j <= nx; j++) {
 			yj = x[j - 1] - Math.pow(x[0], 0.5 * (1.0 + 3.0 * (j - 2.0) / 
 					(nx - 2.0)));
 			pj = Math.cos(20.0 * yj * PI / Math.sqrt(j + 0.0));
@@ -148,7 +153,6 @@ class CEC2009 {
 	 * @param nx the number of decision variables
 	 */
 	public static void UF4(double[] x, double[] f, int nx) {
-		int j;
 		int count1 = 0;
 		int count2 = 0;
 		double sum1 = 0.0;
@@ -156,7 +160,7 @@ class CEC2009 {
 		double yj;
 		double hj;
 
-		for (j = 2; j <= nx; j++) {
+		for (int j = 2; j <= nx; j++) {
 			yj = x[j - 1] - Math.sin(6.0 * PI * x[0] + j * PI / nx);
 			hj = Math.abs(yj) / (1.0 + Math.exp(2.0 * Math.abs(yj)));
 			
@@ -181,7 +185,6 @@ class CEC2009 {
 	 * @param nx the number of decision variables
 	 */
 	public static void UF5(double[] x, double[] f, int nx) {
-		int j;
 		int count1 = 0;
 		int count2 = 0;
 		double sum1 = 0.0;
@@ -191,7 +194,7 @@ class CEC2009 {
 		double N = 10.0;
 		double E = 0.1;
 
-		for (j = 2; j <= nx; j++) {
+		for (int j = 2; j <= nx; j++) {
 			yj = x[j - 1] - Math.sin(6.0 * PI * x[0] + j * PI / nx);
 			hj = 2.0 * yj * yj - Math.cos(4.0 * PI * yj) + 1.0;
 			
@@ -217,7 +220,6 @@ class CEC2009 {
 	 * @param nx the number of decision variables
 	 */
 	public static void UF6(double[] x, double[] f, int nx) {
-		int j;
 		int count1 = 0;
 		int count2 = 0;
 		double sum1 = 0.0;
@@ -230,7 +232,7 @@ class CEC2009 {
 		double N = 2.0;
 		double E = 0.1;
 
-		for (j = 2; j <= nx; j++) {
+		for (int j = 2; j <= nx; j++) {
 			yj = x[j - 1] - Math.sin(6.0 * PI * x[0] + j * PI / nx);
 			pj = Math.cos(20.0 * yj * PI / Math.sqrt(j + 0.0));
 			
@@ -265,14 +267,13 @@ class CEC2009 {
 	 * @param nx the number of decision variables
 	 */
 	public static void UF7(double[] x, double[] f, int nx) {
-		int j;
 		int count1 = 0;
 		int count2 = 0;
 		double sum1 = 0.0;
 		double sum2 = 0.0;
 		double yj;
 
-		for (j = 2; j <= nx; j++) {
+		for (int j = 2; j <= nx; j++) {
 			yj = x[j - 1] - Math.sin(6.0 * PI * x[0] + j * PI / nx);
 			
 			if (j % 2 == 0) {
@@ -297,7 +298,6 @@ class CEC2009 {
 	 * @param nx the number of decision variables
 	 */
 	public static void UF8(double[] x, double[] f, int nx) {
-		int j;
 		int count1 = 0;
 		int count2 = 0;
 		int count3 = 0;
@@ -306,7 +306,7 @@ class CEC2009 {
 		double sum3 = 0.0;
 		double yj;
 
-		for (j = 3; j <= nx; j++) {
+		for (int j = 3; j <= nx; j++) {
 			yj = x[j - 1] - 2.0 * x[1]
 					* Math.sin(2.0 * PI * x[0] + j * PI / nx);
 			
@@ -337,7 +337,6 @@ class CEC2009 {
 	 * @param nx the number of decision variables
 	 */
 	public static void UF9(double[] x, double[] f, int nx) {
-		int j;
 		int count1 = 0;
 		int count2 = 0;
 		int count3 = 0;
@@ -347,7 +346,7 @@ class CEC2009 {
 		double yj;
 		double E = 0.1;
 
-		for (j = 3; j <= nx; j++) {
+		for (int j = 3; j <= nx; j++) {
 			yj = x[j - 1] - 2.0 * x[1]
 					* Math.sin(2.0 * PI * x[0] + j * PI / nx);
 			
@@ -382,7 +381,6 @@ class CEC2009 {
 	 * @param nx the number of decision variables
 	 */
 	public static void UF10(double[] x, double[] f, int nx) {
-		int j;
 		int count1 = 0;
 		int count2 = 0;
 		int count3 = 0;
@@ -392,7 +390,7 @@ class CEC2009 {
 		double yj;
 		double hj;
 
-		for (j = 3; j <= nx; j++) {
+		for (int j = 3; j <= nx; j++) {
 			yj = x[j - 1] - 2.0 * x[1]
 					* Math.sin(2.0 * PI * x[0] + j * PI / nx);
 			hj = 4.0 * yj * yj - Math.cos(8.0 * PI * yj) + 1.0;
@@ -425,7 +423,6 @@ class CEC2009 {
 	 * @param nx the number of decision variables
 	 */
 	public static void CF1(double[] x, double[] f, double[] c, int nx) {
-		int j;
 		int count1 = 0;
 		int count2 = 0;
 		double sum1 = 0.0;
@@ -434,7 +431,7 @@ class CEC2009 {
 		double N = 10.0;
 		double a = 1.0;
 
-		for (j = 2; j <= nx; j++) {
+		for (int j = 2; j <= nx; j++) {
 			yj = x[j - 1] - Math.pow(x[0], 0.5 * (1.0 + 3.0 * (j - 2.0) / 
 					(nx - 2.0)));
 			
@@ -462,7 +459,6 @@ class CEC2009 {
 	 * @param nx the number of decision variables
 	 */
 	public static void CF2(double[] x, double[] f, double[] c, int nx) {
-		int j;
 		int count1 = 0;
 		int count2 = 0;
 		double sum1 = 0.0;
@@ -472,7 +468,7 @@ class CEC2009 {
 		double a = 1.0;
 		double t;
 
-		for (j = 2; j <= nx; j++) {
+		for (int j = 2; j <= nx; j++) {
 			yj = x[j - 1] - Math.sin(6.0 * PI * x[0] + j * PI / nx);
 			
 			if (j % 2 == 1) {
@@ -502,7 +498,6 @@ class CEC2009 {
 	 * @param nx the number of decision variables
 	 */
 	public static void CF3(double[] x, double[] f, double[] c, int nx) {
-		int j;
 		int count1 = 0;
 		int count2 = 0;
 		double sum1 = 0.0;
@@ -514,7 +509,7 @@ class CEC2009 {
 		double N = 2.0;
 		double a = 1.0;
 
-		for (j = 2; j <= nx; j++) {
+		for (int j = 2; j <= nx; j++) {
 			yj = x[j - 1] - Math.sin(6.0 * PI * x[0] + j * PI / nx);
 			pj = Math.cos(20.0 * yj * PI / Math.sqrt(j + 0.0));
 			
@@ -545,13 +540,12 @@ class CEC2009 {
 	 * @param nx the number of decision variables
 	 */
 	public static void CF4(double[] x, double[] f, double[] c, int nx) {
-		int j;
 		double sum1 = 0.0;
 		double sum2 = 0.0;
 		double yj;
 		double t;
 
-		for (j = 2; j <= nx; j++) {
+		for (int j = 2; j <= nx; j++) {
 			yj = x[j - 1] - Math.sin(6.0 * PI * x[0] + j * PI / nx);
 			
 			if (j % 2 == 1) {
@@ -582,12 +576,11 @@ class CEC2009 {
 	 * @param nx the number of decision variables
 	 */
 	public static void CF5(double[] x, double[] f, double[] c, int nx) {
-		int j;
 		double sum1 = 0.0;
 		double sum2 = 0.0;
 		double yj;
 
-		for (j = 2; j <= nx; j++) {
+		for (int j = 2; j <= nx; j++) {
 			if (j % 2 == 1) {
 				yj = x[j - 1] - 0.8 * x[0]
 						* Math.cos(6.0 * PI * x[0] + j * PI / nx);
@@ -620,12 +613,11 @@ class CEC2009 {
 	 * @param nx the number of decision variables
 	 */
 	public static void CF6(double[] x, double[] f, double[] c, int nx) {
-		int j;
 		double sum1 = 0.0;
 		double sum2 = 0.0;
 		double yj;
 
-		for (j = 2; j <= nx; j++) {
+		for (int j = 2; j <= nx; j++) {
 			if (j % 2 == 1) {
 				yj = x[j - 1] - 0.8 * x[0]
 						* Math.cos(6.0 * PI * x[0] + j * PI / nx);
@@ -657,12 +649,11 @@ class CEC2009 {
 	 * @param nx the number of decision variables
 	 */
 	public static void CF7(double[] x, double[] f, double[] c, int nx) {
-		int j;
 		double sum1 = 0.0;
 		double sum2 = 0.0;
 		double yj;
 
-		for (j = 2; j <= nx; j++) {
+		for (int j = 2; j <= nx; j++) {
 			if (j % 2 == 1) {
 				yj = x[j - 1] - Math.cos(6.0 * PI * x[0] + j * PI / nx);
 				sum1 += 2.0 * yj * yj - Math.cos(4.0 * PI * yj) + 1.0;
@@ -697,7 +688,6 @@ class CEC2009 {
 	 * @param nx the number of decision variables
 	 */
 	public static void CF8(double[] x, double[] f, double[] c, int nx) {
-		int j;
 		int count1 = 0;
 		int count2 = 0;
 		int count3 = 0;
@@ -708,7 +698,7 @@ class CEC2009 {
 		double N = 2.0;
 		double a = 4.0;
 
-		for (j = 3; j <= nx; j++) {
+		for (int j = 3; j <= nx; j++) {
 			yj = x[j - 1] - 2.0 * x[1]
 					* Math.sin(2.0 * PI * x[0] + j * PI / nx);
 			
@@ -743,7 +733,6 @@ class CEC2009 {
 	 * @param nx the number of decision variables
 	 */
 	public static void CF9(double[] x, double[] f, double[] c, int nx) {
-		int j;
 		int count1 = 0;
 		int count2 = 0;
 		int count3 = 0;
@@ -754,7 +743,7 @@ class CEC2009 {
 		double N = 2.0;
 		double a = 3.0;
 
-		for (j = 3; j <= nx; j++) {
+		for (int j = 3; j <= nx; j++) {
 			yj = x[j - 1] - 2.0 * x[1]
 					* Math.sin(2.0 * PI * x[0] + j * PI / nx);
 			
@@ -789,7 +778,6 @@ class CEC2009 {
 	 * @param nx the number of decision variables
 	 */
 	public static void CF10(double[] x, double[] f, double[] c, int nx) {
-		int j;
 		int count1 = 0;
 		int count2 = 0;
 		int count3 = 0;
@@ -801,7 +789,7 @@ class CEC2009 {
 		double N = 2.0;
 		double a = 1.0;
 
-		for (j = 3; j <= nx; j++) {
+		for (int j = 3; j <= nx; j++) {
 			yj = x[j - 1] - 2.0 * x[1]
 					* Math.sin(2.0 * PI * x[0] + j * PI / nx);
 			hj = 4.0 * yj * yj - Math.cos(8.0 * PI * yj) + 1.0;
@@ -837,8 +825,6 @@ class CEC2009 {
 	 * @param n_obj the number of objectives
 	 */
 	public static void R2_DTLZ2_M5(double[] x, double[] f, int nx, int n_obj) {
-		int i = 0;
-		int j = 0;
 		int k = nx - n_obj + 1;
 		double g = 0;
 		double[][] M_10D = {
@@ -957,16 +943,16 @@ class CEC2009 {
 		double[] lamda_l = new double[nx];
 		
 		if (nx == 10) {
-			for (i = 0; i < nx; i++) {
-				for (j = 0; j < nx; j++) {
+			for (int i = 0; i < nx; i++) {
+				for (int j = 0; j < nx; j++) {
 					M[i][j] = M_10D[i][j];
 				}
 				
 				lamda_l[i] = lamda_l_10D[i];
 			}
 		} else {
-			for (i = 0; i < nx; i++) {
-				for (j = 0; j < nx; j++) {
+			for (int i = 0; i < nx; i++) {
+				for (int j = 0; j < nx; j++) {
 					M[i][j] = M_30D[i][j];
 				}
 				
@@ -974,10 +960,10 @@ class CEC2009 {
 			}
 		}
 		
-		for (i = 0; i < nx; i++) {
+		for (int i = 0; i < nx; i++) {
 			z[i] = 0;
 			
-			for (j = 0; j < nx; j++) {
+			for (int j = 0; j < nx; j++) {
 				z[i] += M[i][j] * x[j];
 			}
 			
@@ -993,23 +979,23 @@ class CEC2009 {
 			}
 		}
 		
-		for (j = 0; j < n_obj; j++) {
+		for (int j = 0; j < n_obj; j++) {
 			psum[j] = 0;
 		}
 		
-		for (i = nx - k + 1; i <= nx; i++) {
+		for (int i = nx - k + 1; i <= nx; i++) {
 			g += Math.pow(zz[i - 1] - 0.5, 2);
 			
-			for (j = 0; j < n_obj; j++) {
+			for (int j = 0; j < n_obj; j++) {
 				psum[j] = Math.sqrt(Math.pow(psum[j], 2)
 						+ Math.pow(p[i - 1], 2));
 			}
 		}
 		
-		for (i = 1; i <= n_obj; i++) {
+		for (int i = 1; i <= n_obj; i++) {
 			double ff = (1 + g);
 			
-			for (j = n_obj - i; j >= 1; j--) {
+			for (int j = n_obj - i; j >= 1; j--) {
 				ff *= Math.cos(zz[j - 1] * PI / 2.0);
 				psum[i - 1] = Math.sqrt(Math.pow(psum[i - 1], 2)
 						+ Math.pow(p[j - 1], 2));
@@ -1034,8 +1020,6 @@ class CEC2009 {
 	 * @param n_obj the number of objectives
 	 */
 	public static void R3_DTLZ3_M5(double[] x, double[] f, int nx, int n_obj) {
-		int i = 0;
-		int j = 0;
 		int k = nx - n_obj + 1;
 		double g = 0;
 		double[][] M_10D = {
@@ -1154,16 +1138,16 @@ class CEC2009 {
 		double[] lamda_l = new double[nx];
 		
 		if (nx == 10) {
-			for (i = 0; i < nx; i++) {
-				for (j = 0; j < nx; j++) {
+			for (int i = 0; i < nx; i++) {
+				for (int j = 0; j < nx; j++) {
 					M[i][j] = M_10D[i][j];
 				}
 				
 				lamda_l[i] = lamda_l_10D[i];
 			}
 		} else {
-			for (i = 0; i < nx; i++) {
-				for (j = 0; j < nx; j++) {
+			for (int i = 0; i < nx; i++) {
+				for (int j = 0; j < nx; j++) {
 					M[i][j] = M_30D[i][j];
 				}
 				
@@ -1171,10 +1155,10 @@ class CEC2009 {
 			}
 		}
 		
-		for (i = 0; i < nx; i++) {
+		for (int i = 0; i < nx; i++) {
 			z[i] = 0;
 			
-			for (j = 0; j < nx; j++) {
+			for (int j = 0; j < nx; j++) {
 				z[i] += M[i][j] * x[j];
 			}
 			
@@ -1190,15 +1174,15 @@ class CEC2009 {
 			}
 		}
 		
-		for (j = 0; j < n_obj; j++) {
+		for (int j = 0; j < n_obj; j++) {
 			psum[j] = 0;
 		}
 		
-		for (i = nx - k + 1; i <= nx; i++) {
+		for (int i = nx - k + 1; i <= nx; i++) {
 			g += Math.pow(zz[i - 1] - 0.5, 2)
 					- Math.cos(20 * PI * (zz[i - 1] - 0.5));
 			
-			for (j = 0; j < n_obj; j++) {
+			for (int j = 0; j < n_obj; j++) {
 				psum[j] = Math.sqrt(Math.pow(psum[j], 2)
 						+ Math.pow(p[i - 1], 2));
 			}
@@ -1206,10 +1190,10 @@ class CEC2009 {
 		
 		g = 100 * (k + g);
 		
-		for (i = 1; i <= n_obj; i++) {
+		for (int i = 1; i <= n_obj; i++) {
 			double ff = (1 + g);
 			
-			for (j = n_obj - i; j >= 1; j--) {
+			for (int j = n_obj - i; j >= 1; j--) {
 				ff *= Math.cos(zz[j - 1] * PI / 2.0);
 				psum[i - 1] = Math.sqrt(Math.pow(psum[i - 1], 2)
 						+ Math.pow(p[j - 1], 2));
@@ -1234,8 +1218,6 @@ class CEC2009 {
 	 * @param M the number of objectives
 	 */
 	public static void WFG1_M5(double[] z, double[] f, int nx, int M) {
-		int i = 0;
-		int j = 0;
 		double[] y = new double[30];
 		double[] t1 = new double[30];
 		double[] t2 = new double[30];
@@ -1243,27 +1225,27 @@ class CEC2009 {
 		double[] t4 = new double[5];
 		int k = M == 2 ? 4 : 2 * (M - 1);
 		
-		for (i = 0; i < nx; i++) {
+		for (int i = 0; i < nx; i++) {
 			y[i] = z[i] / (2.0 * (i + 1));
 		}
 		
-		for (i = 0; i < k; i++) {
+		for (int i = 0; i < k; i++) {
 			t1[i] = y[i];
 		}
 		
-		for (i = k; i < nx; i++) {
+		for (int i = k; i < nx; i++) {
 			t1[i] = s_linear(y[i], 0.35);
 		}
 		
-		for (i = 0; i < k; i++) {
+		for (int i = 0; i < k; i++) {
 			t2[i] = t1[i];
 		}
 		
-		for (i = k; i < nx; i++) {
+		for (int i = k; i < nx; i++) {
 			t2[i] = b_flat(t1[i], 0.8, 0.75, 0.85);
 		}
 		
-		for (i = 0; i < nx; i++) {
+		for (int i = 0; i < nx; i++) {
 			t3[i] = b_poly(t2[i], 0.02);
 		}
 		
@@ -1273,15 +1255,15 @@ class CEC2009 {
 		double[] y_sub2 = new double[30];
 		double[] w_sub2 = new double[30];
 		
-		for (i = 1; i <= nx; i++) {
+		for (int i = 1; i <= nx; i++) {
 			w[i - 1] = 2.0 * i;
 		}
 		
-		for (i = 1; i <= M - 1; i++) {
+		for (int i = 1; i <= M - 1; i++) {
 			int head = (i - 1) * k / (M - 1);
 			int tail = i * k / (M - 1);
 			
-			for (j = head; j < tail; j++) {
+			for (int j = head; j < tail; j++) {
 				y_sub[j - head] = t3[j];
 				w_sub[j - head] = w[j];
 			}
@@ -1289,14 +1271,13 @@ class CEC2009 {
 			t4[i - 1] = r_sum(y_sub, w_sub, tail - head);
 		}
 		
-		for (j = k; j < nx; j++) {
+		for (int j = k; j < nx; j++) {
 			y_sub2[j - k] = t3[j];
 			w_sub2[j - k] = w[j];
 		}
 		
-		t4[i - 1] = r_sum(y_sub2, w_sub2, nx - k);
+		t4[M - 1] = r_sum(y_sub2, w_sub2, nx - k);
 		
-		int m;
 		int[] A = new int[5];
 		double[] x = new double[5];
 		double[] h = new double[5];
@@ -1304,11 +1285,11 @@ class CEC2009 {
 		
 		A[0] = 1;
 		
-		for (i = 1; i < M - 1; i++) {
+		for (int i = 1; i < M - 1; i++) {
 			A[i] = 1;
 		}
 		
-		for (i = 0; i < M - 1; i++) {
+		for (int i = 0; i < M - 1; i++) {
 			double tmp1 = t4[M - 1];
 			
 			if (A[i] > tmp1) {
@@ -1320,17 +1301,17 @@ class CEC2009 {
 		
 		x[M - 1] = t4[M - 1];
 		
-		for (m = 1; m <= M - 1; m++) {
+		for (int m = 1; m <= M - 1; m++) {
 			h[m - 1] = convex(x, m, M);
 		}
 		
-		h[m - 1] = mixed(x, 5, 1.0);
+		h[M - 1] = mixed(x, 5, 1.0);
 		
-		for (m = 1; m <= M; m++) {
+		for (int m = 1; m <= M; m++) {
 			S[m - 1] = m * 2.0;
 		}
 		
-		for (i = 0; i < M; i++) {
+		for (int i = 0; i < M; i++) {
 			f[i] = 1.0 * x[M - 1] + S[i] * h[i];
 		}
 	}
@@ -1358,10 +1339,9 @@ class CEC2009 {
 	}
 
 	private static double convex(double[] x, int m, int M) {
-		int i;
 		double result = 1.0;
 		
-		for (i = 1; i <= M - m; i++) {
+		for (int i = 1; i <= M - m; i++) {
 			result *= 1.0 - Math.cos(x[i - 1] * PI / 2.0);
 		}
 		
@@ -1401,11 +1381,10 @@ class CEC2009 {
 	}
 
 	private static double r_sum(double[] y, double[] w, int ny) {
-		int i;
 		double numerator = 0.0;
 		double denominator = 0.0;
 		
-		for (i = 0; i < ny; i++) {
+		for (int i = 0; i < ny; i++) {
 			numerator += w[i] * y[i];
 			denominator += w[i];
 		}
