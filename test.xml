@@ -1,21 +1,48 @@
 <?xml version="1.0"?>
+<!--
+Copyright 2009-2012 David Hadka
 
-<!-- 
-  If Apache Ant is installed, the framework can be tested using the command
-      ant -f test.xml
-      
-  See <http://ant.apache.org/> for instructions on installing Apache Ant.
+This file is part of the MOEA Framework.
+
+The MOEA Framework is free software: you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License as published by 
+the Free Software Foundation, either version 3 of the License, or (at your 
+option) any later version.
+
+The MOEA Framework is distributed in the hope that it will be useful, but 
+WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY 
+or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public 
+License for more details.
+
+You should have received a copy of the GNU Lesser General Public License 
+along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
+
+
+
+Use of these build scripts requires Apache Ant to be installed.  See
+<http://ant.apache.org/> for instructions on installing Apache Ant.
 -->
- 
 <project name="MOEA Framework Testing" basedir="." default="test">
 
+	<!-- Loads properties from properties file and environment -->
 	<property file="META-INF/build.properties" />
 	<property environment="env" />
 	
+	<!-- The working folder for these Ant build targets -->
+	<property name="build" value="build" />
+	
+	<!-- The folder where compiled files ready for distribution are saved -->
+	<property name="dist" value="dist" />
+	
+	<!-- The folder where JUnit test results are saved -->
+	<property name="results" value="test-results" />
+	
+	<!-- Classpath of third-party libraries used by the MOEA Framework -->
 	<path id="classpath">
 		<fileset dir="lib" includes="*.jar" />
 	</path>
 	
+	<!-- List of files required in every distribution -->
 	<path id="requiredfiles">
 		<fileset file="README" />
 		<fileset file="LICENSE" />
@@ -23,20 +50,23 @@
 		<fileset file="HELP" />
 	</path>
 	
+	<!-- Determines which dependencies are available -->
 	<target name="check-dependencies">
 		<available classname="org.junit.Assert" classpathref="classpath"
 				property="junit-exists" />
 		
 		<!-- Commented to always force recompiling of the JAR -->
-		<!--<available file="dist/${shortname}-${version}.jar" 
+		<!--<available file="${dist}/${shortname}-${version}.jar" 
 				property="binary-exists" />-->
 	</target>
 	
+	<!-- Conditionally builds the MOEA Framework JAR -->
 	<target name="check-binary" depends="check-dependencies" 
 			unless="binary-exists">
 		<ant target="build-binary" />
 	</target>
 	
+	<!-- Displays message and fails build if JUnit is not available -->
 	<target name="check-junit" depends="check-dependencies"
 			unless="junit-exists">
 		<echo>==================================================================</echo>
@@ -48,6 +78,7 @@
 		<fail message="JUnit library missing"/>
 	</target>
 	
+	<!-- Builds the C executables in auxiliary/c/ used for testing -->
 	<target name="build-c">
 		<exec executable="make" dir="auxiliary/c/" failifexecutionfails="false">
 			<arg value="clean" />
@@ -57,48 +88,51 @@
 				failifexecutionfails="false" />
 	</target>
 	
+	<!-- Builds the MOEA Framework Test JAR -->
 	<target name="build-tests" 
 			depends="check-dependencies,check-binary,check-junit">
-		<delete dir="build" />
-		<mkdir dir="build" />
+		<delete dir="${build}" />
+		<mkdir dir="${build}" />
 
-		<javac destdir="build" debug="${java.debug}" 
+		<javac destdir="${build}" debug="${java.debug}" 
 				includeantruntime="false">
 			<src path="test" />
 			<src path="examples" />
 			<classpath>
 				<path refid="classpath" />
-				<pathelement location="dist/${shortname}-${version}.jar" />
+				<pathelement location="${dist}/${shortname}-${version}.jar" />
 			</classpath>
 		</javac>
 
-		<copy todir="build">
+		<copy todir="${build}">
 			<fileset excludes="**/*.java" dir="test" />
 		</copy>
 		
-		<copy todir="build/META-INF">
+		<copy todir="${build}/META-INF">
 			<path refid="requiredfiles" />
 		</copy>
 
-		<jar basedir="build" 
-			jarfile="dist/${shortname}-${version}-Test.jar" />
+		<jar basedir="${build}" 
+			jarfile="${dist}/${shortname}-${version}-Test.jar" />
 	</target>
 
-	<target name="run-tests" depends="build-tests, build-c">		
-		<mkdir dir="test-results" />
-		<mkdir dir="test-results/raw" />
+	<!-- Runs all JUnit tests -->
+	<target name="run-tests" depends="build-tests, build-c">
+		<delete dir="${results}" />
+		<mkdir dir="${results}" />
+		<mkdir dir="${results}/raw" />
 	
 		<junit printsummary="on" haltonfailure="false" 
-				tempdir="test-results/raw" errorproperty="junit.failure"
+				tempdir="${results}/raw" errorproperty="junit.failure"
 				failureproperty="junit.failure">
 			<classpath>
 				<path refid="classpath" />
-				<fileset file="dist/${shortname}-${version}.jar" />
-				<fileset file="dist/${shortname}-${version}-Test.jar" />
+				<fileset file="${dist}/${shortname}-${version}.jar" />
+				<fileset file="${dist}/${shortname}-${version}-Test.jar" />
 			</classpath>
-			<batchtest todir="test-results/raw">
+			<batchtest todir="${results}/raw">
 				<formatter type="xml" />
-				<zipfileset src="dist/${shortname}-${version}-Test.jar">
+				<zipfileset src="${dist}/${shortname}-${version}-Test.jar">
 					<include name="**/*Test.class" />
 					<exclude name="org/moeaframework/algorithm/AlgorithmTest.class" />
 					<exclude name="org/moeaframework/core/indicator/IndicatorTest.class" />
@@ -123,14 +157,15 @@
 			</batchtest>
 		</junit>
 
-		<junitreport todir="test-results">
-			<fileset dir="test-results/raw">
+		<junitreport todir="${results}">
+			<fileset dir="${results}/raw">
 				<include name="TEST-*.xml"/>
 			</fileset>
-			<report format="frames" todir="test-results"/>
+			<report format="frames" todir="${results}"/>
 		</junitreport>
 	</target>
 	
+	<!-- The main test target, running all JUnit tests and displaying the results -->
 	<target name="test" depends="run-tests" if="junit.failure" 
 			description="Run the unit tests">
 		<echo>==================================================================</echo>
