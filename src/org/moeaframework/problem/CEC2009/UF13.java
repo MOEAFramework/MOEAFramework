@@ -17,55 +17,20 @@
  */
 package org.moeaframework.problem.CEC2009;
 
-import org.moeaframework.core.CoreUtils;
-import org.moeaframework.core.Solution;
-import org.moeaframework.core.variable.RealVariable;
-import org.moeaframework.problem.AbstractProblem;
+import org.moeaframework.problem.WFG.WFG1;
 
 /**
  * The unconstrained UF13 test problem from the CEC 2009 special session and
  * competition.
  */
-public class UF13 extends AbstractProblem {
+public class UF13 extends WFG1 {
 
 	/**
 	 * Constructs a UF13 test problem with 30 decision variables and 5
 	 * objectives.
 	 */
 	public UF13() {
-		this(30, 5);
-	}
-
-	/**
-	 * Constructs a UF13 test problem with the specified number of decision
-	 * variables and objectives.
-	 * 
-	 * @param numberOfVariables the number of decision variables
-	 * @param numberOfObjectives the number of objectives
-	 */
-	public UF13(int numberOfVariables, int numberOfObjectives) {
-		super(numberOfVariables, numberOfObjectives);
-	}
-
-	@Override
-	public void evaluate(Solution solution) {
-		double[] x = CoreUtils.castVariablesToDoubleArray(solution);
-		double[] f = new double[numberOfObjectives];
-
-		CEC2009.WFG1_M5(x, f, numberOfVariables, numberOfObjectives);
-
-		solution.setObjectives(f);
-	}
-
-	@Override
-	public Solution newSolution() {
-		Solution solution = new Solution(numberOfVariables, numberOfObjectives);
-
-		for (int i = 0; i < numberOfVariables; i++) {
-			solution.setVariable(i, new RealVariable(0.0, 2.0 * (i + 1)));
-		}
-
-		return solution;
+		super(8, 22, 5);
 	}
 
 }
