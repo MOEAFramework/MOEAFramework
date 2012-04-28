@@ -29,10 +29,10 @@ Use of these build scripts requires Apache Ant to be installed.  See
 	<property environment="env" />
 	
 	<!-- Path to Java JDK source code (optional for inheriting javadoc comments) -->
-	<property name="jdk.source" value="../OpenJDK${java.version}/jdk/src/share/classes" />
+	<property name="jdk.source" value="../OpenJDK${java.major}/jdk/src/share/classes" />
 	
 	<!-- URL to Java API -->
-	<property name="jdk.api" value="http://download.oracle.com/javase/${java.version}/docs/api/" />
+	<property name="jdk.api" value="http://download.oracle.com/javase/${java.major}/docs/api/" />
 	
 	<!-- The working folder for these Ant build targets -->
 	<property name="build" value="build" />
@@ -77,7 +77,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 			<classpath>
 				<path refid="classpath" />
 			</classpath>
-			<link href="$jdk.api" />
+			<link href="${jdk.api}" />
 		</javadoc>
 	</target>
 
@@ -168,7 +168,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		</copy>
 
 		<tar destfile="${dist}/${shortname}-${version}.tar.gz" 
-				basedir="${build}" compression="gzip" />
+				basedir="${build}" compression="gzip" longfile="gnu" />
 	</target>
 
 	<!-- Packages the MOEA Framework source code, libraries and required files  -->
@@ -209,7 +209,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		</replace>
 
 		<tar destfile="${dist}/${shortname}-${version}-Source.tar.gz" 
-				basedir="${build}" compression="gzip" />
+				basedir="${build}" compression="gzip" longfile="gnu" />
 	</target>
 
 	<!-- Builds the http://www.moeaframework.org website -->
