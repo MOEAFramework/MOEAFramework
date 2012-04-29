@@ -117,6 +117,16 @@ any changes.
  Medium
 --------
 
+  - The MOEA Framework can currently connect with C/C++ programs by sending
+    data over standard I/O or sockets.  This, however, is not efficient as the
+    data must be serialized, transmitted, and parsed between Java and C.  Java
+    does have the Java Native Interface (JNI) or similar tools like Java Native
+    Access (JNA) for directly invoking methods in natively-compiled libraries.
+    Explore ways to develop a faster interface using JNI.
+    
+  - Develop a MATLAB interface, ideally using the same socket communication
+    scheme employed by ExternalProblem.
+
   - The org.moeaframework.core.fitness package contains code for supporting
     indicator-based methods, but is currently unused.  These should be used to
     implement native indicator-based MOEAs.
