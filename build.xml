@@ -469,12 +469,12 @@ Use of these build scripts requires Apache Ant to be installed.  See
 			<replacefilter token="%DATE%" value="${TODAY}" />
 		</replace>
 		
-		<exec executable="pdflatex" dir="${build}">
+		<exec executable="pdflatex" dir="${build}" failonerror="true">
 			<arg value="manual" />
 		</exec>
 		
 		<!-- run a second time to get references and TOC correct -->
-		<exec executable="pdflatex" dir="${build}">
+		<exec executable="pdflatex" dir="${build}" failonerror="true">
 			<arg value="manual" />
 		</exec>
 		
