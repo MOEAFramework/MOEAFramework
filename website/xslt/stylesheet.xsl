@@ -28,7 +28,7 @@
 				<meta name="description">
 					<xsl:attribute name="content"><xsl:value-of select="description" /></xsl:attribute>
 				</meta>
-				<meta name="keywords" content="multiobjective, optimization, evolutionary, genetic, algorithm, moea, framework, java, lgpl, open, source, download, free" />
+				<meta name="keywords" content="multiobjective, multicriteria, moea, moeas, optimization, optimisation, evolutionary, genetic, algorithm, differential, evolution, particle, swarm, framework, library, java, lgpl, open, source, oss, download, free" />
 				<meta name="robots" content="index, follow, noarchive" />
 				<meta name="googlebot" content="noarchive" />
 				<meta http-equiv="pragma" content="no-cache" />

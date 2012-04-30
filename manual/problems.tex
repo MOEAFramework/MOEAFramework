@@ -193,13 +193,25 @@ import org.moeaframework.problem.ExternalProblem;
 public class Kursawe extends ExternalProblem {
 
 	public Kursawe() {
-		super("kursawe.exe", 3, 2);
+		super("kursawe.exe");
+	}
+	
+	public int getNumberOfVariables() {
+		return 3;
+	}
+	
+	public int getNumberOfObjectives() {
+		return 2;
+	}
+	
+	public int getNumberOfConstraints() {
+		return 0;
 	}
 
 	@Override
 	public Solution newSolution() {
-		Solution solution = new Solution(numberOfVariables, 
-				numberOfObjectives);
+		Solution solution = new Solution(getNumberOfVariables(), 
+				getNumberOfObjectives(), getNumberOfConstraints());
  
 		for (int i = 0; i < numberOfVariables; i++) {
 			solution.setVariable(i, new RealVariable(-5.0, 5.0));

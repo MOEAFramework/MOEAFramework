@@ -25,29 +25,30 @@
 \begin{document}
 
 \frontmatter
-
 \include{title}
 \include{copyright}
 \include{preface}
 \include{contributing}
 \tableofcontents
-%\listoffigures \addcontentsline{toc}{chapter}{List of Figures}
-%\listoftables \addcontentsline{toc}{chapter}{List of Tables}
 
 \mainmatter
+\include{introduction}
 
-%\include{introduction}
+\part{Beginner's Guide - Installing and Using the MOEA Framework}
 \include{installation}
 \include{executor}
 \include{problems}
+
+\part{Advanced Guide - Large-Scale Experiments and other Advanced Topics}
 \include{comparison}
 \include{advanced}
+
+\part{Developer's Guide - Extending and Contributing to the MOEA Framework}
 \include{developer}
 
-\appendix
+%\appendix
 
 \backmatter
-
 \include{license}
 
 %\bibliographystyle{apalike}
