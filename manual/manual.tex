@@ -11,15 +11,18 @@
 
 \documentclass[12pt,twoside]{book}
 
-\usepackage{graphicx}
-\usepackage{hyperref}
-\usepackage{color}
-\usepackage[usenames,dvipsnames]{xcolor}
-\usepackage{listings}
-\usepackage{courier}
-\usepackage{amsmath}
-\usepackage{amssymb}
+\usepackage{graphicx} %insert graphics into text
+\usepackage{wrapfig} %wrap text around figures
+\usepackage[linktocpage=true]{hyperref} %clickable links to text sections, URLs, etc
+\usepackage{color} %explicitly define colors
+\usepackage[usenames,dvipsnames]{xcolor} %predefined named colors
+\usepackage{listings} %source code formatting
+\usepackage{courier} %improved fonts in source code listings
+\usepackage{amsmath} %improved math equations and math formatting
+\usepackage{amssymb} %extended math symbols
+\usepackage{makeidx} %compile index of keywords
 
+\makeindex
 \input{style.tex}
 
 \begin{document}
@@ -49,6 +52,9 @@
 %\appendix
 
 \backmatter
+\addcontentsline{toc}{chapter}{Index}
+\printindex
+\clearpage
 \include{license}
 
 %\bibliographystyle{apalike}

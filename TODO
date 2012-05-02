@@ -12,6 +12,9 @@ any changes.
  Easy
 ------
 
+  - ExtractData is overriding the -h,--help option.  This will be fixed in 
+    version 2.0.
+
   - The UF* and CF* methods in CEC2009 are passed both a double array (x) and
     the length of this array (nx) as arguments.  Remove the nx argument and use
     x.length instead.
