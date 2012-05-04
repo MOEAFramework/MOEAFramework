@@ -32,7 +32,7 @@ import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.PopulationIO;
 import org.moeaframework.core.Problem;
-import org.moeaframework.core.comparator.EpsilonBoxConstraintComparator;
+import org.moeaframework.core.comparator.EpsilonBoxDominanceComparator;
 import org.moeaframework.core.indicator.QualityIndicator;
 import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.core.spi.ProblemFactory;
@@ -301,7 +301,7 @@ public class Evaluator extends CommandLineUtility {
 				&& properties.containsKey("epsilon")) {
 			TypedProperties typedProperties = new TypedProperties(properties);
 			result = new EpsilonBoxDominanceArchive(
-					new EpsilonBoxConstraintComparator(
+					new EpsilonBoxDominanceComparator(
 							typedProperties.getDoubleArray("epsilon", null)),
 					result);
 		}

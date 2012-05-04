@@ -24,21 +24,21 @@ import org.junit.Test;
 import org.moeaframework.core.Solution;
 
 /**
- * Tests the {@link EpsilonBoxConstraintComparator} class.
+ * Tests the {@link ParetoDominanceComparator} class.
  */
-public class EpsilonBoxConstraintComparatorTest {
+public class ParetoObjectiveComparatorTest {
 
 	/**
-	 * The &epsilon;-box constraint comparator used for testing.
+	 * The Pareto dominance comparator used for testing.
 	 */
-	private EpsilonBoxConstraintComparator comparator;
+	private ParetoDominanceComparator comparator;
 
 	/**
 	 * Setup the comparator for use by all test methods.
 	 */
 	@Before
 	public void setUp() {
-		comparator = new EpsilonBoxConstraintComparator(0.5);
+		comparator = new ParetoDominanceComparator();
 	}
 
 	/**
@@ -54,29 +54,14 @@ public class EpsilonBoxConstraintComparatorTest {
 	 */
 	@Test
 	public void testDominance() {
-		Solution solution1 = new Solution(0, 2, 1);
-		Solution solution2 = new Solution(0, 2, 1);
-		Solution solution3 = new Solution(0, 2, 1);
-
-		solution1.setObjectives(new double[] { 0.0, 0.0 });
-		solution1.setConstraint(0, 1.0);
-		solution2.setObjectives(new double[] { 1.0, 1.0 });
-		solution2.setConstraint(0, 0.0);
-		solution3.setObjectives(new double[] { 1.0, 0.0 });
-		solution3.setConstraint(0, 0.0);
-
+		Solution solution1 = new Solution(new double[] { 0.5, 0.5, 0.5 });
+		Solution solution2 = new Solution(new double[] { 0.0, 0.0, 0.0 });
+		Solution solution3 = new Solution(new double[] { 0.5, 0.0, 0.5 });
+		
 		Assert.assertTrue(comparator.compare(solution1, solution2) > 0);
-		Assert.assertFalse(comparator.isSameBox());
-		Assert.assertTrue(comparator.compare(solution2, solution1) < 0);
-		Assert.assertFalse(comparator.isSameBox());
 		Assert.assertTrue(comparator.compare(solution1, solution3) > 0);
-		Assert.assertFalse(comparator.isSameBox());
+		Assert.assertTrue(comparator.compare(solution2, solution1) < 0);
 		Assert.assertTrue(comparator.compare(solution3, solution1) < 0);
-		Assert.assertFalse(comparator.isSameBox());
-		Assert.assertTrue(comparator.compare(solution2, solution3) > 0);
-		Assert.assertFalse(comparator.isSameBox());
-		Assert.assertTrue(comparator.compare(solution3, solution2) < 0);
-		Assert.assertFalse(comparator.isSameBox());
 	}
 
 	/**
@@ -84,18 +69,25 @@ public class EpsilonBoxConstraintComparatorTest {
 	 */
 	@Test
 	public void testNondominance() {
-		Solution solution1 = new Solution(0, 2, 1);
-		Solution solution2 = new Solution(0, 2, 1);
+		Solution solution1 = new Solution(new double[] { 0.5, 0.5, 0.5 });
+		Solution solution2 = new Solution(new double[] { 0.5, 0.0, 1.0 });
 
-		solution1.setObjectives(new double[] { 0.75, 0.25 });
-		solution1.setConstraint(0, 1.0);
-		solution2.setObjectives(new double[] { 0.25, 0.75 });
-		solution2.setConstraint(0, 1.0);
+		Assert.assertEquals(0, comparator.compare(solution1, solution2));
+		Assert.assertEquals(0, comparator.compare(solution2, solution1));
+	}
+	
+	/**
+	 * Tests if the comparator correctly detects non-domination of equal
+	 * solutions, since technically neither solution is superior in any
+	 * objective.
+	 */
+	@Test
+	public void testEquals() {
+		Solution solution1 = new Solution(new double[] { 0.5, 0.5, 0.5 });
+		Solution solution2 = new Solution(new double[] { 0.5, 0.5, 0.5 });
 
-		Assert.assertTrue(comparator.compare(solution1, solution2) == 0);
-		Assert.assertFalse(comparator.isSameBox());
-		Assert.assertTrue(comparator.compare(solution2, solution1) == 0);
-		Assert.assertFalse(comparator.isSameBox());
+		Assert.assertEquals(0, comparator.compare(solution1, solution2));
+		Assert.assertEquals(0, comparator.compare(solution2, solution1));
 	}
 
 }

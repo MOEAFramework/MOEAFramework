@@ -35,7 +35,7 @@ import org.moeaframework.core.comparator.AggregateConstraintComparator;
 import org.moeaframework.core.comparator.ChainedComparator;
 import org.moeaframework.core.comparator.CrowdingComparator;
 import org.moeaframework.core.comparator.DominanceComparator;
-import org.moeaframework.core.comparator.EpsilonBoxConstraintComparator;
+import org.moeaframework.core.comparator.EpsilonBoxDominanceComparator;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
 import org.moeaframework.core.operator.RandomInitialization;
 import org.moeaframework.core.operator.TournamentSelection;
@@ -169,12 +169,10 @@ public class StandardAlgorithms extends AlgorithmProvider {
 
 		Population population = new Population();
 
-		DominanceComparator comparator = new ChainedComparator(
-				new AggregateConstraintComparator(),
-				new ParetoDominanceComparator());
+		DominanceComparator comparator = new ParetoDominanceComparator();
 
 		EpsilonBoxDominanceArchive archive = new EpsilonBoxDominanceArchive(
-				new EpsilonBoxConstraintComparator(properties.getDoubleArray(
+				new EpsilonBoxDominanceComparator(properties.getDoubleArray(
 						"epsilon", new double[] { EpsilonHelper
 								.getEpsilon(problem) })));
 
@@ -205,9 +203,8 @@ public class StandardAlgorithms extends AlgorithmProvider {
 				populationSize);
 
 		NondominatedSortingPopulation population = 
-				new NondominatedSortingPopulation(new ChainedComparator(
-						new AggregateConstraintComparator(),
-						new ParetoDominanceComparator()));
+				new NondominatedSortingPopulation(
+						new ParetoDominanceComparator());
 
 		TournamentSelection selection = new TournamentSelection(2, 
 				new ChainedComparator(
@@ -280,9 +277,7 @@ public class StandardAlgorithms extends AlgorithmProvider {
 		
 		int populationSize = (int)properties.getDouble("populationSize", 100);
 		
-		DominanceComparator comparator = new ChainedComparator(
-				new AggregateConstraintComparator(),
-				new ParetoDominanceComparator());
+		DominanceComparator comparator = new ParetoDominanceComparator();
 
 		NondominatedSortingPopulation population = 
 				new NondominatedSortingPopulation(comparator);
@@ -315,12 +310,11 @@ public class StandardAlgorithms extends AlgorithmProvider {
 				populationSize);
 
 		NondominatedSortingPopulation population = 
-				new NondominatedSortingPopulation(new ChainedComparator(
-						new AggregateConstraintComparator(),
-						new ParetoDominanceComparator()));
+				new NondominatedSortingPopulation(
+						new ParetoDominanceComparator());
 
 		EpsilonBoxDominanceArchive archive = new EpsilonBoxDominanceArchive(
-				new EpsilonBoxConstraintComparator(properties.getDoubleArray(
+				new EpsilonBoxDominanceComparator(properties.getDoubleArray(
 						"epsilon", new double[] { EpsilonHelper
 								.getEpsilon(problem) })));
 
@@ -354,13 +348,12 @@ public class StandardAlgorithms extends AlgorithmProvider {
 		
 		if (properties.contains("epsilon")) {
 			archive = new EpsilonBoxDominanceArchive(
-					new EpsilonBoxConstraintComparator(
+					new EpsilonBoxDominanceComparator(
 							properties.getDoubleArray("epsilon", new double[] {
 									EpsilonHelper.getEpsilon(problem) })));
 		} else {
-			archive = new NondominatedPopulation(new ChainedComparator(
-					new AggregateConstraintComparator(),
-					new ParetoDominanceComparator()));
+			archive = new NondominatedPopulation(
+					new ParetoDominanceComparator());
 		}
 		
 		return new RandomSearch(problem, generator, archive);

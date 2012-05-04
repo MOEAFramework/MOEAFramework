@@ -172,7 +172,10 @@ public class InstrumenterTest {
 		new Instrumenter().attach(collector).instrument(algorithm);
 		
 		Set<Object> instrumentedObjects = collector.getInstrumentedObjects();
-		Assert.assertEquals(4, instrumentedObjects.size());
+		for (Object obj : instrumentedObjects) {
+			System.out.println(obj.getClass());
+		}
+		Assert.assertEquals(6, instrumentedObjects.size());
 		Assert.assertTrue(instrumentedObjects.contains(algorithm));
 		Assert.assertTrue(instrumentedObjects.contains(algorithm.variation));
 		Assert.assertTrue(instrumentedObjects.contains(algorithm.selection));

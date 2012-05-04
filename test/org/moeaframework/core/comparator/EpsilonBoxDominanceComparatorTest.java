@@ -21,7 +21,6 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 
 /**
@@ -55,21 +54,28 @@ public class EpsilonBoxDominanceComparatorTest {
 	 */
 	@Test
 	public void testDominance() {
-		Solution solution1 = new Solution(new double[] { 0.0, 0.0 });
-		Solution solution2 = new Solution(new double[] { 1.0, 1.0 });
-		Solution solution3 = new Solution(new double[] { 1.0, 0.0 });
+		Solution solution1 = new Solution(0, 2, 1);
+		Solution solution2 = new Solution(0, 2, 1);
+		Solution solution3 = new Solution(0, 2, 1);
 
-		Assert.assertTrue(comparator.compare(solution1, solution2) < 0);
+		solution1.setObjectives(new double[] { 0.0, 0.0 });
+		solution1.setConstraint(0, 1.0);
+		solution2.setObjectives(new double[] { 1.0, 1.0 });
+		solution2.setConstraint(0, 0.0);
+		solution3.setObjectives(new double[] { 1.0, 0.0 });
+		solution3.setConstraint(0, 0.0);
+
+		Assert.assertTrue(comparator.compare(solution1, solution2) > 0);
 		Assert.assertFalse(comparator.isSameBox());
-		Assert.assertTrue(comparator.compare(solution2, solution1) > 0);
+		Assert.assertTrue(comparator.compare(solution2, solution1) < 0);
 		Assert.assertFalse(comparator.isSameBox());
-		Assert.assertTrue(comparator.compare(solution1, solution3) < 0);
+		Assert.assertTrue(comparator.compare(solution1, solution3) > 0);
 		Assert.assertFalse(comparator.isSameBox());
-		Assert.assertTrue(comparator.compare(solution3, solution1) > 0);
+		Assert.assertTrue(comparator.compare(solution3, solution1) < 0);
 		Assert.assertFalse(comparator.isSameBox());
-		Assert.assertFalse(comparator.compare(solution2, solution3) < 0);
+		Assert.assertTrue(comparator.compare(solution2, solution3) > 0);
 		Assert.assertFalse(comparator.isSameBox());
-		Assert.assertFalse(comparator.compare(solution3, solution2) > 0);
+		Assert.assertTrue(comparator.compare(solution3, solution2) < 0);
 		Assert.assertFalse(comparator.isSameBox());
 	}
 
@@ -78,46 +84,18 @@ public class EpsilonBoxDominanceComparatorTest {
 	 */
 	@Test
 	public void testNondominance() {
-		Solution solution1 = new Solution(new double[] { 0.75, 0.25 });
-		Solution solution2 = new Solution(new double[] { 0.25, 0.75 });
+		Solution solution1 = new Solution(0, 2, 1);
+		Solution solution2 = new Solution(0, 2, 1);
+
+		solution1.setObjectives(new double[] { 0.75, 0.25 });
+		solution1.setConstraint(0, 1.0);
+		solution2.setObjectives(new double[] { 0.25, 0.75 });
+		solution2.setConstraint(0, 1.0);
 
 		Assert.assertTrue(comparator.compare(solution1, solution2) == 0);
 		Assert.assertFalse(comparator.isSameBox());
 		Assert.assertTrue(comparator.compare(solution2, solution1) == 0);
 		Assert.assertFalse(comparator.isSameBox());
-	}
-
-	/**
-	 * Test if an {@code EpsilonBoxDominanceComparator} correctly detects
-	 * dominance within the same &epsilon;-box (i.e., selects the solution 
-	 * nearer to the optimal corner).
-	 */
-	@Test
-	public void testDominanceInBox() {
-		Solution solution1 = new Solution(new double[] { 0.15, 0.35 });
-		Solution solution2 = new Solution(new double[] { 0.2, 0.2 });
-
-		Assert.assertTrue(comparator.compare(solution1, solution2) > 0);
-		Assert.assertTrue(comparator.isSameBox());
-		Assert.assertTrue(comparator.compare(solution2, solution1) < 0);
-		Assert.assertTrue(comparator.isSameBox());
-	}
-
-	/**
-	 * Tests if an {@code EpsilonBoxDominanceComparator} correctly extends the
-	 * epsilon array.
-	 */
-	@Test
-	public void testEpsilonExtension() {
-		EpsilonBoxDominanceComparator comparator = 
-				new EpsilonBoxDominanceComparator(new double[] { 0.1, 0.2 });
-
-		Assert.assertEquals(0.1, comparator.getEpsilon(0), Settings.EPS);
-		Assert.assertEquals(0.2, comparator.getEpsilon(1), Settings.EPS);
-		Assert.assertEquals(0.2, comparator.getEpsilon(2), Settings.EPS);
-		Assert.assertEquals(0.2, comparator.getEpsilon(Integer.MAX_VALUE),
-				Settings.EPS);
-		Assert.assertEquals(2, comparator.getNumberOfDefinedEpsilons());
 	}
 
 }

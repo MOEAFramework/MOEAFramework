@@ -64,10 +64,6 @@ any changes.
   - Add unit tests for the examples.  These tests should simulate the
     instructions provided on the website.
 
-  - Need to ensure that constrained solutions are appropriately handled when
-    constructing approximation sets or used in code that does not handle
-    constraints (i.e., indicators).
-
   - To provide consistent output, use of YAML is preferred.  YAML is preferred
     over formats like XML and JSON due to its very simple and human-readable
     syntax.  Find and upgrade output code which is not yet in a YAML format.

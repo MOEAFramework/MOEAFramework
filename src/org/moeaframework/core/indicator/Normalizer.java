@@ -25,8 +25,9 @@ import org.moeaframework.core.Solution;
 
 /**
  * Normalizes populations so that all objectives reside in the range {@code
- * [0, 1]}.  A reference set should be used to ensure the normalization is
- * uniformly applied.
+ * [0, 1]}.  This normalization ignores infeasible solutions, so the resulting
+ * normalized population contains no infeasible solutions.  A reference set
+ * should be used to ensure the normalization is uniformly applied.
  */
 public class Normalizer {
 	
@@ -73,6 +74,11 @@ public class Normalizer {
 
 		for (int i = 0; i < population.size(); i++) {
 			Solution solution = population.get(i);
+			
+			if (solution.violatesConstraints()) {
+				continue;
+			}
+			
 			for (int j = 0; j < problem.getNumberOfObjectives(); j++) {
 				minimum[j] = Math.min(minimum[j], solution.getObjective(j));
 				maximum[j] = Math.max(maximum[j], solution.getObjective(j));
@@ -134,14 +140,18 @@ public class Normalizer {
 	 */
 	private void normalize(Population originalSet, Population normalizedSet) {
 		for (Solution solution : originalSet) {
+			if (solution.violatesConstraints()) {
+				continue;
+			}
+			
 			solution = solution.copy();
-
+	
 			for (int j = 0; j < problem.getNumberOfObjectives(); j++) {
 				solution.setObjective(j,
-						(solution.getObjective(j) - minimum[j])
-								/ (maximum[j] - minimum[j]));
+						(solution.getObjective(j) - minimum[j]) /
+						(maximum[j] - minimum[j]));
 			}
-
+	
 			normalizedSet.add(solution);
 		}
 	}

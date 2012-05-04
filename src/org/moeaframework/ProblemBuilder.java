@@ -27,9 +27,7 @@ import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PopulationIO;
 import org.moeaframework.core.Problem;
-import org.moeaframework.core.comparator.AggregateConstraintComparator;
-import org.moeaframework.core.comparator.ChainedComparator;
-import org.moeaframework.core.comparator.EpsilonBoxConstraintComparator;
+import org.moeaframework.core.comparator.EpsilonBoxDominanceComparator;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
 import org.moeaframework.core.spi.ProblemFactory;
 
@@ -209,12 +207,10 @@ class ProblemBuilder {
 	 */
 	NondominatedPopulation newArchive() {
 		if (epsilon == null) {
-			return new NondominatedPopulation(new ChainedComparator(
-					new AggregateConstraintComparator(),
-					new ParetoDominanceComparator()));
+			return new NondominatedPopulation(new ParetoDominanceComparator());
 		} else {
 			return new EpsilonBoxDominanceArchive(
-					new EpsilonBoxConstraintComparator(epsilon));
+					new EpsilonBoxDominanceComparator(epsilon));
 		}
 	}
 	

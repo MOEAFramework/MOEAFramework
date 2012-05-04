@@ -30,8 +30,6 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Selection;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
-import org.moeaframework.core.comparator.AggregateConstraintComparator;
-import org.moeaframework.core.comparator.ChainedComparator;
 import org.moeaframework.core.comparator.DominanceComparator;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
 
@@ -79,9 +77,7 @@ public class EpsilonMOEA extends AbstractEvolutionaryAlgorithm implements
 			EpsilonBoxDominanceArchive archive, Selection selection,
 			Variation variation, Initialization initialization) {
 		this(problem, population, archive, selection, variation,
-				initialization, new ChainedComparator(
-						new AggregateConstraintComparator(),
-						new ParetoDominanceComparator()));
+				initialization, new ParetoDominanceComparator());
 	}
 
 	/**

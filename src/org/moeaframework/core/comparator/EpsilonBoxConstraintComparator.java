@@ -17,56 +17,45 @@
  */
 package org.moeaframework.core.comparator;
 
-import org.moeaframework.core.Solution;
+import java.io.Serializable;
 
 /**
  * Compares solutions first using the {@link AggregateConstraintComparator}
  * followed by the {@link EpsilonBoxDominanceComparator}.
+ * 
+ * @deprecated Will be removed in version 2.0; use EpsilonBoxDominanceComparator
+ *             instead
  */
+@Deprecated
 public class EpsilonBoxConstraintComparator extends
-EpsilonBoxDominanceComparator {
+EpsilonBoxDominanceComparator implements Serializable {
 
-	private static final long serialVersionUID = -5691444587961578117L;
-
-	/**
-	 * The aggregate constraint comparator.
-	 */
-	private final AggregateConstraintComparator comparator;
+	private static final long serialVersionUID = -7470779078938449587L;
 
 	/**
-	 * Constructs a dominance comparator for comparing solutions first using the
-	 * {@link AggregateConstraintComparator} followed by the
-	 * {@link EpsilonBoxDominanceComparator} with the specified &epsilon; value.
+	 * Constructs a dominance comparator for comparing solutions using the
+	 * {@link EpsilonBoxDominanceComparator}.
 	 * 
 	 * @param epsilon the epsilon value used by this comparator
+	 * @deprecated Will be removed in version 2.0; use
+	 *             EpsilonBoxDominanceComparator instead
 	 */
+	@Deprecated
 	public EpsilonBoxConstraintComparator(double epsilon) {
 		super(epsilon);
-		comparator = new AggregateConstraintComparator();
 	}
 
 	/**
-	 * Constructs a dominance comparator for comparing solutions first using the
-	 * {@link AggregateConstraintComparator} followed by the
-	 * {@link EpsilonBoxDominanceComparator} with the specified &epsilon; value.
+	 * Constructs a dominance comparator for comparing solutions using the
+	 * {@link EpsilonBoxDominanceComparator}.
 	 * 
 	 * @param epsilons the epsilon values used by this comparator
+	 * @deprecated Will be removed in version 2.0; use
+	 *             EpsilonBoxDominanceComparator instead
 	 */
+	@Deprecated
 	public EpsilonBoxConstraintComparator(double[] epsilons) {
 		super(epsilons);
-		comparator = new AggregateConstraintComparator();
-	}
-
-	@Override
-	public int compare(Solution solution1, Solution solution2) {
-		int flag = comparator.compare(solution1, solution2);
-
-		if (flag != 0) {
-			isSameBox = false;
-			return flag;
-		} else {
-			return super.compare(solution1, solution2);
-		}
 	}
 
 }

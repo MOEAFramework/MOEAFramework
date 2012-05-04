@@ -32,6 +32,11 @@ Framework.
     a temporary measure for working with maximization objectives until more
     integrated support is available.
     
+  * Restructures the dominance comparators so that the default comparators
+    include constraint violation checks by default.  Also deprecates the
+    EpsilonBoxConstraintComparator as its functionality is now redundant with
+    EpsilonBoxDominanceComparator.
+    
   * Removes over 300 lines of redundant code from UF11, UF12 and UF13 test
     problems from the CEC 2009 test problem suite.  The redundant code was
     replaced by calls to existing code in DTLZ2, DTLZ3 and WFG1.
