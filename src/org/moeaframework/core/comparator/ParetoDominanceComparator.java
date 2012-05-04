@@ -21,7 +21,17 @@ import java.io.Serializable;
 
 /**
  * Compares two solutions using aggregate constraint violation and the Pareto
- * dominance relation.
+ * dominance relation as originally proposed by Kalyanmoy Deb.
+ * <p>
+ * References:
+ * <ol>
+ * <li>Kalyanmoy, D., "An Efficient Constraint Handling Method for Genetic
+ * Algorithms." Computer Methods in Applied Mechanics and Engineering, pp.
+ * 311--338, 1998.
+ * </ol>
+ * 
+ * @see AggregateConstraintComparator
+ * @see ParetoObjectiveComparator
  */
 public class ParetoDominanceComparator extends ChainedComparator implements
 Serializable {

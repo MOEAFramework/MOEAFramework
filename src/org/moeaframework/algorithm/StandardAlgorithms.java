@@ -31,7 +31,6 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variable;
 import org.moeaframework.core.Variation;
-import org.moeaframework.core.comparator.AggregateConstraintComparator;
 import org.moeaframework.core.comparator.ChainedComparator;
 import org.moeaframework.core.comparator.CrowdingComparator;
 import org.moeaframework.core.comparator.DominanceComparator;
@@ -208,7 +207,6 @@ public class StandardAlgorithms extends AlgorithmProvider {
 
 		TournamentSelection selection = new TournamentSelection(2, 
 				new ChainedComparator(
-						new AggregateConstraintComparator(),
 						new ParetoDominanceComparator(),
 						new CrowdingComparator()));
 
@@ -320,7 +318,6 @@ public class StandardAlgorithms extends AlgorithmProvider {
 
 		TournamentSelection selection = new TournamentSelection(2, 
 				new ChainedComparator(
-						new AggregateConstraintComparator(),
 						new ParetoDominanceComparator(),
 						new CrowdingComparator()));
 

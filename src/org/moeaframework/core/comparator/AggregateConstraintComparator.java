@@ -23,18 +23,9 @@ import java.util.Comparator;
 import org.moeaframework.core.Solution;
 
 /**
- * Compares solutions based on their magnitude of constraint violations. Using
- * the method proposed by Kalyanmoy Deb, infeasible solutions are compared
- * solely on the magnitude of their constraint violation. Absolute values of
- * constraints are used, so only the magnitude of the constraint violation is
- * important.
- * <p>
- * References:
- * <ol>
- * <li>Kalyanmoy, D., "An Efficient Constraint Handling Method for Genetic
- * Algorithms." Computer Methods in Applied Mechanics and Engineering, pp.
- * 311--338, 1998.
- * </ol>
+ * Compares solutions based on their magnitude of constraint violations. 
+ * Absolute values of constraints are used, so only the magnitude of the
+ * constraint violation is important.
  */
 public class AggregateConstraintComparator implements DominanceComparator,
 Comparator<Solution>, Serializable {
