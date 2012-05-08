@@ -137,8 +137,8 @@ public class EpsilonMOEA extends AbstractEvolutionaryAlgorithm implements
 		boolean dominated = false;
 
 		for (int i = 0; i < population.size(); i++) {
-			int flag = dominanceComparator.compare(newSolution, population
-					.get(i));
+			int flag = dominanceComparator.compare(newSolution, 
+			        population.get(i));
 
 			if (flag < 0) {
 				dominates.add(i);

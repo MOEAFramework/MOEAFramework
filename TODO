@@ -12,6 +12,21 @@ any changes.
  Easy
 ------
 
+  - Add unit tests to ensure constraints are not used by any of the performance
+    indicators.
+
+  - Add constructors for epsilon arrays to EpsilonBoxDominanceArchive and any
+    other classes that use epsilons.  Should these be varadic arrays?
+
+  - ResultFileWriter and MetricFileWriter are technically appenders.  Add
+    ResultFileAppender and MetricFileAppender for the case when we want to
+    recover and append to the file, and have ResultFileWriter and
+    MetricFileWriter start the file from the beginning.  This change will be
+    implemented in version 2.0.  This should also allow ResultFileWriter to not
+    need the Problem argument, making saving datasets easier.  The
+    ResultFileAppender would still need the Problem in order to validate the
+    saved entries.
+
   - ExtractData is overriding the -h,--help option.  This will be fixed in 
     version 2.0.
 
