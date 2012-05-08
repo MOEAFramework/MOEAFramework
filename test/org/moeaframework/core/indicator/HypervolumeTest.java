@@ -24,6 +24,7 @@ import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
+import org.moeaframework.core.Solution;
 import org.moeaframework.core.spi.ProblemFactory;
 
 /**
@@ -55,6 +56,26 @@ public class HypervolumeTest extends IndicatorTest {
 		NondominatedPopulation referenceSet = ProblemFactory.getInstance()
 				.getReferenceSet("DTLZ2_2");
 		NondominatedPopulation approximationSet = new NondominatedPopulation();
+
+		Hypervolume hypervolume = new Hypervolume(problem, referenceSet);
+		Assert.assertEquals(0.0, hypervolume.evaluate(approximationSet), 
+				Settings.EPS);
+	}
+	
+	/**
+	 * Tests if infeasible solutions are properly ignored.
+	 */
+	@Test
+	public void testInfeasibleApproximationSet() {
+		Problem problem = ProblemFactory.getInstance().getProblem("CF1");
+		NondominatedPopulation referenceSet = ProblemFactory.getInstance()
+				.getReferenceSet("CF1");
+		NondominatedPopulation approximationSet = new NondominatedPopulation();
+		
+		Solution solution = problem.newSolution();
+		solution.setObjectives(new double[] { 0.5, 0.5 });
+		solution.setConstraints(new double[] { 10.0 });
+		approximationSet.add(solution);
 
 		Hypervolume hypervolume = new Hypervolume(problem, referenceSet);
 		Assert.assertEquals(0.0, hypervolume.evaluate(approximationSet), 

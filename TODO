@@ -12,9 +12,6 @@ any changes.
  Easy
 ------
 
-  - Add unit tests to ensure constraints are not used by any of the performance
-    indicators.
-
   - Add constructors for epsilon arrays to EpsilonBoxDominanceArchive and any
     other classes that use epsilons.  Should these be varadic arrays?
 

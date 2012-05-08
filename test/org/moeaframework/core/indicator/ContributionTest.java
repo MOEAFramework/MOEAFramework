@@ -21,7 +21,9 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.TestUtils;
 import org.moeaframework.core.NondominatedPopulation;
+import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
+import org.moeaframework.core.Solution;
 import org.moeaframework.core.spi.ProblemFactory;
 
 /**
@@ -50,6 +52,26 @@ public class ContributionTest {
 		NondominatedPopulation referenceSet = ProblemFactory.getInstance()
 				.getReferenceSet("DTLZ2_2");
 		NondominatedPopulation approximationSet = new NondominatedPopulation();
+
+		Contribution c = new Contribution(referenceSet, 0.25);
+		Assert.assertEquals(0.0, c.evaluate(approximationSet), 
+				Settings.EPS);
+	}
+	
+	/**
+	 * Tests if infeasible solutions are properly ignored.
+	 */
+	@Test
+	public void testInfeasibleApproximationSet() {
+		Problem problem = ProblemFactory.getInstance().getProblem("CF1");
+		NondominatedPopulation referenceSet = ProblemFactory.getInstance()
+				.getReferenceSet("CF1");
+		NondominatedPopulation approximationSet = new NondominatedPopulation();
+		
+		Solution solution = problem.newSolution();
+		solution.setObjectives(new double[] { 0.5, 0.5 });
+		solution.setConstraints(new double[] { 10.0 });
+		approximationSet.add(solution);
 
 		Contribution c = new Contribution(referenceSet, 0.25);
 		Assert.assertEquals(0.0, c.evaluate(approximationSet), 
