@@ -34,9 +34,9 @@ any changes.
   - An issue is cropping up when an approximation set is empty (no feasible
     solutions).  The distance metrics result in a value of infinity.  This in
     itself is fine, but becomes problematic when averaging the values with
-    SimpleStatistics as a single infinity value skews the results.  Ideally,
-    the Evaluator/ResultFileEvaluator should include an argument that specifies
-    the maximum indicator value.
+    SimpleStatistics as a single infinity value skews the results.  Add
+    configuration options in global.properties that controls the min/max limits
+    for the objectives.
 
   - Need to determine for which classes does value-based equals methods make
     sense, and provide equals and hashCode implementations for these classes.

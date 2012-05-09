@@ -22,18 +22,22 @@ This user manual is divided into the following three parts:
 
 \section{Key Features}
 
-\begin{itemize}
-  \item Fast, reliable implementations of many state-of-the-art multiobjective evolutionary algorithms
-  \item Extensible with custom algorithms, problems and operators
-  \item Modular design for constructing new optimization algorithms from existing components
-  \item Permissive open source license
-  \item Fully documented source code
-  \item Over 1000 test cases to ensure validity
-\end{itemize}
+\paragraph{Fast, reliable implementations of many state-of-the-art multiobjective evolutionary algorithms.}  The MOEA Framework contains internally NSGA-II, $\epsilon$-MOEA, $\epsilon$-NSGA-II, GDE3 and MOEA/D.  These algorithms are optimized for performance, making them readily available for high performance applications.  By also supporting the JMetal and PISA libraries, the MOEA Framework provides access to $24$ multiobjective optimization algorithms.
+
+\paragraph{Extensible with custom algorithms, problems and operators.}  The MOEA Framework provides a base set of algorithms, test problems and search operators, but can also be easily extended to include additional components.  Using a Service Provider Interface (SPI), new algorithms and problems are seamlessly integrated within the MOEA Framework.  
+
+\paragraph{Modular design for constructing new optimization algorithms from existing components.}  The well-structured, object-oriented design of the MOEA Framework library allows combining existing components to construct new optimization algorithms.  And if needed functionality is not available in the MOEA Framework, you can always extend an existing class or add new classes to support any desired feature.
+
+\paragraph{Permissive open source license.}  The MOEA Framework is licensed under the free and open GNU Lesser General Public License, version 3 or (at your option) any later version.  This allows end users to study, modify, and distribute the MOEA Framework freely.
+
+\paragraph{Fully documented source code.}  The source code is fully documented and is frequently updated to remain consistent with any changes.  Furthermore, an extensive user manual is provided detailing the use of the MOEA Framework in detail.
+
+\paragraph{Extensive support available online.}  As an actively maintained project, bug fixes and new features are constantly added.  We are constantly striving to improve this product.  To aid this process, our website provides the tools to report bugs, request new features, or get answers to your questions.
+
+\paragraph{Over 1000 test cases to ensure validity.}  Every release of the MOEA Framework undergoes extensive testing and quality control checks.  And, if any bugs are discovered that survive this testing, we will promptly fix the issues and release patches.  
 
 \section{Other Java Frameworks}
-
-There exist a number of Java optimization framework developed over the years.  This section discusses the advantages and disadvantages of each framework.
+There exist a number of Java optimization framework developed over the years.  This section discusses the advantages and disadvantages of each framework.  While we appreciate your interest in the MOEA Framework, it is always useful to be aware of the available tools which may suit your specific needs better.
 
 \subsection{Watchmaker Framework}
 \begin{wrapfigure}{l}{4cm}
@@ -152,3 +156,6 @@ Opt4J provides perhaps the cleanest MOEA implementation.  It takes modularity to
 %    \end{itemize}
 %\end{description}
 %\end{quote}
+
+\section{Getting Help}
+This user guide is the most comprehensive resource for learning about the MOEA Framework.  However, as this manual is still a work in progress, you may need to turn to some other resources to find answers to your questions.  Our website at \webpage{http://www.moeaframework.org} contains links to the API documentation, which provides access to the detailed source code documentation.  This website also has links to file bugs or request new features.  If you still can not find an answer to your question, feel free to contact us at \mailto{support@moeaframework.org}.
