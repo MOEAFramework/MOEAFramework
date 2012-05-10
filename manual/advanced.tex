@@ -155,3 +155,99 @@ If all else fails, the hypervolume calculation can be disabled.  When disabled, 
 \begin{lstlisting}[language=Plaintext]
 org.moeaframework.core.indicator.hypervolume_enabled = false
 \end{lstlisting}
+
+\section{Storing Large Datasets}
+When dealing with large datasets, proper data organization and management is key to avoiding headaches.  A number of tools are provided by the MOEA Framework for storing and manipulating large datasets.  The two key classes are the \java{ResultFileWriter} and \java{ResultFileReader}.  A result file is a collection of one or more approximation sets.  Each entry in the result file is the approximation set, including the decision variables and objectives for all solutions in the approximation set, and any additiona metadata you provide.  Note that this approximation set does not contain any constraints, as only feasible solutions are written in a result file.
+
+\subsection{Writing Result Files}
+
+The \java{ResultFileWriter} class is used to write result files.  The example code below demonstrates running the UF1 problem and recording the approximation set at each generation.  In addition, two pieces of metadata are stored: the current number of objective function evaluations (NFE) and the elapsed time.
+
+\begin{lstlisting}[language=Java]
+Problem problem = null;
+Algorithm algorithm = null;
+ResultFileWriter writer = null;
+long startTime = System.currentTimeMillis();
+
+try {
+  problem = ProblemFactory.getInstance().getProblem("UF1");  
+  algorithm = AlgorithmFactory.getInstance().getAlgorithm(
+      "NSGAII", new Properties(), problem);
+
+  try {
+    writer = new ResultFileWriter(problem, new File("result.set"));
+
+    //run the algorithm
+    while (!algorithm.isTerminated() && 
+        (algorithm.getNumberOfEvaluations() < 10000)) {
+      algorithm.step(); //run one generation of the algorithm
+    
+      TypedProperties properties = new TypedProperties();
+      properties.setInt("NFE", algorithm.getNumberOfEvaluations());
+      properties.setLong("ElapsedTime", System.currentTimeMillis()-start);
+      
+      writer.append(new ResultEntry(algorithm.getResult(), properties));
+    }
+  } finally {
+    //close the result file writer
+    if (writer != null) {
+      writer.close();
+    }
+  }
+} finally {
+  //close the problem to free any resources
+  if (problem != null) {
+    problem.close(); 
+  }
+}
+\end{lstlisting}
+
+\begin{important}
+If the file you are saving already exists, the \java{ResultFileWriter} appends any new data to the end of the file.  If you do not want to append to any existing data, delete any old file first.
+\end{important}
+
+\subsection{Extract Information from Result Files}
+The \java{ExtractData} command line utility is an extremely useful tool for extracting information from a result file.  It can extract any properties from the file as well as calculate specific performance indicators, and outputs this data in a clean, tabular format which can be read into spreadsheet software, such as LibreOffice Calc or Microsoft Excel.  When only extracting metadata, you need only specify the input file and the property keys to extract.  For instance, continuing the example from above, we can extract the \plaintext{NFE} and \plaintext{ElapsedTime} properties with the following command:
+
+\begin{lstlisting}[language=Plaintext]
+java org.moeaframework.analysis.sensitivity.ExtractData
+    --problem UF1
+    --input result.set
+    NFE ElapsedTime
+\end{lstlisting}
+
+The output of this command will appear similar to:
+
+\begin{lstlisting}[language=Plaintext]
+#NFE ElapsedTime
+100     125
+200     156
+300     172
+400     187
+500     203
+...
+\end{lstlisting}
+
+Performance indicators can be calculated using one of the ``plus options.''  The options for the supported performance indicators include \plaintext{+hypervolume} for hypervolume, \plaintext{+generational} for generational distance, \plaintext{+inverted} for inverted generational distance, \plaintext{+epsilon} for additive $\epsilon$-indicator, \plaintext{+error} for maximum Pareto front error, \plaintext{+spacing} for spacing, and \plaintext{+contribution} for reference set contribution/coverage.  In addition, you must specify the problem, reference set, and optionally the $\epsilon$ values to use when calculating contribution.  For example:
+
+\begin{lstlisting}[language=Plaintext]
+java org.moeaframework.analysis.sensitivity.ExtractData
+    --problem UF1
+    --input result.set
+    --reference ./pf/UF1.dat
+    NFE ElapsedTime +hypervolume +epsilon +coverage
+\end{lstlisting}
+
+The added performance indicators will appear alongside the other properties:
+
+\begin{lstlisting}[language=Plaintext]
+#NFE ElapsedTime +hypervolume +epsilon +contribution
+100     125          0.0      1.287951      0.0
+200     156          0.0      1.149751      0.0
+300     172          0.0      1.102796      0.0
+400     187          0.0      1.083581      0.0
+500     203          0.0      0.959353      0.0
+...
+\end{lstlisting}
+
+Additional command line options allow you to format the output, such as removing the column header line or specifying the column separator character.
