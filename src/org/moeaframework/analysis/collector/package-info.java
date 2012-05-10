@@ -28,12 +28,16 @@
  * <table width="100%" border="1" cellpadding="3" cellspacing="0">
  *   <tr class="TableHeadingColor">
  *     <th width="25%" align="left">Key</th>
- *     <th width="75%" align="left">Description</th>
+ *     <th width="50%" align="left">Description</th>
+ *     <th width="25%" align="left">Collector</th>
  *   </tr>
  *   <tr>
  *     <td>{@code NFE}</td>
  *     <td>
  *       The number of objective function evaluations.
+ *     </td>
+ *     <td>
+ *       None (Always Saved)
  *     </td>
  *   </tr>
  *   <tr>
@@ -42,11 +46,17 @@
  *       The approximation set of non-dominated solutions discovered by the
  *       algorithm.  This collector consumes large quantities of memory.
  *     </td>
+ *     <td>
+ *       {@link org.moeaframework.analysis.collector.ApproximationSetCollector}
+ *     </td>
  *   </tr>
  *   <tr>
  *     <td>{@code Elapsed Time}</td>
  *     <td>
  *       The wall-clock time elapsed since the start of the algorithm.
+ *     </td>
+ *     <td>
+ *       {@link org.moeaframework.analysis.collector.ElapsedTimeCollector}
  *     </td>
  *   </tr>
  *   <tr>
@@ -54,11 +64,17 @@
  *     <td>
  *       The number of time continuation or &epsilon;-continuation restarts.
  *     </td>
+ *     <td>
+ *       {@link org.moeaframework.analysis.collector.AdaptiveTimeContinuationCollector}
+ *     </td>
  *   </tr>
  *   <tr>
  *     <td>{@code Number of Improvements}</td>
  *     <td>
  *       The number of &epsilon;-dominance improvements detected.
+ *     </td>
+ *     <td>
+ *       {@link org.moeaframework.analysis.collector.EpsilonProgressCollector}
  *     </td>
  *   </tr>
  *   <tr>
@@ -67,15 +83,8 @@
  *       The number of strictly dominating &epsilon;-dominance improvements
  *       detected.
  *     </td>
- *   </tr>
- *   <tr>
- *     <td>Indicator Name</td>
  *     <td>
- *       The value of a performance indicator.  Current indicators include
- *       {@code AdditiveEpsilonIndicator}, {@code Contribution},
- *       {@code GenerationalDistance}, {@code Hypervolume},
- *       {@code InvertedGenerationalDistance},
- *       {@code MaximumParetoFrontError} and {@code Spacing}.
+ *       {@link org.moeaframework.analysis.collector.EpsilonProgressCollector}
  *     </td>
  *   </tr>
  *   <tr>
@@ -83,19 +92,78 @@
  *     <td>
  *       The size of the population.
  *     </td>
+ *     <td>
+ *       {@link org.moeaframework.analysis.collector.PopulationSizeCollector}
+ *     </td>
  *   </tr>
  *   <tr>
  *     <td>{@code Archive Size}</td>
  *     <td>
  *       The size of the archive.
  *     </td>
+ *     <td>
+ *       {@link org.moeaframework.analysis.collector.PopulationSizeCollector}
+ *     </td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@code AdditiveEpsilonIndicator}</td>
+ *     <td>
+ *       The value of the additive &epsilon;-indicator performance indicator.
+ *     </td>
+ *     <td>{@link org.moeaframework.analysis.collector.IndicatorCollector}</td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@code Contribution}</td>
+ *     <td>
+ *       The value of the contribution/coverage performance indicator.
+ *     </td>
+ *     <td>{@link org.moeaframework.analysis.collector.IndicatorCollector}</td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@code GenerationalDistance}</td>
+ *     <td>
+ *       The value of the generational distance performance indicator.
+ *     </td>
+ *     <td>{@link org.moeaframework.analysis.collector.IndicatorCollector}</td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@code Hypervolume}</td>
+ *     <td>
+ *       The value of the hypervolume performance indicator.
+ *     </td>
+ *     <td>{@link org.moeaframework.analysis.collector.IndicatorCollector}</td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@code InvertedGenerationalDistance}</td>
+ *     <td>
+ *       The value of the inverted generational distance performance indicator.
+ *     </td>
+ *     <td>{@link org.moeaframework.analysis.collector.IndicatorCollector}</td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@code MaximumParetoFrontError}</td>
+ *     <td>
+ *       The value of the maximum Pareto front error performance indicator.
+ *     </td>
+ *     <td>{@link org.moeaframework.analysis.collector.IndicatorCollector}</td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@code Spacing}</td>
+ *     <td>
+ *       The value of the spacing performance indicator.
+ *     </td>
+ *     <td>{@link org.moeaframework.analysis.collector.IndicatorCollector}</td>
  *   </tr>
  *   <tr>
  *     <td>Operator Name</td>
  *     <td>
  *       The probability of an operator being selected by adaptive multimethod
  *       variation.  Use the string name for the operator used by
- *       {@link OperatorFactory}, such as {@code "PCX"} or {@code "SBX+PM"}.
+ *       {@link org.moeaframework.core.spi.OperatorFactory}, such as
+ *       {@code "PCX"} or {@code "SBX+PM"}.
+ *     </td>
+ *     <td>
+ *       {@link org.moeaframework.analysis.collector.AdaptiveMultimethodVariationCollector}
  *     </td>
  *   </tr>
  * </table>
