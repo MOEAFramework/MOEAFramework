@@ -167,7 +167,7 @@
   <tr>
     <td class="package">org.moeaframewwork.analysis.collector</td>
     <td class="good">86.3 %</td>
-    <td></td>
+    <td>Tests only check functionality, not correctness</td>
   </tr>
   <tr>
     <td class="package">org.moeaframework.analysis.diagnostics</td>

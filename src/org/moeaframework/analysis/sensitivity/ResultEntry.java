@@ -20,6 +20,7 @@ package org.moeaframework.analysis.sensitivity;
 import java.util.Properties;
 
 import org.moeaframework.core.NondominatedPopulation;
+import org.moeaframework.util.TypedProperties;
 
 /**
  * An entry in a result file.
@@ -61,6 +62,19 @@ public class ResultEntry {
 		super();
 		this.population = population;
 		this.properties = properties;
+	}
+	
+	/**
+	 * Constructs a result file entry with the specified non-dominated
+	 * population and auxiliary properties.
+	 * 
+	 * @param population the non-dominated population stored in this entry
+	 * @param properties the auxiliary properties stored in this entry
+	 */
+	public ResultEntry(NondominatedPopulation population,
+			TypedProperties properties) {
+		this(population, properties == null ? null : 
+				properties.getProperties());
 	}
 
 	/**

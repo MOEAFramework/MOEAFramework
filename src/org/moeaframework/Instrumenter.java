@@ -604,7 +604,11 @@ public class Instrumenter extends ProblemBuilder {
 		}
 		
 		if (includeApproximationSet) {
-			collectors.add(new ApproximationSetCollector());
+			if (epsilon == null) {
+				collectors.add(new ApproximationSetCollector());
+			} else {
+				collectors.add(new ApproximationSetCollector(epsilon));
+			}
 		}
 		
 		if (includePopulationSize) {

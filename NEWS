@@ -37,6 +37,9 @@ Framework.
     EpsilonBoxConstraintComparator as its functionality is now redundant with
     EpsilonBoxDominanceComparator.
     
+  * Updates Instrumenter to only record epsilon-dominant solutions if epsilons
+    are provided.
+    
   * Removes over 300 lines of redundant code from UF11, UF12 and UF13 test
     problems from the CEC 2009 test problem suite.  The redundant code was
     replaced by calls to existing code in DTLZ2, DTLZ3 and WFG1.

@@ -36,6 +36,7 @@ import org.moeaframework.core.variable.Grammar;
 import org.moeaframework.core.variable.Permutation;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.AbstractProblem;
+import org.moeaframework.util.TypedProperties;
 
 /**
  * Tests the {@link ResultFileWriter} class.
@@ -170,7 +171,7 @@ public class ResultFileWriterTest {
 		
 		try {
 			writer = new ResultFileWriter(problem, file);
-			writer.append(new ResultEntry(population, null));
+			writer.append(new ResultEntry(population, (TypedProperties)null));
 		} finally {
 			if (writer != null) {
 				writer.close();
@@ -460,7 +461,7 @@ public class ResultFileWriterTest {
 		
 		try {
 			writer = new ResultFileWriter(problem, file);
-			writer.append(new ResultEntry(population, null));
+			writer.append(new ResultEntry(population, (Properties)null));
 		} finally {
 			if (writer != null) {
 				writer.close();

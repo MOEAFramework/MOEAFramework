@@ -20,7 +20,10 @@ package org.moeaframework.analysis.collector;
 import java.util.ArrayList;
 
 import org.moeaframework.core.Algorithm;
+import org.moeaframework.core.EpsilonBoxDominanceArchive;
+import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.comparator.EpsilonBoxDominanceComparator;
 
 /**
  * Collects approximation sets from an {@link Algorithm}.
@@ -34,11 +37,37 @@ public class ApproximationSetCollector implements Collector {
 	private final Algorithm algorithm;
 	
 	/**
-	 * Constructs an unattached collector for recording approximation sets from
-	 * an algorithm.
+	 * The &epsilon;-values used when collecting only the &epsilon;-dominant
+	 * solutions; or {@code null} if regular Pareto dominance is used.
+	 */
+	private final double[] epsilon;
+	
+	/**
+	 * Constructs an unattached collector for recording Pareto dominance
+	 * approximation sets from an algorithm.
 	 */
 	public ApproximationSetCollector() {
-		this(null);
+		this(null, null);
+	}
+	
+	/**
+	 * Constructs an unattached collector for recording &epsilon;-box dominance
+	 * approximation sets from an algorithm.
+	 * 
+	 * @param epsilon the &epsilon; value
+	 */
+	public ApproximationSetCollector(double epsilon) {
+		this(null, new double[] { epsilon });
+	}
+	
+	/**
+	 * Constructs an unattached collector for recording &epsilon;-box dominance
+	 * approximation sets from an algorithm.
+	 * 
+	 * @param epsilon the &epsilon; values
+	 */
+	public ApproximationSetCollector(double[] epsilon) {
+		this(null, epsilon);
 	}
 	
 	/**
@@ -46,10 +75,14 @@ public class ApproximationSetCollector implements Collector {
 	 * specified algorithm.
 	 * 
 	 * @param algorithm the algorithm this collector records data from
+	 * @param epsilon the &epsilon;-values used when collecting only the 
+	 *        &epsilon;-dominant solutions; or {@code null} if regular Pareto
+	 *        dominance is used
 	 */
-	public ApproximationSetCollector(Algorithm algorithm) {
+	public ApproximationSetCollector(Algorithm algorithm, double[] epsilon) {
 		super();
 		this.algorithm = algorithm;
+		this.epsilon = epsilon;
 	}
 
 	@Override
@@ -60,14 +93,43 @@ public class ApproximationSetCollector implements Collector {
 
 	@Override
 	public Collector attach(Object object) {
-		return new ApproximationSetCollector((Algorithm)object);
+		return new ApproximationSetCollector((Algorithm)object, epsilon);
 	}
 
 	@Override
 	public void collect(Accumulator accumulator) {
 		ArrayList<Solution> list = new ArrayList<Solution>();
+		NondominatedPopulation result = algorithm.getResult();
 		
-		for (Solution solution : algorithm.getResult()) {
+		//if epsilons are provided, convert result to epsilon-dominance archive
+		if (epsilon != null) {
+			boolean isSameEpsilon = false;
+
+			//check if result already has the correct epsilons
+			if (result instanceof EpsilonBoxDominanceArchive) {
+				EpsilonBoxDominanceArchive archive = 
+						(EpsilonBoxDominanceArchive)result;
+				EpsilonBoxDominanceComparator comparator = 
+						archive.getComparator();
+				
+				isSameEpsilon = true;
+				
+				for (int i=0; i<epsilon.length; i++) {
+					if (epsilon[i] != comparator.getEpsilon(i)) {
+						isSameEpsilon = false;
+						break;
+					}
+				}
+			}
+			
+			//apply epsilons only if necessary
+			if (!isSameEpsilon) {
+				result = new EpsilonBoxDominanceArchive(
+						new EpsilonBoxDominanceComparator(epsilon), result);
+			}
+		}
+		
+		for (Solution solution : result) {
 			list.add(solution);
 		}
 		
