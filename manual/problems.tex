@@ -26,6 +26,10 @@ Throughout this chapter, we will show how a simple multiobjective problem, the K
   \end{aligned}
 \end{equation}
 
+\begin{important}
+The MOEA Framework only works on minimization problems.  If any objectives in your problem are to be maximized, you can negate the objective value to convert from maximization into minimization.  In other words, by minimizing the negated objective, your are maximizing the original objective.  See section \ref{sect:maximizing} for additional details on dealing with maximization objectives.
+\end{important}
+
 \section{Java}
 Defining new problems in Java is the most direct and straightforward way to introduce new problems into the MOEA Framework.  All problems in the MOEA Framework implement the \class{Problem} interface.  The \class{Problem} interface defines the methods for characterizing a problem, defining the problem's representation and evaluating solutions to the problem.  In practice, you should never need to implement the \class{Problem} interface directly, but can extend the more convenient \class{AbstractProblem}.  \class{AbstractProblem} provides default implementations for many of the methods required by the \class{Problem} interface.  The code example below shows the Kursawe problem defined by extending the AbstractProblem.
 

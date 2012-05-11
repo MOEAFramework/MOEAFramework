@@ -251,3 +251,26 @@ The added performance indicators will appear alongside the other properties:
 \end{lstlisting}
 
 Additional command line options allow you to format the output, such as removing the column header line or specifying the column separator character.
+
+\section{Dealing with Maximized Objectives}
+\label{sect:maximizing}
+The MOEA Framework is setup to minimize objectives; it can not by itself maximize objectives.  This simplifies the program and increases its performance considerably.  By only allowing minimization objectives, the MOEA Framework can avoid the overhead of constantly determining the optimization direction whenever calculating the Pareto dominance relation.
+
+This approach, however, puts the burden on the user to make the appropriate adjustments to their problem definition to allow maximization objectives.  The easiest way to allow maximization objectives is to negate the objective value, as demonstrated below:
+
+\begin{lstlisting}[language=Java]
+solution.setObjective(0, obj1);
+solution.setObjective(1, -obj2); //negate the original objective value
+\end{lstlisting}
+
+By minimizing the negated objective value, we are maximizing the original objective value.  These negated objective values will be carried through to any output files produced by the MOEA Framework.  The help assist in managing these output files, version 1.13 includes the \java{Negater} command line utility.  The \java{Negater} tool processes any output file produced by the MOEA Framework and negates any specified objective.  For example, without the two objective example above, we can remove the negation in any output file with the following command.  Specifying a direction of 1 will negate the corresponding objective values in the processed file.
+
+\begin{lstlisting}[language=Plaintext]
+java org.moeaframework.analysis.sensitivity.Negater
+    --direction 0,1
+    output.set
+\end{lstlisting}
+
+\begin{important}
+It is best to wait until all post-processing is complete before negating the objectives back to their original, maximized form as any calculations on the maximized form will be invalid.  You can always apply the \java{Negater} a second time to undo the change.  It is the responsibility of the user to manage their data files accordingly.
+\end{important}
