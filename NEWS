@@ -1,9 +1,14 @@
 This file documents the major changes implemented in each release of the MOEA
 Framework.
 
---------------------
- Version 1.13 (TBD)
---------------------
+----------------------------
+ Version 1.13 (10 May 2012)
+----------------------------
+
+  * Significant improvements to the user manual, including
+      - Restructuring into beginner, advanced and developer sections
+      - Added introduction chapter
+      - Added several sections to the Advanced Topics chapter
 
   * Fixes minor bug where AdaptiveMultimethodVariation was permitting one
     additional invocation prior to updating the operator selection
