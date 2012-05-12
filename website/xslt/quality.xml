@@ -125,8 +125,12 @@
 <p>
   The following table provides an overview of the size and complexity of the
   MOEA Framework.  Note that lines of code only measures executable lines of
-  code, ignoring comments and whitespace.
+  code, ignoring comments and whitespace.  See the
+  <a id="inline" href="#data">Source Code Evolution</a> chart to see how these
+  values have changed over all releases.
 </p>
+
+<div style="display:none"><div style='height:420px;width:820px' id="data"></div></div>
 
 <table style="margin-left: 75px;">
   <tr>
@@ -184,9 +188,6 @@
     <td>77.4%</td>
   </tr>
 </table>
-
-<a id="inline" href="#data">Click here to see chart</a>
-<div style="display:none"><div style='height:420px;width:820px' id="data"></div></div>
 </div>
 
 <div class="section">
