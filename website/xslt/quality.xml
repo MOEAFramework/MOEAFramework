@@ -66,7 +66,9 @@
       //google.setOnLoadCallback(drawVisualization);
       $(document).ready(function() {
         $("a#inline").fancybox({
-          'hideOnContentClick': true,
+          hideOnContentClick: true,
+          titlePosition: 'inside',
+          title: 'This chart shows the evolution of the source code across all releases',
           onComplete: drawVisualization
         });
       });
