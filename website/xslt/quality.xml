@@ -8,6 +8,71 @@
 <page>
   <title>Code Quality</title>
   <description>Overview of code quality, unit test failures, test coverage and more</description>
+  <header>
+    <script type="text/javascript" src="http://www.google.com/jsapi"></script>
+    <script type="text/javascript" src="scripts/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="fancybox/jquery.fancybox-1.3.4.js"></script>
+    <link rel="stylesheet" href="fancybox/jquery.fancybox-1.3.4.css" type="text/css" media="screen" />
+    <script type="text/javascript">
+<![CDATA[
+      google.load('visualization', '1', {packages: ['corechart']});
+]]>
+    </script>
+    <script type="text/javascript">
+<![CDATA[
+      function drawVisualization() {
+        // Create and populate the data table.
+        var data = new google.visualization.DataTable();
+        data.addColumn('date', 'Date');
+        data.addColumn('number', 'LOC (Source)');
+        data.addColumn({type: 'string', role: 'annotation'});
+        data.addColumn('number', 'LOC (Test)');
+        data.addColumn('number', 'Comments');
+        data.addColumn('number', 'Classes');
+        data.addColumn('number', 'Constructors');
+        data.addColumn('number', 'Methods');
+        data.addColumn('number', 'Unit Tests');
+        data.addRows([
+          [new Date(2011, 6, 14),  14721, '1.0',  7644,   1940,  249,  299,  1094,  615],
+          [new Date(2011, 6, 27),  15351, '1.1',  8190,   2177,  256,  324,  1120,  650],
+          [new Date(2011, 7, 5),   15674, '1.2',  8376,   2209,  259,  327,  1136,  673],
+          [new Date(2011, 7, 26),  15474, '1.3',  9897,   2350,  264,  335,  1037,  716],
+          [new Date(2011, 8, 11),  15698, '1.4',  9993,   2112,  267,  338,  1050,  723],
+          [new Date(2011, 8, 28),  15985, '1.5',  10303,  2162,  269,  341,  1102,  755],
+          [new Date(2011, 9, 10),  16590, '1.6',  10851,  2227,  273,  345,  1124,  769],
+          [new Date(2011, 9, 29),  17156, '1.7',  10967,  2300,  274,  348,  1162,  769],
+          [new Date(2011, 11, 21), 19990, '1.8',  12381,  2591,  332,  373,  1392,  936],
+          [new Date(2012, 1, 3),   21189, '1.9',  12856,  2773,  367,  414,  1469,  952],
+          [new Date(2012, 1, 22),  21246, '1.10', 13769,  2773,  367,  414,  1472,  994],
+          [new Date(2012, 2, 29),  21319, '1.11', 13800,  2774,  368,  414,  1474,  998],
+          [new Date(2012, 4, 10),  21372, '1.12', 13857,  2783,  368,  417,  1475,  1007],
+          [new Date(2012, 5, 10),  21387, '1.13', 14728,  2885,  371,  424,  1469,  1025]]);
+          
+      
+        // Create and draw the visualization.
+        new google.visualization.LineChart(document.getElementById('data')).
+            draw(data, {curveType: "function",
+                        title: 'Source Code Evolution',
+                        width: 800,
+                        height: 400,
+                        legend: { position: 'right'},
+                        focusTarget: 'category',
+                        hAxis: {title: 'Release Date'},
+                        vAxis: {title: 'Number of ...'}});
+      }
+      
+      
+
+      //google.setOnLoadCallback(drawVisualization);
+      $(document).ready(function() {
+        $("a#inline").fancybox({
+          'hideOnContentClick': true,
+          onComplete: drawVisualization
+        });
+      });
+]]>
+    </script>
+  </header>
   <content>
 <h2>Code Quality</h2>
 
@@ -120,6 +185,8 @@
   </tr>
 </table>
 
+<a id="inline" href="#data">Click here to see chart</a>
+<div style="display:none"><div style='height:420px;width:820px' id="data"></div></div>
 </div>
 
 <div class="section">

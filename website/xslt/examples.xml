@@ -8,6 +8,13 @@
 <page>
   <title>Examples using the MOEA Framework</title>
   <description>Walk through introductory examples using the MOEA Framework</description>
+  <header>
+  	<script type="text/javascript" src="scripts/shCore.js"></script>
+	<script type="text/javascript" src="scripts/shBrushJava.js"></script>
+	<script type="text/javascript" src="scripts/shBrushCpp.js"></script>
+	<link type="text/css" rel="stylesheet" href="styles/shCoreEclipse.css" />
+	<script type="text/javascript">SyntaxHighlighter.all();</script>
+  </header>
   <content>
 <h2>Examples</h2>
 
@@ -28,8 +35,8 @@
 </ul>
 
 <div class="section">
-<h3>Setup</h3>
 <a name="setup" />
+<h3>Setup</h3>
 
 <p>
   In order to run these examples or use the MOEA Framework, Java 6 (or a later
@@ -93,8 +100,8 @@
 </div>
 
 <div class="section">
-<h3>Example 1: Simple Run</h3>
 <a name="example1" />
+<h3>Example 1: Simple Run</h3>
 
 <div class="files">
   <ul>
@@ -123,8 +130,8 @@ NondominatedPopulation result = new Executor()
 </div>
 
 <div class="section">
-<h3>Example 2: Statistical Comparison of Algorithms</h3>
 <a name="example2" />
+<h3>Example 2: Statistical Comparison of Algorithms</h3>
 
 <div class="files">
   <ul>
@@ -171,8 +178,8 @@ analyzer.printAnalysis();
 </div>
 
 <div class="section">
-<h3>Example 3: Collecting Runtime Dynamics</h3>
 <a name="example3" />
+<h3>Example 3: Collecting Runtime Dynamics</h3>
 
 <div class="files">
   <ul>
@@ -216,8 +223,8 @@ for (int i=0; i<accumulator.size("NFE"); i++) {
 </div>
 
 <div class="section">
-<h3>Example 4: Defining New Problems</h3>
 <a name="example4" />
+<h3>Example 4: Defining New Problems</h3>
 
 <div class="files">
   <ul>
@@ -301,8 +308,8 @@ NondominatedPopulation result = new Executor()
 </div>
 
 <div class="section">
-<h3>Example 5: Defining Problems in C/C++</h3>
 <a name="example5" />
+<h3>Example 5: Defining Problems in C/C++</h3>
 
 <div class="files">
   <ul>
@@ -435,31 +442,25 @@ int main(int argc, char* argv[]) {
 </div>
 
 <div class="section">
-<h3>Example 6: Diagnostic Tool</h3>
 <a href="example6" />
+<h3>Example 6: Diagnostic Tool</h3>
 
 <p>
   A graphical tool is distributed with the MOEA Framework for comparing multiple
   algorithms on a number of test problems.  Windows users may launch this tool
-  by running the <code>launch-diagnostic-tool.bat</code> file.  The screenshots
-  below demonstrate the functionality provided by this tool.
-</p>
-
-<p>
-  <a href="images/screenshot-1.png" rel="lightbox[main]"
-      title="Comparison of three MOEAs on the UF1 problem">
-    <img src="images/screenshot-1-small.png" class="float-left" width="114" height="70" alt="Comparison of three MOEAs on the UF1 problem" />
-   </a>
+  by running the <code>launch-diagnostic-tool.bat</code> file.  You can also
+  preview this tool online by clicking the Launch button below (this requires
+  Java 6 to be installed).
   
-  <a href="images/screenshot-3.png" rel="lightbox[main]"
-      title="Multiple plots can be shown side-by-side">
-    <img src="images/screenshot-3-small.png" class="float-left" width="114" height="70" alt="Multiple plots can be shown side-by-side" />
-  </a>
-  
-  <a href="images/screenshot-2.png" rel="lightbox[main]"
-      title="The convergence of the approximation set to the reference set">
-    <img src="images/screenshot-2-small.png" class="float-left" width="93" height="70" alt="The convergence of the approximation set to the reference set" />
-  </a>
+  <center>
+    <script src="http://www.moeaframework.org/jnlp/deployJava.js"></script>
+    <script>
+<![CDATA[
+        var url = "http://www.moeaframework.org/jnlp/DiagnosticTool.jnlp";
+        deployJava.createWebStartLaunchButton(url, '1.6.0');
+]]>
+    </script>
+  </center>
 </p>
 </div>
 

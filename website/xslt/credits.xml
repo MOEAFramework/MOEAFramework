@@ -8,6 +8,7 @@
 <page>
   <title>MOEA Framework credits</title>
   <description>List of contributors to the MOEA Framework</description>
+  <header></header>
   <content>
 <h2>Credits</h2>
 
@@ -33,19 +34,12 @@
       (<a href="http://creativecommons.org/licenses/by/2.5/">CC Attribution 2.5</a>)
     </li>
     <li>
-      Image popups powered by
-      <a href="http://lokeshdhakar.com/projects/lightbox2/">Lightbox 2</a>
-      (<a href="http://creativecommons.org/licenses/by/2.5/">CC Attribution 2.5</a>)
-    </li>
-    <li>
-      <a href="http://prototypejs.org/">Prototype Javascript Framework</a>
-      and
-      <a href="http://script.aculo.us/">script.aculo.us</a>, used by Lightbox 2
+      Syntax highlighting with
+      <a href="http://alexgorbatchev.com/SyntaxHighlighter/">SyntaxHighlighter</a>
       (<a href="http://www.opensource.org/licenses/mit-license.php">MIT License</a>)
     </li>
     <li>
-      Syntax highlighting with
-      <a href="http://alexgorbatchev.com/SyntaxHighlighter/">SyntaxHighlighter</a>
+      <a href="http://jquery.org/">JQuery</a> and <a href="http://fancybox.net/home">Fancybox</a> for displaying popup boxes
       (<a href="http://www.opensource.org/licenses/mit-license.php">MIT License</a>)
     </li>
     <li>

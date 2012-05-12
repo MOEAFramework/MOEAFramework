@@ -8,6 +8,7 @@
 <page>
   <title>Code Quality</title>
   <description>Overview of code quality, unit test failures, test coverage and more</description>
+  <header></header>
   <content>
 <h2>Code Quality</h2>
 

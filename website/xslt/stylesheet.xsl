@@ -36,21 +36,10 @@
 				<title><xsl:value-of select="title" /></title>
 				<link rel="shortcut icon" href="/favicon.ico" />
 
-				<!-- include lightbox files for image popups -->
-				<script type="text/javascript" src="scripts/prototype.js"></script>
-				<script type="text/javascript" src="scripts/scriptaculous.js?load=effects,builder"></script>
-				<script type="text/javascript" src="scripts/lightbox.js"></script>
-				<link rel="stylesheet" type="text/css" media="screen" href="css/lightbox.css" />
-
-				<!-- include SyntaxHighlighter files for displaying source codes -->
-				<script type="text/javascript" src="scripts/shCore.js"></script>
-				<script type="text/javascript" src="scripts/shBrushJava.js"></script>
-				<script type="text/javascript" src="scripts/shBrushCpp.js"></script>
-				<link type="text/css" rel="stylesheet" href="styles/shCoreEclipse.css" />
-				<script type="text/javascript">SyntaxHighlighter.all();</script>
-
 				<!-- include the Styleshout Coolblue stylesheet -->
 				<link rel="stylesheet" type="text/css" media="screen" href="css/screen.css" />
+				
+				<xsl:copy-of select="header/node()" />
 			</head>
 			<body>
 				<!-- header -->
