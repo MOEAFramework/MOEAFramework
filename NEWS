@@ -5,6 +5,9 @@ Framework.
  Version 1.14 (TBD)
 --------------------
 
+  * Adds the ability to plot individual trace lines rather than the condensed
+    quantile view.  Adds the view menu to toggle between these two options. 
+
   * Minor improvements to the website.
   
 

@@ -194,6 +194,16 @@ public class ActionFactory implements ControllerListener {
 	private Action aboutDialogAction;
 	
 	/**
+	 * The action for showing individual traces in the line plots.
+	 */
+	private Action showIndividualTraces;
+	
+	/**
+	 * The action for showing 25%, 50% and 75% quantiles in the line plots.
+	 */
+	private Action showQuantiles;
+	
+	/**
 	 * Constructs a new action factory.
 	 * 
 	 * @param frame the {@code DiagnosticTool} instance on which these actions
@@ -626,6 +636,40 @@ public class ActionFactory implements ControllerListener {
 			
 		};
 		
+		showIndividualTraces = new AbstractAction("Show Individual Traces") {
+
+			private static final long serialVersionUID = 7197923975477668385L;
+			
+			{
+				putValue(Action.SELECTED_KEY, 
+						controller.getShowIndividualTraces());
+			}
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//showQuantiles.putValue(Action.SELECTED_KEY, false);
+				controller.setShowIndividualTraces(true);
+			}
+			
+		};
+		
+		showQuantiles = new AbstractAction("Show Quantiles") {
+
+			private static final long serialVersionUID = -7733483777432591099L;
+			
+			{
+				putValue(Action.SELECTED_KEY, 
+						!controller.getShowIndividualTraces());
+			}
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//showIndividualTraces.putValue(Action.SELECTED_KEY, false);
+				controller.setShowIndividualTraces(false);
+			}
+			
+		};
+		
 		memoryUsageAction = new AbstractAction("") {
 
 			private static final long serialVersionUID = -3966834246075639069L;
@@ -947,6 +991,24 @@ public class ActionFactory implements ControllerListener {
 	 */
 	public Action getAboutDialogAction() {
 		return aboutDialogAction;
+	}
+	
+	/**
+	 * Returns the action for showing individual traces in the line plots.
+	 * 
+	 * @return the action for showing individual traces in the line plots
+	 */
+	public Action getShowIndividualTracesAction() {
+		return showIndividualTraces;
+	}
+	
+	/**
+	 * Returns the action for showing quantiles in the line plots.
+	 * 
+	 * @return the action for showing quantiles in the line plots
+	 */
+	public Action getShowQuantilesAction() {
+		return showQuantiles;
 	}
 
 	/**

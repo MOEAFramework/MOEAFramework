@@ -185,6 +185,12 @@ public class Controller {
 	private final DiagnosticTool frame;
 	
 	/**
+	 * Toggles between showing individual trace lines when {@code true} and
+	 * quantiles when {@code false}.
+	 */
+	private boolean showIndividualTraces;
+	
+	/**
 	 * Constructs a new controller for the specified {@code DiagnosticTool}
 	 * instance.
 	 * 
@@ -988,6 +994,32 @@ public class Controller {
 	 */
 	public int getOverallProgress() {
 		return overallProgress;
+	}
+
+	/**
+	 * Returns {@code true} if individual traces are shown; {@code false} if
+	 * quantiles are shown.
+	 * 
+	 * @return {@code true} if individual traces are shown; {@code false} if
+	 *         quantiles are shown
+	 */
+	public boolean getShowIndividualTraces() {
+		return showIndividualTraces;
+	}
+
+	/**
+	 * Set to {@code true} to show individual traces; {@code false} to show
+	 * quantiles.
+	 * 
+	 * @param showIndividualTraces {@code true} to show individual traces;
+	 *        {@code false} to show quantiles
+	 */
+	public void setShowIndividualTraces(boolean showIndividualTraces) {
+		if (this.showIndividualTraces != showIndividualTraces) {
+			this.showIndividualTraces = showIndividualTraces;
+			
+			fireViewChangedEvent();
+		}
 	}
 
 	/**

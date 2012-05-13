@@ -23,23 +23,34 @@ import java.awt.Color;
 import java.awt.Paint;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.math.stat.descriptive.DescriptiveStatistics;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.LegendItem;
+import org.jfree.chart.LegendItemCollection;
+import org.jfree.chart.LegendItemSource;
 import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.block.LineBorder;
 import org.jfree.chart.plot.DatasetRenderingOrder;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.DeviationRenderer;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
+import org.jfree.chart.title.LegendTitle;
 import org.jfree.data.xy.DefaultTableXYDataset;
+import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.YIntervalSeries;
 import org.jfree.data.xy.YIntervalSeriesCollection;
+import org.jfree.ui.RectangleEdge;
+import org.jfree.ui.RectangleInsets;
 import org.moeaframework.analysis.collector.Accumulator;
 
 /**
@@ -111,92 +122,189 @@ public class LinePlot extends ResultPlot {
 		setLayout(new BorderLayout());
 	}
 	
-	@Override
-	protected void update() {
-		YIntervalSeriesCollection dataset = new YIntervalSeriesCollection();
+	/**
+	 * Generate the individual series for the specified key.
+	 * 
+	 * @param key the key identifying which result to plot
+	 * @param dataset the dataset to store the generated series
+	 */
+	protected void generateIndividualSeries(ResultKey key, 
+			DefaultTableXYDataset dataset) {
+		for (Accumulator accumulator : controller.get(key)) {
+			if (!accumulator.keySet().contains(metric)) {
+				continue;
+			}
+		
+			XYSeries series = new XYSeries(key, false, false);
 
-		for (ResultKey key : frame.getSelectedResults()) {
-			List<DataPoint> dataPoints = new ArrayList<DataPoint>();
+			for (int i=0; i<accumulator.size(metric); i++) {
+				series.add((Number)accumulator.get("NFE", i), 
+						(Number)accumulator.get(metric, i));
+			}
 			
-			for (Accumulator accumulator : controller.get(key)) {
-				if (!accumulator.keySet().contains(metric)) {
-					continue;
-				}
-				
-				for (int i=0; i<accumulator.size(metric); i++) {
-					dataPoints.add(new DataPoint(
-							(Integer)accumulator.get("NFE", i), 
-							((Number)accumulator.get(metric, i)).doubleValue()));
-				}
+			dataset.addSeries(series);
+		}
+	}
+
+	/**
+	 * Generates the quantile series for the specified key.
+	 * 
+	 * @param key the key identifying which result to plot
+	 * @param dataset the dataset to store the generated series
+	 */
+	protected void generateQuantileSeries(ResultKey key, 
+			YIntervalSeriesCollection dataset) {
+		List<DataPoint> dataPoints = new ArrayList<DataPoint>();
+		
+		for (Accumulator accumulator : controller.get(key)) {
+			if (!accumulator.keySet().contains(metric)) {
+				continue;
 			}
-				
-			Collections.sort(dataPoints);
-
-			YIntervalSeries series = new YIntervalSeries(key);
-			DescriptiveStatistics statistics = new DescriptiveStatistics();
-			int index = 0;
-			int currentNFE = RESOLUTION;
-
-			while (index < dataPoints.size()) {
-				DataPoint point = dataPoints.get(index);
-
-				if (point.getNFE() <= currentNFE) {
-					statistics.addValue(point.getValue());
-					index++;
-				} else {
-					if (statistics.getN() > 0) {
-						series.add(currentNFE, 
-								statistics.getPercentile(50), 
-								statistics.getPercentile(25), 
-								statistics.getPercentile(75));
-					}
-
-					statistics.clear();
-					currentNFE += RESOLUTION;
-				}
+			
+			for (int i=0; i<accumulator.size(metric); i++) {
+				dataPoints.add(new DataPoint(
+						(Integer)accumulator.get("NFE", i), 
+						((Number)accumulator.get(metric, i)).doubleValue()));
 			}
+		}
+			
+		Collections.sort(dataPoints);
 
-			if (statistics.getN() > 0) {
-				//if only entry, add extra point to display non-zero width
-				if (series.isEmpty()) {
-					series.add(currentNFE-RESOLUTION, 
+		YIntervalSeries series = new YIntervalSeries(key);
+		DescriptiveStatistics statistics = new DescriptiveStatistics();
+		int index = 0;
+		int currentNFE = RESOLUTION;
+
+		while (index < dataPoints.size()) {
+			DataPoint point = dataPoints.get(index);
+
+			if (point.getNFE() <= currentNFE) {
+				statistics.addValue(point.getValue());
+				index++;
+			} else {
+				if (statistics.getN() > 0) {
+					series.add(currentNFE, 
 							statistics.getPercentile(50), 
 							statistics.getPercentile(25), 
 							statistics.getPercentile(75));
 				}
 
-				series.add(currentNFE, 
+				statistics.clear();
+				currentNFE += RESOLUTION;
+			}
+		}
+
+		if (statistics.getN() > 0) {
+			//if only entry, add extra point to display non-zero width
+			if (series.isEmpty()) {
+				series.add(currentNFE-RESOLUTION, 
 						statistics.getPercentile(50), 
 						statistics.getPercentile(25), 
 						statistics.getPercentile(75));
 			}
+
+			series.add(currentNFE, 
+					statistics.getPercentile(50), 
+					statistics.getPercentile(25), 
+					statistics.getPercentile(75));
+		}
+		
+		dataset.addSeries(series);
+	}
+	
+	@Override
+	protected void update() {
+		XYDataset dataset = null;
+		
+		//generate the plot data
+		if (controller.getShowIndividualTraces()) {
+			dataset = new DefaultTableXYDataset();
 			
-			dataset.addSeries(series);
+			for (ResultKey key : frame.getSelectedResults()) {
+				generateIndividualSeries(key, (DefaultTableXYDataset)dataset);
+			}
+		} else {
+			dataset = new YIntervalSeriesCollection();
+
+			for (ResultKey key : frame.getSelectedResults()) {
+				generateQuantileSeries(key, (YIntervalSeriesCollection)dataset);
+			}
 		}
 
+		//create the chart
 		JFreeChart chart = ChartFactory.createXYLineChart(metric, "NFE",
-				"Value", dataset, PlotOrientation.VERTICAL, true, true,
+				"Value", dataset, PlotOrientation.VERTICAL, false, true,
 				false);
 		final XYPlot plot = chart.getXYPlot();
-
-		DeviationRenderer renderer = new DeviationRenderer(true, false);
-
-		for (int i=0; i<dataset.getSeriesCount(); i++) {
-			Paint paint = frame.getPaintHelper().get(dataset.getSeriesKey(i));
-
-			renderer.setSeriesStroke(i, new BasicStroke(3f, 1, 1));
-			renderer.setSeriesPaint(i, paint);
-			renderer.setSeriesFillPaint(i, paint);
+		
+		//setup the series renderer
+		if (controller.getShowIndividualTraces()) {
+			XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer(true, 
+					false);
+			
+			for (int i=0; i<dataset.getSeriesCount(); i++) {
+				Paint paint = frame.getPaintHelper().get(
+						dataset.getSeriesKey(i));
+	
+				renderer.setSeriesStroke(i, new BasicStroke(1f, 1, 1));
+				renderer.setSeriesPaint(i, paint);
+			}
+			
+			plot.setRenderer(renderer);
+		} else {
+			DeviationRenderer renderer = new DeviationRenderer(true, false);
+	
+			for (int i=0; i<dataset.getSeriesCount(); i++) {
+				Paint paint = frame.getPaintHelper().get(
+						dataset.getSeriesKey(i));
+	
+				renderer.setSeriesStroke(i, new BasicStroke(3f, 1, 1));
+				renderer.setSeriesPaint(i, paint);
+				renderer.setSeriesFillPaint(i, paint);
+			}
+	
+			plot.setRenderer(renderer);
 		}
+		
+		//create the legend
+		final LegendItemCollection items = plot.getLegendItems();
+		Iterator<?> iterator = items.iterator();
+		Set<ResultKey> uniqueKeys = new HashSet<ResultKey>();
+		
+		while (iterator.hasNext()) {
+			LegendItem item = (LegendItem)iterator.next();
+			
+			if (uniqueKeys.contains(item.getSeriesKey())) {
+				iterator.remove();
+			} else {
+				uniqueKeys.add((ResultKey)item.getSeriesKey());
+			}
+		}
+		
+		LegendItemSource source = new LegendItemSource() {
 
-		plot.setRenderer(renderer);
+			@Override
+			public LegendItemCollection getLegendItems() {
+				return items;
+			}
+			
+		};
+		
+		LegendTitle legend = new LegendTitle(source);
+		legend.setMargin(new RectangleInsets(1.0, 1.0, 1.0, 1.0));
+		legend.setFrame(new LineBorder());
+		legend.setBackgroundPaint(Color.WHITE);
+		legend.setPosition(RectangleEdge.BOTTOM);
+		chart.addLegend(legend);
 
+		//scale the axes
 		final NumberAxis domainAxis = new NumberAxis();
 		domainAxis.setAutoRange(true);
 		plot.setDomainAxis(domainAxis);
 		
 		//add overlay
 		if (controller.getShowLastTrace() && 
+				!controller.getShowIndividualTraces() &&
 				(controller.getLastAccumulator() != null) && 
 				controller.getLastAccumulator().keySet().contains(metric)) {
 			DefaultTableXYDataset dataset2 = new DefaultTableXYDataset();
@@ -220,6 +328,7 @@ public class LinePlot extends ResultPlot {
 			plot.setDatasetRenderingOrder(DatasetRenderingOrder.FORWARD);
 		}
 		
+		//update the chart in the GUI
 		removeAll();
 		add(new ChartPanel(chart), BorderLayout.CENTER);
 		revalidate();

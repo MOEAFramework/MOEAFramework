@@ -35,6 +35,7 @@ import java.util.Set;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComboBox;
@@ -47,6 +48,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JProgressBar;
+import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JSplitPane;
@@ -340,6 +342,20 @@ ControllerListener {
 		file.addSeparator();
 		file.add(new JMenuItem(actionFactory.getExitAction()));
 		
+		JMenu view = new JMenu("View");
+		JMenuItem individualTraces = new JRadioButtonMenuItem(
+				actionFactory.getShowIndividualTracesAction());
+		JMenuItem quantiles = new JRadioButtonMenuItem(
+				actionFactory.getShowQuantilesAction());
+		ButtonGroup traceGroup = new ButtonGroup();
+		traceGroup.add(individualTraces);
+		traceGroup.add(quantiles);
+		view.add(individualTraces);
+		view.add(quantiles);
+		view.addSeparator();
+		view.add(new JCheckBoxMenuItem(
+				actionFactory.getShowLastTraceAction()));
+		
 		JMenu metrics = new JMenu("Collect");
 		metrics.add(new JMenuItem(
 				actionFactory.getEnableAllIndicatorsAction()));
@@ -371,9 +387,6 @@ ControllerListener {
 				actionFactory.getIncludePopulationSizeAction()));
 		metrics.add(new JCheckBoxMenuItem(
 				actionFactory.getIncludeApproximationSetAction()));
-		metrics.addSeparator();
-		metrics.add(new JCheckBoxMenuItem(
-				actionFactory.getShowLastTraceAction()));
 		
 		JMenu help = new JMenu("Help");
 		help.add(new JMenuItem(actionFactory.getAboutDialogAction()));
@@ -382,6 +395,7 @@ ControllerListener {
 		
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.add(file);
+		menuBar.add(view);
 		menuBar.add(metrics);
 		menuBar.add(help);
 		menuBar.add(Box.createHorizontalGlue());
