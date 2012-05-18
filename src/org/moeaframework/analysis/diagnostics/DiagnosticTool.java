@@ -267,6 +267,11 @@ ControllerListener {
 						return;
 					}
 					
+					if (!controller.get(resultListModel.getElementAt(index))
+							.contains("Approximation Set")) {
+						return;
+					}
+					
 					JPopupMenu popupMenu = new JPopupMenu();
 					
 					popupMenu.add(new JMenuItem(
