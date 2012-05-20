@@ -261,14 +261,24 @@ ControllerListener {
 			
 			public void mouseClicked(final MouseEvent e) {
 				if (SwingUtilities.isRightMouseButton(e)) {
-					final int index = resultTable.rowAtPoint(e.getPoint());
+					int index = resultTable.rowAtPoint(e.getPoint());
+					boolean containsSet = false;
 					
 					if (index == -1) {
 						return;
 					}
 					
-					if (!controller.get(resultListModel.getElementAt(index))
-							.contains("Approximation Set")) {
+					ResultKey key = resultListModel.getElementAt(index);
+					
+					//verify that at least one accumulator contains data
+					for (Accumulator accumulator : controller.get(key)) {
+						if (accumulator.keySet().contains(
+								"Approximation Set")) {
+							containsSet = true;
+						}
+					}
+					
+					if (!containsSet) {
 						return;
 					}
 					
