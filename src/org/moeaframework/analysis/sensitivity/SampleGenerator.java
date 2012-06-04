@@ -57,34 +57,29 @@ public class SampleGenerator extends CommandLineUtility {
 				.withLongOpt("numberOfSamples")
 				.hasArg()
 				.withArgName("value")
-				.withDescription("Number of samples")
 				.isRequired()
 				.create('n'));
 		options.addOption(OptionBuilder
 				.withLongOpt("parameterFile")
 				.hasArg()
 				.withArgName("file")
-				.withDescription("Parameter file")
 				.isRequired()
 				.create('p'));
 		options.addOption(OptionBuilder
 				.withLongOpt("method")
 				.hasArg()
 				.withArgName("name")
-				.withDescription("Sample generation method (uniform, latin, sobol, saltelli)")
 				.isRequired()
 				.create('m'));
 		options.addOption(OptionBuilder
 				.withLongOpt("seed")
 				.hasArg()
 				.withArgName("value")
-				.withDescription("Random number generator seed")
 				.create('s'));
 		options.addOption(OptionBuilder
 				.withLongOpt("output")
 				.hasArg()
 				.withArgName("file")
-				.withDescription("Output file")
 				.create('o'));
 
 		return options;

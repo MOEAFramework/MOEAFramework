@@ -327,54 +327,45 @@ public class Analysis extends CommandLineUtility {
 				.withLongOpt("parameterFile")
 				.hasArg()
 				.withArgName("file")
-				.withDescription("Parameter file")
 				.isRequired()
 				.create('p'));
 		options.addOption(OptionBuilder
 				.withLongOpt("parameters")
 				.hasArg()
 				.withArgName("file")
-				.withDescription("Parameter samples")
 				.isRequired()
 				.create('i'));
 		options.addOption(OptionBuilder
 				.withLongOpt("metric")
 				.hasArg()
 				.withArgName("value")
-				.withDescription("Column in metric file to evaluate")
 				.isRequired()
 				.create('m'));
 		options.addOption(OptionBuilder
 				.withLongOpt("hypervolume")
 				.hasArg()
 				.withArgName("value")
-				.withDescription("Ideal or target hypervolume")
 				.create('t'));
 		options.addOption(OptionBuilder
 				.withLongOpt("output")
 				.hasArg()
 				.withArgName("file")
-				.withDescription("Output file")
 				.create('o'));
 		options.addOption(OptionBuilder
 				.withLongOpt("efficiency")
-				.withDescription("Include efficiency calculation")
 				.create('e'));
 		options.addOption(OptionBuilder
 				.withLongOpt("band")
 				.hasArg()
 				.withArgName("width")
-				.withDescription("NFE band width for calculating efficiency")
 				.create('b'));
 		options.addOption(OptionBuilder
 				.withLongOpt("controllability")
-				.withDescription("Include controllability calculation")
 				.create('c'));
 		options.addOption(OptionBuilder
 				.withLongOpt("threshold")
 				.hasArg()
 				.withArgName("percent")
-				.withDescription("Attainment threshold")
 				.create('t'));
 		
 		return options;

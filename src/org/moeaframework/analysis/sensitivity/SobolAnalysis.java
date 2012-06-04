@@ -599,38 +599,32 @@ public class SobolAnalysis extends CommandLineUtility {
 				.withLongOpt("parameterFile")
 				.hasArg()
 				.withArgName("file")
-				.withDescription("Parameter description file")
 				.isRequired()
 				.create('p'));
 		options.addOption(OptionBuilder
 				.withLongOpt("input")
 				.hasArg()
 				.withArgName("file")
-				.withDescription("Model output file")
 				.isRequired()
 				.create('i'));
 		options.addOption(OptionBuilder
 				.withLongOpt("metric")
 				.hasArg()
 				.withArgName("value")
-				.withDescription("Column in model output to evaluate")
 				.isRequired()
 				.create('m'));
 		options.addOption(OptionBuilder
 				.withLongOpt("simple")
-				.withDescription("Simple output format")
 				.create('s'));
 		options.addOption(OptionBuilder
 				.withLongOpt("output")
 				.hasArg()
 				.withArgName("file")
-				.withDescription("Output file")
 				.create('o'));
 		options.addOption(OptionBuilder
 				.withLongOpt("resamples")
 				.hasArg()
 				.withArgName("number")
-				.withDescription("Number of resamples when computing bootstrap confidence intervals")
 				.create('r'));
 
 		return options;

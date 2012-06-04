@@ -54,10 +54,12 @@ public class Negater extends CommandLineUtility {
     public Options getOptions() {
         Options options = super.getOptions();
 
-        options.addOption(OptionBuilder.withLongOpt("direction").hasArg()
+        options.addOption(OptionBuilder
+        		.withLongOpt("direction")
+        		.hasArg()
                 .withArgName("d1,d2,...")
-                .withDescription("Comma-separated direction flags")
-                .isRequired().create('d'));
+                .isRequired()
+                .create('d'));
 
         return options;
     }

@@ -51,13 +51,11 @@ public class ResultFileInfo extends CommandLineUtility {
 				.withLongOpt("problem")
 				.hasArg()
 				.withArgName("name")
-				.withDescription("Problem name")
 				.create('b'));
 		group.addOption(OptionBuilder
 				.withLongOpt("dimension")
 				.hasArg()
 				.withArgName("number")
-				.withDescription("Number of objectives")
 				.create('d'));
 		options.addOptionGroup(group);
 		
@@ -65,7 +63,6 @@ public class ResultFileInfo extends CommandLineUtility {
 				.withLongOpt("output")
 				.hasArg()
 				.withArgName("file")
-				.withDescription("Output file")
 				.create('o'));
 		
 		return options;

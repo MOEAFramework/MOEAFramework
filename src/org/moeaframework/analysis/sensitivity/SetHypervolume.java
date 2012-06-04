@@ -51,7 +51,6 @@ public class SetHypervolume extends CommandLineUtility {
 				.withLongOpt("epsilon")
 				.hasArg()
 				.withArgName("e1,e2,...")
-				.withDescription("Epsilon values for epsilon-dominance")
 				.create('e'));
 		
 		return options;

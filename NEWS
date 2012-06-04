@@ -5,12 +5,18 @@ Framework.
  Version 1.14 (TBD)
 --------------------
 
+  * Adds chapter on using the diagnostic tool to the user manual.
+
   * Several improvements to the diagnostic tool GUI, including
       - Hide the 'Show Approximation Set' right-click menu if the approximation
         set is not available
       - Adds the ability to plot individual trace lines rather than the
         condensed quantile view.  Adds the view menu to toggle between these
-        two options. 
+        two options.
+        
+  * Adds internationalization and localization support to the diagnostic tool
+    and command-line utilities, so end-user facing messages can be displayed in
+    local languages.
 
   * Minor improvements to the website.
   

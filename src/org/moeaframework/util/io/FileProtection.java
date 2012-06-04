@@ -313,7 +313,7 @@ public class FileProtection extends CommandLineUtility {
 		
 		options.addOption(OptionBuilder
 				.withLongOpt("check")
-				.withDescription("validates the listed files")
+				.withDescription("Validates the listed files")
 				.create('c'));
 		
 		return options;

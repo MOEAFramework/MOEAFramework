@@ -57,13 +57,11 @@ public class ResultFileMerger extends CommandLineUtility {
 				.withLongOpt("problem")
 				.hasArg()
 				.withArgName("name")
-				.withDescription("Problem name")
 				.create('b'));
 		group.addOption(OptionBuilder
 				.withLongOpt("dimension")
 				.hasArg()
 				.withArgName("number")
-				.withDescription("Number of objectives")
 				.create('d'));
 		options.addOptionGroup(group);
 		
@@ -71,18 +69,15 @@ public class ResultFileMerger extends CommandLineUtility {
 				.withLongOpt("epsilon")
 				.hasArg()
 				.withArgName("e1,e2,...")
-				.withDescription("Epsilon values for epsilon-dominance")
 				.create('e'));
 		options.addOption(OptionBuilder
 				.withLongOpt("output")
 				.hasArg()
 				.withArgName("file")
-				.withDescription("Output file containing the merged set")
 				.isRequired()
 				.create('o'));
 		options.addOption(OptionBuilder
 				.withLongOpt("resultFile")
-				.withDescription("Output result file instead of reference set")
 				.create('r'));
 		
 		return options;

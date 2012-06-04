@@ -65,7 +65,7 @@ public abstract class CommandLineUtility {
 	 * 
 	 * @return a description of this command line utility; or {@code null} if
 	 *         no description is provided
-	 * @deprecated the description is not read through the Localization
+	 * @deprecated the description is now read through the Localization
 	 *             class; will be removed in version 2.0
 	 */
 	@Deprecated
@@ -106,10 +106,6 @@ public abstract class CommandLineUtility {
 		}
 
 		if ((commandLine == null) || commandLine.hasOption("help")) {
-			//load the program description
-			String description = Localization.getString(getClass(), 
-					"description");
-			
 			//update the options with their descriptions
 			for (Object object : options.getOptions()) {
 				Option option = (Option)object;
@@ -120,23 +116,19 @@ public abstract class CommandLineUtility {
 					if (Localization.containsKey(type, key)) {
 						option.setDescription(Localization.getString(type, key));
 						break;
+					} else {
+						type = type.getSuperclass();
 					}
-				}
-				
-				if (Localization.containsKey(getClass(), key)) {
-					option.setDescription(Localization.getString(
-							getClass(), key));
-				} else if (Localization.containsKey(CommandLineUtility.class, 
-						key)) {
-					option.setDescription(Localization.getString(
-							CommandLineUtility.class, key));
 				}
 			}
 			
 			//format and display the help message
 			HelpFormatter helpFormatter = new HelpFormatter();
 			helpFormatter.printHelp("java " + getClass().getName(),
-					description, options, null, true);
+					Localization.getString(getClass(), "description"),
+					options, 
+					Localization.getString(CommandLineUtility.class, "footer"),
+					true);
 			System.exit(-1);
 		}
 

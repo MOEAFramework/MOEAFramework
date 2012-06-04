@@ -52,14 +52,12 @@ public class SetContribution extends CommandLineUtility {
 				.withLongOpt("reference")
 				.hasArg()
 				.withArgName("file")
-				.withDescription("Reference set file")
 				.isRequired()
 				.create('r'));
 		options.addOption(OptionBuilder
 				.withLongOpt("epsilon")
 				.hasArg()
 				.withArgName("e1,e2,...")
-				.withDescription("Epsilon values for epsilon-dominance")
 				.create('e'));
 		
 		return options;

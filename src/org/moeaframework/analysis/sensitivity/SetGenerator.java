@@ -56,34 +56,29 @@ public class SetGenerator extends CommandLineUtility {
 				.withLongOpt("problem")
 				.hasArg()
 				.withArgName("name")
-				.withDescription("Problem name")
 				.isRequired()
 				.create('b'));
 		options.addOption(OptionBuilder
 				.withLongOpt("numberOfPoints")
 				.hasArg()
 				.withArgName("value")
-				.withDescription("Number of points to generate")
 				.isRequired()
 				.create('n'));
 		options.addOption(OptionBuilder
 				.withLongOpt("seed")
 				.hasArg()
 				.withArgName("value")
-				.withDescription("Random number seed")
 				.create('s'));
 		options.addOption(OptionBuilder
 				.withLongOpt("output")
 				.hasArg()
 				.withArgName("file")
-				.withDescription("Output file")
 				.isRequired()
 				.create('o'));
 		options.addOption(OptionBuilder
 				.withLongOpt("epsilon")
 				.hasArg()
 				.withArgName("e1,e2,...")
-				.withDescription("Epsilon values for epsilon-dominance")
 				.create('e'));
 		
 		return options;

@@ -58,13 +58,11 @@ public class ResultFileSeedMerger extends CommandLineUtility {
 				.withLongOpt("problem")
 				.hasArg()
 				.withArgName("name")
-				.withDescription("Problem name")
 				.create('b'));
 		group.addOption(OptionBuilder
 				.withLongOpt("dimension")
 				.hasArg()
 				.withArgName("number")
-				.withDescription("Number of objectives")
 				.create('d'));
 		options.addOptionGroup(group);
 
@@ -72,14 +70,12 @@ public class ResultFileSeedMerger extends CommandLineUtility {
 				.withLongOpt("output")
 				.hasArg()
 				.withArgName("file")
-				.withDescription("Output file")
 				.isRequired()
 				.create('o'));
 		options.addOption(OptionBuilder
 				.withLongOpt("epsilon")
 				.hasArg()
 				.withArgName("e1,e2,...")
-				.withDescription("Epsilon values for epsilon-dominance")
 				.create('e'));
 
 		return options;

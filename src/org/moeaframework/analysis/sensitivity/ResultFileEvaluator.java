@@ -55,13 +55,11 @@ public class ResultFileEvaluator extends CommandLineUtility {
 				.withLongOpt("problem")
 				.hasArg()
 				.withArgName("name")
-				.withDescription("Problem name")
 				.create('b'));
 		group.addOption(OptionBuilder
 				.withLongOpt("dimension")
 				.hasArg()
 				.withArgName("number")
-				.withDescription("Number of objectives")
 				.create('d'));
 		options.addOptionGroup(group);
 		
@@ -69,25 +67,21 @@ public class ResultFileEvaluator extends CommandLineUtility {
 				.withLongOpt("input")
 				.hasArg()
 				.withArgName("file")
-				.withDescription("Input result file")
 				.isRequired()
 				.create('i'));
 		options.addOption(OptionBuilder
 				.withLongOpt("output")
 				.hasArg()
 				.withArgName("file")
-				.withDescription("Output metric file")
 				.isRequired()
 				.create('o'));
 		options.addOption(OptionBuilder
 				.withLongOpt("reference")
 				.hasArg()
 				.withArgName("file")
-				.withDescription("Reference set file")
 				.create('r'));
 		options.addOption(OptionBuilder
 				.withLongOpt("force")
-				.withDescription("Continue processing if the file timestamp check fails")
 				.create('f'));
 		
 		return options;

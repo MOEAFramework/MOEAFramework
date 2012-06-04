@@ -52,13 +52,11 @@ public class SimpleStatistics extends CommandLineUtility {
 		options.addOption(OptionBuilder
 				.withLongOpt("mode")
 				.hasArg()
-				.withDescription("Either minimum, maximum, average, stdev, count")
 				.create('m'));
 		options.addOption(OptionBuilder
 				.withLongOpt("output")
 				.hasArg()
 				.withArgName("file")
-				.withDescription("Output file")
 				.isRequired()
 				.create('o'));
 		

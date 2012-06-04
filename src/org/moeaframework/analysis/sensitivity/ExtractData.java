@@ -88,13 +88,11 @@ public class ExtractData extends CommandLineUtility {
 				.withLongOpt("problem")
 				.hasArg()
 				.withArgName("name")
-				.withDescription("Problem name")
 				.create('b'));
 		group.addOption(OptionBuilder
 				.withLongOpt("dimension")
 				.hasArg()
 				.withArgName("number")
-				.withDescription("Number of objectives")
 				.create('d'));
 		options.addOptionGroup(group);
 		
@@ -102,36 +100,30 @@ public class ExtractData extends CommandLineUtility {
 				.withLongOpt("input")
 				.hasArg()
 				.withArgName("file")
-				.withDescription("Input file")
 				.isRequired()
 				.create('i'));
 		options.addOption(OptionBuilder
 				.withLongOpt("output")
 				.hasArg()
 				.withArgName("file")
-				.withDescription("Output file")
 				.create('o'));
 		options.addOption(OptionBuilder
 				.withLongOpt("separator")
 				.hasArg()
 				.withArgName("value")
-				.withDescription("Separator between entries")
 				.create('s'));
 		options.addOption(OptionBuilder
 				.withLongOpt("reference")
 				.hasArg()
 				.withArgName("file")
-				.withDescription("Reference set file")
 				.create('r'));
 		options.addOption(OptionBuilder
 				.withLongOpt("epsilon")
 				.hasArg()
 				.withArgName("e1,e2,...")
-				.withDescription("Epsilon values for epsilon-dominance")
 				.create('e'));
 		options.addOption(OptionBuilder
 				.withLongOpt("noheader")
-				.withDescription("Do not print header line")
 				.create('h'));
 		
 		return options;

@@ -170,17 +170,14 @@ public class ReferenceSetMerger extends CommandLineUtility {
 				.withLongOpt("output")
 				.hasArg()
 				.withArgName("file")
-				.withDescription("Output file for combined set")
 				.create('o'));
 		options.addOption(OptionBuilder
 				.withLongOpt("epsilon")
 				.hasArg()
 				.withArgName("e1,e2,...")
-				.withDescription("Epsilon values for epsilon-dominance")
 				.create('e'));
 		options.addOption(OptionBuilder
 				.withLongOpt("diff")
-				.withDescription("Write diff files showing which solutions survived in the combined set")
 				.create('d'));
 
 		return options;
