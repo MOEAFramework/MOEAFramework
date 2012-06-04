@@ -196,12 +196,12 @@ public class ActionFactory implements ControllerListener {
 	/**
 	 * The action for showing individual traces in the line plots.
 	 */
-	private Action showIndividualTraces;
+	private Action showIndividualTracesAction;
 	
 	/**
 	 * The action for showing 25%, 50% and 75% quantiles in the line plots.
 	 */
-	private Action showQuantiles;
+	private Action showQuantilesAction;
 	
 	/**
 	 * Constructs a new action factory.
@@ -393,7 +393,7 @@ public class ActionFactory implements ControllerListener {
 
 		};
 		
-		includeSpacingAction = new AbstractAction("Spacing ") {
+		includeSpacingAction = new AbstractAction("Spacing") {
 
 			private static final long serialVersionUID = 3256132970071591253L;
 
@@ -636,7 +636,7 @@ public class ActionFactory implements ControllerListener {
 			
 		};
 		
-		showIndividualTraces = new AbstractAction("Show Individual Traces") {
+		showIndividualTracesAction = new AbstractAction("Show Individual Traces") {
 
 			private static final long serialVersionUID = 7197923975477668385L;
 			
@@ -653,7 +653,7 @@ public class ActionFactory implements ControllerListener {
 			
 		};
 		
-		showQuantiles = new AbstractAction("Show Quantiles") {
+		showQuantilesAction = new AbstractAction("Show Quantiles") {
 
 			private static final long serialVersionUID = -7733483777432591099L;
 			
@@ -999,7 +999,7 @@ public class ActionFactory implements ControllerListener {
 	 * @return the action for showing individual traces in the line plots
 	 */
 	public Action getShowIndividualTracesAction() {
-		return showIndividualTraces;
+		return showIndividualTracesAction;
 	}
 	
 	/**
@@ -1008,7 +1008,7 @@ public class ActionFactory implements ControllerListener {
 	 * @return the action for showing quantiles in the line plots
 	 */
 	public Action getShowQuantilesAction() {
-		return showQuantiles;
+		return showQuantilesAction;
 	}
 
 	/**
