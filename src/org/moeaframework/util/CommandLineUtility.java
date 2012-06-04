@@ -21,6 +21,7 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.GnuParser;
 import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Option;
 import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
@@ -64,7 +65,10 @@ public abstract class CommandLineUtility {
 	 * 
 	 * @return a description of this command line utility; or {@code null} if
 	 *         no description is provided
+	 * @deprecated the description is not read through the Localization
+	 *             class; will be removed in version 2.0
 	 */
+	@Deprecated
 	public String getDescription() {
 		return null;
 	}
@@ -102,9 +106,37 @@ public abstract class CommandLineUtility {
 		}
 
 		if ((commandLine == null) || commandLine.hasOption("help")) {
+			//load the program description
+			String description = Localization.getString(getClass(), 
+					"description");
+			
+			//update the options with their descriptions
+			for (Object object : options.getOptions()) {
+				Option option = (Option)object;
+				String key = "option." + option.getLongOpt();
+				Class<?> type = getClass();
+				
+				while (CommandLineUtility.class.isAssignableFrom(type)) {
+					if (Localization.containsKey(type, key)) {
+						option.setDescription(Localization.getString(type, key));
+						break;
+					}
+				}
+				
+				if (Localization.containsKey(getClass(), key)) {
+					option.setDescription(Localization.getString(
+							getClass(), key));
+				} else if (Localization.containsKey(CommandLineUtility.class, 
+						key)) {
+					option.setDescription(Localization.getString(
+							CommandLineUtility.class, key));
+				}
+			}
+			
+			//format and display the help message
 			HelpFormatter helpFormatter = new HelpFormatter();
 			helpFormatter.printHelp("java " + getClass().getName(),
-					getDescription(), options, null, true);
+					description, options, null, true);
 			System.exit(-1);
 		}
 

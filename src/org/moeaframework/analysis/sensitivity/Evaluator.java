@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.util.Properties;
 
 import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.Option;
 import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
 import org.moeaframework.core.Algorithm;
@@ -38,6 +39,7 @@ import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.problem.TimingProblem;
 import org.moeaframework.util.CommandLineUtility;
+import org.moeaframework.util.Localization;
 import org.moeaframework.util.TypedProperties;
 
 /**
@@ -45,22 +47,22 @@ import org.moeaframework.util.TypedProperties;
  * parameterizations.
  */
 public class Evaluator extends CommandLineUtility {
-	
+
 	/**
 	 * The problem being evaluated.
 	 */
 	protected Problem problem;
-	
+
 	/**
 	 * The output writer where end-of-run results are stored.
 	 */
 	protected OutputWriter output;
-	
+
 	/**
 	 * The sample reader from which input parameters are read.
 	 */
 	protected SampleReader input;
-	
+
 	/**
 	 * Private constructor to prevent instantiation.
 	 */
@@ -72,40 +74,35 @@ public class Evaluator extends CommandLineUtility {
 	@Override
 	public Options getOptions() {
 		Options options = super.getOptions();
-		
+
 		options.addOption(OptionBuilder
 				.withLongOpt("parameterFile")
 				.hasArg()
 				.withArgName("file")
-				.withDescription("Parameter description file")
 				.isRequired()
 				.create('p'));
 		options.addOption(OptionBuilder
 				.withLongOpt("input")
 				.hasArg()
 				.withArgName("file")
-				.withDescription("Parameter samples")
 				.isRequired()
 				.create('i'));
 		options.addOption(OptionBuilder
 				.withLongOpt("output")
 				.hasArg()
 				.withArgName("file")
-				.withDescription("Output file")
 				.isRequired()
 				.create('o'));
 		options.addOption(OptionBuilder
 				.withLongOpt("problem")
 				.hasArg()
 				.withArgName("name")
-				.withDescription("Problem name")
 				.isRequired()
 				.create('b'));
 		options.addOption(OptionBuilder
 				.withLongOpt("algorithm")
 				.hasArg()
 				.withArgName("name")
-				.withDescription("Algorithm name")
 				.isRequired()
 				.create('a'));
 		options.addOption(OptionBuilder
@@ -113,40 +110,46 @@ public class Evaluator extends CommandLineUtility {
 				.hasArgs()
 				.withArgName("p1=v1;p2=v2;...")
 				.withValueSeparator(';')
-				.withDescription("Fixed algorithm properties")
 				.create('x'));
 		options.addOption(OptionBuilder
 				.withLongOpt("seed")
 				.hasArg()
 				.withArgName("value")
-				.withDescription("Random number seed")
 				.create('s'));
 		options.addOption(OptionBuilder
 				.withLongOpt("epsilon")
 				.hasArg()
 				.withArgName("e1,e2,...")
-				.withDescription("Epsilon values for epsilon-dominance")
 				.create('e'));
 		options.addOption(OptionBuilder
 				.withLongOpt("metrics")
-				.withDescription("Evaluate and output metrics")
 				.create('m'));
 		options.addOption(OptionBuilder
 				.withLongOpt("reference")
 				.hasArg()
 				.withArgName("file")
-				.withDescription("Reference set file")
 				.create('r'));
 		options.addOption(OptionBuilder
 				.withLongOpt("novariables")
-				.withDescription("Do not output decision variables")
 				.create('n'));
 		options.addOption(OptionBuilder
 				.withLongOpt("force")
-				.withDescription("Continue processing if the file timestamp check fails")
 				.create('f'));
 
+		//fill in option descriptions
+		for (Object obj : options.getOptions()) {
+			Option option = (Option)obj;
+
+			option.setDescription(Localization.getString(Evaluator.class, 
+					"option." + option.getLongOpt()));
+		}
+
 		return options;
+	}
+
+	@Override
+	public String getDescription() {
+		return Localization.getString(Evaluator.class, "description");
 	}
 
 	@Override
@@ -177,7 +180,7 @@ public class Evaluator extends CommandLineUtility {
 				try {
 					if (commandLine.hasOption("metrics")) {
 						NondominatedPopulation referenceSet = null;
-						
+
 						// load reference set and create the quality indicator
 						if (commandLine.hasOption("reference")) {
 							referenceSet = new NondominatedPopulation(
@@ -189,15 +192,15 @@ public class Evaluator extends CommandLineUtility {
 									.getReferenceSet(commandLine.getOptionValue(
 											"problem"));
 						}
-						
+
 						if (referenceSet == null) {
 							throw new FrameworkException(
 									"no reference set available");
 						}
-						
+
 						QualityIndicator indicator = new QualityIndicator(
 								problem, referenceSet);
-						
+
 						output = new MetricFileWriter(indicator, outputFile);
 					} else {
 						output = new ResultFileWriter(problem, outputFile,
@@ -269,7 +272,7 @@ public class Evaluator extends CommandLineUtility {
 	 * @throws IOException if an I/O error occurred
 	 */
 	protected void process(String algorithmName, Properties properties)
-	throws IOException {
+			throws IOException {
 		// instrument the problem to record timing information
 		TimingProblem timingProblem = new TimingProblem(problem);
 
@@ -303,7 +306,7 @@ public class Evaluator extends CommandLineUtility {
 			result = new EpsilonBoxDominanceArchive(
 					new EpsilonBoxDominanceComparator(
 							typedProperties.getDoubleArray("epsilon", null)),
-					result);
+							result);
 		}
 
 		// record instrumented data
