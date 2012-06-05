@@ -43,6 +43,8 @@ import org.jfree.ui.about.AboutDialog;
 import org.jfree.ui.about.ProjectInfo;
 import org.moeaframework.Instrumenter;
 import org.moeaframework.core.NondominatedPopulation;
+import org.moeaframework.core.Settings;
+import org.moeaframework.util.Localization;
 
 /**
  * Collection of actions used by the diagnostic tool.
@@ -50,10 +52,17 @@ import org.moeaframework.core.NondominatedPopulation;
 public class ActionFactory implements ControllerListener {
 	
 	/**
+	 * The file extension.
+	 */
+	private static final String EXTENSION = "." + Localization.getString(
+			ActionFactory.class, "extension").toLowerCase();
+	
+	/**
 	 * The file filter used when selecting the file to save/load.
 	 */
 	private static final FileFilter FILTER = new FileNameExtensionFilter(
-			"Data File", "adf");
+			Localization.getString(ActionFactory.class, "extensionDescription"),
+			Localization.getString(ActionFactory.class, "extension"));
 	
 	/**
 	 * The {@code Controller} instance on which these actions operate.
@@ -225,9 +234,13 @@ public class ActionFactory implements ControllerListener {
 	 * Initializes the actions used by this action factory.
 	 */
 	protected void initialize() {
-		saveAction = new AbstractAction("Save...") {
+		saveAction = new AbstractAction() {
 
 			private static final long serialVersionUID = -1909996187887919230L;
+			
+			{
+				putValue(Action.NAME, Localization.getString(ActionFactory.class, "save"));
+			}
 
 			@Override
 			public void actionPerformed(ActionEvent event) {
@@ -239,9 +252,9 @@ public class ActionFactory implements ControllerListener {
 				if (result == JFileChooser.APPROVE_OPTION) {
 					File file = fileChooser.getSelectedFile();
 						
-					if (!file.getName().toUpperCase().endsWith(".ADF")) {
+					if (!file.getName().toLowerCase().endsWith(EXTENSION)) {
 						file = new File(file.getParent(), file.getName() + 
-								".adf");
+								EXTENSION);
 					}
 					
 					try {
@@ -254,9 +267,13 @@ public class ActionFactory implements ControllerListener {
 			
 		};
 		
-		loadAction = new AbstractAction("Load...") {
+		loadAction = new AbstractAction() {
 
 			private static final long serialVersionUID = 6667076082827906472L;
+			
+			{
+				putValue(Action.NAME, Localization.getString(ActionFactory.class, "load"));
+			}
 
 			@Override
 			public void actionPerformed(ActionEvent event) {
@@ -276,9 +293,13 @@ public class ActionFactory implements ControllerListener {
 			
 		};
 		
-		exitAction = new AbstractAction("Exit") {
+		exitAction = new AbstractAction() {
 
 			private static final long serialVersionUID = -8388268233198826720L;
+			
+			{
+				putValue(Action.NAME, Localization.getString(ActionFactory.class, "exit"));
+			}
 
 			@Override
 			public void actionPerformed(ActionEvent event) {
@@ -287,11 +308,12 @@ public class ActionFactory implements ControllerListener {
 			
 		};
 		
-		showLastTraceAction = new AbstractAction("Display Last Trace") {
+		showLastTraceAction = new AbstractAction() {
 
 			private static final long serialVersionUID = -6068811236087074314L;
 			
 			{
+				putValue(Action.NAME, Localization.getString(ActionFactory.class, "showLastTrace"));
 				putValue(Action.SELECTED_KEY, controller.getShowLastTrace());
 			}
 
@@ -302,9 +324,13 @@ public class ActionFactory implements ControllerListener {
 			
 		};
 		
-		enableAllIndicatorsAction = new AbstractAction("Enable All Performance Indicators") {
+		enableAllIndicatorsAction = new AbstractAction() {
 
 			private static final long serialVersionUID = -6068811236087074314L;
+			
+			{
+				putValue(Action.NAME, Localization.getString(ActionFactory.class, "enableAllIndicators"));
+			}
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -325,9 +351,13 @@ public class ActionFactory implements ControllerListener {
 			
 		};
 		
-		disableAllIndicatorsAction = new AbstractAction("Disable All Performance Indicators") {
+		disableAllIndicatorsAction = new AbstractAction() {
 
 			private static final long serialVersionUID = 5291581694356532809L;
+			
+			{
+				putValue(Action.NAME, Localization.getString(ActionFactory.class, "disableAllIndicators"));
+			}
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -348,11 +378,12 @@ public class ActionFactory implements ControllerListener {
 			
 		};
 		
-		includeHypervolumeAction = new AbstractAction("Hypervolume") {
+		includeHypervolumeAction = new AbstractAction() {
 
 			private static final long serialVersionUID = -8388268233198826720L;
 
 			{
+				putValue(Action.NAME, Localization.getString(ActionFactory.class, "includeHypervolume"));
 				putValue(Action.SELECTED_KEY, controller.getIncludeHypervolume());
 			}
 
@@ -363,11 +394,12 @@ public class ActionFactory implements ControllerListener {
 			
 		};
 		
-		includeGenerationalDistanceAction = new AbstractAction("Generational Distance") {
+		includeGenerationalDistanceAction = new AbstractAction() {
 
 			private static final long serialVersionUID = 6577840439300886142L;
 
 			{
+				putValue(Action.NAME, Localization.getString(ActionFactory.class, "includeGenerationalDistance"));
 				putValue(Action.SELECTED_KEY, controller.getIncludeGenerationalDistance());
 			}
 
@@ -378,11 +410,12 @@ public class ActionFactory implements ControllerListener {
 			
 		};
 		
-		includeInvertedGenerationalDistanceAction = new AbstractAction("Inverted Generational Distance") {
+		includeInvertedGenerationalDistanceAction = new AbstractAction() {
 
 			private static final long serialVersionUID = -4264252375261182056L;
 
 			{
+				putValue(Action.NAME, Localization.getString(ActionFactory.class, "includeInvertedGenerationalDistance"));
 				putValue(Action.SELECTED_KEY, controller.getIncludeInvertedGenerationalDistance());
 			}
 
@@ -393,11 +426,12 @@ public class ActionFactory implements ControllerListener {
 
 		};
 		
-		includeSpacingAction = new AbstractAction("Spacing") {
+		includeSpacingAction = new AbstractAction() {
 
 			private static final long serialVersionUID = 3256132970071591253L;
 
 			{
+				putValue(Action.NAME, Localization.getString(ActionFactory.class, "includeSpacing"));
 				putValue(Action.SELECTED_KEY, controller.getIncludeSpacing());
 			}
 
@@ -408,11 +442,12 @@ public class ActionFactory implements ControllerListener {
 
 		};
 		
-		includeAdditiveEpsilonIndicatorAction = new AbstractAction("Additive Epsilon Indicator") {
+		includeAdditiveEpsilonIndicatorAction = new AbstractAction() {
 
 			private static final long serialVersionUID = -4612470190342088537L;
 
 			{
+				putValue(Action.NAME, Localization.getString(ActionFactory.class, "includeAdditiveEpsilonIndicator"));
 				putValue(Action.SELECTED_KEY, controller.getIncludeAdditiveEpsilonIndicator());
 			}
 
@@ -423,11 +458,12 @@ public class ActionFactory implements ControllerListener {
 
 		};
 		
-		includeContributionAction = new AbstractAction("Contribution") {
+		includeContributionAction = new AbstractAction() {
 
 			private static final long serialVersionUID = 7751303429555416136L;
 
 			{
+				putValue(Action.NAME, Localization.getString(ActionFactory.class, "includeContribution"));
 				putValue(Action.SELECTED_KEY, controller.getIncludeContribution());
 			}
 
@@ -438,11 +474,12 @@ public class ActionFactory implements ControllerListener {
 
 		};
 		
-		includeEpsilonProgressAction = new AbstractAction("Epsilon-Progress Improvements") {
+		includeEpsilonProgressAction = new AbstractAction() {
 
 			private static final long serialVersionUID = -2514670979923374486L;
 
 			{
+				putValue(Action.NAME, Localization.getString(ActionFactory.class, "includeEpsilonProgress"));
 				putValue(Action.SELECTED_KEY, controller.getIncludeEpsilonProgress());
 			}
 
@@ -453,11 +490,12 @@ public class ActionFactory implements ControllerListener {
 
 		};
 		
-		includeAdaptiveMultimethodVariationAction = new AbstractAction("Adaptive Multimethod Variation Probabilities") {
+		includeAdaptiveMultimethodVariationAction = new AbstractAction() {
 
 			private static final long serialVersionUID = -2295024482426435226L;
 
 			{
+				putValue(Action.NAME, Localization.getString(ActionFactory.class, "includeAdaptiveMultimethodVariation"));
 				putValue(Action.SELECTED_KEY, controller.getIncludeAdaptiveMultimethodVariation());
 			}
 
@@ -468,11 +506,12 @@ public class ActionFactory implements ControllerListener {
 
 		};
 		
-		includeAdaptiveTimeContinuationAction = new AbstractAction("Restart Frequency") {
+		includeAdaptiveTimeContinuationAction = new AbstractAction() {
 
 			private static final long serialVersionUID = 3178255679435336378L;
 
 			{
+				putValue(Action.NAME, Localization.getString(ActionFactory.class, "includeAdaptiveTimeContinuation"));
 				putValue(Action.SELECTED_KEY, controller.getIncludeAdaptiveTimeContinuation());
 			}
 
@@ -483,11 +522,12 @@ public class ActionFactory implements ControllerListener {
 
 		};
 		
-		includeElapsedTimeAction = new AbstractAction("Elapsed Time") {
+		includeElapsedTimeAction = new AbstractAction() {
 
 			private static final long serialVersionUID = -664733245004881369L;
 
 			{
+				putValue(Action.NAME, Localization.getString(ActionFactory.class, "includeElapsedTime"));
 				putValue(Action.SELECTED_KEY, controller.getIncludeElapsedTime());
 			}
 
@@ -498,11 +538,12 @@ public class ActionFactory implements ControllerListener {
 
 		};
 		
-		includePopulationSizeAction = new AbstractAction("Population/Archive Size") {
+		includePopulationSizeAction = new AbstractAction() {
 
 			private static final long serialVersionUID = 567786863596776287L;
 
 			{
+				putValue(Action.NAME, Localization.getString(ActionFactory.class, "includePopulationSize"));
 				putValue(Action.SELECTED_KEY, controller.getIncludePopulationSize());
 			}
 
@@ -513,11 +554,12 @@ public class ActionFactory implements ControllerListener {
 
 		};
 		
-		includeApproximationSetAction = new AbstractAction("Approximation Set (Memory Intensive)") {
+		includeApproximationSetAction = new AbstractAction() {
 
 			private static final long serialVersionUID = 567786863596776287L;
 
 			{
+				putValue(Action.NAME, Localization.getString(ActionFactory.class, "includeApproximationSet"));
 				putValue(Action.SELECTED_KEY, controller.getIncludeApproximationSet());
 			}
 
@@ -528,11 +570,12 @@ public class ActionFactory implements ControllerListener {
 
 		};
 		
-		runAction = new AbstractAction("Run") {
+		runAction = new AbstractAction() {
 
 			private static final long serialVersionUID = -3966834246075639069L;
 			
 			{
+				putValue(Action.NAME, Localization.getString(ActionFactory.class, "run"));
 				setEnabled(!controller.isRunning());
 			}
 
@@ -543,11 +586,12 @@ public class ActionFactory implements ControllerListener {
 			
 		};
 		
-		cancelAction = new AbstractAction("Cancel") {
+		cancelAction = new AbstractAction() {
 
 			private static final long serialVersionUID = 3035060554253471054L;
 			
 			{
+				putValue(Action.NAME, Localization.getString(ActionFactory.class, "cancel"));
 				setEnabled(controller.isRunning());
 			}
 
@@ -558,11 +602,12 @@ public class ActionFactory implements ControllerListener {
 			
 		};
 		
-		clearAction = new AbstractAction("Clear") {
+		clearAction = new AbstractAction() {
 
 			private static final long serialVersionUID = 3770122212031491835L;
 			
 			{
+				putValue(Action.NAME, Localization.getString(ActionFactory.class, "clear"));
 				setEnabled(!controller.isRunning());
 			}
 
@@ -573,11 +618,12 @@ public class ActionFactory implements ControllerListener {
 			
 		};
 		
-		showStatisticsAction = new AbstractAction("Show Statistics") {
+		showStatisticsAction = new AbstractAction() {
 
 			private static final long serialVersionUID = 6836221261899470110L;
 			
 			{
+				putValue(Action.NAME, Localization.getString(ActionFactory.class, "showStatistics"));
 				setEnabled(false);
 			}
 
@@ -588,9 +634,13 @@ public class ActionFactory implements ControllerListener {
 			
 		};
 		
-		aboutDialogAction = new AbstractAction("About") {
+		aboutDialogAction = new AbstractAction() {
 
 			private static final long serialVersionUID = -7768030811303579787L;
+			
+			{
+				putValue(Action.NAME, Localization.getString(ActionFactory.class, "about"));
+			}
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -626,7 +676,9 @@ public class ActionFactory implements ControllerListener {
 							properties.getProperty("version"), "GNU LGPL", 
 							null));
 						
-					AboutDialog dialog = new AboutDialog(frame, "About", info);
+					AboutDialog dialog = new AboutDialog(frame,
+							Localization.getString(ActionFactory.class, "about"),
+							info);
 					dialog.setLocationRelativeTo(frame);
 					dialog.setVisible(true);
 				} catch (Exception ex) {
@@ -636,41 +688,39 @@ public class ActionFactory implements ControllerListener {
 			
 		};
 		
-		showIndividualTracesAction = new AbstractAction("Show Individual Traces") {
+		showIndividualTracesAction = new AbstractAction() {
 
 			private static final long serialVersionUID = 7197923975477668385L;
 			
 			{
-				putValue(Action.SELECTED_KEY, 
-						controller.getShowIndividualTraces());
+				putValue(Action.NAME, Localization.getString(ActionFactory.class, "showIndividualTraces"));
+				putValue(Action.SELECTED_KEY, controller.getShowIndividualTraces());
 			}
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//showQuantiles.putValue(Action.SELECTED_KEY, false);
 				controller.setShowIndividualTraces(true);
 			}
 			
 		};
 		
-		showQuantilesAction = new AbstractAction("Show Quantiles") {
+		showQuantilesAction = new AbstractAction() {
 
 			private static final long serialVersionUID = -7733483777432591099L;
 			
 			{
-				putValue(Action.SELECTED_KEY, 
-						!controller.getShowIndividualTraces());
+				putValue(Action.NAME, Localization.getString(ActionFactory.class, "showQuantiles"));
+				putValue(Action.SELECTED_KEY, !controller.getShowIndividualTraces());
 			}
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//showIndividualTraces.putValue(Action.SELECTED_KEY, false);
 				controller.setShowIndividualTraces(false);
 			}
 			
 		};
 		
-		memoryUsageAction = new AbstractAction("") {
+		memoryUsageAction = new AbstractAction() {
 
 			private static final long serialVersionUID = -3966834246075639069L;
 			
@@ -722,7 +772,6 @@ public class ActionFactory implements ControllerListener {
 		StringBuilder sb = new StringBuilder();
 		BufferedReader reader = null;
 		String line = null;
-		String newLine = System.getProperty("line.separator");
 		boolean isNewParagraph = false;
 		
 		try {
@@ -736,8 +785,8 @@ public class ActionFactory implements ControllerListener {
 					isNewParagraph = true;
 				} else {
 					if (isNewParagraph) {
-						sb.append(newLine);
-						sb.append(newLine);
+						sb.append(Settings.NEW_LINE);
+						sb.append(Settings.NEW_LINE);
 					} else {
 						sb.append(' ');
 					}
@@ -1018,9 +1067,13 @@ public class ActionFactory implements ControllerListener {
 	 * @return the action to display the approximation set for the given result
 	 */
 	public Action getShowApproximationSetAction(final ResultKey key) {
-		return new AbstractAction("Show Approximation Set") {
+		return new AbstractAction() {
 
 			private static final long serialVersionUID = 1680529848835103744L;
+			
+			{
+				putValue(Action.NAME, Localization.getString(ActionFactory.class, "showApproximationSet"));
+			}
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -1054,9 +1107,13 @@ public class ActionFactory implements ControllerListener {
 	 * @return the action to select all items in the specified table
 	 */
 	public Action getSelectAllAction(final JTable table) {
-		return new AbstractAction("Select All") {
+		return new AbstractAction() {
 
 			private static final long serialVersionUID = 8538384599545194314L;
+			
+			{
+				putValue(Action.NAME, Localization.getString(ActionFactory.class, "selectAll"));
+			}
 
 			@Override
 			public void actionPerformed(ActionEvent e) {

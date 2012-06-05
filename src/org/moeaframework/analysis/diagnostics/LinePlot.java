@@ -52,6 +52,7 @@ import org.jfree.data.xy.YIntervalSeriesCollection;
 import org.jfree.ui.RectangleEdge;
 import org.jfree.ui.RectangleInsets;
 import org.moeaframework.analysis.collector.Accumulator;
+import org.moeaframework.util.Localization;
 
 /**
  * Displays a line plot of the runtime dynamics of a metric, displaying the
@@ -232,8 +233,14 @@ public class LinePlot extends ResultPlot {
 		}
 
 		//create the chart
-		JFreeChart chart = ChartFactory.createXYLineChart(metric, "NFE",
-				"Value", dataset, PlotOrientation.VERTICAL, false, true,
+		JFreeChart chart = ChartFactory.createXYLineChart(
+				metric,
+				Localization.getString(LinePlot.class, "xAxis"),
+				Localization.getString(LinePlot.class, "yAxis"),
+				dataset,
+				PlotOrientation.VERTICAL,
+				false,
+				true,
 				false);
 		final XYPlot plot = chart.getXYPlot();
 		
@@ -308,7 +315,9 @@ public class LinePlot extends ResultPlot {
 				(controller.getLastAccumulator() != null) && 
 				controller.getLastAccumulator().keySet().contains(metric)) {
 			DefaultTableXYDataset dataset2 = new DefaultTableXYDataset();
-			XYSeries series = new XYSeries("Last", false, false);
+			XYSeries series = new XYSeries(
+					Localization.getString(LinePlot.class, "last"),
+					false, false);
 			
 			for (int i=0; i<controller.getLastAccumulator().size(metric); i++) {
 				series.add(

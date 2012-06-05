@@ -61,6 +61,7 @@ import javax.swing.table.AbstractTableModel;
 
 import org.moeaframework.analysis.collector.Accumulator;
 import org.moeaframework.core.Settings;
+import org.moeaframework.util.Localization;
 
 /**
  * The main window of the diagnostic tool.
@@ -177,7 +178,7 @@ ControllerListener {
 	 * Constructs a new diagnostic tool window.
 	 */
 	public DiagnosticTool() {
-		super("MOEA Diagnostic Tool");
+		super(Localization.getString(DiagnosticTool.class, "title"));
 
 		setSize(800, 600);
 		setMinimumSize(new Dimension(800, 600));
@@ -215,11 +216,14 @@ ControllerListener {
 			public String getColumnName(int column) {
 				switch (column) {
 				case 0: 
-					return "Algorithm";
+					return Localization.getString(DiagnosticTool.class,
+							"algorithm");
 				case 1: 
-					return "Problem";
+					return Localization.getString(DiagnosticTool.class,
+							"problem");
 				case 2: 
-					return "Seeds";
+					return Localization.getString(DiagnosticTool.class,
+							"numberOfSeeds");
 				default: 
 					throw new IllegalStateException();
 				}
@@ -351,13 +355,15 @@ ControllerListener {
 	 * constructor, and should not be invoked again.
 	 */
 	protected void layoutMenu() {
-		JMenu file = new JMenu("File");
+		JMenu file = new JMenu(Localization.getString(DiagnosticTool.class,
+				"file"));
 		file.add(new JMenuItem(actionFactory.getSaveAction()));
 		file.add(new JMenuItem(actionFactory.getLoadAction()));
 		file.addSeparator();
 		file.add(new JMenuItem(actionFactory.getExitAction()));
 		
-		JMenu view = new JMenu("View");
+		JMenu view = new JMenu(Localization.getString(DiagnosticTool.class,
+				"view"));
 		JMenuItem individualTraces = new JRadioButtonMenuItem(
 				actionFactory.getShowIndividualTracesAction());
 		JMenuItem quantiles = new JRadioButtonMenuItem(
@@ -371,7 +377,8 @@ ControllerListener {
 		view.add(new JCheckBoxMenuItem(
 				actionFactory.getShowLastTraceAction()));
 		
-		JMenu metrics = new JMenu("Collect");
+		JMenu metrics = new JMenu(Localization.getString(DiagnosticTool.class,
+				"collect"));
 		metrics.add(new JMenuItem(
 				actionFactory.getEnableAllIndicatorsAction()));
 		metrics.add(new JMenuItem(
@@ -403,7 +410,8 @@ ControllerListener {
 		metrics.add(new JCheckBoxMenuItem(
 				actionFactory.getIncludeApproximationSetAction()));
 		
-		JMenu help = new JMenu("Help");
+		JMenu help = new JMenu(Localization.getString(DiagnosticTool.class,
+				"help"));
 		help.add(new JMenuItem(actionFactory.getAboutDialogAction()));
 		
 		JMenu usage = new JMenu(actionFactory.getMemoryUsageAction());
@@ -449,14 +457,16 @@ ControllerListener {
 		
 		JPanel resultPane = new JPanel(new BorderLayout());
 		resultPane.setBorder(BorderFactory.createTitledBorder(
-				"Displayed Results"));
+				Localization.getString(DiagnosticTool.class,
+						"displayedResults")));
 		resultPane.add(new JScrollPane(resultTable), BorderLayout.CENTER);
 		resultPane.add(analysisPane, BorderLayout.SOUTH);
 		resultPane.setMinimumSize(new Dimension(100, 100));
 		
 		JPanel metricPane = new JPanel(new BorderLayout());
 		metricPane.setBorder(BorderFactory.createTitledBorder(
-				"Displayed Metrics"));
+				Localization.getString(DiagnosticTool.class,
+						"displayedMetrics")));
 		metricPane.add(new JScrollPane(metricList), BorderLayout.CENTER);
 		metricPane.setMinimumSize(new Dimension(100, 100));
 		
@@ -470,20 +480,27 @@ ControllerListener {
 		buttonPane.add(clear);
 		
 		JPanel controlPane = new JPanel(new GridBagLayout());
-		controlPane.setBorder(BorderFactory.createTitledBorder("Controls"));
-		controlPane.add(new JLabel("Algorithm:"), label);
+		controlPane.setBorder(BorderFactory.createTitledBorder(
+				Localization.getString(DiagnosticTool.class, "controls")));
+		controlPane.add(new JLabel(Localization.getString(DiagnosticTool.class,
+				"algorithm") + ":"), label);
 		controlPane.add(algorithm, field);
-		controlPane.add(new JLabel("Problem:"), label);
+		controlPane.add(new JLabel(Localization.getString(DiagnosticTool.class,
+				"problem") + ":"), label);
 		controlPane.add(problem, field);
-		controlPane.add(new JLabel("Seeds:"), label);
+		controlPane.add(new JLabel(Localization.getString(DiagnosticTool.class,
+				"numberOfSeeds") + ":"), label);
 		controlPane.add(numberOfSeeds, field);
-		controlPane.add(new JLabel("Max NFE:"), label);
+		controlPane.add(new JLabel(Localization.getString(DiagnosticTool.class,
+				"numberOfEvaluations") + ":"), label);
 		controlPane.add(numberOfEvaluations, field);
 		controlPane.add(buttonPane, button);
 		controlPane.add(new JPanel(), button);
-		controlPane.add(new JLabel("Run Progress:"), label);
+		controlPane.add(new JLabel(Localization.getString(DiagnosticTool.class,
+				"runProgress") + ":"), label);
 		controlPane.add(runProgress, field);
-		controlPane.add(new JLabel("Overall Progress:"), label);
+		controlPane.add(new JLabel(Localization.getString(DiagnosticTool.class,
+				"overallProgress") + ":"), label);
 		controlPane.add(overallProgress, field);
 		
 		JPanel controls = new JPanel();

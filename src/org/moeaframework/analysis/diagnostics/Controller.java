@@ -54,6 +54,7 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.core.spi.ProblemFactory;
+import org.moeaframework.util.Localization;
 
 /**
  * The controller manages the underlying data model, performs the evaluation
@@ -509,7 +510,8 @@ public class Controller {
 			ByteArrayOutputStream stream = new ByteArrayOutputStream();
 			analyzer.printAnalysis(new PrintStream(stream));
 			
-			JFrame frame = new JFrame("Statistical Results");
+			JFrame frame = new JFrame(
+					Localization.getString(getClass(), "statisticalResults"));
 			frame.setSize(800, 600);
 			frame.setMinimumSize(new Dimension(800, 600));
 			frame.setLocationRelativeTo(frame);

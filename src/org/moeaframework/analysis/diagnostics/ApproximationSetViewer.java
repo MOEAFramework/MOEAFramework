@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Vector;
 
 import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -61,6 +62,7 @@ import org.moeaframework.analysis.collector.Accumulator;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.RealVariable;
+import org.moeaframework.util.Localization;
 
 /**
  * Window for displaying approximation set dynamics.
@@ -181,7 +183,8 @@ ActionListener, ChartChangeListener, ListSelectionListener {
 	 */
 	public ApproximationSetViewer(String name, List<Accumulator> accumulators, 
 			NondominatedPopulation referenceSet) {
-		super("Approximation Set for " + name);
+		super(Localization.getString(ApproximationSetViewer.class, "title",
+				name));
 		this.accumulators = accumulators;
 		this.referenceSet = referenceSet;
 		
@@ -251,15 +254,18 @@ ActionListener, ChartChangeListener, ListSelectionListener {
 		Vector<String> objectives = new Vector<String>();
 		
 		for (int i=0; i<solution.getNumberOfObjectives(); i++) {
-			objectives.add("Objective " + (i+1));
+			objectives.add(
+					Localization.getString(getClass(), "objective", i+1));
 		}
 		
 		for (int i=0; i<solution.getNumberOfConstraints(); i++) {
-			objectives.add("Constraint " + (i+1));
+			objectives.add(
+					Localization.getString(getClass(), "constraint", i+1));
 		}
 		
 		for (int i=0; i<solution.getNumberOfVariables(); i++) {
-			objectives.add("Variable " + (i+1));
+			objectives.add(
+					Localization.getString(getClass(), "variable", i+1));
 		}
 		
 		xAxisSelection = new JComboBox(objectives);
@@ -275,10 +281,14 @@ ActionListener, ChartChangeListener, ListSelectionListener {
 		initializeReferenceSetBounds();
 		
 		//initialize plotting controls
-		useInitialBounds = new JRadioButton("Use Initial Bounds");
-		useReferenceSetBounds = new JRadioButton("Use Reference Set Bounds");
-		useDynamicBounds = new JRadioButton("Use Dynamic Bounds");
-		useZoomBounds = new JRadioButton("Use Zoom");
+		useInitialBounds = new JRadioButton(
+				Localization.getString(getClass(), "useInitialBounds"));
+		useReferenceSetBounds = new JRadioButton(
+				Localization.getString(getClass(), "useReferenceSetBounds"));
+		useDynamicBounds = new JRadioButton(
+				Localization.getString(getClass(), "useDynamicBounds"));
+		useZoomBounds = new JRadioButton(
+				Localization.getString(getClass(), "useZoom"));
 		
 		ButtonGroup rangeButtonGroup = new ButtonGroup();
 		rangeButtonGroup.add(useInitialBounds);
@@ -300,15 +310,20 @@ ActionListener, ChartChangeListener, ListSelectionListener {
 		String[] seeds = new String[accumulators.size()];
 		
 		for (int i=0; i<accumulators.size(); i++) {
-			seeds[i] = "Seed " + (i+1);
+			seeds[i] = Localization.getString(getClass(), "seed", i+1);
 		}
 		
 		seedList = new JList(seeds);
 		seedList.addListSelectionListener(this);
 		
-		selectAll = new JButton(new AbstractAction("Select All") {
+		selectAll = new JButton(new AbstractAction() {
 
 			private static final long serialVersionUID = -3709557130361259485L;
+			
+			{
+				putValue(Action.NAME, Localization.getString(getClass(),
+						"selectAll"));
+			}
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -320,7 +335,8 @@ ActionListener, ChartChangeListener, ListSelectionListener {
 		
 		//initialize miscellaneous components
 		paintHelper = new PaintHelper();
-		paintHelper.set("Reference Set", Color.BLACK);
+		paintHelper.set(Localization.getString(getClass(), "referenceSet"),
+				Color.BLACK);
 		
 		chartContainer = new JPanel(new BorderLayout());
 	}
@@ -339,9 +355,11 @@ ActionListener, ChartChangeListener, ListSelectionListener {
 		buttonPane.add(useZoomBounds);
 		
 		JPanel objectivePane = new JPanel(new FlowLayout(FlowLayout.CENTER));
-		objectivePane.add(new JLabel("X Axis:"));
+		objectivePane.add(new JLabel(
+				Localization.getString(getClass(), "xAxis")));
 		objectivePane.add(xAxisSelection);
-		objectivePane.add(new JLabel("Y Axis:"));
+		objectivePane.add(new JLabel(
+				Localization.getString(getClass(), "yAxis")));
 		objectivePane.add(yAxisSelection);
 		
 		JPanel controlPane = new JPanel(new GridLayout(3, 1));
@@ -426,8 +444,9 @@ ActionListener, ChartChangeListener, ListSelectionListener {
 			}
 				
 			List<?> list = (List<?>)accumulator.get("Approximation Set", index);
-			XYSeries series = new XYSeries("Seed " + (seedIndex+1), false, 
-					true);
+			XYSeries series = new XYSeries(
+					Localization.getString(getClass(), "seed", seedIndex+1),
+					false, true);
 				
 			for (Object object : list) {
 				Solution solution = (Solution)object;
@@ -439,7 +458,9 @@ ActionListener, ChartChangeListener, ListSelectionListener {
 		
 		//generate reference set
 		if (referenceSet != null) {
-			XYSeries series = new XYSeries("Reference Set", false, true);
+			XYSeries series = new XYSeries(
+					Localization.getString(getClass(), "referenceSet"),
+					false, true);
 				
 			for (Solution solution : referenceSet) {
 				series.add(getValue(solution, 0), getValue(solution, 1));

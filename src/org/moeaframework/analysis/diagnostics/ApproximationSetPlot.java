@@ -36,6 +36,7 @@ import org.moeaframework.analysis.collector.Accumulator;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Solution;
+import org.moeaframework.util.Localization;
 
 /**
  * Displays the end-of-run Pareto approximation set.
@@ -99,8 +100,13 @@ public class ApproximationSetPlot extends ResultPlot {
 			}
 		}
 		
-		JFreeChart chart = ChartFactory.createScatterPlot(metric, "Objective 1",
-				"Objective 2", dataset, PlotOrientation.VERTICAL, true, true,
+		JFreeChart chart = ChartFactory.createScatterPlot(metric,
+				Localization.getString(getClass(), "objective", 1),
+				Localization.getString(getClass(), "objective", 2),
+				dataset,
+				PlotOrientation.VERTICAL,
+				true,
+				true,
 				false);
 		
 		XYPlot plot = chart.getXYPlot();
@@ -135,7 +141,10 @@ public class ApproximationSetPlot extends ResultPlot {
 			}
 			
 			if (!population.isEmpty()) {
-				XYSeries series = new XYSeries("Last", false, true);
+				XYSeries series = new XYSeries(
+						Localization.getString(getClass(), "last"),
+						false,
+						true);
 				
 				for (Solution solution : population) {
 					series.add(solution.getObjective(0), 
