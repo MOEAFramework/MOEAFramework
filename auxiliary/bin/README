@@ -58,26 +58,22 @@ setup your computer to recognize this new interface.
           
   2) Navigate to the /usr/share/MOEAFramework-%VERSION%/bin folder.
   
-  3) Ensure the moea.sh script is executable.  Run the following command:
-       chmod +x moea.sh
+  3) Ensure the moea script is executable.  Run the following command:
+       chmod +x moea
         
   4) If you have administrative permissions, create a symbolic link to this
      shell script.  Run the following command:
-       ln -s moea.sh /usr/bin/moea
+       ln -s moea /usr/bin/moea
      
   5) If you do not have administrative permissions, you can update the PATH
      environment variable to run this script.
      
-     a) First, create a symbolic link for this shell script.  Run the following
-        command:
-          ln -s moea.sh moea
-          
-     b) Temporarily, you can modify the PATH with the following command:
+     a) Temporarily, you can modify the PATH with the following command:
           PATH=$PATH:/usr/share/MOEAFramework-%VERSION%/bin
         The PATH will be reset whenever you log off or restart your computer,
         so you will need to run this command whenever you need to use this tool.
         
-     c) A more permanent option involves modifying the PATH in your default
+     b) A more permanent option involves modifying the PATH in your default
         shell's configuration file.  This file is usually called .bash_profile
         or .profile and is located in your home directory.  Edit this file and
         add the following line:
