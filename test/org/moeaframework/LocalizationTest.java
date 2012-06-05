@@ -31,11 +31,13 @@ public class LocalizationTest {
 	@Test
 	public void testInstanceMethods() {
 		Localization english = Localization.getLocalization(
-				LocalizationTest.class);
+				LocalizationTest.class.getPackage().getName());
 		Localization spanish = Localization.getLocalization(
-				LocalizationTest.class, new Locale("ES"));
+				LocalizationTest.class.getPackage().getName(),
+				new Locale("ES"));
 		Localization german = Localization.getLocalization(
-				LocalizationTest.class, new Locale("DE"));
+				LocalizationTest.class.getPackage().getName(),
+				new Locale("DE"));
 
 		//test without arguments
 		Assert.assertEquals("hello, world", english.getString("test"));
@@ -58,6 +60,12 @@ public class LocalizationTest {
 		Assert.assertEquals("missing.key", english.getString("missing.key",
 				"Foo"));
 		Assert.assertFalse(english.containsKey("missing.key"));
+		
+		//test with missing bundle
+		Localization missing = Localization.getLocalization(
+				"org.moeaframework.util.missing");
+		Assert.assertEquals("missing.key", missing.getString("missing.key"));
+		Assert.assertFalse(missing.containsKey("missing.key"));
 	}
 
 	@Test
