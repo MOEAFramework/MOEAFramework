@@ -25,7 +25,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.text.DecimalFormat;
 import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
@@ -52,17 +51,23 @@ import org.moeaframework.util.Localization;
 public class ActionFactory implements ControllerListener {
 	
 	/**
+	 * The localization instance for produce locale-specific strings.
+	 */
+	private static Localization localization = Localization.getLocalization(
+			ActionFactory.class.getPackage().getName());
+	
+	/**
 	 * The file extension.
 	 */
-	private static final String EXTENSION = "." + Localization.getString(
-			ActionFactory.class, "extension").toLowerCase();
-	
+	private static String EXTENSION = 
+			"." + localization.getString("file.extension").toLowerCase();
+
 	/**
 	 * The file filter used when selecting the file to save/load.
 	 */
-	private static final FileFilter FILTER = new FileNameExtensionFilter(
-			Localization.getString(ActionFactory.class, "extensionDescription"),
-			Localization.getString(ActionFactory.class, "extension"));
+	private static FileFilter FILTER = new FileNameExtensionFilter(
+			localization.getString("file.extension.description"),
+			localization.getString("file.extension"));
 	
 	/**
 	 * The {@code Controller} instance on which these actions operate.
@@ -239,7 +244,8 @@ public class ActionFactory implements ControllerListener {
 			private static final long serialVersionUID = -1909996187887919230L;
 			
 			{
-				putValue(Action.NAME, Localization.getString(ActionFactory.class, "save"));
+				putValue(Action.NAME, localization.getString("action.save.name"));
+				putValue(Action.SHORT_DESCRIPTION, localization.getString("action.save.description"));
 			}
 
 			@Override
@@ -272,7 +278,8 @@ public class ActionFactory implements ControllerListener {
 			private static final long serialVersionUID = 6667076082827906472L;
 			
 			{
-				putValue(Action.NAME, Localization.getString(ActionFactory.class, "load"));
+				putValue(Action.NAME, localization.getString("action.load.name"));
+				putValue(Action.SHORT_DESCRIPTION, localization.getString("action.load.description"));
 			}
 
 			@Override
@@ -298,7 +305,8 @@ public class ActionFactory implements ControllerListener {
 			private static final long serialVersionUID = -8388268233198826720L;
 			
 			{
-				putValue(Action.NAME, Localization.getString(ActionFactory.class, "exit"));
+				putValue(Action.NAME, localization.getString("action.exit.name"));
+				putValue(Action.SHORT_DESCRIPTION, localization.getString("action.exit.description"));
 			}
 
 			@Override
@@ -313,7 +321,8 @@ public class ActionFactory implements ControllerListener {
 			private static final long serialVersionUID = -6068811236087074314L;
 			
 			{
-				putValue(Action.NAME, Localization.getString(ActionFactory.class, "showLastTrace"));
+				putValue(Action.NAME, localization.getString("action.showLastTrace.name"));
+				putValue(Action.SHORT_DESCRIPTION, localization.getString("action.showLastTrace.description"));
 				putValue(Action.SELECTED_KEY, controller.getShowLastTrace());
 			}
 
@@ -329,7 +338,8 @@ public class ActionFactory implements ControllerListener {
 			private static final long serialVersionUID = -6068811236087074314L;
 			
 			{
-				putValue(Action.NAME, Localization.getString(ActionFactory.class, "enableAllIndicators"));
+				putValue(Action.NAME, localization.getString("action.enableAllIndicators.name"));
+				putValue(Action.SHORT_DESCRIPTION, localization.getString("action.enableAllIndicators.description"));
 			}
 
 			@Override
@@ -356,7 +366,8 @@ public class ActionFactory implements ControllerListener {
 			private static final long serialVersionUID = 5291581694356532809L;
 			
 			{
-				putValue(Action.NAME, Localization.getString(ActionFactory.class, "disableAllIndicators"));
+				putValue(Action.NAME, localization.getString("action.disableAllIndicators.name"));
+				putValue(Action.SHORT_DESCRIPTION, localization.getString("action.disableAllIndicators.description"));
 			}
 
 			@Override
@@ -383,7 +394,8 @@ public class ActionFactory implements ControllerListener {
 			private static final long serialVersionUID = -8388268233198826720L;
 
 			{
-				putValue(Action.NAME, Localization.getString(ActionFactory.class, "includeHypervolume"));
+				putValue(Action.NAME, localization.getString("action.includeHypervolume.name"));
+				putValue(Action.SHORT_DESCRIPTION, localization.getString("action.includeHypervolume.description"));
 				putValue(Action.SELECTED_KEY, controller.getIncludeHypervolume());
 			}
 
@@ -399,7 +411,8 @@ public class ActionFactory implements ControllerListener {
 			private static final long serialVersionUID = 6577840439300886142L;
 
 			{
-				putValue(Action.NAME, Localization.getString(ActionFactory.class, "includeGenerationalDistance"));
+				putValue(Action.NAME, localization.getString("action.includeGenerationalDistance.name"));
+				putValue(Action.SHORT_DESCRIPTION, localization.getString("action.includeGenerationalDistance.description"));
 				putValue(Action.SELECTED_KEY, controller.getIncludeGenerationalDistance());
 			}
 
@@ -415,7 +428,8 @@ public class ActionFactory implements ControllerListener {
 			private static final long serialVersionUID = -4264252375261182056L;
 
 			{
-				putValue(Action.NAME, Localization.getString(ActionFactory.class, "includeInvertedGenerationalDistance"));
+				putValue(Action.NAME, localization.getString("action.includeInvertedGenerationalDistance.name"));
+				putValue(Action.SHORT_DESCRIPTION, localization.getString("action.includeInvertedGenerationalDistance.description"));
 				putValue(Action.SELECTED_KEY, controller.getIncludeInvertedGenerationalDistance());
 			}
 
@@ -431,7 +445,8 @@ public class ActionFactory implements ControllerListener {
 			private static final long serialVersionUID = 3256132970071591253L;
 
 			{
-				putValue(Action.NAME, Localization.getString(ActionFactory.class, "includeSpacing"));
+				putValue(Action.NAME, localization.getString("action.includeSpacing.name"));
+				putValue(Action.SHORT_DESCRIPTION, localization.getString("action.includeSpacing.description"));
 				putValue(Action.SELECTED_KEY, controller.getIncludeSpacing());
 			}
 
@@ -447,7 +462,8 @@ public class ActionFactory implements ControllerListener {
 			private static final long serialVersionUID = -4612470190342088537L;
 
 			{
-				putValue(Action.NAME, Localization.getString(ActionFactory.class, "includeAdditiveEpsilonIndicator"));
+				putValue(Action.NAME, localization.getString("action.includeAdditiveEpsilonIndicator.name"));
+				putValue(Action.SHORT_DESCRIPTION, localization.getString("action.includeAdditiveEpsilonIndicator.description"));
 				putValue(Action.SELECTED_KEY, controller.getIncludeAdditiveEpsilonIndicator());
 			}
 
@@ -463,7 +479,8 @@ public class ActionFactory implements ControllerListener {
 			private static final long serialVersionUID = 7751303429555416136L;
 
 			{
-				putValue(Action.NAME, Localization.getString(ActionFactory.class, "includeContribution"));
+				putValue(Action.NAME, localization.getString("action.includeContribution.name"));
+				putValue(Action.SHORT_DESCRIPTION, localization.getString("action.includeContribution.description"));
 				putValue(Action.SELECTED_KEY, controller.getIncludeContribution());
 			}
 
@@ -479,7 +496,8 @@ public class ActionFactory implements ControllerListener {
 			private static final long serialVersionUID = -2514670979923374486L;
 
 			{
-				putValue(Action.NAME, Localization.getString(ActionFactory.class, "includeEpsilonProgress"));
+				putValue(Action.NAME, localization.getString("action.includeEpsilonProgress.name"));
+				putValue(Action.SHORT_DESCRIPTION, localization.getString("action.includeEpsilonProgress.description"));
 				putValue(Action.SELECTED_KEY, controller.getIncludeEpsilonProgress());
 			}
 
@@ -495,7 +513,8 @@ public class ActionFactory implements ControllerListener {
 			private static final long serialVersionUID = -2295024482426435226L;
 
 			{
-				putValue(Action.NAME, Localization.getString(ActionFactory.class, "includeAdaptiveMultimethodVariation"));
+				putValue(Action.NAME, localization.getString("action.includeAdaptiveMultimethodVariation.name"));
+				putValue(Action.SHORT_DESCRIPTION, localization.getString("action.includeAdaptiveMultimethodVariation.description"));
 				putValue(Action.SELECTED_KEY, controller.getIncludeAdaptiveMultimethodVariation());
 			}
 
@@ -511,7 +530,8 @@ public class ActionFactory implements ControllerListener {
 			private static final long serialVersionUID = 3178255679435336378L;
 
 			{
-				putValue(Action.NAME, Localization.getString(ActionFactory.class, "includeAdaptiveTimeContinuation"));
+				putValue(Action.NAME, localization.getString("action.includeAdaptiveTimeContinuation.name"));
+				putValue(Action.SHORT_DESCRIPTION, localization.getString("action.includeAdaptiveTimeContinuation.description"));
 				putValue(Action.SELECTED_KEY, controller.getIncludeAdaptiveTimeContinuation());
 			}
 
@@ -527,7 +547,8 @@ public class ActionFactory implements ControllerListener {
 			private static final long serialVersionUID = -664733245004881369L;
 
 			{
-				putValue(Action.NAME, Localization.getString(ActionFactory.class, "includeElapsedTime"));
+				putValue(Action.NAME, localization.getString("action.includeElapsedTime.name"));
+				putValue(Action.SHORT_DESCRIPTION, localization.getString("action.includeElapsedTime.description"));
 				putValue(Action.SELECTED_KEY, controller.getIncludeElapsedTime());
 			}
 
@@ -543,7 +564,8 @@ public class ActionFactory implements ControllerListener {
 			private static final long serialVersionUID = 567786863596776287L;
 
 			{
-				putValue(Action.NAME, Localization.getString(ActionFactory.class, "includePopulationSize"));
+				putValue(Action.NAME, localization.getString("action.includePopulationSize.name"));
+				putValue(Action.SHORT_DESCRIPTION, localization.getString("action.includePopulationSize.description"));
 				putValue(Action.SELECTED_KEY, controller.getIncludePopulationSize());
 			}
 
@@ -559,7 +581,8 @@ public class ActionFactory implements ControllerListener {
 			private static final long serialVersionUID = 567786863596776287L;
 
 			{
-				putValue(Action.NAME, Localization.getString(ActionFactory.class, "includeApproximationSet"));
+				putValue(Action.NAME, localization.getString("action.includeApproximationSet.name"));
+				putValue(Action.SHORT_DESCRIPTION, localization.getString("action.includeApproximationSet.description"));
 				putValue(Action.SELECTED_KEY, controller.getIncludeApproximationSet());
 			}
 
@@ -575,7 +598,8 @@ public class ActionFactory implements ControllerListener {
 			private static final long serialVersionUID = -3966834246075639069L;
 			
 			{
-				putValue(Action.NAME, Localization.getString(ActionFactory.class, "run"));
+				putValue(Action.NAME, localization.getString("action.run.name"));
+				putValue(Action.SHORT_DESCRIPTION, localization.getString("action.run.description"));
 				setEnabled(!controller.isRunning());
 			}
 
@@ -591,7 +615,8 @@ public class ActionFactory implements ControllerListener {
 			private static final long serialVersionUID = 3035060554253471054L;
 			
 			{
-				putValue(Action.NAME, Localization.getString(ActionFactory.class, "cancel"));
+				putValue(Action.NAME, localization.getString("action.cancel.name"));
+				putValue(Action.SHORT_DESCRIPTION, localization.getString("action.cancel.description"));
 				setEnabled(controller.isRunning());
 			}
 
@@ -607,7 +632,8 @@ public class ActionFactory implements ControllerListener {
 			private static final long serialVersionUID = 3770122212031491835L;
 			
 			{
-				putValue(Action.NAME, Localization.getString(ActionFactory.class, "clear"));
+				putValue(Action.NAME, localization.getString("action.clear.name"));
+				putValue(Action.SHORT_DESCRIPTION, localization.getString("action.clear.description"));
 				setEnabled(!controller.isRunning());
 			}
 
@@ -623,7 +649,8 @@ public class ActionFactory implements ControllerListener {
 			private static final long serialVersionUID = 6836221261899470110L;
 			
 			{
-				putValue(Action.NAME, Localization.getString(ActionFactory.class, "showStatistics"));
+				putValue(Action.NAME, localization.getString("action.showStatistics.name"));
+				putValue(Action.SHORT_DESCRIPTION, localization.getString("action.showStatistics.description"));
 				setEnabled(false);
 			}
 
@@ -639,7 +666,8 @@ public class ActionFactory implements ControllerListener {
 			private static final long serialVersionUID = -7768030811303579787L;
 			
 			{
-				putValue(Action.NAME, Localization.getString(ActionFactory.class, "about"));
+				putValue(Action.NAME, localization.getString("action.about.name"));
+				putValue(Action.SHORT_DESCRIPTION, localization.getString("action.about.description"));
 			}
 
 			@Override
@@ -677,7 +705,7 @@ public class ActionFactory implements ControllerListener {
 							null));
 						
 					AboutDialog dialog = new AboutDialog(frame,
-							Localization.getString(ActionFactory.class, "about"),
+							localization.getString("title.about"),
 							info);
 					dialog.setLocationRelativeTo(frame);
 					dialog.setVisible(true);
@@ -693,7 +721,8 @@ public class ActionFactory implements ControllerListener {
 			private static final long serialVersionUID = 7197923975477668385L;
 			
 			{
-				putValue(Action.NAME, Localization.getString(ActionFactory.class, "showIndividualTraces"));
+				putValue(Action.NAME, localization.getString("action.showIndividualTraces.name"));
+				putValue(Action.SHORT_DESCRIPTION, localization.getString("action.showIndividualTraces.description"));
 				putValue(Action.SELECTED_KEY, controller.getShowIndividualTraces());
 			}
 
@@ -709,7 +738,8 @@ public class ActionFactory implements ControllerListener {
 			private static final long serialVersionUID = -7733483777432591099L;
 			
 			{
-				putValue(Action.NAME, Localization.getString(ActionFactory.class, "showQuantiles"));
+				putValue(Action.NAME, localization.getString("action.showQuantiles.name"));
+				putValue(Action.SHORT_DESCRIPTION, localization.getString("action.showQuantiles.description"));
 				putValue(Action.SELECTED_KEY, !controller.getShowIndividualTraces());
 			}
 
@@ -736,20 +766,19 @@ public class ActionFactory implements ControllerListener {
 		};
 		
 		final Timer timer = new Timer(1000, new ActionListener() {
-			
-			final DecimalFormat df = new DecimalFormat("0.0");
-			
-			final double divisor = 1024*1024;
+
+			final double DIVISOR = 1024*1024;
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				long free = Runtime.getRuntime().freeMemory();
 				long total = Runtime.getRuntime().totalMemory();
 				long max = Runtime.getRuntime().maxMemory();
+				double used = (total - free) / DIVISOR;
+				double available = max / DIVISOR;
 
 				memoryUsageAction.putValue(Action.NAME, 
-						"Memory Usage: " + df.format((total - free)/divisor) + 
-						" of " + df.format(max/divisor) + " MBs");
+						localization.getString("text.memory", used, available));
 			}
 			
 		});
@@ -1072,7 +1101,8 @@ public class ActionFactory implements ControllerListener {
 			private static final long serialVersionUID = 1680529848835103744L;
 			
 			{
-				putValue(Action.NAME, Localization.getString(ActionFactory.class, "showApproximationSet"));
+				putValue(Action.NAME, localization.getString("action.showApproximationSet.name"));
+				putValue(Action.SHORT_DESCRIPTION, localization.getString("action.showApproximationSet.description"));
 			}
 
 			@Override
@@ -1112,7 +1142,8 @@ public class ActionFactory implements ControllerListener {
 			private static final long serialVersionUID = 8538384599545194314L;
 			
 			{
-				putValue(Action.NAME, Localization.getString(ActionFactory.class, "selectAll"));
+				putValue(Action.NAME, localization.getString("action.selectAll.name"));
+				putValue(Action.SHORT_DESCRIPTION, localization.getString("action.selectAll.description"));
 			}
 
 			@Override

@@ -42,9 +42,10 @@ import org.moeaframework.util.sequence.Uniform;
 public class SampleGenerator extends CommandLineUtility {
 
 	/**
-	 * Private constructor to prevent instantiation.
+	 * Constructs the command line utility for producing randomly-generated
+	 * parameters for use by the {@link Evaluator}.
 	 */
-	private SampleGenerator() {
+	public SampleGenerator() {
 		super();
 	}
 

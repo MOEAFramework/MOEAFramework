@@ -17,8 +17,6 @@
  */
 package org.moeaframework.analysis.diagnostics;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -35,10 +33,7 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
 import org.apache.commons.lang3.event.EventListenerSupport;
@@ -54,14 +49,13 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.core.spi.ProblemFactory;
-import org.moeaframework.util.Localization;
 
 /**
  * The controller manages the underlying data model, performs the evaluation
  * of jobs, and notifies any listeners when its state changes.
  */
 public class Controller {
-	
+
 	/**
 	 * The collection of listeners which are notified when the controller state
 	 * changes.
@@ -510,20 +504,11 @@ public class Controller {
 			ByteArrayOutputStream stream = new ByteArrayOutputStream();
 			analyzer.printAnalysis(new PrintStream(stream));
 			
-			JFrame frame = new JFrame(
-					Localization.getString(getClass(), "statisticalResults"));
-			frame.setSize(800, 600);
-			frame.setMinimumSize(new Dimension(800, 600));
-			frame.setLocationRelativeTo(frame);
-			frame.setIconImage(frame.getIconImage());
-			frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-			frame.setLayout(new BorderLayout());
-			
-			JTextArea textArea = new JTextArea(stream.toString());
-			textArea.setWrapStyleWord(true);
-			
-			frame.add(new JScrollPane(textArea), BorderLayout.CENTER);
-			frame.setVisible(true);
+			StatisticalResultsViewer viewer = new StatisticalResultsViewer(
+					this, stream.toString());
+			viewer.setLocationRelativeTo(frame);
+			viewer.setIconImages(frame.getIconImages());
+			viewer.setVisible(true);
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		} finally {

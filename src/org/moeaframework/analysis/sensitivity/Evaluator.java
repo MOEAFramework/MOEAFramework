@@ -64,9 +64,10 @@ public class Evaluator extends CommandLineUtility {
 	protected SampleReader input;
 
 	/**
-	 * Private constructor to prevent instantiation.
+	 * Constructs the command line utility for evaluating an algorithm using
+	 * many parameterizations.
 	 */
-	private Evaluator() {
+	public Evaluator() {
 		super();
 	}
 

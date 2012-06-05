@@ -37,9 +37,10 @@ import org.moeaframework.util.TypedProperties;
 public class SetContribution extends CommandLineUtility {
 	
 	/**
-	 * Private constructor to prevent instantiation.
+	 * Constructs the command line utility for reporting the number of
+	 * solutions in a set that are contained within a reference set.
 	 */
-	private SetContribution() {
+	public SetContribution() {
 		super();
 	}
 

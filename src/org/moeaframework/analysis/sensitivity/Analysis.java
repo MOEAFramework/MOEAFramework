@@ -76,9 +76,10 @@ public class Analysis extends CommandLineUtility {
 	private int bandWidth = 10000;
 	
 	/**
-	 * Private constructor to prevent instantiation.
+	 * Constructs the command line utility for calculating the best, probability
+	 * of attainment, efficiency and controllability metrics.
 	 */
-	private Analysis() {
+	public Analysis() {
 		super();
 	}
 	

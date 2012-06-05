@@ -40,9 +40,10 @@ import org.moeaframework.util.TypedProperties;
 public class ResultFileMerger extends CommandLineUtility {
 
 	/**
-	 * Private constructor to prevent instantiation.
+	 * Constructs the command line utility for merging the approximation sets 
+	 * stored in one or more result files.
 	 */
-	private ResultFileMerger() {
+	public ResultFileMerger() {
 		super();
 	}
 	

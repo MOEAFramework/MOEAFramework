@@ -36,9 +36,10 @@ import org.moeaframework.util.TypedProperties;
 public class SetHypervolume extends CommandLineUtility {
 	
 	/**
-	 * Private constructor to prevent instantiation.
+	 * Constructs the command line utility for calculating the hypervolume of 
+	 * approximation sets.
 	 */
-	private SetHypervolume() {
+	public SetHypervolume() {
 		super();
 	}
 

@@ -71,9 +71,10 @@ public class ExtractData extends CommandLineUtility {
 	private NondominatedPopulation referenceSet;
 
 	/**
-	 * Private constructor to prevent instantiation.
+	 * Constructs the command line utility for extracting data from a result
+	 * file.
 	 */
-	private ExtractData() {
+	public ExtractData() {
 		super();
 	}
 

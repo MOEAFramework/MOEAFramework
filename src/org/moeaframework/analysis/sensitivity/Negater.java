@@ -43,9 +43,10 @@ import org.moeaframework.util.TypedProperties;
 public class Negater extends CommandLineUtility {
     
     /**
-     * Private constructor to prevent instantiation.
+     * Constructs the command line utility for negating the objectives in
+     * result files.
      */
-    private Negater() {
+    public Negater() {
         super();
     }
 

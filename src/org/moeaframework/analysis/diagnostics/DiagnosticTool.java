@@ -70,6 +70,12 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener,
 ControllerListener {
 
 	private static final long serialVersionUID = -8770087330810075627L;
+	
+	/**
+	 * The localization instance for produce locale-specific strings.
+	 */
+	private static Localization localization = Localization.getLocalization(
+			DiagnosticTool.class.getPackage().getName());
 
 	/**
 	 * The controller which stores the underlying data model and notifies this
@@ -178,7 +184,7 @@ ControllerListener {
 	 * Constructs a new diagnostic tool window.
 	 */
 	public DiagnosticTool() {
-		super(Localization.getString(DiagnosticTool.class, "title"));
+		super(localization.getString("title.diagnosticTool"));
 
 		setSize(800, 600);
 		setMinimumSize(new Dimension(800, 600));
@@ -216,14 +222,11 @@ ControllerListener {
 			public String getColumnName(int column) {
 				switch (column) {
 				case 0: 
-					return Localization.getString(DiagnosticTool.class,
-							"algorithm");
+					return localization.getString("text.algorithm");
 				case 1: 
-					return Localization.getString(DiagnosticTool.class,
-							"problem");
+					return localization.getString("text.problem");
 				case 2: 
-					return Localization.getString(DiagnosticTool.class,
-							"numberOfSeeds");
+					return localization.getString("text.numberOfSeeds");
 				default: 
 					throw new IllegalStateException();
 				}
@@ -355,15 +358,13 @@ ControllerListener {
 	 * constructor, and should not be invoked again.
 	 */
 	protected void layoutMenu() {
-		JMenu file = new JMenu(Localization.getString(DiagnosticTool.class,
-				"file"));
+		JMenu file = new JMenu(localization.getString("menu.file"));
 		file.add(new JMenuItem(actionFactory.getSaveAction()));
 		file.add(new JMenuItem(actionFactory.getLoadAction()));
 		file.addSeparator();
 		file.add(new JMenuItem(actionFactory.getExitAction()));
 		
-		JMenu view = new JMenu(Localization.getString(DiagnosticTool.class,
-				"view"));
+		JMenu view = new JMenu(localization.getString("menu.view"));
 		JMenuItem individualTraces = new JRadioButtonMenuItem(
 				actionFactory.getShowIndividualTracesAction());
 		JMenuItem quantiles = new JRadioButtonMenuItem(
@@ -377,8 +378,7 @@ ControllerListener {
 		view.add(new JCheckBoxMenuItem(
 				actionFactory.getShowLastTraceAction()));
 		
-		JMenu metrics = new JMenu(Localization.getString(DiagnosticTool.class,
-				"collect"));
+		JMenu metrics = new JMenu(localization.getString("menu.collect"));
 		metrics.add(new JMenuItem(
 				actionFactory.getEnableAllIndicatorsAction()));
 		metrics.add(new JMenuItem(
@@ -410,8 +410,7 @@ ControllerListener {
 		metrics.add(new JCheckBoxMenuItem(
 				actionFactory.getIncludeApproximationSetAction()));
 		
-		JMenu help = new JMenu(Localization.getString(DiagnosticTool.class,
-				"help"));
+		JMenu help = new JMenu(localization.getString("menu.help"));
 		help.add(new JMenuItem(actionFactory.getAboutDialogAction()));
 		
 		JMenu usage = new JMenu(actionFactory.getMemoryUsageAction());
@@ -457,16 +456,14 @@ ControllerListener {
 		
 		JPanel resultPane = new JPanel(new BorderLayout());
 		resultPane.setBorder(BorderFactory.createTitledBorder(
-				Localization.getString(DiagnosticTool.class,
-						"displayedResults")));
+				localization.getString("text.displayedResults")));
 		resultPane.add(new JScrollPane(resultTable), BorderLayout.CENTER);
 		resultPane.add(analysisPane, BorderLayout.SOUTH);
 		resultPane.setMinimumSize(new Dimension(100, 100));
 		
 		JPanel metricPane = new JPanel(new BorderLayout());
 		metricPane.setBorder(BorderFactory.createTitledBorder(
-				Localization.getString(DiagnosticTool.class,
-						"displayedMetrics")));
+				localization.getString("text.displayedMetrics")));
 		metricPane.add(new JScrollPane(metricList), BorderLayout.CENTER);
 		metricPane.setMinimumSize(new Dimension(100, 100));
 		
@@ -481,26 +478,27 @@ ControllerListener {
 		
 		JPanel controlPane = new JPanel(new GridBagLayout());
 		controlPane.setBorder(BorderFactory.createTitledBorder(
-				Localization.getString(DiagnosticTool.class, "controls")));
-		controlPane.add(new JLabel(Localization.getString(DiagnosticTool.class,
-				"algorithm") + ":"), label);
+				localization.getString("text.controls")));
+		controlPane.add(new JLabel(
+				localization.getString("text.algorithm") + ":"), label);
 		controlPane.add(algorithm, field);
-		controlPane.add(new JLabel(Localization.getString(DiagnosticTool.class,
-				"problem") + ":"), label);
+		controlPane.add(new JLabel(
+				localization.getString("text.problem") + ":"), label);
 		controlPane.add(problem, field);
-		controlPane.add(new JLabel(Localization.getString(DiagnosticTool.class,
-				"numberOfSeeds") + ":"), label);
+		controlPane.add(new JLabel(
+				localization.getString("text.numberOfSeeds") + ":"), label);
 		controlPane.add(numberOfSeeds, field);
-		controlPane.add(new JLabel(Localization.getString(DiagnosticTool.class,
-				"numberOfEvaluations") + ":"), label);
+		controlPane.add(new JLabel(
+				localization.getString("text.numberOfEvaluations") + ":"),
+				label);
 		controlPane.add(numberOfEvaluations, field);
 		controlPane.add(buttonPane, button);
 		controlPane.add(new JPanel(), button);
-		controlPane.add(new JLabel(Localization.getString(DiagnosticTool.class,
-				"runProgress") + ":"), label);
+		controlPane.add(new JLabel(
+				localization.getString("text.runProgress") + ":"), label);
 		controlPane.add(runProgress, field);
-		controlPane.add(new JLabel(Localization.getString(DiagnosticTool.class,
-				"overallProgress") + ":"), label);
+		controlPane.add(new JLabel(
+				localization.getString("text.overallProgress") + ":"), label);
 		controlPane.add(overallProgress, field);
 		
 		JPanel controls = new JPanel();

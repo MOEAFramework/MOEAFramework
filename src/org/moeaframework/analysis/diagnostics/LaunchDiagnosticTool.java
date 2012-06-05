@@ -34,9 +34,9 @@ public class LaunchDiagnosticTool extends CommandLineUtility {
 			"/org/moeaframework/analysis/diagnostics/icon.png";
 	
 	/**
-	 * Private constructor to prevent instantiation.
+	 * Constructs the command line utility for launching the diagnostic tool.
 	 */
-	private LaunchDiagnosticTool() {
+	public LaunchDiagnosticTool() {
 		super();
 	}
 

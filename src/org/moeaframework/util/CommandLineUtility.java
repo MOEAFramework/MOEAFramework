@@ -32,6 +32,12 @@ import org.apache.commons.cli.ParseException;
  * the quirks of different operating systems.
  */
 public abstract class CommandLineUtility {
+	
+	/**
+	 * The command string used to invoke this command line utility.  If
+	 * {@code null}, this displays as {@code java full.class.Name}.
+	 */
+	private String commandString = null;
 
 	/**
 	 * Constructs a command line utility. The constructor for subclasses should
@@ -65,7 +71,7 @@ public abstract class CommandLineUtility {
 	 * 
 	 * @return a description of this command line utility; or {@code null} if
 	 *         no description is provided
-	 * @deprecated the description is now read through the Localization
+	 * @deprecated The description is now read through the Localization
 	 *             class; will be removed in version 2.0
 	 */
 	@Deprecated
@@ -114,7 +120,8 @@ public abstract class CommandLineUtility {
 				
 				while (CommandLineUtility.class.isAssignableFrom(type)) {
 					if (Localization.containsKey(type, key)) {
-						option.setDescription(Localization.getString(type, key));
+						option.setDescription(
+								Localization.getString(type, key));
 						break;
 					} else {
 						type = type.getSuperclass();
@@ -124,7 +131,8 @@ public abstract class CommandLineUtility {
 			
 			//format and display the help message
 			HelpFormatter helpFormatter = new HelpFormatter();
-			helpFormatter.printHelp("java " + getClass().getName(),
+			helpFormatter.printHelp(
+					getCommandString(),
 					Localization.getString(getClass(), "description"),
 					options, 
 					Localization.getString(CommandLineUtility.class, "footer"),
@@ -138,6 +146,30 @@ public abstract class CommandLineUtility {
 			e.printStackTrace();
 			System.exit(-1);
 		}
+	}
+
+	/**
+	 * Returns the command string used to invoke this command line utility.
+	 * 
+	 * @return the command string used to invoke this command line utility
+	 */
+	public String getCommandString() {
+		if (commandString == null) {
+			return "java " + getClass().getName();
+		} else {
+			return commandString;
+		}
+	}
+
+	/**
+	 * Sets the command string used to invoke this command line utility.
+	 * 
+	 * @param commandString the command string used to invoke this command line
+	 *        utility; or {@code null} to use the default Java command line
+	 *        string
+	 */
+	public void setCommandString(String commandString) {
+		this.commandString = commandString;
 	}
 
 }

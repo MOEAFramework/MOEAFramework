@@ -38,9 +38,10 @@ import org.moeaframework.util.CommandLineUtility;
 public class ResultFileEvaluator extends CommandLineUtility {
 	
 	/**
-	 * Private constructor to prevent instantiation.
+	 * Constructs the command line utility for evaluating the approximation sets
+	 * stored in a result file and computing its metric file.
 	 */
-	private ResultFileEvaluator() {
+	public ResultFileEvaluator() {
 		super();
 	}
 

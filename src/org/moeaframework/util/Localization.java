@@ -27,7 +27,31 @@ import java.util.ResourceBundle;
  * Locale-specific strings are stored in a single file in each package
  * named {@code LocalStrings.properties}, 
  * {@code LocalStrings_{locale}.properties} or any other format supported by
- * {@link ResourceBundle}.
+ * {@link ResourceBundle}.  This class supports two modes of localization:
+ * <p>
+ * <h3>Package-specific</h3>
+ * This is useful when classes in a package share common resources.  All
+ * classes have access to all stored resources.  Use the
+ * {@link #getLocalization(String)} method to create instances of the
+ * {@code Localization} class for a specific package.  Here, you use the
+ * {@link #getString(String)} and {@link #getString(String, Object...)}
+ * methods on the {@code Localization} instance you previously created.
+ * <p>
+ * <h3>Class-specific</h3>
+ * The {@link #getString(Class, String)} and
+ * {@link #getString(Class, String, Object...)} static methods do not require
+ * you to explicitly create a new {@code Localization} instance.  In addition,
+ * the keys are automatically prefixed with the class name.  For example, if
+ * your property file contains the following lines:
+ * <pre>
+ * WindowA.title = First Title
+ * WindowB.title = Second Title
+ * </pre>
+ * You can read each entry with
+ * {@code Localization.getString(WindowA.class, "title")} and 
+ * {@code Localization.getString(WindowB.class, "title")}.  This is convenient
+ * for providing localization in subclasses by using the {@code getClass()}
+ * method.
  */
 public class Localization {
 
@@ -156,7 +180,7 @@ public class Localization {
 	 * @param type the class requesting the localization object
 	 * @return the localization object for the given class
 	 */
-	public static Localization getLocalization(Class<?> type) {
+	static Localization getLocalization(Class<?> type) {
 		return getLocalization(type.getPackage().getName());
 	}
 
@@ -167,7 +191,7 @@ public class Localization {
 	 * @param locale the target locale
 	 * @return the localization object for the given class
 	 */
-	public static Localization getLocalization(Class<?> type, Locale locale) {
+	static Localization getLocalization(Class<?> type, Locale locale) {
 		return getLocalization(type.getPackage().getName(), locale);
 	}
 	

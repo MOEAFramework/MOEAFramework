@@ -41,9 +41,10 @@ import org.moeaframework.util.TypedProperties;
 public class SetGenerator extends CommandLineUtility {
 
 	/**
-	 * Private constructor to prevent instantiation.
+	 * Constructs the command line utility for generating reference sets for a
+	 * given problem.
 	 */
-	private SetGenerator() {
+	public SetGenerator() {
 		super();
 	}
 	

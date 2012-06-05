@@ -46,6 +46,12 @@ public class ApproximationSetPlot extends ResultPlot {
 	private static final long serialVersionUID = -6915212513300959375L;
 	
 	/**
+	 * The localization instance for produce locale-specific strings.
+	 */
+	private static Localization localization = Localization.getLocalization(
+			ApproximationSetPlot.class.getPackage().getName());
+	
+	/**
 	 * The &epsilon; value used when displaying the approximation set.
 	 */
 	private static final double EPSILON = 0.01;
@@ -101,8 +107,8 @@ public class ApproximationSetPlot extends ResultPlot {
 		}
 		
 		JFreeChart chart = ChartFactory.createScatterPlot(metric,
-				Localization.getString(getClass(), "objective", 1),
-				Localization.getString(getClass(), "objective", 2),
+				localization.getString("text.objective", 1),
+				localization.getString("text.objective", 2),
 				dataset,
 				PlotOrientation.VERTICAL,
 				true,
@@ -142,7 +148,7 @@ public class ApproximationSetPlot extends ResultPlot {
 			
 			if (!population.isEmpty()) {
 				XYSeries series = new XYSeries(
-						Localization.getString(getClass(), "last"),
+						localization.getString("text.last"),
 						false,
 						true);
 				

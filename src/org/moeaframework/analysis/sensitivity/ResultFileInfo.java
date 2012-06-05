@@ -34,9 +34,10 @@ import org.moeaframework.util.CommandLineUtility;
 public class ResultFileInfo extends CommandLineUtility {
 	
 	/**
-	 * Private constructor to prevent instantiation.
+	 * Constructs the command line utility for counting the number of entries
+	 * in a result file.
 	 */
-	private ResultFileInfo() {
+	public ResultFileInfo() {
 		super();
 	}
 	

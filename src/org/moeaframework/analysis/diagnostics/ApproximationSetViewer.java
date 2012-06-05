@@ -71,6 +71,12 @@ public class ApproximationSetViewer extends JFrame implements ChangeListener,
 ActionListener, ChartChangeListener, ListSelectionListener {
 
 	private static final long serialVersionUID = -7556845366893802202L;
+	
+	/**
+	 * The localization instance for produce locale-specific strings.
+	 */
+	private static Localization localization = Localization.getLocalization(
+			ApproximationSetViewer.class.getPackage().getName());
 
 	/**
 	 * The accumulators which contain {@code "Approximation Set"} entries.
@@ -183,8 +189,7 @@ ActionListener, ChartChangeListener, ListSelectionListener {
 	 */
 	public ApproximationSetViewer(String name, List<Accumulator> accumulators, 
 			NondominatedPopulation referenceSet) {
-		super(Localization.getString(ApproximationSetViewer.class, "title",
-				name));
+		super(localization.getString("title.approximationSetViewer", name));
 		this.accumulators = accumulators;
 		this.referenceSet = referenceSet;
 		
@@ -254,18 +259,15 @@ ActionListener, ChartChangeListener, ListSelectionListener {
 		Vector<String> objectives = new Vector<String>();
 		
 		for (int i=0; i<solution.getNumberOfObjectives(); i++) {
-			objectives.add(
-					Localization.getString(getClass(), "objective", i+1));
+			objectives.add(localization.getString("text.objective", i+1));
 		}
 		
 		for (int i=0; i<solution.getNumberOfConstraints(); i++) {
-			objectives.add(
-					Localization.getString(getClass(), "constraint", i+1));
+			objectives.add(localization.getString("text.constraint", i+1));
 		}
 		
 		for (int i=0; i<solution.getNumberOfVariables(); i++) {
-			objectives.add(
-					Localization.getString(getClass(), "variable", i+1));
+			objectives.add(localization.getString("text.variable", i+1));
 		}
 		
 		xAxisSelection = new JComboBox(objectives);
@@ -282,13 +284,22 @@ ActionListener, ChartChangeListener, ListSelectionListener {
 		
 		//initialize plotting controls
 		useInitialBounds = new JRadioButton(
-				Localization.getString(getClass(), "useInitialBounds"));
+				localization.getString("action.useInitialBounds.name"));
 		useReferenceSetBounds = new JRadioButton(
-				Localization.getString(getClass(), "useReferenceSetBounds"));
+				localization.getString("action.useReferenceSetBounds.name"));
 		useDynamicBounds = new JRadioButton(
-				Localization.getString(getClass(), "useDynamicBounds"));
+				localization.getString("action.useDynamicBounds.name"));
 		useZoomBounds = new JRadioButton(
-				Localization.getString(getClass(), "useZoom"));
+				localization.getString("action.useZoom.name"));
+		
+		useInitialBounds.setToolTipText(
+				localization.getString("action.useInitialBounds.description"));
+		useReferenceSetBounds.setToolTipText(
+				localization.getString("action.useReferenceSetBounds.description"));
+		useDynamicBounds.setToolTipText(
+				localization.getString("action.useDynamicBounds.description"));
+		useZoomBounds.setToolTipText(
+				localization.getString("action.useZoom.description"));
 		
 		ButtonGroup rangeButtonGroup = new ButtonGroup();
 		rangeButtonGroup.add(useInitialBounds);
@@ -310,7 +321,7 @@ ActionListener, ChartChangeListener, ListSelectionListener {
 		String[] seeds = new String[accumulators.size()];
 		
 		for (int i=0; i<accumulators.size(); i++) {
-			seeds[i] = Localization.getString(getClass(), "seed", i+1);
+			seeds[i] = localization.getString("text.seed", i+1);
 		}
 		
 		seedList = new JList(seeds);
@@ -321,8 +332,8 @@ ActionListener, ChartChangeListener, ListSelectionListener {
 			private static final long serialVersionUID = -3709557130361259485L;
 			
 			{
-				putValue(Action.NAME, Localization.getString(getClass(),
-						"selectAll"));
+				putValue(Action.NAME,
+						localization.getString("action.selectAll.name"));
 			}
 
 			@Override
@@ -335,7 +346,7 @@ ActionListener, ChartChangeListener, ListSelectionListener {
 		
 		//initialize miscellaneous components
 		paintHelper = new PaintHelper();
-		paintHelper.set(Localization.getString(getClass(), "referenceSet"),
+		paintHelper.set(localization.getString("text.referenceSet"),
 				Color.BLACK);
 		
 		chartContainer = new JPanel(new BorderLayout());
@@ -355,11 +366,9 @@ ActionListener, ChartChangeListener, ListSelectionListener {
 		buttonPane.add(useZoomBounds);
 		
 		JPanel objectivePane = new JPanel(new FlowLayout(FlowLayout.CENTER));
-		objectivePane.add(new JLabel(
-				Localization.getString(getClass(), "xAxis")));
+		objectivePane.add(new JLabel(localization.getString("text.xAxis")));
 		objectivePane.add(xAxisSelection);
-		objectivePane.add(new JLabel(
-				Localization.getString(getClass(), "yAxis")));
+		objectivePane.add(new JLabel(localization.getString("text.yAxis")));
 		objectivePane.add(yAxisSelection);
 		
 		JPanel controlPane = new JPanel(new GridLayout(3, 1));
@@ -372,7 +381,8 @@ ActionListener, ChartChangeListener, ListSelectionListener {
 		rightPane.add(controlPane, BorderLayout.SOUTH);
 		
 		JPanel leftPane = new JPanel(new BorderLayout());
-		leftPane.setBorder(BorderFactory.createTitledBorder("Seeds"));
+		leftPane.setBorder(BorderFactory.createTitledBorder(
+				localization.getString("text.seeds")));
 		leftPane.add(new JScrollPane(seedList), BorderLayout.CENTER);
 		leftPane.add(selectAll, BorderLayout.SOUTH);
 		leftPane.setMinimumSize(new Dimension(100, 100));
@@ -445,7 +455,7 @@ ActionListener, ChartChangeListener, ListSelectionListener {
 				
 			List<?> list = (List<?>)accumulator.get("Approximation Set", index);
 			XYSeries series = new XYSeries(
-					Localization.getString(getClass(), "seed", seedIndex+1),
+					localization.getString("text.seed", seedIndex+1),
 					false, true);
 				
 			for (Object object : list) {
@@ -459,7 +469,7 @@ ActionListener, ChartChangeListener, ListSelectionListener {
 		//generate reference set
 		if (referenceSet != null) {
 			XYSeries series = new XYSeries(
-					Localization.getString(getClass(), "referenceSet"),
+					localization.getString("text.referenceSet"),
 					false, true);
 				
 			for (Solution solution : referenceSet) {

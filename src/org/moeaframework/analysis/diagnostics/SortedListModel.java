@@ -36,7 +36,7 @@ AbstractListModel {
 	private static final long serialVersionUID = 833503105693282917L;
 	
 	/**
-	 * The underying data model.
+	 * The underlying data model.
 	 */
 	private final TreeSet<T> set;
 	

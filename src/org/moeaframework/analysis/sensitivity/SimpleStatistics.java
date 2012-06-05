@@ -38,9 +38,10 @@ import org.moeaframework.util.OptionCompleter;
 public class SimpleStatistics extends CommandLineUtility {
 	
 	/**
-	 * Private constructor to prevent instantiation.
+	 * Constructs the command line utility for computing statistics across
+	 * multiple data files.
 	 */
-	private SimpleStatistics() {
+	public SimpleStatistics() {
 		super();
 	}
 
