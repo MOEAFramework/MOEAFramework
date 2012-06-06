@@ -790,13 +790,19 @@ public class ActionFactory implements ControllerListener {
 		frame.addWindowListener(new WindowAdapter() {
 
 			@Override
-			public void windowClosing(WindowEvent e) {
+			public void windowClosed(WindowEvent e) {
 				timer.stop();
 			}
 			
 		});
 	}
 	
+	/**
+	 * Loads the GNU LGPL license file and formats it for display.
+	 * 
+	 * @return the formatted GNU LGPL license
+	 * @throws IOException if an I/O error occurred
+	 */
 	private String loadLicense() throws IOException {
 		StringBuilder sb = new StringBuilder();
 		BufferedReader reader = null;

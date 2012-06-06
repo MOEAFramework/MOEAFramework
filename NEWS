@@ -13,6 +13,10 @@ Framework.
       - Adds the ability to plot individual trace lines rather than the
         condensed quantile view.  Adds the view menu to toggle between these
         two options.
+      - The statistical results window now includes a Save option to save the
+        statistical results to a text file.
+      - Fixes bug where using the File > Exit menu option closed the window but
+        the program was still running.
         
   * Adds internationalization and localization support to the diagnostic tool
     and command-line utilities, so end-user facing messages can be displayed in
