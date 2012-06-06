@@ -17,7 +17,10 @@
  */
 package org.moeaframework.analysis.sensitivity;
 
+import org.moeaframework.core.EpsilonBoxDominanceArchive;
+import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
+import org.moeaframework.core.comparator.EpsilonBoxDominanceComparator;
 
 /**
  * Provides &epsilon; values for algorithms using &epsilon;-dominance archives
@@ -80,5 +83,46 @@ public class EpsilonHelper {
 			return 0.01;
 		}
 	}
+	
+	/**
+	 * Converts the population to an {@link EpsilonBoxDominanceArchive} with
+	 * the given &epsilon; values.  To prevent unnecessary computations, this
+	 * conversion only occurs if the original population is not an
+	 * {@code EpsilonBoxDominanceArchive} and does not have matching &epsilon;
+	 * values.
+	 * 
+	 * @param population the population to convert
+	 * @param epsilon the &epsilon; values
+	 * @return the population converted to an {@code EpsilonBoxDominanceArchive}
+	 *         with the given &epsilon; values
+	 */
+	public static EpsilonBoxDominanceArchive convert(Population population, 
+			double[] epsilon) {
+		boolean isSameEpsilon = false;
 
+		//check if population already has the correct epsilons
+		if (population instanceof EpsilonBoxDominanceArchive) {
+			EpsilonBoxDominanceArchive result =
+					(EpsilonBoxDominanceArchive)population;
+			EpsilonBoxDominanceComparator comparator = 
+					result.getComparator();
+
+			isSameEpsilon = true;
+
+			for (int i=0; i<epsilon.length; i++) {
+				if (epsilon[i] != comparator.getEpsilon(i)) {
+					isSameEpsilon = false;
+					break;
+				}
+			}
+		}
+
+		//apply epsilons only if necessary
+		if (isSameEpsilon) {
+			return (EpsilonBoxDominanceArchive)population;
+		} else {
+			return new EpsilonBoxDominanceArchive(
+					new EpsilonBoxDominanceComparator(epsilon), population);
+		}	
+	}
 }

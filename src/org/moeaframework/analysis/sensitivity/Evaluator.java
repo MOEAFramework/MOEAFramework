@@ -27,13 +27,11 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
 import org.moeaframework.core.Algorithm;
-import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.PopulationIO;
 import org.moeaframework.core.Problem;
-import org.moeaframework.core.comparator.EpsilonBoxDominanceComparator;
 import org.moeaframework.core.indicator.QualityIndicator;
 import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.core.spi.ProblemFactory;
@@ -301,13 +299,11 @@ public class Evaluator extends CommandLineUtility {
 		algorithm.terminate();
 
 		// apply epsilon-dominance if required
-		if (!(result instanceof EpsilonBoxDominanceArchive)
-				&& properties.containsKey("epsilon")) {
+		if (properties.containsKey("epsilon")) {
 			TypedProperties typedProperties = new TypedProperties(properties);
-			result = new EpsilonBoxDominanceArchive(
-					new EpsilonBoxDominanceComparator(
-							typedProperties.getDoubleArray("epsilon", null)),
-							result);
+			double[] epsilon = typedProperties.getDoubleArray("epsilon", null);
+			
+			result = EpsilonHelper.convert(result, epsilon);
 		}
 
 		// record instrumented data

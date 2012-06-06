@@ -19,11 +19,10 @@ package org.moeaframework.analysis.collector;
 
 import java.util.ArrayList;
 
+import org.moeaframework.analysis.sensitivity.EpsilonHelper;
 import org.moeaframework.core.Algorithm;
-import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.comparator.EpsilonBoxDominanceComparator;
 
 /**
  * Collects approximation sets from an {@link Algorithm}.
@@ -103,30 +102,7 @@ public class ApproximationSetCollector implements Collector {
 		
 		//if epsilons are provided, convert result to epsilon-dominance archive
 		if (epsilon != null) {
-			boolean isSameEpsilon = false;
-
-			//check if result already has the correct epsilons
-			if (result instanceof EpsilonBoxDominanceArchive) {
-				EpsilonBoxDominanceArchive archive = 
-						(EpsilonBoxDominanceArchive)result;
-				EpsilonBoxDominanceComparator comparator = 
-						archive.getComparator();
-				
-				isSameEpsilon = true;
-				
-				for (int i=0; i<epsilon.length; i++) {
-					if (epsilon[i] != comparator.getEpsilon(i)) {
-						isSameEpsilon = false;
-						break;
-					}
-				}
-			}
-			
-			//apply epsilons only if necessary
-			if (!isSameEpsilon) {
-				result = new EpsilonBoxDominanceArchive(
-						new EpsilonBoxDominanceComparator(epsilon), result);
-			}
+			result = EpsilonHelper.convert(result, epsilon);
 		}
 		
 		for (Solution solution : result) {
