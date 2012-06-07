@@ -27,6 +27,7 @@ import org.junit.Test;
 import org.moeaframework.TestUtils;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
+import org.moeaframework.core.indicator.Contribution;
 import org.moeaframework.core.indicator.QualityIndicator;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.core.spi.TestProblemFactory;
@@ -172,5 +173,104 @@ public class ExtractDataTest {
 		}
 	}
 	
-
+	@Test
+	public void testContributionWithEpsilon() throws IOException {
+		double epsilon = 0.1;
+		File input = TestUtils.createTempFile(COMPLETE);
+		File output = TestUtils.createTempFile();
+		Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
+		NondominatedPopulation referenceSet = ProblemFactory.getInstance()
+				.getReferenceSet("DTLZ2_2");
+		
+		ExtractData.main(new String[] {
+			"--dimension", "2",
+			"--reference", new File("./pf/DTLZ2.2D.pf").getAbsolutePath(),
+			"--input", input.getPath(),
+			"--output", output.getPath(),
+			"--epsilon", Double.toString(epsilon),
+			"+con" });
+		
+		BufferedReader reader = null;
+		ResultFileReader resultReader = null;
+		Contribution contribution = new Contribution(referenceSet, epsilon);
+		
+		try {
+			reader = new BufferedReader(new FileReader(output));
+			
+			try {
+				resultReader = new ResultFileReader(problem, input);
+				
+				Assert.assertEquals("#+con", reader.readLine());
+				
+				NondominatedPopulation population = 
+						resultReader.next().getPopulation();
+				Assert.assertEquals("" + contribution.evaluate(population), 
+						reader.readLine());
+				
+				population = resultReader.next().getPopulation();
+				Assert.assertEquals("" + contribution.evaluate(population), 
+						reader.readLine());
+				
+				Assert.assertNull(reader.readLine());
+			} finally {
+				if (resultReader != null) {
+					resultReader.close();
+				}
+			}
+		} finally {
+			if (reader != null) {
+				reader.close();
+			}
+		}
+	}
+	
+	@Test
+	public void testContributionWithoutEpsilon() throws IOException {
+		File input = TestUtils.createTempFile(COMPLETE);
+		File output = TestUtils.createTempFile();
+		Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
+		NondominatedPopulation referenceSet = ProblemFactory.getInstance()
+				.getReferenceSet("DTLZ2_2");
+		
+		ExtractData.main(new String[] {
+			"--dimension", "2",
+			"--reference", new File("./pf/DTLZ2.2D.pf").getAbsolutePath(),
+			"--input", input.getPath(),
+			"--output", output.getPath(),
+			"+con" });
+		
+		BufferedReader reader = null;
+		ResultFileReader resultReader = null;
+		Contribution contribution = new Contribution(referenceSet);
+		
+		try {
+			reader = new BufferedReader(new FileReader(output));
+			
+			try {
+				resultReader = new ResultFileReader(problem, input);
+				
+				Assert.assertEquals("#+con", reader.readLine());
+				
+				NondominatedPopulation population = 
+						resultReader.next().getPopulation();
+				Assert.assertEquals("" + contribution.evaluate(population), 
+						reader.readLine());
+				
+				population = resultReader.next().getPopulation();
+				Assert.assertEquals("" + contribution.evaluate(population), 
+						reader.readLine());
+				
+				Assert.assertNull(reader.readLine());
+			} finally {
+				if (resultReader != null) {
+					resultReader.close();
+				}
+			}
+		} finally {
+			if (reader != null) {
+				reader.close();
+			}
+		}
+	}
+	
 }

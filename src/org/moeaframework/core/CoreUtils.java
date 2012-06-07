@@ -182,34 +182,29 @@ public class CoreUtils {
 	 * Moves the file from one path to another. This method can rename a file or
 	 * move it to a different directory, like the Unix {@code mv} command.
 	 *
-	 * @param from the source file
-	 * @param to the destination file
+	 * @param source the source file
+	 * @param destination the destination file
 	 * @throws IOException if an I/O error occurs
 	 */
-	public static void move(File from, File to) throws IOException {
-		if (from == null) {
-			throw new IllegalArgumentException("source is null");
-		}
+	public static void move(File source, File destination) throws IOException {
+		Validate.notNull(source, "source is null");
+		Validate.notNull(destination, "destination is null");
 		
-		if (to == null) {
-			throw new IllegalArgumentException("destination is null");
-		}
-		
-		if (from.equals(to)) {
+		if (source.equals(destination)) {
 			return;
 		}
 
-		if (!from.renameTo(to)) {
-			copy(from, to);
+		if (!source.renameTo(destination)) {
+			copy(source, destination);
 			
-			if (!from.delete()) {
-				if (!to.delete()) {
+			if (!source.delete()) {
+				if (!destination.delete()) {
 					throw new IOException(MessageFormat.format(UNABLE_TO_DELETE,
-							to));
+							destination));
 				}
 				
 				throw new IOException(MessageFormat.format(UNABLE_TO_DELETE, 
-						from));
+						source));
 			}
 		}
 	}
@@ -217,20 +212,15 @@ public class CoreUtils {
 	/**
 	 * Copies all the bytes from one file to another.
 	 *.
-	 * @param from the source file
-	 * @param to the destination file
+	 * @param source the source file
+	 * @param destination the destination file
 	 * @throws IOException if an I/O error occurred
 	 */
-	public static void copy(File from, File to) throws IOException {
-		if (from == null) {
-			throw new IllegalArgumentException("source is null");
-		}
+	public static void copy(File source, File destination) throws IOException {
+		Validate.notNull(source, "source is null");
+		Validate.notNull(destination, "destination is null");
 		
-		if (to == null) {
-			throw new IllegalArgumentException("destination is null");
-		}
-		
-		if (from.equals(to)) {
+		if (source.equals(destination)) {
 			return;
 		}
 		
@@ -238,10 +228,10 @@ public class CoreUtils {
 		OutputStream output = null;
 
 		try {
-			input = new FileInputStream(from);
+			input = new FileInputStream(source);
 
 			try {
-				output = new FileOutputStream(to);
+				output = new FileOutputStream(destination);
 				
 				copy(input, output);
 			} finally {
