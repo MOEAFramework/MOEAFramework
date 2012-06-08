@@ -35,6 +35,10 @@ Framework.
         moea Evaluator [arguments]
     We can also provide a more consistent experience across multiple platforms
     using this interface.
+    
+  * Improved support for specifying executable commands in the configuration
+    files.  Commands which contain whitespace within an argument are now
+    supported by placing quotes around the argument ("...").
   
 
 ----------------------------

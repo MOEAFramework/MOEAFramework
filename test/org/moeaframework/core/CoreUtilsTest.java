@@ -269,5 +269,14 @@ public class CoreUtilsTest {
 		
 		return directory;
 	}
+	
+	public void testParseCommand() throws IOException {
+		String command = "java -jar \"C:\\Program Files\\Test\\test.jar\" \"\"";
+		String[] expected = new String[] { "java", "-jar", 
+				"C:\\Program Files\\Test\\test.jar", "\"" };
+		String[] actual = CoreUtils.parseCommand(command);
+		
+		Assert.assertArrayEquals(expected, actual);
+	}
 
 }

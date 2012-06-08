@@ -25,6 +25,7 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.moeaframework.core.CoreUtils;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Population;
@@ -439,7 +440,8 @@ public class Hypervolume extends NormalizedIndicator {
 	 */
 	private static double invokeNativeProcess(String command)
 			throws IOException {
-		Process process = Runtime.getRuntime().exec(command);
+		Process process = new ProcessBuilder(
+				CoreUtils.parseCommand(command)).start();
 		RedirectStream.redirect(process.getErrorStream(), System.err);
 		BufferedReader reader = null;
 		String lastLine = null;

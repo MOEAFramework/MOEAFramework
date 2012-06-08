@@ -26,6 +26,7 @@ import java.io.OutputStream;
 import java.text.MessageFormat;
 
 import org.apache.commons.lang3.Validate;
+import org.apache.commons.lang3.text.StrTokenizer;
 import org.moeaframework.core.variable.RealVariable;
 
 /**
@@ -155,6 +156,17 @@ public class CoreUtils {
 		}
 
 		return result;
+	}
+	
+	/**
+	 * Splits an executable command into its individual arguments.  Quoted text
+	 * ({@code "..."}) is treated as one argument.
+	 *  
+	 * @param command the command represented in a single string
+	 * @return the individual arguments comprising the command
+	 */
+	public static String[] parseCommand(String command) {
+		return new StrTokenizer(command).setQuoteChar('\"').getTokenArray();
 	}
 	
 	/*

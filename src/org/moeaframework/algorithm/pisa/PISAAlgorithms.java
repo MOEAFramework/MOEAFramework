@@ -21,7 +21,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Properties;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.moeaframework.core.Algorithm;
+import org.moeaframework.core.CoreUtils;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
@@ -112,9 +114,11 @@ public class PISAAlgorithms extends AlgorithmProvider {
 					throw new IllegalArgumentException("missing configuration");
 				}
 				
-				ProcessBuilder builder = new ProcessBuilder(command, 
-						configuration, prefix.getCanonicalPath(), 
-						Double.toString(pollRate/(double)1000));
+				ProcessBuilder builder = new ProcessBuilder(ArrayUtils.addAll(
+						CoreUtils.parseCommand(command), 
+						configuration,
+						prefix.getCanonicalPath(), 
+						Double.toString(pollRate/(double)1000)));
 				
 				Variation variation = OperatorFactory.getInstance()
 						.getVariation(null, properties, problem);
@@ -138,6 +142,5 @@ public class PISAAlgorithms extends AlgorithmProvider {
 			return null;
 		}
 	}
-
 	
 }

@@ -155,7 +155,7 @@ public class PISAAlgorithmsTest {
 	}
 	
 	@Test
-	@Ignore("crashes with fp != NULL assertion on line 135 in semo_io.c")
+	@Ignore("crashes with fp != NULL assertion on line 135 in semo_io.c, but recompiling from source fixes this bug")
 	public void testSEMO() {
 		properties.setProperty("populationSize", "1");
 		properties.setProperty("operator", "PM");
@@ -173,9 +173,21 @@ public class PISAAlgorithmsTest {
 	}
 	
 	@Test
-	@Ignore("implemented in java")
 	public void testSIBEA() {
-		run("sibea", "win");
+		String name = "sibea_win";
+		String directory = "./pisa/" + name;
+		
+		TestUtils.assumeFileExists(new File(directory));
+
+		Settings.PROPERTIES.setString(
+				"org.moeaframework.algorithm.pisa.algorithms", name);
+		Settings.PROPERTIES.setString("org.moeaframework.algorithm.pisa." +
+				name + ".command", "java -jar " + directory + "/sibea.jar");
+		Settings.PROPERTIES.setString("org.moeaframework.algorithm.pisa." +
+				name + ".configuration", directory + "/sibea_param.txt");
+		
+		test(AlgorithmFactory.getInstance().getAlgorithm(name, properties, 
+				realProblem));
 	}
 	
 	@Test
