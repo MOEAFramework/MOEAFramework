@@ -17,15 +17,63 @@
  */
 package org.moeaframework.core.operator.real;
 
+import jmetal.util.JMException;
+import org.apache.commons.lang3.ArrayUtils;
 import org.junit.Test;
+import org.moeaframework.TestThresholds;
+import org.moeaframework.algorithm.jmetal.JMetalProblemAdapter;
+import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.operator.MeanCentricVariationTest;
 import org.moeaframework.core.operator.ParentImmutabilityTest;
+import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.core.variable.RealVariable;
 
 /**
  * Tests the {@link DifferentialEvolution} class.
  */
-public class DifferentialEvolutionTest {
+public class DifferentialEvolutionTest extends MeanCentricVariationTest {
+	
+	/**
+	 * Tests if the MOEA Framework and JMetal implementations of differential
+	 * evolution are equivalent.
+	 */
+	@Test
+	public void testDistribution() throws ClassNotFoundException, JMException {
+		Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
+		JMetalProblemAdapter adapter = new JMetalProblemAdapter(problem);
+		DifferentialEvolution myDE = new DifferentialEvolution(0.1, 0.5);
+		jmetal.base.operator.crossover.DifferentialEvolutionCrossover theirDE =
+				new jmetal.base.operator.crossover.DifferentialEvolutionCrossover();
+		
+		theirDE.CR_ = 0.1;
+		theirDE.F_ = 0.5;
+		
+		for (int i = 0; i < 10; i++) {
+			Solution[] myParents = new Solution[4];
+			jmetal.base.Solution[] theirParents = new jmetal.base.Solution[4];
+			
+			Solution[] myOffspring = new Solution[TestThresholds.SAMPLES];
+			Solution[] theirOffspring = new Solution[TestThresholds.SAMPLES];
+			
+			for (int j = 0; j < 4; j++) {
+				theirParents[j] = new jmetal.base.Solution(adapter);
+				myParents[j] = adapter.translate(theirParents[j]);
+			}
+			
+			for (int j = 0; j < TestThresholds.SAMPLES; j++) {
+				myOffspring[j] = myDE.evolve(myParents)[0];
+				theirOffspring[j] = adapter.translate((jmetal.base.Solution)
+						theirDE.execute(new Object[] {
+							theirParents[0], 
+							ArrayUtils.subarray(theirParents, 1,
+									theirParents.length)
+						}));
+			}
+			
+			check(theirOffspring, myOffspring);
+		}
+	}
 
 	/**
 	 * Tests if the parents remain unchanged during variation.
