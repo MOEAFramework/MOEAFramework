@@ -12,6 +12,9 @@ any changes.
  Easy
 ------
 
+  - Add MOEA/D provider for JMetal (and any other overloaded algorithms) and
+    add support for the -JMetal extension to the algorithm name.
+
   - Add constructors for epsilon arrays to EpsilonBoxDominanceArchive and any
     other classes that use epsilons.  Should these be varadic arrays?
 

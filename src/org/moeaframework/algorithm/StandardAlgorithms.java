@@ -231,7 +231,7 @@ public class StandardAlgorithms extends AlgorithmProvider {
 			throw new FrameworkException("unsupported decision variable type");
 		}
 		
-		int populationSize = (int)properties.getDouble("populationSize", 600);
+		int populationSize = (int)properties.getDouble("populationSize", 100);
 		
 		//enforce population size lower bound
 		if (populationSize < problem.getNumberOfObjectives()) {
@@ -247,14 +247,14 @@ public class StandardAlgorithms extends AlgorithmProvider {
 
 		MOEAD algorithm = new MOEAD(
 				problem,
-				Math.max(1, (int)(properties.getDouble("neighborhoodSize", 0.1)
+				Math.max(2, (int)(properties.getDouble("neighborhoodSize", 0.1)
 						* populationSize)),
 				initialization,
 				variation,
 				properties.getDouble("delta", 0.9),
 				Math.max(1, (int)(properties.getDouble("eta", 0.01) 
 						* populationSize)),
-				(int)properties.getDouble("updateUtility", 50));
+				(int)properties.getDouble("updateUtility", -1));
 
 		return algorithm;
 	}

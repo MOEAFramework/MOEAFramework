@@ -5,6 +5,9 @@ Framework.
  Version 1.14 (TBD)
 --------------------
 
+  * The MOEAD algorithm now provides both the original MOEA/D implementation as
+    well as the utility-based search extension introduced in 2009.
+
   * Adds chapter on using the diagnostic tool to the user manual.
 
   * Several improvements to the diagnostic tool GUI, including
@@ -20,7 +23,7 @@ Framework.
         
   * Adds internationalization and localization support to the diagnostic tool
     and command-line utilities, so end-user facing messages can be displayed in
-    local languages.
+    local languages, if translations are available.
 
   * Minor improvements to the website.
   

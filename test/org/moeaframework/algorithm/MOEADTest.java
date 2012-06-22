@@ -19,16 +19,14 @@ package org.moeaframework.algorithm;
 
 import java.io.IOException;
 import java.util.Properties;
+
 import jmetal.base.Operator;
 import jmetal.base.operator.crossover.CrossoverFactory;
 import jmetal.base.operator.mutation.MutationFactory;
 import jmetal.metaheuristics.moead.MOEAD;
 import jmetal.util.JMException;
 
-import org.junit.Ignore;
 import org.junit.Test;
-import org.moeaframework.Analyzer;
-import org.moeaframework.Executor;
 import org.moeaframework.algorithm.jmetal.JMetalAlgorithmAdapter;
 import org.moeaframework.algorithm.jmetal.JMetalProblemAdapter;
 import org.moeaframework.core.Algorithm;
@@ -38,10 +36,9 @@ import org.moeaframework.core.spi.ProviderNotFoundException;
 import org.moeaframework.util.TypedProperties;
 
 /**
- * 
+ * Tests the {@link MOEAD} class.
  */
-@Ignore
-public class MOEADTest {
+public class MOEADTest extends AlgorithmTest {
 	
 	private static class MOEADFactory extends AlgorithmFactory {
 
@@ -50,36 +47,40 @@ public class MOEADTest {
 				Properties properties, Problem problem) {
 			if (name.equalsIgnoreCase("MOEAD-JMetal")) {
 				try {
-				TypedProperties tp = new TypedProperties(properties);
-				JMetalProblemAdapter adapter = new JMetalProblemAdapter(problem);
-				MOEAD algorithm = new MOEAD(adapter);
-			    
-			    // Algorithm parameters
-			    algorithm.setInputParameter("populationSize",tp.getInt("populationSize", 100));
-			    algorithm.setInputParameter("maxEvaluations",tp.getInt("maxEvaluations", 10000));
-			    
-			    // Directory with the files containing the weight vectors used in 
-			    // Q. Zhang,  W. Liu,  and H Li, The Performance of a New Version of MOEA/D 
-			    // on CEC09 Unconstrained MOP Test Instances Working Report CES-491, School 
-			    // of CS & EE, University of Essex, 02/2009.
-			    // http://dces.essex.ac.uk/staff/qzhang/MOEAcompetition/CEC09final/code/ZhangMOEADcode/moead0305.rar
-			    algorithm.setInputParameter("dataDirectory",
-			    "C:\\Users\\David\\Desktop\\Weight");
-			    
-			    // Crossover operator 
-			    Operator crossover = CrossoverFactory.getCrossoverOperator("DifferentialEvolutionCrossover");                   
-			    crossover.setParameter("CR", 0.1);                   
-			    crossover.setParameter("F", 0.5);
-			    
-			    // Mutation operator
-			    Operator mutation = MutationFactory.getMutationOperator("PolynomialMutation");                    
-			    mutation.setParameter("probability",1.0/problem.getNumberOfVariables());
-			    mutation.setParameter("distributionIndex",20.0);  
-			    
-			    algorithm.addOperator("crossover",crossover);
-			    algorithm.addOperator("mutation",mutation);
-			    
-			    return new JMetalAlgorithmAdapter(algorithm, adapter);
+					TypedProperties tp = new TypedProperties(properties);
+					JMetalProblemAdapter adapter = new JMetalProblemAdapter(
+							problem);
+					MOEAD algorithm = new MOEAD(adapter);
+				    
+				    // Algorithm parameters
+				    algorithm.setInputParameter("populationSize",
+				    		tp.getInt("populationSize", 100));
+				    algorithm.setInputParameter("maxEvaluations",
+				    		tp.getInt("maxEvaluations", 10000));
+				    
+				    // Directory with the files containing the weight vectors
+				    // used in [2].  Note that these weights are not used in
+				    // these tests, but the parameter must be set to avoid
+				    // a NullPointerException.
+				    algorithm.setInputParameter("dataDirectory", "Weight");
+				    
+				    // Crossover operator 
+				    Operator crossover = CrossoverFactory.getCrossoverOperator(
+				    		"DifferentialEvolutionCrossover");                   
+				    crossover.setParameter("CR", 0.1);                   
+				    crossover.setParameter("F", 0.5);
+				    
+				    // Mutation operator
+				    Operator mutation = MutationFactory.getMutationOperator(
+				    		"PolynomialMutation");                    
+				    mutation.setParameter("probability",
+				    		1.0/problem.getNumberOfVariables());
+				    mutation.setParameter("distributionIndex",20.0);  
+				    
+				    algorithm.addOperator("crossover",crossover);
+				    algorithm.addOperator("mutation",mutation);
+				    
+				    return new JMetalAlgorithmAdapter(algorithm, adapter);
 				} catch (JMException e) {
 					throw new ProviderNotFoundException(name, e);
 				}
@@ -91,28 +92,18 @@ public class MOEADTest {
 	}
 	
 	@Test
-	public void test() throws IOException {
-		String problem = "UF1";
-		
-		Analyzer analyzer = new Analyzer()
-				.withProblem(problem)
-				.includeAllMetrics()
-				.showAggregate()
-				.showStatisticalSignificance();
-		
-		Executor executor = new Executor()
-				.withProblem(problem)
-				.usingAlgorithmFactory(new MOEADFactory())
-				.withProperty("populationSize", 300)
-				.withMaxEvaluations(300*33)
-				.distributeOnAllCores();
-		
-		analyzer.addAll("MOEAD", 
-				executor.withAlgorithm("MOEAD").runSeeds(50));
-		analyzer.addAll("MOEAD-JMetal", 
-				executor.withAlgorithm("MOEAD-JMetal").runSeeds(50));
-		
-		analyzer.printAnalysis();
+	public void testDTLZ1() throws IOException {
+		test("DTLZ1_2", "MOEAD", "MOEAD-JMetal", new MOEADFactory());
+	}
+	
+	@Test
+	public void testDTLZ2() throws IOException {
+		test("DTLZ2_2", "MOEAD", "MOEAD-JMetal", new MOEADFactory());
+	}
+	
+	@Test
+	public void testUF1() throws IOException {
+		test("UF1", "MOEAD", "MOEAD-JMetal", new MOEADFactory());
 	}
 
 }
