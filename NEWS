@@ -26,18 +26,6 @@ Framework.
     local languages, if translations are available.
 
   * Minor improvements to the website.
-  
-  * Begins development on a new command line interface, with the aim to
-    simplify launching the various tools.  This interface will hide the verbose
-    command line statements required by Java, and replace it with a streamlined
-    SVN-style interface.  For example, instead of writing the following Java
-    command every time a Java program is executed:
-        java -Xmx1g -server -classpath $(echo lib/*.jar | sed 's/ /:/g'):.
-                org.moeaframework.analysis.sensitivity.Evaluator [arguments]
-    a much simpler form is possible:
-        moea Evaluator [arguments]
-    We can also provide a more consistent experience across multiple platforms
-    using this interface.
     
   * Improved support for specifying executable commands in the configuration
     files.  Commands which contain whitespace within an argument are now
