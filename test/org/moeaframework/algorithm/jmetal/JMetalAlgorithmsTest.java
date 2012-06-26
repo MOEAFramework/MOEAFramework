@@ -111,7 +111,7 @@ public class JMetalAlgorithmsTest {
 	
 	@Test
 	public void testGDE3_Real() {
-		testDirectly("GDE3", realProblem);
+		test("GDE3-JMetal", realProblem);
 	}
 
 	@Test
@@ -131,7 +131,7 @@ public class JMetalAlgorithmsTest {
 	
 	@Test
 	public void testNSGAII_Real() {
-		testDirectly("NSGAII", realProblem);
+		test("NSGAII-JMetal", realProblem);
 	}
 
 	@Test
@@ -186,7 +186,7 @@ public class JMetalAlgorithmsTest {
 	
 	@Test(expected = ProviderNotFoundException.class)
 	public void testGDE3_Binary() {
-		testDirectly("GDE3", binaryProblem);
+		test("GDE3-JMetal", binaryProblem);
 	}
 
 	@Test
@@ -206,7 +206,7 @@ public class JMetalAlgorithmsTest {
 	
 	@Test
 	public void testNSGAII_Binary() {
-		testDirectly("NSGAII", binaryProblem);
+		test("NSGAII-JMetal", binaryProblem);
 	}
 
 	@Test(expected = ProviderNotFoundException.class)
@@ -261,7 +261,7 @@ public class JMetalAlgorithmsTest {
 	
 	@Test(expected = ProviderNotFoundException.class)
 	public void testGDE3_Permutation() {
-		testDirectly("GDE3", permutationProblem);
+		test("GDE3-JMetal", permutationProblem);
 	}
 
 	@Test
@@ -281,7 +281,7 @@ public class JMetalAlgorithmsTest {
 	
 	@Test
 	public void testNSGAII_Permutation() {
-		testDirectly("NSGAII", permutationProblem);
+		test("NSGAII-JMetal", permutationProblem);
 	}
 
 	@Test(expected = ProviderNotFoundException.class)
@@ -322,30 +322,6 @@ public class JMetalAlgorithmsTest {
 	 */
 	private void test(String name, Problem problem) {
 		Algorithm algorithm = AlgorithmFactory.getInstance().getAlgorithm(name, 
-				properties, problem);
-		
-		Assert.assertTrue(algorithm instanceof JMetalAlgorithmAdapter);
-		Assert.assertEquals(0, algorithm.getNumberOfEvaluations());
-		Assert.assertEquals(0, algorithm.getResult().size());
-		Assert.assertFalse(algorithm.isTerminated());
-		algorithm.step();
-		Assert.assertEquals(1000, algorithm.getNumberOfEvaluations());
-		Assert.assertTrue(algorithm.getResult().size() > 0);
-		Assert.assertTrue(algorithm.isTerminated());
-	}
-	
-	/**
-	 * Identical to {@link #test(String, Problem)}, but uses the 
-	 * {@link JMetalAlgorithms} algorithms factory directly rather than through
-	 * the SPI of {@link AlgorithmFactory}.  This permits testing algorithms
-	 * which would otherwise be inaccessible since they are superseded by other
-	 * implementations.
-	 * 
-	 * @param name the name of the algorithm
-	 * @param problem the problem
-	 */
-	private void testDirectly(String name, Problem problem) {
-		Algorithm algorithm = new JMetalAlgorithms().getAlgorithm(name, 
 				properties, problem);
 		
 		Assert.assertTrue(algorithm instanceof JMetalAlgorithmAdapter);
