@@ -395,23 +395,50 @@ public class Settings {
 	 * Returns the command, invokable through {@link Runtime#exec(String)}, for
 	 * starting the PISA selector.
 	 * 
-	 * @param name the name of the PISA selector
+	 * @param algorithmName the name of the PISA selector
 	 * @return the command, invokable through {@link Runtime#exec(String)}, for
 	 *         starting the PISA selector
 	 */
-	public static String getPISACommand(String name) {
-		return PROPERTIES.getString(KEY_PISA_PREFIX + name + ".command", null);
+	public static String getPISACommand(String algorithmName) {
+		return PROPERTIES.getString(KEY_PISA_PREFIX + algorithmName +
+				".command", null);
 	}
 	
 	/**
 	 * Returns the configuration file for the PISA selector.
 	 * 
-	 * @param name the name of the PISA selector
+	 * @param algorithmName the name of the PISA selector
 	 * @return the configuration file for the PISA selector
 	 */
-	public static String getPISAConfiguration(String name) {
-		return PROPERTIES.getString(KEY_PISA_PREFIX + name + ".configuration",
-				null);
+	public static String getPISAConfiguration(String algorithmName) {
+		return PROPERTIES.getString(KEY_PISA_PREFIX + algorithmName +
+				".configuration", null);
+	}
+	
+	/**
+	 * Returns the list of parameter names for the PISA selector.
+	 * 
+	 * @param algorithmName the name of the PISA selector
+	 * @return the list of parameter names for the PISA selector
+	 */
+	public static String[] getPISAParameters(String algorithmName) {
+		return PROPERTIES.getStringArray(KEY_PISA_PREFIX + algorithmName +
+				".parameters", new String[0]);
+	}
+	
+	/**
+	 * Returns the default value of the specified parameter for the PISA
+	 * selector.
+	 * 
+	 * @param algorithmName the name of the PISA selector
+	 * @param parameterName the name of the parameter
+	 * @return the default value of the specified parameter for the PISA
+	 *         selector
+	 */
+	public static String getPISAParameterDefaultValue(String algorithmName,
+			String parameterName) {
+		return PROPERTIES.getString(KEY_PISA_PREFIX + algorithmName +
+				".parameter." + parameterName, null);
 	}
 
 	/**

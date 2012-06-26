@@ -29,17 +29,21 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.moeaframework.algorithm.AbstractAlgorithm;
 import org.moeaframework.algorithm.AlgorithmException;
 import org.moeaframework.core.CoreUtils;
 import org.moeaframework.core.Initialization;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
+import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.operator.RandomInitialization;
+import org.moeaframework.util.TypedProperties;
 import org.moeaframework.util.io.RedirectStream;
 
 /**
@@ -104,7 +108,7 @@ public class PISAAlgorithm extends AbstractAlgorithm {
 	 * The variation operator.
 	 */
 	private final Variation variation;
-
+	
 	/**
 	 * Constructs an adapter for a PISA selector.
 	 * 
@@ -116,7 +120,11 @@ public class PISAAlgorithm extends AbstractAlgorithm {
 	 * @param alpha the population size
 	 * @param mu the number of parents
 	 * @param lambda the number of offspring
+	 * @deprecated Will be removed in version 2.0; use the 
+	 *             {@link #PISAAlgorithm(String, ProcessBuilder, Problem,
+	 *             Variation, int, int, int, Properties)} constructor instead
 	 */
+	@Deprecated
 	public PISAAlgorithm(String filePrefix, ProcessBuilder selector,
 			Problem problem, Variation variation, int alpha, int mu, 
 			int lambda) {
@@ -128,6 +136,81 @@ public class PISAAlgorithm extends AbstractAlgorithm {
 		this.mu = mu;
 		this.lambda = lambda;
 
+		state = new State(new File(filePrefix + "sta"));
+		solutions = new HashMap<Integer, Solution>();
+	}
+
+	/**
+	 * Constructs an adapter for a PISA selector.
+	 * 
+	 * @param name the name of the PISA selector
+	 * @param problem the problem being solved
+	 * @param variation the variation operator
+	 * @param properties additional properties for the PISA selector
+	 *        configuration file
+	 * @throws IOException if an I/O error occurred
+	 */
+	public PISAAlgorithm(String name, Problem problem, Variation variation,
+			Properties properties) throws IOException {
+		super(problem);
+		this.variation = variation;
+		
+		TypedProperties typedProperties = new TypedProperties(properties);
+		String command = Settings.getPISACommand(name);
+		String configuration = Settings.getPISAConfiguration(name);
+		int pollRate = Settings.getPISAPollRate();
+		
+		if (command == null) {
+			throw new IllegalArgumentException("missing command");
+		}
+		
+		//This is slightly unsafe since the actual files used by 
+		//PISA add the arc, cfg, ini, sel and sta extensions.  This
+		//dependency on files for communication is part of PISA's 
+		//design.
+		filePrefix = File.createTempFile("pisa", "").getCanonicalPath();
+		
+		//write the configuration file if one is not specified
+		if (configuration == null) {
+			PrintWriter writer = null;
+			configuration = new File(filePrefix + "par").getCanonicalPath();
+
+			try {
+				writer = new PrintWriter(new BufferedWriter(new FileWriter(
+						configuration)));
+				
+				for (String parameter : Settings.getPISAParameters(name)) {
+					writer.print(parameter);
+					writer.print(' ');
+					writer.print(typedProperties.getString(parameter,
+							Settings.getPISAParameterDefaultValue(name,
+									parameter)));
+				}
+			} finally {
+				if (writer != null) {
+					writer.close();
+				}
+			}
+		}
+		
+		//construct the command line call to start the PISA selector
+		selector = new ProcessBuilder(ArrayUtils.addAll(
+				CoreUtils.parseCommand(command), 
+				configuration,
+				filePrefix, 
+				Double.toString(pollRate/(double)1000)));
+		
+		//ensure population size is a multiple of the # of parents
+		int populationSize = (int)typedProperties.getDouble("populationSize",
+				100);
+		
+		while (populationSize % variation.getArity() != 0) {
+			populationSize++;
+		}
+		
+		alpha = populationSize;
+		mu = (int)typedProperties.getDouble("mu", alpha);
+		lambda = (int)typedProperties.getDouble("lambda", alpha);
 		state = new State(new File(filePrefix + "sta"));
 		solutions = new HashMap<Integer, Solution>();
 	}

@@ -17,13 +17,10 @@
  */
 package org.moeaframework.algorithm.pisa;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Properties;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.moeaframework.core.Algorithm;
-import org.moeaframework.core.CoreUtils;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
@@ -31,7 +28,6 @@ import org.moeaframework.core.Variation;
 import org.moeaframework.core.spi.AlgorithmProvider;
 import org.moeaframework.core.spi.OperatorFactory;
 import org.moeaframework.core.spi.ProviderNotFoundException;
-import org.moeaframework.util.TypedProperties;
 
 /**
  * Algorithm provider for PISA selectors. In order to make a PISA selector
@@ -83,8 +79,6 @@ public class PISAAlgorithms extends AlgorithmProvider {
 	@Override
 	public Algorithm getAlgorithm(String name, Properties properties,
 			Problem problem) {
-		TypedProperties typedProperties = new TypedProperties(properties);
-		
 		//lookup the case-sensitive version of the PISA algorithm name to 
 		//generate the correct property keys
 		name = getCaseSensitiveSelectorName(name);
@@ -96,45 +90,10 @@ public class PISAAlgorithms extends AlgorithmProvider {
 			}
 			
 			try {
-				String command = Settings.getPISACommand(name);
-				String configuration = Settings.getPISAConfiguration(name);
-				int pollRate = Settings.getPISAPollRate();
-				
-				//This is slightly unsafe since the actual files used by 
-				//PISA add the arc, cfg, ini, sel and sta extensions.  This
-				//dependency on files for communication is part of PISA's 
-				//design.
-				File prefix = File.createTempFile("pisa", "");
-				
-				if (command == null) {
-					throw new IllegalArgumentException("missing command");
-				}
-				
-				if (configuration == null) {
-					throw new IllegalArgumentException("missing configuration");
-				}
-				
-				ProcessBuilder builder = new ProcessBuilder(ArrayUtils.addAll(
-						CoreUtils.parseCommand(command), 
-						configuration,
-						prefix.getCanonicalPath(), 
-						Double.toString(pollRate/(double)1000)));
-				
 				Variation variation = OperatorFactory.getInstance()
 						.getVariation(null, properties, problem);
-
-				int alpha = (int)typedProperties.getDouble("populationSize", 
-						100);
 				
-				while (alpha % variation.getArity() != 0) {
-					alpha++;
-				}
-				
-				int mu = (int)typedProperties.getDouble("mu", alpha);
-				int lambda = (int)typedProperties.getDouble("lambda", alpha);
-				
-				return new PISAAlgorithm(prefix.getCanonicalPath(), builder, 
-						problem, variation, alpha, mu, lambda);
+				return new PISAAlgorithm(name, problem, variation, properties);
 			} catch (IOException e) {
 				throw new ProviderNotFoundException(name, e);
 			}

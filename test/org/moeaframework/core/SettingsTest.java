@@ -62,12 +62,22 @@ public class SettingsTest {
 		for (String algorithm : Settings.getPISAAlgorithms()) {
 			Assert.assertNotNull(Settings.getPISACommand(algorithm));
 		}
-	}
+	}		
 
 	@Test
 	public void testPISAConfiguration() {
 		for (String algorithm : Settings.getPISAAlgorithms()) {
 			Assert.assertNotNull(Settings.getPISAConfiguration(algorithm));
+		}
+	}
+	
+	@Test
+	public void testPISAParameters() {
+		for (String algorithm : Settings.getPISAAlgorithms()) {
+			for (String parameter : Settings.getPISAParameters(algorithm)) {
+				Assert.assertNotNull(Settings.getPISAParameterDefaultValue(
+						algorithm, parameter));
+			}
 		}
 	}
 	
