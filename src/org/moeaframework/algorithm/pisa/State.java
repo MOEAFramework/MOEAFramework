@@ -24,6 +24,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import org.moeaframework.core.Settings;
+
 /**
  * Reads and writes PISA state files.
  */
@@ -37,7 +39,7 @@ public class State {
 	/**
 	 * The delay in milliseconds between successive reads of the state file.
 	 */
-	private static final long pollRate = 100;
+	private static final long pollRate = Settings.getPISAPollRate();
 	
 	/**
 	 * The number of times this class will attempt to write to the state file

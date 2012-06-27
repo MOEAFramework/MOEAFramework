@@ -32,6 +32,10 @@ Framework.
     
   * Adds support of instantiating overloaded JMetal algorithms by appending
     "-JMetal" to the algorithm name, such as "NSGAII-JMetal".
+    
+  * Improves support for configuring PISA selectors.  Previously, a static file
+    was used to configure the selector.  Now, this configuration file can be
+    generated dynamically using the parameters set inside the MOEA Framework.
 
 
 ----------------------------

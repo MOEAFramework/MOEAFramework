@@ -20,35 +20,41 @@ package org.moeaframework.algorithm.pisa;
 import java.io.File;
 import java.io.IOException;
 import java.util.Properties;
+import java.util.Random;
 
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.moeaframework.TestUtils;
 import org.moeaframework.core.Algorithm;
-import org.moeaframework.core.CoreUtils;
+import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
+import org.moeaframework.core.indicator.QualityIndicator;
 import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.core.spi.ProblemFactory;
-import org.moeaframework.core.spi.ProviderNotFoundException;
 
 /**
- * Tests the {@link PISAAlgorithms} class.
+ * Tests the {@link PISAAlgorithms} class ussing the new, parameter-based
+ * configurations.
  */
 public class PISAAlgorithmsTest {
 	
 	/**
-	 * The real encoded test problem.
+	 * The test problem.
 	 */
-	private Problem realProblem;
+	private Problem problem;
 	
 	/**
 	 * The properties for controlling the test problems.
 	 */
 	private Properties properties;
+	
+	/**
+	 * The quality indicator for comparing solutions to the test problem.
+	 */
+	private QualityIndicator qualityIndicator;
 	
 	/**
 	 * Creates the shared problem.
@@ -57,8 +63,10 @@ public class PISAAlgorithmsTest {
 	 */
 	@Before
 	public void setUp() throws IOException {
-		realProblem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
+		problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
 		properties = new Properties();
+		qualityIndicator = new QualityIndicator(problem,
+				ProblemFactory.getInstance().getReferenceSet("DTLZ2_2"));
 		
 		properties.setProperty("populationSize", "100");
 		properties.setProperty("maxEvaluations", "1000");
@@ -69,164 +77,54 @@ public class PISAAlgorithmsTest {
 	 */
 	@After
 	public void tearDown() {
-		realProblem = null;
+		problem = null;
 		properties = null;
+		qualityIndicator = null;
 	}
 	
-	private void run(String name, String directory, String command, 
-			String configuration, Problem problem) {
-		TestUtils.assumeFileExists(new File(directory));
-
-		Settings.PROPERTIES.setString(
-				"org.moeaframework.algorithm.pisa.algorithms", name);
-		Settings.PROPERTIES.setString("org.moeaframework.algorithm.pisa." +
-				name + ".command", command);
-		Settings.PROPERTIES.setString("org.moeaframework.algorithm.pisa." +
-				name + ".configuration", configuration);
-		
-		test(AlgorithmFactory.getInstance().getAlgorithm(name, properties, 
-				problem));
-	}
-	
-	private void run(String algorithm, String os, Problem problem) {
-		String name = algorithm + "_" + os;
-		String directory = "./pisa/" + name;
-		
-		run(name, directory, directory + "/" + algorithm + ".exe", 
-				directory + "/" + algorithm + "_param.txt", problem);
-	}
-	
-	private void run(String algorithm, String os) {
-		run(algorithm, os, realProblem);
-	}
-	
-	@Test(expected = ProviderNotFoundException.class)
-	public void testConstraints() {
-		TestUtils.assumeFileExists(new File("./pisa/hype_win"));
-
-		run("hype", "win", ProblemFactory.getInstance().getProblem("CF1"));
-	}
-	
+	/**
+	 * Tests if running NSGA2 with the same or different parameter settings
+	 * produces different/similar results, thus checking if the parameters
+	 * are correctly set.
+	 */
 	@Test
-	@Ignore("requires maxIterations parameter, which is currently not supported")
-	public void testECEA() {
-		run("ecea", "win");
-	}
-	
-	@Test
-	@Ignore("possible memory leak, favor built-in implementation")
-	public void testEpsilonMOEA() {
-		properties.setProperty("mu", "2");
-		properties.setProperty("lambda", "2");
-		run("epsmoea", "win");
-	}
-	
-	@Test
-	public void testFEMO() {
-		run("femo", "win");
-	}
-	
-	@Test
-	public void testHypE() {
-		run("hype", "win");
-	}
-	
-	@Test
-	public void testIBEA() {
-		run("ibea", "win");
-	}
-	
-	@Test
-	@Ignore("need to make design file an argument, otherwise can't parallelize")
-	public void testMSOPS() throws IOException {
-		CoreUtils.copy(
-				new File("./pisa/msops_win/msops_weights/" + 
-						properties.getProperty("populationSize") + 
-						"/space-filling-" +
-						realProblem.getNumberOfObjectives() + "dim.des"), 
-				new File("space-filling-" +
-						realProblem.getNumberOfObjectives() + "dim.des"));
-		run("msops", "win");
-	}
-
-	@Test
-	public void testNSGAII() {
-		run("nsga2", "win");
-	}
-	
-	@Test
-	@Ignore("crashes with fp != NULL assertion on line 135 in semo_io.c, but recompiling from source fixes this bug")
-	public void testSEMO() {
-		properties.setProperty("populationSize", "1");
-		properties.setProperty("operator", "PM");
-		run("semo", "win");
-	}
-	
-	@Test
-	public void testSEMO2() {
-		run("semo2", "win");
-	}
-	
-	@Test
-	public void testSHV() {
-		run("shv", "win");
-	}
-	
-	@Test
-	public void testSIBEA() {
-		String name = "sibea_win";
-		String directory = "./pisa/" + name;
+	public void testNSGA2() {
+		String name = "nsga2_parameter_test";
+		String directory = "./pisa/nsga2_win";
 		
 		TestUtils.assumeFileExists(new File(directory));
 
 		Settings.PROPERTIES.setString(
 				"org.moeaframework.algorithm.pisa.algorithms", name);
 		Settings.PROPERTIES.setString("org.moeaframework.algorithm.pisa." +
-				name + ".command", "java -jar " + directory + "/sibea.jar");
-		Settings.PROPERTIES.setString("org.moeaframework.algorithm.pisa." +
-				name + ".configuration", directory + "/sibea_param.txt");
-		
-		test(AlgorithmFactory.getInstance().getAlgorithm(name, properties, 
-				realProblem));
-	}
-	
-	@Test
-	@Ignore("this works, but is very time consuming")
-	public void testSPAM() {
-		run("spam", "win");
-	}
-	
-	@Test
-	public void testSPEA2() {
-		run("spea2", "win");
-	}
-	
-	@Test
-	public void testUnaryOperators() {
-		properties.setProperty("operator", "PM");
-		run("semo2", "win");
-	}
-	
-	@Test
-	public void testMultiparentOperators() {
-		properties.setProperty("mu", "500");
-		properties.setProperty("operator", "PCX");
-		run("semo2", "win");
-	}
-	
-	@Test
-	public void testCaseSensitivity() {
-		TestUtils.assumeFileExists(new File("./pisa/hype_win"));
+				name + ".command", directory + "/" + "nsga2.exe");
+		Settings.PROPERTIES.setStringArray("org.moeaframework.algorithm.pisa." +
+				name + ".parameters", new String[] { "seed", "tournament" });
+		Settings.PROPERTIES.setInt("org.moeaframework.algorithm.pisa." + name +
+				".parameter.tournament", 2);
 
-		//sets up the necessary properties for 'hype_win'
-		testHypE();
+		double result1 = test(AlgorithmFactory.getInstance().getAlgorithm(name,
+				properties, problem));
 		
-		Algorithm algorithm = AlgorithmFactory.getInstance().getAlgorithm(
-				"HYPE_WIN", new Properties(), realProblem);
+		properties.setProperty("seed", Integer.toString(PRNG.nextInt()));
 		
-		Assert.assertNotNull(algorithm);
+		double result2 = test(AlgorithmFactory.getInstance().getAlgorithm(name,
+				properties, problem));
 		
-		algorithm.terminate();
+		properties.setProperty("tournament", "3");
+		
+		double result3 = test(AlgorithmFactory.getInstance().getAlgorithm(name,
+				properties, problem));
+		
+		double result4 = test(AlgorithmFactory.getInstance().getAlgorithm(name,
+				properties, problem));
+
+		Assert.assertTrue(result1 != result3);
+		Assert.assertTrue(result2 != result3);
+		Assert.assertTrue(result3 == result4);
+		
+		Settings.PROPERTIES.remove(
+				"org.moeaframework.algorithm.pisa.algorithms");
 	}
 	
 	/**
@@ -234,7 +132,9 @@ public class PISAAlgorithmsTest {
 	 * 
 	 * @param algorithm the algorithm
 	 */
-	private void test(Algorithm algorithm) {
+	protected double test(Algorithm algorithm) {
+		PRNG.setRandom(new Random(1337));
+		
 		Assert.assertTrue(algorithm instanceof PISAAlgorithm);
 		Assert.assertEquals(0, algorithm.getNumberOfEvaluations());
 		Assert.assertEquals(0, algorithm.getResult().size());
@@ -249,6 +149,9 @@ public class PISAAlgorithmsTest {
 		Assert.assertEquals(1000, algorithm.getNumberOfEvaluations());
 		Assert.assertTrue(algorithm.getResult().size() > 0);
 		Assert.assertTrue(algorithm.isTerminated());
+		
+		qualityIndicator.calculate(algorithm.getResult());
+		return qualityIndicator.getHypervolume();
 	}
 	
 }

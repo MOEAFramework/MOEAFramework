@@ -38,6 +38,7 @@ import org.moeaframework.algorithm.AlgorithmException;
 import org.moeaframework.core.CoreUtils;
 import org.moeaframework.core.Initialization;
 import org.moeaframework.core.NondominatedPopulation;
+import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
@@ -121,8 +122,8 @@ public class PISAAlgorithm extends AbstractAlgorithm {
 	 * @param mu the number of parents
 	 * @param lambda the number of offspring
 	 * @deprecated Will be removed in version 2.0; use the 
-	 *             {@link #PISAAlgorithm(String, ProcessBuilder, Problem,
-	 *             Variation, int, int, int, Properties)} constructor instead
+	 *             {@link #PISAAlgorithm(String, Problem, Variation,
+	 *             Properties)} constructor instead
 	 */
 	@Deprecated
 	public PISAAlgorithm(String filePrefix, ProcessBuilder selector,
@@ -170,6 +171,11 @@ public class PISAAlgorithm extends AbstractAlgorithm {
 		//design.
 		filePrefix = File.createTempFile("pisa", "").getCanonicalPath();
 		
+		//ensure the seed property is set
+		if (!properties.containsKey("seed")) {
+			properties.setProperty("seed", Integer.toString(PRNG.nextInt()));
+		}
+		
 		//write the configuration file if one is not specified
 		if (configuration == null) {
 			PrintWriter writer = null;
@@ -182,7 +188,7 @@ public class PISAAlgorithm extends AbstractAlgorithm {
 				for (String parameter : Settings.getPISAParameters(name)) {
 					writer.print(parameter);
 					writer.print(' ');
-					writer.print(typedProperties.getString(parameter,
+					writer.println(typedProperties.getString(parameter,
 							Settings.getPISAParameterDefaultValue(name,
 									parameter)));
 				}
@@ -208,6 +214,7 @@ public class PISAAlgorithm extends AbstractAlgorithm {
 			populationSize++;
 		}
 		
+		//configure the remaining options
 		alpha = populationSize;
 		mu = (int)typedProperties.getDouble("mu", alpha);
 		lambda = (int)typedProperties.getDouble("lambda", alpha);

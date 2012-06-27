@@ -32,24 +32,46 @@ import org.moeaframework.core.spi.ProviderNotFoundException;
 /**
  * Algorithm provider for PISA selectors. In order to make a PISA selector
  * available for this provider, two steps are required. First, the PISA selector
- * must be downloaded and, if necessary, compiled. Second, three entries must be
- * added to the configuration file (typically {@code global.properties}). As an
- * example, for the HypE selector, add the selector name, {@code hype}, to the
- * list of PISA algorithms:
+ * must be downloaded and, if necessary, compiled. Second, the configuration
+ * file (typically {@code global.properties}) must be updated with the new
+ * PISA selector. As an example, for the HypE selector, add the selector name,
+ * {@code hype}, to the list of PISA algorithms:
  * <pre>
  *   org.moeaframework.util.pisa.algorithms = hype, spea2, nsga2
  * </pre>
- * Next, the executable and configuration file must be listed:
+ * For each algorithm, define its configuration options below.  For the example
+ * of {@code hype}, specify the following:
+ * <ol>
+ *   <li>The executable to run:
+ *     <pre>
+ *        org.moeaframework.algorithm.pisa.hype.command = ./path/to/hype.exe
+ *     </pre>
+ *   <li>The list of parameters:
+ *     <pre>
+ *        org.moeaframework.algorithm.pisa.hype.parameters = seed, tournament, mating, bound, nrOfSamples
+ *     </pre>
+ *     The order typically matters, so ensure the parameters are listed in the
+ *     same order as expected by the executable.
+ *   <li>For each parameter, specify its default value:
+ *     <pre>
+ *        org.moeaframework.algorithm.pisa.hype.parameter.tournament = 5
+ *        org.moeaframework.algorithm.pisa.hype.parameter.mating = 1
+ *        ...
+ *     </pre>
+ *     It is not necessary to give a default for the seed parameter as it is
+ *     set automatically by the MOEA Framework.
+ * </ol>
+ * Note: Prior to version 1.14, the MOEA Framework only accepted a static
+ * version of the algorithm parameters using the option:
  * <pre>
- *   org.moeaframework.util.pisa.hype.command = ./pisa/hype_win/hype.exe
- *   org.moeaframework.util.pisa.hype.configuration = ./pisa/hype_win/hype_params.txt
+ *   org.moeaframework.algorithm.pisa.hype.configuration = ./path/to/hype_params.txt
  * </pre>
- * Once completed, the PISA selector can be used with:
+ * This is still accepted, but would mean the MOEA Framework is unable to
+ * change the algorithm parameters.  Once completed, the PISA selector can be
+ * used with:
  * <pre>
  *   Algorithm algorithm = AlgorithmFactory.getInstance().getAlgorithm("hype", properties, problem);
  * </pre>
- * Note how the keys contain the name {@code hype}. The name {@code hype} is
- * user-defined, but must be kept consistent as shown above.
  */
 public class PISAAlgorithms extends AlgorithmProvider {
 

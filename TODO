@@ -12,6 +12,9 @@ any changes.
  Easy
 ------
 
+  - QualityIndicator returns 0.0 if the calculate method has not been called,
+    should instead result in an illegal state.
+
   * Complete development of the new command line interface, with the aim to
     simplify launching the various tools.  This interface will hide the verbose
     command line statements required by Java, and replace it with a streamlined
@@ -109,10 +112,6 @@ any changes.
     
   - Develop an interface for defining stopping conditions.  Executor should
     provide the necessary functionality for defining stopping conditions.
-    
-  - PISA selections require a parameter file.  Determine if any of the PISA
-    selectors have useful parameters and, if so, add support for writing
-    custom parameter files.
     
   - While by default PISA does not support constraints, its specification does
     claim additional data such as constraints can be supported.  Determine if
