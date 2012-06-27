@@ -1,9 +1,9 @@
 This file documents the major changes implemented in each release of the MOEA
 Framework.
 
---------------------
- Version 1.14 (TBD)
---------------------
+-----------------------------
+ Version 1.14 (26 June 2012)
+-----------------------------
 
   * The MOEAD algorithm now provides both the original MOEA/D implementation as
     well as the utility-based search extension introduced in 2009.  See the

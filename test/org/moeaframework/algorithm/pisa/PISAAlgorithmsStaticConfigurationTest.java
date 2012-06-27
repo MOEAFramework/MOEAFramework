@@ -220,13 +220,15 @@ public class PISAAlgorithmsStaticConfigurationTest {
 	
 	@Test
 	public void testCaseSensitivity() {
-		TestUtils.assumeFileExists(new File("./pisa/hype_win"));
-
-		//sets up the necessary properties for 'hype_win'
-		testHypE();
+		String name = "hype_win";
+		
+		Settings.PROPERTIES.setString(
+				"org.moeaframework.algorithm.pisa.algorithms", name);
+		Settings.PROPERTIES.setString("org.moeaframework.algorithm.pisa." +
+				name + ".command", "foo");
 		
 		Algorithm algorithm = AlgorithmFactory.getInstance().getAlgorithm(
-				"HYPE_WIN", new Properties(), realProblem);
+				name.toUpperCase(), new Properties(), realProblem);
 		
 		Assert.assertNotNull(algorithm);
 		

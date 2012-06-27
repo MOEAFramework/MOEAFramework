@@ -50,6 +50,34 @@ public class SimpleStatisticsTest {
 	
 	@Test
 	@Ignore
+	public void testMissingEntries() throws IOException {
+		File input1 = TestUtils.createTempFile("0.0 0.0 0.0\n1.0 1.0 1.0");
+		File input2 = TestUtils.createTempFile("0.0 0.0\n0.0 0.5 1.0\n");
+		File output = TestUtils.createTempFile();
+		
+		SimpleStatistics.main(new String[] {
+				"-m", "av",
+				"-o", output.getPath(),
+				input1.getPath(),
+				input2.getPath()});
+	}
+	
+	@Test
+	@Ignore
+	public void testMissingRows() throws IOException {
+		File input1 = TestUtils.createTempFile("0.0 0.0 0.0\n1.0 1.0 1.0");
+		File input2 = TestUtils.createTempFile("0.0 0.0 0.0\n");
+		File output = TestUtils.createTempFile();
+		
+		SimpleStatistics.main(new String[] {
+				"-m", "av",
+				"-o", output.getPath(),
+				input1.getPath(),
+				input2.getPath()});
+	}
+	
+	@Test
+	@Ignore
 	public void testInfinityToNaN() throws IOException {
 		File input1 = TestUtils.createTempFile("0.0 0.0 0.0\n1.0 Infinity 1.0");
 		File input2 = TestUtils.createTempFile("0.0 0.0 0.0\n0.0 0.5 1.0\n");
