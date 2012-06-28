@@ -300,6 +300,12 @@ invalid entry in row
   See the documentation on the various file types to determine if this error
   can be corrected.
 
+invoke calculate prior to getting indicator values
+  Attempted to retrieve one of the indicator values prior to invoking the
+  calculate method.  Ensure the calculate method is invoked first, prior
+  When using QualityIndicator, the calculate method must be invoked prior to
+  retrieving any of the indicator values.  
+
 
 ----------
  Warnings

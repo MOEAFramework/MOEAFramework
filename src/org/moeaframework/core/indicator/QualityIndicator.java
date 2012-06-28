@@ -46,6 +46,12 @@ public class QualityIndicator {
 	 * the range {@code [0, 1]}.
 	 */
 	private final Normalizer normalizer;
+	
+	/**
+	 * The approximation set used during the last invocation of
+	 * {@code calculate}.
+	 */
+	private NondominatedPopulation normalizedApproximationSet;
 
 	/**
 	 * The generational distance of the approximation set from the last
@@ -114,8 +120,12 @@ public class QualityIndicator {
 	 * 
 	 * @return the generational distance of the approximation set from the last
 	 *         invocation of {@code calculate}
+	 * @throws IllegalStateException if the {@code calculate} method has not
+	 *         been invoked
 	 */
 	public double getGenerationalDistance() {
+		checkCalculateInvocation();
+		
 		return generationalDistance;
 	}
 
@@ -125,8 +135,12 @@ public class QualityIndicator {
 	 * 
 	 * @return the inverted generational distance of the approximation set from
 	 *         the last invocation of {@code calculate}
+	 * @throws IllegalStateException if the {@code calculate} method has not
+	 *         been invoked
 	 */
 	public double getInvertedGenerationalDistance() {
+		checkCalculateInvocation();
+		
 		return invertedGenerationalDistance;
 	}
 
@@ -136,8 +150,12 @@ public class QualityIndicator {
 	 * 
 	 * @return the additive &epsilon;-indicator of the approximation set from 
 	 *         the last invocation of {@code calculate}
+	 * @throws IllegalStateException if the {@code calculate} method has not
+	 *         been invoked
 	 */
 	public double getAdditiveEpsilonIndicator() {
+		checkCalculateInvocation();
+		
 		return additiveEpsilonIndicator;
 	}
 
@@ -147,8 +165,12 @@ public class QualityIndicator {
 	 * 
 	 * @return the hypervolume of the approximation set from the last invocation
 	 *         of {@code calculate}
+	 * @throws IllegalStateException if the {@code calculate} method has not
+	 *         been invoked
 	 */
 	public double getHypervolume() {
+		checkCalculateInvocation();
+		
 		return hypervolume;
 	}
 
@@ -158,8 +180,12 @@ public class QualityIndicator {
 	 * 
 	 * @return the maximum Pareto front error of the approximation set from the
 	 *         last invocation of {@code calculate}
+	 * @throws IllegalStateException if the {@code calculate} method has not
+	 *         been invoked
 	 */
 	public double getMaximumParetoFrontError() {
+		checkCalculateInvocation();
+		
 		return maximumParetoFrontError;
 	}
 
@@ -169,8 +195,12 @@ public class QualityIndicator {
 	 * 
 	 * @return the spacing of the approximation set from the last invocation of
 	 *         {@code calculate}
+	 * @throws IllegalStateException if the {@code calculate} method has not
+	 *         been invoked
 	 */
 	public double getSpacing() {
+		checkCalculateInvocation();
+		
 		return spacing;
 	}
 
@@ -178,9 +208,25 @@ public class QualityIndicator {
 	 * The reference set for the problem.
 	 * 
 	 * @return the reference set for the problem
+	 * @throws IllegalStateException if the {@code calculate} method has not
+	 *         been invoked
 	 */
 	public NondominatedPopulation getReferenceSet() {
 		return referenceSet;
+	}
+	
+	/**
+	 * Throws an exception if the {@code calculate} method has not been
+	 * invoked.
+	 * 
+	 * @throws IllegalStateException if the {@code calculate} method has not
+	 *         been invoked
+	 */
+	private void checkCalculateInvocation() {
+		if (normalizedApproximationSet == null) {
+			throw new IllegalStateException(
+					"invoke calculate prior to getting indicator values");
+		}
 	}
 
 	/**
@@ -191,8 +237,7 @@ public class QualityIndicator {
 	 * @param approximationSet the approximation set
 	 */
 	public void calculate(NondominatedPopulation approximationSet) {
-		NondominatedPopulation normalizedApproximationSet = 
-				normalizer.normalize(approximationSet);
+		normalizedApproximationSet = normalizer.normalize(approximationSet);
 		
 		if (Settings.isHypervolumeEnabled()) {
 			hypervolume = Hypervolume.evaluate(problem, 
