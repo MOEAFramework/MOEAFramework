@@ -1,6 +1,17 @@
 This file documents the major changes implemented in each release of the MOEA
 Framework.
 
+--------------------
+ Version 1.15 (TBD)
+--------------------
+
+  * Several bug fixes:
+  
+      - QualityIndicator previously returned indicator values of 0 if the
+        calculate method had not been invoked.  Now, attempting to retrieve any
+        indicator value results in an IllegalStateException.  
+
+
 -----------------------------
  Version 1.14 (26 June 2012)
 -----------------------------
@@ -12,13 +23,17 @@ Framework.
   * Adds chapter on using the diagnostic tool to the user manual.
 
   * Several improvements to the diagnostic tool GUI, including
+  
       - Hide the 'Show Approximation Set' right-click menu if the approximation
         set is not available
+        
       - Adds the ability to plot individual trace lines rather than the
         condensed quantile view.  Adds the view menu to toggle between these
         two options.
+        
       - The statistical results window now includes a Save option to save the
         statistical results to a text file.
+        
       - Fixes bug where using the File > Exit menu option closed the window but
         the program was still running.
         
