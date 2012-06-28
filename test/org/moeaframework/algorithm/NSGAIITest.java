@@ -18,46 +18,31 @@
 package org.moeaframework.algorithm;
 
 import java.io.IOException;
-import java.util.Properties;
-
 import org.junit.Test;
-import org.moeaframework.algorithm.jmetal.JMetalAlgorithms;
-import org.moeaframework.core.Algorithm;
-import org.moeaframework.core.Problem;
-import org.moeaframework.core.spi.AlgorithmFactory;
 
 /**
  * Tests the {@link NSGAII} class.
  */
 public class NSGAIITest extends AlgorithmTest {
 	
-	private static class NSGAIIFactory extends AlgorithmFactory {
-
-		@Override
-		public synchronized Algorithm getAlgorithm(String name,
-				Properties properties, Problem problem) {
-			if (name.equalsIgnoreCase("NSGAII-JMetal")) {
-				return new JMetalAlgorithms().getAlgorithm("NSGAII", properties, problem);
-			} else {
-				return super.getAlgorithm(name, properties, problem);
-			}
-		}
-		
-	}
-	
 	@Test
 	public void testDTLZ1() throws IOException {
-		test("DTLZ1_2", "NSGAII", "NSGAII-JMetal", new NSGAIIFactory());
+		test("DTLZ1_2", "NSGAII", "NSGAII-JMetal");
 	}
 	
 	@Test
 	public void testDTLZ2() throws IOException {
-		test("DTLZ2_2", "NSGAII", "NSGAII-JMetal", new NSGAIIFactory());
+		test("DTLZ2_2", "NSGAII", "NSGAII-JMetal");
+	}
+	
+	@Test
+	public void testDTLZ7() throws IOException {
+		test("DTLZ7_2", "NSGAII", "NSGAII-JMetal");
 	}
 	
 	@Test
 	public void testUF1() throws IOException {
-		test("UF1", "NSGAII", "NSGAII-JMetal", new NSGAIIFactory());
+		test("UF1", "NSGAII", "NSGAII-JMetal");
 	}
 
 }

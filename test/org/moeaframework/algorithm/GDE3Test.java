@@ -18,46 +18,31 @@
 package org.moeaframework.algorithm;
 
 import java.io.IOException;
-import java.util.Properties;
-
 import org.junit.Test;
-import org.moeaframework.algorithm.jmetal.JMetalAlgorithms;
-import org.moeaframework.core.Algorithm;
-import org.moeaframework.core.Problem;
-import org.moeaframework.core.spi.AlgorithmFactory;
 
 /**
  * Tests the {@link GDE3} class.
  */
 public class GDE3Test extends AlgorithmTest {
 	
-	private static class GDE3Factory extends AlgorithmFactory {
-
-		@Override
-		public synchronized Algorithm getAlgorithm(String name,
-				Properties properties, Problem problem) {
-			if (name.equalsIgnoreCase("GDE3-JMetal")) {
-				return new JMetalAlgorithms().getAlgorithm("GDE3", properties, problem);
-			} else {
-				return super.getAlgorithm(name, properties, problem);
-			}
-		}
-		
-	}
-	
 	@Test
 	public void testDTLZ1() throws IOException {
-		test("DTLZ1_2", "GDE3", "GDE3-JMetal", new GDE3Factory());
+		test("DTLZ1_2", "GDE3", "GDE3-JMetal");
 	}
 	
 	@Test
 	public void testDTLZ2() throws IOException {
-		test("DTLZ2_2", "GDE3", "GDE3-JMetal", new GDE3Factory());
+		test("DTLZ2_2", "GDE3", "GDE3-JMetal");
+	}
+	
+	@Test
+	public void testDTLZ7() throws IOException {
+		test("DTLZ7_2", "GDE3", "GDE3-JMetal");
 	}
 	
 	@Test
 	public void testUF1() throws IOException {
-		test("UF1", "GDE3", "GDE3-JMetal", new GDE3Factory());
+		test("UF1", "GDE3", "GDE3-JMetal");
 	}
 
 }

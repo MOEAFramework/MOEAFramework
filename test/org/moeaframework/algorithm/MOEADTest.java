@@ -102,6 +102,11 @@ public class MOEADTest extends AlgorithmTest {
 	}
 	
 	@Test
+	public void testDTLZ7() throws IOException {
+		test("DTLZ7_2", "MOEAD", "MOEAD-JMetal", new MOEADFactory());
+	}
+	
+	@Test
 	public void testUF1() throws IOException {
 		test("UF1", "MOEAD", "MOEAD-JMetal", new MOEADFactory());
 	}

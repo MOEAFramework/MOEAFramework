@@ -34,6 +34,20 @@ import org.moeaframework.core.spi.AlgorithmFactory;
 public abstract class AlgorithmTest {
 	
 	/**
+	 * Tests if two algorithms are statistically indifferent.  The default
+	 * {@link AlgorithmFactory} is used to create instances.
+	 * 
+	 * @param problem the name of the problem to test
+	 * @param algorithm1 the name of the first algorithm to test
+	 * @param algorithm2 the name of the second algorithm to test
+	 * @throws IOException should not occur
+	 */
+	public void test(String problem, String algorithm1, String algorithm2)
+			throws IOException {
+		test(problem, algorithm1, algorithm2, AlgorithmFactory.getInstance());
+	}
+	
+	/**
 	 * Tests if two algorithms are statistically indifferent.
 	 * 
 	 * @param problem the name of the problem to test
