@@ -112,8 +112,8 @@ public class PISAAlgorithmsStaticConfigurationTest {
 	}
 	
 	@Test
-	@Ignore("requires maxIterations parameter, which is currently not supported")
 	public void testECEA() {
+		properties.setProperty("maxIterations", "100");
 		run("ecea", "win");
 	}
 	

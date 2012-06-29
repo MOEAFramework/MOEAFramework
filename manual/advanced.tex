@@ -50,25 +50,32 @@ A standardized method for adding PISA selectors to the MOEA Framework is provide
     \begin{enumerate}
       \item Add the name of the selector, \plaintext{NAME}, to the comma-separated list of available PISA selectors in \plaintext{org.moeaframework.algorithm.pisa.algorithms}
       \item Add the property \plaintext{org.moeaframework.algorithm.pisa.NAME.command}, which points to the program executable which starts the PISA selector
-      \item Add the property \plaintext{org.moeaframework.algorithm.pisa.NAME.configuration},  which points to the configuration file for the PISA selector
+      \item Provide a list of parameters, in the order required by the PISA selector, with the property \plaintext{org.moeaframework.algorithm.pisa.NAME.parameters}
+      \item For each of the listed parameters, PARAM, add the property \plaintext{org.moeaframework.algorithm.pisa.NAME.PARAM} to set the default value for the parameter.  It is not necessary to list the seed parameter
     \end{enumerate}
 \end{enumerate}
 
-For example, if we install the SEMO2 selector, we would first download the SEMO2 binaries from \webpage{http://www.tik.ee.ethz.ch/pisa/}.  These binaries are typically packaged as a compressed file (.zip or .tar.gz).  Next, extract the contents of this compressed file into the MOEA Framework installation folder.  In this example, we extracted the contents to the folder \folder{pisa/SEMO2}.  Finally, add the following three lines to the \file{global.properties} file:
+For example, if we install the HypE selector, we would first download the HypE binaries from \webpage{http://www.tik.ee.ethz.ch/pisa/}.  These binaries are typically packaged as a compressed file (.zip or .tar.gz).  Next, extract the contents of this compressed file into the MOEA Framework installation folder.  In this example, we extracted the contents to the folder \folder{pisa/HypE}.  Finally, add the following lines to the \file{global.properties} file:
 
 \begin{lstlisting}[language=Plaintext]
-org.moeaframework.algorithm.pisa.algorithms=SEMO2
-org.moeaframework.algorithm.pisa.SEMO2.command=./pisa/SEMO2/semo2.exe
-org.moeaframework.algorithm.pisa.SEMO2.configuration=./pisa/SEMO2/semo2_params.txt
+org.moeaframework.algorithm.pisa.algorithms=HypE
+org.moeaframework.algorithm.pisa.HypE.command = ./pisa/hype_win/hype.exe
+org.moeaframework.algorithm.pisa.HypE.parameters = seed, tournament, mating, bound, nrOfSamples
+org.moeaframework.algorithm.pisa.HypE.parameter.tournament = 5
+org.moeaframework.algorithm.pisa.HypE.parameter.mating = 1
+org.moeaframework.algorithm.pisa.HypE.parameter.bound = 2000
+org.moeaframework.algorithm.pisa.HypE.parameter.nrOfSamples = -1
 \end{lstlisting}
 
-Once completed, you should be able to run the diagnostic tool and confirm that SEMO2 appears in the list of available algorithms.  Additionally, SEMO2 may be referenced throughout the MOEA Framework wherever the algorithm is specified as a string, such as:
+Once completed, you should be able to run the diagnostic tool and confirm that HypE appears in the list of available algorithms.  Additionally, HypE may be referenced throughout the MOEA Framework wherever the algorithm is specified as a string, such as:
 
 \begin{lstlisting}[language=Java]
 new Executor()
 		.withProblem("Kursawe")
-		.withAlgorithm("SEMO2")
+		.withAlgorithm("HypE")
 		.withMaxEvaluations(10000)
+		.withProperty("bound", 1000)
+		.withProperty("tournament", 2)
 		.run();
 \end{lstlisting}
 

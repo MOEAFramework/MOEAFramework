@@ -170,6 +170,10 @@ import org.moeaframework.util.TypedProperties;
  *   </tr>
  * </table>
  * <p>
+ * Operators can be combined by joining the two operator names with the plus
+ * sign, such as {@code "sbx+pm"}.  Not all operators can be joined this way.
+ * See {@link CompoundVariation} for the restrictions.
+ * <p>
  * This class is thread safe.
  */
 public class OperatorFactory {
