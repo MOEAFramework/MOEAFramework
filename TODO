@@ -150,9 +150,6 @@ any changes.
     indicator-based methods, but is currently unused.  These should be used to
     implement native indicator-based MOEAs.
     
-  - Add the R* indicators.  Open source implementations are available in PISA,
-    but will need to be converted to Java.
-    
   - The MOEA Framework is primarily a single-threaded library, and currently
     only supports multithreaded evaluation of problems.  This limitation is
     caused by: 1) shared instances which are not thread safe, such as PRNG;
@@ -189,10 +186,6 @@ any changes.
     support high-dimensional (3D) visualization of Pareto sets, detailed
     runtime and end-of-run performance analysis, a code editor for defining new
     problems in one of the supported scripting languages, etc.
-    
-  - Internationalization and localization.  This involves translating and
-    providing the necessary conversions to allow users of any nationality and
-    language to use these tools.
     
   - Product branding.  As the adoption of the MOEA Framework grows, it is
     critical to establish its identity in the open-source market.  A clean,
