@@ -110,11 +110,6 @@ any changes.
   - Develop an interface for defining stopping conditions.  Executor should
     provide the necessary functionality for defining stopping conditions.
     
-  - While by default PISA does not support constraints, its specification does
-    claim additional data such as constraints can be supported.  Determine if
-    any PISA selectors support constraints.  If so, identify how the selector
-    represents constraints in the data files.
-    
   - Scan the source code for errors, exceptions and warnings which are not
     documented in the HELP file.
     
