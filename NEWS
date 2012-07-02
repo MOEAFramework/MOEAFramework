@@ -5,6 +5,8 @@ Framework.
  Version 1.15 (TBD)
 --------------------
 
+  * Adds detailed list of errors and warning messages to the user manual.
+
   * Several bug fixes:
   
       - QualityIndicator previously returned indicator values of 0 if the
