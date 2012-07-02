@@ -7,208 +7,207 @@ Errors halt the execution of the program and produce an error message to the sta
 \vspace{\baselineskip}
 
 \noindent
-\textit{Exception in thread "main" java.lang.NoClassDefFoundError: \<class\>}
-\begin{quote}
-  Thrown when Java is starting but is unable to find the specified class. Ensure the specified class is located on the Java classpath.  If the class is located in a JAR file, use
-  
+\textit{Exception in thread "main" java.lang.NoClassDefFoundError: \plaintext{<class>}}
+\begin{indented}
+  Thrown when Java is starting but is unable to find the specified class.  Ensure the specified class is located on the Java classpath.  If the class is located in a JAR file, use
+  \begin{indented}
     \plaintext{java -classpath \$CLASSPATH:/path/to/library.jar ...}
-    
+  \end{indented}
   If the class is an individual .class file in a folder, use
-  
+  \begin{indented}
     \plaintext{java -classpath \$CLASSPATH:/path/to/folder/}
-\end{quote}
+  \end{indented}
+\end{indented}
 
 \noindent
 \textit{Error occurred during initialization of VM} or
 \textit{Too small initial heap for new size specified}
-\begin{quote}
-  This Java error occurs when the initial heap size (allocated memory) is too small to instantiate the Java virtual machine (VM).  This error is likely caused by the -Xmx command line option requesting less memory than is necessary to start the VM.  Increasing the -Xmx value may resolve this issue. Also ensure the -Xmx argument is properly formatted.  For instance, use -Xmx128m and NOT -Xmx128.
-\end{quote}
+\begin{indented}
+  This Java error occurs when the initial heap size (allocated memory) is too small to instantiate the Java virtual machine (VM).  This error is likely caused by the \plaintext{-Xmx} command line option requesting less memory than is necessary to start the VM.  Increasing the \plaintext{-Xmx} value may resolve this issue. Also ensure the \plaintext{-Xmx} argument is properly formatted.  For instance, use \plaintext{-Xmx128m} and NOT \plaintext{-Xmx128}.
+\end{indented}
 
 \noindent
-\textit{Error occurred during initialization of VM} or
+\textit{Error occurred duing initialization of VM} or
 \textit{Could not reserve enough space for object heap} or
 \textit{Could not create the Java virtual machine}
-\begin{quote}
-  This Java error occurs when there is insufficient heap size (allocated memory) to instantiate the Java virtual machine (VM).  This error is likely caused by the -Xmx command line option requesting more memory than is available on the host system.  This error may also occur if other running processes consume large quantities of memory.  Lowering the -Xmx value may  resolve this issue.
-\end{quote}
+\begin{indented}
+  This Java error occurs when there is insufficient heap size (allocated memory) to instantiate the Java virtual machine (VM).  This error is likely caused by the \plaintext{-Xmx} command line option requesting more memory than is available on the host system.  This error may also occur if other running processes consume large quantities of memory.  Lowering the \plaintext{-Xmx} value may resolve this issue.
+\end{indented}
 
 \noindent
 \textit{Exception in thread "main" java.lang.OutOfMemoryError: GC overhead limit exceeded}
-\begin{quote}
+\begin{indented}
   Java relies on a garbage collector to detect and free memory which is no longer in use.  This process is usually fast.  However, if Java determines it is spending too much time performing garbage collection (98\% of the time) and is only recovering a small amount of memory (2\% of the heap), this error is thrown.  This is likely caused when the in-use memory approaches the maximum heap size, leaving little unallocated memory for temporary objects.  Try  increasing the maximum heap size with the -Xmx command line argument.
-\end{quote}
+\end{indented}
 
 \noindent
-\textit{Assertion failed: fp != NULL, file \<filename\>, line \<linenumber\>}
-\begin{quote}
+\textit{Assertion failed: fp != NULL, file \plaintext{<filename>}, line \plaintext{<linenumber>}}
+\begin{indented}
   PISA modules communicate using the file system.  Some anti-virus software scans the contents of files before read and after write operations.  This may cause one of the PISA communication files to become inaccessible and cause this error.  To test if this is the cause, try disabling your anti-virus and re-run the program.
   
-  A more permanent and secure solution involves adding an exception to the  anti-virus software to prevent active monitoring of PISA communication files. For example, first add the line
+  A more permanent and secure solution involves adding an exception to the anti-virus software to prevent active monitoring of PISA communication files. For example, first add the line
     \plaintext{java.io.tmpdir=<folder>}
-  to global.properties and set <folder> to some temporary folder where the PISA communication files will be stored.  Then configure your anti-virus software to ignore the contents of \<folder\>.
-\end{quote}
+  to global.properties and set \plaintext{<folder>} to some temporary folder where the PISA communication files will be stored.  Then configure your anti-virus software to ignore the contents of \plaintext{<folder>}.
+\end{indented}
 
 \noindent
 \textit{problem does not have an analytical solution}
-\begin{quote}
-  Attempted to use SetGenerator to produce a reference set for a problem which does not implement AnalyticalProblem.  Only AnalyticalProblems, which provide a method for generating Pareto optimal solutions, can be used with SetGenerator.
-\end{quote}
+\begin{indented}
+  Attempted to use \java{SetGenerator} to produce a reference set for a problem which does not implement \java{AnalyticalProblem}.  Only \java{AnalyticalProblem}s, which provide a method for generating Pareto optimal solutions, can be used with \java{SetGenerator}.
+\end{indented}
 
 \noindent
 \textit{input appears to be newer than output}
-\begin{quote}
+\begin{indented}
   Several of the command line utilities read entries in an input file and write the corresponding outputs to a separate output file.  If the last modified date on the input file is newer than the date on the output file, this exception is thrown.  This suggests that the input file has been modified unexpectedly, and attempting to resume with a partially evaluated output file may result in incorrect results.  To resolve:
-  
-    1) If the input file is unchanged, use the --force command line option to override this check.
-       
-    2) If the input file is changed, delete the output file and restart evaluation from the beginning.
-\end{quote}
+  \begin{enumerate}
+    \item If the input file is unchanged, use the \plaintext{--force} command line option to override this check.
+    \item If the input file is changed, delete the output file and restart evaluation from the beginning.
+  \end{enumerate}
+\end{indented}
 
 \noindent
 \textit{no reference set available}
-\begin{quote}
-  Several of the command line utilities require a reference set.  The reference set either is provided by the problem (through the ProblemProvider), or supplied by the user via a command line argument.  This exception occurs
- if neither approach provides a reference set.
-\end{quote}
+\begin{indented}
+  Several of the command line utilities require a reference set.  The reference set either is provided by the problem (through the \java{ProblemProvider}), or supplied by the user via a command line argument.  This exception occurs if neither approach provides a reference set.
+\end{indented}
 
 \noindent
 \textit{unable to load reference set}
-\begin{quote}
+\begin{indented}
   Indicates that a reference set is specified, but it could not be loaded. The error message should contain additional information about the underlying cause for the load failure.
-\end{quote}
+\end{indented}
 
 \noindent
 \textit{output has more entries than input}
-\begin{quote}
-  Thrown by the Evaluator or ResultFileEvaluator command line utilities when attempting to resume evaluation of a partially evaluated file, but the output file contains more entries than the input file.  This implies the input file was either modified, or a different input file was supplied than originally used to produce the output file.  Unless the original input file is found, do not attempt to recover from this exception.  Delete the output file and restart evaluation from the beginning.
-\end{quote}
+\begin{indented}
+  Thrown by the \java{Evaluator} or \java{ResultFileEvaluator} command line utilities when attempting to resume evaluation of a partially evaluated file, but the output file contains more entries than the input file.  This implies the input file was either modified, or a different input file was supplied than originally used to produce the output file.  Unless the original input file is found, do not attempt to recover from this exception.  Delete the output file and restart evaluation from the beginning.
+\end{indented}
 
 \noindent
 \textit{maxEvaluations not defined}
-\begin{quote}
-  Thrown by the Evaluator command line utility if the maxEvaluations property has not been defined.  This property must either be defined in the parameter input file or through the -x maxEvaluations=<value> command line argument.
-\end{quote}
+\begin{indented}
+  Thrown by the \java{Evaluator} command line utility if the \plaintext{maxEvaluations} property has not been defined.  This property must either be defined in the parameter input file or through the \plaintext{-x maxEvaluations=<value>} command line argument.
+\end{indented}
 
 \noindent
 \textit{unsupported decision variable type}
-\begin{quote}
+\begin{indented}
   Thrown when the user attempts to use an algorithm that does not support the given problem's decision variable encoding.  For instance, GDE3 only supports real-valued encodings, and will throw this exception if binary or permutation encoded problems are provided.
-\end{quote}
+\end{indented}
 
 \noindent
 \textit{not enough bits} or
 \textit{not enough dimensions}
-\begin{quote}
+\begin{indented}
   The Sobol sequence generator supports up to $21000$ dimensions and can produce up to $2147483647$ samples ($2^{31}-1$).  While unlikely, if either of these two limits are exceeded, these exceptions are thrown.
-\end{quote}
+\end{indented}
 
 \noindent
 \textit{invalid number of parents}
-\begin{quote}
-  Attempting to use CompoundVariation in a manner inconsistent with its API specification will result in this exception.  Refer to the API documentation and the restrictions on the number of parents for a variation operator.
-\end{quote}
+\begin{indented}
+  Attempting to use \java{CompoundVariation} in a manner inconsistent with its API specification will result in this exception.  Refer to the API documentation and the restrictions on the number of parents for a variation operator.
+\end{indented}
 
 \noindent
 \textit{binary variables not same length} or
 \textit{permutations not same size}
-\begin{quote}
+\begin{indented}
   Thrown by variation operators which require binary variables or permutations of equal length, but the supplied variables differ in length.
-\end{quote}
+\end{indented}
 
 \noindent  
 \textit{invalid bit string}
-\begin{quote}
-  Thrown by ResultFileReader if either of the following two cases occurs: 1) the binary variable length differs from that specified in the problem definition; and 2) the string encoding in the file contains invalid characters.  In either case, the binary variable stored in the result file could not be read.
-\end{quote}
+\begin{indented}
+  Thrown by \java{ResultFileReader} if either of the following two cases occurs: 1) the binary variable length differs from that specified in the problem definition; and 2) the string encoding in the file contains invalid characters.  In either case, the binary variable stored in the result file could not be read.
+\end{indented}
 
 \noindent  
 \textit{invalid permutation}
-\begin{quote}
-  Thrown by ResultFileREader if either of the following two cases occurs: 1) the permutation length differs from that specified in the problem definition; and 2) the string encoding in the file does not represent a valid permutation.  In either case, the permutation stored in the result file could not be read.
-\end{quote}
+\begin{indented}
+  Thrown by \java{ResultFileReader} if either of the following two cases occurs: 1) the permutation length differs from that specified in the problem definition; and 2) the string encoding in the file does not represent a valid permutation.  In either case, the permutation stored in the result file could not be read.
+\end{indented}
 
 \noindent
-\textit{no provider for \<name\>}
-\begin{quote}
+\textit{no provider for \plaintext{<name>}}
+\begin{indented}
   Thrown by the service provider interface (org.moeaframework.core.spi) codes when no provider for the requested service is available.  Check the following:
-  
-    1) If a nested exception is reported, the nested exception will identify the failure.
-       
-    2) Ensure <name> is in fact provided by a built-in or third-party provider. Check spelling and case sensitivity.
-       
-    3) If <name> is supplied by a third-party provider, ensure the provider is located on the Java classpath.  If the provider is in a JAR file, use
+  \begin{enumerate}
+    \item If a nested exception is reported, the nested exception will identify the failure.
+    \item Ensure \plaintext{<name>} is in fact provided by a built-in or third-party provider. Check spelling and case sensitivity.
+    \item If \plaintext{<name>} is supplied by a third-party provider, ensure the provider is located on the Java classpath.  If the provider is in a JAR file, use
            \plaintext{java -classpath \$CLASSPATH:/path/to/provider.jar ...}
        If the provider is supplied as class files in a folder, use
            \plaintext{java -classpath \$CLASSPATH:/path/to/folder/}
-\end{quote}
+  \end{enumerate}
+\end{indented}
 
 \noindent
 \textit{error sending variables to external process} or
 \textit{error receiving variables from external process}
-\begin{quote}
+\begin{indented}
   Thrown when communicating with an external problem, but an I/O error occurred that disrupted the communication.  Numerous situations may cause this exception, such as the external process terminating unexpectedly.
-\end{quote}
+\end{indented}
 
 \noindent
 \textit{end of stream reached when response expected}
-\begin{quote}
+\begin{indented}
   Thrown when communicating with an external process, but the connection to the external process closed.  This is most likely the result of an error on the external process side which caused the external process to terminate unexpectedly.  Error messages printed to the standard error stream should appear in the Java error stream.
-\end{quote}
+\end{indented}
 
 \noindent
 \textit{response contained fewer tokens than expected}
-\begin{quote}
+\begin{indented}
   Thrown when communicating with an external problem, and the external process has returned an unexpected number of entries.  This is most likely a configuration error where the defined number of objectives or constraints differs from what is actually returned by the external process.
-\end{quote}
+\end{indented}
 
 \noindent
 \textit{unable to serialize variable}
-\begin{quote}
+\begin{indented}
   Attempted to serialize a decision variable to send to an external problem, but the decision variable is not one of the supported types.  Only real variables are supported.
-\end{quote}
+\end{indented}
 
 \noindent
 \textit{restart not supported}
-\begin{quote}
+\begin{indented}
   PISA supports the ability to reuse a selector after a run has completed. The MOEA Framework currently does not support this feature.  This exception is thrown if the PISA selector attempts to reset.
-\end{quote}
+\end{indented}
 
 \noindent
 \textit{expected END on last line} or
 \textit{unexpected end of file} or
 \textit{invalid selection length}
-\begin{quote}
+\begin{indented}
   These exceptions are thrown when communicating with PISA processes, and the files produced by the PISA process appear to be incomplete or malformed. Check the implementation of the PISA codes to ensure they follow the correct protocol and syntax.
-\end{quote}
+\end{indented}
 
 \noindent
 \textit{invalid variation length}
-\begin{quote}
+\begin{indented}
   This exception is caused by an incorrect configuration of PISA.  The following equality must hold
-  \begin{equation}
+  \begin{equation*}
     children * (mu / parents) = lambda,
-  \end{equation}
+  \end{equation*}
   where mu is the number of parents selected by the PISA process, parents is the number of parent solutions required by the variation operator, children is the number of offspring produced by a single invocation of the variation operator, and lambda is the total number of offspring produced during a generation.
-\end{quote}
+\end{indented}
 
 \noindent
 \textit{no digest file}
-\begin{quote}
+\begin{indented}
   Thrown when attempting to validate a data file using a digest file, but no such digest file exists.  Processing of the data file should cease immediately for sensitive applications where data integrity is essential. If the digest file simply hasn't yet been produced but the file contents are verified, the FileProtection command line utility can optionally generate digest files.
-\end{quote}
+\end{indented}
   
 \noindent
 \textit{invalid digest file}
-\begin{quote}
+\begin{indented}
   Thrown when attempting to validate a date file using a digest file, but the digest file is corrupted or does not contain a valid digest.  Processing of the data file should cease immediately for sensitive applications where data integrity is essential.
-\end{quote}
+\end{indented}
 
 \noindent
 \textit{digest does not match}
-\begin{quote}
+\begin{indented}
   Thrown when attempting to validate a data file using a digest file, but the actual digest of the data file does not match the expected digest contained in the digest file.  This indicates that the data file or the digest file are corrupted.  Processing of the data file should cease immediately for sensitive applications where data integrity is essential.
-\end{quote}
+\end{indented}
   
 \noindent
 \textit{unexpected rule separator} or
@@ -217,79 +216,79 @@ Errors halt the execution of the program and produce an error message to the sta
 \textit{rule must start with non-terminal} or
 \textit{rule must contain at least one production} or
 \textit{codon array is empty}
-\begin{quote}
+\begin{indented}
   Each of these exceptions originates in the grammatical evolution code, and indicate specific errors when loading or processing a context free grammar. The specific error message details the cause.
-\end{quote}
+\end{indented}
 
 \noindent
 \textit{unable to mkdir <directory>}
-\begin{quote}
+\begin{indented}
   For an unknown reason, the underlying operating system was unable to create a directory.  Check to ensure the location of the directory is writable.  One may also manually create the directory.
-\end{quote}
+\end{indented}
   
 \noindent
 \textit{no scripting engine for extension <ext>}
-\begin{quote}
+\begin{indented}
   Attempted to use the Java Scripting APIs, but no engine for the specified file extension could be found.  To resolve:
-  
-    1) Check that the extension is valid.  If not, supply the file extension for the scripting language required.
-       
-    2) Ensure the scripting language engine is listed on the classpath.  The engine, if packaged in a JAR, can be specified with:
+  \begin{enumerate}
+    \item Check that the extension is valid.  If not, supply the file extension for the scripting language required.
+    \item Ensure the scripting language engine is listed on the classpath.  The engine, if packaged in a JAR, can be specified with:
          \plaintext{java -classpath \$CLASSPATH:/path/to/engine.jar}
-\end{quote}
+  \end{enumerate}
+\end{indented}
 
 \noindent
 \textit{no scripting engine for <name>}
-\begin{quote}
+\begin{indented}
   Attempted to use the Java Scripting APIs, but no engine with the specified name was found.
-  
-    1) Check that the name is valid.  If not, supply the correct name for the scripting language engine as required.
-       
-    2) Ensure the scripting language engine is listed on the classpath.  The engine, if packaged in a JAR, can be specified with:
+  \begin{enumerate}
+    \item Check that the name is valid.  If not, supply the correct name for the scripting language engine as required.
+    \item Ensure the scripting language engine is listed on the classpath.  The engine, if packaged in a JAR, can be specified with:
          \plaintext{java -classpath \$CLASSPATH:/path/to/engine.jar}
-\end{quote}
+  \end{enumerate}
+\end{indented}
 
 \noindent
 \textit{file has no extension}
-\begin{quote}
-  Attempted to use a script file with ScriptedProblem, but the filename does not contain a valid extension.  Either supply the file extension for the scripting language required, or use the constructor which accepts the engine name as an argument.
-\end{quote}
+\begin{indented}
+  Attempted to use a script file with \java{ScriptedProblem}, but the filename does not contain a valid extension.  Either supply the file extension for the scripting language required, or use the constructor which accepts the engine name as an argument.
+\end{indented}
 
 \noindent
 \textit{scripting engine not invocable}
-\begin{quote}
-  Thrown when using a scripting language engine which does not implement the Invocable interface.  The scripting language does not support methods or functions, and thus can not be used as intended.
-\end{quote}
+\begin{indented}
+  Thrown when using a scripting language engine which does not implement the \java{Invocable} interface.  The scripting language does not support methods or functions, and thus can not be used as intended.
+\end{indented}
   
 \noindent
 \textit{requires two or more groups}
-\begin{quote}
+\begin{indented}
   Attempted to use one of the n-ary statistical tests which require at least two groups.  Either add a second group to compare against, or remove the statistical test.
-\end{quote}
+\end{indented}
   
 \noindent
 \textit{could not locate resource <name>}
-\begin{quote}
+\begin{indented}
   Thrown when attempting to access a resource packages within the MOEA Framework, but the resource could not be located.  This is an error with the distribution.  Please contact the distributor to correct this issue.
-\end{quote}
+\end{indented}
   
 \noindent
 \textit{insufficient number of entries in row}
-\begin{quote}
+\begin{indented}
   Attempted to read a data file, but the row was missing one or more entries. The exact meaning depends on the specific data file, but generally this error means the file is incomplete, improperly formatted or corrupted.  See the documentation on the various file types to determine if this error can be corrected.
-\end{quote}
+\end{indented}
   
 \noindent
 \textit{invalid entry in row}
-\begin{quote}
+\begin{indented}
   Attempted to read a data file, but an entry was not formatted correctly. See the documentation on the various file types to determine if this error can be corrected.
-\end{quote}
+\end{indented}
 
 \noindent
 \textit{invoke calculate prior to getting indicator values}
-\begin{quote}
-  Attempted to retrieve one of the indicator values prior to invoking the calculate method.  When using QualityIndicator, the calculate method must be invoked prior to retrieving any of the indicator values.
-\end{quote}
+\begin{indented}
+  Attempted to retrieve one of the indicator values prior to invoking the calculate method.  When using \java{QualityIndicator}, the calculate method must be invoked prior to retrieving any of the indicator values.
+\end{indented}
 
 
 \section{Warnings}
@@ -297,82 +296,82 @@ Warnings are messages printed to the standard error stream (i.e., the console) t
 \vspace{\baselineskip}
 
 \noindent
-\textit{no digest file exists to validate <FILE>}
-\begin{quote}
+\textit{no digest file exists to validate \plaintext{<FILE>}}
+\begin{indented}
   Attempted to validate the file but no digest file exists.  This indicates that the framework could not verify the authenticity of the file.
-\end{quote}
+\end{indented}
   
 \noindent
 \textit{saving result file without variables, may become unstable}
-\begin{quote}
-  Occurs when writing a result file with the output of decision variables suppressed.  The suppression of decision variable output is a user-specified option.  The warning "may become unstable" indicates that further use of the result file may result in unexpected errors if the decision variables are required.
-\end{quote}
+\begin{indented}
+  Occurs when writing a result file with the output of decision variables suppressed.  The suppression of decision variable output is a user-specified option.  The warning ``may become unstable'' indicates that further use of the result file may result in unexpected errors if the decision variables are required.
+\end{indented}
   
 \noindent
 \textit{unsupported decision variable type, may become unstable}
-\begin{quote}
-  Occurs when reading or writing result files which use unsupported decision variable types.  When this occurs, the program is unable to read or write the decision variable, and its value is therefore lost.  The warning "may become unstable" indicates that further use of the result file may result in unexpected errors if the decision variables are required.
-\end{quote}
+\begin{indented}
+  Occurs when reading or writing result files which use unsupported decision variable types.  When this occurs, the program is unable to read or write the decision variable, and its value is therefore lost.  The warning ``may become unstable'' indicates that further use of the result file may result in unexpected errors if the decision variables are required.
+\end{indented}
   
 \noindent
 \textit{duplicate solution found}
-\begin{quote}
-  Issued by ReferenceSetMerger if any of the algorithms contribute identical solutions.  If this warning is emitted, the contribution of each algorithm to the reference set is invalid.  Use SetContribution instead to compute the contribution of overlapping sets to a reference set.
-\end{quote}
+\begin{indented}
+  Issued by \java{ReferenceSetMerger} if any of the algorithms contribute identical solutions.  If this warning is emitted, the contribution of each algorithm to the reference set is invalid.  Use SetContribution instead to compute the contribution of overlapping sets to a reference set.
+\end{indented}
   
 \noindent
 \textit{can not initialize unknown type}
-\begin{quote}
-  Emitted by RandomInitialization if the problem uses unsupported decision variable types.  The algorithm will continue to run, but the unsupported decision variables will remain initialized to their default values.
-\end{quote}
+\begin{indented}
+  Emitted by \java{RandomInitialization} if the problem uses unsupported decision variable types.  The algorithm will continue to run, but the unsupported decision variables will remain initialized to their default values.
+\end{indented}
 
 \noindent
 \textit{an error occurred while writing the state file}
 \textit{an error occurred while reading the state file}
-\begin{quote}
+\begin{indented}
   Occurs when checkpoints are enabled, but the algorithm does not support checkpoints or an error occurred while reading or writing the checkpoint.  The execution of the algorithm will continue normally, but no checkpoints will be produced.
-\end{quote}
+\end{indented}
   
 \noindent
 \textit{multiple constraints not supported, aggregating into first constraint}
-\begin{quote}
+\begin{indented}
   Occurs when an algorithm implementation does not support multiple constraints. This occurs primarily with the JMetal library, which only uses a single aggregate constraint violation value.  When translating between JMetal and the MOEA Framework, the first objective in the MOEA Framework is assigned the aggregate constraint violation value; the remaining objectives become 0.
-\end{quote}
+\end{indented}
 
 \noindent
 \textit{increasing MOEA/D population size}
-\begin{quote}
+\begin{indented}
   The population size of MOEA/D must be at least the number of objectives of the problem.  If not, the population size is automatically increased.
-\end{quote}
+\end{indented}
   
 \noindent
 \textit{checkpoints not supported when running multiple seeds}
-\begin{quote}
-  Emitted by the Executor when the withCheckpointFile(...) and  accumulateAcrossSeeds(...) options are both used.  Checkpoints are only supported for single-seed evaluation.  The Executor will continue without checkpoints.
-\end{quote}
+\begin{indented}
+  Emitted by the \java{Executor} when the \java{withCheckpointFile(...)} and \java{accumulateAcrossSeeds(...)} options are both used.  Checkpoints are only supported for single-seed evaluation.  The \java{Executor} will continue without checkpoints.
+\end{indented}
   
 \noindent
 \textit{checkpoints not supported by algorithm}
-\begin{quote}
-  Emitted by the Executor if the algorithm is not Resumable (i.e., does not support checkpoints).  The Executor will continue without checkpoints.
-\end{quote}
+\begin{indented}
+  Emitted by the \java{Executor} if the algorithm is not Resumable (i.e., does not support checkpoints).  The Executor will continue without checkpoints.
+\end{indented}
   
 \noindent
 \textit{Provider org.moeaframework.algorithm.jmetal.JMetalAlgorithms could not be 
-instantiated: java.lang.NoClassDefFoundError: <class>}
-\begin{quote}
-  This warning occurs when attempting to instantiate the JMetal algorithm provider, but the JMetal library could not be found on the classpath.  This is treated as a warning and not an exception since a secondary provider may exist for the specified algorithm.  If no secondary provider exists, a ProviderNotFoundException will be thrown.  To correct, obtain the latest  JMetal library from http://jmetal.sourceforge.net/ and list it on the  classpath as follows:
+instantiated: java.lang.NoClassDefFoundError: \plaintext{<class>}}
+\begin{indented}
+  This warning occurs when attempting to instantiate the JMetal algorithm provider, but the JMetal library could not be found on the classpath.  This is treated as a warning and not an exception since a secondary provider may exist for the specified algorithm.  If no secondary provider exists, a \java{ProviderNotFoundException} will be thrown.  To correct, obtain the latest JMetal library from \webpage{http://jmetal.sourceforge.net/} and list it on the  classpath as follows:
     \plaintext{java -classpath \$CLASSPATH:/path/to/JMetal.jar}
-\end{quote}
+\end{indented}
     
 \noindent
-\textit{unable to negate values in <file>, incorrect number of values in a row}
-\begin{quote}
-  Emitted by the Negater command line utility when one of the files it is processing contains an invalid number of values in a row.  The file is expected to contain the same number of values in a row as values passed to the -d,--direction command line argument.  The file will not be modified if this issue is detected.
-\end{quote}
+\textit{unable to negate values in \plaintext{<file>}, incorrect number of values in a row}
+\begin{indented}
+  Emitted by the \java{Negater} command line utility when one of the files it is processing contains an invalid number of values in a row.  The file is expected to contain the same number of values in a row as values passed to the \plaintext{-d,--direction} command line argument.  The file will not be modified if this issue is detected.
+\end{indented}
 
 \noindent
-\textit{unable to negate values in <file>, unable to parse number}
-\begin{quote}
-  Emitted by the Negater command line utility when one of the files it is processing encounters a value it is unable to parse.  The columns being negated must be numeric values.  The file will not be modified if this issue is detected.
-\end{quote}
+\textit{unable to negate values in \plaintext{<file>}, unable to parse number}
+\begin{indented}
+  Emitted by the \java{Negater} command line utility when one of the files it is processing encounters a value it is unable to parse.  The columns being negated must be numeric values.  The file will not be modified if this issue is detected.
+\end{indented}
