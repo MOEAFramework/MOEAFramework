@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<jnlp spec="6.0+" codebase="http://www.moeaframework.org/jnlp/" href="DiagnosticTool.jnlp">
+<jnlp spec="6.0+"
+    codebase="http://www.moeaframework.org/jnlp/"
+    href="DiagnosticTool.jnlp">
   <information>
     <title>Diagnostic Tool</title>
     <vendor>MOEA Framework</vendor>
@@ -13,7 +15,7 @@
   </security>
   <resources>
     <j2se version="1.6+"/>
-    <jar href="MOEAFramework-1.11-Executable.jar"/>
+    <jar href="MOEAFramework-%VERSION%-Executable.jar"/>
   </resources>
   <application-desc main-class="org.moeaframework.analysis.diagnostics.LaunchDiagnosticTool"/>
 </jnlp> 

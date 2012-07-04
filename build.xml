@@ -265,7 +265,10 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		</copy>
 	</target>
 
-	<!-- Run keytool -genkeypair -alias moeaframework to generate the key store -->
+	<!-- To generate the key store (valid for 10 years), run:
+	       keytool -genkeypair -alias moeaframework -validity 3653
+	     Signing the JAR is necessary for enabling all permissions, which is
+	     needed for save/load functionality. -->
 	<target name="package-jnlp" 
 			depends="package-executable"
 			description="Creates the JNLP Web Start distribution">
