@@ -23,8 +23,16 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variable;
 
 /**
- * Methods for converting between {@link RealVariable} and
- * {@link BinaryVariable} in both binary and gray code formats.
+ * Helper methods for working with various decision variable types and
+ * encodings.  As these methods may internally perform type conversions, it is
+ * strongly recommended that these methods are used consistently to access
+ * decision variables.  For example, whenever you create a decision variable
+ * with {@link #newInt(int, int)}, always set the value with
+ * {@link #setInt(Variable, int)} and read the value with
+ * {@link #asInt(Variable)}.
+ * <p>
+ * This class also provides methods for converting between {@link RealVariable}
+ * and {@link BinaryVariable} in both binary and gray code formats.
  */
 public class EncodingUtils {
 

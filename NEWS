@@ -5,6 +5,15 @@ Framework.
  Version 1.15 (TBD)
 --------------------
 
+  * Adds several helper methods to EncodingUtils to support creating, getting,
+    and setting the values of common decision variable types.  These helper
+    methods handle all the necessary type checking and conversions.  For
+    instance, integer decision variables are now supported:
+    
+        Variable variable = EncodingUtils.newInt(5, 10);
+        EncodingUtils.setInt(variable, 7);
+        int value = EncodingUtils.getInt(variable);
+
   * Adds detailed list of errors and warning messages to the user manual.
 
   * Several bug fixes:
