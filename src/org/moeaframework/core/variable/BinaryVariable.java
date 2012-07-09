@@ -138,6 +138,8 @@ public class BinaryVariable implements Variable {
 	 * @param variable the other {@code BinaryVariable}
 	 * @return the Hamming distance between this instance and the specified
 	 *         {@code BinaryVariable}
+	 * @throws IllegalArgumentException if the two binary strings differ in the
+	 *         number of bits
 	 */
 	public int hammingDistance(BinaryVariable variable) {
 		if (numberOfBits != variable.numberOfBits) {

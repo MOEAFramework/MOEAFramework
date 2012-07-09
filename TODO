@@ -65,8 +65,6 @@ any changes.
     reference set files.  Until reference sets are added, they can't be used
     in the MOEA diagnostic tool.
     
-  - Upgrade to Apache Commons Lang 3.1
-    
   - Upgrade to Apache Commons Math 3.0
     
   - Upgrade to Apache Commons Codec 1.6
