@@ -150,5 +150,28 @@ public class BinaryVariableTest {
 		bitSet.set(0);
 		Assert.assertFalse(value.get(0));
 	}
+	
+	@Test
+	public void testHammingDistance() {
+		BinaryVariable b1 = new BinaryVariable(5);
+		BinaryVariable b2 = new BinaryVariable(5);
+		
+		b1.set(2, true);
+		b1.set(4, true);
+		b2.set(2, true);
+		b2.set(3, true);
+		
+		Assert.assertEquals(2, b1.hammingDistance(b2));
+		Assert.assertEquals(0, b1.hammingDistance(b1));
+		Assert.assertEquals(0, b2.hammingDistance(b2));
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testHammingDistanceLength() {
+		BinaryVariable b1 = new BinaryVariable(5);
+		BinaryVariable b2 = new BinaryVariable(6);
+		
+		b1.hammingDistance(b2);
+	}
 
 }
