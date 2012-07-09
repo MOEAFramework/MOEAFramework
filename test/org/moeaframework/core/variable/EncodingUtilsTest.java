@@ -17,9 +17,13 @@
  */
 package org.moeaframework.core.variable;
 
+import java.util.BitSet;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.core.Settings;
+import org.moeaframework.core.Solution;
+import org.moeaframework.core.Variable;
 
 public class EncodingUtilsTest {
 
@@ -237,6 +241,258 @@ public class EncodingUtilsTest {
 
 			Assert.assertEquals(value, doubleVariable.getValue(), Settings.EPS);
 		}
+	}
+	
+	@Test
+	public void testIntEncoding() {
+		Variable variable = EncodingUtils.newInt(3, 8);
+		
+		EncodingUtils.setReal(variable, 5.25);
+		Assert.assertEquals(5, EncodingUtils.asInt(variable));
+		
+		EncodingUtils.setReal(variable, 8.999);
+		Assert.assertEquals(8, EncodingUtils.asInt(variable));
+	}
+	
+	@Test
+	public void testBinaryEncoding() {
+		Variable variable = EncodingUtils.newBinary(3);
+		
+		EncodingUtils.setBinary(variable, new boolean[] { false, false, true });
+		BitSet bitSet = EncodingUtils.asBitSet(variable);
+		
+		Assert.assertFalse(bitSet.get(0));
+		Assert.assertFalse(bitSet.get(1));
+		Assert.assertTrue(bitSet.get(2));
+		Assert.assertEquals(3, bitSet.length());
+		
+		bitSet.flip(0);
+		bitSet.flip(2);
+		EncodingUtils.setBitSet(variable, bitSet);
+		boolean[] binary = EncodingUtils.asBinary(variable);
+		
+		Assert.assertEquals(3, binary.length);
+		Assert.assertTrue(binary[0]);
+		Assert.assertFalse(binary[1]);
+		Assert.assertFalse(binary[2]);
+	}
+	
+	@Test
+	public void testBooleanEncoding() {
+		Variable variable = EncodingUtils.newBoolean();
+		
+		EncodingUtils.setBoolean(variable, true);
+		Assert.assertTrue(EncodingUtils.asBoolean(variable));
+		
+		EncodingUtils.setBoolean(variable, false);
+		Assert.assertFalse(EncodingUtils.asBoolean(variable));
+	}
+	
+	@Test
+	public void testPermutationEncoding() {
+		Variable variable = EncodingUtils.newPermutation(3);
+		
+		EncodingUtils.setPermutation(variable, new int[] { 0, 2, 1 });
+		Assert.assertArrayEquals(new int[] { 0, 2, 1 },
+				EncodingUtils.asPermutation(variable));
+	}
+	
+	@Test
+	public void testRealArrayEncoding() {
+		Solution solution = new Solution(3, 1);
+		solution.setVariable(0, EncodingUtils.newReal(0.0, 1.0));
+		solution.setVariable(1, EncodingUtils.newReal(2.0, 4.0));
+		solution.setVariable(2, EncodingUtils.newReal(-1.0, 1.0));
+		
+		EncodingUtils.setReal(solution, new double[] { 0.5, 3.0, 0.0 });
+		Assert.assertArrayEquals(new double[] { 0.5, 3.0, 0.0 },
+				EncodingUtils.asReal(solution), Settings.EPS);
+		
+		Assert.assertArrayEquals(new double[] { 3.0, 0.0 }, 
+				EncodingUtils.asReal(solution, 1, 3), Settings.EPS);
+		
+		Assert.assertArrayEquals(new double[] { 3.0 },
+				EncodingUtils.asReal(solution, 1, 2), Settings.EPS);
+		
+		Assert.assertArrayEquals(new double[0],
+				EncodingUtils.asReal(solution, 1, 1), Settings.EPS);
+		
+		EncodingUtils.setReal(solution, 1, 3, new double[] { 2.0, -1.0 });
+		
+		Assert.assertArrayEquals(new double[] { 0.5, 2.0, -1.0 },
+				EncodingUtils.asReal(solution), Settings.EPS);
+		
+		EncodingUtils.setReal(solution, 2, 3, new double[] { 1.0 });
+		
+		Assert.assertArrayEquals(new double[] { 0.5, 2.0, 1.0 },
+				EncodingUtils.asReal(solution), Settings.EPS);
+		
+		EncodingUtils.setReal(solution, 2, 2, new double[0]);
+		
+		Assert.assertArrayEquals(new double[] { 0.5, 2.0, 1.0 },
+				EncodingUtils.asReal(solution), Settings.EPS);
+	}
+	
+	@Test
+	public void testIntArrayEncoding() {
+		Solution solution = new Solution(3, 1);
+		solution.setVariable(0, EncodingUtils.newInt(0, 1));
+		solution.setVariable(1, EncodingUtils.newInt(2, 4));
+		solution.setVariable(2, EncodingUtils.newInt(-1, 1));
+		
+		EncodingUtils.setInt(solution, new int[] { 0, 3, 0 });
+		Assert.assertArrayEquals(new int[] { 0, 3, 0 },
+				EncodingUtils.asInt(solution));
+		
+		Assert.assertArrayEquals(new int[] { 3, 0 }, 
+				EncodingUtils.asInt(solution, 1, 3));
+		
+		Assert.assertArrayEquals(new int[] { 3 },
+				EncodingUtils.asInt(solution, 1, 2));
+		
+		Assert.assertArrayEquals(new int[0],
+				EncodingUtils.asInt(solution, 1, 1));
+		
+		EncodingUtils.setInt(solution, 1, 3, new int[] { 2, -1 });
+		
+		Assert.assertArrayEquals(new int[] { 0, 2, -1 },
+				EncodingUtils.asInt(solution));
+		
+		EncodingUtils.setInt(solution, 2, 3, new int[] { 1 });
+		
+		Assert.assertArrayEquals(new int[] { 0, 2, 1 },
+				EncodingUtils.asInt(solution));
+		
+		EncodingUtils.setInt(solution, 2, 2, new int[0]);
+		
+		Assert.assertArrayEquals(new int[] { 0, 2, 1 },
+				EncodingUtils.asInt(solution));
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testRealInvalidType1() {
+		EncodingUtils.setReal(EncodingUtils.newBinary(3), 1.0);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testIntInvalidType1() {
+		EncodingUtils.setInt(EncodingUtils.newBinary(3), 1);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testBinaryInvalidType1() {
+		EncodingUtils.setBinary(EncodingUtils.newReal(0.0, 1.0),
+				new boolean[] { false, false, true });
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testBitSetInvalidType1() {
+		EncodingUtils.setBitSet(EncodingUtils.newReal(0.0, 1.0), new BitSet(3));
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testBooleanInvalidType1() {
+		EncodingUtils.setBoolean(EncodingUtils.newReal(0.0, 1.0), true);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testPermutationInvalidType1() {
+		EncodingUtils.setPermutation(EncodingUtils.newBinary(3),
+				new int[] { 0, 2, 1 });
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testRealInvalidType2() {
+		EncodingUtils.asReal(EncodingUtils.newBinary(3));
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testIntInvalidType2() {
+		EncodingUtils.asInt(EncodingUtils.newBinary(3));
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testBinaryInvalidType2() {
+		EncodingUtils.asBinary(EncodingUtils.newReal(0.0, 1.0));
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testBitSetInvalidType2() {
+		EncodingUtils.asBitSet(EncodingUtils.newReal(0.0, 1.0));
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testBooleanInvalidType2() {
+		EncodingUtils.asBoolean(EncodingUtils.newReal(0.0, 1.0));
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testPermutationInvalidType2() {
+		EncodingUtils.asPermutation(EncodingUtils.newBinary(3));
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testBinaryInvalidNumberOfBits1() {
+		Variable variable = EncodingUtils.newBinary(2);
+		EncodingUtils.setBinary(variable, new boolean[] { false, false, true });
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testBinaryInvalidNumberOfBits2() {
+		Variable variable = EncodingUtils.newBinary(2);
+		EncodingUtils.setBinary(variable, new boolean[] { false });
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testBooleanInvalidNumberOfBits1() {
+		Variable variable = EncodingUtils.newBinary(2);
+		EncodingUtils.asBoolean(variable);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testBooleanInvalidNumberOfBits2() {
+		Variable variable = EncodingUtils.newBinary(2);
+		EncodingUtils.setBoolean(variable, true);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testRealArrayInvalidType1() {
+		Solution solution = new Solution(3, 1);
+		solution.setVariable(0, EncodingUtils.newReal(0.0, 1.0));
+		solution.setVariable(1, EncodingUtils.newBinary(2));
+		solution.setVariable(2, EncodingUtils.newReal(-1.0, 1.0));
+		
+		EncodingUtils.setReal(solution, new double[] { 0.0, 0.0, 0.0 });
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testRealArrayInvalidType2() {
+		Solution solution = new Solution(3, 1);
+		solution.setVariable(0, EncodingUtils.newReal(0.0, 1.0));
+		solution.setVariable(1, EncodingUtils.newBinary(2));
+		solution.setVariable(2, EncodingUtils.newReal(-1.0, 1.0));
+		
+		EncodingUtils.asReal(solution);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testIntArrayInvalidType1() {
+		Solution solution = new Solution(3, 1);
+		solution.setVariable(0, EncodingUtils.newInt(0, 1));
+		solution.setVariable(1, EncodingUtils.newBinary(2));
+		solution.setVariable(2, EncodingUtils.newInt(-1, 1));
+		
+		EncodingUtils.setInt(solution, new int[] { 0, 0, 0 });
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testIntArrayInvalidType2() {
+		Solution solution = new Solution(3, 1);
+		solution.setVariable(0, EncodingUtils.newInt(0, 1));
+		solution.setVariable(1, EncodingUtils.newBinary(2));
+		solution.setVariable(2, EncodingUtils.newInt(-1, 1));
+		
+		EncodingUtils.asInt(solution);
 	}
 
 }
