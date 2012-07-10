@@ -21,7 +21,7 @@ public class IntegerProblemTest {
 
 		@Override
 		public void evaluate(Solution solution) {
-			int[] x = EncodingUtils.asInt(solution);
+			int[] x = EncodingUtils.getInt(solution);
 			double f = Math.pow(1 - x[0], 2) + 100*Math.pow(x[1]-x[0]*x[0], 2);
 			
 			solution.setObjective(0, f);
@@ -50,7 +50,7 @@ public class IntegerProblemTest {
 		
 		Solution solution = result.get(0);
 		Assert.assertArrayEquals(new int[] { 1, 1 }, 
-				EncodingUtils.asInt(solution));
+				EncodingUtils.getInt(solution));
 		Assert.assertEquals(0, solution.getObjective(0), Settings.EPS);
 	}
 

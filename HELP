@@ -313,7 +313,7 @@ not a permutation
   The EncodingUtils class handles all the type checking internally.  If any of
   the arguments are not of the expected type, one of these exceptions is
   thrown.  Ensure the argument is of the expected type.  For example, ensure
-  variable is a BinaryVariable when calling asBinary(variable).
+  variable is a BinaryVariable when calling getBinary(variable).
 
 invalid number of values
 invalid number of bits

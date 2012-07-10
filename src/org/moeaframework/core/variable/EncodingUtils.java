@@ -35,7 +35,7 @@ import org.moeaframework.core.Variable;
  * </pre>
  * <p>
  * Support for integer encodings is now supported using the
- * {@link #newInt(int, int)}, {@link #asInt(Variable)},
+ * {@link #newInt(int, int)}, {@link #getInt(Variable)},
  * {@link #setInt(Variable, int)} methods.  Internally, integers are
  * represented by floating-point values.  In order to remain consistent,
  * only use these methods to create, set, and get the value of
@@ -270,7 +270,7 @@ public class EncodingUtils {
 	 * @throws IllegalArgumentException if the decision variable is not of type
 	 *         {@link RealVariable}
 	 */
-	public static double asReal(Variable variable) {
+	public static double getReal(Variable variable) {
 		if (variable instanceof RealVariable) {
 			return ((RealVariable)variable).getValue();
 		} else {
@@ -286,8 +286,8 @@ public class EncodingUtils {
 	 * @throws IllegalArgumentException if the decision variable is not of type
 	 *         {@link RealVariable}
 	 */
-	public static int asInt(Variable variable) {
-		return (int)Math.floor(asReal(variable));
+	public static int getInt(Variable variable) {
+		return (int)Math.floor(getReal(variable));
 	}
 	
 	/**
@@ -300,7 +300,7 @@ public class EncodingUtils {
 	 * @throws IllegalArgumentException if the decision variable is not of type
 	 *         {@link BinaryVariable}
 	 */
-	public static BitSet asBitSet(Variable variable) {
+	public static BitSet getBitSet(Variable variable) {
 		if (variable instanceof BinaryVariable) {
 			return ((BinaryVariable)variable).getBitSet();
 		} else {
@@ -318,7 +318,7 @@ public class EncodingUtils {
 	 * @throws IllegalArgumentException if the decision variable is not of type
 	 *         {@link BinaryVariable}
 	 */
-	public static boolean[] asBinary(Variable variable) {
+	public static boolean[] getBinary(Variable variable) {
 		if (variable instanceof BinaryVariable) {
 			BinaryVariable binaryVariable = (BinaryVariable)variable;
 			boolean[] result = new boolean[binaryVariable.getNumberOfBits()];
@@ -341,8 +341,8 @@ public class EncodingUtils {
 	 * @throws IllegalArgumentException if the decision variable is not of type
 	 *         {@link BinaryVariable}
 	 */
-	public static boolean asBoolean(Variable variable) {
-		boolean[] values = asBinary(variable);
+	public static boolean getBoolean(Variable variable) {
+		boolean[] values = getBinary(variable);
 		
 		if (values.length == 1) {
 			return values[0];
@@ -359,7 +359,7 @@ public class EncodingUtils {
 	 * @throws IllegalArgumentException if the decision variable is not of type
 	 *         {@link Permutation}
 	 */
-	public static int[] asPermutation(Variable variable) {
+	public static int[] getPermutation(Variable variable) {
 		if (variable instanceof Permutation) {
 			return ((Permutation)variable).toArray();
 		} else {
@@ -378,8 +378,8 @@ public class EncodingUtils {
 	 * @throws IllegalArgumentException if any decision variable contained in
 	 *         the solution is not of type {@link RealVariable}
 	 */
-	public static double[] asReal(Solution solution) {
-		return asReal(solution, 0, solution.getNumberOfVariables());
+	public static double[] getReal(Solution solution) {
+		return getReal(solution, 0, solution.getNumberOfVariables());
 	}
 	
 	/**
@@ -397,12 +397,12 @@ public class EncodingUtils {
 	 *         the solution between the start and end index is not of type
 	 *         {@link RealVariable}
 	 */
-	public static double[] asReal(Solution solution, int startIndex,
+	public static double[] getReal(Solution solution, int startIndex,
 			int endIndex) {
 		double[] result = new double[endIndex - startIndex];
 		
 		for (int i=startIndex; i<endIndex; i++) {
-			result[i-startIndex] = asReal(solution.getVariable(i));
+			result[i-startIndex] = getReal(solution.getVariable(i));
 		}
 		
 		return result;
@@ -419,8 +419,8 @@ public class EncodingUtils {
 	 * @throws IllegalArgumentException if any decision variable contained in
 	 *         the solution is not of type {@link RealVariable}
 	 */
-	public static int[] asInt(Solution solution) {
-		return asInt(solution, 0, solution.getNumberOfVariables());
+	public static int[] getInt(Solution solution) {
+		return getInt(solution, 0, solution.getNumberOfVariables());
 	}
 	
 	/**
@@ -438,11 +438,11 @@ public class EncodingUtils {
 	 *         the solution between the start and end index is not of type
 	 *         {@link RealVariable}
 	 */
-	public static int[] asInt(Solution solution, int startIndex, int endIndex) {
+	public static int[] getInt(Solution solution, int startIndex, int endIndex) {
 		int[] result = new int[endIndex - startIndex];
 		
 		for (int i=startIndex; i<endIndex; i++) {
-			result[i-startIndex] = asInt(solution.getVariable(i));
+			result[i-startIndex] = getInt(solution.getVariable(i));
 		}
 		
 		return result;
