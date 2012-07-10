@@ -45,6 +45,36 @@ import org.moeaframework.core.Variable;
  * and {@link BinaryVariable} in both binary and gray code formats.
  */
 public class EncodingUtils {
+	
+	/**
+	 * The error message shown when the array length is not valid.
+	 */
+	private static final String INVALID_LENGTH = "invalid number of values";
+	
+	/**
+	 * The error message shown when the number of bits provided is not valid.
+	 */
+	private static final String INVALID_BITS = "invalid number of bits";
+	
+	/**
+	 * The error message shown when the decision variable is not real-valued.
+	 */
+	private static final String NOT_REAL = "not a real variable";
+	
+	/**
+	 * The error message shown when the decision variable is not a permutation.
+	 */
+	private static final String NOT_PERMUTATION = "not a permutation";
+	
+	/**
+	 * The error message shown when the decision variable is not a binary value.
+	 */
+	private static final String NOT_BINARY = "not a binary variable";
+	
+	/**
+	 * The error message shown when the decision variable is not a boolean.
+	 */
+	private static final String NOT_BOOLEAN = "not a boolean variable";
 
 	/**
 	 * Private constructor to prevent instantiation.
@@ -105,7 +135,7 @@ public class EncodingUtils {
 		}
 
 		if ((numberOfBits < 1) || (numberOfBits > 63)) {
-			throw new IllegalArgumentException("invalid number of bits");
+			throw new IllegalArgumentException(INVALID_BITS);
 		}
 
 		if ((1L << numberOfBits) <= value) {
@@ -128,7 +158,7 @@ public class EncodingUtils {
 		int numberOfBits = binary.getNumberOfBits();
 
 		if ((numberOfBits < 1) || (numberOfBits > 63)) {
-			throw new IllegalArgumentException("invalid number of bits");
+			throw new IllegalArgumentException(INVALID_BITS);
 		}
 
 		long value = 0;
@@ -244,7 +274,7 @@ public class EncodingUtils {
 		if (variable instanceof RealVariable) {
 			return ((RealVariable)variable).getValue();
 		} else {
-			throw new IllegalArgumentException("not a real variable");
+			throw new IllegalArgumentException(NOT_REAL);
 		}
 	}
 	
@@ -274,7 +304,7 @@ public class EncodingUtils {
 		if (variable instanceof BinaryVariable) {
 			return ((BinaryVariable)variable).getBitSet();
 		} else {
-			throw new IllegalArgumentException("not a binary variable");
+			throw new IllegalArgumentException(NOT_BINARY);
 		}
 	}
 	
@@ -299,7 +329,7 @@ public class EncodingUtils {
 			
 			return result;
 		} else {
-			throw new IllegalArgumentException("not a binary variable");
+			throw new IllegalArgumentException(NOT_BINARY);
 		}
 	}
 	
@@ -317,7 +347,7 @@ public class EncodingUtils {
 		if (values.length == 1) {
 			return values[0];
 		} else {
-			throw new IllegalArgumentException("not a boolean variable");
+			throw new IllegalArgumentException(NOT_BOOLEAN);
 		}
 	}
 	
@@ -333,7 +363,7 @@ public class EncodingUtils {
 		if (variable instanceof Permutation) {
 			return ((Permutation)variable).toArray();
 		} else {
-			throw new IllegalArgumentException("not a permutation");
+			throw new IllegalArgumentException(NOT_PERMUTATION);
 		}
 	}
 	
@@ -425,12 +455,14 @@ public class EncodingUtils {
 	 * @param value the value to assign the floating-point decision variable
 	 * @throws IllegalArgumentException if the decision variable is not of type
 	 *         {@link RealVariable}
+	 * @throws IllegalArgumentException if the value is out of bounds
+	 *         ({@code value < getLowerBound()) || (value > getUpperBound()})
 	 */
 	public static void setReal(Variable variable, double value) {
 		if (variable instanceof RealVariable) {
 			((RealVariable)variable).setValue(value);
 		} else {
-			throw new IllegalArgumentException("not a real variable");
+			throw new IllegalArgumentException(NOT_REAL);
 		}
 	}
 	
@@ -443,6 +475,8 @@ public class EncodingUtils {
 	 * @param values the array of floating-point values to assign the solution
 	 * @throws IllegalArgumentException if any decision variable contained in
 	 *         the solution is not of type {@link RealVariable}
+	 * @throws IllegalArgumentException if any of the values are out of bounds
+	 *         ({@code value < getLowerBound()) || (value > getUpperBound()})
 	 */
 	public static void setReal(Solution solution, double[] values) {
 		setReal(solution, 0, solution.getNumberOfVariables(), values);
@@ -462,9 +496,17 @@ public class EncodingUtils {
 	 * @throws IllegalArgumentException if any decision variable contained in
 	 *         the solution between the start and end index is not of type
 	 *         {@link RealVariable}
+	 * @throws IllegalArgumentException if an invalid number of values are
+	 *         provided
+	 * @throws IllegalArgumentException if any of the values are out of bounds
+	 *         ({@code value < getLowerBound()) || (value > getUpperBound()})
 	 */
 	public static void setReal(Solution solution, int startIndex, int endIndex,
 			double[] values) {
+		if (values.length != (endIndex - startIndex)) {
+			throw new IllegalArgumentException(INVALID_LENGTH);
+		}
+		
 		for (int i=startIndex; i<endIndex; i++) {
 			setReal(solution.getVariable(i), values[i-startIndex]);
 		}
@@ -477,6 +519,8 @@ public class EncodingUtils {
 	 * @param value the value to assign the integer-valued decision variable
 	 * @throws IllegalArgumentException if the decision variable is not of type
 	 *         {@link RealVariable}
+	 * @throws IllegalArgumentException if the value is out of bounds
+	 *         ({@code value < getLowerBound()) || (value > getUpperBound()})
 	 */
 	public static void setInt(Variable variable, int value) {
 		setReal(variable, value);
@@ -491,6 +535,8 @@ public class EncodingUtils {
 	 * @param values the array of integer values to assign the solution
 	 * @throws IllegalArgumentException if any decision variable contained in
 	 *         the solution is not of type {@link RealVariable}
+	 * @throws IllegalArgumentException if any of the values are out of bounds
+	 *         ({@code value < getLowerBound()) || (value > getUpperBound()})
 	 */
 	public static void setInt(Solution solution, int[] values) {
 		setInt(solution, 0, solution.getNumberOfVariables(), values);
@@ -510,9 +556,17 @@ public class EncodingUtils {
 	 * @throws IllegalArgumentException if any decision variable contained in
 	 *         the solution between the start and end index is not of type
 	 *         {@link RealVariable}
+	 * @throws IllegalArgumentException if an invalid number of values are
+	 *         provided
+	 * @throws IllegalArgumentException if any of the values are out of bounds
+	 *         ({@code value < getLowerBound()) || (value > getUpperBound()})
 	 */
 	public static void setInt(Solution solution, int startIndex, int endIndex,
 			int[] values) {
+		if (values.length != (endIndex - startIndex)) {
+			throw new IllegalArgumentException(INVALID_LENGTH);
+		}
+		
 		for (int i=startIndex; i<endIndex; i++) {
 			setInt(solution.getVariable(i), values[i-startIndex]);
 		}
@@ -535,7 +589,7 @@ public class EncodingUtils {
 				binaryVariable.set(i, bitSet.get(i));
 			}
 		} else {
-			throw new IllegalArgumentException("not a binary variable");
+			throw new IllegalArgumentException(NOT_BINARY);
 		}
 	}
 	
@@ -547,20 +601,22 @@ public class EncodingUtils {
 	 * @param values the bits to set in the binary decision variable
 	 * @throws IllegalArgumentException if the decision variable is not of type
 	 *         {@link BinaryVariable}
+	 * @throws IllegalArgumentException if an invalid number of values are
+	 *         provided
 	 */
 	public static void setBinary(Variable variable, boolean[] values) {
 		if (variable instanceof BinaryVariable) {
 			BinaryVariable binaryVariable = (BinaryVariable)variable;
 			
 			if (values.length != binaryVariable.getNumberOfBits()) {
-				throw new IllegalArgumentException("must have same number of bits");
+				throw new IllegalArgumentException(INVALID_LENGTH);
 			}
 			
 			for (int i=0; i<binaryVariable.getNumberOfBits(); i++) {
 				binaryVariable.set(i, values[i]);
 			}
 		} else {
-			throw new IllegalArgumentException("not a binary variable");
+			throw new IllegalArgumentException(NOT_BINARY);
 		}
 	}
 	
@@ -571,6 +627,8 @@ public class EncodingUtils {
 	 * @param value the value to assign the boolean decision variable
 	 * @throws IllegalArgumentException if the decision variable is not of type
 	 *         {@link BinaryVariable}
+	 * @throws IllegalArgumentException if the number of bits in the binary
+	 *         variable is not {@code 1}
 	 */
 	public static void setBoolean(Variable variable, boolean value) {
 		setBinary(variable, new boolean[] { value });
@@ -583,12 +641,14 @@ public class EncodingUtils {
 	 * @param values the permutation to assign the permutation decision variable
 	 * @throws IllegalArgumentException if the decision variable is not of type
 	 *         {@link Permutation}
+	 * @throws IllegalArgumentException if {@code values} is not a valid
+	 *         permutation
 	 */
 	public static void setPermutation(Variable variable, int[] values) {
 		if (variable instanceof Permutation) {
 			((Permutation)variable).fromArray(values);
 		} else {
-			throw new IllegalArgumentException("not a permutation");
+			throw new IllegalArgumentException(NOT_PERMUTATION);
 		}
 	}
 

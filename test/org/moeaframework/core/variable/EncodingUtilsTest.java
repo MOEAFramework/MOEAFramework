@@ -494,5 +494,37 @@ public class EncodingUtilsTest {
 		
 		EncodingUtils.asInt(solution);
 	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testRealArrayInvalidLength1() {
+		Solution solution = new Solution(2, 0);
+		solution.setVariable(0, EncodingUtils.newReal(0.0, 1.0));
+		solution.setVariable(1, EncodingUtils.newReal(0.0, 1.0));
+		EncodingUtils.setReal(solution, new double[] { 0.25 });
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testRealArrayInvalidLength2() {
+		Solution solution = new Solution(2, 0);
+		solution.setVariable(0, EncodingUtils.newReal(0.0, 1.0));
+		solution.setVariable(1, EncodingUtils.newReal(0.0, 1.0));
+		EncodingUtils.setReal(solution, new double[] { 0.25, 0.75, 0.5 });
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testIntArrayInvalidLength1() {
+		Solution solution = new Solution(2, 0);
+		solution.setVariable(0, EncodingUtils.newInt(0, 1));
+		solution.setVariable(1, EncodingUtils.newInt(0, 1));
+		EncodingUtils.setInt(solution, new int[] { 0 });
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testIntArrayInvalidLength2() {
+		Solution solution = new Solution(2, 0);
+		solution.setVariable(0, EncodingUtils.newInt(0, 1));
+		solution.setVariable(1, EncodingUtils.newInt(0, 1));
+		EncodingUtils.setInt(solution, new int[] { 0, 1, 0 });
+	}
 
 }

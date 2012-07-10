@@ -304,7 +304,25 @@ invoke calculate prior to getting indicator values
   Attempted to retrieve one of the indicator values prior to invoking the
   calculate method.  Ensure the calculate method is invoked first, prior
   When using QualityIndicator, the calculate method must be invoked prior to
-  retrieving any of the indicator values.  
+  retrieving any of the indicator values.
+  
+not a real variable
+not a binary variable
+not a boolean variable
+not a permutation
+  The EncodingUtils class handles all the type checking internally.  If any of
+  the arguments are not of the expected type, one of these exceptions is
+  thrown.  Ensure the argument is of the expected type.  For example, ensure
+  variable is a BinaryVariable when calling asBinary(variable).
+
+invalid number of values
+invalid number of bits
+  Attempted to set the decision variable values using an array, but the number
+  of elements in the array does not match the required number of elements.
+  For setReal and setInt, ensure the number of real-valued/integer-valued
+  decision variables being set matches the array length.  For setBinary,
+  ensure the number of bits expressed in the binary variable matches the array
+  length.
 
 
 ----------
