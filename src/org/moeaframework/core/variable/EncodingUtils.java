@@ -24,12 +24,22 @@ import org.moeaframework.core.Variable;
 
 /**
  * Helper methods for working with various decision variable types and
- * encodings.  As these methods may internally perform type conversions, it is
- * strongly recommended that these methods are used consistently to access
- * decision variables.  For example, whenever you create a decision variable
- * with {@link #newInt(int, int)}, always set the value with
- * {@link #setInt(Variable, int)} and read the value with
- * {@link #asInt(Variable)}.
+ * encodings.  First, these methods perform any necessary type checking and
+ * type conversion.  Instead of writing:
+ * <pre>
+ *   double value = ((RealVariable)solution.getVariable(i)).getValue()
+ * </pre>
+ * the following simplified version is allowed:
+ * <pre>
+ *   double value = asReal(solution.getVariable(i));
+ * </pre>
+ * <p>
+ * Support for integer encodings is now supported using the
+ * {@link #newInt(int, int)}, {@link #asInt(Variable)},
+ * {@link #setInt(Variable, int)} methods.  Internally, integers are
+ * represented by floating-point values.  In order to remain consistent,
+ * only use these methods to create, set, and get the value of
+ * integer decision variables.
  * <p>
  * This class also provides methods for converting between {@link RealVariable}
  * and {@link BinaryVariable} in both binary and gray code formats.

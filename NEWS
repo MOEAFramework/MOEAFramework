@@ -7,12 +7,9 @@ Framework.
 
   * Adds several helper methods to EncodingUtils to support creating, getting,
     and setting the values of common decision variable types.  These helper
-    methods handle all the necessary type checking and conversions.  For
-    instance, integer decision variables are now supported:
-    
-        Variable variable = EncodingUtils.newInt(5, 10);
-        EncodingUtils.setInt(variable, 7);
-        int value = EncodingUtils.getInt(variable);
+    methods handle all necessary type checking and type conversions.  Included
+    in this addition is support for integer decision variables.  See the
+    class documentation for EncodingUtils for details.
 
   * Adds detailed list of errors and warning messages to the user manual.
 
