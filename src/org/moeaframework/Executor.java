@@ -28,13 +28,13 @@ import java.util.concurrent.Executors;
 import org.moeaframework.algorithm.Checkpoints;
 import org.moeaframework.algorithm.Resumable;
 import org.moeaframework.core.Algorithm;
-import org.moeaframework.core.CoreUtils;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.util.TypedProperties;
 import org.moeaframework.util.distributed.DistributedProblem;
+import org.moeaframework.util.io.FileUtils;
 
 /**
  * Configures and executes algorithms while hiding the underlying boilerplate 
@@ -262,7 +262,7 @@ public class Executor extends ProblemBuilder {
 	 */
 	public Executor resetCheckpointFile() throws IOException {
 		if (checkpointFile != null) {
-			CoreUtils.delete(checkpointFile);
+			FileUtils.delete(checkpointFile);
 		}
 		
 		return this;

@@ -28,12 +28,12 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.moeaframework.TestUtils;
 import org.moeaframework.core.Algorithm;
-import org.moeaframework.core.CoreUtils;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.core.spi.ProviderNotFoundException;
+import org.moeaframework.util.io.FileUtils;
 
 /**
  * Tests the {@link PISAAlgorithms} class using the old, static configuration
@@ -143,7 +143,7 @@ public class PISAAlgorithmsStaticConfigurationTest {
 	@Test
 	@Ignore("need to make design file an argument, otherwise can't parallelize")
 	public void testMSOPS() throws IOException {
-		CoreUtils.copy(
+		FileUtils.copy(
 				new File("./pisa/msops_win/msops_weights/" + 
 						properties.getProperty("populationSize") + 
 						"/space-filling-" +

@@ -17,13 +17,10 @@
  */
 package org.moeaframework.core;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.moeaframework.TestUtils;
 
 /**
  * Tests the {@link CoreUtils} class.
@@ -102,89 +99,6 @@ public class CoreUtilsTest {
 	public void testMerge2Null() {
 		Solution s1 = new Solution(0, 0);
 		CoreUtils.merge((Solution[])null, new Solution[] { s1 });
-	}
-	
-	@Test
-	public void testMove() throws IOException {
-		File from = TestUtils.createTempFile("foobar");
-		File to = TestUtils.createTempFile();
-		
-		CoreUtils.move(from, to);
-		
-		Assert.assertFalse(from.exists());
-		Assert.assertTrue(to.exists());
-		Assert.assertEquals(1, TestUtils.lineCount(to));
-		TestUtils.assertLinePattern(to, "foobar");
-	}
-	
-	@Test
-	public void testMoveSame() throws IOException {
-		File file = TestUtils.createTempFile("foobar");
-		
-		CoreUtils.move(file, file);
-		
-		Assert.assertTrue(file.exists());
-		Assert.assertEquals(1, TestUtils.lineCount(file));
-		TestUtils.assertLinePattern(file, "foobar");
-	}
-	
-	@Test(expected = FileNotFoundException.class)
-	public void testMoveNonexistentFile() throws IOException {
-		File from = TestUtils.createTempFile("foobar");
-		File to = TestUtils.createTempFile();
-		
-		from.delete();
-		
-		CoreUtils.move(from, to);	
-	}
-	
-	@Test
-	public void testDelete() throws IOException {
-		File file = TestUtils.createTempFile();
-		
-		CoreUtils.delete(file);
-		
-		Assert.assertFalse(file.exists());
-	}
-	
-	@Test
-	public void testDeleteNonexistentFile() throws IOException {
-		File file = TestUtils.createTempFile();
-		file.delete();
-		
-		CoreUtils.delete(file);
-		
-		Assert.assertFalse(file.exists());
-	}
-	
-	@Test
-	public void testMkdir() throws IOException {
-		CoreUtils.mkdir(getTempFolder());
-	}
-	
-	@Test
-	public void testMkdirAlreadyExists() throws IOException {
-		File directory = getTempFolder();
-		
-		CoreUtils.mkdir(directory);
-		CoreUtils.mkdir(directory);
-	}
-	
-	@Test(expected = IOException.class)
-	public void testMkdirButFileExistsWithName() throws IOException {
-		File file = TestUtils.createTempFile();
-		
-		CoreUtils.mkdir(file);
-	}
-	
-	private File getTempFolder() throws IOException {
-		File file = File.createTempFile("test", null);
-		file.delete();
-		
-		File directory = new File(file.getParent(), file.getName());
-		directory.deleteOnExit();
-		
-		return directory;
 	}
 	
 	public void testParseCommand() throws IOException {

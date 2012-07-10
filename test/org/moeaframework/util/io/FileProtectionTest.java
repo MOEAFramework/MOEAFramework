@@ -23,12 +23,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.io.Writer;
+
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.TestUtils;
-import org.moeaframework.core.CoreUtils;
 import org.moeaframework.core.Settings;
 
 /**
@@ -77,7 +77,7 @@ public class FileProtectionTest {
 	}
 	
 	private void deleteDigestFile() throws IOException {
-		CoreUtils.delete(FileProtection.getDigestFile(file));
+		FileUtils.delete(FileProtection.getDigestFile(file));
 	}
 	
 	/**

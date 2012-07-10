@@ -18,32 +18,18 @@
 package org.moeaframework.core;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.text.MessageFormat;
 
-import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.text.StrTokenizer;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
+import org.moeaframework.util.io.FileUtils;
 
 /**
  * Collection of utility methods that do not fit nicely in any other location.
  */
 public class CoreUtils {
-	
-	/**
-	 * Error message when unable to delete a file.
-	 */
-	private static final String UNABLE_TO_DELETE = "unable to delete {0}";
-	
-	/**
-	 * Error message when unable to create a directory.
-	 */
-	private static final String UNABLE_TO_MKDIR = "unable to mkdir {0}";
 
 	/**
 	 * Private constructor to prevent instantiation.
@@ -72,6 +58,9 @@ public class CoreUtils {
 	/**
 	 * Returns the variables as an array of doubles of a {@link Solution} whose
 	 * variables are all {@link RealVariable}s.
+	 * <p>
+	 * This method will likely be deprecated and removed in the future.  Use
+	 * {@link EncodingUtils#getReal(Solution)} instead.
 	 * 
 	 * @param solution the solution whose variables are all
 	 *        {@code DoubleVariable}s
@@ -86,6 +75,9 @@ public class CoreUtils {
 	/**
 	 * Fills the variables of a {@link Solution} whose variables are all
 	 * {@link RealVariable}s with the values in the specified array of doubles.
+	 * <p>
+	 * This method will likely be deprecated and removed in the future.  Use
+	 * {@link EncodingUtils#setReal(Solution, double[])} instead.
 	 * 
 	 * @param solution the solution whose variables are all
 	 *        {@code RealVariable}s
@@ -157,27 +149,6 @@ public class CoreUtils {
 	public static String[] parseCommand(String command) {
 		return new StrTokenizer(command).setQuoteChar('\"').getTokenArray();
 	}
-	
-	/*
-	 * The following code is based on the Files and ByteStream classes by
-	 * Chris Nokleberg.  The code is replicated here since both classes are 
-	 * tagged with the @Beta annotation, indicating its API is subject to 
-	 * incompatible changes in future releases.
-	 * 
-	 * Copyright (C) 2007 The Guava Authors
-	 *
-	 * Licensed under the Apache License, Version 2.0 (the "License");
-	 * you may not use this file except in compliance with the License.
-	 * You may obtain a copy of the License at
-	 *
-	 * http://www.apache.org/licenses/LICENSE-2.0
-	 *
-	 * Unless required by applicable law or agreed to in writing, software
-	 * distributed under the License is distributed on an "AS IS" BASIS,
-	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-	 * See the License for the specific language governing permissions and
-	 * limitations under the License.
-	 */
 
 	/**
 	 * Moves the file from one path to another. This method can rename a file or
@@ -186,28 +157,12 @@ public class CoreUtils {
 	 * @param source the source file
 	 * @param destination the destination file
 	 * @throws IOException if an I/O error occurs
+	 * @deprecated Will be removed in version 2.0; replace with
+	 *             {@link FileUtils#move(File, File)}.
 	 */
+	@Deprecated
 	public static void move(File source, File destination) throws IOException {
-		Validate.notNull(source, "source is null");
-		Validate.notNull(destination, "destination is null");
-		
-		if (source.equals(destination)) {
-			return;
-		}
-
-		if (!source.renameTo(destination)) {
-			copy(source, destination);
-			
-			if (!source.delete()) {
-				if (!destination.delete()) {
-					throw new IOException(MessageFormat.format(UNABLE_TO_DELETE,
-							destination));
-				}
-				
-				throw new IOException(MessageFormat.format(UNABLE_TO_DELETE, 
-						source));
-			}
-		}
+		FileUtils.move(source, destination);
 	}
 
 	/**
@@ -216,63 +171,12 @@ public class CoreUtils {
 	 * @param source the source file
 	 * @param destination the destination file
 	 * @throws IOException if an I/O error occurred
+	 * @deprecated Will be removed in version 2.0; replace with
+	 *             {@link FileUtils#copy(File, File)}.
 	 */
+	@Deprecated
 	public static void copy(File source, File destination) throws IOException {
-		Validate.notNull(source, "source is null");
-		Validate.notNull(destination, "destination is null");
-		
-		if (source.equals(destination)) {
-			return;
-		}
-		
-		InputStream input = null;
-		OutputStream output = null;
-
-		try {
-			input = new FileInputStream(source);
-
-			try {
-				output = new FileOutputStream(destination);
-				
-				copy(input, output);
-			} finally {
-				if (output != null) {
-					output.close();
-				}
-			}
-		} finally {
-			if (input != null) {
-				input.close();
-			}
-		}
-	}
-
-	/**
-	 * Copies all bytes from the input stream to the output stream.
-	 * Does not close or flush either stream.
-	 *
-	 * @param from the input stream to read from
-	 * @param to the output stream to write to
-	 * @return the number of bytes copied
-	 * @throws IOException if an I/O error occurred
-	 */
-	private static long copy(InputStream from, OutputStream to)
-	throws IOException {
-		byte[] buf = new byte[Settings.BUFFER_SIZE];
-		long total = 0;
-
-		while (true) {
-			int r = from.read(buf);
-
-			if (r == -1) {
-				break;
-			}
-
-			to.write(buf, 0, r);
-			total += r;
-		}
-
-		return total;
+		FileUtils.copy(source, destination);
 	}
 
 	/**
@@ -280,14 +184,12 @@ public class CoreUtils {
 	 *
 	 * @param file the file to delete
 	 * @throws IOException if the file could not be deleted
+	 * @deprecated Will be removed in version 2.0; replace with
+	 *             {@link FileUtils#delete(File)}.
 	 */
+	@Deprecated
 	public static void delete(File file) throws IOException {
-		if (file.exists()) {
-			if (!file.delete()) {
-				throw new IOException(MessageFormat.format(UNABLE_TO_DELETE, 
-						file));
-			}
-		}
+		FileUtils.delete(file);
 	}
 	
 	/**
@@ -295,19 +197,12 @@ public class CoreUtils {
 	 * 
 	 * @param directory the directory to create
 	 * @throws IOException if the directory could not be created
+	 * @deprecated Will be removed in version 2.0; replace with
+	 *             {@link FileUtils#mkdir(File)}.
 	 */
+	@Deprecated
 	public static void mkdir(File directory) throws IOException {
-		if (directory.exists()) {
-			if (!directory.isDirectory()) {
-				throw new IOException(MessageFormat.format(UNABLE_TO_MKDIR,
-						directory));
-			}
-		} else {
-			if (!directory.mkdirs()) {
-				throw new IOException(MessageFormat.format(UNABLE_TO_MKDIR,
-						directory));
-			}
-		}
+		FileUtils.mkdir(directory);
 	}
 
 }

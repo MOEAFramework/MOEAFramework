@@ -23,7 +23,6 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.OptionGroup;
 import org.apache.commons.cli.Options;
-import org.moeaframework.core.CoreUtils;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PopulationIO;
@@ -32,6 +31,7 @@ import org.moeaframework.core.comparator.EpsilonBoxDominanceComparator;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.util.CommandLineUtility;
 import org.moeaframework.util.TypedProperties;
+import org.moeaframework.util.io.FileUtils;
 
 /**
  * Command line utility for merging the approximation sets stored in one or more
@@ -133,7 +133,7 @@ public class ResultFileMerger extends CommandLineUtility {
 				ResultFileWriter writer = null;
 				
 				//delete the file to avoid appending
-				CoreUtils.delete(output);
+				FileUtils.delete(output);
 				
 				try {
 					writer = new ResultFileWriter(problem, output);

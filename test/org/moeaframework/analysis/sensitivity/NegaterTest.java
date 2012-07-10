@@ -23,7 +23,7 @@ import java.io.IOException;
 import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.TestUtils;
-import org.moeaframework.core.CoreUtils;
+import org.moeaframework.util.io.FileUtils;
 
 /**
  * Tests the {@link Negater} class.
@@ -52,7 +52,7 @@ public class NegaterTest {
         File file = TestUtils.createTempFile(
                 "0.0 0.1 -0.1 -0.1\n#foo bar\n5.12e-10 -5.12e10 0.5 0.000001");
         File copy = TestUtils.createTempFile();
-        CoreUtils.copy(file, copy);
+        FileUtils.copy(file, copy);
         
         Negater.main(new String[] {
                "-d", "1,1,0,1",
@@ -73,7 +73,7 @@ public class NegaterTest {
         File file = TestUtils.createTempFile(
                 "0.0 0.1 -0.1 -0.1\n#foo bar\n5.12e-10 -5.12e10 0.5");
         File copy = TestUtils.createTempFile();
-        CoreUtils.copy(file, copy);
+        FileUtils.copy(file, copy);
 
         Negater.main(new String[] {
                "-d", "1,1,0,1",
@@ -89,7 +89,7 @@ public class NegaterTest {
         File file = TestUtils.createTempFile(
                 "0.0 0.1 -0.1 -0.1\n#foo bar\n5.12e-10 0,1,2 0.5 0.000001");
         File copy = TestUtils.createTempFile();
-        CoreUtils.copy(file, copy);
+        FileUtils.copy(file, copy);
 
         Negater.main(new String[] {
                "-d", "1,1,0,1",

@@ -45,6 +45,7 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.operator.RandomInitialization;
 import org.moeaframework.util.TypedProperties;
+import org.moeaframework.util.io.FileUtils;
 import org.moeaframework.util.io.RedirectStream;
 
 /**
@@ -538,11 +539,11 @@ public class PISAAlgorithm extends AbstractAlgorithm {
 	 * @throws IOException if an I/O error occurred
 	 */
 	private void configure() throws IOException {
-		CoreUtils.delete(new File(filePrefix + "arc"));
-		CoreUtils.delete(new File(filePrefix + "cfg"));
-		CoreUtils.delete(new File(filePrefix + "ini"));
-		CoreUtils.delete(new File(filePrefix + "sel"));
-		CoreUtils.delete(new File(filePrefix + "sta"));
+		FileUtils.delete(new File(filePrefix + "arc"));
+		FileUtils.delete(new File(filePrefix + "cfg"));
+		FileUtils.delete(new File(filePrefix + "ini"));
+		FileUtils.delete(new File(filePrefix + "sel"));
+		FileUtils.delete(new File(filePrefix + "sta"));
 
 		PrintWriter writer = null;
 

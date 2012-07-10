@@ -37,7 +37,6 @@ import org.apache.commons.math.stat.descriptive.rank.Min;
 import org.moeaframework.analysis.sensitivity.ResultEntry;
 import org.moeaframework.analysis.sensitivity.ResultFileReader;
 import org.moeaframework.analysis.sensitivity.ResultFileWriter;
-import org.moeaframework.core.CoreUtils;
 import org.moeaframework.core.Indicator;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PopulationIO;
@@ -50,6 +49,7 @@ import org.moeaframework.core.indicator.InvertedGenerationalDistance;
 import org.moeaframework.core.indicator.MaximumParetoFrontError;
 import org.moeaframework.core.indicator.Spacing;
 import org.moeaframework.core.spi.ProblemFactory;
+import org.moeaframework.util.io.FileUtils;
 import org.moeaframework.util.statistics.KruskalWallisTest;
 import org.moeaframework.util.statistics.MannWhitneyUTest;
 
@@ -430,7 +430,7 @@ public class Analyzer extends ProblemBuilder {
 	 */
 	public Analyzer saveData(File directory, String prefix, String suffix) 
 	throws IOException {
-		CoreUtils.mkdir(directory);
+		FileUtils.mkdir(directory);
 
 		for (String algorithm : data.keySet()) {
 			saveAs(algorithm, new File(directory, prefix + algorithm + 
@@ -519,7 +519,7 @@ public class Analyzer extends ProblemBuilder {
 			problem = getProblemInstance();
 			
 			//delete the file to avoid appending
-			CoreUtils.delete(resultFile);
+			FileUtils.delete(resultFile);
 
 			try {
 				writer = new ResultFileWriter(problem, resultFile);

@@ -33,13 +33,13 @@ import java.util.Properties;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.StringUtils;
-import org.moeaframework.core.CoreUtils;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variable;
 import org.moeaframework.core.variable.BinaryVariable;
 import org.moeaframework.core.variable.Permutation;
 import org.moeaframework.core.variable.RealVariable;
+import org.moeaframework.util.io.FileUtils;
 
 /**
  * Writes result files. A result file contains one or more entries consisting
@@ -150,8 +150,8 @@ public class ResultFileWriter implements OutputWriter {
 			existingFile = new File(file.getParent(), "." + file.getName()
 					+ ".unclean");
 
-			CoreUtils.delete(existingFile);
-			CoreUtils.move(file, existingFile);
+			FileUtils.delete(existingFile);
+			FileUtils.move(file, existingFile);
 		}
 
 		// prepare this class for writing
@@ -187,7 +187,7 @@ public class ResultFileWriter implements OutputWriter {
 				}
 			}
 
-			CoreUtils.delete(existingFile);
+			FileUtils.delete(existingFile);
 		}
 	}
 

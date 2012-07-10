@@ -23,8 +23,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import org.moeaframework.core.CoreUtils;
 import org.moeaframework.core.indicator.QualityIndicator;
+import org.moeaframework.util.io.FileUtils;
 
 /**
  * Writes metric files. A metric file is the output of {@code Evaluator} and
@@ -84,8 +84,8 @@ public class MetricFileWriter implements OutputWriter {
 			existingFile = new File(file.getParent(), "." + file.getName()
 					+ ".unclean");
 
-			CoreUtils.delete(existingFile);
-			CoreUtils.move(file, existingFile);
+			FileUtils.delete(existingFile);
+			FileUtils.move(file, existingFile);
 		}
 
 		// prepare this class for writing
@@ -122,7 +122,7 @@ public class MetricFileWriter implements OutputWriter {
 				}
 			}
 
-			CoreUtils.delete(existingFile);
+			FileUtils.delete(existingFile);
 		}
 	}
 
