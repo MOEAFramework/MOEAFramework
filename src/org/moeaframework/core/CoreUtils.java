@@ -27,6 +27,7 @@ import java.text.MessageFormat;
 
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.text.StrTokenizer;
+import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
 
 /**
@@ -79,13 +80,7 @@ public class CoreUtils {
 	 *         {@code RealVariable}
 	 */
 	public static double[] castVariablesToDoubleArray(Solution solution) {
-		double[] variables = new double[solution.getNumberOfVariables()];
-
-		for (int i = 0; i < solution.getNumberOfVariables(); i++) {
-			variables[i] = ((RealVariable)solution.getVariable(i)).getValue();
-		}
-
-		return variables;
+		return EncodingUtils.getReal(solution);
 	}
 
 	/**
@@ -101,13 +96,7 @@ public class CoreUtils {
 	 */
 	public static void fillVariablesFromDoubleArray(Solution solution,
 			double[] variables) {
-		Validate.isTrue(variables.length == solution.getNumberOfVariables(),
-				"invalid number of variables, expected %d", 
-				solution.getNumberOfVariables());
-		
-		for (int i = 0; i < solution.getNumberOfVariables(); i++) {
-			((RealVariable)solution.getVariable(i)).setValue(variables[i]);
-		}
+		EncodingUtils.setReal(solution, variables);
 	}
 
 	/**

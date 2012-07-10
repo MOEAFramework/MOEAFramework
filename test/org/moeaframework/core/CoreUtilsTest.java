@@ -24,8 +24,6 @@ import java.io.IOException;
 import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.TestUtils;
-import org.moeaframework.core.variable.BinaryVariable;
-import org.moeaframework.core.variable.RealVariable;
 
 /**
  * Tests the {@link CoreUtils} class.
@@ -42,87 +40,6 @@ public class CoreUtilsTest {
 	@Deprecated
 	public void testAssertNotNullWithNull() {
 		CoreUtils.assertNotNull("test", null);
-	}
-	
-	@Test
-	public void testCastVariablesToDoubleArray() {
-		Solution solution = new Solution(2, 0);
-		solution.setVariable(0, new RealVariable(0.25, 0.0, 1.0));
-		solution.setVariable(1, new RealVariable(0.75, 0.0, 1.0));
-		Assert.assertArrayEquals(new double[] { 0.25, 0.75 }, 
-				CoreUtils.castVariablesToDoubleArray(solution), Settings.EPS);
-	}
-	
-	@Test
-	public void testCastVariablesToDoubleArrayEmpty() {
-		Solution solution = new Solution(0, 0);
-		Assert.assertArrayEquals(new double[] { }, 
-				CoreUtils.castVariablesToDoubleArray(solution), Settings.EPS);
-	}
-	
-	@Test(expected = ClassCastException.class)
-	public void testCastVariablesToDoubleInvalidType() {
-		Solution solution = new Solution(2, 0);
-		solution.setVariable(0, new RealVariable(0.25, 0.0, 1.0));
-		solution.setVariable(1, new BinaryVariable(3));
-		CoreUtils.castVariablesToDoubleArray(solution);
-	}
-	
-	@Test
-	public void testFillVariablesFromDoubleArray() {
-		Solution solution = new Solution(2, 0);
-		solution.setVariable(0, new RealVariable(0.0, 1.0));
-		solution.setVariable(1, new RealVariable(0.0, 1.0));
-		CoreUtils.fillVariablesFromDoubleArray(solution, 
-				new double[] { 0.25, 0.75 });
-		
-		Assert.assertEquals(0.25, ((RealVariable)solution.getVariable(0))
-				.getValue(), Settings.EPS);
-		Assert.assertEquals(0.75, ((RealVariable)solution.getVariable(1))
-				.getValue(), Settings.EPS);
-	}
-	
-	@Test
-	public void testFillVariablesFromDoubleArrayEmpty() {
-		Solution solution = new Solution(0, 0);
-		CoreUtils.fillVariablesFromDoubleArray(solution, 
-				new double[] {  });
-		Assert.assertEquals(0, solution.getNumberOfVariables());
-	}
-	
-	@Test(expected = ClassCastException.class)
-	public void testFillVariablesFromDoubleArrayInvalidType() {
-		Solution solution = new Solution(2, 0);
-		solution.setVariable(0, new RealVariable(0.0, 1.0));
-		solution.setVariable(1, new BinaryVariable(3));
-		CoreUtils.fillVariablesFromDoubleArray(solution, 
-				new double[] { 0.25, 0.75 });
-	}
-	
-	@Test(expected = NullPointerException.class)
-	public void testFillVariablesFromDoubleArrayNullPointer() {
-		Solution solution = new Solution(2, 0);
-		solution.setVariable(0, new RealVariable(0.0, 1.0));
-		CoreUtils.fillVariablesFromDoubleArray(solution, 
-				new double[] { 0.25, 0.75 });
-	}
-	
-	@Test(expected = IllegalArgumentException.class)
-	public void testFillVariablesFromDoubleArrayInvalidLength1() {
-		Solution solution = new Solution(2, 0);
-		solution.setVariable(0, new RealVariable(0.0, 1.0));
-		solution.setVariable(1, new RealVariable(0.0, 1.0));
-		CoreUtils.fillVariablesFromDoubleArray(solution, 
-				new double[] { 0.25 });
-	}
-	
-	@Test(expected = IllegalArgumentException.class)
-	public void testFillVariablesFromDoubleArrayInvalidLength2() {
-		Solution solution = new Solution(2, 0);
-		solution.setVariable(0, new RealVariable(0.0, 1.0));
-		solution.setVariable(1, new RealVariable(0.0, 1.0));
-		CoreUtils.fillVariablesFromDoubleArray(solution, 
-				new double[] { 0.25, 0.75, 0.5 });
 	}
 	
 	@Test
