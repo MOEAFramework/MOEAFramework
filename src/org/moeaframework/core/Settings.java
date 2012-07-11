@@ -26,6 +26,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.Properties;
 
+import org.apache.commons.lang3.text.StrTokenizer;
 import org.moeaframework.util.TypedProperties;
 import org.moeaframework.util.io.FileProtection;
 import org.moeaframework.core.indicator.Hypervolume;
@@ -563,12 +564,22 @@ public class Settings {
 				".{0}.md5");
 	}
 	
+	/**
+	 * Returns the list of algorithms displayed in the diagnostic tool GUI.
+	 * 
+	 * @return the list of algorithms displayed in the diagnostic tool GUI
+	 */
 	public static String[] getDiagnosticToolAlgorithms() {
 		return PROPERTIES.getStringArray(KEY_DIAGNOSTIC_TOOL_ALGORITHMS, 
 				new String[] { "NSGAII", "GDE3", "eMOEA", "eNSGAII", 
 				"MOEAD", "Random" });
 	}
 	
+	/**
+	 * Returns the list of problems displayed in the diagnostic tool GUI.
+	 * 
+	 * @return the list of problems displayed in the diagnostic tool GUI
+	 */
 	public static String[] getDiagnosticToolProblems() {
 		return PROPERTIES.getStringArray(KEY_DIAGNOSTIC_TOOL_PROBLEMS, 
 				new String[] { 
@@ -585,6 +596,18 @@ public class Settings {
 				"Poloni", "Quagliarella", "Rendon", "Rendon2", "Schaffer", 
 				"Schaffer2", "Srinivas", "Tamaki", "Tanaka", "Viennet", 
 				"Viennet2", "Viennet3", "Viennet4"*/});
+	}
+	
+	/**
+	 * Splits an executable command into its individual arguments.  This method
+	 * allows quoted text ({@code "..."}) in properties to be treated as an
+	 * individual argument as required by {@link ProcessBuilder}.
+	 *  
+	 * @param command the command represented in a single string
+	 * @return the individual arguments comprising the command
+	 */
+	public static String[] parseCommand(String command) {
+		return new StrTokenizer(command).setQuoteChar('\"').getTokenArray();
 	}
 	
 }

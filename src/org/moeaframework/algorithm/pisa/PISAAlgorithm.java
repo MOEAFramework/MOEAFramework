@@ -35,7 +35,6 @@ import java.util.Set;
 import org.apache.commons.lang3.ArrayUtils;
 import org.moeaframework.algorithm.AbstractAlgorithm;
 import org.moeaframework.algorithm.AlgorithmException;
-import org.moeaframework.core.CoreUtils;
 import org.moeaframework.core.Initialization;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PRNG;
@@ -202,7 +201,7 @@ public class PISAAlgorithm extends AbstractAlgorithm {
 		
 		//construct the command line call to start the PISA selector
 		selector = new ProcessBuilder(ArrayUtils.addAll(
-				CoreUtils.parseCommand(command), 
+				Settings.parseCommand(command), 
 				configuration,
 				filePrefix, 
 				Double.toString(pollRate/(double)1000)));

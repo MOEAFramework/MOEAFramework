@@ -21,7 +21,6 @@ import java.io.File;
 import java.io.IOException;
 import java.text.MessageFormat;
 
-import org.apache.commons.lang3.text.StrTokenizer;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.util.io.FileUtils;
@@ -145,9 +144,12 @@ public class CoreUtils {
 	 *  
 	 * @param command the command represented in a single string
 	 * @return the individual arguments comprising the command
+	 * @deprecated Will be removed in version 2.0; replace with
+	 *             {@link Settings#parseCommand(String)}
 	 */
+	@Deprecated
 	public static String[] parseCommand(String command) {
-		return new StrTokenizer(command).setQuoteChar('\"').getTokenArray();
+		return Settings.parseCommand(command);
 	}
 
 	/**

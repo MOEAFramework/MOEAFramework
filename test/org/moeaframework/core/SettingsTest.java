@@ -17,6 +17,8 @@
  */
 package org.moeaframework.core;
 
+import java.io.IOException;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -125,6 +127,16 @@ public class SettingsTest {
 	@Test
 	public void testDiagnosticToolProblems() {
 		Assert.assertNotNull(Settings.getDiagnosticToolProblems());
+	}
+	
+	@Test
+	public void testParseCommand() throws IOException {
+		String command = "java -jar \"C:\\Program Files\\Test\\test.jar\" \"\"\"";
+		String[] expected = new String[] { "java", "-jar", 
+				"C:\\Program Files\\Test\\test.jar", "\"" };
+		String[] actual = Settings.parseCommand(command);
+		
+		Assert.assertArrayEquals(expected, actual);
 	}
 
 }

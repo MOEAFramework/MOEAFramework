@@ -17,14 +17,13 @@
  */
 package org.moeaframework.core;
 
-import java.io.IOException;
-
 import org.junit.Assert;
 import org.junit.Test;
 
 /**
  * Tests the {@link CoreUtils} class.
  */
+@Deprecated
 public class CoreUtilsTest {
 	
 	@Test
@@ -99,15 +98,6 @@ public class CoreUtilsTest {
 	public void testMerge2Null() {
 		Solution s1 = new Solution(0, 0);
 		CoreUtils.merge((Solution[])null, new Solution[] { s1 });
-	}
-	
-	public void testParseCommand() throws IOException {
-		String command = "java -jar \"C:\\Program Files\\Test\\test.jar\" \"\"";
-		String[] expected = new String[] { "java", "-jar", 
-				"C:\\Program Files\\Test\\test.jar", "\"" };
-		String[] actual = CoreUtils.parseCommand(command);
-		
-		Assert.assertArrayEquals(expected, actual);
 	}
 
 }

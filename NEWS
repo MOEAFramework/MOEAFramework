@@ -12,6 +12,11 @@ Framework.
     class documentation for EncodingUtils for details.
 
   * Adds detailed list of errors and warning messages to the user manual.
+  
+  * Performed some code reorganization to eventually remove the CoreUtils class,
+    since it is currently an amalgamation of functions serving different
+    purposes.  These methods have been moved to more appropriate classes, and
+    CoreUtils is being deprecated.
 
   * Several bug fixes:
   
