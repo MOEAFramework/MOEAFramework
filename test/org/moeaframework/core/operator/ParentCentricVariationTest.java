@@ -27,8 +27,8 @@ import org.apache.commons.math.stat.clustering.Clusterable;
 import org.apache.commons.math.stat.clustering.KMeansPlusPlusClusterer;
 import org.junit.Assert;
 import org.moeaframework.TestThresholds;
-import org.moeaframework.core.CoreUtils;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.util.Vector;
 
 /**
@@ -43,8 +43,7 @@ public abstract class ParentCentricVariationTest extends
 		List<ClusterablePoint> points = new ArrayList<ClusterablePoint>();
 
 		for (Solution solution : offspring) {
-			points.add(new ClusterablePoint(CoreUtils
-					.castVariablesToDoubleArray(solution)));
+			points.add(new ClusterablePoint(EncodingUtils.getReal(solution)));
 		}
 
 		KMeansPlusPlusClusterer<ClusterablePoint> clusterer = 
@@ -60,8 +59,7 @@ public abstract class ParentCentricVariationTest extends
 				boolean allEqual = true;
 
 				double[] centroid = clusters.get(i).getCenter().getPoint();
-				double[] parent = CoreUtils
-						.castVariablesToDoubleArray(solution);
+				double[] parent = EncodingUtils.getReal(solution);
 
 				for (int j = 0; j < parent.length; j++) {
 					if (Math.abs(parent[j] - centroid[j]) > 

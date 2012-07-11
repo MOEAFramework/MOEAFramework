@@ -17,8 +17,8 @@
  */
 package org.moeaframework.core.operator;
 
-import org.moeaframework.core.CoreUtils;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.util.Vector;
 
@@ -41,8 +41,7 @@ public abstract class DistributionVariationTest {
 		double[] average = new double[solutions[0].getNumberOfVariables()];
 
 		for (Solution solution : solutions) {
-			average = Vector.add(average, CoreUtils
-					.castVariablesToDoubleArray(solution));
+			average = Vector.add(average, EncodingUtils.getReal(solution));
 		}
 
 		return Vector.divide(average, solutions.length);

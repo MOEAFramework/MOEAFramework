@@ -17,9 +17,9 @@
  */
 package org.moeaframework.problem.DTLZ;
 
-import org.moeaframework.core.CoreUtils;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
 
 /**
@@ -53,7 +53,7 @@ public class DTLZ4 extends DTLZ {
 
 	@Override
 	public void evaluate(Solution solution) {
-		double[] x = CoreUtils.castVariablesToDoubleArray(solution);
+		double[] x = EncodingUtils.getReal(solution);
 		double[] f = new double[numberOfObjectives];
 
 		int k = numberOfVariables - numberOfObjectives + 1;

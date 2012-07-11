@@ -17,8 +17,8 @@
  */
 package org.moeaframework.problem.ZDT;
 
-import org.moeaframework.core.CoreUtils;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.variable.EncodingUtils;
 
 /**
  * The ZDT3 test problem.
@@ -44,7 +44,7 @@ public class ZDT3 extends ZDT {
 
 	@Override
 	public void evaluate(Solution solution) {
-		double[] x = CoreUtils.castVariablesToDoubleArray(solution);
+		double[] x = EncodingUtils.getReal(solution);
 
 		double g = 0.0;
 		for (int i = 1; i < x.length; i++) {

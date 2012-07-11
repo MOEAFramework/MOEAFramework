@@ -17,8 +17,8 @@
  */
 package org.moeaframework.problem.misc;
 
-import org.moeaframework.core.CoreUtils;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.AbstractProblem;
 
@@ -43,7 +43,7 @@ public class OKA1 extends AbstractProblem {
 
 	@Override
 	public void evaluate(Solution solution) {
-		double[] x = CoreUtils.castVariablesToDoubleArray(solution);
+		double[] x = EncodingUtils.getReal(solution);
 		double x1 = Math.cos(Math.PI / 12.0) * x[0] - Math.sin(Math.PI / 12.0)
 				* x[1];
 		double x2 = Math.sin(Math.PI / 12.0) * x[0] + Math.cos(Math.PI / 12.0)

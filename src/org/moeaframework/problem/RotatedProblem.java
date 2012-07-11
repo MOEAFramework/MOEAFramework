@@ -18,9 +18,9 @@
 package org.moeaframework.problem;
 
 import org.apache.commons.math.linear.RealMatrix;
-import org.moeaframework.core.CoreUtils;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.util.RotationMatrixBuilder;
 import org.moeaframework.util.Vector;
@@ -87,9 +87,12 @@ public class RotatedProblem implements Problem {
 		for (int i = 0; i < getNumberOfVariables(); i++) {
 			RealVariable variable = (RealVariable)solution.getVariable(i);
 			
-			center[i] = (variable.getLowerBound() + variable.getUpperBound()) / 2.0;
-			lowerBounds[i] = Math.sqrt(2.0) * (variable.getLowerBound() - center[i]);
-			upperBounds[i] = Math.sqrt(2.0) * (variable.getUpperBound() - center[i]);
+			center[i] = (variable.getLowerBound() + variable.getUpperBound()) /
+					2.0;
+			lowerBounds[i] = Math.sqrt(2.0) *
+					(variable.getLowerBound() - center[i]);
+			upperBounds[i] = Math.sqrt(2.0) *
+					(variable.getUpperBound() - center[i]);
 		}
 	}
 
@@ -118,7 +121,7 @@ public class RotatedProblem implements Problem {
 		Solution temp = problem.newSolution();
 		
 		//apply the rotation
-		double[] x = CoreUtils.castVariablesToDoubleArray(solution);
+		double[] x = EncodingUtils.getReal(solution);
 		x = rotation.operate(x);
 		x = Vector.add(x, center);
 		

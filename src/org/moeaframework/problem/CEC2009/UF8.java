@@ -17,8 +17,8 @@
  */
 package org.moeaframework.problem.CEC2009;
 
-import org.moeaframework.core.CoreUtils;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.AbstractProblem;
 
@@ -47,7 +47,7 @@ public class UF8 extends AbstractProblem {
 
 	@Override
 	public void evaluate(Solution solution) {
-		double[] x = CoreUtils.castVariablesToDoubleArray(solution);
+		double[] x = EncodingUtils.getReal(solution);
 		double[] f = new double[3];
 
 		CEC2009.UF8(x, f, numberOfVariables);

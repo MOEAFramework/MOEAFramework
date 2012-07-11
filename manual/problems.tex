@@ -34,8 +34,8 @@ The MOEA Framework only works on minimization problems.  If any objectives in yo
 Defining new problems in Java is the most direct and straightforward way to introduce new problems into the MOEA Framework.  All problems in the MOEA Framework implement the \class{Problem} interface.  The \class{Problem} interface defines the methods for characterizing a problem, defining the problem's representation and evaluating solutions to the problem.  In practice, you should never need to implement the \class{Problem} interface directly, but can extend the more convenient \class{AbstractProblem}.  \class{AbstractProblem} provides default implementations for many of the methods required by the \class{Problem} interface.  The code example below shows the Kursawe problem defined by extending the AbstractProblem.
 
 \begin{lstlisting}[language=Java]
-import org.moeaframework.core.CoreUtils;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.AbstractProblem;
  
@@ -59,7 +59,7 @@ public class Kursawe extends AbstractProblem {
 
 	@Override
 	public void evaluate(Solution solution) {
-		double[] x = CoreUtils.castVariablesToDoubleArray(solution);
+		double[] x = EncodingUtils.getReal(solution);
 		double f1 = 0.0;
 		double f2 = 0.0;
    	 
@@ -326,7 +326,7 @@ function getNumberOfConstraints() {
 }
 
 function evaluate(solution) {
-	x = CoreUtils.castVariablesToDoubleArray(solution);
+	x = EncodingUtils.getReal(solution);
 	f1 = 0.0;
 	f2 = 0.0;
 

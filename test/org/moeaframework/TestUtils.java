@@ -40,11 +40,11 @@ import org.apache.commons.math.linear.RealMatrix;
 import org.apache.commons.math.stat.descriptive.DescriptiveStatistics;
 import org.junit.Assert;
 import org.junit.Assume;
-import org.moeaframework.core.CoreUtils;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.util.io.CommentedLineReader;
 
 /**
@@ -242,7 +242,7 @@ public class TestUtils {
 	public static Solution evaluateAt(Problem problem, 
 			double... variables) {
 		Solution solution = problem.newSolution();
-		CoreUtils.fillVariablesFromDoubleArray(solution, variables);
+		EncodingUtils.setReal(solution, variables);
 		problem.evaluate(solution);
 		return solution;
 	}

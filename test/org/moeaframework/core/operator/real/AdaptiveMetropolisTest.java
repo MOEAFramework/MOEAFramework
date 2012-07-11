@@ -36,10 +36,10 @@ import org.moeaframework.AbsoluteError;
 import org.moeaframework.RelativeError;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.TestUtils;
-import org.moeaframework.core.CoreUtils;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.operator.ParentCentricVariationTest;
 import org.moeaframework.core.operator.ParentImmutabilityTest;
+import org.moeaframework.core.variable.EncodingUtils;
 
 /**
  * Tests the {@link AdaptiveMetropolis} class.
@@ -159,10 +159,11 @@ public class AdaptiveMetropolisTest extends ParentCentricVariationTest {
 		RealMatrix rm = MatrixUtils.createRealMatrix(parents.length, 2);
 		
 		for (int i=0; i<parents.length; i++) {
-			rm.setRow(i, CoreUtils.castVariablesToDoubleArray(parents[i]));
+			rm.setRow(i, EncodingUtils.getReal(parents[i]));
 		}
 		
-		rm = rm.scalarMultiply(Math.pow(jumpRateCoefficient / Math.sqrt(2), 2.0));
+		rm = rm.scalarMultiply(Math.pow(jumpRateCoefficient / Math.sqrt(2),
+				2.0));
 		
 		return new Covariance(rm).getCovarianceMatrix();
 	}
@@ -187,8 +188,7 @@ public class AdaptiveMetropolisTest extends ParentCentricVariationTest {
 		List<ClusterablePoint> points = new ArrayList<ClusterablePoint>();
 
 		for (Solution solution : offspring) {
-			points.add(new ClusterablePoint(CoreUtils
-					.castVariablesToDoubleArray(solution)));
+			points.add(new ClusterablePoint(EncodingUtils.getReal(solution)));
 		}
 
 		KMeansPlusPlusClusterer<ClusterablePoint> clusterer = 

@@ -23,10 +23,10 @@ import org.apache.commons.math.linear.CholeskyDecompositionImpl;
 import org.apache.commons.math.linear.RealMatrix;
 import org.apache.commons.math.linear.RealVector;
 import org.apache.commons.math.stat.correlation.Covariance;
-import org.moeaframework.core.CoreUtils;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
+import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
 
 /**
@@ -103,7 +103,7 @@ public class AdaptiveMetropolis implements Variation {
 		RealMatrix x = new Array2DRowRealMatrix(k, n);
 		
 		for (int i=0; i<k; i++) {
-			x.setRow(i, CoreUtils.castVariablesToDoubleArray(parents[i]));
+			x.setRow(i, EncodingUtils.getReal(parents[i]));
 		}
 		
 		try {
@@ -122,7 +122,7 @@ public class AdaptiveMetropolis implements Variation {
 				
 				//apply adaptive metropolis step to solution
 				RealVector muC = new ArrayRealVector(
-						CoreUtils.castVariablesToDoubleArray(child));
+						EncodingUtils.getReal(child));
 				RealVector ru = new ArrayRealVector(n);
 				
 				for (int j=0; j<n; j++) {

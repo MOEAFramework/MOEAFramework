@@ -20,9 +20,9 @@ package org.moeaframework.problem.CEC2009;
 import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.TestThresholds;
-import org.moeaframework.core.CoreUtils;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.operator.RandomInitialization;
+import org.moeaframework.core.variable.EncodingUtils;
 
 public class UF12Test {
 	
@@ -33,7 +33,7 @@ public class UF12Test {
 				TestThresholds.SAMPLES);
 		
 		for (Solution solution : initialization.initialize()) {
-			double[] x = CoreUtils.castVariablesToDoubleArray(solution);
+			double[] x = EncodingUtils.getReal(solution);
 			double[] f = new double[uf12.getNumberOfObjectives()];
 			
 			R3_DTLZ3_M5(x, f, uf12.getNumberOfVariables(),

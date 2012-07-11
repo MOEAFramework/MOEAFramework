@@ -27,12 +27,19 @@ import org.moeaframework.util.io.FileUtils;
 
 /**
  * Collection of utility methods that do not fit nicely in any other location.
+ * 
+ * @deprecated Will be removed in version 2.0; many of these methods have been
+ *             moved to more appropriate classes
  */
+@Deprecated
 public class CoreUtils {
 
 	/**
 	 * Private constructor to prevent instantiation.
+	 * 
+	 * @deprecated Will be removed in version 2.0
 	 */
+	@Deprecated
 	private CoreUtils() {
 		super();
 	}
@@ -67,6 +74,7 @@ public class CoreUtils {
 	 * @throws ClassCastException if any variables are not of type
 	 *         {@code RealVariable}
 	 */
+	@Deprecated
 	public static double[] castVariablesToDoubleArray(Solution solution) {
 		return EncodingUtils.getReal(solution);
 	}
@@ -85,6 +93,7 @@ public class CoreUtils {
 	 * @throws IllegalArgumentException if {@code (variables.length != 
 	 *         solution.getNumberOfVariables())}
 	 */
+	@Deprecated
 	public static void fillVariablesFromDoubleArray(Solution solution,
 			double[] variables) {
 		EncodingUtils.setReal(solution, variables);

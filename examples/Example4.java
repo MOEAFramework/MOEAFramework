@@ -16,9 +16,9 @@
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
 import org.moeaframework.Executor;
-import org.moeaframework.core.CoreUtils;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.AbstractProblem;
 
@@ -64,7 +64,7 @@ public class Example4 {
 		 */
 		@Override
 		public void evaluate(Solution solution) {
-			double[] x = CoreUtils.castVariablesToDoubleArray(solution);
+			double[] x = EncodingUtils.getReal(solution);
 			double[] f = new double[numberOfObjectives];
 
 			int k = numberOfVariables - numberOfObjectives + 1;
