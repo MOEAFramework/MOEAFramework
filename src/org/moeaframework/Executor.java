@@ -26,7 +26,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import org.moeaframework.algorithm.Checkpoints;
-import org.moeaframework.algorithm.Resumable;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
@@ -591,15 +590,10 @@ public class Executor extends ProblemBuilder {
 					}
 
 					if (checkpointFile != null) {
-						if (algorithm instanceof Resumable) {
-							algorithm = new Checkpoints(
-									(Resumable)algorithm, 
-									checkpointFile, 
-									checkpointFrequency);
-						} else {
-							System.err.println(
-									"checkpoints not supported by algorithm");
-						}
+						algorithm = new Checkpoints(
+								algorithm, 
+								checkpointFile,
+								checkpointFrequency);
 					}
 					
 					if (instrumenter != null) {

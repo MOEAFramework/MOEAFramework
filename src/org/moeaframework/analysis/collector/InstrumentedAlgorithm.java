@@ -17,6 +17,8 @@
  */
 package org.moeaframework.analysis.collector;
 
+import java.io.NotSerializableException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,6 +80,88 @@ public class InstrumentedAlgorithm extends PeriodicAction {
 		
 		for (Collector collector : collectors) {
 			collector.collect(accumulator);
+		}
+	}
+	
+	/**
+	 * Proxy for serializing and deserializing the state of an
+	 * {@code InstrumentedAlgorithm} instance. This proxy supports saving
+	 * the underlying algorithm state and the {@code accumulator}.
+	 */
+	private static class InstrumentedAlgorithmState implements
+	Serializable {
+
+		private static final long serialVersionUID = -313598408729472790L;
+
+		/**
+		 * The state of the underlying algorithm.
+		 */
+		private final Serializable algorithmState;
+		
+		/**
+		 * The {@code accumulator} from the {@code InstrumentedAlgorithm}
+		 * instance.
+		 */
+		private final Accumulator accumulator;
+
+		/**
+		 * Constructs a proxy for storing the state of an
+		 * {@code InstrumentedAlgorithm} instance.
+		 * 
+		 * @param algorithmState the state of the underlying algorithm
+		 * @param accumulator the {@code accumulator} from the
+		 *        {@code InstrumentedAlgorithm} instance
+		 */
+		public InstrumentedAlgorithmState(Serializable algorithmState,
+				Accumulator accumulator) {
+			super();
+			this.algorithmState = algorithmState;
+			this.accumulator = accumulator;
+		}
+
+		/**
+		 * Returns the underlying algorithm state.
+		 * 
+		 * @return the underlying algorithm state
+		 */
+		public Serializable getAlgorithmState() {
+			return algorithmState;
+		}
+
+		/**
+		 * Returns the {@code accumulator} from the
+		 * {@code InstrumentedAlgorithm} instance.
+		 * 
+		 * @return the {@code accumulator} from the
+		 *         {@code InstrumentedAlgorithm} instance
+		 */
+		public Accumulator getAccumulator() {
+			return accumulator;
+		}
+		
+	}
+
+	@Override
+	public Serializable getState() throws NotSerializableException {
+		return new InstrumentedAlgorithmState(algorithm.getState(),
+				accumulator);
+	}
+
+	@Override
+	public void setState(Object state) throws NotSerializableException {
+		InstrumentedAlgorithmState instrumentedAlgorithmState =
+				(InstrumentedAlgorithmState)state;
+		
+		algorithm.setState(instrumentedAlgorithmState.getAlgorithmState());
+		
+		//copy the stored accumulator contents to this accumulator
+		Accumulator storedAccumulator =
+				instrumentedAlgorithmState.getAccumulator();
+		
+		for (String key : storedAccumulator.keySet()) {
+			for (int i=0; i<storedAccumulator.size(key); i++) {
+				accumulator.add(key, storedAccumulator.get(key, i));
+			}
 		}
 	}
 	

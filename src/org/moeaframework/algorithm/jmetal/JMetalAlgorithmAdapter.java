@@ -17,6 +17,9 @@
  */
 package org.moeaframework.algorithm.jmetal;
 
+import java.io.NotSerializableException;
+import java.io.Serializable;
+
 import org.moeaframework.algorithm.AlgorithmException;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.NondominatedPopulation;
@@ -127,6 +130,24 @@ public class JMetalAlgorithmAdapter implements Algorithm {
 		if (solutionSet == null) {
 			solutionSet = new jmetal.base.SolutionSet();
 		}
+	}
+
+	/**
+	 * Throws {@code NotSerializableException} since JMetal algorithms are
+	 * currently not serializable.
+	 */
+	@Override
+	public Serializable getState() throws NotSerializableException {
+		throw new NotSerializableException(getClass().getName());
+	}
+
+	/**
+	 * Throws {@code NotSerializableException} since JMetal algorithms are
+	 * currently not serializable.
+	 */
+	@Override
+	public void setState(Object state) throws NotSerializableException {
+		throw new NotSerializableException(getClass().getName());
 	}
 
 }

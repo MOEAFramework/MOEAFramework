@@ -17,6 +17,8 @@
  */
 package org.moeaframework.core.spi;
 
+import java.io.NotSerializableException;
+import java.io.Serializable;
 import java.util.Properties;
 
 import org.moeaframework.core.Algorithm;
@@ -77,6 +79,16 @@ public class TestAlgorithmFactory extends AlgorithmFactory {
 			public void terminate() {
 				algorithm.terminate();
 				terminateCount++;
+			}
+
+			@Override
+			public Serializable getState() throws NotSerializableException {
+				return algorithm.getState();
+			}
+
+			@Override
+			public void setState(Object state) throws NotSerializableException {
+				algorithm.setState(state);
 			}
 			
 		};

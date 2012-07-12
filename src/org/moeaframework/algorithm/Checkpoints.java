@@ -60,7 +60,7 @@ public class Checkpoints extends PeriodicAction {
 	 * @param checkpointFrequency the number of objective function evaluations
 	 *        between checkpoints
 	 */
-	public Checkpoints(Resumable algorithm, File stateFile,
+	public Checkpoints(Algorithm algorithm, File stateFile,
 			int checkpointFrequency) {
 		super(algorithm, checkpointFrequency, FrequencyType.EVALUATIONS);
 		this.stateFile = stateFile;
@@ -120,7 +120,7 @@ public class Checkpoints extends PeriodicAction {
 	@Override
 	public void doAction() {
 		try {
-			saveState(((Resumable)algorithm).getState());
+			saveState(algorithm.getState());
 		} catch (IOException e) {
 			System.err.println(
 					"an error occurred while writing the state file");

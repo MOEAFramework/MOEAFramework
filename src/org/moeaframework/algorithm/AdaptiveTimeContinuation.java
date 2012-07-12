@@ -17,6 +17,9 @@
  */
 package org.moeaframework.algorithm;
 
+import java.io.NotSerializableException;
+import java.io.Serializable;
+
 import org.apache.commons.lang3.event.EventListenerSupport;
 import org.moeaframework.core.EvolutionaryAlgorithm;
 import org.moeaframework.core.NondominatedPopulation;
@@ -238,6 +241,79 @@ implements EvolutionaryAlgorithm {
 	@Override
 	public NondominatedPopulation getArchive() {
 		return ((EvolutionaryAlgorithm)algorithm).getArchive();
+	}
+	
+	/**
+	 * Proxy for serializing and deserializing the state of an
+	 * {@code AdaptiveTimeContinuation} instance. This proxy supports saving
+	 * the underlying algorithm state and {@code iterationAtLastRestart}.
+	 */
+	private static class AdaptiveTimeContinuationState implements Serializable {
+
+		private static final long serialVersionUID = -4773227519517581809L;
+
+		/**
+		 * The state of the underlying algorithm.
+		 */
+		private final Serializable algorithmState;
+		
+		/**
+		 * The {@code iterationAtLastRestart} value of the
+		 * {@code AdaptiveTimeContinuation} instance.
+		 */
+		private final int iterationAtLastRestart;
+
+		/**
+		 * Constructs a proxy for storing the state of an
+		 * {@code AdaptiveTimeContinuation} instance.
+		 * 
+		 * @param algorithmState the state of the underlying algorithm
+		 * @param iterationAtLastRestart the {@code iterationAtLastRestart}
+		 *        value of the {@code AdaptiveTimeContinuation} instance
+		 */
+		public AdaptiveTimeContinuationState(Serializable algorithmState,
+				int iterationAtLastRestart) {
+			super();
+			this.algorithmState = algorithmState;
+			this.iterationAtLastRestart = iterationAtLastRestart;
+		}
+
+		/**
+		 * Returns the underlying algorithm state.
+		 * 
+		 * @return the underlying algorithm state
+		 */
+		public Serializable getAlgorithmState() {
+			return algorithmState;
+		}
+
+		/**
+		 * Returns the {@code iterationAtLastRestart} value of the
+		 * {@code AdaptiveTimeContinuation} instance.
+		 * 
+		 * @return the {@code iterationAtLastRestart} value of the
+		 *         {@code AdaptiveTimeContinuation} instance
+		 */
+		public int getIterationAtLastRestart() {
+			return iterationAtLastRestart;
+		}
+		
+	}
+
+	@Override
+	public Serializable getState() throws NotSerializableException {
+		return new AdaptiveTimeContinuationState(algorithm.getState(),
+				iterationAtLastRestart);
+	}
+
+	@Override
+	public void setState(Object state) throws NotSerializableException {
+		AdaptiveTimeContinuationState adaptiveTimeContinuationState =
+				(AdaptiveTimeContinuationState)state;
+		
+		algorithm.setState(adaptiveTimeContinuationState.getAlgorithmState());
+		iterationAtLastRestart = 
+				adaptiveTimeContinuationState.getIterationAtLastRestart();
 	}
 
 }

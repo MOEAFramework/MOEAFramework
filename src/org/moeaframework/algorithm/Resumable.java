@@ -25,6 +25,10 @@ import org.moeaframework.core.Algorithm;
 /**
  * Interface for algorithms whose internal state can be saved at regular
  * checkpoints and resumed later.
+ * 
+ * @deprecated Will be removed in version 2.0; this interface is now part of
+ *             Algorithm, a change that was necessary to ensure decorated
+ *             algorithms can be properly serialized
  */
 public interface Resumable extends Algorithm {
 

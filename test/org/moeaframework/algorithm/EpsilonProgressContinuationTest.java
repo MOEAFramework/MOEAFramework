@@ -17,6 +17,9 @@
  */
 package org.moeaframework.algorithm;
 
+import java.io.NotSerializableException;
+import java.io.Serializable;
+
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -92,6 +95,16 @@ public class EpsilonProgressContinuationTest {
 		@Override
 		public EpsilonBoxDominanceArchive getArchive() {
 			return archive;
+		}
+
+		@Override
+		public Serializable getState() throws NotSerializableException {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public void setState(Object state) throws NotSerializableException {
+			throw new UnsupportedOperationException();
 		}
 		
 	}

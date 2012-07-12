@@ -34,7 +34,7 @@ import org.moeaframework.core.Solution;
  * override the {@link #initialize()} and {@link #iterate()} methods
  * individually.
  */
-public abstract class AbstractAlgorithm implements Algorithm, Resumable {
+public abstract class AbstractAlgorithm implements Algorithm {
 
 	/**
 	 * The problem being solved.

@@ -17,6 +17,11 @@
  */
 package org.moeaframework.core;
 
+import java.io.NotSerializableException;
+import java.io.Serializable;
+
+import org.moeaframework.algorithm.AlgorithmException;
+
 /**
  * Interface for an optimization algorithm. An optimization algorithm operates
  * by performing a series of optimization steps, though the amount of work
@@ -84,5 +89,29 @@ public interface Algorithm {
 	 * after termination.
 	 */
 	public void terminate();
+	
+	/**
+	 * Returns a {@code Serializable} object representing the internal state of
+	 * this algorithm.
+	 * 
+	 * @return a {@code Serializable} object representing the internal state of
+	 *         this algorithm
+	 * @throws NotSerializableException if this algorithm does not support
+	 *         serialization
+	 * @throws AlgorithmException if this algorithm has not yet been
+	 *         initialized
+	 */
+	public Serializable getState() throws NotSerializableException;
+
+	/**
+	 * Sets the internal state of of this algorithm.
+	 * 
+	 * @param state the internal state of this algorithm
+	 * @throws NotSerializableException if this algorithm does not support
+	 *         serialization
+	 * @throws AlgorithmException if this algorithm has already been
+	 *         initialized
+	 */
+	public void setState(Object state) throws NotSerializableException;
 
 }
