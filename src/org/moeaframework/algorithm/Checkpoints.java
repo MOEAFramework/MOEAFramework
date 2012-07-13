@@ -69,6 +69,7 @@ public class Checkpoints extends PeriodicAction {
 			try {
 				algorithm.setState(loadState());
 			} catch (Exception e) {
+				e.printStackTrace();
 				System.err.println(
 						"an error occurred while reading the state file");
 			}

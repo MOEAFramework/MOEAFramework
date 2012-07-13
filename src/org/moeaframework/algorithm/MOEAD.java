@@ -17,6 +17,8 @@
  */
 package org.moeaframework.algorithm;
 
+import java.io.NotSerializableException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -53,7 +55,9 @@ public class MOEAD extends AbstractAlgorithm {
 	/**
 	 * Represents an individual (population slot) in the MOEA/D algorithm.
 	 */
-	private static class Individual {
+	private static class Individual implements Serializable {
+
+		private static final long serialVersionUID = 868794189268472009L;
 
 		/**
 		 * The current solution occupying this individual.
@@ -662,6 +666,120 @@ public class MOEAD extends AbstractAlgorithm {
 		if ((updateUtility >= 0) && (generation % updateUtility == 0)) {
 			updateUtility();
 		}
+	}
+	
+	/**
+	 * Proxy for serializing and deserializing the state of a
+	 * {@code MOEAD} instance. This proxy supports saving
+	 * the {@code population}, {@code idealPoint} and {@code generation}.
+	 */
+	public static class MOEADState implements Serializable {
+
+		private static final long serialVersionUID = 8694911146929397897L;
+
+		/**
+		 * The {@code population} from the {@code MOEAD} instance.
+		 */
+		private final List<Individual> population;
+		
+		/**
+		 * The value of the {@code idealPoint} from the {@code MOEAD} instance.
+		 */
+		private final double[] idealPoint;
+		
+		/**
+		 * The value of {@code numberOfEvaluations} from the {@code MOEAD}
+		 * instance.
+		 */
+		private final int numberOfEvaluations;
+		
+		/**
+		 * The value of {@code generation} from the {@code MOEAD} instance.
+		 */
+		private final int generation;
+		
+		/**
+		 * Constructs a proxy for serializing and deserializing the state of a
+		 * {@code MOEAD} instance.
+		 * 
+		 * @param population the {@code population} from the {@code MOEAD}
+		 *        instance
+		 * @param idealPoint the value of the {@code idealPoint} from the
+		 *        {@code MOEAD} instance
+		 * @param numberOfEvaluations the value of {@code numberOfEvaluations}
+		 *        from the {@code MOEAD} instance
+		 * @param generation the value of {@code generation} from the
+		 *        {@code MOEAD} instance
+		 */
+		public MOEADState(List<Individual> population, double[] idealPoint,
+				int numberOfEvaluations, int generation) {
+			super();
+			this.population = population;
+			this.idealPoint = idealPoint;
+			this.numberOfEvaluations = numberOfEvaluations;
+			this.generation = generation;
+		}
+
+		/**
+		 * Returns the {@code population} from the {@code MOEAD} instance.
+		 * 
+		 * @return the {@code population} from the {@code MOEAD} instance
+		 */
+		public List<Individual> getPopulation() {
+			return population;
+		}
+
+		/**
+		 * Returns the value of the {@code idealPoint} from the {@code MOEAD}
+		 * instance.
+		 * 
+		 * @return the value of the {@code idealPoint} from the {@code MOEAD}
+		 *         instance
+		 */
+		public double[] getIdealPoint() {
+			return idealPoint;
+		}
+		
+		/**
+		 * Returns the value of {@code numberOfEvaluations} from the
+		 * {@code MOEAD} instance.
+		 * 
+		 * @return the value of {@code numberOfEvaluations} from the
+		 *         {@code MOEAD} instance
+		 */
+		public int getNumberOfEvaluations() {
+			return numberOfEvaluations;
+		}
+
+		/**
+		 * Returns the value of {@code generation} from the {@code MOEAD}
+		 * instance.
+		 * 
+		 * @return the value of {@code generation} from the {@code MOEAD}
+		 *         instance
+		 */
+		public int getGeneration() {
+			return generation;
+		}
+		
+	}
+
+	@Override
+	public Serializable getState() throws NotSerializableException {
+		return new MOEADState(population, idealPoint, numberOfEvaluations,
+				generation);
+	}
+
+	@Override
+	public void setState(Object state) throws NotSerializableException {
+		super.initialize();
+
+		MOEADState moeadState = (MOEADState)state;
+
+		population = moeadState.getPopulation();
+		idealPoint = moeadState.getIdealPoint();
+		numberOfEvaluations = moeadState.getNumberOfEvaluations();
+		generation = moeadState.getGeneration();
 	}
 
 }

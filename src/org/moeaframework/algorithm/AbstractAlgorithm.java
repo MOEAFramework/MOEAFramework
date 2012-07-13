@@ -100,8 +100,8 @@ public abstract class AbstractAlgorithm implements Algorithm {
 
 	/**
 	 * Performs any initialization that is required by this algorithm. This
-	 * method is called automatically by the first invocation of {@link #step()}
-	 * , but may also be called manually prior to any invocations
+	 * method is called automatically by the first invocation of
+	 * {@link #step()}, but may also be called manually prior to any invocations
 	 * of {@code step}. Implementations should always invoke
 	 * {@code super.initialize()} to ensure the hierarchy is initialized
 	 * correctly.
