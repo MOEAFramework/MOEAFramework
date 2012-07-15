@@ -33,6 +33,9 @@ import org.moeaframework.core.comparator.RankComparator;
  * attributes for its solutions by invoking
  * {@link FastNondominatedSorting#evaluate(Population)}. This population tracks
  * modifications and performs fast non-dominated sorting only when required.
+ * Only changes made to this population can be tracked; changes made directly
+ * to the contained solutions will not be detected.  Therefore, it may be
+ * necessary to invoke {@link #update()} manually.
  * <p>
  * The iterator() method returned by {@link Population} must use the
  * {@code size()}, {@code get(int)} and {@code remove(int)} methods to ensure
@@ -211,8 +214,10 @@ public class NondominatedSortingPopulation extends Population {
 	/**
 	 * Updates the rank and crowding distance of all solutions in this
 	 * population.  This method will in general be called automatically when
-	 * the population is modified.  However, it may be necessary to invoke this
-	 * method when the solutions themselves are modified directly.
+	 * the population is modified.  However, only changes made to this
+	 * population can be tracked; changes made directly to the contained
+	 * solutions will not be detected.  Therefore, it may be necessary to
+	 * invoke {@link #update()} manually.
 	 */
 	public void update() {
 		modified = false;
