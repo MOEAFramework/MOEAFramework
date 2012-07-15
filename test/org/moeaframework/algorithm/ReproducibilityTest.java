@@ -91,9 +91,10 @@ public class ReproducibilityTest {
 	 */
 	public void test(String algorithmName) {
 		NondominatedPopulation resultSet = null;
+		long seed = PRNG.getRandom().nextLong();
 
 		for (int i = 0; i < 2; i++) {
-			PRNG.setSeed(1337);
+			PRNG.setSeed(seed);
 
 			Problem problem = ProblemFactory.getInstance().getProblem(
 					"DTLZ2_2");

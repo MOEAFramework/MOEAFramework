@@ -130,7 +130,7 @@ public class ResumeTest {
 	 */
 	protected void testContinuousRun(String algorithmName) throws IOException {
 		Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
-		int seed = PRNG.nextInt();
+		long seed = PRNG.getRandom().nextLong();
 		
 		// first, run the algorithm normally
 		PRNG.setSeed(seed);
@@ -165,8 +165,6 @@ public class ResumeTest {
 			checkpoints = new Checkpoints(
 					AlgorithmFactory.getInstance().getAlgorithm(algorithmName,
 							new Properties(), problem), file, 0);
-			
-			
 
 			checkpoints.step();
 		}
