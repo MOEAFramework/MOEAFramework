@@ -323,10 +323,10 @@ public class MOEAD extends AbstractAlgorithm {
 		initializePopulation(initialSolutions.length);
 		initializeNeighborhoods();
 		initializeIdealPoint();
+		evaluateAll(initialSolutions);
 		
 		for (int i = 0; i < initialSolutions.length; i++) {
 			Solution solution = initialSolutions[i];
-			evaluate(solution);
 			updateIdealPoint(solution);
 			population.get(i).setSolution(solution);
 		}

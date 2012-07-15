@@ -12,6 +12,8 @@ Framework.
     
   * The Resumable interface is deprecated since its methods are now
     redundant (see the item above for details).
+    
+  * MOEA/D and epsilon-NSGA-II can now be resumed.
 
   * Adds several helper methods to EncodingUtils to support creating, getting,
     and setting the values of common decision variable types.  These helper
@@ -30,7 +32,11 @@ Framework.
   
       - QualityIndicator previously returned indicator values of 0 if the
         calculate method had not been invoked.  Now, attempting to retrieve any
-        indicator value results in an IllegalStateException.  
+        indicator value results in an IllegalStateException.
+        
+      - NSGA-II was not performing non-dominated sorting on the initial
+        population, which resulted in incorrect ranks and crowding distances
+        for the first generation.  This is now fixed.
 
 
 -----------------------------

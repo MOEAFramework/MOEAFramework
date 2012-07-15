@@ -19,6 +19,7 @@ package org.moeaframework.algorithm;
 
 import java.io.NotSerializableException;
 import java.io.Serializable;
+import java.util.Arrays;
 
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.Problem;
@@ -80,6 +81,16 @@ public abstract class AbstractAlgorithm implements Algorithm {
 		for (Solution solution : solutions) {
 			evaluate(solution);
 		}
+	}
+	
+	/**
+	 * Evaluates the specified solutions.  This method is equivalent to
+	 * {@code evaluateAll(Arrays.asList(solutions))}.
+	 * 
+	 * @param solutions the solutions to evaluate
+	 */
+	public void evaluateAll(Solution[] solutions) {
+		evaluateAll(Arrays.asList(solutions));
 	}
 
 	@Override

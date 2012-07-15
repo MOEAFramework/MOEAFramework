@@ -378,7 +378,7 @@ public class PISAAlgorithm extends AbstractAlgorithm {
 		Solution[] initialPopulation = initialization.initialize();
 		int[] initialIds = new int[alpha];
 
-		evaluateAll(Arrays.asList(initialPopulation));
+		evaluateAll(initialPopulation);
 
 		for (int i = 0; i < alpha; i++) {
 			initialIds[i] = addToPopulation(initialPopulation[i]);

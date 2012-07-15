@@ -12,6 +12,8 @@ any changes.
  Easy
 ------
 
+  * Make PISA and JMetal algorithms resumable, if possible.
+
   * Complete development of the new command line interface, with the aim to
     simplify launching the various tools.  This interface will hide the verbose
     command line statements required by Java, and replace it with a streamlined

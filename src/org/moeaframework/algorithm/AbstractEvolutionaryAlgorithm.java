@@ -94,9 +94,10 @@ public abstract class AbstractEvolutionaryAlgorithm extends AbstractAlgorithm
 
 		Population population = getPopulation();
 		NondominatedPopulation archive = getArchive();
-
-		population.addAll(initialization.initialize());
-		evaluateAll(population);
+		Solution[] initialSolutions = initialization.initialize();
+		
+		evaluateAll(initialSolutions);
+		population.addAll(initialSolutions);
 
 		if (archive != null) {
 			archive.addAll(population);

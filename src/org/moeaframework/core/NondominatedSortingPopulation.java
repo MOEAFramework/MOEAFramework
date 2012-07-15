@@ -210,9 +210,11 @@ public class NondominatedSortingPopulation extends Population {
 
 	/**
 	 * Updates the rank and crowding distance of all solutions in this
-	 * population.
+	 * population.  This method will in general be called automatically when
+	 * the population is modified.  However, it may be necessary to invoke this
+	 * method when the solutions themselves are modified directly.
 	 */
-	protected void update() {
+	public void update() {
 		modified = false;
 		fastNondominatedSorting.evaluate(this);
 	}
