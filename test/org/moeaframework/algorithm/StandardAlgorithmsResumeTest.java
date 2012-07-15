@@ -14,32 +14,13 @@ import org.moeaframework.core.NondominatedSortingPopulation;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
-import org.moeaframework.core.Solution;
 import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.core.spi.ProblemFactory;
-import org.moeaframework.problem.DTLZ.DTLZ2;
 
 /**
  * Tests if algorithm state can be saved and restored for various algorithms.
  */
-public class ResumeTest {
-	
-	public static class ErrorProneProblem extends DTLZ2 {
-
-		public ErrorProneProblem(int numberOfObjectives) {
-			super(numberOfObjectives);
-		}
-
-		@Override
-		public void evaluate(Solution solution) {
-			if (PRNG.nextDouble() <= 0.001) {
-				throw new RuntimeException();
-			} else {
-				super.evaluate(solution);
-			}
-		}
-		
-	}
+public class StandardAlgorithmsResumeTest {
 
 	@Test
 	public void testNSGAIIResult() throws IOException {
