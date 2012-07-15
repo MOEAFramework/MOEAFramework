@@ -152,8 +152,8 @@ public class FastNondominatedSorting {
 				for (int j = 1; j < n - 1; j++) {
 					double distance = (Double)front.get(j).getAttribute(
 							CROWDING_ATTRIBUTE);
-					distance += (front.get(j + 1).getObjective(i) - front.get(
-							j - 1).getObjective(i))
+					distance += (front.get(j + 1).getObjective(i) - 
+							front.get(j - 1).getObjective(i))
 							/ (maxObjective - minObjective);
 					front.get(j).setAttribute(CROWDING_ATTRIBUTE, distance);
 				}
