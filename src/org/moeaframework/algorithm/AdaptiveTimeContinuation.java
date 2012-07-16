@@ -189,7 +189,6 @@ implements EvolutionaryAlgorithm {
 	 * @param type the type of restart
 	 */
 	protected void restart(RestartType type) {
-		System.out.println("Restart");
 		Population population = getPopulation();
 		NondominatedPopulation archive = getArchive();
 

@@ -138,7 +138,6 @@ public class StandardAlgorithmsResumeTest {
 		NondominatedPopulation normalResult = algorithm.getResult();
 		
 		// second, run the algorithm using checkpoints
-		System.out.println("==");
 		File file = TestUtils.createTempFile();
 		Checkpoints checkpoints = null;
 		PRNG.setSeed(seed);
