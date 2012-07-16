@@ -189,6 +189,7 @@ implements EvolutionaryAlgorithm {
 	 * @param type the type of restart
 	 */
 	protected void restart(RestartType type) {
+		System.out.println("Restart");
 		Population population = getPopulation();
 		NondominatedPopulation archive = getArchive();
 
@@ -302,18 +303,17 @@ implements EvolutionaryAlgorithm {
 
 	@Override
 	public Serializable getState() throws NotSerializableException {
-		return new AdaptiveTimeContinuationState(algorithm.getState(),
+		return new AdaptiveTimeContinuationState(super.getState(),
 				iterationAtLastRestart);
 	}
 
 	@Override
-	public void setState(Object state) throws NotSerializableException {
-		AdaptiveTimeContinuationState adaptiveTimeContinuationState =
-				(AdaptiveTimeContinuationState)state;
+	public void setState(Object objState) throws NotSerializableException {
+		AdaptiveTimeContinuationState state =
+				(AdaptiveTimeContinuationState)objState;
 		
-		algorithm.setState(adaptiveTimeContinuationState.getAlgorithmState());
-		iterationAtLastRestart = 
-				adaptiveTimeContinuationState.getIterationAtLastRestart();
+		super.setState(state.getAlgorithmState());
+		iterationAtLastRestart = state.getIterationAtLastRestart();
 	}
 
 }

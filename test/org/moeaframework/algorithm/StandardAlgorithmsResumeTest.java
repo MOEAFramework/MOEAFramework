@@ -84,13 +84,13 @@ public class StandardAlgorithmsResumeTest {
 		NondominatedPopulation lastResult = new NondominatedPopulation();
 		int lastNFE = 0;
 		Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
-		Algorithm algorithm = null;
 		Checkpoints checkpoints = null;
 
-		for (int i = 0; i < 10; i++) {
-			algorithm = AlgorithmFactory.getInstance().getAlgorithm(
-					algorithmName, new Properties(), problem);
-			checkpoints = new Checkpoints(algorithm, file, 0);
+		for (int i = 0; i < 200; i++) {
+			checkpoints = new Checkpoints(
+					AlgorithmFactory.getInstance().getAlgorithm(
+							algorithmName, new Properties(), problem),
+							file, 0);
 
 			Assert.assertEquals(lastNFE, checkpoints.getNumberOfEvaluations());
 			TestUtils.assertEquals(lastResult, checkpoints.getResult());
@@ -118,7 +118,7 @@ public class StandardAlgorithmsResumeTest {
 		Algorithm algorithm = AlgorithmFactory.getInstance().getAlgorithm(
 				algorithmName, new Properties(), problem);
 		
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 200; i++) {
 			// Due to how NondominatedSortingPopulation automatically
 			// recalculates ranks and crowding distances, the checkpoint
 			// version slightly differs due to an extra update.  This hack
@@ -138,14 +138,16 @@ public class StandardAlgorithmsResumeTest {
 		NondominatedPopulation normalResult = algorithm.getResult();
 		
 		// second, run the algorithm using checkpoints
+		System.out.println("==");
 		File file = TestUtils.createTempFile();
 		Checkpoints checkpoints = null;
 		PRNG.setSeed(seed);
 
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 200; i++) {
 			checkpoints = new Checkpoints(
-					AlgorithmFactory.getInstance().getAlgorithm(algorithmName,
-							new Properties(), problem), file, 0);
+					AlgorithmFactory.getInstance().getAlgorithm(
+							algorithmName, new Properties(), problem),
+							file, 0);
 
 			checkpoints.step();
 		}

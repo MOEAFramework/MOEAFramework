@@ -143,20 +143,19 @@ public class InstrumentedAlgorithm extends PeriodicAction {
 
 	@Override
 	public Serializable getState() throws NotSerializableException {
-		return new InstrumentedAlgorithmState(algorithm.getState(),
+		return new InstrumentedAlgorithmState(super.getState(),
 				accumulator);
 	}
 
 	@Override
-	public void setState(Object state) throws NotSerializableException {
-		InstrumentedAlgorithmState instrumentedAlgorithmState =
-				(InstrumentedAlgorithmState)state;
+	public void setState(Object objState) throws NotSerializableException {
+		InstrumentedAlgorithmState state =
+				(InstrumentedAlgorithmState)objState;
 		
-		algorithm.setState(instrumentedAlgorithmState.getAlgorithmState());
+		super.setState(state.getAlgorithmState());
 		
 		//copy the stored accumulator contents to this accumulator
-		Accumulator storedAccumulator =
-				instrumentedAlgorithmState.getAccumulator();
+		Accumulator storedAccumulator = state.getAccumulator();
 		
 		for (String key : storedAccumulator.keySet()) {
 			for (int i=0; i<storedAccumulator.size(key); i++) {

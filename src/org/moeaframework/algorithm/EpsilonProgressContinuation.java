@@ -161,19 +161,17 @@ public class EpsilonProgressContinuation extends AdaptiveTimeContinuation {
 
 	@Override
 	public Serializable getState() throws NotSerializableException {
-		return new EpsilonProgressContinuationState(algorithm.getState(),
+		return new EpsilonProgressContinuationState(super.getState(),
 				improvementsAtLastCheck);
 	}
 
 	@Override
-	public void setState(Object state) throws NotSerializableException {
-		EpsilonProgressContinuationState epsilonProgressContinuationState =
-				(EpsilonProgressContinuationState)state;
+	public void setState(Object objState) throws NotSerializableException {
+		EpsilonProgressContinuationState state =
+				(EpsilonProgressContinuationState)objState;
 		
-		algorithm.setState(
-				epsilonProgressContinuationState.getAlgorithmState());
-		improvementsAtLastCheck = 
-				epsilonProgressContinuationState.getImprovementsAtLastCheck();
+		super.setState(state.getAlgorithmState());
+		improvementsAtLastCheck = state.getImprovementsAtLastCheck();
 	}
 
 }

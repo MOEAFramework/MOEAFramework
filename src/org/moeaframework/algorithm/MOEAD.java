@@ -771,15 +771,15 @@ public class MOEAD extends AbstractAlgorithm {
 	}
 
 	@Override
-	public void setState(Object state) throws NotSerializableException {
+	public void setState(Object objState) throws NotSerializableException {
 		super.initialize();
 
-		MOEADState moeadState = (MOEADState)state;
+		MOEADState state = (MOEADState)objState;
 
-		population = moeadState.getPopulation();
-		idealPoint = moeadState.getIdealPoint();
-		numberOfEvaluations = moeadState.getNumberOfEvaluations();
-		generation = moeadState.getGeneration();
+		population = state.getPopulation();
+		idealPoint = state.getIdealPoint();
+		numberOfEvaluations = state.getNumberOfEvaluations();
+		generation = state.getGeneration();
 	}
 
 }
