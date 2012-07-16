@@ -11,15 +11,28 @@ import org.moeaframework.TestUtils;
 import org.moeaframework.analysis.collector.Accumulator;
 import org.moeaframework.analysis.collector.IndicatorCollector;
 import org.moeaframework.analysis.collector.InstrumentedAlgorithm;
+import org.moeaframework.analysis.sensitivity.EpsilonHelper;
 import org.moeaframework.core.Algorithm;
+import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.EvolutionaryAlgorithm;
+import org.moeaframework.core.Initialization;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.NondominatedSortingPopulation;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
+import org.moeaframework.core.Variation;
+import org.moeaframework.core.comparator.ChainedComparator;
+import org.moeaframework.core.comparator.CrowdingComparator;
+import org.moeaframework.core.comparator.EpsilonBoxDominanceComparator;
+import org.moeaframework.core.comparator.ParetoDominanceComparator;
 import org.moeaframework.core.indicator.Hypervolume;
+import org.moeaframework.core.operator.RandomInitialization;
+import org.moeaframework.core.operator.TournamentSelection;
+import org.moeaframework.core.operator.UniformSelection;
+import org.moeaframework.core.operator.real.UM;
 import org.moeaframework.core.spi.AlgorithmFactory;
+import org.moeaframework.core.spi.OperatorFactory;
 import org.moeaframework.core.spi.ProblemFactory;
 
 /**
@@ -59,28 +72,8 @@ public class StandardAlgorithmsResumeTest {
 	}
 	
 	@Test
-	public void testInstrumentedNSGAII() throws IOException {
+	public void testInstrumentedAlgorithm() throws IOException {
 		testInstrumented("NSGAII");
-	}
-	
-	@Test
-	public void testInstrumentedGDE3() throws IOException {
-		testInstrumented("GDE3");
-	}
-	
-	@Test
-	public void testInstrumentedMOEAD() throws IOException {
-		testInstrumented("MOEAD");
-	}
-	
-	@Test
-	public void testInstrumentedEpsilonNSGAII() throws IOException {
-		testInstrumented("eNSGAII");
-	}
-	
-	@Test
-	public void testInstrumentedEpslonMOEA() throws IOException {
-		testInstrumented("eMOEA");
 	}
 	
 	/**
@@ -204,6 +197,52 @@ public class StandardAlgorithmsResumeTest {
 						checkpointResult.get(key, i));
 			}
 		}
+	}
+	
+	@Test
+	public void testEpsilonProgressContinuation() throws IOException {
+		AlgorithmFactory.setInstance(new TestAlgorithmFactory());
+		test("EpsilonProgressContinuationTest");
+		AlgorithmFactory.setInstance(new AlgorithmFactory());
+	}
+	
+	private static class TestAlgorithmFactory extends AlgorithmFactory {
+
+		@Override
+		public Algorithm getAlgorithm(String name, Properties properties,
+				Problem problem) {
+			if (name.equalsIgnoreCase("EpsilonProgressContinuationTest")) {
+				Initialization initialization = new RandomInitialization(
+						problem, 100);
+	
+				NondominatedSortingPopulation population = 
+						new NondominatedSortingPopulation(
+								new ParetoDominanceComparator());
+	
+				EpsilonBoxDominanceArchive archive = 
+						new EpsilonBoxDominanceArchive(
+								new EpsilonBoxDominanceComparator(
+										EpsilonHelper.getEpsilon(problem)));
+	
+				TournamentSelection selection = new TournamentSelection(2, 
+						new ChainedComparator(
+								new ParetoDominanceComparator(),
+								new CrowdingComparator()));
+	
+				Variation variation = 
+						OperatorFactory.getInstance().getVariation(null,
+								new Properties(), problem);
+	
+				NSGAII nsgaii = new NSGAII(problem, population, archive,
+						selection, variation, initialization);
+	
+				return new EpsilonProgressContinuation(nsgaii, 100, 100, 4.0,
+						100, 10000, new UniformSelection(), new UM(1.0));
+			} else {
+				return super.getAlgorithm(name, properties, problem);
+			}
+		}
+		
 	}
 	
 }

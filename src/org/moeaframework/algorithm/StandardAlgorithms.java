@@ -327,7 +327,7 @@ public class StandardAlgorithms extends AlgorithmProvider {
 		NSGAII nsgaii = new NSGAII(problem, population, archive, selection,
 				variation, initialization);
 
-		final AdaptiveTimeContinuation algorithm = new AdaptiveTimeContinuation(
+		AdaptiveTimeContinuation algorithm = new AdaptiveTimeContinuation(
 				nsgaii, 100, 100, 1.0 / properties.getDouble("injectionRate",
 						0.25), 100, 10000, new UniformSelection(), new UM(1.0));
 
