@@ -34,6 +34,8 @@ import org.moeaframework.core.operator.grammar.GrammarMutation;
 import org.moeaframework.core.operator.permutation.Insertion;
 import org.moeaframework.core.operator.permutation.PMX;
 import org.moeaframework.core.operator.permutation.Swap;
+import org.moeaframework.core.operator.program.BranchCrossover;
+import org.moeaframework.core.operator.program.PointMutation;
 import org.moeaframework.core.operator.real.AdaptiveMetropolis;
 import org.moeaframework.core.operator.real.DifferentialEvolution;
 import org.moeaframework.core.operator.real.PCX;
@@ -45,6 +47,7 @@ import org.moeaframework.core.operator.real.UNDX;
 import org.moeaframework.core.variable.BinaryVariable;
 import org.moeaframework.core.variable.Grammar;
 import org.moeaframework.core.variable.Permutation;
+import org.moeaframework.core.variable.Program;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.util.TypedProperties;
 
@@ -191,6 +194,8 @@ public class OperatorFactory {
 		
 		GRAMMAR,
 		
+		PROGRAM,
+		
 		UNKNOWN
 
 	}
@@ -256,6 +261,8 @@ public class OperatorFactory {
 				types.add(Type.PERMUTATION);
 			} else if (variable instanceof Grammar) {
 				types.add(Type.GRAMMAR);
+			} else if (variable instanceof Program) {
+				types.add(Type.PROGRAM);
 			} else {
 				types.add(Type.UNKNOWN);
 			}
@@ -277,6 +284,8 @@ public class OperatorFactory {
 			return "pmx+insertion+swap";
 		} else if (type.equals(Type.GRAMMAR)) {
 			return "gx+gm";
+		} else if (type.equals(Type.PROGRAM)) {
+			return "bc+ptm";
 		} else {
 			throw new ProviderNotFoundException("unknown type");
 		}
@@ -402,6 +411,12 @@ public class OperatorFactory {
 			} else if (name.equalsIgnoreCase("gm")) {
 				return new GrammarMutation(
 						properties.getDouble("gm.rate", 1.0));
+			} else if (name.equalsIgnoreCase("ptm")) {
+				return new PointMutation(
+						properties.getDouble("ptm.rate", 0.01));
+			} else if (name.equalsIgnoreCase("bc")) {
+				return new BranchCrossover(
+						properties.getDouble("bc.rate", 0.9));
 			} else {
 				throw new ProviderNotFoundException(name);
 			}

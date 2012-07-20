@@ -25,7 +25,9 @@ import org.moeaframework.core.Variable;
 import org.moeaframework.core.variable.BinaryVariable;
 import org.moeaframework.core.variable.Grammar;
 import org.moeaframework.core.variable.Permutation;
+import org.moeaframework.core.variable.Program;
 import org.moeaframework.core.variable.RealVariable;
+import org.moeaframework.util.tree.Rules;
 
 /**
  * Initializes all built-in decision variables randomly. The
@@ -105,6 +107,19 @@ public class RandomInitialization implements Initialization {
 				array[i] = PRNG.nextInt(grammar.getMaximumValue());
 			}
 			grammar.fromArray(array);
+		} else if (variable instanceof Program) {
+			Program program = (Program)variable;
+			Rules rules = program.getRules();
+			int depth = PRNG.nextInt(rules.getMaxDepth());
+			boolean isFull = PRNG.nextBoolean();
+			
+			if (isFull) {
+				program.setArgument(0, rules.buildTreeFull(
+						program.getReturnType(), depth));
+			} else {
+				program.setArgument(0, rules.buildTreeGrow(
+						program.getReturnType(), depth));
+			}
 		} else {
 			System.err.println("can not initialize unknown type");
 		}
