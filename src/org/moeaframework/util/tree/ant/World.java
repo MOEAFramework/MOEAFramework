@@ -26,6 +26,8 @@ public class World {
 	
 	private int numberOfMoves;
 	
+	private int remainingMoves;
+	
 	private int maxMoves;
 	
 	private int foodEaten;
@@ -44,13 +46,8 @@ public class World {
 		super();
 		this.maxMoves = maxMoves;
 		
-		x = 0;
-		y = 0;
-		direction = Direction.EAST;
-		numberOfMoves = 0;
-		foodEaten = 0;
-		
 		load(reader);
+		reset();
 	}
 	
 	protected void load(Reader reader) throws IOException {
@@ -119,7 +116,7 @@ public class World {
 		x = 0;
 		y = 0;
 		direction = Direction.EAST;
-		numberOfMoves = 0;
+		remainingMoves = maxMoves;
 		foodEaten = 0;
 		
 		for (int i = 0; i < width; i++) {
@@ -136,7 +133,7 @@ public class World {
 	}
 	
 	public int getRemainingMoves() {
-		return maxMoves - numberOfMoves;
+		return remainingMoves;
 	}
 
 	public int getNumberOfMoves() {
@@ -173,7 +170,7 @@ public class World {
 			throw new IllegalStateException();
 		}
 		
-		numberOfMoves++;
+		remainingMoves--;
 	}
 	
 	public void turnLeft() {
@@ -194,7 +191,7 @@ public class World {
 			throw new IllegalStateException();
 		}
 		
-		numberOfMoves++;
+		remainingMoves--;
 	}
 	
 	public void moveForward() {
@@ -222,9 +219,10 @@ public class World {
 		if (map[x][y].equals(State.FOOD)) {
 			map[x][y] = State.EATEN;
 			foodEaten++;
+			numberOfMoves = maxMoves - remainingMoves;
 		}
 		
-		numberOfMoves++;
+		remainingMoves--;
 	}
 	
 	public boolean isFoodAhead() {

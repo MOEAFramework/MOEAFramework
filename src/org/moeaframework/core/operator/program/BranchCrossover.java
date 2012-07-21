@@ -51,15 +51,27 @@ public class BranchCrossover implements Variation {
 		// pick the node to be replaced (destination) from the first parent
 		if (PRNG.nextDouble() <= rules.getFunctionCrossoverProbability()) {
 			int size = program1.getArgument(0).getNumberOfFunctions();
+			
+			if (size == 0) {
+				// no valid crossover, no change is made
+				return;
+			}
+			
 			node = program1.getArgument(0).getFunctionAt(PRNG.nextInt(size));
 		} else {
 			int size = program1.getArgument(0).getNumberOfTerminals();
+			
+			if (size == 0) {
+				// no valid crossover, no change is made
+				return;
+			}
+			
 			node = program1.getArgument(0).getTerminalAt(PRNG.nextInt(size));
 		}
 		
 		// pick the replacement (source) from the second parent
 		if (PRNG.nextDouble() <= rules.getFunctionCrossoverProbability()) {
-			int size = program1.getArgument(0).getNumberOfFunctions(
+			int size = program2.getArgument(0).getNumberOfFunctions(
 					node.getReturnType());
 			
 			if (size == 0) {
@@ -67,10 +79,10 @@ public class BranchCrossover implements Variation {
 				return;
 			}
 
-			replacement = program1.getArgument(0).getFunctionAt(
+			replacement = program2.getArgument(0).getFunctionAt(
 					node.getReturnType(), PRNG.nextInt(size));
 		} else {
-			int size = program1.getArgument(0).getNumberOfTerminals(
+			int size = program2.getArgument(0).getNumberOfTerminals(
 					node.getReturnType());
 			
 			if (size == 0) {
@@ -78,7 +90,7 @@ public class BranchCrossover implements Variation {
 				return;
 			}
 
-			replacement = program1.getArgument(0).getTerminalAt(
+			replacement = program2.getArgument(0).getTerminalAt(
 					node.getReturnType(), PRNG.nextInt(size));
 		}
 		

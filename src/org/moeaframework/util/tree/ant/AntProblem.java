@@ -50,6 +50,8 @@ public class AntProblem extends AbstractProblem {
 	}
 	
 	public void displayLastEvaluation() {
+		System.out.println("Moves: " + world.getNumberOfMoves());
+		System.out.println("Food: " + world.getFoodEaten());
 		world.display();
 	}
 

@@ -252,7 +252,7 @@ public abstract class Node {
 			
 			if (size > index) {
 				// this argument contains the node to return
-				return getNodeAt(type, includeFunctions, includeTerminals, 
+				return argument.getNodeAt(type, includeFunctions, includeTerminals, 
 						index);
 			} else {
 				// this argument does not contain the node

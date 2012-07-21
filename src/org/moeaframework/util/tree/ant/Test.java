@@ -22,9 +22,6 @@ public class Test {
 				.run();
 		
 		for (Solution solution : results) {
-			System.out.println(solution.getObjective(0));
-			System.out.println(solution.getVariable(0));
-			
 			AntProblem problem = new AntProblem(file, maxMoves);
 			problem.evaluate(solution);
 			problem.displayLastEvaluation();

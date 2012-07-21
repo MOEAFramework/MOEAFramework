@@ -24,8 +24,8 @@ public class Rules {
 		
 		returnType = Void.class;
 		maxInitializationDepth = 5;
-		maxCrossoverDepth = 10;
-		functionCrossoverProbability = 0.1;
+		maxCrossoverDepth = Integer.MAX_VALUE;
+		functionCrossoverProbability = 0.5;
 		availableNodes = new ArrayList<Node>();
 	}
 	
