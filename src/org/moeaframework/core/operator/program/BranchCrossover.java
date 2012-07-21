@@ -1,8 +1,5 @@
 package org.moeaframework.core.operator.program;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variable;
@@ -47,58 +44,58 @@ public class BranchCrossover implements Variation {
 		return new Solution[] { result1 };
 	}
 	
-	public Node getCrossoverPoint(Node node, int count) {
-		if (count == 0) {
-			return node;
+	protected void crossover(Program program1, Program program2, Rules rules) {
+		Node node = null;
+		Node replacement = null;
+		
+		// pick the node to be replaced (destination) from the first parent
+		if (PRNG.nextDouble() <= rules.getFunctionCrossoverProbability()) {
+			int size = program1.getArgument(0).getNumberOfFunctions();
+			node = program1.getArgument(0).getFunctionAt(PRNG.nextInt(size));
 		} else {
-			count--;
+			int size = program1.getArgument(0).getNumberOfTerminals();
+			node = program1.getArgument(0).getTerminalAt(PRNG.nextInt(size));
+		}
+		
+		// pick the replacement (source) from the second parent
+		if (PRNG.nextDouble() <= rules.getFunctionCrossoverProbability()) {
+			int size = program1.getArgument(0).getNumberOfFunctions(
+					node.getReturnType());
 			
-			for (int i = 0; i < node.getNumberOfArguments(); i++) {
-				Node argument = node.getArgument(i);
-				int size = argument.size();
-				
-				if (size > count) {
-					return getCrossoverPoint(argument, count);
-				} else {
-					count -= size;
-				}
+			if (size == 0) {
+				// no valid crossover, no change is made
+				return;
 			}
+
+			replacement = program1.getArgument(0).getFunctionAt(
+					node.getReturnType(), PRNG.nextInt(size));
+		} else {
+			int size = program1.getArgument(0).getNumberOfTerminals(
+					node.getReturnType());
+			
+			if (size == 0) {
+				// no valid crossover, no change is made
+				return;
+			}
+
+			replacement = program1.getArgument(0).getTerminalAt(
+					node.getReturnType(), PRNG.nextInt(size));
 		}
 		
-		throw new IllegalStateException();
-	}
-	
-	public List<Node> listCrossoverOptions(Node node, Class<?> type) {
-		List<Node> result = new ArrayList<Node>();
-		
-		if (type.isAssignableFrom(node.getReturnType())) {
-			result.add(node);
-		}
-		
-		for (int i = 0; i < node.getNumberOfArguments(); i++) {
-			result.addAll(listCrossoverOptions(node.getArgument(i), type));
-		}
-		
-		return result;
-	}
-	
-	public void crossover(Program program1, Program program2, Rules rules) {
-		int size = program1.size();
-		int count = PRNG.nextInt(size - 1) + 1; // skip the program node
-		Node node = getCrossoverPoint(program1, count);
-		Node parent = node.getParent();
-		List<Node> options = listCrossoverOptions(program2.getArgument(0),
-				node.getReturnType());
-		
-		if (options.isEmpty()) {
+		// if this replacement violates the depth limit, no change is made
+		if (node.getDepth() + replacement.getMaximumHeight() > 
+				rules.getMaxCrossoverDepth()) {
 			return;
 		}
+		
+		// replace the node
+		Node parent = node.getParent();
 		
 		for (int i = 0; i < parent.getNumberOfArguments(); i++) {
 			Node argument = parent.getArgument(i);
 			
 			if (argument == node) {
-				parent.setArgument(i, PRNG.nextItem(options));
+				parent.setArgument(i, replacement);
 			}
 		}
 	}

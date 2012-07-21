@@ -155,5 +155,112 @@ public abstract class Node {
 	Class<?>[] getArgumentTypes() {
 		return argumentTypes;
 	}
+	
+	public boolean isTerminal() {
+		return getNumberOfArguments() == 0;
+	}
+	
+	public int getNumberOfFunctions(Class<?> type) {
+		return getNumberOfNodes(type, true, false);
+	}
+	
+	public Node getFunctionAt(Class<?> type, int index) {
+		return getNodeAt(type, true, false, index);
+	}
+	
+	public int getNumberOfFunctions() {
+		return getNumberOfFunctions(Object.class);
+	}
+	
+	public Node getFunctionAt(int index) {
+		return getFunctionAt(Object.class, index);
+	}
+	
+	public int getNumberOfTerminals(Class<?> type) {
+		return getNumberOfNodes(type, false, true);
+	}
+	
+	public Node getTerminalAt(Class<?> type, int index) {
+		return getNodeAt(type, false, true, index);
+	}
+	
+	public int getNumberOfTerminals() {
+		return getNumberOfTerminals(Object.class);
+	}
+	
+	public Node getTerminalAt(int index) {
+		return getTerminalAt(Object.class, index);
+	}
+	
+	public int getNumberOfNodes(Class<?> type) {
+		return getNumberOfNodes(type, true, true);
+	}
+	
+	public Node getNodeAt(Class<?> type, int index) {
+		return getNodeAt(type, true, true, index);
+	}
+	
+	public int getNumberOfNodes() {
+		return getNumberOfNodes(Object.class);
+	}
+	
+	public Node getNodeAt(int index) {
+		return getNodeAt(Object.class, index);
+	}
+	
+	protected int getNumberOfNodes(Class<?> type, boolean includeFunctions,
+			boolean includeTerminals) {
+		int result = 0;
+
+		// is this node a match?
+		if ((isTerminal() && 
+				includeTerminals && 
+				type.isAssignableFrom(getReturnType())) ||
+			(!isTerminal() && 
+				includeFunctions && 
+				type.isAssignableFrom(getReturnType()))) {
+			result++;
+		}
+		
+		// count matching nodes in arguments
+		for (Node argument : arguments) {
+			result += argument.getNumberOfNodes(type, includeFunctions,
+					includeTerminals);
+		}
+		
+		return result;
+	}
+	
+	protected Node getNodeAt(Class<?> type, boolean includeFunctions,
+			boolean includeTerminals, int index) {
+		// is this node a match?
+		if ((isTerminal() && includeTerminals && 
+				type.isAssignableFrom(getReturnType())) ||
+			(!isTerminal() && includeFunctions && 
+				type.isAssignableFrom(getReturnType()))) {
+			if (index == 0) {
+				return this;
+			} else {
+				index--;
+			}
+		}
+		
+		// recurse on matching nodes in arguments
+		for (Node argument : arguments) {
+			int size = argument.getNumberOfNodes(type, includeFunctions,
+					includeTerminals);
+			
+			if (size > index) {
+				// this argument contains the node to return
+				return getNodeAt(type, includeFunctions, includeTerminals, 
+						index);
+			} else {
+				// this argument does not contain the node
+				index -= size;
+			}
+		}
+		
+		throw new IndexOutOfBoundsException();
+	}
 
 }

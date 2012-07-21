@@ -40,7 +40,7 @@ public class PointMutation implements Variation {
 		return new Solution[] { result };
 	}
 	
-	public void mutate(Node node, Rules rules) {
+	protected void mutate(Node node, Rules rules) {
 		for (int i = 0; i < node.getNumberOfArguments(); i++) {
 			if (PRNG.nextDouble() <= probability) {
 				Node argument = node.getArgument(i);

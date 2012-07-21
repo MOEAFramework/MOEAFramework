@@ -17,18 +17,68 @@
  */
 package org.moeaframework.util.distributed;
 
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.core.Population;
+import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.problem.AbstractProblem;
+import org.moeaframework.problem.MockRealProblem;
 
 /**
  * Tests the {@link DistributedProblem} and {@link FutureSolution} classes.
  */
 public class DistributedProblemTest {
+	
+	/**
+	 * Tests if the synchronized keyword is sufficient to force a problem to
+	 * be evaluated serially.
+	 */
+	@Test
+	public void testSerialProblem() {
+		ExecutorService executor = Executors.newFixedThreadPool(10);
+		Problem problem = new DistributedProblem(new MockRealProblem() {
+			
+			private boolean isInvoked;
+
+			@Override
+			public synchronized void evaluate(Solution solution) {
+				Assert.assertFalse(isInvoked);
+				
+				isInvoked = true;
+				
+				super.evaluate(solution);
+				
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+					// do nothing
+				}
+				
+				isInvoked = false;
+			}
+			
+		}, executor);
+		
+		Population population = new Population();
+		
+		for (int i = 0; i < 10; i++) {
+			population.add(problem.newSolution());
+		}
+		
+		for (int i = 0; i < 10; i++) {
+			problem.evaluate(population.get(i));
+		}
+		
+		for (int i = 0; i < 10; i++) {
+			population.get(i).getObjectives();
+		}
+		
+		executor.shutdown();
+	}
 
 	/**
 	 * Tests running a small single-thread test.

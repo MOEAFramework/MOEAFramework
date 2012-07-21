@@ -110,7 +110,7 @@ public class RandomInitialization implements Initialization {
 		} else if (variable instanceof Program) {
 			Program program = (Program)variable;
 			Rules rules = program.getRules();
-			int depth = PRNG.nextInt(rules.getMaxDepth());
+			int depth = PRNG.nextInt(rules.getMaxInitializationDepth());
 			boolean isFull = PRNG.nextBoolean();
 			
 			if (isFull) {

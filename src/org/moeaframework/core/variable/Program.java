@@ -5,6 +5,12 @@ import org.moeaframework.util.tree.Environment;
 import org.moeaframework.util.tree.Node;
 import org.moeaframework.util.tree.Rules;
 
+/**
+ * 
+ * <b>Note: Although {@code Program} extends {@link Node}, the {@code Program}
+ * object must never be altered by the optimization algorithm.</b>  Only
+ * its arguments can undergo variation.
+ */
 public class Program extends Node implements Variable {
 
 	private static final long serialVersionUID = -2621361322042428290L;

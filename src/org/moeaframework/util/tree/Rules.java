@@ -11,7 +11,11 @@ public class Rules {
 	
 	private Node scaffolding;
 	
-	private int maxDepth;
+	private int maxInitializationDepth;
+	
+	private int maxCrossoverDepth;
+	
+	private double functionCrossoverProbability;
 	
 	private List<Node> availableNodes;
 	
@@ -19,7 +23,9 @@ public class Rules {
 		super();
 		
 		returnType = Void.class;
-		maxDepth = 5;
+		maxInitializationDepth = 5;
+		maxCrossoverDepth = 10;
+		functionCrossoverProbability = 0.1;
 		availableNodes = new ArrayList<Node>();
 	}
 	
@@ -40,12 +46,28 @@ public class Rules {
 		setReturnType(scaffolding.getReturnType());
 	}
 
-	public int getMaxDepth() {
-		return maxDepth;
+	public int getMaxInitializationDepth() {
+		return maxInitializationDepth;
 	}
 
-	public void setMaxDepth(int maxDepth) {
-		this.maxDepth = maxDepth;
+	public void setMaxInitializationDepth(int maxInitializationDepth) {
+		this.maxInitializationDepth = maxInitializationDepth;
+	}
+
+	public int getMaxCrossoverDepth() {
+		return maxCrossoverDepth;
+	}
+
+	public void setMaxCrossoverDepth(int maxCrossoverDepth) {
+		this.maxCrossoverDepth = maxCrossoverDepth;
+	}
+
+	public double getFunctionCrossoverProbability() {
+		return functionCrossoverProbability;
+	}
+
+	public void setFunctionCrossoverProbability(double functionCrossoverProbability) {
+		this.functionCrossoverProbability = functionCrossoverProbability;
 	}
 
 	public void add(Node node) {
@@ -139,6 +161,21 @@ public class Rules {
 	
 	public List<Node> getAvailableNodes() {
 		return availableNodes;
+	}
+	
+	public List<Node> listAvailableCrossoverNodes(Node node, Class<?> type) {
+		List<Node> result = new ArrayList<Node>();
+		
+		if (type.isAssignableFrom(node.getReturnType())) {
+			result.add(node);
+		}
+		
+		for (int i = 0; i < node.getNumberOfArguments(); i++) {
+			result.addAll(listAvailableCrossoverNodes(node.getArgument(i),
+					type));
+		}
+		
+		return result;
 	}
 
 	public List<Node> listAvailableMutations(Node node) {
