@@ -27,10 +27,24 @@ import org.moeaframework.core.variable.Program;
 import org.moeaframework.util.tree.Node;
 import org.moeaframework.util.tree.Rules;
 
+/**
+ * Mutates a program by randomly selecting nodes in the expression tree and
+ * replacing the node with a new, compatible, randomly-selected node.
+ * <p>
+ * This operator is type-safe.
+ */
 public class PointMutation implements Variation {
 	
+	/**
+	 * The probability of mutating a node in the tree.
+	 */
 	private double probability;
 	
+	/**
+	 * Constructs a new point mutation instance.
+	 * 
+	 * @param probability the probability of mutating a node in the tree
+	 */
 	public PointMutation(double probability) {
 		super();
 		this.probability = probability;
@@ -57,6 +71,12 @@ public class PointMutation implements Variation {
 		return new Solution[] { result };
 	}
 	
+	/**
+	 * Applies point mutation to the arguments of the specified node.
+	 * 
+	 * @param node the parent of the nodes undergoing mutation
+	 * @param rules the rules defining the program syntax
+	 */
 	protected void mutate(Node node, Rules rules) {
 		for (int i = 0; i < node.getNumberOfArguments(); i++) {
 			if (PRNG.nextDouble() <= probability) {

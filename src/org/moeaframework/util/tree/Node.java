@@ -343,7 +343,6 @@ public abstract class Node {
 	 * Returns the number of function (non-terminal) nodes contained in the
 	 * subtree rooted at this node.
 	 * 
-	 * @param type the return type of the node
 	 * @return the number of function (non-terminal) nodes contained in the
 	 *         subtree rooted at this node
 	 */
@@ -400,7 +399,6 @@ public abstract class Node {
 	 * Returns the number of terminal nodes contained in the subtree rooted at
 	 * this node.
 	 * 
-	 * @param type the return type of the node
 	 * @return the number of terminal nodes contained in the subtree rooted at
 	 *         this node
 	 */

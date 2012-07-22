@@ -25,10 +25,25 @@ import org.moeaframework.core.variable.Program;
 import org.moeaframework.util.tree.Node;
 import org.moeaframework.util.tree.Rules;
 
+/**
+ * Exchanges a randomly-selected subtree from one program with a compatible,
+ * randomly-selected subtree from another program.
+ * <p>
+ * This operator is type-safe.
+ */
 public class BranchCrossover implements Variation {
 	
+	/**
+	 * The probability that branch crossover is applied to a program.
+	 */
 	private double probability;
 	
+	/**
+	 * Constructs a new branch crossover instance.
+	 * 
+	 * @param probability the probability that branch crossover is applied to a
+	 *        program
+	 */
 	public BranchCrossover(double probability) {
 		super();
 		this.probability = probability;
@@ -61,6 +76,14 @@ public class BranchCrossover implements Variation {
 		return new Solution[] { result1 };
 	}
 	
+	/**
+	 * Applies branch crossover to the programs.
+	 * 
+	 * @param program1 the first program, which is the parent program
+	 * @param program2 the second program, which provides the replacement
+	 *        subtree
+	 * @param rules the rules defining the program syntax
+	 */
 	protected void crossover(Program program1, Program program2, Rules rules) {
 		Node node = null;
 		Node replacement = null;
@@ -113,20 +136,12 @@ public class BranchCrossover implements Variation {
 		
 		// if this replacement violates the depth limit, no change is made
 		if (node.getDepth() + replacement.getMaximumHeight() > 
-				rules.getMaxCrossoverDepth()) {
+				rules.getMaxVariationDepth()) {
 			return;
 		}
 		
 		// replace the node
-		Node parent = node.getParent();
-		
-		for (int i = 0; i < parent.getNumberOfArguments(); i++) {
-			Node argument = parent.getArgument(i);
-			
-			if (argument == node) {
-				parent.setArgument(i, replacement);
-			}
-		}
+		rules.replace(node, replacement);
 	}
 
 }

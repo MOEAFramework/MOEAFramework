@@ -21,7 +21,8 @@ package org.moeaframework.util.tree;
  * Provides many arithmetic and trigonometric functions that operate on
  * {@link Number}s, performing any necessary implicit casting.  An integer
  * number remains an integer unless the specific function requires
- * floating-point values.
+ * floating-point values.  These methods favor {@link Long} and {@link Double}
+ * representations for integer and floating-point values, respectively.
  */
 public class NumberArithmetic {
 	

@@ -17,6 +17,7 @@
  */
 
 /**
- * Collection of operators for grammars.
+ * Collection of operators for grammars for use with Grammatical Evolution
+ * (GE).
  */
 package org.moeaframework.core.operator.grammar;

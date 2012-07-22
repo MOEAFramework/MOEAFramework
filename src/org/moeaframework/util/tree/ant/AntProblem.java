@@ -67,6 +67,7 @@ public class AntProblem extends AbstractProblem {
 		rules.add(new IsFoodAhead());
 		rules.add(new IfElse(Void.class));
 		rules.add(new Sequence(Void.class, Void.class));
+		rules.setReturnType(Void.class);
 		
 		world = new World(file, maxMoves);
 	}
@@ -102,7 +103,7 @@ public class AntProblem extends AbstractProblem {
 	@Override
 	public Solution newSolution() {
 		Solution solution = new Solution(1, 1);
-		solution.setVariable(0, new Program(rules, Void.class));
+		solution.setVariable(0, new Program(rules));
 		return solution;
 	}
 

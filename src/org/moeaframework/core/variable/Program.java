@@ -23,7 +23,9 @@ import org.moeaframework.util.tree.Node;
 import org.moeaframework.util.tree.Rules;
 
 /**
- * 
+ * A decision variable for programs.  The program is represented as a
+ * strongly-typed expression tree.
+ * <p>
  * <b>Note: Although {@code Program} extends {@link Node}, the {@code Program}
  * object must never be altered by the optimization algorithm.</b>  Only
  * its arguments can undergo variation.
@@ -32,13 +34,26 @@ public class Program extends Node implements Variable {
 
 	private static final long serialVersionUID = -2621361322042428290L;
 
+	/**
+	 * The rules defining the program syntax.
+	 */
 	private final Rules rules;
 
-	public Program(Rules rules, Class<?> type) {
-		super(type, type);
+	/**
+	 * Constructs a new program variable with the specified syntax rules.
+	 * 
+	 * @param rules the rules defining the program syntax
+	 */
+	public Program(Rules rules) {
+		super(rules.getReturnType(), rules.getReturnType());
 		this.rules = rules;
 	}
 	
+	/**
+	 * Returns the rules defining the program syntax.
+	 * 
+	 * @return the rules defining the program syntax
+	 */
 	public Rules getRules() {
 		return rules;
 	}
@@ -50,7 +65,7 @@ public class Program extends Node implements Variable {
 
 	@Override
 	public Program copyNode() {
-		return new Program(rules, getReturnType());
+		return new Program(rules);
 	}
 
 	@Override

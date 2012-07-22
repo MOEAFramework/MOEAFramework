@@ -17,7 +17,7 @@
  */
 
 /**
- * Collection of operators for expression trees for use with genetic
- * programming.
+ * Collection of operators for expression trees for use with Genetic
+ * Programming (GP).
  */
 package org.moeaframework.core.operator.program;
