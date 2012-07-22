@@ -17,8 +17,15 @@
  */
 package org.moeaframework.util.tree;
 
+/**
+ * The node for comparing if one number is greater than another.
+ */
 public class GreaterThan extends Node {
 	
+	/**
+	 * Constructs a new node for comparing if one number is greater than
+	 * another.
+	 */
 	public GreaterThan() {
 		super(Boolean.class, Number.class, Number.class);
 	}

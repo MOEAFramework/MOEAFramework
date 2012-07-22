@@ -17,8 +17,15 @@
  */
 package org.moeaframework.util.tree;
 
+/**
+ * The node for calculating the logical OR of two boolean values.
+ */
 public class Or extends Node {
 	
+	/**
+	 * Constructs a new node for calculating the logical OR of two boolean
+	 * values.
+	 */
 	public Or() {
 		super(Boolean.class, Boolean.class, Boolean.class);
 	}

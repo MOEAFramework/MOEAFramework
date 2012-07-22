@@ -17,8 +17,15 @@
  */
 package org.moeaframework.util.tree;
 
+/**
+ * The node for comparing if a number is less than or equal to another.
+ */
 public class LessThanOrEqual extends Node {
 	
+	/**
+	 * Constructs a new node for comparing if a number is less than or equal
+	 * to another.
+	 */
 	public LessThanOrEqual() {
 		super(Boolean.class, Number.class, Number.class);
 	}
@@ -33,11 +40,6 @@ public class LessThanOrEqual extends Node {
 		return NumberArithmetic.lessThanOrEqual(
 				(Number)getArgument(0).evaluate(environment),
 				(Number)getArgument(1).evaluate(environment));
-	}
-	
-	@Override
-	public Class<? extends Boolean> getReturnType() {
-		return Boolean.class;
 	}
 
 }

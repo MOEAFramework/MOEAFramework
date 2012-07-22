@@ -18,29 +18,50 @@
 package org.moeaframework.util.tree;
 
 /**
- * The node for calculating the absolute value of a number.
- * 
- * @see Math#abs(long)
- * @see Math#abs(double)
+ * The node for truncating, or bounding, a number within a range.  If the
+ * number is outside the defined range, the number is set to the nearest number
+ * within the range.
  */
-public class Abs extends Node {
+public class Truncate extends Node {
 	
 	/**
-	 * Constructs a new node for calculating the absolute value of a number.
+	 * The minimum value in the range.
 	 */
-	public Abs() {
+	private final double min;
+	
+	/**
+	 * The maximum value in the range.
+	 */
+	private final double max;
+	
+	/**
+	 * Constructs a new node for truncating a number within a range.
+	 * 
+	 * @param min the minimum value in the range
+	 * @param max the maximum value in the range
+	 */
+	public Truncate(double min, double max) {
 		super(Number.class, Number.class);
+		this.min = min;
+		this.max = max;
 	}
 	
 	@Override
-	public Abs copyNode() {
-		return new Abs();
+	public Truncate copyNode() {
+		return new Truncate(min, max);
 	}
 	
 	@Override
 	public Number evaluate(Environment environment) {
-		return NumberArithmetic.abs(
-				(Number)getArgument(0).evaluate(environment));
+		Number value = (Number)getArgument(0).evaluate(environment);
+		
+		if (NumberArithmetic.lessThan(value, min)) {
+			return min;
+		} else if (NumberArithmetic.greaterThan(value, max)) {
+			return max;
+		} else {
+			return value;
+		}
 	}
 
 }

@@ -17,8 +17,14 @@
  */
 package org.moeaframework.util.tree;
 
-public class Subtract extends Node{
+/**
+ * The node for subtracting two numbers.
+ */
+public class Subtract extends Node {
 	
+	/**
+	 * Constructs a new node for subtracting two numbers.
+	 */
 	public Subtract() {
 		super(Number.class, Number.class, Number.class);
 	}

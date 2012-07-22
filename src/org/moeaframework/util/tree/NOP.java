@@ -17,8 +17,14 @@
  */
 package org.moeaframework.util.tree;
 
+/**
+ * The node for defining an empty expression.
+ */
 public class NOP extends Node {
 	
+	/**
+	 * Constructs a new node for defining an empty expression.
+	 */
 	public NOP() {
 		super(Void.class);
 	}

@@ -17,8 +17,15 @@
  */
 package org.moeaframework.util.tree;
 
+/**
+ * The node for calculating the logical AND of two boolean values.
+ */
 public class And extends Node {
 	
+	/**
+	 * Constructs a new node for calculating the logical AND of two boolean
+	 * values.
+	 */
 	public And() {
 		super(Boolean.class, Boolean.class, Boolean.class);
 	}

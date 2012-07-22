@@ -17,20 +17,47 @@
  */
 package org.moeaframework.util.tree;
 
+/**
+ * The node for executing two or more expressions in sequence.  The return
+ * value of the last expression is returned, and the return type should be
+ * specified using an appropriate constructor.  Since the expressions are
+ * strongly typed, the type(s) specified in the constructor is important.
+ */
 public class Sequence extends Node {
 	
+	/**
+	 * Constructs a new node for executing two expressions in sequence.
+	 */
 	public Sequence() {
 		this(Object.class);
 	}
 	
+	/**
+	 * Constructs a new node for executing two expressions in sequence.
+	 * 
+	 * @param type the return type of the last expression to be executed
+	 */
 	public Sequence(Class<?> type) {
 		this(Object.class, type);
 	}
 	
+	/**
+	 * Constructs a new node for executing two expressions in sequence.
+	 * 
+	 * @param type1 the return type of the first expression
+	 * @param type2 the return type of the second expression, which is also the
+	 *        return type of this sequence
+	 */
 	public Sequence(Class<?> type1, Class<?> type2) {
 		super(type2, type1, type2);
 	}
 	
+	/**
+	 * Constructs a new node for executing a specified number of expressions
+	 * in sequence.
+	 * 
+	 * @param types the types of each expression in this sequence
+	 */
 	public Sequence(Class<?>... types) {
 		super(types[types.length-1], types);
 	}

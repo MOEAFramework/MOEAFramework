@@ -17,8 +17,18 @@
  */
 package org.moeaframework.util.tree;
 
-public class Exp extends Node{
+/**
+ * The node for calculating the result of Euler's number <i>e</i> raised to the
+ * power of a number.
+ * 
+ * @see Math#exp(double)
+ */
+public class Exp extends Node {
 	
+	/**
+	 * Constructs a new node for calculating the result of Euler's number
+	 * <i>e</i> raised to the power of a number.
+	 */
 	public Exp() {
 		super(Number.class, Number.class);
 	}

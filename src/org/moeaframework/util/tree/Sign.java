@@ -17,8 +17,19 @@
  */
 package org.moeaframework.util.tree;
 
-public class Sign extends Node{
+/**
+ * The node for calculating the sign of a number.  The sign of a number is
+ * {@code 1} if the number is greater than zero, {@code -1} if the number is
+ * less than zero, and {@code 0} if the number is equal to zero.
+ * 
+ * @see Long#signum(long)
+ * @see Math#signum(double)
+ */
+public class Sign extends Node {
 	
+	/**
+	 * Constructs a new node for calculating the sign of a number.
+	 */
 	public Sign() {
 		super(Number.class, Number.class);
 	}

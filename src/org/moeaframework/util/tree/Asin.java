@@ -17,8 +17,16 @@
  */
 package org.moeaframework.util.tree;
 
-public class Asin extends Node{
+/**
+ * The node for calculating the arc sine of a number.
+ * 
+ * @see Math#asin(double)
+ */
+public class Asin extends Node {
 	
+	/**
+	 * Constructs a new node for calculating the arc sine of a number.
+	 */
 	public Asin() {
 		super(Number.class, Number.class);
 	}

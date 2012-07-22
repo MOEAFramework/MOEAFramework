@@ -17,8 +17,14 @@
  */
 package org.moeaframework.util.tree;
 
+/**
+ * The node for multiplying two numbers.
+ */
 public class Multiply extends Node {
 	
+	/**
+	 * Constructs a new node for multiplying two numbers.
+	 */
 	public Multiply() {
 		super(Number.class, Number.class, Number.class);
 	}

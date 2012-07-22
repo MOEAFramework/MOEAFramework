@@ -17,8 +17,18 @@
  */
 package org.moeaframework.util.tree;
 
-public class Floor extends Node{
+/**
+ * The node for calculating the largest integer value that is less than or
+ * equal to a number.
+ * 
+ * @see Math#floor(double)
+ */
+public class Floor extends Node {
 	
+	/**
+	 * Constructs a new node for calculating the largest integer value that is
+	 * less than or equal to a number.
+	 */
 	public Floor() {
 		super(Number.class, Number.class);
 	}

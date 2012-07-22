@@ -17,8 +17,16 @@
  */
 package org.moeaframework.util.tree;
 
+/**
+ * The node for repeatedly executing an expression while a condition, a
+ * boolean expression, remains {@code true}.
+ */
 public class While extends Node {
 
+	/**
+	 * Constructs a new node for repeatedly executing an expression while a
+	 * condition remains {@code true}.
+	 */
 	public While() {
 		super(Object.class, Boolean.class, Object.class);
 	}

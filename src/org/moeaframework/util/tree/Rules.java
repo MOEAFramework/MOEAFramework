@@ -95,7 +95,6 @@ public class Rules {
 		add(new And());
 		add(new Or());
 		add(new Not());
-		add(new Xor());
 		add(new Equals());
 		add(new GreaterThan());
 		add(new LessThan());

@@ -17,8 +17,16 @@
  */
 package org.moeaframework.util.tree;
 
-public class Acos extends Node{
+/**
+ * The node for calculating the arc cosine of a number.
+ * 
+ * @see Math#acos(double)
+ */
+public class Acos extends Node {
 	
+	/**
+	 * Constructs a new node for calculating the arc cosine of a number.
+	 */
 	public Acos() {
 		super(Number.class, Number.class);
 	}

@@ -17,8 +17,18 @@
  */
 package org.moeaframework.util.tree;
 
-public class Sin extends Node{
+/**
+ * The node for calculating the trigonometric sine of an angle specified in
+ * radians.
+ * 
+ * @see Math#sin(double)
+ */
+public class Sin extends Node {
 	
+	/**
+	 * Constructs a new node for calculating the trigonometric sine of an
+	 * angle specified in radians.
+	 */
 	public Sin() {
 		super(Number.class, Number.class);
 	}

@@ -17,27 +17,85 @@
  */
 package org.moeaframework.util.tree;
 
+/**
+ * The node for calling a named function.
+ */
 public class Call extends Node {
 	
+	/**
+	 * The name of the function to call.
+	 */
 	private final String functionName;
 	
+	/**
+	 * The names of the variables to the function.
+	 */
 	private final String[] variableNames;
 	
+	/**
+	 * The types of the variables to the function.
+	 */
 	private final Class<?>[] variableTypes;
 	
-	public Call(String functionName, Class<?> returnType, String variableName, Class<?> variableType) {
-		this(functionName, returnType, new String[] { variableName }, new Class<?>[] { variableType });
+	/**
+	 * Constructs a new node for calling a function that takes no arguments.
+	 * 
+	 * @param functionName the name of the function
+	 * @param returnType the return type of the function
+	 */
+	public Call(String functionName, Class<?> returnType) {
+		this(functionName, returnType, new String[0], new Class<?>[0]);
 	}
 	
-	public Call(String functionName, Class<?> returnType, String variable1, Class<?> type1, String variable2, Class<?> type2) {
-		this(functionName, returnType, new String[] { variable1, variable2 }, new Class<?>[] { type1, type2 });
+	/**
+	 * Constructs a new node for calling a function that takes one argument.
+	 * 
+	 * @param functionName the name of the function
+	 * @param returnType the return type of the function
+	 * @param variableName the name of the argument
+	 * @param variableType the type of the argument
+	 */
+	public Call(String functionName, Class<?> returnType, String variableName,
+			Class<?> variableType) {
+		this(functionName, returnType, new String[] { variableName },
+				new Class<?>[] { variableType });
 	}
 	
+	/**
+	 * Constructs a new node for calling a function that takes two arguments.
+	 * 
+	 * @param functionName the name of the function
+	 * @param returnType the return type of the function
+	 * @param name1 the name of the first argument
+	 * @param type1 the type of the first argument
+	 * @param name2 the name of the second argument
+	 * @param type2 the type of the second argument
+	 */
+	public Call(String functionName, Class<?> returnType, String name1,
+			Class<?> type1, String name2, Class<?> type2) {
+		this(functionName, returnType, new String[] { name1, name2 },
+				new Class<?>[] { type1, type2 });
+	}
+	
+	/**
+	 * Constructs a new node for calling the function as defined.
+	 * 
+	 * @param function the function
+	 */
 	public Call(Define function) {
 		this(function.getFunctionName(), function.getArgumentType(0),
 				function.getVariableNames(), function.getVariableTypes());
 	}
 	
+	/**
+	 * Constructs a new node for calling a function that takes a
+	 * user-defined number of arguments.
+	 * 
+	 * @param functionName the name of the function
+	 * @param returnType the return type of the function
+	 * @param variableNames the names of the arguments to the function
+	 * @param variableTypes the types of the arguments to the function
+	 */
 	public Call(String functionName, Class<?> returnType, String[] variableNames, Class<?>[] variableTypes) {
 		super(returnType, variableTypes);
 		this.functionName = functionName;
@@ -45,14 +103,29 @@ public class Call extends Node {
 		this.variableTypes = variableTypes;
 	}
 
+	/**
+	 * Returns the name of this function.
+	 * 
+	 * @return the name of this function
+	 */
 	public String getFunctionName() {
 		return functionName;
 	}
 
+	/**
+	 * Returns the names of the arguments to this function.
+	 * 
+	 * @return the names of the arguments to this function
+	 */
 	public String[] getVariableNames() {
 		return variableNames;
 	}
 
+	/**
+	 * Returns the types of the arguments to this function.
+	 * 
+	 * @return the types of the arguments to this function
+	 */
 	public Class<?>[] getVariableTypes() {
 		return variableTypes;
 	}
@@ -71,7 +144,6 @@ public class Call extends Node {
 		}
 		
 		Node functionBody = environment.get(Node.class, functionName);
-
 		return functionBody.evaluate(closure);
 	}
 	

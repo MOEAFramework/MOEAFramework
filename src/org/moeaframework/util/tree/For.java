@@ -17,12 +17,27 @@
  */
 package org.moeaframework.util.tree;
 
+/**
+ * The node for executing an expression for a given number of iterations.  A
+ * named variable is created that contains the loop counter.
+ */
 public class For extends Node {
 	
+	/**
+	 * The name of the variable where the loop counter is stored
+	 */
 	private final String variableName;
 	
+	/**
+	 * Constructs a new node for executing an expression for a given number
+	 * of iterations.
+	 * 
+	 * @param variableName the name of the variable where the loop counter is
+	 *        stored
+	 */
 	public For(String variableName) {
-		super(Object.class, Number.class, Number.class, Number.class, Object.class);
+		super(Object.class, Number.class, Number.class, Number.class,
+				Object.class);
 		this.variableName = variableName;
 	}
 
@@ -38,7 +53,8 @@ public class For extends Node {
 		Number step = (Number)getArgument(2).evaluate(environment);
 		Object value = null;
 		
-		for (Number i = start; NumberArithmetic.lessThan(i, end); i = NumberArithmetic.add(i, step)) {
+		for (Number i = start; NumberArithmetic.lessThan(i, end);
+				i = NumberArithmetic.add(i, step)) {
 			environment.set(variableName, i);
 			value = getArgument(3).evaluate(environment);
 		}

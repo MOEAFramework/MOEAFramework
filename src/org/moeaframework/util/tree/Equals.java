@@ -17,8 +17,14 @@
  */
 package org.moeaframework.util.tree;
 
+/**
+ * The node for comparing two numbers for equality.
+ */
 public class Equals extends Node {
 	
+	/**
+	 * Constructs a new node for comparing two numbers for equality.
+	 */
 	public Equals() {
 		super(Boolean.class, Number.class, Number.class);
 	}

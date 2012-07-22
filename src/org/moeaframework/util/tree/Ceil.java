@@ -17,8 +17,18 @@
  */
 package org.moeaframework.util.tree;
 
-public class Ceil extends Node{
+/**
+ * The node for calculating the smallest integer value that is greater than or
+ * equal to a number.
+ * 
+ * @see Math#ceil(double)
+ */
+public class Ceil extends Node {
 	
+	/**
+	 * Constructs a new node for calculating the smallest integer value that is
+	 * greater than or equal to a number.
+	 */
 	public Ceil() {
 		super(Number.class, Number.class);
 	}

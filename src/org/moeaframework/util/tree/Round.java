@@ -17,8 +17,16 @@
  */
 package org.moeaframework.util.tree;
 
-public class Round extends Node{
+/**
+ * The node for rounding a number to the nearest integer.
+ * 
+ * @see Math#round(double)
+ */
+public class Round extends Node {
 	
+	/**
+	 * Constructs a new node for rounding a number to the nearest integer.
+	 */
 	public Round() {
 		super(Number.class, Number.class);
 	}

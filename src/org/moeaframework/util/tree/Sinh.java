@@ -17,8 +17,16 @@
  */
 package org.moeaframework.util.tree;
 
-public class Sinh extends Node{
+/**
+ * The node for calculating the hyperbolic sine of a number.
+ * 
+ * @see Math#sinh(double)
+ */
+public class Sinh extends Node {
 	
+	/**
+	 * Constructs a new node for calculating the hyperbolic sine of a number.
+	 */
 	public Sinh() {
 		super(Number.class, Number.class);
 	}

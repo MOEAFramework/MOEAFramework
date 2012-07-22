@@ -17,8 +17,18 @@
  */
 package org.moeaframework.util.tree;
 
-public class Cos extends Node{
+/**
+ * The node for calculating the trigonometric cosine of an angle specified in
+ * radians.
+ * 
+ * @see Math#cos(double)
+ */
+public class Cos extends Node {
 	
+	/**
+	 * Constructs a new node for calculating the trigonometric cosine of an
+	 * angle specified in radians.
+	 */
 	public Cos() {
 		super(Number.class, Number.class);
 	}

@@ -17,8 +17,16 @@
  */
 package org.moeaframework.util.tree;
 
-public class SquareRoot extends Node{
+/**
+ * The node for calculating the square root of a number.
+ * 
+ * @see Math#sqrt(double)
+ */
+public class SquareRoot extends Node {
 	
+	/**
+	 * Constructs a new node for calculating the square root of a number.
+	 */
 	public SquareRoot() {
 		super(Number.class, Number.class);
 	}

@@ -17,8 +17,14 @@
  */
 package org.moeaframework.util.tree;
 
-public class Log extends Node{
+/**
+ * The node for calculating the natural logarithm of a number.
+ */
+public class Log extends Node {
 	
+	/**
+	 * Constructs a new node for calculating the natural logarithm of a number.
+	 */
 	public Log() {
 		super(Number.class, Number.class);
 	}

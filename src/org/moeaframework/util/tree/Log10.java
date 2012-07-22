@@ -17,8 +17,14 @@
  */
 package org.moeaframework.util.tree;
 
-public class Log10 extends Node{
+/**
+ * The node for calculating the base-10 logarithm of a number.
+ */
+public class Log10 extends Node {
 	
+	/**
+	 * Constructs a new node for calculating the base-10 logarithm of a number.
+	 */
 	public Log10() {
 		super(Number.class, Number.class);
 	}

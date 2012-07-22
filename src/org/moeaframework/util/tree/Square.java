@@ -17,8 +17,14 @@
  */
 package org.moeaframework.util.tree;
 
-public class Square extends Node{
+/**
+ * The node for calculating the square of a number.
+ */
+public class Square extends Node {
 	
+	/**
+	 * Constructs a new node for calculating the square of a number.
+	 */
 	public Square() {
 		super(Number.class, Number.class);
 	}

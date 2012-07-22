@@ -17,10 +17,27 @@
  */
 package org.moeaframework.util.tree;
 
+/**
+ * The node for assigning the value of a named variable within the current
+ * scope.  Variables are locally-scoped within functions (i.e., {@link Define}
+ * and {@link Lambda}) and globally-scoped elsewhere.
+ * 
+ * @see Get
+ */
 public class Set extends Node {
 	
+	/**
+	 * The name of the variable.
+	 */
 	private final String name;
 	
+	/**
+	 * Constructs a new node for assigning the value of a named variable within
+	 * the current scope.
+	 * 
+	 * @param type the type of the variable
+	 * @param name the name of the variable
+	 */
 	public Set(Class<?> type, String name) {
 		super(type, type);
 		this.name = name;

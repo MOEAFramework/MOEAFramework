@@ -17,8 +17,17 @@
  */
 package org.moeaframework.util.tree;
 
-public class Power extends Node{
+/**
+ * The node for calculating the power of a number and exponent.
+ * 
+ * @see Math#pow(double, double)
+ */
+public class Power extends Node {
 	
+	/**
+	 * Constructs a new node for calculating the power of a number and
+	 * exponent.
+	 */
 	public Power() {
 		super(Number.class, Number.class, Number.class);
 	}

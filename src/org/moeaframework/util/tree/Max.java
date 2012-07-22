@@ -17,8 +17,18 @@
  */
 package org.moeaframework.util.tree;
 
-public class Max extends Node{
+/**
+ * The node for calculating the maximum value of the two arguments.
+ * 
+ * @see Math#max(long, long)
+ * @see Math#max(double, double)
+ */
+public class Max extends Node {
 	
+	/**
+	 * Constructs a new node for calculating the maximum value of the two
+	 * arguments.
+	 */
 	public Max() {
 		super(Number.class, Number.class, Number.class);
 	}

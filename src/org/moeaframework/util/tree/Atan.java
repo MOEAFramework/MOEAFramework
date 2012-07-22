@@ -17,8 +17,16 @@
  */
 package org.moeaframework.util.tree;
 
-public class Atan extends Node{
+/**
+ * The node for calculating the arc tangent of a number.
+ * 
+ * @see Math#atan(double)
+ */
+public class Atan extends Node {
 	
+	/**
+	 * Constructs a new node for calculating the arc tangent of a number.
+	 */
 	public Atan() {
 		super(Number.class, Number.class);
 	}

@@ -17,8 +17,16 @@
  */
 package org.moeaframework.util.tree;
 
-public class Tanh extends Node{
+/**
+ * The node for calculating the hyperbolic tangent of a number.
+ * 
+ * @see Math#tanh(double)
+ */
+public class Tanh extends Node {
 	
+	/**
+	 * Constructs a new node for calculating the hyperbolic tangent of a number.
+	 */
 	public Tanh() {
 		super(Number.class, Number.class);
 	}

@@ -17,8 +17,14 @@
  */
 package org.moeaframework.util.tree;
 
-public class Divide extends Node{
+/**
+ * The node for dividing two numbers.
+ */
+public class Divide extends Node {
 	
+	/**
+	 * Constructs a new node for dividing two numbers.
+	 */
 	public Divide() {
 		super(Number.class, Number.class, Number.class);
 	}

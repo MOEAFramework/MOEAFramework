@@ -17,8 +17,14 @@
  */
 package org.moeaframework.util.tree;
 
-public class Add extends Node{
+/**
+ * The node for adding two numbers.
+ */
+public class Add extends Node {
 	
+	/**
+	 * Constructs a new node for adding two numbers.
+	 */
 	public Add() {
 		super(Number.class, Number.class, Number.class);
 	}

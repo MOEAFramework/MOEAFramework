@@ -17,30 +17,56 @@
  */
 package org.moeaframework.util.tree;
 
+/**
+ * The node for defining a constant value.
+ */
 public class Constant extends Node {
 	
+	/**
+	 * The value.
+	 */
 	private final Object value;
 	
+	/**
+	 * Constructs a new node for defining a constant floating-point number.
+	 * 
+	 * @param value the floating-point number
+	 */
 	public Constant(double value) {
-		this(Number.class, value);
+		this((Double)value);
 	}
 	
+	/**
+	 * Constructs a new node for defining a constant integer value.
+	 * 
+	 * @param value the integer value
+	 */
 	public Constant(long value) {
-		this(Number.class, value);
+		this((Long)value);
 	}
 	
+	/**
+	 * Constructs a new node for defining a constant boolean value.
+	 * 
+	 * @param value the boolean value
+	 */
 	public Constant(boolean value) {
-		this(Boolean.class, value);
+		this((Boolean)value);
 	}
 	
-	public Constant(Class<?> returnType, Object value) {
-		super(returnType);
+	/**
+	 * Constructs a new node for defining a constant {@link Object}.
+	 * 
+	 * @param value the object
+	 */
+	public Constant(Object value) {
+		super(value.getClass());
 		this.value = value;
 	}
 	
 	@Override
 	public Constant copyNode() {
-		return new Constant(getReturnType(), value);
+		return new Constant(value);
 	}
 	
 	@Override
@@ -48,6 +74,7 @@ public class Constant extends Node {
 		return value;
 	}
 	
+	@Override
 	public String toString() {
 		return String.valueOf(value);
 	}

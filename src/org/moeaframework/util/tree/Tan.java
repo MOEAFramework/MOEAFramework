@@ -17,8 +17,18 @@
  */
 package org.moeaframework.util.tree;
 
-public class Tan extends Node{
+/**
+ * The node for calculating the trigonometric tangent of an angle specified in
+ * radians.
+ * 
+ * @see Math#tan(double)
+ */
+public class Tan extends Node {
 	
+	/**
+	 * Constructs a new node for calculating the trigonometric tangent of an
+	 * angle specified in radians.
+	 */
 	public Tan() {
 		super(Number.class, Number.class);
 	}

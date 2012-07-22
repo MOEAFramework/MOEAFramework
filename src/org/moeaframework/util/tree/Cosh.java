@@ -17,8 +17,16 @@
  */
 package org.moeaframework.util.tree;
 
-public class Cosh extends Node{
+/**
+ * The node for calculating the hyperbolic cosine of a number.
+ * 
+ * @see Math#cosh(double)
+ */
+public class Cosh extends Node {
 	
+	/**
+	 * Constructs a new node for calculating the hyperbolic cosine of a number.
+	 */
 	public Cosh() {
 		super(Number.class, Number.class);
 	}

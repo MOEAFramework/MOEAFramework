@@ -20,16 +20,36 @@ package org.moeaframework.util.tree;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The execution context, or environment, storing the named variables used by
+ * a program.  Defined functions are first-class objects and also stored in the
+ * environment.
+ */
 public class Environment {
 	
+	/**
+	 * The enclosing environment.
+	 */
 	private Environment parent;
 	
+	/**
+	 * The mapping of names to stored variables and functions.
+	 */
 	private Map<String, Object> memory;
 	
+	/**
+	 * Constructs a new, empty environment.
+	 */
 	public Environment() {
 		this(null);
 	}
 	
+	/**
+	 * Constructs a new environment enclosed within the specified enclosing
+	 * environment.
+	 * 
+	 * @param parent the enclosing environment
+	 */
 	public Environment(Environment parent) {
 		super();
 		this.parent = parent;
@@ -37,6 +57,17 @@ public class Environment {
 		memory = new HashMap<String, Object>();
 	}
 	
+	/**
+	 * Returns the content of the named variable stored in this environment or
+	 * its enclosing environment; or {@code null} if the variable has not yet
+	 * been defined.
+	 * 
+	 * @param type the type of the variable
+	 * @param name the name of the variable
+	 * @return the content of the named variable stored in this environment or
+	 *         its enclosing environment; or {@code null} if the variable has
+	 *         not yet been defined
+	 */
 	public <T> T get(Class<T> type, String name) {
 		Object value = memory.get(name);
 		
@@ -51,6 +82,12 @@ public class Environment {
 		}
 	}
 	
+	/**
+	 * Sets the content of the named variable to the specified value.
+	 * 
+	 * @param name the name of the variable
+	 * @param value the value to store in the variable
+	 */
 	public void set(String name, Object value) {
 		memory.put(name, value);
 	}
