@@ -26,7 +26,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Tests the {@link Grammar} class.
+ * Tests the {@link ContextFreeGrammar} class.
  */
 public class GrammarTest {
 	
@@ -89,8 +89,8 @@ public class GrammarTest {
 	}
 
 	/**
-	 * Tests if the {@link Grammar#isValid} method correctly identifies valid
-	 * and invalid grammars.
+	 * Tests if the {@link ContextFreeGrammar#isValid} method correctly
+	 * identifies valid and invalid grammars.
 	 * 
 	 * @throws IOException if an I/O error occurred
 	 */
@@ -101,6 +101,20 @@ public class GrammarTest {
 		Assert.assertFalse(Parser.load(new StringReader("")).isValid());
 		Assert.assertFalse(Parser.load(new StringReader("<foo> ::= <bar>"))
 				.isValid());
+	}
+	
+	@Test
+	public void testMinimumHeight() throws IOException {
+		Assert.assertEquals(2, grammar.getMinimumHeight(0));
+		Assert.assertEquals(1, grammar.getMinimumHeight(1));
+		Assert.assertEquals(1, grammar.getMinimumHeight(2));
+		
+		//test an infinitely recursive grammar
+		ContextFreeGrammar infiniteGrammar = Parser.load(new StringReader(
+				"<expr> ::= <expr> + <expr> | 'func(' <expr> ')'"));
+		
+		Assert.assertEquals(Integer.MAX_VALUE,
+				infiniteGrammar.getMinimumHeight(0));
 	}
 
 }
