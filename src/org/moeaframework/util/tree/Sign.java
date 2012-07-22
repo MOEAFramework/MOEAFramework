@@ -22,6 +22,24 @@ package org.moeaframework.util.tree;
  * {@code 1} if the number is greater than zero, {@code -1} if the number is
  * less than zero, and {@code 0} if the number is equal to zero.
  * 
+ * <table border="1" cellpadding="3" cellspacing="0">
+ *   <tr class="TableHeadingColor">
+ *     <th width="25%" align="left">Name</th>
+ *     <th width="25%" align="left">Type</th>
+ *     <th width="50%" align="left">Description</th>
+ *   </tr>
+ *   <tr>
+ *     <td>Argument 1</td>
+ *     <td>Number</td>
+ *     <td>The number</td>
+ *   </tr>
+ *   <tr>
+ *     <td>Return Value</td>
+ *     <td>Number</td>
+ *     <td>The sign of the number</td>
+ *   </tr>
+ * </table>
+ * 
  * @see Long#signum(long)
  * @see Math#signum(double)
  */

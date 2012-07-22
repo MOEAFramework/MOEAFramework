@@ -20,6 +20,34 @@ package org.moeaframework.util.tree;
 /**
  * The node for executing one of two expressions depending on the result of a
  * boolean expression.
+ * 
+ * <table border="1" cellpadding="3" cellspacing="0">
+ *   <tr class="TableHeadingColor">
+ *     <th width="25%" align="left">Name</th>
+ *     <th width="25%" align="left">Type</th>
+ *     <th width="50%" align="left">Description</th>
+ *   </tr>
+ *   <tr>
+ *     <td>Argument 1</td>
+ *     <td>Boolean</td>
+ *     <td>The condition that decides which expression to execute</td>
+ *   </tr>
+ *   <tr>
+ *     <td>Argument 2</td>
+ *     <td>User-Defined</td>
+ *     <td>The expression to execute when the condition is {@code true}</td>
+ *   </tr>
+ *   <tr>
+ *     <td>Argument 3</td>
+ *     <td>User-Defined</td>
+ *     <td>The expression to execute when the condition is {@code false}</td>
+ *   </tr>
+ *   <tr>
+ *     <td>Return Value</td>
+ *     <td>User-Defined</td>
+ *     <td>The return value of the executed expression</td>
+ *   </tr>
+ * </table>
  */
 public class IfElse extends Node {
 	

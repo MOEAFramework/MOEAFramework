@@ -26,6 +26,19 @@ package org.moeaframework.util.tree;
  * {@code 0}.  For boolean values, the default is {@code false}.  For objects,
  * the default is {@code null}.
  * 
+ * <table border="1" cellpadding="3" cellspacing="0">
+ *   <tr class="TableHeadingColor">
+ *     <th width="25%" align="left">Name</th>
+ *     <th width="25%" align="left">Type</th>
+ *     <th width="50%" align="left">Description</th>
+ *   </tr>
+ *   <tr>
+ *     <td>Return Value</td>
+ *     <td>User-Defined</td>
+ *     <td>The valued stored in the named variable</td>
+ *   </tr>
+ * </table>
+ * 
  * @see Set
  */
 public class Get extends Node {

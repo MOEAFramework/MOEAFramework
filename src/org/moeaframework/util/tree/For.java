@@ -20,6 +20,40 @@ package org.moeaframework.util.tree;
 /**
  * The node for executing an expression for a given number of iterations.  A
  * named variable is created that contains the loop counter.
+ * 
+ * <table border="1" cellpadding="3" cellspacing="0">
+ *   <tr class="TableHeadingColor">
+ *     <th width="25%" align="left">Name</th>
+ *     <th width="25%" align="left">Type</th>
+ *     <th width="50%" align="left">Description</th>
+ *   </tr>
+ *   <tr>
+ *     <td>Argument 1</td>
+ *     <td>Number</td>
+ *     <td>The starting loop counter value</td>
+ *   </tr>
+ *   <tr>
+ *     <td>Argument 2</td>
+ *     <td>Number</td>
+ *     <td>The ending loop counter value</td>
+ *   </tr>
+ *   <tr>
+ *     <td>Argument 3</td>
+ *     <td>Number</td>
+ *     <td>The increment of the loop counter</td>
+ *   </tr>
+ *   <tr>
+ *     <td>Argument 4</td>
+ *     <td>User-Defined</td>
+ *     <td>The expression to execute inside the loop</td>
+ *   </tr>
+ *   <tr>
+ *     <td>Return Value</td>
+ *     <td>User-Defined</td>
+ *     <td>The return value of the last executed expression; or {@code null}
+ *         if the loop was never executed</td>
+ *   </tr>
+ * </table>
  */
 public class For extends Node {
 	

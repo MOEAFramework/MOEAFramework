@@ -19,6 +19,24 @@ package org.moeaframework.util.tree;
 
 /**
  * The node for calculating the logical NOT of a boolean value.
+ * 
+ * <table border="1" cellpadding="3" cellspacing="0">
+ *   <tr class="TableHeadingColor">
+ *     <th width="25%" align="left">Name</th>
+ *     <th width="25%" align="left">Type</th>
+ *     <th width="50%" align="left">Description</th>
+ *   </tr>
+ *   <tr>
+ *     <td>Argument 1</td>
+ *     <td>Boolean</td>
+ *     <td>The boolean value</td>
+ *   </tr>
+ *   <tr>
+ *     <td>Return Value</td>
+ *     <td>Number</td>
+ *     <td>The logical NOT of the boolean value</td>
+ *   </tr>
+ * </table>
  */
 public class Not extends Node {
 

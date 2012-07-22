@@ -20,6 +20,24 @@ package org.moeaframework.util.tree;
 /**
  * The node for calculating the hyperbolic tangent of a number.
  * 
+ * <table border="1" cellpadding="3" cellspacing="0">
+ *   <tr class="TableHeadingColor">
+ *     <th width="25%" align="left">Name</th>
+ *     <th width="25%" align="left">Type</th>
+ *     <th width="50%" align="left">Description</th>
+ *   </tr>
+ *   <tr>
+ *     <td>Argument 1</td>
+ *     <td>Number</td>
+ *     <td>The angle</td>
+ *   </tr>
+ *   <tr>
+ *     <td>Return Value</td>
+ *     <td>Number</td>
+ *     <td>The hyperbolic tangent of the angle</td>
+ *   </tr>
+ * </table>
+ * 
  * @see Math#tanh(double)
  */
 public class Tanh extends Node {

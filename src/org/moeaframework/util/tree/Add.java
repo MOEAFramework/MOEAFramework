@@ -19,6 +19,29 @@ package org.moeaframework.util.tree;
 
 /**
  * The node for adding two numbers.
+ * 
+ * <table border="1" cellpadding="3" cellspacing="0">
+ *   <tr class="TableHeadingColor">
+ *     <th width="25%" align="left">Name</th>
+ *     <th width="25%" align="left">Type</th>
+ *     <th width="50%" align="left">Description</th>
+ *   </tr>
+ *   <tr>
+ *     <td>Argument 1</td>
+ *     <td>Number</td>
+ *     <td>The first number</td>
+ *   </tr>
+ *   <tr>
+ *     <td>Argument 2</td>
+ *     <td>Number</td>
+ *     <td>The second number</td>
+ *   </tr>
+ *   <tr>
+ *     <td>Return Value</td>
+ *     <td>Number</td>
+ *     <td>The value of adding the two numbers</td>
+ *   </tr>
+ * </table>
  */
 public class Add extends Node {
 	

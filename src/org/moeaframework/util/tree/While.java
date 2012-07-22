@@ -20,6 +20,30 @@ package org.moeaframework.util.tree;
 /**
  * The node for repeatedly executing an expression while a condition, a
  * boolean expression, remains {@code true}.
+ * 
+ * <table border="1" cellpadding="3" cellspacing="0">
+ *   <tr class="TableHeadingColor">
+ *     <th width="25%" align="left">Name</th>
+ *     <th width="25%" align="left">Type</th>
+ *     <th width="50%" align="left">Description</th>
+ *   </tr>
+ *   <tr>
+ *     <td>Argument 1</td>
+ *     <td>Boolean</td>
+ *     <td>The condition that determines how long the loop is executed</td>
+ *   </tr>
+ *   <tr>
+ *     <td>Argument 2</td>
+ *     <td>User-Defined</td>
+ *     <td>The expression to execute when the condition is {@code true}</td>
+ *   </tr>
+ *   <tr>
+ *     <td>Return Value</td>
+ *     <td>User-Defined</td>
+ *     <td>The return value of the last executed expression; or {@code null}
+ *         if the loop was never executed</td>
+ *   </tr>
+ * </table>
  */
 public class While extends Node {
 

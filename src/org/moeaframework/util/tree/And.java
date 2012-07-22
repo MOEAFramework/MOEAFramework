@@ -19,6 +19,29 @@ package org.moeaframework.util.tree;
 
 /**
  * The node for calculating the logical AND of two boolean values.
+ * 
+ * <table border="1" cellpadding="3" cellspacing="0">
+ *   <tr class="TableHeadingColor">
+ *     <th width="25%" align="left">Name</th>
+ *     <th width="25%" align="left">Type</th>
+ *     <th width="50%" align="left">Description</th>
+ *   </tr>
+ *   <tr>
+ *     <td>Argument 1</td>
+ *     <td>Boolean</td>
+ *     <td>The first boolean value</td>
+ *   </tr>
+ *   <tr>
+ *     <td>Argument 2</td>
+ *     <td>Boolean</td>
+ *     <td>The second boolean value</td>
+ *   </tr>
+ *   <tr>
+ *     <td>Return Value</td>
+ *     <td>Number</td>
+ *     <td>The logical AND of the two boolean values</td>
+ *   </tr>
+ * </table>
  */
 public class And extends Node {
 	

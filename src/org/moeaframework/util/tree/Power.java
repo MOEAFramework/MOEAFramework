@@ -18,14 +18,37 @@
 package org.moeaframework.util.tree;
 
 /**
- * The node for calculating the power of a number and exponent.
+ * The node for calculating the power of a base number and exponent.
+ * 
+ * <table border="1" cellpadding="3" cellspacing="0">
+ *   <tr class="TableHeadingColor">
+ *     <th width="25%" align="left">Name</th>
+ *     <th width="25%" align="left">Type</th>
+ *     <th width="50%" align="left">Description</th>
+ *   </tr>
+ *   <tr>
+ *     <td>Argument 1</td>
+ *     <td>Number</td>
+ *     <td>The base number</td>
+ *   </tr>
+ *   <tr>
+ *     <td>Argument 2</td>
+ *     <td>Number</td>
+ *     <td>The exponent</td>
+ *   </tr>
+ *   <tr>
+ *     <td>Return Value</td>
+ *     <td>Number</td>
+ *     <td>The power of the base number and the exponent</td>
+ *   </tr>
+ * </table>
  * 
  * @see Math#pow(double, double)
  */
 public class Power extends Node {
 	
 	/**
-	 * Constructs a new node for calculating the power of a number and
+	 * Constructs a new node for calculating the power of a base number and
 	 * exponent.
 	 */
 	public Power() {

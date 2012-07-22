@@ -22,6 +22,29 @@ package org.moeaframework.util.tree;
  * value of the last expression is returned, and the return type should be
  * specified using an appropriate constructor.  Since the expressions are
  * strongly typed, the type(s) specified in the constructor is important.
+ * 
+ * <table border="1" cellpadding="3" cellspacing="0">
+ *   <tr class="TableHeadingColor">
+ *     <th width="25%" align="left">Name</th>
+ *     <th width="25%" align="left">Type</th>
+ *     <th width="50%" align="left">Description</th>
+ *   </tr>
+ *   <tr>
+ *     <td>Argument 1</td>
+ *     <td>User-Defined</td>
+ *     <td>The first expression</td>
+ *   </tr>
+ *   <tr>
+ *     <td>Argument 2</td>
+ *     <td>User-Defined</td>
+ *     <td>The second expression</td>
+ *   </tr>
+ *   <tr>
+ *     <td>Return Value</td>
+ *     <td>User-Defined</td>
+ *     <td>The return value of the last expression</td>
+ *   </tr>
+ * </table>
  */
 public class Sequence extends Node {
 	

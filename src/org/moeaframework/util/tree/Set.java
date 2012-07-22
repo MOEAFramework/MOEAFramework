@@ -22,6 +22,24 @@ package org.moeaframework.util.tree;
  * scope.  Variables are locally-scoped within functions (i.e., {@link Define}
  * and {@link Lambda}) and globally-scoped elsewhere.
  * 
+ * <table border="1" cellpadding="3" cellspacing="0">
+ *   <tr class="TableHeadingColor">
+ *     <th width="25%" align="left">Name</th>
+ *     <th width="25%" align="left">Type</th>
+ *     <th width="50%" align="left">Description</th>
+ *   </tr>
+ *   <tr>
+ *     <td>Argument 1</td>
+ *     <td>User-Defined</td>
+ *     <td>The value to store in the named variable</td>
+ *   </tr>
+ *   <tr>
+ *     <td>Return Value</td>
+ *     <td>User-Defined</td>
+ *     <td>The value stored in the named variable</td>
+ *   </tr>
+ * </table>
+ * 
  * @see Get
  */
 public class Set extends Node {
