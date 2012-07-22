@@ -24,15 +24,17 @@
 <h2>A Framework for Innovation</h2>
   
 <p>
-  The MOEA Framework is an open source Java library for developing and 
+  The MOEA Framework is a free and open source Java library for developing and 
   experimenting with multiobjective evolutionary algorithms (MOEAs) and
-  other general-purpose multiobjective optimization algorithms.
+  other general-purpose multiobjective optimization algorithms.  The MOEA
+  Framework supports genetic algorithms, differential evolution, particle
+  swarm optimization, genetic programming, grammatical evolution, and more.
   A number of algorithms are provided out-of-the-box, including NSGA-II,
-  &epsilon;-MOEA, GDE3 and MOEA/D.  In addition, the MOEA Framework provides the tools
-  necessary to rapidly design, develop, execute and statistically test
+  &epsilon;-MOEA, GDE3 and MOEA/D.  In addition, the MOEA Framework provides the
+  tools necessary to rapidly design, develop, execute and statistically test
   optimization algorithms.
 </p>
-  
+
 <h3>Key Features</h3>
   
   <ul>
@@ -41,7 +43,7 @@
     <li>Modular design for constructing new optimization algorithms from existing components</li>
     <li>Permissive open source license</li>
     <li>Fully documented source code</li>
-    <li>Over 1000 test cases to ensure validity</li>
+    <li>Over 1100 test cases to ensure validity</li>
   </ul>
   
 <h3>Gallery</h3>

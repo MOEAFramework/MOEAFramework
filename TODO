@@ -156,14 +156,6 @@ any changes.
  Hard
 ------
 
-  - While basic support for grammatical evolution is provided, several other
-    Java-based evolutionary computing frameworks provide significantly better
-    support for genetic programming and grammatical evolution.  One such
-    example is ECJ <http://cs.gmu.edu/~eclab/projects/ecj/>.  Develop
-    comprehensive support for genetic programming and grammatical evolution in
-    the MOEA Framework (possibly reusing an existing library with a compatible
-    license).
-
   - Develop a GUI that simplifies the use of the framework, allowing users to
     quickly design, run and view the results of experiments.  This should
     support high-dimensional (3D) visualization of Pareto sets, detailed

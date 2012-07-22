@@ -26,7 +26,9 @@ import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Solution;
 
 /**
- * Example running the ant trail problem.
+ * Example running the ant trail problem.  NSGA-II isn't really designed for
+ * single-objective functions, but this serves as a demonstration of genetic
+ * programming.
  */
 public class Test {
 	
@@ -37,7 +39,8 @@ public class Test {
 	 * @throws FileNotFoundException if the ant trail file could not be found
 	 * @throws IOException if an I/O error occurred
 	 */
-	public static void main(String[] args) throws FileNotFoundException, IOException {
+	public static void main(String[] args) throws FileNotFoundException,
+	IOException {
 		int maxMoves = 500;
 		File file = new File("src/org/moeaframework/util/tree/ant/santafe.trail");
 		

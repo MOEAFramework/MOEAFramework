@@ -5,6 +5,11 @@ Framework.
  Version 1.15 (TBD)
 --------------------
 
+  * Adds genetic programming (GP) support for evolving expression trees.  This
+    includes over 45 program building blocks (logic functions, arithmetic
+    functions, control structures, etc.) and the variation operators for
+    evolving programs.
+
   * Fixes algorithm "resumability".  Before, wrapping an algorithm inside
     another class would sometimes hide the Resumable interface, preventing the
     algorithm from saving/restoring its state.  Now, all algorithms (and their
