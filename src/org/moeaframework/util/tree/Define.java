@@ -90,7 +90,8 @@ public class Define extends Node {
 	 * @param variableNames the names of the arguments to the function
 	 * @param variableTypes the types of the arguments to the function
 	 */
-	public Define(String functionName, Class<?> returnType, String[] variableNames, Class<?>[] variableTypes) {
+	public Define(String functionName, Class<?> returnType,
+			String[] variableNames, Class<?>[] variableTypes) {
 		super(Void.class, returnType);
 		this.functionName = functionName;
 		this.variableNames = variableNames;
@@ -126,7 +127,8 @@ public class Define extends Node {
 
 	@Override
 	public Node copyNode() {
-		return new Define(functionName, getArgumentType(0), variableNames, variableTypes);
+		return new Define(functionName, getArgumentType(0), variableNames,
+				variableTypes);
 	}
 
 	@Override

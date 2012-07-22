@@ -98,7 +98,8 @@ public class Call extends Node {
 	 * @param variableNames the names of the arguments to the function
 	 * @param variableTypes the types of the arguments to the function
 	 */
-	public Call(String functionName, Class<?> returnType, String[] variableNames, Class<?>[] variableTypes) {
+	public Call(String functionName, Class<?> returnType,
+			String[] variableNames, Class<?>[] variableTypes) {
 		super(returnType, variableTypes);
 		this.functionName = functionName;
 		this.variableNames = variableNames;
@@ -134,7 +135,8 @@ public class Call extends Node {
 
 	@Override
 	public Node copyNode() {
-		return new Call(functionName, getReturnType(), variableNames, variableTypes);
+		return new Call(functionName, getReturnType(), variableNames,
+				variableTypes);
 	}
 
 	@Override

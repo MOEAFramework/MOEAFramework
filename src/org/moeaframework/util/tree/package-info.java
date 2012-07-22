@@ -19,5 +19,14 @@
 /**
  * Classes for representing, building and evaluating expression trees for use
  * in Genetic Programming (GP).
+ * <p>
+ * References:
+ * <ol>
+ *   <li>Poli, R., Langdon, W.B., McPhee, N.F., Koza, J.R.  "A Field Guide to
+ *       Genetic Programming."  Available online at
+ *       <http://www.gp-field-guide.org.uk>, 26 March 2008.
+ *   <li>Koza, J.R.  "Genetic Programming: On the Programming of Computers by
+ *       Means of Natural Selection."  MIT Press, Cambridge, MA, USA, 1992.
+ * <ol>
  */
 package org.moeaframework.util.tree;
