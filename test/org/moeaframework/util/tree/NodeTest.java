@@ -21,7 +21,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * Tests specific node instances as well as the arithmetic in
+ * Tests the {@link Node} class, specific node instances, and the methods in
  * {@link NumberArithmetic}.
  */
 public class NodeTest {

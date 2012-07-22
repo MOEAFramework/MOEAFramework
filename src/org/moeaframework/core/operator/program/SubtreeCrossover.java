@@ -31,20 +31,20 @@ import org.moeaframework.util.tree.Rules;
  * <p>
  * This operator is type-safe.
  */
-public class BranchCrossover implements Variation {
+public class SubtreeCrossover implements Variation {
 	
 	/**
-	 * The probability that branch crossover is applied to a program.
+	 * The probability that subtree crossover is applied to a program.
 	 */
 	private double probability;
 	
 	/**
-	 * Constructs a new branch crossover instance.
+	 * Constructs a new subtree crossover instance.
 	 * 
-	 * @param probability the probability that branch crossover is applied to a
-	 *        program
+	 * @param probability the probability that subtree crossover is applied to
+	 *        a program
 	 */
-	public BranchCrossover(double probability) {
+	public SubtreeCrossover(double probability) {
 		super();
 		this.probability = probability;
 	}
@@ -77,7 +77,7 @@ public class BranchCrossover implements Variation {
 	}
 	
 	/**
-	 * Applies branch crossover to the programs.
+	 * Applies subtree crossover to the programs.
 	 * 
 	 * @param program1 the first program, which is the parent program
 	 * @param program2 the second program, which provides the replacement
@@ -141,7 +141,14 @@ public class BranchCrossover implements Variation {
 		}
 		
 		// replace the node
-		rules.replace(node, replacement);
+		Node parent = node.getParent();
+		
+		for (int i = 0; i < parent.getNumberOfArguments(); i++) {
+			if (parent.getArgument(i) == node) {
+				parent.setArgument(i, replacement);
+				break;
+			}
+		}
 	}
 
 }

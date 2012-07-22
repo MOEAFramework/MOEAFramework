@@ -64,7 +64,7 @@ public class PointMutation implements Variation {
 			
 			if (variable instanceof Program) {
 				Program program = (Program)variable;
-				mutate(program, program.getRules());
+				mutate(program.getArgument(0), program.getRules());
 			}
 		}
 		
@@ -72,33 +72,38 @@ public class PointMutation implements Variation {
 	}
 	
 	/**
-	 * Applies point mutation to the arguments of the specified node.
+	 * Applies point mutation to the specified node.
 	 * 
-	 * @param node the parent of the nodes undergoing mutation
+	 * @param node the node undergoing point mutation
 	 * @param rules the rules defining the program syntax
 	 */
 	protected void mutate(Node node, Rules rules) {
-		for (int i = 0; i < node.getNumberOfArguments(); i++) {
-			if (PRNG.nextDouble() <= probability) {
-				Node argument = node.getArgument(i);
-				List<Node> mutations = rules.listAvailableMutations(argument);
-				
-				if (!mutations.isEmpty()) {
-					//apply the mutation
-					Node mutation = PRNG.nextItem(mutations);
-					node.setArgument(i, mutation);
-					
-					for (int j = 0; j < argument.getNumberOfArguments(); j++) {
-						mutation.setArgument(j, argument.getArgument(j));
+		if (PRNG.nextDouble() <= probability) {
+			// mutate this node
+			List<Node> mutations = rules.listAvailableMutations(node);
+			
+			if (!mutations.isEmpty()) {
+				Node mutation = PRNG.nextItem(mutations).copyNode();
+				Node parent = node.getParent();
+
+				for (int i = 0; i < parent.getNumberOfArguments(); i++) {
+					if (parent.getArgument(i) == node) {
+						parent.setArgument(i, mutation);
+						break;
 					}
-					
-					argument = mutation;
 				}
 				
-				for (int j = 0; j < argument.getNumberOfArguments(); j++) {
-					mutate(argument.getArgument(j), rules);
+				for (int i = 0; i < node.getNumberOfArguments(); i++) {
+					mutation.setArgument(i, node.getArgument(i));
 				}
+				
+				node = mutation;
 			}
+		}
+		
+		// recursively mutate arguments
+		for (int i = 0; i < node.getNumberOfArguments(); i++) {
+			mutate(node.getArgument(i), rules);
 		}
 	}
 

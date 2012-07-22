@@ -34,7 +34,7 @@ import org.moeaframework.core.operator.grammar.GrammarMutation;
 import org.moeaframework.core.operator.permutation.Insertion;
 import org.moeaframework.core.operator.permutation.PMX;
 import org.moeaframework.core.operator.permutation.Swap;
-import org.moeaframework.core.operator.program.BranchCrossover;
+import org.moeaframework.core.operator.program.SubtreeCrossover;
 import org.moeaframework.core.operator.program.PointMutation;
 import org.moeaframework.core.operator.real.AdaptiveMetropolis;
 import org.moeaframework.core.operator.real.DifferentialEvolution;
@@ -415,7 +415,7 @@ public class OperatorFactory {
 				return new PointMutation(
 						properties.getDouble("ptm.rate", 0.01));
 			} else if (name.equalsIgnoreCase("bc")) {
-				return new BranchCrossover(
+				return new SubtreeCrossover(
 						properties.getDouble("bc.rate", 0.9));
 			} else {
 				throw new ProviderNotFoundException(name);

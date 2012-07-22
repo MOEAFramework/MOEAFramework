@@ -315,27 +315,6 @@ public class Rules {
 	}
 	
 	/**
-	 * Replaces the original node with the given replacement node.  The tree
-	 * containing the original node is modified and will subsequently
-	 * contain the replacement node.
-	 * 
-	 * @param original the original node
-	 * @param replacement the replacement node
-	 */
-	public void replace(Node original, Node replacement) {
-		Node parent = original.getParent();
-		
-		if (parent != null) {
-			for (int i = 0; i < parent.getNumberOfArguments(); i++) {
-				if (parent.getArgument(i) == original) {
-					parent.setArgument(i, replacement);
-					break;
-				}
-			}
-		}
-	}
-	
-	/**
 	 * Returns the list of all nodes which can appear in programs produced
 	 * using these rules.
 	 * 
@@ -402,16 +381,19 @@ public class Rules {
 	 *         {@code false} otherwise
 	 */
 	protected boolean isMutationCompatible(Node original, Node mutation) {
-		if (!original.getReturnType().isAssignableFrom(mutation.getReturnType())) {
+		if (!original.getReturnType().isAssignableFrom(
+				mutation.getReturnType())) {
 			return false;
 		}
 		
-		if (original.getNumberOfArguments() != mutation.getNumberOfArguments()) {
+		if (original.getNumberOfArguments() != 
+				mutation.getNumberOfArguments()) {
 			return false;
 		}
 		
 		for (int i = 0; i < original.getNumberOfArguments(); i++) {
-			if (!original.getArgumentType(i).isAssignableFrom(mutation.getArgumentType(i))) {
+			if (!original.getArgumentType(i).isAssignableFrom(
+					mutation.getArgumentType(i))) {
 				return false;
 			}
 		}
@@ -551,9 +533,11 @@ public class Rules {
 			
 			for (int i = 0; i < node.getNumberOfArguments(); i++) {
 				if (node.getArgument(i) == null) {
-					copy.setArgument(i, buildTreeFull(node.getArgumentType(i), depth-1));
+					copy.setArgument(i, buildTreeFull(node.getArgumentType(i),
+							depth-1));
 				} else {
-					copy.setArgument(i, buildTreeFull(node.getArgument(i), depth-1));
+					copy.setArgument(i, buildTreeFull(node.getArgument(i),
+							depth-1));
 				}
 			}
 			
@@ -579,9 +563,11 @@ public class Rules {
 			
 			for (int i = 0; i < node.getNumberOfArguments(); i++) {
 				if (node.getArgument(i) == null) {
-					copy.setArgument(i, buildTreeGrow(node.getArgumentType(i), depth-1));
+					copy.setArgument(i, buildTreeGrow(node.getArgumentType(i),
+							depth-1));
 				} else {
-					copy.setArgument(i, buildTreeGrow(node.getArgument(i), depth-1));
+					copy.setArgument(i, buildTreeGrow(node.getArgument(i),
+							depth-1));
 				}
 			}
 			
