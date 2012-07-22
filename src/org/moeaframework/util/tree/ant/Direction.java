@@ -17,14 +17,29 @@
  */
 package org.moeaframework.util.tree.ant;
 
+/**
+ * The direction the ant is facing.
+ */
 public enum Direction {
 	
+	/**
+	 * North / Up.
+	 */
 	NORTH,
 	
+	/**
+	 * South / Down.
+	 */
 	SOUTH,
 	
+	/**
+	 * East / Right.
+	 */
 	EAST,
 	
+	/**
+	 * West / Left.
+	 */
 	WEST
 
 }

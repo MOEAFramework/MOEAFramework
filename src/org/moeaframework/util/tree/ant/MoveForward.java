@@ -20,8 +20,16 @@ package org.moeaframework.util.tree.ant;
 import org.moeaframework.util.tree.Environment;
 import org.moeaframework.util.tree.Node;
 
+/**
+ * The node for moving the ant forward one position in the direction it is
+ * facing.  Performing this operation consumes one move.
+ */
 public class MoveForward extends Node {
 	
+	/**
+	 * Constructs a new node for moving the ant forward one position in the
+	 * direction it is facing.
+	 */
 	public MoveForward() {
 		super();
 	}

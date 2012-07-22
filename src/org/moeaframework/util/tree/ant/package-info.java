@@ -15,34 +15,8 @@
  * You should have received a copy of the GNU Lesser General Public License 
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.util.tree.ant;
-
-import org.moeaframework.util.tree.Environment;
-import org.moeaframework.util.tree.Node;
 
 /**
- * The node for turning the ant right.  Performing this operation consumes one
- * move.
+ * Classes for defining the ant trail problem.
  */
-public class TurnRight extends Node {
-	
-	/**
-	 * Constructs a new node for turning the ant right.
-	 */
-	public TurnRight() {
-		super();
-	}
-
-	@Override
-	public TurnRight copyNode() {
-		return new TurnRight();
-	}
-
-	@Override
-	public Void evaluate(Environment environment) {
-		World world = environment.get(World.class, "world");
-		world.turnRight();
-		return null;
-	}
-
-}
+package org.moeaframework.util.tree.ant;

@@ -27,38 +27,107 @@ import java.io.Reader;
 
 import org.moeaframework.util.io.CommentedLineReader;
 
+/**
+ * The world that the ant occupies.  The world is cyclic, so an ant walking
+ * off the boundary on one side will appear on the boundary at the opposite
+ * side.
+ */
 public class World {
 	
+	/**
+	 * The current horizontal position of the ant.
+	 */
 	private int x;
 	
+	/**
+	 * The current vertical position of the ant.
+	 */
 	private int y;
 	
+	/**
+	 * The width of the world.
+	 */
 	private int width;
 	
+	/**
+	 * The height of the world.
+	 */
 	private int height;
 	
+	/**
+	 * The state of each cell in the world.
+	 */
 	private State[][] map;
 	
+	/**
+	 * The current direction the ant is facing.
+	 */
 	private Direction direction;
 	
+	/**
+	 * The number of moves required by the ant to find and eat all the food.
+	 * This does not count moves expended after the last piece of food was
+	 * eaten.
+	 */
 	private int numberOfMoves;
 	
+	/**
+	 * The number of remaining moves the ant can perform to find food.
+	 */
 	private int remainingMoves;
 	
+	/**
+	 * The maximum number of moves the ant can expend to find food.
+	 */
 	private int maxMoves;
 	
+	/**
+	 * The amount of food eaten by the ant.
+	 */
 	private int foodEaten;
 	
+	/**
+	 * The total amount of food available in this world.
+	 */
 	private int totalFood;
 	
-	public World(File file, int maxMoves) throws FileNotFoundException, IOException {
+	/**
+	 * Constructs a new world using the ant trail defined in the specified
+	 * file.
+	 * 
+	 * @param file the file containing the ant trail
+	 * @param maxMoves the maximum number of moves the ant can expend to find
+	 *        food
+	 * @throws FileNotFoundException if the file was not found
+	 * @throws IOException if an I/O error occurred
+	 */
+	public World(File file, int maxMoves) throws FileNotFoundException,
+	IOException {
 		this(new FileReader(file), maxMoves);
 	}
 	
+	/**
+	 * Constructs a new world using the ant trail defined in the specified
+	 * input stream.
+	 * 
+	 * @param stream the stream containing the ant trail
+	 * @param maxMoves the maximum number of moves the ant can expend to find
+	 *        food
+	 * @throws IOException if an I/O error occurred
+	 */
 	public World(InputStream stream, int maxMoves) throws IOException {
 		this(new InputStreamReader(stream), maxMoves);
 	}
 	
+	/**
+	 * Constructs a new world using the ant trail defined in the specified
+	 * reader.
+	 * 
+	 * @param reader the reader containing the ant trail
+	 * @param maxMoves the maximum number of moves the ant can expend to find
+	 *        food
+	 * @throws IOException if an I/O error occurred
+	 */
 	public World(Reader reader, int maxMoves) throws IOException {
 		super();
 		this.maxMoves = maxMoves;
@@ -67,6 +136,12 @@ public class World {
 		reset();
 	}
 	
+	/**
+	 * Loads the ant trail.
+	 * 
+	 * @param reader the reader containing the ant trail
+	 * @throws IOException if an I/O error occurred
+	 */
 	protected void load(Reader reader) throws IOException {
 		CommentedLineReader lineReader = null;
 		
@@ -104,6 +179,7 @@ public class World {
 					i++;
 				}
 				
+				// fill any remaining columns
 				while (i < width) {
 					map[i][j] = State.EMPTY;
 					i++;
@@ -112,6 +188,7 @@ public class World {
 				j++;
 			}
 			
+			// fill any remaining rows
 			while (j < height) {
 				i = 0;
 				
@@ -129,6 +206,10 @@ public class World {
 		}
 	}
 	
+	/**
+	 * Resets this world, returning the ant to its starting position and
+	 * resetting the state of all cells to their original states.
+	 */
 	public void reset() {
 		x = 0;
 		y = 0;
@@ -145,30 +226,68 @@ public class World {
 		}
 	}
 	
+	/**
+	 * Returns the maximum number of moves the ant can expend to find food.
+	 * 
+	 * @return the maximum number of moves the ant can expend to find food
+	 */
 	public int getMaxMoves() {
 		return maxMoves;
 	}
 	
+	/**
+	 * Returns the number of remaining moves the ant can perform to find food.
+	 * 
+	 * @return the number of remaining moves the ant can perform to find food
+	 */
 	public int getRemainingMoves() {
 		return remainingMoves;
 	}
 
+	/**
+	 * Returns the number of moves required by the ant to find and eat all the
+	 * food.  This does not count moves expended after the last piece of food
+	 * was eaten.
+	 * 
+	 * @return the number of moves required by the ant to find and eat all the
+	 *         food
+	 */
 	public int getNumberOfMoves() {
 		return numberOfMoves;
 	}
 	
+	/**
+	 * Returns the amount of food eaten by the ant.
+	 * 
+	 * @return the amount of food eaten by the ant
+	 */
 	public int getFoodEaten() {
 		return foodEaten;
 	}
 	
+	/**
+	 * Returns the total amount of food available in this world.
+	 * 
+	 * @return the total amount of food available in this world
+	 */
 	public int getTotalFood() {
 		return totalFood;
 	}
 	
+	/**
+	 * Returns the amount of food remaining in this world not yet eaten by the
+	 * ant.
+	 * 
+	 * @return the amount of food remaining in this world not yet eaten by the
+	 * ant
+	 */
 	public int getRemainingFood() {
 		return totalFood - foodEaten;
 	}
 
+	/**
+	 * Turns the ant right.
+	 */
 	public void turnRight() {
 		switch (direction) {
 		case NORTH:
@@ -190,6 +309,9 @@ public class World {
 		remainingMoves--;
 	}
 	
+	/**
+	 * Turns the ant left.
+	 */
 	public void turnLeft() {
 		switch (direction) {
 		case NORTH:
@@ -211,6 +333,11 @@ public class World {
 		remainingMoves--;
 	}
 	
+	/**
+	 * Moves the ant forward one position in the direction it is facing.  If
+	 * the ant has already expended all available moves, the ant remains
+	 * stationary.
+	 */
 	public void moveForward() {
 		if (getRemainingMoves() <= 0) {
 			return;
@@ -242,6 +369,13 @@ public class World {
 		remainingMoves--;
 	}
 	
+	/**
+	 * Returns {@code true} if food is located in the position directly ahead
+	 * of the ant; {@code false} otherwise.
+	 * 
+	 * @return {@code true} if food is located in the position directly ahead
+	 *         of the ant; {@code false} otherwise
+	 */
 	public boolean isFoodAhead() {
 		switch (direction) {
 		case NORTH:
@@ -257,6 +391,9 @@ public class World {
 		}
 	}
 	
+	/**
+	 * Prints a visual representation of the world to {@code System.out}.
+	 */
 	public void display() {
 		for (int j = 0; j < height; j++) {
 			for (int i = 0; i < width; i++) {

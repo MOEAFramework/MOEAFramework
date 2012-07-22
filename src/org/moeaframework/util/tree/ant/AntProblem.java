@@ -29,12 +29,33 @@ import org.moeaframework.util.tree.IfElse;
 import org.moeaframework.util.tree.Rules;
 import org.moeaframework.util.tree.Sequence;
 
+/**
+ * The ant trail problem.  A program for controlling an ant must be discovered
+ * to traverse a world and maximize the amount of food eaten.  The ant should
+ * also minimize the number of steps required to do so.
+ */
 public class AntProblem extends AbstractProblem {
 
+	/**
+	 * The rules for building the ant trail program.
+	 */
 	private final Rules rules;
 	
+	/**
+	 * The world that the ant occupies.
+	 */
 	private final World world;
 
+	/**
+	 * Constructs a new ant trail problem using the ant trail defined in the
+	 * specified file.
+	 * 
+	 * @param file the file containing the ant trail
+	 * @param maxMoves the maximum number of moves the ant can expend to find
+	 *        food
+	 * @throws FileNotFoundException if the file was not found
+	 * @throws IOException if an I/O error occurred
+	 */
 	public AntProblem(File file, int maxMoves) throws FileNotFoundException,
 	IOException {
 		super(1, 1);
@@ -66,9 +87,15 @@ public class AntProblem extends AbstractProblem {
 		solution.setObjective(0, world.getRemainingFood());
 	}
 	
+	/**
+	 * Prints a visual representation of the last evaluated solution to this
+	 * problem.
+	 */
 	public void displayLastEvaluation() {
-		System.out.println("Moves: " + world.getNumberOfMoves());
-		System.out.println("Food: " + world.getFoodEaten());
+		System.out.println("Moves: " + world.getNumberOfMoves() + " / " +
+				world.getMaxMoves());
+		System.out.println("Food: " + world.getFoodEaten() + " / " + 
+				world.getTotalFood());
 		world.display();
 	}
 
