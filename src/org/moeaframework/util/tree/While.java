@@ -66,7 +66,7 @@ public class While extends Node {
 		Object value = null;
 		
 		while ((Boolean)getArgument(0).evaluate(environment)) {
-			value = getArgument(2).evaluate(environment);
+			value = getArgument(1).evaluate(environment);
 		}
 		
 		return value;

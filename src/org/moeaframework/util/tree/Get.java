@@ -91,6 +91,8 @@ public class Get extends Node {
 		} else if (getReturnType().equals(Float.class) ||
 				getReturnType().equals(Double.class)) {
 			return 0.0;
+		} else if (getReturnType().equals(Number.class)) {
+			return 0;
 		} else if (getReturnType().equals(Boolean.class)) {
 			return false;
 		} else {

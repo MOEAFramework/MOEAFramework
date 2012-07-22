@@ -47,7 +47,7 @@ public class Constant extends Node {
 	 * @param value the floating-point number
 	 */
 	public Constant(double value) {
-		this((Double)value);
+		this(Double.class, value);
 	}
 	
 	/**
@@ -56,7 +56,7 @@ public class Constant extends Node {
 	 * @param value the integer value
 	 */
 	public Constant(long value) {
-		this((Long)value);
+		this(Long.class, value);
 	}
 	
 	/**
@@ -65,22 +65,25 @@ public class Constant extends Node {
 	 * @param value the boolean value
 	 */
 	public Constant(boolean value) {
-		this((Boolean)value);
+		this(Boolean.class, value);
 	}
 	
 	/**
-	 * Constructs a new node for defining a constant {@link Object}.
+	 * Constructs a new node for defining a constant {@link Object}.  It is
+	 * necessary to pass the type explicitly to ensure values such as 
+	 * {@code null} are handled correctly.
 	 * 
+	 * @param type the type of the object
 	 * @param value the object
 	 */
-	public Constant(Object value) {
-		super(value.getClass());
+	public Constant(Class<?> type, Object value) {
+		super(type);
 		this.value = value;
 	}
 	
 	@Override
 	public Constant copyNode() {
-		return new Constant(value);
+		return new Constant(getReturnType(), value);
 	}
 	
 	@Override

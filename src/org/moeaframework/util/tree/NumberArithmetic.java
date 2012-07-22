@@ -434,9 +434,9 @@ public class NumberArithmetic {
 	 */
 	public static Number min(Number a, Number b) {
 		if (isFloatingPoint(a) || isFloatingPoint(b)) {
-			return Math.max(a.doubleValue(), b.doubleValue());
+			return Math.min(a.doubleValue(), b.doubleValue());
 		} else {
-			return Math.max(a.longValue(), b.longValue());
+			return Math.min(a.longValue(), b.longValue());
 		}
 	}
 	

@@ -60,10 +60,9 @@ public class Equals extends Node {
 
 	@Override
 	public Boolean evaluate(Environment environment) {
-		Number n1 = (Number)getArgument(0).evaluate(environment);
-		Number n2 = (Number)getArgument(1).evaluate(environment);
-		
-		return n1.equals(n2);
+		return NumberArithmetic.equals(
+				(Number)getArgument(0).evaluate(environment),
+				(Number)getArgument(1).evaluate(environment));
 	}
 
 }
