@@ -25,8 +25,18 @@ import org.moeaframework.Executor;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Solution;
 
+/**
+ * Example running the ant trail problem.
+ */
 public class Test {
 	
+	/**
+	 * Starts the example running the ant trail problem.
+	 * 
+	 * @param args the command line arguments
+	 * @throws FileNotFoundException if the ant trail file could not be found
+	 * @throws IOException if an I/O error occurred
+	 */
 	public static void main(String[] args) throws FileNotFoundException, IOException {
 		int maxMoves = 500;
 		File file = new File("src/org/moeaframework/util/tree/ant/santafe.trail");

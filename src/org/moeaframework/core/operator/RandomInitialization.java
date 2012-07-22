@@ -27,6 +27,7 @@ import org.moeaframework.core.variable.Grammar;
 import org.moeaframework.core.variable.Permutation;
 import org.moeaframework.core.variable.Program;
 import org.moeaframework.core.variable.RealVariable;
+import org.moeaframework.util.tree.Node;
 import org.moeaframework.util.tree.Rules;
 
 /**
@@ -108,18 +109,28 @@ public class RandomInitialization implements Initialization {
 			}
 			grammar.fromArray(array);
 		} else if (variable instanceof Program) {
+			// ramped half-and-half initialization
 			Program program = (Program)variable;
 			Rules rules = program.getRules();
-			int depth = PRNG.nextInt(rules.getMaxInitializationDepth());
+			int depth = PRNG.nextInt(2, rules.getMaxInitializationDepth());
 			boolean isFull = PRNG.nextBoolean();
+			Node root = null;
 			
 			if (isFull) {
-				program.setArgument(0, rules.buildTreeFull(
-						program.getReturnType(), depth));
+				if (rules.getScaffolding() == null) {
+					root = rules.buildTreeFull(rules.getReturnType(), depth);
+				} else {
+					root = rules.buildTreeFull(rules.getScaffolding(), depth);
+				}
 			} else {
-				program.setArgument(0, rules.buildTreeGrow(
-						program.getReturnType(), depth));
+				if (rules.getScaffolding() == null) {
+					root = rules.buildTreeGrow(rules.getReturnType(), depth);
+				} else {
+					root = rules.buildTreeGrow(rules.getScaffolding(), depth);
+				}
 			}
+			
+			program.setArgument(0, root);
 		} else {
 			System.err.println("can not initialize unknown type");
 		}
