@@ -19,7 +19,7 @@ package org.moeaframework.util.tree;
 
 /**
  * The node for executing one of two expressions depending on the result of a
- * boolean expression.
+ * boolean expression.  The inputs and outputs to this node are shown below:
  * 
  * <table border="1" cellpadding="3" cellspacing="0">
  *   <tr class="TableHeadingColor">

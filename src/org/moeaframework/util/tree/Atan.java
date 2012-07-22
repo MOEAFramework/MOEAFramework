@@ -18,7 +18,8 @@
 package org.moeaframework.util.tree;
 
 /**
- * The node for calculating the arc tangent of a number.
+ * The node for calculating the arc tangent of a number.  The inputs and
+ * outputs to this node are shown below:
  * 
  * <table border="1" cellpadding="3" cellspacing="0">
  *   <tr class="TableHeadingColor">

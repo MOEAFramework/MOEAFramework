@@ -18,7 +18,8 @@
 package org.moeaframework.util.tree;
 
 /**
- * The node for comparing if a number is less than another.
+ * The node for comparing if a number is less than another.  The inputs and
+ * outputs to this node are shown below:
  * 
  * <table border="1" cellpadding="3" cellspacing="0">
  *   <tr class="TableHeadingColor">

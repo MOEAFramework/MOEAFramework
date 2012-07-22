@@ -20,7 +20,8 @@ package org.moeaframework.util.tree;
 /**
  * The node for assigning the value of a named variable within the current
  * scope.  Variables are locally-scoped within functions (i.e., {@link Define}
- * and {@link Lambda}) and globally-scoped elsewhere.
+ * and {@link Lambda}) and globally-scoped elsewhere.  The inputs and
+ * outputs to this node are shown below:
  * 
  * <table border="1" cellpadding="3" cellspacing="0">
  *   <tr class="TableHeadingColor">

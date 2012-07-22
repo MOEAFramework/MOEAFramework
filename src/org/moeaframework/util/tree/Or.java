@@ -18,7 +18,8 @@
 package org.moeaframework.util.tree;
 
 /**
- * The node for calculating the logical OR of two boolean values.
+ * The node for calculating the logical OR of two boolean values.  The inputs
+ * and outputs to this node are shown below:
  * 
  * <table border="1" cellpadding="3" cellspacing="0">
  *   <tr class="TableHeadingColor">

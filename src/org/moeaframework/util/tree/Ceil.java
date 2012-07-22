@@ -19,7 +19,7 @@ package org.moeaframework.util.tree;
 
 /**
  * The node for calculating the smallest integer value that is greater than or
- * equal to a number.
+ * equal to a number.  The inputs and outputs to this node are shown below:
  * 
  * <table border="1" cellpadding="3" cellspacing="0">
  *   <tr class="TableHeadingColor">

@@ -19,7 +19,7 @@ package org.moeaframework.util.tree;
 
 /**
  * The node for calculating the result of Euler's number <i>e</i> raised to the
- * power of a number.
+ * power of a number.  The inputs and outputs to this node are shown below:
  * 
  * <table border="1" cellpadding="3" cellspacing="0">
  *   <tr class="TableHeadingColor">

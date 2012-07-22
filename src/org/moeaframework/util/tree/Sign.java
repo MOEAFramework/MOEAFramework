@@ -20,7 +20,8 @@ package org.moeaframework.util.tree;
 /**
  * The node for calculating the sign of a number.  The sign of a number is
  * {@code 1} if the number is greater than zero, {@code -1} if the number is
- * less than zero, and {@code 0} if the number is equal to zero.
+ * less than zero, and {@code 0} if the number is equal to zero.  The inputs and
+ * outputs to this node are shown below:
  * 
  * <table border="1" cellpadding="3" cellspacing="0">
  *   <tr class="TableHeadingColor">

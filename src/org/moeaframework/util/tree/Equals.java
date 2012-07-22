@@ -18,7 +18,8 @@
 package org.moeaframework.util.tree;
 
 /**
- * The node for comparing two numbers for equality.
+ * The node for comparing two numbers for equality.  The inputs and
+ * outputs to this node are shown below:
  * 
  * <table border="1" cellpadding="3" cellspacing="0">
  *   <tr class="TableHeadingColor">

@@ -18,7 +18,8 @@
 package org.moeaframework.util.tree;
 
 /**
- * The node for multiplying two numbers.
+ * The node for multiplying two numbers.  The inputs and outputs to this node
+ * are shown below:
  * 
  * <table border="1" cellpadding="3" cellspacing="0">
  *   <tr class="TableHeadingColor">

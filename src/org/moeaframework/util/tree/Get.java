@@ -19,7 +19,8 @@ package org.moeaframework.util.tree;
 
 /**
  * The node for reading the value stored in a named variable within the current
- * scope.  See {@link Set} for details on scoping.
+ * scope.  See {@link Set} for details on scoping.  The inputs and outputs to
+ * this node are shown below:
  * <p>
  * If the named variable has not yet been set, a default value is returned
  * depending on the return type.  For numeric values, the default is

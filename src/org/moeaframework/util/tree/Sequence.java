@@ -21,7 +21,8 @@ package org.moeaframework.util.tree;
  * The node for executing two or more expressions in sequence.  The return
  * value of the last expression is returned, and the return type should be
  * specified using an appropriate constructor.  Since the expressions are
- * strongly typed, the type(s) specified in the constructor is important.
+ * strongly typed, the type(s) specified in the constructor is important.  The
+ * inputs and outputs to this node are shown below:
  * 
  * <table border="1" cellpadding="3" cellspacing="0">
  *   <tr class="TableHeadingColor">

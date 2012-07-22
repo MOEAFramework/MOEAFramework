@@ -19,7 +19,8 @@ package org.moeaframework.util.tree;
 
 /**
  * The node for executing an expression for a given number of iterations.  A
- * named variable is created that contains the loop counter.
+ * named variable is created that contains the loop counter.  The inputs and
+ * outputs to this node are shown below:
  * 
  * <table border="1" cellpadding="3" cellspacing="0">
  *   <tr class="TableHeadingColor">
