@@ -41,6 +41,11 @@ public class BinaryVariableTest {
 	public void tearDown() {
 		value = null;
 	}
+	
+	@Test
+	public void testToString() {
+		Assert.assertEquals("01", value.toString());
+	}
 
 	@Test
 	public void testGetValue() {

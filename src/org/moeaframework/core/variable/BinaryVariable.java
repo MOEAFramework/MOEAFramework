@@ -187,5 +187,16 @@ public class BinaryVariable implements Variable {
 					.isEquals();
 		}
 	}
+	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		
+		for (int i = 0; i < numberOfBits; i++) {
+			sb.append(bitSet.get(i) ? "1" : "0");
+		}
+		
+		return sb.toString();
+	}
 
 }

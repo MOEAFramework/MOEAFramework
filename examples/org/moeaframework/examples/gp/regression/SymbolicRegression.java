@@ -99,7 +99,7 @@ WindowListener {
 	}
 	
 	protected void initialize() {
-		frame = new JFrame("Symbolic Regression");
+		frame = new JFrame("Symbolic Regression Demo");
 		frame.getContentPane().setLayout(new BorderLayout());
 		frame.setSize(600, 600);
 		frame.setLocationRelativeTo(null);
@@ -166,9 +166,10 @@ WindowListener {
 		
 		difference = Math.sqrt(difference);
 		
-		//if (Double.isNaN(difference)) {
-		//	difference = Double.POSITIVE_INFINITY;
-		//}
+		// protect against NaN
+		if (Double.isNaN(difference)) {
+			difference = Double.POSITIVE_INFINITY;
+		}
 
 		solution.setObjective(0, difference);
 	}
@@ -219,7 +220,7 @@ WindowListener {
 		
 				// generate the plot
 				JFreeChart chart = ChartFactory.createXYLineChart(
-						"Symbolic Regression", "x", "f(x)", dataset,
+						"Symbolic Regression Demo", "x", "f(x)", dataset,
 						PlotOrientation.VERTICAL, true, true, false);
 				XYPlot plot = chart.getXYPlot();
 				plot.setRenderer(new XYLineAndShapeRenderer());
