@@ -17,12 +17,22 @@
  */
 package org.moeaframework.util.tree;
 
+import org.moeaframework.core.Settings;
+
 /**
  * Provides many arithmetic and trigonometric functions that operate on
  * {@link Number}s, performing any necessary implicit casting.  An integer
  * number remains an integer unless the specific function requires
  * floating-point values.  These methods favor {@link Long} and {@link Double}
  * representations for integer and floating-point values, respectively.
+ * <p>
+ * The arithmetic functions provided herein support optional function
+ * protection, which is enabled by default.  Function protection prevents
+ * values like {@code Inf} and {@code NaN} from appearing due to invalid
+ * inputs.  For example, this protects against division-by-zero.  To disable
+ * function protection, set the property
+ * {@code org.moeaframework.util.tree.protected_functions = false} in the file
+ * {@code global.properties}.
  */
 public class NumberArithmetic {
 	
@@ -126,14 +136,20 @@ public class NumberArithmetic {
 	}
 	
 	/**
-	 * Returns the square root of the number.
+	 * Returns the square root of the number.  If the number is less than zero
+	 * and function protection is enabled, this functions the square root of
+	 * the absolute value of the number.
 	 * 
 	 * @param a the number
 	 * @return the square root of the number
 	 * @see Math#sqrt(double)
 	 */
 	public static Number sqrt(Number a) {
-		return Math.sqrt(a.doubleValue());
+		if ((a.doubleValue() < 0.0) && Settings.isProtectedFunctions()) {
+			return Math.sqrt(Math.abs(a.doubleValue()));
+		} else {
+			return Math.sqrt(a.doubleValue());
+		}
 	}
 	
 	/**
@@ -179,7 +195,9 @@ public class NumberArithmetic {
 	}
 	
 	/**
-	 * Returns the value of dividing the first number by the second.
+	 * Returns the value of dividing the first number by the second.  If the
+	 * second argument is {@code 0} and function protection is enabled, this
+	 * function returns {@code 1} regardless of the first argument's value.
 	 * 
 	 * @param a the first number
 	 * @param b the second number
@@ -187,24 +205,43 @@ public class NumberArithmetic {
 	 */
 	public static Number div(Number a, Number b) {
 		if (isFloatingPoint(a) || isFloatingPoint(b)) {
-			return a.doubleValue() / b.doubleValue();
+			if ((b.doubleValue() == 0.0) && Settings.isProtectedFunctions()) {
+				return 1.0;
+			} else {
+				return a.doubleValue() / b.doubleValue();
+			}
 		} else {
-			return a.longValue() / b.longValue();
+			if ((b.longValue() == 0) && Settings.isProtectedFunctions()) {
+				return 1L;
+			} else {
+				return a.longValue() / b.longValue();
+			}
 		}
 	}
 	
 	/**
-	 * Returns the remainder from dividing the first number by the second.
+	 * Returns the remainder from dividing the first number by the second.  If
+	 * the second argument is {@code 0} and function protection is enabled, 
+	 * this function returns {@code 0} regardless of the first argument's
+	 * value.
 	 * 
 	 * @param a the first number
 	 * @param b the second number
-	 * @return the remainder from dividig the first number by the second
+	 * @return the remainder from dividing the first number by the second
 	 */
 	public static Number mod(Number a, Number b) {
 		if (isFloatingPoint(a) || isFloatingPoint(b)) {
-			return a.doubleValue() % b.doubleValue();
+			if ((b.doubleValue() == 0.0) && Settings.isProtectedFunctions()) {
+				return 0.0;
+			} else {
+				return a.doubleValue() % b.doubleValue();
+			}
 		} else {
-			return a.longValue() % b.longValue();
+			if ((b.longValue() == 0) && Settings.isProtectedFunctions()) {
+				return 0L;
+			} else {
+				return a.longValue() % b.longValue();
+			}
 		}
 	}
 	
@@ -274,25 +311,49 @@ public class NumberArithmetic {
 	}
 	
 	/**
-	 * Returns the natural logarithm of the number.
+	 * Returns the natural logarithm of the number.  If the numbers is
+	 * negative and function protection is enabled, then this function returns
+	 * the natural logarithm of the absolute value of the number.  If the
+	 * number is between {@code -1.0} and {@code 1.0} and function protection
+	 * is enabled, this function returns {@code 0.0}.
 	 * 
 	 * @param a the number
 	 * @return the natural logarithm of the number
 	 * @see Math#log(double)
 	 */
 	public static Number log(Number a) {
-		return Math.log(a.doubleValue());
+		if ((a.doubleValue() < 1.0) && Settings.isProtectedFunctions()) {
+			if (a.doubleValue() > -1.0) {
+				return 0.0;
+			} else {
+				return Math.log(Math.abs(a.doubleValue()));
+			}
+		} else {
+			return Math.log(a.doubleValue());
+		}
 	}
 	
 	/**
-	 * Returns the base-10 logarithm of the number.
+	 * Returns the base-10 logarithm of the number.  If the numbers is
+	 * negative and function protection is enabled, then this function returns
+	 * the base-10 logarithm of the absolute value of the number.  If the
+	 * number is between {@code -1.0} and {@code 1.0} and function protection
+	 * is enabled, this function returns {@code 0.0}.
 	 * 
 	 * @param a the number
 	 * @return the base-10 logarithm of the number
 	 * @see Math#log10(double)
 	 */
 	public static Number log10(Number a) {
-		return Math.log10(a.doubleValue());
+		if ((a.doubleValue() < 1.0) && Settings.isProtectedFunctions()) {
+			if (a.doubleValue() > -1.0) {
+				return 0.0;
+			} else {
+				return Math.log10(Math.abs(a.doubleValue()));
+			}
+		} else {
+			return Math.log10(a.doubleValue());
+		}
 	}
 	
 	/**

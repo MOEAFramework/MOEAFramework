@@ -210,6 +210,12 @@ public class Settings {
 			"analysis.diagnostics.problems";
 	
 	/**
+	 * The property key for the genetic programming protected functions flag.
+	 */
+	public static final String KEY_GP_PROTECTED_FUNCTIONS = KEY_PREFIX +
+			"util.tree.protected_functions";
+	
+	/**
 	 * Loads the properties.
 	 */
 	static {
@@ -608,6 +614,19 @@ public class Settings {
 	 */
 	public static String[] parseCommand(String command) {
 		return new StrTokenizer(command).setQuoteChar('\"').getTokenArray();
+	}
+	
+	/**
+	 * Returns {@code true} if genetic programming functions should use
+	 * protection against invalid arguments that would otherwise result in
+	 * {@code NaN} or other invalid values; {@code false} otherwise.
+	 * 
+	 * @return {@code true} if genetic programming functions should use
+	 *         protection against invalid arguments that would otherwise result
+	 *         in {@code NaN} or other invalid values; {@code false} otherwise
+	 */
+	public static boolean isProtectedFunctions() {
+		return PROPERTIES.getBoolean(KEY_GP_PROTECTED_FUNCTIONS, true);
 	}
 	
 }

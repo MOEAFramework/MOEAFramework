@@ -33,6 +33,12 @@ import org.moeaframework.util.tree.Sequence;
  * The ant trail problem.  A program for controlling an ant must be discovered
  * to traverse a world and maximize the amount of food eaten.  The ant should
  * also minimize the number of steps required to do so.
+ * <p>
+ * References:
+ * <ol>
+ *   <li>Koza, J.R.  "Genetic Programming: On the Programming of Computers by
+ *       Means of Natural Selection."  MIT Press, Cambridge, MA, USA, 1992.
+ * <ol>
  */
 public class AntProblem extends AbstractProblem {
 

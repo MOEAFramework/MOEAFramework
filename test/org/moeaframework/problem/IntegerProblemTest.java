@@ -66,7 +66,7 @@ public class IntegerProblemTest {
 		NondominatedPopulation result = new Executor()
 				.withAlgorithm("NSGAII")
 				.withProblemClass(StepRosenbrockProblem.class)
-				.withMaxEvaluations(10000)
+				.withMaxEvaluations(100000)
 				.run();
 		
 		Solution solution = result.get(0);
