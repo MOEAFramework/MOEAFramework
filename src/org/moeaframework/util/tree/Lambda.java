@@ -42,6 +42,9 @@ public class Lambda extends Node {
 	 * no arguments.
 	 * 
 	 * @param node the body of this function
+	 * @throws IllegalArgumentException if {@code node} is incomplete or not
+	 *         strongly typed (i.e., {@code node.isValid()} returns
+	 *         {@code false})
 	 */
 	public Lambda(Node node) {
 		this(node, new String[0], new Class<?>[0]);
@@ -54,6 +57,9 @@ public class Lambda extends Node {
 	 * @param node the body of this function
 	 * @param variableName the name of the argument
 	 * @param variableType the type of the argument
+	 * @throws IllegalArgumentException if {@code node} is incomplete or not
+	 *         strongly typed (i.e., {@code node.isValid()} returns
+	 *         {@code false})
 	 */
 	public Lambda(Node node, String variableName, Class<?> variableType) {
 		this(node, new String[] { variableName },
@@ -69,6 +75,9 @@ public class Lambda extends Node {
 	 * @param type1 the type of the first argument
 	 * @param name2 the name of the second argument
 	 * @param type2 the type of the second argument
+	 * @throws IllegalArgumentException if {@code node} is incomplete or not
+	 *         strongly typed (i.e., {@code node.isValid()} returns
+	 *         {@code false})
 	 */
 	public Lambda(Node node, String name1, Class<?> type1, 
 			String name2, Class<?> type2) {
@@ -83,6 +92,9 @@ public class Lambda extends Node {
 	 * @param node the body of this function
 	 * @param variableNames the names of the arguments to this function
 	 * @param variableTypes the types of the arguments to this function
+	 * @throws IllegalArgumentException if {@code node} is incomplete or not
+	 *         strongly typed (i.e., {@code node.isValid()} returns
+	 *         {@code false})
 	 */
 	public Lambda(Node node, String[] variableNames, Class<?>[] variableTypes) {
 		super(node.getReturnType(), variableTypes);

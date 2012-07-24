@@ -74,10 +74,6 @@ any changes.
     over formats like XML and JSON due to its very simple and human-readable
     syntax.  Find and upgrade output code which is not yet in a YAML format.
 
-  - Get rid of EpsilonHelper, as it only helps on several of the built-in
-    problems.  The epsilons should be provided via the epsilon property.  If
-    not, throw an exception.
-
   - When restarting a file, ResultFileWriter and MetricFileWriter first move
     the unclean file to a temporary location and copy the clean contents to the
     original location.  If this process is interrupted for any reason, the

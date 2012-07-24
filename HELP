@@ -323,6 +323,20 @@ invalid number of bits
   decision variables being set matches the array length.  For setBinary,
   ensure the number of bits expressed in the binary variable matches the array
   length.
+  
+lambda function is not valid
+  In genetic programming, a lambda function was created with an invalid body.
+  The body of a lambda function must be fully defined and strongly typed.  If
+  not, this exception is thrown.  Check the definition of the lambda function
+  and ensure all arguments are non-null and are of the correct type.  Check the
+  error output to see if any warning messages were printed that detail the
+  cause of this exception.
+  
+index does not reference node in tree
+  Attempted to use one of the node.getXXXAt() methods, but the index referred
+  to a node not within the tree.  This is similar to an out-of-bounds
+  exception, as the index pointed to a node outside the tree.  Ensure the index
+  is valid.
 
 
 ----------
@@ -413,3 +427,14 @@ unable to negate values in <file>, unable to parse number
   processing encounters a value it is unable to parse.  The columns being
   negated must be numeric values.  The file will not be modified if this issue
   is detected.
+  
+argument is null
+<class> not assignable from <class>
+  When validating an expression tree using the node.isValid() method, details
+  identifying why the tree is invalid are printed.  The warning "argument is
+  null" indicates the tree is incomplete and contains a missing argument.
+  Check to ensure all arguments of all nodes within the tree are non-null.
+  The warning "<class> not assignable from <class>" indicates the required type
+  of an argument did not match the return type of the argument.  If this
+  warning appears when using Sequence, For or While, ensure you specify the
+  return type of these nodes using the appropriate constructor.

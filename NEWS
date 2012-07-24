@@ -8,7 +8,8 @@ Framework.
   * Adds genetic programming (GP) support for evolving expression trees.  This
     includes over 45 program building blocks (logic functions, arithmetic
     functions, control structures, etc.) and the variation operators for
-    evolving programs.
+    evolving programs.  Symbolic regression and the ant trail problem have been
+    included as examples using GP.
 
   * Fixes algorithm "resumability".  Before, wrapping an algorithm inside
     another class would sometimes hide the Resumable interface, preventing the

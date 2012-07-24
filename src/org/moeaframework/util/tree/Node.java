@@ -548,15 +548,16 @@ public abstract class Node {
 			
 			if (size > index) {
 				// this argument contains the node to return
-				return argument.getNodeAt(type, includeFunctions, includeTerminals, 
-						index);
+				return argument.getNodeAt(type, includeFunctions,
+						includeTerminals, index);
 			} else {
 				// this argument does not contain the node
 				index -= size;
 			}
 		}
 		
-		throw new IndexOutOfBoundsException();
+		throw new IndexOutOfBoundsException(
+				"index does not reference node in tree");
 	}
 
 }

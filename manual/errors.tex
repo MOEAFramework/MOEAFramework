@@ -321,6 +321,18 @@ Errors halt the execution of the program and produce an error message to the sta
   Attempted to set the decision variable values using an array, but the number of elements in the array does not match the required number of elements. For \java{EncodingUtils.setReal} and \java{EncodingUtils.setInt}, ensure the number of real-valued/integer-valued decision variables being set matches the array length.  For \java{EncodingUtils.setBinary}, ensure the number of bits expressed in the binary variable matches the array length.
 \end{indented}
 
+\noindent
+\textit{lambda function is not valid}
+\begin{indented}
+  In genetic programming, a lambda function was created with an invalid body. The body of a lambda function must be fully defined and strongly typed.  If not, this exception is thrown.  Check the definition of the lambda function and ensure all arguments are non-null and are of the correct type.  Check the error output to see if any warning messages were printed that detail the cause of this exception.
+\end{indented}
+
+\noindent
+\textit{index does not reference node in tree}
+\begin{indented}
+  Attempted to use one of the \java{node.getXXXAt()} methods, but the index referred to a node not within the tree.  This is similar to an out-of-bounds exception, as the index pointed to a node outside the tree.  Ensure the index is valid.
+\end{indented}
+
 
 \section{Warnings}
 Warnings are messages printed to the standard error stream (i.e., the console) that indicate an abnormal or unsafe condition.  While warnings do not indicate an error occurred, they do indicate caution is required by the user.
@@ -406,4 +418,11 @@ Warnings are messages printed to the standard error stream (i.e., the console) t
 \textit{unable to negate values in \plaintext{<file>}, unable to parse number}
 \begin{indented}
   Emitted by the \java{Negater} command line utility when one of the files it is processing encounters a value it is unable to parse.  The columns being negated must be numeric values.  The file will not be modified if this issue is detected.
+\end{indented}
+
+\noindent
+\textit{argument is null} or\\
+\textit{\plaintext{<class>} not assignable from \plaintext{<class>}}
+\begin{indented}
+  When validating an expression tree using the \java{node.isValid()} method, details identifying why the tree is invalid are printed.  The warning ``argument is null'' indicates the tree is incomplete and contains a missing argument. Check to ensure all arguments of all nodes within the tree are non-null. The warning ``\plaintext{<class>} not assignable from \plaintext{<class>}'' indicates the required type of an argument did not match the return type of the argument.  If this warning appears when using \java{Sequence}, \java{For} or \java{While} nodes, ensure you specify the return type of these nodes using the appropriate constructor.
 \end{indented}
