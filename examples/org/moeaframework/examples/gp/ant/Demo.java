@@ -42,7 +42,8 @@ public class Demo {
 	public static void main(String[] args) throws FileNotFoundException,
 	IOException {
 		int maxMoves = 500;
-		File file = new File("src/org/moeaframework/util/tree/ant/santafe.trail");
+		File file = new File(
+				"examples/org/moeaframework/examples/gp/ant/santafe.trail");
 		
 		NondominatedPopulation results = new Executor()
 				.withProblemClass(AntProblem.class, file, maxMoves)
