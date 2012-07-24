@@ -17,13 +17,12 @@
  */
 package org.moeaframework.examples.gp.ant;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 
 import org.moeaframework.Executor;
 import org.moeaframework.core.NondominatedPopulation;
-import org.moeaframework.core.Solution;
 
 /**
  * Example running the ant trail problem.  NSGA-II isn't really designed for
@@ -42,21 +41,28 @@ public class Demo {
 	public static void main(String[] args) throws FileNotFoundException,
 	IOException {
 		int maxMoves = 500;
-		File file = new File(
-				"examples/org/moeaframework/examples/gp/ant/santafe.trail");
 		
+		// solve the ant trail instance
 		NondominatedPopulation results = new Executor()
-				.withProblemClass(AntProblem.class, file, maxMoves)
+				.withProblemClass(AntProblem.class, openDataFile(), maxMoves)
 				.withAlgorithm("NSGAII")
 				.withProperty("populationSize", 500)
 				.withMaxEvaluations(500000)
 				.run();
 		
-		for (Solution solution : results) {
-			AntProblem problem = new AntProblem(file, maxMoves);
-			problem.evaluate(solution);
-			problem.displayLastEvaluation();
-		}
+		// display the result
+		AntProblem problem = new AntProblem(openDataFile(), maxMoves);
+		problem.evaluate(results.get(0));
+		problem.displayLastEvaluation();
+	}
+	
+	/**
+	 * Returns an input stream that contains the ant trail data file.
+	 * 
+	 * @return an input stream that contains the ant trail data file
+	 */
+	public static InputStream openDataFile() {
+		return Demo.class.getResourceAsStream("santafe.trail");
 	}
 
 }

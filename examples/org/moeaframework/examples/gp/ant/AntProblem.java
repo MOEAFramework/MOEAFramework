@@ -19,7 +19,11 @@ package org.moeaframework.examples.gp.ant;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.Program;
@@ -64,6 +68,33 @@ public class AntProblem extends AbstractProblem {
 	 */
 	public AntProblem(File file, int maxMoves) throws FileNotFoundException,
 	IOException {
+		this(new FileReader(file), maxMoves);
+	}
+	
+	/**
+	 * Constructs a new ant trail problem using the ant trail defined in the
+	 * specified input stream.
+	 * 
+	 * @param inputStream the input stream containing the ant trail
+	 * @param maxMoves the maximum number of moves the ant can expend to find
+	 *        food
+	 * @throws IOException if an I/O error occurred
+	 */
+	public AntProblem(InputStream inputStream, int maxMoves) throws
+	IOException {
+		this(new InputStreamReader(inputStream), maxMoves);
+	}
+	
+	/**
+	 * Constructs a new ant trail problem using the ant trail defined in the
+	 * specified reader.
+	 * 
+	 * @param reader the reader containing the ant trail
+	 * @param maxMoves the maximum number of moves the ant can expend to find
+	 *        food
+	 * @throws IOException if an I/O error occurred
+	 */
+	public AntProblem(Reader reader, int maxMoves) throws IOException {
 		super(1, 1);
 		
 		rules = new Rules();
@@ -75,7 +106,7 @@ public class AntProblem extends AbstractProblem {
 		rules.add(new Sequence(Void.class, Void.class));
 		rules.setReturnType(Void.class);
 		
-		world = new World(file, maxMoves);
+		world = new World(reader, maxMoves);
 	}
 
 	@Override
