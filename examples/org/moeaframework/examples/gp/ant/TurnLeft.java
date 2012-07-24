@@ -15,34 +15,34 @@
  * You should have received a copy of the GNU Lesser General Public License 
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.util.tree.ant;
+package org.moeaframework.examples.gp.ant;
+
+import org.moeaframework.util.tree.Environment;
+import org.moeaframework.util.tree.Node;
 
 /**
- * The state of each cell in the world.
+ * The node for turning the ant left.  Performing this operation consumes one
+ * move.
  */
-public enum State {
+public class TurnLeft extends Node {
+	
+	/**
+	 * Constructs a new node for turning the ant left.
+	 */
+	public TurnLeft() {
+		super();
+	}
 
-	/**
-	 * The cell contains food.
-	 */
-	FOOD,
-	
-	/**
-	 * The cell is empty.
-	 */
-	EMPTY,
-	
-	/**
-	 * The cell is empty but located on the "ideal" ant trail.  This must NOT
-	 * be used to influence the ant's behavior, and should be treated like an
-	 * EMPTY cell.
-	 */
-	TRAIL,
-	
-	/**
-	 * The cell previously contained food, but the ant reached this location
-	 * and ate the food.
-	 */
-	EATEN
+	@Override
+	public TurnLeft copyNode() {
+		return new TurnLeft();
+	}
+
+	@Override
+	public Void evaluate(Environment environment) {
+		World world = environment.get(World.class, "world");
+		world.turnLeft();
+		return null;
+	}
 
 }

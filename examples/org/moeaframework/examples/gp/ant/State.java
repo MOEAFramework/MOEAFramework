@@ -15,35 +15,34 @@
  * You should have received a copy of the GNU Lesser General Public License 
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.util.tree.ant;
-
-import org.moeaframework.util.tree.Environment;
-import org.moeaframework.util.tree.Node;
+package org.moeaframework.examples.gp.ant;
 
 /**
- * The node for moving the ant forward one position in the direction it is
- * facing.  Performing this operation consumes one move.
+ * The state of each cell in the world.
  */
-public class MoveForward extends Node {
+public enum State {
+
+	/**
+	 * The cell contains food.
+	 */
+	FOOD,
 	
 	/**
-	 * Constructs a new node for moving the ant forward one position in the
-	 * direction it is facing.
+	 * The cell is empty.
 	 */
-	public MoveForward() {
-		super();
-	}
-
-	@Override
-	public MoveForward copyNode() {
-		return new MoveForward();
-	}
-
-	@Override
-	public Void evaluate(Environment environment) {
-		World world = environment.get(World.class, "world");
-		world.moveForward();
-		return null;
-	}
+	EMPTY,
+	
+	/**
+	 * The cell is empty but located on the "ideal" ant trail.  This must NOT
+	 * be used to influence the ant's behavior, and should be treated like an
+	 * EMPTY cell.
+	 */
+	TRAIL,
+	
+	/**
+	 * The cell previously contained food, but the ant reached this location
+	 * and ate the food.
+	 */
+	EATEN
 
 }

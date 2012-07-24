@@ -19,4 +19,4 @@
 /**
  * Classes for defining the ant trail problem.
  */
-package org.moeaframework.util.tree.ant;
+package org.moeaframework.examples.gp.ant;

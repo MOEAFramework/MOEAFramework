@@ -15,34 +15,48 @@
  * You should have received a copy of the GNU Lesser General Public License 
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.util.tree.ant;
+package org.moeaframework.examples.gp.ant;
 
 import org.moeaframework.util.tree.Environment;
 import org.moeaframework.util.tree.Node;
 
 /**
- * The node for turning the ant left.  Performing this operation consumes one
- * move.
+ * The node for determining if food is located in the position directly ahead
+ * of the ant.
+ * 
+ * <table border="1" cellpadding="3" cellspacing="0">
+ *   <tr class="TableHeadingColor">
+ *     <th width="25%" align="left">Name</th>
+ *     <th width="25%" align="left">Type</th>
+ *     <th width="50%" align="left">Description</th>
+ *   </tr>
+ *   <tr>
+ *     <td>Return Value</td>
+ *     <td>Boolean</td>
+ *     <td>{@code true} if food is located in the position directly ahead of
+ *         the ant; {@code false} otherwise</td>
+ *   </tr>
+ * </table>
  */
-public class TurnLeft extends Node {
+public class IsFoodAhead extends Node {
 	
 	/**
-	 * Constructs a new node for turning the ant left.
+	 * Constructs a new node for determining if food is located in the position
+	 * directly ahead of the ant.
 	 */
-	public TurnLeft() {
-		super();
+	public IsFoodAhead() {
+		super(Boolean.class);
 	}
 
 	@Override
-	public TurnLeft copyNode() {
-		return new TurnLeft();
+	public IsFoodAhead copyNode() {
+		return new IsFoodAhead();
 	}
 
 	@Override
-	public Void evaluate(Environment environment) {
+	public Boolean evaluate(Environment environment) {
 		World world = environment.get(World.class, "world");
-		world.turnLeft();
-		return null;
+		return world.isFoodAhead();
 	}
 
 }

@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Lesser General Public License 
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.util.tree.ant;
+package org.moeaframework.examples.gp.ant;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -30,7 +30,7 @@ import org.moeaframework.core.Solution;
  * single-objective functions, but this serves as a demonstration of genetic
  * programming.
  */
-public class Test {
+public class Demo {
 	
 	/**
 	 * Starts the example running the ant trail problem.

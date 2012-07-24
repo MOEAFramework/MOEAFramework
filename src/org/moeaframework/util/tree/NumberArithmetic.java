@@ -32,7 +32,9 @@ import org.moeaframework.core.Settings;
  * inputs.  For example, this protects against division-by-zero.  To disable
  * function protection, set the property
  * {@code org.moeaframework.util.tree.protected_functions = false} in the file
- * {@code global.properties}.
+ * {@code global.properties}.  {@code Inf} and {@code NaN} values can still
+ * occur with function protection enabled, so outputs should still be
+ * validated.
  */
 public class NumberArithmetic {
 	
@@ -205,7 +207,8 @@ public class NumberArithmetic {
 	 */
 	public static Number div(Number a, Number b) {
 		if (isFloatingPoint(a) || isFloatingPoint(b)) {
-			if ((b.doubleValue() == 0.0) && Settings.isProtectedFunctions()) {
+			if ((Math.abs(b.doubleValue()) < Settings.EPS) &&
+					Settings.isProtectedFunctions()) {
 				return 1.0;
 			} else {
 				return a.doubleValue() / b.doubleValue();
@@ -231,7 +234,8 @@ public class NumberArithmetic {
 	 */
 	public static Number mod(Number a, Number b) {
 		if (isFloatingPoint(a) || isFloatingPoint(b)) {
-			if ((b.doubleValue() == 0.0) && Settings.isProtectedFunctions()) {
+			if ((Math.abs(b.doubleValue()) < Settings.EPS) &&
+					Settings.isProtectedFunctions()) {
 				return 0.0;
 			} else {
 				return a.doubleValue() % b.doubleValue();
@@ -314,19 +318,22 @@ public class NumberArithmetic {
 	 * Returns the natural logarithm of the number.  If the numbers is
 	 * negative and function protection is enabled, then this function returns
 	 * the natural logarithm of the absolute value of the number.  If the
-	 * number is between {@code -1.0} and {@code 1.0} and function protection
-	 * is enabled, this function returns {@code 0.0}.
+	 * number is near zero and function protection is enabled, this function
+	 * returns {@code 0.0}.
 	 * 
 	 * @param a the number
 	 * @return the natural logarithm of the number
 	 * @see Math#log(double)
 	 */
 	public static Number log(Number a) {
-		if ((a.doubleValue() < 1.0) && Settings.isProtectedFunctions()) {
-			if (a.doubleValue() > -1.0) {
+		if ((a.doubleValue() < Settings.EPS) && 
+				Settings.isProtectedFunctions()) {
+			double value = Math.abs(a.doubleValue());
+			
+			if (value < Settings.EPS) {
 				return 0.0;
 			} else {
-				return Math.log(Math.abs(a.doubleValue()));
+				return Math.log(value);
 			}
 		} else {
 			return Math.log(a.doubleValue());
@@ -337,19 +344,22 @@ public class NumberArithmetic {
 	 * Returns the base-10 logarithm of the number.  If the numbers is
 	 * negative and function protection is enabled, then this function returns
 	 * the base-10 logarithm of the absolute value of the number.  If the
-	 * number is between {@code -1.0} and {@code 1.0} and function protection
-	 * is enabled, this function returns {@code 0.0}.
+	 * number is near zero and function protection is enabled, this function
+	 * returns {@code 0.0}.
 	 * 
 	 * @param a the number
 	 * @return the base-10 logarithm of the number
 	 * @see Math#log10(double)
 	 */
 	public static Number log10(Number a) {
-		if ((a.doubleValue() < 1.0) && Settings.isProtectedFunctions()) {
-			if (a.doubleValue() > -1.0) {
+		if ((a.doubleValue() < Settings.EPS) && 
+				Settings.isProtectedFunctions()) {
+			double value = Math.abs(a.doubleValue());
+			
+			if (value < Settings.EPS) {
 				return 0.0;
 			} else {
-				return Math.log10(Math.abs(a.doubleValue()));
+				return Math.log10(value);
 			}
 		} else {
 			return Math.log10(a.doubleValue());
