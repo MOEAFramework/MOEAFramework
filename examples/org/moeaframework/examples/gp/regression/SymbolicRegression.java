@@ -185,7 +185,7 @@ WindowListener {
 		SwingUtilities.invokeLater(new Runnable() {
 			
 			public void run() {
-				if (!frame.isVisible() && !isCanceled) {
+				if (generation == 1) {
 					frame.setVisible(true);
 				}
 		
