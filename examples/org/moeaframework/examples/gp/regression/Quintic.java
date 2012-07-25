@@ -17,46 +17,60 @@
  */
 package org.moeaframework.examples.gp.regression;
 
-import org.moeaframework.util.tree.Add;
-import org.moeaframework.util.tree.Cos;
-import org.moeaframework.util.tree.Divide;
-import org.moeaframework.util.tree.Exp;
-import org.moeaframework.util.tree.Get;
-import org.moeaframework.util.tree.Log;
-import org.moeaframework.util.tree.Multiply;
-import org.moeaframework.util.tree.Rules;
-import org.moeaframework.util.tree.Sin;
-import org.moeaframework.util.tree.Subtract;
+import java.util.Properties;
 
-public class Quintic extends SymbolicRegression {
+import org.apache.commons.math.FunctionEvaluationException;
+import org.apache.commons.math.analysis.UnivariateRealFunction;
+import org.moeaframework.core.Algorithm;
+import org.moeaframework.core.spi.AlgorithmFactory;
 
-	public Quintic() {
-		super(getRules(), "x", -1.0, 1.0, 100);
-	}
+/**
+ * The Quintic function as introduced in [1].  The function is
+ * {@code f(x) = x^5 - 2x^3 + x}.
+ * 
+ * References:
+ * <ol>
+ *   <li>Koza, J.R.  "Genetic Programming II: Automatic Discovery of Reusable
+ *       Programs."  MIT Press, Cambridge, MA, 1994.
+ * </ol>
+ */
+public class Quintic implements UnivariateRealFunction {
 	
-	public static Rules getRules() {
-		Rules rules = new Rules();
-		rules.add(new Add());
-		rules.add(new Multiply());
-		rules.add(new Subtract());
-		rules.add(new Divide());
-		rules.add(new Sin());
-		rules.add(new Cos());
-		rules.add(new Exp());
-		rules.add(new Log());
-		rules.add(new Get(Number.class, "x"));
-		rules.setReturnType(Number.class);
-		rules.setMaxVariationDepth(10);
-		return rules;
+	public static void main(String[] args) throws FunctionEvaluationException {
+		// setup the problem and GUI
+		SymbolicRegression problem = new SymbolicRegression(new Quintic(),
+				-1.0, 1.0, 100);
+		SymbolicRegressionGUI gui = new SymbolicRegressionGUI(problem);
+		
+		// setup and construct the GP solver
+		int generation = 0;
+		int maxGenerations = 1000;
+		Algorithm algorithm = null;
+		Properties properties = new Properties();
+		properties.setProperty("populationSize", "500");
+		
+		try {
+			algorithm = AlgorithmFactory.getInstance().getAlgorithm(
+					"NSGAII", properties, problem);
+			
+			// run the GP solver
+			while ((generation < maxGenerations) && !gui.isCanceled()) {
+				algorithm.step();
+				generation++;
+				
+				gui.update(algorithm.getResult().get(0), generation,
+						maxGenerations);
+			}
+		} finally {
+			if (algorithm != null) {
+				algorithm.terminate();
+			}
+		}
 	}
 
 	@Override
-	public double evaluate(double x) {
+	public double value(double x) throws FunctionEvaluationException {
 		return x*x*x*x*x* - 2.0*x*x*x + x;
-	}
-	
-	public static void main(String[] args) {
-		new Quintic().runDemo(1000);
 	}
 	
 }
