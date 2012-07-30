@@ -34,24 +34,68 @@ import org.moeaframework.util.tree.Rules;
 import org.moeaframework.util.tree.Sin;
 import org.moeaframework.util.tree.Subtract;
 
+/**
+ * The symbolic regression problem for genetic programming.  Given a function,
+ * the symbolic regression problem attempts to find an expression for closely
+ * approximating the output of the function.
+ */
 public class SymbolicRegression extends AbstractProblem {
 	
+	/**
+	 * The actual function implementation.
+	 */
 	private final UnivariateRealFunction function;
 	
+	/**
+	 * The lower bound for comparing the actual and approximate functions.
+	 */
 	private final double lowerBound;
 	
+	/**
+	 * The upper bound for comparing the actual and approximate functions.
+	 */
 	private final double upperBound;
 	
+	/**
+	 * The number of comparisons made between the actual and approximate
+	 * functions.
+	 */
 	private final int steps;
 	
+	/**
+	 * The name of the input variable for the expression tree.
+	 */
 	private String symbol;
 	
+	/**
+	 * The rules for building expression trees for symbolic regression.
+	 */
 	private Rules rules;
 	
+	/**
+	 * The cached x values.
+	 */
 	private double[] x;
 	
+	/**
+	 * The cached actual y values.
+	 */
 	private double[] y;
 
+	/**
+	 * Constructs a new symbolic regression problem for approximating the
+	 * given function.
+	 * 
+	 * @param function the actual function implementation
+	 * @param lowerBound the lower bound for comparing the actual and
+	 *        approximate functions
+	 * @param upperBound the upper bound for comparing the actual and
+	 *        approximate functions
+	 * @param steps the number of comparisons made between the actual and
+	 *        approximate functions
+	 * @throws FunctionEvaluationException if an error occurred when evaluating
+	 *         the actual function
+	 */
 	public SymbolicRegression(UnivariateRealFunction function,
 			double lowerBound, double upperBound, int steps)
 					throws FunctionEvaluationException {
@@ -86,46 +130,120 @@ public class SymbolicRegression extends AbstractProblem {
 		}
 	}
 
+	/**
+	 * Returns the actual function implementation.
+	 * 
+	 * @return the actual function implementation
+	 */
 	public UnivariateRealFunction getFunction() {
 		return function;
 	}
 
+	/**
+	 * Returns the lower bound for comparing the actual and approximate
+	 * functions.
+	 * 
+	 * @return the lower bound for comparing the actual and approximate
+	 *         functions
+	 */
 	public double getLowerBound() {
 		return lowerBound;
 	}
 
+	/**
+	 * Returns the upper bound for comparing the actual and approximate
+	 * functions.
+	 * 
+	 * @return the upper bound for comparing the actual and approximate
+	 *         functions
+	 */
 	public double getUpperBound() {
 		return upperBound;
 	}
 
+	/**
+	 * Returns the number of comparisons made between the actual and
+	 * approximate functions.
+	 * 
+	 * @return the number of comparisons made between the actual and
+	 *         approximate functions
+	 */
 	public int getSteps() {
 		return steps;
 	}
 
+	/**
+	 * Returns the name of the input variable to the specified function.
+	 * 
+	 * @return the name of the input variable to the specified function
+	 */
 	public String getSymbol() {
 		return symbol;
 	}
 
+	/**
+	 * Sets the name of the input variable to the approximated function.  The
+	 * default is {@code "x"}.  When changing the symbol, be sure to add the
+	 * rule {@code new Get(Number.class, symbol)} so the input variable value
+	 * can be accessed in the approximated function.
+	 * 
+	 * @param symbol the name of the input variable to the approximated
+	 *        function
+	 */
 	public void setSymbol(String symbol) {
 		this.symbol = symbol;
 	}
 
+	/**
+	 * Returns the rules used to construct the approximated function.
+	 * 
+	 * @return the rules used to construct the approximated function
+	 */
 	public Rules getRules() {
 		return rules;
 	}
 
+	/**
+	 * Sets the rules used to construct the approximated function.
+	 * 
+	 * @param rules the rules used to construct the approximated function
+	 */
 	public void setRules(Rules rules) {
 		this.rules = rules;
 	}
 	
+	/**
+	 * Returns the array of x-values, the function inputs, used when comparing
+	 * the actual and approximated functions.
+	 * 
+	 * @return the array of x-values, the function inputs, used when comparing
+	 *         the actual and approximated functions
+	 */
 	public double[] getX() {
 		return x;
 	}
 	
+	/**
+	 * Returns the array of y-values, the function outputs, resulting from
+	 * evaluating the actual function using the x-values from {@link #getX()}.
+	 * 
+	 * @return the array of y-values, the function outputs, resulting from
+	 *         evaluating the actual function
+	 */
 	public double[] getActualY() {
 		return y;
 	}
 	
+	/**
+	 * Returns the array of y-values, the function outputs, resulting from
+	 * evaluating the approximated function using the x-values from
+	 * {@link #getX()}.
+	 * 
+	 * @param solution the solution whose approximated function is being
+	 *        evaluated
+	 * @return the array of y-values, the function outputs, resulting from
+	 *         evaluating the approximated function
+	 */
 	public double[] getApproximatedY(Solution solution) {
 		Program program = (Program)solution.getVariable(0);
 		double[] approximatedY = new double[steps];

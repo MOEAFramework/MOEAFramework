@@ -198,6 +198,7 @@ public class Knapsack implements Problem {
 			}
 		}
 
+		// negate the objectives since Knapsack is maximization
 		solution.setObjectives(Vector.negate(f));
 		solution.setConstraints(g);
 	}

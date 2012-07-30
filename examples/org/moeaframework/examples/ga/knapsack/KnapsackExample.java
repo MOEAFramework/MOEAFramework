@@ -46,6 +46,7 @@ public class KnapsackExample {
 				.withProblemClass(Knapsack.class, input)
 				.withAlgorithm("NSGAII")
 				.withMaxEvaluations(50000)
+				.distributeOnAllCores()
 				.run();
 
 		// print the results

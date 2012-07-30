@@ -17,12 +17,8 @@
  */
 package org.moeaframework.examples.gp.regression;
 
-import java.util.Properties;
-
 import org.apache.commons.math.FunctionEvaluationException;
 import org.apache.commons.math.analysis.UnivariateRealFunction;
-import org.moeaframework.core.Algorithm;
-import org.moeaframework.core.spi.AlgorithmFactory;
 
 /**
  * The Quintic function as introduced in [1].  The function is
@@ -36,36 +32,16 @@ import org.moeaframework.core.spi.AlgorithmFactory;
  */
 public class Quintic implements UnivariateRealFunction {
 	
+	/**
+	 * Runs the Quintic demo problem.
+	 * 
+	 * @param args the command line arguments
+	 * @throws FunctionEvaluationException if an error occurred while
+	 *         evaluating the function (should not occur in practice)
+	 */
 	public static void main(String[] args) throws FunctionEvaluationException {
-		// setup the problem and GUI
-		SymbolicRegression problem = new SymbolicRegression(new Quintic(),
-				-1.0, 1.0, 100);
-		SymbolicRegressionGUI gui = new SymbolicRegressionGUI(problem);
-		
-		// setup and construct the GP solver
-		int generation = 0;
-		int maxGenerations = 1000;
-		Algorithm algorithm = null;
-		Properties properties = new Properties();
-		properties.setProperty("populationSize", "500");
-		
-		try {
-			algorithm = AlgorithmFactory.getInstance().getAlgorithm(
-					"NSGAII", properties, problem);
-			
-			// run the GP solver
-			while ((generation < maxGenerations) && !gui.isCanceled()) {
-				algorithm.step();
-				generation++;
-				
-				gui.update(algorithm.getResult().get(0), generation,
-						maxGenerations);
-			}
-		} finally {
-			if (algorithm != null) {
-				algorithm.terminate();
-			}
-		}
+		SymbolicRegressionGUI.runDemo(new SymbolicRegression(new Quintic(),
+				-1.0, 1.0, 100));
 	}
 
 	@Override
