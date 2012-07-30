@@ -333,6 +333,20 @@ Errors halt the execution of the program and produce an error message to the sta
   Attempted to use one of the \java{node.getXXXAt()} methods, but the index referred to a node not within the tree.  This is similar to an out-of-bounds exception, as the index pointed to a node outside the tree.  Ensure the index is valid.
 \end{indented}
 
+\noindent
+\textit{malformed property argument}
+\begin{indented}
+  The Evaluator command line utility supports setting algorithm parameters on the command line with the -x option.  The parameters should be of the form:
+  \begin{indented}
+    \plaintext{-x name=value}
+  \end{indented}
+  or if multiple parameters are set:
+  \begin{indented}
+    \plaintext{-x name1=value1;name2=value2;name3=value3}
+  \end{indented}
+  This error is thrown if the command line argument is not in either of these two forms.  Check the command line argument to ensure it is formatted correctly.
+\end{indented}
+
 
 \section{Warnings}
 Warnings are messages printed to the standard error stream (i.e., the console) that indicate an abnormal or unsafe condition.  While warnings do not indicate an error occurred, they do indicate caution is required by the user.

@@ -337,6 +337,16 @@ index does not reference node in tree
   to a node not within the tree.  This is similar to an out-of-bounds
   exception, as the index pointed to a node outside the tree.  Ensure the index
   is valid.
+  
+malformed property argument
+  The Evaluator command line utility supports setting algorithm parameters on
+  the command line with the -x option.  The parameters should be of the form:
+    -x name=value
+  or if multiple parameters are set:
+    -x name1=value1;name2=value2;name3=value3
+  This error is thrown if the command line argument is not in either of these
+  two forms.  Check the command line argument to ensure it is formatted
+  correctly.
 
 
 ----------

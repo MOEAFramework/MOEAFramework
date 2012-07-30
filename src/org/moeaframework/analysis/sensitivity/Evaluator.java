@@ -223,7 +223,14 @@ public class Evaluator extends CommandLineUtility {
 						for (String property : commandLine
 								.getOptionValues("properties")) {
 							String[] tokens = property.split("=");
-							defaultProperties.setProperty(tokens[0], tokens[1]);
+							
+							if (tokens.length == 2) {
+								defaultProperties.setProperty(tokens[0],
+										tokens[1]);
+							} else {
+								throw new FrameworkException(
+										"malformed property argument");
+							}
 						}
 					}
 
