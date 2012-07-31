@@ -81,7 +81,6 @@ public abstract class AlgorithmTest {
 			output = new ByteArrayOutputStream();
 			
 			analyzer.printAnalysis(new PrintStream(output));
-			System.out.println(output.toString());
 			Assert.assertTrue(countIndifferences(output.toString(), algorithm1)
 					>= 5);
 		} finally {

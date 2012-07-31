@@ -12,7 +12,7 @@ Framework.
     
   * Adds a number of example problems in the examples/ folder to demonstrate
     various features.  The new example problems include:
-      - 0/1 multiobjective knapsack problem
+      - 0/1 multiobjective knapsack problem (binary encoding)
       - Ant trail problem (genetic programming)
       - Symbolic regression (genetic programming)
 
