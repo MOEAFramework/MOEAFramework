@@ -42,7 +42,7 @@ import org.moeaframework.util.tree.Sequence;
  * <ol>
  *   <li>Koza, J.R.  "Genetic Programming: On the Programming of Computers by
  *       Means of Natural Selection."  MIT Press, Cambridge, MA, USA, 1992.
- * <ol>
+ * </ol>
  */
 public class AntProblem extends AbstractProblem {
 

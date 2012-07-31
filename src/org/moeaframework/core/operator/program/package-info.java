@@ -27,6 +27,6 @@
  *       <http://www.gp-field-guide.org.uk>}, 26 March 2008.
  *   <li>Koza, J.R.  "Genetic Programming: On the Programming of Computers by
  *       Means of Natural Selection."  MIT Press, Cambridge, MA, USA, 1992.
- * <ol>
+ * </ol>
  */
 package org.moeaframework.core.operator.program;

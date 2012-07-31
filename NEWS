@@ -19,12 +19,11 @@ Framework.
   * Fixes algorithm "resumability".  Before, wrapping an algorithm inside
     another class would sometimes hide the Resumable interface, preventing the
     algorithm from saving/restoring its state.  Now, all algorithms (and their
-    wrappers) by default provide the getState and setState methods.
+    wrappers) by default provide the getState and setState methods.  As a
+    result, MOEA/D and epsilon-NSGA-II can now be resumed.
     
   * The Resumable interface is deprecated since its methods are now
     redundant (see the item above for details).
-    
-  * MOEA/D and epsilon-NSGA-II can now be resumed.
 
   * Adds several helper methods to EncodingUtils to support creating, getting,
     and setting the values of common decision variable types.  These helper
