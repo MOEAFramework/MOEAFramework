@@ -121,6 +121,8 @@ public class Rules {
 	 */
 	public void setScaffolding(Node scaffolding) {
 		this.scaffolding = scaffolding;
+		
+		scaffolding.setFixedTree(true);
 		setReturnType(scaffolding.getReturnType());
 	}
 
