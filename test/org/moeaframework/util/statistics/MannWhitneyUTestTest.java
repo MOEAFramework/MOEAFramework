@@ -77,5 +77,23 @@ public class MannWhitneyUTestTest {
 		Assert.assertTrue(test.test(0.05));
 		Assert.assertEquals(100, test.lastU, TestThresholds.STATISTICS_EPS);
 	}
+	
+	@Test
+	public void testAllEqual() throws MathException {
+		MannWhitneyUTest test = new MannWhitneyUTest();
+		test.add(10, 0);
+		test.add(10, 0);
+		test.add(10, 0);
+		test.add(10, 0);
+		test.add(10, 0);
+		test.add(10, 1);
+		test.add(10, 1);
+		test.add(10, 1);
+		test.add(10, 1);
+		test.add(10, 1);
+
+		Assert.assertFalse(test.test(0.05));
+		Assert.assertFalse(test.test(0.01));
+	}
 
 }

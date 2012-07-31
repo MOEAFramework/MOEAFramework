@@ -76,6 +76,12 @@ public class WilcoxonSignedRanksTest extends OrdinalStatisticalTest {
 	 * The value being tested against the population median.
 	 */
 	private final double median;
+	
+	/**
+	 * Used to determine the number of observations added, since observations
+	 * equal to the median are not included in the data.
+	 */
+	private int numberOfObservations;
 
 	/**
 	 * The value of {@code T} from the last invocation of {@link #test}. This
@@ -101,6 +107,11 @@ public class WilcoxonSignedRanksTest extends OrdinalStatisticalTest {
 	public double getMedian() {
 		return median;
 	}
+	
+	@Override
+	public int size() {
+		return numberOfObservations;
+	}
 
 	/**
 	 * Adds a new observation with the specified value.
@@ -111,6 +122,8 @@ public class WilcoxonSignedRanksTest extends OrdinalStatisticalTest {
 		if (value - median != 0.0) {
 			super.add(value - median, 0);
 		}
+		
+		numberOfObservations++;
 	}
 	
 	/**
@@ -126,6 +139,11 @@ public class WilcoxonSignedRanksTest extends OrdinalStatisticalTest {
 
 	@Override
 	public boolean test(double alpha) throws MathException {
+		if ((numberOfObservations > 0) && (data.size() == 0)) {
+			// all observations are equal to the median
+			return false;
+		}
+		
 		NormalDistribution dist = new NormalDistributionImpl();
 		double Rpos = 0.0;
 		double Rneg = 0.0;

@@ -85,5 +85,23 @@ public class TwoSampleTTestTest {
 		Assert.assertTrue(test.test(0.05));
 		Assert.assertFalse(test.test(0.01));
 	}
+	
+	@Test
+	public void testAllEqual() throws MathException {
+		TwoSampleTTest test = new TwoSampleTTest(true);
+		test.add(10, 0);
+		test.add(10, 0);
+		test.add(10, 0);
+		test.add(10, 0);
+		test.add(10, 0);
+		test.add(10, 1);
+		test.add(10, 1);
+		test.add(10, 1);
+		test.add(10, 1);
+		test.add(10, 1);
+
+		Assert.assertFalse(test.test(0.05));
+		Assert.assertFalse(test.test(0.01));
+	}
 
 }

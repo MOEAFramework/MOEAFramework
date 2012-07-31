@@ -315,7 +315,7 @@ public class TypedProperties {
 		} else if (value.isEmpty()) {
 			return new String[0];
 		} else {
-			String[] tokens = value.split(separator);
+			String[] tokens = value.split(separator, -1);
 
 			for (int i = 0; i < tokens.length; i++) {
 				tokens[i] = tokens[i].trim();

@@ -38,7 +38,7 @@ public class OneWayANOVATest {
 	 * @throws MathException should not occur
 	 */
 	@Test
-	public void exampleTest() throws MathException {
+	public void testExample() throws MathException {
 		OneWayANOVA test = new OneWayANOVA(3);
 		test.add(8, 0);
 		test.add(10, 0);
@@ -60,6 +60,29 @@ public class OneWayANOVATest {
 				.oneWayAnovaFValue(test.categorize()), 0.01);
 		Assert.assertTrue(test.test(0.05));
 		Assert.assertTrue(test.test(0.01));
+	}
+	
+	@Test
+	public void testAllEquals() throws MathException {
+		OneWayANOVA test = new OneWayANOVA(3);
+		test.add(10, 0);
+		test.add(10, 0);
+		test.add(10, 0);
+		test.add(10, 0);
+		test.add(10, 0);
+		test.add(10, 1);
+		test.add(10, 1);
+		test.add(10, 1);
+		test.add(10, 1);
+		test.add(10, 1);
+		test.add(10, 2);
+		test.add(10, 2);
+		test.add(10, 2);
+		test.add(10, 2);
+		test.add(10, 2);
+		
+		Assert.assertFalse(test.test(0.05));
+		Assert.assertFalse(test.test(0.01));
 	}
 
 }

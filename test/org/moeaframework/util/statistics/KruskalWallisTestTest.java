@@ -159,5 +159,25 @@ public class KruskalWallisTestTest {
 		Assert.assertEquals(18.464, kw.H(), 0.001);
 		Assert.assertEquals(0.9945, kw.C(), 0.0001);
 	}
+	
+	@Test
+	public void testAllEqual() throws MathException {
+		KruskalWallisTest kw = new KruskalWallisTest(3);
+		kw.add(10, 0);
+		kw.add(10, 0);
+		kw.add(10, 0);
+		kw.add(10, 0);
+		kw.add(10, 0);
+		kw.add(10, 1);
+		kw.add(10, 1);
+		kw.add(10, 1);
+		kw.add(10, 2);
+		kw.add(10, 2);
+		kw.add(10, 2);
+		kw.add(10, 2);
+
+		Assert.assertFalse(kw.test(0.05));
+		Assert.assertFalse(kw.test(0.01));
+	}
 
 }

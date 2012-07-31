@@ -50,5 +50,23 @@ public class SingleSampleTTestTest {
 				.get(0)), 0.01);
 		Assert.assertFalse(test.test(0.05));
 	}
+	
+	@Test
+	public void testAllEqual() throws MathException {
+		SingleSampleTTest test = new SingleSampleTTest(10.0);
+		test.add(10);
+		test.add(10);
+		test.add(10);
+		test.add(10);
+		test.add(10);
+		test.add(10);
+		test.add(10);
+		test.add(10);
+		test.add(10);
+		test.add(10);
+
+		Assert.assertFalse(test.test(0.05));
+		Assert.assertFalse(test.test(0.01));
+	}
 
 }

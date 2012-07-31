@@ -132,8 +132,15 @@ public class KruskalWallisTest extends OrdinalStatisticalTest {
 
 		ChiSquaredDistribution dist = new ChiSquaredDistributionImpl(
 				numberOfGroups - 1);
+		double H = H();
+		double C = C();
+		
+		if (C == 0.0) {
+			// all medians the same
+			return false;
+		}
 
-		return 1.0 - dist.cumulativeProbability(H() / C()) < alpha;
+		return 1.0 - dist.cumulativeProbability(H / C) < alpha;
 	}
 
 }

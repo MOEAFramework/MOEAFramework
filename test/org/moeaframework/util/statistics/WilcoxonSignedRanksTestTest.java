@@ -102,5 +102,23 @@ public class WilcoxonSignedRanksTestTest {
 		Assert.assertTrue(test.test(0.05));
 		Assert.assertEquals(19, test.lastT, 0.001);
 	}
+	
+	@Test
+	public void testAllEqual() throws MathException {
+		WilcoxonSignedRanksTest test = new WilcoxonSignedRanksTest(10.0);
+		test.add(10);
+		test.add(10);
+		test.add(10);
+		test.add(10);
+		test.add(10);
+		test.add(10);
+		test.add(10);
+		test.add(10);
+		test.add(10);
+		test.add(10);
+
+		Assert.assertFalse(test.test(0.05));
+		Assert.assertFalse(test.test(0.01));
+	}
 
 }

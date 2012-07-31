@@ -48,6 +48,12 @@ Framework.
       - NSGA-II was not performing non-dominated sorting on the initial
         population, which resulted in incorrect ranks and crowding distances
         for the first generation.  This is now fixed.
+        
+      - Several statistical tests did not correctly handle the case where all
+        observations were equal.  For example, the Kruskal-Wallis test would
+        result in an exception when calculating the Chi-Squared cumulative
+        probability function due to division-by-zero.  These statistical tests
+        have been fixed.
 
 
 -----------------------------
