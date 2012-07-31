@@ -33,21 +33,22 @@
         data.addColumn('number', 'Methods');
         data.addColumn('number', 'Unit Tests');
         data.addRows([
-          [new Date(2011, 6, 14),  14721, '1.0',  7644,   1940,  249,  299,  1094,  615],
-          [new Date(2011, 6, 27),  15351, '1.1',  8190,   2177,  256,  324,  1120,  650],
-          [new Date(2011, 7, 5),   15674, '1.2',  8376,   2209,  259,  327,  1136,  673],
-          [new Date(2011, 7, 26),  15474, '1.3',  9897,   2350,  264,  335,  1037,  716],
-          [new Date(2011, 8, 11),  15698, '1.4',  9993,   2112,  267,  338,  1050,  723],
-          [new Date(2011, 8, 28),  15985, '1.5',  10303,  2162,  269,  341,  1102,  755],
-          [new Date(2011, 9, 10),  16590, '1.6',  10851,  2227,  273,  345,  1124,  769],
-          [new Date(2011, 9, 29),  17156, '1.7',  10967,  2300,  274,  348,  1162,  769],
-          [new Date(2011, 11, 21), 19990, '1.8',  12381,  2591,  332,  373,  1392,  936],
-          [new Date(2012, 1, 3),   21189, '1.9',  12856,  2773,  367,  414,  1469,  952],
-          [new Date(2012, 1, 22),  21246, '1.10', 13769,  2773,  367,  414,  1472,  994],
-          [new Date(2012, 2, 29),  21319, '1.11', 13800,  2774,  368,  414,  1474,  998],
-          [new Date(2012, 4, 10),  21372, '1.12', 13857,  2783,  368,  417,  1475,  1007],
-          [new Date(2012, 5, 10),  21387, '1.13', 14728,  2885,  371,  424,  1469,  1025],
-          [new Date(2012, 6, 26),  21878, '1.14', 15076,  3210,  378,  428,  1501,  1040]]);
+          [new Date(2011, 5, 14),  14721, '1.0',  7644,   1940,  249,  299,  1094,  615],
+          [new Date(2011, 5, 27),  15351, '1.1',  8190,   2177,  256,  324,  1120,  650],
+          [new Date(2011, 6, 5),   15674, '1.2',  8376,   2209,  259,  327,  1136,  673],
+          [new Date(2011, 6, 26),  15474, '1.3',  9897,   2350,  264,  335,  1037,  716],
+          [new Date(2011, 7, 11),  15698, '1.4',  9993,   2112,  267,  338,  1050,  723],
+          [new Date(2011, 7, 28),  15985, '1.5',  10303,  2162,  269,  341,  1102,  755],
+          [new Date(2011, 8, 10),  16590, '1.6',  10851,  2227,  273,  345,  1124,  769],
+          [new Date(2011, 8, 29),  17156, '1.7',  10967,  2300,  274,  348,  1162,  769],
+          [new Date(2011, 10, 21), 19990, '1.8',  12381,  2591,  332,  373,  1392,  936],
+          [new Date(2012, 0, 3),   21189, '1.9',  12856,  2773,  367,  414,  1469,  952],
+          [new Date(2012, 0, 22),  21246, '1.10', 13769,  2773,  367,  414,  1472,  994],
+          [new Date(2012, 1, 29),  21319, '1.11', 13800,  2774,  368,  414,  1474,  998],
+          [new Date(2012, 3, 10),  21372, '1.12', 13857,  2783,  368,  417,  1475,  1007],
+          [new Date(2012, 4, 10),  21387, '1.13', 14728,  2885,  371,  424,  1469,  1025],
+          [new Date(2012, 5, 26),  21878, '1.14', 15076,  3210,  378,  428,  1501,  1040],
+          [new Date(2012, 6, 31),  24121, '1.15', 16515,  3386,  438,  507,  1774,  1152]]);
 
         // Create and draw the visualization.
         new google.visualization.LineChart(document.getElementById('data')).
@@ -108,6 +109,10 @@
     <a href="http://code.google.com/javadevtools/codepro/doc/index.html">CodePro
       Analytix</a> - For auditing code quality and metric calculation
   </li>
+  <li>
+    <a href="http://checkstyle.sourceforge.net/">CheckStyle</a> - For ensuring
+      source code follows coding guidelines
+  </li>
 </ul>
 
 <p>
@@ -138,42 +143,42 @@
   </tr>
   <tr>
     <td>Lines of Source Code</td>
-    <td>21,878</td>
+    <td>24,121</td>
   </tr>
   <tr>
     <td>Number of Comments</td>
-    <td>3,210</td>
+    <td>3,386</td>
   </tr>
   <tr>
     <td>Number of Packages</td>
-    <td>35</td>
+    <td>37</td>
   </tr>
   <tr>
     <td>Number of Classes</td>
-    <td>378</td>
+    <td>438</td>
   </tr>
   <tr>
     <td>Number of Constructors</td>
-    <td>428</td>
+    <td>507</td>
   </tr>
   <tr>
     <td>Number of Methods</td>
-    <td>1,501</td>
+    <td>1,774</td>
   </tr>
   <tr>
     <td>Average Cyclomatic Complexity</td>
-    <td>2.06</td>
+    <td>1.97</td>
   </tr>
   <tr>
     <th colspan="2">Test Statistics</th>
   </tr>
   <tr>
     <td>Lines of Test Code</td>
-    <td>15,076</td>
+    <td>16,515</td>
   </tr>
   <tr>
     <td>Number of Unit Tests</td>
-    <td>1,040</td>
+    <td>1,152</td>
   </tr>
   <tr>
     <td>Number of Unit Test Errors</td>
@@ -185,7 +190,7 @@
   </tr>
   <tr>
     <td>Test Coverage</td>
-    <td>76.1%</td>
+    <td>76.8%</td>
   </tr>
 </table>
 </div>
@@ -218,17 +223,17 @@
   </tr>
   <tr>
     <td class="package">org.moeaframework</td>
-    <td class="good">80.7 %</td>
+    <td class="good">82.6 %</td>
     <td></td>
   </tr>
   <tr>
     <td class="package">org.moeaframework.algorithm</td>
-    <td class="good">81.8 %</td>
+    <td class="good">82.9 %</td>
     <td></td>
   </tr>
   <tr>
     <td class="package">org.moeaframework.algorithm.jmetal</td>
-    <td class="good">95.7 %</td>
+    <td class="good">94.9 %</td>
     <td></td>
   </tr>
   <tr>
@@ -238,7 +243,7 @@
   </tr>
   <tr>
     <td class="package">org.moeaframewwork.analysis.collector</td>
-    <td class="good">83.8 %</td>
+    <td class="good">86.6 %</td>
     <td>Tests only check functionality, not correctness</td>
   </tr>
   <tr>
@@ -253,7 +258,7 @@
   </tr>
   <tr>
     <td class="package">org.moeaframework.core</td>
-    <td class="good">92.7 %</td>
+    <td class="good">93.5 %</td>
     <td></td>
   </tr>
   <tr>
@@ -268,12 +273,12 @@
   </tr>
   <tr>
     <td class="package">org.moeaframework.core.indicator</td>
-    <td class="good">81.2 %</td>
+    <td class="good">81.7 %</td>
     <td></td>
   </tr>
   <tr>
     <td class="package">org.moeaframework.core.operator</td>
-    <td class="good">93.8 %</td>
+    <td class="good">88.0 %</td>
     <td></td>
   </tr>
   <tr>
@@ -292,18 +297,23 @@
     <td></td>
   </tr>
   <tr>
+    <td class="package">org.moeaframework.core.operator.program</td>
+    <td class="good">98.0 %</td>
+    <td></td>
+  </tr>
+  <tr>
     <td class="package">org.moeaframework.core.operator.real</td>
-    <td class="good">95.4 %</td>
+    <td class="good">95.6 %</td>
     <td></td>
   </tr>
   <tr>
     <td class="package">org.moeaframework.core.spi</td>
-    <td class="good">94.1 %</td>
+    <td class="good">91.4 %</td>
     <td></td>
   </tr>
   <tr>
     <td class="package">org.moeaframework.core.variable</td>
-    <td class="good">97.5 %</td>
+    <td class="good">98.1 %</td>
     <td></td>
   </tr>
   <tr>
@@ -358,7 +368,7 @@
   </tr>
   <tr>
     <td class="package">org.moeaframework.util.io</td>
-    <td class="good">87.4 %</td>
+    <td class="good">82.1 %</td>
     <td></td>
   </tr>
   <tr>
@@ -373,7 +383,12 @@
   </tr>
   <tr>
     <td class="package">org.moeaframework.util.statistics</td>
-    <td class="good">93.8 %</td>
+    <td class="good">94.1 %</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td class="package">org.moeaframework.util.tree</td>
+    <td class="good">86.0 %</td>
     <td></td>
   </tr>
 </table>

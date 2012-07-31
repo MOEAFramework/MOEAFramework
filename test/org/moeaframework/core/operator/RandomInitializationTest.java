@@ -27,7 +27,9 @@ import org.moeaframework.core.Variable;
 import org.moeaframework.core.variable.BinaryVariable;
 import org.moeaframework.core.variable.Grammar;
 import org.moeaframework.core.variable.Permutation;
+import org.moeaframework.core.variable.Program;
 import org.moeaframework.core.variable.RealVariable;
+import org.moeaframework.util.tree.Rules;
 
 public class RandomInitializationTest {
 
@@ -37,12 +39,17 @@ public class RandomInitializationTest {
 			
 			@Override
 			public Solution newSolution() {
+				Rules rules = new Rules();
+				rules.populateWithDefaults();
+				rules.setReturnType(Number.class);
+				
 				Solution solution = new Solution(5, 0);
 				solution.setVariable(0, new RealVariable(0, 1));
 				solution.setVariable(1, new BinaryVariable(10));
 				solution.setVariable(2, new Permutation(4));
 				solution.setVariable(3, new Grammar(4));
-				solution.setVariable(4, new Variable() {
+				solution.setVariable(4, new Program(rules));
+				solution.setVariable(5, new Variable() {
 
 					private static final long serialVersionUID = -5453570189207466169L;
 

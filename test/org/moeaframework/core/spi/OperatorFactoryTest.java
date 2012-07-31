@@ -41,7 +41,7 @@ public class OperatorFactoryTest {
 
 	private static final String[] operators = { "sbx+pm", "hux+bf", 
 		"pmx+insertion+swap", "de", "de+pm", "pcx", "spx", "undx", "pm", "um", 
-		"1x+um", "2x+um", "ux+um", "gx+gm" };
+		"1x+um", "2x+um", "ux+um", "gx+gm", "bc", "ptm", "bc+ptm" };
 	
 	private Problem problem;
 	
