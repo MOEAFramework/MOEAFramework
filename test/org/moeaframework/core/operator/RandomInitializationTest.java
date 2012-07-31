@@ -35,7 +35,7 @@ public class RandomInitializationTest {
 
 	@Test
 	public void testMixedType() {
-		Problem problem = new ProblemStub(5) {
+		Problem problem = new ProblemStub(6) {
 			
 			@Override
 			public Solution newSolution() {
@@ -43,7 +43,7 @@ public class RandomInitializationTest {
 				rules.populateWithDefaults();
 				rules.setReturnType(Number.class);
 				
-				Solution solution = new Solution(5, 0);
+				Solution solution = new Solution(6, 0);
 				solution.setVariable(0, new RealVariable(0, 1));
 				solution.setVariable(1, new BinaryVariable(10));
 				solution.setVariable(2, new Permutation(4));
