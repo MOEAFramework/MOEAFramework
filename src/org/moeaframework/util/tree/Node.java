@@ -23,6 +23,12 @@ package org.moeaframework.util.tree;
  * nodes must match the argument type from its parent node.
  */
 public abstract class Node {
+	
+	/**
+	 * {@code true} if this node should not be modified, altered or replaced;
+	 * {@code false} otherwise.
+	 */
+	private boolean fixed;
 
 	/**
 	 * The parent of this node; or {@code null} if this node has no parent.
@@ -63,6 +69,46 @@ public abstract class Node {
 		this.argumentTypes = argumentTypes;
 		
 		arguments = new Node[argumentTypes.length];
+	}
+	
+	/**
+	 * Calls {@link #setFixed(boolean)} on all nodes in the subtree rooted at
+	 * this node.
+	 * 
+	 * @param fixed {@code true} if all nodes in the subtree rooted at this
+	 *        node should not be modified, altered, or replaced; {@code false}
+	 *        otherwise
+	 */
+	public void setFixedTree(boolean fixed) {
+		setFixed(fixed);
+		
+		for (Node argument : arguments) {
+			if (argument != null) {
+				argument.setFixedTree(fixed);
+			}
+		}
+	}
+	
+	/**
+	 * Set to {@code true} if this node should not be modified, altered, or
+	 * replaced; {@code false} otherwise.
+	 * 
+	 * @param fixed {@code true} if this node should not be modified, altered,
+	 *        or replaced; {@code false} otherwise
+	 */
+	public void setFixed(boolean fixed) {
+		this.fixed = fixed;
+	}
+	
+	/**
+	 * Returns {@code true} if this node should not be modified, altered, or
+	 * replaced; {@code false} otherwise.
+	 * 
+	 * @return {@code true} if this node should not be modified, altered, or
+	 *         replaced; {@code false} otherwise
+	 */
+	public boolean isFixed() {
+		return fixed;
 	}
 
 	/**

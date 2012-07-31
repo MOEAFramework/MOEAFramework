@@ -757,5 +757,28 @@ public class NodeTest {
 		Assert.assertFalse(invalid1.isValid());
 		Assert.assertFalse(invalid2.isValid());
 	}
+	
+	@Test
+	public void testFixed() {
+		Node node1 = new Constant(true);
+		Node node2 = new Constant(false);
+		Node node3 = new Or().setArgument(0, node1).setArgument(1, node2);
+		
+		Assert.assertFalse(node1.isFixed());
+		Assert.assertFalse(node2.isFixed());
+		Assert.assertFalse(node3.isFixed());
+		
+		node3.setFixed(true);
+		
+		Assert.assertFalse(node1.isFixed());
+		Assert.assertFalse(node2.isFixed());
+		Assert.assertTrue(node3.isFixed());
+		
+		node3.setFixedTree(true);
+		
+		Assert.assertTrue(node1.isFixed());
+		Assert.assertTrue(node2.isFixed());
+		Assert.assertTrue(node3.isFixed());
+	}
 
 }
