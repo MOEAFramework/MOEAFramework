@@ -20,6 +20,7 @@ package org.moeaframework.core.operator.program;
 import junit.framework.Assert;
 
 import org.junit.Test;
+import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.Program;
 import org.moeaframework.util.tree.Rules;
@@ -44,6 +45,10 @@ public class SubtreeCrossoverTest {
 			
 			Program program2 = new Program(rules);
 			program2.setArgument(0, rules.buildTreeFull(Number.class, 4));
+			
+			int fixedArgument = PRNG.nextInt(program1.getNumberOfArguments());
+			program1.setFixed(true);
+			program1.getArgument(fixedArgument).setFixed(true);
 
 			Assert.assertTrue(program1.isValid());
 			Assert.assertEquals(5, program1.getMinimumHeight());
@@ -66,6 +71,8 @@ public class SubtreeCrossoverTest {
 			
 			Assert.assertTrue(result.isValid());
 			Assert.assertTrue(result.getMaximumHeight() <= 5);
+			Assert.assertEquals(program1.getArgument(fixedArgument).getClass(),
+					result.getArgument(fixedArgument).getClass());
 		}
 	}
 

@@ -78,7 +78,7 @@ public class PointMutation implements Variation {
 	 * @param rules the rules defining the program syntax
 	 */
 	protected void mutate(Node node, Rules rules) {
-		if (PRNG.nextDouble() <= probability) {
+		if (!node.isFixed() && (PRNG.nextDouble() <= probability)) {
 			// mutate this node
 			List<Node> mutations = rules.listAvailableMutations(node);
 			

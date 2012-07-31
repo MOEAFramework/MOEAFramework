@@ -134,6 +134,11 @@ public class SubtreeCrossover implements Variation {
 					node.getReturnType(), PRNG.nextInt(size));
 		}
 		
+		// if either node is fixed, no change is made
+		if (node.isFixed() || replacement.isFixed()) {
+			return;
+		}
+		
 		// if this replacement violates the depth limit, no change is made
 		if (node.getDepth() + replacement.getMaximumHeight() > 
 				rules.getMaxVariationDepth()) {

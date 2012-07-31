@@ -261,13 +261,16 @@ public abstract class Node {
 
 	/**
 	 * Returns a copy of this node including copies of all its arguments (child
-	 * nodes).
+	 * nodes).  All attributes of the node are also retained, such as 
+	 * {@link #isFixed()}.
 	 * 
 	 * @return a copy of this node including copies of all its arguments (child
 	 *         nodes)
 	 */
 	public Node copyTree() {
 		Node node = copyNode();
+		
+		node.setFixed(isFixed());
 		
 		for (int i = 0; i < getNumberOfArguments(); i++) {
 			node.setArgument(i, getArgument(i).copyTree());

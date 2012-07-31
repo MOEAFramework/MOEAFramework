@@ -20,6 +20,7 @@ package org.moeaframework.core.operator.program;
 import junit.framework.Assert;
 
 import org.junit.Test;
+import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.Program;
 import org.moeaframework.util.tree.Rules;
@@ -40,6 +41,9 @@ public class PointMutationTest {
 		for (int i = 0; i < 100; i++) {
 			Program program = new Program(rules);
 			program.setArgument(0, rules.buildTreeFull(Number.class, 4));
+			
+			int fixedNodeIndex = PRNG.nextInt(program.getNumberOfNodes());
+			program.getNodeAt(fixedNodeIndex).setFixed(true);
 
 			Assert.assertTrue(program.isValid());
 			Assert.assertEquals(5, program.getMinimumHeight());
@@ -56,6 +60,8 @@ public class PointMutationTest {
 			Assert.assertTrue(result.isValid());
 			Assert.assertEquals(5, result.getMinimumHeight());
 			Assert.assertEquals(5, result.getMaximumHeight());
+			Assert.assertEquals(program.getNodeAt(fixedNodeIndex).getClass(),
+					result.getNodeAt(fixedNodeIndex).getClass());
 		}
 	}
 
