@@ -79,7 +79,6 @@ public class MannWhitneyUTest extends OrdinalStatisticalTest {
 	 */
 	@Override
 	public boolean test(double alpha) throws MathException {
-		NormalDistribution dist = new NormalDistributionImpl();
 		double[] R = new double[2];
 		int[] n = new int[2];
 
@@ -101,6 +100,7 @@ public class MannWhitneyUTest extends OrdinalStatisticalTest {
 			return U <= getCriticalUValueFromTable(n[0], n[1], alpha);
 		} else {
 			double z = 0.0;
+			NormalDistribution dist = new NormalDistributionImpl();
 
 			if (Settings.isContinuityCorrection()) {
 				z = (Math.abs(U - n[0] * n[1] / 2.0) - 0.5)
@@ -110,8 +110,8 @@ public class MannWhitneyUTest extends OrdinalStatisticalTest {
 						/ Math.sqrt(n[0] * n[1] * (n[0] + n[1] + 1.0) / 12.0);
 			}
 
-			return Math.abs(z) >= Math.abs(dist
-					.inverseCumulativeProbability(alpha));
+			return Math.abs(z) >= Math.abs(
+					dist.inverseCumulativeProbability(alpha));
 		}
 	}
 
