@@ -103,7 +103,10 @@ public class WilcoxonSignedRanksTestTest {
 		Assert.assertEquals(19, test.lastT, 0.001);
 	}
 	
-	@Test
+	/**
+	 * At least six observations not equal to the median are required.
+	 */
+	@Test(expected = IllegalArgumentException.class)
 	public void testAllEqual() throws MathException {
 		WilcoxonSignedRanksTest test = new WilcoxonSignedRanksTest(10.0);
 		test.add(10);
@@ -118,7 +121,6 @@ public class WilcoxonSignedRanksTestTest {
 		test.add(10);
 
 		Assert.assertFalse(test.test(0.05));
-		Assert.assertFalse(test.test(0.01));
 	}
 
 }

@@ -162,19 +162,14 @@ public class KruskalWallisTestTest {
 	
 	@Test
 	public void testAllEqual() throws MathException {
-		KruskalWallisTest kw = new KruskalWallisTest(3);
-		kw.add(10, 0);
-		kw.add(10, 0);
-		kw.add(10, 0);
-		kw.add(10, 0);
-		kw.add(10, 0);
-		kw.add(10, 1);
-		kw.add(10, 1);
-		kw.add(10, 1);
-		kw.add(10, 2);
-		kw.add(10, 2);
-		kw.add(10, 2);
-		kw.add(10, 2);
+		KruskalWallisTest kw = new KruskalWallisTest(2);
+		
+		// a number around 20 is sufficient to cause the convergence
+		// exception if not guarded against
+		for (int i=0; i<20; i++) {
+			kw.add(10.0, 0);
+			kw.add(10.0, 1);
+		}
 
 		Assert.assertFalse(kw.test(0.05));
 		Assert.assertFalse(kw.test(0.01));

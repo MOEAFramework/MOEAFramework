@@ -134,9 +134,9 @@ public class KruskalWallisTest extends OrdinalStatisticalTest {
 				numberOfGroups - 1);
 		double H = H();
 		double C = C();
-		
+
 		if (C == 0.0) {
-			// all medians the same
+			// all observations the same
 			return false;
 		}
 
