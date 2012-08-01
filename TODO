@@ -11,12 +11,6 @@ any changes.
 ------
  Easy
 ------
-  
-  - PISA algorithm tests are setting the list of available algorithms, but they
-    also need to remove these from the list to prevent other codes from being
-    affected.
-    
-  - Update text in README.
 
   - Add constructors for epsilon arrays to EpsilonBoxDominanceArchive and any
     other classes that use epsilons.  Should these be varadic arrays?
