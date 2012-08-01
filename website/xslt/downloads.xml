@@ -100,9 +100,9 @@
           onClick="_gaq.push(['_trackEvent', 'Downloads', 'Binary', '1.14']);">Binary</a> |
       <a href="https://sourceforge.net/projects/moeaframework/files/MOEAFramework-1.14/MOEAFramework-1.14-Source.tar.gz/download"
           onClick="_gaq.push(['_trackEvent', 'Downloads', 'Source', '1.14']);">Source</a> |
-      <a href="https://sourceforge.net/projects/moeaframework/files/MOEAFramework-1.14/MOEAFramework-1.14-Executable.tar.gz/download"
+      <a href="https://sourceforge.net/projects/moeaframework/files/MOEAFramework-1.14/MOEAFramework-1.14-Executable.jar/download"
           onClick="_gaq.push(['_trackEvent', 'Downloads', 'Executable', '1.14']);">Executable</a> |
-      <a href="https://sourceforge.net/projects/moeaframework/files/MOEAFramework-1.14/MOEAFramework-1.14-Manual.tar.gz/download"
+      <a href="https://sourceforge.net/projects/moeaframework/files/MOEAFramework-1.14/MOEAFramework-1.14-Manual.pdf/download"
           onClick="_gaq.push(['_trackEvent', 'Downloads', 'Manual', '1.14']);">Manual</a>
     </td>    
   </tr>
@@ -114,9 +114,9 @@
           onClick="_gaq.push(['_trackEvent', 'Downloads', 'Binary', '1.13']);">Binary</a> |
       <a href="https://sourceforge.net/projects/moeaframework/files/MOEAFramework-1.13/MOEAFramework-1.13-Source.tar.gz/download"
           onClick="_gaq.push(['_trackEvent', 'Downloads', 'Source', '1.13']);">Source</a> |
-      <a href="https://sourceforge.net/projects/moeaframework/files/MOEAFramework-1.13/MOEAFramework-1.13-Executable.tar.gz/download"
+      <a href="https://sourceforge.net/projects/moeaframework/files/MOEAFramework-1.13/MOEAFramework-1.13-Executable.jar/download"
           onClick="_gaq.push(['_trackEvent', 'Downloads', 'Executable', '1.13']);">Executable</a> |
-      <a href="https://sourceforge.net/projects/moeaframework/files/MOEAFramework-1.13/MOEAFramework-1.13-Manual.tar.gz/download"
+      <a href="https://sourceforge.net/projects/moeaframework/files/MOEAFramework-1.13/MOEAFramework-1.13-Manual.pdf/download"
           onClick="_gaq.push(['_trackEvent', 'Downloads', 'Manual', '1.13']);">Manual</a>
     </td>    
   </tr>
@@ -128,9 +128,9 @@
           onClick="_gaq.push(['_trackEvent', 'Downloads', 'Binary', '1.12']);">Binary</a> |
       <a href="https://sourceforge.net/projects/moeaframework/files/MOEAFramework-1.12/MOEAFramework-1.12-Source.tar.gz/download"
           onClick="_gaq.push(['_trackEvent', 'Downloads', 'Source', '1.12']);">Source</a> |
-      <a href="https://sourceforge.net/projects/moeaframework/files/MOEAFramework-1.12/MOEAFramework-1.12-Executable.tar.gz/download"
+      <a href="https://sourceforge.net/projects/moeaframework/files/MOEAFramework-1.12/MOEAFramework-1.12-Executable.jar/download"
           onClick="_gaq.push(['_trackEvent', 'Downloads', 'Executable', '1.12']);">Executable</a> |
-      <a href="https://sourceforge.net/projects/moeaframework/files/MOEAFramework-1.12/MOEAFramework-1.12-Manual.tar.gz/download"
+      <a href="https://sourceforge.net/projects/moeaframework/files/MOEAFramework-1.12/MOEAFramework-1.12-Manual.pdf/download"
           onClick="_gaq.push(['_trackEvent', 'Downloads', 'Manual', '1.12']);">Manual</a>
     </td>
   </tr>
@@ -142,9 +142,9 @@
           onClick="_gaq.push(['_trackEvent', 'Downloads', 'Binary', '1.11']);">Binary</a> |
       <a href="https://sourceforge.net/projects/moeaframework/files/MOEAFramework-1.11/MOEAFramework-1.11-Source.tar.gz/download"
           onClick="_gaq.push(['_trackEvent', 'Downloads', 'Source', '1.11']);">Source</a> |
-      <a href="https://sourceforge.net/projects/moeaframework/files/MOEAFramework-1.11/MOEAFramework-1.11-Executable.tar.gz/download"
+      <a href="https://sourceforge.net/projects/moeaframework/files/MOEAFramework-1.11/MOEAFramework-1.11-Executable.jar/download"
           onClick="_gaq.push(['_trackEvent', 'Downloads', 'Executable', '1.11']);">Executable</a> |
-      <a href="https://sourceforge.net/projects/moeaframework/files/MOEAFramework-1.11/MOEAFramework-1.11-Manual.tar.gz/download"
+      <a href="https://sourceforge.net/projects/moeaframework/files/MOEAFramework-1.11/MOEAFramework-1.11-Manual.pdf/download"
           onClick="_gaq.push(['_trackEvent', 'Downloads', 'Manual', '1.11']);">Manual</a>
     </td>
   </tr>
@@ -156,9 +156,9 @@
           onClick="_gaq.push(['_trackEvent', 'Downloads', 'Binary', '1.10']);">Binary</a> |
       <a href="https://sourceforge.net/projects/moeaframework/files/MOEAFramework-1.10/MOEAFramework-1.10-Source.tar.gz/download"
           onClick="_gaq.push(['_trackEvent', 'Downloads', 'Source', '1.10']);">Source</a> |
-      <a href="https://sourceforge.net/projects/moeaframework/files/MOEAFramework-1.10/MOEAFramework-1.10-Executable.tar.gz/download"
+      <a href="https://sourceforge.net/projects/moeaframework/files/MOEAFramework-1.10/MOEAFramework-1.10-Executable.jar/download"
           onClick="_gaq.push(['_trackEvent', 'Downloads', 'Executable', '1.10']);">Executable</a> |
-      <a href="https://sourceforge.net/projects/moeaframework/files/MOEAFramework-1.10/MOEAFramework-1.10-Manual.tar.gz/download"
+      <a href="https://sourceforge.net/projects/moeaframework/files/MOEAFramework-1.10/MOEAFramework-1.10-Manual.pdf/download"
           onClick="_gaq.push(['_trackEvent', 'Downloads', 'Manual', '1.10']);">Manual</a>
     </td>
   </tr>
