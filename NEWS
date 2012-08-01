@@ -1,9 +1,9 @@
 This file documents the major changes implemented in each release of the MOEA
 Framework.
 
---------------------
- Version 1.15 (TBD)
---------------------
+------------------------------
+ Version 1.15 (31 July 2012)
+------------------------------
 
   * Adds genetic programming (GP) support for evolving expression trees.  This
     includes over 45 program building blocks (logic functions, arithmetic
