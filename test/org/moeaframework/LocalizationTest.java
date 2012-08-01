@@ -81,9 +81,9 @@ public class LocalizationTest {
 				"test"));
 
 		Locale.setDefault(new Locale("ES"));
-		Assert.assertEquals("hola, est·tico mundo", 
+		Assert.assertEquals("hola, est√°tico mundo", 
 				Localization.getString(LocalizationTest.class, "test"));
-		Assert.assertEquals("hola, est·tico Foo", 
+		Assert.assertEquals("hola, est√°tico Foo", 
 				Localization.getString(LocalizationTest.class, "testArgument",
 						"Foo"));
 		Assert.assertTrue(Localization.containsKey(LocalizationTest.class, 
