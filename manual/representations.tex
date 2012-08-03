@@ -10,17 +10,231 @@
 % Documentation License".
 
 \chapter{Representing Decision Variables}
+\label{chpt:representations}
 
-In \chptref{chpt:problems} we saw various ways to define new problems using real-valued (floating-point) decision variables.  In addition to floating-point values, the MOEA Framework allows problems to be encoded using integers, bit strings, permutations, programs (expression trees) and grammars.  This section details the use of each of these decision variables and their supported variation operators.
+In \chptref{chpt:problems} we saw various ways to define new problems using real-valued (floating-point) decision variables.  In addition to floating-point values, the MOEA Framework allows problems to be encoded using integers, bit strings, permutations, programs (expression trees) and grammars.  This chapter details the use of each of these decision variables and their supported variation operators.  This chapter also details the use of the new \java{EncodingUtils} class, which provides many helper methods for creating, reading and modifying different types of decision variables.
 
 \section{Floating-Point Values}
 
+\begin{lstlisting}[language=Java]
+public Solution newSolution() {
+    Solution solution = new Solution(3, 2);
+    solution.setVariable(0, EncodingUtils.newReal(-1.0, 1.0));
+    solution.setVariable(1, EncodingUtils.newReal(0, Math.PI));
+    solution.setVariable(2, EncodingUtils.newReal(10.0, 100.0));
+    return solution;
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=Java]
+public void evaluate(Solution solution) {
+    double x = EncodingUtils.getReal(solution.getVariable(0));
+    double y = EncodingUtils.getReal(solution.getVariable(1));
+    double z = EncodingUtils.getReal(solution.getVariable(2));
+    
+    //TODO: evaluate the solution given the values of x, y and z
+}
+\end{lstlisting}
+
+If the solution contains exclusively floating-point values, then one can read out all of the variables into an array using a single method.
+\begin{lstlisting}[language=Java]
+public void evaluate(Solution solution) {
+    double[] x = EncodingUtils.getReal(solution);
+        
+    //TODO: evaluate the solution given the values of x[0], x[1] and x[2]
+}
+\end{lstlisting}
+
 \section{Integers}
+
+\begin{lstlisting}[language=Java]
+public Solution newSolution() {
+    Solution solution = new Solution(3, 2);
+    solution.setVariable(0, EncodingUtils.newInt(-1, 1));
+    solution.setVariable(1, EncodingUtils.newInt(0, 100));
+    solution.setVariable(2, EncodingUtils.newInt(-10, 10));
+    return solution;
+}
+\end{lstlisting}
+
+The integer values can be read from a solution similarly to the floating-point examples, except we use \java{getInt} instead of \java{getReal}.
+\begin{lstlisting}[language=Java]
+public void evaluate(Solution solution) {
+    int x = EncodingUtils.getInt(solution.getVariable(0));
+    int y = EncodingUtils.getInt(solution.getVariable(1));
+    int z = EncodingUtils.getInt(solution.getVariable(2));
+    
+    //TODO: evaluate the solution given the values of x, y and z
+}
+\end{lstlisting}
+
+We can similarly extract the array of integers if the solution is exclusively represented by integer decision variables.
+\begin{lstlisting}[language=Java]
+public void evaluate(Solution solution) {
+    int[] x = EncodingUtils.getInt(solution);
+        
+    //TODO: evaluate the solution given the values of x[0], x[1] and x[2]
+}
+\end{lstlisting}
+
+The integer representation is also useful for representing other discrete values.  The following example shows how to represent three power levels: low, medium and high.
+\begin{lstlisting}[language=Java]
+public enum PowerLevel {
+    LOW,
+    MEDIUM,
+    HIGH
+}
+
+// store enumeration as array so we can index values
+public static final PowerLevel[] POWER_LEVELS = PowerLevel.values();
+
+// create the decision variable
+solution.setVariable(0, EncodingUtils.newInt(0,
+    POWER_LEVELS.length-1));
+
+// read the variable
+PowerLevel level = POWER_LEVELS[EncodingUtils.getInt(
+    solution.getVariable(0))];
+\end{lstlisting}
+
+Internally, integers are stored as floating-point values.  This allows the same variation operators to be applied
 
 \section{Bit Strings}
 
+\begin{lstlisting}[language=Java]
+public Solution newSolution() {
+    Solution solution = new Solution(1, 2);
+    solution.setVariable(0, EncodingUtils.newBinary(100));
+    return solution;
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=Java]
+public void evaluate(Solution solution) {
+    boolean[] values = EncodingUtils.getBinary(
+        solution.getVariable(0));
+
+    //TODO: evaluate the solution given the boolean values
+}
+\end{lstlisting}
+
 \section{Permutations}
 
+\begin{lstlisting}[language=Java]
+public Solution newSolution() {
+    Solution solution = new Solution(1, 2);
+    solution.setVariable(0, EncodingUtils.newPermutation(25));
+    return solution;
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=Java]
+public void evaluate(Solution solution) {
+    int[] permutation = EncodingUtils.getPermutation(
+        solution.getVariable(0));
+        
+    //TODO: evaluate the solution given the permutation
+}
+\end{lstlisting}
+
 \section{Programs (Expression Trees)}
+The first step towards evolving programs using evolutionary algorithms involves defining the rules for the program (i.e., the syntax and semantics).  The MOEA Framework comes enabled with over $45$ pre-defined program elements for defining constants, variables, arithmetic operators, control structures, functions, etc.  When defining the rules, two important properties should be kept in mind: \emph{closure} and \emph{sufficiency}.
+
+The closure property requires all program element to be able to accept as arguments any value and data type that could possibly be returned by any other function or terminal.  All programs generated or evolved by the MOEA Framework are strongly typed.  No program produced by the MOEA Framework will pass an argument to a function that is an incorrect type.  Furthermore, all functions guard against invalid inputs.  For example, the \java{log} of a negative number is undefined.  Rather then causing an error, the \java{log} method will guard itself and return \java{0.0}.  This allows the rest of the calculation to continue unabated.  With these two behaviors built into the MOEA Framework, the closure property is guaranteed.
+
+The sufficiency property states that the rule set must contain all the necessary functions and terminals necessary to produce a solution to the problem.  Ensuring this property holds is more challenging as it will depend on the problem domain.  For instance, the operators \java{And}, \java{Or} and \java{Not} are sufficient to produce all boolean expressions.  It may not be so obvious in other problem domains which program elements are required to ensure sufficiency.  Additionally, it is often helpful to restrict the rule set to those program elements that are sufficient, thus reducing the search space for the evolutionary algorithm.
+
+Below, we construct a rule set using several arithmetic operators.  One terminal is included, the variable \java{x}.  We will assign this variable later when evaluating the program.  The last setting required is the return type of the program.  In this case, the program will return a number.
+\begin{lstlisting}[language=Java]
+    //first, establish the rules for the program
+		Rules rules = new Rules();
+		rules.add(new Add());
+		rules.add(new Multiply());
+		rules.add(new Subtract());
+		rules.add(new Divide());
+		rules.add(new Sin());
+		rules.add(new Cos());
+		rules.add(new Exp());
+		rules.add(new Log());
+		rules.add(new Get(Number.class, "x"));
+		rules.setReturnType(Number.class);
+\end{lstlisting}
+
+The second step is constructing the solution used by the evolutionary algorithm.  Here, we define one decision variable that is a program following the rule set we previously defined.
+\begin{lstlisting}[language=Java]
+public Solution newSolution() {
+    Solution solution = new Solution(1, 1);
+    solution.setVariable(0, new Program(rules));
+    return solution;
+}
+\end{lstlisting}
+
+Lastly, we evaluate the program.  The program executes inside an environment.  The environment holds all the variables and other identifiers that the program can access throughout its exection.  Since we previously defined our program to read the variable \java{x} (with the \java{Get} node), we want to initialize the value of \java{x} in the environment.  Once the environment is initialized, we evaluate the program.  Since we set the return type to be a number in the rule set, we cast the output from the program's evaluation to a number.
+\begin{lstlisting}[language=Java]
+public void evaluate(Solution solution) {
+    Program program = (Program)solution.getVariable(0);
+
+    // initialize the variables used by the program
+    Environment environment = new Environment();
+    environment.set("x", 15);
+    
+    // evaluate the program
+    double result = (Number)program.evaluate(
+        environment)).doubleValue();
+        
+    // TODO: use the result to set the objective value
+}
+\end{lstlisting}
 
 \section{Grammars}
+Grammars are very similar to programs, but differ slightly in their definition and how the derived programs are generated.  Whereas the program required us to define a set of program elements (the rules) used for constructing the program, the grammar defines these rules using a context free grammar.  The text below shows an example grammar.  You should note that this grammar defines the same functions and terminals as the example in the previous section.
+\begin{lstlisting}[language=Plaintext]
+<expr> ::= <func> | (<expr> <op> <expr>) | <value>
+<func> ::= <func-name> ( <expr> )
+<func-name> ::= Math.sin | Math.cos | Math.exp | Math.log
+<op> ::= + | * | - | **
+<value> ::= x
+\end{lstlisting}
+
+We first parse the context free grammar.  In the example below, the grammar is read from a file.  It is also possible to pass a string containing the grammar using a \java{StringReader} in place of the \java{FileReader}.
+\begin{lstlisting}[language=Java]
+    ContextFreeGrammar grammar = Parser.load(
+        new FileReader("grammar.bnf"));
+\end{lstlisting}
+
+Second, we construct the grammar variable that will be evolved by the evolutionary algorithm.  Note how the \java{Grammar} object is passed an integer.  Grammatical evolution uses a novel representation of the decision variable.  Internally, it uses an integer array called a \emph{codon}.  It does not define the program itself, but provides instructions for deriving the program using the grammar.  The integer argument to \java{Grammar} specifies the length of the codon.  We defer a detailed explanation this derivation to the grammatical evolution literature.
+\begin{lstlisting}[language=Java]
+public Solution newSolution() {
+    Solution solution = new Solution(1, 1);
+    solution.setVariable(0, new Grammar(10));
+    return solution;
+}
+\end{lstlisting}
+
+Finally, we can evaluate a solution by first extracting the codon and deriving the program.  Unlike programs that can be evaluated directly, the grammar produces a string.  While it is common for grammars to produce program code, this is not a requirement.  This is one of the major differences between genetic programming and grammatical evolution.  In this case, we are producing program code and will need a mechanism to evaluate the program.  For this example, we use Java's scripting capabilities.  The grammar we defined above was designed to produce programs for the Groovy scripting language.  In the code below, we instantiate a \java{ScriptEngine} for Groovy, initialize the \java{x} variable, and evaluate the program.
+\begin{lstlisting}[language=Java]
+public void evaluate(Solution solution) {
+    int[] codon = ((Grammar)solution.getVariable(0)).toArray();
+    
+    // derive the program using the codon
+    String program = grammar.build(codon);
+
+    if (program == null) {
+        // if null, the codon did not produce a valid grammar
+        // TODO: penalize the objective value
+    } else {
+        ScriptEngineManager sem = new ScriptEngineManager();
+        ScriptEngine engine = sem.getEngineByName("groovy");
+
+        // initialize the variables used by the program
+        Bindings b = new SimpleBindings();
+        b.put("x", 15);
+
+        double result = ((Number)engine.eval(program, b))
+            .doubleValue();
+            
+        // TODO: use the result to set the objective value
+    }
+}
+\end{lstlisting}
+

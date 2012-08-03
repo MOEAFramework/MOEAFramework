@@ -31,7 +31,7 @@ import org.moeaframework.core.Variable;
  * </pre>
  * the following simplified version is allowed:
  * <pre>
- *   double value = asReal(solution.getVariable(i));
+ *   double value = getReal(solution.getVariable(i));
  * </pre>
  * <p>
  * Support for integer encodings is now supported using the
