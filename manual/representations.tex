@@ -15,7 +15,9 @@
 In \chptref{chpt:problems} we saw various ways to define new problems using real-valued (floating-point) decision variables.  In addition to floating-point values, the MOEA Framework allows problems to be encoded using integers, bit strings, permutations, programs (expression trees) and grammars.  This chapter details the use of each of these decision variables and their supported variation operators.  This chapter also details the use of the new \java{EncodingUtils} class, which provides many helper methods for creating, reading and modifying different types of decision variables.
 
 \section{Floating-Point Values}
+Floating-point values, also known as real-valued decision variables, provide a natural way to represent numeric values.  Floating-point decision variables are represented using \java{RealVariable} decision variables.  When creating a new real-valued decision variable, one must specify the lower and upper bounds that the value can represent.
 
+To create real-valued decision variables, use the \java{EndocingUtils.newReal(lowerBound, upperBound)} method.  Note how the lower and upper bounds must be defined.  The example code below demonstrates creating a solution with three different real-valued decision variables.
 \begin{lstlisting}[language=Java]
 public Solution newSolution() {
     Solution solution = new Solution(3, 2);
@@ -26,27 +28,33 @@ public Solution newSolution() {
 }
 \end{lstlisting}
 
+Inside the \java{evaluate} method, we can extract the values from the decision variables using the \java{EncodingUtils.getReal(...)} method.  Continuing the previous code example, we extract the values of the three decision variables below.
 \begin{lstlisting}[language=Java]
 public void evaluate(Solution solution) {
     double x = EncodingUtils.getReal(solution.getVariable(0));
     double y = EncodingUtils.getReal(solution.getVariable(1));
     double z = EncodingUtils.getReal(solution.getVariable(2));
     
-    //TODO: evaluate the solution given the values of x, y and z
+    // TODO: evaluate the solution given the values of x, y and
+    // z
 }
 \end{lstlisting}
 
-If the solution contains exclusively floating-point values, then one can read out all of the variables into an array using a single method.
+Alternatively, if the solution contains exclusively floating-point values, then we can read out all of the variables into an array using a single call.  Note that we pass the entire solution to the \java{EncodingUtils.getReal(...)} method below.
 \begin{lstlisting}[language=Java]
 public void evaluate(Solution solution) {
     double[] x = EncodingUtils.getReal(solution);
         
-    //TODO: evaluate the solution given the values of x[0], x[1] and x[2]
+    // TODO: evaluate the solution given the values of x[0],
+    // x[1] and x[2]
 }
 \end{lstlisting}
 
+The \java{EncodingUtils} class handles all the type checking and casting needed to ensure variables are read properly.  Attempting to read or write a decision variable that is not the correct type will result in an \java{IllegalArgumentException}.  If you see this exception, check all your decision variables to ensure they are the types you expect.   
+
 \section{Integers}
 
+Integer-valued decision variables can be constructed in a similar way as floating-point values.  For instance, below we construct the solution using calls to \java{EncodingUtils.newInt(lowerBound, upperBound)}.  As we saw with floating-point values, we must specify the lower and upper bounds of the decision variables.
 \begin{lstlisting}[language=Java]
 public Solution newSolution() {
     Solution solution = new Solution(3, 2);
@@ -57,50 +65,38 @@ public Solution newSolution() {
 }
 \end{lstlisting}
 
-The integer values can be read from a solution similarly to the floating-point examples, except we use \java{getInt} instead of \java{getReal}.
+Similarly, the values stored in the decision variables can be read using the \java{EncodingUtils.getInt(...)} method, as demonstrated below.
 \begin{lstlisting}[language=Java]
 public void evaluate(Solution solution) {
     int x = EncodingUtils.getInt(solution.getVariable(0));
     int y = EncodingUtils.getInt(solution.getVariable(1));
     int z = EncodingUtils.getInt(solution.getVariable(2));
     
-    //TODO: evaluate the solution given the values of x, y and z
+    // TODO: evaluate the solution given the values of x, y and
+    // z
 }
 \end{lstlisting}
 
-We can similarly extract the array of integers if the solution is exclusively represented by integer decision variables.
+And as we saw with floating-point values, if the solution is exclusively represented by integer-valued decision variables, we can likewise extract all values with a single call to \java{EncodingUtils.getInt(...)}.  Note again that this method is passed the entire solution instead of the individual decision variables as before.
 \begin{lstlisting}[language=Java]
 public void evaluate(Solution solution) {
     int[] x = EncodingUtils.getInt(solution);
         
-    //TODO: evaluate the solution given the values of x[0], x[1] and x[2]
+    // TODO: evaluate the solution given the values of x[0],
+    // x[1] and x[2]
 }
 \end{lstlisting}
 
-The integer representation is also useful for representing other discrete values.  The following example shows how to represent three power levels: low, medium and high.
-\begin{lstlisting}[language=Java]
-public enum PowerLevel {
-    LOW,
-    MEDIUM,
-    HIGH
-}
+The integer representation can be used to represent any other kind of discrete value.  For example, suppose we wanted to represent all even numbers between $0$ and $100$.  We can accomplish this using \java{EncodingUtils.newInt(0, 50)} and reading the value with \java{2*EncodingUtils.getInt(variable)}.  Integers are also useful for selecting a single item from a group.  In this scenario, the integer-valued decision variable represents the index of the item in an array.
 
-// store enumeration as array so we can index values
-public static final PowerLevel[] POWER_LEVELS = PowerLevel.values();
-
-// create the decision variable
-solution.setVariable(0, EncodingUtils.newInt(0,
-    POWER_LEVELS.length-1));
-
-// read the variable
-PowerLevel level = POWER_LEVELS[EncodingUtils.getInt(
-    solution.getVariable(0))];
-\end{lstlisting}
-
-Internally, integers are stored as floating-point values.  This allows the same variation operators to be applied
+\begin{tip}
+Internally, integers are stored as floating-point values.  This allows the same variation operators to be applied to both real-valued and integer-valued decision variables.  When working with integers, always use the \java{EncodingUtils.newInt(...)} and \java{EncodingUtils.getInt(...)} methods.  This will ensure the internal floating-point representation is correctly converted into an integer.
+\end{tip}
 
 \section{Bit Strings}
+Many problems involve making choices.  For example, the famous knapsack problem involves choosing which items to place in a knapsack to maximize the value of the items carried, but not exceed the weight capacity of the knapsack.  If $N$ items are available, we can represent the decision to include each item using a bit string with $N$ bits.  Each bit in the string corresponds to an item, and is set to \java{1} if the item is included and \java{0} if the item is excluded.  For instance, the bit string \java{00110} would place items 3 and 4 inside the knapsack, excluding the rest.
 
+The MOEA Framework supports fixed-length bit strings.  The example code below produces a solution with a single decision variable representing a bit string with length $100$.
 \begin{lstlisting}[language=Java]
 public Solution newSolution() {
     Solution solution = new Solution(1, 2);
@@ -109,6 +105,7 @@ public Solution newSolution() {
 }
 \end{lstlisting}
 
+When evaluating the solution, the bit string can be read into an array of \java{boolean} values, as demonstrated below.
 \begin{lstlisting}[language=Java]
 public void evaluate(Solution solution) {
     boolean[] values = EncodingUtils.getBinary(
@@ -119,7 +116,9 @@ public void evaluate(Solution solution) {
 \end{lstlisting}
 
 \section{Permutations}
+Permutation decision variables appear in many combinatorial and job scheduling problems.  In the famous traveling salesman problem (TSP), a salesman must travel to every city with the condition that they visit each city exactly once.  The order in which the salesman visits each city is conveniently represented as a permutation.
 
+The code example below demonstrates the creation of a permutation of 25 elements.
 \begin{lstlisting}[language=Java]
 public Solution newSolution() {
     Solution solution = new Solution(1, 2);
@@ -128,6 +127,7 @@ public Solution newSolution() {
 }
 \end{lstlisting}
 
+The permutation is read out into an array of \java{int} values.  If the permutation is over $N$ elements, the array length will be $N$ and the values stored will range from $0$ to $N-1$.  Each distinct value will appear only once in the array (by definition of a permutation).
 \begin{lstlisting}[language=Java]
 public void evaluate(Solution solution) {
     int[] permutation = EncodingUtils.getPermutation(
@@ -187,22 +187,24 @@ public void evaluate(Solution solution) {
 \end{lstlisting}
 
 \section{Grammars}
-Grammars are very similar to programs, but differ slightly in their definition and how the derived programs are generated.  Whereas the program required us to define a set of program elements (the rules) used for constructing the program, the grammar defines these rules using a context free grammar.  The text below shows an example grammar.  You should note that this grammar defines the same functions and terminals as the example in the previous section.
+Grammars are very similar to programs, but differ slightly in their definition and how the derived programs are generated.  Whereas the program required us to define a set of program elements (the rules) used for constructing the program, the grammar defines these rules using a context free grammar.  The text below shows an example grammar.  The format of this grammar is Backus-Naur form.
 \begin{lstlisting}[language=Plaintext]
 <expr> ::= <func> | (<expr> <op> <expr>) | <value>
 <func> ::= <func-name> ( <expr> )
 <func-name> ::= Math.sin | Math.cos | Math.exp | Math.log
-<op> ::= + | * | - | **
+<op> ::= + | * | - | /
 <value> ::= x
 \end{lstlisting}
 
-We first parse the context free grammar.  In the example below, the grammar is read from a file.  It is also possible to pass a string containing the grammar using a \java{StringReader} in place of the \java{FileReader}.
+You should note that this grammar defines the same functions and terminals as the example in the previous section.  This also demonstrates an important differenct between programs and grammars in the MOEA Framework.  The grammar explicitly defines where each problem element can appear.  This is in contract to programs, whose structure is determined by the type system.  As a result, grammars require more setup time but offer more control over programs.  We will now demonstrate the use of grammars in the MOEA Framework.
+
+First, we must parse the context free grammar.  In the example below, the grammar is read from a file.  It is also possible to pass a string containing the grammar using a \java{StringReader} in place of the \java{FileReader}.
 \begin{lstlisting}[language=Java]
     ContextFreeGrammar grammar = Parser.load(
         new FileReader("grammar.bnf"));
 \end{lstlisting}
 
-Second, we construct the grammar variable that will be evolved by the evolutionary algorithm.  Note how the \java{Grammar} object is passed an integer.  Grammatical evolution uses a novel representation of the decision variable.  Internally, it uses an integer array called a \emph{codon}.  It does not define the program itself, but provides instructions for deriving the program using the grammar.  The integer argument to \java{Grammar} specifies the length of the codon.  We defer a detailed explanation this derivation to the grammatical evolution literature.
+Second, we construct the grammar variable that will be evolved by the evolutionary algorithm.  Note how the \java{Grammar} object is passed an integer.  Grammatical evolution uses a novel representation of the decision variable.  Internally, it uses an integer array called a \emph{codon}.  The codon does not define the program itself, but provides instructions for deriving the program using the grammar.  The integer argument to \java{Grammar} specifies the length of the codon.  We defer a detailed explanation this derivation to the grammatical evolution literature.
 \begin{lstlisting}[language=Java]
 public Solution newSolution() {
     Solution solution = new Solution(1, 1);
@@ -211,7 +213,7 @@ public Solution newSolution() {
 }
 \end{lstlisting}
 
-Finally, we can evaluate a solution by first extracting the codon and deriving the program.  Unlike programs that can be evaluated directly, the grammar produces a string.  While it is common for grammars to produce program code, this is not a requirement.  This is one of the major differences between genetic programming and grammatical evolution.  In this case, we are producing program code and will need a mechanism to evaluate the program.  For this example, we use Java's scripting capabilities.  The grammar we defined above was designed to produce programs for the Groovy scripting language.  In the code below, we instantiate a \java{ScriptEngine} for Groovy, initialize the \java{x} variable, and evaluate the program.
+Finally, we can evaluate a solution by first extracting the codon and deriving the program.  Unlike programs that can be evaluated directly, the grammar produces a string (the derivation).  While it is common for grammars to produce program code, this is not a requirement.  This is the second major difference between grammars and programs in the MOEA Framework --- the behavior of programs is defined explicitly, whereas the behavior of grammars depends on how the grammar is interpreted.  In this case, we are producing program code and will need a scripting language to evaluate the program.  Using Java's Scripting API and having defined the grammar so that it produces a valid Groovy program, we can evaluate the derivation using the Groovy scripting language.  In the code below, we instantiate a \java{ScriptEngine} for Groovy, initialize the variable \java{x} and evaluate the program.
 \begin{lstlisting}[language=Java]
 public void evaluate(Solution solution) {
     int[] codon = ((Grammar)solution.getVariable(0)).toArray();
