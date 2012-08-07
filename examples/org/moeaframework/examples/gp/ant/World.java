@@ -17,6 +17,7 @@
  */
 package org.moeaframework.examples.gp.ant;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -24,8 +25,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-
-import org.moeaframework.util.io.CommentedLineReader;
 
 /**
  * The world that the ant occupies.  The world is cyclic, so an ant walking
@@ -143,10 +142,10 @@ public class World {
 	 * @throws IOException if an I/O error occurred
 	 */
 	protected void load(Reader reader) throws IOException {
-		CommentedLineReader lineReader = null;
+		BufferedReader lineReader = null;
 		
 		try {
-			lineReader = new CommentedLineReader(reader);
+			lineReader = new BufferedReader(reader);
 			
 			//read out the world dimension
 			String[] tokens = lineReader.readLine().split("\\s+");
