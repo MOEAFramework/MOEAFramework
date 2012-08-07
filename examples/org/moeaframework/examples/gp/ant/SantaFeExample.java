@@ -25,11 +25,11 @@ import org.moeaframework.Executor;
 import org.moeaframework.core.NondominatedPopulation;
 
 /**
- * Example running the ant trail problem.  NSGA-II isn't really designed for
- * single-objective functions, but this serves as a demonstration of genetic
- * programming.
+ * Example running the ant trail problem with the Santa Fe trail.  NSGA-II
+ * isn't really designed for single-objective functions, but this serves as a
+ * demonstration of genetic programming.
  */
-public class Demo {
+public class SantaFeExample {
 	
 	/**
 	 * Starts the example running the ant trail problem.
@@ -62,7 +62,7 @@ public class Demo {
 	 * @return an input stream that contains the ant trail data file
 	 */
 	public static InputStream openDataFile() {
-		return Demo.class.getResourceAsStream("santafe.trail");
+		return SantaFeExample.class.getResourceAsStream("santafe.trail");
 	}
 
 }
