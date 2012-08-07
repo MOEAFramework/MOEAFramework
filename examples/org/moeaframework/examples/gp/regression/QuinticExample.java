@@ -21,7 +21,7 @@ import org.apache.commons.math.FunctionEvaluationException;
 import org.apache.commons.math.analysis.UnivariateRealFunction;
 
 /**
- * The Quintic function as introduced in [1].  The function is
+ * The Quintic function as introduced by Koza [1].  The function is
  * {@code f(x) = x^5 - 2x^3 + x}.
  * 
  * References:
@@ -30,7 +30,7 @@ import org.apache.commons.math.analysis.UnivariateRealFunction;
  *       Programs."  MIT Press, Cambridge, MA, 1994.
  * </ol>
  */
-public class Quintic implements UnivariateRealFunction {
+public class QuinticExample implements UnivariateRealFunction {
 	
 	/**
 	 * Runs the Quintic demo problem.
@@ -40,8 +40,8 @@ public class Quintic implements UnivariateRealFunction {
 	 *         evaluating the function (should not occur in practice)
 	 */
 	public static void main(String[] args) throws FunctionEvaluationException {
-		SymbolicRegressionGUI.runDemo(new SymbolicRegression(new Quintic(),
-				-1.0, 1.0, 100));
+		SymbolicRegressionGUI.runDemo(new SymbolicRegression(
+				new QuinticExample(), -1.0, 1.0, 100));
 	}
 
 	@Override
