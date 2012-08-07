@@ -18,6 +18,7 @@
 package org.moeaframework.analysis.collector;
 
 import java.io.Serializable;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,6 +31,13 @@ import java.util.Set;
 public class Accumulator implements Serializable {
 
 	private static final long serialVersionUID = -7483439787468468601L;
+	
+	/**
+	 * The error message displayed when attempting to access and invalid key
+	 * that does not exist in an accumulator.
+	 */
+	private static final String INVALID_KEY =
+			"key not defined in accumulator: {0}";
 
 	/**
 	 * The internal storage of data.
@@ -75,9 +83,20 @@ public class Accumulator implements Serializable {
 	 * @param key the key
 	 * @param index the index
 	 * @return the value at the specified index for the specified key
+	 * @throws IllegalArgumentException if the key was not contained in this
+	 *         accumulator
+	 * @throws IndexOutOfBoundsException if the index is out of range {@code
+	 *         (index < 0 || index >= size(key))}
 	 */
 	public Serializable get(String key, int index) {
-		return data.get(key).get(index);
+		List<Serializable> entries = data.get(key);
+		
+		if (entries == null) {
+			throw new IllegalArgumentException(MessageFormat.format(
+					INVALID_KEY, key));
+		} else {
+			return entries.get(index);
+		}
 	}
 
 	/**
@@ -85,9 +104,18 @@ public class Accumulator implements Serializable {
 	 * 
 	 * @param key the key
 	 * @return the number of values stored for the specified key
+	 * @throws IllegalArgumentException if the key was not contained in this
+	 *         accumulator
 	 */
 	public int size(String key) {
-		return data.get(key).size();
+		List<Serializable> entries = data.get(key);
+		
+		if (entries == null) {
+			throw new IllegalArgumentException(MessageFormat.format(
+					INVALID_KEY, key));
+		} else {
+			return entries.size();
+		}
 	}
 
 }

@@ -1,6 +1,17 @@
 This file documents the major changes implemented in each release of the MOEA
 Framework.
 
+--------------------
+ Version 1.16 (TBD)
+--------------------
+
+  * Several bug fixes:
+  
+      - The Accumulator would throw a NullPointerException if an invalid key
+        was provided.  Now this throws an IllegalArgumentException with an
+        improved error message.
+
+
 ------------------------------
  Version 1.15 (31 July 2012)
 ------------------------------

@@ -347,7 +347,12 @@ malformed property argument
   This error is thrown if the command line argument is not in either of these
   two forms.  Check the command line argument to ensure it is formatted
   correctly.
-
+  
+key not defined in accumulator: <key>
+  Thrown when attempting to access a key in an Accumulator object that is not
+  contained within the Accumulator.  Use accumulator.keySet() to see what keys
+  are available and ensure the requested key exists within the accumulator.
+  
 
 ----------
  Warnings

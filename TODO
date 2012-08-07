@@ -12,6 +12,9 @@ any changes.
  Easy
 ------
 
+  - Check sensitivity routines to see if the output file is optional...such
+    as SimpleStatistics.
+
   - Add constructors for epsilon arrays to EpsilonBoxDominanceArchive and any
     other classes that use epsilons.  Should these be varadic arrays?
 
