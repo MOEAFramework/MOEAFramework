@@ -58,7 +58,6 @@ public class SimpleStatistics extends CommandLineUtility {
 				.withLongOpt("output")
 				.hasArg()
 				.withArgName("file")
-				.isRequired()
 				.create('o'));
 		
 		return options;
