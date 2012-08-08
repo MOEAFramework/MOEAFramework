@@ -154,6 +154,18 @@ import org.moeaframework.util.TypedProperties;
  *     <td>{@code gm.rate}</td>
  *   </tr>
  *   <tr>
+ *     <td>{@link SubtreeCrossover}</td>
+ *     <td>Program</td>
+ *     <td>{@code bx}</td>
+ *     <td>{@code bx.rate}</td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@link PointMutation}</td>
+ *     <td>Program</td>
+ *     <td>{@code ptm}</td>
+ *     <td>{@code ptm.rate}</td>
+ *   </tr>
+ *   <tr>
  *     <td>{@link OnePointCrossover}</td>
  *     <td>Any</td>
  *     <td>{@code 1x}</td>
@@ -285,7 +297,7 @@ public class OperatorFactory {
 		} else if (type.equals(Type.GRAMMAR)) {
 			return "gx+gm";
 		} else if (type.equals(Type.PROGRAM)) {
-			return "bc+ptm";
+			return "bx+ptm";
 		} else {
 			throw new ProviderNotFoundException("unknown type");
 		}
@@ -414,9 +426,9 @@ public class OperatorFactory {
 			} else if (name.equalsIgnoreCase("ptm")) {
 				return new PointMutation(
 						properties.getDouble("ptm.rate", 0.01));
-			} else if (name.equalsIgnoreCase("bc")) {
+			} else if (name.equalsIgnoreCase("bx")) {
 				return new SubtreeCrossover(
-						properties.getDouble("bc.rate", 0.9));
+						properties.getDouble("bx.rate", 0.9));
 			} else {
 				throw new ProviderNotFoundException(name);
 			}

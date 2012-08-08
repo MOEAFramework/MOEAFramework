@@ -5,6 +5,12 @@ Framework.
  Version 1.16 (TBD)
 --------------------
 
+  * Adds several new examples, including:
+  
+      - Two new symbolic regression functions: QuarticExample and SexticExample
+      
+      - A new, harder ant trail map in LosAltosExample.
+
   * Several bug fixes:
   
       - The Accumulator would throw a NullPointerException if an invalid key

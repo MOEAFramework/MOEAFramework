@@ -240,3 +240,82 @@ public void evaluate(Solution solution) {
 }
 \end{lstlisting}
 
+\section{Variation Operators}
+The MOEA Framework contains a number of variation operators (initialization, mutation, crossover, etc.) tailored for each representation type.  This section provides a brief overview of the available operators and details their use.
+
+\subsection{Initialization}
+The start of all evolutionary algorithms is the construction of an initial population.  This population is important since, in general, all future solutions are derived from members of this initial population.  Ensuring this initial population provides a diverse and representative set of individuals is paramount.
+
+The floating-point, integer, binary, permutation and grammar variables are all initialized uniformly at random.  This ensures the values, bit strings, etc. are distributed uniformly throughout the search space.
+
+Programs require a slightly more complicated initalization to ensure the initial population contains a diverse sampling of potential programs.  The MOEA Framework provides the ramped half-and-half initialization method, which is one of the most popular initialization techniques for programs.  We refer readers to the genetic programming literature for a detailed description of ramped half-and-half initialization.
+
+\subsection{Variation (Mutation \& Crossover)}
+After the initial population is generated, an evolutionary algorithm evolves the population using individual or combinations of variation operators.  Variation operators are classified into two forms: crossover and mutation.  Crossover involves combining two or more parents to create an offspring.  Mutation involves a single parent.  Mutations generally produce only small changes, but this is not mandatory.
+
+\tblref{tbl:operators} lists the supported variation operators in the MOEA Framework.  The table highlights the decision variable representation and type of each variation operator.
+
+\begin{table}
+  \centering
+  \caption{List of Supported Variation Operators}
+  \label{tbl:operators}
+  \begin{tabular}{llll}
+    \hline
+    Representation & Type & Name & Abbr. \\
+    \hline
+    Real / Integer & Crossover & Simulated Binary Crossover & SBX \\
+    Real / Integer & Mutation & Polynomial Mutation & PM \\
+    Real / Integer & Crossover & Differential Evolution & DE \\
+    Real / Integer & Crossover & Parent-Centric Crossover & PCX \\
+    Real / Integer & Crossover & Simplex Crossover & SPX \\
+    Real / Integer & Crossover & Unimodal Normal Distribution Crossover & UNDX \\
+    Real / Integer & Mutation & Uniform Mutation & UM \\
+    Real / Integer & Crossover & Adaptive Metropolis & AM \\
+    Binary & Crossover & Half-Uniform Crossover & HUX \\
+    Binary & Mutation & Bit Flip Mutation & BF \\
+    Permutation & Crossover & Partially-Mapped Crossover & PMX \\
+    Permutation & Mutation & Element Insertion & Insertion \\
+    Permutation & Mutation & Element Swap & Swap \\
+    Grammar & Crossover & Single-Point Crossover for Grammars & GX \\
+    Grammar & Mutation & Uniform Mutation for Grammars & GM \\
+    Program & Crossover & Branch (Subtree) Crossover & BX \\
+    Program & Mutation & Point Mutation & PTM \\
+    Any & Crossover & Single-Point Crossover & 1X \\
+    Any & Crossover & Two-Point Crossover & 2X \\
+    Any & Crossover & Uniform Crossover & UX \\
+    \hline
+  \end{tabular}
+\end{table}
+
+The abbreviation column lists the keyword used in the MOEA Framework for referencing each operator.  The example code below shows how we can specify the operator used by an algorithm and also any parameters for the operator.  In this example, we are using parent-centric crossover (PCX) and setting two of its parameters, \java{pcx.eta} and \java{pcx.zeta}.  Refer to the \java{OperatorFactory} class documentation for a complete list of the operators and their parameters.
+\begin{lstlisting}[language=Java]
+NondominatedPopulation result = new Executor()
+    .withProblem("UF1")
+    .withAlgorithm("NSGAII")
+    .withProperty("operator", "pcx")
+    .withProperty("pcx.eta", 0.1)
+    .withProperty("pcx.zeta", 0.1)
+    .withMaxEvaluations(10000)
+    .run();
+\end{lstlisting}
+
+It is also possible to combine certain variation operators using the \java{+} symbol.  In the example below, we combine differential evolution with polynomial mutation (\java{de+pm}), and we can set the parameters for both of these operators as shown.
+\begin{lstlisting}[language=Java]
+NondominatedPopulation result = new Executor()
+    .withProblem("UF1")
+    .withAlgorithm("NSGAII")
+    .withProperty("operator", "de+pm")
+    .withProperty("de.rate", 0.5)
+    .withProperty("pm.rate", 0.1)
+    .withMaxEvaluations(10000)
+    .run();
+\end{lstlisting}
+
+\begin{important}
+Not all combinations of operators are supported.  In general, combining a crossover operator with a mutation operator is ok.  If you request an invalid operator combination, you will see an exception with the message \emph{invalid number of parents}.  See the \java{CompoundVariation} class documentation for more details on what operators can be combined.
+\end{important}
+
+\section{Conclusion}
+This chapter introduced the various decision variable representations supported by the MOEA Framework.  Look at these different representations as the building blocks for your problem.  If you can construct your problem using these building blocks, the problem will seamlessly integrate with the MOEA Framework.
+
+We close this chapter by commenting that the MOEA Framework is not limited to these representations.  New representations are periodically introduced in the literature.  This fact influenced the design of the MOEA Framework to allow new represnetations and variation operators.  Interested readers should stay turned for future updates to this user manual that will discuss such extensions in detail.
