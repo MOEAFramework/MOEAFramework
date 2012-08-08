@@ -50,7 +50,7 @@
 						<h1 id="logo-text">
 							<a href="index.html" title="">MOEA Framework</a>
 						</h1>
-						<p id="slogan">An Open Source Java Framework for Multiobjective Optimization</p>
+						<p id="slogan">A Free and Open Source Java Framework for Multiobjective Optimization</p>
 
 						<div id="nav">
 							<ul>
