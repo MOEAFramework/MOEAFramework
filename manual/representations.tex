@@ -196,7 +196,7 @@ Grammars are very similar to programs, but differ slightly in their definition a
 <value> ::= x
 \end{lstlisting}
 
-You should note that this grammar defines the same functions and terminals as the example in the previous section.  This also demonstrates an important differenct between programs and grammars in the MOEA Framework.  The grammar explicitly defines where each problem element can appear.  This is in contract to programs, whose structure is determined by the type system.  As a result, grammars require more setup time but offer more control over programs.  We will now demonstrate the use of grammars in the MOEA Framework.
+You should note that this grammar defines the same functions and terminals as the example in the previous section.  This also demonstrates an important difference between programs and grammars in the MOEA Framework.  The grammar explicitly defines where each problem element can appear.  This is in contrast to programs, whose structure is determined by the type system.  As a result, grammars require more setup time but offer more control over programs.  We will now demonstrate the use of grammars in the MOEA Framework.
 
 First, we must parse the context free grammar.  In the example below, the grammar is read from a file.  It is also possible to pass a string containing the grammar using a \java{StringReader} in place of the \java{FileReader}.
 \begin{lstlisting}[language=Java]
@@ -204,7 +204,7 @@ First, we must parse the context free grammar.  In the example below, the gramma
         new FileReader("grammar.bnf"));
 \end{lstlisting}
 
-Second, we construct the grammar variable that will be evolved by the evolutionary algorithm.  Note how the \java{Grammar} object is passed an integer.  Grammatical evolution uses a novel representation of the decision variable.  Internally, it uses an integer array called a \emph{codon}.  The codon does not define the program itself, but provides instructions for deriving the program using the grammar.  The integer argument to \java{Grammar} specifies the length of the codon.  We defer a detailed explanation this derivation to the grammatical evolution literature.
+Second, we construct the grammar variable that will be evolved by the evolutionary algorithm.  Note how the \java{Grammar} object is passed an integer.  Grammatical evolution uses a novel representation of the decision variable.  Internally, it uses an integer array called a \emph{codon}.  The codon does not define the program itself, but provides instructions for deriving the program using the grammar.  The integer argument to \java{Grammar} specifies the length of the codon.  We defer a detailed explanation of this derivation to the grammatical evolution literature.
 \begin{lstlisting}[language=Java]
 public Solution newSolution() {
     Solution solution = new Solution(1, 1);
@@ -213,7 +213,7 @@ public Solution newSolution() {
 }
 \end{lstlisting}
 
-Finally, we can evaluate a solution by first extracting the codon and deriving the program.  Unlike programs that can be evaluated directly, the grammar produces a string (the derivation).  While it is common for grammars to produce program code, this is not a requirement.  This is the second major difference between grammars and programs in the MOEA Framework --- the behavior of programs is defined explicitly, whereas the behavior of grammars depends on how the grammar is interpreted.  In this case, we are producing program code and will need a scripting language to evaluate the program.  Using Java's Scripting API and having defined the grammar so that it produces a valid Groovy program, we can evaluate the derivation using the Groovy scripting language.  In the code below, we instantiate a \java{ScriptEngine} for Groovy, initialize the variable \java{x} and evaluate the program.
+Finally, we can evaluate a solution by first extracting the codon and deriving the program.  Unlike programs that can be evaluated directly, the grammar produces a string (the derivation).  While it is common for grammars to produce program code, this is not a requirement.  This is the second major difference between grammars and programs in the MOEA Framework --- the behavior of programs is defined explicitly, whereas the behavior of grammars depend on how the grammar is interpreted.  In this case, we are producing program code and will need a scripting language to evaluate the program.  Using Java's Scripting API and having defined the grammar so that it produces a valid Groovy program, we can evaluate the derivation using the Groovy scripting language.  In the code below, we instantiate a \java{ScriptEngine} for Groovy, initialize the variable \java{x} and evaluate the program.
 \begin{lstlisting}[language=Java]
 public void evaluate(Solution solution) {
     int[] codon = ((Grammar)solution.getVariable(0)).toArray();
@@ -239,6 +239,8 @@ public void evaluate(Solution solution) {
     }
 }
 \end{lstlisting}
+
+In order to compile and run this example, the Groovy scripting language must be installed.  To install Groovy, download the binary release from \webpage{http://groovy.codehaus.org/}, extract the \file{embeddable\\groovy-all-2.0.1.jar} file into the \folder{lib} folder in your MOEA Framework installation, and add this jar file onto the Java classpath with launching this example.
 
 \section{Variation Operators}
 The MOEA Framework contains a number of variation operators (initialization, mutation, crossover, etc.) tailored for each representation type.  This section provides a brief overview of the available operators and details their use.
