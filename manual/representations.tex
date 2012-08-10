@@ -240,7 +240,7 @@ public void evaluate(Solution solution) {
 }
 \end{lstlisting}
 
-In order to compile and run this example, the Groovy scripting language must be installed.  To install Groovy, download the binary release from \webpage{http://groovy.codehaus.org/}, extract the \file{embeddable\\groovy-all-2.0.1.jar} file into the \folder{lib} folder in your MOEA Framework installation, and add this jar file onto the Java classpath with launching this example.
+In order to compile and run this example, the Groovy scripting language must be installed.  To install Groovy, download the binary release from \webpage{http://groovy.codehaus.org/}, extract the \file{embeddable\\groovy-all-2.0.1.jar} file into the \folder{lib} folder in your MOEA Framework installation, and add this jar file onto the Java classpath when launching this example.
 
 \section{Variation Operators}
 The MOEA Framework contains a number of variation operators (initialization, mutation, crossover, etc.) tailored for each representation type.  This section provides a brief overview of the available operators and details their use.
@@ -263,28 +263,28 @@ After the initial population is generated, an evolutionary algorithm evolves the
   \label{tbl:operators}
   \begin{tabular}{llll}
     \hline
-    Representation & Type & Name & Abbr. \\
+    Representation & Type & Abbr. \\
     \hline
-    Real / Integer & Crossover & Simulated Binary Crossover & SBX \\
-    Real / Integer & Mutation & Polynomial Mutation & PM \\
-    Real / Integer & Crossover & Differential Evolution & DE \\
-    Real / Integer & Crossover & Parent-Centric Crossover & PCX \\
-    Real / Integer & Crossover & Simplex Crossover & SPX \\
-    Real / Integer & Crossover & Unimodal Normal Distribution Crossover & UNDX \\
-    Real / Integer & Mutation & Uniform Mutation & UM \\
-    Real / Integer & Crossover & Adaptive Metropolis & AM \\
-    Binary & Crossover & Half-Uniform Crossover & HUX \\
-    Binary & Mutation & Bit Flip Mutation & BF \\
-    Permutation & Crossover & Partially-Mapped Crossover & PMX \\
-    Permutation & Mutation & Element Insertion & Insertion \\
-    Permutation & Mutation & Element Swap & Swap \\
-    Grammar & Crossover & Single-Point Crossover for Grammars & GX \\
-    Grammar & Mutation & Uniform Mutation for Grammars & GM \\
-    Program & Crossover & Branch (Subtree) Crossover & BX \\
-    Program & Mutation & Point Mutation & PTM \\
-    Any & Crossover & Single-Point Crossover & 1X \\
-    Any & Crossover & Two-Point Crossover & 2X \\
-    Any & Crossover & Uniform Crossover & UX \\
+    Real / Integer & Simulated Binary Crossover & SBX \\
+    Real / Integer & Polynomial Mutation & PM \\
+    Real / Integer & Differential Evolution & DE \\
+    Real / Integer & Parent-Centric Crossover & PCX \\
+    Real / Integer & Simplex Crossover & SPX \\
+    Real / Integer & Unimodal Normal Distribution Crossover & UNDX \\
+    Real / Integer & Uniform Mutation & UM \\
+    Real / Integer & Adaptive Metropolis & AM \\
+    Binary & Half-Uniform Crossover & HUX \\
+    Binary & Bit Flip Mutation & BF \\
+    Permutation & Partially-Mapped Crossover & PMX \\
+    Permutation & Element Insertion & Insertion \\
+    Permutation & Element Swap & Swap \\
+    Grammar & Single-Point Crossover for Grammars & GX \\
+    Grammar & Uniform Mutation for Grammars & GM \\
+    Program & Branch (Subtree) Crossover & BX \\
+    Program & Point Mutation & PTM \\
+    Any & Single-Point Crossover & 1X \\
+    Any & Two-Point Crossover & 2X \\
+    Any & Uniform Crossover & UX \\
     \hline
   \end{tabular}
 \end{table}

@@ -46,7 +46,7 @@ Errors halt the execution of the program and produce an error message to the sta
 \end{indented}
 
 \noindent
-\textit{Exception in thread "main" java.lang.OutOfMemoryError: GC overhead limit exceeded}
+\textit{Exception in thread ``main'' java.lang.OutOfMemoryError: GC overhead limit exceeded}
 \begin{indented}
   Java relies on a garbage collector to detect and free memory which is no longer in use.  This process is usually fast.  However, if Java determines it is spending too much time performing garbage collection (98\% of the time) and is only recovering a small amount of memory (2\% of the heap), this error is thrown.  This is likely caused when the in-use memory approaches the maximum heap size, leaving little unallocated memory for temporary objects.  Try  increasing the maximum heap size with the \plaintext{-Xmx} command line argument.
 \end{indented}
