@@ -184,7 +184,7 @@ Iterable<ResultEntry> {
 	 * @return the solution
 	 */
 	private Solution parseSolution(String line) {
-		String[] entries = line.split("\\s+");
+		String[] entries = line.trim().split("\\s+");
 		Solution solution = null;
 
 		if (entries.length < problem.getNumberOfObjectives()) {

@@ -57,6 +57,20 @@ public class ResultFileReaderTest {
 			"#\n";
 	
 	/**
+	 * A valid result file with extra whitespace on lines.
+	 */
+	public static final String COMPLETE_WHITESPACE = 
+			"# Problem = Test\n" +
+			"# Variables = 3\n" +
+			"# Objectives = 2\n" + 
+			"  0.0 00100 2,1,0 0.0 1.0\n" + 
+			"\t\t1.0 01000 1,0,2 1.0 0.0\n" + 
+			"#\n" + 
+			"0.0 00100    2,1,0 \t 0.0 1.0\n" + 
+			"\t 1.0 01000 1,0,2 1.0 0.0 \t\n" +
+			"#\n";
+	
+	/**
 	 * A valid result file but without decision variables.
 	 */
 	public static final String COMPLETE_NOVARIABLES = 
@@ -297,6 +311,27 @@ public class ResultFileReaderTest {
 		try {
 			reader = new ResultFileReader(problem, TestUtils.createTempFile(
 					COMPLETE));
+			validateComplete(reader);
+		} finally {
+			if (reader != null) {
+				reader.close();
+			}
+		}
+	}
+	
+	/**
+	 * Tests if a valid result file with extra whitespace on lines is read
+	 * correctly.
+	 * 
+	 * @throws IOException should not occur
+	 */
+	@Test
+	public void testReaderCompleteWhitespace() throws IOException {
+		ResultFileReader reader = null;
+
+		try {
+			reader = new ResultFileReader(problem, TestUtils.createTempFile(
+					COMPLETE_WHITESPACE));
 			validateComplete(reader);
 		} finally {
 			if (reader != null) {

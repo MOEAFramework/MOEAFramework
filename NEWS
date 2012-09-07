@@ -20,6 +20,10 @@ Framework.
       - SimpleStatistics required the --output command-line option even though
         it was designed to be optional.  The --output option is now optional,
         redirecting to standard output if the option is not specified.
+        
+      - Some of the I/O methods were failing to correctly parse files if the
+        line contained whitespace at the start of the line.  To improve the
+        flexibility of these methods, such whitespace is now trimmed.
 
 
 ------------------------------

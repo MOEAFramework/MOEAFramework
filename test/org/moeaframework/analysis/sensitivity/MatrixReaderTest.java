@@ -28,15 +28,24 @@ import org.moeaframework.core.Settings;
  */
 public class MatrixReaderTest {
 
-	public static final String FIXED = "0.0 0.1 -0.1\n"
-			+ "# commented line\n" + "0 10 100\n";
+	public static final String FIXED =
+			"0.0 0.1 -0.1\n" +
+			"# commented line\n" +
+			"0 10 100\n";
+	
+	public static final String FIXED_WHITESPACE =
+			"  0.0 0.1    -0.1  \n" +
+			"# commented line\n" +
+			"\t\t0 \t 10 100\t\t\n";
 
-	public static final String VARIABLE = "0.0 0.1 -0.1\n"
-			+ "-0.1 -0.2\n" +
+	public static final String VARIABLE =
+			"0.0 0.1 -0.1\n" +
+			"-0.1 -0.2\n" +
 			"0 10 100\n";
 
-	public static final String UNPARSEABLE = "0.0 0.1 -0.1\n"
-			+ "0.0 0.1 -0.1foo\n" + // unparseable data
+	public static final String UNPARSEABLE =
+			"0.0 0.1 -0.1\n" +
+			"0.0 0.1 -0.1foo\n" + // unparseable data
 			"0 10 100\n";
 	
 	@Test
@@ -65,8 +74,22 @@ public class MatrixReaderTest {
 		Assert.assertFalse(reader.hasNext());
 	}
 	
-	@Test(expected = Exception.class)
+	@Test
 	public void testFixed3() {
+		MatrixReader reader = new MatrixReader(new StringReader(
+				FIXED_WHITESPACE), 3);
+		
+		Assert.assertTrue(reader.hasNext());
+		Assert.assertArrayEquals(new double[] { 0.0, 0.1, -0.1 }, reader.next(),
+				Settings.EPS);
+		Assert.assertTrue(reader.hasNext());
+		Assert.assertArrayEquals(new double[] { 0, 10, 100 }, reader.next(), 
+				Settings.EPS);
+		Assert.assertFalse(reader.hasNext());
+	}
+	
+	@Test(expected = Exception.class)
+	public void testFixed4() {
 		MatrixReader reader = new MatrixReader(new StringReader(FIXED), 2);
 		
 		Assert.assertFalse(reader.hasNext());

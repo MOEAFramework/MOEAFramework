@@ -174,7 +174,7 @@ Closeable {
 			return null;
 		}
 
-		String[] tokens = line.split("\\s+");
+		String[] tokens = line.trim().split("\\s+");
 
 		if ((numberOfColumns >= 0) && (tokens.length != numberOfColumns)) {
 			error = true;

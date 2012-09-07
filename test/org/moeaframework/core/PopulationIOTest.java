@@ -77,7 +77,7 @@ public class PopulationIOTest {
 	 * {@link PopulationIO#readObjectives} methods to ensure the objectives are
 	 * stored and retrieved correctly.
 	 * 
-	 * @throws IOException if an I/O error occurred
+	 * @throws IOException should not occur
 	 */
 	@Test
 	public void testWriteReadObjectives() throws IOException {
@@ -99,7 +99,7 @@ public class PopulationIOTest {
 	 * Tests the {@link PopulationIO#write} and {@link PopulationIO#read}
 	 * methods to ensure the objectives are stored and retrieved correctly.
 	 * 
-	 * @throws IOException if an I/O error occurred
+	 * @throws IOException should not occur
 	 */
 	@Test
 	public void testWriteRead() throws IOException {
@@ -110,6 +110,23 @@ public class PopulationIOTest {
 		Population population2 = PopulationIO.read(file);
 
 		Assert.assertEquals(population.size(), population2.size());
+	}
+	
+	/**
+	 * Tests {@link PopulationIO#readObjectives} to ensure it correctly
+	 * parses files that contain extra whitespace characters.
+	 * 
+	 * @throws IOException should not occur
+	 */
+	@Test
+	public void testReadWhitespace() throws IOException {
+		File file = TestUtils.createTempFile("0   1 \t 2\n\t   3 4 5 \t\n");
+		Population population = PopulationIO.readObjectives(file);
+		
+		Assert.assertArrayEquals(new double[] {0.0, 1.0, 2.0},
+				population.get(0).getObjectives(), Settings.EPS);
+		Assert.assertArrayEquals(new double[] {3.0, 4.0, 5.0},
+				population.get(1).getObjectives(), Settings.EPS);
 	}
 
 }
