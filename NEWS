@@ -6,10 +6,9 @@ Framework.
 --------------------
 
   * Adds several new examples, including:
-  
       - Two new symbolic regression functions: QuarticExample and SexticExample
-      
       - A new, harder ant trail map in LosAltosExample.
+      - One-max binary optimization problem.
 
   * Several bug fixes:
   
