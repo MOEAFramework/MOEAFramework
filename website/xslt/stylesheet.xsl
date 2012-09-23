@@ -28,7 +28,7 @@
 				<meta name="description">
 					<xsl:attribute name="content"><xsl:value-of select="description" /></xsl:attribute>
 				</meta>
-				<meta name="keywords" content="multiobjective, multicriteria, moea, moeas, optimization, optimisation, evolutionary, genetic, algorithm, programming, differential, grammatical, evolution, particle, swarm, framework, library, java, lgpl, open, source, oss, download, free" />
+				<meta name="keywords" content="multiobjective, multicriteria, moea, moeas, nsga, nsgaii, moead, gde3, optimization, optimisation, evolutionary, genetic, algorithm, programming, differential, grammatical, evolution, particle, swarm, framework, library, java, lgpl, open, source, oss, download, free" />
 				<meta name="robots" content="index, follow, noarchive" />
 				<meta name="googlebot" content="noarchive" />
 				<meta http-equiv="pragma" content="no-cache" />
@@ -41,14 +41,14 @@
 				
 				<xsl:copy-of select="header/node()" />
 			</head>
-			<body>
+			<body itemscope="itemscope" itemtype="http://schema.org/SoftwareApplication">
 				<!-- header -->
 				<div id="header-wrap">
 					<div id="header">
 						<a name="top"></a>
-						<img id="logo" src="images/logo2_small.png" alt="MOEA Framework logo" width="103" height="100" />
+						<img id="logo" src="images/logo2_small.png" alt="MOEA Framework logo" width="103" height="100" itemprop="image" />
 						<h1 id="logo-text">
-							<a href="index.html" title="">MOEA Framework</a>
+							<a href="index.html" title="" itemprop="name">MOEA Framework</a>
 						</h1>
 						<p id="slogan">A Free and Open Source Java Framework for Multiobjective Optimization</p>
 
@@ -107,13 +107,17 @@
 							<div class="sidemenu downloads">
 								<h3>Downloads</h3>
 								<p>
-									Current Version: <b><xsl:value-of select="$version" /></b><br />
-									Released: <xsl:value-of select="$today" />
+									Current Version: <span itemprop="softwareVersion"><b><xsl:value-of select="$version" /></b></span><br />
+									Released: <span itemprop="dateModified"><xsl:value-of select="$today" /></span>
+									<meta itemprop="operatingSystem" content="Windows" />
+									<meta itemprop="operatingSystem" content="Linux" />
+									<meta itemprop="operatingSystem" content="Mac" />
 								</p>
 								<ul>
 									<li>
 										<a href="https://sourceforge.net/projects/moeaframework/files/MOEAFramework-%VERSION%/MOEAFramework-%VERSION%.tar.gz/download"
-										    onClick="_gaq.push(['_trackEvent', 'Downloads', 'Binary', '%VERSION%']);">
+										    onClick="_gaq.push(['_trackEvent', 'Downloads', 'Binary', '%VERSION%']);"
+										    itemprop="downloadUrl">
 											Compiled Binaries
 										</a>
 									</li>

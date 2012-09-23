@@ -23,7 +23,7 @@
   <content>
 <h2>A Framework for Innovation</h2>
   
-<p>
+<p itemprop="description">
   The MOEA Framework is a free and open source Java library for developing and 
   experimenting with multiobjective evolutionary algorithms (MOEAs) and
   other general-purpose multiobjective optimization algorithms.  The MOEA
@@ -37,7 +37,7 @@
 
 <h3>Key Features</h3>
   
-  <ul>
+  <ul itemprop="featureList">
     <li>Fast, reliable implementations of many state-of-the-art multiobjective evolutionary algorithms</li>
     <li>Extensible with custom algorithms, problems and operators</li>
     <li>Modular design for constructing new optimization algorithms from existing components</li>
@@ -50,22 +50,22 @@
 
 <p>
   <a class="grouped_elements" href="images/screenshot-1.png" rel="gallery"
-      title="Comparison of three MOEAs on the UF1 problem">
+      title="Comparison of three MOEAs on the UF1 problem" itemprop="screenshot">
     <img src="images/screenshot-1-small.png" class="float-left" width="114" height="70" alt="Comparison of three MOEAs on the UF1 problem" />
    </a>
   
   <a class="grouped_elements" href="images/screenshot-3.png" rel="gallery"
-      title="Multiple plots can be shown side-by-side">
+      title="Multiple plots can be shown side-by-side" itemprop="screenshot">
     <img src="images/screenshot-3-small.png" class="float-left" width="114" height="70" alt="Multiple plots can be shown side-by-side" />
   </a>
   
   <a class="grouped_elements" href="images/screenshot-2.png" rel="gallery"
-      title="The convergence of the approximation set to the reference set">
+      title="The convergence of the approximation set to the reference set" itemprop="screenshot">
     <img src="images/screenshot-2-small.png" class="float-left" width="93" height="70" alt="The convergence of the approximation set to the reference set" />
   </a>
   
   <a class="grouped_elements" href="images/screenshot-4.png" rel="gallery"
-      title="Example code for running the MOEA Framework and the corresponding output">
+      title="Example code for running the MOEA Framework and the corresponding output" itemprop="screenshot">
     <img src="images/screenshot-4-small.png" class="float-left" width="167" height="70" alt="Example code for running the MOEA Framework and the corresponding output" />
   </a>
 </p>

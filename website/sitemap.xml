@@ -33,30 +33,30 @@
   <loc>http://www.moeaframework.org/documentation.html</loc>
   <lastmod>%LASTMOD%</lastmod>
   <changefreq>weekly</changefreq>
-  <priority>0.80</priority>
+  <priority>0.60</priority>
 </url>
 <url>
   <loc>http://www.moeaframework.org/javadoc/index.html</loc>
   <lastmod>%LASTMOD%</lastmod>
   <changefreq>weekly</changefreq>
-  <priority>0.80</priority>
+  <priority>0.60</priority>
 </url>
 <url>
   <loc>http://www.moeaframework.org/support.html</loc>
   <lastmod>%LASTMOD%</lastmod>
   <changefreq>weekly</changefreq>
-  <priority>0.60</priority>
+  <priority>0.40</priority>
 </url>
 <url>
   <loc>http://www.moeaframework.org/contribute.html</loc>
   <lastmod>%LASTMOD%</lastmod>
   <changefreq>weekly</changefreq>
-  <priority>0.60</priority>
+  <priority>0.40</priority>
 </url>
 <url>
   <loc>http://www.moeaframework.org/quality.html</loc>
   <lastmod>%LASTMOD%</lastmod>
   <changefreq>weekly</changefreq>
-  <priority>0.40</priority>
+  <priority>0.20</priority>
 </url>
 </urlset>
