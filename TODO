@@ -12,6 +12,9 @@ any changes.
  Easy
 ------
 
+  - Add notification when MetricFileReader or ResultFileReader discard entries
+    so that users will not be confused when data appears to be missing.
+
   - Add constructors for epsilon arrays to EpsilonBoxDominanceArchive and any
     other classes that use epsilons.  Should these be varadic arrays?
 

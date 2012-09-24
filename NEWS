@@ -1,9 +1,9 @@
 This file documents the major changes implemented in each release of the MOEA
 Framework.
 
---------------------
- Version 1.16 (TBD)
---------------------
+-----------------------------
+ Version 1.16 (23 Sept 2012)
+-----------------------------
 
   * Adds several new examples, including:
       - Two new symbolic regression functions: QuarticExample and SexticExample
