@@ -22,7 +22,6 @@ import jmetal.base.solutionType.BinarySolutionType;
 import jmetal.base.solutionType.PermutationSolutionType;
 import jmetal.base.solutionType.RealSolutionType;
 
-import org.apache.commons.math.stat.StatUtils;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variable;
@@ -119,12 +118,23 @@ public class JMetalProblemAdapter extends jmetal.base.Problem {
 
 		problem.evaluate(result);
 
-		for (int i = 0; i < solution.numberOfObjectives(); i++) {
+		for (int i = 0; i < result.getNumberOfObjectives(); i++) {
 			solution.setObjective(i, result.getObjective(i));
 		}
+		
+		// calculate constraint violation
+		double overallConstraintViolation = 0.0;
+		int numberOfViolations = 0;
+		
+		for (int i = 0; i < result.getNumberOfConstraints(); i++) {
+			if (result.getConstraint(i) != 0.0) {
+				numberOfViolations++;
+				overallConstraintViolation -= Math.abs(result.getConstraint(i));
+			}
+		}
 
-		solution.setOverallConstraintViolation(StatUtils.sum(
-				result.getConstraints()));
+		solution.setOverallConstraintViolation(overallConstraintViolation);
+		solution.setNumberOfViolatedConstraint(numberOfViolations);
 	}
 	
 	/**
