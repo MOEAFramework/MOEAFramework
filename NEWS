@@ -1,6 +1,14 @@
 This file documents the major changes implemented in each release of the MOEA
 Framework.
 
+--------------------
+ Version 1.17 (TBD)
+--------------------
+
+  * Adds error message if the resource files used by some examples are not
+    found.  This can occur when the classpath is not configured correctly.
+
+
 -----------------------------
  Version 1.16 (23 Sept 2012)
 -----------------------------

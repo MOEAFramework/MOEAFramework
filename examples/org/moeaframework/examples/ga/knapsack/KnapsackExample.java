@@ -40,6 +40,11 @@ public class KnapsackExample {
 		// open the file containing the knapsack problem instance
 		InputStream input = Knapsack.class.getResourceAsStream(
 				"knapsack.100.2");
+		
+		if (input == null) {
+			System.err.println("Unable to find the file knapsack.100.2");
+			System.exit(-1);
+		}
 				
 		// solve using NSGA-II
 		NondominatedPopulation result = new Executor()

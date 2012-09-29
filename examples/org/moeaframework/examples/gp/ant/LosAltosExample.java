@@ -60,7 +60,15 @@ public class LosAltosExample {
 	 * @return an input stream that contains the Los Altos ant trail data file
 	 */
 	public static InputStream openDataFile() {
-		return LosAltosExample.class.getResourceAsStream("losaltos.trail");
+		InputStream stream = LosAltosExample.class.getResourceAsStream(
+				"losaltos.trail");
+		
+		if (stream == null) {
+			System.err.println("Unable to find the file losaltos.trail.");
+			System.exit(-1);
+		}
+		
+		return stream;
 	}
 
 }

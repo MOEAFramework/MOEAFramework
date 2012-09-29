@@ -62,7 +62,15 @@ public class SantaFeExample {
 	 * @return an input stream that contains the ant trail data file
 	 */
 	public static InputStream openDataFile() {
-		return SantaFeExample.class.getResourceAsStream("santafe.trail");
+		InputStream stream = LosAltosExample.class.getResourceAsStream(
+				"santafe.trail");
+		
+		if (stream == null) {
+			System.err.println("Unable to find the file santafe.trail.");
+			System.exit(-1);
+		}
+		
+		return stream;
 	}
 
 }
