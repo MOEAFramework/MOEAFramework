@@ -39,7 +39,8 @@ import org.moeaframework.util.io.CommentedLineReader;
  * Parsing stops at the first error.  Check the {@code error} flag to determine
  * if an error was encountered.  An exception may or may not be thrown,
  * depending on the type of error and the value of the 
- * {@code suppressExceptions} flag.
+ * {@code suppressExceptions} flag.  If exceptions are suppressed, a warning
+ * message will be printed.
  */
 class MatrixReader implements Iterable<double[]>, Iterator<double[]>, 
 Closeable {
@@ -180,6 +181,7 @@ Closeable {
 			error = true;
 			
 			if (supressExceptions) {
+				System.err.println("insufficient number of entries in row, ignoring remaining rows in the file");
 				return null;
 			} else {
 				throw new IOException("insufficient number of entries in row");

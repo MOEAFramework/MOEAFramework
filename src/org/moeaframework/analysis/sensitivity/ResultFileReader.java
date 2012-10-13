@@ -157,6 +157,7 @@ Iterable<ResultEntry> {
 				Solution solution = parseSolution(line);
 				
 				if (solution == null) {
+					System.err.println("unable to parse solution, ignoring remaining entries in the file");
 					return null;
 				} else {
 					population.add(solution);

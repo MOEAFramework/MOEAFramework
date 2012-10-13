@@ -5,6 +5,13 @@ Framework.
  Version 1.17 (TBD)
 --------------------
 
+  * ResultFileReader and MetricFileReader would discard any remaining entries
+    in an input file upon encountering any invalid data.  This is the intended
+    behavior, which allows the software to automatically resume execution at
+    the last valid entry.  However, since no notification was provided that the
+    software was discarding data, this surprised some users.  The software now
+    emits a warning message when discarding data in this manner.
+
   * Adds error message if the resource files used by some examples are not
     found.  This can occur when the classpath is not configured correctly.
 
