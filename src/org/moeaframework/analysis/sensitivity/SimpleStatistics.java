@@ -59,6 +59,14 @@ public class SimpleStatistics extends CommandLineUtility {
 				.hasArg()
 				.withArgName("file")
 				.create('o'));
+		options.addOption(OptionBuilder
+				.withLongOpt("ignore")
+				.create('i'));
+		options.addOption(OptionBuilder
+				.withLongOpt("maximum")
+				.hasArg()
+				.withArgName("value")
+				.create('x'));
 		
 		return options;
 	}
@@ -158,7 +166,17 @@ public class SimpleStatistics extends CommandLineUtility {
 					
 					for (int k=0; k<entries.size(); k++) {
 						double value = entries.get(k)[i][j];
-						if (!Double.isInfinite(value) && !Double.isNaN(value)) {
+						
+						if (Double.isInfinite(value) &&
+								commandLine.hasOption("maximum")) {
+							value = Double.parseDouble(
+									commandLine.getOptionValue("maximum"));
+						}
+						
+						if ((Double.isInfinite(value) || Double.isNaN(value)) &&
+								commandLine.hasOption("ignore")) {
+							// ignore infinity or NaN values
+						} else {
 							statistics.addValue(value);
 						}
 					}

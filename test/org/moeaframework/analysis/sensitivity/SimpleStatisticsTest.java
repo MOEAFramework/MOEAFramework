@@ -115,8 +115,46 @@ public class SimpleStatisticsTest {
 	}
 	
 	@Test
-	@Ignore
-	public void testInfinityToNaN() throws IOException {
+	public void testInfinityAndNaN() throws IOException {
+		File input1 = TestUtils.createTempFile("0.0 0.0 0.0\n1.0 Infinity 1.0");
+		File input2 = TestUtils.createTempFile("0.0 0.0 NaN\n0.0 0.5 1.0\n");
+		File output = TestUtils.createTempFile();
+		
+		SimpleStatistics.main(new String[] {
+				"-m", "av",
+				"-o", output.getPath(),
+				input1.getPath(),
+				input2.getPath()});
+		
+		String[] actual = new String(TestUtils.loadFile(output)).split("\\s+");
+		String[] expected = new String[] { "0.0", "0.0", "NaN", "0.5", "NaN", 
+				"1.0" };
+		
+		Assert.assertArrayEquals(expected, actual);
+	}
+	
+	@Test
+	public void testInfinityAndNaNIgnoring() throws IOException {
+		File input1 = TestUtils.createTempFile("0.0 0.0 0.0\n1.0 Infinity 1.0");
+		File input2 = TestUtils.createTempFile("0.0 0.0 NaN\n0.0 0.5 1.0\n");
+		File output = TestUtils.createTempFile();
+		
+		SimpleStatistics.main(new String[] {
+				"-m", "av",
+				"-o", output.getPath(),
+				"-i",
+				input1.getPath(),
+				input2.getPath()});
+		
+		String[] actual = new String(TestUtils.loadFile(output)).split("\\s+");
+		String[] expected = new String[] { "0.0", "0.0", "0.0", "0.5", "0.5", 
+				"1.0" };
+		
+		Assert.assertArrayEquals(expected, actual);
+	}
+	
+	@Test
+	public void testInfinityMaximum() throws IOException {
 		File input1 = TestUtils.createTempFile("0.0 0.0 0.0\n1.0 Infinity 1.0");
 		File input2 = TestUtils.createTempFile("0.0 0.0 0.0\n0.0 0.5 1.0\n");
 		File output = TestUtils.createTempFile();
@@ -124,6 +162,7 @@ public class SimpleStatisticsTest {
 		SimpleStatistics.main(new String[] {
 				"-m", "av",
 				"-o", output.getPath(),
+				"-x", "1.0",
 				input1.getPath(),
 				input2.getPath()});
 		
