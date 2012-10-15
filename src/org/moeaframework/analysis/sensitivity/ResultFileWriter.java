@@ -33,7 +33,9 @@ import java.util.Properties;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.StringUtils;
+import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Problem;
+import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variable;
 import org.moeaframework.core.variable.BinaryVariable;
@@ -83,6 +85,13 @@ public class ResultFileWriter implements OutputWriter {
 	 */
 	protected static final String NO_VARIABLES_WARNING =
 			"saving result file without variables, may become unstable";
+	
+	/**
+	 * The message displayed when an unclean file exists from a previous run.
+	 */
+	protected static final String EXISTING_FILE =
+			"an unclean version of the file exists from a previous run, " +
+			"requires manual intervention";
 
 	/**
 	 * The stream for appending data to the file.
@@ -144,13 +153,24 @@ public class ResultFileWriter implements OutputWriter {
 		}
 
 		// if the file already exists, move it to a temporary location
-		File existingFile = null;
-
+		File existingFile = new File(file.getParent(), "." + file.getName()
+				+ ".unclean");
+		
+		if (existingFile.exists()) {
+			if (Settings.getCleanupStrategy().equalsIgnoreCase("restore")) {
+				if (file.exists()) {
+					FileUtils.delete(existingFile);
+				} else {
+					// do nothing, the unclean file is ready for recovery
+				}
+			} else if (Settings.getCleanupStrategy().equalsIgnoreCase("overwrite")) {
+				FileUtils.delete(existingFile);
+			} else {
+				throw new FrameworkException(EXISTING_FILE);
+			}
+		}
+		
 		if (file.exists()) {
-			existingFile = new File(file.getParent(), "." + file.getName()
-					+ ".unclean");
-
-			FileUtils.delete(existingFile);
 			FileUtils.move(file, existingFile);
 		}
 
@@ -172,7 +192,7 @@ public class ResultFileWriter implements OutputWriter {
 		writer.println(problem.getNumberOfObjectives());
 
 		// if the file already existed, copy all complete entries
-		if (existingFile != null) {
+		if (existingFile.exists()) {
 			ResultFileReader reader = null;
 
 			try {

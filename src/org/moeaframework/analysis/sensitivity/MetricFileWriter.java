@@ -23,6 +23,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import org.moeaframework.core.FrameworkException;
+import org.moeaframework.core.Settings;
 import org.moeaframework.core.indicator.QualityIndicator;
 import org.moeaframework.util.io.FileUtils;
 
@@ -78,16 +80,27 @@ public class MetricFileWriter implements OutputWriter {
 		this.qualityIndicator = qualityIndicator;
 
 		// if the file already exists, move it to a temporary location
-		File existingFile = null;
-
+		File existingFile = new File(file.getParent(), "." + file.getName()
+				+ ".unclean");
+		
+		if (existingFile.exists()) {
+			if (Settings.getCleanupStrategy().equalsIgnoreCase("restore")) {
+				if (file.exists()) {
+					FileUtils.delete(existingFile);
+				} else {
+					// do nothing, the unclean file is ready for recovery
+				}
+			} else if (Settings.getCleanupStrategy().equalsIgnoreCase("overwrite")) {
+				FileUtils.delete(existingFile);
+			} else {
+				throw new FrameworkException(ResultFileWriter.EXISTING_FILE);
+			}
+		}
+		
 		if (file.exists()) {
-			existingFile = new File(file.getParent(), "." + file.getName()
-					+ ".unclean");
-
-			FileUtils.delete(existingFile);
 			FileUtils.move(file, existingFile);
 		}
-
+		
 		// prepare this class for writing
 		numberOfEntries = 0;
 		writer = new PrintWriter(new BufferedWriter(new FileWriter(file)), 
@@ -96,7 +109,7 @@ public class MetricFileWriter implements OutputWriter {
 		writer.println("#Hypervolume GenerationalDistance InvertedGenerationalDistance Spacing EpsilonIndicator MaximumParetoFrontError");
 
 		// if the file already existed, copy all complete entries
-		if (existingFile != null) {
+		if (existingFile.exists()) {
 			MetricFileReader reader = null;
 
 			try {

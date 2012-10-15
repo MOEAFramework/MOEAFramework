@@ -12,6 +12,12 @@ Framework.
     software was discarding data, this surprised some users.  The software now
     emits a warning message when discarding data in this manner.
     
+  * Adds more predictable behavior when ResultFileWriter and MetricFileWriter
+    attempt to recover data from an interrupted run.  The user can now choose
+    to restore, overwrite, or exit with an error.  See the
+      org.moeaframework.analysis.sensitivity.cleanup
+    property in global.properties for more details.
+    
   * Adds the --ignore and --maximum options to SimpleStatistics to give users
     better control over how infinity and NaN values are handled.
 

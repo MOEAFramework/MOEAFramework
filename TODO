@@ -63,17 +63,6 @@ any changes.
   - To provide consistent output, use of YAML is preferred.  YAML is preferred
     over formats like XML and JSON due to its very simple and human-readable
     syntax.  Find and upgrade output code which is not yet in a YAML format.
-
-  - When restarting a file, ResultFileWriter and MetricFileWriter first move
-    the unclean file to a temporary location and copy the clean contents to the
-    original location.  If this process is interrupted for any reason, the
-    original file is no longer at its original location, and thus data may be
-    lost.  A better approach is to create a temporary file, copy the clean
-    contents to the temporary file, then move the temporary file to the original
-    location.  This way, if the process is interrupted, the original file
-    remains unchanged.  An alternative approach is to detect that the
-    temporary file exists and exit with an exception, requiring the user to
-    intervene.
     
   - Develop an interface for defining stopping conditions.  Executor should
     provide the necessary functionality for defining stopping conditions.

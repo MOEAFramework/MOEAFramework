@@ -353,6 +353,15 @@ key not defined in accumulator: <key>
   contained within the Accumulator.  Use accumulator.keySet() to see what keys
   are available and ensure the requested key exists within the accumulator.
   
+an unclean version of the file exists from a previous run, requires manual
+intervention
+  Thrown when attempting to recover data from an interrupted run, but it appears
+  there already exists an "unclean" file from a previous recovery attempt.  If
+  the user believes the unclean file contains valid data, she can copy the
+  unclean file to its original location.  Or, she can delete the unclean file
+  to start fresh.  The org.moeaframework.analysis.sensitivity.cleanup property
+  in global.properties controls the default behavior in this scenario.
+  
 
 ----------
  Warnings

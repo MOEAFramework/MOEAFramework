@@ -216,6 +216,13 @@ public class Settings {
 			"util.tree.protected_functions";
 	
 	/**
+	 * The property key for the cleanup strategy when restarting from previous
+	 * runs.
+	 */
+	public static final String KEY_CLEANUP_STRATEGY = KEY_PREFIX + 
+			"analysis.sensitivity.cleanup";
+	
+	/**
 	 * Loads the properties.
 	 */
 	static {
@@ -627,6 +634,18 @@ public class Settings {
 	 */
 	public static boolean isProtectedFunctions() {
 		return PROPERTIES.getBoolean(KEY_GP_PROTECTED_FUNCTIONS, true);
+	}
+	
+	/**
+	 * Returns the cleanup strategy when restarting from a previous run.
+	 * Possible values are {@code error}, {@code overwrite}, and
+	 * {@code recover}.  The default is {@code error}.  Any other values should
+	 * default to {@code error}.
+	 * 
+	 * @return the cleanup strategy when restarting from a previous run
+	 */
+	public static String getCleanupStrategy() {
+		return PROPERTIES.getString(KEY_CLEANUP_STRATEGY, "error");
 	}
 	
 }
