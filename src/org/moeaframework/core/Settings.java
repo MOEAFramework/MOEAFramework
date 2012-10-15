@@ -639,7 +639,7 @@ public class Settings {
 	/**
 	 * Returns the cleanup strategy when restarting from a previous run.
 	 * Possible values are {@code error}, {@code overwrite}, and
-	 * {@code recover}.  The default is {@code error}.  Any other values should
+	 * {@code restore}.  The default is {@code error}.  Any other values should
 	 * default to {@code error}.
 	 * 
 	 * @return the cleanup strategy when restarting from a previous run
