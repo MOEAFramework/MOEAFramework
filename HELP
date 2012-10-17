@@ -355,12 +355,13 @@ key not defined in accumulator: <key>
   
 an unclean version of the file exists from a previous run, requires manual
 intervention
-  Thrown when attempting to recover data from an interrupted run, but it appears
-  there already exists an "unclean" file from a previous recovery attempt.  If
-  the user believes the unclean file contains valid data, she can copy the
-  unclean file to its original location.  Or, she can delete the unclean file
-  to start fresh.  The org.moeaframework.analysis.sensitivity.cleanup property
-  in global.properties controls the default behavior in this scenario.
+  Thrown when ResultFileWriter or MetricFileWriter attempt to recover data from
+  an interrupted run, but it appears there already exists an "unclean" file from
+  a previous recovery attempt.  If the user believes the unclean file contains
+  valid data, she can copy the unclean file to its original location.  Or, she
+  can delete the unclean file to start fresh.  The
+  org.moeaframework.analysis.sensitivity.cleanup property in global.properties
+  controls the default behavior in this scenario.
   
 
 ----------
@@ -462,3 +463,13 @@ argument is null
   of an argument did not match the return type of the argument.  If this
   warning appears when using Sequence, For or While, ensure you specify the
   return type of these nodes using the appropriate constructor.
+  
+  unable to parse solution, ignoring remaining entries in the file
+  insufficient number of entries in row, ignoring remaining rows in the file
+    Occurs when MetricFileReader or ResultFileReader encounter invalid data in
+    an input file.  They automatically discard any remaining entries in the
+    file, assuming they are corrupt.  This is primarily intended to allow the
+    software to automatically recover from a previous, interrupted execution.
+    These warnings are provided to inform the user that invalid entries are
+    being discarded.
+  
