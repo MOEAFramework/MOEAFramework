@@ -24,10 +24,6 @@ any changes.
   - ExtractData is overriding the -h,--help option.  This will be fixed in 
     version 2.0.
 
-  - The UF* and CF* methods in CEC2009 are passed both a double array (x) and
-    the length of this array (nx) as arguments.  Remove the nx argument and use
-    x.length instead.
-
   - Need to determine for which classes does value-based equals methods make
     sense, and provide equals and hashCode implementations for these classes.
     As an example, it doesn't make sense for Solution to provide an equals
@@ -57,10 +53,6 @@ any changes.
     reports.  It would probably be a good design to provide functionality
     similar to SwingWorker's progress notifications.
 
-  - To provide consistent output, use of YAML is preferred.  YAML is preferred
-    over formats like XML and JSON due to its very simple and human-readable
-    syntax.  Find and upgrade output code which is not yet in a YAML format.
-    
   - Develop an interface for defining stopping conditions.  Executor should
     provide the necessary functionality for defining stopping conditions.
     
