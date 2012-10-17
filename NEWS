@@ -5,6 +5,9 @@ Framework.
  Version 1.17 (TBD)
 --------------------
 
+  * Adds constructors to EpsilonBoxDominanceArchive for passing arrays of
+    epsilon values.
+
   * ResultFileReader and MetricFileReader would discard any remaining entries
     in an input file upon encountering any invalid data.  This is the intended
     behavior, which allows the software to automatically resume execution at
