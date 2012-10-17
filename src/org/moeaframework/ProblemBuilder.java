@@ -27,7 +27,6 @@ import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PopulationIO;
 import org.moeaframework.core.Problem;
-import org.moeaframework.core.comparator.EpsilonBoxDominanceComparator;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
 import org.moeaframework.core.spi.ProblemFactory;
 
@@ -209,8 +208,7 @@ class ProblemBuilder {
 		if (epsilon == null) {
 			return new NondominatedPopulation(new ParetoDominanceComparator());
 		} else {
-			return new EpsilonBoxDominanceArchive(
-					new EpsilonBoxDominanceComparator(epsilon));
+			return new EpsilonBoxDominanceArchive(epsilon);
 		}
 	}
 	

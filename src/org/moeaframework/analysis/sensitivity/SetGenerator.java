@@ -29,7 +29,6 @@ import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.PopulationIO;
 import org.moeaframework.core.Problem;
-import org.moeaframework.core.comparator.EpsilonBoxDominanceComparator;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.problem.AnalyticalProblem;
 import org.moeaframework.util.CommandLineUtility;
@@ -98,8 +97,7 @@ public class SetGenerator extends CommandLineUtility {
 			double[] epsilon = TypedProperties.withProperty("epsilon",
 					commandLine.getOptionValue("epsilon")).getDoubleArray(
 					"epsilon", null);
-			set = new EpsilonBoxDominanceArchive(
-					new EpsilonBoxDominanceComparator(epsilon));
+			set = new EpsilonBoxDominanceArchive(epsilon);
 		} else {
 			set = new NondominatedPopulation();
 		}

@@ -25,7 +25,6 @@ import org.apache.commons.cli.Options;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PopulationIO;
-import org.moeaframework.core.comparator.EpsilonBoxDominanceComparator;
 import org.moeaframework.core.indicator.Hypervolume;
 import org.moeaframework.util.CommandLineUtility;
 import org.moeaframework.util.TypedProperties;
@@ -68,9 +67,7 @@ public class SetHypervolume extends CommandLineUtility {
 						"epsilon", commandLine.getOptionValue("epsilon"));
 				
 				set = new EpsilonBoxDominanceArchive(
-						new EpsilonBoxDominanceComparator(
-								typedProperties.getDoubleArray("epsilon", 
-										null)), set);
+						typedProperties.getDoubleArray("epsilon", null), set);
 			}
 			
 			System.out.print(filename);

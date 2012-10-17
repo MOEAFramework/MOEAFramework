@@ -121,8 +121,7 @@ public class EpsilonHelper {
 		if (isSameEpsilon) {
 			return (EpsilonBoxDominanceArchive)population;
 		} else {
-			return new EpsilonBoxDominanceArchive(
-					new EpsilonBoxDominanceComparator(epsilon), population);
+			return new EpsilonBoxDominanceArchive(epsilon, population);
 		}	
 	}
 }

@@ -34,7 +34,6 @@ import org.moeaframework.core.Variation;
 import org.moeaframework.core.comparator.ChainedComparator;
 import org.moeaframework.core.comparator.CrowdingComparator;
 import org.moeaframework.core.comparator.DominanceComparator;
-import org.moeaframework.core.comparator.EpsilonBoxDominanceComparator;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
 import org.moeaframework.core.operator.RandomInitialization;
 import org.moeaframework.core.operator.TournamentSelection;
@@ -171,9 +170,8 @@ public class StandardAlgorithms extends AlgorithmProvider {
 		DominanceComparator comparator = new ParetoDominanceComparator();
 
 		EpsilonBoxDominanceArchive archive = new EpsilonBoxDominanceArchive(
-				new EpsilonBoxDominanceComparator(properties.getDoubleArray(
-						"epsilon", new double[] { EpsilonHelper
-								.getEpsilon(problem) })));
+				properties.getDoubleArray("epsilon", 
+						new double[] { EpsilonHelper.getEpsilon(problem) }));
 
 		final TournamentSelection selection = new TournamentSelection(
 				2, comparator);
@@ -312,9 +310,8 @@ public class StandardAlgorithms extends AlgorithmProvider {
 						new ParetoDominanceComparator());
 
 		EpsilonBoxDominanceArchive archive = new EpsilonBoxDominanceArchive(
-				new EpsilonBoxDominanceComparator(properties.getDoubleArray(
-						"epsilon", new double[] { EpsilonHelper
-								.getEpsilon(problem) })));
+				properties.getDoubleArray("epsilon", 
+						new double[] { EpsilonHelper.getEpsilon(problem) }));
 
 		TournamentSelection selection = new TournamentSelection(2, 
 				new ChainedComparator(
@@ -345,9 +342,8 @@ public class StandardAlgorithms extends AlgorithmProvider {
 		
 		if (properties.contains("epsilon")) {
 			archive = new EpsilonBoxDominanceArchive(
-					new EpsilonBoxDominanceComparator(
-							properties.getDoubleArray("epsilon", new double[] {
-									EpsilonHelper.getEpsilon(problem) })));
+					properties.getDoubleArray("epsilon", new double[] {
+							EpsilonHelper.getEpsilon(problem) }));
 		} else {
 			archive = new NondominatedPopulation(
 					new ParetoDominanceComparator());

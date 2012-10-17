@@ -41,7 +41,6 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.comparator.ChainedComparator;
 import org.moeaframework.core.comparator.CrowdingComparator;
-import org.moeaframework.core.comparator.EpsilonBoxDominanceComparator;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
 import org.moeaframework.core.indicator.Hypervolume;
 import org.moeaframework.core.operator.RandomInitialization;
@@ -238,8 +237,7 @@ public class StandardAlgorithmsResumeTest {
 	
 				EpsilonBoxDominanceArchive archive = 
 						new EpsilonBoxDominanceArchive(
-								new EpsilonBoxDominanceComparator(
-										EpsilonHelper.getEpsilon(problem)));
+								EpsilonHelper.getEpsilon(problem));
 	
 				TournamentSelection selection = new TournamentSelection(2, 
 						new ChainedComparator(

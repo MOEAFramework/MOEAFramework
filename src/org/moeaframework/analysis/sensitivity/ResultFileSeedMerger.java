@@ -29,7 +29,6 @@ import org.apache.commons.cli.Options;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
-import org.moeaframework.core.comparator.EpsilonBoxDominanceComparator;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.util.CommandLineUtility;
 import org.moeaframework.util.TypedProperties;
@@ -166,8 +165,7 @@ public class ResultFileSeedMerger extends CommandLineUtility {
 						double[] epsilon = TypedProperties.withProperty(
 								"epsilon", commandLine.getOptionValue(
 								"epsilon")).getDoubleArray("epsilon", null);
-						mergedSet = new EpsilonBoxDominanceArchive(
-								new EpsilonBoxDominanceComparator(epsilon));
+						mergedSet = new EpsilonBoxDominanceArchive(epsilon);
 					} else {
 						mergedSet = new NondominatedPopulation();
 					}

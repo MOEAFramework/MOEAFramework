@@ -33,7 +33,6 @@ import org.moeaframework.core.Population;
 import org.moeaframework.core.PopulationIO;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.comparator.EpsilonBoxDominanceComparator;
 
 /**
  * Utility for merging two or more populations identified by unique sources and
@@ -191,8 +190,7 @@ public class ReferenceSetMerger extends CommandLineUtility {
 					"epsilon", commandLine.getOptionValue("epsilon"));
 			
 			combinedPopulation = new EpsilonBoxDominanceArchive(
-					new EpsilonBoxDominanceComparator(properties
-							.getDoubleArray("epsilon", null)));
+					properties.getDoubleArray("epsilon", null));
 		}
 
 		//read the population files

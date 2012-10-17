@@ -75,6 +75,31 @@ public class EpsilonBoxDominanceArchive extends NondominatedPopulation {
 			Iterable<? extends Solution> iterable) {
 		super(new EpsilonBoxDominanceComparator(epsilon), iterable);
 	}
+	
+	/**
+	 * Constructs an empty &epsilon;-box dominance archive using an additive
+	 * &epsilon;-box dominance comparator with the specified &epsilon; values.
+	 * 
+	 * @param epsilon the &epsilon; values used by the additive &epsilon;-box
+	 *        dominance comparator
+	 */
+	public EpsilonBoxDominanceArchive(double[] epsilon) {
+		super(new EpsilonBoxDominanceComparator(epsilon));
+	}
+	
+	/**
+	 * Constructs an &epsilon;-box dominance archive using an additive
+	 * &epsilon;-box dominance comparator with the specified &epsilon; values
+	 * and initialized with the specified solutions.
+	 * 
+	 * @param epsilon the &epsilon; values used by the additive &epsilon;-box
+	 *        dominance comparator
+	 * @param iterable the solutions used to initialize this archive
+	 */
+	public EpsilonBoxDominanceArchive(double[] epsilon,
+			Iterable<? extends Solution> iterable) {
+		super(new EpsilonBoxDominanceComparator(epsilon), iterable);
+	}
 
 	/**
 	 * Constructs an empty &epsilon;-box dominance archive using the specified
