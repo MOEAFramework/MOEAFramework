@@ -453,7 +453,7 @@ int main(int argc, char* argv[]) {
   Java 6 to be installed).
   
   <center>
-    <script src="http://www.moeaframework.org/jnlp/deployJava.js"></script>
+    <script src="http://www.java.com/js/deployJava.js"></script>
     <script>
 <![CDATA[
         var url = "http://www.moeaframework.org/jnlp/DiagnosticTool.jnlp";
