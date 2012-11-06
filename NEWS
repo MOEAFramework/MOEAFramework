@@ -5,6 +5,8 @@ Framework.
  Version 1.17 (TBD)
 --------------------
 
+  * Fixes bounds of the Schaffer problem.  Changed from [0, 2] to [-10, 10].
+
   * Adds constructors to EpsilonBoxDominanceArchive for passing arrays of
     epsilon values.
 

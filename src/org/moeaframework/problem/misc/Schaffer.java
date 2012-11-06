@@ -58,7 +58,7 @@ public class Schaffer extends AbstractProblem {
 	public Solution newSolution() {
 		Solution solution = new Solution(1, 2);
 		
-		solution.setVariable(0, new RealVariable(0, 2));
+		solution.setVariable(0, new RealVariable(-10.0, 10.0));
 
 		return solution;
 	}
