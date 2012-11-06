@@ -119,7 +119,7 @@ along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
 		
 		<!-- Control variables in for loops should not be modified -->
 		<!-- Several instances exist that should be fixed -->
-		<!-- <module name="ModifiedControlVariable"/> -->
+		<module name="ModifiedControlVariable"/>
 		
 		<!-- Do not wrap boolean return statements in conditional statement -->
 		<module name="SimplifyBooleanReturn"/>

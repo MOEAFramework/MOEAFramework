@@ -12,6 +12,9 @@ any changes.
  Easy
 ------
 
+  - Examples 5 and 6 references the C interface code.  This should be included
+    in the compiled JAR distribution.
+
   - ResultFileWriter and MetricFileWriter are technically appenders.  Add
     ResultFileAppender and MetricFileAppender for the case when we want to
     recover and append to the file, and have ResultFileWriter and
@@ -44,6 +47,8 @@ any changes.
   - Upgrade to Apache Commons Codec 1.6
   
   - Upgrade to JFreeChart 1.0.14, JCommon 1.0.17
+  
+  - Upgrade to Checkstyle 5.6
 
   - Upgrade to JMetal 4.0.  Some work is required since some packages changed
     between version 3.1 and 4.0.  This change will likely have to wait until a

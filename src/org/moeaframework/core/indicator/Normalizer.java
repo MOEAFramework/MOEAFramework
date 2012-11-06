@@ -144,15 +144,15 @@ public class Normalizer {
 				continue;
 			}
 			
-			solution = solution.copy();
+			Solution clone = solution.copy();
 	
 			for (int j = 0; j < problem.getNumberOfObjectives(); j++) {
-				solution.setObjective(j,
-						(solution.getObjective(j) - minimum[j]) /
+				clone.setObjective(j,
+						(clone.getObjective(j) - minimum[j]) /
 						(maximum[j] - minimum[j]));
 			}
 	
-			normalizedSet.add(solution);
+			normalizedSet.add(clone);
 		}
 	}
 

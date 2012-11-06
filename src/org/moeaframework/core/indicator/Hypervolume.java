@@ -288,13 +288,13 @@ public class Hypervolume extends NormalizedIndicator {
 				}
 			}
 			
-			solution = solution.copy();
+			Solution clone = solution.copy();
 					
 			if (isInverted) {
-				invert(problem, solution);
+				invert(problem, clone);
 			}
 					
-			solutions.add(solution);
+			solutions.add(clone);
 		}
 
 		if (isCustomHypervolume) {
