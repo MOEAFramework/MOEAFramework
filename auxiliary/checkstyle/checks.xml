@@ -39,6 +39,9 @@ along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
 	<!-- This does not work properly when src and test folders share the same
 	     package structure, as the package-info.java files are only in src -->
 	<!-- <module name="JavadocPackage" /> -->
+	
+	<!-- Ensure consistency among properties files -->
+	<module name="Translation" />
 
 	<module name="TreeWalker">
 		<property name="tabWidth" value="4"/>
@@ -122,6 +125,7 @@ along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
 		<module name="ModifiedControlVariable"/>
 		
 		<!-- Do not wrap boolean return statements in conditional statement -->
+		<module name="SimplifyBooleanExpression" />
 		<module name="SimplifyBooleanReturn"/>
 		
 		<!-- Never compare strings with == or != -->
@@ -143,6 +147,7 @@ along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
 		<!-- Switch statements should be structured correctly -->
 		<module name="DefaultComesLast"/>
 		<module name="MissingSwitchDefault"/>
+		<module name="FallThrough" />
 
 		<!-- Only one variable declaration is allowed per line -->
 		<module name="MultipleVariableDeclarations"/>
@@ -187,6 +192,10 @@ along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
 			<property name="packageAllowed" value="true" />
 		</module>
 		
+		<!-- Prevent importing from the sun.* packages -->
+		<module name="IllegalImport" />
+		
+		<!-- Use the factory methods to create booleans and strings -->
 		<module name="IllegalInstantiation">
             <property name="classes" value="java.lang.Boolean, java.lang.String"/>
         </module>
@@ -196,5 +205,13 @@ along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
 			<property name="format" value="^$"/>
 			<property name="illegalClassNames" value="java.util.GregorianCalendar, java.util.Hashtable, java.util.HashSet, java.util.HashMap, java.util.ArrayList, java.util.LinkedHashMap, java.util.LinkedHashSet, java.util.TreeSet, java.util.TreeMap, java.util.Vector"/>
         </module> -->
+        
+        <!-- Avoid using nested blocks (blocks without control statement) -->
+        <module name="AvoidNestedBlocks" />
+        
+        <!-- Ensure the JUnit methods are named correctly -->
+        <module name="JUnitTestCase" />
+        
+        <!-- <module name="InnerAssignment" /> -->
 	</module>
 </module>
