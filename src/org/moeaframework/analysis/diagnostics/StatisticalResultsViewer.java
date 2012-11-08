@@ -129,7 +129,9 @@ public class StatisticalResultsViewer extends JFrame {
 					} catch (IOException e) {
 						controller.handleException(e);
 					} finally {
-						writer.close();
+						if (writer != null) {
+							writer.close();
+						}
 					}
 				}
 			}

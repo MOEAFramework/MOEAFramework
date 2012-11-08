@@ -148,7 +148,13 @@ public class World {
 			lineReader = new BufferedReader(reader);
 			
 			//read out the world dimension
-			String[] tokens = lineReader.readLine().split("\\s+");
+			String line = lineReader.readLine();
+			
+			if (line == null) {
+				throw new IOException("trail missing header line");
+			}
+			
+			String[] tokens = line.split("\\s+");
 			width = Integer.parseInt(tokens[0]);
 			height = Integer.parseInt(tokens[1]);
 			map = new State[width][height];
@@ -156,7 +162,6 @@ public class World {
 			//read the world state
 			int i = 0;
 			int j = 0;
-			String line = null;
 			
 			while ((line = lineReader.readLine()) != null) {
 				i = 0;
