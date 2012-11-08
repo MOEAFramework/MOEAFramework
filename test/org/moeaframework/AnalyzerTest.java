@@ -53,17 +53,15 @@ public class AnalyzerTest {
 		problemFactory = null;
 	}
 	
-	//TODO: this should result in a warning and not an exception, to avoid data
-	//loss in case printAnalysis() is followed by saveData()
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testOneSampleStatisticalResults() throws IOException {
 		new Analyzer()
 				.withProblem("DTLZ2_2")
 				.includeGenerationalDistance()
 				.showStatisticalSignificance()
-				.add("NSGAII", new Executor()
+				.addAll("NSGAII", new Executor()
 						.withProblem("DTLZ2_2")
-						.withAlgorithm("NSGAII").run())
+						.withAlgorithm("NSGAII").runSeeds(5))
 				.printAnalysis();
 	}
 	

@@ -757,6 +757,11 @@ public class Analyzer extends ProblemBuilder {
 				}
 				
 				for (Indicator indicator : indicators) {
+					//insufficient number of samples, skip test
+					if (algorithms.size() < 2) {
+						continue;
+					}
+					
 					KruskalWallisTest kwTest = new KruskalWallisTest(
 							algorithms.size());
 					
