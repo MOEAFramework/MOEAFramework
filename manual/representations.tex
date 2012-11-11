@@ -17,7 +17,7 @@ In \chptref{chpt:problems} we saw various ways to define new problems using real
 \section{Floating-Point Values}
 Floating-point values, also known as real-valued decision variables, provide a natural way to represent numeric values.  Floating-point decision variables are represented using \java{RealVariable} decision variables.  When creating a new real-valued decision variable, one must specify the lower and upper bounds that the value can represent.
 
-To create real-valued decision variables, use the \java{EndocingUtils.newReal(lowerBound, upperBound)} method.  Note how the lower and upper bounds must be defined.  The example code below demonstrates creating a solution with three different real-valued decision variables.
+To create real-valued decision variables, use the \java{EncodingUtils.newReal(lowerBound, upperBound)} method.  Note how the lower and upper bounds must be defined.  The example code below demonstrates creating a solution with three different real-valued decision variables.
 \begin{lstlisting}[language=Java]
 public Solution newSolution() {
     Solution solution = new Solution(3, 2);
@@ -169,7 +169,7 @@ public Solution newSolution() {
 }
 \end{lstlisting}
 
-Lastly, we evaluate the program.  The program executes inside an environment.  The environment holds all the variables and other identifiers that the program can access throughout its exection.  Since we previously defined our program to read the variable \java{x} (with the \java{Get} node), we want to initialize the value of \java{x} in the environment.  Once the environment is initialized, we evaluate the program.  Since we set the return type to be a number in the rule set, we cast the output from the program's evaluation to a number.
+Lastly, we evaluate the program.  The program executes inside an environment.  The environment holds all the variables and other identifiers that the program can access throughout its execution.  Since we previously defined our program to read the variable \java{x} (with the \java{Get} node), we want to initialize the value of \java{x} in the environment.  Once the environment is initialized, we evaluate the program.  Since we set the return type to be a number in the rule set, we cast the output from the program's evaluation to a number.
 \begin{lstlisting}[language=Java]
 public void evaluate(Solution solution) {
     Program program = (Program)solution.getVariable(0);
@@ -250,7 +250,7 @@ The start of all evolutionary algorithms is the construction of an initial popul
 
 The floating-point, integer, binary, permutation and grammar variables are all initialized uniformly at random.  This ensures the values, bit strings, etc. are distributed uniformly throughout the search space.
 
-Programs require a slightly more complicated initalization to ensure the initial population contains a diverse sampling of potential programs.  The MOEA Framework provides the ramped half-and-half initialization method, which is one of the most popular initialization techniques for programs.  We refer readers to the genetic programming literature for a detailed description of ramped half-and-half initialization.
+Programs require a slightly more complicated initialization to ensure the initial population contains a diverse sampling of potential programs.  The MOEA Framework provides the ramped half-and-half initialization method, which is one of the most popular initialization techniques for programs.  We refer readers to the genetic programming literature for a detailed description of ramped half-and-half initialization.
 
 \subsection{Variation (Mutation \& Crossover)}
 After the initial population is generated, an evolutionary algorithm evolves the population using individual or combinations of variation operators.  Variation operators are classified into two forms: crossover and mutation.  Crossover involves combining two or more parents to create an offspring.  Mutation involves a single parent.  Mutations generally produce only small changes, but this is not mandatory.
@@ -320,4 +320,4 @@ Not all combinations of operators are supported.  In general, combining a crosso
 \section{Conclusion}
 This chapter introduced the various decision variable representations supported by the MOEA Framework.  Look at these different representations as the building blocks for your problem.  If you can construct your problem using these building blocks, the problem will seamlessly integrate with the MOEA Framework.
 
-We close this chapter by commenting that the MOEA Framework is not limited to these representations.  New representations are periodically introduced in the literature.  This fact influenced the design of the MOEA Framework to allow new represnetations and variation operators.  Interested readers should stay turned for future updates to this user manual that will discuss such extensions in detail.
+We close this chapter by commenting that the MOEA Framework is not limited to these representations.  New representations are periodically introduced in the literature.  This fact influenced the design of the MOEA Framework to allow new representations and variation operators.  Interested readers should stay turned for future updates to this user manual that will discuss such extensions in detail.
