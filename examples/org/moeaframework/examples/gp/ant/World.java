@@ -412,10 +412,10 @@ public class World {
 					System.out.print('.');
 					break;
 				case EATEN:
-					System.out.print("@");
+					System.out.print('@');
 					break;
 				default:
-					System.out.print("?");
+					System.out.print('?');
 					break;
 				}
 			}

@@ -225,7 +225,7 @@ public class StandardAlgorithmsResumeTest {
 	private static class TestAlgorithmFactory extends AlgorithmFactory {
 
 		@Override
-		public Algorithm getAlgorithm(String name, Properties properties,
+		public synchronized Algorithm getAlgorithm(String name, Properties properties,
 				Problem problem) {
 			if (name.equalsIgnoreCase("EpsilonProgressContinuationTest")) {
 				Initialization initialization = new RandomInitialization(

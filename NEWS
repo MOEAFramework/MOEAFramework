@@ -33,6 +33,8 @@ Framework.
     statistically indifferent.
     
   * Fixes bounds of the Schaffer problem.  Changed from [0, 2] to [-10, 10].
+  
+  * Fixes several issues identified by FindBugs and CodePro Tools.
 
 
 -----------------------------

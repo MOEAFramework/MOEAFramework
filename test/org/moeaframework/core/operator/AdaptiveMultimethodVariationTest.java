@@ -247,7 +247,7 @@ public class AdaptiveMultimethodVariationTest {
 		}
 		
 		Assert.assertEquals(numberOfSamples / variation.getUpdateWindow(), 
-				((AdaptiveMultimethodVariationCounter)variation).getCount());
+				variation.getCount());
 	}
 	
 }
