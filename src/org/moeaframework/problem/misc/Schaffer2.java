@@ -17,12 +17,16 @@
  */
 package org.moeaframework.problem.misc;
 
+import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.AbstractProblem;
+import org.moeaframework.problem.AnalyticalProblem;
 
 /**
- * The Schaffer (2) problem.
+ * The Schaffer (2) problem.  The Schaffer (2) problem is univariate, with the
+ * optimum defined by {@code 1 <= x <= 2} and {@code 4 <= x <= 5}.
  * <p>
  * Properties:
  * <ul>
@@ -37,7 +41,7 @@ import org.moeaframework.problem.AbstractProblem;
  *       of Technology, Ph.D. Thesis, Appendix B.
  * </ol>
  */
-public class Schaffer2 extends AbstractProblem {
+public class Schaffer2 extends AbstractProblem implements AnalyticalProblem {
 
 	/**
 	 * Constructs the Schaffer (2) problem.
@@ -66,9 +70,23 @@ public class Schaffer2 extends AbstractProblem {
 	@Override
 	public Solution newSolution() {
 		Solution solution = new Solution(1, 2);
-		
 		solution.setVariable(0, new RealVariable(-5.0, 10.0));
+		return solution;
+	}
 
+	@Override
+	public Solution generate() {
+		Solution solution = newSolution();
+		
+		if (PRNG.nextBoolean()) {
+			EncodingUtils.setReal(solution.getVariable(0),
+					PRNG.nextDouble(1.0, 2.0));
+		} else {
+			EncodingUtils.setReal(solution.getVariable(0),
+					PRNG.nextDouble(4.0, 5.0));
+		}
+		
+		evaluate(solution);
 		return solution;
 	}
 
