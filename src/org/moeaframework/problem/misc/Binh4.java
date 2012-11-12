@@ -18,20 +18,31 @@
 package org.moeaframework.problem.misc;
 
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.variable.RealVariable;
+import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.problem.AbstractProblem;
+import org.moeaframework.problem.AnalyticalProblem;
 
 /**
- * The Binh (4) problem.
+ * The Binh (4) problem.  The global feasible optimum is at {@code (3.0, 0.5)}.
+ * <p>
+ * Properties:
+ * <ul>
+ *   <li>Connected Pareto set
+ *   <li>Degenerate, concave Pareto front
+ * </ul>
  * <p>
  * References:
  * <ol>
+ *   <li>Binh, T. T., and Korn, U. (1997).  "Multiobjective Evolution Strategy
+ *       with Linear and Nonlinear Constraints."  Proc. of the 15th IMACS
+ *       World Congress on Scientific Computation, Modeling and Applied
+ *       Mathematics, pp. 357-362.
  *   <li>Van Veldhuizen, D. A (1999).  "Multiobjective Evolutionary Algorithms: 
  *       Classifications, Analyses, and New Innovations."  Air Force Institute
  *       of Technology, Ph.D. Thesis, Appendix B.
  * </ol>
  */
-public class Binh4 extends AbstractProblem {
+public class Binh4 extends AbstractProblem implements AnalyticalProblem {
 
 	/**
 	 * Constructs the Binh (4) problem.
@@ -42,8 +53,8 @@ public class Binh4 extends AbstractProblem {
 
 	@Override
 	public void evaluate(Solution solution) {
-		double x = ((RealVariable)solution.getVariable(0)).getValue();
-		double y = ((RealVariable)solution.getVariable(1)).getValue();
+		double x = EncodingUtils.getReal(solution.getVariable(0));
+		double y = EncodingUtils.getReal(solution.getVariable(1));
 		double f1 = 1.5 - x*(1.0 - y);
 		double f2 = 2.25 - x*(1.0 - Math.pow(y, 2.0));
 		double f3 = 2.625 - x*(1.0 - Math.pow(y, 3.0));
@@ -61,9 +72,20 @@ public class Binh4 extends AbstractProblem {
 	public Solution newSolution() {
 		Solution solution = new Solution(2, 3, 2);
 		
-		solution.setVariable(0, new RealVariable(-10.0, 10.0));
-		solution.setVariable(1, new RealVariable(-10.0, 10.0));
+		solution.setVariable(0, EncodingUtils.newReal(-10.0, 10.0));
+		solution.setVariable(1, EncodingUtils.newReal(-10.0, 10.0));
 		
+		return solution;
+	}
+
+	@Override
+	public Solution generate() {
+		Solution solution = newSolution();
+		
+		EncodingUtils.setReal(solution.getVariable(0), 3.0);
+		EncodingUtils.setReal(solution.getVariable(1), 0.5);
+		
+		evaluate(solution);
 		return solution;
 	}
 
