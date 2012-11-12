@@ -17,10 +17,11 @@
  */
 package org.moeaframework.problem.misc;
 
+import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
-import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.AbstractProblem;
+import org.moeaframework.problem.AnalyticalProblem;
 
 /**
  * The Fonseca (2) problem.
@@ -38,7 +39,7 @@ import org.moeaframework.problem.AbstractProblem;
  *       of Technology, Ph.D. Thesis, Appendix B.
  * </ol>
  */
-public class Fonseca2 extends AbstractProblem {
+public class Fonseca2 extends AbstractProblem implements AnalyticalProblem {
 	
 	/**
 	 * Constructs the Fonseca (2) problem with {@code 3} decision variables.
@@ -80,9 +81,23 @@ public class Fonseca2 extends AbstractProblem {
 		Solution solution = new Solution(numberOfVariables, 2);
 
 		for (int i=0; i<numberOfVariables; i++) {
-			solution.setVariable(i, new RealVariable(-4.0, 4.0));
+			solution.setVariable(i, EncodingUtils.newReal(-4.0, 4.0));
 		}
 
+		return solution;
+	}
+
+	@Override
+	public Solution generate() {
+		Solution solution = newSolution();
+		double x = PRNG.nextDouble(-1.0 / Math.sqrt(numberOfVariables),
+				1.0 / Math.sqrt(numberOfVariables));
+		
+		for (int i = 0; i < numberOfVariables; i++) {
+			EncodingUtils.setReal(solution.getVariable(i), x);
+		}
+		
+		evaluate(solution);
 		return solution;
 	}
 
