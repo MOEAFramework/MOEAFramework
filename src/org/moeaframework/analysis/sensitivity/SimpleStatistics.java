@@ -196,7 +196,8 @@ public class SimpleStatistics extends CommandLineUtility {
 					} else if (mode.equals("count")) {
 						out.print(statistics.getN());
 					} else {
-						throw new IllegalStateException();
+						throw new IllegalArgumentException("unknown mode: " +
+								mode);
 					}
 				}
 				

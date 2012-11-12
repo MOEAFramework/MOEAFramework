@@ -12,6 +12,11 @@ any changes.
  Easy
 ------
 
+  - Need to make problem names case insensitive.
+
+  - Add ARFF and Aerovis output formats to ExtractData and any other relevant
+    classes.
+
   - Examples 5 and 6 references the C interface code.  This should be included
     in the compiled JAR distribution.
 
