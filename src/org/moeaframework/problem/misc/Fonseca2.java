@@ -34,7 +34,11 @@ import org.moeaframework.problem.AnalyticalProblem;
  * <p>
  * References:
  * <ol>
- *   <li>Van Veldhuizen, D. A (1999).  "Multiobjective Evolutionary Algorithms: 
+ *   <li>Fonseca C. M. and Fleming, P. J. (1995).  "Multiobjective Genetic
+ *       Algorithms Made Easy: Selection, Sharing and Mating Restriction."
+ *       Genetic Algorithms and Engineering Systems: Innovations and
+ *       Applications, 12-14 Sept. 1995, pp. 45-52.
+ *   <li>Van Veldhuizen, D. A. (1999).  "Multiobjective Evolutionary Algorithms: 
  *       Classifications, Analyses, and New Innovations."  Air Force Institute
  *       of Technology, Ph.D. Thesis, Appendix B.
  * </ol>

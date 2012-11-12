@@ -34,6 +34,9 @@ import org.moeaframework.problem.AnalyticalProblem;
  * <p>
  * References:
  * <ol>
+ *   <li>Fonseca, C. M. and Fleming, P. J. (1995).  "An Overview of Evolutioary
+ *       Algorithms in Multiobjective Optimization."  Evolutionary Computation,
+ *       vol. 3, no. 1, pp. 1-16.
  *   <li>Van Veldhuizen, D. A (1999).  "Multiobjective Evolutionary Algorithms: 
  *       Classifications, Analyses, and New Innovations."  Air Force Institute
  *       of Technology, Ph.D. Thesis, Appendix B.
