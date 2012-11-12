@@ -945,6 +945,8 @@ public class StandardProblems extends ProblemProvider {
 				filename = "LZ07_F8.pf";
 			} else if (name.equals("LZ9")) {
 				filename = "LZ07_F9.pf";
+			} else if (name.equals("Fonseca")) {
+				filename = "Fonseca.pf";
 			} else if (name.equals("Schaffer")) {
 				filename = "Schaffer.pf";
 			} else if (name.equals("Schaffer2")) {

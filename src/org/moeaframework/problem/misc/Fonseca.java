@@ -17,9 +17,11 @@
  */
 package org.moeaframework.problem.misc;
 
+import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.variable.RealVariable;
+import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.problem.AbstractProblem;
+import org.moeaframework.problem.AnalyticalProblem;
 
 /**
  * The Fonseca problem.
@@ -37,7 +39,7 @@ import org.moeaframework.problem.AbstractProblem;
  *       of Technology, Ph.D. Thesis, Appendix B.
  * </ol>
  */
-public class Fonseca extends AbstractProblem {
+public class Fonseca extends AbstractProblem implements AnalyticalProblem {
 
 	/**
 	 * Constructs the Fonseca problem.
@@ -48,8 +50,8 @@ public class Fonseca extends AbstractProblem {
 
 	@Override
 	public void evaluate(Solution solution) {
-		double x = ((RealVariable)solution.getVariable(0)).getValue();
-		double y = ((RealVariable)solution.getVariable(1)).getValue();
+		double x = EncodingUtils.getReal(solution.getVariable(0));
+		double y = EncodingUtils.getReal(solution.getVariable(1));
 		double f1 = 1.0 - Math.exp(-Math.pow(x-1.0, 2.0) - 
 				Math.pow(y+1.0, 2.0));
 		double f2 = 1.0 - Math.exp(-Math.pow(x+1.0, 2.0) - 
@@ -63,9 +65,21 @@ public class Fonseca extends AbstractProblem {
 	public Solution newSolution() {
 		Solution solution = new Solution(2, 2);
 		
-		solution.setVariable(0, new RealVariable(-4.0, 4.0));
-		solution.setVariable(1, new RealVariable(-4.0, 4.0));
+		solution.setVariable(0, EncodingUtils.newReal(-4.0, 4.0));
+		solution.setVariable(1, EncodingUtils.newReal(-4.0, 4.0));
 		
+		return solution;
+	}
+
+	@Override
+	public Solution generate() {
+		Solution solution = newSolution();
+		double x = PRNG.nextDouble(-1.0, 1.0);
+		
+		EncodingUtils.setReal(solution.getVariable(0), x);
+		EncodingUtils.setReal(solution.getVariable(1), -x);
+		
+		evaluate(solution);
 		return solution;
 	}
 

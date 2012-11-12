@@ -20,7 +20,6 @@ package org.moeaframework.problem.misc;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
-import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.AbstractProblem;
 import org.moeaframework.problem.AnalyticalProblem;
 
@@ -52,7 +51,7 @@ public class Schaffer2 extends AbstractProblem implements AnalyticalProblem {
 
 	@Override
 	public void evaluate(Solution solution) {
-		double x = ((RealVariable)solution.getVariable(0)).getValue();
+		double x = EncodingUtils.getReal(solution.getVariable(0));
 		
 		if (x <= 1.0) {
 			solution.setObjective(0, -x);
@@ -70,7 +69,7 @@ public class Schaffer2 extends AbstractProblem implements AnalyticalProblem {
 	@Override
 	public Solution newSolution() {
 		Solution solution = new Solution(1, 2);
-		solution.setVariable(0, new RealVariable(-5.0, 10.0));
+		solution.setVariable(0, EncodingUtils.newReal(-5.0, 10.0));
 		return solution;
 	}
 
