@@ -29,6 +29,7 @@ import org.moeaframework.problem.AnalyticalProblem;
  * <ul>
  *   <li>Connected Pareto set
  *   <li>Degenerate, concave Pareto front
+ *   <li>Constrained
  * </ul>
  * <p>
  * References:
