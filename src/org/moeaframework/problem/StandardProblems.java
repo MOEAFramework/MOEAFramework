@@ -957,6 +957,8 @@ public class StandardProblems extends ProblemProvider {
 				filename = "Laumanns.pf";
 			} else if (name.equals("Murata")) {
 				filename = "Murata.pf";
+			} else if (name.equals("Rendon2.pf")) {
+				filename = "Rendon2.pf";
 			} else if (name.equals("Schaffer")) {
 				filename = "Schaffer.pf";
 			} else if (name.equals("Schaffer2")) {
