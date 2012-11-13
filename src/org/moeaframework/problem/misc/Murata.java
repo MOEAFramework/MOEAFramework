@@ -17,12 +17,15 @@
  */
 package org.moeaframework.problem.misc;
 
+import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.variable.RealVariable;
+import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.problem.AbstractProblem;
+import org.moeaframework.problem.AnalyticalProblem;
 
 /**
- * The Murata problem.
+ * The Murata problem.  The optimum is defined by {@code (x, 2)} where
+ * {@code 1 <= x < = 4}.
  * <p>
  * Properties:
  * <ul>
@@ -32,12 +35,15 @@ import org.moeaframework.problem.AbstractProblem;
  * <p>
  * References:
  * <ol>
+ *   <li>Murata, T. and Ishibuchi, H. (1995).  "MOGA: Multi-Objective Genetic
+ *       Algorithms."  IEEE International Conference on Evolutionary
+ *       Computation, pp. 289-294.
  *   <li>Van Veldhuizen, D. A (1999).  "Multiobjective Evolutionary Algorithms: 
  *       Classifications, Analyses, and New Innovations."  Air Force Institute
  *       of Technology, Ph.D. Thesis, Appendix B.
  * </ol>
  */
-public class Murata extends AbstractProblem {
+public class Murata extends AbstractProblem implements AnalyticalProblem {
 
 	/**
 	 * Constructs the Murata problem.
@@ -48,8 +54,8 @@ public class Murata extends AbstractProblem {
 
 	@Override
 	public void evaluate(Solution solution) {
-		double x = ((RealVariable)solution.getVariable(0)).getValue();
-		double y = ((RealVariable)solution.getVariable(1)).getValue();
+		double x = EncodingUtils.getReal(solution.getVariable(0));
+		double y = EncodingUtils.getReal(solution.getVariable(1));
 		double f1 = 2.0 * Math.sqrt(x);
 		double f2 = x * (1.0 - y) + 5.0;
 		
@@ -61,9 +67,21 @@ public class Murata extends AbstractProblem {
 	public Solution newSolution() {
 		Solution solution = new Solution(2, 2);
 		
-		solution.setVariable(0, new RealVariable(1, 4));
-		solution.setVariable(1, new RealVariable(1, 2));
+		solution.setVariable(0, EncodingUtils.newReal(1, 4));
+		solution.setVariable(1, EncodingUtils.newReal(1, 2));
 		
+		return solution;
+	}
+
+	@Override
+	public Solution generate() {
+		Solution solution = newSolution();
+		
+		EncodingUtils.setReal(solution.getVariable(0),
+				PRNG.nextDouble(1.0, 4.0));
+		EncodingUtils.setReal(solution.getVariable(1), 2.0);
+		
+		evaluate(solution);
 		return solution;
 	}
 
