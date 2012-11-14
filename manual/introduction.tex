@@ -107,7 +107,7 @@ jMetal \index{jMetal} is a framework focused on the development, experimentation
       \item Not currently setup as a library; several places have hard-coded paths to resources located on the original developer’s computer
       \item Appears to lack any kind of automated testing or quality assurance
       \item Source code is not fully documented
-      \item Infrequent releases (11 months between release 3.1 and 4.0)
+      \item Infrequent releases (the last release, version 4.0, was in November 2011)
     \end{itemize}
 \end{description}
 \end{quote}
@@ -136,25 +136,8 @@ Opt4J provides perhaps the cleanest MOEA implementation.  It takes modularity to
 \end{description}
 \end{quote}
 
-%\subsection{JCLEC}
-%
-%\begin{quote}
-%\begin{description}
-%  \item[Homepage:] \webpage{http://jclec.sourceforge.net/}
-%  \item[License:] GNU General Public License, Version 3 or later
-%  \item[Advantages:]\ %force line break
-%    \begin{itemize}
-%      \item Extensive use of unit tests
-%      \item Well documented source code
-%    \end{itemize}
-%  \item[Disadvantages:]\ %force line break
-%    \begin{itemize}
-%      \item GNU GPL license can not be mixed with other non-compatible licenses
-%      \item Only minor support for multiobjective optimization
-%      \item Provides only outdated MOEAs (NSGA-II and SPEA2)
-%    \end{itemize}
-%\end{description}
-%\end{quote}
+\subsection{Others}
+For completeness, we also acknowledge JGAP and JCLEC, two stable and maintained Java libraries for evolutionary computation.  These two libraries, like the Watchmaker Framework, are specialized for single-objective optimization.  They do provide basic support for multiobjective optimization, but not to the extent of JMetal, Opt4J, and the MOEA Framework.  If you are dealing with only single-objective optimization problems, we encourage you to explore these libraries that specialize in single-objective optimization.
 
 \section{Reporting Bugs}
 The MOEA Framework is not bug-free, nor is any other software application, and reporting bugs to developers is the first step towards improving the reliability of software.  Critical bugs will often be addressed within days.  If during its use you encounter error messages, crashes, or other unexpected behavior, please file a bug report at \webpage{http://moeaframework.org/support.html}.  In the bug report, describe the problem encountered and, if known, the version of the MOEA Framework used.
