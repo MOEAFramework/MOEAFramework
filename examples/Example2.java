@@ -37,7 +37,7 @@ public class Example2 {
 
 		Analyzer analyzer = new Analyzer()
 				.withProblem(problem)
-				.includeAllMetrics()
+				.includeHypervolume()
 				.showStatisticalSignificance();
 
 		//run each algorithm for 50 seeds

@@ -15,8 +15,6 @@
  * You should have received a copy of the GNU Lesser General Public License 
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-import java.util.Arrays;
-
 import org.moeaframework.Executor;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Solution;
@@ -38,7 +36,8 @@ public class Example1 {
 		
 		//display the results
 		for (Solution solution : result) {
-			System.out.println(Arrays.toString(solution.getObjectives()));
+			System.out.println(solution.getObjective(0) + " " + 
+					solution.getObjective(1));
 		}
 	}
 

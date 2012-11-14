@@ -12,6 +12,7 @@
   	<script type="text/javascript" src="scripts/shCore.js"></script>
 	<script type="text/javascript" src="scripts/shBrushJava.js"></script>
 	<script type="text/javascript" src="scripts/shBrushCpp.js"></script>
+	<script type="text/javascript" src="scripts/shBrushPlain.js"></script>
 	<link type="text/css" rel="stylesheet" href="styles/shCoreEclipse.css" />
 	<script type="text/javascript">SyntaxHighlighter.all();</script>
   </header>
@@ -42,7 +43,7 @@
   In order to run these examples or use the MOEA Framework, Java 6 (or a later
   version) must be installed on your computer.  The Java 6 development kit (JDK)
   for Windows and Linux can be downloaded 
-  <a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk-6u29-download-513648.html">here</a>.
+  <a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk6u37-downloads-1859587.html">here</a>.
 </p>
 
 <p>
@@ -50,25 +51,19 @@
   binaries from the <a href="downloads.html">downloads</a> page.  Windows users
   may extract the downloaded file using
   <a href="http://www.7-zip.org/">7-zip</a>.  The files will extract to a 
-  folder called MOEAFramework-%VERSION%.  
+  folder called MOEAFramework-%VERSION%.  This folder will look similar to:
 </p>
 
-<p>
-  Next, download one of the examples below to this folder.  For example, if
-  you downloaded <a href="Example1.java">Example1.java</a>, the folder contents
-  should look similar to:
-</p>
-
-  <div class="files">
+<div class="files">
   <ul>
     <li class="folder">MOEAFramework-%VERSION%/</li>
     <li class="empty">
       <ul>
+        <li class="folder">examples/</li>
         <li class="folder">javadoc/</li>
         <li class="folder">lib/</li>
         <li class="folder">licenses/</li>
         <li class="folder">pf/</li>
-        <li><b>Example1.java</b></li>
         <li>global.properties</li>
         <li>HELP</li>
         <li>launch-diagnostic-tool.bat</li>
@@ -78,17 +73,17 @@
       </ul>
     </li>
   </ul>
-  </div>
+</div>
   
 <p>
-  Lastly, compile and run the program using the following commands.  For
-  Windows users, run these commands in the Command Prompt from the 
-  MOEAFramework-%VERSION% folder.
+  All of the examples below are in the examples/ folder.  You may compile and
+  run an example using the following commands.  Run these commands in the
+  Command Prompt from the MOEAFramework-%VERSION% folder.
 </p>
 
 <pre>
-              javac -Djava.ext.dirs=lib Example1.java
-              java -Djava.ext.dirs=lib Example1</pre>
+              javac -cp examples;lib/* examples/Example1.java
+              java -cp examples;lib/* Example1</pre>
 
 <p>
   If you receive the message <i>'javac' is not recognized as an internal or
@@ -96,6 +91,7 @@
   to setup your environment on 
   <a href="http://vietpad.sourceforge.net/javaonwindows.html">Windows</a> or
   <a href="http://vietpad.sourceforge.net/javaonlinux.html">Linux</a>.
+  Unix/Linux users should replace the semicolons (;) with colons (:).
 </p>
 </div>
 
@@ -127,6 +123,23 @@ NondominatedPopulation result = new Executor()
     .run();
   </pre>
 </div>
+
+<p>
+  Since UF1 is a bi-objective problem, printing the results will list the two
+  objective function values for each non-dominated (Pareto optimal) solution
+  found by NSGA-II:
+</p>
+
+<div class="code">
+  <pre class="brush: plain; toolbar: false;">
+0.03225854617597993 0.8955469164422306
+1.234133105250407   0.02627025526143537
+0.14805820063877223 0.7958040473509136
+0.3669854396928317  0.49597909950890706
+...
+  </pre>
+</div>
+
 </div>
 
 <div class="section">
@@ -145,7 +158,8 @@ NondominatedPopulation result = new Executor()
   including hypervolume, generational distance, inverted generational distance,
   additive &epsilon;-indicator, spacing and contribution.  Additionally,
   Kruskal-Wallis and Mann-Whitney U tests provide statistical significance
-  results.
+  results.  In the example below, we compare the algorithms using the
+  hypervolume metric.
 </p>
 
 <div class="code">
@@ -161,7 +175,7 @@ Executor executor = new Executor()
 		
 Analyzer analyzer = new Analyzer()
     .withProblem(problem)
-    .includeAllMetrics()
+    .includeHypervolume()
     .showStatisticalSignificance();
 
 //run each algorithm for 50 seeds
@@ -173,6 +187,39 @@ for (String algorithm : algorithms) {
 //print the results
 analyzer.printAnalysis();
 ]]>
+  </pre>
+</div>
+
+<p>
+  Running this script produces the output shown below.  We can see that GDE3 and
+  NSGA-II produce the best (largest) hypervolume values.  Furthermore, we have
+  determined statistically that there is no significant difference in
+  performance between GDE3 and NSGA-II.
+</p>
+
+<div class="code">
+  <pre class="brush: plain; toolbar: false;">
+GDE3:
+    Hypervolume: 
+        Min: 0.4389785065649592
+        Median: 0.4974186560778636
+        Max: 0.535166930530847
+        Count: 50
+        Indifferent: [NSGAII]
+eMOEA:
+    Hypervolume: 
+        Min: 0.35003766343295073
+        Median: 0.47633216464734596
+        Max: 0.53311360537305
+        Count: 50
+        Indifferent: []
+NSGAII:
+    Hypervolume: 
+        Min: 0.38868701091987184
+        Median: 0.5040946740799506
+        Max: 0.5371138081508796
+        Count: 50
+        Indifferent: [GDE3]
   </pre>
 </div>
 </div>
@@ -191,7 +238,7 @@ analyzer.printAnalysis();
   Runtime dynamics provide insight into the behavior of an optimization
   algorithm throughout a run.  For instance, one can observe how solution
   quality changes with the number of function evaluations (NFE).  The 
-  Instrumenter class collects this data and provides it to the user.
+  Instrumenter class records the runtime dynamics.
 </p>
 
 <div class="code">
@@ -220,6 +267,24 @@ for (int i=0; i<accumulator.size("NFE"); i++) {
 ]]>
   </pre>
 </div>
+
+<p>
+  The output from this script, shown below, shows how the generational
+  distance metric changes over time.  We see that NSGA-II is rapidly converging
+  to the reference set (the optimal solutions) since its generational
+  distance is converging to 0.
+</p>
+
+<div class="code">
+  <pre class="brush: plain; toolbar: false">
+NFE  ElapsedTime  GenerationalDistance
+100  0.096681148  0.8185884950594635
+200  0.113829380  0.5423878889227384
+300  0.128466418  0.3997002414956422
+400  0.137947185  0.3541110315964887
+...
+  </pre>
+</div>
 </div>
 
 <div class="section">
@@ -235,7 +300,11 @@ for (int i=0; i<accumulator.size("NFE"); i++) {
 <p>
   A number of methods are available to provide custom, user-defined problems
   that cleanly integrate with all other components of the MOEA Framework.  The
-  following demonstrates the two-objective DTLZ2 problem.
+  following demonstrates the two-objective DTLZ2 problem.  Note that you only
+  need to define two methods: newSolution and evaluate.  The newSolution
+  method defines the problem representation (the number and types of its
+  decision variables).  The evaluate method takes a solution and computes its
+  objective function values.
 </p>
 
 <div class="code">
@@ -372,8 +441,10 @@ public static class DTLZ2 extends ExternalProblem {
 </div>
 
 <p>
-  The <code>moeaframework.h</code> C/C++ header is used to create the
-  corresponding executable, as shown below. 
+  Next, we create the C/C++ program that defines the problem.  Note the use of
+  several methods with names beginning with the MOEA_ prefix.  These methods
+  are provided by the <code>moeaframework.h</code> library, which is
+  provided in the MOEA Framework source code.
 </p>
 
 <div class="code">
@@ -433,10 +504,13 @@ int main(int argc, char* argv[]) {
 </div>
 
 <p>
-  The <code>MOEA_*</code> methods establish a communication channel with the
-  MOEA Framework, receive decision variable and respond with the evaluated
-  objectives and constraints.  The communication can be direct through
-  standard I/O or across a network using sockets.
+  The MOEA_Init method establishes a communication channel with the MOEA
+  Framework.  This communication channel can use standard I/O streams or
+  sockets.  The MOEA_Next_solution and MOEA_Read_doubles methods are used to
+  read the next solution to be evaluated.  Once the solution is evaluated, the
+  computed objective function values are sent back to the MOEA Framework.
+  Finally, once all solutions are evaluated, we shutdown the communication
+  channel by calling MOEA_Terminate.
 </p>
 
 </div>
