@@ -24,7 +24,7 @@ Inside Eclipse, navigate to the src $\rightarrow$ org $\rightarrow$ moeaframewor
 
 \section{Layout of the GUI}
 
-Figure \ref{fig:diagnosticToolAnnotated} provides a screenshot of the diagnostic tool window.  This window is composed of the following sections:
+\figref{fig:diagnosticToolAnnotated} provides a screenshot of the diagnostic tool window.  This window is composed of the following sections:
 
 \begin{figure}
   \includegraphics[width=\linewidth]{diagnosticToolAnnotated.png}
@@ -37,7 +37,7 @@ Figure \ref{fig:diagnosticToolAnnotated} provides a screenshot of the diagnostic
   \item The execution panel.  Clicking run will execute the algorithm as configured in the configuration panel.  Two progress bars display the individual run progress and the total progress for all seeds.  Any in-progress runs can be canceled.
   \item The displayed results table.  This table displays the completed runs.  The entries which are selected/highlighted are displayed in the charts.  You can click an individual line to show the data for just that entry, click while holding the Alt key to select multiple entries, or click the Select All button to select all entries.
   \item The displayed metrics table.  Similar to the displayed results table, the selected metrics are displayed in the charts.  You can select one metric or multiple metrics by holding the Alt key while clicking.
-  \item The actual charts.  A chart will be generated for each selected metric.  Thus, if two metrics are selected, then two charts will be displayed side-by-side.  See figure \ref{fig:diagnosticToolMultiselect} for an example.
+  \item The actual charts.  A chart will be generated for each selected metric.  Thus, if two metrics are selected, then two charts will be displayed side-by-side.  See \figref{fig:diagnosticToolMultiselect} for an example.
 \end{enumerate}
 
 \begin{figure}
@@ -53,7 +53,7 @@ Figure \ref{fig:diagnosticToolAnnotated} provides a screenshot of the diagnostic
 \section{Quantile Plots vs Individual Traces}
 By default, the chart displayed by the diagnostic tool show the statistical 25\%, 50\% and 75\% quantiles.  The 50\% quantile is the thick colored line, and the 25\% and 75\% quantiles are depicted by the colored area.  This quantile view allows you to quickly distinguish the performance between multiple algorithms, particularly when there is significant overlap between two or more algorithms.
 
-You can also view the raw, individual traces by selecting 'Show Individual Traces' in the View menu.  Each colored line represents one seed.  Figure \ref{fig:diagnosticToolTraces} provides an example of plots showing individual traces.  You can always switch back to the quantile view using the View menu.
+You can also view the raw, individual traces by selecting 'Show Individual Traces' in the View menu.  Each colored line represents one seed.  \figref{fig:diagnosticToolTraces} provides an example of plots showing individual traces.  You can always switch back to the quantile view using the View menu.
 
 \begin{figure}
   \includegraphics[width=\linewidth]{diagnosticToolTraces.png}
@@ -62,7 +62,7 @@ You can also view the raw, individual traces by selecting 'Show Individual Trace
 \end{figure}
 
 \section{Viewing Approximation Set Dynamics}
-Another powerful feature of the diagnostic tool is the visualization of approximation set dynamics.  The approximation set dynamics show how the algorithm's result (its approximation set) evolved throughout the run.  To view the approximation set dynamics, right-click on one of the rows in the displayed results table.  A menu will appear with the option to show the approximation set.  A window similar to figure \ref{fig:approximationSetViewerAnnotated} will appear.
+Another powerful feature of the diagnostic tool is the visualization of approximation set dynamics.  The approximation set dynamics show how the algorithm's result (its approximation set) evolved throughout the run.  To view the approximation set dynamics, right-click on one of the rows in the displayed results table.  A menu will appear with the option to show the approximation set.  A window similar to \figref{fig:approximationSetViewerAnnotated} will appear.
 
 \begin{important}
   This menu will disappear if you disable collecting the approximation set using the Collect menu.  Storing the approximation set data tends to be memory intensive, and it is sometimes useful to disable collecting the approximation sets if they are not needed.
@@ -88,7 +88,7 @@ This window displays the following items:
 \end{tip}
 
 \section{Statistical Results}
-The diagnostic tool also allows you to exercise the statistical testing tools provided by the MOEA Framework with the click of a button.  If you have two or more entries selected in the displayed results table, the 'Show Statistics' button will become enabled.  Figure \ref{fig:statisticalResultsViewer} shows the example output from clicking this button.  The data is formatted as YAML.  YAML uses indentation to indicate the relationship among entries.  For example, observe that the first line is not indented and says 'GDE3:'.  All entries shown below that are indented.  Thus, the second line, which is 'Hypervolume:', indicates that this is the hypervolume for the GDE3 algorithm.  The third line says 'Aggregate: 0.4894457739242269', and indicates that the aggregate hypervolume produced by GDE3 was $0.489$.
+The diagnostic tool also allows you to exercise the statistical testing tools provided by the MOEA Framework with the click of a button.  If you have two or more entries selected in the displayed results table, the 'Show Statistics' button will become enabled.  \figref{fig:statisticalResultsViewer} shows the example output from clicking this button.  The data is formatted as YAML.  YAML uses indentation to indicate the relationship among entries.  For example, observe that the first line is not indented and says 'GDE3:'.  All entries shown below that are indented.  Thus, the second line, which is 'Hypervolume:', indicates that this is the hypervolume for the GDE3 algorithm.  The third line says 'Aggregate: 0.4894457739242269', and indicates that the aggregate hypervolume produced by GDE3 was $0.489$.
 
 \begin{figure}
   \includegraphics[width=\linewidth]{statisticalResultsViewer.png}

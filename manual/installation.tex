@@ -73,10 +73,12 @@ Java 6, or any later version, is required for any system running the MOEA Framew
 
 Please follow the installation instruction accompanying your chosen JRE or JDK.
 
-\subsection{Eclipse (Optional)}
-Eclipse is a development environment, providing the tools needed to write, debug, test and run Java programs.  Eclipse can be downloaded for free from \webpage{http://www.eclipse.org/}.  The installation of Eclipse is simple --- just extract the compressed file to a folder of your choice and run the Eclipse executable from this folder.
+\subsection{Eclipse or NetBeans (Optional)}
+Eclipse and NetBeans are two development environments for writing, debugging, testing, and running Java programs.  Eclipse can be downloaded for free from \webpage{http://www.eclipse.org/}, and NetBeans can be obtained from \webpage{http://netbeans.org/}.
 
-First-time users of Eclipse may be prompted to select a workspace location.  The default location is typically fine.  Click the checkbox to no longer show this dialog and click Ok.
+The installation of Eclipse is simple --- just extract the compressed file to a folder of your choice and run the Eclipse executable from this folder.  First-time users of Eclipse may be prompted to select a workspace location.  The default location is typically fine.  Click the checkbox to no longer show this dialog and click Ok.
+
+To install NetBeans, simply run the executable.  Once installed, you can launch NetBeans by clicking the NetBeans link in your start menu.
 
 \subsection{Apache Ant (Optional)}
 Apache Ant is a Java tool for automatically compiling and packaging projects, similar to the Make utility on Unix/Linux.  Individuals working with the source code distribution should consider installing Apache Ant, as it helps automate building and testing the MOEA Framework.  Apache Ant can be downloaded from \webpage{http://ant.apache.org/}.  The installation instructions provided by Ant should be followed.
@@ -86,7 +88,27 @@ Note that Eclipse contains Ant, so it is not necessary to install Eclipse and An
 \section{Importing into Eclipse}
 When working with the source code distribution, it is necessary to properly configure the Java environment to ensure all resources are available.  To assist in this process, the source code distribution includes the necessary files to import directly into Eclipse.
 
-To import the MOEA Framework project into Eclipse, first start Eclipse and select File $\rightarrow$ Import... from the menu.  A popup window will appear.  Ensure the General $\rightarrow$ Existing Projects into Workspace item is selected and click Next.  A new window will appear.  In this new window, locate the Set Root Directory entry.  Using the Browse button, select the MOEA Framework folder containing the source code.  Finally, click Finish.  The MOEA Framework will now be properly configured in Eclipse.
+To import the MOEA Framework project into Eclipse, first start Eclipse and select File $\rightarrow$ Import... from the menu.  A popup window will appear.  Ensure the General $\rightarrow$ Existing Projects into Workspace item is selected and click Next.  A new window will appear.  In this new window, locate the Set Root Directory entry.  Using the Browse button, select the \folder{\moeaframework} folder containing the source code.  Finally, click Finish.  The MOEA Framework will now be properly configured in Eclipse.
+
+\section{Importing into NetBeans}
+If you downloaded the source code, you can import the MOEA Framework into NetBeans as follows.  In NetBeans, select New Project from the File menu.  In the screen that appears, select the ``Java'' category and ``Java Project with Existing Sources''.  Click Next.
+
+Specify the project name as ``MOEA Framework''.  Set the project folder by clicking the Browse button and selecting the \folder{\moeaframework} folder.  Click Next.
+
+Add the \folder{src} and \folder{examples} folders as Source Package Folders.  Click Finish.  The MOEA Framework project should now appear in the Projects window.
+
+Finally, we need to add the third-party libraries used by the MOEA Framework.  Right-click the MOEA Framework project in the Projects window and select Properties.  In the window that appears, click Libraries in the left-hand panel.  On the right-side of the window, click the button ``Add Jars/Folder''.  Browse to the \folder{\moeaframework/lib} folder, highlight all the JAR files (using shift or alt to select multiple files), and click Ok.  Click the ``Add Jars/Folder'' button again.  Navigate to and select the root \folder{\moeaframework} folder, and click Ok.  You should now see $8$ items in the compile-time libraries list.  There should be $7$ entries referencing \plaintext{.jar} files the ``\folder{.}'' as the last entry.  Your screen should look like \figref{fig:netbeans}.  Click Ok when finished.
+
+\begin{figure}
+  \center
+  \includegraphics[width=.8\linewidth]{netbeans.png}
+  \caption{How the NetBeans properties window should appear in the MOEA Framework is properly configured.}
+  \label{fig:netbeans}
+\end{figure}
+
+\begin{important}
+Test your NetBeans install by running Example1.  You can run an example by expanding the \folder{examples} folder in the Project window, right-clicking Example1, and selecting Run File from the popup menu.  If you receive a ``provider not found'' error, go back to the previous step and ensure the ``\folder{.}'' entry is listed as a compile-time library.  This is required for the Java Service Provider Interface (SPI) mechanism to properly locate algorithms and problems built into the MOEA Framework.
+\end{important}
 
 \section{Testing your Installation}
 Having finished installing the MOEA Framework and its dependencies, it is useful to run the MOEA Diagnostic Tool to test if the installation was successful.  If the diagnostic tool appears and you can run any algorithm, then the installation was successful.

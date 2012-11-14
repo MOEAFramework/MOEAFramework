@@ -12,6 +12,9 @@ any changes.
  Easy
 ------
 
+  - Update examples on website to reflect availability of examples in the
+    compiled binaries.
+    
   - Need to make problem names case insensitive.
 
   - Add ARFF and Aerovis output formats to ExtractData and any other relevant

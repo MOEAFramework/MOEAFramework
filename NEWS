@@ -38,6 +38,8 @@ Framework.
     Murata, Rendon2, Schaffer, Schaffer2, Fonseca, Fonseca2.
   
   * Fixes several issues identified by FindBugs and CodePro Tools.
+  
+  * Adds NetBeans installation instructions to the user manual.
 
 
 -----------------------------
