@@ -12,8 +12,6 @@ any changes.
  Easy
 ------
     
-  - Need to make problem names case insensitive.
-
   - Add ARFF and Aerovis output formats to ExtractData and any other relevant
     classes.
 

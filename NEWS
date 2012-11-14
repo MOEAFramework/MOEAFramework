@@ -36,9 +36,12 @@ Framework.
   
   * Adds reference sets for several problems, including Binh, Binh4, Laumanns,
     Murata, Rendon2, Schaffer, Schaffer2, Fonseca, Fonseca2.
-  
-  * Fixes several issues identified by FindBugs and CodePro Tools.
-  
+    
+  * Built-in problem names are now case-insensitive.  Now, the following two
+    lines are equivalent:
+        new Executor().withProblem("ZDT1")  
+        new Executor().withProblem("zdt1")
+
   * Adds NetBeans installation instructions to the user manual.
 
 

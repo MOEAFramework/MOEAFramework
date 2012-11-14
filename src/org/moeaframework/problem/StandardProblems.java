@@ -638,6 +638,8 @@ public class StandardProblems extends ProblemProvider {
 
 	@Override
 	public Problem getProblem(String name) {
+		name = name.toUpperCase();
+		
 		try {
 			if (name.startsWith("DTLZ1")) {
 				return new DTLZ1(Integer.parseInt(name.substring(6)));
@@ -752,67 +754,67 @@ public class StandardProblems extends ProblemProvider {
 				return new LZ8();
 			} else if (name.equals("LZ9")) {
 				return new LZ9();
-			} else if (name.equals("Belegundu")) {
+			} else if (name.equalsIgnoreCase("Belegundu")) {
 				return new Belegundu();
-			} else if (name.equals("Binh")) {
+			} else if (name.equalsIgnoreCase("Binh")) {
 				return new Binh();
-			} else if (name.equals("Binh2")) {
+			} else if (name.equalsIgnoreCase("Binh2")) {
 				return new Binh2();
-			} else if (name.equals("Binh3")) {
+			} else if (name.equalsIgnoreCase("Binh3")) {
 				return new Binh3();
-			} else if (name.equals("Binh4")) {
+			} else if (name.equalsIgnoreCase("Binh4")) {
 				return new Binh4();
-			} else if (name.equals("Fonseca")) {
+			} else if (name.equalsIgnoreCase("Fonseca")) {
 				return new Fonseca();
-			} else if (name.equals("Fonseca2")) {
+			} else if (name.equalsIgnoreCase("Fonseca2")) {
 				return new Fonseca2();
-			} else if (name.equals("Jimenez")) {
+			} else if (name.equalsIgnoreCase("Jimenez")) {
 				return new Jimenez();
-			} else if (name.equals("Kita")) {
+			} else if (name.equalsIgnoreCase("Kita")) {
 				return new Kita();
-			} else if (name.equals("Kursawe")) {
+			} else if (name.equalsIgnoreCase("Kursawe")) {
 				return new Kursawe();
-			} else if (name.equals("Laumanns")) {
+			} else if (name.equalsIgnoreCase("Laumanns")) {
 				return new Laumanns();
-			} else if (name.equals("Lis")) {
+			} else if (name.equalsIgnoreCase("Lis")) {
 				return new Lis();
-			} else if (name.equals("Murata")) {
+			} else if (name.equalsIgnoreCase("Murata")) {
 				return new Murata();
-			} else if (name.equals("Obayashi")) {
+			} else if (name.equalsIgnoreCase("Obayashi")) {
 				return new Obayashi();
-			} else if (name.equals("OKA1")) {
+			} else if (name.equalsIgnoreCase("OKA1")) {
 				return new OKA1();
-			} else if (name.equals("OKA2")) {
+			} else if (name.equalsIgnoreCase("OKA2")) {
 				return new OKA2();
-			} else if (name.equals("Osyczka")) {
+			} else if (name.equalsIgnoreCase("Osyczka")) {
 				return new Osyczka();
-			} else if (name.equals("Osyczka2")) {
+			} else if (name.equalsIgnoreCase("Osyczka2")) {
 				return new Osyczka2();
-			} else if (name.equals("Poloni")) {
+			} else if (name.equalsIgnoreCase("Poloni")) {
 				return new Poloni();
-			} else if (name.equals("Quagliarella")) {
+			} else if (name.equalsIgnoreCase("Quagliarella")) {
 				return new Quagliarella();
-			} else if (name.equals("Rendon")) {
+			} else if (name.equalsIgnoreCase("Rendon")) {
 				return new Rendon();
-			} else if (name.equals("Rendon2")) {
+			} else if (name.equalsIgnoreCase("Rendon2")) {
 				return new Rendon2();
-			} else if (name.equals("Schaffer")) {
+			} else if (name.equalsIgnoreCase("Schaffer")) {
 				return new Schaffer();
-			} else if (name.equals("Schaffer2")) {
+			} else if (name.equalsIgnoreCase("Schaffer2")) {
 				return new Schaffer2();
-			} else if (name.equals("Srinivas")) {
+			} else if (name.equalsIgnoreCase("Srinivas")) {
 				return new Srinivas();
-			} else if (name.equals("Tamaki")) {
+			} else if (name.equalsIgnoreCase("Tamaki")) {
 				return new Tamaki();
-			} else if (name.equals("Tanaka")) {
+			} else if (name.equalsIgnoreCase("Tanaka")) {
 				return new Tanaka();
-			} else if (name.equals("Viennet")) {
+			} else if (name.equalsIgnoreCase("Viennet")) {
 				return new Viennet();
-			} else if (name.equals("Viennet2")) {
+			} else if (name.equalsIgnoreCase("Viennet2")) {
 				return new Viennet2();
-			} else if (name.equals("Viennet3")) {
+			} else if (name.equalsIgnoreCase("Viennet3")) {
 				return new Viennet3();
-			} else if (name.equals("Viennet4")) {
+			} else if (name.equalsIgnoreCase("Viennet4")) {
 				return new Viennet4();
 			} else {
 				return null;
@@ -825,6 +827,7 @@ public class StandardProblems extends ProblemProvider {
 	@Override
 	public NondominatedPopulation getReferenceSet(String name) {
 		String filename = null;
+		name = name.toUpperCase();
 
 		try {
 			if (name.startsWith("DTLZ1")) {
@@ -945,23 +948,23 @@ public class StandardProblems extends ProblemProvider {
 				filename = "LZ07_F8.pf";
 			} else if (name.equals("LZ9")) {
 				filename = "LZ07_F9.pf";
-			} else if (name.equals("Binh")) {
+			} else if (name.equalsIgnoreCase("Binh")) {
 				filename = "Binh.pf";
-			} else if (name.equals("Binh4")) {
+			} else if (name.equalsIgnoreCase("Binh4")) {
 				filename = "Binh4.pf";
-			} else if (name.equals("Fonseca")) {
+			} else if (name.equalsIgnoreCase("Fonseca")) {
 				filename = "Fonseca.pf";
-			} else if (name.equals("Fonseca2")) {
+			} else if (name.equalsIgnoreCase("Fonseca2")) {
 				filename = "Fonseca2.pf";
-			} else if (name.equals("Laumanns")) {
+			} else if (name.equalsIgnoreCase("Laumanns")) {
 				filename = "Laumanns.pf";
-			} else if (name.equals("Murata")) {
+			} else if (name.equalsIgnoreCase("Murata")) {
 				filename = "Murata.pf";
-			} else if (name.equals("Rendon2")) {
+			} else if (name.equalsIgnoreCase("Rendon2")) {
 				filename = "Rendon2.pf";
-			} else if (name.equals("Schaffer")) {
+			} else if (name.equalsIgnoreCase("Schaffer")) {
 				filename = "Schaffer.pf";
-			} else if (name.equals("Schaffer2")) {
+			} else if (name.equalsIgnoreCase("Schaffer2")) {
 				filename = "Schaffer2.pf";
 			} else {
 				return null;

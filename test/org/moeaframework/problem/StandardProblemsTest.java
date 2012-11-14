@@ -17,6 +17,7 @@
  */
 package org.moeaframework.problem;
 
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.core.spi.ProblemFactory;
@@ -26,6 +27,7 @@ import org.moeaframework.core.spi.ProblemFactory;
  */
 public class StandardProblemsTest {
 	
+	//TODO: need to include miscellaneous problems as well
 	/**
 	 * The names of the standard problems.
 	 */
@@ -52,6 +54,21 @@ public class StandardProblemsTest {
 	@Test
 	public void test() {
 		for (String name : problems) {
+			Assert.assertNotNull("no problem for " + name, 
+					ProblemFactory.getInstance().getProblem(name));
+			Assert.assertNotNull("no reference set for " + name,
+					ProblemFactory.getInstance().getReferenceSet(name));
+		}
+	}
+	
+	/**
+	 * Ensures the names are not case sensitive.
+	 */
+	@Test
+	public void testCaseInsensitivity() {
+		for (String name : problems) {
+			name = StringUtils.swapCase(name);
+
 			Assert.assertNotNull("no problem for " + name, 
 					ProblemFactory.getInstance().getProblem(name));
 			Assert.assertNotNull("no reference set for " + name,
