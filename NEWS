@@ -1,9 +1,9 @@
 This file documents the major changes implemented in each release of the MOEA
 Framework.
 
---------------------
- Version 1.17 (TBD)
---------------------
+----------------------------
+ Version 1.17 (14 Nov 2012)
+----------------------------
 
   * Adds constructors to EpsilonBoxDominanceArchive for passing arrays of
     epsilon values.
@@ -37,10 +37,8 @@ Framework.
   * Adds reference sets for several problems, including Binh, Binh4, Laumanns,
     Murata, Rendon2, Schaffer, Schaffer2, Fonseca, Fonseca2.
     
-  * Built-in problem names are now case-insensitive.  Now, the following two
-    lines are equivalent:
-        new Executor().withProblem("ZDT1")  
-        new Executor().withProblem("zdt1")
+  * Built-in problem names are now case-insensitive.  For instance, you can
+    instantiate the ZDT1 problem using the strings "ZDT1" or "zdt1".
 
   * Adds NetBeans installation instructions to the user manual.
 
