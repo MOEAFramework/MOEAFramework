@@ -50,8 +50,6 @@ any changes.
     in the MOEA diagnostic tool.
     
   - Upgrade to Apache Commons Math 3.0
-    
-  - Upgrade to Apache Commons Codec 1.6
   
   - Upgrade to Checkstyle 5.6
   

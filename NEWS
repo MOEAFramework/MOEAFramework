@@ -12,7 +12,8 @@ Framework.
     series, but new features and improvements will only be added to the 2.x
     series.
     
-  * Upgraded to JMetal 4.2.
+  * Upgraded to JMetal 4.2; also upgrades to the latest versions of JFreeChart,
+    Commons Codec
 
 
 ----------------------------
