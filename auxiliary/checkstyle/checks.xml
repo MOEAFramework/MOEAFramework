@@ -111,9 +111,6 @@ along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
 		<!-- Several instances exist that should be fixed -->
 		<!-- <module name="MissingCtor"/> -->
 		
-		<!-- Avoid the error-prone double checked locking pattern -->
-		<module name="DoubleCheckedLocking"/>
-		
 		<!-- <module name="EqualsAvoidNull"/> -->
 		
 		<!-- No magic numbers -->

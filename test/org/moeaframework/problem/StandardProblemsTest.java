@@ -67,12 +67,12 @@ public class StandardProblemsTest {
 	@Test
 	public void testCaseInsensitivity() {
 		for (String name : problems) {
-			name = StringUtils.swapCase(name);
+			String swapCaseName = StringUtils.swapCase(name);
 
-			Assert.assertNotNull("no problem for " + name, 
-					ProblemFactory.getInstance().getProblem(name));
-			Assert.assertNotNull("no reference set for " + name,
-					ProblemFactory.getInstance().getReferenceSet(name));
+			Assert.assertNotNull("no problem for " + swapCaseName, 
+					ProblemFactory.getInstance().getProblem(swapCaseName));
+			Assert.assertNotNull("no reference set for " + swapCaseName,
+					ProblemFactory.getInstance().getReferenceSet(swapCaseName));
 		}
 	}
 

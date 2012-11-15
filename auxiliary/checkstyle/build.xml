@@ -40,7 +40,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 	</path>
 
 	<taskdef resource="checkstyletask.properties"
-	         classpath="${checkstyle}/checkstyle-5.5-all.jar"/>
+	         classpath="${checkstyle}/checkstyle-5.6-all.jar"/>
 
 	<target name="check-style">
 		<delete dir="${build}" />
