@@ -61,6 +61,7 @@ import jmetal.util.JMException;
 import jmetal.util.comparators.FPGAFitnessComparator;
 import jmetal.util.comparators.FitnessComparator;
 
+import org.moeaframework.analysis.sensitivity.EpsilonHelper;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.spi.AlgorithmProvider;
@@ -131,7 +132,7 @@ import org.moeaframework.util.TypedProperties;
  *     <td>OMOPSO</td>
  *     <td>Real*</td>
  *     <td>{@code populationSize, archiveSize, maxEvaluations, 
- *         mutationProbability, perturbationIndex}</td>
+ *         mutationProbability, perturbationIndex, epsilon}</td>
  *   </tr>
  *   <tr>
  *     <td>PAES</td>
@@ -663,6 +664,9 @@ public class JMetalAlgorithms extends AlgorithmProvider {
 		algorithm.setInputParameter("archiveSize", 
 				(int)properties.getDouble("archiveSize", 100));
 		algorithm.setInputParameter("maxIterations", maxIterations);
+		algorithm.setInputParameter("epsilon",
+				properties.getDoubleArray("epsilon", new double[] {
+						EpsilonHelper.getEpsilon(problem.getProblem()) }));
 		
 		HashMap<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("probability", properties.getDouble("mutationProbability", mutationProbability));
