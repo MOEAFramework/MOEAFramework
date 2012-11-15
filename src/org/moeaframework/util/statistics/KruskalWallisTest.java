@@ -17,9 +17,7 @@
  */
 package org.moeaframework.util.statistics;
 
-import org.apache.commons.math.MathException;
-import org.apache.commons.math.distribution.ChiSquaredDistribution;
-import org.apache.commons.math.distribution.ChiSquaredDistributionImpl;
+import org.apache.commons.math3.distribution.ChiSquaredDistribution;
 
 /**
  * The Kruskal-Wallis One-Way Analysis of Variance by Ranks is a non-parametric
@@ -127,10 +125,10 @@ public class KruskalWallisTest extends OrdinalStatisticalTest {
 	}
 
 	@Override
-	public boolean test(double alpha) throws MathException {
+	public boolean test(double alpha) {
 		update();
 
-		ChiSquaredDistribution dist = new ChiSquaredDistributionImpl(
+		ChiSquaredDistribution dist = new ChiSquaredDistribution(
 				numberOfGroups - 1);
 		double H = H();
 		double C = C();

@@ -17,8 +17,7 @@
  */
 package org.moeaframework.examples.gp.regression;
 
-import org.apache.commons.math.FunctionEvaluationException;
-import org.apache.commons.math.analysis.UnivariateRealFunction;
+import org.apache.commons.math3.analysis.UnivariateFunction;
 
 /**
  * The Quartic function as introduced by Koza [1].  The function is
@@ -30,22 +29,20 @@ import org.apache.commons.math.analysis.UnivariateRealFunction;
  *       Means of Natural Selection."  MIT Press, Cambridge, MA, USA, 1992.
  * </ol>
  */
-public class QuarticExample implements UnivariateRealFunction {
+public class QuarticExample implements UnivariateFunction {
 	
 	/**
 	 * Runs the Quartic demo problem.
 	 * 
 	 * @param args the command line arguments
-	 * @throws FunctionEvaluationException if an error occurred while
-	 *         evaluating the function (should not occur in practice)
 	 */
-	public static void main(String[] args) throws FunctionEvaluationException {
+	public static void main(String[] args) {
 		SymbolicRegressionGUI.runDemo(new SymbolicRegression(
 				new QuarticExample(), -1.0, 1.0, 100));
 	}
 
 	@Override
-	public double value(double x) throws FunctionEvaluationException {
+	public double value(double x) {
 		return x*x*x*x + x*x*x + x*x + x;
 	}
 	

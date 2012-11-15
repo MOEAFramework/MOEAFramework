@@ -17,7 +17,7 @@
  */
 package org.moeaframework.problem.DTLZ;
 
-import org.apache.commons.math.stat.StatUtils;
+import org.apache.commons.math3.stat.StatUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.TestThresholds;

@@ -17,7 +17,7 @@
  */
 package org.moeaframework.util;
 
-import org.apache.commons.math.util.MathUtils;
+import org.apache.commons.math3.util.ArithmeticUtils;
 
 /**
  * Defines mathematical operations that are applied to arrays.
@@ -52,7 +52,7 @@ public class ArrayMath {
 		int sum = 0;
 
 		for (int value : array) {
-			sum = MathUtils.addAndCheck(sum, value);
+			sum = ArithmeticUtils.addAndCheck(sum, value);
 		}
 
 		return sum;

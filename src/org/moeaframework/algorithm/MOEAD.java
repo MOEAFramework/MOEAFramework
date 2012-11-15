@@ -25,8 +25,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import org.apache.commons.math.stat.StatUtils;
-import org.apache.commons.math.util.MathUtils;
+import org.apache.commons.math3.stat.StatUtils;
+import org.apache.commons.math3.util.MathArrays;
 import org.moeaframework.core.Initialization;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PRNG;
@@ -207,9 +207,9 @@ public class MOEAD extends AbstractAlgorithm {
 
 		@Override
 		public int compare(Individual o1, Individual o2) {
-			double d1 = MathUtils.distance(
+			double d1 = MathArrays.distance(
 					individual.getWeights(), o1.getWeights());
-			double d2 = MathUtils.distance(
+			double d2 = MathArrays.distance(
 					individual.getWeights(), o2.getWeights());
 
 			return Double.compare(d1, d2);
@@ -417,7 +417,7 @@ public class MOEAD extends AbstractAlgorithm {
 				double d = Double.POSITIVE_INFINITY;
 
 				for (int j = 0; j < population.size(); j++) {
-					d = Math.min(d, MathUtils.distance(weights.get(i),
+					d = Math.min(d, MathArrays.distance(weights.get(i),
 							population.get(j).getWeights()));
 				}
 

@@ -17,8 +17,6 @@
  */
 package org.moeaframework.util.statistics;
 
-import org.apache.commons.math.MathException;
-
 /**
  * Interface for statistical hypothesis testing methods.
  */
@@ -37,9 +35,7 @@ public interface StatisticalTest {
 	 * @param alpha the prespecified level of confidence
 	 * @return {@code true} if the null hypothesis is rejected; {@code false}
 	 *         otherwise
-	 * @throws MathException if an exception occurred when evaluating the
-	 *         statistical test
 	 */
-	public boolean test(double alpha) throws MathException;
+	public boolean test(double alpha);
 
 }

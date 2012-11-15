@@ -17,9 +17,7 @@
  */
 package org.moeaframework.util.statistics;
 
-import org.apache.commons.math.MathException;
-import org.apache.commons.math.distribution.NormalDistribution;
-import org.apache.commons.math.distribution.NormalDistributionImpl;
+import org.apache.commons.math3.distribution.NormalDistribution;
 import org.moeaframework.core.Settings;
 
 /**
@@ -78,7 +76,7 @@ public class MannWhitneyUTest extends OrdinalStatisticalTest {
 	 * available, the normal approximation is used allowing any value for alpha.
 	 */
 	@Override
-	public boolean test(double alpha) throws MathException {
+	public boolean test(double alpha) {
 		double[] R = new double[2];
 		int[] n = new int[2];
 
@@ -100,7 +98,7 @@ public class MannWhitneyUTest extends OrdinalStatisticalTest {
 			return U <= getCriticalUValueFromTable(n[0], n[1], alpha);
 		} else {
 			double z = 0.0;
-			NormalDistribution dist = new NormalDistributionImpl();
+			NormalDistribution dist = new NormalDistribution();
 
 			if (Settings.isContinuityCorrection()) {
 				z = (Math.abs(U - n[0] * n[1] / 2.0) - 0.5)
@@ -115,8 +113,7 @@ public class MannWhitneyUTest extends OrdinalStatisticalTest {
 		}
 	}
 
-	private static int getCriticalUValueFromTable(int n1, int n2, double alpha)
-			throws MathException {
+	private static int getCriticalUValueFromTable(int n1, int n2, double alpha) {
 		if ((n1 < 1) || (n1 > 20) || (n2 < 1) || (n2 > 20)) {
 			throw new IllegalArgumentException(
 					"only valid for 1 <= n1 <= 20, 1 <= n2 <= 20");

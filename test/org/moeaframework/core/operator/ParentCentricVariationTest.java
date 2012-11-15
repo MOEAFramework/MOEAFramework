@@ -22,9 +22,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
-import org.apache.commons.math.stat.clustering.Cluster;
-import org.apache.commons.math.stat.clustering.Clusterable;
-import org.apache.commons.math.stat.clustering.KMeansPlusPlusClusterer;
+import org.apache.commons.math3.stat.clustering.Cluster;
+import org.apache.commons.math3.stat.clustering.Clusterable;
+import org.apache.commons.math3.stat.clustering.KMeansPlusPlusClusterer;
 import org.junit.Assert;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.core.Solution;

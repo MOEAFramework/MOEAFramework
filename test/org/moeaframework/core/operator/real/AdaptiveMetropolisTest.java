@@ -21,15 +21,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import org.apache.commons.math.linear.CholeskyDecompositionImpl;
-import org.apache.commons.math.linear.MatrixUtils;
-import org.apache.commons.math.linear.NonSquareMatrixException;
-import org.apache.commons.math.linear.NotPositiveDefiniteMatrixException;
-import org.apache.commons.math.linear.NotSymmetricMatrixException;
-import org.apache.commons.math.linear.RealMatrix;
-import org.apache.commons.math.stat.clustering.Cluster;
-import org.apache.commons.math.stat.clustering.KMeansPlusPlusClusterer;
-import org.apache.commons.math.stat.correlation.Covariance;
+import org.apache.commons.math3.linear.CholeskyDecomposition;
+import org.apache.commons.math3.linear.MatrixUtils;
+import org.apache.commons.math3.linear.RealMatrix;
+import org.apache.commons.math3.stat.clustering.Cluster;
+import org.apache.commons.math3.stat.clustering.KMeansPlusPlusClusterer;
+import org.apache.commons.math3.stat.correlation.Covariance;
 import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.AbsoluteError;
@@ -51,8 +48,7 @@ public class AdaptiveMetropolisTest extends ParentCentricVariationTest {
 	 * MATLAB that is positive definite.
 	 */
 	@Test
-	public void testVrugtSample() throws NonSquareMatrixException, 
-	NotSymmetricMatrixException, NotPositiveDefiniteMatrixException {
+	public void testVrugtSample() {
 		RealMatrix matrix = MatrixUtils.createRealMatrix(new double[][] {
 				{ 0.0000,  0.0002, -0.0006,  0.0008,  0.0001,  0.0018,  0.0001,  0.0003,  0.0006, -0.0035 },
 				{ 0.0934, -0.0010, -0.0062,  0.0001,  0.0024,  0.0017,  0.0019,  0.0004,  0.0008, -0.0067 },
@@ -70,7 +66,7 @@ public class AdaptiveMetropolisTest extends ParentCentricVariationTest {
 		
 		double jumpRate = Math.pow(2.4 / Math.sqrt(10), 2.0);
 
-		RealMatrix actual = new CholeskyDecompositionImpl(
+		RealMatrix actual = new CholeskyDecomposition(
 					new Covariance(matrix.scalarMultiply(jumpRate))
 					.getCovarianceMatrix()).getLT();
 		

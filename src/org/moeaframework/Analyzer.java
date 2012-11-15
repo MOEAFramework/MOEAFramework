@@ -29,11 +29,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.math.MathException;
-import org.apache.commons.math.stat.descriptive.UnivariateStatistic;
-import org.apache.commons.math.stat.descriptive.rank.Max;
-import org.apache.commons.math.stat.descriptive.rank.Median;
-import org.apache.commons.math.stat.descriptive.rank.Min;
+import org.apache.commons.math3.stat.descriptive.UnivariateStatistic;
+import org.apache.commons.math3.stat.descriptive.rank.Max;
+import org.apache.commons.math3.stat.descriptive.rank.Median;
+import org.apache.commons.math3.stat.descriptive.rank.Min;
 import org.moeaframework.analysis.sensitivity.ResultEntry;
 import org.moeaframework.analysis.sensitivity.ResultFileReader;
 import org.moeaframework.analysis.sensitivity.ResultFileWriter;
@@ -804,7 +803,7 @@ public class Analyzer extends ProblemBuilder {
 								}
 							}
 						}
-					} catch (MathException e) {
+					} catch (RuntimeException e) { //TODO: restrict to MathRuntimeException, but it is currently not found
 						e.printStackTrace();
 					}
 				}

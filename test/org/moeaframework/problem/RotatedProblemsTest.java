@@ -17,7 +17,7 @@
  */
 package org.moeaframework.problem;
 
-import org.apache.commons.math.util.MathUtils;
+import org.apache.commons.math3.util.MathArrays;
 import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.TestThresholds;
@@ -139,7 +139,7 @@ public class RotatedProblemsTest {
 			problemA.evaluate(solutionA);
 			problemB.evaluate(solutionB);
 			
-			Assert.assertTrue(MathUtils.distance(solutionA.getObjectives(), 
+			Assert.assertTrue(MathArrays.distance(solutionA.getObjectives(), 
 					solutionB.getObjectives()) > Settings.EPS);
 		}
 	}

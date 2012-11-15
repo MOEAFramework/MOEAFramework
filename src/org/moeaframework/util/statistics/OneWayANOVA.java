@@ -17,8 +17,7 @@
  */
 package org.moeaframework.util.statistics;
 
-import org.apache.commons.math.MathException;
-import org.apache.commons.math.stat.inference.TestUtils;
+import org.apache.commons.math3.stat.inference.TestUtils;
 
 /**
  * The Single-Factor Between-Subjects Analysis of Variance determines if (at
@@ -71,7 +70,7 @@ public class OneWayANOVA extends IntervalRatioStatisticalTest {
 	}
 
 	@Override
-	public boolean test(double alpha) throws MathException {
+	public boolean test(double alpha) {
 		return TestUtils.oneWayAnovaTest(categorize(), alpha);
 	}
 

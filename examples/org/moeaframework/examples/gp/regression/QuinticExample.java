@@ -17,8 +17,7 @@
  */
 package org.moeaframework.examples.gp.regression;
 
-import org.apache.commons.math.FunctionEvaluationException;
-import org.apache.commons.math.analysis.UnivariateRealFunction;
+import org.apache.commons.math3.analysis.UnivariateFunction;
 
 /**
  * The Quintic function as introduced by Koza [1].  The function is
@@ -30,22 +29,20 @@ import org.apache.commons.math.analysis.UnivariateRealFunction;
  *       Programs."  MIT Press, Cambridge, MA, 1994.
  * </ol>
  */
-public class QuinticExample implements UnivariateRealFunction {
+public class QuinticExample implements UnivariateFunction {
 	
 	/**
 	 * Runs the Quintic demo problem.
 	 * 
 	 * @param args the command line arguments
-	 * @throws FunctionEvaluationException if an error occurred while
-	 *         evaluating the function (should not occur in practice)
 	 */
-	public static void main(String[] args) throws FunctionEvaluationException {
+	public static void main(String[] args) {
 		SymbolicRegressionGUI.runDemo(new SymbolicRegression(
 				new QuinticExample(), -1.0, 1.0, 100));
 	}
 
 	@Override
-	public double value(double x) throws FunctionEvaluationException {
+	public double value(double x) {
 		return x*x*x*x*x* - 2.0*x*x*x + x;
 	}
 	

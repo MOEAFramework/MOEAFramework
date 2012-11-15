@@ -17,7 +17,6 @@
  */
 package org.moeaframework.util.statistics;
 
-import org.apache.commons.math.MathException;
 import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.TestThresholds;
@@ -34,11 +33,9 @@ public class KruskalWallisTestTest {
 
 	/**
 	 * Test from Sheskin (2004) in Chapter 22.
-	 * 
-	 * @throws MathException should not occur
 	 */
 	@Test
-	public void testExample1() throws MathException {
+	public void testExample1() {
 		KruskalWallisTest kw = new KruskalWallisTest(3);
 		kw.add(10, 0);
 		kw.add(11, 0);
@@ -66,11 +63,9 @@ public class KruskalWallisTestTest {
 	/**
 	 * Daily bottle-cap production of three machines from Kruskal and Wallis
 	 * (1952). This example demonstrates the test without ties.
-	 * 
-	 * @throws MathException should not occur
 	 */
 	@Test
-	public void testExample2() throws MathException {
+	public void testExample2() {
 		KruskalWallisTest kw = new KruskalWallisTest(3);
 		kw.add(340, 0);
 		kw.add(345, 0);
@@ -92,11 +87,9 @@ public class KruskalWallisTestTest {
 	/**
 	 * Birth weights of eight litters of pigs example from Kruskal and Wallis
 	 * (1952). This example demonstrates the test with ties.
-	 * 
-	 * @throws MathException should not occur
 	 */
 	@Test
-	public void testExample3() throws MathException {
+	public void testExample3() {
 		KruskalWallisTest kw = new KruskalWallisTest(8);
 		kw.add(2.0, 0);
 		kw.add(2.8, 0);
@@ -161,7 +154,7 @@ public class KruskalWallisTestTest {
 	}
 	
 	@Test
-	public void testAllEqual() throws MathException {
+	public void testAllEqual() {
 		KruskalWallisTest kw = new KruskalWallisTest(2);
 		
 		// a number around 20 is sufficient to cause the convergence

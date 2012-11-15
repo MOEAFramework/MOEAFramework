@@ -20,8 +20,8 @@ package org.moeaframework.util;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.math.linear.MatrixUtils;
-import org.apache.commons.math.linear.RealMatrix;
+import org.apache.commons.math3.linear.MatrixUtils;
+import org.apache.commons.math3.linear.RealMatrix;
 import org.moeaframework.core.PRNG;
 
 /**

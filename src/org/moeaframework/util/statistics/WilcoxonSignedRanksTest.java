@@ -20,9 +20,7 @@ package org.moeaframework.util.statistics;
 import java.io.Serializable;
 import java.util.Comparator;
 
-import org.apache.commons.math.MathException;
-import org.apache.commons.math.distribution.NormalDistribution;
-import org.apache.commons.math.distribution.NormalDistributionImpl;
+import org.apache.commons.math3.distribution.NormalDistribution;
 import org.moeaframework.core.Settings;
 
 /**
@@ -125,7 +123,7 @@ public class WilcoxonSignedRanksTest extends OrdinalStatisticalTest {
 	}
 
 	@Override
-	public boolean test(double alpha) throws MathException {
+	public boolean test(double alpha) {
 		double Rpos = 0.0;
 		double Rneg = 0.0;
 
@@ -149,7 +147,7 @@ public class WilcoxonSignedRanksTest extends OrdinalStatisticalTest {
 			return T <= getCriticalTValueFromTable(n, alpha);
 		} else {
 			double z = 0.0;
-			NormalDistribution dist = new NormalDistributionImpl();
+			NormalDistribution dist = new NormalDistribution();
 
 			if (Settings.isContinuityCorrection()) {
 				z = (Math.abs(T - n * (n + 1) / 4.0) - 0.5)
@@ -164,8 +162,7 @@ public class WilcoxonSignedRanksTest extends OrdinalStatisticalTest {
 		}
 	}
 
-	private static int getCriticalTValueFromTable(int n, double alpha)
-			throws MathException {
+	private static int getCriticalTValueFromTable(int n, double alpha) {
 		if ((n < 6) || (n > 50)) {
 			throw new IllegalArgumentException("only valid for 6 <= n <= 50");
 		}

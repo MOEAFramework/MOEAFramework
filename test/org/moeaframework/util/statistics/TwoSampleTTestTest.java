@@ -17,8 +17,7 @@
  */
 package org.moeaframework.util.statistics;
 
-import org.apache.commons.math.MathException;
-import org.apache.commons.math.stat.inference.TestUtils;
+import org.apache.commons.math3.stat.inference.TestUtils;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -29,11 +28,9 @@ public class TwoSampleTTestTest {
 
 	/**
 	 * Test from Sheskin (2004) in Chapter 11.
-	 * 
-	 * @throws MathException should not occur
 	 */
 	@Test
-	public void testIndependentExample() throws MathException {
+	public void testIndependentExample() {
 		TwoSampleTTest test = new TwoSampleTTest(true);
 		test.add(11, 0);
 		test.add(1, 0);
@@ -53,11 +50,9 @@ public class TwoSampleTTestTest {
 
 	/**
 	 * Test from Sheskin (2004) in Chapter 17.
-	 * 
-	 * @throws MathException should not occur
 	 */
 	@Test
-	public void testDependentExample() throws MathException {
+	public void testDependentExample() {
 		TwoSampleTTest test = new TwoSampleTTest(false);
 		test.add(9, 0);
 		test.add(2, 0);
@@ -87,7 +82,7 @@ public class TwoSampleTTestTest {
 	}
 	
 	@Test
-	public void testAllEqual() throws MathException {
+	public void testAllEqual() {
 		TwoSampleTTest test = new TwoSampleTTest(true);
 		test.add(10, 0);
 		test.add(10, 0);

@@ -18,8 +18,7 @@
 package org.moeaframework.util.statistics;
 
 import org.junit.Assert;
-import org.apache.commons.math.MathException;
-import org.apache.commons.math.stat.inference.TestUtils;
+import org.apache.commons.math3.stat.inference.TestUtils;
 import org.junit.Test;
 
 /**
@@ -34,11 +33,9 @@ public class OneWayANOVATest {
 
 	/**
 	 * Test from Sheskin (2004) in Chapter 21.
-	 * 
-	 * @throws MathException should not occur
 	 */
 	@Test
-	public void testExample() throws MathException {
+	public void testExample() {
 		OneWayANOVA test = new OneWayANOVA(3);
 		test.add(8, 0);
 		test.add(10, 0);
@@ -63,7 +60,7 @@ public class OneWayANOVATest {
 	}
 	
 	@Test
-	public void testAllEquals() throws MathException {
+	public void testAllEquals() {
 		OneWayANOVA test = new OneWayANOVA(3);
 		test.add(10, 0);
 		test.add(10, 0);

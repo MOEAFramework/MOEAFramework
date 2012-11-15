@@ -17,12 +17,12 @@
  */
 package org.moeaframework.core.operator.real;
 
-import org.apache.commons.math.linear.Array2DRowRealMatrix;
-import org.apache.commons.math.linear.ArrayRealVector;
-import org.apache.commons.math.linear.CholeskyDecompositionImpl;
-import org.apache.commons.math.linear.RealMatrix;
-import org.apache.commons.math.linear.RealVector;
-import org.apache.commons.math.stat.correlation.Covariance;
+import org.apache.commons.math3.linear.Array2DRowRealMatrix;
+import org.apache.commons.math3.linear.ArrayRealVector;
+import org.apache.commons.math3.linear.CholeskyDecomposition;
+import org.apache.commons.math3.linear.RealMatrix;
+import org.apache.commons.math3.linear.RealVector;
+import org.apache.commons.math3.stat.correlation.Covariance;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
@@ -110,7 +110,7 @@ public class AdaptiveMetropolis implements Variation {
 			//perform Cholesky factorization and get the upper triangular matrix
 			double jumpRate = Math.pow(jumpRateCoefficient / Math.sqrt(n), 2.0);
 
-			RealMatrix chol = new CholeskyDecompositionImpl(
+			RealMatrix chol = new CholeskyDecomposition(
 						new Covariance(x.scalarMultiply(jumpRate))
 						.getCovarianceMatrix()).getLT();
 			

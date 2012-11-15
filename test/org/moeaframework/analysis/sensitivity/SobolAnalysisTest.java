@@ -25,8 +25,7 @@ import java.io.PrintWriter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.math.FunctionEvaluationException;
-import org.apache.commons.math.analysis.MultivariateRealFunction;
+import org.apache.commons.math3.analysis.MultivariateFunction;
 import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.TestThresholds;
@@ -39,13 +38,11 @@ import org.moeaframework.util.sequence.Saltelli;
 public class SobolAnalysisTest {
 	
 	@Test
-	public void testNoInteraction1() throws FunctionEvaluationException, 
-	IOException {
-		File outputFile = test(new MultivariateRealFunction() {
+	public void testNoInteraction1() throws IOException {
+		File outputFile = test(new MultivariateFunction() {
 
 			@Override
-			public double value(double[] variables)
-					throws FunctionEvaluationException {
+			public double value(double[] variables) {
 				return variables[0];
 			}
 			
@@ -65,13 +62,11 @@ public class SobolAnalysisTest {
 	}
 	
 	@Test
-	public void testNoInteraction12() throws FunctionEvaluationException, 
-	IOException {
-		File outputFile = test(new MultivariateRealFunction() {
+	public void testNoInteraction12() throws IOException {
+		File outputFile = test(new MultivariateFunction() {
 
 			@Override
-			public double value(double[] variables)
-					throws FunctionEvaluationException {
+			public double value(double[] variables) {
 				return variables[0] + variables[1];
 			}
 			
@@ -91,13 +86,11 @@ public class SobolAnalysisTest {
 	}
 	
 	@Test
-	public void testNoInteraction123() throws FunctionEvaluationException, 
-	IOException {
-		File outputFile = test(new MultivariateRealFunction() {
+	public void testNoInteraction123() throws IOException {
+		File outputFile = test(new MultivariateFunction() {
 
 			@Override
-			public double value(double[] variables)
-					throws FunctionEvaluationException {
+			public double value(double[] variables) {
 				return variables[0] + variables[1] + variables[2];
 			}
 			
@@ -117,13 +110,11 @@ public class SobolAnalysisTest {
 	}
 	
 	@Test
-	public void testInteraction12() throws FunctionEvaluationException, 
-	IOException {
-		File outputFile = test(new MultivariateRealFunction() {
+	public void testInteraction12() throws IOException {
+		File outputFile = test(new MultivariateFunction() {
 
 			@Override
-			public double value(double[] variables)
-					throws FunctionEvaluationException {
+			public double value(double[] variables) {
 				return variables[0]*variables[1] + variables[2];
 			}
 			
@@ -149,13 +140,11 @@ public class SobolAnalysisTest {
 	}
 	
 	@Test
-	public void testInteraction123() throws FunctionEvaluationException, 
-	IOException {
-		File outputFile = test(new MultivariateRealFunction() {
+	public void testInteraction123() throws IOException {
+		File outputFile = test(new MultivariateFunction() {
 
 			@Override
-			public double value(double[] variables)
-					throws FunctionEvaluationException {
+			public double value(double[] variables) {
 				return variables[0]*variables[1]*variables[2];
 			}
 			
@@ -196,8 +185,7 @@ public class SobolAnalysisTest {
 	 *         the function
 	 * @throws IOException if an I/O error occurred
 	 */
-	protected File test(MultivariateRealFunction function) throws 
-	FunctionEvaluationException, IOException {
+	protected File test(MultivariateFunction function) throws IOException {
 		double[][] input = new Saltelli().generate(1000*8, 3);
 		double[] output = evaluate(function, input);
 		
@@ -305,8 +293,8 @@ public class SobolAnalysisTest {
 	 * @throws FunctionEvaluationException if an error occurred when evaluating
 	 *         the function
 	 */
-	protected double[] evaluate(MultivariateRealFunction function, 
-			double[][] input) throws FunctionEvaluationException { 
+	protected double[] evaluate(MultivariateFunction function, 
+			double[][] input) { 
 		double[] output = new double[input.length];
 		
 		for (int i=0; i<input.length; i++) {

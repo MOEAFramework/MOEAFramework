@@ -36,8 +36,8 @@ import java.util.BitSet;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import org.apache.commons.math.linear.RealMatrix;
-import org.apache.commons.math.stat.descriptive.DescriptiveStatistics;
+import org.apache.commons.math3.linear.RealMatrix;
+import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.junit.Assert;
 import org.junit.Assume;
 import org.moeaframework.core.Population;

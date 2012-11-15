@@ -17,7 +17,7 @@
  */
 package org.moeaframework.core.indicator;
 
-import org.apache.commons.math.util.MathUtils;
+import org.apache.commons.math3.util.MathArrays;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.Indicator;
 import org.moeaframework.core.NondominatedPopulation;
@@ -118,7 +118,7 @@ public class Contribution implements Indicator {
 			
 			for (Solution solution2 : approximationSet) {
 				if (comparator == null) {
-					double distance = MathUtils.distance(
+					double distance = MathArrays.distance(
 							solution1.getObjectives(), 
 							solution2.getObjectives());
 					

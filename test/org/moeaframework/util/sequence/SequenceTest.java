@@ -18,7 +18,7 @@
 package org.moeaframework.util.sequence;
 
 import org.junit.Assert;
-import org.apache.commons.math.stat.descriptive.DescriptiveStatistics;
+import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.moeaframework.TestThresholds;
 
 /**

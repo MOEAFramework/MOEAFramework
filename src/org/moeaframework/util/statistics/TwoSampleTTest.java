@@ -19,8 +19,7 @@ package org.moeaframework.util.statistics;
 
 import java.util.List;
 
-import org.apache.commons.math.MathException;
-import org.apache.commons.math.stat.inference.TestUtils;
+import org.apache.commons.math3.stat.inference.TestUtils;
 
 /**
  * The Two-Sample t test determines if the mean of two populations are
@@ -76,7 +75,7 @@ public class TwoSampleTTest extends IntervalRatioStatisticalTest {
 	}
 
 	@Override
-	public boolean test(double alpha) throws MathException {
+	public boolean test(double alpha) {
 		List<double[]> categories = categorize();
 
 		if (independent) {

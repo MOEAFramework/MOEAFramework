@@ -26,7 +26,7 @@ import java.util.Set;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
-import org.apache.commons.math.util.MathUtils;
+import org.apache.commons.math3.util.MathArrays;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Population;
@@ -99,7 +99,7 @@ public class ReferenceSetMerger extends CommandLineUtility {
 			
 			//print warning if duplicate solutions found
 			for (Solution s : combinedPopulation) {
-				if (MathUtils.distance(s.getObjectives(), 
+				if (MathArrays.distance(s.getObjectives(), 
 						solution.getObjectives()) < Settings.EPS) {
 					System.err.println("duplicate solution found");
 				}

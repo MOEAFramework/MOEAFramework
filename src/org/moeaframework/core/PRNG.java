@@ -21,8 +21,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-import org.apache.commons.math.random.MersenneTwister;
-import org.apache.commons.math.random.RandomAdaptor;
+import org.apache.commons.math3.random.MersenneTwister;
+import org.apache.commons.math3.random.RandomAdaptor;
 
 /**
  * Static methods for generating random or pseudo-random numbers. Any source of

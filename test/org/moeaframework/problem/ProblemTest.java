@@ -17,7 +17,7 @@
  */
 package org.moeaframework.problem;
 
-import org.apache.commons.math.stat.StatUtils;
+import org.apache.commons.math3.stat.StatUtils;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.TestUtils;
 import org.moeaframework.algorithm.jmetal.JMetalProblemAdapter;

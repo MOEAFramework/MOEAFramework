@@ -17,8 +17,7 @@
  */
 package org.moeaframework.examples.gp.regression;
 
-import org.apache.commons.math.FunctionEvaluationException;
-import org.apache.commons.math.analysis.UnivariateRealFunction;
+import org.apache.commons.math3.analysis.UnivariateFunction;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.Program;
 import org.moeaframework.problem.AbstractProblem;
@@ -44,7 +43,7 @@ public class SymbolicRegression extends AbstractProblem {
 	/**
 	 * The actual function implementation.
 	 */
-	private final UnivariateRealFunction function;
+	private final UnivariateFunction function;
 	
 	/**
 	 * The lower bound for comparing the actual and approximate functions.
@@ -93,12 +92,9 @@ public class SymbolicRegression extends AbstractProblem {
 	 *        approximate functions
 	 * @param steps the number of comparisons made between the actual and
 	 *        approximate functions
-	 * @throws FunctionEvaluationException if an error occurred when evaluating
-	 *         the actual function
 	 */
-	public SymbolicRegression(UnivariateRealFunction function,
-			double lowerBound, double upperBound, int steps)
-					throws FunctionEvaluationException {
+	public SymbolicRegression(UnivariateFunction function,
+			double lowerBound, double upperBound, int steps) {
 		super(1, 1);
 		this.function = function;
 		this.lowerBound = lowerBound;
@@ -135,7 +131,7 @@ public class SymbolicRegression extends AbstractProblem {
 	 * 
 	 * @return the actual function implementation
 	 */
-	public UnivariateRealFunction getFunction() {
+	public UnivariateFunction getFunction() {
 		return function;
 	}
 

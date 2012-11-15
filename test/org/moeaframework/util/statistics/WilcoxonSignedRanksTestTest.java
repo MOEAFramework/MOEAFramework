@@ -17,7 +17,6 @@
  */
 package org.moeaframework.util.statistics;
 
-import org.apache.commons.math.MathException;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -28,11 +27,9 @@ public class WilcoxonSignedRanksTestTest {
 
 	/**
 	 * Test from Sheskin (2004) in Chapter 6.
-	 * 
-	 * @throws MathException should not occur
 	 */
 	@Test
-	public void testExample1() throws MathException {
+	public void testExample1() {
 		WilcoxonSignedRanksTest test = new WilcoxonSignedRanksTest(5.0);
 		test.add(9);
 		test.add(10);
@@ -52,11 +49,9 @@ public class WilcoxonSignedRanksTestTest {
 	 * Example from
 	 * <a href="http://en.wikipedia.org/wiki/Wilcoxon_signed-rank_test">
 	 * Wikipedia</a>.
-	 * 
-	 * @throws MathException should not occur
 	 */
 	@Test
-	public void testExample2() throws MathException {
+	public void testExample2() {
 		WilcoxonSignedRanksTest test = new WilcoxonSignedRanksTest(0.0);
 		test.add(15);
 		test.add(-7);
@@ -76,11 +71,9 @@ public class WilcoxonSignedRanksTestTest {
 	/**
 	 * Example from <a href="http://faculty.vassar.edu/lowry/ch12a.html">
 	 * http://faculty.vassar.edu/lowry/ch12a.html</a>
-	 * 
-	 * @throws MathException should not occur
 	 */
 	@Test
-	public void testExample3() throws MathException {
+	public void testExample3() {
 		WilcoxonSignedRanksTest test = new WilcoxonSignedRanksTest(0.0);
 		test.add(0);
 		test.add(0);
@@ -107,7 +100,7 @@ public class WilcoxonSignedRanksTestTest {
 	 * At least six observations not equal to the median are required.
 	 */
 	@Test(expected = IllegalArgumentException.class)
-	public void testAllEqual() throws MathException {
+	public void testAllEqual() {
 		WilcoxonSignedRanksTest test = new WilcoxonSignedRanksTest(10.0);
 		test.add(10);
 		test.add(10);

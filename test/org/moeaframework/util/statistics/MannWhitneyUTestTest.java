@@ -18,7 +18,6 @@
 package org.moeaframework.util.statistics;
 
 import org.junit.Assert;
-import org.apache.commons.math.MathException;
 import org.junit.Test;
 import org.moeaframework.TestThresholds;
 
@@ -29,11 +28,9 @@ public class MannWhitneyUTestTest {
 
 	/**
 	 * Test from Sheskin (2004) in Chapter 12.
-	 * 
-	 * @throws MathException should not occur
 	 */
 	@Test
-	public void testExample1() throws MathException {
+	public void testExample1() {
 		MannWhitneyUTest test = new MannWhitneyUTest();
 		test.add(11, 0);
 		test.add(1, 0);
@@ -55,7 +52,7 @@ public class MannWhitneyUTestTest {
 	 * Wikipedia</a>
 	 */
 	@Test
-	public void testExample2() throws MathException {
+	public void testExample2() {
 		MannWhitneyUTest test = new MannWhitneyUTest();
 
 		for (int i = 0; i <= 8; i++) {
@@ -79,7 +76,7 @@ public class MannWhitneyUTestTest {
 	}
 	
 	@Test
-	public void testAllEqual() throws MathException {
+	public void testAllEqual() {
 		MannWhitneyUTest test = new MannWhitneyUTest();
 		test.add(10, 0);
 		test.add(10, 0);

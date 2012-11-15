@@ -17,8 +17,7 @@
  */
 package org.moeaframework.util.statistics;
 
-import org.apache.commons.math.MathException;
-import org.apache.commons.math.stat.inference.TestUtils;
+import org.apache.commons.math3.stat.inference.TestUtils;
 
 /**
  * The Single-Sample t test determines if the population's mean equals some
@@ -86,7 +85,7 @@ public class SingleSampleTTest extends IntervalRatioStatisticalTest {
 	}
 
 	@Override
-	public boolean test(double alpha) throws MathException {
+	public boolean test(double alpha) {
 		return TestUtils.tTest(mean, categorize().get(0), alpha);
 	}
 

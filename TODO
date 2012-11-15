@@ -12,6 +12,9 @@ any changes.
  Easy
 ------
 
+  - Look for any existing functionality that can be replaced by one of the
+    existing libraries.
+
   - Update the diagnostic GUI with new library version numbers.
 
   - Check if the new JMetal fixes any of the ignored problem instances.
@@ -48,8 +51,6 @@ any changes.
   - The recently-added misc problems from Van Veldhuizen's dissertation need
     reference set files.  Until reference sets are added, they can't be used
     in the MOEA diagnostic tool.
-    
-  - Upgrade to Apache Commons Math 3.0
   
   - Add reporting function to Executor which periodically outputs progress
     reports.  It would probably be a good design to provide functionality

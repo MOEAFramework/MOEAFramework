@@ -17,10 +17,9 @@
  */
 package org.moeaframework.util;
 
-import org.apache.commons.math.linear.LUDecomposition;
-import org.apache.commons.math.linear.LUDecompositionImpl;
-import org.apache.commons.math.linear.RealMatrix;
-import org.apache.commons.math.util.MathUtils;
+import org.apache.commons.math3.linear.LUDecomposition;
+import org.apache.commons.math3.linear.RealMatrix;
+import org.apache.commons.math3.util.ArithmeticUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.AbsoluteError;
@@ -44,7 +43,7 @@ public class RotationMatrixBuilderTest {
 	 * @param rm the matrix to test
 	 */
 	public void testRotationMatrix(RealMatrix rm) {
-		LUDecomposition lu = new LUDecompositionImpl(rm);
+		LUDecomposition lu = new LUDecomposition(rm);
 		
 		Assert.assertEquals(1.0, lu.getDeterminant(), Settings.EPS);
 		TestUtils.assertEquals(rm.transpose(), lu.getSolver().getInverse(), 
@@ -95,7 +94,7 @@ public class RotationMatrixBuilderTest {
 	@Test
 	public void testRotateK() {
 		for (int n=2; n<N; n++) {
-			for (int k=0; k<=MathUtils.binomialCoefficient(n, 2); k++) {
+			for (int k=0; k<=ArithmeticUtils.binomialCoefficient(n, 2); k++) {
 				RotationMatrixBuilder builder = new RotationMatrixBuilder(n);
 				builder.rotateK(k);
 				
@@ -112,7 +111,7 @@ public class RotationMatrixBuilderTest {
 	@Test
 	public void testRotateAll() {
 		for (int n=2; n<N; n++) {
-			for (int k=0; k<=MathUtils.binomialCoefficient(n, 2); k++) {
+			for (int k=0; k<=ArithmeticUtils.binomialCoefficient(n, 2); k++) {
 				RotationMatrixBuilder builder = new RotationMatrixBuilder(n);
 				builder.rotateAll();
 				
