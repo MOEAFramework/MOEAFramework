@@ -35,7 +35,7 @@ public class JMetalAlgorithmAdapter implements Algorithm {
 	/**
 	 * The JMetal algorithm.
 	 */
-	private final jmetal.base.Algorithm algorithm;
+	private final jmetal.core.Algorithm algorithm;
 
 	/**
 	 * The JMetal problem adapter.
@@ -45,14 +45,14 @@ public class JMetalAlgorithmAdapter implements Algorithm {
 	/**
 	 * The JMetal solution set.
 	 */
-	private jmetal.base.SolutionSet solutionSet;
+	private jmetal.core.SolutionSet solutionSet;
 
 	/**
 	 * Constructs an adapter for the specified JMetal algorithm.
 	 * 
 	 * @param algorithm the JMetal algorithm
 	 */
-	public JMetalAlgorithmAdapter(jmetal.base.Algorithm algorithm,
+	public JMetalAlgorithmAdapter(jmetal.core.Algorithm algorithm,
 			JMetalProblemAdapter problem) {
 		super();
 		this.algorithm = algorithm;
@@ -128,7 +128,7 @@ public class JMetalAlgorithmAdapter implements Algorithm {
 	@Override
 	public void terminate() {
 		if (solutionSet == null) {
-			solutionSet = new jmetal.base.SolutionSet();
+			solutionSet = new jmetal.core.SolutionSet();
 		}
 	}
 

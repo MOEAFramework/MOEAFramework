@@ -1,6 +1,20 @@
 This file documents the major changes implemented in each release of the MOEA
 Framework.
 
+-------------------
+ Version 2.0 (TBD)
+-------------------
+
+  * The release of version 2.0 brings about significant changes to the MOEA
+    Framework.  Old, deprecated APIs have been removed.  Third-party libraries
+    have been upgraded to their latest versions.  As a result, upgrading from
+    the 1.x to 2.x may break existing code.  Users may continue to use the 1.x
+    series, but new features and improvements will only be added to the 2.x
+    series.
+    
+  * Upgraded to JMetal 4.2.
+
+
 ----------------------------
  Version 1.17 (14 Nov 2012)
 ----------------------------

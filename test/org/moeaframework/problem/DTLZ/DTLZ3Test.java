@@ -114,7 +114,7 @@ public class DTLZ3Test extends ProblemTest {
 	 * @throws Exception if a JMetal error occurred
 	 */
 	protected void test(int M) throws Exception {
-		jmetal.base.Problem problemA = new jmetal.problems.DTLZ.DTLZ3("Real",
+		jmetal.core.Problem problemA = new jmetal.problems.DTLZ.DTLZ3("Real",
 				M + 9, M);
 		Problem problemB = new org.moeaframework.problem.DTLZ.DTLZ3(M);
 

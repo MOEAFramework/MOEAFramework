@@ -242,16 +242,28 @@ public class StandardAlgorithms extends AlgorithmProvider {
 
 		Variation variation = OperatorFactory.getInstance().getVariation(
 				"de+pm", properties, problem);
+		
+		int neighborhoodSize = 20;
+		int eta = 2;
+		
+		if (properties.contains("neighborhoodSize")) {
+			neighborhoodSize = Math.max(20, 
+					(int)(properties.getDouble("neighborhoodSize", 0.1)
+							* populationSize));
+		}
+		
+		if (properties.contains("eta")) {
+			eta = Math.max(2, (int)(properties.getDouble("eta", 0.01) 
+					* populationSize));
+		}
 
 		MOEAD algorithm = new MOEAD(
 				problem,
-				Math.max(2, (int)(properties.getDouble("neighborhoodSize", 0.1)
-						* populationSize)),
+				neighborhoodSize,
 				initialization,
 				variation,
 				properties.getDouble("delta", 0.9),
-				Math.max(1, (int)(properties.getDouble("eta", 0.01) 
-						* populationSize)),
+				eta,
 				(int)properties.getDouble("updateUtility", -1));
 
 		return algorithm;

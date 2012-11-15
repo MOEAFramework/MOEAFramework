@@ -17,10 +17,10 @@
  */
 package org.moeaframework.algorithm.jmetal;
 
-import jmetal.base.SolutionType;
-import jmetal.base.solutionType.BinarySolutionType;
-import jmetal.base.solutionType.PermutationSolutionType;
-import jmetal.base.solutionType.RealSolutionType;
+import jmetal.core.SolutionType;
+import jmetal.encodings.solutionType.BinarySolutionType;
+import jmetal.encodings.solutionType.PermutationSolutionType;
+import jmetal.encodings.solutionType.RealSolutionType;
 
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
@@ -34,7 +34,7 @@ import org.moeaframework.problem.ProblemException;
  * Adapter for JMetal problems. This allows MOEA Framework {@link Problem}s to
  * be used within the JMetal library.
  */
-public class JMetalProblemAdapter extends jmetal.base.Problem {
+public class JMetalProblemAdapter extends jmetal.core.Problem {
 
 	private static final long serialVersionUID = 668044250314229409L;
 
@@ -109,10 +109,12 @@ public class JMetalProblemAdapter extends jmetal.base.Problem {
 		} catch (ClassNotFoundException e) {
 			throw new ProblemException(problem, e);
 		}
+		
+		solutionType_ = solutionType;
 	}
 
 	@Override
-	public void evaluate(jmetal.base.Solution solution)
+	public void evaluate(jmetal.core.Solution solution)
 			throws jmetal.util.JMException {
 		Solution result = translate(solution);
 
@@ -147,27 +149,30 @@ public class JMetalProblemAdapter extends jmetal.base.Problem {
 	 * @param solution the JMetal solution to be translated
 	 * @return the translated solution
 	 */
-	public Solution translate(jmetal.base.Solution solution) {
+	public Solution translate(jmetal.core.Solution solution) {
 		Solution result = problem.newSolution();
 
 		for (int i = 0; i < solution.numberOfVariables(); i++) {
-			jmetal.base.Variable variable = solution.getDecisionVariables()[i];
-			if (variable instanceof jmetal.base.variable.Real) {
-				jmetal.base.variable.Real real = 
-						(jmetal.base.variable.Real)variable;
+			jmetal.core.Variable variable = solution.getDecisionVariables()[i];
+			if (variable instanceof jmetal.encodings.variable.Real) {
+				jmetal.encodings.variable.Real real = 
+						(jmetal.encodings.variable.Real)variable;
 				result.setVariable(i, new RealVariable(real.getValue(), real
 						.getLowerBound(), real.getUpperBound()));
-			} else if (variable instanceof jmetal.base.variable.Binary) {
-				jmetal.base.variable.Binary binary = 
-						(jmetal.base.variable.Binary)variable;
-				BinaryVariable bv = new BinaryVariable(binary.getNumberOfBits());
+			} else if (variable instanceof jmetal.encodings.variable.Binary) {
+				jmetal.encodings.variable.Binary binary = 
+						(jmetal.encodings.variable.Binary)variable;
+				BinaryVariable bv = new BinaryVariable(
+						binary.getNumberOfBits());
+				
 				for (int j = 0; j < binary.getNumberOfBits(); j++) {
 					bv.set(j, binary.getIth(j));
 				}
+				
 				result.setVariable(i, bv);
-			} else if (variable instanceof jmetal.base.variable.Permutation) {
-				jmetal.base.variable.Permutation permutation = 
-						(jmetal.base.variable.Permutation)variable;
+			} else if (variable instanceof jmetal.encodings.variable.Permutation) {
+				jmetal.encodings.variable.Permutation permutation = 
+						(jmetal.encodings.variable.Permutation)variable;
 				Permutation p = new Permutation(permutation.vector_);
 				result.setVariable(i, p);
 			} else {

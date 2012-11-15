@@ -74,7 +74,7 @@ public class CEC2009Test extends ProblemTest {
 	}
 
 	public void test(String problem) throws Exception {
-		jmetal.base.Problem problemA;
+		jmetal.core.Problem problemA;
 		Problem problemB;
 
 		if (problem.equals("UF1")) {

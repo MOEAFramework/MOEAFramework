@@ -17,21 +17,15 @@
  */
 package org.moeaframework.algorithm.jmetal;
 
+import java.util.HashMap;
 import java.util.Properties;
 
-import jmetal.base.Operator;
-import jmetal.base.SolutionType;
-import jmetal.base.operator.comparator.FPGAFitnessComparator;
-import jmetal.base.operator.comparator.FitnessComparator;
-import jmetal.base.operator.crossover.CrossoverFactory;
-import jmetal.base.operator.localSearch.MutationLocalSearch;
-import jmetal.base.operator.mutation.MutationFactory;
-import jmetal.base.operator.selection.BinaryTournament;
-import jmetal.base.operator.selection.SelectionFactory;
-import jmetal.base.solutionType.BinaryRealSolutionType;
-import jmetal.base.solutionType.BinarySolutionType;
-import jmetal.base.solutionType.PermutationSolutionType;
-import jmetal.base.solutionType.RealSolutionType;
+import jmetal.core.Operator;
+import jmetal.core.SolutionType;
+import jmetal.encodings.solutionType.BinaryRealSolutionType;
+import jmetal.encodings.solutionType.BinarySolutionType;
+import jmetal.encodings.solutionType.PermutationSolutionType;
+import jmetal.encodings.solutionType.RealSolutionType;
 import jmetal.metaheuristics.abyss.AbYSS;
 import jmetal.metaheuristics.cellde.CellDE;
 import jmetal.metaheuristics.densea.DENSEA;
@@ -47,7 +41,25 @@ import jmetal.metaheuristics.pesa2.PESA2;
 import jmetal.metaheuristics.smpso.SMPSO;
 import jmetal.metaheuristics.smsemoa.SMSEMOA;
 import jmetal.metaheuristics.spea2.SPEA2;
+import jmetal.operators.crossover.DifferentialEvolutionCrossover;
+import jmetal.operators.crossover.HUXCrossover;
+import jmetal.operators.crossover.PMXCrossover;
+import jmetal.operators.crossover.SBXCrossover;
+import jmetal.operators.crossover.SinglePointCrossover;
+import jmetal.operators.localSearch.MutationLocalSearch;
+import jmetal.operators.mutation.BitFlipMutation;
+import jmetal.operators.mutation.NonUniformMutation;
+import jmetal.operators.mutation.PolynomialMutation;
+import jmetal.operators.mutation.SwapMutation;
+import jmetal.operators.mutation.UniformMutation;
+import jmetal.operators.selection.BinaryTournament;
+import jmetal.operators.selection.BinaryTournament2;
+import jmetal.operators.selection.DifferentialEvolutionSelection;
+import jmetal.operators.selection.RandomSelection;
+import jmetal.operators.selection.RankingAndCrowdingSelection;
 import jmetal.util.JMException;
+import jmetal.util.comparators.FPGAFitnessComparator;
+import jmetal.util.comparators.FitnessComparator;
 
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.Problem;
@@ -119,7 +131,7 @@ import org.moeaframework.util.TypedProperties;
  *     <td>OMOPSO</td>
  *     <td>Real*</td>
  *     <td>{@code populationSize, archiveSize, maxEvaluations, 
- *         perturbationIndex}</td>
+ *         mutationProbability, perturbationIndex}</td>
  *   </tr>
  *   <tr>
  *     <td>PAES</td>
@@ -196,7 +208,7 @@ public class JMetalAlgorithms extends AlgorithmProvider {
 			Problem problem) {
 		TypedProperties typedProperties = new TypedProperties(properties);
 		JMetalProblemAdapter adapter = new JMetalProblemAdapter(problem);
-		jmetal.base.Algorithm algorithm = null;
+		jmetal.core.Algorithm algorithm = null;
 
 		try {
 			if (name.equalsIgnoreCase("AbYSS") ||
@@ -266,44 +278,41 @@ public class JMetalAlgorithms extends AlgorithmProvider {
 	 * @param problem the problem adapter
 	 * @throws JMException if an error occurred when constructing the operators
 	 */
-	private void setupVariationOperators(jmetal.base.Algorithm algorithm,
+	private void setupVariationOperators(jmetal.core.Algorithm algorithm,
 			TypedProperties properties, JMetalProblemAdapter problem)
 			throws JMException {
 		Operator crossover = null;
 		Operator mutation = null;
+		HashMap<String, Object> parameters = null;
 		SolutionType solutionType = problem.getSolutionType();
 
 		if ((solutionType instanceof BinarySolutionType)
 				|| (solutionType instanceof BinaryRealSolutionType)) {
-			crossover = CrossoverFactory
-					.getCrossoverOperator("SinglePointCrossover");
-			crossover.setParameter("probability", properties.getDouble(
-					"1x.rate", 0.9));
+			parameters = new HashMap<String, Object>();
+			parameters.put("probability", properties.getDouble("1x.rate", 0.9));
+			crossover = new SinglePointCrossover(parameters);
 
-			mutation = MutationFactory.getMutationOperator("BitFlipMutation");
-			mutation.setParameter("probability", properties.getDouble(
-					"bf.rate", 1.0 / problem.getLength(0)));
+			parameters = new HashMap<String, Object>();
+			parameters.put("probability", properties.getDouble("bf.rate", 1.0 / problem.getLength(0)));
+			mutation = new BitFlipMutation(parameters);
 		} else if (solutionType instanceof RealSolutionType) {
-			crossover = CrossoverFactory.getCrossoverOperator("SBXCrossover");
-			crossover.setParameter("probability", properties.getDouble(
-					"sbx.rate", 1.0));
-			crossover.setParameter("distributionIndex", properties.getDouble(
-					"sbx.distributionIndex", 15.0));
+			parameters = new HashMap<String, Object>();
+			parameters.put("probability", properties.getDouble("sbx.rate", 1.0));
+			parameters.put("distributionIndex", properties.getDouble("sbx.distributionIndex", 15.0));
+			crossover = new SBXCrossover(parameters);
 
-			mutation = MutationFactory
-					.getMutationOperator("PolynomialMutation");
-			mutation.setParameter("probability", properties.getDouble(
-					"pm.rate", 1.0 / problem.getNumberOfVariables()));
-			mutation.setParameter("distributionIndex", properties.getDouble(
-					"pm.distributionIndex", 20.0));
+			parameters = new HashMap<String, Object>();
+			parameters.put("probability", properties.getDouble("pm.rate", 1.0 / problem.getNumberOfVariables()));
+			parameters.put("distributionIndex", properties.getDouble("pm.distributionIndex", 20.0));
+			mutation = new PolynomialMutation(parameters);
 		} else if (solutionType instanceof PermutationSolutionType) {
-			crossover = CrossoverFactory.getCrossoverOperator("PMXCrossover");
-			crossover.setParameter("probability", properties.getDouble(
-					"pmx.rate", 1.0));
+			parameters = new HashMap<String, Object>();
+			parameters.put("probability", properties.getDouble("pmx.rate", 1.0));
+			crossover = new PMXCrossover(parameters);
 
-			mutation = MutationFactory.getMutationOperator("SwapMutation");
-			mutation.setParameter("probability", properties.getDouble(
-					"swap.rate", 0.35));
+			parameters = new HashMap<String, Object>();
+			parameters.put("probability", properties.getDouble("swap.rate", 0.35));
+			mutation = new SwapMutation(parameters);
 		} else {
 			throw new JMException("solution type not supported");
 		}
@@ -339,24 +348,22 @@ public class JMetalAlgorithms extends AlgorithmProvider {
 				(int)properties.getDouble("archiveSize", 100));
 		algorithm.setInputParameter("maxEvaluations", 
 				(int)properties.getDouble("maxEvaluations", 25000));
+		
+		HashMap<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("probability", properties.getDouble("sbx.rate", 1.0));
+		parameters.put("distributionIndex", properties.getDouble("sbx.distributionIndex", 15.0));
+		Operator crossover = new SBXCrossover(parameters);
 
-		Operator crossover = CrossoverFactory.getCrossoverOperator(
-				"SBXCrossover");
-		crossover.setParameter("probability", 
-				properties.getDouble("sbx.rate", 1.0));
-		crossover.setParameter("distributionIndex", 
-				properties.getDouble("sbx.distributionIndex", 20.0));
+		parameters = new HashMap<String, Object>();
+		parameters.put("probability", properties.getDouble("pm.rate", 1.0 / problem.getNumberOfVariables()));
+		parameters.put("distributionIndex", properties.getDouble("pm.distributionIndex", 20.0));
+		Operator mutation = new PolynomialMutation(parameters);
 
-		Operator mutation = MutationFactory.getMutationOperator(
-				"PolynomialMutation");
-		mutation.setParameter("probability", properties.getDouble("pm.rate", 
-				1.0 / problem.getNumberOfVariables()));
-		mutation.setParameter("distributionIndex", 
-				properties.getDouble("pm.distributionIndex", 20.0));
-
-		Operator improvement = new MutationLocalSearch(problem, mutation);
-		improvement.setParameter("improvementRounds", 
-				(int)properties.getDouble("improvementRounds", 1));
+		parameters = new HashMap<String, Object>();
+		parameters.put("problem", problem);
+		parameters.put("improvementRounds", (int)properties.getDouble("improvementRounds", 1));
+		parameters.put("mutation", mutation);
+		Operator improvement = new MutationLocalSearch(parameters);
 
 		algorithm.addOperator("crossover", crossover);
 		algorithm.addOperator("improvement", improvement);
@@ -391,14 +398,12 @@ public class JMetalAlgorithms extends AlgorithmProvider {
 		algorithm.setInputParameter("feedBack", 
 				(int)properties.getDouble("feedBack", 20));
 
-		Operator crossover = CrossoverFactory.getCrossoverOperator(
-				"DifferentialEvolutionCrossover");
-		crossover.setParameter("de.crossoverRate", 
-				properties.getDouble("CR",0.5));
-		crossover.setParameter("de.stepSize", properties.getDouble("F", 0.5));
-
-		Operator selection = SelectionFactory.getSelectionOperator(
-				"BinaryTournament");
+		HashMap<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("CR", properties.getDouble("de.crossoverRate", 0.1));
+		parameters.put("F", properties.getDouble("de.stepSize", 0.5));
+		Operator crossover = new DifferentialEvolutionCrossover(parameters);
+		
+		Operator selection = new BinaryTournament(null);
 
 		algorithm.addOperator("crossover", crossover);
 		algorithm.addOperator("selection", selection);
@@ -426,7 +431,7 @@ public class JMetalAlgorithms extends AlgorithmProvider {
 
 		setupVariationOperators(algorithm, properties, problem);
 
-		Operator selection = new BinaryTournament();
+		Operator selection = new BinaryTournament(null);
 		algorithm.addOperator("selection", selection);
 
 		return algorithm;
@@ -460,7 +465,10 @@ public class JMetalAlgorithms extends AlgorithmProvider {
 
 		setupVariationOperators(algorithm, properties, problem);
 
-		Operator selection = new BinaryTournament(new FPGAFitnessComparator());
+		HashMap<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("comparator", new FPGAFitnessComparator());
+		Operator selection = new BinaryTournament(parameters);
+		
 		algorithm.addOperator("selection", selection);
 
 		return algorithm;
@@ -488,14 +496,12 @@ public class JMetalAlgorithms extends AlgorithmProvider {
 		algorithm.setInputParameter("maxIterations", (int)properties.getDouble(
 				"maxEvaluations", 25000) / populationSize);
 
-		Operator crossover = CrossoverFactory.getCrossoverOperator(
-				"DifferentialEvolutionCrossover");                   
-		crossover.setParameter("CR", 
-				properties.getDouble("de.crossoverRate", 0.1));                   
-		crossover.setParameter("F", properties.getDouble("de.stepSize", 0.5));
+		HashMap<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("CR", properties.getDouble("de.crossoverRate", 0.1));
+		parameters.put("F", properties.getDouble("de.stepSize", 0.5));
+		Operator crossover = new DifferentialEvolutionCrossover(parameters);
 
-		Operator selection = SelectionFactory.getSelectionOperator(
-				"DifferentialEvolutionSelection") ;
+		Operator selection = new DifferentialEvolutionSelection(null);
 
 		algorithm.addOperator("crossover", crossover);
 		algorithm.addOperator("selection", selection);
@@ -525,7 +531,10 @@ public class JMetalAlgorithms extends AlgorithmProvider {
 
 		setupVariationOperators(algorithm, properties, problem);
 
-		Operator selection = new BinaryTournament(new FitnessComparator());
+		HashMap<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("comparator", new FitnessComparator());
+		Operator selection = new BinaryTournament(parameters);
+		
 		algorithm.addOperator("selection", selection);
 
 		return algorithm;
@@ -555,8 +564,7 @@ public class JMetalAlgorithms extends AlgorithmProvider {
 
 		setupVariationOperators(algorithm, properties, problem);
 
-		Operator selection = SelectionFactory.getSelectionOperator(
-				"BinaryTournament");
+		Operator selection = new BinaryTournament(null);
 		algorithm.addOperator("selection", selection);
 
 		return algorithm;
@@ -591,22 +599,19 @@ public class JMetalAlgorithms extends AlgorithmProvider {
 		algorithm.setInputParameter("maxEvaluations", 
 				(int)properties.getDouble("maxEvaluations", 25000));
 
-		Operator crossoverOperator = CrossoverFactory.getCrossoverOperator(
-				"HUXCrossover");
-		crossoverOperator.setParameter("probability", 
-				properties.getDouble("hux.rate", 1.0));
+		HashMap<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("probability", properties.getDouble("hux.rate", 1.0));
+		Operator crossoverOperator = new HUXCrossover(parameters);
 
-		Operator mutationOperator = MutationFactory.getMutationOperator(
-				"BitFlipMutation");
-		mutationOperator.setParameter("probability", 
-				properties.getDouble("bf.rate", 0.35));
+		parameters = new HashMap<String, Object>();
+		parameters.put("probability", properties.getDouble("bf.rate", 0.35));
+		Operator mutationOperator = new BitFlipMutation(parameters);
 
-		Operator parentsSelection = SelectionFactory.getSelectionOperator(
-				"RandomSelection");
+		Operator parentsSelection = new RandomSelection(null);
 
-		Operator newGenerationSelection = SelectionFactory.getSelectionOperator(
-				"RankingAndCrowdingSelection");
-		newGenerationSelection.setParameter("problem", problem);
+		parameters = new HashMap<String, Object>();
+		parameters.put("problem", problem);
+		Operator newGenerationSelection = new RankingAndCrowdingSelection(parameters);
 
 		algorithm.addOperator("crossover", crossoverOperator);
 		algorithm.addOperator("cataclysmicMutation", mutationOperator);
@@ -627,8 +632,7 @@ public class JMetalAlgorithms extends AlgorithmProvider {
 
 		setupVariationOperators(algorithm, properties, problem);
 
-	    Operator selection = SelectionFactory.getSelectionOperator(
-	    		"BinaryTournament2") ;                           
+	    Operator selection = new BinaryTournament2(null);                           
 	    algorithm.addOperator("selection", selection);
 	    
 	    return algorithm;
@@ -651,14 +655,28 @@ public class JMetalAlgorithms extends AlgorithmProvider {
 
 		OMOPSO algorithm = new OMOPSO(problem);
 		int populationSize = (int)properties.getDouble("populationSize", 100);
+		int maxIterations = (int)properties.getDouble("maxEvaluations", 25000) /
+				populationSize;
+		double mutationProbability = 1.0 / problem.getNumberOfVariables();
 
 		algorithm.setInputParameter("swarmSize", populationSize);
 		algorithm.setInputParameter("archiveSize", 
 				(int)properties.getDouble("archiveSize", 100));
-		algorithm.setInputParameter("maxIterations", (int)properties.getDouble(
-				"maxEvaluations", 25000) / populationSize);
-		algorithm.setInputParameter("perturbationIndex", 
-				properties.getDouble("perturbationIndex", 0.5));
+		algorithm.setInputParameter("maxIterations", maxIterations);
+		
+		HashMap<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("probability", properties.getDouble("mutationProbability", mutationProbability));
+		parameters.put("perturbation", properties.getDouble("perturbationIndex", 0.5));
+		Operator uniformMutation = new UniformMutation(parameters);
+		
+		parameters = new HashMap<String, Object>();
+		parameters.put("probability", properties.getDouble("mutationProbability", mutationProbability));
+		parameters.put("perturbation", properties.getDouble("perturbationIndex", 0.5));
+		parameters.put("maxIterations", maxIterations);
+		Operator nonUniformMutation = new NonUniformMutation(parameters);
+		
+		algorithm.addOperator("uniformMutation", uniformMutation);
+	    algorithm.addOperator("nonUniformMutation", nonUniformMutation);
 
 		return algorithm;
 	}
@@ -733,19 +751,19 @@ public class JMetalAlgorithms extends AlgorithmProvider {
 
 		SMPSO algorithm = new SMPSO(problem);
 		int populationSize = (int)properties.getDouble("populationSize", 100);
+		int maxIterations = (int)properties.getDouble("maxEvaluations", 25000) /
+				populationSize;
 
 		algorithm.setInputParameter("swarmSize", populationSize);
 		algorithm.setInputParameter("archiveSize", 
 				(int)properties.getDouble("archiveSize", 100));
-		algorithm.setInputParameter("maxIterations", (int)properties.getDouble(
-				"maxEvaluations", 25000) / populationSize);
+		algorithm.setInputParameter("maxIterations", maxIterations);
+		
+		HashMap<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("probability", properties.getDouble("pm.rate", 1.0 / problem.getNumberOfVariables()));
+		parameters.put("distributionIndex", properties.getDouble("pm.distributionIndex", 20.0));
+		Operator mutation = new PolynomialMutation(parameters);
 
-		Operator mutation = MutationFactory.getMutationOperator(
-				"PolynomialMutation");
-		mutation.setParameter("probability", properties.getDouble("pm.rate",
-				1.0 / problem.getNumberOfVariables()));
-		mutation.setParameter("distributionIndex", 
-				properties.getDouble("pm.distributionIndex", 20.0));
 		algorithm.addOperator("mutation", mutation);
 
 		return algorithm;
@@ -773,8 +791,7 @@ public class JMetalAlgorithms extends AlgorithmProvider {
 
 		setupVariationOperators(algorithm, properties, problem);
 
-		Operator selection = SelectionFactory.getSelectionOperator(
-				"BinaryTournament");
+		Operator selection = new BinaryTournament(null);
 		algorithm.addOperator("selection", selection);
 
 		return algorithm;
@@ -793,7 +810,6 @@ public class JMetalAlgorithms extends AlgorithmProvider {
 			JMetalProblemAdapter problem) throws JMException {
 		SMSEMOA algorithm = new SMSEMOA(problem);
 
-		// Algorithm parameters
 		algorithm.setInputParameter("populationSize", 
 				(int)properties.getDouble("populationSize", 100));
 		algorithm.setInputParameter("maxEvaluations", 
@@ -803,8 +819,7 @@ public class JMetalAlgorithms extends AlgorithmProvider {
 
 		setupVariationOperators(algorithm, properties, problem);
 
-		Operator selection = SelectionFactory.getSelectionOperator(
-				"RandomSelection");
+		Operator selection = new RandomSelection(null);
 		algorithm.addOperator("selection", selection);
 
 		return algorithm;

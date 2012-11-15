@@ -37,12 +37,12 @@ public abstract class ProblemTest {
 	 * @param problemB the MOEA Framework problem
 	 * @throws Exception if an error occurred in JMetal
 	 */
-	protected void test(jmetal.base.Problem problemA, Problem problemB)
+	protected void test(jmetal.core.Problem problemA, Problem problemB)
 			throws Exception {
 		JMetalProblemAdapter adapter = new JMetalProblemAdapter(problemB);
 		
 		for (int i = 0; i < TestThresholds.SAMPLES; i++) {
-			jmetal.base.Solution solutionA = new jmetal.base.Solution(problemA);
+			jmetal.core.Solution solutionA = new jmetal.core.Solution(problemA);
 			Solution solutionB = adapter.translate(solutionA);
 
 			problemA.evaluate(solutionA);
@@ -59,7 +59,7 @@ public abstract class ProblemTest {
 	 * @param solutionA the JMetal solution
 	 * @param solutionB the MOEA Framework solution
 	 */
-	protected void compare(jmetal.base.Solution solutionA, Solution solutionB) {
+	protected void compare(jmetal.core.Solution solutionA, Solution solutionB) {
 		for (int i = 0; i < solutionA.numberOfObjectives(); i++) {
 			TestUtils.assertEquals(solutionA.getObjective(i), 
 					solutionB.getObjective(i));

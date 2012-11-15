@@ -52,10 +52,6 @@ any changes.
   - Upgrade to JFreeChart 1.0.14, JCommon 1.0.17
   
   - Upgrade to Checkstyle 5.6
-
-  - Upgrade to JMetal 4.0.  Some work is required since some packages changed
-    between version 3.1 and 4.0.  This change will likely have to wait until a
-    major revision as backwards compatibility will likely break.
   
   - Add reporting function to Executor which periodically outputs progress
     reports.  It would probably be a good design to provide functionality

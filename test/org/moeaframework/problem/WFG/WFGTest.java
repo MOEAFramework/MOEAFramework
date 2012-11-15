@@ -339,7 +339,7 @@ public class WFGTest extends ProblemTest {
 	}
 
 	public void test(String problem, int M) throws Exception {
-		jmetal.base.Problem problemA;
+		jmetal.core.Problem problemA;
 		Problem problemB;
 
 		int k = M - 1;

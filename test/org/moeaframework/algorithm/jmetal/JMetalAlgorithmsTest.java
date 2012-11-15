@@ -348,7 +348,7 @@ public class JMetalAlgorithmsTest {
 		JMetalProblemAdapter adapter = new JMetalProblemAdapter(
 				new DistributedProblem(realProblem, 
 						Executors.newSingleThreadExecutor()));
-		jmetal.base.Solution solution = new jmetal.base.Solution(adapter);
+		jmetal.core.Solution solution = new jmetal.core.Solution(adapter);
 		
 		//this will throw an exception if the distributed problem is not 
 		//correctly handled

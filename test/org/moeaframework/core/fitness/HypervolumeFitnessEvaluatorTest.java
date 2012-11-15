@@ -17,7 +17,7 @@
  */
 package org.moeaframework.core.fitness;
 
-import jmetal.base.SolutionSet;
+import jmetal.core.SolutionSet;
 import jmetal.metaheuristics.ibea.IBEA;
 
 import org.junit.Test;
@@ -64,7 +64,7 @@ public class HypervolumeFitnessEvaluatorTest {
 		SolutionSet theirPopulation = new SolutionSet(myPopulation.size());
 		
 		for (Solution mySolution : myPopulation) {
-			jmetal.base.Solution theirSolution = new jmetal.base.Solution(
+			jmetal.core.Solution theirSolution = new jmetal.core.Solution(
 					mySolution.getNumberOfObjectives());
 			
 			for (int i=0; i<mySolution.getNumberOfObjectives(); i++) {

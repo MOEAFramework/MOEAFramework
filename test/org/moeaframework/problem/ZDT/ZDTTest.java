@@ -94,7 +94,7 @@ public class ZDTTest extends ProblemTest {
 	 * @throws Exception should not occur
 	 */
 	private void test(String problem) throws Exception {
-		jmetal.base.Problem problemA;
+		jmetal.core.Problem problemA;
 		Problem problemB;
 
 		if (problem.equals("ZDT1")) {
@@ -110,7 +110,7 @@ public class ZDTTest extends ProblemTest {
 			problemA = new jmetal.problems.ZDT.ZDT4("Real");
 			problemB = new org.moeaframework.problem.ZDT.ZDT4();
 		} else if (problem.equals("ZDT5")) {
-			problemA = new jmetal.problems.ZDT.ZDT5();
+			problemA = new jmetal.problems.ZDT.ZDT5("Real");
 			problemB = new org.moeaframework.problem.ZDT.ZDT5();
 		} else if (problem.equals("ZDT6")) {
 			problemA = new jmetal.problems.ZDT.ZDT6("Real");

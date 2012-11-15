@@ -70,7 +70,7 @@ public class JMetalProblemAdapterTest {
 		MockConstraintProblem problem = new MockConstraintProblem();
 		JMetalProblemAdapter adapter = new JMetalProblemAdapter(problem);
 		
-		jmetal.base.Solution solution = new jmetal.base.Solution(adapter);
+		jmetal.core.Solution solution = new jmetal.core.Solution(adapter);
 		adapter.evaluate(solution);
 		
 		Assert.assertEquals(-35.0, solution.getOverallConstraintViolation(),

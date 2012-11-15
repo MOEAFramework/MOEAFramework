@@ -69,7 +69,7 @@ public class LZTest extends ProblemTest {
 	}
 
 	public void test(String problem) throws Exception {
-		jmetal.base.Problem problemA;
+		jmetal.core.Problem problemA;
 		Problem problemB;
 
 		if (problem.equals("LZ1")) {
