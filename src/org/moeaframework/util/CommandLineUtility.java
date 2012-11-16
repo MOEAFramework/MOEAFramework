@@ -66,20 +66,6 @@ public abstract class CommandLineUtility {
 	}
 
 	/**
-	 * Returns a description of this command line utility; or {@code null} if
-	 * no description is provided.
-	 * 
-	 * @return a description of this command line utility; or {@code null} if
-	 *         no description is provided
-	 * @deprecated The description is now read through the Localization
-	 *             class; will be removed in version 2.0
-	 */
-	@Deprecated
-	public String getDescription() {
-		return null;
-	}
-
-	/**
 	 * Runs this command line utility with the specified command line arguments.
 	 * 
 	 * @param commandLine the command line arguments

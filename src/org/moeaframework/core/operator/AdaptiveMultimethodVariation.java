@@ -224,15 +224,13 @@ public class AdaptiveMultimethodVariation implements Variation {
 		return arity;
 	}
 
-	/**
-	 * Procedure for adjusting an array of probabilities to ensure the
-	 * probabilities are at least {@code minimum}.
-	 * 
-	 * @deprecated not used by this class
-	 * @param probabilities the array of probabilities
-	 * @param minimum the minimum probability
-	 */
-//	@Deprecated
+//	/**
+//	 * Procedure for adjusting an array of probabilities to ensure the
+//	 * probabilities are at least {@code minimum}.
+//	 * 
+//	 * @param probabilities the array of probabilities
+//	 * @param minimum the minimum probability
+//	 */
 //	public static void correctProbabilities(double[] probabilities,
 //			double minimum) {
 //		double diff = 0.0;

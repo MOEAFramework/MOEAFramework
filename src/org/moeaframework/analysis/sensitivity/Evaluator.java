@@ -147,11 +147,6 @@ public class Evaluator extends CommandLineUtility {
 	}
 
 	@Override
-	public String getDescription() {
-		return Localization.getString(Evaluator.class, "description");
-	}
-
-	@Override
 	public void run(CommandLine commandLine) throws IOException {
 		File outputFile = new File(commandLine.getOptionValue("output"));
 		File inputFile = new File(commandLine.getOptionValue("input"));

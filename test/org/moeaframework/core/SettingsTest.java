@@ -84,42 +84,6 @@ public class SettingsTest {
 	}
 	
 	@Test
-	@Deprecated
-	public void testPBSQsubCommand() {
-		Assert.assertNotNull(Settings.getPBSQsubCommand());
-	}
-
-	@Test
-	@Deprecated
-	public void testPBSScript() {
-		Assert.assertNotNull(Settings.getPBSScript());
-	}
-
-	@Test
-	@Deprecated
-	public void testPBSQstatCommand() {
-		Assert.assertNotNull(Settings.getPBSQstatCommand());
-	}
-
-	@Test
-	@Deprecated
-	public void testPBSQdelCommand() {
-		Assert.assertNotNull(Settings.getPBSQdelCommand());
-	}
-
-	@Test
-	@Deprecated
-	public void testPBSQueuedRegex() {
-		Assert.assertNotNull(Settings.getPBSQueuedRegex());
-	}
-
-	@Test
-	@Deprecated
-	public void testPBSJobIdRegex() {
-		Assert.assertNotNull(Settings.getPBSJobIdRegex());
-	}
-	
-	@Test
 	public void testDiagnosticToolAlgorithms() {
 		Assert.assertNotNull(Settings.getDiagnosticToolAlgorithms());
 	}

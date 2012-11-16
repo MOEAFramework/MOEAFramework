@@ -12,6 +12,10 @@ any changes.
  Easy
 ------
 
+  - Commons Math3 now provides the Mann-Whitney U and Wilcoxon Signed-Ranks
+    tests.  Determine if these are compatible with the statistics classes, and
+    replace if able.
+
   - Look for any existing functionality that can be replaced by one of the
     existing libraries.
 

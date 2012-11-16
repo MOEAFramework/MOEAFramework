@@ -803,7 +803,7 @@ public class Analyzer extends ProblemBuilder {
 								}
 							}
 						}
-					} catch (RuntimeException e) { //TODO: restrict to MathRuntimeException, but it is currently not found
+					} catch (RuntimeException e) {
 						e.printStackTrace();
 					}
 				}

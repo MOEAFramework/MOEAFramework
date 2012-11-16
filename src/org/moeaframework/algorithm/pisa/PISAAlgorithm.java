@@ -109,37 +109,6 @@ public class PISAAlgorithm extends AbstractAlgorithm {
 	 * The variation operator.
 	 */
 	private final Variation variation;
-	
-	/**
-	 * Constructs an adapter for a PISA selector.
-	 * 
-	 * @param filePrefix the file prefix used when creating the PISA
-	 *        communication files
-	 * @param selector the {@link ProcessBuilder} to start the selector process
-	 * @param problem the problem being solved
-	 * @param variation the variation operator
-	 * @param alpha the population size
-	 * @param mu the number of parents
-	 * @param lambda the number of offspring
-	 * @deprecated Will be removed in version 2.0; use the 
-	 *             {@link #PISAAlgorithm(String, Problem, Variation,
-	 *             Properties)} constructor instead
-	 */
-	@Deprecated
-	public PISAAlgorithm(String filePrefix, ProcessBuilder selector,
-			Problem problem, Variation variation, int alpha, int mu, 
-			int lambda) {
-		super(problem);
-		this.filePrefix = filePrefix;
-		this.selector = selector;
-		this.variation = variation;
-		this.alpha = alpha;
-		this.mu = mu;
-		this.lambda = lambda;
-
-		state = new State(new File(filePrefix + "sta"));
-		solutions = new HashMap<Integer, Solution>();
-	}
 
 	/**
 	 * Constructs an adapter for a PISA selector.

@@ -304,32 +304,6 @@ public class Hypervolume extends NormalizedIndicator {
 					problem.getNumberOfObjectives());
 		}
 	}
-	
-	/**
-	 * Returns a copy of the population containing only those solutions which
-	 * exist within the unit hypervolume, removing any solutions that exceed
-	 * the normalized nadir point.
-	 * 
-	 * @param population the population to be pruned
-	 * @return the pruned population
-	 * @deprecated Will be removed in version 2.0
-	 */
-	@Deprecated
-	public static Population prune(Iterable<Solution> population) {
-		Population result = new Population();
-		
-		outer: for (Solution solution : population) {
-			for (int i=0; i<solution.getNumberOfObjectives(); i++) {
-				if (solution.getObjective(i) > 1.0) {
-					continue outer;
-				}
-			}
-			
-			result.add(solution);
-		}
-		
-		return result;
-	}
 
 	/**
 	 * Since hypervolume calculation is expensive, this method provides the

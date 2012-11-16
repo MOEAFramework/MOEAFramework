@@ -14,6 +14,8 @@ Framework.
     
   * Upgrades all libraries to their latest version.  Several libraries, like
     Commons Math and JMetal are not backwards compatible.
+    
+  * Removes deprecated API.
 
 
 ----------------------------
