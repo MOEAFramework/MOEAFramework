@@ -17,6 +17,7 @@
  */
 package org.moeaframework.util.tree;
 
+import org.apache.commons.math3.util.FastMath;
 import org.moeaframework.core.Settings;
 
 /**
@@ -476,6 +477,39 @@ public class NumberArithmetic {
 	 */
 	public static Number tanh(Number a) {
 		return Math.tanh(a.doubleValue());
+	}
+	
+	/**
+	 * Returns the hyperbolic arc sine of the number.
+	 * 
+	 * @param a the number
+	 * @return the hyperbolic arc sine of the number
+	 * @see FastMath#asinh(double)
+	 */
+	public static Number asinh(Number a) {
+		return FastMath.asinh(a.doubleValue());
+	}
+	
+	/**
+	 * Returns the hyperbolic arc cosine of the number.
+	 * 
+	 * @param a the number
+	 * @return the hyperbolic arc cosine of the number
+	 * @see FastMath#acosh(double)
+	 */
+	public static Number acosh(Number a) {
+		return FastMath.acosh(a.doubleValue());
+	}
+	
+	/**
+	 * Returns the hyperbolic arc tangent of the number.
+	 * 
+	 * @param a the number
+	 * @return the hyperbolic arc tangent of the number
+	 * @see FastMath#atanh(double)
+	 */
+	public static Number atanh(Number a) {
+		return FastMath.atanh(a.doubleValue());
 	}
 	
 	/**

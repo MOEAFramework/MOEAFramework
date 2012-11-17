@@ -17,6 +17,7 @@
  */
 package org.moeaframework.util.tree;
 
+import org.apache.commons.math3.util.FastMath;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -64,6 +65,15 @@ public class NodeTest {
 	}
 	
 	@Test
+	public void testAcosh() {
+		Node node = new Acosh()
+				.setArgument(0, new Constant(1.324));
+
+		Assert.assertTrue(NumberArithmetic.equals(FastMath.acosh(1.324),
+				(Number)node.evaluate(new UnusedEnvironment())));
+	}
+	
+	@Test
 	public void testAdd() {
 		Node node = new Add()
 				.setArgument(0, new Constant(-1))
@@ -104,11 +114,29 @@ public class NodeTest {
 	}
 	
 	@Test
+	public void testAsinh() {
+		Node node = new Asinh()
+				.setArgument(0, new Constant(Math.PI / 4.0));
+		
+		Assert.assertTrue(NumberArithmetic.equals(FastMath.asinh(Math.PI / 4.0),
+				(Number)node.evaluate(new UnusedEnvironment())));
+	}
+	
+	@Test
 	public void testAtan() {
 		Node node = new Atan()
 				.setArgument(0, new Constant(Math.PI / 4.0));
 		
 		Assert.assertTrue(NumberArithmetic.equals(Math.atan(Math.PI / 4.0),
+				(Number)node.evaluate(new UnusedEnvironment())));
+	}
+	
+	@Test
+	public void testAtanh() {
+		Node node = new Atanh()
+				.setArgument(0, new Constant(Math.PI / 4.0));
+		
+		Assert.assertTrue(NumberArithmetic.equals(FastMath.atanh(Math.PI / 4.0),
 				(Number)node.evaluate(new UnusedEnvironment())));
 	}
 	
