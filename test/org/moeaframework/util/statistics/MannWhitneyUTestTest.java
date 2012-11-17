@@ -20,6 +20,8 @@ package org.moeaframework.util.statistics;
 import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.TestThresholds;
+import org.moeaframework.core.PRNG;
+import org.moeaframework.core.Settings;
 
 /**
  * Tests the {@link MannWhitneyUTest} class.
@@ -73,6 +75,34 @@ public class MannWhitneyUTestTest {
 
 		Assert.assertTrue(test.test(0.05));
 		Assert.assertEquals(100, test.lastU, TestThresholds.STATISTICS_EPS);
+	}
+	
+	/**
+	 * Commons Math 3.0 introduced their own MannWhitneyUTest class.  The
+	 * Commons Math implementation only supports the normal approximation for
+	 * the U statistic, and will be inaccurate with small sample sizes.
+	 */
+	@Test
+	public void testCommonsMath() {
+		double[] d1 = new double[100];
+		double[] d2 = new double[100];
+		
+		for (int i = 0; i < 100; i++) {
+			d1[i] = PRNG.nextGaussian(10.0, 5.0);
+			d2[i] = PRNG.nextGaussian(11.0, 6.0);
+		}
+		
+		MannWhitneyUTest test1 = new MannWhitneyUTest();
+		test1.addAll(d1, 0);
+		test1.addAll(d2, 1);
+		test1.test(0.05);
+		double u1 = test1.lastU;
+		
+		org.apache.commons.math3.stat.inference.MannWhitneyUTest test2 = 
+				new org.apache.commons.math3.stat.inference.MannWhitneyUTest();
+		double u2 = test2.mannWhitneyU(d1, d2);
+		
+		Assert.assertEquals(100*100 - u2, u1, Settings.EPS);
 	}
 	
 	@Test
