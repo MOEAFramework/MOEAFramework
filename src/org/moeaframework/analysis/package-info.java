@@ -41,7 +41,8 @@
  *       Diagnostic tool for analyzing the runtime behavior of algorithms.  
  *       This tool requires the 
  *       <a href="http://www.jfree.org/jfreechart/">JFreeChart</a> library and
- *       its dependencies to be installed.
+ *       its dependencies to be installed (which are provided by default in the
+ *       MOEA Framework distribution).
  *     </td>
  *   </tr>
  *   <tr>
@@ -50,8 +51,7 @@
  *       A collection of command line tools for running large-scale
  *       experiments and performing comparative and sensitive analysis on
  *       algorithms.  These tools are designed to run on compute clusters
- *       and supercomputers.  The {@link org.moeaframework.util.pbs} package
- *       contains utilities for managing jobs on PBS job queues.
+ *       and supercomputers.
  *     </td>
  *   </tr>
  * </table>
