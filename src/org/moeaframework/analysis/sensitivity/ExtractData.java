@@ -125,7 +125,7 @@ public class ExtractData extends CommandLineUtility {
 				.create('e'));
 		options.addOption(OptionBuilder
 				.withLongOpt("noheader")
-				.create('h'));
+				.create('n'));
 		
 		return options;
 	}

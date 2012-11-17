@@ -34,9 +34,6 @@ any changes.
     ResultFileAppender would still need the Problem in order to validate the
     saved entries.
 
-  - ExtractData is overriding the -h,--help option.  This will be fixed in 
-    version 2.0.
-
   - Need to determine for which classes does value-based equals methods make
     sense, and provide equals and hashCode implementations for these classes.
     As an example, it doesn't make sense for Solution to provide an equals
