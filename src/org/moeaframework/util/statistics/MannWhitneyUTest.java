@@ -69,11 +69,16 @@ public class MannWhitneyUTest extends OrdinalStatisticalTest {
 		super.addAll(values, group);
 	}
 
-	/*
+	/**
+	 * {@inheritDoc}
+	 * <p>
 	 * When the samples from both populations are less than 20, only alpha
 	 * values of 0.05 and 0.01 are valid. This is because a table is used to
 	 * accurately determine the critical values. When more than 20 samples are
 	 * available, the normal approximation is used allowing any value for alpha.
+	 * 
+	 * @throws IllegalArgumentException if an insufficient sampling size is
+	 *         provided, or if an invalid alpha value is provided
 	 */
 	@Override
 	public boolean test(double alpha) {
@@ -113,6 +118,17 @@ public class MannWhitneyUTest extends OrdinalStatisticalTest {
 		}
 	}
 
+	/**
+	 * Returns the critical U value from the lookup tables.
+	 * 
+	 * @param n1 the number of samples from the first group
+	 * @param n2 the number of samples from the second group
+	 * @param alpha the prespecified level of confidence; only values of 0.05
+	 *        and 0.01 are permitted
+	 * @return the critical U value from the lookup tables
+	 * @throws IllegalArgumentException if an insufficient sampling size is
+	 *         provided, or if an invalid alpha value is provided
+	 */
 	private static int getCriticalUValueFromTable(int n1, int n2, double alpha) {
 		if ((n1 < 1) || (n1 > 20) || (n2 < 1) || (n2 > 20)) {
 			throw new IllegalArgumentException(
@@ -138,6 +154,10 @@ public class MannWhitneyUTest extends OrdinalStatisticalTest {
 		return value;
 	}
 
+	/**
+	 * Table of critical U values for alpha=0.05.  Entries of -1 indicate an
+	 * insufficient sampling size.
+	 */
 	private static final int[] TABLE_5 = new int[] { -1, -1, -1, -1, -1, -1,
 			-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
 			-1, -1, -1, -1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, -1, -1, -1,
@@ -163,6 +183,10 @@ public class MannWhitneyUTest extends OrdinalStatisticalTest {
 			-1, 2, 8, 14, 20, 27, 34, 41, 48, 55, 62, 69, 76, 83, 90, 98, 105,
 			112, 119, 127 };
 
+	/**
+	 * Table of critical U values for alpha=0.01.  Entries of -1 indicate an
+	 * insufficient sampling size.
+	 */
 	private static final int[] TABLE_1 = new int[] { -1, -1, -1, -1, -1, -1,
 			-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
 			-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 0, 0,

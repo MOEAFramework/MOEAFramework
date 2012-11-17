@@ -69,6 +69,11 @@ public class OneWayANOVA extends IntervalRatioStatisticalTest {
 		super.addAll(values, group);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see TestUtils#oneWayAnovaTest(java.util.Collection, double)
+	 */
 	@Override
 	public boolean test(double alpha) {
 		return TestUtils.oneWayAnovaTest(categorize(), alpha);

@@ -84,6 +84,11 @@ public class SingleSampleTTest extends IntervalRatioStatisticalTest {
 		super.addAll(values, 0);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see TestUtils#tTest(double, double[], double)
+	 */
 	@Override
 	public boolean test(double alpha) {
 		return TestUtils.tTest(mean, categorize().get(0), alpha);

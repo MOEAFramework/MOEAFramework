@@ -74,6 +74,12 @@ public class TwoSampleTTest extends IntervalRatioStatisticalTest {
 		super.addAll(values, group);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see TestUtils#tTest(double[], double[], double)
+	 * @see TestUtils#pairedTTest(double[], double[], double)
+	 */
 	@Override
 	public boolean test(double alpha) {
 		List<double[]> categories = categorize();
