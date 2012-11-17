@@ -19,8 +19,6 @@ any changes.
   - Look for any existing functionality that can be replaced by one of the
     existing libraries.
 
-  - Update the diagnostic GUI with new library version numbers.
-
   - Check if the new JMetal fixes any of the ignored problem instances.
     
   - Add ARFF and Aerovis output formats to ExtractData and any other relevant

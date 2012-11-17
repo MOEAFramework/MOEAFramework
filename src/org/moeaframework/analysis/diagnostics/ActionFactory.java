@@ -688,17 +688,17 @@ public class ActionFactory implements ControllerListener {
 					
 					info.addLibrary(new Library("Apache Commons CLI", "1.2", 
 							"Apache License", null));
-					info.addLibrary(new Library("Apache Commons Codec", "1.5", 
+					info.addLibrary(new Library("Apache Commons Codec", "1.7", 
 							"Apache License", null));
 					info.addLibrary(new Library("Apache Commons Lang", "3.1",
 							"Apache License", null));
-					info.addLibrary(new Library("Apache Commons Math", "1.2", 
+					info.addLibrary(new Library("Apache Commons Math", "3.0", 
 							"Apache License", null));
-					info.addLibrary(new Library("JCommon", "1.0.16", "GNU LGPL",
+					info.addLibrary(new Library("JCommon", "1.0.17", "GNU LGPL",
 							null));
-					info.addLibrary(new Library("JFreeChart", "1.0.13", 
+					info.addLibrary(new Library("JFreeChart", "1.0.14", 
 							"GNU LGPL", null));
-					info.addLibrary(new Library("JMetal", "3.1", "GNU LGPL", 
+					info.addLibrary(new Library("JMetal", "4.2", "GNU LGPL", 
 							null));
 					info.addLibrary(new Library("MOEAFramework", 
 							properties.getProperty("version"), "GNU LGPL", 
