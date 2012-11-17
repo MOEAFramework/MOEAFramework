@@ -19,8 +19,6 @@ any changes.
   - Look for any existing functionality that can be replaced by one of the
     existing libraries.
 
-  - Check if the new JMetal fixes any of the ignored problem instances.
-    
   - Add ARFF and Aerovis output formats to ExtractData and any other relevant
     classes.
 

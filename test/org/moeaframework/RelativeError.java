@@ -17,9 +17,8 @@
  */
 package org.moeaframework;
 
+import org.junit.Assert;
 import org.moeaframework.core.Settings;
-
-import junit.framework.Assert;
 
 /**
  * Compares floating-point numbers allowing a small relative error when
@@ -58,7 +57,8 @@ public class RelativeError implements FloatingPointError {
 	    	}
 
 	    	if (error > relativeError) {
-	    		Assert.fail(Assert.format(null, d1, d2));
+	    		Assert.fail("values " + d1 + " " + d2 + " differ by more than "
+	    				+ (relativeError*100.0) + "% error");
 	    	}
 	    }
 	}
