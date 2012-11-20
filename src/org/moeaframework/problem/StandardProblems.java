@@ -956,6 +956,8 @@ public class StandardProblems extends ProblemProvider {
 				filename = "Fonseca.pf";
 			} else if (name.equalsIgnoreCase("Fonseca2")) {
 				filename = "Fonseca2.pf";
+			} else if (name.equalsIgnoreCase("Kita")) {
+				filename = "Kita.pf";
 			} else if (name.equalsIgnoreCase("Laumanns")) {
 				filename = "Laumanns.pf";
 			} else if (name.equalsIgnoreCase("Murata")) {
