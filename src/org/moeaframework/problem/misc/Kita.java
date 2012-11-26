@@ -34,6 +34,10 @@ import org.moeaframework.problem.AbstractProblem;
  * <p>
  * References:
  * <ol>
+ *   <li>Kita, H., et al. (1996).  "Multi-Objective Optimization by Means of
+ *       the Thermodynamical Genetic Algorithm."  Parallel Problem Solving from
+ *       Nature — PPSN IV, Lecture Notes in Computer Science, Springer,
+ *       pp. 504-512.
  *   <li>Van Veldhuizen, D. A (1999).  "Multiobjective Evolutionary Algorithms: 
  *       Classifications, Analyses, and New Innovations."  Air Force Institute
  *       of Technology, Ph.D. Thesis, Appendix B.
