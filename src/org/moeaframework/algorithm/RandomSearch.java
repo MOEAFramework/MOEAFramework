@@ -60,6 +60,12 @@ public class RandomSearch extends AbstractAlgorithm {
 	}
 
 	@Override
+	protected void initialize() {
+		super.initialize();
+		iterate();
+	}
+
+	@Override
 	protected void iterate() {
 		Population solutions = new Population(generator.initialize());
 		evaluateAll(solutions);

@@ -200,8 +200,7 @@ public class StandardAlgorithms extends AlgorithmProvider {
 				populationSize);
 
 		NondominatedSortingPopulation population = 
-				new NondominatedSortingPopulation(
-						new ParetoDominanceComparator());
+				new NondominatedSortingPopulation();
 
 		TournamentSelection selection = new TournamentSelection(2, 
 				new ChainedComparator(
@@ -357,8 +356,7 @@ public class StandardAlgorithms extends AlgorithmProvider {
 					properties.getDoubleArray("epsilon", new double[] {
 							EpsilonHelper.getEpsilon(problem) }));
 		} else {
-			archive = new NondominatedPopulation(
-					new ParetoDominanceComparator());
+			archive = new NondominatedPopulation();
 		}
 		
 		return new RandomSearch(problem, generator, archive);
