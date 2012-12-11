@@ -32,6 +32,9 @@ import org.moeaframework.problem.AbstractProblem;
  * <p>
  * References:
  * <ol>
+ *   <li>Lis, J. and Eiben, A. E. (1996).  "A Multi-Sexual Genetic Algorithm for
+ *       Multiobjective Optimization."  Proceedings of the IEEE International
+ *       Conference on Evolutionary Computation, 59-64.
  *   <li>Van Veldhuizen, D. A (1999).  "Multiobjective Evolutionary Algorithms: 
  *       Classifications, Analyses, and New Innovations."  Air Force Institute
  *       of Technology, Ph.D. Thesis, Appendix B.

@@ -17,12 +17,14 @@
  */
 package org.moeaframework.problem.misc;
 
+import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.variable.RealVariable;
+import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.problem.AbstractProblem;
+import org.moeaframework.problem.AnalyticalProblem;
 
 /**
- * The Kita problem.
+ * The Obayashi problem.
  * <p>
  * Properties:
  * <ul>
@@ -34,12 +36,16 @@ import org.moeaframework.problem.AbstractProblem;
  * <p>
  * References:
  * <ol>
+ *   <li>Obayashi, S. (1998).  "Pareto Genetic Algorithm for Aerodynamic
+ *       Design using the Navier-Stokes Equations."  Genetic Algorithms and
+ *       Evolution Strategies in Engineering and Computer Science: Recent
+ *       Advances and Industrial Applications, pp. 245-266.
  *   <li>Van Veldhuizen, D. A (1999).  "Multiobjective Evolutionary Algorithms: 
  *       Classifications, Analyses, and New Innovations."  Air Force Institute
  *       of Technology, Ph.D. Thesis, Appendix B.
  * </ol>
  */
-public class Obayashi extends AbstractProblem {
+public class Obayashi extends AbstractProblem implements AnalyticalProblem {
 
 	/**
 	 * Constructs the Obayashi problem.
@@ -50,8 +56,8 @@ public class Obayashi extends AbstractProblem {
 
 	@Override
 	public void evaluate(Solution solution) {
-		double x = ((RealVariable)solution.getVariable(0)).getValue();
-		double y = ((RealVariable)solution.getVariable(1)).getValue();
+		double x = EncodingUtils.getReal(solution.getVariable(0));
+		double y = EncodingUtils.getReal(solution.getVariable(1));
 		double c = Math.pow(x, 2.0) + Math.pow(y, 2.0) - 1.0;
 		
 		solution.setObjective(0, -x);
@@ -63,9 +69,22 @@ public class Obayashi extends AbstractProblem {
 	public Solution newSolution() {
 		Solution solution = new Solution(2, 2, 1);
 		
-		solution.setVariable(0, new RealVariable(0.0, 1.0));
-		solution.setVariable(1, new RealVariable(0.0, 1.0));
+		solution.setVariable(0, EncodingUtils.newReal(0.0, 1.0));
+		solution.setVariable(1, EncodingUtils.newReal(0.0, 1.0));
 		
+		return solution;
+	}
+
+	@Override
+	public Solution generate() {
+		Solution solution = newSolution();
+		double x = PRNG.nextDouble(0, 1);
+		double y = Math.sqrt(1.0 - Math.pow(x, 2.0));
+		
+		EncodingUtils.setReal(solution.getVariable(0), x);
+		EncodingUtils.setReal(solution.getVariable(1), y);
+		
+		evaluate(solution);
 		return solution;
 	}
 
