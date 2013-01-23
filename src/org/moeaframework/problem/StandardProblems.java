@@ -978,6 +978,8 @@ public class StandardProblems extends ProblemProvider {
 				filename = "Poloni.pf";
 			} else if (name.equalsIgnoreCase("Quagliarella")) {
 				filename = "Quagliarella.pf";
+			} else if (name.equalsIgnoreCase("Rendon")) {
+				filename = "Rendon.pf";
 			} else if (name.equalsIgnoreCase("Rendon2")) {
 				filename = "Rendon2.pf";
 			} else if (name.equalsIgnoreCase("Schaffer")) {

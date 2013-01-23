@@ -37,6 +37,12 @@ import org.moeaframework.problem.AbstractProblem;
  *   <li>Van Veldhuizen, D. A (1999).  "Multiobjective Evolutionary Algorithms: 
  *       Classifications, Analyses, and New Innovations."  Air Force Institute
  *       of Technology, Ph.D. Thesis, Appendix B.
+ *   <li>Poloni, C., et al. (1996).  "Multiobjective Optimization by GAs:
+ *       Application to System and Component Design."  Computational Methods in
+ *       Applied Sciences '96: Invited Lectures and Special Technological
+ *       Sessions of the Third ECCOMAS Computational Fluid Dynamics Conference
+ *       and the Second ECCOMAS Conference on Numerical Methods in Engineering,
+ *       pp. 258-264.
  * </ol>
  */
 public class Poloni extends AbstractProblem {
