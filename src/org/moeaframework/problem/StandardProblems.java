@@ -948,6 +948,8 @@ public class StandardProblems extends ProblemProvider {
 				filename = "LZ07_F8.pf";
 			} else if (name.equals("LZ9")) {
 				filename = "LZ07_F9.pf";
+			} else if (name.equalsIgnoreCase("Belegundu")) {
+				filename = "Belegundu.pf";
 			} else if (name.equalsIgnoreCase("Binh")) {
 				filename = "Binh.pf";
 			} else if (name.equalsIgnoreCase("Binh4")) {
