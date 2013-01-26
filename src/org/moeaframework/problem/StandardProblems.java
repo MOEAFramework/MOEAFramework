@@ -972,6 +972,8 @@ public class StandardProblems extends ProblemProvider {
 				filename = "Obayashi.pf";
 			} else if (name.equalsIgnoreCase("OKA1")) {
 				filename = "OKA1.pf";
+			} else if (name.equalsIgnoreCase("OKA2")) {
+				filename = "OKA2.pf";
 			} else if (name.equalsIgnoreCase("Osyczka")) {
 				filename = "Osyczka.pf";
 			} else if (name.equalsIgnoreCase("Osyczka2")) {
