@@ -952,6 +952,8 @@ public class StandardProblems extends ProblemProvider {
 				filename = "Belegundu.pf";
 			} else if (name.equalsIgnoreCase("Binh")) {
 				filename = "Binh.pf";
+			} else if (name.equalsIgnoreCase("Binh2")) {
+				filename = "Binh2.pf";
 			} else if (name.equalsIgnoreCase("Binh4")) {
 				filename = "Binh4.pf";
 			} else if (name.equalsIgnoreCase("Fonseca")) {
