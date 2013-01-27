@@ -954,6 +954,8 @@ public class StandardProblems extends ProblemProvider {
 				filename = "Binh.pf";
 			} else if (name.equalsIgnoreCase("Binh2")) {
 				filename = "Binh2.pf";
+			} else if (name.equalsIgnoreCase("Binh3")) {
+				filename = "Binh3.pf";
 			} else if (name.equalsIgnoreCase("Binh4")) {
 				filename = "Binh4.pf";
 			} else if (name.equalsIgnoreCase("Fonseca")) {
@@ -994,6 +996,8 @@ public class StandardProblems extends ProblemProvider {
 				filename = "Schaffer.pf";
 			} else if (name.equalsIgnoreCase("Schaffer2")) {
 				filename = "Schaffer2.pf";
+			} else if (name.equalsIgnoreCase("Srinivas")) {
+				filename = "Srinivas.pf";
 			} else {
 				return null;
 			}
