@@ -1002,6 +1002,8 @@ public class StandardProblems extends ProblemProvider {
 				filename = "Tanaka.pf";
 			} else if (name.equalsIgnoreCase("Viennet")) {
 				filename = "Viennet.pf";
+			} else if (name.equalsIgnoreCase("Viennet2")) {
+				filename = "Viennet2.pf";
 			} else {
 				return null;
 			}
