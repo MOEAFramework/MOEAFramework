@@ -998,6 +998,8 @@ public class StandardProblems extends ProblemProvider {
 				filename = "Schaffer2.pf";
 			} else if (name.equalsIgnoreCase("Srinivas")) {
 				filename = "Srinivas.pf";
+			} else if (name.equalsIgnoreCase("Tanaka")) {
+				filename = "Tanaka.pf";
 			} else {
 				return null;
 			}
