@@ -15,7 +15,9 @@ Framework.
   * Upgrades all libraries to their latest version.  Several libraries, like
     Commons Math and JMetal are not backwards compatible.
     
-  * Removes deprecated API.
+  * Adds reference sets for all of the test problems in the
+    org.moeaframework.problems.misc package.  These problems are now accessible
+    in the MOEA Diagnostic Tool GUI.
 
 
 ----------------------------
