@@ -37,10 +37,6 @@ any changes.
     comparison between solutions and populations would be useful.  For
     consistency, use the Apache Commons Lang builder classes to implement
     equals and hashCode.
-
-  - The recently-added misc problems from Van Veldhuizen's dissertation need
-    reference set files.  Until reference sets are added, they can't be used
-    in the MOEA diagnostic tool.
   
   - Add reporting function to Executor which periodically outputs progress
     reports.  It would probably be a good design to provide functionality
