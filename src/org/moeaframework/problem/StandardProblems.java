@@ -931,23 +931,23 @@ public class StandardProblems extends ProblemProvider {
 			} else if (name.equals("CF10")) {
 				filename = "CF10.dat";
 			} else if (name.equals("LZ1")) {
-				filename = "LZ07_F1.pf";
+				filename = "LZ09_F1.pf";
 			} else if (name.equals("LZ2")) {
-				filename = "LZ07_F2.pf";
+				filename = "LZ09_F2.pf";
 			} else if (name.equals("LZ3")) {
-				filename = "LZ07_F3.pf";
+				filename = "LZ09_F3.pf";
 			} else if (name.equals("LZ4")) {
-				filename = "LZ07_F4.pf";
+				filename = "LZ09_F4.pf";
 			} else if (name.equals("LZ5")) {
-				filename = "LZ07_F5.pf";
+				filename = "LZ09_F5.pf";
 			} else if (name.equals("LZ6")) {
-				filename = "LZ07_F6.pf";
+				filename = "LZ09_F6.pf";
 			} else if (name.equals("LZ7")) {
-				filename = "LZ07_F7.pf";
+				filename = "LZ09_F7.pf";
 			} else if (name.equals("LZ8")) {
-				filename = "LZ07_F8.pf";
+				filename = "LZ09_F8.pf";
 			} else if (name.equals("LZ9")) {
-				filename = "LZ07_F9.pf";
+				filename = "LZ09_F9.pf";
 			} else if (name.equalsIgnoreCase("Belegundu")) {
 				filename = "Belegundu.pf";
 			} else if (name.equalsIgnoreCase("Binh")) {
