@@ -79,6 +79,68 @@ public class EpsilonHelper {
 							"number of objectives not supported");
 				}
 			}
+		} else if (name.equalsIgnoreCase("Belegundu")) {
+			return 0.1;
+		} else if (name.equalsIgnoreCase("Binh")) {
+			return 0.25;
+		} else if (name.equalsIgnoreCase("Binh2")) {
+			return 0.35;
+		} else if (name.equalsIgnoreCase("Binh3")) {
+			return 0.01;
+		} else if (name.equalsIgnoreCase("Binh4")) {
+			return 0.01;
+		} else if (name.equalsIgnoreCase("Fonseca")) {
+			return 0.0025;
+		} else if (name.equalsIgnoreCase("Fonseca2")) {
+			return 0.007;
+		} else if (name.equalsIgnoreCase("Jimenez")) {
+			return 0.05;
+		} else if (name.equalsIgnoreCase("Kita")) {
+			return 0.01;
+		} else if (name.equalsIgnoreCase("Kursawe")) {
+			return 0.035;
+		} else if (name.equalsIgnoreCase("Laumanns")) {
+			return 0.02;
+		} else if (name.equalsIgnoreCase("Lis")) {
+			return 0.004;
+		} else if (name.equalsIgnoreCase("Murata")) {
+			return 0.02;
+		} else if (name.equalsIgnoreCase("Obayashi")) {
+			return 0.006;
+		} else if (name.equalsIgnoreCase("OKA1")) {
+			return 0.0145;
+		} else if (name.equalsIgnoreCase("OKA2")) {
+			return 0.000001;
+		} else if (name.equalsIgnoreCase("Osyczka")) {
+			return 0.0012;
+		} else if (name.equalsIgnoreCase("Osyczka2")) {
+			return 0.5;
+		} else if (name.equalsIgnoreCase("Poloni")) {
+			return 0.04;
+		} else if (name.equalsIgnoreCase("Quagliarella")) {
+			return 0.03;
+		} else if (name.equalsIgnoreCase("Rendon")) {
+			return 0.01;
+		} else if (name.equalsIgnoreCase("Rendon2")) {
+			return 0.027;
+		} else if (name.equalsIgnoreCase("Schaffer")) {
+			return 0.02;
+		} else if (name.equalsIgnoreCase("Schaffer2")) {
+			return 0.017;
+		} else if (name.equalsIgnoreCase("Srinivas")) {
+			return 1.5;
+		} else if (name.equalsIgnoreCase("Tamaki")) {
+			return 0.06;
+		} else if (name.equalsIgnoreCase("Tanaka")) {
+			return 0.0045;
+		} else if (name.equalsIgnoreCase("Viennet")) {
+			return 0.1;
+		} else if (name.equalsIgnoreCase("Viennet2")) {
+			return 0.0062;
+		} else if (name.equalsIgnoreCase("Viennet3")) {
+			return 0.011;
+		} else if (name.equalsIgnoreCase("Viennet4")) {
+			return 0.085;
 		} else {
 			return 0.01;
 		}

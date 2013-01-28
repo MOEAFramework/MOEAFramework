@@ -27,7 +27,6 @@ import org.moeaframework.core.spi.ProblemFactory;
  */
 public class StandardProblemsTest {
 	
-	//TODO: need to include miscellaneous problems as well
 	/**
 	 * The names of the standard problems.
 	 */
@@ -44,7 +43,13 @@ public class StandardProblemsTest {
 			"UF1", "UF2", "UF3", "UF4", "UF5", "UF6", "UF7", "UF8", "UF9",
 			"UF10", "UF11", "UF12", "UF13", "CF1", "CF2", "CF3", "CF4", "CF5",
 			"CF6", "CF7", "CF8", "CF9", "CF10", "LZ1", "LZ2", "LZ3", "LZ4",
-			"LZ5", "LZ6", "LZ7", "LZ8", "LZ9"
+			"LZ5", "LZ6", "LZ7", "LZ8", "LZ9",
+			"Belegundu", "Binh", "Binh2", "Binh3", "Binh4", "Fonseca", 
+			"Fonseca2", "Jimenez", "Kita", "Kursawe", "Laumanns", "Lis", 
+			"Murata", "Obayashi", "OKA1", "OKA2", "Osyczka", "Osyczka2", 
+			"Poloni", "Quagliarella", "Rendon", "Rendon2", "Schaffer", 
+			"Schaffer2", "Srinivas", "Tamaki", "Tanaka", "Viennet", 
+			"Viennet2", "Viennet3", "Viennet4"
 	};
 	
 	/**
