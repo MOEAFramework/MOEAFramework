@@ -998,6 +998,8 @@ public class StandardProblems extends ProblemProvider {
 				filename = "Schaffer2.pf";
 			} else if (name.equalsIgnoreCase("Srinivas")) {
 				filename = "Srinivas.pf";
+			} else if (name.equalsIgnoreCase("Tamaki")) {
+				filename = "Tamaki.pf";
 			} else if (name.equalsIgnoreCase("Tanaka")) {
 				filename = "Tanaka.pf";
 			} else if (name.equalsIgnoreCase("Viennet")) {
@@ -1006,6 +1008,8 @@ public class StandardProblems extends ProblemProvider {
 				filename = "Viennet2.pf";
 			} else if (name.equalsIgnoreCase("Viennet3")) {
 				filename = "Viennet3.pf";
+			} else if (name.equalsIgnoreCase("Viennet4")) {
+				filename = "Viennet4.pf";
 			} else {
 				return null;
 			}
