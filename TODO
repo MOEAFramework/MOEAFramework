@@ -12,6 +12,8 @@ any changes.
  Easy
 ------
 
+  - Let the Normalizer input the ideal and nadir points.
+
   - Add ARFF and Aerovis output formats to ExtractData and any other relevant
     classes.
 
