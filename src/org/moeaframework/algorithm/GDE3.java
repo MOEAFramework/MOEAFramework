@@ -28,6 +28,7 @@ import org.moeaframework.core.operator.real.DifferentialEvolutionSelection;
 
 /**
  * Implementation of the Generalized Differential Evolution (GDE3) algorithm.
+ * <p>
  * References:
  * <ol>
  * <li>Kukkonen and Lampinen (2005). "GDE3: The Third Evolution Step of
