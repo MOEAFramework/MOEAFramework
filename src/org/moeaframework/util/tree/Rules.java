@@ -258,7 +258,7 @@ public class Rules {
 	 * Allows the default trigonometric nodes to appear in programs produced
 	 * using these rules.  This includes {@link Sin}, {@link Cos}, {@link Tan},
 	 * {@link Asin}, {@link Acos}, {@link Atan}, {@link Sinh}, {@link Cosh},
-	 * {@link Tanh}, {@lik Asinh}, {@link Acosh}, and {@link Atanh}.
+	 * {@link Tanh}, {@link Asinh}, {@link Acosh}, and {@link Atanh}.
 	 */
 	public void populateWithTrig() {
 		add(new Sin());
