@@ -7,7 +7,9 @@ import org.moeaframework.Executor;
 /**
  * Helper for notifying {@link ProgressListener}s when the evaluation progress
  * of an {@link Executor} changes.  This class reports the current progress,
- * percent complete, elapsed time, and remaining time.
+ * percent complete, elapsed time, and remaining time.  Be sure to first call
+ * {@link #start(int, int)} to set the total number of seeds and NFE prior to
+ * invoking any other method.
  */
 public class ProgressHelper {
 	

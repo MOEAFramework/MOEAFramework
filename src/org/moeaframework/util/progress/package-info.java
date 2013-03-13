@@ -18,6 +18,6 @@
 
 /**
  * Collection of classes for managing progress reporting, including providing
- * listeners for progress updates and estimating remaining time.
+ * listeners for receiving progress updates and estimating remaining time.
  */
 package org.moeaframework.util.progress;
