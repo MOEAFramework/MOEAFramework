@@ -130,18 +130,24 @@ public class ProgressHelper {
 	private void updateStatistics() {
 		long currentTime = System.currentTimeMillis();
 		
-		// update moving average
+		// calculate the change since the last call
 		double diffTime = currentTime - lastTime;
 		double diffSeed = currentSeed - lastSeed;
 		double diffNFE = currentNFE - lastNFE;
 		double percentChange = (diffSeed + (diffNFE / maxNFE)) / totalSeeds;
 		
-		statistics.addValue(diffTime / percentChange);
-		
-		// finally, update the last values
-		lastTime = currentTime;
-		lastSeed = currentSeed;
-		lastNFE = currentNFE;
+		// only update if the change was significant
+		if ((diffTime > 0.0) && (percentChange > 0.0001)) {
+			System.out.println("Update: " + diffTime + " " + percentChange + " " + (diffTime / percentChange));
+			
+			
+			statistics.addValue(diffTime / percentChange);
+			
+			// update the last values
+			lastTime = currentTime;
+			lastSeed = currentSeed;
+			lastNFE = currentNFE;
+		}
 	}
 	
 	/**
@@ -158,6 +164,8 @@ public class ProgressHelper {
 		double remainingNFE = maxNFE - currentNFE;
 		double percentRemaining = (remainingSeeds + (remainingNFE / maxNFE)) /
 				totalSeeds;
+		
+		System.out.println(statistics.getMean() + " " + percentRemaining);
 		
 		ProgressEvent event = new ProgressEvent(
 				executor,
@@ -234,13 +242,13 @@ public class ProgressHelper {
 		this.maxNFE = maxNFE;
 		
 		// reset all internal parameters
-		lastTime = startTime;
 		lastSeed = 1;
 		lastNFE = 0;
 		currentSeed = 1;
 		currentNFE = 0;
 		statistics.clear();
 		startTime = System.currentTimeMillis();
+		lastTime = startTime;
 	}
 	
 	/**
@@ -252,37 +260,6 @@ public class ProgressHelper {
 		// this currently does nothing, but may be used in the future if we
 		// do anything to reduce the number of reports (i.e., send updates
 		// at most once every second)
-	}
-	
-	public static void main(String[] args) {
-		int totalSeeds = 10;
-		int maxNFE = 100000;
-		ProgressHelper helper = new ProgressHelper(null);
-		
-		helper.addProgressListener(new ProgressListener() {
-
-			@Override
-			public void progressUpdate(ProgressEvent event) {
-				System.out.println(event.getRemainingTime());
-			}
-			
-		});
-		
-		helper.start(totalSeeds, maxNFE);
-		
-		for (int i = 0; i < totalSeeds; i++) {
-			for (int j = 0; j <= maxNFE-10000; j += 10000) {
-				try {
-					Thread.sleep(10);
-				} catch (InterruptedException e) {
-					//do nothing
-				}
-				
-				helper.setCurrentNFE(j+10000);
-			}
-			
-			helper.nextSeed();
-		}
 	}
 
 }

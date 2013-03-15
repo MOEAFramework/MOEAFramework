@@ -39,22 +39,6 @@ any changes.
     comparison between solutions and populations would be useful.  For
     consistency, use the Apache Commons Lang builder classes to implement
     equals and hashCode.
-  
-  - Add reporting function to Executor which periodically outputs progress
-    reports.  It would probably be a good design to provide functionality
-    similar to SwingWorker's progress notifications.
-    
-      ProgressListener:
-        - public void progressUpdate(ProgressEvent event);
-      
-      ProgressEvent:
-        - currentSeed
-        - totalSeeds
-        - currentNFE
-        - maxNFE
-        - percentComplete
-        - elapsedTime
-        - estimatedRemainingTime
 
   - Develop an interface for defining stopping conditions.  Executor should
     provide the necessary functionality for defining stopping conditions.
