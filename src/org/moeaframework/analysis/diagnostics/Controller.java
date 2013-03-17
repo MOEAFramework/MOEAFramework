@@ -30,7 +30,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -39,17 +38,18 @@ import javax.swing.SwingUtilities;
 
 import org.apache.commons.lang3.event.EventListenerSupport;
 import org.moeaframework.Analyzer;
+import org.moeaframework.Executor;
 import org.moeaframework.Instrumenter;
 import org.moeaframework.analysis.collector.Accumulator;
-import org.moeaframework.analysis.collector.InstrumentedAlgorithm;
 import org.moeaframework.analysis.sensitivity.EpsilonHelper;
-import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.core.spi.ProblemFactory;
+import org.moeaframework.util.Timing;
+import org.moeaframework.util.progress.ProgressEvent;
+import org.moeaframework.util.progress.ProgressListener;
 
 /**
  * The controller manages the underlying data model, performs the evaluation
@@ -163,13 +163,6 @@ public class Controller {
 	private volatile int overallProgress;
 	
 	/**
-	 * {@code true} if the current job is to be canceled; {@code false} 
-	 * otherwise.  The controller periodically checks this value to determine
-	 * if it should interrupt the job.
-	 */
-	private volatile boolean canceled;
-	
-	/**
 	 * The thread running the current job; or {@code null} if no job is
 	 * running.
 	 */
@@ -185,6 +178,11 @@ public class Controller {
 	 * quantiles when {@code false}.
 	 */
 	private boolean showIndividualTraces;
+	
+	/**
+	 * The executor for the current run.
+	 */
+	private Executor executor;
 	
 	/**
 	 * Constructs a new controller for the specified {@code DiagnosticTool}
@@ -539,123 +537,120 @@ public class Controller {
 		thread = new Thread() {
 			
 			public void run() {
+				Timing.startTimer("New Controller");
 				try {
-					Problem problem = null;
-					canceled = false;
 					updateProgress(0, 0, numberOfEvaluations, numberOfSeeds);
 
+					// setup the instrumenter to collect the necessary info
+					Instrumenter instrumenter = new Instrumenter()
+							.withFrequency(100)
+							.withProblem(problemName);
+					
+					if (getIncludeHypervolume()) {
+						instrumenter.attachHypervolumeCollector();
+					}
+					
+					if (getIncludeGenerationalDistance()) {
+						instrumenter.attachGenerationalDistanceCollector();
+					}
+					
+					if (getIncludeInvertedGenerationalDistance()) {
+						instrumenter.attachInvertedGenerationalDistanceCollector();
+					}
+					
+					if (getIncludeSpacing()) {
+						instrumenter.attachSpacingCollector();
+					}
+					
+					if (getIncludeAdditiveEpsilonIndicator()) {
+						instrumenter.attachAdditiveEpsilonIndicatorCollector();
+					}
+					
+					if (getIncludeContribution()) {
+						instrumenter.attachContributionCollector();
+					}
+					
+					if (getIncludeEpsilonProgress()) {
+						instrumenter.attachEpsilonProgressCollector();
+					}
+					
+					if (getIncludeAdaptiveMultimethodVariation()) {
+						instrumenter.attachAdaptiveMultimethodVariationCollector();
+					}
+					
+					if (getIncludeAdaptiveTimeContinuation()) {
+						instrumenter.attachAdaptiveTimeContinuationCollector();
+					}
+					
+					if (getIncludeElapsedTime()) {
+						instrumenter.attachElapsedTimeCollector();
+					}
+					
+					if (getIncludeApproximationSet()) {
+						instrumenter.attachApproximationSetCollector();
+					}
+					
+					if (getIncludePopulationSize()) {
+						instrumenter.attachPopulationSizeCollector();
+					}
+					
+					// lookup predefined epsilons for this problem
+					Problem problem = null;
+					
 					try {
 						problem = ProblemFactory.getInstance().getProblem(
 								problemName);
 						
-						Instrumenter instrumenter = new Instrumenter()
-								.withFrequency(100)
-								.withProblem(problemName)
-								.withEpsilon(EpsilonHelper.getEpsilon(problem));
-						
-						if (getIncludeHypervolume()) {
-							instrumenter.attachHypervolumeCollector();
-						}
-						
-						if (getIncludeGenerationalDistance()) {
-							instrumenter.attachGenerationalDistanceCollector();
-						}
-						
-						if (getIncludeInvertedGenerationalDistance()) {
-							instrumenter.attachInvertedGenerationalDistanceCollector();
-						}
-						
-						if (getIncludeSpacing()) {
-							instrumenter.attachSpacingCollector();
-						}
-						
-						if (getIncludeAdditiveEpsilonIndicator()) {
-							instrumenter.attachAdditiveEpsilonIndicatorCollector();
-						}
-						
-						if (getIncludeContribution()) {
-							instrumenter.attachContributionCollector();
-						}
-						
-						if (getIncludeEpsilonProgress()) {
-							instrumenter.attachEpsilonProgressCollector();
-						}
-						
-						if (getIncludeAdaptiveMultimethodVariation()) {
-							instrumenter.attachAdaptiveMultimethodVariationCollector();
-						}
-						
-						if (getIncludeAdaptiveTimeContinuation()) {
-							instrumenter.attachAdaptiveTimeContinuationCollector();
-						}
-					
-						if (getIncludeElapsedTime()) {
-							instrumenter.attachElapsedTimeCollector();
-						}
-						
-						if (getIncludeApproximationSet()) {
-							instrumenter.attachApproximationSetCollector();
-						}
-						
-						if (getIncludePopulationSize()) {
-							instrumenter.attachPopulationSizeCollector();
-						}
-	
-						for (int i=0; i<numberOfSeeds; i++) {
-							Properties properties = new Properties();
-							properties.setProperty("maxEvaluations", 
-									Integer.toString(numberOfEvaluations));
-							
-							Algorithm algorithm = null;
-							
-							try {
-								algorithm = AlgorithmFactory.getInstance()
-										.getAlgorithm(algorithmName, properties,
-												problem);
-							
-								InstrumentedAlgorithm instrumentedAlgorithm = 
-										instrumenter.instrument(algorithm);
-								
-								while (instrumentedAlgorithm.getNumberOfEvaluations() < numberOfEvaluations) {
-									instrumentedAlgorithm.step();
-									updateProgress(
-											instrumentedAlgorithm.getNumberOfEvaluations(), 
-											i, 
-											numberOfEvaluations, 
-											numberOfSeeds);
-									
-									if (canceled || Thread.currentThread().isInterrupted()) {
-										return;
-									}
-								}
-								
-								add(algorithmName, problemName, 
-										instrumentedAlgorithm.getAccumulator());
-							} finally {
-								if (algorithm != null) {
-									algorithm.terminate();
-								}
-							}
-							
-							updateProgress(numberOfEvaluations, i+1, 
-									numberOfEvaluations, numberOfSeeds);
-							
-							if (canceled || Thread.currentThread().isInterrupted()) {
-								return;
-							}
-						}
+						instrumenter.withEpsilon(EpsilonHelper.getEpsilon(
+								problem));
 					} finally {
 						if (problem != null) {
 							problem.close();
 						}
 					}
+					
+					// setup the progress listener to receive updates
+					ProgressListener listener = new ProgressListener() {
+						
+						@Override
+						public void progressUpdate(ProgressEvent event) {
+							updateProgress(
+									event.getCurrentNFE(),
+									event.getCurrentSeed(),
+									event.getMaxNFE(),
+									event.getTotalSeeds());
+							
+							if (event.isSeedFinished()) {
+								Executor executor = event.getExecutor();
+								Instrumenter instrumenter =
+										executor.getInstrumenter();
+								
+								add(algorithmName, problemName,
+										instrumenter.getLastAccumulator());
+							}
+						}
+						
+					};
+					
+					// setup the executor to run for the desired time
+					executor = new Executor()
+							.withSameProblemAs(instrumenter)
+							.withInstrumenter(instrumenter)
+							.withAlgorithm(algorithmName)
+							.withMaxEvaluations(numberOfEvaluations)
+							.withProgressListener(listener);
+					
+					// run the executor using the listener to collect results
+					executor.runSeeds(numberOfSeeds);
 				} catch (Exception e) {
 					handleException(e);
 				} finally {
-					canceled = false;
 					thread = null;
 					fireStateChangedEvent();
 				}
+				
+				Timing.stopTimer("New Controller");
+				Timing.printStatistics();
 			}
 		};
 		
@@ -668,7 +663,9 @@ public class Controller {
 	 * Notifies the controller that it should cancel the current evaluation job.
 	 */
 	public void cancel() {
-		canceled = true;
+		if (executor != null) {
+			executor.cancel();
+		}
 	}
 	
 	/**
