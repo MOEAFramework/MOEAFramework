@@ -29,47 +29,25 @@ import org.junit.Test;
 public class ProgressHelperTest {
 	
 	/**
-	 * Tests progress reporting for a single seed with small evaluation times.
+	 * Tests progress reporting for a single seed.
 	 * 
 	 * @throws InterruptedException if the simulation failed to execute
 	 *         properly due to an interruption
 	 */
 	@Test
-	public void testTiming1() throws InterruptedException {
-		test(1, 100000, 10000, 60);
+	public void testTimingSingleSeed() throws InterruptedException {
+		test(1, 100000, 10000, 500);
 	}
 	
 	/**
-	 * Tests progress reporting for a single seed with large evaluation times.
+	 * Tests progress reporting for many seeds.
 	 * 
 	 * @throws InterruptedException if the simulation failed to execute
 	 *         properly due to an interruption
 	 */
 	@Test
-	public void testTiming2() throws InterruptedException {
-		test(1, 100000, 10000, 600);
-	}
-	
-	/**
-	 * Tests progress reporting for many seeds with small evaluation times.
-	 * 
-	 * @throws InterruptedException if the simulation failed to execute
-	 *         properly due to an interruption
-	 */
-	@Test
-	public void testTiming3() throws InterruptedException {
-		test(10, 100000, 10000, 60);
-	}
-	
-	/**
-	 * Tests progress reporting for many seeds with large evaluation times.
-	 * 
-	 * @throws InterruptedException if the simulation failed to execute
-	 *         properly due to an interruption
-	 */
-	@Test
-	public void testTiming4() throws InterruptedException {
-		test(10, 100000, 10000, 600);
+	public void testTimingManySeeds() throws InterruptedException {
+		test(10, 100000, 10000, 500);
 	}
 	
 	/**
@@ -79,8 +57,8 @@ public class ProgressHelperTest {
 	 *         properly due to an interruption
 	 */
 	@Test
-	public void testTiming5() throws InterruptedException {
-		test(1, 1000, 1, 6);
+	public void testTimingFineGrained() throws InterruptedException {
+		test(1, 1000, 1, 50);
 	}
 	
 	/**
@@ -112,7 +90,12 @@ public class ProgressHelperTest {
 		
 		for (int i = 0; i < totalSeeds; i++) {
 			for (int j = 0; j <= maxNFE-frequency; j += frequency) {
-				Thread.sleep(time);
+				long start = System.nanoTime();
+				
+				while (System.nanoTime() - start < time*1000000) {
+					//loop for the given amount of time
+				}
+				
 				helper.setCurrentNFE(j+frequency);
 			}
 			
@@ -124,22 +107,42 @@ public class ProgressHelperTest {
 		double error = 0.05 * expectedTime;
 		
 		Assert.assertEquals(expectedCount, events.size());
+		Assert.assertFalse(events.get(0).isSeedFinished());
+		Assert.assertTrue(events.get(events.size() - 1).isSeedFinished());
+		
+		// test seed count
 		Assert.assertEquals(1, events.get(0).getCurrentSeed());
-		Assert.assertEquals(totalSeeds/2 + 1, 
+		Assert.assertEquals(totalSeeds/2 + 1,
 				events.get(events.size()/2).getCurrentSeed());
-		Assert.assertEquals(totalSeeds, 
+		Assert.assertEquals(totalSeeds,
 				events.get(events.size() - 2).getCurrentSeed());
-		Assert.assertEquals(expectedTime / 2.0, 
+		
+		// test elapsed time
+		Assert.assertEquals(expectedTime / 2.0,
 				events.get(events.size()/2 - 1).getElapsedTime(), error);
-		Assert.assertEquals(expectedTime, 
+		Assert.assertEquals(expectedTime,
 				events.get(events.size()-1).getElapsedTime(), error);
-		Assert.assertEquals(expectedTime / 2.0, 
+		
+		// test remaining time
+		Assert.assertEquals(expectedTime / 2.0,
 				events.get(events.size()/2 - 1).getRemainingTime(), error);
-		Assert.assertEquals(0.0, 
+		Assert.assertEquals(0.0,
 				events.get(events.size() - 1).getRemainingTime(), error);
-		Assert.assertEquals(events.get(events.size()-1).getElapsedTime(), 
-				events.get(events.size()/2).getElapsedTime() + 
+		Assert.assertEquals(events.get(events.size()-1).getElapsedTime(),
+				events.get(events.size()/2).getElapsedTime() +
 				events.get(events.size()/2).getRemainingTime(), error);
+		
+		// test percent complete
+		Assert.assertEquals(0.5,
+				events.get(events.size()/2 - 1).getPercentComplete(), 0.05);
+		Assert.assertEquals(1.0,
+				events.get(events.size() - 1).getPercentComplete(), 0.05);
+		
+		// test constant attributes
+		for (ProgressEvent event : events) {
+			Assert.assertEquals(totalSeeds, event.getTotalSeeds());
+			Assert.assertEquals(maxNFE, event.getMaxNFE());
+		}
 	}
 
 	/**
@@ -203,7 +206,7 @@ public class ProgressHelperTest {
 		Thread.sleep(1000);
 		helper.setCurrentNFE(100000);
 		
-		Assert.assertEquals(4, events.size());
+		Assert.assertEquals(3, events.size());
 		Assert.assertTrue(Double.isNaN(events.get(0).getRemainingTime()));
 		Assert.assertTrue(Double.isNaN(events.get(1).getRemainingTime()));
 		Assert.assertTrue(events.get(2).getRemainingTime() > 0.0);
