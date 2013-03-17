@@ -157,7 +157,6 @@ public class ProgressHelperTest {
 		Assert.assertTrue(Double.isNaN(events.get(0).getRemainingTime()));
 		Assert.assertTrue(Double.isNaN(events.get(1).getRemainingTime()));
 		Assert.assertTrue(events.get(2).getRemainingTime() > 0.0);
-		Assert.assertTrue(events.get(3).getRemainingTime() > 0.0);
 	}
 	
 	/**
@@ -186,13 +185,11 @@ public class ProgressHelperTest {
 		helper.setCurrentNFE(50000);
 		Thread.sleep(1000);
 		helper.setCurrentNFE(100000);
-		helper.nextSeed();
 		
 		Assert.assertEquals(4, events.size());
 		Assert.assertTrue(Double.isNaN(events.get(0).getRemainingTime()));
 		Assert.assertTrue(Double.isNaN(events.get(1).getRemainingTime()));
 		Assert.assertTrue(events.get(2).getRemainingTime() > 0.0);
-		Assert.assertTrue(events.get(3).getRemainingTime() > 0.0);
 	}
 	
 }
