@@ -138,9 +138,6 @@ public class ProgressHelper {
 		
 		// only update if the change was significant
 		if ((diffTime > 0.0) && (percentChange > 0.0001)) {
-			System.out.println("Update: " + diffTime + " " + percentChange + " " + (diffTime / percentChange));
-			
-			
 			statistics.addValue(diffTime / percentChange);
 			
 			// update the last values
@@ -164,8 +161,6 @@ public class ProgressHelper {
 		double remainingNFE = maxNFE - currentNFE;
 		double percentRemaining = (remainingSeeds + (remainingNFE / maxNFE)) /
 				totalSeeds;
-		
-		System.out.println(statistics.getMean() + " " + percentRemaining);
 		
 		ProgressEvent event = new ProgressEvent(
 				executor,
