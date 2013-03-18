@@ -12,8 +12,6 @@ any changes.
  Easy
 ------
 
-  - Upgrade to Commons Math 3.1.1, JCommon 1.0.18, JMetal 4.3, JUnit 4.11
-
   - Let the Normalizer input the ideal and nadir points.
 
   - Add ARFF and Aerovis output formats to ExtractData and any other relevant
