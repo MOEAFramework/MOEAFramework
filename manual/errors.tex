@@ -370,6 +370,16 @@ Errors halt the execution of the program and produce an error message to the sta
   Thrown when \java{ResultFileWriter} or \java{MetricFileWriter} attempt to recover data from an interrupted run, but it appears there already exists an ``unclean'' file from a previous recovery attempt.  If the user believes the unclean file contains valid data, she can copy the unclean file to its original location.  Or, she can delete the unclean file to start fresh.  The \plaintext{org.moeaframework.analysis.sensitivity.cleanup} property in \file{global.properties} controls the default behavior in this scenario.
 \end{indented}
 
+\noindent
+\textit{requires at least two solutions} or
+\textit{objective with empty range}
+\begin{indented}
+  These two exceptions are thrown when using the Normalizer with a degenerate population.  A degenerate population either has fewer than two solutions or the range of any objective is below computer precision.  In this scenario, the population can not be normalized.
+\end{indented}
+
+
+
+
 
 \section{Warnings}
 Warnings are messages printed to the standard error stream (i.e., the console) that indicate an abnormal or unsafe condition.  While warnings do not indicate an error occurred, they do indicate caution is required by the user.

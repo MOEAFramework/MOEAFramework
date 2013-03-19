@@ -363,6 +363,13 @@ intervention
   org.moeaframework.analysis.sensitivity.cleanup property in global.properties
   controls the default behavior in this scenario.
   
+requires at least two solutions
+objective with empty range
+  These two exceptions are thrown when using the Normalizer with a degenerate
+  population.  A degenerate population either has fewer than two solutions or
+  the range of any objective is below computer precision.  In this scenario,
+  the population can not be normalized.
+  
 
 ----------
  Warnings

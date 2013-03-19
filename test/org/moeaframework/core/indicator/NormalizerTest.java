@@ -62,7 +62,7 @@ public class NormalizerTest {
 	}
 	
 	/**
-	 * Tests normalization under normal conditions.
+	 * Tests normalization when the bounds are derived from the population.
 	 */
 	@Test
 	public void testRescale() {
@@ -77,6 +77,27 @@ public class NormalizerTest {
 		expected.add(TestUtils.newSolution(0.0, 1.0));
 		expected.add(TestUtils.newSolution(1.0, 0.0));
 		expected.add(TestUtils.newSolution(0.5, 0.5));
+		
+		TestUtils.assertEquals(expected, normalizer.normalize(population));
+	}
+	
+	/**
+	 * Tests normalization when the bounds are defined explicitly.
+	 */
+	@Test
+	public void testRescaleExplicit() {
+		NondominatedPopulation population = new NondominatedPopulation();
+		population.add(TestUtils.newSolution(0.0, 0.1));
+		population.add(TestUtils.newSolution(10.0, -0.1));
+		population.add(TestUtils.newSolution(5.0, 0.0));
+		
+		Normalizer normalizer = new Normalizer(new ProblemStub(2), 
+				new double[] { 0.0, -0.2 }, new double[] { 20.0, 0.2 });
+		
+		NondominatedPopulation expected = new NondominatedPopulation();
+		expected.add(TestUtils.newSolution(0.0, 0.75));
+		expected.add(TestUtils.newSolution(0.5, 0.25));
+		expected.add(TestUtils.newSolution(0.25, 0.5));
 		
 		TestUtils.assertEquals(expected, normalizer.normalize(population));
 	}

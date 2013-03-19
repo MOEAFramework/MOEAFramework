@@ -48,25 +48,57 @@ public class Normalizer {
 	
 	/**
 	 * Constructs a normalizer for normalizing populations so that all 
-	 * objectives reside in the range {@code [0, 1]}.
+	 * objectives reside in the range {@code [0, 1]}.  This constructor derives
+	 * the minimum and maximum bounds from the given population.
 	 * 
 	 * @param problem the problem
 	 * @param population the population defining the minimum and maximum bounds
-	 * @throws IllegalArgumentException if the reference set contains fewer
+	 * @throws IllegalArgumentException if the population set contains fewer
 	 *         than two solutions, or if there exists an objective with an
 	 *         empty range
 	 */
 	public Normalizer(Problem problem, Population population) {
 		super();
 		this.problem = problem;
+		this.minimum = new double[problem.getNumberOfObjectives()];
+		this.maximum = new double[problem.getNumberOfObjectives()];
+
+		calculateRanges(population);		
+		checkRanges();
+	}
+	
+	/**
+	 * Constructs a normalizer for normalizing population so that all
+	 * objectives reside in the range {@code [0, 1]}.  This constructor allows
+	 * defining the minimum and maximum bounds explicitly.
+	 * 
+	 * @param problem the problem
+	 * @param minimum the minimum bounds of each objective
+	 * @param maximum the maximum bounds of each objective
+	 */
+	public Normalizer(Problem problem, double[] minimum, double[] maximum) {
+		super();
+		this.problem = problem;
+		this.minimum = minimum.clone();
+		this.maximum = maximum.clone();
 		
+		checkRanges();
+	}
+	
+	/**
+	 * Calculates the range of each objective given the population.  The range
+	 * is defined by the minimum and maximum value of each objective.
+	 * 
+	 * @param population the population defining the minimum and maximum bounds
+	 * @throws IllegalArgumentException if the population contains fewer than
+	 *         two solutions
+	 */
+	private void calculateRanges(Population population) {
 		if (population.size() < 2) {
-			throw new IllegalArgumentException("requires at least two solutions");
+			throw new IllegalArgumentException(
+					"requires at least two solutions");
 		}
-
-		minimum = new double[problem.getNumberOfObjectives()];
-		maximum = new double[problem.getNumberOfObjectives()];
-
+		
 		for (int i = 0; i < problem.getNumberOfObjectives(); i++) {
 			minimum[i] = Double.POSITIVE_INFINITY;
 			maximum[i] = Double.NEGATIVE_INFINITY;
@@ -84,10 +116,20 @@ public class Normalizer {
 				maximum[j] = Math.max(maximum[j], solution.getObjective(j));
 			}
 		}
-		
+	}
+	
+	/**
+	 * Checks if any objective has a range that is smaller than machine
+	 * precision.
+	 * 
+	 * @throws IllegalArgumentException if any objective has a range that is
+	 *         smaller than machine precision
+	 */
+	private void checkRanges() {
 		for (int i = 0; i < problem.getNumberOfObjectives(); i++) {
 			if (Math.abs(minimum[i] - maximum[i]) < Settings.EPS) {
-				throw new IllegalArgumentException("objective with empty range");
+				throw new IllegalArgumentException(
+						"objective with empty range");
 			}
 		}
 	}

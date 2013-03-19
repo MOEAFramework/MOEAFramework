@@ -129,7 +129,7 @@ public class Executor extends ProblemBuilder {
 	
 	/**
 	 * Informs this executor to stop processing and returns any results
-	 * collected thus far.
+	 * collected thus far.  This method is thread-safe.
 	 */
 	public void cancel() {
 		isCanceled.set(true);
@@ -138,7 +138,7 @@ public class Executor extends ProblemBuilder {
 	/**
 	 * Returns {@code true} if the canceled flag is set; {@code false}
 	 * otherwise.  After canceling a run, the flag will remain set to
-	 * {@code true} until another run is started.
+	 * {@code true} until another run is started.  This method is thread-safe.
 	 * 
 	 * @return {@code true} if the canceled flag is set; {@code false}
 	 *         otherwise
