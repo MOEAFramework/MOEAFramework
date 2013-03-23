@@ -377,8 +377,9 @@ public class FileProtection extends CommandLineUtility {
 	 * digests.
 	 * 
 	 * @param args the command line arguments
+	 * @throws Exception if an error occurred
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		new FileProtection().start(args);
 	}
 

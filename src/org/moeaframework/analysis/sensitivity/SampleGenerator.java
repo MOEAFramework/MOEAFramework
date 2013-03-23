@@ -162,8 +162,9 @@ public class SampleGenerator extends CommandLineUtility {
 	 * by the {@link Evaluator}.
 	 * 
 	 * @param args the command line arguments
+	 * @throws Exception if an error occurred
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		new SampleGenerator().start(args);
 	}
 

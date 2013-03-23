@@ -18,7 +18,6 @@
 package org.moeaframework.analysis.sensitivity;
 
 import java.io.File;
-import java.io.IOException;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -31,7 +30,7 @@ import org.moeaframework.util.io.FileUtils;
 public class NegaterTest {
     
     @Test
-    public void testSingleNegation() throws IOException {
+    public void testSingleNegation() throws Exception {
         File file = TestUtils.createTempFile(
                 "0.0 0.1 -0.1 -0.1\n#foo bar\n5.12e-10 -5.12e10 0.5 0.000001");
         
@@ -48,7 +47,7 @@ public class NegaterTest {
     }
     
     @Test
-    public void testDoubleNegation() throws IOException {
+    public void testDoubleNegation() throws Exception {
         File file = TestUtils.createTempFile(
                 "0.0 0.1 -0.1 -0.1\n#foo bar\n5.12e-10 -5.12e10 0.5 0.000001");
         File copy = TestUtils.createTempFile();
@@ -69,7 +68,7 @@ public class NegaterTest {
     }
     
     @Test
-    public void testNoOverwriteOnError1() throws IOException {
+    public void testNoOverwriteOnError1() throws Exception {
         File file = TestUtils.createTempFile(
                 "0.0 0.1 -0.1 -0.1\n#foo bar\n5.12e-10 -5.12e10 0.5");
         File copy = TestUtils.createTempFile();
@@ -85,7 +84,7 @@ public class NegaterTest {
     }
 
     @Test
-    public void testNoOverwriteOnError2() throws IOException {
+    public void testNoOverwriteOnError2() throws Exception {
         File file = TestUtils.createTempFile(
                 "0.0 0.1 -0.1 -0.1\n#foo bar\n5.12e-10 0,1,2 0.5 0.000001");
         File copy = TestUtils.createTempFile();

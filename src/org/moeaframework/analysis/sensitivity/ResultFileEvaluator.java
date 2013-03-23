@@ -176,8 +176,9 @@ public class ResultFileEvaluator extends CommandLineUtility {
 	 * stored in a result file and computing its metric file.
 	 * 
 	 * @param args the command line arguments
+	 * @throws Exception if an error occurred
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		new ResultFileEvaluator().start(args);
 	}
 

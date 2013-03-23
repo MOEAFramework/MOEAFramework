@@ -18,7 +18,6 @@
 package org.moeaframework.util;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -226,9 +225,9 @@ public class ReferenceSetMerger extends CommandLineUtility {
 	 * Starts the command line utility for merging two or more sets.
 	 * 
 	 * @param args the command line arguments
-	 * @throws IOException if an I/O error occurred
+	 * @throws Exception if an error occurred
 	 */
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws Exception {
 		new ReferenceSetMerger().start(args);
 	}
 

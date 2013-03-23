@@ -130,8 +130,9 @@ public class ResultFileInfo extends CommandLineUtility {
 	 * result file.
 	 * 
 	 * @param args the command line arguments
+	 * @throws Exception if an error occurred
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		new ResultFileInfo().start(args);
 	}
 

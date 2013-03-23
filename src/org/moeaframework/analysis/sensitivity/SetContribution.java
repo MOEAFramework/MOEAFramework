@@ -96,8 +96,9 @@ public class SetContribution extends CommandLineUtility {
 	 * a set that are contained within a reference set.
 	 * 
 	 * @param args the command line arguments
+	 * @throws Exception if an error occurred
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		new SetContribution().start(args);
 	}
 

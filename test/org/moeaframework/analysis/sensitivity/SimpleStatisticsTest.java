@@ -18,11 +18,11 @@
 package org.moeaframework.analysis.sensitivity;
 
 import java.io.File;
-import java.io.IOException;
+
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.moeaframework.TestUtils;
+import org.moeaframework.core.FrameworkException;
 
 /**
  * Tests the {@link SimpleStatistics} class.
@@ -30,7 +30,7 @@ import org.moeaframework.TestUtils;
 public class SimpleStatisticsTest {
 	
 	@Test
-	public void testNormal() throws IOException {
+	public void testNormal() throws Exception {
 		File input1 = TestUtils.createTempFile("0.0 0.0 0.0\n1.0 1.0 1.0");
 		File input2 = TestUtils.createTempFile("0.0 0.0 0.0\n0.0 0.5 1.0\n");
 		File output = TestUtils.createTempFile();
@@ -49,8 +49,7 @@ public class SimpleStatisticsTest {
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
-	@Ignore
-	public void testMissingEntries() throws IOException {
+	public void testMissingEntries() throws Exception {
 		File input1 = TestUtils.createTempFile("0.0 0.0 0.0\n1.0 1.0 1.0");
 		File input2 = TestUtils.createTempFile("0.0 0.0\n0.0 0.5 1.0\n");
 		File output = TestUtils.createTempFile();
@@ -63,8 +62,7 @@ public class SimpleStatisticsTest {
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
-	@Ignore
-	public void testEmptyFile() throws IOException {
+	public void testEmptyFile() throws Exception {
 		File input1 = TestUtils.createTempFile("0.0 0.0 0.0\n1.0 1.0 1.0");
 		File input2 = TestUtils.createTempFile("");
 		File output = TestUtils.createTempFile();
@@ -77,8 +75,7 @@ public class SimpleStatisticsTest {
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
-	@Ignore
-	public void testMissingRows() throws IOException {
+	public void testMissingRows() throws Exception {
 		File input1 = TestUtils.createTempFile("0.0 0.0 0.0\n1.0 1.0 1.0");
 		File input2 = TestUtils.createTempFile("0.0 0.0 0.0\n");
 		File output = TestUtils.createTempFile();
@@ -91,8 +88,7 @@ public class SimpleStatisticsTest {
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
-	@Ignore
-	public void testNoInputs() throws IOException {
+	public void testNoInputs() throws Exception {
 		File output = TestUtils.createTempFile();
 		
 		SimpleStatistics.main(new String[] {
@@ -100,9 +96,8 @@ public class SimpleStatisticsTest {
 				"-o", output.getPath()});
 	}
 	
-	@Test(expected = IllegalArgumentException.class)
-	@Ignore
-	public void testInvalidEntry() throws IOException {
+	@Test(expected = FrameworkException.class)
+	public void testInvalidEntry() throws Exception {
 		File input1 = TestUtils.createTempFile("0.0 0.0 0.0\n1.0 1.0 1.0");
 		File input2 = TestUtils.createTempFile("0.0 foo 0.0\n0.0 0.5 1.0");
 		File output = TestUtils.createTempFile();
@@ -115,7 +110,7 @@ public class SimpleStatisticsTest {
 	}
 	
 	@Test
-	public void testInfinityAndNaN() throws IOException {
+	public void testInfinityAndNaN() throws Exception {
 		File input1 = TestUtils.createTempFile("0.0 0.0 0.0\n1.0 Infinity 1.0");
 		File input2 = TestUtils.createTempFile("0.0 0.0 NaN\n0.0 0.5 1.0\n");
 		File output = TestUtils.createTempFile();
@@ -134,7 +129,7 @@ public class SimpleStatisticsTest {
 	}
 	
 	@Test
-	public void testInfinityAndNaNIgnoring() throws IOException {
+	public void testInfinityAndNaNIgnoring() throws Exception {
 		File input1 = TestUtils.createTempFile("0.0 0.0 0.0\n1.0 Infinity 1.0");
 		File input2 = TestUtils.createTempFile("0.0 0.0 NaN\n0.0 0.5 1.0\n");
 		File output = TestUtils.createTempFile();
@@ -154,7 +149,7 @@ public class SimpleStatisticsTest {
 	}
 	
 	@Test
-	public void testInfinityMaximum() throws IOException {
+	public void testInfinityMaximum() throws Exception {
 		File input1 = TestUtils.createTempFile("0.0 0.0 0.0\n1.0 Infinity 1.0");
 		File input2 = TestUtils.createTempFile("0.0 0.0 0.0\n0.0 0.5 1.0\n");
 		File output = TestUtils.createTempFile();

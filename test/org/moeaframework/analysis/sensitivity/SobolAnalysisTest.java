@@ -38,7 +38,7 @@ import org.moeaframework.util.sequence.Saltelli;
 public class SobolAnalysisTest {
 	
 	@Test
-	public void testNoInteraction1() throws IOException {
+	public void testNoInteraction1() throws Exception {
 		File outputFile = test(new MultivariateFunction() {
 
 			@Override
@@ -62,7 +62,7 @@ public class SobolAnalysisTest {
 	}
 	
 	@Test
-	public void testNoInteraction12() throws IOException {
+	public void testNoInteraction12() throws Exception {
 		File outputFile = test(new MultivariateFunction() {
 
 			@Override
@@ -86,7 +86,7 @@ public class SobolAnalysisTest {
 	}
 	
 	@Test
-	public void testNoInteraction123() throws IOException {
+	public void testNoInteraction123() throws Exception {
 		File outputFile = test(new MultivariateFunction() {
 
 			@Override
@@ -110,7 +110,7 @@ public class SobolAnalysisTest {
 	}
 	
 	@Test
-	public void testInteraction12() throws IOException {
+	public void testInteraction12() throws Exception {
 		File outputFile = test(new MultivariateFunction() {
 
 			@Override
@@ -140,7 +140,7 @@ public class SobolAnalysisTest {
 	}
 	
 	@Test
-	public void testInteraction123() throws IOException {
+	public void testInteraction123() throws Exception {
 		File outputFile = test(new MultivariateFunction() {
 
 			@Override
@@ -185,7 +185,7 @@ public class SobolAnalysisTest {
 	 *         the function
 	 * @throws IOException if an I/O error occurred
 	 */
-	protected File test(MultivariateFunction function) throws IOException {
+	protected File test(MultivariateFunction function) throws Exception {
 		double[][] input = new Saltelli().generate(1000*8, 3);
 		double[] output = evaluate(function, input);
 		

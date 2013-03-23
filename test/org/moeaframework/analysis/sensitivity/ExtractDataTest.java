@@ -20,7 +20,6 @@ package org.moeaframework.analysis.sensitivity;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.io.IOException;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -67,7 +66,7 @@ public class ExtractDataTest {
 		"#\n";
 	
 	@Test
-	public void testComplete() throws IOException {
+	public void testComplete() throws Exception {
 		File input = TestUtils.createTempFile(COMPLETE);
 		File output = TestUtils.createTempFile();
 		
@@ -93,7 +92,7 @@ public class ExtractDataTest {
 	}
 	
 	@Test
-	public void testClose() throws IOException {
+	public void testClose() throws Exception {
 		TestProblemFactory problemFactory = new TestProblemFactory();
 		ProblemFactory.setInstance(problemFactory);
 		
@@ -111,7 +110,7 @@ public class ExtractDataTest {
 	}
 	
 	@Test
-	public void testMetrics() throws IOException {
+	public void testMetrics() throws Exception {
 		File input = TestUtils.createTempFile(COMPLETE);
 		File output = TestUtils.createTempFile();
 		Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
@@ -174,7 +173,7 @@ public class ExtractDataTest {
 	}
 	
 	@Test
-	public void testContributionWithEpsilon() throws IOException {
+	public void testContributionWithEpsilon() throws Exception {
 		double epsilon = 0.1;
 		File input = TestUtils.createTempFile(COMPLETE);
 		File output = TestUtils.createTempFile();
@@ -225,7 +224,7 @@ public class ExtractDataTest {
 	}
 	
 	@Test
-	public void testContributionWithoutEpsilon() throws IOException {
+	public void testContributionWithoutEpsilon() throws Exception {
 		File input = TestUtils.createTempFile(COMPLETE);
 		File output = TestUtils.createTempFile();
 		Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");

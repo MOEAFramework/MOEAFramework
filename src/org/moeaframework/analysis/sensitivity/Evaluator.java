@@ -324,8 +324,9 @@ public class Evaluator extends CommandLineUtility {
 	 * parameterizations.
 	 * 
 	 * @param args the command line arguments
+	 * @throws Exception if an error occurred
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		new Evaluator().start(args);
 	}
 

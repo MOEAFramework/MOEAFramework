@@ -288,8 +288,9 @@ public class ExtractData extends CommandLineUtility {
 	 * Starts the command line utility for extracting data from a result file.
 	 * 
 	 * @param args the command line arguments
+	 * @throws Exception if an error occurred
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		new ExtractData().start(args);
 	}
 

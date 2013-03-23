@@ -63,7 +63,7 @@ public class IntegrationTest {
 	}
 	
 	@Test
-	public void testSetGenerator() throws IOException {
+	public void testSetGenerator() throws Exception {
 		File referenceSet = TestUtils.createTempFile();
 		
 		SetGenerator.main(new String[] {
@@ -229,7 +229,7 @@ public class IntegrationTest {
 	 * @throws IOException if an I/O error occurred
 	 */
 	@Test
-	public void testSensitivity() throws IOException {
+	public void testSensitivity() throws Exception {
 		//create the sample file
 		File parameterDescriptionFile = TestUtils.createTempFile(
 				"populationSize 10 100\r\nmaxEvaluations 1000 10000");
@@ -312,7 +312,7 @@ public class IntegrationTest {
 	 * @throws IOException if an I/O error occurred
 	 */
 	@Test
-	public void testClosedAndTerminated() throws IOException {
+	public void testClosedAndTerminated() throws Exception {
 		//create the sample file
 		File parameterDescriptionFile = TestUtils.createTempFile(
 				"populationSize 10 100\r\nmaxEvaluations 1000 10000");

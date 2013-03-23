@@ -20,7 +20,6 @@ package org.moeaframework.analysis.sensitivity;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -152,8 +151,9 @@ public class Negater extends CommandLineUtility {
      * result files.
      * 
      * @param args the command line arguments
+	 * @throws Exception if an error occurred
      */
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception {
         new Negater().start(args);
     }
 
