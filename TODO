@@ -12,6 +12,14 @@ any changes.
  Easy
 ------
 
+  - Evaluator fills in option descriptions which is already done by
+    CommandLineUtility.
+
+  - When calling Localization.getLocalization, methods should use the version
+    that takes the class and not the package name.
+
+  - ResultFileMerger should be able to also retain decision variables.
+
   - Add ARFF and Aerovis output formats to ExtractData and any other relevant
     classes.
 

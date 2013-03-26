@@ -47,7 +47,6 @@ import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.spi.ProblemFactory;
-import org.moeaframework.util.Timing;
 import org.moeaframework.util.progress.ProgressEvent;
 import org.moeaframework.util.progress.ProgressListener;
 
@@ -537,7 +536,6 @@ public class Controller {
 		thread = new Thread() {
 			
 			public void run() {
-				Timing.startTimer("New Controller");
 				try {
 					updateProgress(0, 0, numberOfEvaluations, numberOfSeeds);
 
@@ -648,9 +646,6 @@ public class Controller {
 					thread = null;
 					fireStateChangedEvent();
 				}
-				
-				Timing.stopTimer("New Controller");
-				Timing.printStatistics();
 			}
 		};
 		
