@@ -12,9 +12,6 @@ any changes.
  Easy
 ------
 
-  - Evaluator fills in option descriptions which is already done by
-    CommandLineUtility.
-
   - ResultFileMerger should be able to also retain decision variables.
 
   - Add ARFF and Aerovis output formats to ExtractData and any other relevant

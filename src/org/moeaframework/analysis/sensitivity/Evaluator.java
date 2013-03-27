@@ -135,14 +135,6 @@ public class Evaluator extends CommandLineUtility {
 				.withLongOpt("force")
 				.create('f'));
 
-		//fill in option descriptions
-		for (Object obj : options.getOptions()) {
-			Option option = (Option)obj;
-
-			option.setDescription(Localization.getString(Evaluator.class, 
-					"option." + option.getLongOpt()));
-		}
-
 		return options;
 	}
 
