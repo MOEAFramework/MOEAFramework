@@ -59,7 +59,7 @@ public abstract class CommandLineUtility {
 	 * Exception handler for formatting and printing the error message to the
 	 * command line.
 	 */
-	private static class CommandLineUncaughtExceptionHandler implements
+	private class CommandLineUncaughtExceptionHandler implements
 	UncaughtExceptionHandler {
 
 		@Override
@@ -67,6 +67,7 @@ public abstract class CommandLineUtility {
 			if (e instanceof ParseException) {
 				// error when parsing command line options
 				System.err.println(e.getMessage());
+				showHelp();
 			} else {
 				e.printStackTrace();
 			}
@@ -100,8 +101,9 @@ public abstract class CommandLineUtility {
 	public Options getOptions() {
 		Options options = new Options();
 
-		options.addOption(OptionBuilder.withLongOpt("help").withDescription(
-				"Display help information").create('h'));
+		options.addOption(OptionBuilder
+				.withLongOpt("help")
+				.create('h'));
 
 		return options;
 	}
@@ -143,10 +145,10 @@ public abstract class CommandLineUtility {
 		CommandLine commandLine = commandLineParser.parse(options, args);
 			
 		if (commandLine.hasOption("help")) {
-			showHelp(options);
+			showHelp();
+		} else {
+			run(commandLine);
 		}
-			
-		run(commandLine);
 	}
 	
 	/**
@@ -156,7 +158,9 @@ public abstract class CommandLineUtility {
 	 * 
 	 * @param options the available command line options
 	 */
-	private void showHelp(Options options) {
+	private void showHelp() {
+		Options options = getOptions();
+		
 		//update the options with their descriptions
 		for (Object object : options.getOptions()) {
 			Option option = (Option)object;
