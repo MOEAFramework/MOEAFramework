@@ -75,7 +75,7 @@ ControllerListener {
 	 * The localization instance for produce locale-specific strings.
 	 */
 	private static Localization localization = Localization.getLocalization(
-			DiagnosticTool.class.getPackage().getName());
+			DiagnosticTool.class);
 
 	/**
 	 * The controller which stores the underlying data model and notifies this

@@ -49,7 +49,7 @@ public class StatisticalResultsViewer extends JFrame {
 	 * The localization instance for produce locale-specific strings.
 	 */
 	private static Localization localization = Localization.getLocalization(
-			StatisticalResultsViewer.class.getPackage().getName());
+			StatisticalResultsViewer.class);
 	
 	/**
 	 * The controller instance.

@@ -66,7 +66,7 @@ public class LinePlot extends ResultPlot {
 	 * The localization instance for produce locale-specific strings.
 	 */
 	private static Localization localization = Localization.getLocalization(
-			LinePlot.class.getPackage().getName());
+			LinePlot.class);
 	
 	/**
 	 * The resolution of the line plot, controlling the number of collected

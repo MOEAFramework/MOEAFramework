@@ -31,12 +31,12 @@ public class LocalizationTest {
 	@Test
 	public void testInstanceMethods() {
 		Localization english = Localization.getLocalization(
-				LocalizationTest.class.getPackage().getName());
+				LocalizationTest.class);
 		Localization spanish = Localization.getLocalization(
-				LocalizationTest.class.getPackage().getName(),
+				LocalizationTest.class,
 				new Locale("ES"));
 		Localization german = Localization.getLocalization(
-				LocalizationTest.class.getPackage().getName(),
+				LocalizationTest.class,
 				new Locale("DE"));
 
 		//test without arguments

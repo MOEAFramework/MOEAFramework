@@ -180,7 +180,7 @@ public class Localization {
 	 * @param type the class requesting the localization object
 	 * @return the localization object for the given class
 	 */
-	static Localization getLocalization(Class<?> type) {
+	public static Localization getLocalization(Class<?> type) {
 		return getLocalization(type.getPackage().getName());
 	}
 
@@ -191,7 +191,7 @@ public class Localization {
 	 * @param locale the target locale
 	 * @return the localization object for the given class
 	 */
-	static Localization getLocalization(Class<?> type, Locale locale) {
+	public static Localization getLocalization(Class<?> type, Locale locale) {
 		return getLocalization(type.getPackage().getName(), locale);
 	}
 	

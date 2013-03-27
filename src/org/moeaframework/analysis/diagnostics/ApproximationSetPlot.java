@@ -49,7 +49,7 @@ public class ApproximationSetPlot extends ResultPlot {
 	 * The localization instance for produce locale-specific strings.
 	 */
 	private static Localization localization = Localization.getLocalization(
-			ApproximationSetPlot.class.getPackage().getName());
+			ApproximationSetPlot.class);
 	
 	/**
 	 * The &epsilon; value used when displaying the approximation set.

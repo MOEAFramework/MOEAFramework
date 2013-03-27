@@ -54,7 +54,7 @@ public class ActionFactory implements ControllerListener {
 	 * The localization instance for produce locale-specific strings.
 	 */
 	private static Localization localization = Localization.getLocalization(
-			ActionFactory.class.getPackage().getName());
+			ActionFactory.class);
 	
 	/**
 	 * The file extension.

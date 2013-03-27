@@ -76,7 +76,7 @@ ActionListener, ChartChangeListener, ListSelectionListener {
 	 * The localization instance for produce locale-specific strings.
 	 */
 	private static Localization localization = Localization.getLocalization(
-			ApproximationSetViewer.class.getPackage().getName());
+			ApproximationSetViewer.class);
 
 	/**
 	 * The accumulators which contain {@code "Approximation Set"} entries.
