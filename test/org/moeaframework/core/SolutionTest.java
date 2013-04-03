@@ -377,6 +377,7 @@ public class SolutionTest {
 		Solution copy = new Solution(solution);
 
 		// the equals method is based on object identity
+		Assert.assertFalse(solution == copy);
 		Assert.assertFalse(solution.equals(copy));
 		Assert.assertFalse(copy.equals(solution));
 
