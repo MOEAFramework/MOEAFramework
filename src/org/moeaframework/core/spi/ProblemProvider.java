@@ -21,9 +21,9 @@ import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 
 /**
- * Defines an SPI for problems. Problems are identified by a unique name. The
- * methods of the provider must return {@code null} if the problem is not
- * supported by the provider.
+ * Defines an SPI for instantiation optimization problems. Problems are
+ * identified by a unique name. The methods of the provider must return {@code
+ * null} if the problem is not supported by the provider.
  * <p>
  * If the provider can supply the problem but an error occurred during
  * instantiation, the provider may throw a {@link ProviderNotFoundException}

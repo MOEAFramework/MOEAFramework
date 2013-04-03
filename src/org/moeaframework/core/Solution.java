@@ -22,13 +22,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * A solution to a problem, storing the decision variables, objectives,
- * constraints and attributes. Attributes are arbitrary {@code (key, value)}
- * pairs; they are instance-specific and are not carried over in the copy
- * constructor.
+ * A solution to an optimization problem, storing the decision variables,
+ * objectives, constraints and attributes. Attributes are arbitrary {@code
+ * (key, value)} pairs; they are instance-specific and are not carried over in
+ * the copy constructor.
  * <p>
  * Solutions should only be constructed in {@link Problem#newSolution()} or 
- * cloned from an existing solution with {@link #copy()}.
+ * cloned from an existing solution with {@link #copy()}.  This ensures the
+ * solutions and configured correctly for the given optimization problem.
  */
 public class Solution implements Serializable {
 

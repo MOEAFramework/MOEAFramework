@@ -18,7 +18,8 @@
 package org.moeaframework.core;
 
 /**
- * Interface for defining problems.  All methods must be thread safe.
+ * Interface for defining optimization problems.  All methods must be thread
+ * safe.
  */
 public interface Problem {
 

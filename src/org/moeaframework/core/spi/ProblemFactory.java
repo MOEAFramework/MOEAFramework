@@ -25,8 +25,9 @@ import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 
 /**
- * Factory for creating problem instances and reference sets. See
- * {@link ProblemProvider} for details on adding new providers.
+ * Factory for creating optimization problem instances and their corresponding
+ * reference sets, if known. See {@link ProblemProvider} for details on adding
+ * new providers.
  * <p>
  * This class is thread safe.
  */
