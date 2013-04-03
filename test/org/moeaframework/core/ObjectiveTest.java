@@ -25,25 +25,33 @@ public class ObjectiveTest {
 	
 	@Test
 	public void testDirection() {
-		Objective objective = new Objective();
-		objective.setDirection(Direction.MAXIMIZE);
-		Assert.assertEquals(Direction.MAXIMIZE, objective.getDirection());
+		Objective objective1 = new Objective();
+		Assert.assertEquals(Direction.MINIMIZE, objective1.getDirection());
 		
-		objective.setDirection(Direction.MINIMIZE);
-		Assert.assertEquals(Direction.MINIMIZE, objective.getDirection());
+		Objective objective2 = new Objective(Direction.MAXIMIZE);
+		Assert.assertEquals(Direction.MAXIMIZE, objective2.getDirection());
 	}
 	
 	@Test
 	public void testValue() {
-		Objective objective = new Objective();
+		Objective objective = new Objective(Direction.MAXIMIZE);
 		objective.setValue(100.0);
-		Assert.assertEquals(100.0, objective.getValue(), Settings.EPS);
-		
-		objective.setDirection(Direction.MAXIMIZE);
 		Assert.assertEquals(100.0, objective.getValue(), Settings.EPS);
 		
 		objective.setValue(-50.0);
 		Assert.assertEquals(-50.0, objective.getValue(), Settings.EPS);
+	}
+	
+	@Test
+	public void testCanonicalValue() {
+		Objective objective = new Objective(Direction.MAXIMIZE);
+		objective.setCanonicalValue(50.0);
+		Assert.assertEquals(-50.0, objective.getValue(), Settings.EPS);
+		Assert.assertEquals(50.0, objective.getCanonicalValue(), Settings.EPS);
+		
+		objective.setCanonicalValue(-50.0);
+		Assert.assertEquals(50.0, objective.getValue(), Settings.EPS);
+		Assert.assertEquals(-50.0, objective.getCanonicalValue(), Settings.EPS);
 	}
 	
 	@Test
@@ -56,14 +64,12 @@ public class ObjectiveTest {
 		Assert.assertEquals(Direction.MAXIMIZE, objective2.getDirection());
 		Assert.assertEquals(50.0, objective2.getValue());
 		
-		objective1.setDirection(Direction.MINIMIZE);
 		objective1.setValue(100.0);
 		Assert.assertEquals(Direction.MAXIMIZE, objective2.getDirection());
 		Assert.assertEquals(50.0, objective2.getValue());
 		
-		objective2.setDirection(Direction.MAXIMIZE);
 		objective2.setValue(200.0);
-		Assert.assertEquals(Direction.MINIMIZE, objective1.getDirection());
+		Assert.assertEquals(Direction.MAXIMIZE, objective1.getDirection());
 		Assert.assertEquals(100.0, objective1.getValue(), Settings.EPS);
 	}
 	
