@@ -30,7 +30,7 @@ public class Objective {
 	private final Direction direction;
 	
 	/**
-	 * The objective value.
+	 * The canonical objective value.
 	 */
 	private double value;
 	
@@ -51,6 +51,16 @@ public class Objective {
 		super();
 		this.direction = direction;
 		this.value = Double.NaN;
+	}
+	
+	/**
+	 * Copy constructor.
+	 * 
+	 * @param objective the objective being copied
+	 */
+	protected Objective(Objective objective) {
+		this(objective.getDirection());
+		this.value = objective.getCanonicalValue();
 	}
 
 	/**
@@ -88,14 +98,14 @@ public class Objective {
 		return value;
 	}
 	
-	/**
-	 * Sets the canonical value of this objective.
-	 * 
-	 * @param value the canonical value of this objective
-	 */
-	public void setCanonicalValue(double value) {
-		this.value = value;
-	}
+//	/**
+//	 * Sets the canonical value of this objective.
+//	 * 
+//	 * @param value the canonical value of this objective
+//	 */
+//	public void setCanonicalValue(double value) {
+//		this.value = value;
+//	}
 
 	/**
 	 * Returns the direction of optimization (i.e., minimized or maximized).
@@ -113,9 +123,7 @@ public class Objective {
 	 * @return a copy of this objective
 	 */
 	public Objective copy() {
-		Objective copy = new Objective(direction);
-		copy.setCanonicalValue(value);
-		return copy;
+		return new Objective(this);
 	}
 
 }
