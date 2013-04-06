@@ -13,8 +13,8 @@ package org.moeaframework.core;
  * even billions of such comparisons can occur throughout a single run, this
  * would negatively impact performance.  To avoid this performance bottleneck,
  * the MOEA Framework internally stores the objective values in their
- * <em>canonical</em> form.  It's fairly straightforward: the value of
- * maximized objectives are negated.  Minimized objectives remain unchanged.
+ * <em>canonical</em> form.  It's fairly straightforward: minimized objectives
+ * remain unchanged; the value of maximized objectives are negated.
  * As a result, all objectives, regardless of their direction, are treated
  * internally as being minimized.
  * <p>
@@ -56,7 +56,7 @@ public class Objective {
 	/**
 	 * Copy constructor.
 	 * 
-	 * @param objective the objective being copied
+	 * @param objective the objective to copy
 	 */
 	protected Objective(Objective objective) {
 		this(objective.getDirection());
@@ -97,15 +97,6 @@ public class Objective {
 	public double getCanonicalValue() {
 		return value;
 	}
-	
-//	/**
-//	 * Sets the canonical value of this objective.
-//	 * 
-//	 * @param value the canonical value of this objective
-//	 */
-//	public void setCanonicalValue(double value) {
-//		this.value = value;
-//	}
 
 	/**
 	 * Returns the direction of optimization (i.e., minimized or maximized).
