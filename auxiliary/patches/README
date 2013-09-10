@@ -1,0 +1,12 @@
+Objective.patch and ObjectiveClasses.patch
+------------------------------------------
+These patches add incomplete support for specifying the direction (minimization
+or maximization) for each objective.  These changes have been abandoned for the
+near-term due to challenges in its implementation.  Primarily, to ensure
+consistent handling of data, the direction needs to be stored alongside the
+Pareto solutions.  This can be done in two ways:
+
+  1) Whenever reading / writing any data file, the associated problem must be
+     specified as an argument; or
+     
+  2) Encode the direction within data files.

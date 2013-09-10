@@ -1,0 +1,553 @@
+Index: test/org/moeaframework/core/ObjectiveTest.java
+===================================================================
+--- test/org/moeaframework/core/ObjectiveTest.java	(revision 1084)
++++ test/org/moeaframework/core/ObjectiveTest.java	(revision 1089)
+@@ -9,43 +9,65 @@
+  */
+ public class ObjectiveTest {
+ 
++	/**
++	 * Tests that the constructor correctly initializes the internal state.
++	 */
+ 	@Test
+-	public void testConstructor1() {
+-		Objective objective = new Objective();
+-		Assert.assertEquals(Direction.MINIMIZE, objective.getDirection());
+-		Assert.assertTrue(Double.isNaN(objective.getValue()));
++	public void testConstructor() {
++		Objective objective1 = new Objective();
++		Assert.assertEquals(Direction.MINIMIZE, objective1.getDirection());
++		Assert.assertTrue(Double.isNaN(objective1.getValue()));
++		
++		Objective objective2 = new Objective(Direction.MAXIMIZE);
++		Assert.assertEquals(Direction.MAXIMIZE, objective2.getDirection());
++		Assert.assertTrue(Double.isNaN(objective2.getValue()));
+ 	}
+ 	
++	/**
++	 * Tests that the objective value getters and setters work correctly.
++	 */
+ 	@Test
+-	public void testConstructor2() {
+-		Objective objective = new Objective(Direction.MAXIMIZE);
+-		Assert.assertEquals(Direction.MAXIMIZE, objective.getDirection());
+-		Assert.assertTrue(Double.isNaN(objective.getValue()));
+-	}
+-	
+-	@Test
+-	public void testDirection() {
+-		Objective objective = new Objective();
+-		objective.setDirection(Direction.MAXIMIZE);
+-		Assert.assertEquals(Direction.MAXIMIZE, objective.getDirection());
++	public void testValue() {
++		Objective objective1 = new Objective();
++		objective1.setValue(100.0);
++		Assert.assertEquals(100.0, objective1.getValue(), Settings.EPS);
++		objective1.setValue(-50.0);
++		Assert.assertEquals(-50.0, objective1.getValue(), Settings.EPS);
+ 		
+-		objective.setDirection(Direction.MINIMIZE);
+-		Assert.assertEquals(Direction.MINIMIZE, objective.getDirection());
++		Objective objective2 = new Objective(Direction.MAXIMIZE);
++		objective2.setValue(100.0);
++		Assert.assertEquals(100.0, objective2.getValue(), Settings.EPS);
++		objective2.setValue(-50.0);
++		Assert.assertEquals(-50.0, objective2.getValue(), Settings.EPS);
+ 	}
+ 	
++	/**
++	 * Tests that the canonical value is correctly negated for maximized
++	 * objective.
++	 */
+ 	@Test
+-	public void testValue() {
+-		Objective objective = new Objective();
+-		objective.setValue(100.0);
+-		Assert.assertEquals(100.0, objective.getValue(), Settings.EPS);
++	public void testCanonicalValue() {
++		Objective objective1 = new Objective();
++		objective1.setValue(50.0);
++		Assert.assertEquals(50.0, objective1.getValue(), Settings.EPS);
++		Assert.assertEquals(50.0, objective1.getCanonicalValue(), Settings.EPS);
++		objective1.setValue(-50.0);
++		Assert.assertEquals(-50.0, objective1.getValue(), Settings.EPS);
++		Assert.assertEquals(-50.0, objective1.getCanonicalValue(), Settings.EPS);
+ 		
+-		objective.setDirection(Direction.MAXIMIZE);
+-		Assert.assertEquals(100.0, objective.getValue(), Settings.EPS);
+-		
+-		objective.setValue(-50.0);
+-		Assert.assertEquals(-50.0, objective.getValue(), Settings.EPS);
++		Objective objective2 = new Objective(Direction.MAXIMIZE);
++		objective2.setValue(50.0);
++		Assert.assertEquals(50.0, objective2.getValue(), Settings.EPS);
++		Assert.assertEquals(-50.0, objective2.getCanonicalValue(), Settings.EPS);
++		objective2.setValue(-50.0);
++		Assert.assertEquals(-50.0, objective2.getValue(), Settings.EPS);
++		Assert.assertEquals(50.0, objective2.getCanonicalValue(), Settings.EPS);
+ 	}
+ 	
++	/**
++	 * Tests that the copy method and copy constructor produce an independent
++	 * copy of the original objective.
++	 */
+ 	@Test
+ 	public void testCopy() {
+ 		Objective objective1 = new Objective(Direction.MAXIMIZE);
+@@ -56,14 +78,12 @@
+ 		Assert.assertEquals(Direction.MAXIMIZE, objective2.getDirection());
+ 		Assert.assertEquals(50.0, objective2.getValue());
+ 		
+-		objective1.setDirection(Direction.MINIMIZE);
+ 		objective1.setValue(100.0);
+ 		Assert.assertEquals(Direction.MAXIMIZE, objective2.getDirection());
+ 		Assert.assertEquals(50.0, objective2.getValue());
+ 		
+-		objective2.setDirection(Direction.MAXIMIZE);
+-		objective2.setValue(200.0);
+-		Assert.assertEquals(Direction.MINIMIZE, objective1.getDirection());
++		objective2.setValue(0.0);
++		Assert.assertEquals(Direction.MAXIMIZE, objective1.getDirection());
+ 		Assert.assertEquals(100.0, objective1.getValue(), Settings.EPS);
+ 	}
+ 	
+Index: test/org/moeaframework/core/ConstraintTest.java
+===================================================================
+--- test/org/moeaframework/core/ConstraintTest.java	(revision 0)
++++ test/org/moeaframework/core/ConstraintTest.java	(revision 1089)
+@@ -0,0 +1,139 @@
++package org.moeaframework.core;
++
++import org.junit.Test;
++
++import junit.framework.Assert;
++
++/**
++ * Tests the {@link Constraint} class.
++ */
++public class ConstraintTest {
++
++	/**
++	 * Tests that the constructor correctly initializes the internal state.
++	 */
++	@Test
++	public void testConstructor() {
++		Constraint constraint1 = new Constraint(ConstraintType.EQUAL);
++		Assert.assertEquals(ConstraintType.EQUAL, constraint1.getType());
++		Assert.assertTrue(Double.isNaN(constraint1.getValue()));
++		Assert.assertTrue(Double.isNaN(constraint1.getAbsoluteValue()));
++		Assert.assertTrue(constraint1.isConstraintViolated());
++		
++		Constraint constraint2 = new Constraint(ConstraintType.LESS_THAN_OR_EQUAL);
++		Assert.assertEquals(ConstraintType.LESS_THAN_OR_EQUAL, constraint2.getType());
++		Assert.assertTrue(Double.isNaN(constraint2.getValue()));
++		Assert.assertTrue(Double.isNaN(constraint2.getAbsoluteValue()));
++		Assert.assertTrue(constraint2.isConstraintViolated());
++		
++		Constraint constraint3 = new Constraint(ConstraintType.GREATER_THAN_OR_EQUAL);
++		Assert.assertEquals(ConstraintType.GREATER_THAN_OR_EQUAL, constraint3.getType());
++		Assert.assertTrue(Double.isNaN(constraint3.getValue()));
++		Assert.assertTrue(Double.isNaN(constraint3.getAbsoluteValue()));
++		Assert.assertTrue(constraint3.isConstraintViolated());
++	}
++	
++	/**
++	 * Tests that the constraint value getters and setters work correctly.
++	 */
++	@Test
++	public void testValue() {
++		Constraint constraint1 = new Constraint(ConstraintType.EQUAL);
++		constraint1.setValue(100.0);
++		Assert.assertEquals(100.0, constraint1.getValue(), Settings.EPS);
++		constraint1.setValue(-50.0);
++		Assert.assertEquals(-50.0, constraint1.getValue(), Settings.EPS);
++		
++		Constraint constraint2 = new Constraint(ConstraintType.LESS_THAN_OR_EQUAL);
++		constraint2.setValue(100.0);
++		Assert.assertEquals(100.0, constraint2.getValue(), Settings.EPS);
++		constraint2.setValue(-50.0);
++		Assert.assertEquals(-50.0, constraint2.getValue(), Settings.EPS);
++		
++		Constraint constraint3 = new Constraint(ConstraintType.GREATER_THAN_OR_EQUAL);
++		constraint3.setValue(100.0);
++		Assert.assertEquals(100.0, constraint3.getValue(), Settings.EPS);
++		constraint3.setValue(-50.0);
++		Assert.assertEquals(-50.0, constraint3.getValue(), Settings.EPS);
++	}
++	
++	/**
++	 * Tests that the absolute value reports the correct value given the
++	 * constraint type.
++	 */
++	@Test
++	public void testCanonicalValue() {
++		Constraint constraint1 = new Constraint(ConstraintType.EQUAL);
++		constraint1.setValue(100.0);
++		Assert.assertEquals(100.0, constraint1.getAbsoluteValue(), Settings.EPS);
++		constraint1.setValue(-50.0);
++		Assert.assertEquals(50.0, constraint1.getAbsoluteValue(), Settings.EPS);
++		
++		Constraint constraint2 = new Constraint(ConstraintType.LESS_THAN_OR_EQUAL);
++		constraint2.setValue(100.0);
++		Assert.assertEquals(100.0, constraint2.getAbsoluteValue(), Settings.EPS);
++		constraint2.setValue(-50.0);
++		Assert.assertEquals(0.0, constraint2.getAbsoluteValue(), Settings.EPS);
++		
++		Constraint constraint3 = new Constraint(ConstraintType.GREATER_THAN_OR_EQUAL);
++		constraint3.setValue(100.0);
++		Assert.assertEquals(0.0, constraint3.getAbsoluteValue(), Settings.EPS);
++		constraint3.setValue(-50.0);
++		Assert.assertEquals(50.0, constraint3.getAbsoluteValue(), Settings.EPS);
++	}
++	
++	/**
++	 * Tests that the constraint violation check works correctly given the
++	 * constraint type.
++	 */
++	@Test
++	public void testIsConstraintViolated() {
++		Constraint constraint1 = new Constraint(ConstraintType.EQUAL);
++		constraint1.setValue(-100.0);
++		Assert.assertTrue(constraint1.isConstraintViolated());
++		constraint1.setValue(0.0);
++		Assert.assertFalse(constraint1.isConstraintViolated());
++		constraint1.setValue(100.0);
++		Assert.assertTrue(constraint1.isConstraintViolated());
++
++		Constraint constraint2 = new Constraint(ConstraintType.LESS_THAN_OR_EQUAL);
++		constraint2.setValue(-100.0);
++		Assert.assertFalse(constraint2.isConstraintViolated());
++		constraint2.setValue(0.0);
++		Assert.assertFalse(constraint2.isConstraintViolated());
++		constraint2.setValue(100.0);
++		Assert.assertTrue(constraint2.isConstraintViolated());
++		
++		Constraint constraint3 = new Constraint(ConstraintType.GREATER_THAN_OR_EQUAL);
++		constraint3.setValue(-100.0);
++		Assert.assertTrue(constraint3.isConstraintViolated());
++		constraint3.setValue(0.0);
++		Assert.assertFalse(constraint3.isConstraintViolated());
++		constraint3.setValue(100.0);
++		Assert.assertFalse(constraint3.isConstraintViolated());
++	}
++	
++	/**
++	 * Tests that the copy method and copy constructor produce an independent
++	 * copy of the original constraint.
++	 */
++	@Test
++	public void testCopy() {
++		Constraint constraint1 = new Constraint(ConstraintType.EQUAL);
++		constraint1.setValue(50.0);
++		
++		Constraint constraint2 = constraint1.copy();
++		Assert.assertFalse(constraint1 == constraint2);
++		Assert.assertEquals(ConstraintType.EQUAL, constraint2.getType());
++		Assert.assertEquals(50.0, constraint2.getValue());
++		
++		constraint1.setValue(100.0);
++		Assert.assertEquals(ConstraintType.EQUAL, constraint2.getType());
++		Assert.assertEquals(50.0, constraint2.getValue());
++		
++		constraint2.setValue(0.0);
++		Assert.assertEquals(ConstraintType.EQUAL, constraint1.getType());
++		Assert.assertEquals(100.0, constraint1.getValue(), Settings.EPS);
++	}
++	
++}
+Index: src/org/moeaframework/core/Constraint.java
+===================================================================
+--- src/org/moeaframework/core/Constraint.java	(revision 0)
++++ src/org/moeaframework/core/Constraint.java	(revision 1089)
+@@ -0,0 +1,149 @@
++package org.moeaframework.core;
++
++/**
++ * A constraint, defining both the constraint type (i.e., equality vs
++ * inequality) and the constraint value.  Whether or not this value violates
++ * the constraint depends on the constraint type.  All constraints use a
++ * threshold (cutoff) of {@code 0.0}.
++ * <p>
++ * <table width="100%" border="1" cellpadding="3" cellspacing="0">
++ *   <tr class="TableHeadingColor">
++ *     <th width="25%" align="left">Constraint Type</th>
++ *     <th width="75%" align="left">Feasible When</th>
++ *   </tr>
++ *   <tr>
++ *     <td>{@code EQUAL}</td>
++ *     <td>{@code value == 0}</td>
++ *   </tr>
++ *   <tr>
++ *     <td>{@code LESS_THAN_OR_EQUAL}</td>
++ *     <td>{@code value <= 0}</td>
++ *   </tr>
++ *   <tr>
++ *     <td>{@code GREATER_THAN_OR_EQUAL}</td>
++ *     <td>{@code value >= 0}</td>
++ *   </tr>
++ * </table>
++ * 
++ * The methods {@link #isConstraintViolated()} and {@link #getAbsoluteValue()}
++ * should be used to check if the constraint is violated and its magnitude,
++ * respectively.
++ */
++public class Constraint {
++	
++	/**
++	 * The type of constraint (i.e., equality vs inequality).
++	 */
++	private final ConstraintType type;
++	
++	/**
++	 * The value of this constraint.
++	 */
++	private double value;
++	
++	/**
++	 * Internal variable that stores the absolute value of the constraint
++	 * violation.  To improve performance, this value is computed in
++	 * {@link #setValue(double)}.  
++	 */
++	private double absoluteValue;
++	
++	/**
++	 * Constructs a new constraint.
++	 * 
++	 * @param type the type of constraint (i.e., equality vs inequality)
++	 */
++	public Constraint(ConstraintType type) {
++		super();
++		this.type = type;
++		this.value = Double.NaN;
++		this.absoluteValue = Double.NaN;
++	}
++	
++	/**
++	 * Copy constructor.
++	 * 
++	 * @param constraint the constraint to copy
++	 */
++	protected Constraint(Constraint constraint) {
++		this(constraint.getType());
++		setValue(constraint.getValue());
++	}
++
++	/**
++	 * Returns the value of this constraint.  Whether or not this value
++	 * violates the constraint depends on the constraint type.  Use
++	 * {@link #isConstraintViolated()} to test for constraint violations.
++	 * 
++	 * @return the value of this constraint
++	 */
++	public double getValue() {
++		return value;
++	}
++
++	/**
++	 * Sets the value of this constraint.  Whether or not this value violates
++	 * the constraint depends on the constraint type.
++	 * 
++	 * @param value the value of this constraint
++	 */
++	public void setValue(double value) {
++		this.value = value;
++		
++		switch (type) {
++		case EQUAL:
++			absoluteValue = Math.abs(value);
++			break;
++		case LESS_THAN_OR_EQUAL:
++			absoluteValue = value <= 0.0 ? 0.0 : value;
++			break;
++		case GREATER_THAN_OR_EQUAL:
++			absoluteValue = value >= 0.0 ? 0.0 : -value;
++			break;
++		default:
++			throw new IllegalStateException();
++		}
++	}
++
++	/**
++	 * Returns the type of constraint (i.e., equality vs inequality).
++	 * 
++	 * @return the type of constraint
++	 */
++	public ConstraintType getType() {
++		return type;
++	}
++	
++	/**
++	 * Returns {@code true} if this constraint is violated; {@code false}
++	 * otherwise.
++	 * 
++	 * @return {@code true} if this constraint is violated; {@code false}
++	 *         otherwise
++	 */
++	public boolean isConstraintViolated() {
++		return absoluteValue != 0.0;
++	}
++
++	/**
++	 * Returns the absolute constraint violation, defined as {@code 0.0} when
++	 * this constraint is satisfied and {@code abs(getValue())} when this
++	 * constraint is violated.
++	 * 
++	 * @return the absolute constraint violation
++	 */
++	public double getAbsoluteValue() {
++		return absoluteValue;
++	}
++	
++	/**
++	 * Creates and returns a copy of this constraint.  The copy is completely
++	 * independent from the original.
++	 * 
++	 * @return a copy of this constraint
++	 */
++	public Constraint copy() {
++		return new Constraint(this);
++	}
++
++}
+Index: src/org/moeaframework/core/Objective.java
+===================================================================
+--- src/org/moeaframework/core/Objective.java	(revision 1084)
++++ src/org/moeaframework/core/Objective.java	(revision 1089)
+@@ -2,17 +2,35 @@
+ 
+ /**
+  * An objective, defining both the objective value and the optimization
+- * direction.  
++ * direction.
++ * <p>
++ * This class distinguishes between the actual objective value and the
++ * <em>canonical objective value</em>.  Since the MOEA Framework supports both
++ * minimized and maximized objectives, it would be necessary to check the
++ * direction every time two objectives are compared.  This is problematic for
++ * two reasons.  First, this would litter the code with many if/else cases to
++ * handle both minimized and maximized objectives.  Second, since millions or
++ * even billions of such comparisons can occur throughout a single run, this
++ * would negatively impact performance.  To avoid this performance bottleneck,
++ * the MOEA Framework internally stores the objective values in their
++ * <em>canonical</em> form.  It's fairly straightforward: minimized objectives
++ * remain unchanged; the value of maximized objectives are negated.
++ * As a result, all objectives, regardless of their direction, are treated
++ * internally as being minimized.
++ * <p>
++ * Just remember: when comparing objective values, use
++ * {@link #getCanonicalValue()}; when displaying objective values to the user,
++ * use {@link #getValue()}.
+  */
+ public class Objective {
+ 	
+ 	/**
+ 	 * The direction of optimization (i.e., minimized or maximized).
+ 	 */
+-	private Direction direction;
++	private final Direction direction;
+ 	
+ 	/**
+-	 * The objective value.
++	 * The canonical objective value.
+ 	 */
+ 	private double value;
+ 	
+@@ -34,6 +52,16 @@
+ 		this.direction = direction;
+ 		this.value = Double.NaN;
+ 	}
++	
++	/**
++	 * Copy constructor.
++	 * 
++	 * @param objective the objective to copy
++	 */
++	protected Objective(Objective objective) {
++		this(objective.getDirection());
++		this.value = objective.getCanonicalValue();
++	}
+ 
+ 	/**
+ 	 * Returns the objective value.
+@@ -41,7 +69,11 @@
+ 	 * @return the objective value
+ 	 */
+ 	public double getValue() {
+-		return value;
++		if (direction == Direction.MINIMIZE) {
++			return value;
++		} else {
++			return -value;
++		}
+ 	}
+ 
+ 	/**
+@@ -50,16 +82,20 @@
+ 	 * @param value the objective value
+ 	 */
+ 	public void setValue(double value) {
+-		this.value = value;
++		if (direction == Direction.MINIMIZE) {
++			this.value = value;
++		} else {
++			this.value = -value;
++		}
+ 	}
+-
++	
+ 	/**
+-	 * Sets the direction of optimization (i.e., minimized or maximized).
++	 * Returns the canonical value of this objective.
+ 	 * 
+-	 * @param direction the direction of optimization
++	 * @return the canonical value of this objective
+ 	 */
+-	public void setDirection(Direction direction) {
+-		this.direction = direction;
++	public double getCanonicalValue() {
++		return value;
+ 	}
+ 
+ 	/**
+@@ -78,9 +114,7 @@
+ 	 * @return a copy of this objective
+ 	 */
+ 	public Objective copy() {
+-		Objective copy = new Objective(direction);
+-		copy.setValue(value);
+-		return copy;
++		return new Objective(this);
+ 	}
+ 
+ }
+Index: src/org/moeaframework/core/ConstraintType.java
+===================================================================
+--- src/org/moeaframework/core/ConstraintType.java	(revision 0)
++++ src/org/moeaframework/core/ConstraintType.java	(revision 1089)
+@@ -0,0 +1,26 @@
++package org.moeaframework.core;
++
++/**
++ * Differentiates equality and inequality constraints.
++ */
++public enum ConstraintType {
++	
++	/**
++	 * An inequality constraint which is feasible if and only if the constraint
++	 * is less than or equal to zero (i.e., {@code constraint <= 0}).
++	 */
++	LESS_THAN_OR_EQUAL,
++	
++	/**
++	 * An inequality constraint which is feasible if and only if the constraint
++	 * is greater than or equal to zero (i.e., {@code constraint >= 0}).
++	 */
++	GREATER_THAN_OR_EQUAL,
++	
++	/**
++	 * An equality constraint which is feasible if and only if the constraint
++	 * is equal to zero (i.e., {@code constraint == 0}). 
++	 */
++	EQUAL
++
++}

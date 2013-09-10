@@ -1,0 +1,216 @@
+Index: src/org/moeaframework/core/Solution.java
+===================================================================
+--- src/org/moeaframework/core/Solution.java	(revision 1055)
++++ src/org/moeaframework/core/Solution.java	(working copy)
+@@ -42,7 +42,9 @@
+ 	/**
+ 	 * The objectives of this solution.
+ 	 */
+-	private final double[] objectives;
++	private final Objective[] objectives;
++	
++	//private final Direction[] directions;
+ 
+ 	/**
+ 	 * The constraints of this solution.
+@@ -79,9 +81,14 @@
+ 	public Solution(int numberOfVariables, int numberOfObjectives,
+ 			int numberOfConstraints) {
+ 		variables = new Variable[numberOfVariables];
+-		objectives = new double[numberOfObjectives];
++		objectives = new Objective[numberOfObjectives];
++		//directions = new Direction[numberOfObjectives];
+ 		constraints = new double[numberOfConstraints];
+ 		attributes = new HashMap<String, Serializable>();
++		
++		for (int i = 0; i < getNumberOfObjectives(); i++) {
++			objectives[i] = new Objective();
++		}
+ 	}
+ 
+ 	/**
+@@ -107,17 +114,21 @@
+ 		this(solution.getNumberOfVariables(), solution.getNumberOfObjectives(),
+ 				solution.getNumberOfConstraints());
+ 
+-		for (int i = 0; i < solution.getNumberOfVariables(); i++) {
++		for (int i = 0; i < getNumberOfVariables(); i++) {
+ 			setVariable(i, solution.getVariable(i).copy());
+ 		}
+ 
+ 		for (int i = 0; i < getNumberOfObjectives(); i++) {
+-			setObjective(i, solution.getObjective(i));
++			setObjective(i, objectives[i].copy());
+ 		}
+ 
+ 		for (int i = 0; i < getNumberOfConstraints(); i++) {
+ 			setConstraint(i, solution.getConstraint(i));
+ 		}
++		
++//		for (int i = 0; i < getNumberOfObjectives(); i++) {
++//			setObjectiveDirection(i, solution.g);
++//		}
+ 	}
+ 
+ 	/**
+@@ -173,7 +184,22 @@
+ 	 *         {@code (index < 0) || (index >= getNumberOfObjectives())}
+ 	 */
+ 	public double getObjective(int index) {
+-		return objectives[index];
++		Objective objective = objectives[index];
++		
++//		switch (objective.getDirection()) {
++//		case MINIMIZE:
++//			return objective.getValue();
++//		case MAXIMIZE:
++//			return -objective.getValue();
++//		default:
++//			throw new IllegalArgumentException("invalid direction");
++//		}
++		
++		if (objective.getDirection() == Direction.MINIMIZE) {
++			return objective.getValue();
++		} else {
++			return -objective.getValue();
++		}
+ 	}
+ 
+ 	/**
+@@ -196,9 +222,42 @@
+ 	 * @throws IndexOutOfBoundsException if the index is out of range
+ 	 *         {@code (index < 0) || (index >= getNumberOfObjectives())}
+ 	 */
+-	public void setObjective(int index, double objective) {
++	public void setObjective(int index, double value) {
++		Objective objective = objectives[index];
++		
++		if (objective.getDirection() == Direction.MINIMIZE) {
++			objective.setValue(value);
++		} else {
++			objective.setValue(-value);
++		}
++		
++//		switch (objective.getDirection()) {
++//		case MINIMIZE:
++//			objective.setValue(value);
++//			break;
++//		case MAXIMIZE:
++//			objective.setValue(-value);
++//			break;
++//		default:
++//			throw new IllegalArgumentException("invalid direction");
++//		}
++	}
++	
++	public void setObjective(int index, Objective objective) {
+ 		objectives[index] = objective;
+ 	}
++	
++//	public void setObjectiveDirection(int index, Direction direction) {
++//		if (direction == null) {
++//			throw new IllegalArgumentException("direction is null");
++//		}
++//		
++//		directions[index] = direction;
++//	}
++//	
++//	public Direction getObjectiveDirection(int index) {
++//		return directions[index];
++//	}
+ 
+ 	/**
+ 	 * Sets all objectives of this solution.
+@@ -213,9 +272,17 @@
+ 		}
+ 
+ 		for (int i = 0; i < objectives.length; i++) {
+-			this.objectives[i] = objectives[i];
++			setObjective(i, objectives[i]);
+ 		}
+ 	}
++	
++	public double getCanonicalObjective(int index) {
++		return objectives[index].getValue();
++	}
++	
++	public void setCanonicalObjective(int index, double objective) {
++		objectives[index].setValue(objective);
++	}
+ 
+ 	/**
+ 	 * Returns an array containing the objectives of this solution. Modifying
+@@ -224,7 +291,13 @@
+ 	 * @return an array containing the objectives of this solution
+ 	 */
+ 	public double[] getObjectives() {
+-		return objectives.clone();
++		double[] result = new double[objectives.length];
++		
++		for (int i = 0; i < objectives.length; i++) {
++			result[i] = getObjective(i);
++		}
++		
++		return result;
+ 	}
+ 
+ 	/**
+Index: src/org/moeaframework/core/comparator/ParetoObjectiveComparator.java
+===================================================================
+--- src/org/moeaframework/core/comparator/ParetoObjectiveComparator.java	(revision 1055)
++++ src/org/moeaframework/core/comparator/ParetoObjectiveComparator.java	(working copy)
+@@ -45,13 +45,13 @@
+ 		boolean dominate2 = false;
+ 
+ 		for (int i = 0; i < solution1.getNumberOfObjectives(); i++) {
+-			if (solution1.getObjective(i) < solution2.getObjective(i)) {
++			if (solution1.getCanonicalObjective(i) < solution2.getCanonicalObjective(i)) {
+ 				dominate1 = true;
+ 
+ 				if (dominate2) {
+ 					return 0;
+ 				}
+-			} else if (solution1.getObjective(i) > solution2.getObjective(i)) {
++			} else if (solution1.getCanonicalObjective(i) > solution2.getCanonicalObjective(i)) {
+ 				dominate2 = true;
+ 
+ 				if (dominate1) {
+Index: src/org/moeaframework/core/NondominatedPopulation.java
+===================================================================
+--- src/org/moeaframework/core/NondominatedPopulation.java	(revision 1055)
++++ src/org/moeaframework/core/NondominatedPopulation.java	(working copy)
+@@ -135,7 +135,7 @@
+ 		double distance = 0.0;
+ 
+ 		for (int i = 0; i < s1.getNumberOfObjectives(); i++) {
+-			distance += Math.pow(s1.getObjective(i) - s2.getObjective(i), 2.0);
++			distance += Math.pow(s1.getCanonicalObjective(i) - s2.getCanonicalObjective(i), 2.0);
+ 		}
+ 
+ 		return Math.sqrt(distance);
+Index: src/org/moeaframework/core/FastNondominatedSorting.java
+===================================================================
+--- src/org/moeaframework/core/FastNondominatedSorting.java	(revision 1055)
++++ src/org/moeaframework/core/FastNondominatedSorting.java	(working copy)
+@@ -141,8 +141,8 @@
+ 			for (int i = 0; i < numberOfObjectives; i++) {
+ 				front.sort(new ObjectiveComparator(i));
+ 
+-				double minObjective = front.get(0).getObjective(i);
+-				double maxObjective = front.get(n - 1).getObjective(i);
++				double minObjective = front.get(0).getCanonicalObjective(i);
++				double maxObjective = front.get(n - 1).getCanonicalObjective(i);
+ 
+ 				front.get(0).setAttribute(CROWDING_ATTRIBUTE,
+ 						Double.POSITIVE_INFINITY);
+@@ -152,8 +152,8 @@
+ 				for (int j = 1; j < n - 1; j++) {
+ 					double distance = (Double)front.get(j).getAttribute(
+ 							CROWDING_ATTRIBUTE);
+-					distance += (front.get(j + 1).getObjective(i) - 
+-							front.get(j - 1).getObjective(i))
++					distance += (front.get(j + 1).getCanonicalObjective(i) - 
++							front.get(j - 1).getCanonicalObjective(i))
+ 							/ (maxObjective - minObjective);
+ 					front.get(j).setAttribute(CROWDING_ATTRIBUTE, distance);
+ 				}

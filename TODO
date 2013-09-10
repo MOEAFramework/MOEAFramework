@@ -20,15 +20,6 @@ any changes.
   - Examples 5 and 6 references the C interface code.  This should be included
     in the compiled JAR distribution.
 
-  - ResultFileWriter and MetricFileWriter are technically appenders.  Add
-    ResultFileAppender and MetricFileAppender for the case when we want to
-    recover and append to the file, and have ResultFileWriter and
-    MetricFileWriter start the file from the beginning.  This change will be
-    implemented in version 2.0.  This should also allow ResultFileWriter to not
-    need the Problem argument, making saving datasets easier.  The
-    ResultFileAppender would still need the Problem in order to validate the
-    saved entries.
-
   - Need to determine for which classes does value-based equals methods make
     sense, and provide equals and hashCode implementations for these classes.
     As an example, it doesn't make sense for Solution to provide an equals
@@ -40,9 +31,6 @@ any changes.
     consistency, use the Apache Commons Lang builder classes to implement
     equals and hashCode.
 
-  - Develop an interface for defining stopping conditions.  Executor should
-    provide the necessary functionality for defining stopping conditions.
-    
   - Scan the source code for errors, exceptions and warnings which are not
     documented in the HELP file.
     
