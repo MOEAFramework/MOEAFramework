@@ -321,25 +321,6 @@ public class PRNG {
 		}
 	}
 
-	// /**
-	// * Shuffles the elements of the specified array using the same algorithm
-	// as
-	// * {@link Collections#shuffle}.
-	// *
-	// * @param array the array to be shuffled
-	// */
-	// public static void shuffle(char[] array) {
-	// for (int i = array.length - 1; i >= 1; i--) {
-	// int j = nextInt(i + 1);
-	//
-	// if (i != j) {
-	// char temp = array[i];
-	// array[i] = array[j];
-	// array[j] = temp;
-	// }
-	// }
-	// }
-
 	/**
 	 * Shuffles the elements of the specified array using the same algorithm as
 	 * {@link Collections#shuffle}.

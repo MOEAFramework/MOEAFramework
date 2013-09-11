@@ -17,8 +17,7 @@
  */
 package org.moeaframework.core.operator.program;
 
-import junit.framework.Assert;
-
+import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;

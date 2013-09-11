@@ -20,7 +20,6 @@ package org.moeaframework.algorithm.pisa;
 import java.io.File;
 import java.io.IOException;
 import java.util.Properties;
-import java.util.Random;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -102,22 +101,29 @@ public class PISAAlgorithmsTest {
 				name + ".parameters", new String[] { "seed", "tournament" });
 		Settings.PROPERTIES.setInt("org.moeaframework.algorithm.pisa." + name +
 				".parameter.tournament", 2);
+		
+		long seed1 = PRNG.getRandom().nextLong();
+		long seed2 = PRNG.getRandom().nextLong();
+		
+		while (seed1 == seed2) {
+			seed2 = PRNG.getRandom().nextLong();
+		}
 
 		double result1 = test(AlgorithmFactory.getInstance().getAlgorithm(name,
-				properties, problem));
+				properties, problem), seed1);
 		
 		properties.setProperty("seed", Integer.toString(PRNG.nextInt()));
 		
 		double result2 = test(AlgorithmFactory.getInstance().getAlgorithm(name,
-				properties, problem));
+				properties, problem), seed2);
 		
 		properties.setProperty("tournament", "3");
 		
 		double result3 = test(AlgorithmFactory.getInstance().getAlgorithm(name,
-				properties, problem));
+				properties, problem), seed1);
 		
 		double result4 = test(AlgorithmFactory.getInstance().getAlgorithm(name,
-				properties, problem));
+				properties, problem), seed1);
 
 		Assert.assertTrue(result1 != result3);
 		Assert.assertTrue(result2 != result3);
@@ -132,8 +138,8 @@ public class PISAAlgorithmsTest {
 	 * 
 	 * @param algorithm the algorithm
 	 */
-	protected double test(Algorithm algorithm) {
-		PRNG.setRandom(new Random(1337));
+	protected double test(Algorithm algorithm, long seed) {
+		PRNG.setSeed(seed);
 		
 		Assert.assertTrue(algorithm instanceof PISAAlgorithm);
 		Assert.assertEquals(0, algorithm.getNumberOfEvaluations());

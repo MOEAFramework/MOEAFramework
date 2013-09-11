@@ -21,8 +21,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Properties;
 
-import junit.framework.Assert;
-
+import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.TestUtils;
 import org.moeaframework.analysis.collector.Accumulator;
