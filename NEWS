@@ -21,6 +21,8 @@ Framework.
     
   * Executor can now report the progress, elapsed time, and estimated time
     remaining.  Additionally, the executor can be canceled at any time.
+    
+  * Fixes integer overflow bug in epsilon-dominance calculations.
 
 
 ----------------------------

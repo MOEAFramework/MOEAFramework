@@ -140,9 +140,8 @@ Serializable {
 
 		for (int i = 0; i < solution1.getNumberOfObjectives(); i++) {
 			double epsilon = getEpsilon(i);
-
-			int index1 = (int)Math.floor(solution1.getObjective(i) / epsilon);
-			int index2 = (int)Math.floor(solution2.getObjective(i) / epsilon);
+			double index1 = Math.floor(solution1.getObjective(i) / epsilon);
+			double index2 = Math.floor(solution2.getObjective(i) / epsilon);
 
 			if (index1 < index2) {
 				dominate1 = true;
@@ -167,20 +166,14 @@ Serializable {
 
 			for (int i = 0; i < solution1.getNumberOfObjectives(); i++) {
 				double epsilon = getEpsilon(i);
-
-				int index1 = (int)Math.floor(solution1.getObjective(i)
-						/ epsilon);
-				int index2 = (int)Math.floor(solution2.getObjective(i)
-						/ epsilon);
+				double index1 = Math.floor(solution1.getObjective(i) / epsilon);
+				double index2 = Math.floor(solution2.getObjective(i) / epsilon);
 
 				dist1 += Math.pow(solution1.getObjective(i) - index1 * epsilon,
 						2.0);
 				dist2 += Math.pow(solution2.getObjective(i) - index2 * epsilon,
 						2.0);
 			}
-
-			dist1 = Math.sqrt(dist1);
-			dist2 = Math.sqrt(dist2);
 
 			if (dist1 < dist2) {
 				return -1;
