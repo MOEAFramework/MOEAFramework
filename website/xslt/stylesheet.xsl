@@ -146,7 +146,7 @@
 								</p>
 							</div>
 							
-							<xsl:choice>
+							<xsl:choose>
 								<xsl:when test="$filename = 'index.xml' or $filename = 'documentation.xml' or $filename = 'support.xml' or $filename = 'contribute.xml' or $filename = 'credits.xml'">
 									<div class="sidemenu">
 										<h3></h3>
@@ -179,7 +179,7 @@
 										</p>
 									</div>
 								</xsl:otherwise>
-							</xsl:choice>
+							</xsl:choose>
 						</div>
 					</div>
 				</div>
