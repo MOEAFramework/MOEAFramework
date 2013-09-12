@@ -145,22 +145,41 @@
 									Licensed under the <a href="http://www.gnu.org/licenses/lgpl.html">GNU Lesser General Public License</a>.
 								</p>
 							</div>
-							<!--
-							<div class="sidemenu">
-								<h3></h3>
-								<p>
-									<script type="text/javascript">
-										google_ad_client = "ca-pub-5610668616453880";
-										google_ad_slot = "9118867796";
-										google_ad_width = 200;
-										google_ad_height = 200;
-									</script>
-									<script type="text/javascript"
-										src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-									</script>
-								</p>
-							</div>
-							-->
+							
+							<xsl:choice>
+								<xsl:when test="$filename = 'index.xml' or $filename = 'documentation.xml' or $filename = 'support.xml' or $filename = 'contribute.xml' or $filename = 'credits.xml'">
+									<div class="sidemenu">
+										<h3></h3>
+										<p>
+											<script type="text/javascript">
+												google_ad_client = "ca-pub-5610668616453880";
+												google_ad_slot = "9118867796";
+												google_ad_width = 200;
+												google_ad_height = 200;
+											</script>
+											<script type="text/javascript"
+													src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+											</script>
+										</p>
+									</div>
+								</xsl:when>
+								<xsl:otherwise>
+									<div class="sidemenu">
+										<h3></h3>
+										<p>
+											<script type="text/javascript">
+												google_ad_client = "ca-pub-5610668616453880";
+												google_ad_slot = "7891799492";
+												google_ad_width = 160;
+												google_ad_height = 600;
+											</script>
+											<script type="text/javascript"
+													src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+											</script>
+										</p>
+									</div>
+								</xsl:otherwise>
+							</xsl:choice>
 						</div>
 					</div>
 				</div>
