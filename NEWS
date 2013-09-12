@@ -1,9 +1,9 @@
 This file documents the major changes implemented in each release of the MOEA
 Framework.
 
--------------------
- Version 2.0 (TBD)
--------------------
+---------------------------
+ Version 2.0 (11 Sep 2013)
+---------------------------
 
   * The release of version 2.0 brings about significant changes to the MOEA
     Framework.  Old, deprecated APIs have been removed.  Third-party libraries

@@ -3,7 +3,7 @@
     codebase="http://www.moeaframework.org/jnlp/"
     href="DiagnosticTool.jnlp">
   <information>
-    <title>Diagnostic Tool</title>
+    <title>MOEA Diagnostic Tool</title>
     <vendor>MOEA Framework</vendor>
     <homepage href="http://www.moeaframework.org" />
     <description>The MOEA Diagnostic Tool</description>
