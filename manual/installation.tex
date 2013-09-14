@@ -68,7 +68,7 @@ Java 6, or any later version, is required for any system running the MOEA Framew
     \begin{itemize}
       \item For AIX, Linux and z/OS
     \end{itemize}
-  \item[Apple] - \webpage{http://developer.apple.com/java/}
+  \item[Apple] - \webpage{http://support.apple.com/kb/DL1572}
 \end{description}
 
 Please follow the installation instruction accompanying your chosen JRE or JDK.
@@ -122,7 +122,7 @@ java -Djava.ext.dirs=lib
 \end{lstlisting}
 
 \paragraph{All-in-One Executable}
-Double-click the downloaded JAR file.  If this fails, you can also manually launch the tool with with the following command:
+Double-click the downloaded JAR file.  If the Diagnostic Tool window does not appear, try to manually launch the tool with with the following command:
 
 \begin{lstlisting}[language=Plaintext]
 java -jar MOEAFramework-%VERSION%-Executable.jar
@@ -160,8 +160,6 @@ This section describes the contents of the compiled binaries and source code dis
   \item[\folder{test/}] contains all JUnit unit tests used to ensure the correctness of the MOEA Framework source code.
   \item[\folder{website/}] contains all files used to generate the website.
   \item[\file{build.xml}] contains the Apache Ant build scripts for compiling and/or building the MOEA Framework library.
-  \item[\file{codetemplates.xml}] defines the code templates used by Eclipse.  In order to be used, the code template must be imported into Eclipse.
-  \item[\file{format.xml}] defines the source code formatting options used by Eclipse.  In order to be used, the format must be imported into Eclipse.
   \item[\file{global.properties}] is the configuration file for the MOEA Framework.  Default settings are used unless the settings are provided in this file.
   \item[\file{HELP}] provides a comprehensive list of errors and warning messages encountered when using the MOEA Framework.  When available, information about the cause and ways to fix errors are suggested.
   \item[\file{LICENSE}] lists the open source software licenses in use by the MOEA Framework, contributor code and third-party libraries.
@@ -172,4 +170,4 @@ This section describes the contents of the compiled binaries and source code dis
 \end{description}
 
 \section{Conclusion}
-This chapter described each of the MOEA Framework distributions.  At this point, you should have a working MOEA Framework distribution which you can use to run the examples in the following chapters.
+This chapter described each of the MOEA Framework distributions.  At this point, you should have a working MOEA Framework distribution which you can use to run the examples in subsequent chapters.
