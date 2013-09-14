@@ -77,9 +77,9 @@ Since line 6 defines the class name to be \texttt{Example1}, this code snippet m
 ...
 \end{lstlisting}
 
-The \texttt{withProblem} and \texttt{withAlgorithm} methods allow us to specify the problem and algorithm by name.  Changing the problem or algorithm is as simple as changing the string passed to these methods.  For example, replacing line 11 in the code snippet above to \texttt{withAlgorithm(``GDE3'')} will now allow you to run the Generalized Differential Evolution 3 (GDE3) algorithm.  Most existing MOEA libraries require users to instantiate and configure each algorithm manually.  In the MOEA Framework, such details are handled by the Executor.
+The \texttt{withProblem} and \texttt{withAlgorithm} methods allow us to specify the problem and algorithm by name.  Changing the problem or algorithm is as simple as changing the string passed to these methods.  For example, replacing line 11 in the code snippet above to \java{withAlgorithm("GDE3")} will now allow you to run the Generalized Differential Evolution 3 (GDE3) algorithm.  Most existing MOEA libraries require users to instantiate and configure each algorithm manually.  In the MOEA Framework, such details are handled by the Executor.
 
-The MOEA Framework is distributed with a number of built-in problems and algorithms.  See the API documentation for \texttt{StandardProblems} and \texttt{StandardAlgorithms} to see the list of problems and algorithms available, respectively.
+The MOEA Framework is distributed with a number of built-in problems and algorithms.  See the API documentation for \texttt{StandardProblems} and \texttt{StandardAlgorithms} to see the list of problems and algorithms available, respectively.  This documentation is available online at \webpage{http://www.moeaframework.org/javadoc/org/moeaframework/problem/StandardProblems.html} and \webpage{http://www.moeaframework.org/javadoc/org/moeaframework/algorithm/StandardAlgorithms.html}.
 
 When specifying only the problem, algorithm and maximum evaluations, the Executor assumes default parameterizations for the internal components of the algorithm.  For instance, NSGA-II parameters include the population size, the simulated binary crossover (SBX) rate and distribution index, and the polynomial mutation (PM) rate and distribution index.  Changing the parameter settings from their defaults is possible using the \texttt{setProperty} methods.  Each parameter is identified by a key and is assigned a numeric value.  For example, all of NSGA-II's parameters are set in the following code snippet:
 
@@ -98,11 +98,15 @@ NondominatedPopulation result = new Executor()
 
 Each algorithm defines its own parameters.  Refer to the API documentation for the exact parameter keys.  Any parameters not explicitly defined using the \texttt{withProperty} methods will be set to their default values.
 
-The Executor also provides some more advanced features.  First, it contains several methods for distribution objective function evaluations across multiple processing cores or computers.  Distributing evaluations can significantly speed up a run through parallelization.  The simplest way to enable parallelization is through the \texttt{distributeOnAllCores} method.  This will distribute objective function evaluations across all cores on your local computer.  Note that not all problems can support parallelization.  In such cases, the MOEA Framework will still run the algorithm, but it will not be parallelized.
+The Executor also provides some more advanced features.  First, it contains several methods for distributing objective function evaluations across multiple processing cores or computers.  Distributing evaluations can significantly speed up a run through parallelization.  The simplest way to enable parallelization is through the \texttt{distributeOnAllCores} method.  This will distribute objective function evaluations across all cores on your local computer.  Note that not all algorithms can support parallelization.  In such cases, the MOEA Framework will still run the algorithm, but it will not be parallelized.
 
-Second, the MOEA Framework provides checkpointing functionality.  As an algorithm is running, checkpoint files will be periodically saved.  The checkpoint file stores the current state of the algorithm.  If the run is interrupted, such as a power outage, the run can be resumed at the last saved checkpoint.  The \texttt{setCheckpointFile} sets the file location for the checkpoint file, and \texttt{checkpointEveryIteration} or \texttt{setCheckpointFrequency} control how frequently the checkpoint file is saved.
+Second, the MOEA Framework provides checkpointing functionality.  As an algorithm is running, checkpoint files will be periodically saved.  The checkpoint file stores the current state of the algorithm.  If the run is interrupted, such as during a power outage, the run can be resumed at the last saved checkpoint.  The \texttt{setCheckpointFile} sets the file location for the checkpoint file, and \texttt{checkpointEveryIteration} or \texttt{setCheckpointFrequency} control how frequently the checkpoint file is saved.
 
-Resuming a run from a checkpoint occurs automatically.  If the checkpoint file does not exist, a run starts from the beginning.  However, if the checkpoint file exists, then the run is automatically resumed at that checkpoint.  Care must be taken when using checkpoints as they can be a source of confusion for new users.  For instance, using the same checkpoint file from an unrelated run can cause unexpected behavior or an error.  For this reason, checkpoints are recommended only when solving time-consuming problems.
+Resuming a run from a checkpoint occurs automatically.  If the checkpoint file does not exist, a run starts from the beginning.  However, if the checkpoint file exists, then the run is automatically resumed at that checkpoint.
+
+\begin{tip}
+Care must be taken when using checkpoints as they can be a source of confusion for new users.  For instance, using the same checkpoint file from an unrelated run can cause unexpected behavior or an error.  For this reason, checkpoints are recommended only when solving time-consuming problems.
+\end{tip}
 
 The snippet below extends our example with distributed evaluations and checkpointing.  In addition to the code below, you will need to import the \java{File} class by adding \java{import java.io.File} at the beginning of the file.
 
@@ -129,7 +133,7 @@ Checkpoint files are never deleted by the MOEA Framework.  Each time you run thi
 \section{Instrumenter}
 In addition to supporting a multitude of algorithms and test problems, the MOEA Framework also contains a comprehensive suite of tools for analyzing the performance of algorithms.  The MOEA Framework supports both run-time dynamics and end-of-run analysis.  Run-time dynamics capture the behavior of an algorithm throughout the duration of a run, recording how its solution quality and other elements change.  End-of-run analysis, on the other hand, focuses on the result of a complete run and comparing the relative performance of various algorithms.  Run-time dynamics will be introduced in this section using the Instrumenter; end-of-run analysis will be discussed in the following section using the Analyzer.
 
-The Instrumenter gets its name from its ability to add instrumentation, pieces of code which record information, to an algorithm.  A range of data can be collected using the Instrumenter, including:
+The Instrumenter gets its name from its ability to add instrumentation, which are pieces of code that record information, to an algorithm.  A range of data can be collected using the Instrumenter, including:
 
 \begin{enumerate}
   \item Elapsed time
@@ -150,7 +154,7 @@ Instrumenter instrumenter = new Instrumenter()
 
 First, line 1 creates the new Instumenter instance.  Next, line 2 specifies the problem.  This allows the instrumenter to access the known reference set for this problem, which is necessary for evaluating performance metrics.  Third, line 3 sets the frequency at which the data is recorded.  In this example, data is recorded every 100 evaluations.  Lastly, line 4 indicates that all available data should be collected.
 
-Next, we must create and configure the Executor instance with the following code snippet:
+Next, we create and configure the Executor instance with the following code snippet:
 
 \begin{lstlisting}[language=Java]
 NondominatedPopulation result = new Executor()
@@ -163,13 +167,13 @@ NondominatedPopulation result = new Executor()
 
 This code snippet is similar to the previous examples of the Executor, but includes the addition of line 5.  Line 5 tells the executor that all algorithms it executes will be instrumented with our Instrumenter instance.  Once the instrumenter is set and the algorithm is configured, we can run the algorithm on line 6.
 
-Once the run completes, we can now access the data collected by the instrumenter.  The data is stored in an Accumulator object.  The Accumulator for the run we just executed can be retrieved with the following line:
+When the run completes, we can access the data collected by the instrumenter.  The data is stored in an Accumulator object.  The Accumulator for the run we just executed can be retrieved with the following line:
 
 \begin{lstlisting}[language=Java]
 Accumulator accumulator = instrumenter.getLastAccumulator();
 \end{lstlisting}
 
-An Accumulator is similar to a Map in that it stores key-value pairs.  The key identifies the type of data recorded.  However, instead of storing a single value, the Accumulator stores many values, one for each datapoint collected by the Instrumenter.  The data can be extracted from an Accumulator with a loop similar to the following:
+An Accumulator is similar to a Map in that it stores key-value pairs.  The key identifies the type of data recorded.  However, instead of storing a single value, the Accumulator stores many values, one for each datapoint collected by the Instrumenter.  Recall that in this example, we are recording a datapoint every 100 evaluations (i.e., the frequency).  The data can be extracted from an Accumulator with a loop similar to the following:
 
 \begin{lstlisting}[language=Java]
 for (int i=0; i<accumulator.size("NFE"); i++) {
@@ -228,15 +232,17 @@ Since line 8 defines the class name to be \texttt{Example2}, this code snippet m
 
 This shows how NSGA-II experiences rapid convergence early in a run.  In the first 600 evaluations, the generational distance decreases to 33\% of its starting value.  Running for longer, you should see the speed of convergence begin to level off.  This type of curve is commonly seen when using MOEAs.  They often experience a rapid initial convergence that quickly levels off.  You can confirm this behavior by running this example on different algorithms.
 
+\begin{tip}
 There are a few things to keep in mind when using the Instrumenter. First, instrumenting an algorithm and recording all the data will slow down the execution of algorithms and significantly increase their memory usage.  For this reason, we strongly recommend limiting the data collected to what you consider important.  To limit the data collected, simply replace the \texttt{attachAll} method with one or more specific attach methods, such as \texttt{attachGenerationalDistanceCollector}.  Changing the collection frequency is another way to reduce the performance and memory usage.
+\end{tip}
 
 Second, if the memory usage exceeds that which is allocated to Java, you will receive an \texttt{OutOfMemoryException}.  The immediate solution is to increase the amount of memory allocated to Java by specifying the \texttt{-Xmx} command-line option when starting a Java application.  For example, the following command will launch a Java program with 512 MBs of available memory.
 
 \begin{quote}
-  \texttt{java -Xmx512m -classpath ...}
+  \texttt{java -Xmx512m ...rest of command...}
 \end{quote}
 
-If you have set the \texttt{-Xmx} option to include all available memory on your computer and you still receive an \texttt{OutOfMemoryException}, then you need to decrease the collection frequency or restrict which data is collected.
+If you have set the \texttt{-Xmx} option to include all available memory on your computer and you still receive an \texttt{OutOfMemoryException}, then you need to decrease the collection frequency or restrict what data is collected.
 
 Third, the Instrumenter only collects data which is provided by the algorithm.  For instance, an Instrumenter with \texttt{attachAdaptiveTimeContinuationCollector} will work perfectly fine on an algorithm that does support adaptive time continuation.  The Instrumenter examines the composition of the algorithm and only collects data for the components it finds.  This also implies that the Instrumenter will work on any algorithm, including any provided by third-party providers.
 
@@ -326,13 +332,13 @@ NSGAII:
 ...
 \end{lstlisting}
 
-Observe how the results are organized by the indenting.  It starts with the sample names, GDE3 and NSGAII in this example.  The first indentation level shows the different metrics, such as Hypervolume.  The second indentation level shows the various statistics for the metric, such as the minimum, median and maximum value.
+Observe how the results are organized by the indenting.  It starts with the sample names, GDE3 and NSGAII in this example.  The first indentation level shows the different metrics, such as Hypervolume.  The second indentation level shows the various statistics for the metric, such as the minimum, median and maximum values.
 
-The indifferent statistics show the statistical significance of the results.  The Analyzer applies the Mann-Whitney and Kruskal-Wallis tests for statistical significance.  If the medians are significantly different, then the indifferent columns shows empty brackets (i.e., \texttt{[]}).  However, if the medians are indifferent, then the samples which are indifferent will be shown within the brackets.
+The indifferent field show the statistical significance of the results.  The Analyzer applies the Mann-Whitney and Kruskal-Wallis tests for statistical significance.  If the medians are significantly different, then the indifferent columns shows empty brackets (i.e., \texttt{[]}).  However, if the medians are indifferent, then the samples which are indifferent will be shown within the brackets.  For example, if GDE3's indifferent field was \texttt{[NSGAII]}, then that indicates there is no statistical difference in performance between GDE3 and NSGA-II.
 
-Statistical significance is important when comparing multiple algorithms, particularly when the results will be reported in scientific papers.  Running an algorithm will likely produce different results each time it is run.  This is because many algorithms are stochastic (include sources of randomness).  Because of this, it is a common practice to run each algorithm for multiple seeds, with each seed using a different random number sequence.  As a result, an algorithm does not produce a single result.  It produces a distribution of results.  When comparing algorithms based on their distributions, it is necessary to use statistical tests.  Statistical tests allow us to determine if two distributions (i.e., two algorithms) are similar or different.  This is exactly what is provided when enabling \texttt{showStatisticalSignificance} and viewing the Indifferent entries in the output from Analyzer.
+Statistical significance is important when comparing multiple algorithms, particularly when the results will be reported in scientific papers.  Running an algorithm will likely produce different results each time it is run.  This is because many algorithms are stochastic (meaning that they include sources of randomness).  Because of this, it is a common practice to run each algorithm for multiple seeds, with each seed using a different random number sequence.  As a result, an algorithm does not produce a single result.  It produces a distribution of results.  When comparing algorithms based on their distributions, it is necessary to use statistical tests.  Statistical tests allow us to determine if two distributions (i.e., two algorithms) are similar or different.  This is exactly what is provided when enabling \texttt{showStatisticalSignificance} and viewing the Indifferent entries in the output from Analyzer.
 
 In the example above, we called \texttt{includeAllMetrics} to include all performance metrics in the analysis.  This includes hypervolume, generational distance, inverted generational distance, spacing, additive $\epsilon$-indicator, maximum Pareto front error and reference set contribution.  It is possible to enable specific metrics by calling their corresponding include method, such as \texttt{includeGenerationalDistance}.
 
 \section{Conclusion}
-This chapter introduced three of the high-level classes: the Executor, Instrumenter and Analyzer.  The examples provided show the basics of using these classes, but their functionality is not limited to what was demonstrated.  Readers should explore the API documentation for these classes to discover some of their more sophisticated functionality.
+This chapter introduced three of the high-level classes: the Executor, Instrumenter and Analyzer.  The examples provided show the basics of using these classes, but their functionality is not limited to what was demonstrated.  Readers should explore the API documentation for these classes to discover their more sophisticated functionality.

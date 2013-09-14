@@ -12,6 +12,9 @@ any changes.
  Easy
 ------
 
+  - Move the discussion of checkpointing in the Executor chapter to a more
+    advanced section.
+
   - Upgrade to JMetal 4.4.  The latest JMetal source is currently missing the
     IConstraintViolationComparator interface and can not be compiled.
 
