@@ -22,6 +22,8 @@ This user manual is divided into the following three parts:
 
 \section{Key Features}
 
+The following features of the MOEA Framework distinguish it from available alternatives (detailed in the next section).
+
 \paragraph{Fast, reliable implementations of many state-of-the-art multiobjective evolutionary algorithms.}  The MOEA Framework contains internally NSGA-II, $\epsilon$-MOEA, $\epsilon$-NSGA-II, GDE3 and MOEA/D.  These algorithms are optimized for performance, making them readily available for high performance applications.  By also supporting the JMetal and PISA libraries, the MOEA Framework provides access to $24$ multiobjective optimization algorithms.
 
 \paragraph{Extensible with custom algorithms, problems and operators.}  The MOEA Framework provides a base set of algorithms, test problems and search operators, but can also be easily extended to include additional components.  Using a Service Provider Interface (SPI), new algorithms and problems are seamlessly integrated within the MOEA Framework.  
@@ -34,7 +36,7 @@ This user manual is divided into the following three parts:
 
 \paragraph{Extensive support available online.}  As an actively maintained project, bug fixes and new features are constantly added.  We are constantly striving to improve this product.  To aid this process, our website provides the tools to report bugs, request new features, or get answers to your questions.
 
-\paragraph{Over 1000 test cases to ensure validity.}  Every release of the MOEA Framework undergoes extensive testing and quality control checks.  And, if any bugs are discovered that survive this testing, we will promptly fix the issues and release patches.  
+\paragraph{Over 1100 test cases to ensure validity.}  Every release of the MOEA Framework undergoes extensive testing and quality control checks.  And, if any bugs are discovered that survive this testing, we will promptly fix the issues and release patches.  
 
 \section{Other Java Frameworks}
 There exist a number of Java optimization framework developed over the years.  This section discusses the advantages and disadvantages of each framework.  While we appreciate your interest in the MOEA Framework, it is always useful to be aware of the available tools which may suit your specific needs better.
@@ -43,7 +45,7 @@ There exist a number of Java optimization framework developed over the years.  T
 \begin{wrapfigure}{l}{4cm}
   \includegraphics[width=4cm]{watchmaker.png}
 \end{wrapfigure}
-The Watchmaker Framework is one of the most popular open source Java libraries for single objective optimization.  Its design is non-invasive, allowing users to evolve objects of any type.  Most other framework (including the MOEA Framework) require the user to encode their objects using pre-defined decision variable types.  However, giving the users this freedom also increases the burden on the user to develop custom evolutionary operators for their objects.
+The Watchmaker Framework is one of the most popular open source Java libraries for single objective optimization.  Its design is non-invasive, allowing users to evolve objects of any type.  Most other frameworks (including the MOEA Framework) require the user to encode their objects using pre-defined decision variable types.  However, giving the users this freedom also increases the burden on the user to develop custom evolutionary operators for their objects.
 
 \begin{quote}
 \begin{description}
@@ -66,7 +68,7 @@ The Watchmaker Framework is one of the most popular open source Java libraries f
 \end{quote}
 
 \subsection{ECJ}
-ECJ is a research-oriented Java library developed at the George Mason University’s Evolutionary Computation Laboratory.  Now in existence for nearly fourteen years, ECJ is a mature and stable framework.  It features a range of evolutionary paradigms, including both single and multiobjective optimization, master/slave and island-model parallelization, coevolution, parsimony pressure techniques, with extensive support for genetic programming.  
+ECJ is a research-oriented Java library developed at the George Mason University's Evolutionary Computation Laboratory.  Now in existence for nearly fourteen years, ECJ is a mature and stable framework.  It features a range of evolutionary paradigms, including both single and multiobjective optimization, master/slave and island-model parallelization, coevolution, parsimony pressure techniques, with extensive support for genetic programming.  
 
 \begin{quote}
 \begin{description}
@@ -80,11 +82,9 @@ ECJ is a research-oriented Java library developed at the George Mason University
     \end{itemize}
   \item[Disadvantages:]\ %force line break
     \begin{itemize}
-      \item Only minor support for multiobjective optimization
-      \item Focused on single-objective optimization, providing only outdated MOEAs (NSGA-II and SPEA2)
+      \item Focused on single-objective optimization, providing only older MOEAs (NSGA-II and SPEA2)
       \item Configuring EAs using ECJ’s configuration file can be cumbersome and error prone
       \item Appears to lack any kind of automated testing or quality assurance
-      \item Infrequent releases (the last release, version 20, was in October 2010)
     \end{itemize}
 \end{description}
 \end{quote}
