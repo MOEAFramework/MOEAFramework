@@ -10,7 +10,7 @@
 % Documentation License".
 
 \chapter{Diagnostic Tool}
-The MOEA Framework provides a graphical interface to quickly run and analyze MOEAs on a number of test problems.  This chapter describes this diagnostic tool in detail.
+The MOEA Framework provides a graphical interface to quickly run and analyze MOEAs on a number of test problems.  This chapter describes the diagnostic tool in detail.
 
 \section{Running the Diagnostic Tool}
 The diagnostic tool is launched in a number of ways, depending on which version of the MOEA Framework you downloaded.  Follow the instructions below for your version to launch the diagnostic tool.
@@ -24,7 +24,7 @@ java -Djava.ext.dirs=lib
 \end{lstlisting}
 
 \paragraph{All-in-One Executable}
-Double-click the downloaded JAR file.  If this fails, you can also manually launch the tool with with the following command:
+Double-click the downloaded JAR file.  If the diagnostic tool window does not appear, you can try to manually launch the tool with the following command:
 
 \begin{lstlisting}[language=Plaintext]
 java -jar MOEAFramework-%VERSION%-Executable.jar
@@ -44,7 +44,7 @@ Inside Eclipse, navigate to the src $\rightarrow$ org $\rightarrow$ moeaframewor
 \end{figure}
 
 \begin{enumerate}
-  \item The configuration panel.  This panel lets you select the algorithm, problem, number of repetitions (seeds), and maximum number of evaluations (NFE).
+  \item The configuration panel.  This panel lets you select the algorithm, problem, number of repetitions (seeds), and maximum number of function evaluations (NFE).
   \item The execution panel.  Clicking run will execute the algorithm as configured in the configuration panel.  Two progress bars display the individual run progress and the total progress for all seeds.  Any in-progress runs can be canceled.
   \item The displayed results table.  This table displays the completed runs.  The entries which are selected/highlighted are displayed in the charts.  You can click an individual line to show the data for just that entry, click while holding the Alt key to select multiple entries, or click the Select All button to select all entries.
   \item The displayed metrics table.  Similar to the displayed results table, the selected metrics are displayed in the charts.  You can select one metric or multiple metrics by holding the Alt key while clicking.
@@ -62,9 +62,9 @@ Inside Eclipse, navigate to the src $\rightarrow$ org $\rightarrow$ moeaframewor
 \end{tip}
 
 \section{Quantile Plots vs Individual Traces}
-By default, the chart displayed by the diagnostic tool show the statistical 25\%, 50\% and 75\% quantiles.  The 50\% quantile is the thick colored line, and the 25\% and 75\% quantiles are depicted by the colored area.  This quantile view allows you to quickly distinguish the performance between multiple algorithms, particularly when there is significant overlap between two or more algorithms.
+By default, the charts displayed in the diagnostic tool show the statistical 25\%, 50\% and 75\% quantiles.  The 50\% quantile is the thick colored line, and the 25\% and 75\% quantiles are depicted by the colored area.  This quantile view allows you to quickly distinguish the performance between multiple algorithms, particularly when there is significant overlap between two or more algorithms.
 
-You can also view the raw, individual traces by selecting 'Show Individual Traces' in the View menu.  Each colored line represents one seed.  \figref{fig:diagnosticToolTraces} provides an example of plots showing individual traces.  You can always switch back to the quantile view using the View menu.
+You can alternatively view the raw, individual traces by selecting 'Show Individual Traces' in the View menu.  Each colored line represents one seed.  \figref{fig:diagnosticToolTraces} provides an example of plots showing individual traces.  You can always switch back to the quantile view using the View menu.
 
 \begin{figure}
   \includegraphics[width=\linewidth]{diagnosticToolTraces.png}
@@ -107,16 +107,16 @@ The diagnostic tool also allows you to exercise the statistical testing tools pr
   \label{fig:statisticalResultsViewer}
 \end{figure}
 
-Displayed for each metric are the min, median and max values for the specific metric.  It is important to note that these values are calculated from the end-of-run result.  No intermediate results are used in the statistical tests.  The aggregate value is the metric value resulting when the result from all seeds is combined into one.  The count is the number of seeds.  
+Displayed for each metric are the min, median and max values for the specific metric.  It is important to note that these values are calculated from the end-of-run result.  No intermediate results are used in the statistical tests.  The aggregate value is the metric value resulting when the result from all seeds are combined into one.  The count is the number of seeds.  
 
-The indifferent entries are of particular importance and will be explained in detail.  When comparing two data sets using statistical tools, it is not sufficient to simply compare their average or median values.  This is because such results can be skewed by randomness.  For example, suppose we are calculating the median values of ten seeds.  If one algorithm gets ``lucky'', and happens to use more above-average seeds, the estimated median will be skewed.  Therefore, it is necessary to check the statistical significance of results.  This is exactly what the indifferent entries are displaying.  To determine statistical significance, the MOEA Framework uses the Kruskal-Wallis and Mann-Whitney U tests with 95\% confidence intervals.  If an algorithm's median value for a metric is statistically different from another algorithm, the indifferent entry will contain an empty list (e.g., 'Indifferent: []').  However, if its results are not statistically different, then the indifferent entry will list the algorithms it is statistically inidifferent (e.g., 'Indifferent: [NSGAII]').  This list may contain more than one algorithm if multiple algorithms are indifferent.
+The indifferent entries are of particular importance and will be explained in detail.  When comparing two data sets using statistical tools, it is not sufficient to simply compare their average or median values.  This is because such results can be skewed by randomness.  For example, suppose we are calculating the median values of ten seeds.  If one algorithm gets ``lucky'' and happens to use more above-average seeds, the estimated median will be skewed.  Therefore, it is necessary to check the statistical significance of results.  This is exactly what the indifferent entries are displaying.  To determine statistical significance, the MOEA Framework uses the Kruskal-Wallis and Mann-Whitney U tests with 95\% confidence intervals.  If an algorithm's median value for a metric is statistically different from another algorithm, the indifferent entry will contain an empty list (e.g., 'Indifferent: []').  However, if its results are not statistically different, then the indifferent entry will list the algorithms producing statistically similar results (e.g., 'Indifferent: [NSGAII]').  This list may contain more than one algorithm if multiple algorithms are indifferent.
 
 \begin{important}
-  The show statistics button also requires each of the selected entries to use the same problem.  The button will remain disabled unless this condition is satisfied.
+  The show statistics button also requires each of the selected entries to use the same problem.  The button will remain disabled unless this condition is satisfied.  If the button is disabled, please ensure you have two or more rows selected and all selected entries are using the same problem.
 \end{important}
 
-\section{Advanced Use}
-This last section details some more advanced use of the diagnostic tool.
-
-\subsection{Improving Performance and Memory Efficiency}
+\section{Improving Performance and Memory Efficiency}
 By default, the diagnostic tool collects and displays all available data.  If you know ahead of time that certain pieces of data are not needed for your experiments, you can often increase the performance and memory efficiency of the program by disabling unneeded data.  You can enable or disable the collection of data by checking or unchecking the appropriate item in the Collect menu.
+
+\section{Conclusion}
+This chapter provided an introduction to the MOEA Diagnostic Tool, which is a GUI that allows users to experiment running various MOEAs on different problems.  Readers are encouraged to experiment with this GUI when first using the MOEA Framework as it should provide insight into how MOEAs operate.  As an exercise, try running all of the available MOEAs on the \texttt{DTLZ2_2} problem.  Do the performance metrics (e.g., generational distance) converge to roughly the same value?  Does one MOEA converge to this value faster than the others?  Repeat this experiment with different problems and see if you get the same result.
