@@ -12,7 +12,7 @@
 \chapter{Representing Decision Variables}
 \label{chpt:representations}
 
-In \chptref{chpt:problems} we saw various ways to define new problems using real-valued (floating-point) decision variables.  In addition to floating-point values, the MOEA Framework allows problems to be encoded using integers, bit strings, permutations, programs (expression trees) and grammars.  This chapter details the use of each of these decision variables and their supported variation operators.  This chapter also details the use of the new \java{EncodingUtils} class, which provides many helper methods for creating, reading and modifying different types of decision variables.
+In \chptref{chpt:problems} we saw various ways to define new problems using real-valued (floating-point) decision variables.  In addition to floating-point values, the MOEA Framework allows problems to be encoded using integers, bit strings, permutations, programs (expression trees), and grammars.  This chapter details the use of each of these decision variables and their supported variation operators.  This chapter also details the use of the \java{EncodingUtils} class, which provides many helper methods for creating, reading and modifying different types of decision variables.
 
 \section{Floating-Point Values}
 Floating-point values, also known as real-valued decision variables, provide a natural way to represent numeric values.  Floating-point decision variables are represented using \java{RealVariable} decision variables.  When creating a new real-valued decision variable, one must specify the lower and upper bounds that the value can represent.
@@ -28,15 +28,15 @@ public Solution newSolution() {
 }
 \end{lstlisting}
 
-Inside the \java{evaluate} method, we can extract the values from the decision variables using the \java{EncodingUtils.getReal(...)} method.  Continuing the previous code example, we extract the values of the three decision variables below.
+Inside the \java{evaluate} method, we can extract the decision variable values from the solution using the \java{EncodingUtils.getReal(...)} method.  Continuing the previous code example, we extract the values of the three decision variables below.
 \begin{lstlisting}[language=Java]
 public void evaluate(Solution solution) {
     double x = EncodingUtils.getReal(solution.getVariable(0));
     double y = EncodingUtils.getReal(solution.getVariable(1));
     double z = EncodingUtils.getReal(solution.getVariable(2));
     
-    // TODO: evaluate the solution given the values of x, y and
-    // z
+    // TODO: evaluate the solution given the values of x, y,
+    // and z
 }
 \end{lstlisting}
 
@@ -46,7 +46,7 @@ public void evaluate(Solution solution) {
     double[] x = EncodingUtils.getReal(solution);
         
     // TODO: evaluate the solution given the values of x[0],
-    // x[1] and x[2]
+    // x[1], and x[2]
 }
 \end{lstlisting}
 
@@ -72,8 +72,8 @@ public void evaluate(Solution solution) {
     int y = EncodingUtils.getInt(solution.getVariable(1));
     int z = EncodingUtils.getInt(solution.getVariable(2));
     
-    // TODO: evaluate the solution given the values of x, y and
-    // z
+    // TODO: evaluate the solution given the values of x, y,
+    // and z
 }
 \end{lstlisting}
 
@@ -83,7 +83,7 @@ public void evaluate(Solution solution) {
     int[] x = EncodingUtils.getInt(solution);
         
     // TODO: evaluate the solution given the values of x[0],
-    // x[1] and x[2]
+    // x[1], and x[2]
 }
 \end{lstlisting}
 
@@ -93,10 +93,34 @@ The integer representation can be used to represent any other kind of discrete v
 Internally, integers are stored as floating-point values.  This allows the same variation operators to be applied to both real-valued and integer-valued decision variables.  When working with integers, always use the \java{EncodingUtils.newInt(...)} and \java{EncodingUtils.getInt(...)} methods.  This will ensure the internal floating-point representation is correctly converted into an integer.
 \end{tip}
 
-\section{Bit Strings}
-Many problems involve making choices.  For example, the famous knapsack problem involves choosing which items to place in a knapsack to maximize the value of the items carried, but not exceed the weight capacity of the knapsack.  If $N$ items are available, we can represent the decision to include each item using a bit string with $N$ bits.  Each bit in the string corresponds to an item, and is set to \java{1} if the item is included and \java{0} if the item is excluded.  For instance, the bit string \java{00110} would place items 3 and 4 inside the knapsack, excluding the rest.
+\section{Boolean Values}
+Boolean values represent simple binary choices, such as ``yes / no'' or ``on / off''.  Use the \java{EncodingUtils.newBoolean()} method to create boolean decision variables, as shown below.  Note also how we can combine multiple decision variable types in a single solution.
+\begin{lstlisting}[language=Java]
+public Solution newSolution() {
+    Solution solution = new Solution(2, 2);
+    solution.setVariable(0, EncodingUtils.newBoolean());
+    solution.setVariable(1, EncodingUtils.newInt(0, 100));
+    return solution;
+}
+\end{lstlisting}
 
-The MOEA Framework supports fixed-length bit strings.  The example code below produces a solution with a single decision variable representing a bit string with length $100$.
+Boolean values can be read using \java{EncodingUtils.getBoolean(...)}, as demonstrated below.
+\begin{lstlisting}[language=Java]
+public void evaluate(Solution solution) {
+    boolean b = EncodingUtils.getBoolean(
+        solution.getVariable(0));
+    int x = EncodingUtils.getInt(solution.getVariable(1));
+    
+    // TODO: evaluate the solution given the values of b and x
+}
+\end{lstlisting}
+
+The boolean decision variable works well when the problem has a single choice.  If the problem involves more than one choice, it is more convenient and efficient to use bit strings (an array of booleans) instead.  Bit strings are introduced in the following section.
+
+\section{Bit Strings}
+Many problems involve making choices.  For example, the famous knapsack problem involves choosing which items to place in a knapsack to maximize the value of the items carried without exceeding the weight capacity of the knapsack.  If $N$ items are available, we can represent the decision to include each item using a bit string with $N$ bits.  Each bit in the string corresponds to an item, and is set to \java{1} if the item is included and \java{0} if the item is excluded.  For instance, the bit string \java{00110} would place items 3 and 4 inside the knapsack, excluding the rest.
+
+The MOEA Framework supports fixed-length bit strings.  The example code below produces a solution with a single decision variable representing a bit string with length $100$.  Again, note how the entire bit string is stored within a single decision variable.
 \begin{lstlisting}[language=Java]
 public Solution newSolution() {
     Solution solution = new Solution(1, 2);
@@ -116,7 +140,7 @@ public void evaluate(Solution solution) {
 \end{lstlisting}
 
 \section{Permutations}
-Permutation decision variables appear in many combinatorial and job scheduling problems.  In the famous traveling salesman problem (TSP), a salesman must travel to every city with the condition that they visit each city exactly once.  The order in which the salesman visits each city is conveniently represented as a permutation.
+Permutation decision variables appear in many combinatorial and job scheduling problems.  In the famous traveling salesman problem (TSP), a salesman must travel to every city with the condition that they visit each city exactly once.  The order in which the salesman visits each city is conveniently represented as a permutation.  For example, the permutation \java{0,3,1,2} states that the salesman visits the first city first (0 represents the first city), travels to the fourth city (3), then travels to the second city (1), and finally arrives at the third city (2).
 
 The code example below demonstrates the creation of a permutation of 25 elements.
 \begin{lstlisting}[language=Java]
@@ -169,7 +193,7 @@ public Solution newSolution() {
 }
 \end{lstlisting}
 
-Lastly, we evaluate the program.  The program executes inside an environment.  The environment holds all the variables and other identifiers that the program can access throughout its execution.  Since we previously defined our program to read the variable \java{x} (with the \java{Get} node), we want to initialize the value of \java{x} in the environment.  Once the environment is initialized, we evaluate the program.  Since we set the return type to be a number in the rule set, we cast the output from the program's evaluation to a number.
+Lastly, we evaluate the program.  The program executes inside an environment.  The environment holds all of the variables and other identifiers that the program can access throughout its execution.  Since we previously defined the variable \java{x} (with the \java{Get} node), we want to initialize the value of \java{x} in the environment.  Once the environment is initialized, we evaluate the program.  Since we set the return type to be a number in the rule set, we cast the output from the program's evaluation to a number.
 \begin{lstlisting}[language=Java]
 public void evaluate(Solution solution) {
     Program program = (Program)solution.getVariable(0);
@@ -213,7 +237,7 @@ public Solution newSolution() {
 }
 \end{lstlisting}
 
-Finally, we can evaluate a solution by first extracting the codon and deriving the program.  Unlike programs that can be evaluated directly, the grammar produces a string (the derivation).  While it is common for grammars to produce program code, this is not a requirement.  This is the second major difference between grammars and programs in the MOEA Framework --- the behavior of programs is defined explicitly, whereas the behavior of grammars depend on how the grammar is interpreted.  In this case, we are producing program code and will need a scripting language to evaluate the program.  Using Java's Scripting API and having defined the grammar so that it produces a valid Groovy program, we can evaluate the derivation using the Groovy scripting language.  In the code below, we instantiate a \java{ScriptEngine} for Groovy, initialize the variable \java{x} and evaluate the program.
+Finally, we can evaluate a solution by first extracting the codon and deriving the program.  Unlike programs that can be evaluated directly, the grammar produces a string (the derivation).  While it is common for grammars to produce program code, this is not a requirement.  This is the second major difference between grammars and programs in the MOEA Framework --- the behavior of programs is defined explicitly, whereas the behavior of grammars depend on how the grammar is interpreted.  In this case, we are producing program code and will need a scripting language to evaluate the program.  Using Java's Scripting API and having defined the grammar so that it produces a valid Groovy program, we can evaluate the derivation using the Groovy scripting language.  In the code below, we instantiate a \java{ScriptEngine} for Groovy, initialize the variable \java{x}, and evaluate the program.
 \begin{lstlisting}[language=Java]
 public void evaluate(Solution solution) {
     int[] codon = ((Grammar)solution.getVariable(0)).toArray();

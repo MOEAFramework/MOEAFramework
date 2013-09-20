@@ -14,6 +14,14 @@ any changes.
 
   - Move the discussion of checkpointing in the Executor chapter to a more
     advanced section.
+    
+  - Clean up chapter 5.  Most of the section on referencing problems should be
+    moved to a more advanced section.
+
+  - EncodingUtils should support extracting the codon array from Grammars
+  
+  - It would be good to have a chapter that details the available algorithms,
+    problems, etc.
 
   - Upgrade to JMetal 4.4.  The latest JMetal source is currently missing the
     IConstraintViolationComparator interface and can not be compiled.
