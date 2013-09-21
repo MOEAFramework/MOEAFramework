@@ -99,17 +99,7 @@ NondominatedPopulation result = new Executor()
 
 Each algorithm defines its own parameters.  Refer to the API documentation for the exact parameter keys.  Any parameters not explicitly defined using the \texttt{withProperty} methods will be set to their default values.
 
-The Executor also provides some more advanced features.  First, it contains several methods for distributing objective function evaluations across multiple processing cores or computers.  Distributing evaluations can significantly speed up a run through parallelization.  The simplest way to enable parallelization is through the \texttt{distributeOnAllCores} method.  This will distribute objective function evaluations across all cores on your local computer.  Note that not all algorithms can support parallelization.  In such cases, the MOEA Framework will still run the algorithm, but it will not be parallelized.
-
-Second, the MOEA Framework provides checkpointing functionality.  As an algorithm is running, checkpoint files will be periodically saved.  The checkpoint file stores the current state of the algorithm.  If the run is interrupted, such as during a power outage, the run can be resumed at the last saved checkpoint.  The \texttt{setCheckpointFile} sets the file location for the checkpoint file, and \texttt{checkpointEveryIteration} or \texttt{setCheckpointFrequency} control how frequently the checkpoint file is saved.
-
-Resuming a run from a checkpoint occurs automatically.  If the checkpoint file does not exist, a run starts from the beginning.  However, if the checkpoint file exists, then the run is automatically resumed at that checkpoint.
-
-\begin{tip}
-Care must be taken when using checkpoints as they can be a source of confusion for new users.  For instance, using the same checkpoint file from an unrelated run can cause unexpected behavior or an error.  For this reason, checkpoints are recommended only when solving time-consuming problems.
-\end{tip}
-
-The snippet below extends our example with distributed evaluations and checkpointing.  In addition to the code below, you will need to import the \java{File} class by adding \java{import java.io.File} at the beginning of the file.
+The Executor also provides many advanced features.  One such feature is the ability to distribute objective function evaluations across multiple processing cores or computers.  Distributing evaluations can significantly speed up a run through parallelization.  The simplest way to enable parallelization is through the \texttt{distributeOnAllCores} method.  This will distribute objective function evaluations across all cores on your local computer.  Note that not all algorithms can support parallelization.  In such cases, the MOEA Framework will still run the algorithm, but it will not be parallelized.  The code snippet below extends our example with distributed evaluations.
 
 \begin{lstlisting}[language=Java]
 NondominatedPopulation result = new Executor()
@@ -122,14 +112,8 @@ NondominatedPopulation result = new Executor()
 		.withProperty("pm.rate", 0.1)
 		.withProperty("pm.distributionIndex", 20.0)
 		.distributeOnAllCores()
-		.checkpointEveryIteration()
-		.withCheckpointFile(new File("UF1_NSGAII.chkpt"))
 		.run();
 \end{lstlisting}
-
-\begin{important}
-Checkpoint files are never deleted by the MOEA Framework.  Each time you run this example, it will resume from its last save point.  If you want to run this example from the beginning, you must delete the checkpoint file manually.  In this example, the checkpoint file is saved in the \folder{\moeaframework} folder.
-\end{important}
 
 \section{Instrumenter}
 In addition to supporting a multitude of algorithms and test problems, the MOEA Framework also contains a comprehensive suite of tools for analyzing the performance of algorithms.  The MOEA Framework supports both run-time dynamics and end-of-run analysis.  Run-time dynamics capture the behavior of an algorithm throughout the duration of a run, recording how its solution quality and other elements change.  End-of-run analysis, on the other hand, focuses on the result of a complete run and comparing the relative performance of various algorithms.  Run-time dynamics will be introduced in this section using the Instrumenter; end-of-run analysis will be discussed in the following section using the Analyzer.

@@ -12,9 +12,6 @@ any changes.
  Easy
 ------
 
-  - Move the discussion of checkpointing in the Executor chapter to a more
-    advanced section.
-    
   - Clean up chapter 5.  Most of the section on referencing problems should be
     moved to a more advanced section.
 
@@ -22,6 +19,9 @@ any changes.
   
   - It would be good to have a chapter that details the available algorithms,
     problems, etc.
+    
+  - Add an example chapter at the end of Part 1 that provides a comprehensive
+    example showing all features discussed thus far (e.g., Knapsack problem).
 
   - Upgrade to JMetal 4.4.  The latest JMetal source is currently missing the
     IConstraintViolationComparator interface and can not be compiled.
