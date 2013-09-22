@@ -12,8 +12,7 @@ any changes.
  Easy
 ------
 
-  - Clean up chapter 5.  Most of the section on referencing problems should be
-    moved to a more advanced section.
+  - ScriptedProblem should be able to accept a string version of the filename.
 
   - EncodingUtils should support extracting the codon array from Grammars
   

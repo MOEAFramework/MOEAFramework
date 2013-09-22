@@ -89,13 +89,7 @@ The \java{evaluate} method is responsible for evaluating solutions to the proble
 
 Since the Kursawe problem contains all real-valued decision variables, we can cast the decision variables to an array using the helpful methods of the \class{EncodingUtils} class on line 26.  Use of \class{EncodingUtils} is encouraged for extracting the decision variables from a solution.  Then on lines 27 to 38, we use those decision variables to evaluate the Kursawe problem.  Finally, on lines 40-41, we assign the two objectives for this problem.
 
-At this point, the problem is completely defined and can be used with the MOEA Framework.  The following section describes how to reference user-defined problems within the MOEA Framework.
-
-\section{Referencing the Problem}
-Once a new problem is defined in Java, it can be referenced by the MOEA Framework in a number of ways.  This section details the various methods for referencing problems.
-
-\subsection{By Class}
-The \class{Executor}, \class{Instrumenter} and \class{Analyzer} classes introduced in \chptref{chpt:executor} all accept direct references to the problem class using the \java{withProblemClass} method.  For example, following the previous example with the Kursawe problem, we can optimize this problem with the following code:
+At this point, the problem is completely defined and can be used with the MOEA Framework.  To use this problem with the \class{Executor}, \class{Instrumenter} and \class{Analyzer} classes introduced in \chptref{chpt:executor}, you pass a direct references to the problem class using the \java{withProblemClass} method.  For example, we can optimize the Kursawe problem we just defined with the following code:
 
 \begin{lstlisting}[language=Java]
 new Executor()
@@ -105,148 +99,74 @@ new Executor()
 		.run();
 \end{lstlisting}
 
-Note how the Kursawe problem is specified by name followed by \java{.class}.  This passes a direct reference to the Kursawe class we created in the previous chapter.
+Note how we pass the reference to the problem with \java{Kursawe.class}.  The name of the class, \java{Kursawe}, is followed by \java{.class}.  The MOEA Framework then calls the constructor for the problem class, which in this case is the empty (no argument) constructor, and proceed to optimize the problem.
 
 Problems can also define constructors with arguments.  For example, consider a problem that needs to load data from a file.  For this to work, define a constructor in the problem class that accepts the desired inputs.  In this case, our constructor would be called \java{public ProblemWithArgument(File dataFile) { ... }}.  You can then solve this problem as shown below.
 
 \begin{lstlisting}[language=Java]
 new Executor()
-		.withProblemClass(ProblemWithArgument.class, new File("inputFile.txt"))
+		.withProblemClass(ProblemWithArgument.class,
+        new File("inputFile.txt"))
 		.withAlgorithm("NSGAII")
 		.withMaxEvaluations(10000)
 		.run();
 \end{lstlisting}
 
-\subsection{By Class Name}
-As of version 1.11, problems can be referenced by their fully-qualified class name.  The fully-qualified class name includes the Java package in which the class is defined.  For example, the Schaffer problem's fully-qualified class name is \classpath{org.moeaframework.problem.misc.Schaffer}.  The problem \emph{must} have an empty (no argument) constructor.
-
-The class name can be used to run problems anywhere the MOEA Framework accepts a string representation of the problem.  This includes but is not limited to
-\begin{enumerate}
-  \item The \java{withProblem} method in \class{Executor}, \class{Instrumenter} and \class{Analyzer}
-  \item Any command line utilities with a problem argument
-  \item The problem selection combo box in the MOEA Diagnostic Tool
-\end{enumerate}
-
-\subsection{By Name}
-
-The MOEA Framework also provides the option to reference problems by name.  There are two advantages to using this approach.  First, this approach allows the use of short, meaningful names.  For example, rather than specifying the fully-qualified class name for the Schaffer problem, \classpath{org.moeaframework.problem.misc.Schaffer}, one can use the name \class{Schaffer} instead.  Second, a reference set for named problems can optionally be defined.  This reference set will be automatically used wherever a reference set is required.  Without this, a reference set must be manually specified by the user or programmer each time it is required.
-
-The disadvantage to this approach is that some additional configuration is necessary to provide the mapping from the problem name to the problem class.  As such, this approach is recommended for third-party library developers who are developing new problems to be used with the MOEA Framework.  The remainder of this section describes two such methods for referencing problems by name.
-
-The problem name can be used to run problems anywhere the MOEA Framework accepts a string representation of the problem.  This includes but is not limited to
-\begin{enumerate}
-  \item The \texttt{withProblem} method in \class{Executor}, \class{Instrumenter} and \class{Analyzer}
-  \item Any command line utilities with a problem argument
-  \item The problem selection combo box in the MOEA Diagnostic Tool
-\end{enumerate}
-
-\subsection{With a ProblemProvider}
-The first way to reference problems by name is to define a \class{ProblemProvider}.  The \class{ProblemProvider} uses the Java Service Provider Interface (SPI).  The SPI allows the MOEA Framework to load all available providers from the classpath.  This approach allows third-party software vendors to distribute compiled JAR files containing \class{ProblemProvider} instances that are automatically loaded by the MOEA Framework.  To create a new \class{ProblemProvider}, first create a subclass of the \class{ProblemProvider} class.  To do so, you must define two methods:
-\begin{enumerate}
-  \item \java{Problem getProblem(String name)}
-  \item \java{NondominatedPopulation getReferenceSet(String name)}
-\end{enumerate}
-
-Both methods are provided the problem name as the argument.  The \texttt{getProblem} method should return a new instance of the specified problem, or \java{null} if the provider does not support the given problem name.  Likewise, the \java{getReferenceSet} method should return the reference set of the specified problem if one is available, or \java{null} otherwise.  Returning \java{null} when the problem is not supported by the provider is important, as the Java SPI will scan all available \class{ProblemProvider} instances until it finds a suitable provider.
-
-\begin{lstlisting}[language=Java]
-import org.moeaframework.core.NondominatedPopulation;
-import org.moeaframework.core.Problem;
-import org.moeaframework.core.spi.ProblemProvider;
-
-public class ExampleProblemProvider extends ProblemProvider {
-
-	public Problem getProblem(String name) {
-		if (name.equalsIgnoreCase("kursawe")) {
-			return new Kursawe();
-		} else {
-			return null;
-		}
-	}
-
-	public NondominatedPopulation getReferenceSet(String name) {
-		return null;
-	}
-
-}
-\end{lstlisting}
-
-Lastly, a special configuration file used by the SPI must be created.  The file is located at \file{META-INF/services/org.moeaframework.core.spi.ProblemProvider}.  Each line of this file must contain the fully-qualified class name for each of the \class{ProblemProvider}s being introduced.  When bundling the compiled class files into a JAR, be sure that this configuration file is also copied into the JAR.
-
-Once packaged as a JAR, the provider is ready to be used.  Place the JAR on the classpath used by the MOEA Framework.  Once on the classpath, the Java SPI mechanism used by the MOEA Framework will be able to scan and load all providers contained in all available JAR files.
-
-\subsection{With the \texttt{global.properties} File}
-The second way to reference problems by name is to add the problem definition to the \file{global.properties} file.  This \file{global.properties} file contains the configuration options for the MOEA Framework.  This file usually accompanies a MOEA Framework distribution, but in the event it does not exist, you can just create a new empty text file.  Adding a new problem is as simple as adding the following two lines to \file{global.properties}:
-
-\begin{lstlisting}[language=Plaintext]
-org.moeaframework.problem.problems = Kursawe
-org.moeaframework.problem.Kursawe.class = Kursawe
-\end{lstlisting}
-
-Line 1 lists all problems configured in the \file{global.properties} file.  The string provided here becomes the problem name.  This is the name you would subsequently provide to any of the MOEA Framework tools to instantiate the problem.  More than one problem can be specified by separating the problem names with commas.
-
-Line 2 identifies the class for the specified problem.  Note that this entry follows the naming convention \plaintext{org.moeaframework.problem.NAME.class = value}.  The \plaintext{NAME} used must match the problem name defined in line 1.  The value is the fully-qualified Java classname.  In this case, the class is located in the default package.  If this class were located, for example, in the package \classpath{foo.bar}, the value must be set to \class{foo.bar.Kursawe}.
-
-The reference set file for the problem can be optionally specified as well.  If a reference set is available for the problem, add the following line to \file{global.properties}:
-
-\begin{lstlisting}[language=Plaintext]
-org.moeaframework.problem.Kursawe.referenceSet = kursawe.ref
-\end{lstlisting}
-
 \section{C/C++}
-Implementing a problem in C/C++ requires two steps:
-\begin{enumerate}
-  \item Extend the \class{ExternalProblem} class for your problem.  The \class{ExternalProblem} defines the problem representation --- the number and type of the decision variables, the number of objectives and the number of constraints.  This provides the MOEA Framework with sufficient information to run the algorithm, but the actual evaluation of the problem is deferred to the C/C++ program.
-  \item Create the executable in C/C++ using the \file{moeaframework.h} library.  This library provides the methods for receiving the decision variables from the MOEA Framework, after which the C/C++ program evaluates the problem and sends the objectives and any constraints back to the MOEA Framework.
-\end{enumerate}
-
-We demonstrate this with an example.  The first step is to create the \texttt{ExternalProblem} instance for our class, as shown below.
-
-\begin{lstlisting}[language=Java]
-import org.moeaframework.core.Solution;
-import org.moeaframework.core.variable.RealVariable;
-import org.moeaframework.problem.ExternalProblem;
-
-public class Kursawe extends ExternalProblem {
-
-	public Kursawe() {
-		super("kursawe.exe");
-	}
-	
-	public int getNumberOfVariables() {
-		return 3;
-	}
-	
-	public int getNumberOfObjectives() {
-		return 2;
-	}
-	
-	public int getNumberOfConstraints() {
-		return 0;
-	}
-
-	@Override
-	public Solution newSolution() {
-		Solution solution = new Solution(getNumberOfVariables(), 
-				getNumberOfObjectives(), getNumberOfConstraints());
- 
-		for (int i = 0; i < numberOfVariables; i++) {
-			solution.setVariable(i, new RealVariable(-5.0, 5.0));
-		}
- 
-		return solution;
-	}
-
-}
-\end{lstlisting}
-
-The main difference between this implementation and the previous incarnations is how the executable is specified on line 10.  In addition, the evaluate method is no longer defined.  The \class{ExternalProblem} defines the evaluate method to use the defined executable.  The code for the corresponding executable is provided below.
+It is often the case that the problem / model / computer simulation you are working with is written in a different programming language, such as C/C++.  With a little work, it is possible to connect that C/C++ problem to the MOEA Framework and optimize its inputs / parameters.  In the following example, we will demonstrate how to connect the MOEA Framework to a simple C program.  We continue using the Kursawe problem, which if written in C would appear as follows:
 
 \begin{lstlisting}[language=C]
-#include <stdio.h>
+#include <math.h>
+
+int nvars = 3;
+int nobjs = 2;
+ 
+void evaluate(double* vars, double* objs) {
+	int i;
+	objs[0] = 0.0;
+	objs[1] = 0.0;
+
+	for (i = 0; i < nvars - 1; i++) {
+		objs[0] += -10.0 * exp(-0.2 * sqrt(
+				pow(vars[i], 2.0) + pow(vars[i+1], 2.0)));
+	}
+
+	for (i = 0; i < nvars; i++) {
+		objs[1] += pow(abs(vars[i]), 0.8) +  
+				5.0 * sin(pow(vars[i], 3.0));
+	}
+}
+\end{lstlisting}
+
+Note how the \cpp{evaluate} method takes two arguments, \cpp{vars} and \cpp{objs}, which coincide with the inputs (the decision variables) and the outputs (the objective values).  Now we need to define how the \cpp{evaluate} method connects to the MOEA Framework.  This connection is established using the following code.
+
+\begin{lstlisting}[language=C]
 #include <stdlib.h>
-#include <string.h>
-#include <errno.h>
+#include "moeaframework.h"
+ 
+int main(int argc, char* argv[]) {
+	double vars[nvars];
+	double objs[nobjs];
+
+	MOEA_Init(nobjs, 0);
+
+	while (MOEA_Next_solution() == MOEA_SUCCESS) {
+		MOEA_Read_doubles(nvars, vars);
+		evaluate(vars, objs);
+		MOEA_Write(objs, NULL);
+	}
+
+	MOEA_Finalize();
+	return EXIT_SUCCESS;
+}
+\end{lstlisting}
+
+First, line 2 includes the \file{moeaframework.h} file.  This header is provided by the MOEA Framework and defines all the functions needed to communicate with the MOEA Framework.  All such functions begin with the prefix \cpp{MOEA\_}.  You can find the \file{moeaframework.h} file in the source code distribution in the folder \folder{auxiliary/c/} along with additional examples.
+
+Lines 4-18 define the main loop for the C/C++ program.  Lines 5-6 initialize the storage arrays for the decision variables and objectives.  Line 8 calls \cpp{MOEA\_Init} to initialize the communication between C/C++ and the MOEA Framework.  The \cpp{MOEA\_Init} method takes the number of objectives and constraints as arguments.  Once initialized, we can begin reading and evaluating solutions.  Line 10 loops as long as we successfully read the next solution using \cpp{MOEA\_Next\_solution()}.  Line 11 extracts the real valued decision variables, filling the array \cpp{vars}.  Line 12 invokes the \cpp{evaluate} method to evaluate the problem.  This results in the array \cpp{objs} being filled with the resulting objective values.  Line 13 writes the objectives back to the MOEA Framework.  The second argument to \cpp{MOEA\_Write} is \cpp{NULL} in this example, since the Kursawe problem is unconstrained.  This loop repeats until no more solutions are read.  At this point, the C/C++ program terminates by invoking \cpp{MOEA\_Finalize()} and exiting.  The complete source code is shown below.
+
+\begin{lstlisting}[language=C]
+#include <stdlib.h>
 #include <math.h>
 #include "moeaframework.h"
  
@@ -286,21 +206,67 @@ int main(int argc, char* argv[]) {
 }
 \end{lstlisting}
 
-First, line 6 includes the \file{moeaframework.h} file.  This provides all the functions needed to communicate with the MOEA Framework.  All such functions begin with the prefix \cpp{MOEA\_}.
+You can save this C code to \file{kursawe.c} and compile it into an executable.  If using the GNU C Compiler (gcc), you can compile this code with the following command on Linux or Windows.  Note that you will need both \file{moeaframework.h} and \file{moeaframework.c} in the same directory as \file{kursawe.c}.
 
-Lines 8 and 9 define the number of decision variables and objectives for this problem.  Lines 11-25 define the evaluation of the problem.  The body of this function will be specific to the problem being implemented.
-
-Lines 27-40 define the main loop for the C/C++ program.  Lines 28 and 29 initialize the storage arrays for the decision variables and objectives.  Line 31 calls \cpp{MOEA\_Init} to initialize the communication between C/C++ and the MOEA Framework.  The \cpp{MOEA\_Init} method takes the number of objectives and constraints as arguments.  Once initialized, we can begin reading and evaluating solutions.  Line 33 loops as long as we successfully read the next solution using \cpp{MOEA\_Next\_solution()}.  Line 34 extracts the real valued decision variables, filling the array \cpp{vars}.  Line 35 invokes the \cpp{evaluate} method to evaluate the problem.  This results in the array \cpp{objs} being filled with the resulting objective values.  Line 36 writes the objectives back to the MOEA Framework.  The second argument to \cpp{MOEA\_Write} is \cpp{NULL} in this example, since the Kursawe problem is unconstrained.  This loop repeats until no more solutions are read.  At this point, the C/C++ program terminates by invoking \cpp{MOEA\_Finalize()} and exiting.
-
-As can be seen in this example, the C/C++ program lives only to evaluate solutions to the problem.  All other functions are handled by the MOEA Framework.
-
-To compile this executable, save the example C/C++ code to the file kursawe.c and run the command below.  Note that this requires a C/C++ compiler to be installed on your system, and assumes that the \file{moeaframework.c} and \file{moeaframework.h} files are located in the same folder as \file{kursawe.c}.
-
-\begin{lstlisting}[language=bash]
+\begin{lstlisting}[language=bash,breakatwhitespace=true]
 gcc -o kursawe.exe kursawe.c moeaframework.c -lm
 \end{lstlisting}
 
+At this point, we now switch back to Java and define the problem class by extending the \class{ExternalProblem} class.  We extend the \class{ExternalProblem} class instead of the \class{AbstractProblem} class since \class{ExternalProblem} understands how to communicate with the executable we just compiled.  The code snippet below shows the complete Java class for this example.
+
+\begin{lstlisting}[language=Java]
+import org.moeaframework.core.Solution;
+import org.moeaframework.core.variable.RealVariable;
+import org.moeaframework.problem.ExternalProblem;
+
+public class ExternalKursawe extends ExternalProblem {
+
+	public ExternalKursawe() {
+		super("kursawe.exe");
+	}
+	
+	public int getNumberOfVariables() {
+		return 3;
+	}
+	
+	public int getNumberOfObjectives() {
+		return 2;
+	}
+	
+	public int getNumberOfConstraints() {
+		return 0;
+	}
+
+	@Override
+	public Solution newSolution() {
+		Solution solution = new Solution(getNumberOfVariables(), 
+				getNumberOfObjectives(), getNumberOfConstraints());
+ 
+		for (int i = 0; i < numberOfVariables; i++) {
+			solution.setVariable(i, new RealVariable(-5.0, 5.0));
+		}
+ 
+		return solution;
+	}
+
+}
+\end{lstlisting}
+
+Note how we still need to define the number of variables, objectives, and constraints in addition to defining the \java{newSolution} method.  However, we no longer include the \java{evaluate} method.  Instead, we reference the executable we previously created on line 8.  The MOEA Framework will launch the executable and use it to evaluate solutions to the problem.
+
+Our work is now complete.  We can now solve this ``external'' version of the Kursawe problem just like the pure Java implementation shown earlier in this chapter.
+
+\begin{lstlisting}[language=Java]
+new Executor()
+		.withProblemClass(ExternalKursawe.class)
+		.withAlgorithm("NSGAII")
+		.withMaxEvaluations(10000)
+		.run();
+\end{lstlisting}
+
+\begin{tip}
 It is helpful to test the C/C++ program manually prior to running it with the MOEA Framework.  Tests can be performed by launching the C/C++ program and manually typing in inputs.  In this example, the program requires 3 real values entered on a single line.
+\end{tip}
 
 \begin{lstlisting}[language=Plaintext]
 -2.5 1.25 0.05
@@ -312,10 +278,10 @@ Once the enter key is pressed, the program will output the two objectives to the
 -13.504159423733775 6.966377092192072
 \end{lstlisting}
 
-Additional inputs can be provided, or press Ctrl+D to terminate the program.  At this point, the problem is ready to be used in the MOEA Framework.
+Additional inputs can be provided, or press Ctrl+D to terminate the program.
 
 \section{Scripting Language}
-Problems can also be defined in one of the many scripting languages available via the Java Scripting API.  Supported languages include Javascript, Python, Ruby, Scheme, Groovy and BeanShell.  Java SE 6 is provided with Rhino, a Javascript scripting engine, out-of-the-box.  The following code snippet shows the Rhino Javascript code for defining the Kursawe problem.
+Problems can also be defined in one of the many scripting languages available via the Java Scripting API.  Supported languages include Javascript, Python, Ruby, Scheme, Groovy and BeanShell.  Java SE 6 includes Rhino, a Javascript scripting engine, out-of-the-box.  The following code snippet shows the Rhino Javascript code for defining the Kursawe problem.
 
 \begin{lstlisting}[language=JavaScript]
 importPackage(java.lang);
@@ -373,21 +339,23 @@ function close() {
 }
 \end{lstlisting}
 
-Note how all methods defined by the \class{Problem} interface are specified in the Javascript file.  Also note how we can invoke Java methods and constructors through the scripting language.  The specifics of how to implement functions and invoke existing methods are specific to the scripting language chosen.  Refer to the documentation for the scripting language for details.
+Note how all methods defined by the \class{Problem} interface appear in this code.  Also note how we can invoke Java methods and constructors through the scripting language.  The specifics of how to implement functions and invoke existing methods are specific to the scripting language chosen.  Refer to the documentation for the scripting language for details.
 
-Save this script to an appropriate file with the correct file extension for the scripting language.  Since the script in this example is written in the Rhino Javascript language, we save the file to \file{kursawe.js}.  We can then create an instance of the problem using the \class{ScriptedProblem} class, or more conveniently:
+Save this script to an appropriate file with the correct file extension for the scripting language.  Since the script in this example is written in the Rhino Javascript language, we save the file to \file{kursawe.js}.  Solving this Javascript version of the Kursawe problem is nearly identical to all previous examples, as shown below.
 
 \begin{lstlisting}[language=Java]
 new Executor()
-		.withProblem(ScriptedProblem.class, 
+		.withProblemClass(ScriptedProblem.class, 
 				new File("kursawe.js"))
 		.withAlgorithm("NSGAII")
 		.withMaxEvaluations(10000)
 		.run();
 \end{lstlisting}
 
+The only difference is on lines 2-3, where we specify the problem class as \java{ScriptedProblem.class} and pass as an argument the file \file{kursawe.js}.  The \java{ScriptedProblem} class loads the file, determines the appropriate scripting engine, and uses that scripting engine to evaluate solutions to the problem.
+
 \section{Conclusion}
-This chapter introduced the various means to introduce new problems into the MOEA Framework.  This includes implementing problems in Java, C/C++ and in one of the many supported scripting languages.  Care must be taken when choosing which language to use, as each method has different advantages and drawbacks.  One key consideration is the speed of each method.  The table below shows the wall-clock time for the three methods discussed in this chapter.  These times were produced on an Intel\copyright Core\texttrademark 2 Duo @ 2.13 GHz.
+This chapter introduced the various means for introducing new problems to the MOEA Framework.  This includes implementing problems in Java, C/C++, and in one of the many supported scripting languages.  Care must be taken when choosing which language to use, as each method has different advantages and drawbacks.  One key consideration is the speed of each method.  The table below shows the wall-clock time for the three methods discussed in this chapter.  These times were produced on an Intel\copyright Core\texttrademark 2 Duo @ 2.13 GHz.
 
 \par
 \begin{center}
@@ -400,4 +368,4 @@ This chapter introduced the various means to introduce new problems into the MOE
 \end{tabular}
 \end{center}
 
-Observe that using C/C++ incurs an overhead of approximately $0.000278$ seconds per evaluation.  For the trivial problem used as the example throughout this chapter, the overhead outweighs the evaluation time.  One would expect, however, that larger and more complex problems will benefit from potentially faster C/C++ implementations.  Furthermore, as one would expect, the scripted implementation in Javascript incurs a significant penalty.
+Observe that using C/C++ incurs an overhead of approximately $0.000278$ seconds per evaluation.  For the simple Kursawe problem used as the example throughout this chapter, the overhead outweighs the evaluation time.  One would expect, however, that larger and more complex problems will benefit from potentially faster C/C++ implementations.  Furthermore, as one would expect, the scripted implementation in Javascript incurs a significant performance penalty.

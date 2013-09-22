@@ -15,7 +15,6 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 #include "moeaframework.h"
