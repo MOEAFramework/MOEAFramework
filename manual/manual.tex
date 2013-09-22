@@ -15,12 +15,13 @@
 \usepackage{wrapfig} %wrap text around figures
 \usepackage[linktocpage=true]{hyperref} %clickable links to text sections, URLs, etc
 \usepackage{color} %explicitly define colors
-\usepackage[usenames,dvipsnames]{xcolor} %predefined named colors
+\usepackage[usenames,dvipsnames,table]{xcolor} %predefined named colors
 \usepackage{listings} %source code formatting
 \usepackage{courier} %improved fonts in source code listings
 \usepackage{amsmath} %improved math equations and math formatting
 \usepackage{amssymb} %extended math symbols
 \usepackage{makeidx} %compile index of keywords
+\usepackage{rotating} %displaying tables and figures in landscape mode
 
 \makeindex
 \input{style.tex}
@@ -48,6 +49,7 @@
 
 \part{Advanced Guide - Large-Scale Experiments and other Advanced Topics}
 \include{comparison}
+\include{algorithms}
 \include{advanced}
 
 \part{Developer's Guide - Extending and Contributing to the MOEA Framework}

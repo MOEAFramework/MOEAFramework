@@ -1,0 +1,52 @@
+% Copyright 2011-2013 David Hadka.  All Rights Reserved.
+%
+% This file is part of the MOEA Framework User Manual.
+%
+% Permission is granted to copy, distribute and/or modify this document under
+% the terms of the GNU Free Documentation License, Version 1.3 or any later
+% version published by the Free Software Foundation; with the Invariant Section
+% being the section entitled "Preface", \cellcolor{red!25}No Front-Cover Texts, and \cellcolor{red!25}No Back-Cover
+% Texts.  A copy of the license is included in the section entitled "GNU Free
+% Documentation License".
+
+\chapter{Optimization Algorithms}
+\label{chpt:algorithms}
+
+The MOEA Framework supports the 25 optimization algorithms listed in \tblref{tbl:algorithms}.  \tblref{tbl:algorithms} also indicates which of the decision variable representations from \chptref{chpt:representations} are supported by each algorithm.  The remainder of this chapter introduces each of these algorithms and details their use within the MOEA Framework.
+
+\begin{sidewaystable}
+  \centering
+  \caption{List of available optimization algorithms.}
+  \label{tbl:algorithms}
+  \begin{tabular}{ll|cccccc|l}
+  \hline
+  Algorithm & Type & Real & Binary & Permutation & Grammar & Program & Constraints & Provider \\
+  \hline
+  AbYSS & Scatter Search & \cellcolor{green!25}Yes & \cellcolor{red!25}No & \cellcolor{red!25}No & \cellcolor{red!25}No & \cellcolor{red!25}No & \cellcolor{green!25}Yes & JMetal \\
+  CellDE & Differential Evolution & \cellcolor{green!25}Yes & \cellcolor{red!25}No & \cellcolor{red!25}No & \cellcolor{red!25}No & \cellcolor{red!25}No & \cellcolor{green!25}Yes & JMetal \\
+  DENSEA & Genetic Algorithm & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{red!25}No & \cellcolor{red!25}No & \cellcolor{green!25}Yes & JMetal \\
+  ECEA & Genetic Algorithm & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{red!25}No & PISA \\
+  eMOEA & $\epsilon$-Dominance & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & Native \\
+  eNSGAII & $\epsilon$-Dominance & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & Native \\
+  FastPGA & Genetic Algorithm & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{red!25}No & \cellcolor{red!25}No & \cellcolor{green!25}Yes & JMetal \\
+  FEMO & Genetic Algorithm & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{red!25}No & PISA \\
+  GDE3 & Differential Evolution & \cellcolor{green!25}Yes & \cellcolor{red!25}No & \cellcolor{red!25}No & \cellcolor{red!25}No & \cellcolor{red!25}No & \cellcolor{green!25}Yes & Native \\
+  HypE & Indicator-Based & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{red!25}No & PISA \\
+  IBEA & Indicator-Based & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{red!25}No & \cellcolor{red!25}No & \cellcolor{green!25}Yes & JMetal \\
+  MOCell & Cellular & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{red!25}No & \cellcolor{red!25}No & \cellcolor{green!25}Yes & JMetal \\
+  MOCHC & CHC Algorithm & \cellcolor{red!25}No & \cellcolor{green!25}Yes & \cellcolor{red!25}No & \cellcolor{red!25}No & \cellcolor{red!25}No & \cellcolor{green!25}Yes & JMetal \\
+  MOEAD & Decomposition & \cellcolor{green!25}Yes & \cellcolor{red!25}No & \cellcolor{red!25}No & \cellcolor{red!25}No & \cellcolor{red!25}No & \cellcolor{green!25}Yes & Native \\
+  NSGAII & Genetic Algorithm & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & Native \\
+  OMOPSO & Particle Swarm & \cellcolor{green!25}Yes & \cellcolor{red!25}No & \cellcolor{red!25}No & \cellcolor{red!25}No & \cellcolor{red!25}No & \cellcolor{green!25}Yes & JMetal \\
+  PAES & Evolutionary Strategy & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{red!25}No & \cellcolor{red!25}No & \cellcolor{green!25}Yes & JMetal \\
+  PESA2 & Genetic Algorithm & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{red!25}No & \cellcolor{red!25}No & \cellcolor{green!25}Yes & JMetal \\
+  SEMO2 & Genetic Algorithm & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{red!25}No & PISA \\
+  SHV & Indicator-Based & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{red!25}No & PISA \\
+  SIBEA & Indicator-Based & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{red!25}No & PISA \\
+  SMPSO & Particle Swarm & \cellcolor{green!25}Yes & \cellcolor{red!25}No & \cellcolor{red!25}No & \cellcolor{red!25}No & \cellcolor{red!25}No & \cellcolor{green!25}Yes & JMetal \\
+  SMSEMOA & Indicator-Based & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{red!25}No & \cellcolor{red!25}No & \cellcolor{green!25}Yes & JMetal \\
+  SPAM & Indicator-Based & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{red!25}No & PISA \\
+  SPEA2 & Genetic Algorithm & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{red!25}No & \cellcolor{red!25}No & \cellcolor{green!25}Yes & JMetal \\
+  \hline
+  \end{tabular}
+\end{sidewaystable}
