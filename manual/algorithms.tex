@@ -12,7 +12,7 @@
 \chapter{Optimization Algorithms}
 \label{chpt:algorithms}
 
-The MOEA Framework supports the 25 optimization algorithms listed in \tblref{tbl:algorithms}.  \tblref{tbl:algorithms} also indicates which of the decision variable representations from \chptref{chpt:representations} are supported by each algorithm.  The remainder of this chapter introduces each of these algorithms and details their use within the MOEA Framework.
+The MOEA Framework supports the 26 optimization algorithms listed in \tblref{tbl:algorithms}.  \tblref{tbl:algorithms} also indicates which of the decision variable representations from \chptref{chpt:representations} are supported by each algorithm.  The remainder of this chapter introduces each of these algorithms and details their use within the MOEA Framework.
 
 \begin{sidewaystable}
   \centering
@@ -40,6 +40,7 @@ The MOEA Framework supports the 25 optimization algorithms listed in \tblref{tbl
   OMOPSO & Particle Swarm & \cellcolor{green!25}Yes & \cellcolor{red!25}No & \cellcolor{red!25}No & \cellcolor{red!25}No & \cellcolor{red!25}No & \cellcolor{green!25}Yes & JMetal \\
   PAES & Evolutionary Strategy & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{red!25}No & \cellcolor{red!25}No & \cellcolor{green!25}Yes & JMetal \\
   PESA2 & Genetic Algorithm & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{red!25}No & \cellcolor{red!25}No & \cellcolor{green!25}Yes & JMetal \\
+  Random & Random SEarch & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & Native \\
   SEMO2 & Genetic Algorithm & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{red!25}No & PISA \\
   SHV & Indicator-Based & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{red!25}No & PISA \\
   SIBEA & Indicator-Based & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{red!25}No & PISA \\
@@ -50,3 +51,235 @@ The MOEA Framework supports the 25 optimization algorithms listed in \tblref{tbl
   \hline
   \end{tabular}
 \end{sidewaystable}
+
+\section{Native Algorithms}
+The native algorithms listed in \tblref{tbl:algorithms} are implemented within the MOEA Framework, and thus support all functionality provided by the MOEA Framework.  This section details all of the native algorithms.
+
+\subsection{$\epsilon$-MOEA}
+$\epsilon$-MOEA is a steady-state MOEA that uses $\epsilon$-dominance archiving to record a diverse set of Pareto optimal solutions.  Full details of this algorithm are available in the following technical report:
+\begin{quote}
+Deb, K. et al. ``A Fast Multi-Objective Evolutionary Algorithm for Finding Well-Spread Pareto-Optimal Solutions.'' KanGAL Report No 2003002, Feb 2003. 
+\end{quote}
+Use the string \java{"eMOEA"} when creating instances of this algorithm with the \java{Executor}.  The following parameters are available:
+\newline
+\newline
+\begin{tabularx}{\linewidth}{lX}
+  \hline
+  Parameter & Description \\
+  \hline
+  populationSize & The size of the population \\
+  epsilon & The $\epsilon$ values used by the $\epsilon$-dominance archive, which can either be a single value or a comma-separated array \\
+  sbx.rate & The crossover rate for simulated binary crossover \\
+  sbx.distributionIndex & The distribution index for simulated binary crossover \\
+  pm.rate & The mutation rate for polynomial mutation \\
+  pm.distributionIndex & The distribution index for polynomial mutation \\
+  \hline
+\end{tabularx}
+
+\subsection{NSGA-II}
+NSGA-II is one of the most widely used MOEAs and was introduced in the following paper:
+\begin{quote}
+Deb, K. et al.  ``A Fast Elitist Multi-Objective Genetic Algorithm: NSGA-II.''  IEEE Transactions on Evolutionary Computation, 6:182-197, 2000.
+\end{quote}
+Use the string \java{"NSGAII"} when creating instances of this algorithm with the \java{Executor}.  The following parameters are available:
+\newline
+\newline
+\begin{tabularx}{\linewidth}{lX}
+  \hline
+  Parameter & Description \\
+  \hline
+  populationSize & The size of the population \\
+  sbx.rate & The crossover rate for simulated binary crossover \\
+  sbx.distributionIndex & The distribution index for simulated binary crossover \\
+  pm.rate & The mutation rate for polynomial mutation \\
+  pm.distributionIndex & The distribution index for polynomial mutation \\
+  \hline
+\end{tabularx}
+
+\subsection{$\epsilon$-NSGA-II}
+$\epsilon$-NSGA-II is an extension of NSGA-II that uses an $\epsilon$-dominance archive and randomized restart to enhance search and find a diverse set of Pareto optimal solutions.  Full details of this algorithm are given in the following paper:
+\begin{quote}
+Kollat, J. B., and Reed, P. M. ``Comparison of Multi-Objective Evolutionary Algorithms for Long-Term Monitoring Design.''  Advances in Water Resources, 29(6):792-807, 2006.
+\end{quote}
+Use the string \java{"eNSGAII"} when creating instances of this algorithm with the \java{Executor}.  The following parameters are available:
+\newline
+\newline
+\begin{tabularx}{\linewidth}{lX}
+  \hline
+  Parameter & Description \\
+  \hline
+  populationSize & The size of the population \\
+  epsilon & The $\epsilon$ values used by the $\epsilon$-dominance archive, which can either be a single value or a comma-separated array \\
+  sbx.rate & The crossover rate for simulated binary crossover \\
+  sbx.distributionIndex & The distribution index for simulated binary crossover \\
+  pm.rate & The mutation rate for polynomial mutation \\
+  pm.distributionIndex & The distribution index for polynomial mutation \\
+  injectionRate & Controls the percentage of the population after a restart this is ``injected'', or copied, from the $\epsilon$-dominance archive \\
+  \hline
+\end{tabularx}
+
+\subsection{MOEA/D}
+MOEA/D is a relatively new optimization algorithm based on the concept of decomposing the problem into many single-objective formulations.  Two versions of MOEA/D exist in the literature.  The first, based on the paper cited below, is the original incarnation:
+\begin{quote}
+Li, H. and Zhang, Q.  ``Multiobjective Optimization problems with Complicated Pareto Sets, MOEA/D and NSGA-II.''  IEEE Transactions on Evolutionary Computation, 13(2):284-302, 2009.
+\end{quote}
+An extension to the original MOEA/D algorithm introduced a utility function that aimed to reduce the amount of ``wasted'' effort by the algorithm.  Full details of this extension are available in the following paper:
+\begin{quote}
+    Zhang, Q., et al. ``The Performance of a New Version of MOEA/D on CEC09 Unconstrained MOP Test Instances.'' IEEE Congress on Evolutionary Computation, 2009. 
+\end{quote}
+Use the string \java{"MOEAD"} when creating instances of this algorithm with the \java{Executor}.  The parameters listed below are available.  Note that if the \texttt{updateUtility} parameter is NOT defined, then the original MOEA/D implementation is used.  If \texttt{updateUtility} is set, then the utility-based extension is enabled.
+\newline
+\newline
+\begin{tabularx}{\linewidth}{lX}
+  \hline
+  Parameter & Description \\
+  \hline
+  populationSize & The size of the population \\
+  de.crossoverRate & The crossover rate for differential evolution \\
+  de.stepSize & Control the size of each step taken by differential evolution \\
+  pm.rate & The mutation rate for polynomial mutation \\
+  pm.distributionIndex & The distribution index for polynomial mutation \\
+  neighborhoodSize & The size of the neighborhood used for mating, given as a percentage of the population size \\
+  delta & The probability of mating with an individual from the neighborhood versus the entire population \\
+  eta & The maximum number of spots in the population that an offspring can replace, given as a percentage of the population size \\
+  updateUtility & The frequency, in generations, at which utility values are updated \\
+  \hline
+\end{tabularx}
+
+\subsection{GDE3}
+GDE3 is the extension of differential evolution for multiobjective problems.  It was originally introduced in the following technical report:
+\begin{quote}
+Kukkonen and Lampinen (2005). ``GDE3: The Third Evolution Step of Generalized Differential Evolution.'' KanGAL Report Number 2005013. 
+\end{quote}
+Use the string \java{"GDE3"} when creating instances of this algorithm with the \java{Executor}.  The following parameters are available:
+\newline
+\newline
+\begin{tabularx}{\linewidth}{lX}
+  \hline
+  Parameter & Description \\
+  \hline
+  populationSize & The size of the population \\
+  de.crossoverRate & The crossover rate for differential evolution \\
+  de.stepSize & Control the size of each step taken by differential evolution \\
+  \hline
+\end{tabularx}
+
+\subsection{Random Search}
+The random search algorithm simply randomly generates new solutions uniformly throughout the search space.  It is not intended as an ``optimization algorithm'' \emph{per se}, but as a way to compare the performance of other MOEAs against random search.  If an optimization algorithm can not beat random search, then continued use of that optimization algorithm should be questioned.
+
+Use the string \java{"Random"} when creating instances of this algorithm with the \java{Executor}.  The following parameters are available:
+\newline
+\newline
+\begin{tabularx}{\linewidth}{lX}
+  \hline
+  Parameter & Description \\
+  \hline
+  populationSize & This parameter only has a use when parallelizing evaluations; it controls the number of solutions that are generated and evaluated in parallel \\
+  epsilon & The $\epsilon$ values used by the $\epsilon$-dominance archive, which can either be a single value or a comma-separated array (this parameter is optional) \\
+  \hline
+\end{tabularx}
+
+\section{JMetal Algorithms}
+Many of the optimization algorithms that can be executed within the MOEA Framework are provided by the JMetal library.  JMetal supports only the real-valued, binary, and permutation encodings.  Each of the descriptions below will indicate which of these encodings, if any, the algorithm supports.  For each encoding, a different set of parameters are available.  For real-valued encodings, the additional parameters are:
+\newline
+\newline
+\begin{tabularx}{\linewidth}{lX}
+  \hline
+  Parameter & Description \\
+  \hline
+  sbx.rate & The crossover rate for simulated binary crossover \\
+  sbx.distributionIndex & The distribution index for simulated binary crossover \\
+  pm.rate & The mutation rate for polynomial mutation \\
+  pm.distributionIndex & The distribution index for polynomial mutation \\
+  \hline
+\end{tabularx}
+\newline
+For binary encodings, the additional parameters are:
+\newline
+\newline
+\begin{tabularx}{\linewidth}{lX}
+  \hline
+  Parameter & Description \\
+  \hline
+  1x.rate & The crossover rate for single-point crossover \\
+  bf.rate & The mutation rate for bit flip mutation \\
+  \hline
+\end{tabularx}
+\newline
+For permutation encodings, the additional parameters are:
+\newline
+\newline
+\begin{tabularx}{\linewidth}{lX}
+  \hline
+  Parameter & Description \\
+  \hline
+  pmx.rate & The crossover rate for PMX crossover \\
+  swap.rate & The mutation rate for the swap operator \\
+  \hline
+\end{tabularx}
+\newline
+
+\subsection{AbYSS}
+
+\subsection{CellDE}
+
+\subsection{DENSEA}
+
+\subsection{FastPGA}
+
+\subsection{IBEA}
+IBEA is a indicator-based MOEA that uses the hypervolume performance indicator as a means to rank solutions.  IBEA was introduced in the following paper:
+\begin{quote}
+Zitzler, E. and K\"unzli, S.  ``Indicator-based selection in multiobjective search.'' In Parallel Problem Solving from Nature (PPSN VIII), Lecture Notes in Computer Science, pages 832–842, Berlin / Heidelberg, Springer, 2004.
+\end{quote}
+
+\subsection{MOCell}
+
+\subsection{MOCHC}
+
+\subsection{OMOPSO}
+
+\begin{quote}
+Sierra, M. R. and Coello Coello, C. A.  ``Improving PSO-based multi-objective optimization using crowding, mutation and $\epsilon$-dominance.'' In Evolutionary Multi-Criterion Optimization, Lecture Notes in Computer Science, pages 505–519, Berlin / Heidelberg. Springer, 2005.
+\end{quote}
+
+\subsection{PAES}
+
+\subsection{PESA2}
+
+\subsection{SMPSO}
+
+\subsection{SMSEMOA}
+
+\subsection{SPEA2}
+SPEA2 is an older but popular benchmark MOEA that uses the so-called ``strength-based'' method for ranking solutions.  SPEA2 was introduced in the following conference proceedings:
+\begin{quote}
+Zitzler, E., et al.  ``SPEA2: Improving the Strength Pareto Evolutionary Algorithm For Multiobjective Optimization. CIMNE, Barcelona, Spain, 2002.
+\end{quote}
+Use the string \java{"SPEA2"} when creating instances of this algorithm with the \java{Executor}.  SPEA2 supports real-valued, binary, and permutation encodings.  The following parameters are available:
+\newline
+\newline
+\begin{tabularx}{\linewidth}{lX}
+  \hline
+  Parameter & Description \\
+  \hline
+  populationSize & The size of the population \\
+  archiveSize & The size of the archive \\
+  \hline
+\end{tabularx}
+
+AbYSS 	Real 	populationSize, refSet1Size, refSet2Size, archiveSize, maxEvaluations, improvementRounds
+CellDE 	Real* 	populationSize, archiveSize, maxEvaluations, feedBack, de.crossoverRate, de.stepSize
+DENSEA 	Any 	populationSize, maxEvaluations
+FastPGA 	Any 	maxPopSize, initialPopulationSize, maxEvaluations, a, b, c, d, termination
+GDE3 	Real* 	populationSize, maxEvaluations, de.crossoverRate, de.stepSize
+IBEA 	Any 	populationSize, archiveSize, maxEvaluations
+MOCell 	Any 	populationSize, archiveSize, maxEvaluations, feedBack
+MOCHC 	Binary* 	initialConvergenceCount, preservedPopulation, convergenceValue, populationSize, maxEvaluations, hux.rate, bf.rate
+NSGAII 	Any 	populationSize, maxEvaluations
+OMOPSO 	Real* 	populationSize, archiveSize, maxEvaluations, mutationProbability, perturbationIndex, epsilon
+PAES 	Any 	archiveSize, biSections, maxEvaluations
+PESA2 	Any 	populationSize, archiveSize, bisections, maxEvaluations
+SMPSO 	Real* 	populationSize, archiveSize, maxEvaluations, pm.rate, pm.distributionIndex
+SMSEMOA 	Any 	populationSize, maxEvaluations, offset
+SPEA2 	Any 	populationSize, archiveSize, maxEvaluations
