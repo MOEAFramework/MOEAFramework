@@ -125,7 +125,7 @@ Li, H. and Zhang, Q.  ``Multiobjective Optimization problems with Complicated Pa
 \end{quote}
 An extension to the original MOEA/D algorithm introduced a utility function that aimed to reduce the amount of ``wasted'' effort by the algorithm.  Full details of this extension are available in the following paper:
 \begin{quote}
-    Zhang, Q., et al. ``The Performance of a New Version of MOEA/D on CEC09 Unconstrained MOP Test Instances.'' IEEE Congress on Evolutionary Computation, 2009. 
+Zhang, Q., et al. ``The Performance of a New Version of MOEA/D on CEC09 Unconstrained MOP Test Instances.'' IEEE Congress on Evolutionary Computation, 2009. 
 \end{quote}
 Use the string \java{"MOEAD"} when creating instances of this algorithm with the \java{Executor}.  The parameters listed below are available.  Note that if the \texttt{updateUtility} parameter is NOT defined, then the original MOEA/D implementation is used.  If \texttt{updateUtility} is set, then the utility-based extension is enabled.
 \newline
@@ -220,36 +220,229 @@ For permutation encodings, the additional parameters are:
 \newline
 
 \subsection{AbYSS}
+AbYSS is a hybrid scatter search algorithm that uses genetic algorithm operators.  It was originally introduced in the following paper:
+\begin{quote}
+Nebro, A. J., et al.  ``AbYSS: Adapting Scatter Search to Multiobjective Optimization.''  IEEE Transactions on Evolutionary Computation, 12(4):349-457, 2008.
+\end{quote}
+Use the string \java{"AbYSS"} when creating instances of this algorithm with the \java{Executor}.  Only real-valued decision variables are supported.  The following parameters are available:
+\newline
+\newline
+\begin{tabularx}{\linewidth}{lX}
+  \hline
+  Parameter & Description \\
+  \hline
+  populationSize & The size of the population \\
+  archiveSize & The size of the archive \\
+  refSet1Size & - \\
+  refSet2Size & - \\
+  improvementRounds & - \\
+  \hline
+\end{tabularx}
 
 \subsection{CellDE}
+CellDE is a hybrid cellular genetic algorithm (meaning mating only occurs among neighbors) combined with differential evolution.  CellDE was introduced in the following study:
+\begin{quote}
+Durillo, J. J., et al.  ``Solving Three-Objective Optimization Problems Using a new Hybrid Cellular Genetic Algorithm.''  Parallel Problem Solving from Nature - PPSN X, Springer, 661-370, 2008.
+\end{quote}
+Use the string \java{"CellDE"} when creating instances of this algorithm with the \java{Executor}.  Only real-valued decision variables are supported.  The following parameters are available:
+\newline
+\newline
+\begin{tabularx}{\linewidth}{lX}
+  \hline
+  Parameter & Description \\
+  \hline
+  populationSize & The size of the population \\
+  archiveSize & The size of the archive \\
+  feedBack & - \\
+  de.crossoverRate & The crossover rate for differential evolution \\
+  de.stepSize & Control the size of each step taken by differential evolution \\
+  \hline
+\end{tabularx}
 
 \subsection{DENSEA}
+DENSEA is the duplicate elimination non-domination sorting evolutionary algorithm discussed in the following paper:
+\begin{quote}
+D. Greiner, et al.  ``Enhancing the multiobjective optimum design of structural trusses with evolutionary algorithms using DENSEA.''  44th AIAA (American Institute of Aeronautics and Astronautics) Aerospace Sciences Meeting and Exhibit, AIAA-2006-1474, 2006. 
+\end{quote} 
+Use the string \java{"DENSEA"} when creating instances of this algorithm with the \java{Executor}.  DENSEA supports real-valued, binary, and permutation encodings.  The following parameters are available:
+\newline
+\newline
+\begin{tabularx}{\linewidth}{lX}
+  \hline
+  Parameter & Description \\
+  \hline
+  populationSize & The size of the population \\
+  \hline
+\end{tabularx}
 
 \subsection{FastPGA}
+FastPGA is a genetic algorithm that uses adaptive population sizing to solve time-consumping problems more efficiencly.  It was introduced in the following paper:
+\begin{quote}
+Eskandari, H., et al.  ``FastPGA: A Dynamic Population Sizing Approach for Solving Expensive Multiobjective Optimization Problems.''  Evolutionary Multi-Criterion Optimization, Springer, 141-155, 2007.
+\end{quote}
+Use the string \java{"FastPGA"} when creating instances of this algorithm with the \java{Executor}.  FastPGA supports real-valued, binary, and permutation encodings.  The following parameters are available:
+\newline
+\newline
+\begin{tabularx}{\linewidth}{lX}
+  \hline
+  Parameter & Description \\
+  \hline
+  maxPopSize & The maximum size of the population \\
+  initialPopulationSize & The initial size of the population \\
+  a & - \\
+  b & - \\
+  c & - \\
+  d & - \\
+  termination & - \\
+  \hline
+\end{tabularx}
 
 \subsection{IBEA}
 IBEA is a indicator-based MOEA that uses the hypervolume performance indicator as a means to rank solutions.  IBEA was introduced in the following paper:
 \begin{quote}
 Zitzler, E. and K\"unzli, S.  ``Indicator-based selection in multiobjective search.'' In Parallel Problem Solving from Nature (PPSN VIII), Lecture Notes in Computer Science, pages 832–842, Berlin / Heidelberg, Springer, 2004.
 \end{quote}
+Use the string \java{"IBEA"} when creating instances of this algorithm with the \java{Executor}.  IBEA supports real-valued, binary, and permutation encodings.  The following parameters are available:
+\newline
+\newline
+\begin{tabularx}{\linewidth}{lX}
+  \hline
+  Parameter & Description \\
+  \hline
+  populationSize & The size of the population \\
+  archiveSize & The size of the archive \\
+  \hline
+\end{tabularx}
 
 \subsection{MOCell}
+MOCell is the multiobjective version of a cellular genetic algorithm.  It was originally introduced at the following workshop:
+\begin{quote}
+Nebro, A. J., et al.  ``A Cellular Genetic Algorithm for Multiobjective Optimization.''  Proceedings of the Workshop on Nature Inspired Cooperative Strategies for Optimization, Granada, Spain, 25-36, 2006.
+\end{quote}
+Use the string \java{"MOCell"} when creating instances of this algorithm with the \java{Executor}.  MOCell supports real-valued, binary, and permutation encodings.  The following parameters are available:
+\newline
+\newline
+\begin{tabularx}{\linewidth}{lX}
+  \hline
+  Parameter & Description \\
+  \hline
+  populationSize & The size of the population \\
+  archiveSize & The size of the archive \\
+  feedBack & Controls the number of solutions from the archive that are fed back into the population \\
+  \hline
+\end{tabularx}
 
 \subsection{MOCHC}
+MOCHC is a genetic algorithm that combines a conservative selection strategy with highly disruptive recombination, which unlike traditional MOEAs aims to produce offspring that are maximally different from both parents.  It was introduced in the following conference proceedings:
+\begin{quote}
+Nebro, A. J., et al.  ``Optimal Antenna Placement using a New Multi-objective CHC Algorithm.''  Proceedings of the 9th Annual Conference on Genetic and Evolutionary Computation, London, England, 876-883, 2007.
+\end{quote}
+Use the string \java{"MOCHC"} when creating instances of this algorithm with the \java{Executor}.  Only binary encodings are supported.  The following parameters are available:
+\newline
+\newline
+\begin{tabularx}{\linewidth}{lX}
+  \hline
+  Parameter & Description \\
+  \hline
+  initialConvergenceCount & - \\
+  preservedPopulation & - \\
+  convergenceValue & - \\
+  populationSize & The size of the population \\
+  hux.rate & The crossover rate for the highly disruptive recombination operator \\
+  bf.rate & The mutation rate for bit-flip mutation \\
+  \hline
+\end{tabularx}
 
 \subsection{OMOPSO}
-
+OMOPSO is a multiobjective particle swarm optimization algorithm that includes an $\epsilon$-dominance archive to discover a diverse set of Pareto optimal solutions.  OMOPSO was originally introduced at the following conference:
 \begin{quote}
-Sierra, M. R. and Coello Coello, C. A.  ``Improving PSO-based multi-objective optimization using crowding, mutation and $\epsilon$-dominance.'' In Evolutionary Multi-Criterion Optimization, Lecture Notes in Computer Science, pages 505–519, Berlin / Heidelberg. Springer, 2005.
+Sierra, M. R. and Coello Coello, C. A.  ``Improving PSO-based multi-objective optimization using crowding, mutation and $\epsilon$-dominance.'' Evolutionary Multi-Criterion Optimization, Berlin, Germany, 505-519, 2005.
 \end{quote}
+Use the string \java{"OMOPSO"} when creating instances of this algorithm with the \java{Executor}.  Only real-valued decision variables are supported.  The following parameters are available:
+\newline
+\newline
+\begin{tabularx}{\linewidth}{lX}
+  \hline
+  Parameter & Description \\
+  \hline
+  populationSize & The size of the population \\
+  archiveSize & The size of the archive \\
+  mutationProbability & The mutation probability for uniform and non-uniform mutation \\
+  perturbationIndex & Controls the shape of the distribution for uniform and non-uniform mutation \\
+  epsilon & The $\epsilon$ values used by the $\epsilon$-dominance archive \\
+  \hline
+\end{tabularx}
 
 \subsection{PAES}
+PAES is a multiobjective version of evolution strategy.  PAES tends to underperform when compared to other MOEAs, but it is often used as a baseline algorithm for comparisons.  PAES was introduced in the following conference proceedings:
+\begin{quote}
+Knowles, J. and Corne, D.  ``The Pareto Archived Evolution Strategy: A New Baseline Algorithm for Multiobjective Optimization.''  Proceedings of the 1999 Congress on Evolutionary Computation, Piscataway, NJ, 98-105, 1999.
+\end{quote}
+Use the string \java{"PAES"} when creating instances of this algorithm with the \java{Executor}.  PAES supports real-valued, binary, and permutation encodings.  The following parameters are available:
+\newline
+\newline
+\begin{tabularx}{\linewidth}{lX}
+  \hline
+  Parameter & Description \\
+  \hline
+  archiveSize & The size of the archive \\
+  biSections & The number of bisections in the adaptive grid archive \\
+  \hline
+\end{tabularx}
 
-\subsection{PESA2}
+\subsection{PESA-II}
+PESA-II is another multiobjective evolutionary algorithm that tends to underperform other MOEAs but is often used as a baseline algorithm.  PESA-II was introduced in the following paper:
+\begin{quote}
+Corne, D. W., et al.  ``PESA-II: Region-based Selection in Evolutionary Multiobjective Optimization.''  Proceedings of the Genetic and Evolutionary Computation Conference, 283-290, 2001.
+\end{quote}
+Use the string \java{"PESA2"} when creating instances of this algorithm with the \java{Executor}.  PESA-II supports real-valued, binary, and permutation encodings.  The following parameters are available:
+\newline
+\newline
+\begin{tabularx}{\linewidth}{lX}
+  \hline
+  Parameter & Description \\
+  \hline
+  populationSize & The size of the population \\
+  archiveSize & The size of the archive \\
+  bisections & The number of bisections in the adaptive grid archive \\
+  \hline
+\end{tabularx}
 
 \subsection{SMPSO}
+SMPSO is a multiobjective particle swarm optimization algorithm that was originally presented at the following conference:
+\begin{quote}
+Nebro, A. J., et al.  ``SMPSO: A New PSO-based Metaheuristic for Multi-objective Optimization.''  2009 IEEE Symposium on Computational Intelligence in Multicriteria Decision-Making, 66-73, 2009.
+\end{quote}
+Use the string \java{"SMPSO"} when creating instances of this algorithm with the \java{Executor}.  Only real-valued decision variables are supported.  The following parameters are available:
+\newline
+\newline
+\begin{tabularx}{\linewidth}{lX}
+  \hline
+  Parameter & Description \\
+  \hline
+  populationSize & The size of the population \\
+  archiveSize & The size of the archive \\
+  pm.rate & The mutation rate for polynomial mutation \\
+  pm.distributionIndex & The distribution index for polynomial mutation \\
+  \hline
+\end{tabularx}
 
 \subsection{SMSEMOA}
+SMSEMOA is an indicator-based MOEA that uses the volume of the dominated hypervolume to rank individuals.  SMSEMOA is discussed in detail in the following paper:
+\begin{quote}
+Beume, N., et al.  ``SMS-EMOA: Multiobjective selection based on dominated hypervolume.''  European Journal of Operational Research, 181(3):1653-1669, 2007.
+\end{quote}
+Use the string \java{"SMSEMOA"} when creating instances of this algorithm with the \java{Executor}.  SMSEMOA supports real-valued, binary, and permutation encodings.  The following parameters are available:
+\newline
+\newline
+\begin{tabularx}{\linewidth}{lX}
+  \hline
+  Parameter & Description \\
+  \hline
+  populationSize & The size of the population \\
+  offset & - \\
+  \hline
+\end{tabularx}
 
 \subsection{SPEA2}
 SPEA2 is an older but popular benchmark MOEA that uses the so-called ``strength-based'' method for ranking solutions.  SPEA2 was introduced in the following conference proceedings:
@@ -268,18 +461,3 @@ Use the string \java{"SPEA2"} when creating instances of this algorithm with the
   \hline
 \end{tabularx}
 
-AbYSS 	Real 	populationSize, refSet1Size, refSet2Size, archiveSize, maxEvaluations, improvementRounds
-CellDE 	Real* 	populationSize, archiveSize, maxEvaluations, feedBack, de.crossoverRate, de.stepSize
-DENSEA 	Any 	populationSize, maxEvaluations
-FastPGA 	Any 	maxPopSize, initialPopulationSize, maxEvaluations, a, b, c, d, termination
-GDE3 	Real* 	populationSize, maxEvaluations, de.crossoverRate, de.stepSize
-IBEA 	Any 	populationSize, archiveSize, maxEvaluations
-MOCell 	Any 	populationSize, archiveSize, maxEvaluations, feedBack
-MOCHC 	Binary* 	initialConvergenceCount, preservedPopulation, convergenceValue, populationSize, maxEvaluations, hux.rate, bf.rate
-NSGAII 	Any 	populationSize, maxEvaluations
-OMOPSO 	Real* 	populationSize, archiveSize, maxEvaluations, mutationProbability, perturbationIndex, epsilon
-PAES 	Any 	archiveSize, biSections, maxEvaluations
-PESA2 	Any 	populationSize, archiveSize, bisections, maxEvaluations
-SMPSO 	Real* 	populationSize, archiveSize, maxEvaluations, pm.rate, pm.distributionIndex
-SMSEMOA 	Any 	populationSize, maxEvaluations, offset
-SPEA2 	Any 	populationSize, archiveSize, maxEvaluations

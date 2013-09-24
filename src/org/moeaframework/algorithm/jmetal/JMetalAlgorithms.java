@@ -137,7 +137,7 @@ import org.moeaframework.util.TypedProperties;
  *   <tr>
  *     <td>PAES</td>
  *     <td>Any</td>
- *     <td>{@code archiveSize, biSections, maxEvaluations}</td>
+ *     <td>{@code archiveSize, bisections, maxEvaluations}</td>
  *   </tr>
  *   <tr>
  *     <td>PESA2</td>
