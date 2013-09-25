@@ -28,7 +28,7 @@ import java.util.regex.Pattern;
 
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.variable.BinaryVariable;
+import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.util.Vector;
 import org.moeaframework.util.io.CommentedLineReader;
 
@@ -177,12 +177,13 @@ public class Knapsack implements Problem {
 
 	@Override
 	public void evaluate(Solution solution) {
-		BinaryVariable binary = (BinaryVariable)solution.getVariable(0);
+		boolean[] d = EncodingUtils.getBinary(solution.getVariable(0));
 		double[] f = new double[nsacks];
 		double[] g = new double[nsacks];
 
+		// calculate the profits and weights for the knapsacks
 		for (int i = 0; i < nitems; i++) {
-			if (binary.get(i)) {
+			if (d[i]) {
 				for (int j = 0; j < nsacks; j++) {
 					f[j] += profit[j][i];
 					g[j] += weight[j][i];
@@ -190,6 +191,7 @@ public class Knapsack implements Problem {
 			}
 		}
 
+		// check if any weights exceed the capacities
 		for (int j = 0; j < nsacks; j++) {
 			if (g[j] <= capacity[j]) {
 				g[j] = 0.0;
@@ -226,7 +228,7 @@ public class Knapsack implements Problem {
 	@Override
 	public Solution newSolution() {
 		Solution solution = new Solution(1, nsacks, nsacks);
-		solution.setVariable(0, new BinaryVariable(nitems));
+		solution.setVariable(0, EncodingUtils.newBinary(nitems));
 		return solution;
 	}
 

@@ -17,12 +17,6 @@ any changes.
   - ScriptedProblem should be able to accept a string version of the filename.
 
   - EncodingUtils should support extracting the codon array from Grammars
-  
-  - It would be good to have a chapter that details the available algorithms,
-    problems, etc.
-    
-  - Add an example chapter at the end of Part 1 that provides a comprehensive
-    example showing all features discussed thus far (e.g., Knapsack problem).
 
   - Upgrade to JMetal 4.4.  The latest JMetal source is currently missing the
     IConstraintViolationComparator interface and can not be compiled.
