@@ -34,8 +34,8 @@ import org.moeaframework.core.Variation;
  * References:
  * <ol>
  *   <li>Hadka, D. and Reed, P.  "Borg: An Auto-Adaptive Many-Objective
- *       Evolutionary Computing Framework."  In Review at Evolutionary
- *       Computation.
+ *       Evolutionary Computing Framework."  Evolutionary Computation,
+ *       21(2):231-259, 2013.
  * </ol>
  */
 public class EpsilonProgressContinuation extends AdaptiveTimeContinuation {

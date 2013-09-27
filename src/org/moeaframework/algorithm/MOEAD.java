@@ -673,7 +673,7 @@ public class MOEAD extends AbstractAlgorithm {
 	 * {@code MOEAD} instance. This proxy supports saving
 	 * the {@code population}, {@code idealPoint} and {@code generation}.
 	 */
-	public static class MOEADState implements Serializable {
+	private static class MOEADState implements Serializable {
 
 		private static final long serialVersionUID = 8694911146929397897L;
 
