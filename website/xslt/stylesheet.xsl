@@ -146,6 +146,19 @@
 								</p>
 							</div>
 							
+							<div class="sidemenu">
+								<h3>Paperback Manual</h3>
+								<p>
+									<a href="http://www.lulu.com/product/21284804" class="tooltip" title="100% of the proceeds from book sales support the continued development and maintenance of the MOEA Framework.">
+										Get your paperback copy of the user manual today and support us!<br />
+										<img align="middle" src="images/product_thumbnail.jpg" width="100px" style="padding: 0;"></img><br />
+									</a>
+									<span style="font-size: 12pt; font-weight: bold;"><b>Price: <font color="red">$25.49</font></b></span><br />
+									<span style="font-size: 10pt;">You Save: <font color="red">$4.50 (15%)</font></span><br />
+								</p>
+							</div>
+							
+							<!--
 							<xsl:choose>
 								<xsl:when test="$filename = 'index.xml' or $filename = 'documentation.xml' or $filename = 'support.xml' or $filename = 'contribute.xml' or $filename = 'credits.xml'">
 									<div class="sidemenu">
@@ -180,6 +193,7 @@
 									</div>
 								</xsl:otherwise>
 							</xsl:choose>
+							-->
 						</div>
 					</div>
 				</div>
