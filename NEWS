@@ -1,6 +1,21 @@
 This file documents the major changes implemented in each release of the MOEA
 Framework.
 
+-------------------
+ Version 2.1 (TBD)
+-------------------
+ 
+  * Fixes several reported issues when running in Cygwin
+  
+    - The C wrapper file (moeaframework.c) now correctly handles Windows-style
+      newlines.  Previously, the executable would crash when running on Cygwin.
+      
+    - Updates documentation to clarify how to specify the classpath on Cygwin.
+      Since Cygwin runs the native Windows Java executable, the classpath
+      separator is ';'.  However, the Cygwin command line interprets the ';'
+      as a command separator unless the classpath is surrounded by quotes.
+
+
 ---------------------------
  Version 2.0 (11 Sep 2013)
 ---------------------------

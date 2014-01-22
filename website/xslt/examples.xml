@@ -82,8 +82,8 @@
 </p>
 
 <pre>
-              javac -cp examples;lib/* examples/Example1.java
-              java -cp examples;lib/* Example1</pre>
+              javac -cp "examples;lib/*" examples/Example1.java
+              java -cp "examples;lib/*" Example1</pre>
 
 <p>
   If you receive the message <i>'javac' is not recognized as an internal or

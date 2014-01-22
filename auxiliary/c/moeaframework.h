@@ -42,6 +42,7 @@ typedef enum MOEA_Status {
   MOEA_MALLOC_ERROR,
   MOEA_NULL_POINTER_ERROR,
   MOEA_SOCKET_ERROR,
+  MOEA_IO_ERROR
 } MOEA_Status;
 
 /**

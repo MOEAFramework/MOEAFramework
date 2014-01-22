@@ -75,6 +75,8 @@ const char* MOEA_Status_message(const MOEA_Status status) {
     return "Attempted to dereference NULL pointer";
   case MOEA_SOCKET_ERROR:
     return "Unable to establish socket connection";
+  case MOEA_IO_ERROR:
+    return "Unable to read/write from stream";
   default:
     return "Unknown error";
   }
@@ -232,7 +234,25 @@ MOEA_Status MOEA_Next_solution() {
     character = fgetc(MOEA_Stream_input);
 
     if ((character == EOF) || (character == '\r') || (character == '\n')) {
+      if (ferror(MOEA_Stream_input)) {
+        return MOEA_Error(MOEA_IO_ERROR);
+      }
+
       MOEA_Line_buffer[position++] = '\0';
+
+      /* handle the windows-style \r\n newline */
+      if (character == '\r') {
+        character = fgetc(MOEA_Stream_input);
+
+        if ((character == EOF) && ferror(MOEA_Stream_input)) {
+          return MOEA_Error(MOEA_IO_ERROR);
+        } else if (character != '\n') {
+          if (ungetc(character, MOEA_Stream_input) != character) {
+            return MOEA_Error(MOEA_IO_ERROR);
+          }
+        }
+      }
+
       break; 
     } else {
       MOEA_Line_buffer[position++] = character;
@@ -378,24 +398,37 @@ MOEA_Status MOEA_Write(const double* objectives, const double* constraints) {
   /* write objectives to output */
   for (i=0; i<MOEA_Number_objectives; i++) {
     if (i > 0) {
-      fprintf(MOEA_Stream_output, " ");
+      if (fprintf(MOEA_Stream_output, " ") < 0) {
+        return MOEA_Error(MOEA_IO_ERROR);
+      }
     }
     
-    fprintf(MOEA_Stream_output, "%.17g", objectives[i]);
+    if (fprintf(MOEA_Stream_output, "%.17g", objectives[i]) < 0) {
+      return MOEA_Error(MOEA_IO_ERROR);
+    }
   }
   
   /* write constraints to output */
   for (i=0; i<MOEA_Number_constraints; i++) {
     if ((MOEA_Number_objectives > 0) || (i > 0)) {
-      fprintf(MOEA_Stream_output, " ");
+      if (fprintf(MOEA_Stream_output, " ") < 0) {
+        return MOEA_Error(MOEA_IO_ERROR);
+      }
     }
   
-    fprintf(MOEA_Stream_output, "%.17g", constraints[i]);
+    if (fprintf(MOEA_Stream_output, "%.17g", constraints[i]) < 0) {
+      return MOEA_Error(MOEA_IO_ERROR);
+    }
   }
   
   /* end line and flush to push data out immediately */
-  fprintf(MOEA_Stream_output, "\n");
-  fflush(MOEA_Stream_output);
+  if (fprintf(MOEA_Stream_output, "\n") < 0) {
+    return MOEA_Error(MOEA_IO_ERROR);
+  }
+
+  if (fflush(MOEA_Stream_output) == EOF) {
+    return MOEA_Error(MOEA_IO_ERROR);
+  }
   
   return MOEA_SUCCESS;
 }
