@@ -119,6 +119,11 @@ the following methods:
 
   * Specify JARs on classpath (Unix/Linux only)
       java -classpath $(echo lib/*.jar | sed 's/ /:/g'):. <command>
+      
+  * Specify JARs on classpath with wildcard
+      java -classpath ".:lib/*" <command>
+    Windows and Cygwin users will need to replace the colon (:) with a
+    semi-colon (;).
 
   * Specify JARs in extension directories
       java -Djava.ext.dirs=lib <command>

@@ -23,12 +23,14 @@ Errors halt the execution of the program and produce an error message to the sta
 \begin{indented}
   Thrown when Java is starting but is unable to find the specified class.  Ensure the specified class is located on the Java classpath.  If the class is located in a JAR file, use
   \begin{indented}
-    \plaintext{java -classpath \$CLASSPATH:/path/to/library.jar ...}
+    \plaintext{java -classpath "\$CLASSPATH:/path/to/library.jar" ...}
   \end{indented}
   If the class is an individual .class file in a folder, use
   \begin{indented}
-    \plaintext{java -classpath \$CLASSPATH:/path/to/folder/}
+    \plaintext{java -classpath "\$CLASSPATH:/path/to/folder/"}
   \end{indented}
+  Also ensure you are using the correct classpath separator.  Linux users will use the colon (:) as the above examples demonstrate.  Windows and Cygwin users should use the
+  semi-colon (;).
 \end{indented}
 
 \noindent
@@ -156,12 +158,14 @@ Errors halt the execution of the program and produce an error message to the sta
     \item Ensure \plaintext{<name>} is in fact provided by a built-in or third-party provider. Check spelling and case sensitivity.
     \item If \plaintext{<name>} is supplied by a third-party provider, ensure the provider is located on the Java classpath.  If the provider is in a JAR file, use
       \begin{indented}
-        \plaintext{java -classpath \$CLASSPATH:/path/to/provider.jar ...}
+        \plaintext{java -classpath "\$CLASSPATH:/path/to/provider.jar" ...}
       \end{indented}
       If the provider is supplied as class files in a folder, use
       \begin{indented}
-        \plaintext{java -classpath \$CLASSPATH:/path/to/folder/}
+        \plaintext{java -classpath "\$CLASSPATH:/path/to/folder/"}
       \end{indented}
+      Also ensure you are using the correct classpath separator.  Linux users will use the colon (:) as the above examples demonstrate.  Windows and Cygwin users should use the
+      semi-colon (;).
   \end{enumerate}
 \end{indented}
 
@@ -257,8 +261,10 @@ Errors halt the execution of the program and produce an error message to the sta
     \item Check that the extension is valid.  If not, supply the file extension for the scripting language required.
     \item Ensure the scripting language engine is listed on the classpath.  The engine, if packaged in a JAR, can be specified with
       \begin{indented}
-        \plaintext{java -classpath \$CLASSPATH:/path/to/engine.jar}
+        \plaintext{java -classpath "\$CLASSPATH:/path/to/engine.jar"}
       \end{indented}
+      Also ensure you are using the correct classpath separator.  Linux users will use the colon (:) as the above example demonstrates.  Windows and Cygwin users should use the
+      semi-colon (;).
   \end{enumerate}
 \end{indented}
 
@@ -270,8 +276,10 @@ Errors halt the execution of the program and produce an error message to the sta
     \item Check that the name is valid.  If not, supply the correct name for the scripting language engine as required.
     \item Ensure the scripting language engine is listed on the classpath.  The engine, if packaged in a JAR, can be specified with
       \begin{indented}
-        \plaintext{java -classpath \$CLASSPATH:/path/to/engine.jar}
+        \plaintext{java -classpath "\$CLASSPATH:/path/to/engine.jar"}
       \end{indented}
+      Also ensure you are using the correct classpath separator.  Linux users will use the colon (:) as the above example demonstrates.  Windows and Cygwin users should use the
+      semi-colon (;).
   \end{enumerate}
 \end{indented}
 
@@ -452,8 +460,10 @@ Warnings are messages printed to the standard error stream (i.e., the console) t
 \begin{indented}
   This warning occurs when attempting to instantiate the JMetal algorithm provider, but the JMetal library could not be found on the classpath.  This is treated as a warning and not an exception since a secondary provider may exist for the specified algorithm.  If no secondary provider exists, a \java{ProviderNotFoundException} will be thrown.  To correct, obtain the latest JMetal library from \webpage{http://jmetal.sourceforge.net/} and list it on the  classpath as follows:
   \begin{indented}
-    \plaintext{java -classpath \$CLASSPATH:/path/to/JMetal.jar}
+    \plaintext{java -classpath "\$CLASSPATH:/path/to/JMetal.jar"}
   \end{indented}
+  Also ensure you are using the correct classpath separator.  Linux users will use the colon (:) as the above example demonstrates.  Windows and Cygwin users should use the
+  semi-colon (;).
 \end{indented}
     
 \noindent

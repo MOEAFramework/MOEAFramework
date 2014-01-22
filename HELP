@@ -16,9 +16,12 @@ Exception in thread "main" java.lang.NoClassDefFoundError: <class>
   Thrown when Java is starting but is unable to find the specified class.
   Ensure the specified class is located on the Java classpath.  If the class
   is located in a JAR file, use
-    java -classpath $CLASSPATH:/path/to/library.jar ...
+    java -classpath "$CLASSPATH:/path/to/library.jar" ...
   If the class is an individual .class file in a folder, use
-    java -classpath $CLASSPATH:/path/to/folder/
+    java -classpath "$CLASSPATH:/path/to/folder/"
+  Also ensure you are using the correct classpath separator.  Linux users will
+  use the colon (:) as the above examples demonstrate.  Windows and Cygwin
+  users should use the semi-colon (;).
 
 Error occurred during initialization of VM
 Too small initial heap for new size specified
@@ -158,9 +161,12 @@ no provider for <name>
        
     3) If <name> is supplied by a third-party provider, ensure the provider is
        located on the Java classpath.  If the provider is in a JAR file, use
-           java -classpath $CLASSPATH:/path/to/provider.jar ...
+           java -classpath "$CLASSPATH:/path/to/provider.jar" ...
        If the provider is supplied as class files in a folder, use
-           java -classpath $CLASSPATH:/path/to/folder/
+           java -classpath "$CLASSPATH:/path/to/folder/"
+       Also ensure you are using the correct classpath separator.  Linux users
+       will use the colon (:) as the above examples demonstrate.  Windows and
+       Cygwin users should use the semi-colon (;).
 
 error sending variables to external process
 error receiving variables from external process
@@ -254,7 +260,10 @@ no scripting engine for extension <ext>
        
     2) Ensure the scripting language engine is listed on the classpath.  The
        engine, if packaged in a JAR, can be specified with:
-         java -classpath $CLASSPATH:/path/to/engine.jar
+         java -classpath "$CLASSPATH:/path/to/engine.jar"
+       Also ensure you are using the correct classpath separator.  Linux users
+       will use the colon (:) as the above example demonstrates.  Windows and
+       Cygwin users should use the semi-colon (;).
 
 no scripting engine for <name>
   Attempted to use the Java Scripting APIs, but no engine with the specified
@@ -265,7 +274,10 @@ no scripting engine for <name>
        
     2) Ensure the scripting language engine is listed on the classpath.  The
        engine, if packaged in a JAR, can be specified with:
-         java -classpath $CLASSPATH:/path/to/engine.jar
+         java -classpath "$CLASSPATH:/path/to/engine.jar"
+       Also ensure you are using the correct classpath separator.  Linux users
+       will use the colon (:) as the above example demonstrates.  Windows and
+       Cygwin users should use the semi-colon (;).
 
 file has no extension
   Attempted to use a script file with ScriptedProblem, but the filename does
@@ -445,7 +457,10 @@ instantiated: java.lang.NoClassDefFoundError: <class>
   ProviderNotFoundException will be thrown.  To correct, obtain the latest 
   JMetal library from http://jmetal.sourceforge.net/ and list it on the 
   classpath as follows:
-    java -classpath $CLASSPATH:/path/to/JMetal.jar
+    java -classpath "$CLASSPATH:/path/to/JMetal.jar"
+  Also ensure you are using the correct classpath separator.  Linux users will
+  use the colon (:) as the above example demonstrates.  Windows and Cygwin
+  users should use the semi-colon (;).
     
 unable to negate values in <file>, incorrect number of values in a row
   Emitted by the Negater command line utility when one of the files it is
