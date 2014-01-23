@@ -1,4 +1,4 @@
-/* Copyright 2009-2013 David Hadka
+/* Copyright 2009-2014 David Hadka
  *
  * This file is part of the MOEA Framework.
  *

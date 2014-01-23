@@ -1,4 +1,4 @@
-% Copyright 2011-2013 David Hadka.  All Rights Reserved.
+% Copyright 2011-2014 David Hadka.  All Rights Reserved.
 %
 % This file is part of the MOEA Framework User Manual.
 %
@@ -27,11 +27,11 @@ A \texttt{major.minor} version numbering scheme is used for all releases of the 
 \end{itemize}
 
 \section{Release Cycle}
-The MOEA Framework is a research tool, and as such experiences rapid periods of development.  To provide these updates in a timely manner, new minor versions are released approximately on a five to six week cycle.  New releases are immediately available for download from \webpage{http://www.moeaframework.org} and are announced on \webpage{http://www.freecode.com}.
+The MOEA Framework is a research tool, and as such experiences rapid periods of development.  To provide these updates in a timely manner, new minor versions are released approximately every six months, but more frequent releases may occur to fix bugs.  New releases are immediately available for download from \webpage{http://www.moeaframework.org} and are announced on \webpage{http://www.freecode.com}.
 
 Prior to every release, the MOEA Framework must pass all testing code to ensure it functions as expected.  Furthermore, the code must pass a number of code quality and code style checks.
 
-Major version increments will occur approximately every one to two years.  The decision to release a new major version will depend on the state of the codebase.  Major releases serve as a time for spring cleaning, allowing developers to remove old, deprecated API.
+Major version increments will occur approximately every four to five years.  The decision to release a new major version will depend on the state of the codebase.  Major releases serve as a time for spring cleaning, allowing developers to remove old, deprecated API.
 
 \section{API Deprecation}
 Throughout the lifetime of a software project, certain API elements may be deemed unused, redundant or flawed by the developers and users.  A process is established to facilitate the identification, cleanup and removal of such API elements.  Once a consensus is reached that a certain API element is to be removed, it will be marked as \java{@Deprecated} in the next release.  This annotation serves as a reminder to all developers and users that the marked class, variable, constructor or method should be avoided in all client code.

@@ -12,6 +12,9 @@ any changes.
  Easy
 ------
 
+  - Move the c files into the examples folder so they are distributed in
+    binary releases.
+
   - The C wrapper documentation should show an example command for compiling the
     exe.
     
