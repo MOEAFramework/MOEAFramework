@@ -14,6 +14,10 @@ Framework.
       Since Cygwin runs the native Windows Java executable, the classpath
       separator is ';'.  However, the Cygwin command line interprets the ';'
       as a command separator unless the classpath is surrounded by quotes.
+      
+  * Moves the C example files from the auxiliary/c/ folder to the examples/
+    folder.  This ensures the necessary C code is distributed in the binary
+    distribution for running Example5 and Example6.
 
 
 ---------------------------

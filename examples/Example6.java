@@ -18,6 +18,7 @@
 import java.io.File;
 import java.io.IOException;
 
+import org.apache.commons.lang3.SystemUtils;
 import org.moeaframework.Executor;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Solution;
@@ -27,7 +28,7 @@ import org.moeaframework.problem.ExternalProblem;
 /**
  * Similar to Example4, sockets can be used instead of standard I/O for
  * communicating with the external process.  Run the command 'make' in the
- * ./auxiliary/c/ folder to compile the executable.  This example will only
+ * ./examples/ folder to compile the executable.  This example will only
  * work on POSIX (Unix-like) systems.
  */
 public class Example6 {
@@ -79,10 +80,15 @@ public class Example6 {
 	public static void main(String[] args) throws IOException, 
 	InterruptedException {
 		//check if the executable exists
-		File file = new File("./auxiliary/c/dtlz2_socket.exe");
+		File file = new File("./examples/dtlz2_socket.exe");
 		
 		if (!file.exists()) {
-			System.err.println("Please compile the executable by running make in the ./auxiliary/c/ folder");
+			if (!SystemUtils.IS_OS_UNIX) {
+				System.err.println("This example only works on POSIX-compliant systems; see the Makefile for details");
+				return;
+			}
+			
+			System.err.println("Please compile the executable by running make in the ./examples/ folder");
 			return;
 		}
 		

@@ -27,8 +27,8 @@ import org.moeaframework.problem.ExternalProblem;
 /**
  * Demonstrates how problems can be defined externally to the MOEA Framework,
  * possibly written in a different programming language.  In this case, the
- * problem is defined in the file ./auxiliary/c/dtlz2.c using the C programming
- * language.  Run the command 'make' in the ./auxiliary/c/ folder to compile
+ * problem is defined in the file ./examples/dtlz2.c using the C programming
+ * language.  Run the command 'make' in the ./examples/ folder to compile
  * the executable.
  */
 public class Example5 {
@@ -40,7 +40,7 @@ public class Example5 {
 	public static class MyDTLZ2 extends ExternalProblem {
 
 		public MyDTLZ2() throws IOException {
-			super("./auxiliary/c/dtlz2_stdio.exe");
+			super("./examples/dtlz2_stdio.exe");
 		}
 
 		@Override
@@ -79,10 +79,10 @@ public class Example5 {
 	
 	public static void main(String[] args) {
 		//check if the executable exists
-		File file = new File("./auxiliary/c/dtlz2_stdio.exe");
+		File file = new File("./examples/dtlz2_stdio.exe");
 				
 		if (!file.exists()) {
-			System.err.println("Please compile the executable by running make in the ./auxiliary/c/ folder");
+			System.err.println("Please compile the executable by running make in the ./examples/ folder");
 			return;
 		}
 		
