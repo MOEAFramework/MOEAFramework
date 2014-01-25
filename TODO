@@ -12,12 +12,6 @@ any changes.
  Easy
 ------
 
-  - Move the c files into the examples folder so they are distributed in
-    binary releases.
-
-  - The C wrapper documentation should show an example command for compiling the
-    exe.
-    
   - Add a short primer to the documentation on how to compile and run Java code,
     set the classpath, etc.
 
@@ -34,9 +28,6 @@ any changes.
 
   - Add ARFF and Aerovis output formats to ExtractData and any other relevant
     classes.
-
-  - Examples 5 and 6 references the C interface code.  This should be included
-    in the compiled JAR distribution.
 
   - Need to determine for which classes does value-based equals methods make
     sense, and provide equals and hashCode implementations for these classes.

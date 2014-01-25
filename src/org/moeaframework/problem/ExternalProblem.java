@@ -66,7 +66,7 @@ import org.moeaframework.util.io.RedirectStream;
  * A C/C++ interface is provided for implementing problems.  This interface
  * supports both modes of communication, depending on which initialization
  * routine is invoked.  See the {@code moeaframework.c} and
- * {@code moeaframework.h} files in the source code distribution for details.
+ * {@code moeaframework.h} files in the {@code examples/} folder for details.
  * This interface conforms to the communication protocol described below.
  * <p>
  * The communication protocol consists of sending decision variables to the

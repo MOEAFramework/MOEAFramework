@@ -444,7 +444,7 @@ public static class DTLZ2 extends ExternalProblem {
   Next, we create the C/C++ program that defines the problem.  Note the use of
   several methods with names beginning with the MOEA_ prefix.  These methods
   are provided by the <code>moeaframework.h</code> library, which is
-  provided in the MOEA Framework source code.
+  provided provided in the examples/ folder.
 </p>
 
 <div class="code">
