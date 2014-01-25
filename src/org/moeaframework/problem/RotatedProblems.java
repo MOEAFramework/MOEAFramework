@@ -62,6 +62,14 @@ import org.moeaframework.util.RotationMatrixBuilder;
  * {@code "UNROT_DTLZ2_2"}, {@code "ROT_DTLZ2_2"}, {@code "ROT(30)_DTLZ2_2"}
  * and {@code "ROT(10,RAND)_DTLZ2_2"}.  Note that multiple calls to
  * {@link #getProblem(String)} may return instances with different rotations.
+ * <p>
+ * When comparing rotated problems against their unrotated versions, it is
+ * important to use the {@code UNROT_} prefix for the unrotated problem.  The
+ * act of rotating a problem expands the decision variable ranges slightly
+ * (imagine a 1 x 1 square that is rotated 45 degrees; the bounding box of the
+ * rotated square is approximately 1.4 x 1.4).  The {@code UNROT_} prefix
+ * ensures the unrotated version uses the same expanded decision variable ranges
+ * as the rotated variant.
  */
 public class RotatedProblems extends ProblemProvider {
 
