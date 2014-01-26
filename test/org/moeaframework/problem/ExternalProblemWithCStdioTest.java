@@ -50,8 +50,13 @@ public class ExternalProblemWithCStdioTest {
 	
 	@Before
 	public void setUp() throws IOException {
-		file = new File("./auxiliary/c/test_stdio.exe");
+		file = new File("./test/org/moeaframework/problem/test_stdio.exe");
 		
+		//attempt to run make if the file does not exist
+		if (!file.exists()) {
+			TestUtils.runMake(file.getParentFile());
+		}
+
 		TestUtils.assumeFileExists(file);
 		
 		//start the process separately to intercept the error (debug) data

@@ -17,8 +17,6 @@ any changes.
 
   - Look into the JMetal algorithms dMPOSO, ssNSGAII, SMPSOhv
 
-  - ScriptedProblem should be able to accept a string version of the filename.
-
   - EncodingUtils should support extracting the codon array from Grammars
 
   - Upgrade to JMetal 4.4.  The latest JMetal source is currently missing the

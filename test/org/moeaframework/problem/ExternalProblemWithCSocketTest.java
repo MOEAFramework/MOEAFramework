@@ -37,7 +37,15 @@ ExternalProblemWithCStdioTest {
 	
 	@Before
 	public void setUp() throws IOException {
-		file = new File("./auxiliary/c/test_socket.exe");
+		//skip this test if the machine is not POSIX compliant
+		TestUtils.assumePOSIX();
+		
+		file = new File("./test/org/moeaframework/problem/test_socket.exe");
+		
+		//attempt to run make if the file does not exist
+		if (!file.exists()) {
+			TestUtils.runMake(file.getParentFile());
+		}
 		
 		TestUtils.assumeFileExists(file);
 		

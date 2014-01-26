@@ -36,6 +36,7 @@ import java.util.BitSet;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.SystemUtils;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.junit.Assert;
@@ -556,9 +557,51 @@ public class TestUtils {
 		return file;
 	}
 	
+	/**
+	 * Skips the current test if the file does not exist.
+	 * 
+	 * @param file the file to check
+	 */
 	public static void assumeFileExists(File file) {
 		if (!file.exists()) {
 			System.err.println(file + " does not exist, skipping test");
+			Assume.assumeTrue(false);
+		}
+	}
+	
+	/**
+	 * Skips the current test if the machine is not POSIX-compliant.
+	 */
+	public static void assumePOSIX() {
+		if (!SystemUtils.IS_OS_UNIX) {
+			System.err.println("system is not POSIX-compliant, skipping test");
+			Assume.assumeTrue(false);
+		}
+	}
+	
+	/**
+	 * Attempts to run make in the given folder.  If make is not successful,
+	 * the test is skipped.
+	 * 
+	 * @param folder the folder in which make is executed
+	 */
+	public static void runMake(File folder) {
+		System.out.println("Running make to build test executables");
+		
+		try {
+			Process process = Runtime.getRuntime().exec("make", null, folder);
+			
+			if (process.waitFor() != 0) {
+				System.err.println("make exited with an error status ("
+						+ process.exitValue() + "), skipping test");
+				Assume.assumeTrue(false);
+			}
+		} catch (InterruptedException e) {
+			System.err.println("interrupted while waiting for make to " +
+					"complete, skipping test");
+			Assume.assumeTrue(false);
+		} catch (IOException e) {
+			System.err.println("unable to run make, skipping test");
 			Assume.assumeTrue(false);
 		}
 	}
