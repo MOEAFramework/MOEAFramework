@@ -47,7 +47,7 @@ public class SantaFeExample {
 				.withProblemClass(AntProblem.class, openDataFile(), maxMoves)
 				.withAlgorithm("NSGAII")
 				.withProperty("populationSize", 500)
-				.withMaxEvaluations(500000)
+				.withMaxEvaluations(250000)
 				.run();
 		
 		// display the result
@@ -62,7 +62,7 @@ public class SantaFeExample {
 	 * @return an input stream that contains the ant trail data file
 	 */
 	public static InputStream openDataFile() {
-		InputStream stream = LosAltosExample.class.getResourceAsStream(
+		InputStream stream = SantaFeExample.class.getResourceAsStream(
 				"santafe.trail");
 		
 		if (stream == null) {

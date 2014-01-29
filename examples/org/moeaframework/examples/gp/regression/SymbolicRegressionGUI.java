@@ -52,7 +52,7 @@ import org.moeaframework.core.spi.AlgorithmFactory;
  * A GUI for displaying the actual and approximated functions used in a
  * symbolic regression problem instance.
  */
-public class SymbolicRegressionGUI extends JFrame implements WindowListener {
+public class SymbolicRegressionGUI extends JDialog implements WindowListener {
 
 	private static final long serialVersionUID = -2137650953653684495L;
 
@@ -105,7 +105,7 @@ public class SymbolicRegressionGUI extends JFrame implements WindowListener {
 	 * @param problem the symbolic regression problem instance
 	 */
 	public SymbolicRegressionGUI(SymbolicRegression problem) {
-		super("Symbolic Regression Demo");
+		super((JFrame)null, "Symbolic Regression Demo");
 		this.problem = problem;
 		
 		initialize();
@@ -113,7 +113,7 @@ public class SymbolicRegressionGUI extends JFrame implements WindowListener {
 		
 		setSize(600, 600);
 		setLocationRelativeTo(null);
-		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		addWindowListener(this);
 	}
 	

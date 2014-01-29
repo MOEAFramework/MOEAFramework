@@ -49,8 +49,7 @@ public class Sobol implements Sequence {
 	/**
 	 * The path to the resource containing Sobol' directions.
 	 */
-	private static final String DIRECTIONS_RESOURCE = 
-			"org/moeaframework/util/sequence/joe-kuo-6.21000";
+	private static final String DIRECTIONS_RESOURCE = "joe-kuo-6.21000";
 
 	/**
 	 * Statically initializes the Sobol' directions.
@@ -78,9 +77,8 @@ public class Sobol implements Sequence {
 		BufferedReader reader = null;
 
 		try {
-			reader = new BufferedReader(new InputStreamReader(Thread
-					.currentThread().getContextClassLoader()
-					.getResourceAsStream(DIRECTIONS_RESOURCE)));
+			reader = new BufferedReader(new InputStreamReader(
+					Sobol.class.getResourceAsStream(DIRECTIONS_RESOURCE)));
 
 			List<int[]> directions = new ArrayList<int[]>();
 

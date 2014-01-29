@@ -28,14 +28,16 @@ import org.moeaframework.analysis.collector.Accumulator;
  * throughout the run.
  */
 public class Example3 {
-	
+
 	public static void main(String[] args) throws IOException {
+		// setup the instrumenter to record the generational distance metric
 		Instrumenter instrumenter = new Instrumenter()
 				.withReferenceSet(new File("./pf/UF1.dat"))
 				.withFrequency(100)
 				.attachElapsedTimeCollector()
 				.attachGenerationalDistanceCollector();
 		
+		// use the executor to run the algorithm with the instrumenter
 		new Executor()
 				.withProblem("UF1")
 				.withAlgorithm("NSGAII")
@@ -45,9 +47,13 @@ public class Example3 {
 		
 		Accumulator accumulator = instrumenter.getLastAccumulator();
 		
+		// print the runtime dynamics
+		System.out.println("  NFE\tElapsed Time\tGenerational Distance");
+		
 		for (int i=0; i<accumulator.size("NFE"); i++) {
-			System.out.println(accumulator.get("NFE", i) + "\t" + 
-					accumulator.get("Elapsed Time", i) + "\t" +
+			System.out.format("%5d\t%.5f\t\t%.5f%n",
+					accumulator.get("NFE", i),
+					accumulator.get("Elapsed Time", i),
 					accumulator.get("GenerationalDistance", i));
 		}
 	}
