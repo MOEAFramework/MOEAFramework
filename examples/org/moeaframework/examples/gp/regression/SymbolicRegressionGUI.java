@@ -28,7 +28,6 @@ import java.util.Properties;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -52,7 +51,7 @@ import org.moeaframework.core.spi.AlgorithmFactory;
  * A GUI for displaying the actual and approximated functions used in a
  * symbolic regression problem instance.
  */
-public class SymbolicRegressionGUI extends JDialog implements WindowListener {
+public class SymbolicRegressionGUI extends JFrame implements WindowListener {
 
 	private static final long serialVersionUID = -2137650953653684495L;
 
@@ -105,7 +104,7 @@ public class SymbolicRegressionGUI extends JDialog implements WindowListener {
 	 * @param problem the symbolic regression problem instance
 	 */
 	public SymbolicRegressionGUI(SymbolicRegression problem) {
-		super((JFrame)null, "Symbolic Regression Demo");
+		super("Symbolic Regression Demo");
 		this.problem = problem;
 		
 		initialize();
