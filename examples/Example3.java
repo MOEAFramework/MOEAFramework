@@ -15,7 +15,6 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-import java.io.File;
 import java.io.IOException;
 
 import org.moeaframework.Executor;
@@ -32,7 +31,7 @@ public class Example3 {
 	public static void main(String[] args) throws IOException {
 		// setup the instrumenter to record the generational distance metric
 		Instrumenter instrumenter = new Instrumenter()
-				.withReferenceSet(new File("./pf/UF1.dat"))
+				.withProblem("UF1")
 				.withFrequency(100)
 				.attachElapsedTimeCollector()
 				.attachGenerationalDistanceCollector();
@@ -48,10 +47,10 @@ public class Example3 {
 		Accumulator accumulator = instrumenter.getLastAccumulator();
 		
 		// print the runtime dynamics
-		System.out.println("  NFE\tElapsed Time\tGenerational Distance");
+		System.out.format("  NFE    Time      Generational Distance%n");
 		
 		for (int i=0; i<accumulator.size("NFE"); i++) {
-			System.out.format("%5d\t%.5f\t\t%.5f%n",
+			System.out.format("%5d    %-8.4f  %-8.4f%n",
 					accumulator.get("NFE", i),
 					accumulator.get("Elapsed Time", i),
 					accumulator.get("GenerationalDistance", i));

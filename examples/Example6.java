@@ -104,10 +104,12 @@ public class Example6 {
 				.run();
 				
 		//display the results
+		System.out.format("Objective1  Objective2%n");
+		
 		for (Solution solution : result) {
-			System.out.print(solution.getObjective(0));
-			System.out.print(' ');
-			System.out.println(solution.getObjective(1));
+			System.out.format("%.4f      %.4f%n",
+					solution.getObjective(0),
+					solution.getObjective(1));
 		}
 	}
 	

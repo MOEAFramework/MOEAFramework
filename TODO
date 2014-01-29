@@ -12,6 +12,8 @@ any changes.
  Easy
 ------
 
+  - Add unit tests to ensure examples can compile and run.
+
   - Add a short primer to the documentation on how to compile and run Java code,
     set the classpath, etc.
 
