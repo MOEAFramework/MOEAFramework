@@ -35,7 +35,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import org.apache.commons.lang3.StringUtils;
 import org.moeaframework.core.Settings;
 
 public class TerminalGUI extends JFrame {
@@ -107,8 +106,11 @@ public class TerminalGUI extends JFrame {
 					System.getProperty("java.class.path"),
 					example.getMainClass().getName()};
 			
-			output.append("> ");
-			output.append(StringUtils.join(command, " "));
+			// echo command to output, quoting the classpath
+			output.append("> java -classpath \"");
+			output.append(System.getProperty("java.class.path"));
+			output.append("\"");
+			output.append(example.getMainClass().getName());
 			output.append(Settings.NEW_LINE);
 			
 			status.setText("Status: Running...");

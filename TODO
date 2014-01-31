@@ -24,8 +24,6 @@ any changes.
   - Upgrade to JMetal 4.4.  The latest JMetal source is currently missing the
     IConstraintViolationComparator interface and can not be compiled.
 
-  - ResultFileMerger should be able to also retain decision variables.
-
   - Add ARFF and Aerovis output formats to ExtractData and any other relevant
     classes.
 
