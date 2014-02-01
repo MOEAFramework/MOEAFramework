@@ -20,6 +20,7 @@ package org.moeaframework.examples.gui;
 import java.awt.BorderLayout;
 import java.awt.Desktop;
 import java.awt.FlowLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
@@ -144,6 +145,10 @@ public class ExamplesGUI extends JFrame {
 		getContentPane().setLayout(new BorderLayout());
 		getContentPane().add(contentPane, BorderLayout.CENTER);
 		setSize(800, 600);
+		
+		setIconImage(Toolkit.getDefaultToolkit().getImage(
+				getClass().getResource(
+						"/org/moeaframework/analysis/diagnostics/icon.png")));
 	}
 	
 	private void setupActions() {

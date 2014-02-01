@@ -23,6 +23,7 @@ package org.moeaframework.examples.ga.tsplib;
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Toolkit;
 import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
@@ -172,6 +173,10 @@ public class TSPExample {
 		frame.setSize(500, 400);
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
+		
+		frame.setIconImage(Toolkit.getDefaultToolkit().getImage(
+				TSPExample.class.getResource(
+						"/org/moeaframework/analysis/diagnostics/icon.png")));
 		
 		// create the optimization problem and evolutionary algorithm
 		Problem problem = new TSPProblem(instance);

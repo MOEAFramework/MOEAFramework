@@ -19,6 +19,7 @@ package org.moeaframework.examples.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -85,6 +86,10 @@ public class TerminalGUI extends JFrame {
 		getContentPane().add(contentPane, BorderLayout.CENTER);
 		setSize(600, 400);
 		setLocationRelativeTo(null);
+		
+		setIconImage(Toolkit.getDefaultToolkit().getImage(
+				getClass().getResource(
+						"/org/moeaframework/analysis/diagnostics/icon.png")));
 	}
 	
 	private void setupActions() {
