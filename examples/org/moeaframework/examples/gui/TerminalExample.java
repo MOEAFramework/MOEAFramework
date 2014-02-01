@@ -17,8 +17,23 @@
  */
 package org.moeaframework.examples.gui;
 
+/**
+ * An example that runs on the command line and prints its results to standard
+ * output.  Any standard output will be displayed in a special GUI that mimics
+ * a terminal window.
+ */
 public class TerminalExample extends Example {
 	
+	/**
+	 * Constructs a new example that runs on the command line.
+	 * 
+	 * @param name the name of this example
+	 * @param description the description of this example
+	 * @param mainClass the class defining the main method that is invoked to
+	 *        start this example
+	 * @param resources any resources, such as source code or data files, that
+	 *        should be displayed in the examples GUI
+	 */
 	public TerminalExample(String name, String description, Class<?> mainClass,
 			String... resources) {
 		super(name, description, mainClass, resources);

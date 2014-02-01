@@ -37,8 +37,15 @@ import org.moeaframework.examples.gui.Example;
 import org.moeaframework.examples.gui.ExamplesGUI;
 import org.moeaframework.examples.gui.TerminalExample;
 
+/**
+ * Launches the demo application allowing the learn about and experiment with
+ * the MOEA Framework using several examples.
+ */
 public class Examples {
 	
+	/**
+	 * The resource bundle containing the localized example descriptions.
+	 */
 	private static ResourceBundle resourceBundle;
 	
 	static {
@@ -51,6 +58,18 @@ public class Examples {
 		}
 	}
 	
+	/**
+	 * Private constructor to prevent instantiation.
+	 */
+	private Examples() {
+		super();
+	}
+	
+	/**
+	 * Starts the demo application.
+	 * 
+	 * @param args the command line arguments
+	 */
 	public static void main(String[] args) {
 		try {
 			UIManager.setLookAndFeel(

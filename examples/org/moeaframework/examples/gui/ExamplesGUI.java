@@ -49,20 +49,44 @@ import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rtextarea.RTextScrollPane;
 import org.moeaframework.core.Settings;
 
+/**
+ * GUI for displaying and running the examples.
+ */
 public class ExamplesGUI extends JFrame {
 	
 	private static final long serialVersionUID = -3101518902404130963L;
 
+	/**
+	 * The examples to display.
+	 */
 	private final Vector<Example> examples;
 	
+	/**
+	 * The list displaying all available examples.
+	 */
 	private JList list;
 	
+	/**
+	 * The button for running the currently-selected example.
+	 */
 	private JButton runButton;
 	
+	/**
+	 * The button for closing the window.
+	 */
 	private JButton exitButton;
 	
+	/**
+	 * The tabbed pane for containing the description and resources for the
+	 * currently-selected example.
+	 */
 	private JTabbedPane tabbedPane;
 	
+	/**
+	 * Constructs and displays a new example GUI.
+	 * 
+	 * @param examples the examples to display
+	 */
 	public ExamplesGUI(Vector<Example> examples) {
 		super("MOEA Framework Examples");
 		this.examples = examples;
@@ -74,6 +98,15 @@ public class ExamplesGUI extends JFrame {
 		list.setSelectedIndex(0);
 	}
 	
+	/**
+	 * Returns the contents of the specified resource.  This resource can
+	 * reference a file on the local system or a resource contained on the
+	 * classpath.
+	 * 
+	 * @param resource the resource to load
+	 * @return the contents of the resource
+	 * @throws IOException if an I/O error occurred
+	 */
 	private String load(String resource) throws IOException {
 		File file = new File(resource);
 		
@@ -95,6 +128,14 @@ public class ExamplesGUI extends JFrame {
 		}
 	}
 	
+	/**
+	 * Return the contents of the specified reader.  This method does not close
+	 * the reader.
+	 * 
+	 * @param reader the reader to read
+	 * @return the contents of the reader
+	 * @throws IOException if an I/O error occurred
+	 */
 	private String load(BufferedReader reader) throws IOException {
 		String line = null;
 		StringBuilder builder = new StringBuilder();
@@ -107,6 +148,13 @@ public class ExamplesGUI extends JFrame {
 		return builder.toString();
 	}
 	
+	/**
+	 * Returns the contents of the specified file.
+	 * 
+	 * @param file the file to read
+	 * @return the contents of the file
+	 * @throws IOException if an I/O error occurred
+	 */
 	private String load(File file) throws IOException {
 		BufferedReader reader = null;
 		
@@ -120,6 +168,9 @@ public class ExamplesGUI extends JFrame {
 		}
 	}
 	
+	/**
+	 * Layout the components on the GUI.
+	 */
 	public void layoutComponents() {
 		list = new JList(examples);
 		runButton = new JButton("Run Example");
@@ -151,6 +202,9 @@ public class ExamplesGUI extends JFrame {
 						"/org/moeaframework/analysis/diagnostics/icon.png")));
 	}
 	
+	/**
+	 * Register any event listeners.
+	 */
 	private void setupActions() {
 		list.addListSelectionListener(new ListSelectionListener() {
 
@@ -184,6 +238,11 @@ public class ExamplesGUI extends JFrame {
 		});
 	}
 	
+	/**
+	 * Update the display to show the information about the specified example.
+	 * 
+	 * @param example the currently-selected example
+	 */
 	private void display(Example example) {
 		if (example == null) {
 			tabbedPane.removeAll();

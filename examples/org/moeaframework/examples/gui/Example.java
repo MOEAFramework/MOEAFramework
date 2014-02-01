@@ -17,16 +17,43 @@
  */
 package org.moeaframework.examples.gui;
 
+/**
+ * An example for use in the {@link ExamplesGUI}.
+ */
 public class Example {
 	
+	/**
+	 * The name of this example.
+	 */
 	private final String name;
 	
+	/**
+	 * The description of this example.
+	 */
 	private final String description;
 	
+	/**
+	 * The class defining the main method that is invoked to start this
+	 * example.
+	 */
 	private final Class<?> mainClass;
 	
+	/**
+	 * Any resources, such as source code or data files, that should be
+	 * displayed in the examples GUI.
+	 */
 	private final String[] resources;
 	
+	/**
+	 * Constructs a new example.
+	 * 
+	 * @param name the name of this example
+	 * @param description the description of this example
+	 * @param mainClass the class defining the main method that is invoked to
+	 *        start this example
+	 * @param resources any resources, such as source code or data files, that
+	 *        should be displayed in the examples GUI
+	 */
 	public Example(String name, String description, Class<?> mainClass,
 			String... resources) {
 		super();
@@ -36,18 +63,42 @@ public class Example {
 		this.resources = resources;
 	}
 
+	/**
+	 * Returns the name of this example.
+	 * 
+	 * @return the name of this example
+	 */
 	public String getName() {
 		return name;
 	}
 
+	/**
+	 * Returns the description of this example.
+	 * 
+	 * @return the description of this example
+	 */
 	public String getDescription() {
 		return description;
 	}
 
+	/**
+	 * Returns the class defining the main method that is invoked to start this
+	 * example.
+	 * 
+	 * @return the class defining the main method that is invoked to start this
+	 *         example
+	 */
 	public Class<?> getMainClass() {
 		return mainClass;
 	}
 
+	/**
+	 * Returns any resources, such as source code or data files, that should be
+	 * displayed in the examples GUI.
+	 * 
+	 * @return any resources, such as source code or data files, that should be
+	 *         displayed in the examples GUI
+	 */
 	public String[] getResources() {
 		return resources;
 	}
@@ -57,6 +108,10 @@ public class Example {
 		return name;
 	}
 	
+	/**
+	 * Runs the example.  The example itself is responsible for providing any
+	 * GUI to display the results.
+	 */
 	public void run() {
 		try {
 			Runtime.getRuntime().exec(new String[] { 

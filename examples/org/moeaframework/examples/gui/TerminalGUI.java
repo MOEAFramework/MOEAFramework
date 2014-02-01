@@ -38,18 +38,40 @@ import javax.swing.JTextArea;
 
 import org.moeaframework.core.Settings;
 
+/**
+ * A GUI that mimics a terminal window for displaying the output from a
+ * {@link TerminalExample}.
+ */
 public class TerminalGUI extends JFrame {
 	
 	private static final long serialVersionUID = 2927412401050615141L;
 
+	/**
+	 * The example to run.
+	 */
 	private final TerminalExample example;
 	
+	/**
+	 * The text area containing the standard output from the example.
+	 */
 	private JTextArea output;
 	
+	/**
+	 * The status message indicating if the example is running or finished.
+	 */
 	private JLabel status;
 	
+	/**
+	 * The button for closing this window.
+	 */
 	private JButton closeButton;
 	
+	/**
+	 * Constructs and displays a new terminal GUI.  The example starts running
+	 * immediately after the GUI is displayed.
+	 * 
+	 * @param example the example to run
+	 */
 	public TerminalGUI(TerminalExample example) {
 		super(example.getName() + " Output");
 		this.example = example;
@@ -61,6 +83,9 @@ public class TerminalGUI extends JFrame {
 		runExample();
 	}
 	
+	/**
+	 * Layout the components on the GUI.
+	 */
 	private void layoutComponents() {
 		output = new JTextArea();
 		output.setEditable(false);
@@ -92,6 +117,9 @@ public class TerminalGUI extends JFrame {
 						"/org/moeaframework/analysis/diagnostics/icon.png")));
 	}
 	
+	/**
+	 * Register any event listeners.
+	 */
 	private void setupActions() {
 		closeButton.addActionListener(new ActionListener() {
 
@@ -103,6 +131,10 @@ public class TerminalGUI extends JFrame {
 		});
 	}
 	
+	/**
+	 * Runs the example and pipes its output and error streams to the text
+	 * area.
+	 */
 	private void runExample() {
 		try {
 			String[] command = new String[] {
@@ -132,8 +164,11 @@ public class TerminalGUI extends JFrame {
 		}
 	}
 	
+	/**
+	 * Thread that pipes the error stream to the text area.
+	 */
 	private class ErrorRedirectThread extends Thread {
-		
+
 		private final InputStream errorStream;
 		
 		public ErrorRedirectThread(InputStream errorStream) {
@@ -157,6 +192,10 @@ public class TerminalGUI extends JFrame {
 		}
 	}
 	
+	/**
+	 * Thread that pipes the output stream to the text area.  This thread also
+	 * updates the status when the process completes.
+	 */
 	private class OutputRedirectThread extends Thread {
 		
 		private final InputStream outputStream;
