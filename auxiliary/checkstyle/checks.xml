@@ -46,7 +46,7 @@ along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
 	<module name="TreeWalker">
 		<property name="tabWidth" value="4"/>
 	
-		<!-- Explicitly define all important classes -->
+		<!-- Explicitly define all imported classes -->
 		<module name="AvoidStarImport" />
 		
 		<!-- No unused imports -->

@@ -555,7 +555,7 @@ public class Executor extends ProblemBuilder {
 	}
 	
 	/**
-	 * Sets all properties.
+	 * Sets all properties.  This will clear any existing properties.
 	 * 
 	 * @param properties the properties
 	 * @return a reference to this executor

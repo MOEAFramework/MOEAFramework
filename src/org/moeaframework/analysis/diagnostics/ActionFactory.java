@@ -1129,7 +1129,7 @@ public class ActionFactory implements ControllerListener {
 						controller.get(key), 
 						referenceSet);
 				viewer.setLocationRelativeTo(frame);
-				viewer.setIconImage(frame.getIconImage());
+				viewer.setIconImages(frame.getIconImages());
 				viewer.setVisible(true);
 			}
 			

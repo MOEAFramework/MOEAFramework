@@ -17,21 +17,17 @@
  */
 package org.moeaframework.analysis.diagnostics;
 
-import java.awt.Toolkit;
-
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import org.apache.commons.cli.CommandLine;
+import org.moeaframework.core.Settings;
 import org.moeaframework.util.CommandLineUtility;
 
 /**
  * Command line utility for launching the diagnostic tool.
  */
 public class LaunchDiagnosticTool extends CommandLineUtility {
-	
-	private static final String ICON = 
-			"/org/moeaframework/analysis/diagnostics/icon.png";
 	
 	/**
 	 * Constructs the command line utility for launching the diagnostic tool.
@@ -54,9 +50,7 @@ public class LaunchDiagnosticTool extends CommandLineUtility {
 				}
 				
 				DiagnosticTool diagnosticTool = new DiagnosticTool();
-				diagnosticTool.setIconImage(
-						Toolkit.getDefaultToolkit().getImage(
-								getClass().getResource(ICON)));
+				diagnosticTool.setIconImages(Settings.getIconImages());
 				diagnosticTool.setVisible(true);
 			}
 				

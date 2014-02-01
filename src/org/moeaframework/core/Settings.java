@@ -17,6 +17,8 @@
  */
 package org.moeaframework.core;
 
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -24,6 +26,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 import org.apache.commons.lang3.text.StrTokenizer;
@@ -493,6 +497,26 @@ public class Settings {
 	 */
 	public static String getCleanupStrategy() {
 		return PROPERTIES.getString(KEY_CLEANUP_STRATEGY, "error");
+	}
+	
+	/**
+	 * Returns the MOEA Framework icons of various sizes.
+	 * 
+	 * @return the MOEA Framework icons
+	 */
+	public static List<Image> getIconImages() {
+		Toolkit toolkit = Toolkit.getDefaultToolkit();
+		List<Image> icons = new ArrayList<Image>();
+		
+		icons.add(toolkit.getImage(Settings.class.getResource("logo16.png")));
+		icons.add(toolkit.getImage(Settings.class.getResource("logo24.png")));
+		icons.add(toolkit.getImage(Settings.class.getResource("logo32.png")));
+		icons.add(toolkit.getImage(Settings.class.getResource("logo48.png")));
+		icons.add(toolkit.getImage(Settings.class.getResource("logo64.png")));
+		icons.add(toolkit.getImage(Settings.class.getResource("logo128.png")));
+		icons.add(toolkit.getImage(Settings.class.getResource("logo256.png")));
+
+		return icons;
 	}
 	
 }

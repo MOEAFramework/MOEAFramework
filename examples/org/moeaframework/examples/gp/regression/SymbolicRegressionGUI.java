@@ -21,7 +21,6 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
@@ -45,6 +44,7 @@ import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.xy.DefaultTableXYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.moeaframework.core.Algorithm;
+import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.spi.AlgorithmFactory;
 
@@ -115,10 +115,7 @@ public class SymbolicRegressionGUI extends JFrame implements WindowListener {
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		addWindowListener(this);
-		
-		setIconImage(Toolkit.getDefaultToolkit().getImage(
-				getClass().getResource(
-						"/org/moeaframework/analysis/diagnostics/icon.png")));
+		setIconImages(Settings.getIconImages());
 	}
 	
 	/**
