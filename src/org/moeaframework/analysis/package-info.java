@@ -54,6 +54,13 @@
  *       and supercomputers.
  *     </td>
  *   </tr>
+ *   <tr>
+ *     <td>{@link org.moeaframework.analysis.tools}</td>
+ *     <td>
+ *       Command line tools for solving optimization problems and analyzing the
+ *       results.
+ *     </td>
+ *   </tr>
  * </table>
  */
 package org.moeaframework.analysis;

@@ -25,7 +25,7 @@ import org.moeaframework.core.Algorithm;
 public class ElapsedTimeCollector implements Collector {
 
 	/**
-	 * The time, in milliseconds, this collector was created.  This roughly
+	 * The time, in nanoseconds, this collector was created.  This roughly
 	 * corresponds to the time the algorithm starts, assuming that the algorithm
 	 * is run immediately following its setup.
 	 */

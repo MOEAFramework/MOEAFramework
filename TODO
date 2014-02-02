@@ -24,9 +24,6 @@ any changes.
   - Upgrade to JMetal 4.4.  The latest JMetal source is currently missing the
     IConstraintViolationComparator interface and can not be compiled.
 
-  - Add ARFF and Aerovis output formats to ExtractData and any other relevant
-    classes.
-
   - Need to determine for which classes does value-based equals methods make
     sense, and provide equals and hashCode implementations for these classes.
     As an example, it doesn't make sense for Solution to provide an equals
