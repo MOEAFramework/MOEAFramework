@@ -194,7 +194,7 @@ public class ExamplesGUI extends JFrame {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		getContentPane().setLayout(new BorderLayout());
 		getContentPane().add(contentPane, BorderLayout.CENTER);
-		setSize(800, 600);
+		setSize(840, 600);
 		setIconImages(Settings.getIconImages());
 	}
 	
