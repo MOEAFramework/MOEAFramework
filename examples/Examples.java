@@ -175,6 +175,7 @@ public class Examples {
 				resourceBundle.getString("tsp1.name"),
 				resourceBundle.getString("tsp1.description"),
 				PR76Example.class,
+				"examples/org/moeaframework/examples/ga/tsplib/PR76Example.java",
 				"examples/org/moeaframework/examples/ga/tsplib/TSPExample.java",
 				"examples/org/moeaframework/examples/ga/tsplib/pr76.tsp"));
 		
@@ -182,6 +183,7 @@ public class Examples {
 				resourceBundle.getString("tsp2.name"),
 				resourceBundle.getString("tsp2.description"),
 				A280Example.class,
+				"examples/org/moeaframework/examples/ga/tsplib/A280Example.java",
 				"examples/org/moeaframework/examples/ga/tsplib/TSPExample.java",
 				"examples/org/moeaframework/examples/ga/tsplib/a280.tsp"));
 		

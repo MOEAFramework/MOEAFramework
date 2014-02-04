@@ -25,6 +25,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.Properties;
 
@@ -235,6 +237,16 @@ public class TSPExample {
 	 */
 	public static void solve(Reader reader) throws IOException {
 		solve(new TSPInstance(reader));
+	}
+	
+	/**
+	 * Runs the example TSP optimization problem.
+	 * 
+	 * @param stream the stream containing the TSPLIB instance
+	 * @throws IOException if an I/O error occurred
+	 */
+	public static void solve(InputStream stream) throws IOException {
+		solve(new TSPInstance(new InputStreamReader(stream)));
 	}
 
 }
