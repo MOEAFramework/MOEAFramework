@@ -351,8 +351,9 @@ index does not reference node in tree
   is valid.
   
 malformed property argument
-  The Evaluator command line utility supports setting algorithm parameters on
-  the command line with the -x option.  The parameters should be of the form:
+  The Evaluator and Solve command line utilities support setting algorithm
+  parameters on the command line with the -x option.  The parameters should be
+  of the form:
     -x name=value
   or if multiple parameters are set:
     -x name1=value1;name2=value2;name3=value3
@@ -381,7 +382,32 @@ objective with empty range
   population.  A degenerate population either has fewer than two solutions or
   the range of any objective is below computer precision.  In this scenario,
   the population can not be normalized.
-  
+
+lower bound and upper bounds not the same length
+  When specifying the --lowerBounds and --upperBounds arguments to the Solve
+  utility, the number of values in the comma-separated list must match.
+
+invalid variable specification <value>, not properly formatted
+invalid real specification <value>, expected R(<lb>,<ub>)
+invalid binary specification <value>, expected B(<length>)
+invalid permutation specification <value>, expected P(<length>)
+invalid variable specification <value>, unknown type
+  The --variables argument to the Solve utility allows specifying the types and
+  ranges of the decision variables.  These error messages indicate that one or
+  more of the variable specifications is invalid.  The message will identify
+  the problem.  An example variable specification is provided below:
+    --variables "R(0;1),B(5),P(10),R(-1;1)"
+  Also, always surround the argument with quotes as shown in this example.
+
+must specify either the problem, the variables, or the lower and upper bounds
+arguments
+  The Solve command line utility operates on both problems defined within the
+  MOEA Framework (by name) or problems external to the MOEA Framework, such as
+  an executable.  For problems identified by name, the --problem argument must
+  be specified.  For external problems, (1) if the problem is real-valued, you
+  can use the --lowerBounds and --upperBounds arguments; or (2) use the
+  --variables argument to specify the decision variables and their types.
+
 
 ----------
  Warnings
@@ -486,12 +512,34 @@ argument is null
   warning appears when using Sequence, For or While, ensure you specify the
   return type of these nodes using the appropriate constructor.
   
-  unable to parse solution, ignoring remaining entries in the file
-  insufficient number of entries in row, ignoring remaining rows in the file
-    Occurs when MetricFileReader or ResultFileReader encounter invalid data in
-    an input file.  They automatically discard any remaining entries in the
-    file, assuming they are corrupt.  This is primarily intended to allow the
-    software to automatically recover from a previous, interrupted execution.
-    These warnings are provided to inform the user that invalid entries are
-    being discarded.
-  
+unable to parse solution, ignoring remaining entries in the file
+insufficient number of entries in row, ignoring remaining rows in the file
+  Occurs when MetricFileReader or ResultFileReader encounter invalid data in
+  an input file.  They automatically discard any remaining entries in the
+  file, assuming they are corrupt.  This is primarily intended to allow the
+  software to automatically recover from a previous, interrupted execution.
+  These warnings are provided to inform the user that invalid entries are
+  being discarded.
+
+Unable to find the file <file>
+  This warning is shown when running an example that must load a data file but
+  the data file could not be found.  Ensure that the examples directory is
+  located on your classpath:
+    java -classpath "$CLASSPATH:examples" ...
+  Also ensure you are using the correct classpath separator.  Linux users will
+  use the colon (:) as the above example demonstrates.  Windows and Cygwin
+  users should use the semi-colon (;).
+
+incorrect number of names, using defaults
+  Occurs when using the --names argument provided by ARFFConverter and
+  AerovisConverter to provide custom names for the decision variables and/or
+  objectives, but the number of names provided is not correct.  When providing
+  names for only the objectives, the number of names must match the number of
+  objectives.  When providing names for both variables and objectives, the
+  number of names must match the number of variables and objectives in the data
+  file.  Otherwise, this warning is displayed and the program uses default
+  names.
+
+population is empty, can not generate ARFF file
+  The ARFFConverter outputs an ARFF file using the last entry in a result file.
+  If the last entry is empty, then no ARFF file is generated.
