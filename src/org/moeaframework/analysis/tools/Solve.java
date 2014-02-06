@@ -167,7 +167,7 @@ public class Solve extends CommandLineUtility {
 	private Problem createExternalProblem(final CommandLine commandLine) throws ParseException, IOException {
 		final List<Variable> variables = new ArrayList<Variable>();
 		final int numberOfObjectives = Integer.parseInt(commandLine.getOptionValue("objectives"));
-		final int numberOfConstraints = Integer.parseInt(commandLine.getOptionValue("constraints"));
+		final int numberOfConstraints = commandLine.hasOption("constraints") ? Integer.parseInt(commandLine.getOptionValue("constraints")) : 0;
 		
 		if (commandLine.hasOption("lowerBounds") && commandLine.hasOption("upperBounds")) {
 			String[] lowerBoundTokens = commandLine.getOptionValue("lowerBounds").split(",");

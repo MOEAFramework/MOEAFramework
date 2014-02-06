@@ -18,6 +18,19 @@ Framework.
   * Moves the C example files from the auxiliary/c/ folder to the examples/
     folder.  This ensures the necessary C code is distributed in the binary
     distribution for running Example5 and Example6.
+    
+  * Adds several new command line utilities:
+  
+    - Solve: Solves an optimization problem using the MOEA Framework.  The
+      problem can be one recognized by the MOEA Framework by name, such as any
+      built-in problem, or an external problem.  See the Defining New Problems
+      chapter in the user manual for details on writing external problems.
+      
+    - ARFFConverter: Converts a result file into an ARFF file that can be
+      analyzed using data mining tools.
+      
+    - AerovisConverter: Converts a result file into an input file for Aerovis,
+      a high-dimensional data visualization and exploration tool.
 
 
 ---------------------------
