@@ -499,8 +499,32 @@ public class TestUtils {
 	 * @return  the regular expression pattern for detecting any number of 
 	 *          numeric values separated by whitespace
 	 */
-	public static String getNumericPattern(int n) {
-		return "(-?[0-9]+\\.[0-9]+(E-?[0-9]+)?\\b\\s*){" + n + "}";
+	public static String getSpaceSeparatedNumericPattern(int n) {
+		return "(-?[0-9]+(\\.[0-9]+(E-?[0-9]+)?)?\\b\\s*){" + n + "}";
+	}
+	
+	/**
+	 * Returns the regular expression pattern for detecting any number of 
+	 * numeric values separated by a comma.
+	 * 
+	 * @param n the number of numeric values to detect
+	 * @return  the regular expression pattern for detecting any number of 
+	 *          numeric values separated by a comma
+	 */
+	public static String getCommaSeparatedNumericPattern(int n) {
+		String pattern = "";
+		
+		if (n > 0) {
+			pattern = "(-?[0-9]+(\\.[0-9]+(E-?[0-9]+)?)?)";
+		}
+		
+		if (n > 1) {
+			pattern += "(\\s*,\\s*-?[0-9]+(\\.[0-9]+(E-?[0-9]+)?)?){" +
+					(n-1) +
+					"}";
+		}
+		
+		return pattern;
 	}
 	
 	/**

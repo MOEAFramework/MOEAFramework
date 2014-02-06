@@ -258,8 +258,8 @@ public class SobolAnalysisTest {
 		BufferedReader reader = null;
 		String line = null;
 		Pattern pattern = Pattern.compile("^\\s*" + key + "\\s+" + 
-				TestUtils.getNumericPattern(1) + "\\s+\\[" + 
-				TestUtils.getNumericPattern(1) + "\\]\\s*$");
+				TestUtils.getSpaceSeparatedNumericPattern(1) + "\\s+\\[" + 
+				TestUtils.getSpaceSeparatedNumericPattern(1) + "\\]\\s*$");
 		
 		try {
 			reader = new BufferedReader(new FileReader(file));

@@ -72,8 +72,8 @@ public class IntegrationTest {
 				"-o", referenceSet.getPath()});
 		
 		Assert.assertEquals(10, TestUtils.lineCount(referenceSet));
-		TestUtils.assertLinePattern(referenceSet, TestUtils.getNumericPattern(
-				2));
+		TestUtils.assertLinePattern(referenceSet,
+				TestUtils.getSpaceSeparatedNumericPattern(2));
 	}
 	
 	/**
@@ -94,8 +94,8 @@ public class IntegrationTest {
 				"-o", parameterFile.getPath()});
 		
 		Assert.assertEquals(10, TestUtils.lineCount(parameterFile));
-		TestUtils.assertLinePattern(parameterFile, TestUtils.getNumericPattern(
-				2));
+		TestUtils.assertLinePattern(parameterFile,
+				TestUtils.getSpaceSeparatedNumericPattern(2));
 		
 		//evaluate two MOEAs
 		File resultFile1 = TestUtils.createTempFile();
@@ -181,9 +181,9 @@ public class IntegrationTest {
 		
 		Assert.assertEquals(11, TestUtils.lineCount(metricFile1));
 		Assert.assertEquals(11, TestUtils.lineCount(metricFile2));
-		TestUtils.assertLinePattern(metricFile1, TestUtils.getNumericPattern(
+		TestUtils.assertLinePattern(metricFile1, TestUtils.getSpaceSeparatedNumericPattern(
 				MetricFileWriter.NUMBER_OF_METRICS));
-		TestUtils.assertLinePattern(metricFile2, TestUtils.getNumericPattern(
+		TestUtils.assertLinePattern(metricFile2, TestUtils.getSpaceSeparatedNumericPattern(
 				MetricFileWriter.NUMBER_OF_METRICS));
 		
 		//compute the average metric value
@@ -196,7 +196,7 @@ public class IntegrationTest {
 				metricFile2.getPath()});
 		
 		Assert.assertEquals(10, TestUtils.lineCount(averageMetrics));
-		TestUtils.assertLinePattern(averageMetrics, TestUtils.getNumericPattern(
+		TestUtils.assertLinePattern(averageMetrics, TestUtils.getSpaceSeparatedNumericPattern(
 				MetricFileWriter.NUMBER_OF_METRICS));
 		
 		//perform the analysis
@@ -242,8 +242,8 @@ public class IntegrationTest {
 				"-o", parameterFile.getPath()});
 		
 		Assert.assertEquals(60, TestUtils.lineCount(parameterFile));
-		TestUtils.assertLinePattern(parameterFile, TestUtils.getNumericPattern(
-				2));
+		TestUtils.assertLinePattern(parameterFile,
+				TestUtils.getSpaceSeparatedNumericPattern(2));
 		
 		//evaluate MOEA
 		File metricFile = TestUtils.createTempFile();
@@ -257,7 +257,7 @@ public class IntegrationTest {
 				"-m"});
 		
 		Assert.assertEquals(61, TestUtils.lineCount(metricFile));
-		TestUtils.assertLinePattern(metricFile, TestUtils.getNumericPattern(
+		TestUtils.assertLinePattern(metricFile, TestUtils.getSpaceSeparatedNumericPattern(
 				MetricFileWriter.NUMBER_OF_METRICS));
 
 		//compute sensitivity results
