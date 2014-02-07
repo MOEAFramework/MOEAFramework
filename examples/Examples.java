@@ -192,6 +192,11 @@ public class Examples {
 				resourceBundle.getString("diagnostic.description"),
 				LaunchDiagnosticTool.class));
 		
+		examples.add(new Example(
+				resourceBundle.getString("conclusion.name"),
+				resourceBundle.getString("conclusion.description"),
+				null));
+		
 		new ExamplesGUI(examples);
 	}
 

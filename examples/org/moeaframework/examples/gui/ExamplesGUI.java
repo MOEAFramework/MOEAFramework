@@ -87,7 +87,7 @@ public class ExamplesGUI extends JFrame {
 	 * @param examples the examples to display
 	 */
 	public ExamplesGUI(Vector<Example> examples) {
-		super("MOEA Framework Examples");
+		super("MOEA Framework Demos");
 		this.examples = examples;
 		
 		layoutComponents();
