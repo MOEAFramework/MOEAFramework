@@ -171,7 +171,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		</copy>
 		
 		<copy todir="${base}/examples">
-			<fileset dir="examples" />
+			<fileset dir="examples" excludes="*.exe,*.o,*.a" />
 		</copy>
 
 		<tar destfile="${dist}/${shortname}-${version}.tar.gz" 
@@ -187,10 +187,10 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		<copy todir="${base}">
 			<fileset dir=".">
 				<include name="auxiliary/**" />
-				<exclude name="auxiliary/c/*.exe" />
-				<exclude name="auxiliary/c/*.o" />
-				<exclude name="auxiliary/c/*.a" />
 				<include name="examples/**" />
+				<exclude name="examples/*.exe" />
+				<exclude name="examples/*.o" />
+				<exclude name="examples/*.a" />
 				<include name="lib/**" />
 				<exclude name="lib/junit-*.jar" />
 				<include name="manual/**" />
@@ -198,6 +198,9 @@ Use of these build scripts requires Apache Ant to be installed.  See
 				<include name="pf/**" />
 				<include name="src/**" />
 				<include name="test/**" />
+				<exclude name="test/org/moeaframework/problem/*.exe" />
+				<exclude name="test/org/moeaframework/problem/*.o" />
+				<exclude name="test/org/moeaframework/problem/*.a" />
 				<include name="website/**" />
 				<include name="global.properties" />
 				<include name="build.xml" />
@@ -381,12 +384,12 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		</javac>
 		
 		<copy todir="${build}">
-			<fileset excludes="**/*.java,overview.html" dir="examples" />
+			<fileset excludes="**/*.java,overview.html,*.exe,*.o,*.a" dir="examples" />
 		</copy>
 		
 		<!-- copy the examples source code so it can be seen in the demo GUI -->
 		<copy todir="${build}/examples">
-			<fileset dir="examples" />
+			<fileset dir="examples" excludes="*.exe,*.o,*.a" />
 		</copy>
 		
 		<copy todir="${build}/pf">
