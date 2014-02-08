@@ -85,10 +85,10 @@
 									<a href="support.html">Support</a>
 								</li>
 								<li>
-									<xsl:if test="$filename = 'contribute.xml'">
+									<xsl:if test="$filename = 'donate.xml'">
 										<xsl:attribute name="id">current</xsl:attribute>
 									</xsl:if>
-									<a href="contribute.html">Contribute</a>
+									<a href="donate.html">Donate</a>
 								</li>
 							</ul>
 						</div>
@@ -114,6 +114,13 @@
 									<meta itemprop="operatingSystem" content="Mac" />
 								</p>
 								<ul>
+									<li>
+										<a href="https://sourceforge.net/projects/moeaframework/files/MOEAFramework-%VERSION%/MOEAFramework-%VERSION%-Demo.jar/download"
+										    onClick="_gaq.push(['_trackEvent', 'Downloads', 'Demo', '%VERSION%']);"
+										    itemprop="downloadUrl">
+											Demo Application
+										</a>
+									</li>
 									<li>
 										<a href="https://sourceforge.net/projects/moeaframework/files/MOEAFramework-%VERSION%/MOEAFramework-%VERSION%.tar.gz/download"
 										    onClick="_gaq.push(['_trackEvent', 'Downloads', 'Binary', '%VERSION%']);"
@@ -153,8 +160,8 @@
 										Get your paperback copy of the user manual today and support us!<br />
 										<img align="middle" src="images/product_thumbnail.jpg" width="100px" style="padding: 0;"></img><br />
 									</a>
-									<span style="font-size: 12pt; font-weight: bold;"><b>Price: <font color="red">$25.49</font></b></span><br />
-									<span style="font-size: 10pt;">You Save: <font color="red">$4.50 (15%)</font></span><br />
+									<span style="font-size: 12pt; font-weight: bold;"><b>Price: <font color="red">$20.99</font></b></span><br />
+									<span style="font-size: 10pt;">You Save: <font color="red">$9.00 (30%)</font></span><br />
 								</p>
 							</div>
 							

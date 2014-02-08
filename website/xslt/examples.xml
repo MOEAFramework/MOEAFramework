@@ -22,7 +22,8 @@
 <p>
   The following examples demonstrate the basic functionality provided by the
   MOEA Framework.  Links to the full source code are provided alongside each
-  code snippet.
+  code snippet.  You may also find these and more examples in the demo
+  application on the <a href="downloads.html">downloads</a> page.
 </p>
 
 <ul>
@@ -32,7 +33,6 @@
   <li><a href="#example3">Example 3: Collecting Runtime Dynamics</a></li>
   <li><a href="#example4">Example 4: Defining New Problems</a></li>
   <li><a href="#example5">Example 5: Defining Problems in C/C++</a></li>
-  <li><a href="#example6">Example 6: Diagnostic Tool</a></li>
 </ul>
 
 <div class="section">
@@ -132,10 +132,11 @@ NondominatedPopulation result = new Executor()
 
 <div class="code">
   <pre class="brush: plain; toolbar: false;">
-0.03225854617597993 0.8955469164422306
-1.234133105250407   0.02627025526143537
-0.14805820063877223 0.7958040473509136
-0.3669854396928317  0.49597909950890706
+Objective1  Objective2
+0.9465      0.0466
+0.1355      2.0513
+0.1403      1.9960
+0.2520      0.5120
 ...
   </pre>
 </div>
@@ -277,12 +278,13 @@ for (int i=0; i<accumulator.size("NFE"); i++) {
 
 <div class="code">
   <pre class="brush: plain; toolbar: false">
-NFE  ElapsedTime  GenerationalDistance
-100  0.096681148  0.8185884950594635
-200  0.113829380  0.5423878889227384
-300  0.128466418  0.3997002414956422
-400  0.137947185  0.3541110315964887
-...
+ NFE    Time      Generational Distance
+ 100    0.0256    0.7616  
+ 200    0.0421    0.6645  
+ 300    0.0543    0.4847  
+ 400    0.0636    0.4425  
+ 500    0.0713    0.4178  
+ ...
   </pre>
 </div>
 </div>
@@ -513,29 +515,6 @@ int main(int argc, char* argv[]) {
   channel by calling MOEA_Terminate.
 </p>
 
-</div>
-
-<div class="section">
-<a name="example6" />
-<h3>Example 6: Diagnostic Tool</h3>
-
-<p>
-  A graphical tool is distributed with the MOEA Framework for comparing multiple
-  algorithms on a number of test problems.  Windows users may launch this tool
-  by running the <code>launch-diagnostic-tool.bat</code> file.  You can also
-  preview this tool online by clicking the Launch button below (this requires
-  Java 6 to be installed).
-  
-  <center>
-    <script src="http://www.java.com/js/deployJava.js"></script>
-    <script>
-<![CDATA[
-        var url = "http://www.moeaframework.org/jnlp/DiagnosticTool.jnlp";
-        deployJava.createWebStartLaunchButton(url, '1.6.0');
-]]>
-    </script>
-  </center>
-</p>
 </div>
 
 <div class="section">

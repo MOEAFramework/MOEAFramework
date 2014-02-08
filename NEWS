@@ -31,6 +31,9 @@ Framework.
       
     - AerovisConverter: Converts a result file into an input file for Aerovis,
       a high-dimensional data visualization and exploration tool.
+      
+  * Includes new demo application to demonstrate the capabilities of the MOEA
+    Framework.
 
 
 ---------------------------

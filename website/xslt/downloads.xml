@@ -23,6 +23,21 @@
 <div class="listing">
   <ul>
     <li>
+      <a href="https://sourceforge.net/projects/moeaframework/files/MOEAFramework-%VERSION%/MOEAFramework-%VERSION%-Demo.jar/download"
+          onClick="_gaq.push(['_trackEvent', 'Downloads', 'Demo', '%VERSION%']);">
+        <img src="images/java_jar.png" class="float-left" width="22" height="22" alt="Download the demo application" />
+        <strong>Demo Application</strong>
+      </a>
+      <br />
+      <span>
+        Walk through several demos and examples to see the capabilities of the
+        MOEA Framework.  Double-clicking the JAR file or running
+        '<code>java -jar MOEAFramework-%VERSION%-Demo.jar</code>'
+        will start the application.
+      </span>
+      <div class="fix"></div>
+    </li>
+    <li>
       <a href="https://sourceforge.net/projects/moeaframework/files/MOEAFramework-%VERSION%/MOEAFramework-%VERSION%.tar.gz/download"
           onClick="_gaq.push(['_trackEvent', 'Downloads', 'Binary', '%VERSION%']);">
         <img src="images/tgz.png" class="float-left" width="22" height="22" alt="Download compiled binaries" />
@@ -47,21 +62,6 @@
         Download all source codes, unit tests and supporting materials.  This 
         download is recommended for developers wanting to modify or extend the 
         MOEA framework.
-      </span>
-      <div class="fix"></div>
-    </li>
-    <li>
-      <a href="https://sourceforge.net/projects/moeaframework/files/MOEAFramework-%VERSION%/MOEAFramework-%VERSION%-Executable.jar/download"
-          onClick="_gaq.push(['_trackEvent', 'Downloads', 'Executable', '%VERSION%']);">
-        <img src="images/java_jar.png" class="float-left" width="22" height="22" alt="Download the all-in-one executable JAR file" />
-        <strong>All-in-one Executable</strong>
-      </a>
-      <br />
-      <span>
-        Contains the entire MOEA Framework library packaged in a single,
-        executable JAR file.  Double-clicking the JAR file or running
-        '<code>java -jar MOEAFramework-%VERSION%-Executable.jar</code>'
-        will launch the MOEA diagnostic tool.
       </span>
       <div class="fix"></div>
     </li>
