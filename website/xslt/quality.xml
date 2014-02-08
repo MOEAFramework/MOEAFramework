@@ -51,7 +51,8 @@
           [new Date(2012, 6, 31),  24121, '1.15', 16515,  3386,  438,  507,  1774,  1152],
           [new Date(2012, 8, 23),  24135, '1.16', 16616,  3387,  438,  507,  1774,  1159],
           [new Date(2012, 10, 14), 24307, '1.17', 16694,  3397,  438,  509,  1784,  1163],
-          [new Date(2013, 8, 11),  24225, '2.0',  16735,  3397,  438,  504,  1784,  1152]]);
+          [new Date(2013, 8, 11),  24225, '2.0',  16735,  3397,  438,  504,  1784,  1152],
+          [new Date(2014, 2, 14),  25036, '2.1',  16887,  3426,  444,  508,  1811,  1157]]);
 
         // Create and draw the visualization.
         new google.visualization.LineChart(document.getElementById('data')).
@@ -146,42 +147,42 @@
   </tr>
   <tr>
     <td>Lines of Source Code</td>
-    <td>24,225</td>
+    <td>25,036</td>
   </tr>
   <tr>
     <td>Number of Comments</td>
-    <td>3,397</td>
+    <td>3,426</td>
   </tr>
   <tr>
     <td>Number of Packages</td>
-    <td>37</td>
+    <td>38</td>
   </tr>
   <tr>
     <td>Number of Classes</td>
-    <td>438</td>
+    <td>444</td>
   </tr>
   <tr>
     <td>Number of Constructors</td>
-    <td>504</td>
+    <td>508</td>
   </tr>
   <tr>
     <td>Number of Methods</td>
-    <td>1,784</td>
+    <td>1,811</td>
   </tr>
   <tr>
     <td>Average Cyclomatic Complexity</td>
-    <td>1.99</td>
+    <td>2.02</td>
   </tr>
   <tr>
     <th colspan="2">Test Statistics</th>
   </tr>
   <tr>
     <td>Lines of Test Code</td>
-    <td>16,735</td>
+    <td>16,887</td>
   </tr>
   <tr>
     <td>Number of Unit Tests</td>
-    <td>1,152</td>
+    <td>1,157</td>
   </tr>
   <tr>
     <td>Number of Unit Test Errors</td>
@@ -193,7 +194,7 @@
   </tr>
   <tr>
     <td>Test Coverage</td>
-    <td>77.9%</td>
+    <td>77.3%</td>
   </tr>
 </table>
 </div>
@@ -226,7 +227,7 @@
   </tr>
   <tr>
     <td class="package">org.moeaframework</td>
-    <td class="good">81.9 %</td>
+    <td class="good">80.7 %</td>
     <td></td>
   </tr>
   <tr>
@@ -241,7 +242,7 @@
   </tr>
   <tr>
     <td class="package">org.moeaframework.algorithm.pisa</td>
-    <td class="good">86.5 %</td>
+    <td class="good">85.9 %</td>
     <td></td>
   </tr>
   <tr>
@@ -260,8 +261,13 @@
     <td></td>
   </tr>
   <tr>
+    <td class="package">org.moeaframework.analysis.tools</td>
+    <td class="okay">62.4 %</td>
+    <td></td>
+  </tr>
+  <tr>
     <td class="package">org.moeaframework.core</td>
-    <td class="good">94.1 %</td>
+    <td class="good">91.9 %</td>
     <td></td>
   </tr>
   <tr>
@@ -306,7 +312,7 @@
   </tr>
   <tr>
     <td class="package">org.moeaframework.core.operator.real</td>
-    <td class="good">95.6 %</td>
+    <td class="good">95.2 %</td>
     <td></td>
   </tr>
   <tr>
@@ -316,12 +322,12 @@
   </tr>
   <tr>
     <td class="package">org.moeaframework.core.variable</td>
-    <td class="good">98.1 %</td>
+    <td class="good">98.4 %</td>
     <td></td>
   </tr>
   <tr>
     <td class="package">org.moeaframework.problem</td>
-    <td class="good">92.9 %</td>
+    <td class="good">93.6 %</td>
     <td></td>
   </tr>
   <tr>
@@ -381,7 +387,7 @@
   </tr>
   <tr>
     <td class="package">org.moeaframework.util.sequence</td>
-    <td class="good">92.9 %</td>
+    <td class="good">92.8 %</td>
     <td></td>
   </tr>
   <tr>
