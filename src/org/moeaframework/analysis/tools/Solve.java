@@ -164,17 +164,87 @@ public class Solve extends CommandLineUtility {
 		return options;
 	}
 	
-	private Problem createExternalProblem(final CommandLine commandLine) throws ParseException, IOException {
-		final List<Variable> variables = new ArrayList<Variable>();
-		final int numberOfObjectives = Integer.parseInt(commandLine.getOptionValue("objectives"));
-		final int numberOfConstraints = commandLine.hasOption("constraints") ? Integer.parseInt(commandLine.getOptionValue("constraints")) : 0;
+	/**
+	 * Parses a single variable specification from the command line.  This
+	 * method is case sensitive.
+	 * 
+	 * @param token the variable specification from the command line
+	 * @return the generated variable object
+	 * @throws ParseException if an error occurred while parsing the variable
+	 *         specification
+	 */
+	private Variable parseVariableSpecification(String token)
+			throws ParseException {
+		if (!token.endsWith(")")) {
+			throw new ParseException("invalid variable specification '" +
+					token + "', not properly formatted");
+		}
 		
-		if (commandLine.hasOption("lowerBounds") && commandLine.hasOption("upperBounds")) {
-			String[] lowerBoundTokens = commandLine.getOptionValue("lowerBounds").split(",");
-			String[] upperBoundTokens = commandLine.getOptionValue("upperBounds").split(",");
+		if (token.startsWith("R(")) {
+			// real-valued decision variable
+			String content = token.substring(2, token.length()-1);
+			int index = content.indexOf(';');
+			
+			if (index >= 0) {
+				double lowerBound = Double.parseDouble(
+						content.substring(0, index));
+				double upperBound = Double.parseDouble(
+						content.substring(index+1, content.length()));
+				return EncodingUtils.newReal(lowerBound, upperBound);
+			} else {
+				throw new ParseException("invalid real specification '" +
+						token + "', expected R(<lb>,<ub>)");
+			}
+		} else if (token.startsWith("B(")) {
+			String content = token.substring(2, token.length()-1);
+			
+			try {
+				int length = Integer.parseInt(content.trim());
+				return EncodingUtils.newBinary(length);
+			} catch (NumberFormatException e) {
+				throw new ParseException("invalid binary specification '" +
+						token + "', expected B(<length>)");
+			}
+		} else if (token.startsWith("P(")) {
+			String content = token.substring(2, token.length()-1);
+			
+			try {
+				int length = Integer.parseInt(content.trim());
+				return EncodingUtils.newPermutation(length);
+			} catch (NumberFormatException e) {
+				throw new ParseException("invalid permutation specification '"
+						+ token + "', expected P(<length>)");
+			}
+		} else {
+			throw new ParseException("invalid variable specification '"
+					+ token + "', unknown type");
+		}
+	}
+	
+	/**
+	 * Parses the decision variable specification either from the
+	 * {@code --lowerBounds} and {@code --upperBounds} options or the
+	 * {@code --variables} option.
+	 * 
+	 * @param commandLine the command line arguments
+	 * @return the parsed variable specifications
+	 * @throws ParseException if an error occurred while parsing the variable
+	 *         specifications
+	 */
+	private List<Variable> parseVariables(CommandLine commandLine)
+			throws ParseException {
+		List<Variable> variables = new ArrayList<Variable>();
+		
+		if (commandLine.hasOption("lowerBounds") &&
+				commandLine.hasOption("upperBounds")) {
+			String[] lowerBoundTokens =
+					commandLine.getOptionValue("lowerBounds").split(",");
+			String[] upperBoundTokens =
+					commandLine.getOptionValue("upperBounds").split(",");
 			
 			if (lowerBoundTokens.length != upperBoundTokens.length) {
-				throw new ParseException("lower bound and upper bounds not the same length");
+				throw new ParseException("lower bound and upper bounds not " +
+						"the same length");
 			}
 			
 			for (int i = 0; i < lowerBoundTokens.length; i++) {
@@ -183,52 +253,41 @@ public class Solve extends CommandLineUtility {
 				variables.add(EncodingUtils.newReal(lowerBound, upperBound));
 			}
 		} else if (commandLine.hasOption("variables")) {
-			String[] tokens = commandLine.getOptionValue("variables").split(",");
+			String[] tokens =
+					commandLine.getOptionValue("variables").split(",");
 			
 			for (String token : tokens) {
 				token = token.trim().toUpperCase();
-				
-				if (!token.endsWith(")")) {
-					throw new ParseException("invalid variable specification '" + token + "', not properly formatted");
-				}
-				
-				if (token.startsWith("R(")) {
-					// real-valued decision variable
-					String content = token.substring(2, token.length()-1);
-					int index = content.indexOf(';');
-					
-					if (index >= 0) {
-						double lowerBound = Double.parseDouble(content.substring(0, index));
-						double upperBound = Double.parseDouble(content.substring(index+1, content.length()));
-						variables.add(EncodingUtils.newReal(lowerBound, upperBound));
-					} else {
-						throw new ParseException("invalid real specification '" + token + "', expected R(<lb>,<ub>)");
-					}
-				} else if (token.startsWith("B(")) {
-					String content = token.substring(2, token.length()-1);
-					
-					try {
-						int length = Integer.parseInt(content.trim());
-						variables.add(EncodingUtils.newBinary(length));
-					} catch (NumberFormatException e) {
-						throw new ParseException("invalid binary specification '" + token + "', expected B(<length>)");
-					}
-				} else if (token.startsWith("P(")) {
-					String content = token.substring(2, token.length()-1);
-					
-					try {
-						int length = Integer.parseInt(content.trim());
-						variables.add(EncodingUtils.newPermutation(length));
-					} catch (NumberFormatException e) {
-						throw new ParseException("invalid permutation specification '" + token + "', expected P(<length>)");
-					}
-				} else {
-					throw new ParseException("invalid variable specification '" + token + "', unknown type");
-				}
+				variables.add(parseVariableSpecification(token));
 			}
 		} else {
-			throw new ParseException("must specify either the problem, the variables, or the lower and upper bounds arguments");
+			throw new ParseException("must specify either the problem, the " +
+					"variables, or the lower and upper bounds arguments");
 		}
+		
+		return variables;
+	}
+	
+	/**
+	 * Creates an external problem using the information provided on the
+	 * command line.
+	 * 
+	 * @param commandLine the command line arguments
+	 * @return the external problem
+	 * @throws ParseException if an error occurred parsing any of the command
+	 *         line options
+	 * @throws IOException if an error occurred starting the external program
+	 */
+	private Problem createExternalProblem(final CommandLine commandLine)
+			throws ParseException, IOException {
+		final int numberOfObjectives = Integer.parseInt(
+				commandLine.getOptionValue("objectives"));
+		
+		final int numberOfConstraints = commandLine.hasOption("constraints") ?
+				Integer.parseInt(commandLine.getOptionValue("constraints")) :
+				0;
+		
+		final List<Variable> variables = parseVariables(commandLine);
 		
 		if (commandLine.hasOption("useSocket")) {
 			String hostname = null; // default to localhost
@@ -244,17 +303,21 @@ public class Solve extends CommandLineUtility {
 			}
 			
 			if (commandLine.hasOption("startupDelay")) {
-				delay = Integer.parseInt(commandLine.getOptionValue("startupDelay"));
+				delay = Integer.parseInt(
+						commandLine.getOptionValue("startupDelay"));
 			}
 			
 			if (commandLine.getArgs().length > 0) {
 				// the command to run is specified on the command line
-				System.out.println("Running " + StringUtils.join(commandLine.getArgs()));
+				System.out.print("Running ");
+				System.out.println(StringUtils.join(commandLine.getArgs()));
 				new ProcessBuilder(commandLine.getArgs()).start();
 			}
 			
 			try {
-				System.out.println("Sleeping for " + delay + " seconds");
+				System.out.print("Sleeping for ");
+				System.out.print(delay);
+				System.out.println(" seconds");
 				Thread.sleep(delay*1000);
 			} catch (InterruptedException e) {
 				// do nothing
@@ -335,6 +398,13 @@ public class Solve extends CommandLineUtility {
 		}
 	}
 	
+	/**
+	 * Runs a number of trials as a way to quickly test if the connection
+	 * between this solver and the problem is functional.
+	 * 
+	 * @param problem the problem
+	 * @param commandLine the command line arguments
+	 */
 	private void runTests(Problem problem, CommandLine commandLine) {
 		int trials = 5;
 		
@@ -344,14 +414,19 @@ public class Solve extends CommandLineUtility {
 		
 		try {
 			int count = 0;
-			RandomInitialization initialization = new RandomInitialization(problem, trials);
+			RandomInitialization initialization = new RandomInitialization(
+					problem, trials);
+			
 			Solution[] solutions = initialization.initialize();
 			
 			for (Solution solution : solutions) {
 				System.out.println("Running test " + (++count) + ":");
 				
 				for (int j = 0; j < solution.getNumberOfVariables(); j++) {
-					System.out.println("  Variable " + (j+1) + " = " + solution.getVariable(j));
+					System.out.print("  Variable ");
+					System.out.print(j+1);
+					System.out.print(" = ");
+					System.out.println(solution.getVariable(j));
 				}
 				
 				System.out.println("  * Evaluating solution *");
@@ -359,22 +434,31 @@ public class Solve extends CommandLineUtility {
 				System.out.println("  * Evaluation complete *");
 				
 				for (int j = 0; j < solution.getNumberOfObjectives(); j++) {
-					System.out.println("  Objective " + (j+1) + " = " + solution.getObjective(j));
+					System.out.print("  Objective ");
+					System.out.print(j+1);
+					System.out.print(" = ");
+					System.out.println(solution.getObjective(j));
 				}
 				
 				for (int j = 0; j < solution.getNumberOfConstraints(); j++) {
-					System.out.println("  Constraint " + (j+1) + " = " + solution.getConstraint(j));
+					System.out.print("  Constraint ");
+					System.out.print(j+1);
+					System.out.print(" = ");
+					System.out.println(solution.getConstraint(j));
 				}
 				
-				if ((solution.getNumberOfConstraints() > 0) && solution.violatesConstraints()) {
-					System.out.println("  Solution is infeasible (non-zero constraint value)!");
+				if ((solution.getNumberOfConstraints() > 0) &&
+						solution.violatesConstraints()) {
+					System.out.println("  Solution is infeasible (non-zero " +
+							"constraint value)!");
 				}
 			}
 			
 			System.out.println("Test succeeded!");
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("Test failed!  Please see the error message above for details.");
+			System.out.println("Test failed!  Please see the error message " + 
+					"above for details.");
 		}
 	}
 
@@ -473,8 +557,14 @@ public class Solve extends CommandLineUtility {
 		}
 	}
 
+	/**
+	 * Wraps an algorithm to write the approximation set and periodic intervals.
+	 */
 	private static class RuntimeCollector extends PeriodicAction {
 		
+		/**
+		 * The result file writer where the runtime information is stored.
+		 */
 		private final ResultFileWriter writer;
 
 		/**
@@ -484,6 +574,15 @@ public class Solve extends CommandLineUtility {
 		 */
 		private final long startTime;
 
+		/**
+		 * Constructs a new wrapper to collect runtime dynamics.
+		 * 
+		 * @param algorithm the wrapped algorithm
+		 * @param frequency the frequency at which the runtime snapshots are
+		 *        recorded
+		 * @param writer the result file writer where the runtime information
+		 *        is stored
+		 */
 		public RuntimeCollector(Algorithm algorithm, int frequency,
 				ResultFileWriter writer) {
 			super(algorithm, frequency, FrequencyType.EVALUATIONS);

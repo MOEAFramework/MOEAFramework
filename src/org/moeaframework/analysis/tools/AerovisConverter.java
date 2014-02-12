@@ -94,7 +94,19 @@ public class AerovisConverter extends CommandLineUtility {
 		return options;
 	}
 	
-	private void printHeader(Problem problem, boolean reduced, List<String> attributes, PrintWriter writer) {
+	/**
+	 * Prints the header lines to the Aerovis file.
+	 * 
+	 * @param problem the problem
+	 * @param reduced {@code true} if the decision variables are suppressed;
+	 *        {@code false} if they are written to the output file
+	 * @param attributes the names of the decision variables and/or objectives;
+	 *        the length must match the number of variables, objectives, or
+	 *        both, otherwise default names are used
+	 * @param writer the writer where the output is written
+	 */
+	private void printHeader(Problem problem, boolean reduced,
+			List<String> attributes, PrintWriter writer) {
 		int numberOfVariables = problem.getNumberOfVariables();
 		int numberOfObjectives = problem.getNumberOfObjectives();
 		
@@ -155,7 +167,18 @@ public class AerovisConverter extends CommandLineUtility {
 		writer.println("#");
 	}
 	
-	private void convert(Problem problem, boolean reduced, ResultFileReader reader, PrintWriter writer) {
+	/**
+	 * Converts and writes the contents of the result file to the Aerovis
+	 * format.
+	 * 
+	 * @param problem the problem
+	 * @param reduced {@code true} if the decision variables are suppressed;
+	 *        {@code false} if they are written to the output file
+	 * @param reader the result file reader
+	 * @param writer the writer where the output is written
+	 */
+	private void convert(Problem problem, boolean reduced,
+			ResultFileReader reader, PrintWriter writer) {
 		int numberOfVariables = problem.getNumberOfVariables();
 		int numberOfObjectives = problem.getNumberOfObjectives();
 		
