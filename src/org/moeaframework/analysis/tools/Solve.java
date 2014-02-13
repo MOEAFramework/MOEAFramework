@@ -257,8 +257,8 @@ public class Solve extends CommandLineUtility {
 					commandLine.getOptionValue("variables").split(",");
 			
 			for (String token : tokens) {
-				token = token.trim().toUpperCase();
-				variables.add(parseVariableSpecification(token));
+				variables.add(parseVariableSpecification(
+						token.trim().toUpperCase()));
 			}
 		} else {
 			throw new ParseException("must specify either the problem, the " +
