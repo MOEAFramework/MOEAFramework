@@ -143,7 +143,7 @@ public class TerminalGUI extends JFrame {
 			// echo command to output, quoting the classpath
 			output.append("> java -classpath \"");
 			output.append(System.getProperty("java.class.path"));
-			output.append("\"");
+			output.append("\" ");
 			output.append(example.getMainClass().getName());
 			output.append(Settings.NEW_LINE);
 			
