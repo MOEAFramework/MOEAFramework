@@ -2,8 +2,15 @@ This file documents the major changes implemented in each release of the MOEA
 Framework.
 
 -------------------
- Version 2.1 (TBD)
+ Version 2.2 (TBD)
 -------------------
+
+  * Fixes incorrect line numbers in section 7.3 in the user manual.
+
+
+---------------------------
+ Version 2.1 (19 Feb 2014)
+---------------------------
  
   * Fixes several reported issues when running in Cygwin
   
