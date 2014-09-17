@@ -6,6 +6,9 @@ Framework.
 -------------------
 
   * Fixes incorrect line numbers in section 7.3 in the user manual.
+  
+  * Updates user manual to better describe setting up the project in NetBeans
+    in response to bug #23.
 
 
 ---------------------------
