@@ -10,6 +10,7 @@
   <description>Donate to the MOEA Framework and support our developers</description>
   <header></header>
   <content>
+<div class="section">
 <h2>Donate</h2>
   
 <p>
@@ -32,6 +33,24 @@
   allows us to continue to expand the functionality within the software,
   maintain the user manual and documentation, fix bugs, and provide help to our
   users.  We thank you for your support!
+</p>
+</div>
+
+<div class="section">
+<h3>Purchase the Paperback Manual</h3>
+
+<p>
+  You can also support this project by purchasing the
+  <a href="http://www.lulu.com/product/21284804">paperback user manual</a>
+  from our on-demand publisher.  This 189 page reference manual is the official
+  guide for learning how to use the MOEA Framework.  As always, you can
+  download the user manual as a PDF for free from our
+  <a href="downloads.html">downloads</a> page.
+</p>
+</div>
+
+<p>
+  <i>Note: The MOEA Framework is NOT registered as a not-for-profit or charitable organization.  Donations to this project are likely not tax deductible.  Please consult a tax professional for additional details.</i>
 </p>
 
   </content>
