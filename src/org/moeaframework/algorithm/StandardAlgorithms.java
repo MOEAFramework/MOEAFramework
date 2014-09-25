@@ -121,12 +121,16 @@ public class StandardAlgorithms extends AlgorithmProvider {
 				return newMOEAD(typedProperties, problem);
 			} else if (name.equalsIgnoreCase("GDE3")) {
 				return newGDE3(typedProperties, problem);
-			} else if (name.equalsIgnoreCase("NSGAII")) {
+			} else if (name.equalsIgnoreCase("NSGAII") ||
+					name.equalsIgnoreCase("NSGA-II") ||
+					name.equalsIgnoreCase("NSGA2")) {
 				return newNSGAII(typedProperties, problem);
 			} else if (name.equalsIgnoreCase("NSGAIII") ||
+					name.equalsIgnoreCase("NSGA-III") ||
 					name.equalsIgnoreCase("NSGA3")) {
 				return newNSGAIII(typedProperties, problem);
-			} else if (name.equalsIgnoreCase("eNSGAII")) {
+			} else if (name.equalsIgnoreCase("eNSGAII") ||
+					name.equalsIgnoreCase("eNSGA2")) {
 				return neweNSGAII(typedProperties, problem);
 			} else if (name.equalsIgnoreCase("eMOEA")) {
 				return neweMOEA(typedProperties, problem);
