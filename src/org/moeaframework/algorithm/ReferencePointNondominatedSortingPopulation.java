@@ -43,12 +43,15 @@ import org.moeaframework.util.Vector;
  *   <li>Deb, K. and Jain, H.  "An Evolutionary Many-Objective Optimization
  *       Algorithm Using Reference-Point-Based Nondominated Sorting Approach,
  *       Part I: Solving Problems With Box Constraints."  IEEE Transactions on
- *       Evolutionary Computation, 18(4):577-601.
+ *       Evolutionary Computation, 18(4):577-601, 2014.
  *   <li><a href="http://web.ntnu.edu.tw/~tcchiang/publications/nsga3cpp/nsga3cpp.htm">C++ Implementation by Tsung-Che Chiang</a>
  * </ol>
  */
 public class ReferencePointNondominatedSortingPopulation extends NondominatedSortingPopulation {
 	
+	/**
+	 * The name of the attribute for storing the normalized objectives.
+	 */
 	private static final String NORMALIZED_OBJECTIVES = "Normalized Objectives";
 
 	/**

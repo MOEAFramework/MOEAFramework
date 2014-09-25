@@ -37,6 +37,7 @@ The MOEA Framework supports the 26 optimization algorithms listed in \tblref{tbl
   MOCHC & CHC Algorithm & \cellcolor{red!25}No & \cellcolor{green!25}Yes & \cellcolor{red!25}No & \cellcolor{red!25}No & \cellcolor{red!25}No & \cellcolor{green!25}Yes & JMetal \\
   MOEAD & Decomposition & \cellcolor{green!25}Yes & \cellcolor{red!25}No & \cellcolor{red!25}No & \cellcolor{red!25}No & \cellcolor{red!25}No & \cellcolor{green!25}Yes & Native \\
   NSGAII & Genetic Algorithm & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & Native \\
+  NSGAIII & Genetic Algorithm & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & Native \\
   OMOPSO & Particle Swarm & \cellcolor{green!25}Yes & \cellcolor{red!25}No & \cellcolor{red!25}No & \cellcolor{red!25}No & \cellcolor{red!25}No & \cellcolor{green!25}Yes & JMetal \\
   PAES & Evolutionary Strategy & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{red!25}No & \cellcolor{red!25}No & \cellcolor{green!25}Yes & JMetal \\
   PESA2 & Genetic Algorithm & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{red!25}No & \cellcolor{red!25}No & \cellcolor{green!25}Yes & JMetal \\
@@ -95,6 +96,33 @@ Use the string \java{"NSGAII"} when creating instances of this algorithm with th
   pm.distributionIndex & The distribution index for polynomial mutation \\
   \hline
 \end{tabularx}
+
+\subsection{NSGA-III}
+NSGA-III is the many-objective successor to NSGA-II, using reference points to direct solutions towards a diverse set.  Full details are described in:
+\begin{quote}
+Deb, K. and Jain, H.  "An Evolutionary Many-Objective Optimization Algorithm Using Reference-Point-Based Nondominated Sorting Approach, Part I: Solving Problems With Box Constraints."  IEEE Transactions on Evolutionary Computation, 18(4):577-601, 2014.
+\end{quote}
+Use the string \java{"NSGAIII"} when creating instances of this algorithm with the \java{Executor}.  The following parameters are available:
+\newline
+\newline
+\begin{tabularx}{\linewidth}{lX}
+  \hline
+  Parameter & Description \\
+  \hline
+  populationSize & The size of the population \\
+  divisions & The number of divisions \\
+  sbx.rate & The crossover rate for simulated binary crossover \\
+  sbx.distributionIndex & The distribution index for simulated binary crossover \\
+  pm.rate & The mutation rate for polynomial mutation \\
+  pm.distributionIndex & The distribution index for polynomial mutation \\
+  \hline
+\end{tabularx}
+
+The \java{divisions} parameter governs the number of reference points, $H$, for an $M$ objective problem with the following equation:
+\begin{equation}
+  H = {M+divisions-1 \choose divisions}
+\end{equation}
+Deb and Jain also propose a two-layer approach for divisions for many-objective problems where an outer and inner division number is specified.  To use the two-layer approach, replace the \java{divisions} parameter with \java{divisionsOuter} and \java{divisionsInner}.
 
 \subsection{$\epsilon$-NSGA-II}
 $\epsilon$-NSGA-II is an extension of NSGA-II that uses an $\epsilon$-dominance archive and randomized restart to enhance search and find a diverse set of Pareto optimal solutions.  Full details of this algorithm are given in the following paper:

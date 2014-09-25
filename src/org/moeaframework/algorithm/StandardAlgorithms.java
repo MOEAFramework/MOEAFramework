@@ -92,7 +92,9 @@ import org.moeaframework.util.TypedProperties;
  *     <td>NSGAIII</td>
  *     <td>Any</td>
  *     <td>{@code populationSize, divisions, sbx.rate, sbx.distributionIndex,
- *         pm.rate, pm.distributionIndex}</td>
+ *         pm.rate, pm.distributionIndex} (for the two-layer approach, replace
+ *         {@code divisions} by {@code divisionsOuter} and
+ *         {@code divisionsInner})</td>
  *   </tr>
  *   <tr>
  *     <td>Random</td>
@@ -238,14 +240,25 @@ public class StandardAlgorithms extends AlgorithmProvider {
 	 */
 	private Algorithm newNSGAIII(TypedProperties properties, Problem problem) {
 		int populationSize = (int)properties.getDouble("populationSize", 100);
-		int divisions = (int)properties.getDouble("divisions", 4);
 
 		Initialization initialization = new RandomInitialization(problem,
 				populationSize);
 
-		ReferencePointNondominatedSortingPopulation population = 
-				new ReferencePointNondominatedSortingPopulation(
-						problem.getNumberOfObjectives(), divisions);
+		ReferencePointNondominatedSortingPopulation population = null;
+		
+		if (properties.contains("divisionsOuter") && properties.contains("divisionsInner")) {
+			int divisionsOuter = (int)properties.getDouble("divisionsOuter", 4);
+			int divisionsInner = (int)properties.getDouble("divisionsInner", 0);
+			
+			population = new ReferencePointNondominatedSortingPopulation(
+					problem.getNumberOfObjectives(), divisionsOuter,
+					divisionsInner);
+		} else {
+			int divisions = (int)properties.getDouble("divisions", 4);
+			
+			population = new ReferencePointNondominatedSortingPopulation(
+					problem.getNumberOfObjectives(), divisions);
+		}
 
 		TournamentSelection selection = new TournamentSelection(2, 
 				new ParetoDominanceComparator());
