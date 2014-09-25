@@ -5,7 +5,7 @@ Framework.
  Version 2.2 (TBD)
 -------------------
 
-  * Adds the NSGA-III algorithm.
+  * Adds the recently published NSGA-III algorithm.
   
   * Fixes incorrect line numbers in section 7.3 in the user manual.
   

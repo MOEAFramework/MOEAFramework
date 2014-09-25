@@ -15,7 +15,8 @@ any changes.
   - Add a short primer to the documentation on how to compile and run Java code,
     set the classpath, etc.
 
-  - Look into the JMetal algorithms dMPOSO, ssNSGAII, SMPSOhv
+  - Look into the JMetal algorithms dMPOSO, ssNSGAII, SMPSOhv.  JMetal also
+    recently added CMA-ES and the R* indicators which could be of interest.
 
   - EncodingUtils should support extracting the codon array from Grammars
 
@@ -55,9 +56,6 @@ any changes.
     Access (JNA) for directly invoking methods in natively-compiled libraries.
     Explore ways to develop a faster interface using JNI.
     
-  - Develop a MATLAB interface, ideally using the same socket communication
-    scheme employed by ExternalProblem.
-
   - The org.moeaframework.core.fitness package contains code for supporting
     indicator-based methods, but is currently unused.  These should be used to
     implement native indicator-based MOEAs.
