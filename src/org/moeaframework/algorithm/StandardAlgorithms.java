@@ -89,6 +89,12 @@ import org.moeaframework.util.TypedProperties;
  *         injectionRate}</td>
  *   </tr>
  *   <tr>
+ *     <td>NSGAIII</td>
+ *     <td>Any</td>
+ *     <td>{@code populationSize, divisions, sbx.rate, sbx.distributionIndex,
+ *         pm.rate, pm.distributionIndex}</td>
+ *   </tr>
+ *   <tr>
  *     <td>Random</td>
  *     <td>Any</td>
  *     <td>{@code populationSize, (epsilon)}</td>
@@ -110,12 +116,16 @@ public class StandardAlgorithms extends AlgorithmProvider {
 		TypedProperties typedProperties = new TypedProperties(properties);
 
 		try {
-			if (name.equalsIgnoreCase("MOEAD")) {
+			if (name.equalsIgnoreCase("MOEAD") ||
+					name.equalsIgnoreCase("MOEA/D")) {
 				return newMOEAD(typedProperties, problem);
 			} else if (name.equalsIgnoreCase("GDE3")) {
 				return newGDE3(typedProperties, problem);
 			} else if (name.equalsIgnoreCase("NSGAII")) {
 				return newNSGAII(typedProperties, problem);
+			} else if (name.equalsIgnoreCase("NSGAIII") ||
+					name.equalsIgnoreCase("NSGA3")) {
+				return newNSGAIII(typedProperties, problem);
 			} else if (name.equalsIgnoreCase("eNSGAII")) {
 				return neweNSGAII(typedProperties, problem);
 			} else if (name.equalsIgnoreCase("eMOEA")) {
@@ -186,12 +196,12 @@ public class StandardAlgorithms extends AlgorithmProvider {
 	}
 
 	/**
-	 * Returns a new {@link eNSGAII} instance.
+	 * Returns a new {@link NSGAII} instance.
 	 * 
-	 * @param properties the properties for customizing the new {@code eNSGAII}
+	 * @param properties the properties for customizing the new {@code NSGAII}
 	 *        instance
 	 * @param problem the problem
-	 * @return a new {@code eNSGAII} instance
+	 * @return a new {@code NSGAII} instance
 	 */
 	private Algorithm newNSGAII(TypedProperties properties, Problem problem) {
 		int populationSize = (int)properties.getDouble("populationSize", 100);
@@ -206,6 +216,35 @@ public class StandardAlgorithms extends AlgorithmProvider {
 				new ChainedComparator(
 						new ParetoDominanceComparator(),
 						new CrowdingComparator()));
+
+		Variation variation = OperatorFactory.getInstance().getVariation(null, 
+				properties, problem);
+
+		return new NSGAII(problem, population, null, selection, variation,
+				initialization);
+	}
+	
+	/**
+	 * Returns a new {@link NSGAIII} instance.
+	 * 
+	 * @param properties the properties for customizing the new {@code NSGAIII}
+	 *        instance
+	 * @param problem the problem
+	 * @return a new {@code NSGAIII} instance
+	 */
+	private Algorithm newNSGAIII(TypedProperties properties, Problem problem) {
+		int populationSize = (int)properties.getDouble("populationSize", 100);
+		int divisions = (int)properties.getDouble("divisions", 4);
+
+		Initialization initialization = new RandomInitialization(problem,
+				populationSize);
+
+		ReferencePointNondominatedSortingPopulation population = 
+				new ReferencePointNondominatedSortingPopulation(
+						problem.getNumberOfObjectives(), divisions);
+
+		TournamentSelection selection = new TournamentSelection(2, 
+				new ParetoDominanceComparator());
 
 		Variation variation = OperatorFactory.getInstance().getVariation(null, 
 				properties, problem);
