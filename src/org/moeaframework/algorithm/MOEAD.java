@@ -424,7 +424,6 @@ public class MOEAD extends AbstractAlgorithm {
 				if (d > distance) {
 					weight = weights.get(i);
 					distance = d;
-					break;
 				}
 			}
 
@@ -781,5 +780,5 @@ public class MOEAD extends AbstractAlgorithm {
 		numberOfEvaluations = state.getNumberOfEvaluations();
 		generation = state.getGeneration();
 	}
-
+	
 }
