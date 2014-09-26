@@ -42,6 +42,14 @@ public class ReproducibilityTest {
 	public void testNSGAII() {
 		test("NSGAII");
 	}
+	
+	/**
+	 * Tests NSGAIII for reproducibility.
+	 */
+	@Test
+	public void testNSGAIII() {
+		test("NSGAIII");
+	}
 
 	/**
 	 * Tests MOEA/D for reproducibility.

@@ -67,6 +67,11 @@ public class StandardAlgorithmsResumeTest {
 	}
 	
 	@Test
+	public void testNSGAIII() throws IOException {
+		test("NSGAIII");
+	}
+	
+	@Test
 	public void testGDE3() throws IOException {
 		test("GDE3");
 	}

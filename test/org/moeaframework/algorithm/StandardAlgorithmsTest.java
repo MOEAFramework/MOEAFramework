@@ -94,6 +94,11 @@ public class StandardAlgorithmsTest {
 	}
 	
 	@Test
+	public void testNSGAIII_Real() {
+		test("NSGAIII", realProblem);
+	}
+	
+	@Test
 	public void testMOEAD_Real() {
 		test("MOEAD", realProblem);
 	}
@@ -121,6 +126,11 @@ public class StandardAlgorithmsTest {
 	@Test
 	public void testNSGAII_Binary() {
 		test("NSGAII", binaryProblem);
+	}
+	
+	@Test
+	public void testNSGAIII_Binary() {
+		test("NSGAIII", binaryProblem);
 	}
 	
 	@Test(expected = ProviderNotFoundException.class)
@@ -151,6 +161,11 @@ public class StandardAlgorithmsTest {
 	@Test
 	public void testNSGAII_Permutation() {
 		test("NSGAII", permutationProblem);
+	}
+	
+	@Test
+	public void testNSGAIII_Permutation() {
+		test("NSGAIII", permutationProblem);
 	}
 	
 	@Test(expected = ProviderNotFoundException.class)
