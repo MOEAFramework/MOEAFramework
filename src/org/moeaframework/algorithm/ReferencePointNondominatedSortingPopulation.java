@@ -286,8 +286,6 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 
 			weights = generateWeights(null, divisionsOuter);
 		}
-		
-		System.out.println(numberOfObjectives + " " + weights.get(0).length);
 	}
 
 	/**
