@@ -180,6 +180,8 @@ public class TestUtils {
 			}
 		}
 		
+		//TODO: the attributes check does not work correctly if it contains
+		//arrays since it's using an identity check and not a value check
 		//return s1.getAttributes().equals(s2.getAttributes());
 		return true;
 	}
