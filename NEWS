@@ -1,9 +1,9 @@
 This file documents the major changes implemented in each release of the MOEA
 Framework.
 
--------------------
- Version 2.2 (TBD)
--------------------
+----------------------------
+ Version 2.2 (28 Sept 2014)
+----------------------------
 
   * Adds the recently published NSGA-III algorithm.
   

@@ -588,5 +588,13 @@ Then add an exception to your antivirus software to disable scanning files locat
 (Note: Disabling an antivirus program from scanning a folder will leave its contents unprotected.  Follow these steps at your own risk.)
 \end{quote}
 
+\section{Borg MOEA}
+
+The Borg MOEA is a state-of-the-art MOEA built with auto-adaptive multioperator search, $\epsilon$-progress to monitor search progress, and randomized restarts triggered by a lack of $\epsilon$-progress.  These features enable the Borg MOEA to solve challenging, real-world problems that cause other MOEAs to fail.  The Borg MOEA was first introduced in the following paper:
+\begin{quote}
+Hadka, D. and P. Reed (2013). ``Borg: An Auto-Adaptive Many-Objective Evolutionary Computing Framework.'' Evolutionary Computation, 21(2):231-259.
+\end{quote}
+Since the Borg MOEA is restricted to non-commercial and academic users, the Borg MOEA is not distributed with the MOEA Framework.  However, version 1.8 of the Borg MOEA includes a plugin for the MOEA Framework, allowing it to be called from within the MOEA Framework like any other optimization algorithm.  See the user manual accompanying the Borg MOEA for further details.  The Borg MOEA can be downloaded from \url{http://borgmoea.org/}.  Commercial users should visit \url{http://decisionvis.com} to license the Borg MOEA for use with commercial applications.
+
 \section{Conclusion}
 This chapter provided an overview of the optimization algorithms that are known to work with and extensively tested within the MOEA Framework.  By following the parameterization guidance provided in this chapter and the information in \tblref{tbl:algorithms}, you can apply any of these algorithms to solve your optimization problems.
