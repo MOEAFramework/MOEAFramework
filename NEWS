@@ -1,6 +1,14 @@
 This file documents the major changes implemented in each release of the MOEA
 Framework.
 
+-------------------
+ Version 2.3 (TBD)
+ ------------------
+ 
+  * Adds references section to user manual to give appropriate recognition to
+    the academic foundations for the MOEA Framework.
+    
+
 ----------------------------
  Version 2.2 (28 Sept 2014)
 ----------------------------
