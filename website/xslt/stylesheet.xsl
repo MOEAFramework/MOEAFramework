@@ -153,6 +153,7 @@
 								</p>
 							</div>
 							
+							<!--
 							<div class="sidemenu">
 								<h3>Paperback Manual</h3>
 								<p>
@@ -164,8 +165,8 @@
 									<span style="font-size: 10pt;">You Save: <font color="red">$9.00 (30%)</font></span><br />
 								</p>
 							</div>
+							-->
 							
-							<!--
 							<xsl:choose>
 								<xsl:when test="$filename = 'index.xml' or $filename = 'documentation.xml' or $filename = 'support.xml' or $filename = 'contribute.xml' or $filename = 'credits.xml'">
 									<div class="sidemenu">
@@ -200,7 +201,6 @@
 									</div>
 								</xsl:otherwise>
 							</xsl:choose>
-							-->
 						</div>
 					</div>
 				</div>
