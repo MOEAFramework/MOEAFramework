@@ -5,6 +5,11 @@ Framework.
  Version 2.3 (TBD)
  ------------------
  
+  * Fixes bug #25.  The original PISA implementation of IBEA had a typo in the
+    binary hypervolume calculation that was recently discovered by researchers.
+    The affected code in the MOEA Framework, which was derived from the original
+    PISA implementation, has been corrected.
+ 
   * Adds references section to user manual to give appropriate recognition to
     the academic foundations for the MOEA Framework.
     

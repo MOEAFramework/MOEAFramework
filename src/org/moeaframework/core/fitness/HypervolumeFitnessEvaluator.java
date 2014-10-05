@@ -127,7 +127,7 @@ public class HypervolumeFitnessEvaluator extends IndicatorFitnessEvaluator {
 						(max - b) / rho;
 			} else {
 				volume = calculateHypervolume(solution1, solution2, d - 1) *
-						(max - b) / rho;
+						(max - a) / rho;
 			}
 		}
 
