@@ -168,7 +168,7 @@
 							-->
 							
 							<xsl:choose>
-								<xsl:when test="$filename = 'index.xml' or $filename = 'documentation.xml' or $filename = 'support.xml' or $filename = 'contribute.xml' or $filename = 'credits.xml'">
+								<xsl:when test="$filename = 'index.xml' or $filename = 'documentation.xml' or $filename = 'support.xml' or $filename = 'contribute.xml' or $filename = 'credits.xml' or $filename = 'donate.xml'">
 									<div class="sidemenu">
 										<h3></h3>
 										<p>
