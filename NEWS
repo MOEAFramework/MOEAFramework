@@ -10,6 +10,11 @@ Framework.
     parameters.  The new parameters are windowSize, maxWindowSize,
     minimumPopulationSize, and maximumPopulationSize.
     
+  * Provides a fix for reported issues with Java's Service Provider Interface
+    not finding providers on some platforms (e.g., Android).  Default providers
+    should now be discovered on all platforms.
+    
+    
 
 --------------------------
  Version 2.3 (5 Oct 2014)

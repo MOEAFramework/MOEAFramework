@@ -22,6 +22,7 @@ import java.util.Properties;
 import java.util.ServiceConfigurationError;
 import java.util.ServiceLoader;
 
+import org.moeaframework.algorithm.StandardAlgorithms;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.Problem;
 
@@ -93,22 +94,50 @@ public class AlgorithmFactory {
 	public synchronized Algorithm getAlgorithm(String name, 
 			Properties properties, Problem problem) {
 		Iterator<AlgorithmProvider> ps = PROVIDERS.iterator();
+		
+		// ensure standard algorithms can be found in case the system has not
+		// setup correctly
+		if (!ps.hasNext()) {
+			Algorithm algorithm = instantiateAlgorithm(
+					new StandardAlgorithms(), name, properties, problem);
+			
+			if (algorithm != null) {
+				return algorithm;
+			}
+		}
 
+		// loop over all providers to find the algorithm implementation
 		while (ps.hasNext()) {
-			try {
-				AlgorithmProvider provider = ps.next();
-				Algorithm algorithm = provider.getAlgorithm(name, properties,
-						problem);
-	
-				if (algorithm != null) {
-					return algorithm;
-				}
-			} catch (ServiceConfigurationError e) {
-				System.err.println(e.getMessage());
+			Algorithm algorithm = instantiateAlgorithm(ps.next(), name,
+					properties, problem);
+			
+			if (algorithm != null) {
+				return algorithm;
 			}
 		}
 
 		throw new ProviderNotFoundException(name);
+	}
+	
+	/**
+	 * Attempts to instantiate the given algorithm using the given provider.
+	 * 
+	 * @param provider the algorithm provider
+	 * @param name the name identifying the algorithm
+	 * @param properties the implementation-specific properties
+	 * @param problem the problem to be solved
+	 * @return an instance of the algorithm with the registered name; or
+	 *         {@code null} if the provider does not implement the algorithm
+	 */
+	private Algorithm instantiateAlgorithm(AlgorithmProvider provider,
+			String name, Properties properties, Problem problem) {
+		try {
+			return provider.getAlgorithm(name, properties, problem);
+		} catch (ServiceConfigurationError e) {
+			System.err.println(e.getMessage());
+		}
+		
+		return null;
 	}
 
 }

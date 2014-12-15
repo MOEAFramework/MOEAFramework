@@ -23,6 +23,10 @@ import java.util.ServiceLoader;
 
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
+import org.moeaframework.problem.ClassLoaderProblems;
+import org.moeaframework.problem.PropertiesProblems;
+import org.moeaframework.problem.RotatedProblems;
+import org.moeaframework.problem.StandardProblems;
 
 /**
  * Factory for creating optimization problem instances and their corresponding
@@ -89,21 +93,57 @@ public class ProblemFactory {
 	 */
 	public synchronized Problem getProblem(String name) {
 		Iterator<ProblemProvider> ps = PROVIDERS.iterator();
+		
+		// ensure standard problems can be found in case the system has not
+		// setup correctly
+		if (!ps.hasNext()) {
+			Problem problem = instantiateProblem(new StandardProblems(), name);
+			
+			if (problem == null) {
+				problem = instantiateProblem(new PropertiesProblems(), name);
+			}
+			
+			if (problem == null) {
+				problem = instantiateProblem(new ClassLoaderProblems(), name);
+			}
+			
+			if (problem == null) {
+				problem = instantiateProblem(new RotatedProblems(), name);
+			}
+			
+			if (problem != null) {
+				return problem;
+			}
+		}
 
+		// loop over all providers to find the problem implementation
 		while (ps.hasNext()) {
-			try {
-				ProblemProvider provider = ps.next();
-				Problem problem = provider.getProblem(name);
-	
-				if (problem != null) {
-					return problem;
-				}
-			} catch (ServiceConfigurationError e) {
-				System.err.println(e.getMessage());
+			Problem problem = instantiateProblem(ps.next(), name);
+			
+			if (problem != null) {
+				return problem;
 			}
 		}
 
 		throw new ProviderNotFoundException(name);
+	}
+	
+	/**
+	 * Attempts to instantiate the given problem using the given provider.
+	 * 
+	 * @param provider the problem provider
+	 * @param name the name identifying the problem
+	 * @return an instance of the problem with the registered name; or
+	 *         {@code null} if the provider does not implement the problem
+	 */
+	private Problem instantiateProblem(ProblemProvider provider, String name) {
+		try {
+			return provider.getProblem(name);
+		} catch (ServiceConfigurationError e) {
+			System.err.println(e.getMessage());
+		}
+		
+		return null;
 	}
 
 	/**
@@ -120,6 +160,30 @@ public class ProblemFactory {
 			String name) {
 		Iterator<ProblemProvider> ps = PROVIDERS.iterator();
 
+		// ensure standard problems can be found in case the system has not
+		// setup correctly
+		if (!ps.hasNext()) {
+			NondominatedPopulation referenceSet = new StandardProblems()
+					.getReferenceSet(name);
+
+			if (referenceSet == null) {
+				referenceSet = new PropertiesProblems().getReferenceSet(name);
+			}
+			
+			if (referenceSet == null) {
+				referenceSet = new ClassLoaderProblems().getReferenceSet(name);
+			}
+			
+			if (referenceSet == null) {
+				referenceSet = new RotatedProblems().getReferenceSet(name);
+			}
+			
+			if (referenceSet != null) {
+				return referenceSet;
+			}
+		}
+
+		// loop over all providers to find the reference set
 		while (ps.hasNext()) {
 			ProblemProvider provider = ps.next();
 			NondominatedPopulation referenceSet = provider
