@@ -86,7 +86,8 @@ import org.moeaframework.util.TypedProperties;
  *     <td>Any</td>
  *     <td>{@code populationSize, epsilon, sbx.rate,
  *         sbx.distributionIndex, pm.rate, pm.distributionIndex, 
- *         injectionRate}</td>
+ *         injectionRate, windowSize, maxWindowSize, minimumPopulationSize,
+ *         maximumPopulationSize}</td>
  *   </tr>
  *   <tr>
  *     <td>NSGAIII</td>
@@ -392,8 +393,14 @@ public class StandardAlgorithms extends AlgorithmProvider {
 				variation, initialization);
 
 		AdaptiveTimeContinuation algorithm = new AdaptiveTimeContinuation(
-				nsgaii, 100, 100, 1.0 / properties.getDouble("injectionRate",
-						0.25), 100, 10000, new UniformSelection(), new UM(1.0));
+				nsgaii,
+				properties.getInt("windowSize", 100),
+				Math.max(properties.getInt("windowSize", 100), properties.getInt("maxWindowSize", 100)),
+				1.0 / properties.getDouble("injectionRate", 0.25),
+				properties.getInt("minimumPopulationSize", 100),
+				properties.getInt("maximumPopulationSize", 10000),
+				new UniformSelection(),
+				new UM(1.0));
 
 		return algorithm;
 	}

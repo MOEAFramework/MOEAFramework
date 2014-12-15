@@ -1,6 +1,16 @@
 This file documents the major changes implemented in each release of the MOEA
 Framework.
 
+
+-------------------
+ Version 2.4 (TBD)
+-------------------
+
+  * Replace several hard-coded parameters for e-NSGA-II with customizable
+    parameters.  The new parameters are windowSize, maxWindowSize,
+    minimumPopulationSize, and maximumPopulationSize.
+    
+
 --------------------------
  Version 2.3 (5 Oct 2014)
  -------------------------
