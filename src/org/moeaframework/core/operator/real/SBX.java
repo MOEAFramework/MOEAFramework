@@ -187,6 +187,12 @@ public class SBX implements Variation {
 			double p_bl = 1 - 1 / (2 * Math.pow(bl, distributionIndex + 1));
 			double p_bu = 1 - 1 / (2 * Math.pow(bu, distributionIndex + 1));
 			double u = PRNG.nextDouble();
+			
+			//prevent out-of-bounds values if PRNG draws the value 1.0
+			if (u == 1.0) {
+				u = Math.nextAfter(u, -1.0);
+			}
+			
 			double u0 = u * p_bl;
 			double u1 = u * p_bu;
 			double b0;
@@ -218,6 +224,19 @@ public class SBX implements Variation {
 				double temp = v1.getValue();
 				v1.setValue(v2.getValue());
 				v2.setValue(temp);
+			}
+			
+			//guard against out-of-bounds values
+			if (v1.getValue() < lb) {
+				v1.setValue(lb);
+			} else if (v1.getValue() > ub) {
+				v1.setValue(ub);
+			}
+			
+			if (v2.getValue() < lb) {
+				v2.setValue(lb);
+			} else if (v2.getValue() > ub) {
+				v2.setValue(ub);
 			}
 		}
 	}

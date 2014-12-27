@@ -17,8 +17,11 @@
  */
 package org.moeaframework.core.operator.real;
 
+import java.util.Random;
+
 import org.junit.Test;
 import org.moeaframework.TestThresholds;
+import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.operator.ParentCentricVariationTest;
 import org.moeaframework.core.operator.ParentImmutabilityTest;
@@ -108,6 +111,41 @@ public class SBXTest extends ParentCentricVariationTest {
 				newSolution(0.0, 1.0) };
 
 		ParentImmutabilityTest.test(parents, sbx);
+	}
+	
+	/**
+	 * Test to ensure the SBX operator works correctly if the PRNG draws a
+	 * value of 1.0.  The SBX code results in out-of-bounds values if this
+	 * happens and must be guarded against.
+	 */
+	@Test
+	public void testRNGError() {
+		PRNG.setRandom(new Random() {
+
+			private static final long serialVersionUID = 5106394622429956004L;
+
+			@Override
+			public double nextDouble() {
+				return 1.0;
+			}
+			
+		});
+		
+		SBX sbx = new SBX(1.0, 20.0);
+
+		Solution s1 = new Solution(2, 0);
+		s1.setVariable(0, new RealVariable(-2.0, -10.0, 10.0));
+		s1.setVariable(1, new RealVariable(-2.0, -10.0, 10.0));
+
+		Solution s2 = new Solution(2, 0);
+		s2.setVariable(0, new RealVariable(2.0, -10.0, 10.0));
+		s2.setVariable(1, new RealVariable(2.0, -10.0, 10.0));
+
+		Solution[] parents = new Solution[] { s1, s2 };
+
+		// if error, RealVariable#setValue will throw an
+		// IllegalArgumentException 
+		sbx.evolve(parents);
 	}
 
 }
