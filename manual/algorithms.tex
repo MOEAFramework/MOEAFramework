@@ -143,6 +143,10 @@ Use the string \java{"eNSGAII"} when creating instances of this algorithm with t
   pm.rate & The mutation rate for polynomial mutation \\
   pm.distributionIndex & The distribution index for polynomial mutation \\
   injectionRate & Controls the percentage of the population after a restart this is ``injected'', or copied, from the $\epsilon$-dominance archive \\
+  windowSize & Frequency of checking if a randomized restart should be triggered (number of iterations) \\
+  maxWindowSize & The maximum number of iterations between successive randomized restarts \\
+  minimumPopulationSize & The smallest possible population size when injecting new solutions after a randomized restart \\
+  maximumPopulationSize & The largest possible population size when injecting new solutions after a randomized restart \\
   \hline
 \end{tabularx}
 
