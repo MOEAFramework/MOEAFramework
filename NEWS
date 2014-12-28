@@ -14,11 +14,11 @@ Framework.
     not finding providers on some platforms (e.g., Android).  Default providers
     should now be discovered on all platforms.
     
-  * Guard against out-of-bounds errors in SBX operator.  If the random number
-    generator (RNG) draws the value of 1.0, SBX will produce out-of-bounds
-    values.  This has not been an issue since the default RNG never produces
-    the value 1.0, but a custom RNG may do so.  The guards ensure this error
-    will not occur.
+  * Guard against out-of-bounds errors in the SBX operator.  If the random
+    number generator (RNG) draws the value of 1.0, SBX will produce out-of-
+    bounds values.  This has not been an issue since the default RNG never
+    produces the value 1.0, but a custom RNG may do so.  The guards ensure this
+    error will never occur.
     
   * Adds chapter in the user manual discussing master-slave, island-model, and
     hybrid parallelization techniques.

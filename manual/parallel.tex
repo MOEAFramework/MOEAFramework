@@ -14,30 +14,30 @@
 
 When we first introduced the \java{Executor} class in \chptref{chpt:executor}, we demonstrated the \java{distributeOnAllCores()} method as a way to automatically and seamlessly distribute the evaluation across all cores in your local computer.  This section shows how to expand this simple distributed computing methods to large-scale cloud and high-performance computing systems.
 
-\section{Master-Slave with JPPF}
+We will explore three classes of parallelization: master-slave, island-model, and hybrid.  The master-slave approach will increase computing speed (decrease computing time) by spreading the function evaluations across multiple processors or computers.  The island-model approach improves convergence properties of the algorithm by running multiple concurrent instances of the MOEA, periodically sharing candidate solutions between islands (called migrations).  Lastly, the hybrid approach combines the master-slave and island-model to provide the benefits of both techniques.
+
+\section{Master-Slave Parallelization}
 \label{sect:masterSlave}
 
-The ``master-slave'' parallelization strategy is a parallelization technique to reduce computing by by spreading the workload across multiple processing cores, either on the same computer or on multiple computers connected by a network.  The MOEA is run on a single node called the master, and all problem evaluations are distributed to one or more slave nodes for processing.
+The ``master-slave'' parallelization strategy is a parallelization technique to reduce computing by spreading the workload across multiple processing cores, either on the same computer or on multiple computers connected by a network.  The MOEA is run on a single node called the master, and all function evaluations are distributed to one or more slave nodes for processing.
 
-In order for this form of parallelization to work, the algorithm must be naturally parallelizable.  To be naturally parallelizable, the algorithm must avoid querying the evaluation results (i.e., the objectives and constraint values) prior to evaluating all solutions.  This is typically achieved by designing an algorithm to invoke the \java{evaluateAll(...)} method.  If this condition holds, then the MOEA Framework will automatically detect that the algorithm is parallelizable and enable master-slave processing.  A simple way to determine if an algorithm is parallelizable is to use the \java{distributeOnAllCores()} method in the \java{Executor} and checking the CPU usage of each core. 
+In order for this form of parallelization to work, the algorithm must be naturally parallelizable.  To be naturally parallelizable, the algorithm must avoid querying the evaluation results (i.e., the objectives and constraint values) prior to evaluating all solutions.  This is typically achieved by designing an algorithm to invoke the \java{evaluateAll(...)} method.  If this condition holds, then the MOEA Framework will automatically detect that the algorithm is parallelizable and enable master-slave processing.  A simple way to determine if an algorithm is parallelizable is to use the \java{distributeOnAllCores()} method in the \java{Executor} and checking the CPU usage of each core on your local computer.  Many of the algorithms provided by the MOEA Framework are parallelizable (e.g., NSGA-II, $\epsilon$-NSGA-II, NSGA-III, GDE3) but others like are not (e.g., $\epsilon$-MOEA, MOEA/D).
 
-Many of the algorithms provided by the MOEA Framework are parallelizable (e.g., NSGA-II, $\epsilon$-NSGA-II, NSGA-III, GDE3) but others like are not (e.g., $\epsilon$-MOEA, MOEA/D).
-
-\begin{wrapfigure}{l}{4cm}
-  \includegraphics[width=4cm]{jppf.png}
+\begin{wrapfigure}{l}{3cm}
+  \includegraphics[width=3cm]{jppf.png}
 \end{wrapfigure}
-JPPF is a Java framework for parallel processing licensed under the Apache license, version 2, which is a free and open-source license.  This section demonstrates distributing the problem evaluations using JPPF.  This example was tested using JPPF version 4.2.5.  For the purposes of this exercise, we will run all slave nodes on a single computer.  Please refer to the JPPF documentation for information on running nodes on multiple computers.
-
-To begin, first download the Server/Driver, Node, and Application Template distributions from \webpage{http://www.jppf.org/} and unzip the files to any location on your computer.  Next, create a new project in your Java development environment (e.g., Eclipse or NetBeans).  Add to the project the MOEA Framework and JPPF JAR files located in the \folder{MOEAFramework-%VERSION%/lib} and \folder{JPPF-4.2.5-application-template/lib} folders, respectively.  If using Eclipse, the project folder should appear similar to \figref{fig:jppfProjectSetup}.
+The MOEA Framework relies on third-party ``grid computing'' or ``parallel processing'' libraries to enable the distribution of work across multiple computers.  One such library is JPPF.  This section demonstrates configuring and running a master-slave MOEA using the MOEA Framework and JPPF.  This example was tested using JPPF version 4.2.5.  For the purposes of this exercise, we will run all slave nodes on a single computer.  Please refer to the JPPF documentation for information on running nodes on multiple computers.
 
 \begin{figure}
   \center
   \includegraphics{jppfProjectSetup.png}
   \caption{Screenshot of an Eclipse project with the JPPF and MOEA Framework JAR files included.}
   \label{fig:jppfProjectSetup}
-\end{figure}  
+\end{figure}
 
-In this example, we will create a simple test problem and artificially make it computationally expensive by adding a long-running loop.  Create a new Java class file called \file{ParallelProblem.java} with the following code:
+To begin, first download the Server/Driver, Node, and Application Template distributions from \webpage{http://www.jppf.org/} and unzip the files to any location on your computer.  Next, create a new project in your Java development environment (e.g., Eclipse or NetBeans).  Add to the project the MOEA Framework and JPPF JAR files located in the \folder{MOEAFramework-%VERSION%/lib} and \folder{JPPF-4.2.5-application-template/lib} folders, respectively.  If using Eclipse, the project folder should appear similar to \figref{fig:jppfProjectSetup}. 
+
+In this example, we will create a simple test problem and artificially make it computationally expensive by adding a long-running loop.  Create a new Java class called \file{ParallelProblem.java} with the following code:
 
 \begin{lstlisting}[language=Java]
 import java.io.Serializable;
@@ -81,7 +81,8 @@ public class ParallelProblem implements Problem, Serializable {
 		solution.setObjective(0, Math.pow(x, 2.0));
 		solution.setObjective(1, Math.pow(x - 2.0, 2.0));
 		
-		System.out.println("Elapsed time: " + (System.currentTimeMillis() - start));
+		System.out.println("Elapsed time: " +
+				(System.currentTimeMillis() - start));
 	}
 
 	@Override
@@ -99,7 +100,9 @@ public class ParallelProblem implements Problem, Serializable {
 }
 \end{lstlisting}
 
-Note that this class implements the \java{Serializable} interface.  This is a required step for parallelization.  Implementing the \java{Serializable} class allows the Java class to be encoded and transmitted across a network.  To make a serializable class, all one needs to do is add \java{implements Serializable} after the class name, as shown in this example.
+\begin{tip}
+Note that this class implements the \java{Serializable} interface.  This is a required step for parallelization.  Implementing the \java{Serializable} interface allows the Java class to be encoded and transmitted across a network.  To make a serializable class, all one needs to do is add \java{implements Serializable} after the class name, as shown in this example.
+\end{tip}
 
 Next, create another Java class called \file{JPPFExample.java} with the following code:
 
@@ -155,15 +158,17 @@ public class JPPFExample {
 }
 \end{lstlisting}
 
-With these two files created, we can now test this example.  Prior to running the Java code we just created, you will need to start the JPPF driver and one or more JPPF nodes.  To start the driver, run the \file{JPPF-4.2.5-driver/startDriver.bat} program.  To start a local node, run the \file{JPPF-4.2.5-node/startNode.bat} program.  You should see two command prompt windows appear.  Finally, run the \java{JPPFExample} class we just created.  If all works as intended, your computer should now be running at or near $100\%$ CPU utilization.
+Line 20 is where we configure the Executor to distribute function evaluations using JPPF.  Also of importance is lines 20-21, where we set the JPPF batch size and timeout.  It is best if the batch size is equal to the population size in this example (the default population size of $100$).
 
-During our testing, we found that running this example on a single local core with no parallelization takes approximately $1,687$ seconds while running on four local cores takes approximately $545$ seconds.  This results in a speedup of $3.1$.  We lose some speedup due to communication overhead between the master and slave nodes, but still obtain a reasonable speedup.
+With these two files created, we can now test this example.  Prior to running the Java code we just created, you will need to start the JPPF driver and one or more JPPF nodes.  To start the driver, run the \file{JPPF-4.2.5-driver/startDriver.bat} program.  To start a local node, run the \file{JPPF-4.2.5-node/startNode.bat} program.  You should see two command prompt windows appear.  If using Unix/Linux, use the files with the \plaintext{.sh} extension instead.  Once the driver and node(s) are started, run the \java{JPPFExample} class we just created.  If all works as intended, your computer should now be running at or near $100\%$ CPU utilization as it is distributing work to all nodes.
+
+During our testing, we found that running this example on a single local core with no parallelization takes approximately $1,687$ seconds while running on four local cores takes approximately $545$ seconds.  This results in a speedup of $3.1x$.  We lose some speedup due to communication overhead between the master and slave nodes, but still obtain a reasonable speedup.
 
 \section{Island-Model Parallelization}
 
 Rather than run a single algorithm and distribute the problem evaluations to many cores, the island-model approach runs multiple instances of the algorithm in parallel.  This method of parallelization does not speed up the algorithm itself, but allows running multiple algorithms in parallel.  Periodically, solutions migrate from one population to another.  These migration events distribute genetic information to other islands, which in practice improves convergence properties.  For example, if one island gets stuck at a local optima, a migration event may introduce new genetic material that helps the island escape the local optima and continue searching for the global optimum.
 
-The MOEA Framework can support island-model parallelization with some additional coding.  The developer is responsible for instantiating each algorithm/island and processing the migrations.  Below is a simple island-model example where migration events occur every $10,000$ evaluations.  A random solution from each island population is selected (the emigrant) and sent to one of the neighboring islands.  Special care is needed to ensure the code is correctly synchronized to avoid race conditions.  In this example, we use a semaphore to ensure mutually exclusive while obtaining locks (i.e., the \java{synchronized (oldIsland)} and \java{synchronized (newIsland)} lines) to avoid the possibility of deadlocks.  Additionally, the majority of Java and MOEA Framework classes are not thread safe, and any modifications must be carefully synchronized.
+The MOEA Framework can support island-model parallelization with some additional coding.  The developer is responsible for instantiating each algorithm/island and processing the migrations.  Below is a simple island-model example where migration events occur every $10,000$ evaluations.  A random solution from each island population is selected (the emigrant) and sent to one of the neighboring islands.  Special care is needed to ensure the code is correctly synchronized to avoid race conditions.  In this example, we use a semaphore to ensure mutual exclusion while obtaining locks (i.e., the \java{synchronized (oldIsland)} and \java{synchronized (newIsland)} lines) to avoid the possibility of deadlocks.  Additionally, the majority of Java and MOEA Framework classes are not thread safe, and any modifications must be carefully synchronized.
 
 \begin{lstlisting}[language=Java]
 import java.util.HashMap;
@@ -299,15 +304,12 @@ public class IslandExample {
 
 \section{Hybrid Parallelization}
 
-Combining the island-model and master-slave parallelization strategies, the hybrid parallelization approach inherits the benefits of both strategies.  It gains speedup from the master-slave strategy by distributing function evaluations across many cores, and the benefit of operating multiple, concurrent algorithms in the island-model strategy.  Using the parallel computing library JPPF, from \sectref{sect:masterSlave}, we can enable distributed computing with the island-model approach.  To enable the hybrid strategy, you can wrap the problem created on lines 25-26 to enable evaluating on multiple local cores:
-
+Combining the island-model and master-slave parallelization strategies, the hybrid parallelization approach inherits the benefits of both strategies.  It gains speedup from the master-slave strategy by distributing function evaluations across many cores, and the benefit of operating multiple, concurrent algorithms in the island-model strategy.  Since we are not using the \java{Executor} in the island-model example, we instead use the underlying \java{DistributedProblem} class.  To enable the hybrid strategy, wrap the problem created on lines 25-26 to either distribute work across multiple local cores:
 \begin{lstlisting}[language=Java]
 problem = new DistributedProblem(problem,
 		Runtime.getRuntime().availableProcessors());
 \end{lstlisting}
-
-or on multiple computers across a network using JPPF or another library:
-
+or on multiple computers across a network using JPPF:
 \begin{lstlisting}[language=Java]
 problem = new DistributedProblem(problem, jppfExecutor);
 \end{lstlisting}
@@ -315,4 +317,4 @@ problem = new DistributedProblem(problem, jppfExecutor);
 Above, \java{jppfExecutor} is the JPPF executor service created in \sectref{sect:masterSlave}.  Note that all of the requirements outlined in \sectref{sect:masterSlave} must be followed when using JPPF.
 
 \section{Conclusion}
-This chapter provided an introduction to parallel computing with the MOEA Framework.  We explored the master-slave, island-model, and hybrid parallelization strategy.  Using parallelization, we can help decrease computing time by distributing the workload across multiple computers and/or improve convergence properties by running multiple concurrent algorithms.  
+This chapter provided an introduction to parallel computing with the MOEA Framework.  We explored the master-slave, island-model, and hybrid parallelization strategies.  Using parallelization, we can help decrease computing time by distributing the workload across multiple computers and/or improve convergence properties by running multiple concurrent algorithms.  
