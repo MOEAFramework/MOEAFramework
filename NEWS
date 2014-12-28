@@ -20,6 +20,9 @@ Framework.
     the value 1.0, but a custom RNG may do so.  The guards ensure this error
     will not occur.
     
+  * Adds chapter in the user manual discussing master-slave, island-model, and
+    hybrid parallelization techniques.
+    
     
 --------------------------
  Version 2.3 (5 Oct 2014)

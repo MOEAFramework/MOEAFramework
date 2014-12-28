@@ -12,13 +12,17 @@
 \chapter{Parallelization}
 \label{chpt:parallelization}
 
-When we first introduced the \java{Executor} class in \chptref{chpt:executor}, we demonstrated the \java{distributeOnAllCores()} method as a way to automatically and seamlessly distribute the evaluation across all cores in your local computer.  This section shows how to expand this simple distributed computing methods to large-scale cloud and high-performance computing systems.  This form of parallelization is typically called ``master-slave'' processing, where the MOEA is run on a single node called the master and all problem evaluations are distributed to one or more slave nodes for processing.
+When we first introduced the \java{Executor} class in \chptref{chpt:executor}, we demonstrated the \java{distributeOnAllCores()} method as a way to automatically and seamlessly distribute the evaluation across all cores in your local computer.  This section shows how to expand this simple distributed computing methods to large-scale cloud and high-performance computing systems.
+
+\section{Master-Slave with JPPF}
+\label{sect:masterSlave}
+
+The ``master-slave'' parallelization strategy is a parallelization technique to reduce computing by by spreading the workload across multiple processing cores, either on the same computer or on multiple computers connected by a network.  The MOEA is run on a single node called the master, and all problem evaluations are distributed to one or more slave nodes for processing.
 
 In order for this form of parallelization to work, the algorithm must be naturally parallelizable.  To be naturally parallelizable, the algorithm must avoid querying the evaluation results (i.e., the objectives and constraint values) prior to evaluating all solutions.  This is typically achieved by designing an algorithm to invoke the \java{evaluateAll(...)} method.  If this condition holds, then the MOEA Framework will automatically detect that the algorithm is parallelizable and enable master-slave processing.  A simple way to determine if an algorithm is parallelizable is to use the \java{distributeOnAllCores()} method in the \java{Executor} and checking the CPU usage of each core. 
 
 Many of the algorithms provided by the MOEA Framework are parallelizable (e.g., NSGA-II, $\epsilon$-NSGA-II, NSGA-III, GDE3) but others like are not (e.g., $\epsilon$-MOEA, MOEA/D).
 
-\section{JPPF}
 \begin{wrapfigure}{l}{4cm}
   \includegraphics[width=4cm]{jppf.png}
 \end{wrapfigure}
@@ -155,5 +159,160 @@ With these two files created, we can now test this example.  Prior to running th
 
 During our testing, we found that running this example on a single local core with no parallelization takes approximately $1,687$ seconds while running on four local cores takes approximately $545$ seconds.  This results in a speedup of $3.1$.  We lose some speedup due to communication overhead between the master and slave nodes, but still obtain a reasonable speedup.
 
+\section{Island-Model Parallelization}
+
+Rather than run a single algorithm and distribute the problem evaluations to many cores, the island-model approach runs multiple instances of the algorithm in parallel.  This method of parallelization does not speed up the algorithm itself, but allows running multiple algorithms in parallel.  Periodically, solutions migrate from one population to another.  These migration events distribute genetic information to other islands, which in practice improves convergence properties.  For example, if one island gets stuck at a local optima, a migration event may introduce new genetic material that helps the island escape the local optima and continue searching for the global optimum.
+
+The MOEA Framework can support island-model parallelization with some additional coding.  The developer is responsible for instantiating each algorithm/island and processing the migrations.  Below is a simple island-model example where migration events occur every $10,000$ evaluations.  A random solution from each island population is selected (the emigrant) and sent to one of the neighboring islands.  Special care is needed to ensure the code is correctly synchronized to avoid race conditions.  In this example, we use a semaphore to ensure mutually exclusive while obtaining locks (i.e., the \java{synchronized (oldIsland)} and \java{synchronized (newIsland)} lines) to avoid the possibility of deadlocks.  Additionally, the majority of Java and MOEA Framework classes are not thread safe, and any modifications must be carefully synchronized.
+
+\begin{lstlisting}[language=Java]
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
+import java.util.concurrent.Semaphore;
+
+import org.apache.commons.math3.random.MersenneTwister;
+import org.apache.commons.math3.random.RandomAdaptor;
+import org.apache.commons.math3.random.SynchronizedRandomGenerator;
+import org.moeaframework.algorithm.NSGAII;
+import org.moeaframework.algorithm.PeriodicAction;
+import org.moeaframework.algorithm.PeriodicAction.FrequencyType;
+import org.moeaframework.core.NondominatedPopulation;
+import org.moeaframework.core.PRNG;
+import org.moeaframework.core.Population;
+import org.moeaframework.core.Problem;
+import org.moeaframework.core.spi.AlgorithmFactory;
+import org.moeaframework.core.spi.ProblemFactory;
+
+public class IslandExample {
+	
+	public static void main(String[] args) {
+		final int numberOfIslands = 4;
+		final int maxEvaluations = 1000000;
+		final int migrationFrequency = 10000;
+		final Problem problem = ProblemFactory.getInstance()
+				.getProblem("DTLZ2_2");
+		final Map<Thread, NSGAII> islands = new HashMap<Thread,
+				NSGAII>();
+		
+		// this semaphore is used to synchronize locking
+		// to prevent deadlocks
+		final Semaphore semaphore = new Semaphore(1);
+		
+		// need to use a synchronized random number generator
+		// instead of the default
+		PRNG.setRandom(new RandomAdaptor(
+				new SynchronizedRandomGenerator(
+				new MersenneTwister())));
+		
+		// create the algorithm run on each island
+		for (int i = 0; i < numberOfIslands; i++) {
+			final NSGAII nsgaii = (NSGAII)AlgorithmFactory
+					.getInstance().getAlgorithm(
+							"NSGAII",
+							new Properties(),
+							problem);
+			
+			// create a periodic action for handling migration events
+			final PeriodicAction migration = new PeriodicAction(
+					nsgaii,
+					migrationFrequency,
+					FrequencyType.EVALUATIONS) {
+
+				@Override
+				public void doAction() {
+					try {
+						Thread thisThread = Thread.currentThread();
+						
+						for (Thread otherThread : islands.keySet()) {
+							if (otherThread != thisThread) {
+								semaphore.acquire();
+								
+								Population oldIsland = islands.get(thisThread)
+										.getPopulation();
+								Population newIsland = islands.get(otherThread)
+										.getPopulation();
+										
+								synchronized (oldIsland) {
+									synchronized (newIsland) {
+										int emigrant = PRNG.nextInt(oldIsland.size());
+										newIsland.add(oldIsland.get(emigrant));
+								
+										System.out.println("Sending solution " +
+												emigrant + " from " +
+												Thread.currentThread().getName() +
+												" to " + otherThread.getName());
+									}
+								}
+								
+								semaphore.release();
+							}
+						}
+					} catch (InterruptedException e) {
+						// ignore
+					}
+				}
+				
+			};
+			
+			// start each algorithm its own thread so they run
+			// concurrently
+			Thread thread = new Thread() {
+				
+				public void run() {
+					while (migration.getNumberOfEvaluations() <
+							maxEvaluations) {
+						migration.step();
+					}
+				}
+				
+			};
+			
+			islands.put(thread, nsgaii);
+		}
+		
+		// start the threads
+		for (Thread thread : islands.keySet()) {
+			thread.start();
+		}
+		
+		// wait for all threads to finish and aggregate the result
+		NondominatedPopulation result =
+				new NondominatedPopulation();
+		
+		for (Thread thread : islands.keySet()) {
+			try {
+				thread.join();
+				result.addAll(islands.get(thread).getResult());
+			} catch (InterruptedException e) {
+				System.out.println("Thread " + thread.getId() +
+						" was interrupted!");
+			}
+		}
+		
+		System.out.println("Found " + result.size() +
+				" solutions!");
+	}
+
+}
+\end{lstlisting}
+
+\section{Hybrid Parallelization}
+
+Combining the island-model and master-slave parallelization strategies, the hybrid parallelization approach inherits the benefits of both strategies.  It gains speedup from the master-slave strategy by distributing function evaluations across many cores, and the benefit of operating multiple, concurrent algorithms in the island-model strategy.  Using the parallel computing library JPPF, from \sectref{sect:masterSlave}, we can enable distributed computing with the island-model approach.  To enable the hybrid strategy, you can wrap the problem created on lines 25-26 to enable evaluating on multiple local cores:
+
+\begin{lstlisting}[language=Java]
+problem = new DistributedProblem(problem,
+		Runtime.getRuntime().availableProcessors());
+\end{lstlisting}
+
+or on multiple computers across a network using JPPF or another library:
+
+\begin{lstlisting}[language=Java]
+problem = new DistributedProblem(problem, jppfExecutor);
+\end{lstlisting}
+
+Above, \java{jppfExecutor} is the JPPF executor service created in \sectref{sect:masterSlave}.  Note that all of the requirements outlined in \sectref{sect:masterSlave} must be followed when using JPPF.
+
 \section{Conclusion}
-This chapter provided an introduction to parallel computing with the MOEA Framework.  We will continue to expand on this section in future releases to provide examples of other parallel libraries and parallelization techniques.
+This chapter provided an introduction to parallel computing with the MOEA Framework.  We explored the master-slave, island-model, and hybrid parallelization strategy.  Using parallelization, we can help decrease computing time by distributing the workload across multiple computers and/or improve convergence properties by running multiple concurrent algorithms.  
