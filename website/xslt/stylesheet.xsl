@@ -142,6 +142,7 @@
 									</li>
 								</ul>
 								<p>
+									Using Maven?  Add our <a href="downloads.html#maven">dependency</a>.<br />
 									Looking for a <a href="downloads.html#previous">previous release</a>?
 								</p>
 							</div>

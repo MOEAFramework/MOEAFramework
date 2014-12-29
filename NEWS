@@ -23,6 +23,9 @@ Framework.
   * Adds chapter in the user manual discussing master-slave, island-model, and
     hybrid parallelization techniques.
     
+  * Adds support for Maven.  Version 2.4 and all subsequent releases will be
+    available on the Maven Central Repository.
+    
     
 --------------------------
  Version 2.3 (5 Oct 2014)

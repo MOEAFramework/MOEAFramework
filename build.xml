@@ -581,6 +581,14 @@ Use of these build scripts requires Apache Ant to be installed.  See
 					<url>https://oss.sonatype.org/content/groups/staging</url>
 				</repository>
 			</repositories>
+		
+			<dependencies>
+				<dependency>
+					<groupId>org.moeaframework</groupId>
+					<artifactId>moeaframework</artifactId>
+					<version>${version}</version>
+				</dependency>
+			</dependencies>
 	-->
 	<target name="package-maven" description="Creates an artifact bundle for upload to Sonatype OSS">
 		<delete dir="${maven}" />

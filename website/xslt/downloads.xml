@@ -8,7 +8,12 @@
 <page>
   <title>Download the MOEA Framework</title>
   <description>Download the current and previous versions of the MOEA Framework</description>
-  <header></header>
+  <header>
+  	<script type="text/javascript" src="scripts/shCore.js"></script>
+	<script type="text/javascript" src="scripts/shBrushXml.js"></script>
+	<link type="text/css" rel="stylesheet" href="styles/shCoreEclipse.css" />
+	<script type="text/javascript">SyntaxHighlighter.all();</script>
+  </header>
   <content>
 <h2>Downloads</h2>
 
@@ -80,6 +85,28 @@
       <div class="fix"></div>
     </li>
   </ul>
+</div>
+
+<div class="section">
+<h3>Maven Support</h3>
+<a name="maven"></a>
+
+<p>
+  Copy-and-paste the following dependency to your pom.xml file to add the MOEA
+  Framework to your Maven project.  Need help?  See the
+  <a href="http://maven.apache.org/guides/getting-started/maven-in-five-minutes.html">Maven in 5 Minutes</a>
+  guide.
+</p>
+
+<div class="code">
+  <pre class="brush: xml; toolbar: false;">
+&lt;dependency>
+    &lt;groupId>org.moeaframework&lt;/groupId>
+    &lt;artifactId>moeaframework&lt;/artifactId>
+    &lt;version>%VERSION%&lt;/version>
+&lt;/dependency>
+  </pre>
+</div>
 </div>
 
 <div class="section">

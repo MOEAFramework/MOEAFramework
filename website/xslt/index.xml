@@ -40,6 +40,7 @@
   <ul itemprop="featureList">
     <li>Fast, reliable implementations of many state-of-the-art multiobjective evolutionary algorithms</li>
     <li>Extensible with custom algorithms, problems and operators</li>
+    <li>Supports master-slave, island-model, and hybrid parallelization</li>
     <li>Modular design for constructing new optimization algorithms from existing components</li>
     <li>Permissive open source license</li>
     <li>Fully documented source code</li>
