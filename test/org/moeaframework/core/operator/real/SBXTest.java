@@ -120,6 +120,8 @@ public class SBXTest extends ParentCentricVariationTest {
 	 */
 	@Test
 	public void testRNGError() {
+		Random originalRandom = PRNG.getRandom();
+		
 		PRNG.setRandom(new Random() {
 
 			private static final long serialVersionUID = 5106394622429956004L;
@@ -146,6 +148,8 @@ public class SBXTest extends ParentCentricVariationTest {
 		// if error, RealVariable#setValue will throw an
 		// IllegalArgumentException 
 		sbx.evolve(parents);
+		
+		PRNG.setRandom(originalRandom);
 	}
 
 }
