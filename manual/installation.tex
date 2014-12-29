@@ -19,16 +19,16 @@ Prior to downloading, using, modifying or distributing the MOEA Framework, devel
 
 \section{Which Distribution is Right for Me?}
 
-The MOEA Framework is currently distributed in three forms: 1) the compiled binaries; 2) the all-in-one executable JAR file; and 3) the source code.  The following text describes each distribution and its intended audience.
+The MOEA Framework is currently distributed in three forms: 1) the compiled binaries; 2) the source code; and 3) the demo application.  The following text describes each distribution and its intended audience.
 
 \paragraph{Compiled Binaries}
 The compiled binaries distribution contains a fully-working MOEA Framework installation.  All required third-party libraries, data files and documentation are provided.  This download is recommended for developers integrating the MOEA Framework into an existing project.
 
-\paragraph{All-in-One Executable}
-The all-in-one executable distribution is similar to the compiled binaries.  It provides a fully-working MOEA Framework installation with one major difference: all files are packaged into a single JAR file.  This distribution is intended for first-time users and, in particular, for demonstrating the MOEA Diagnostic Tool by double-clicking the JAR file.
-
 \paragraph{Source Code}
 The source code distribution contains all source code, unit tests, documentation and data files.  This distribution gives users full control over the MOEA Framework, as any component can be modified as needed.  As such, this download is recommended for developers wishing to contribute to or study the inner workings of the MOEA Framework.
+
+\paragraph{Demo Application}
+Running the downloaded demo application, either by double-clicking the JAR file or running the command \plaintext{java -jar MOEAFramework-%VERSION%-Demo.jar}, will launch a program to provides several interactive demos of the MOEA Framework.  This is intended for first-time users to quickly learn about the MOEA Framework and its capabilities.
 
 \section{Obtaining a Copy}
 
@@ -45,7 +45,7 @@ Windows users must use an unzip utility like 7-Zip to extract the file contents.
 The software packages listed below are required or recommended in order to use the MOEA Framework.  Any software package marked as required MUST be installed on your computer in order to use the MOEA Framework.  Software marked as optional is not required to be installed, but will generally make your life easier.  This manual will often provide instructions specific to these optional software packages.
 
 \subsection{Java 6+ (Required)}
-Java 6, or any later version, is required for any system running the MOEA Framework.  If downloading the compiled binaries or all-in-one executable, you only need to install the Java Runtime Environment (JRE).  The source code download requires the Java Development Kit (JDK), which contains the compiler and other developer tools.  We recommend one of the following vendors (most are free):
+Java 6, or any later version, is required for any system running the MOEA Framework.  If downloading the compiled binaries or demo application, you only need to install the Java Runtime Environment (JRE).  The source code download requires the Java Development Kit (JDK), which contains the compiler and other developer tools.  We recommend one of the following vendors (most are free):
 
 \begin{description}
   \item[Oracle] - \webpage{http://www.oracle.com/technetwork/java/javase/}
@@ -121,15 +121,15 @@ java -Djava.ext.dirs=lib
 		org.moeaframework.analysis.diagnostics.LaunchDiagnosticTool
 \end{lstlisting}
 
-\paragraph{All-in-One Executable}
-Double-click the downloaded JAR file.  If the Diagnostic Tool window does not appear, try to manually launch the tool with with the following command:
-
-\begin{lstlisting}[language=Plaintext]
-java -jar MOEAFramework-%VERSION%-Executable.jar
-\end{lstlisting}
-
 \paragraph{Source Code}
 Inside Eclipse, navigate to the src $\rightarrow$ org $\rightarrow$ moeaframework $\rightarrow$ analysis $\rightarrow$ diagnostic package in the Package Explorer window.  Right-click the file \texttt{LaunchDiagnosticTool.java} and select the Run as $\rightarrow$ Java Application option in the popup menu.
+
+\paragraph{Demo Program}
+Double-click the downloaded JAR file.  If the demo window does not appear, try to manually launch the tool with with the following command:
+
+\begin{lstlisting}[language=Plaintext]
+java -jar MOEAFramework-%VERSION%-Demo.jar
+\end{lstlisting}
 
 \section{Distribution Contents}
 This section describes the contents of the compiled binaries and source code distribution downloads.
@@ -168,6 +168,17 @@ This section describes the contents of the compiled binaries and source code dis
   \item[\file{test.xml}] contains the Apache Ant testing scripts used to automatically run all JUnit unit tests and provide a human-readable report of the test results.
   \item[\file{TODO}] lists all planned changes for the MOEA Framework source code.  This file is a starting point for individuals wishing to contribute modifications to the MOEA Framework.
 \end{description}
+
+\section{Resolving Dependencies with Maven}
+As of version 2.4, the MOEA Framework and its dependencies can be resolved using the Maven dependency management system.  Maven is available from \webpage{http://maven.apache.org/}.  To add the MOEA Framework to your Maven project, add the following dependency to your \file{pom.xml} file:
+
+\begin{lstlisting}[language=Plaintext]
+<dependency>
+	<groupId>org.moeaframework</groupId>
+	<artifactId>moeaframework</artifactId>
+	<version>%VERSION%</version>
+</dependency>
+\end{lstlisting}
 
 \section{Conclusion}
 This chapter described each of the MOEA Framework distributions.  At this point, you should have a working MOEA Framework distribution which you can use to run the examples in subsequent chapters.
