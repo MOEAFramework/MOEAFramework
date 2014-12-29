@@ -43,6 +43,9 @@ Use of these build scripts requires Apache Ant to be installed.  See
 	<!-- The folder where generated javadoc files are saved -->
 	<property name="javadoc" value="javadoc" />
 	
+	<!-- The folder where maven artifacts are saved -->
+	<property name="maven" value="maven" />
+	
 	<!-- The base/root folder for organizing distributions -->
 	<property name="base" value="${build}/${shortname}-${version}" />
 
@@ -280,6 +283,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 	       keytool -genkeypair -alias moeaframework -validity 3653
 	     Signing the JAR is necessary for enabling all permissions, which is
 	     needed for save/load functionality. -->
+	<!--
 	<target name="package-jnlp" 
 			depends="package-executable"
 			description="Creates the JNLP Web Start distribution">
@@ -305,8 +309,10 @@ Use of these build scripts requires Apache Ant to be installed.  See
 			</path>
 		</signjar>
 	</target>
+	-->
 
 	<!-- Packages the all-in-one executable distribution -->
+	<!--
 	<target name="package-executable" depends="build-binary" description="Creates the executable JAR file">
 		<delete dir="${build}" />
 		<mkdir dir="${build}" />
@@ -346,6 +352,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		<jar destfile="${dist}/${shortname}-${version}-Executable.jar"
 			basedir="${build}" manifest="${build}/META-INF/MANIFEST.mf" />
 	</target>
+	-->
 	
 	<!-- Packages the demo distribution -->
 	<target name="package-demo" depends="build-binary" description="Creates the executable JAR file">
@@ -559,6 +566,68 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		
 		<move file="${build}/manual.pdf" 
 				tofile="${dist}/${shortname}-${version}-Manual.pdf" />
+	</target>
+	
+	<!-- GPG Instructions:
+	        gpg -gen-key
+	        gpg -keyserver keyserver.ubuntu.com -send-keys keyid
+	        
+	     After Uploading to Sonatype OSS, test by adding to pom.xml:
+	     
+			<repositories>
+				<repository>
+					<id>oss.sonatype.org</id>
+					<name>OSS Sonatype Staging</name>
+					<url>https://oss.sonatype.org/content/groups/staging</url>
+				</repository>
+			</repositories>
+	-->
+	<target name="package-maven" description="Creates an artifact bundle for upload to Sonatype OSS">
+		<delete dir="${maven}" />
+		<mkdir dir="${maven}" />
+		<property name="artifact" value="moeaframework" />
+		
+		<copy file="auxiliary/maven/moeaframework.pom"
+				tofile="${maven}/${artifact}-${version}.pom" />
+		<replace file="${maven}/${artifact}-${version}.pom">
+			<replacefilter token="%VERSION%" value="${version}" />
+		</replace>
+		
+		<antcall target="build-binary" />
+		<unjar src="lib/JMetal-4.3.jar" dest="${build}" />
+		<jar destfile="${maven}/${artifact}-${version}.jar" 
+				basedir="${build}" />
+		
+		<antcall target="package-source" />
+		<jar destfile="${maven}/${artifact}-${version}-sources.jar" 
+				basedir="${build}" />
+		
+		<antcall target="build-javadoc" />
+		<jar destfile="${maven}/${artifact}-${version}-javadoc.jar"
+				basedir="${javadoc}" />
+		
+		<exec executable="gpg" failonerror="true">
+			<arg value="-ab" />
+			<arg value="${maven}/${artifact}-${version}.pom" />
+		</exec>
+		
+		<exec executable="gpg" failonerror="true">
+			<arg value="-ab" />
+			<arg value="${maven}/${artifact}-${version}.jar" />
+		</exec>
+		
+		<exec executable="gpg" failonerror="true">
+			<arg value="-ab" />
+			<arg value="${maven}/${artifact}-${version}-sources.jar" />
+		</exec>
+			
+		<exec executable="gpg" failonerror="true">
+			<arg value="-ab" />
+			<arg value="${maven}/${artifact}-${version}-javadoc.jar" />
+		</exec>
+		
+		<jar destfile="${maven}/${artifact}-${version}-bundle.jar"
+				basedir="${maven}" />
 	</target>
 	
 </project>
