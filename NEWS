@@ -2,9 +2,9 @@ This file documents the major changes implemented in each release of the MOEA
 Framework.
 
 
--------------------
- Version 2.4 (TBD)
--------------------
+--------------------------
+ Version 2.4 (2 Jan 2015)
+--------------------------
 
   * Replace several hard-coded parameters for e-NSGA-II with customizable
     parameters.  The new parameters are windowSize, maxWindowSize,
@@ -26,8 +26,8 @@ Framework.
   * Adds support for Maven.  Version 2.4 and all subsequent releases will be
     available on the Maven Central Repository.
     
-  * Addition of two new binary problems: NK-landscapes and additively
-    decomposable problems.
+  * Addition of two new GA examples with binary encodings: NK-landscapes and
+    additively decomposable problems.
 
 
 --------------------------
