@@ -178,5 +178,19 @@ As of version 2.4, the MOEA Framework and its dependencies can be resolved using
 </dependency>
 \end{lstlisting}
 
+\section{A Note on Running Examples}
+Several example applications are provided with the MOEA Framework in the \folder{\moeaframework/examples/} folder.  Details on these examples can be found on our website at \webpage{http://moeaframework.org/examples.html}.  In general, you will want to compile and run these examples from the \folder{\moeaframework} folder, with a command similar to:
+
+\begin{lstlisting}[language=Plaintext]
+javac -cp "examples;lib/*" examples/Example1.java
+java -cp "examples;lib/*" Example1
+\end{lstlisting}
+
+If you receive an error saying ``no reference set available'', that is because the MOEA Framework is unable to locate the Pareto sets for the example problems, typically located in \folder{\moeaframework/pf/}.  To resolve this error, you will need to add the root \folder{\moeaframework} folder to your classpath, such as:
+
+\begin{lstlisting}[language=Plaintext]
+java -cp "C:/path/to/MOEAFramework-2.4;C:/path/to/MOEAFramework-2.4/lib/*;C:/path/to/MOEAFramework-2.4/examples" Example1
+\end{lstlisting}
+
 \section{Conclusion}
 This chapter described each of the MOEA Framework distributions.  At this point, you should have a working MOEA Framework distribution which you can use to run the examples in subsequent chapters.
