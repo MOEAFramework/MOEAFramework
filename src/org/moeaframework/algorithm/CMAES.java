@@ -1,21 +1,34 @@
 package org.moeaframework.algorithm;
 
+import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Comparator;
 
 import org.apache.commons.math3.stat.StatUtils;
+import org.moeaframework.core.FastNondominatedSorting;
+import org.moeaframework.core.FitnessEvaluator;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.comparator.AggregateConstraintComparator;
+import org.moeaframework.core.comparator.ChainedComparator;
+import org.moeaframework.core.comparator.FitnessComparator;
+import org.moeaframework.core.comparator.NondominatedSortingComparator;
 import org.moeaframework.core.comparator.ObjectiveComparator;
+import org.moeaframework.core.comparator.RankComparator;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.AbstractProblem;
 
 /**
- * The Covariance Matrix Adaption Evolution Strategy (CMA-ES) algorithm.
- * This implementation uses resampling to generate offspring within bounds.
+ * The Covariance Matrix Adaption Evolution Strategy (CMA-ES) algorithm for
+ * single and multi-objective problems.  For multi-objective problems,
+ * individuals are compared using Pareto ranking and crowding distance to break
+ * ties.  An optional {@code fitnessEvaluator} parameter can be specified to
+ * replace the crowding distance calculation with, for example, the
+ * hypervolume indicator.
  * <p>
  * This file is based on the Java implementation of CMA-ES by Nikolaus Hansen
  * available at https://www.lri.fr/~hansen/cmaes_inmatlab.html#java,
@@ -29,6 +42,9 @@ import org.moeaframework.problem.AbstractProblem;
  *       pp. 282-291, Berlin: Springer.
  *   <li>Hansen, N. (2011).  The CMA Evolution Strategy: A Tutorial.
  *       Available at https://www.lri.fr/~hansen/cmatutorial.pdf.
+ *   <li>Igel, C., N. Hansen, and S. Roth (2007).  Covariance Matrix Adaptation
+ *       for Multi-objective Optimization.  Evolutionary Computation,
+ *       15(1):1-28.
  * </ol>
  */
 public class CMAES extends AbstractAlgorithm {
@@ -44,6 +60,18 @@ public class CMAES extends AbstractAlgorithm {
 	 * numerically stable.
 	 */
 	private final boolean checkConsistency;
+	
+	/**
+	 * Secondary comparison criteria for comparing population individuals
+	 * with the same rank.  If {@code null}, the default crowding distance
+	 * metric is used.
+	 */
+	private final FitnessEvaluator fitnessEvaluator;
+	
+	/**
+	 * Nondominated archive of the best solutions found.
+	 */
+	private final NondominatedPopulation archive;
 
 	/**
 	 * The number of iterations already performed.
@@ -147,56 +175,81 @@ public class CMAES extends AbstractAlgorithm {
 	 * The current population.
 	 */
 	private Population population;
-	
-	/**
-	 * The best solution found.
-	 */
-	private Solution best;
 
 	/**
-	 * Last iteration were the eigendecomposition was calculated.
+	 * Last iteration were the eigenvalue decomposition was calculated.
 	 */
 	private int lastEigenupdate;
 	
 	/**
-	 * Constructs a new CMA-ES instance with no initial search point and no
-	 * consistency checks.
-	 * 
+	 * Constructs a new CMA-ES instance using default parameters.
+	 *
 	 * @param problem the problem to optimize
 	 * @param lambda the offspring population size
 	 */
 	public CMAES(Problem problem, int lambda) {
-		this(problem, lambda, null);
+		this(problem, lambda, null, new NondominatedPopulation());
 	}
 	
 	/**
-	 * Constructs a new CMA-ES instance with no consistency checks.
-	 * 
+	 * Constructs a new CMA-ES instance using default parameters.
+	 *
 	 * @param problem the problem to optimize
 	 * @param lambda the offspring population size
-	 * @param initialSearchPoint an initial search point, or {@code null} if
-	 *        no initial search point is specified
+	 * @param fitnessEvaluator secondary comparison criteria for comparing
+	 *        population individuals with the same rank, or {@code null} to use
+	 *        the default crowding distance metric
+	 * @param archive the nondominated archive for storing the elite individuals
 	 */
-	public CMAES(Problem problem, int lambda, double[] initialSearchPoint) {
-		this(problem, lambda, initialSearchPoint, false);
+	public CMAES(Problem problem, int lambda, FitnessEvaluator fitnessEvaluator,
+			NondominatedPopulation archive) {
+		this(problem, lambda, fitnessEvaluator, archive, null, false,
+				-1, -1, -1, -1, -1, -1, -1);
 	}
 
 	/**
 	 * Constructs a new CMA-ES instance with the given parameters.
+	 * <p>
+	 * If the parameters {@code cc}, {@code cs}, {@code damps}, {@code ccov},
+	 * {@code ccovsep}, {@code sigma}, and {@code diagonalIterations} are set
+	 * to any negative number, then the default parameter will be used.
 	 * 
 	 * @param problem the problem to optimize
 	 * @param lambda the offspring population size
+	 * @param fitnessEvaluator secondary comparison criteria for comparing
+	 *        population individuals with the same rank, or {@code null} to use
+	 *        the default crowding distance metric
+	 * @param archive the nondominated archive for storing the elite individuals
 	 * @param initialSearchPoint an initial search point, or {@code null} if
 	 *        no initial search point is specified
 	 * @param checkConsistency if {@code true}, performs checks to ensure
 	 *        CMA-ES remains numerically stable
+	 * @param cc the cumulation parameter
+	 * @param cs the step size of the cumulation parameter
+	 * @param damps the damping factor for the step size
+	 * @param ccov the learning rate
+	 * @param ccovsep the learning rate when in diagonal-only mode
+	 * @param sigma the initial standard deviation
+	 * @param diagonalIterations the number of iterations in which only the
+	 *        covariance diagonal is used
 	 */
-	public CMAES(Problem problem, int lambda, double[] initialSearchPoint,
-			boolean checkConsistency) {
+	public CMAES(Problem problem, int lambda, FitnessEvaluator fitnessEvaluator,
+			NondominatedPopulation archive, double[] initialSearchPoint,
+			boolean checkConsistency, double cc, double cs, double damps,
+			double ccov, double ccovsep, double sigma, int diagonalIterations) {
 		super(problem);
 		this.lambda = lambda;
 		this.initialSearchPoint = initialSearchPoint;
 		this.checkConsistency = checkConsistency;
+		this.fitnessEvaluator = fitnessEvaluator;
+		this.archive = archive;
+		this.cc = cc;
+		this.cs = cs;
+		this.damps = damps;
+		this.ccov = ccov;
+		this.ccovsep = ccovsep;
+		this.sigma = sigma;
+		this.diagonalIterations = diagonalIterations;
 		
 		population = new Population();
 		
@@ -205,23 +258,14 @@ public class CMAES extends AbstractAlgorithm {
 	
 	/**
 	 * Validates parameters prior to calling the {@link #initialize()} method.
-	 * Checks include ensuring the initial search point is valid, the problem
-	 * is single-objective and unconstrained, and ensures each devision variable
-	 * is real-valued.
+	 * Checks include ensuring the initial search point is valid and ensures
+	 * each devision variable is real-valued.
 	 * 
 	 * @param prototypeSolution an example solution for retrieving variable
 	 *        types and bounds
 	 * @throws IllegalArgumentException if any of the checks fail
 	 */
 	private void preInitChecks(Solution prototypeSolution) {
-		if (problem.getNumberOfObjectives() > 1) {
-			throw new IllegalArgumentException("CMA-ES only works on single-objective problems");
-		}
-		
-		if (problem.getNumberOfConstraints() > 0) {
-			throw new IllegalArgumentException("CMA-ES does not support constriants");
-		}
-		
 		if (initialSearchPoint != null) {
 			if (initialSearchPoint.length != prototypeSolution.getNumberOfVariables()) {
 				throw new IllegalArgumentException("initial search point is not the correct length (expected=" + prototypeSolution.getNumberOfVariables() + ", actual=" + initialSearchPoint.length + ")");
@@ -283,6 +327,10 @@ public class CMAES extends AbstractAlgorithm {
 			throw new IllegalArgumentException("ccov >= 0 must hold (ccov=" + ccov + ")");
 		}
 		
+		if (ccovsep < 0) {
+			throw new IllegalArgumentException("ccovsep >= 0 must hold (ccovsep=" + ccovsep + ")");
+		}
+		
 		if (sigma <= 0) {
 			throw new IllegalArgumentException("initial standard deviation, sigma, must be positive (sigma=" + sigma + ")");
 		}
@@ -302,8 +350,14 @@ public class CMAES extends AbstractAlgorithm {
 		preInitChecks(prototypeSolution);
 
 		// initialization
-		sigma = 0.5;
-		diagonalIterations = 150 * N / lambda;
+		if (sigma < 0) {
+			sigma = 0.5;
+		}
+		
+		if (diagonalIterations < 0) {
+			diagonalIterations = 150 * N / lambda;
+		}
+		
 		xmean = new double[N];
 		diagD = new double[N];
 		pc = new double[N];
@@ -366,11 +420,26 @@ public class CMAES extends AbstractAlgorithm {
 		double sumSq = StatUtils.sumSq(weights);;
 
 		mueff = 1.0 / sumSq; // also called mucov
-		cs = (mueff + 2) / (N + mueff + 3);
-		damps = (1 + 2 * Math.max(0, Math.sqrt((mueff - 1.0) / (N + 1)) - 1)) + cs;
-		cc = 4.0 / (N + 4.0);
-		ccov = 2.0 / (N + 1.41) / (N + 1.41) / mueff + (1 - (1.0 / mueff)) * Math.min(1, (2 * mueff - 1) / (mueff + (N + 2) * (N + 2)));
-		ccovsep = Math.min(1, ccov * (N + 1.5) / 3.0);
+		
+		if (cs < 0) {
+			cs = (mueff + 2) / (N + mueff + 3);
+		}
+		
+		if (damps < 0) {
+			damps = (1 + 2 * Math.max(0, Math.sqrt((mueff - 1.0) / (N + 1)) - 1)) + cs;
+		}
+		
+		if (cc < 0) {
+			cc = 4.0 / (N + 4.0);
+		}
+		
+		if (ccov < 0) {
+			ccov = 2.0 / (N + 1.41) / (N + 1.41) / mueff + (1 - (1.0 / mueff)) * Math.min(1, (2 * mueff - 1) / (mueff + (N + 2) * (N + 2)));
+		}
+		
+		if (ccovsep < 0) {
+			ccovsep = Math.min(1, ccov * (N + 1.5) / 3.0);
+		}
 		
 		postInitChecks();
 	}
@@ -395,7 +464,7 @@ public class CMAES extends AbstractAlgorithm {
 				}
 			}
 
-			// eigendecomposition
+			// eigenvalue decomposition
 			double[] offdiag = new double[N];
 			tred2(N, B, diagD, offdiag);
 			tql2(N, diagD, offdiag, B);
@@ -407,7 +476,8 @@ public class CMAES extends AbstractAlgorithm {
 			// assign diagD to eigenvalue square roots
 			for (int i = 0; i < N; i++) {
 				if (diagD[i] < 0) { // numerical problem?
-					throw new RuntimeException("an eigenvalue has become negative.");
+					System.err.println("an eigenvalue has become negative");
+					diagD[i] = 0;
 				}
 
 				diagD[i] = Math.sqrt(diagD[i]);
@@ -527,6 +597,32 @@ public class CMAES extends AbstractAlgorithm {
 
 		iteration++;
 	}
+	
+	/**
+	 * Comparator using indicator-based fitness to break ties.
+	 */
+	private static class NondominatedFitnessComparator extends ChainedComparator implements Comparator<Solution>, Serializable {
+
+		private static final long serialVersionUID = -4088873047790962685L;
+
+		public NondominatedFitnessComparator() {
+			super(new RankComparator(), new FitnessComparator());
+		}
+
+	}
+	
+	/**
+	 * Comparator for single-objective problems using aggregate constraint violations to handle constrained optimization problems.
+	 */
+	private static class SingleObjectiveComparator extends ChainedComparator implements Comparator<Solution>, Serializable {
+
+		private static final long serialVersionUID = 6182830776461513578L;
+
+		public SingleObjectiveComparator() {
+			super(new AggregateConstraintComparator(), new ObjectiveComparator(0));
+		}
+		
+	}
 
 	/**
 	 * Updates the internal parameters given the evaluated population.
@@ -538,7 +634,15 @@ public class CMAES extends AbstractAlgorithm {
 		double[] artmp = new double[N];
 
 		// sort function values
-		population.sort(new ObjectiveComparator(0));
+		if (problem.getNumberOfObjectives() == 1) {
+			population.sort(new SingleObjectiveComparator());
+		} else {
+			if (fitnessEvaluator == null) {
+				population.sort(new NondominatedSortingComparator());
+			} else {
+				population.sort(new NondominatedFitnessComparator());
+			}
+		}
 
 		// calculate xmean and BDz
 		for (int i = 0; i < N; i++) {
@@ -617,24 +721,22 @@ public class CMAES extends AbstractAlgorithm {
 		samplePopulation();
 		evaluateAll(population);
 		
-		for (Solution solution : population) {
-			if ((best == null) || (solution.getObjective(0) < best.getObjective(0))) {
-				best = solution;
+		// extension for multiple objectives
+		if (problem.getNumberOfObjectives() > 1) {
+			new FastNondominatedSorting().evaluate(population);
+			
+			if (fitnessEvaluator != null) {
+				fitnessEvaluator.evaluate(population);
 			}
 		}
 
+		archive.addAll(population);
 		updateDistribution();
 	}
 	
 	@Override
 	public NondominatedPopulation getResult() {
-		NondominatedPopulation result = new NondominatedPopulation();
-		
-		if (best != null) {
-			result.add(best);
-		}
-		
-		return result;
+		return archive;
 	}
 
 
