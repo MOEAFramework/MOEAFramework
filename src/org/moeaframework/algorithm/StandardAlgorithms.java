@@ -22,6 +22,7 @@ import java.util.Properties;
 import org.moeaframework.analysis.sensitivity.EpsilonHelper;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
+import org.moeaframework.core.FitnessEvaluator;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Initialization;
 import org.moeaframework.core.NondominatedPopulation;
@@ -35,6 +36,8 @@ import org.moeaframework.core.comparator.ChainedComparator;
 import org.moeaframework.core.comparator.CrowdingComparator;
 import org.moeaframework.core.comparator.DominanceComparator;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
+import org.moeaframework.core.fitness.AdditiveEpsilonIndicatorFitnessEvaluator;
+import org.moeaframework.core.fitness.HypervolumeFitnessEvaluator;
 import org.moeaframework.core.operator.RandomInitialization;
 import org.moeaframework.core.operator.TournamentSelection;
 import org.moeaframework.core.operator.UniformSelection;
@@ -49,7 +52,8 @@ import org.moeaframework.util.TypedProperties;
 
 /**
  * A provider of standard algorithms. The following table contains all
- * available algorithms and the customizable properties.
+ * available algorithms and the customizable properties.  See the user manual
+ * for a more detailed description of the algorithms and parameters.
  * <p>
  * <table width="100%" border="1" cellpadding="3" cellspacing="0">
  *   <tr class="TableHeadingColor">
@@ -98,6 +102,12 @@ import org.moeaframework.util.TypedProperties;
  *         {@code divisionsInner})</td>
  *   </tr>
  *   <tr>
+ *     <td>CMA-ES</td>
+ *     <td>Real</td>
+ *     <td>{@code lambda, cc, cs, damps, ccov, ccovsep, sigma,
+ *         diagonalIterations, indicator, initialSearchPoint}</td>
+ *   </tr>
+ *   <tr>
  *     <td>Random</td>
  *     <td>Any</td>
  *     <td>{@code populationSize, (epsilon)}</td>
@@ -137,6 +147,10 @@ public class StandardAlgorithms extends AlgorithmProvider {
 				return neweNSGAII(typedProperties, problem);
 			} else if (name.equalsIgnoreCase("eMOEA")) {
 				return neweMOEA(typedProperties, problem);
+			} else if (name.equalsIgnoreCase("CMA-ES") ||
+					name.equalsIgnoreCase("CMAES") ||
+					name.equalsIgnoreCase("MO-CMA-ES")) {
+				return newCMAES(typedProperties, problem);
 			} else if (name.equalsIgnoreCase("Random")) {
 				return newRandomSearch(typedProperties, problem);
 			} else {
@@ -404,6 +418,45 @@ public class StandardAlgorithms extends AlgorithmProvider {
 				new UM(1.0));
 
 		return algorithm;
+	}
+	
+	private Algorithm newCMAES(TypedProperties properties, Problem problem) {
+		if (!checkType(RealVariable.class, problem)) {
+			throw new FrameworkException("unsupported decision variable type");
+		}
+		
+		int lambda = (int)properties.getDouble("lambda", 100);
+		double cc = properties.getDouble("cc", -1.0);
+		double cs = properties.getDouble("cs", -1.0);
+		double damps = properties.getDouble("damps", -1.0);
+		double ccov = properties.getDouble("ccov", -1.0);
+		double ccovsep = properties.getDouble("ccovsep", -1.0);
+		double sigma = properties.getDouble("sigma", -1.0);
+		int diagonalIterations = (int)properties.getDouble("diagonalIterations", -1);
+		String indicator = properties.getString("indicator", "crowding");
+		double[] initialSearchPoint = properties.getDoubleArray("initialSearchPoint", null);
+		NondominatedPopulation archive = null;
+		FitnessEvaluator fitnessEvaluator = null;
+		
+		if (problem.getNumberOfObjectives() == 1) {
+			archive = new NondominatedPopulation();
+		} else {
+			archive = new EpsilonBoxDominanceArchive(
+					properties.getDoubleArray("epsilon", 
+							new double[] { EpsilonHelper.getEpsilon(problem) }));
+		}
+		
+		if ("hypervolume".equals(indicator)) {
+			fitnessEvaluator = new HypervolumeFitnessEvaluator(problem);
+		} else if ("epsilon".equals(indicator)) {
+			fitnessEvaluator = new AdditiveEpsilonIndicatorFitnessEvaluator(problem);
+		}
+		
+		CMAES cmaes = new CMAES(problem, lambda, fitnessEvaluator, archive,
+				initialSearchPoint, false, cc, cs, damps, ccov, ccovsep, sigma,
+				diagonalIterations);
+
+		return cmaes;
 	}
 	
 	private Algorithm newRandomSearch(TypedProperties properties, 

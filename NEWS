@@ -5,6 +5,8 @@ Framework.
  Version 2.5 (TBD)
 -------------------
 
+  * Adds support for single and multi-objective CMA-ES.
+
   * Updates chapter 2 in user manual to resolve bugs 32 and 33.
 
 

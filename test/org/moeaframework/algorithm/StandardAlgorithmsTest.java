@@ -114,6 +114,11 @@ public class StandardAlgorithmsTest {
 	}
 	
 	@Test
+	public void testCMAES_Real() {
+		test("CMAES", realProblem);
+	}
+	
+	@Test
 	public void testRandomSearch_Real() {
 		test("Random", realProblem);
 	}
@@ -146,6 +151,11 @@ public class StandardAlgorithmsTest {
 	@Test
 	public void testEpsilonNSGAII_Binary() {
 		test("eNSGAII", binaryProblem);
+	}
+	
+	@Test(expected = ProviderNotFoundException.class)
+	public void testCMAES_Binary() {
+		test("CMAES", binaryProblem);
 	}
 	
 	@Test
@@ -181,6 +191,11 @@ public class StandardAlgorithmsTest {
 	@Test
 	public void testEpsilonNSGAII_Permutation() {
 		test("eNSGAII", permutationProblem);
+	}
+	
+	@Test(expected = ProviderNotFoundException.class)
+	public void testCMAES_Permutation() {
+		test("CMAES", permutationProblem);
 	}
 	
 	@Test

@@ -20,7 +20,6 @@ import org.moeaframework.core.comparator.ObjectiveComparator;
 import org.moeaframework.core.comparator.RankComparator;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
-import org.moeaframework.problem.AbstractProblem;
 
 /**
  * The Covariance Matrix Adaption Evolution Strategy (CMA-ES) algorithm for
@@ -737,43 +736,6 @@ public class CMAES extends AbstractAlgorithm {
 	@Override
 	public NondominatedPopulation getResult() {
 		return archive;
-	}
-
-
-
-	public static void main(String[] args) {
-		AbstractProblem problem = new AbstractProblem(2, 1, 0) {
-
-			@Override
-			public void evaluate(Solution solution) {
-				double result = 0.0;
-				double[] x = EncodingUtils.getReal(solution);
-
-				for (int i = 0; i < x.length-1; i++) {
-					result += 100 * (x[i]*x[i] - x[i+1])*(x[i]*x[i] - x[i+1]) + (x[i] - 1)*(x[i] - 1);
-				}
-
-				solution.setObjective(0, result);
-			}
-
-			@Override
-			public Solution newSolution() {
-				Solution solution = new Solution(2, 1, 0);
-				solution.setVariable(0, EncodingUtils.newReal(-10, 10));
-				solution.setVariable(1, EncodingUtils.newReal(-10, 10));
-				return solution;
-			}
-
-		};
-
-		CMAES cmaes = new CMAES(problem, 1000);
-
-		for (int i = 0; i < 100; i++) {
-			cmaes.step();
-		}
-
-		Solution best = cmaes.getResult().get(0);
-		System.out.println(Arrays.toString(EncodingUtils.getReal(best)) + " " + Arrays.toString(best.getObjectives()));
 	}
 	
 	// The remaining functions in this file are copied almost verbatim from

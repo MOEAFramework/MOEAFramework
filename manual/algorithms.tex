@@ -196,6 +196,35 @@ Use the string \java{"GDE3"} when creating instances of this algorithm with the 
   \hline
 \end{tabularx}
 
+\subsection{CMA-ES}
+CMA-ES is a sophisticated covariance matrix adaptation evolution strategy algorithm for real-valued global optimization problems.  The MOEA Framework supports both the single and multiobjective versions.  The single-objective version is described in:
+\begin{quote}
+Hansen and Kern (2004). ``Evaluating the CMA Evolution Strategy on Multimodal Test Functions.'' In Proceedings of the Eighth International Conference on Parallel Problem Solving from Nature PPSN VIII, pp. 282-291, Berlin: Springer.
+\end{quote}
+and the multiobjective extension is introduced in:
+\begin{quote}
+Igel, C., N. Hansen, and S. Roth (2007).  ``Covariance Matrix Adaptation for Multi-objective Optimization.''  Evolutionary Computation, 15(1):1-28.
+\end{quote}
+Use the string \java{"CMA-ES"} when creating instances of this algorithm with the \java{Executor}.  The following parameters are available:
+\newline
+\newline
+\begin{tabularx}{\linewidth}{lX}
+  \hline
+  Parameters & Description \\
+  \hline
+  lambda & The offspring population size \\
+  cc & The cumulation parameter \\
+  cs & The step size of the cumulation parameter \\
+  damps & The damping factor for the step size \\
+  ccov & The learning rate \\
+  ccovsep & The learning rate when in diagonal-only mode \\
+  sigma & The initial standard deviation \\
+  diagonalIterations & The number of iterations in which only the covariance diagonal is used \\
+  indicator & Either \java{"hypervolume"} or \java{"epsilon"} to specify the use of the hypervolume or additive-epsilon indicator.  If neither is defined, crowding distance is used \\
+  initialSearchPoint & Initial guess at the starting location (comma-separated values) \\
+  \hline
+\end{tabularx}
+
 \subsection{Random Search}
 The random search algorithm simply randomly generates new solutions uniformly throughout the search space.  It is not intended as an ``optimization algorithm'' \emph{per se}, but as a way to compare the performance of other MOEAs against random search.  If an optimization algorithm can not beat random search, then continued use of that optimization algorithm should be questioned.
 
