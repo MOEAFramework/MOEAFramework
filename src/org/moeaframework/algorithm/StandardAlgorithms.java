@@ -432,7 +432,7 @@ public class StandardAlgorithms extends AlgorithmProvider {
 		double ccov = properties.getDouble("ccov", -1.0);
 		double ccovsep = properties.getDouble("ccovsep", -1.0);
 		double sigma = properties.getDouble("sigma", -1.0);
-		int diagonalIterations = (int)properties.getDouble("diagonalIterations", -1);
+		int diagonalIterations = (int)properties.getDouble("diagonalIterations", 0);
 		String indicator = properties.getString("indicator", "crowding");
 		double[] initialSearchPoint = properties.getDoubleArray("initialSearchPoint", null);
 		NondominatedPopulation archive = null;
