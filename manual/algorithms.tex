@@ -24,6 +24,7 @@ The MOEA Framework supports the 26 optimization algorithms listed in \tblref{tbl
   \hline
   AbYSS & Scatter Search & \cellcolor{green!25}Yes & \cellcolor{red!25}No & \cellcolor{red!25}No & \cellcolor{red!25}No & \cellcolor{red!25}No & \cellcolor{green!25}Yes & JMetal \\
   CellDE & Differential Evolution & \cellcolor{green!25}Yes & \cellcolor{red!25}No & \cellcolor{red!25}No & \cellcolor{red!25}No & \cellcolor{red!25}No & \cellcolor{green!25}Yes & JMetal \\
+  CMA-ES & Evolutionary Strategy & \cellcolor{green!25}Yes & \cellcolor{red!25}No & \cellcolor{red!25}No & \cellcolor{red!25}No & \cellcolor{red!25}No & \cellcolor{green!25}Yes & Native \\
   DENSEA & Genetic Algorithm & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{red!25}No & \cellcolor{red!25}No & \cellcolor{green!25}Yes & JMetal \\
   ECEA & Genetic Algorithm & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{red!25}No & PISA \\
   eMOEA & $\epsilon$-Dominance & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & Native \\
@@ -76,6 +77,23 @@ Use the string \java{"eMOEA"} when creating instances of this algorithm with the
   pm.distributionIndex & The distribution index for polynomial mutation \\
   \hline
 \end{tabularx}
+\newline
+\newline
+and the default values for these parameters are:
+\newline
+\newline
+\begin{tabularx}{\linewidth}{lX}
+  \hline
+  Parameter & Default Value \\
+  \hline
+  populationSize & $100$ \\
+  epsilon & Problem dependent \\
+  sbx.rate & $1.0$ \\
+  sbx.distributionIndex & $15.0$ \\
+  pm.rate & $1/N$ where $N$ is the number of decision variables \\
+  pm.distributionIndex & $20.0$ \\
+  \hline
+\end{tabularx}
 
 \subsection{NSGA-II}
 NSGA-II is one of the most widely used MOEAs and was introduced in the following paper:
@@ -96,7 +114,22 @@ Use the string \java{"NSGAII"} when creating instances of this algorithm with th
   pm.distributionIndex & The distribution index for polynomial mutation \\
   \hline
 \end{tabularx}
-
+\newline
+\newline
+and the default values for these parameters are:
+\newline
+\newline
+\begin{tabularx}{\linewidth}{lX}
+  \hline
+  Parameter & Default Values \\
+  \hline
+  populationSize & $100$ \\
+  sbx.rate & $1.0$ \\
+  sbx.distributionIndex & $15.0$ \\
+  pm.rate & $1/N$ \\
+  pm.distributionIndex & $20.0$ \\
+  \hline
+\end{tabularx}
 \subsection{NSGA-III}
 NSGA-III is the many-objective successor to NSGA-II, using reference points to direct solutions towards a diverse set.  Full details are described in:
 \begin{quote}
@@ -117,7 +150,25 @@ Use the string \java{"NSGAIII"} when creating instances of this algorithm with t
   pm.distributionIndex & The distribution index for polynomial mutation \\
   \hline
 \end{tabularx}
-
+\newline
+\newline
+and the default values for these parameters are:
+\newline
+\newline
+\begin{tabularx}{\linewidth}{lX}
+  \hline
+  Parameter & Default Values \\
+  \hline
+  populationSize & $100$ \\
+  divisions & $4$ \\
+  sbx.rate & $1.0$ \\
+  sbx.distributionIndex & $15.0$ \\
+  pm.rate & $1/N$ \\
+  pm.distributionIndex & $20.0$ \\
+  \hline
+\end{tabularx}
+\newline
+\newline
 The \java{divisions} parameter governs the number of reference points, $H$, for an $M$ objective problem with the following equation:
 \begin{equation}
   H = {M+divisions-1 \choose divisions}
@@ -149,6 +200,28 @@ Use the string \java{"eNSGAII"} when creating instances of this algorithm with t
   maximumPopulationSize & The largest possible population size when injecting new solutions after a randomized restart \\
   \hline
 \end{tabularx}
+\newline
+\newline
+and the default values for these parameters are:
+\newline
+\newline
+\begin{tabularx}{\linewidth}{lX}
+  \hline
+  Parameter & Default Values \\
+  \hline
+  populationSize & $100$ \\
+  epsilon & Problem dependent \\
+  sbx.rate & $1.0$ \\
+  sbx.distributionIndex & $15.0$ \\
+  pm.rate & $1/N$ \\
+  pm.distributionIndex & $20.0$ \\
+  injectionRate & $0.25$ \\
+  windowSize & $100$ \\
+  maxWindowSize & $100$ \\
+  minimumPopulationSize & $100$ \\
+  maximumPopulationSize & $10000$ \\
+  \hline
+\end{tabularx}
 
 \subsection{MOEA/D}
 MOEA/D is a relatively new optimization algorithm based on the concept of decomposing the problem into many single-objective formulations.  Two versions of MOEA/D exist in the literature.  The first, based on the paper cited below, is the original incarnation:
@@ -177,6 +250,26 @@ Use the string \java{"MOEAD"} when creating instances of this algorithm with the
   updateUtility & The frequency, in generations, at which utility values are updated \\
   \hline
 \end{tabularx}
+\newline
+\newline
+and the default values for these parameters are:
+\newline
+\newline
+\begin{tabularx}{\linewidth}{lX}
+  \hline
+  Parameter & Default Values \\
+  \hline
+  populationSize & $100$ \\
+  de.crossoverRate & $0.1$ \\
+  de.stepSize & $0.5$ \\
+  pm.rate & $1/N$ \\
+  pm.distributionIndex & $20.0$ \\
+  neighborhoodSize & $0.1$ \\
+  delta & $0.9$ \\
+  eta & $0.01$ \\
+  updateUtility & Unset \\
+  \hline
+\end{tabularx}
 
 \subsection{GDE3}
 GDE3 is the extension of differential evolution for multiobjective problems.  It was originally introduced in the following technical report:
@@ -193,6 +286,20 @@ Use the string \java{"GDE3"} when creating instances of this algorithm with the 
   populationSize & The size of the population \\
   de.crossoverRate & The crossover rate for differential evolution \\
   de.stepSize & Control the size of each step taken by differential evolution \\
+  \hline
+\end{tabularx}
+\newline
+\newline
+and the default values for these parameters are:
+\newline
+\newline
+\begin{tabularx}{\linewidth}{lX}
+  \hline
+  Parameter & Default Values \\
+  \hline
+  populationSize & $100$ \\
+  de.crossoverRate & $0.1$ \\
+  de.stepSize & $0.5$ \\
   \hline
 \end{tabularx}
 
@@ -224,6 +331,27 @@ Use the string \java{"CMA-ES"} when creating instances of this algorithm with th
   initialSearchPoint & Initial guess at the starting location (comma-separated values) \\
   \hline
 \end{tabularx}
+\newline
+\newline
+and the default values for these parameters are:
+\newline
+\newline
+\begin{tabularx}{\linewidth}{lX}
+  \hline
+  Parameters & Default Values \\
+  \hline
+  lambda & $100$ \\
+  cc & Derived value (see reference paper) \\
+  cs & Derived value (see reference paper) \\
+  damps & Derived value (see reference paper) \\
+  ccov & Derived value (see reference paper) \\
+  ccovsep & Derived value (see reference paper) \\
+  sigma & $0.5$ \\
+  diagonalIterations & Derived value (see reference paper) \\
+  indicator & Unset (crowding distance) \\
+  initialSearchPoint & Unset \\
+  \hline
+\end{tabularx}
 
 \subsection{Random Search}
 The random search algorithm simply randomly generates new solutions uniformly throughout the search space.  It is not intended as an ``optimization algorithm'' \emph{per se}, but as a way to compare the performance of other MOEAs against random search.  If an optimization algorithm can not beat random search, then continued use of that optimization algorithm should be questioned.
@@ -237,6 +365,19 @@ Use the string \java{"Random"} when creating instances of this algorithm with th
   \hline
   populationSize & This parameter only has a use when parallelizing evaluations; it controls the number of solutions that are generated and evaluated in parallel \\
   epsilon & The $\epsilon$ values used by the $\epsilon$-dominance archive, which can either be a single value or a comma-separated array (this parameter is optional) \\
+  \hline
+\end{tabularx}
+\newline
+\newline
+and the default values for these parameters are:
+\newline
+\newline
+\begin{tabularx}{\linewidth}{lX}
+  \hline
+  Parameter & Default Values \\
+  \hline
+  populationSize & $100$ \\
+  epsilon & Problem dependent \\
   \hline
 \end{tabularx}
 
