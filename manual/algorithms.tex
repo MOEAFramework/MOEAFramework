@@ -441,6 +441,22 @@ Use the string \java{"AbYSS"} when creating instances of this algorithm with the
   improvementRounds & The number of iterations that the local search operator is applied \\
   \hline
 \end{tabularx}
+\newline
+\newline
+with the default parameter values:
+\newline
+\newline
+\begin{tabularx}{\linewidth}{lX}
+  \hline
+  Parameter & Default Values\\
+  \hline
+  populationSize & $20$ \\
+  archiveSize & $100$ \\
+  refSet1Size & $10$ \\
+  refSet2Size & $10$ \\
+  improvementRounds & $1$ \\
+  \hline
+\end{tabularx}
 
 \subsection{CellDE}
 CellDE is a hybrid cellular genetic algorithm (meaning mating only occurs among neighbors) combined with differential evolution.  CellDE was introduced in the following study:
@@ -461,12 +477,28 @@ Use the string \java{"CellDE"} when creating instances of this algorithm with th
   de.stepSize & Control the size of each step taken by differential evolution \\
   \hline
 \end{tabularx}
+\newline
+\newline
+with the default parameter values:
+\newline
+\newline
+\begin{tabularx}{\linewidth}{lX}
+  \hline
+  Parameter & Default Values \\
+  \hline
+  populationSize & $100$ \\
+  archiveSize & $100$ \\
+  feedBack & $20$ \\
+  de.crossoverRate & $0.1$ \\
+  de.stepSize & $0.5$ \\
+  \hline
+\end{tabularx}
 
 \subsection{DENSEA}
 DENSEA is the duplicate elimination non-domination sorting evolutionary algorithm discussed in the following paper:
 \begin{quote}
-D. Greiner, et al.  ``Enhancing the multiobjective optimum design of structural trusses with evolutionary algorithms using DENSEA.''  44th AIAA (American Institute of Aeronautics and Astronautics) Aerospace Sciences Meeting and Exhibit, AIAA-2006-1474, 2006. 
-\end{quote} 
+D. Greiner, et al.  ``Enhancing the multiobjective optimum design of structural trusses with evolutionary algorithms using DENSEA.''  44th AIAA (American Institute of Aeronautics and Astronautics) Aerospace Sciences Meeting and Exhibit, AIAA-2006-1474, 2006.
+\end{quote}
 Use the string \java{"DENSEA"} when creating instances of this algorithm with the \java{Executor}.  DENSEA supports real-valued, binary, and permutation encodings.  The following parameters are available:
 \newline
 \newline
@@ -475,6 +507,18 @@ Use the string \java{"DENSEA"} when creating instances of this algorithm with th
   Parameter & Description \\
   \hline
   populationSize & The size of the population \\
+  \hline
+\end{tabularx}
+\newline
+\newline
+with the default parameter values:
+\newline
+\newline
+\begin{tabularx}{\linewidth}{lX}
+  \hline
+  Parameter & Default Values \\
+  \hline
+  populationSize & $100$ \\
   \hline
 \end{tabularx}
 
@@ -499,6 +543,24 @@ Use the string \java{"FastPGA"} when creating instances of this algorithm with t
   termination & If 0, the algorithm terminates early if all solutions like on the Pareto optimal front \\
   \hline
 \end{tabularx}
+\newline
+\newline
+with the default parameter values:
+\newline
+\newline
+\begin{tabularx}{\linewidth}{lX}
+  \hline
+  Parameter & Default Values \\
+  \hline
+  maxPopSize & $100$ \\
+  initialPopulationSize & $100$ \\
+  a & $20.0$ \\
+  b & $1.0$ \\
+  c & $20.0$ \\
+  d & $0.0$ \\
+  termination & $1$ \\
+  \hline
+\end{tabularx}
 
 \subsection{IBEA}
 IBEA is a indicator-based MOEA that uses the hypervolume performance indicator as a means to rank solutions.  IBEA was introduced in the following paper:
@@ -514,6 +576,19 @@ Use the string \java{"IBEA"} when creating instances of this algorithm with the 
   \hline
   populationSize & The size of the population \\
   archiveSize & The size of the archive \\
+  \hline
+\end{tabularx}
+\newline
+\newline
+with the default parameter values:
+\newline
+\newline
+\begin{tabularx}{\linewidth}{lX}
+  \hline
+  Parameter & Default Values \\
+  \hline
+  populationSize & $100$ \\
+  archiveSize & $100$ \\
   \hline
 \end{tabularx}
 
@@ -532,6 +607,20 @@ Use the string \java{"MOCell"} when creating instances of this algorithm with th
   populationSize & The size of the population \\
   archiveSize & The size of the archive \\
   feedBack & Controls the number of solutions from the archive that are fed back into the population \\
+  \hline
+\end{tabularx}
+\newline
+\newline
+with the default parameter values:
+\newline
+\newline
+\begin{tabularx}{\linewidth}{lX}
+  \hline
+  Parameter & Default Values \\
+  \hline
+  populationSize & $100$ \\
+  archiveSize & $100$ \\
+  feedBack & $20$ \\
   \hline
 \end{tabularx}
 
@@ -555,6 +644,23 @@ Use the string \java{"MOCHC"} when creating instances of this algorithm with the
   bf.rate & The mutation rate for bit-flip mutation \\
   \hline
 \end{tabularx}
+\newline
+\newline
+with the default parameter values:
+\newline
+\newline
+\begin{tabularx}{\linewidth}{lX}
+  \hline
+  Parameter & Default Values \\
+  \hline
+  initialConvergenceCount & $0.25$ \\
+  preservedPopulation & $0.05$ \\
+  convergenceValue & $3$ \\
+  populationSize & $100$ \\
+  hux.rate & $1.0$ \\
+  bf.rate & $0.35$ \\
+  \hline
+\end{tabularx}
 
 \subsection{OMOPSO}
 OMOPSO is a multiobjective particle swarm optimization algorithm that includes an $\epsilon$-dominance archive to discover a diverse set of Pareto optimal solutions.  OMOPSO was originally introduced at the following conference:
@@ -575,6 +681,22 @@ Use the string \java{"OMOPSO"} when creating instances of this algorithm with th
   epsilon & The $\epsilon$ values used by the $\epsilon$-dominance archive \\
   \hline
 \end{tabularx}
+\newline
+\newline
+with the default parameter values:
+\newline
+\newline
+\begin{tabularx}{\linewidth}{lX}
+  \hline
+  Parameter & Default Values \\
+  \hline
+  populationSize & $100$ \\
+  archiveSize & $100$ \\
+  mutationProbability & $1/N$ \\
+  perturbationIndex & $0.5$ \\
+  epsilon & Problem dependent \\
+  \hline
+\end{tabularx}
 
 \subsection{PAES}
 PAES is a multiobjective version of evolution strategy.  PAES tends to underperform when compared to other MOEAs, but it is often used as a baseline algorithm for comparisons.  PAES was introduced in the following conference proceedings:
@@ -590,6 +712,19 @@ Use the string \java{"PAES"} when creating instances of this algorithm with the 
   \hline
   archiveSize & The size of the archive \\
   bisections & The number of bisections in the adaptive grid archive \\
+  \hline
+\end{tabularx}
+\newline
+\newline
+with the default parameter values:
+\newline
+\newline
+\begin{tabularx}{\linewidth}{lX}
+  \hline
+  Parameter & Default Values \\
+  \hline
+  archiveSize & $100$ \\
+  bisections & $8$ \\
   \hline
 \end{tabularx}
 
@@ -608,6 +743,20 @@ Use the string \java{"PESA2"} when creating instances of this algorithm with the
   populationSize & The size of the population \\
   archiveSize & The size of the archive \\
   bisections & The number of bisections in the adaptive grid archive \\
+  \hline
+\end{tabularx}
+\newline
+\newline
+with the default parameter values:
+\newline
+\newline
+\begin{tabularx}{\linewidth}{lX}
+  \hline
+  Parameter & Default Values \\
+  \hline
+  populationSize & $10$ \\
+  archiveSize & $100$ \\
+  bisections & $8$ \\
   \hline
 \end{tabularx}
 
@@ -629,6 +778,21 @@ Use the string \java{"SMPSO"} when creating instances of this algorithm with the
   pm.distributionIndex & The distribution index for polynomial mutation \\
   \hline
 \end{tabularx}
+\newline
+\newline
+with the default parameter values:
+\newline
+\newline
+\begin{tabularx}{\linewidth}{lX}
+  \hline
+  Parameter & Default Values \\
+  \hline
+  populationSize & $100$ \\
+  archiveSize & $100$ \\
+  pm.rate & $1/N$ \\
+  pm.distributionIndex & $20.0$ \\
+  \hline
+\end{tabularx}
 
 \subsection{SMSEMOA}
 SMSEMOA is an indicator-based MOEA that uses the volume of the dominated hypervolume to rank individuals.  SMSEMOA is discussed in detail in the following paper:
@@ -644,6 +808,19 @@ Use the string \java{"SMSEMOA"} when creating instances of this algorithm with t
   \hline
   populationSize & The size of the population \\
   offset & - \\
+  \hline
+\end{tabularx}
+\newline
+\newline
+with the default parameter values:
+\newline
+\newline
+\begin{tabularx}{\linewidth}{lX}
+  \hline
+  Parameter & Default Values \\
+  \hline
+  populationSize & $100$ \\
+  offset & $100.0$ \\
   \hline
 \end{tabularx}
 
@@ -663,7 +840,19 @@ Use the string \java{"SPEA2"} when creating instances of this algorithm with the
   archiveSize & The size of the archive \\
   \hline
 \end{tabularx}
-
+\newline
+\newline
+with the default parameter values:
+\newline
+\newline
+\begin{tabularx}{\linewidth}{lX}
+  \hline
+  Parameter & Default Values \\
+  \hline
+  populationSize & $100$ \\
+  archiveSize & $100$ \\
+  \hline
+\end{tabularx}
 \section{PISA Algorithms}
 The MOEA Framework has been extensively tested with the PISA algorithms listed in \tblref{tbl:algorithms}.  PISA algorithms are provided by a third-party and are not distributed by the MOEA Framework, but the MOEA Framework can be configured to run such optimization algorithms.  This section describes how to connect the MOEA Framework to a PISA algorithm.
 

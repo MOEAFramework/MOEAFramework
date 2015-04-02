@@ -6,6 +6,8 @@ Framework.
 -------------------
 
   * Adds support for single and multi-objective CMA-ES.
+  
+  * User manual now includes the default parameters for algorithms in chapter 9.
 
   * Updates chapter 2 in user manual to resolve bugs 32 and 33.
 
