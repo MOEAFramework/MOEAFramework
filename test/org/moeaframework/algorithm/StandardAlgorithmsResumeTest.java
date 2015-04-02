@@ -19,6 +19,7 @@ package org.moeaframework.algorithm;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Properties;
 
 import org.junit.Assert;
@@ -38,6 +39,7 @@ import org.moeaframework.core.NondominatedSortingPopulation;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
+import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.comparator.ChainedComparator;
 import org.moeaframework.core.comparator.CrowdingComparator;
@@ -91,6 +93,11 @@ public class StandardAlgorithmsResumeTest {
 	@Test
 	public void testEpsilonMOEA() throws IOException {
 		test("eMOEA");
+	}
+	
+	@Test
+	public void testCMAES() throws IOException {
+		test("CMA-ES");
 	}
 	
 	@Test

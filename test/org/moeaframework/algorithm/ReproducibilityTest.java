@@ -85,6 +85,14 @@ public class ReproducibilityTest {
 	}
 	
 	/**
+	 * Tests CMA-ES for reproducibility.
+	 */
+	@Test
+	public void testCMAES() {
+		test("CMA-ES");
+	}
+	
+	/**
 	 * Tests random search for reproducibility.
 	 */
 	@Test

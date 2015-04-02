@@ -1,8 +1,11 @@
 package org.moeaframework.algorithm;
 
+import java.io.NotSerializableException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
 
 import org.apache.commons.math3.stat.StatUtils;
 import org.moeaframework.core.FastNondominatedSorting;
@@ -251,8 +254,6 @@ public class CMAES extends AbstractAlgorithm {
 		this.diagonalIterations = diagonalIterations;
 		
 		population = new Population();
-		
-		initialize();
 	}
 	
 	/**
@@ -357,7 +358,6 @@ public class CMAES extends AbstractAlgorithm {
 			diagonalIterations = 150 * N / lambda;
 		}
 		
-		xmean = new double[N];
 		diagD = new double[N];
 		pc = new double[N];
 		ps = new double[N];
@@ -382,22 +382,26 @@ public class CMAES extends AbstractAlgorithm {
 		}
 		
 		// initialization of xmean
-		if (initialSearchPoint == null) {
-			for (int i = 0; i < N; i++) {
-				RealVariable variable = (RealVariable)prototypeSolution.getVariable(i);
-				double offset = sigma * diagD[i];
-				double range = (variable.getUpperBound() - variable.getLowerBound() - 2*sigma*diagD[i]);
-				
-				if (offset > 0.4 * (variable.getUpperBound() - variable.getLowerBound())) {
-					offset = 0.4 * (variable.getUpperBound() - variable.getLowerBound());
-					range = 0.2 * (variable.getUpperBound() - variable.getLowerBound());
+		if (xmean == null) {
+			xmean = new double[N];
+			
+			if (initialSearchPoint == null) {
+				for (int i = 0; i < N; i++) {
+					RealVariable variable = (RealVariable)prototypeSolution.getVariable(i);
+					double offset = sigma * diagD[i];
+					double range = (variable.getUpperBound() - variable.getLowerBound() - 2*sigma*diagD[i]);
+					
+					if (offset > 0.4 * (variable.getUpperBound() - variable.getLowerBound())) {
+						offset = 0.4 * (variable.getUpperBound() - variable.getLowerBound());
+						range = 0.2 * (variable.getUpperBound() - variable.getLowerBound());
+					}
+					
+					xmean[i] = variable.getLowerBound() + offset + PRNG.nextDouble() * range;
 				}
-				
-				xmean[i] = variable.getLowerBound() + offset + PRNG.nextDouble() * range;
-			}
-		} else {
-			for (int i = 0; i < N; i++) {
-				xmean[i] = initialSearchPoint[i] + sigma * diagD[i] * PRNG.nextGaussian();
+			} else {
+				for (int i = 0; i < N; i++) {
+					xmean[i] = initialSearchPoint[i] + sigma * diagD[i] * PRNG.nextGaussian();
+				}
 			}
 		}
 
@@ -734,6 +738,22 @@ public class CMAES extends AbstractAlgorithm {
 	}
 	
 	@Override
+	public void step() {
+		// Since unlike other algorithms, the initialize() method does not
+		// produce an initial population.  To remain consistent, we override
+		// the step() method so that iterate() is called after initialize().
+		if (isTerminated()) {
+			throw new AlgorithmTerminationException(this, 
+					"algorithm already terminated");
+		} else if (!isInitialized()) {
+			initialize();
+			iterate();
+		} else {
+			iterate();
+		}
+	}
+	
+	@Override
 	public NondominatedPopulation getResult() {
 		return archive;
 	}
@@ -994,7 +1014,9 @@ public class CMAES extends AbstractAlgorithm {
 		return res;
 	}
 
-	/** sqrt(a^2 + b^2) without under/overflow. **/
+	/**
+	 * Compute sqrt(a^2 + b^2) without under/overflow.
+	 */
 	private static double hypot(double a, double b) {
 		double r  = 0;
 		if (Math.abs(a) > Math.abs(b)) {
@@ -1005,6 +1027,153 @@ public class CMAES extends AbstractAlgorithm {
 			r = Math.abs(b)*Math.sqrt(1+r*r);
 		}
 		return r;
+	}
+	
+	/**
+	 * Proxy for serializing and deserializing the state of a {@code CMAES}
+	 * instance.
+	 */
+	private static class CMAESState implements Serializable {
+
+		private static final long serialVersionUID = 2634186176589891715L;
+
+		/**
+		 * The {@code population} from the {@code MOEAD} instance.
+		 */
+		private final List<Solution> population;
+		
+		/**
+		 * The archive stored in a serializable list.
+		 */
+		private final List<Solution> archive;
+		
+		/**
+		 * The value of {@code iteration} from the {@code CMAES} instance.
+		 */
+		private int iteration;
+
+		/**
+		 * The value of {@code sigma} from the {@code CMAES} instance.
+		 */
+		private double sigma;
+
+		/**
+		 * The value of {@code diagD} from the {@code CMAES} instance.
+		 */
+		private double[] diagD;
+
+		/**
+		 * The value of {@code xmean} from the {@code CMAES} instance.
+		 */
+		private double[] xmean;
+
+		/**
+		 * The value of {@code pc} from the {@code CMAES} instance.
+		 */
+		private double[] pc;
+
+		/**
+		 * The value of {@code ps} from the {@code CMAES} instance.
+		 */
+		private double[] ps;
+
+		/**
+		 * The value of {@code B} from the {@code CMAES} instance.
+		 */
+		private double[][] B;
+
+		/**
+		 * The value of {@code C} from the {@code CMAES} instance.
+		 */
+		private double[][] C;
+
+		/**
+		 * The value of {@code lastEigenupdate} from the {@code CMAES} instance.
+		 */
+		private int lastEigenupdate;
+		
+		/**
+		 * Constructs a proxy for serializing and deserializing the state of a
+		 * {@code CMAES} instance.
+		 * 
+		 * @param population the value of {@code population} from the {@code CMAES} instance
+		 * @param archive the value of {@code archive} from the {@code CMAES} instance
+		 * @param iteration the value of {@code iteration} from the {@code CMAES} instance
+		 * @param sigma the value of {@code sigma} from the {@code CMAES} instance
+		 * @param diagD the value of {@code diagD} from the {@code CMAES} instance
+		 * @param xmean the value of {@code xmean} from the {@code CMAES} instance
+		 * @param pc the value of {@code pc} from the {@code CMAES} instance
+		 * @param ps the value of {@code ps} from the {@code CMAES} instance
+		 * @param B the value of {@code B} from the {@code CMAES} instance
+		 * @param C the value of {@code C} from the {@code CMAES} instance
+		 * @param lastDigenupdate the value of {@code lastEigenupdate} from the {@code CMAES} instance
+		 */
+		public CMAESState(List<Solution> population, List<Solution> archive,
+				int iteration, double sigma, double[] diagD, double[] xmean,
+				double[] pc, double[] ps, double[][] B, double[][] C,
+				int lastEigenupdate) {
+			super();
+			this.population = population;
+			this.archive = archive;
+			this.iteration = iteration;
+			this.sigma = sigma;
+			this.diagD = diagD;
+			this.xmean = xmean;
+			this.pc = pc;
+			this.ps = ps;
+			this.B = B;
+			this.C = C;
+			this.lastEigenupdate = lastEigenupdate;
+		}
+
+	}
+
+	@Override
+	public Serializable getState() throws NotSerializableException {
+		if (!isInitialized()) {
+			throw new AlgorithmInitializationException(this, 
+					"algorithm not initialized");
+		}
+
+		List<Solution> populationList = new ArrayList<Solution>();
+		List<Solution> archiveList = new ArrayList<Solution>();
+
+		for (Solution solution : population) {
+			populationList.add(solution);
+		}
+
+		if (archive != null) {
+			for (Solution solution : archive) {
+				archiveList.add(solution);
+			}
+		}
+
+		return new CMAESState(populationList, archiveList, iteration, sigma,
+				diagD.clone(), xmean.clone(), pc.clone(), ps.clone(),
+				B.clone(), C.clone(), lastEigenupdate);
+	}
+
+	@Override
+	public void setState(Object objState) throws NotSerializableException {
+		CMAESState state = (CMAESState)objState;
+		
+		xmean = state.xmean.clone();
+		initialize();
+		
+		population.addAll(state.population);
+		
+		if (archive != null) {
+			archive.addAll(state.archive);
+		}
+		
+		iteration = state.iteration;
+		sigma = state.sigma;
+		diagD = state.diagD.clone();
+		pc = state.pc.clone();
+		ps = state.ps.clone();
+		B = state.B.clone();
+		C = state.C.clone();
+		lastEigenupdate = state.lastEigenupdate;
 	}
 
 }
