@@ -7,6 +7,8 @@ Framework.
 
   * Adds support for single and multi-objective CMA-ES.
   
+  * Adds native implementations of SPEA2, PAES.
+  
   * User manual now includes the default parameters for algorithms in chapter 9.
 
   * Updates chapter 2 in user manual to resolve bugs 32 and 33.

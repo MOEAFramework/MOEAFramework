@@ -122,6 +122,11 @@ public class StandardAlgorithmsTest {
 	public void testSPEA2_Real() {
 		test("SPEA2", realProblem);
 	}
+
+	@Test
+	public void testPAES_Real() {
+		test("PAES", realProblem);
+	}
 	
 	@Test
 	public void testRandomSearch_Real() {
@@ -167,6 +172,11 @@ public class StandardAlgorithmsTest {
 	public void testSPEA2_Binary() {
 		test("SPEA2", binaryProblem);
 	}
+
+	@Test
+	public void testPAES_Binary() {
+		test("PAES", binaryProblem);
+	}
 	
 	@Test
 	public void testRandomSearch_Binary() {
@@ -211,6 +221,11 @@ public class StandardAlgorithmsTest {
 	@Test
 	public void testSPEA2_Permutation() {
 		test("SPEA2", permutationProblem);
+	}
+
+	@Test
+	public void testPAES_Permutation() {
+		test("PAES", permutationProblem);
 	}
 	
 	@Test

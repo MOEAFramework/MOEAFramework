@@ -220,7 +220,7 @@ public class AdaptiveGridArchive extends NondominatedPopulation {
 	 *         archive, or {@code -1} if the solution is not within the current
 	 *         lower and upper bounds
 	 */
-	protected int findIndex(Solution solution) {
+	public int findIndex(Solution solution) {
 		int index = 0;
 
 		for (int i = 0; i < problem.getNumberOfObjectives(); i++) {
@@ -242,6 +242,16 @@ public class AdaptiveGridArchive extends NondominatedPopulation {
 		}
 
 		return index;
+	}
+	
+	/**
+	 * Returns the density of the solution at the given index.
+	 * 
+	 * @param index the solution index
+	 * @return the density of the solution at the given index
+	 */
+	public int getDensity(int index) {
+		return density[index];
 	}
 
 }

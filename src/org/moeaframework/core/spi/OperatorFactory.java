@@ -250,15 +250,70 @@ public class OperatorFactory {
 	}
 	
 	/**
-	 * Returns the name of the default variation operator for the given problem.
+	 * Returns the name of the default mutation operator for the given problem.
 	 * Mixed types are currently not supported.
+	 * 
+	 * @param problem the problem
+	 * @return the name of the default mutation operator for the given problem
+	 * @throws ProviderNotFoundException if no default mutation operator could
+	 *         be determined
+	 */
+	public String getDefaultMutation(Problem problem) {
+		EnumSet<Type> types = EnumSet.noneOf(Type.class);
+		Solution solution = problem.newSolution();
+		
+		for (int i=0; i<solution.getNumberOfVariables(); i++) {
+			Variable variable = solution.getVariable(i);
+			
+			if (variable instanceof RealVariable) {
+				types.add(Type.REAL);
+			} else if (variable instanceof BinaryVariable) {
+				types.add(Type.BINARY);
+			} else if (variable instanceof Permutation) {
+				types.add(Type.PERMUTATION);
+			} else if (variable instanceof Grammar) {
+				types.add(Type.GRAMMAR);
+			} else if (variable instanceof Program) {
+				types.add(Type.PROGRAM);
+			} else {
+				types.add(Type.UNKNOWN);
+			}
+		}
+		
+		if (types.isEmpty()) {
+			throw new ProviderNotFoundException("empty type");
+		} else if (types.size() > 1) {
+			throw new ProviderNotFoundException("mixed type");
+		}
+		
+		Type type = types.iterator().next();
+		
+		if (type.equals(Type.REAL)) {
+			return "pm";
+		} else if (type.equals(Type.BINARY)) {
+			return "bf";
+		} else if (type.equals(Type.PERMUTATION)) {
+			return "insertion+swap";
+		} else if (type.equals(Type.GRAMMAR)) {
+			return "gm";
+		} else if (type.equals(Type.PROGRAM)) {
+			return "ptm";
+		} else {
+			throw new ProviderNotFoundException("unknown type");
+		}
+	}
+	
+	/**
+	 * Returns the name of the default variation operator (e.g., crossover with
+	 * mutation) for the given problem.  Mixed types are currently not
+	 * supported.
 	 * 
 	 * @param problem the problem
 	 * @return the name of the default variation operator for the given problem
 	 * @throws ProviderNotFoundException if no default variation operator could
 	 *         be determined
 	 */
-	private String getDefaultVariation(Problem problem) {
+	public String getDefaultVariation(Problem problem) {
 		EnumSet<Type> types = EnumSet.noneOf(Type.class);
 		Solution solution = problem.newSolution();
 		

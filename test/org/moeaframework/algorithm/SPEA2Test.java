@@ -1,17 +1,12 @@
 package org.moeaframework.algorithm;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Properties;
-
-import jmetal.core.SolutionSet;
-import jmetal.util.Spea2Fitness;
 
 import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.TestUtils;
 import org.moeaframework.core.FitnessEvaluator;
-import org.moeaframework.core.Initialization;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
@@ -24,51 +19,6 @@ import org.moeaframework.problem.MockRealProblem;
  * Tests the {@link SPEA2} class.
  */
 public class SPEA2Test extends AlgorithmTest {
-	
-	@Test
-	public void test() {
-		Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
-		Population population = new Population();
-		SolutionSet solutionSet = new SolutionSet(20);
-		Initialization initialization = new RandomInitialization(problem, 20);
-		
-		for (Solution solution : initialization.initialize()) {
-			problem.evaluate(solution);
-			population.add(solution);
-			
-			jmetal.core.Solution jmetalSolution = new jmetal.core.Solution(2);
-			jmetalSolution.setObjective(0, solution.getObjective(0));
-			jmetalSolution.setObjective(1, solution.getObjective(1));
-			solutionSet.add(jmetalSolution);
-		}
-		
-		SPEA2 spea2 = new SPEA2(problem, null, null, 0, 1);
-		spea2.fitnessEvaluator.evaluate(population);
-		Population result1 = spea2.truncate(population, 3);
-		
-		Spea2Fitness fitness = new Spea2Fitness(solutionSet);
-		fitness.fitnessAssign();
-		SolutionSet result2 = fitness.environmentalSelection(3);
-		
-		for (int i = 0; i < population.size(); i++) {
-			System.out.println(Arrays.toString(population.get(i).getObjectives()) + " " + population.get(i).getAttribute("fitness"));
-		}
-		System.out.println("=");
-		for (int i = 0; i < solutionSet.size(); i++) {
-			System.out.println(solutionSet.get(i).getObjective(0) + " " + solutionSet.get(i).getObjective(1) + " " + solutionSet.get(i).getFitness());
-		}
-		
-		System.out.println();
-		System.out.println();
-		
-		for (int i = 0; i < result1.size(); i++) {
-			System.out.println(result1.get(i).getAttribute("fitness"));
-		}
-		System.out.println("=");
-		for (int i = 0; i < result2.size(); i++) {
-			System.out.println(result2.get(i).getFitness());
-		}
-	}
 	
 	@Test
 	public void testDTLZ1() throws IOException {

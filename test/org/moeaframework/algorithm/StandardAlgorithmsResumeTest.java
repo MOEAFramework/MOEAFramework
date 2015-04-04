@@ -102,6 +102,11 @@ public class StandardAlgorithmsResumeTest {
 	public void testSPEA2() throws IOException {
 		test("SPEA2");
 	}
+
+	@Test
+	public void testPAES() throws IOException {
+		test("PAES");
+	}
 	
 	@Test
 	public void testInstrumentedAlgorithm() throws IOException {

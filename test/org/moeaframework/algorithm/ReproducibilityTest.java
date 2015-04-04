@@ -101,6 +101,14 @@ public class ReproducibilityTest {
 	}
 	
 	/**
+	 * Tests PAES for reproducibility.
+	 */
+	@Test
+	public void testPAES() {
+		test("PAES");
+	}
+	
+	/**
 	 * Tests random search for reproducibility.
 	 */
 	@Test

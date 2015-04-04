@@ -160,6 +160,8 @@ public class StandardAlgorithms extends AlgorithmProvider {
 				return newCMAES(typedProperties, problem);
 			} else if (name.equalsIgnoreCase("SPEA2")) {
 				return newSPEA2(typedProperties, problem);
+			} else if (name.equalsIgnoreCase("PAES")) {
+				return newPAES(typedProperties, problem);
 			} else if (name.equalsIgnoreCase("Random")) {
 				return newRandomSearch(typedProperties, problem);
 			} else {
@@ -498,6 +500,34 @@ public class StandardAlgorithms extends AlgorithmProvider {
 		return new SPEA2(problem, initialization, variation, offspringSize, k);
 	}
 	
+	/**
+	 * Returns a new {@link PAES} instance.
+	 * 
+	 * @param properties the properties for customizing the new {@code PAES}
+	 *        instance
+	 * @param problem the problem
+	 * @return a new {@code PAES} instance
+	 */
+	private Algorithm newPAES(TypedProperties properties, Problem problem) {
+		int archiveSize = (int)properties.getDouble("archiveSize", 100);
+		int biSections = (int)properties.getDouble("biSections", 8);
+
+		Variation variation = OperatorFactory.getInstance().getVariation(
+				OperatorFactory.getInstance().getDefaultMutation(problem), 
+				properties,
+				problem);
+
+		return new PAES(problem, variation, biSections, archiveSize);
+	}
+	
+	/**
+	 * Returns a new {@link RandomSearch} instance.
+	 * 
+	 * @param properties the properties for customizing the new
+	 *        {@code RandomSearch} instance
+	 * @param problem the problem
+	 * @return a new {@code RandomSearch} instance
+	 */
 	private Algorithm newRandomSearch(TypedProperties properties, 
 			Problem problem) {
 		int populationSize = (int)properties.getDouble("populationSize", 100);
