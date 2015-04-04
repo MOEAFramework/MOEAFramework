@@ -11,8 +11,8 @@
 	<classpathentry kind="lib" path="lib/jcommon-1.0.20.jar"/>
 	<classpathentry kind="lib" path="lib/jfreechart-1.0.15.jar"/>
 	<classpathentry kind="lib" path="lib/junit-4.11.jar"/>
-	<classpathentry kind="lib" path="lib/commons-math3-3.1.1.jar"/>
 	<classpathentry kind="lib" path="lib/rsyntaxtextarea.jar"/>
+	<classpathentry kind="lib" path="lib/commons-math3-3.4.1.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

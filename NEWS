@@ -10,6 +10,9 @@ Framework.
   * User manual now includes the default parameters for algorithms in chapter 9.
 
   * Updates chapter 2 in user manual to resolve bugs 32 and 33.
+  
+  * Upgraded to Commons-Math 3.4 (from version 3.1.1) to get access to newer
+    methods.
 
 
 --------------------------

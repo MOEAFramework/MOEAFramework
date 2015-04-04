@@ -108,6 +108,12 @@ import org.moeaframework.util.TypedProperties;
  *         diagonalIterations, indicator, initialSearchPoint}</td>
  *   </tr>
  *   <tr>
+ *     <td>SPEA2</td>
+ *     <td>Any</td>
+ *     <td>{@code populationSize, offspringSize, k, sbx.rate,
+ *         sbx.distributionIndex, pm.rate, pm.distributionIndex}</td>
+ *   </tr>
+ *   <tr>
  *     <td>Random</td>
  *     <td>Any</td>
  *     <td>{@code populationSize, (epsilon)}</td>
@@ -143,6 +149,7 @@ public class StandardAlgorithms extends AlgorithmProvider {
 					name.equalsIgnoreCase("NSGA3")) {
 				return newNSGAIII(typedProperties, problem);
 			} else if (name.equalsIgnoreCase("eNSGAII") ||
+					name.equalsIgnoreCase("e-NSGA-II") ||
 					name.equalsIgnoreCase("eNSGA2")) {
 				return neweNSGAII(typedProperties, problem);
 			} else if (name.equalsIgnoreCase("eMOEA")) {
@@ -151,6 +158,8 @@ public class StandardAlgorithms extends AlgorithmProvider {
 					name.equalsIgnoreCase("CMAES") ||
 					name.equalsIgnoreCase("MO-CMA-ES")) {
 				return newCMAES(typedProperties, problem);
+			} else if (name.equalsIgnoreCase("SPEA2")) {
+				return newSPEA2(typedProperties, problem);
 			} else if (name.equalsIgnoreCase("Random")) {
 				return newRandomSearch(typedProperties, problem);
 			} else {
@@ -420,6 +429,14 @@ public class StandardAlgorithms extends AlgorithmProvider {
 		return algorithm;
 	}
 	
+	/**
+	 * Returns a new {@link CMAES} instance.
+	 * 
+	 * @param properties the properties for customizing the new {@code CMAES}
+	 *        instance
+	 * @param problem the problem
+	 * @return a new {@code CMAES} instance
+	 */
 	private Algorithm newCMAES(TypedProperties properties, Problem problem) {
 		if (!checkType(RealVariable.class, problem)) {
 			throw new FrameworkException("unsupported decision variable type");
@@ -457,6 +474,28 @@ public class StandardAlgorithms extends AlgorithmProvider {
 				diagonalIterations);
 
 		return cmaes;
+	}
+	
+	/**
+	 * Returns a new {@link SPEA2} instance.
+	 * 
+	 * @param properties the properties for customizing the new {@code SPEA2}
+	 *        instance
+	 * @param problem the problem
+	 * @return a new {@code SPEA2} instance
+	 */
+	private Algorithm newSPEA2(TypedProperties properties, Problem problem) {
+		int populationSize = (int)properties.getDouble("populationSize", 100);
+		int offspringSize = (int)properties.getDouble("offspringSize", 100);
+		int k = (int)properties.getDouble("k", 1);
+		
+		Initialization initialization = new RandomInitialization(problem,
+				populationSize);
+
+		Variation variation = OperatorFactory.getInstance().getVariation(null, 
+				properties, problem);
+
+		return new SPEA2(problem, initialization, variation, offspringSize, k);
 	}
 	
 	private Algorithm newRandomSearch(TypedProperties properties, 

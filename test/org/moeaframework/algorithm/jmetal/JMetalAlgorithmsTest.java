@@ -161,7 +161,7 @@ public class JMetalAlgorithmsTest {
 
 	@Test
 	public void testSPEA2_Real() {
-		test("SPEA2", realProblem);
+		test("SPEA2-JMetal", realProblem);
 	}
 
 	@Test(expected = ProviderNotFoundException.class)
@@ -236,7 +236,7 @@ public class JMetalAlgorithmsTest {
 
 	@Test
 	public void testSPEA2_Binary() {
-		test("SPEA2", binaryProblem);
+		test("SPEA2-JMetal", binaryProblem);
 	}
 	
 	@Test(expected = ProviderNotFoundException.class)
@@ -311,7 +311,7 @@ public class JMetalAlgorithmsTest {
 
 	@Test
 	public void testSPEA2_Permutation() {
-		test("SPEA2", permutationProblem);
+		test("SPEA2-JMetal", permutationProblem);
 	}
 
 	/**

@@ -115,7 +115,12 @@ public class StandardAlgorithmsTest {
 	
 	@Test
 	public void testCMAES_Real() {
-		test("CMAES", realProblem);
+		test("CMA-ES", realProblem);
+	}
+	
+	@Test
+	public void testSPEA2_Real() {
+		test("SPEA2", realProblem);
 	}
 	
 	@Test
@@ -155,7 +160,12 @@ public class StandardAlgorithmsTest {
 	
 	@Test(expected = ProviderNotFoundException.class)
 	public void testCMAES_Binary() {
-		test("CMAES", binaryProblem);
+		test("CMA-ES", binaryProblem);
+	}
+	
+	@Test
+	public void testSPEA2_Binary() {
+		test("SPEA2", binaryProblem);
 	}
 	
 	@Test
@@ -195,7 +205,12 @@ public class StandardAlgorithmsTest {
 	
 	@Test(expected = ProviderNotFoundException.class)
 	public void testCMAES_Permutation() {
-		test("CMAES", permutationProblem);
+		test("CMA-ES", permutationProblem);
+	}
+	
+	@Test
+	public void testSPEA2_Permutation() {
+		test("SPEA2", permutationProblem);
 	}
 	
 	@Test

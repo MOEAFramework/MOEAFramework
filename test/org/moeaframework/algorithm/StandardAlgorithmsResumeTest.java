@@ -99,6 +99,11 @@ public class StandardAlgorithmsResumeTest {
 	}
 	
 	@Test
+	public void testSPEA2() throws IOException {
+		test("SPEA2");
+	}
+	
+	@Test
 	public void testInstrumentedAlgorithm() throws IOException {
 		testInstrumented("NSGAII");
 	}

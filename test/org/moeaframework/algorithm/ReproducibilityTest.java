@@ -93,6 +93,14 @@ public class ReproducibilityTest {
 	}
 	
 	/**
+	 * Tests SPEA2 for reproducibility.
+	 */
+	@Test
+	public void testSPEA2() {
+		test("SPEA2");
+	}
+	
+	/**
 	 * Tests random search for reproducibility.
 	 */
 	@Test
