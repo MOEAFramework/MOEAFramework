@@ -109,6 +109,14 @@ public class ReproducibilityTest {
 	}
 	
 	/**
+	 * Tests PESA2 for reproducibility.
+	 */
+	@Test
+	public void testPESA2() {
+		test("PESA2");
+	}
+	
+	/**
 	 * Tests random search for reproducibility.
 	 */
 	@Test

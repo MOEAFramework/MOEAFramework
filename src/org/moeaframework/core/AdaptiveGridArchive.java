@@ -84,8 +84,8 @@ public class AdaptiveGridArchive extends NondominatedPopulation {
 
 		minimum = new double[problem.getNumberOfObjectives()];
 		maximum = new double[problem.getNumberOfObjectives()];
-		density = new int[(int)Math.pow(numberOfDivisions, problem
-				.getNumberOfObjectives())];
+		density = new int[(int)Math.pow(numberOfDivisions,
+				problem.getNumberOfObjectives())];
 
 		adaptGrid();
 	}

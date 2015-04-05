@@ -16,7 +16,7 @@ import org.moeaframework.core.operator.RandomInitialization;
  * References:
  * <ol>
  *   <li>Knowles, J.D. and D. W. Corne (1999). The Pareto Archived Evolution
- *       Strategy : A New Baseline Algorithm for Pareto Multiobjective
+ *       Strategy: A New Baseline Algorithm for Pareto Multiobjective
  *       Optimisation. In Proceedings of the 1999 Congress on Evolutionary
  *       Computation (CEC'99), pp. 98-105.
  * </ol>

@@ -114,6 +114,17 @@ import org.moeaframework.util.TypedProperties;
  *         sbx.distributionIndex, pm.rate, pm.distributionIndex}</td>
  *   </tr>
  *   <tr>
+ *     <td>PAES</td>
+ *     <td>Any</td>
+ *     <td>{@code archiveSize, bisections, pm.rate, pm.distributionIndex}</td>
+ *   </tr>
+ *   <tr>
+ *     <td>PESA2</td>
+ *     <td>Any</td>
+ *     <td>{@code populationSize, archiveSize, bisections, sbx.rate,
+ *         sbx.distributionIndex, pm.rate, pm.distributionIndex}</td>
+ *   </tr>
+ *   <tr>
  *     <td>Random</td>
  *     <td>Any</td>
  *     <td>{@code populationSize, (epsilon)}</td>
@@ -162,6 +173,8 @@ public class StandardAlgorithms extends AlgorithmProvider {
 				return newSPEA2(typedProperties, problem);
 			} else if (name.equalsIgnoreCase("PAES")) {
 				return newPAES(typedProperties, problem);
+			} else if (name.equalsIgnoreCase("PESA2")) {
+				return newPESA2(typedProperties, problem);
 			} else if (name.equalsIgnoreCase("Random")) {
 				return newRandomSearch(typedProperties, problem);
 			} else {
@@ -510,14 +523,36 @@ public class StandardAlgorithms extends AlgorithmProvider {
 	 */
 	private Algorithm newPAES(TypedProperties properties, Problem problem) {
 		int archiveSize = (int)properties.getDouble("archiveSize", 100);
-		int biSections = (int)properties.getDouble("biSections", 8);
+		int bisections = (int)properties.getDouble("bisections", 8);
 
 		Variation variation = OperatorFactory.getInstance().getVariation(
 				OperatorFactory.getInstance().getDefaultMutation(problem), 
 				properties,
 				problem);
 
-		return new PAES(problem, variation, biSections, archiveSize);
+		return new PAES(problem, variation, bisections, archiveSize);
+	}
+	
+	/**
+	 * Returns a new {@link PESA2} instance.
+	 * 
+	 * @param properties the properties for customizing the new {@code PESA2}
+	 *        instance
+	 * @param problem the problem
+	 * @return a new {@code PESA2} instance
+	 */
+	private Algorithm newPESA2(TypedProperties properties, Problem problem) {
+		int populationSize = (int)properties.getDouble("populationSize", 100);
+		int archiveSize = (int)properties.getDouble("archiveSize", 100);
+		int bisections = (int)properties.getDouble("bisections", 8);
+		
+		Initialization initialization = new RandomInitialization(problem,
+				populationSize);
+
+		Variation variation = OperatorFactory.getInstance().getVariation(null, 
+				properties, problem);
+
+		return new PESA2(problem, variation, initialization, bisections, archiveSize);
 	}
 	
 	/**
