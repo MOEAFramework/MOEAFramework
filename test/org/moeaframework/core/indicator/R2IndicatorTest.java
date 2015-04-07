@@ -15,16 +15,6 @@ import org.moeaframework.problem.MockRealProblem;
  * using the PISA r-ind.exe program.
  */
 public class R2IndicatorTest {
-
-	@Test
-	public void testChebychev() throws IOException {
-		testUtility("./pf/DTLZ2.2D.pf", new RIndicator.ChebychevUtility(), 0.782451);
-	}
-	
-	@Test
-	public void testLinearWeights() throws IOException {
-		testUtility("./pf/DTLZ2.2D.pf", new RIndicator.LinearWeightedSumUtility(), 0.750497);
-	}
 	
 	@Test
 	public void testZero() throws IOException {
@@ -53,13 +43,18 @@ public class R2IndicatorTest {
 		Assert.assertTrue(indicator.evaluate(population1) < indicator.evaluate(population2));
 	}
 	
-	public void testUtility(String file, RIndicator.UtilityFunction utilityFunction, double expectedUtility) throws IOException {
+	@Test
+	public void testCase() throws IOException {
 		NondominatedPopulation referenceSet = new NondominatedPopulation(
-				PopulationIO.readObjectives(new File(file)));
+				PopulationIO.readObjectives(new File("./pf/DTLZ2.2D.pf")));
 		
-		R2Indicator indicator = new R2Indicator(new MockRealProblem(), 500, referenceSet, utilityFunction);
-		Assert.assertEquals(expectedUtility, indicator.expectedUtility(referenceSet), 0.000001);
+		R2Indicator indicator = new R2Indicator(new MockRealProblem(), 500, referenceSet);
 		
+		NondominatedPopulation population = new NondominatedPopulation();
+		population.add(TestUtils.newSolution(0.75, 0.25));
+		population.add(TestUtils.newSolution(0.25, 0.75));
+		
+		Assert.assertEquals(3.245073179e-002, indicator.evaluate(population), 0.000001);
 	}
 	
 }

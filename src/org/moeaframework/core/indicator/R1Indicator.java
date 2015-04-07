@@ -19,6 +19,18 @@ import org.moeaframework.core.Solution;
  * </ol>
  */
 public class R1Indicator extends RIndicator {
+	
+	/**
+	 * The default value for {@code espilon}.
+	 */
+	public static final double DEFAULT_EPSILON = 0.00001;
+	
+	/**
+	 * Resolution when comparing two utility function values for equality.
+	 * If the difference between the two utility values is less than
+	 * {@code epsilon}, they are considered equal.
+	 */
+	private double epsilon;
 
 	/**
 	 * Constructs a new R1 indicator using the Chebychev utility function.
@@ -43,7 +55,23 @@ public class R1Indicator extends RIndicator {
 	public R1Indicator(Problem problem, int subdivisions,
 			NondominatedPopulation referenceSet,
 			UtilityFunction utilityFunction) {
+		this(problem, subdivisions, referenceSet, utilityFunction,
+				DEFAULT_EPSILON);
+	}
+	
+	/**
+	 * Constructs a new R1 indicator using the specified utility function.
+	 * 
+	 * @param problem the problem
+	 * @param subdivisions the number of subdivisions along each objective
+	 * @param referenceSet the reference set
+	 * @param utilityFunction the utility function
+	 */
+	public R1Indicator(Problem problem, int subdivisions,
+			NondominatedPopulation referenceSet,
+			UtilityFunction utilityFunction, double epsilon) {
 		super(problem, subdivisions, referenceSet, utilityFunction);
+		this.epsilon = epsilon;
 	}
 	
 	@Override
@@ -64,7 +92,7 @@ public class R1Indicator extends RIndicator {
 						weights[i]));
 			}
 
-			if (Math.abs(max2 - max1) < 0.00001) {
+			if (Math.abs(max2 - max1) < epsilon) {
 				sum += 0.5;
 			} else if (max1 > max2) {
 				sum += 1.0;

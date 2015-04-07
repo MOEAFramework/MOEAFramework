@@ -2,6 +2,7 @@ package org.moeaframework.core.indicator;
 
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
+import org.moeaframework.core.Solution;
 
 /**
  * Computes the R3 indicator.  The R3 indicator is a utility ratio, or the
@@ -45,11 +46,26 @@ public class R3Indicator extends RIndicator {
 	
 	@Override
 	public double evaluate(NondominatedPopulation population) {
-		double referenceSetUtility = expectedUtility(
-				getNormalizedReferenceSet());
+		double sum = 0.0;
 		
-		return (referenceSetUtility - expectedUtility(population)) /
-				(referenceSetUtility + 1e-30);
+		for (int i = 0; i < weights.length; i++) {
+			double max1 = Double.NEGATIVE_INFINITY;
+			double max2 = Double.NEGATIVE_INFINITY;
+			
+			for (Solution solution : population) {
+				max1 = Math.max(max1, utilityFunction.computeUtility(solution,
+						weights[i]));
+			}
+			
+			for (Solution solution : getNormalizedReferenceSet()) {
+				max2 = Math.max(max2, utilityFunction.computeUtility(solution,
+						weights[i]));
+			}
+			
+			sum += (max2 - max1) / (max2 + 1e-30);
+		}
+		
+		return sum / weights.length;
 	}
 
 }
