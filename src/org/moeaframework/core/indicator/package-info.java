@@ -84,6 +84,13 @@
  *     <td>No</td>
  *     <td>Maximize &rarr; 1</td>
  *   </tr>
+ *   <tr>
+ *     <td>{@link org.moeaframework.core.indicator.R2Indicator}</td>
+ *     <td>No</td>
+ *     <td>Yes</td>
+ *     <td>Yes</td>
+ *     <td>Minimize &rarr; -1</td>
+ *   </tr>
  * </table>
  * <p>
  * References:
