@@ -127,6 +127,18 @@ import org.moeaframework.util.TypedProperties;
  *         sbx.distributionIndex, pm.rate, pm.distributionIndex}</td>
  *   </tr>
  *   <tr>
+ *     <td>OMOPSO</td>
+ *     <td>Real</td>
+ *     <td>{@code populationSize, archiveSize, maxEvaluations,
+ *         mutationProbability, perturbationIndex, epsilon}</td>
+ *   </tr>
+ *   <tr>
+ *     <td>SMPSO</td>
+ *     <td>Real</td>
+ *     <td>{@code populationSize, archiveSize, pm.rate,
+ *         pm.distributionIndex}</td>
+ *   </tr>
+ *   <tr>
  *     <td>Random</td>
  *     <td>Any</td>
  *     <td>{@code populationSize, (epsilon)}</td>
