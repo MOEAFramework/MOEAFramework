@@ -5,6 +5,8 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.comparator.CrowdingComparator;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
+import org.moeaframework.core.fitness.CrowdingDistanceFitnessEvaluator;
+import org.moeaframework.core.fitness.FitnessBasedArchive;
 import org.moeaframework.core.operator.real.PM;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
@@ -38,7 +40,7 @@ public class SMPSO extends AbstractPSOAlgorithm {
 			double mutationProbability, double distributionIndex) {
 		super(problem, swarmSize, leaderSize, new CrowdingComparator(),
 				new ParetoDominanceComparator(),
-				new CrowdingPopulation(leaderSize),
+				new FitnessBasedArchive(new CrowdingDistanceFitnessEvaluator(), leaderSize),
 				null,
 				new PM(mutationProbability, distributionIndex));
 
@@ -97,6 +99,9 @@ public class SMPSO extends AbstractPSOAlgorithm {
 
 	@Override
 	protected void mutate(int i) {
+		// The SMPSO paper [1] states that mutation is applied 15% of the time,
+		// but the JMetal implementation applies to every 6th particle.  Should
+		// the application of mutation be random instead?
 		if (i % 6 == 0) {
 			particles[i] = mutation.evolve(new Solution[] { particles[i] })[0];
 		}

@@ -35,5 +35,14 @@ public interface FitnessEvaluator {
 	 * @param population the population to be evaluated
 	 */
 	public void evaluate(Population population);
+	
+	/**
+	 * Returns {@code true} if larger fitness values are preferred; otherwise
+	 * smaller fitness values are preferred.
+	 * 
+	 * @return {@code true} if larger fitness values are preferred; otherwise
+	 *         smaller fitness values are preferred
+	 */
+	public boolean areLargerValuesPreferred();
 
 }

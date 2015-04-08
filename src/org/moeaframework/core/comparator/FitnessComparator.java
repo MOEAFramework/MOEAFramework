@@ -34,18 +34,41 @@ public class FitnessComparator implements DominanceComparator,
 Comparator<Solution>, Serializable {
 
 	private static final long serialVersionUID = -3480841924543305614L;
+	
+	/**
+	 * {@code true} if larger fitness values are preferred; otherwise smaller
+	 * fitness values are preferred.
+	 */
+	private final boolean largerValuesPreferred;
 
 	/**
 	 * Constructs a dominance comparator for comparing solutions based on their
-	 * {@code FITNESS_ATTRIBUTE} value.
+	 * {@code FITNESS_ATTRIBUTE} value.  By default, smaller fitness values
+	 * are preferred.
+	 * 
+	 * @deprecated Use {@link #FitnessComparator(boolean)} instead; this method
+	 *             will be removed in a future version
 	 */
+	@Deprecated
 	public FitnessComparator() {
+		this(false);
+	}
+	
+	/**
+	 * Constructs a dominance comparator for comparing solutions based on their
+	 * {@code FITNESS_ATTRIBUTE} value.
+	 * 
+	 * @param largerValuesPreferred {@code true} if larger fitness values are
+	 *        preferred; otherwise smaller fitness values are preferred
+	 */
+	public FitnessComparator(boolean largerValuesPreferred) {
 		super();
+		this.largerValuesPreferred = largerValuesPreferred;
 	}
 
 	@Override
 	public int compare(Solution solution1, Solution solution2) {
-		return Double.compare(
+		return (largerValuesPreferred ? -1 : 1) * Double.compare(
 				(Double)solution1.getAttribute(FITNESS_ATTRIBUTE),
 				(Double)solution2.getAttribute(FITNESS_ATTRIBUTE));
 	}

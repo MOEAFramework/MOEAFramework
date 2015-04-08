@@ -7,6 +7,7 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.comparator.DominanceComparator;
+import org.moeaframework.core.fitness.FitnessBasedArchive;
 import org.moeaframework.core.operator.RandomInitialization;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
@@ -39,7 +40,7 @@ public abstract class AbstractPSOAlgorithm extends AbstractAlgorithm {
 	/**
 	 * The leaders.
 	 */
-	protected NondominatedPopulation leaders;
+	protected FitnessBasedArchive leaders;
 	
 	/**
 	 * The archive of non-dominated solutions; or {@code null} of no external
@@ -85,7 +86,7 @@ public abstract class AbstractPSOAlgorithm extends AbstractAlgorithm {
 	public AbstractPSOAlgorithm(Problem problem, int swarmSize, int leaderSize,
 			DominanceComparator leaderComparator,
 			DominanceComparator dominanceComparator,
-			NondominatedPopulation leaders,
+			FitnessBasedArchive leaders,
 			NondominatedPopulation archive,
 			Variation mutation) {
 		super(problem);
@@ -253,6 +254,7 @@ public abstract class AbstractPSOAlgorithm extends AbstractAlgorithm {
 		}
 		
 		leaders.addAll(initialParticles);
+		leaders.update();
 		
 		if (archive != null) {
 			archive.addAll(initialParticles);
@@ -269,6 +271,7 @@ public abstract class AbstractPSOAlgorithm extends AbstractAlgorithm {
 		
 		updateLocalBest();
 		leaders.addAll(particles);
+		leaders.update();
 		
 		if (archive != null) {
 			archive.addAll(particles);

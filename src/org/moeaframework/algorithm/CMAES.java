@@ -604,12 +604,12 @@ public class CMAES extends AbstractAlgorithm {
 	/**
 	 * Comparator using indicator-based fitness to break ties.
 	 */
-	private static class NondominatedFitnessComparator extends ChainedComparator implements Comparator<Solution>, Serializable {
+	private class NondominatedFitnessComparator extends ChainedComparator implements Comparator<Solution>, Serializable {
 
 		private static final long serialVersionUID = -4088873047790962685L;
 
 		public NondominatedFitnessComparator() {
-			super(new RankComparator(), new FitnessComparator());
+			super(new RankComparator(), new FitnessComparator(fitnessEvaluator.areLargerValuesPreferred()));
 		}
 
 	}
@@ -617,7 +617,7 @@ public class CMAES extends AbstractAlgorithm {
 	/**
 	 * Comparator for single-objective problems using aggregate constraint violations to handle constrained optimization problems.
 	 */
-	private static class SingleObjectiveComparator extends ChainedComparator implements Comparator<Solution>, Serializable {
+	private class SingleObjectiveComparator extends ChainedComparator implements Comparator<Solution>, Serializable {
 
 		private static final long serialVersionUID = 6182830776461513578L;
 

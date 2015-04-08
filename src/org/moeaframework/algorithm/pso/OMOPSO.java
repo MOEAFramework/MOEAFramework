@@ -7,6 +7,8 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.comparator.CrowdingComparator;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
+import org.moeaframework.core.fitness.CrowdingDistanceFitnessEvaluator;
+import org.moeaframework.core.fitness.FitnessBasedArchive;
 import org.moeaframework.core.variable.RealVariable;
 
 // NOTE: This implementation is derived from the original manuscripts and the
@@ -59,7 +61,7 @@ public class OMOPSO extends AbstractPSOAlgorithm {
 			double mutationPerturbation, int maxIterations) {
 		super(problem, swarmSize, leaderSize, new CrowdingComparator(),
 				new ParetoDominanceComparator(),
-				new CrowdingPopulation(leaderSize),
+				new FitnessBasedArchive(new CrowdingDistanceFitnessEvaluator(), leaderSize),
 				new EpsilonBoxDominanceArchive(epsilons),
 				null);
 		this.uniformMutation = new UniformMutation(mutationProbability,

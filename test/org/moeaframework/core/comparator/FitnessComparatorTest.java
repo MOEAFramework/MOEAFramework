@@ -40,7 +40,7 @@ public class FitnessComparatorTest {
 	 */
 	@Before
 	public void setUp() {
-		comparator = new FitnessComparator();
+		comparator = new FitnessComparator(false);
 	}
 
 	/**

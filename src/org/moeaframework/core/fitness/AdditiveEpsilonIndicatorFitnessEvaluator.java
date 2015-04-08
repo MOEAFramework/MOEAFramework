@@ -87,4 +87,9 @@ public class AdditiveEpsilonIndicatorFitnessEvaluator extends
 		return eps;
 	}
 
+	@Override
+	public boolean areLargerValuesPreferred() {
+		return false;
+	}
+
 }

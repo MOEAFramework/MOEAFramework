@@ -65,6 +65,11 @@ public class SPEA2 extends AbstractEvolutionaryAlgorithm {
 	 * Strength-based fitness evaluator.
 	 */
 	protected final StrengthFitnessEvaluator fitnessEvaluator;
+	
+	/**
+	 * Compares solutions based on strength.
+	 */
+	protected final FitnessComparator fitnessComparator;
 
 	/**
 	 * Constructs a new instance of SPEA2.
@@ -82,8 +87,9 @@ public class SPEA2 extends AbstractEvolutionaryAlgorithm {
 		this.variation = variation;
 		this.numberOfOffspring = numberOfOffspring;
 		
-		selection = new TournamentSelection(new FitnessComparator());
 		fitnessEvaluator = new StrengthFitnessEvaluator(k);
+		fitnessComparator = new FitnessComparator(fitnessEvaluator.areLargerValuesPreferred());
+		selection = new TournamentSelection(fitnessComparator);
 	}
 
 	@Override
@@ -145,7 +151,7 @@ public class SPEA2 extends AbstractEvolutionaryAlgorithm {
 		
 		if (survivors.size() < size) {
 			// fill remaining spaces with dominated solutions
-			offspring.sort(new FitnessComparator());
+			offspring.sort(fitnessComparator);
 			
 			while (survivors.size() < size) {
 				survivors.add(offspring.get(0));
@@ -383,6 +389,11 @@ public class SPEA2 extends AbstractEvolutionaryAlgorithm {
 			for (int i = 0; i < population.size(); i++) {
 				population.get(i).setAttribute(FITNESS_ATTRIBUTE, fitness[i]);
 			}
+		}
+
+		@Override
+		public boolean areLargerValuesPreferred() {
+			return false;
 		}
 		
 	}

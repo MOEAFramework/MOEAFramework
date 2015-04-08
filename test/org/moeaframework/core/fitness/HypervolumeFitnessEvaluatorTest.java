@@ -17,6 +17,8 @@
  */
 package org.moeaframework.core.fitness;
 
+import java.util.Arrays;
+
 import jmetal.core.SolutionSet;
 import jmetal.metaheuristics.ibea.IBEA;
 
@@ -30,11 +32,29 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.operator.RandomInitialization;
 import org.moeaframework.core.spi.ProblemFactory;
+import org.moeaframework.problem.MockRealProblem;
 
 /**
  * Tests the {@link HypervolumeFitnessEvaluator} class.
  */
 public class HypervolumeFitnessEvaluatorTest {
+	
+	@Test
+	public void test() {
+		Population population = new Population();
+		population.add(TestUtils.newSolution(0.0, 0.0));
+		population.add(TestUtils.newSolution(0.0, 1.0));
+		population.add(TestUtils.newSolution(1.0, 0.0));
+		population.add(TestUtils.newSolution(0.5, 0.5));
+		
+		FitnessEvaluator fitnessEvaluator = new HypervolumeFitnessEvaluator(
+				new MockRealProblem());
+		fitnessEvaluator.evaluate(population);
+		
+		for (Solution solution : population) {
+			System.out.println(Arrays.toString(solution.getObjectives()) + " " + solution.getAttribute("fitness"));
+		}
+	}
 
 	@Test
 	public void testDTLZ2_2D() {
