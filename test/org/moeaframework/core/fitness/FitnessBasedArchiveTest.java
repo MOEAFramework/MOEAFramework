@@ -1,3 +1,6 @@
+// TODO: These tests currently rely on classes available in JMetal 4.5 but not
+// in the version currently being used by the MOEA Framework.
+
 //package org.moeaframework.core.fitness;
 //
 //import jmetal.util.Distance;

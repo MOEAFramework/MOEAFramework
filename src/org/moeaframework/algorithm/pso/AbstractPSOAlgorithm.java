@@ -51,7 +51,7 @@ public abstract class AbstractPSOAlgorithm extends AbstractAlgorithm {
 	/**
 	 * The speed / velocity of each particle.
 	 */
-	protected double[][] speed;
+	protected double[][] velocities;
 	
 	/**
 	 * Comparator for selecting leaders.
@@ -100,15 +100,15 @@ public abstract class AbstractPSOAlgorithm extends AbstractAlgorithm {
 
 		particles = new Solution[swarmSize];
 		localBestParticles =  new Solution[swarmSize];
-		speed = new double[swarmSize][problem.getNumberOfVariables()];
+		velocities = new double[swarmSize][problem.getNumberOfVariables()];
 	}
 	
 	/**
 	 * Update the speeds of all particles.
 	 */
-	protected void updateSpeeds() {
+	protected void updateVelocities() {
 		for (int i = 0; i < swarmSize; i++) {
-			updateSpeed(i);
+			updateVelocity(i);
 		}
 	}
 	
@@ -117,7 +117,7 @@ public abstract class AbstractPSOAlgorithm extends AbstractAlgorithm {
 	 * 
 	 * @param i the index of the particle
 	 */
-	protected void updateSpeed(int i) {
+	protected void updateVelocity(int i) {
 		Solution particle = particles[i];
 		Solution localBestParticle = localBestParticles[i];
 		Solution leader = selectLeader();
@@ -133,7 +133,7 @@ public abstract class AbstractPSOAlgorithm extends AbstractAlgorithm {
 			double localBestValue = EncodingUtils.getReal(localBestParticle.getVariable(j));
 			double leaderValue = EncodingUtils.getReal(leader.getVariable(j));
 			
-			speed[i][j] = W * speed[i][j] + 
+			velocities[i][j] = W * velocities[i][j] + 
 					C1*r1*(localBestValue - particleValue) +
 					C2*r2*(leaderValue - particleValue);
 		}
@@ -159,14 +159,14 @@ public abstract class AbstractPSOAlgorithm extends AbstractAlgorithm {
 		
 		for (int j = 0; j < problem.getNumberOfVariables(); j++) {
 			RealVariable variable = (RealVariable)offspring.getVariable(j);
-			double value = variable.getValue() + speed[i][j];
+			double value = variable.getValue() + velocities[i][j];
 			
 			if (value < variable.getLowerBound()) {
 				value = variable.getLowerBound();
-				speed[i][j] *= -1;
+				velocities[i][j] *= -1;
 			} else if (value > variable.getUpperBound()) {
 				value = variable.getUpperBound();
-				speed[i][j] *= -1;
+				velocities[i][j] *= -1;
 			}
 			
 			variable.setValue(value);
@@ -263,7 +263,7 @@ public abstract class AbstractPSOAlgorithm extends AbstractAlgorithm {
 
 	@Override
 	protected void iterate() {
-		updateSpeeds();
+		updateVelocities();
 		updatePositions();
 		mutate();
 		

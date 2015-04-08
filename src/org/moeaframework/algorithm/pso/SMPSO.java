@@ -32,9 +32,15 @@ import org.moeaframework.core.variable.RealVariable;
  */
 public class SMPSO extends AbstractPSOAlgorithm {
 	
-	private double[] minimumDelta;
+	/**
+	 * The minimum velocity for each variable.
+	 */
+	private double[] minimumVelocity;
 	
-	private double[] maximumDelta;
+	/**
+	 * The maximum velocity for each varaible.
+	 */
+	private double[] maximumVelocity;
 	
 	public SMPSO(Problem problem, int swarmSize, int leaderSize,
 			double mutationProbability, double distributionIndex) {
@@ -44,19 +50,21 @@ public class SMPSO extends AbstractPSOAlgorithm {
 				null,
 				new PM(mutationProbability, distributionIndex));
 
-		minimumDelta = new double[problem.getNumberOfVariables()];
-		maximumDelta = new double[problem.getNumberOfVariables()];
+		// initialize the minimum and maximum velocities
+		minimumVelocity = new double[problem.getNumberOfVariables()];
+		maximumVelocity = new double[problem.getNumberOfVariables()];
 		
 		Solution prototypeSolution = problem.newSolution();
 		
 		for (int i = 0; i < problem.getNumberOfVariables(); i++) {
 			RealVariable variable = (RealVariable)prototypeSolution.getVariable(i);
-			maximumDelta[i] = (variable.getUpperBound() - variable.getLowerBound()) / 2.0;
-			minimumDelta[i] = -maximumDelta[i];
+			maximumVelocity[i] = (variable.getUpperBound() - variable.getLowerBound()) / 2.0;
+			minimumVelocity[i] = -maximumVelocity[i];
 		}
 	}
 	
-	protected void updateSpeed(int i) {
+	@Override
+	protected void updateVelocity(int i) {
 		Solution particle = particles[i];
 		Solution localBestParticle = localBestParticles[i];
 		Solution leader = selectLeader();
@@ -73,20 +81,27 @@ public class SMPSO extends AbstractPSOAlgorithm {
 			double leaderValue = EncodingUtils.getReal(leader.getVariable(j));
 			
 			double velocity = constrictionCoefficient(C1, C2) * 
-					W * speed[i][j] + 
+					W * velocities[i][j] + 
 					C1*r1*(localBestValue - particleValue) +
 					C2*r2*(leaderValue - particleValue);
 			
-			if (velocity > maximumDelta[j]) {
-				velocity = maximumDelta[j];
-			} else if (velocity < minimumDelta[j]) {
-				velocity = minimumDelta[j];
+			if (velocity > maximumVelocity[j]) {
+				velocity = maximumVelocity[j];
+			} else if (velocity < minimumVelocity[j]) {
+				velocity = minimumVelocity[j];
 			}
 			
-			speed[i][j] = velocity;
+			velocities[i][j] = velocity;
 		}
 	}
 	
+	/**
+	 * Returns the velocity constriction coefficient.
+	 * 
+	 * @param c1 the velocity coefficient for the local best
+	 * @param c2 the velocity coefficient for the leader
+	 * @return the velocity constriction coefficient
+	 */
 	protected double constrictionCoefficient(double c1, double c2) {
 		double rho = c1 + c2;
 		
@@ -106,6 +121,5 @@ public class SMPSO extends AbstractPSOAlgorithm {
 			particles[i] = mutation.evolve(new Solution[] { particles[i] })[0];
 		}
 	}
-
 
 }
