@@ -7,7 +7,9 @@ Framework.
 
   * Adds support for single and multi-objective CMA-ES.
   
-  * Adds native implementations of SPEA2, PAES.
+  * Adds native implementations of SPEA2, PAES, PESA2.
+  
+  * Adds R1, R2, and R3 binary indicators.
   
   * User manual now includes the default parameters for algorithms in chapter 9.
 

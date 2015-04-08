@@ -19,6 +19,8 @@ package org.moeaframework.algorithm;
 
 import java.util.Properties;
 
+import org.moeaframework.algorithm.pso.OMOPSO;
+import org.moeaframework.algorithm.pso.SMPSO;
 import org.moeaframework.analysis.sensitivity.EpsilonHelper;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
@@ -175,6 +177,10 @@ public class StandardAlgorithms extends AlgorithmProvider {
 				return newPAES(typedProperties, problem);
 			} else if (name.equalsIgnoreCase("PESA2")) {
 				return newPESA2(typedProperties, problem);
+			} else if (name.equalsIgnoreCase("OMOPSO")) {
+				return newOMOPSO(typedProperties, problem);
+			} else if (name.equalsIgnoreCase("SMPSO")) {
+				return newSMPSO(typedProperties, problem);
 			} else if (name.equalsIgnoreCase("Random")) {
 				return newRandomSearch(typedProperties, problem);
 			} else {
@@ -553,6 +559,58 @@ public class StandardAlgorithms extends AlgorithmProvider {
 				properties, problem);
 
 		return new PESA2(problem, variation, initialization, bisections, archiveSize);
+	}
+	
+	/**
+	 * Returns a new {@link OMOPSO} instance.
+	 * 
+	 * @param properties the properties for customizing the new {@code OMOPSO}
+	 *        instance
+	 * @param problem the problem
+	 * @return a new {@code OMOPSO} instance
+	 */
+	private Algorithm newOMOPSO(TypedProperties properties, Problem problem) {
+		if (!checkType(RealVariable.class, problem)) {
+			throw new FrameworkException("unsupported decision variable type");
+		}
+		
+		int populationSize = (int)properties.getDouble("populationSize", 100);
+		int archiveSize = (int)properties.getDouble("archiveSize", 100);
+		int maxIterations = (int)properties.getDouble("maxEvaluations", 25000) /
+				populationSize;
+		double mutationProbability = properties.getDouble("mutationProbability",
+				1.0 / problem.getNumberOfVariables());
+		double perturbationIndex = properties.getDouble("perturbationIndex",
+				0.5);
+		double[] epsilon = properties.getDoubleArray("epsilon",
+				new double[] { EpsilonHelper.getEpsilon(problem) });
+		
+		return new OMOPSO(problem, populationSize, archiveSize,
+				epsilon, mutationProbability, perturbationIndex, maxIterations);
+	}
+	
+	/**
+	 * Returns a new {@link SMPSO} instance.
+	 * 
+	 * @param properties the properties for customizing the new {@code SMPSO}
+	 *        instance
+	 * @param problem the problem
+	 * @return a new {@code SMPSO} instance
+	 */
+	private Algorithm newSMPSO(TypedProperties properties, Problem problem) {
+		if (!checkType(RealVariable.class, problem)) {
+			throw new FrameworkException("unsupported decision variable type");
+		}
+		
+		int populationSize = (int)properties.getDouble("populationSize", 100);
+		int archiveSize = (int)properties.getDouble("archiveSize", 100);
+		double mutationProbability = properties.getDouble("pm.rate",
+				1.0 / problem.getNumberOfVariables());
+		double distributionIndex = properties.getDouble("pm.distributionIndex",
+				0.5);
+		
+		return new SMPSO(problem, populationSize, archiveSize,
+				mutationProbability, distributionIndex);
 	}
 	
 	/**

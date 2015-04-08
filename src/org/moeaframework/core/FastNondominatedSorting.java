@@ -123,7 +123,7 @@ public class FastNondominatedSorting {
 	 * 
 	 * @param front the population whose solutions are to be evaluated
 	 */
-	protected void updateCrowdingDistance(Population front) {
+	public void updateCrowdingDistance(Population front) {
 		int n = front.size();
 
 		if (n < 3) {
