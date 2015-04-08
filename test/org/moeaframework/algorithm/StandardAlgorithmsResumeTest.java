@@ -114,6 +114,23 @@ public class StandardAlgorithmsResumeTest {
 	}
 	
 	@Test
+	@Ignore("currently not implemented")
+	public void testOMOPSO() throws IOException {
+		test("OMOPSO");
+	}
+	
+	@Test
+	@Ignore("currently not implemented")
+	public void testSMPSO() throws IOException {
+		test("SMPSO");
+	}
+	
+	@Test
+	public void testIBEA() throws IOException {
+		test("IBEA");
+	}
+	
+	@Test
 	public void testInstrumentedAlgorithm() throws IOException {
 		testInstrumented("NSGAII");
 	}

@@ -144,6 +144,11 @@ public class StandardAlgorithmsTest {
 	}
 	
 	@Test
+	public void testIBEA_Real() {
+		test("IBEA", realProblem);
+	}
+	
+	@Test
 	public void testRandomSearch_Real() {
 		test("Random", realProblem);
 	}
@@ -208,6 +213,10 @@ public class StandardAlgorithmsTest {
 		test("SMPSO", binaryProblem);
 	}
 	
+	public void testIBEA_Binary() {
+		test("IBEA", binaryProblem);
+	}
+	
 	@Test
 	public void testRandomSearch_Binary() {
 		test("Random", binaryProblem);
@@ -270,7 +279,11 @@ public class StandardAlgorithmsTest {
 	
 	@Test(expected = ProviderNotFoundException.class)
 	public void testSMPSO_Permutation() {
-		test("SMPSOS", permutationProblem);
+		test("SMPSO", permutationProblem);
+	}
+	
+	public void testIBEA_Permutation() {
+		test("IBEA", permutationProblem);
 	}
 	
 	@Test

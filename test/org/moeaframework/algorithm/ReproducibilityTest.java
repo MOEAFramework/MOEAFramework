@@ -133,6 +133,14 @@ public class ReproducibilityTest {
 	}
 	
 	/**
+	 * Tests IBEA for reproducibility.
+	 */
+	@Test
+	public void testIBEA() {
+		test("IBEA");
+	}
+	
+	/**
 	 * Tests random search for reproducibility.
 	 */
 	@Test

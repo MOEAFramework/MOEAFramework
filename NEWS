@@ -7,7 +7,10 @@ Framework.
 
   * Adds support for single and multi-objective CMA-ES.
   
-  * Adds native implementations of SPEA2, PAES, PESA2, OMPSO, SMPSO.
+  * Adds native implementations of SPEA2, PAES, PESA2, OMPSO, SMPSO, IBEA.
+    Having native implementations expands the capabilities of these algorithms,
+    including collecting runtime dynamics, access to better operators and
+    representations, parallelization, and more.
   
   * Adds R1, R2, and R3 binary indicators.  The R2 indicator is most often
     seen in the literature, but the others are included for completeness.

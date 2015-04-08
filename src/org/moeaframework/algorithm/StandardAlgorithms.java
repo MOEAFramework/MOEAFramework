@@ -40,6 +40,7 @@ import org.moeaframework.core.comparator.DominanceComparator;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
 import org.moeaframework.core.fitness.AdditiveEpsilonIndicatorFitnessEvaluator;
 import org.moeaframework.core.fitness.HypervolumeFitnessEvaluator;
+import org.moeaframework.core.fitness.IndicatorFitnessEvaluator;
 import org.moeaframework.core.operator.RandomInitialization;
 import org.moeaframework.core.operator.TournamentSelection;
 import org.moeaframework.core.operator.UniformSelection;
@@ -139,6 +140,12 @@ import org.moeaframework.util.TypedProperties;
  *         pm.distributionIndex}</td>
  *   </tr>
  *   <tr>
+ *     <td>IBEA</td>
+ *     <td>Any</td>
+ *     <td>{@code populationSize, sbx.rate, sbx.distributionIndex, pm.rate,
+ *         pm.distributionIndex, indicator}</td>
+ *   </tr>
+ *   <tr>
  *     <td>Random</td>
  *     <td>Any</td>
  *     <td>{@code populationSize, (epsilon)}</td>
@@ -193,6 +200,8 @@ public class StandardAlgorithms extends AlgorithmProvider {
 				return newOMOPSO(typedProperties, problem);
 			} else if (name.equalsIgnoreCase("SMPSO")) {
 				return newSMPSO(typedProperties, problem);
+			} else if (name.equalsIgnoreCase("IBEA")) {
+				return newIBEA(typedProperties, problem);
 			} else if (name.equalsIgnoreCase("Random")) {
 				return newRandomSearch(typedProperties, problem);
 			} else {
@@ -623,6 +632,36 @@ public class StandardAlgorithms extends AlgorithmProvider {
 		
 		return new SMPSO(problem, populationSize, archiveSize,
 				mutationProbability, distributionIndex);
+	}
+	
+	/**
+	 * Returns a new {@link IBEA} instance.
+	 * 
+	 * @param properties the properties for customizing the new {@code IBEA}
+	 *        instance
+	 * @param problem the problem
+	 * @return a new {@code IBEA} instance
+	 */
+	private Algorithm newIBEA(TypedProperties properties, Problem problem) {
+		int populationSize = (int)properties.getDouble("populationSize", 100);
+		String indicator = properties.getString("indicator", "hypervolume");
+		IndicatorFitnessEvaluator fitnessEvaluator = null;
+
+		Initialization initialization = new RandomInitialization(problem,
+				populationSize);
+
+		Variation variation = OperatorFactory.getInstance().getVariation(null, 
+				properties, problem);
+		
+		if ("hypervolume".equals(indicator)) {
+			fitnessEvaluator = new HypervolumeFitnessEvaluator(problem);
+		} else if ("epsilon".equals(indicator)) {
+			fitnessEvaluator = new AdditiveEpsilonIndicatorFitnessEvaluator(
+					problem);
+		}
+
+		return new IBEA(problem, null, initialization, variation,
+				fitnessEvaluator);
 	}
 	
 	/**

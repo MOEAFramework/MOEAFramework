@@ -18,6 +18,7 @@
 package org.moeaframework.core.fitness;
 
 import org.moeaframework.core.FitnessEvaluator;
+import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
@@ -37,6 +38,18 @@ public abstract class IndicatorFitnessEvaluator implements FitnessEvaluator {
 	 * Scaling factor for fitness calculation.
 	 */
 	private static final double kappa = 0.05;
+	
+	/**
+	 * Record of the maximum indicator value from the last call to
+	 * {@link #evaluate(Population)}.
+	 */
+	private double maxAbsIndicatorValue;
+	
+	/**
+	 * Record of the fitness components from the last call to
+	 * {@link #evaluate(Population)}.
+	 */
+	private double[][] fitcomp;
 
 	/**
 	 * Constructs an indicator-based fitness for the specified problem.
@@ -97,8 +110,8 @@ public abstract class IndicatorFitnessEvaluator implements FitnessEvaluator {
 		Population normalizedPopulation = normalizer.normalize(population);
 
 		// compute fitness components
-		double[][] fitcomp = new double[population.size()][population.size()];
-		double maxAbsIndicatorValue = Double.NEGATIVE_INFINITY;
+		fitcomp = new double[population.size()][population.size()];
+		maxAbsIndicatorValue = Double.NEGATIVE_INFINITY;
 
 		for (int i = 0; i < population.size(); i++) {
 			for (int j = 0; j < population.size(); j++) {
@@ -117,14 +130,52 @@ public abstract class IndicatorFitnessEvaluator implements FitnessEvaluator {
 			
 			for (int j = 0; j < population.size(); j++) {
 				if (i != j) {
-					sum += Math.exp((-fitcomp[j][i] / maxAbsIndicatorValue)
-							/ kappa);
+					sum += Math.exp((-fitcomp[j][i] / maxAbsIndicatorValue) / kappa);
 				}
 			}
 			
-			population.get(i).setAttribute(FitnessEvaluator.FITNESS_ATTRIBUTE, 
-					sum);
+			population.get(i).setAttribute(FitnessEvaluator.FITNESS_ATTRIBUTE, sum);
 		}
+	}
+	
+	/**
+	 * After calling {@link #evaluate(Population)}, this method is used to
+	 * iteratively remove solutions from the population while updating the
+	 * fitness value. There must be no other modifications to the population
+	 * between invocations of {@link #evaluate(Population)} and this method
+	 * other than removing solutions using this method.
+	 * 
+	 * @param population the population
+	 * @param removeIndex the index to remove
+	 */
+	public void removeAndUpdate(Population population, int removeIndex) {
+		if (fitcomp == null) {
+			throw new FrameworkException("evaluate must be called first");
+		}
+		
+		for (int i = 0; i < population.size(); i++) {
+			if (i != removeIndex) {
+				Solution solution = population.get(i);
+				double fitness = (Double)solution.getAttribute(
+						FitnessEvaluator.FITNESS_ATTRIBUTE);
+				
+				fitness -= Math.exp((-fitcomp[removeIndex][i] / maxAbsIndicatorValue) / kappa);
+				
+				solution.setAttribute(FITNESS_ATTRIBUTE, fitness);
+			}
+		}
+		
+		for (int i = 0; i < population.size(); i++) {
+			for (int j = removeIndex+1; j < population.size(); j++) {
+				fitcomp[i][j-1] = fitcomp[i][j];
+			}
+			
+			if (i > removeIndex) {
+				fitcomp[i-1] = fitcomp[i];
+			}
+		}
+
+		population.remove(removeIndex);
 	}
 
 	/**
