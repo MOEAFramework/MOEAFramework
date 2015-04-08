@@ -7,16 +7,17 @@ Framework.
 
   * Adds support for single and multi-objective CMA-ES.
   
-  * Adds native implementations of SPEA2, PAES, PESA2.
+  * Adds native implementations of SPEA2, PAES, PESA2, OMPSO, SMPSO.
   
-  * Adds R1, R2, and R3 binary indicators.
+  * Adds R1, R2, and R3 binary indicators.  The R2 indicator is most often
+    seen in the literature, but the others are included for completeness.
   
   * User manual now includes the default parameters for algorithms in chapter 9.
 
   * Updates chapter 2 in user manual to resolve bugs 32 and 33.
   
   * Upgraded to Commons-Math 3.4 (from version 3.1.1) to get access to newer
-    methods.
+    methods (primarily KthSelector).
 
 
 --------------------------

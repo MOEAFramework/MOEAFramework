@@ -30,10 +30,30 @@ import org.moeaframework.core.variable.RealVariable;
  */
 public class OMOPSO extends AbstractPSOAlgorithm {
 
+	/**
+	 * The uniform mutation operator, whose parameters remain unchanged.
+	 */
 	private final Variation uniformMutation;
 	
+	/**
+	 * The non-uniform mutation operator, whose parameters change during a run.
+	 */
 	private final Variation nonUniformMutation;
 	
+	/**
+	 * Constructs a new OMOPSO instance.
+	 * 
+	 * @param problem the problem
+	 * @param swarmSize the number of particles
+	 * @param leaderSize the number of leaders
+	 * @param epsilons the &epsilon;-values used in the external archive
+	 * @param mutationProbability the mutation probability for uniform and
+	 *        non-uniform mutation
+	 * @param mutationPerturbation the perturbation index for uniform and
+	 *        non-uniform mutation
+	 * @param maxIterations the maximum iterations for scaling the non-uniform
+	 *        mutation
+	 */
 	public OMOPSO(Problem problem, int swarmSize, int leaderSize,
 			double[] epsilons, double mutationProbability,
 			double mutationPerturbation, int maxIterations) {
@@ -59,13 +79,16 @@ public class OMOPSO extends AbstractPSOAlgorithm {
 		}
 	}
 	
-	public class NonUniformMutation implements Variation {
+	/**
+	 * The non-uniform mutation operator.
+	 */
+	private class NonUniformMutation implements Variation {
 		
-		private double probability = 1.0 / problem.getNumberOfVariables();
+		private final double probability;
 		
-		private double perturbation = 0.5;
+		private final double perturbation;
 		
-		private int maxIterations = 250;
+		private final int maxIterations;
 		
 		public NonUniformMutation(double probability, double perturbation,
 				int maxIterations) {
@@ -118,11 +141,14 @@ public class OMOPSO extends AbstractPSOAlgorithm {
 
 	}
 	
-	public class UniformMutation implements Variation {
+	/**
+	 * The uniform mutation operator.
+	 */
+	private class UniformMutation implements Variation {
 		
-		private double probability = 1.0 / problem.getNumberOfVariables();
+		private final double probability;
 		
-		private double perturbation = 0.5;
+		private final double perturbation;
 		
 		public UniformMutation(double probability, double perturbation) {
 			super();

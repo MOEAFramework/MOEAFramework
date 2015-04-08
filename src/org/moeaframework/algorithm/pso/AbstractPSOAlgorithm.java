@@ -12,30 +12,76 @@ import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
 
 /**
- * Generic multi-objective particle swarm optimizer (MOPSO) implementation.
+ * Abstract multi-objective particle swarm optimizer (MOPSO).
  */
 public abstract class AbstractPSOAlgorithm extends AbstractAlgorithm {
 
+	/**
+	 * The number of particles.
+	 */
 	protected int swarmSize;
 	
+	/**
+	 * The number of leaders.
+	 */
 	protected int leaderSize;
 	
+	/**
+	 * The particles.
+	 */
 	protected Solution[] particles;
 	
+	/**
+	 * The local best particles.
+	 */
 	protected Solution[] localBestParticles;
 	
+	/**
+	 * The leaders.
+	 */
 	protected NondominatedPopulation leaders;
 	
+	/**
+	 * The archive of non-dominated solutions; or {@code null} of no external
+	 * archive is sued.
+	 */
 	protected NondominatedPopulation archive;
 	
+	/**
+	 * The speed / velocity of each particle.
+	 */
 	protected double[][] speed;
 	
+	/**
+	 * Comparator for selecting leaders.
+	 */
 	protected DominanceComparator leaderComparator;
 	
+	/**
+	 * Comparator for updating the local best particles.
+	 */
 	protected DominanceComparator dominanceComparator;
 	
+	/**
+	 * Mutation operator, or {@code null} if no mutation is defined.
+	 */
 	protected Variation mutation;
 	
+	/**
+	 * Constructs a new abstract PSO algorithm.
+	 * 
+	 * @param problem the problem
+	 * @param swarmSize the number of particles
+	 * @param leaderSize the number of leaders
+	 * @param leaderComparator comparator for selecting leaders
+	 * @param dominanceComparator comparator for updating the local best
+	 *        particles
+	 * @param leaders non-dominated population for storing the leaders
+	 * @param archive non-dominated population for storing the external archive;
+	 *        or {@code null} if no external archive is defined
+	 * @param mutation mutation operator, or {@code null} if no mutation is
+	 *        defined
+	 */
 	public AbstractPSOAlgorithm(Problem problem, int swarmSize, int leaderSize,
 			DominanceComparator leaderComparator,
 			DominanceComparator dominanceComparator,
@@ -56,12 +102,20 @@ public abstract class AbstractPSOAlgorithm extends AbstractAlgorithm {
 		speed = new double[swarmSize][problem.getNumberOfVariables()];
 	}
 	
+	/**
+	 * Update the speeds of all particles.
+	 */
 	protected void updateSpeeds() {
 		for (int i = 0; i < swarmSize; i++) {
 			updateSpeed(i);
 		}
 	}
 	
+	/**
+	 * Update the speed of an individual particle.
+	 * 
+	 * @param i the index of the particle
+	 */
 	protected void updateSpeed(int i) {
 		Solution particle = particles[i];
 		Solution localBestParticle = localBestParticles[i];
@@ -84,12 +138,20 @@ public abstract class AbstractPSOAlgorithm extends AbstractAlgorithm {
 		}
 	}
 	
+	/**
+	 * Update the positions of all particles.
+	 */
 	protected void updatePositions() {
 		for (int i = 0; i < swarmSize; i++) {
 			updatePosition(i);
 		}
 	}
 	
+	/**
+	 * Update the position of an individual particle.
+	 * 
+	 * @param i the index of the particle
+	 */
 	protected void updatePosition(int i) {
 		Solution parent = particles[i];
 		Solution offspring = parent.copy();
@@ -112,6 +174,11 @@ public abstract class AbstractPSOAlgorithm extends AbstractAlgorithm {
 		particles[i] = offspring;
 	}
 	
+	/**
+	 * Randomly select a leader.
+	 * 
+	 * @return the selected leader
+	 */
 	protected Solution selectLeader() {
 		Solution leader1 = leaders.get(PRNG.nextInt(leaders.size()));
 		Solution leader2 = leaders.get(PRNG.nextInt(leaders.size()));
@@ -128,6 +195,9 @@ public abstract class AbstractPSOAlgorithm extends AbstractAlgorithm {
 		}
 	}
 	
+	/**
+	 * Updates the local best particles.
+	 */
 	protected void updateLocalBest() {
 		for (int i = 0; i < swarmSize; i++) {
 			int flag = dominanceComparator.compare(particles[i],
@@ -139,12 +209,20 @@ public abstract class AbstractPSOAlgorithm extends AbstractAlgorithm {
 		}
 	}
 	
+	/**
+	 * Applies the mutation operator to all particles.
+	 */
 	protected void mutate() {
 		for (int i = 0; i < swarmSize; i++) {
 			mutate(i);
 		}
 	}
 	
+	/**
+	 * Applies the mutation operator to an individual particle.
+	 * 
+	 * @param i the index of the particle
+	 */
 	protected void mutate(int i) {
 		if (mutation != null) {
 			particles[i] = mutation.evolve(new Solution[] { particles[i] })[0];
@@ -191,7 +269,10 @@ public abstract class AbstractPSOAlgorithm extends AbstractAlgorithm {
 		
 		updateLocalBest();
 		leaders.addAll(particles);
-		archive.addAll(particles);
+		
+		if (archive != null) {
+			archive.addAll(particles);
+		}
 	}
 
 }

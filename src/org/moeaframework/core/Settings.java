@@ -436,7 +436,8 @@ public class Settings {
 	public static String[] getDiagnosticToolAlgorithms() {
 		return PROPERTIES.getStringArray(KEY_DIAGNOSTIC_TOOL_ALGORITHMS, 
 				new String[] { "NSGAII", "NSGAIII", "GDE3", "eMOEA", "eNSGAII", 
-				"MOEAD", "CMA-ES", "SPEA2", "PAES", "PESA2", "Random" });
+				"MOEAD", "CMA-ES", "SPEA2", "PAES", "PESA2", "OMOPSO", "SMPSO",
+				"Random" });
 	}
 	
 	/**

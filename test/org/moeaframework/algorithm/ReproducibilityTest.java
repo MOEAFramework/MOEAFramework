@@ -117,6 +117,22 @@ public class ReproducibilityTest {
 	}
 	
 	/**
+	 * Tests OMOPSO for reproducibility.
+	 */
+	@Test
+	public void testOMOPSO() {
+		test("OMOPSO");
+	}
+	
+	/**
+	 * Tests SMPSO for reproducibility.
+	 */
+	@Test
+	public void testSMPSO() {
+		test("SMPSO");
+	}
+	
+	/**
 	 * Tests random search for reproducibility.
 	 */
 	@Test

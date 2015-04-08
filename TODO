@@ -12,6 +12,8 @@ any changes.
  Easy
 ------
 
+  - Need to make PSO algorithms resumable.
+
   - Add a short primer to the documentation on how to compile and run Java code,
     set the classpath, etc.
 

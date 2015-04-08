@@ -134,6 +134,16 @@ public class StandardAlgorithmsTest {
 	}
 	
 	@Test
+	public void testOMOPSO_Real() {
+		test("OMOPSO", realProblem);
+	}
+	
+	@Test
+	public void testSMPSO_Real() {
+		test("SMPSO", realProblem);
+	}
+	
+	@Test
 	public void testRandomSearch_Real() {
 		test("Random", realProblem);
 	}
@@ -186,6 +196,16 @@ public class StandardAlgorithmsTest {
 	@Test
 	public void testPESA2_Binary() {
 		test("PESA2", binaryProblem);
+	}
+	
+	@Test(expected = ProviderNotFoundException.class)
+	public void testOMOPSO_Binary() {
+		test("OMOPSO", binaryProblem);
+	}
+	
+	@Test(expected = ProviderNotFoundException.class)
+	public void testSMPSO_Binary() {
+		test("SMPSO", binaryProblem);
 	}
 	
 	@Test
@@ -241,6 +261,16 @@ public class StandardAlgorithmsTest {
 	@Test
 	public void testPESA2_Permutation() {
 		test("PESA2", permutationProblem);
+	}
+	
+	@Test(expected = ProviderNotFoundException.class)
+	public void testOMOPSO_Permutation() {
+		test("OMOPSO", permutationProblem);
+	}
+	
+	@Test(expected = ProviderNotFoundException.class)
+	public void testSMPSO_Permutation() {
+		test("SMPSOS", permutationProblem);
 	}
 	
 	@Test
