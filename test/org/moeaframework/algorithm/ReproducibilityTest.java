@@ -139,6 +139,14 @@ public class ReproducibilityTest {
 	public void testIBEA() {
 		test("IBEA");
 	}
+
+	/**
+	 * Tests SMSEMOA for reproducibility.
+	 */
+	@Test
+	public void testSMSEMOA() {
+		test("SMS-EMOA");
+	}
 	
 	/**
 	 * Tests random search for reproducibility.

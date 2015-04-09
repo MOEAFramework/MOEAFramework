@@ -131,6 +131,11 @@ public class StandardAlgorithmsResumeTest {
 	}
 	
 	@Test
+	public void testSMSEMOA() throws IOException {
+		test("SMS-EMOA");
+	}
+	
+	@Test
 	public void testInstrumentedAlgorithm() throws IOException {
 		testInstrumented("NSGAII");
 	}

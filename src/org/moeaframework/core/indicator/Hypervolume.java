@@ -227,7 +227,19 @@ public class Hypervolume extends NormalizedIndicator {
 		return n;
 	}
 
-	private static double calculateHypervolume(List<Solution> population,
+	/**
+	 * The internal, unnormalized hypervolume calculation.  While this method
+	 * is public, we do not encourage its use since incorrect arguments can
+	 * cause unexpected behavior.  Instead, use the
+	 * {@link #Hypervolume(Problem, NondominatedPopulation)} constructor
+	 * to create a normalizing version of the hypervolume calculation.
+	 * 
+	 * @param population the population
+	 * @param numberOfSolutions the number of solutions
+	 * @param numberOfObjectives the number of objectives
+	 * @return the hypervolume metric
+	 */
+	public static double calculateHypervolume(List<Solution> population,
 			int numberOfSolutions, int numberOfObjectives) {
 		double volume = 0.0;
 		double distance = 0.0;

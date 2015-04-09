@@ -39,6 +39,7 @@ import org.moeaframework.core.comparator.CrowdingComparator;
 import org.moeaframework.core.comparator.DominanceComparator;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
 import org.moeaframework.core.fitness.AdditiveEpsilonIndicatorFitnessEvaluator;
+import org.moeaframework.core.fitness.HypervolumeContributionFitnessEvaluator;
 import org.moeaframework.core.fitness.HypervolumeFitnessEvaluator;
 import org.moeaframework.core.fitness.IndicatorFitnessEvaluator;
 import org.moeaframework.core.operator.RandomInitialization;
@@ -146,6 +147,11 @@ import org.moeaframework.util.TypedProperties;
  *         pm.distributionIndex, indicator}</td>
  *   </tr>
  *   <tr>
+ *     <td>SMS-EMOA</td>
+ *     <td>Any</td>
+ *     <td>{@code populationSize, offset}</td>
+ *   </tr>
+ *   <tr>
  *     <td>Random</td>
  *     <td>Any</td>
  *     <td>{@code populationSize, (epsilon)}</td>
@@ -202,6 +208,9 @@ public class StandardAlgorithms extends AlgorithmProvider {
 				return newSMPSO(typedProperties, problem);
 			} else if (name.equalsIgnoreCase("IBEA")) {
 				return newIBEA(typedProperties, problem);
+			} else if (name.equalsIgnoreCase("SMSEMOA") ||
+					name.equalsIgnoreCase("SMS-EMOA")) {
+				return newSMSEMOA(typedProperties, problem);
 			} else if (name.equalsIgnoreCase("Random")) {
 				return newRandomSearch(typedProperties, problem);
 			} else {
@@ -661,6 +670,35 @@ public class StandardAlgorithms extends AlgorithmProvider {
 		}
 
 		return new IBEA(problem, null, initialization, variation,
+				fitnessEvaluator);
+	}
+	
+	/**
+	 * Returns a new {@link SMSEMOA} instance.
+	 * 
+	 * @param properties the properties for customizing the new {@code SMSEMOA}
+	 *        instance
+	 * @param problem the problem
+	 * @return a new {@code SMSEMOA} instance
+	 */
+	private Algorithm newSMSEMOA(TypedProperties properties, Problem problem) {
+		int populationSize = (int)properties.getDouble("populationSize", 100);
+		double offset = properties.getDouble("offset", 100.0);
+		String indicator = properties.getString("indicator", "hypervolume");
+		FitnessEvaluator fitnessEvaluator = null;
+		
+		Initialization initialization = new RandomInitialization(problem,
+				populationSize);
+
+		Variation variation = OperatorFactory.getInstance().getVariation(null, 
+				properties, problem);
+		
+		if ("hypervolume".equals(indicator)) {
+			fitnessEvaluator = new HypervolumeContributionFitnessEvaluator(
+					problem, offset);
+		}
+
+		return new SMSEMOA(problem, initialization, variation,
 				fitnessEvaluator);
 	}
 	

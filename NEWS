@@ -7,7 +7,8 @@ Framework.
 
   * Adds support for single and multi-objective CMA-ES.
   
-  * Adds native implementations of SPEA2, PAES, PESA2, OMPSO, SMPSO, IBEA.
+  * Adds native implementations of SPEA2, PAES, PESA2, OMPSO, SMPSO, IBEA,
+    SMS-EMOA.
     Having native implementations expands the capabilities of these algorithms,
     including collecting runtime dynamics, access to better operators and
     representations, parallelization, and more.

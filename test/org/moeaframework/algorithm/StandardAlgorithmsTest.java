@@ -147,6 +147,11 @@ public class StandardAlgorithmsTest {
 	public void testIBEA_Real() {
 		test("IBEA", realProblem);
 	}
+
+	@Test
+	public void testSMSEMOA_Real() {
+		test("SMS-EMOA", realProblem);
+	}
 	
 	@Test
 	public void testRandomSearch_Real() {
@@ -213,8 +218,14 @@ public class StandardAlgorithmsTest {
 		test("SMPSO", binaryProblem);
 	}
 	
+	@Test
 	public void testIBEA_Binary() {
 		test("IBEA", binaryProblem);
+	}
+
+	@Test
+	public void testSMSEMOA_Binary() {
+		test("SMS-EMOA", binaryProblem);
 	}
 	
 	@Test
@@ -281,9 +292,15 @@ public class StandardAlgorithmsTest {
 	public void testSMPSO_Permutation() {
 		test("SMPSO", permutationProblem);
 	}
-	
+
+	@Test
 	public void testIBEA_Permutation() {
 		test("IBEA", permutationProblem);
+	}
+	
+	@Test
+	public void testSMSEMOA_Permutation() {
+		test("SMS-EMOA", permutationProblem);
 	}
 	
 	@Test

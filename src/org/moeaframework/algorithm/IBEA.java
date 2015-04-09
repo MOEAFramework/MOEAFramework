@@ -27,7 +27,7 @@ import org.moeaframework.core.operator.TournamentSelection;
 public class IBEA extends AbstractEvolutionaryAlgorithm {
 	
 	/**
-	 * The indicator fitness evaluator to use (e.g., hypervolume
+	 * The indicator fitness evaluator to use (e.g., hypervolume or
 	 * additive-epsilon indicator).
 	 */
 	private IndicatorFitnessEvaluator fitnessEvaluator;
