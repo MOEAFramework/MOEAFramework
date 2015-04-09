@@ -116,6 +116,24 @@ public class Controller {
 	private boolean includeContribution = true;
 	
 	/**
+	 * {@code true} if the R1 indicator collector is included; {@code false}
+	 * otherwise.
+	 */
+	private boolean includeR1 = false;
+	
+	/**
+	 * {@code true} if the R2 indicator collector is included; {@code false}
+	 * otherwise.
+	 */
+	private boolean includeR2 = true;
+	
+	/**
+	 * {@code true} if the R3 indicator collector is included; {@code false}
+	 * otherwise.
+	 */
+	private boolean includeR3 = false;
+	
+	/**
 	 * {@code true} if the &epsilon;-progress collector is included; 
 	 * {@code false} otherwise.
 	 */
@@ -568,6 +586,18 @@ public class Controller {
 						instrumenter.attachContributionCollector();
 					}
 					
+					if (getIncludeR1()) {
+						instrumenter.attachR1Collector();
+					}
+					
+					if (getIncludeR2()) {
+						instrumenter.attachR2Collector();
+					}
+					
+					if (getIncludeR3()) {
+						instrumenter.attachR3Collector();
+					}
+					
 					if (getIncludeEpsilonProgress()) {
 						instrumenter.attachEpsilonProgressCollector();
 					}
@@ -827,6 +857,69 @@ public class Controller {
 	 */
 	public void setIncludeContribution(boolean includeContribution) {
 		this.includeContribution = includeContribution;
+	}
+	
+	/**
+	 * Returns {@code true} if the R1 indicator collector is included;
+	 * {@code false} otherwise.
+	 * 
+	 * @return {@code true} if the R1 indicator collector is included;
+	 *         {@code false} otherwise
+	 */
+	public boolean getIncludeR1() {
+		return includeR1;
+	}
+	
+	/**
+	 * Sets the inclusion of the R1 indicator collector.
+	 * 
+	 * @param includeR1 {@code true} if the R1 indicator collector is included;
+	 *        {@code false} otherwise
+	 */
+	public void setIncludeR1(boolean includeR1) {
+		this.includeR1 = includeR1;
+	}
+	
+	/**
+	 * Returns {@code true} if the R2 indicator collector is included;
+	 * {@code false} otherwise.
+	 * 
+	 * @return {@code true} if the R2 indicator collector is included;
+	 *         {@code false} otherwise
+	 */
+	public boolean getIncludeR2() {
+		return includeR2;
+	}
+	
+	/**
+	 * Sets the inclusion of the R2 indicator collector.
+	 * 
+	 * @param includeR2 {@code true} if the R2 indicator collector is included;
+	 *        {@code false} otherwise
+	 */
+	public void setIncludeR2(boolean includeR2) {
+		this.includeR2 = includeR2;
+	}
+	
+	/**
+	 * Returns {@code true} if the R3 indicator collector is included;
+	 * {@code false} otherwise.
+	 * 
+	 * @return {@code true} if the R3 indicator collector is included;
+	 *         {@code false} otherwise
+	 */
+	public boolean getIncludeR3() {
+		return includeR3;
+	}
+	
+	/**
+	 * Sets the inclusion of the R3 indicator collector.
+	 * 
+	 * @param includeR3 {@code true} if the R3 indicator collector is included;
+	 *        {@code false} otherwise
+	 */
+	public void setIncludeR3(boolean includeR3) {
+		this.includeR3 = includeR3;
 	}
 
 	/**

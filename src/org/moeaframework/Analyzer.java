@@ -46,6 +46,9 @@ import org.moeaframework.core.indicator.GenerationalDistance;
 import org.moeaframework.core.indicator.Hypervolume;
 import org.moeaframework.core.indicator.InvertedGenerationalDistance;
 import org.moeaframework.core.indicator.MaximumParetoFrontError;
+import org.moeaframework.core.indicator.R1Indicator;
+import org.moeaframework.core.indicator.R2Indicator;
+import org.moeaframework.core.indicator.R3Indicator;
 import org.moeaframework.core.indicator.Spacing;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.util.io.FileUtils;
@@ -122,6 +125,24 @@ public class Analyzer extends ProblemBuilder {
 	 * reference set is to be computed; {@code false} otherwise.
 	 */
 	private boolean includeContribution;
+	
+	/**
+	 * {@code true} if the R1 indicator is to be computed; {@code false}
+	 * otherwise.
+	 */
+	private boolean includeR1;
+	
+	/**
+	 * {@code true} if the R2 indicator is to be computed; {@code false}
+	 * otherwise.
+	 */
+	private boolean includeR2;
+	
+	/**
+	 * {@code true} if the R3 indicator is to be computed; {@code false}
+	 * otherwise.
+	 */
+	private boolean includeR3;
 	
 	/**
 	 * {@code true} if the individual values for each seed are shown;
@@ -287,6 +308,39 @@ public class Analyzer extends ProblemBuilder {
 	}
 	
 	/**
+	 * Enables the evaluation of the R1 indicator.
+	 * 
+	 * @return a reference to this analyzer
+	 */
+	public Analyzer includeR1() {
+		includeR1 = true;
+		
+		return this;
+	}
+	
+	/**
+	 * Enables the evaluation of the R2 indicator.
+	 * 
+	 * @return a reference to this analyzer
+	 */
+	public Analyzer includeR2() {
+		includeR2 = true;
+		
+		return this;
+	}
+	
+	/**
+	 * Enables the evaluation of the R3 indicator.
+	 * 
+	 * @return a reference to this analyzer
+	 */
+	public Analyzer includeR3() {
+		includeR3 = true;
+		
+		return this;
+	}
+	
+	/**
 	 * Enables the evaluation of all metrics.
 	 * 
 	 * @return a reference to this analyzer
@@ -299,6 +353,9 @@ public class Analyzer extends ProblemBuilder {
 		includeMaximumParetoFrontError();
 		includeSpacing();
 		includeContribution();
+		includeR1();
+		includeR2();
+		includeR3();
 		
 		return this;
 	}
@@ -689,6 +746,24 @@ public class Analyzer extends ProblemBuilder {
 				} else {
 					indicators.add(new Contribution(referenceSet, epsilon));
 				}
+			}
+			
+			if (includeR1) {
+				indicators.add(new R1Indicator(problem,
+						R1Indicator.getDefaultSubdivisions(problem),
+						referenceSet));
+			}
+			
+			if (includeR2) {
+				indicators.add(new R2Indicator(problem,
+						R2Indicator.getDefaultSubdivisions(problem),
+						referenceSet));
+			}
+			
+			if (includeR3) {
+				indicators.add(new R3Indicator(problem,
+						R3Indicator.getDefaultSubdivisions(problem),
+						referenceSet));
 			}
 			
 			if (indicators.isEmpty()) {

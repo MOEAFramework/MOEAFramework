@@ -396,6 +396,12 @@ ControllerListener {
 				actionFactory.getIncludeAdditiveEpsilonIndicatorAction()));
 		metrics.add(new JCheckBoxMenuItem(
 				actionFactory.getIncludeContributionAction()));
+		metrics.add(new JCheckBoxMenuItem(
+				actionFactory.getIncludeR1Action()));
+		metrics.add(new JCheckBoxMenuItem(
+				actionFactory.getIncludeR2Action()));
+		metrics.add(new JCheckBoxMenuItem(
+				actionFactory.getIncludeR3Action()));
 		metrics.addSeparator();
 		metrics.add(new JCheckBoxMenuItem(
 				actionFactory.getIncludeEpsilonProgressAction()));

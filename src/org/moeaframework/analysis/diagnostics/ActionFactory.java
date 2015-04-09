@@ -145,6 +145,21 @@ public class ActionFactory implements ControllerListener {
 	private Action includeContributionAction;
 	
 	/**
+	 * The action to toggle the inclusion of the R1 indicator collector.
+	 */
+	private Action includeR1Action;
+	
+	/**
+	 * The action to toggle the inclusion of the R2 indicator collector.
+	 */
+	private Action includeR2Action;
+	
+	/**
+	 * The action to toggle the inclusion of the R3 indicator collector.
+	 */
+	private Action includeR3Action;
+	
+	/**
 	 * The action to toggle the inclusion of &epsilon;-progress restart
 	 * collector.
 	 */
@@ -350,6 +365,9 @@ public class ActionFactory implements ControllerListener {
 				includeSpacingAction.putValue(Action.SELECTED_KEY, true);
 				includeAdditiveEpsilonIndicatorAction.putValue(Action.SELECTED_KEY, true);
 				includeContributionAction.putValue(Action.SELECTED_KEY, true);
+				includeR1Action.putValue(Action.SELECTED_KEY, true);
+				includeR2Action.putValue(Action.SELECTED_KEY, true);
+				includeR3Action.putValue(Action.SELECTED_KEY, true);
 				
 				controller.setIncludeHypervolume(true);
 				controller.setIncludeGenerationalDistance(true);
@@ -357,6 +375,9 @@ public class ActionFactory implements ControllerListener {
 				controller.setIncludeSpacing(true);
 				controller.setIncludeAdditiveEpsilonIndicator(true);
 				controller.setIncludeContribution(true);
+				controller.setIncludeR1(true);
+				controller.setIncludeR2(true);
+				controller.setIncludeR3(true);
 			}
 			
 		};
@@ -378,6 +399,9 @@ public class ActionFactory implements ControllerListener {
 				includeSpacingAction.putValue(Action.SELECTED_KEY, false);
 				includeAdditiveEpsilonIndicatorAction.putValue(Action.SELECTED_KEY, false);
 				includeContributionAction.putValue(Action.SELECTED_KEY, false);
+				includeR1Action.putValue(Action.SELECTED_KEY, false);
+				includeR2Action.putValue(Action.SELECTED_KEY, false);
+				includeR3Action.putValue(Action.SELECTED_KEY, false);
 				
 				controller.setIncludeHypervolume(false);
 				controller.setIncludeGenerationalDistance(false);
@@ -385,6 +409,9 @@ public class ActionFactory implements ControllerListener {
 				controller.setIncludeSpacing(false);
 				controller.setIncludeAdditiveEpsilonIndicator(false);
 				controller.setIncludeContribution(false);
+				controller.setIncludeR1(false);
+				controller.setIncludeR2(false);
+				controller.setIncludeR3(false);
 			}
 			
 		};
@@ -487,6 +514,57 @@ public class ActionFactory implements ControllerListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				controller.setIncludeContribution((Boolean)getValue(Action.SELECTED_KEY));
+			}
+
+		};
+		
+		includeR1Action = new AbstractAction() {
+
+			private static final long serialVersionUID = 7307447492866764644L;
+
+			{
+				putValue(Action.NAME, localization.getString("action.includeR1.name"));
+				putValue(Action.SHORT_DESCRIPTION, localization.getString("action.includeR1.description"));
+				putValue(Action.SELECTED_KEY, controller.getIncludeR1());
+			}
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				controller.setIncludeR1((Boolean)getValue(Action.SELECTED_KEY));
+			}
+
+		};
+		
+		includeR2Action = new AbstractAction() {
+
+			private static final long serialVersionUID = -5385083123364658233L;
+
+			{
+				putValue(Action.NAME, localization.getString("action.includeR2.name"));
+				putValue(Action.SHORT_DESCRIPTION, localization.getString("action.includeR2.description"));
+				putValue(Action.SELECTED_KEY, controller.getIncludeR2());
+			}
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				controller.setIncludeR2((Boolean)getValue(Action.SELECTED_KEY));
+			}
+
+		};
+		
+		includeR3Action = new AbstractAction() {
+
+			private static final long serialVersionUID = -2777143619264295330L;
+
+			{
+				putValue(Action.NAME, localization.getString("action.includeR3.name"));
+				putValue(Action.SHORT_DESCRIPTION, localization.getString("action.includeR3.description"));
+				putValue(Action.SELECTED_KEY, controller.getIncludeR3());
+			}
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				controller.setIncludeR3((Boolean)getValue(Action.SELECTED_KEY));
 			}
 
 		};
@@ -688,17 +766,17 @@ public class ActionFactory implements ControllerListener {
 					
 					info.addLibrary(new Library("Apache Commons CLI", "1.2", 
 							"Apache License", null));
-					info.addLibrary(new Library("Apache Commons Codec", "1.7", 
+					info.addLibrary(new Library("Apache Commons Codec", "1.8", 
 							"Apache License", null));
 					info.addLibrary(new Library("Apache Commons Lang", "3.1",
 							"Apache License", null));
-					info.addLibrary(new Library("Apache Commons Math", "3.0", 
+					info.addLibrary(new Library("Apache Commons Math", "3.4.1", 
 							"Apache License", null));
-					info.addLibrary(new Library("JCommon", "1.0.17", "GNU LGPL",
+					info.addLibrary(new Library("JCommon", "1.0.20", "GNU LGPL",
 							null));
-					info.addLibrary(new Library("JFreeChart", "1.0.14", 
+					info.addLibrary(new Library("JFreeChart", "1.0.15", 
 							"GNU LGPL", null));
-					info.addLibrary(new Library("JMetal", "4.2", "GNU LGPL", 
+					info.addLibrary(new Library("JMetal", "4.3", "GNU LGPL", 
 							null));
 					info.addLibrary(new Library("MOEAFramework", 
 							properties.getProperty("version"), "GNU LGPL", 
@@ -957,6 +1035,39 @@ public class ActionFactory implements ControllerListener {
 	 */
 	public Action getIncludeContributionAction() {
 		return includeContributionAction;
+	}
+	
+	/**
+	 * Returns the action to toggle the inclusion of the R1 indicator
+	 * collector.
+	 * 
+	 * @return the action to toggle the inclusion of the R1 indicator
+	 *         collector
+	 */
+	public Action getIncludeR1Action() {
+		return includeR1Action;
+	}
+	
+	/**
+	 * Returns the action to toggle the inclusion of the R2 indicator
+	 * collector.
+	 * 
+	 * @return the action to toggle the inclusion of the R2 indicator
+	 *         collector
+	 */
+	public Action getIncludeR2Action() {
+		return includeR2Action;
+	}
+	
+	/**
+	 * Returns the action to toggle the inclusion of the R3 indicator
+	 * collector.
+	 * 
+	 * @return the action to toggle the inclusion of the R3 indicator
+	 *         collector
+	 */
+	public Action getIncludeR3Action() {
+		return includeR3Action;
 	}
 
 	/**

@@ -46,6 +46,9 @@ import org.moeaframework.core.indicator.Contribution;
 import org.moeaframework.core.indicator.GenerationalDistance;
 import org.moeaframework.core.indicator.Hypervolume;
 import org.moeaframework.core.indicator.InvertedGenerationalDistance;
+import org.moeaframework.core.indicator.R1Indicator;
+import org.moeaframework.core.indicator.R2Indicator;
+import org.moeaframework.core.indicator.R3Indicator;
 import org.moeaframework.core.indicator.Spacing;
 import org.moeaframework.core.spi.ProblemFactory;
 
@@ -110,6 +113,21 @@ public class Instrumenter extends ProblemBuilder {
 	 * otherwise.
 	 */
 	private boolean includeContribution;
+	
+	/**
+	 * {@code true} if the R1 collector is included; {@code false} otherwise.
+	 */
+	private boolean includeR1;
+	
+	/**
+	 * {@code true} if the R2 collector is included; {@code false} otherwise.
+	 */
+	private boolean includeR2;
+	
+	/**
+	 * {@code true} if the R3 collector is included; {@code false} otherwise.
+	 */
+	private boolean includeR3;
 	
 	/**
 	 * {@code true} if the &epsilon;-progress collector is included;
@@ -276,9 +294,43 @@ public class Instrumenter extends ProblemBuilder {
 	}
 	
 	/**
+	 * Includes the R1 collector when instrumenting algorithms.
+	 * 
+	 * @return a reference to this instrumenter
+	 */
+	public Instrumenter attachR1Collector() {
+		includeR1 = true;
+		
+		return this;
+	}
+	
+	/**
+	 * Includes the R2 collector when instrumenting algorithms.
+	 * 
+	 * @return a reference to this instrumenter
+	 */
+	public Instrumenter attachR2Collector() {
+		includeR2 = true;
+		
+		return this;
+	}
+	
+	/**
+	 * Includes the R3 collector when instrumenting algorithms.
+	 * 
+	 * @return a reference to this instrumenter
+	 */
+	public Instrumenter attachR3Collector() {
+		includeR3 = true;
+		
+		return this;
+	}
+	
+	/**
 	 * Includes all indicator collectors when instrumenting algorithms.  This
 	 * includes hypervolume, generational distance, inverted generational
-	 * distance, spacing, additive &epsilon;-indicator and contribution.
+	 * distance, spacing, additive &epsilon;-indicator, contribution, and the
+	 * R1, R2, and R3 indicators.
 	 * 
 	 * @return a reference to this instrumenter
 	 */
@@ -289,6 +341,9 @@ public class Instrumenter extends ProblemBuilder {
 		attachSpacingCollector();
 		attachAdditiveEpsilonIndicatorCollector();
 		attachContributionCollector();
+		attachR1Collector();
+		attachR2Collector();
+		attachR3Collector();
 		
 		return this;
 	}
@@ -583,6 +638,30 @@ public class Instrumenter extends ProblemBuilder {
 				collectors.add(new IndicatorCollector(
 						archive == null ? new Contribution(referenceSet) :
 						new Contribution(referenceSet, archive.getComparator()),
+						archive));
+			}
+			
+			if (includeR1) {
+				collectors.add(new IndicatorCollector(new R1Indicator(
+						problem,
+						R1Indicator.getDefaultSubdivisions(problem),
+						referenceSet),
+						archive));
+			}
+			
+			if (includeR2) {
+				collectors.add(new IndicatorCollector(new R2Indicator(
+						problem,
+						R2Indicator.getDefaultSubdivisions(problem),
+						referenceSet),
+						archive));
+			}
+			
+			if (includeR3) {
+				collectors.add(new IndicatorCollector(new R3Indicator(
+						problem,
+						R3Indicator.getDefaultSubdivisions(problem),
+						referenceSet),
 						archive));
 			}
 		}

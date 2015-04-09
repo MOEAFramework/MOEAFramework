@@ -216,6 +216,35 @@ public abstract class RIndicator extends NormalizedIndicator {
 		
 		return kary;
 	}
+	
+	/**
+	 * Returns the default number of subdivisions for a given problem. The
+	 * defaults, for an M objective problem, are:
+	 * <ul>
+	 *   <li>if M=2, then 500
+	 *   <li>if M=3, then 30
+	 *   <li>if M=4, then 12
+	 *   <li>if M=5, then 8
+	 *   <li>else 3
+	 * </ul>
+	 * 
+	 * @param problem the problem
+	 * @return the default number of subdivisions for a given problem
+	 */
+	public static int getDefaultSubdivisions(Problem problem) {
+		switch (problem.getNumberOfObjectives()) {
+		case 2:
+			return 500;
+		case 3:
+			return 30;
+		case 4:
+			return 12;
+		case 5:
+			return 8;
+		default:
+			return 3;
+		}
+	}
 
 
 }

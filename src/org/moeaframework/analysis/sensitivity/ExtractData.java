@@ -37,6 +37,9 @@ import org.moeaframework.core.indicator.GenerationalDistance;
 import org.moeaframework.core.indicator.Hypervolume;
 import org.moeaframework.core.indicator.InvertedGenerationalDistance;
 import org.moeaframework.core.indicator.MaximumParetoFrontError;
+import org.moeaframework.core.indicator.R1Indicator;
+import org.moeaframework.core.indicator.R2Indicator;
+import org.moeaframework.core.indicator.R3Indicator;
 import org.moeaframework.core.indicator.Spacing;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.util.CommandLineUtility;
@@ -55,6 +58,9 @@ import org.moeaframework.util.TypedProperties;
  *   <li>{@code +error} for {@link MaximumParetoFrontError}
  *   <li>{@code +spacing} for {@link Spacing}
  *   <li>{@code +contribution} for {@link Contribution}
+ *   <li>{@code +R1} for {@link R1Indicator}
+ *   <li>{@code +R2} for {@link R2Indicator}
+ *   <li>{@code +R3} for {@link R3Indicator}
  * </ul>
  */
 public class ExtractData extends CommandLineUtility {
@@ -230,7 +236,7 @@ public class ExtractData extends CommandLineUtility {
 			CommandLine commandLine) throws IOException {
 		OptionCompleter completer = new OptionCompleter("hypervolume",
 				"generational", "inverted", "epsilon", "error", "spacing",
-				"contribution");
+				"contribution", "R1", "R2", "R3");
 		String option = completer.lookup(command);
 		
 		if (option == null) {
@@ -277,6 +283,15 @@ public class ExtractData extends CommandLineUtility {
 			} else {
 				indicator = new Contribution(referenceSet);
 			}
+		} else if (option.equals("R1")) {
+			indicator = new R1Indicator(problem,
+					R1Indicator.getDefaultSubdivisions(problem), referenceSet);
+		} else if (option.equals("R2")) {
+			indicator = new R2Indicator(problem,
+					R2Indicator.getDefaultSubdivisions(problem), referenceSet);
+		} else if (option.equals("R3")) {
+			indicator = new R3Indicator(problem,
+					R3Indicator.getDefaultSubdivisions(problem), referenceSet);
 		} else {
 			throw new IllegalStateException();
 		}
