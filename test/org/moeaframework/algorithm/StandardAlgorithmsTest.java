@@ -154,6 +154,11 @@ public class StandardAlgorithmsTest {
 	}
 	
 	@Test
+	public void testVEGA_Real() {
+		test("VEGA", realProblem);
+	}
+	
+	@Test
 	public void testRandomSearch_Real() {
 		test("Random", realProblem);
 	}
@@ -229,6 +234,11 @@ public class StandardAlgorithmsTest {
 	}
 	
 	@Test
+	public void testVEGA_Binary() {
+		test("VEGA", binaryProblem);
+	}
+	
+	@Test
 	public void testRandomSearch_Binary() {
 		test("Random", binaryProblem);
 	}
@@ -301,6 +311,11 @@ public class StandardAlgorithmsTest {
 	@Test
 	public void testSMSEMOA_Permutation() {
 		test("SMS-EMOA", permutationProblem);
+	}
+	
+	@Test
+	public void testVEGA_Permutation() {
+		test("VEGA", permutationProblem);
 	}
 	
 	@Test

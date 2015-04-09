@@ -149,6 +149,14 @@ public class ReproducibilityTest {
 	}
 	
 	/**
+	 * Tests VEGA for reproducibility.
+	 */
+	@Test
+	public void testVEGA() {
+		test("VEGA");
+	}
+	
+	/**
 	 * Tests random search for reproducibility.
 	 */
 	@Test

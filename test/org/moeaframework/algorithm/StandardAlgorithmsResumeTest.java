@@ -136,6 +136,11 @@ public class StandardAlgorithmsResumeTest {
 	}
 	
 	@Test
+	public void testVEGA() throws IOException {
+		test("VEGA");
+	}
+	
+	@Test
 	public void testInstrumentedAlgorithm() throws IOException {
 		testInstrumented("NSGAII");
 	}

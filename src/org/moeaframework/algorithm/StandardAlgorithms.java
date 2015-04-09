@@ -149,7 +149,14 @@ import org.moeaframework.util.TypedProperties;
  *   <tr>
  *     <td>SMS-EMOA</td>
  *     <td>Any</td>
- *     <td>{@code populationSize, offset}</td>
+ *     <td>{@code populationSize, offset, sbx.rate, sbx.distributionIndex,
+ *         pm.rate, pm.distributionIndex}</td>
+ *   </tr>
+ *   <tr>
+ *     <td>VEGA</td>
+ *     <td>Any</td>
+ *     <td>{@code populationSize, sbx.rate, sbx.distributionIndex, pm.rate,
+ *         pm.distributionIndex}</td>
  *   </tr>
  *   <tr>
  *     <td>Random</td>
@@ -211,6 +218,8 @@ public class StandardAlgorithms extends AlgorithmProvider {
 			} else if (name.equalsIgnoreCase("SMSEMOA") ||
 					name.equalsIgnoreCase("SMS-EMOA")) {
 				return newSMSEMOA(typedProperties, problem);
+			} else if (name.equalsIgnoreCase("VEGA")) {
+				return newVEGA(typedProperties, problem);
 			} else if (name.equalsIgnoreCase("Random")) {
 				return newRandomSearch(typedProperties, problem);
 			} else {
@@ -700,6 +709,26 @@ public class StandardAlgorithms extends AlgorithmProvider {
 
 		return new SMSEMOA(problem, initialization, variation,
 				fitnessEvaluator);
+	}
+	
+	/**
+	 * Returns a new {@link VEGA} instance.
+	 * 
+	 * @param properties the properties for customizing the new {@code VEGA}
+	 *        instance
+	 * @param problem the problem
+	 * @return a new {@code VEGA} instance
+	 */
+	private Algorithm newVEGA(TypedProperties properties, Problem problem) {
+		int populationSize = (int)properties.getDouble("populationSize", 100);
+
+		Initialization initialization = new RandomInitialization(problem,
+				populationSize);
+
+		Variation variation = OperatorFactory.getInstance().getVariation(null, 
+				properties, problem);
+		return new VEGA(problem, new Population(), null, initialization,
+				variation);
 	}
 	
 	/**
