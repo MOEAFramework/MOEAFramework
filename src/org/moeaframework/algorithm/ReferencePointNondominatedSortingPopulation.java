@@ -111,7 +111,7 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 		this.divisionsOuter = divisions;
 		this.divisionsInner = 0;
 
-		setup();
+		initialize();
 	}
 
 	/**
@@ -132,7 +132,7 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 		this.divisionsOuter = divisions;
 		this.divisionsInner = 0;
 
-		setup();
+		initialize();
 	}
 
 	/**
@@ -151,7 +151,7 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 		this.divisionsOuter = divisions;
 		this.divisionsInner = 0;
 
-		setup();
+		initialize();
 	}
 
 	/**
@@ -170,7 +170,7 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 		this.divisionsOuter = divisions;
 		this.divisionsInner = 0;
 
-		setup();
+		initialize();
 	}
 
 	/**
@@ -188,7 +188,7 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 		this.divisionsOuter = divisionsOuter;
 		this.divisionsInner = divisionsInner;
 
-		setup();
+		initialize();
 	}
 
 	/**
@@ -210,7 +210,7 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 		this.divisionsOuter = divisionsOuter;
 		this.divisionsInner = divisionsInner;
 
-		setup();
+		initialize();
 	}
 
 	/**
@@ -230,7 +230,7 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 		this.divisionsOuter = divisionsOuter;
 		this.divisionsInner = divisionsInner;
 
-		setup();
+		initialize();
 	}
 
 	/**
@@ -250,13 +250,13 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 		this.divisionsOuter = divisionsOuter;
 		this.divisionsInner = divisionsInner;
 
-		setup();
+		initialize();
 	}
 
 	/**
 	 * Initializes the ideal point and reference points (weights).
 	 */
-	private void setup() {
+	private void initialize() {
 		idealPoint = new double[numberOfObjectives];
 		Arrays.fill(idealPoint, Double.POSITIVE_INFINITY);
 

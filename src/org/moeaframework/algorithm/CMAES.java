@@ -437,7 +437,7 @@ public class CMAES extends AbstractAlgorithm {
 			weights[i] /= sum;
 		}
 
-		double sumSq = StatUtils.sumSq(weights);;
+		double sumSq = StatUtils.sumSq(weights);
 
 		mueff = 1.0 / sumSq; // also called mucov
 		
@@ -786,7 +786,7 @@ public class CMAES extends AbstractAlgorithm {
 	 * Reinsch, and Wilkinson, Handbook for Auto. Comp., Vol.ii-Linear Algebra,
 	 * and the corresponding Fortran subroutine in EISPACK.
 	 */
-	public static void tred2(int n, double V[][], double d[], double e[]) {
+	public static void tred2(int n, double[][] V, double[] d, double[] e) {
 		for (int j = 0; j < n; j++) {
 			d[j] = V[n-1][j];
 		}
@@ -896,7 +896,7 @@ public class CMAES extends AbstractAlgorithm {
 	 * Reinsch, and Wilkinson, Handbook for Auto. Comp., Vol.ii-Linear Algebra,
 	 * and the corresponding Fortran subroutine in EISPACK.
 	 */
-	public static void tql2(int n, double d[], double e[], double V[][]) {
+	public static void tql2(int n, double[] d, double[] e, double[][] V) {
 		for (int i = 1; i < n; i++) {
 			e[i-1] = e[i];
 		}
@@ -1006,12 +1006,16 @@ public class CMAES extends AbstractAlgorithm {
 	 * 
 	 * @return the number of detected inaccuracies
 	 */
-	private static int checkEigenSystem(int N, double C[][], double diag[], double Q[][]) {
+	private static int checkEigenSystem(int N, double[][] C, double[] diag, double[][] Q) {
 		/* compute Q diag Q^T and Q Q^T to check */
-		int i, j, k, res = 0;
-		double cc, dd;
+		int i;
+		int j;
+		int k;
+		int res = 0;
+		double cc;
+		double dd;
 
-		for (i=0; i < N; ++i)
+		for (i=0; i < N; ++i) {
 			for (j=0; j < N; ++j) {
 				for (cc=0.,dd=0., k=0; k < N; ++k) {
 					cc += diag[k] * Q[i][k] * Q[j][k];
@@ -1028,6 +1032,7 @@ public class CMAES extends AbstractAlgorithm {
 					++res;
 				}
 			}
+		}
 		return res;
 	}
 

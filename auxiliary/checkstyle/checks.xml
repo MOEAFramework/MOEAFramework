@@ -23,7 +23,7 @@ along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
 <module name="Checker">
 	<!-- Source code files contain appropriate copyright and license notices -->
 	<module name="RegexpHeader">
-		<property name="headerFile" value="header.txt" />
+		<property name="headerFile" value="${basedir}/auxiliary/checkstyle/header.txt" />
 		<property name="fileExtensions" value="java,c,h" />
 	</module>
 	
