@@ -501,6 +501,18 @@ public class Controller {
 				analyzer.includeContribution();
 			}
 			
+			if (getIncludeR1()) {
+				analyzer.includeR1();
+			}
+			
+			if (getIncludeR2()) {
+				analyzer.includeR2();
+			}
+			
+			if (getIncludeR3()) {
+				analyzer.includeR3();
+			}
+			
 			for (ResultKey key : selectedResults) {
 				for (Accumulator accumulator : get(key)) {
 					if (!accumulator.keySet().contains("Approximation Set")) {
