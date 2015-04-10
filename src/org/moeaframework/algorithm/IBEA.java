@@ -1,4 +1,4 @@
-﻿/* Copyright 2009-2015 David Hadka
+/* Copyright 2009-2015 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -36,7 +36,7 @@ import org.moeaframework.core.operator.TournamentSelection;
  * <p>
  * References:
  * <ol>
- *   <li>Zitzler, E. and S. Künzli (2004).  Indicator-Based Selection in
+ *   <li>Zitzler, E. and S. K�nzli (2004).  Indicator-Based Selection in
  *       Multiobjective Search.  Parallel Problem Solving from Nature
  *       (PPSN VIII), pp. 832-842.
  * </ol>

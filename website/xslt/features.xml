@@ -1,0 +1,333 @@
+<?xml version="1.0"?>
+<!DOCTYPE some_name [ 
+<!ENTITY nbsp "&#160;">
+<!ENTITY copy "&#169;">
+<!ENTITY epsilon "&#949;">
+]>
+
+<page>
+  <title>Key Features of the MOEA Framework</title>
+  <description>Walk through introductory examples using the MOEA Framework</description>
+  <header>
+  	<script type="text/javascript" src="scripts/shCore.js"></script>
+	<script type="text/javascript" src="scripts/shBrushJava.js"></script>
+	<script type="text/javascript" src="scripts/shBrushCpp.js"></script>
+	<script type="text/javascript" src="scripts/shBrushPlain.js"></script>
+	<link type="text/css" rel="stylesheet" href="styles/shCoreEclipse.css" />
+	<script type="text/javascript">SyntaxHighlighter.all();</script>
+	<style>
+	  td, th {
+	  	padding: .3em 1em;
+	  }
+	</style>
+  </header>
+  <content>
+<h2>Key Features</h2>
+
+<p>
+  The MOEA Framework aims to provide a comprehensive collection of algorithms and
+  tools for multiobjective optimization.  This page lists the key features of
+  the MOEA Framework.  For more information, see our online documentation.
+</p>
+
+<ul>
+  <li><a href="#algorithms">Algorithms</a></li>
+  <li><a href="#controllers">Meta-Algorithms</a></li>
+  <li><a href="#problems">Problem Sets</a></li>
+  <li><a href="#representations">Representations</a></li>
+  <li><a href="#evaluation">Performance Evaluation</a></li>
+</ul>
+
+<div class="section">
+<a name="algorithms" />
+<h3>Algorithms</h3>
+<p>The MOEA Framework has the largest collection of MOEAs of any library.  In
+addition to these pre-defined algorithms, new algorithms can be easily constructed
+using existing components.</p>
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td style="font-weight: bold;">&epsilon;-MOEA</td>
+    <td>&epsilon;-Dominance-based Evolutionary Algorithm</td>
+  </tr>
+  <tr>
+  	<td style="font-weight: bold">NSGA-II</td>
+  	<td>Non-dominated Sorting Genetic Algorithm II</td>
+  </tr>
+  <tr>
+  	<td style="font-weight: bold">NSGA-III</td>
+  	<td>Reference-Point Based Non-dominated Sorting Genetic Algorithm</td>
+  </tr>
+  <tr>
+  	<td style="font-weight: bold">&epsilon;-NSGA-II</td>
+  	<td>NSGA-II with &epsilon;-Dominance, Randomized Restarts, and Adaptive Population Sizing</td>
+  </tr>
+  <tr>
+    <td style="font-weight: bold">Borg&nbsp;MOEA</td>
+    <td>Adaptive Multioperator Search (Hyper Heuristic) with &epsilon;-Dominance and &epsilon;-Progress Triggered Restarts</td>
+  </tr>
+  <tr>
+  	<td style="font-weight: bold">MOEA/D</td>
+  	<td>Multiobjective Evolutionary Algorithm with Decomposition</td>
+  </tr>
+  <tr>
+  	<td style="font-weight: bold">GDE3</td>
+  	<td>Generalized Differential Evolution 3</td>
+  </tr>
+  <tr>
+  	<td style="font-weight: bold">CMA-ES</td>
+  	<td>Covariance Matrix Adaption Evolution Strategy</td>
+  </tr>
+  <tr>
+    <td style="font-weight: bold">IBEA</td>
+    <td>Indicator-Based Evolutionary Algorithm</td>
+  </tr>
+  <tr>
+    <td style="font-weight: bold">OMOPSO</td>
+    <td>Multiobjective Particle Swarm Optimization</td>
+  </tr>
+  <tr>
+    <td style="font-weight: bold">SMPSO</td>
+    <td>Speed-Constrained Multiobjective Particle Swarm Optimization</td>
+  </tr>
+  <tr>
+    <td style="font-weight: bold">PAES</td>
+    <td>Pareto Archived Evolution Strategy</td>
+  </tr>
+  <tr>
+    <td style="font-weight: bold">PESA2</td>
+    <td>Pareto Envelope-based Selection Algorithm 2</td>
+  </tr>
+  <tr>
+    <td style="font-weight: bold">SMS-EMOA</td>
+    <td>S-Metric Selection MOEA</td>
+  </tr>
+  <tr>
+    <td style="font-weight: bold">SPEA2</td>
+    <td>Strength-based Evolutionary Algorithm 2</td>
+  </tr>
+  <tr>
+    <td style="font-weight: bold">VEGA</td>
+    <td>Vector Evaluated Genetic Algorithm</td>
+  </tr>
+  <tr>
+    <td style="font-weight: bold">Random</td>
+    <td>Random Search</td>
+  </tr>
+  <tr>
+    <td style="font-weight: bold">AbYSS</td>
+    <td>Multiobjective Scatter Search<sup>1</sup></td>
+  </tr>
+  <tr>
+    <td style="font-weight: bold">CellDE</td>
+    <td>Cellular Genetic Algorithm with Diffential Evolution<sup>1</sup></td>
+  </tr>
+  <tr>
+    <td style="font-weight: bold">DENSEA</td>
+    <td>Duplicate Elimination Nondominated Sorting Evolutionary Algorithm<sup>1</sup></td>
+  </tr>
+  <tr>
+    <td style="font-weight: bold">FastPGA</td>
+    <td>Fast Pareto Genetic Algorithm<sup>1</sup></td>
+  </tr>
+  <tr>
+    <td style="font-weight: bold">MOCell</td>
+    <td>Multiobjective Cellular Genetic Algorithm<sup>1</sup></td>
+  </tr>
+  <tr>
+    <td style="font-weight: bold">MOCHC</td>
+    <td>Multiobjective CHC Algorithm<sup>1</sup></td>
+  </tr>
+  <tr>
+    <td style="font-weight: bold">ECEA</td>
+    <td>Epsilon-Constraint Evolutionary Algorithm<sup>2</sup></td>
+  </tr>
+  <tr>
+    <td style="font-weight: bold">FEMO</td>
+    <td>Fair Evolutionary Multiobjective Optimizer<sup>2</sup></td>
+  </tr>
+  <tr>
+    <td style="font-weight: bold">HypE</td>
+    <td>Hypervolume Estimation Algorithm for Multiobjective Optimization<sup>2</sup></td>
+  </tr>
+  <tr>
+    <td style="font-weight: bold">SEMO2</td>
+    <td>Simple Evolutionary Multiobjective Optmimizer<sup>2</sup></td>
+  </tr>
+  <tr>
+    <td style="font-weight: bold">SHV</td>
+    <td>Sampling-Based Hypervolume-Oriented Algorithm<sup>2</sup></td>
+  </tr>
+  <tr>
+    <td style="font-weight: bold">SIBEA</td>
+    <td>Simple Indicator Based Evolutionary Algorithm<sup>2</sup></td>
+  </tr>
+  <tr>
+    <td style="font-weight: bold">SPAM</td>
+    <td>Set Preference Algorithm for Multiobjective Optimization<sup>2</sup></td>
+  </tr>
+</table>
+<p>
+<sup>1</sup> - Algorithms provided by the JMetal library (included with the MOEA Framework).<br />
+<sup>2</sup> - Algorithms provided by the PISA library (not included).<br />
+<sup>3</sup> - Available as a JAR plugin from <a href="http://borgmoea.org">borgmoea.org</a>.
+</p>
+</div>
+
+<div class="section">
+<a name="controllers" />
+<h3>Meta-Algorithms</h3>
+<p>Meta-algorithms are wrappers around existing algorithms to provide additional functionality.</p>
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td style="font-weight: bold;">Adaptive Time Continuation</td>
+    <td>Periodically restart the algorithm, possibly adapting parameters</td>
+  </tr>
+  <tr>
+  	<td style="font-weight: bold">Epsilon Progress Continuation</td>
+  	<td>Monitor search progress, triggering a restart if search stagnates</td>
+  </tr>
+  <tr>
+  	<td style="font-weight: bold">Checkpoints</td>
+  	<td>Periodically save the state of the algorithm to resume interrupted runs</td>
+  </tr>
+</table>
+</div>
+
+<div class="section">
+<a name="problems" />
+<h3>Problem Sets</h3>
+<p>Also included are all major test problems from the literature.  Additionally,
+new problems written in Java or other languages can be easily incorporated.</p>
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td style="font-weight: bold;">ZDT</td>
+    <td>6 real-valued problems from Zitzler et al. (2000)</td>
+  </tr>
+  <tr>
+  	<td style="font-weight: bold">DTLZ</td>
+  	<td>5 unconstrained, scalable real-valued problems from Deb et al. (2001)</td>
+  </tr>
+  <tr>
+  	<td style="font-weight: bold">LZ</td>
+  	<td>9 real-valued problems from Hui Li and Qingfu Zhang (2009)</td>
+  </tr>
+  <tr>
+  	<td style="font-weight: bold">CEC2009</td>
+  	<td>13 unconstrained and 10 constrained real-valued problems from the CEC2009 competition</td>
+  </tr>
+  <tr>
+  	<td style="font-weight: bold">WFG</td>
+  	<td>9 scalable, real-valued problems by Huband et al. (2005)</td>
+  </tr>
+  <tr>
+  	<td style="font-weight: bold">Miscellaneous</td>
+  	<td>28 real-valued, binary, permutation, and program-based test problems from the literature (e.g., knapsack, NK-landscapes)</td>
+  </tr>
+</table>
+</div>
+
+<div class="section">
+<a name="representations" />
+<h3>Representations</h3>
+<table>
+  <tr>
+    <th>Representation</th>
+    <th>Operators</th>
+  </tr>
+  <tr>
+    <td style="font-weight: bold;">Real-Valued</td>
+    <td>Simulated Binary Crossover (SBX)<br />
+        Polynomial Mutation (PM)<br />
+        Parent-Centric Crossover (PCX)<br />
+        Simplex Crossover (SPX)<br />
+        Unimodal Normal Distribution Crossover (UNDX)<br />
+        Uniform Mutation (UM)<br />
+        Differential Evolution (DE)<br />
+        Adaptive Metropolis (AM)</td>
+  </tr>
+  <tr>
+  	<td style="font-weight: bold">Binary</td>
+  	<td>Bit Flip Mutation<br />
+  	    Half-Uniform Crossover (HUX)</td>
+  </tr>
+  <tr>
+  	<td style="font-weight: bold">Permutation</td>
+  	<td>Insertion<br />
+  	    Swap<br />
+  	    Partially Mapped Crossover (PMX)</td>
+  </tr>
+  <tr>
+  	<td style="font-weight: bold">Grammars</td>
+  	<td>Single-point Crossover<br />
+  	    Uniform Mutation</td>
+  </tr>
+  <tr>
+  	<td style="font-weight: bold">Programs</td>
+  	<td>Point Mutation<br />
+  	    Subtree Crossover</td>
+  </tr>
+  <tr>
+  	<td style="font-weight: bold">Generic</td>
+  	<td>One Point Crossover<br />
+  	    Two Point Crossover<br />
+  	    Uniform Crossover<br />
+  	    Adaptive Multimethod Variation</td>
+  </tr>
+</table>
+</div>
+
+<div class="section">
+<a name="evaluation" />
+<h3>Performance Evaluation</h3>
+<p></p>
+<table>
+  <tr>
+    <th>Feature</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td style="font-weight: bold;">Indicators</td>
+    <td>Hypervolume<br />
+        Generational Distance (GD)<br />
+        Inverted Generational Distance (IGD)<br />
+        Additive &epsilon;-Indicator<br />
+        Contribution<br />
+        Maximum Pareto Front Error<br />
+        Spacing<br />
+        R1 Indicator<br />
+        R2 Indicator<br />
+        R3 Indicator</td>
+  </tr>
+  <tr>
+  	<td style="font-weight: bold">Collecting Runtime Dynamics</td>
+  	<td>Use collectors to record runtime behavior of algorithms</td>
+  </tr>
+  <tr>
+  	<td style="font-weight: bold">Evaluator, Analyzer, and Instrumenter</td>
+  	<td>Three Java classes for quickly evaluating MOEAs, statistically analyzing results, and collecting runtime dynamics</td>
+  </tr>
+  <tr>
+  	<td style="font-weight: bold">Diagnostic Tool</td>
+  	<td>GUI for quickly comparing the performance of algorithms on standard test problems</td>
+  </tr>
+  <tr>
+  	<td style="font-weight: bold">Sensitivity Analysis</td>
+  	<td>Sensitivity analysis tools for identifying key parameters for an algorithm (accessible through a command-line interface)</td>
+  </tr>
+</table>
+</div>
+
+  </content>
+</page>

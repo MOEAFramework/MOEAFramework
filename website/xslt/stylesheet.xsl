@@ -61,6 +61,12 @@
 									<a href="index.html">Home</a>
 								</li>
 								<li>
+									<xsl:if test="$filename = 'features.xml'">
+										<xsl:attribute name="id">current</xsl:attribute>
+									</xsl:if>
+									<a href="features.html">Features</a>
+								</li>
+								<li>
 									<xsl:if test="$filename = 'examples.xml'">
 										<xsl:attribute name="id">current</xsl:attribute>
 									</xsl:if>

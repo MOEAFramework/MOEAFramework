@@ -17,6 +17,11 @@ body {
 	background: url(../images/bg.jpg);
 }
 
+sup {
+    vertical-align: super;
+    font-size: smaller;
+}
+
 hr {
   border: 1px solid #EFEFEF;
 }
