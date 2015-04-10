@@ -22,7 +22,7 @@
 	</style>
   </header>
   <content>
-<h2>Key Features</h2>
+<h2>Features</h2>
 
 <p>
   The MOEA Framework aims to provide a comprehensive collection of algorithms and
@@ -67,7 +67,7 @@ using existing components.</p>
   </tr>
   <tr>
     <td style="font-weight: bold">Borg&nbsp;MOEA</td>
-    <td>Adaptive Multioperator Search (Hyper Heuristic) with &epsilon;-Dominance and &epsilon;-Progress Triggered Restarts</td>
+    <td>Adaptive Multioperator Search with &epsilon;-Dominance and &epsilon;-Progress Triggered Restarts</td>
   </tr>
   <tr>
   	<td style="font-weight: bold">MOEA/D</td>
@@ -75,7 +75,7 @@ using existing components.</p>
   </tr>
   <tr>
   	<td style="font-weight: bold">GDE3</td>
-  	<td>Generalized Differential Evolution 3</td>
+  	<td>Generalized Differential Evolution</td>
   </tr>
   <tr>
   	<td style="font-weight: bold">CMA-ES</td>
@@ -99,7 +99,7 @@ using existing components.</p>
   </tr>
   <tr>
     <td style="font-weight: bold">PESA2</td>
-    <td>Pareto Envelope-based Selection Algorithm 2</td>
+    <td>Pareto Envelope-based Selection Algorithm</td>
   </tr>
   <tr>
     <td style="font-weight: bold">SMS-EMOA</td>
@@ -107,7 +107,7 @@ using existing components.</p>
   </tr>
   <tr>
     <td style="font-weight: bold">SPEA2</td>
-    <td>Strength-based Evolutionary Algorithm 2</td>
+    <td>Strength-based Evolutionary Algorithm</td>
   </tr>
   <tr>
     <td style="font-weight: bold">VEGA</td>
@@ -325,6 +325,10 @@ new problems written in Java or other languages can be easily incorporated.</p>
   <tr>
   	<td style="font-weight: bold">Sensitivity Analysis</td>
   	<td>Sensitivity analysis tools for identifying key parameters for an algorithm (accessible through a command-line interface)</td>
+  </tr>
+  <tr>
+    <td style="font-weight: bold">Parallelization</td>
+    <td>Automatic parallelization of algorithms across multiple cores, or distribute processing across a network using <a href="http://www.jppf.org/">JPPF</a>, <a href="http://www.gridgain.com/">GridGain</a>, or any other supported grid computing library</td>
   </tr>
 </table>
 </div>
