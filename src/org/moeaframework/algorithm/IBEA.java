@@ -36,7 +36,7 @@ import org.moeaframework.core.operator.TournamentSelection;
  * <p>
  * References:
  * <ol>
- *   <li>Zitzler, E. and S. Künzli (2004).  Indicator-Based Selection in
+ *   <li>Zitzler, E. and S. Kunzli (2004).  Indicator-Based Selection in
  *       Multiobjective Search.  Parallel Problem Solving from Nature
  *       (PPSN VIII), pp. 832-842.
  * </ol>
