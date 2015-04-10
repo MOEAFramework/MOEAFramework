@@ -56,8 +56,10 @@ import org.moeaframework.util.TypedProperties;
 
 /**
  * A provider of standard algorithms. The following table contains all
- * available algorithms and the customizable properties.  See the user manual
- * for a more detailed description of the algorithms and parameters.
+ * available algorithms and the customizable properties.  These properties are
+ * tailored for real-valued operators.  If using a different representation,
+ * see {@link OperatorFactory} for the appropriate parameters.  See the user
+ * manual for a more detailed description of the algorithms and parameters.
  * <p>
  * <table width="100%" border="1" cellpadding="3" cellspacing="0">
  *   <tr class="TableHeadingColor">
@@ -66,28 +68,16 @@ import org.moeaframework.util.TypedProperties;
  *     <th width="80%" align="left">Properties</th>
  *   </tr>
  *   <tr>
+ *     <td>CMA-ES</td>
+ *     <td>Real</td>
+ *     <td>{@code lambda, cc, cs, damps, ccov, ccovsep, sigma,
+ *         diagonalIterations, indicator, initialSearchPoint}</td>
+ *   </tr>
+ *   <tr>
  *     <td>eMOEA</td>
  *     <td>Any</td>
  *     <td>{@code populationSize, epsilon, sbx.rate,
  *         sbx.distributionIndex, pm.rate, pm.distributionIndex}</td>
- *   </tr>
- *   <tr>
- *     <td>NSGAII</td>
- *     <td>Any</td>
- *     <td>{@code populationSize, sbx.rate, sbx.distributionIndex,
- *         pm.rate, pm.distributionIndex}</td>
- *   </tr>
- *   <tr>
- *     <td>MOEAD</td>
- *     <td>Real</td>
- *     <td>{@code populationSize, de.crossoverRate, de.stepSize, pm.rate,
- *         pm.distributionIndex, neighborhoodSize, delta, eta, 
- *         updateUtility}</td>
- *   </tr>
- *   <tr>
- *     <td>GDE3</td>
- *     <td>Real</td>
- *     <td>{@code populationSize, de.crossoverRate, de.stepSize}</td>
  *   </tr>
  *   <tr>
  *     <td>eNSGAII</td>
@@ -98,6 +88,31 @@ import org.moeaframework.util.TypedProperties;
  *         maximumPopulationSize}</td>
  *   </tr>
  *   <tr>
+ *     <td>GDE3</td>
+ *     <td>Real</td>
+ *     <td>{@code populationSize, de.crossoverRate, de.stepSize}</td>
+ *   </tr>
+ *   <tr>
+ *     <td>IBEA</td>
+ *     <td>Any</td>
+ *     <td>{@code populationSize, sbx.rate, sbx.distributionIndex, pm.rate,
+ *         pm.distributionIndex, indicator}</td>
+ *   </tr>
+ *   <tr>
+ *     <td>MOEAD</td>
+ *     <td>Real</td>
+ *     <td>{@code populationSize, de.crossoverRate, de.stepSize, pm.rate,
+ *         pm.distributionIndex, neighborhoodSize, delta, eta, 
+ *         updateUtility}</td>
+ *   </tr>
+ *   <tr>
+ *     <td>NSGAII</td>
+ *     <td>Any</td>
+ *     <td>{@code populationSize, sbx.rate, sbx.distributionIndex,
+ *         pm.rate, pm.distributionIndex}</td>
+ *   </tr>
+ *   
+ *   <tr>
  *     <td>NSGAIII</td>
  *     <td>Any</td>
  *     <td>{@code populationSize, divisions, sbx.rate, sbx.distributionIndex,
@@ -106,16 +121,10 @@ import org.moeaframework.util.TypedProperties;
  *         {@code divisionsInner})</td>
  *   </tr>
  *   <tr>
- *     <td>CMA-ES</td>
+ *     <td>OMOPSO</td>
  *     <td>Real</td>
- *     <td>{@code lambda, cc, cs, damps, ccov, ccovsep, sigma,
- *         diagonalIterations, indicator, initialSearchPoint}</td>
- *   </tr>
- *   <tr>
- *     <td>SPEA2</td>
- *     <td>Any</td>
- *     <td>{@code populationSize, offspringSize, k, sbx.rate,
- *         sbx.distributionIndex, pm.rate, pm.distributionIndex}</td>
+ *     <td>{@code populationSize, archiveSize, maxEvaluations,
+ *         mutationProbability, perturbationIndex, epsilon}</td>
  *   </tr>
  *   <tr>
  *     <td>PAES</td>
@@ -129,10 +138,9 @@ import org.moeaframework.util.TypedProperties;
  *         sbx.distributionIndex, pm.rate, pm.distributionIndex}</td>
  *   </tr>
  *   <tr>
- *     <td>OMOPSO</td>
- *     <td>Real</td>
- *     <td>{@code populationSize, archiveSize, maxEvaluations,
- *         mutationProbability, perturbationIndex, epsilon}</td>
+ *     <td>Random</td>
+ *     <td>Any</td>
+ *     <td>{@code populationSize, epsilon}</td>
  *   </tr>
  *   <tr>
  *     <td>SMPSO</td>
@@ -141,27 +149,22 @@ import org.moeaframework.util.TypedProperties;
  *         pm.distributionIndex}</td>
  *   </tr>
  *   <tr>
- *     <td>IBEA</td>
- *     <td>Any</td>
- *     <td>{@code populationSize, sbx.rate, sbx.distributionIndex, pm.rate,
- *         pm.distributionIndex, indicator}</td>
- *   </tr>
- *   <tr>
  *     <td>SMS-EMOA</td>
  *     <td>Any</td>
  *     <td>{@code populationSize, offset, sbx.rate, sbx.distributionIndex,
  *         pm.rate, pm.distributionIndex}</td>
  *   </tr>
  *   <tr>
+ *     <td>SPEA2</td>
+ *     <td>Any</td>
+ *     <td>{@code populationSize, offspringSize, k, sbx.rate,
+ *         sbx.distributionIndex, pm.rate, pm.distributionIndex}</td>
+ *   </tr>
+ *   <tr>
  *     <td>VEGA</td>
  *     <td>Any</td>
  *     <td>{@code populationSize, sbx.rate, sbx.distributionIndex, pm.rate,
  *         pm.distributionIndex}</td>
- *   </tr>
- *   <tr>
- *     <td>Random</td>
- *     <td>Any</td>
- *     <td>{@code populationSize, (epsilon)}</td>
  *   </tr>
  * </table>
  */

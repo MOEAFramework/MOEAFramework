@@ -60,6 +60,56 @@ The native algorithms listed in \tblref{tbl:algorithms} are implemented within t
 
 Note that in the following descriptions, we list the parameters for real-valued operators.  If \tblref{tbl:algorithms} indicates that other representations are supported, then the real-valued operator parameters should be replaced for the other default operators.  For more details on the parameters for the various operators, see the Javadoc documentation for the \java{OperatorFactory} class.
 
+\subsection{CMA-ES}
+CMA-ES is a sophisticated covariance matrix adaptation evolution strategy algorithm for real-valued global optimization problems.  The MOEA Framework supports both the single and multiobjective versions.  The single-objective version is described in:
+\begin{quote}
+Hansen and Kern (2004). ``Evaluating the CMA Evolution Strategy on Multimodal Test Functions.'' In Proceedings of the Eighth International Conference on Parallel Problem Solving from Nature PPSN VIII, pp. 282-291, Berlin: Springer.
+\end{quote}
+and the multiobjective extension is introduced in:
+\begin{quote}
+Igel, C., N. Hansen, and S. Roth (2007).  ``Covariance Matrix Adaptation for Multi-objective Optimization.''  Evolutionary Computation, 15(1):1-28.
+\end{quote}
+Use the string \java{"CMA-ES"} when creating instances of this algorithm with the \java{Executor}.  The following parameters are available:
+\newline
+\newline
+\begin{tabularx}{\linewidth}{lX}
+  \hline
+  Parameters & Description \\
+  \hline
+  lambda & The offspring population size \\
+  cc & The cumulation parameter \\
+  cs & The step size of the cumulation parameter \\
+  damps & The damping factor for the step size \\
+  ccov & The learning rate \\
+  ccovsep & The learning rate when in diagonal-only mode \\
+  sigma & The initial standard deviation \\
+  diagonalIterations & The number of iterations in which only the covariance diagonal is used \\
+  indicator & Either \java{"hypervolume"} or \java{"epsilon"} to specify the use of the hypervolume or additive-epsilon indicator.  If neither is defined, crowding distance is used \\
+  initialSearchPoint & Initial guess at the starting location (comma-separated values) \\
+  \hline
+\end{tabularx}
+\newline
+\newline
+and the default values for these parameters are:
+\newline
+\newline
+\begin{tabularx}{\linewidth}{lX}
+  \hline
+  Parameters & Default Values \\
+  \hline
+  lambda & $100$ \\
+  cc & Derived value (see reference paper) \\
+  cs & Derived value (see reference paper) \\
+  damps & Derived value (see reference paper) \\
+  ccov & Derived value (see reference paper) \\
+  ccovsep & Derived value (see reference paper) \\
+  sigma & $0.5$ \\
+  diagonalIterations & $0$ \\
+  indicator & Unset (crowding distance) \\
+  initialSearchPoint & Unset \\
+  \hline
+\end{tabularx}
+
 \subsection{$\epsilon$-MOEA}
 $\epsilon$-MOEA is a steady-state MOEA that uses $\epsilon$-dominance archiving to record a diverse set of Pareto optimal solutions.  Full details of this algorithm are available in the following technical report:
 \begin{quote}
@@ -97,86 +147,6 @@ and the default values for these parameters are:
   pm.distributionIndex & $20.0$ \\
   \hline
 \end{tabularx}
-
-\subsection{NSGA-II}
-NSGA-II is one of the most widely used MOEAs and was introduced in the following paper:
-\begin{quote}
-Deb, K. et al.  ``A Fast Elitist Multi-Objective Genetic Algorithm: NSGA-II.''  IEEE Transactions on Evolutionary Computation, 6:182-197, 2000.
-\end{quote}
-Use the string \java{"NSGAII"} when creating instances of this algorithm with the \java{Executor}.  The following parameters are available:
-\newline
-\newline
-\begin{tabularx}{\linewidth}{lX}
-  \hline
-  Parameter & Description \\
-  \hline
-  populationSize & The size of the population \\
-  sbx.rate & The crossover rate for simulated binary crossover \\
-  sbx.distributionIndex & The distribution index for simulated binary crossover \\
-  pm.rate & The mutation rate for polynomial mutation \\
-  pm.distributionIndex & The distribution index for polynomial mutation \\
-  \hline
-\end{tabularx}
-\newline
-\newline
-and the default values for these parameters are:
-\newline
-\newline
-\begin{tabularx}{\linewidth}{lX}
-  \hline
-  Parameter & Default Values \\
-  \hline
-  populationSize & $100$ \\
-  sbx.rate & $1.0$ \\
-  sbx.distributionIndex & $15.0$ \\
-  pm.rate & $1/N$ \\
-  pm.distributionIndex & $20.0$ \\
-  \hline
-\end{tabularx}
-\subsection{NSGA-III}
-NSGA-III is the many-objective successor to NSGA-II, using reference points to direct solutions towards a diverse set.  Full details are described in:
-\begin{quote}
-Deb, K. and Jain, H.  "An Evolutionary Many-Objective Optimization Algorithm Using Reference-Point-Based Nondominated Sorting Approach, Part I: Solving Problems With Box Constraints."  IEEE Transactions on Evolutionary Computation, 18(4):577-601, 2014.
-\end{quote}
-Use the string \java{"NSGAIII"} when creating instances of this algorithm with the \java{Executor}.  The following parameters are available:
-\newline
-\newline
-\begin{tabularx}{\linewidth}{lX}
-  \hline
-  Parameter & Description \\
-  \hline
-  populationSize & The size of the population \\
-  divisions & The number of divisions \\
-  sbx.rate & The crossover rate for simulated binary crossover \\
-  sbx.distributionIndex & The distribution index for simulated binary crossover \\
-  pm.rate & The mutation rate for polynomial mutation \\
-  pm.distributionIndex & The distribution index for polynomial mutation \\
-  \hline
-\end{tabularx}
-\newline
-\newline
-and the default values for these parameters are:
-\newline
-\newline
-\begin{tabularx}{\linewidth}{lX}
-  \hline
-  Parameter & Default Values \\
-  \hline
-  populationSize & $100$ \\
-  divisions & $4$ \\
-  sbx.rate & $1.0$ \\
-  sbx.distributionIndex & $15.0$ \\
-  pm.rate & $1/N$ \\
-  pm.distributionIndex & $20.0$ \\
-  \hline
-\end{tabularx}
-\newline
-\newline
-The \java{divisions} parameter governs the number of reference points, $H$, for an $M$ objective problem with the following equation:
-\begin{equation}
-  H = {M+divisions-1 \choose divisions}
-\end{equation}
-Deb and Jain also propose a two-layer approach for divisions for many-objective problems where an outer and inner division number is specified.  To use the two-layer approach, replace the \java{divisions} parameter with \java{divisionsOuter} and \java{divisionsInner}.
 
 \subsection{$\epsilon$-NSGA-II}
 $\epsilon$-NSGA-II is an extension of NSGA-II that uses an $\epsilon$-dominance archive and randomized restart to enhance search and find a diverse set of Pareto optimal solutions.  Full details of this algorithm are given in the following paper:
@@ -223,6 +193,76 @@ and the default values for these parameters are:
   maxWindowSize & $100$ \\
   minimumPopulationSize & $100$ \\
   maximumPopulationSize & $10000$ \\
+  \hline
+\end{tabularx}
+
+\subsection{GDE3}
+GDE3 is the extension of differential evolution for multiobjective problems.  It was originally introduced in the following technical report:
+\begin{quote}
+Kukkonen and Lampinen (2005). ``GDE3: The Third Evolution Step of Generalized Differential Evolution.'' KanGAL Report Number 2005013. 
+\end{quote}
+Use the string \java{"GDE3"} when creating instances of this algorithm with the \java{Executor}.  The following parameters are available:
+\newline
+\newline
+\begin{tabularx}{\linewidth}{lX}
+  \hline
+  Parameter & Description \\
+  \hline
+  populationSize & The size of the population \\
+  de.crossoverRate & The crossover rate for differential evolution \\
+  de.stepSize & Control the size of each step taken by differential evolution \\
+  \hline
+\end{tabularx}
+\newline
+\newline
+and the default values for these parameters are:
+\newline
+\newline
+\begin{tabularx}{\linewidth}{lX}
+  \hline
+  Parameter & Default Values \\
+  \hline
+  populationSize & $100$ \\
+  de.crossoverRate & $0.1$ \\
+  de.stepSize & $0.5$ \\
+  \hline
+\end{tabularx}
+
+\subsection{IBEA}
+IBEA is a indicator-based MOEA that uses the hypervolume performance indicator as a means to rank solutions.  IBEA was introduced in the following paper:
+\begin{quote}
+Zitzler, E. and K\"unzli, S.  ``Indicator-based selection in multiobjective search.'' In Parallel Problem Solving from Nature (PPSN VIII), Lecture Notes in Computer Science, pages 832–842, Berlin / Heidelberg, Springer, 2004.
+\end{quote}
+Use the string \java{"IBEA"} when creating instances of this algorithm with the \java{Executor}.  The following parameters are available:
+\newline
+\newline
+\begin{tabularx}{\linewidth}{lX}
+  \hline
+  Parameter & Description \\
+  \hline
+  populationSize & The size of the population \\
+  sbx.rate & The crossover rate for simulated binary crossover \\
+  sbx.distributionIndex & The distribution index for simulated binary crossover \\
+  pm.rate & The mutation rate for polynomial mutation \\
+  pm.distributionIndex & The distribution index for polynomial mutation \\
+  indicator & The indicator function (e.g., hypervolume, epsilon, crowding) \\
+  \hline
+\end{tabularx}
+\newline
+\newline
+with the default parameter values:
+\newline
+\newline
+\begin{tabularx}{\linewidth}{lX}
+  \hline
+  Parameter & Default Values \\
+  \hline
+  populationSize & $100$ \\
+  sbx.rate & $1.0$ \\
+  sbx.distributionIndex & $15.0$ \\
+  pm.rate & $1/N$ \\
+  pm.distributionIndex & $20.0$ \\
+  indicator & hypervolume \\
   \hline
 \end{tabularx}
 
@@ -274,122 +314,12 @@ and the default values for these parameters are:
   \hline
 \end{tabularx}
 
-\subsection{GDE3}
-GDE3 is the extension of differential evolution for multiobjective problems.  It was originally introduced in the following technical report:
+\subsection{NSGA-II}
+NSGA-II is one of the most widely used MOEAs and was introduced in the following paper:
 \begin{quote}
-Kukkonen and Lampinen (2005). ``GDE3: The Third Evolution Step of Generalized Differential Evolution.'' KanGAL Report Number 2005013. 
+Deb, K. et al.  ``A Fast Elitist Multi-Objective Genetic Algorithm: NSGA-II.''  IEEE Transactions on Evolutionary Computation, 6:182-197, 2000.
 \end{quote}
-Use the string \java{"GDE3"} when creating instances of this algorithm with the \java{Executor}.  The following parameters are available:
-\newline
-\newline
-\begin{tabularx}{\linewidth}{lX}
-  \hline
-  Parameter & Description \\
-  \hline
-  populationSize & The size of the population \\
-  de.crossoverRate & The crossover rate for differential evolution \\
-  de.stepSize & Control the size of each step taken by differential evolution \\
-  \hline
-\end{tabularx}
-\newline
-\newline
-and the default values for these parameters are:
-\newline
-\newline
-\begin{tabularx}{\linewidth}{lX}
-  \hline
-  Parameter & Default Values \\
-  \hline
-  populationSize & $100$ \\
-  de.crossoverRate & $0.1$ \\
-  de.stepSize & $0.5$ \\
-  \hline
-\end{tabularx}
-
-\subsection{CMA-ES}
-CMA-ES is a sophisticated covariance matrix adaptation evolution strategy algorithm for real-valued global optimization problems.  The MOEA Framework supports both the single and multiobjective versions.  The single-objective version is described in:
-\begin{quote}
-Hansen and Kern (2004). ``Evaluating the CMA Evolution Strategy on Multimodal Test Functions.'' In Proceedings of the Eighth International Conference on Parallel Problem Solving from Nature PPSN VIII, pp. 282-291, Berlin: Springer.
-\end{quote}
-and the multiobjective extension is introduced in:
-\begin{quote}
-Igel, C., N. Hansen, and S. Roth (2007).  ``Covariance Matrix Adaptation for Multi-objective Optimization.''  Evolutionary Computation, 15(1):1-28.
-\end{quote}
-Use the string \java{"CMA-ES"} when creating instances of this algorithm with the \java{Executor}.  The following parameters are available:
-\newline
-\newline
-\begin{tabularx}{\linewidth}{lX}
-  \hline
-  Parameters & Description \\
-  \hline
-  lambda & The offspring population size \\
-  cc & The cumulation parameter \\
-  cs & The step size of the cumulation parameter \\
-  damps & The damping factor for the step size \\
-  ccov & The learning rate \\
-  ccovsep & The learning rate when in diagonal-only mode \\
-  sigma & The initial standard deviation \\
-  diagonalIterations & The number of iterations in which only the covariance diagonal is used \\
-  indicator & Either \java{"hypervolume"} or \java{"epsilon"} to specify the use of the hypervolume or additive-epsilon indicator.  If neither is defined, crowding distance is used \\
-  initialSearchPoint & Initial guess at the starting location (comma-separated values) \\
-  \hline
-\end{tabularx}
-\newline
-\newline
-and the default values for these parameters are:
-\newline
-\newline
-\begin{tabularx}{\linewidth}{lX}
-  \hline
-  Parameters & Default Values \\
-  \hline
-  lambda & $100$ \\
-  cc & Derived value (see reference paper) \\
-  cs & Derived value (see reference paper) \\
-  damps & Derived value (see reference paper) \\
-  ccov & Derived value (see reference paper) \\
-  ccovsep & Derived value (see reference paper) \\
-  sigma & $0.5$ \\
-  diagonalIterations & $0$ \\
-  indicator & Unset (crowding distance) \\
-  initialSearchPoint & Unset \\
-  \hline
-\end{tabularx}
-
-\subsection{Random Search}
-The random search algorithm simply randomly generates new solutions uniformly throughout the search space.  It is not intended as an ``optimization algorithm'' \emph{per se}, but as a way to compare the performance of other MOEAs against random search.  If an optimization algorithm can not beat random search, then continued use of that optimization algorithm should be questioned.
-
-Use the string \java{"Random"} when creating instances of this algorithm with the \java{Executor}.  The following parameters are available:
-\newline
-\newline
-\begin{tabularx}{\linewidth}{lX}
-  \hline
-  Parameter & Description \\
-  \hline
-  populationSize & This parameter only has a use when parallelizing evaluations; it controls the number of solutions that are generated and evaluated in parallel \\
-  epsilon & The $\epsilon$ values used by the $\epsilon$-dominance archive, which can either be a single value or a comma-separated array (this parameter is optional) \\
-  \hline
-\end{tabularx}
-\newline
-\newline
-and the default values for these parameters are:
-\newline
-\newline
-\begin{tabularx}{\linewidth}{lX}
-  \hline
-  Parameter & Default Values \\
-  \hline
-  populationSize & $100$ \\
-  epsilon & Problem dependent \\
-  \hline
-\end{tabularx}
-
-\subsection{IBEA}
-IBEA is a indicator-based MOEA that uses the hypervolume performance indicator as a means to rank solutions.  IBEA was introduced in the following paper:
-\begin{quote}
-Zitzler, E. and K\"unzli, S.  ``Indicator-based selection in multiobjective search.'' In Parallel Problem Solving from Nature (PPSN VIII), Lecture Notes in Computer Science, pages 832–842, Berlin / Heidelberg, Springer, 2004.
-\end{quote}
-Use the string \java{"IBEA"} when creating instances of this algorithm with the \java{Executor}.  The following parameters are available:
+Use the string \java{"NSGAII"} when creating instances of this algorithm with the \java{Executor}.  The following parameters are available:
 \newline
 \newline
 \begin{tabularx}{\linewidth}{lX}
@@ -401,12 +331,11 @@ Use the string \java{"IBEA"} when creating instances of this algorithm with the 
   sbx.distributionIndex & The distribution index for simulated binary crossover \\
   pm.rate & The mutation rate for polynomial mutation \\
   pm.distributionIndex & The distribution index for polynomial mutation \\
-  indicator & The indicator function (e.g., hypervolume, epsilon, crowding) \\
   \hline
 \end{tabularx}
 \newline
 \newline
-with the default parameter values:
+and the default values for these parameters are:
 \newline
 \newline
 \begin{tabularx}{\linewidth}{lX}
@@ -418,9 +347,53 @@ with the default parameter values:
   sbx.distributionIndex & $15.0$ \\
   pm.rate & $1/N$ \\
   pm.distributionIndex & $20.0$ \\
-  indicator & hypervolume \\
   \hline
 \end{tabularx}
+
+\subsection{NSGA-III}
+NSGA-III is the many-objective successor to NSGA-II, using reference points to direct solutions towards a diverse set.  Full details are described in:
+\begin{quote}
+Deb, K. and Jain, H.  "An Evolutionary Many-Objective Optimization Algorithm Using Reference-Point-Based Nondominated Sorting Approach, Part I: Solving Problems With Box Constraints."  IEEE Transactions on Evolutionary Computation, 18(4):577-601, 2014.
+\end{quote}
+Use the string \java{"NSGAIII"} when creating instances of this algorithm with the \java{Executor}.  The following parameters are available:
+\newline
+\newline
+\begin{tabularx}{\linewidth}{lX}
+  \hline
+  Parameter & Description \\
+  \hline
+  populationSize & The size of the population \\
+  divisions & The number of divisions \\
+  sbx.rate & The crossover rate for simulated binary crossover \\
+  sbx.distributionIndex & The distribution index for simulated binary crossover \\
+  pm.rate & The mutation rate for polynomial mutation \\
+  pm.distributionIndex & The distribution index for polynomial mutation \\
+  \hline
+\end{tabularx}
+\newline
+\newline
+and the default values for these parameters are:
+\newline
+\newline
+\begin{tabularx}{\linewidth}{lX}
+  \hline
+  Parameter & Default Values \\
+  \hline
+  populationSize & $100$ \\
+  divisions & $4$ \\
+  sbx.rate & $1.0$ \\
+  sbx.distributionIndex & $15.0$ \\
+  pm.rate & $1/N$ \\
+  pm.distributionIndex & $20.0$ \\
+  \hline
+\end{tabularx}
+\newline
+\newline
+The \java{divisions} parameter governs the number of reference points, $H$, for an $M$ objective problem with the following equation:
+\begin{equation}
+  H = {M+divisions-1 \choose divisions}
+\end{equation}
+Deb and Jain also propose a two-layer approach for divisions for many-objective problems where an outer and inner division number is specified.  To use the two-layer approach, replace the \java{divisions} parameter with \java{divisionsOuter} and \java{divisionsInner}.
 
 \subsection{OMOPSO}
 OMOPSO is a multiobjective particle swarm optimization algorithm that includes an $\epsilon$-dominance archive to discover a diverse set of Pareto optimal solutions.  OMOPSO was originally introduced at the following conference:
@@ -534,6 +507,34 @@ with the default parameter values:
   \hline
 \end{tabularx}
 
+\subsection{Random Search}
+The random search algorithm simply randomly generates new solutions uniformly throughout the search space.  It is not intended as an ``optimization algorithm'' \emph{per se}, but as a way to compare the performance of other MOEAs against random search.  If an optimization algorithm can not beat random search, then continued use of that optimization algorithm should be questioned.
+
+Use the string \java{"Random"} when creating instances of this algorithm with the \java{Executor}.  The following parameters are available:
+\newline
+\newline
+\begin{tabularx}{\linewidth}{lX}
+  \hline
+  Parameter & Description \\
+  \hline
+  populationSize & This parameter only has a use when parallelizing evaluations; it controls the number of solutions that are generated and evaluated in parallel \\
+  epsilon & The $\epsilon$ values used by the $\epsilon$-dominance archive, which can either be a single value or a comma-separated array (this parameter is optional) \\
+  \hline
+\end{tabularx}
+\newline
+\newline
+and the default values for these parameters are:
+\newline
+\newline
+\begin{tabularx}{\linewidth}{lX}
+  \hline
+  Parameter & Default Values \\
+  \hline
+  populationSize & $100$ \\
+  epsilon & Problem dependent \\
+  \hline
+\end{tabularx}
+
 \subsection{SMPSO}
 SMPSO is a multiobjective particle swarm optimization algorithm that was originally presented at the following conference:
 \begin{quote}
@@ -568,12 +569,12 @@ with the default parameter values:
   \hline
 \end{tabularx}
 
-\subsection{SMSEMOA}
-SMSEMOA is an indicator-based MOEA that uses the volume of the dominated hypervolume to rank individuals.  SMSEMOA is discussed in detail in the following paper:
+\subsection{SMS-EMOA}
+SMS-EMOA is an indicator-based MOEA that uses the volume of the dominated hypervolume to rank individuals.  SMS-EMOA is discussed in detail in the following paper:
 \begin{quote}
 Beume, N., et al.  ``SMS-EMOA: Multiobjective selection based on dominated hypervolume.''  European Journal of Operational Research, 181(3):1653-1669, 2007.
 \end{quote}
-Use the string \java{"SMSEMOA"} when creating instances of this algorithm with the \java{Executor}.  The following parameters are available:
+Use the string \java{"SMS-EMOA"} when creating instances of this algorithm with the \java{Executor}.  The following parameters are available:
 \newline
 \newline
 \begin{tabularx}{\linewidth}{lX}
