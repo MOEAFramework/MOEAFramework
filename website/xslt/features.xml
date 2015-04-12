@@ -35,7 +35,7 @@
   <li><a href="#controllers">Meta-Algorithms</a></li>
   <li><a href="#problems">Problem Sets</a></li>
   <li><a href="#representations">Representations</a></li>
-  <li><a href="#evaluation">Performance Evaluation</a></li>
+  <li><a href="#other">Additional Features</a></li>
 </ul>
 
 <div class="section">
@@ -50,88 +50,56 @@ using existing components.</p>
     <th>Description</th>
   </tr>
   <tr>
-    <td style="font-weight: bold;">&epsilon;-MOEA</td>
-    <td>&epsilon;-Dominance-based Evolutionary Algorithm</td>
-  </tr>
-  <tr>
-  	<td style="font-weight: bold">NSGA-II</td>
-  	<td>Non-dominated Sorting Genetic Algorithm II</td>
-  </tr>
-  <tr>
-  	<td style="font-weight: bold">NSGA-III</td>
-  	<td>Reference-Point Based Non-dominated Sorting Genetic Algorithm</td>
-  </tr>
-  <tr>
-  	<td style="font-weight: bold">&epsilon;-NSGA-II</td>
-  	<td>NSGA-II with &epsilon;-Dominance, Randomized Restarts, and Adaptive Population Sizing</td>
+    <td style="font-weight: bold">AbYSS</td>
+    <td>Multiobjective Scatter Search<sup>1</sup></td>
   </tr>
   <tr>
     <td style="font-weight: bold">Borg&nbsp;MOEA</td>
-    <td>Adaptive Multioperator Search with &epsilon;-Dominance and &epsilon;-Progress Triggered Restarts</td>
-  </tr>
-  <tr>
-  	<td style="font-weight: bold">MOEA/D</td>
-  	<td>Multiobjective Evolutionary Algorithm with Decomposition</td>
-  </tr>
-  <tr>
-  	<td style="font-weight: bold">GDE3</td>
-  	<td>Generalized Differential Evolution</td>
-  </tr>
-  <tr>
-  	<td style="font-weight: bold">CMA-ES</td>
-  	<td>Covariance Matrix Adaption Evolution Strategy</td>
-  </tr>
-  <tr>
-    <td style="font-weight: bold">IBEA</td>
-    <td>Indicator-Based Evolutionary Algorithm</td>
-  </tr>
-  <tr>
-    <td style="font-weight: bold">OMOPSO</td>
-    <td>Multiobjective Particle Swarm Optimization</td>
-  </tr>
-  <tr>
-    <td style="font-weight: bold">SMPSO</td>
-    <td>Speed-Constrained Multiobjective Particle Swarm Optimization</td>
-  </tr>
-  <tr>
-    <td style="font-weight: bold">PAES</td>
-    <td>Pareto Archived Evolution Strategy</td>
-  </tr>
-  <tr>
-    <td style="font-weight: bold">PESA2</td>
-    <td>Pareto Envelope-based Selection Algorithm</td>
-  </tr>
-  <tr>
-    <td style="font-weight: bold">SMS-EMOA</td>
-    <td>S-Metric Selection MOEA</td>
-  </tr>
-  <tr>
-    <td style="font-weight: bold">SPEA2</td>
-    <td>Strength-based Evolutionary Algorithm</td>
-  </tr>
-  <tr>
-    <td style="font-weight: bold">VEGA</td>
-    <td>Vector Evaluated Genetic Algorithm</td>
-  </tr>
-  <tr>
-    <td style="font-weight: bold">Random</td>
-    <td>Random Search</td>
-  </tr>
-  <tr>
-    <td style="font-weight: bold">AbYSS</td>
-    <td>Multiobjective Scatter Search<sup>1</sup></td>
+    <td>Adaptive Multioperator Search with &epsilon;-Dominance and &epsilon;-Progress Triggered Restarts<sup>3</sup></td>
   </tr>
   <tr>
     <td style="font-weight: bold">CellDE</td>
     <td>Cellular Genetic Algorithm with Diffential Evolution<sup>1</sup></td>
   </tr>
   <tr>
+  	<td style="font-weight: bold">CMA-ES</td>
+  	<td>Covariance Matrix Adaption Evolution Strategy</td>
+  </tr>
+  <tr>
     <td style="font-weight: bold">DENSEA</td>
     <td>Duplicate Elimination Nondominated Sorting Evolutionary Algorithm<sup>1</sup></td>
   </tr>
   <tr>
+    <td style="font-weight: bold">ECEA</td>
+    <td>Epsilon-Constraint Evolutionary Algorithm<sup>2</sup></td>
+  </tr>
+  <tr>
+    <td style="font-weight: bold;">&epsilon;-MOEA</td>
+    <td>&epsilon;-Dominance-based Evolutionary Algorithm</td>
+  </tr>
+  <tr>
+  	<td style="font-weight: bold">&epsilon;-NSGA-II</td>
+  	<td>NSGA-II with &epsilon;-Dominance, Randomized Restarts, and Adaptive Population Sizing</td>
+  </tr>
+  <tr>
     <td style="font-weight: bold">FastPGA</td>
     <td>Fast Pareto Genetic Algorithm<sup>1</sup></td>
+  </tr>
+  <tr>
+    <td style="font-weight: bold">FEMO</td>
+    <td>Fair Evolutionary Multiobjective Optimizer<sup>2</sup></td>
+  </tr>
+  <tr>
+  	<td style="font-weight: bold">GDE3</td>
+  	<td>Generalized Differential Evolution</td>
+  </tr>
+  <tr>
+    <td style="font-weight: bold">HypE</td>
+    <td>Hypervolume Estimation Algorithm for Multiobjective Optimization<sup>2</sup></td>
+  </tr>
+  <tr>
+    <td style="font-weight: bold">IBEA</td>
+    <td>Indicator-Based Evolutionary Algorithm</td>
   </tr>
   <tr>
     <td style="font-weight: bold">MOCell</td>
@@ -142,16 +110,32 @@ using existing components.</p>
     <td>Multiobjective CHC Algorithm<sup>1</sup></td>
   </tr>
   <tr>
-    <td style="font-weight: bold">ECEA</td>
-    <td>Epsilon-Constraint Evolutionary Algorithm<sup>2</sup></td>
+  	<td style="font-weight: bold">MOEA/D</td>
+  	<td>Multiobjective Evolutionary Algorithm with Decomposition</td>
   </tr>
   <tr>
-    <td style="font-weight: bold">FEMO</td>
-    <td>Fair Evolutionary Multiobjective Optimizer<sup>2</sup></td>
+  	<td style="font-weight: bold">NSGA-II</td>
+  	<td>Non-dominated Sorting Genetic Algorithm II</td>
   </tr>
   <tr>
-    <td style="font-weight: bold">HypE</td>
-    <td>Hypervolume Estimation Algorithm for Multiobjective Optimization<sup>2</sup></td>
+  	<td style="font-weight: bold">NSGA-III</td>
+  	<td>Reference-Point Based Non-dominated Sorting Genetic Algorithm</td>
+  </tr>
+  <tr>
+    <td style="font-weight: bold">OMOPSO</td>
+    <td>Multiobjective Particle Swarm Optimization</td>
+  </tr>
+  <tr>
+    <td style="font-weight: bold">PAES</td>
+    <td>Pareto Archived Evolution Strategy</td>
+  </tr>
+  <tr>
+    <td style="font-weight: bold">PESA2</td>
+    <td>Pareto Envelope-based Selection Algorithm</td>
+  </tr>
+  <tr>
+    <td style="font-weight: bold">Random</td>
+    <td>Random Search</td>
   </tr>
   <tr>
     <td style="font-weight: bold">SEMO2</td>
@@ -166,13 +150,29 @@ using existing components.</p>
     <td>Simple Indicator Based Evolutionary Algorithm<sup>2</sup></td>
   </tr>
   <tr>
+    <td style="font-weight: bold">SMPSO</td>
+    <td>Speed-Constrained Multiobjective Particle Swarm Optimization</td>
+  </tr>
+  <tr>
+    <td style="font-weight: bold">SMS-EMOA</td>
+    <td>S-Metric Selection MOEA</td>
+  </tr>
+  <tr>
     <td style="font-weight: bold">SPAM</td>
     <td>Set Preference Algorithm for Multiobjective Optimization<sup>2</sup></td>
   </tr>
+  <tr>
+    <td style="font-weight: bold">SPEA2</td>
+    <td>Strength-based Evolutionary Algorithm</td>
+  </tr>
+  <tr>
+    <td style="font-weight: bold">VEGA</td>
+    <td>Vector Evaluated Genetic Algorithm</td>
+  </tr>
 </table>
 <p>
-<sup>1</sup> - Algorithms provided by the JMetal library (included with the MOEA Framework).<br />
-<sup>2</sup> - Algorithms provided by the PISA library (not included).<br />
+<sup>1</sup> - Algorithms provided by the <a href="http://jmetal.sourceforge.net/">JMetal</a> library (included with the MOEA Framework).<br />
+<sup>2</sup> - Algorithms provided by the <a href="http://www.tik.ee.ethz.ch/sop/pisa/">PISA</a> library.<br />
 <sup>3</sup> - Available as a JAR plugin from <a href="http://borgmoea.org">borgmoea.org</a>.
 </p>
 </div>
@@ -289,8 +289,8 @@ new problems written in Java or other languages can be easily incorporated.</p>
 </div>
 
 <div class="section">
-<a name="evaluation" />
-<h3>Performance Evaluation</h3>
+<a name="other" />
+<h3>Additional Features</h3>
 <p></p>
 <table>
   <tr>
@@ -298,7 +298,7 @@ new problems written in Java or other languages can be easily incorporated.</p>
     <th>Description</th>
   </tr>
   <tr>
-    <td style="font-weight: bold;">Indicators</td>
+    <td style="font-weight: bold;">Performance Indicators</td>
     <td>Hypervolume<br />
         Generational Distance (GD)<br />
         Inverted Generational Distance (IGD)<br />
@@ -311,12 +311,14 @@ new problems written in Java or other languages can be easily incorporated.</p>
         R3 Indicator</td>
   </tr>
   <tr>
-  	<td style="font-weight: bold">Collecting Runtime Dynamics</td>
-  	<td>Use collectors to record runtime behavior of algorithms</td>
-  </tr>
-  <tr>
-  	<td style="font-weight: bold">Evaluator, Analyzer, and Instrumenter</td>
-  	<td>Three Java classes for quickly evaluating MOEAs, statistically analyzing results, and collecting runtime dynamics</td>
+  	<td style="font-weight: bold">Executor, Analyzer, and Instrumenter</td>
+  	<td>Three simple Java classes for accessing 90% of the functionality of the MOEA Framework:
+  	    <ul>
+  	      <li>Executor - Construct and execute MOEAs to solve optimization problems</li>
+  	      <li>Analyzer - Statistically compare results</li>
+  	      <li>Instrumenter - Record runtime dynamics</li>
+  	    </ul>
+  	  </td>
   </tr>
   <tr>
   	<td style="font-weight: bold">Diagnostic Tool</td>
@@ -329,6 +331,14 @@ new problems written in Java or other languages can be easily incorporated.</p>
   <tr>
     <td style="font-weight: bold">Parallelization</td>
     <td>Automatic parallelization of algorithms across multiple cores, or distribute processing across a network using <a href="http://www.jppf.org/">JPPF</a>, <a href="http://www.gridgain.com/">GridGain</a>, or any other supported grid computing library</td>
+  </tr>
+  <tr>
+    <td style="font-weight: bold">Extensible</td>
+    <td>Build new algorithms, operators, representations, or problems and integrate them into the MOEA Framework using our Service Provider Interface (SPI)</td>
+  </tr>
+  <tr>
+    <td style="font-weight: bold">Best Practices</td>
+    <td>Extensively documented and unit tested source code to ensure quality</td>
   </tr>
 </table>
 </div>
