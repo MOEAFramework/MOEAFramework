@@ -212,23 +212,23 @@ ActionListener, ChartChangeListener, ListSelectionListener {
 			return;
 		}
 
-		double rangeMin = Double.POSITIVE_INFINITY;
-		double rangeMax = Double.NEGATIVE_INFINITY;
 		double domainMin = Double.POSITIVE_INFINITY;
 		double domainMax = Double.NEGATIVE_INFINITY;
+		double rangeMin = Double.POSITIVE_INFINITY;
+		double rangeMax = Double.NEGATIVE_INFINITY;
 		
 		for (Solution solution : referenceSet) {
-			rangeMin = Math.min(rangeMin, getValue(solution, 0));
-			rangeMax = Math.max(rangeMax, getValue(solution, 0));
-			domainMin = Math.min(domainMin, getValue(solution, 1));
-			domainMax = Math.max(domainMax, getValue(solution, 1));
+			domainMin = Math.min(domainMin, getValue(solution, 0));
+			domainMax = Math.max(domainMax, getValue(solution, 0));
+			rangeMin = Math.min(rangeMin, getValue(solution, 1));
+			rangeMax = Math.max(rangeMax, getValue(solution, 1));
 		}
 		
-		rangeMax *= 2;
-		domainMax *= 2;
+		domainMax += (domainMax-domainMin);
+		rangeMax += (rangeMax-rangeMin);
 		
-		referenceRangeBounds = new Range(rangeMin, rangeMax);
 		referenceDomainBounds = new Range(domainMin, domainMax);
+		referenceRangeBounds = new Range(rangeMin, rangeMax);
 	}
 	
 	/**
@@ -448,8 +448,7 @@ ActionListener, ChartChangeListener, ListSelectionListener {
 			}
 				
 			while ((index < accumulator.size("NFE")-1) && 
-					((Integer)accumulator.get("NFE", index) < 
-							slider.getValue())) {
+					((Integer)accumulator.get("NFE", index) < slider.getValue())) {
 				index++;
 			}
 				
