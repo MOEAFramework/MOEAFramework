@@ -183,6 +183,11 @@ public class Instrumenter extends ProblemBuilder {
 	private Accumulator lastAccumulator;
 	
 	/**
+	 * The packages that this instrumenter is allowed to access.
+	 */
+	private final List<String> allowedPackages;
+	
+	/**
 	 * Constructs a new instrumenter instance, initially with no collectors.
 	 */
 	public Instrumenter() {
@@ -190,6 +195,9 @@ public class Instrumenter extends ProblemBuilder {
 		
 		frequency = 100;
 		customCollectors = new ArrayList<Collector>();
+		
+		allowedPackages = new ArrayList<String>();
+		allowedPackages.add("org.moeaframework");
 	}
 	
 	/**
@@ -204,7 +212,50 @@ public class Instrumenter extends ProblemBuilder {
 	}
 	
 	/**
+	 * Allows this instrumenter to visit classes in the given package.  Some
+	 * Java classes can not be readily visited/discovered by this instrumenter,
+	 * possibly resulting in a {@code NullPointerException} or a
+	 * {@code SecurityException}.  Therefore, the instrumenter can only visit
+	 * classes explicitly allowed by the user.  By default,
+	 * {@code org.moeaframework} is allowed.
+	 * 
+	 * @param packageName a package name or the package name prefix
+	 * @return a reference to this instrumenter
+	 */
+	public Instrumenter addAllowedPackage(String packageName) {
+		allowedPackages.add(packageName);
+		
+		return this;
+	}
+	
+	/**
+	 * Removes one of the packages this instrumenter is allowed to visit.
+	 * Note that the given string must match the string passed to
+	 * {@link #addAllowedPackage(String)}.
+	 * 
+	 * @param packageName the package name or package name prefix to remove
+	 * @return a reference to this instrumenter
+	 */
+	public Instrumenter removeAllowedPackage(String packageName) {
+		allowedPackages.remove(packageName);
+		
+		return this;
+	}
+	
+	/**
+	 * Returns all packages this instrumenter is allowed to visit.
+	 * 
+	 * @return the list of allowed package names
+	 */
+	public List<String> getAllowedPackages() {
+		return allowedPackages;
+	}
+	
+	/**
 	 * Sets the frequency, in evaluations, that data is collected.  
+	 * 
+	 * @param frequency the frequency
+	 * @return a reference to this instrumenter
 	 */
 	public Instrumenter withFrequency(int frequency) {
 		this.frequency = frequency;
@@ -535,6 +586,20 @@ public class Instrumenter extends ProblemBuilder {
 			for (Object element : (Collection<?>)object) {
 				instrument(algorithm, collectors, visited, parents, element, 
 						null);
+			}
+		} else if (type.getPackage() != null) {
+			//do not visit objects that are in inaccessible packages
+			boolean allowed = false;
+			
+			for (String packageName : allowedPackages) {
+				if (type.getPackage().getName().startsWith(packageName)) {
+					allowed = true;
+					break;
+				}
+			}
+			
+			if (!allowed) {
+				return;
 			}
 		}
 		

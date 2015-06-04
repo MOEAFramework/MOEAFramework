@@ -224,7 +224,7 @@ public class InstrumenterTest {
 		
 		Accumulator accumulator = instrumenter.getLastAccumulator();
 		
-		Assert.assertEquals(10, accumulator.keySet().size());
+		Assert.assertEquals(13, accumulator.keySet().size());
 	}
 	
 }

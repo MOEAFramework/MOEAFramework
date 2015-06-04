@@ -29,6 +29,11 @@ Framework.
     
   * Fixes bug #34, where the scaling of plot in the Approximation Set Viewer
     were incorrect.
+    
+  * The Instrumenter can now visit classes not contained in the
+    org.moeaframework package, meaning the Instrumenter can collect data from
+    user-defined classes.  Specify these classes with
+    Instrumenter#addAllowedPackage.
 
 
 --------------------------
