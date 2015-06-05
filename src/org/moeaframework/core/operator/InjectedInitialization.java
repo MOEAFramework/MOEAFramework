@@ -50,13 +50,17 @@ public class InjectedInitialization extends RandomInitialization {
 
 	@Override
 	public Solution[] initialize() {
-		Solution[] initialPopulation = super.initialize();
-		
-		for (int i = 0; i < injectedSolutions.size(); i++) {
-			initialPopulation[i] = injectedSolutions.get(i);
+		if (populationSize <= injectedSolutions.size()) {
+			return injectedSolutions.toArray(new Solution[0]);
+		} else {
+			Solution[] initialPopulation = super.initialize();
+			
+			for (int i = 0; i < injectedSolutions.size(); i++) {
+				initialPopulation[i] = injectedSolutions.get(i);
+			}
+			
+			return initialPopulation;
 		}
-		
-		return initialPopulation;
 	}
 
 }

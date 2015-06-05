@@ -40,12 +40,12 @@ public class RandomInitialization implements Initialization {
 	/**
 	 * The problem.
 	 */
-	private final Problem problem;
+	protected final Problem problem;
 
 	/**
 	 * The initial population size.
 	 */
-	private final int populationSize;
+	protected final int populationSize;
 
 	/**
 	 * Constructs a random initialization operator.
@@ -86,8 +86,8 @@ public class RandomInitialization implements Initialization {
 	protected void initialize(Variable variable) {
 		if (variable instanceof RealVariable) {
 			RealVariable real = (RealVariable)variable;
-			real.setValue(PRNG.nextDouble(real.getLowerBound(), real
-					.getUpperBound()));
+			real.setValue(PRNG.nextDouble(real.getLowerBound(),
+					real.getUpperBound()));
 		} else if (variable instanceof BinaryVariable) {
 			BinaryVariable binary = (BinaryVariable)variable;
 
