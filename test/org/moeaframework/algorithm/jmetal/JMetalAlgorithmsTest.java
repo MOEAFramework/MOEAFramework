@@ -116,7 +116,7 @@ public class JMetalAlgorithmsTest {
 
 	@Test
 	public void testIBEA_Real() {
-		test("IBEA", realProblem);
+		test("IBEA-JMetal", realProblem);
 	}
 
 	@Test
@@ -136,27 +136,27 @@ public class JMetalAlgorithmsTest {
 
 	@Test
 	public void testOMOPSO_Real() {
-		test("OMOPSO", realProblem);
+		test("OMOPSO-JMetal", realProblem);
 	}
 
 	@Test
 	public void testPAES_Real() {
-		test("PAES", realProblem);
+		test("PAES-JMetal", realProblem);
 	}
 
 	@Test
 	public void testPESA2_Real() {
-		test("PESA2", realProblem);
+		test("PESA2-JMetal", realProblem);
 	}
 
 	@Test
 	public void testSMPSO_Real() {
-		test("SMPSO", realProblem);
+		test("SMPSO-JMetal", realProblem);
 	}
 	
 	@Test
 	public void testSMSEMOA_Real() {
-		test("SMSEMOA", realProblem);
+		test("SMSEMOA-JMetal", realProblem);
 	}
 
 	@Test
@@ -191,7 +191,7 @@ public class JMetalAlgorithmsTest {
 
 	@Test
 	public void testIBEA_Binary() {
-		test("IBEA", binaryProblem);
+		test("IBEA-JMetal", binaryProblem);
 	}
 
 	@Test
@@ -211,27 +211,27 @@ public class JMetalAlgorithmsTest {
 
 	@Test(expected = ProviderNotFoundException.class)
 	public void testOMOPSO_Binary() {
-		test("OMOPSO", binaryProblem);
+		test("OMOPSO-JMetal", binaryProblem);
 	}
 
 	@Test
 	public void testPAES_Binary() {
-		test("PAES", binaryProblem);
+		test("PAES-JMetal", binaryProblem);
 	}
 
 	@Test
 	public void testPESA2_Binary() {
-		test("PESA2", binaryProblem);
+		test("PESA2-JMetal", binaryProblem);
 	}
 
 	@Test(expected = ProviderNotFoundException.class)
 	public void testSMPSO_Binary() {
-		test("SMPSO", binaryProblem);
+		test("SMPSO-JMetal", binaryProblem);
 	}
 	
 	@Test
 	public void testSMSEMOA_Binary() {
-		test("SMSEMOA", binaryProblem);
+		test("SMSEMOA-JMetal", binaryProblem);
 	}
 
 	@Test
@@ -266,7 +266,7 @@ public class JMetalAlgorithmsTest {
 
 	@Test
 	public void testIBEA_Permutation() {
-		test("IBEA", permutationProblem);
+		test("IBEA-JMetal", permutationProblem);
 	}
 
 	@Test
@@ -286,27 +286,27 @@ public class JMetalAlgorithmsTest {
 
 	@Test(expected = ProviderNotFoundException.class)
 	public void testOMOPSO_Permutation() {
-		test("OMOPSO", permutationProblem);
+		test("OMOPSO-JMetal", permutationProblem);
 	}
 
 	@Test
 	public void testPAES_Permutation() {
-		test("PAES", permutationProblem);
+		test("PAES-JMetal", permutationProblem);
 	}
 
 	@Test
 	public void testPESA2_Permutation() {
-		test("PESA2", permutationProblem);
+		test("PESA2-JMetal", permutationProblem);
 	}
 
 	@Test(expected = ProviderNotFoundException.class)
 	public void testSMPSO_Permutation() {
-		test("SMPSO", permutationProblem);
+		test("SMPSO-JMetal", permutationProblem);
 	}
 	
 	@Test
 	public void testSMSEMOA_Permutation() {
-		test("SMSEMOA", permutationProblem);
+		test("SMSEMOA-JMetal", permutationProblem);
 	}
 
 	@Test
