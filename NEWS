@@ -1,9 +1,9 @@
 This file documents the major changes implemented in each release of the MOEA
 Framework.
 
--------------------
- Version 2.5 (TBD)
--------------------
+----------------------------
+ Version 2.5 (30 June 2015)
+----------------------------
 
   * Adds support for single and multi-objective CMA-ES.
   
