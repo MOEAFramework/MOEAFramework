@@ -32,12 +32,14 @@
 				<meta name="robots" content="index, follow, noarchive" />
 				<meta name="googlebot" content="noarchive" />
 				<meta http-equiv="pragma" content="no-cache" />
+				<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
 				<title><xsl:value-of select="title" /></title>
 				<link rel="shortcut icon" href="/favicon.ico" />
 
 				<!-- include the Styleshout Coolblue stylesheet -->
 				<link rel="stylesheet" type="text/css" media="screen" href="css/screen.css" />
+				<link rel="stylesheet" type="text/css" media="only screen and (max-device-width: 480px)" href="css/mobile.css" />
 				
 				<xsl:copy-of select="header/node()" />
 			</head>
