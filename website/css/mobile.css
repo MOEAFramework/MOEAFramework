@@ -10,6 +10,8 @@
   width: 100%;
   left: 0px;
   overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: hidden;
 }
 
 #header #nav ul li a {
@@ -47,6 +49,7 @@ img#logo {
   padding: 0;
   margin: 0;
   overflow: visible;
+  background: #FFF url(../images/content_mobile.gif) repeat-y center top;
 }
 
 #main {
