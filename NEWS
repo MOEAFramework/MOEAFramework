@@ -27,7 +27,7 @@ Framework.
   * Upgraded to Commons-Math 3.4 (from version 3.1.1) to get access to newer
     methods (primarily KthSelector).
     
-  * Fixes bug #34, where the scaling of plot in the Approximation Set Viewer
+  * Fixes bug #34, where the scaling of plots in the Approximation Set Viewer
     were incorrect.
     
   * The Instrumenter can now visit classes not contained in the
