@@ -658,7 +658,8 @@ public class Instrumenter extends ProblemBuilder {
 		
 		if (includeHypervolume || includeGenerationalDistance || 
 				includeInvertedGenerationalDistance || includeSpacing ||
-				includeAdditiveEpsilonIndicator || includeContribution) {
+				includeAdditiveEpsilonIndicator || includeContribution ||
+				includeR1 || includeR2 || includeR3) {
 			Problem problem = algorithm.getProblem();
 			NondominatedPopulation referenceSet = getReferenceSet();
 			EpsilonBoxDominanceArchive archive = null;
