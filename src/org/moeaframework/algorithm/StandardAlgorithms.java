@@ -19,6 +19,7 @@ package org.moeaframework.algorithm;
 
 import java.util.Properties;
 
+import org.apache.commons.math3.util.CombinatoricsUtils;
 import org.moeaframework.algorithm.pso.OMOPSO;
 import org.moeaframework.algorithm.pso.SMPSO;
 import org.moeaframework.analysis.sensitivity.EpsilonHelper;
@@ -29,8 +30,10 @@ import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Initialization;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.NondominatedSortingPopulation;
+import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
+import org.moeaframework.core.Selection;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variable;
 import org.moeaframework.core.Variation;
@@ -326,29 +329,80 @@ public class StandardAlgorithms extends AlgorithmProvider {
 	 * @return a new {@code NSGAIII} instance
 	 */
 	private Algorithm newNSGAIII(TypedProperties properties, Problem problem) {
-		int populationSize = (int)properties.getDouble("populationSize", 100);
-
-		Initialization initialization = new RandomInitialization(problem,
-				populationSize);
-
-		ReferencePointNondominatedSortingPopulation population = null;
+		int divisionsOuter = 4;
+		int divisionsInner = 0;
 		
 		if (properties.contains("divisionsOuter") && properties.contains("divisionsInner")) {
-			int divisionsOuter = (int)properties.getDouble("divisionsOuter", 4);
-			int divisionsInner = (int)properties.getDouble("divisionsInner", 0);
-			
-			population = new ReferencePointNondominatedSortingPopulation(
-					problem.getNumberOfObjectives(), divisionsOuter,
-					divisionsInner);
+			divisionsOuter = (int)properties.getDouble("divisionsOuter", 4);
+			divisionsInner = (int)properties.getDouble("divisionsInner", 0);
+		} else if (properties.contains("divisions")){
+			divisionsOuter = (int)properties.getDouble("divisions", 4);
+		} else if (problem.getNumberOfObjectives() == 2) {
+			divisionsOuter = 20;
+		} else if (problem.getNumberOfObjectives() == 3) {
+			divisionsOuter = 12;
+		} else if (problem.getNumberOfObjectives() == 4) {
+			divisionsOuter = 8;
+		} else if (problem.getNumberOfObjectives() == 5) {
+			divisionsOuter = 6;
+		} else if (problem.getNumberOfObjectives() == 6) {
+			divisionsOuter = 5;
+		} else if (problem.getNumberOfObjectives() == 7) {
+			divisionsOuter = 3;
+			divisionsInner = 2;
+		} else if (problem.getNumberOfObjectives() == 8) {
+			divisionsOuter = 3;
+			divisionsInner = 2;
+		} else if (problem.getNumberOfObjectives() == 9) {
+			divisionsOuter = 3;
+			divisionsInner = 2;
+		} else if (problem.getNumberOfObjectives() == 10) {
+			divisionsOuter = 3;
+			divisionsInner = 2;
 		} else {
-			int divisions = (int)properties.getDouble("divisions", 4);
-			
-			population = new ReferencePointNondominatedSortingPopulation(
-					problem.getNumberOfObjectives(), divisions);
+			divisionsOuter = 2;
+			divisionsInner = 1;
 		}
+		
+		int populationSize;
+		
+		if (properties.contains("populationSize")) {
+			populationSize = (int)properties.getDouble("populationSize", 100);
+		} else {
+			// compute number of reference points
+			populationSize = (int)(CombinatoricsUtils.binomialCoefficient(problem.getNumberOfObjectives() + divisionsOuter - 1, divisionsOuter) +
+					(divisionsInner == 0 ? 0 : CombinatoricsUtils.binomialCoefficient(problem.getNumberOfObjectives() + divisionsInner - 1, divisionsInner)));
 
-		TournamentSelection selection = new TournamentSelection(2, 
-				new ParetoDominanceComparator());
+			// round up to a multiple of 4
+			populationSize = (int)Math.ceil(populationSize / 4d) * 4;
+		}
+		
+		Initialization initialization = new RandomInitialization(problem,
+				populationSize);
+		
+		ReferencePointNondominatedSortingPopulation population = new ReferencePointNondominatedSortingPopulation(
+				problem.getNumberOfObjectives(), divisionsOuter, divisionsInner);
+
+		Selection selection = null;
+		
+		if (problem.getNumberOfConstraints() == 0) {
+			selection = new Selection() {
+	
+				@Override
+				public Solution[] select(int arity, Population population) {
+					Solution[] result = new Solution[arity];
+					
+					for (int i = 0; i < arity; i++) {
+						result[i] = population.get(PRNG.nextInt(population.size()));
+					}
+					
+					return result;
+				}
+				
+			};
+		} else {
+			selection = new TournamentSelection(2, new ParetoDominanceComparator());
+		}
 
 		Variation variation = OperatorFactory.getInstance().getVariation(null, 
 				properties, problem);

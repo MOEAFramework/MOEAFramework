@@ -26,7 +26,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.math3.stat.StatUtils;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.NondominatedSortingPopulation;
 import org.moeaframework.core.PRNG;
@@ -61,6 +60,9 @@ import org.moeaframework.util.Vector;
  *       Algorithm Using Reference-Point-Based Nondominated Sorting Approach,
  *       Part I: Solving Problems With Box Constraints."  IEEE Transactions on
  *       Evolutionary Computation, 18(4):577-601, 2014.
+ *   <li>Deb, K. and Jain, H.  "Handling Many-Objective Problems Using an
+ *       Improved NSGA-II Procedure.  WCCI 2012 IEEE World Contress on Computational
+ *       Intelligence, Brisbane, Australia, June 10-15, 2012.
  *   <li><a href="http://web.ntnu.edu.tw/~tcchiang/publications/nsga3cpp/nsga3cpp.htm">C++ Implementation by Tsung-Che Chiang</a>
  * </ol>
  */
@@ -265,10 +267,10 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 				System.err.println("The specified number of outer divisions produces intermediate reference points, recommend setting divisionsOuter < numberOfObjectives.");
 			}
 
-			weights = generateWeights(null, divisionsOuter);
+			weights = generateWeights(divisionsOuter);
 
 			// offset the inner weights
-			List<double[]> inner = generateWeights(null, divisionsInner);
+			List<double[]> inner = generateWeights(divisionsInner);
 
 			for (int i = 0; i < inner.size(); i++) {
 				double[] weight = inner.get(i);
@@ -284,60 +286,47 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 				System.err.println("No intermediate reference points will be generated for the specified number of divisions, recommend increasing divisions");
 			}
 
-			weights = generateWeights(null, divisionsOuter);
+			weights = generateWeights(divisionsOuter);
 		}
 	}
-
-	/**
-	 * Extends the given array with a new element appended to the end.
-	 * 
-	 * @param array the original array, or {@code null} for an empty array
-	 * @param value the value to append
-	 * @return the extended array
-	 */
-	private double[] extend(double[] array, double value) {
-		double[] result = null;
-
-		if (array == null) {
-			result = new double[1];
-		} else {
-			result = Arrays.copyOf(array, array.length + 1);
-		}
-
-		result[result.length-1] = value;
-		return result;
-	}
-
+	
 	/**
 	 * Generates the reference points (weights) for the given number of
 	 * divisions.
 	 * 
-	 * @param point the partially generated point, or {@code null} for the first
-	 *        invocation
 	 * @param divisions the number of divisions
 	 * @return the list of reference points
 	 */
-	private List<double[]> generateWeights(double[] point, int divisions) {
+	private List<double[]> generateWeights(int divisions) {
 		List<double[]> result = new ArrayList<double[]>();
-		double sum = 0.0;
-		int N = divisions;
-
-		if (point != null) {
-			sum = StatUtils.sum(point);
-			N = (int)((1.0 - sum)*divisions);
-		} else {
-			point = new double[0];
-		}
-
-		if (point.length < numberOfObjectives-1) {
-			for (int i = 0; i <= N; i++) {
-				result.addAll(generateWeights(extend(point, i/(double)divisions), divisions));
-			}
-		} else {
-			result.add(extend(point, 1.0 - sum));
-		}
+		double[] weight = new double[numberOfObjectives];
+		
+		generateRecursive(result, weight, numberOfObjectives, divisions, divisions, 0);
 
 		return result;
+	}
+	
+	/**
+	 * Generate reference points (weights) recursively.
+	 * 
+	 * @param weights list storing the generated reference points
+	 * @param weight the partial reference point being recursively generated
+	 * @param numberOfObjectives the number of objectives
+	 * @param left the number of remaining divisions
+	 * @param total the total number of divisions
+	 * @param index the current index being generated
+	 */
+	private void generateRecursive(List<double[]> weights,
+			double[] weight, int numberOfObjectives, int left, int total, int index) {
+		if (index == (numberOfObjectives - 1)) {
+			weight[index] = (double)left/total;
+			weights.add(weight.clone());
+		} else {
+			for (int i = 0; i <= left; i += 1) {
+				weight[index] = (double) i / total;
+				generateRecursive(weights, weight, numberOfObjectives, left - i, total, index + 1);
+			}
+		}
 	}
 
 	/**
@@ -396,15 +385,15 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 	 * @param weights the reference point (weight vector)
 	 * @return the value of the scalarizing function
 	 */
-	protected double achievementScalarizingFunction(Solution solution, double[] weights) {
-		double result = Double.NEGATIVE_INFINITY;
+	protected static double achievementScalarizingFunction(Solution solution, double[] weights) {
+		double max = Double.NEGATIVE_INFINITY;
 		double[] objectives = (double[])solution.getAttribute(NORMALIZED_OBJECTIVES);
 
 		for (int i = 0; i < solution.getNumberOfObjectives(); i++) {
-			result = Math.max(result, objectives[i]/weights[i]);
+			max = Math.max(max, objectives[i]/weights[i]);
 		}
 
-		return result;
+		return max;
 	}
 
 	/**
@@ -412,25 +401,30 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 	 * the point that minimizes the achievement scalarizing function using a
 	 * reference point near the given objective.
 	 * 
+	 * The NSGA-III paper (1) does not provide any details on the scalarizing
+	 * function, but an earlier paper by the authors (2) where some precursor
+	 * experiments are performed does define a possible function, replicated
+	 * below.
+	 * 
 	 * @param objective the objective index
 	 * @return the extreme point in the given objective
 	 */
 	private Solution findExtremePoint(int objective) {
-		double eps = 0.001;
+		double eps = 0.000001;
 		double[] weights = new double[numberOfObjectives];
 
-		for (int i = 0; i < weights.length; i++) {
+		for (int i = 0; i < numberOfObjectives; i++) {
 			if (i == objective) {
-				weights[i] = 1.0 - eps*(weights.length-1);
+				weights[i] = 1.0;
 			} else {
 				weights[i] = eps;
 			}
 		}
 
-		Solution result = get(0);
+		Solution result = null;
 		double resultASF = Double.POSITIVE_INFINITY;
 
-		for (int i = 1; i < size(); i++) {
+		for (int i = 0; i < size(); i++) {
 			Solution solution = get(i);
 			double solutionASF = achievementScalarizingFunction(solution, weights);
 
@@ -461,18 +455,21 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 
 	/**
 	 * Calculates the intercepts between the hyperplane formed by the extreme
-	 * points and each axis.
+	 * points and each axis.  The original paper (1) is unclear how to handle
+	 * degenerate cases, which occurs more frequently at larger dimensions.  In
+	 * this implementation, we simply use the nadir point for scaling.
 	 * 
 	 * @return an array of the intercept points for each objective
 	 */
 	private double[] calculateIntercepts() {
 		Solution[] extremePoints = extremePoints();
+		boolean degenerate = false;
 		double[] intercepts = new double[numberOfObjectives];
 
 		try {
 			double[] b = new double[numberOfObjectives];
 			double[][] A = new double[numberOfObjectives][numberOfObjectives];
-
+			
 			for (int i = 0; i < numberOfObjectives; i++) {
 				double[] objectives = (double[])extremePoints[i].getAttribute(NORMALIZED_OBJECTIVES);
 
@@ -489,16 +486,26 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 				intercepts[i] = 1.0 / result[i];
 			}
 		} catch (RuntimeException e) {
-			for (int i = 0; i < numberOfObjectives; i++) {
-				double[] objectives = (double[])extremePoints[i].getAttribute(NORMALIZED_OBJECTIVES);
-				intercepts[i] = objectives[i];
-			}
+			degenerate = true;
 		}
 
-		// avoid small intercepts since we will be dividing by this number
-		for (int i = 0; i < numberOfObjectives; i++) {
-			if (intercepts[i] < Settings.EPS) {
-				intercepts[i] = Settings.EPS;
+		if (!degenerate) {
+			// avoid small or negative intercepts
+			for (int i = 0; i < numberOfObjectives; i++) {
+				if (intercepts[i] < 0.001) {
+					degenerate = true;
+					break;
+				}
+			}
+		}
+		
+		if (degenerate) {
+			Arrays.fill(intercepts, Double.NEGATIVE_INFINITY);
+			
+			for (Solution solution : this) {
+				for (int i = 0; i < numberOfObjectives; i++) {
+					intercepts[i] = Math.max(intercepts[i], solution.getObjective(i));
+				}
 			}
 		}
 
@@ -574,7 +581,7 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 	 * @param point the point
 	 * @return the minimum distance
 	 */
-	private double pointLineDistance(double[] line, double[] point) {
+	private static double pointLineDistance(double[] line, double[] point) {
 		return Vector.magnitude(Vector.subtract(Vector.multiply(
 				Vector.dot(line, point) / Vector.dot(line, line),
 				line), point));
@@ -648,6 +655,22 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 	@Override
 	public void truncate(int size, Comparator<? super Solution> comparator) {
 		if (size() > size) {
+			// remove all solutions past the last front
+			sort(new RankComparator());
+
+			int maxRank = (Integer)super.get(size-1).getAttribute(RANK_ATTRIBUTE);
+			Population front = new Population();
+
+			for (int i = 0; i < size(); i++) {
+				int rank = (Integer)get(i).getAttribute(RANK_ATTRIBUTE);
+				
+				if (rank > maxRank) {
+					front.add(get(i));
+				}
+			}
+
+			removeAll(front);
+			
 			// update the ideal point
 			updateIdealPoint();
 
@@ -658,31 +681,18 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 			// by the extreme points, and compute the intercepts
 			normalizeByIntercepts(calculateIntercepts());
 
-			// identify points in last front and remove from population; we
-			// need to be careful to avoid alternating calls to remove and get
-			// to prevent unnecessary nondominated sorting updates
-			sort(new RankComparator());
-
-			int maxRank = (Integer)super.get(size-1).getAttribute(RANK_ATTRIBUTE);
-			Population front = new Population();
+			// get the solutions in the last front
+			front = new Population();
 
 			for (int i = 0; i < size(); i++) {
 				int rank = (Integer)get(i).getAttribute(RANK_ATTRIBUTE);
 
-				if (rank >= maxRank) {
+				if (rank == maxRank) {
 					front.add(get(i));
 				}
 			}
 
 			removeAll(front);
-
-			for (int i = front.size()-1; i >= 0; i--) {
-				int rank = (Integer)front.get(i).getAttribute(RANK_ATTRIBUTE);
-
-				if (rank > maxRank) {
-					front.remove(i);
-				}
-			}
 
 			// associate each solution to a reference point
 			List<List<Solution>> members = associateToReferencePoint(this);
@@ -692,15 +702,21 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 			// loop over niche-preservation operation until population is full
 			while (size() < size) {
 				// identify reference point with the fewest associated members
-				int minIndex = -1;
+				List<Integer> minIndices = new ArrayList<Integer>();
 				int minCount = Integer.MAX_VALUE;
 
 				for (int i = 0; i < members.size(); i++) {
-					if (!excluded.contains(i) && (members.get(i).size() < minCount)) {
-						minIndex = i;
-						minCount = members.get(i).size();
+					if (!excluded.contains(i) && (members.get(i).size() <= minCount)) {
+						if (members.get(i).size() < minCount) {
+							minIndices.clear();
+							minCount = members.get(i).size();
+						}
+						
+						minIndices.add(i);
 					}
 				}
+				
+				int minIndex = PRNG.nextItem(minIndices);
 
 				// add associated solution
 				if (minCount == 0) {
@@ -734,5 +750,5 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 	public void truncate(int size) {
 		truncate(size, new RankComparator());
 	}
-
+	
 }
