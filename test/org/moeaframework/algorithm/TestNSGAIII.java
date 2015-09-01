@@ -6,9 +6,8 @@ import java.io.IOException;
 import org.apache.commons.math3.stat.descriptive.rank.Max;
 import org.apache.commons.math3.stat.descriptive.rank.Median;
 import org.apache.commons.math3.stat.descriptive.rank.Min;
+import org.junit.Ignore;
 import org.junit.Test;
-import org.moeaframework.Analyzer;
-import org.moeaframework.Executor;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PopulationIO;
@@ -25,6 +24,7 @@ import org.moeaframework.util.TypedProperties;
 public class TestNSGAIII {
 	
 	@Test
+	@Ignore("Must download reference sets from http://web.ntnu.edu.tw/~tcchiang/publications/nsga3cpp/nsga3cpp.htm")
 	public void test() throws IOException {
 		evaluate(new DTLZ1(3), 400, new NondominatedPopulation(PopulationIO.readObjectives(new File("DTLZ1(3)-PF.txt"))));
 		evaluate(new DTLZ1(5), 600, new NondominatedPopulation(PopulationIO.readObjectives(new File("DTLZ1(5)-PF.txt"))));
