@@ -1,3 +1,20 @@
+/* Copyright 2009-2015 David Hadka
+ *
+ * This file is part of the MOEA Framework.
+ *
+ * The MOEA Framework is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
+ *
+ * The MOEA Framework is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
+ * License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package org.moeaframework.algorithm;
 
 import java.io.File;
@@ -21,8 +38,15 @@ import org.moeaframework.problem.DTLZ.DTLZ3;
 import org.moeaframework.problem.DTLZ.DTLZ4;
 import org.moeaframework.util.TypedProperties;
 
+/**
+ * Tests the {@link NSGAIII} class.
+ */
 public class TestNSGAIII {
 	
+	/**
+	 * Replicates the unscaled and scaled DTLZ experiments performed in the
+	 * original NSGA-III paper.
+	 */
 	@Test
 	@Ignore("Must download reference sets from http://web.ntnu.edu.tw/~tcchiang/publications/nsga3cpp/nsga3cpp.htm")
 	public void test() throws IOException {

@@ -142,6 +142,16 @@ public class Population implements Iterable<Solution> {
 	public <T extends Solution> boolean addAll(T[] solutions) {
 		return addAll(Arrays.asList(solutions));
 	}
+	
+	/**
+	 * Replaces the solution at the given index.
+	 * 
+	 * @param index the index to replace
+	 * @param solution the new solution
+	 */
+	public void replace(int index, Solution solution) {
+		data.set(index, solution);
+	}
 
 	/**
 	 * Removes all solutions from this population.

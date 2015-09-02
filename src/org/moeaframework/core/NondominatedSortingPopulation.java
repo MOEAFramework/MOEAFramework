@@ -107,6 +107,12 @@ public class NondominatedSortingPopulation extends Population {
 	}
 
 	@Override
+	public void replace(int index, Solution solution) {
+		modified = true;
+		super.replace(index, solution);
+	}
+
+	@Override
 	public Solution get(int index) {
 		if (modified) {
 			update();

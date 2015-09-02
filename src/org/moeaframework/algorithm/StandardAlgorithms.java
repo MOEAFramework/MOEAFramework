@@ -77,6 +77,14 @@ import org.moeaframework.util.TypedProperties;
  *         diagonalIterations, indicator, initialSearchPoint}</td>
  *   </tr>
  *   <tr>
+ *     <td>DBEA</td>
+ *     <td>Any</td>
+ *     <td>{@code populationSize, divisions, sbx.rate, sbx.distributionIndex,
+ *         pm.rate, pm.distributionIndex} (for the two-layer approach, replace
+ *         {@code divisions} by {@code divisionsOuter} and
+ *         {@code divisionsInner})</td>
+ *   </tr>
+ *   <tr>
  *     <td>eMOEA</td>
  *     <td>Any</td>
  *     <td>{@code populationSize, epsilon, sbx.rate,
@@ -226,6 +234,9 @@ public class StandardAlgorithms extends AlgorithmProvider {
 				return newSMSEMOA(typedProperties, problem);
 			} else if (name.equalsIgnoreCase("VEGA")) {
 				return newVEGA(typedProperties, problem);
+			} else if (name.equalsIgnoreCase("DBEA") ||
+					name.equalsIgnoreCase("I-DBEA")) {
+				return newDBEA(typedProperties, problem);
 			} else if (name.equalsIgnoreCase("Random")) {
 				return newRandomSearch(typedProperties, problem);
 			} else {
@@ -786,6 +797,70 @@ public class StandardAlgorithms extends AlgorithmProvider {
 				properties, problem);
 		return new VEGA(problem, new Population(), null, initialization,
 				variation);
+	}
+	
+	/**
+	 * Returns a new {@link DBEA} instance.
+	 * 
+	 * @param properties the properties for customizing the new {@code DBEA}
+	 *        instance
+	 * @param problem the problem
+	 * @return a new {@code DBEA} instance
+	 */
+	private Algorithm newDBEA(TypedProperties properties, Problem problem) {
+		int divisionsOuter = 4;
+		int divisionsInner = 0;
+		
+		if (properties.contains("divisionsOuter") && properties.contains("divisionsInner")) {
+			divisionsOuter = (int)properties.getDouble("divisionsOuter", 4);
+			divisionsInner = (int)properties.getDouble("divisionsInner", 0);
+		} else if (properties.contains("divisions")){
+			divisionsOuter = (int)properties.getDouble("divisions", 4);
+		} else if (problem.getNumberOfObjectives() == 2) {
+			divisionsOuter = 20;
+		} else if (problem.getNumberOfObjectives() == 3) {
+			divisionsOuter = 12;
+		} else if (problem.getNumberOfObjectives() == 4) {
+			divisionsOuter = 8;
+		} else if (problem.getNumberOfObjectives() == 5) {
+			divisionsOuter = 6;
+		} else if (problem.getNumberOfObjectives() == 6) {
+			divisionsOuter = 5;
+		} else if (problem.getNumberOfObjectives() == 7) {
+			divisionsOuter = 3;
+			divisionsInner = 2;
+		} else if (problem.getNumberOfObjectives() == 8) {
+			divisionsOuter = 3;
+			divisionsInner = 2;
+		} else if (problem.getNumberOfObjectives() == 9) {
+			divisionsOuter = 3;
+			divisionsInner = 2;
+		} else if (problem.getNumberOfObjectives() == 10) {
+			divisionsOuter = 3;
+			divisionsInner = 2;
+		} else {
+			divisionsOuter = 2;
+			divisionsInner = 1;
+		}
+		
+		int populationSize;
+		
+		if (properties.contains("populationSize")) {
+			populationSize = (int)properties.getDouble("populationSize", 100);
+		} else {
+			// compute number of reference points
+			populationSize = (int)(CombinatoricsUtils.binomialCoefficient(problem.getNumberOfObjectives() + divisionsOuter - 1, divisionsOuter) +
+					(divisionsInner == 0 ? 0 : CombinatoricsUtils.binomialCoefficient(problem.getNumberOfObjectives() + divisionsInner - 1, divisionsInner)));
+		}
+		
+		Initialization initialization = new RandomInitialization(problem,
+				populationSize);
+		
+		Variation variation = OperatorFactory.getInstance().getVariation(null, 
+				properties, problem);
+		
+		return new DBEA(problem, initialization,
+				variation, divisionsOuter, divisionsInner);
 	}
 	
 	/**
