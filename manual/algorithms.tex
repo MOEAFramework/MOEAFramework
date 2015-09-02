@@ -25,6 +25,7 @@ The MOEA Framework supports the 26 optimization algorithms listed in \tblref{tbl
   AbYSS & Scatter Search & \cellcolor{green!25}Yes & \cellcolor{red!25}No & \cellcolor{red!25}No & \cellcolor{red!25}No & \cellcolor{red!25}No & \cellcolor{green!25}Yes & JMetal \\
   CellDE & Differential Evolution & \cellcolor{green!25}Yes & \cellcolor{red!25}No & \cellcolor{red!25}No & \cellcolor{red!25}No & \cellcolor{red!25}No & \cellcolor{green!25}Yes & JMetal \\
   CMA-ES & Evolutionary Strategy & \cellcolor{green!25}Yes & \cellcolor{red!25}No & \cellcolor{red!25}No & \cellcolor{red!25}No & \cellcolor{red!25}No & \cellcolor{green!25}Yes & Native \\
+  DBEA & Decomposition & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & Native \\
   DENSEA & Genetic Algorithm & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{red!25}No & \cellcolor{red!25}No & \cellcolor{green!25}Yes & JMetal \\
   ECEA & Genetic Algorithm & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{red!25}No & PISA \\
   eMOEA & $\epsilon$-Dominance & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & Native \\
@@ -38,7 +39,7 @@ The MOEA Framework supports the 26 optimization algorithms listed in \tblref{tbl
   MOCHC & CHC Algorithm & \cellcolor{red!25}No & \cellcolor{green!25}Yes & \cellcolor{red!25}No & \cellcolor{red!25}No & \cellcolor{red!25}No & \cellcolor{green!25}Yes & JMetal \\
   MOEAD & Decomposition & \cellcolor{green!25}Yes & \cellcolor{red!25}No & \cellcolor{red!25}No & \cellcolor{red!25}No & \cellcolor{red!25}No & \cellcolor{green!25}Yes & Native \\
   NSGAII & Genetic Algorithm & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & Native \\
-  NSGAIII & Genetic Algorithm & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & Native \\
+  NSGAIII & Reference Point & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & Native \\
   OMOPSO & Particle Swarm & \cellcolor{green!25}Yes & \cellcolor{red!25}No & \cellcolor{red!25}No & \cellcolor{red!25}No & \cellcolor{red!25}No & \cellcolor{green!25}Yes & Native \\
   PAES & Evolutionary Strategy & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & Native \\
   PESA2 & Genetic Algorithm & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & \cellcolor{green!25}Yes & Native \\
@@ -109,6 +110,51 @@ and the default values for these parameters are:
   initialSearchPoint & Unset \\
   \hline
 \end{tabularx}
+
+\subsection{DBEA}
+DBEA is the improved Decomposition-Based Evolutionary Algorithm, using reference directions to direct solutions towards a diverse set.  DBEA shares many similarities with NSGA-III.  Full details are described in:
+\begin{quote}
+Asafuddoula, M., T. Ray, and R. Sarker.  ``A Decomposition-Based Evolutionary Algorithm for Many-Objective Optimization.''  IEEE Transaction on Evolutionary Computation, 19(3):445-460, 2015.
+\end{quote}
+Use the string \java{"DBEA"} when creating instances of this algorithm with the \java{Executor}.  The following parameters are available:
+\newline
+\newline
+\begin{tabularx}{\linewidth}{lX}
+  \hline
+  Parameter & Description \\
+  \hline
+  populationSize & The size of the population \\
+  divisions & The number of divisions \\
+  sbx.rate & The crossover rate for simulated binary crossover \\
+  sbx.distributionIndex & The distribution index for simulated binary crossover \\
+  pm.rate & The mutation rate for polynomial mutation \\
+  pm.distributionIndex & The distribution index for polynomial mutation \\
+  \hline
+\end{tabularx}
+\newline
+\newline
+and the default values for these parameters are:
+\newline
+\newline
+\begin{tabularx}{\linewidth}{lX}
+  \hline
+  Parameter & Default Values \\
+  \hline
+  populationSize & $100$ \\
+  divisions & $4$ \\
+  sbx.rate & $1.0$ \\
+  sbx.distributionIndex & $15.0$ \\
+  pm.rate & $1/N$ \\
+  pm.distributionIndex & $20.0$ \\
+  \hline
+\end{tabularx}
+\newline
+\newline
+The \java{divisions} parameter governs the number of reference directions, $H$, for an $M$ objective problem with the following equation:
+\begin{equation}
+  H = {M+divisions-1 \choose divisions}
+\end{equation}
+DBEA also supports the two-layer approach used by NSGA-III where an outer and inner division number is specified.  To use the two-layer approach, replace the \java{divisions} parameter with \java{divisionsOuter} and \java{divisionsInner}.
 
 \subsection{$\epsilon$-MOEA}
 $\epsilon$-MOEA is a steady-state MOEA that uses $\epsilon$-dominance archiving to record a diverse set of Pareto optimal solutions.  Full details of this algorithm are available in the following technical report:
