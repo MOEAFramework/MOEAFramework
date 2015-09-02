@@ -273,7 +273,9 @@ public abstract class Node {
 		node.setFixed(isFixed());
 		
 		for (int i = 0; i < getNumberOfArguments(); i++) {
-			node.setArgument(i, getArgument(i).copyTree());
+			if (getArgument(i) != null) {
+				node.setArgument(i, getArgument(i).copyTree());
+			}
 		}
 		
 		return node;
