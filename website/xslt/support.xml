@@ -13,55 +13,31 @@
 <h2>Support</h2>
 
 <p>
-  Support is provided through our 
-  <a href="http://sourceforge.net/projects/moeaframework/">SourceForge page</a>.
-  It is recommended that you create a SorceForge account to submit bugs and 
-  feature requests, as having an account will allow us to contact you in the
-  event further details are needed.
+  We recently transitioned to hosting the MOEA Framework source code on
+  <a href="https://github.com/MOEAFramework/MOEAFramework/">Github</a>.  As a
+  result, we will no longer be using the Sourceforge trackers.  Please use the
+  new links below to report issues.
 </p>
 
 <div class="section">
-<h3>Report Bugs</h3>
+<h3>Report Issues</h3>
 
 <p>
   The MOEA Framework is not bug-free, nor is any other software application,
   and reporting bugs to developers is the first step towards improving the
   reliability of software.  Critical bugs will often be addressed within days.
+  Requests for new features will also be considered.
 </p>
 
   <ul>
     <li>
-      <a href="http://sourceforge.net/p/moeaframework/bugs/">
-        Browse Bug Reports
+      <a href="https://github.com/MOEAFramework/MOEAFramework/issues">
+        View Current Issues
       </a>
     </li>
     <li>
-      <a href="http://sourceforge.net/p/moeaframework/bugs/new/">
-        Submit Bug Report
-      </a>
-    </li>
-  </ul>
-</div>
-
-<div class="section">
-<h3>Request New Features</h3>
-
-<p>
-  We welcome input from the user community when deciding if any new features or
-  extensions should be developed.  Developers wishing to contribute to this
-  project may also browse the list of feature requests when looking for new
-  development ideas.
-</p>
-
-  <ul>
-    <li>
-      <a href="http://sourceforge.net/p/moeaframework/feature-requests/">
-        Browse Feature Requests
-      </a>
-    </li>
-    <li>
-      <a href="http://sourceforge.net/p/moeaframework/feature-requests/new/">
-        Submit New Feature Request
+      <a href="https://github.com/MOEAFramework/MOEAFramework/issues/new">
+        Submit New Issue
       </a>
     </li>
   </ul>

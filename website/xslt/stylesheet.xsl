@@ -123,27 +123,27 @@
 								</p>
 								<ul>
 									<li>
-										<a href="https://sourceforge.net/projects/moeaframework/files/MOEAFramework-%VERSION%/MOEAFramework-%VERSION%-Demo.jar/download"
+										<a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v%VERSION%/MOEAFramework-%VERSION%-Demo.jar"
 										    onClick="_gaq.push(['_trackEvent', 'Downloads', 'Demo', '%VERSION%']);"
 										    itemprop="downloadUrl">
 											Demo Application
 										</a>
 									</li>
 									<li>
-										<a href="https://sourceforge.net/projects/moeaframework/files/MOEAFramework-%VERSION%/MOEAFramework-%VERSION%.tar.gz/download"
+										<a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v%VERSION%/MOEAFramework-%VERSION%.tar.gz"
 										    onClick="_gaq.push(['_trackEvent', 'Downloads', 'Binary', '%VERSION%']);"
 										    itemprop="downloadUrl">
 											Compiled Binaries
 										</a>
 									</li>
 									<li>
-										<a href="https://sourceforge.net/projects/moeaframework/files/MOEAFramework-%VERSION%/MOEAFramework-%VERSION%-Source.tar.gz/download"
+										<a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v%VERSION%/MOEAFramework-%VERSION%-Source.tar.gz"
                                             onClick="_gaq.push(['_trackEvent', 'Downloads', 'Source', '%VERSION%']);">
 											Source Code
 										</a>
 									</li>
 									<li>
-										<a href="https://sourceforge.net/projects/moeaframework/files/MOEAFramework-%VERSION%/MOEAFramework-%VERSION%-Manual.pdf/download"
+										<a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v%VERSION%/MOEAFramework-%VERSION%-Manual.pdf"
 											onClick="_gaq.push(['_trackEvent', 'Downloads', 'Manual', '%VERSION%']);">
 											User Manual	
 										</a>

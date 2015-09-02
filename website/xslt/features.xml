@@ -59,11 +59,15 @@ using existing components.</p>
   </tr>
   <tr>
     <td style="font-weight: bold">CellDE</td>
-    <td>Cellular Genetic Algorithm with Diffential Evolution<sup>1</sup></td>
+    <td>Cellular Genetic Algorithm with Differential Evolution<sup>1</sup></td>
   </tr>
   <tr>
   	<td style="font-weight: bold">CMA-ES</td>
   	<td>Covariance Matrix Adaption Evolution Strategy</td>
+  </tr>
+  <tr>
+    <td style="font-weight: bold">DBEA</td>
+    <td>Improved Decomposition-Based Evolutionary Algorithm</td>
   </tr>
   <tr>
     <td style="font-weight: bold">DENSEA</td>
