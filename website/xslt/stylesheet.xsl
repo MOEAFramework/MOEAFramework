@@ -150,8 +150,8 @@
 									</li>
 								</ul>
 								<p>
-									Using Maven?  Add our <a href="downloads.html#maven">dependency</a>.<br />
-									Looking for a <a href="downloads.html#previous">previous release</a>?
+									<a href="https://github.com/MOEAFramework/MOEAFramework">Fork us on Github</a>!<br />
+									Using Maven?  <a href="downloads.html#maven">Add our dependency</a>.
 								</p>
 							</div>
 

@@ -1,6 +1,7 @@
-## MOEA Framework ##
+﻿## MOEA Framework ##
 
-**Visit our website at [http://moeaframework.org](http://moeaframework.org) for examples, downloads, and support.**
+**Visit our website at [http://moeaframework.org](http://moeaframework.org)
+for downloads, documentation, and examples.**
 
 The MOEA Framework is a free and open source Java library for developing and
 experimenting with multiobjective evolutionary algorithms (MOEAs) and other
@@ -20,6 +21,9 @@ Its key features includes:
   * Permissive open source license
   * Fully documented source code
   * Over 1100 test cases to ensure validity
+
+Since its release in 2011, the MOEA Framework has been downloaded over
+22,390 times.  Please contact us if you are interested in contributing!
 
 ### License ###
 
