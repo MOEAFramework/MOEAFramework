@@ -1119,9 +1119,15 @@ public class Controller {
 	protected void handleException(Exception e) {
 		e.printStackTrace();
 		
+		String message = e.getMessage() == null ? e.toString() : e.getMessage();
+		
+		if (e.getCause() != null && e.getCause().getMessage() != null) {
+			message += " - " + e.getCause().getMessage();
+		}
+		
 		JOptionPane.showMessageDialog(
 				frame, 
-				e.getMessage() == null ? e.toString() : e.getMessage(), 
+				message, 
 				"Error", 
 				JOptionPane.ERROR_MESSAGE);
 	}
