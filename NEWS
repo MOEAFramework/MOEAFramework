@@ -1,6 +1,32 @@
 This file documents the major changes implemented in each release of the MOEA
 Framework.
 
+------------------
+Version 2.6 (TBD)
+------------------
+
+  * Fixes several bugs:
+   
+      - Fixes bug where the R indicators were not being included by the
+        Instrumenter.
+       
+      - Fixes NullPointerException when combining parallelization with the
+        program encoding.
+   
+  * Improves NSGA-III's ability to handle problems with 8+ objectives.  With
+    8+ objectives, the calculation of intercepts can quickly degenerate and
+    cause the algorithm to struggle.
+   
+  * Adds the Improved Decomposition-Based Evolutionary Algorithm (DBEA).  This
+    is another MOEA designed for many-objective problems, similar to NSGA-III.
+    
+  * Adds weights package for generalizing the generation of weight vectors for
+    decomposition and reference point methods.
+   
+  * Transitioned hosting of the MOEA Framework to Github.  We welcome all
+    contributors!
+    
+
 ----------------------------
  Version 2.5 (30 June 2015)
 ----------------------------
