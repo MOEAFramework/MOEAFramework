@@ -26,6 +26,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.apache.commons.math3.util.MathArrays;
+import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Initialization;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PRNG;
@@ -33,6 +34,7 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
 import org.moeaframework.util.weights.RandomGenerator;
+import org.moeaframework.util.weights.WeightGenerator;
 
 /**
  * Implementation of MOEA/D, the multiobjective evolutionary algorithm with
@@ -232,6 +234,12 @@ public class MOEAD extends AbstractAlgorithm {
 	 * The size of the neighborhood used for mating.
 	 */
 	private final int neighborhoodSize;
+	
+	/**
+	 * The weight generator; or {@code null} if the default weight generator
+	 * is used.
+	 */
+	private final WeightGenerator weightGenerator;
 
 	/**
 	 * The probability of mating with a solution in the neighborhood rather
@@ -264,7 +272,7 @@ public class MOEAD extends AbstractAlgorithm {
 	 * The current generation number.
 	 */
 	private int generation;
-
+	
 	/**
 	 * Constructs the MOEA/D algorithm with the specified components.  This
 	 * version of MOEA/D uses utility-based search as described in [2].
@@ -284,13 +292,8 @@ public class MOEAD extends AbstractAlgorithm {
 	public MOEAD(Problem problem, int neighborhoodSize,
 			Initialization initialization, Variation variation, double delta,
 			double eta, int updateUtility) {
-		super(problem);
-		this.neighborhoodSize = neighborhoodSize;
-		this.initialization = initialization;
-		this.variation = variation;
-		this.delta = delta;
-		this.eta = eta;
-		this.updateUtility = updateUtility;
+		this(problem, neighborhoodSize, null, initialization, variation, delta,
+				eta, updateUtility);
 	}
 	
 	/**
@@ -312,6 +315,60 @@ public class MOEAD extends AbstractAlgorithm {
 			double eta) {
 		this(problem, neighborhoodSize, initialization, variation, delta, eta,
 				-1);
+	}
+
+	/**
+	 * Constructs the MOEA/D algorithm with the specified components.  This
+	 * version of MOEA/D uses utility-based search as described in [2].
+	 * 
+	 * @param problem the problem being solved
+	 * @param neighborhoodSize the size of the neighborhood used for mating,
+	 *        which must be at least {@code variation.getArity()-1}.
+	 * @param weightGenerator the weight generator
+	 * @param initialization the initialization method, which must generate the
+	 *        same number of solutions as weights
+	 * @param variation the variation operator
+	 * @param delta the probability of mating with a solution in the
+	 *        neighborhood rather than the entire population
+	 * @param eta the maximum number of population slots a solution can replace
+	 * @param updateUtility the frequency, in generations, in which utility
+	 *        values are updated; set to {@code -1} to disable utility-based
+	 *        search
+	 */
+	public MOEAD(Problem problem, int neighborhoodSize,
+			WeightGenerator weightGenerator, Initialization initialization,
+			Variation variation, double delta, double eta, int updateUtility) {
+		super(problem);
+		this.neighborhoodSize = neighborhoodSize;
+		this.weightGenerator = weightGenerator;
+		this.initialization = initialization;
+		this.variation = variation;
+		this.delta = delta;
+		this.eta = eta;
+		this.updateUtility = updateUtility;
+	}
+	
+	/**
+	 * Constructs the MOEA/D algorithm with the specified components.  This
+	 * constructs the original MOEA/D implementation without utility-based
+	 * search.
+	 * 
+	 * @param problem the problem being solved
+	 * @param neighborhoodSize the size of the neighborhood used for mating,
+	 *        which must be at least {@code variation.getArity()-1}.
+	 * @param weightGenerator the weight generator
+	 * @param initialization the initialization method, which must generate the
+	 *        same number of solutions as weights
+	 * @param variation the variation operator
+	 * @param delta the probability of mating with a solution in the
+	 *        neighborhood rather than the entire population
+	 * @param eta the maximum number of population slots a solution can replace
+	 */
+	public MOEAD(Problem problem, int neighborhoodSize,
+			WeightGenerator weightGenerator, Initialization initialization,
+			Variation variation, double delta, double eta) {
+		this(problem, neighborhoodSize, weightGenerator, initialization,
+				variation, delta, eta, -1);
 	}
 
 	@Override
@@ -347,11 +404,24 @@ public class MOEAD extends AbstractAlgorithm {
 	private void initializePopulation(int populationSize) {
 		population = new ArrayList<Individual>(populationSize);
 		
-		List<double[]> weights = new RandomGenerator(
-				problem.getNumberOfObjectives(), populationSize).generate();
-		
-		for (double[] weight : weights) {
-			population.add(new Individual(weight));
+		if (weightGenerator == null) {
+			List<double[]> weights = new RandomGenerator(
+					problem.getNumberOfObjectives(), populationSize).generate();
+			
+			for (double[] weight : weights) {
+				population.add(new Individual(weight));
+			}
+		} else {
+			List<double[]> weights = weightGenerator.generate();
+			
+			if (weights.size() != populationSize) {
+				throw new FrameworkException("weight generator must return " +
+						populationSize + " weights");
+			}
+			
+			for (double[] weight : weights) {
+				population.add(new Individual(weight));
+			}
 		}
 	}
 

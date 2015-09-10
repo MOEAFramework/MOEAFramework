@@ -64,7 +64,7 @@ public class RandomGenerator implements WeightGenerator {
 	}
 	
 	/**
-	 * Initializes the weights for 2D problems.
+	 * Returns the weights for 2D problems.
 	 * 
 	 * @return the weights
 	 */
@@ -84,7 +84,7 @@ public class RandomGenerator implements WeightGenerator {
 	}
 
 	/**
-	 * Initializes the weights for problems of arbitrary dimension.
+	 * Returns the weights for problems of arbitrary dimension.
 	 * 
 	 * @return the weights
 	 */

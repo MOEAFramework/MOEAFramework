@@ -21,7 +21,8 @@ Version 2.6 (TBD)
     is another MOEA designed for many-objective problems, similar to NSGA-III.
     
   * Adds weights package for generalizing the generation of weight vectors for
-    decomposition and reference point methods.
+    decomposition and reference point methods.  MOEA/D now accepts a weight
+    generator as an argument, allowing the use of non-standard weights.
    
   * Transitioned hosting of the MOEA Framework to Github.  We welcome all
     contributors!
