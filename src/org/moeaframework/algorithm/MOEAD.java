@@ -25,7 +25,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import org.apache.commons.math3.stat.StatUtils;
 import org.apache.commons.math3.util.MathArrays;
 import org.moeaframework.core.Initialization;
 import org.moeaframework.core.NondominatedPopulation;
@@ -33,6 +32,7 @@ import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
+import org.moeaframework.util.weights.RandomGenerator;
 
 /**
  * Implementation of MOEA/D, the multiobjective evolutionary algorithm with
@@ -345,90 +345,13 @@ public class MOEAD extends AbstractAlgorithm {
 	 * @param populationSize the population size
 	 */
 	private void initializePopulation(int populationSize) {
-		if (problem.getNumberOfObjectives() == 2) {
-			initializePopulation2D(populationSize);
-		} else {
-			initializePopulationND(populationSize);
-		}
-	}
-
-	/**
-	 * Initializes the population for 2D problems.
-	 * 
-	 * @param populationSize the population size
-	 */
-	private void initializePopulation2D(int populationSize) {
 		population = new ArrayList<Individual>(populationSize);
 		
-		// ensure boundary weights are at front of the population
-		population.add(new Individual(new double[] { 0.0, 1.0 }));
-		population.add(new Individual(new double[] { 1.0, 0.0 }));
-
-		for (int i = 1; i < populationSize - 1; i++) {
-			double a = i / (double)(populationSize - 1);
-			population.add(new Individual(new double[] { a, 1 - a }));
-		}
-	}
-
-	/**
-	 * Initializes the population for problems of arbitrary dimension.
-	 * 
-	 * @param populationSize the population size
-	 */
-	private void initializePopulationND(int populationSize) {
-		int N = 50;
-		int numberOfObjectives = problem.getNumberOfObjectives();
-		List<double[]> weights = new ArrayList<double[]>(populationSize * N);
-
-		// create random weights
-		for (int i = 0; i < populationSize * N; i++) {
-			double[] weight = new double[numberOfObjectives];
-			
-			for (int j = 0; j < numberOfObjectives; j++) {
-				weight[j] = PRNG.nextDouble();
-			}
-			
-			double sum = StatUtils.sum(weight);
-			
-			for (int j = 0; j < numberOfObjectives; j++) {
-				weight[j] /= sum;
-			}
-
-			weights.add(weight);
-		}
-
-		population = new ArrayList<Individual>(populationSize);
-
-		// initialize population with weights (1,0,...,0), (0,1,...,0), ...,
-		// (0,...,0,1)
-		for (int i = 0; i < numberOfObjectives; i++) {
-			double[] weight = new double[numberOfObjectives];
-			weight[i] = 1.0;
+		List<double[]> weights = new RandomGenerator(
+				problem.getNumberOfObjectives(), populationSize).generate();
+		
+		for (double[] weight : weights) {
 			population.add(new Individual(weight));
-		}
-
-		// fill in remaining weights with the weight vector with the largest
-		// distance from the assigned weights
-		while (population.size() < populationSize) {
-			double[] weight = null;
-			double distance = Double.NEGATIVE_INFINITY;
-
-			for (int i = 0; i < weights.size(); i++) {
-				double d = Double.POSITIVE_INFINITY;
-
-				for (int j = 0; j < population.size(); j++) {
-					d = Math.min(d, MathArrays.distance(weights.get(i),
-							population.get(j).getWeights()));
-				}
-
-				if (d > distance) {
-					weight = weights.get(i);
-					distance = d;
-				}
-			}
-
-			population.add(new Individual(weight));
-			weights.remove(weight);
 		}
 	}
 

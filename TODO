@@ -17,8 +17,7 @@ any changes.
   - Add a short primer to the documentation on how to compile and run Java code,
     set the classpath, etc.
 
-  - Look into the JMetal algorithms dMPOSO, ssNSGAII, SMPSOhv.  JMetal also
-    recently added CMA-ES and the R* indicators which could be of interest.
+  - Look into the JMetal algorithms dMPOSO, ssNSGAII, SMPSOhv.
 
   - EncodingUtils should support extracting the codon array from Grammars
 
