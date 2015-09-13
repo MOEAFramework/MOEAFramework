@@ -739,6 +739,11 @@ public class StandardAlgorithms extends AlgorithmProvider {
 	 * @return a new {@code IBEA} instance
 	 */
 	private Algorithm newIBEA(TypedProperties properties, Problem problem) {
+		if (problem.getNumberOfConstraints() > 0) {
+			throw new ProviderNotFoundException("IBEA", 
+					new FrameworkException("constraints not supported"));
+		}
+		
 		int populationSize = (int)properties.getDouble("populationSize", 100);
 		String indicator = properties.getString("indicator", "hypervolume");
 		IndicatorFitnessEvaluator fitnessEvaluator = null;
