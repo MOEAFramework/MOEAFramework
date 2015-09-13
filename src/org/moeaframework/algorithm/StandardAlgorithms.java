@@ -37,6 +37,7 @@ import org.moeaframework.core.Selection;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variable;
 import org.moeaframework.core.Variation;
+import org.moeaframework.core.comparator.AggregateConstraintComparator;
 import org.moeaframework.core.comparator.ChainedComparator;
 import org.moeaframework.core.comparator.CrowdingComparator;
 import org.moeaframework.core.comparator.DominanceComparator;
@@ -412,7 +413,16 @@ public class StandardAlgorithms extends AlgorithmProvider {
 				
 			};
 		} else {
-			selection = new TournamentSelection(2, new ParetoDominanceComparator());
+			selection = new TournamentSelection(2, new ChainedComparator(
+					new AggregateConstraintComparator(),
+					new DominanceComparator() {
+
+						@Override
+						public int compare(Solution solution1, Solution solution2) {
+							return PRNG.nextBoolean() ? -1 : 1;
+						}
+						
+					}));
 		}
 
 		Variation variation = OperatorFactory.getInstance().getVariation(null, 

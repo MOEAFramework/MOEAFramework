@@ -16,6 +16,8 @@ Version 2.6 (TBD)
   * Improves NSGA-III's ability to handle problems with 8+ objectives.  With
     8+ objectives, the calculation of intercepts can quickly degenerate and
     cause the algorithm to struggle.
+    
+  * Adds the constrained DTLZ problems introduced by K. Deb and H. Jain.
    
   * Adds the Improved Decomposition-Based Evolutionary Algorithm (DBEA).  This
     is another MOEA designed for many-objective problems, similar to NSGA-III.

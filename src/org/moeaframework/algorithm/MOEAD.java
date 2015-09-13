@@ -565,6 +565,16 @@ public class MOEAD extends AbstractAlgorithm {
 
 		return max;
 	}
+	
+	private double sumOfConstraintViolations(Solution solution) {
+		double sum = 0.0;
+		
+		for (int i = 0; i < solution.getNumberOfConstraints(); i++) {
+			sum += Math.abs(solution.getConstraint(i));
+		}
+		
+		return sum;
+	}
 
 	/**
 	 * Updates the population with the specified solution. Only the specified
@@ -582,9 +592,29 @@ public class MOEAD extends AbstractAlgorithm {
 		
 		for (int i = 0; i < matingIndices.size(); i++) {
 			Individual individual = population.get(matingIndices.get(i));
-
-			if (fitness(solution, individual.getWeights()) < fitness(
-					individual.getSolution(), individual.getWeights())) {
+			boolean canReplace = false;
+			
+			if (solution.violatesConstraints() &&
+					individual.getSolution().violatesConstraints()) {
+				double cv1 = sumOfConstraintViolations(solution);
+				double cv2 = sumOfConstraintViolations(individual.getSolution());
+				
+				if (cv1 < cv2) {
+					canReplace = true;
+				}
+			} else if (individual.getSolution().violatesConstraints()) {
+				canReplace = true;
+			} else if (solution.violatesConstraints()) {
+				// do nothing
+			} else {
+				if (fitness(solution, individual.getWeights()) <
+						fitness(individual.getSolution(),
+								individual.getWeights())) {
+					canReplace = true;
+				}
+			}
+			
+			if (canReplace) {
 				individual.setSolution(solution);
 				c = c + 1;
 			}
