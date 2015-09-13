@@ -22,8 +22,20 @@ Its key features includes:
   * Fully documented source code
   * Over 1100 test cases to ensure validity
 
-Since its release in 2011, the MOEA Framework has been downloaded over
-22,390 times.  Please contact us if you are interested in contributing!
+Since its initial release in 2011, the MOEA Framework has been downloaded over
+22,579 times.  Please contact us if you are interested in contributing!
+
+### Download ###
+
+The latest release can be downloaded from our [website](http://moeaframework.org)
+or from the [releases page](https://github.com/MOEAFramework/MOEAFramework/releases).
+Maven users can add our dependency to their `pom.xml` file:
+
+    <dependency>
+        <groupId>org.moeaframework</groupId>
+        <artifactId>moeaframework</artifactId>
+        <version>2.5</version>
+    </dependency>
 
 ### License ###
 
@@ -41,8 +53,3 @@ License for more details.
 
 You should have received a copy of the GNU Lesser General Public License
 along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
-
-The MOEA Framework is distributed with software governed by licenses other than
-the GNU Lesser General Public License, but which are compatible with the terms
-of the GNU Lesser General Public License.  Please see the LICENSE file for
-details.
