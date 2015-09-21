@@ -99,7 +99,7 @@ public class FastNondominatedSorting {
 
 		while (!remaining.isEmpty()) {
 			NondominatedPopulation front = new NondominatedPopulation(
-					comparator);
+					comparator, true);
 
 			for (Solution solution : remaining) {
 				front.add(solution);

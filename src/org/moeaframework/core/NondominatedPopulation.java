@@ -35,6 +35,13 @@ public class NondominatedPopulation extends Population {
 	 * The dominance comparator used by this non-dominated population.
 	 */
 	private final DominanceComparator comparator;
+	
+	/**
+	 * If {@code true}, allow duplicate solutions in this non-dominated
+	 * population.  Duplicate solutions are those whose Euclidean distance
+	 * is smaller than {@value Settings.EPSILON}.
+	 */
+	private final boolean allowDuplicates;
 
 	/**
 	 * Constructs an empty non-dominated population using the Pareto dominance
@@ -52,8 +59,23 @@ public class NondominatedPopulation extends Population {
 	 *        population
 	 */
 	public NondominatedPopulation(DominanceComparator comparator) {
+		this(comparator, false);
+	}
+	
+	/**
+	 * Constructs an empty non-dominated population using the specified 
+	 * dominance relation.
+	 * 
+	 * @param comparator the dominance relation used by this non-dominated
+	 *        population
+	 * @param allowDuplicates allow duplicate solutions into the non-dominated
+	 *        population
+	 */
+	public NondominatedPopulation(DominanceComparator comparator,
+			boolean allowDuplicates) {
 		super();
 		this.comparator = comparator;
+		this.allowDuplicates = allowDuplicates;
 	}
 
 	/**
@@ -101,7 +123,8 @@ public class NondominatedPopulation extends Population {
 				iterator.remove();
 			} else if (flag > 0) {
 				return false;
-			} else if (distance(newSolution, oldSolution) < Settings.EPS) {
+			} else if (!allowDuplicates &&
+					distance(newSolution, oldSolution) < Settings.EPS) {
 				return false;
 			}
 		}
@@ -127,7 +150,8 @@ public class NondominatedPopulation extends Population {
 				iterator.remove();
 			} else if (flag > 0) {
 				return;
-			} else if (distance(newSolution, oldSolution) < Settings.EPS) {
+			} else if (!allowDuplicates &&
+					distance(newSolution, oldSolution) < Settings.EPS) {
 				return;
 			}
 		}
