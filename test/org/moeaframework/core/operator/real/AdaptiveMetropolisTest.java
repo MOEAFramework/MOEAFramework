@@ -29,10 +29,13 @@ import org.apache.commons.math3.stat.clustering.KMeansPlusPlusClusterer;
 import org.apache.commons.math3.stat.correlation.Covariance;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.moeaframework.AbsoluteError;
 import org.moeaframework.RelativeError;
+import org.moeaframework.RetryOnTravis;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.TestUtils;
+import org.moeaframework.TravisRunner;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.operator.ParentCentricVariationTest;
 import org.moeaframework.core.operator.ParentImmutabilityTest;
@@ -41,6 +44,7 @@ import org.moeaframework.core.variable.EncodingUtils;
 /**
  * Tests the {@link AdaptiveMetropolis} class.
  */
+@RunWith(TravisRunner.class)
 public class AdaptiveMetropolisTest extends ParentCentricVariationTest {
 	
 	/**
@@ -169,6 +173,7 @@ public class AdaptiveMetropolisTest extends ParentCentricVariationTest {
 	 * covariance as the parent solutions.
 	 */
 	@Test
+	@RetryOnTravis
 	public void testCovariance() {
 		//the smaller jump rate is used to ensure separation between clusters
 		double jumpRateCoefficient = 0.5;

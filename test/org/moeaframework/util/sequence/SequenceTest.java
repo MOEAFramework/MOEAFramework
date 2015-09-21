@@ -18,12 +18,17 @@
 package org.moeaframework.util.sequence;
 
 import org.junit.Assert;
+import org.junit.runner.RunWith;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
+import org.moeaframework.RetryOnTravis;
 import org.moeaframework.TestThresholds;
+import org.moeaframework.TravisRunner;
 
 /**
  * Abstract class for testing implementation of {@link Sequence}.
  */
+@RunWith(TravisRunner.class)
+@RetryOnTravis
 public abstract class SequenceTest {
 
 	/**

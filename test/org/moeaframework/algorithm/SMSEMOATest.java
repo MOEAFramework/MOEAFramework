@@ -18,11 +18,19 @@
 package org.moeaframework.algorithm;
 
 import java.io.IOException;
+
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.moeaframework.IgnoreOnTravis;
+import org.moeaframework.TravisRunner;
 
 /**
  * Tests the {@link SMSEMOA} class.
  */
+@RunWith(TravisRunner.class)
+@IgnoreOnTravis("exceeds 10 minute timeout")
+@Ignore
 public class SMSEMOATest extends AlgorithmTest {
 	
 	@Test

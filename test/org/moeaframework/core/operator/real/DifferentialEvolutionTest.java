@@ -22,7 +22,10 @@ import java.util.HashMap;
 import jmetal.util.JMException;
 import org.apache.commons.lang3.ArrayUtils;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.moeaframework.RetryOnTravis;
 import org.moeaframework.TestThresholds;
+import org.moeaframework.TravisRunner;
 import org.moeaframework.algorithm.jmetal.JMetalProblemAdapter;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
@@ -34,6 +37,7 @@ import org.moeaframework.core.variable.RealVariable;
 /**
  * Tests the {@link DifferentialEvolution} class.
  */
+@RunWith(TravisRunner.class)
 public class DifferentialEvolutionTest extends MeanCentricVariationTest {
 	
 	/**
@@ -41,6 +45,7 @@ public class DifferentialEvolutionTest extends MeanCentricVariationTest {
 	 * evolution are equivalent.
 	 */
 	@Test
+	@RetryOnTravis
 	public void testDistribution() throws ClassNotFoundException, JMException {
 		Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
 		JMetalProblemAdapter adapter = new JMetalProblemAdapter(problem);

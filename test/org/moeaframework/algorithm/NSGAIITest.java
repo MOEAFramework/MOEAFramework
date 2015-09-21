@@ -18,11 +18,17 @@
 package org.moeaframework.algorithm;
 
 import java.io.IOException;
+
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.moeaframework.RetryOnTravis;
+import org.moeaframework.TravisRunner;
 
 /**
  * Tests the {@link NSGAII} class.
  */
+@RunWith(TravisRunner.class)
+@RetryOnTravis
 public class NSGAIITest extends AlgorithmTest {
 	
 	@Test

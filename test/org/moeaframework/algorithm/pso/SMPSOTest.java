@@ -18,12 +18,18 @@
 package org.moeaframework.algorithm.pso;
 
 import java.io.IOException;
+
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.moeaframework.RetryOnTravis;
+import org.moeaframework.TravisRunner;
 import org.moeaframework.algorithm.AlgorithmTest;
 
 /**
  * Tests the {@link SMPSO} class.
  */
+@RunWith(TravisRunner.class)
+@RetryOnTravis
 public class SMPSOTest extends AlgorithmTest {
 	
 	@Test

@@ -22,7 +22,10 @@ import java.util.Properties;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.moeaframework.RetryOnTravis;
 import org.moeaframework.TestUtils;
+import org.moeaframework.TravisRunner;
 import org.moeaframework.core.FitnessEvaluator;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
@@ -35,26 +38,28 @@ import org.moeaframework.problem.MockRealProblem;
 /**
  * Tests the {@link SPEA2} class.
  */
+@RunWith(TravisRunner.class)
+@RetryOnTravis
 public class SPEA2Test extends AlgorithmTest {
 	
 	@Test
 	public void testDTLZ1() throws IOException {
-		test("DTLZ1_2", "SPEA2", "SPEA2-JMetal");
+		test("DTLZ1_2", "SPEA2", "SPEA2-JMetal", true);
 	}
 	
 	@Test
 	public void testDTLZ2() throws IOException {
-		test("DTLZ2_2", "SPEA2", "SPEA2-JMetal");
+		test("DTLZ2_2", "SPEA2", "SPEA2-JMetal", true);
 	}
 	
 	@Test
 	public void testDTLZ7() throws IOException {
-		test("DTLZ7_2", "SPEA2", "SPEA2-JMetal");
+		test("DTLZ7_2", "SPEA2", "SPEA2-JMetal", true);
 	}
 	
 	@Test
 	public void testUF1() throws IOException {
-		test("UF1", "SPEA2", "SPEA2-JMetal");
+		test("UF1", "SPEA2", "SPEA2-JMetal", true);
 	}
 	
 	@Test

@@ -27,6 +27,9 @@ import jmetal.operators.crossover.DifferentialEvolutionCrossover;
 import jmetal.operators.mutation.PolynomialMutation;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.moeaframework.RetryOnTravis;
+import org.moeaframework.TravisRunner;
 import org.moeaframework.algorithm.jmetal.JMetalAlgorithmAdapter;
 import org.moeaframework.algorithm.jmetal.JMetalProblemAdapter;
 import org.moeaframework.core.Algorithm;
@@ -37,6 +40,8 @@ import org.moeaframework.util.TypedProperties;
 /**
  * Tests the {@link MOEAD} class.
  */
+@RunWith(TravisRunner.class)
+@RetryOnTravis
 public class MOEADTest extends AlgorithmTest {
 	
 	private static class MOEADFactory extends AlgorithmFactory {

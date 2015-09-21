@@ -26,6 +26,7 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PopulationIO;
@@ -35,6 +36,7 @@ import org.moeaframework.core.spi.TestProblemFactory;
 /**
  * Tests the {@link Analyzer} class.
  */
+@RunWith(TravisRunner.class)
 public class AnalyzerTest {
 	
 	private TestAlgorithmFactory algorithmFactory;

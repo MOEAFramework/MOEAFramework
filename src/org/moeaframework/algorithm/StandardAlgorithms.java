@@ -349,6 +349,8 @@ public class StandardAlgorithms extends AlgorithmProvider {
 			divisionsInner = (int)properties.getDouble("divisionsInner", 0);
 		} else if (properties.contains("divisions")){
 			divisionsOuter = (int)properties.getDouble("divisions", 4);
+		} else if (problem.getNumberOfObjectives() == 1) {
+			divisionsOuter = 100;
 		} else if (problem.getNumberOfObjectives() == 2) {
 			divisionsOuter = 20;
 		} else if (problem.getNumberOfObjectives() == 3) {
@@ -831,6 +833,8 @@ public class StandardAlgorithms extends AlgorithmProvider {
 			divisionsInner = (int)properties.getDouble("divisionsInner", 0);
 		} else if (properties.contains("divisions")){
 			divisionsOuter = (int)properties.getDouble("divisions", 4);
+		} else if (problem.getNumberOfObjectives() == 1) {
+			divisionsOuter = 100;
 		} else if (problem.getNumberOfObjectives() == 2) {
 			divisionsOuter = 20;
 		} else if (problem.getNumberOfObjectives() == 3) {

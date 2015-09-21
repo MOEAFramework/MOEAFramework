@@ -18,10 +18,15 @@
 package org.moeaframework.util.sequence;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.moeaframework.RetryOnTravis;
+import org.moeaframework.TravisRunner;
 
 /**
  * Tests the {@link Sobol} class.
  */
+@RunWith(TravisRunner.class)
+@RetryOnTravis
 public class SobolTest extends SequenceTest {
 
 	/**
