@@ -724,7 +724,7 @@ public class StandardAlgorithms extends AlgorithmProvider {
 		double mutationProbability = properties.getDouble("pm.rate",
 				1.0 / problem.getNumberOfVariables());
 		double distributionIndex = properties.getDouble("pm.distributionIndex",
-				0.5);
+				20.0);
 		
 		return new SMPSO(problem, populationSize, archiveSize,
 				mutationProbability, distributionIndex);
