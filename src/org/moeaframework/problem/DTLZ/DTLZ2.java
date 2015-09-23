@@ -30,7 +30,7 @@ public class DTLZ2 extends DTLZ {
 	/**
 	 * Constructs a DTLZ2 test problem with the specified number of objectives.
 	 * This is equivalent to calling {@code new DTLZ2(numberOfObjectives+9,
-	 * numberOfObjectives)}
+	 * numberOfObjectives)}.
 	 * 
 	 * @param numberOfObjectives the number of objectives for this problem
 	 */

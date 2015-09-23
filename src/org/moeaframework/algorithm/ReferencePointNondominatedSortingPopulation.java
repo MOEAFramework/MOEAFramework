@@ -35,6 +35,7 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.comparator.DominanceComparator;
 import org.moeaframework.core.comparator.RankComparator;
 import org.moeaframework.util.Vector;
+import org.moeaframework.util.weights.NormalBoundaryIntersectionGenerator;
 
 /**
  * Implementation of the reference-point-based nondominated sorting method
@@ -61,8 +62,8 @@ import org.moeaframework.util.Vector;
  *       Part I: Solving Problems With Box Constraints."  IEEE Transactions on
  *       Evolutionary Computation, 18(4):577-601, 2014.
  *   <li>Deb, K. and Jain, H.  "Handling Many-Objective Problems Using an
- *       Improved NSGA-II Procedure.  WCCI 2012 IEEE World Contress on Computational
- *       Intelligence, Brisbane, Australia, June 10-15, 2012.
+ *       Improved NSGA-II Procedure.  WCCI 2012 IEEE World Contress on
+ *       Computational Intelligence, Brisbane, Australia, June 10-15, 2012.
  *   <li><a href="http://web.ntnu.edu.tw/~tcchiang/publications/nsga3cpp/nsga3cpp.htm">C++ Implementation by Tsung-Che Chiang</a>
  * </ol>
  */
@@ -261,72 +262,9 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 	private void initialize() {
 		idealPoint = new double[numberOfObjectives];
 		Arrays.fill(idealPoint, Double.POSITIVE_INFINITY);
-
-		if (divisionsInner > 0) {
-			if (divisionsOuter >= numberOfObjectives) {
-				System.err.println("The specified number of outer divisions produces intermediate reference points, recommend setting divisionsOuter < numberOfObjectives.");
-			}
-
-			weights = generateWeights(divisionsOuter);
-
-			// offset the inner weights
-			List<double[]> inner = generateWeights(divisionsInner);
-
-			for (int i = 0; i < inner.size(); i++) {
-				double[] weight = inner.get(i);
-
-				for (int j = 0; j < weight.length; j++) {
-					weight[j] = (1.0/numberOfObjectives + weight[j])/2;
-				}
-			}
-
-			weights.addAll(inner);
-		} else {
-			if (divisionsOuter < numberOfObjectives) {
-				System.err.println("No intermediate reference points will be generated for the specified number of divisions, recommend increasing divisions");
-			}
-
-			weights = generateWeights(divisionsOuter);
-		}
-	}
-	
-	/**
-	 * Generates the reference points (weights) for the given number of
-	 * divisions.
-	 * 
-	 * @param divisions the number of divisions
-	 * @return the list of reference points
-	 */
-	private List<double[]> generateWeights(int divisions) {
-		List<double[]> result = new ArrayList<double[]>();
-		double[] weight = new double[numberOfObjectives];
 		
-		generateRecursive(result, weight, numberOfObjectives, divisions, divisions, 0);
-
-		return result;
-	}
-	
-	/**
-	 * Generate reference points (weights) recursively.
-	 * 
-	 * @param weights list storing the generated reference points
-	 * @param weight the partial reference point being recursively generated
-	 * @param numberOfObjectives the number of objectives
-	 * @param left the number of remaining divisions
-	 * @param total the total number of divisions
-	 * @param index the current index being generated
-	 */
-	private void generateRecursive(List<double[]> weights,
-			double[] weight, int numberOfObjectives, int left, int total, int index) {
-		if (index == (numberOfObjectives - 1)) {
-			weight[index] = (double)left/total;
-			weights.add(weight.clone());
-		} else {
-			for (int i = 0; i <= left; i += 1) {
-				weight[index] = (double) i / total;
-				generateRecursive(weights, weight, numberOfObjectives, left - i, total, index + 1);
-			}
-		}
+		weights = new NormalBoundaryIntersectionGenerator(numberOfObjectives,
+				divisionsOuter, divisionsInner).generate();
 	}
 
 	/**

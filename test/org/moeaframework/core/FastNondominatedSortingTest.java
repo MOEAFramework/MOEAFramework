@@ -127,6 +127,28 @@ public class FastNondominatedSortingTest {
 				Settings.EPS);
 	}
 	
+	/**
+	 * Tests if two identical solutions are ranked correctly.
+	 */
+	@Test
+	public void testIdenticalSolutions() {
+		Solution solution1 = new Solution(new double[] { 0.0, 1.0 });
+		Solution solution2 = new Solution(new double[] { 0.5, 0.5 });
+		Solution solution3 = new Solution(new double[] { 0.0, 1.0 });
+
+		population.add(solution1);
+		population.add(solution2);
+		population.add(solution3);
+
+		sorting.evaluate(population);
+		
+		assertHasAttributes(population);
+
+		Assert.assertEquals(0, getRank(solution1));
+		Assert.assertEquals(0, getRank(solution2));
+		Assert.assertEquals(0, getRank(solution3));
+	}
+	
 	private void assertHasAttributes(Population population) {
 		for (Solution solution : population) {
 			Assert.assertTrue(solution.hasAttribute(RANK_ATTRIBUTE));
