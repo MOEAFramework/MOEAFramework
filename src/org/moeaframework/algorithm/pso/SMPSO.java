@@ -98,9 +98,9 @@ public class SMPSO extends AbstractPSOAlgorithm {
 			double leaderValue = EncodingUtils.getReal(leader.getVariable(j));
 			
 			double velocity = constrictionCoefficient(C1, C2) * 
-					W * velocities[i][j] + 
+					(W * velocities[i][j] + 
 					C1*r1*(localBestValue - particleValue) +
-					C2*r2*(leaderValue - particleValue);
+					C2*r2*(leaderValue - particleValue));
 			
 			if (velocity > maximumVelocity[j]) {
 				velocity = maximumVelocity[j];
