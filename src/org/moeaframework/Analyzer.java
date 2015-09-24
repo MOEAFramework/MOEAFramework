@@ -952,6 +952,10 @@ public class Analyzer extends ProblemBuilder {
 			algorithmResults.add(result);
 		}
 		
+		public void print() {
+			print(System.out);
+		}
+		
 		public void print(PrintStream ps) {
 			for (AlgorithmResult algorithmResult : algorithmResults) {
 				ps.print(algorithmResult.getAlgorithm());
@@ -1007,7 +1011,7 @@ public class Analyzer extends ProblemBuilder {
 			indicatorResults.add(result);
 		}
 		
-		public void print(PrintStream ps) {
+		void print(PrintStream ps) {
 			for (IndicatorResult indicatorResult : indicatorResults) {
 				indicatorResult.print(ps);
 			}
@@ -1080,7 +1084,7 @@ public class Analyzer extends ProblemBuilder {
 			indifferentAlgorithms.add(algorithm);
 		}
 		
-		public void print(PrintStream ps) {
+		void print(PrintStream ps) {
 			double[] values = getValues();
 			
 			ps.print("    ");

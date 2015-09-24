@@ -17,12 +17,6 @@
  */
 package org.moeaframework.algorithm;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.PrintStream;
-import java.io.StringReader;
-
 import org.junit.Assert;
 import org.moeaframework.Analyzer;
 import org.moeaframework.Executor;
@@ -40,11 +34,39 @@ public abstract class AlgorithmTest {
 	 * @param problem the name of the problem to test
 	 * @param algorithm1 the name of the first algorithm to test
 	 * @param algorithm2 the name of the second algorithm to test
-	 * @throws IOException should not occur
 	 */
-	public void test(String problem, String algorithm1, String algorithm2)
-			throws IOException {
-		test(problem, algorithm1, algorithm2, AlgorithmFactory.getInstance());
+	public void test(String problem, String algorithm1, String algorithm2) {
+		test(problem, algorithm1, algorithm2, false,
+				AlgorithmFactory.getInstance());
+	}
+	
+	/**
+	 * Tests if two algorithms are statistically indifferent.  The default
+	 * {@link AlgorithmFactory} is used to create instances.
+	 * 
+	 * @param problem the name of the problem to test
+	 * @param algorithm1 the name of the first algorithm to test
+	 * @param algorithm2 the name of the second algorithm to test
+	 * @param allowBetterPerformance do not fail if the MOEA Framework
+	 *        algorithm exceeds the performance
+	 */
+	public void test(String problem, String algorithm1, String algorithm2,
+			boolean allowBetterPerformance) {
+		test(problem, algorithm1, algorithm2, allowBetterPerformance,
+				AlgorithmFactory.getInstance());
+	}
+
+	/**
+	 * Tests if two algorithms are statistically indifferent.
+	 * 
+	 * @param problem the name of the problem to test
+	 * @param algorithm1 the name of the first algorithm to test
+	 * @param algorithm2 the name of the second algorithm to test
+	 * @param factory the factory used to construct the algorithms
+	 */
+	public void test(String problem, String algorithm1, String algorithm2, 
+			AlgorithmFactory factory) {
+		test(problem, algorithm1, algorithm2, false, factory);
 	}
 	
 	/**
@@ -53,11 +75,12 @@ public abstract class AlgorithmTest {
 	 * @param problem the name of the problem to test
 	 * @param algorithm1 the name of the first algorithm to test
 	 * @param algorithm2 the name of the second algorithm to test
+	 * @param allowBetterPerformance do not fail if the MOEA Framework
+	 *        algorithm exceeds the performance
 	 * @param factory the factory used to construct the algorithms
-	 * @throws IOException should not occur
 	 */
 	public void test(String problem, String algorithm1, String algorithm2, 
-			AlgorithmFactory factory) throws IOException {
+			boolean allowBetterPerformance, AlgorithmFactory factory) {
 		Analyzer analyzer = new Analyzer()
 				.withProblem(problem)
 				.includeAllMetrics()
@@ -75,56 +98,48 @@ public abstract class AlgorithmTest {
 		analyzer.addAll(algorithm2, 
 				executor.withAlgorithm(algorithm2).runSeeds(10));
 		
-		ByteArrayOutputStream output = null;
+		Analyzer.AnalyzerResults analyzerResults = analyzer.getAnalysis();
+		Analyzer.AlgorithmResult algorithmResult =
+				analyzerResults.get(algorithm2);
+
+		int indifferences = 0;
 		
-		try {
-			output = new ByteArrayOutputStream();
-			
-			analyzer.printAnalysis(new PrintStream(output));
-			Assert.assertTrue(countIndifferences(output.toString(), algorithm1)
-					>= 5);
-		} finally {
-			if (output != null) {
-				output.close();
-			}
+		for (String indicator : algorithmResult.getIndicators()) {
+			indifferences += algorithmResult.get(indicator)
+					.getIndifferentAlgorithms().size();
 		}
-	}
-	
-	/**
-	 * Counts the number of indifferences in the statistical output by counting
-	 * the number of lines matching
-	 * <pre>
-	 *        Indifferent: [<algorithmName>]
-	 * </pre>
-	 * 
-	 * @param output the statistical output from 
-	 *        {@link Analyzer#printAnalysis(PrintStream)}
-	 * @param algorithmName the name of one of the algorithms being tested
-	 * @return the number of indifferences in the statistical output
-	 * @throws IOException should not occur
-	 */
-	public int countIndifferences(String output, String algorithmName) 
-	throws IOException {
-		BufferedReader reader = null;
-		String line = null;
-		int count = 0;
 		
-		try {
-			reader = new BufferedReader(new StringReader(output));
-			
-			while ((line = reader.readLine()) != null) {
-				if (line.matches("^\\s*Indifferent:\\s*\\[" + algorithmName + 
-						"\\]\\s*$")) {
-					count++;
+		if (indifferences < 5) {
+			if (allowBetterPerformance) {
+				int outperformance = 0;
+				
+				for (String indicator : algorithmResult.getIndicators()) {
+					double value1 = analyzerResults.get(algorithm1)
+							.get(indicator).getMedian();
+					double value2 = analyzerResults.get(algorithm2)
+							.get(indicator).getMedian();
+					
+					if (indicator.equals("Spacing") ||
+							indicator.equals("Hypervolume") ||
+							indicator.equals("Contribution") ||
+							indicator.equals("R1Indicator")) {
+						if (value1 >= value2) {
+							outperformance++;
+						}
+					} else {
+						if (value1 <= value2) {
+							outperformance++;
+						}
+					}
 				}
-			}
-		} finally {
-			if (reader != null) {
-				reader.close();
+
+				if (outperformance < 5) {
+					Assert.fail("algorithms show different performance");
+				}
+			} else {
+				Assert.fail("algorithms show statistical difference");
 			}
 		}
-		
-		return count;
 	}
 
 }

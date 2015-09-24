@@ -31,7 +31,8 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.problem.MockRealProblem;
 
 /**
- * Tests the {@link PESA2} class.
+ * Tests the {@link PESA2} class.  The MOEA Framework's implementation tends
+ * to outperform the JMetal implementation.
  */
 public class PESA2Test extends AlgorithmTest {
 	
@@ -98,22 +99,22 @@ public class PESA2Test extends AlgorithmTest {
 	
 	@Test
 	public void testDTLZ1() throws IOException {
-		test("DTLZ1_2", "PESA2", "PESA2-JMetal");
+		test("DTLZ1_2", "PESA2", "PESA2-JMetal", true);
 	}
 	
 	@Test
 	public void testDTLZ2() throws IOException {
-		test("DTLZ2_2", "PESA2", "PESA2-JMetal");
+		test("DTLZ2_2", "PESA2", "PESA2-JMetal", true);
 	}
 	
 	@Test
 	public void testDTLZ7() throws IOException {
-		test("DTLZ7_2", "PESA2", "PESA2-JMetal");
+		test("DTLZ7_2", "PESA2", "PESA2-JMetal", true);
 	}
 	
 	@Test
 	public void testUF1() throws IOException {
-		test("UF1", "PESA2", "PESA2-JMetal");
+		test("UF1", "PESA2", "PESA2-JMetal", true);
 	}
 
 }
