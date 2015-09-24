@@ -540,8 +540,6 @@ public class Controller {
 			viewer.setLocationRelativeTo(frame);
 			viewer.setIconImages(frame.getIconImages());
 			viewer.setVisible(true);
-		} catch (IOException ex) {
-			ex.printStackTrace();
 		} finally {
 			if (problem != null) {
 				problem.close();

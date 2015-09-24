@@ -631,9 +631,8 @@ public class Analyzer extends ProblemBuilder {
 	 * output.
 	 * 
 	 * @return a reference to this analyzer
-	 * @throws IOException if an I/O error occurred
 	 */
-	public Analyzer printAnalysis() throws IOException {
+	public Analyzer printAnalysis() {
 		printAnalysis(System.out);
 		
 		return this;
@@ -691,15 +690,13 @@ public class Analyzer extends ProblemBuilder {
 	}
 	
 	/**
-	 * Prints the analysis of all data recorded in this analyzer.  
+	 * Generates the analysis of all data recorded in this analyzer.  
 	 * 
-	 * @param ps the stream to which the analysis is written
-	 * @return a reference to this analyzer
-	 * @throws IOException if an I/O error occurred
+	 * @return an object storing the results of the analysis
 	 */
-	public Analyzer printAnalysis(PrintStream ps) throws IOException {
+	public AnalyzerResults getAnalysis() {
 		if (data.isEmpty()) {
-			return this;
+			return new AnalyzerResults();
 		}
 		
 		Problem problem = null;
@@ -768,7 +765,7 @@ public class Analyzer extends ProblemBuilder {
 			
 			if (indicators.isEmpty()) {
 				System.err.println("no indicators selected");
-				return this;
+				return new AnalyzerResults();
 			}
 			
 			//generate the aggregate sets
@@ -789,14 +786,14 @@ public class Analyzer extends ProblemBuilder {
 			
 			//precompute the individual seed metrics, as they are used both
 			//for descriptive statistics and statistical significance tests
-			Map<String, Map<Indicator, double[]>> metrics = 
-					new HashMap<String, Map<Indicator, double[]>>();
+			AnalyzerResults analyzerResults = new AnalyzerResults();
 			
 			for (String algorithm : data.keySet()) {
-				Map<Indicator, double[]> entry = 
-						new HashMap<Indicator, double[]>();
+				AlgorithmResult algorithmResult = new AlgorithmResult(
+						algorithm);
 				
 				for (Indicator indicator : indicators) {
+					String indicatorName = indicator.getClass().getSimpleName();
 					List<NondominatedPopulation> sets = data.get(algorithm);
 					double[] values = new double[sets.size()];
 					
@@ -804,33 +801,26 @@ public class Analyzer extends ProblemBuilder {
 						values[i] = indicator.evaluate(sets.get(i));
 					}
 					
-					entry.put(indicator, values);
+					algorithmResult.add(new IndicatorResult(
+							indicatorName, values));
+					
+					if (showAggregate) {
+						algorithmResult.get(indicatorName).setAggregateValue(
+								indicator.evaluate(
+										aggregateSets.get(algorithm)));
+					}
 				}
 				
-				metrics.put(algorithm, entry);
+				analyzerResults.add(algorithmResult);
 			}
 			
 			//precompute the statistical significance of the medians
-			Map<Indicator, Map<String, List<String>>> indifferences =
-					new HashMap<Indicator, Map<String, List<String>>>();
-			
 			if (showStatisticalSignificance) {
-				List<String> algorithms = new ArrayList<String>(
-						metrics.keySet());
-				
-				//initialize the storage
-				for (Indicator indicator : indicators) {
-					HashMap<String, List<String>> entry = 
-							new HashMap<String, List<String>>();
-					
-					for (String algorithm : algorithms) {
-						entry.put(algorithm, new ArrayList<String>());
-					}
-					
-					indifferences.put(indicator, entry);
-				}
+				List<String> algorithms = new ArrayList<String>(data.keySet());
 				
 				for (Indicator indicator : indicators) {
+					String indicatorName = indicator.getClass().getSimpleName();
+					
 					//insufficient number of samples, skip test
 					if (algorithms.size() < 2) {
 						continue;
@@ -840,20 +830,25 @@ public class Analyzer extends ProblemBuilder {
 							algorithms.size());
 					
 					for (int i=0; i<algorithms.size(); i++) {
-						kwTest.addAll(metrics.get(algorithms.get(i))
-								.get(indicator), i);
+						String algorithm = algorithms.get(i);
+						double[] values = analyzerResults.get(algorithm)
+								.get(indicatorName).getValues();
+						
+						kwTest.addAll(values, i);
 					}
 					
 					try {
 						if (!kwTest.test(significanceLevel)) {
 							for (int i=0; i<algorithms.size()-1; i++) {
 								for (int j=i+1; j<algorithms.size(); j++) {
-									indifferences.get(indicator)
-											.get(algorithms.get(i))
-											.add(algorithms.get(j));
-									indifferences.get(indicator)
-											.get(algorithms.get(j))
-											.add(algorithms.get(i));
+									analyzerResults.get(algorithms.get(i))
+											.get(indicatorName)
+											.addIndifferentAlgorithm(
+													algorithms.get(j));
+									analyzerResults.get(algorithms.get(j))
+											.get(indicatorName)
+											.addIndifferentAlgorithm(
+													algorithms.get(i));
 								}
 							}
 						} else {
@@ -862,18 +857,22 @@ public class Analyzer extends ProblemBuilder {
 									MannWhitneyUTest mwTest = 
 											new MannWhitneyUTest();
 									
-									mwTest.addAll(metrics.get(algorithms.get(i))
-											.get(indicator), 0);
-									mwTest.addAll(metrics.get(algorithms.get(j))
-											.get(indicator), 1);
+									mwTest.addAll(analyzerResults
+											.get(algorithms.get(i))
+											.get(indicatorName).getValues(), 0);
+									mwTest.addAll(analyzerResults
+											.get(algorithms.get(j))
+											.get(indicatorName).getValues(), 1);
 									
 									if (!mwTest.test(significanceLevel)) {
-										indifferences.get(indicator)
-												.get(algorithms.get(i))
-												.add(algorithms.get(j));
-										indifferences.get(indicator)
-												.get(algorithms.get(j))
-												.add(algorithms.get(i));
+										analyzerResults.get(algorithms.get(i))
+												.get(indicatorName)
+												.addIndifferentAlgorithm(
+														algorithms.get(j));
+										analyzerResults.get(algorithms.get(j))
+												.get(indicatorName)
+												.addIndifferentAlgorithm(
+														algorithms.get(i));
 									}
 								}
 							}
@@ -883,77 +882,24 @@ public class Analyzer extends ProblemBuilder {
 					}
 				}
 			}
-			
-			//print the results
-			Min min = new Min();
-			Max max = new Max();
-			Median median = new Median();
-			
-			for (String algorithm : metrics.keySet()) {
-				ps.print(algorithm);
-				ps.println(':');
-				
-				for (Indicator indicator : indicators) {
-					double[] values = metrics.get(algorithm).get(indicator);
 					
-					ps.print("    ");
-					ps.print(indicator.getClass().getSimpleName());
-					ps.print(": ");
-					
-					if (values.length == 0) {
-						ps.print("null");
-					} else if (values.length == 1) {
-						ps.print(values[0]);
-					} else {
-						ps.println();
-						
-						if (showAggregate) {
-							ps.print("        Aggregate: ");
-							ps.println(indicator.evaluate(
-									aggregateSets.get(algorithm)));
-						}
-						
-						if (statistics.isEmpty()) {
-							ps.print("        Min: ");
-							ps.println(min.evaluate(values));
-							ps.print("        Median: ");
-							ps.println(median.evaluate(values));
-							ps.print("        Max: ");
-							ps.println(max.evaluate(values));
-						} else {
-							for (UnivariateStatistic statistic : statistics) {
-								ps.print("        ");
-								ps.print(statistic.getClass().getSimpleName());
-								ps.print(": ");
-								ps.println(statistic.evaluate(values));
-							}
-						}
-						
-						ps.print("        Count: ");
-						ps.print(values.length);
-						
-						if (showStatisticalSignificance) {
-							ps.println();
-							ps.print("        Indifferent: ");
-							ps.print(indifferences.get(indicator)
-									.get(algorithm));
-						}
-						
-						if (showIndividualValues) {
-							ps.println();
-							ps.print("        Values: ");
-							ps.print(Arrays.toString(values));
-						}
-					}
-					
-					ps.println();
-				}
-			}
+			return analyzerResults;
 		} finally {
 			if (problem != null) {
 				problem.close();
 			}
 		}
+	}
+	
+	/**
+	 * Prints the analysis of all data recorded in this analyzer.  
+	 * 
+	 * @param ps the stream to which the analysis is written
+	 * @return a reference to this analyzer
+	 * @throws IOException if an I/O error occurred
+	 */
+	public Analyzer printAnalysis(PrintStream ps) {
+		getAnalysis().print(ps);
 		
 		return this;
 	}
@@ -967,6 +913,227 @@ public class Analyzer extends ProblemBuilder {
 		data.clear();
 		
 		return this;
+	}
+	
+	/**
+	 * Inner class storing the results produced by this analyzer.
+	 */
+	public class AnalyzerResults {
+		
+		private final List<AlgorithmResult> algorithmResults;
+		
+		public AnalyzerResults() {
+			super();
+			
+			algorithmResults = new ArrayList<AlgorithmResult>();
+		}
+		
+		public List<String> getAlgorithms() {
+			List<String> algorithms = new ArrayList<String>();
+			
+			for (AlgorithmResult result : algorithmResults) {
+				algorithms.add(result.getAlgorithm());
+			}
+			
+			return algorithms;
+		}
+		
+		public AlgorithmResult get(String algorithm) {
+			for (AlgorithmResult result : algorithmResults) {
+				if (result.getAlgorithm().equals(algorithm)) {
+					return result;
+				}
+			}
+			
+			return null;
+		}
+		
+		void add(AlgorithmResult result) {
+			algorithmResults.add(result);
+		}
+		
+		public void print(PrintStream ps) {
+			for (AlgorithmResult algorithmResult : algorithmResults) {
+				ps.print(algorithmResult.getAlgorithm());
+				ps.println(':');
+				
+				algorithmResult.print(ps);
+			}
+		}
+		
+	}
+	
+	/**
+	 * Inner class for storing the results for a single algorithm.
+	 */
+	public class AlgorithmResult {
+		
+		private final String algorithm;
+		
+		private final List<IndicatorResult> indicatorResults;
+		
+		public AlgorithmResult(String algorithm) {
+			super();
+			this.algorithm = algorithm;
+			
+			indicatorResults = new ArrayList<IndicatorResult>();
+		}
+		
+		public String getAlgorithm() {
+			return algorithm;
+		}
+
+		public List<String> getIndicators() {
+			List<String> indicators = new ArrayList<String>();
+			
+			for (IndicatorResult result : indicatorResults) {
+				indicators.add(result.getIndicator());
+			}
+			
+			return indicators;
+		}
+		
+		public IndicatorResult get(String indicator) {
+			for (IndicatorResult result : indicatorResults) {
+				if (result.getIndicator().equals(indicator)) {
+					return result;
+				}
+			}
+			
+			return null;
+		}
+		
+		void add(IndicatorResult result) {
+			indicatorResults.add(result);
+		}
+		
+		public void print(PrintStream ps) {
+			for (IndicatorResult indicatorResult : indicatorResults) {
+				indicatorResult.print(ps);
+			}
+		}
+		
+	}
+	
+	/**
+	 * Inner class for storing the results for a single performance indicator.
+	 */
+	public class IndicatorResult {
+		
+		private final String indicator;
+		
+		private final double[] values;
+		
+		private final List<String> indifferentAlgorithms;
+		
+		private Double aggregateValue;
+		
+		public IndicatorResult(String indicator, double[] values) {
+			super();
+			this.indicator = indicator;
+			this.values = values;
+			
+			indifferentAlgorithms = new ArrayList<String>();
+		}
+		
+		public double[] getValues() {
+			return values.clone();
+		}
+
+		public double getMin() {
+			return getStatistic(new Min());
+		}
+		
+		public double getMedian() {
+			return getStatistic(new Median());
+		}
+		
+		public double getMax() {
+			return getStatistic(new Max());
+		}
+		
+		public double getStatistic(UnivariateStatistic statistic) {
+			return statistic.evaluate(values);
+		}
+		
+		public int getCount() {
+			return values.length;
+		}
+
+		public List<String> getIndifferentAlgorithms() {
+			return new ArrayList<String>(indifferentAlgorithms);
+		}
+
+		public Double getAggregateValue() {
+			return aggregateValue;
+		}
+
+		void setAggregateValue(Double aggregateValue) {
+			this.aggregateValue = aggregateValue;
+		}
+
+		public String getIndicator() {
+			return indicator;
+		}
+		
+		void addIndifferentAlgorithm(String algorithm) {
+			indifferentAlgorithms.add(algorithm);
+		}
+		
+		public void print(PrintStream ps) {
+			double[] values = getValues();
+			
+			ps.print("    ");
+			ps.print(getIndicator());
+			ps.print(": ");
+			
+			if (values.length == 0) {
+				ps.print("null");
+			} else if (values.length == 1) {
+				ps.print(values[0]);
+			} else {
+				ps.println();
+				
+				if (showAggregate) {
+					ps.print("        Aggregate: ");
+					ps.println(getAggregateValue());
+				}
+				
+				if (statistics.isEmpty()) {
+					ps.print("        Min: ");
+					ps.println(getMin());
+					ps.print("        Median: ");
+					ps.println(getMedian());
+					ps.print("        Max: ");
+					ps.println(getMax());
+				} else {
+					for (UnivariateStatistic statistic : statistics) {
+						ps.print("        ");
+						ps.print(statistic.getClass().getSimpleName());
+						ps.print(": ");
+						ps.println(getStatistic(statistic));
+					}
+				}
+				
+				ps.print("        Count: ");
+				ps.print(getCount());
+				
+				if (showStatisticalSignificance) {
+					ps.println();
+					ps.print("        Indifferent: ");
+					ps.print(getIndifferentAlgorithms());
+				}
+				
+				if (showIndividualValues) {
+					ps.println();
+					ps.print("        Values: ");
+					ps.print(Arrays.toString(values));
+				}
+			}
+			
+			ps.println();
+		}
+		
 	}
 	
 }

@@ -25,6 +25,9 @@ Version 2.6 (TBD)
   * Adds weights package for generalizing the generation of weight vectors for
     decomposition and reference point methods.  MOEA/D now accepts a weight
     generator as an argument, allowing the use of non-standard weights.
+    
+  * The Analyzer can now return an AnalyzerResults object storing all the
+    statistical results.
    
   * Transitioned hosting of the MOEA Framework to Github.  We welcome all
     contributors!
