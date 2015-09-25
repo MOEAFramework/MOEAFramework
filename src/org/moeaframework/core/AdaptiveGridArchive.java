@@ -304,7 +304,7 @@ public class AdaptiveGridArchive extends NondominatedPopulation {
 					tempIndex--;
 				}
 
-				index += tempIndex * (int)Math.pow(numberOfDivisions, i);
+				index += tempIndex * ArithmeticUtils.pow(numberOfDivisions, i);
 			}
 		}
 
