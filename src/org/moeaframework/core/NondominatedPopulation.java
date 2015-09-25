@@ -34,14 +34,14 @@ public class NondominatedPopulation extends Population {
 	/**
 	 * The dominance comparator used by this non-dominated population.
 	 */
-	private final DominanceComparator comparator;
+	protected final DominanceComparator comparator;
 	
 	/**
 	 * If {@code true}, allow duplicate solutions in this non-dominated
 	 * population.  Duplicate solutions are those whose Euclidean distance
 	 * is smaller than {@value Settings.EPSILON}.
 	 */
-	private final boolean allowDuplicates;
+	protected final boolean allowDuplicates;
 
 	/**
 	 * Constructs an empty non-dominated population using the Pareto dominance

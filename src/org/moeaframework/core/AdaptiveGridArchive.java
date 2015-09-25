@@ -18,6 +18,10 @@
 package org.moeaframework.core;
 
 import java.util.Arrays;
+import java.util.Iterator;
+
+import org.apache.commons.math3.util.ArithmeticUtils;
+import org.moeaframework.core.comparator.ParetoDominanceComparator;
 
 /**
  * Adaptive grid archive. Divides objective space into a number of grid cells,
@@ -78,13 +82,14 @@ public class AdaptiveGridArchive extends NondominatedPopulation {
 	 */
 	public AdaptiveGridArchive(int capacity, Problem problem,
 			int numberOfDivisions) {
+		super(new ParetoDominanceComparator(), true);
 		this.capacity = capacity;
 		this.problem = problem;
 		this.numberOfDivisions = numberOfDivisions;
 
 		minimum = new double[problem.getNumberOfObjectives()];
 		maximum = new double[problem.getNumberOfObjectives()];
-		density = new int[(int)Math.pow(numberOfDivisions,
+		density = new int[ArithmeticUtils.pow(numberOfDivisions,
 				problem.getNumberOfObjectives())];
 
 		adaptGrid();
@@ -120,25 +125,54 @@ public class AdaptiveGridArchive extends NondominatedPopulation {
 
 	@Override
 	public boolean add(Solution solution) {
-		boolean added = super.add(solution);
+		// check if the candidate dominates or is dominated by any member in
+		// the archive
+		Iterator<Solution> iterator = iterator();
 
-		if (!added) {
-			return false;
+		while (iterator.hasNext()) {
+			Solution oldSolution = iterator.next();
+			int flag = comparator.compare(solution, oldSolution);
+
+			if (flag < 0) {
+				// candidate dominates a member of the archive
+				iterator.remove();
+			} else if (flag > 0) {
+				// candidate is dominated by a member of the archive
+				return false;
+			}
 		}
-
+		
+		// if archive is empty, add the candidate
+		if (isEmpty()) {
+			super.forceAddWithoutCheck(solution);
+			adaptGrid();
+			return true;
+		}
+		
+		// temporarily add the candidate solution
+		super.forceAddWithoutCheck(solution);
 		int index = findIndex(solution);
-
+		
 		if (index < 0) {
 			adaptGrid();
+			index = findIndex(solution);
 		} else {
 			density[index]++;
 		}
-
-		if (size() > capacity) {
-			remove(findDensestIndex());
+		
+		if (size() <= capacity) {
+			// if archive is not exceeding capacity, keep the candidate
+			return true;
+		} else if (density[index] == density[findDensestCell()]) {
+			// if the candidate is in the most dense cell, reject the candidate
+			remove(solution);
+			return false;
+		} else {
+			// otherwise keep the candidate and remove a solution from the most
+			// dense cell
+			remove(pickSolutionFromDensestCell());
+			return true;
 		}
-
-		return true;
 	}
 
 	@Override
@@ -147,7 +181,11 @@ public class AdaptiveGridArchive extends NondominatedPopulation {
 
 		super.remove(index);
 
-		density[gridIndex]--;
+		if (density[gridIndex] > 1) {
+			density[gridIndex]--;
+		} else {
+			adaptGrid();
+		}
 	}
 
 	@Override
@@ -155,7 +193,13 @@ public class AdaptiveGridArchive extends NondominatedPopulation {
 		boolean removed = super.remove(solution);
 
 		if (removed) {
-			density[findIndex(solution)]--;
+			int index = findIndex(solution);
+			
+			if (density[index] > 1) {
+				density[index]--;
+			} else {
+				adaptGrid();
+			}
 		}
 
 		return removed;
@@ -166,27 +210,50 @@ public class AdaptiveGridArchive extends NondominatedPopulation {
 		super.clear();
 		adaptGrid();
 	}
+	
+	/**
+	 * Returns the index of the grid cell with the largest density.
+	 * 
+	 * @return the index of the grid cell with the largest density
+	 */
+	protected int findDensestCell() {
+		int index = -1;
+		int value = -1;
+		
+		for (int i = 0; i < size(); i++) {
+			int tempIndex = findIndex(get(i));
+			int tempValue = density[tempIndex];
+			
+			if (tempValue > value) {
+				value = tempValue;
+				index = tempIndex;
+			}
+		}
+		
+		return index;
+	}
 
 	/**
-	 * Returns the index of the solution residing in the densest grid cell. If
-	 * there are more than one such solutions, the first value is returned.
+	 * Returns a solution residing in the densest grid cell. If there are more
+	 * than one such solution or multiple cells with the same density, the first
+	 * solution encountered is returned.
 	 * 
-	 * @return the index of the solution residing in the densest grid cell
+	 * @return a solution residing in the densest grid cell
 	 */
-	protected int findDensestIndex() {
-		int index = -1;
+	protected Solution pickSolutionFromDensestCell() {
+		Solution solution = null;
 		int value = -1;
 
 		for (int i = 0; i < size(); i++) {
 			int tempValue = density[findIndex(get(i))];
 
 			if (tempValue > value) {
-				index = i;
+				solution = get(i);
 				value = tempValue;
 			}
 		}
 
-		return index;
+		return solution;
 	}
 
 	/**

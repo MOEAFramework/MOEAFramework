@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 
+import org.apache.commons.math3.util.ArithmeticUtils;
 import org.moeaframework.core.AdaptiveGridArchive;
 import org.moeaframework.core.Initialization;
 import org.moeaframework.core.PRNG;
@@ -66,11 +67,21 @@ public class PESA2 extends AbstractEvolutionaryAlgorithm {
 	 */
 	protected Map<Integer, List<Solution>> gridMap;
 
+	/**
+	 * Constructs a new PESA2 instance.
+	 * 
+	 * @param problem the problem
+	 * @param variation the mutation operator
+	 * @param initialization the initialization operator
+	 * @param bisections the number of bisections in the adaptive grid archive
+	 * @param archiveSize the capacity of the adaptive grid archive
+	 */
 	public PESA2(Problem problem, Variation variation,
 			Initialization initialization, int bisections, int archiveSize) {
 		super(problem,
 				new Population(),
-				new AdaptiveGridArchive(archiveSize, problem, bisections),
+				new AdaptiveGridArchive(archiveSize, problem,
+						ArithmeticUtils.pow(2, bisections)),
 				initialization);
 		this.variation = variation;
 		
@@ -106,7 +117,7 @@ public class PESA2 extends AbstractEvolutionaryAlgorithm {
 	/**
 	 * Returns a mapping from grid index to the solutions occupying that grid
 	 * index.  The key is the grid index, and the value is the list of solutions
-	 * occupyign that index.
+	 * occupying that index.
 	 * 
 	 * @return a mapping from grid index to the solutions occupying that grid
 	 *         index

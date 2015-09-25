@@ -17,6 +17,7 @@
  */
 package org.moeaframework.algorithm;
 
+import org.apache.commons.math3.util.ArithmeticUtils;
 import org.moeaframework.core.AdaptiveGridArchive;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
@@ -64,7 +65,8 @@ public class PAES extends AbstractEvolutionaryAlgorithm {
 			int archiveSize) {
 		super(problem,
 				new Population(),
-				new AdaptiveGridArchive(archiveSize, problem, bisections),
+				new AdaptiveGridArchive(archiveSize, problem, 
+						ArithmeticUtils.pow(2, bisections)),
 				null);
 		this.variation = variation;
 		
@@ -137,14 +139,12 @@ public class PAES extends AbstractEvolutionaryAlgorithm {
 		
 		if (flag == 1) {
 			// the offspring dominates the parent
-			population.remove(0);
-			population.add(offspring);
+			population.replace(0, offspring);
 			archive.add(offspring);
 		} else if (flag == 0) {
 			// the parent and offspring are non-dominated
 			if (archive.add(offspring)) {
-				population.remove(0);
-				population.add(test(parent, offspring));
+				population.replace(0, test(parent, offspring));
 			}
 		}
 	}
