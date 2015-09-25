@@ -916,18 +916,30 @@ public class Analyzer extends ProblemBuilder {
 	}
 	
 	/**
-	 * Inner class storing the results produced by this analyzer.
+	 * Stores the results produced by this analyzer.
 	 */
 	public class AnalyzerResults {
 		
+		/**
+		 * The results for each algorithm.
+		 */
 		private final List<AlgorithmResult> algorithmResults;
 		
-		public AnalyzerResults() {
+		/**
+		 * Constructs a new, empty object for storing the results from this
+		 * analyzer.
+		 */
+		AnalyzerResults() {
 			super();
 			
 			algorithmResults = new ArrayList<AlgorithmResult>();
 		}
 		
+		/**
+		 * Returns the algorithms processed using this analyzer.
+		 * 
+		 * @return the algorithm names
+		 */
 		public List<String> getAlgorithms() {
 			List<String> algorithms = new ArrayList<String>();
 			
@@ -938,6 +950,12 @@ public class Analyzer extends ProblemBuilder {
 			return algorithms;
 		}
 		
+		/**
+		 * Returns the results for a single algorithm.
+		 * 
+		 * @param algorithm the name of the algorithm
+		 * @return the results for the given algorithm
+		 */
 		public AlgorithmResult get(String algorithm) {
 			for (AlgorithmResult result : algorithmResults) {
 				if (result.getAlgorithm().equals(algorithm)) {
@@ -948,19 +966,30 @@ public class Analyzer extends ProblemBuilder {
 			return null;
 		}
 		
+		/**
+		 * Adds the results for an algorithm.  Each result should have a unique
+		 * algorithm name.
+		 * 
+		 * @param result the results for the algorithm
+		 */
 		void add(AlgorithmResult result) {
 			algorithmResults.add(result);
 		}
 		
+		/**
+		 * Prints the results to standard output.
+		 */
 		public void print() {
 			print(System.out);
 		}
 		
+		/**
+		 * Prints the results to the given stream.
+		 * 
+		 * @param ps the stream where the results are printed
+		 */
 		public void print(PrintStream ps) {
 			for (AlgorithmResult algorithmResult : algorithmResults) {
-				ps.print(algorithmResult.getAlgorithm());
-				ps.println(':');
-				
 				algorithmResult.print(ps);
 			}
 		}
@@ -968,14 +997,26 @@ public class Analyzer extends ProblemBuilder {
 	}
 	
 	/**
-	 * Inner class for storing the results for a single algorithm.
+	 * Stores the results for a single algorithm.
 	 */
 	public class AlgorithmResult {
 		
+		/**
+		 * The name of the algorithm.
+		 */
 		private final String algorithm;
 		
+		/**
+		 * The results for each indicator.
+		 */
 		private final List<IndicatorResult> indicatorResults;
 		
+		/**
+		 * Constructs a new, empty object for storing the results of a single
+		 * algorithm.
+		 * 
+		 * @param algorithm the algorithm name
+		 */
 		public AlgorithmResult(String algorithm) {
 			super();
 			this.algorithm = algorithm;
@@ -983,10 +1024,20 @@ public class Analyzer extends ProblemBuilder {
 			indicatorResults = new ArrayList<IndicatorResult>();
 		}
 		
+		/**
+		 * Returns the name of the algorithm.
+		 * 
+		 * @return the algorithm name
+		 */
 		public String getAlgorithm() {
 			return algorithm;
 		}
 
+		/**
+		 * Returns the names of the indicators contained within these results.
+		 * 
+		 * @return a list of the indicator names
+		 */
 		public List<String> getIndicators() {
 			List<String> indicators = new ArrayList<String>();
 			
@@ -997,6 +1048,12 @@ public class Analyzer extends ProblemBuilder {
 			return indicators;
 		}
 		
+		/**
+		 * Returns the results for the given indicator.
+		 * 
+		 * @param indicator the indicator name
+		 * @return the results for the given indicator
+		 */
 		public IndicatorResult get(String indicator) {
 			for (IndicatorResult result : indicatorResults) {
 				if (result.getIndicator().equals(indicator)) {
@@ -1007,11 +1064,25 @@ public class Analyzer extends ProblemBuilder {
 			return null;
 		}
 		
+		/**
+		 * Adds the results for a single indicator.  The name of the indicator
+		 * should be unique.
+		 * 
+		 * @param result the indicator result
+		 */
 		void add(IndicatorResult result) {
 			indicatorResults.add(result);
 		}
 		
+		/**
+		 * Prints the results to the given stream.
+		 * 
+		 * @param ps the stream where the results are printed
+		 */
 		void print(PrintStream ps) {
+			ps.print(getAlgorithm());
+			ps.println(':');
+			
 			for (IndicatorResult indicatorResult : indicatorResults) {
 				indicatorResult.print(ps);
 			}
@@ -1024,14 +1095,35 @@ public class Analyzer extends ProblemBuilder {
 	 */
 	public class IndicatorResult {
 		
+		/**
+		 * The name of the indicator.
+		 */
 		private final String indicator;
 		
+		/**
+		 * The computed indicator values.
+		 */
 		private final double[] values;
 		
-		private final List<String> indifferentAlgorithms;
+		/**
+		 * A list of algorithms whose performance with respect to this
+		 * indicator are statistically similar to the current algorithm.
+		 */
+		private List<String> indifferentAlgorithms;
 		
+		/**
+		 * The indicator value of the aggregate Pareto set, or {@code null}
+		 * if the aggregate value was not computed.
+		 */
 		private Double aggregateValue;
 		
+		/**
+		 * Constructs a new object for storing the results for a single
+		 * indicator.
+		 * 
+		 * @param indicator the name of the indicator
+		 * @param values the computed indicator values
+		 */
 		public IndicatorResult(String indicator, double[] values) {
 			super();
 			this.indicator = indicator;
@@ -1040,50 +1132,118 @@ public class Analyzer extends ProblemBuilder {
 			indifferentAlgorithms = new ArrayList<String>();
 		}
 		
+		/**
+		 * Returns the computed indicator values.
+		 * 
+		 * @return the indicator values
+		 */
 		public double[] getValues() {
 			return values.clone();
 		}
 
+		/**
+		 * Returns the minimum indicator value.
+		 * 
+		 * @return the minimum indicator value
+		 */
 		public double getMin() {
 			return getStatistic(new Min());
 		}
 		
+		/**
+		 * Returns the median indicator value.
+		 * 
+		 * @return the median indicator value
+		 */
 		public double getMedian() {
 			return getStatistic(new Median());
 		}
 		
+		/**
+		 * Returns the maximum indicator value.
+		 * 
+		 * @return the maximum indicator value
+		 */
 		public double getMax() {
 			return getStatistic(new Max());
 		}
 		
+		/**
+		 * Computes and returns the value of the given univariate statistic.
+		 * 
+		 * @param statistic the univariate statistic to compute
+		 * @return the computed value of the statistic
+		 */
 		public double getStatistic(UnivariateStatistic statistic) {
 			return statistic.evaluate(values);
 		}
 		
+		/**
+		 * Returns the number of samples.
+		 * 
+		 * @return the number of samples
+		 */
 		public int getCount() {
 			return values.length;
 		}
 
+		/**
+		 * Returns a list of algorithms whose performance with respect to this
+		 * indicator are statistically similar to the current algorithm.  This
+		 * list will only be populated if
+		 * {@link Analyzer#showStatisticalSignificance()} is invoked.
+		 * 
+		 * @return a list of algorithms with statistically similar performance
+		 */
 		public List<String> getIndifferentAlgorithms() {
 			return new ArrayList<String>(indifferentAlgorithms);
 		}
+		
+		/**
+		 * Adds an algorithm with statistically similar performance to the
+		 * current algorithm.
+		 * 
+		 * @param algorithm the algorithm with statistically similar performance
+		 */
+		void addIndifferentAlgorithm(String algorithm) {
+			indifferentAlgorithms.add(algorithm);
+		}
 
+		/**
+		 * Returns the indicator value of the aggregate Pareto set, or
+		 * {@code null} if the aggregate value was not computed.  This value
+		 * is only computed if {@link Analyzer#showAggregate()} is invoked.
+		 * 
+		 * @return the aggregate indicator value; or {@code null} if not
+		 *         computed
+		 */
 		public Double getAggregateValue() {
 			return aggregateValue;
 		}
 
+		/**
+		 * Sets the indicator value of the aggregate Pareto set.
+		 * 
+		 * @param aggregateValue the aggregate indicator value
+		 */
 		void setAggregateValue(Double aggregateValue) {
 			this.aggregateValue = aggregateValue;
 		}
 
+		/**
+		 * Returns the indicator name.
+		 * 
+		 * @return the indicator name
+		 */
 		public String getIndicator() {
 			return indicator;
 		}
 		
-		void addIndifferentAlgorithm(String algorithm) {
-			indifferentAlgorithms.add(algorithm);
-		}
-		
+		/**
+		 * Prints the results to the given stream.
+		 * 
+		 * @param ps the stream where the results are printed
+		 */
 		void print(PrintStream ps) {
 			double[] values = getValues();
 			
