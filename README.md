@@ -3,6 +3,8 @@
 **Visit our website at [http://moeaframework.org](http://moeaframework.org)
 for downloads, documentation, and examples.**
 
+﻿[![Build Status](https://travis-ci.org/MOEAFramework/MOEAFramework.svg?branch=master)](https://travis-ci.org/MOEAFramework/MOEAFramework)
+
 The MOEA Framework is a free and open source Java library for developing and
 experimenting with multiobjective evolutionary algorithms (MOEAs) and other
 general-purpose multiobjective optimization algorithms. The MOEA Framework
