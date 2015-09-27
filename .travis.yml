@@ -1,4 +1,10 @@
 language: java
 
+jdk:
+  - openjdk6
+  - openjdk7
+  - oraclejdk7
+  - oraclejdk8
+
 script:
-  - ant -f test.xml
+  - ant -DON_TRAVIS=true -f test.xml

@@ -24,8 +24,11 @@ import java.util.Map;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.moeaframework.RetryOnTravis;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.TestUtils;
+import org.moeaframework.TravisRunner;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.problem.MockRealProblem;
@@ -34,6 +37,8 @@ import org.moeaframework.problem.MockRealProblem;
  * Tests the {@link PESA2} class.  The MOEA Framework's implementation tends
  * to outperform the JMetal implementation.
  */
+@RunWith(TravisRunner.class)
+@RetryOnTravis
 public class PESA2Test extends AlgorithmTest {
 	
 	@Test

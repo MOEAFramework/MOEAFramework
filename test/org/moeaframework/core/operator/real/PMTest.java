@@ -18,13 +18,17 @@
 package org.moeaframework.core.operator.real;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.moeaframework.RetryOnTravis;
 import org.moeaframework.TestThresholds;
+import org.moeaframework.TravisRunner;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.operator.MeanCentricVariationTest;
 import org.moeaframework.core.operator.ParentImmutabilityTest;
 import org.moeaframework.core.operator.TypeSafetyTest;
 import org.moeaframework.core.variable.RealVariable;
 
+@RunWith(TravisRunner.class)
 public class PMTest extends MeanCentricVariationTest {
 
 	/**
@@ -36,6 +40,7 @@ public class PMTest extends MeanCentricVariationTest {
 	}
 
 	@Test
+	@RetryOnTravis
 	public void testDistribution() {
 		PM pm = new PM(1.0, 20.0);
 

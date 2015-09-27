@@ -27,7 +27,10 @@ import javax.script.ScriptException;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.moeaframework.IgnoreOnTravis;
 import org.moeaframework.TestUtils;
+import org.moeaframework.TravisRunner;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
@@ -36,6 +39,8 @@ import org.moeaframework.core.variable.RealVariable;
 /**
  * Tests the {@link ScriptedProblem} class.
  */
+@RunWith(TravisRunner.class)
+@IgnoreOnTravis("the scripting engine may not be available")
 public class ScriptedProblemTest {
 	
 	private static final String RESOURCE_JAVASCRIPT = 

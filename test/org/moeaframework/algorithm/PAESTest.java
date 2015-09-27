@@ -18,12 +18,18 @@
 package org.moeaframework.algorithm;
 
 import java.io.IOException;
+
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.moeaframework.RetryOnTravis;
+import org.moeaframework.TravisRunner;
 
 /**
  * Tests the {@link PAES} class.  The MOEA Framework's implementation tends
  * to outperform the JMetal implementation.
  */
+@RunWith(TravisRunner.class)
+@RetryOnTravis
 public class PAESTest extends AlgorithmTest {
 	
 	@Test

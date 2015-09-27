@@ -442,7 +442,9 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 			
 			for (Solution solution : this) {
 				for (int i = 0; i < numberOfObjectives; i++) {
-					intercepts[i] = Math.max(intercepts[i], solution.getObjective(i));
+					intercepts[i] = Math.max(
+							Math.max(intercepts[i], Settings.EPS),
+							solution.getObjective(i));
 				}
 			}
 		}

@@ -27,21 +27,21 @@ Use of these build scripts requires Apache Ant to be installed.  See
 	<!-- Loads properties from properties file and environment -->
 	<property file="META-INF/build.properties" />
 	<property environment="env" />
-	
+
 	<!-- The working folder for these Ant build targets -->
 	<property name="build" value="build" />
-	
+
 	<!-- The folder where compiled files ready for distribution are saved -->
 	<property name="dist" value="dist" />
-	
+
 	<!-- The folder where JUnit test results are saved -->
 	<property name="results" value="test-results" />
-	
+
 	<!-- Classpath of third-party libraries used by the MOEA Framework -->
 	<path id="classpath">
 		<fileset dir="lib" includes="*.jar" />
 	</path>
-	
+
 	<!-- List of files required in every distribution -->
 	<path id="requiredfiles">
 		<fileset file="README" />
@@ -49,35 +49,35 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		<fileset file="NEWS" />
 		<fileset file="HELP" />
 	</path>
-	
+
 	<!-- Determines which dependencies are available -->
 	<target name="check-dependencies">
 		<available classname="org.junit.Assert" classpathref="classpath"
 				property="junit-exists" />
-		
+
 		<!-- Commented to always force recompiling of the JAR -->
 		<!--<available file="${dist}/${shortname}-${version}.jar" 
 				property="binary-exists" />-->
 	</target>
-	
+
 	<!-- Conditionally builds the MOEA Framework JAR -->
 	<target name="check-binary" depends="check-dependencies" 
 			unless="binary-exists">
 		<ant target="build-binary" />
 	</target>
-	
+
 	<!-- Displays message and fails build if JUnit is not available -->
 	<target name="check-junit" depends="check-dependencies"
 			unless="junit-exists">
 		<echo>==================================================================</echo>
 		<echo> The JUnit library is missing from your classpath.  Please</echo>
 		<echo> download the latest JUnit 4 library from http://www.junit.org/,</echo>
-		<echo> and place the JAR in the lib/ folder.</echo> 
+		<echo> and place the JAR in the lib/ folder.</echo>
 		<echo>==================================================================</echo>
-			
+
 		<fail message="JUnit library missing"/>
 	</target>
-	
+
 	<!-- Builds the C executables in auxiliary/c/ used for testing -->
 	<!--<target name="build-c">
 		<exec executable="make" dir="auxiliary/c/" failifexecutionfails="false">
@@ -87,7 +87,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		<exec executable="make" dir="auxiliary/c/"
 				failifexecutionfails="false" />
 	</target>-->
-	
+
 	<!-- Builds the MOEA Framework Test JAR -->
 	<target name="build-tests" 
 			depends="check-dependencies,check-binary,check-junit">
@@ -108,7 +108,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		<copy todir="${build}">
 			<fileset excludes="**/*.java" dir="test" />
 		</copy>
-		
+
 		<copy todir="${build}/META-INF">
 			<path refid="requiredfiles" />
 		</copy>
@@ -122,15 +122,16 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		<delete dir="${results}" />
 		<mkdir dir="${results}" />
 		<mkdir dir="${results}/raw" />
-	
-		<junit printsummary="on" haltonfailure="false" 
-				tempdir="${results}/raw" errorproperty="junit.failure"
-				failureproperty="junit.failure">
+
+		<junit haltonfailure="false" tempdir="${results}/raw"
+				errorproperty="junit.failure"
+				failureproperty="junit.failure" fork="true">
 			<classpath>
 				<path refid="classpath" />
 				<fileset file="${dist}/${shortname}-${version}.jar" />
 				<fileset file="${dist}/${shortname}-${version}-Test.jar" />
 			</classpath>
+			<sysproperty key="ON_TRAVIS" value="${ON_TRAVIS}"/>
 			<batchtest todir="${results}/raw">
 				<formatter type="xml" />
 				<zipfileset src="${dist}/${shortname}-${version}-Test.jar">
@@ -145,6 +146,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 					<exclude name="org/moeaframework/core/operator/PointCrossoverTest.class" />
 					<exclude name="org/moeaframework/core/operator/TypeSafetyTest.class" />
 					<exclude name="org/moeaframework/problem/ProblemTest.class" />
+					<exclude name="org/moeaframework/util/LocalizationTest.class" />
 					<exclude name="org/moeaframework/util/sequence/SequenceTest.class" />
 					<exclude name="org/moeaframework/util/statistics/IntervalRatioStatisticalTest.class" />
 					<exclude name="org/moeaframework/util/statistics/KruskalWallisTest.class" />
@@ -154,8 +156,11 @@ Use of these build scripts requires Apache Ant to be installed.  See
 					<exclude name="org/moeaframework/util/statistics/StatisticalTest.class" />
 					<exclude name="org/moeaframework/util/statistics/TwoSampleTTest.class" />
 					<exclude name="org/moeaframework/util/statistics/WilcoxonSignedRanksTest.class" />
+					<exclude name="org/moeaframework/util/weights/WeightGeneratorTest.class" />
 				</zipfileset>
 			</batchtest>
+			<formatter type="plain" usefile="false" />
+			<formatter type="plain" />
 		</junit>
 
 		<junitreport todir="${results}">
@@ -165,20 +170,21 @@ Use of these build scripts requires Apache Ant to be installed.  See
 			<report format="frames" todir="${results}"/>
 		</junitreport>
 	</target>
-	
+
 	<!-- The main test target, running all JUnit tests and displaying the results -->
 	<target name="test" depends="run-tests" if="junit.failure" 
 			description="Run the unit tests">
 		<echo>==================================================================</echo>
-		<echo> One or more unit tests failed!  Open test-results/index.html to</echo> 
+		<echo> One or more unit tests failed!  Open test-results/index.html to</echo>
 		<echo> see which tests failed.</echo>
-	    <echo> </echo>
+		<echo>
+		</echo>
 		<echo> Note: due to the stochastic nature of the MOEA Framework, there</echo>
 		<echo> is a small chance that some correct tests will fail.  Please</echo>
 		<echo> repeat the tests prior to notifying the developers.</echo>
 		<echo>==================================================================</echo>
-	
-	    <fail message="Unit test(s) failed.  See reports!"/>
+
+		<fail message="Unit test(s) failed.  See reports!"/>
 	</target>
-	
+
 </project>

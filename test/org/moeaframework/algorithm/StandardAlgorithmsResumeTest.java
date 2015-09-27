@@ -109,6 +109,7 @@ public class StandardAlgorithmsResumeTest {
 	}
 
 	@Test
+	@Ignore("currently not implemented")
 	public void testPESA2() throws IOException {
 		test("PESA2");
 	}
