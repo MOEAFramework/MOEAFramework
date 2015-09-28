@@ -120,6 +120,20 @@
     <th>Downloads</th>
   </tr>
   <tr>
+  	<td>2.5</td>
+  	<td>30 Jun 2015</td>
+  	<td>
+      <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v2.5/MOEAFramework-2.5.tar.gz"
+          onClick="_gaq.push(['_trackEvent', 'Downloads', 'Binary', '2.5']);">Binary</a> |
+      <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v2.5/MOEAFramework-2.5-Source.tar.gz"
+          onClick="_gaq.push(['_trackEvent', 'Downloads', 'Source', '2.5']);">Source</a> |
+      <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v2.5/MOEAFramework-2.5-Demo.jar"
+          onClick="_gaq.push(['_trackEvent', 'Downloads', 'Demo', '2.5']);">Demo</a> |
+      <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v2.5/MOEAFramework-2.5-Manual.pdf"
+          onClick="_gaq.push(['_trackEvent', 'Downloads', 'Manual', '2.5']);">Manual</a>
+  	</td>
+  </tr>
+  <tr>
     <td>2.4</td>
     <td>2 Jan 2015</td>
     <td>
