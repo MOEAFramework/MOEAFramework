@@ -108,10 +108,14 @@ Use of these build scripts requires Apache Ant to be installed.  See
 			<replacefilter token="%DATE%" value="${TODAY}" />
 		</replace>
 		
-		<property name="svn.version" value="Undefined" />
-
-		<exec executable="svnversion" outputproperty="svn.version"
-				errorproperty="svn.error" failifexecutionfails="false"/>
+		<exec executable="git" outputproperty="impl.version"
+				errorproperty="impl.error" failifexecutionfails="false">
+			<arg value="rev-parse" />
+			<arg value="--short" />
+			<arg value="HEAD" />
+		</exec>
+		
+		<property name="impl.version" value="Undefined" />
 		
 		<manifest file="${build}/META-INF/MANIFEST.MF">
 			<section name="org/moeaframework/">
@@ -119,7 +123,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 				<attribute name="Specification-Version" value="${version}" />
 				<attribute name="Specification-Vendor" value="http://www.moeaframework.org" />
 				<attribute name="Implementation-Title" value="org.moeaframework" />
-				<attribute name="Implementation-Version" value="${svn.version}" />
+				<attribute name="Implementation-Version" value="${impl.version}" />
 				<attribute name="Implementation-Vendor" value="http://www.moeaframework.org" />
 			</section>
 		</manifest>
