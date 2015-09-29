@@ -761,6 +761,9 @@ public class StandardAlgorithms extends AlgorithmProvider {
 		} else if ("epsilon".equals(indicator)) {
 			fitnessEvaluator = new AdditiveEpsilonIndicatorFitnessEvaluator(
 					problem);
+		} else {
+			throw new IllegalArgumentException("invalid indicator: " +
+					indicator);
 		}
 
 		return new IBEA(problem, null, initialization, variation,
