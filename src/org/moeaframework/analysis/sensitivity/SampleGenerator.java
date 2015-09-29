@@ -88,21 +88,34 @@ public class SampleGenerator extends CommandLineUtility {
 
 	@Override
 	public void run(CommandLine commandLine) throws IOException {
-		ParameterFile parameterFile = new ParameterFile(new File(commandLine
-				.getOptionValue("parameterFile")));
+		ParameterFile parameterFile = new ParameterFile(new File(
+				commandLine.getOptionValue("parameterFile")));
 
 		int N = Integer.parseInt(commandLine.getOptionValue("numberOfSamples"));
 		int D = parameterFile.size();
+		
+		if (N <= 0) {
+			throw new IllegalArgumentException(
+					"numberOfSamples must be positive");
+		}
+		
+		if (D <= 0) {
+			throw new IllegalArgumentException(
+					"parameter file contains no parameters");
+		}
 
 		Sequence sequence = null;
 
 		if (commandLine.hasOption("method")) {
 			OptionCompleter completer = new OptionCompleter("uniform", "latin",
 					"sobol", "saltelli");
-			String method = completer.lookup(commandLine
-					.getOptionValue("method"));
+			String method = completer.lookup(
+					commandLine.getOptionValue("method"));
 
-			if (method.equals("latin")) {
+			if (method == null) {
+				throw new IllegalArgumentException("invalid method: "
+						+ commandLine.getOptionValue("method"));
+			} else if (method.equals("latin")) {
 				sequence = new LatinHypercube();
 			} else if (method.equals("sobol")) {
 				sequence = new Sobol();
@@ -128,8 +141,8 @@ public class SampleGenerator extends CommandLineUtility {
 		try {
 			if (commandLine.hasOption("output")) {
 				output = new PrintStream(new BufferedOutputStream(
-						new FileOutputStream(commandLine
-								.getOptionValue("output"))));
+						new FileOutputStream(
+								commandLine.getOptionValue("output"))));
 			}
 
 			double[][] samples = sequence.generate(N, D);
@@ -137,15 +150,15 @@ public class SampleGenerator extends CommandLineUtility {
 			for (int i = 0; i < N; i++) {
 				output.print(parameterFile.get(0).getLowerBound()
 						+ samples[i][0]
-						* (parameterFile.get(0).getUpperBound() - parameterFile
-								.get(0).getLowerBound()));
+						* (parameterFile.get(0).getUpperBound() -
+								parameterFile.get(0).getLowerBound()));
 
 				for (int j = 1; j < D; j++) {
 					output.print(' ');
 					output.print(parameterFile.get(j).getLowerBound()
 							+ samples[i][j]
-							* (parameterFile.get(j).getUpperBound() - parameterFile
-									.get(j).getLowerBound()));
+							* (parameterFile.get(j).getUpperBound() -
+									parameterFile.get(j).getLowerBound()));
 				}
 
 				output.println();
