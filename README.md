@@ -4,6 +4,7 @@
 for downloads, documentation, and examples.**
 
 ﻿[![Build Status](https://travis-ci.org/MOEAFramework/MOEAFramework.svg?branch=master)](https://travis-ci.org/MOEAFramework/MOEAFramework)
+﻿[![Maven Central](https://img.shields.io/maven-central/v/org.moeaframework/moeaframework.svg)](http://mvnrepository.com/artifact/org.moeaframework/moeaframework/2.6)
 
 The MOEA Framework is a free and open source Java library for developing and
 experimenting with multiobjective evolutionary algorithms (MOEAs) and other
@@ -36,7 +37,7 @@ Maven users can add our dependency to their `pom.xml` file:
     <dependency>
         <groupId>org.moeaframework</groupId>
         <artifactId>moeaframework</artifactId>
-        <version>2.5</version>
+        <version>2.6</version>
     </dependency>
 
 ### License ###
