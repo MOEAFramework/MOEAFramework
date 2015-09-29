@@ -24,6 +24,7 @@ import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashSet;
 import java.util.Properties;
@@ -752,8 +753,17 @@ public class ActionFactory implements ControllerListener {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					Properties properties = new Properties();
-					properties.load(getClass().getResourceAsStream(
-							"/META-INF/build.properties"));
+					InputStream stream = null;
+					
+					try {
+						stream = getClass().getResourceAsStream(
+								"/META-INF/build.properties");
+						properties.load(stream);
+					} finally {
+						if (stream != null) {
+							stream.close();
+						}
+					}
 					
 					ProjectInfo info = new ProjectInfo(
 							properties.getProperty("name"),
