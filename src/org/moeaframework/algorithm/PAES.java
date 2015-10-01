@@ -58,7 +58,7 @@ public class PAES extends AbstractEvolutionaryAlgorithm {
 	 * @param variation the mutation operator
 	 * @param bisections the number of bisections in the adaptive grid archive
 	 * @param archiveSize the capacity of the adaptive grid archive
-	 * @throws IllegalArgumentExceptio if the variation operator requires more
+	 * @throws IllegalArgumentException if the variation operator requires more
 	 *         than one parent
 	 */
 	public PAES(Problem problem, Variation variation, int bisections,
