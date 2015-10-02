@@ -29,7 +29,7 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.indicator.Contribution;
 import org.moeaframework.core.indicator.QualityIndicator;
 import org.moeaframework.core.spi.ProblemFactory;
-import org.moeaframework.core.spi.TestProblemFactory;
+import org.moeaframework.core.spi.ProblemFactoryTestWrapper;
 
 /**
  * Tests the {@link ExtractData} class.
@@ -93,7 +93,7 @@ public class ExtractDataTest {
 	
 	@Test
 	public void testClose() throws Exception {
-		TestProblemFactory problemFactory = new TestProblemFactory();
+		ProblemFactoryTestWrapper problemFactory = new ProblemFactoryTestWrapper();
 		ProblemFactory.setInstance(problemFactory);
 		
 		File input = TestUtils.createTempFile(COMPLETE);
