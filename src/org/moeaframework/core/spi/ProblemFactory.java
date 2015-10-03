@@ -17,7 +17,9 @@
  */
 package org.moeaframework.core.spi;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.ServiceConfigurationError;
 import java.util.ServiceLoader;
 
@@ -46,6 +48,11 @@ public class ProblemFactory {
 	 * The default problem factory.
 	 */
 	private static ProblemFactory instance;
+	
+	/**
+	 * Collection of providers that have been manually added.
+	 */
+	private List<ProblemProvider> customProviders;
 	
 	/**
 	 * Instantiates the static {@code PROVIDERS} and {@code instance} objects.
@@ -78,6 +85,19 @@ public class ProblemFactory {
 	 */
 	public ProblemFactory() {
 		super();
+		
+		customProviders = new ArrayList<ProblemProvider>();
+	}
+	
+	/**
+	 * Adds a problem provider to this problem factory.  Subsequent calls
+	 * to {@link #getProblem(String)} or {@link #getReferenceSet(String)} will
+	 * search the given provider for a match.
+	 * 
+	 * @param provider the new problem provider
+	 */
+	public void addProvider(ProblemProvider provider) {
+		customProviders.add(provider);
 	}
 
 	/**
@@ -92,39 +112,46 @@ public class ProblemFactory {
 	 *         available
 	 */
 	public synchronized Problem getProblem(String name) {
-		Iterator<ProblemProvider> ps = PROVIDERS.iterator();
+		// loop over all providers that have been manually added
+		for (ProblemProvider provider : customProviders) {
+			Problem problem = instantiateProblem(provider, name);
+			
+			if (problem != null) {
+				return problem;
+			}
+		}
 		
-		// ensure standard problems can be found in case the system has not
-		// setup correctly
-		if (!ps.hasNext()) {
-			Problem problem = instantiateProblem(new StandardProblems(), name);
-			
-			if (problem == null) {
-				problem = instantiateProblem(new PropertiesProblems(), name);
-			}
-			
-			if (problem == null) {
-				problem = instantiateProblem(new ClassLoaderProblems(), name);
-			}
-			
-			if (problem == null) {
-				problem = instantiateProblem(new RotatedProblems(), name);
-			}
+		// loop over all providers available via the SPI
+		Iterator<ProblemProvider> iterator = PROVIDERS.iterator();
+		
+		while (iterator.hasNext()) {
+			Problem problem = instantiateProblem(iterator.next(), name);
 			
 			if (problem != null) {
 				return problem;
 			}
 		}
-
-		// loop over all providers to find the problem implementation
-		while (ps.hasNext()) {
-			Problem problem = instantiateProblem(ps.next(), name);
+		
+		// ensure standard problems can always be found
+		Problem problem = instantiateProblem(new StandardProblems(), name);
 			
-			if (problem != null) {
-				return problem;
-			}
+		if (problem == null) {
+			problem = instantiateProblem(new PropertiesProblems(), name);
+		}
+			
+		if (problem == null) {
+			problem = instantiateProblem(new ClassLoaderProblems(), name);
+		}
+			
+		if (problem == null) {
+			problem = instantiateProblem(new RotatedProblems(), name);
+		}
+			
+		if (problem != null) {
+			return problem;
 		}
 
+		// throw an exception if no match found
 		throw new ProviderNotFoundException(name);
 	}
 	
@@ -156,44 +183,51 @@ public class ProblemFactory {
 	 * @return the reference set of the problem with the registered name; or
 	 *         {@code null} if no reference set is available
 	 */
-	public synchronized NondominatedPopulation getReferenceSet(
-			String name) {
-		Iterator<ProblemProvider> ps = PROVIDERS.iterator();
-
-		// ensure standard problems can be found in case the system has not
-		// setup correctly
-		if (!ps.hasNext()) {
-			NondominatedPopulation referenceSet = new StandardProblems()
-					.getReferenceSet(name);
-
-			if (referenceSet == null) {
-				referenceSet = new PropertiesProblems().getReferenceSet(name);
-			}
-			
-			if (referenceSet == null) {
-				referenceSet = new ClassLoaderProblems().getReferenceSet(name);
-			}
-			
-			if (referenceSet == null) {
-				referenceSet = new RotatedProblems().getReferenceSet(name);
-			}
-			
+	public synchronized NondominatedPopulation getReferenceSet(String name) {
+		// loop over all providers that have been manually added
+		for (ProblemProvider provider : customProviders) {
+			NondominatedPopulation referenceSet =
+					provider.getReferenceSet(name);
+					
 			if (referenceSet != null) {
 				return referenceSet;
 			}
 		}
-
-		// loop over all providers to find the reference set
-		while (ps.hasNext()) {
-			ProblemProvider provider = ps.next();
-			NondominatedPopulation referenceSet = provider
-					.getReferenceSet(name);
+		
+		// loop over all providers available via the SPI
+		Iterator<ProblemProvider> iterator = PROVIDERS.iterator();
+		
+		while (iterator.hasNext()) {
+			ProblemProvider provider = iterator.next();
+			NondominatedPopulation referenceSet =
+					provider.getReferenceSet(name);
 
 			if (referenceSet != null) {
 				return referenceSet;
 			}
 		}
+		
+		// ensure standard problems can always be found
+		NondominatedPopulation referenceSet =
+				new StandardProblems().getReferenceSet(name);
 
+		if (referenceSet == null) {
+			referenceSet = new PropertiesProblems().getReferenceSet(name);
+		}
+			
+		if (referenceSet == null) {
+			referenceSet = new ClassLoaderProblems().getReferenceSet(name);
+		}
+			
+		if (referenceSet == null) {
+			referenceSet = new RotatedProblems().getReferenceSet(name);
+		}
+			
+		if (referenceSet != null) {
+			return referenceSet;
+		}
+
+		// return null if no match is found
 		return null;
 	}
 

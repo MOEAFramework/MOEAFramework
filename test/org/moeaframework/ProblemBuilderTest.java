@@ -28,7 +28,7 @@ import org.moeaframework.core.PopulationIO;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.spi.ProblemFactory;
-import org.moeaframework.core.spi.TestProblemFactory;
+import org.moeaframework.core.spi.ProblemFactoryTestWrapper;
 import org.moeaframework.problem.DTLZ.DTLZ2;
 import org.moeaframework.problem.ZDT.ZDT5;
 
@@ -55,7 +55,7 @@ public class ProblemBuilderTest {
 	
 	@Test
 	public void testProblemFactory() {
-		TestProblemFactory problemFactory = new TestProblemFactory();
+		ProblemFactoryTestWrapper problemFactory = new ProblemFactoryTestWrapper();
 		ProblemBuilder builder = new ProblemBuilder()
 				.usingProblemFactory(problemFactory)
 				.withProblem("DTLZ2_2");

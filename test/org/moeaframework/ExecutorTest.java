@@ -22,22 +22,22 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.moeaframework.core.spi.TestAlgorithmFactory;
-import org.moeaframework.core.spi.TestProblemFactory;
+import org.moeaframework.core.spi.AlgorithmFactoryTestWrapper;
+import org.moeaframework.core.spi.ProblemFactoryTestWrapper;
 
 /**
  * Tests the {@link Executor} class.
  */
 public class ExecutorTest {
 
-	private TestAlgorithmFactory algorithmFactory;
+	private AlgorithmFactoryTestWrapper algorithmFactory;
 	
-	private TestProblemFactory problemFactory;
+	private ProblemFactoryTestWrapper problemFactory;
 	
 	@Before
 	public void setUp() {
-		algorithmFactory = new TestAlgorithmFactory();
-		problemFactory = new TestProblemFactory();
+		algorithmFactory = new AlgorithmFactoryTestWrapper();
+		problemFactory = new ProblemFactoryTestWrapper();
 	}
 	
 	@After

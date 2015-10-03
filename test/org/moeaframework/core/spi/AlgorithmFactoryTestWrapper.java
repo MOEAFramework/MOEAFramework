@@ -30,7 +30,7 @@ import org.moeaframework.core.Solution;
  * Algorithm factory that instruments {@link Algorithm} instances with testing
  * code.
  */
-public class TestAlgorithmFactory extends AlgorithmFactory {
+public class AlgorithmFactoryTestWrapper extends AlgorithmFactory {
 	
 	/**
 	 * The number of times the {@code terminate} method has been invoked.

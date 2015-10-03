@@ -25,7 +25,7 @@ import org.moeaframework.problem.AnalyticalProblem;
  * Problem factory which instruments {@link Problem} instances with testing
  * code.
  */
-public class TestProblemFactory extends ProblemFactory {
+public class ProblemFactoryTestWrapper extends ProblemFactory {
 	
 	/**
 	 * The number of times the {@code close} method has been invoked.

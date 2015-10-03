@@ -17,7 +17,9 @@
  */
 package org.moeaframework.core.spi;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Properties;
 import java.util.ServiceConfigurationError;
 import java.util.ServiceLoader;
@@ -43,6 +45,11 @@ public class AlgorithmFactory {
 	 * The default algorithm factory.
 	 */
 	private static AlgorithmFactory instance;
+	
+	/**
+	 * Collection of providers that have been manually added.
+	 */
+	private List<AlgorithmProvider> customProviders;
 	
 	/**
 	 * Instantiates the static {@code PROVIDERS} and {@code instance} objects.
@@ -75,6 +82,19 @@ public class AlgorithmFactory {
 	 */
 	public AlgorithmFactory() {
 		super();
+		
+		customProviders = new ArrayList<AlgorithmProvider>();
+	}
+	
+	/**
+	 * Adds an algorithm provider to this algorithm factory.  Subsequent calls
+	 * to {@link #getAlgorithm(String, Properties, Problem)} will search the
+	 * given provider for a match.
+	 * 
+	 * @param provider the new algorithm provider
+	 */
+	public void addProvider(AlgorithmProvider provider) {
+		customProviders.add(provider);
 	}
 
 	/**
@@ -93,23 +113,43 @@ public class AlgorithmFactory {
 	 */
 	public synchronized Algorithm getAlgorithm(String name, 
 			Properties properties, Problem problem) {
-		Iterator<AlgorithmProvider> ps = PROVIDERS.iterator();
+		boolean hasStandardAlgorithms = false;
 		
-		// ensure standard algorithms can be found in case the system has not
-		// setup correctly
-		if (!ps.hasNext()) {
-			Algorithm algorithm = instantiateAlgorithm(
-					new StandardAlgorithms(), name, properties, problem);
+		// loop over all providers that have been manually added
+		for (AlgorithmProvider provider : customProviders) {
+			Algorithm algorithm = instantiateAlgorithm(provider, name,
+					properties, problem);
+			
+			if (provider.getClass() == StandardAlgorithms.class) {
+				hasStandardAlgorithms = true;
+			}
 			
 			if (algorithm != null) {
 				return algorithm;
 			}
 		}
 
-		// loop over all providers to find the algorithm implementation
-		while (ps.hasNext()) {
-			Algorithm algorithm = instantiateAlgorithm(ps.next(), name,
+		// loop over all providers available via the SPI
+		Iterator<AlgorithmProvider> iterator = PROVIDERS.iterator();
+		
+		while (iterator.hasNext()) {
+			AlgorithmProvider provider = iterator.next();
+			Algorithm algorithm = instantiateAlgorithm(provider, name,
 					properties, problem);
+			
+			if (provider.getClass() == StandardAlgorithms.class) {
+				hasStandardAlgorithms = true;
+			}
+			
+			if (algorithm != null) {
+				return algorithm;
+			}
+		}
+		
+		// always ensure we check the standard algorithms
+		if (!hasStandardAlgorithms) {
+			Algorithm algorithm = instantiateAlgorithm(
+					new StandardAlgorithms(), name, properties, problem);
 			
 			if (algorithm != null) {
 				return algorithm;

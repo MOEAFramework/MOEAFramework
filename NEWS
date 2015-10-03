@@ -1,9 +1,20 @@
 This file documents the major changes implemented in each release of the MOEA
 Framework.
 
-------------------
-Version 2.6 (TBD)
-------------------
+-------------------
+ Version 2.7 (TBD)
+-------------------
+
+  * Adds ability to incorporate new problems or algorithms without having to
+    use Java's service provider interface (SPI).  Now, providers can be
+    programatically added via
+      - AlgorithmFactory.getInstance().addProvider(...) or
+      - ProblemFactory.getInstance().addProvider(...)
+
+
+----------------------------
+ Version 2.6 (28 Sept 2015)
+----------------------------
 
   * Fixes several bugs:
    
