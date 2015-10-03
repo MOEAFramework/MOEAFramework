@@ -6,7 +6,7 @@ Framework.
 -------------------
 
   * Adds ability to incorporate new problems or algorithms without having to
-    use Java's service provider interface (SPI).  Now, provides can be
+    use Java's service provider interface (SPI).  Now, providers can be
     programatically added via
       - AlgorithmFactory.getInstance().addProvider(...) or
       - ProblemFactory.getInstance().addProvider(...)
