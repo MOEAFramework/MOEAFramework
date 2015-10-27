@@ -628,17 +628,17 @@ public class MOEAD extends AbstractAlgorithm {
 	/**
 	 * Updates the utility of each individual.
 	 */
-	private void updateUtility() {
+	protected void updateUtility() {
 		for (Individual individual : population) {
 			double oldFitness = individual.getFitness();
 			double newFitness = fitness(individual.getSolution(), idealPoint);
-			double relativeDecrease = oldFitness - newFitness;
+			double relativeDecrease = (oldFitness - newFitness) / oldFitness; 
 
 			if (relativeDecrease > 0.001) {
 				individual.setUtility(1.0);
 			} else {
-				double utility = Math.min(1.0, 0.95 * (1.0 + delta / 0.001)
-						* individual.getUtility());
+				double utility = Math.min(1.0,
+						(0.95 + 0.05*relativeDecrease/0.001)* individual.getUtility());
 				individual.setUtility(utility);
 			}
 
