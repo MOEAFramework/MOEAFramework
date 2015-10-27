@@ -264,7 +264,8 @@ public class MOEAD extends AbstractAlgorithm {
 
 	/**
 	 * The frequency, in generations, in which utility values are updated.  Set
-	 * to {@code -1} to disable utility-based search.
+	 * to {@code -1} to disable utility-based search.  [2] recommends to update
+	 * every {@code 50} generations.
 	 */
 	private final int updateUtility;
 
@@ -286,8 +287,8 @@ public class MOEAD extends AbstractAlgorithm {
 	 *        neighborhood rather than the entire population
 	 * @param eta the maximum number of population slots a solution can replace
 	 * @param updateUtility the frequency, in generations, in which utility
-	 *        values are updated; set to {@code -1} to disable utility-based
-	 *        search
+	 *        values are updated; set to {@code 50} to use the recommended
+	 *        update frequency or {@code -1} to disable utility-based search.
 	 */
 	public MOEAD(Problem problem, int neighborhoodSize,
 			Initialization initialization, Variation variation, double delta,
@@ -332,8 +333,8 @@ public class MOEAD extends AbstractAlgorithm {
 	 *        neighborhood rather than the entire population
 	 * @param eta the maximum number of population slots a solution can replace
 	 * @param updateUtility the frequency, in generations, in which utility
-	 *        values are updated; set to {@code -1} to disable utility-based
-	 *        search
+	 *        values are updated; set to {@code 50} to use the recommended
+	 *        update frequency or {@code -1} to disable utility-based search.
 	 */
 	public MOEAD(Problem problem, int neighborhoodSize,
 			WeightGenerator weightGenerator, Initialization initialization,
@@ -628,17 +629,17 @@ public class MOEAD extends AbstractAlgorithm {
 	/**
 	 * Updates the utility of each individual.
 	 */
-	private void updateUtility() {
+	protected void updateUtility() {
 		for (Individual individual : population) {
 			double oldFitness = individual.getFitness();
 			double newFitness = fitness(individual.getSolution(), idealPoint);
-			double relativeDecrease = oldFitness - newFitness;
+			double relativeDecrease = (oldFitness - newFitness) / oldFitness; 
 
 			if (relativeDecrease > 0.001) {
 				individual.setUtility(1.0);
 			} else {
-				double utility = Math.min(1.0, 0.95 * (1.0 + delta / 0.001)
-						* individual.getUtility());
+				double utility = Math.min(1.0,
+						(0.95 + 0.05*relativeDecrease/0.001)* individual.getUtility());
 				individual.setUtility(utility);
 			}
 
