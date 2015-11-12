@@ -36,12 +36,12 @@ public class NondominatedPopulationTest {
 		Solution s1 = new Solution(new double[] { 0.0, 1.0, 0.0 });
 		Solution s2 = new Solution(new double[] { 0.0, 0.0, -1.0 });
 
-		Assert.assertEquals(Math.sqrt(2.0), population.distance(s1, s2),
+		Assert.assertEquals(Math.sqrt(2.0), population.objectiveDistance(s1, s2),
 				Settings.EPS);
-		Assert.assertEquals(Math.sqrt(2.0), population.distance(s2, s1),
+		Assert.assertEquals(Math.sqrt(2.0), population.objectiveDistance(s2, s1),
 				Settings.EPS);
-		Assert.assertEquals(0.0, population.distance(s1, s1), Settings.EPS);
-		Assert.assertEquals(0.0, population.distance(s2, s2), Settings.EPS);
+		Assert.assertEquals(0.0, population.objectiveDistance(s1, s1), Settings.EPS);
+		Assert.assertEquals(0.0, population.objectiveDistance(s2, s2), Settings.EPS);
 	}
 
 	/**

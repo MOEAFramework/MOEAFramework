@@ -17,10 +17,15 @@
  */
 package org.moeaframework.core;
 
+import java.util.BitSet;
 import java.util.Iterator;
 
 import org.moeaframework.core.comparator.DominanceComparator;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
+import org.moeaframework.core.variable.BinaryVariable;
+import org.moeaframework.core.variable.EncodingUtils;
+import org.moeaframework.core.variable.Permutation;
+import org.moeaframework.core.variable.RealVariable;
 
 /**
  * A population that maintains the property of pair-wise non-dominance between
@@ -30,6 +35,32 @@ import org.moeaframework.core.comparator.ParetoDominanceComparator;
  * population, the new solution is not added.
  */
 public class NondominatedPopulation extends Population {
+	
+	/**
+	 * Specifies how duplicate solutions are handled.  Duplicate solutions are
+	 * those whose Euclidean distance, either in decision or objective space,
+	 * is smaller than {@value Settings.EPSILON}.
+	 */
+	public static enum DuplicateMode {
+		
+		/**
+		 * Do not allow any duplicate solutions into this population.
+		 */
+		NO_DUPLICATES,
+		
+		/**
+		 * Allow duplicate solutions only if they have different decision
+		 * variables.
+		 */
+		ALLOW_DUPLICATE_OBJECTIVES,
+		
+		/**
+		 * Allow all duplicate solutions, even if they have identical decision
+		 * variables and objectives.
+		 */
+		ALLOW_DUPLICATES
+		
+	}
 
 	/**
 	 * The dominance comparator used by this non-dominated population.
@@ -37,11 +68,9 @@ public class NondominatedPopulation extends Population {
 	protected final DominanceComparator comparator;
 	
 	/**
-	 * If {@code true}, allow duplicate solutions in this non-dominated
-	 * population.  Duplicate solutions are those whose Euclidean distance
-	 * is smaller than {@value Settings.EPSILON}.
+	 * Specifies how duplicate solutions are handled. 
 	 */
-	protected final boolean allowDuplicates;
+	protected final DuplicateMode duplicateMode;
 
 	/**
 	 * Constructs an empty non-dominated population using the Pareto dominance
@@ -59,7 +88,7 @@ public class NondominatedPopulation extends Population {
 	 *        population
 	 */
 	public NondominatedPopulation(DominanceComparator comparator) {
-		this(comparator, false);
+		this(comparator, DuplicateMode.NO_DUPLICATES);
 	}
 	
 	/**
@@ -70,12 +99,28 @@ public class NondominatedPopulation extends Population {
 	 *        population
 	 * @param allowDuplicates allow duplicate solutions into the non-dominated
 	 *        population
+	 * @deprecated Use {@link #NondominatedPopulation(DominanceComparator,
+	 * 		  DuplicateMode)} instead.
 	 */
 	public NondominatedPopulation(DominanceComparator comparator,
 			boolean allowDuplicates) {
+		this(comparator, allowDuplicates ? DuplicateMode.ALLOW_DUPLICATES :
+			DuplicateMode.NO_DUPLICATES);
+	}
+	
+	/**
+	 * Constructs an empty non-dominated population using the specified 
+	 * dominance relation.
+	 * 
+	 * @param comparator the dominance relation used by this non-dominated
+	 *        population
+	 * @param duplicateMode specifies how duplicate solutions are handled
+	 */
+	public NondominatedPopulation(DominanceComparator comparator,
+			DuplicateMode duplicateMode) {
 		super();
 		this.comparator = comparator;
-		this.allowDuplicates = allowDuplicates;
+		this.duplicateMode = duplicateMode;
 	}
 
 	/**
@@ -123,9 +168,23 @@ public class NondominatedPopulation extends Population {
 				iterator.remove();
 			} else if (flag > 0) {
 				return false;
-			} else if (!allowDuplicates &&
-					distance(newSolution, oldSolution) < Settings.EPS) {
-				return false;
+			} else {
+				switch (duplicateMode) {
+				case NO_DUPLICATES:
+					if (objectiveDistance(newSolution, oldSolution) < Settings.EPS) {
+						return false;
+					}
+					
+					break;
+				case ALLOW_DUPLICATE_OBJECTIVES:
+					if (variableDistance(newSolution, oldSolution) < Settings.EPS) {
+						return false;
+					}
+					
+					break;
+				case ALLOW_DUPLICATES:
+					break;
+				}
 			}
 		}
 
@@ -150,9 +209,23 @@ public class NondominatedPopulation extends Population {
 				iterator.remove();
 			} else if (flag > 0) {
 				return;
-			} else if (!allowDuplicates &&
-					distance(newSolution, oldSolution) < Settings.EPS) {
-				return;
+			} else {
+				switch (duplicateMode) {
+				case NO_DUPLICATES:
+					if (objectiveDistance(newSolution, oldSolution) < Settings.EPS) {
+						return;
+					}
+					
+					break;
+				case ALLOW_DUPLICATE_OBJECTIVES:
+					if (variableDistance(newSolution, oldSolution) < Settings.EPS) {
+						return;
+					}
+					
+					break;
+				case ALLOW_DUPLICATES:
+					break;
+				}
 			}
 		}
 
@@ -181,7 +254,7 @@ public class NondominatedPopulation extends Population {
 	 * @param s2 the second solution
 	 * @return the distance between the two solutions in objective space
 	 */
-	protected double distance(Solution s1, Solution s2) {
+	protected double objectiveDistance(Solution s1, Solution s2) {
 		double distance = 0.0;
 
 		for (int i = 0; i < s1.getNumberOfObjectives(); i++) {
@@ -189,6 +262,43 @@ public class NondominatedPopulation extends Population {
 		}
 
 		return Math.sqrt(distance);
+	}
+	
+	protected double variableDistance(Solution s1, Solution s2) {
+		double distance = 0.0;
+		
+		for (int i = 0; i < s1.getNumberOfVariables(); i++) {
+			Variable v1 = s1.getVariable(i);
+			Variable v2 = s2.getVariable(i);
+			
+			if ((v1 instanceof RealVariable) && (v2 instanceof RealVariable)) {
+				distance += Math.pow(EncodingUtils.getReal(v1),
+						EncodingUtils.getReal(v2));
+			} else if ((v1 instanceof BinaryVariable) && (v2 instanceof BinaryVariable)) {
+				BitSet bs1 = EncodingUtils.getBitSet(v1);
+				BitSet bs2 = EncodingUtils.getBitSet(v2);
+				
+				bs1.xor(bs2);
+				
+				distance += bs1.cardinality();
+			} else if ((v1 instanceof Permutation) && (v2 instanceof Permutation)) {
+				int[] p1 = EncodingUtils.getPermutation(v1);
+				int[] p2 = EncodingUtils.getPermutation(v2);
+				
+				for (int j = 0; j < p1.length; j++) {
+					for (int k = 0; k < p2.length; k++) {
+						if (p2[k] == p1[j]) {
+							distance += Math.abs(k-j);
+						}
+					}
+				}
+			} else {
+				// TODO: add better calculations for other types
+				distance += 1.0;
+			}
+		}
+		
+		return distance;
 	}
 
 	/**
