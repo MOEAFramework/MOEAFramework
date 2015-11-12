@@ -32,6 +32,7 @@ import org.moeaframework.core.PopulationIO;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.indicator.IndicatorUtils;
+import org.moeaframework.core.indicator.InvertedGenerationalDistance;
 import org.moeaframework.core.indicator.NormalizedIndicator;
 import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.problem.DTLZ.DTLZ1;
@@ -105,7 +106,7 @@ public class NSGAIIITest {
 		int trials = 20;
 		double[] igdValues = new double[trials];
 		
-		InvertedGenerationalDistance2 igd = new InvertedGenerationalDistance2(
+		InvertedGenerationalDistance igd = new InvertedGenerationalDistance(
 				problem, referenceSet);
 		
 		for (int i = 0; i < trials; i++) {
@@ -161,49 +162,6 @@ public class NSGAIIITest {
 		System.out.println("  Min: " + new Min().evaluate(igdValues));
 		System.out.println("  Med: " + new Median().evaluate(igdValues));
 		System.out.println("  Max: " + new Max().evaluate(igdValues));
-	}
-	
-	/**
-	 * Deb and Jain use a version that averages the distance rather than
-	 * using the root mean square value.
-	 */
-	public static class InvertedGenerationalDistance2 extends NormalizedIndicator {
-
-		public InvertedGenerationalDistance2(Problem problem,
-				NondominatedPopulation referenceSet) {
-			super(problem, referenceSet);
-		}
-
-		@Override
-		public double evaluate(NondominatedPopulation approximationSet) {
-			return evaluate(problem, normalize(approximationSet), 
-					getNormalizedReferenceSet());
-		}
-
-		/**
-		 * Computes the inverted generational distance for the specified problem
-		 * given an approximation set and reference set. While not necessary, the
-		 * approximation and reference sets should be normalized. Returns
-		 * {@code Double.POSITIVE_INFINITY} if the approximation set is empty.
-		 * 
-		 * @param problem the problem
-		 * @param approximationSet an approximation set for the problem
-		 * @param referenceSet the reference set for the problem
-		 * @return the inverted generational distance for the specified problem 
-		 *         given an approximation set and reference set
-		 */
-		static double evaluate(Problem problem,
-				NondominatedPopulation approximationSet,
-				NondominatedPopulation referenceSet) {
-			double sum = 0.0;
-
-			for (int i = 0; i < referenceSet.size(); i++) {
-				sum += IndicatorUtils.distanceToNearestSolution(problem,
-						referenceSet.get(i), approximationSet);
-			}
-
-			return sum / referenceSet.size();
-		}
 	}
 
 	public class ScaledProblem implements Problem {

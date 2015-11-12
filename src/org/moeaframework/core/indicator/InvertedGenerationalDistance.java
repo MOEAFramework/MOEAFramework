@@ -19,6 +19,7 @@ package org.moeaframework.core.indicator;
 
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
+import org.moeaframework.core.Settings;
 
 /**
  * Inverted generational distance indicator. Represents average distance from
@@ -26,6 +27,12 @@ import org.moeaframework.core.Problem;
  * set.
  */
 public class InvertedGenerationalDistance extends NormalizedIndicator {
+	
+	/**
+	 * Set to {@code 1.0} to replicate inverted generational distance as seen
+	 * in the literature; or any power.
+	 */
+	private final double d;
 
 	/**
 	 * Constructs an inverted generational distance evaluator for the specified
@@ -36,13 +43,28 @@ public class InvertedGenerationalDistance extends NormalizedIndicator {
 	 */
 	public InvertedGenerationalDistance(Problem problem,
 			NondominatedPopulation referenceSet) {
+		this(problem, referenceSet, Settings.getIGDPower());
+	}
+	
+	/**
+	 * Constructs an inverted generational distance evaluator for the specified
+	 * problem and corresponding reference set.
+	 * 
+	 * @param problem the problem
+	 * @param referenceSet the reference set for the problem
+	 * @param d the power, typically {@code 1.0}
+	 */
+	public InvertedGenerationalDistance(Problem problem,
+			NondominatedPopulation referenceSet,
+			double d) {
 		super(problem, referenceSet);
+		this.d = d;
 	}
 
 	@Override
 	public double evaluate(NondominatedPopulation approximationSet) {
 		return evaluate(problem, normalize(approximationSet), 
-				getNormalizedReferenceSet());
+				getNormalizedReferenceSet(), d);
 	}
 
 	/**
@@ -54,19 +76,21 @@ public class InvertedGenerationalDistance extends NormalizedIndicator {
 	 * @param problem the problem
 	 * @param approximationSet an approximation set for the problem
 	 * @param referenceSet the reference set for the problem
+	 * @param d the power, typically {@code 1.0}
 	 * @return the inverted generational distance for the specified problem 
 	 *         given an approximation set and reference set
 	 */
 	static double evaluate(Problem problem,
 			NondominatedPopulation approximationSet,
-			NondominatedPopulation referenceSet) {
+			NondominatedPopulation referenceSet,
+			double d) {
 		double sum = 0.0;
 
 		for (int i = 0; i < referenceSet.size(); i++) {
 			sum += Math.pow(IndicatorUtils.distanceToNearestSolution(problem,
-					referenceSet.get(i), approximationSet), 2.0);
+					referenceSet.get(i), approximationSet), d);
 		}
 
-		return Math.sqrt(sum) / referenceSet.size();
+		return Math.pow(sum, 1.0 / d) / referenceSet.size();
 	}
 }

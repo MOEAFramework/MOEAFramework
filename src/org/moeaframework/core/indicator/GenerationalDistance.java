@@ -19,12 +19,20 @@ package org.moeaframework.core.indicator;
 
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
+import org.moeaframework.core.Settings;
 
 /**
  * Generational distance indicator. Represents average distance from solutions
  * in an approximation set to the nearest solution in the reference set.
  */
 public class GenerationalDistance extends NormalizedIndicator {
+	
+	/**
+	 * Set to {@code 2.0} to replicate generational distance as seen in the
+	 * literature, {@code 1.0} to compute the average distance, or any other
+	 * power.
+	 */
+	private final double d;
 
 	/**
 	 * Constructs a generational distance evaluator for the specified problem 
@@ -35,13 +43,28 @@ public class GenerationalDistance extends NormalizedIndicator {
 	 */
 	public GenerationalDistance(Problem problem,
 			NondominatedPopulation referenceSet) {
+		this(problem, referenceSet, Settings.getGDPower());
+	}
+	
+	/**
+	 * Constructs a generational distance evaluator for the specified problem 
+	 * and corresponding reference set.
+	 * 
+	 * @param problem the problem
+	 * @param referenceSet the reference set for the problem
+	 * @param d the power, typically {@code 2.0}
+	 */
+	public GenerationalDistance(Problem problem,
+			NondominatedPopulation referenceSet,
+			double d) {
 		super(problem, referenceSet);
+		this.d = d;
 	}
 
 	@Override
 	public double evaluate(NondominatedPopulation approximationSet) {
 		return evaluate(problem, normalize(approximationSet), 
-				getNormalizedReferenceSet());
+				getNormalizedReferenceSet(), d);
 	}
 
 	/**
@@ -53,12 +76,14 @@ public class GenerationalDistance extends NormalizedIndicator {
 	 * @param problem the problem
 	 * @param approximationSet an approximation set for the problem
 	 * @param referenceSet the reference set for the problem
+	 * @param d the power, typically {@code 2.0}
 	 * @return the generational distance for the specified problem given an
 	 *         approximation set and reference set
 	 */
 	static double evaluate(Problem problem,
 			NondominatedPopulation approximationSet,
-			NondominatedPopulation referenceSet) {
+			NondominatedPopulation referenceSet,
+			double d) {
 		double sum = 0.0;
 		
 		if (approximationSet.isEmpty()) {
@@ -67,9 +92,9 @@ public class GenerationalDistance extends NormalizedIndicator {
 
 		for (int i = 0; i < approximationSet.size(); i++) {
 			sum += Math.pow(IndicatorUtils.distanceToNearestSolution(problem,
-					approximationSet.get(i), referenceSet), 2.0);
+					approximationSet.get(i), referenceSet), d);
 		}
-
-		return Math.sqrt(sum) / approximationSet.size();
+		
+		return Math.pow(sum, 1.0 / d) / approximationSet.size();
 	}
 }

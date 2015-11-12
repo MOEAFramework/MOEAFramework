@@ -10,6 +10,19 @@ Framework.
     programatically added via
       - AlgorithmFactory.getInstance().addProvider(...) or
       - ProblemFactory.getInstance().addProvider(...)
+      
+  * Fixes bug in MOEA/D-DRA's update utility calculation (this was a bug in the
+    official MOEA/D-DRA implementation that has since been corrected).  Thanks
+    to @abdulhameedpk for reporting this bug.
+    
+  * Like JMetal, the generational distance and inverted generational distance
+    calculations use the mean square distance.  In the literature, however,
+    inverted generational distance is typically computed using the average
+    distance.  For consistency, inverted generational distance is now computed
+    using the average.  This can also be controlled by two new global
+    properties:
+      org.moeaframework.core.indicator.gd_power = 2.0
+      org.moeaframework.core.indicator.igd_power = 1.0
 
 
 ----------------------------

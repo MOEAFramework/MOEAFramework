@@ -112,12 +112,12 @@ public class InvertedGenerationalDistanceTest extends IndicatorTest {
 		
 		approximationSet.clear();
 		approximationSet.add(TestUtils.newSolution(1.0, 1.0));
-		Assert.assertEquals(Math.sqrt(2.0)/2.0, igd.evaluate(approximationSet),
+		Assert.assertEquals(2.0/2.0, igd.evaluate(approximationSet),
 				Settings.EPS);
 		
 		approximationSet.clear();
 		approximationSet.add(TestUtils.newSolution(2.0, 2.0));
-		Assert.assertEquals(Math.sqrt(10.0)/2.0, igd.evaluate(approximationSet),
+		Assert.assertEquals(2.0*Math.sqrt(5.0)/2.0, igd.evaluate(approximationSet),
 				Settings.EPS);
 
 		approximationSet.clear();
@@ -213,7 +213,7 @@ public class InvertedGenerationalDistanceTest extends IndicatorTest {
 				problemName, 100);
 
 		InvertedGenerationalDistance myIndicator = 
-				new InvertedGenerationalDistance(problem, referenceSet);
+				new InvertedGenerationalDistance(problem, referenceSet, 2.0);
 		jmetal.qualityIndicator.InvertedGenerationalDistance theirIndicator = 
 				new jmetal.qualityIndicator.InvertedGenerationalDistance();
 

@@ -72,6 +72,20 @@ public class Settings {
 	public static final String KEY_PREFIX = "org.moeaframework.";
 	
 	/**
+	 * The property key for the power used in the generational distance
+	 * calculation.
+	 */
+	public static final String KEY_GD_POWER = KEY_PREFIX + 
+			"core.indicator.gd_power";
+	
+	/**
+	 * The property key for the power used in the inverted generational
+	 * distance calculation.
+	 */
+	public static final String KEY_IGD_POWER = KEY_PREFIX +
+			"core.indicator.igd_power";
+	
+	/**
 	 * The property key for the continuity correction flag.
 	 */
 	public static final String KEY_CONTINUITY_CORRECTION = KEY_PREFIX +
@@ -237,6 +251,26 @@ public class Settings {
 	 */
 	public static boolean isContinuityCorrection() {
 		return PROPERTIES.getBoolean(KEY_CONTINUITY_CORRECTION, false);
+	}
+	
+	/**
+	 * Returns the power used in the generational distance calculation.
+	 * The default value is 2.0.
+	 * 
+	 * @return the power used in the generational distance calculation
+	 */
+	public static double getGDPower() {
+		return PROPERTIES.getDouble(KEY_GD_POWER, 2.0);
+	}
+	
+	/**
+	 * Returns the power used in the inverted generational distance calculation.
+	 * The default value is 1.0.
+	 * 
+	 * @return the power used in the inverted generational distance calculation
+	 */
+	public static double getIGDPower() {
+		return PROPERTIES.getDouble(KEY_IGD_POWER, 1.0);
 	}
 	
 	/**
