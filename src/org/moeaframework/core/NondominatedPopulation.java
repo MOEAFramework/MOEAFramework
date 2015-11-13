@@ -93,7 +93,7 @@ public class NondominatedPopulation extends Population {
 	 *        population
 	 */
 	public NondominatedPopulation(DominanceComparator comparator) {
-		this(comparator, DuplicateMode.NO_DUPLICATES);
+		this(comparator, Settings.getDuplicateMode());
 	}
 	
 	/**
@@ -107,6 +107,7 @@ public class NondominatedPopulation extends Population {
 	 * @deprecated Use {@link #NondominatedPopulation(DominanceComparator,
 	 * 		  DuplicateMode)} instead.
 	 */
+	@Deprecated
 	public NondominatedPopulation(DominanceComparator comparator,
 			boolean allowDuplicates) {
 		this(comparator, allowDuplicates ? DuplicateMode.ALLOW_DUPLICATES :

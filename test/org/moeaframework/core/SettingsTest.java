@@ -118,6 +118,9 @@ public class SettingsTest {
 		Assert.assertEquals(DuplicateMode.ALLOW_DUPLICATES,
 				Settings.getDuplicateMode());
 		
+		Assert.assertEquals(DuplicateMode.ALLOW_DUPLICATES,
+				new NondominatedPopulation().duplicateMode);
+		
 		Settings.PROPERTIES.remove(Settings.KEY_DUPLICATE_MODE);
 	}
 

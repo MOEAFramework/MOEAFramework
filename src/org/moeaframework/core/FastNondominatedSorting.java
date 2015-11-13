@@ -20,6 +20,7 @@ package org.moeaframework.core;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.moeaframework.core.NondominatedPopulation.DuplicateMode;
 import org.moeaframework.core.comparator.DominanceComparator;
 import org.moeaframework.core.comparator.ObjectiveComparator;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
@@ -99,7 +100,7 @@ public class FastNondominatedSorting {
 
 		while (!remaining.isEmpty()) {
 			NondominatedPopulation front = new NondominatedPopulation(
-					comparator, true);
+					comparator, DuplicateMode.ALLOW_DUPLICATES);
 
 			for (Solution solution : remaining) {
 				front.add(solution);
