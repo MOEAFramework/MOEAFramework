@@ -17,15 +17,10 @@
  */
 package org.moeaframework.core;
 
-import java.util.BitSet;
 import java.util.Iterator;
 
 import org.moeaframework.core.comparator.DominanceComparator;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
-import org.moeaframework.core.variable.BinaryVariable;
-import org.moeaframework.core.variable.EncodingUtils;
-import org.moeaframework.core.variable.Permutation;
-import org.moeaframework.core.variable.RealVariable;
 
 /**
  * A population that maintains the property of pair-wise non-dominance between
@@ -78,6 +73,16 @@ public class NondominatedPopulation extends Population {
 	 */
 	public NondominatedPopulation() {
 		this(new ParetoDominanceComparator());
+	}
+	
+	/**
+	 * Constructs an empty non-dominated population using the Pareto dominance
+	 * relation.
+	 * 
+	 * @param duplicateMode specifies how duplicate solutions are handled
+	 */
+	public NondominatedPopulation(DuplicateMode duplicateMode) {
+		this(new ParetoDominanceComparator(), duplicateMode);
 	}
 
 	/**
@@ -168,23 +173,8 @@ public class NondominatedPopulation extends Population {
 				iterator.remove();
 			} else if (flag > 0) {
 				return false;
-			} else {
-				switch (duplicateMode) {
-				case NO_DUPLICATES:
-					if (objectiveDistance(newSolution, oldSolution) < Settings.EPS) {
-						return false;
-					}
-					
-					break;
-				case ALLOW_DUPLICATE_OBJECTIVES:
-					if (variableDistance(newSolution, oldSolution) < Settings.EPS) {
-						return false;
-					}
-					
-					break;
-				case ALLOW_DUPLICATES:
-					break;
-				}
+			} else if (isDuplicate(newSolution, oldSolution)) {
+				return false;
 			}
 		}
 
@@ -209,23 +199,8 @@ public class NondominatedPopulation extends Population {
 				iterator.remove();
 			} else if (flag > 0) {
 				return;
-			} else {
-				switch (duplicateMode) {
-				case NO_DUPLICATES:
-					if (objectiveDistance(newSolution, oldSolution) < Settings.EPS) {
-						return;
-					}
-					
-					break;
-				case ALLOW_DUPLICATE_OBJECTIVES:
-					if (variableDistance(newSolution, oldSolution) < Settings.EPS) {
-						return;
-					}
-					
-					break;
-				case ALLOW_DUPLICATES:
-					break;
-				}
+			} else if (isDuplicate(newSolution, oldSolution)) {
+				return;
 			}
 		}
 
@@ -254,7 +229,7 @@ public class NondominatedPopulation extends Population {
 	 * @param s2 the second solution
 	 * @return the distance between the two solutions in objective space
 	 */
-	protected double objectiveDistance(Solution s1, Solution s2) {
+	protected double distance(Solution s1, Solution s2) {
 		double distance = 0.0;
 
 		for (int i = 0; i < s1.getNumberOfObjectives(); i++) {
@@ -264,41 +239,36 @@ public class NondominatedPopulation extends Population {
 		return Math.sqrt(distance);
 	}
 	
-	protected double variableDistance(Solution s1, Solution s2) {
-		double distance = 0.0;
-		
-		for (int i = 0; i < s1.getNumberOfVariables(); i++) {
-			Variable v1 = s1.getVariable(i);
-			Variable v2 = s2.getVariable(i);
-			
-			if ((v1 instanceof RealVariable) && (v2 instanceof RealVariable)) {
-				distance += Math.pow(EncodingUtils.getReal(v1),
-						EncodingUtils.getReal(v2));
-			} else if ((v1 instanceof BinaryVariable) && (v2 instanceof BinaryVariable)) {
-				BitSet bs1 = EncodingUtils.getBitSet(v1);
-				BitSet bs2 = EncodingUtils.getBitSet(v2);
-				
-				bs1.xor(bs2);
-				
-				distance += bs1.cardinality();
-			} else if ((v1 instanceof Permutation) && (v2 instanceof Permutation)) {
-				int[] p1 = EncodingUtils.getPermutation(v1);
-				int[] p2 = EncodingUtils.getPermutation(v2);
-				
-				for (int j = 0; j < p1.length; j++) {
-					for (int k = 0; k < p2.length; k++) {
-						if (p2[k] == p1[j]) {
-							distance += Math.abs(k-j);
-						}
-					}
-				}
-			} else {
-				// TODO: add better calculations for other types
-				distance += 1.0;
+	/**
+	 * Returns {@code true} if the two solutions are duplicates and one should
+	 * be ignored based on the duplicate mode.  This default implementation
+	 * depends on the {@link #equals(Object)} method of the {@link Variable}
+	 * class to check for equality of the decision variables.
+	 * 
+	 * @param s1 the first solution
+	 * @param s2 the second solution
+	 * @return {@code true} if the solutions are duplicates; {@code false}
+	 *         otherwise
+	 */
+	protected boolean isDuplicate(Solution s1, Solution s2) {
+		switch (duplicateMode) {
+		case NO_DUPLICATES:
+			return distance(s1, s2) < Settings.EPS;
+		case ALLOW_DUPLICATE_OBJECTIVES:
+			if (s1.getNumberOfVariables() != s2.getNumberOfVariables()) {
+				return false;
 			}
+			
+			for (int i = 0; i < s1.getNumberOfVariables(); i++) {
+				if (!s1.getVariable(i).equals(s2.getVariable(i))) {
+					return false;
+				}
+			}
+			
+			return true;
+		default:
+			return false;
 		}
-		
-		return distance;
 	}
 
 	/**

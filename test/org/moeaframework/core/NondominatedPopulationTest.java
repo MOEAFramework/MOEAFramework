@@ -17,8 +17,13 @@
  */
 package org.moeaframework.core;
 
+import java.util.BitSet;
+
 import org.junit.Assert;
 import org.junit.Test;
+import org.moeaframework.core.NondominatedPopulation.DuplicateMode;
+import org.moeaframework.core.variable.EncodingUtils;
+import org.moeaframework.problem.MockBinaryProblem;
 
 /**
  * Tests the {@link NondominatedPopulation} class.
@@ -36,12 +41,12 @@ public class NondominatedPopulationTest {
 		Solution s1 = new Solution(new double[] { 0.0, 1.0, 0.0 });
 		Solution s2 = new Solution(new double[] { 0.0, 0.0, -1.0 });
 
-		Assert.assertEquals(Math.sqrt(2.0), population.objectiveDistance(s1, s2),
+		Assert.assertEquals(Math.sqrt(2.0), population.distance(s1, s2),
 				Settings.EPS);
-		Assert.assertEquals(Math.sqrt(2.0), population.objectiveDistance(s2, s1),
+		Assert.assertEquals(Math.sqrt(2.0), population.distance(s2, s1),
 				Settings.EPS);
-		Assert.assertEquals(0.0, population.objectiveDistance(s1, s1), Settings.EPS);
-		Assert.assertEquals(0.0, population.objectiveDistance(s2, s2), Settings.EPS);
+		Assert.assertEquals(0.0, population.distance(s1, s1), Settings.EPS);
+		Assert.assertEquals(0.0, population.distance(s2, s2), Settings.EPS);
 	}
 
 	/**
@@ -91,6 +96,79 @@ public class NondominatedPopulationTest {
 		Assert.assertEquals(2, population.size());
 		Assert.assertTrue(population.contains(solution2));
 		Assert.assertTrue(population.contains(solution4));
+	}
+	
+	/**
+	 * This is similar to {@link #testAddSimilar()} but tests if a solution
+	 * with different variables is also rejected.
+	 */
+	@Test
+	public void testNoDuplicates() {
+		NondominatedPopulation population = new NondominatedPopulation(
+				DuplicateMode.NO_DUPLICATES);
+		
+		MockBinaryProblem problem = new MockBinaryProblem();
+		
+		Solution solution1 = problem.newSolution();
+		EncodingUtils.setBitSet(solution1.getVariable(0), new BitSet(10));
+		solution1.setObjectives(new double[] { 0.5 });
+		
+		Solution solution2 = solution1.copy();
+		
+		Solution solution3 = solution1.copy();
+		BitSet bits = new BitSet(10);
+		bits.set(3);
+		EncodingUtils.setBitSet(solution3.getVariable(0), bits);
+		
+		Assert.assertTrue(population.add(solution1));
+		Assert.assertFalse(population.add(solution2));
+		Assert.assertFalse(population.add(solution3));
+	}
+	
+	@Test
+	public void testAllowDuplicates() {
+		NondominatedPopulation population = new NondominatedPopulation(
+				DuplicateMode.ALLOW_DUPLICATES);
+		
+		MockBinaryProblem problem = new MockBinaryProblem();
+		
+		Solution solution1 = problem.newSolution();
+		EncodingUtils.setBitSet(solution1.getVariable(0), new BitSet(10));
+		solution1.setObjectives(new double[] { 0.5 });
+		
+		Solution solution2 = solution1.copy();
+		
+		Solution solution3 = solution1.copy();
+		BitSet bits = new BitSet(10);
+		bits.set(3);
+		EncodingUtils.setBitSet(solution3.getVariable(0), bits);
+		
+		Assert.assertTrue(population.add(solution1));
+		Assert.assertTrue(population.add(solution2));
+		Assert.assertTrue(population.add(solution3));
+	}
+	
+	@Test
+	public void testAllowDuplicateObjectives() {
+		NondominatedPopulation population = new NondominatedPopulation(
+				DuplicateMode.ALLOW_DUPLICATE_OBJECTIVES);
+		
+		MockBinaryProblem problem = new MockBinaryProblem();
+		
+		Solution solution1 = problem.newSolution();
+		EncodingUtils.setBitSet(solution1.getVariable(0), new BitSet(10));
+		solution1.setObjectives(new double[] { 0.5 });
+		
+		Solution solution2 = solution1.copy();
+		
+		Solution solution3 = solution1.copy();
+		BitSet bits = new BitSet(10);
+		bits.set(3);
+		EncodingUtils.setBitSet(solution3.getVariable(0), bits);
+		
+		Assert.assertTrue(population.add(solution1));
+		Assert.assertFalse(population.add(solution2));
+		Assert.assertTrue(population.add(solution3));
 	}
 
 }
