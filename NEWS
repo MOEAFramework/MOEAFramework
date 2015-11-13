@@ -7,7 +7,8 @@ Framework.
 
   * Adds ability to incorporate new problems or algorithms without having to
     use Java's service provider interface (SPI).  Now, providers can be
-    programatically added via
+    programatically added via:
+    
       - AlgorithmFactory.getInstance().addProvider(...) or
       - ProblemFactory.getInstance().addProvider(...)
       
@@ -21,8 +22,19 @@ Framework.
     distance.  For consistency, inverted generational distance is now computed
     using the average.  This can also be controlled by two new global
     properties:
+    
       org.moeaframework.core.indicator.gd_power = 2.0
       org.moeaframework.core.indicator.igd_power = 1.0
+      
+  * Previously, non-dominated populations removed any duplicate solutions with
+    nearly identical objectives.  Now, this behavior can be controlled, allowing
+    duplicate solutions with three options: NO_DUPLICATES, ALLOW_DUPLICATES,
+    and ALLOW_DUPLICATE_OBJECTIVES.  This can also be controlled by the new
+    global property:
+    
+      org.moeaframework.core.duplicate_mode = ALLOW_DUPLICATE_OBJECTIVES
+      
+    Thanks to @Nozo for this suggestion.
 
 
 ----------------------------

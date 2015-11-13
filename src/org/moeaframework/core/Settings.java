@@ -33,6 +33,7 @@ import java.util.Properties;
 import org.apache.commons.lang3.text.StrTokenizer;
 import org.moeaframework.util.TypedProperties;
 import org.moeaframework.util.io.FileProtection;
+import org.moeaframework.core.NondominatedPopulation.DuplicateMode;
 import org.moeaframework.core.indicator.Hypervolume;
 
 /**
@@ -70,6 +71,13 @@ public class Settings {
 	 * The prefix for all property keys.
 	 */
 	public static final String KEY_PREFIX = "org.moeaframework.";
+	
+	/**
+	 * The property key for how to handle duplicate solutions in a nondominated
+	 * population.
+	 */
+	public static final String KEY_DUPLICATE_MODE = KEY_PREFIX +
+			"core.duplicate_mode";
 	
 	/**
 	 * The property key for the power used in the generational distance
@@ -251,6 +259,17 @@ public class Settings {
 	 */
 	public static boolean isContinuityCorrection() {
 		return PROPERTIES.getBoolean(KEY_CONTINUITY_CORRECTION, false);
+	}
+	
+	/**
+	 * Returns the strategy used for handling duplicate solutions in a
+	 * nondominated population.
+	 * 
+	 * @return the strategy for handling duplicate solutions
+	 */
+	public static DuplicateMode getDuplicateMode() {
+		return DuplicateMode.valueOf(PROPERTIES.getString(KEY_DUPLICATE_MODE,
+				"NO_DUPLICATES").toUpperCase());
 	}
 	
 	/**
