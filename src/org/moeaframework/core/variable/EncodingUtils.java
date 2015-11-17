@@ -273,6 +273,8 @@ public class EncodingUtils {
 	public static double getReal(Variable variable) {
 		if (variable instanceof RealVariable) {
 			return ((RealVariable)variable).getValue();
+		} else if (variable instanceof BinaryIntegerVariable) {
+			return ((BinaryIntegerVariable)variable).getValue();
 		} else {
 			throw new IllegalArgumentException(NOT_REAL);
 		}

@@ -163,7 +163,7 @@ public class RealVariable implements Variable {
 
 	@Override
 	public void randomize() {
-		setValue(PRNG.nextDouble(getLowerBound(), getUpperBound()));
+		setValue(PRNG.nextDouble(lowerBound, upperBound));
 	}
 
 }
