@@ -23,6 +23,9 @@ Framework.
     properties:
       org.moeaframework.core.indicator.gd_power = 2.0
       org.moeaframework.core.indicator.igd_power = 1.0
+      
+  * Adds more flexible SPI for introducing new variation operators.  This also
+    improves support for defining new decision variable types.
 
 
 ----------------------------

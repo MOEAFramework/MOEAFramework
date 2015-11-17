@@ -4,7 +4,6 @@ import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
 
-import org.moeaframework.core.Initialization;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variable;
@@ -27,6 +26,7 @@ import org.moeaframework.core.operator.real.SPX;
 import org.moeaframework.core.operator.real.UM;
 import org.moeaframework.core.operator.real.UNDX;
 import org.moeaframework.core.spi.OperatorProvider;
+import org.moeaframework.core.spi.ProviderNotFoundException;
 import org.moeaframework.core.variable.BinaryVariable;
 import org.moeaframework.core.variable.Grammar;
 import org.moeaframework.core.variable.Permutation;
@@ -176,7 +176,12 @@ public class StandardOperators extends OperatorProvider {
 		
 		for (int i=0; i<solution.getNumberOfVariables(); i++) {
 			Variable variable = solution.getVariable(i);
-			types.add(variable.getClass());
+			
+			if (variable == null) {
+				throw new ProviderNotFoundException("variable is null");
+			} else {
+				types.add(variable.getClass());
+			}
 		}
 		
 		if (types.isEmpty() || (types.size() > 1)) {
@@ -207,7 +212,12 @@ public class StandardOperators extends OperatorProvider {
 		
 		for (int i=0; i<solution.getNumberOfVariables(); i++) {
 			Variable variable = solution.getVariable(i);
-			types.add(variable.getClass());
+			
+			if (variable == null) {
+				throw new ProviderNotFoundException("variable is null");
+			} else {
+				types.add(variable.getClass());
+			}
 		}
 		
 		if (types.isEmpty() || (types.size() > 1)) {
@@ -314,42 +324,6 @@ public class StandardOperators extends OperatorProvider {
 		} else {
 			return null;
 		}
-	}
-
-	/**
-	 * By default, this returns {@link RandomInitialization}.  The {@code name}
-	 * argument is currently ignored, but may be used in future releases.
-	 */
-	@Override
-	public Initialization getInitialization(String name, Properties properties,
-			Problem problem) {
-		// ensure all types are supported (so if a new type is introduced a
-		// subclass can implement
-		Set<Class<?>> types = new HashSet<Class<?>>();
-		Solution solution = problem.newSolution();
-		
-		for (int i=0; i<solution.getNumberOfVariables(); i++) {
-			Variable variable = solution.getVariable(i);
-			types.add(variable.getClass());
-		}
-
-		for (Class<?> type : types) {
-			if (!RealVariable.class.isAssignableFrom(type) &&
-					!BinaryVariable.class.isAssignableFrom(type) &&
-					!Permutation.class.isAssignableFrom(type) &&
-					!Grammar.class.isAssignableFrom(type) &&
-					!Program.class.isAssignableFrom(type)) {
-				return null;
-			}
-		}
-		
-		// return the standard random initialization
-		TypedProperties typedProperties = new TypedProperties(properties);
-		
-		int populationSize = (int)typedProperties.getDouble("populationSize",
-				100);
-		
-		return new RandomInitialization(problem, populationSize);
 	}
 
 }

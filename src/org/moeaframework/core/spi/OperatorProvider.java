@@ -2,7 +2,6 @@ package org.moeaframework.core.spi;
 
 import java.util.Properties;
 
-import org.moeaframework.core.Initialization;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Variation;
 
@@ -64,19 +63,5 @@ public abstract class OperatorProvider {
 	 */
 	public abstract Variation getVariation(String name, Properties properties, 
 			Problem problem);
-	
-	/**
-	 * Returns an instance of the initialization operator with the specified
-	 * name.  This method must return {@code null} if no suitable operator is
-	 * found.
-	 * 
-	 * @param name the name identifying the initialization operator
-	 * @param properties the implementation-specific properties
-	 * @param problem the problem to be solved
-	 * @return an instance of the initialization operator with the specified
-	 *         name
-	 */
-	public abstract Initialization getInitialization(String name,
-			Properties properties, Problem problem);
 
 }
