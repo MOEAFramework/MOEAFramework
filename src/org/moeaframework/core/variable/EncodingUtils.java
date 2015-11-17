@@ -35,11 +35,10 @@ import org.moeaframework.core.Variable;
  * </pre>
  * <p>
  * Support for integer encodings is now supported using the
- * {@link #newInt(int, int)}, {@link #getInt(Variable)},
- * {@link #setInt(Variable, int)} methods.  Internally, integers are
- * represented by floating-point values.  In order to remain consistent,
- * only use these methods to create, set, and get the value of
- * integer decision variables.
+ * {@link #newInt(int, int)} or {@link #newBinaryInt(int, int)}.  The former
+ * represents integers as floating-point values while the latter uses binary
+ * strings.  Both representations are accessed using {@link #getInt(Variable)}
+ * and {@link #setInt(Variable, int)} methods.
  * <p>
  * This class also provides methods for converting between {@link RealVariable}
  * and {@link BinaryVariable} in both binary and gray code formats.
@@ -60,6 +59,11 @@ public class EncodingUtils {
 	 * The error message shown when the decision variable is not real-valued.
 	 */
 	private static final String NOT_REAL = "not a real variable";
+	
+	/**
+	 * The error message shown when the decision variable is not integer-valued.
+	 */
+	private static final String NOT_INT = "not an integer variable";
 	
 	/**
 	 * The error message shown when the decision variable is not a permutation.
@@ -221,7 +225,8 @@ public class EncodingUtils {
 	
 	/**
 	 * Returns a new integer-valued decision variable bounded within the
-	 * specified range.
+	 * specified range.  The integer value is encoded using a
+	 * {@link RealVariable}.
 	 * 
 	 * @param lowerBound the lower bound of the integer value
 	 * @param upperBound the upper bound of the integer value
@@ -231,6 +236,21 @@ public class EncodingUtils {
 	public static RealVariable newInt(int lowerBound, int upperBound) {
 		return new RealVariable(lowerBound, Math.nextAfter(
 				(double)(upperBound+1), Double.NEGATIVE_INFINITY));
+	}
+	
+	/**
+	 * Returns a new integer-valued decision variable bounded within the
+	 * specified range.  The integer value is encoded using a
+	 * {@link BinaryVariable}.
+	 * 
+	 * @param lowerBound the lower bound of the integer value
+	 * @param upperBound the upper bound of the integer value
+	 * @return a new integer-valued decision variable bounded within the
+	 *         specified range
+	 */
+	public static BinaryIntegerVariable newBinaryInt(int lowerBound,
+			int upperBound) {
+		return new BinaryIntegerVariable(lowerBound, upperBound);
 	}
 	
 	/**
@@ -273,8 +293,6 @@ public class EncodingUtils {
 	public static double getReal(Variable variable) {
 		if (variable instanceof RealVariable) {
 			return ((RealVariable)variable).getValue();
-		} else if (variable instanceof BinaryIntegerVariable) {
-			return ((BinaryIntegerVariable)variable).getValue();
 		} else {
 			throw new IllegalArgumentException(NOT_REAL);
 		}
@@ -289,7 +307,13 @@ public class EncodingUtils {
 	 *         {@link RealVariable}
 	 */
 	public static int getInt(Variable variable) {
-		return (int)Math.floor(getReal(variable));
+		if (variable instanceof RealVariable) {
+			return (int)Math.floor(((RealVariable)variable).getValue());
+		} else if (variable instanceof BinaryIntegerVariable) {
+			return (int)Math.floor(((BinaryIntegerVariable)variable).getValue());
+		} else {
+			throw new IllegalArgumentException(NOT_INT);
+		}
 	}
 	
 	/**
@@ -525,7 +549,13 @@ public class EncodingUtils {
 	 *         ({@code value < getLowerBound()) || (value > getUpperBound()})
 	 */
 	public static void setInt(Variable variable, int value) {
-		setReal(variable, value);
+		if (variable instanceof RealVariable) {
+			((RealVariable)variable).setValue(value);
+		} else if (variable instanceof BinaryIntegerVariable) {
+			((BinaryIntegerVariable)variable).setValue(value);
+		} else {
+			throw new IllegalArgumentException(NOT_INT);
+		}
 	}
 	
 	/**

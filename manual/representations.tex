@@ -53,8 +53,9 @@ public void evaluate(Solution solution) {
 The \java{EncodingUtils} class handles all the type checking and casting needed to ensure variables are read properly.  Attempting to read or write a decision variable that is not the correct type will result in an \java{IllegalArgumentException}.  If you see this exception, check all your decision variables to ensure they are the types you expect.   
 
 \section{Integers}
+Integer-valued decision variables can either be represented using real values or a binary string.  The choice of representation affects which variation operators are available.  Both options are detailed below.
 
-Integer-valued decision variables can be constructed in a similar way as floating-point values.  For instance, below we construct the solution using calls to \java{EncodingUtils.newInt(lowerBound, upperBound)}.  As we saw with floating-point values, we must specify the lower and upper bounds of the decision variables.
+First, integer-valued decision variables can be encoded using real-valued variables.  For instance, below we construct the solution using calls to \java{EncodingUtils.newInt(lowerBound, upperBound)}.  As with floating-point values, we must specify the lower and upper bounds of the decision variables.
 \begin{lstlisting}[language=Java]
 public Solution newSolution() {
     Solution solution = new Solution(3, 2);
@@ -65,7 +66,9 @@ public Solution newSolution() {
 }
 \end{lstlisting}
 
-Similarly, the values stored in the decision variables can be read using the \java{EncodingUtils.getInt(...)} method, as demonstrated below.
+Second, the integer value can be encoded as a binary string.  It is recommended that \java{upperBound-lowerBound} is a power of 2.  Otherwise, the domain of the underlying binary string is larger than the integer representation, and some integer values will occur more frequently.  This representation is created using \java{EncodingUtils.newBinaryint(lowerBound, upperBound} and manipulated using the \java{getInt} and \java{setInt} methods.  Note that the binary string uses gray coding by default.  Gray coding is often used since it ensures that two successive integer values differ only by one bit.
+
+Regardless of the underlying representation, integer values are accessed using the \java{EncodingUtils.getInt(...)} method, as demonstrated below.  We strongly encourage using \java{getInt} to read the value of integers, as it ensures the correct translation between the underlying representation and the integer value.
 \begin{lstlisting}[language=Java]
 public void evaluate(Solution solution) {
     int x = EncodingUtils.getInt(solution.getVariable(0));
@@ -78,6 +81,7 @@ public void evaluate(Solution solution) {
 \end{lstlisting}
 
 And as we saw with floating-point values, if the solution is exclusively represented by integer-valued decision variables, we can likewise extract all values with a single call to \java{EncodingUtils.getInt(...)}.  Note again that this method is passed the entire solution instead of the individual decision variables as before.
+
 \begin{lstlisting}[language=Java]
 public void evaluate(Solution solution) {
     int[] x = EncodingUtils.getInt(solution);
