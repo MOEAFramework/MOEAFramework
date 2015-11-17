@@ -32,7 +32,7 @@ import org.moeaframework.core.Problem;
  * To provide a custom {@code ProblemProvider}, first extend this class and
  * implement the two abstract methods. Next, build a JAR file containing the
  * custom provider. Within the JAR file, create the file
- * {@code META-INF/services/org.moeaframework.problem.ProblemProvider}
+ * {@code META-INF/services/org.moeaframework.core.spi.ProblemProvider}
  * containing on a single line the class name of the custom provider. Lastly,
  * add this JAR file to the classpath. Once these steps are completed, the
  * problem(s) are now accessible via the

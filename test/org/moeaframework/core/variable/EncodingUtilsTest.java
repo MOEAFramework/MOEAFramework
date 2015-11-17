@@ -255,6 +255,17 @@ public class EncodingUtilsTest {
 	}
 	
 	@Test
+	public void testBinaryIntEncoding() {
+		Variable variable = EncodingUtils.newBinaryInt(3, 8);
+		
+		EncodingUtils.setInt(variable, 5);
+		Assert.assertEquals(5, EncodingUtils.getInt(variable));
+		
+		EncodingUtils.setInt(variable, 8);
+		Assert.assertEquals(8, EncodingUtils.getInt(variable));
+	}
+	
+	@Test
 	public void testBinaryEncoding() {
 		Variable variable = EncodingUtils.newBinary(3);
 		

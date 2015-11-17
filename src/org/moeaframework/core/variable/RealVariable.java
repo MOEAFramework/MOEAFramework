@@ -21,6 +21,7 @@ import java.text.MessageFormat;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Variable;
 
 /**
@@ -158,6 +159,11 @@ public class RealVariable implements Variable {
 					.append(value, rhs.value)
 					.isEquals();
 		}
+	}
+
+	@Override
+	public void randomize() {
+		setValue(PRNG.nextDouble(lowerBound, upperBound));
 	}
 
 }
