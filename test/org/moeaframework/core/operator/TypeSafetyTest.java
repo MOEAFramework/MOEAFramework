@@ -39,6 +39,11 @@ public class TypeSafetyTest {
 			return new NewVariable();
 		}
 
+		@Override
+		public void randomize() {
+			throw new UnsupportedOperationException();
+		}
+
 	}
 
 	/**

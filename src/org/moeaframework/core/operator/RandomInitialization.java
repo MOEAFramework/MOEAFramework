@@ -18,17 +18,9 @@
 package org.moeaframework.core.operator;
 
 import org.moeaframework.core.Initialization;
-import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variable;
-import org.moeaframework.core.variable.BinaryVariable;
-import org.moeaframework.core.variable.Grammar;
-import org.moeaframework.core.variable.Permutation;
-import org.moeaframework.core.variable.Program;
-import org.moeaframework.core.variable.RealVariable;
-import org.moeaframework.util.tree.Node;
-import org.moeaframework.util.tree.Rules;
 
 /**
  * Initializes all built-in decision variables randomly. The
@@ -67,8 +59,7 @@ public class RandomInitialization implements Initialization {
 			Solution solution = problem.newSolution();
 
 			for (int j = 0; j < solution.getNumberOfVariables(); j++) {
-				Variable variable = solution.getVariable(j);
-				initialize(variable);
+				solution.getVariable(j).randomize();
 			}
 
 			initialPopulation[i] = solution;
@@ -82,58 +73,11 @@ public class RandomInitialization implements Initialization {
 	 * supports all built-in types, and can be extended to support custom types.
 	 * 
 	 * @param variable the variable to be initialized
+	 * @deprecated Call variable.randomize() instead
 	 */
+	@Deprecated
 	protected void initialize(Variable variable) {
-		if (variable instanceof RealVariable) {
-			RealVariable real = (RealVariable)variable;
-			real.setValue(PRNG.nextDouble(real.getLowerBound(),
-					real.getUpperBound()));
-		} else if (variable instanceof BinaryVariable) {
-			BinaryVariable binary = (BinaryVariable)variable;
-
-			for (int i = 0; i < binary.getNumberOfBits(); i++) {
-				binary.set(i, PRNG.nextBoolean());
-			}
-		} else if (variable instanceof Permutation) {
-			Permutation permutation = (Permutation)variable;
-
-			int[] array = permutation.toArray();
-			PRNG.shuffle(array);
-			permutation.fromArray(array);
-		} else if (variable instanceof Grammar) {
-			Grammar grammar = (Grammar)variable;
-
-			int[] array = grammar.toArray();
-			for (int i = 0; i < array.length; i++) {
-				array[i] = PRNG.nextInt(grammar.getMaximumValue());
-			}
-			grammar.fromArray(array);
-		} else if (variable instanceof Program) {
-			// ramped half-and-half initialization
-			Program program = (Program)variable;
-			Rules rules = program.getRules();
-			int depth = PRNG.nextInt(2, rules.getMaxInitializationDepth());
-			boolean isFull = PRNG.nextBoolean();
-			Node root = null;
-			
-			if (isFull) {
-				if (rules.getScaffolding() == null) {
-					root = rules.buildTreeFull(rules.getReturnType(), depth);
-				} else {
-					root = rules.buildTreeFull(rules.getScaffolding(), depth);
-				}
-			} else {
-				if (rules.getScaffolding() == null) {
-					root = rules.buildTreeGrow(rules.getReturnType(), depth);
-				} else {
-					root = rules.buildTreeGrow(rules.getScaffolding(), depth);
-				}
-			}
-			
-			program.setArgument(0, root);
-		} else {
-			System.err.println("can not initialize unknown type");
-		}
+		variable.randomize();
 	}
 
 }

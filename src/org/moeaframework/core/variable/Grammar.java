@@ -19,6 +19,7 @@ package org.moeaframework.core.variable;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Variable;
 import org.moeaframework.util.grammar.ContextFreeGrammar;
 
@@ -256,6 +257,13 @@ public class Grammar implements Variable {
 			Grammar rhs = (Grammar)obj;
 			
 			return new EqualsBuilder().append(codon, rhs.codon).isEquals();
+		}
+	}
+
+	@Override
+	public void randomize() {
+		for (int i = 0; i < codon.length; i++) {
+			codon[i] = PRNG.nextInt(getMaximumValue());
 		}
 	}
 

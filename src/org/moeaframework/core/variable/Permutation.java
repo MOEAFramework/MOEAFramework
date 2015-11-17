@@ -19,6 +19,7 @@ package org.moeaframework.core.variable;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Variable;
 
 /**
@@ -202,6 +203,11 @@ public class Permutation implements Variable {
 			return new EqualsBuilder().append(permutation, rhs.permutation)
 					.isEquals();
 		}
+	}
+
+	@Override
+	public void randomize() {
+		PRNG.shuffle(permutation);
 	}
 
 }

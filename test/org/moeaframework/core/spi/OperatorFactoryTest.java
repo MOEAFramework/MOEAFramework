@@ -179,6 +179,11 @@ public class OperatorFactoryTest {
 						throw new UnsupportedOperationException();
 					}
 
+					@Override
+					public void randomize() {
+						throw new UnsupportedOperationException();
+					}
+
 				});
 				
 				return solution;

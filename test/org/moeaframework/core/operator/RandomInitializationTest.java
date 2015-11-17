@@ -58,6 +58,11 @@ public class RandomInitializationTest {
 						throw new UnsupportedOperationException();
 					}
 
+					@Override
+					public void randomize() {
+						// do nothing
+					}
+
 				});
 				return solution;
 			}

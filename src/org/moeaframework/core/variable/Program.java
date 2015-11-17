@@ -17,6 +17,7 @@
  */
 package org.moeaframework.core.variable;
 
+import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Variable;
 import org.moeaframework.util.tree.Environment;
 import org.moeaframework.util.tree.Node;
@@ -71,6 +72,33 @@ public class Program extends Node implements Variable {
 	@Override
 	public Object evaluate(Environment environment) {
 		return getArgument(0).evaluate(environment);
+	}
+
+	/**
+	 * Initializes the program tree using ramped half-and-half initialization.
+	 */
+	@Override
+	public void randomize() {
+		Rules rules = getRules();
+		int depth = PRNG.nextInt(2, rules.getMaxInitializationDepth());
+		boolean isFull = PRNG.nextBoolean();
+		Node root = null;
+		
+		if (isFull) {
+			if (rules.getScaffolding() == null) {
+				root = rules.buildTreeFull(rules.getReturnType(), depth);
+			} else {
+				root = rules.buildTreeFull(rules.getScaffolding(), depth);
+			}
+		} else {
+			if (rules.getScaffolding() == null) {
+				root = rules.buildTreeGrow(rules.getReturnType(), depth);
+			} else {
+				root = rules.buildTreeGrow(rules.getScaffolding(), depth);
+			}
+		}
+		
+		setArgument(0, root);
 	}
 
 }

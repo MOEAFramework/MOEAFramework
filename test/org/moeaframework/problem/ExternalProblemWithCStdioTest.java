@@ -221,7 +221,12 @@ public class ExternalProblemWithCStdioTest {
 
 			@Override
 			public Variable copy() {
-				return this;
+				throw new UnsupportedOperationException();
+			}
+
+			@Override
+			public void randomize() {
+				throw new UnsupportedOperationException();
 			}
 			
 		});
