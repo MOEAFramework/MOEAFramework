@@ -33,8 +33,8 @@ public class NondominatedPopulation extends Population {
 	
 	/**
 	 * Specifies how duplicate solutions are handled.  Duplicate solutions are
-	 * those whose Euclidean distance, either in decision or objective space,
-	 * is smaller than {@value Settings.EPSILON}.
+	 * those whose Euclidean distance in objective space are less than
+	 * {@value Settings#EPS}.
 	 */
 	public static enum DuplicateMode {
 		
@@ -230,7 +230,7 @@ public class NondominatedPopulation extends Population {
 	 * @param s2 the second solution
 	 * @return the distance between the two solutions in objective space
 	 */
-	protected double distance(Solution s1, Solution s2) {
+	protected static double distance(Solution s1, Solution s2) {
 		double distance = 0.0;
 
 		for (int i = 0; i < s1.getNumberOfObjectives(); i++) {

@@ -17,7 +17,7 @@
  */
 package org.moeaframework.core;
 
-import static org.moeaframework.core.FastNondominatedSorting.RANK_ATTRIBUTE;
+import static org.moeaframework.core.NondominatedSorting.RANK_ATTRIBUTE;
 
 import java.util.Comparator;
 import java.util.Iterator;
@@ -27,6 +27,7 @@ import org.moeaframework.core.comparator.DominanceComparator;
 import org.moeaframework.core.comparator.NondominatedSortingComparator;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
 import org.moeaframework.core.comparator.RankComparator;
+import org.moeaframework.util.Timing;
 
 /**
  * Population that maintains the {@code rank} and {@code crowdingDistance}
@@ -52,7 +53,7 @@ public class NondominatedSortingPopulation extends Population {
 	/**
 	 * The fast non-dominated sorting implementation.
 	 */
-	private final FastNondominatedSorting fastNondominatedSorting;
+	private final NondominatedSorting nondominatedSorting;
 
 	/**
 	 * Constructs an empty population that maintains the {@code rank} and
@@ -72,7 +73,7 @@ public class NondominatedSortingPopulation extends Population {
 		super();
 
 		modified = false;
-		fastNondominatedSorting = new FastNondominatedSorting(comparator);
+		nondominatedSorting = new FastNondominatedSorting(comparator);
 	}
 
 	/**
@@ -210,7 +211,7 @@ public class NondominatedSortingPopulation extends Population {
 		
 		//prune front until correct size
 		while (size() + front.size() > size) {
-			fastNondominatedSorting.updateCrowdingDistance(front);
+			nondominatedSorting.updateCrowdingDistance(front);
 			front.truncate(front.size()-1, new CrowdingComparator());
 		}
 		
@@ -227,7 +228,7 @@ public class NondominatedSortingPopulation extends Population {
 	 */
 	public void update() {
 		modified = false;
-		fastNondominatedSorting.evaluate(this);
+		nondominatedSorting.evaluate(this);
 	}
 
 }
