@@ -13,8 +13,7 @@ Framework.
       - ProblemFactory.getInstance().addProvider(...)
       
   * Fixes bug in MOEA/D-DRA's update utility calculation (this was a bug in the
-    official MOEA/D-DRA implementation that has since been corrected).  Thanks
-    to @abdulhameedpk for reporting this bug.
+    official MOEA/D-DRA implementation that has since been corrected).
     
   * Like JMetal, the generational distance and inverted generational distance
     calculations use the mean square distance.  In the literature, however,
@@ -34,7 +33,14 @@ Framework.
     
       org.moeaframework.core.duplicate_mode = ALLOW_DUPLICATE_OBJECTIVES
       
-    Thanks to @Nozo for this suggestion.
+  * Fixes bug in fast non-dominated sorting where duplicate extreme solutions
+    were assigned crowding distances of infinity.  As a result, the truncate /
+    prune operator would remove other non-dominated solutions before the
+    duplicate solutions.  The behavior now assigns duplicate solutions a
+    crowding distance of 0, causing the truncate / prune operator to remove
+    duplicates first.
+    
+  * Thanks to @abdulhameedpk and @Nozo for reporting several of these issue.
 
 
 ----------------------------

@@ -19,6 +19,7 @@ package org.moeaframework.core;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.moeaframework.core.comparator.DominanceComparator;
 import org.moeaframework.core.comparator.ObjectiveComparator;
 
@@ -126,8 +127,9 @@ public class FastNondominatedSorting extends NondominatedSorting {
 				boolean isDuplicate = false;
 				
 				for (int j = 0; j < i; j++) {
-					if (duplicateChecks[i][j]) {
+					if (duplicateChecks[currentFront.get(i)][currentFront.get(j)]) {
 						isDuplicate = true;
+						break;
 					}
 				}
 				
