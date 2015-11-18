@@ -94,6 +94,13 @@ public class Settings {
 			"core.indicator.igd_power";
 	
 	/**
+	 * The property key to indicate that fast non-dominated sorting should be
+	 * used.
+	 */
+	public static final String KEY_FAST_NONDOMINATED_SORTING = KEY_PREFIX +
+			"core.fast_nondominated_sorting";
+	
+	/**
 	 * The property key for the continuity correction flag.
 	 */
 	public static final String KEY_CONTINUITY_CORRECTION = KEY_PREFIX +
@@ -290,6 +297,19 @@ public class Settings {
 	 */
 	public static double getIGDPower() {
 		return PROPERTIES.getDouble(KEY_IGD_POWER, 1.0);
+	}
+	
+	/**
+	 * Returns {@code true} if fast non-dominated sorting should be used;
+	 * or {@code false} if the naive non-dominated sorting implementation is
+	 * preferred.  The default is {@code true}.
+	 * 
+	 * @return {@code true} if fast non-dominated sorting should be used;
+	 *         or {@code false} if the naive non-dominated sorting
+	 *         implementation is preferred
+	 */
+	public static boolean useFastNondominatedSorting() {
+		return PROPERTIES.getBoolean(KEY_FAST_NONDOMINATED_SORTING, true);
 	}
 	
 	/**

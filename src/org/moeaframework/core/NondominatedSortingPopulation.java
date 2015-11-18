@@ -27,12 +27,11 @@ import org.moeaframework.core.comparator.DominanceComparator;
 import org.moeaframework.core.comparator.NondominatedSortingComparator;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
 import org.moeaframework.core.comparator.RankComparator;
-import org.moeaframework.util.Timing;
 
 /**
  * Population that maintains the {@code rank} and {@code crowdingDistance}
  * attributes for its solutions by invoking
- * {@link FastNondominatedSorting#evaluate(Population)}. This population tracks
+ * {@link NondominatedSorting#evaluate(Population)}. This population tracks
  * modifications and performs fast non-dominated sorting only when required.
  * Only changes made to this population can be tracked; changes made directly
  * to the contained solutions will not be detected.  Therefore, it may be
@@ -71,9 +70,13 @@ public class NondominatedSortingPopulation extends Population {
 	 */
 	public NondominatedSortingPopulation(DominanceComparator comparator) {
 		super();
-
 		modified = false;
-		nondominatedSorting = new FastNondominatedSorting(comparator);
+		
+		if (Settings.useFastNondominatedSorting()) {
+			nondominatedSorting = new FastNondominatedSorting(comparator);
+		} else {
+			nondominatedSorting = new NondominatedSorting(comparator);
+		}
 	}
 
 	/**
