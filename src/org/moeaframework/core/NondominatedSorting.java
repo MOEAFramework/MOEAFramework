@@ -131,8 +131,6 @@ public class NondominatedSorting {
 	 * @param front the population whose solutions are to be evaluated
 	 */
 	public void updateCrowdingDistance(Population front) {
-		int n = front.size();
-		
 		// initially assign all crowding distances of 0.0
 		for (Solution solution : front) {
 			solution.setAttribute(CROWDING_ATTRIBUTE, 0.0);
@@ -140,14 +138,28 @@ public class NondominatedSorting {
 		
 		// remove any duplicate solutions, the duplicate solutions will retain
 		// the crowding distance of 0.0
-		NondominatedPopulation uniqueFront = new NondominatedPopulation(
-				DuplicateMode.NO_DUPLICATES);
+		Population uniqueFront = new Population();
 		
-		uniqueFront.addAll(front);
-		n = uniqueFront.size();
+		for (Solution s1 : front) {
+			boolean isDuplicate = false;
+			
+			for (Solution s2 : uniqueFront) {
+				if (NondominatedPopulation.distance(s1, s2) < Settings.EPS) {
+					isDuplicate = true;
+					break;
+				}
+			}
+			
+			if (!isDuplicate) {
+				uniqueFront.add(s1);
+			}
+		}
+		
 		front = uniqueFront;
 
 		// then compute the crowding distance for the unique solutions
+		int n = front.size();
+		
 		if (n < 3) {
 			for (Solution solution : front) {
 				solution.setAttribute(CROWDING_ATTRIBUTE,
@@ -155,10 +167,6 @@ public class NondominatedSorting {
 			}
 		} else {
 			int numberOfObjectives = front.get(0).getNumberOfObjectives();
-
-			for (Solution solution : front) {
-				solution.setAttribute(CROWDING_ATTRIBUTE, 0.0);
-			}
 
 			for (int i = 0; i < numberOfObjectives; i++) {
 				front.sort(new ObjectiveComparator(i));

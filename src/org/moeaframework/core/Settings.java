@@ -302,14 +302,16 @@ public class Settings {
 	/**
 	 * Returns {@code true} if fast non-dominated sorting should be used;
 	 * or {@code false} if the naive non-dominated sorting implementation is
-	 * preferred.  The default is {@code true}.
+	 * preferred.  The default is {@code false} since while the fast version
+	 * has better worst-case time complexity, the naive version tends to run
+	 * faster except for a small number of edge cases.
 	 * 
 	 * @return {@code true} if fast non-dominated sorting should be used;
 	 *         or {@code false} if the naive non-dominated sorting
 	 *         implementation is preferred
 	 */
 	public static boolean useFastNondominatedSorting() {
-		return PROPERTIES.getBoolean(KEY_FAST_NONDOMINATED_SORTING, true);
+		return PROPERTIES.getBoolean(KEY_FAST_NONDOMINATED_SORTING, false);
 	}
 	
 	/**

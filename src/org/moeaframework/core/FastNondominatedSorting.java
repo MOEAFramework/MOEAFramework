@@ -21,13 +21,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.moeaframework.core.comparator.DominanceComparator;
-import org.moeaframework.core.comparator.ObjectiveComparator;
 
 /**
  * Fast non-dominated sorting algorithm for dominance depth ranking. Assigns the
  * {@code rank} and {@code crowdingDistance} attributes to solutions. Solutions
  * of rank 0 belong to the Pareto non-dominated front.  Requires at worst
- * O(MN^2) operations instead of O(MN^3) required by a naive implementation.
+ * O(MN^2) operations instead of O(MN^3) required by a naive implementation of
+ * {@link NondominatedSorting}, but tends to run slower than the naive
+ * implementation except on edge cases (e.g., for N solutions there are N
+ * fronts).
  * <p>
  * [1] does not discuss how to handle duplicate solutions.  A straightforward
  * interpretation is that duplicate solutions should have the worst crowding
@@ -65,7 +67,6 @@ public class FastNondominatedSorting extends NondominatedSorting {
 		
 		// precompute the dominance relations
 		int[][] dominanceChecks = new int[N][N];
-		boolean[][] duplicateChecks = new boolean[N][N];
 		
 		for (int i = 0; i < N; i++) {
 			Solution si = population.get(i);
@@ -76,9 +77,6 @@ public class FastNondominatedSorting extends NondominatedSorting {
 					
 					dominanceChecks[i][j] = comparator.compare(si, sj);
 					dominanceChecks[j][i] = -dominanceChecks[i][j];
-					
-					duplicateChecks[i][j] = duplicateChecks[j][i] = 
-							NondominatedPopulation.distance(si, sj) < Settings.EPS;
 				}
 			}
 		}
@@ -117,27 +115,11 @@ public class FastNondominatedSorting extends NondominatedSorting {
 		
 		while (!currentFront.isEmpty()) {
 			List<Integer> nextFront = new ArrayList<Integer>();
-			Population uniqueSolutions = new Population();
+			Population solutionsInFront = new Population();
 			
 			for (int i = 0; i < currentFront.size(); i++) {
 				Solution solution = population.get(currentFront.get(i));
 				solution.setAttribute(RANK_ATTRIBUTE, rank);
-				
-				// restrict crowding calculation to unique solutions only
-				boolean isDuplicate = false;
-				
-				for (int j = 0; j < i; j++) {
-					if (duplicateChecks[currentFront.get(i)][currentFront.get(j)]) {
-						isDuplicate = true;
-						break;
-					}
-				}
-				
-				if (isDuplicate) {
-					solution.setAttribute(CROWDING_ATTRIBUTE, 0.0);
-				} else {
-					uniqueSolutions.add(solution);
-				}
 				
 				// update the dominated counts as compute next front
 				for (Integer j : dominatesList.get(currentFront.get(i))) {
@@ -147,51 +129,14 @@ public class FastNondominatedSorting extends NondominatedSorting {
 						nextFront.add(j);
 					}
 				}
+				
+				solutionsInFront.add(solution);
 			}
 			
-			updateCrowdingDistance(uniqueSolutions);
+			updateCrowdingDistance(solutionsInFront);
 			
 			rank += 1;
 			currentFront = nextFront;
-		}
-	}
-
-	@Override
-	public void updateCrowdingDistance(Population front) {
-		int n = front.size();
-
-		if (n < 3) {
-			for (Solution solution : front) {
-				solution.setAttribute(CROWDING_ATTRIBUTE,
-						Double.POSITIVE_INFINITY);
-			}
-		} else {
-			int numberOfObjectives = front.get(0).getNumberOfObjectives();
-
-			for (Solution solution : front) {
-				solution.setAttribute(CROWDING_ATTRIBUTE, 0.0);
-			}
-
-			for (int i = 0; i < numberOfObjectives; i++) {
-				front.sort(new ObjectiveComparator(i));
-
-				double minObjective = front.get(0).getObjective(i);
-				double maxObjective = front.get(n - 1).getObjective(i);
-
-				front.get(0).setAttribute(CROWDING_ATTRIBUTE,
-						Double.POSITIVE_INFINITY);
-				front.get(n - 1).setAttribute(CROWDING_ATTRIBUTE,
-						Double.POSITIVE_INFINITY);
-
-				for (int j = 1; j < n - 1; j++) {
-					double distance = (Double)front.get(j).getAttribute(
-							CROWDING_ATTRIBUTE);
-					distance += (front.get(j + 1).getObjective(i) - 
-							front.get(j - 1).getObjective(i))
-							/ (maxObjective - minObjective);
-					front.get(j).setAttribute(CROWDING_ATTRIBUTE, distance);
-				}
-			}
 		}
 	}
 
