@@ -26,7 +26,8 @@ Its key features includes:
   * Over 1200 test cases to ensure validity
 
 Since its initial release in 2011, the MOEA Framework has been downloaded over
-23,000 times.  Please contact us if you are interested in contributing!
+25,000 times, averaging about 920 downloads per month this past year.  Please 
+contact us if you are interested in contributing!
 
 ### Download ###
 
@@ -37,7 +38,7 @@ Maven users can add our dependency to their `pom.xml` file:
     <dependency>
         <groupId>org.moeaframework</groupId>
         <artifactId>moeaframework</artifactId>
-        <version>2.6</version>
+        <version>2.7</version>
     </dependency>
 
 ### License ###
