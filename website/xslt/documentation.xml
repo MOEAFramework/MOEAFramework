@@ -50,15 +50,15 @@
       <div class="fix"></div>
     </li>
     <li>
-      <a href="quality.html">
-        <img src="images/html.png" class="float-left" width="22" height="22" alt="View the code quality metrics for the latest release" />
-        <strong>Code Quality Report (HTML)</strong>
+      <a href="http://keyboardscientist.weebly.com">
+        <img src="images/html.png" class="float-left" width="22" height="22" alt="Blog" />
+        <strong>Blog</strong>
       </a>
       <br />
       <span>
-        Learn how the developers maintain the correctness, reliability and
-        overall quality of the MOEA Framework.  This report also contains
-        detailed code metrics for the latest release.
+        We are starting a blog that will cover a variety of topics related to using
+        the MOEA Framework along with general programming and scientific tips.  Subscribe
+        to receive notifications of new blog posts.
       </span>
       <div class="fix"></div>
     </li>

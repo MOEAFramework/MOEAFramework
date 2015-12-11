@@ -1,9 +1,9 @@
 This file documents the major changes implemented in each release of the MOEA
 Framework.
 
--------------------
- Version 2.7 (TBD)
--------------------
+---------------------------
+ Version 2.7 (11 Dec 2015)
+---------------------------
 
   * Adds ability to incorporate new problems or algorithms without having to
     use Java's service provider interface (SPI).  Now, providers can be
