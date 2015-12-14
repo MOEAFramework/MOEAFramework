@@ -352,7 +352,7 @@ public class StandardAlgorithms extends AlgorithmProvider {
 		} else if (problem.getNumberOfObjectives() == 1) {
 			divisionsOuter = 100;
 		} else if (problem.getNumberOfObjectives() == 2) {
-			divisionsOuter = 20;
+			divisionsOuter = 99;
 		} else if (problem.getNumberOfObjectives() == 3) {
 			divisionsOuter = 12;
 		} else if (problem.getNumberOfObjectives() == 4) {
@@ -839,7 +839,7 @@ public class StandardAlgorithms extends AlgorithmProvider {
 		} else if (problem.getNumberOfObjectives() == 1) {
 			divisionsOuter = 100;
 		} else if (problem.getNumberOfObjectives() == 2) {
-			divisionsOuter = 20;
+			divisionsOuter = 99;
 		} else if (problem.getNumberOfObjectives() == 3) {
 			divisionsOuter = 12;
 		} else if (problem.getNumberOfObjectives() == 4) {
