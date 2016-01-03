@@ -17,6 +17,9 @@
  */
 package org.moeaframework.analysis.collector;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.Serializable;
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -122,6 +125,30 @@ public class Accumulator implements Serializable {
 		}
 	}
 	
+	/**
+	 * Saves the contests of this accumulator to a CSV file.
+	 * 
+	 * @param file the file to create
+	 * @throws IOException if an I/O error occurred
+	 */
+	public void saveCSV(File file) throws IOException {
+		FileWriter writer = null;
+		
+		try {
+			writer = new FileWriter(file);
+			writer.write(toCSV());
+		} finally {
+			if (writer != null) {
+				writer.close();
+			}
+		}
+	}
+	
+	/**
+	 * Returns the contents of this accumulator as a string in CSV format.
+	 * 
+	 * @return the contents of this accumulator as a string in CSV format
+	 */
 	public String toCSV() {
 		StringBuilder sb = new StringBuilder();
 		boolean firstValue = true;
