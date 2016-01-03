@@ -21,6 +21,7 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.moeaframework.core.Settings;
 
 public class AccumulatorTest {
 	
@@ -62,6 +63,23 @@ public class AccumulatorTest {
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testGetInvalidIndex() {
 		accumulator.get("test", 2);
+	}
+	
+	@Test
+	public void testToCSV() {
+		accumulator = new Accumulator();
+		accumulator.add("NFE", 100);
+		accumulator.add("NFE", 200);
+		accumulator.add("es,cap\"e", 0);
+		accumulator.add("es,cap\"e", 1);
+		
+		String expected = "NFE, \"es,cap\"\"e\"" +
+				Settings.NEW_LINE +
+				"100, 0" +
+				Settings.NEW_LINE +
+				"200, 1";
+		
+		Assert.assertEquals(expected, accumulator.toCSV());
 	}
 
 }
