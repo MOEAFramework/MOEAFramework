@@ -22,6 +22,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Paint;
+import java.awt.RenderingHints;
 import java.awt.geom.Rectangle2D;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -955,7 +956,12 @@ public class Plot {
 		}
 		// we suppress shadow generation, because SVG is a vector format and
 		// the shadow effect is applied via bitmap effects...
-		g2.setRenderingHint(JFreeChart.KEY_SUPPRESS_SHADOW_GENERATION, true);
+		g2.setRenderingHint(new RenderingHints.Key(0) {
+	        @Override
+	        public boolean isCompatibleValue(Object val) {
+	            return val instanceof Boolean;
+	        }
+	    }, true);
 		String svg = null;
 		Rectangle2D drawArea = new Rectangle2D.Double(0, 0, width, height);
 		this.chart.draw(g2, drawArea);
