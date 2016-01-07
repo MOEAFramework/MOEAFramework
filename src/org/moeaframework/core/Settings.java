@@ -181,6 +181,13 @@ public class Settings {
 			"analysis.sensitivity.cleanup";
 	
 	/**
+	 * The property key for listing the allowed packages that can be
+	 * instrumented.
+	 */
+	public static final String KEY_ALLOWED_PACKAGES = KEY_PREFIX +
+			"allowed_packages";
+	
+	/**
 	 * Loads the properties.
 	 */
 	static {
@@ -532,6 +539,16 @@ public class Settings {
 	 */
 	public static String getCleanupStrategy() {
 		return PROPERTIES.getString(KEY_CLEANUP_STRATEGY, "error");
+	}
+	
+	/**
+	 * Returns the allowed packages that can be instrumented.  By default, only
+	 * packages in "org.moeaframework" can be instrumented.
+	 * 
+	 * @return the allowed packages that can be instrumented
+	 */
+	public static String[] getAllowedPackages() {
+		return PROPERTIES.getStringArray(KEY_ALLOWED_PACKAGES, new String[0]);
 	}
 	
 	/**

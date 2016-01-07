@@ -457,8 +457,10 @@ public class Plot {
 		List<Number> ys = new ArrayList<Number>();
 		
 		for (Solution solution : population) {
-			xs.add(solution.getObjective(x));
-			ys.add(solution.getObjective(y));
+			if (!solution.violatesConstraints()) {
+				xs.add(solution.getObjective(x));
+				ys.add(solution.getObjective(y));
+			}
 		}
 		
 		scatter(label, xs, ys);
@@ -951,9 +953,11 @@ public class Plot {
 	 */
 	private String generateSVG(int width, int height) {
 		Graphics2D g2 = createSVGGraphics2D(width, height);
+		
 		if (g2 == null) {
 			throw new IllegalStateException("JFreeSVG library is not present.");
 		}
+		
 		// we suppress shadow generation, because SVG is a vector format and
 		// the shadow effect is applied via bitmap effects...
 		g2.setRenderingHint(new RenderingHints.Key(0) {
@@ -962,9 +966,11 @@ public class Plot {
 	            return val instanceof Boolean;
 	        }
 	    }, true);
+		
 		String svg = null;
 		Rectangle2D drawArea = new Rectangle2D.Double(0, 0, width, height);
-		this.chart.draw(g2, drawArea);
+		chart.draw(g2, drawArea);
+		
 		try {
 			Method m = g2.getClass().getMethod("getSVGElement");
 			svg = (String) m.invoke(g2);
@@ -979,6 +985,7 @@ public class Plot {
 		} catch (InvocationTargetException e) {
 			// null will be returned
 		}
+		
 		return svg;
 	}
 
@@ -989,7 +996,7 @@ public class Plot {
 		try {
 			Class<?> svgGraphics2d = Class.forName("org.jfree.graphics2d.svg.SVGGraphics2D");
 			Constructor<?> ctor = svgGraphics2d.getConstructor(int.class, int.class);
-			return (Graphics2D) ctor.newInstance(w, h);
+			return (Graphics2D)ctor.newInstance(w, h);
 		} catch (ClassNotFoundException ex) {
 			return null;
 		} catch (NoSuchMethodException ex) {
@@ -1029,8 +1036,8 @@ public class Plot {
 	/**
 	 * Displays the chart in a standalone window.
 	 */
-	public void show() {
-		show(800, 600);
+	public JFrame show() {
+		return show(800, 600);
 	}
 	
 	/**
@@ -1038,8 +1045,9 @@ public class Plot {
 	 * 
 	 * @param width the width of the chart
 	 * @param height the height of the chart
+	 * @return the window that was created
 	 */
-	public void show(int width, int height) {
+	public JFrame show(int width, int height) {
 		JFrame frame = new JFrame();
 		
 		frame.getContentPane().setLayout(new BorderLayout());
@@ -1052,6 +1060,8 @@ public class Plot {
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.setTitle("MOEA Framework Plot");
 		frame.setVisible(true);
+		
+		return frame;
 	}
 
 }

@@ -21,6 +21,7 @@ import java.io.File;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -41,6 +42,7 @@ import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
+import org.moeaframework.core.Settings;
 import org.moeaframework.core.indicator.AdditiveEpsilonIndicator;
 import org.moeaframework.core.indicator.Contribution;
 import org.moeaframework.core.indicator.GenerationalDistance;
@@ -198,6 +200,7 @@ public class Instrumenter extends ProblemBuilder {
 		
 		allowedPackages = new ArrayList<String>();
 		allowedPackages.add("org.moeaframework");
+		allowedPackages.addAll(Arrays.asList(Settings.getAllowedPackages()));
 	}
 	
 	/**
