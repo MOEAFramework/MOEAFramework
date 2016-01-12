@@ -13,10 +13,9 @@
 <h2>Support</h2>
 
 <p>
-  We recently transitioned to hosting the MOEA Framework source code on
-  <a href="https://github.com/MOEAFramework/MOEAFramework/">Github</a>.  As a
-  result, we will no longer be using the Sourceforge trackers.  Please use the
-  new links below to report issues.
+  The source code and issue tracker for the MOEA Framework is available on
+  <a href="https://github.com/MOEAFramework/MOEAFramework/">Github</a>.  Please
+  use the links below to report issues.
 </p>
 
 <div class="section">

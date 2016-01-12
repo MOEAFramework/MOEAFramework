@@ -70,6 +70,7 @@
       </span>
       <div class="fix"></div>
     </li>
+    <!--
     <li>
       <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v%VERSION%/MOEAFramework-%VERSION%-Manual.pdf"
       	  onClick="_gaq.push(['_trackEvent', 'Downloads', 'Manual', '%VERSION%']);">
@@ -84,6 +85,7 @@
       </span>
       <div class="fix"></div>
     </li>
+    -->
   </ul>
 </div>
 

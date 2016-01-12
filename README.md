@@ -26,7 +26,7 @@ Its key features includes:
   * Over 1200 test cases to ensure validity
 
 Since its initial release in 2011, the MOEA Framework has been downloaded over
-25,000 times, averaging about 920 downloads per month this past year.  Please 
+27,000 times, averaging about 920 downloads per month this past year.  Please 
 contact us if you are interested in contributing!
 
 ### Download ###

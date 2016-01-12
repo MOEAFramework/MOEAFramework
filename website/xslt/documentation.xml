@@ -13,52 +13,78 @@
 <h2>Documentation</h2>
 
 <p>
-  This page provides links to all available documentation for the MOEA
-  Framework.  If you are encountering problems or have questions not covered
-  in the documentation, please submit a bug report through the
-  <a href="support.html">support</a> page.
+  Check out the <a href="javadoc/index.html">API Specification</a> to view
+  documentation for all classes and methods.  In addition, the following books
+  are recommended to learn more about the MOEA Framework and related subjects.
+  Purchases help fund the continued development and maintenance of this
+  software.  Thank you for your support!
 </p>
 
 <div class="listing">
   <ul>
     <li>
-      <a href="javadoc/index.html">
-        <img src="images/html.png" class="float-left" width="22" height="22" alt="Browse API specification" />
-        <strong>API Specification (HTML)</strong>
+      <a href="http://www.lulu.com/shop/david-hadka/beginners-guide-to-the-moea-framework/ebook/product-22522401.html">
+        <img src="images/beginners.jpg" class="float-left" width="107" height="140"
+        	alt="Purchase the Beginner's Guide to the MOEA Framework" 
+        	style="background: none; border: 1px; padding: 0px;" />
+        <strong style="font-size: 10pt">Beginner's Guide to the MOEA Framework</strong>
       </a>
       <br />
       <span>
-        The API specification details all classes, constructors and methods 
-        provided by the MOEA Framework library.  The API specification is also
-        provided in the compiled binaries distribution inside the javadoc
-        folder.
+        The official beginner's guide to the MOEA Framework, filled
+        with complete code samples to get you started using the MOEA Framework
+        quickly. It covers topics ranging from solving unconstrained and
+        constrained optimization problems, comparing the performance of
+        algorithms, plotting results, developing custom algorithms, integrating
+        your own optimization problems, and more.
+      </span>
+      <br /><br />
+      <span style="font-size: 10pt">
+        <a href="http://www.lulu.com/shop/david-hadka/beginners-guide-to-the-moea-framework/ebook/product-22522401.html" style="text-transform: none"><font color="red">$34.99</font> - Digital Copy (PDF)</a>
+        |
+        <a href="http://www.lulu.com/content/paperback-book/beginners-guide-to-the-moea-framework/18285779" style="text-transform: none"><font color="red">$42.99</font> - Paperback</a>
       </span>
       <div class="fix"></div>
     </li>
     <li>
-      <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v%VERSION%/MOEAFramework-%VERSION%-Manual.pdf"
-      	  onClick="_gaq.push(['_trackEvent', 'Downloads', 'Manual', '%VERSION%']);">
-        <img src="images/pdf.png" class="float-left" width="22" height="22" alt="Download user manual" />
-        <strong>User Manual (PDF)</strong>
+      <a href="http://www.amazon.com/gp/product/1489994602/ref=as_li_tl?ie=UTF8&amp;camp=1789&amp;creative=390957&amp;creativeASIN=1489994602&amp;linkCode=as2&amp;tag=mofr-20&amp;linkId=GBZVOVDT7F2A4EGG">
+        <img src="images/coellocoello.png" class="float-left" width="107" height="140"
+        	alt="Purchase the book Evolutionary Algorithms for Solving Multi-Objective Problems"
+        	style="background: none; border: 1px; padding: 0px;" />
+        <strong style="font-size: 10pt">Evolutionary Algorithms for Solving Multi-Objective Problems</strong>
       </a>
       <br />
       <span>
-        A comprehensive user manual for the MOEA Framework.  This manual walks
-        through various uses of the MOEA Framework in detail, providing
-        step-by-step instructions and troubleshooting advice.
+        Covers the theory and application of multiobjective evolutionary algorithms, including detailed
+        descriptions of many MOEAs, test problems, testing methods, parallelization, and more.  The design
+        of the MOEA Framework is heavily influenced by this book, and is recommended for researchers using
+        the MOEA Framework in their own work.
+      </span>
+      <br /><br />
+      <span style="font-size: 10pt">
+      	<a href="http://www.amazon.com/gp/product/1489994602/ref=as_li_tl?ie=UTF8&amp;camp=1789&amp;creative=390957&amp;creativeASIN=1489994602&amp;linkCode=as2&amp;tag=mofr-20&amp;linkId=GBZVOVDT7F2A4EGG"
+      	   style="text-transform: none"><font color="red">$124.00</font> - Buy now on Amazon!</a>
       </span>
       <div class="fix"></div>
     </li>
     <li>
-      <a href="http://keyboardscientist.weebly.com">
-        <img src="images/html.png" class="float-left" width="22" height="22" alt="Blog" />
-        <strong>Blog</strong>
+      <a href="http://www.amazon.com/gp/product/0071809252/ref=as_li_tl?ie=UTF8&amp;camp=1789&amp;creative=390957&amp;creativeASIN=0071809252&amp;linkCode=as2&amp;tag=mofr-20&amp;linkId=QFZAF6APBOEJ2WVL">
+        <img src="images/javaguide.png" class="float-left" width="107" height="140"
+        	alt="Purchase the book Java: A Beginner's Guide, Sixth Edition"
+        	style="background: none; border: 1px; padding: 0px;" />
+        <strong style="font-size: 10pt">Java: A Beginner's Guide, Sixth Edition</strong>
       </a>
       <br />
       <span>
-        We are starting a blog that will cover a variety of topics related to using
-        the MOEA Framework along with general programming and scientific tips.  Subscribe
-        to receive notifications of new blog posts.
+        This book covers all the basics of Java, including new features introduced in
+        the Java 8. Learn about object-oriented programming, exception handling,
+        I/O, multithreading, generics, lambda expressions, and Swing (GUI
+        programming).
+      </span>
+      <br /><br />
+      <span style="font-size: 10pt">
+      	<a href="http://www.amazon.com/gp/product/0071809252/ref=as_li_tl?ie=UTF8&amp;camp=1789&amp;creative=390957&amp;creativeASIN=0071809252&amp;linkCode=as2&amp;tag=mofr-20&amp;linkId=QFZAF6APBOEJ2WVL"
+      	   style="text-transform: none"><font color="red">$21.36</font> - Buy now on Amazon!</a>
       </span>
       <div class="fix"></div>
     </li>

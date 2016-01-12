@@ -143,17 +143,13 @@
 										</a>
 									</li>
 									<li>
-										<a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v%VERSION%/MOEAFramework-%VERSION%-Manual.pdf"
-											onClick="_gaq.push(['_trackEvent', 'Downloads', 'Manual', '%VERSION%']);">
-											User Manual	
-										</a>
+										<a href="javadoc/index.html">API Specification</a>
 									</li>
 								</ul>
 								<p>
 									<a href="https://github.com/MOEAFramework/MOEAFramework">Visit us on Github</a>!<br />
 									<iframe src="https://ghbtns.com/github-btn.html?user=MOEAFramework&amp;repo=MOEAFramework&amp;type=fork&amp;count=true" frameborder="0" scrolling="0" width="170px" height="20px"></iframe>
 									<iframe src="https://ghbtns.com/github-btn.html?user=MOEAFramework&amp;repo=MOEAFramework&amp;type=star&amp;count=true" frameborder="0" scrolling="0" width="170px" height="20px"></iframe>
-									<!-- Using Maven?  <a href="downloads.html#maven">Add our dependency</a>. -->
 								</p>
 							</div>
 
