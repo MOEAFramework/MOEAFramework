@@ -42,10 +42,10 @@
     <li>Fast, reliable implementations of many state-of-the-art multiobjective evolutionary algorithms</li>
     <li>Extensible with custom algorithms, problems and operators</li>
     <li>Supports master-slave, island-model, and hybrid parallelization</li>
-    <li>Modular design for constructing new optimization algorithms from existing components</li>
+    <li>Tools for building and statistically testing new optimization algorithms</li>
+    <li><a href="support.html">Professional support for businesses</a></li>
     <li>Permissive open source license</li>
-    <li>Fully documented source code</li>
-    <li>Over 1200 test cases to ensure validity</li>
+    <li>Fully documented and tested source code</li>
     <li><a href="features.html">See more...</a></li>
   </ul>
   
