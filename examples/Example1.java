@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 David Hadka
+/* Copyright 2009-2016 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -29,9 +29,9 @@ public class Example1 {
 		//configure and run this experiment
 		NondominatedPopulation result = new Executor()
 				.withProblem("UF1")
-				.withAlgorithm("NSGAII")
-				.withMaxEvaluations(10000)
-				.distributeOnAllCores()
+				.withAlgorithm("Random")
+				.withMaxEvaluations(20)
+				.withProperty("populationSize", 20)
 				.run();
 		
 		//display the results

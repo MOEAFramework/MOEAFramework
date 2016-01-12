@@ -1,4 +1,4 @@
-^/\* Copyright (\([cC]\) )?\d\d\d\d(-\d\d\d\d)? .*$
+^/\* Copyright (\([cC]\) )?\d\d\d\d(-\d\d\d\d)?.*$
 ^ \*\s*$
 ^ \* This file is part of the MOEA Framework\.\s*$
 ^ \*\s*$

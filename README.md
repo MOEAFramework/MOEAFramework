@@ -43,7 +43,7 @@ Maven users can add our dependency to their `pom.xml` file:
 
 ### License ###
 
-Copyright 2009-2015 David Hadka and other contributors.  All rights reserved.
+Copyright 2009-2016 David Hadka and other contributors.  All rights reserved.
 
 The MOEA Framework is free software: you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as published by

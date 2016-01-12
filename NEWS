@@ -1,6 +1,22 @@
 This file documents the major changes implemented in each release of the MOEA
 Framework.
 
+-------------------
+ Version 2.8 (TBD)
+-------------------
+
+  * Adds the Plot class to facilitate quick and simple plots of Pareto fronts,
+    runtime dynamics, box-and-whisker comparisons, and more.  Able to save
+    PNG, JPEG, and SVG figures (if JFreeSVG is added to the classpath).
+    
+  * Adds toCSV and saveCSV methods to the Accumulator class to allow exporting
+    its contents to a file.
+    
+  * NSGA-III and DBEA now default to 99 divisions on bi-objective problems.
+    This results in 100 reference points, matching other algorithms that use
+    a population size of 100.
+
+
 ---------------------------
  Version 2.7 (11 Dec 2015)
 ---------------------------

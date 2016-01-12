@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 David Hadka
+/* Copyright 2009-2016 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
+import java.io.File;
 import java.io.IOException;
 
 import org.moeaframework.Analyzer;
@@ -27,8 +28,8 @@ import org.moeaframework.Executor;
 public class Example2 {
 
 	public static void main(String[] args) throws IOException {
-		String problem = "UF1";
-		String[] algorithms = { "NSGAII", "GDE3", "eMOEA" };
+		String problem = "ZDT5";
+		String[] algorithms = { "NSGAII" };
 
 		//setup the experiment
 		Executor executor = new Executor()
@@ -47,6 +48,7 @@ public class Example2 {
 		}
 
 		//print the results
+		analyzer.saveReferenceSet(new File("pf/ZDT5.pf"));
 		analyzer.printAnalysis();
 	}
 	
