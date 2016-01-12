@@ -577,7 +577,7 @@ public class Plot {
 		}
 
 		// generate the dataset
-		XYSeries series = new XYSeries(label, true, false);
+		XYSeries series = new XYSeries(label, false, true);
 		
 		for (int i = 0; i < x.size(); i++) {
 			series.add(x.get(i), y.get(i));
@@ -646,7 +646,7 @@ public class Plot {
 		}
 
 		// generate the dataset
-		XYSeries series = new XYSeries(label, true, false);
+		XYSeries series = new XYSeries(label, false, true);
 		
 		for (int i = 0; i < x.size(); i++) {
 			series.add(x.get(i), y.get(i));
