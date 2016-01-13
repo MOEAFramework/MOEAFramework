@@ -23,6 +23,7 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Paint;
 import java.awt.RenderingHints;
+import java.awt.Dialog.ModalityType;
 import java.awt.geom.Rectangle2D;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -34,6 +35,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 
 import org.jfree.chart.ChartFactory;
@@ -1059,6 +1061,38 @@ public class Plot {
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.setTitle("MOEA Framework Plot");
+		frame.setVisible(true);
+		
+		return frame;
+	}
+	
+	/**
+	 * Displays the chart in a blocking JDialog.
+	 */
+	public JDialog showDialog() {
+		return showDialog(800, 600);
+	}
+	
+	/**
+	 * Displays the chart in a blocking JDialog.
+	 * 
+	 * @param width the width of the chart
+	 * @param height the height of the chart
+	 * @return the window that was created
+	 */
+	public JDialog showDialog(int width, int height) {
+		JDialog frame = new JDialog();
+		
+		frame.getContentPane().setLayout(new BorderLayout());
+		frame.getContentPane().add(getChartPanel(), BorderLayout.CENTER);
+		
+		frame.setPreferredSize(new Dimension(width, height));
+		frame.pack();
+		
+		frame.setLocationRelativeTo(null);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frame.setTitle("MOEA Framework Plot");
+		frame.setModalityType(ModalityType.APPLICATION_MODAL);
 		frame.setVisible(true);
 		
 		return frame;
