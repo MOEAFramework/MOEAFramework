@@ -49,8 +49,8 @@ public class ProblemBuilderTest {
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void testNoReferenceSet() throws IOException {
-		//ZDT5 has no reference set
-		new ProblemBuilder().withProblem("ZDT5").getReferenceSet();
+		//20D DTLZ2 has no reference set
+		new ProblemBuilder().withProblem("DTLZ2_20").getReferenceSet();
 	}
 	
 	@Test
