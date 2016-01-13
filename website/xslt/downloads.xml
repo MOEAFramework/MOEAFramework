@@ -106,6 +106,20 @@
     <th>Downloads</th>
   </tr>
   <tr>
+  	<td>2.7</td>
+  	<td>11 Dec 2015</td>
+  	<td>
+      <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v2.7/MOEAFramework-2.7.tar.gz"
+          onClick="_gaq.push(['_trackEvent', 'Downloads', 'Binary', '2.7']);">Binary</a> |
+      <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v2.7/MOEAFramework-2.7-Source.tar.gz"
+          onClick="_gaq.push(['_trackEvent', 'Downloads', 'Source', '2.7']);">Source</a> |
+      <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v2.7/MOEAFramework-2.7-Demo.jar"
+          onClick="_gaq.push(['_trackEvent', 'Downloads', 'Demo', '2.7']);">Demo</a> |
+      <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v2.7/MOEAFramework-2.7-Manual.pdf"
+          onClick="_gaq.push(['_trackEvent', 'Downloads', 'Manual', '2.7']);">Manual</a>
+  	</td>
+  </tr>
+  <tr>
   	<td>2.6</td>
   	<td>28 Sept 2015</td>
   	<td>
