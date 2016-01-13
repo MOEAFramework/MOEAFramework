@@ -475,7 +475,6 @@ public class Plot {
 	 * Displays the runtime data stored in an {@link Accumulator} as one or
 	 * more line plots.
 	 * 
-	 * @param label the label for the series
 	 * @param accumulator the {@code Accumulator} instance
 	 * @return a reference to this {@code Plot} instance
 	 */
@@ -765,10 +764,10 @@ public class Plot {
 	}
 
 	/**
-	 * Displays the statistical results from an {@link AnalyzerResult} as a
+	 * Displays the statistical results from an {@link AnalyzerResults} as a
 	 * box-and-whisker plot.
 	 * 
-	 * @param analyzer the {@code AnalyzerResult} instance
+	 * @param result the {@code AnalyzerResults} instance
 	 * @return a reference to this {@code Plot} instance
 	 */
 	public Plot add(AnalyzerResults result) {

@@ -1,9 +1,9 @@
 This file documents the major changes implemented in each release of the MOEA
 Framework.
 
--------------------
- Version 2.8 (TBD)
--------------------
+---------------------------
+ Version 2.8 (13 Jan 2016)
+---------------------------
 
   * Adds the Plot class to facilitate quick and simple plots of Pareto fronts,
     runtime dynamics, box-and-whisker comparisons, and more.  Able to save
@@ -15,6 +15,10 @@ Framework.
   * NSGA-III and DBEA now default to 99 divisions on bi-objective problems.
     This results in 100 reference points, matching other algorithms that use
     a population size of 100.
+    
+  * Released a new beginner's guide that will replace the outdated user manual.
+    The new beginner's guide is available for purchase on the website and will
+    help raise funds to continue development of this software.
 
 
 ---------------------------

@@ -70,22 +70,6 @@
       </span>
       <div class="fix"></div>
     </li>
-    <!--
-    <li>
-      <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v%VERSION%/MOEAFramework-%VERSION%-Manual.pdf"
-      	  onClick="_gaq.push(['_trackEvent', 'Downloads', 'Manual', '%VERSION%']);">
-        <img src="images/pdf.png" class="float-left" width="22" height="22" alt="Download user manual" />
-        <strong>User Manual</strong>
-      </a>
-      <br />
-      <span>
-        A comprehensive user manual for the MOEA Framework.  This manual walks
-        through various uses of the MOEA Framework in detail, providing
-        step-by-step instructions and troubleshooting advice.
-      </span>
-      <div class="fix"></div>
-    </li>
-    -->
   </ul>
 </div>
 

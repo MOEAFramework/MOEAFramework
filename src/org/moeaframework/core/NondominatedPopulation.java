@@ -39,7 +39,7 @@ public class NondominatedPopulation extends Population {
 	/**
 	 * If {@code true}, allow duplicate solutions in this non-dominated
 	 * population.  Duplicate solutions are those whose Euclidean distance
-	 * is smaller than {@value Settings.EPSILON}.
+	 * is smaller than {@code Settings.EPSILON}.
 	 */
 	protected final boolean allowDuplicates;
 

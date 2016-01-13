@@ -15,7 +15,7 @@
 <p>
   Check out the <a href="javadoc/index.html">API Specification</a> to view
   documentation for all classes and methods.  In addition, the following books
-  are recommended to learn more about the MOEA Framework and related subjects.
+  are recommended to learn more about the MOEA Framework and related subjects. 
   Purchases help fund the continued development and maintenance of this
   software.  Thank you for your support!
 </p>
@@ -42,7 +42,7 @@
       <span style="font-size: 10pt">
         <a href="http://www.lulu.com/shop/david-hadka/beginners-guide-to-the-moea-framework/ebook/product-22522401.html" style="text-transform: none"><font color="red">$34.99</font> - Digital Copy (PDF)</a>
         |
-        <a href="http://www.lulu.com/content/paperback-book/beginners-guide-to-the-moea-framework/18285779" style="text-transform: none"><font color="red">$42.99</font> - Paperback</a>
+        <a href="http://www.lulu.com/content/paperback-book/beginners-guide-to-the-moea-framework/18285779" style="text-transform: none"><font color="red">$39.99</font> - Paperback (US/Europe)</a> / <a href="http://www.lulu.com/content/paperback-book/beginners-guide-to-the-moea-framework/18285779" style="text-transform: none">International</a>
       </span>
       <div class="fix"></div>
     </li>
@@ -89,6 +89,13 @@
       <div class="fix"></div>
     </li>
   </ul>
+</div>
+
+<div>
+  <p>
+    Older versions of the user manual can be accessed on the
+    <a href="downloads.html">downloads page</a>.
+  </p>
 </div>
 
   </content>
