@@ -143,7 +143,7 @@
 										</a>
 									</li>
 									<li>
-										<a href="javadoc/index.html">API Specification</a>
+										<a href="documentation.html">Documentation</a>
 									</li>
 								</ul>
 								<p>
