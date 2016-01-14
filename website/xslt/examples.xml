@@ -119,7 +119,6 @@ NondominatedPopulation result = new Executor()
     .withProblem("UF1")
     .withAlgorithm("NSGAII")
     .withMaxEvaluations(10000)
-    .distributeOnAllCores()
     .run();
   </pre>
 </div>
@@ -246,7 +245,7 @@ NSGAII:
   <pre class="brush: java; toolbar: false;">
 <![CDATA[
 Instrumenter instrumenter = new Instrumenter()
-    .withReferenceSet(new File("./pf/UF1.dat"))
+    .withProblem("UF1")
     .withFrequency(100)
     .attachElapsedTimeCollector()
     .attachGenerationalDistanceCollector();

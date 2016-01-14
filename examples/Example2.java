@@ -28,8 +28,8 @@ import org.moeaframework.Executor;
 public class Example2 {
 
 	public static void main(String[] args) throws IOException {
-		String problem = "ZDT5";
-		String[] algorithms = { "NSGAII" };
+		String problem = "UF1";
+		String[] algorithms = { "NSGAII", "GDE3", "eMOEA" };
 
 		//setup the experiment
 		Executor executor = new Executor()

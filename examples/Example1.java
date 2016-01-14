@@ -29,9 +29,8 @@ public class Example1 {
 		//configure and run this experiment
 		NondominatedPopulation result = new Executor()
 				.withProblem("UF1")
-				.withAlgorithm("Random")
-				.withMaxEvaluations(20)
-				.withProperty("populationSize", 20)
+				.withAlgorithm("NSGAII")
+				.withMaxEvaluations(10000)
 				.run();
 		
 		//display the results
