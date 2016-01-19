@@ -637,22 +637,10 @@ public class Executor extends ProblemBuilder {
 		
 		// return the termination conditions
 		if (conditions.size() == 0) {
-			System.err.println(
-					"no termination conditions set, may run indefinitely");
+			System.err.println("no termination conditions set, setting to " +
+					"25,000 max evaluations");
 			
-			return new TerminationCondition() {
-
-				@Override
-				public void initialize(Algorithm algorithm) {
-					// do nothing
-				}
-
-				@Override
-				public boolean shouldTerminate(Algorithm algorithm) {
-					return false;
-				}
-				
-			};
+			return new MaxFunctionEvaluations(25000);
 		} else if (conditions.size() == 1) {
 			return conditions.get(0);
 		} else {
