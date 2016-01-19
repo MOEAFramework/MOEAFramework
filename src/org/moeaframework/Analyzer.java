@@ -208,6 +208,11 @@ public class Analyzer extends ProblemBuilder {
 	}
 	
 	@Override
+	public Analyzer withProblem(Problem problemInstance) {
+		return (Analyzer)super.withProblem(problemInstance);
+	}
+	
+	@Override
 	public Analyzer withProblemClass(Class<?> problemClass, 
 			Object... problemArguments) {
 		return (Analyzer)super.withProblemClass(problemClass, problemArguments);
@@ -549,7 +554,7 @@ public class Analyzer extends ProblemBuilder {
 				}
 			}
 		} finally {
-			if (problem != null) {
+			if ((problem != null) && (problem != this.problemInstance)) {
 				problem.close();
 			}
 		}
@@ -593,7 +598,7 @@ public class Analyzer extends ProblemBuilder {
 				}
 			}
 		} finally {
-			if (problem != null) {
+			if ((problem != null) && (problem != this.problemInstance)) {
 				problem.close();
 			}
 		}
@@ -885,7 +890,7 @@ public class Analyzer extends ProblemBuilder {
 					
 			return analyzerResults;
 		} finally {
-			if (problem != null) {
+			if ((problem != null) && (problem != this.problemInstance)) {
 				problem.close();
 			}
 		}

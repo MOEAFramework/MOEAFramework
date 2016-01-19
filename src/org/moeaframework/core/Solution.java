@@ -21,6 +21,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang3.SerializationUtils;
+
 /**
  * A solution to an optimization problem, storing the decision variables,
  * objectives, constraints and attributes. Attributes are arbitrary {@code
@@ -136,6 +138,25 @@ public class Solution implements Serializable {
 	 */
 	public Solution copy() {
 		return new Solution(this);
+	}
+	
+	/**
+	 * Similar to {@link #copy()} except all attributes are also copied.  As a
+	 * result, this method tends to be significantly slower than {@code copy()}
+	 * if many large objects are stored as attributes.
+	 * 
+	 * @return an independent copy of this solution
+	 */
+	public Solution deepCopy() {
+		Solution copy = copy();
+		
+		for (Map.Entry<String, Serializable> entry : getAttributes().entrySet()) {
+			copy.setAttribute(
+					entry.getKey(),
+					SerializationUtils.clone(entry.getValue()));
+		}
+		
+		return copy;
 	}
 
 	/**

@@ -368,6 +368,20 @@ public class SolutionTest {
 		objectives[0] = 0.0;
 		Assert.assertEquals(1.0, solution.getObjective(0), Settings.EPS);
 	}
+	
+	/**
+	 * Tests if the deep copy method works correctly, property cloning all
+	 * attributes.
+	 */
+	@Test
+	public void testDeepCopy() {
+		double[] array = new double[] { 1.0, 2.0 };
+		solution.setAttribute("key", array);
+		
+		Solution copy = solution.deepCopy();
+		
+		Assert.assertTrue(array != copy.getAttribute("key"));
+	}
 
 	/**
 	 * Tests if the copy constructor works correctly.

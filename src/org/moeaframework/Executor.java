@@ -30,8 +30,12 @@ import org.moeaframework.algorithm.Checkpoints;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
+import org.moeaframework.core.TerminationCondition;
 import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.core.spi.ProblemFactory;
+import org.moeaframework.core.termination.CompoundTerminationCondition;
+import org.moeaframework.core.termination.MaxElapsedTime;
+import org.moeaframework.core.termination.MaxFunctionEvaluations;
 import org.moeaframework.util.TypedProperties;
 import org.moeaframework.util.distributed.DistributedProblem;
 import org.moeaframework.util.io.FileUtils;
@@ -104,7 +108,7 @@ public class Executor extends ProblemBuilder {
 	private Instrumenter instrumenter;
 	
 	/**
-	 * Manages reporting progress, elapsed time, adn time remaining to
+	 * Manages reporting progress, elapsed time, and time remaining to
 	 * {@link ProgressListener}s.
 	 */
 	private ProgressHelper progress;
@@ -116,6 +120,11 @@ public class Executor extends ProblemBuilder {
 	private AtomicBoolean isCanceled;
 	
 	/**
+	 * The termination conditions.
+	 */
+	private List<TerminationCondition> terminationConditions;
+	
+	/**
 	 * Constructs a new executor initialized with default settings.
 	 */
 	public Executor() {
@@ -125,6 +134,7 @@ public class Executor extends ProblemBuilder {
 		progress = new ProgressHelper(this);
 		properties = new TypedProperties();
 		numberOfThreads = 1;
+		terminationConditions = new ArrayList<TerminationCondition>();
 	}
 	
 	/**
@@ -199,6 +209,11 @@ public class Executor extends ProblemBuilder {
 	}
 	
 	@Override
+	public Executor withProblem(Problem problemInstance) {
+		return (Executor)super.withProblem(problemInstance);
+	}
+	
+	@Override
 	public Executor withProblemClass(Class<?> problemClass, 
 			Object... problemArguments) {
 		return (Executor)super.withProblemClass(problemClass, problemArguments);
@@ -209,6 +224,12 @@ public class Executor extends ProblemBuilder {
 			Object... problemArguments) throws ClassNotFoundException {
 		return (Executor)super.withProblemClass(problemClassName,
 				problemArguments);
+	}
+	
+	public Executor withTerminationCondition(TerminationCondition condition) {
+		terminationConditions.add(condition);
+		
+		return this;
 	}
 	
 	/**
@@ -344,6 +365,19 @@ public class Executor extends ProblemBuilder {
 	 */
 	public Executor withMaxEvaluations(int maxEvaluations) {
 		withProperty("maxEvaluations", maxEvaluations);
+		
+		return this;
+	}
+	
+	/**
+	 * Sets the maximum elapsed time in milliseconds; equivalent to setting the
+	 * property {@code maxTime}.
+	 * 
+	 * @param maxTime the maximum elapsed time in milliseconds
+	 * @return a reference to this executor
+	 */
+	public Executor withMaxTime(long maxTime) {
+		withProperty("maxTime", maxTime);
 		
 		return this;
 	}
@@ -580,6 +614,54 @@ public class Executor extends ProblemBuilder {
 	}
 	
 	/**
+	 * Returns the termination condition for this executor.
+	 * 
+	 * @return the termination condition
+	 */
+	protected TerminationCondition createTerminationCondition() {
+		int maxEvaluations = properties.getInt("maxEvaluations", -1);
+		long maxTime = properties.getLong("maxTime", -1);
+		
+		// create a list of the termination conditions
+		List<TerminationCondition> conditions = new ArrayList<TerminationCondition>();
+		
+		if (maxEvaluations >= 0) {
+			conditions.add(new MaxFunctionEvaluations(maxEvaluations));
+		}
+		
+		if (maxTime >= 0) {
+			conditions.add(new MaxElapsedTime(maxTime));
+		}
+		
+		conditions.addAll(terminationConditions);
+		
+		// return the termination conditions
+		if (conditions.size() == 0) {
+			System.err.println(
+					"no termination conditions set, may run indefinitely");
+			
+			return new TerminationCondition() {
+
+				@Override
+				public void initialize(Algorithm algorithm) {
+					// do nothing
+				}
+
+				@Override
+				public boolean shouldTerminate(Algorithm algorithm) {
+					return false;
+				}
+				
+			};
+		} else if (conditions.size() == 1) {
+			return conditions.get(0);
+		} else {
+			return new CompoundTerminationCondition(conditions.toArray(
+					new TerminationCondition[conditions.size()]));
+		}
+	}
+	
+	/**
 	 * Runs this executor with its configured settings multiple times,
 	 * returning the individual end-of-run approximation sets.  If the run
 	 * is canceled, the list contains any complete seeds that finished prior
@@ -597,16 +679,16 @@ public class Executor extends ProblemBuilder {
 			checkpointFile = null;
 		}
 		
-		int maxEvaluations = properties.getInt("maxEvaluations", 25000);
-		
+		int maxEvaluations = properties.getInt("maxEvaluations", -1);
+		long maxTime = properties.getLong("maxTime", -1);
 		List<NondominatedPopulation> results =
 				new ArrayList<NondominatedPopulation>();
 		
-		progress.start(numberOfSeeds, maxEvaluations);
+		progress.start(numberOfSeeds, maxEvaluations, maxTime);
 		
 		for (int i = 0; i < numberOfSeeds && !isCanceled.get(); i++) {
 			NondominatedPopulation result = runSingleSeed(i+1, numberOfSeeds,
-					maxEvaluations);
+					createTerminationCondition());
 			
 			if (result != null) {
 				results.add(result);
@@ -626,7 +708,7 @@ public class Executor extends ProblemBuilder {
 	 */
 	public NondominatedPopulation run() {
 		isCanceled.set(false);
-		return runSingleSeed(1, 1, properties.getInt("maxEvaluations", 25000));
+		return runSingleSeed(1, 1, createTerminationCondition());
 	}
 
 	/**
@@ -637,10 +719,11 @@ public class Executor extends ProblemBuilder {
 	 * @param numberOfSeeds to total number of seeds being run
 	 * @param maxEvaluations to maximum number of objective function
 	 *        evaluations per seed
+	 * 
 	 * @return the end-of-run approximation set; or {@code null} if canceled
 	 */
 	protected NondominatedPopulation runSingleSeed(int seed, int numberOfSeeds,
-			int maxEvaluations) {
+			TerminationCondition terminationCondition) {
 		if (algorithmName == null) {
 			throw new IllegalArgumentException("no algorithm specified");
 		}
@@ -689,9 +772,11 @@ public class Executor extends ProblemBuilder {
 					if (instrumenter != null) {
 						algorithm = instrumenter.instrument(algorithm);
 					}
+					
+					terminationCondition.initialize(algorithm);
 
 					while (!algorithm.isTerminated() &&
-							(algorithm.getNumberOfEvaluations() < maxEvaluations)) {
+							!terminationCondition.shouldTerminate(algorithm)) {
 						// stop and return null if canceled and not yet complete
 						if (isCanceled.get()) {
 							return null;
@@ -715,7 +800,7 @@ public class Executor extends ProblemBuilder {
 				}
 			}
 		} finally {
-			if (problem != null) {
+			if ((problem != null) && (problem != this.problemInstance)) {
 				problem.close();
 			}
 		}

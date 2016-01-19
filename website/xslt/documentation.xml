@@ -47,6 +47,30 @@
       <div class="fix"></div>
     </li>
     <li>
+      <a href="http://www.lulu.com/shop/david-hadka/high-performance-computing-with-the-moea-framework-and-ignite/ebook/product-22531100.html">
+        <img src="images/hpcmoea_small.png" class="float-left" width="107" height="140"
+        	alt="Purchase the book High Performance Computing with the MOEA Framework and Ignite" 
+        	style="background: none; border: 1px; padding: 0px;" />
+        <strong style="font-size: 10pt">High Performance Computing with the MOEA Framework and Ignite</strong>
+      </a>
+      <br />
+      <span>
+         	This book demonstrates how to exploit high performance computing
+         	with the MOEA Framework, from small personal computers up to
+         	large-scale supercomputers. For distributed memory parallelization,
+         	we show how to use Apache Ignite to construct master-slave,
+         	island model, and hybrid parallelization architectures. Purchase
+         	of this book includes complete code samples.
+      </span>
+      <br /><br />
+      <span style="font-size: 10pt">
+        <a href="http://www.lulu.com/shop/david-hadka/high-performance-computing-with-the-moea-framework-and-ignite/ebook/product-22531100.html" style="text-transform: none"><font color="red">$14.99</font> - Digital Copy (PDF)</a>
+        |
+        <a href="http://www.amazon.com/gp/product/1523475463/ref=as_li_tl?ie=UTF8&amp;camp=1789&amp;creative=390957&amp;creativeASIN=1523475463&amp;linkCode=as2&amp;tag=mofr-20&amp;linkId=2H6X3GBK5UTCZCQX" style="text-transform: none"><font color="red">$24.99</font> - Paperback (US/Europe)</a>
+      </span>
+      <div class="fix"></div>
+    </li>
+    <li>
       <a href="http://www.amazon.com/gp/product/1489994602/ref=as_li_tl?ie=UTF8&amp;camp=1789&amp;creative=390957&amp;creativeASIN=1489994602&amp;linkCode=as2&amp;tag=mofr-20&amp;linkId=GBZVOVDT7F2A4EGG">
         <img src="images/coellocoello.png" class="float-left" width="107" height="140"
         	alt="Purchase the book Evolutionary Algorithms for Solving Multi-Objective Problems"

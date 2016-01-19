@@ -86,7 +86,7 @@ public class ProgressHelperTest {
 			
 		});
 		
-		helper.start(totalSeeds, maxNFE);
+		helper.start(totalSeeds, maxNFE, -1);
 		
 		for (int i = 0; i < totalSeeds; i++) {
 			for (int j = 0; j <= maxNFE-frequency; j += frequency) {
@@ -166,7 +166,7 @@ public class ProgressHelperTest {
 			
 		});
 		
-		helper.start(10, 100000);
+		helper.start(10, 100000, -1);
 		helper.setCurrentNFE(0);
 		Thread.sleep(1000);
 		helper.setCurrentNFE(0);
@@ -200,7 +200,7 @@ public class ProgressHelperTest {
 			
 		});
 		
-		helper.start(10, 100000);
+		helper.start(10, 100000, -1);
 		helper.setCurrentNFE(0);
 		helper.setCurrentNFE(50000);
 		Thread.sleep(1000);

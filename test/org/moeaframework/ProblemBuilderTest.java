@@ -75,6 +75,9 @@ public class ProblemBuilderTest {
 		Assert.assertNotNull(builder.withProblemClass(ZDT5.class)
 				.getProblemInstance());
 		
+		Assert.assertNotNull(builder.withProblem(new ZDT5())
+				.getProblemInstance());
+		
 		Assert.assertNotNull(builder.withProblemClass(
 				"org.moeaframework.problem.ZDT.ZDT5").getProblemInstance());
 	}

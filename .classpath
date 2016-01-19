@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry excluding="**/.svn/*" kind="src" path="src"/>
+	<classpathentry excluding="**/.svn/*" including="META-INF/" kind="src" path=""/>
 	<classpathentry excluding="**/.svn/*" kind="src" path="test"/>
 	<classpathentry excluding="**/.svn/*" kind="src" path="examples"/>
 	<classpathentry kind="lib" path="lib/commons-cli-1.2.jar"/>

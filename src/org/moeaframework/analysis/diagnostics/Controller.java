@@ -197,11 +197,6 @@ public class Controller {
 	private boolean showIndividualTraces;
 	
 	/**
-	 * 
-	 */
-	private boolean showQuantiles;
-	
-	/**
 	 * The executor for the current run.
 	 */
 	private Executor executor;

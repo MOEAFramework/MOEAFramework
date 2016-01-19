@@ -501,6 +501,11 @@ public class Instrumenter extends ProblemBuilder {
 	public Instrumenter withProblem(String problemName) {
 		return (Instrumenter)super.withProblem(problemName);
 	}
+	
+	@Override
+	public Instrumenter withProblem(Problem problemInstance) {
+		return (Instrumenter)super.withProblem(problemInstance);
+	}
 
 	@Override
 	public Instrumenter withProblemClass(Class<?> problemClass, 

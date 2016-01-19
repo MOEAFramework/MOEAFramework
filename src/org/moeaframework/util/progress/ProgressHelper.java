@@ -79,6 +79,11 @@ public class ProgressHelper {
 	private long lastTime;
 	
 	/**
+	 * The maximum elapsed time per seed.
+	 */
+	private long maxTime;
+	
+	/**
 	 * The seed that was evaluated when {@link #updateStatistics()} was last
 	 * invoked, used for estimating the remaining time.
 	 */
@@ -134,7 +139,19 @@ public class ProgressHelper {
 		double diffTime = currentTime - lastTime;
 		double diffSeed = currentSeed - lastSeed;
 		double diffNFE = currentNFE - lastNFE;
-		double percentChange = (diffSeed + (diffNFE / maxNFE)) / totalSeeds;
+		double percentNFE = Double.POSITIVE_INFINITY;
+		double percentTime = Double.POSITIVE_INFINITY;
+		
+		if (maxNFE >= 0) {
+			percentNFE = diffNFE / maxNFE;
+		}
+		
+		if (maxTime >= 0) {
+			percentTime = diffTime / maxTime;
+		}
+		
+		double diffPercent = Math.min(percentNFE, percentTime);
+		double percentChange = (diffSeed + diffPercent) / totalSeeds;
 		
 		// only update if the change was significant
 		if ((diffTime > 0.0) && (percentChange > 0.0001)) {
@@ -159,8 +176,19 @@ public class ProgressHelper {
 		long currentTime = System.currentTimeMillis();
 		double remainingSeeds = totalSeeds - currentSeed;
 		double remainingNFE = maxNFE - currentNFE;
-		double percentRemaining = (remainingSeeds + (remainingNFE / maxNFE)) /
-				totalSeeds;
+		double remainingTime = maxTime - (currentTime - startTime);
+		double percentNFE = Double.POSITIVE_INFINITY;
+		double percentTime = Double.POSITIVE_INFINITY;
+		
+		if (maxNFE >= 0) {
+			percentNFE = (remainingSeeds + (remainingNFE / maxNFE)) / totalSeeds;
+		}
+		
+		if (maxTime >= 0) {
+			percentTime = (remainingSeeds + (remainingTime / maxTime)) / totalSeeds;
+		}
+		
+		double percentRemaining = Math.min(percentNFE, percentTime);
 		
 		ProgressEvent event = new ProgressEvent(
 				executor,
@@ -171,7 +199,8 @@ public class ProgressHelper {
 				maxNFE,
 				Math.max(1.0 - percentRemaining, 0.0),
 				(currentTime - startTime) / 1000.0,
-				(statistics.getMean() * percentRemaining) / 1000.0);
+				(statistics.getMean() * percentRemaining) / 1000.0,
+				maxTime / 1000.0);
 		
 		listeners.fire().progressUpdate(event);
 	}
@@ -231,10 +260,12 @@ public class ProgressHelper {
 	 * @param totalSeeds the total number of seeds to be evaluated
 	 * @param maxNFE the maximum number of objective function evaluations per
 	 *        seed
+	 * @param maxTime the maximum time
 	 */
-	public void start(int totalSeeds, int maxNFE) {
+	public void start(int totalSeeds, int maxNFE, long maxTime) {
 		this.totalSeeds = totalSeeds;
 		this.maxNFE = maxNFE;
+		this.maxTime = maxTime;
 		
 		// reset all internal parameters
 		lastSeed = 1;
