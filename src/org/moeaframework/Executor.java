@@ -46,18 +46,49 @@ import org.moeaframework.util.progress.ProgressListener;
  * Configures and executes algorithms while hiding the underlying boilerplate 
  * code needed to setup and safely execute an algorithm.  For example, the 
  * following demonstrates its typical use:
+ * <p>
  * <pre>
  *   NondominatedPopulation result = new Executor()
  *       .withAlgorithm("NSGAII")
  *       .withProblem("DTLZ2_2")
+ *       .withMaxEvaluations(10000)
+ *       .run();
+ * </pre>
+ * <p>
+ * The problem and algorithm must be specified prior to calling {@link #run()}.
+ * Additional parameters for each algorithm can be assigned using the
+ * {@code withProperty} methods:
+ * <p>
+ * <pre>
+ *   NondominatedPopulation result = new Executor()
+ *       .withAlgorithm("NSGAII")
+ *       .withProblem("DTLZ2_2")
+ *       .withMaxEvaluations(10000)
  *       .withProperty("populationSize", 100)
- *       .withProperty("maxEvaluations", 10000)
+ *       .withProperty("sbx.rate", 1.0)
+ *       .withProperty("sbx.distributionIndex", 15.0)
+ *       .withProperty("pm.rate", 0.05)
+ *       .withProperty("pm.distributionIndex", 20.0)
+ *       .run();
+ * </pre>
+ * <p>
+ * The evaluation of function evaluations can be distributed across multiple
+ * cores or computers by using {@link #distributeOnAllCores()},
+ * {@link #distributeOn(int)}, or {@link #distributeWith(ExecutorService)}.
+ * Checkpoint files can be saved in order to resume interrupted runs using the
+ * {@link #withCheckpointFrequency(int)} and {@link #withCheckpointFile(File)}
+ * methods.  For example:
+ * <p>
+ * <pre>
+ *   NondominatedPopulation result = new Executor()
+ *       .withAlgorithm("NSGAII")
+ *       .withProblem("DTLZ2_2")
+ *       .withMaxEvaluations(100000)
  *       .distributeOnAllCores()
- *       .checkpointEveryIteration()
+ *       .withCheckpointFrequency(1000)
  *       .withCheckpointFile(new File("example.state"))
  *       .run();
  * </pre>
- * The problem and algorithm must be specified prior to {@link #run()}.
  */
 public class Executor extends ProblemBuilder {
 	

@@ -1,6 +1,20 @@
 This file documents the major changes implemented in each release of the MOEA
 Framework.
 
+-------------------
+ Version 2.9 (TBD)
+-------------------
+
+  * Adds support for termination conditions.  The Executor can now support
+    running for fixed wall-clock times:
+    
+       executor.withMaxTime(1000) // run for 1 second (1000 milliseconds)
+       
+    or with user-defined termination conditions:
+    
+       executor.withTerminationCondition(...)
+       
+
 ---------------------------
  Version 2.8 (13 Jan 2016)
 ---------------------------

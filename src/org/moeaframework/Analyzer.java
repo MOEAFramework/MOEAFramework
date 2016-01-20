@@ -58,6 +58,7 @@ import org.moeaframework.util.statistics.MannWhitneyUTest;
 /**
  * Performs basic end-of-run analysis.  For example, the following demonstrates
  * its typical use.  First construct and configure the analyzer:
+ * <p>
  * <pre>
  *   Analyzer analyzer = new Analyzer()
  *       .withProblem("DTLZ2_2")
@@ -68,7 +69,9 @@ import org.moeaframework.util.statistics.MannWhitneyUTest;
  *       .showAggregate()
  *       .showStatisticalSignificance();
  * </pre>
+ * <p>
  * The problem must always be specified.  Next, add the data to be analyzed:
+ * <p>
  * <pre>
  *   Executor executor = new Executor().withProblem("DTLZ2_2");
  *   add("NSGAII", executor.withAlgorithm("NSGAII").run());
@@ -80,7 +83,8 @@ import org.moeaframework.util.statistics.MannWhitneyUTest;
  * </pre>
  * The output produced is compatible with the 
  * <a href="http://yaml.org/">YAML</a> format, and thus can be postprocessed
- * easily with any YAML parser.
+ * easily with any YAML parser.  The results can also be accessed
+ * programatically by calling {@link #getAnalysis()}.
  */
 public class Analyzer extends ProblemBuilder {
 	

@@ -27,16 +27,40 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.indicator.Hypervolume;
 
+/**
+ * Assigns the fitness of solutions based on their contribution to the overall
+ * hypervolume.
+ */
 public class HypervolumeContributionFitnessEvaluator implements FitnessEvaluator {
 	
+	/**
+	 * The problem.
+	 */
 	private final Problem problem;
 	
+	/**
+	 * The offset used when determining the reference point for the hypervolume
+	 * calculation.
+	 */
 	private final double offset;
 	
+	/**
+	 * Constructs a new hypervolume contribution fitness evaluator with an
+	 * offset of 100.
+	 * 
+	 * @param problem the problem
+	 */
 	public HypervolumeContributionFitnessEvaluator(Problem problem) {
 		this(problem, 100.0);
 	}
 	
+	/**
+	 * Constructs a new hypervolume contribution fitness evaluator.
+	 * 
+	 * @param problem the problem
+	 * @param offset the offset used when determining the reference point for\
+	 *               the hypervolume calculation.
+	 */
 	public HypervolumeContributionFitnessEvaluator(Problem problem, double offset) {
 		super();
 		this.problem = problem;
@@ -65,6 +89,13 @@ public class HypervolumeContributionFitnessEvaluator implements FitnessEvaluator
 		}
 	}
 	
+	/**
+	 * Normalizes the population using a reference point calculated by the
+	 * maximum extent of the population plus an offset.
+	 * 
+	 * @param population the population to normalize
+	 * @return the normalized solutions
+	 */
 	private List<Solution> normalize(Population population) {
 		List<Solution> result = new ArrayList<Solution>();
 		

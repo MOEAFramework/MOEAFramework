@@ -63,6 +63,7 @@ import org.moeaframework.core.spi.ProblemFactory;
  * the collection of runtime information as the algorithm is executed.  Lastly,
  * the {@code InstrumentedAlgorithm} stores the runtime information, which can
  * subsequently be accessed and analyzed.
+ * <p>
  * <pre>
  *   Instrumenter instrumenter = new Instrumenter()
  *     .withProblem(problemName)
