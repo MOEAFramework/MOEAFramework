@@ -716,7 +716,7 @@ public class Executor extends ProblemBuilder {
 			throw new IllegalArgumentException("no algorithm specified");
 		}
 		
-		if ((problemName == null) && (problemClass == null)) {
+		if ((problemName == null) && (problemClass == null) && (problemInstance == null)) {
 			throw new IllegalArgumentException("no problem specified");
 		}
 		
