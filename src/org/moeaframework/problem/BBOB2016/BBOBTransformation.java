@@ -8,6 +8,7 @@ public abstract class BBOBTransformation extends BBOBFunction {
 	
 	public BBOBTransformation(BBOBFunction function) {
 		super(function.getNumberOfVariables());
+		this.function = function;
 	}
 	
 	@Override

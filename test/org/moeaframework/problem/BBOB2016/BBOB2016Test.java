@@ -25,12 +25,43 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.Executor;
 import org.moeaframework.TestUtils;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PRNG;
 
+/**
+ * To run these tests, you'll first need to compile CocoJNI.dll.  Copy the
+ * .c and .h files from this package into the code-experiments/build/java
+ * folder within the Coco Framework repository.  Then run:
+ * 
+ *     gcc -Wl,--kill-at -I "C:\Program Files\Java\jdk1.7.0_45\include"
+ *         -I "C:\Program Files\Java\jdk1.7.0_45\include\win32" -shared
+ *         -o CocoJNI.dll org_moeaframework_problem_BBOB2016_CocoJNI.c
+ *         
+ * You will likely need to change the paths to your version of the Java
+ * Development Kit.  If any interfaces changed, you may need to update the
+ * .h and .c files.  Run:
+ * 
+ *     javah -jni -cp test org.moeaframework.problem.BBOB2016.CocoJNI
+ *     
+ * from the root of the MOEA Framework source code to recreate the header file,
+ * rename CocoJNI.c to org_moeaframework_problem_BBOB2016_CocoJNI.c, and
+ * replace all occurrences of:
+ * 
+ *     Java_CocoJNI_
+ *     
+ * with:
+ * 
+ *     Java_org_moeaframework_problem_BBOB2016_CocoJNI_
+ *     
+ * in the C code.
+ * 
+ * A working version of the DLL is distributed with these tests, but must
+ * first be moved to the root MOEA Framework directory.
+ */
 public class BBOB2016Test {
 	
 	@Test
@@ -52,22 +83,36 @@ public class BBOB2016Test {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(baos.toByteArray())));
 		String problemName = null;
 		
+		int count = 0;
+		
 		while ((problemName = reader.readLine()) != null) {
+			count++;
+			
 			PRNG.setSeed(1000);
 			NondominatedPopulation result1 = new Executor()
 					.withProblem(problemName)
 					.withAlgorithm("NSGAII")
-					.withMaxEvaluations(20000)
+					.withMaxEvaluations(10000)
 					.run();
 			
 			PRNG.setSeed(1000);
 			NondominatedPopulation result2 = new Executor()
 					.withProblem(CocoProblemWrapper.findProblem("NSGAII", problemName))
 					.withAlgorithm("NSGAII")
-					.withMaxEvaluations(20000)
+					.withMaxEvaluations(10000)
 					.run();
 			
-			System.out.println(problemName + " " + TestUtils.equals(result1, result2));
+			boolean equal = TestUtils.equals(result1, result2);
+			System.out.println(problemName + " " + (equal ? "ok!" : "does not match!") + " " + count);
+			
+			if (!equal) {
+				Assert.fail("Output from " + problemName + " differs");
+			}
+			
+			if (count == 100) {
+				// stop after testing every instance at least once
+				break;
+			}
 		}
 	}
 
