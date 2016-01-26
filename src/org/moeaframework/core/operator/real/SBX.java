@@ -209,35 +209,43 @@ public class SBX implements Variation {
 			} else {
 				b1 = Math.pow(0.5 / (1 - u1), 1 / (distributionIndex + 1));
 			}
+			
+			// generate the new values, storing in y0 and y1
+			double y0;
+			double y1;
 
 			if (x0 < x1) {
-				v1.setValue(0.5 * (x0 + x1 + b0 * (x0 - x1)));
-				v2.setValue(0.5 * (x0 + x1 + b1 * (x1 - x0)));
+				y0 = 0.5 * (x0 + x1 + b0 * (x0 - x1));
+				y1 = 0.5 * (x0 + x1 + b1 * (x1 - x0));
 			} else {
-				v1.setValue(0.5 * (x0 + x1 + b1 * (x0 - x1)));
-				v2.setValue(0.5 * (x0 + x1 + b0 * (x1 - x0)));
+				y0 = 0.5 * (x0 + x1 + b1 * (x0 - x1));
+				y1 = 0.5 * (x0 + x1 + b0 * (x1 - x0));
 			}
 
 			//this makes PISA's SBX compatible with other implementations
 			//which swap the values
 			if (PRNG.nextBoolean()) {
-				double temp = v1.getValue();
-				v1.setValue(v2.getValue());
-				v2.setValue(temp);
+				double temp = y0;
+				y0 = y1;
+				y1 = temp;
 			}
 			
 			//guard against out-of-bounds values
-			if (v1.getValue() < lb) {
-				v1.setValue(lb);
-			} else if (v1.getValue() > ub) {
-				v1.setValue(ub);
+			if (y0 < lb) {
+				y0 = lb;
+			} else if (y0 > ub) {
+				y0 = ub;
 			}
 			
-			if (v2.getValue() < lb) {
-				v2.setValue(lb);
-			} else if (v2.getValue() > ub) {
-				v2.setValue(ub);
+			if (y1 < lb) {
+				y1 = lb;
+			} else if (y1 > ub) {
+				y1 = ub;
 			}
+			
+			// save the values
+			v1.setValue(y0);
+			v2.setValue(y1);
 		}
 	}
 
