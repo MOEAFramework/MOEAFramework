@@ -20,7 +20,11 @@ package org.moeaframework.problem;
 import org.moeaframework.core.Problem;
 
 /**
- * Abstract class for {@link Problem}s.
+ * Abstract class for a {@link Problem}.  For simplicity, most problems should
+ * extend {@code AbstractProblem} rather than implement the {@code Problem}
+ * interface directly.  At a minimum, only the {@link #newSolution()} and
+ * {@link #evaluate(org.moeaframework.core.Solution)} methods need to be
+ * defined.
  */
 public abstract class AbstractProblem implements Problem {
 
