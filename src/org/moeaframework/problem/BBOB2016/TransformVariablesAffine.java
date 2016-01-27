@@ -27,12 +27,28 @@ import org.moeaframework.core.variable.EncodingUtils;
  * file located in the Coco Framework repository for more details.
  */
 
+/**
+ * Performs an affine transformation of the form f(x) = Mx + b.
+ */
 public class TransformVariablesAffine extends BBOBTransformation {
 
+	/**
+	 * The rotation component of the affine transform.
+	 */
 	private final double[][] M;
 	
+	/**
+	 * The translation component of the affine transform.
+	 */
 	private final double[] b;
 	
+	/**
+	 * Constructs a new instance of the affine transformation.
+	 * 
+	 * @param function the inner function
+	 * @param M the rotation component of the affine transform
+	 * @param b the translation component of the affine transform
+	 */
 	public TransformVariablesAffine(BBOBFunction function, double[][] M, double[] b) {
 		super(function);
 		this.M = M;

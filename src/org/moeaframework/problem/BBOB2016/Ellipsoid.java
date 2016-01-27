@@ -27,10 +27,31 @@ import org.moeaframework.core.variable.EncodingUtils;
  * file located in the Coco Framework repository for more details.
  */
 
+/**
+ * The Ellipsoid function.  It is not intended for this function to be
+ * used directly since the BBOB test suite applies additional transformations
+ * to the test functions.
+ * <p>
+ * Properties:
+ * <ul>
+ *   <li>Non-separable
+ *   <li>Unimodal
+ *   <li>Ill-conditioned
+ *   <li>Smooth local irregularities
+ * </ul>
+ */
 public class Ellipsoid extends BBOBFunction {
 	
+	/**
+	 * The conditioning factor.
+	 */
 	public static final double CONDITION = 1.0e6;
 	
+	/**
+	 * Constructs a new instance of the Ellipsoid function.
+	 * 
+	 * @param numberOfVariables the number of decision variables
+	 */
 	public Ellipsoid(int numberOfVariables) {
 		super(numberOfVariables);
 	}

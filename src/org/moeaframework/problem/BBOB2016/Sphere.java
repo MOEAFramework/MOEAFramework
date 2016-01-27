@@ -27,8 +27,25 @@ import org.moeaframework.core.variable.EncodingUtils;
  * file located in the Coco Framework repository for more details.
  */
 
+/**
+ * The sphere function.  It is not intended for this function to be used
+ * directly since the BBOB test suite applies additional transformations to the
+ * test functions.
+ * <p>
+ * Properties:
+ * <ul>
+ *   <li>Separable
+ *   <li>Unimodal
+ *   <li>Symmetric - Rotationally and scale invariant
+ * </ul>
+ */
 public class Sphere extends BBOBFunction {
 
+	/**
+	 * Constructs a new instance of the sphere function.
+	 * 
+	 * @param numberOfVariables the number of decision variables
+	 */
 	public Sphere(int numberOfVariables) {
 		super(numberOfVariables);
 	}

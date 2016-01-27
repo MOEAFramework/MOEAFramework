@@ -27,10 +27,25 @@ import org.moeaframework.core.variable.RealVariable;
  * file located in the Coco Framework repository for more details.
  */
 
+/**
+ * Transformation that penalizes the objectives if the decision variables
+ * fall outside the region of interest.  This transformation currently has no
+ * impact on the MOEA Framework since all real-valued decision variables
+ * enforce the lower and upper bounds.
+ */
 public class TransformObjectivePenalize extends BBOBTransformation {
 	
+	/**
+	 * The penalty factor.
+	 */
 	private final double factor;
 	
+	/**
+	 * Constructs a new instance of the penalty transformation.
+	 * 
+	 * @param function the inner function
+	 * @param factor the penalty factor
+	 */
 	public TransformObjectivePenalize(BBOBFunction function, double factor) {
 		super(function);
 		this.factor = factor;
@@ -39,11 +54,13 @@ public class TransformObjectivePenalize extends BBOBTransformation {
 	@Override
 	public void evaluate(Solution solution) {
 		double penalty = 0.0;
+		double lowerBound = -5.0;
+		double upperBound = 5.0;
 		
 		for (int i = 0; i < numberOfVariables; i++) {
 			RealVariable v = (RealVariable)solution.getVariable(i);
-			double c1 = v.getValue() - v.getUpperBound();
-			double c2 = v.getLowerBound() - v.getValue();
+			double c1 = v.getValue() - upperBound;
+			double c2 = lowerBound - v.getValue();
 			
 			if (c1 > 0.0) {
 				penalty += c1*c1;

@@ -27,10 +27,23 @@ import org.moeaframework.core.variable.EncodingUtils;
  * file located in the Coco Framework repository for more details.
  */
 
+/**
+ * The x-hat transformation, which negates some of the decision variables.
+ */
 public class TransformVariablesXHat extends BBOBTransformation {
 
+	/**
+	 * The random number seed controlling which decision variables are negated.
+	 */
 	private final long seed;
 	
+	/**
+	 * Constructs a new instance of the x-hat transformation.
+	 * 
+	 * @param function the inner function
+	 * @param seed the random number seed controlling which decision variables
+	 *        are negated
+	 */
 	public TransformVariablesXHat(BBOBFunction function, long seed) {
 		super(function);
 		this.seed = seed;

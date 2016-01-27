@@ -26,10 +26,23 @@ import org.moeaframework.core.Solution;
  * file located in the Coco Framework repository for more details.
  */
 
+/**
+ * Transformation that raises the objective value to the power of a given
+ * exponent.
+ */
 public class TransformObjectivePower extends BBOBTransformation {
 
+	/**
+	 * The exponent.
+	 */
 	private final double exponent;
 	
+	/**
+	 * Constructs a new instance of the power transformation.
+	 * 
+	 * @param function the inner function
+	 * @param exponent the exponent
+	 */
 	public TransformObjectivePower(BBOBFunction function, double exponent) {
 		super(function);
 		this.exponent = exponent;

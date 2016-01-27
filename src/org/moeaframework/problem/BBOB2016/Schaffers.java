@@ -27,8 +27,26 @@ import org.moeaframework.core.variable.EncodingUtils;
  * file located in the Coco Framework repository for more details.
  */
 
+/**
+ * The Schaffers F7 function.  It is not intended for this function to be
+ * used directly since the BBOB test suite applies additional transformations
+ * to the test functions.
+ * <p>
+ * Properties:
+ * <ul>
+ *   <li>Highly multimodal (frequency and amplitude of modulation vary)
+ *   <li>Asymmetric
+ *   <li>Rotated
+ *   <li>Low conditioning
+ * </ul>
+ */
 public class Schaffers extends BBOBFunction {
 	
+	/**
+	 * Constructs a new instance of the Schaffers F7 problem.
+	 * 
+	 * @param numberOfVariables the number of decision variables
+	 */
 	public Schaffers(int numberOfVariables) {
 		super(numberOfVariables);
 	}

@@ -27,10 +27,31 @@ import org.moeaframework.core.variable.EncodingUtils;
  * file located in the Coco Framework repository for more details.
  */
 
+/**
+ * The Attractive Sector function.  It is not intended for this function to be
+ * used directly since the BBOB test suite applies additional transformations
+ * to the test functions.
+ * <p>
+ * Properties:
+ * <ul>
+ *   <li>Highly asymmetric
+ *   <li>Unimodal
+ *   <li>Low or moderate conditioning
+ * </ul>
+ */
 public class AttractiveSector extends BBOBFunction {
 	
+	/**
+	 * The location of the optimum.
+	 */
 	private final double[] xopt;
 	
+	/**
+	 * Constructs a new instance of the Attractive Sector functoin.
+	 * 
+	 * @param numberOfVariables the number of decision variables
+	 * @param xopt the location of the optimum
+	 */
 	public AttractiveSector(int numberOfVariables, double[] xopt) {
 		super(numberOfVariables);
 		this.xopt = xopt;

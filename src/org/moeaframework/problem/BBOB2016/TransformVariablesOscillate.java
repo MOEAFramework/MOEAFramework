@@ -27,10 +27,23 @@ import org.moeaframework.core.variable.EncodingUtils;
  * file located in the Coco Framework repository for more details.
  */
 
+/**
+ * Transformation that applies a monotone oscillation to the decision variables
+ * of the inner function.
+ */
 public class TransformVariablesOscillate extends BBOBTransformation {
 	
+	/**
+	 * Factor controlling the periodicity of the oscillation.
+	 */
 	public static final double ALPHA = 0.1;
 
+	/**
+	 * Constructs a new transformation that applies an oscillation to the
+	 * decision variables.
+	 * 
+	 * @param function the inner function
+	 */
 	public TransformVariablesOscillate(BBOBFunction function) {
 		super(function);
 	}

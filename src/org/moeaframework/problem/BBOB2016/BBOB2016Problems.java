@@ -36,11 +36,30 @@ import org.moeaframework.core.spi.ProblemProvider;
  * file located in the Coco Framework repository for more details.
  */
 
+/**
+ * Problem provider for all problems in the BBOB 2016 test suite.  This test
+ * suite consists of bi-objective problems constructed from two single-objective
+ * functions.  Each single-objective function name follows the pattern:
+ * <pre>
+ *     bbob_f001_d02_i05
+ * </pre>
+ * In this case, we are requesting the fifth instance of the first BBOB
+ * function with 2 decision variables.  The location of the optimum differs in
+ * each instance.  To create the name of a BBOB 2016 problem supported by this
+ * problem provider, separate two function names with two underscores, such
+ * as:
+ * <pre>
+ *     bbob_f001_d02_i05__bbob_f021_d02_i07
+ * </pre>
+ * The dimension or number of decision variables must be identical in both
+ * functions.
+ */
 public class BBOB2016Problems extends ProblemProvider {
 
 	@Override
 	public Problem getProblem(String name) {
-		Pattern pattern = Pattern.compile("^bbob_f([0-9]+)_i([0-9]+)_d([0-9]+)__bbob_f([0-9]+)_i([0-9]+)_d([0-9]+)$");
+		Pattern pattern = Pattern.compile(
+				"^bbob_f([0-9]+)_i([0-9]+)_d([0-9]+)__bbob_f([0-9]+)_i([0-9]+)_d([0-9]+)$");
 		Matcher matcher = pattern.matcher(name);
 
 		if (matcher.matches()) {
@@ -63,6 +82,14 @@ public class BBOB2016Problems extends ProblemProvider {
 		return null;
 	}
 
+	/**
+	 * Constructs an instance of one of the BBOB test functions.
+	 * 
+	 * @param function the index of the test function
+	 * @param dimension the number of decision variables
+	 * @param instance the function instance
+	 * @return the BBOB test function
+	 */
 	public static BBOBFunction createInstance(int function, int dimension, int instance) {
 		int rseed = function + 10000 * instance;
 
@@ -342,10 +369,21 @@ public class BBOB2016Problems extends ProblemProvider {
 		}
 	}
 
+	/**
+	 * Comparator used by the Gallagher function to order the peaks by height.
+	 */
 	private static class GallagherPeakComprator implements Comparator<Integer> {
 
+		/**
+		 * The height of each peak.
+		 */
 		private final double[] gallagher_peaks;
 
+		/**
+		 * Constructs a new comparator for ordering Gallagher peaks by height.
+		 * 
+		 * @param gallagher_peaks the height of each peak
+		 */
 		public GallagherPeakComprator(double[] gallagher_peaks) {
 			super();
 			this.gallagher_peaks = gallagher_peaks;

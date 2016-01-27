@@ -27,8 +27,25 @@ import org.moeaframework.core.variable.EncodingUtils;
  * file located in the Coco Framework repository for more details.
  */
 
+/**
+ * The Rastrigin function.  For a problem with D variables, this highly
+ * multimodal function has approximately 10^D local optima.  It is not intended
+ * for this function to be used directly since the BBOB test suite applies
+ * additional transformations to the test functions.
+ * <p>
+ * Properties:
+ * <ul>
+ *   <li>Separable
+ *   <li>Multimodal
+ * </ul>
+ */
 public class Rastrigin extends BBOBFunction {
 	
+	/**
+	 * Constructs a new instance of the Rastrigin function.
+	 * 
+	 * @param numberOfVariables the number of decision variables
+	 */
 	public Rastrigin(int numberOfVariables) {
 		super(numberOfVariables);
 	}

@@ -26,10 +26,21 @@ import org.moeaframework.core.Solution;
  * file located in the Coco Framework repository for more details.
  */
 
+/**
+ * Transformation that oscillates the objective values of the inner function.
+ */
 public class TransformObjectiveOscillate extends BBOBTransformation {
 	
+	/**
+	 * Controls the frequency of the oscillation.
+	 */
 	public static final double ALPHA = 0.1;
 	
+	/**
+	 * Constructs a new instance of the oscillation transformation.
+	 * 
+	 * @param function the inner function
+	 */
 	public TransformObjectiveOscillate(BBOBFunction function) {
 		super(function);
 	}

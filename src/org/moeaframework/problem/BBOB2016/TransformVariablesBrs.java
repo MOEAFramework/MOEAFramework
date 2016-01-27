@@ -27,8 +27,17 @@ import org.moeaframework.core.variable.EncodingUtils;
  * file located in the Coco Framework repository for more details.
  */
 
+/**
+ * Transformation that skews or scales the decision variables using the same
+ * method described by the Buche-Rastrigin function.
+ */
 public class TransformVariablesBrs extends BBOBTransformation {
 
+	/**
+	 * Constructs a new instance of the Buche-Rastrigin scaling transformation.
+	 * 
+	 * @param function the inner function
+	 */
 	public TransformVariablesBrs(BBOBFunction function) {
 		super(function);
 	}

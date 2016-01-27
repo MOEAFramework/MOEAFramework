@@ -27,16 +27,47 @@ import org.moeaframework.core.variable.EncodingUtils;
  * file located in the Coco Framework repository for more details.
  */
 
+/**
+ * The 101-peak Gallagher function.  It is not intended for this function to be
+ * used directly since the BBOB test suite applies additional transformations
+ * to the test functions.
+ * <p>
+ * Properties:
+ * <ul>
+ *   <li>Multimodal (with random locations of local optima)
+ * </ul>
+ */
 public class Gallagher extends BBOBFunction {
 
+	/**
+	 * The rotation matrix.
+	 */
 	private final double[][] rotation;
 	
+	/**
+	 * The location of the local optima.
+	 */
 	private final double[][] xLocal;
 	
+	/**
+	 * Controls the steepness of the peaks.
+	 */
 	private final double[][] arrScales;
 	
+	/**
+	 * The magnitude of the peaks.
+	 */
 	private final double[] peaks;
 	
+	/**
+	 * Constructs a new instance of the 101-peak Gallagher function.
+	 * 
+	 * @param numberOfVariables the number of decision variables
+	 * @param rotation the rotation matrix
+	 * @param xLocal the location of the local optima
+	 * @param arrScales controls the steepness of the peaks
+	 * @param peaks the magnitude of the peaks
+	 */
 	public Gallagher(int numberOfVariables, double[][] rotation, double[][] xLocal, double[][] arrScales, double[] peaks) {
 		super(numberOfVariables);
 		this.rotation = rotation;

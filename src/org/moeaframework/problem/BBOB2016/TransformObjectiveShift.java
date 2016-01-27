@@ -26,10 +26,22 @@ import org.moeaframework.core.Solution;
  * file located in the Coco Framework repository for more details.
  */
 
+/**
+ * Transformation that offsets the value of the objective by a fixed amount.
+ */
 public class TransformObjectiveShift extends BBOBTransformation {
 	
+	/**
+	 * The fixed offset.
+	 */
 	private final double offset;
 	
+	/**
+	 * Constructs a new instance of the shift objective transformation.
+	 * 
+	 * @param function the inner function
+	 * @param offset the fixed offset
+	 */
 	public TransformObjectiveShift(BBOBFunction function, double offset) {
 		super(function);
 		this.offset = offset;

@@ -27,10 +27,22 @@ import org.moeaframework.core.variable.EncodingUtils;
  * file located in the Coco Framework repository for more details.
  */
 
+/**
+ * Transformation used to convert a symmetric to an asymmetric decision space.
+ */
 public class TransformVariablesAsymmetric extends BBOBTransformation {
 
+	/**
+	 * Factor controlling the magnitude of the asymmetry.
+	 */
 	private final double beta;
 	
+	/**
+	 * Constructs a new instance of the asymmetric transformation.
+	 * 
+	 * @param function the inner function
+	 * @param beta factor controlling the magnitude of the asymmetry
+	 */
 	public TransformVariablesAsymmetric(BBOBFunction function, double beta) {
 		super(function);
 		this.beta = beta;

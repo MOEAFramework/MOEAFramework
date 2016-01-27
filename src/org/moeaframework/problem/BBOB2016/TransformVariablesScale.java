@@ -27,10 +27,23 @@ import org.moeaframework.core.variable.EncodingUtils;
  * file located in the Coco Framework repository for more details.
  */
 
+/**
+ * Transformation that scales the decision variables by a given factor.
+ */
 public class TransformVariablesScale extends BBOBTransformation {
 
+	/**
+	 * The scaling factor.
+	 */
 	private final double factor;
 	
+	/**
+	 * Constructs a new transformation that scales the decision variables by
+	 * a given factor.
+	 * 
+	 * @param function the inner function
+	 * @param factor the scaling factor
+	 */
 	public TransformVariablesScale(BBOBFunction function, double factor) {
 		super(function);
 		this.factor = factor;

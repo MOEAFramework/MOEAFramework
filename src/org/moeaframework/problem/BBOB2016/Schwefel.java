@@ -27,8 +27,24 @@ import org.moeaframework.core.variable.EncodingUtils;
  * file located in the Coco Framework repository for more details.
  */
 
+/**
+ * The Schwefel function.  It is not intended for this function to be
+ * used directly since the BBOB test suite applies additional transformations
+ * to the test functions.
+ * <p>
+ * Properties:
+ * <ul>
+ *   <li>Multimodal
+ *   <li>Partially separable
+ * </ul>
+ */
 public class Schwefel extends BBOBFunction {
 	
+	/**
+	 * Constructs a new instance of the Schwefel function.
+	 * 
+	 * @param numberOfVariables the number of decision variables
+	 */
 	public Schwefel(int numberOfVariables) {
 		super(numberOfVariables);
 	}

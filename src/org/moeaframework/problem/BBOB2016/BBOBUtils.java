@@ -29,12 +29,39 @@ import org.moeaframework.core.variable.RealVariable;
 public class BBOBUtils {
 	
 	/**
-	 * All BBOB problems use decision variables in the domain [-5, 5], but the
-	 * transformed problems may expand to a larger domain.
-	 * @return
+	 * The lower bound returned by {@link #createTransformedVariable()}.
+	 */
+	private static double LOWER_BOUND = -100000.0;
+	
+	/**
+	 * The upper bound returned by {@link #createTransformedVariable()}.
+	 */
+	private static double UPPER_BOUND = 100000.0;
+	
+	/**
+	 * Overrides the lower and upper bounds returned by
+	 * {@link #createTransformedVariable()}.  The bounds must be sufficiently
+	 * large, otherwise an exception may be thrown.
+	 * 
+	 * @param lower the new lower bounds
+	 * @param upper the new upper bounds
+	 */
+	public static void setBounds(double lower, double upper) {
+		LOWER_BOUND = lower;
+		UPPER_BOUND = upper;
+	}
+	
+	/**
+	 * All BBOB problems are defined with the domain [-5, 5], but the inner,
+	 * transformed functions are defined over the entire real domain.  This
+	 * method returns a real decision variable bounded from
+	 * [@value LOWER_BOUNDS, @value UPPER_BOUNDS], which practically covers the
+	 * entire real domain.
+	 * 
+	 * @return a real decision variable used by the BBOB inner functions
 	 */
 	public static RealVariable createTransformedVariable() {
-		return new RealVariable(-10000.0, 10000.0);
+		return new RealVariable(LOWER_BOUND, UPPER_BOUND);
 	}
 
 	public static double[] uniform(int N, long inseed) {

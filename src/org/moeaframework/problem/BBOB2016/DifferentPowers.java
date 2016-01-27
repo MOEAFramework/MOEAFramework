@@ -27,8 +27,26 @@ import org.moeaframework.core.variable.EncodingUtils;
  * file located in the Coco Framework repository for more details.
  */
 
+/**
+ * The Different Powers function.  It is not intended for this function to be
+ * used directly since the BBOB test suite applies additional transformations
+ * to the test functions.
+ * <p>
+ * Properties:
+ * <ul>
+ *   <li>High conditioning
+ *   <li>Unimodal
+ *   <li>Rotated
+ *   <li>Small solution volume
+ * </ul>
+ */
 public class DifferentPowers extends BBOBFunction {
 	
+	/**
+	 * Constructs a new instance of the Different Powers function.
+	 * 
+	 * @param numberOfVariables the number of decision variables
+	 */
 	public DifferentPowers(int numberOfVariables) {
 		super(numberOfVariables);
 	}

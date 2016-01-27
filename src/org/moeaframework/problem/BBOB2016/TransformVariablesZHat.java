@@ -27,10 +27,22 @@ import org.moeaframework.core.variable.EncodingUtils;
  * file located in the Coco Framework repository for more details.
  */
 
+/**
+ * The z-hat transformation used by the Schwefel function.
+ */
 public class TransformVariablesZHat extends BBOBTransformation {
 
+	/**
+	 * The location of the optimum.
+	 */
 	private final double[] xopt;
 	
+	/**
+	 * Constructs a new instance of the z-hat transformation.
+	 * 
+	 * @param function the inner function
+	 * @param xopt the location of the optimum
+	 */
 	public TransformVariablesZHat(BBOBFunction function, double[] xopt) {
 		super(function);
 		this.xopt = xopt;

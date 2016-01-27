@@ -4,11 +4,16 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.problem.AbstractProblem;
 
 /**
- * Abstract class for the functions and transformations provided by the BBOB
- * test suite.
+ * Abstract class for the functions provided by the BBOB test suite.  These
+ * functions are exclusively single-objective.
  */
 public abstract class BBOBFunction extends AbstractProblem {
 
+	/**
+	 * Constructs a new function for the BBOB test suite.
+	 * 
+	 * @param numberOfVariables the number of decision variables
+	 */
 	public BBOBFunction(int numberOfVariables) {
 		super(numberOfVariables, 1);
 	}

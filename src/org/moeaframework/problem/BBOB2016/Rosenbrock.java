@@ -27,8 +27,24 @@ import org.moeaframework.core.variable.EncodingUtils;
  * file located in the Coco Framework repository for more details.
  */
 
+/**
+ * The Rosenbrock function.  It is not intended for this function to be used
+ * directly since the BBOB test suite applies additional transformations to the
+ * test functions.
+ * <p>
+ * Properties:
+ * <ul>
+ *   <li>Partially separable
+ *   <li>Low or moderate conditioning
+ * </ul>
+ */
 public class Rosenbrock extends BBOBFunction {
 	
+	/**
+	 * Constructs a new instance of the Rosenbrock function.
+	 * 
+	 * @param numberOfVariables the number of decision variables
+	 */
 	public Rosenbrock(int numberOfVariables) {
 		super(numberOfVariables);
 	}

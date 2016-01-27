@@ -27,10 +27,25 @@ import org.moeaframework.core.variable.EncodingUtils;
  * file located in the Coco Framework repository for more details.
  */
 
+/**
+ * The Sharp Ridge function.  It is not intended for this function to be
+ * used directly since the BBOB test suite applies additional transformations
+ * to the test functions.
+ * <p>
+ * Properties:
+ * <ul>
+ *   <li>Non-differentiable
+ *   <li>Constant gradient
+ *   <li>Unimodal
+ * </ul>
+ */
 public class SharpRidge extends BBOBFunction {
 	
-	public static final double ALPHA = 100.0;
-	
+	/**
+	 * Constructs a new instance of the Sharp Ridge function.
+	 * 
+	 * @param numberOfVariables the number of decision variables
+	 */
 	public SharpRidge(int numberOfVariables) {
 		super(numberOfVariables);
 	}
@@ -44,7 +59,7 @@ public class SharpRidge extends BBOBFunction {
 			result += x[i] * x[i];
 		}
 		
-		solution.setObjective(0, ALPHA * Math.sqrt(result) + x[0] * x[0]);
+		solution.setObjective(0, 100.0 * Math.sqrt(result) + x[0] * x[0]);
 	}
 
 }

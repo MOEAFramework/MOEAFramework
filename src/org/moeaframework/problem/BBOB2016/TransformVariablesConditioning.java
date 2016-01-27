@@ -27,10 +27,24 @@ import org.moeaframework.core.variable.EncodingUtils;
  * file located in the Coco Framework repository for more details.
  */
 
+/**
+ * Transformation that alters the condition number of the function.  Increasing
+ * the condition number increases the magnitude of changes observed in the
+ * function outputs caused by small changes to the inputs.
+ */
 public class TransformVariablesConditioning extends BBOBTransformation {
 
+	/**
+	 * Factor controlling the increase in conditioning.
+	 */
 	private final double alpha;
 	
+	/**
+	 * Constructs a new instance of the conditioning transformation.
+	 * 
+	 * @param function the inner function
+	 * @param alpha factor controlling the increase in conditioning
+	 */
 	public TransformVariablesConditioning(BBOBFunction function, double alpha) {
 		super(function);
 		this.alpha = alpha;

@@ -27,10 +27,23 @@ import org.moeaframework.core.variable.EncodingUtils;
  * file located in the Coco Framework repository for more details.
  */
 
+/**
+ * Transformation that shifts all decision variables by a given offset.
+ */
 public class TransformVariablesShift extends BBOBTransformation {
 	
+	/**
+	 * The offset.
+	 */
 	private final double[] offset;
 	
+	/**
+	 * Constructs a transformation that shifts all decision variables by a
+	 * given offset.
+	 * 
+	 * @param function the inner function
+	 * @param offset the offset
+	 */
 	public TransformVariablesShift(BBOBFunction function, double[] offset) {
 		super(function);
 		this.offset = offset;
