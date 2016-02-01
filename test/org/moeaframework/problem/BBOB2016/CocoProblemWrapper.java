@@ -45,7 +45,8 @@ public class CocoProblemWrapper extends AbstractProblem {
 		Solution solution = new Solution(numberOfVariables, numberOfObjectives, numberOfConstraints);
 		
 		for (int i = 0; i < numberOfVariables; i++) {
-			solution.setVariable(i, EncodingUtils.newReal(problem.getSmallestValueOfInterest(i), problem.getLargestValueOfInterest(i)));
+			solution.setVariable(i, EncodingUtils.newReal(
+					problem.getSmallestValueOfInterest(i), problem.getLargestValueOfInterest(i)));
 		}
 		
 		return solution;
