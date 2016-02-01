@@ -157,7 +157,8 @@ appreciated: new feature additions, bug fixes, testing, documentation, user
 support, translations, promotions, etc.  Even the smallest contribution can
 make a huge difference.
 
-Please see <http://www.moeaframework.org/contribute.html> for details.
+Please visit our Github page at <https://github.com/MOEAFramework/MOEAFramework>
+to learn more.
 
 
 ------------
@@ -189,5 +190,6 @@ this and other free and open source projects.
     EclEmma <http://www.eclemma.org/>
     FindBugs <http://findbugs.sourceforge.net/>
     Ant <http://ant.apache.org/>
-    Subversion <http://subversion.apache.org/>
     Checkstyle <http://checkstyle.sourceforge.net/>
+    Git <https://git-scm.com/>
+    
