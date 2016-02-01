@@ -1,4 +1,4 @@
-% Copyright 2011-2015 David Hadka.  All Rights Reserved.
+% Copyright 2011-2016 David Hadka.  All Rights Reserved.
 %
 % This file is part of the MOEA Framework User Manual.
 %
@@ -9,13 +9,23 @@
 % Texts.  A copy of the license is included in the section entitled "GNU Free
 % Documentation License".
 
-\chapter{Installation Instructions}
+\section{What is the MOEA Framework?}
 
-This chapter details the steps necessary to download and install the MOEA Framework on your computer.
+The MOEA Framework is a free and open source Java library for developing and experimenting with multiobjective evolutionary algorithms (MOEAs) and other general-purpose optimization algorithms.  A number of algorithms are provided out-of-the-box, including NSGA-II, NSGA-III, $\epsilon$-MOEA, GDE3 and MOEA/D.  In addition, the MOEA Framework provides the tools necessary to rapidly design, develop, execute and statistically test optimization algorithms.  The following features of the MOEA Framework distinguish it from available alternatives:
 
-\section{Understanding the License}
+\paragraph{Fast, reliable implementations of many state-of-the-art multiobjective evolutionary algorithms.}  The MOEA Framework contains internally NSGA-II, NSGA-III, $\epsilon$-MOEA, $\epsilon$-NSGA-II, PAES, PESA2, SPEA2, IBEA, SMS-EMOA, GDE3, SMPSO, OMOPSO, CMA-ES, and MOEA/D.  These algorithms are optimized for performance, making them readily available for high performance applications.  By also supporting the JMetal and PISA libraries, the MOEA Framework provides access to $30$ multiobjective optimization algorithms.
 
-Prior to downloading, using, modifying or distributing the MOEA Framework, developers should make themselves aware of the conditions of the GNU Lesser General Public License (GNU LGPL).  While the GNU LGPL is a free software license, it does define certain conditions that must be followed in order to use, modify and distribute the MOEA Framework library.  These conditions are enacted to ensure that all recipients of the MOEA Framework (in its original and modified forms) are granted the freedoms to use, modify, study and distribute the MOEA Framework so long as the conditions of the GNU LGPL are met.  Visit \webpage{http://www.gnu.org/licenses/lgpl.html} to read the full terms of this license.
+\paragraph{Extensible with custom algorithms, problems and operators.}  The MOEA Framework provides a base set of algorithms, test problems and search operators, but can also be easily extended to include additional components.  Using a Service Provider Interface (SPI), new algorithms and problems are seamlessly integrated within the MOEA Framework.  
+
+\paragraph{Modular design for constructing new optimization algorithms from existing components.}  The well-structured, object-oriented design of the MOEA Framework library allows combining existing components to construct new optimization algorithms.  And if needed functionality is not available in the MOEA Framework, you can always extend an existing class or add new classes to support any desired feature.
+
+\paragraph{Permissive open source license.}  The MOEA Framework is licensed under the free and open GNU Lesser General Public License, version 3 or (at your option) any later version.  This allows end users to study, modify, and distribute the MOEA Framework freely.
+
+\paragraph{Fully documented source code.}  The source code is fully documented and is frequently updated to remain consistent with any changes.  Furthermore, an extensive user manual is provided detailing the use of the MOEA Framework in detail.
+
+\paragraph{Extensive support available online.}  As an actively maintained project, bug fixes and new features are constantly added.  We are constantly striving to improve this product.  To aid this process, our website provides the tools to report bugs, request new features, or get answers to your questions.
+
+\paragraph{Over 1200 test cases to ensure validity.}  Every release of the MOEA Framework undergoes extensive testing and quality control checks.  And, if any bugs are discovered that survive this testing, we will promptly fix the issues and release patches.  
 
 \section{Which Distribution is Right for Me?}
 
@@ -28,21 +38,22 @@ The compiled binaries distribution contains a fully-working MOEA Framework insta
 The source code distribution contains all source code, unit tests, documentation and data files.  This distribution gives users full control over the MOEA Framework, as any component can be modified as needed.  As such, this download is recommended for developers wishing to contribute to or study the inner workings of the MOEA Framework.
 
 \paragraph{Demo Application}
-The demo application provides several interactive demos of the MOEA Framework launched by double-clicking the downloaded JAR file or running the command \plaintext{java - jar MOEAFramework-%VERSION%-Demo.jar}.  This download is intended for first-time users to quickly learn about the MOEA Framework and its capabilities.
+The demo application provides several interactive demos of the MOEA Framework launched by double-clicking the downloaded JAR file.  This download is intended for first-time users to quickly learn about the MOEA Framework and its capabilities.
 
 \section{Obtaining a Copy}
 
-The various MOEA Framework distributions can be downloaded from our website at \webpage{http://www.moeaframework.org/}.  The compiled binaries and source code distributions are packaged in a compressed tar (.tar.gz) file.  Unix/Linux/Mac users can extract the file contents using the following command:
+The various MOEA Framework distributions can be downloaded from our website at \webpage{moeaframework.org/}.  The compiled binaries and source code distributions are packaged in a compressed tar (.tar.gz) file.  Unix/Linux/Mac users can extract the file contents using the following command:
 
 \begin{lstlisting}[language=Plaintext]
 tar -xzf MOEAFramework-%VERSION%.tar.gz
 \end{lstlisting}
 
+\noindent
 Windows users must use an unzip utility like 7-Zip to extract the file contents.  7-Zip is a free, open source program which can be downloaded from \webpage{http://www.7-zip.org/}.
 
 \section{Installing Dependencies}
 
-The software packages listed below are required or recommended in order to use the MOEA Framework.  Any software package marked as required MUST be installed on your computer in order to use the MOEA Framework.  Software marked as optional is not required to be installed, but will generally make your life easier.  This manual will often provide instructions specific to these optional software packages.
+The software packages listed below are required or recommended in order to use the MOEA Framework.  Any software package marked as required MUST be installed on your computer in order to use the MOEA Framework.  Software marked as optional is not required to be installed, but will generally make your life easier.
 
 \subsection{Java 6+ (Required)}
 Java 6, or any later version, is required for any system running the MOEA Framework.  If downloading the compiled binaries or demo application, you only need to install the Java Runtime Environment (JRE).  The source code download requires the Java Development Kit (JDK), which contains the compiler and other developer tools.  We recommend one of the following vendors (most are free):
@@ -74,11 +85,11 @@ Java 6, or any later version, is required for any system running the MOEA Framew
 Please follow the installation instruction accompanying your chosen JRE or JDK.
 
 \subsection{Eclipse or NetBeans (Optional)}
-Eclipse and NetBeans are two development environments for writing, debugging, testing, and running Java programs.  Eclipse can be downloaded for free from \webpage{http://www.eclipse.org/}, and NetBeans can be obtained from \webpage{http://netbeans.org/}.
+Eclipse and NetBeans are two development environments for writing, debugging, testing, and running Java programs.  Eclipse can be downloaded for free from \webpage{eclipse.org/}, and NetBeans can be obtained from \webpage{netbeans.org/}.
 
 The installation of Eclipse is simple --- just extract the compressed file to a folder of your choice and run the Eclipse executable from this folder.  First-time users of Eclipse may be prompted to select a workspace location.  The default location is typically fine.  Click the checkbox to no longer show this dialog and click Ok.
 
-To install NetBeans, simply run the executable.  Once installed, you can launch NetBeans by clicking the NetBeans link in your start menu.
+To install NetBeans, simply run the downloaded executable.  Once installed, you can launch NetBeans by clicking the NetBeans link in your start menu.
 
 \subsection{Apache Ant (Optional)}
 Apache Ant is a Java tool for automatically compiling and packaging projects, similar to the Make utility on Unix/Linux.  Individuals working with the source code distribution should consider installing Apache Ant, as it helps automate building and testing the MOEA Framework.  Apache Ant can be downloaded from \webpage{http://ant.apache.org/}.  The installation instructions provided by Ant should be followed.
@@ -129,44 +140,6 @@ Double-click the downloaded JAR file.  If the demo window does not appear, try t
 java -jar MOEAFramework-%VERSION%-Demo.jar
 \end{lstlisting}
 
-\section{Distribution Contents}
-This section describes the contents of the compiled binaries and source code distribution downloads.
-
-\subsection{Compiled Binary Contents}
-\begin{description}
-  \item[\folder{javadoc/}] contains the MOEA Framework API, which is a valuable resource for software developers as it provides descriptions of all classes, methods and variables available in the MOEA Framework.  The API may be viewed in a web browser by opening the \file{index.html} file.
-  \item[\folder{lib/}] contains the compiled libraries required to use the MOEA Framework.  This includes the MOEA Framework compiled libraries and all required third-party libraries.
-  \item[\folder{licenses/}] contains the complete text of all open source software licenses for the MOEA Framework and third-party libraries.  In order to comply with the licenses, this folder should always be distributed alongside the compiled libraries in the lib folder.
-  \item[\folder{pf/}] contains the Pareto front files for the test problems provided by default in the MOEA Framework.
-  \item[\file{global.properties}] is the configuration file for the MOEA Framework.  Default settings are used unless the settings are provided in this file.
-  \item[\file{HELP}] provides a comprehensive list of errors and warning messages encountered when using the MOEA Framework.  When available, information about the cause and ways to fix errors are suggested.
-  \item[\file{launch-diagnostic-tool.bat}] launches the diagnostic tool GUI that allows users to run algorithms and display runtime information about the algorithms.  This file is for Windows systems only.
-  \item[\file{LICENSE}] lists the open source software licenses in use by the MOEA Framework, contributor code and third-party libraries.
-  \item[\file{NEWS}] details all important changes made in the current release and prior releases.  This includes critical bug fixes, changes, enhancements and new features.
-  \item[\file{README}] provides information about obtaining, installing, using, distributing, licensing and contributing to the MOEA Framework.
-\end{description}
-
-\subsection{Source Code Contents}
-\begin{description}
-  \item[\folder{auxiliary/}] contains an assortment of files and utilities used by the MOEA Framework, but are not required in a build.  For instance, this folder contains example C/C++ code for interfacing C/C++ problems with the MOEA Framework.
-  \item[\folder{examples/}] contains examples using the MOEA Framework.  These examples are also available on the website.
-  \item[\folder{lib/}] contains all required third-party libraries used by the MOEA Framework.
-  \item[\folder{manual/}] contains the LaTeX files and figures for generating this user manual.
-  \item[\folder{META-INF/}] contains important files which are packaged with the compiled binaries.  Such files include the service provider declarations, licensing information, etc.
-  \item[\folder{pf/}] contains the Pareto front files for the test problems provided by default in the MOEA Framework.
-  \item[\folder{src/}] contains all source code in use by the core MOEA Framework library.
-  \item[\folder{test/}] contains all JUnit unit tests used to ensure the correctness of the MOEA Framework source code.
-  \item[\folder{website/}] contains all files used to generate the website.
-  \item[\file{build.xml}] contains the Apache Ant build scripts for compiling and/or building the MOEA Framework library.
-  \item[\file{global.properties}] is the configuration file for the MOEA Framework.  Default settings are used unless the settings are provided in this file.
-  \item[\file{HELP}] provides a comprehensive list of errors and warning messages encountered when using the MOEA Framework.  When available, information about the cause and ways to fix errors are suggested.
-  \item[\file{LICENSE}] lists the open source software licenses in use by the MOEA Framework, contributor code and third-party libraries.
-  \item[\file{NEWS}] details all important changes made in the current release and prior releases.  This includes critical bug fixes, changes, enhancements and new features.
-  \item[\file{README}] provides information about obtaining, installing, using, distributing, licensing and contributing to the MOEA Framework.
-  \item[\file{test.xml}] contains the Apache Ant testing scripts used to automatically run all JUnit unit tests and provide a human-readable report of the test results.
-  \item[\file{TODO}] lists all planned changes for the MOEA Framework source code.  This file is a starting point for individuals wishing to contribute modifications to the MOEA Framework.
-\end{description}
-
 \section{Resolving Dependencies with Maven}
 As of version 2.4, the MOEA Framework and its dependencies can be resolved using the Maven dependency management system.  Maven is available from \webpage{http://maven.apache.org/}.  To add the MOEA Framework to your Maven project, add the following dependency to your \file{pom.xml} file:
 
@@ -178,19 +151,23 @@ As of version 2.4, the MOEA Framework and its dependencies can be resolved using
 </dependency>
 \end{lstlisting}
 
-\section{A Note on Running Examples}
-Several example applications are provided with the MOEA Framework in the \folder{\moeaframework/examples/} folder.  Details on these examples can be found on our website at \webpage{http://moeaframework.org/examples.html}.  In general, you will want to compile and run these examples from the \folder{\moeaframework} folder, with a command similar to:
+\section{Running Examples}
+Several example applications are provided with the MOEA Framework in the \folder{\moeaframework/examples/} folder.  If using Eclipse or Netbeans, you can run these examples directly within the GUI.  For example, in Eclipse, right-click Example1.java and select Run as $\rightarrow$ Java Application.  If running from the command line, you will first need to compile the code using the Java compiler (\texttt{javac}) followed by running the example in the Java virtual machine (\texttt{java}).  For example, you can compile and run the first example on Windows as follows:
 
 \begin{lstlisting}[language=Plaintext]
-javac -cp "examples;lib/*" examples/Example1.java
-java -cp "examples;lib/*" Example1
+javac -cp ".;examples;lib/*" examples/Example1.java
+java -cp ".;examples;lib/*" Example1
 \end{lstlisting}
 
-If you receive an error saying ``no reference set available'', that is because the MOEA Framework is unable to locate the Pareto sets for the example problems, typically located in \folder{\moeaframework/pf/}.  To resolve this error, you will need to add the root \folder{\moeaframework} folder to your classpath, such as:
+\noindent
+If using Unix/Linux, replace the semicolons (;) with colons (:) in the above commands.  You can find more details on the available examples on our website at \webpage{moeaframework.org/examples.html} or viewing the source code for the examples.
 
-\begin{lstlisting}[language=Plaintext]
-java -cp "C:/path/to/MOEAFramework-2.4;C:/path/to/MOEAFramework-2.4/lib/*;C:/path/to/MOEAFramework-2.4/examples" Example1
-\end{lstlisting}
+\section{Getting Help}
+We encourage new users to read through our examples to learn more about the basic use of the MOEA Framework.  We also have a number of online resources.  The documentation page on our website at \webpage{moeaframework.org/documentation.html} provides access to the API Specification showing all available documentation for classes and methods.  In addition, you can find books available for purchase including the recommended Beginner's Guide to the MOEA Framework.  You can also visit our Github page at \webpage{https://github.com/MOEAFramework/MOEAFramework} to submit bug reports and help requests.
 
 \section{Conclusion}
-This chapter described each of the MOEA Framework distributions.  At this point, you should have a working MOEA Framework distribution which you can use to run the examples in subsequent chapters.
+Thanks again for downloading the MOEA Framework.  We hope you find it useful in your work.  If using the MOEA Framework in academic publications, please include a citation as follows:
+
+\begin{quote}
+  Hadka, David (2015).  MOEA Framework - A Free and Open Source Java Framework for Multiobjective Optimization. Version %VERSION%, http://www.moeaframework.org/.
+\end{quote}

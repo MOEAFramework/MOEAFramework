@@ -1,4 +1,4 @@
-% Copyright 2011-2015 David Hadka.  All Rights Reserved.
+% Copyright 2011-2016 David Hadka.  All Rights Reserved.
 %
 % This file is part of the MOEA Framework User Manual.
 %
@@ -9,7 +9,7 @@
 % Texts.  A copy of the license is included in the section entitled "GNU Free
 % Documentation License".
 
-\documentclass[12pt,twoside]{book}
+\documentclass[11pt,oneside]{article}
 
 \usepackage{graphicx} %insert graphics into text
 \usepackage{wrapfig} %wrap text around figures
@@ -23,6 +23,7 @@
 \usepackage{makeidx} %compile index of keywords
 \usepackage{rotating} %displaying tables and figures in landscape mode
 \usepackage{tabularx} %advanced tables with text wrapping
+\usepackage{fullpage}
 
 \makeindex
 \input{style.tex}
@@ -31,46 +32,7 @@
 
 \sloppy %prevents text in margins, but sometimes produces large spaces between words
 
-\frontmatter
 \include{title}
-\include{copyright}
-\include{preface}
-\include{contributing}
-\tableofcontents
-
-\mainmatter
-\include{introduction}
-
-\part{Beginner's Guide - Installing and Using the MOEA Framework}
 \include{installation}
-\include{executor}
-\include{diagnostic}
-\include{problems}
-\include{representations}
-\include{knapsack}
-
-\part{Advanced Guide - Large-Scale Experiments, Parallelization, and other Advanced Topics}
-\include{comparison}
-\include{algorithms}
-\include{parallel}
-\include{advanced}
-
-\part{Developer's Guide - Extending and Contributing to the MOEA Framework}
-\include{developer}
-\include{errors}
-
-%\appendix
-
-\backmatter
-%\addcontentsline{toc}{chapter}{Index}
-%\printindex
-%\clearpage
-\include{credits}
-\include{license}
-\include{references}
-
-%\bibliographystyle{apalike}
-%\addcontentsline{toc}{chapter}{Bibliography}
-%\bibliography{../references}
 
 \end{document}
