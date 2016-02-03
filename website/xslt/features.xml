@@ -236,6 +236,10 @@ new problems written in Java or other languages can be easily incorporated.</p>
   	<td>9 scalable, real-valued problems by Huband et al. (2005)</td>
   </tr>
   <tr>
+    <td style="font-weight: bold">BBOB-2016</td>
+    <td>55 bi-objective problems from the BBOB workshop hosted at GECCO 2016</td>
+  </tr>
+  <tr>
   	<td style="font-weight: bold">Miscellaneous</td>
   	<td>28 real-valued, binary, permutation, and program-based test problems from the literature (e.g., knapsack, NK-landscapes)</td>
   </tr>
