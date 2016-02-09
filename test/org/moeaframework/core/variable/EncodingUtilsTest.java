@@ -309,6 +309,15 @@ public class EncodingUtilsTest {
 	}
 	
 	@Test
+	public void testSubsetEncoding() {
+		Variable variable = EncodingUtils.newSubset(5, 10);
+		
+		EncodingUtils.setSubset(variable, new int[] { 1, 3, 5, 6, 7 });
+		Assert.assertArrayEquals(new int[] { 1, 3, 5, 6, 7 },
+				EncodingUtils.getSubset(variable));
+	}
+	
+	@Test
 	public void testRealArrayEncoding() {
 		Solution solution = new Solution(3, 1);
 		solution.setVariable(0, EncodingUtils.newReal(0.0, 1.0));
@@ -413,6 +422,12 @@ public class EncodingUtilsTest {
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
+	public void testSubsetInvalidType1() {
+		EncodingUtils.setSubset(EncodingUtils.newBinary(3),
+				new int[] { 1, 3, 5, 6, 7 });
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
 	public void testRealInvalidType2() {
 		EncodingUtils.getReal(EncodingUtils.newBinary(3));
 	}
@@ -440,6 +455,11 @@ public class EncodingUtilsTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void testPermutationInvalidType2() {
 		EncodingUtils.getPermutation(EncodingUtils.newBinary(3));
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testSubsetInvalidType2() {
+		EncodingUtils.getSubset(EncodingUtils.newBinary(3));
 	}
 	
 	@Test(expected = IllegalArgumentException.class)

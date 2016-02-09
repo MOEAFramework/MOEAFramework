@@ -71,6 +71,11 @@ public class EncodingUtils {
 	private static final String NOT_PERMUTATION = "not a permutation";
 	
 	/**
+	 * The error message shown when the decision variable is not a subset.
+	 */
+	private static final String NOT_SUBSET = "not a subset";
+	
+	/**
 	 * The error message shown when the decision variable is not a binary value.
 	 */
 	private static final String NOT_BINARY = "not a binary variable";
@@ -283,6 +288,17 @@ public class EncodingUtils {
 	}
 	
 	/**
+	 * Returns a new subset with the specified number of items.
+	 * 
+	 * @param k the fixed size of the subset
+	 * @param n the total number of items in the set
+	 * @return a new subset with the specified number of items
+	 */
+	public static Subset newSubset(int k, int n) {
+		return new Subset(k, n);
+	}
+	
+	/**
 	 * Returns the value stored in a floating-point decision variable.
 	 * 
 	 * @param variable the decision variable
@@ -390,6 +406,22 @@ public class EncodingUtils {
 			return ((Permutation)variable).toArray();
 		} else {
 			throw new IllegalArgumentException(NOT_PERMUTATION);
+		}
+	}
+	
+	/**
+	 * Returns the value stored in a subset decision variable.
+	 * 
+	 * @param variable the decision variable
+	 * @return the value stored in a subset decision variable
+	 * @throws IllegalArgumentException if the decision variable is not of type
+	 *         {@link Subset}
+	 */
+	public static int[] getSubset(Variable variable) {
+		if (variable instanceof Subset) {
+			return ((Subset)variable).toArray();
+		} else {
+			throw new IllegalArgumentException(NOT_SUBSET);
 		}
 	}
 	
@@ -681,6 +713,24 @@ public class EncodingUtils {
 			((Permutation)variable).fromArray(values);
 		} else {
 			throw new IllegalArgumentException(NOT_PERMUTATION);
+		}
+	}
+	
+	/**
+	 * Sets the value of a subset decision variable.
+	 * 
+	 * @param variable the decision variable
+	 * @param values the subset to assign the subset decision variable
+	 * @throws IllegalArgumentException if the decision variable is not of type
+	 *         {@link Subset}
+	 * @throws IllegalArgumentException if {@code values} is not a valid
+	 *         subset
+	 */
+	public static void setSubset(Variable variable, int[] values) {
+		if (variable instanceof Subset) {
+			((Subset)variable).fromArray(values);
+		} else {
+			throw new IllegalArgumentException(NOT_SUBSET);
 		}
 	}
 
