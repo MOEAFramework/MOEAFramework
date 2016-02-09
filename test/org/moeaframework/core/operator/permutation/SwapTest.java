@@ -31,7 +31,7 @@ import org.moeaframework.core.variable.Permutation;
 public class SwapTest {
 
 	/**
-	 * Tests if the grammar crossover operator is type-safe.
+	 * Tests if the swap mutation operator is type-safe.
 	 */
 	@Test
 	public void testTypeSafety() {

@@ -31,7 +31,7 @@ import org.moeaframework.core.variable.Permutation;
 public class InsertionTest {
 
 	/**
-	 * Tests if the grammar crossover operator is type-safe.
+	 * Tests if the insertion mutation operator is type-safe.
 	 */
 	@Test
 	public void testTypeSafety() {

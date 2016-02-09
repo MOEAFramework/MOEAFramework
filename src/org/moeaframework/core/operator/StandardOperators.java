@@ -42,6 +42,8 @@ import org.moeaframework.core.operator.real.SBX;
 import org.moeaframework.core.operator.real.SPX;
 import org.moeaframework.core.operator.real.UM;
 import org.moeaframework.core.operator.real.UNDX;
+import org.moeaframework.core.operator.subset.Replace;
+import org.moeaframework.core.operator.subset.SSX;
 import org.moeaframework.core.spi.OperatorProvider;
 import org.moeaframework.core.spi.ProviderNotFoundException;
 import org.moeaframework.core.variable.BinaryVariable;
@@ -49,6 +51,7 @@ import org.moeaframework.core.variable.Grammar;
 import org.moeaframework.core.variable.Permutation;
 import org.moeaframework.core.variable.Program;
 import org.moeaframework.core.variable.RealVariable;
+import org.moeaframework.core.variable.Subset;
 import org.moeaframework.util.TypedProperties;
 
 /**
@@ -141,6 +144,18 @@ import org.moeaframework.util.TypedProperties;
  *     <td>{@code swap.rate}</td>
  *   </tr>
  *   <tr>
+ *     <td>{@link SSX}</td>
+ *     <td>Subset</td>
+ *     <td>{@code ssx}</td>
+ *     <td>{@code ssx.rate}</td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@link Replace}</td>
+ *     <td>Subset</td>
+ *     <td>{@code replace}</td>
+ *     <td>{@code replace.rate}</td>
+ *   </tr>
+ *   <tr>
  *     <td>{@link GrammarCrossover}</td>
  *     <td>Grammar</td>
  *     <td>{@code gx}</td>
@@ -217,6 +232,8 @@ public class StandardOperators extends OperatorProvider {
 			return "gm";
 		} else if (Program.class.isAssignableFrom(type)) {
 			return "ptm";
+		} else if (Subset.class.isAssignableFrom(type)) {
+			return "replace";
 		} else {
 			return null;
 		}
@@ -253,6 +270,8 @@ public class StandardOperators extends OperatorProvider {
 			return "gx+gm";
 		} else if (Program.class.isAssignableFrom(type)) {
 			return "bx+ptm";
+		} else if (Subset.class.isAssignableFrom(type)) {
+			return "ssx+replace";
 		} else {
 			return null;
 		}
@@ -338,6 +357,12 @@ public class StandardOperators extends OperatorProvider {
 		} else if (name.equalsIgnoreCase("bx")) {
 			return new SubtreeCrossover(
 					typedProperties.getDouble("bx.rate", 0.9));
+		} else if (name.equalsIgnoreCase("replace")) {
+			return new Replace(
+					typedProperties.getDouble("replace.rate", 0.9));
+		} else if (name.equalsIgnoreCase("ssx")) {
+			return new SSX(
+					typedProperties.getDouble("ssx.rate", 0.3));
 		} else {
 			return null;
 		}
