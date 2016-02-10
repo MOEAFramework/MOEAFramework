@@ -17,6 +17,8 @@ Framework.
   * Adds the 55 bi-objective test problems that will be appearing in the BBOB
     Workshop this year at GECCO 2016.
     
+  * Adds subset decision variable for representing fixed-size subsets.
+    
 
 ---------------------------
  Version 2.8 (13 Jan 2016)

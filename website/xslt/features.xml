@@ -277,6 +277,11 @@ new problems written in Java or other languages can be easily incorporated.</p>
   	    Partially Mapped Crossover (PMX)</td>
   </tr>
   <tr>
+  	<td style="font-weight: bold">Subset</td>
+  	<td>Replace<br />
+  	    Subset Crossover (SSX)</td>
+  </tr>
+  <tr>
   	<td style="font-weight: bold">Grammars</td>
   	<td>Single-point Crossover<br />
   	    Uniform Mutation</td>

@@ -31,6 +31,7 @@ import org.moeaframework.core.spi.ProviderNotFoundException;
 import org.moeaframework.problem.MockBinaryProblem;
 import org.moeaframework.problem.MockPermutationProblem;
 import org.moeaframework.problem.MockRealProblem;
+import org.moeaframework.problem.MockSubsetProblem;
 
 /**
  * Tests the {@link StandardAlgorithms} class.
@@ -53,6 +54,11 @@ public class StandardAlgorithmsTest {
 	protected Problem permutationProblem;
 	
 	/**
+	 * The subset test problem.
+	 */
+	protected Problem subsetProblem;
+	
+	/**
 	 * The properties for controlling the test problems.
 	 */
 	protected Properties properties;
@@ -67,6 +73,7 @@ public class StandardAlgorithmsTest {
 		realProblem = new MockRealProblem();
 		binaryProblem = new MockBinaryProblem();
 		permutationProblem = new MockPermutationProblem();
+		subsetProblem = new MockSubsetProblem();
 		properties = new Properties();
 		
 		properties.setProperty("maxEvaluations", "1000");
@@ -80,6 +87,7 @@ public class StandardAlgorithmsTest {
 		realProblem = null;
 		binaryProblem = null;
 		permutationProblem = null;
+		subsetProblem = null;
 		properties = null;
 	}
 	
@@ -321,6 +329,86 @@ public class StandardAlgorithmsTest {
 	@Test
 	public void testRandomSearch_Permutation() {
 		test("Random", permutationProblem);
+	}
+	
+	@Test
+	public void testEpsilonMOEA_Subset() {
+		test("eMOEA", subsetProblem);
+	}
+	
+	@Test
+	public void testNSGAII_Subset() {
+		test("NSGAII", subsetProblem);
+	}
+	
+	@Test
+	public void testNSGAIII_Subset() {
+		test("NSGAIII", subsetProblem);
+	}
+	
+	@Test(expected = ProviderNotFoundException.class)
+	public void testMOEAD_Subset() {
+		test("MOEAD", subsetProblem);
+	}
+	
+	@Test(expected = ProviderNotFoundException.class)
+	public void testGDE3_Subset() {
+		test("GDE3", subsetProblem);
+	}
+	
+	@Test
+	public void testEpsilonNSGAII_Subset() {
+		test("eNSGAII", subsetProblem);
+	}
+	
+	@Test(expected = ProviderNotFoundException.class)
+	public void testCMAES_Subset() {
+		test("CMA-ES", subsetProblem);
+	}
+	
+	@Test
+	public void testSPEA2_Subset() {
+		test("SPEA2", subsetProblem);
+	}
+
+	@Test
+	public void testPAES_Subset() {
+		test("PAES", subsetProblem);
+	}
+
+	@Test
+	public void testPESA2_Subset() {
+		test("PESA2", subsetProblem);
+	}
+	
+	@Test(expected = ProviderNotFoundException.class)
+	public void testOMOPSO_Subset() {
+		test("OMOPSO", subsetProblem);
+	}
+	
+	@Test(expected = ProviderNotFoundException.class)
+	public void testSMPSO_Subset() {
+		test("SMPSO", subsetProblem);
+	}
+
+	@Test
+	public void testIBEA_Subset() {
+		test("IBEA", subsetProblem);
+	}
+	
+	@Test
+	public void testSMSEMOA_Subset() {
+		test("SMS-EMOA", subsetProblem);
+	}
+	
+	@Test
+	public void testVEGA_Subset() {
+		test("VEGA", subsetProblem);
+	}
+	
+	@Test
+	public void testRandomSearch_Subset() {
+		test("Random", subsetProblem);
 	}
 	
 	/**
