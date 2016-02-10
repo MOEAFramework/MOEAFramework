@@ -27,6 +27,7 @@ import org.moeaframework.core.Settings;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.spi.AlgorithmProvider;
 import org.moeaframework.core.spi.OperatorFactory;
+import org.moeaframework.core.spi.ProviderLookupException;
 import org.moeaframework.core.spi.ProviderNotFoundException;
 
 /**
@@ -108,7 +109,7 @@ public class PISAAlgorithms extends AlgorithmProvider {
 		if (name != null) {
 			if (problem.getNumberOfConstraints() > 0) {
 				throw new ProviderNotFoundException(name, 
-						new FrameworkException("constraints not supported"));
+						new ProviderLookupException("constraints not supported"));
 			}
 			
 			try {

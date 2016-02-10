@@ -45,7 +45,7 @@ import org.moeaframework.core.operator.real.UNDX;
 import org.moeaframework.core.operator.subset.Replace;
 import org.moeaframework.core.operator.subset.SSX;
 import org.moeaframework.core.spi.OperatorProvider;
-import org.moeaframework.core.spi.ProviderNotFoundException;
+import org.moeaframework.core.spi.ProviderLookupException;
 import org.moeaframework.core.variable.BinaryVariable;
 import org.moeaframework.core.variable.Grammar;
 import org.moeaframework.core.variable.Permutation;
@@ -210,7 +210,7 @@ public class StandardOperators extends OperatorProvider {
 			Variable variable = solution.getVariable(i);
 			
 			if (variable == null) {
-				throw new ProviderNotFoundException("variable is null");
+				throw new ProviderLookupException("variable is null");
 			} else {
 				types.add(variable.getClass());
 			}
@@ -248,7 +248,7 @@ public class StandardOperators extends OperatorProvider {
 			Variable variable = solution.getVariable(i);
 			
 			if (variable == null) {
-				throw new ProviderNotFoundException("variable is null");
+				throw new ProviderLookupException("variable is null");
 			} else {
 				types.add(variable.getClass());
 			}

@@ -109,14 +109,14 @@ public class OperatorFactory {
 	 * 
 	 * @param problem the problem
 	 * @return the name of the default mutation operator for the given problem
-	 * @throws ProviderNotFoundException if no default mutation operator could
+	 * @throws ProviderLookupException if no default mutation operator could
 	 *         be determined
 	 */
 	public String getDefaultMutation(Problem problem) {
 		String result = lookupMutationHint(problem);
 		
 		if (result == null) {
-			throw new ProviderNotFoundException("unsupported or unknown type");
+			throw new ProviderLookupException("unsupported or unknown type");
 		}
 		
 		return result;
@@ -129,14 +129,14 @@ public class OperatorFactory {
 	 * 
 	 * @param problem the problem
 	 * @return the name of the default variation operator for the given problem
-	 * @throws ProviderNotFoundException if no default variation operator could
+	 * @throws ProviderLookupException if no default variation operator could
 	 *         be determined
 	 */
 	public String getDefaultVariation(Problem problem) {
 		String result = lookupVariationHint(problem);
 		
 		if (result == null) {
-			throw new ProviderNotFoundException("unsupported or unknown type");
+			throw new ProviderLookupException("unsupported or unknown type");
 		}
 		
 		return result;
@@ -299,7 +299,7 @@ public class OperatorFactory {
 			}
 		}
 		
-		throw new ProviderNotFoundException(
+		throw new ProviderLookupException(
 				"unable to find suitable variation operator");
 	}
 	
@@ -344,7 +344,7 @@ public class OperatorFactory {
 			}
 		}
 		
-		throw new ProviderNotFoundException(
+		throw new ProviderLookupException(
 				"unable to find suitable variation operator");
 	}
 	

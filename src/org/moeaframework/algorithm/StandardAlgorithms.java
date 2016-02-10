@@ -54,6 +54,7 @@ import org.moeaframework.core.operator.real.DifferentialEvolutionSelection;
 import org.moeaframework.core.operator.real.UM;
 import org.moeaframework.core.spi.AlgorithmProvider;
 import org.moeaframework.core.spi.OperatorFactory;
+import org.moeaframework.core.spi.ProviderLookupException;
 import org.moeaframework.core.spi.ProviderNotFoundException;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.util.TypedProperties;
@@ -743,7 +744,7 @@ public class StandardAlgorithms extends AlgorithmProvider {
 	private Algorithm newIBEA(TypedProperties properties, Problem problem) {
 		if (problem.getNumberOfConstraints() > 0) {
 			throw new ProviderNotFoundException("IBEA", 
-					new FrameworkException("constraints not supported"));
+					new ProviderLookupException("constraints not supported"));
 		}
 		
 		int populationSize = (int)properties.getDouble("populationSize", 100);
