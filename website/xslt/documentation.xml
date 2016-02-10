@@ -13,15 +13,37 @@
 <h2>Documentation</h2>
 
 <p>
-  Check out the <a href="javadoc/index.html">API Specification</a> to view
-  documentation for all classes and methods.  In addition, the following books
-  are recommended to learn more about the MOEA Framework and related subjects. 
-  Purchases help fund the continued development and maintenance of this
-  software.  Thank you for your support!
+  In addition to the
+  <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v%VERSION%/MOEAFramework-%VERSION%-QuickStart.pdf"
+          onClick="_gaq.push(['_trackEvent', 'Downloads', 'Manual', '%VERSION%']);">Quick Start Guide</a> 
+  and examples distributed with the
+  download, please find additional documentation below.  Help fund the
+  continued development and maintenance of this software by purchasing our
+  guides below.  Thank you for your support!
 </p>
 
 <div class="listing">
   <ul>
+    <li>
+      <a href="javadoc/index.html">
+        <img src="images/apidoc.png" class="float-left" width="107" height="140"
+        	alt="View the API Specification" 
+        	style="background: none; border: 1px; padding: 0px;" />
+        <strong style="font-size: 10pt">API Specification</strong>
+      </a>
+      <br />
+      <span>
+        The API specification for the MOEA Framework lists all classes and
+        methods with complete, detailed documentation.  Use this along with the
+        examples available in every download to gain a better understanding of
+        the inner workings of this software.
+      </span>
+      <br /><br />
+      <span style="font-size: 10pt">
+        <a href="javadoc/index.html" style="text-transform: none">Browse the API</a>
+      </span>
+      <div class="fix"></div>
+    </li>
     <li>
       <a href="http://www.lulu.com/shop/david-hadka/beginners-guide-to-the-moea-framework/ebook/product-22522401.html">
         <img src="images/beginners.jpg" class="float-left" width="107" height="140"
@@ -40,9 +62,9 @@
       </span>
       <br /><br />
       <span style="font-size: 10pt">
-        <a href="http://www.lulu.com/shop/david-hadka/beginners-guide-to-the-moea-framework/ebook/product-22522401.html" style="text-transform: none"><font color="red">$34.99</font> - Digital Copy (PDF)</a>
+        <a href="http://www.lulu.com/shop/david-hadka/beginners-guide-to-the-moea-framework/ebook/product-22522401.html" style="text-transform: none"><font color="#FF409F">$24.99</font> - Digital Copy (PDF)</a>
         |
-        <a href="http://www.amazon.com/gp/product/1523374764/ref=as_li_tl?ie=UTF8&amp;camp=1789&amp;creative=390957&amp;creativeASIN=1523374764&amp;linkCode=as2&amp;tag=mofr-20&amp;linkId=K2VMTPIDA3Y4URUE" style="text-transform: none"><font color="red">$39.99</font> - Paperback (US/Europe)</a> / <a href="http://www.lulu.com/content/paperback-book/beginners-guide-to-the-moea-framework/18285779" style="text-transform: none">International</a>
+        <a href="http://www.amazon.com/gp/product/1523374764/ref=as_li_tl?ie=UTF8&amp;camp=1789&amp;creative=390957&amp;creativeASIN=1523374764&amp;linkCode=as2&amp;tag=mofr-20&amp;linkId=K2VMTPIDA3Y4URUE" style="text-transform: none"><font color="#FF409F">$34.99</font> - Paperback</a>
       </span>
       <div class="fix"></div>
     </li>
@@ -64,9 +86,9 @@
       </span>
       <br /><br />
       <span style="font-size: 10pt">
-        <a href="http://www.lulu.com/shop/david-hadka/high-performance-computing-with-the-moea-framework-and-ignite/ebook/product-22531100.html" style="text-transform: none"><font color="red">$14.99</font> - Digital Copy (PDF)</a>
+        <a href="http://www.lulu.com/shop/david-hadka/high-performance-computing-with-the-moea-framework-and-ignite/ebook/product-22531100.html" style="text-transform: none"><font color="#FF409F">$9.99</font> - Digital Copy (PDF)</a>
         |
-        <a href="http://www.amazon.com/gp/product/1523475463/ref=as_li_tl?ie=UTF8&amp;camp=1789&amp;creative=390957&amp;creativeASIN=1523475463&amp;linkCode=as2&amp;tag=mofr-20&amp;linkId=2H6X3GBK5UTCZCQX" style="text-transform: none"><font color="red">$24.99</font> - Paperback (US/Europe)</a>
+        <a href="http://www.amazon.com/gp/product/1523475463/ref=as_li_tl?ie=UTF8&amp;camp=1789&amp;creative=390957&amp;creativeASIN=1523475463&amp;linkCode=as2&amp;tag=mofr-20&amp;linkId=2H6X3GBK5UTCZCQX" style="text-transform: none"><font color="#FF409F">$19.99</font> - Paperback</a>
       </span>
       <div class="fix"></div>
     </li>
@@ -87,28 +109,7 @@
       <br /><br />
       <span style="font-size: 10pt">
       	<a href="http://www.amazon.com/gp/product/1489994602/ref=as_li_tl?ie=UTF8&amp;camp=1789&amp;creative=390957&amp;creativeASIN=1489994602&amp;linkCode=as2&amp;tag=mofr-20&amp;linkId=GBZVOVDT7F2A4EGG"
-      	   style="text-transform: none"><font color="red">$124.00</font> - Buy now on Amazon!</a>
-      </span>
-      <div class="fix"></div>
-    </li>
-    <li>
-      <a href="http://www.amazon.com/gp/product/0071809252/ref=as_li_tl?ie=UTF8&amp;camp=1789&amp;creative=390957&amp;creativeASIN=0071809252&amp;linkCode=as2&amp;tag=mofr-20&amp;linkId=QFZAF6APBOEJ2WVL">
-        <img src="images/javaguide.png" class="float-left" width="107" height="140"
-        	alt="Purchase the book Java: A Beginner's Guide, Sixth Edition"
-        	style="background: none; border: 1px; padding: 0px;" />
-        <strong style="font-size: 10pt">Java: A Beginner's Guide, Sixth Edition</strong>
-      </a>
-      <br />
-      <span>
-        This book covers all the basics of Java, including new features introduced in
-        the Java 8. Learn about object-oriented programming, exception handling,
-        I/O, multithreading, generics, lambda expressions, and Swing (GUI
-        programming).
-      </span>
-      <br /><br />
-      <span style="font-size: 10pt">
-      	<a href="http://www.amazon.com/gp/product/0071809252/ref=as_li_tl?ie=UTF8&amp;camp=1789&amp;creative=390957&amp;creativeASIN=0071809252&amp;linkCode=as2&amp;tag=mofr-20&amp;linkId=QFZAF6APBOEJ2WVL"
-      	   style="text-transform: none"><font color="red">$21.36</font> - Buy now on Amazon!</a>
+      	   style="text-transform: none"><font color="#FF409F">$124.00</font> - Buy now on Amazon!</a>
       </span>
       <div class="fix"></div>
     </li>

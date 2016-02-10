@@ -113,10 +113,10 @@
 						<!-- sidebar -->
 						<div id="sidebar">
 							<div class="sidemenu downloads">
-								<h3>Downloads</h3>
+								<h3>Quick Links</h3>
 								<p>
 									Current Version: <span itemprop="softwareVersion"><b><xsl:value-of select="$version" /></b></span><br />
-									Released: <span itemprop="dateModified"><xsl:value-of select="$today" /></span>
+									Released: <span itemprop="dateModified">Jan 13, 2016</span>
 									<meta itemprop="operatingSystem" content="Windows" />
 									<meta itemprop="operatingSystem" content="Linux" />
 									<meta itemprop="operatingSystem" content="Mac" />
