@@ -1,9 +1,9 @@
 This file documents the major changes implemented in each release of the MOEA
 Framework.
 
--------------------
- Version 2.9 (TBD)
--------------------
+--------------------------
+ Version 2.9 (9 Mar 2016)
+--------------------------
 
   * Adds support for termination conditions.  The Executor can now support
     running for fixed wall-clock times:

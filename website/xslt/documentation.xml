@@ -22,6 +22,8 @@
   guides below.  Thank you for your support!
 </p>
 
+<p><font color="#FF409F"><strong>Spring savings - Save 40% on the digital copies of our manuals between now and June 19th!</strong></font></p>
+
 <div class="listing">
   <ul>
     <li>
@@ -58,13 +60,15 @@
         quickly. It covers topics ranging from solving unconstrained and
         constrained optimization problems, comparing the performance of
         algorithms, plotting results, developing custom algorithms, integrating
-        your own optimization problems, and more.
+        your own optimization problems, and more.  
+        <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v%VERSION%/MOEAFramework-%VERSION%-BeginnersGuidePreview.pdf"
+          onClick="_gaq.push(['_trackEvent', 'Downloads', 'Manual', '%VERSION%']);">Preview</a>
       </span>
       <br /><br />
       <span style="font-size: 10pt">
-        <a href="http://www.lulu.com/shop/david-hadka/beginners-guide-to-the-moea-framework/ebook/product-22522401.html" style="text-transform: none"><font color="#FF409F">$24.99</font> - Digital Copy (PDF)</a>
+        <a href="http://www.lulu.com/shop/david-hadka/beginners-guide-to-the-moea-framework/ebook/product-22522401.html" style="text-transform: none"><span class="price"><strike>$25</strike> $15 (Save 40%)</span> - Digital Copy (PDF)</a>
         |
-        <a href="http://www.amazon.com/gp/product/1523374764/ref=as_li_tl?ie=UTF8&amp;camp=1789&amp;creative=390957&amp;creativeASIN=1523374764&amp;linkCode=as2&amp;tag=mofr-20&amp;linkId=K2VMTPIDA3Y4URUE" style="text-transform: none"><font color="#FF409F">$34.99</font> - Paperback</a>
+        <a href="http://www.amazon.com/gp/product/1523374764/ref=as_li_tl?ie=UTF8&amp;camp=1789&amp;creative=390957&amp;creativeASIN=1523374764&amp;linkCode=as2&amp;tag=mofr-20&amp;linkId=K2VMTPIDA3Y4URUE" style="text-transform: none"><span class="price">$35</span> - Paperback</a>
       </span>
       <div class="fix"></div>
     </li>
@@ -86,9 +90,9 @@
       </span>
       <br /><br />
       <span style="font-size: 10pt">
-        <a href="http://www.lulu.com/shop/david-hadka/high-performance-computing-with-the-moea-framework-and-ignite/ebook/product-22531100.html" style="text-transform: none"><font color="#FF409F">$9.99</font> - Digital Copy (PDF)</a>
+        <a href="http://www.lulu.com/shop/david-hadka/high-performance-computing-with-the-moea-framework-and-ignite/ebook/product-22531100.html" style="text-transform: none"><span class="price"><strike>$10</strike> $6 (Save 40%)</span> - Digital Copy (PDF)</a>
         |
-        <a href="http://www.amazon.com/gp/product/1523475463/ref=as_li_tl?ie=UTF8&amp;camp=1789&amp;creative=390957&amp;creativeASIN=1523475463&amp;linkCode=as2&amp;tag=mofr-20&amp;linkId=2H6X3GBK5UTCZCQX" style="text-transform: none"><font color="#FF409F">$19.99</font> - Paperback</a>
+        <a href="http://www.amazon.com/gp/product/1523475463/ref=as_li_tl?ie=UTF8&amp;camp=1789&amp;creative=390957&amp;creativeASIN=1523475463&amp;linkCode=as2&amp;tag=mofr-20&amp;linkId=2H6X3GBK5UTCZCQX" style="text-transform: none"><span class="price">$20</span> - Paperback</a>
       </span>
       <div class="fix"></div>
     </li>
@@ -109,7 +113,7 @@
       <br /><br />
       <span style="font-size: 10pt">
       	<a href="http://www.amazon.com/gp/product/1489994602/ref=as_li_tl?ie=UTF8&amp;camp=1789&amp;creative=390957&amp;creativeASIN=1489994602&amp;linkCode=as2&amp;tag=mofr-20&amp;linkId=GBZVOVDT7F2A4EGG"
-      	   style="text-transform: none"><font color="#FF409F">$124.00</font> - Buy now on Amazon!</a>
+      	   style="text-transform: none"><span class="price">$124</span> - Buy now on Amazon!</a>
       </span>
       <div class="fix"></div>
     </li>

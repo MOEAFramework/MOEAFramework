@@ -49,6 +49,16 @@ a:hover.more {
 	background-color: #FF3399;
 }
 
+a:link .price, a:visited .price {
+	color: #FF409F;
+	font-weight: bold;
+}
+
+a:hover .price {
+	color: #000;
+	font-weight: bold;
+}
+
 /* Headers */
 h1, h2, h3, h4 {
 	font: bold 1em/1.5em 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, Sans-Serif;
