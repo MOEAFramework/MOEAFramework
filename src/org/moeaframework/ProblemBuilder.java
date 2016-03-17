@@ -97,6 +97,7 @@ class ProblemBuilder {
 	ProblemBuilder withSameProblemAs(ProblemBuilder builder) {
 		this.problemName = builder.problemName;
 		this.problemClass = builder.problemClass;
+		this.problemInstance = builder.problemInstance;
 		this.problemArguments = builder.problemArguments;
 		this.problemFactory = builder.problemFactory;
 		this.epsilon = builder.epsilon;
