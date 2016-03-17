@@ -467,9 +467,13 @@ public class StandardAlgorithms extends AlgorithmProvider {
 		int eta = 2;
 		
 		if (properties.contains("neighborhoodSize")) {
-			neighborhoodSize = Math.max(20, 
+			neighborhoodSize = Math.max(2, 
 					(int)(properties.getDouble("neighborhoodSize", 0.1)
 							* populationSize));
+		}
+		
+		if (neighborhoodSize > populationSize) {
+			neighborhoodSize = populationSize;
 		}
 		
 		if (properties.contains("eta")) {
