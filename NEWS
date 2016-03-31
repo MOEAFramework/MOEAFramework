@@ -1,6 +1,18 @@
 This file documents the major changes implemented in each release of the MOEA
 Framework.
 
+--------------------
+ Version 2.10 (TBD)
+--------------------
+
+  * Adds option to disable swapping the decision variables in the SBX operator.
+    Most algorithms using SBX have swapping enabled.  However, NSGA-III disables
+    this swapping by default.  
+
+  * Prevent crashing MOEA/D if the user selects a neighborhood size larger than
+    the population size.
+
+
 --------------------------
  Version 2.9 (9 Mar 2016)
 --------------------------
