@@ -56,6 +56,11 @@ public class SBX implements Variation {
 	 * The distribution index of this SBX operator.
 	 */
 	private final double distributionIndex;
+	
+	/**
+	 * Enable randomly swapping decision variables between the parents.
+	 */
+	private final boolean swap;
 
 	/**
 	 * Constructs a SBX operator with the specified probability and
@@ -66,8 +71,26 @@ public class SBX implements Variation {
 	 * @param distributionIndex the distribution index of this SBX operator
 	 */
 	public SBX(double probability, double distributionIndex) {
+		this(probability, distributionIndex, true);
+	}
+	
+	/**
+	 * Constructs a SBX operator with the specified probability and
+	 * distribution index.  Set {@code swap} to {@code true} to recreate the
+	 * traditional SBX operation; and to {@code false} to use the SBX variant
+	 * used by NSGA-III.
+	 * 
+	 * @param probability the probability of applying this SBX operator to each
+	 *        variable
+	 * @param distributionIndex the distribution index of this SBX operator
+	 * @param swap enable randomly swapping the decision variables between the
+	 *        two parents
+	 */
+	public SBX(double probability, double distributionIndex, boolean swap) {
+		super();
 		this.probability = probability;
 		this.distributionIndex = distributionIndex;
+		this.swap = swap;
 	}
 
 	/**
@@ -106,12 +129,24 @@ public class SBX implements Variation {
 				if (PRNG.nextBoolean() && (variable1 instanceof RealVariable)
 						&& (variable2 instanceof RealVariable)) {
 					evolve((RealVariable)variable1, (RealVariable)variable2,
-							distributionIndex);
+							distributionIndex, swap);
 				}
 			}
 		}
 
 		return new Solution[] { result1, result2 };
+	}
+	
+	/**
+	 * Evolves the specified variables using the SBX operator.
+	 * 
+	 * @param v1 the first variable
+	 * @param v2 the second variable
+	 * @param distributionIndex the distribution index of this SBX operator
+	 */
+	public static void evolve(RealVariable v1, RealVariable v2,
+			double distributionIndex) {
+		evolve(v1, v2, distributionIndex, true);
 	}
 
 	/*
@@ -155,9 +190,10 @@ public class SBX implements Variation {
 	 * @param v1 the first variable
 	 * @param v2 the second variable
 	 * @param distributionIndex the distribution index of this SBX operator
+	 * @param swap randomly swap the variable between the two parents
 	 */
 	public static void evolve(RealVariable v1, RealVariable v2,
-			double distributionIndex) {
+			double distributionIndex, boolean swap) {
 		double x0 = v1.getValue();
 		double x1 = v2.getValue();
 
@@ -224,7 +260,7 @@ public class SBX implements Variation {
 
 			//this makes PISA's SBX compatible with other implementations
 			//which swap the values
-			if (PRNG.nextBoolean()) {
+			if (swap && PRNG.nextBoolean()) {
 				double temp = y0;
 				y0 = y1;
 				y1 = temp;

@@ -285,7 +285,8 @@ public class StandardOperators extends OperatorProvider {
 		if (name.equalsIgnoreCase("sbx")) {
 			return new SBX(
 					typedProperties.getDouble("sbx.rate", 1.0), 
-					typedProperties.getDouble("sbx.distributionIndex", 15.0));
+					typedProperties.getDouble("sbx.distributionIndex", 15.0),
+					typedProperties.getBoolean("sbx.swap", true));
 		} else if (name.equalsIgnoreCase("pm")) {
 			return new PM(
 					typedProperties.getDouble("pm.rate", 

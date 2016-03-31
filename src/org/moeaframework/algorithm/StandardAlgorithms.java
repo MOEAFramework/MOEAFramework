@@ -427,6 +427,13 @@ public class StandardAlgorithms extends AlgorithmProvider {
 						
 					}));
 		}
+		
+		// disable swapping variables in SBX operator to remain consistent with
+		// Deb's implementation (thanks to Haitham Seada for identifying this
+		// discrepancy)
+		if (!properties.contains("sbx.swap")) {
+			properties.setBoolean("sbx.swap", false);
+		}
 
 		Variation variation = OperatorFactory.getInstance().getVariation(null, 
 				properties, problem);
