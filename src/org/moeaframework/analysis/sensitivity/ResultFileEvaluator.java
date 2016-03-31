@@ -30,6 +30,7 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.indicator.QualityIndicator;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.util.CommandLineUtility;
+import org.moeaframework.util.TypedProperties;
 
 /**
  * Command line utility for evaluating the approximation sets stored in a
@@ -76,6 +77,11 @@ public class ResultFileEvaluator extends CommandLineUtility {
 				.withArgName("file")
 				.isRequired()
 				.create('o'));
+		options.addOption(OptionBuilder
+				.withLongOpt("epsilon")
+				.hasArg()
+				.withArgName("e1,e2,...")
+				.create('e'));
 		options.addOption(OptionBuilder
 				.withLongOpt("reference")
 				.hasArg()
@@ -152,7 +158,18 @@ public class ResultFileEvaluator extends CommandLineUtility {
 
 					// evaluate the remaining entries
 					while (reader.hasNext()) {
-						writer.append(reader.next());
+						ResultEntry entry = reader.next();
+						
+						if (commandLine.hasOption("epsilon")) {
+							TypedProperties typedProperties = new TypedProperties();
+							typedProperties.getProperties().setProperty("epsilon", commandLine.getOptionValue("epsilon"));
+
+							double[] epsilon = typedProperties.getDoubleArray("epsilon", null);
+							
+							entry = new ResultEntry(EpsilonHelper.convert(entry.getPopulation(), epsilon), entry.getProperties());
+						}
+						
+						writer.append(entry);
 					}
 				} finally {
 					if (writer != null) {
