@@ -12,7 +12,8 @@ general-purpose multiobjective optimization algorithms. The MOEA Framework
 supports genetic algorithms, differential evolution, particle swarm
 optimization, genetic programming, grammatical evolution, and more. A number of
 algorithms are provided out-of-the-box, including NSGA-II, NSGA-III, ε-MOEA,
-GDE3 and MOEA/D. In addition, the MOEA Framework provides the tools necessary
+GDE3, PAES, PESA2, SPEA2, IBEA, SMS-EMOA, SMPSO, OMOPSO, CMA-ES, and MOEA/D.
+In addition, the MOEA Framework provides the tools necessary
 to rapidly design, develop, execute and statistically test optimization
 algorithms.
 
@@ -26,7 +27,7 @@ Its key features includes:
   * Fully documented and tested source code
 
 Since its initial release in 2011, the MOEA Framework has been downloaded over
-27,000 times, averaging about 920 downloads per month this past year.  Please 
+30,000 times, averaging 966 downloads per month this past year.  Please 
 contact us if you are interested in contributing!
 
 ### Download ###
@@ -38,7 +39,7 @@ Maven users can add our dependency to their `pom.xml` file:
     <dependency>
         <groupId>org.moeaframework</groupId>
         <artifactId>moeaframework</artifactId>
-        <version>2.8</version>
+        <version>2.9</version>
     </dependency>
 
 ### License ###
