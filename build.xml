@@ -258,8 +258,6 @@ Use of these build scripts requires Apache Ant to be installed.  See
 
 		<loadfile property="website.tracker" srcFile="website/tracker.partial" />
 
-		<loadfile property="website.docad" srcFile="website/docad.partial" />
-
 		<xslt basedir="website/xslt" destdir="${build}" 
 				style="website/xslt/stylesheet.xsl" 
 				includes="*.xml" filenameparameter="filename">
@@ -272,9 +270,6 @@ Use of these build scripts requires Apache Ant to be installed.  See
 			<replacefilter token="%VERSION%" value="${version}" />
 			<replacefilter value="${website.tracker}">
 				<replacetoken><![CDATA[<!-- %TRACKER% -->]]></replacetoken>
-			</replacefilter>
-			<replacefilter value="${website.docad}">
-				<replacetoken><![CDATA[<!-- %DOCAD% -->]]></replacetoken>
 			</replacefilter>
 		</replace>
 
