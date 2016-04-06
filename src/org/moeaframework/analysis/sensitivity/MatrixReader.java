@@ -223,6 +223,7 @@ Closeable {
 	 * 
 	 * @return {@code true} if exceptions are suppressed; {@code false}
 	 *         otherwise
+	 * @deprecated use {@link #isSuppressExceptions()} instead
 	 */
 	@Deprecated
 	boolean isSupressExceptions() {
@@ -235,6 +236,7 @@ Closeable {
 	 * 
 	 * @param supressExceptions {@code true} if exceptions are suppressed; 
 	 *        {@code false} otherwise
+	 * @deprecated use {@link #setSuppressExceptions(boolean)} instead
 	 */
 	@Deprecated
 	void setSupressExceptions(boolean supressExceptions) {
