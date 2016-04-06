@@ -45,7 +45,7 @@ public class MetricFileReader extends MatrixReader {
 	 */
 	public MetricFileReader(File file) throws FileNotFoundException {
 		super(file, NUMBER_OF_METRICS);
-		setSupressExceptions(true);
+		setSuppressExceptions(true);
 	}
 
 	/**
@@ -56,7 +56,7 @@ public class MetricFileReader extends MatrixReader {
 	 */
 	public MetricFileReader(Reader reader) {
 		super(reader, NUMBER_OF_METRICS);
-		setSupressExceptions(true);
+		setSuppressExceptions(true);
 	}
 
 }

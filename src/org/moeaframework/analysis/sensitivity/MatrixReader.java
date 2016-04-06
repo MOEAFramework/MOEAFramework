@@ -72,7 +72,7 @@ Closeable {
 	 * {@code true} if errors are suppressed; {@code false} otherwise.  I/O
 	 * errors will still be thrown.
 	 */
-	private boolean supressExceptions;
+	private boolean suppressExceptions;
 
 	/**
 	 * Constructs a reader for loading a matrix contained in the specified file.
@@ -180,7 +180,7 @@ Closeable {
 		if ((numberOfColumns >= 0) && (tokens.length != numberOfColumns)) {
 			error = true;
 			
-			if (supressExceptions) {
+			if (suppressExceptions) {
 				System.err.println("insufficient number of entries in row, ignoring remaining rows in the file");
 				return null;
 			} else {
@@ -197,7 +197,7 @@ Closeable {
 		} catch (NumberFormatException e) {
 			error = true;
 			
-			if (supressExceptions) {
+			if (suppressExceptions) {
 				return null;
 			} else {
 				throw new IOException("invalid entry in row", e);
@@ -224,8 +224,9 @@ Closeable {
 	 * @return {@code true} if exceptions are suppressed; {@code false}
 	 *         otherwise
 	 */
+	@Deprecated
 	boolean isSupressExceptions() {
-		return supressExceptions;
+		return suppressExceptions;
 	}
 
 	/**
@@ -235,8 +236,31 @@ Closeable {
 	 * @param supressExceptions {@code true} if exceptions are suppressed; 
 	 *        {@code false} otherwise
 	 */
+	@Deprecated
 	void setSupressExceptions(boolean supressExceptions) {
-		this.supressExceptions = supressExceptions;
+		this.suppressExceptions = supressExceptions;
+	}
+	
+	/**
+	 * Returns {@code true} if exceptions are suppressed; {@code false}
+	 * otherwise.  Low-level I/O exceptions will still be thrown.  
+	 * 
+	 * @return {@code true} if exceptions are suppressed; {@code false}
+	 *         otherwise
+	 */
+	boolean isSuppressExceptions() {
+		return suppressExceptions;
+	}
+
+	/**
+	 * Set to {@code true} to suppress exceptions; {@code false} otherwise.
+	 * Low-level I/O exceptions will still be thrown.
+	 * 
+	 * @param supressExceptions {@code true} if exceptions are suppressed; 
+	 *        {@code false} otherwise
+	 */
+	void setSuppressExceptions(boolean suppressExceptions) {
+		this.suppressExceptions = suppressExceptions;
 	}
 
 }
