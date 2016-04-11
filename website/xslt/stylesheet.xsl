@@ -92,12 +92,6 @@
 									</xsl:if>
 									<a href="support.html">Support</a>
 								</li>
-								<li>
-									<xsl:if test="$filename = 'donate.xml'">
-										<xsl:attribute name="id">current</xsl:attribute>
-									</xsl:if>
-									<a href="donate.html">Donate</a>
-								</li>
 							</ul>
 						</div>
 					</div>
@@ -160,9 +154,11 @@
 								</p>
 							</div>
 		
+							<!--
 							<div class="sidemenu">					
 								<script type="text/javascript" src="scripts/jszt.js"></script><script type="text/javascript" src="scripts/referral.js"></script> 
                             </div>
+                             -->
 						</div>
 					</div>
 				</div>
