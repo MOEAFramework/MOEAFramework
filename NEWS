@@ -11,6 +11,9 @@ Framework.
 
   * Prevent crashing MOEA/D if the user selects a neighborhood size larger than
     the population size.
+    
+  * Better documentation for the command-line methods.  The Javadocs now list
+    all arguments with their descriptions.
 
 
 --------------------------

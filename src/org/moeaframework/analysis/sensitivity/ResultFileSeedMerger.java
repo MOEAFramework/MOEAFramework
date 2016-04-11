@@ -35,7 +35,37 @@ import org.moeaframework.util.TypedProperties;
 
 /**
  * Command line utility for merging the approximation sets in one or more result
- * files across the seeds.
+ * files across the seeds.  For example, if {@link Evaluator} was run with 25
+ * different seeds and 100 different parameterizations, then each of the 25
+ * output files (from each seed) will contain 100 records.  This command
+ * produces a single file with 100 records, where each record is produced by
+ * combining the approximation sets for that record across all seeds.
+ * <p>
+ * Usage: {@code java -cp "..." org.moeaframework.analysis.sensitivity.ResultFileSeedMerger <options> <files>}
+ * <p>
+ * Arguments:
+ * <table border="0" style="margin-left: 1em">
+ *   <tr>
+ *     <td>{@code -b, --problem}</td>
+ *     <td>The name of the problem.  This name should reference one of the
+ *         problems recognized by the MOEA Framework.</td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@code -d, --dimension}</td>
+ *     <td>The number of objectives (use instead of -b).</td>
+ *   </tr>
+ *   </tr>
+ *   <tr>
+ *     <td>{@code -o, --output}</td>
+ *     <td>The output file where the extract data will be saved.</td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@code -e, --epsilon}</td>
+ *     <td>The epsilon values for limiting the size of the results.  This
+ *         epsilon value is also used for any algorithms that include an
+ *         epsilon parameter.</td>
+ *   </tr>
+ * </table>
  */
 public class ResultFileSeedMerger extends CommandLineUtility {
 

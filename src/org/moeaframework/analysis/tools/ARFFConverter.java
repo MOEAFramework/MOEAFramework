@@ -48,6 +48,39 @@ import org.moeaframework.util.CommandLineUtility;
  * entry in the result file.  Second, it can only convert real-valued decision
  * variables.  Any other decision variable types will appear as missing values
  * in the ARFF file.
+ * <p>
+ * Usage: {@code java -cp "..." org.moeaframework.analysis.tools.ARFFConverter <options>}
+ * <p>
+ * Arguments:
+ * <table border="0" style="margin-left: 1em">
+ *   <tr>
+ *     <td>{@code -b, --problem}</td>
+ *     <td>The name of the problem.  This name should reference one of the
+ *         problems recognized by the MOEA Framework.</td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@code -d, --dimension}</td>
+ *     <td>The number of objectives (use instead of -b).</td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@code -i, --input}</td>
+ *     <td>The result file containing the input data.
+ *     </td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@code -o, --output}</td>
+ *     <td>The output file where the extract data will be saved.</td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@code -r, --reduced}</td>
+ *     <td>Only include objective values in the output file.</td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@code -n, --names}</td>
+ *     <td>The names for the decision variables and objectives, separated by
+ *         commas.</td>
+ *   </tr>
+ * </table>
  */
 public class ARFFConverter extends CommandLineUtility {
 	

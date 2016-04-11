@@ -736,8 +736,7 @@ public class Executor extends ProblemBuilder {
 	 * @param seed the current seed being run, such that
 	 *        {@code 1 <= seed <= numberOfSeeds}
 	 * @param numberOfSeeds to total number of seeds being run
-	 * @param maxEvaluations to maximum number of objective function
-	 *        evaluations per seed
+	 * @param terminationCondition the termination conditions for the run
 	 * 
 	 * @return the end-of-run approximation set; or {@code null} if canceled
 	 */

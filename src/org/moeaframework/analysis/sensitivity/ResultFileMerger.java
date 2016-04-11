@@ -34,7 +34,39 @@ import org.moeaframework.util.io.FileUtils;
 
 /**
  * Command line utility for merging the approximation sets stored in one or more
- * result files.
+ * result files.  The output is a single approximation set containing the
+ * non-dominated solutions from all input files.
+ * <p>
+ * Usage: {@code java -cp "..." org.moeaframework.analysis.sensitivity.ResultFileMerger <options> <files>}
+ * <p>
+ * Arguments:
+ * <table border="0" style="margin-left: 1em">
+ *   <tr>
+ *     <td>{@code -b, --problem}</td>
+ *     <td>The name of the problem.  This name should reference one of the
+ *         problems recognized by the MOEA Framework.</td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@code -d, --dimension}</td>
+ *     <td>The number of objectives (use instead of -b).</td>
+ *   </tr>
+ *   </tr>
+ *   <tr>
+ *     <td>{@code -o, --output}</td>
+ *     <td>The output file where the extract data will be saved.</td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@code -e, --epsilon}</td>
+ *     <td>The epsilon values for limiting the size of the results.  This
+ *         epsilon value is also used for any algorithms that include an
+ *         epsilon parameter.</td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@code -r, --resultFile}</td>
+ *     <td>Output a result file, which includes all of the decision variables
+ *         when combined with the -b option.</td>
+ *   </tr>
+ * </table>
  */
 public class ResultFileMerger extends CommandLineUtility {
 

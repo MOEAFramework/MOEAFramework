@@ -36,6 +36,58 @@ import org.moeaframework.util.CommandLineUtility;
  * efficiency and controllability metrics.  These search control metrics are
  * discussed in detail in [1].
  * <p>
+ * Usage: {@code java -cp "..." org.moeaframework.analysis.sensitivity.Analysis <options> <files>}
+ * <p>
+ * Arguments:
+ * <table border="0" style="margin-left: 1em">
+ *   <tr>
+ *     <td>{@code -p, --parameterFile}</td>
+ *     <td>Location of the parameter configuration file (required)</td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@code -i, --parameters}</td>
+ *     <td>Location of the parameter sample file (required)</td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@code -m, --metric}</td>
+ *     <td>The metric index (or column) to use for the analysis (required).
+ *         Indices are 0-based, so 0 indicates the first column in the input.
+ *     </td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@code -v, --hypervolume}</td>
+ *     <td>The target or ideal hypervolume value, used to normalize the
+ *         hypervolume in the analysis.</td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@code -o, --output}</td>
+ *     <td>Location where the output file containing the analysis results is
+ *         saved.  Of not given, the output is printed to the console.</td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@code -e, --efficiency}</td>
+ *     <td>Include the efficiency metric in the analysis results.</td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@code -b, --band}</td>
+ *     <td>The width of the NFE band.  The efficiency metric groups samples
+ *         with similar NFE together (i.e., those in the same band).</td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@code -c, --controllability}</td>
+ *     <td>Include the controllability metric in the analysis results.</td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@code -t, --threshold}</td>
+ *     <td>The performance threshold as a percentage when computing the
+ *         attainment, efficiency, and controllability metrics.</td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@code <files>}</td>
+ *     <td>One or more files containing the metric results (i.e., the output
+ *         from {@link ResultFileEvaluator}).
+ * </table>
+ * <p>
  * References:
  * <ol>
  *   <li>Hadka, D. and Reed, P.  "Diagnostic Assessment of Search Controls and

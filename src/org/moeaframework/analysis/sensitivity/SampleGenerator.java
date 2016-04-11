@@ -37,7 +37,39 @@ import org.moeaframework.util.sequence.Uniform;
 
 /**
  * Command line utility for producing randomly-generated parameters for use by
- * the {@link Evaluator}.
+ * the {@link Evaluator} or {@link DetailedEvaluator}.  The output is called a
+ * parameter sample file.
+ * <p>
+ * Usage: {@code java -cp "..." org.moeaframework.analysis.sensitivity.SampleGenerator}
+ * <p>
+ * Arguments:
+ * <table border="0" style="margin-left: 1em">
+ *   <tr>
+ *     <td>{@code -n, --numberOfSamples}</td>
+ *     <td>The number of samples to generate.  Depending on the selected method,
+ *         more samples may be generated then given by this option (required).
+ *         </td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@code -p, --parameterFile}</td>
+ *     <td>Location of the parameter configuration file (required)</td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@code -m, --method}</td>
+ *     <td>The sampling method, such as {@code latin}, {@code sobol}, or
+ *         {@code saltelli} (required).  If you eventually want to use the
+ *         results with {@link SobolAnalysis}, then use the {@code saltelli}
+ *         method.
+ *     </td>
+ *   <tr>
+ *     <td>{@code -s, --seed}</td>
+ *     <td>The seed used to generate the parameter samples.</td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@code -o, --output}</td>
+ *     <td>The output file where the parameter samples are saved.</td>
+ *   </tr>
+ * </table>
  */
 public class SampleGenerator extends CommandLineUtility {
 
