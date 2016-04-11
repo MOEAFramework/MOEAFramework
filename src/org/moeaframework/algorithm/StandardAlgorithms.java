@@ -66,6 +66,10 @@ import org.moeaframework.util.TypedProperties;
  * see {@link OperatorFactory} for the appropriate parameters.  See the user
  * manual for a more detailed description of the algorithms and parameters.
  * <p>
+ * <strong>For a more detailed description of each algorithm, their properties,
+ * and their default values, please refer to Appendix A in the Beginner's Guide
+ * to the MOEA Framework.</strong>
+ * <p>
  * <table width="100%" border="1" cellpadding="3" cellspacing="0">
  *   <tr class="TableHeadingColor">
  *     <th width="10%" align="left">Name</th>
