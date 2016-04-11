@@ -26,6 +26,7 @@
  * <ol>
  *   <li>Hadka, D. and Reed, P.  "Diagnostic Assessment of Search Controls and
  *       Failure Modes in Many-Objective Evolutionary Optimization."
- *       Evolutionary Computation.
+ *       Evolutionary Computation, 20(3):423-452.
+ * </ol>
  */
 package org.moeaframework.analysis.sensitivity;

@@ -21,7 +21,6 @@ import java.io.IOException;
 import java.util.Properties;
 
 import org.moeaframework.core.Algorithm;
-import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Variation;
