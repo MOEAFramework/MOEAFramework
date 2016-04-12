@@ -106,16 +106,14 @@ public class C2_DTLZ2Test {
 				minDistance = Math.min(minDistance, distance);
 			}
 			
-			{
-				double distance = 0.0;
-				
-				for (int j = 0; j < numberOfObjectives; j++) {
-					distance += Math.pow(solution.getObjective(j) -
-							1 / Math.sqrt(numberOfObjectives), 2.0);
-				}
-				
-				minDistance = Math.min(minDistance, distance);
+			double distance = 0.0;
+
+			for (int j = 0; j < numberOfObjectives; j++) {
+				distance += Math.pow(solution.getObjective(j) -
+					        1 / Math.sqrt(numberOfObjectives), 2.0);
 			}
+
+			minDistance = Math.min(minDistance, distance);
 			
 			if (minDistance < Math.pow(r, 2.0)) {
 				Assert.assertFalse(solution.violatesConstraints());
