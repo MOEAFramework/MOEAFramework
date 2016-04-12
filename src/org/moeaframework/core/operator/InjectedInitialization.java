@@ -17,7 +17,7 @@ public class InjectedInitialization extends RandomInitialization {
 	/**
 	 * The solutions to be injected into the initial population.
 	 */
-	public List<Solution> injectedSolutions;
+	private List<Solution> injectedSolutions;
 
 	/**
 	 * Constructs a random initialization operator that includes one or more
