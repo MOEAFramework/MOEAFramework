@@ -48,6 +48,11 @@ public class QualityIndicator {
 	private final Normalizer normalizer;
 	
 	/**
+	 * The normalizer that includes the hypervolume delta.
+	 */
+	private final Normalizer hypervolumeNormalizer;
+	
+	/**
 	 * The approximation set used during the last invocation of
 	 * {@code calculate}.
 	 */
@@ -103,6 +108,9 @@ public class QualityIndicator {
 		
 		normalizer = new Normalizer(problem, referenceSet);
 		normalizedReferenceSet = normalizer.normalize(referenceSet);
+		
+		hypervolumeNormalizer = new Normalizer(problem, referenceSet,
+				Settings.getHypervolumeDelta());
 	}
 
 	/**
@@ -237,14 +245,14 @@ public class QualityIndicator {
 	 * @param approximationSet the approximation set
 	 */
 	public void calculate(NondominatedPopulation approximationSet) {
-		normalizedApproximationSet = normalizer.normalize(approximationSet);
-		
 		if (Settings.isHypervolumeEnabled()) {
 			hypervolume = Hypervolume.evaluate(problem, 
-					normalizedApproximationSet);
+					hypervolumeNormalizer.normalize(approximationSet));
 		} else {
 			hypervolume = Double.NaN;
 		}
+		
+		normalizedApproximationSet = normalizer.normalize(approximationSet);
 		
 		generationalDistance = GenerationalDistance.evaluate(problem,
 				normalizedApproximationSet, normalizedReferenceSet,
