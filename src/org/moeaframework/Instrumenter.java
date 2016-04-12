@@ -21,7 +21,6 @@ import java.io.File;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -42,7 +41,6 @@ import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
-import org.moeaframework.core.Settings;
 import org.moeaframework.core.indicator.AdditiveEpsilonIndicator;
 import org.moeaframework.core.indicator.Contribution;
 import org.moeaframework.core.indicator.GenerationalDistance;
@@ -186,11 +184,6 @@ public class Instrumenter extends ProblemBuilder {
 	private Accumulator lastAccumulator;
 	
 	/**
-	 * The packages that this instrumenter is allowed to access.
-	 */
-	private final List<String> allowedPackages;
-	
-	/**
 	 * Constructs a new instrumenter instance, initially with no collectors.
 	 */
 	public Instrumenter() {
@@ -198,10 +191,6 @@ public class Instrumenter extends ProblemBuilder {
 		
 		frequency = 100;
 		customCollectors = new ArrayList<Collector>();
-		
-		allowedPackages = new ArrayList<String>();
-		allowedPackages.add("org.moeaframework");
-		allowedPackages.addAll(Arrays.asList(Settings.getAllowedPackages()));
 	}
 	
 	/**
@@ -225,10 +214,10 @@ public class Instrumenter extends ProblemBuilder {
 	 * 
 	 * @param packageName a package name or the package name prefix
 	 * @return a reference to this instrumenter
+	 * @deprecated has no effect
 	 */
+	@Deprecated
 	public Instrumenter addAllowedPackage(String packageName) {
-		allowedPackages.add(packageName);
-		
 		return this;
 	}
 	
@@ -239,10 +228,10 @@ public class Instrumenter extends ProblemBuilder {
 	 * 
 	 * @param packageName the package name or package name prefix to remove
 	 * @return a reference to this instrumenter
+	 * @deprecated has no effect
 	 */
+	@Deprecated
 	public Instrumenter removeAllowedPackage(String packageName) {
-		allowedPackages.remove(packageName);
-		
 		return this;
 	}
 	
@@ -250,9 +239,11 @@ public class Instrumenter extends ProblemBuilder {
 	 * Returns all packages this instrumenter is allowed to visit.
 	 * 
 	 * @return the list of allowed package names
+	 * @deprecated has no effect
 	 */
+	@Deprecated
 	public List<String> getAllowedPackages() {
-		return allowedPackages;
+		return new ArrayList<String>();
 	}
 	
 	/**
@@ -571,7 +562,12 @@ public class Instrumenter extends ProblemBuilder {
 		if (object == null) {
 			return;
 		} else if ((type == null) || (type.equals(object.getClass()))) {
-			if (visited.contains(object)) {
+			try {
+				if (visited.contains(object)) {
+					return;
+				}
+			} catch (NullPointerException e) {
+				// proxies will sometimes result in NPEs when calling hashCode
 				return;
 			}
 				
@@ -597,19 +593,11 @@ public class Instrumenter extends ProblemBuilder {
 						null);
 			}
 		} else if (type.getPackage() != null) {
-			//do not visit objects that are in inaccessible packages
-			boolean allowed = false;
-			
-			for (String packageName : allowedPackages) {
-				if (type.getPackage().getName().startsWith(packageName)) {
-					allowed = true;
-					break;
-				}
-			}
-			
-			if (!allowed) {
-				return;
-			}
+			// Previous versions support the idea of "allowed packages" that
+			// could be scanned by the instrumenter.  We now handle any
+			// exceptions that sometimes occur when walking the object graph,
+			// so we can now scan all packages.  It may be useful in the future
+			// to add "excluded packages" for performance.
 		}
 		
 		if (!visited.contains(object)) {

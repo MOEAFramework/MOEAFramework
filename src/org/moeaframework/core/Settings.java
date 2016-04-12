@@ -183,7 +183,10 @@ public class Settings {
 	/**
 	 * The property key for listing the allowed packages that can be
 	 * instrumented.
+	 * 
+	 * @deprecated no longer used
 	 */
+	@Deprecated
 	public static final String KEY_ALLOWED_PACKAGES = KEY_PREFIX +
 			"allowed_packages";
 	
@@ -546,7 +549,9 @@ public class Settings {
 	 * packages in "org.moeaframework" can be instrumented.
 	 * 
 	 * @return the allowed packages that can be instrumented
+	 * @deprecated no longer used
 	 */
+	@Deprecated
 	public static String[] getAllowedPackages() {
 		return PROPERTIES.getStringArray(KEY_ALLOWED_PACKAGES, new String[0]);
 	}
