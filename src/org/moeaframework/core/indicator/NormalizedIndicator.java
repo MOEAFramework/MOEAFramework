@@ -62,6 +62,26 @@ public abstract class NormalizedIndicator implements Indicator {
 	}
 	
 	/**
+	 * Constructs a normalized indicator for the specified problem and 
+	 * corresponding reference set.
+	 * 
+	 * @param problem the problem
+	 * @param referenceSet the reference set for the problem
+	 * @param delta a delta added to the maximum value (used when computing the
+	 *        reference point for hypervolume calculations)
+	 * @throws IllegalArgumentException if the reference set contains fewer
+	 *         than two solutions
+	 */
+	public NormalizedIndicator(Problem problem,
+			NondominatedPopulation referenceSet, double delta) {
+		super();
+		this.problem = problem;
+		
+		normalizer = new Normalizer(problem, referenceSet, delta);
+		normalizedReferenceSet = normalizer.normalize(referenceSet);
+	}
+	
+	/**
 	 * Normalizes the specified approximation set.
 	 * 
 	 * @param approximationSet the approximation set to be normalized

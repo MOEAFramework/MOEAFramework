@@ -37,6 +37,12 @@ public class Normalizer {
 	private final Problem problem;
 	
 	/**
+	 * A delta added to the maximum value (used when computing the reference
+	 * point for hypervolume calculations).
+	 */
+	private final double delta;
+	
+	/**
 	 * The minimum value for each objective.
 	 */
 	private final double[] minimum;
@@ -60,6 +66,32 @@ public class Normalizer {
 	public Normalizer(Problem problem, Population population) {
 		super();
 		this.problem = problem;
+		this.delta = 0.0;
+		this.minimum = new double[problem.getNumberOfObjectives()];
+		this.maximum = new double[problem.getNumberOfObjectives()];
+
+		calculateRanges(population);		
+		checkRanges();
+	}
+	
+	/**
+	 * Constructs a normalizer for normalizing populations so that all 
+	 * objectives reside in the range {@code [0, 1]}.  This constructor derives
+	 * the minimum and maximum bounds from the given population and a given
+	 * delta.
+	 * 
+	 * @param problem the problem
+	 * @param population the population defining the minimum and maximum bounds
+	 * @param delta a delta added to the maximum value (used when computing the
+	 *        reference point for hypervolume calculations)
+	 * @throws IllegalArgumentException if the population set contains fewer
+	 *         than two solutions, or if there exists an objective with an
+	 *         empty range
+	 */
+	public Normalizer(Problem problem, Population population, double delta) {
+		super();
+		this.problem = problem;
+		this.delta = delta;
 		this.minimum = new double[problem.getNumberOfObjectives()];
 		this.maximum = new double[problem.getNumberOfObjectives()];
 
@@ -79,6 +111,7 @@ public class Normalizer {
 	public Normalizer(Problem problem, double[] minimum, double[] maximum) {
 		super();
 		this.problem = problem;
+		this.delta = 0.0;
 		this.minimum = minimum.clone();
 		this.maximum = maximum.clone();
 		
@@ -115,6 +148,10 @@ public class Normalizer {
 				minimum[j] = Math.min(minimum[j], solution.getObjective(j));
 				maximum[j] = Math.max(maximum[j], solution.getObjective(j));
 			}
+		}
+		
+		for (int j = 0; j < problem.getNumberOfObjectives(); j++) {
+			maximum[j] += delta * (maximum[j] - minimum[j]);
 		}
 	}
 	
