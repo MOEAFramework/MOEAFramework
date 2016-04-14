@@ -180,7 +180,7 @@ public class SBX implements Variation {
 				y1 = x2;
 			}
 
-			// find beta value
+			// compute beta
 			if ((y1 - lb) > (ub - y2)) {
 				beta = 1 + (2 * (ub - y2) / (y2 - y1));
 			} else {
@@ -205,28 +205,19 @@ public class SBX implements Variation {
 			// generate two children
 			x1 = 0.5 * ((y1 + y2) - betaq * (y2 - y1));
 			x2 = 0.5 * ((y1 + y2) + betaq * (y2 - y1));
-		} else {
-			betaq = 1.0;
-			y1 = x1;
-			y2 = x2;
-
-			// generate two children
-			x1 = 0.5 * ((y1 + y2) - betaq * (y2 - y1));
-			x2 = 0.5 * ((y1 + y2) + betaq * (y2 - y1));
-
-		}
-
-		// ensure the children are within bounds
-		if (x1 < lb) {
-			x1 = lb;
-		} else if (x1 > ub) {
-			x1 = ub;
-		}
-		
-		if (x2 < lb) {
-			x2 = lb;
-		} else if (x2 > ub) {
-			x2 = ub;
+			
+			// ensure the children are within bounds
+			if (x1 < lb) {
+				x1 = lb;
+			} else if (x1 > ub) {
+				x1 = ub;
+			}
+			
+			if (x2 < lb) {
+				x2 = lb;
+			} else if (x2 > ub) {
+				x2 = ub;
+			}
 		}
 		
 		// randomly swap the variables
