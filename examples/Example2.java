@@ -48,7 +48,6 @@ public class Example2 {
 		}
 
 		//print the results
-		analyzer.saveReferenceSet(new File("pf/ZDT5.pf"));
 		analyzer.printAnalysis();
 	}
 	
