@@ -438,6 +438,14 @@ public class StandardAlgorithms extends AlgorithmProvider {
 		if (!properties.contains("sbx.swap")) {
 			properties.setBoolean("sbx.swap", false);
 		}
+		
+		if (!properties.contains("sbx.distributionIndex")) {
+			properties.setDouble("sbx.distributionIndex", 30.0);
+		}
+		
+		if (!properties.contains("pm.distributionIndex")) {
+			properties.setDouble("pm.distributionIndex", 20.0);
+		}
 
 		Variation variation = OperatorFactory.getInstance().getVariation(null, 
 				properties, problem);

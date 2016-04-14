@@ -128,6 +128,7 @@ public class NSGAIIITest {
 			properties.setDouble("sbx.rate", 1.0);
 			properties.setDouble("sbx.distributionIndex", 30.0);
 			properties.setDouble("pm.distributionIndex", 20.0);
+			properties.setBoolean("sbx.swap", false);
 			properties.setDouble("populationSize", populationSize);
 			
 			if (problem.getNumberOfObjectives() == 3) {

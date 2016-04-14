@@ -5,9 +5,10 @@ Framework.
  Version 2.10 (TBD)
 --------------------
 
-  * Adds option to disable swapping the decision variables in the SBX operator.
-    Most algorithms using SBX have swapping enabled.  However, NSGA-III disables
-    this swapping by default.  
+  * A new version of the SBX operator is included.  This version is more
+    numerically stable than the previous implementation based on PISA.  An
+    additional parameter, sbx.swap, disables swapping variables to mimic the
+    SBX operator used in NSGA-III.
 
   * Prevent crashing MOEA/D if the user selects a neighborhood size larger than
     the population size.
