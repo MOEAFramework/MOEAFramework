@@ -81,7 +81,7 @@ public class Hypervolume extends NormalizedIndicator {
 	 * @param referenceSet the reference set
 	 */
 	public Hypervolume(Problem problem, NondominatedPopulation referenceSet) {
-		super(problem, referenceSet, Settings.getHypervolumeDelta());
+		super(problem, referenceSet, true);
 	}
 
 	/**

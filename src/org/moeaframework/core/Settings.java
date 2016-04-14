@@ -99,6 +99,12 @@ public class Settings {
 			"core.indicator.hypervolume_delta";
 	
 	/**
+	 * The prefix for specifying custom reference points for different problems.
+	 */
+	public static final String KEY_HYPERVOLUME_PREFIX = KEY_PREFIX + 
+			"core.indicator.hypervolume_refpt.";
+	
+	/**
 	 * The property key for the hypervolume command.
 	 */
 	public static final String KEY_HYPERVOLUME = KEY_PREFIX +
@@ -284,6 +290,18 @@ public class Settings {
 	}
 	
 	/**
+	 * Returns the reference point for the given problem, or {@code null} if
+	 * one is not specified.
+	 * 
+	 * @param problem the problem name
+	 * @return the reference point
+	 */
+	public static double[] getReferencePoint(String problem) {
+		return PROPERTIES.getDoubleArray(KEY_HYPERVOLUME_PREFIX + problem,
+				null);
+	}
+	
+	/**
 	 * Returns the delta applied to the nadir point of the reference set when 
 	 * calculating the hypervolume.  Having a non-zero delta is necessary to 
 	 * ensure extremal solutions contribute to the hypervolume.
@@ -292,7 +310,7 @@ public class Settings {
 	 *         calculating the hypervolume
 	 */
 	public static double getHypervolumeDelta() {
-		return PROPERTIES.getDouble(KEY_HYPERVOLUME_DELTA, Settings.EPS);
+		return PROPERTIES.getDouble(KEY_HYPERVOLUME_DELTA, 0.0);
 	}
 	
 	/**
