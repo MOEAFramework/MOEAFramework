@@ -266,10 +266,10 @@ public class SBX implements Variation {
 				x1 = x2;
 				x2 = temp;
 			}
+			
+			v1.setValue(x1);
+			v2.setValue(x2);
 		}
-
-		v1.setValue(x1);
-		v2.setValue(x2);
 	}
 	
 	/**
@@ -349,10 +349,10 @@ public class SBX implements Variation {
 				x1 = x2;
 				x2 = temp;
 			}
+			
+			v1.setValue(x1);
+			v2.setValue(x2);
 		}
-
-		v1.setValue(x1);
-		v2.setValue(x2);
 	}
 
 }
