@@ -18,6 +18,7 @@
 package org.moeaframework.core.operator.real;
 
 import org.moeaframework.core.PRNG;
+import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variable;
 import org.moeaframework.core.Variation;
@@ -62,6 +63,12 @@ public class SBX implements Variation {
 	private final boolean swap;
 
 	/**
+	 * If {@code true}, use symmetric distributions; otherwise asymmetric
+	 * distributions are used.
+	 */
+	private final boolean symmetric;
+	
+	/**
 	 * Constructs a SBX operator with the specified probability and
 	 * distribution index.
 	 * 
@@ -70,7 +77,7 @@ public class SBX implements Variation {
 	 * @param distributionIndex the distribution index of this SBX operator
 	 */
 	public SBX(double probability, double distributionIndex) {
-		this(probability, distributionIndex, true);
+		this(probability, distributionIndex, true, false);
 	}
 
 	/**
@@ -82,14 +89,17 @@ public class SBX implements Variation {
 	 * @param probability the probability of applying this SBX operator to each
 	 *        variable
 	 * @param distributionIndex the distribution index of this SBX operator
-	 * @param swap enable randomly swapping the decision variables between the
-	 *        two parents
+	 * @param swap if {@code true}, randomly swap the variables between the two
+	 *        parents
+	 * @param symmetric if {@code true}, symmetric distrubutions are used
 	 */
-	public SBX(double probability, double distributionIndex, boolean swap) {
+	public SBX(double probability, double distributionIndex, boolean swap,
+			boolean symmetric) {
 		super();
 		this.probability = probability;
 		this.distributionIndex = distributionIndex;
 		this.swap = swap;
+		this.symmetric = symmetric;
 	}
 
 	/**
@@ -110,6 +120,29 @@ public class SBX implements Variation {
 		return distributionIndex;
 	}
 
+	/**
+	 * Returns {@code true} if this SBX operator swaps variables between the
+	 * two parents.  Disabling this swapping produces offspring closer to the
+	 * two parents, which is beneficial for NSGA-III.
+	 * 
+	 * @return {@code true} if this SBX operator swaps variables between the
+	 *         two parents
+	 */
+	public boolean isSwap() {
+		return swap;
+	}
+
+	/**
+	 * Returns {@code true} if the offspring are distributed symmetrically; or
+	 * {@code false} if asymmetric distributions are used.
+	 * 
+	 * @return {@code true} if the offspring are distributed symmetrically; or
+	 *         {@code false} if asymmetric distributions are used
+	 */
+	public boolean isSymmetric() {
+		return symmetric;
+	}
+
 	@Override
 	public int getArity() {
 		return 2;
@@ -127,8 +160,15 @@ public class SBX implements Variation {
 
 				if (PRNG.nextBoolean() && (variable1 instanceof RealVariable)
 						&& (variable2 instanceof RealVariable)) {
-					evolve((RealVariable)variable1, (RealVariable)variable2,
-							distributionIndex, swap);
+					if (symmetric) {
+						evolve_symmetric((RealVariable)variable1,
+								(RealVariable)variable2, distributionIndex,
+								swap);
+					} else {
+						evolve_asymmetric((RealVariable)variable1,
+								(RealVariable)variable2, distributionIndex,
+								swap);
+					}
 				}
 			}
 		}
@@ -145,7 +185,7 @@ public class SBX implements Variation {
 	 */
 	public static void evolve(RealVariable v1, RealVariable v2,
 			double distributionIndex) {
-		evolve(v1, v2, distributionIndex, true);
+		evolve_asymmetric(v1, v2, distributionIndex, true);
 	}
 
 	/*
@@ -155,14 +195,15 @@ public class SBX implements Variation {
 	 */
 
 	/**
-	 * Evolves the specified variables using the SBX operator.
+	 * Evolves the specified variables using the SBX operator using symmetric
+	 * distributions.
 	 * 
 	 * @param v1 the first variable
 	 * @param v2 the second variable
 	 * @param distributionIndex the distribution index of this SBX operator
 	 * @param swap randomly swap the variable between the two parents
 	 */
-	public static void evolve(RealVariable v1, RealVariable v2,
+	public static void evolve_symmetric(RealVariable v1, RealVariable v2,
 			double distributionIndex, boolean swap) {
 		double y1, y2, betaq, beta, alpha, rand;
 		double x1 = v1.getValue();
@@ -170,8 +211,8 @@ public class SBX implements Variation {
 		double lb = v1.getLowerBound();
 		double ub = v1.getUpperBound();
 
-		// Check whether variable is selected or not
-		if (Math.abs(x1 - x2) > 0.00000001) {
+		// avoid division by zero
+		if (Math.abs(x1 - x2) > Settings.EPS) {
 			if (x2 > x1) {
 				y2 = x2;
 				y1 = x1;
@@ -218,13 +259,96 @@ public class SBX implements Variation {
 			} else if (x2 > ub) {
 				x2 = ub;
 			}
+			
+			// randomly swap the variables
+			if (swap && PRNG.nextBoolean()) {
+				double temp = x1;
+				x1 = x2;
+				x2 = temp;
+			}
 		}
-		
-		// randomly swap the variables
-		if (swap && PRNG.nextBoolean()) {
-			double temp = x1;
-			x1 = x2;
-			x2 = temp;
+
+		v1.setValue(x1);
+		v2.setValue(x2);
+	}
+	
+	/**
+	 * Evolves the specified variables using the SBX operator using asymmetric
+	 * distributions.
+	 * 
+	 * @param v1 the first variable
+	 * @param v2 the second variable
+	 * @param distributionIndex the distribution index of this SBX operator
+	 * @param swap randomly swap the variable between the two parents
+	 */
+	public static void evolve_asymmetric(RealVariable v1, RealVariable v2,
+			double distributionIndex, boolean swap) {
+		double y1, y2, betaq, beta, alpha, rand;
+		double x1 = v1.getValue();
+		double x2 = v2.getValue();
+		double lb = v1.getLowerBound();
+		double ub = v1.getUpperBound();
+
+		// avoid division by zero
+		if (Math.abs(x1 - x2) > Settings.EPS) {
+			if (x2 > x1) {
+				y2 = x2;
+				y1 = x1;
+			} else {
+				y2 = x1;
+				y1 = x2;
+			}
+
+			// generate first offspring
+			beta = 1.0 / (1.0 + (2.0 * (y1 - lb) / (y2 - y1)));
+			alpha = 2.0 - Math.pow(beta, distributionIndex + 1.0);
+			rand = PRNG.nextDouble();
+
+			if (rand <= 1.0 / alpha) {
+				alpha = alpha * rand;
+				betaq = Math.pow(alpha, 1.0 / (distributionIndex + 1.0));
+			} else {
+				alpha = alpha * rand;
+				alpha = 1.0 / (2.0 - alpha);
+				betaq = Math.pow(alpha, 1.0 / (distributionIndex + 1.0));
+			}
+			
+			x1 = 0.5 * ((y1 + y2) - betaq * (y2 - y1));
+			
+			// generate second offspring
+			beta = 1.0 / (1.0 + (2.0 * (ub - y2) / (y2 - y1)));
+			alpha = 2.0 - Math.pow(beta, distributionIndex + 1.0);
+			
+			if (rand <= 1.0 / alpha) {
+				alpha = alpha * rand;
+				betaq = Math.pow(alpha, 1.0 / (distributionIndex + 1.0));
+			} else {
+				alpha = alpha * rand;
+				alpha = 1.0 / (2.0 - alpha);
+				betaq = Math.pow(alpha, 1.0 / (distributionIndex + 1.0));
+			}
+			
+			x2 = 0.5 * ((y1 + y2) + betaq * (y2 - y1));
+			
+			// ensure the children are within bounds
+			if (x1 < lb) {
+				x1 = lb;
+			} else if (x1 > ub) {
+				x1 = ub;
+			}
+			
+			if (x2 < lb) {
+				x2 = lb;
+			} else if (x2 > ub) {
+				x2 = ub;
+			}
+			
+			// randomly swap the variables
+			if (swap && PRNG.nextBoolean()) {
+				double temp = x1;
+				x1 = x2;
+				x2 = temp;
+			}
 		}
 
 		v1.setValue(x1);
