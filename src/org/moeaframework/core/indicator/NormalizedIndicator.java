@@ -60,7 +60,9 @@ public abstract class NormalizedIndicator implements Indicator {
 	
 	/**
 	 * Constructs a normalized indicator for the specified problem and 
-	 * corresponding reference set.
+	 * corresponding reference set.  If {@code useReferencePoint} is
+	 * {@code true}, this constructor will attempt to lookup the appropriate
+	 * reference point for the given problem.
 	 * 
 	 * @param problem the problem
 	 * @param referenceSet the reference set for the problem
@@ -75,13 +77,15 @@ public abstract class NormalizedIndicator implements Indicator {
 		this.problem = problem;
 		
 		if (useReferencePoint) {
-			double[] referencePoint = Settings.getReferencePoint(problem.getName());
+			double[] referencePoint = Settings.getReferencePoint(
+					problem.getName());
 			
 			if (referencePoint == null) {
 				normalizer = new Normalizer(problem, referenceSet,
 						Settings.getHypervolumeDelta());
 			} else {
-				normalizer = new Normalizer(problem, referenceSet, referencePoint);
+				normalizer = new Normalizer(problem, referenceSet,
+						referencePoint);
 			}
 		} else {
 			normalizer = new Normalizer(problem, referenceSet);
@@ -92,18 +96,18 @@ public abstract class NormalizedIndicator implements Indicator {
 	
 	/**
 	 * Constructs a normalized indicator for the specified problem and 
-	 * corresponding reference set.  This version is tailored for hypervolume
-	 * calculations, allowing the use of a custom reference point.
+	 * corresponding reference set.  This version allows the use of a custom
+	 * reference point.
 	 * 
 	 * @param problem the problem
 	 * @param referenceSet the reference set for the problem
-	 * @param referencePoint the reference point if defined (used for
-	 *        hypervolume calculations)
+	 * @param referencePoint the reference point (used for hypervolume
+	 *        calculations)
 	 * @throws IllegalArgumentException if the reference set contains fewer
 	 *         than two solutions
 	 */
 	public NormalizedIndicator(Problem problem,
-			NondominatedPopulation referenceSet, double delta, double[] referencePoint) {
+			NondominatedPopulation referenceSet, double[] referencePoint) {
 		super();
 		this.problem = problem;
 		
