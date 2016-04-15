@@ -5,10 +5,13 @@ Framework.
  Version 2.10 (TBD)
 --------------------
 
-  * A new version of the SBX operator is included.  This version is more
-    numerically stable than the previous implementation based on PISA.  An
-    additional parameter, sbx.swap, disables swapping variables to mimic the
-    SBX operator used in NSGA-III.
+  * A new version of the SBX operator is included.  This version includes two
+    new parameters:
+    
+      sbx.swap - controls if the variables are randomly swapped between parents;
+                 set to false to replicate NSGA-III
+      sbx.symmetric - controls if the offspring distribution is symmetric or
+                 asymmetric
 
   * Prevent crashing MOEA/D if the user selects a neighborhood size larger than
     the population size.
