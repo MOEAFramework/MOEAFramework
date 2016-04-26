@@ -22,7 +22,6 @@ import java.io.IOException;
 import java.util.Properties;
 
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.moeaframework.TestUtils;
 import org.moeaframework.analysis.collector.Accumulator;
@@ -68,7 +67,6 @@ public class StandardAlgorithmsResumeTest {
 	}
 	
 	@Test
-	@Ignore
 	public void testNSGAIII() throws IOException {
 		test("NSGAIII");
 	}
@@ -109,19 +107,16 @@ public class StandardAlgorithmsResumeTest {
 	}
 
 	@Test
-	@Ignore("currently not implemented")
 	public void testPESA2() throws IOException {
 		test("PESA2");
 	}
 	
 	@Test
-	@Ignore("currently not implemented")
 	public void testOMOPSO() throws IOException {
 		test("OMOPSO");
 	}
 	
 	@Test
-	@Ignore("currently not implemented")
 	public void testSMPSO() throws IOException {
 		test("SMPSO");
 	}

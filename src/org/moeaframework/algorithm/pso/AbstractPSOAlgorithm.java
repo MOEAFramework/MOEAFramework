@@ -17,7 +17,14 @@
  */
 package org.moeaframework.algorithm.pso;
 
+import java.io.NotSerializableException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.moeaframework.algorithm.AbstractAlgorithm;
+import org.moeaframework.algorithm.AlgorithmInitializationException;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Problem;
@@ -303,6 +310,192 @@ public abstract class AbstractPSOAlgorithm extends AbstractAlgorithm {
 		if (archive != null) {
 			archive.addAll(particles);
 		}
+	}
+	
+	@Override
+	public Serializable getState() throws NotSerializableException {
+		if (!isInitialized()) {
+			throw new AlgorithmInitializationException(this, 
+					"algorithm not initialized");
+		}
+
+		List<Solution> particlesList = Arrays.asList(particles);
+		List<Solution> localBestParticlesList = Arrays.asList(localBestParticles);
+		List<Solution> leadersList = new ArrayList<Solution>();
+		List<Solution> archiveList = new ArrayList<Solution>();
+		double[][] velocitiesClone = new double[velocities.length][];
+
+		for (Solution solution : leaders) {
+			leadersList.add(solution);
+		}
+
+		if (archive != null) {
+			for (Solution solution : archive) {
+				archiveList.add(solution);
+			}
+		}
+		
+		for (int i = 0; i < velocities.length; i++) {
+			velocitiesClone[i] = velocities[i].clone();
+		}
+
+		return new PSOAlgorithmState(getNumberOfEvaluations(),
+				particlesList, localBestParticlesList, leadersList,
+				archiveList, velocitiesClone);
+	}
+
+	@Override
+	public void setState(Object objState) throws NotSerializableException {
+		super.initialize();
+
+		PSOAlgorithmState state = (PSOAlgorithmState)objState;
+
+		numberOfEvaluations = state.getNumberOfEvaluations();
+		
+		if (state.getParticles().size() != swarmSize) {
+			throw new NotSerializableException(
+					"swarmSize does not match serialized state");
+		}
+
+		for (int i = 0; i < swarmSize; i++) {
+			particles[i] = state.getParticles().get(i);
+		}
+		
+		for (int i = 0; i < swarmSize; i++) {
+			localBestParticles[i] = state.getLocalBestParticles().get(i);
+		}
+		
+		leaders.addAll(state.getLeaders());
+		leaders.update();
+
+		if (archive != null) {
+			archive.addAll(state.getArchive());
+		}
+		
+		for (int i = 0; i < swarmSize; i++) {
+			for (int j = 0; j < problem.getNumberOfVariables(); j++) {
+				velocities[i][j] = state.getVelocities()[i][j];
+			}
+		}
+	}
+	
+	/**
+	 * Proxy for serializing and deserializing the state of an
+	 * {@code AbstractPSOAlgorithm}. This proxy supports saving
+	 * the {@code numberOfEvaluations}, {@code population} and {@code archive}.
+	 */
+	private static class PSOAlgorithmState implements Serializable {
+
+		private static final long serialVersionUID = -1895823731827106938L;
+
+		/**
+		 * The number of objective function evaluations.
+		 */
+		private final int numberOfEvaluations;
+
+		/**
+		 * The particles stored in a serializable list.
+		 */
+		private final List<Solution> particles;
+
+		/**
+		 * The local best particles stored in a serializable list.
+		 */
+		private final List<Solution> localBestParticles;
+		
+		/**
+		 * The leaders stored in a serializable list.
+		 */
+		private final List<Solution> leaders;
+		
+		/**
+		 * The archive stored in a serializable list.
+		 */
+		private final List<Solution> archive;
+		
+		/**
+		 * The velocities.
+		 */
+		private final double[][] velocities;
+
+		/**
+		 * Constructs a proxy to serialize and deserialize the state of an 
+		 * {@code AbstractPSOAlgorithm}.
+		 * 
+		 * @param numberOfEvaluations the number of objective function
+		 *        evaluations
+		 * @param population the population stored in a serializable list
+		 * @param archive the archive stored in a serializable list
+		 */
+		public PSOAlgorithmState(int numberOfEvaluations,
+				List<Solution> particles,
+				List<Solution> localBestParticles,
+				List<Solution> leaders,
+				List<Solution> archive,
+				double[][] velocities) {
+			super();
+			this.numberOfEvaluations = numberOfEvaluations;
+			this.particles = particles;
+			this.localBestParticles = localBestParticles;
+			this.leaders = leaders;
+			this.archive = archive;
+			this.velocities = velocities;
+		}
+
+		/**
+		 * Returns the number of objective function evaluations.
+		 * 
+		 * @return the number of objective function evaluations
+		 */
+		public int getNumberOfEvaluations() {
+			return numberOfEvaluations;
+		}
+
+		/**
+		 * Returns the particles stored in a serializable list.
+		 * 
+		 * @return the particles stored in a serializable list
+		 */
+		public List<Solution> getParticles() {
+			return particles;
+		}
+
+		/**
+		 * Returns the local best particles stored in a serializable list.
+		 * 
+		 * @return the local best particles stored in a serializable list
+		 */
+		public List<Solution> getLocalBestParticles() {
+			return localBestParticles;
+		}
+
+		/**
+		 * Returns the leaders stored in a serializable list.
+		 * 
+		 * @return the leaders stored in a serializable list
+		 */
+		public List<Solution> getLeaders() {
+			return leaders;
+		}
+
+		/**
+		 * Returns the velocities.
+		 * 
+		 * @return the velocities
+		 */
+		public double[][] getVelocities() {
+			return velocities;
+		}
+
+		/**
+		 * Returns the archive stored in a serializable list.
+		 * 
+		 * @return the archive stored in a serializable list
+		 */
+		public List<Solution> getArchive() {
+			return archive;
+		}
+
 	}
 
 }
