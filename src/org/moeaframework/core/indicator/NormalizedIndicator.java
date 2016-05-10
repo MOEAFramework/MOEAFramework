@@ -116,6 +116,26 @@ public abstract class NormalizedIndicator implements Indicator {
 	}
 	
 	/**
+	 * Constructs a normalized indicator for the specified problem and 
+	 * corresponding reference set.  This version allows the use of a custom
+	 * minimum and maximum bounds.
+	 * 
+	 * @param problem the problem
+	 * @param referenceSet the reference set for the problem
+	 * @param minimum the minimum bounds
+	 * @param maximum the maximum bounds
+	 */
+	public NormalizedIndicator(Problem problem,
+			NondominatedPopulation referenceSet, double[] minimum,
+			double[] maximum) {
+		super();
+		this.problem = problem;
+		
+		normalizer = new Normalizer(problem, minimum, maximum);
+		normalizedReferenceSet = normalizer.normalize(referenceSet);
+	}
+	
+	/**
 	 * Normalizes the specified approximation set.
 	 * 
 	 * @param approximationSet the approximation set to be normalized

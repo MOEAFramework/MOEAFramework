@@ -83,6 +83,30 @@ public class Hypervolume extends NormalizedIndicator {
 	public Hypervolume(Problem problem, NondominatedPopulation referenceSet) {
 		super(problem, referenceSet, true);
 	}
+	
+	/**
+	 * Constructs a hypervolume evaluator for the specified problem using the
+	 * given reference set and reference point.
+	 * 
+	 * @param problem the problem
+	 * @param referenceSet the reference set
+	 * @param referencePoint the reference point
+	 */
+	public Hypervolume(Problem problem, double[] referencePoint) {
+		super(problem, new NondominatedPopulation(), referencePoint);
+	}
+	
+	/**
+	 * Constructs a hypervolume evaluator for the specified problem using the
+	 * given minimum and maximum bounds.
+	 * 
+	 * @param problem the problem
+	 * @param minimum the minimum bounds of the set
+	 * @param maximum the maximum bounds of the set
+	 */
+	public Hypervolume(Problem problem, double[] minimum, double[] maximum) {
+		super(problem, new NondominatedPopulation(), minimum, maximum);
+	}
 
 	/**
 	 * Inverts the objective values since this hypervolume algorithm operates

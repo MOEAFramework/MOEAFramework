@@ -149,8 +149,13 @@ public class Normalizer {
 		this.problem = problem;
 		this.delta = 0.0;
 		this.referencePoint = null;
-		this.minimum = minimum.clone();
-		this.maximum = maximum.clone();
+		this.minimum = new double[problem.getNumberOfObjectives()];
+		this.maximum = new double[problem.getNumberOfObjectives()];
+		
+		for (int j = 0; j < problem.getNumberOfObjectives(); j++) {
+			this.minimum[j] = minimum[j >= minimum.length ? minimum.length-1 : j];
+			this.maximum[j] = maximum[j >= maximum.length ? maximum.length-1 : j];
+		}
 		
 		checkRanges();
 	}

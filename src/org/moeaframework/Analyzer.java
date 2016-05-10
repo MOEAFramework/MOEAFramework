@@ -181,6 +181,19 @@ public class Analyzer extends ProblemBuilder {
 	private List<UnivariateStatistic> statistics;
 	
 	/**
+	 * The ideal point to use when normalizing the data; or {@code null} if the
+	 * ideal point should be derived from the reference set.
+	 */
+	private double[] idealPoint;
+	
+	/**
+	 * The reference point to use when computing the hypervolume metric; or
+	 * {@code null} if the reference point should be derived from the reference
+	 * set.
+	 */
+	private double[] referencePoint;
+	
+	/**
 	 * The collection of end-of-run approximation sets.
 	 */
 	private Map<String, List<NondominatedPopulation>> data;
@@ -445,6 +458,30 @@ public class Analyzer extends ProblemBuilder {
 		return this;
 	}
 	
+	/**
+	 * Sets the ideal point used for computing the hypervolume metric.
+	 * 
+	 * @param idealPoint the ideal point
+	 * @return a reference to this analyzer
+	 */
+	public Analyzer withIdealPoint(double... idealPoint) {
+		this.idealPoint = idealPoint;
+		
+		return this;
+	}
+
+	/**
+	 * Sets the reference point used for computing the hypervolume metric.
+	 * 
+	 * @param referencePoint the reference point
+	 * @return a reference to this analyzer
+	 */
+	public Analyzer withReferencePoint(double... referencePoint) {
+		this.referencePoint = referencePoint;
+		
+		return this;
+	}
+
 	/**
 	 * Adds the collection of new samples with the specified name.
 	 * 
@@ -720,7 +757,13 @@ public class Analyzer extends ProblemBuilder {
 			List<Indicator> indicators = new ArrayList<Indicator>();
 			
 			if (includeHypervolume) {
-				indicators.add(new Hypervolume(problem, referenceSet));
+				if ((idealPoint != null) && (referencePoint != null)) {
+					indicators.add(new Hypervolume(problem, idealPoint, referencePoint));
+				} else if (referencePoint != null) {
+					indicators.add(new Hypervolume(problem, referencePoint));
+				} else {
+					indicators.add(new Hypervolume(problem, referenceSet));
+				}
 			}
 			
 			if (includeGenerationalDistance) {

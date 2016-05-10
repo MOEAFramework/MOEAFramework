@@ -26,6 +26,9 @@ Framework.
        
     indicates all hypervolume calculations for DTLZ3 will use the reference
     point (2, 2, ..., 2).
+    
+  * Analyzer now includes withIdealPoint(...) and withReferencePoint(...) for
+    use with the hypervolume calculations.
 
 
 --------------------------
