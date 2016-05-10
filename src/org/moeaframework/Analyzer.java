@@ -760,7 +760,7 @@ public class Analyzer extends ProblemBuilder {
 				if ((idealPoint != null) && (referencePoint != null)) {
 					indicators.add(new Hypervolume(problem, idealPoint, referencePoint));
 				} else if (referencePoint != null) {
-					indicators.add(new Hypervolume(problem, referencePoint));
+					indicators.add(new Hypervolume(problem, referenceSet, referencePoint));
 				} else {
 					indicators.add(new Hypervolume(problem, referenceSet));
 				}

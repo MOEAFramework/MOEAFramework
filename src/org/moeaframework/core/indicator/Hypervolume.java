@@ -92,8 +92,9 @@ public class Hypervolume extends NormalizedIndicator {
 	 * @param referenceSet the reference set
 	 * @param referencePoint the reference point
 	 */
-	public Hypervolume(Problem problem, double[] referencePoint) {
-		super(problem, new NondominatedPopulation(), referencePoint);
+	public Hypervolume(Problem problem, NondominatedPopulation referenceSet,
+			double[] referencePoint) {
+		super(problem, referenceSet, referencePoint);
 	}
 	
 	/**

@@ -82,20 +82,7 @@ public class HypervolumeTest extends IndicatorTest {
 				Settings.EPS);
 	}
 	
-	/**
-	 * Runs through some simple cases to ensure the hypervolume is computed
-	 * correctly.
-	 */
-	@Test
-	public void testSimple() {
-		Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
-		
-		NondominatedPopulation referenceSet = new NondominatedPopulation();
-		referenceSet.add(TestUtils.newSolution(0.0, 1.0));
-		referenceSet.add(TestUtils.newSolution(1.0, 0.0));
-		
-		Hypervolume hypervolume = new Hypervolume(problem, referenceSet);
-		
+	public void test(Hypervolume hypervolume) {
 		NondominatedPopulation approximationSet = new NondominatedPopulation();
 		
 		Assert.assertEquals(0.0, hypervolume.evaluate(approximationSet), 
@@ -130,6 +117,97 @@ public class HypervolumeTest extends IndicatorTest {
 		approximationSet.add(TestUtils.newSolution(0.0, 0.5));
 		Assert.assertEquals(0.75, hypervolume.evaluate(approximationSet), 
 				Settings.EPS);
+	}
+
+	/**
+	 * Runs through some simple cases to ensure the hypervolume is computed
+	 * correctly.
+	 */
+	@Test
+	public void testSimple() {
+		Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
+		
+		NondominatedPopulation referenceSet = new NondominatedPopulation();
+		referenceSet.add(TestUtils.newSolution(0.0, 1.0));
+		referenceSet.add(TestUtils.newSolution(1.0, 0.0));
+		
+		Hypervolume hypervolume = new Hypervolume(problem, referenceSet);
+		
+		test(hypervolume);
+	}
+	
+	@Test
+	public void testExplicitBounds() {
+		Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
+		
+		Hypervolume hypervolume = new Hypervolume(problem,
+				new double[] { 0.0, 0.0 },
+				new double[] { 1.0, 1.0 });
+		
+		test(hypervolume);
+	}
+	
+	public void test2(Hypervolume hypervolume) {
+		NondominatedPopulation approximationSet = new NondominatedPopulation();
+		
+		Assert.assertEquals(0.0, hypervolume.evaluate(approximationSet), 
+				Settings.EPS);
+		
+		approximationSet.add(TestUtils.newSolution(0.5, 0.5));
+		Assert.assertEquals(0.5625, hypervolume.evaluate(approximationSet), 
+				Settings.EPS);
+		
+		approximationSet.clear();
+		approximationSet.add(TestUtils.newSolution(0.0, 0.0));
+		Assert.assertEquals(1.0, hypervolume.evaluate(approximationSet), 
+				Settings.EPS);
+		
+		approximationSet.clear();
+		approximationSet.add(TestUtils.newSolution(1.0, 1.0));
+		Assert.assertEquals(0.25, hypervolume.evaluate(approximationSet), 
+				Settings.EPS);
+		
+		approximationSet.clear();
+		approximationSet.add(TestUtils.newSolution(2.0, 2.0));
+		Assert.assertEquals(0.0, hypervolume.evaluate(approximationSet), 
+				Settings.EPS);
+	}
+	
+	@Test
+	public void testExplicitBounds2_RefOnly() {
+		Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
+		
+		NondominatedPopulation referenceSet = new NondominatedPopulation();
+		referenceSet.add(TestUtils.newSolution(0.0, 1.0));
+		referenceSet.add(TestUtils.newSolution(1.0, 0.0));
+		
+		Hypervolume hypervolume = new Hypervolume(problem, referenceSet,
+				new double[] { 2.0, 2.0 });
+		
+		test2(hypervolume);
+	}
+	
+	@Test
+	public void testExplicitBounds2_Both() {
+		Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
+		
+		Hypervolume hypervolume = new Hypervolume(problem,
+				new double[] { 0.0, 0.0 },
+				new double[] { 2.0, 2.0 });
+		
+		test2(hypervolume);
+	}
+	
+	@Test
+	public void testExplicitBounds2_Properties() {
+		Settings.PROPERTIES.setDouble("org.moeaframework.core.indicator.hypervolume_idealpt.DTLZ2", 0.0);
+		Settings.PROPERTIES.setDouble("org.moeaframework.core.indicator.hypervolume_refpt.DTLZ2", 2.0);
+		
+		Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
+		
+		Hypervolume hypervolume = new Hypervolume(problem, new NondominatedPopulation());
+		
+		test2(hypervolume);
 	}
 
 	/**
