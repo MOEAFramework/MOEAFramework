@@ -153,8 +153,9 @@ public class HypervolumeTest extends IndicatorTest {
 		Assert.assertEquals(0.0, hypervolume.evaluate(approximationSet), 
 				Settings.EPS);
 		
+		// target value is 1.5^2 / 2^2
 		approximationSet.add(TestUtils.newSolution(0.5, 0.5));
-		Assert.assertEquals(0.5625, hypervolume.evaluate(approximationSet), 
+		Assert.assertEquals(0.5625, hypervolume.evaluate(approximationSet),
 				Settings.EPS);
 		
 		approximationSet.clear();
@@ -208,6 +209,9 @@ public class HypervolumeTest extends IndicatorTest {
 		Hypervolume hypervolume = new Hypervolume(problem, new NondominatedPopulation());
 		
 		test2(hypervolume);
+		
+		Settings.PROPERTIES.remove("org.moeaframework.core.indicator.hypervolume_idealpt.DTLZ2");
+		Settings.PROPERTIES.remove("org.moeaframework.core.indicator.hypervolume_refpt.DTLZ2");
 	}
 
 	/**
