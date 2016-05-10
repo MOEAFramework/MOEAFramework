@@ -19,13 +19,14 @@ Framework.
   * Better documentation for the command-line methods.  The Javadocs now list
     all arguments with their descriptions.
     
-  * Ability to define custom reference points when calculating hypervolume in
-    global.properties.  For example:
+  * Ability to define custom ideal and reference points when calculating
+    hypervolume in global.properties.  For example:
     
+       org.moeaframework.core.indicator.hypervolume_idealpt.DTLZ3 = 0
        org.moeaframework.core.indicator.hypervolume_refpt.DTLZ3 = 2
        
-    indicates all hypervolume calculations for DTLZ3 will use the reference
-    point (2, 2, ..., 2).
+    indicates the hypervolume will be calculated with the volume between
+    (0,...,0) and (2,...,2).
     
   * Analyzer now includes withIdealPoint(...) and withReferencePoint(...) for
     use with the hypervolume calculations.

@@ -77,15 +77,16 @@ public abstract class NormalizedIndicator implements Indicator {
 		this.problem = problem;
 		
 		if (useReferencePoint) {
-			double[] referencePoint = Settings.getReferencePoint(
-					problem.getName());
+			double[] idealPoint = Settings.getIdealPoint(problem.getName());
+			double[] referencePoint = Settings.getReferencePoint(problem.getName());
 			
-			if (referencePoint == null) {
-				normalizer = new Normalizer(problem, referenceSet,
-						Settings.getHypervolumeDelta());
+			if ((idealPoint != null) && (referencePoint != null)) {
+				normalizer = new Normalizer(problem, idealPoint, referencePoint);
+			} else if (referencePoint != null) {
+				normalizer = new Normalizer(problem, referenceSet, referencePoint);
 			} else {
 				normalizer = new Normalizer(problem, referenceSet,
-						referencePoint);
+						Settings.getHypervolumeDelta());
 			}
 		} else {
 			normalizer = new Normalizer(problem, referenceSet);

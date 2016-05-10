@@ -99,9 +99,15 @@ public class Settings {
 			"core.indicator.hypervolume_delta";
 	
 	/**
+	 * The prefix for specifying custom ideal points for different problems.
+	 */
+	public static final String KEY_IDEALPT_PREFIX = KEY_PREFIX + 
+			"core.indicator.hypervolume_idealpt.";
+	
+	/**
 	 * The prefix for specifying custom reference points for different problems.
 	 */
-	public static final String KEY_HYPERVOLUME_PREFIX = KEY_PREFIX + 
+	public static final String KEY_REFPT_PREFIX = KEY_PREFIX + 
 			"core.indicator.hypervolume_refpt.";
 	
 	/**
@@ -290,6 +296,18 @@ public class Settings {
 	}
 	
 	/**
+	 * Returns the ideal point for the given problem, or {@code null} if
+	 * one is not specified.
+	 * 
+	 * @param problem the problem name
+	 * @return the ideal point
+	 */
+	public static double[] getIdealPoint(String problem) {
+		return PROPERTIES.getDoubleArray(KEY_IDEALPT_PREFIX + problem,
+				null);
+	}
+	
+	/**
 	 * Returns the reference point for the given problem, or {@code null} if
 	 * one is not specified.
 	 * 
@@ -297,7 +315,7 @@ public class Settings {
 	 * @return the reference point
 	 */
 	public static double[] getReferencePoint(String problem) {
-		return PROPERTIES.getDoubleArray(KEY_HYPERVOLUME_PREFIX + problem,
+		return PROPERTIES.getDoubleArray(KEY_REFPT_PREFIX + problem,
 				null);
 	}
 	
