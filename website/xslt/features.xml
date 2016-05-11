@@ -142,6 +142,10 @@ using existing components.</p>
     <td>Random Search</td>
   </tr>
   <tr>
+    <td style="font-weight: bold">RVEA</td>
+    <td>Reference Vector Guided Evolutionary Algorithm</td>
+  </tr>
+  <tr>
     <td style="font-weight: bold">SEMO2</td>
     <td>Simple Evolutionary Multiobjective Optmimizer<sup>2</sup></td>
   </tr>
