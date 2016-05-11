@@ -137,6 +137,12 @@ public class StandardAlgorithmsResumeTest {
 	}
 	
 	@Test
+	//@Ignore("currently not supported")
+	public void testRVEA() throws IOException {
+		test("RVEA");
+	}
+	
+	@Test
 	public void testInstrumentedAlgorithm() throws IOException {
 		testInstrumented("NSGAII");
 	}

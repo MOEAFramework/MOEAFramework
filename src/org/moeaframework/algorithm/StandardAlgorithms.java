@@ -933,6 +933,10 @@ public class StandardAlgorithms extends AlgorithmProvider {
 		int divisionsOuter = 4;
 		int divisionsInner = 0;
 		
+		if (problem.getNumberOfObjectives() < 2) {
+			throw new FrameworkException("RVEA requires at least two objectives");
+		}
+		
 		if (properties.contains("divisionsOuter") && properties.contains("divisionsInner")) {
 			divisionsOuter = (int)properties.getDouble("divisionsOuter", 4);
 			divisionsInner = (int)properties.getDouble("divisionsInner", 0);

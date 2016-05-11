@@ -17,10 +17,12 @@
  */
 package org.moeaframework.algorithm;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Solution;
@@ -64,7 +66,7 @@ public class ReferenceVectorGuidedPopulation extends Population {
 	/**
 	 * The ideal point.
 	 */
-	private double[] idealPoint;
+	public double[] idealPoint;
 	
 	/**
 	 * The original, unnormalized reference vectors.
@@ -107,7 +109,7 @@ public class ReferenceVectorGuidedPopulation extends Population {
 		this.divisionsOuter = divisions;
 		this.divisionsInner = 0;
 		this.alpha = alpha;
-
+		
 		initialize();
 	}
 
@@ -232,6 +234,11 @@ public class ReferenceVectorGuidedPopulation extends Population {
 	 * the vectors
 	 */
 	private void initialize() {
+		// validate arguments
+		if (numberOfObjectives < 2) {
+			throw new FrameworkException("requires at least two objectives");
+		}
+		
 		// create the reference vectors
 		originalWeights = new NormalBoundaryIntersectionGenerator(
 				numberOfObjectives, divisionsOuter, divisionsInner).generate();
@@ -447,6 +454,176 @@ public class ReferenceVectorGuidedPopulation extends Population {
 				add(select(associations, i));
 			}
 		}
+	}
+	
+	/**
+	 * Returns the serializable state of this population.
+	 * 
+	 * @return the serializable state of this population
+	 */
+	protected ReferenceVectorGuidedPopulationState getState() {
+		double[] idealPointClone = idealPoint == null ? null : idealPoint.clone();
+		List<double[]> originalWeightsClone = new ArrayList<double[]>();
+		List<double[]> weightsClone = new ArrayList<double[]>();
+		double[] minAnglesClone = minAngles == null ? null : minAngles.clone();
+		List<Solution> populationList = new ArrayList<Solution>();
+		
+		for (double[] weight : originalWeights) {
+			originalWeightsClone.add(weight.clone());
+		}
+		
+		for (double[] weight : weights) {
+			weightsClone.add(weight.clone());
+		}
+		
+		for (Solution solution : this) {
+			populationList.add(solution);
+		}
+		
+		return new ReferenceVectorGuidedPopulationState(populationList,
+				idealPointClone, originalWeightsClone, weightsClone,
+				minAnglesClone, scalingFactor);
+	}
+	
+	/**
+	 * Configures this population given the serializable state.
+	 * 
+	 * @param state the serializable state
+	 */
+	protected void setState(ReferenceVectorGuidedPopulationState state) {
+		idealPoint = state.getIdealPoint() == null ? null : state.getIdealPoint().clone();
+		minAngles = state.getMinAngles() == null ? null : state.getMinAngles().clone();
+		scalingFactor = state.getScalingFactor();
+		originalWeights.clear();
+		weights.clear();
+		clear();
+		
+		for (double[] weight : state.getOriginalWeights()) {
+			originalWeights.add(weight.clone());
+		}
+		
+		for (double[] weight : state.getWeights()) {
+			weights.add(weight.clone());
+		}
+		
+		addAll(state.getPopulation());
+	}
+	
+	/**
+	 * Proxy for serializing the state of this population.  All data fields
+	 * provided to or read from this proxy should be cloned.
+	 */
+	protected static class ReferenceVectorGuidedPopulationState implements Serializable {
+
+		private static final long serialVersionUID = 2967034665150122964L;
+		
+		/**
+		 * The population stored in a serializable list.
+		 */
+		private final List<Solution> population;
+
+		/**
+		 * The ideal point.
+		 */
+		private final double[] idealPoint;
+		
+		/**
+		 * The original weight vectors.
+		 */
+		private final List<double[]> originalWeights;
+		
+		/**
+		 * The weight vectors.
+		 */
+		private final List<double[]> weights;
+		
+		/**
+		 * The minimum angles between weight vectors.
+		 */
+		private final double[] minAngles;
+		
+		/**
+		 * The scaling factor.
+		 */
+		private final double scalingFactor;
+		
+		/**
+		 * Creates a new proxy for serializing the state of this population.
+		 * 
+		 * @param population the population stored in a serializable list
+		 * @param idealPoint the ideal point
+		 * @param originalWeights the original weight vectors
+		 * @param weights the weight vectors
+		 * @param minAngles the minimum angles between weight vectors
+		 * @param scalingFactor the scaling factor
+		 */
+		public ReferenceVectorGuidedPopulationState(List<Solution> population,
+				double[] idealPoint, List<double[]> originalWeights,
+				List<double[]> weights, double[] minAngles,
+				double scalingFactor) {
+			super();
+			this.population = population;
+			this.idealPoint = idealPoint;
+			this.originalWeights = originalWeights;
+			this.weights = weights;
+			this.minAngles = minAngles;
+			this.scalingFactor = scalingFactor;
+		}
+		
+		/**
+		 * Returns the population stored in a serializable list.
+		 * 
+		 * @return the population stored in a serializable list
+		 */
+		public List<Solution> getPopulation() {
+			return population;
+		}
+
+		/**
+		 * Returns the ideal point.
+		 * 
+		 * @return the ideal point
+		 */
+		public double[] getIdealPoint() {
+			return idealPoint;
+		}
+
+		/**
+		 * Returns the original weight vectors.
+		 * 
+		 * @return the original weight vectors
+		 */
+		public List<double[]> getOriginalWeights() {
+			return originalWeights;
+		}
+
+		/**
+		 * Returns the weight vectors.
+		 * 
+		 * @return the weight vectors
+		 */
+		public List<double[]> getWeights() {
+			return weights;
+		}
+
+		/**
+		 * Returns the minimum angles between weight vectors.
+		 * 
+		 * @return the minimum angles between weight vectors
+		 */
+		public double[] getMinAngles() {
+			return minAngles;
+		}
+
+		/**
+		 * Returns the scaling factor.
+		 * 
+		 * @return the scaling factor
+		 */
+		public double getScalingFactor() {
+			return scalingFactor;
+		}
+		
 	}
 
 }

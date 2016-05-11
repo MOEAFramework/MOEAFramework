@@ -1,8 +1,11 @@
 package org.moeaframework.algorithm;
 
+import java.io.NotSerializableException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.moeaframework.algorithm.ReferenceVectorGuidedPopulation.ReferenceVectorGuidedPopulationState;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Initialization;
 import org.moeaframework.core.PRNG;
@@ -102,7 +105,7 @@ public class RVEA extends AbstractEvolutionaryAlgorithm {
 			indices.add(indices.get(0));
 		}
 		
-		// genreate the offspring
+		// generate the offspring
 		for (int i = 0; i < indices.size(); i += 2) {
 			Solution[] parents = new Solution[] { population.get(indices.get(i)), population.get(indices.get(i+1)) };
 			Solution[] children = variation.evolve(parents);
@@ -127,6 +130,98 @@ public class RVEA extends AbstractEvolutionaryAlgorithm {
 	@Override
 	public ReferenceVectorGuidedPopulation getPopulation() {
 		return (ReferenceVectorGuidedPopulation)super.getPopulation();
+	}
+	
+	@Override
+	public Serializable getState() throws NotSerializableException {
+		if (!isInitialized()) {
+			throw new AlgorithmInitializationException(this, 
+					"algorithm not initialized");
+		}
+
+		return new RVEAState(getNumberOfEvaluations(), generation,
+				getPopulation().getState());
+	}
+
+	@Override
+	public void setState(Object objState) throws NotSerializableException {
+		RVEAState state = (RVEAState)objState;
+
+		initialized = true;
+		numberOfEvaluations = state.getNumberOfEvaluations();
+		generation = state.getGeneration();
+		getPopulation().setState(state.getPopulationState());
+	}
+
+	/**
+	 * Proxy for serializing and deserializing the state of an
+	 * {@code RVEA} instance. This proxy supports saving
+	 * the {@code numberOfEvaluations}, {@code generation}, {@code population}
+	 * and {@code archive}.
+	 */
+	private static class RVEAState implements Serializable {
+
+		private static final long serialVersionUID = 5341464818762163296L;
+
+		/**
+		 * The number of objective function evaluations.
+		 */
+		private final int numberOfEvaluations;
+		
+		/**
+		 * The current generation.
+		 */
+		private final int generation;
+
+		/**
+		 * The population stored in a serializable list.
+		 */
+		private final ReferenceVectorGuidedPopulationState populationState;
+
+		/**
+		 * Constructs a proxy to serialize and deserialize the state of an 
+		 * {@code RVEA} instance.
+		 * 
+		 * @param numberOfEvaluations the number of objective function
+		 *        evaluations
+		 * @param generation the current generation
+		 * @param population the population stored in a serializable object
+		 */
+		public RVEAState(int numberOfEvaluations, int generation,
+				ReferenceVectorGuidedPopulationState populationState) {
+			super();
+			this.numberOfEvaluations = numberOfEvaluations;
+			this.generation = generation;
+			this.populationState = populationState;
+		}
+
+		/**
+		 * Returns the number of objective function evaluations.
+		 * 
+		 * @return the number of objective function evaluations
+		 */
+		public int getNumberOfEvaluations() {
+			return numberOfEvaluations;
+		}
+
+		/**
+		 * Returns the current generation.
+		 * 
+		 * @return the current generation
+		 */
+		public int getGeneration() {
+			return generation;
+		}
+
+		/**
+		 * Returns the population stored in a serializable object.
+		 * 
+		 * @return the population stored in a serializable object
+		 */
+		public ReferenceVectorGuidedPopulationState getPopulationState() {
+			return populationState;
+		}
+
 	}
 
 }
