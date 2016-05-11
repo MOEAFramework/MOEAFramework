@@ -5,6 +5,9 @@ Framework.
  Version 2.10 (TBD)
 --------------------
 
+  * Adds the reference vector guided evolutionary algorithm (RVEA) by
+    Cheng, Jin, Olhofer, and Sendhoff.
+
   * A new version of the SBX operator is included.  This version includes two
     new parameters:
     
