@@ -128,7 +128,6 @@ import org.moeaframework.util.TypedProperties;
  *     <td>{@code populationSize, sbx.rate, sbx.distributionIndex,
  *         pm.rate, pm.distributionIndex}</td>
  *   </tr>
- *   
  *   <tr>
  *     <td>NSGAIII</td>
  *     <td>Any</td>
@@ -158,6 +157,15 @@ import org.moeaframework.util.TypedProperties;
  *     <td>Random</td>
  *     <td>Any</td>
  *     <td>{@code populationSize, epsilon}</td>
+ *   </tr>
+ *   <tr>
+ *     <td>RVEA</td>
+ *     <td>Any</td>
+ *     <td>{@code populationSize, divisions, alpha, maxEvaluations,
+ *         adaptFrequency, sbx.rate, sbx.distributionIndex, pm.rate,
+ *         pm.distributionIndex} (for the two-layer approach, replace
+ *         {@code divisions} by {@code divisionsOuter} and
+ *         {@code divisionsInner})</td>
  *   </tr>
  *   <tr>
  *     <td>SMPSO</td>
@@ -243,6 +251,8 @@ public class StandardAlgorithms extends AlgorithmProvider {
 			} else if (name.equalsIgnoreCase("DBEA") ||
 					name.equalsIgnoreCase("I-DBEA")) {
 				return newDBEA(typedProperties, problem);
+			} else if (name.equalsIgnoreCase("RVEA")) {
+				return newRVEA(typedProperties, problem);
 			} else if (name.equalsIgnoreCase("Random")) {
 				return newRandomSearch(typedProperties, problem);
 			} else {
@@ -365,7 +375,8 @@ public class StandardAlgorithms extends AlgorithmProvider {
 		} else if (problem.getNumberOfObjectives() == 5) {
 			divisionsOuter = 6;
 		} else if (problem.getNumberOfObjectives() == 6) {
-			divisionsOuter = 5;
+			divisionsOuter = 4;
+			divisionsInner = 1;
 		} else if (problem.getNumberOfObjectives() == 7) {
 			divisionsOuter = 3;
 			divisionsInner = 2;
@@ -871,7 +882,8 @@ public class StandardAlgorithms extends AlgorithmProvider {
 		} else if (problem.getNumberOfObjectives() == 5) {
 			divisionsOuter = 6;
 		} else if (problem.getNumberOfObjectives() == 6) {
-			divisionsOuter = 5;
+			divisionsOuter = 4;
+			divisionsInner = 1;
 		} else if (problem.getNumberOfObjectives() == 7) {
 			divisionsOuter = 3;
 			divisionsInner = 2;
@@ -907,6 +919,90 @@ public class StandardAlgorithms extends AlgorithmProvider {
 		
 		return new DBEA(problem, initialization,
 				variation, divisionsOuter, divisionsInner);
+	}
+	
+	/**
+	 * Returns a new {@link RVEA} instance.
+	 * 
+	 * @param properties the properties for customizing the new {@code RVEA}
+	 *        instance
+	 * @param problem the problem
+	 * @return a new {@code RVEA} instance
+	 */
+	private Algorithm newRVEA(TypedProperties properties, Problem problem) {
+		int divisionsOuter = 4;
+		int divisionsInner = 0;
+		
+		if (problem.getNumberOfObjectives() < 2) {
+			throw new FrameworkException("RVEA requires at least two objectives");
+		}
+		
+		if (properties.contains("divisionsOuter") && properties.contains("divisionsInner")) {
+			divisionsOuter = (int)properties.getDouble("divisionsOuter", 4);
+			divisionsInner = (int)properties.getDouble("divisionsInner", 0);
+		} else if (properties.contains("divisions")){
+			divisionsOuter = (int)properties.getDouble("divisions", 4);
+		} else if (problem.getNumberOfObjectives() == 1) {
+			divisionsOuter = 100;
+		} else if (problem.getNumberOfObjectives() == 2) {
+			divisionsOuter = 99;
+		} else if (problem.getNumberOfObjectives() == 3) {
+			divisionsOuter = 12;
+		} else if (problem.getNumberOfObjectives() == 4) {
+			divisionsOuter = 8;
+		} else if (problem.getNumberOfObjectives() == 5) {
+			divisionsOuter = 6;
+		} else if (problem.getNumberOfObjectives() == 6) {
+			divisionsOuter = 4;
+			divisionsInner = 1;
+		} else if (problem.getNumberOfObjectives() == 7) {
+			divisionsOuter = 3;
+			divisionsInner = 2;
+		} else if (problem.getNumberOfObjectives() == 8) {
+			divisionsOuter = 3;
+			divisionsInner = 2;
+		} else if (problem.getNumberOfObjectives() == 9) {
+			divisionsOuter = 3;
+			divisionsInner = 2;
+		} else if (problem.getNumberOfObjectives() == 10) {
+			divisionsOuter = 3;
+			divisionsInner = 2;
+		} else {
+			divisionsOuter = 2;
+			divisionsInner = 1;
+		}
+		
+		// compute number of reference vectors
+		int populationSize = (int)(CombinatoricsUtils.binomialCoefficient(problem.getNumberOfObjectives() + divisionsOuter - 1, divisionsOuter) +
+					(divisionsInner == 0 ? 0 : CombinatoricsUtils.binomialCoefficient(problem.getNumberOfObjectives() + divisionsInner - 1, divisionsInner)));
+		
+		Initialization initialization = new RandomInitialization(problem,
+				populationSize);
+		
+		ReferenceVectorGuidedPopulation population = new ReferenceVectorGuidedPopulation(
+				problem.getNumberOfObjectives(), divisionsOuter, divisionsInner,
+				properties.getDouble("alpha", 2.0));
+
+		if (!properties.contains("sbx.swap")) {
+			properties.setBoolean("sbx.swap", false);
+		}
+		
+		if (!properties.contains("sbx.distributionIndex")) {
+			properties.setDouble("sbx.distributionIndex", 30.0);
+		}
+		
+		if (!properties.contains("pm.distributionIndex")) {
+			properties.setDouble("pm.distributionIndex", 20.0);
+		}
+
+		Variation variation = OperatorFactory.getInstance().getVariation(null, 
+				properties, problem);
+		
+		int maxGenerations = (int)(properties.getDouble("maxEvaluations", 10000) / populationSize);
+		int adaptFrequency = (int)properties.getDouble("adaptFrequency", maxGenerations / 10);
+
+		return new RVEA(problem, population, variation, initialization,
+				maxGenerations, adaptFrequency);
 	}
 	
 	/**

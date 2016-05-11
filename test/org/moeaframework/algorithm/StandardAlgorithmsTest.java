@@ -23,6 +23,7 @@ import java.util.Properties;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.Problem;
@@ -167,6 +168,11 @@ public class StandardAlgorithmsTest {
 	}
 	
 	@Test
+	public void testRVEA_Real() {
+		test("RVEA", realProblem);
+	}
+	
+	@Test
 	public void testRandomSearch_Real() {
 		test("Random", realProblem);
 	}
@@ -244,6 +250,12 @@ public class StandardAlgorithmsTest {
 	@Test
 	public void testVEGA_Binary() {
 		test("VEGA", binaryProblem);
+	}
+	
+	@Test
+	@Ignore("current does not work since RVEA requires at least two objectives")
+	public void testRVEA_Binary() {
+		test("RVEA", binaryProblem);
 	}
 	
 	@Test
@@ -327,6 +339,12 @@ public class StandardAlgorithmsTest {
 	}
 	
 	@Test
+	@Ignore("currently broken as RVEA requires at least two objectives")
+	public void testRVEA_Permutation() {
+		test("RVEA", permutationProblem);
+	}
+	
+	@Test
 	public void testRandomSearch_Permutation() {
 		test("Random", permutationProblem);
 	}
@@ -404,6 +422,12 @@ public class StandardAlgorithmsTest {
 	@Test
 	public void testVEGA_Subset() {
 		test("VEGA", subsetProblem);
+	}
+	
+	@Test
+	@Ignore("currently broken as RVEA requires at least two objectives")
+	public void testRVEA_Subset() {
+		test("RVEA", subsetProblem);
 	}
 	
 	@Test
