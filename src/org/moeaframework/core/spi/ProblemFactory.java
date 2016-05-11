@@ -32,8 +32,12 @@ import org.moeaframework.problem.StandardProblems;
 
 /**
  * Factory for creating optimization problem instances and their corresponding
- * reference sets, if known. See {@link ProblemProvider} for details on adding
+ * reference sets, if known.  Problems are referenced by name.  For example,
+ * {@code getProblem("DTLZ2_2")} will create an instance of the 2-objective
+ * DTLZ2 problem.  See {@link ProblemProvider} for details on adding
  * new providers.
+ * <p>
+ * <a href="https://i.imgur.com/y41pi4n.jpg">Obligatory Link</a>
  * <p>
  * This class is thread safe.
  */
