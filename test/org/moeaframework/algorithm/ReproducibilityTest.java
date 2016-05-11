@@ -155,6 +155,14 @@ public class ReproducibilityTest {
 	public void testVEGA() {
 		test("VEGA");
 	}
+
+	/**
+	 * Tests RVEA for reproducibility.
+	 */
+	@Test
+	public void testRVEA() {
+		test("RVEA");
+	}
 	
 	/**
 	 * Tests random search for reproducibility.
