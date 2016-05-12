@@ -3,9 +3,8 @@ package org.moeaframework.algorithm.single;
 import java.io.Serializable;
 
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.comparator.DominanceComparator;
 
-public class TchebychevObjectiveComparator implements DominanceComparator, Serializable {
+public class TchebychevObjectiveComparator implements SingleObjectiveComparator, Serializable {
 	
 	private static final long serialVersionUID = 5018011451944335718L;
 	

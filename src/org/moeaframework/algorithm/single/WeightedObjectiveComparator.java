@@ -3,9 +3,8 @@ package org.moeaframework.algorithm.single;
 import java.io.Serializable;
 
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.comparator.DominanceComparator;
 
-public class WeightedObjectiveComparator implements DominanceComparator, Serializable {
+public class WeightedObjectiveComparator implements SingleObjectiveComparator, Serializable {
 	
 	private static final long serialVersionUID = 5157359855613094380L;
 	

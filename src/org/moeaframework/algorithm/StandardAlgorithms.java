@@ -23,6 +23,9 @@ import org.apache.commons.math3.util.CombinatoricsUtils;
 import org.moeaframework.algorithm.pso.OMOPSO;
 import org.moeaframework.algorithm.pso.SMPSO;
 import org.moeaframework.algorithm.single.DifferentialEvolution;
+import org.moeaframework.algorithm.single.EvolutionaryStrategy;
+import org.moeaframework.algorithm.single.GeneticAlgorithm;
+import org.moeaframework.algorithm.single.SingleObjectiveComparator;
 import org.moeaframework.algorithm.single.TchebychevDominanceComparator;
 import org.moeaframework.algorithm.single.WeightedDominanceComparator;
 import org.moeaframework.analysis.sensitivity.EpsilonHelper;
@@ -195,6 +198,36 @@ import org.moeaframework.util.TypedProperties;
  *         pm.distributionIndex}</td>
  *   </tr>
  * </table>
+ * <p>
+ * Several single-objective algorithms are also supported.  These
+ * single-objective algorithms support an optional weighting method, which can
+ * be either {@code "linear"} or {@code "tchebyshev"}.
+ * <p>
+ * <table width="100%" border="1" cellpadding="3" cellspacing="0">
+ *   <tr class="TableHeadingColor">
+ *     <th width="10%" align="left">Name</th>
+ *     <th width="10%" align="left">Type</th>
+ *     <th width="80%" align="left">Properties</th>
+ *   </tr>
+ *   <tr>
+ *     <td>GA</td>
+ *     <td>Any</td>
+ *     <td>{@code populationSize, method, weights, sbx.rate,
+ *         sbx.distributionIndex, pm.rate, pm.distributionIndex}</td>
+ *   </tr>
+ *   <tr>
+ *     <td>ES</td>
+ *     <td>Any</td>
+ *     <td>{@code populationSize, method, weights, sbx.rate,
+ *         sbx.distributionIndex, pm.rate, pm.distributionIndex}</td>
+ *   </tr>
+ *   <tr>
+ *     <td>DE</td>
+ *     <td>Real</td>
+ *     <td>{@code populationSize, method, weights, de.crossoverRate,
+ *         de.stepSize}</td>
+ *   </tr>
+ * </table>
  */
 public class StandardAlgorithms extends AlgorithmProvider {
 
@@ -262,6 +295,12 @@ public class StandardAlgorithms extends AlgorithmProvider {
 					name.equalsIgnoreCase("DE") ||
 					name.equalsIgnoreCase("DE/rand/1/bin")) {
 				return newDifferentialEvolution(typedProperties, problem);
+			} else if (name.equalsIgnoreCase("GeneticAlgorithm") ||
+					name.equalsIgnoreCase("GA")) {
+				return newGeneticAlgorithm(typedProperties, problem);
+			} else if (name.equalsIgnoreCase("EvolutionaryStrategy") ||
+					name.equalsIgnoreCase("ES")) {
+				return newEvolutionaryStrategy(typedProperties, problem);
 			} else {
 				return null;
 			}
@@ -1039,9 +1078,74 @@ public class StandardAlgorithms extends AlgorithmProvider {
 		
 		return new RandomSearch(problem, generator, archive);
 	}
+	
+	/**
+	 * Returns a new single-objective {@link GeneticAlgorithm} instance.
+	 * 
+	 * @param properties the properties for customizing the new
+	 *        {@code GeneticAlgorithm} instance
+	 * @param problem the problem
+	 * @return a new {@code GeneticAlgorithm} instance
+	 */
+	private Algorithm newGeneticAlgorithm(TypedProperties properties, Problem problem) {
+		int populationSize = (int)properties.getDouble("populationSize", 100);
+		double[] weights = properties.getDoubleArray("weights", new double[] { 1.0 });
+		String method = properties.getString("method", "linear");
+		
+		SingleObjectiveComparator comparator = null;
+		
+		if (method.equalsIgnoreCase("linear")) {
+			comparator = new WeightedDominanceComparator(weights);
+		} else if (method.equalsIgnoreCase("chebyshev") || method.equalsIgnoreCase("tchebychev")) {
+			comparator = new TchebychevDominanceComparator(weights);
+		} else {
+			throw new FrameworkException("unrecognized weighting method: " + method);
+		}
+
+		Initialization initialization = new RandomInitialization(problem, populationSize);
+		
+		Selection selection = new TournamentSelection(2, comparator);
+
+		Variation variation = OperatorFactory.getInstance().getVariation(null, properties, problem);
+
+		return new GeneticAlgorithm(problem, comparator, initialization, selection, variation);
+	}
+	
+	/**
+	 * Returns a new single-objective {@link EvolutionaryStrategy} instance.
+	 * 
+	 * @param properties the properties for customizing the new
+	 *        {@code EvolutionaryStrategy} instance
+	 * @param problem the problem
+	 * @return a new {@code EvolutionaryStrategy} instance
+	 */
+	private Algorithm newEvolutionaryStrategy(TypedProperties properties, Problem problem) {
+		int populationSize = (int)properties.getDouble("populationSize", 100);
+		double[] weights = properties.getDoubleArray("weights", new double[] { 1.0 });
+		String method = properties.getString("method", "linear");
+		
+		SingleObjectiveComparator comparator = null;
+		
+		if (method.equalsIgnoreCase("linear")) {
+			comparator = new WeightedDominanceComparator(weights);
+		} else if (method.equalsIgnoreCase("chebyshev") || method.equalsIgnoreCase("tchebychev")) {
+			comparator = new TchebychevDominanceComparator(weights);
+		} else {
+			throw new FrameworkException("unrecognized weighting method: " + method);
+		}
+
+		Initialization initialization = new RandomInitialization(problem, populationSize);
+
+		Variation variation = OperatorFactory.getInstance().getVariation(
+				OperatorFactory.getInstance().getDefaultMutation(problem),
+				properties,
+				problem);
+
+		return new EvolutionaryStrategy(problem, comparator, initialization, variation);
+	}
 
 	/**
-	 * Returns a new {@link DE/rand/1/bin} instance.
+	 * Returns a new single-objective {@link DE/rand/1/bin} instance.
 	 * 
 	 * @param properties the properties for customizing the new
 	 *        {@code DE/rand/1/bin} instance
@@ -1057,7 +1161,7 @@ public class StandardAlgorithms extends AlgorithmProvider {
 		double[] weights = properties.getDoubleArray("weights", new double[] { 1.0 });
 		String method = properties.getString("method", "linear");
 		
-		DominanceComparator comparator = null;
+		SingleObjectiveComparator comparator = null;
 		
 		if (method.equalsIgnoreCase("linear")) {
 			comparator = new WeightedDominanceComparator(weights);

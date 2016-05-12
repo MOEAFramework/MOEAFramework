@@ -6,19 +6,19 @@ import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.comparator.DominanceComparator;
 import org.moeaframework.core.operator.real.DifferentialEvolutionVariation;
 import org.moeaframework.core.operator.real.DifferentialEvolutionSelection;
 
 public class DifferentialEvolution extends AbstractEvolutionaryAlgorithm {
 	
-	private DominanceComparator comparator;
+	private final SingleObjectiveComparator comparator;
 	
-	private DifferentialEvolutionSelection selection;
+	private final DifferentialEvolutionSelection selection;
 	
-	private DifferentialEvolutionVariation variation;
+	private final DifferentialEvolutionVariation variation;
 
-	public DifferentialEvolution(Problem problem, DominanceComparator comparator,
+	public DifferentialEvolution(Problem problem,
+			SingleObjectiveComparator comparator,
 			Initialization initialization,
 			DifferentialEvolutionSelection selection,
 			DifferentialEvolutionVariation variation) {

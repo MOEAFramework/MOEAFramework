@@ -6,7 +6,7 @@ import org.moeaframework.core.comparator.AggregateConstraintComparator;
 import org.moeaframework.core.comparator.ChainedComparator;
 
 public class WeightedDominanceComparator extends ChainedComparator implements
-Serializable {
+SingleObjectiveComparator, Serializable {
 
 	private static final long serialVersionUID = -2110850728860429004L;
 
