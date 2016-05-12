@@ -22,6 +22,9 @@ import java.util.Properties;
 import org.apache.commons.math3.util.CombinatoricsUtils;
 import org.moeaframework.algorithm.pso.OMOPSO;
 import org.moeaframework.algorithm.pso.SMPSO;
+import org.moeaframework.algorithm.single.DifferentialEvolution;
+import org.moeaframework.algorithm.single.TchebychevDominanceComparator;
+import org.moeaframework.algorithm.single.WeightedDominanceComparator;
 import org.moeaframework.analysis.sensitivity.EpsilonHelper;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
@@ -49,8 +52,8 @@ import org.moeaframework.core.fitness.IndicatorFitnessEvaluator;
 import org.moeaframework.core.operator.RandomInitialization;
 import org.moeaframework.core.operator.TournamentSelection;
 import org.moeaframework.core.operator.UniformSelection;
-import org.moeaframework.core.operator.real.DifferentialEvolution;
 import org.moeaframework.core.operator.real.DifferentialEvolutionSelection;
+import org.moeaframework.core.operator.real.DifferentialEvolutionVariation;
 import org.moeaframework.core.operator.real.UM;
 import org.moeaframework.core.spi.AlgorithmProvider;
 import org.moeaframework.core.spi.OperatorFactory;
@@ -255,6 +258,10 @@ public class StandardAlgorithms extends AlgorithmProvider {
 				return newRVEA(typedProperties, problem);
 			} else if (name.equalsIgnoreCase("Random")) {
 				return newRandomSearch(typedProperties, problem);
+			} else if (name.equalsIgnoreCase("DifferentialEvolution") ||
+					name.equalsIgnoreCase("DE") ||
+					name.equalsIgnoreCase("DE/rand/1/bin")) {
+				return newDifferentialEvolution(typedProperties, problem);
 			} else {
 				return null;
 			}
@@ -550,7 +557,7 @@ public class StandardAlgorithms extends AlgorithmProvider {
 		DifferentialEvolutionSelection selection = 
 				new DifferentialEvolutionSelection();
 
-		DifferentialEvolution variation = (DifferentialEvolution)OperatorFactory
+		DifferentialEvolutionVariation variation = (DifferentialEvolutionVariation)OperatorFactory
 				.getInstance().getVariation("de", properties, problem);
 
 		return new GDE3(problem, population, comparator, selection, variation,
@@ -1033,4 +1040,41 @@ public class StandardAlgorithms extends AlgorithmProvider {
 		return new RandomSearch(problem, generator, archive);
 	}
 
+	/**
+	 * Returns a new {@link DE/rand/1/bin} instance.
+	 * 
+	 * @param properties the properties for customizing the new
+	 *        {@code DE/rand/1/bin} instance
+	 * @param problem the problem
+	 * @return a new {@code DE/rand/1/bin} instance
+	 */
+	private Algorithm newDifferentialEvolution(TypedProperties properties, Problem problem) {
+		if (!checkType(RealVariable.class, problem)) {
+			throw new FrameworkException("unsupported decision variable type");
+		}
+		
+		int populationSize = (int)properties.getDouble("populationSize", 100);
+		double[] weights = properties.getDoubleArray("weights", new double[] { 1.0 });
+		String method = properties.getString("method", "linear");
+		
+		DominanceComparator comparator = null;
+		
+		if (method.equalsIgnoreCase("linear")) {
+			comparator = new WeightedDominanceComparator(weights);
+		} else if (method.equalsIgnoreCase("chebyshev") || method.equalsIgnoreCase("tchebychev")) {
+			comparator = new TchebychevDominanceComparator(weights);
+		} else {
+			throw new FrameworkException("unrecognized weighting method: " + method);
+		}
+
+		Initialization initialization = new RandomInitialization(problem, populationSize);
+
+		DifferentialEvolutionSelection selection = new DifferentialEvolutionSelection();
+
+		DifferentialEvolutionVariation variation = (DifferentialEvolutionVariation)OperatorFactory.getInstance()
+				.getVariation("de", properties, problem);
+
+		return new DifferentialEvolution(problem, comparator, initialization, selection, variation);
+	}
+	
 }

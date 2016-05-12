@@ -24,7 +24,7 @@ import org.moeaframework.core.Solution;
 
 /**
  * Selection operator to be used in conjunction with the
- * {@link DifferentialEvolution} operator. The {@code select} method returns the
+ * {@link DifferentialEvolutionVariation} operator. The {@code select} method returns the
  * solutions {@code [currentIndex, r1, r2, ...]}, where {@code currentIndex} is
  * set using the {@link #setCurrentIndex(int)} method and {@code r1, r2, ...}
  * are randomly selected solutions. The returned solutions are guaranteed to
