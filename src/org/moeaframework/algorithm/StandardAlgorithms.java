@@ -25,6 +25,7 @@ import org.moeaframework.algorithm.pso.SMPSO;
 import org.moeaframework.algorithm.single.DifferentialEvolution;
 import org.moeaframework.algorithm.single.EvolutionaryStrategy;
 import org.moeaframework.algorithm.single.GeneticAlgorithm;
+import org.moeaframework.algorithm.single.OneManyAlgorithm;
 import org.moeaframework.algorithm.single.SingleObjectiveComparator;
 import org.moeaframework.algorithm.single.TchebychevDominanceComparator;
 import org.moeaframework.algorithm.single.WeightedDominanceComparator;
@@ -201,7 +202,7 @@ import org.moeaframework.util.TypedProperties;
  * <p>
  * Several single-objective algorithms are also supported.  These
  * single-objective algorithms support an optional weighting method, which can
- * be either {@code "linear"} or {@code "tchebyshev"}.
+ * be either {@code "linear"} or {@code "tchebychev"}.
  * <p>
  * <table width="100%" border="1" cellpadding="3" cellspacing="0">
  *   <tr class="TableHeadingColor">
@@ -301,6 +302,11 @@ public class StandardAlgorithms extends AlgorithmProvider {
 			} else if (name.equalsIgnoreCase("EvolutionaryStrategy") ||
 					name.equalsIgnoreCase("ES")) {
 				return newEvolutionaryStrategy(typedProperties, problem);
+			} else if (name.equalsIgnoreCase("OneMany")) {
+				return newOneManyAlgorithm(typedProperties, problem);
+			} else if (name.toUpperCase().startsWith("ONEMANY(") && name.endsWith(")")) {
+				typedProperties.setString("algorithm", name.substring(8, name.length()-1));
+				return newOneManyAlgorithm(typedProperties, problem);
 			} else {
 				return null;
 			}
@@ -1077,6 +1083,26 @@ public class StandardAlgorithms extends AlgorithmProvider {
 		}
 		
 		return new RandomSearch(problem, generator, archive);
+	}
+	
+	/**
+	 * Returns a new single-objective {@link OneManyAlgorithm} instance.
+	 * 
+	 * @param properties the properties for customizing the new
+	 *        {@code ManyOnceAlgorithm} instance
+	 * @param problem the problem
+	 * @return a new {@code ManyOnceAlgorithm} instance
+	 */
+	private Algorithm newOneManyAlgorithm(TypedProperties properties, Problem problem) {
+		String algorithmName = properties.getString("algorithm", "GA");
+		int instances = (int)properties.getDouble("instances", 100);
+		
+		if (!properties.contains("method")) {
+			properties.setString("method", "tchebychev");
+		}
+
+		return new OneManyAlgorithm(problem, algorithmName,
+				properties.getProperties(), instances);
 	}
 	
 	/**
