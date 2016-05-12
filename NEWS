@@ -1,9 +1,9 @@
 This file documents the major changes implemented in each release of the MOEA
 Framework.
 
---------------------
- Version 2.10 (TBD)
---------------------
+----------------------------
+ Version 2.10 (11 May 2016)
+----------------------------
 
   * Adds the reference vector guided evolutionary algorithm (RVEA) by
     Cheng, Jin, Olhofer, and Sendhoff.
