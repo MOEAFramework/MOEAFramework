@@ -17,6 +17,7 @@
  */
 package org.moeaframework.algorithm;
 
+import java.util.List;
 import java.util.Properties;
 
 import org.apache.commons.math3.util.CombinatoricsUtils;
@@ -49,6 +50,7 @@ import org.moeaframework.core.comparator.ChainedComparator;
 import org.moeaframework.core.comparator.CrowdingComparator;
 import org.moeaframework.core.comparator.DominanceComparator;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
+import org.moeaframework.core.comparator.RankComparator;
 import org.moeaframework.core.fitness.AdditiveEpsilonIndicatorFitnessEvaluator;
 import org.moeaframework.core.fitness.HypervolumeContributionFitnessEvaluator;
 import org.moeaframework.core.fitness.HypervolumeFitnessEvaluator;
@@ -65,6 +67,7 @@ import org.moeaframework.core.spi.ProviderLookupException;
 import org.moeaframework.core.spi.ProviderNotFoundException;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.util.TypedProperties;
+import org.moeaframework.util.weights.RandomGenerator;
 
 /**
  * A provider of standard algorithms. The following table contains all
@@ -290,6 +293,8 @@ public class StandardAlgorithms extends AlgorithmProvider {
 				return newDBEA(typedProperties, problem);
 			} else if (name.equalsIgnoreCase("RVEA")) {
 				return newRVEA(typedProperties, problem);
+			} else if (name.equalsIgnoreCase("MSOPS")) {
+				return newMSOPS(typedProperties, problem);
 			} else if (name.equalsIgnoreCase("Random")) {
 				return newRandomSearch(typedProperties, problem);
 			} else if (name.equalsIgnoreCase("DifferentialEvolution") ||
@@ -1055,6 +1060,34 @@ public class StandardAlgorithms extends AlgorithmProvider {
 
 		return new RVEA(problem, population, variation, initialization,
 				maxGenerations, adaptFrequency);
+	}
+	
+	/**
+	 * Returns a new {@link MSOPS} instance.
+	 * 
+	 * @param properties the properties for customizing the new {@code MSOPS}
+	 *        instance
+	 * @param problem the problem
+	 * @return a new {@code MSOPS} instance
+	 */
+	private Algorithm newMSOPS(TypedProperties properties, Problem problem) {
+		int populationSize = (int)properties.getDouble("populationSize", 100);
+		int numberOfWeights = (int)properties.getDouble("numberOfWeights", 50);
+
+		Initialization initialization = new RandomInitialization(problem,
+				populationSize);
+		
+		List<double[]> weights = new RandomGenerator(problem.getNumberOfObjectives(), numberOfWeights).generate();
+
+		MSOPSRankedPopulation population = new MSOPSRankedPopulation(weights);
+
+		TournamentSelection selection = new TournamentSelection(2, new RankComparator());
+
+		Variation variation = OperatorFactory.getInstance().getVariation(null, 
+				properties, problem);
+
+		return new MSOPS(problem, population, selection, variation,
+				initialization);
 	}
 	
 	/**

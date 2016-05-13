@@ -25,13 +25,13 @@ public class WeightedObjectiveComparator implements SingleObjectiveComparator, S
 
 	@Override
 	public int compare(Solution solution1, Solution solution2) {
-		double fitness1 = calculateFitness(solution1);
-		double fitness2 = calculateFitness(solution2);
+		double fitness1 = calculateFitness(solution1, weights);
+		double fitness2 = calculateFitness(solution2, weights);
 		
 		return Double.compare(fitness1, fitness2);
 	}
 	
-	protected double calculateFitness(Solution solution) {
+	public static double calculateFitness(Solution solution, double[] weights) {
 		double fitness = 0.0;
 		
 		for (int i = 0; i < solution.getNumberOfObjectives(); i++) {

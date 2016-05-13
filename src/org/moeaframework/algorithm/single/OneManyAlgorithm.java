@@ -13,16 +13,18 @@ import org.moeaframework.util.TypedProperties;
 import org.moeaframework.util.weights.RandomGenerator;
 
 /**
- * Instantiates and runs several instances of a single algorithm.  This is
- * intended to be used with single-objective optimizers that use weighted
- * aggregation of the objectives.  This is based on the work of E. J. Hughes
- * [1], where he investigates running many single-objective optimizers (one
- * many) compared to running a single many-objective optimizer (many once).
+ * Instantiates and runs several instances of a single objective algorithm.
+ * This is intended to be used with single-objective optimizers that use
+ * weighted aggregation of the objectives.  This is based on the Repeated Single
+ * Objective (RSO) algorithm by E. J. Hughes [1], where he investigates running
+ * many single-objective optimizers (one many) compared to running a single
+ * many-objective optimizer (many once).
  * <p>
  * Be mindful of how running multiple instances affects the {@link #step()}.
- * Each step performs one iteration of each instance.  Thus, given 20 instances
- * of an algorithm with a population size of 100, then 2000 evaluations will
- * occur each step.
+ * Each step performs one iteration of each instance.  Thus, given 50 instances
+ * of an algorithm with a population size of 100, then 5000 evaluations will
+ * occur each step.  In [1], they decrease the population size for the single
+ * objective optimizers.
  * <p>
  * References:
  * <ol>
