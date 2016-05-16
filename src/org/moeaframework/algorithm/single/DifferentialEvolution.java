@@ -6,8 +6,9 @@ import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.operator.real.DifferentialEvolutionVariation;
+import org.moeaframework.core.comparator.DominanceComparator;
 import org.moeaframework.core.operator.real.DifferentialEvolutionSelection;
+import org.moeaframework.core.operator.real.DifferentialEvolutionVariation;
 
 public class DifferentialEvolution extends AbstractEvolutionaryAlgorithm {
 	
@@ -47,7 +48,7 @@ public class DifferentialEvolution extends AbstractEvolutionaryAlgorithm {
 		
 		//greedy selection of next population
 		for (int i = 0; i < population.size(); i++) {
-			if (comparator.compare(children.get(i), population.get(i)) < 0) {
+			if (((DominanceComparator)comparator).compare(children.get(i), population.get(i)) < 0) {
 				population.replace(i, children.get(i));
 			}
 		}

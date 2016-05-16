@@ -138,9 +138,9 @@ public class MSOPSRankedPopulation extends Population {
 	public void update() {
 		modified = false;
 		
-		int P = size();
-		int T = weights.size();
-		double[][] scores = new double[P][T];
+		final int P = size();
+		final int T = weights.size();
+		final double[][] scores = new double[P][T];
 		final int[][] ranks = new int[P][T];
 		double maxScore = Double.NEGATIVE_INFINITY;
 		
