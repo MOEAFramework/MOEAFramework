@@ -1,33 +1,51 @@
 package org.moeaframework.algorithm;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.Initialization;
-import org.moeaframework.core.NondominatedPopulation;
-import org.moeaframework.core.NondominatedSortingPopulation;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
-import org.moeaframework.core.Selection;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.Variation;
-import org.moeaframework.util.weights.RandomGenerator;
+import org.moeaframework.core.operator.real.DifferentialEvolutionSelection;
+import org.moeaframework.core.operator.real.DifferentialEvolutionVariation;
 
+/**
+ * Implementation of the Multiple Single Objective Pareto Sampling (MSOPS)
+ * algorithm.  This implementation only supports differential evolution.
+ * <p>
+ * References:
+ * <ol>
+ *   <li>E. J. Hughes.  "Multiple Single Objective Pareto Sampling."  2003
+ *       Congress on Evolutionary Computation, pp. 2678-2684.
+ *   <li>Matlab source code available from
+ *       <a href="http://code.evanhughes.org/">http://code.evanhughes.org/</a>.
+ * </ol>
+ * 
+ * @see MSOPSRankedPopulation
+ */
 public class MSOPS extends AbstractEvolutionaryAlgorithm {
 	
 	/**
 	 * The selection operator.
 	 */
-	private final Selection selection;
+	private final DifferentialEvolutionSelection selection;
 
 	/**
 	 * The variation operator.
 	 */
-	private final Variation variation;
+	private final DifferentialEvolutionVariation variation;
 
-	public MSOPS(Problem problem, MSOPSRankedPopulation population, Selection selection,
-			Variation variation, Initialization initialization) {
+	/**
+	 * Constructs a new instance of the MSOPS algorithm.
+	 * 
+	 * @param problem the problem
+	 * @param population the population supporting MSOPS ranking
+	 * @param selection the differential evolution selection operator
+	 * @param variation the differential evolution variation operator
+	 * @param initialization the initialization method
+	 */
+	public MSOPS(Problem problem, MSOPSRankedPopulation population,
+			DifferentialEvolutionSelection selection,
+			DifferentialEvolutionVariation variation,
+			Initialization initialization) {
 		super(problem, population, null, initialization);
 		this.variation = variation;
 		this.selection = selection;
@@ -43,10 +61,14 @@ public class MSOPS extends AbstractEvolutionaryAlgorithm {
 		MSOPSRankedPopulation population = getPopulation();
 		Population offspring = new Population();
 		int populationSize = population.size();
+		int neighborhoodSize = (int)Math.ceil(populationSize/2.0);
 
-		while (offspring.size() < populationSize) {
+		for (int i = 0; i < populationSize; i++) {
+			// findNearest(i, ...) always puts the i-th solution at index 0
+			selection.setCurrentIndex(0);
+			
 			Solution[] parents = selection.select(variation.getArity(),
-					population);
+					population.findNearest(i, neighborhoodSize));
 			Solution[] children = variation.evolve(parents);
 
 			offspring.addAll(children);

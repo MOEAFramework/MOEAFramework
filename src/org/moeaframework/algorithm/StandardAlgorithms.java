@@ -26,7 +26,7 @@ import org.moeaframework.algorithm.pso.SMPSO;
 import org.moeaframework.algorithm.single.DifferentialEvolution;
 import org.moeaframework.algorithm.single.EvolutionaryStrategy;
 import org.moeaframework.algorithm.single.GeneticAlgorithm;
-import org.moeaframework.algorithm.single.OneManyAlgorithm;
+import org.moeaframework.algorithm.single.RepeatedSingleObjective;
 import org.moeaframework.algorithm.single.SingleObjectiveComparator;
 import org.moeaframework.algorithm.single.TchebychevDominanceComparator;
 import org.moeaframework.algorithm.single.WeightedDominanceComparator;
@@ -50,7 +50,6 @@ import org.moeaframework.core.comparator.ChainedComparator;
 import org.moeaframework.core.comparator.CrowdingComparator;
 import org.moeaframework.core.comparator.DominanceComparator;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
-import org.moeaframework.core.comparator.RankComparator;
 import org.moeaframework.core.fitness.AdditiveEpsilonIndicatorFitnessEvaluator;
 import org.moeaframework.core.fitness.HypervolumeContributionFitnessEvaluator;
 import org.moeaframework.core.fitness.HypervolumeFitnessEvaluator;
@@ -131,6 +130,12 @@ import org.moeaframework.util.weights.RandomGenerator;
  *     <td>{@code populationSize, de.crossoverRate, de.stepSize, pm.rate,
  *         pm.distributionIndex, neighborhoodSize, delta, eta, 
  *         updateUtility}</td>
+ *   </tr>
+ *   <tr>
+ *     <td>MSOPS</td>
+ *     <td>Real</td>
+ *     <td>{@code populationSize, numberOfWeights, de.crossoverRate,
+ *         de.stepSize}</td>
  *   </tr>
  *   <tr>
  *     <td>NSGAII</td>
@@ -307,11 +312,11 @@ public class StandardAlgorithms extends AlgorithmProvider {
 			} else if (name.equalsIgnoreCase("EvolutionaryStrategy") ||
 					name.equalsIgnoreCase("ES")) {
 				return newEvolutionaryStrategy(typedProperties, problem);
-			} else if (name.equalsIgnoreCase("OneMany")) {
-				return newOneManyAlgorithm(typedProperties, problem);
-			} else if (name.toUpperCase().startsWith("ONEMANY(") && name.endsWith(")")) {
-				typedProperties.setString("algorithm", name.substring(8, name.length()-1));
-				return newOneManyAlgorithm(typedProperties, problem);
+			} else if (name.equalsIgnoreCase("RSO")) {
+				return newRSO(typedProperties, problem);
+			} else if (name.toUpperCase().startsWith("RSO(") && name.endsWith(")")) {
+				typedProperties.setString("algorithm", name.substring(4, name.length()-1));
+				return newRSO(typedProperties, problem);
 			} else {
 				return null;
 			}
@@ -1080,11 +1085,11 @@ public class StandardAlgorithms extends AlgorithmProvider {
 		List<double[]> weights = new RandomGenerator(problem.getNumberOfObjectives(), numberOfWeights).generate();
 
 		MSOPSRankedPopulation population = new MSOPSRankedPopulation(weights);
+		
+		DifferentialEvolutionSelection selection = new DifferentialEvolutionSelection();
 
-		TournamentSelection selection = new TournamentSelection(2, new RankComparator());
-
-		Variation variation = OperatorFactory.getInstance().getVariation(null, 
-				properties, problem);
+		DifferentialEvolutionVariation variation = (DifferentialEvolutionVariation)OperatorFactory.getInstance().getVariation(
+				"de", properties, problem);
 
 		return new MSOPS(problem, population, selection, variation,
 				initialization);
@@ -1119,14 +1124,14 @@ public class StandardAlgorithms extends AlgorithmProvider {
 	}
 	
 	/**
-	 * Returns a new single-objective {@link OneManyAlgorithm} instance.
+	 * Returns a new single-objective {@link RepeatedSingleObjective} instance.
 	 * 
 	 * @param properties the properties for customizing the new
-	 *        {@code ManyOnceAlgorithm} instance
+	 *        {@code RepeatedSingleObjective} instance
 	 * @param problem the problem
-	 * @return a new {@code ManyOnceAlgorithm} instance
+	 * @return a new {@code RepeatedSingleObjective} instance
 	 */
-	private Algorithm newOneManyAlgorithm(TypedProperties properties, Problem problem) {
+	private Algorithm newRSO(TypedProperties properties, Problem problem) {
 		String algorithmName = properties.getString("algorithm", "GA");
 		int instances = (int)properties.getDouble("instances", 100);
 		
@@ -1134,7 +1139,7 @@ public class StandardAlgorithms extends AlgorithmProvider {
 			properties.setString("method", "tchebychev");
 		}
 
-		return new OneManyAlgorithm(problem, algorithmName,
+		return new RepeatedSingleObjective(problem, algorithmName,
 				properties.getProperties(), instances);
 	}
 	

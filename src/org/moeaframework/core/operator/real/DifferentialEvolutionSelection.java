@@ -34,7 +34,8 @@ import org.moeaframework.core.Solution;
 public class DifferentialEvolutionSelection implements Selection {
 
 	/**
-	 * The current index.
+	 * The current index.  If set to {@code -1}, then the current index is
+	 * randomly selected.
 	 */
 	private int currentIndex;
 
@@ -43,11 +44,14 @@ public class DifferentialEvolutionSelection implements Selection {
 	 */
 	public DifferentialEvolutionSelection() {
 		super();
+		currentIndex = -1;
 	}
 
 	/**
 	 * Sets the current index, which is the index of the first solution returned
-	 * by the {@code select} method.
+	 * by the {@code select} method.  If set to {@code -1}, then the current
+	 * index is randomly assigned each time {@link #select(int, Population)} is
+	 * invoked.
 	 * 
 	 * @param currentIndex the current index
 	 */
@@ -62,7 +66,12 @@ public class DifferentialEvolutionSelection implements Selection {
 		}
 
 		int[] indices = new int[arity];
-		indices[0] = currentIndex;
+		
+		if (currentIndex < 0) {
+			indices[0] = PRNG.nextInt(population.size());
+		} else {
+			indices[0] = currentIndex;
+		}
 
 		for (int i = 1; i < arity; i++) {
 			boolean isDuplicate;

@@ -33,7 +33,7 @@ import org.moeaframework.util.weights.RandomGenerator;
  *       pp. 222-227.
  * </ol>
  */
-public class OneManyAlgorithm extends AbstractAlgorithm {
+public class RepeatedSingleObjective extends AbstractAlgorithm {
 	
 	/**
 	 * The name of the algorithm.
@@ -59,7 +59,7 @@ public class OneManyAlgorithm extends AbstractAlgorithm {
 	 * @param properties the algorithm properties
 	 * @param instances the number of instances
 	 */
-	public OneManyAlgorithm(Problem problem, String algorithmName, Properties properties, int instances) {
+	public RepeatedSingleObjective(Problem problem, String algorithmName, Properties properties, int instances) {
 		super(problem);
 		this.algorithmName = algorithmName;
 		this.properties = properties;
