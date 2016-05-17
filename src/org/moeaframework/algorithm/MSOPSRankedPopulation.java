@@ -221,7 +221,7 @@ public class MSOPSRankedPopulation extends Population {
 				int rank1 = sortedRanks[i1][selectedWeight];
 				int rank2 = sortedRanks[i2][selectedWeight];
 				
-				return Integer.compare(rank1, rank2);
+				return rank1 < rank2 ? -1 : rank1 > rank2 ? 1 : 0;
 			}
 			
 		});
