@@ -4,17 +4,17 @@ import java.io.Serializable;
 
 import org.moeaframework.core.Solution;
 
-public class TchebychevObjectiveComparator implements SingleObjectiveComparator, Serializable {
+public class MinMaxObjectiveComparator implements SingleObjectiveComparator, Serializable {
 	
 	private static final long serialVersionUID = 5018011451944335718L;
 	
 	private double[] weights;
 	
-	public TchebychevObjectiveComparator() {
+	public MinMaxObjectiveComparator() {
 		this(1.0);
 	}
 	
-	public TchebychevObjectiveComparator(double... weights) {
+	public MinMaxObjectiveComparator(double... weights) {
 		super();
 		this.weights = weights;
 		

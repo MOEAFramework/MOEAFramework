@@ -4,17 +4,17 @@ import java.io.Serializable;
 
 import org.moeaframework.core.Solution;
 
-public class WeightedObjectiveComparator implements SingleObjectiveComparator, Serializable {
+public class LinearObjectiveComparator implements SingleObjectiveComparator, Serializable {
 	
 	private static final long serialVersionUID = 5157359855613094380L;
 	
 	private double[] weights;
 	
-	public WeightedObjectiveComparator() {
+	public LinearObjectiveComparator() {
 		this(1.0);
 	}
 	
-	public WeightedObjectiveComparator(double... weights) {
+	public LinearObjectiveComparator(double... weights) {
 		super();
 		this.weights = weights;
 		

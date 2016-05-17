@@ -28,8 +28,8 @@ import org.moeaframework.algorithm.single.EvolutionaryStrategy;
 import org.moeaframework.algorithm.single.GeneticAlgorithm;
 import org.moeaframework.algorithm.single.RepeatedSingleObjective;
 import org.moeaframework.algorithm.single.SingleObjectiveComparator;
-import org.moeaframework.algorithm.single.TchebychevDominanceComparator;
-import org.moeaframework.algorithm.single.WeightedDominanceComparator;
+import org.moeaframework.algorithm.single.MinMaxDominanceComparator;
+import org.moeaframework.algorithm.single.LinearDominanceComparator;
 import org.moeaframework.analysis.sensitivity.EpsilonHelper;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
@@ -210,7 +210,7 @@ import org.moeaframework.util.weights.RandomGenerator;
  * <p>
  * Several single-objective algorithms are also supported.  These
  * single-objective algorithms support an optional weighting method, which can
- * be either {@code "linear"} or {@code "tchebychev"}.
+ * be either {@code "linear"} or {@code "min-max"}.
  * <p>
  * <table width="100%" border="1" cellpadding="3" cellspacing="0">
  *   <tr class="TableHeadingColor">
@@ -237,6 +237,12 @@ import org.moeaframework.util.weights.RandomGenerator;
  *         de.stepSize}</td>
  *   </tr>
  * </table>
+ * <p>
+ * Lastly, the Repeated Single Objective ({@code RSO}) algorithm is a special
+ * case that runs a single-objective algorithm multiple times while aggregating
+ * the result.  For example, you can create the algorithm {@code RSO(GA)} to
+ * run the single-objective genetic algorithm ({@code GA}) multiple times.  The
+ * {@code instances} property controls the number of repeated runs.
  */
 public class StandardAlgorithms extends AlgorithmProvider {
 
@@ -1136,7 +1142,7 @@ public class StandardAlgorithms extends AlgorithmProvider {
 		int instances = (int)properties.getDouble("instances", 100);
 		
 		if (!properties.contains("method")) {
-			properties.setString("method", "tchebychev");
+			properties.setString("method", "min-max");
 		}
 
 		return new RepeatedSingleObjective(problem, algorithmName,
@@ -1159,9 +1165,9 @@ public class StandardAlgorithms extends AlgorithmProvider {
 		SingleObjectiveComparator comparator = null;
 		
 		if (method.equalsIgnoreCase("linear")) {
-			comparator = new WeightedDominanceComparator(weights);
-		} else if (method.equalsIgnoreCase("chebyshev") || method.equalsIgnoreCase("tchebychev")) {
-			comparator = new TchebychevDominanceComparator(weights);
+			comparator = new LinearDominanceComparator(weights);
+		} else if (method.equalsIgnoreCase("min-max")) {
+			comparator = new MinMaxDominanceComparator(weights);
 		} else {
 			throw new FrameworkException("unrecognized weighting method: " + method);
 		}
@@ -1191,9 +1197,9 @@ public class StandardAlgorithms extends AlgorithmProvider {
 		SingleObjectiveComparator comparator = null;
 		
 		if (method.equalsIgnoreCase("linear")) {
-			comparator = new WeightedDominanceComparator(weights);
-		} else if (method.equalsIgnoreCase("chebyshev") || method.equalsIgnoreCase("tchebychev")) {
-			comparator = new TchebychevDominanceComparator(weights);
+			comparator = new LinearDominanceComparator(weights);
+		} else if (method.equalsIgnoreCase("min-max")) {
+			comparator = new MinMaxDominanceComparator(weights);
 		} else {
 			throw new FrameworkException("unrecognized weighting method: " + method);
 		}
@@ -1228,9 +1234,9 @@ public class StandardAlgorithms extends AlgorithmProvider {
 		SingleObjectiveComparator comparator = null;
 		
 		if (method.equalsIgnoreCase("linear")) {
-			comparator = new WeightedDominanceComparator(weights);
-		} else if (method.equalsIgnoreCase("chebyshev") || method.equalsIgnoreCase("tchebychev")) {
-			comparator = new TchebychevDominanceComparator(weights);
+			comparator = new LinearDominanceComparator(weights);
+		} else if (method.equalsIgnoreCase("min-max")) {
+			comparator = new MinMaxDominanceComparator(weights);
 		} else {
 			throw new FrameworkException("unrecognized weighting method: " + method);
 		}

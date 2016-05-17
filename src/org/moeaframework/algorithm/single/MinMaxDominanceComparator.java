@@ -5,19 +5,19 @@ import java.io.Serializable;
 import org.moeaframework.core.comparator.AggregateConstraintComparator;
 import org.moeaframework.core.comparator.ChainedComparator;
 
-public class TchebychevDominanceComparator extends ChainedComparator implements
+public class MinMaxDominanceComparator extends ChainedComparator implements
 SingleObjectiveComparator, Serializable {
 
 	private static final long serialVersionUID = -1433954844334603655L;
 
-	public TchebychevDominanceComparator() {
+	public MinMaxDominanceComparator() {
 		super(new AggregateConstraintComparator(),
-				new TchebychevObjectiveComparator());
+				new MinMaxObjectiveComparator());
 	}
 	
-	public TchebychevDominanceComparator(double... weights) {
+	public MinMaxDominanceComparator(double... weights) {
 		super(new AggregateConstraintComparator(),
-				new TchebychevObjectiveComparator(weights));
+				new MinMaxObjectiveComparator(weights));
 	}
 
 }

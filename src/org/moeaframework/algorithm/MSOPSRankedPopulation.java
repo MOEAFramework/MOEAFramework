@@ -8,7 +8,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
-import org.moeaframework.algorithm.single.TchebychevObjectiveComparator;
+import org.moeaframework.algorithm.single.MinMaxObjectiveComparator;
 import org.moeaframework.algorithm.single.VectorAngleDistanceScalingComparator;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Population;
@@ -263,7 +263,7 @@ public class MSOPSRankedPopulation extends Population {
 			Solution solution = get(i);
 			
 			for (int j = 0; j < T; j++) {
-				scores[i][j] = TchebychevObjectiveComparator.calculateFitness(solution, weights.get(j));
+				scores[i][j] = MinMaxObjectiveComparator.calculateFitness(solution, weights.get(j));
 				scores[i][j+T] = VectorAngleDistanceScalingComparator.calculateFitness(solution, weights.get(j), 100.0);
 				maxScore = Math.max(maxScore, Math.max(scores[i][j], scores[i][j+T]));
 			}
