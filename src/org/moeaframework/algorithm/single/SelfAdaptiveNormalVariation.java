@@ -35,6 +35,9 @@ import org.moeaframework.core.variable.RealVariable;
  */
 public class SelfAdaptiveNormalVariation implements Variation {
 	
+	/**
+	 * The attribute for storing the self adaptive parameter.
+	 */
 	public static final String SIGMA = "sigma";
 
 	@Override

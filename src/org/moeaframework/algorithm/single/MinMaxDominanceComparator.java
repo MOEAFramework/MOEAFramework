@@ -22,6 +22,12 @@ import java.io.Serializable;
 import org.moeaframework.core.comparator.AggregateConstraintComparator;
 import org.moeaframework.core.comparator.ChainedComparator;
 
+/**
+ * Weighted min-max aggregate function that supports constraints.
+ * 
+ * @see AggregateConstraintComparator
+ * @see MinMaxObjectiveComparator
+ */
 public class MinMaxDominanceComparator extends ChainedComparator implements
 AggregateObjectiveComparator, Serializable {
 

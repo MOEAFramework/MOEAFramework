@@ -22,6 +22,12 @@ import java.io.Serializable;
 import org.moeaframework.core.comparator.AggregateConstraintComparator;
 import org.moeaframework.core.comparator.ChainedComparator;
 
+/**
+ * Version of the weighted linear aggregate function that supports constraints.
+ * 
+ * @see AggregateConstraintComparator
+ * @see LinearObjectiveComparator
+ */
 public class LinearDominanceComparator extends ChainedComparator implements
 AggregateObjectiveComparator, Serializable {
 

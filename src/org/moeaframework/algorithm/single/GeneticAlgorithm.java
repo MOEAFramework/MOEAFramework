@@ -26,14 +26,41 @@ import org.moeaframework.core.Selection;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
 
+/**
+ * Single-objective genetic algorithm (GA) implementation.
+ * <p>
+ * References:
+ * <ol>
+ *   <li>John Holland.  "Adaptation in Natural and Artificial Systems."  
+ *       MIT Press, ISBN: 9780262082136.
+ * </ol>
+ */
 public class GeneticAlgorithm extends AbstractEvolutionaryAlgorithm {
 	
+	/**
+	 * The aggregate objective comparator.
+	 */
 	private final AggregateObjectiveComparator comparator;
 
+	/**
+	 * The selection operator.
+	 */
 	private final Selection selection;
 
+	/**
+	 * The mutation operator.
+	 */
 	private final Variation variation;
 
+	/**
+	 * Constructs a new instance of the genetic algorithm (GA).
+	 * 
+	 * @param problem the problem
+	 * @param comparator the aggregate objective comparator
+	 * @param initialization the initialization method
+	 * @param selection the selection operator
+	 * @param variation the variation operator
+	 */
 	public GeneticAlgorithm(Problem problem,
 			AggregateObjectiveComparator comparator,
 			Initialization initialization,

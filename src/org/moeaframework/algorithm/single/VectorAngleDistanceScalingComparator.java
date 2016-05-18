@@ -22,6 +22,17 @@ import java.io.Serializable;
 import org.moeaframework.core.Solution;
 import org.moeaframework.util.Vector;
 
+/**
+ * The vector angle distance scaling aggregate function.  The distance between
+ * the origin and the objective vector is scaled by the cosine angle between the
+ * objective vector and a target vector.
+ * <p>
+ * References:
+ * <ol>
+ *   <li>E. J. Hughes.  "Multiple Single Objective Pareto Sampling."  2003
+ *       Congress on Evolutionary Computation, pp. 2678-2684.
+ * </ol>
+ */
 public class VectorAngleDistanceScalingComparator implements AggregateObjectiveComparator, Serializable {
 
 	private static final long serialVersionUID = -2535092560377062714L;

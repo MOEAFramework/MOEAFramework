@@ -28,7 +28,10 @@ import org.moeaframework.core.Variation;
 
 /**
  * Single-objective (mu + lambda) evolution strategy (ES) algorithm.  In this
- * implementation, mu and lambda are both equal to the initial population size.  
+ * implementation, mu and lambda are both equal to the initial population size.
+ * For example, with an initial population of size 1, this mimics the classic
+ * (1 + 1)-ES algorithm.  Can only be used with mutation operators with a single
+ * parent. 
  * <p>
  * References:
  * <ol>
@@ -66,7 +69,7 @@ public class EvolutionStrategy extends AbstractEvolutionaryAlgorithm {
 		this.variation = variation;
 		
 		if (variation.getArity() != 1) {
-			throw new FrameworkException("EvolutionaryStrategy only supports variation operators with 1 parent");
+			throw new FrameworkException("only supports variation operators with 1 parent");
 		}
 	}
 

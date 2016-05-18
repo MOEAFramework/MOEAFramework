@@ -21,6 +21,10 @@ import java.io.Serializable;
 
 import org.moeaframework.core.Solution;
 
+/**
+ * Weighted min-max aggregate function.  By default, all weights are assumed
+ * to be equal.
+ */
 public class MinMaxObjectiveComparator implements AggregateObjectiveComparator, Serializable {
 	
 	private static final long serialVersionUID = 5018011451944335718L;
