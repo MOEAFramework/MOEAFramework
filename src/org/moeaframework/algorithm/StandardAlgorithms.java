@@ -24,12 +24,13 @@ import org.apache.commons.math3.util.CombinatoricsUtils;
 import org.moeaframework.algorithm.pso.OMOPSO;
 import org.moeaframework.algorithm.pso.SMPSO;
 import org.moeaframework.algorithm.single.DifferentialEvolution;
-import org.moeaframework.algorithm.single.EvolutionaryStrategy;
+import org.moeaframework.algorithm.single.EvolutionStrategy;
 import org.moeaframework.algorithm.single.GeneticAlgorithm;
 import org.moeaframework.algorithm.single.RepeatedSingleObjective;
-import org.moeaframework.algorithm.single.SingleObjectiveComparator;
+import org.moeaframework.algorithm.single.AggregateObjectiveComparator;
 import org.moeaframework.algorithm.single.MinMaxDominanceComparator;
 import org.moeaframework.algorithm.single.LinearDominanceComparator;
+import org.moeaframework.algorithm.single.SelfAdaptiveNormalVariation;
 import org.moeaframework.analysis.sensitivity.EpsilonHelper;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
@@ -66,6 +67,7 @@ import org.moeaframework.core.spi.ProviderLookupException;
 import org.moeaframework.core.spi.ProviderNotFoundException;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.util.TypedProperties;
+import org.moeaframework.util.Vector;
 import org.moeaframework.util.weights.RandomGenerator;
 
 /**
@@ -315,7 +317,7 @@ public class StandardAlgorithms extends AlgorithmProvider {
 			} else if (name.equalsIgnoreCase("GeneticAlgorithm") ||
 					name.equalsIgnoreCase("GA")) {
 				return newGeneticAlgorithm(typedProperties, problem);
-			} else if (name.equalsIgnoreCase("EvolutionaryStrategy") ||
+			} else if (name.equalsIgnoreCase("EvolutionStrategy") ||
 					name.equalsIgnoreCase("ES")) {
 				return newEvolutionaryStrategy(typedProperties, problem);
 			} else if (name.equalsIgnoreCase("RSO")) {
@@ -1089,6 +1091,11 @@ public class StandardAlgorithms extends AlgorithmProvider {
 				populationSize);
 		
 		List<double[]> weights = new RandomGenerator(problem.getNumberOfObjectives(), numberOfWeights).generate();
+		
+		// normalize weights so their magnitude is 1
+		for (int i = 0; i < weights.size(); i++) {
+			weights.set(i, Vector.normalize(weights.get(i)));
+		}
 
 		MSOPSRankedPopulation population = new MSOPSRankedPopulation(weights);
 		
@@ -1162,7 +1169,7 @@ public class StandardAlgorithms extends AlgorithmProvider {
 		double[] weights = properties.getDoubleArray("weights", new double[] { 1.0 });
 		String method = properties.getString("method", "linear");
 		
-		SingleObjectiveComparator comparator = null;
+		AggregateObjectiveComparator comparator = null;
 		
 		if (method.equalsIgnoreCase("linear")) {
 			comparator = new LinearDominanceComparator(weights);
@@ -1182,7 +1189,7 @@ public class StandardAlgorithms extends AlgorithmProvider {
 	}
 	
 	/**
-	 * Returns a new single-objective {@link EvolutionaryStrategy} instance.
+	 * Returns a new single-objective {@link EvolutionStrategy} instance.
 	 * 
 	 * @param properties the properties for customizing the new
 	 *        {@code EvolutionaryStrategy} instance
@@ -1190,11 +1197,15 @@ public class StandardAlgorithms extends AlgorithmProvider {
 	 * @return a new {@code EvolutionaryStrategy} instance
 	 */
 	private Algorithm newEvolutionaryStrategy(TypedProperties properties, Problem problem) {
+		if (!checkType(RealVariable.class, problem)) {
+			throw new FrameworkException("unsupported decision variable type");
+		}
+		
 		int populationSize = (int)properties.getDouble("populationSize", 100);
 		double[] weights = properties.getDoubleArray("weights", new double[] { 1.0 });
 		String method = properties.getString("method", "linear");
 		
-		SingleObjectiveComparator comparator = null;
+		AggregateObjectiveComparator comparator = null;
 		
 		if (method.equalsIgnoreCase("linear")) {
 			comparator = new LinearDominanceComparator(weights);
@@ -1205,13 +1216,10 @@ public class StandardAlgorithms extends AlgorithmProvider {
 		}
 
 		Initialization initialization = new RandomInitialization(problem, populationSize);
+		
+		Variation variation = new SelfAdaptiveNormalVariation();
 
-		Variation variation = OperatorFactory.getInstance().getVariation(
-				OperatorFactory.getInstance().getDefaultMutation(problem),
-				properties,
-				problem);
-
-		return new EvolutionaryStrategy(problem, comparator, initialization, variation);
+		return new EvolutionStrategy(problem, comparator, initialization, variation);
 	}
 
 	/**
@@ -1231,7 +1239,7 @@ public class StandardAlgorithms extends AlgorithmProvider {
 		double[] weights = properties.getDoubleArray("weights", new double[] { 1.0 });
 		String method = properties.getString("method", "linear");
 		
-		SingleObjectiveComparator comparator = null;
+		AggregateObjectiveComparator comparator = null;
 		
 		if (method.equalsIgnoreCase("linear")) {
 			comparator = new LinearDominanceComparator(weights);

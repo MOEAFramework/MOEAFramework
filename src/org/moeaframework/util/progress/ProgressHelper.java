@@ -68,7 +68,7 @@ public class ProgressHelper {
 	private int maxNFE;
 	
 	/**
-	 * The time the {@link #start(int, int)} method was invoked.
+	 * The time the {@link #start(int, int, long)} method was invoked.
 	 */
 	private long startTime;
 	
@@ -279,8 +279,8 @@ public class ProgressHelper {
 	
 	/**
 	 * Stops this progress helper.  No other methods should be invoked after
-	 * calling this method.  However, {@link #start(int, int)} can be called
-	 * to reset and restart this progress helper.
+	 * calling this method.  However, {@link #start(int, int, long)} can be
+	 * called to reset and restart this progress helper.
 	 */
 	public void stop() {
 		// this currently does nothing, but may be used in the future if we

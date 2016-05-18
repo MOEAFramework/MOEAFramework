@@ -18,31 +18,56 @@
 package org.moeaframework.algorithm.single;
 
 import org.moeaframework.algorithm.AbstractEvolutionaryAlgorithm;
+import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Initialization;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
-import org.moeaframework.core.Selection;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
 
-public class GeneticAlgorithm extends AbstractEvolutionaryAlgorithm {
+/**
+ * Single-objective (mu + lambda) evolution strategy (ES) algorithm.  In this
+ * implementation, mu and lambda are both equal to the initial population size.  
+ * <p>
+ * References:
+ * <ol>
+ *   <li>Ingo Rechenberg.  "Evolutionsstrategie – Optimierung technischer
+ *       Systeme nach Prinzipien der biologischen Evolution."  Ph.D. thesis,
+ *       Fromman-Holzboog, 1971..
+ * </ol>
+ */
+public class EvolutionStrategy extends AbstractEvolutionaryAlgorithm {
 	
+	/**
+	 * The aggregate objective comparator.
+	 */
 	private final AggregateObjectiveComparator comparator;
 
-	private final Selection selection;
-
+	/**
+	 * The variation operator.
+	 */
 	private final Variation variation;
 
-	public GeneticAlgorithm(Problem problem,
+	/**
+	 * Constructs a new instance of the evolution strategy (ES) algorithm.
+	 * 
+	 * @param problem the problem
+	 * @param comparator the aggregate objective comparator
+	 * @param initialization the initialization method
+	 * @param variation the variation operator
+	 */
+	public EvolutionStrategy(Problem problem,
 			AggregateObjectiveComparator comparator,
 			Initialization initialization,
-			Selection selection,
 			Variation variation) {
 		super(problem, new Population(), null, initialization);
 		this.comparator = comparator;
 		this.variation = variation;
-		this.selection = selection;
+		
+		if (variation.getArity() != 1) {
+			throw new FrameworkException("EvolutionaryStrategy only supports variation operators with 1 parent");
+		}
 	}
 
 	@Override
@@ -50,10 +75,9 @@ public class GeneticAlgorithm extends AbstractEvolutionaryAlgorithm {
 		Population population = getPopulation();
 		Population offspring = new Population();
 		int populationSize = population.size();
-
-		while (offspring.size() < populationSize) {
-			Solution[] parents = selection.select(variation.getArity(),
-					population);
+		
+		for (int i = 0; i < population.size(); i++) {
+			Solution[] parents = new Solution[] { population.get(i) };
 			Solution[] children = variation.evolve(parents);
 
 			offspring.addAll(children);
@@ -61,7 +85,6 @@ public class GeneticAlgorithm extends AbstractEvolutionaryAlgorithm {
 
 		evaluateAll(offspring);
 
-		population.clear();
 		population.addAll(offspring);
 		population.truncate(populationSize, comparator);
 	}
