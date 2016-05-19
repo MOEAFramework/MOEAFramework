@@ -33,11 +33,23 @@ AggregateObjectiveComparator, Serializable {
 
 	private static final long serialVersionUID = -1433954844334603655L;
 
+	/**
+	 * Constructs a new dominance comparator using a weighted min-max aggregate
+	 * function and constraints.  Equal weights are used for each objective.
+	 */
 	public MinMaxDominanceComparator() {
 		super(new AggregateConstraintComparator(),
 				new MinMaxObjectiveComparator());
 	}
 	
+	/**
+	 * Constructs a new dominance comparator using a weighted min-max aggregate
+	 * function and constraints.  One weight should be given for each objective;
+	 * if fewer weights are provided, the last weight is repeated for the 
+	 * remaining objectives.
+	 * 
+	 * @param weights the weight vector
+	 */
 	public MinMaxDominanceComparator(double... weights) {
 		super(new AggregateConstraintComparator(),
 				new MinMaxObjectiveComparator(weights));

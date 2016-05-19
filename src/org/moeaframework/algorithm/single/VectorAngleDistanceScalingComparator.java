@@ -37,14 +37,33 @@ public class VectorAngleDistanceScalingComparator implements AggregateObjectiveC
 
 	private static final long serialVersionUID = -2535092560377062714L;
 
+	/**
+	 * Factor for scaling the effects of the angle.
+	 */
 	private final double q;
 	
+	/**
+	 * The weight vector.  Must have a magnitude of 1.0.
+	 */
 	private final double[] weights;
 	
+	/**
+	 * Constructs a new instance of the vector angle distance scaling aggregate
+	 * function with the given weights.
+	 * 
+	 * @param weights the weight vector; must have a magnitude of 1.0
+	 */
 	public VectorAngleDistanceScalingComparator(double[] weights) {
 		this(weights, 100.0);
 	}
 	
+	/**
+	 * Constructs a new instance of the vector angle distance scaling aggregate
+	 * function with the given weights.
+	 * 
+	 * @param weights the weight vector; must have a magnitude of 1.0
+	 * @param q factor for scaling the effects of the angle
+	 */
 	public VectorAngleDistanceScalingComparator(double[] weights, double q) {
 		super();
 		this.weights = weights;
@@ -59,6 +78,17 @@ public class VectorAngleDistanceScalingComparator implements AggregateObjectiveC
 		return Double.compare(fitness1, fitness2);
 	}
 
+	/**
+	 * Computes the vector angle distance scaling aggregate fitness of the
+	 * solution.  One weight should be given for each objective; if fewer
+	 * weights are provided, the last weight is repeated for the remaining
+	 * objectives.
+	 * 
+	 * @param solution the solution
+	 * @param weights the weight vector
+	 * @param q factor for scaling the effects of the angle
+	 * @return the fitness, where smaller values are preferred
+	 */
 	public static double calculateFitness(Solution solution, double[] weights, double q) {
 		double[] objectives = solution.getObjectives();
 		double magnitude = Vector.magnitude(objectives);

@@ -29,12 +29,26 @@ public class LinearObjectiveComparator implements AggregateObjectiveComparator, 
 	
 	private static final long serialVersionUID = 5157359855613094380L;
 	
+	/**
+	 * The weight vector.
+	 */
 	private double[] weights;
 	
+	/**
+	 * Constructs a new comparator using a weighted linear aggregate function.
+	 * Equal weights are used for each objective.
+	 */
 	public LinearObjectiveComparator() {
 		this(1.0);
 	}
 	
+	/**
+	 * Constructs a new comparator using a weighted linear aggregate function.
+	 * One weight should be given for each objective; if fewer weights are
+	 * provided, the last weight is repeated for the remaining objectives.
+	 * 
+	 * @param weights the weight vector
+	 */
 	public LinearObjectiveComparator(double... weights) {
 		super();
 		this.weights = weights;
@@ -52,6 +66,15 @@ public class LinearObjectiveComparator implements AggregateObjectiveComparator, 
 		return Double.compare(fitness1, fitness2);
 	}
 	
+	/**
+	 * Computes the weighted linear aggregate fitness of the solution.  One
+	 * weight should be given for each objective; if fewer weights are
+	 * provided, the last weight is repeated for the remaining objectives.
+	 * 
+	 * @param solution the solution
+	 * @param weights the weight vector
+	 * @return the fitness, where smaller values are preferred
+	 */
 	public static double calculateFitness(Solution solution, double[] weights) {
 		double fitness = 0.0;
 		

@@ -24,17 +24,33 @@ import org.moeaframework.core.Solution;
 /**
  * Weighted min-max aggregate function.  By default, all weights are assumed
  * to be equal.
+ * 
+ * @see MinMaxDominanceComparator
  */
 public class MinMaxObjectiveComparator implements AggregateObjectiveComparator, Serializable {
 	
 	private static final long serialVersionUID = 5018011451944335718L;
 	
+	/**
+	 * The weight vector.
+	 */
 	private double[] weights;
 	
+	/**
+	 * Constructs a new comparator using a weighted min-max aggregate function.
+	 * Equal weights are used for each objective.
+	 */
 	public MinMaxObjectiveComparator() {
 		this(1.0);
 	}
 	
+	/**
+	 * Constructs a new comparator using a weighted min-max aggregate function.
+	 * One weight should be given for each objective; if fewer weights are
+	 * provided, the last weight is repeated for the remaining objectives.
+	 * 
+	 * @param weights the weight vector
+	 */
 	public MinMaxObjectiveComparator(double... weights) {
 		super();
 		this.weights = weights;
@@ -52,6 +68,15 @@ public class MinMaxObjectiveComparator implements AggregateObjectiveComparator, 
 		return Double.compare(fitness1, fitness2);
 	}
 	
+	/**
+	 * Computes the weighted min-max aggregate fitness of the solution.  One
+	 * weight should be given for each objective; if fewer weights are
+	 * provided, the last weight is repeated for the remaining objectives.
+	 * 
+	 * @param solution the solution
+	 * @param weights the weight vector
+	 * @return the fitness, where smaller values are preferred
+	 */
 	public static double calculateFitness(Solution solution, double[] weights) {
 		double max = Double.NEGATIVE_INFINITY;
 

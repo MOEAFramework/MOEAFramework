@@ -33,11 +33,23 @@ AggregateObjectiveComparator, Serializable {
 
 	private static final long serialVersionUID = -2110850728860429004L;
 
+	/**
+	 * Constructs a new dominance comparator using a weighted linear aggregate
+	 * function and constraints.  Equal weights are used for each objective.
+	 */
 	public LinearDominanceComparator() {
 		super(new AggregateConstraintComparator(),
 				new LinearObjectiveComparator());
 	}
-	
+
+	/**
+	 * Constructs a new dominance comparator using a weighted linear aggregate
+	 * function and constraints.  One weight should be given for each objective;
+	 * if fewer weights are provided, the last weight is repeated for the 
+	 * remaining objectives.
+	 * 
+	 * @param weights the weight vector
+	 */
 	public LinearDominanceComparator(double... weights) {
 		super(new AggregateConstraintComparator(),
 				new LinearObjectiveComparator(weights));
