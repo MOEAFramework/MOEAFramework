@@ -335,10 +335,13 @@ public class StandardAlgorithms extends AlgorithmProvider {
 		NondominatedSortingPopulation population = 
 				new NondominatedSortingPopulation();
 
-		TournamentSelection selection = new TournamentSelection(2, 
-				new ChainedComparator(
-						new ParetoDominanceComparator(),
-						new CrowdingComparator()));
+		TournamentSelection selection = null;
+		
+		if (properties.getBoolean("withReplacement", true)) {
+			selection = new TournamentSelection(2, new ChainedComparator(
+					new ParetoDominanceComparator(),
+					new CrowdingComparator()));
+		}
 
 		Variation variation = OperatorFactory.getInstance().getVariation(null, 
 				properties, problem);

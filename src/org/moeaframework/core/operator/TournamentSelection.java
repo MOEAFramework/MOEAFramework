@@ -142,8 +142,7 @@ public class TournamentSelection implements Selection {
 		Solution winner = population.get(PRNG.nextInt(population.size()));
 
 		for (int i = 1; i < size; i++) {
-			Solution candidate = population
-					.get(PRNG.nextInt(population.size()));
+			Solution candidate = population.get(PRNG.nextInt(population.size()));
 
 			int flag = comparator.compare(winner, candidate);
 
@@ -153,6 +152,38 @@ public class TournamentSelection implements Selection {
 		}
 
 		return winner;
+	}
+	
+	/**
+	 * Performs binary tournament selection.
+	 * 
+	 * @param solution1 the first solution
+	 * @param solution2 the second solution
+	 * @param comparator the comparison operator
+	 * @return the solution that wins the tournament
+	 */
+	public static Solution binaryTournament(Solution solution1,
+			Solution solution2, DominanceComparator comparator) {
+		int flag = comparator.compare(solution1, solution2);
+
+		if (flag > 0) {
+			return solution2;
+		} else {
+			return solution1;
+		}
+	}
+	
+	/**
+	 * Performs binary tournament selection with Pareto dominance.
+	 * 
+	 * @param solution1 the first solution
+	 * @param solution2 the second solution
+	 * @return the solution that wins the tournament
+	 */
+	public static Solution binaryTournament(Solution solution1,
+			Solution solution2) {
+		return binaryTournament(solution1, solution2,
+				new ParetoDominanceComparator());
 	}
 
 }
