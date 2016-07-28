@@ -102,7 +102,7 @@ public class NSGAII extends AbstractEvolutionaryAlgorithm implements
 			
 			while (offspring.size() < populationSize) {
 				// ensure the pool has enough solutions
-				while (pool.size() < variation.getArity()) {
+				while (pool.size() < 2*variation.getArity()) {
 					List<Solution> poolAdditions = new ArrayList<Solution>();
 					
 					for (Solution solution : population) {
