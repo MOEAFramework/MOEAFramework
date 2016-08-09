@@ -85,7 +85,7 @@ import org.moeaframework.util.TypedProperties;
  *   <tr>
  *     <td>DBEA</td>
  *     <td>Any</td>
- *     <td>{@code populationSize, divisions, sbx.rate, sbx.distributionIndex,
+ *     <td>{@code divisions, sbx.rate, sbx.distributionIndex,
  *         pm.rate, pm.distributionIndex} (for the two-layer approach, replace
  *         {@code divisions} by {@code divisionsOuter} and
  *         {@code divisionsInner})</td>
@@ -901,15 +901,8 @@ public class StandardAlgorithms extends AlgorithmProvider {
 			divisionsInner = 1;
 		}
 		
-		int populationSize;
-		
-		if (properties.contains("populationSize")) {
-			populationSize = (int)properties.getDouble("populationSize", 100);
-		} else {
-			// compute number of reference points
-			populationSize = (int)(CombinatoricsUtils.binomialCoefficient(problem.getNumberOfObjectives() + divisionsOuter - 1, divisionsOuter) +
+		int populationSize = (int)(CombinatoricsUtils.binomialCoefficient(problem.getNumberOfObjectives() + divisionsOuter - 1, divisionsOuter) +
 					(divisionsInner == 0 ? 0 : CombinatoricsUtils.binomialCoefficient(problem.getNumberOfObjectives() + divisionsInner - 1, divisionsInner)));
-		}
 		
 		Initialization initialization = new RandomInitialization(problem,
 				populationSize);

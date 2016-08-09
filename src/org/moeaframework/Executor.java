@@ -414,6 +414,18 @@ public class Executor extends ProblemBuilder {
 	}
 	
 	/**
+	 * Unsets a property.
+	 * 
+	 * @param key the property key
+	 * @return a reference to this executor
+	 */
+	public Executor removeProperty(String key) {
+		properties.remove(key);
+		
+		return this;
+	}
+	
+	/**
 	 * Sets a property.
 	 * 
 	 * @param key the property key
