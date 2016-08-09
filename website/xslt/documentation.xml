@@ -60,7 +60,7 @@
         quickly. It covers topics ranging from solving unconstrained and
         constrained optimization problems, comparing the performance of
         algorithms, plotting results, developing custom algorithms, integrating
-        your own optimization problems, and more.  
+        your own optimization problems, and more.  179 pages.
         <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v%VERSION%/MOEAFramework-%VERSION%-BeginnersGuidePreview.pdf"
           onClick="_gaq.push(['_trackEvent', 'Downloads', 'Manual', '%VERSION%']);">Preview</a>
       </span>
@@ -81,12 +81,13 @@
       </a>
       <br />
       <span>
-         	This book demonstrates how to exploit high performance computing
-         	with the MOEA Framework, from small personal computers up to
-         	large-scale supercomputers. For distributed memory parallelization,
-         	we show how to use Apache Ignite to construct master-slave,
-         	island model, and hybrid parallelization architectures. Purchase
-         	of this book includes complete code samples.
+         	This book demonstrates how to create high performance evolutionary
+         	algorithms with the MOEA Framework, scaling from small personal computers up
+         	to large-scale supercomputers. For distributed memory computing on
+         	larger systems, we demonstrate how to use Apache Ignite to construct
+         	master-slave, island model, and hybrid parallelization architectures.
+         	The purchase of this book includes complete code samples available for
+         	download.  49 pages.
       </span>
       <br /><br />
       <span style="font-size: 10pt">
