@@ -108,16 +108,30 @@ Specify the project name as ``MOEA Framework''.  Set the project folder by click
 
 Add the \folder{src} and \folder{examples} folders as Source Package Folders.  Click Finish.  The MOEA Framework project should now appear in the Projects window.
 
-Finally, we need to add the third-party libraries used by the MOEA Framework.  Right-click the MOEA Framework project in the Projects window and select Properties.  In the window that appears, click Libraries in the left-hand panel.  On the right-side of the window, click the button ``Add Jars/Folder''.  Browse to the \folder{\moeaframework/lib} folder, highlight all the JAR files (using shift or alt to select multiple files), and click Ok.  Be sure that you select each individual JAR file and not the folder containing the JAR files.  Click the ``Add Jars/Folder'' button again.  Navigate to and select the root \folder{\moeaframework} folder, and click Ok.  You should now see $8$ items in the compile-time libraries list.  There should be $7$ entries referencing \plaintext{.jar} files the ``\folder{.}'' as the last entry.  Your screen should look like \figref{fig:netbeans}.  Click Ok when finished.
+Finally, we need to add the third-party libraries used by the MOEA Framework.  Right-click the MOEA Framework project in the Projects window and select Properties.  In the window that appears, click Libraries in the left-hand panel.  On the right-side of the window, click the button ``Add Jars/Folder''.  Browse to the \folder{\moeaframework/lib} folder, highlight all the JAR files (using shift or alt to select multiple files), and click Ok.  Be sure that you select each individual JAR file and not the folder containing the JAR files.  Click the ``Add Jars/Folder'' button again.  Navigate to and select the root \folder{\moeaframework} folder, and click Ok.  You should now see $8$ items in the compile-time libraries list.  There should be $7$ entries referencing \plaintext{.jar} files the ``\folder{.}'' as the last entry.  Your screen should look like the figure below.  Click Ok when finished.
 
-\begin{figure}
-  \center
-  \includegraphics[width=.8\linewidth]{netbeans.png}
-  \caption{How the NetBeans properties window should appear in the MOEA Framework is properly configured.}
-  \label{fig:netbeans}
-\end{figure}
+%\begin{figure}
+\begin{center}
+  \includegraphics[width=.6\linewidth]{netbeans.png}
+\end{center}
+%  \caption{How the NetBeans properties window should appear in the MOEA Framework is properly configured.}
+%  \label{fig:netbeans}
+%\end{figure}
 
 Test your NetBeans install by running Example1.  You can run an example by expanding the \folder{examples} folder in the Project window, right-clicking Example1, and selecting Run File from the popup menu.
+
+\section{Resolving Dependencies with Maven}
+Since version 2.4, the MOEA Framework and its dependencies can be resolved using the Maven dependency management system.  Maven is available from \webpage{http://maven.apache.org/}.  To add the MOEA Framework to your Maven project, add the following dependency to your \file{pom.xml} file:
+
+\begin{lstlisting}[language=Plaintext]
+<dependency>
+	<groupId>org.moeaframework</groupId>
+	<artifactId>moeaframework</artifactId>
+	<version>%VERSION%</version>
+</dependency>
+\end{lstlisting}
+
+If this is your first time using Maven, check out the Maven in 5 Minutes guide at \webpage{http://maven.apache.org/guides/getting-started/maven-in-five-minutes.html}.
 
 \section{Testing your Installation}
 Having finished installing the MOEA Framework and its dependencies, it is useful to run the MOEA Diagnostic Tool to test if the installation was successful.  If the diagnostic tool appears and you can run any algorithm, then the installation was successful.
@@ -140,17 +154,6 @@ Double-click the downloaded JAR file.  If the demo window does not appear, try t
 java -jar MOEAFramework-%VERSION%-Demo.jar
 \end{lstlisting}
 
-\section{Resolving Dependencies with Maven}
-As of version 2.4, the MOEA Framework and its dependencies can be resolved using the Maven dependency management system.  Maven is available from \webpage{http://maven.apache.org/}.  To add the MOEA Framework to your Maven project, add the following dependency to your \file{pom.xml} file:
-
-\begin{lstlisting}[language=Plaintext]
-<dependency>
-	<groupId>org.moeaframework</groupId>
-	<artifactId>moeaframework</artifactId>
-	<version>%VERSION%</version>
-</dependency>
-\end{lstlisting}
-
 \section{Running Examples}
 Several example applications are provided with the MOEA Framework in the \folder{\moeaframework/examples/} folder.  If using Eclipse or Netbeans, you can run these examples directly within the GUI.  For example, in Eclipse, right-click Example1.java and select Run as $\rightarrow$ Java Application.  If running from the command line, you will first need to compile the code using the Java compiler (\texttt{javac}) followed by running the example in the Java virtual machine (\texttt{java}).  For example, you can compile and run the first example on Windows as follows:
 
@@ -163,7 +166,18 @@ java -cp ".;examples;lib/*" Example1
 If using Unix/Linux, replace the semicolons (;) with colons (:) in the above commands.  You can find more details on the available examples on our website at \webpage{moeaframework.org/examples.html} or viewing the source code for the examples.
 
 \section{Getting Help}
-We encourage new users to read through our examples to learn more about the basic use of the MOEA Framework.  We also have a number of online resources.  The documentation page on our website at \webpage{moeaframework.org/documentation.html} provides access to the API Specification showing all available documentation for classes and methods.  In addition, you can find books available for purchase including the recommended Beginner's Guide to the MOEA Framework.  You can also visit our Github page at \webpage{https://github.com/MOEAFramework/MOEAFramework} to submit bug reports and help requests.
+
+As a new user to the MOEA Framework, you may find it helpful to walk through our examples.  As demonstrated in the previous section, you can find and run our examples in the \folder{\moeaframework/examples/} folder.
+
+\begin{wrapfigure}{L}{0.25\textwidth}
+\includegraphics[]{../website/images/beginners.jpg}
+\end{wrapfigure}
+
+Additionally, we have authored two helpful books for purchase from \webpage{moeaframework.org/documentation.html}.  The Beginner's Guide to the MOEA Framework covers topics ranging from solving unconstrained and constrained optimization problems, comparing the performance of algorithms, plotting results, developing custom algorithms, integrating your own optimization problems, and more.  A supplemental book covers developing distributed and high-performance parallel algorithms built using master-slave, island, and hybrid architectures.  Both books include complete, downloadable code examples to get you started quickly.
+
+Advanced users who wish to learn the inner workings of the MOEA Framework or make significant modifications can find the API specification available on our website at \webpage{moeaframework.org/documentation.html}.  This specification details every class and method provided by the MOEA Framework, and often includes examples or detailed descriptions of their usage.
+
+Lastly, it is common for users to have questions or requests not answered by these resources.  Please visit our Github page at \webpage{https://github.com/MOEAFramework/MOEAFramework}.  We recommend searching the issue tracker to see if a user previously asked your question.  You can also create issues for any bugs or odd behavior you have encountered.
 
 \section{Conclusion}
 Thanks again for downloading the MOEA Framework.  We hope you find it useful in your work.  If using the MOEA Framework in academic publications, please include a citation as follows:
