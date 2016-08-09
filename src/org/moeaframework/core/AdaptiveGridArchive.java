@@ -20,6 +20,7 @@ package org.moeaframework.core;
 import java.util.Arrays;
 import java.util.Iterator;
 
+import org.apache.commons.math3.exception.MathArithmeticException;
 import org.apache.commons.math3.util.ArithmeticUtils;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
 
@@ -28,6 +29,11 @@ import org.moeaframework.core.comparator.ParetoDominanceComparator;
  * maintaining a count of the number of solutions within each grid cell. When
  * the size of the archive exceeds a specified capacity, a solution from the
  * most crowded grid cell is selected and removed from the archive.
+ * <p>
+ * This implementation currently stores the density of each grid cell in an
+ * array.  As such, {@code pow(numberOfDivisions, numberOfObjectives)} can not
+ * exceed the storage capacity of an array, or {@code pow(2, 32)}.  We may
+ * consider at some point using sparse arrays to remove this limitation.
  * <p>
  * References:
  * <ol>
@@ -79,6 +85,9 @@ public class AdaptiveGridArchive extends NondominatedPopulation {
 	 * @param problem the problem for which this archive is used
 	 * @param numberOfDivisions the number of divisions this archive uses to
 	 *        split each objective
+	 * @throws FrameworkException if
+	 *         {@code pow(numberOfDivisions, numberOfObjectives)} exceeds the
+	 *         storage capacity of an array
 	 */
 	public AdaptiveGridArchive(int capacity, Problem problem,
 			int numberOfDivisions) {
@@ -89,8 +98,16 @@ public class AdaptiveGridArchive extends NondominatedPopulation {
 
 		minimum = new double[problem.getNumberOfObjectives()];
 		maximum = new double[problem.getNumberOfObjectives()];
-		density = new int[ArithmeticUtils.pow(numberOfDivisions,
-				problem.getNumberOfObjectives())];
+		
+		// guard against integer overflow
+		try {
+			density = new int[ArithmeticUtils.pow(
+					numberOfDivisions,
+					problem.getNumberOfObjectives())];
+		} catch (MathArithmeticException e) {
+			throw new FrameworkException("number of divisions (bisections) " +
+					"too large for adaptive grid archive", e);
+		}
 
 		adaptGrid();
 	}

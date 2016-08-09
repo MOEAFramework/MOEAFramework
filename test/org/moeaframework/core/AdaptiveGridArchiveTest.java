@@ -206,5 +206,14 @@ public class AdaptiveGridArchiveTest {
 		
 		Assert.assertArrayEquals(expectedDensity, archive.density);
 	}
+	
+	/**
+	 * Since the adaptive grid archive uses an array internally, we must prevent
+	 * the number of divisions exceeding the maximum length of arrays.
+	 */
+	@Test(expected=FrameworkException.class)
+	public void testOverflow() {
+		new AdaptiveGridArchive(100, new ProblemStub(4), 256);
+	}
 
 }

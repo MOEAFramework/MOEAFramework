@@ -1,6 +1,26 @@
 This file documents the major changes implemented in each release of the MOEA
 Framework.
 
+--------------------
+ Version 2.11 (TBD)
+--------------------
+
+  * Removes the populationSize parameter from DBEA.  The population size is
+    determined by the number of reference points.  Thanks henryyuri for
+    reporting.
+    
+  * Fixes bug in RVEA.  If any objective has a range of 0, which could be
+    caused by duplicates or infeasible solutions, the normalization breaks and
+    all solutions are associated with one reference vector.  The fix ensures
+    a non-zero range for normalization.
+    
+  * Prevent integer overflow exception if attempting to use an adaptive grid
+    archive with too many divisions that exceeds the storage capacity of an
+    array.  A custom error message is produced indicating the problem.  We may
+    want to consider a sparse array or map for storage to remove this
+    limitation.
+    
+
 ----------------------------
  Version 2.10 (11 May 2016)
 ----------------------------
