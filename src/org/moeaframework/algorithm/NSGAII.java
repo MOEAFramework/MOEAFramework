@@ -93,7 +93,8 @@ public class NSGAII extends AbstractEvolutionaryAlgorithm implements
 
 		if (selection == null) {
 			// recreate the original NSGA-II implementation using binary
-			// tournament selection without replacement
+			// tournament selection without replacement; this version works by
+			// maintaining a pool of candidate parents.
 			LinkedList<Solution> pool = new LinkedList<Solution>();
 			
 			DominanceComparator comparator = new ChainedComparator(
@@ -127,13 +128,13 @@ public class NSGAII extends AbstractEvolutionaryAlgorithm implements
 				offspring.addAll(variation.evolve(parents));
 			}
 		} else {
-			// run NSGA-II with a user-defined selection operator
+			// run NSGA-II using selection with replacement; this version allows
+			// using custom selection operators
 			while (offspring.size() < populationSize) {
 				Solution[] parents = selection.select(variation.getArity(),
 						population);
-				Solution[] children = variation.evolve(parents);
-	
-				offspring.addAll(children);
+
+				offspring.addAll(variation.evolve(parents));
 			}
 		}
 

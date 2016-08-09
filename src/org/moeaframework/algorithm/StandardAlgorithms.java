@@ -126,7 +126,7 @@ import org.moeaframework.util.TypedProperties;
  *     <td>NSGAII</td>
  *     <td>Any</td>
  *     <td>{@code populationSize, sbx.rate, sbx.distributionIndex,
- *         pm.rate, pm.distributionIndex}</td>
+ *         pm.rate, pm.distributionIndex, withReplacement}</td>
  *   </tr>
  *   <tr>
  *     <td>NSGAIII</td>

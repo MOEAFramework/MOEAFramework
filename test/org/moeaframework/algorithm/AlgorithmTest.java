@@ -17,6 +17,8 @@
  */
 package org.moeaframework.algorithm;
 
+import java.util.Properties;
+
 import org.junit.Assert;
 import org.moeaframework.Analyzer;
 import org.moeaframework.Executor;
@@ -81,6 +83,25 @@ public abstract class AlgorithmTest {
 	 */
 	public void test(String problem, String algorithm1, String algorithm2, 
 			boolean allowBetterPerformance, AlgorithmFactory factory) {
+		test(problem, algorithm1, new Properties(), algorithm2,
+				new Properties(), allowBetterPerformance, factory);
+	}
+	
+	/**
+	 * Tests if two algorithms are statistically indifferent.
+	 * 
+	 * @param problem the name of the problem to test
+	 * @param algorithm1 the name of the first algorithm to test
+	 * @param properties1 the properties used by the first algorithm to test
+	 * @param algorithm2 the name of the second algorithm to test
+	 * @param properties2 the properties used by the second algorithm to test
+	 * @param allowBetterPerformance do not fail if the MOEA Framework
+	 *        algorithm exceeds the performance
+	 * @param factory the factory used to construct the algorithms
+	 */
+	public void test(String problem, String algorithm1, Properties properties1,
+			String algorithm2, Properties properties2,
+			boolean allowBetterPerformance, AlgorithmFactory factory) {
 		Analyzer analyzer = new Analyzer()
 				.withProblem(problem)
 				.includeAllMetrics()
@@ -93,14 +114,20 @@ public abstract class AlgorithmTest {
 				.withMaxEvaluations(10000)
 				.distributeOnAllCores();
 		
-		analyzer.addAll(algorithm1, 
-				executor.withAlgorithm(algorithm1).runSeeds(10));
-		analyzer.addAll(algorithm2, 
-				executor.withAlgorithm(algorithm2).runSeeds(10));
+		analyzer.addAll("A", 
+				executor.withAlgorithm(algorithm1)
+						.withProperties(properties1)
+						.runSeeds(10));
+		analyzer.addAll("B", 
+				executor.withAlgorithm(algorithm2)
+						.withProperties(properties2)
+						.runSeeds(10));
+		
+		analyzer.printAnalysis();
 		
 		Analyzer.AnalyzerResults analyzerResults = analyzer.getAnalysis();
 		Analyzer.AlgorithmResult algorithmResult =
-				analyzerResults.get(algorithm2);
+				analyzerResults.get("A");
 
 		int indifferences = 0;
 		
@@ -114,9 +141,9 @@ public abstract class AlgorithmTest {
 				int outperformance = 0;
 				
 				for (String indicator : algorithmResult.getIndicators()) {
-					double value1 = analyzerResults.get(algorithm1)
+					double value1 = analyzerResults.get("A")
 							.get(indicator).getMedian();
-					double value2 = analyzerResults.get(algorithm2)
+					double value2 = analyzerResults.get("B")
 							.get(indicator).getMedian();
 					
 					if (indicator.equals("Spacing") ||
