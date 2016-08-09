@@ -215,7 +215,7 @@ public class ReferenceVectorGuidedPopulation extends Population {
 			double[] newWeight = weight.clone();
 			
 			for (int i = 0; i < numberOfObjectives; i++) {
-				newWeight[i] *= (zmax[i] - zmin[i]);
+				newWeight[i] *= Math.max(0.01, zmax[i] - zmin[i]);
 			}
 			
 			weights.add(Vector.normalize(newWeight));
@@ -350,6 +350,14 @@ public class ReferenceVectorGuidedPopulation extends Population {
 					maxDistance = distance;
 					maxIndex = i;
 				}
+			}
+			
+			// if there is only a single solution, then the normalized
+			// objectives will be 0 (since the ideal point == the solution);
+			// in this case, the solution could be associated with any
+			// reference vector
+			if (maxIndex < 0) {
+				maxIndex = 0;
 			}
 
 			result.get(maxIndex).add(solution);
