@@ -598,6 +598,10 @@ public class Instrumenter extends ProblemBuilder {
 			// exceptions that sometimes occur when walking the object graph,
 			// so we can now scan all packages.  It may be useful in the future
 			// to add "excluded packages" for performance.
+			
+			if (type.getPackage().getName().startsWith("java.")) {
+				return;
+			}
 		}
 		
 		if (!visited.contains(object)) {
