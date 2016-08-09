@@ -37,7 +37,7 @@ import org.moeaframework.core.comparator.RankComparator;
  * Population implementing the ranking scheme used by the Multiple Single
  * Objective Pareto Sampling (MSOPS) algorithm.  Solutions are ranked with 
  * respect to T weight vectors based on two metrics --- the weighted min-max
- * aggregate and the vector angle distance scaling (VADS) metric --- producting
+ * aggregate and the vector angle distance scaling (VADS) metric --- producing
  * 2*T scores/rankings.  The overall ranking of a solution is computed using a
  * lexicographical ordering, where the best rank is given to the solution with
  * the best individual ranking among the T weight vectors.

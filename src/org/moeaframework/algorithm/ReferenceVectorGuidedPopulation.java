@@ -66,7 +66,7 @@ public class ReferenceVectorGuidedPopulation extends Population {
 	/**
 	 * The ideal point.
 	 */
-	public double[] idealPoint;
+	protected double[] idealPoint;
 	
 	/**
 	 * The original, unnormalized reference vectors.
