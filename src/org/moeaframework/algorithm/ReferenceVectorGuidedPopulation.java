@@ -66,7 +66,7 @@ public class ReferenceVectorGuidedPopulation extends Population {
 	/**
 	 * The ideal point.
 	 */
-	public double[] idealPoint;
+	double[] idealPoint;
 	
 	/**
 	 * The original, unnormalized reference vectors.
@@ -76,7 +76,7 @@ public class ReferenceVectorGuidedPopulation extends Population {
 	/**
 	 * The normalized reference vectors.
 	 */
-	private List<double[]> weights;
+	List<double[]> weights;
 	
 	/**
 	 * The minimum angle between reference vectors.
@@ -269,7 +269,7 @@ public class ReferenceVectorGuidedPopulation extends Population {
 	/**
 	 * Compute the ideal point.
 	 */
-	private void calculateIdealPoint() {
+	protected void calculateIdealPoint() {
 		idealPoint = new double[numberOfObjectives];
 		Arrays.fill(idealPoint, Double.POSITIVE_INFINITY);
 		
@@ -289,7 +289,7 @@ public class ReferenceVectorGuidedPopulation extends Population {
 	 * method does not modify the objective values, it creates a new attribute
 	 * with the name {@value NORMALIZED_OBJECTIVES}.
 	 */
-	private void translateByIdealPoint() {
+	protected void translateByIdealPoint() {
 		for (Solution solution : this) {
 			double[] objectives = solution.getObjectives();
 
@@ -303,26 +303,28 @@ public class ReferenceVectorGuidedPopulation extends Population {
 	
 	/**
 	 * Returns the cosine between the objective vector and a reference vector.
+	 * This method assumes the line is a normalized weight vector; the point
+	 * does not need to be normalized.
 	 * 
 	 * @param line the line originating from the origin
 	 * @param point the point
 	 * @return the cosine
 	 */
-	private static double cosine(double[] line, double[] point) {
+	protected static double cosine(double[] line, double[] point) {
 		return Vector.dot(point, line) / Vector.magnitude(point);
 	}
 	
 	/**
 	 * Returns the angle between the objective vector and a reference vector.
+	 * This method assumes the line is a normalized weight vector; the point
+	 * does not need to be normalized.
 	 * 
-	 * @param line
-	 * @param points
 	 * @param line the line originating from the origin
 	 * @param point the point
 	 * @return the angle (acosine)
 	 */
-	private static double acosine(double[] line, double[] points) {
-		return Math.acos(cosine(line, points));
+	protected static double acosine(double[] line, double[] point) {
+		return Math.acos(cosine(line, point));
 	}
 	
 	/**
@@ -334,7 +336,7 @@ public class ReferenceVectorGuidedPopulation extends Population {
 	 * @param population the population of solutions
 	 * @return the association of solutions to reference points
 	 */
-	private List<List<Solution>> associateToReferencePoint(Population population) {
+	protected List<List<Solution>> associateToReferencePoint(Population population) {
 		List<List<Solution>> result = new ArrayList<List<Solution>>();
 
 		for (int i = 0; i < weights.size(); i++) {
@@ -377,7 +379,7 @@ public class ReferenceVectorGuidedPopulation extends Population {
 	 * @return the smallest angle between the given reference vector and all
 	 *         remaining vectors
 	 */
-	private double smallestAngleBetweenWeights(int index) {
+	protected double smallestAngleBetweenWeights(int index) {
 		double smallestAngle = Double.POSITIVE_INFINITY;
 		
 		for (int i = 0; i < weights.size(); i++) {
@@ -397,7 +399,7 @@ public class ReferenceVectorGuidedPopulation extends Population {
 	 * @param index the index of the reference vector
 	 * @return the solution with the smallest penalized distance
 	 */
-	private Solution select(List<Solution> solutions, int index) {
+	protected Solution select(List<Solution> solutions, int index) {
 		double[] weight = weights.get(index);
 		double minDistance = Double.POSITIVE_INFINITY;
 		Solution minSolution = null;
