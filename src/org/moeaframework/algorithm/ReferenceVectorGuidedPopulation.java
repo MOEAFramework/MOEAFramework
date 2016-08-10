@@ -193,6 +193,9 @@ public class ReferenceVectorGuidedPopulation extends Population {
 		this.scalingFactor = scalingFactor;
 	}
 	
+	/**
+	 * Normalize the reference vectors.
+	 */
 	public void adapt() {
 		// compute the minimum and maximum of the objectives
 		double[] zmin = new double[numberOfObjectives];
@@ -442,6 +445,10 @@ public class ReferenceVectorGuidedPopulation extends Population {
 		throw new UnsupportedOperationException("call truncate() instead");
 	}
 	
+	/**
+	 * Truncates the population so that only one solution is associated with
+	 * each reference vector.
+	 */
 	public void truncate() {
 		// update the ideal point
 		calculateIdealPoint();

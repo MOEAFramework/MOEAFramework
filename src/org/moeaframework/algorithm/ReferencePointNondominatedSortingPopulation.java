@@ -72,7 +72,7 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 	/**
 	 * The name of the attribute for storing the normalized objectives.
 	 */
-	private static final String NORMALIZED_OBJECTIVES = "Normalized Objectives";
+	static final String NORMALIZED_OBJECTIVES = "Normalized Objectives";
 
 	/**
 	 * The number of objectives.
@@ -93,7 +93,7 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 	/**
 	 * The ideal point, updated each iteration.
 	 */
-	private double[] idealPoint;
+	double[] idealPoint;
 
 	/**
 	 * The list of reference points, or weights.
@@ -270,7 +270,7 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 	/**
 	 * Updates the ideal point given the solutions currently in this population.
 	 */
-	private void updateIdealPoint() {
+	protected void updateIdealPoint() {
 		for (Solution solution : this) {
 			if (solution.getNumberOfObjectives() != numberOfObjectives) {
 				throw new FrameworkException("incorrect number of objectives");
@@ -287,7 +287,7 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 	 * method does not modify the objective values, it creates a new attribute
 	 * with the name {@value NORMALIZED_OBJECTIVES}.
 	 */
-	private void translateByIdealPoint() {
+	protected void translateByIdealPoint() {
 		for (Solution solution : this) {
 			double[] objectives = solution.getObjectives();
 
@@ -306,7 +306,7 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 	 * 
 	 * @param intercepts the intercepts used for scaling
 	 */
-	private void normalizeByIntercepts(double[] intercepts) {
+	protected void normalizeByIntercepts(double[] intercepts) {
 		for (Solution solution : this) {
 			double[] objectives = (double[])solution.getAttribute(NORMALIZED_OBJECTIVES);
 
@@ -347,7 +347,7 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 	 * @param objective the objective index
 	 * @return the extreme point in the given objective
 	 */
-	private Solution findExtremePoint(int objective) {
+	protected Solution findExtremePoint(int objective) {
 		double eps = 0.000001;
 		double[] weights = new double[numberOfObjectives];
 
@@ -399,7 +399,7 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 	 * 
 	 * @return an array of the intercept points for each objective
 	 */
-	private double[] calculateIntercepts() {
+	protected double[] calculateIntercepts() {
 		Solution[] extremePoints = extremePoints();
 		boolean degenerate = false;
 		double[] intercepts = new double[numberOfObjectives];
@@ -521,7 +521,7 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 	 * @param point the point
 	 * @return the minimum distance
 	 */
-	private static double pointLineDistance(double[] line, double[] point) {
+	protected static double pointLineDistance(double[] line, double[] point) {
 		return Vector.magnitude(Vector.subtract(Vector.multiply(
 				Vector.dot(line, point) / Vector.dot(line, line),
 				line), point));
@@ -536,7 +536,7 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 	 * @param population the population of solutions
 	 * @return the association of solutions to reference points
 	 */
-	private List<List<Solution>> associateToReferencePoint(Population population) {
+	protected List<List<Solution>> associateToReferencePoint(Population population) {
 		List<List<Solution>> result = new ArrayList<List<Solution>>();
 
 		for (int i = 0; i < weights.size(); i++) {
@@ -571,14 +571,14 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 	 * @param weight the reference point
 	 * @return the solution nearest to the reference point
 	 */
-	private Solution findSolutionWithMinimumDistance(List<Solution> solutions, double[] weight) {
+	protected Solution findSolutionWithMinimumDistance(List<Solution> solutions, double[] weight) {
 		double minDistance = Double.POSITIVE_INFINITY;
 		Solution minSolution = null;
 
 		for (int i = 0; i < solutions.size(); i++) {
 			double[] objectives = (double[])solutions.get(i).getAttribute(NORMALIZED_OBJECTIVES);
 			double distance = pointLineDistance(weight, objectives);
-
+			
 			if (distance < minDistance) {
 				minDistance = distance;
 				minSolution = solutions.get(i);
