@@ -111,19 +111,18 @@ public abstract class AlgorithmTest {
 		Executor executor = new Executor()
 				.withProblem(problem)
 				.usingAlgorithmFactory(factory)
-				.withMaxEvaluations(10000)
 				.distributeOnAllCores();
 		
 		analyzer.addAll("A", 
 				executor.withAlgorithm(algorithm1)
 						.withProperties(properties1)
+						.withMaxEvaluations(10000)
 						.runSeeds(10));
 		analyzer.addAll("B", 
 				executor.withAlgorithm(algorithm2)
 						.withProperties(properties2)
+						.withMaxEvaluations(10000)
 						.runSeeds(10));
-		
-		analyzer.printAnalysis();
 		
 		Analyzer.AnalyzerResults analyzerResults = analyzer.getAnalysis();
 		Analyzer.AlgorithmResult algorithmResult =

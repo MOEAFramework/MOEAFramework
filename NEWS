@@ -6,8 +6,8 @@ Framework.
 --------------------
 
   * Removes the populationSize parameter from DBEA.  The population size is
-    determined by the number of reference points.  Thanks henryyuri for
-    reporting.
+    determined by the number of reference points.  Setting to a different value
+    would cause an exception.  Thanks to henryyuri for reporting (issue #69).
     
   * Fixes bug in RVEA.  If any objective has a range of 0, which could be
     caused by duplicates or infeasible solutions, the normalization breaks and
@@ -18,7 +18,18 @@ Framework.
     archive with too many divisions that exceeds the storage capacity of an
     array.  A custom error message is produced indicating the problem.  We may
     want to consider a sparse array or map for storage to remove this
-    limitation.
+    limitation.  Thanks to zhoudiprivateChina for reporting (issue #67).
+    
+  * At the request of abhinavgaur (issue #65), added an option to run NSGA-II
+    using binary tournament selection *without* replacement.  This follows the
+    original NSGA-II algorithm more closely.  Note that on many test problems,
+    there is no statistically significant change in end-of-run indicators.
+    To use, run:
+    
+        new Executor()
+                .withAlgorithm("NSGAII")
+                .withProperty("withReplacement", false)
+                ...
     
 
 ----------------------------

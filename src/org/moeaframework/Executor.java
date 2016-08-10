@@ -632,7 +632,8 @@ public class Executor extends ProblemBuilder {
 	}
 	
 	/**
-	 * Sets all properties.  This will clear any existing properties.
+	 * Sets all properties.  This will clear any existing properties, including
+	 * the {@code maxEvaluations} or {@code maxTime}.
 	 * 
 	 * @param properties the properties
 	 * @return a reference to this executor
