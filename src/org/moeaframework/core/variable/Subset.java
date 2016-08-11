@@ -60,12 +60,12 @@ public class Subset implements Variable {
 	/**
 	 * The ordered members in this subset.
 	 */
-	public int[] members;
+	private int[] members;
 
 	/**
 	 * Set of members in this subset for faster querying.
 	 */
-	public Set<Integer> memberSet;
+	private Set<Integer> memberSet;
 
 	/**
 	 * Constructs a new decision variable for representing subsets of size
