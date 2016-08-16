@@ -17,7 +17,7 @@
  */
 package org.moeaframework.core;
 
-import static org.moeaframework.core.FastNondominatedSorting.RANK_ATTRIBUTE;
+import static org.moeaframework.core.NondominatedSorting.RANK_ATTRIBUTE;
 
 import java.util.Comparator;
 import java.util.Iterator;
@@ -31,7 +31,7 @@ import org.moeaframework.core.comparator.RankComparator;
 /**
  * Population that maintains the {@code rank} and {@code crowdingDistance}
  * attributes for its solutions by invoking
- * {@link FastNondominatedSorting#evaluate(Population)}. This population tracks
+ * {@link NondominatedSorting#evaluate(Population)}. This population tracks
  * modifications and performs fast non-dominated sorting only when required.
  * Only changes made to this population can be tracked; changes made directly
  * to the contained solutions will not be detected.  Therefore, it may be
@@ -52,7 +52,7 @@ public class NondominatedSortingPopulation extends Population {
 	/**
 	 * The fast non-dominated sorting implementation.
 	 */
-	private final FastNondominatedSorting fastNondominatedSorting;
+	private final NondominatedSorting nondominatedSorting;
 
 	/**
 	 * Constructs an empty population that maintains the {@code rank} and
@@ -70,9 +70,13 @@ public class NondominatedSortingPopulation extends Population {
 	 */
 	public NondominatedSortingPopulation(DominanceComparator comparator) {
 		super();
-
 		modified = false;
-		fastNondominatedSorting = new FastNondominatedSorting(comparator);
+		
+		if (Settings.useFastNondominatedSorting()) {
+			nondominatedSorting = new FastNondominatedSorting(comparator);
+		} else {
+			nondominatedSorting = new NondominatedSorting(comparator);
+		}
 	}
 
 	/**
@@ -210,7 +214,7 @@ public class NondominatedSortingPopulation extends Population {
 		
 		//prune front until correct size
 		while (size() + front.size() > size) {
-			fastNondominatedSorting.updateCrowdingDistance(front);
+			nondominatedSorting.updateCrowdingDistance(front);
 			front.truncate(front.size()-1, new CrowdingComparator());
 		}
 		
@@ -227,7 +231,7 @@ public class NondominatedSortingPopulation extends Population {
 	 */
 	public void update() {
 		modified = false;
-		fastNondominatedSorting.evaluate(this);
+		nondominatedSorting.evaluate(this);
 	}
 
 }

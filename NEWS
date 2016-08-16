@@ -7,7 +7,7 @@ Framework.
 
   * Removes the populationSize parameter from DBEA.  The population size is
     determined by the number of reference points.  Setting to a different value
-    would cause an exception.  Thanks to henryyuri for reporting (issue #69).
+    would cause an exception.  Thanks to @henryyuri for reporting (issue #69).
     
   * Fixes bug in RVEA.  If any objective has a range of 0, which could be
     caused by duplicates or infeasible solutions, the normalization breaks and
@@ -18,9 +18,9 @@ Framework.
     archive with too many divisions that exceeds the storage capacity of an
     array.  A custom error message is produced indicating the problem.  We may
     want to consider a sparse array or map for storage to remove this
-    limitation.  Thanks to zhoudiprivateChina for reporting (issue #67).
+    limitation.  Thanks to @zhoudiprivateChina for reporting (issue #67).
     
-  * At the request of abhinavgaur (issue #65), added an option to run NSGA-II
+  * At the request of @abhinavgaur (issue #65), added an option to run NSGA-II
     using binary tournament selection *without* replacement.  This follows the
     original NSGA-II algorithm more closely.  Note that on many test problems,
     there is no statistically significant change in end-of-run indicators.
@@ -30,6 +30,30 @@ Framework.
                 .withAlgorithm("NSGAII")
                 .withProperty("withReplacement", false)
                 ...
+    
+  * Adds more control over handling duplicate solutions within non-dominated
+    populations.  Previously, solutions with identical objectives were excluded.
+    Now, this behavior is controlled with one of three options:
+    
+      - NO_DUPLICATE_OBJECTIVES (default) - Exclude solutions with identical
+            objectives
+      - ALLOW_DUPLICATE_OBJECTIVES - Allow solutions with identical objectives
+            as long as their decision variables differ
+      - ALLOW_DUPLICATES - Allow solutions with identical objectives and
+            decision variables
+      
+    This can also be controlled by the new global property:
+    
+      org.moeaframework.core.duplicate_mode = ALLOW_DUPLICATE_OBJECTIVES
+      
+    This also ensures duplicate solutions are assigned a crowding distance of 0
+    so they are truncated/pruned from a population first.  Thanks to @Nozo
+    (issue #15) for reporting this issue.
+    
+  * Adds global property to switch the non-dominated sorting algorithm between
+    a brute-force implementation and Deb et al.'s fast non-dominated sorting.
+    The brute-force implementation tends to have a faster average time while the
+    fast non-dominated sorting implementation has better worst-case runtime.
     
 
 ----------------------------
@@ -111,13 +135,13 @@ Framework.
 
   * Adds ability to incorporate new problems or algorithms without having to
     use Java's service provider interface (SPI).  Now, providers can be
-    programatically added via
+    programatically added via:
+    
       - AlgorithmFactory.getInstance().addProvider(...) or
       - ProblemFactory.getInstance().addProvider(...)
       
   * Fixes bug in MOEA/D-DRA's update utility calculation (this was a bug in the
-    official MOEA/D-DRA implementation that has since been corrected).  Thanks
-    to @abdulhameedpk for reporting this bug.
+    official MOEA/D-DRA implementation that has since been corrected).
     
   * Like JMetal, the generational distance and inverted generational distance
     calculations use the mean square distance.  In the literature, however,
@@ -125,6 +149,7 @@ Framework.
     distance.  For consistency, inverted generational distance is now computed
     using the average.  This can also be controlled by two new global
     properties:
+    
       org.moeaframework.core.indicator.gd_power = 2.0
       org.moeaframework.core.indicator.igd_power = 1.0
       

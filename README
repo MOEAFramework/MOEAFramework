@@ -72,11 +72,11 @@ details.
 
 The latest version of the MOEA Framework can be downloaded from 
 <http://www.moeaframework.org/>.  The MOEA Framework is available in source
-code and binary distributions.  Java 6.0 or later is required to be accessible
-on the host system.  For source code distributions, the Java Development Kit
-(JDK) is required to compile the code.  For binary distributions, only the Java
-Runtime Environment (JRE) is necessary.  Depending on your platform, the JRE or
-JDK can be obtained from the following vendors:
+code and binary distributions.  Java 6.0 or later is required.  For source code
+distributions, the Java Development Kit (JDK) is required to compile the code.
+For binary distributions, only the Java Runtime Environment (JRE) is necessary.
+Depending on your platform, the JRE or JDK can be obtained from the following
+vendors:
 
   Oracle <http://www.oracle.com/technetwork/java/javase/>
     * Windows, Linux and Solaris

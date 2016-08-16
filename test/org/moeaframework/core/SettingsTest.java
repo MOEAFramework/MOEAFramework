@@ -21,6 +21,7 @@ import java.io.IOException;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.moeaframework.core.NondominatedPopulation.DuplicateMode;
 
 /**
  * Tests the {@link Settings} class.  These tests ensure that valid settings
@@ -101,6 +102,26 @@ public class SettingsTest {
 		String[] actual = Settings.parseCommand(command);
 		
 		Assert.assertArrayEquals(expected, actual);
+	}
+	
+	@Test
+	public void testDuplicateMode() {
+		Assert.assertEquals(DuplicateMode.NO_DUPLICATE_OBJECTIVES,
+				Settings.getDuplicateMode());
+	}
+	
+	@Test
+	public void testDuplicateModeCaseSensitivity() {
+		Settings.PROPERTIES.setString(Settings.KEY_DUPLICATE_MODE,
+				DuplicateMode.ALLOW_DUPLICATES.name().toLowerCase());
+		
+		Assert.assertEquals(DuplicateMode.ALLOW_DUPLICATES,
+				Settings.getDuplicateMode());
+		
+		Assert.assertEquals(DuplicateMode.ALLOW_DUPLICATES,
+				new NondominatedPopulation().duplicateMode);
+		
+		Settings.PROPERTIES.remove(Settings.KEY_DUPLICATE_MODE);
 	}
 
 }

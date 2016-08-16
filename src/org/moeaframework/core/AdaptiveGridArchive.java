@@ -91,7 +91,8 @@ public class AdaptiveGridArchive extends NondominatedPopulation {
 	 */
 	public AdaptiveGridArchive(int capacity, Problem problem,
 			int numberOfDivisions) {
-		super(new ParetoDominanceComparator(), true);
+		super(new ParetoDominanceComparator(),
+				DuplicateMode.ALLOW_DUPLICATES);
 		this.capacity = capacity;
 		this.problem = problem;
 		this.numberOfDivisions = numberOfDivisions;

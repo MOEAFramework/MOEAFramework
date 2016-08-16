@@ -33,6 +33,7 @@ import java.util.Properties;
 import org.apache.commons.lang3.text.StrTokenizer;
 import org.moeaframework.util.TypedProperties;
 import org.moeaframework.util.io.FileProtection;
+import org.moeaframework.core.NondominatedPopulation.DuplicateMode;
 import org.moeaframework.core.indicator.Hypervolume;
 
 /**
@@ -72,6 +73,13 @@ public class Settings {
 	public static final String KEY_PREFIX = "org.moeaframework.";
 	
 	/**
+	 * The property key for how to handle duplicate solutions in a nondominated
+	 * population.
+	 */
+	public static final String KEY_DUPLICATE_MODE = KEY_PREFIX +
+			"core.duplicate_mode";
+	
+	/**
 	 * The property key for the power used in the generational distance
 	 * calculation.
 	 */
@@ -84,6 +92,13 @@ public class Settings {
 	 */
 	public static final String KEY_IGD_POWER = KEY_PREFIX +
 			"core.indicator.igd_power";
+	
+	/**
+	 * The property key to indicate that fast non-dominated sorting should be
+	 * used.
+	 */
+	public static final String KEY_FAST_NONDOMINATED_SORTING = KEY_PREFIX +
+			"core.fast_nondominated_sorting";
 	
 	/**
 	 * The property key for the continuity correction flag.
@@ -276,6 +291,17 @@ public class Settings {
 	}
 	
 	/**
+	 * Returns the strategy used for handling duplicate solutions in a
+	 * nondominated population.
+	 * 
+	 * @return the strategy for handling duplicate solutions
+	 */
+	public static DuplicateMode getDuplicateMode() {
+		return DuplicateMode.valueOf(PROPERTIES.getString(KEY_DUPLICATE_MODE,
+				"NO_DUPLICATES").toUpperCase());
+	}
+	
+	/**
 	 * Returns the power used in the generational distance calculation.
 	 * The default value is 2.0.
 	 * 
@@ -317,6 +343,21 @@ public class Settings {
 	public static double[] getReferencePoint(String problem) {
 		return PROPERTIES.getDoubleArray(KEY_REFPT_PREFIX + problem,
 				null);
+	}
+	
+	/**
+	 * Returns {@code true} if fast non-dominated sorting should be used;
+	 * or {@code false} if the naive non-dominated sorting implementation is
+	 * preferred.  The default is {@code false} since while the fast version
+	 * has better worst-case time complexity, the naive version tends to run
+	 * faster except for a small number of edge cases.
+	 * 
+	 * @return {@code true} if fast non-dominated sorting should be used;
+	 *         or {@code false} if the naive non-dominated sorting
+	 *         implementation is preferred
+	 */
+	public static boolean useFastNondominatedSorting() {
+		return PROPERTIES.getBoolean(KEY_FAST_NONDOMINATED_SORTING, false);
 	}
 	
 	/**
