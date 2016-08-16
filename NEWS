@@ -1,9 +1,9 @@
 This file documents the major changes implemented in each release of the MOEA
 Framework.
 
---------------------
- Version 2.11 (TBD)
---------------------
+----------------------------
+ Version 2.11 (18 Aug 2016)
+----------------------------
 
   * Removes the populationSize parameter from DBEA.  The population size is
     determined by the number of reference points.  Setting to a different value

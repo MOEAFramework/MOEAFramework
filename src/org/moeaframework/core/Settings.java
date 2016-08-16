@@ -298,7 +298,7 @@ public class Settings {
 	 */
 	public static DuplicateMode getDuplicateMode() {
 		return DuplicateMode.valueOf(PROPERTIES.getString(KEY_DUPLICATE_MODE,
-				DuplicateMode.NO_DUPLICATE_OBJECTIVES.toString()).toUpperCase());
+				DuplicateMode.NO_DUPLICATE_OBJECTIVES.name()).toUpperCase());
 	}
 	
 	/**
