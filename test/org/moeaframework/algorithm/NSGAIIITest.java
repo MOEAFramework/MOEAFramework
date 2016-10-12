@@ -19,7 +19,6 @@ package org.moeaframework.algorithm;
 
 import java.io.File;
 import java.io.IOException;
-
 import org.apache.commons.math3.stat.descriptive.rank.Max;
 import org.apache.commons.math3.stat.descriptive.rank.Median;
 import org.apache.commons.math3.stat.descriptive.rank.Min;
@@ -97,7 +96,6 @@ public class NSGAIIITest {
 		evaluate(new ScaledProblem(new DTLZ2(8), 3), 500, new NondominatedPopulation(PopulationIO.readObjectives(new File("DTLZ2(8)-PFscaled.txt"))));
 		evaluate(new ScaledProblem(new DTLZ2(10), 3), 750, new NondominatedPopulation(PopulationIO.readObjectives(new File("DTLZ2(10)-PFscaled.txt"))));
 		evaluate(new ScaledProblem(new DTLZ2(15), 2), 1000, new NondominatedPopulation(PopulationIO.readObjectives(new File("DTLZ2(15)-PFscaled.txt"))));
-		
 	}
 	
 	public void evaluate(Problem problem, int maxGen, NondominatedPopulation referenceSet) {
@@ -105,7 +103,7 @@ public class NSGAIIITest {
 		double[] igdValues = new double[trials];
 		
 		InvertedGenerationalDistance igd = new InvertedGenerationalDistance(
-				problem, referenceSet);
+				problem, referenceSet, 2.0);
 		
 		for (int i = 0; i < trials; i++) {
 			int populationSize;
