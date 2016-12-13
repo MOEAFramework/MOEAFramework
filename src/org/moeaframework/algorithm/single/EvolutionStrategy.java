@@ -35,9 +35,9 @@ import org.moeaframework.core.Variation;
  * <p>
  * References:
  * <ol>
- *   <li>Ingo Rechenberg.  "Evolutionsstrategie – Optimierung technischer
+ *   <li>Ingo Rechenberg.  "Evolutionsstrategie: Optimierung technischer
  *       Systeme nach Prinzipien der biologischen Evolution."  Ph.D. thesis,
- *       Fromman-Holzboog, 1971..
+ *       Fromman-Holzboog, 1971.
  * </ol>
  */
 public class EvolutionStrategy extends AbstractEvolutionaryAlgorithm {

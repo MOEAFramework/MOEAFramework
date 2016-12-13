@@ -18,6 +18,7 @@
 package org.moeaframework.algorithm.single;
 
 import java.io.NotSerializableException;
+import java.util.Comparator;
 
 import org.moeaframework.algorithm.AbstractEvolutionaryAlgorithm;
 import org.moeaframework.core.Initialization;
@@ -117,7 +118,7 @@ public class GeneticAlgorithm extends AbstractEvolutionaryAlgorithm {
 	 */
 	public void updateEliteSolution() {
 		for (Solution solution : getPopulation()) {
-			if (comparator.compare(eliteSolution, solution) > 0) {
+			if (((Comparator<Solution>)comparator).compare(eliteSolution, solution) > 0) {
 				eliteSolution = solution;
 			}
 		}
