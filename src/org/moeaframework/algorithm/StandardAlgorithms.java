@@ -17,11 +17,20 @@
  */
 package org.moeaframework.algorithm;
 
+import java.util.List;
 import java.util.Properties;
 
 import org.apache.commons.math3.util.CombinatoricsUtils;
 import org.moeaframework.algorithm.pso.OMOPSO;
 import org.moeaframework.algorithm.pso.SMPSO;
+import org.moeaframework.algorithm.single.DifferentialEvolution;
+import org.moeaframework.algorithm.single.EvolutionStrategy;
+import org.moeaframework.algorithm.single.GeneticAlgorithm;
+import org.moeaframework.algorithm.single.RepeatedSingleObjective;
+import org.moeaframework.algorithm.single.AggregateObjectiveComparator;
+import org.moeaframework.algorithm.single.MinMaxDominanceComparator;
+import org.moeaframework.algorithm.single.LinearDominanceComparator;
+import org.moeaframework.algorithm.single.SelfAdaptiveNormalVariation;
 import org.moeaframework.analysis.sensitivity.EpsilonHelper;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
@@ -49,8 +58,8 @@ import org.moeaframework.core.fitness.IndicatorFitnessEvaluator;
 import org.moeaframework.core.operator.RandomInitialization;
 import org.moeaframework.core.operator.TournamentSelection;
 import org.moeaframework.core.operator.UniformSelection;
-import org.moeaframework.core.operator.real.DifferentialEvolution;
 import org.moeaframework.core.operator.real.DifferentialEvolutionSelection;
+import org.moeaframework.core.operator.real.DifferentialEvolutionVariation;
 import org.moeaframework.core.operator.real.UM;
 import org.moeaframework.core.spi.AlgorithmProvider;
 import org.moeaframework.core.spi.OperatorFactory;
@@ -58,6 +67,8 @@ import org.moeaframework.core.spi.ProviderLookupException;
 import org.moeaframework.core.spi.ProviderNotFoundException;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.util.TypedProperties;
+import org.moeaframework.util.Vector;
+import org.moeaframework.util.weights.RandomGenerator;
 
 /**
  * A provider of standard algorithms. The following table contains all
@@ -121,6 +132,12 @@ import org.moeaframework.util.TypedProperties;
  *     <td>{@code populationSize, de.crossoverRate, de.stepSize, pm.rate,
  *         pm.distributionIndex, neighborhoodSize, delta, eta, 
  *         updateUtility}</td>
+ *   </tr>
+ *   <tr>
+ *     <td>MSOPS</td>
+ *     <td>Real</td>
+ *     <td>{@code populationSize, numberOfWeights, de.crossoverRate,
+ *         de.stepSize}</td>
  *   </tr>
  *   <tr>
  *     <td>NSGAII</td>
@@ -192,6 +209,42 @@ import org.moeaframework.util.TypedProperties;
  *         pm.distributionIndex}</td>
  *   </tr>
  * </table>
+ * <p>
+ * Several single-objective algorithms are also supported.  These
+ * single-objective algorithms support an optional weighting method, which can
+ * be either {@code "linear"} or {@code "min-max"}.
+ * <p>
+ * <table width="100%" border="1" cellpadding="3" cellspacing="0">
+ *   <tr class="TableHeadingColor">
+ *     <th width="10%" align="left">Name</th>
+ *     <th width="10%" align="left">Type</th>
+ *     <th width="80%" align="left">Properties</th>
+ *   </tr>
+ *   <tr>
+ *     <td>GA</td>
+ *     <td>Any</td>
+ *     <td>{@code populationSize, method, weights, sbx.rate,
+ *         sbx.distributionIndex, pm.rate, pm.distributionIndex}</td>
+ *   </tr>
+ *   <tr>
+ *     <td>ES</td>
+ *     <td>Any</td>
+ *     <td>{@code populationSize, method, weights, sbx.rate,
+ *         sbx.distributionIndex, pm.rate, pm.distributionIndex}</td>
+ *   </tr>
+ *   <tr>
+ *     <td>DE</td>
+ *     <td>Real</td>
+ *     <td>{@code populationSize, method, weights, de.crossoverRate,
+ *         de.stepSize}</td>
+ *   </tr>
+ * </table>
+ * <p>
+ * Lastly, the Repeated Single Objective ({@code RSO}) algorithm is a special
+ * case that runs a single-objective algorithm multiple times while aggregating
+ * the result.  For example, you can create the algorithm {@code RSO(GA)} to
+ * run the single-objective genetic algorithm ({@code GA}) multiple times.  The
+ * {@code instances} property controls the number of repeated runs.
  */
 public class StandardAlgorithms extends AlgorithmProvider {
 
@@ -253,8 +306,25 @@ public class StandardAlgorithms extends AlgorithmProvider {
 				return newDBEA(typedProperties, problem);
 			} else if (name.equalsIgnoreCase("RVEA")) {
 				return newRVEA(typedProperties, problem);
+			} else if (name.equalsIgnoreCase("MSOPS")) {
+				return newMSOPS(typedProperties, problem);
 			} else if (name.equalsIgnoreCase("Random")) {
 				return newRandomSearch(typedProperties, problem);
+			} else if (name.equalsIgnoreCase("DifferentialEvolution") ||
+					name.equalsIgnoreCase("DE") ||
+					name.equalsIgnoreCase("DE/rand/1/bin")) {
+				return newDifferentialEvolution(typedProperties, problem);
+			} else if (name.equalsIgnoreCase("GeneticAlgorithm") ||
+					name.equalsIgnoreCase("GA")) {
+				return newGeneticAlgorithm(typedProperties, problem);
+			} else if (name.equalsIgnoreCase("EvolutionStrategy") ||
+					name.equalsIgnoreCase("ES")) {
+				return newEvolutionaryStrategy(typedProperties, problem);
+			} else if (name.equalsIgnoreCase("RSO")) {
+				return newRSO(typedProperties, problem);
+			} else if (name.toUpperCase().startsWith("RSO(") && name.endsWith(")")) {
+				typedProperties.setString("algorithm", name.substring(4, name.length()-1));
+				return newRSO(typedProperties, problem);
 			} else {
 				return null;
 			}
@@ -553,7 +623,7 @@ public class StandardAlgorithms extends AlgorithmProvider {
 		DifferentialEvolutionSelection selection = 
 				new DifferentialEvolutionSelection();
 
-		DifferentialEvolution variation = (DifferentialEvolution)OperatorFactory
+		DifferentialEvolutionVariation variation = (DifferentialEvolutionVariation)OperatorFactory
 				.getInstance().getVariation("de", properties, problem);
 
 		return new GDE3(problem, population, comparator, selection, variation,
@@ -1028,5 +1098,165 @@ public class StandardAlgorithms extends AlgorithmProvider {
 		
 		return new RandomSearch(problem, generator, archive);
 	}
+	
+	/**
+	 * Returns a new {@link MSOPS} instance.
+	 * 
+	 * @param properties the properties for customizing the new {@code MSOPS}
+	 *        instance
+	 * @param problem the problem
+	 * @return a new {@code MSOPS} instance
+	 */
+	private Algorithm newMSOPS(TypedProperties properties, Problem problem) {
+		if (!checkType(RealVariable.class, problem)) {
+			throw new FrameworkException("unsupported decision variable type");
+		}
+		
+		int populationSize = (int)properties.getDouble("populationSize", 100);
+		int numberOfWeights = (int)properties.getDouble("numberOfWeights", 50);
 
+		Initialization initialization = new RandomInitialization(problem,
+				populationSize);
+		
+		List<double[]> weights = new RandomGenerator(problem.getNumberOfObjectives(), numberOfWeights).generate();
+		
+		// normalize weights so their magnitude is 1
+		for (int i = 0; i < weights.size(); i++) {
+			weights.set(i, Vector.normalize(weights.get(i)));
+		}
+
+		MSOPSRankedPopulation population = new MSOPSRankedPopulation(weights);
+		
+		DifferentialEvolutionSelection selection = new DifferentialEvolutionSelection();
+
+		DifferentialEvolutionVariation variation = (DifferentialEvolutionVariation)OperatorFactory.getInstance().getVariation(
+				"de", properties, problem);
+
+		return new MSOPS(problem, population, selection, variation,
+				initialization);
+	}
+	
+	/**
+	 * Returns a new single-objective {@link RepeatedSingleObjective} instance.
+	 * 
+	 * @param properties the properties for customizing the new
+	 *        {@code RepeatedSingleObjective} instance
+	 * @param problem the problem
+	 * @return a new {@code RepeatedSingleObjective} instance
+	 */
+	private Algorithm newRSO(TypedProperties properties, Problem problem) {
+		String algorithmName = properties.getString("algorithm", "GA");
+		int instances = (int)properties.getDouble("instances", 100);
+		
+		if (!properties.contains("method")) {
+			properties.setString("method", "min-max");
+		}
+
+		return new RepeatedSingleObjective(problem, algorithmName,
+				properties.getProperties(), instances);
+	}
+	
+	/**
+	 * Returns a new single-objective {@link GeneticAlgorithm} instance.
+	 * 
+	 * @param properties the properties for customizing the new
+	 *        {@code GeneticAlgorithm} instance
+	 * @param problem the problem
+	 * @return a new {@code GeneticAlgorithm} instance
+	 */
+	private Algorithm newGeneticAlgorithm(TypedProperties properties, Problem problem) {
+		int populationSize = (int)properties.getDouble("populationSize", 100);
+		double[] weights = properties.getDoubleArray("weights", new double[] { 1.0 });
+		String method = properties.getString("method", "linear");
+		
+		AggregateObjectiveComparator comparator = null;
+		
+		if (method.equalsIgnoreCase("linear")) {
+			comparator = new LinearDominanceComparator(weights);
+		} else if (method.equalsIgnoreCase("min-max")) {
+			comparator = new MinMaxDominanceComparator(weights);
+		} else {
+			throw new FrameworkException("unrecognized weighting method: " + method);
+		}
+
+		Initialization initialization = new RandomInitialization(problem, populationSize);
+		
+		Selection selection = new TournamentSelection(2, comparator);
+
+		Variation variation = OperatorFactory.getInstance().getVariation(null, properties, problem);
+
+		return new GeneticAlgorithm(problem, comparator, initialization, selection, variation);
+	}
+	
+	/**
+	 * Returns a new single-objective {@link EvolutionStrategy} instance.
+	 * 
+	 * @param properties the properties for customizing the new
+	 *        {@code EvolutionaryStrategy} instance
+	 * @param problem the problem
+	 * @return a new {@code EvolutionaryStrategy} instance
+	 */
+	private Algorithm newEvolutionaryStrategy(TypedProperties properties, Problem problem) {
+		if (!checkType(RealVariable.class, problem)) {
+			throw new FrameworkException("unsupported decision variable type");
+		}
+		
+		int populationSize = (int)properties.getDouble("populationSize", 100);
+		double[] weights = properties.getDoubleArray("weights", new double[] { 1.0 });
+		String method = properties.getString("method", "linear");
+		
+		AggregateObjectiveComparator comparator = null;
+		
+		if (method.equalsIgnoreCase("linear")) {
+			comparator = new LinearDominanceComparator(weights);
+		} else if (method.equalsIgnoreCase("min-max")) {
+			comparator = new MinMaxDominanceComparator(weights);
+		} else {
+			throw new FrameworkException("unrecognized weighting method: " + method);
+		}
+
+		Initialization initialization = new RandomInitialization(problem, populationSize);
+		
+		Variation variation = new SelfAdaptiveNormalVariation();
+
+		return new EvolutionStrategy(problem, comparator, initialization, variation);
+	}
+
+	/**
+	 * Returns a new single-objective {@link DE/rand/1/bin} instance.
+	 * 
+	 * @param properties the properties for customizing the new
+	 *        {@code DE/rand/1/bin} instance
+	 * @param problem the problem
+	 * @return a new {@code DE/rand/1/bin} instance
+	 */
+	private Algorithm newDifferentialEvolution(TypedProperties properties, Problem problem) {
+		if (!checkType(RealVariable.class, problem)) {
+			throw new FrameworkException("unsupported decision variable type");
+		}
+		
+		int populationSize = (int)properties.getDouble("populationSize", 100);
+		double[] weights = properties.getDoubleArray("weights", new double[] { 1.0 });
+		String method = properties.getString("method", "linear");
+		
+		AggregateObjectiveComparator comparator = null;
+		
+		if (method.equalsIgnoreCase("linear")) {
+			comparator = new LinearDominanceComparator(weights);
+		} else if (method.equalsIgnoreCase("min-max")) {
+			comparator = new MinMaxDominanceComparator(weights);
+		} else {
+			throw new FrameworkException("unrecognized weighting method: " + method);
+		}
+
+		Initialization initialization = new RandomInitialization(problem, populationSize);
+
+		DifferentialEvolutionSelection selection = new DifferentialEvolutionSelection();
+
+		DifferentialEvolutionVariation variation = (DifferentialEvolutionVariation)OperatorFactory.getInstance()
+				.getVariation("de", properties, problem);
+
+		return new DifferentialEvolution(problem, comparator, initialization, selection, variation);
+	}
+	
 }

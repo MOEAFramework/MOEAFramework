@@ -35,7 +35,7 @@ import org.moeaframework.core.operator.permutation.Swap;
 import org.moeaframework.core.operator.program.PointMutation;
 import org.moeaframework.core.operator.program.SubtreeCrossover;
 import org.moeaframework.core.operator.real.AdaptiveMetropolis;
-import org.moeaframework.core.operator.real.DifferentialEvolution;
+import org.moeaframework.core.operator.real.DifferentialEvolutionVariation;
 import org.moeaframework.core.operator.real.PCX;
 import org.moeaframework.core.operator.real.PM;
 import org.moeaframework.core.operator.real.SBX;
@@ -84,7 +84,7 @@ import org.moeaframework.util.TypedProperties;
  *     <td>{@code um.rate}</td>
  *   </tr>
  *   <tr>
- *     <td>{@link DifferentialEvolution}</td>
+ *     <td>{@link DifferentialEvolutionVariation}</td>
  *     <td>Real</td>
  *     <td>{@code de}</td>
  *     <td>{@code de.crossoverRate, de.stepSize}</td>
@@ -294,7 +294,7 @@ public class StandardOperators extends OperatorProvider {
 							1.0 / problem.getNumberOfVariables()), 
 							typedProperties.getDouble("pm.distributionIndex", 20.0));
 		} else if (name.equalsIgnoreCase("de")) {	
-			return new DifferentialEvolution(
+			return new DifferentialEvolutionVariation(
 					typedProperties.getDouble("de.crossoverRate", 0.1), 
 					typedProperties.getDouble("de.stepSize", 0.5));
 		} else if (name.equalsIgnoreCase("pcx")) {

@@ -49,7 +49,7 @@ Comparator<Solution>, Serializable {
 	 * @return the sum of the absolute value of the constraints for the
 	 *         specified solution
 	 */
-	protected double getConstraints(Solution solution) {
+	public static double getConstraints(Solution solution) {
 		double constraints = 0.0;
 
 		for (int i = 0; i < solution.getNumberOfConstraints(); i++) {

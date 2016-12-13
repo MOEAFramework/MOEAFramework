@@ -309,7 +309,7 @@ public class SymbolicRegressionGUI extends JFrame implements WindowListener {
 
 		try {
 			algorithm = AlgorithmFactory.getInstance().getAlgorithm(
-					"NSGAII", properties, problem);
+					"GA", properties, problem);
 
 			// run the GP solver
 			while ((generation < maxGenerations) && !gui.isCanceled()) {

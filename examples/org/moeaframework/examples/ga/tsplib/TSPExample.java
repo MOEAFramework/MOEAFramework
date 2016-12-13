@@ -183,7 +183,7 @@ public class TSPExample {
 		properties.setProperty("pmx.rate", "0.4");
 		
 		Algorithm algorithm = AlgorithmFactory.getInstance().getAlgorithm(
-				"NSGAII", properties, problem);
+				"GA", properties, problem);
 		
 		int iteration = 0;
 		
