@@ -45,7 +45,7 @@ public class SantaFeExample {
 		// solve the ant trail instance
 		NondominatedPopulation results = new Executor()
 				.withProblemClass(AntProblem.class, openDataFile(), maxMoves)
-				.withAlgorithm("NSGAII")
+				.withAlgorithm("GA")
 				.withProperty("populationSize", 500)
 				.withMaxEvaluations(250000)
 				.run();

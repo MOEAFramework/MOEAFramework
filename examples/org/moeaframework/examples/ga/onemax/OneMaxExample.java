@@ -34,11 +34,11 @@ public class OneMaxExample {
 
 	public static void main(String[] args) {
 		Properties properties = new Properties();
-		properties.setProperty("populationSize", "10");
+		properties.setProperty("populationSize", "100");
 		
 		Problem problem = new OneMax(100);
 		Algorithm algorithm = AlgorithmFactory.getInstance().getAlgorithm(
-				"NSGAII", properties, problem);
+				"GA", properties, problem);
 
 		while (!algorithm.isTerminated()) {
 			algorithm.step();

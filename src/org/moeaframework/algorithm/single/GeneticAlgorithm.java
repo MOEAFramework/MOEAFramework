@@ -17,6 +17,8 @@
  */
 package org.moeaframework.algorithm.single;
 
+import java.io.NotSerializableException;
+
 import org.moeaframework.algorithm.AbstractEvolutionaryAlgorithm;
 import org.moeaframework.core.Initialization;
 import org.moeaframework.core.NondominatedPopulation;
@@ -27,7 +29,8 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
 
 /**
- * Single-objective genetic algorithm (GA) implementation.
+ * Single-objective genetic algorithm (GA) implementation with elitism.  A
+ * single elite individual is retained in each generation.
  * <p>
  * References:
  * <ol>
@@ -51,6 +54,11 @@ public class GeneticAlgorithm extends AbstractEvolutionaryAlgorithm {
 	 * The mutation operator.
 	 */
 	private final Variation variation;
+	
+	/**
+	 * The solution with the best fitness score.
+	 */
+	private Solution eliteSolution;
 
 	/**
 	 * Constructs a new instance of the genetic algorithm (GA).
@@ -73,6 +81,14 @@ public class GeneticAlgorithm extends AbstractEvolutionaryAlgorithm {
 	}
 
 	@Override
+	protected void initialize() {
+		super.initialize();
+		
+		eliteSolution = getPopulation().get(0);
+		updateEliteSolution();
+	}
+
+	@Override
 	public void iterate() {
 		Population population = getPopulation();
 		Population offspring = new Population();
@@ -89,15 +105,41 @@ public class GeneticAlgorithm extends AbstractEvolutionaryAlgorithm {
 		evaluateAll(offspring);
 
 		population.clear();
+		population.add(eliteSolution);
 		population.addAll(offspring);
 		population.truncate(populationSize, comparator);
+		
+		updateEliteSolution();
+	}
+	
+	/**
+	 * Update the elite solution.
+	 */
+	public void updateEliteSolution() {
+		for (Solution solution : getPopulation()) {
+			if (comparator.compare(eliteSolution, solution) > 0) {
+				eliteSolution = solution;
+			}
+		}
 	}
 	
 	@Override
 	public NondominatedPopulation getResult() {
 		NondominatedPopulation result = new NondominatedPopulation(comparator);
-		result.addAll(getPopulation());
+		
+		if (eliteSolution != null) {
+			result.add(eliteSolution);
+		}
+		
 		return result;
+	}
+
+	@Override
+	public void setState(Object objState) throws NotSerializableException {
+		super.setState(objState);
+		
+		eliteSolution = getPopulation().get(0);
+		updateEliteSolution();
 	}
 
 }

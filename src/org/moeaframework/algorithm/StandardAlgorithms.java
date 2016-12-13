@@ -1076,39 +1076,6 @@ public class StandardAlgorithms extends AlgorithmProvider {
 	}
 	
 	/**
-	 * Returns a new {@link MSOPS} instance.
-	 * 
-	 * @param properties the properties for customizing the new {@code MSOPS}
-	 *        instance
-	 * @param problem the problem
-	 * @return a new {@code MSOPS} instance
-	 */
-	private Algorithm newMSOPS(TypedProperties properties, Problem problem) {
-		int populationSize = (int)properties.getDouble("populationSize", 100);
-		int numberOfWeights = (int)properties.getDouble("numberOfWeights", 50);
-
-		Initialization initialization = new RandomInitialization(problem,
-				populationSize);
-		
-		List<double[]> weights = new RandomGenerator(problem.getNumberOfObjectives(), numberOfWeights).generate();
-		
-		// normalize weights so their magnitude is 1
-		for (int i = 0; i < weights.size(); i++) {
-			weights.set(i, Vector.normalize(weights.get(i)));
-		}
-
-		MSOPSRankedPopulation population = new MSOPSRankedPopulation(weights);
-		
-		DifferentialEvolutionSelection selection = new DifferentialEvolutionSelection();
-
-		DifferentialEvolutionVariation variation = (DifferentialEvolutionVariation)OperatorFactory.getInstance().getVariation(
-				"de", properties, problem);
-
-		return new MSOPS(problem, population, selection, variation,
-				initialization);
-	}
-	
-	/**
 	 * Returns a new {@link RandomSearch} instance.
 	 * 
 	 * @param properties the properties for customizing the new
@@ -1134,6 +1101,43 @@ public class StandardAlgorithms extends AlgorithmProvider {
 		}
 		
 		return new RandomSearch(problem, generator, archive);
+	}
+	
+	/**
+	 * Returns a new {@link MSOPS} instance.
+	 * 
+	 * @param properties the properties for customizing the new {@code MSOPS}
+	 *        instance
+	 * @param problem the problem
+	 * @return a new {@code MSOPS} instance
+	 */
+	private Algorithm newMSOPS(TypedProperties properties, Problem problem) {
+		if (!checkType(RealVariable.class, problem)) {
+			throw new FrameworkException("unsupported decision variable type");
+		}
+		
+		int populationSize = (int)properties.getDouble("populationSize", 100);
+		int numberOfWeights = (int)properties.getDouble("numberOfWeights", 50);
+
+		Initialization initialization = new RandomInitialization(problem,
+				populationSize);
+		
+		List<double[]> weights = new RandomGenerator(problem.getNumberOfObjectives(), numberOfWeights).generate();
+		
+		// normalize weights so their magnitude is 1
+		for (int i = 0; i < weights.size(); i++) {
+			weights.set(i, Vector.normalize(weights.get(i)));
+		}
+
+		MSOPSRankedPopulation population = new MSOPSRankedPopulation(weights);
+		
+		DifferentialEvolutionSelection selection = new DifferentialEvolutionSelection();
+
+		DifferentialEvolutionVariation variation = (DifferentialEvolutionVariation)OperatorFactory.getInstance().getVariation(
+				"de", properties, problem);
+
+		return new MSOPS(problem, population, selection, variation,
+				initialization);
 	}
 	
 	/**

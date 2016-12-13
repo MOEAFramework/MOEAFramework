@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.util.Properties;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.moeaframework.TestUtils;
 import org.moeaframework.analysis.collector.Accumulator;
@@ -137,9 +138,35 @@ public class StandardAlgorithmsResumeTest {
 	}
 	
 	@Test
-	//@Ignore("currently not supported")
 	public void testRVEA() throws IOException {
 		test("RVEA");
+	}
+	
+	@Test
+	public void testGA() throws IOException {
+		test("GA");
+	}
+	
+	@Test
+	public void testES() throws IOException {
+		test("ES");
+	}
+	
+	@Test
+	public void testDE() throws IOException {
+		test("DE");
+	}
+	
+	@Test
+	@Ignore("currently resume capability is not supported")
+	public void testRSO() throws IOException {
+		test("RSO");
+	}
+	
+	@Test
+	@Ignore("currently resume capability is not supported")
+	public void testMSOPS() throws IOException {
+		test("MSOPS");
 	}
 	
 	@Test

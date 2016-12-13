@@ -171,6 +171,46 @@ public class ReproducibilityTest {
 	public void testRandom() {
 		test("Random");
 	}
+	
+	/**
+	 * Tests GA for reproducibility.
+	 */
+	@Test
+	public void testGA() {
+		test("GA");
+	}
+	
+	/**
+	 * Tests ES for reproducibility.
+	 */
+	@Test
+	public void testES() {
+		test("ES");
+	}
+	
+	/**
+	 * Tests DE for reproducibility.
+	 */
+	@Test
+	public void testDE() {
+		test("DE");
+	}
+	
+	/**
+	 * Tests RSO for reproducibility.
+	 */
+	@Test
+	public void testRSO() {
+		test("RSO");
+	}
+	
+	/**
+	 * Tests MSOPS for reproducibility.
+	 */
+	@Test
+	public void testMSOPS() {
+		test("MSOPS");
+	}
 
 	/**
 	 * Tests the algorithm for reproducibility. The algorithm must be available

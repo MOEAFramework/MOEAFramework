@@ -80,9 +80,7 @@ public class VectorAngleDistanceScalingComparator implements AggregateObjectiveC
 
 	/**
 	 * Computes the vector angle distance scaling aggregate fitness of the
-	 * solution.  One weight should be given for each objective; if fewer
-	 * weights are provided, the last weight is repeated for the remaining
-	 * objectives.
+	 * solution.  One weight should be given for each objective.
 	 * 
 	 * @param solution the solution
 	 * @param weights the weight vector
