@@ -27,7 +27,7 @@ Its key features includes:
   * Fully documented and tested source code
 
 Since its initial release in 2011, the MOEA Framework has been downloaded over
-34,000 times, averaging 959 downloads per month this past year.  Please 
+38,000 times, averaging over 900 downloads per month this past year.  Please 
 contact us if you are interested in contributing!
 
 ### Download ###

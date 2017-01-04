@@ -228,9 +228,8 @@ import org.moeaframework.util.weights.RandomGenerator;
  *   </tr>
  *   <tr>
  *     <td>ES</td>
- *     <td>Any</td>
- *     <td>{@code populationSize, method, weights, sbx.rate,
- *         sbx.distributionIndex, pm.rate, pm.distributionIndex}</td>
+ *     <td>Real</td>
+ *     <td>{@code populationSize, method, weights}</td>
  *   </tr>
  *   <tr>
  *     <td>DE</td>
