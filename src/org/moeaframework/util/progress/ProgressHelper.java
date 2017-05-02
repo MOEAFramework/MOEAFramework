@@ -20,6 +20,7 @@ package org.moeaframework.util.progress;
 import org.apache.commons.lang3.event.EventListenerSupport;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.moeaframework.Executor;
+import org.moeaframework.core.Algorithm;
 
 /**
  * Helper for notifying {@link ProgressListener}s when the evaluation progress
@@ -45,12 +46,17 @@ public class ProgressHelper {
 	 * The executor using this progress helper.
 	 */
 	private final Executor executor;
+
+	/**
+	 * The current {@link Algorithm} being run. 
+	 */
+	private Algorithm currentAlgorithm;
 	
 	/**
 	 * The current seed being evaluated, starting at 1.
 	 */
 	private int currentSeed;
-	
+
 	/**
 	 * The total number of seeds to be evaluated.
 	 */
@@ -192,6 +198,7 @@ public class ProgressHelper {
 		
 		ProgressEvent event = new ProgressEvent(
 				executor,
+				currentAlgorithm,
 				currentSeed,
 				totalSeeds,
 				isSeedFinished,
@@ -237,6 +244,18 @@ public class ProgressHelper {
 			sendProgressEvent(true);
 		}
 	}
+
+	/**
+	 * Sets the currently running algorithm, so that {@link ProgressEvent}s
+	 * can access the algorithm object.
+	 * 
+	 * @param algorithm - the algorithm that is going to be running
+	 */
+	public void setCurrentAlgorithm(Algorithm algorithm) {
+		this.currentAlgorithm = algorithm;
+		
+	}
+
 	
 	/**
 	 * Increments the current seed and sets NFE to 0.  This method will
