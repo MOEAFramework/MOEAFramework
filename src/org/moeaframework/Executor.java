@@ -805,6 +805,7 @@ public class Executor extends ProblemBuilder {
 					}
 					
 					terminationCondition.initialize(algorithm);
+					progress.setCurrentAlgorithm(algorithm);
 
 					while (!algorithm.isTerminated() &&
 							!terminationCondition.shouldTerminate(algorithm)) {

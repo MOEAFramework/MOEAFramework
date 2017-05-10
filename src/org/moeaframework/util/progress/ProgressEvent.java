@@ -20,6 +20,7 @@ package org.moeaframework.util.progress;
 import java.io.Serializable;
 
 import org.moeaframework.Executor;
+import org.moeaframework.core.Algorithm;
 
 /**
  * A progress report, including the percent complete, elapsed time, and
@@ -34,6 +35,11 @@ public class ProgressEvent implements Serializable {
 	 */
 	private final Executor executor;
 
+	/**
+	 * The current {@link Algorithm} being run. 
+	 */
+	private final Algorithm currentAlgorithm;
+	
 	/**
 	 * The current seed being evaluated, starting at 1.
 	 */
@@ -88,6 +94,7 @@ public class ProgressEvent implements Serializable {
 	 * Constructs a new progress report with the given values.
 	 * 
 	 * @param executor the executor from which these progress reports originate
+	 * @param algorithm the current algorithm the executor is running
 	 * @param currentSeed the current seed being evaluated, starting at 1
 	 * @param totalSeeds the total number of seeds to be evaluated
 	 * @param isSeedFinished {@code true} if this event was created in response
@@ -103,13 +110,14 @@ public class ProgressEvent implements Serializable {
 	 * @param maxTime the maximum elapsed time per seed in seconds, or
 	 *        {@code -1} if not set
 	 */
-	public ProgressEvent(Executor executor, int currentSeed, int totalSeeds,
-			boolean isSeedFinished, int currentNFE, int maxNFE,
-			double percentComplete, double elapsedTime, double remainingTime,
-			double maxTime) {
+	public ProgressEvent(Executor executor, Algorithm algorithm, 
+			int currentSeed, int totalSeeds, boolean isSeedFinished, 
+			int currentNFE,	int maxNFE, double percentComplete,
+			double elapsedTime, double remainingTime, double maxTime) {
 		super();
 		this.executor = executor;
 		this.currentSeed = currentSeed;
+		this.currentAlgorithm = algorithm;
 		this.totalSeeds = totalSeeds;
 		this.isSeedFinished = isSeedFinished;
 		this.currentNFE = currentNFE;
@@ -127,6 +135,15 @@ public class ProgressEvent implements Serializable {
 	 */
 	public Executor getExecutor() {
 		return executor;
+	}
+
+	/**
+	 * Returns the algorithm that is currently running
+	 * 
+	 * @return the algorithm currently running
+	 */
+	public Algorithm getCurrentAlgorithm() {
+		return currentAlgorithm;
 	}
 
 	/**
