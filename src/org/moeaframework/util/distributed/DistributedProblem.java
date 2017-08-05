@@ -46,6 +46,14 @@ public class DistributedProblem implements Problem {
 	private final Problem innerProblem;
 
 	/**
+	 * By assigning a unique id to each FutureSolution that this 
+	 * DistributedProblem creates, problems with stochastic evaluation functions
+	 * (e.g., certain types of simulations) can use this as a random seed
+	 * in order to get replicability of results even when run in parallel.      
+	 */
+	private long nextDistributedEvaluationID = 0;
+	
+	/**
 	 * Decorates a problem for distributing the evaluation of the problem across
 	 * multiple threads, cores or compute nodes as defined by the specified
 	 * {@code ExecutorService}.
@@ -106,6 +114,7 @@ public class DistributedProblem implements Problem {
 	public void evaluate(Solution solution) {
 		if (solution instanceof FutureSolution) {
 			FutureSolution futureSolution = (FutureSolution)solution;
+			futureSolution.setDistributedEvaluationID(nextDistributedEvaluationID());
 			Future<Solution> future = executor.submit(new ProblemEvaluator(
 					innerProblem, futureSolution));
 			futureSolution.setFuture(future);
@@ -113,6 +122,11 @@ public class DistributedProblem implements Problem {
 			throw new ProblemException(this, "requires FutureSolution");
 		}
 	}
+
+	synchronized long nextDistributedEvaluationID() {
+		return nextDistributedEvaluationID++;
+	}
+
 
 	@Override
 	public String getName() {
@@ -138,7 +152,7 @@ public class DistributedProblem implements Problem {
 	public Solution newSolution() {
 		return new FutureSolution(innerProblem.newSolution());
 	}
-
+	
 	@Override
 	public void close() {
 		innerProblem.close();
