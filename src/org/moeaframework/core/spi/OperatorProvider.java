@@ -37,7 +37,7 @@ import org.moeaframework.core.Variation;
  * {@code META-INF/services/org.moeaframework.core.spi.OperatorProvider}
  * containing on a single line the class name of the custom provider. Lastly,
  * add this JAR file to the classpath. Once these steps are completed, the
- * problem(s) are now accessible via the methods in this class.
+ * operators(s) are now accessible via the methods in this class.
  */
 public abstract class OperatorProvider {
 	
