@@ -22,11 +22,15 @@ import java.util.concurrent.Executors;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.moeaframework.Executor;
+import org.moeaframework.core.NondominatedPopulation;
+import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.problem.AbstractProblem;
 import org.moeaframework.problem.MockRealProblem;
+import org.moeaframework.problem.MockRealStochasticProblem;
 
 /**
  * Tests the {@link DistributedProblem} and {@link FutureSolution} classes.
@@ -175,6 +179,27 @@ public class DistributedProblemTest {
 
 		Assert.assertTrue(Math.abs(1000 * N / (double)P
 				- (System.currentTimeMillis() - startTime)) < 1000);
+	}
+	
+	@Test
+	public void testReplicabilityOfStochasticDistributedProblem() {		
+		double bestSingle = getResultFromStochasticRun(1);
+		double bestQuad = getResultFromStochasticRun(4);
+		double bestSixteen = getResultFromStochasticRun(16);
+		Assert.assertEquals(bestSingle, bestQuad,    0.000000000001);
+		Assert.assertEquals(bestQuad, bestSixteen, 0.000000000001);
+	}
+	
+	private double getResultFromStochasticRun(int numThreads) {
+		PRNG.setSeed(1234); // arbitrary seed
+		NondominatedPopulation result = new Executor()
+				.withAlgorithm("GA")
+				.withProblem(new MockRealStochasticProblem())
+				.withProperty("populationSize", 10)
+				.withMaxEvaluations(1000)
+				.distributeOn(numThreads)
+				.run();
+		return result.get(0).getObjective(0); // one one optimum for a single objective problem
 	}
 
 }

@@ -45,6 +45,12 @@ public class FutureSolution extends Solution {
 	private transient Future<Solution> future;
 
 	/**
+	 * Each FutureSolution may be assigned a unique identifier, which Problems 
+	 * with stochastic evaluation functions can use for seeding their RNGs.
+	 */
+	private long distributedEvaluationID;
+	
+	/**
 	 * Constructs a future solution. This future solution replaces the nested
 	 * solution; there should exist no direct access to the nested solution.
 	 * 
@@ -69,6 +75,26 @@ public class FutureSolution extends Solution {
 		this.future = future;
 	}
 
+	/**
+	 * 
+	 * @param distributedEvaluationID a unique identifier that should be assigned
+	 *        at the time that evaluation of this FutureSolution is *requested*.
+	 *        (Using this number as an RNG seed allows stochastic problems to 
+	 *        get replicable results.)
+	 */
+	synchronized void setDistributedEvaluationID(long distributedEvaluationID) {
+		this.distributedEvaluationID = distributedEvaluationID;		
+	}
+	
+	/** 
+	 * @return the unique identifier that was associated with this FutureSolution
+	 *        (Using this number as an RNG seed allows stochastic problems to 
+	 *        get replicable results.)
+	 */
+	public long getDistributedEvaluationID() {
+		return this.distributedEvaluationID;		
+	}
+	
 	/**
 	 * Updates this solution with the result of the {@code Future}, or blocks
 	 * until the result is available. Since the result is a serialized copy of
