@@ -117,7 +117,7 @@ class Solutions {
 	 *         solution to the WFG8 problem
 	 */
 	public static double[] WFG_8_random_soln(int k, int l) {
-		double[] result = new double[k + l];
+		double[] result = new double[k];
 
 		// set position parameters
 		for (int i = 0; i < k; i++) {
@@ -126,7 +126,7 @@ class Solutions {
 
 		// set distance parameters
 		for (int i = k; i < k + l; i++) {
-			double[] w = new double[k + l];
+			double[] w = new double[result.length];
 			Arrays.fill(w, 1.0);
 
 			double u = TransFunctions.r_sum(result, w);
@@ -134,6 +134,7 @@ class Solutions {
 			double tmp1 = Math.abs(Math.floor(0.5 - u) + 0.98 / 49.98);
 			double tmp2 = 0.02 + 49.98 * (0.98 / 49.98 - (1.0 - 2.0 * u) * tmp1);
 
+			result = Arrays.copyOf(result, result.length+1);
 			result[i] = Math.pow(0.35, Math.pow(tmp2, -1.0));
 		}
 
@@ -263,7 +264,7 @@ class Solutions {
 	 *         solution to the I3 problem
 	 */
 	public static double[] I3_random_soln(int k, int l) {
-		double[] result = new double[k + l];
+		double[] result = new double[k];
 
 		// set position parameters
 		for (int i = 0; i < k; i++) {
@@ -272,7 +273,7 @@ class Solutions {
 
 		// set distance parameters
 		for (int i = k; i < k + l; i++) {
-			double[] w = new double[k + l];
+			double[] w = new double[result.length];
 			Arrays.fill(w, 1.0);
 
 			double u = TransFunctions.r_sum(result, w);
@@ -280,6 +281,7 @@ class Solutions {
 			double tmp1 = Math.abs(Math.floor(0.5 - u) + 0.98 / 49.98);
 			double tmp2 = 0.02 + 49.98 * (0.98 / 49.98 - (1.0 - 2.0 * u) * tmp1);
 
+			result = Arrays.copyOf(result, result.length+1);
 			result[i] = Math.pow(0.35, Math.pow(tmp2, -1.0));
 		}
 

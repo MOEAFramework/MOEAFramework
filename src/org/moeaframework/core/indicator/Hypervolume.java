@@ -317,11 +317,11 @@ public class Hypervolume extends NormalizedIndicator {
 
 		List<Solution> solutions = new ArrayList<Solution>();
 
-		for (Solution solution : approximationSet) {
+		outer: for (Solution solution : approximationSet) {
 			//prune any solutions which exceed the Nadir point
 			for (int i=0; i<solution.getNumberOfObjectives(); i++) {
 				if (solution.getObjective(i) > 1.0) {
-					continue;
+					continue outer;
 				}
 			}
 			

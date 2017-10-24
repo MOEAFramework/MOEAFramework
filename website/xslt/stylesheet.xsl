@@ -166,7 +166,7 @@
 				<!-- footer -->
 				<div id="footer-bottom">
 					<div class="bottom-left">
-						&copy; 2009-2016 <strong>Dave Hadka and others</strong>
+						&copy; 2009-2017 <strong>Dave Hadka and others</strong>
     					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 						Website template by <a href="http://www.styleshout.com/">styleshout</a>
     					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
