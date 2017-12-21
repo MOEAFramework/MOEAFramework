@@ -329,7 +329,7 @@ public class DTLZ2 extends AbstractProblem {
   }
 
   public void evaluate(Solution solution) {
-    double[] x = CoreUtils.castVariablesToDoubleArray(solution);
+    double[] x = EncodingUtils.getReal(solution);
     double[] f = new double[numberOfObjectives];
 
     int k = numberOfVariables - numberOfObjectives + 1;
