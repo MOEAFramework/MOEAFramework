@@ -17,6 +17,7 @@
  */
 package org.moeaframework.core.operator.subset;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import org.moeaframework.core.PRNG;
@@ -55,16 +56,24 @@ public class SSX implements Variation {
 	 * @param s2 the second subset
 	 */
 	public static void evolve(Subset s1, Subset s2) {
-		int k = s1.getK();
-		Set<Integer> p1set = s1.getSet();
-		Set<Integer> p2set = s2.getSet();
+		Set<Integer> s1set = s1.getSet();
+		Set<Integer> s2set = s2.getSet();
 		
-		for (int i = 0; i < k; i++) {
-			if (!p1set.contains(s2.get(i)) && !p2set.contains(s1.get(i)) && PRNG.nextBoolean()) {
-				int temp = s1.get(i);
-				s1.set(i, s2.get(i));
-				s2.set(i, temp);
-			}
+		Set<Integer> intersection = new HashSet<Integer>(s1set);
+		intersection.retainAll(s2set);
+		
+		s1set.removeAll(intersection);
+		s2set.removeAll(intersection);
+		
+		while (!s1set.isEmpty() && !s2set.isEmpty()) {
+			int s1member = PRNG.nextItem(s1set);
+			int s2member = PRNG.nextItem(s2set);
+			
+			s1.replace(s1member, s2member);
+			s2.replace(s2member, s1member);
+			
+			s1set.remove(s1member);
+			s2set.remove(s2member);
 		}
 	}
 

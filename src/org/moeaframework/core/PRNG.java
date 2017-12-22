@@ -20,6 +20,7 @@ package org.moeaframework.core;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 import org.apache.commons.math3.random.MersenneTwister;
 import org.apache.commons.math3.random.RandomAdaptor;
@@ -360,6 +361,28 @@ public class PRNG {
 	 */
 	public static <T> T nextItem(List<T> list) {
 		return list.get(PRNG.nextInt(list.size()));
+	}
+	
+	/**
+	 * Returns a randomly selected item from the specified set.
+	 * 
+	 * @param <T> the type of the elements stored in the set
+	 * @param set the set from which the item is randomly selected
+	 * @return a randomly selected item from the specified set
+	 */
+	public static <T> T nextItem(Set<T> set) {
+		int index = PRNG.nextInt(set.size());
+		int count = 0;
+		
+		for (T value : set) {
+			if (count == index) {
+				return value;
+			}
+			
+			count++;
+		}
+		
+		throw new IllegalStateException();
 	}
 
 }

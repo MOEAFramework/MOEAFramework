@@ -42,6 +42,8 @@ import org.moeaframework.core.operator.real.SBX;
 import org.moeaframework.core.operator.real.SPX;
 import org.moeaframework.core.operator.real.UM;
 import org.moeaframework.core.operator.real.UNDX;
+import org.moeaframework.core.operator.subset.Add;
+import org.moeaframework.core.operator.subset.Remove;
 import org.moeaframework.core.operator.subset.Replace;
 import org.moeaframework.core.operator.subset.SSX;
 import org.moeaframework.core.spi.OperatorProvider;
@@ -156,6 +158,18 @@ import org.moeaframework.util.TypedProperties;
  *     <td>{@code replace.rate}</td>
  *   </tr>
  *   <tr>
+ *     <td>{@link Add}</td>
+ *     <td>Subset</td>
+ *     <td>{@code add}</td>
+ *     <td>{@code add.rate}</td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@link Remove}</td>
+ *     <td>Subset</td>
+ *     <td>{@code remove}</td>
+ *     <td>{@code remove.rate}</td>
+ *   </tr>
+ *   <tr>
  *     <td>{@link GrammarCrossover}</td>
  *     <td>Grammar</td>
  *     <td>{@code gx}</td>
@@ -233,7 +247,7 @@ public class StandardOperators extends OperatorProvider {
 		} else if (Program.class.isAssignableFrom(type)) {
 			return "ptm";
 		} else if (Subset.class.isAssignableFrom(type)) {
-			return "replace";
+			return "replace+add+remove";
 		} else {
 			return null;
 		}
@@ -271,7 +285,7 @@ public class StandardOperators extends OperatorProvider {
 		} else if (Program.class.isAssignableFrom(type)) {
 			return "bx+ptm";
 		} else if (Subset.class.isAssignableFrom(type)) {
-			return "ssx+replace";
+			return "ssx+replace+add+remove";
 		} else {
 			return null;
 		}
@@ -362,6 +376,12 @@ public class StandardOperators extends OperatorProvider {
 		} else if (name.equalsIgnoreCase("replace")) {
 			return new Replace(
 					typedProperties.getDouble("replace.rate", 0.9));
+		} else if (name.equalsIgnoreCase("add")) {
+			return new Add(
+					typedProperties.getDouble("add.rate", 0.1));
+		} else if (name.equalsIgnoreCase("remove")) {
+			return new Remove(
+					typedProperties.getDouble("remove.rate", 0.1));
 		} else if (name.equalsIgnoreCase("ssx")) {
 			return new SSX(
 					typedProperties.getDouble("ssx.rate", 0.3));

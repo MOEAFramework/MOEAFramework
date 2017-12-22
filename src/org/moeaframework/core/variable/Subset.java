@@ -17,7 +17,7 @@
  */
 package org.moeaframework.core.variable;
 
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -30,8 +30,7 @@ import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Variable;
 
 /**
- * Decision variable for fixed-size subsets.  Use a {@code BinaryVariable} for
- * variable-size subsets.
+ * Decision variable for subsets.
  */
 public class Subset implements Variable {
 
@@ -45,12 +44,16 @@ public class Subset implements Variable {
 	 * smaller than {@code n}.
 	 */
 	private static final double OPT_FACTOR = 1.1;
-
+	
 	/**
-	 * Enables validation checks to ensure the subset is valid.  Due to the
-	 * time complexity of validating subsets, this is disabled by default.
+	 * The minimum number of members in the subset.
 	 */
-	private static final boolean VALIDATE = false;
+	private int l;
+	
+	/**
+	 * The maximum number of members in the subset.
+	 */
+	private int u;
 
 	/**
 	 * The number of candidate members.
@@ -58,14 +61,9 @@ public class Subset implements Variable {
 	private int n;
 
 	/**
-	 * The ordered members in this subset.
-	 */
-	private int[] members;
-
-	/**
 	 * Set of members in this subset for faster querying.
 	 */
-	private Set<Integer> memberSet;
+	private Set<Integer> members;
 
 	/**
 	 * Constructs a new decision variable for representing subsets of size
@@ -74,120 +72,183 @@ public class Subset implements Variable {
 	 * @param k the fixed size of the subset
 	 * @param n the size of the original set (i.e., the number of candidate
 	 *          members)
-	 */
+	 */	
 	public Subset(int k, int n) {
+		this(k, k, n);
+	}
+
+	/**
+	 * Constructs a new decision variable for representing subsets whose size
+	 * ranges between {@code l} (minimum size) and {@code u} (maximum size)
+	 * from a set of size {@code n}
+	 * 
+	 * @param l the minimum size of the subset
+	 * @param u the maximum size of the subset
+	 * @param n the size of the original set (i.e., the number of candidate
+	 *          members)
+	 */
+	public Subset(int l, int u, int n) {
 		super();
+		this.l = l;
+		this.u = u;
 		this.n = n;
 		
-		if (k > n) {
+		if (u > n) {
 			throw new IllegalArgumentException("k must be <= n");
 		}
-
-		members = new int[k];
-		memberSet = new HashSet<Integer>();
 		
-		for (int i = 0; i < k; i++) {
-			members[i] = i;
-			memberSet.add(i);
+		if (l < 0) {
+			throw new IllegalArgumentException("l must be >= 0");
+		}
+		
+		if (l > u) {
+			throw new IllegalArgumentException("l must be <= u");
+		}
+
+		members = new HashSet<Integer>();
+		
+		for (int i = 0; i < l; i++) {
+			members.add(i);
+		}
+	}
+	
+	/**
+	 * Checks if this subset is valid, throwing an exception if it is not.
+	 * 
+	 * @throws FrameworkException if this subset is not valid
+	 */
+	public void validate() {
+		if ((members.size() < l) || (members.size() > u)) {
+			throw new FrameworkException("subset not valid (invalid size)");
+		}
+		
+		for (int value : members) {
+			if ((value < 0) || (value >= n)) {
+				throw new FrameworkException("subset not valid (contains invalid member)");
+			}
 		}
 	}
 
 	/**
-	 * Returns the fixed size of this subset.
+	 * Returns the minimum number of members in this subset.
 	 * 
-	 * @return the fixed size of this subset
+	 * @return the minimum number of members in this subset
 	 */
-	public int getK() {
-		return members.length;
+	public int getL() {
+		return l;
+	}
+	
+	/**
+	 * Returns the maximum number of members in this subset.
+	 * 
+	 * @return the maximum number of members in this subset
+	 */
+	public int getU() {
+		return u;
 	}
 
 	/**
-	 * The size of the original set.
+	 * Returns the size of the original set.
 	 * 
 	 * @return the size of the original set
 	 */
 	public int getN() {
 		return n;
 	}
-
+	
 	/**
-	 * Gets the member of this subset at the given index.
+	 * Returns the current size of this subset.
 	 * 
-	 * @param index the index
-	 * @return the member of this subset at the given index
+	 * @return the current size of this subset
 	 */
-	public int get(int index) {
-		return members[index];
+	public int size() {
+		return members.size();
 	}
-
+	
 	/**
-	 * Checks if this subset is valid, throwing an exception if not.
+	 * Replaces a member of this subset with another member not in this subset.
 	 * 
-	 * @throws FrameworkException if this subset is not valid
+	 * @param oldValue the old member
+	 * @param newValue the new member
 	 */
-	public void validate() {
-		if (VALIDATE) {
-			Set<Integer> values = new HashSet<Integer>();
-
-			for (int i = 0; i < members.length; i++) {
-				values.add(members[i]);
-			}
-
-			if (values.size() != members.length) {
-				throw new FrameworkException("not a valid subset");
-			}
-		}
+	public void replace(int oldValue, int newValue) {
+		members.remove(oldValue);
+		members.add(newValue);
 	}
-
+	
 	/**
-	 * Assigns the member of this subset at the given index.
+	 * Adds a new member to this subset, increasing the subset size by 1.
 	 * 
-	 * @param index the index
 	 * @param value the new member
 	 */
-	public void set(int index, int value) {
-		memberSet.remove(members[index]);
-		members[index] = value;
-		memberSet.add(value);
-		validate();
+	public void add(int value) {
+		members.add(value);
+	}
+	
+	/**
+	 * Removes a member from this subset, decreasing the subset size by 1.
+	 * 
+	 * @param value the member to remove
+	 */
+	public void remove(int value) {
+		members.remove(value);
+	}
+	
+	/**
+	 * Returns {@code true} if the subset contains the given member; {@code false} otherwise.
+	 * 
+	 * @param value the member
+	 * @return {@code true} if the subset contains the given member; {@code false} otherwise
+	 */
+	public boolean contains(int value) {
+		return members.contains(value);
 	}
 
 	/**
-	 * Returns the membership in this subset as an unmodifiable set.
+	 * Returns the membership in this subset.
 	 * 
 	 * @return the membership in this subset.
 	 */
 	public Set<Integer> getSet() {
-		return Collections.unmodifiableSet(memberSet);
+		return new HashSet<Integer>(members);
 	}
 
 	/**
-	 * Returns the membership in this subset as an array.
+	 * Returns the membership in this subset as an array.  The ordering is non-deterministic and may change
+	 * between calls.
 	 * 
-	 * @return the membership in this subset
+	 * @return the membership in this subset as an array
 	 */
 	public int[] toArray() {
-		return members.clone();
+		int[] result = new int[members.size()];
+		int index = 0;
+		
+		for (Integer value : members) {
+			result[index++] = value;
+		}
+		
+		return result;
 	}
 
 	/**
-	 * Populates this subset from an array.
+	 * Populates this subset from an array.  Any duplicate values in the array will be ignored.
 	 * 
 	 * @param members the array containing the subset members
 	 */
-	public void fromArray(int[] members) {
-		if (this.members.length != members.length) {
+	public void fromArray(int[] array) {
+		if (array.length < l || array.length > u) {
 			throw new IllegalArgumentException("invalid subset length");
 		}
+		
+		members.clear();
 
-		memberSet.clear();
-
-		for (int i = 0; i < members.length; i++) {
-			this.members[i] = members[i];
-			memberSet.add(members[i]);
+		for (int i = 0; i < array.length; i++) {
+			if ((array[i] < 0) || (array[i] >= n)) {
+				throw new IllegalArgumentException("invalid value in subset");
+			}
+			
+			members.add(array[i]);
 		}
-
-		validate();
 	}
 
 	@Override
@@ -216,22 +277,26 @@ public class Subset implements Variable {
 
 	@Override
 	public Subset copy() {
-		Subset copy = new Subset(members.length, n);
-		copy.fromArray(members);
+		Subset copy = new Subset(l, u, n);
+		copy.members = getSet();
 		return copy;
 	}
 
 	@Override
 	public void randomize() {
-		if (members.length < n / OPT_FACTOR) {
+		int s = PRNG.nextInt(l, u);
+		
+		members.clear();
+		
+		if (s < n / OPT_FACTOR) {
 			Set<Integer> generated = new HashSet<Integer>();
 
-			for (int i = 0; i < members.length; i++) {
+			for (int i = 0; i < s; i++) {
 				while (true) {
 					int value = PRNG.nextInt(n);
 
 					if (!generated.contains(value)) {
-						members[i] = value;
+						members.add(value);
 						generated.add(value);
 						break;
 					}
@@ -244,23 +309,38 @@ public class Subset implements Variable {
 				pool.add(i);
 			}
 
-			for (int i = 0; i < members.length; i++) {
-				members[i] = pool.remove(PRNG.nextInt(pool.size()));
+			for (int i = 0; i < s; i++) {
+				members.add(pool.remove(PRNG.nextInt(pool.size())));
 			}
+		}
+	}
+	
+	/**
+	 * Randomly pick a value that is contained in this subset.
+	 * 
+	 * @return the randomly-selected member
+	 */
+	public int randomMember() {
+		if (members.size() == 0) {
+			throw new FrameworkException("no member exists (set is empty)");
+		} else {
+			return PRNG.nextItem(members);
 		}
 	}
 
 	/**
 	 * Randomly pick a value that is not contained in this subset.
+	 * 
+	 * @returns the randomly-selected non-member
 	 */
 	public int randomNonmember() {
-		if (members.length == n) {
-			throw new FrameworkException("no non-member exists (k == n)");
-		} else if (members.length < n / OPT_FACTOR) {
+		if (members.size() == n) {
+			throw new FrameworkException("no non-member exists (set contains all values)");
+		} else if (members.size() < n / OPT_FACTOR) {
 			while (true) {
 				int value = PRNG.nextInt(n);
 
-				if (!memberSet.contains(value)) {
+				if (!members.contains(value)) {
 					return value;
 				}
 			}
@@ -269,7 +349,7 @@ public class Subset implements Variable {
 			int count = 0;
 
 			for (int i = 0; i < n; i++) {
-				if (!memberSet.contains(i)) {
+				if (!members.contains(i)) {
 					count++;
 
 					if (PRNG.nextInt(count) == 0) {
@@ -280,6 +360,11 @@ public class Subset implements Variable {
 
 			return result;
 		}
+	}
+	
+	@Override
+	public String toString() {
+		return Arrays.toString(toArray());
 	}
 
 }

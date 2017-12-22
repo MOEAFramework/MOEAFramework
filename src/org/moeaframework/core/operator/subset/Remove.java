@@ -24,12 +24,11 @@ import org.moeaframework.core.Variation;
 import org.moeaframework.core.variable.Subset;
 
 /**
- * Replacement mutation operator.  Randomly replaces one of the members in the
- * subset with a non-member.
+ * Remove mutation operator.  Randomly removes one member from the subset.
  * <p>
  * This operator is type-safe.
  */
-public class Replace implements Variation {
+public class Remove implements Variation {
 
 	/**
 	 * The probability of mutating a variable.
@@ -37,12 +36,12 @@ public class Replace implements Variation {
 	private final double probability;
 
 	/**
-	 * Constructs a replacement mutation operator with the specified
+	 * Constructs a remove mutation operator with the specified
 	 * probability of mutating a variable.
 	 * 
 	 * @param probability the probability of mutating a variable
 	 */
-	public Replace(double probability) {
+	public Remove(double probability) {
 		super();
 		this.probability = probability;
 	}
@@ -64,13 +63,13 @@ public class Replace implements Variation {
 	}
 
 	/**
-	 * Evolves the specified subset using the replacement mutation operator.
+	 * Evolves the specified subset using the remove mutation operator.
 	 * 
 	 * @param subset the subset to be mutated
 	 */
 	public static void evolve(Subset subset) {
-		if ((subset.size() < subset.getN()) && (subset.size() > 0)) {
-			subset.replace(subset.randomMember(), subset.randomNonmember());
+		if (subset.size() > subset.getL()) {
+			subset.remove(subset.randomMember());
 		}
 	}
 

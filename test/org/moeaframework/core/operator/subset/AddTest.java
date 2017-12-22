@@ -30,20 +30,20 @@ import org.moeaframework.core.variable.Permutation;
 import org.moeaframework.core.variable.Subset;
 
 /**
- * Tests for {@link Replace} mutation.
+ * Tests for {@link Add} mutation.
  */
-public class ReplaceTest {
+public class AddTest {
 
 	/**
-	 * Tests if the replace mutation operator is type-safe.
+	 * Tests if the add mutation operator is type-safe.
 	 */
 	@Test
 	public void testTypeSafety() {
-		TypeSafetyTest.testTypeSafety(new Replace(1.0));
+		TypeSafetyTest.testTypeSafety(new Add(1.0));
 	}
 
 	/**
-	 * Tests various probabilities to ensure replace mutation is applied the
+	 * Tests various probabilities to ensure add mutation is applied the
 	 * correct number of times on average.
 	 */
 	@Test
@@ -54,19 +54,19 @@ public class ReplaceTest {
 	}
 
 	/**
-	 * Tests if the replace mutation occurs with the specified probability.
+	 * Tests if the add mutation occurs with the specified probability.
 	 * 
 	 * @param probability the probability
 	 */
 	private void testProbability(double probability) {
-		Replace replace = new Replace(probability);
+		Add add = new Add(probability);
 		int count = 0;
+		int skipped = 0;
 
 		for (int i = 0; i < TestThresholds.SAMPLES; i++) {
-			// These values are randomly chosen in ranges to ensure replacement can always occur
-			int n = PRNG.nextInt(2, 20);
-			int l = PRNG.nextInt(1, n-1);
-			int u = PRNG.nextInt(l, n-1);
+			int n = PRNG.nextInt(1, 20);
+			int l = PRNG.nextInt(0, n);
+			int u = PRNG.nextInt(l, n);
 			
 			Subset subset = new Subset(l, u, n);
 			subset.randomize();
@@ -74,32 +74,32 @@ public class ReplaceTest {
 			Solution original = new Solution(1, 0);
 			original.setVariable(0, subset);
 
-			Solution mutated = replace.evolve(new Solution[] { original })[0];
-
-			if (testSubset((Subset)original.getVariable(0), (Subset)mutated.getVariable(0))) {
+			Solution mutated = add.evolve(new Solution[] { original })[0];
+			Subset newSubset = (Subset)mutated.getVariable(0);
+			
+			if ((subset.size() == newSubset.size()) && (subset.size() == subset.getU())) {
+				skipped++;
+			} else if (testSubset(subset, newSubset)) {
 				count++;
 			}
 		}
 
-		Assert.assertEquals(probability, (double)count / TestThresholds.SAMPLES,
+		Assert.assertEquals(probability, (double)count / (TestThresholds.SAMPLES - skipped),
 				TestThresholds.VARIATION_EPS);
 	}
 
 	/**
-	 * Returns {@code true} if the result is a valid replacement; {@code false}
+	 * Returns {@code true} if the result is a valid add; {@code false}
 	 * otherwise.
 	 * 
 	 * @param v1 the first subset
 	 * @param v2 the second subset
-	 * @return {@code true} if the result is a valid replacement; {@code false}
+	 * @return {@code true} if the result is a valid add; {@code false}
 	 *         otherwise
 	 */
 	protected boolean testSubset(Subset v1, Subset v2) {
-		// Size should remain unchanged
-		Assert.assertEquals(v1.size(), v2.size());
-		
-		Set<Integer> set = v1.getSet();
-		set.removeAll(v2.getSet());
+		Set<Integer> set = v2.getSet();
+		set.removeAll(v1.getSet());
 		return set.size() == 1;
 	}
 

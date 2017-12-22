@@ -17,6 +17,7 @@
  */
 package org.moeaframework.core.variable;
 
+import java.util.Arrays;
 import java.util.BitSet;
 
 import org.moeaframework.core.Solution;
@@ -288,7 +289,7 @@ public class EncodingUtils {
 	}
 	
 	/**
-	 * Returns a new subset with the specified number of items.
+	 * Returns a new fixed-size subset with the specified number of items.
 	 * 
 	 * @param k the fixed size of the subset
 	 * @param n the total number of items in the set
@@ -296,6 +297,18 @@ public class EncodingUtils {
 	 */
 	public static Subset newSubset(int k, int n) {
 		return new Subset(k, n);
+	}
+	
+	/**
+	 * Returns a new variable-size subset with the specified number of items.
+	 * 
+	 * @param l the minimum number of members in the subset
+	 * @param u the maximum number of members in the subset
+	 * @param n the total number of items in the set
+	 * @return a new subset with the specified number of items
+	 */
+	public static Subset newSubset(int l, int u, int n) {
+		return new Subset(l, u, n);
 	}
 	
 	/**
@@ -420,6 +433,68 @@ public class EncodingUtils {
 	public static int[] getSubset(Variable variable) {
 		if (variable instanceof Subset) {
 			return ((Subset)variable).toArray();
+		} else {
+			throw new IllegalArgumentException(NOT_SUBSET);
+		}
+	}
+	
+	/**
+	 * Returns the value stored in a subset decision variable with the items sorted.
+	 * 
+	 * @param variable the decision variable
+	 * @return the value stored in a subset decision variable with the items sorted
+	 * @throws IllegalArgumentException if the decision variable is not of type
+	 *         {@link Subset}
+	 */
+	public static int[] getOrderedSubset(Variable variable) {
+		int[] subset = getSubset(variable);
+		Arrays.sort(subset);
+		return subset;
+	}
+	
+	/**
+	 * Returns the subset as a binary string, where 1 indicates the index is included
+	 * in the set.
+	 * 
+	 * @param variable the decision variable
+	 * @return a binary string representation of the subset
+	 * @throws IllegalArgumentException if the decision variable is not of type
+	 *         {@link Subset}
+	 */
+	public static boolean[] getSubsetAsBinary(Variable variable) {
+		if (variable instanceof Subset) {
+			Subset subset = (Subset)variable;
+			boolean[] result = new boolean[subset.getN()];
+			
+			for (int i = 0; i < subset.getN(); i++) {
+				result[i] = subset.contains(i);
+			}
+			
+			return result;
+		} else {
+			throw new IllegalArgumentException(NOT_SUBSET);
+		}
+	}
+	
+	/**
+	 * Returns the subset as a BitSet, where a set bit indicates the index is included
+	 * in the set.
+	 * 
+	 * @param variable the decision variable
+	 * @return a BitSet representation of the subset
+	 * @throws IllegalArgumentException if the decision variable is not of type
+	 *         {@link Subset}
+	 */
+	public static BitSet getSubsetAsBitSet(Variable variable) {
+		if (variable instanceof Subset) {
+			Subset subset = (Subset)variable;
+			BitSet bitSet = new BitSet(subset.getN());
+			
+			for (int i = 0; i < subset.getN(); i++) {
+				bitSet.set(i, subset.contains(i));
+			}
+			
+			return bitSet;
 		} else {
 			throw new IllegalArgumentException(NOT_SUBSET);
 		}
@@ -729,6 +804,53 @@ public class EncodingUtils {
 	public static void setSubset(Variable variable, int[] values) {
 		if (variable instanceof Subset) {
 			((Subset)variable).fromArray(values);
+		} else {
+			throw new IllegalArgumentException(NOT_SUBSET);
+		}
+	}
+	
+	/**
+	 * Sets the value of a subset decision variable using a binary string representation.
+	 * 
+	 * @param variable the decision variable
+	 * @param values the binary string representation of a subset
+	 * @throws IllegalArgumentException if the binary string representation is not a
+	 *         valid subset
+	 */
+	public static void setSubset(Variable variable, boolean[] values) {
+		BitSet bitSet = new BitSet(values.length);
+			
+		for (int i = 0; i < values.length; i++) {
+			bitSet.set(i, values[i]);
+		}
+			
+		setSubset(variable, bitSet);
+	}
+	
+	/**
+	 * Sets the value of a subset decision variable using a BitSet representation.
+	 * 
+	 * @param variable the decision variable
+	 * @param values the BitSet representation of a subset
+	 * @throws IllegalArgumentException if the BitSet representation is not a
+	 *         valid subset
+	 */
+	public static void setSubset(Variable variable, BitSet bitSet) {
+		if (variable instanceof Subset) {
+			Subset subset = (Subset)variable;
+			
+			if (bitSet.length() > subset.getN()) {
+				throw new IllegalArgumentException("binary representation of subset contains too many indices");
+			}
+			
+			int[] values = new int[bitSet.cardinality()];
+			int count = 0;
+			
+			for (int i = bitSet.nextSetBit(0); i >= 0; i = bitSet.nextSetBit(i+1)) {
+				values[count++] = i;
+			}
+			
+			setSubset(variable, values);
 		} else {
 			throw new IllegalArgumentException(NOT_SUBSET);
 		}

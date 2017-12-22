@@ -67,6 +67,18 @@ public class TestUtils {
 	}
 	
 	/**
+	 * Asserts that two boolean arrays are equal.
+	 * 
+	 * @param expected the expected array
+	 * @param actual the actual array
+	 */
+	public static void assertEquals(boolean[] expected, boolean[] actual) {
+		for (int i=0; i<expected.length; i++) {
+			Assert.assertEquals(expected[i], actual[i]);
+		}
+	}
+	
+	/**
 	 * Asserts that two double matrices are equal.
 	 * 
 	 * @param expected the expected matrix

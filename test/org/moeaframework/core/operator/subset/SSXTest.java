@@ -17,7 +17,10 @@
  */
 package org.moeaframework.core.operator.subset;
 
+import org.junit.Assert;
 import org.junit.Test;
+import org.moeaframework.TestThresholds;
+import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.operator.ParentImmutabilityTest;
 import org.moeaframework.core.operator.TypeSafetyTest;
@@ -37,21 +40,51 @@ public class SSXTest {
 	}
 
 	/**
-	 * Tests if the {@link SSX#evolve} method produces valid subset.
+	 * Tests if the {@link SSX#evolve} method produces valid subset for fixed-size sets.
 	 */
 	@Test
-	public void testEvolve() {
-		for (int i = 0; i < 1000; i++) {
-			Subset s1 = new Subset(5, 10);
-			Subset s2 = new Subset(5, 10);
+	public void testEvolveFixedSize() {
+		for (int i = 0; i < TestThresholds.SAMPLES; i++) {
+			int n = PRNG.nextInt(1, 20);
+			int k = PRNG.nextInt(0, n);
+			Subset s1 = new Subset(k, n);
+			Subset s2 = new Subset(k, n);
 			
 			s1.randomize();
 			s2.randomize();
-
+			
 			SSX.evolve(s1, s2);
 
 			s1.validate();
 			s2.validate();
+		}
+	}
+	
+	/**
+	 * Tests if the {@link SSX#evolve} method produces valid subset for variable-size sets.
+	 */
+	@Test
+	public void testEvolveVariableSize() {
+		for (int i = 0; i < TestThresholds.SAMPLES; i++) {
+			int n = PRNG.nextInt(1, 20);
+			int l = PRNG.nextInt(0, n-1);
+			int u = PRNG.nextInt(l+1, n);
+			
+			Subset s1 = new Subset(l, u, n);
+			Subset s2 = new Subset(l, u, n);
+			
+			s1.randomize();
+			s2.randomize();
+			
+			int size1 = s1.size();
+			int size2 = s2.size();
+			
+			SSX.evolve(s1, s2);
+
+			s1.validate();
+			s2.validate();
+			Assert.assertEquals(size1, s1.size());
+			Assert.assertEquals(size2, s2.size());
 		}
 	}
 
