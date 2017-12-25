@@ -17,8 +17,11 @@
  */
 package org.moeaframework.util.distributed;
 
+import java.io.Serializable;
+import java.util.Map;
 import java.util.concurrent.Future;
 
+import org.apache.commons.lang3.SerializationUtils;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Solution;
 
