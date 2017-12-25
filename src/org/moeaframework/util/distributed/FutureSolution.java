@@ -81,6 +81,12 @@ public class FutureSolution extends Solution {
 				future = null;
 				setObjectives(solution.getObjectives());
 				setConstraints(solution.getConstraints());
+				//Add attributes copy
+				for (Map.Entry<String, Serializable> entry : solution.getAttributes().entrySet()) {
+				    setAttribute(
+					    entry.getKey(),
+					    SerializationUtils.clone(entry.getValue()));
+				}
 			} catch (Exception e) {
 				throw new FrameworkException(e);
 			}
