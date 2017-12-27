@@ -118,12 +118,14 @@ public class SubsetTest {
 		subset.fromArray(new int[] { 0, 1, 2, 3, 4 });
 		
 		Subset subset2 = subset.copy();
-		subset2.remove(subset2.randomMember());
-		subset2.remove(subset2.randomNonmember()); // Removing a non-member is a no-op
 		
-		Assert.assertEquals(subset.size()-1, subset2.size());
-		Assert.assertFalse(subset.equals(subset2));
-		Assert.assertNotEquals(subset.hashCode(), subset2.hashCode());
+		for (int i = 1; i <= subset2.size(); i++) {
+			subset2.remove(subset2.randomMember());
+			subset2.remove(subset2.randomNonmember()); // Removing a non-member is a no-op
+			
+			Assert.assertEquals(subset.size()-i, subset2.size());
+			Assert.assertFalse(subset.equals(subset2));
+		}
 	}
 	
 	@Test(expected = FrameworkException.class)
