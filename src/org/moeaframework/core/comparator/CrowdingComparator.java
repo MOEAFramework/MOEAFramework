@@ -45,14 +45,8 @@ Comparator<Solution>, Serializable {
 	public int compare(Solution solution1, Solution solution2) {
 		double crowding1 = (Double)solution1.getAttribute(CROWDING_ATTRIBUTE);
 		double crowding2 = (Double)solution2.getAttribute(CROWDING_ATTRIBUTE);
-
-		if (crowding1 > crowding2) {
-			return -1;
-		} else if (crowding1 < crowding2) {
-			return 1;
-		} else {
-			return 0;
-		}
+		
+		return -Double.compare(crowding1, crowding2);
 	}
 
 }

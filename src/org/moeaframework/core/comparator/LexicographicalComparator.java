@@ -40,10 +40,10 @@ Serializable {
 	@Override
 	public int compare(Solution a, Solution b) {
 		for (int i = 0; i < a.getNumberOfObjectives(); i++) {
-			if (a.getObjective(i) < b.getObjective(i)) {
-				return -1;
-			} else if (a.getObjective(i) > b.getObjective(i)) {
-				return 1;
+			int flag = Double.compare(a.getObjective(i), b.getObjective(i));
+			
+			if (flag != 0) {
+				return flag;
 			}
 		}
 

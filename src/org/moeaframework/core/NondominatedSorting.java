@@ -173,19 +173,21 @@ public class NondominatedSorting {
 
 				double minObjective = front.get(0).getObjective(i);
 				double maxObjective = front.get(n - 1).getObjective(i);
+				
+				if (maxObjective - minObjective >= Settings.EPS) {
+					front.get(0).setAttribute(CROWDING_ATTRIBUTE,
+							Double.POSITIVE_INFINITY);
+					front.get(n - 1).setAttribute(CROWDING_ATTRIBUTE,
+							Double.POSITIVE_INFINITY);
 
-				front.get(0).setAttribute(CROWDING_ATTRIBUTE,
-						Double.POSITIVE_INFINITY);
-				front.get(n - 1).setAttribute(CROWDING_ATTRIBUTE,
-						Double.POSITIVE_INFINITY);
-
-				for (int j = 1; j < n - 1; j++) {
-					double distance = (Double)front.get(j).getAttribute(
-							CROWDING_ATTRIBUTE);
-					distance += (front.get(j + 1).getObjective(i) - 
-							front.get(j - 1).getObjective(i))
-							/ (maxObjective - minObjective);
-					front.get(j).setAttribute(CROWDING_ATTRIBUTE, distance);
+					for (int j = 1; j < n - 1; j++) {
+						double distance = (Double)front.get(j).getAttribute(
+								CROWDING_ATTRIBUTE);
+						distance += (front.get(j + 1).getObjective(i) - 
+								front.get(j - 1).getObjective(i))
+								/ (maxObjective - minObjective);
+						front.get(j).setAttribute(CROWDING_ATTRIBUTE, distance);
+					}
 				}
 			}
 		}
