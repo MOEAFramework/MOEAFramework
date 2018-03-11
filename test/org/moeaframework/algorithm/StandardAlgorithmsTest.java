@@ -218,7 +218,6 @@ public class StandardAlgorithmsTest {
 		test("NSGAIII", binaryProblem);
 	}
 	
-	@Test(expected = ProviderNotFoundException.class)
 	public void testMOEAD_Binary() {
 		test("MOEAD", binaryProblem);
 	}
@@ -329,7 +328,6 @@ public class StandardAlgorithmsTest {
 		test("NSGAIII", permutationProblem);
 	}
 	
-	@Test(expected = ProviderNotFoundException.class)
 	public void testMOEAD_Permutation() {
 		test("MOEAD", permutationProblem);
 	}
@@ -440,7 +438,6 @@ public class StandardAlgorithmsTest {
 		test("NSGAIII", subsetProblem);
 	}
 	
-	@Test(expected = ProviderNotFoundException.class)
 	public void testMOEAD_Subset() {
 		test("MOEAD", subsetProblem);
 	}
