@@ -547,10 +547,6 @@ public class StandardAlgorithms extends AlgorithmProvider {
 	 * @throws FrameworkException if the decision variables are not real valued
 	 */
 	private Algorithm newMOEAD(TypedProperties properties, Problem problem) {
-		if (!checkType(RealVariable.class, problem)) {
-			throw new FrameworkException("unsupported decision variable type");
-		}
-		
 		int populationSize = (int)properties.getDouble("populationSize", 100);
 		
 		//enforce population size lower bound
@@ -561,9 +557,16 @@ public class StandardAlgorithms extends AlgorithmProvider {
 
 		Initialization initialization = new RandomInitialization(problem,
 				populationSize);
+		
+		//default to de+pm for real-encodings
+		String operator = properties.getString("operator", null);
+		
+		if ((operator == null) && checkType(RealVariable.class, problem)) {
+			operator = "de+pm";
+		}
 
 		Variation variation = OperatorFactory.getInstance().getVariation(
-				"de+pm", properties, problem);
+				operator, properties, problem);
 		
 		int neighborhoodSize = 20;
 		int eta = 2;
