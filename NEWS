@@ -2,6 +2,25 @@ This file documents the major changes implemented in each release of the MOEA
 Framework.
 
 ----------------------------
+ Version 2.13 (TBD)
+----------------------------
+
+  * Enable variable-length subsets in addition to the fixed-length subsets
+    currently supported.
+    
+  * Distributed problem provides an evaluation id that can be used to
+    replicate results when the problem is stochastic.
+    
+  * Guard against NaNs in NondominatedSorting that would occasionally produce
+    IllegalArgumentExceptions when calling Population#sort.
+    
+  * Support all decision variable types in MOEA/D (previously only supported
+    real variables).
+    
+  * Other miscellaneous bug fixes.
+
+
+----------------------------
  Version 2.12 (04 Jan 2017)
 ----------------------------
 
