@@ -17,6 +17,8 @@
  */
 package org.moeaframework.util.distributed;
 
+import java.io.Serializable;
+import java.util.Map;
 import java.util.concurrent.Future;
 
 import org.moeaframework.core.FrameworkException;
@@ -60,12 +62,6 @@ public class FutureSolution extends Solution {
 		super(solution);
 	}
 
-	@Override
-	public FutureSolution copy() {
-		update();
-		return new FutureSolution(this);
-	}
-
 	/**
 	 * Sets the {@code Future} for this solution.
 	 * 
@@ -98,31 +94,36 @@ public class FutureSolution extends Solution {
 	/**
 	 * Updates this solution with the result of the {@code Future}, or blocks
 	 * until the result is available. Since the result is a serialized copy of
-	 * this solution, the objectives and constraints must be copied.
+	 * this solution, the objectives, constraints, and attributes must be copied.
 	 */
 	private synchronized void update() {
 		if (future != null) {
 			try {
 				Solution solution = future.get();
 				future = null;
+				
 				setObjectives(solution.getObjectives());
 				setConstraints(solution.getConstraints());
+				
+				for (Map.Entry<String, Serializable> entry : solution.getAttributes().entrySet()) {
+					setAttribute(entry.getKey(), entry.getValue());
+				}
 			} catch (Exception e) {
 				throw new FrameworkException(e);
 			}
 		}
+	}
+	
+	@Override
+	public FutureSolution copy() {
+		update();
+		return new FutureSolution(this);
 	}
 
 	@Override
 	public double[] getObjectives() {
 		update();
 		return super.getObjectives();
-	}
-
-	@Override
-	public double getConstraint(int index) {
-		update();
-		return super.getConstraint(index);
 	}
 
 	@Override
@@ -135,6 +136,36 @@ public class FutureSolution extends Solution {
 	public double getObjective(int index) {
 		update();
 		return super.getObjective(index);
+	}
+	
+	@Override
+	public double getConstraint(int index) {
+		update();
+		return super.getConstraint(index);
+	}
+	
+	@Override
+	public boolean violatesConstraints() {
+		update();
+		return super.violatesConstraints();
+	}
+	
+	@Override
+	public Object getAttribute(String key) {
+		update();
+		return super.getAttribute(key);
+	}
+	
+	@Override
+	public boolean hasAttribute(String key) {
+		update();
+		return super.hasAttribute(key);
+	}
+	
+	@Override
+	public Map<String, Serializable> getAttributes() {
+		update();
+		return super.getAttributes();
 	}
 
 }
