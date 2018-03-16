@@ -349,7 +349,6 @@ public class IntegrationTest {
 		ResultFileMerger.main(new String[] {
 				"-b", "DTLZ2_2",
 				"-o", combinedFile.getPath(),
-				"-r",
 				resultFile.getPath()});
 		
 		//run the seed merger
