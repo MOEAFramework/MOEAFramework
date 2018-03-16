@@ -17,8 +17,11 @@
  */
 package org.moeaframework.util.distributed;
 
+import java.io.Serializable;
+import java.util.Map;
 import java.util.concurrent.Future;
 
+import org.apache.commons.lang3.SerializationUtils;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Solution;
 
@@ -107,6 +110,12 @@ public class FutureSolution extends Solution {
 				future = null;
 				setObjectives(solution.getObjectives());
 				setConstraints(solution.getConstraints());
+				//Add attributes copy
+				for (Map.Entry<String, Serializable> entry : solution.getAttributes().entrySet()) {
+				    setAttribute(
+					    entry.getKey(),
+					    SerializationUtils.clone(entry.getValue()));
+				}
 			} catch (Exception e) {
 				throw new FrameworkException(e);
 			}
