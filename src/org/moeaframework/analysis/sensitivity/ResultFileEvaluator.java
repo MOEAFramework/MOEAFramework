@@ -27,6 +27,7 @@ import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PopulationIO;
 import org.moeaframework.core.Problem;
+import org.moeaframework.core.Solution;
 import org.moeaframework.core.indicator.QualityIndicator;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.util.CommandLineUtility;
@@ -177,6 +178,14 @@ public class ResultFileEvaluator extends CommandLineUtility {
 			} else {
 				problem = new ProblemStub(Integer.parseInt(commandLine
 						.getOptionValue("dimension")));
+			}
+			
+			// validate the reference set
+			for (Solution solution : referenceSet) {
+				if (solution.getNumberOfObjectives() != problem.getNumberOfObjectives()) {
+					throw new FrameworkException(
+							"reference set contains invalid number of objectives");
+				}
 			}
 
 			QualityIndicator indicator = new QualityIndicator(problem,
