@@ -17,6 +17,10 @@
  */
 package org.moeaframework.core.operator.subset;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.TestThresholds;
@@ -44,6 +48,9 @@ public class SSXTest {
 	 */
 	@Test
 	public void testEvolveFixedSize() {
+		DescriptiveStatistics stats1 = new DescriptiveStatistics();
+		DescriptiveStatistics stats2 = new DescriptiveStatistics();
+		
 		for (int i = 0; i < TestThresholds.SAMPLES; i++) {
 			int n = PRNG.nextInt(1, 20);
 			int k = PRNG.nextInt(0, n);
@@ -53,11 +60,19 @@ public class SSXTest {
 			s1.randomize();
 			s2.randomize();
 			
-			SSX.evolve(s1, s2);
+			Subset s1copy = s1.copy();
+			Subset s2copy = s2.copy();
+			
+			SSX.evolve(s1copy, s2copy);
 
-			s1.validate();
-			s2.validate();
+			s1copy.validate();
+			s2copy.validate();
+			
+			countSwapped(s1, s2, s1copy, s2copy, stats1, stats2);
 		}
+		
+		Assert.assertEquals(0.5, stats1.getMean(), TestThresholds.STATISTICS_EPS);
+		Assert.assertEquals(0.5, stats1.getMean(), TestThresholds.STATISTICS_EPS);
 	}
 	
 	/**
@@ -65,6 +80,9 @@ public class SSXTest {
 	 */
 	@Test
 	public void testEvolveVariableSize() {
+		DescriptiveStatistics stats1 = new DescriptiveStatistics();
+		DescriptiveStatistics stats2 = new DescriptiveStatistics();
+		
 		for (int i = 0; i < TestThresholds.SAMPLES; i++) {
 			int n = PRNG.nextInt(1, 20);
 			int l = PRNG.nextInt(0, n-1);
@@ -76,16 +94,24 @@ public class SSXTest {
 			s1.randomize();
 			s2.randomize();
 			
-			int size1 = s1.size();
-			int size2 = s2.size();
+			Subset s1copy = s1.copy();
+			Subset s2copy = s2.copy();
 			
-			SSX.evolve(s1, s2);
+			int size1 = s1copy.size();
+			int size2 = s2copy.size();
+			
+			SSX.evolve(s1copy, s2copy);
 
-			s1.validate();
-			s2.validate();
-			Assert.assertEquals(size1, s1.size());
-			Assert.assertEquals(size2, s2.size());
+			s1copy.validate();
+			s2copy.validate();
+			Assert.assertEquals(size1, s1copy.size());
+			Assert.assertEquals(size2, s2copy.size());
+			
+			countSwapped(s1, s2, s1copy, s2copy, stats1, stats2);
 		}
+		
+		Assert.assertEquals(0.5, stats1.getMean(), TestThresholds.STATISTICS_EPS);
+		Assert.assertEquals(0.5, stats1.getMean(), TestThresholds.STATISTICS_EPS);
 	}
 
 	/**
@@ -110,6 +136,44 @@ public class SSXTest {
 		Solution[] parents = new Solution[] { s1, s2 };
 
 		ParentImmutabilityTest.test(parents, ssx);
+	}
+	
+	/**
+	 * Records the percent of swapped values in each subset.
+	 * 
+	 * @param original1 the first subset
+	 * @param original2 the second subset
+	 * @param new1 the first evolved subset
+	 * @param new2 the second evolved subset
+	 * @param stats1 the percent of swapped values for the first subset
+	 * @param stats2 the percent of swapped values for the second subset
+	 */
+	protected void countSwapped(Subset original1, Subset original2, Subset new1, Subset new2,
+			DescriptiveStatistics stats1, DescriptiveStatistics stats2) {		
+		Set<Integer> original1set = original1.getSet();
+		Set<Integer> new1set = new1.getSet();
+		Set<Integer> original2set = original2.getSet();
+		Set<Integer> new2set = new2.getSet();
+		
+		Set<Integer> intersection = new HashSet<Integer>(original1set);
+		intersection.retainAll(original2set);
+		
+		original1set.removeAll(intersection);
+		new1set.removeAll(intersection);
+		original2set.removeAll(intersection);
+		new2set.removeAll(intersection);
+		
+		int original1size = original1set.size();
+		int original2size = original2set.size();
+		int minSize = Math.min(original1size, original2size);
+		
+		if (minSize > 0) {
+			original1set.retainAll(new1set);
+			original2set.retainAll(new2set);
+			
+			stats1.addValue((original1size - original1set.size()) / (double)minSize);
+			stats2.addValue((original2size - original2set.size()) / (double)minSize);
+		}
 	}
 
 }
