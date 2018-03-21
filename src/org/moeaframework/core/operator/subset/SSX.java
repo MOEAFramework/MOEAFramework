@@ -28,7 +28,7 @@ import org.moeaframework.core.variable.Subset;
 
 /**
  * Subset crossover.  Similar to {@code HUX} for binary strings, SSX swaps
- * half of the non-shared members of the two subsets. 
+ * half of the non-shared members of the two subsets.
  * <p>
  * This variation operator is type-safe.
  */
@@ -69,8 +69,10 @@ public class SSX implements Variation {
 			int s1member = PRNG.nextItem(s1set);
 			int s2member = PRNG.nextItem(s2set);
 			
-			s1.replace(s1member, s2member);
-			s2.replace(s2member, s1member);
+			if (PRNG.nextBoolean()) {
+				s1.replace(s1member, s2member);
+				s2.replace(s2member, s1member);
+			}
 			
 			s1set.remove(s1member);
 			s2set.remove(s2member);
