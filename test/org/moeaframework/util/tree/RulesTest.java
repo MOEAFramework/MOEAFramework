@@ -30,6 +30,48 @@ public class RulesTest {
 	
 	private int SAMPLES = 100;
 	
+	@Test(expected = NoValidNodeException.class)
+	public void testFullWithMissingNode1() {
+		Rules rules = new Rules();
+		rules.add(new Add());
+		rules.buildTreeFull(String.class, 5);
+	}
+	
+	@Test(expected = UnsatisfiedArgumentException.class)
+	public void testFullWithMissingNode2() {
+		Rules rules = new Rules();
+		rules.add(new Add());
+		rules.buildTreeFull(Number.class, 5);
+	}
+
+	@Test(expected = NoValidNodeException.class)
+	public void testFullWithMissingNode3() {
+		Rules rules = new Rules();
+		rules.add(new Constant(5.0));
+		rules.buildTreeFull(String.class, 5);
+	}
+	
+	@Test(expected = NoValidNodeException.class)
+	public void testgrowWithMissingNode1() {
+		Rules rules = new Rules();
+		rules.add(new Add());
+		rules.buildTreeGrow(String.class, 5);
+	}
+	
+	@Test(expected = UnsatisfiedArgumentException.class)
+	public void testGrowWithMissingNode2() {
+		Rules rules = new Rules();
+		rules.add(new Add());
+		rules.buildTreeGrow(Number.class, 5);
+	}
+	
+	@Test(expected = NoValidNodeException.class)
+	public void testGrowWithMissingNode3() {
+		Rules rules = new Rules();
+		rules.add(new Constant(5.0));
+		rules.buildTreeGrow(String.class, 5);
+	}
+	
 	@Test
 	public void testGrowType() {
 		Rules rules = new Rules();

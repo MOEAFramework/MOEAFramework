@@ -482,13 +482,33 @@ public class Rules {
 	 */
 	public Node buildTreeFull(Class<?> type, int depth) {
 		if (depth == 0) {
-			return PRNG.nextItem(listAvailableTerminals(type)).copyNode();
+			List<Node> availableTerminals = listAvailableTerminals(type);
+			
+			if (availableTerminals.isEmpty()) {
+				throw new NoValidNodeException("No terminal found with type "
+						+ type.getSimpleName());
+			}
+			
+			return PRNG.nextItem(availableTerminals).copyNode();
 		} else {
-			Node node = PRNG.nextItem(listAvailableFunctions(type)).copyNode();
+			List<Node> availableFunctions = listAvailableFunctions(type);
+			
+			if (availableFunctions.isEmpty()) {
+				throw new NoValidNodeException("No functions found with type "
+						+ type.getSimpleName());
+			}
+			
+			Node node = PRNG.nextItem(availableFunctions).copyNode();
 			
 			for (int i = 0; i < node.getNumberOfArguments(); i++) {
-				node.setArgument(i, buildTreeFull(node.getArgumentType(i),
-						depth-1));
+				try {
+					node.setArgument(i, buildTreeFull(node.getArgumentType(i),
+							depth-1));
+				} catch (NoValidNodeException e) {
+					throw new UnsatisfiedArgumentException(
+							"Unable to find valid argument for "
+							+ node.getClass().getSimpleName(), e);
+				}
 			}
 			
 			return node;
@@ -507,13 +527,33 @@ public class Rules {
 	 */
 	public Node buildTreeGrow(Class<?> type, int depth) {
 		if (depth == 0) {
-			return PRNG.nextItem(listAvailableTerminals(type)).copyNode();
+			List<Node> availableTerminals = listAvailableTerminals(type);
+			
+			if (availableTerminals.isEmpty()) {
+				throw new NoValidNodeException("No terminal found with type "
+						+ type.getSimpleName());
+			}
+			
+			return PRNG.nextItem(availableTerminals).copyNode();
 		} else {
-			Node node = PRNG.nextItem(listAvailableNodes(type)).copyNode();
+			List<Node> availableNodes = listAvailableNodes(type);
+			
+			if (availableNodes.isEmpty()) {
+				throw new NoValidNodeException("No functions or terminals found with type "
+						+ type.getSimpleName());
+			}
+			
+			Node node = PRNG.nextItem(availableNodes).copyNode();
 			
 			for (int i = 0; i < node.getNumberOfArguments(); i++) {
-				node.setArgument(i, buildTreeGrow(node.getArgumentType(i),
-						depth-1));
+				try {
+					node.setArgument(i, buildTreeGrow(node.getArgumentType(i),
+							depth-1));
+				} catch (NoValidNodeException e) {
+					throw new UnsatisfiedArgumentException(
+							"Unable to find valid argument for "
+							+ node.getClass().getSimpleName(), e);
+				}
 			}
 			
 			return node;
