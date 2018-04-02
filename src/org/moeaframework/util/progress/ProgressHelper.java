@@ -207,7 +207,7 @@ public class ProgressHelper {
 				Math.max(1.0 - percentRemaining, 0.0),
 				(currentTime - startTime) / 1000.0,
 				(statistics.getMean() * percentRemaining) / 1000.0,
-				maxTime / 1000.0);
+				maxTime >= 0.0 ? maxTime / 1000.0 : maxTime);
 		
 		listeners.fire().progressUpdate(event);
 	}

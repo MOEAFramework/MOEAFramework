@@ -452,7 +452,7 @@ public class Controller {
 	protected void updateProgress(int currentEvaluation, int currentSeed,
 			int totalEvaluations, int totalSeeds) {
 		runProgress = (int)(100*currentEvaluation/(double)totalEvaluations);
-		overallProgress = (int)(100*currentSeed/(double)totalSeeds);
+		overallProgress = (int)(100*(currentSeed > 0 ? currentSeed - 1 : 0)/(double)totalSeeds);
 		
 		fireProgressChangedEvent();
 	}

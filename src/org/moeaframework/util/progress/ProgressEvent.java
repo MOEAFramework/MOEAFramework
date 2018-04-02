@@ -147,7 +147,8 @@ public class ProgressEvent implements Serializable {
 	}
 
 	/**
-	 * Returns the current seed being evaluated, starting at 1.
+	 * Returns the current seed being evaluated, starting at 1.  Note that after the last seed completes, this value
+	 * will return 1 + {@code getTotalSeeds()}.
 	 * 
 	 * @return the current seed being evaluated, starting at 1
 	 */
