@@ -16,8 +16,18 @@ Framework.
     
   * Support all decision variable types in MOEA/D (previously only supported
     real variables).
+
+  * Several improvements to the progress listener, including:
     
-  * Other miscellaneous bug fixes.
+    - ProgressListener now provides access to the current algorithm being run by
+      the Executor.  This can be used, for example, to get the contents of the
+      population each iteration.
+
+    - Fixes an "off by one" error in the ProgressListener, where it would report
+      100% complete while the last seed was still running.
+
+    - The ProgressListener is now called when running a single seed. Previously
+      it was only called inside runSeeds().
 
 
 ----------------------------

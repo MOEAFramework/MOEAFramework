@@ -25,7 +25,7 @@ import java.io.Serializable;
  * <p>
  * References:
  * <ol>
- * <li>Kalyanmoy, D., "An Efficient Constraint Handling Method for Genetic
+ * <li>Deb, K., "An Efficient Constraint Handling Method for Genetic
  * Algorithms." Computer Methods in Applied Mechanics and Engineering, pp.
  * 311--338, 1998.
  * </ol>
