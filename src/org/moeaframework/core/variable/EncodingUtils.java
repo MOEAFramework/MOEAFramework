@@ -837,12 +837,6 @@ public class EncodingUtils {
 	 */
 	public static void setSubset(Variable variable, BitSet bitSet) {
 		if (variable instanceof Subset) {
-			Subset subset = (Subset)variable;
-			
-			if (bitSet.length() > subset.getN()) {
-				throw new IllegalArgumentException("binary representation of subset contains too many indices");
-			}
-			
 			int[] values = new int[bitSet.cardinality()];
 			int count = 0;
 			
