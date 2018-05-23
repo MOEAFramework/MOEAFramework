@@ -629,8 +629,6 @@ public class Instrumenter extends ProblemBuilder {
 			type = object.getClass();
 		}
 		
-		System.out.println(object + " " + type.getPackage());
-		
 		if (type.isAnnotation() || type.isEnum() || type.isPrimitive()) {
 			//ignore objects which are not classes or arrays
 			return;
