@@ -212,6 +212,16 @@ public class InstrumenterTest {
 	}
 	
 	@Test
+	public void testExcludedPackages() {
+		SimpleAlgorithm algorithm = new SimpleAlgorithm();
+		new Instrumenter().addExcludedPackage("org.moeaframework").attach(collector).instrument(algorithm);
+		
+		Set<Object> instrumentedObjects = collector.getInstrumentedObjects();
+		
+		Assert.assertEquals(0, instrumentedObjects.size());
+	}
+	
+	@Test
 	public void testWithExecutor() {
 		Instrumenter instrumenter = new Instrumenter()
 				.withProblem("DTLZ2_2")

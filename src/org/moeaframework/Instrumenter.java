@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.Stack;
 
+import org.apache.commons.lang3.StringUtils;
 import org.moeaframework.algorithm.PeriodicAction.FrequencyType;
 import org.moeaframework.analysis.collector.Accumulator;
 import org.moeaframework.analysis.collector.AdaptiveMultimethodVariationCollector;
@@ -186,6 +187,12 @@ public class Instrumenter extends ProblemBuilder {
 	private final List<Collector> customCollectors;
 	
 	/**
+	 * The excluded packages.  Any objects from these packages will not be
+	 * walked.
+	 */
+	private final List<String> excludedPackages;
+	
+	/**
 	 * The accumulator from the last instrumented algorithm.
 	 */
 	private Accumulator lastAccumulator;
@@ -199,6 +206,9 @@ public class Instrumenter extends ProblemBuilder {
 		frequency = 100;
 		frequencyType = FrequencyType.EVALUATIONS;
 		customCollectors = new ArrayList<Collector>();
+		
+		excludedPackages = new ArrayList<String>();
+		excludedPackages.add("java");
 	}
 	
 	/**
@@ -210,6 +220,30 @@ public class Instrumenter extends ProblemBuilder {
 	 */
 	public Accumulator getLastAccumulator() {
 		return lastAccumulator;
+	}
+	
+	/**
+	 * Adds an excluded package that will not be walked by this instrumenter.
+	 * 
+	 * @param packageName the package name
+	 * @return a reference to this instrumenter
+	 */
+	public Instrumenter addExcludedPackage(String packageName) {
+		excludedPackages.add(packageName);
+		
+		return this;
+	}
+	
+	/**
+	 * Removes an excluded package from this instrumenter.
+	 * 
+	 * @param packageName the package name
+	 * @return a reference to this instrumenter
+	 */
+	public Instrumenter removeExcludedPackage(String packageName) {
+		excludedPackages.add(packageName);
+		
+		return this;
 	}
 	
 	/**
@@ -595,6 +629,8 @@ public class Instrumenter extends ProblemBuilder {
 			type = object.getClass();
 		}
 		
+		System.out.println(object + " " + type.getPackage());
+		
 		if (type.isAnnotation() || type.isEnum() || type.isPrimitive()) {
 			//ignore objects which are not classes or arrays
 			return;
@@ -616,15 +652,25 @@ public class Instrumenter extends ProblemBuilder {
 				instrument(algorithm, collectors, visited, parents, element, 
 						null);
 			}
-		} else if (type.getPackage() != null) {
-			// Previous versions support the idea of "allowed packages" that
-			// could be scanned by the instrumenter.  We now handle any
-			// exceptions that sometimes occur when walking the object graph,
-			// so we can now scan all packages.  It may be useful in the future
-			// to add "excluded packages" for performance.
-			
-			if (type.getPackage().getName().startsWith("java.")) {
-				return;
+		} else if (type.getPackage() != null) {			
+			for (String excludedPackage : excludedPackages) {
+				String[] excludedPackageSegments = StringUtils.split(excludedPackage, '.');
+				String[] typePackageSegments = StringUtils.split(type.getPackage().getName(), '.');
+				
+				if (typePackageSegments.length >= excludedPackageSegments.length) {
+					boolean matches = true;
+					
+					for (int i = 0; i < excludedPackageSegments.length; i++) {
+						if (!typePackageSegments[i].equals(excludedPackageSegments[i])) {
+							matches = false;
+							break;
+						}
+					}
+					
+					if (matches) {
+						return;
+					}
+				}
 			}
 		}
 		
