@@ -39,6 +39,7 @@ import org.moeaframework.core.Variation;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
 import org.moeaframework.core.operator.TournamentSelection;
 import org.moeaframework.core.operator.real.UM;
+import org.moeaframework.problem.MockRealProblem;
 
 /**
  * Tests the {@link Instrumenter} class.
@@ -147,6 +148,8 @@ public class InstrumenterTest {
 		
 		protected int integer = 5;
 		
+		protected Problem problem = new MockRealProblem();
+		
 	}
 	
 	private TestCollector collector;
@@ -189,8 +192,8 @@ public class InstrumenterTest {
 		Assert.assertTrue(instrumentedObjects.contains(algorithm));
 		Assert.assertTrue(instrumentedObjects.contains(algorithm.variation));
 		Assert.assertTrue(instrumentedObjects.contains(algorithm.selection));
-		Assert.assertTrue(instrumentedObjects.contains(
-				algorithm.selection.getComparator()));
+		Assert.assertTrue(instrumentedObjects.contains(algorithm.selection.getComparator()));
+		Assert.assertFalse(instrumentedObjects.contains(algorithm.problem));
 	}
 	
 	@Test

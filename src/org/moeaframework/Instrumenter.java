@@ -601,6 +601,9 @@ public class Instrumenter extends ProblemBuilder {
 		} else if (object instanceof Instrumenter) {
 			//well this is embarrassing
 			return;
+		} else if (object instanceof Problem) {
+			//ignore any problem instances (we care only about the algorithm)
+			return;
 		} else if (type.isArray()) {
 			//recursively walk the elements in the array
 			for (int i=0; i<Array.getLength(object); i++) {
