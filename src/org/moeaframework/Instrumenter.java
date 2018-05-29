@@ -43,6 +43,7 @@ import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
+import org.moeaframework.core.Solution;
 import org.moeaframework.core.indicator.AdditiveEpsilonIndicator;
 import org.moeaframework.core.indicator.Contribution;
 import org.moeaframework.core.indicator.GenerationalDistance;
@@ -78,6 +79,9 @@ import org.moeaframework.core.spi.ProblemFactory;
  * 
  *   Accumulator accumulator = instrumenter.getLastAccumulator();
  * </pre>
+ * Note that the Instrumenter will not scan the contents of {@link Solution} or
+ * {@link Problem}.  Instead, use the Instrumenter to enumerate these objects
+ * and access their properties programmatically.
  */
 public class Instrumenter extends ProblemBuilder {
 
@@ -635,9 +639,6 @@ public class Instrumenter extends ProblemBuilder {
 		} else if (object instanceof Instrumenter) {
 			//well this is embarrassing
 			return;
-		} else if (object instanceof Problem) {
-			//ignore any problem instances (we care only about the algorithm)
-			return;
 		} else if (type.isArray()) {
 			//recursively walk the elements in the array
 			for (int i=0; i<Array.getLength(object); i++) {
@@ -681,6 +682,13 @@ public class Instrumenter extends ProblemBuilder {
 			}
 			
 			visited.add(object);
+		}
+		
+		//ignore some types we should not recursively scan as these have caused
+		//issues with user libraries...it's the user's responsibility to access
+		//the internals of these objects.
+		if ((object instanceof Solution) || (object instanceof Problem)) {
+			return;
 		}
 		
 		//recursively walk superclass to enumerate all non-public fields

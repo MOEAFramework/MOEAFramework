@@ -148,7 +148,13 @@ public class InstrumenterTest {
 		
 		protected int integer = 5;
 		
-		protected Problem problem = new MockRealProblem();
+		protected Problem problem = new TestProblem();
+		
+	}
+	
+	public static class TestProblem extends MockRealProblem {
+		
+		protected Object testObject = new Object();
 		
 	}
 	
@@ -187,13 +193,13 @@ public class InstrumenterTest {
 		new Instrumenter().attach(collector).instrument(algorithm);
 		
 		Set<Object> instrumentedObjects = collector.getInstrumentedObjects();
-
-		Assert.assertEquals(6, instrumentedObjects.size());
+		
+		Assert.assertEquals(7, instrumentedObjects.size());
 		Assert.assertTrue(instrumentedObjects.contains(algorithm));
 		Assert.assertTrue(instrumentedObjects.contains(algorithm.variation));
 		Assert.assertTrue(instrumentedObjects.contains(algorithm.selection));
 		Assert.assertTrue(instrumentedObjects.contains(algorithm.selection.getComparator()));
-		Assert.assertFalse(instrumentedObjects.contains(algorithm.problem));
+		Assert.assertTrue(instrumentedObjects.contains(algorithm.problem));
 	}
 	
 	@Test
