@@ -395,7 +395,7 @@ public class Solution implements Serializable {
 	 * @param attributes the {@code Map} containing the attributes to be added
 	 *        to this solution
 	 */
-	public void addAttributes(Map<String, Serializable> attributes) {
+	public void addAttributes(Map<String, Object> attributes) {
 		attributes.putAll(attributes);
 	}
 
