@@ -53,15 +53,15 @@ public class DistributedProblemTest {
 				Assert.assertFalse(isInvoked);
 				
 				isInvoked = true;
-				
+
 				super.evaluate(solution);
-				
+
 				try {
 					Thread.sleep(100);
 				} catch (InterruptedException e) {
 					// do nothing
 				}
-				
+
 				isInvoked = false;
 			}
 			
@@ -80,7 +80,8 @@ public class DistributedProblemTest {
 		for (int i = 0; i < 10; i++) {
 			population.get(i).getObjectives();
 		}
-		
+
+
 		executor.shutdown();
 	}
 

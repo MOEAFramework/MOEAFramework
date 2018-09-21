@@ -391,11 +391,11 @@ public class Solution implements Serializable {
 
 	/**
 	 * Adds all attributes to this solution in the specified {@link Map}.
-	 * 
+	 *
 	 * @param attributes the {@code Map} containing the attributes to be added
 	 *        to this solution
 	 */
-	public void addAttributes(Map<String, Object> attributes) {
+	public void addAttributes(Map<String, Serializable> attributes) {
 		attributes.putAll(attributes);
 	}
 
