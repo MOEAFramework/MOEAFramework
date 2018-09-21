@@ -1,4 +1,4 @@
-/* Copyright 2009-2016 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -69,9 +69,8 @@ public class Replace implements Variation {
 	 * @param subset the subset to be mutated
 	 */
 	public static void evolve(Subset subset) {
-		if (subset.getK() < subset.getN()) {
-			int i = PRNG.nextInt(subset.getK());
-			subset.set(i, subset.randomNonmember());
+		if ((subset.size() < subset.getN()) && (subset.size() > 0)) {
+			subset.replace(subset.randomMember(), subset.randomNonmember());
 		}
 	}
 

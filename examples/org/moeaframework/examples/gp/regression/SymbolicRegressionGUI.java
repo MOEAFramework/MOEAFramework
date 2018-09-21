@@ -1,4 +1,4 @@
-/* Copyright 2009-2016 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -309,7 +309,7 @@ public class SymbolicRegressionGUI extends JFrame implements WindowListener {
 
 		try {
 			algorithm = AlgorithmFactory.getInstance().getAlgorithm(
-					"NSGAII", properties, problem);
+					"GA", properties, problem);
 
 			// run the GP solver
 			while ((generation < maxGenerations) && !gui.isCanceled()) {

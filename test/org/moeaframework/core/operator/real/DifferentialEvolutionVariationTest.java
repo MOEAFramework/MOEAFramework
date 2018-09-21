@@ -1,4 +1,4 @@
-/* Copyright 2009-2016 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -35,10 +35,10 @@ import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.core.variable.RealVariable;
 
 /**
- * Tests the {@link DifferentialEvolution} class.
+ * Tests the {@link DifferentialEvolutionVariation} class.
  */
 @RunWith(TravisRunner.class)
-public class DifferentialEvolutionTest extends MeanCentricVariationTest {
+public class DifferentialEvolutionVariationTest extends MeanCentricVariationTest {
 	
 	/**
 	 * Tests if the MOEA Framework and JMetal implementations of differential
@@ -49,7 +49,7 @@ public class DifferentialEvolutionTest extends MeanCentricVariationTest {
 	public void testDistribution() throws ClassNotFoundException, JMException {
 		Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
 		JMetalProblemAdapter adapter = new JMetalProblemAdapter(problem);
-		DifferentialEvolution myDE = new DifferentialEvolution(0.1, 0.5);
+		DifferentialEvolutionVariation myDE = new DifferentialEvolutionVariation(0.1, 0.5);
 		jmetal.operators.crossover.DifferentialEvolutionCrossover theirDE =
 				new jmetal.operators.crossover.DifferentialEvolutionCrossover(
 						new HashMap<String, Object>());
@@ -88,7 +88,7 @@ public class DifferentialEvolutionTest extends MeanCentricVariationTest {
 	 */
 	@Test
 	public void testParentImmutability() {
-		DifferentialEvolution de = new DifferentialEvolution(1.0, 1.0);
+		DifferentialEvolutionVariation de = new DifferentialEvolutionVariation(1.0, 1.0);
 
 		Solution s1 = new Solution(2, 0);
 		s1.setVariable(0, new RealVariable(2.0, -10.0, 10.0));

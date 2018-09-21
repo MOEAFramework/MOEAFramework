@@ -1,4 +1,4 @@
-/* Copyright 2009-2016 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -150,6 +150,29 @@ public class NondominatedSortingTest {
 		
 		Assert.assertTrue(Double.isInfinite(getCrowding(solution1)));
 		Assert.assertEquals(0.0, getCrowding(solution3), Settings.EPS);
+	}
+	
+	@Test
+	public void testSingularDimension() {
+		Solution solution1 = new Solution(new double[] { 0.0, 0.0, 1.0 });
+		Solution solution2 = new Solution(new double[] { 0.5, 0.0, 0.5 });
+		Solution solution3 = new Solution(new double[] { 1.0, 0.0, 0.0 });
+
+		population.add(solution1);
+		population.add(solution2);
+		population.add(solution3);
+
+		sorting.evaluate(population);
+		
+		assertHasAttributes(population);
+
+		Assert.assertEquals(0, getRank(solution1));
+		Assert.assertEquals(0, getRank(solution2));
+		Assert.assertEquals(0, getRank(solution3));
+		
+		Assert.assertTrue(Double.isInfinite(getCrowding(solution1)));
+		Assert.assertFalse(Double.isNaN(getCrowding(solution2)));
+		Assert.assertTrue(Double.isInfinite(getCrowding(solution3)));
 	}
 	
 	private void assertHasAttributes(Population population) {

@@ -1,4 +1,4 @@
-/* Copyright 2009-2016 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -20,6 +20,7 @@ package org.moeaframework.util.progress;
 import org.apache.commons.lang3.event.EventListenerSupport;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.moeaframework.Executor;
+import org.moeaframework.core.Algorithm;
 
 /**
  * Helper for notifying {@link ProgressListener}s when the evaluation progress
@@ -45,12 +46,17 @@ public class ProgressHelper {
 	 * The executor using this progress helper.
 	 */
 	private final Executor executor;
+
+	/**
+	 * The current {@link Algorithm} being run. 
+	 */
+	private Algorithm currentAlgorithm;
 	
 	/**
 	 * The current seed being evaluated, starting at 1.
 	 */
 	private int currentSeed;
-	
+
 	/**
 	 * The total number of seeds to be evaluated.
 	 */
@@ -68,7 +74,7 @@ public class ProgressHelper {
 	private int maxNFE;
 	
 	/**
-	 * The time the {@link #start(int, int)} method was invoked.
+	 * The time the {@link #start(int, int, long)} method was invoked.
 	 */
 	private long startTime;
 	
@@ -192,6 +198,7 @@ public class ProgressHelper {
 		
 		ProgressEvent event = new ProgressEvent(
 				executor,
+				currentAlgorithm,
 				currentSeed,
 				totalSeeds,
 				isSeedFinished,
@@ -200,7 +207,7 @@ public class ProgressHelper {
 				Math.max(1.0 - percentRemaining, 0.0),
 				(currentTime - startTime) / 1000.0,
 				(statistics.getMean() * percentRemaining) / 1000.0,
-				maxTime / 1000.0);
+				maxTime >= 0.0 ? maxTime / 1000.0 : maxTime);
 		
 		listeners.fire().progressUpdate(event);
 	}
@@ -237,6 +244,18 @@ public class ProgressHelper {
 			sendProgressEvent(true);
 		}
 	}
+
+	/**
+	 * Sets the currently running algorithm, so that {@link ProgressEvent}s
+	 * can access the algorithm object.
+	 * 
+	 * @param algorithm - the algorithm that is going to be running
+	 */
+	public void setCurrentAlgorithm(Algorithm algorithm) {
+		this.currentAlgorithm = algorithm;
+		
+	}
+
 	
 	/**
 	 * Increments the current seed and sets NFE to 0.  This method will
@@ -279,8 +298,8 @@ public class ProgressHelper {
 	
 	/**
 	 * Stops this progress helper.  No other methods should be invoked after
-	 * calling this method.  However, {@link #start(int, int)} can be called
-	 * to reset and restart this progress helper.
+	 * calling this method.  However, {@link #start(int, int, long)} can be
+	 * called to reset and restart this progress helper.
 	 */
 	public void stop() {
 		// this currently does nothing, but may be used in the future if we

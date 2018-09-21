@@ -1,4 +1,4 @@
-/* Copyright 2009-2016 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -23,7 +23,7 @@ import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.comparator.DominanceComparator;
-import org.moeaframework.core.operator.real.DifferentialEvolution;
+import org.moeaframework.core.operator.real.DifferentialEvolutionVariation;
 import org.moeaframework.core.operator.real.DifferentialEvolutionSelection;
 
 /**
@@ -51,7 +51,7 @@ public class GDE3 extends AbstractEvolutionaryAlgorithm {
 	/**
 	 * The variation operator.
 	 */
-	private final DifferentialEvolution variation;
+	private final DifferentialEvolutionVariation variation;
 
 	/**
 	 * Constructs the GDE3 algorithm with the specified components.
@@ -67,7 +67,7 @@ public class GDE3 extends AbstractEvolutionaryAlgorithm {
 	public GDE3(Problem problem, NondominatedSortingPopulation population,
 			DominanceComparator comparator,
 			DifferentialEvolutionSelection selection,
-			DifferentialEvolution variation, Initialization initialization) {
+			DifferentialEvolutionVariation variation, Initialization initialization) {
 		super(problem, population, null, initialization);
 		this.comparator = comparator;
 		this.selection = selection;

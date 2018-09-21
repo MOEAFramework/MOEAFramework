@@ -1,4 +1,4 @@
-/* Copyright 2009-2016 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -349,7 +349,6 @@ public class IntegrationTest {
 		ResultFileMerger.main(new String[] {
 				"-b", "DTLZ2_2",
 				"-o", combinedFile.getPath(),
-				"-r",
 				resultFile.getPath()});
 		
 		//run the seed merger

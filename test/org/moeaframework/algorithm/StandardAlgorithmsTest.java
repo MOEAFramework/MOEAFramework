@@ -1,4 +1,4 @@
-/* Copyright 2009-2016 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -78,6 +78,7 @@ public class StandardAlgorithmsTest {
 		properties = new Properties();
 		
 		properties.setProperty("maxEvaluations", "1000");
+		properties.setProperty("instances", "10"); // for RSO: maxEvaluations (1000) / instances (10) == GA population size (100)
 	}
 
 	/**
@@ -176,6 +177,31 @@ public class StandardAlgorithmsTest {
 	public void testRandomSearch_Real() {
 		test("Random", realProblem);
 	}
+
+	@Test
+	public void testGA_Real() {
+		test("GA", realProblem);
+	}
+	
+	@Test
+	public void testES_Real() {
+		test("ES", realProblem);
+	}
+	
+	@Test
+	public void testDE_Real() {
+		test("DE", realProblem);
+	}
+	
+	@Test
+	public void testRSO_Real() {
+		test("RSO", realProblem);
+	}
+	
+	@Test
+	public void testMSOPS_Real() {
+		test("MSOPS", realProblem);
+	}
 	
 	@Test
 	public void testEpsilonMOEA_Binary() {
@@ -192,7 +218,6 @@ public class StandardAlgorithmsTest {
 		test("NSGAIII", binaryProblem);
 	}
 	
-	@Test(expected = ProviderNotFoundException.class)
 	public void testMOEAD_Binary() {
 		test("MOEAD", binaryProblem);
 	}
@@ -264,6 +289,31 @@ public class StandardAlgorithmsTest {
 	}
 	
 	@Test
+	public void testGA_Binary() {
+		test("GA", binaryProblem);
+	}
+	
+	@Test(expected = ProviderNotFoundException.class)
+	public void testES_Binary() {
+		test("ES", binaryProblem);
+	}
+	
+	@Test(expected = ProviderNotFoundException.class)
+	public void testDE_Binary() {
+		test("DE", binaryProblem);
+	}
+	
+	@Test
+	public void testRSO_Binary() {
+		test("RSO", binaryProblem);
+	}
+	
+	@Test(expected = ProviderNotFoundException.class)
+	public void testMSOPS_Binary() {
+		test("MSOPS", binaryProblem);
+	}
+	
+	@Test
 	public void testEpsilonMOEA_Permutation() {
 		test("eMOEA", permutationProblem);
 	}
@@ -278,7 +328,6 @@ public class StandardAlgorithmsTest {
 		test("NSGAIII", permutationProblem);
 	}
 	
-	@Test(expected = ProviderNotFoundException.class)
 	public void testMOEAD_Permutation() {
 		test("MOEAD", permutationProblem);
 	}
@@ -350,6 +399,31 @@ public class StandardAlgorithmsTest {
 	}
 	
 	@Test
+	public void testGA_Permutation() {
+		test("GA", permutationProblem);
+	}
+	
+	@Test(expected = ProviderNotFoundException.class)
+	public void testES_Permutation() {
+		test("ES", permutationProblem);
+	}
+	
+	@Test(expected = ProviderNotFoundException.class)
+	public void testDE_Permutation() {
+		test("DE", permutationProblem);
+	}
+	
+	@Test
+	public void testRSO_Permutation() {
+		test("RSO", permutationProblem);
+	}
+	
+	@Test(expected = ProviderNotFoundException.class)
+	public void testMSOPS_Permutation() {
+		test("MSOPS", permutationProblem);
+	}
+	
+	@Test
 	public void testEpsilonMOEA_Subset() {
 		test("eMOEA", subsetProblem);
 	}
@@ -364,7 +438,6 @@ public class StandardAlgorithmsTest {
 		test("NSGAIII", subsetProblem);
 	}
 	
-	@Test(expected = ProviderNotFoundException.class)
 	public void testMOEAD_Subset() {
 		test("MOEAD", subsetProblem);
 	}
@@ -433,6 +506,31 @@ public class StandardAlgorithmsTest {
 	@Test
 	public void testRandomSearch_Subset() {
 		test("Random", subsetProblem);
+	}
+	
+	@Test
+	public void testGA_Subset() {
+		test("GA", subsetProblem);
+	}
+	
+	@Test(expected = ProviderNotFoundException.class)
+	public void testES_Subset() {
+		test("ES", subsetProblem);
+	}
+	
+	@Test(expected = ProviderNotFoundException.class)
+	public void testDE_Subset() {
+		test("DE", subsetProblem);
+	}
+	
+	@Test
+	public void testRSO_Subset() {
+		test("RSO", subsetProblem);
+	}
+	
+	@Test(expected = ProviderNotFoundException.class)
+	public void testMSOPS_Subset() {
+		test("MSOPS", subsetProblem);
 	}
 	
 	/**

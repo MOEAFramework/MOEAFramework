@@ -1,4 +1,4 @@
-/* Copyright 2009-2016 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -91,6 +91,26 @@ public class NondominatedSortingPopulationTest {
 		Solution solution1 = new Solution(new double[] { 0.0, 1.0 });
 		Solution solution2 = new Solution(new double[] { 0.5, 0.5 });
 		Solution solution3 = new Solution(new double[] { 1.0, 0.0 });
+
+		population.add(solution1);
+		population.add(solution2);
+		population.add(solution3);
+
+		population.truncate(2);
+
+		Assert.assertTrue(population.contains(solution1));
+		Assert.assertFalse(population.contains(solution2));
+		Assert.assertTrue(population.contains(solution3));
+	}
+	
+	@Test
+	public void testSingularObjective() {
+		NondominatedSortingPopulation population = 
+				new NondominatedSortingPopulation();
+
+		Solution solution1 = new Solution(new double[] { 0.0, 0.0, 1.0 });
+		Solution solution2 = new Solution(new double[] { 0.5, 0.0, 0.5 });
+		Solution solution3 = new Solution(new double[] { 1.0, 0.0, 0.0 });
 
 		population.add(solution1);
 		population.add(solution2);

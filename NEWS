@@ -2,6 +2,43 @@ This file documents the major changes implemented in each release of the MOEA
 Framework.
 
 ----------------------------
+ Version 2.13 (TBD)
+----------------------------
+
+  * Enable variable-length subsets in addition to the fixed-length subsets
+    currently supported.
+    
+  * Distributed problem provides an evaluation id that can be used to
+    replicate results when the problem is stochastic.
+    
+  * Guard against NaNs in NondominatedSorting that would occasionally produce
+    IllegalArgumentExceptions when calling Population#sort.
+    
+  * Support all decision variable types in MOEA/D (previously only supported
+    real variables).
+    
+  * Other miscellaneous bug fixes.
+
+
+----------------------------
+ Version 2.12 (04 Jan 2017)
+----------------------------
+
+  * Adds single-objective implementations of a genetic algorithm (GA),
+    evolution strategies (ES), and differential evolution (DE).
+    
+  * Adds multi-objective implementations of the Multiple Single Objective Pareto
+    Sampling (MSOPS) and Repeated Single Objective (RSO) algorithms.  RSO
+    runs a single-objective optimizer multiple times with different weights.
+    
+  * Updated examples so problems with only one objective (TSP, Ant, etc.) use
+    a single-objective optimizer.
+    
+  * The Instrumenter collection frequency can now be set to either number of
+    evaluations or number of steps (issue #92).
+    
+
+----------------------------
  Version 2.11 (18 Aug 2016)
 ----------------------------
 

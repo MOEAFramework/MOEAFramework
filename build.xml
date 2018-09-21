@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!--
-Copyright 2009-2016 David Hadka
+Copyright 2009-2018 David Hadka
 
 This file is part of the MOEA Framework.
 
@@ -610,6 +610,9 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		
 		<antcall target="build-binary" />
 		<unjar src="lib/JMetal-4.3.jar" dest="${build}" />
+		<copy todir="${build}/pf">
+			<fileset dir="pf" />
+		</copy>
 		<jar destfile="${maven}/${artifact}-${version}.jar" 
 				basedir="${build}" />
 		

@@ -1,4 +1,4 @@
-/* Copyright 2009-2016 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -34,11 +34,11 @@ public class OneMaxExample {
 
 	public static void main(String[] args) {
 		Properties properties = new Properties();
-		properties.setProperty("populationSize", "10");
+		properties.setProperty("populationSize", "100");
 		
 		Problem problem = new OneMax(100);
 		Algorithm algorithm = AlgorithmFactory.getInstance().getAlgorithm(
-				"NSGAII", properties, problem);
+				"GA", properties, problem);
 
 		while (!algorithm.isTerminated()) {
 			algorithm.step();

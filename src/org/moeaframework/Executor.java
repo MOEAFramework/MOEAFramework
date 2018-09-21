@@ -1,4 +1,4 @@
-/* Copyright 2009-2016 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -722,10 +722,9 @@ public class Executor extends ProblemBuilder {
 			NondominatedPopulation result = runSingleSeed(i+1, numberOfSeeds,
 					createTerminationCondition());
 			
-			if (result != null) {
-				results.add(result);
-				progress.nextSeed();
-			}
+			results.add(result);
+				
+			progress.nextSeed();
 		}
 		
 		progress.stop();
@@ -740,7 +739,18 @@ public class Executor extends ProblemBuilder {
 	 */
 	public NondominatedPopulation run() {
 		isCanceled.set(false);
-		return runSingleSeed(1, 1, createTerminationCondition());
+		
+		int maxEvaluations = properties.getInt("maxEvaluations", -1);
+		long maxTime = properties.getLong("maxTime", -1);
+		
+		progress.start(1, maxEvaluations, maxTime);
+		
+		NondominatedPopulation result = runSingleSeed(1, 1, createTerminationCondition());
+		
+		progress.nextSeed();
+		progress.stop();
+		
+		return result;
 	}
 
 	/**
@@ -805,6 +815,7 @@ public class Executor extends ProblemBuilder {
 					}
 					
 					terminationCondition.initialize(algorithm);
+					progress.setCurrentAlgorithm(algorithm);
 
 					while (!algorithm.isTerminated() &&
 							!terminationCondition.shouldTerminate(algorithm)) {
@@ -818,6 +829,8 @@ public class Executor extends ProblemBuilder {
 					}
 
 					result.addAll(algorithm.getResult());
+					
+					progress.setCurrentAlgorithm(null);
 				} finally {
 					if (algorithm != null) {
 						algorithm.terminate();

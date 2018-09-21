@@ -1,4 +1,4 @@
-/* Copyright 2009-2016 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -141,6 +141,33 @@ public class StandardAlgorithmsResumeTest {
 	@Test
 	public void testRVEA() throws IOException {
 		test("RVEA");
+	}
+	
+	@Test
+	public void testGA() throws IOException {
+		test("GA");
+	}
+	
+	@Test
+	public void testES() throws IOException {
+		test("ES");
+	}
+	
+	@Test
+	public void testDE() throws IOException {
+		test("DE");
+	}
+	
+	@Test
+	@Ignore("currently resume capability is not supported")
+	public void testRSO() throws IOException {
+		test("RSO");
+	}
+	
+	@Test
+	@Ignore("currently resume capability is not supported")
+	public void testMSOPS() throws IOException {
+		test("MSOPS");
 	}
 	
 	@Test

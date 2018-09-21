@@ -1,4 +1,4 @@
-/* Copyright 2009-2016 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.Stack;
 
+import org.moeaframework.algorithm.PeriodicAction.FrequencyType;
 import org.moeaframework.analysis.collector.Accumulator;
 import org.moeaframework.analysis.collector.AdaptiveMultimethodVariationCollector;
 import org.moeaframework.analysis.collector.AdaptiveTimeContinuationCollector;
@@ -167,9 +168,15 @@ public class Instrumenter extends ProblemBuilder {
 	private boolean includePopulationSize;
 
 	/**
-	 * The frequency, in evaluations, that data is collected.
+	 * The frequency that data is collected.
 	 */
 	private int frequency;
+	
+	/**
+	 * The units for the frequency, either in terms of the number of evaluations
+	 * or number of steps (iterations).
+	 */
+	private FrequencyType frequencyType;
 	
 	/**
 	 * The collection of custom collectors added through the 
@@ -190,6 +197,7 @@ public class Instrumenter extends ProblemBuilder {
 		super();
 		
 		frequency = 100;
+		frequencyType = FrequencyType.EVALUATIONS;
 		customCollectors = new ArrayList<Collector>();
 	}
 	
@@ -247,13 +255,26 @@ public class Instrumenter extends ProblemBuilder {
 	}
 	
 	/**
-	 * Sets the frequency, in evaluations, that data is collected.  
+	 * Sets the frequency that data is collected.  
 	 * 
 	 * @param frequency the frequency
 	 * @return a reference to this instrumenter
 	 */
 	public Instrumenter withFrequency(int frequency) {
 		this.frequency = frequency;
+		
+		return this;
+	}
+	
+	/**
+	 * Indicates if the frequency is defined in terms of the number of
+	 * evaluations or number of steps (iterations).
+	 * 
+	 * @param frequencyType the frequency type, either EVALUATIONS or STEPS
+	 * @return a reference to this instrumenter
+	 */
+	public Instrumenter withFrequencyType(FrequencyType frequencyType) {
+		this.frequencyType = frequencyType;
 		
 		return this;
 	}
@@ -760,7 +781,7 @@ public class Instrumenter extends ProblemBuilder {
 		collectors.addAll(customCollectors);
 		
 		InstrumentedAlgorithm instrumentedAlgorithm = new InstrumentedAlgorithm(
-				algorithm, frequency);
+				algorithm, frequency, frequencyType);
 		
 		instrument(instrumentedAlgorithm, collectors, new HashSet<Object>(), 
 				new Stack<Object>(), algorithm, null);

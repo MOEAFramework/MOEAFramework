@@ -1,4 +1,4 @@
-/* Copyright 2009-2016 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -35,13 +35,15 @@ import org.moeaframework.core.operator.permutation.Swap;
 import org.moeaframework.core.operator.program.PointMutation;
 import org.moeaframework.core.operator.program.SubtreeCrossover;
 import org.moeaframework.core.operator.real.AdaptiveMetropolis;
-import org.moeaframework.core.operator.real.DifferentialEvolution;
+import org.moeaframework.core.operator.real.DifferentialEvolutionVariation;
 import org.moeaframework.core.operator.real.PCX;
 import org.moeaframework.core.operator.real.PM;
 import org.moeaframework.core.operator.real.SBX;
 import org.moeaframework.core.operator.real.SPX;
 import org.moeaframework.core.operator.real.UM;
 import org.moeaframework.core.operator.real.UNDX;
+import org.moeaframework.core.operator.subset.Add;
+import org.moeaframework.core.operator.subset.Remove;
 import org.moeaframework.core.operator.subset.Replace;
 import org.moeaframework.core.operator.subset.SSX;
 import org.moeaframework.core.spi.OperatorProvider;
@@ -84,7 +86,7 @@ import org.moeaframework.util.TypedProperties;
  *     <td>{@code um.rate}</td>
  *   </tr>
  *   <tr>
- *     <td>{@link DifferentialEvolution}</td>
+ *     <td>{@link DifferentialEvolutionVariation}</td>
  *     <td>Real</td>
  *     <td>{@code de}</td>
  *     <td>{@code de.crossoverRate, de.stepSize}</td>
@@ -154,6 +156,18 @@ import org.moeaframework.util.TypedProperties;
  *     <td>Subset</td>
  *     <td>{@code replace}</td>
  *     <td>{@code replace.rate}</td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@link Add}</td>
+ *     <td>Subset</td>
+ *     <td>{@code add}</td>
+ *     <td>{@code add.rate}</td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@link Remove}</td>
+ *     <td>Subset</td>
+ *     <td>{@code remove}</td>
+ *     <td>{@code remove.rate}</td>
  *   </tr>
  *   <tr>
  *     <td>{@link GrammarCrossover}</td>
@@ -233,7 +247,7 @@ public class StandardOperators extends OperatorProvider {
 		} else if (Program.class.isAssignableFrom(type)) {
 			return "ptm";
 		} else if (Subset.class.isAssignableFrom(type)) {
-			return "replace";
+			return "replace+add+remove";
 		} else {
 			return null;
 		}
@@ -271,7 +285,7 @@ public class StandardOperators extends OperatorProvider {
 		} else if (Program.class.isAssignableFrom(type)) {
 			return "bx+ptm";
 		} else if (Subset.class.isAssignableFrom(type)) {
-			return "ssx+replace";
+			return "ssx+replace+add+remove";
 		} else {
 			return null;
 		}
@@ -294,7 +308,7 @@ public class StandardOperators extends OperatorProvider {
 							1.0 / problem.getNumberOfVariables()), 
 							typedProperties.getDouble("pm.distributionIndex", 20.0));
 		} else if (name.equalsIgnoreCase("de")) {	
-			return new DifferentialEvolution(
+			return new DifferentialEvolutionVariation(
 					typedProperties.getDouble("de.crossoverRate", 0.1), 
 					typedProperties.getDouble("de.stepSize", 0.5));
 		} else if (name.equalsIgnoreCase("pcx")) {
@@ -362,6 +376,12 @@ public class StandardOperators extends OperatorProvider {
 		} else if (name.equalsIgnoreCase("replace")) {
 			return new Replace(
 					typedProperties.getDouble("replace.rate", 0.9));
+		} else if (name.equalsIgnoreCase("add")) {
+			return new Add(
+					typedProperties.getDouble("add.rate", 0.1));
+		} else if (name.equalsIgnoreCase("remove")) {
+			return new Remove(
+					typedProperties.getDouble("remove.rate", 0.1));
 		} else if (name.equalsIgnoreCase("ssx")) {
 			return new SSX(
 					typedProperties.getDouble("ssx.rate", 0.3));

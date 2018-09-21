@@ -1,4 +1,4 @@
-/* Copyright 2009-2016 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -452,7 +452,7 @@ public class Controller {
 	protected void updateProgress(int currentEvaluation, int currentSeed,
 			int totalEvaluations, int totalSeeds) {
 		runProgress = (int)(100*currentEvaluation/(double)totalEvaluations);
-		overallProgress = (int)(100*currentSeed/(double)totalSeeds);
+		overallProgress = (int)(100*(currentSeed > 0 ? currentSeed - 1 : 0)/(double)totalSeeds);
 		
 		fireProgressChangedEvent();
 	}

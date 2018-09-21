@@ -1,4 +1,4 @@
-/* Copyright 2009-2016 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -17,12 +17,12 @@
  */
 package org.moeaframework.core.operator.subset;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.TestThresholds;
+import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.operator.ParentImmutabilityTest;
 import org.moeaframework.core.operator.TypeSafetyTest;
@@ -35,7 +35,7 @@ import org.moeaframework.core.variable.Subset;
 public class ReplaceTest {
 
 	/**
-	 * Tests if the replace crossover operator is type-safe.
+	 * Tests if the replace mutation operator is type-safe.
 	 */
 	@Test
 	public void testTypeSafety() {
@@ -63,32 +63,42 @@ public class ReplaceTest {
 		int count = 0;
 
 		for (int i = 0; i < TestThresholds.SAMPLES; i++) {
+			// These values are randomly chosen in ranges to ensure replacement can always occur
+			int n = PRNG.nextInt(2, 20);
+			int l = PRNG.nextInt(1, n-1);
+			int u = PRNG.nextInt(l, n-1);
+			
+			Subset subset = new Subset(l, u, n);
+			subset.randomize();
+			
 			Solution original = new Solution(1, 0);
-			original.setVariable(0, new Subset(50, 100));
+			original.setVariable(0, subset);
 
 			Solution mutated = replace.evolve(new Solution[] { original })[0];
 
-			if (testSubset((Subset)original.getVariable(0),
-					(Subset)mutated.getVariable(0))) {
+			if (testSubset((Subset)original.getVariable(0), (Subset)mutated.getVariable(0))) {
 				count++;
 			}
 		}
 
-		Assert.assertEquals((double)count / TestThresholds.SAMPLES,
-				probability, TestThresholds.VARIATION_EPS);
+		Assert.assertEquals(probability, (double)count / TestThresholds.SAMPLES,
+				TestThresholds.VARIATION_EPS);
 	}
 
 	/**
 	 * Returns {@code true} if the result is a valid replacement; {@code false}
 	 * otherwise.
 	 * 
-	 * @param v1 the first permutation
-	 * @param v2 the second permutation
+	 * @param v1 the first subset
+	 * @param v2 the second subset
 	 * @return {@code true} if the result is a valid replacement; {@code false}
 	 *         otherwise
 	 */
 	protected boolean testSubset(Subset v1, Subset v2) {
-		Set<Integer> set = new HashSet<Integer>(v1.getSet());
+		// Size should remain unchanged
+		Assert.assertEquals(v1.size(), v2.size());
+		
+		Set<Integer> set = v1.getSet();
 		set.removeAll(v2.getSet());
 		return set.size() == 1;
 	}

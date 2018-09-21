@@ -1,4 +1,4 @@
-/* Copyright 2009-2016 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -33,6 +33,8 @@ import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
+import org.moeaframework.core.operator.CompoundVariation;
+import org.moeaframework.core.operator.real.DifferentialEvolutionVariation;
 import org.moeaframework.util.weights.RandomGenerator;
 import org.moeaframework.util.weights.WeightGenerator;
 
@@ -270,6 +272,11 @@ public class MOEAD extends AbstractAlgorithm {
 	private final int updateUtility;
 
 	/**
+	 * Set to {@code true} if using differential evolution.
+	 */
+	final boolean useDE;
+	
+	/**
 	 * The current generation number.
 	 */
 	private int generation;
@@ -347,6 +354,16 @@ public class MOEAD extends AbstractAlgorithm {
 		this.delta = delta;
 		this.eta = eta;
 		this.updateUtility = updateUtility;
+		
+		if (variation instanceof DifferentialEvolutionVariation) {
+			useDE = true;
+		} else if (variation instanceof CompoundVariation) {
+			CompoundVariation compoundVariation = (CompoundVariation)variation;
+			useDE = compoundVariation.getName().startsWith(
+					DifferentialEvolutionVariation.class.getSimpleName());
+		} else {
+			useDE = false;
+		}
 	}
 	
 	/**
@@ -657,8 +674,8 @@ public class MOEAD extends AbstractAlgorithm {
 			Solution[] parents = new Solution[variation.getArity()];
 			parents[0] = population.get(index).getSolution();
 			
-			if (variation.getArity() > 2) {
-				// mimic MOEA/D parent selection for differential evolution
+			if (useDE) {
+				// MOEA/D parent selection for differential evolution
 				PRNG.shuffle(matingIndices);
 				
 				for (int i = 1; i < variation.getArity()-1; i++) {

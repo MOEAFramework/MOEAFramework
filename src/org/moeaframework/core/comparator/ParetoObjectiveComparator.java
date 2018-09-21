@@ -1,4 +1,4 @@
-/* Copyright 2009-2016 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -45,13 +45,15 @@ Serializable {
 		boolean dominate2 = false;
 
 		for (int i = 0; i < solution1.getNumberOfObjectives(); i++) {
-			if (solution1.getObjective(i) < solution2.getObjective(i)) {
+			int flag = Double.compare(solution1.getObjective(i), solution2.getObjective(i));
+			
+			if (flag < 0) {
 				dominate1 = true;
 
 				if (dominate2) {
 					return 0;
 				}
-			} else if (solution1.getObjective(i) > solution2.getObjective(i)) {
+			} else if (flag > 0) {
 				dominate2 = true;
 
 				if (dominate1) {

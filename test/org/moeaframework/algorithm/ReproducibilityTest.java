@@ -1,4 +1,4 @@
-/* Copyright 2009-2016 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -170,6 +170,46 @@ public class ReproducibilityTest {
 	@Test
 	public void testRandom() {
 		test("Random");
+	}
+	
+	/**
+	 * Tests GA for reproducibility.
+	 */
+	@Test
+	public void testGA() {
+		test("GA");
+	}
+	
+	/**
+	 * Tests ES for reproducibility.
+	 */
+	@Test
+	public void testES() {
+		test("ES");
+	}
+	
+	/**
+	 * Tests DE for reproducibility.
+	 */
+	@Test
+	public void testDE() {
+		test("DE");
+	}
+	
+	/**
+	 * Tests RSO for reproducibility.
+	 */
+	@Test
+	public void testRSO() {
+		test("RSO");
+	}
+	
+	/**
+	 * Tests MSOPS for reproducibility.
+	 */
+	@Test
+	public void testMSOPS() {
+		test("MSOPS");
 	}
 
 	/**

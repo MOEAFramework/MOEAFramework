@@ -1,4 +1,4 @@
-/* Copyright 2009-2016 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -557,8 +557,9 @@ public class Settings {
 	public static String[] getDiagnosticToolAlgorithms() {
 		return PROPERTIES.getStringArray(KEY_DIAGNOSTIC_TOOL_ALGORITHMS, 
 				new String[] { "NSGAII", "NSGAIII", "GDE3", "eMOEA", "eNSGAII", 
-				"MOEAD", "CMA-ES", "SPEA2", "PAES", "PESA2", "OMOPSO", "SMPSO",
-				"IBEA", "SMS-EMOA", "VEGA", "DBEA", "Random", "RVEA" });
+				"MOEAD", "MSOPS", "CMA-ES", "SPEA2", "PAES", "PESA2", "OMOPSO",
+				"SMPSO", "IBEA", "SMS-EMOA", "VEGA", "DBEA", "Random", "RVEA",
+				"RSO" });
 	}
 	
 	/**

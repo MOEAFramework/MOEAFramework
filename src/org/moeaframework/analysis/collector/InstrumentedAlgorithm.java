@@ -1,4 +1,4 @@
-/* Copyright 2009-2016 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -43,13 +43,26 @@ public class InstrumentedAlgorithm extends PeriodicAction {
 
 	/**
 	 * Decorates the specified algorithm to periodically collect information
-	 * about its runtime behavior.
+	 * about its runtime behavior.  Frequency is given in number of evaluations.
 	 * 
 	 * @param algorithm the algorithm to decorate
 	 * @param frequency the frequency, in evaluations, that data is collected
 	 */
 	public InstrumentedAlgorithm(Algorithm algorithm, int frequency) {
-		super(algorithm, frequency, FrequencyType.EVALUATIONS);
+		this(algorithm, frequency, FrequencyType.EVALUATIONS);
+	}
+	
+	/**
+	 * Decorates the specified algorithm to periodically collect information
+	 * about its runtime behavior.
+	 * 
+	 * @param algorithm the algorithm to decorate
+	 * @param frequency the frequency that data is collected
+	 * @param frequencyType if frequency is defined by EVALUATIONS or STEPS
+	 */
+	public InstrumentedAlgorithm(Algorithm algorithm, int frequency,
+			FrequencyType frequencyType) {
+		super(algorithm, frequency, frequencyType);
 		
 		accumulator = new Accumulator();
 		collectors = new ArrayList<Collector>();
