@@ -19,8 +19,6 @@ package org.moeaframework.algorithm.pso;
 
 import java.io.NotSerializableException;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.moeaframework.algorithm.AbstractAlgorithm;
@@ -35,6 +33,7 @@ import org.moeaframework.core.fitness.FitnessBasedArchive;
 import org.moeaframework.core.operator.RandomInitialization;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
+import org.moeaframework.util.SolutionUtils;
 
 /**
  * Abstract multi-objective particle swarm optimizer (MOPSO).
@@ -78,7 +77,7 @@ public abstract class AbstractPSOAlgorithm extends AbstractAlgorithm {
 	
 	/**
 	 * The archive of non-dominated solutions; or {@code null} of no external
-	 * archive is sued.
+	 * archive is used.
 	 */
 	protected NondominatedPopulation archive;
 	
@@ -312,6 +311,18 @@ public abstract class AbstractPSOAlgorithm extends AbstractAlgorithm {
 		}
 	}
 	
+	public List<Solution> getParticles() {
+		return SolutionUtils.copyToList(particles);
+	}
+	
+	public List<Solution> getLocalBestParticles() {
+		return SolutionUtils.copyToList(localBestParticles);
+	}
+	
+	public List<Solution> getLeaders() {
+		return SolutionUtils.copyToList(leaders);
+	}
+	
 	@Override
 	public Serializable getState() throws NotSerializableException {
 		if (!isInitialized()) {
@@ -319,21 +330,11 @@ public abstract class AbstractPSOAlgorithm extends AbstractAlgorithm {
 					"algorithm not initialized");
 		}
 
-		List<Solution> particlesList = Arrays.asList(particles);
-		List<Solution> localBestParticlesList = Arrays.asList(localBestParticles);
-		List<Solution> leadersList = new ArrayList<Solution>();
-		List<Solution> archiveList = new ArrayList<Solution>();
+		List<Solution> particlesList = SolutionUtils.toList(particles);
+		List<Solution> localBestParticlesList = SolutionUtils.toList(localBestParticles);
+		List<Solution> leadersList = SolutionUtils.toList(leaders);
+		List<Solution> archiveList = archive == null ? null : SolutionUtils.toList(archive);
 		double[][] velocitiesClone = new double[velocities.length][];
-
-		for (Solution solution : leaders) {
-			leadersList.add(solution);
-		}
-
-		if (archive != null) {
-			for (Solution solution : archive) {
-				archiveList.add(solution);
-			}
-		}
 		
 		for (int i = 0; i < velocities.length; i++) {
 			velocitiesClone[i] = velocities[i].clone();
