@@ -38,37 +38,37 @@ public class Rules {
 	/**
 	 * The return type of all programs produced using these rules.
 	 */
-	private Class<?> returnType;
+	protected Class<?> returnType;
 	
 	/**
 	 * The program scaffolding; or {@code null} if the program has no defined
 	 * scaffolding.
 	 */
-	private Node scaffolding;
+	protected Node scaffolding;
 	
 	/**
 	 * The maximum depth of the expression trees produced by any initialization
 	 * routine.
 	 */
-	private int maxInitializationDepth;
+	protected int maxInitializationDepth;
 	
 	/**
 	 * The maximum depth of the expression trees produced by any variation
 	 * operator.
 	 */
-	private int maxVariationDepth;
+	protected int maxVariationDepth;
 	
 	/**
 	 * The probability of crossover being applied to a function (non-terminal)
 	 * node.
 	 */
-	private double functionCrossoverProbability;
-	
+	protected double functionCrossoverProbability;
+
 	/**
 	 * The list of all available nodes that may appear in the expression tree;
 	 * nodes that are exclusive to program scaffolding need not be listed.
 	 */
-	private List<Node> availableNodes;
+	protected List<Node> availableNodes;
 	
 	/**
 	 * Constructs a new set of rules for defining program syntax.
