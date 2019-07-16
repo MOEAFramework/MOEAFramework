@@ -208,6 +208,13 @@ public class Settings {
 			"analysis.sensitivity.cleanup";
 	
 	/**
+	 * The property key for enabling debugging info when running external
+	 * problems.
+	 */
+	public static final String KEY_EXTERNAL_PROBLEM_DEBUGGING = KEY_PREFIX + 
+			"problem.external_problem_debugging";
+	
+	/**
 	 * The property key for listing the allowed packages that can be
 	 * instrumented.
 	 * 
@@ -620,6 +627,17 @@ public class Settings {
 	 */
 	public static String getCleanupStrategy() {
 		return PROPERTIES.getString(KEY_CLEANUP_STRATEGY, "error");
+	}
+	
+	/**
+	 * Returns {@code true} if debugging is enabled when running external
+	 * problems.
+	 * 
+	 * @return {@code true} if debugging for external problems is enabled;
+	 *         {@code false} otherwise
+	 */
+	public static boolean getExternalProblemDebuggingEnabled() {
+		return PROPERTIES.getBoolean(KEY_EXTERNAL_PROBLEM_DEBUGGING, false);
 	}
 	
 	/**
