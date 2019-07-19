@@ -1,5 +1,5 @@
 language: java
-dist: precise
+dist: trusty
 
 env:
   global:
@@ -17,9 +17,9 @@ addons:
     branch_pattern: coverity_scan
 
 jdk:
-  - oraclejdk6
-  - oraclejdk7
   - oraclejdk8
-
+  - oraclejdk9
+  - oraclejdk11
+  
 script:
   - ant -DON_TRAVIS=true -f test.xml
