@@ -1,8 +1,5 @@
 language: java
-
-before_install:
-  - sudo apt-get install -y ant
-  - sudo apt-get install -y junit
+dist: precise
 
 env:
   global:
@@ -20,7 +17,9 @@ addons:
     branch_pattern: coverity_scan
 
 jdk:
-  - oraclejdk9
+  - oraclejdk6
+  - oraclejdk7
+  - oraclejdk8
 
 script:
   - ant -DON_TRAVIS=true -f test.xml
