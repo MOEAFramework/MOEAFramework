@@ -282,13 +282,12 @@ public abstract class ExternalProblem implements Problem {
 					debug.newLine();
 					
 					if (process != null) {
-						if (process.isAlive()) {
+						try {
+							int exitCode = process.exitValue();
+							debug.write("Process exited with code " + exitCode);
+						} catch (IllegalThreadStateException e) {
 							debug.write("Process is still alive");
-						} else {
-							debug.write("Process exited with code " + process.exitValue());
 						}
-						
-						debug.newLine();	
 					}
 					
 					debug.flush();
