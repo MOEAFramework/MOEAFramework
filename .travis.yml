@@ -1,4 +1,5 @@
 language: java
+install: ant deps
 
 env:
   global:
@@ -16,8 +17,6 @@ addons:
     branch_pattern: coverity_scan
 
 jdk:
-  - openjdk7
-  - oraclejdk8
   - oraclejdk9
 
 script:
