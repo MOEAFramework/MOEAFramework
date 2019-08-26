@@ -8,10 +8,20 @@ import java.util.Arrays;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class StandardDetection implements Detection {
+
+    private final double proportion;
+
+    public StandardDetection(double proportion){
+        this.proportion = proportion;
+    }
+
+    public StandardDetection(){
+        this(0.1d);
+    }
+
     @Override
     public double getProportionOfExperimentalSolutions() {
-        // Static 10%
-        return 0.1d;
+        return proportion;
     }
 
     @Override

@@ -57,7 +57,7 @@ public class StandardDynamicAlgorithms extends AlgorithmProvider {
 
         Detection detection = new StandardDetection();
 
-        int zeta = (int) properties.getDouble("zeta", 0.2d);
+        double zeta = properties.getDouble("zeta", 0.2d);
 
         return new DNSGAIIA(problem, population, null, selection, variation, initialization, detection, zeta);
     }

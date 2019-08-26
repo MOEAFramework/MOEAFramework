@@ -4,9 +4,21 @@ import org.moeaframework.core.*;
 
 import java.util.Arrays;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
-
+/**
+ * Implementation of the first version of Dynamic NSGA-II algorithm proposed by Kalyanmoy Deb et. al. by extending the
+ * original {@link NSGAII} algorithm and implementing the {@link DynamicAlgorithm}
+ * <p>
+ * References:
+ * <ol>
+ * <li>Deb K., Rao N. U.B., Karthik S. (2007) Dynamic Multi-objective Optimization and Decision-Making Using Modified
+ * NSGA-II: A Case Study on Hydro-thermal Power Scheduling. In: Obayashi S., Deb K., Poloni C., Hiroyasu T.,
+ * Murata T. (eds) Evolutionary Multi-Criterion Optimization. EMO 2007. Lecture Notes in Computer Science,
+ * vol 4403. Springer, Berlin, Heidelberg
+ * </ol>
+ */
 public class DNSGAIIA extends NSGAII implements DynamicAlgorithm {
     /**
     * The detection operator
@@ -36,7 +48,7 @@ public class DNSGAIIA extends NSGAII implements DynamicAlgorithm {
     }
 
     public DNSGAIIA(Problem problem, NondominatedSortingPopulation population, EpsilonBoxDominanceArchive archive, Selection selection, Variation variation, Initialization initialization, Detection detection) {
-        this(problem, population, archive, selection, variation, initialization, detection, 0.2);
+        this(problem, population, archive, selection, variation, initialization, detection, 0.2d);
     }
 
     @Override
@@ -49,7 +61,7 @@ public class DNSGAIIA extends NSGAII implements DynamicAlgorithm {
     @Override
     public void stepOnChange() {
         int[] indexes = ThreadLocalRandom.current().ints(0, population.size()).distinct().limit((int)(population.size()*this.zeta)).toArray();
-        Arrays.stream(indexes).forEach(population::remove);
+        population.removeAll(Arrays.stream(indexes).boxed().map(population::get).collect(Collectors.toList()));
         Stream.generate(problem::newSolution).limit(indexes.length).forEach(population::add);
     }
 }
