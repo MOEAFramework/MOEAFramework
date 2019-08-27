@@ -26,7 +26,7 @@ public class StandardDetection implements Detection {
 
     @Override
     public boolean isEnvironmentChanged(Problem problem, Solution[] solutions) {
-        int[] indexes = ThreadLocalRandom.current().ints(0, solutions.length).distinct().limit((int)(solutions.length*0.1d)).toArray();
+        int[] indexes = ThreadLocalRandom.current().ints(0, solutions.length).distinct().limit((int)(solutions.length*this.proportion)).toArray();
         for(int index : indexes) {
             double[] objectives = solutions[index].getObjectives().clone();
             problem.evaluate(solutions[index]);
