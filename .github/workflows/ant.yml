@@ -9,7 +9,7 @@ jobs:
     
     strategy:
       matrix:
-        java: [ '1.6', '1.7', '1.8', '9.x', '10.x', '11.x', '12.x', '13.x' ]
+        java: [ '1.8', '9.x.x', '10.x.x', '11.x.x', '12.x.x', '13.x.x' ]
 
     steps:
     - uses: actions/checkout@v1
