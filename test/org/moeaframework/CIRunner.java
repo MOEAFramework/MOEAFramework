@@ -30,21 +30,21 @@ import org.junit.runners.model.Statement;
 /**
  * JUnit runner designed to handle some compatibility issues when using an
  * automated continuous integration service, such as Travis CI.  Specifically
- * enables the use of the {@link RetryOnTravis} and {@link IgnoreOnTravis} annotations.
+ * enables the use of the {@link Retryable} and {@link IgnoreOnCI} annotations.
  */
-public class TravisRunner extends BlockJUnit4ClassRunner {
+public class CIRunner extends BlockJUnit4ClassRunner {
 
-	public TravisRunner(Class<?> type) throws InitializationError {
+	public CIRunner(Class<?> type) throws InitializationError {
 		super(type);
 	}
 
-	public boolean isRunningOnTravis() {
-		return Boolean.parseBoolean(System.getProperty("ON_TRAVIS", "false"));
+	public boolean isRunningOnCI() {
+		return Boolean.parseBoolean(System.getProperty("ON_CI", "false"));
 	}
 
 	@Override
 	public void run(RunNotifier arg0) {
-		isRunningOnTravis();
+		isRunningOnCI();
 		super.run(arg0);
 	}
 
@@ -54,19 +54,19 @@ public class TravisRunner extends BlockJUnit4ClassRunner {
 
 		if (method.getAnnotation(Ignore.class) != null) {
 			notifier.fireTestIgnored(description);
-		} else if ((method.getAnnotation(IgnoreOnTravis.class) != null ||
-				getTestClass().getJavaClass().getAnnotation(IgnoreOnTravis.class) != null) &&
-				isRunningOnTravis()) {
-			System.out.println("Ignoring " + description.getDisplayName() + " on Travis CI");
+		} else if ((method.getAnnotation(IgnoreOnCI.class) != null ||
+				getTestClass().getJavaClass().getAnnotation(IgnoreOnCI.class) != null) &&
+				isRunningOnCI()) {
+			System.out.println("Ignoring " + description.getDisplayName() + " on CI build");
 			notifier.fireTestIgnored(description);
-		} else if (method.getAnnotation(RetryOnTravis.class) != null &&
-				isRunningOnTravis()) {
+		} else if (method.getAnnotation(Retryable.class) != null &&
+				isRunningOnCI()) {
 			runTestUnit(methodBlock(method), description, notifier,
-					method.getAnnotation(RetryOnTravis.class).value());
-		} else if (getTestClass().getJavaClass().getAnnotation(RetryOnTravis.class) != null &&
-				isRunningOnTravis()) {
+					method.getAnnotation(Retryable.class).value());
+		} else if (getTestClass().getJavaClass().getAnnotation(Retryable.class) != null &&
+				isRunningOnCI()) {
 			runTestUnit(methodBlock(method), description, notifier,
-					getTestClass().getJavaClass().getAnnotation(RetryOnTravis.class).value());
+					getTestClass().getJavaClass().getAnnotation(Retryable.class).value());
 		} else {
 			super.runChild(method, notifier);
 		}

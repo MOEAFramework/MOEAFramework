@@ -24,11 +24,11 @@ import java.lang.annotation.ElementType;
 
 /**
  * Annotation for retrying tests.  Test classes using this annotation must also
- * specify \code{@RunWith(TravisRunner.clsas)}.
+ * specify \code{@RunWith(CIRunner.clsas)}.
  */
 @Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface RetryOnTravis {
+public @interface Retryable {
 
 	int value() default 5;
 

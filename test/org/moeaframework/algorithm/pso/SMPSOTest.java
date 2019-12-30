@@ -21,15 +21,15 @@ import java.io.IOException;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.moeaframework.RetryOnTravis;
-import org.moeaframework.TravisRunner;
+import org.moeaframework.Retryable;
+import org.moeaframework.CIRunner;
 import org.moeaframework.algorithm.AlgorithmTest;
 
 /**
  * Tests the {@link SMPSO} class.
  */
-@RunWith(TravisRunner.class)
-@RetryOnTravis
+@RunWith(CIRunner.class)
+@Retryable
 public class SMPSOTest extends AlgorithmTest {
 	
 	@Test

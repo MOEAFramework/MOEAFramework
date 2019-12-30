@@ -22,14 +22,14 @@ import java.io.IOException;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.moeaframework.IgnoreOnTravis;
-import org.moeaframework.TravisRunner;
+import org.moeaframework.IgnoreOnCI;
+import org.moeaframework.CIRunner;
 
 /**
  * Tests the {@link SMSEMOA} class.
  */
-@RunWith(TravisRunner.class)
-@IgnoreOnTravis("exceeds 10 minute timeout")
+@RunWith(CIRunner.class)
+@IgnoreOnCI("exceeds 10 minute timeout")
 @Ignore
 public class SMSEMOATest extends AlgorithmTest {
 	

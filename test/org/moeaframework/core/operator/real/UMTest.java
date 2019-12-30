@@ -20,16 +20,16 @@ package org.moeaframework.core.operator.real;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.moeaframework.RetryOnTravis;
+import org.moeaframework.Retryable;
 import org.moeaframework.TestThresholds;
-import org.moeaframework.TravisRunner;
+import org.moeaframework.CIRunner;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.operator.DistributionVariationTest;
 import org.moeaframework.core.operator.ParentImmutabilityTest;
 import org.moeaframework.core.operator.TypeSafetyTest;
 import org.moeaframework.core.variable.RealVariable;
 
-@RunWith(TravisRunner.class)
+@RunWith(CIRunner.class)
 public class UMTest extends DistributionVariationTest {
 
 	/**
@@ -41,7 +41,7 @@ public class UMTest extends DistributionVariationTest {
 	}
 
 	@Test
-	@RetryOnTravis
+	@Retryable
 	public void testDistribution() {
 		UM um = new UM(1.0);
 

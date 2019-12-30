@@ -19,14 +19,14 @@ package org.moeaframework.core.operator.real;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.moeaframework.RetryOnTravis;
+import org.moeaframework.Retryable;
 import org.moeaframework.TestThresholds;
-import org.moeaframework.TravisRunner;
+import org.moeaframework.CIRunner;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.operator.MeanCentricVariationTest;
 import org.moeaframework.core.operator.ParentImmutabilityTest;
 
-@RunWith(TravisRunner.class)
+@RunWith(CIRunner.class)
 public class UNDXTest extends MeanCentricVariationTest {
 
 	/**
@@ -34,7 +34,7 @@ public class UNDXTest extends MeanCentricVariationTest {
 	 * completely different parents are used.
 	 */
 	@Test
-	@RetryOnTravis
+	@Retryable
 	public void testFullDistribution() {
 		UNDX undx = new UNDX(3, TestThresholds.SAMPLES);
 
@@ -51,7 +51,7 @@ public class UNDXTest extends MeanCentricVariationTest {
 	 * the parents are degenerate along one axis.
 	 */
 	@Test
-	@RetryOnTravis
+	@Retryable
 	public void testPartialDistribution() {
 		UNDX undx = new UNDX(3, TestThresholds.SAMPLES);
 

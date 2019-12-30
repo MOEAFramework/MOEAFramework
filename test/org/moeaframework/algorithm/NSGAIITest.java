@@ -22,8 +22,8 @@ import java.io.IOException;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.moeaframework.RetryOnTravis;
-import org.moeaframework.TravisRunner;
+import org.moeaframework.Retryable;
+import org.moeaframework.CIRunner;
 import org.moeaframework.core.NondominatedSortingPopulation;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
@@ -37,8 +37,8 @@ import org.moeaframework.util.TypedProperties;
 /**
  * Tests the {@link NSGAII} class.
  */
-@RunWith(TravisRunner.class)
-@RetryOnTravis
+@RunWith(CIRunner.class)
+@Retryable
 public class NSGAIITest extends AlgorithmTest {
 	
 	@Test

@@ -20,4 +20,4 @@ jobs:
     - name: Build with Ant - Java ${{ matrix.java }}
       run: ant -noinput -buildfile build.xml
     - name: Test with Ant - Java ${{ matrix.java }}
-      run: ant -DON_TRAVIS=true -f test.xml
+      run: ant -DON_CI=true -f test.xml

@@ -21,9 +21,9 @@ import java.util.Random;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.moeaframework.RetryOnTravis;
+import org.moeaframework.Retryable;
 import org.moeaframework.TestThresholds;
-import org.moeaframework.TravisRunner;
+import org.moeaframework.CIRunner;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.operator.ParentCentricVariationTest;
@@ -31,7 +31,7 @@ import org.moeaframework.core.operator.ParentImmutabilityTest;
 import org.moeaframework.core.operator.TypeSafetyTest;
 import org.moeaframework.core.variable.RealVariable;
 
-@RunWith(TravisRunner.class)
+@RunWith(CIRunner.class)
 public class SBXTest extends ParentCentricVariationTest {
 
 	/**
@@ -46,7 +46,7 @@ public class SBXTest extends ParentCentricVariationTest {
 	 * Tests if the offspring form clusters distributed around each parent.
 	 */
 	@Test
-	@RetryOnTravis
+	@Retryable
 	public void testDistribution1() {
 		SBX sbx = new SBX(1.0, 20.0);
 

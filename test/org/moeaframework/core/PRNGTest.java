@@ -27,15 +27,15 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.moeaframework.TestThresholds;
-import org.moeaframework.RetryOnTravis;
-import org.moeaframework.TravisRunner;
+import org.moeaframework.Retryable;
+import org.moeaframework.CIRunner;
 
 /**
  * Tests a {@link PRNG} to ensure the {@code nextX} methods produce a sequence
  * of values satisfying theoretical properties of the desired distribution.
  */
-@RunWith(TravisRunner.class)
-@RetryOnTravis
+@RunWith(CIRunner.class)
+@Retryable
 public class PRNGTest {
 
 	/**

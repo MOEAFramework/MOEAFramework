@@ -21,14 +21,14 @@ import java.io.IOException;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.moeaframework.RetryOnTravis;
-import org.moeaframework.TravisRunner;
+import org.moeaframework.Retryable;
+import org.moeaframework.CIRunner;
 
 /**
  * Tests the {@link IBEA} class.
  */
-@RunWith(TravisRunner.class)
-@RetryOnTravis
+@RunWith(CIRunner.class)
+@Retryable
 public class IBEATest extends AlgorithmTest {
 	
 	@Test

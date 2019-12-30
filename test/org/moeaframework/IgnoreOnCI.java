@@ -23,15 +23,15 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.ElementType;
 
 /**
- * Annotation for ignoring unit tests on Travis CI.  This can be used to ignore
+ * Annotation for ignoring unit tests on CI builds.  This can be used to ignore
  * tests that frequently fail due to their stochastic nature, are not configured
- * to run correctly on Travis' build environment, or exceed the 10 minute
+ * to run correctly in a CI build environment, or exceed the 10 minute
  * timeout.  Test classes using this annotation must also specify
- * \code{@RunWith(TravisRunner.clsas)}.
+ * \code{@RunWith(CIRunner.clsas)}.
  */
 @Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface IgnoreOnTravis {
+public @interface IgnoreOnCI {
 	
 	String value() default "No comment";
 

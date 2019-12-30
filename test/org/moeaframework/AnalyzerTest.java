@@ -36,7 +36,7 @@ import org.moeaframework.core.spi.ProblemFactoryTestWrapper;
 /**
  * Tests the {@link Analyzer} class.
  */
-@RunWith(TravisRunner.class)
+@RunWith(CIRunner.class)
 public class AnalyzerTest {
 	
 	private AlgorithmFactoryTestWrapper algorithmFactory;

@@ -20,15 +20,15 @@ package org.moeaframework.util.sequence;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.moeaframework.RetryOnTravis;
+import org.moeaframework.Retryable;
 import org.moeaframework.TestThresholds;
-import org.moeaframework.TravisRunner;
+import org.moeaframework.CIRunner;
 
 /**
  * Tests the {@link Saltelli} class.
  */
-@RunWith(TravisRunner.class)
-@RetryOnTravis
+@RunWith(CIRunner.class)
+@Retryable
 public class SaltelliTest extends SequenceTest {
 
 	/**

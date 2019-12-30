@@ -19,14 +19,14 @@ package org.moeaframework.util.sequence;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.moeaframework.RetryOnTravis;
-import org.moeaframework.TravisRunner;
+import org.moeaframework.Retryable;
+import org.moeaframework.CIRunner;
 
 /**
  * Tests the {@link LatinHypercube} class.
  */
-@RunWith(TravisRunner.class)
-@RetryOnTravis
+@RunWith(CIRunner.class)
+@Retryable
 public class LatinHypercubeTest extends SequenceTest {
 
 	/**
