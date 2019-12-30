@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -18,31 +18,38 @@
 package org.moeaframework.algorithm;
 
 import java.io.IOException;
+
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.moeaframework.RetryOnTravis;
+import org.moeaframework.TravisRunner;
 
 /**
- * Tests the {@link PAES} class.
+ * Tests the {@link PAES} class.  The MOEA Framework's implementation tends
+ * to outperform the JMetal implementation.
  */
+@RunWith(TravisRunner.class)
+@RetryOnTravis
 public class PAESTest extends AlgorithmTest {
 	
 	@Test
 	public void testDTLZ1() throws IOException {
-		test("DTLZ1_2", "PAES", "PAES-JMetal");
+		test("DTLZ1_2", "PAES", "PAES-JMetal", true);
 	}
 	
 	@Test
 	public void testDTLZ2() throws IOException {
-		test("DTLZ2_2", "PAES", "PAES-JMetal");
+		test("DTLZ2_2", "PAES", "PAES-JMetal", true);
 	}
 	
 	@Test
 	public void testDTLZ7() throws IOException {
-		test("DTLZ7_2", "PAES", "PAES-JMetal");
+		test("DTLZ7_2", "PAES", "PAES-JMetal", true);
 	}
 	
 	@Test
 	public void testUF1() throws IOException {
-		test("UF1", "PAES", "PAES-JMetal");
+		test("UF1", "PAES", "PAES-JMetal", true);
 	}
 
 }

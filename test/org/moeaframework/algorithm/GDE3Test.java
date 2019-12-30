@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -18,11 +18,17 @@
 package org.moeaframework.algorithm;
 
 import java.io.IOException;
+
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.moeaframework.RetryOnTravis;
+import org.moeaframework.TravisRunner;
 
 /**
  * Tests the {@link GDE3} class.
  */
+@RunWith(TravisRunner.class)
+@RetryOnTravis
 public class GDE3Test extends AlgorithmTest {
 	
 	@Test

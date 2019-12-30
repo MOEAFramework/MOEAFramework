@@ -21,19 +21,21 @@ provided by the MOEA Framework and supported third-party libraries.
 <table width="100%" border="1" cellpadding="3" cellspacing="0">
   <tr class="TableHeadingColor">
     <th width="10%" align="left">Algorithm</th>
-    <th width="20%" align="left">Type</th>
-    <th width="10%" align="center">Real</th>
-    <th width="10%" align="center">Binary</th>
-    <th width="10%" align="center">Permutation</th>
-    <th width="10%" align="center">Grammar</th>
-    <th width="10%" align="center">Program</th>
-    <th width="10%" align="center">Constraints</th>
+    <th width="17%" align="left">Type</th>
+    <th width="9%" align="center">Real</th>
+    <th width="9%" align="center">Binary</th>
+    <th width="9%" align="center">Permutation</th>
+    <th width="9%" align="center">Subset</th>
+    <th width="9%" align="center">Grammar</th>
+    <th width="9%" align="center">Program</th>
+    <th width="9%" align="center">Constraints</th>
     <th width="10%" align="left">Provider</th>
   </tr>
   <tr>
     <td>AbYSS</td>
     <td>Scatter Search</td>
     <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#FF9090">No</td>
     <td align="center" bgcolor="#FF9090">No</td>
     <td align="center" bgcolor="#FF9090">No</td>
     <td align="center" bgcolor="#FF9090">No</td>
@@ -49,6 +51,7 @@ provided by the MOEA Framework and supported third-party libraries.
     <td align="center" bgcolor="#FF9090">No</td>
     <td align="center" bgcolor="#FF9090">No</td>
     <td align="center" bgcolor="#FF9090">No</td>
+    <td align="center" bgcolor="#FF9090">No</td>
     <td align="center" bgcolor="#90FF90">Yes</td>
     <td>JMetal</td>
   </tr>
@@ -56,6 +59,7 @@ provided by the MOEA Framework and supported third-party libraries.
     <td>CMA-ES</td>
     <td>Evolutionary Strategy</td>
     <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#FF9090">No</td>
     <td align="center" bgcolor="#FF9090">No</td>
     <td align="center" bgcolor="#FF9090">No</td>
     <td align="center" bgcolor="#FF9090">No</td>
@@ -72,6 +76,19 @@ provided by the MOEA Framework and supported third-party libraries.
     <td align="center" bgcolor="#90FF90">Yes</td>
     <td align="center" bgcolor="#90FF90">Yes</td>
     <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td>Native</td>
+  </tr>
+  <tr>
+    <td>DE</td>
+    <td>Single Objective</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#FF9090">No</td>
+    <td align="center" bgcolor="#FF9090">No</td>
+    <td align="center" bgcolor="#FF9090">No</td>
+    <td align="center" bgcolor="#FF9090">No</td>
+    <td align="center" bgcolor="#FF9090">No</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
     <td>Native</td>
   </tr>
   <tr>
@@ -82,12 +99,14 @@ provided by the MOEA Framework and supported third-party libraries.
     <td align="center" bgcolor="#90FF90">Yes</td>
     <td align="center" bgcolor="#FF9090">No</td>
     <td align="center" bgcolor="#FF9090">No</td>
+    <td align="center" bgcolor="#FF9090">No</td>
     <td align="center" bgcolor="#90FF90">Yes</td>
     <td>JMetal</td>
   </tr>
   <tr>
     <td>ECEA</td>
     <td>Genetic Algorithm</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
     <td align="center" bgcolor="#90FF90">Yes</td>
     <td align="center" bgcolor="#90FF90">Yes</td>
     <td align="center" bgcolor="#90FF90">Yes</td>
@@ -105,6 +124,7 @@ provided by the MOEA Framework and supported third-party libraries.
     <td align="center" bgcolor="#90FF90">Yes</td>
     <td align="center" bgcolor="#90FF90">Yes</td>
     <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
     <td>Native</td>
   </tr>
   <tr>
@@ -116,6 +136,19 @@ provided by the MOEA Framework and supported third-party libraries.
     <td align="center" bgcolor="#90FF90">Yes</td>
     <td align="center" bgcolor="#90FF90">Yes</td>
     <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td>Native</td>
+  </tr>
+  <tr>
+    <td>ES</td>
+    <td>Single Objective</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#FF9090">No</td>
+    <td align="center" bgcolor="#FF9090">No</td>
+    <td align="center" bgcolor="#FF9090">No</td>
+    <td align="center" bgcolor="#FF9090">No</td>
+    <td align="center" bgcolor="#FF9090">No</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
     <td>Native</td>
   </tr>
   <tr>
@@ -124,6 +157,7 @@ provided by the MOEA Framework and supported third-party libraries.
     <td align="center" bgcolor="#90FF90">Yes</td>
     <td align="center" bgcolor="#90FF90">Yes</td>
     <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#FF9090">No</td>
     <td align="center" bgcolor="#FF9090">No</td>
     <td align="center" bgcolor="#FF9090">No</td>
     <td align="center" bgcolor="#90FF90">Yes</td>
@@ -137,13 +171,27 @@ provided by the MOEA Framework and supported third-party libraries.
     <td align="center" bgcolor="#90FF90">Yes</td>
     <td align="center" bgcolor="#90FF90">Yes</td>
     <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
     <td align="center" bgcolor="#FF9090">No</td>
     <td>PISA</td>
+  </tr>
+  <tr>
+    <td>GA</td>
+    <td>Single Objective</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td>Native</td>
   </tr>
   <tr>
     <td>GDE3</td>
     <td>Differential Evolution</td>
     <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#FF9090">No</td>
     <td align="center" bgcolor="#FF9090">No</td>
     <td align="center" bgcolor="#FF9090">No</td>
     <td align="center" bgcolor="#FF9090">No</td>
@@ -154,6 +202,7 @@ provided by the MOEA Framework and supported third-party libraries.
   <tr>
     <td>HypE</td>
     <td>Indicator-Based</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
     <td align="center" bgcolor="#90FF90">Yes</td>
     <td align="center" bgcolor="#90FF90">Yes</td>
     <td align="center" bgcolor="#90FF90">Yes</td>
@@ -170,7 +219,8 @@ provided by the MOEA Framework and supported third-party libraries.
     <td align="center" bgcolor="#90FF90">Yes</td>
     <td align="center" bgcolor="#90FF90">Yes</td>
     <td align="center" bgcolor="#90FF90">Yes</td>
-    <td align="center" bgcolor="#90FF90">No</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#FF9090">No</td>
     <td>Native</td>
   </tr>
   <tr>
@@ -179,6 +229,7 @@ provided by the MOEA Framework and supported third-party libraries.
     <td align="center" bgcolor="#90FF90">Yes</td>
     <td align="center" bgcolor="#90FF90">Yes</td>
     <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#FF9090">No</td>
     <td align="center" bgcolor="#FF9090">No</td>
     <td align="center" bgcolor="#FF9090">No</td>
     <td align="center" bgcolor="#90FF90">Yes</td>
@@ -192,6 +243,7 @@ provided by the MOEA Framework and supported third-party libraries.
     <td align="center" bgcolor="#FF9090">No</td>
     <td align="center" bgcolor="#FF9090">No</td>
     <td align="center" bgcolor="#FF9090">No</td>
+    <td align="center" bgcolor="#FF9090">No</td>
     <td align="center" bgcolor="#90FF90">Yes</td>
     <td>JMetal</td>
   </tr>
@@ -199,6 +251,19 @@ provided by the MOEA Framework and supported third-party libraries.
     <td>MOEAD</td>
     <td>Decomposition</td>
     <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#FF9090">Yes</td>
+    <td align="center" bgcolor="#FF9090">Yes</td>
+    <td align="center" bgcolor="#FF9090">Yes</td>
+    <td align="center" bgcolor="#FF9090">Yes</td>
+    <td align="center" bgcolor="#FF9090">Yes</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td>Native</td>
+  </tr>
+  <tr>
+    <td>MSOPS</td>
+    <td>Differential Evolution</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#FF9090">No</td>
     <td align="center" bgcolor="#FF9090">No</td>
     <td align="center" bgcolor="#FF9090">No</td>
     <td align="center" bgcolor="#FF9090">No</td>
@@ -209,6 +274,7 @@ provided by the MOEA Framework and supported third-party libraries.
   <tr>
     <td>NSGAII</td>
     <td>Genetic Algorithm</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
     <td align="center" bgcolor="#90FF90">Yes</td>
     <td align="center" bgcolor="#90FF90">Yes</td>
     <td align="center" bgcolor="#90FF90">Yes</td>
@@ -226,6 +292,7 @@ provided by the MOEA Framework and supported third-party libraries.
     <td align="center" bgcolor="#90FF90">Yes</td>
     <td align="center" bgcolor="#90FF90">Yes</td>
     <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
     <td>Native</td>
   </tr>
   <tr>
@@ -236,12 +303,14 @@ provided by the MOEA Framework and supported third-party libraries.
     <td align="center" bgcolor="#FF9090">No</td>
     <td align="center" bgcolor="#FF9090">No</td>
     <td align="center" bgcolor="#FF9090">No</td>
+    <td align="center" bgcolor="#FF9090">No</td>
     <td align="center" bgcolor="#90FF90">Yes</td>
     <td>Native</td>
   </tr>
   <tr>
     <td>PAES</td>
     <td>Evolutionary Strategy</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
     <td align="center" bgcolor="#90FF90">Yes</td>
     <td align="center" bgcolor="#90FF90">Yes</td>
     <td align="center" bgcolor="#90FF90">Yes</td>
@@ -259,11 +328,37 @@ provided by the MOEA Framework and supported third-party libraries.
     <td align="center" bgcolor="#90FF90">Yes</td>
     <td align="center" bgcolor="#90FF90">Yes</td>
     <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td>Native</td>
+  </tr>
+  <tr>
+    <td>RSO</td>
+    <td>Single Objective</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td>Native</td>  
+  </tr>
+  <tr>
+    <td>RVEA</td>
+    <td>Reference Vectors</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
     <td>Native</td>
   </tr>
   <tr>
     <td>SEMO2</td>
     <td>Genetic Algorithm</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
     <td align="center" bgcolor="#90FF90">Yes</td>
     <td align="center" bgcolor="#90FF90">Yes</td>
     <td align="center" bgcolor="#90FF90">Yes</td>
@@ -280,12 +375,14 @@ provided by the MOEA Framework and supported third-party libraries.
     <td align="center" bgcolor="#90FF90">Yes</td>
     <td align="center" bgcolor="#90FF90">Yes</td>
     <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
     <td align="center" bgcolor="#FF9090">No</td>
     <td>PISA</td>
   </tr>
   <tr>
     <td>SIBEA</td>
     <td>Indicator-Based</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
     <td align="center" bgcolor="#90FF90">Yes</td>
     <td align="center" bgcolor="#90FF90">Yes</td>
     <td align="center" bgcolor="#90FF90">Yes</td>
@@ -302,6 +399,7 @@ provided by the MOEA Framework and supported third-party libraries.
     <td align="center" bgcolor="#FF9090">No</td>
     <td align="center" bgcolor="#FF9090">No</td>
     <td align="center" bgcolor="#FF9090">No</td>
+    <td align="center" bgcolor="#FF9090">No</td>
     <td align="center" bgcolor="#90FF90">Yes</td>
     <td>Native</td>
   </tr>
@@ -314,11 +412,13 @@ provided by the MOEA Framework and supported third-party libraries.
     <td align="center" bgcolor="#90FF90">Yes</td>
     <td align="center" bgcolor="#90FF90">Yes</td>
     <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
     <td>Native</td>
   </tr>
   <tr>
     <td>SPAM</td>
     <td>Indicator-Based</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
     <td align="center" bgcolor="#90FF90">Yes</td>
     <td align="center" bgcolor="#90FF90">Yes</td>
     <td align="center" bgcolor="#90FF90">Yes</td>
@@ -336,11 +436,13 @@ provided by the MOEA Framework and supported third-party libraries.
     <td align="center" bgcolor="#90FF90">Yes</td>
     <td align="center" bgcolor="#90FF90">Yes</td>
     <td align="center" bgcolor="#90FF90">Yes</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
     <td>Native</td>
   </tr>
   <tr>
     <td>VEGA</td>
     <td>Genetic Algorithm</td>
+    <td align="center" bgcolor="#90FF90">Yes</td>
     <td align="center" bgcolor="#90FF90">Yes</td>
     <td align="center" bgcolor="#90FF90">Yes</td>
     <td align="center" bgcolor="#90FF90">Yes</td>

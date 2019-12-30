@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -77,6 +77,27 @@ public class NormalizerTest {
 		expected.add(TestUtils.newSolution(0.0, 1.0));
 		expected.add(TestUtils.newSolution(1.0, 0.0));
 		expected.add(TestUtils.newSolution(0.5, 0.5));
+		
+		TestUtils.assertEquals(expected, normalizer.normalize(population));
+	}
+	
+	/**
+	 * Tests normalization when a reference point is provided.
+	 */
+	@Test
+	public void testRescaleReferencePoint() {
+		NondominatedPopulation population = new NondominatedPopulation();
+		population.add(TestUtils.newSolution(0.0, 0.1));
+		population.add(TestUtils.newSolution(10.0, -0.1));
+		population.add(TestUtils.newSolution(5.0, 0.0));
+		
+		Normalizer normalizer = new Normalizer(new ProblemStub(2), 
+				population, new double[] { 20.0, 0.2 });
+		
+		NondominatedPopulation expected = new NondominatedPopulation();
+		expected.add(TestUtils.newSolution(0.0, 0.6666666));
+		expected.add(TestUtils.newSolution(0.5, 0.0));
+		expected.add(TestUtils.newSolution(0.25, 0.3333333));
 		
 		TestUtils.assertEquals(expected, normalizer.normalize(population));
 	}

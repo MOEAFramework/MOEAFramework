@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -367,6 +367,20 @@ public class SolutionTest {
 		// check if objectives were defensively copied
 		objectives[0] = 0.0;
 		Assert.assertEquals(1.0, solution.getObjective(0), Settings.EPS);
+	}
+	
+	/**
+	 * Tests if the deep copy method works correctly, property cloning all
+	 * attributes.
+	 */
+	@Test
+	public void testDeepCopy() {
+		double[] array = new double[] { 1.0, 2.0 };
+		solution.setAttribute("key", array);
+		
+		Solution copy = solution.deepCopy();
+		
+		Assert.assertTrue(array != copy.getAttribute("key"));
 	}
 
 	/**

@@ -1,0 +1,5 @@
+<expr> ::= <func> | (<expr> <op> <expr>) | <value>
+<func> ::= <func-name> ( <expr> )
+<func-name> ::= Math.sin | Math.cos | Math.exp | Math.log
+<op> ::= + | * | - | /
+<value> ::= x

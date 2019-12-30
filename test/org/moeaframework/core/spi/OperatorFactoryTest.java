@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -142,7 +142,7 @@ public class OperatorFactoryTest {
 				new Properties(), problem));
 	}
 	
-	@Test(expected = ProviderNotFoundException.class)
+	@Test(expected = ProviderLookupException.class)
 	public void testMixedType() {
 		Problem problem = new ProblemStub(5) {
 			
@@ -162,7 +162,7 @@ public class OperatorFactoryTest {
 				problem);
 	}
 	
-	@Test(expected = ProviderNotFoundException.class)
+	@Test(expected = ProviderLookupException.class)
 	public void testUnknownType() {
 		Problem problem = new ProblemStub(1) {
 			
@@ -179,6 +179,11 @@ public class OperatorFactoryTest {
 						throw new UnsupportedOperationException();
 					}
 
+					@Override
+					public void randomize() {
+						throw new UnsupportedOperationException();
+					}
+
 				});
 				
 				return solution;
@@ -190,7 +195,7 @@ public class OperatorFactoryTest {
 				problem);
 	}
 	
-	@Test(expected = ProviderNotFoundException.class)
+	@Test(expected = ProviderLookupException.class)
 	public void testEmptyType() {
 		Problem problem = new ProblemStub(0);
 		

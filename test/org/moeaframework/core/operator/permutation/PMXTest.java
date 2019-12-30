@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -30,7 +30,7 @@ import org.moeaframework.core.variable.Permutation;
 public class PMXTest {
 
 	/**
-	 * Tests if the grammar crossover operator is type-safe.
+	 * Tests if the PMX crossover operator is type-safe.
 	 */
 	@Test
 	public void testTypeSafety() {

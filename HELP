@@ -92,6 +92,12 @@ no reference set available
   supplied by the user via a command line argument.  This exception occurs
   if neither approach provides a reference set.
   
+reference set contains invalid number of objectives
+  Several of the command line utilities require a reference set.  The reference
+  set file should contain only the objectives.  This error is thrown when the
+  reference set file contains solutions with an incorrect number of objectives.
+  Ensure the reference set file is valid and only includes objectives.
+  
 unable to load reference set
   Indicates that a reference set is specified, but it could not be loaded.
   The error message should contain additional information about the underlying

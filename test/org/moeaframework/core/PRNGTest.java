@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -25,12 +25,17 @@ import java.util.List;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.moeaframework.TestThresholds;
+import org.moeaframework.RetryOnTravis;
+import org.moeaframework.TravisRunner;
 
 /**
  * Tests a {@link PRNG} to ensure the {@code nextX} methods produce a sequence
  * of values satisfying theoretical properties of the desired distribution.
  */
+@RunWith(TravisRunner.class)
+@RetryOnTravis
 public class PRNGTest {
 
 	/**

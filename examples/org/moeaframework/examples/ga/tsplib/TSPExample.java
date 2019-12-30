@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -183,7 +183,7 @@ public class TSPExample {
 		properties.setProperty("pmx.rate", "0.4");
 		
 		Algorithm algorithm = AlgorithmFactory.getInstance().getAlgorithm(
-				"NSGAII", properties, problem);
+				"GA", properties, problem);
 		
 		int iteration = 0;
 		

@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -22,22 +22,22 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.moeaframework.core.spi.TestAlgorithmFactory;
-import org.moeaframework.core.spi.TestProblemFactory;
+import org.moeaframework.core.spi.AlgorithmFactoryTestWrapper;
+import org.moeaframework.core.spi.ProblemFactoryTestWrapper;
 
 /**
  * Tests the {@link Executor} class.
  */
 public class ExecutorTest {
 
-	private TestAlgorithmFactory algorithmFactory;
+	private AlgorithmFactoryTestWrapper algorithmFactory;
 	
-	private TestProblemFactory problemFactory;
+	private ProblemFactoryTestWrapper problemFactory;
 	
 	@Before
 	public void setUp() {
-		algorithmFactory = new TestAlgorithmFactory();
-		problemFactory = new TestProblemFactory();
+		algorithmFactory = new AlgorithmFactoryTestWrapper();
+		problemFactory = new ProblemFactoryTestWrapper();
 	}
 	
 	@After
@@ -81,6 +81,48 @@ public class ExecutorTest {
 		
 		Assert.assertEquals(10, algorithmFactory.getTerminateCount());
 		Assert.assertEquals(10, problemFactory.getCloseCount());
+	}
+	
+	@Test
+	public void testProgressListenerSingleSeed() {
+		TestProgressListener listener = new TestProgressListener();
+		
+		new Executor()
+			.withProblem("DTLZ2_2")
+			.withAlgorithm("NSGAII")
+			.withProgressListener(listener)
+			.withMaxEvaluations(1000)
+			.run();
+		
+		Assert.assertEquals(1, listener.getSeedCount());
+		Assert.assertEquals(11, listener.getCallCount());
+		Assert.assertEquals(0, listener.getLastEvent().getCurrentNFE()); // resets to 0 after calling nextSeed
+		Assert.assertEquals(1000, listener.getLastEvent().getMaxNFE());
+		Assert.assertEquals(1, listener.getLastEvent().getTotalSeeds());
+		Assert.assertEquals(2, listener.getLastEvent().getCurrentSeed()); // TODO: is this OK
+		Assert.assertEquals(1.0, listener.getLastEvent().getPercentComplete(), 0.0);
+		Assert.assertEquals(0.0, listener.getLastEvent().getRemainingTime(), 0.0);
+	}
+	
+	@Test
+	public void testProgressListenerMultipleSeed() {
+		TestProgressListener listener = new TestProgressListener();
+		
+		new Executor()
+			.withProblem("DTLZ2_2")
+			.withAlgorithm("NSGAII")
+			.withProgressListener(listener)
+			.withMaxEvaluations(1000)
+			.runSeeds(5);
+		
+		Assert.assertEquals(5, listener.getSeedCount());
+		Assert.assertEquals(55, listener.getCallCount());
+		Assert.assertEquals(0, listener.getLastEvent().getCurrentNFE()); // resets to 0 after calling nextSeed
+		Assert.assertEquals(1000, listener.getLastEvent().getMaxNFE());
+		Assert.assertEquals(5, listener.getLastEvent().getTotalSeeds());
+		Assert.assertEquals(6, listener.getLastEvent().getCurrentSeed());
+		Assert.assertEquals(1.0, listener.getLastEvent().getPercentComplete(), 0.0);
+		Assert.assertEquals(0.0, listener.getLastEvent().getRemainingTime(), 0.0);
 	}
 
 	@Test(expected = IllegalArgumentException.class)

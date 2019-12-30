@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -24,7 +24,8 @@ import org.junit.Test;
 import org.moeaframework.util.Localization;
 
 /**
- * Tests the {@link Localization} class.
+ * Tests the {@link Localization} class.  If errors occur when running tests
+ * within Eclipse, please ensure the text file encoding is UTF-8.
  */
 public class LocalizationTest {
 

@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -58,6 +58,7 @@ import org.moeaframework.util.statistics.MannWhitneyUTest;
 /**
  * Performs basic end-of-run analysis.  For example, the following demonstrates
  * its typical use.  First construct and configure the analyzer:
+ * <p>
  * <pre>
  *   Analyzer analyzer = new Analyzer()
  *       .withProblem("DTLZ2_2")
@@ -68,7 +69,9 @@ import org.moeaframework.util.statistics.MannWhitneyUTest;
  *       .showAggregate()
  *       .showStatisticalSignificance();
  * </pre>
+ * <p>
  * The problem must always be specified.  Next, add the data to be analyzed:
+ * <p>
  * <pre>
  *   Executor executor = new Executor().withProblem("DTLZ2_2");
  *   add("NSGAII", executor.withAlgorithm("NSGAII").run());
@@ -80,7 +83,8 @@ import org.moeaframework.util.statistics.MannWhitneyUTest;
  * </pre>
  * The output produced is compatible with the 
  * <a href="http://yaml.org/">YAML</a> format, and thus can be postprocessed
- * easily with any YAML parser.
+ * easily with any YAML parser.  The results can also be accessed
+ * programatically by calling {@link #getAnalysis()}.
  */
 public class Analyzer extends ProblemBuilder {
 	
@@ -177,6 +181,19 @@ public class Analyzer extends ProblemBuilder {
 	private List<UnivariateStatistic> statistics;
 	
 	/**
+	 * The ideal point to use when normalizing the data; or {@code null} if the
+	 * ideal point should be derived from the reference set.
+	 */
+	private double[] idealPoint;
+	
+	/**
+	 * The reference point to use when computing the hypervolume metric; or
+	 * {@code null} if the reference point should be derived from the reference
+	 * set.
+	 */
+	private double[] referencePoint;
+	
+	/**
 	 * The collection of end-of-run approximation sets.
 	 */
 	private Map<String, List<NondominatedPopulation>> data;
@@ -205,6 +222,11 @@ public class Analyzer extends ProblemBuilder {
 	@Override
 	public Analyzer withProblem(String problemName) {
 		return (Analyzer)super.withProblem(problemName);
+	}
+	
+	@Override
+	public Analyzer withProblem(Problem problemInstance) {
+		return (Analyzer)super.withProblem(problemInstance);
 	}
 	
 	@Override
@@ -437,6 +459,30 @@ public class Analyzer extends ProblemBuilder {
 	}
 	
 	/**
+	 * Sets the ideal point used for computing the hypervolume metric.
+	 * 
+	 * @param idealPoint the ideal point
+	 * @return a reference to this analyzer
+	 */
+	public Analyzer withIdealPoint(double... idealPoint) {
+		this.idealPoint = idealPoint;
+		
+		return this;
+	}
+
+	/**
+	 * Sets the reference point used for computing the hypervolume metric.
+	 * 
+	 * @param referencePoint the reference point
+	 * @return a reference to this analyzer
+	 */
+	public Analyzer withReferencePoint(double... referencePoint) {
+		this.referencePoint = referencePoint;
+		
+		return this;
+	}
+
+	/**
 	 * Adds the collection of new samples with the specified name.
 	 * 
 	 * @param name the name of these samples
@@ -549,7 +595,7 @@ public class Analyzer extends ProblemBuilder {
 				}
 			}
 		} finally {
-			if (problem != null) {
+			if ((problem != null) && (problem != this.problemInstance)) {
 				problem.close();
 			}
 		}
@@ -593,7 +639,7 @@ public class Analyzer extends ProblemBuilder {
 				}
 			}
 		} finally {
-			if (problem != null) {
+			if ((problem != null) && (problem != this.problemInstance)) {
 				problem.close();
 			}
 		}
@@ -631,9 +677,8 @@ public class Analyzer extends ProblemBuilder {
 	 * output.
 	 * 
 	 * @return a reference to this analyzer
-	 * @throws IOException if an I/O error occurred
 	 */
-	public Analyzer printAnalysis() throws IOException {
+	public Analyzer printAnalysis() {
 		printAnalysis(System.out);
 		
 		return this;
@@ -691,15 +736,13 @@ public class Analyzer extends ProblemBuilder {
 	}
 	
 	/**
-	 * Prints the analysis of all data recorded in this analyzer.  
+	 * Generates the analysis of all data recorded in this analyzer.  
 	 * 
-	 * @param ps the stream to which the analysis is written
-	 * @return a reference to this analyzer
-	 * @throws IOException if an I/O error occurred
+	 * @return an object storing the results of the analysis
 	 */
-	public Analyzer printAnalysis(PrintStream ps) throws IOException {
+	public AnalyzerResults getAnalysis() {
 		if (data.isEmpty()) {
-			return this;
+			return new AnalyzerResults();
 		}
 		
 		Problem problem = null;
@@ -714,7 +757,13 @@ public class Analyzer extends ProblemBuilder {
 			List<Indicator> indicators = new ArrayList<Indicator>();
 			
 			if (includeHypervolume) {
-				indicators.add(new Hypervolume(problem, referenceSet));
+				if ((idealPoint != null) && (referencePoint != null)) {
+					indicators.add(new Hypervolume(problem, idealPoint, referencePoint));
+				} else if (referencePoint != null) {
+					indicators.add(new Hypervolume(problem, referenceSet, referencePoint));
+				} else {
+					indicators.add(new Hypervolume(problem, referenceSet));
+				}
 			}
 			
 			if (includeGenerationalDistance) {
@@ -768,7 +817,7 @@ public class Analyzer extends ProblemBuilder {
 			
 			if (indicators.isEmpty()) {
 				System.err.println("no indicators selected");
-				return this;
+				return new AnalyzerResults();
 			}
 			
 			//generate the aggregate sets
@@ -789,14 +838,14 @@ public class Analyzer extends ProblemBuilder {
 			
 			//precompute the individual seed metrics, as they are used both
 			//for descriptive statistics and statistical significance tests
-			Map<String, Map<Indicator, double[]>> metrics = 
-					new HashMap<String, Map<Indicator, double[]>>();
+			AnalyzerResults analyzerResults = new AnalyzerResults();
 			
 			for (String algorithm : data.keySet()) {
-				Map<Indicator, double[]> entry = 
-						new HashMap<Indicator, double[]>();
+				AlgorithmResult algorithmResult = new AlgorithmResult(
+						algorithm);
 				
 				for (Indicator indicator : indicators) {
+					String indicatorName = indicator.getClass().getSimpleName();
 					List<NondominatedPopulation> sets = data.get(algorithm);
 					double[] values = new double[sets.size()];
 					
@@ -804,33 +853,26 @@ public class Analyzer extends ProblemBuilder {
 						values[i] = indicator.evaluate(sets.get(i));
 					}
 					
-					entry.put(indicator, values);
+					algorithmResult.add(new IndicatorResult(
+							indicatorName, values));
+					
+					if (showAggregate) {
+						algorithmResult.get(indicatorName).setAggregateValue(
+								indicator.evaluate(
+										aggregateSets.get(algorithm)));
+					}
 				}
 				
-				metrics.put(algorithm, entry);
+				analyzerResults.add(algorithmResult);
 			}
 			
 			//precompute the statistical significance of the medians
-			Map<Indicator, Map<String, List<String>>> indifferences =
-					new HashMap<Indicator, Map<String, List<String>>>();
-			
 			if (showStatisticalSignificance) {
-				List<String> algorithms = new ArrayList<String>(
-						metrics.keySet());
-				
-				//initialize the storage
-				for (Indicator indicator : indicators) {
-					HashMap<String, List<String>> entry = 
-							new HashMap<String, List<String>>();
-					
-					for (String algorithm : algorithms) {
-						entry.put(algorithm, new ArrayList<String>());
-					}
-					
-					indifferences.put(indicator, entry);
-				}
+				List<String> algorithms = new ArrayList<String>(data.keySet());
 				
 				for (Indicator indicator : indicators) {
+					String indicatorName = indicator.getClass().getSimpleName();
+					
 					//insufficient number of samples, skip test
 					if (algorithms.size() < 2) {
 						continue;
@@ -840,20 +882,25 @@ public class Analyzer extends ProblemBuilder {
 							algorithms.size());
 					
 					for (int i=0; i<algorithms.size(); i++) {
-						kwTest.addAll(metrics.get(algorithms.get(i))
-								.get(indicator), i);
+						String algorithm = algorithms.get(i);
+						double[] values = analyzerResults.get(algorithm)
+								.get(indicatorName).getValues();
+						
+						kwTest.addAll(values, i);
 					}
 					
 					try {
 						if (!kwTest.test(significanceLevel)) {
 							for (int i=0; i<algorithms.size()-1; i++) {
 								for (int j=i+1; j<algorithms.size(); j++) {
-									indifferences.get(indicator)
-											.get(algorithms.get(i))
-											.add(algorithms.get(j));
-									indifferences.get(indicator)
-											.get(algorithms.get(j))
-											.add(algorithms.get(i));
+									analyzerResults.get(algorithms.get(i))
+											.get(indicatorName)
+											.addIndifferentAlgorithm(
+													algorithms.get(j));
+									analyzerResults.get(algorithms.get(j))
+											.get(indicatorName)
+											.addIndifferentAlgorithm(
+													algorithms.get(i));
 								}
 							}
 						} else {
@@ -862,18 +909,22 @@ public class Analyzer extends ProblemBuilder {
 									MannWhitneyUTest mwTest = 
 											new MannWhitneyUTest();
 									
-									mwTest.addAll(metrics.get(algorithms.get(i))
-											.get(indicator), 0);
-									mwTest.addAll(metrics.get(algorithms.get(j))
-											.get(indicator), 1);
+									mwTest.addAll(analyzerResults
+											.get(algorithms.get(i))
+											.get(indicatorName).getValues(), 0);
+									mwTest.addAll(analyzerResults
+											.get(algorithms.get(j))
+											.get(indicatorName).getValues(), 1);
 									
 									if (!mwTest.test(significanceLevel)) {
-										indifferences.get(indicator)
-												.get(algorithms.get(i))
-												.add(algorithms.get(j));
-										indifferences.get(indicator)
-												.get(algorithms.get(j))
-												.add(algorithms.get(i));
+										analyzerResults.get(algorithms.get(i))
+												.get(indicatorName)
+												.addIndifferentAlgorithm(
+														algorithms.get(j));
+										analyzerResults.get(algorithms.get(j))
+												.get(indicatorName)
+												.addIndifferentAlgorithm(
+														algorithms.get(i));
 									}
 								}
 							}
@@ -883,77 +934,24 @@ public class Analyzer extends ProblemBuilder {
 					}
 				}
 			}
-			
-			//print the results
-			Min min = new Min();
-			Max max = new Max();
-			Median median = new Median();
-			
-			for (String algorithm : metrics.keySet()) {
-				ps.print(algorithm);
-				ps.println(':');
-				
-				for (Indicator indicator : indicators) {
-					double[] values = metrics.get(algorithm).get(indicator);
 					
-					ps.print("    ");
-					ps.print(indicator.getClass().getSimpleName());
-					ps.print(": ");
-					
-					if (values.length == 0) {
-						ps.print("null");
-					} else if (values.length == 1) {
-						ps.print(values[0]);
-					} else {
-						ps.println();
-						
-						if (showAggregate) {
-							ps.print("        Aggregate: ");
-							ps.println(indicator.evaluate(
-									aggregateSets.get(algorithm)));
-						}
-						
-						if (statistics.isEmpty()) {
-							ps.print("        Min: ");
-							ps.println(min.evaluate(values));
-							ps.print("        Median: ");
-							ps.println(median.evaluate(values));
-							ps.print("        Max: ");
-							ps.println(max.evaluate(values));
-						} else {
-							for (UnivariateStatistic statistic : statistics) {
-								ps.print("        ");
-								ps.print(statistic.getClass().getSimpleName());
-								ps.print(": ");
-								ps.println(statistic.evaluate(values));
-							}
-						}
-						
-						ps.print("        Count: ");
-						ps.print(values.length);
-						
-						if (showStatisticalSignificance) {
-							ps.println();
-							ps.print("        Indifferent: ");
-							ps.print(indifferences.get(indicator)
-									.get(algorithm));
-						}
-						
-						if (showIndividualValues) {
-							ps.println();
-							ps.print("        Values: ");
-							ps.print(Arrays.toString(values));
-						}
-					}
-					
-					ps.println();
-				}
-			}
+			return analyzerResults;
 		} finally {
-			if (problem != null) {
+			if ((problem != null) && (problem != this.problemInstance)) {
 				problem.close();
 			}
 		}
+	}
+	
+	/**
+	 * Prints the analysis of all data recorded in this analyzer.  
+	 * 
+	 * @param ps the stream to which the analysis is written
+	 * @return a reference to this analyzer
+	 * @throws IOException if an I/O error occurred
+	 */
+	public Analyzer printAnalysis(PrintStream ps) {
+		getAnalysis().print(ps);
 		
 		return this;
 	}
@@ -967,6 +965,391 @@ public class Analyzer extends ProblemBuilder {
 		data.clear();
 		
 		return this;
+	}
+	
+	/**
+	 * Stores the results produced by this analyzer.
+	 */
+	public class AnalyzerResults {
+		
+		/**
+		 * The results for each algorithm.
+		 */
+		private final List<AlgorithmResult> algorithmResults;
+		
+		/**
+		 * Constructs a new, empty object for storing the results from this
+		 * analyzer.
+		 */
+		AnalyzerResults() {
+			super();
+			
+			algorithmResults = new ArrayList<AlgorithmResult>();
+		}
+		
+		/**
+		 * Returns the algorithms processed using this analyzer.
+		 * 
+		 * @return the algorithm names
+		 */
+		public List<String> getAlgorithms() {
+			List<String> algorithms = new ArrayList<String>();
+			
+			for (AlgorithmResult result : algorithmResults) {
+				algorithms.add(result.getAlgorithm());
+			}
+			
+			return algorithms;
+		}
+		
+		/**
+		 * Returns the results for a single algorithm.
+		 * 
+		 * @param algorithm the name of the algorithm
+		 * @return the results for the given algorithm
+		 */
+		public AlgorithmResult get(String algorithm) {
+			for (AlgorithmResult result : algorithmResults) {
+				if (result.getAlgorithm().equals(algorithm)) {
+					return result;
+				}
+			}
+			
+			return null;
+		}
+		
+		/**
+		 * Adds the results for an algorithm.  Each result should have a unique
+		 * algorithm name.
+		 * 
+		 * @param result the results for the algorithm
+		 */
+		void add(AlgorithmResult result) {
+			algorithmResults.add(result);
+		}
+		
+		/**
+		 * Prints the results to standard output.
+		 */
+		public void print() {
+			print(System.out);
+		}
+		
+		/**
+		 * Prints the results to the given stream.
+		 * 
+		 * @param ps the stream where the results are printed
+		 */
+		public void print(PrintStream ps) {
+			for (AlgorithmResult algorithmResult : algorithmResults) {
+				algorithmResult.print(ps);
+			}
+		}
+		
+	}
+	
+	/**
+	 * Stores the results for a single algorithm.
+	 */
+	public class AlgorithmResult {
+		
+		/**
+		 * The name of the algorithm.
+		 */
+		private final String algorithm;
+		
+		/**
+		 * The results for each indicator.
+		 */
+		private final List<IndicatorResult> indicatorResults;
+		
+		/**
+		 * Constructs a new, empty object for storing the results of a single
+		 * algorithm.
+		 * 
+		 * @param algorithm the algorithm name
+		 */
+		public AlgorithmResult(String algorithm) {
+			super();
+			this.algorithm = algorithm;
+			
+			indicatorResults = new ArrayList<IndicatorResult>();
+		}
+		
+		/**
+		 * Returns the name of the algorithm.
+		 * 
+		 * @return the algorithm name
+		 */
+		public String getAlgorithm() {
+			return algorithm;
+		}
+
+		/**
+		 * Returns the names of the indicators contained within these results.
+		 * 
+		 * @return a list of the indicator names
+		 */
+		public List<String> getIndicators() {
+			List<String> indicators = new ArrayList<String>();
+			
+			for (IndicatorResult result : indicatorResults) {
+				indicators.add(result.getIndicator());
+			}
+			
+			return indicators;
+		}
+		
+		/**
+		 * Returns the results for the given indicator.
+		 * 
+		 * @param indicator the indicator name
+		 * @return the results for the given indicator
+		 */
+		public IndicatorResult get(String indicator) {
+			for (IndicatorResult result : indicatorResults) {
+				if (result.getIndicator().equals(indicator)) {
+					return result;
+				}
+			}
+			
+			return null;
+		}
+		
+		/**
+		 * Adds the results for a single indicator.  The name of the indicator
+		 * should be unique.
+		 * 
+		 * @param result the indicator result
+		 */
+		void add(IndicatorResult result) {
+			indicatorResults.add(result);
+		}
+		
+		/**
+		 * Prints the results to the given stream.
+		 * 
+		 * @param ps the stream where the results are printed
+		 */
+		void print(PrintStream ps) {
+			ps.print(getAlgorithm());
+			ps.println(':');
+			
+			for (IndicatorResult indicatorResult : indicatorResults) {
+				indicatorResult.print(ps);
+			}
+		}
+		
+	}
+	
+	/**
+	 * Inner class for storing the results for a single performance indicator.
+	 */
+	public class IndicatorResult {
+		
+		/**
+		 * The name of the indicator.
+		 */
+		private final String indicator;
+		
+		/**
+		 * The computed indicator values.
+		 */
+		private final double[] values;
+		
+		/**
+		 * A list of algorithms whose performance with respect to this
+		 * indicator are statistically similar to the current algorithm.
+		 */
+		private List<String> indifferentAlgorithms;
+		
+		/**
+		 * The indicator value of the aggregate Pareto set, or {@code null}
+		 * if the aggregate value was not computed.
+		 */
+		private Double aggregateValue;
+		
+		/**
+		 * Constructs a new object for storing the results for a single
+		 * indicator.
+		 * 
+		 * @param indicator the name of the indicator
+		 * @param values the computed indicator values
+		 */
+		public IndicatorResult(String indicator, double[] values) {
+			super();
+			this.indicator = indicator;
+			this.values = values;
+			
+			indifferentAlgorithms = new ArrayList<String>();
+		}
+		
+		/**
+		 * Returns the computed indicator values.
+		 * 
+		 * @return the indicator values
+		 */
+		public double[] getValues() {
+			return values.clone();
+		}
+
+		/**
+		 * Returns the minimum indicator value.
+		 * 
+		 * @return the minimum indicator value
+		 */
+		public double getMin() {
+			return getStatistic(new Min());
+		}
+		
+		/**
+		 * Returns the median indicator value.
+		 * 
+		 * @return the median indicator value
+		 */
+		public double getMedian() {
+			return getStatistic(new Median());
+		}
+		
+		/**
+		 * Returns the maximum indicator value.
+		 * 
+		 * @return the maximum indicator value
+		 */
+		public double getMax() {
+			return getStatistic(new Max());
+		}
+		
+		/**
+		 * Computes and returns the value of the given univariate statistic.
+		 * 
+		 * @param statistic the univariate statistic to compute
+		 * @return the computed value of the statistic
+		 */
+		public double getStatistic(UnivariateStatistic statistic) {
+			return statistic.evaluate(values);
+		}
+		
+		/**
+		 * Returns the number of samples.
+		 * 
+		 * @return the number of samples
+		 */
+		public int getCount() {
+			return values.length;
+		}
+
+		/**
+		 * Returns a list of algorithms whose performance with respect to this
+		 * indicator are statistically similar to the current algorithm.  This
+		 * list will only be populated if
+		 * {@link Analyzer#showStatisticalSignificance()} is invoked.
+		 * 
+		 * @return a list of algorithms with statistically similar performance
+		 */
+		public List<String> getIndifferentAlgorithms() {
+			return new ArrayList<String>(indifferentAlgorithms);
+		}
+		
+		/**
+		 * Adds an algorithm with statistically similar performance to the
+		 * current algorithm.
+		 * 
+		 * @param algorithm the algorithm with statistically similar performance
+		 */
+		void addIndifferentAlgorithm(String algorithm) {
+			indifferentAlgorithms.add(algorithm);
+		}
+
+		/**
+		 * Returns the indicator value of the aggregate Pareto set, or
+		 * {@code null} if the aggregate value was not computed.  This value
+		 * is only computed if {@link Analyzer#showAggregate()} is invoked.
+		 * 
+		 * @return the aggregate indicator value; or {@code null} if not
+		 *         computed
+		 */
+		public Double getAggregateValue() {
+			return aggregateValue;
+		}
+
+		/**
+		 * Sets the indicator value of the aggregate Pareto set.
+		 * 
+		 * @param aggregateValue the aggregate indicator value
+		 */
+		void setAggregateValue(Double aggregateValue) {
+			this.aggregateValue = aggregateValue;
+		}
+
+		/**
+		 * Returns the indicator name.
+		 * 
+		 * @return the indicator name
+		 */
+		public String getIndicator() {
+			return indicator;
+		}
+		
+		/**
+		 * Prints the results to the given stream.
+		 * 
+		 * @param ps the stream where the results are printed
+		 */
+		void print(PrintStream ps) {
+			double[] values = getValues();
+			
+			ps.print("    ");
+			ps.print(getIndicator());
+			ps.print(": ");
+			
+			if (values.length == 0) {
+				ps.print("null");
+			} else if (values.length == 1) {
+				ps.print(values[0]);
+			} else {
+				ps.println();
+				
+				if (showAggregate) {
+					ps.print("        Aggregate: ");
+					ps.println(getAggregateValue());
+				}
+				
+				if (statistics.isEmpty()) {
+					ps.print("        Min: ");
+					ps.println(getMin());
+					ps.print("        Median: ");
+					ps.println(getMedian());
+					ps.print("        Max: ");
+					ps.println(getMax());
+				} else {
+					for (UnivariateStatistic statistic : statistics) {
+						ps.print("        ");
+						ps.print(statistic.getClass().getSimpleName());
+						ps.print(": ");
+						ps.println(getStatistic(statistic));
+					}
+				}
+				
+				ps.print("        Count: ");
+				ps.print(getCount());
+				
+				if (showStatisticalSignificance) {
+					ps.println();
+					ps.print("        Indifferent: ");
+					ps.print(getIndifferentAlgorithms());
+				}
+				
+				if (showIndividualValues) {
+					ps.println();
+					ps.print("        Values: ");
+					ps.print(Arrays.toString(values));
+				}
+			}
+			
+			ps.println();
+		}
+		
 	}
 	
 }

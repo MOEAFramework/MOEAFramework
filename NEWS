@@ -1,9 +1,215 @@
 This file documents the major changes implemented in each release of the MOEA
 Framework.
 
-------------------
-Version 2.6 (TBD)
-------------------
+----------------------------
+ Version 2.13 (TBD)
+----------------------------
+
+  * Enable variable-length subsets in addition to the fixed-length subsets
+    currently supported.
+    
+  * Distributed problem provides an evaluation id that can be used to
+    replicate results when the problem is stochastic.
+    
+  * Guard against NaNs in NondominatedSorting that would occasionally produce
+    IllegalArgumentExceptions when calling Population#sort.
+    
+  * Support all decision variable types in MOEA/D (previously only supported
+    real variables).
+
+  * Several improvements to the progress listener, including:
+    
+    - ProgressListener now provides access to the current algorithm being run by
+      the Executor.  This can be used, for example, to get the contents of the
+      population each iteration.
+
+    - Fixes an "off by one" error in the ProgressListener, where it would report
+      100% complete while the last seed was still running.
+
+    - The ProgressListener is now called when running a single seed. Previously
+      it was only called inside runSeeds().
+
+
+----------------------------
+ Version 2.12 (04 Jan 2017)
+----------------------------
+
+  * Adds single-objective implementations of a genetic algorithm (GA),
+    evolution strategies (ES), and differential evolution (DE).
+    
+  * Adds multi-objective implementations of the Multiple Single Objective Pareto
+    Sampling (MSOPS) and Repeated Single Objective (RSO) algorithms.  RSO
+    runs a single-objective optimizer multiple times with different weights.
+    
+  * Updated examples so problems with only one objective (TSP, Ant, etc.) use
+    a single-objective optimizer.
+    
+  * The Instrumenter collection frequency can now be set to either number of
+    evaluations or number of steps (issue #92).
+    
+
+----------------------------
+ Version 2.11 (18 Aug 2016)
+----------------------------
+
+  * Removes the populationSize parameter from DBEA.  The population size is
+    determined by the number of reference points.  Setting to a different value
+    would cause an exception.  Thanks to @henryyuri for reporting (issue #69).
+    
+  * Fixes bug in RVEA.  If any objective has a range of 0, which could be
+    caused by duplicates or infeasible solutions, the normalization breaks and
+    all solutions are associated with one reference vector.  The fix ensures
+    a non-zero range for normalization.
+    
+  * Prevent integer overflow exception if attempting to use an adaptive grid
+    archive with too many divisions that exceeds the storage capacity of an
+    array.  A custom error message is produced indicating the problem.  We may
+    want to consider a sparse array or map for storage to remove this
+    limitation.  Thanks to @zhoudiprivateChina for reporting (issue #67).
+    
+  * At the request of @abhinavgaur (issue #65), added an option to run NSGA-II
+    using binary tournament selection *without* replacement.  This follows the
+    original NSGA-II algorithm more closely.  Note that on many test problems,
+    there is no statistically significant change in end-of-run indicators.
+    To use, run:
+    
+        new Executor()
+                .withAlgorithm("NSGAII")
+                .withProperty("withReplacement", false)
+                ...
+    
+  * Adds more control over handling duplicate solutions within non-dominated
+    populations.  Previously, solutions with identical objectives were excluded.
+    Now, this behavior is controlled with one of three options:
+    
+      - NO_DUPLICATE_OBJECTIVES (default) - Exclude solutions with identical
+            objectives
+      - ALLOW_DUPLICATE_OBJECTIVES - Allow solutions with identical objectives
+            as long as their decision variables differ
+      - ALLOW_DUPLICATES - Allow solutions with identical objectives and
+            decision variables
+      
+    This can also be controlled by the new global property:
+    
+      org.moeaframework.core.duplicate_mode = ALLOW_DUPLICATE_OBJECTIVES
+      
+    This also ensures duplicate solutions are assigned a crowding distance of 0
+    so they are truncated/pruned from a population first.  Thanks to @Nozo
+    (issue #15) for reporting this issue.
+    
+  * Adds global property to switch the non-dominated sorting algorithm between
+    a brute-force implementation and Deb et al.'s fast non-dominated sorting.
+    The brute-force implementation tends to have a faster average time while the
+    fast non-dominated sorting implementation has better worst-case runtime.
+    
+
+----------------------------
+ Version 2.10 (11 May 2016)
+----------------------------
+
+  * Adds the reference vector guided evolutionary algorithm (RVEA) by
+    Cheng, Jin, Olhofer, and Sendhoff.
+
+  * A new version of the SBX operator is included.  This version includes two
+    new parameters:
+    
+      sbx.swap - controls if the variables are randomly swapped between parents;
+                 set to false to replicate NSGA-III
+      sbx.symmetric - controls if the offspring distribution is symmetric or
+                 asymmetric
+
+  * Prevent crashing MOEA/D if the user selects a neighborhood size larger than
+    the population size.
+    
+  * Better documentation for the command-line methods.  The Javadocs now list
+    all arguments with their descriptions.
+    
+  * Ability to define custom ideal and reference points when calculating
+    hypervolume in global.properties.  For example:
+    
+       org.moeaframework.core.indicator.hypervolume_idealpt.DTLZ3 = 0
+       org.moeaframework.core.indicator.hypervolume_refpt.DTLZ3 = 2
+       
+    indicates the hypervolume will be calculated with the volume between
+    (0,...,0) and (2,...,2).
+    
+  * Analyzer now includes withIdealPoint(...) and withReferencePoint(...) for
+    use with the hypervolume calculations.
+
+
+--------------------------
+ Version 2.9 (9 Mar 2016)
+--------------------------
+
+  * Adds support for termination conditions.  The Executor can now support
+    running for fixed wall-clock times:
+    
+       executor.withMaxTime(1000) // run for 1 second (1000 milliseconds)
+       
+    or with user-defined termination conditions:
+    
+       executor.withTerminationCondition(...)
+       
+  * Adds the 55 bi-objective test problems that will be appearing in the BBOB
+    Workshop this year at GECCO 2016.
+    
+  * Adds subset decision variable for representing fixed-size subsets.
+    
+
+---------------------------
+ Version 2.8 (13 Jan 2016)
+---------------------------
+
+  * Adds the Plot class to facilitate quick and simple plots of Pareto fronts,
+    runtime dynamics, box-and-whisker comparisons, and more.  Able to save
+    PNG, JPEG, and SVG figures (if JFreeSVG is added to the classpath).
+    
+  * Adds toCSV and saveCSV methods to the Accumulator class to allow exporting
+    its contents to a file.
+    
+  * NSGA-III and DBEA now default to 99 divisions on bi-objective problems.
+    This results in 100 reference points, matching other algorithms that use
+    a population size of 100.
+    
+  * Released a new beginner's guide that will replace the outdated user manual.
+    The new beginner's guide is available for purchase on the website and will
+    help raise funds to continue development of this software.
+
+
+---------------------------
+ Version 2.7 (11 Dec 2015)
+---------------------------
+
+  * Adds ability to incorporate new problems or algorithms without having to
+    use Java's service provider interface (SPI).  Now, providers can be
+    programatically added via:
+    
+      - AlgorithmFactory.getInstance().addProvider(...) or
+      - ProblemFactory.getInstance().addProvider(...)
+      
+  * Fixes bug in MOEA/D-DRA's update utility calculation (this was a bug in the
+    official MOEA/D-DRA implementation that has since been corrected).
+    
+  * Like JMetal, the generational distance and inverted generational distance
+    calculations use the mean square distance.  In the literature, however,
+    inverted generational distance is typically computed using the average
+    distance.  For consistency, inverted generational distance is now computed
+    using the average.  This can also be controlled by two new global
+    properties:
+    
+      org.moeaframework.core.indicator.gd_power = 2.0
+      org.moeaframework.core.indicator.igd_power = 1.0
+      
+  * Adds more flexible SPI for introducing new variation operators.  This also
+    improves support for defining new decision variable types.
+    
+  * Introduces the BinaryIntegerVariable for representing integer values
+    encoded as binary strings.
+
+
+----------------------------
+ Version 2.6 (28 Sept 2015)
+----------------------------
 
   * Fixes several bugs:
    
@@ -16,12 +222,18 @@ Version 2.6 (TBD)
   * Improves NSGA-III's ability to handle problems with 8+ objectives.  With
     8+ objectives, the calculation of intercepts can quickly degenerate and
     cause the algorithm to struggle.
+    
+  * Adds the constrained DTLZ problems introduced by K. Deb and H. Jain.
    
   * Adds the Improved Decomposition-Based Evolutionary Algorithm (DBEA).  This
     is another MOEA designed for many-objective problems, similar to NSGA-III.
     
   * Adds weights package for generalizing the generation of weight vectors for
-    decomposition and reference point methods.
+    decomposition and reference point methods.  MOEA/D now accepts a weight
+    generator as an argument, allowing the use of non-standard weights.
+    
+  * The Analyzer can now return an AnalyzerResults object storing all the
+    statistical results.
    
   * Transitioned hosting of the MOEA Framework to Github.  We welcome all
     contributors!

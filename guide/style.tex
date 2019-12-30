@@ -1,0 +1,90 @@
+% Copyright 2011-2015 David Hadka.  All Rights Reserved.
+%
+% This file is part of the MOEA Framework User Manual.
+%
+% Permission is granted to copy, distribute and/or modify this document under
+% the terms of the GNU Free Documentation License, Version 1.3 or any later
+% version published by the Free Software Foundation; with the Invariant Section
+% being the section entitled "Preface", no Front-Cover Texts, and no Back-Cover
+% Texts.  A copy of the license is included in the section entitled "GNU Free
+% Documentation License".
+
+\newcommand{\moeaframework}{MOEAFramework-%VERSION%}
+\newcommand{\vect}[1]{\mathbf{#1}}
+\newcommand{\chptref}[1]{Chapter~\ref{#1}}
+\newcommand{\sectref}[1]{Section~\ref{#1}}
+\newcommand{\defref}[1]{Definition~\ref{#1}}
+\newcommand{\algref}[1]{Algorithm~\ref{#1}}
+\newcommand{\figref}[1]{Figure~\ref{#1}}
+\newcommand{\tblref}[1]{Table~\ref{#1}}
+\newcommand{\appref}[1]{Appendix~\ref{#1}}
+\newcommand{\figurenames}{Figures}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{definition}{Definition}
+
+%% Uncomment if using report document class
+%\newcommand{\frontmatter}{\pagenumbering{roman}}
+%\newcommand{\mainmatter}{\pagenumbering{arabic}}
+%\newcommand{\backmatter}{}
+%\renewenvironment{titlepage}{\thispagestyle{empty}}{}
+
+\newcommand{\webpage}[1]{\url{#1}}
+\newcommand{\mailto}[1]{\href{mailto:#1}{\nolinkurl{#1}}}
+\newcommand{\class}[1]{\nolinkurl{#1}}
+\newcommand{\classpath}[1]{\nolinkurl{#1}}
+\newcommand{\cpp}[1]{\lstinline[language=C,basicstyle=\normalsize\ttfamily]|#1|}
+\newcommand{\java}[1]{\lstinline[language=Java,basicstyle=\normalsize\ttfamily]|#1|}
+\newcommand{\plaintext}[1]{\lstinline[language=Plaintext,basicstyle=\normalsize\ttfamily]|#1|}
+\newcommand{\folder}[1]{\includegraphics[scale=.6]{folder.png}\hspace*{2pt}\nolinkurl{#1}}
+\newcommand{\file}[1]{\includegraphics[scale=.5]{file.png}\hspace*{2pt}\nolinkurl{#1}}
+\newenvironment{important}{\begin{wrapfigure}{l}{1.1cm}\includegraphics[width=1cm]{important.png}\end{wrapfigure}}{}
+\newenvironment{tip}{\begin{wrapfigure}{l}{1.1cm}\includegraphics[width=1cm]{ktip.png}\end{wrapfigure}}{}
+
+\definecolor{sh_comment}{rgb}{0.12, 0.38, 0.18 } %adjusted, in Eclipse: {0.25, 0.42, 0.30 } = #3F6A4D
+\definecolor{sh_keyword}{rgb}{0.37, 0.08, 0.25}  % #5F1441
+\definecolor{sh_string}{rgb}{0.06, 0.10, 0.98} % #101AF9
+
+\lstset{ %
+  frame=shadowbox,
+  basicstyle=\footnotesize\ttfamily,       % the size of the fonts that are used for the code
+  numbers=left,                   % where to put the line-numbers
+  numberstyle=\tiny\color{gray},  % the style that is used for the line-numbers
+  stepnumber=1,                   % the step between two line-numbers. If it's 1, each line will be numbered
+  numbersep=1em,                  % how far the line-numbers are from the code
+  backgroundcolor=\color{white},  % choose the background color. You must add \usepackage{color}
+  showspaces=false,               % show spaces adding particular underscores
+  showstringspaces=false,         % underline spaces within strings
+  showtabs=false,                 % show tabs within strings adding particular underscores
+  rulecolor=\color{black},        % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. commens (green here))
+  rulesepcolor=\color{black},
+  tabsize=2,                      % sets default tabsize to 2 spaces
+  captionpos=b,                   % sets the caption-position to bottom
+  breaklines=true,                % sets automatic line breaking
+  breakatwhitespace=false,        % sets if automatic breaks should only happen at whitespace
+  title=\lstname,                 % show the filename of files included with \lstinputlisting; also try caption instead of title
+  keywordstyle=\color{sh_keyword}\bfseries,      % keyword style
+  commentstyle=\color{sh_comment}\itshape,   % comment style
+  stringstyle=\color{sh_string}\ttfamily,     % string literal style
+  ndkeywordstyle=\color{darkgray}\bfseries,
+  identifierstyle=\color{black},
+  aboveskip=\baselineskip,
+  belowskip=0em
+  %xleftmargin=2em                 % the left-hand margin
+}
+
+\lstdefinelanguage{JavaScript}{
+  keywords={typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break},
+  ndkeywords={class, export, boolean, throw, implements, import, this},
+  sensitive=false,
+  comment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  morestring=[b]',
+  morestring=[b]"
+}
+
+\lstdefinelanguage{Plaintext}{
+  numbers=none
+}
+
+\newenvironment{indented}{\list{}{\leftmargin1cm\rightmargin0cm}\item[]}{\endlist}

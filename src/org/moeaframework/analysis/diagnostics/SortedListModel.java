@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -21,6 +21,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.TreeSet;
+import java.util.Set;
 
 import javax.swing.ListModel;
 import javax.swing.AbstractListModel;
@@ -38,7 +39,7 @@ AbstractListModel {
 	/**
 	 * The underlying data model.
 	 */
-	private final TreeSet<T> set;
+	private final Set<T> set;
 	
 	/**
 	 * Constructs a new sorted list model.

@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -27,13 +27,57 @@ import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PopulationIO;
 import org.moeaframework.core.Problem;
+import org.moeaframework.core.Solution;
 import org.moeaframework.core.indicator.QualityIndicator;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.util.CommandLineUtility;
+import org.moeaframework.util.TypedProperties;
 
 /**
  * Command line utility for evaluating the approximation sets stored in a
  * result file and computing its metric file.
+ * <p>
+ * Usage: {@code java -cp "..." org.moeaframework.analysis.sensitivity.ResultFileEvaluator <options>}
+ * <p>
+ * Arguments:
+ * <table border="0" style="margin-left: 1em">
+ *   <tr>
+ *     <td>{@code -b, --problem}</td>
+ *     <td>The name of the problem.  This name should reference one of the
+ *         problems recognized by the MOEA Framework.</td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@code -d, --dimension}</td>
+ *     <td>The number of objectives (use instead of -b).</td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@code -i, --input}</td>
+ *     <td>The result file containing the input data.
+ *     </td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@code -o, --output}</td>
+ *     <td>The output file where the extract data will be saved.</td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@code -e, --epsilon}</td>
+ *     <td>The epsilon values for limiting the size of the results.  This
+ *         epsilon value is also used for any algorithms that include an
+ *         epsilon parameter.</td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@code -r, --reference}</td>
+ *     <td>Location of the reference file used when computing the performance
+ *         metrics (required if -m is set).</td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@code -f, --force}</td>
+ *     <td>This command performs some sanity checks to ensure the data is
+ *         consistent, such as checking the file modification dates.  If a
+ *         consistency error is reported, use this option to continue processing
+ *         even though the data may be inconsistent.</td>
+ *   </tr>
+ * </table>
  */
 public class ResultFileEvaluator extends CommandLineUtility {
 	
@@ -76,6 +120,11 @@ public class ResultFileEvaluator extends CommandLineUtility {
 				.withArgName("file")
 				.isRequired()
 				.create('o'));
+		options.addOption(OptionBuilder
+				.withLongOpt("epsilon")
+				.hasArg()
+				.withArgName("e1,e2,...")
+				.create('e'));
 		options.addOption(OptionBuilder
 				.withLongOpt("reference")
 				.hasArg()
@@ -130,6 +179,14 @@ public class ResultFileEvaluator extends CommandLineUtility {
 				problem = new ProblemStub(Integer.parseInt(commandLine
 						.getOptionValue("dimension")));
 			}
+			
+			// validate the reference set
+			for (Solution solution : referenceSet) {
+				if (solution.getNumberOfObjectives() != problem.getNumberOfObjectives()) {
+					throw new FrameworkException(
+							"reference set contains invalid number of objectives");
+				}
+			}
 
 			QualityIndicator indicator = new QualityIndicator(problem,
 					referenceSet);
@@ -152,7 +209,18 @@ public class ResultFileEvaluator extends CommandLineUtility {
 
 					// evaluate the remaining entries
 					while (reader.hasNext()) {
-						writer.append(reader.next());
+						ResultEntry entry = reader.next();
+						
+						if (commandLine.hasOption("epsilon")) {
+							TypedProperties typedProperties = new TypedProperties();
+							typedProperties.getProperties().setProperty("epsilon", commandLine.getOptionValue("epsilon"));
+
+							double[] epsilon = typedProperties.getDoubleArray("epsilon", null);
+							
+							entry = new ResultEntry(EpsilonHelper.convert(entry.getPopulation(), epsilon), entry.getProperties());
+						}
+						
+						writer.append(entry);
 					}
 				} finally {
 					if (writer != null) {

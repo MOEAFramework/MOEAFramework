@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -81,7 +81,32 @@ public class Hypervolume extends NormalizedIndicator {
 	 * @param referenceSet the reference set
 	 */
 	public Hypervolume(Problem problem, NondominatedPopulation referenceSet) {
-		super(problem, referenceSet);
+		super(problem, referenceSet, true);
+	}
+	
+	/**
+	 * Constructs a hypervolume evaluator for the specified problem using the
+	 * given reference set and reference point.
+	 * 
+	 * @param problem the problem
+	 * @param referenceSet the reference set
+	 * @param referencePoint the reference point
+	 */
+	public Hypervolume(Problem problem, NondominatedPopulation referenceSet,
+			double[] referencePoint) {
+		super(problem, referenceSet, referencePoint);
+	}
+	
+	/**
+	 * Constructs a hypervolume evaluator for the specified problem using the
+	 * given minimum and maximum bounds.
+	 * 
+	 * @param problem the problem
+	 * @param minimum the minimum bounds of the set
+	 * @param maximum the maximum bounds of the set
+	 */
+	public Hypervolume(Problem problem, double[] minimum, double[] maximum) {
+		super(problem, new NondominatedPopulation(), minimum, maximum);
 	}
 
 	/**
@@ -292,11 +317,11 @@ public class Hypervolume extends NormalizedIndicator {
 
 		List<Solution> solutions = new ArrayList<Solution>();
 
-		for (Solution solution : approximationSet) {
+		outer: for (Solution solution : approximationSet) {
 			//prune any solutions which exceed the Nadir point
 			for (int i=0; i<solution.getNumberOfObjectives(); i++) {
 				if (solution.getObjective(i) > 1.0) {
-					continue;
+					continue outer;
 				}
 			}
 			
@@ -351,9 +376,9 @@ public class Hypervolume extends NormalizedIndicator {
 			double nadirPoint;
 			
 			if (isInverted) {
-				nadirPoint = 0.0 - Settings.getHypervolumeDelta();
+				nadirPoint = 0.0; // - Settings.getHypervolumeDelta();
 			} else {
-				nadirPoint = 1.0 + Settings.getHypervolumeDelta();
+				nadirPoint = 1.0; // + Settings.getHypervolumeDelta();
 			}
 			
 			//generate approximation set file

@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -21,12 +21,12 @@ import java.io.IOException;
 import java.util.Properties;
 
 import org.moeaframework.core.Algorithm;
-import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.spi.AlgorithmProvider;
 import org.moeaframework.core.spi.OperatorFactory;
+import org.moeaframework.core.spi.ProviderLookupException;
 import org.moeaframework.core.spi.ProviderNotFoundException;
 
 /**
@@ -108,7 +108,7 @@ public class PISAAlgorithms extends AlgorithmProvider {
 		if (name != null) {
 			if (problem.getNumberOfConstraints() > 0) {
 				throw new ProviderNotFoundException(name, 
-						new FrameworkException("constraints not supported"));
+						new ProviderLookupException("constraints not supported"));
 			}
 			
 			try {

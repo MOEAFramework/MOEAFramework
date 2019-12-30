@@ -92,12 +92,6 @@
 									</xsl:if>
 									<a href="support.html">Support</a>
 								</li>
-								<li>
-									<xsl:if test="$filename = 'donate.xml'">
-										<xsl:attribute name="id">current</xsl:attribute>
-									</xsl:if>
-									<a href="donate.html">Donate</a>
-								</li>
 							</ul>
 						</div>
 					</div>
@@ -113,7 +107,7 @@
 						<!-- sidebar -->
 						<div id="sidebar">
 							<div class="sidemenu downloads">
-								<h3>Downloads</h3>
+								<h3>Quick Links</h3>
 								<p>
 									Current Version: <span itemprop="softwareVersion"><b><xsl:value-of select="$version" /></b></span><br />
 									Released: <span itemprop="dateModified"><xsl:value-of select="$today" /></span>
@@ -143,15 +137,13 @@
 										</a>
 									</li>
 									<li>
-										<a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v%VERSION%/MOEAFramework-%VERSION%-Manual.pdf"
-											onClick="_gaq.push(['_trackEvent', 'Downloads', 'Manual', '%VERSION%']);">
-											User Manual	
-										</a>
+										<a href="documentation.html">Documentation</a>
 									</li>
 								</ul>
 								<p>
-									<a href="https://github.com/MOEAFramework/MOEAFramework">Fork us on Github</a>!<br />
-									Using Maven?  <a href="downloads.html#maven">Add our dependency</a>.
+									<a href="https://github.com/MOEAFramework/MOEAFramework">Visit us on Github</a>!<br />
+									<iframe src="https://ghbtns.com/github-btn.html?user=MOEAFramework&amp;repo=MOEAFramework&amp;type=fork&amp;count=true" frameborder="0" scrolling="0" width="170px" height="20px"></iframe>
+									<iframe src="https://ghbtns.com/github-btn.html?user=MOEAFramework&amp;repo=MOEAFramework&amp;type=star&amp;count=true" frameborder="0" scrolling="0" width="170px" height="20px"></iframe>
 								</p>
 							</div>
 
@@ -161,55 +153,12 @@
 									Licensed under the <a href="http://www.gnu.org/licenses/lgpl.html">GNU Lesser General Public License</a>.
 								</p>
 							</div>
-							
+		
 							<!--
-							<div class="sidemenu">
-								<h3>Paperback Manual</h3>
-								<p>
-									<a href="http://www.lulu.com/product/21284804" class="tooltip" title="All proceeds from book sales support the continued development and maintenance of the MOEA Framework.">
-										Get your paperback copy of the user manual today and support us!<br />
-										<img align="middle" src="images/product_thumbnail.jpg" width="100px" style="padding: 0;"></img><br />
-									</a>
-									<span style="font-size: 12pt; font-weight: bold;"><b>Price: <font color="red">$20.99</font></b></span><br />
-									<span style="font-size: 10pt;">You Save: <font color="red">$9.00 (30%)</font></span><br />
-								</p>
-							</div>
-							-->
-							
-							<xsl:choose>
-								<xsl:when test="$filename = 'index.xml' or $filename = 'documentation.xml' or $filename = 'support.xml' or $filename = 'contribute.xml' or $filename = 'credits.xml' or $filename = 'donate.xml'">
-									<div class="sidemenu">
-										<h3></h3>
-										<p>
-											<script type="text/javascript">
-												google_ad_client = "ca-pub-5610668616453880";
-												google_ad_slot = "9118867796";
-												google_ad_width = 200;
-												google_ad_height = 200;
-											</script>
-											<script type="text/javascript"
-													src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-											</script>
-										</p>
-									</div>
-								</xsl:when>
-								<xsl:otherwise>
-									<div class="sidemenu">
-										<h3></h3>
-										<p>
-											<script type="text/javascript">
-												google_ad_client = "ca-pub-5610668616453880";
-												google_ad_slot = "7891799492";
-												google_ad_width = 160;
-												google_ad_height = 600;
-											</script>
-											<script type="text/javascript"
-													src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-											</script>
-										</p>
-									</div>
-								</xsl:otherwise>
-							</xsl:choose>
+							<div class="sidemenu">					
+								<script type="text/javascript" src="scripts/jszt.js"></script><script type="text/javascript" src="scripts/referral.js"></script> 
+                            </div>
+                             -->
 						</div>
 					</div>
 				</div>
@@ -217,7 +166,7 @@
 				<!-- footer -->
 				<div id="footer-bottom">
 					<div class="bottom-left">
-						&copy; 2009-2015 <strong>Dave Hadka and others</strong>
+						&copy; 2009-2018 <strong>Dave Hadka and others</strong>
     					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 						Website template by <a href="http://www.styleshout.com/">styleshout</a>
     					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

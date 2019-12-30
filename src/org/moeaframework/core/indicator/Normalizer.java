@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -16,6 +16,8 @@
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.moeaframework.core.indicator;
+
+import java.util.Arrays;
 
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Population;
@@ -35,6 +37,17 @@ public class Normalizer {
 	 * The problem.
 	 */
 	private final Problem problem;
+	
+	/**
+	 * A delta added to the maximum value (used when computing the reference
+	 * point for hypervolume calculations).
+	 */
+	private final double delta;
+	
+	/**
+	 * The reference point if defined (used for hypervolume calculations).
+	 */
+	private final double[] referencePoint;
 	
 	/**
 	 * The minimum value for each objective.
@@ -60,6 +73,61 @@ public class Normalizer {
 	public Normalizer(Problem problem, Population population) {
 		super();
 		this.problem = problem;
+		this.delta = 0.0;
+		this.referencePoint = null;
+		this.minimum = new double[problem.getNumberOfObjectives()];
+		this.maximum = new double[problem.getNumberOfObjectives()];
+
+		calculateRanges(population);		
+		checkRanges();
+	}
+	
+	/**
+	 * Constructs a normalizer for normalizing populations so that all 
+	 * objectives reside in the range {@code [0, 1]}.  This constructor derives
+	 * the minimum and maximum bounds from the given population and a given
+	 * delta.
+	 * 
+	 * @param problem the problem
+	 * @param population the population defining the minimum and maximum bounds
+	 * @param delta a delta added to the maximum value (used when computing the
+	 *        reference point for hypervolume calculations)
+	 * @throws IllegalArgumentException if the population set contains fewer
+	 *         than two solutions, or if there exists an objective with an
+	 *         empty range
+	 */
+	public Normalizer(Problem problem, Population population, double delta) {
+		super();
+		this.problem = problem;
+		this.delta = delta;
+		this.referencePoint = null;
+		this.minimum = new double[problem.getNumberOfObjectives()];
+		this.maximum = new double[problem.getNumberOfObjectives()];
+
+		calculateRanges(population);		
+		checkRanges();
+	}
+	
+	/**
+	 * Constructs a normalizer for normalizing populations so that all 
+	 * objectives reside in the range {@code [0, 1]}.  This constructor derives
+	 * the minimum and maximum bounds from the given population and a given
+	 * delta.
+	 * 
+	 * @param problem the problem
+	 * @param population the population defining the minimum and maximum bounds
+	 * @param referencePoint the reference point if defined (used for
+	 *        hypervolume calculations)
+	 * @throws IllegalArgumentException if the population set contains fewer
+	 *         than two solutions, or if there exists an objective with an
+	 *         empty range
+	 */
+	public Normalizer(Problem problem, Population population,
+			double[] referencePoint) {
+		super();
+		this.problem = problem;
+		this.delta = 0.0;
+		this.referencePoint = referencePoint.clone();
 		this.minimum = new double[problem.getNumberOfObjectives()];
 		this.maximum = new double[problem.getNumberOfObjectives()];
 
@@ -79,8 +147,15 @@ public class Normalizer {
 	public Normalizer(Problem problem, double[] minimum, double[] maximum) {
 		super();
 		this.problem = problem;
-		this.minimum = minimum.clone();
-		this.maximum = maximum.clone();
+		this.delta = 0.0;
+		this.referencePoint = null;
+		this.minimum = new double[problem.getNumberOfObjectives()];
+		this.maximum = new double[problem.getNumberOfObjectives()];
+		
+		for (int j = 0; j < problem.getNumberOfObjectives(); j++) {
+			this.minimum[j] = minimum[j >= minimum.length ? minimum.length-1 : j];
+			this.maximum[j] = maximum[j >= maximum.length ? maximum.length-1 : j];
+		}
 		
 		checkRanges();
 	}
@@ -115,6 +190,23 @@ public class Normalizer {
 				minimum[j] = Math.min(minimum[j], solution.getObjective(j));
 				maximum[j] = Math.max(maximum[j], solution.getObjective(j));
 			}
+		}
+		
+		if (referencePoint != null) {
+			for (int j = 0; j < problem.getNumberOfObjectives(); j++) {
+				maximum[j] = referencePoint[j >= referencePoint.length ?
+						referencePoint.length-1 : j];
+			}
+			
+			System.err.println("Using reference point: " +
+					Arrays.toString(maximum));
+		} else if (delta > 0.0) {
+			for (int j = 0; j < problem.getNumberOfObjectives(); j++) {
+				maximum[j] += delta * (maximum[j] - minimum[j]);
+			}
+			
+			System.err.println("Using reference point: " +
+					Arrays.toString(maximum));
 		}
 	}
 	

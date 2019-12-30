@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -39,6 +39,7 @@ import org.moeaframework.core.Variation;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
 import org.moeaframework.core.operator.TournamentSelection;
 import org.moeaframework.core.operator.real.UM;
+import org.moeaframework.problem.MockRealProblem;
 
 /**
  * Tests the {@link Instrumenter} class.
@@ -147,6 +148,14 @@ public class InstrumenterTest {
 		
 		protected int integer = 5;
 		
+		protected Problem problem = new TestProblem();
+		
+	}
+	
+	public static class TestProblem extends MockRealProblem {
+		
+		protected Object testObject = new Object();
+		
 	}
 	
 	private TestCollector collector;
@@ -184,13 +193,13 @@ public class InstrumenterTest {
 		new Instrumenter().attach(collector).instrument(algorithm);
 		
 		Set<Object> instrumentedObjects = collector.getInstrumentedObjects();
-
-		Assert.assertEquals(6, instrumentedObjects.size());
+		
+		Assert.assertEquals(7, instrumentedObjects.size());
 		Assert.assertTrue(instrumentedObjects.contains(algorithm));
 		Assert.assertTrue(instrumentedObjects.contains(algorithm.variation));
 		Assert.assertTrue(instrumentedObjects.contains(algorithm.selection));
-		Assert.assertTrue(instrumentedObjects.contains(
-				algorithm.selection.getComparator()));
+		Assert.assertTrue(instrumentedObjects.contains(algorithm.selection.getComparator()));
+		Assert.assertTrue(instrumentedObjects.contains(algorithm.problem));
 	}
 	
 	@Test
@@ -206,6 +215,16 @@ public class InstrumenterTest {
 		Assert.assertTrue(instrumentedObjects.contains(algorithm));
 		Assert.assertTrue(instrumentedObjects.contains(this));
 		Assert.assertTrue(instrumentedObjects.contains(collector));
+	}
+	
+	@Test
+	public void testExcludedPackages() {
+		SimpleAlgorithm algorithm = new SimpleAlgorithm();
+		new Instrumenter().addExcludedPackage("org.moeaframework").attach(collector).instrument(algorithm);
+		
+		Set<Object> instrumentedObjects = collector.getInstrumentedObjects();
+		
+		Assert.assertEquals(0, instrumentedObjects.size());
 	}
 	
 	@Test

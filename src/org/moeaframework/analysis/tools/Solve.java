@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -51,6 +51,97 @@ import org.moeaframework.util.io.FileUtils;
  * supported optimization algorithms.  This utility supports solving problems
  * defined within the MOEA Framework as well as compatible external problems.
  * See {@link ExternalProblem} for details on developing an external problem.
+ * <p>
+ * Usage: {@code java -cp "..." org.moeaframework.analysis.sensitivity.ResultFileEvaluator <options>}
+ * <p>
+ * Arguments:
+ * <table border="0" style="margin-left: 1em">
+ *   <tr>
+ *     <td>{@code -f, --output}</td>
+ *     <td>The output file location.</td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@code -b, --problem}</td>
+ *     <td>The name of the problem.  This name should reference one of the
+ *         problems recognized by the MOEA Framework.</td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@code -a, --algorithm}</td>
+ *     <td>The name of the algorithm.  This name should reference one of the
+ *         algorithms recognized by the MOEA Framework.</td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@code -x, --properties}</td>
+ *     <td>Semicolon-separated list of additional parameters for the
+ *         algorithm (e.g., {@code -x maxEvaluations=10000;populationSize=100}.
+ *     </td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@code -s, --seed}</td>
+ *     <td>The random number seed used for each run.</td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@code -e, --epsilon}</td>
+ *     <td>The epsilon values for limiting the size of the results.  This
+ *         epsilon value is also used for any algorithms that include an
+ *         epsilon parameter.</td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@code -n, --numberOfEvaluations}</td>
+ *     <td>The number of function evaluations (NFE) to run.</td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@code -F, --runtimeFrequency}</td>
+ *     <td>The frequency, in NFE, that records are saved to the output file
+ *     </td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@code -v, --variables}</td>
+ *     <td>Comma-separated list of decision variable specifications.  Use
+ *         {@code "R(<lb>;<ub>)"} for real-valued, {@code "B(<length>)"}
+ *         for binary, and {@code "P(<length>)"} for permutations.
+ *   </tr>
+ *   <tr>
+ *     <td>{@code -o, --objectives}</td>
+ *     <td>The number of objectives.</td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@code -c, --constraints}</td>
+ *     <td>The number of constraints.</td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@code -l, --lowerBounds}</td>
+ *     <td>Lower bounds of real-valued decision variables, separated by commas.
+ *     </td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@code -u, --upperBounds}</td>
+ *     <td>Upper bounds of real-valued decision variables, separated by commas.
+ *     </td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@code -S, --useSocket}</td>
+ *     <td>Communicate with external problem using sockets.</td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@code -H, --hostname}</td>
+ *     <td>Hostname used when using sockets (default localhost)</td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@code -P, --port}</td>
+ *     <td>Port used when using sockets (default 16801).</td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@code -D, --startupDelay}</td>
+ *     <td>Delay in seconds between running the executable and starting
+ *         optimization (default 1).</td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@code -t, --test}</td>
+ *     <td>Runs a few trials to test the connection with the external problem.
+ *     </td>
+ *   </tr>
+ * </table>
  */
 public class Solve extends CommandLineUtility {
 

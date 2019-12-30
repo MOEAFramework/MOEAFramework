@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -41,6 +41,67 @@ import org.moeaframework.util.TypedProperties;
 /**
  * Command line utility for evaluating an algorithm using many 
  * parameterizations.
+ * <p>
+ * Usage: {@code java -cp "..." org.moeaframework.analysis.sensitivity.Evaluator <options>}
+ * <p>
+ * Arguments:
+ * <table border="0" style="margin-left: 1em">
+ *   <tr>
+ *     <td>{@code -p, --parameterFile}</td>
+ *     <td>Location of the parameter configuration file (required)</td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@code -i, --input}</td>
+ *     <td>Location of the parameter sample file (required)</td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@code -o, --output}</td>
+ *     <td>The location of the output file.  Each record in the output file
+ *         will correspond to the end-of-run approximation set from each
+ *         parameterization read from the parameter sample file.</td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@code -b, --problem}</td>
+ *     <td>The name of the problem.  This name should reference one of the
+ *         problems recognized by the MOEA Framework.</td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@code -a, --algorithm}</td>
+ *     <td>The name of the algorithm.  This name should reference one of the
+ *         algorithms recognized by the MOEA Framework.</td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@code -x, --properties}</td>
+ *     <td>Semicolon-separated list of additional parameters for the
+ *         algorithm (e.g., {@code -x maxEvaluations=10000;populationSize=100}.
+ *     </td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@code -s, --seed}</td>
+ *     <td>The random number seed used for each run.</td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@code -e, --epsilon}</td>
+ *     <td>The epsilon values for limiting the size of the results.  This
+ *         epsilon value is also used for any algorithms that include an
+ *         epsilon parameter.</td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@code -m, --metrics}</td>
+ *     <td>Compute the performance metrics and output a metric file.  This is
+ *         equivalent to running {@link ResultFileEvaluator} on the result file
+ *         produced by this command.</td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@code -r, --reference}</td>
+ *     <td>Location of the reference file used when computing the performance
+ *         metrics (required if -m is set).</td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@code -n, --novariables}</td>
+ *     <td>To save on space, do not save decision variables in the results.</td>
+ *   </tr>
+ * </table>
  */
 public class Evaluator extends CommandLineUtility {
 

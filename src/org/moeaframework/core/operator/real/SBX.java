@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -58,6 +58,17 @@ public class SBX implements Variation {
 	private final double distributionIndex;
 
 	/**
+	 * Enable randomly swapping decision variables between the parents.
+	 */
+	private final boolean swap;
+
+	/**
+	 * If {@code true}, use symmetric distributions; otherwise asymmetric
+	 * distributions are used.
+	 */
+	private final boolean symmetric;
+	
+	/**
 	 * Constructs a SBX operator with the specified probability and
 	 * distribution index.
 	 * 
@@ -66,8 +77,29 @@ public class SBX implements Variation {
 	 * @param distributionIndex the distribution index of this SBX operator
 	 */
 	public SBX(double probability, double distributionIndex) {
+		this(probability, distributionIndex, true, false);
+	}
+
+	/**
+	 * Constructs a SBX operator with the specified probability and
+	 * distribution index.  Set {@code swap} to {@code true} to recreate the
+	 * traditional SBX operation; and to {@code false} to use the SBX variant
+	 * used by NSGA-III.
+	 * 
+	 * @param probability the probability of applying this SBX operator to each
+	 *        variable
+	 * @param distributionIndex the distribution index of this SBX operator
+	 * @param swap if {@code true}, randomly swap the variables between the two
+	 *        parents
+	 * @param symmetric if {@code true}, symmetric distrubutions are used
+	 */
+	public SBX(double probability, double distributionIndex, boolean swap,
+			boolean symmetric) {
+		super();
 		this.probability = probability;
 		this.distributionIndex = distributionIndex;
+		this.swap = swap;
+		this.symmetric = symmetric;
 	}
 
 	/**
@@ -88,6 +120,29 @@ public class SBX implements Variation {
 		return distributionIndex;
 	}
 
+	/**
+	 * Returns {@code true} if this SBX operator swaps variables between the
+	 * two parents.  Disabling this swapping produces offspring closer to the
+	 * two parents, which is beneficial for NSGA-III.
+	 * 
+	 * @return {@code true} if this SBX operator swaps variables between the
+	 *         two parents
+	 */
+	public boolean isSwap() {
+		return swap;
+	}
+
+	/**
+	 * Returns {@code true} if the offspring are distributed symmetrically; or
+	 * {@code false} if asymmetric distributions are used.
+	 * 
+	 * @return {@code true} if the offspring are distributed symmetrically; or
+	 *         {@code false} if asymmetric distributions are used
+	 */
+	public boolean isSymmetric() {
+		return symmetric;
+	}
+
 	@Override
 	public int getArity() {
 		return 2;
@@ -105,8 +160,15 @@ public class SBX implements Variation {
 
 				if (PRNG.nextBoolean() && (variable1 instanceof RealVariable)
 						&& (variable2 instanceof RealVariable)) {
-					evolve((RealVariable)variable1, (RealVariable)variable2,
-							distributionIndex);
+					if (symmetric) {
+						evolve_symmetric((RealVariable)variable1,
+								(RealVariable)variable2, distributionIndex,
+								swap);
+					} else {
+						evolve_asymmetric((RealVariable)variable1,
+								(RealVariable)variable2, distributionIndex,
+								swap);
+					}
 				}
 			}
 		}
@@ -114,41 +176,6 @@ public class SBX implements Variation {
 		return new Solution[] { result1, result2 };
 	}
 
-	/*
-	 * The following source code is modified from the DTLZ variator module for
-	 * PISA. This implementation was chosen over Kalyanmoy Deb's original SBX
-	 * implementation due to license incompatibilities with the LGPL. The DTLZ
-	 * variator module license is provided below.
-	 * 
-	 * Copyright (c) 2002-2003 Swiss Federal Institute of Technology,
-	 * Computer Engineering and Networks Laboratory. All rights reserved.
-	 * 
-	 * PISA - A Platform and Programming Language Independent Interface for
-	 * Search Algorithms.
-	 * 
-	 * DTLZ - Scalable Test Functions for MOEAs - A variator module for PISA
-	 * 
-	 * Permission to use, copy, modify, and distribute this software and its
-	 * documentation for any purpose, without fee, and without written
-	 * agreement is hereby granted, provided that the above copyright notice
-	 * and the following two paragraphs appear in all copies of this
-	 * software.
-	 * 
-	 * IN NO EVENT SHALL THE SWISS FEDERAL INSTITUTE OF TECHNOLOGY, COMPUTER
-	 * ENGINEERING AND NETWORKS LABORATORY BE LIABLE TO ANY PARTY FOR DIRECT,
-	 * INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF
-	 * THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE SWISS
-	 * FEDERAL INSTITUTE OF TECHNOLOGY, COMPUTER ENGINEERING AND NETWORKS
-	 * LABORATORY HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-	 * 
-	 * THE SWISS FEDERAL INSTITUTE OF TECHNOLOGY, COMPUTER ENGINEERING AND
-	 * NETWORKS LABORATORY, SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING,
-	 * BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
-	 * FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS
-	 * ON AN "AS IS" BASIS, AND THE SWISS FEDERAL INSTITUTE OF TECHNOLOGY,
-	 * COMPUTER ENGINEERING AND NETWORKS LABORATORY HAS NO OBLIGATION TO
-	 * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
-	 */
 	/**
 	 * Evolves the specified variables using the SBX operator.
 	 * 
@@ -158,86 +185,173 @@ public class SBX implements Variation {
 	 */
 	public static void evolve(RealVariable v1, RealVariable v2,
 			double distributionIndex) {
-		double x0 = v1.getValue();
-		double x1 = v2.getValue();
+		evolve_asymmetric(v1, v2, distributionIndex, true);
+	}
 
-		double dx = Math.abs(x1 - x0);
+	/*
+	 * The following code was provided by Haitham Seada on Dec 14, 2015.  This
+	 * replaces the old implementation based on PISA, which appears to have
+	 * some numerical issues, particularly on problems like DTLZ3.
+	 */
 
-		if (dx > Settings.EPS) {
-			double lb = v1.getLowerBound();
-			double ub = v1.getUpperBound();
-			double bl;
-			double bu;
+	/**
+	 * Evolves the specified variables using the SBX operator using symmetric
+	 * distributions.
+	 * 
+	 * @param v1 the first variable
+	 * @param v2 the second variable
+	 * @param distributionIndex the distribution index of this SBX operator
+	 * @param swap randomly swap the variable between the two parents
+	 */
+	public static void evolve_symmetric(RealVariable v1, RealVariable v2,
+			double distributionIndex, boolean swap) {
+		double y1, y2, betaq, beta, alpha, rand;
+		double x1 = v1.getValue();
+		double x2 = v2.getValue();
+		double lb = v1.getLowerBound();
+		double ub = v1.getUpperBound();
+
+		// avoid division by zero
+		if (Math.abs(x1 - x2) > Settings.EPS) {
+			if (x2 > x1) {
+				y2 = x2;
+				y1 = x1;
+			} else {
+				y2 = x1;
+				y1 = x2;
+			}
+
+			// compute beta
+			if ((y1 - lb) > (ub - y2)) {
+				beta = 1 + (2 * (ub - y2) / (y2 - y1));
+			} else {
+				beta = 1 + (2 * (y1 - lb) / (y2 - y1));
+			}
+
+			// compute alpha
+			beta = 1.0 / beta;
+			alpha = 2.0 - Math.pow(beta, distributionIndex + 1.0);
+			rand = PRNG.nextDouble();
+
+			// compute betaq
+			if (rand <= 1.0 / alpha) {
+				alpha = alpha * rand;
+				betaq = Math.pow(alpha, 1.0 / (distributionIndex + 1.0));
+			} else {
+				alpha = alpha * rand;
+				alpha = 1.0 / (2.0 - alpha);
+				betaq = Math.pow(alpha, 1.0 / (distributionIndex + 1.0));
+			}
+
+			// generate two children
+			x1 = 0.5 * ((y1 + y2) - betaq * (y2 - y1));
+			x2 = 0.5 * ((y1 + y2) + betaq * (y2 - y1));
 			
-			if (x0 < x1) {
-				bl = 1 + 2 * (x0 - lb) / dx;
-				bu = 1 + 2 * (ub - x1) / dx;
-			} else {
-				bl = 1 + 2 * (x1 - lb) / dx;
-				bu = 1 + 2 * (ub - x0) / dx;
-			}
-
-			//use symmetric distributions
-			if (bl < bu) {
-				bu = bl;
-			} else {
-				bl = bu;
-			}
-
-			double p_bl = 1 - 1 / (2 * Math.pow(bl, distributionIndex + 1));
-			double p_bu = 1 - 1 / (2 * Math.pow(bu, distributionIndex + 1));
-			double u = PRNG.nextDouble();
-			
-			//prevent out-of-bounds values if PRNG draws the value 1.0
-			if (u == 1.0) {
-				u = Math.nextAfter(u, -1.0);
-			}
-			
-			double u0 = u * p_bl;
-			double u1 = u * p_bu;
-			double b0;
-			double b1;
-
-			if (u0 <= 0.5) {
-				b0 = Math.pow(2 * u0, 1 / (distributionIndex + 1));
-			} else {
-				b0 = Math.pow(0.5 / (1 - u0), 1 / (distributionIndex + 1));
-			}
-
-			if (u1 <= 0.5) {
-				b1 = Math.pow(2 * u1, 1 / (distributionIndex + 1));
-			} else {
-				b1 = Math.pow(0.5 / (1 - u1), 1 / (distributionIndex + 1));
-			}
-
-			if (x0 < x1) {
-				v1.setValue(0.5 * (x0 + x1 + b0 * (x0 - x1)));
-				v2.setValue(0.5 * (x0 + x1 + b1 * (x1 - x0)));
-			} else {
-				v1.setValue(0.5 * (x0 + x1 + b1 * (x0 - x1)));
-				v2.setValue(0.5 * (x0 + x1 + b0 * (x1 - x0)));
-			}
-
-			//this makes PISA's SBX compatible with other implementations
-			//which swap the values
-			if (PRNG.nextBoolean()) {
-				double temp = v1.getValue();
-				v1.setValue(v2.getValue());
-				v2.setValue(temp);
-			}
-			
-			//guard against out-of-bounds values
-			if (v1.getValue() < lb) {
-				v1.setValue(lb);
-			} else if (v1.getValue() > ub) {
-				v1.setValue(ub);
+			// ensure the children are within bounds
+			if (x1 < lb) {
+				x1 = lb;
+			} else if (x1 > ub) {
+				x1 = ub;
 			}
 			
-			if (v2.getValue() < lb) {
-				v2.setValue(lb);
-			} else if (v2.getValue() > ub) {
-				v2.setValue(ub);
+			if (x2 < lb) {
+				x2 = lb;
+			} else if (x2 > ub) {
+				x2 = ub;
 			}
+			
+			// randomly swap the variables
+			if (swap && PRNG.nextBoolean()) {
+				double temp = x1;
+				x1 = x2;
+				x2 = temp;
+			}
+			
+			v1.setValue(x1);
+			v2.setValue(x2);
+		}
+	}
+	
+	/**
+	 * Evolves the specified variables using the SBX operator using asymmetric
+	 * distributions.
+	 * 
+	 * @param v1 the first variable
+	 * @param v2 the second variable
+	 * @param distributionIndex the distribution index of this SBX operator
+	 * @param swap randomly swap the variable between the two parents
+	 */
+	public static void evolve_asymmetric(RealVariable v1, RealVariable v2,
+			double distributionIndex, boolean swap) {
+		double y1, y2, betaq, beta, alpha, rand;
+		double x1 = v1.getValue();
+		double x2 = v2.getValue();
+		double lb = v1.getLowerBound();
+		double ub = v1.getUpperBound();
+
+		// avoid division by zero
+		if (Math.abs(x1 - x2) > Settings.EPS) {
+			if (x2 > x1) {
+				y2 = x2;
+				y1 = x1;
+			} else {
+				y2 = x1;
+				y1 = x2;
+			}
+
+			// generate first offspring
+			beta = 1.0 / (1.0 + (2.0 * (y1 - lb) / (y2 - y1)));
+			alpha = 2.0 - Math.pow(beta, distributionIndex + 1.0);
+			rand = PRNG.nextDouble();
+
+			if (rand <= 1.0 / alpha) {
+				alpha = alpha * rand;
+				betaq = Math.pow(alpha, 1.0 / (distributionIndex + 1.0));
+			} else {
+				alpha = alpha * rand;
+				alpha = 1.0 / (2.0 - alpha);
+				betaq = Math.pow(alpha, 1.0 / (distributionIndex + 1.0));
+			}
+			
+			x1 = 0.5 * ((y1 + y2) - betaq * (y2 - y1));
+			
+			// generate second offspring
+			beta = 1.0 / (1.0 + (2.0 * (ub - y2) / (y2 - y1)));
+			alpha = 2.0 - Math.pow(beta, distributionIndex + 1.0);
+			
+			if (rand <= 1.0 / alpha) {
+				alpha = alpha * rand;
+				betaq = Math.pow(alpha, 1.0 / (distributionIndex + 1.0));
+			} else {
+				alpha = alpha * rand;
+				alpha = 1.0 / (2.0 - alpha);
+				betaq = Math.pow(alpha, 1.0 / (distributionIndex + 1.0));
+			}
+			
+			x2 = 0.5 * ((y1 + y2) + betaq * (y2 - y1));
+			
+			// ensure the children are within bounds
+			if (x1 < lb) {
+				x1 = lb;
+			} else if (x1 > ub) {
+				x1 = ub;
+			}
+			
+			if (x2 < lb) {
+				x2 = lb;
+			} else if (x2 > ub) {
+				x2 = ub;
+			}
+			
+			// randomly swap the variables
+			if (swap && PRNG.nextBoolean()) {
+				double temp = x1;
+				x1 = x2;
+				x2 = temp;
+			}
+			
+			v1.setValue(x1);
+			v2.setValue(x2);
 		}
 	}
 

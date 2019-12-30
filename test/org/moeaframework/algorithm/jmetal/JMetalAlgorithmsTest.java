@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -26,6 +26,7 @@ import jmetal.util.JMException;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.Problem;
@@ -34,6 +35,8 @@ import org.moeaframework.core.spi.ProviderNotFoundException;
 import org.moeaframework.problem.MockBinaryProblem;
 import org.moeaframework.problem.MockPermutationProblem;
 import org.moeaframework.problem.MockRealProblem;
+import org.moeaframework.problem.MockSubsetProblem;
+import org.moeaframework.problem.ProblemException;
 import org.moeaframework.util.distributed.DistributedProblem;
 import org.moeaframework.util.distributed.FutureSolution;
 
@@ -59,6 +62,11 @@ public class JMetalAlgorithmsTest {
 	private Problem permutationProblem;
 	
 	/**
+	 * The subset test problem.
+	 */
+	private Problem subsetProblem;
+	
+	/**
 	 * The properties for controlling the test problems.
 	 */
 	private Properties properties;
@@ -73,6 +81,7 @@ public class JMetalAlgorithmsTest {
 		realProblem = new MockRealProblem();
 		binaryProblem = new MockBinaryProblem();
 		permutationProblem = new MockPermutationProblem();
+		subsetProblem = new MockSubsetProblem();
 		properties = new Properties();
 		
 		properties.setProperty("maxEvaluations", "1000");
@@ -86,6 +95,7 @@ public class JMetalAlgorithmsTest {
 		realProblem = null;
 		binaryProblem = null;
 		permutationProblem = null;
+		subsetProblem = null;
 		properties = null;
 	}
 
@@ -105,6 +115,7 @@ public class JMetalAlgorithmsTest {
 	}
 
 	@Test
+	@Ignore("fails on Java 7+ due to comparator violating contract")
 	public void testFastPGA_Real() {
 		test("FastPGA", realProblem);
 	}
@@ -180,6 +191,7 @@ public class JMetalAlgorithmsTest {
 	}
 
 	@Test
+	@Ignore("fails on Java 7+ due to comparator violating contract")
 	public void testFastPGA_Binary() {
 		test("FastPGA", binaryProblem);
 	}
@@ -255,6 +267,7 @@ public class JMetalAlgorithmsTest {
 	}
 
 	@Test
+	@Ignore("fails on Java 7+ due to comparator violating contract")
 	public void testFastPGA_Permutation() {
 		test("FastPGA", permutationProblem);
 	}
@@ -312,6 +325,81 @@ public class JMetalAlgorithmsTest {
 	@Test
 	public void testSPEA2_Permutation() {
 		test("SPEA2-JMetal", permutationProblem);
+	}
+	
+	@Test(expected = ProblemException.class)
+	public void testAbYSS_Subset() {
+		test("AbYSS", subsetProblem);
+	}
+
+	@Test(expected = ProblemException.class)
+	public void testCellDE_Subset() {
+		test("CellDE", subsetProblem);
+	}
+
+	@Test(expected = ProblemException.class)
+	public void testDENSEA_Subset() {
+		test("DENSEA", subsetProblem);
+	}
+
+	@Test(expected = ProblemException.class)
+	public void testFastPGA_Subset() {
+		test("FastPGA", subsetProblem);
+	}
+	
+	@Test(expected = ProblemException.class)
+	public void testGDE3_Subset() {
+		test("GDE3-JMetal", subsetProblem);
+	}
+
+	@Test(expected = ProblemException.class)
+	public void testIBEA_Subset() {
+		test("IBEA-JMetal", subsetProblem);
+	}
+
+	@Test(expected = ProblemException.class)
+	public void testMOCell_Subset() {
+		test("MOCell", subsetProblem);
+	}
+
+	@Test(expected = ProblemException.class)
+	public void testMOCHC_Subset() {
+		test("MOCHC", subsetProblem);
+	}
+	
+	@Test(expected = ProblemException.class)
+	public void testNSGAII_Subset() {
+		test("NSGAII-JMetal", subsetProblem);
+	}
+
+	@Test(expected = ProblemException.class)
+	public void testOMOPSO_Subset() {
+		test("OMOPSO-JMetal", subsetProblem);
+	}
+
+	@Test(expected = ProblemException.class)
+	public void testPAES_Subset() {
+		test("PAES-JMetal", subsetProblem);
+	}
+
+	@Test(expected = ProblemException.class)
+	public void testPESA2_Subset() {
+		test("PESA2-JMetal", subsetProblem);
+	}
+
+	@Test(expected = ProblemException.class)
+	public void testSMPSO_Subset() {
+		test("SMPSO-JMetal", subsetProblem);
+	}
+	
+	@Test(expected = ProblemException.class)
+	public void testSMSEMOA_Subset() {
+		test("SMSEMOA-JMetal", subsetProblem);
+	}
+
+	@Test(expected = ProblemException.class)
+	public void testSPEA2_Subset() {
+		test("SPEA2-JMetal", subsetProblem);
 	}
 
 	/**

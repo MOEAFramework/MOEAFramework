@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -18,13 +18,31 @@
 package org.moeaframework.algorithm.pso;
 
 import java.io.IOException;
+
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.moeaframework.RetryOnTravis;
+import org.moeaframework.TravisRunner;
 import org.moeaframework.algorithm.AlgorithmTest;
 
 /**
  * Tests the {@link OMOPSO} class.
  */
+@RunWith(TravisRunner.class)
+@RetryOnTravis
 public class OMOPSOTest extends AlgorithmTest {
+	
+	@BeforeClass
+	public static void setUp() {
+		OMOPSO.TESTING_MODE = true;
+	}
+	
+	@AfterClass
+	public static void tearDown() {
+		OMOPSO.TESTING_MODE = false;
+	}
 	
 	@Test
 	public void testDTLZ1() throws IOException {

@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -38,8 +38,8 @@ import org.moeaframework.examples.gui.ExamplesGUI;
 import org.moeaframework.examples.gui.TerminalExample;
 
 /**
- * Launches the demo application allowing the learn about and experiment with
- * the MOEA Framework using several examples.
+ * Launches the demo application allowing users to learn about and experiment
+ * with the MOEA Framework using several examples.
  */
 public class Examples {
 	

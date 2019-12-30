@@ -38,14 +38,14 @@ Its key features includes:
   * Modular design for constructing new algorithms from existing components
   * Permissive open source license
   * Fully documented source code
-  * Over 1100 test cases to ensure validity
+  * Over 1200 test cases to ensure validity
 
 
 ----------------------------------------
  2. Copyright and Licensing Information
 ----------------------------------------
 
-Copyright 2009-2015 David Hadka and other contributors.  All rights reserved.
+Copyright 2009-2018 David Hadka and other contributors.  All rights reserved.
 
 The MOEA Framework is free software: you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as published by
@@ -72,11 +72,11 @@ details.
 
 The latest version of the MOEA Framework can be downloaded from 
 <http://www.moeaframework.org/>.  The MOEA Framework is available in source
-code and binary distributions.  Java 6.0 or later is required to be accessible
-on the host system.  For source code distributions, the Java Development Kit
-(JDK) is required to compile the code.  For binary distributions, only the Java
-Runtime Environment (JRE) is necessary.  Depending on your platform, the JRE or
-JDK can be obtained from the following vendors:
+code and binary distributions.  Java 6.0 or later is required.  For source code
+distributions, the Java Development Kit (JDK) is required to compile the code.
+For binary distributions, only the Java Runtime Environment (JRE) is necessary.
+Depending on your platform, the JRE or JDK can be obtained from the following
+vendors:
 
   Oracle <http://www.oracle.com/technetwork/java/javase/>
     * Windows, Linux and Solaris
@@ -157,7 +157,8 @@ appreciated: new feature additions, bug fixes, testing, documentation, user
 support, translations, promotions, etc.  Even the smallest contribution can
 make a huge difference.
 
-Please see <http://www.moeaframework.org/contribute.html> for details.
+Please visit our Github page at <https://github.com/MOEAFramework/MOEAFramework>
+to learn more.
 
 
 ------------
@@ -189,5 +190,6 @@ this and other free and open source projects.
     EclEmma <http://www.eclemma.org/>
     FindBugs <http://findbugs.sourceforge.net/>
     Ant <http://ant.apache.org/>
-    Subversion <http://subversion.apache.org/>
     Checkstyle <http://checkstyle.sourceforge.net/>
+    Git <https://git-scm.com/>
+    

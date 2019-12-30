@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -17,173 +17,22 @@
  */
 package org.moeaframework.core.spi;
 
-import java.util.EnumSet;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Properties;
+import java.util.ServiceConfigurationError;
+import java.util.ServiceLoader;
+
 import org.moeaframework.core.Problem;
-import org.moeaframework.core.Solution;
-import org.moeaframework.core.Variable;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.operator.CompoundVariation;
-import org.moeaframework.core.operator.OnePointCrossover;
-import org.moeaframework.core.operator.TwoPointCrossover;
-import org.moeaframework.core.operator.UniformCrossover;
-import org.moeaframework.core.operator.binary.BitFlip;
-import org.moeaframework.core.operator.binary.HUX;
-import org.moeaframework.core.operator.grammar.GrammarCrossover;
-import org.moeaframework.core.operator.grammar.GrammarMutation;
-import org.moeaframework.core.operator.permutation.Insertion;
-import org.moeaframework.core.operator.permutation.PMX;
-import org.moeaframework.core.operator.permutation.Swap;
-import org.moeaframework.core.operator.program.SubtreeCrossover;
-import org.moeaframework.core.operator.program.PointMutation;
-import org.moeaframework.core.operator.real.AdaptiveMetropolis;
-import org.moeaframework.core.operator.real.DifferentialEvolution;
-import org.moeaframework.core.operator.real.PCX;
-import org.moeaframework.core.operator.real.PM;
-import org.moeaframework.core.operator.real.SBX;
-import org.moeaframework.core.operator.real.SPX;
-import org.moeaframework.core.operator.real.UM;
-import org.moeaframework.core.operator.real.UNDX;
-import org.moeaframework.core.variable.BinaryVariable;
-import org.moeaframework.core.variable.Grammar;
-import org.moeaframework.core.variable.Permutation;
-import org.moeaframework.core.variable.Program;
-import org.moeaframework.core.variable.RealVariable;
+import org.moeaframework.core.operator.StandardOperators;
 import org.moeaframework.util.TypedProperties;
 
 /**
- * Factory for creating operator instances.  The table below shows the supported
- * operators.  The name and properties columns show the values accepted by
- * {@link #getVariation(String, Properties, Problem)}.
- * <p>
- * <table width="100%" border="1" cellpadding="3" cellspacing="0">
- *   <tr class="TableHeadingColor">
- *     <th width="15%" align="left">Operator</th>
- *     <th width="10%" align="left">Type</th>
- *     <th width="10%" align="left">Name</th>
- *     <th width="65%" align="left">Properties</th>
- *   </tr>
- *   <tr>
- *     <td>{@link SBX}</td>
- *     <td>Real</td>
- *     <td>{@code sbx}</td>
- *     <td>{@code sbx.rate, sbx.distributionIndex}</td>
- *   </tr>
- *   <tr>
- *     <td>{@link PM}</td>
- *     <td>Real</td>
- *     <td>{@code pm}</td>
- *     <td>{@code pm.rate, pm.distributionIndex}</td>
- *   </tr>
- *   <tr>
- *     <td>{@link UM}</td>
- *     <td>Real</td>
- *     <td>{@code um}</td>
- *     <td>{@code um.rate}</td>
- *   </tr>
- *   <tr>
- *     <td>{@link DifferentialEvolution}</td>
- *     <td>Real</td>
- *     <td>{@code de}</td>
- *     <td>{@code de.crossoverRate, de.stepSize}</td>
- *   </tr>
- *   <tr>
- *     <td>{@link PCX}</td>
- *     <td>Real</td>
- *     <td>{@code pcx}</td>
- *     <td>{@code pcx.parents, pcx.offspring, pcx.eta, pcx.zeta}</td>
- *   </tr>
- *   <tr>
- *     <td>{@link SPX}</td>
- *     <td>Real</td>
- *     <td>{@code spx}</td>
- *     <td>{@code spx.parents, spx.offspring, spx.epsilon}</td>
- *   </tr>
- *   <tr>
- *     <td>{@link UNDX}</td>
- *     <td>Real</td>
- *     <td>{@code undx}</td>
- *     <td>{@code undx.parents, undx.offspring, undx.eta, undx.zeta}</td>
- *   </tr>
- *   <tr>
- *     <td>{@link AdaptiveMetropolis}</td>
- *     <td>Real</td>
- *     <td>{@code am}</td>
- *     <td>{@code am.parents, am.offspring, am.coefficient}</td>
- *   </tr>
- *   <tr>
- *     <td>{@link HUX}</td>
- *     <td>Binary</td>
- *     <td>{@code hux}</td>
- *     <td>{@code hux.rate}</td>
- *   </tr>
- *   <tr>
- *     <td>{@link BitFlip}</td>
- *     <td>Binary</td>
- *     <td>{@code bf}</td>
- *     <td>{@code bf.rate}</td>
- *   </tr>
- *   <tr>
- *     <td>{@link PMX}</td>
- *     <td>Permutation</td>
- *     <td>{@code pmx}</td>
- *     <td>{@code pmx.rate}</td>
- *   </tr>
- *   <tr>
- *     <td>{@link Insertion}</td>
- *     <td>Permutation</td>
- *     <td>{@code insertion}</td>
- *     <td>{@code insertion.rate}</td>
- *   </tr>
- *   <tr>
- *     <td>{@link Swap}</td>
- *     <td>Permutation</td>
- *     <td>{@code swap}</td>
- *     <td>{@code swap.rate}</td>
- *   </tr>
- *   <tr>
- *     <td>{@link GrammarCrossover}</td>
- *     <td>Grammar</td>
- *     <td>{@code gx}</td>
- *     <td>{@code gx.rate}</td>
- *   </tr>
- *   <tr>
- *     <td>{@link GrammarMutation}</td>
- *     <td>Grammar</td>
- *     <td>{@code gm}</td>
- *     <td>{@code gm.rate}</td>
- *   </tr>
- *   <tr>
- *     <td>{@link SubtreeCrossover}</td>
- *     <td>Program</td>
- *     <td>{@code bx}</td>
- *     <td>{@code bx.rate}</td>
- *   </tr>
- *   <tr>
- *     <td>{@link PointMutation}</td>
- *     <td>Program</td>
- *     <td>{@code ptm}</td>
- *     <td>{@code ptm.rate}</td>
- *   </tr>
- *   <tr>
- *     <td>{@link OnePointCrossover}</td>
- *     <td>Any</td>
- *     <td>{@code 1x}</td>
- *     <td>{@code 1x.rate}</td>
- *   </tr>
- *   <tr>
- *     <td>{@link TwoPointCrossover}</td>
- *     <td>Any</td>
- *     <td>{@code 2x}</td>
- *     <td>{@code 2x.rate}</td>
- *   </tr>
- *   <tr>
- *     <td>{@link UniformCrossover}</td>
- *     <td>Any</td>
- *     <td>{@code ux}</td>
- *     <td>{@code ux.rate}</td>
- *   </tr>
- * </table>
+ * Factory for creating and variation (e.g., crossover and mutation) operator
+ * instances.
  * <p>
  * Operators can be combined by joining the two operator names with the plus
  * sign, such as {@code "sbx+pm"}.  Not all operators can be joined this way.
@@ -192,25 +41,11 @@ import org.moeaframework.util.TypedProperties;
  * This class is thread safe.
  */
 public class OperatorFactory {
-
+	
 	/**
-	 * The types supported by this operator factory.
+	 * The static service loader for loading operator providers.
 	 */
-	private static enum Type {
-		
-		REAL,
-		
-		BINARY,
-		
-		PERMUTATION,
-		
-		GRAMMAR,
-		
-		PROGRAM,
-		
-		UNKNOWN
-
-	}
+	private static final ServiceLoader<OperatorProvider> PROVIDERS;
 	
 	/**
 	 * The default operator factory.
@@ -218,9 +53,15 @@ public class OperatorFactory {
 	private static OperatorFactory instance;
 	
 	/**
+	 * Collection of providers that have been manually added.
+	 */
+	private List<OperatorProvider> customProviders;
+	
+	/**
 	 * Instantiates the static {@code instance} object.
 	 */
 	static {
+		PROVIDERS = ServiceLoader.load(OperatorProvider.class);
 		instance = new OperatorFactory();
 	}
 	
@@ -247,6 +88,19 @@ public class OperatorFactory {
 	 */
 	public OperatorFactory() {
 		super();
+		
+		customProviders = new ArrayList<OperatorProvider>();
+	}
+	
+	/**
+	 * Adds an operator provider to this operator factory.  Subsequent calls
+	 * to {@link #getVariation(String, Properties, Problem)} will search the
+	 * given provider for a match.
+	 * 
+	 * @param provider the new operator provider
+	 */
+	public void addProvider(OperatorProvider provider) {
+		customProviders.add(provider);
 	}
 	
 	/**
@@ -255,52 +109,17 @@ public class OperatorFactory {
 	 * 
 	 * @param problem the problem
 	 * @return the name of the default mutation operator for the given problem
-	 * @throws ProviderNotFoundException if no default mutation operator could
+	 * @throws ProviderLookupException if no default mutation operator could
 	 *         be determined
 	 */
 	public String getDefaultMutation(Problem problem) {
-		EnumSet<Type> types = EnumSet.noneOf(Type.class);
-		Solution solution = problem.newSolution();
+		String result = lookupMutationHint(problem);
 		
-		for (int i=0; i<solution.getNumberOfVariables(); i++) {
-			Variable variable = solution.getVariable(i);
-			
-			if (variable instanceof RealVariable) {
-				types.add(Type.REAL);
-			} else if (variable instanceof BinaryVariable) {
-				types.add(Type.BINARY);
-			} else if (variable instanceof Permutation) {
-				types.add(Type.PERMUTATION);
-			} else if (variable instanceof Grammar) {
-				types.add(Type.GRAMMAR);
-			} else if (variable instanceof Program) {
-				types.add(Type.PROGRAM);
-			} else {
-				types.add(Type.UNKNOWN);
-			}
+		if (result == null) {
+			throw new ProviderLookupException("unsupported or unknown type");
 		}
 		
-		if (types.isEmpty()) {
-			throw new ProviderNotFoundException("empty type");
-		} else if (types.size() > 1) {
-			throw new ProviderNotFoundException("mixed type");
-		}
-		
-		Type type = types.iterator().next();
-		
-		if (type.equals(Type.REAL)) {
-			return "pm";
-		} else if (type.equals(Type.BINARY)) {
-			return "bf";
-		} else if (type.equals(Type.PERMUTATION)) {
-			return "insertion+swap";
-		} else if (type.equals(Type.GRAMMAR)) {
-			return "gm";
-		} else if (type.equals(Type.PROGRAM)) {
-			return "ptm";
-		} else {
-			throw new ProviderNotFoundException("unknown type");
-		}
+		return result;
 	}
 	
 	/**
@@ -310,57 +129,24 @@ public class OperatorFactory {
 	 * 
 	 * @param problem the problem
 	 * @return the name of the default variation operator for the given problem
-	 * @throws ProviderNotFoundException if no default variation operator could
+	 * @throws ProviderLookupException if no default variation operator could
 	 *         be determined
 	 */
 	public String getDefaultVariation(Problem problem) {
-		EnumSet<Type> types = EnumSet.noneOf(Type.class);
-		Solution solution = problem.newSolution();
+		String result = lookupVariationHint(problem);
 		
-		for (int i=0; i<solution.getNumberOfVariables(); i++) {
-			Variable variable = solution.getVariable(i);
-			
-			if (variable instanceof RealVariable) {
-				types.add(Type.REAL);
-			} else if (variable instanceof BinaryVariable) {
-				types.add(Type.BINARY);
-			} else if (variable instanceof Permutation) {
-				types.add(Type.PERMUTATION);
-			} else if (variable instanceof Grammar) {
-				types.add(Type.GRAMMAR);
-			} else if (variable instanceof Program) {
-				types.add(Type.PROGRAM);
-			} else {
-				types.add(Type.UNKNOWN);
-			}
+		if (result == null) {
+			throw new ProviderLookupException("unsupported or unknown type");
 		}
 		
-		if (types.isEmpty()) {
-			throw new ProviderNotFoundException("empty type");
-		} else if (types.size() > 1) {
-			throw new ProviderNotFoundException("mixed type");
-		}
-		
-		Type type = types.iterator().next();
-		
-		if (type.equals(Type.REAL)) {
-			return "sbx+pm";
-		} else if (type.equals(Type.BINARY)) {
-			return "hux+bf";
-		} else if (type.equals(Type.PERMUTATION)) {
-			return "pmx+insertion+swap";
-		} else if (type.equals(Type.GRAMMAR)) {
-			return "gx+gm";
-		} else if (type.equals(Type.PROGRAM)) {
-			return "bx+ptm";
-		} else {
-			throw new ProviderNotFoundException("unknown type");
-		}
+		return result;
 	}
-
+	
 	/**
-	 * Equivalent to calling 
-	 * {@link #getVariation(String, TypedProperties, Problem)}.
+	 * Returns an instance of the variation operator with the specified name.
+	 * This method must throw an {@link ProviderNotFoundException} if no 
+	 * suitable operator is found.  If {@code name} is null, the factory should
+	 * return a default variation operator appropriate for the problem.
 	 * 
 	 * @param name the name identifying the variation operator
 	 * @param properties the implementation-specific properties
@@ -369,9 +155,9 @@ public class OperatorFactory {
 	 * @throws ProviderNotFoundException if no provider for the algorithm is 
 	 *         available
 	 */
-	public Variation getVariation(String name, Properties properties, 
+	public Variation getVariation(String name, TypedProperties properties,
 			Problem problem) {
-		return getVariation(name, new TypedProperties(properties), problem);
+		return getVariation(name, properties.getProperties(), problem);
 	}
 
 	/**
@@ -387,14 +173,14 @@ public class OperatorFactory {
 	 * @throws ProviderNotFoundException if no provider for the algorithm is 
 	 *         available
 	 */
-	public Variation getVariation(String name, TypedProperties properties, 
+	public Variation getVariation(String name, Properties properties, 
 			Problem problem) {
 		if (name == null) {
-			String operator = properties.getString("operator", null);
+			String operator = properties.getProperty("operator", null);
 			
 			if (operator == null) {
-				return getVariation(getDefaultVariation(problem), properties, 
-						problem);
+				String hint = lookupVariationHint(problem);
+				return getVariation(hint, properties, problem);
 			} else {
 				return getVariation(operator, properties, problem);
 			}
@@ -403,91 +189,163 @@ public class OperatorFactory {
 			CompoundVariation variation = new CompoundVariation();
 			
 			for (String entry : entries) {
-				variation.appendOperator(getVariation(entry, properties,
-						problem));
+				variation.appendOperator(
+						getVariation(entry, properties, problem));
 			}
 			
 			return variation;
 		} else {
-			if (name.equalsIgnoreCase("sbx")) {
-				return new SBX(
-						properties.getDouble("sbx.rate", 1.0), 
-						properties.getDouble("sbx.distributionIndex", 15.0));
-			} else if (name.equalsIgnoreCase("pm")) {
-				return new PM(
-						properties.getDouble("pm.rate", 
-								1.0 / problem.getNumberOfVariables()), 
-						properties.getDouble("pm.distributionIndex", 20.0));
-			} else if (name.equalsIgnoreCase("de")) {	
-				return new DifferentialEvolution(
-						properties.getDouble("de.crossoverRate", 0.1), 
-						properties.getDouble("de.stepSize", 0.5));
-			} else if (name.equalsIgnoreCase("pcx")) {
-				return new PCX(
-						(int)properties.getDouble("pcx.parents", 10),
-						(int)properties.getDouble("pcx.offspring", 2), 
-						properties.getDouble("pcx.eta", 0.1), 
-						properties.getDouble("pcx.zeta", 0.1));
-			} else if (name.equalsIgnoreCase("spx")) {
-				return new SPX(
-						(int)properties.getDouble("spx.parents", 10),
-						(int)properties.getDouble("spx.offspring", 2),
-						properties.getDouble("spx.epsilon", 3));
-			} else if (name.equalsIgnoreCase("undx")) {
-				return new UNDX(
-						(int)properties.getDouble("undx.parents", 10),
-						(int)properties.getDouble("undx.offspring", 2), 
-						properties.getDouble("undx.zeta", 0.5), 
-						properties.getDouble("undx.eta", 0.35));
-			} else if (name.equalsIgnoreCase("um")) {
-				return new UM(
-						properties.getDouble("um.rate", 
-								1.0 / problem.getNumberOfVariables()));
-			} else if (name.equalsIgnoreCase("am")) {
-				return new AdaptiveMetropolis(
-						(int)properties.getDouble("am.parents", 10),
-						(int)properties.getDouble("am.offspring", 2), 
-						properties.getDouble("am.coefficient", 2.4));
-			} else if (name.equalsIgnoreCase("hux")) {
-				return new HUX(
-						properties.getDouble("hux.rate", 1.0));
-			} else if (name.equalsIgnoreCase("bf")) {
-				return new BitFlip(
-						properties.getDouble("bf.rate", 0.01));
-			} else if (name.equalsIgnoreCase("pmx")) {
-				return new PMX(
-						properties.getDouble("pmx.rate", 1.0));
-			} else if (name.equalsIgnoreCase("insertion")) {
-				return new Insertion(
-						properties.getDouble("insertion.rate", 0.3));
-			} else if (name.equalsIgnoreCase("swap")) {
-				return new Swap(
-						properties.getDouble("swap.rate", 0.3));
-			} else if (name.equalsIgnoreCase("1x")) {
-				return new OnePointCrossover(
-						properties.getDouble("1x.rate", 1.0));
-			} else if (name.equalsIgnoreCase("2x")) {
-				return new TwoPointCrossover(
-						properties.getDouble("2x.rate", 1.0));
-			} else if (name.equalsIgnoreCase("ux")) {
-				return new UniformCrossover(
-						properties.getDouble("ux.rate", 1.0));
-			} else if (name.equalsIgnoreCase("gx")) {
-				return new GrammarCrossover(
-						properties.getDouble("gx.rate", 1.0));
-			} else if (name.equalsIgnoreCase("gm")) {
-				return new GrammarMutation(
-						properties.getDouble("gm.rate", 1.0));
-			} else if (name.equalsIgnoreCase("ptm")) {
-				return new PointMutation(
-						properties.getDouble("ptm.rate", 0.01));
-			} else if (name.equalsIgnoreCase("bx")) {
-				return new SubtreeCrossover(
-						properties.getDouble("bx.rate", 0.9));
-			} else {
-				throw new ProviderNotFoundException(name);
+			return instantiateVariation(name, properties, problem);
+		}
+	}
+	
+	private Variation instantiateVariation(OperatorProvider provider,
+			String name, Properties properties, Problem problem) {
+		try {
+			return provider.getVariation(name, properties, problem);
+		} catch (ServiceConfigurationError e) {
+			System.err.println(e.getMessage());
+		}
+		
+		return null;
+	}
+	
+	private Variation instantiateVariation(String name, Properties properties,
+			Problem problem) {
+		boolean hasStandardOperators = false;
+		
+		// loop over all providers that have been manually added
+		for (OperatorProvider provider : customProviders) {
+			Variation variation = instantiateVariation(provider, name,
+					properties, problem);
+			
+			if (provider.getClass() == StandardOperators.class) {
+				hasStandardOperators = true;
+			}
+			
+			if (variation != null) {
+				return variation;
 			}
 		}
+
+		// loop over all providers available via the SPI
+		Iterator<OperatorProvider> iterator = PROVIDERS.iterator();
+		
+		while (iterator.hasNext()) {
+			OperatorProvider provider = iterator.next();
+			Variation variation = instantiateVariation(provider, name,
+					properties, problem);
+			
+			if (provider.getClass() == StandardOperators.class) {
+				hasStandardOperators = true;
+			}
+			
+			if (variation != null) {
+				return variation;
+			}
+		}
+		
+		// always ensure we check the standard algorithms
+		if (!hasStandardOperators) {
+			Variation variation = instantiateVariation(new StandardOperators(),
+					name, properties, problem);
+			
+			if (variation != null) {
+				return variation;
+			}
+		}
+
+		throw new ProviderNotFoundException(name);
+	}
+	
+	private String lookupMutationHint(Problem problem) {
+		boolean hasStandardOperators = false;
+		
+		// loop over all providers that have been manually added
+		for (OperatorProvider provider : customProviders) {
+			String hint = provider.getMutationHint(problem);
+
+			if (provider.getClass() == StandardOperators.class) {
+				hasStandardOperators = true;
+			}
+			
+			if (hint != null) {
+				return hint;
+			}
+		}
+
+		// loop over all providers available via the SPI
+		Iterator<OperatorProvider> iterator = PROVIDERS.iterator();
+		
+		while (iterator.hasNext()) {
+			OperatorProvider provider = iterator.next();
+			String hint = provider.getMutationHint(problem);
+			
+			if (provider.getClass() == StandardOperators.class) {
+				hasStandardOperators = true;
+			}
+			
+			if (hint != null) {
+				return hint;
+			}
+		}
+		
+		// always ensure we check the standard algorithms
+		if (!hasStandardOperators) {
+			String hint = new StandardOperators().getMutationHint(problem);
+
+			if (hint != null) {
+				return hint;
+			}
+		}
+		
+		throw new ProviderLookupException(
+				"unable to find suitable variation operator");
+	}
+	
+	private String lookupVariationHint(Problem problem) {
+		boolean hasStandardOperators = false;
+		
+		// loop over all providers that have been manually added
+		for (OperatorProvider provider : customProviders) {
+			String hint = provider.getVariationHint(problem);
+
+			if (provider.getClass() == StandardOperators.class) {
+				hasStandardOperators = true;
+			}
+			
+			if (hint != null) {
+				return hint;
+			}
+		}
+
+		// loop over all providers available via the SPI
+		Iterator<OperatorProvider> iterator = PROVIDERS.iterator();
+		
+		while (iterator.hasNext()) {
+			OperatorProvider provider = iterator.next();
+			String hint = provider.getVariationHint(problem);
+			
+			if (provider.getClass() == StandardOperators.class) {
+				hasStandardOperators = true;
+			}
+			
+			if (hint != null) {
+				return hint;
+			}
+		}
+		
+		// always ensure we check the standard algorithms
+		if (!hasStandardOperators) {
+			String hint = new StandardOperators().getVariationHint(problem);
+
+			if (hint != null) {
+				return hint;
+			}
+		}
+		
+		throw new ProviderLookupException(
+				"unable to find suitable variation operator");
 	}
 	
 }

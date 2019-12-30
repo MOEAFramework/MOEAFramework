@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -37,6 +37,11 @@ public class TypeSafetyTest {
 		@Override
 		public Variable copy() {
 			return new NewVariable();
+		}
+
+		@Override
+		public void randomize() {
+			throw new UnsupportedOperationException();
 		}
 
 	}

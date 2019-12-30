@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -25,7 +25,9 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.indicator.Normalizer;
 
 /**
- * Abstract class for assigning fitnesses based on an indicator.
+ * Abstract class for assigning fitness based on a binary indicator.  This
+ * class combines the pair-wise fitness of each solution into an aggregate
+ * fitness within the entire population.
  */
 public abstract class IndicatorFitnessEvaluator implements FitnessEvaluator {
 

@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -30,11 +30,42 @@ import org.moeaframework.core.comparator.ParetoDominanceComparator;
  * population, the new solution is not added.
  */
 public class NondominatedPopulation extends Population {
+	
+	/**
+	 * Specifies how duplicate solutions are handled.  Duplicate solutions are
+	 * those whose Euclidean distance in objective space are less than
+	 * {@value Settings#EPS}.
+	 */
+	public static enum DuplicateMode {
+		
+		/**
+		 * Do not allow any duplicate solutions into this population.
+		 */
+		NO_DUPLICATE_OBJECTIVES,
+		
+		/**
+		 * Allow duplicate solutions only if they have different decision
+		 * variables.
+		 */
+		ALLOW_DUPLICATE_OBJECTIVES,
+		
+		/**
+		 * Allow all duplicate solutions, even if they have identical decision
+		 * variables and objectives.
+		 */
+		ALLOW_DUPLICATES
+		
+	}
 
 	/**
 	 * The dominance comparator used by this non-dominated population.
 	 */
-	private final DominanceComparator comparator;
+	protected final DominanceComparator comparator;
+	
+	/**
+	 * Specifies how duplicate solutions are handled. 
+	 */
+	protected final DuplicateMode duplicateMode;
 
 	/**
 	 * Constructs an empty non-dominated population using the Pareto dominance
@@ -42,6 +73,16 @@ public class NondominatedPopulation extends Population {
 	 */
 	public NondominatedPopulation() {
 		this(new ParetoDominanceComparator());
+	}
+	
+	/**
+	 * Constructs an empty non-dominated population using the Pareto dominance
+	 * relation.
+	 * 
+	 * @param duplicateMode specifies how duplicate solutions are handled
+	 */
+	public NondominatedPopulation(DuplicateMode duplicateMode) {
+		this(new ParetoDominanceComparator(), duplicateMode);
 	}
 
 	/**
@@ -52,8 +93,41 @@ public class NondominatedPopulation extends Population {
 	 *        population
 	 */
 	public NondominatedPopulation(DominanceComparator comparator) {
+		this(comparator, Settings.getDuplicateMode());
+	}
+	
+	/**
+	 * Constructs an empty non-dominated population using the specified 
+	 * dominance relation.
+	 * 
+	 * @param comparator the dominance relation used by this non-dominated
+	 *        population
+	 * @param allowDuplicates allow duplicate solutions into the non-dominated
+	 *        population
+	 * @deprecated Use {@link #NondominatedPopulation(DominanceComparator,
+	 * 		  DuplicateMode)} instead.
+	 */
+	@Deprecated
+	public NondominatedPopulation(DominanceComparator comparator,
+			boolean allowDuplicates) {
+		this(comparator, allowDuplicates ?
+				DuplicateMode.ALLOW_DUPLICATES :
+				DuplicateMode.NO_DUPLICATE_OBJECTIVES);
+	}
+	
+	/**
+	 * Constructs an empty non-dominated population using the specified 
+	 * dominance relation.
+	 * 
+	 * @param comparator the dominance relation used by this non-dominated
+	 *        population
+	 * @param duplicateMode specifies how duplicate solutions are handled
+	 */
+	public NondominatedPopulation(DominanceComparator comparator,
+			DuplicateMode duplicateMode) {
 		super();
 		this.comparator = comparator;
+		this.duplicateMode = duplicateMode;
 	}
 
 	/**
@@ -101,7 +175,7 @@ public class NondominatedPopulation extends Population {
 				iterator.remove();
 			} else if (flag > 0) {
 				return false;
-			} else if (distance(newSolution, oldSolution) < Settings.EPS) {
+			} else if (isDuplicate(newSolution, oldSolution)) {
 				return false;
 			}
 		}
@@ -127,7 +201,7 @@ public class NondominatedPopulation extends Population {
 				iterator.remove();
 			} else if (flag > 0) {
 				return;
-			} else if (distance(newSolution, oldSolution) < Settings.EPS) {
+			} else if (isDuplicate(newSolution, oldSolution)) {
 				return;
 			}
 		}
@@ -157,7 +231,7 @@ public class NondominatedPopulation extends Population {
 	 * @param s2 the second solution
 	 * @return the distance between the two solutions in objective space
 	 */
-	protected double distance(Solution s1, Solution s2) {
+	protected static double distance(Solution s1, Solution s2) {
 		double distance = 0.0;
 
 		for (int i = 0; i < s1.getNumberOfObjectives(); i++) {
@@ -165,6 +239,38 @@ public class NondominatedPopulation extends Population {
 		}
 
 		return Math.sqrt(distance);
+	}
+	
+	/**
+	 * Returns {@code true} if the two solutions are duplicates and one should
+	 * be ignored based on the duplicate mode.  This default implementation
+	 * depends on the {@link #equals(Object)} method of the {@link Variable}
+	 * class to check for equality of the decision variables.
+	 * 
+	 * @param s1 the first solution
+	 * @param s2 the second solution
+	 * @return {@code true} if the solutions are duplicates; {@code false}
+	 *         otherwise
+	 */
+	protected boolean isDuplicate(Solution s1, Solution s2) {
+		switch (duplicateMode) {
+		case NO_DUPLICATE_OBJECTIVES:
+			return distance(s1, s2) < Settings.EPS;
+		case ALLOW_DUPLICATE_OBJECTIVES:
+			if (s1.getNumberOfVariables() != s2.getNumberOfVariables()) {
+				return false;
+			}
+			
+			for (int i = 0; i < s1.getNumberOfVariables(); i++) {
+				if (!s1.getVariable(i).equals(s2.getVariable(i))) {
+					return false;
+				}
+			}
+			
+			return true;
+		default:
+			return false;
+		}
 	}
 
 	/**

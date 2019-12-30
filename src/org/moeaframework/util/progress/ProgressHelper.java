@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -20,6 +20,7 @@ package org.moeaframework.util.progress;
 import org.apache.commons.lang3.event.EventListenerSupport;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.moeaframework.Executor;
+import org.moeaframework.core.Algorithm;
 
 /**
  * Helper for notifying {@link ProgressListener}s when the evaluation progress
@@ -45,12 +46,17 @@ public class ProgressHelper {
 	 * The executor using this progress helper.
 	 */
 	private final Executor executor;
+
+	/**
+	 * The current {@link Algorithm} being run. 
+	 */
+	private Algorithm currentAlgorithm;
 	
 	/**
 	 * The current seed being evaluated, starting at 1.
 	 */
 	private int currentSeed;
-	
+
 	/**
 	 * The total number of seeds to be evaluated.
 	 */
@@ -68,7 +74,7 @@ public class ProgressHelper {
 	private int maxNFE;
 	
 	/**
-	 * The time the {@link #start(int, int)} method was invoked.
+	 * The time the {@link #start(int, int, long)} method was invoked.
 	 */
 	private long startTime;
 	
@@ -77,6 +83,11 @@ public class ProgressHelper {
 	 * used for estimating the remaining time.
 	 */
 	private long lastTime;
+	
+	/**
+	 * The maximum elapsed time per seed.
+	 */
+	private long maxTime;
 	
 	/**
 	 * The seed that was evaluated when {@link #updateStatistics()} was last
@@ -134,7 +145,19 @@ public class ProgressHelper {
 		double diffTime = currentTime - lastTime;
 		double diffSeed = currentSeed - lastSeed;
 		double diffNFE = currentNFE - lastNFE;
-		double percentChange = (diffSeed + (diffNFE / maxNFE)) / totalSeeds;
+		double percentNFE = Double.POSITIVE_INFINITY;
+		double percentTime = Double.POSITIVE_INFINITY;
+		
+		if (maxNFE >= 0) {
+			percentNFE = diffNFE / maxNFE;
+		}
+		
+		if (maxTime >= 0) {
+			percentTime = diffTime / maxTime;
+		}
+		
+		double diffPercent = Math.min(percentNFE, percentTime);
+		double percentChange = (diffSeed + diffPercent) / totalSeeds;
 		
 		// only update if the change was significant
 		if ((diffTime > 0.0) && (percentChange > 0.0001)) {
@@ -159,11 +182,23 @@ public class ProgressHelper {
 		long currentTime = System.currentTimeMillis();
 		double remainingSeeds = totalSeeds - currentSeed;
 		double remainingNFE = maxNFE - currentNFE;
-		double percentRemaining = (remainingSeeds + (remainingNFE / maxNFE)) /
-				totalSeeds;
+		double remainingTime = maxTime - (currentTime - startTime);
+		double percentNFE = Double.POSITIVE_INFINITY;
+		double percentTime = Double.POSITIVE_INFINITY;
+		
+		if (maxNFE >= 0) {
+			percentNFE = (remainingSeeds + (remainingNFE / maxNFE)) / totalSeeds;
+		}
+		
+		if (maxTime >= 0) {
+			percentTime = (remainingSeeds + (remainingTime / maxTime)) / totalSeeds;
+		}
+		
+		double percentRemaining = Math.min(percentNFE, percentTime);
 		
 		ProgressEvent event = new ProgressEvent(
 				executor,
+				currentAlgorithm,
 				currentSeed,
 				totalSeeds,
 				isSeedFinished,
@@ -171,7 +206,8 @@ public class ProgressHelper {
 				maxNFE,
 				Math.max(1.0 - percentRemaining, 0.0),
 				(currentTime - startTime) / 1000.0,
-				(statistics.getMean() * percentRemaining) / 1000.0);
+				(statistics.getMean() * percentRemaining) / 1000.0,
+				maxTime >= 0.0 ? maxTime / 1000.0 : maxTime);
 		
 		listeners.fire().progressUpdate(event);
 	}
@@ -208,6 +244,18 @@ public class ProgressHelper {
 			sendProgressEvent(true);
 		}
 	}
+
+	/**
+	 * Sets the currently running algorithm, so that {@link ProgressEvent}s
+	 * can access the algorithm object.
+	 * 
+	 * @param algorithm - the algorithm that is going to be running
+	 */
+	public void setCurrentAlgorithm(Algorithm algorithm) {
+		this.currentAlgorithm = algorithm;
+		
+	}
+
 	
 	/**
 	 * Increments the current seed and sets NFE to 0.  This method will
@@ -231,10 +279,12 @@ public class ProgressHelper {
 	 * @param totalSeeds the total number of seeds to be evaluated
 	 * @param maxNFE the maximum number of objective function evaluations per
 	 *        seed
+	 * @param maxTime the maximum time
 	 */
-	public void start(int totalSeeds, int maxNFE) {
+	public void start(int totalSeeds, int maxNFE, long maxTime) {
 		this.totalSeeds = totalSeeds;
 		this.maxNFE = maxNFE;
+		this.maxTime = maxTime;
 		
 		// reset all internal parameters
 		lastSeed = 1;
@@ -248,8 +298,8 @@ public class ProgressHelper {
 	
 	/**
 	 * Stops this progress helper.  No other methods should be invoked after
-	 * calling this method.  However, {@link #start(int, int)} can be called
-	 * to reset and restart this progress helper.
+	 * calling this method.  However, {@link #start(int, int, long)} can be
+	 * called to reset and restart this progress helper.
 	 */
 	public void stop() {
 		// this currently does nothing, but may be used in the future if we

@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -18,11 +18,19 @@
 package org.moeaframework.algorithm;
 
 import java.io.IOException;
+
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.moeaframework.IgnoreOnTravis;
+import org.moeaframework.TravisRunner;
 
 /**
  * Tests the {@link SMSEMOA} class.
  */
+@RunWith(TravisRunner.class)
+@IgnoreOnTravis("exceeds 10 minute timeout")
+@Ignore
 public class SMSEMOATest extends AlgorithmTest {
 	
 	@Test

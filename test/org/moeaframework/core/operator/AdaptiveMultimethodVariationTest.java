@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -17,6 +17,7 @@
  */
 package org.moeaframework.core.operator;
 
+import org.apache.commons.math3.util.ArithmeticUtils;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -239,7 +240,8 @@ public class AdaptiveMultimethodVariationTest {
 		UniformSelection selection = new UniformSelection();
 		
 		//ensure sufficient number of samples to trigger off-by-one error
-		int numberOfSamples = (int)Math.pow(variation.getUpdateWindow(), 3);
+		int numberOfSamples = ArithmeticUtils.pow(variation.getUpdateWindow(),
+				3);
 		
 		for (int i=0; i<numberOfSamples; i++) {
 			variation.evolve(selection.select(variation.getArity(), 

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!--
-Copyright 2009-2015 David Hadka
+Copyright 2009-2018 David Hadka
 
 This file is part of the MOEA Framework.
 
@@ -108,10 +108,14 @@ Use of these build scripts requires Apache Ant to be installed.  See
 			<replacefilter token="%DATE%" value="${TODAY}" />
 		</replace>
 		
-		<property name="svn.version" value="Undefined" />
-
-		<exec executable="svnversion" outputproperty="svn.version"
-				errorproperty="svn.error" failifexecutionfails="false"/>
+		<exec executable="git" outputproperty="impl.version"
+				errorproperty="impl.error" failifexecutionfails="false">
+			<arg value="rev-parse" />
+			<arg value="--short" />
+			<arg value="HEAD" />
+		</exec>
+		
+		<property name="impl.version" value="Undefined" />
 		
 		<manifest file="${build}/META-INF/MANIFEST.MF">
 			<section name="org/moeaframework/">
@@ -119,7 +123,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 				<attribute name="Specification-Version" value="${version}" />
 				<attribute name="Specification-Vendor" value="http://www.moeaframework.org" />
 				<attribute name="Implementation-Title" value="org.moeaframework" />
-				<attribute name="Implementation-Version" value="${svn.version}" />
+				<attribute name="Implementation-Version" value="${impl.version}" />
 				<attribute name="Implementation-Vendor" value="http://www.moeaframework.org" />
 			</section>
 		</manifest>
@@ -134,7 +138,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 
 	<!-- Packages the MOEA Framework JAR file along with javadocs and required files -->
 	<target name="package-binary" 
-			depends="build-binary, build-javadoc"
+			depends="package-guide, build-binary, build-javadoc"
 			description="Creates the binary distribution file">
 		<delete dir="${build}" />
 		<mkdir dir="${base}" />
@@ -147,7 +151,6 @@ Use of these build scripts requires Apache Ant to be installed.  See
 			<path refid="requiredfiles" />
 			<fileset file="global.properties" />
 			<fileset file="auxiliary/windows/launch-diagnostic-tool.bat" />
-			<fileset file="auxiliary/windows/launch-demos.bat" />
 		</copy>
 
 		<replace file="${base}/README">
@@ -176,6 +179,10 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		<copy todir="${base}/examples">
 			<fileset dir="examples" excludes="*.exe,*.o,*.a" />
 		</copy>
+		
+		<copy tofile="${base}/QuickStart.pdf">
+			<fileset file="${dist}/${shortname}-${version}-QuickStart.pdf" />
+		</copy>
 
 		<tar destfile="${dist}/${shortname}-${version}.tar.gz" 
 				basedir="${build}" compression="gzip" longfile="gnu" />
@@ -183,6 +190,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 
 	<!-- Packages the MOEA Framework source code, libraries and required files  -->
 	<target name="package-source" 
+			depends="package-guide"
 			description="Creates the source code distribution file">
 		<delete dir="${build}" />
 		<mkdir dir="${base}" />
@@ -196,7 +204,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 				<exclude name="examples/*.a" />
 				<include name="lib/**" />
 				<exclude name="lib/junit-*.jar" />
-				<include name="manual/**" />
+				<include name="guide/**" />
 				<include name="META-INF/**" />
 				<include name="pf/**" />
 				<include name="src/**" />
@@ -221,6 +229,10 @@ Use of these build scripts requires Apache Ant to be installed.  See
 			<replacefilter token="%VERSION%" value="${version}" />
 		</replace>
 
+		<copy tofile="${base}/QuickStart.pdf">
+			<fileset file="${dist}/${shortname}-${version}-QuickStart.pdf" />
+		</copy>
+		
 		<tar destfile="${dist}/${shortname}-${version}-Source.tar.gz" 
 				basedir="${build}" compression="gzip" longfile="gnu" />
 	</target>
@@ -246,8 +258,6 @@ Use of these build scripts requires Apache Ant to be installed.  See
 
 		<loadfile property="website.tracker" srcFile="website/tracker.partial" />
 
-		<loadfile property="website.docad" srcFile="website/docad.partial" />
-
 		<xslt basedir="website/xslt" destdir="${build}" 
 				style="website/xslt/stylesheet.xsl" 
 				includes="*.xml" filenameparameter="filename">
@@ -260,9 +270,6 @@ Use of these build scripts requires Apache Ant to be installed.  See
 			<replacefilter token="%VERSION%" value="${version}" />
 			<replacefilter value="${website.tracker}">
 				<replacetoken><![CDATA[<!-- %TRACKER% -->]]></replacetoken>
-			</replacefilter>
-			<replacefilter value="${website.docad}">
-				<replacetoken><![CDATA[<!-- %DOCAD% -->]]></replacetoken>
 			</replacefilter>
 		</replace>
 
@@ -536,15 +543,15 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		</move>
 	</target>
 	
-	<!-- Builds the user manual, converting from LaTeX to a PDF -->
-	<target name="package-manual" description="Builds the user manual">
+	<!-- Builds the quick start guide, converting from LaTeX to a PDF -->
+	<target name="package-guide" description="Builds the quick start guide">
 		<tstamp />
 		
 		<delete dir="${build}" />
 		<mkdir dir="${build}" />
 
 		<copy todir="${build}">
-			<fileset dir="manual" />
+			<fileset dir="guide" />
 		</copy>
 		
 		<replace dir="${build}">
@@ -553,19 +560,19 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		</replace>
 		
 		<exec executable="pdflatex" dir="${build}" failonerror="true">
-			<arg value="manual" />
+			<arg value="guide" />
 		</exec>
 		
 		<exec executable="makeindex" dir="${build}" failonerror="true">
-			<arg value="manual" />
+			<arg value="guide" />
 		</exec>
 		
 		<exec executable="pdflatex" dir="${build}" failonerror="true">
-			<arg value="manual" />
+			<arg value="guide" />
 		</exec>
 		
-		<move file="${build}/manual.pdf" 
-				tofile="${dist}/${shortname}-${version}-Manual.pdf" />
+		<move file="${build}/guide.pdf" 
+				tofile="${dist}/${shortname}-${version}-QuickStart.pdf" />
 	</target>
 	
 	<!-- GPG Instructions:
@@ -603,6 +610,9 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		
 		<antcall target="build-binary" />
 		<unjar src="lib/JMetal-4.3.jar" dest="${build}" />
+		<copy todir="${build}/pf">
+			<fileset dir="pf" />
+		</copy>
 		<jar destfile="${maven}/${artifact}-${version}.jar" 
 				basedir="${build}" />
 		

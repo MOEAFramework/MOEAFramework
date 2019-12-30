@@ -48,13 +48,13 @@
   <priority>0.40</priority>
 </url>
 <url>
-  <loc>http://www.moeaframework.org/contribute.html</loc>
+  <loc>http://www.moeaframework.org/features.html</loc>
   <lastmod>%LASTMOD%</lastmod>
   <changefreq>weekly</changefreq>
   <priority>0.40</priority>
 </url>
 <url>
-  <loc>http://www.moeaframework.org/quality.html</loc>
+  <loc>http://www.moeaframework.org/archive.html</loc>
   <lastmod>%LASTMOD%</lastmod>
   <changefreq>weekly</changefreq>
   <priority>0.20</priority>

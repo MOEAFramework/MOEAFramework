@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -192,6 +192,9 @@ public class PISAAlgorithmsStaticConfigurationTest {
 		
 		test(AlgorithmFactory.getInstance().getAlgorithm(name, properties, 
 				realProblem));
+		
+		Settings.PROPERTIES.remove(
+				"org.moeaframework.algorithm.pisa.algorithms");
 	}
 	
 	@Test
@@ -233,6 +236,9 @@ public class PISAAlgorithmsStaticConfigurationTest {
 		Assert.assertNotNull(algorithm);
 		
 		algorithm.terminate();
+		
+		Settings.PROPERTIES.remove(
+				"org.moeaframework.algorithm.pisa.algorithms");
 	}
 	
 	/**

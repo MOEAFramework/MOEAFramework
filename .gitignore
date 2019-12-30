@@ -1,0 +1,10 @@
+bin/
+build/
+cov-int/
+dist/
+pisa/
+test-results/
+javadoc/
+maven/
+*.exe
+*~

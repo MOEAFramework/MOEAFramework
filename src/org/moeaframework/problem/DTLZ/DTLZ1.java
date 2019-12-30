@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -30,7 +30,7 @@ public class DTLZ1 extends DTLZ {
 	/**
 	 * Constructs a DTLZ1 test problem with the specified number of objectives.
 	 * This is equivalent to calling {@code new DTLZ1(numberOfObjectives+4, 
-	 * numberOfObjectives)}
+	 * numberOfObjectives)}.
 	 * 
 	 * @param numberOfObjectives the number of objectives for this problem
 	 */

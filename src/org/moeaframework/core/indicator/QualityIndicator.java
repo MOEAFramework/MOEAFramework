@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -46,6 +46,11 @@ public class QualityIndicator {
 	 * the range {@code [0, 1]}.
 	 */
 	private final Normalizer normalizer;
+	
+	/**
+	 * The normalizer that includes the hypervolume delta.
+	 */
+	private final Normalizer hypervolumeNormalizer;
 	
 	/**
 	 * The approximation set used during the last invocation of
@@ -103,6 +108,9 @@ public class QualityIndicator {
 		
 		normalizer = new Normalizer(problem, referenceSet);
 		normalizedReferenceSet = normalizer.normalize(referenceSet);
+		
+		hypervolumeNormalizer = new Normalizer(problem, referenceSet,
+				Settings.getHypervolumeDelta());
 	}
 
 	/**
@@ -237,19 +245,21 @@ public class QualityIndicator {
 	 * @param approximationSet the approximation set
 	 */
 	public void calculate(NondominatedPopulation approximationSet) {
-		normalizedApproximationSet = normalizer.normalize(approximationSet);
-		
 		if (Settings.isHypervolumeEnabled()) {
 			hypervolume = Hypervolume.evaluate(problem, 
-					normalizedApproximationSet);
+					hypervolumeNormalizer.normalize(approximationSet));
 		} else {
 			hypervolume = Double.NaN;
 		}
 		
+		normalizedApproximationSet = normalizer.normalize(approximationSet);
+		
 		generationalDistance = GenerationalDistance.evaluate(problem,
-				normalizedApproximationSet, normalizedReferenceSet);
+				normalizedApproximationSet, normalizedReferenceSet,
+				Settings.getGDPower());
 		invertedGenerationalDistance = InvertedGenerationalDistance.evaluate(
-				problem, normalizedApproximationSet, normalizedReferenceSet);
+				problem, normalizedApproximationSet, normalizedReferenceSet,
+				Settings.getIGDPower());
 		additiveEpsilonIndicator = AdditiveEpsilonIndicator.evaluate(problem,
 				normalizedApproximationSet, normalizedReferenceSet);
 		maximumParetoFrontError = MaximumParetoFrontError.evaluate(problem,

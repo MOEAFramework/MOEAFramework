@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -38,6 +38,23 @@ import org.moeaframework.util.TypedProperties;
  * <p>
  * This utility modifies the file in place.  Avoid killing the process as doing
  * so may leave the file(s) in a corrupted state.
+ * <p>
+ * Usage: {@code java -cp "..." org.moeaframework.analysis.sensitivity.Negater <options> <files>}
+ * <p>
+ * Arguments:
+ * <table border="0" style="margin-left: 1em">
+ *   <tr>
+ *     <td>{@code -d, --direction}</td>
+ *     <td>The optimization direction (required).  A comma-separated list with
+ *         1 if the objective should be negated (maximized) and 0 otherwise
+ *         (e.g., {@code -d 1,0,1} to negate the first and third objective).
+ *         </td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@code <files>}</td>
+ *     <td>The files to be negated.</td>
+ *   </tr>
+ * </table>
  */
 public class Negater extends CommandLineUtility {
     

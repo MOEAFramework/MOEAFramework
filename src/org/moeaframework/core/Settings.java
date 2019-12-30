@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -33,6 +33,7 @@ import java.util.Properties;
 import org.apache.commons.lang3.text.StrTokenizer;
 import org.moeaframework.util.TypedProperties;
 import org.moeaframework.util.io.FileProtection;
+import org.moeaframework.core.NondominatedPopulation.DuplicateMode;
 import org.moeaframework.core.indicator.Hypervolume;
 
 /**
@@ -72,6 +73,34 @@ public class Settings {
 	public static final String KEY_PREFIX = "org.moeaframework.";
 	
 	/**
+	 * The property key for how to handle duplicate solutions in a nondominated
+	 * population.
+	 */
+	public static final String KEY_DUPLICATE_MODE = KEY_PREFIX +
+			"core.duplicate_mode";
+	
+	/**
+	 * The property key for the power used in the generational distance
+	 * calculation.
+	 */
+	public static final String KEY_GD_POWER = KEY_PREFIX + 
+			"core.indicator.gd_power";
+	
+	/**
+	 * The property key for the power used in the inverted generational
+	 * distance calculation.
+	 */
+	public static final String KEY_IGD_POWER = KEY_PREFIX +
+			"core.indicator.igd_power";
+	
+	/**
+	 * The property key to indicate that fast non-dominated sorting should be
+	 * used.
+	 */
+	public static final String KEY_FAST_NONDOMINATED_SORTING = KEY_PREFIX +
+			"core.fast_nondominated_sorting";
+	
+	/**
 	 * The property key for the continuity correction flag.
 	 */
 	public static final String KEY_CONTINUITY_CORRECTION = KEY_PREFIX +
@@ -83,6 +112,18 @@ public class Settings {
 	 */
 	public static final String KEY_HYPERVOLUME_DELTA = KEY_PREFIX +
 			"core.indicator.hypervolume_delta";
+	
+	/**
+	 * The prefix for specifying custom ideal points for different problems.
+	 */
+	public static final String KEY_IDEALPT_PREFIX = KEY_PREFIX + 
+			"core.indicator.hypervolume_idealpt.";
+	
+	/**
+	 * The prefix for specifying custom reference points for different problems.
+	 */
+	public static final String KEY_REFPT_PREFIX = KEY_PREFIX + 
+			"core.indicator.hypervolume_refpt.";
 	
 	/**
 	 * The property key for the hypervolume command.
@@ -167,6 +208,23 @@ public class Settings {
 			"analysis.sensitivity.cleanup";
 	
 	/**
+	 * The property key for enabling debugging info when running external
+	 * problems.
+	 */
+	public static final String KEY_EXTERNAL_PROBLEM_DEBUGGING = KEY_PREFIX + 
+			"problem.external_problem_debugging";
+	
+	/**
+	 * The property key for listing the allowed packages that can be
+	 * instrumented.
+	 * 
+	 * @deprecated no longer used
+	 */
+	@Deprecated
+	public static final String KEY_ALLOWED_PACKAGES = KEY_PREFIX +
+			"allowed_packages";
+	
+	/**
 	 * Loads the properties.
 	 */
 	static {
@@ -240,6 +298,76 @@ public class Settings {
 	}
 	
 	/**
+	 * Returns the strategy used for handling duplicate solutions in a
+	 * nondominated population.
+	 * 
+	 * @return the strategy for handling duplicate solutions
+	 */
+	public static DuplicateMode getDuplicateMode() {
+		return DuplicateMode.valueOf(PROPERTIES.getString(KEY_DUPLICATE_MODE,
+				DuplicateMode.NO_DUPLICATE_OBJECTIVES.name()).toUpperCase());
+	}
+	
+	/**
+	 * Returns the power used in the generational distance calculation.
+	 * The default value is 2.0.
+	 * 
+	 * @return the power used in the generational distance calculation
+	 */
+	public static double getGDPower() {
+		return PROPERTIES.getDouble(KEY_GD_POWER, 2.0);
+	}
+	
+	/**
+	 * Returns the power used in the inverted generational distance calculation.
+	 * The default value is 1.0.
+	 * 
+	 * @return the power used in the inverted generational distance calculation
+	 */
+	public static double getIGDPower() {
+		return PROPERTIES.getDouble(KEY_IGD_POWER, 1.0);
+	}
+	
+	/**
+	 * Returns the ideal point for the given problem, or {@code null} if
+	 * one is not specified.
+	 * 
+	 * @param problem the problem name
+	 * @return the ideal point
+	 */
+	public static double[] getIdealPoint(String problem) {
+		return PROPERTIES.getDoubleArray(KEY_IDEALPT_PREFIX + problem,
+				null);
+	}
+	
+	/**
+	 * Returns the reference point for the given problem, or {@code null} if
+	 * one is not specified.
+	 * 
+	 * @param problem the problem name
+	 * @return the reference point
+	 */
+	public static double[] getReferencePoint(String problem) {
+		return PROPERTIES.getDoubleArray(KEY_REFPT_PREFIX + problem,
+				null);
+	}
+	
+	/**
+	 * Returns {@code true} if fast non-dominated sorting should be used;
+	 * or {@code false} if the naive non-dominated sorting implementation is
+	 * preferred.  The default is {@code false} since while the fast version
+	 * has better worst-case time complexity, the naive version tends to run
+	 * faster except for a small number of edge cases.
+	 * 
+	 * @return {@code true} if fast non-dominated sorting should be used;
+	 *         or {@code false} if the naive non-dominated sorting
+	 *         implementation is preferred
+	 */
+	public static boolean useFastNondominatedSorting() {
+		return PROPERTIES.getBoolean(KEY_FAST_NONDOMINATED_SORTING, false);
+	}
+	
+	/**
 	 * Returns the delta applied to the nadir point of the reference set when 
 	 * calculating the hypervolume.  Having a non-zero delta is necessary to 
 	 * ensure extremal solutions contribute to the hypervolume.
@@ -248,7 +376,7 @@ public class Settings {
 	 *         calculating the hypervolume
 	 */
 	public static double getHypervolumeDelta() {
-		return PROPERTIES.getDouble(KEY_HYPERVOLUME_DELTA, Settings.EPS);
+		return PROPERTIES.getDouble(KEY_HYPERVOLUME_DELTA, 0.0);
 	}
 	
 	/**
@@ -436,8 +564,9 @@ public class Settings {
 	public static String[] getDiagnosticToolAlgorithms() {
 		return PROPERTIES.getStringArray(KEY_DIAGNOSTIC_TOOL_ALGORITHMS, 
 				new String[] { "NSGAII", "NSGAIII", "GDE3", "eMOEA", "eNSGAII", 
-				"MOEAD", "CMA-ES", "SPEA2", "PAES", "PESA2", "OMOPSO", "SMPSO",
-				"IBEA", "SMS-EMOA", "VEGA", "Random" });
+				"MOEAD", "MSOPS", "CMA-ES", "SPEA2", "PAES", "PESA2", "OMOPSO",
+				"SMPSO", "IBEA", "SMS-EMOA", "VEGA", "DBEA", "Random", "RVEA",
+				"RSO" });
 	}
 	
 	/**
@@ -498,6 +627,29 @@ public class Settings {
 	 */
 	public static String getCleanupStrategy() {
 		return PROPERTIES.getString(KEY_CLEANUP_STRATEGY, "error");
+	}
+	
+	/**
+	 * Returns {@code true} if debugging is enabled when running external
+	 * problems.
+	 * 
+	 * @return {@code true} if debugging for external problems is enabled;
+	 *         {@code false} otherwise
+	 */
+	public static boolean getExternalProblemDebuggingEnabled() {
+		return PROPERTIES.getBoolean(KEY_EXTERNAL_PROBLEM_DEBUGGING, false);
+	}
+	
+	/**
+	 * Returns the allowed packages that can be instrumented.  By default, only
+	 * packages in "org.moeaframework" can be instrumented.
+	 * 
+	 * @return the allowed packages that can be instrumented
+	 * @deprecated no longer used
+	 */
+	@Deprecated
+	public static String[] getAllowedPackages() {
+		return PROPERTIES.getStringArray(KEY_ALLOWED_PACKAGES, new String[0]);
 	}
 	
 	/**

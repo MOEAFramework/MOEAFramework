@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -20,7 +20,11 @@ package org.moeaframework.problem;
 import org.moeaframework.core.Problem;
 
 /**
- * Abstract class for {@link Problem}s.
+ * Abstract class for a {@link Problem}.  For simplicity, most problems should
+ * extend {@code AbstractProblem} rather than implement the {@code Problem}
+ * interface directly.  At a minimum, only the {@link #newSolution()} and
+ * {@link #evaluate(org.moeaframework.core.Solution)} methods need to be
+ * defined.
  */
 public abstract class AbstractProblem implements Problem {
 

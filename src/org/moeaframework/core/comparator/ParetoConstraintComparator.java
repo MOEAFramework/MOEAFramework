@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -42,15 +42,16 @@ Serializable {
 		boolean dominate2 = false;
 
 		for (int i = 0; i < solution1.getNumberOfConstraints(); i++) {
-			if (Math.abs(solution1.getConstraint(i)) < Math.abs(solution2
-					.getConstraint(i))) {
+			int flag = Double.compare(Math.abs(solution1.getConstraint(i)),
+					Math.abs(solution2.getConstraint(i)));
+			
+			if (flag < 0) {
 				dominate1 = true;
 
 				if (dominate2) {
 					return 0;
 				}
-			} else if (Math.abs(solution1.getConstraint(i)) > Math
-					.abs(solution2.getConstraint(i))) {
+			} else if (flag > 0) {
 				dominate2 = true;
 
 				if (dominate1) {

@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -27,6 +27,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.Stack;
 
+import org.apache.commons.lang3.StringUtils;
+import org.moeaframework.algorithm.PeriodicAction.FrequencyType;
 import org.moeaframework.analysis.collector.Accumulator;
 import org.moeaframework.analysis.collector.AdaptiveMultimethodVariationCollector;
 import org.moeaframework.analysis.collector.AdaptiveTimeContinuationCollector;
@@ -41,6 +43,7 @@ import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
+import org.moeaframework.core.Solution;
 import org.moeaframework.core.indicator.AdditiveEpsilonIndicator;
 import org.moeaframework.core.indicator.Contribution;
 import org.moeaframework.core.indicator.GenerationalDistance;
@@ -61,6 +64,7 @@ import org.moeaframework.core.spi.ProblemFactory;
  * the collection of runtime information as the algorithm is executed.  Lastly,
  * the {@code InstrumentedAlgorithm} stores the runtime information, which can
  * subsequently be accessed and analyzed.
+ * <p>
  * <pre>
  *   Instrumenter instrumenter = new Instrumenter()
  *     .withProblem(problemName)
@@ -75,6 +79,9 @@ import org.moeaframework.core.spi.ProblemFactory;
  * 
  *   Accumulator accumulator = instrumenter.getLastAccumulator();
  * </pre>
+ * Note that the Instrumenter will not scan the contents of {@link Solution} or
+ * {@link Problem}.  Instead, use the Instrumenter to enumerate these objects
+ * and access their properties programmatically.
  */
 public class Instrumenter extends ProblemBuilder {
 
@@ -166,9 +173,15 @@ public class Instrumenter extends ProblemBuilder {
 	private boolean includePopulationSize;
 
 	/**
-	 * The frequency, in evaluations, that data is collected.
+	 * The frequency that data is collected.
 	 */
 	private int frequency;
+	
+	/**
+	 * The units for the frequency, either in terms of the number of evaluations
+	 * or number of steps (iterations).
+	 */
+	private FrequencyType frequencyType;
 	
 	/**
 	 * The collection of custom collectors added through the 
@@ -178,14 +191,15 @@ public class Instrumenter extends ProblemBuilder {
 	private final List<Collector> customCollectors;
 	
 	/**
+	 * The excluded packages.  Any objects from these packages will not be
+	 * walked.
+	 */
+	private final List<String> excludedPackages;
+	
+	/**
 	 * The accumulator from the last instrumented algorithm.
 	 */
 	private Accumulator lastAccumulator;
-	
-	/**
-	 * The packages that this instrumenter is allowed to access.
-	 */
-	private final List<String> allowedPackages;
 	
 	/**
 	 * Constructs a new instrumenter instance, initially with no collectors.
@@ -194,10 +208,11 @@ public class Instrumenter extends ProblemBuilder {
 		super();
 		
 		frequency = 100;
+		frequencyType = FrequencyType.EVALUATIONS;
 		customCollectors = new ArrayList<Collector>();
 		
-		allowedPackages = new ArrayList<String>();
-		allowedPackages.add("org.moeaframework");
+		excludedPackages = new ArrayList<String>();
+		excludedPackages.add("java");
 	}
 	
 	/**
@@ -212,6 +227,30 @@ public class Instrumenter extends ProblemBuilder {
 	}
 	
 	/**
+	 * Adds an excluded package that will not be walked by this instrumenter.
+	 * 
+	 * @param packageName the package name
+	 * @return a reference to this instrumenter
+	 */
+	public Instrumenter addExcludedPackage(String packageName) {
+		excludedPackages.add(packageName);
+		
+		return this;
+	}
+	
+	/**
+	 * Removes an excluded package from this instrumenter.
+	 * 
+	 * @param packageName the package name
+	 * @return a reference to this instrumenter
+	 */
+	public Instrumenter removeExcludedPackage(String packageName) {
+		excludedPackages.add(packageName);
+		
+		return this;
+	}
+	
+	/**
 	 * Allows this instrumenter to visit classes in the given package.  Some
 	 * Java classes can not be readily visited/discovered by this instrumenter,
 	 * possibly resulting in a {@code NullPointerException} or a
@@ -221,10 +260,10 @@ public class Instrumenter extends ProblemBuilder {
 	 * 
 	 * @param packageName a package name or the package name prefix
 	 * @return a reference to this instrumenter
+	 * @deprecated has no effect
 	 */
+	@Deprecated
 	public Instrumenter addAllowedPackage(String packageName) {
-		allowedPackages.add(packageName);
-		
 		return this;
 	}
 	
@@ -235,10 +274,10 @@ public class Instrumenter extends ProblemBuilder {
 	 * 
 	 * @param packageName the package name or package name prefix to remove
 	 * @return a reference to this instrumenter
+	 * @deprecated has no effect
 	 */
+	@Deprecated
 	public Instrumenter removeAllowedPackage(String packageName) {
-		allowedPackages.remove(packageName);
-		
 		return this;
 	}
 	
@@ -246,19 +285,34 @@ public class Instrumenter extends ProblemBuilder {
 	 * Returns all packages this instrumenter is allowed to visit.
 	 * 
 	 * @return the list of allowed package names
+	 * @deprecated has no effect
 	 */
+	@Deprecated
 	public List<String> getAllowedPackages() {
-		return allowedPackages;
+		return new ArrayList<String>();
 	}
 	
 	/**
-	 * Sets the frequency, in evaluations, that data is collected.  
+	 * Sets the frequency that data is collected.  
 	 * 
 	 * @param frequency the frequency
 	 * @return a reference to this instrumenter
 	 */
 	public Instrumenter withFrequency(int frequency) {
 		this.frequency = frequency;
+		
+		return this;
+	}
+	
+	/**
+	 * Indicates if the frequency is defined in terms of the number of
+	 * evaluations or number of steps (iterations).
+	 * 
+	 * @param frequencyType the frequency type, either EVALUATIONS or STEPS
+	 * @return a reference to this instrumenter
+	 */
+	public Instrumenter withFrequencyType(FrequencyType frequencyType) {
+		this.frequencyType = frequencyType;
 		
 		return this;
 	}
@@ -498,6 +552,11 @@ public class Instrumenter extends ProblemBuilder {
 	public Instrumenter withProblem(String problemName) {
 		return (Instrumenter)super.withProblem(problemName);
 	}
+	
+	@Override
+	public Instrumenter withProblem(Problem problemInstance) {
+		return (Instrumenter)super.withProblem(problemInstance);
+	}
 
 	@Override
 	public Instrumenter withProblemClass(Class<?> problemClass, 
@@ -562,7 +621,12 @@ public class Instrumenter extends ProblemBuilder {
 		if (object == null) {
 			return;
 		} else if ((type == null) || (type.equals(object.getClass()))) {
-			if (visited.contains(object)) {
+			try {
+				if (visited.contains(object)) {
+					return;
+				}
+			} catch (NullPointerException e) {
+				// proxies will sometimes result in NPEs when calling hashCode
 				return;
 			}
 				
@@ -587,19 +651,25 @@ public class Instrumenter extends ProblemBuilder {
 				instrument(algorithm, collectors, visited, parents, element, 
 						null);
 			}
-		} else if (type.getPackage() != null) {
-			//do not visit objects that are in inaccessible packages
-			boolean allowed = false;
-			
-			for (String packageName : allowedPackages) {
-				if (type.getPackage().getName().startsWith(packageName)) {
-					allowed = true;
-					break;
+		} else if (type.getPackage() != null) {			
+			for (String excludedPackage : excludedPackages) {
+				String[] excludedPackageSegments = StringUtils.split(excludedPackage, '.');
+				String[] typePackageSegments = StringUtils.split(type.getPackage().getName(), '.');
+				
+				if (typePackageSegments.length >= excludedPackageSegments.length) {
+					boolean matches = true;
+					
+					for (int i = 0; i < excludedPackageSegments.length; i++) {
+						if (!typePackageSegments[i].equals(excludedPackageSegments[i])) {
+							matches = false;
+							break;
+						}
+					}
+					
+					if (matches) {
+						return;
+					}
 				}
-			}
-			
-			if (!allowed) {
-				return;
 			}
 		}
 		
@@ -612,6 +682,13 @@ public class Instrumenter extends ProblemBuilder {
 			}
 			
 			visited.add(object);
+		}
+		
+		//ignore some types we should not recursively scan as these have caused
+		//issues with user libraries...it's the user's responsibility to access
+		//the internals of these objects.
+		if ((object instanceof Solution) || (object instanceof Problem)) {
+			return;
 		}
 		
 		//recursively walk superclass to enumerate all non-public fields
@@ -759,7 +836,7 @@ public class Instrumenter extends ProblemBuilder {
 		collectors.addAll(customCollectors);
 		
 		InstrumentedAlgorithm instrumentedAlgorithm = new InstrumentedAlgorithm(
-				algorithm, frequency);
+				algorithm, frequency, frequencyType);
 		
 		instrument(instrumentedAlgorithm, collectors, new HashSet<Object>(), 
 				new Stack<Object>(), algorithm, null);

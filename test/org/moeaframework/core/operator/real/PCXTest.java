@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -18,7 +18,10 @@
 package org.moeaframework.core.operator.real;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.moeaframework.RetryOnTravis;
 import org.moeaframework.TestThresholds;
+import org.moeaframework.TravisRunner;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.operator.ParentCentricVariationTest;
 import org.moeaframework.core.operator.ParentImmutabilityTest;
@@ -27,12 +30,14 @@ import org.moeaframework.core.operator.ParentImmutabilityTest;
  * Tests parent-centric crossover (PCX) to ensure clusters are formed centered
  * around each parent.
  */
+@RunWith(TravisRunner.class)
 public class PCXTest extends ParentCentricVariationTest {
 
 	/**
 	 * Tests if the offspring form clusters distributed around each parent.
 	 */
 	@Test
+	@RetryOnTravis
 	public void testFullDistribution() {
 		PCX pcx = new PCX(3, TestThresholds.SAMPLES);
 
@@ -49,6 +54,7 @@ public class PCXTest extends ParentCentricVariationTest {
 	 * the parents being degenerate along one axis.
 	 */
 	@Test
+	@RetryOnTravis
 	public void testPartialDistribution() {
 		PCX pcx = new PCX(3, TestThresholds.SAMPLES);
 

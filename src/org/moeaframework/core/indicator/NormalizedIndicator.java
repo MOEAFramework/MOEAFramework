@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -20,6 +20,7 @@ package org.moeaframework.core.indicator;
 import org.moeaframework.core.Indicator;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
+import org.moeaframework.core.Settings;
 
 /**
  * Abstract class for indicators that require normalized approximation and
@@ -54,10 +55,84 @@ public abstract class NormalizedIndicator implements Indicator {
 	 */
 	public NormalizedIndicator(Problem problem,
 			NondominatedPopulation referenceSet) {
+		this(problem, referenceSet, false);
+	}
+	
+	/**
+	 * Constructs a normalized indicator for the specified problem and 
+	 * corresponding reference set.  If {@code useReferencePoint} is
+	 * {@code true}, this constructor will attempt to lookup the appropriate
+	 * reference point for the given problem.
+	 * 
+	 * @param problem the problem
+	 * @param referenceSet the reference set for the problem
+	 * @param useReferencePoint if {@code true}, a reference point is used
+	 *        (e.g., for the hypervolume indicator)
+	 * @throws IllegalArgumentException if the reference set contains fewer
+	 *         than two solutions
+	 */
+	public NormalizedIndicator(Problem problem,
+			NondominatedPopulation referenceSet, boolean useReferencePoint) {
 		super();
 		this.problem = problem;
 		
-		normalizer = new Normalizer(problem, referenceSet);
+		if (useReferencePoint) {
+			double[] idealPoint = Settings.getIdealPoint(problem.getName());
+			double[] referencePoint = Settings.getReferencePoint(problem.getName());
+			
+			if ((idealPoint != null) && (referencePoint != null)) {
+				normalizer = new Normalizer(problem, idealPoint, referencePoint);
+			} else if (referencePoint != null) {
+				normalizer = new Normalizer(problem, referenceSet, referencePoint);
+			} else {
+				normalizer = new Normalizer(problem, referenceSet,
+						Settings.getHypervolumeDelta());
+			}
+		} else {
+			normalizer = new Normalizer(problem, referenceSet);
+		}
+		
+		normalizedReferenceSet = normalizer.normalize(referenceSet);
+	}
+	
+	/**
+	 * Constructs a normalized indicator for the specified problem and 
+	 * corresponding reference set.  This version allows the use of a custom
+	 * reference point.
+	 * 
+	 * @param problem the problem
+	 * @param referenceSet the reference set for the problem
+	 * @param referencePoint the reference point (used for hypervolume
+	 *        calculations)
+	 * @throws IllegalArgumentException if the reference set contains fewer
+	 *         than two solutions
+	 */
+	public NormalizedIndicator(Problem problem,
+			NondominatedPopulation referenceSet, double[] referencePoint) {
+		super();
+		this.problem = problem;
+		
+		normalizer = new Normalizer(problem, referenceSet, referencePoint);
+		normalizedReferenceSet = normalizer.normalize(referenceSet);
+	}
+	
+	/**
+	 * Constructs a normalized indicator for the specified problem and 
+	 * corresponding reference set.  This version allows the use of a custom
+	 * minimum and maximum bounds.
+	 * 
+	 * @param problem the problem
+	 * @param referenceSet the reference set for the problem
+	 * @param minimum the minimum bounds
+	 * @param maximum the maximum bounds
+	 */
+	public NormalizedIndicator(Problem problem,
+			NondominatedPopulation referenceSet, double[] minimum,
+			double[] maximum) {
+		super();
+		this.problem = problem;
+		
+		normalizer = new Normalizer(problem, minimum, maximum);
 		normalizedReferenceSet = normalizer.normalize(referenceSet);
 	}
 	

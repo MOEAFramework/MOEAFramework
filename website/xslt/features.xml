@@ -26,7 +26,7 @@
 
 <p>
   The MOEA Framework aims to provide a comprehensive collection of algorithms and
-  tools for multiobjective optimization.  This page lists the key features of
+  tools for single and multiobjective optimization.  This page lists the key features of
   the MOEA Framework.  For more information, see our online documentation.
 </p>
 
@@ -41,7 +41,7 @@
 <div class="section">
 <a name="algorithms" />
 <h3>Algorithms</h3>
-<p>The MOEA Framework has the largest collection of MOEAs of any library.  In
+<p>The MOEA Framework has the largest collection of EAs and MOEAs of any library.  In
 addition to these pre-defined algorithms, new algorithms can be easily constructed
 using existing components.</p>
 <table>
@@ -70,12 +70,20 @@ using existing components.</p>
     <td>Improved Decomposition-Based Evolutionary Algorithm</td>
   </tr>
   <tr>
+    <td style="font-weight: bold">DE</td>
+    <td>Differential Evolution (Single Objective)</td>
+  </tr>
+  <tr>
     <td style="font-weight: bold">DENSEA</td>
     <td>Duplicate Elimination Nondominated Sorting Evolutionary Algorithm<sup>1</sup></td>
   </tr>
   <tr>
     <td style="font-weight: bold">ECEA</td>
     <td>Epsilon-Constraint Evolutionary Algorithm<sup>2</sup></td>
+  </tr>
+  <tr>
+    <td style="font-weight: bold">ES</td>
+    <td>Evolution Strategies (Single Objective)</td>
   </tr>
   <tr>
     <td style="font-weight: bold;">&epsilon;-MOEA</td>
@@ -92,6 +100,10 @@ using existing components.</p>
   <tr>
     <td style="font-weight: bold">FEMO</td>
     <td>Fair Evolutionary Multiobjective Optimizer<sup>2</sup></td>
+  </tr>
+  <tr>
+    <td style="font-weight: bold">GA</td>
+    <td>Genetic Algorithm with Elitism (Single Objective)</td>
   </tr>
   <tr>
   	<td style="font-weight: bold">GDE3</td>
@@ -118,6 +130,10 @@ using existing components.</p>
   	<td>Multiobjective Evolutionary Algorithm with Decomposition</td>
   </tr>
   <tr>
+    <td style="font-weight: bold">MSOPS</td>
+    <td>Multiple Single-Objective Pareto Sampling</td>
+  </tr>
+  <tr>
   	<td style="font-weight: bold">NSGA-II</td>
   	<td>Non-dominated Sorting Genetic Algorithm II</td>
   </tr>
@@ -140,6 +156,14 @@ using existing components.</p>
   <tr>
     <td style="font-weight: bold">Random</td>
     <td>Random Search</td>
+  </tr>
+  <tr>
+    <td style="font-weight: bold">RSO</td>
+    <td>Repeated Single Objective Algorithm</td>
+  </tr>
+  <tr>
+    <td style="font-weight: bold">RVEA</td>
+    <td>Reference Vector Guided Evolutionary Algorithm</td>
   </tr>
   <tr>
     <td style="font-weight: bold">SEMO2</td>
@@ -236,6 +260,10 @@ new problems written in Java or other languages can be easily incorporated.</p>
   	<td>9 scalable, real-valued problems by Huband et al. (2005)</td>
   </tr>
   <tr>
+    <td style="font-weight: bold">BBOB-2016</td>
+    <td>55 bi-objective problems from the BBOB workshop hosted at GECCO 2016</td>
+  </tr>
+  <tr>
   	<td style="font-weight: bold">Miscellaneous</td>
   	<td>28 real-valued, binary, permutation, and program-based test problems from the literature (e.g., knapsack, NK-landscapes)</td>
   </tr>
@@ -271,6 +299,11 @@ new problems written in Java or other languages can be easily incorporated.</p>
   	<td>Insertion<br />
   	    Swap<br />
   	    Partially Mapped Crossover (PMX)</td>
+  </tr>
+  <tr>
+  	<td style="font-weight: bold">Subset</td>
+  	<td>Replace<br />
+  	    Subset Crossover (SSX)</td>
   </tr>
   <tr>
   	<td style="font-weight: bold">Grammars</td>

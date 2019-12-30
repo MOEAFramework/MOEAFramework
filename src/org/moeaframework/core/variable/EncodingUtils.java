@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -17,6 +17,7 @@
  */
 package org.moeaframework.core.variable;
 
+import java.util.Arrays;
 import java.util.BitSet;
 
 import org.moeaframework.core.Solution;
@@ -35,11 +36,10 @@ import org.moeaframework.core.Variable;
  * </pre>
  * <p>
  * Support for integer encodings is now supported using the
- * {@link #newInt(int, int)}, {@link #getInt(Variable)},
- * {@link #setInt(Variable, int)} methods.  Internally, integers are
- * represented by floating-point values.  In order to remain consistent,
- * only use these methods to create, set, and get the value of
- * integer decision variables.
+ * {@link #newInt(int, int)} or {@link #newBinaryInt(int, int)}.  The former
+ * represents integers as floating-point values while the latter uses binary
+ * strings.  Both representations are accessed using {@link #getInt(Variable)}
+ * and {@link #setInt(Variable, int)} methods.
  * <p>
  * This class also provides methods for converting between {@link RealVariable}
  * and {@link BinaryVariable} in both binary and gray code formats.
@@ -62,9 +62,19 @@ public class EncodingUtils {
 	private static final String NOT_REAL = "not a real variable";
 	
 	/**
+	 * The error message shown when the decision variable is not integer-valued.
+	 */
+	private static final String NOT_INT = "not an integer variable";
+	
+	/**
 	 * The error message shown when the decision variable is not a permutation.
 	 */
 	private static final String NOT_PERMUTATION = "not a permutation";
+	
+	/**
+	 * The error message shown when the decision variable is not a subset.
+	 */
+	private static final String NOT_SUBSET = "not a subset";
 	
 	/**
 	 * The error message shown when the decision variable is not a binary value.
@@ -221,7 +231,8 @@ public class EncodingUtils {
 	
 	/**
 	 * Returns a new integer-valued decision variable bounded within the
-	 * specified range.
+	 * specified range.  The integer value is encoded using a
+	 * {@link RealVariable}.
 	 * 
 	 * @param lowerBound the lower bound of the integer value
 	 * @param upperBound the upper bound of the integer value
@@ -231,6 +242,21 @@ public class EncodingUtils {
 	public static RealVariable newInt(int lowerBound, int upperBound) {
 		return new RealVariable(lowerBound, Math.nextAfter(
 				(double)(upperBound+1), Double.NEGATIVE_INFINITY));
+	}
+	
+	/**
+	 * Returns a new integer-valued decision variable bounded within the
+	 * specified range.  The integer value is encoded using a
+	 * {@link BinaryVariable}.
+	 * 
+	 * @param lowerBound the lower bound of the integer value
+	 * @param upperBound the upper bound of the integer value
+	 * @return a new integer-valued decision variable bounded within the
+	 *         specified range
+	 */
+	public static BinaryIntegerVariable newBinaryInt(int lowerBound,
+			int upperBound) {
+		return new BinaryIntegerVariable(lowerBound, upperBound);
 	}
 	
 	/**
@@ -263,6 +289,29 @@ public class EncodingUtils {
 	}
 	
 	/**
+	 * Returns a new fixed-size subset with the specified number of items.
+	 * 
+	 * @param k the fixed size of the subset
+	 * @param n the total number of items in the set
+	 * @return a new subset with the specified number of items
+	 */
+	public static Subset newSubset(int k, int n) {
+		return new Subset(k, n);
+	}
+	
+	/**
+	 * Returns a new variable-size subset with the specified number of items.
+	 * 
+	 * @param l the minimum number of members in the subset
+	 * @param u the maximum number of members in the subset
+	 * @param n the total number of items in the set
+	 * @return a new subset with the specified number of items
+	 */
+	public static Subset newSubset(int l, int u, int n) {
+		return new Subset(l, u, n);
+	}
+	
+	/**
 	 * Returns the value stored in a floating-point decision variable.
 	 * 
 	 * @param variable the decision variable
@@ -287,7 +336,13 @@ public class EncodingUtils {
 	 *         {@link RealVariable}
 	 */
 	public static int getInt(Variable variable) {
-		return (int)Math.floor(getReal(variable));
+		if (variable instanceof RealVariable) {
+			return (int)Math.floor(((RealVariable)variable).getValue());
+		} else if (variable instanceof BinaryIntegerVariable) {
+			return (int)Math.floor(((BinaryIntegerVariable)variable).getValue());
+		} else {
+			throw new IllegalArgumentException(NOT_INT);
+		}
 	}
 	
 	/**
@@ -364,6 +419,84 @@ public class EncodingUtils {
 			return ((Permutation)variable).toArray();
 		} else {
 			throw new IllegalArgumentException(NOT_PERMUTATION);
+		}
+	}
+	
+	/**
+	 * Returns the value stored in a subset decision variable.
+	 * 
+	 * @param variable the decision variable
+	 * @return the value stored in a subset decision variable
+	 * @throws IllegalArgumentException if the decision variable is not of type
+	 *         {@link Subset}
+	 */
+	public static int[] getSubset(Variable variable) {
+		if (variable instanceof Subset) {
+			return ((Subset)variable).toArray();
+		} else {
+			throw new IllegalArgumentException(NOT_SUBSET);
+		}
+	}
+	
+	/**
+	 * Returns the value stored in a subset decision variable with the items sorted.
+	 * 
+	 * @param variable the decision variable
+	 * @return the value stored in a subset decision variable with the items sorted
+	 * @throws IllegalArgumentException if the decision variable is not of type
+	 *         {@link Subset}
+	 */
+	public static int[] getOrderedSubset(Variable variable) {
+		int[] subset = getSubset(variable);
+		Arrays.sort(subset);
+		return subset;
+	}
+	
+	/**
+	 * Returns the subset as a binary string, where 1 indicates the index is included
+	 * in the set.
+	 * 
+	 * @param variable the decision variable
+	 * @return a binary string representation of the subset
+	 * @throws IllegalArgumentException if the decision variable is not of type
+	 *         {@link Subset}
+	 */
+	public static boolean[] getSubsetAsBinary(Variable variable) {
+		if (variable instanceof Subset) {
+			Subset subset = (Subset)variable;
+			boolean[] result = new boolean[subset.getN()];
+			
+			for (int i = 0; i < subset.getN(); i++) {
+				result[i] = subset.contains(i);
+			}
+			
+			return result;
+		} else {
+			throw new IllegalArgumentException(NOT_SUBSET);
+		}
+	}
+	
+	/**
+	 * Returns the subset as a BitSet, where a set bit indicates the index is included
+	 * in the set.
+	 * 
+	 * @param variable the decision variable
+	 * @return a BitSet representation of the subset
+	 * @throws IllegalArgumentException if the decision variable is not of type
+	 *         {@link Subset}
+	 */
+	public static BitSet getSubsetAsBitSet(Variable variable) {
+		if (variable instanceof Subset) {
+			Subset subset = (Subset)variable;
+			BitSet bitSet = new BitSet(subset.getN());
+			
+			for (int i = 0; i < subset.getN(); i++) {
+				bitSet.set(i, subset.contains(i));
+			}
+			
+			return bitSet;
+		} else {
+			throw new IllegalArgumentException(NOT_SUBSET);
 		}
 	}
 	
@@ -523,7 +656,13 @@ public class EncodingUtils {
 	 *         ({@code value < getLowerBound()) || (value > getUpperBound()})
 	 */
 	public static void setInt(Variable variable, int value) {
-		setReal(variable, value);
+		if (variable instanceof RealVariable) {
+			((RealVariable)variable).setValue(value);
+		} else if (variable instanceof BinaryIntegerVariable) {
+			((BinaryIntegerVariable)variable).setValue(value);
+		} else {
+			throw new IllegalArgumentException(NOT_INT);
+		}
 	}
 	
 	/**
@@ -649,6 +788,65 @@ public class EncodingUtils {
 			((Permutation)variable).fromArray(values);
 		} else {
 			throw new IllegalArgumentException(NOT_PERMUTATION);
+		}
+	}
+	
+	/**
+	 * Sets the value of a subset decision variable.
+	 * 
+	 * @param variable the decision variable
+	 * @param values the subset to assign the subset decision variable
+	 * @throws IllegalArgumentException if the decision variable is not of type
+	 *         {@link Subset}
+	 * @throws IllegalArgumentException if {@code values} is not a valid
+	 *         subset
+	 */
+	public static void setSubset(Variable variable, int[] values) {
+		if (variable instanceof Subset) {
+			((Subset)variable).fromArray(values);
+		} else {
+			throw new IllegalArgumentException(NOT_SUBSET);
+		}
+	}
+	
+	/**
+	 * Sets the value of a subset decision variable using a binary string representation.
+	 * 
+	 * @param variable the decision variable
+	 * @param values the binary string representation of a subset
+	 * @throws IllegalArgumentException if the binary string representation is not a
+	 *         valid subset
+	 */
+	public static void setSubset(Variable variable, boolean[] values) {
+		BitSet bitSet = new BitSet(values.length);
+			
+		for (int i = 0; i < values.length; i++) {
+			bitSet.set(i, values[i]);
+		}
+			
+		setSubset(variable, bitSet);
+	}
+	
+	/**
+	 * Sets the value of a subset decision variable using a BitSet representation.
+	 * 
+	 * @param variable the decision variable
+	 * @param values the BitSet representation of a subset
+	 * @throws IllegalArgumentException if the BitSet representation is not a
+	 *         valid subset
+	 */
+	public static void setSubset(Variable variable, BitSet bitSet) {
+		if (variable instanceof Subset) {
+			int[] values = new int[bitSet.cardinality()];
+			int count = 0;
+			
+			for (int i = bitSet.nextSetBit(0); i >= 0; i = bitSet.nextSetBit(i+1)) {
+				values[count++] = i;
+			}
+			
+			setSubset(variable, values);
+		} else {
+			throw new IllegalArgumentException(NOT_SUBSET);
 		}
 	}
 

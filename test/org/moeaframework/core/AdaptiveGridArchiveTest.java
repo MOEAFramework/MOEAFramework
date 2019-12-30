@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -112,8 +112,11 @@ public class AdaptiveGridArchiveTest {
 		archive.add(TestUtils.newSolution(0.0, 1.0));
 		archive.add(TestUtils.newSolution(1.0, 0.0));
 		archive.add(TestUtils.newSolution(0.7, 0.2));
+		
+		Solution densestSolution = archive.pickSolutionFromDensestCell();
 
-		Assert.assertEquals(1, archive.findDensestIndex());
+		Assert.assertTrue(archive.get(1) == densestSolution ||
+				archive.get(2) == densestSolution);
 	}
 
 	/**
@@ -146,13 +149,16 @@ public class AdaptiveGridArchiveTest {
 
 		archive.add(TestUtils.newSolution(0.0, 1.0));
 		archive.add(TestUtils.newSolution(1.0, 0.0));
-
-		Assert.assertEquals(2, archive.size());
-
 		archive.add(TestUtils.newSolution(0.0, 0.0));
 
 		Assert.assertEquals(1, archive.size());
-		Assert.assertArrayEquals(new int[] { 1, 0, 0, 0 }, archive.density);
+		
+		int index = archive.findIndex(archive.get(0));
+		
+		int[] expectedDensity = new int[4];
+		expectedDensity[index] = 1;
+		
+		Assert.assertArrayEquals(expectedDensity, archive.density);
 	}
 
 	/**
@@ -169,7 +175,13 @@ public class AdaptiveGridArchiveTest {
 		archive.remove(1);
 
 		Assert.assertEquals(1, archive.size());
-		Assert.assertArrayEquals(new int[] { 0, 0, 1, 0 }, archive.density);
+		
+		int index = archive.findIndex(archive.get(0));
+		
+		int[] expectedDensity = new int[4];
+		expectedDensity[index] = 1;
+		
+		Assert.assertArrayEquals(expectedDensity, archive.density);
 	}
 
 	/**
@@ -186,7 +198,22 @@ public class AdaptiveGridArchiveTest {
 		archive.remove(archive.get(1));
 
 		Assert.assertEquals(1, archive.size());
-		Assert.assertArrayEquals(new int[] { 0, 0, 1, 0 }, archive.density);
+		
+		int index = archive.findIndex(archive.get(0));
+		
+		int[] expectedDensity = new int[4];
+		expectedDensity[index] = 1;
+		
+		Assert.assertArrayEquals(expectedDensity, archive.density);
+	}
+	
+	/**
+	 * Since the adaptive grid archive uses an array internally, we must prevent
+	 * the number of divisions exceeding the maximum length of arrays.
+	 */
+	@Test(expected=FrameworkException.class)
+	public void testOverflow() {
+		new AdaptiveGridArchive(100, new ProblemStub(4), 256);
 	}
 
 }

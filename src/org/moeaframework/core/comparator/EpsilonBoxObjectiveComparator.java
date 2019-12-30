@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -142,14 +142,15 @@ Serializable {
 			double epsilon = getEpsilon(i);
 			double index1 = Math.floor(solution1.getObjective(i) / epsilon);
 			double index2 = Math.floor(solution2.getObjective(i) / epsilon);
+			int flag = Double.compare(index1, index2);
 
-			if (index1 < index2) {
+			if (flag < 0) {
 				dominate1 = true;
 
 				if (dominate2) {
 					return 0;
 				}
-			} else if (index1 > index2) {
+			} else if (flag > 0) {
 				dominate2 = true;
 
 				if (dominate1) {
@@ -175,11 +176,7 @@ Serializable {
 						2.0);
 			}
 
-			if (dist1 < dist2) {
-				return -1;
-			} else {
-				return 1;
-			}
+			return Double.compare(dist1, dist2) < 0 ? -1 : 1;
 		} else if (dominate1) {
 			return -1;
 		} else {

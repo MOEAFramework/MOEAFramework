@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -33,6 +33,27 @@ import org.moeaframework.util.TypedProperties;
  * contained within a reference set.  The common use-case of this utility is to
  * determine the percent makeup of the individual approximation sets used 
  * during the reference set construction.
+ * <p>
+ * Usage: {@code java -cp "..." org.moeaframework.analysis.sensitivity.SetContribution <options> <files>}
+ * <p>
+ * Arguments:
+ * <table border="0" style="margin-left: 1em">
+ *   <tr>
+ *     <td>{@code -e, --epsilon}</td>
+ *     <td>The epsilon values for limiting the size of the results.  This
+ *         epsilon value is also used for any algorithms that include an
+ *         epsilon parameter.</td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@code -r, --reference}</td>
+ *     <td>Location of the reference file used when computing the performance
+ *         metrics (required if -m is set).</td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@code <files>}</td>
+ *     <td>The files to analyze.</td>
+ *   </tr>
+ * </table>
  */
 public class SetContribution extends CommandLineUtility {
 	

@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -27,8 +27,8 @@ import org.junit.Test;
 import org.moeaframework.TestUtils;
 import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.core.spi.ProblemFactory;
-import org.moeaframework.core.spi.TestAlgorithmFactory;
-import org.moeaframework.core.spi.TestProblemFactory;
+import org.moeaframework.core.spi.AlgorithmFactoryTestWrapper;
+import org.moeaframework.core.spi.ProblemFactoryTestWrapper;
 import org.moeaframework.util.ReferenceSetMerger;
 
 /**
@@ -40,14 +40,14 @@ import org.moeaframework.util.ReferenceSetMerger;
  */
 public class IntegrationTest {
 	
-	private TestAlgorithmFactory algorithmFactory;
+	private AlgorithmFactoryTestWrapper algorithmFactory;
 	
-	private TestProblemFactory problemFactory;
+	private ProblemFactoryTestWrapper problemFactory;
 	
 	@Before
 	public void setUp() {
-		algorithmFactory = new TestAlgorithmFactory();
-		problemFactory = new TestProblemFactory();
+		algorithmFactory = new AlgorithmFactoryTestWrapper();
+		problemFactory = new ProblemFactoryTestWrapper();
 		
 		AlgorithmFactory.setInstance(algorithmFactory);
 		ProblemFactory.setInstance(problemFactory);
@@ -349,7 +349,6 @@ public class IntegrationTest {
 		ResultFileMerger.main(new String[] {
 				"-b", "DTLZ2_2",
 				"-o", combinedFile.getPath(),
-				"-r",
 				resultFile.getPath()});
 		
 		//run the seed merger

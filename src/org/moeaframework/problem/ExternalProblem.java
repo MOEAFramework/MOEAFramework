@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -24,11 +24,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.net.Socket;
 import java.net.InetAddress;
+import java.net.Socket;
 import java.net.UnknownHostException;
 
 import org.moeaframework.core.Problem;
+import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variable;
 import org.moeaframework.core.variable.BinaryVariable;
@@ -104,6 +105,16 @@ public abstract class ExternalProblem implements Problem {
 	 * Writer connected to the process' standard input.
 	 */
 	private final BufferedWriter writer;
+	
+	/**
+	 * Writer for debugging messages.
+	 */
+	private BufferedWriter debug;
+	
+	/**
+	 * The process, or {@code null} if no process was started.
+	 */
+	private Process process;
 
 	/**
 	 * Constructs an external problem using {@code new
@@ -170,6 +181,8 @@ public abstract class ExternalProblem implements Problem {
 	ExternalProblem(Process process) {
 		this(process.getInputStream(), process.getOutputStream());
 		RedirectStream.redirect(process.getErrorStream(), System.err);
+		
+		this.process = process;
 	}
 	
 	/**
@@ -183,6 +196,25 @@ public abstract class ExternalProblem implements Problem {
 		super();
 		reader = new BufferedReader(new InputStreamReader(input));
 		writer = new BufferedWriter(new OutputStreamWriter(output));
+		
+		if (Settings.getExternalProblemDebuggingEnabled()) {
+			setDebugStream(System.out);
+		}
+	}
+	
+	/**
+	 * Sets the output stream used to write debugging information.  If
+	 * {@code null}, disables debugging.  The debug stream is not closed
+	 * by this class and must be managed by the caller.
+	 * 
+	 * @param stream the output stream
+	 */
+	public void setDebugStream(OutputStream stream) {
+		if (stream == null) {
+			debug = null;
+		} else {
+			debug = new BufferedWriter(new OutputStreamWriter(stream));
+		}
 	}
 
 	/**
@@ -213,14 +245,28 @@ public abstract class ExternalProblem implements Problem {
 	@Override
 	public synchronized void evaluate(Solution solution) 
 	throws ProblemException {
+		BufferedWriter debug = this.debug;
+		
 		// send variables to external process
 		try {
-			writer.write(encode(solution.getVariable(0)));
+			StringBuilder sb = new StringBuilder();
+			
+			sb.append(encode(solution.getVariable(0)));
+			
 			for (int i = 1; i < solution.getNumberOfVariables(); i++) {
-				writer.write(" ");
-				writer.write(encode(solution.getVariable(i)));
+				sb.append(" ");
+				sb.append(encode(solution.getVariable(i)));
 			}
-			writer.newLine();
+			
+			sb.append(Settings.NEW_LINE);
+			
+			if (debug != null) {
+				debug.write("<< ");
+				debug.write(sb.toString());
+				debug.flush();
+			}
+			
+			writer.write(sb.toString());
 			writer.flush();
 		} catch (IOException e) {
 			throw new ProblemException(this, "error sending variables to external process", e);
@@ -231,11 +277,34 @@ public abstract class ExternalProblem implements Problem {
 			String line = reader.readLine();
 
 			if (line == null) {
+				if (debug != null) {
+					debug.write("Reached end of stream");
+					debug.newLine();
+					
+					if (process != null) {
+						try {
+							int exitCode = process.exitValue();
+							debug.write("Process exited with code " + exitCode);
+						} catch (IllegalThreadStateException e) {
+							debug.write("Process is still alive");
+						}
+					}
+					
+					debug.flush();
+				}
+				
 				throw new ProblemException(this, "end of stream reached when response expected");
 			}
 
+			if (debug != null) {
+				debug.write(">> ");
+				debug.write(line);
+				debug.newLine();
+				debug.flush();
+			}
+			
 			String[] tokens = line.split("\\s+");
-
+			
 			if (tokens.length != (solution.getNumberOfObjectives() + 
 					solution.getNumberOfConstraints())) {
 				throw new ProblemException(this, "response contained fewer tokens than expected");

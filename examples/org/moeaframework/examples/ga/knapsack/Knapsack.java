@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -43,29 +43,29 @@ public class Knapsack implements Problem {
 	/**
 	 * The number of sacks.
 	 */
-	private int nsacks;
+	protected int nsacks;
 
 	/**
 	 * The number of items.
 	 */
-	private int nitems;
+	protected int nitems;
 
 	/**
 	 * Entry {@code profit[i][j]} is the profit from including item {@code j}
 	 * in sack {@code i}.
 	 */
-	private int[][] profit;
+	protected int[][] profit;
 
 	/**
 	 * Entry {@code weight[i][j]} is the weight incurred from including item
 	 * {@code j} in sack {@code i}.
 	 */
-	private int[][] weight;
+	protected int[][] weight;
 
 	/**
 	 * Entry {@code capacity[i]} is the weight capacity of sack {@code i}.
 	 */
-	private int[] capacity;
+	protected int[] capacity;
 
 	/**
 	 * Constructs a multiobjective 0/1 knapsack problem instance loaded from

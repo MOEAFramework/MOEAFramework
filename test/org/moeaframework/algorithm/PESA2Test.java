@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -24,15 +24,21 @@ import java.util.Map;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.moeaframework.RetryOnTravis;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.TestUtils;
+import org.moeaframework.TravisRunner;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.problem.MockRealProblem;
 
 /**
- * Tests the {@link PESA2} class.
+ * Tests the {@link PESA2} class.  The MOEA Framework's implementation tends
+ * to outperform the JMetal implementation.
  */
+@RunWith(TravisRunner.class)
+@RetryOnTravis
 public class PESA2Test extends AlgorithmTest {
 	
 	@Test
@@ -98,22 +104,22 @@ public class PESA2Test extends AlgorithmTest {
 	
 	@Test
 	public void testDTLZ1() throws IOException {
-		test("DTLZ1_2", "PESA2", "PESA2-JMetal");
+		test("DTLZ1_2", "PESA2", "PESA2-JMetal", true);
 	}
 	
 	@Test
 	public void testDTLZ2() throws IOException {
-		test("DTLZ2_2", "PESA2", "PESA2-JMetal");
+		test("DTLZ2_2", "PESA2", "PESA2-JMetal", true);
 	}
 	
 	@Test
 	public void testDTLZ7() throws IOException {
-		test("DTLZ7_2", "PESA2", "PESA2-JMetal");
+		test("DTLZ7_2", "PESA2", "PESA2-JMetal", true);
 	}
 	
 	@Test
 	public void testUF1() throws IOException {
-		test("UF1", "PESA2", "PESA2-JMetal");
+		test("UF1", "PESA2", "PESA2-JMetal", true);
 	}
 
 }

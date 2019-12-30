@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -22,7 +22,18 @@ import org.moeaframework.core.FitnessEvaluator;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Solution;
 
+/**
+ * Assigns fitness values based on the crowding distance from fast
+ * non-dominated sorting.
+ */
 public class CrowdingDistanceFitnessEvaluator implements FitnessEvaluator {
+	
+	/**
+	 * Constructs a new crowding distance fitness evaluator.
+	 */
+	public CrowdingDistanceFitnessEvaluator() {
+		super();
+	}
 
 	@Override
 	public void evaluate(Population population) {

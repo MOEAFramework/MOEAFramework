@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -61,7 +61,7 @@ import org.apache.commons.math3.linear.RealMatrix;
  *   <li>Asafuddoula, M., T. Ray, and R. Sarker (2015).  "A Decomposition-
  *       Based Evolutionary Algorithm for Many-Objective Optimization."
  *       IEEE Transaction on Evolutionary Computation, 19(3):445-460.
- *   <li><a href="http://seit.unsw.adfa.edu.au/research/sites/mdo/Ray/Research-Data/Matlab-DBEA.rar">
+ *   <li><a href="http://www.mdolab.net/Ray/Research-Data/Matlab-DBEA.rar">
  *       Matlab-DBEA.rar</a>
  * </ol>
  */

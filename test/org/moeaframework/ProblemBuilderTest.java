@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -28,7 +28,7 @@ import org.moeaframework.core.PopulationIO;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.spi.ProblemFactory;
-import org.moeaframework.core.spi.TestProblemFactory;
+import org.moeaframework.core.spi.ProblemFactoryTestWrapper;
 import org.moeaframework.problem.DTLZ.DTLZ2;
 import org.moeaframework.problem.ZDT.ZDT5;
 
@@ -49,13 +49,13 @@ public class ProblemBuilderTest {
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void testNoReferenceSet() throws IOException {
-		//ZDT5 has no reference set
-		new ProblemBuilder().withProblem("ZDT5").getReferenceSet();
+		//20D DTLZ2 has no reference set
+		new ProblemBuilder().withProblem("DTLZ2_20").getReferenceSet();
 	}
 	
 	@Test
 	public void testProblemFactory() {
-		TestProblemFactory problemFactory = new TestProblemFactory();
+		ProblemFactoryTestWrapper problemFactory = new ProblemFactoryTestWrapper();
 		ProblemBuilder builder = new ProblemBuilder()
 				.usingProblemFactory(problemFactory)
 				.withProblem("DTLZ2_2");
@@ -73,6 +73,9 @@ public class ProblemBuilderTest {
 		Assert.assertNotNull(builder.withProblem("ZDT5").getProblemInstance());
 		
 		Assert.assertNotNull(builder.withProblemClass(ZDT5.class)
+				.getProblemInstance());
+		
+		Assert.assertNotNull(builder.withProblem(new ZDT5())
 				.getProblemInstance());
 		
 		Assert.assertNotNull(builder.withProblemClass(

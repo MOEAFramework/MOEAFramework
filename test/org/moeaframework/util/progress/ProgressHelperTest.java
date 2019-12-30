@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -86,7 +86,7 @@ public class ProgressHelperTest {
 			
 		});
 		
-		helper.start(totalSeeds, maxNFE);
+		helper.start(totalSeeds, maxNFE, -1);
 		
 		for (int i = 0; i < totalSeeds; i++) {
 			for (int j = 0; j <= maxNFE-frequency; j += frequency) {
@@ -166,7 +166,7 @@ public class ProgressHelperTest {
 			
 		});
 		
-		helper.start(10, 100000);
+		helper.start(10, 100000, -1);
 		helper.setCurrentNFE(0);
 		Thread.sleep(1000);
 		helper.setCurrentNFE(0);
@@ -200,7 +200,7 @@ public class ProgressHelperTest {
 			
 		});
 		
-		helper.start(10, 100000);
+		helper.start(10, 100000, -1);
 		helper.setCurrentNFE(0);
 		helper.setCurrentNFE(50000);
 		Thread.sleep(1000);
@@ -208,7 +208,8 @@ public class ProgressHelperTest {
 		
 		Assert.assertEquals(3, events.size());
 		Assert.assertTrue(Double.isNaN(events.get(0).getRemainingTime()));
-		Assert.assertTrue(Double.isNaN(events.get(1).getRemainingTime()));
+		Assert.assertTrue(Double.isNaN(events.get(1).getRemainingTime()) ||
+				events.get(1).getRemainingTime() > 0.0);
 		Assert.assertTrue(events.get(2).getRemainingTime() > 0.0);
 	}
 	

@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -23,6 +23,7 @@ import java.util.Properties;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.Problem;
@@ -31,6 +32,7 @@ import org.moeaframework.core.spi.ProviderNotFoundException;
 import org.moeaframework.problem.MockBinaryProblem;
 import org.moeaframework.problem.MockPermutationProblem;
 import org.moeaframework.problem.MockRealProblem;
+import org.moeaframework.problem.MockSubsetProblem;
 
 /**
  * Tests the {@link StandardAlgorithms} class.
@@ -53,6 +55,11 @@ public class StandardAlgorithmsTest {
 	protected Problem permutationProblem;
 	
 	/**
+	 * The subset test problem.
+	 */
+	protected Problem subsetProblem;
+	
+	/**
 	 * The properties for controlling the test problems.
 	 */
 	protected Properties properties;
@@ -67,9 +74,11 @@ public class StandardAlgorithmsTest {
 		realProblem = new MockRealProblem();
 		binaryProblem = new MockBinaryProblem();
 		permutationProblem = new MockPermutationProblem();
+		subsetProblem = new MockSubsetProblem();
 		properties = new Properties();
 		
 		properties.setProperty("maxEvaluations", "1000");
+		properties.setProperty("instances", "10"); // for RSO: maxEvaluations (1000) / instances (10) == GA population size (100)
 	}
 
 	/**
@@ -80,6 +89,7 @@ public class StandardAlgorithmsTest {
 		realProblem = null;
 		binaryProblem = null;
 		permutationProblem = null;
+		subsetProblem = null;
 		properties = null;
 	}
 	
@@ -159,8 +169,38 @@ public class StandardAlgorithmsTest {
 	}
 	
 	@Test
+	public void testRVEA_Real() {
+		test("RVEA", realProblem);
+	}
+	
+	@Test
 	public void testRandomSearch_Real() {
 		test("Random", realProblem);
+	}
+
+	@Test
+	public void testGA_Real() {
+		test("GA", realProblem);
+	}
+	
+	@Test
+	public void testES_Real() {
+		test("ES", realProblem);
+	}
+	
+	@Test
+	public void testDE_Real() {
+		test("DE", realProblem);
+	}
+	
+	@Test
+	public void testRSO_Real() {
+		test("RSO", realProblem);
+	}
+	
+	@Test
+	public void testMSOPS_Real() {
+		test("MSOPS", realProblem);
 	}
 	
 	@Test
@@ -178,7 +218,6 @@ public class StandardAlgorithmsTest {
 		test("NSGAIII", binaryProblem);
 	}
 	
-	@Test(expected = ProviderNotFoundException.class)
 	public void testMOEAD_Binary() {
 		test("MOEAD", binaryProblem);
 	}
@@ -239,8 +278,39 @@ public class StandardAlgorithmsTest {
 	}
 	
 	@Test
+	@Ignore("current does not work since RVEA requires at least two objectives")
+	public void testRVEA_Binary() {
+		test("RVEA", binaryProblem);
+	}
+	
+	@Test
 	public void testRandomSearch_Binary() {
 		test("Random", binaryProblem);
+	}
+	
+	@Test
+	public void testGA_Binary() {
+		test("GA", binaryProblem);
+	}
+	
+	@Test(expected = ProviderNotFoundException.class)
+	public void testES_Binary() {
+		test("ES", binaryProblem);
+	}
+	
+	@Test(expected = ProviderNotFoundException.class)
+	public void testDE_Binary() {
+		test("DE", binaryProblem);
+	}
+	
+	@Test
+	public void testRSO_Binary() {
+		test("RSO", binaryProblem);
+	}
+	
+	@Test(expected = ProviderNotFoundException.class)
+	public void testMSOPS_Binary() {
+		test("MSOPS", binaryProblem);
 	}
 	
 	@Test
@@ -258,7 +328,6 @@ public class StandardAlgorithmsTest {
 		test("NSGAIII", permutationProblem);
 	}
 	
-	@Test(expected = ProviderNotFoundException.class)
 	public void testMOEAD_Permutation() {
 		test("MOEAD", permutationProblem);
 	}
@@ -319,8 +388,149 @@ public class StandardAlgorithmsTest {
 	}
 	
 	@Test
+	@Ignore("currently broken as RVEA requires at least two objectives")
+	public void testRVEA_Permutation() {
+		test("RVEA", permutationProblem);
+	}
+	
+	@Test
 	public void testRandomSearch_Permutation() {
 		test("Random", permutationProblem);
+	}
+	
+	@Test
+	public void testGA_Permutation() {
+		test("GA", permutationProblem);
+	}
+	
+	@Test(expected = ProviderNotFoundException.class)
+	public void testES_Permutation() {
+		test("ES", permutationProblem);
+	}
+	
+	@Test(expected = ProviderNotFoundException.class)
+	public void testDE_Permutation() {
+		test("DE", permutationProblem);
+	}
+	
+	@Test
+	public void testRSO_Permutation() {
+		test("RSO", permutationProblem);
+	}
+	
+	@Test(expected = ProviderNotFoundException.class)
+	public void testMSOPS_Permutation() {
+		test("MSOPS", permutationProblem);
+	}
+	
+	@Test
+	public void testEpsilonMOEA_Subset() {
+		test("eMOEA", subsetProblem);
+	}
+	
+	@Test
+	public void testNSGAII_Subset() {
+		test("NSGAII", subsetProblem);
+	}
+	
+	@Test
+	public void testNSGAIII_Subset() {
+		test("NSGAIII", subsetProblem);
+	}
+	
+	public void testMOEAD_Subset() {
+		test("MOEAD", subsetProblem);
+	}
+	
+	@Test(expected = ProviderNotFoundException.class)
+	public void testGDE3_Subset() {
+		test("GDE3", subsetProblem);
+	}
+	
+	@Test
+	public void testEpsilonNSGAII_Subset() {
+		test("eNSGAII", subsetProblem);
+	}
+	
+	@Test(expected = ProviderNotFoundException.class)
+	public void testCMAES_Subset() {
+		test("CMA-ES", subsetProblem);
+	}
+	
+	@Test
+	public void testSPEA2_Subset() {
+		test("SPEA2", subsetProblem);
+	}
+
+	@Test
+	public void testPAES_Subset() {
+		test("PAES", subsetProblem);
+	}
+
+	@Test
+	public void testPESA2_Subset() {
+		test("PESA2", subsetProblem);
+	}
+	
+	@Test(expected = ProviderNotFoundException.class)
+	public void testOMOPSO_Subset() {
+		test("OMOPSO", subsetProblem);
+	}
+	
+	@Test(expected = ProviderNotFoundException.class)
+	public void testSMPSO_Subset() {
+		test("SMPSO", subsetProblem);
+	}
+
+	@Test
+	public void testIBEA_Subset() {
+		test("IBEA", subsetProblem);
+	}
+	
+	@Test
+	public void testSMSEMOA_Subset() {
+		test("SMS-EMOA", subsetProblem);
+	}
+	
+	@Test
+	public void testVEGA_Subset() {
+		test("VEGA", subsetProblem);
+	}
+	
+	@Test
+	@Ignore("currently broken as RVEA requires at least two objectives")
+	public void testRVEA_Subset() {
+		test("RVEA", subsetProblem);
+	}
+	
+	@Test
+	public void testRandomSearch_Subset() {
+		test("Random", subsetProblem);
+	}
+	
+	@Test
+	public void testGA_Subset() {
+		test("GA", subsetProblem);
+	}
+	
+	@Test(expected = ProviderNotFoundException.class)
+	public void testES_Subset() {
+		test("ES", subsetProblem);
+	}
+	
+	@Test(expected = ProviderNotFoundException.class)
+	public void testDE_Subset() {
+		test("DE", subsetProblem);
+	}
+	
+	@Test
+	public void testRSO_Subset() {
+		test("RSO", subsetProblem);
+	}
+	
+	@Test(expected = ProviderNotFoundException.class)
+	public void testMSOPS_Subset() {
+		test("MSOPS", subsetProblem);
 	}
 	
 	/**

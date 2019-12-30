@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -21,6 +21,7 @@ import java.util.BitSet;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Variable;
 
 /**
@@ -197,6 +198,13 @@ public class BinaryVariable implements Variable {
 		}
 		
 		return sb.toString();
+	}
+
+	@Override
+	public void randomize() {
+		for (int i = 0; i < getNumberOfBits(); i++) {
+			set(i, PRNG.nextBoolean());
+		}
 	}
 
 }

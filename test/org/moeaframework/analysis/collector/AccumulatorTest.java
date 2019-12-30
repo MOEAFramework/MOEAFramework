@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -17,10 +17,15 @@
  */
 package org.moeaframework.analysis.collector;
 
+import java.io.File;
+import java.io.IOException;
+
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.moeaframework.TestUtils;
+import org.moeaframework.core.Settings;
 
 public class AccumulatorTest {
 	
@@ -62,6 +67,45 @@ public class AccumulatorTest {
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testGetInvalidIndex() {
 		accumulator.get("test", 2);
+	}
+	
+	@Test
+	public void testToCSV() {
+		accumulator = new Accumulator();
+		accumulator.add("NFE", 100);
+		accumulator.add("NFE", 200);
+		accumulator.add("es,cap\"e", 0);
+		accumulator.add("es,cap\"e", 1);
+		
+		String expected = "NFE, \"es,cap\"\"e\"" +
+				Settings.NEW_LINE +
+				"100, 0" +
+				Settings.NEW_LINE +
+				"200, 1";
+		
+		Assert.assertEquals(expected, accumulator.toCSV());
+	}
+	
+	@Test
+	public void testSaveCSV() throws IOException {
+		accumulator = new Accumulator();
+		accumulator.add("NFE", 100);
+		accumulator.add("NFE", 200);
+		accumulator.add("es,cap\"e", 0);
+		accumulator.add("es,cap\"e", 1);
+		
+		String expected = "NFE, \"es,cap\"\"e\"" +
+				Settings.NEW_LINE +
+				"100, 0" +
+				Settings.NEW_LINE +
+				"200, 1";
+		
+		File tempFile = TestUtils.createTempFile();
+		accumulator.saveCSV(tempFile);
+		
+		String actual = new String(TestUtils.loadFile(tempFile));
+		
+		Assert.assertEquals(expected, actual);
 	}
 
 }

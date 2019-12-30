@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -49,7 +49,7 @@ Comparator<Solution>, Serializable {
 	 * @return the sum of the absolute value of the constraints for the
 	 *         specified solution
 	 */
-	protected double getConstraints(Solution solution) {
+	public static double getConstraints(Solution solution) {
 		double constraints = 0.0;
 
 		for (int i = 0; i < solution.getNumberOfConstraints(); i++) {
@@ -63,18 +63,8 @@ Comparator<Solution>, Serializable {
 	public int compare(Solution solution1, Solution solution2) {
 		double constraints1 = getConstraints(solution1);
 		double constraints2 = getConstraints(solution2);
-
-		if ((constraints1 != 0.0) || (constraints2 != 0.0)) {
-			if (constraints1 == 0.0) {
-				return -1;
-			} else if (constraints2 == 0.0) {
-				return 1;
-			} else {
-				return Double.compare(constraints1, constraints2);
-			}
-		} else {
-			return 0;
-		}
+		
+		return Double.compare(constraints1, constraints2);
 	}
 
 }

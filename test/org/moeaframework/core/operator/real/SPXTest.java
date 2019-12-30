@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -18,11 +18,15 @@
 package org.moeaframework.core.operator.real;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.moeaframework.RetryOnTravis;
 import org.moeaframework.TestThresholds;
+import org.moeaframework.TravisRunner;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.operator.MeanCentricVariationTest;
 import org.moeaframework.core.operator.ParentImmutabilityTest;
 
+@RunWith(TravisRunner.class)
 public class SPXTest extends MeanCentricVariationTest {
 
 	/**
@@ -30,6 +34,7 @@ public class SPXTest extends MeanCentricVariationTest {
 	 * completely different parents are used.
 	 */
 	@Test
+	@RetryOnTravis
 	public void testFullDistribution() {
 		SPX sbx = new SPX(3, TestThresholds.SAMPLES);
 
@@ -46,6 +51,7 @@ public class SPXTest extends MeanCentricVariationTest {
 	 * the parents are degenerate along one axis.
 	 */
 	@Test
+	@RetryOnTravis
 	public void testPartialDistribution() {
 		SPX sbx = new SPX(3, TestThresholds.SAMPLES);
 

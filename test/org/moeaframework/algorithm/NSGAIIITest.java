@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -19,7 +19,6 @@ package org.moeaframework.algorithm;
 
 import java.io.File;
 import java.io.IOException;
-
 import org.apache.commons.math3.stat.descriptive.rank.Max;
 import org.apache.commons.math3.stat.descriptive.rank.Median;
 import org.apache.commons.math3.stat.descriptive.rank.Min;
@@ -31,8 +30,7 @@ import org.moeaframework.core.Population;
 import org.moeaframework.core.PopulationIO;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.indicator.IndicatorUtils;
-import org.moeaframework.core.indicator.NormalizedIndicator;
+import org.moeaframework.core.indicator.InvertedGenerationalDistance;
 import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.problem.DTLZ.DTLZ1;
 import org.moeaframework.problem.DTLZ.DTLZ2;
@@ -98,15 +96,14 @@ public class NSGAIIITest {
 		evaluate(new ScaledProblem(new DTLZ2(8), 3), 500, new NondominatedPopulation(PopulationIO.readObjectives(new File("DTLZ2(8)-PFscaled.txt"))));
 		evaluate(new ScaledProblem(new DTLZ2(10), 3), 750, new NondominatedPopulation(PopulationIO.readObjectives(new File("DTLZ2(10)-PFscaled.txt"))));
 		evaluate(new ScaledProblem(new DTLZ2(15), 2), 1000, new NondominatedPopulation(PopulationIO.readObjectives(new File("DTLZ2(15)-PFscaled.txt"))));
-		
 	}
 	
 	public void evaluate(Problem problem, int maxGen, NondominatedPopulation referenceSet) {
 		int trials = 20;
 		double[] igdValues = new double[trials];
 		
-		InvertedGenerationalDistance2 igd = new InvertedGenerationalDistance2(
-				problem, referenceSet);
+		InvertedGenerationalDistance igd = new InvertedGenerationalDistance(
+				problem, referenceSet, 2.0);
 		
 		for (int i = 0; i < trials; i++) {
 			int populationSize;
@@ -129,6 +126,7 @@ public class NSGAIIITest {
 			properties.setDouble("sbx.rate", 1.0);
 			properties.setDouble("sbx.distributionIndex", 30.0);
 			properties.setDouble("pm.distributionIndex", 20.0);
+			properties.setBoolean("sbx.swap", false);
 			properties.setDouble("populationSize", populationSize);
 			
 			if (problem.getNumberOfObjectives() == 3) {
@@ -161,49 +159,6 @@ public class NSGAIIITest {
 		System.out.println("  Min: " + new Min().evaluate(igdValues));
 		System.out.println("  Med: " + new Median().evaluate(igdValues));
 		System.out.println("  Max: " + new Max().evaluate(igdValues));
-	}
-	
-	/**
-	 * Deb and Jain use a version that averages the distance rather than
-	 * using the root mean square value.
-	 */
-	public static class InvertedGenerationalDistance2 extends NormalizedIndicator {
-
-		public InvertedGenerationalDistance2(Problem problem,
-				NondominatedPopulation referenceSet) {
-			super(problem, referenceSet);
-		}
-
-		@Override
-		public double evaluate(NondominatedPopulation approximationSet) {
-			return evaluate(problem, normalize(approximationSet), 
-					getNormalizedReferenceSet());
-		}
-
-		/**
-		 * Computes the inverted generational distance for the specified problem
-		 * given an approximation set and reference set. While not necessary, the
-		 * approximation and reference sets should be normalized. Returns
-		 * {@code Double.POSITIVE_INFINITY} if the approximation set is empty.
-		 * 
-		 * @param problem the problem
-		 * @param approximationSet an approximation set for the problem
-		 * @param referenceSet the reference set for the problem
-		 * @return the inverted generational distance for the specified problem 
-		 *         given an approximation set and reference set
-		 */
-		static double evaluate(Problem problem,
-				NondominatedPopulation approximationSet,
-				NondominatedPopulation referenceSet) {
-			double sum = 0.0;
-
-			for (int i = 0; i < referenceSet.size(); i++) {
-				sum += IndicatorUtils.distanceToNearestSolution(problem,
-						referenceSet.get(i), approximationSet);
-			}
-
-			return sum / referenceSet.size();
-		}
 	}
 
 	public class ScaledProblem implements Problem {

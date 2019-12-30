@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -26,25 +26,27 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PopulationIO;
-import org.moeaframework.core.spi.TestAlgorithmFactory;
-import org.moeaframework.core.spi.TestProblemFactory;
+import org.moeaframework.core.spi.AlgorithmFactoryTestWrapper;
+import org.moeaframework.core.spi.ProblemFactoryTestWrapper;
 
 /**
  * Tests the {@link Analyzer} class.
  */
+@RunWith(TravisRunner.class)
 public class AnalyzerTest {
 	
-	private TestAlgorithmFactory algorithmFactory;
+	private AlgorithmFactoryTestWrapper algorithmFactory;
 	
-	private TestProblemFactory problemFactory;
+	private ProblemFactoryTestWrapper problemFactory;
 	
 	@Before
 	public void setUp() {
-		algorithmFactory = new TestAlgorithmFactory();
-		problemFactory = new TestProblemFactory();
+		algorithmFactory = new AlgorithmFactoryTestWrapper();
+		problemFactory = new ProblemFactoryTestWrapper();
 	}
 	
 	@After

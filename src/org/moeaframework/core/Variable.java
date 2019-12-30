@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -21,7 +21,9 @@ import java.io.Serializable;
 
 /**
  * Interface for decision variables. This interface ensures independent copies
- * of decision variables can be constructed.
+ * of decision variables can be constructed.  Implementations are strongly
+ * encouraged to also override {@link #equals(Object)} and
+ * {@link #hashCode()}.
  */
 public interface Variable extends Serializable {
 
@@ -36,5 +38,11 @@ public interface Variable extends Serializable {
 	 * @return an independent copy of this decision variable
 	 */
 	public Variable copy();
+	
+	/**
+	 * Randomly assign the value of this variable.  In general, the
+	 * randomization should follow a uniform distribution.
+	 */
+	public void randomize();
 
 }

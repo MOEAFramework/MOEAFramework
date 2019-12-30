@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -21,6 +21,7 @@ import java.util.BitSet;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.moeaframework.TestUtils;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variable;
@@ -255,6 +256,17 @@ public class EncodingUtilsTest {
 	}
 	
 	@Test
+	public void testBinaryIntEncoding() {
+		Variable variable = EncodingUtils.newBinaryInt(3, 8);
+		
+		EncodingUtils.setInt(variable, 5);
+		Assert.assertEquals(5, EncodingUtils.getInt(variable));
+		
+		EncodingUtils.setInt(variable, 8);
+		Assert.assertEquals(8, EncodingUtils.getInt(variable));
+	}
+	
+	@Test
 	public void testBinaryEncoding() {
 		Variable variable = EncodingUtils.newBinary(3);
 		
@@ -295,6 +307,45 @@ public class EncodingUtilsTest {
 		EncodingUtils.setPermutation(variable, new int[] { 0, 2, 1 });
 		Assert.assertArrayEquals(new int[] { 0, 2, 1 },
 				EncodingUtils.getPermutation(variable));
+	}
+	
+	@Test
+	public void testSubsetEncoding() {
+		Variable variable = EncodingUtils.newSubset(5, 10);
+		
+		EncodingUtils.setSubset(variable, new int[] { 1, 3, 5, 6, 7 });
+		Assert.assertArrayEquals(new int[] { 1, 3, 5, 6, 7 },
+				EncodingUtils.getSubset(variable));
+	}
+	
+	@Test
+	public void testSubsetEncodingAsBinary() {
+		Variable variable = EncodingUtils.newSubset(5, 10);
+		boolean[] values = new boolean[] { false, false, true, true,
+				false, true, false, true, true, false};
+		
+		EncodingUtils.setSubset(variable, values);
+		Assert.assertArrayEquals(new int[] { 2, 3, 5, 7, 8 },
+				EncodingUtils.getSubset(variable));
+		
+		TestUtils.assertEquals(values, EncodingUtils.getSubsetAsBinary(variable));
+	}
+	
+	@Test
+	public void testSubsetEncodingAsBitSet() {
+		Variable variable = EncodingUtils.newSubset(5, 10);
+		
+		BitSet bitSet = new BitSet(10);
+		bitSet.set(2);
+		bitSet.set(3);
+		bitSet.set(5);
+		bitSet.set(7);
+		bitSet.set(8);
+		
+		EncodingUtils.setSubset(variable, bitSet);
+		Assert.assertArrayEquals(new int[] { 2, 3, 5, 7, 8 },
+				EncodingUtils.getSubset(variable));
+		Assert.assertEquals(bitSet, EncodingUtils.getSubsetAsBitSet(variable));
 	}
 	
 	@Test
@@ -402,6 +453,12 @@ public class EncodingUtilsTest {
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
+	public void testSubsetInvalidType1() {
+		EncodingUtils.setSubset(EncodingUtils.newBinary(3),
+				new int[] { 1, 3, 5, 6, 7 });
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
 	public void testRealInvalidType2() {
 		EncodingUtils.getReal(EncodingUtils.newBinary(3));
 	}
@@ -429,6 +486,11 @@ public class EncodingUtilsTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void testPermutationInvalidType2() {
 		EncodingUtils.getPermutation(EncodingUtils.newBinary(3));
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testSubsetInvalidType2() {
+		EncodingUtils.getSubset(EncodingUtils.newBinary(3));
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
@@ -525,6 +587,62 @@ public class EncodingUtilsTest {
 		solution.setVariable(0, EncodingUtils.newInt(0, 1));
 		solution.setVariable(1, EncodingUtils.newInt(0, 1));
 		EncodingUtils.setInt(solution, new int[] { 0, 1, 0 });
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testSubsetInvalidLength1() {
+		Subset subset = new Subset(5, 10);
+		EncodingUtils.setSubset(subset, new int[] { 2, 4 });
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testSubsetInvalidLength2() {
+		Subset subset = new Subset(5, 10);
+		EncodingUtils.setSubset(subset, new boolean[] { false, false, true, true, false });
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testSubsetInvalidLength3() {
+		Subset subset = new Subset(5, 10);
+		
+		BitSet bitSet = new BitSet(5);
+		bitSet.set(2);
+		bitSet.set(3);
+		
+		EncodingUtils.setSubset(subset, bitSet);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testSubsetInvalidValue1() {
+		Subset subset = new Subset(5, 10);
+		EncodingUtils.setSubset(subset, new int[] { 0, 1, 2, 3, 10 });
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testSubsetInvalidValue2() {
+		Subset subset = new Subset(5, 10);
+		EncodingUtils.setSubset(subset, new int[] { -1, 0, 1, 2, 3 });
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testSubsetInvalidValue3() {
+		Subset subset = new Subset(5, 10);
+		EncodingUtils.setSubset(subset, new boolean[] { false, false, true, true,
+				true, true, false, false, false, false, true });
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testSubsetInvalidValue4() {
+		Subset subset = new Subset(5, 10);
+		
+		BitSet bitSet = new BitSet(5);
+		bitSet.set(2);
+		bitSet.set(3);
+		bitSet.set(4);
+		bitSet.set(5);
+		bitSet.set(10);
+		
+		EncodingUtils.setSubset(subset, bitSet);
 	}
 
 }

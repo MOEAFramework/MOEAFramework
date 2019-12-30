@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -25,14 +25,18 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import org.apache.commons.math3.stat.StatUtils;
 import org.apache.commons.math3.util.MathArrays;
+import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Initialization;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
+import org.moeaframework.core.operator.CompoundVariation;
+import org.moeaframework.core.operator.real.DifferentialEvolutionVariation;
+import org.moeaframework.util.weights.RandomGenerator;
+import org.moeaframework.util.weights.WeightGenerator;
 
 /**
  * Implementation of MOEA/D, the multiobjective evolutionary algorithm with
@@ -232,6 +236,12 @@ public class MOEAD extends AbstractAlgorithm {
 	 * The size of the neighborhood used for mating.
 	 */
 	private final int neighborhoodSize;
+	
+	/**
+	 * The weight generator; or {@code null} if the default weight generator
+	 * is used.
+	 */
+	private final WeightGenerator weightGenerator;
 
 	/**
 	 * The probability of mating with a solution in the neighborhood rather
@@ -256,15 +266,21 @@ public class MOEAD extends AbstractAlgorithm {
 
 	/**
 	 * The frequency, in generations, in which utility values are updated.  Set
-	 * to {@code -1} to disable utility-based search.
+	 * to {@code -1} to disable utility-based search.  [2] recommends to update
+	 * every {@code 50} generations.
 	 */
 	private final int updateUtility;
 
 	/**
+	 * Set to {@code true} if using differential evolution.
+	 */
+	final boolean useDE;
+	
+	/**
 	 * The current generation number.
 	 */
 	private int generation;
-
+	
 	/**
 	 * Constructs the MOEA/D algorithm with the specified components.  This
 	 * version of MOEA/D uses utility-based search as described in [2].
@@ -278,19 +294,14 @@ public class MOEAD extends AbstractAlgorithm {
 	 *        neighborhood rather than the entire population
 	 * @param eta the maximum number of population slots a solution can replace
 	 * @param updateUtility the frequency, in generations, in which utility
-	 *        values are updated; set to {@code -1} to disable utility-based
-	 *        search
+	 *        values are updated; set to {@code 50} to use the recommended
+	 *        update frequency or {@code -1} to disable utility-based search.
 	 */
 	public MOEAD(Problem problem, int neighborhoodSize,
 			Initialization initialization, Variation variation, double delta,
 			double eta, int updateUtility) {
-		super(problem);
-		this.neighborhoodSize = neighborhoodSize;
-		this.initialization = initialization;
-		this.variation = variation;
-		this.delta = delta;
-		this.eta = eta;
-		this.updateUtility = updateUtility;
+		this(problem, neighborhoodSize, null, initialization, variation, delta,
+				eta, updateUtility);
 	}
 	
 	/**
@@ -312,6 +323,70 @@ public class MOEAD extends AbstractAlgorithm {
 			double eta) {
 		this(problem, neighborhoodSize, initialization, variation, delta, eta,
 				-1);
+	}
+
+	/**
+	 * Constructs the MOEA/D algorithm with the specified components.  This
+	 * version of MOEA/D uses utility-based search as described in [2].
+	 * 
+	 * @param problem the problem being solved
+	 * @param neighborhoodSize the size of the neighborhood used for mating,
+	 *        which must be at least {@code variation.getArity()-1}.
+	 * @param weightGenerator the weight generator
+	 * @param initialization the initialization method, which must generate the
+	 *        same number of solutions as weights
+	 * @param variation the variation operator
+	 * @param delta the probability of mating with a solution in the
+	 *        neighborhood rather than the entire population
+	 * @param eta the maximum number of population slots a solution can replace
+	 * @param updateUtility the frequency, in generations, in which utility
+	 *        values are updated; set to {@code 50} to use the recommended
+	 *        update frequency or {@code -1} to disable utility-based search.
+	 */
+	public MOEAD(Problem problem, int neighborhoodSize,
+			WeightGenerator weightGenerator, Initialization initialization,
+			Variation variation, double delta, double eta, int updateUtility) {
+		super(problem);
+		this.neighborhoodSize = neighborhoodSize;
+		this.weightGenerator = weightGenerator;
+		this.initialization = initialization;
+		this.variation = variation;
+		this.delta = delta;
+		this.eta = eta;
+		this.updateUtility = updateUtility;
+		
+		if (variation instanceof DifferentialEvolutionVariation) {
+			useDE = true;
+		} else if (variation instanceof CompoundVariation) {
+			CompoundVariation compoundVariation = (CompoundVariation)variation;
+			useDE = compoundVariation.getName().startsWith(
+					DifferentialEvolutionVariation.class.getSimpleName());
+		} else {
+			useDE = false;
+		}
+	}
+	
+	/**
+	 * Constructs the MOEA/D algorithm with the specified components.  This
+	 * constructs the original MOEA/D implementation without utility-based
+	 * search.
+	 * 
+	 * @param problem the problem being solved
+	 * @param neighborhoodSize the size of the neighborhood used for mating,
+	 *        which must be at least {@code variation.getArity()-1}.
+	 * @param weightGenerator the weight generator
+	 * @param initialization the initialization method, which must generate the
+	 *        same number of solutions as weights
+	 * @param variation the variation operator
+	 * @param delta the probability of mating with a solution in the
+	 *        neighborhood rather than the entire population
+	 * @param eta the maximum number of population slots a solution can replace
+	 */
+	public MOEAD(Problem problem, int neighborhoodSize,
+			WeightGenerator weightGenerator, Initialization initialization,
+			Variation variation, double delta, double eta) {
+		this(problem, neighborhoodSize, weightGenerator, initialization,
+				variation, delta, eta, -1);
 	}
 
 	@Override
@@ -345,90 +420,26 @@ public class MOEAD extends AbstractAlgorithm {
 	 * @param populationSize the population size
 	 */
 	private void initializePopulation(int populationSize) {
-		if (problem.getNumberOfObjectives() == 2) {
-			initializePopulation2D(populationSize);
-		} else {
-			initializePopulationND(populationSize);
-		}
-	}
-
-	/**
-	 * Initializes the population for 2D problems.
-	 * 
-	 * @param populationSize the population size
-	 */
-	private void initializePopulation2D(int populationSize) {
 		population = new ArrayList<Individual>(populationSize);
 		
-		// ensure boundary weights are at front of the population
-		population.add(new Individual(new double[] { 0.0, 1.0 }));
-		population.add(new Individual(new double[] { 1.0, 0.0 }));
-
-		for (int i = 1; i < populationSize - 1; i++) {
-			double a = i / (double)(populationSize - 1);
-			population.add(new Individual(new double[] { a, 1 - a }));
-		}
-	}
-
-	/**
-	 * Initializes the population for problems of arbitrary dimension.
-	 * 
-	 * @param populationSize the population size
-	 */
-	private void initializePopulationND(int populationSize) {
-		int N = 50;
-		int numberOfObjectives = problem.getNumberOfObjectives();
-		List<double[]> weights = new ArrayList<double[]>(populationSize * N);
-
-		// create random weights
-		for (int i = 0; i < populationSize * N; i++) {
-			double[] weight = new double[numberOfObjectives];
+		if (weightGenerator == null) {
+			List<double[]> weights = new RandomGenerator(
+					problem.getNumberOfObjectives(), populationSize).generate();
 			
-			for (int j = 0; j < numberOfObjectives; j++) {
-				weight[j] = PRNG.nextDouble();
+			for (double[] weight : weights) {
+				population.add(new Individual(weight));
+			}
+		} else {
+			List<double[]> weights = weightGenerator.generate();
+			
+			if (weights.size() != populationSize) {
+				throw new FrameworkException("weight generator must return " +
+						populationSize + " weights");
 			}
 			
-			double sum = StatUtils.sum(weight);
-			
-			for (int j = 0; j < numberOfObjectives; j++) {
-				weight[j] /= sum;
+			for (double[] weight : weights) {
+				population.add(new Individual(weight));
 			}
-
-			weights.add(weight);
-		}
-
-		population = new ArrayList<Individual>(populationSize);
-
-		// initialize population with weights (1,0,...,0), (0,1,...,0), ...,
-		// (0,...,0,1)
-		for (int i = 0; i < numberOfObjectives; i++) {
-			double[] weight = new double[numberOfObjectives];
-			weight[i] = 1.0;
-			population.add(new Individual(weight));
-		}
-
-		// fill in remaining weights with the weight vector with the largest
-		// distance from the assigned weights
-		while (population.size() < populationSize) {
-			double[] weight = null;
-			double distance = Double.NEGATIVE_INFINITY;
-
-			for (int i = 0; i < weights.size(); i++) {
-				double d = Double.POSITIVE_INFINITY;
-
-				for (int j = 0; j < population.size(); j++) {
-					d = Math.min(d, MathArrays.distance(weights.get(i),
-							population.get(j).getWeights()));
-				}
-
-				if (d > distance) {
-					weight = weights.get(i);
-					distance = d;
-				}
-			}
-
-			population.add(new Individual(weight));
-			weights.remove(weight);
 		}
 	}
 
@@ -572,6 +583,16 @@ public class MOEAD extends AbstractAlgorithm {
 
 		return max;
 	}
+	
+	private double sumOfConstraintViolations(Solution solution) {
+		double sum = 0.0;
+		
+		for (int i = 0; i < solution.getNumberOfConstraints(); i++) {
+			sum += Math.abs(solution.getConstraint(i));
+		}
+		
+		return sum;
+	}
 
 	/**
 	 * Updates the population with the specified solution. Only the specified
@@ -589,9 +610,29 @@ public class MOEAD extends AbstractAlgorithm {
 		
 		for (int i = 0; i < matingIndices.size(); i++) {
 			Individual individual = population.get(matingIndices.get(i));
-
-			if (fitness(solution, individual.getWeights()) < fitness(
-					individual.getSolution(), individual.getWeights())) {
+			boolean canReplace = false;
+			
+			if (solution.violatesConstraints() &&
+					individual.getSolution().violatesConstraints()) {
+				double cv1 = sumOfConstraintViolations(solution);
+				double cv2 = sumOfConstraintViolations(individual.getSolution());
+				
+				if (cv1 < cv2) {
+					canReplace = true;
+				}
+			} else if (individual.getSolution().violatesConstraints()) {
+				canReplace = true;
+			} else if (solution.violatesConstraints()) {
+				// do nothing
+			} else {
+				if (fitness(solution, individual.getWeights()) <
+						fitness(individual.getSolution(),
+								individual.getWeights())) {
+					canReplace = true;
+				}
+			}
+			
+			if (canReplace) {
 				individual.setSolution(solution);
 				c = c + 1;
 			}
@@ -605,17 +646,17 @@ public class MOEAD extends AbstractAlgorithm {
 	/**
 	 * Updates the utility of each individual.
 	 */
-	private void updateUtility() {
+	protected void updateUtility() {
 		for (Individual individual : population) {
 			double oldFitness = individual.getFitness();
 			double newFitness = fitness(individual.getSolution(), idealPoint);
-			double relativeDecrease = oldFitness - newFitness;
+			double relativeDecrease = (oldFitness - newFitness) / oldFitness; 
 
 			if (relativeDecrease > 0.001) {
 				individual.setUtility(1.0);
 			} else {
-				double utility = Math.min(1.0, 0.95 * (1.0 + delta / 0.001)
-						* individual.getUtility());
+				double utility = Math.min(1.0,
+						(0.95 + 0.05*relativeDecrease/0.001)* individual.getUtility());
 				individual.setUtility(utility);
 			}
 
@@ -633,8 +674,8 @@ public class MOEAD extends AbstractAlgorithm {
 			Solution[] parents = new Solution[variation.getArity()];
 			parents[0] = population.get(index).getSolution();
 			
-			if (variation.getArity() > 2) {
-				// mimic MOEA/D parent selection for differential evolution
+			if (useDE) {
+				// MOEA/D parent selection for differential evolution
 				PRNG.shuffle(matingIndices);
 				
 				for (int i = 1; i < variation.getArity()-1; i++) {

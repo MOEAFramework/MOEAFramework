@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -26,17 +26,24 @@ import jmetal.metaheuristics.moead.MOEAD;
 import jmetal.operators.crossover.DifferentialEvolutionCrossover;
 import jmetal.operators.mutation.PolynomialMutation;
 
+import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.moeaframework.RetryOnTravis;
+import org.moeaframework.TravisRunner;
 import org.moeaframework.algorithm.jmetal.JMetalAlgorithmAdapter;
 import org.moeaframework.algorithm.jmetal.JMetalProblemAdapter;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.spi.AlgorithmFactory;
+import org.moeaframework.problem.MockRealProblem;
 import org.moeaframework.util.TypedProperties;
 
 /**
  * Tests the {@link MOEAD} class.
  */
+@RunWith(TravisRunner.class)
+@RetryOnTravis
 public class MOEADTest extends AlgorithmTest {
 	
 	private static class MOEADFactory extends AlgorithmFactory {
@@ -103,6 +110,36 @@ public class MOEADTest extends AlgorithmTest {
 	@Test
 	public void testUF1() throws IOException {
 		test("UF1", "MOEAD", "MOEAD-JMetal", new MOEADFactory());
+	}
+	
+	@Test
+	public void testSelection() {
+		org.moeaframework.algorithm.MOEAD moead = null;
+		
+		Problem problem = new MockRealProblem();
+		Properties properties = new Properties();
+		
+		//the default is de+pm
+		moead = (org.moeaframework.algorithm.MOEAD)AlgorithmFactory.getInstance()
+				.getAlgorithm("MOEA/D", properties, problem);
+		
+		Assert.assertTrue(moead.useDE);
+		
+		//test with just de
+		properties.setProperty("operator", "de");
+		
+		moead = (org.moeaframework.algorithm.MOEAD)AlgorithmFactory.getInstance()
+				.getAlgorithm("MOEA/D", properties, problem);
+		
+		Assert.assertTrue(moead.useDE);
+		
+		//test with a different operator
+		properties.setProperty("operator", "sbx+pm");
+		
+		moead = (org.moeaframework.algorithm.MOEAD)AlgorithmFactory.getInstance()
+				.getAlgorithm("MOEA/D", properties, problem);
+		
+		Assert.assertFalse(moead.useDE);
 	}
 
 }

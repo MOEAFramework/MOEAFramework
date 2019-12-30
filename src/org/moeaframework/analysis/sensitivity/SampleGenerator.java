@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -37,7 +37,39 @@ import org.moeaframework.util.sequence.Uniform;
 
 /**
  * Command line utility for producing randomly-generated parameters for use by
- * the {@link Evaluator}.
+ * the {@link Evaluator} or {@link DetailedEvaluator}.  The output is called a
+ * parameter sample file.
+ * <p>
+ * Usage: {@code java -cp "..." org.moeaframework.analysis.sensitivity.SampleGenerator}
+ * <p>
+ * Arguments:
+ * <table border="0" style="margin-left: 1em">
+ *   <tr>
+ *     <td>{@code -n, --numberOfSamples}</td>
+ *     <td>The number of samples to generate.  Depending on the selected method,
+ *         more samples may be generated then given by this option (required).
+ *         </td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@code -p, --parameterFile}</td>
+ *     <td>Location of the parameter configuration file (required)</td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@code -m, --method}</td>
+ *     <td>The sampling method, such as {@code latin}, {@code sobol}, or
+ *         {@code saltelli} (required).  If you eventually want to use the
+ *         results with {@link SobolAnalysis}, then use the {@code saltelli}
+ *         method.
+ *     </td>
+ *   <tr>
+ *     <td>{@code -s, --seed}</td>
+ *     <td>The seed used to generate the parameter samples.</td>
+ *   </tr>
+ *   <tr>
+ *     <td>{@code -o, --output}</td>
+ *     <td>The output file where the parameter samples are saved.</td>
+ *   </tr>
+ * </table>
  */
 public class SampleGenerator extends CommandLineUtility {
 
@@ -88,21 +120,34 @@ public class SampleGenerator extends CommandLineUtility {
 
 	@Override
 	public void run(CommandLine commandLine) throws IOException {
-		ParameterFile parameterFile = new ParameterFile(new File(commandLine
-				.getOptionValue("parameterFile")));
+		ParameterFile parameterFile = new ParameterFile(new File(
+				commandLine.getOptionValue("parameterFile")));
 
 		int N = Integer.parseInt(commandLine.getOptionValue("numberOfSamples"));
 		int D = parameterFile.size();
+		
+		if (N <= 0) {
+			throw new IllegalArgumentException(
+					"numberOfSamples must be positive");
+		}
+		
+		if (D <= 0) {
+			throw new IllegalArgumentException(
+					"parameter file contains no parameters");
+		}
 
 		Sequence sequence = null;
 
 		if (commandLine.hasOption("method")) {
 			OptionCompleter completer = new OptionCompleter("uniform", "latin",
 					"sobol", "saltelli");
-			String method = completer.lookup(commandLine
-					.getOptionValue("method"));
+			String method = completer.lookup(
+					commandLine.getOptionValue("method"));
 
-			if (method.equals("latin")) {
+			if (method == null) {
+				throw new IllegalArgumentException("invalid method: "
+						+ commandLine.getOptionValue("method"));
+			} else if (method.equals("latin")) {
 				sequence = new LatinHypercube();
 			} else if (method.equals("sobol")) {
 				sequence = new Sobol();
@@ -128,8 +173,8 @@ public class SampleGenerator extends CommandLineUtility {
 		try {
 			if (commandLine.hasOption("output")) {
 				output = new PrintStream(new BufferedOutputStream(
-						new FileOutputStream(commandLine
-								.getOptionValue("output"))));
+						new FileOutputStream(
+								commandLine.getOptionValue("output"))));
 			}
 
 			double[][] samples = sequence.generate(N, D);
@@ -137,15 +182,15 @@ public class SampleGenerator extends CommandLineUtility {
 			for (int i = 0; i < N; i++) {
 				output.print(parameterFile.get(0).getLowerBound()
 						+ samples[i][0]
-						* (parameterFile.get(0).getUpperBound() - parameterFile
-								.get(0).getLowerBound()));
+						* (parameterFile.get(0).getUpperBound() -
+								parameterFile.get(0).getLowerBound()));
 
 				for (int j = 1; j < D; j++) {
 					output.print(' ');
 					output.print(parameterFile.get(j).getLowerBound()
 							+ samples[i][j]
-							* (parameterFile.get(j).getUpperBound() - parameterFile
-									.get(j).getLowerBound()));
+							* (parameterFile.get(j).getUpperBound() -
+									parameterFile.get(j).getLowerBound()));
 				}
 
 				output.println();

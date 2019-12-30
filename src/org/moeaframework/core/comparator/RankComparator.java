@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -44,14 +44,8 @@ Comparator<Solution>, Serializable {
 	public int compare(Solution solution1, Solution solution2) {
 		int rank1 = (Integer)solution1.getAttribute(RANK_ATTRIBUTE);
 		int rank2 = (Integer)solution2.getAttribute(RANK_ATTRIBUTE);
-
-		if (rank1 < rank2) {
-			return -1;
-		} else if (rank1 > rank2) {
-			return 1;
-		} else {
-			return 0;
-		}
+		
+		return Integer.compare(rank1, rank2);
 	}
 
 }

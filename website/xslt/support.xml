@@ -8,15 +8,25 @@
 <page>
   <title>Support for the MOEA Framework</title>
   <description>Submit bugs or request new features for the MOEA Framework</description>
-  <header></header>
+  <header>
+    <script type="text/javascript" src="scripts/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="fancybox/jquery.fancybox-1.3.4.pack.js"></script>
+    <script type="text/javascript" src="fancybox/jquery.easing-1.4.pack.js"></script>
+    <script type="text/javascript" src="fancybox/jquery.mousewheel-3.0.4.pack.js"></script>
+    <link rel="stylesheet" href="fancybox/jquery.fancybox-1.3.4.css" type="text/css" media="screen" />
+    <script type="text/javascript">
+      $(document).ready(function() {
+        $("a.popup").fancybox({'maxWidth':600, 'maxHeight':400, 'autoDimensions':false, 'type':'inline'});
+      });
+    </script>
+  </header>
   <content>
 <h2>Support</h2>
 
 <p>
-  We recently transitioned to hosting the MOEA Framework source code on
-  <a href="https://github.com/MOEAFramework/MOEAFramework/">Github</a>.  As a
-  result, we will no longer be using the Sourceforge trackers.  Please use the
-  new links below to report issues.
+  The source code and issue tracker for the MOEA Framework is available on
+  <a href="https://github.com/MOEAFramework/MOEAFramework/">Github</a>.  Please
+  use the links below to report issues.
 </p>
 
 <div class="section">
@@ -47,9 +57,84 @@
 <h3>Professional Support</h3>
 
 <p>
-  For businesses, we offer professional consulting and support services.  Please contact
-  <a href="mailto:support@moeaframework.org">support@moeaframework.org</a> for additional details.
+  For businesses, we offer professional consulting and support services.  This
+  can include <a href="#training" class="popup">web-based or onsite training</a>,
+  <a href="#custom" class="popup">custom software development</a>,
+  <a href="#phone" class="popup">9-5 EST phone support</a>, and more.  Please contact
+  <a href="mailto:support@moeaframework.org">support@moeaframework.org</a> for
+  more information or to request a quote.
 </p>
 </div>
+
+<div style="display:none">
+  <div id="training">
+     <h2>Web-based or Onsite Training</h2>
+     <p>
+       Our experts can provide web-based or onsite training for your employees
+       using the MOEA Framework.  Topics can range from the installation and
+       use of the MOEA Framework, advanced use of multiobjective optimization,
+       and more.  One day training sessions include:
+       <ul>
+         <li>6 hours of interactive training per day</li>
+         <li>Up to 10 participants</li>
+         <li>Walkthrough coding, compiling, and running examples</li>
+         <li>Question and answer sessions</li>
+         <li>Free digital copies of the user guides for all participants</li>
+       </ul>
+     </p>
+     <p>
+       Contact us at <a href="mailto:support@moeaframework.org">support@moeaframework.org</a>
+       to schedule your training or request a quote.
+     </p>
+   </div>
+</div>
+
+<div style="display:none">
+  <div id="custom">
+     <h2>Custom Software Development</h2>
+     <p>
+       We understand your time is valuable.  Learning and integrating a new
+       technology into your business can be costly.  That's why you can offload
+       your development costs to us.  Our experts will work with your team
+       to develop system requirements, deliver high-quality software, and
+       provide extended support.  We offer:
+       <ul>
+         <li>Deliver high-quality software based on your requirements</li>
+         <li>Onsite training and integration of software (if necessary)</li>
+         <li>Support and bug fixes up to one year after delivery</li>
+         <li>Extended support options for bug fixes and support up to 5 years</li>
+       </ul>
+     </p>
+     <p>
+       Contact us at <a href="mailto:support@moeaframework.org">support@moeaframework.org</a>
+       to learn more about what we can offer.
+     </p>
+   </div>
+</div>
+
+<div style="display:none">
+  <div id="phone">
+     <h2>9-5 Phone Support</h2>
+     <p>
+       We offer free support via Github's issue tracker, but response times may
+       vary.  With 9-5 Phone Support, our experts are available 9-5 EST Monday
+       through Friday to respond to your issues either by phone or web
+       conference.  In addition to responding to any questions, we also
+       address any bugs or issues identified and provide you immediate access
+       to the patch.  Support includes:
+       <ul>
+         <li>Up to 50 support calls a year</li>
+         <li>First access to bug fixes and patches</li>
+         <li>Call our domain experts any weekday to help troubleshoot issues</li>
+         <li>Basic software and integration support (does not include custom software development)</li>
+       </ul>
+     </p>
+     <p>
+       Contact us at <a href="mailto:support@moeaframework.org">support@moeaframework.org</a>
+       to request a quote.
+     </p>
+   </div>
+</div>
+
   </content>
 </page>

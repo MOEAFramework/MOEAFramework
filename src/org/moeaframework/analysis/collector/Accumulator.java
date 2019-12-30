@@ -1,4 +1,4 @@
-/* Copyright 2009-2015 David Hadka
+/* Copyright 2009-2018 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -17,13 +17,20 @@
  */
 package org.moeaframework.analysis.collector;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.Serializable;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.moeaframework.core.Settings;
 
 /**
  * An accumulator stores collected data from a single run of an algorithm.
@@ -116,6 +123,72 @@ public class Accumulator implements Serializable {
 		} else {
 			return entries.size();
 		}
+	}
+	
+	/**
+	 * Saves the contests of this accumulator to a CSV file.
+	 * 
+	 * @param file the file to create
+	 * @throws IOException if an I/O error occurred
+	 */
+	public void saveCSV(File file) throws IOException {
+		FileWriter writer = null;
+		
+		try {
+			writer = new FileWriter(file);
+			writer.write(toCSV());
+		} finally {
+			if (writer != null) {
+				writer.close();
+			}
+		}
+	}
+	
+	/**
+	 * Returns the contents of this accumulator as a string in CSV format.
+	 * 
+	 * @return the contents of this accumulator as a string in CSV format
+	 */
+	public String toCSV() {
+		StringBuilder sb = new StringBuilder();
+		boolean firstValue = true;
+		
+		// determine the ordering of the fields
+		Set<String> fields = new LinkedHashSet<String>();
+		fields.add("NFE");
+		
+		if (data.containsKey("Elapsed Time")) {
+			fields.add("Elapsed Time");
+		}
+		
+		fields.addAll(keySet());
+		
+		// create the header
+		for (String field : fields) {
+			if (!firstValue) {
+				sb.append(", ");
+			}
+			
+			sb.append(StringEscapeUtils.escapeCsv(field));
+			firstValue = false;
+		}
+		
+		// create the data
+		for (int i = 0; i < size("NFE"); i++) {
+			sb.append(Settings.NEW_LINE);
+			firstValue = true;
+			
+			for (String field : fields) {
+				if (!firstValue) {
+					sb.append(", ");
+				}
+				
+				sb.append(StringEscapeUtils.escapeCsv(get(field, i).toString()));
+				firstValue = false;
+			}
+		}
+		
+		return sb.toString();
 	}
 
 }
