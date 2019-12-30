@@ -2,7 +2,7 @@ This file documents the major changes implemented in each release of the MOEA
 Framework.
 
 ----------------------------
- Version 2.13 (TBD)
+ Version 2.13 (30 Dec 2019)
 ----------------------------
 
   * Adds debugging mode to ExternalProblem by setting
