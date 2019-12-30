@@ -44,13 +44,13 @@ import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.DeviationRenderer;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.chart.title.LegendTitle;
+import org.jfree.chart.ui.RectangleEdge;
+import org.jfree.chart.ui.RectangleInsets;
 import org.jfree.data.xy.DefaultTableXYDataset;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.YIntervalSeries;
 import org.jfree.data.xy.YIntervalSeriesCollection;
-import org.jfree.ui.RectangleEdge;
-import org.jfree.ui.RectangleInsets;
 import org.moeaframework.analysis.collector.Accumulator;
 import org.moeaframework.util.Localization;
 

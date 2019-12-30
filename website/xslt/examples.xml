@@ -40,10 +40,10 @@
 <h3>Setup</h3>
 
 <p>
-  In order to run these examples or use the MOEA Framework, Java 6 (or a later
-  version) must be installed on your computer.  The Java 6 development kit (JDK)
+  In order to run these examples or use the MOEA Framework, Java 8 (or a later
+  version) must be installed on your computer.  The Java 8 development kit (JDK)
   for Windows and Linux can be downloaded 
-  <a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk6u37-downloads-1859587.html">here</a>.
+  <a href="https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html">here</a>.
 </p>
 
 <p>

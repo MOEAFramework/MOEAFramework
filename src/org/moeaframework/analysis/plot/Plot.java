@@ -40,7 +40,7 @@ import javax.swing.JFrame;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
-import org.jfree.chart.ChartUtilities;
+import org.jfree.chart.ChartUtils;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.CategoryAxis;
 import org.jfree.chart.axis.NumberAxis;
@@ -159,7 +159,7 @@ public class Plot {
 			XYToolTipGenerator toolTipGenerator = new StandardXYToolTipGenerator();
 
 			XYItemRenderer renderer = new XYLineAndShapeRenderer(false, true);
-			renderer.setBaseToolTipGenerator(toolTipGenerator);
+			renderer.setDefaultToolTipGenerator(toolTipGenerator);
 			plot.setRenderer(renderer);
 			plot.setOrientation(PlotOrientation.VERTICAL);
 
@@ -186,7 +186,7 @@ public class Plot {
 
 			final BoxAndWhiskerRenderer renderer = new BoxAndWhiskerRenderer();
 			renderer.setFillBox(true);
-			renderer.setBaseToolTipGenerator(new BoxAndWhiskerToolTipGenerator());
+			renderer.setDefaultToolTipGenerator(new BoxAndWhiskerToolTipGenerator());
 
 			final CategoryPlot plot = new CategoryPlot();
 			plot.setDomainAxis(xAxis);
@@ -402,8 +402,8 @@ public class Plot {
 
 		renderer.setDotHeight(6);
 		renderer.setDotWidth(6);
-		renderer.setBasePaint(paint);
-		renderer.setBaseFillPaint(paint);
+		renderer.setDefaultPaint(paint);
+		renderer.setDefaultFillPaint(paint);
 
 		plot.setRenderer(currentDataset, renderer);
 
@@ -595,9 +595,9 @@ public class Plot {
 		XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer(true, false);
 		renderer.setAutoPopulateSeriesStroke(false);
 
-		renderer.setBaseStroke(new BasicStroke(3f, 1, 1));
-		renderer.setBasePaint(paint);
-		renderer.setBaseFillPaint(paint);
+		renderer.setDefaultStroke(new BasicStroke(3f, 1, 1));
+		renderer.setDefaultPaint(paint);
+		renderer.setDefaultFillPaint(paint);
 
 		plot.setRenderer(currentDataset, renderer);
 
@@ -664,9 +664,9 @@ public class Plot {
 		XYAreaRenderer renderer = new XYAreaRenderer();
 		renderer.setAutoPopulateSeriesStroke(false);
 
-		renderer.setBaseStroke(new BasicStroke(3f, 1, 1));
-		renderer.setBasePaint(paint);
-		renderer.setBaseFillPaint(paint);
+		renderer.setDefaultStroke(new BasicStroke(3f, 1, 1));
+		renderer.setDefaultPaint(paint);
+		renderer.setDefaultFillPaint(paint);
 
 		plot.setRenderer(currentDataset, renderer);
 
@@ -743,9 +743,9 @@ public class Plot {
 		StackedXYAreaRenderer renderer = new StackedXYAreaRenderer();
 		renderer.setAutoPopulateSeriesStroke(false);
 
-		renderer.setBaseStroke(new BasicStroke(3f, 1, 1));
-		renderer.setBasePaint(paint);
-		renderer.setBaseFillPaint(paint);
+		renderer.setDefaultStroke(new BasicStroke(3f, 1, 1));
+		renderer.setDefaultPaint(paint);
+		renderer.setDefaultFillPaint(paint);
 
 		plot.setRenderer(currentDataset, renderer);
 
@@ -808,8 +808,8 @@ public class Plot {
 			if (renderer instanceof XYDotRenderer) {
 				((XYDotRenderer)renderer).setDotWidth((int)(size*2));
 				((XYDotRenderer)renderer).setDotHeight((int)(size*2));
-			} else if (renderer.getBaseStroke() instanceof BasicStroke) {
-				BasicStroke oldStroke = (BasicStroke)renderer.getBaseStroke();
+			} else if (renderer.getDefaultStroke() instanceof BasicStroke) {
+				BasicStroke oldStroke = (BasicStroke)renderer.getDefaultStroke();
 
 				BasicStroke newStroke = new BasicStroke(
 						size,
@@ -819,9 +819,9 @@ public class Plot {
 						oldStroke.getDashArray(),
 						oldStroke.getDashPhase());
 
-				renderer.setBaseStroke(newStroke);	
+				renderer.setDefaultStroke(newStroke);	
 			} else {
-				renderer.setBaseStroke(new BasicStroke(size, 1, 1));
+				renderer.setDefaultStroke(new BasicStroke(size, 1, 1));
 			}
 		}
 
@@ -910,13 +910,13 @@ public class Plot {
 	 */
 	public Plot save(File file, String format, int width, int height) throws IOException {
 		if (format.equalsIgnoreCase("PNG")) {
-			ChartUtilities.saveChartAsPNG(
+			ChartUtils.saveChartAsPNG(
 					file,
 					chart,
 					width,
 					height);
 		} else if (format.equalsIgnoreCase("JPG") || format.equalsIgnoreCase("JPEG")) {
-			ChartUtilities.saveChartAsJPEG(
+			ChartUtils.saveChartAsJPEG(
 					file,
 					chart,
 					width,

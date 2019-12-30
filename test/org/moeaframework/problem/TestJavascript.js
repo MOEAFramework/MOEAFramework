@@ -1,5 +1,5 @@
-importPackage(org.moeaframework.core);
-importPackage(org.moeaframework.core.variable);
+var Solution = org.moeaframework.core.Solution;
+var RealVariable = org.moeaframework.core.variable.RealVariable;
 
 function getName() {
 	return "TestScript";
@@ -22,8 +22,8 @@ function evaluate(solution) {
 }
 
 function newSolution() {
-	var solution = Solution(1, 1);
-	solution.setVariable(0, RealVariable(0, 1));
+	var solution = new Solution(1, 1);
+	solution.setVariable(0, new RealVariable(0, 1));
 	return solution;
 }
 

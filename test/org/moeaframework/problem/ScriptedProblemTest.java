@@ -83,7 +83,7 @@ public class ScriptedProblemTest {
 			reader = new InputStreamReader(getClass().getResourceAsStream(
 					RESOURCE_JAVASCRIPT));
 			
-			test(new ScriptedProblem(reader, "rhino"));
+			test(new ScriptedProblem(reader, "nashorn"));
 		} finally {
 			if (reader != null) {
 				reader.close();
