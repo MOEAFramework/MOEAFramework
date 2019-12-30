@@ -5,6 +5,10 @@ Framework.
  Version 2.13 (TBD)
 ----------------------------
 
+  * Adds debugging mode to ExternalProblem by setting
+        org.moeaframework.problem.external_problem_debugging = true
+    in global.properties.
+
   * Enable variable-length subsets in addition to the fixed-length subsets
     currently supported.
     
