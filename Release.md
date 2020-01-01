@@ -31,6 +31,7 @@
    2. Visit `oss.sonatype.org` and login
    3. Create a new Staging Upload, select Artifact Bundle, and upload `*-bundle.jar` from `maven/`
    4. After verifying in staging, release the package.
+   5. Update README.md with the new Maven link and example
 9. Publish the new website:
    1. Run the `package-website` Ant task in `build.xml`.
    2. Checkout the latest `MOEAFramework\Website` repo and switch to the `gh-pages` branch.
