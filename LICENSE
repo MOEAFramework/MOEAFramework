@@ -21,27 +21,31 @@ of the GNU Lesser General Public License.  These licenses are reproduced in the
 source code and/or provided in the licenses folder.
 
   * Apache Commons CLI
-    Copyright 2001-2009 The Apache Software Foundation
+    Copyright 2001-2017 The Apache Software Foundation
     Licensed under the Apache License, version 2.0
     
   * Apache Commons Codec
-    Copyright 2002-2013 The Apache Software Foundation
+    Copyright 2002-2019 The Apache Software Foundation
     Licensed under the Apache License, version 2.0
     
-  * Apache Commons Lang
-    Copyright 2001-2011 The Apache Software Foundation
+  * Apache Commons IO
+    Copyright 2002-2017 The Apache Software Foundation
     Licensed under the Apache License, version 2.0
     
-  * Apache Commons Math
+  * Apache Commons Lang3
+    Copyright 2001-2018 The Apache Software Foundation
+    Licensed under the Apache License, version 2.0
+    
+  * Apache Commons Math3
     See the JAR file for copyright notices
     Licensed under the Apache License, version 2.0
   
   * JCommon                     
-    Copyright 2000-2013 Object Refinery Limited and Contributors
+    Copyright 2000-2014 Object Refinery Limited and Contributors
     Licensed under the GNU Lesser General Public License, version 2.1 or later
   
   * JFreeChart
-    Copyright 2000-2013 Object Refinery Limited and Contributors
+    Copyright 2000-2019 Object Refinery Limited and Contributors
     Licensed under the GNU Lesser General Public License, version 2.1 or later
   
   * JMetal
@@ -49,7 +53,7 @@ source code and/or provided in the licenses folder.
   
   * JUnit              
     Copyright 2000-2006 www.hamcrest.org          
-    Licensed under the Common Public License, version 1.0
+    Licensed under the Eclise Public License
     Note: JUnit is only required to compile and run unit tests.
     
   * Portions derived from the Java Evolutionary Computing Framework
@@ -93,6 +97,6 @@ source code and/or provided in the licenses folder.
     Licensed under the GNU Lesser General Public License, version 2.1 or later
     
   * RSyntaxTextArea
-    Copyright 2012 Robert Futrell
+    Copyright 2019 Robert Futrell
     Licensed under the Modified BSD License
  

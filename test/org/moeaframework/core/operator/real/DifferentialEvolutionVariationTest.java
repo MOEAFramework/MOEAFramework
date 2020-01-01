@@ -17,22 +17,23 @@
  */
 package org.moeaframework.core.operator.real;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 
-import jmetal.util.JMException;
-import org.apache.commons.lang3.ArrayUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.moeaframework.Retryable;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.CIRunner;
-import org.moeaframework.algorithm.jmetal.JMetalProblemAdapter;
+import org.moeaframework.algorithm.jmetal.JMetalUtils;
+import org.moeaframework.algorithm.jmetal.ProblemAdapter;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.operator.MeanCentricVariationTest;
 import org.moeaframework.core.operator.ParentImmutabilityTest;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.core.variable.RealVariable;
+import org.uma.jmetal.util.JMetalException;
 
 /**
  * Tests the {@link DifferentialEvolutionVariation} class.
@@ -46,37 +47,33 @@ public class DifferentialEvolutionVariationTest extends MeanCentricVariationTest
 	 */
 	@Test
 	@Retryable
-	public void testDistribution() throws ClassNotFoundException, JMException {
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void testDistribution() throws ClassNotFoundException, JMetalException {
 		Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
-		JMetalProblemAdapter adapter = new JMetalProblemAdapter(problem);
-		DifferentialEvolutionVariation myDE = new DifferentialEvolutionVariation(0.1, 0.5);
-		jmetal.operators.crossover.DifferentialEvolutionCrossover theirDE =
-				new jmetal.operators.crossover.DifferentialEvolutionCrossover(
-						new HashMap<String, Object>());
+		ProblemAdapter adapter = JMetalUtils.createProblemAdapter(problem);
 		
-		theirDE.CR_ = 0.1;
-		theirDE.F_ = 0.5;
+		DifferentialEvolutionVariation myDE = new DifferentialEvolutionVariation(0.1, 0.5);
+		org.uma.jmetal.operator.impl.crossover.DifferentialEvolutionCrossover theirDE =
+				new org.uma.jmetal.operator.impl.crossover.DifferentialEvolutionCrossover(0.1, 0.5, "rand/1/bin");
 		
 		for (int i = 0; i < 10; i++) {
 			Solution[] myParents = new Solution[4];
-			jmetal.core.Solution[] theirParents = new jmetal.core.Solution[4];
-			
+			List<org.uma.jmetal.solution.DoubleSolution> theirParents = new ArrayList<org.uma.jmetal.solution.DoubleSolution>();
+
 			Solution[] myOffspring = new Solution[TestThresholds.SAMPLES];
 			Solution[] theirOffspring = new Solution[TestThresholds.SAMPLES];
 			
 			for (int j = 0; j < 4; j++) {
-				theirParents[j] = new jmetal.core.Solution(adapter);
-				myParents[j] = adapter.translate(theirParents[j]);
+				org.uma.jmetal.solution.DoubleSolution parent = (org.uma.jmetal.solution.DoubleSolution)adapter.createSolution();
+				theirParents.add(parent);
+				myParents[j] = adapter.convert(parent);
 			}
 			
 			for (int j = 0; j < TestThresholds.SAMPLES; j++) {
 				myOffspring[j] = myDE.evolve(myParents)[0];
-				theirOffspring[j] = adapter.translate((jmetal.core.Solution)
-						theirDE.execute(new Object[] {
-							theirParents[0], 
-							ArrayUtils.subarray(theirParents, 1,
-									theirParents.length)
-						}));
+				
+				theirDE.setCurrentSolution(theirParents.get(0));
+				theirOffspring[j] = adapter.convert(theirDE.execute(theirParents.subList(1, 4)).get(0));
 			}
 			
 			check(theirOffspring, myOffspring);

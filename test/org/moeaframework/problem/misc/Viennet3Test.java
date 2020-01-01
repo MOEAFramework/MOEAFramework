@@ -24,7 +24,7 @@ public class Viennet3Test extends ProblemTest {
 
 	@Test
 	public void testJMetal() throws Exception {
-		test(new jmetal.problems.Viennet3("Real"), new Viennet3());
+		test(new org.uma.jmetal.problem.multiobjective.Viennet3(), new Viennet3());
 	}
 
 }

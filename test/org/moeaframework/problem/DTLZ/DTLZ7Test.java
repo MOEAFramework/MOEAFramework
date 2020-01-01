@@ -18,7 +18,6 @@
 package org.moeaframework.problem.DTLZ;
 
 import org.junit.Test;
-import org.moeaframework.core.Problem;
 import org.moeaframework.problem.ProblemTest;
 
 /**
@@ -103,11 +102,8 @@ public class DTLZ7Test extends ProblemTest {
 	 * @throws Exception if a JMetal error occurred
 	 */
 	protected void test(int M) throws Exception {
-		jmetal.core.Problem problemA = new jmetal.problems.DTLZ.DTLZ7("Real",
-				M + 19, M);
-		Problem problemB = new org.moeaframework.problem.DTLZ.DTLZ7(M);
-
-		test(problemA, problemB);
+		test(new org.uma.jmetal.problem.multiobjective.dtlz.DTLZ7(M + 19, M),
+				new org.moeaframework.problem.DTLZ.DTLZ7(M));
 	}
 
 }

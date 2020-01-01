@@ -21,12 +21,9 @@ import java.io.IOException;
 import java.util.Properties;
 import java.util.concurrent.Executors;
 
-import jmetal.util.JMException;
-
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.Problem;
@@ -39,6 +36,8 @@ import org.moeaframework.problem.MockSubsetProblem;
 import org.moeaframework.problem.ProblemException;
 import org.moeaframework.util.distributed.DistributedProblem;
 import org.moeaframework.util.distributed.FutureSolution;
+import org.uma.jmetal.solution.DoubleSolution;
+import org.uma.jmetal.util.JMetalException;
 
 /**
  * Tests the {@link JMetalAlgorithms} class to ensure the JMetal algorithms
@@ -105,19 +104,18 @@ public class JMetalAlgorithmsTest {
 	}
 
 	@Test
+	public void testCDG_Real() {
+		test("CDG", realProblem);
+	}
+	
+	@Test
 	public void testCellDE_Real() {
 		test("CellDE", realProblem);
 	}
-
+	
 	@Test
-	public void testDENSEA_Real() {
-		test("DENSEA", realProblem);
-	}
-
-	@Test
-	@Ignore("fails on Java 7+ due to comparator violating contract")
-	public void testFastPGA_Real() {
-		test("FastPGA", realProblem);
+	public void testESPEA_Real() {
+		test("ESPEA", realProblem);
 	}
 	
 	@Test
@@ -179,21 +177,20 @@ public class JMetalAlgorithmsTest {
 	public void testAbYSS_Binary() {
 		test("AbYSS", binaryProblem);
 	}
+	
+	@Test(expected = ProviderNotFoundException.class)
+	public void testCDG_Binary() {
+		test("CDG", binaryProblem);
+	}
 
 	@Test(expected = ProviderNotFoundException.class)
 	public void testCellDE_Binary() {
 		test("CellDE", binaryProblem);
 	}
-
+	
 	@Test
-	public void testDENSEA_Binary() {
-		test("DENSEA", binaryProblem);
-	}
-
-	@Test
-	@Ignore("fails on Java 7+ due to comparator violating contract")
-	public void testFastPGA_Binary() {
-		test("FastPGA", binaryProblem);
+	public void testESPEA_Binary() {
+		test("ESPEA", binaryProblem);
 	}
 	
 	@Test(expected = ProviderNotFoundException.class)
@@ -255,23 +252,22 @@ public class JMetalAlgorithmsTest {
 	public void testAbYSS_Permutation() {
 		test("AbYSS", permutationProblem);
 	}
+	
+	@Test(expected = ProviderNotFoundException.class)
+	public void testCDG_Permutation() {
+		test("CDG", permutationProblem);
+	}
 
 	@Test(expected = ProviderNotFoundException.class)
 	public void testCellDE_Permutation() {
 		test("CellDE", permutationProblem);
 	}
-
-	@Test
-	public void testDENSEA_Permutation() {
-		test("DENSEA", permutationProblem);
-	}
-
-	@Test
-	@Ignore("fails on Java 7+ due to comparator violating contract")
-	public void testFastPGA_Permutation() {
-		test("FastPGA", permutationProblem);
-	}
 	
+	@Test
+	public void testESPEA_Permutation() {
+		test("ESPEA", permutationProblem);
+	}
+
 	@Test(expected = ProviderNotFoundException.class)
 	public void testGDE3_Permutation() {
 		test("GDE3-JMetal", permutationProblem);
@@ -331,6 +327,11 @@ public class JMetalAlgorithmsTest {
 	public void testAbYSS_Subset() {
 		test("AbYSS", subsetProblem);
 	}
+	
+	@Test(expected = ProblemException.class)
+	public void testCDG_Subset() {
+		test("CDG", subsetProblem);
+	}
 
 	@Test(expected = ProblemException.class)
 	public void testCellDE_Subset() {
@@ -338,13 +339,8 @@ public class JMetalAlgorithmsTest {
 	}
 
 	@Test(expected = ProblemException.class)
-	public void testDENSEA_Subset() {
-		test("DENSEA", subsetProblem);
-	}
-
-	@Test(expected = ProblemException.class)
-	public void testFastPGA_Subset() {
-		test("FastPGA", subsetProblem);
+	public void testESPEA_Subset() {
+		test("ESPEA", subsetProblem);
 	}
 	
 	@Test(expected = ProblemException.class)
@@ -428,21 +424,21 @@ public class JMetalAlgorithmsTest {
 	 * without error.
 	 * 
 	 * @throws ClassNotFoundException should not occur
-	 * @throws JMException should not occur
+	 * @throws JMetalException should not occur
 	 */
 	@Test
-	public void testDistributedProblem() throws ClassNotFoundException, 
-	JMException {
-		JMetalProblemAdapter adapter = new JMetalProblemAdapter(
+	public void testDistributedProblem() throws ClassNotFoundException, JMetalException {
+		ProblemAdapter<DoubleSolution> adapter = new DoubleProblemAdapter(
 				new DistributedProblem(realProblem, 
 						Executors.newSingleThreadExecutor()));
-		jmetal.core.Solution solution = new jmetal.core.Solution(adapter);
+		
+		DoubleSolution solution = adapter.createSolution();
 		
 		//this will throw an exception if the distributed problem is not 
 		//correctly handled
 		adapter.evaluate(solution);
 		
-		Assert.assertTrue(adapter.translate(solution) instanceof FutureSolution);
+		Assert.assertTrue(adapter.convert(solution) instanceof FutureSolution);
 	}
 
 }

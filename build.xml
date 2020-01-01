@@ -285,81 +285,6 @@ Use of these build scripts requires Apache Ant to be installed.  See
 			<fileset file="examples/dtlz2.c" />
 		</copy>
 	</target>
-
-	<!-- To generate the key store (valid for 10 years), run:
-	       keytool -genkeypair -alias moeaframework -validity 3653
-	     Signing the JAR is necessary for enabling all permissions, which is
-	     needed for save/load functionality. -->
-	<!--
-	<target name="package-jnlp" 
-			depends="package-executable"
-			description="Creates the JNLP Web Start distribution">
-		<delete dir="${build}" />
-		<mkdir dir="${base}" />
-
-		<copy todir="${base}">
-			<fileset dir="auxiliary/jnlp" />
-		</copy>
-
-		<replace dir="${base}" includes="DiagnosticTool.jnlp">
-			<replacefilter token="%VERSION%" value="${version}" />
-			<replacefilter token="%DATE%" value="${TODAY}" />
-		</replace>
-
-		<copy todir="${base}">
-			<fileset file="${dist}/${shortname}-${version}-Executable.jar" />
-		</copy>
-
-		<signjar alias="moeaframework" storepass="secret">
-			<path>
-				<fileset dir="${base}" includes="*.jar" />
-			</path>
-		</signjar>
-	</target>
-	-->
-
-	<!-- Packages the all-in-one executable distribution -->
-	<!--
-	<target name="package-executable" depends="build-binary" description="Creates the executable JAR file">
-		<delete dir="${build}" />
-		<mkdir dir="${build}" />
-		
-		<unjar dest="${build}" src="lib/commons-cli-1.2.jar" />
-		<move file="${build}/META-INF/NOTICE.txt" tofile="${build}/META-INF/COMMONS-CLI-NOTICE.txt" />
-		
-		<unjar dest="${build}" src="lib/commons-codec-1.8.jar" />
-		<move file="${build}/META-INF/NOTICE.txt" tofile="${build}/META-INF/COMMONS-CODEC-NOTICE.txt" />
-		
-		<unjar dest="${build}" src="lib/commons-lang3-3.1.jar" />
-		<move file="${build}/META-INF/NOTICE.txt" tofile="${build}/META-INF/COMMONS-LANG3-NOTICE.txt" />
-		
-		<unjar dest="${build}" src="lib/commons-math3-3.1.1.jar" />
-		<move file="${build}/META-INF/NOTICE.txt" tofile="${build}/META-INF/COMMONS-MATH3-NOTICE.txt" />
-		
-		<unjar dest="${build}" src="lib/jcommon-1.0.20.jar" />
-		<unjar dest="${build}" src="lib/jfreechart-1.0.15.jar" />
-		<unjar dest="${build}" src="lib/JMetal-4.3.jar" />
-		
-		<delete dir="${build}/META-INF/maven" />
-		<delete file="${build}/META-INF/LICENSE.txt" />
-		<delete file="${build}/META-INF/MANIFEST.mf" />
-		<delete dir="${build}/templates" />
-		
-		<unjar dest="${build}" src="${dist}/${shortname}-${version}.jar" />
-		
-		<copy todir="${build}/pf">
-			<fileset dir="pf" />
-		</copy>
-		
-		<manifest mode="update" file="${build}/META-INF/MANIFEST.mf">
-			<attribute name="Main-Class" value="org.moeaframework.analysis.diagnostics.LaunchDiagnosticTool" />
-			<attribute name="Class-Path" value="." />
-		</manifest>
-		
-		<jar destfile="${dist}/${shortname}-${version}-Executable.jar"
-			basedir="${build}" manifest="${build}/META-INF/MANIFEST.mf" />
-	</target>
-	-->
 	
 	<!-- Packages the demo distribution -->
 	<target name="package-demo" depends="build-binary" description="Creates the executable JAR file">
@@ -372,6 +297,9 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		<unjar dest="${build}" src="lib/commons-codec-1.13.jar" />
 		<move file="${build}/META-INF/NOTICE.txt" tofile="${build}/META-INF/COMMONS-CODEC-NOTICE.txt" />
 		
+		<unjar dest="${build}" src="lib/commons-io-2.6.jar" />
+		<move file="${build}/META-INF/NOTICE.txt" tofile="${build}/META-INF/COMMONS-IO-NOTICE.txt" />
+		
 		<unjar dest="${build}" src="lib/commons-lang3-3.9.jar" />
 		<move file="${build}/META-INF/NOTICE.txt" tofile="${build}/META-INF/COMMONS-LANG3-NOTICE.txt" />
 		
@@ -381,7 +309,8 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		<unjar dest="${build}" src="lib/rsyntaxtextarea-3.0.6.jar" />
 		<unjar dest="${build}" src="lib/jcommon-1.0.23.jar" />
 		<unjar dest="${build}" src="lib/jfreechart-1.5.0.jar" />
-		<unjar dest="${build}" src="lib/JMetal-4.3.jar" />
+		<unjar dest="${build}" src="lib/jmetal-algorithm-5.9.jar" />
+		<unjar dest="${build}" src="lib/jmetal-core-5.9.jar" />
 		
 		<delete dir="${build}/META-INF/maven" />
 		<delete file="${build}/META-INF/LICENSE.txt" />

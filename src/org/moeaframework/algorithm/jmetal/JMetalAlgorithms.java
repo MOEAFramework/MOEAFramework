@@ -17,56 +17,73 @@
  */
 package org.moeaframework.algorithm.jmetal;
 
-import java.util.HashMap;
 import java.util.Properties;
 
-import jmetal.core.Operator;
-import jmetal.core.SolutionType;
-import jmetal.encodings.solutionType.BinaryRealSolutionType;
-import jmetal.encodings.solutionType.BinarySolutionType;
-import jmetal.encodings.solutionType.PermutationSolutionType;
-import jmetal.encodings.solutionType.RealSolutionType;
-import jmetal.metaheuristics.abyss.AbYSS;
-import jmetal.metaheuristics.cellde.CellDE;
-import jmetal.metaheuristics.densea.DENSEA;
-import jmetal.metaheuristics.fastPGA.FastPGA;
-import jmetal.metaheuristics.gde3.GDE3;
-import jmetal.metaheuristics.ibea.IBEA;
-import jmetal.metaheuristics.mocell.MOCell;
-import jmetal.metaheuristics.mochc.MOCHC;
-import jmetal.metaheuristics.nsgaII.NSGAII;
-import jmetal.metaheuristics.omopso.OMOPSO;
-import jmetal.metaheuristics.paes.PAES;
-import jmetal.metaheuristics.pesa2.PESA2;
-import jmetal.metaheuristics.smpso.SMPSO;
-import jmetal.metaheuristics.smsemoa.SMSEMOA;
-import jmetal.metaheuristics.spea2.SPEA2;
-import jmetal.operators.crossover.DifferentialEvolutionCrossover;
-import jmetal.operators.crossover.HUXCrossover;
-import jmetal.operators.crossover.PMXCrossover;
-import jmetal.operators.crossover.SBXCrossover;
-import jmetal.operators.crossover.SinglePointCrossover;
-import jmetal.operators.localSearch.MutationLocalSearch;
-import jmetal.operators.mutation.BitFlipMutation;
-import jmetal.operators.mutation.NonUniformMutation;
-import jmetal.operators.mutation.PolynomialMutation;
-import jmetal.operators.mutation.SwapMutation;
-import jmetal.operators.mutation.UniformMutation;
-import jmetal.operators.selection.BinaryTournament;
-import jmetal.operators.selection.BinaryTournament2;
-import jmetal.operators.selection.DifferentialEvolutionSelection;
-import jmetal.operators.selection.RandomSelection;
-import jmetal.operators.selection.RankingAndCrowdingSelection;
-import jmetal.util.JMException;
-import jmetal.util.comparators.FPGAFitnessComparator;
-import jmetal.util.comparators.FitnessComparator;
-
-import org.moeaframework.analysis.sensitivity.EpsilonHelper;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.spi.AlgorithmProvider;
 import org.moeaframework.core.spi.ProviderNotFoundException;
 import org.moeaframework.util.TypedProperties;
+import org.uma.jmetal.algorithm.multiobjective.abyss.ABYSS;
+import org.uma.jmetal.algorithm.multiobjective.abyss.ABYSSBuilder;
+import org.uma.jmetal.algorithm.multiobjective.cdg.AbstractCDG;
+import org.uma.jmetal.algorithm.multiobjective.cdg.CDGBuilder;
+import org.uma.jmetal.algorithm.multiobjective.cellde.CellDE45;
+import org.uma.jmetal.algorithm.multiobjective.espea.ESPEA;
+import org.uma.jmetal.algorithm.multiobjective.espea.ESPEABuilder;
+import org.uma.jmetal.algorithm.multiobjective.espea.util.EnergyArchive.ReplacementStrategy;
+import org.uma.jmetal.algorithm.multiobjective.gde3.GDE3;
+import org.uma.jmetal.algorithm.multiobjective.gde3.GDE3Builder;
+import org.uma.jmetal.algorithm.multiobjective.ibea.IBEA;
+import org.uma.jmetal.algorithm.multiobjective.mocell.MOCell;
+import org.uma.jmetal.algorithm.multiobjective.mocell.MOCellBuilder;
+import org.uma.jmetal.algorithm.multiobjective.mochc.MOCHC;
+import org.uma.jmetal.algorithm.multiobjective.mochc.MOCHCBuilder;
+import org.uma.jmetal.algorithm.multiobjective.moead.AbstractMOEAD;
+import org.uma.jmetal.algorithm.multiobjective.moead.AbstractMOEAD.FunctionType;
+import org.uma.jmetal.algorithm.multiobjective.moead.MOEADBuilder;
+import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAII;
+import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAIIBuilder;
+import org.uma.jmetal.algorithm.multiobjective.nsgaiii.NSGAIII;
+import org.uma.jmetal.algorithm.multiobjective.nsgaiii.NSGAIIIBuilder;
+import org.uma.jmetal.algorithm.multiobjective.omopso.OMOPSO;
+import org.uma.jmetal.algorithm.multiobjective.omopso.OMOPSOBuilder;
+import org.uma.jmetal.algorithm.multiobjective.paes.PAES;
+import org.uma.jmetal.algorithm.multiobjective.paes.PAESBuilder;
+import org.uma.jmetal.algorithm.multiobjective.pesa2.PESA2;
+import org.uma.jmetal.algorithm.multiobjective.pesa2.PESA2Builder;
+import org.uma.jmetal.algorithm.multiobjective.smpso.SMPSO;
+import org.uma.jmetal.algorithm.multiobjective.smpso.SMPSOBuilder;
+import org.uma.jmetal.algorithm.multiobjective.smsemoa.SMSEMOA;
+import org.uma.jmetal.algorithm.multiobjective.smsemoa.SMSEMOABuilder;
+import org.uma.jmetal.algorithm.multiobjective.spea2.SPEA2;
+import org.uma.jmetal.algorithm.multiobjective.spea2.SPEA2Builder;
+import org.uma.jmetal.operator.CrossoverOperator;
+import org.uma.jmetal.operator.MutationOperator;
+import org.uma.jmetal.operator.SelectionOperator;
+import org.uma.jmetal.operator.impl.crossover.DifferentialEvolutionCrossover;
+import org.uma.jmetal.operator.impl.crossover.HUXCrossover;
+import org.uma.jmetal.operator.impl.crossover.SBXCrossover;
+import org.uma.jmetal.operator.impl.mutation.BitFlipMutation;
+import org.uma.jmetal.operator.impl.mutation.NonUniformMutation;
+import org.uma.jmetal.operator.impl.mutation.PolynomialMutation;
+import org.uma.jmetal.operator.impl.mutation.UniformMutation;
+import org.uma.jmetal.operator.impl.selection.BinaryTournamentSelection;
+import org.uma.jmetal.operator.impl.selection.DifferentialEvolutionSelection;
+import org.uma.jmetal.operator.impl.selection.RandomSelection;
+import org.uma.jmetal.operator.impl.selection.RankingAndCrowdingSelection;
+import org.uma.jmetal.qualityindicator.impl.Hypervolume;
+import org.uma.jmetal.qualityindicator.impl.hypervolume.PISAHypervolume;
+import org.uma.jmetal.solution.BinarySolution;
+import org.uma.jmetal.solution.DoubleSolution;
+import org.uma.jmetal.util.JMetalException;
+import org.uma.jmetal.util.archive.Archive;
+import org.uma.jmetal.util.archive.BoundedArchive;
+import org.uma.jmetal.util.archive.impl.CrowdingDistanceArchive;
+import org.uma.jmetal.util.comparator.RankingAndCrowdingDistanceComparator;
+import org.uma.jmetal.util.evaluator.SolutionListEvaluator;
+import org.uma.jmetal.util.evaluator.impl.SequentialSolutionListEvaluator;
+import org.uma.jmetal.util.neighborhood.impl.C9;
 
 /**
  * Algorithm provider for JMetal algorithms. Supports the following algorithms:
@@ -84,13 +101,25 @@ import org.moeaframework.util.TypedProperties;
  *         maxEvaluations, improvementRounds}</td>
  *   </tr>
  *   <tr>
+ *     <td>CDG</td>
+ *     <td>Real*</td>
+ *     <td>{@code populationSize, archiveSize, maxEvaluations,
+ *         de.crossoverRate, de.stepSize, de.variant}</td>
+ *   </tr>
+ *   <tr>
  *     <td>CellDE</td>
  *     <td>Real*</td>
  *     <td>{@code populationSize, archiveSize, maxEvaluations, feedBack,
- *         de.crossoverRate, de.stepSize}</td>
+ *         de.crossoverRate, de.stepSize, de.variant}</td>
  *   </tr>
  *   <tr>
  *     <td>DENSEA</td>
+ *     <td>Any</td>
+ *     <td>{@code populationSize, maxEvaluations}</td>
+ *   </tr>
+ *   <!--
+ *   <tr>
+ *     <td>ESPEA</td>
  *     <td>Any</td>
  *     <td>{@code populationSize, maxEvaluations}</td>
  *   </tr>
@@ -100,11 +129,12 @@ import org.moeaframework.util.TypedProperties;
  *     <td>{@code maxPopSize, initialPopulationSize, maxEvaluations, a, b, c, d,
  *         termination}</td>
  *   </tr>
+ *   -->
  *   <tr>
  *     <td>GDE3</td>
  *     <td>Real*</td>
  *     <td>{@code populationSize, maxEvaluations, de.crossoverRate, 
- *         de.stepSize}</td>
+ *         de.stepSize, de.variant}</td>
  *   </tr>
  *   <tr>
  *     <td>IBEA</td>
@@ -114,7 +144,7 @@ import org.moeaframework.util.TypedProperties;
  *   <tr>
  *     <td>MOCell</td>
  *     <td>Any</td>
- *     <td>{@code populationSize, archiveSize, maxEvaluations, feedBack}</td>
+ *     <td>{@code populationSize, archiveSize, maxEvaluations} (feedback is no longer supported)</td>
  *   </tr>
  *   <tr>
  *     <td>MOCHC</td>
@@ -129,10 +159,16 @@ import org.moeaframework.util.TypedProperties;
  *     <td>{@code populationSize, maxEvaluations}</td>
  *   </tr>
  *   <tr>
+ *     <td>NSGAIII</td>
+ *     <td>Any</td>
+ *     <td>{@code populationSize, maxEvaluations}</td>
+ *   </tr>
+ *   
+ *   <tr>
  *     <td>OMOPSO</td>
  *     <td>Real*</td>
  *     <td>{@code populationSize, archiveSize, maxEvaluations, 
- *         mutationProbability, perturbationIndex, epsilon}</td>
+ *         mutationProbability, perturbationIndex} (epsilon is no longer supported)</td>
  *   </tr>
  *   <tr>
  *     <td>PAES</td>
@@ -204,26 +240,33 @@ public class JMetalAlgorithms extends AlgorithmProvider {
 		super();
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public Algorithm getAlgorithm(String name, Properties properties,
 			Problem problem) {
 		TypedProperties typedProperties = new TypedProperties(properties);
-		JMetalProblemAdapter adapter = new JMetalProblemAdapter(problem);
-		jmetal.core.Algorithm algorithm = null;
+		ProblemAdapter<?> adapter = JMetalUtils.createProblemAdapter(problem);
+		org.uma.jmetal.algorithm.Algorithm algorithm = null;
 
 		try {
 			if (name.equalsIgnoreCase("AbYSS") ||
 					name.equalsIgnoreCase("AbYSS-JMetal")) {
 				algorithm = newAbYSS(typedProperties, adapter);
+			} else if (name.equalsIgnoreCase("CDG") ||
+					name.equalsIgnoreCase("CDG-JMetal")) {
+				algorithm = newCDG(typedProperties, adapter);
 			} else if (name.equalsIgnoreCase("CellDE") ||
 					name.equalsIgnoreCase("CellDE-JMetal")) {
 				algorithm = newCellDE(typedProperties, adapter);
-			} else if (name.equalsIgnoreCase("DENSEA") ||
-					name.equalsIgnoreCase("DENSEA-JMetal")) {
-				algorithm = newDENSEA(typedProperties, adapter);
-			} else if (name.equalsIgnoreCase("FastPGA") ||
-					name.equalsIgnoreCase("FastPGA-JMetal")) {
-				algorithm = newFastPGA(typedProperties, adapter);
+//			} else if (name.equalsIgnoreCase("DENSEA") ||
+//					name.equalsIgnoreCase("DENSEA-JMetal")) {
+//				algorithm = newDENSEA(typedProperties, adapter);
+			} else if (name.equalsIgnoreCase("ESPEA") ||
+					name.equalsIgnoreCase("ESPEA-JMetal")) {
+				algorithm = newESPEA(typedProperties, adapter);
+//			} else if (name.equalsIgnoreCase("FastPGA") ||
+//					name.equalsIgnoreCase("FastPGA-JMetal")) {
+//				algorithm = newFastPGA(typedProperties, adapter);
 			} else if (name.equalsIgnoreCase("GDE3") ||
 					name.equalsIgnoreCase("GDE3-JMetal")) {
 				algorithm = newGDE3(typedProperties, adapter);
@@ -236,9 +279,15 @@ public class JMetalAlgorithms extends AlgorithmProvider {
 			} else if (name.equalsIgnoreCase("MOCHC") ||
 					name.equalsIgnoreCase("MOCHC-JMetal")) {
 				algorithm = newMOCHC(typedProperties, adapter);
+			} else if (name.equalsIgnoreCase("MOEAD") ||
+					name.equalsIgnoreCase("MOEAD-JMetal")) {
+				algorithm = newMOEAD(typedProperties, adapter);
 			} else if (name.equalsIgnoreCase("NSGAII") ||
 					name.equalsIgnoreCase("NSGAII-JMetal")) {
 				algorithm = newNSGAII(typedProperties, adapter);
+			} else if (name.equalsIgnoreCase("NSGAIII") ||
+					name.equalsIgnoreCase("NSGAIII-JMetal")) {
+				algorithm = newNSGAIII(typedProperties, adapter);
 			} else if (name.equalsIgnoreCase("OMOPSO") ||
 					name.equalsIgnoreCase("OMOPSO-JMetal")) {
 				algorithm = newOMOPSO(typedProperties, adapter);
@@ -258,575 +307,567 @@ public class JMetalAlgorithms extends AlgorithmProvider {
 					name.equalsIgnoreCase("SPEA2-JMetal")) {
 				algorithm = newSPEA2(typedProperties, adapter);
 			}
-		} catch (JMException e) {
+		} catch (JMetalException e) {
 			throw new ProviderNotFoundException(name, e);
 		}
 
 		if (algorithm == null) {
 			return null;
 		} else {
-			return new JMetalAlgorithmAdapter(algorithm, adapter);
+			return new JMetalAlgorithmAdapter(algorithm,
+					(int)typedProperties.getDouble("maxEvaluations", 25000),
+					adapter);
 		}
-	}
-
-	/**
-	 * Adds the appropriate variation operators to the algorithm for the
-	 * specified problem. Currently supports {@code Binary}, {@code BinaryReal},
-	 * {@code Real} and {@code Permutation} encodings.
-	 * 
-	 * @param algorithm the algorithm which will use the operators
-	 * @param properties the properties for customizing the operators
-	 * @param problem the problem adapter
-	 * @throws JMException if an error occurred when constructing the operators
-	 */
-	private void setupVariationOperators(jmetal.core.Algorithm algorithm,
-			TypedProperties properties, JMetalProblemAdapter problem)
-			throws JMException {
-		Operator crossover = null;
-		Operator mutation = null;
-		HashMap<String, Object> parameters = null;
-		SolutionType solutionType = problem.getSolutionType();
-
-		if ((solutionType instanceof BinarySolutionType)
-				|| (solutionType instanceof BinaryRealSolutionType)) {
-			parameters = new HashMap<String, Object>();
-			parameters.put("probability", properties.getDouble("1x.rate", 0.9));
-			crossover = new SinglePointCrossover(parameters);
-
-			parameters = new HashMap<String, Object>();
-			parameters.put("probability", properties.getDouble("bf.rate", 1.0 / problem.getLength(0)));
-			mutation = new BitFlipMutation(parameters);
-		} else if (solutionType instanceof RealSolutionType) {
-			parameters = new HashMap<String, Object>();
-			parameters.put("probability", properties.getDouble("sbx.rate", 1.0));
-			parameters.put("distributionIndex", properties.getDouble("sbx.distributionIndex", 15.0));
-			crossover = new SBXCrossover(parameters);
-
-			parameters = new HashMap<String, Object>();
-			parameters.put("probability", properties.getDouble("pm.rate", 1.0 / problem.getNumberOfVariables()));
-			parameters.put("distributionIndex", properties.getDouble("pm.distributionIndex", 20.0));
-			mutation = new PolynomialMutation(parameters);
-		} else if (solutionType instanceof PermutationSolutionType) {
-			parameters = new HashMap<String, Object>();
-			parameters.put("probability", properties.getDouble("pmx.rate", 1.0));
-			crossover = new PMXCrossover(parameters);
-
-			parameters = new HashMap<String, Object>();
-			parameters.put("probability", properties.getDouble("swap.rate", 0.35));
-			mutation = new SwapMutation(parameters);
-		} else {
-			throw new JMException("solution type not supported");
-		}
-
-		algorithm.addOperator("crossover", crossover);
-		algorithm.addOperator("mutation", mutation);
 	}
 
 	/**
 	 * Returns a new {@link AbYSS} instance. Only real encodings are supported.
 	 * 
-	 * @param properties the properties for customizing the new {@code AbYSS}
-	 *        instance
+	 * @param properties the properties for customizing the new {@code AbYSS} instance
 	 * @param problem the problem adapter
 	 * @return a new {@code AbYSS} instance
-	 * @throws JMException if an error occurred when constructing the algorithm
+	 * @throws JMetalException if an error occurred when constructing the algorithm
 	 */
-	private AbYSS newAbYSS(TypedProperties properties,
-			JMetalProblemAdapter problem) throws JMException {
-		if (!(problem.getSolutionType() instanceof RealSolutionType)) {
-			throw new JMException("unsupported solution type");
+	private ABYSS newAbYSS(TypedProperties properties,
+			ProblemAdapter<?> problem) throws JMetalException {
+		if (!(problem instanceof DoubleProblemAdapter)) {
+			throw new JMetalException("AbYSS only supports problems with real decision variables");
 		}
-
-		AbYSS algorithm = new AbYSS(problem);
-
-		algorithm.setInputParameter("populationSize", 
-				(int)properties.getDouble("populationSize", 20));
-		algorithm.setInputParameter("refSet1Size", 
-				(int)properties.getDouble("refSet1Size", 10));
-		algorithm.setInputParameter("refSet2Size", 
-				(int)properties.getDouble("refSet2Size", 10));
-		algorithm.setInputParameter("archiveSize", 
-				(int)properties.getDouble("archiveSize", 100));
-		algorithm.setInputParameter("maxEvaluations", 
-				(int)properties.getDouble("maxEvaluations", 25000));
 		
-		HashMap<String, Object> parameters = new HashMap<String, Object>();
-		parameters.put("probability", properties.getDouble("sbx.rate", 1.0));
-		parameters.put("distributionIndex", properties.getDouble("sbx.distributionIndex", 15.0));
-		Operator crossover = new SBXCrossover(parameters);
+		Archive<DoubleSolution> archive = new CrowdingDistanceArchive<DoubleSolution>(
+				(int)properties.getDouble("archiveSize", 100));
+		
+		CrossoverOperator<DoubleSolution> crossover = new SBXCrossover(
+				properties.getDouble("sbx.rate", 1.0),
+				properties.getDouble("sbx.distributionIndex", 15.0));
+		
+		MutationOperator<DoubleSolution> mutation = new PolynomialMutation(
+				properties.getDouble("pm.rate", 1.0 / problem.getNumberOfVariables()),
+				properties.getDouble("pm.distributionIndex", 20.0));
 
-		parameters = new HashMap<String, Object>();
-		parameters.put("probability", properties.getDouble("pm.rate", 1.0 / problem.getNumberOfVariables()));
-		parameters.put("distributionIndex", properties.getDouble("pm.distributionIndex", 20.0));
-		Operator mutation = new PolynomialMutation(parameters);
+	    ABYSSBuilder builder = new ABYSSBuilder((DoubleProblemAdapter)problem, archive)
+	        .setMaxEvaluations((int)properties.getDouble("maxEvaluations", 25000))
+	        .setPopulationSize((int)properties.getDouble("populationSize", 20))
+	        .setArchiveSize((int)properties.getDouble("archiveSize", 100))
+	        .setRefSet1Size((int)properties.getDouble("refSet1Size", 10))
+	        .setRefSet2Size((int)properties.getDouble("refSet2Size", 10))
+	        .setCrossoverOperator(crossover)
+	        .setMutationOperator(mutation)
+	        .setNumberOfSubranges(properties.getInt("numberOfSubRanges", 4));
+	        
+	    return builder.build();
+	}
+	
+	@SuppressWarnings("rawtypes")
+	private AbstractCDG newCDG(TypedProperties properties,
+			ProblemAdapter<?> problem) throws JMetalException {
+		if (!(problem instanceof DoubleProblemAdapter)) {
+			throw new JMetalException("CDG only supports problems with real decision variables");
+		}
+		
+		DifferentialEvolutionCrossover crossover = new DifferentialEvolutionCrossover(
+				properties.getDouble("de.crossoverRate", 0.1),
+				properties.getDouble("de.stepSize", 0.5),
+				properties.getString("de.variant", "rand/1/bin"));
 
-		parameters = new HashMap<String, Object>();
-		parameters.put("problem", problem);
-		parameters.put("improvementRounds", (int)properties.getDouble("improvementRounds", 1));
-		parameters.put("mutation", mutation);
-		Operator improvement = new MutationLocalSearch(parameters);
-
-		algorithm.addOperator("crossover", crossover);
-		algorithm.addOperator("improvement", improvement);
-
-		return algorithm;
+		CDGBuilder builder = new CDGBuilder((DoubleProblemAdapter)problem)
+	                .setCrossover(crossover)
+	                .setMaxEvaluations((int)properties.getDouble("maxEvaluations", 25000))
+	                .setPopulationSize((int)properties.getDouble("populationSize", 100))
+	                .setResultPopulationSize((int)properties.getDouble("archiveSize", 100))
+	                .setNeighborhoodSelectionProbability(properties.getDouble("neighborhoodSelectionProbability", 0.9));
+	            
+	    return builder.build();
 	}
 
 	/**
-	 * Returns a new {@link CellDE} instance.  Only real encodings are 
-	 * supported.
+	 * Returns a new {@link CellDE} instance.  Only real encodings are supported.
 	 * 
-	 * @param properties the properties for customizing the new {@code CellDE}
-	 *        instance
+	 * @param properties the properties for customizing the new {@code CellDE} instance
 	 * @param problem the problem adapter
 	 * @return a new {@code CellDE} instance
-	 * @throws JMException if an error occurred when constructing the algorithm
+	 * @throws JMetalException if an error occurred when constructing the algorithm
 	 */
-	private CellDE newCellDE(TypedProperties properties,
-			JMetalProblemAdapter problem) throws JMException {
-		if (!(problem.getSolutionType() instanceof RealSolutionType)) {
-			throw new JMException("unsupported solution type");
+	private CellDE45 newCellDE(TypedProperties properties,
+			ProblemAdapter<?> problem) throws JMetalException {
+		if (!(problem instanceof DoubleProblemAdapter)) {
+			throw new JMetalException("CellDE only supports problems with real decision variables");
 		}
-
-		CellDE algorithm = new CellDE(problem);
-
-		algorithm.setInputParameter("populationSize", 
-				(int)properties.getDouble("populationSize", 100));
-		algorithm.setInputParameter("archiveSize", 
-				(int)properties.getDouble("archiveSize", 100));
-		algorithm.setInputParameter("maxEvaluations", 
-				(int)properties.getDouble("maxEvaluations", 25000));
-		algorithm.setInputParameter("feedBack", 
-				(int)properties.getDouble("feedBack", 20));
-
-		HashMap<String, Object> parameters = new HashMap<String, Object>();
-		parameters.put("CR", properties.getDouble("de.crossoverRate", 0.1));
-		parameters.put("F", properties.getDouble("de.stepSize", 0.5));
-		Operator crossover = new DifferentialEvolutionCrossover(parameters);
 		
-		Operator selection = new BinaryTournament(null);
+		DifferentialEvolutionCrossover crossover = new DifferentialEvolutionCrossover(
+				properties.getDouble("de.crossoverRate", 0.1),
+				properties.getDouble("de.stepSize", 0.5),
+				properties.getString("de.variant", "rand/1/bin"));
 
-		algorithm.addOperator("crossover", crossover);
-		algorithm.addOperator("selection", selection);
+		BinaryTournamentSelection<DoubleSolution> selection = new BinaryTournamentSelection<DoubleSolution>(
+				new RankingAndCrowdingDistanceComparator<DoubleSolution>());
 
-		return algorithm;
+		SolutionListEvaluator<DoubleSolution> evaluator = new SequentialSolutionListEvaluator<DoubleSolution>();
+	    
+		return new CellDE45((DoubleProblemAdapter)problem,
+				(int)properties.getDouble("maxEvaluations", 25000),
+				(int)properties.getDouble("populationSize", 100),
+		        new CrowdingDistanceArchive<DoubleSolution>((int)properties.getDouble("archiveSize", 100)),
+		        new C9<DoubleSolution>((int)Math.sqrt(100), (int)Math.sqrt(100)),
+				selection,
+				crossover,
+				(int)properties.getDouble("feedBack", 20),
+				evaluator);
 	}
 
-	/**
-	 * Returns a new {@link DENSEA} instance.
-	 * 
-	 * @param properties the properties for customizing the new {@code DENSEA}
-	 *        instance
-	 * @param problem the problem adapter
-	 * @return a new {@code DENSEA} instance
-	 * @throws JMException if an error occurred when constructing the algorithm
-	 */
-	private DENSEA newDENSEA(TypedProperties properties,
-			JMetalProblemAdapter problem) throws JMException {
-		DENSEA algorithm = new DENSEA(problem);
+//	/**
+//	 * Returns a new {@link DENSEA} instance.
+//	 * 
+//	 * @param properties the properties for customizing the new {@code DENSEA}
+//	 *        instance
+//	 * @param problem the problem adapter
+//	 * @return a new {@code DENSEA} instance
+//	 * @throws JMException if an error occurred when constructing the algorithm
+//	 */
+//	private DENSEA newDENSEA(TypedProperties properties,
+//			JMetalProblemAdapter problem) throws JMException {
+//		DENSEA algorithm = new DENSEA(problem);
+//
+//		algorithm.setInputParameter("populationSize", 
+//				(int)properties.getDouble("populationSize", 100));
+//		algorithm.setInputParameter("maxEvaluations", 
+//				(int)properties.getDouble("maxEvaluations", 25000));
+//
+//		setupVariationOperators(algorithm, properties, problem);
+//
+//		Operator selection = new BinaryTournament(null);
+//		algorithm.addOperator("selection", selection);
+//
+//		return algorithm;
+//	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private ESPEA newESPEA(TypedProperties properties, ProblemAdapter<?> problem) throws JMetalException {
+		CrossoverOperator<?> crossover = JMetalFactory.getInstance().createCrossoverOperator(problem, properties);
+		MutationOperator<?> mutation = JMetalFactory.getInstance().createMutationOperator(problem, properties);
 
-		algorithm.setInputParameter("populationSize", 
-				(int)properties.getDouble("populationSize", 100));
-		algorithm.setInputParameter("maxEvaluations", 
-				(int)properties.getDouble("maxEvaluations", 25000));
-
-		setupVariationOperators(algorithm, properties, problem);
-
-		Operator selection = new BinaryTournament(null);
-		algorithm.addOperator("selection", selection);
-
-		return algorithm;
+	    ESPEABuilder builder = new ESPEABuilder(problem, crossover, mutation);
+	    builder.setMaxEvaluations((int)properties.getDouble("maxEvaluations", 25000));
+	    builder.setPopulationSize((int)properties.getDouble("populationSize", 100));
+	    builder.setReplacementStrategy(ReplacementStrategy.WORST_IN_ARCHIVE);
+	    
+	    return builder.build();
 	}
 
-	/**
-	 * Returns a new {@link FastPGA} instance.
-	 * 
-	 * @param properties the properties for customizing the new {@code FastPGA}
-	 *        instance
-	 * @param problem the problem adapter
-	 * @return a new {@code FastPGA} instance
-	 * @throws JMException if an error occurred when constructing the algorithm
-	 */
-	private FastPGA newFastPGA(TypedProperties properties,
-			JMetalProblemAdapter problem) throws JMException {
-		FastPGA algorithm = new FastPGA(problem);
-
-		algorithm.setInputParameter("maxPopSize", 
-				(int)properties.getDouble("maxPopSize", 100));
-		algorithm.setInputParameter("initialPopulationSize", 
-				(int)properties.getDouble("initialPopulationSize", 100));
-		algorithm.setInputParameter("maxEvaluations", 
-				(int)properties.getDouble("maxEvaluations", 25000));
-		algorithm.setInputParameter("a", properties.getDouble("a", 20.0));
-		algorithm.setInputParameter("b", properties.getDouble("b", 1.0));
-		algorithm.setInputParameter("c", properties.getDouble("c", 20.0));
-		algorithm.setInputParameter("d", properties.getDouble("d", 0.0));
-		algorithm.setInputParameter("termination", 
-				(int)properties.getDouble("termination", 1));
-
-		setupVariationOperators(algorithm, properties, problem);
-
-		HashMap<String, Object> parameters = new HashMap<String, Object>();
-		parameters.put("comparator", new FPGAFitnessComparator());
-		Operator selection = new BinaryTournament(parameters);
-		
-		algorithm.addOperator("selection", selection);
-
-		return algorithm;
-	}
+//	/**
+//	 * Returns a new {@link FastPGA} instance.
+//	 * 
+//	 * @param properties the properties for customizing the new {@code FastPGA} instance
+//	 * @param problem the problem adapter
+//	 * @return a new {@code FastPGA} instance
+//	 * @throws JMException if an error occurred when constructing the algorithm
+//	 */
+//	private FastPGA newFastPGA(TypedProperties properties,
+//			JMetalProblemAdapter problem) throws JMException {
+//		FastPGA algorithm = new FastPGA(problem);
+//
+//		algorithm.setInputParameter("maxPopSize", 
+//				(int)properties.getDouble("maxPopSize", 100));
+//		algorithm.setInputParameter("initialPopulationSize", 
+//				(int)properties.getDouble("initialPopulationSize", 100));
+//		algorithm.setInputParameter("maxEvaluations", 
+//				(int)properties.getDouble("maxEvaluations", 25000));
+//		algorithm.setInputParameter("a", properties.getDouble("a", 20.0));
+//		algorithm.setInputParameter("b", properties.getDouble("b", 1.0));
+//		algorithm.setInputParameter("c", properties.getDouble("c", 20.0));
+//		algorithm.setInputParameter("d", properties.getDouble("d", 0.0));
+//		algorithm.setInputParameter("termination", 
+//				(int)properties.getDouble("termination", 1));
+//
+//		setupVariationOperators(algorithm, properties, problem);
+//
+//		HashMap<String, Object> parameters = new HashMap<String, Object>();
+//		parameters.put("comparator", new FPGAFitnessComparator());
+//		Operator selection = new BinaryTournament(parameters);
+//		
+//		algorithm.addOperator("selection", selection);
+//
+//		return algorithm;
+//	}
 	
 	/**
 	 * Returns a new {@link GDE3} instance.  Only real encodings are supported.
 	 * 
-	 * @param properties the properties for customizing the new {@code GDE3}
-	 *        instance
+	 * @param properties the properties for customizing the new {@code GDE3} instance
 	 * @param problem the problem adapter
 	 * @return a new {@code GDE3} instance
-	 * @throws JMException if an error occurred when constructing the algorithm
+	 * @throws JMetalException if an error occurred when constructing the algorithm
 	 */
 	private GDE3 newGDE3(TypedProperties properties, 
-			JMetalProblemAdapter problem) throws JMException {
-		if (!(problem.getSolutionType() instanceof RealSolutionType)) {
-			throw new JMException("unsupported solution type");
+			ProblemAdapter<?> problem) throws JMetalException {
+		if (!(problem instanceof DoubleProblemAdapter)) {
+			throw new JMetalException("GDE3 only supports problems with real decision variables");
 		}
-
-		GDE3 algorithm = new GDE3(problem);
-		int populationSize = (int)properties.getDouble("populationSize", 100);
-
-		algorithm.setInputParameter("populationSize", populationSize);
-		algorithm.setInputParameter("maxIterations", (int)properties.getDouble(
-				"maxEvaluations", 25000) / populationSize);
-
-		HashMap<String, Object> parameters = new HashMap<String, Object>();
-		parameters.put("CR", properties.getDouble("de.crossoverRate", 0.1));
-		parameters.put("F", properties.getDouble("de.stepSize", 0.5));
-		Operator crossover = new DifferentialEvolutionCrossover(parameters);
-
-		Operator selection = new DifferentialEvolutionSelection(null);
-
-		algorithm.addOperator("crossover", crossover);
-		algorithm.addOperator("selection", selection);
-
-		return algorithm;
+		
+		DifferentialEvolutionCrossover crossover = new DifferentialEvolutionCrossover(
+				properties.getDouble("de.crossoverRate", 0.1),
+				properties.getDouble("de.stepSize", 0.5),
+				properties.getString("de.variant", "rand/1/bin"));
+				
+		GDE3Builder builder = new GDE3Builder((DoubleProblemAdapter)problem)
+		        .setCrossover(crossover)
+		        .setSelection(new DifferentialEvolutionSelection())
+		        .setMaxEvaluations((int)properties.getDouble("maxEvaluations", 25000))
+		        .setPopulationSize((int)properties.getDouble("populationSize", 100));
+		
+		return builder.build();
 	}
 
 	/**
 	 * Returns a new {@link IBEA} instance.
 	 * 
-	 * @param properties the properties for customizing the new {@code IBEA}
-	 *        instance
+	 * @param properties the properties for customizing the new {@code IBEA} instance
 	 * @param problem the problem adapter
 	 * @return a new {@code IBEA} instance
-	 * @throws JMException if an error occurred when constructing the algorithm
+	 * @throws JMetalException if an error occurred when constructing the algorithm
 	 */
-	private IBEA newIBEA(TypedProperties properties, JMetalProblemAdapter problem)
-			throws JMException {
-		IBEA algorithm = new IBEA(problem);
-
-		algorithm.setInputParameter("populationSize", 
-				(int)properties.getDouble("populationSize", 100));
-		algorithm.setInputParameter("archiveSize", 
-				(int)properties.getDouble("archiveSize", 100));
-		algorithm.setInputParameter("maxEvaluations", 
-				(int)properties.getDouble("maxEvaluations", 25000));
-
-		setupVariationOperators(algorithm, properties, problem);
-
-		HashMap<String, Object> parameters = new HashMap<String, Object>();
-		parameters.put("comparator", new FitnessComparator());
-		Operator selection = new BinaryTournament(parameters);
-		
-		algorithm.addOperator("selection", selection);
-
-		return algorithm;
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private IBEA newIBEA(TypedProperties properties, ProblemAdapter<?> problem)
+			throws JMetalException {
+		CrossoverOperator<?> crossover = JMetalFactory.getInstance().createCrossoverOperator(problem, properties);
+		MutationOperator<?> mutation = JMetalFactory.getInstance().createMutationOperator(problem, properties);
+	    SelectionOperator selection = new BinaryTournamentSelection();
+	    
+		return new IBEA(problem,
+				(int)properties.getDouble("populationSize", 100),
+				(int)properties.getDouble("archiveSize", 100),
+				(int)properties.getDouble("maxEvaluations", 25000),
+				selection,
+				crossover,
+				mutation);
 	}
 
 	/**
 	 * Returns a new {@code MOCell} instance.
 	 * 
-	 * @param properties the properties for customizing the new {@code MOCell}
-	 *        instance
+	 * @param properties the properties for customizing the new {@code MOCell} instance
 	 * @param problem the problem adapter
 	 * @return a new {@code MOCell} instance
-	 * @throws JMException if an error occurred when constructing the algorithm
+	 * @throws JMetalException if an error occurred when constructing the algorithm
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private MOCell newMOCell(TypedProperties properties,
-			JMetalProblemAdapter problem) throws JMException {
-		MOCell algorithm = new MOCell(problem);
-
-		algorithm.setInputParameter("populationSize", 
-				(int)properties.getDouble("populationSize", 100));
-		algorithm.setInputParameter("archiveSize", 
-				(int)properties.getDouble("archiveSize", 100));
-		algorithm.setInputParameter("maxEvaluations", 
-				(int)properties.getDouble("maxEvaluations", 25000));
-		algorithm.setInputParameter("feedBack", 
-				(int)properties.getDouble("feedBack", 20));
-
-		setupVariationOperators(algorithm, properties, problem);
-
-		Operator selection = new BinaryTournament(null);
-		algorithm.addOperator("selection", selection);
-
-		return algorithm;
+			ProblemAdapter<?> problem) throws JMetalException {
+		if (properties.contains("feedback")) {
+			System.err.println("Warning: Parameter 'feedback' is no longer supported in MOCell (JMetal)");
+		}
+		
+		CrossoverOperator<?> crossover = JMetalFactory.getInstance().createCrossoverOperator(problem, properties);
+		MutationOperator<?> mutation = JMetalFactory.getInstance().createMutationOperator(problem, properties);
+	    SelectionOperator selection = new BinaryTournamentSelection(new RankingAndCrowdingDistanceComparator());
+		
+	    int maxEvaluations = (int)properties.getDouble("maxEvaluations", 25000);
+		int populationSize = (int)properties.getDouble("populationSize", 100);
+		int archiveSize = (int)properties.getDouble("archiveSize", 100);
+		
+		MOCellBuilder builder = new MOCellBuilder(problem, crossover, mutation)
+		        .setSelectionOperator(selection)
+		        .setMaxEvaluations(maxEvaluations)
+		        .setPopulationSize(populationSize)
+		        .setArchive(new CrowdingDistanceArchive(archiveSize));
+        
+        return builder.build();
 	}
 
 	/**
-	 * Returns a new {@link MOCHC} instance. Only binary encodings are 
-	 * supported.
+	 * Returns a new {@link MOCHC} instance. Only binary encodings are supported.
 	 * 
-	 * @param properties the properties for customizing the new {@code MOCHC}
-	 *        instance
+	 * @param properties the properties for customizing the new {@code MOCHC} instance
 	 * @param problem the problem adapter
 	 * @return a new {@code MOCHC} instance
-	 * @throws JMException if an error occurred when constructing the algorithm
+	 * @throws JMetalException if an error occurred when constructing the algorithm
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private MOCHC newMOCHC(TypedProperties properties,
-			JMetalProblemAdapter problem) throws JMException {
-		if (!(problem.getSolutionType() instanceof BinarySolutionType)) {
-			throw new JMException("unsupported solution type");
+			ProblemAdapter<?> problem) throws JMetalException {
+		if (!(problem instanceof BinaryProblemAdapter)) {
+			throw new JMetalException("MOCHC only supports problems with binary decision variables");
 		}
+		
+		int populationSize = (int)properties.getDouble("populationSize", 100);
+		
+		HUXCrossover crossover = new HUXCrossover(properties.getDouble("hux.rate", 1.0));
+	    SelectionOperator parentSelection = new RandomSelection<BinarySolution>();
+	    SelectionOperator newGenerationSelection = new RankingAndCrowdingSelection<BinarySolution>(populationSize);
+	    BitFlipMutation mutation = new BitFlipMutation(properties.getDouble("bf.rate", 0.35));
 
-		MOCHC algorithm = new MOCHC(problem);
-
-		algorithm.setInputParameter("initialConvergenceCount", 
-				properties.getDouble("initialConvergenceCount", 0.25));
-		algorithm.setInputParameter("preservedPopulation", 
-				properties.getDouble("preservedPopulation", 0.05));
-		algorithm.setInputParameter("convergenceValue", 
-				(int)properties.getDouble("convergenceValue", 3));
-		algorithm.setInputParameter("populationSize", 
-				(int)properties.getDouble("populationSize", 100));
-		algorithm.setInputParameter("maxEvaluations", 
-				(int)properties.getDouble("maxEvaluations", 25000));
-
-		HashMap<String, Object> parameters = new HashMap<String, Object>();
-		parameters.put("probability", properties.getDouble("hux.rate", 1.0));
-		Operator crossoverOperator = new HUXCrossover(parameters);
-
-		parameters = new HashMap<String, Object>();
-		parameters.put("probability", properties.getDouble("bf.rate", 0.35));
-		Operator mutationOperator = new BitFlipMutation(parameters);
-
-		Operator parentsSelection = new RandomSelection(null);
-
-		parameters = new HashMap<String, Object>();
-		parameters.put("problem", problem);
-		Operator newGenerationSelection = new RankingAndCrowdingSelection(parameters);
-
-		algorithm.addOperator("crossover", crossoverOperator);
-		algorithm.addOperator("cataclysmicMutation", mutationOperator);
-		algorithm.addOperator("parentSelection", parentsSelection);
-		algorithm.addOperator("newGenerationSelection", newGenerationSelection);
-
-		return algorithm;
+	    MOCHCBuilder builder = new MOCHCBuilder((BinaryProblemAdapter)problem)
+	            .setInitialConvergenceCount(properties.getDouble("initialConvergenceCount", 0.25))
+	            .setConvergenceValue((int)properties.getDouble("convergenceValue", 3))
+	            .setPreservedPopulation(properties.getDouble("preservedPopulation", 0.05))
+	            .setMaxEvaluations((int)properties.getDouble("maxEvaluations", 25000))
+	            .setPopulationSize(populationSize)
+	            .setCrossover(crossover)
+	            .setNewGenerationSelection(newGenerationSelection)
+	            .setCataclysmicMutation(mutation)
+	            .setParentSelection(parentSelection);
+	    
+	    return builder.build();
 	}
 	
-	private NSGAII newNSGAII(TypedProperties properties,
-			JMetalProblemAdapter problem) throws JMException {
-		NSGAII algorithm = new NSGAII(problem);
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	private AbstractMOEAD newMOEAD(TypedProperties properties, ProblemAdapter<?> problem) throws JMetalException {
+		if (!(problem instanceof DoubleProblemAdapter)) {
+			throw new JMetalException("MOEAD only supports problems with real decision variables");
+		}
+		
+		MOEADBuilder.Variant variant = MOEADBuilder.Variant.MOEAD;
+		
+		if (properties.contains("variant")) {
+			variant = MOEADBuilder.Variant.valueOf(properties.getString("variant", null));
+		}
+		
+		FunctionType functionType = FunctionType.valueOf(properties.getString("functionType", "TCHE"));
+		
+		if (variant == MOEADBuilder.Variant.MOEADD && !properties.contains("functionType")) {
+			functionType = FunctionType.PBI;
+		}
+		
+		DifferentialEvolutionCrossover crossover = new DifferentialEvolutionCrossover(
+				properties.getDouble("de.crossoverRate", 0.1),
+				properties.getDouble("de.stepSize", 0.5),
+				properties.getString("de.variant", "rand/1/bin"));
+		
+		MutationOperator mutation = JMetalFactory.getInstance().createMutationOperator(problem, properties);
 
-		algorithm.setInputParameter("populationSize", 
-				(int)properties.getDouble("populationSize", 100));
-		algorithm.setInputParameter("maxEvaluations", 
-				(int)properties.getDouble("maxEvaluations", 25000));
-
-		setupVariationOperators(algorithm, properties, problem);
-
-	    Operator selection = new BinaryTournament2(null);                           
-	    algorithm.addOperator("selection", selection);
+		MOEADBuilder builder = new MOEADBuilder((DoubleProblemAdapter)problem, MOEADBuilder.Variant.MOEAD)
+	            .setCrossover(crossover)
+	            .setMutation(mutation)
+	            .setMaxEvaluations((int)properties.getDouble("maxEvaluations", 25000))
+	            .setPopulationSize((int)properties.getDouble("populationSize", 100))
+	            .setResultPopulationSize((int)properties.getDouble("archiveSize", 100))
+	            .setNeighborhoodSelectionProbability(properties.getDouble("delta", 0.9))
+	            .setMaximumNumberOfReplacedSolutions(properties.getInt("eta", 2))
+	            .setNeighborSize((int)properties.getDouble("neighborhoodSize", 20))
+	            .setFunctionType(functionType)
+				.setDataDirectory(properties.getString("dataDirectory", "MOEAD_Weights"));
 	    
-	    return algorithm;
+	     return builder.build();
 	}
+	
+	/**
+	 * Returns a new {@link NSGAII} instance.
+	 * 
+	 * @param properties the properties for customizing the new {@code NSGAII} instance
+	 * @param problem the problem adapter
+	 * @return a new {@code NSGAII} instance
+	 * @throws JMetalException if an error occurred when constructing the algorithm
+	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	private NSGAII newNSGAII(TypedProperties properties,
+			ProblemAdapter<?> problem) throws JMetalException {
+		CrossoverOperator<?> crossover = JMetalFactory.getInstance().createCrossoverOperator(problem, properties);
+		MutationOperator<?> mutation = JMetalFactory.getInstance().createMutationOperator(problem, properties);
+		SelectionOperator selection = new BinaryTournamentSelection();
+		
+		int maxEvaluations = (int)properties.getDouble("maxEvaluations", 25000);
+		int populationSize = (int)properties.getDouble("populationSize", 100);
+		
+		NSGAIIBuilder builder = new NSGAIIBuilder(problem, crossover, mutation, populationSize)
+				.setSelectionOperator(selection)
+				.setMaxEvaluations(maxEvaluations);
+        
+		return builder.build();
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private NSGAIII newNSGAIII(TypedProperties properties, ProblemAdapter<?> problem) throws JMetalException {
+		CrossoverOperator<?> crossover = JMetalFactory.getInstance().createCrossoverOperator(problem, properties);
+		MutationOperator<?> mutation = JMetalFactory.getInstance().createMutationOperator(problem, properties);
+		SelectionOperator selection = new BinaryTournamentSelection();
 
+	    int maxEvaluations = (int)properties.getDouble("maxEvaluations", 25000);
+	    int populationSize = (int)properties.getDouble("populationSize", 100);
+
+		NSGAIIIBuilder builder = new NSGAIIIBuilder(problem)
+				.setCrossoverOperator(crossover)
+				.setMutationOperator(mutation)
+				.setSelectionOperator(selection)
+				.setPopulationSize(populationSize)
+				.setMaxIterations(maxEvaluations / populationSize);
+
+	    return builder.build();
+	}
+	
 	/**
 	 * Returns a new {@link OMOPSO} instance. Only real encodings are supported.
 	 * 
-	 * @param properties the properties for customizing the new {@code OMOPSO}
-	 *        instance
+	 * @param properties the properties for customizing the new {@code OMOPSO} instance
 	 * @param problem the problem adapter
 	 * @return a new {@code OMOPSO} instance
-	 * @throws JMException if an error occurred when constructing the algorithm
+	 * @throws JMetalException if an error occurred when constructing the algorithm
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private OMOPSO newOMOPSO(TypedProperties properties,
-			JMetalProblemAdapter problem) throws JMException {
-		if (!(problem.getSolutionType() instanceof RealSolutionType)) {
-			throw new JMException("unsupported solution type");
+			ProblemAdapter<?> problem) throws JMetalException {
+		if (!(problem instanceof DoubleProblemAdapter)) {
+			throw new JMetalException("OMOPSO only supports problems with real decision variables");
 		}
-
-		OMOPSO algorithm = new OMOPSO(problem);
+		
+		if (properties.contains("epsilon")) {
+			System.err.println("Warning: Parameter 'epsilon' is no longer supported in OMOPSO (JMetal)");
+		}
+		
 		int populationSize = (int)properties.getDouble("populationSize", 100);
-		int maxIterations = (int)properties.getDouble("maxEvaluations", 25000) /
-				populationSize;
+		int archiveSize = (int)properties.getDouble("archiveSize", 100);
+		int maxIterations = (int)properties.getDouble("maxEvaluations", 25000) / populationSize;
 		double mutationProbability = 1.0 / problem.getNumberOfVariables();
-
-		algorithm.setInputParameter("swarmSize", populationSize);
-		algorithm.setInputParameter("archiveSize", 
-				(int)properties.getDouble("archiveSize", 100));
-		algorithm.setInputParameter("maxIterations", maxIterations);
-		algorithm.setInputParameter("epsilon",
-				properties.getDoubleArray("epsilon", new double[] {
-						EpsilonHelper.getEpsilon(problem.getProblem()) }));
 		
-		HashMap<String, Object> parameters = new HashMap<String, Object>();
-		parameters.put("probability", properties.getDouble("mutationProbability", mutationProbability));
-		parameters.put("perturbation", properties.getDouble("perturbationIndex", 0.5));
-		Operator uniformMutation = new UniformMutation(parameters);
+		UniformMutation uniformMutation = new UniformMutation(
+				properties.getDouble("mutationProbability", mutationProbability),
+				properties.getDouble("perturbationIndex", 0.5));
 		
-		parameters = new HashMap<String, Object>();
-		parameters.put("probability", properties.getDouble("mutationProbability", mutationProbability));
-		parameters.put("perturbation", properties.getDouble("perturbationIndex", 0.5));
-		parameters.put("maxIterations", maxIterations);
-		Operator nonUniformMutation = new NonUniformMutation(parameters);
+		NonUniformMutation nonUniformMutation = new NonUniformMutation(
+				properties.getDouble("mutationProbability", mutationProbability),
+				properties.getDouble("perturbationIndex", 0.5),
+				maxIterations);
 		
-		algorithm.addOperator("uniformMutation", uniformMutation);
-	    algorithm.addOperator("nonUniformMutation", nonUniformMutation);
-
-		return algorithm;
+		SolutionListEvaluator evaluator = new SequentialSolutionListEvaluator();
+		
+		OMOPSOBuilder builder = new OMOPSOBuilder((DoubleProblemAdapter)problem, evaluator)
+        		.setMaxIterations(maxIterations)
+        		.setSwarmSize(populationSize)
+        		.setArchiveSize(archiveSize)
+        		.setUniformMutation(uniformMutation)
+        		.setNonUniformMutation(nonUniformMutation);
+		
+        return builder.build();
 	}
 
 	/**
-	 * Returns a new {@link PAES} instanc.
+	 * Returns a new {@link PAES} instance.
 	 * 
-	 * @param properties the properties for customizing the new {@code PAES}
-	 *        instance
+	 * @param properties the properties for customizing the new {@code PAES} instance
 	 * @param problem the problem adapter
 	 * @return a new {@code PAES} instance
-	 * @throws JMException if an error occurred when constructing the algorithm
+	 * @throws JMetalException if an error occurred when constructing the algorithm
 	 */
-	private PAES newPAES(TypedProperties properties, JMetalProblemAdapter problem)
-			throws JMException {
-		PAES algorithm = new PAES(problem);
-
-		algorithm.setInputParameter("archiveSize", 
-				(int)properties.getDouble("archiveSize", 100));
-		algorithm.setInputParameter("biSections", 
-				(int)properties.getDouble("bisections", 8));
-		algorithm.setInputParameter("maxEvaluations", 
-				(int)properties.getDouble("maxEvaluations", 25000));
-
-		// only the mutation operator is used
-		setupVariationOperators(algorithm, properties, problem);
-
-		return algorithm;
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	private PAES newPAES(TypedProperties properties, ProblemAdapter<?> problem)
+			throws JMetalException {
+		MutationOperator<?> mutation = JMetalFactory.getInstance().createMutationOperator(problem, properties);
+		
+		PAESBuilder builder = new PAESBuilder(problem)
+		        .setMutationOperator(mutation)
+		        .setMaxEvaluations((int)properties.getDouble("maxEvaluations", 25000))
+		        .setArchiveSize((int)properties.getDouble("archiveSize", 100))
+		        .setBiSections((int)properties.getDouble("bisections", 8));
+		
+        return builder.build();
 	}
 
 	/**
 	 * Returns a new {@link PESA2} instance.
 	 * 
-	 * @param properties the properties for customizing the new {@code PESA2}
-	 *        instance
+	 * @param properties the properties for customizing the new {@code PESA2} instance
 	 * @param problem the problem adapter
 	 * @return a new {@code PESA2} instance
-	 * @throws JMException if an error occurred when constructing the algorithm
+	 * @throws JMetalException if an error occurred when constructing the algorithm
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private PESA2 newPESA2(TypedProperties properties,
-			JMetalProblemAdapter problem) throws JMException {
-		PESA2 algorithm = new PESA2(problem);
-
-		algorithm.setInputParameter("populationSize", 
-				(int)properties.getDouble("populationSize", 10));
-		algorithm.setInputParameter("archiveSize", 
-				(int)properties.getDouble("archiveSize", 100));
-		algorithm.setInputParameter("bisections", 
-				(int)properties.getDouble("bisections", 8));
-		algorithm.setInputParameter("maxEvaluations", 
-				(int)properties.getDouble("maxEvaluations", 25000));
-
-		setupVariationOperators(algorithm, properties, problem);
-
-		return algorithm;
+			ProblemAdapter<?> problem) throws JMetalException {
+		CrossoverOperator<?> crossover = JMetalFactory.getInstance().createCrossoverOperator(problem, properties);
+		MutationOperator<?> mutation = JMetalFactory.getInstance().createMutationOperator(problem, properties);
+		
+        PESA2Builder builder = new PESA2Builder(problem, crossover, mutation)
+		        .setMaxEvaluations((int)properties.getDouble("maxEvaluations", 25000))
+		        .setPopulationSize((int)properties.getDouble("populationSize", 10))
+		        .setArchiveSize((int)properties.getDouble("archiveSize", 100))
+		        .setBisections((int)properties.getDouble("bisections", 8));
+        
+        return builder.build();
 	}
 
 	/**
 	 * Returns a new {@link SMPSO} instance. Only real encodings are supported.
 	 * 
-	 * @param properties the properties for customizing the new {@code SMPSO}
-	 *        instance
+	 * @param properties the properties for customizing the new {@code SMPSO} instance
 	 * @param problem the problem adapter
 	 * @return a new {@code SMPSO} instance
-	 * @throws JMException if an error occurred when constructing the algorithm
+	 * @throws JMetalException if an error occurred when constructing the algorithm
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private SMPSO newSMPSO(TypedProperties properties,
-			JMetalProblemAdapter problem) throws JMException {
-		if (!(problem.getSolutionType() instanceof RealSolutionType)) {
-			throw new JMException("unsupported solution type");
+			ProblemAdapter<?> problem) throws JMetalException {
+		if (!(problem instanceof DoubleProblemAdapter)) {
+			throw new JMetalException("SMPSO only supports problems with real decision variables");
 		}
-
-		SMPSO algorithm = new SMPSO(problem);
-		int populationSize = (int)properties.getDouble("populationSize", 100);
-		int maxIterations = (int)properties.getDouble("maxEvaluations", 25000) /
-				populationSize;
-
-		algorithm.setInputParameter("swarmSize", populationSize);
-		algorithm.setInputParameter("archiveSize", 
-				(int)properties.getDouble("archiveSize", 100));
-		algorithm.setInputParameter("maxIterations", maxIterations);
 		
-		HashMap<String, Object> parameters = new HashMap<String, Object>();
-		parameters.put("probability", properties.getDouble("pm.rate", 1.0 / problem.getNumberOfVariables()));
-		parameters.put("distributionIndex", properties.getDouble("pm.distributionIndex", 20.0));
-		Operator mutation = new PolynomialMutation(parameters);
+		MutationOperator<DoubleSolution> mutation = (MutationOperator<DoubleSolution>)
+				JMetalFactory.getInstance().createMutationOperator(problem, properties);
+		
+		int populationSize = (int)properties.getDouble("populationSize", 100);
+		int archiveSize = (int)properties.getDouble("archiveSize", 100);
+		int maxIterations = (int)properties.getDouble("maxEvaluations", 25000) / populationSize;
 
-		algorithm.addOperator("mutation", mutation);
-
-		return algorithm;
+	    BoundedArchive archive = new CrowdingDistanceArchive(archiveSize);
+		
+		SMPSOBuilder builder = new SMPSOBuilder((DoubleProblemAdapter)problem, archive)
+		        .setMutation(mutation)
+		        .setMaxIterations(maxIterations)
+		        .setSwarmSize(populationSize);
+		
+        return builder.build();
 	}
 
 	/**
 	 * Returns a new {@link SPEA2} instance.
 	 * 
-	 * @param properties the properties for customizing the new {@code SPEA2}
-	 *        instance
+	 * @param properties the properties for customizing the new {@code SPEA2} instance
 	 * @param problem the problem adapter
 	 * @return a new {@code SPEA2} instance
-	 * @throws JMException if an error occurred when constructing the algorithm
+	 * @throws JMetalException if an error occurred when constructing the algorithm
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private SPEA2 newSPEA2(TypedProperties properties,
-			JMetalProblemAdapter problem) throws JMException {
-		SPEA2 algorithm = new SPEA2(problem);
-
-		algorithm.setInputParameter("populationSize", 
-				(int)properties.getDouble("populationSize", 100));
-		algorithm.setInputParameter("archiveSize", 
-				(int)properties.getDouble("archiveSize", 100));
-		algorithm.setInputParameter("maxEvaluations", 
-				(int)properties.getDouble("maxEvaluations", 25000));
-
-		setupVariationOperators(algorithm, properties, problem);
-
-		Operator selection = new BinaryTournament(null);
-		algorithm.addOperator("selection", selection);
-
-		return algorithm;
+			ProblemAdapter<?> problem) throws JMetalException {
+		CrossoverOperator<?> crossover = JMetalFactory.getInstance().createCrossoverOperator(problem, properties);
+		MutationOperator<?> mutation = JMetalFactory.getInstance().createMutationOperator(problem, properties);
+		SelectionOperator selection = new BinaryTournamentSelection();
+		
+		int maxEvaluations = (int)properties.getDouble("maxEvaluations", 25000);
+		int populationSize = (int)properties.getDouble("populationSize", 100);
+		
+		SPEA2Builder builder = new SPEA2Builder(problem, crossover, mutation)
+		        .setSelectionOperator(selection)
+		        .setMaxIterations(maxEvaluations / populationSize)
+		        .setPopulationSize(populationSize)
+		        .setK(properties.getInt("k", 1));
+		
+		return builder.build();
 	}
 
 	/**
 	 * Returns a new {@link SMSEMOA} instance.
 	 * 
-	 * @param properties the properties for customizing the new {@code SMSEMOA}
-	 *        instance
+	 * @param properties the properties for customizing the new {@code SMSEMOA} instance
 	 * @param problem the problem adapter
 	 * @return a new {@code SMSEMOA} instance
-	 * @throws JMException if an error occurred when constructing the algorithm
+	 * @throws JMetalException if an error occurred when constructing the algorithm
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private SMSEMOA newSMSEMOA(TypedProperties properties,
-			JMetalProblemAdapter problem) throws JMException {
-		SMSEMOA algorithm = new SMSEMOA(problem);
-
-		algorithm.setInputParameter("populationSize", 
-				(int)properties.getDouble("populationSize", 100));
-		algorithm.setInputParameter("maxEvaluations", 
-				(int)properties.getDouble("maxEvaluations", 25000));
-		algorithm.setInputParameter("offset", 
-				properties.getDouble("offset", 100.0));
-
-		setupVariationOperators(algorithm, properties, problem);
-
-		Operator selection = new RandomSelection(null);
-		algorithm.addOperator("selection", selection);
-
-		return algorithm;
+			ProblemAdapter<?> problem) throws JMetalException {
+		CrossoverOperator<?> crossover = JMetalFactory.getInstance().createCrossoverOperator(problem, properties);
+		MutationOperator<?> mutation = JMetalFactory.getInstance().createMutationOperator(problem, properties);
+		SelectionOperator selection = new RandomSelection();
+		
+	    Hypervolume hypervolume = new PISAHypervolume();
+	    hypervolume.setOffset(properties.getDouble("offset", 100.0));
+	    
+	    SMSEMOABuilder builder = new SMSEMOABuilder(problem, crossover, mutation)
+		        .setSelectionOperator(selection)
+		        .setMaxEvaluations((int)properties.getDouble("maxEvaluations", 25000))
+		        .setPopulationSize((int)properties.getDouble("populationSize", 100))
+		        .setHypervolumeImplementation(hypervolume);
+        
+        return builder.build();
 	}
 
 }

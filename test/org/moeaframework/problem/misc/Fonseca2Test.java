@@ -24,7 +24,7 @@ public class Fonseca2Test extends ProblemTest {
 
 	@Test
 	public void testJMetal() throws Exception {
-		test(new jmetal.problems.Fonseca("Real"), new Fonseca2(3));
+		test(new org.uma.jmetal.problem.multiobjective.Fonseca(), new Fonseca2(3));
 	}
 
 }

@@ -72,7 +72,7 @@ details.
 
 The latest version of the MOEA Framework can be downloaded from 
 <http://www.moeaframework.org/>.  The MOEA Framework is available in source
-code and binary distributions.  Java 6.0 or later is required.  For source code
+code and binary distributions.  Java 8.0 or later is required.  For source code
 distributions, the Java Development Kit (JDK) is required to compile the code.
 For binary distributions, only the Java Runtime Environment (JRE) is necessary.
 Depending on your platform, the JRE or JDK can be obtained from the following
@@ -171,15 +171,16 @@ this and other free and open source projects.
   Lead Developer - David Hadka
   
   Third-Party Libraries (see the LICENSE file for more details):
-    Apache Commons CLI <http://commons.apache.org/cli/>
-    Apache Commons Codec <http://commons.apache.org/codec/>
-    Apache Commons Lang <http://commons.apache.org/lang/>
-    Apache Commons Math <http://commons.apache.org/math/>
-    JCommon <http://www.jfree.org/jcommon/>
-    JFreeChart <http://www.jfree.org/jfreechart/>
-    JUnit <http://www.junit.org/>
-    JMetal <http://jmetal.sourceforge.net/>
-    RSyntaxTextArea <http://www.fifesoft.com/rsyntaxtextarea/>
+    Apache Commons CLI
+    Apache Commons Codec 
+    Apache Commons IO
+    Apache Commons Lang3
+    Apache Commons Math3
+    JCommon
+    JFreeChart
+    JUnit
+    JMetal
+    RSyntaxTextArea
     PISA <http://www.tik.ee.ethz.ch/pisa/>
     CEC 2009 test problems <http://www.cec-2009.org/>
     Walking Fish Group (WFG) test problems <http://www.wfg.csse.uwa.edu.au/>

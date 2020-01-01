@@ -54,5 +54,10 @@ public class TestThresholds {
 	 * The floating-point threshold when comparing solutions.
 	 */
 	public static final double SOLUTION_EPS = 0.05;
+	
+	/**
+	 * The floating-point threshold when comparing performance indicators.
+	 */
+	public static final double INDICATOR_EPS = 0.0001;
 
 }

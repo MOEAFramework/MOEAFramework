@@ -28,9 +28,9 @@ import org.moeaframework.problem.ProblemTest;
 public class SrinivasTest extends ProblemTest {
 
 	@Test
-	@Ignore("discrepancy between this implementation and jMetal 3.1")
+	@Ignore("discrepancy between this implementation and jMetal 5.6")
 	public void testJMetal() throws Exception {
-		test(new jmetal.problems.Srinivas("Real"), new Srinivas());
+		test(new org.uma.jmetal.problem.multiobjective.Srinivas(), new Srinivas());
 	}
 	
 	@Test

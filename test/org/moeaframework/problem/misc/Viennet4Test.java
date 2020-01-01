@@ -28,9 +28,9 @@ import org.moeaframework.problem.ProblemTest;
 public class Viennet4Test extends ProblemTest {
 
 	@Test
-	@Ignore("discrepancy between this implementation and jMetal 3.1")
+	//@Ignore("discrepancy between this implementation and jMetal 3.1")
 	public void testJMetal() throws Exception {
-		test(new jmetal.problems.Viennet4("Real"), new Viennet4());
+		test(new org.uma.jmetal.problem.multiobjective.Viennet4(), new Viennet4());
 	}
 	
 	@Test

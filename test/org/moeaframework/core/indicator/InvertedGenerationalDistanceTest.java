@@ -18,15 +18,21 @@
 package org.moeaframework.core.indicator;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.moeaframework.TestThresholds;
 import org.moeaframework.TestUtils;
+import org.moeaframework.algorithm.jmetal.JMetalUtils;
+import org.moeaframework.algorithm.jmetal.ProblemAdapter;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.spi.ProblemFactory;
+import org.uma.jmetal.util.front.Front;
+import org.uma.jmetal.util.front.util.FrontNormalizer;
 
 /**
  * Tests the {@link InvertedGenerationalDistance} class against the JMetal
@@ -205,30 +211,35 @@ public class InvertedGenerationalDistanceTest extends IndicatorTest {
 	 * @param problemName the problem being tested
 	 * @throws IOException should not occur
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	protected void test(String problemName) {
 		Problem problem = ProblemFactory.getInstance().getProblem(problemName);
 		NondominatedPopulation referenceSet = ProblemFactory.getInstance()
 				.getReferenceSet(problemName);
 		NondominatedPopulation approximationSet = generateApproximationSet(
 				problemName, 100);
+		
+		ProblemAdapter adapter = JMetalUtils.createProblemAdapter(problem);
+		Front theirReferenceSet = JMetalUtils.toFront(adapter, JMetalUtils.toSolutionSet(adapter, referenceSet));
+		List theirApproximationSet = JMetalUtils.toSolutionSet(adapter, approximationSet);
+		FrontNormalizer normalizer = new FrontNormalizer(theirReferenceSet);
 
 		InvertedGenerationalDistance myIndicator = 
 				new InvertedGenerationalDistance(problem, referenceSet, 2.0);
-		jmetal.qualityIndicator.InvertedGenerationalDistance theirIndicator = 
-				new jmetal.qualityIndicator.InvertedGenerationalDistance();
+		org.uma.jmetal.qualityindicator.impl.InvertedGenerationalDistance theirIndicator = 
+				new org.uma.jmetal.qualityindicator.impl.InvertedGenerationalDistance(
+						normalizer.normalize(theirReferenceSet));
 
 		// test against random approximation set
 		double actual = myIndicator.evaluate(approximationSet);
-		double expected = theirIndicator.invertedGenerationalDistance(
-				toArray(approximationSet), toArray(referenceSet), problem
-						.getNumberOfObjectives());
+		double expected = theirIndicator.evaluate(normalizer.normalize(theirApproximationSet));
 
-		Assert.assertEquals(expected, actual, Settings.EPS);
+		Assert.assertEquals(expected, actual, TestThresholds.INDICATOR_EPS);
 
 		// test against reference set
 		actual = myIndicator.evaluate(referenceSet);
 
-		Assert.assertEquals(0.0, actual, Settings.EPS);
+		Assert.assertEquals(0.0, actual, TestThresholds.INDICATOR_EPS);
 	}
 
 }

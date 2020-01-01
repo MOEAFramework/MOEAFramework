@@ -339,38 +339,38 @@ public class WFGTest extends ProblemTest {
 	}
 
 	public void test(String problem, int M) throws Exception {
-		jmetal.core.Problem problemA;
+		org.uma.jmetal.problem.DoubleProblem problemA;
 		Problem problemB;
 
 		int k = M - 1;
 		int l = 10;
 
 		if (problem.equals("WFG1")) {
-			problemA = new jmetal.problems.WFG.WFG1("Real", k, l, M);
+			problemA = new org.uma.jmetal.problem.multiobjective.wfg.WFG1(k, l, M);
 			problemB = new org.moeaframework.problem.WFG.WFG1(k, l, M);
 		} else if (problem.equals("WFG2")) {
-			problemA = new jmetal.problems.WFG.WFG2("Real", k, l, M);
+			problemA = new org.uma.jmetal.problem.multiobjective.wfg.WFG2(k, l, M);
 			problemB = new org.moeaframework.problem.WFG.WFG2(k, l, M);
 		} else if (problem.equals("WFG3")) {
-			problemA = new jmetal.problems.WFG.WFG3("Real", k, l, M);
+			problemA = new org.uma.jmetal.problem.multiobjective.wfg.WFG3(k, l, M);
 			problemB = new org.moeaframework.problem.WFG.WFG3(k, l, M);
 		} else if (problem.equals("WFG4")) {
-			problemA = new jmetal.problems.WFG.WFG4("Real", k, l, M);
+			problemA = new org.uma.jmetal.problem.multiobjective.wfg.WFG4(k, l, M);
 			problemB = new org.moeaframework.problem.WFG.WFG4(k, l, M);
 		} else if (problem.equals("WFG5")) {
-			problemA = new jmetal.problems.WFG.WFG5("Real", k, l, M);
+			problemA = new org.uma.jmetal.problem.multiobjective.wfg.WFG5(k, l, M);
 			problemB = new org.moeaframework.problem.WFG.WFG5(k, l, M);
 		} else if (problem.equals("WFG6")) {
-			problemA = new jmetal.problems.WFG.WFG6("Real", k, l, M);
+			problemA = new org.uma.jmetal.problem.multiobjective.wfg.WFG6(k, l, M);
 			problemB = new org.moeaframework.problem.WFG.WFG6(k, l, M);
 		} else if (problem.equals("WFG7")) {
-			problemA = new jmetal.problems.WFG.WFG7("Real", k, l, M);
+			problemA = new org.uma.jmetal.problem.multiobjective.wfg.WFG7(k, l, M);
 			problemB = new org.moeaframework.problem.WFG.WFG7(k, l, M);
 		} else if (problem.equals("WFG8")) {
-			problemA = new jmetal.problems.WFG.WFG8("Real", k, l, M);
+			problemA = new org.uma.jmetal.problem.multiobjective.wfg.WFG8(k, l, M);
 			problemB = new org.moeaframework.problem.WFG.WFG8(k, l, M);
 		} else if (problem.equals("WFG9")) {
-			problemA = new jmetal.problems.WFG.WFG9("Real", k, l, M);
+			problemA = new org.uma.jmetal.problem.multiobjective.wfg.WFG9(k, l, M);
 			problemB = new org.moeaframework.problem.WFG.WFG9(k, l, M);
 		} else {
 			throw new IllegalArgumentException();

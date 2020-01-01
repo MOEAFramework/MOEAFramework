@@ -22,9 +22,10 @@ import org.moeaframework.problem.ProblemTest;
 
 public class PoloniTest extends ProblemTest {
 
-	@Test
-	public void testJMetal() throws Exception {
-		test(new jmetal.problems.Poloni("Real"), new Poloni());
-	}
+	//TODO: Test no longer in JMetal
+//	@Test
+//	public void testJMetal() throws Exception {
+//		test(new org.uma.jmetal.problem.multiobjective.Poloni(), new Poloni());
+//	}
 
 }

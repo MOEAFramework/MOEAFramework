@@ -94,26 +94,26 @@ public class ZDTTest extends ProblemTest {
 	 * @throws Exception should not occur
 	 */
 	private void test(String problem) throws Exception {
-		jmetal.core.Problem problemA;
+		org.uma.jmetal.problem.Problem problemA;
 		Problem problemB;
 
 		if (problem.equals("ZDT1")) {
-			problemA = new jmetal.problems.ZDT.ZDT1("Real");
+			problemA = new org.uma.jmetal.problem.multiobjective.zdt.ZDT1();
 			problemB = new org.moeaframework.problem.ZDT.ZDT1();
 		} else if (problem.equals("ZDT2")) {
-			problemA = new jmetal.problems.ZDT.ZDT2("Real");
+			problemA = new org.uma.jmetal.problem.multiobjective.zdt.ZDT2();
 			problemB = new org.moeaframework.problem.ZDT.ZDT2();
 		} else if (problem.equals("ZDT3")) {
-			problemA = new jmetal.problems.ZDT.ZDT3("Real");
+			problemA = new org.uma.jmetal.problem.multiobjective.zdt.ZDT3();
 			problemB = new org.moeaframework.problem.ZDT.ZDT3();
 		} else if (problem.equals("ZDT4")) {
-			problemA = new jmetal.problems.ZDT.ZDT4("Real");
+			problemA = new org.uma.jmetal.problem.multiobjective.zdt.ZDT4();
 			problemB = new org.moeaframework.problem.ZDT.ZDT4();
 		} else if (problem.equals("ZDT5")) {
-			problemA = new jmetal.problems.ZDT.ZDT5("Real");
+			problemA = new org.uma.jmetal.problem.multiobjective.zdt.ZDT5();
 			problemB = new org.moeaframework.problem.ZDT.ZDT5();
 		} else if (problem.equals("ZDT6")) {
-			problemA = new jmetal.problems.ZDT.ZDT6("Real");
+			problemA = new org.uma.jmetal.problem.multiobjective.zdt.ZDT6();
 			problemB = new org.moeaframework.problem.ZDT.ZDT6();
 		} else {
 			throw new IllegalArgumentException();

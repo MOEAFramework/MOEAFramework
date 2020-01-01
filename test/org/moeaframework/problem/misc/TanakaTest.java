@@ -28,9 +28,9 @@ import org.moeaframework.problem.ProblemTest;
 public class TanakaTest extends ProblemTest {
 
 	@Test
-	@Ignore("discrepancy between this implementation and jMetal 3.1")
+	@Ignore("discrepancy between this implementation and jMetal 5.6")
 	public void testJMetal() throws Exception {
-		test(new jmetal.problems.Tanaka("Real"), new Tanaka());
+		test(new org.uma.jmetal.problem.multiobjective.Tanaka(), new Tanaka());
 	}
 	
 	@Test

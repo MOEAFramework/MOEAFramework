@@ -17,14 +17,16 @@
  */
 package org.moeaframework.core.fitness;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-
-import jmetal.core.SolutionSet;
-import jmetal.metaheuristics.ibea.IBEA;
+import java.util.List;
 
 import org.junit.Test;
+
 import org.moeaframework.TestUtils;
-import org.moeaframework.algorithm.jmetal.JMetalProblemAdapter;
+import org.moeaframework.algorithm.jmetal.JMetalFactory;
+import org.moeaframework.algorithm.jmetal.JMetalUtils;
+import org.moeaframework.algorithm.jmetal.ProblemAdapter;
 import org.moeaframework.core.FitnessEvaluator;
 import org.moeaframework.core.Initialization;
 import org.moeaframework.core.Population;
@@ -33,6 +35,13 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.operator.RandomInitialization;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.problem.MockRealProblem;
+import org.moeaframework.util.TypedProperties;
+import org.uma.jmetal.algorithm.multiobjective.ibea.IBEA;
+import org.uma.jmetal.operator.CrossoverOperator;
+import org.uma.jmetal.operator.MutationOperator;
+import org.uma.jmetal.operator.SelectionOperator;
+import org.uma.jmetal.operator.impl.selection.BinaryTournamentSelection;
+import org.uma.jmetal.util.solutionattribute.impl.Fitness;
 
 /**
  * Tests the {@link HypervolumeFitnessEvaluator} class.
@@ -76,26 +85,28 @@ public class HypervolumeFitnessEvaluatorTest {
 		test("DTLZ2_8");
 	}
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void test(String problemName) {
 		Problem problem = ProblemFactory.getInstance().getProblem(problemName);
 		Population myPopulation = generatePopulation(problem, 100);
 		
 		//translate population to JMetal solution set
-		SolutionSet theirPopulation = new SolutionSet(myPopulation.size());
-		
+		ProblemAdapter<? extends org.uma.jmetal.solution.Solution<?>> problemAdapter = JMetalUtils.createProblemAdapter(problem);
+		List<org.uma.jmetal.solution.Solution<?>> theirPopulation = new ArrayList<org.uma.jmetal.solution.Solution<?>>();
+
 		for (Solution mySolution : myPopulation) {
-			jmetal.core.Solution theirSolution = new jmetal.core.Solution(
-					mySolution.getNumberOfObjectives());
-			
-			for (int i=0; i<mySolution.getNumberOfObjectives(); i++) {
-				theirSolution.setObjective(i, mySolution.getObjective(i));
-			}
-			
+			org.uma.jmetal.solution.Solution<?> theirSolution = problemAdapter.createSolution();
+			JMetalUtils.copyObjectivesAndConstraints(mySolution, theirSolution);
 			theirPopulation.add(theirSolution);
 		}
 		
 		//compute JMetal fitnesses using IBEA
-		IBEA ibea = new IBEA(new JMetalProblemAdapter(problem));
+		TypedProperties properties = new TypedProperties();
+		CrossoverOperator<?> crossover = JMetalFactory.getInstance().createCrossoverOperator(problemAdapter, properties);
+		MutationOperator<?> mutation = JMetalFactory.getInstance().createMutationOperator(problemAdapter, properties);
+	    SelectionOperator selection = new BinaryTournamentSelection();
+	    
+		IBEA ibea = new IBEA(problemAdapter, 100, 100, 25000, selection, crossover, mutation);
 		ibea.calculateFitness(theirPopulation);
 		
 		//compute our fitnesses
@@ -105,7 +116,9 @@ public class HypervolumeFitnessEvaluatorTest {
 		
 		//compare indicator values
 		for (int i=0; i<myPopulation.size(); i++) {
-			TestUtils.assertEquals(theirPopulation.get(i).getFitness(),
+			TestUtils.assertEquals(
+					(Double)new Fitness().getAttribute(
+							theirPopulation.get(i)),
 					(Double)myPopulation.get(i).getAttribute(
 							FitnessEvaluator.FITNESS_ATTRIBUTE));
 		}

@@ -74,48 +74,38 @@ public class CEC2009Test extends ProblemTest {
 	}
 
 	public void test(String problem) throws Exception {
-		jmetal.core.Problem problemA;
+		org.uma.jmetal.problem.DoubleProblem problemA;
 		Problem problemB;
 
 		if (problem.equals("UF1")) {
-			problemA = new jmetal.problems.cec2009Competition.CEC2009_UF1(
-					"Real");
+			problemA = new org.uma.jmetal.problem.multiobjective.UF.UF1();
 			problemB = new org.moeaframework.problem.CEC2009.UF1();
 		} else if (problem.equals("UF2")) {
-			problemA = new jmetal.problems.cec2009Competition.CEC2009_UF2(
-					"Real");
+			problemA = new org.uma.jmetal.problem.multiobjective.UF.UF2();
 			problemB = new org.moeaframework.problem.CEC2009.UF2();
 		} else if (problem.equals("UF3")) {
-			problemA = new jmetal.problems.cec2009Competition.CEC2009_UF3(
-					"Real");
+			problemA = new org.uma.jmetal.problem.multiobjective.UF.UF3();
 			problemB = new org.moeaframework.problem.CEC2009.UF3();
 		} else if (problem.equals("UF4")) {
-			problemA = new jmetal.problems.cec2009Competition.CEC2009_UF4(
-					"Real");
+			problemA = new org.uma.jmetal.problem.multiobjective.UF.UF4();
 			problemB = new org.moeaframework.problem.CEC2009.UF4();
 		} else if (problem.equals("UF5")) {
-			problemA = new jmetal.problems.cec2009Competition.CEC2009_UF5(
-					"Real");
+			problemA = new org.uma.jmetal.problem.multiobjective.UF.UF5();
 			problemB = new org.moeaframework.problem.CEC2009.UF5();
 		} else if (problem.equals("UF6")) {
-			problemA = new jmetal.problems.cec2009Competition.CEC2009_UF6(
-					"Real");
+			problemA = new org.uma.jmetal.problem.multiobjective.UF.UF6();
 			problemB = new org.moeaframework.problem.CEC2009.UF6();
 		} else if (problem.equals("UF7")) {
-			problemA = new jmetal.problems.cec2009Competition.CEC2009_UF7(
-					"Real");
+			problemA = new org.uma.jmetal.problem.multiobjective.UF.UF7();
 			problemB = new org.moeaframework.problem.CEC2009.UF7();
 		} else if (problem.equals("UF8")) {
-			problemA = new jmetal.problems.cec2009Competition.CEC2009_UF8(
-					"Real");
+			problemA = new org.uma.jmetal.problem.multiobjective.UF.UF8();
 			problemB = new org.moeaframework.problem.CEC2009.UF8();
 		} else if (problem.equals("UF9")) {
-			problemA = new jmetal.problems.cec2009Competition.CEC2009_UF9(
-					"Real");
+			problemA = new org.uma.jmetal.problem.multiobjective.UF.UF9();
 			problemB = new org.moeaframework.problem.CEC2009.UF9();
 		} else if (problem.equals("UF10")) {
-			problemA = new jmetal.problems.cec2009Competition.CEC2009_UF10(
-					"Real");
+			problemA = new org.uma.jmetal.problem.multiobjective.UF.UF10();
 			problemB = new org.moeaframework.problem.CEC2009.UF10();
 		} else {
 			throw new IllegalArgumentException();

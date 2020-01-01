@@ -17,15 +17,22 @@
  */
 package org.moeaframework.core.indicator;
 
+import java.util.List;
+
 import org.junit.Assert;
 import org.junit.Test;
+import org.moeaframework.TestThresholds;
 import org.moeaframework.TestUtils;
+import org.moeaframework.algorithm.jmetal.JMetalUtils;
+import org.moeaframework.algorithm.jmetal.ProblemAdapter;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.spi.ProblemFactory;
+import org.uma.jmetal.util.front.Front;
+import org.uma.jmetal.util.front.util.FrontNormalizer;
 
 /**
  * Tests the {@link Hypervolume} class against the JMetal implementation. Due
@@ -286,6 +293,7 @@ public class HypervolumeTest extends IndicatorTest {
 	 * @param problemName the problem being tested
 	 * @throws IOException should not occur
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	protected void test(String problemName) {
 		Problem problem = ProblemFactory.getInstance().getProblem(problemName);
 		NondominatedPopulation referenceSet = ProblemFactory.getInstance()
@@ -296,17 +304,21 @@ public class HypervolumeTest extends IndicatorTest {
 			approximationSet.add(referenceSet.get(PRNG.nextInt(referenceSet
 					.size())));
 		}
+		
+		ProblemAdapter adapter = JMetalUtils.createProblemAdapter(problem);
+		Front theirReferenceSet = JMetalUtils.toFront(adapter, referenceSet);
+		List theirApproximationSet = JMetalUtils.toSolutionSet(adapter, approximationSet);
+		FrontNormalizer normalizer = new FrontNormalizer(theirReferenceSet);
 
 		Hypervolume myHypervolume = new Hypervolume(problem, referenceSet);
-		jmetal.qualityIndicator.Hypervolume theirHypervolume = 
-				new jmetal.qualityIndicator.Hypervolume();
+		org.uma.jmetal.qualityindicator.impl.hypervolume.PISAHypervolume theirHypervolume = 
+				new org.uma.jmetal.qualityindicator.impl.hypervolume.PISAHypervolume(
+						normalizer.normalize(theirReferenceSet));
 
 		double actual = myHypervolume.evaluate(approximationSet);
-		double expected = theirHypervolume.hypervolume(
-				toArray(approximationSet), toArray(referenceSet), problem
-						.getNumberOfObjectives());
+		double expected = theirHypervolume.evaluate(normalizer.normalize(theirApproximationSet));
 
-		Assert.assertEquals(expected, actual, 0.0001);
+		Assert.assertEquals(expected, actual, TestThresholds.INDICATOR_EPS);
 	}
 
 }

@@ -1,6 +1,23 @@
 This file documents the major changes implemented in each release of the MOEA
 Framework.
 
+---------------------
+ Version vNext (TBD)
+---------------------
+
+  * Upgrades minimum JDK version to 1.8.
+
+  * Upgrades all dependencies to their latest version.
+  
+  * Adds support for JMetal 5.6.
+  
+    - Includes new algorithms added to JMetal, including CDG, ESPEA,
+      NSGA-III, and additional MOEA/D variants.
+    
+    - Removes DENSEA and FastPGA, which appear to have been removed from
+      JMetal.  As a result, they will no longer be supported.
+
+
 ----------------------------
  Version 2.13 (30 Dec 2019)
 ----------------------------

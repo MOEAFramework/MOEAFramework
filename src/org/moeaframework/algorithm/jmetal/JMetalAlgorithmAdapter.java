@@ -19,6 +19,8 @@ package org.moeaframework.algorithm.jmetal;
 
 import java.io.NotSerializableException;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.moeaframework.algorithm.AlgorithmException;
 import org.moeaframework.core.Algorithm;
@@ -30,32 +32,39 @@ import org.moeaframework.core.Solution;
  * Adapter for JMetal algorithms. This allows JMetal algorithms to be used
  * within the MOEA Framework as an {@link Algorithm}.
  */
-public class JMetalAlgorithmAdapter implements Algorithm {
+public class JMetalAlgorithmAdapter<T extends org.uma.jmetal.solution.Solution<?>> implements Algorithm {
 
 	/**
 	 * The JMetal algorithm.
 	 */
-	private final jmetal.core.Algorithm algorithm;
+	private final org.uma.jmetal.algorithm.Algorithm<List<T>> algorithm;
 
 	/**
 	 * The JMetal problem adapter.
 	 */
-	private final JMetalProblemAdapter problem;
+	private final ProblemAdapter<T> problem;
+	
+	private final int maxEvaluations;
 
 	/**
 	 * The JMetal solution set.
 	 */
-	private jmetal.core.SolutionSet solutionSet;
+	private List<T> solutionSet;
 
 	/**
 	 * Constructs an adapter for the specified JMetal algorithm.
 	 * 
 	 * @param algorithm the JMetal algorithm
+	 * @param maxEvaluations the maximum number of evaluations this algorithm will run
+	 * @param problem the problem adapter
 	 */
-	public JMetalAlgorithmAdapter(jmetal.core.Algorithm algorithm,
-			JMetalProblemAdapter problem) {
+	public JMetalAlgorithmAdapter(
+			org.uma.jmetal.algorithm.Algorithm<List<T>> algorithm,
+			int maxEvaluations,
+			ProblemAdapter<T> problem) {
 		super();
 		this.algorithm = algorithm;
+		this.maxEvaluations = maxEvaluations;
 		this.problem = problem;
 	}
 
@@ -69,25 +78,7 @@ public class JMetalAlgorithmAdapter implements Algorithm {
 		if (solutionSet == null) {
 			return 0;
 		} else {
-			Integer result = (Integer)algorithm.getInputParameter(
-					"maxEvaluations");
-
-			if (result == null) {
-				// probably a PSO or GDE3 variant
-				Integer maxIterations = (Integer)algorithm.getInputParameter(
-						"maxIterations");
-				Integer populationSize = (Integer)algorithm.getInputParameter(
-						"populationSize");
-				
-				if (populationSize == null) {
-					populationSize = (Integer)algorithm.getInputParameter(
-							"swarmSize");
-				}
-				
-				result = maxIterations*populationSize;
-			}
-
-			return result;
+			return maxEvaluations;
 		}
 	}
 
@@ -102,18 +93,22 @@ public class JMetalAlgorithmAdapter implements Algorithm {
 
 		if (solutionSet != null) {
 			for (int i = 0; i < solutionSet.size(); i++) {
-				result.add(problem.translate(solutionSet.get(i)));
+				Solution solution = problem.convert(solutionSet.get(i));
+				JMetalUtils.copyObjectivesAndConstraints(solutionSet.get(i), solution);
+				result.add(solution);
 			}
 		}
 
 		return result;
 	}
 
+
 	@Override
 	public void step() {
 		if (solutionSet == null) {
 			try {
-				solutionSet = algorithm.execute();
+				algorithm.run();
+				solutionSet = algorithm.getResult();
 			} catch (Exception e) {
 				throw new AlgorithmException(this, e);
 			}
@@ -128,7 +123,7 @@ public class JMetalAlgorithmAdapter implements Algorithm {
 	@Override
 	public void terminate() {
 		if (solutionSet == null) {
-			solutionSet = new jmetal.core.SolutionSet();
+			solutionSet = new ArrayList<T>();
 		}
 	}
 

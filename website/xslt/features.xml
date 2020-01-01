@@ -58,6 +58,10 @@ using existing components.</p>
     <td>Adaptive Multioperator Search with &epsilon;-Dominance and &epsilon;-Progress Triggered Restarts<sup>3</sup></td>
   </tr>
   <tr>
+    <td style="font-weight: bold">CDG</td>
+    <td>Constrained Decomposition Approach with Grids<sup>1</sup></td>
+  </tr>
+  <tr>
     <td style="font-weight: bold">CellDE</td>
     <td>Cellular Genetic Algorithm with Differential Evolution<sup>1</sup></td>
   </tr>
@@ -73,10 +77,12 @@ using existing components.</p>
     <td style="font-weight: bold">DE</td>
     <td>Differential Evolution (Single Objective)</td>
   </tr>
+  <!--
   <tr>
     <td style="font-weight: bold">DENSEA</td>
     <td>Duplicate Elimination Nondominated Sorting Evolutionary Algorithm<sup>1</sup></td>
   </tr>
+  -->
   <tr>
     <td style="font-weight: bold">ECEA</td>
     <td>Epsilon-Constraint Evolutionary Algorithm<sup>2</sup></td>
@@ -86,6 +92,10 @@ using existing components.</p>
     <td>Evolution Strategies (Single Objective)</td>
   </tr>
   <tr>
+    <td style="font-weight: bold">ESPEA</td>
+    <td>Electrostatic Potential Energy Evolutionary Algorithm<sup>1</sup></td>
+  </tr>
+  <tr>
     <td style="font-weight: bold;">&epsilon;-MOEA</td>
     <td>&epsilon;-Dominance-based Evolutionary Algorithm</td>
   </tr>
@@ -93,10 +103,12 @@ using existing components.</p>
   	<td style="font-weight: bold">&epsilon;-NSGA-II</td>
   	<td>NSGA-II with &epsilon;-Dominance, Randomized Restarts, and Adaptive Population Sizing</td>
   </tr>
+  <!--
   <tr>
     <td style="font-weight: bold">FastPGA</td>
     <td>Fast Pareto Genetic Algorithm<sup>1</sup></td>
   </tr>
+  -->
   <tr>
     <td style="font-weight: bold">FEMO</td>
     <td>Fair Evolutionary Multiobjective Optimizer<sup>2</sup></td>

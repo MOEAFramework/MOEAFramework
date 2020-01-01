@@ -21,7 +21,6 @@ import org.apache.commons.math3.stat.StatUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.TestThresholds;
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.problem.AnalyticalProblem;
 import org.moeaframework.problem.ProblemTest;
@@ -115,11 +114,8 @@ public class DTLZ1Test extends ProblemTest {
 	 * @throws Exception if a JMetal error occurred
 	 */
 	protected void test(int M) throws Exception {
-		jmetal.core.Problem problemA = new jmetal.problems.DTLZ.DTLZ1("Real", 
-				M + 4, M);
-		Problem problemB = new org.moeaframework.problem.DTLZ.DTLZ1(M);
-
-		test(problemA, problemB);
+		test(new org.uma.jmetal.problem.multiobjective.dtlz.DTLZ1(M + 4, M),
+				new org.moeaframework.problem.DTLZ.DTLZ1(M));
 	}
 
 	/**

@@ -22,9 +22,10 @@ import org.moeaframework.problem.ProblemTest;
 
 public class OKA2Test extends ProblemTest {
 
-	@Test
-	public void testJMetal() throws Exception {
-		test(new jmetal.problems.OKA2("Real"), new OKA2());
-	}
+	//TODO: Test no longer in JMetal
+//	@Test
+//	public void testJMetal() throws Exception {
+//		test(new org.uma.jmetal.problem.multiobjective.OKA2(), new OKA2());
+//	}
 
 }
