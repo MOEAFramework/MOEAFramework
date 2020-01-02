@@ -9,7 +9,7 @@ Framework.
 
   * Upgrades all dependencies to their latest version.
   
-  * Adds support for JMetal 5.6.
+  * Adds support for JMetal 5.9.
   
     - Includes new algorithms added to JMetal, including CDG, ESPEA,
       NSGA-III, and additional MOEA/D variants.
