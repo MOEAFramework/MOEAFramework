@@ -300,6 +300,9 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		<unjar dest="${build}" src="lib/commons-io-2.6.jar" />
 		<move file="${build}/META-INF/NOTICE.txt" tofile="${build}/META-INF/COMMONS-IO-NOTICE.txt" />
 		
+		<unjar dest="${build}" src="lib/commons-text-1.8.jar" />
+		<move file="${build}/META-INF/NOTICE.txt" tofile="${build}/META-INF/COMMONS-TEXT-NOTICE.txt" />
+		
 		<unjar dest="${build}" src="lib/commons-lang3-3.9.jar" />
 		<move file="${build}/META-INF/NOTICE.txt" tofile="${build}/META-INF/COMMONS-LANG3-NOTICE.txt" />
 		

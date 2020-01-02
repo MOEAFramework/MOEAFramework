@@ -23,7 +23,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.OptionBuilder;
+import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.math3.util.MathArrays;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
@@ -159,24 +159,23 @@ public class ReferenceSetMerger extends CommandLineUtility {
 		return result;
 	}
 
-	@SuppressWarnings("static-access")
 	@Override
 	public Options getOptions() {
 		Options options = super.getOptions();
 		
-		options.addOption(OptionBuilder
-				.withLongOpt("output")
+		options.addOption(Option.builder("o")
+				.longOpt("output")
 				.hasArg()
-				.withArgName("file")
-				.create('o'));
-		options.addOption(OptionBuilder
-				.withLongOpt("epsilon")
+				.argName("file")
+				.build());
+		options.addOption(Option.builder("e")
+				.longOpt("epsilon")
 				.hasArg()
-				.withArgName("e1,e2,...")
-				.create('e'));
-		options.addOption(OptionBuilder
-				.withLongOpt("diff")
-				.create('d'));
+				.argName("e1,e2,...")
+				.build());
+		options.addOption(Option.builder("d")
+				.longOpt("diff")
+				.build());
 
 		return options;
 	}

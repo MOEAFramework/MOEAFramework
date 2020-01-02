@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Properties;
 
 import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.OptionBuilder;
+import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.lang3.StringUtils;
@@ -152,105 +152,104 @@ public class Solve extends CommandLineUtility {
 		super();
 	}
 
-	@SuppressWarnings("static-access")
 	@Override
 	public Options getOptions() {
 		Options options = super.getOptions();
 
-		options.addOption(OptionBuilder
-				.withLongOpt("output")
+		options.addOption(Option.builder("f")
+				.longOpt("output")
 				.hasArg()
-				.withArgName("file")
-				.isRequired()
-				.create('f'));
-		options.addOption(OptionBuilder
-				.withLongOpt("problem")
+				.argName("file")
+				.required()
+				.build());
+		options.addOption(Option.builder("b")
+				.longOpt("problem")
 				.hasArg()
-				.withArgName("name")
-				.create('b'));
-		options.addOption(OptionBuilder
-				.withLongOpt("algorithm")
+				.argName("name")
+				.build());
+		options.addOption(Option.builder("a")
+				.longOpt("algorithm")
 				.hasArg()
-				.withArgName("name")
-				.isRequired()
-				.create('a'));
-		options.addOption(OptionBuilder
-				.withLongOpt("properties")
+				.argName("name")
+				.required()
+				.build());
+		options.addOption(Option.builder("x")
+				.longOpt("properties")
 				.hasArgs()
-				.withArgName("p1=v1;p2=v2;...")
-				.withValueSeparator(';')
-				.create('x'));
-		options.addOption(OptionBuilder
-				.withLongOpt("seed")
+				.argName("p1=v1;p2=v2;...")
+				.valueSeparator(';')
+				.build());
+		options.addOption(Option.builder("s")
+				.longOpt("seed")
 				.hasArg()
-				.withArgName("value")
-				.create('s'));
-		options.addOption(OptionBuilder
-				.withLongOpt("epsilon")
+				.argName("value")
+				.build());
+		options.addOption(Option.builder("e")
+				.longOpt("epsilon")
 				.hasArg()
-				.withArgName("e1,e2,...")
-				.create('e'));
-		options.addOption(OptionBuilder
-				.withLongOpt("numberOfEvaluations")
+				.argName("e1,e2,...")
+				.build());
+		options.addOption(Option.builder("n")
+				.longOpt("numberOfEvaluations")
 				.hasArg()
-				.withArgName("value")
-				.isRequired()
-				.create('n'));
-		options.addOption(OptionBuilder
-				.withLongOpt("runtimeFrequency")
+				.argName("value")
+				.required()
+				.build());
+		options.addOption(Option.builder("F")
+				.longOpt("runtimeFrequency")
 				.hasArg()
-				.withArgName("value")
-				.create('F'));
-		options.addOption(OptionBuilder
-				.withLongOpt("variables")
+				.argName("value")
+				.build());
+		options.addOption(Option.builder("v")
+				.longOpt("variables")
 				.hasArg()
-				.withArgName("v1,v2,...")
-				.create('v'));
-		options.addOption(OptionBuilder
-				.withLongOpt("objectives")
+				.argName("v1,v2,...")
+				.build());
+		options.addOption(Option.builder("o")
+				.longOpt("objectives")
 				.hasArg()
-				.withArgName("value")
-				.create('o'));
-		options.addOption(OptionBuilder
-				.withLongOpt("constraints")
+				.argName("value")
+				.build());
+		options.addOption(Option.builder("c")
+				.longOpt("constraints")
 				.hasArg()
-				.withArgName("value")
-				.create('c'));
-		options.addOption(OptionBuilder
-				.withLongOpt("lowerBounds")
+				.argName("value")
+				.build());
+		options.addOption(Option.builder("l")
+				.longOpt("lowerBounds")
 				.hasArg()
-				.withArgName("v1,v2,...")
-				.create("l"));
-		options.addOption(OptionBuilder
-				.withLongOpt("upperBounds")
+				.argName("v1,v2,...")
+				.build());
+		options.addOption(Option.builder("u")
+				.longOpt("upperBounds")
 				.hasArg()
-				.withArgName("v1,v2,...")
-				.create('u'));
+				.argName("v1,v2,...")
+				.build());
 		
-		options.addOption(OptionBuilder
-				.withLongOpt("useSocket")
-				.create('S'));
-		options.addOption(OptionBuilder
-				.withLongOpt("hostname")
+		options.addOption(Option.builder("S")
+				.longOpt("useSocket")
+				.build());
+		options.addOption(Option.builder("H")
+				.longOpt("hostname")
 				.hasArg()
-				.withArgName("value")
-				.create('H'));
-		options.addOption(OptionBuilder
-				.withLongOpt("port")
+				.argName("value")
+				.build());
+		options.addOption(Option.builder("P")
+				.longOpt("port")
 				.hasArg()
-				.withArgName("value")
-				.create('P'));
-		options.addOption(OptionBuilder
-				.withLongOpt("startupDelay")
+				.argName("value")
+				.build());
+		options.addOption(Option.builder("D")
+				.longOpt("startupDelay")
 				.hasArg()
-				.withArgName("value")
-				.create('D'));
+				.argName("value")
+				.build());
 		
-		options.addOption(OptionBuilder
-				.withLongOpt("test")
-				.hasOptionalArg()
-				.withArgName("trials")
-				.create('t'));
+		options.addOption(Option.builder("t")
+				.longOpt("test")
+				.optionalArg(true)
+				.argName("trials")
+				.build());
 
 		return options;
 	}

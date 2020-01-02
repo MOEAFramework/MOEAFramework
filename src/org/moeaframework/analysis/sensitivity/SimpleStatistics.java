@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.OptionBuilder;
+import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
 import org.moeaframework.util.CommandLineUtility;
@@ -75,28 +75,27 @@ public class SimpleStatistics extends CommandLineUtility {
 		super();
 	}
 
-	@SuppressWarnings("static-access")
 	@Override
 	public Options getOptions() {
 		Options options = super.getOptions();
 		
-		options.addOption(OptionBuilder
-				.withLongOpt("mode")
+		options.addOption(Option.builder("m")
+				.longOpt("mode")
 				.hasArg()
-				.create('m'));
-		options.addOption(OptionBuilder
-				.withLongOpt("output")
+				.build());
+		options.addOption(Option.builder("o")
+				.longOpt("output")
 				.hasArg()
-				.withArgName("file")
-				.create('o'));
-		options.addOption(OptionBuilder
-				.withLongOpt("ignore")
-				.create('i'));
-		options.addOption(OptionBuilder
-				.withLongOpt("maximum")
+				.argName("file")
+				.build());
+		options.addOption(Option.builder("i")
+				.longOpt("ignore")
+				.build());
+		options.addOption(Option.builder("x")
+				.longOpt("maximum")
 				.hasArg()
-				.withArgName("value")
-				.create('x'));
+				.argName("value")
+				.build());
 		
 		return options;
 	}

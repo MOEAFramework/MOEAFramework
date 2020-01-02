@@ -17,6 +17,7 @@
  */
 package org.moeaframework.analysis.sensitivity;
 
+import java.io.IOException;
 import java.io.StringReader;
 
 import org.junit.Assert;
@@ -49,104 +50,174 @@ public class MatrixReaderTest {
 			"0 10 100\n";
 	
 	@Test
-	public void testFixed1() {
-		MatrixReader reader = new MatrixReader(new StringReader(FIXED));
+	public void testFixed1() throws IOException {
+		MatrixReader reader = null;
 		
-		Assert.assertTrue(reader.hasNext());
-		Assert.assertArrayEquals(new double[] { 0.0, 0.1, -0.1 }, reader.next(),
-				Settings.EPS);
-		Assert.assertTrue(reader.hasNext());
-		Assert.assertArrayEquals(new double[] { 0, 10, 100 }, reader.next(), 
-				Settings.EPS);
-		Assert.assertFalse(reader.hasNext());
+		try {
+			reader = new MatrixReader(new StringReader(FIXED));
+		
+			Assert.assertTrue(reader.hasNext());
+			Assert.assertArrayEquals(new double[] { 0.0, 0.1, -0.1 }, reader.next(),
+					Settings.EPS);
+			Assert.assertTrue(reader.hasNext());
+			Assert.assertArrayEquals(new double[] { 0, 10, 100 }, reader.next(), 
+					Settings.EPS);
+			Assert.assertFalse(reader.hasNext());
+		} finally {
+			if (reader != null) {
+				reader.close();
+			}
+		}
 	}
 	
 	@Test
-	public void testFixed2() {
-		MatrixReader reader = new MatrixReader(new StringReader(FIXED), 3);
+	public void testFixed2() throws IOException {
+		MatrixReader reader = null;
 		
-		Assert.assertTrue(reader.hasNext());
-		Assert.assertArrayEquals(new double[] { 0.0, 0.1, -0.1 }, reader.next(),
-				Settings.EPS);
-		Assert.assertTrue(reader.hasNext());
-		Assert.assertArrayEquals(new double[] { 0, 10, 100 }, reader.next(), 
-				Settings.EPS);
-		Assert.assertFalse(reader.hasNext());
+		try {
+			reader = new MatrixReader(new StringReader(FIXED), 3);
+		
+			Assert.assertTrue(reader.hasNext());
+			Assert.assertArrayEquals(new double[] { 0.0, 0.1, -0.1 }, reader.next(),
+					Settings.EPS);
+			Assert.assertTrue(reader.hasNext());
+			Assert.assertArrayEquals(new double[] { 0, 10, 100 }, reader.next(), 
+					Settings.EPS);
+			Assert.assertFalse(reader.hasNext());
+		} finally {
+			if (reader != null) {
+				reader.close();
+			}
+		}
 	}
 	
 	@Test
-	public void testFixed3() {
-		MatrixReader reader = new MatrixReader(new StringReader(
-				FIXED_WHITESPACE), 3);
+	public void testFixed3() throws IOException {
+		MatrixReader reader = null;
 		
-		Assert.assertTrue(reader.hasNext());
-		Assert.assertArrayEquals(new double[] { 0.0, 0.1, -0.1 }, reader.next(),
-				Settings.EPS);
-		Assert.assertTrue(reader.hasNext());
-		Assert.assertArrayEquals(new double[] { 0, 10, 100 }, reader.next(), 
-				Settings.EPS);
-		Assert.assertFalse(reader.hasNext());
+		try {
+			reader = new MatrixReader(new StringReader(FIXED_WHITESPACE), 3);
+			
+			Assert.assertTrue(reader.hasNext());
+			Assert.assertArrayEquals(new double[] { 0.0, 0.1, -0.1 }, reader.next(),
+					Settings.EPS);
+			Assert.assertTrue(reader.hasNext());
+			Assert.assertArrayEquals(new double[] { 0, 10, 100 }, reader.next(), 
+					Settings.EPS);
+			Assert.assertFalse(reader.hasNext());
+		} finally {
+			if (reader != null) {
+				reader.close();
+			}
+		}
 	}
 	
 	@Test(expected = Exception.class)
-	public void testFixed4() {
-		MatrixReader reader = new MatrixReader(new StringReader(FIXED), 2);
+	public void testFixed4() throws IOException {
+		MatrixReader reader = null;
 		
-		Assert.assertFalse(reader.hasNext());
+		try {
+			reader = new MatrixReader(new StringReader(FIXED), 2);
+			
+			Assert.assertFalse(reader.hasNext());
+		} finally {
+			if (reader != null) {
+				reader.close();
+			}
+		}
 	}
 	
 	@Test
-	public void testVariable1() {
-		MatrixReader reader = new MatrixReader(new StringReader(VARIABLE));
+	public void testVariable1() throws IOException {
+		MatrixReader reader = null;
 		
-		Assert.assertTrue(reader.hasNext());
-		Assert.assertArrayEquals(new double[] { 0.0, 0.1, -0.1 }, reader.next(),
-				Settings.EPS);
-		Assert.assertTrue(reader.hasNext());
-		Assert.assertArrayEquals(new double[] { -0.1, -0.2 }, reader.next(), 
-				Settings.EPS);
-		Assert.assertTrue(reader.hasNext());
-		Assert.assertArrayEquals(new double[] { 0, 10, 100 }, reader.next(), 
-				Settings.EPS);
-		Assert.assertFalse(reader.hasNext());
+		try {
+			reader = new MatrixReader(new StringReader(VARIABLE));
+			
+			Assert.assertTrue(reader.hasNext());
+			Assert.assertArrayEquals(new double[] { 0.0, 0.1, -0.1 }, reader.next(),
+					Settings.EPS);
+			Assert.assertTrue(reader.hasNext());
+			Assert.assertArrayEquals(new double[] { -0.1, -0.2 }, reader.next(), 
+					Settings.EPS);
+			Assert.assertTrue(reader.hasNext());
+			Assert.assertArrayEquals(new double[] { 0, 10, 100 }, reader.next(), 
+					Settings.EPS);
+			Assert.assertFalse(reader.hasNext());
+		} finally {
+			if (reader != null) {
+				reader.close();
+			}
+		}
 	}
 	
 	@Test(expected = Exception.class)
-	public void testVariable2() {
-		MatrixReader reader = new MatrixReader(new StringReader(VARIABLE), 3);
+	public void testVariable2() throws IOException {
+		MatrixReader reader = null;
 		
-		Assert.assertTrue(reader.hasNext());
-		Assert.assertArrayEquals(new double[] { 0.0, 0.1, -0.1 }, reader.next(),
-				Settings.EPS);
-		Assert.assertFalse(reader.hasNext());
+		try {
+			reader = new MatrixReader(new StringReader(VARIABLE), 3);
+			
+			Assert.assertTrue(reader.hasNext());
+			Assert.assertArrayEquals(new double[] { 0.0, 0.1, -0.1 }, reader.next(),
+					Settings.EPS);
+			Assert.assertFalse(reader.hasNext());
+		} finally {
+			if (reader != null) {
+				reader.close();
+			}
+		}
 	}
 	
 	@Test(expected = Exception.class)
-	public void testVariable3() {
-		MatrixReader reader = new MatrixReader(new StringReader(VARIABLE), 2);
+	public void testVariable3() throws IOException {
+		MatrixReader reader = null;
 		
-		Assert.assertFalse(reader.hasNext());
+		try {
+			reader = new MatrixReader(new StringReader(VARIABLE), 2);
+			
+			Assert.assertFalse(reader.hasNext());
+		} finally {
+			if (reader != null) {
+				reader.close();
+			}
+		}
 	}
 
 	@Test(expected = Exception.class)
-	public void testUnparseable1() {
-		MatrixReader reader = new MatrixReader(new StringReader(UNPARSEABLE));
+	public void testUnparseable1() throws IOException {
+		MatrixReader reader = null;
 		
-		Assert.assertTrue(reader.hasNext());
-		Assert.assertArrayEquals(new double[] { 0.0, 0.1, -0.1 }, reader.next(),
-				Settings.EPS);
-		Assert.assertFalse(reader.hasNext());
+		try {
+			reader = new MatrixReader(new StringReader(UNPARSEABLE));
+			
+			Assert.assertTrue(reader.hasNext());
+			Assert.assertArrayEquals(new double[] { 0.0, 0.1, -0.1 }, reader.next(),
+					Settings.EPS);
+			Assert.assertFalse(reader.hasNext());
+		} finally {
+			if (reader != null) {
+				reader.close();
+			}
+		}
 	}
 	
 	@Test(expected = Exception.class)
-	public void testUnparseable2() {
-		MatrixReader reader = new MatrixReader(new StringReader(UNPARSEABLE), 
-				3);
+	public void testUnparseable2() throws IOException {
+		MatrixReader reader = null;
 		
-		Assert.assertTrue(reader.hasNext());
-		Assert.assertArrayEquals(new double[] { 0.0, 0.1, -0.1 }, reader.next(),
-				Settings.EPS);
-		Assert.assertFalse(reader.hasNext());
+		try {
+			reader = new MatrixReader(new StringReader(UNPARSEABLE), 3);
+			
+			Assert.assertTrue(reader.hasNext());
+			Assert.assertArrayEquals(new double[] { 0.0, 0.1, -0.1 }, reader.next(),
+					Settings.EPS);
+			Assert.assertFalse(reader.hasNext());
+		} finally {
+			if (reader != null) {
+				reader.close();
+			}
+		}
 	}
 
 }

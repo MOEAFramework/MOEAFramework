@@ -23,7 +23,7 @@ import java.io.PrintStream;
 import java.util.Properties;
 
 import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.OptionBuilder;
+import org.apache.commons.cli.Option;
 import org.apache.commons.cli.OptionGroup;
 import org.apache.commons.cli.Options;
 import org.moeaframework.core.FrameworkException;
@@ -134,54 +134,53 @@ public class ExtractData extends CommandLineUtility {
 		super();
 	}
 
-	@SuppressWarnings("static-access")
 	@Override
 	public Options getOptions() {
 		Options options = super.getOptions();
 		
 		OptionGroup group = new OptionGroup();
 		group.setRequired(true);
-		group.addOption(OptionBuilder
-				.withLongOpt("problem")
+		group.addOption(Option.builder("b")
+				.longOpt("problem")
 				.hasArg()
-				.withArgName("name")
-				.create('b'));
-		group.addOption(OptionBuilder
-				.withLongOpt("dimension")
+				.argName("name")
+				.build());
+		group.addOption(Option.builder("d")
+				.longOpt("dimension")
 				.hasArg()
-				.withArgName("number")
-				.create('d'));
+				.argName("number")
+				.build());
 		options.addOptionGroup(group);
 		
-		options.addOption(OptionBuilder
-				.withLongOpt("input")
+		options.addOption(Option.builder("i")
+				.longOpt("input")
 				.hasArg()
-				.withArgName("file")
-				.isRequired()
-				.create('i'));
-		options.addOption(OptionBuilder
-				.withLongOpt("output")
+				.argName("file")
+				.required()
+				.build());
+		options.addOption(Option.builder("o")
+				.longOpt("output")
 				.hasArg()
-				.withArgName("file")
-				.create('o'));
-		options.addOption(OptionBuilder
-				.withLongOpt("separator")
+				.argName("file")
+				.build());
+		options.addOption(Option.builder("s")
+				.longOpt("separator")
 				.hasArg()
-				.withArgName("value")
-				.create('s'));
-		options.addOption(OptionBuilder
-				.withLongOpt("reference")
+				.argName("value")
+				.build());
+		options.addOption(Option.builder("r")
+				.longOpt("reference")
 				.hasArg()
-				.withArgName("file")
-				.create('r'));
-		options.addOption(OptionBuilder
-				.withLongOpt("epsilon")
+				.argName("file")
+				.build());
+		options.addOption(Option.builder("e")
+				.longOpt("epsilon")
 				.hasArg()
-				.withArgName("e1,e2,...")
-				.create('e'));
-		options.addOption(OptionBuilder
-				.withLongOpt("noheader")
-				.create('n'));
+				.argName("e1,e2,...")
+				.build());
+		options.addOption(Option.builder("n")
+				.longOpt("noheader")
+				.build());
 		
 		return options;
 	}

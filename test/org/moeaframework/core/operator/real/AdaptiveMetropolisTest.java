@@ -19,13 +19,14 @@ package org.moeaframework.core.operator.real;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import org.apache.commons.math3.linear.CholeskyDecomposition;
 import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.RealMatrix;
-import org.apache.commons.math3.stat.clustering.Cluster;
-import org.apache.commons.math3.stat.clustering.KMeansPlusPlusClusterer;
+import org.apache.commons.math3.ml.clustering.CentroidCluster;
+import org.apache.commons.math3.ml.clustering.Cluster;
+import org.apache.commons.math3.ml.clustering.DoublePoint;
+import org.apache.commons.math3.ml.clustering.KMeansPlusPlusClusterer;
 import org.apache.commons.math3.stat.correlation.Covariance;
 import org.junit.Assert;
 import org.junit.Test;
@@ -136,8 +137,8 @@ public class AdaptiveMetropolisTest extends ParentCentricVariationTest {
 	 * @param cluster the cluster
 	 * @return the covariance matrix for the specified cluster
 	 */
-	private RealMatrix getCovariance(Cluster<ClusterablePoint> cluster) {
-		List<ClusterablePoint> points = cluster.getPoints();
+	private RealMatrix getCovariance(Cluster<DoublePoint> cluster) {
+		List<DoublePoint> points = cluster.getPoints();
 		RealMatrix rm = MatrixUtils.createRealMatrix(points.size(), 2);
 		
 		for (int i=0; i<points.size(); i++) {
@@ -186,19 +187,18 @@ public class AdaptiveMetropolisTest extends ParentCentricVariationTest {
 
 		Solution[] offspring = am.evolve(parents);
 		
-		List<ClusterablePoint> points = new ArrayList<ClusterablePoint>();
+		List<DoublePoint> points = new ArrayList<DoublePoint>();
 
 		for (Solution solution : offspring) {
-			points.add(new ClusterablePoint(EncodingUtils.getReal(solution)));
+			points.add(new DoublePoint(EncodingUtils.getReal(solution)));
 		}
 
-		KMeansPlusPlusClusterer<ClusterablePoint> clusterer = 
-				new KMeansPlusPlusClusterer<ClusterablePoint>(new Random());
+		KMeansPlusPlusClusterer<DoublePoint> clusterer = 
+				new KMeansPlusPlusClusterer<DoublePoint>(parents.length, 100);
 
-		List<Cluster<ClusterablePoint>> clusters = clusterer.cluster(points,
-				parents.length, 100);
+		List<CentroidCluster<DoublePoint>> clusters = clusterer.cluster(points);
 
-		for (Cluster<ClusterablePoint> cluster : clusters) {
+		for (CentroidCluster<DoublePoint> cluster : clusters) {
 			TestUtils.assertEquals(getCovariance(cluster), 
 					getCovariance(parents, jumpRateCoefficient), 
 					new RelativeError(0.1));

@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.OptionBuilder;
+import org.apache.commons.cli.Option;
 import org.apache.commons.cli.OptionGroup;
 import org.apache.commons.cli.Options;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
@@ -77,36 +77,35 @@ public class ResultFileSeedMerger extends CommandLineUtility {
 		super();
 	}
 
-	@SuppressWarnings("static-access")
 	@Override
 	public Options getOptions() {
 		Options options = super.getOptions();
 
 		OptionGroup group = new OptionGroup();
 		group.setRequired(true);
-		group.addOption(OptionBuilder
-				.withLongOpt("problem")
+		group.addOption(Option.builder("b")
+				.longOpt("problem")
 				.hasArg()
-				.withArgName("name")
-				.create('b'));
-		group.addOption(OptionBuilder
-				.withLongOpt("dimension")
+				.argName("name")
+				.build());
+		group.addOption(Option.builder("d")
+				.longOpt("dimension")
 				.hasArg()
-				.withArgName("number")
-				.create('d'));
+				.argName("number")
+				.build());
 		options.addOptionGroup(group);
 
-		options.addOption(OptionBuilder
-				.withLongOpt("output")
+		options.addOption(Option.builder("o")
+				.longOpt("output")
 				.hasArg()
-				.withArgName("file")
-				.isRequired()
-				.create('o'));
-		options.addOption(OptionBuilder
-				.withLongOpt("epsilon")
+				.argName("file")
+				.required()
+				.build());
+		options.addOption(Option.builder("e")
+				.longOpt("epsilon")
 				.hasArg()
-				.withArgName("e1,e2,...")
-				.create('e'));
+				.argName("e1,e2,...")
+				.build());
 
 		return options;
 	}

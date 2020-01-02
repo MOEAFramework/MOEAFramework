@@ -18,18 +18,15 @@
 package org.moeaframework.core.operator;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.Random;
 
-import org.apache.commons.math3.stat.clustering.Cluster;
-import org.apache.commons.math3.stat.clustering.Clusterable;
-import org.apache.commons.math3.stat.clustering.KMeansPlusPlusClusterer;
+import org.apache.commons.math3.ml.clustering.CentroidCluster;
+import org.apache.commons.math3.ml.clustering.DoublePoint;
+import org.apache.commons.math3.ml.clustering.KMeansPlusPlusClusterer;
 import org.junit.Assert;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
-import org.moeaframework.util.Vector;
 
 /**
  * Provides test methods for checking if the offspring form clusters around each
@@ -40,17 +37,16 @@ public abstract class ParentCentricVariationTest extends
 
 	@Override
 	protected void check(Solution[] parents, Solution[] offspring) {
-		List<ClusterablePoint> points = new ArrayList<ClusterablePoint>();
+		List<DoublePoint> points = new ArrayList<DoublePoint>();
 
 		for (Solution solution : offspring) {
-			points.add(new ClusterablePoint(EncodingUtils.getReal(solution)));
+			points.add(new DoublePoint(EncodingUtils.getReal(solution)));
 		}
 
-		KMeansPlusPlusClusterer<ClusterablePoint> clusterer = 
-				new KMeansPlusPlusClusterer<ClusterablePoint>(new Random());
+		KMeansPlusPlusClusterer<DoublePoint> clusterer = 
+				new KMeansPlusPlusClusterer<DoublePoint>(parents.length, 100);
 
-		List<Cluster<ClusterablePoint>> clusters = clusterer.cluster(points,
-				parents.length, 100);
+		List<CentroidCluster<DoublePoint>> clusters = clusterer.cluster(points);
 
 		for (Solution solution : parents) {
 			boolean match = false;
@@ -75,43 +71,6 @@ public abstract class ParentCentricVariationTest extends
 
 			Assert.assertTrue(match);
 		}
-	}
-
-	protected static class ClusterablePoint implements
-			Clusterable<ClusterablePoint> {
-
-		private final double[] point;
-
-		public ClusterablePoint(double[] point) {
-			this.point = point;
-		}
-
-		@Override
-		public ClusterablePoint centroidOf(Collection<ClusterablePoint> points) {
-			double[] average = new double[point.length];
-
-			for (ClusterablePoint point : points) {
-				average = Vector.add(average, point.point);
-			}
-
-			return new ClusterablePoint(Vector.divide(average, points.size()));
-		}
-
-		@Override
-		public double distanceFrom(ClusterablePoint point) {
-			double sum = 0.0;
-
-			for (int i = 0; i < this.point.length; i++) {
-				sum += Math.pow(this.point[i] - point.point[i], 2.0);
-			}
-
-			return Math.sqrt(sum);
-		}
-
-		public double[] getPoint() {
-			return point;
-		}
-
 	}
 
 }

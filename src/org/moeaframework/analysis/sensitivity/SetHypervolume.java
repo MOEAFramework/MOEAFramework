@@ -20,7 +20,7 @@ package org.moeaframework.analysis.sensitivity;
 import java.io.File;
 
 import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.OptionBuilder;
+import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.NondominatedPopulation;
@@ -54,16 +54,15 @@ public class SetHypervolume extends CommandLineUtility {
 		super();
 	}
 
-	@SuppressWarnings("static-access")
 	@Override
 	public Options getOptions() {
 		Options options = super.getOptions();
 		
-		options.addOption(OptionBuilder
-				.withLongOpt("epsilon")
+		options.addOption(Option.builder("e")
+				.longOpt("epsilon")
 				.hasArg()
-				.withArgName("e1,e2,...")
-				.create('e'));
+				.argName("e1,e2,...")
+				.build());
 		
 		return options;
 	}

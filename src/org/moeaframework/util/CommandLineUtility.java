@@ -21,10 +21,9 @@ import java.lang.Thread.UncaughtExceptionHandler;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.GnuParser;
+import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
-import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
@@ -97,13 +96,12 @@ public abstract class CommandLineUtility {
 	 * 
 	 * @return the options made available by this command line utility
 	 */
-	@SuppressWarnings("static-access")
 	public Options getOptions() {
 		Options options = new Options();
 
-		options.addOption(OptionBuilder
-				.withLongOpt("help")
-				.create('h'));
+		options.addOption(Option.builder("h")
+				.longOpt("help")
+				.build());
 
 		return options;
 	}
@@ -141,7 +139,7 @@ public abstract class CommandLineUtility {
 		}
 
 		Options options = getOptions();
-		CommandLineParser commandLineParser = new GnuParser();
+		CommandLineParser commandLineParser = new DefaultParser();
 		CommandLine commandLine = commandLineParser.parse(options, args);
 			
 		if (commandLine.hasOption("help")) {

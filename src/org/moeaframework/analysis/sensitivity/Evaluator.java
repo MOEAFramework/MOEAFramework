@@ -23,7 +23,7 @@ import java.io.IOException;
 import java.util.Properties;
 
 import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.OptionBuilder;
+import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.FrameworkException;
@@ -128,71 +128,70 @@ public class Evaluator extends CommandLineUtility {
 		super();
 	}
 
-	@SuppressWarnings("static-access")
 	@Override
 	public Options getOptions() {
 		Options options = super.getOptions();
 
-		options.addOption(OptionBuilder
-				.withLongOpt("parameterFile")
+		options.addOption(Option.builder("p")
+				.longOpt("parameterFile")
 				.hasArg()
-				.withArgName("file")
-				.isRequired()
-				.create('p'));
-		options.addOption(OptionBuilder
-				.withLongOpt("input")
+				.argName("file")
+				.required()
+				.build());
+		options.addOption(Option.builder("i")
+				.longOpt("input")
 				.hasArg()
-				.withArgName("file")
-				.isRequired()
-				.create('i'));
-		options.addOption(OptionBuilder
-				.withLongOpt("output")
+				.argName("file")
+				.required()
+				.build());
+		options.addOption(Option.builder("o")
+				.longOpt("output")
 				.hasArg()
-				.withArgName("file")
-				.isRequired()
-				.create('o'));
-		options.addOption(OptionBuilder
-				.withLongOpt("problem")
+				.argName("file")
+				.required()
+				.build());
+		options.addOption(Option.builder("b")
+				.longOpt("problem")
 				.hasArg()
-				.withArgName("name")
-				.isRequired()
-				.create('b'));
-		options.addOption(OptionBuilder
-				.withLongOpt("algorithm")
+				.argName("name")
+				.required()
+				.build());
+		options.addOption(Option.builder("a")
+				.longOpt("algorithm")
 				.hasArg()
-				.withArgName("name")
-				.isRequired()
-				.create('a'));
-		options.addOption(OptionBuilder
-				.withLongOpt("properties")
+				.argName("name")
+				.required()
+				.build());
+		options.addOption(Option.builder("x")
+				.longOpt("properties")
 				.hasArgs()
-				.withArgName("p1=v1;p2=v2;...")
-				.withValueSeparator(';')
-				.create('x'));
-		options.addOption(OptionBuilder
-				.withLongOpt("seed")
+				.argName("p1=v1;p2=v2;...")
+				.valueSeparator(';')
+				.build());
+		options.addOption(Option.builder("s")
+				.longOpt("seed")
 				.hasArg()
-				.withArgName("value")
-				.create('s'));
-		options.addOption(OptionBuilder
-				.withLongOpt("epsilon")
+				.argName("value")
+				.build());
+		options.addOption(Option.builder("e")
+				.longOpt("epsilon")
 				.hasArg()
-				.withArgName("e1,e2,...")
-				.create('e'));
-		options.addOption(OptionBuilder
-				.withLongOpt("metrics")
-				.create('m'));
-		options.addOption(OptionBuilder
-				.withLongOpt("reference")
+				.argName("e1,e2,...")
+				.build());
+		options.addOption(Option.builder("m")
+				.longOpt("metrics")
+				.build());
+		options.addOption(Option.builder("r")
+				.longOpt("reference")
 				.hasArg()
-				.withArgName("file")
-				.create('r'));
-		options.addOption(OptionBuilder
-				.withLongOpt("novariables")
-				.create('n'));
-		options.addOption(OptionBuilder
-				.withLongOpt("force")
-				.create('f'));
+				.argName("file")
+				.build());
+		options.addOption(Option.builder("n")
+				.longOpt("novariables")
+				.build());
+		options.addOption(Option.builder("f")
+				.longOpt("force")
+				.build());
 
 		return options;
 	}

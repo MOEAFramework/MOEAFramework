@@ -26,7 +26,7 @@ import java.util.Properties;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.MissingOptionException;
-import org.apache.commons.cli.OptionBuilder;
+import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.util.CommandLineUtility;
@@ -371,55 +371,54 @@ public class Analysis extends CommandLineUtility {
 		return (max - band) / (double)max;
 	}
 	
-	@SuppressWarnings("static-access")
 	@Override
 	public Options getOptions() {
 		Options options = super.getOptions();
 		
-		options.addOption(OptionBuilder
-				.withLongOpt("parameterFile")
+		options.addOption(Option.builder("p")
+				.longOpt("parameterFile")
 				.hasArg()
-				.withArgName("file")
-				.isRequired()
-				.create('p'));
-		options.addOption(OptionBuilder
-				.withLongOpt("parameters")
+				.argName("file")
+				.required()
+				.build());
+		options.addOption(Option.builder("i")
+				.longOpt("parameters")
 				.hasArg()
-				.withArgName("file")
-				.isRequired()
-				.create('i'));
-		options.addOption(OptionBuilder
-				.withLongOpt("metric")
+				.argName("file")
+				.required()
+				.build());
+		options.addOption(Option.builder("m")
+				.longOpt("metric")
 				.hasArg()
-				.withArgName("value")
-				.isRequired()
-				.create('m'));
-		options.addOption(OptionBuilder
-				.withLongOpt("hypervolume")
+				.argName("value")
+				.required()
+				.build());
+		options.addOption(Option.builder("t")
+				.longOpt("hypervolume")
 				.hasArg()
-				.withArgName("value")
-				.create('t'));
-		options.addOption(OptionBuilder
-				.withLongOpt("output")
+				.argName("value")
+				.build());
+		options.addOption(Option.builder("o")
+				.longOpt("output")
 				.hasArg()
-				.withArgName("file")
-				.create('o'));
-		options.addOption(OptionBuilder
-				.withLongOpt("efficiency")
-				.create('e'));
-		options.addOption(OptionBuilder
-				.withLongOpt("band")
+				.argName("file")
+				.build());
+		options.addOption(Option.builder("e")
+				.longOpt("efficiency")
+				.build());
+		options.addOption(Option.builder("b")
+				.longOpt("band")
 				.hasArg()
-				.withArgName("width")
-				.create('b'));
-		options.addOption(OptionBuilder
-				.withLongOpt("controllability")
-				.create('c'));
-		options.addOption(OptionBuilder
-				.withLongOpt("threshold")
+				.argName("width")
+				.build());
+		options.addOption(Option.builder("c")
+				.longOpt("controllability")
+				.build());
+		options.addOption(Option.builder("t")
+				.longOpt("threshold")
 				.hasArg()
-				.withArgName("percent")
-				.create('t'));
+				.argName("percent")
+				.build());
 		
 		return options;
 	}

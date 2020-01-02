@@ -38,7 +38,7 @@ import java.security.NoSuchAlgorithmException;
 import java.text.MessageFormat;
 
 import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.OptionBuilder;
+import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -306,15 +306,14 @@ public class FileProtection extends CommandLineUtility {
 		};
 	}
 
-	@SuppressWarnings("static-access")
 	@Override
 	public Options getOptions() {
 		Options options = super.getOptions();
 		
-		options.addOption(OptionBuilder
-				.withLongOpt("check")
-				.withDescription("Validates the listed files")
-				.create('c'));
+		options.addOption(Option.builder("c")
+				.longOpt("check")
+				.desc("Validates the listed files")
+				.build());
 		
 		return options;
 	}

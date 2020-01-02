@@ -17,12 +17,12 @@
  */
 package org.moeaframework.problem.misc;
 
-import org.junit.Test;
+//import org.junit.Test;
 import org.moeaframework.problem.ProblemTest;
 
 public class OKA1Test extends ProblemTest {
 
-	//TODO: Test no longer in JMetal
+	//TODO: Problem no longer in JMetal
 //	@Test
 //	public void testJMetal() throws Exception {
 //		test(new org.uma.jmetal.problem.multiobjective.OKA1(), new OKA1());

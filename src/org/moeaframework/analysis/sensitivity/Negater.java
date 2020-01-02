@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.OptionBuilder;
+import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.moeaframework.util.CommandLineUtility;
 import org.moeaframework.util.TypedProperties;
@@ -66,17 +66,16 @@ public class Negater extends CommandLineUtility {
         super();
     }
 
-    @SuppressWarnings("static-access")
     @Override
     public Options getOptions() {
         Options options = super.getOptions();
 
-        options.addOption(OptionBuilder
-        		.withLongOpt("direction")
+        options.addOption(Option.builder("d")
+        		.longOpt("direction")
         		.hasArg()
-                .withArgName("d1,d2,...")
-                .isRequired()
-                .create('d'));
+                .argName("d1,d2,...")
+                .required()
+                .build());
 
         return options;
     }

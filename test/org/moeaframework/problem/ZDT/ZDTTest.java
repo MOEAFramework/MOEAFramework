@@ -93,6 +93,7 @@ public class ZDTTest extends ProblemTest {
 	 * @param problem the ZDT problem to be tested
 	 * @throws Exception should not occur
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void test(String problem) throws Exception {
 		org.uma.jmetal.problem.Problem problemA;
 		Problem problemB;

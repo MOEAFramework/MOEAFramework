@@ -6,6 +6,7 @@ pisa/
 test-results/
 javadoc/
 maven/
+.settings/
 *.exe
 *~
 .pydevproject

@@ -38,8 +38,9 @@ public abstract class ProblemTest {
 	 * @param problemB the MOEA Framework problem
 	 * @throws Exception if an error occurred in JMetal
 	 */
-	protected <T extends org.uma.jmetal.solution.Solution<?>> void test(org.uma.jmetal.problem.Problem<T> problemA, Problem problemB)
-			throws Exception {
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	protected <T extends org.uma.jmetal.solution.Solution<?>> void test(
+			org.uma.jmetal.problem.Problem<T> problemA, Problem problemB) throws Exception {
 		ProblemAdapter adapter = JMetalUtils.createProblemAdapter(problemB);
 		
 		for (int i = 0; i < TestThresholds.SAMPLES; i++) {

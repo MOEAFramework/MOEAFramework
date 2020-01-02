@@ -30,9 +30,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-import org.apache.commons.lang3.text.StrTokenizer;
 import org.moeaframework.util.TypedProperties;
 import org.moeaframework.util.io.FileProtection;
+import org.apache.commons.text.StringTokenizer;
 import org.moeaframework.core.NondominatedPopulation.DuplicateMode;
 import org.moeaframework.core.indicator.Hypervolume;
 
@@ -601,7 +601,7 @@ public class Settings {
 	 * @return the individual arguments comprising the command
 	 */
 	public static String[] parseCommand(String command) {
-		return new StrTokenizer(command).setQuoteChar('\"').getTokenArray();
+		return new StringTokenizer(command).setQuoteChar('\"').getTokenArray();
 	}
 	
 	/**

@@ -22,7 +22,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.moeaframework.core.Population;
-import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 
 /**

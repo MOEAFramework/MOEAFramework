@@ -20,7 +20,7 @@ package org.moeaframework.analysis.sensitivity;
 import java.io.File;
 
 import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.OptionBuilder;
+import org.apache.commons.cli.Option;
 import org.apache.commons.cli.OptionGroup;
 import org.apache.commons.cli.Options;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
@@ -78,39 +78,38 @@ public class ResultFileMerger extends CommandLineUtility {
 		super();
 	}
 	
-	@SuppressWarnings("static-access")
 	@Override
 	public Options getOptions() {
 		Options options = super.getOptions();
 		
 		OptionGroup group = new OptionGroup();
 		group.setRequired(true);
-		group.addOption(OptionBuilder
-				.withLongOpt("problem")
+		group.addOption(Option.builder("b")
+				.longOpt("problem")
 				.hasArg()
-				.withArgName("name")
-				.create('b'));
-		group.addOption(OptionBuilder
-				.withLongOpt("dimension")
+				.argName("name")
+				.build());
+		group.addOption(Option.builder("d")
+				.longOpt("dimension")
 				.hasArg()
-				.withArgName("number")
-				.create('d'));
+				.argName("number")
+				.build());
 		options.addOptionGroup(group);
 		
-		options.addOption(OptionBuilder
-				.withLongOpt("epsilon")
+		options.addOption(Option.builder("e")
+				.longOpt("epsilon")
 				.hasArg()
-				.withArgName("e1,e2,...")
-				.create('e'));
-		options.addOption(OptionBuilder
-				.withLongOpt("output")
+				.argName("e1,e2,...")
+				.build());
+		options.addOption(Option.builder("o")
+				.longOpt("output")
 				.hasArg()
-				.withArgName("file")
-				.isRequired()
-				.create('o'));
-		options.addOption(OptionBuilder
-				.withLongOpt("resultFile")
-				.create('r'));
+				.argName("file")
+				.required()
+				.build());
+		options.addOption(Option.builder("r")
+				.longOpt("resultFile")
+				.build());
 		
 		return options;
 	}

@@ -21,7 +21,7 @@ import java.io.File;
 import java.io.PrintStream;
 
 import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.OptionBuilder;
+import org.apache.commons.cli.Option;
 import org.apache.commons.cli.OptionGroup;
 import org.apache.commons.cli.Options;
 import org.moeaframework.core.Problem;
@@ -62,30 +62,29 @@ public class ResultFileInfo extends CommandLineUtility {
 		super();
 	}
 	
-	@SuppressWarnings("static-access")
 	@Override
 	public Options getOptions() {
 		Options options = super.getOptions();
 		
 		OptionGroup group = new OptionGroup();
 		group.setRequired(true);
-		group.addOption(OptionBuilder
-				.withLongOpt("problem")
+		group.addOption(Option.builder("b")
+				.longOpt("problem")
 				.hasArg()
-				.withArgName("name")
-				.create('b'));
-		group.addOption(OptionBuilder
-				.withLongOpt("dimension")
+				.argName("name")
+				.build());
+		group.addOption(Option.builder("d")
+				.longOpt("dimension")
 				.hasArg()
-				.withArgName("number")
-				.create('d'));
+				.argName("number")
+				.build());
 		options.addOptionGroup(group);
 		
-		options.addOption(OptionBuilder
-				.withLongOpt("output")
+		options.addOption(Option.builder("o")
+				.longOpt("output")
 				.hasArg()
-				.withArgName("file")
-				.create('o'));
+				.argName("file")
+				.build());
 		
 		return options;
 	}

@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 
 import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.OptionBuilder;
+import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.math3.stat.StatUtils;
 import org.moeaframework.core.PRNG;
@@ -591,42 +591,41 @@ public class SobolAnalysis extends CommandLineUtility {
 		}
 	}
 
-	@SuppressWarnings("static-access")
 	@Override
 	public Options getOptions() {
 		Options options = super.getOptions();
 
-		options.addOption(OptionBuilder
-				.withLongOpt("parameterFile")
+		options.addOption(Option.builder("p")
+				.longOpt("parameterFile")
 				.hasArg()
-				.withArgName("file")
-				.isRequired()
-				.create('p'));
-		options.addOption(OptionBuilder
-				.withLongOpt("input")
+				.argName("file")
+				.required()
+				.build());
+		options.addOption(Option.builder("i")
+				.longOpt("input")
 				.hasArg()
-				.withArgName("file")
-				.isRequired()
-				.create('i'));
-		options.addOption(OptionBuilder
-				.withLongOpt("metric")
+				.argName("file")
+				.required()
+				.build());
+		options.addOption(Option.builder("m")
+				.longOpt("metric")
 				.hasArg()
-				.withArgName("value")
-				.isRequired()
-				.create('m'));
-		options.addOption(OptionBuilder
-				.withLongOpt("simple")
-				.create('s'));
-		options.addOption(OptionBuilder
-				.withLongOpt("output")
+				.argName("value")
+				.required()
+				.build());
+		options.addOption(Option.builder("s")
+				.longOpt("simple")
+				.build());
+		options.addOption(Option.builder("o")
+				.longOpt("output")
 				.hasArg()
-				.withArgName("file")
-				.create('o'));
-		options.addOption(OptionBuilder
-				.withLongOpt("resamples")
+				.argName("file")
+				.build());
+		options.addOption(Option.builder("r")
+				.longOpt("resamples")
 				.hasArg()
-				.withArgName("number")
-				.create('r'));
+				.argName("number")
+				.build());
 
 		return options;
 	}

@@ -21,7 +21,7 @@ import java.io.File;
 import java.io.IOException;
 
 import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.OptionBuilder;
+import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.FrameworkException;
@@ -79,39 +79,38 @@ public class SetGenerator extends CommandLineUtility {
 		super();
 	}
 	
-	@SuppressWarnings("static-access")
 	@Override
 	public Options getOptions() {
 		Options options = super.getOptions();
 		
-		options.addOption(OptionBuilder
-				.withLongOpt("problem")
+		options.addOption(Option.builder("b")
+				.longOpt("problem")
 				.hasArg()
-				.withArgName("name")
-				.isRequired()
-				.create('b'));
-		options.addOption(OptionBuilder
-				.withLongOpt("numberOfPoints")
+				.argName("name")
+				.required()
+				.build());
+		options.addOption(Option.builder("n")
+				.longOpt("numberOfPoints")
 				.hasArg()
-				.withArgName("value")
-				.isRequired()
-				.create('n'));
-		options.addOption(OptionBuilder
-				.withLongOpt("seed")
+				.argName("value")
+				.required()
+				.build());
+		options.addOption(Option.builder("s")
+				.longOpt("seed")
 				.hasArg()
-				.withArgName("value")
-				.create('s'));
-		options.addOption(OptionBuilder
-				.withLongOpt("output")
+				.argName("value")
+				.build());
+		options.addOption(Option.builder("o")
+				.longOpt("output")
 				.hasArg()
-				.withArgName("file")
-				.isRequired()
-				.create('o'));
-		options.addOption(OptionBuilder
-				.withLongOpt("epsilon")
+				.argName("file")
+				.required()
+				.build());
+		options.addOption(Option.builder("e")
+				.longOpt("epsilon")
 				.hasArg()
-				.withArgName("e1,e2,...")
-				.create('e'));
+				.argName("e1,e2,...")
+				.build());
 		
 		return options;
 	}

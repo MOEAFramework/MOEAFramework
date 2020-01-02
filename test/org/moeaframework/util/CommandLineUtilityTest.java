@@ -18,7 +18,7 @@
 package org.moeaframework.util;
 
 import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.OptionBuilder;
+import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.junit.Assert;
@@ -31,15 +31,14 @@ public class CommandLineUtilityTest {
 	
 	public class MockCommandLineUtility extends CommandLineUtility {
 
-		@SuppressWarnings("static-access")
 		@Override
 		public Options getOptions() {
 			Options options = super.getOptions();
 			
-			options.addOption(OptionBuilder
-					.isRequired()
-					.withLongOpt("test")
-					.create('t'));
+			options.addOption(Option.builder("t")
+					.required()
+					.longOpt("test")
+					.build());
 			
 			return options;
 		}
