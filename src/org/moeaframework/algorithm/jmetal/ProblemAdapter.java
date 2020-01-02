@@ -1,9 +1,24 @@
+/* Copyright 2009-2019 David Hadka
+ *
+ * This file is part of the MOEA Framework.
+ *
+ * The MOEA Framework is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
+ *
+ * The MOEA Framework is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
+ * License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package org.moeaframework.algorithm.jmetal;
 
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
-import org.uma.jmetal.util.solutionattribute.impl.NumberOfViolatedConstraints;
-import org.uma.jmetal.util.solutionattribute.impl.OverallConstraintViolation;
 
 public abstract class ProblemAdapter<T extends org.uma.jmetal.solution.Solution<?>> implements org.uma.jmetal.problem.Problem<T> {
 
@@ -47,23 +62,7 @@ public abstract class ProblemAdapter<T extends org.uma.jmetal.solution.Solution<
 
 		getProblem().evaluate(result);
 		
-		for (int i = 0; i < getNumberOfObjectives(); i++) {
-			solution.setObjective(i, result.getObjective(i));
-		}
-			
-		// calculate constraint violation
-		double overallConstraintViolation = 0.0;
-		int numberOfViolations = 0;
-		
-		for (int i = 0; i < getNumberOfConstraints(); i++) {
-			if (result.getConstraint(i) != 0.0) {
-				numberOfViolations++;
-				overallConstraintViolation -= Math.abs(result.getConstraint(i));
-			}
-		}
-		
-		new OverallConstraintViolation<T>().setAttribute(solution, overallConstraintViolation);
-		new NumberOfViolatedConstraints<T>().setAttribute(solution, numberOfViolations);
+		JMetalUtils.copyObjectivesAndConstraints(result, solution);
 	}
 
 	public int getNumberOfMutationIndices() {

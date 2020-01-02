@@ -21,30 +21,27 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.RealVariable;
 
 /**
- * A mock problem with real variables.
+ * Mock class for a problem with constraint violations.
  */
-public class MockRealProblem extends AbstractProblem {
-	
-	public MockRealProblem() {
-		this(1);
-	}
-	
-	public MockRealProblem(int numberOfObjectives) {
-		super(1, numberOfObjectives);
+public class MockConstraintProblem extends AbstractProblem {
+
+	public MockConstraintProblem() {
+		super(1, 1, 3);
 	}
 
 	@Override
 	public void evaluate(Solution solution) {
-		for (int i = 0; i < getNumberOfObjectives(); i++) {
-			solution.setObjective(i, 5.0);
-		}
+		solution.setObjective(0, 5.0);
+		solution.setConstraint(0, -15.0);
+		solution.setConstraint(1, 0.0);
+		solution.setConstraint(2, 20.0);
 	}
 
 	@Override
 	public Solution newSolution() {
-		Solution solution = new Solution(1, getNumberOfObjectives());
+		Solution solution = new Solution(1, 1, 3);
 		solution.setVariable(0, new RealVariable(0.0, 1.0));
 		return solution;
 	}
-
+	
 }

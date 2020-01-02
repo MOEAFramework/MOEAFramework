@@ -17,6 +17,7 @@
  */
 package org.moeaframework.problem.ZDT;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.moeaframework.core.Problem;
 import org.moeaframework.problem.ProblemTest;
@@ -82,6 +83,7 @@ public class ZDTTest extends ProblemTest {
 	 * @throws Exception should not occur
 	 */
 	@Test
+	@Ignore("bug in JMetal 5.9 - fixed by https://github.com/jMetal/jMetal/commit/065a141510a3968cc03a8821a7977ee20614548b")
 	public void testZDT6() throws Exception {
 		test("ZDT6");
 	}

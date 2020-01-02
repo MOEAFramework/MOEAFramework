@@ -19,64 +19,62 @@ package org.moeaframework.algorithm.jmetal;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.variable.RealVariable;
-import org.moeaframework.problem.AbstractProblem;
+import org.moeaframework.problem.MockConstraintProblem;
 import org.uma.jmetal.solution.DoubleSolution;
-import org.uma.jmetal.util.JMetalException;
-import org.uma.jmetal.util.solutionattribute.impl.NumberOfViolatedConstraints;
-import org.uma.jmetal.util.solutionattribute.impl.OverallConstraintViolation;
 
 /**
- * Tests the {@link JMetalProblemAdapters} class.
+ * Tests the {@link ProblemAdapter} class.
  */
 public class ProblemAdapterTest {
 	
-	/**
-	 * Mock class for a problem with constraint violations.
-	 */
-	private class MockConstraintProblem extends AbstractProblem {
+	private class TestProblemAdapter<T extends org.uma.jmetal.solution.Solution<?>> extends ProblemAdapter<T> {
+		
+		private static final long serialVersionUID = -4544075640184829372L;
 
-		public MockConstraintProblem() {
-			super(1, 1, 3);
+		public TestProblemAdapter(Problem problem) {
+			super(problem);
 		}
 
 		@Override
-		public void evaluate(Solution solution) {
-			solution.setConstraint(0, -15.0);
-			solution.setConstraint(1, 0.0);
-			solution.setConstraint(2, 20.0);
+		public T createSolution() {
+			throw new UnsupportedOperationException();
 		}
 
 		@Override
-		public Solution newSolution() {
-			Solution solution = new Solution(1, 1, 3);
-			solution.setVariable(0, new RealVariable(0.0, 1.0));
-			return solution;
+		public Solution convert(T solution) {
+			throw new UnsupportedOperationException();
 		}
 		
 	}
 	
-	/**
-	 * Tests to ensure that the aggregate constraint violation sent to JMetal
-	 * is correct.  In JMetal, constraint violations are indicated by
-	 * negative values.
-	 * 
-	 * @throws ClassNotFoundException should not occur
-	 * @throws JMException should not occur
-	 */
 	@Test
-	public void testConstraintAggregation() throws ClassNotFoundException, JMetalException {
+	public void testDefaultMethods() {
 		MockConstraintProblem problem = new MockConstraintProblem();
-		DoubleProblemAdapter adapter = new DoubleProblemAdapter(problem);
+		TestProblemAdapter<DoubleSolution> adapter = new TestProblemAdapter<DoubleSolution>(problem);
+		
+		Assert.assertEquals(problem.getName(), adapter.getName());
+		Assert.assertEquals(problem.getNumberOfVariables(), adapter.getNumberOfVariables());
+		Assert.assertEquals(problem.getNumberOfObjectives(), adapter.getNumberOfObjectives());
+		Assert.assertEquals(problem.getNumberOfConstraints(), adapter.getNumberOfConstraints());
+		Assert.assertEquals(problem.getNumberOfVariables(), adapter.getNumberOfMutationIndices());
+	}
+	
+	@Test
+	public void testEvaluate() {
+		MockConstraintProblem problem = new MockConstraintProblem();
+		ProblemAdapter<DoubleSolution> adapter = new DoubleProblemAdapter(problem);
 		
 		DoubleSolution solution = adapter.createSolution();
 		adapter.evaluate(solution);
 		
-		Assert.assertEquals(-35.0, new OverallConstraintViolation<DoubleSolution>().getAttribute(solution),
-				Settings.EPS);
-		Assert.assertEquals(2, (int)new NumberOfViolatedConstraints<DoubleSolution>().getAttribute(solution));
+		Assert.assertEquals(problem.getNumberOfVariables(), solution.getNumberOfVariables());
+		Assert.assertEquals(problem.getNumberOfObjectives(), solution.getNumberOfObjectives());
+		Assert.assertEquals(5.0, solution.getObjective(0), Settings.EPS);
+		Assert.assertEquals(-35.0, JMetalUtils.getOverallConstraintViolation(solution), Settings.EPS);
+		Assert.assertEquals(2, JMetalUtils.getNumberOfViolatedConstraints(solution));
 	}
 
 }

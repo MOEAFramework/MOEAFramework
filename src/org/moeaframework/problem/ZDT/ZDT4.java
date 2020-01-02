@@ -19,6 +19,7 @@ package org.moeaframework.problem.ZDT;
 
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
+import org.moeaframework.core.variable.RealVariable;
 
 /**
  * The ZDT4 test problem.
@@ -56,6 +57,19 @@ public class ZDT4 extends ZDT {
 
 		solution.setObjective(0, x[0]);
 		solution.setObjective(1, g * h);
+	}
+	
+	@Override
+	public Solution newSolution() {
+		Solution solution = new Solution(numberOfVariables, 2);
+
+		solution.setVariable(0, new RealVariable(0.0, 1.0));
+
+		for (int i = 1; i < numberOfVariables; i++) {
+			solution.setVariable(i, new RealVariable(-5.0, 5.0));
+		}
+
+		return solution;
 	}
 
 }

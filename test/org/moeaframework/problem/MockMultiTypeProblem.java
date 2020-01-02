@@ -18,32 +18,30 @@
 package org.moeaframework.problem;
 
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.variable.BinaryVariable;
+import org.moeaframework.core.variable.Permutation;
 import org.moeaframework.core.variable.RealVariable;
 
 /**
- * A mock problem with real variables.
+ * A mock problem with different types of variables.
  */
-public class MockRealProblem extends AbstractProblem {
+public class MockMultiTypeProblem extends AbstractProblem {
 	
-	public MockRealProblem() {
-		this(1);
-	}
-	
-	public MockRealProblem(int numberOfObjectives) {
-		super(1, numberOfObjectives);
+	public MockMultiTypeProblem() {
+		super(3, 1);
 	}
 
 	@Override
 	public void evaluate(Solution solution) {
-		for (int i = 0; i < getNumberOfObjectives(); i++) {
-			solution.setObjective(i, 5.0);
-		}
+		solution.setObjective(0, 5.0);
 	}
 
 	@Override
 	public Solution newSolution() {
-		Solution solution = new Solution(1, getNumberOfObjectives());
+		Solution solution = new Solution(3, 1);
 		solution.setVariable(0, new RealVariable(0.0, 1.0));
+		solution.setVariable(1, new BinaryVariable(10));
+		solution.setVariable(2, new Permutation(5));
 		return solution;
 	}
 

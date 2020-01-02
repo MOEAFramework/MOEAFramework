@@ -38,7 +38,7 @@ public class R3IndicatorTest {
 		NondominatedPopulation referenceSet = new NondominatedPopulation(
 				PopulationIO.readObjectives(new File("./pf/DTLZ2.2D.pf")));
 		
-		R3Indicator indicator = new R3Indicator(new MockRealProblem(), 500, referenceSet);
+		R3Indicator indicator = new R3Indicator(new MockRealProblem(2), 500, referenceSet);
 		Assert.assertEquals(0.0, indicator.evaluate(referenceSet), 0.000001);
 	}
 	
@@ -48,7 +48,7 @@ public class R3IndicatorTest {
 		referenceSet.add(TestUtils.newSolution(0.0, 1.0));
 		referenceSet.add(TestUtils.newSolution(1.0, 0.0));
 		
-		R3Indicator indicator = new R3Indicator(new MockRealProblem(), 2, referenceSet);
+		R3Indicator indicator = new R3Indicator(new MockRealProblem(2), 2, referenceSet);
 		
 		NondominatedPopulation population1 = new NondominatedPopulation();
 		population1.add(TestUtils.newSolution(0.75, 0.25));
@@ -65,7 +65,7 @@ public class R3IndicatorTest {
 		NondominatedPopulation referenceSet = new NondominatedPopulation(
 				PopulationIO.readObjectives(new File("./pf/DTLZ2.2D.pf")));
 		
-		R3Indicator indicator = new R3Indicator(new MockRealProblem(), 500, referenceSet);
+		R3Indicator indicator = new R3Indicator(new MockRealProblem(2), 500, referenceSet);
 		
 		NondominatedPopulation population = new NondominatedPopulation();
 		population.add(TestUtils.newSolution(0.75, 0.25));

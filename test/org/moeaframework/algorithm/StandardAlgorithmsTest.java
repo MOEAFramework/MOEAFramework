@@ -33,6 +33,7 @@ import org.moeaframework.problem.MockBinaryProblem;
 import org.moeaframework.problem.MockPermutationProblem;
 import org.moeaframework.problem.MockRealProblem;
 import org.moeaframework.problem.MockSubsetProblem;
+import org.moeaframework.problem.DTLZ.DTLZ2;
 
 /**
  * Tests the {@link StandardAlgorithms} class.
@@ -71,7 +72,7 @@ public class StandardAlgorithmsTest {
 	 */
 	@Before
 	public void setUp() throws IOException {
-		realProblem = new MockRealProblem();
+		realProblem = new MockRealProblem(2);
 		binaryProblem = new MockBinaryProblem();
 		permutationProblem = new MockPermutationProblem();
 		subsetProblem = new MockSubsetProblem();
@@ -155,7 +156,7 @@ public class StandardAlgorithmsTest {
 	
 	@Test
 	public void testIBEA_Real() {
-		test("IBEA", realProblem);
+		test("IBEA", new DTLZ2(2));
 	}
 
 	@Test

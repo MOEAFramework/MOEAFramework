@@ -46,7 +46,7 @@ public class RIndicatorTest {
 		NondominatedPopulation referenceSet = new NondominatedPopulation(
 				PopulationIO.readObjectives(new File(file)));
 		
-		RIndicator indicator = new RIndicator(new MockRealProblem(), 500, referenceSet, utilityFunction) {
+		RIndicator indicator = new RIndicator(new MockRealProblem(2), 500, referenceSet, utilityFunction) {
 
 			@Override
 			public double evaluate(NondominatedPopulation approximationSet) {

@@ -38,7 +38,7 @@ public class R1IndicatorTest {
 		NondominatedPopulation referenceSet = new NondominatedPopulation(
 				PopulationIO.readObjectives(new File("./pf/DTLZ2.2D.pf")));
 		
-		R1Indicator indicator = new R1Indicator(new MockRealProblem(), 500, referenceSet);
+		R1Indicator indicator = new R1Indicator(new MockRealProblem(2), 500, referenceSet);
 		Assert.assertEquals(0.5, indicator.evaluate(referenceSet), 0.000001);
 	}
 	
@@ -51,7 +51,7 @@ public class R1IndicatorTest {
 		population.add(TestUtils.newSolution(0.75, 0.25));
 		population.add(TestUtils.newSolution(0.25, 0.75));
 		
-		R1Indicator indicator = new R1Indicator(new MockRealProblem(), 500, referenceSet);
+		R1Indicator indicator = new R1Indicator(new MockRealProblem(2), 500, referenceSet);
 		
 		Assert.assertEquals(5.269461078e-001, indicator.evaluate(population), 0.000001);
 	}

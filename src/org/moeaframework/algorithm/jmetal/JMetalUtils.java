@@ -1,3 +1,20 @@
+/* Copyright 2009-2019 David Hadka
+ *
+ * This file is part of the MOEA Framework.
+ *
+ * The MOEA Framework is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
+ *
+ * The MOEA Framework is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
+ * License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package org.moeaframework.algorithm.jmetal;
 
 import java.util.ArrayList;
@@ -17,6 +34,7 @@ import org.uma.jmetal.util.front.Front;
 import org.uma.jmetal.util.front.imp.ArrayFront;
 import org.uma.jmetal.util.point.Point;
 import org.uma.jmetal.util.point.impl.ArrayPoint;
+import org.uma.jmetal.util.solutionattribute.impl.NumberOfViolatedConstraints;
 import org.uma.jmetal.util.solutionattribute.impl.OverallConstraintViolation;
 
 public class JMetalUtils {
@@ -83,12 +101,17 @@ public class JMetalUtils {
 		// TODO: Will need to be updated when switching to JMetal 6
 		if (from.getNumberOfConstraints() > 0) {
 			double overallConstraintViolation = 0.0;
+			int numberOfViolatedConstraints = 0;
 			
 			for (int i = 0; i < from.getNumberOfConstraints(); i++) {
-				overallConstraintViolation -= Math.abs(from.getConstraint(i));
+				if (from.getConstraint(i) != 0.0) {
+					overallConstraintViolation -= Math.abs(from.getConstraint(i));
+					numberOfViolatedConstraints++;
+				}
 			}
 			
 			setOverallConstraintViolation(to, overallConstraintViolation);
+			setNumberOfViolatedConstraints(to, numberOfViolatedConstraints);
 		}
 	}
 	
@@ -102,8 +125,22 @@ public class JMetalUtils {
 		}
 	}
 	
+	public static <T extends org.uma.jmetal.solution.Solution<?>> int getNumberOfViolatedConstraints(T solution) {
+		Integer value = new NumberOfViolatedConstraints<T>().getAttribute(solution);
+		
+		if (value == null) {
+			return 0;
+		} else {
+			return value;
+		}
+	}
+	
 	public static <T extends org.uma.jmetal.solution.Solution<?>> void setOverallConstraintViolation(T solution, double value) {
 		new OverallConstraintViolation<T>().setAttribute(solution, value);
+	}
+	
+	public static <T extends org.uma.jmetal.solution.Solution<?>> void setNumberOfViolatedConstraints(T solution, int value) {
+		new NumberOfViolatedConstraints<T>().setAttribute(solution, value);
 	}
 	
 	public static <T extends org.uma.jmetal.solution.Solution<?>> List<T> toSolutionSet(
