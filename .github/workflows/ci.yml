@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     
     strategy:
-      #fail-fast: false
+      fail-fast: false
       matrix:
         java: [ '1.8', '9.x.x', '10.x.x', '11.x.x', '12.x.x', '13.x.x' ]
 
@@ -22,10 +22,9 @@ jobs:
       run: ant -noinput -buildfile build.xml
     - name: Test with Ant - Java ${{ matrix.java }}
       run: ant -DON_CI=true -f test.xml
-      continue-on-error: true
     - name: Upload test results
       uses: actions/upload-artifact@v1
-      #if: always()
+      if: always()
       with:
         name: ant-test-results-${{ matrix.java }}
         path: test-results
@@ -35,7 +34,7 @@ jobs:
     runs-on: ubuntu-latest
     
     strategy:
-      #fail-fast: false
+      fail-fast: false
       matrix:
         java: [ '1.8' ]
 
@@ -59,10 +58,9 @@ jobs:
         mvn test
       env:
         ON_CI: true
-      continue-on-error: true
     - name: Upload test results
       uses: actions/upload-artifact@v1
-      #if: always()
+      if: always()
       with:
         name: maven-test-results-${{ matrix.java }}
         path: build/target/surefire-reports
