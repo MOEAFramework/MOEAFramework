@@ -59,4 +59,4 @@ jobs:
       #if: always()
       with:
         name: maven-test-results-${{ matrix.java }}
-        path: build\target\surefire-reports
+        path: build/target/surefire-reports
