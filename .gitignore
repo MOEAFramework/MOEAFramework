@@ -10,4 +10,4 @@ maven/
 *.exe
 *~
 .pydevproject
-jMetal.log
+jMetal.log*

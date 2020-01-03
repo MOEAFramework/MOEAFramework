@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!--
-Copyright 2009-2019 David Hadka
+Copyright 2009-2020 David Hadka
 
 This file is part of the MOEA Framework.
 
@@ -78,7 +78,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		<fail unless="do.update">Build aborted by user.</fail>
 
 		<replace dir="." includes="**/*.java,**/*.c,**/*.h">
-			<replacetoken><![CDATA[/* Copyright 2009-2018 David Hadka
+			<replacetoken><![CDATA[/* Copyright 2009-2019 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -95,7 +95,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */]]></replacetoken>
-			<replacevalue><![CDATA[/* Copyright 2009-2019 David Hadka
+			<replacevalue><![CDATA[/* Copyright 2009-2020 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
