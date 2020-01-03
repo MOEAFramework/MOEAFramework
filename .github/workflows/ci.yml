@@ -8,6 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     
     strategy:
+      fail-fast: false
       matrix:
         java: [ '1.8', '9.x.x', '10.x.x', '11.x.x', '12.x.x', '13.x.x' ]
 
@@ -33,6 +34,7 @@ jobs:
     runs-on: ubuntu-latest
     
     strategy:
+      fail-fast: false
       matrix:
         java: [ '1.8' ]
 
@@ -44,6 +46,12 @@ jobs:
         java-version: ${{ matrix.java }}
     - name: Prepare Maven project - Java ${{ matrix.java }}
       run: ant -f test.xml build-maven-tests
+    - uses: actions/cache@v1
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: |
+          ${{ runner.os }}-maven-
     - name: Run Maven tests - Java ${{ matrix.java }}
       run: |
         cd build
@@ -55,4 +63,4 @@ jobs:
       if: always()
       with:
         name: maven-test-results-${{ matrix.java }}
-        path: build\target\surefire-reports
+        path: build/target/surefire-reports
