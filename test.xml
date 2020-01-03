@@ -216,6 +216,10 @@ Use of these build scripts requires Apache Ant to be installed.  See
 			<fileset dir="test" />
 		</copy>
 		
+		<copy todir="${build}/src/test/resources">
+			<fileset dir="test" excludes="**/*.java" />
+		</copy>
+		
 		<copy todir="${build}/pf">
 			<fileset dir="pf" />
 		</copy>
