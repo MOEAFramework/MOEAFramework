@@ -22,10 +22,10 @@ jobs:
     - name: Test with Ant - Java ${{ matrix.java }}
       run: ant -DON_CI=true -f test.xml
     - name: Upload test results
-        uses: actions/upload-artifact@v1
-        with:
-          name: ant-test-results-${{ matrix.java }}
-          path: test-results
+      uses: actions/upload-artifact@v1
+      with:
+        name: ant-test-results-${{ matrix.java }}
+        path: test-results
 
   maven-test:
 
@@ -50,7 +50,7 @@ jobs:
       env:
         ON_CI: true
     - name: Upload test results
-        uses: actions/upload-artifact@v1
-        with:
-          name: maven-test-results-${{ matrix.java }}
-          path: build\target\surefire-reports
+      uses: actions/upload-artifact@v1
+      with:
+        name: maven-test-results-${{ matrix.java }}
+        path: build\target\surefire-reports
