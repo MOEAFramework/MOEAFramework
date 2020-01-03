@@ -23,6 +23,7 @@ jobs:
       run: ant -DON_CI=true -f test.xml
     - name: Upload test results
       uses: actions/upload-artifact@v1
+      if: always()
       with:
         name: ant-test-results-${{ matrix.java }}
         path: test-results
@@ -51,6 +52,7 @@ jobs:
         ON_CI: true
     - name: Upload test results
       uses: actions/upload-artifact@v1
+      if: always()
       with:
         name: maven-test-results-${{ matrix.java }}
         path: build\target\surefire-reports
