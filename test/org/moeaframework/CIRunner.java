@@ -39,7 +39,17 @@ public class CIRunner extends BlockJUnit4ClassRunner {
 	}
 
 	public boolean isRunningOnCI() {
-		return Boolean.parseBoolean(System.getProperty("ON_CI", "false"));
+		boolean value = Boolean.parseBoolean(System.getProperty("ON_CI", "false"));
+		
+		if (!value) {
+			String env = System.getenv("ON_CI");
+			
+			if (env != null) {
+				value = Boolean.parseBoolean(env);
+			}
+		}
+		
+		return value;
 	}
 
 	@Override

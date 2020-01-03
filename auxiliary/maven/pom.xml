@@ -28,6 +28,10 @@
 	<scm>
 		<url>https://github.com/MOEAFramework/MOEAFramework</url>
 	</scm>
+	
+	<properties>
+	    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
 
 	<dependencies>
 		<dependency>
@@ -74,6 +78,7 @@
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.12</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.fifesoft</groupId>
@@ -94,6 +99,7 @@
 		    <groupId>org.uma.jmetal</groupId>
 		    <artifactId>jmetal-problem</artifactId>
 		    <version>5.9</version>
+		    <scope>test</scope>
 		</dependency>
 	</dependencies>
 	

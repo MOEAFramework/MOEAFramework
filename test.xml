@@ -131,7 +131,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 				<fileset file="${dist}/${shortname}-${version}.jar" />
 				<fileset file="${dist}/${shortname}-${version}-Test.jar" />
 			</classpath>
-			<sysproperty key="ON_TRAVIS" value="${ON_TRAVIS}"/>
+			<sysproperty key="ON_CI" value="${ON_CI}"/>
 			<batchtest todir="${results}/raw">
 				<formatter type="xml" />
 				<zipfileset src="${dist}/${shortname}-${version}-Test.jar">
@@ -185,6 +185,35 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		<echo>==================================================================</echo>
 
 		<fail message="Unit test(s) failed.  See reports!"/>
+	</target>
+	
+	<target name="build-maven-tests">
+		<delete dir="${build}" />
+		<mkdir dir="${build}" />
+		
+		<mkdir dir="${build}/src/main/java" />
+		<mkdir dir="${build}/src/main/resources" />
+		<mkdir dir="${build}/src/test/java" />
+		
+		<copy tofile="${build}/pom.xml">
+			<fileset file="auxiliary/maven/pom.xml" />
+		</copy>
+		
+		<copy todir="${build}/src/main/resources/META-INF">
+			<fileset dir="META-INF" />
+		</copy>
+		
+		<copy todir="${build}/src/main/java">
+			<fileset excludes="overview.html" dir="src" />
+		</copy>
+		
+		<copy todir="${build}/src/test/java">
+			<fileset dir="test" />
+		</copy>
+		
+		<copy todir="${build}/pf">
+			<fileset dir="pf" />
+		</copy>
 	</target>
 
 </project>

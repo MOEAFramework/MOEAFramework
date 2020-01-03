@@ -16,7 +16,7 @@
 4. If necessary, update the copyright year.
    1. Source code is updated using the `update-header` Ant task in `auxiliary/checkstyle/build.xml`.
    2. Search for the previous year and update any other locations
-5. Ensure all test runs pass.
+5. Ensure all test runs pass.  This includes the Ant and Maven test runs.
 6. Run all of the `package-*` Ant tasks in `build.xml`.
 7. Create a new Github Release using a tag in the format `vX.XX`.
    1. Copy the release notes from `NEWS`

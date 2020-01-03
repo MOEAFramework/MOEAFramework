@@ -53,7 +53,8 @@ source code and/or provided in the licenses folder.
     Licensed under the GNU Lesser General Public License, version 2.1 or later
   
   * JMetal
-    Licensed under the GNU Lesser General Public License, version 3 or later
+    Copyright 2017 Antonio J. Nebro, Juan J. Durillo
+    Licensed under the MIT License
   
   * JUnit              
     Copyright 2000-2006 www.hamcrest.org          
