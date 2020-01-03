@@ -187,6 +187,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		<fail message="Unit test(s) failed.  See reports!"/>
 	</target>
 	
+	<!-- Setup a Maven project that can be tested by running 'mvn test' -->
 	<target name="build-maven-tests">
 		<delete dir="${build}" />
 		<mkdir dir="${build}" />
