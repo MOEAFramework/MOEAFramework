@@ -23,16 +23,16 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.ElementType;
 
 /**
- * Annotation for ignoring unit tests on CI builds.  This can be used to ignore
- * tests that frequently fail due to their stochastic nature, are not configured
- * to run correctly in a CI build environment, or exceed the 10 minute
- * timeout.
+ * Annotation for identifying flaky unit tests on CI builds.  The test still runs
+ * but failures only appear as warnings and do not cause the test to fail.  As a
+ * result, use of this attribute should be audited periodically and problems
+ * addressed.
  * 
- * Test classes using this annotation must also specify \code{@RunWith(CIRunner.clsas)}.
+ * Test classes using this annotation must also specify \code{@RunWith(CIRunner.class)}.
  */
-@Target({ElementType.METHOD, ElementType.TYPE})
+@Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface IgnoreOnCI {
+public @interface Flaky {
 	
 	String value() default "No comment";
 

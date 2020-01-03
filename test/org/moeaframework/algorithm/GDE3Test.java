@@ -19,11 +19,11 @@ package org.moeaframework.algorithm;
 
 import java.io.IOException;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.moeaframework.Retryable;
 import org.moeaframework.CIRunner;
+import org.moeaframework.Flaky;
+import org.moeaframework.Retryable;
 
 /**
  * Tests the {@link GDE3} class.
@@ -33,13 +33,13 @@ import org.moeaframework.CIRunner;
 public class GDE3Test extends AlgorithmTest {
 	
 	@Test
-	@Ignore("need to investigate - differences showing up after upgrading to JMetal 5.9")
+	@Flaky("need to investigate - differences showing up after upgrading to JMetal 5.9")
 	public void testDTLZ1() throws IOException {
 		test("DTLZ1_2", "GDE3", "GDE3-JMetal");
 	}
 	
 	@Test
-	@Ignore("need to investigate - differences showing up after upgrading to JMetal 5.9")
+	@Flaky("need to investigate - differences showing up after upgrading to JMetal 5.9")
 	public void testDTLZ2() throws IOException {
 		test("DTLZ2_2", "GDE3", "GDE3-JMetal");
 	}

@@ -69,23 +69,29 @@ public class CIRunner extends BlockJUnit4ClassRunner {
 				isRunningOnCI()) {
 			System.out.println("Ignoring " + description.getDisplayName() + " on CI build");
 			notifier.fireTestIgnored(description);
-		} else if (method.getAnnotation(Retryable.class) != null &&
-				isRunningOnCI()) {
-			runTestUnit(methodBlock(method), description, notifier,
-					method.getAnnotation(Retryable.class).value());
-		} else if (getTestClass().getJavaClass().getAnnotation(Retryable.class) != null &&
-				isRunningOnCI()) {
-			runTestUnit(methodBlock(method), description, notifier,
-					getTestClass().getJavaClass().getAnnotation(Retryable.class).value());
 		} else {
-			super.runChild(method, notifier);
+			int retries = 0;
+			boolean flaky = false;
+			
+			if (isRunningOnCI()) {
+				if (method.getAnnotation(Retryable.class) != null) {
+					retries = method.getAnnotation(Retryable.class).value();
+				} else if (getTestClass().getJavaClass().getAnnotation(Retryable.class) != null) {
+					retries = getTestClass().getJavaClass().getAnnotation(Retryable.class).value();
+				}
+				
+				if (method.getAnnotation(Flaky.class) != null) {
+					flaky = true;
+				}
+			}
+			
+			runTestUnit(methodBlock(method), description, notifier, retries, flaky);
 		}
 	}
 
-	protected final void runTestUnit(Statement statement,
-			Description description, RunNotifier notifier, int retries) {
-		EachTestNotifier eachTestNotifier = new EachTestNotifier(notifier,
-				description);
+	protected final void runTestUnit(Statement statement, Description description,
+			RunNotifier notifier, int retries, boolean flaky) {
+		EachTestNotifier eachTestNotifier = new EachTestNotifier(notifier, description);
 		eachTestNotifier.fireTestStarted();
 
 		try {
@@ -93,14 +99,22 @@ public class CIRunner extends BlockJUnit4ClassRunner {
 		} catch (AssumptionViolatedException e) {
 			eachTestNotifier.addFailedAssumption(e);
 		} catch (Throwable e) {
-			retry(eachTestNotifier, statement, description, e, retries);
+			if (retries == 0) {
+				if (flaky) {
+					fireFlakyTest(description, e);
+				} else {
+					eachTestNotifier.addFailure(e);
+				}
+			} else {
+				retry(eachTestNotifier, statement, description, e, retries, flaky);
+			}
 		} finally {
 			eachTestNotifier.fireTestFinished();
 		}
 	}
 
 	public void retry(EachTestNotifier notifier, Statement statement,
-			Description description, Throwable currentThrowable, int retries) {
+			Description description, Throwable currentThrowable, int retries, boolean flaky) {
 		Throwable caughtThrowable = currentThrowable;
 		int failedAttempts = 1;
 
@@ -119,8 +133,18 @@ public class CIRunner extends BlockJUnit4ClassRunner {
 			}
 		}
 
-		System.out.println(description.getDisplayName() + " failed after " +
-				failedAttempts + " attempts");
-		notifier.addFailure(caughtThrowable);
+		if (flaky) {
+			fireFlakyTest(description, caughtThrowable);
+		} else {
+			System.out.println(description.getDisplayName() + " failed after " +
+					failedAttempts + " attempts");
+			notifier.addFailure(caughtThrowable);
+		}
+	}
+	
+	protected void fireFlakyTest(Description description, Throwable e) {
+		System.out.println(description.getDisplayName() +
+				" failed. This test is flaky and will be ignored!");
+		System.out.println(e.toString());
 	}
 }

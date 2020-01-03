@@ -36,9 +36,7 @@ public class MockPermutationProblem extends AbstractProblem {
 		Permutation permutation = (Permutation)solution.getVariable(0);
 		
 		for (int i=0; i<9; i++) {
-			if (permutation.get(i) > permutation.get(i+1)) {
-				sum++;
-			}
+			sum += i * permutation.get(i);
 		}
 		
 		solution.setObjective(0, sum);
