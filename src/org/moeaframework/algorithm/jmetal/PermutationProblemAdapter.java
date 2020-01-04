@@ -28,15 +28,22 @@ import org.uma.jmetal.problem.PermutationProblem;
 import org.uma.jmetal.solution.PermutationSolution;
 import org.uma.jmetal.solution.impl.DefaultIntegerPermutationSolution;
 
-public class PermutationProblemAdapter extends ProblemAdapter<PermutationSolution<Integer>> implements PermutationProblem<PermutationSolution<Integer>> {
+/**
+ * {@link ProblemAdapter} for JMetal problems of type {@link PermutationProblem}.  The MOEA Framework
+ * problem must contain exactly one permutation decision variable.
+ */
+public class PermutationProblemAdapter extends ProblemAdapter<PermutationSolution<Integer>>
+implements PermutationProblem<PermutationSolution<Integer>> {
 
 	private static final long serialVersionUID = -7658974412222795821L;
 	
-	private final Solution schema;
-	
+	/**
+	 * Creates a new {@code ProblemAdapter} for the given MOEA Framework problem.
+	 * 
+	 * @param problem the MOEA Framework problem
+	 */
 	public PermutationProblemAdapter(Problem problem) {
 		super(problem);
-		schema = problem.newSolution();
 		
 		if (schema.getNumberOfVariables() != 1) {
 			throw new FrameworkException("PermutationProblemAdapter only works with a single Permutation variable");

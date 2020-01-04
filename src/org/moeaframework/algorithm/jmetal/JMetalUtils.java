@@ -37,12 +37,21 @@ import org.uma.jmetal.util.point.impl.ArrayPoint;
 import org.uma.jmetal.util.solutionattribute.impl.NumberOfViolatedConstraints;
 import org.uma.jmetal.util.solutionattribute.impl.OverallConstraintViolation;
 
+/**
+ * Utility methods for interfacing with JMetal.
+ */
 public class JMetalUtils {
 	
 	private JMetalUtils() {
 		// private constructor to prevent instantiation
 	}
 
+	/**
+	 * Returns the decision variables types used by the given problem.
+	 * 
+	 * @param problem the problem
+	 * @return the set of decision variable types
+	 */
 	public static Set<Class<?>> getTypes(Problem problem) {
 		Set<Class<?>> types = new HashSet<Class<?>>();
 		Solution schema = problem.newSolution();
@@ -54,6 +63,14 @@ public class JMetalUtils {
 		return types;
 	}
 	
+	/**
+	 * Returns the single decision variable type used by the given problem, or
+	 * throws an exception if the problem uses more than one type.
+	 * 
+	 * @param problem the problem
+	 * @return the decision variable type
+	 * @throws ProblemException when the problem has more than one type
+	 */
 	public static Class<?> getSingleType(Problem problem) {
 		Set<Class<?>> types = getTypes(problem);
 		
@@ -67,6 +84,14 @@ public class JMetalUtils {
 		}
 	}
 	
+	/**
+	 * Creates a {@link ProblemAdapter} for the given problem.  Currently only supports
+	 * problems with a single decision variable type of {@code RealVariable},
+	 * {@code BinaryVariable}, or {@code Permutation}.
+	 * 
+	 * @param problem the problem
+	 * @return the problem adapter appropriate for the given problem
+	 */
 	public static ProblemAdapter<? extends org.uma.jmetal.solution.Solution<?>> createProblemAdapter(Problem problem) {
 		Class<?> type = JMetalUtils.getSingleType(problem);
 
@@ -82,6 +107,14 @@ public class JMetalUtils {
 		}
 	}
 	
+	/**
+	 * Copies all objective and constraint values from a JMetal solution to a
+	 * MOEA Framework solution.  Since JMetal currently aggregates all constraints
+	 * into an overall value, this overall value is copied to the first constraint.
+	 * 
+	 * @param from the JMetal solution
+	 * @param to the MOEA Framework solution
+	 */
 	public static <T extends org.uma.jmetal.solution.Solution<?>> void copyObjectivesAndConstraints(T from, Solution to) {
 		for (int i = 0; i < from.getNumberOfObjectives(); i++) {
 			to.setObjective(i, from.getObjective(i));
@@ -93,6 +126,15 @@ public class JMetalUtils {
 		}
 	}
 	
+	/**
+	 * Copies all objective and constraint values from a MOEA Framework solution to
+	 * a JMetal solution.  Note that JMetal currently aggregates all constraints into an
+	 * overall value.  Problems with multiple constraints will be aggregated into this one
+	 * value.
+	 * 
+	 * @param from the MOEA Framework solution
+	 * @param to the JMetal solution
+	 */
 	public static <T extends org.uma.jmetal.solution.Solution<?>> void copyObjectivesAndConstraints(Solution from, T to) {
 		for (int i = 0; i < from.getNumberOfObjectives(); i++) {
 			to.setObjective(i, from.getObjective(i));
@@ -115,6 +157,12 @@ public class JMetalUtils {
 		}
 	}
 	
+	/**
+	 * Returns the overall constraint violation of the JMetal solution.
+	 * 
+	 * @param solution the JMetal solution
+	 * @return the overall constraint violation
+	 */
 	public static <T extends org.uma.jmetal.solution.Solution<?>> double getOverallConstraintViolation(T solution) {
 		Double value = new OverallConstraintViolation<T>().getAttribute(solution);
 		
@@ -125,6 +173,12 @@ public class JMetalUtils {
 		}
 	}
 	
+	/**
+	 * Returns the number of violated constraints of the JMetal solution.
+	 * 
+	 * @param solution the JMetal solution
+	 * @return the number of violated constraints
+	 */
 	public static <T extends org.uma.jmetal.solution.Solution<?>> int getNumberOfViolatedConstraints(T solution) {
 		Integer value = new NumberOfViolatedConstraints<T>().getAttribute(solution);
 		
@@ -135,14 +189,34 @@ public class JMetalUtils {
 		}
 	}
 	
+	/**
+	 * Sets the overall constraint violation of the JMetal solution.
+	 * 
+	 * @param solution the JMetal solution
+	 * @param value the overall constraint violation to set
+	 */
 	public static <T extends org.uma.jmetal.solution.Solution<?>> void setOverallConstraintViolation(T solution, double value) {
 		new OverallConstraintViolation<T>().setAttribute(solution, value);
 	}
 	
+	/**
+	 * Sets the number of violated constraints of the JMetal solution.
+	 * 
+	 * @param solution the JMetal solution
+	 * @param value the number of violated constraints to set
+	 */
 	public static <T extends org.uma.jmetal.solution.Solution<?>> void setNumberOfViolatedConstraints(T solution, int value) {
 		new NumberOfViolatedConstraints<T>().setAttribute(solution, value);
 	}
 	
+	/**
+	 * Converts the given MOEA Framework population to a JMetal solution set.  Only
+	 * the objectives and constraints will be copied.
+	 * 
+	 * @param adapter the problem adapter for converting solutions
+	 * @param population the MOEA Framework population
+	 * @return the JMetal solution set
+	 */
 	public static <T extends org.uma.jmetal.solution.Solution<?>> List<T> toSolutionSet(
 			ProblemAdapter<T> adapter, Population population) {
 		List<T> result = new ArrayList<T>();
@@ -156,6 +230,14 @@ public class JMetalUtils {
 		return result;
 	}
 	
+	/**
+	 * Converts a JMetal solution set to a JMetal {@link Front}.  The {@code Front}
+	 * will only contain feasible solutions.
+	 * 
+	 * @param adapter the problem adapter for converting solutions
+	 * @param solutionSet the JMetal solution set
+	 * @return the JMetal {@code Front}
+	 */
 	public static <T extends org.uma.jmetal.solution.Solution<?>> Front toFront(
 			ProblemAdapter<T> adapter, List<T> solutionSet) {
 		List<Point> points = new ArrayList<Point>();
@@ -176,6 +258,14 @@ public class JMetalUtils {
 		return front;
 	}
 	
+	/**
+	 * Converts a MOEA Framework population to a JMetal {@link Front}.  The {@code Front}
+	 * will only contain feasible solutions. 
+	 * 
+	 * @param adapter the problem adapter for converting solutions
+	 * @param population the MOEA Framework population
+	 * @return the JMetal {@code Front}
+	 */
 	public static <T extends org.uma.jmetal.solution.Solution<?>> Front toFront(
 			ProblemAdapter<T> adapter, Population population) {
 		return toFront(adapter, toSolutionSet(adapter, population));

@@ -19,6 +19,6 @@
 /**
  * Adapters for interfacing with the JMetal library.
  * 
- * @see <a href="http://jmetal.sourceforge.net/">JMetal Homepage</a>
+ * @see <a href="https://github.com/jMetal/jMetal">JMetal Code Repository</a>
  */
 package org.moeaframework.algorithm.jmetal;

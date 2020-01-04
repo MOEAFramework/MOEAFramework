@@ -29,8 +29,10 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 
 /**
- * Adapter for JMetal algorithms. This allows JMetal algorithms to be used
- * within the MOEA Framework as an {@link Algorithm}.
+ * Adapter for JMetal algorithms. This allows JMetal algorithms to be used within the
+ * MOEA Framework as an {@link Algorithm}.  There is one substantial difference: since
+ * JMetal does not distinguish iterations of the algorithm, one "step" is the full
+ * execution of the algorithm.
  */
 public class JMetalAlgorithmAdapter<T extends org.uma.jmetal.solution.Solution<?>> implements Algorithm {
 
@@ -44,6 +46,11 @@ public class JMetalAlgorithmAdapter<T extends org.uma.jmetal.solution.Solution<?
 	 */
 	private final ProblemAdapter<T> problem;
 	
+	// TODO: JMetal added an evaluator class that could be used to read the true number
+	// of evaluations.
+	/**
+	 * The max evaluations the algorithm is run.
+	 */
 	private final int maxEvaluations;
 
 	/**

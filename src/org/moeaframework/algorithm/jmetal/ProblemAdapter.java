@@ -20,18 +20,52 @@ package org.moeaframework.algorithm.jmetal;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 
-public abstract class ProblemAdapter<T extends org.uma.jmetal.solution.Solution<?>> implements org.uma.jmetal.problem.Problem<T> {
+/**
+ * Base class that facilitates passing MOEA Framework problems to JMetal.
+ * 
+ * @param <T> The type of the JMetal solution
+ */
+public abstract class ProblemAdapter<T extends org.uma.jmetal.solution.Solution<?>>
+implements org.uma.jmetal.problem.Problem<T> {
 
 	private static final long serialVersionUID = 5625585375846735318L;
 	
-	private final Problem problem;
+	/**
+	 * The MOEA Framework problem.
+	 */
+	protected final Problem problem;
 	
+	/**
+	 * The problem schema, which defines the variable types and bounds.
+	 */
+	protected final Solution schema;
+	
+	/**
+	 * Creates a new problem adapter for the given MOEA Framework problem.
+	 * 
+	 * @param problem the MOEA Framework problem
+	 */
 	public ProblemAdapter(Problem problem) {
 		this.problem = problem;
+		this.schema = problem.newSolution();
 	}
 	
+	/**
+	 * Returns the MOEA Framework problem.
+	 * 
+	 * @return the MOEA Framework problem
+	 */
 	public Problem getProblem() {
 		return problem;
+	}
+	
+	/**
+	 * Returns the problem schema, which defines the variable types and bounds.
+	 * 
+	 * @return the problem schema, which defines the variable types and bounds
+	 */
+	public Solution getSchema() {
+		return schema;
 	}
 	
 	@Override
@@ -54,6 +88,12 @@ public abstract class ProblemAdapter<T extends org.uma.jmetal.solution.Solution<
 		return problem.getNumberOfVariables();
 	}
 	
+	/**
+	 * Converts the given JMetal solution back into a MOEA Framework solution.
+	 * 
+	 * @param solution the JMetal solution
+	 * @return the equivalent MOEA Framework solution
+	 */
 	public abstract Solution convert(T solution);
 	
 	@Override
@@ -65,6 +105,12 @@ public abstract class ProblemAdapter<T extends org.uma.jmetal.solution.Solution<
 		JMetalUtils.copyObjectivesAndConstraints(result, solution);
 	}
 
+	/**
+	 * Returns the number of decision variables eligible for mutation.  This is
+	 * used to compute mutation rates.
+	 * 
+	 * @return the number of decision variables eligible for mutation
+	 */
 	public int getNumberOfMutationIndices() {
 		return getNumberOfVariables();
 	}

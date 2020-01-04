@@ -35,10 +35,13 @@ import org.uma.jmetal.operator.impl.mutation.BitFlipMutation;
 import org.uma.jmetal.operator.impl.mutation.PermutationSwapMutation;
 import org.uma.jmetal.operator.impl.mutation.PolynomialMutation;
 
+/**
+ * Factory class for creating JMetal crossover and mutation operators.
+ */
 public class JMetalFactory {
 
 	/**
-	 * The default JMetal object factory.
+	 * The default JMetal operator factory.
 	 */
 	private static JMetalFactory instance;
 
@@ -50,19 +53,18 @@ public class JMetalFactory {
 	}
 
 	/**
-	 * Returns the default JMetal object factory.
+	 * Returns the default JMetal operator factory.
 	 * 
-	 * @return the default JMetal object factory
+	 * @return the default JMetal operator factory
 	 */
 	public static synchronized JMetalFactory getInstance() {
 		return instance;
 	}
 
 	/**
-	 * Sets the default JMetal object factory.
+	 * Sets the default JMetal operator factory.
 	 * 
-	 * @param instance
-	 *            the default JMetal object factory
+	 * @param instance the default JMetal operator factory
 	 */
 	public static synchronized void setInstance(JMetalFactory instance) {
 		JMetalFactory.instance = instance;
@@ -79,7 +81,7 @@ public class JMetalFactory {
 	private final Map<Class<? extends ProblemAdapter<?>>, OperatorDescriptor<MutationOperator<?>>> mutationOperators;
 
 	/**
-	 * Constructs a new JMetal object factory.
+	 * Constructs a new JMetal operator factory.
 	 */
 	public JMetalFactory() {
 		super();
@@ -112,6 +114,14 @@ public class JMetalFactory {
 				new DoubleParameterDescriptor("swap.rate", 0.35));
 	}
 
+	/**
+	 * Registers a crossover operator with this factory.  If a mapping already exists for the
+	 * problem type, it will be overridden.
+	 * 
+	 * @param problemType the JMetal problem type
+	 * @param crossoverType the crossover operator class
+	 * @param parameters list of parameters used when initializing the crossover operator
+	 */
 	public <T extends CrossoverOperator<?>> void registerCrossoverOperator(
 			Class<? extends ProblemAdapter<?>> problemType, Class<T> crossoverType,
 			ParameterDescriptor<?>... parameters) {
@@ -119,6 +129,14 @@ public class JMetalFactory {
 				new OperatorDescriptor<CrossoverOperator<?>>(crossoverType, parameters));
 	}
 	
+	/**
+	 * Registers a mutation operator with this factory.  If a mapping already exists for the
+	 * problem type, it will be overridden.
+	 * 
+	 * @param problemType the JMetal problem type
+	 * @param mutationType the crossover operator class
+	 * @param parameters list of parameters used when initializing the mutation operator
+	 */
 	public <T extends MutationOperator<?>> void registerMutationOperator(
 			Class<? extends ProblemAdapter<?>> problemType, Class<T> mutationType,
 			ParameterDescriptor<?>... parameters) {
@@ -126,6 +144,15 @@ public class JMetalFactory {
 				new OperatorDescriptor<MutationOperator<?>>(mutationType, parameters));
 	}
 	
+	/**
+	 * Evaluates the list of parameters to resolve their value.  The value will either
+	 * be the user-defined property value, if set, or the default value.
+	 * 
+	 * @param parameters the list of parameters
+	 * @param problem the problem adapter
+	 * @param properties the user-provided properties
+	 * @return the resolved parameter values
+	 */
 	public Object[] toArguments(List<ParameterDescriptor<?>> parameters, ProblemAdapter<?> problem,
 			TypedProperties properties) {
 		Object[] result = new Object[parameters.size()];
@@ -137,6 +164,15 @@ public class JMetalFactory {
 		return result;
 	}
 
+	/**
+	 * Constructs the JMetal crossover operator for the given problem.
+	 * 
+	 * @param problem the problem adapter
+	 * @param properties the user-provided properties
+	 * @return the crossover operator
+	 * @throws FrameworkException if no operator was registered for the given
+	 *         problem type or an error occurred while constructing the instance
+	 */
 	public CrossoverOperator<?> createCrossoverOperator(ProblemAdapter<?> problem, TypedProperties properties) {
 		OperatorDescriptor<? extends CrossoverOperator<?>> operator = crossoverOperators.get(problem.getClass());
 		
@@ -158,6 +194,15 @@ public class JMetalFactory {
 		}
 	}
 	
+	/**
+	 * Constructs the JMetal mutation operator for the given problem.
+	 * 
+	 * @param problem the problem adapter
+	 * @param properties the user-provided properties
+	 * @return the mutation operator
+	 * @throws FrameworkException if no operator was registered for the given
+	 *         problem type or an error occurred while constructing the instance
+	 */
 	public MutationOperator<?> createMutationOperator(ProblemAdapter<?> problem, TypedProperties properties) {
 		OperatorDescriptor<? extends MutationOperator<?>> operator = mutationOperators.get(problem.getClass());
 		
@@ -179,52 +224,125 @@ public class JMetalFactory {
 		}
 	}
 
+	/**
+	 * Defines a crossover or mutation operator along with its parameters.  The
+	 * type and order of the parameters will determine which constructor is invoked.
+	 *
+	 * @param <T> the base type of the operator
+	 */
 	public class OperatorDescriptor<T> {
 
+		/**
+		 * The operator type.
+		 */
 		private final Class<? extends T> type;
 
+		/**
+		 * The parameters used to call the constructor.
+		 */
 		private final List<ParameterDescriptor<?>> parameters;
 
+		/**
+		 * Defines a crossover or mutation operator.
+		 * 
+		 * @param type the operator type
+		 * @param parameters the parameters used to call the constructor
+		 */
 		public OperatorDescriptor(Class<? extends T> type, ParameterDescriptor<?>... parameters) {
 			this.type = type;
 			this.parameters = Arrays.asList(parameters);
 		}
 
+		/**
+		 * Returns the operator type.
+		 * 
+		 * @return the operator type
+		 */
 		public Class<? extends T> getType() {
 			return type;
 		}
 
+		/**
+		 * Returns the parameters used to call the constructor.
+		 * 
+		 * @return the parameters used to call the constructor
+		 */
 		public List<ParameterDescriptor<?>> getParameters() {
 			return parameters;
 		}
 
 	}
 
+	/**
+	 * Abstract class for defining a parameter used when invoking the constructor.
+	 *
+	 * @param <T> the type of the parameter
+	 */
 	public abstract class ParameterDescriptor<T> {
 
+		/**
+		 * The name of the parameter that is provided by the user, such as
+		 * {@code "sbx.rate"}.
+		 */
 		private final String name;
 
+		/**
+		 * The default value of the parameter.
+		 */
 		private final T defaultValue;
 
+		/**
+		 * Defines a parameter.
+		 * 
+		 * @param name the name of the parameter
+		 * @param defaultValue the default value
+		 */
 		public ParameterDescriptor(String name, T defaultValue) {
 			this.name = name;
 			this.defaultValue = defaultValue;
 		}
 
+		/**
+		 * Returns the name of the parameter.
+		 * 
+		 * @return the name of the parameter
+		 */
 		public String getName() {
 			return name;
 		}
 
+		/**
+		 * Returns the default value.
+		 * 
+		 * @return the default value
+		 */
 		public T getDefaultValue() {
 			return defaultValue;
 		}
 		
+		/**
+		 * Resolves the value of this parameter given the user-defined properties.  Should either
+		 * return the user-defined value or the default value.
+		 * 
+		 * @param problem the problem adapter, providing information about the problem itself
+		 * @param properties the user-defined properties
+		 * @return the resolved value
+		 */
 		public abstract T getValue(ProblemAdapter<?> problem, TypedProperties properties);
 
 	}
 	
+	/**
+	 * Defines a parameter of type {@code Double}.
+	 */
 	public class DoubleParameterDescriptor extends ParameterDescriptor<Double> {
 		
+		/**
+		 * Creates a new parameter of type {@code Double}.
+		 * 
+		 * @param name the name of the parameter
+		 * @param defaultValue the default value
+		 */
 		public DoubleParameterDescriptor(String name, Double defaultValue) {
 			super(name, defaultValue);
 		}
@@ -236,8 +354,17 @@ public class JMetalFactory {
 		
 	}
 	
+	/**
+	 * Defines a parameter of type used to represent a mutation rate. The default value
+	 * is {@code 1 / getNumberOfMutationIndices()}.
+	 */
 	public class MutationRateParameterDescriptor extends DoubleParameterDescriptor {
 		
+		/**
+		 * Creates a new parameter that represents a mutation rate.
+		 * 
+		 * @param name the name of the parameter
+		 */
 		public MutationRateParameterDescriptor(String name) {
 			super(name, 0.0);
 		}

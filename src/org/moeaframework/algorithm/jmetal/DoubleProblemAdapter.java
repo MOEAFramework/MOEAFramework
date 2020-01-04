@@ -25,15 +25,21 @@ import org.uma.jmetal.problem.DoubleProblem;
 import org.uma.jmetal.solution.DoubleSolution;
 import org.uma.jmetal.solution.impl.DefaultDoubleSolution;
 
+/**
+ * {@link ProblemAdapter} for JMetal problems of type {@link DoubleProblem}.  The MOEA Framework
+ * problem must contain only binary decision variables.
+ */
 public class DoubleProblemAdapter extends ProblemAdapter<DoubleSolution> implements DoubleProblem {
 
 	private static final long serialVersionUID = 4011361659496044697L;
-	
-	private Solution schema;
-	
+
+	/**
+	 * Creates a new {@code ProblemAdapter} for the given MOEA Framework problem.
+	 * 
+	 * @param problem the MOEA Framework problem
+	 */
 	public DoubleProblemAdapter(Problem problem) {
 		super(problem);
-		schema = problem.newSolution();
 	}
 	
 	@Override
@@ -53,7 +59,7 @@ public class DoubleProblemAdapter extends ProblemAdapter<DoubleSolution> impleme
 	
 	@Override
 	public Solution convert(DoubleSolution solution) {
-		Solution result = getProblem().newSolution();
+		Solution result = problem.newSolution();
 		
 		for (int i = 0; i < getNumberOfVariables(); i++) {
 			EncodingUtils.setReal(result.getVariable(i), solution.getVariableValue(i));

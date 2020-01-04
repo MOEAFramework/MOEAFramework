@@ -25,17 +25,26 @@ import org.uma.jmetal.problem.BinaryProblem;
 import org.uma.jmetal.solution.BinarySolution;
 import org.uma.jmetal.solution.impl.DefaultBinarySolution;
 
+/**
+ * {@link ProblemAdapter} for JMetal problems of type {@link BinaryProblem}.  The MOEA Framework
+ * problem must contain only binary decision variables.
+ */
 public class BinaryProblemAdapter extends ProblemAdapter<BinarySolution> implements BinaryProblem {
 
 	private static final long serialVersionUID = -7944545872958727275L;
 	
-	private final Solution schema;
-	
+	/**
+	 * The total number of bits across all binary variables.
+	 */
 	private final int totalNumberOfBits;
 	
+	/**
+	 * Creates a new {@code ProblemAdapter} for the given MOEA Framework problem.
+	 * 
+	 * @param problem the MOEA Framework problem
+	 */
 	public BinaryProblemAdapter(Problem problem) {
 		super(problem);
-		schema = problem.newSolution();
 		
 		// count the total number of bits
 		int numberOfBits = 0;
@@ -64,7 +73,7 @@ public class BinaryProblemAdapter extends ProblemAdapter<BinarySolution> impleme
 	
 	@Override
 	public Solution convert(BinarySolution solution) {
-		Solution result = getProblem().newSolution();
+		Solution result = problem.newSolution();
 		
 		for (int i = 0; i < getNumberOfVariables(); i++) {
 			EncodingUtils.setBitSet(result.getVariable(i), solution.getVariableValue(i));

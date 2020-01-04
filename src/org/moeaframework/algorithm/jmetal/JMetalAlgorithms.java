@@ -358,6 +358,14 @@ public class JMetalAlgorithms extends AlgorithmProvider {
 	    return builder.build();
 	}
 	
+	/**
+	 * Returns a new {@link CDG} instance. Only real encodings are supported.
+	 * 
+	 * @param properties the properties for customizing the new {@code CDG} instance
+	 * @param problem the problem adapter
+	 * @return a new {@code CDG} instance
+	 * @throws JMetalException if an error occurred when constructing the algorithm
+	 */
 	@SuppressWarnings("rawtypes")
 	private AbstractCDG newCDG(TypedProperties properties,
 			ProblemAdapter<?> problem) throws JMetalException {
@@ -610,6 +618,14 @@ public class JMetalAlgorithms extends AlgorithmProvider {
 	    return builder.build();
 	}
 	
+	/**
+	 * Returns a new {@link MOEAD} instance. Only real encodings are supported.
+	 * 
+	 * @param properties the properties for customizing the new {@code MOEAD} instance
+	 * @param problem the problem adapter
+	 * @return a new {@code MOEAD} instance
+	 * @throws JMetalException if an error occurred when constructing the algorithm
+	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private AbstractMOEAD newMOEAD(TypedProperties properties, ProblemAdapter<?> problem) throws JMetalException {
 		if (!(problem instanceof DoubleProblemAdapter)) {
@@ -675,6 +691,14 @@ public class JMetalAlgorithms extends AlgorithmProvider {
 		return builder.build();
 	}
 	
+	/**
+	 * Returns a new {@link NSGAIII} instance.
+	 * 
+	 * @param properties the properties for customizing the new {@code NSGAIII} instance
+	 * @param problem the problem adapter
+	 * @return a new {@code NSGAIII} instance
+	 * @throws JMetalException if an error occurred when constructing the algorithm
+	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private NSGAIII newNSGAIII(TypedProperties properties, ProblemAdapter<?> problem) throws JMetalException {
 		CrossoverOperator<?> crossover = JMetalFactory.getInstance().createCrossoverOperator(problem, properties);
