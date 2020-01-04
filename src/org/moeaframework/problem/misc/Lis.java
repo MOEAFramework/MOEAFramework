@@ -54,8 +54,7 @@ public class Lis extends AbstractProblem {
 		double x = ((RealVariable)solution.getVariable(0)).getValue();
 		double y = ((RealVariable)solution.getVariable(1)).getValue();
 		double f1 = Math.pow(Math.pow(x, 2.0) + Math.pow(y, 2.0), 1.0/8.0);
-		double f2 = Math.pow(Math.pow(x-0.5, 2.0) + 
-				Math.pow(y-0.5, 2.0), 1.0/4.0);
+		double f2 = Math.pow(Math.pow(x-0.5, 2.0) + Math.pow(y-0.5, 2.0), 1.0/4.0);
 		
 		solution.setObjective(0, f1);
 		solution.setObjective(1, f2);

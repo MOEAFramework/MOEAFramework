@@ -54,12 +54,9 @@ public class Viennet4 extends AbstractProblem {
 	public void evaluate(Solution solution) {
 		double x = ((RealVariable)solution.getVariable(0)).getValue();
 		double y = ((RealVariable)solution.getVariable(1)).getValue();
-		double f1 = Math.pow(x - 2.0, 2.0) / 2.0 + 
-				Math.pow(y + 1.0, 2.0) / 13.0 + 3.0;
-		double f2 = Math.pow(x + y - 3.0, 2.0) / 175.0 +
-				Math.pow(2.0*y - x, 2.0) / 17.0 - 13.0;
-		double f3 = Math.pow(3.0*x - 2.0*y + 4.0, 2.0) / 8.0 +
-				Math.pow(x - y + 1.0, 2.0) / 27.0 + 15.0;
+		double f1 = Math.pow(x - 2.0, 2.0) / 2.0 + Math.pow(y + 1.0, 2.0) / 13.0 + 3.0;
+		double f2 = Math.pow(x + y - 3.0, 2.0) / 175.0 + Math.pow(2.0*y - x, 2.0) / 17.0 - 13.0;
+		double f3 = Math.pow(3.0*x - 2.0*y + 4.0, 2.0) / 8.0 + Math.pow(x - y + 1.0, 2.0) / 27.0 + 15.0;
 		
 		//subtract Double.MIN_VALUE so that the constraint is satisfied only if
 		//its values is strictly greater than 0

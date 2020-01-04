@@ -44,10 +44,8 @@ public class OKA1 extends AbstractProblem {
 	@Override
 	public void evaluate(Solution solution) {
 		double[] x = EncodingUtils.getReal(solution);
-		double x1 = Math.cos(Math.PI / 12.0) * x[0] - Math.sin(Math.PI / 12.0)
-				* x[1];
-		double x2 = Math.sin(Math.PI / 12.0) * x[0] + Math.cos(Math.PI / 12.0)
-				* x[1];
+		double x1 = Math.cos(Math.PI / 12.0) * x[0] - Math.sin(Math.PI / 12.0) * x[1];
+		double x2 = Math.sin(Math.PI / 12.0) * x[0] + Math.cos(Math.PI / 12.0) * x[1];
 
 		solution.setObjective(0, x1);
 		solution.setObjective(1, Math.sqrt(2.0 * Math.PI)
@@ -62,8 +60,8 @@ public class OKA1 extends AbstractProblem {
 		solution.setVariable(0, new RealVariable(
 				6.0 * Math.sin(Math.PI / 12.0), 6.0 * Math.sin(Math.PI / 12.0)
 						+ 2.0 * Math.PI * Math.cos(Math.PI / 12.0)));
-		solution.setVariable(1, new RealVariable(-2.0 * Math.PI
-				* Math.sin(Math.PI / 12), 6.0 * Math.cos(Math.PI / 12.0)));
+		solution.setVariable(1, new RealVariable(
+				-2.0 * Math.PI * Math.sin(Math.PI / 12), 6.0 * Math.cos(Math.PI / 12.0)));
 
 		return solution;
 	}

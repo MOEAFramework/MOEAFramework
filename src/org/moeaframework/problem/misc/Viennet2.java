@@ -53,12 +53,9 @@ public class Viennet2 extends AbstractProblem {
 	public void evaluate(Solution solution) {
 		double x = ((RealVariable)solution.getVariable(0)).getValue();
 		double y = ((RealVariable)solution.getVariable(1)).getValue();
-		double f1 = Math.pow(x - 2.0, 2.0) / 2.0 + 
-				Math.pow(y + 1.0, 2.0) / 13.0 + 3.0;
-		double f2 = Math.pow(x + y - 3.0, 2.0) / 36.0 +
-				Math.pow(-x + y + 2.0, 2.0) / 8.0 - 17.0;
-		double f3 = Math.pow(x + 2.0*y - 1.0, 2.0) / 175.0 +
-				Math.pow(2.0*y - x, 2.0) / 17.0 - 13.0;
+		double f1 = Math.pow(x - 2.0, 2.0) / 2.0 + Math.pow(y + 1.0, 2.0) / 13.0 + 3.0;
+		double f2 = Math.pow(x + y - 3.0, 2.0) / 36.0 + Math.pow(-x + y + 2.0, 2.0) / 8.0 - 17.0;
+		double f3 = Math.pow(x + 2.0*y - 1.0, 2.0) / 175.0 + Math.pow(2.0*y - x, 2.0) / 17.0 - 13.0;
 		
 		solution.setObjective(0, f1);
 		solution.setObjective(1, f2);

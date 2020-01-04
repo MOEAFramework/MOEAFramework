@@ -85,11 +85,9 @@ public class Schaffer2 extends AbstractProblem implements AnalyticalProblem {
 		Solution solution = newSolution();
 		
 		if (PRNG.nextBoolean()) {
-			EncodingUtils.setReal(solution.getVariable(0),
-					PRNG.nextDouble(1.0, 2.0));
+			EncodingUtils.setReal(solution.getVariable(0), PRNG.nextDouble(1.0, 2.0));
 		} else {
-			EncodingUtils.setReal(solution.getVariable(0),
-					PRNG.nextDouble(4.0, 5.0));
+			EncodingUtils.setReal(solution.getVariable(0), PRNG.nextDouble(4.0, 5.0));
 		}
 		
 		evaluate(solution);

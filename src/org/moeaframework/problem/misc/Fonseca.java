@@ -55,10 +55,8 @@ public class Fonseca extends AbstractProblem implements AnalyticalProblem {
 	public void evaluate(Solution solution) {
 		double x = EncodingUtils.getReal(solution.getVariable(0));
 		double y = EncodingUtils.getReal(solution.getVariable(1));
-		double f1 = 1.0 - Math.exp(-Math.pow(x-1.0, 2.0) - 
-				Math.pow(y+1.0, 2.0));
-		double f2 = 1.0 - Math.exp(-Math.pow(x+1.0, 2.0) - 
-				Math.pow(y-1.0, 2.0));
+		double f1 = 1.0 - Math.exp(-Math.pow(x-1.0, 2.0) - Math.pow(y+1.0, 2.0));
+		double f2 = 1.0 - Math.exp(-Math.pow(x+1.0, 2.0) - Math.pow(y-1.0, 2.0));
 		
 		solution.setObjective(0, f1);
 		solution.setObjective(1, f2);

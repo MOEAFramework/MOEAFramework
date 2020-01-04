@@ -30,7 +30,6 @@ import org.moeaframework.CIRunner;
  */
 @RunWith(CIRunner.class)
 @IgnoreOnCI("exceeds 10 minute timeout")
-@Ignore
 public class SMSEMOATest extends AlgorithmTest {
 	
 	@Test

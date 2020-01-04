@@ -28,7 +28,7 @@ import org.moeaframework.problem.ProblemTest;
 public class Osyczka2Test extends ProblemTest {
 
 	@Test
-	@Ignore("discrepancy between this implementation and jMetal 5.6")
+	@Ignore("JMetal 5.9 modifies the constraint values causing a difference")
 	public void testJMetal() throws Exception {
 		test(new org.uma.jmetal.problem.multiobjective.Osyczka2(), new Osyczka2());
 	}

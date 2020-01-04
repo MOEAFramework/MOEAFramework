@@ -28,7 +28,7 @@ import org.moeaframework.problem.ProblemTest;
 public class SrinivasTest extends ProblemTest {
 
 	@Test
-	@Ignore("discrepancy between this implementation and jMetal 5.6")
+	@Ignore("JMetal 5.9 modifies the constraint values")
 	public void testJMetal() throws Exception {
 		test(new org.uma.jmetal.problem.multiobjective.Srinivas(), new Srinivas());
 	}

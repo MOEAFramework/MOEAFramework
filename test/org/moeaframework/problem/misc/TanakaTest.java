@@ -28,7 +28,7 @@ import org.moeaframework.problem.ProblemTest;
 public class TanakaTest extends ProblemTest {
 
 	@Test
-	@Ignore("discrepancy between this implementation and jMetal 5.6")
+	@Ignore("JMetal 5.9 modifies the constraint values causing a difference")
 	public void testJMetal() throws Exception {
 		test(new org.uma.jmetal.problem.multiobjective.Tanaka(), new Tanaka());
 	}
@@ -37,7 +37,6 @@ public class TanakaTest extends ProblemTest {
 	public void test() {
 		Problem problem = new Tanaka();
 		
-		//technically 0.0, 0.0 is out of bounds, but we'll use it for simplicity
 		Assert.assertArrayEquals(new double[] { 0.1, 0.1 }, 
 				TestUtils.evaluateAt(problem, 0.1, 0.1).getObjectives(),
 				Settings.EPS);

@@ -25,7 +25,7 @@ import org.moeaframework.problem.ProblemTest;
 public class LZTest extends ProblemTest {
 
 	@Test
-	@Ignore("discrepancy in the number of variables (30 vs 10) in JMetal 5.6")
+	@Ignore("JMetal 5.9 uses the incorrect number of variables (10 instead of 30)")
 	public void testLZ1() throws Exception {
 		test("LZ1");
 	}

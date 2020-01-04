@@ -17,7 +17,10 @@
  */
 package org.moeaframework.problem.misc;
 
+import org.junit.Assert;
 import org.junit.Test;
+import org.moeaframework.TestUtils;
+import org.moeaframework.core.Problem;
 import org.moeaframework.problem.ProblemTest;
 
 public class Fonseca2Test extends ProblemTest {
@@ -25,6 +28,50 @@ public class Fonseca2Test extends ProblemTest {
 	@Test
 	public void testJMetal() throws Exception {
 		test(new org.uma.jmetal.problem.multiobjective.Fonseca(), new Fonseca2(3));
+	}
+	
+	@Test
+	public void test2() {
+		Problem problem = new Fonseca2(2);
+		
+		Assert.assertArrayEquals(new double[] { 0.63212, 0.63212 }, // 1 - 1/e 
+				TestUtils.evaluateAt(problem, 0.0, 0.0).getObjectives(),
+				0.00001);
+		
+		Assert.assertArrayEquals(new double[] { 1.0, 1.0 }, 
+				TestUtils.evaluateAt(problem, -4.0, -4.0).getObjectives(),
+				0.00001);
+		
+		Assert.assertArrayEquals(new double[] { 1.0, 1.0 }, 
+				TestUtils.evaluateAt(problem, 4.0, 4.0).getObjectives(),
+				0.00001);
+		
+		Assert.assertArrayEquals(new double[] { 0.0, 0.98168 }, 
+				TestUtils.evaluateAt(problem,
+						1.0 / Math.sqrt(2.0), 1.0 / Math.sqrt(2.0)).getObjectives(),
+				0.00001);
+	}
+	
+	@Test
+	public void test3() {
+		Problem problem = new Fonseca2(3);
+		
+		Assert.assertArrayEquals(new double[] { 0.63212, 0.63212 }, 
+				TestUtils.evaluateAt(problem, 0.0, 0.0, 0.0).getObjectives(),
+				0.00001);
+		
+		Assert.assertArrayEquals(new double[] { 1.0, 1.0 }, 
+				TestUtils.evaluateAt(problem, -4.0, -4.0, -4.0).getObjectives(),
+				0.00001);
+		
+		Assert.assertArrayEquals(new double[] { 1.0, 1.0 }, 
+				TestUtils.evaluateAt(problem, 4.0, 4.0, 4.0).getObjectives(),
+				0.00001);
+		
+		Assert.assertArrayEquals(new double[] { 0.0, 0.98168 }, 
+				TestUtils.evaluateAt(problem,
+						1.0 / Math.sqrt(3.0), 1.0 / Math.sqrt(3.0), 1.0 / Math.sqrt(3.0)).getObjectives(),
+				0.00001);
 	}
 
 }

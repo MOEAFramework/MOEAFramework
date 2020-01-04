@@ -58,14 +58,10 @@ public class Poloni extends AbstractProblem {
 	public void evaluate(Solution solution) {
 		double x = ((RealVariable)solution.getVariable(0)).getValue();
 		double y = ((RealVariable)solution.getVariable(1)).getValue();
-		double A1 = 0.5*Math.sin(1.0) - 2.0*Math.cos(1.0) + Math.sin(2.0) - 
-				1.5*Math.cos(2.0);
-		double A2 = 1.5*Math.sin(1.0) - Math.cos(1.0) + 2.0*Math.sin(2.0) -
-				0.5*Math.cos(2.0);
-		double B1 = 0.5*Math.sin(x) - 2.0*Math.cos(x) + Math.sin(y) -
-				1.5*Math.cos(y);
-		double B2 = 1.5*Math.sin(x) - Math.cos(x) + 2.0*Math.sin(y) -
-				0.5*Math.cos(y);
+		double A1 = 0.5*Math.sin(1.0) - 2.0*Math.cos(1.0) + Math.sin(2.0) - 1.5*Math.cos(2.0);
+		double A2 = 1.5*Math.sin(1.0) - Math.cos(1.0) + 2.0*Math.sin(2.0) - 0.5*Math.cos(2.0);
+		double B1 = 0.5*Math.sin(x) - 2.0*Math.cos(x) + Math.sin(y) - 1.5*Math.cos(y);
+		double B2 = 1.5*Math.sin(x) - Math.cos(x) + 2.0*Math.sin(y) - 0.5*Math.cos(y);
 		double f1 = 1 + Math.pow(A1 - B1, 2.0) + Math.pow(A2 - B2, 2.0);
 		double f2 = Math.pow(x + 3.0, 2.0) + Math.pow(y + 1.0, 2.0);
 		

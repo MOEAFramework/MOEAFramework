@@ -78,8 +78,7 @@ public class Rendon2 extends AbstractProblem implements AnalyticalProblem {
 	public Solution generate() {
 		Solution solution = newSolution();
 		
-		EncodingUtils.setReal(solution.getVariable(0),
-				PRNG.nextDouble(-3.0, 0.0));
+		EncodingUtils.setReal(solution.getVariable(0), PRNG.nextDouble(-3.0, 0.0));
 		EncodingUtils.setReal(solution.getVariable(1), -3.0);
 		
 		evaluate(solution);
