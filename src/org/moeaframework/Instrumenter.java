@@ -70,7 +70,7 @@ import org.moeaframework.core.spi.ProblemFactory;
  *     .withProblem(problemName)
  *     .attachAll();
  * 
- *   Executor executor = new Executor()
+ *   NondominatedPopulation result = new Executor()
  *     .withProblem(problemName)
  *     .withAlgorithm(algorithmName)
  *     .withMaxEvaluations(numberOfEvaluations)
