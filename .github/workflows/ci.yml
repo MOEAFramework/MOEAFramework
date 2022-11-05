@@ -18,6 +18,7 @@ jobs:
       uses: actions/setup-java@v2
       with:
         java-version: ${{ matrix.java }}
+        distribution: temurin
     - name: Build with Ant - Java ${{ matrix.java }}
       run: ant -noinput -buildfile build.xml
     - name: Test with Ant - Java ${{ matrix.java }}
@@ -44,6 +45,8 @@ jobs:
       uses: actions/setup-java@v2
       with:
         java-version: ${{ matrix.java }}
+        distribution: temurin
+        cache: maven
     - name: Prepare Maven project - Java ${{ matrix.java }}
       run: ant -f test.xml build-maven-tests
     - uses: actions/cache@v3
