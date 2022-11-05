@@ -651,7 +651,10 @@ public class Instrumenter extends ProblemBuilder {
 				instrument(algorithm, collectors, visited, parents, element, 
 						null);
 			}
-		} else if (type.getPackage() != null) {			
+		}
+		
+		//avoid scanning contents of any excluded packages
+		if (type.getPackage() != null) {			
 			for (String excludedPackage : excludedPackages) {
 				String[] excludedPackageSegments = StringUtils.split(excludedPackage, '.');
 				String[] typePackageSegments = StringUtils.split(type.getPackage().getName(), '.');
