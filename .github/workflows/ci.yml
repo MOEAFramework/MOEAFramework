@@ -13,9 +13,9 @@ jobs:
         java: [ '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18' ]
 
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v3
     - name: Set up JDK ${{ matrix.java }}
-      uses: actions/setup-java@v1
+      uses: actions/setup-java@v2
       with:
         java-version: ${{ matrix.java }}
     - name: Build with Ant - Java ${{ matrix.java }}
@@ -23,7 +23,7 @@ jobs:
     - name: Test with Ant - Java ${{ matrix.java }}
       run: ant -DON_CI=true -f test.xml
     - name: Upload test results
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v3
       if: always()
       with:
         name: ant-test-results-${{ matrix.java }}
@@ -36,17 +36,17 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        java: [ '1.8' ]
+        java: [ '8' ]
 
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v3
     - name: Set up JDK ${{ matrix.java }}
-      uses: actions/setup-java@v1
+      uses: actions/setup-java@v2
       with:
         java-version: ${{ matrix.java }}
     - name: Prepare Maven project - Java ${{ matrix.java }}
       run: ant -f test.xml build-maven-tests
-    - uses: actions/cache@v1
+    - uses: actions/cache@v3
       with:
         path: ~/.m2/repository
         key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
@@ -59,7 +59,7 @@ jobs:
       env:
         ON_CI: true
     - name: Upload test results
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v3
       if: always()
       with:
         name: maven-test-results-${{ matrix.java }}
