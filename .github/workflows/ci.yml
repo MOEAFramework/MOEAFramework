@@ -49,12 +49,6 @@ jobs:
         cache: maven
     - name: Prepare Maven project - Java ${{ matrix.java }}
       run: ant -f test.xml build-maven-tests
-    - uses: actions/cache@v3
-      with:
-        path: ~/.m2/repository
-        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-        restore-keys: |
-          ${{ runner.os }}-maven-
     - name: Run Maven tests - Java ${{ matrix.java }}
       run: |
         cd build
