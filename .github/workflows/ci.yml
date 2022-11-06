@@ -19,6 +19,11 @@ jobs:
       with:
         java-version: ${{ matrix.java }}
         distribution: zulu
+    - name: Setup up JUnit 4
+      run:
+        cd lib
+        wget https://search.maven.org/remotecontent?filepath=junit/junit/4.13.2/junit-4.13.2.jar
+        wget https://search.maven.org/remotecontent?filepath=org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar
     - name: Build with Ant - Java ${{ matrix.java }}
       run: ant -noinput -buildfile build.xml
     - name: Test with Ant - Java ${{ matrix.java }}
