@@ -40,7 +40,7 @@ import org.moeaframework.core.indicator.Hypervolume;
  * Global settings used by this framework.  The {@code PROPERTIES} object
  * contains the system properties and optionally the contents of a 
  * configuration file (properties in the configuration file take precedence).
- * By default, the {@code global.properties} file is loaded, but can be
+ * By default, the {@code moeaframework.properties} file is loaded, but can be
  * specified using the {@code org.moeaframework.configuration} system
  * property.
  */
@@ -228,7 +228,7 @@ public class Settings {
 	 * Loads the properties.
 	 */
 	static {
-		String resource = "global.properties";
+		String resource = "moeaframework.properties";
 		Properties properties = null;
 		
 		//attempt to access system properties

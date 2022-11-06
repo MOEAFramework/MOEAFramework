@@ -62,7 +62,7 @@ Assertion failed: fp != NULL, file <filename>, line <linenumber>
   anti-virus software to prevent active monitoring of PISA communication files.
   For example, first add the line
     java.io.tmpdir=<folder>
-  to global.properties and set <folder> to some temporary folder where the PISA
+  to moeaframework.properties and set <folder> to some temporary folder where the PISA
   communication files will be stored.  Then configure your anti-virus software
   to ignore the contents of <folder>.
 
@@ -379,7 +379,7 @@ intervention
   a previous recovery attempt.  If the user believes the unclean file contains
   valid data, she can copy the unclean file to its original location.  Or, she
   can delete the unclean file to start fresh.  The
-  org.moeaframework.analysis.sensitivity.cleanup property in global.properties
+  org.moeaframework.analysis.sensitivity.cleanup property in moeaframework.properties
   controls the default behavior in this scenario.
   
 requires at least two solutions
