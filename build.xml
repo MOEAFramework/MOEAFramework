@@ -166,7 +166,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 
 		<copy todir="${base}/lib">
 			<fileset file="${dist}/${shortname}-${version}.jar" />
-			<fileset dir="lib" excludes="junit-*.jar,checkstyle-*.jar" />
+			<fileset dir="lib" excludes="junit-*.jar,hamcrest-core-*.jar,checkstyle-*.jar" />
 		</copy>
 
 		<copy todir="${base}/pf">
@@ -205,6 +205,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 				<exclude name="examples/*.a" />
 				<include name="lib/**" />
 				<exclude name="lib/junit-*.jar" />
+				<exclude name="lib/hamcrest-core-*.jar" />
 				<include name="guide/**" />
 				<include name="META-INF/**" />
 				<include name="pf/**" />
@@ -222,12 +223,8 @@ Use of these build scripts requires Apache Ant to be installed.  See
 			<path refid="requiredfiles" />
 		</copy>
 		
-		<copy todir="${base}">
-			<fileset dir="auxiliary/eclipse" includes=".*" />
-		</copy>
-		
 		<replace file="${base}/.project">
-			<replacefilter token="%VERSION%" value="${version}" />
+			<replacefilter token="MOEAFramework" value="MOEAFramework-${version}" />
 		</replace>
 
 		<copy tofile="${base}/QuickStart.pdf">
