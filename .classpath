@@ -12,12 +12,12 @@
 	<classpathentry kind="lib" path="lib/jcommon-1.0.23.jar"/>
 	<classpathentry kind="lib" path="lib/jmetal-algorithm-5.9.jar"/>
 	<classpathentry kind="lib" path="lib/jmetal-core-5.9.jar"/>
-	<classpathentry kind="lib" path="lib/commons-io-2.6.jar"/>
 	<classpathentry kind="lib" path="lib/jmetal-problem-5.9.jar"/>
 	<classpathentry kind="lib" path="lib/commons-text-1.8.jar"/>
 	<classpathentry kind="lib" path="lib/junit-4.13.2.jar"/>
 	<classpathentry kind="lib" path="lib/commons-cli-1.5.0.jar"/>
 	<classpathentry kind="lib" path="lib/commons-codec-1.15.jar"/>
+	<classpathentry kind="lib" path="lib/commons-io-2.11.0.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
 		<attributes>
 			<attribute name="module" value="true"/>
