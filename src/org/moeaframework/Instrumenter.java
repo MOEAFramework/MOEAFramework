@@ -706,6 +706,11 @@ public class Instrumenter extends ProblemBuilder {
 		parents.push(object);
 		
 		for (Field field : type.getDeclaredFields()) {
+			//skip synthetic fields, which are created internally by Java
+			if (field.isSynthetic()) {
+				continue;
+			}
+			
 			field.setAccessible(true);
 			
 			try {

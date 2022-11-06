@@ -203,18 +203,16 @@ public class InstrumenterTest {
 	}
 	
 	@Test
-	public void testRecursion() {
+	public void testSynthetic() {
 		Algorithm algorithm = new EmptyAlgorithm() {
-			//anonymous class, which will contain reference to InstrumenterTest
+			//anonymous class, which will contain a synthetic field "this" pointing to InstrumenterTest
 		}; 
 		
 		new Instrumenter().attach(collector).instrument(algorithm);
 		
 		Set<Object> instrumentedObjects = collector.getInstrumentedObjects();
-		Assert.assertEquals(3, instrumentedObjects.size());
+		Assert.assertEquals(1, instrumentedObjects.size());
 		Assert.assertTrue(instrumentedObjects.contains(algorithm));
-		Assert.assertTrue(instrumentedObjects.contains(this));
-		Assert.assertTrue(instrumentedObjects.contains(collector));
 	}
 	
 	@Test
