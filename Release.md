@@ -25,7 +25,6 @@
    2. Publish the following files in the `dist` folder:
       - `MOEAFramework-X.XX.tar.gz`
       - `MOEAFramework-X.XX-Demo.jar`
-      - `MOEAFramework-X.XX-QuickStart.pdf`
       - `MOEAFramework-X.XX-BeginnersGuidePreview.pdf`
       - `MOEAFramework-X.XX-Source.tar.gz`
 8. Publish the Maven package:

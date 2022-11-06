@@ -139,7 +139,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 
 	<!-- Packages the MOEA Framework JAR file along with javadocs and required files -->
 	<target name="package-binary" 
-			depends="package-guide, build-binary, build-javadoc"
+			depends="build-binary, build-javadoc"
 			description="Creates the binary distribution file">
 		<delete dir="${build}" />
 		<mkdir dir="${base}" />
@@ -180,10 +180,6 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		<copy todir="${base}/examples">
 			<fileset dir="examples" excludes="*.exe,*.o,*.a" />
 		</copy>
-		
-		<copy tofile="${base}/QuickStart.pdf">
-			<fileset file="${dist}/${shortname}-${version}-QuickStart.pdf" />
-		</copy>
 
 		<tar destfile="${dist}/${shortname}-${version}.tar.gz" 
 				basedir="${build}" compression="gzip" longfile="gnu" />
@@ -191,13 +187,14 @@ Use of these build scripts requires Apache Ant to be installed.  See
 
 	<!-- Packages the MOEA Framework source code, libraries and required files  -->
 	<target name="package-source" 
-			depends="package-guide"
 			description="Creates the source code distribution file">
 		<delete dir="${build}" />
 		<mkdir dir="${base}" />
 
 		<copy todir="${base}">
 			<fileset dir=".">
+				<include name=".project" />
+				<include name=".classpath" />
 				<include name="auxiliary/**" />
 				<include name="examples/**" />
 				<exclude name="examples/*.exe" />
@@ -206,7 +203,6 @@ Use of these build scripts requires Apache Ant to be installed.  See
 				<include name="lib/**" />
 				<exclude name="lib/junit-*.jar" />
 				<exclude name="lib/hamcrest-core-*.jar" />
-				<include name="guide/**" />
 				<include name="META-INF/**" />
 				<include name="pf/**" />
 				<include name="src/**" />
@@ -226,10 +222,6 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		<replace file="${base}/.project">
 			<replacefilter token="MOEAFramework" value="MOEAFramework-${version}" />
 		</replace>
-
-		<copy tofile="${base}/QuickStart.pdf">
-			<fileset file="${dist}/${shortname}-${version}-QuickStart.pdf" />
-		</copy>
 		
 		<tar destfile="${dist}/${shortname}-${version}-Source.tar.gz" 
 				basedir="${build}" compression="gzip" longfile="gnu" />
@@ -472,38 +464,6 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		<move todir="pisa">
 			<fileset includes="**/*" dir="${build}" />
 		</move>
-	</target>
-	
-	<!-- Builds the quick start guide, converting from LaTeX to a PDF -->
-	<target name="package-guide" description="Builds the quick start guide">
-		<tstamp />
-		
-		<delete dir="${build}" />
-		<mkdir dir="${build}" />
-
-		<copy todir="${build}">
-			<fileset dir="guide" />
-		</copy>
-		
-		<replace dir="${build}">
-			<replacefilter token="%VERSION%" value="${version}" />
-			<replacefilter token="%DATE%" value="${TODAY}" />
-		</replace>
-		
-		<exec executable="pdflatex" dir="${build}" failonerror="true">
-			<arg value="guide" />
-		</exec>
-		
-		<exec executable="makeindex" dir="${build}" failonerror="true">
-			<arg value="guide" />
-		</exec>
-		
-		<exec executable="pdflatex" dir="${build}" failonerror="true">
-			<arg value="guide" />
-		</exec>
-		
-		<move file="${build}/guide.pdf" 
-				tofile="${dist}/${shortname}-${version}-QuickStart.pdf" />
 	</target>
 	
 	<!-- GPG Instructions:
