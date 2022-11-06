@@ -18,7 +18,7 @@ jobs:
       uses: actions/setup-java@v2
       with:
         java-version: ${{ matrix.java }}
-        distribution: temurin
+        distribution: zulu
     - name: Build with Ant - Java ${{ matrix.java }}
       run: ant -noinput -buildfile build.xml
     - name: Test with Ant - Java ${{ matrix.java }}
