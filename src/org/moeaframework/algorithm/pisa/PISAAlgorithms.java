@@ -33,7 +33,7 @@ import org.moeaframework.core.spi.ProviderNotFoundException;
  * Algorithm provider for PISA selectors. In order to make a PISA selector
  * available for this provider, two steps are required. First, the PISA selector
  * must be downloaded and, if necessary, compiled. Second, the configuration
- * file (typically {@code global.properties}) must be updated with the new
+ * file (typically {@code moeaframework.properties}) must be updated with the new
  * PISA selector. As an example, for the HypE selector, add the selector name,
  * {@code hype}, to the list of PISA algorithms:
  * <pre>

@@ -17,6 +17,7 @@ Framework.
     - Removes DENSEA and FastPGA, which appear to have been removed from
       JMetal.  As a result, they will no longer be supported.
 
+  * Rename the settings file global.properties to moeaframework.properties.
 
 ----------------------------
  Version 2.13 (30 Dec 2019)

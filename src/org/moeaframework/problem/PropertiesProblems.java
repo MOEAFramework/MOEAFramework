@@ -27,7 +27,7 @@ import org.moeaframework.core.spi.ProblemProvider;
 import org.moeaframework.core.spi.ProviderNotFoundException;
 
 /**
- * Problem provider for problems enumerated in {@code global.properties}.
+ * Problem provider for problems enumerated in {@code moeaframework.properties}.
  * The problems are identified by name as listed in the {@code
  * org.moeaframework.problem.problems} property, with the class and optional
  * reference set defined by the {@code org.moeaframework.problem.NAME.class}
@@ -38,7 +38,7 @@ public class PropertiesProblems extends ProblemProvider {
 	
 	/**
 	 * Constructs the problem provider for problems enumerated in {@code
-	 * global.properties}.
+	 * moeaframework.properties}.
 	 */
 	public PropertiesProblems() {
 		super();

@@ -33,7 +33,7 @@ import org.moeaframework.core.Settings;
  * inputs.  For example, this protects against division-by-zero.  To disable
  * function protection, set the property
  * {@code org.moeaframework.util.tree.protected_functions = false} in the file
- * {@code global.properties}.  {@code Inf} and {@code NaN} values can still
+ * {@code moeaframework.properties}.  {@code Inf} and {@code NaN} values can still
  * occur with function protection enabled, so outputs should still be
  * validated.
  */
