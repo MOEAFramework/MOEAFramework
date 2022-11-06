@@ -10,20 +10,21 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        java: [ '1.8', '9.x.x', '10.x.x', '11.x.x', '12.x.x', '13.x.x' ]
+        java: [ '8', '11', '16', '17', '18', '19' ]
 
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v3
     - name: Set up JDK ${{ matrix.java }}
-      uses: actions/setup-java@v1
+      uses: actions/setup-java@v2
       with:
         java-version: ${{ matrix.java }}
+        distribution: zulu
     - name: Build with Ant - Java ${{ matrix.java }}
       run: ant -noinput -buildfile build.xml
     - name: Test with Ant - Java ${{ matrix.java }}
       run: ant -DON_CI=true -f test.xml
     - name: Upload test results
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v3
       if: always()
       with:
         name: ant-test-results-${{ matrix.java }}
@@ -36,22 +37,18 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        java: [ '1.8' ]
+        java: [ '8' ]
 
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v3
     - name: Set up JDK ${{ matrix.java }}
-      uses: actions/setup-java@v1
+      uses: actions/setup-java@v2
       with:
         java-version: ${{ matrix.java }}
+        distribution: temurin
+        cache: maven
     - name: Prepare Maven project - Java ${{ matrix.java }}
       run: ant -f test.xml build-maven-tests
-    - uses: actions/cache@v1
-      with:
-        path: ~/.m2/repository
-        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-        restore-keys: |
-          ${{ runner.os }}-maven-
     - name: Run Maven tests - Java ${{ matrix.java }}
       run: |
         cd build
@@ -59,7 +56,7 @@ jobs:
       env:
         ON_CI: true
     - name: Upload test results
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v3
       if: always()
       with:
         name: maven-test-results-${{ matrix.java }}

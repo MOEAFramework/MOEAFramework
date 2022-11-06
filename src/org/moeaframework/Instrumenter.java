@@ -651,7 +651,10 @@ public class Instrumenter extends ProblemBuilder {
 				instrument(algorithm, collectors, visited, parents, element, 
 						null);
 			}
-		} else if (type.getPackage() != null) {			
+		}
+		
+		//avoid scanning contents of any excluded packages
+		if (type.getPackage() != null) {			
 			for (String excludedPackage : excludedPackages) {
 				String[] excludedPackageSegments = StringUtils.split(excludedPackage, '.');
 				String[] typePackageSegments = StringUtils.split(type.getPackage().getName(), '.');
@@ -703,6 +706,11 @@ public class Instrumenter extends ProblemBuilder {
 		parents.push(object);
 		
 		for (Field field : type.getDeclaredFields()) {
+			//skip synthetic fields, which are created internally by Java
+			if (field.isSynthetic()) {
+				continue;
+			}
+			
 			field.setAccessible(true);
 			
 			try {
