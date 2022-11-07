@@ -141,7 +141,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		<mkdir dir="${base}/pf" />
 		<mkdir dir="${base}/licenses" />
 		<mkdir dir="${base}/examples" />
-
+		
 		<copy todir="${base}">
 			<path refid="requiredfiles" />
 			<fileset file="moeaframework.properties" />
@@ -268,6 +268,8 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		<copy todir="${build}">
 			<fileset file="examples/dtlz2.c" />
 		</copy>
+		
+		<echo file="${build}/CNAME">moeaframework.org</echo>
 	</target>
 	
 	<!-- Packages the demo distribution -->
@@ -468,8 +470,8 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		<property name="artifact" value="moeaframework" />
 		
 		<copy file="auxiliary/maven/pom.xml"
-				tofile="${maven}/pom.xml" />
-		<replace file="${maven}/pom.xml">
+				tofile="${maven}/${artifact}-${version}.pom" />
+		<replace file="${maven}/${artifact}-${version}.pom">
 			<replacefilter token="%VERSION%" value="${version}" />
 		</replace>
 		
