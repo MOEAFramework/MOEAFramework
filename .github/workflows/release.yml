@@ -16,6 +16,8 @@ jobs:
           distribution: temurin
       - name: Set up GPG
         run: |
-          gpg --keyserver ${{ secrets.GPG_KEYSERVER }} --recv-keys ${{ secrets.GPG_KEYID }}
+          echo "${{ secrets.GPG_PRIVATE_KEY }}" | base64 --decode > gpg.asc
+          echo "${{ secrets.GPG_PASSPHRASE }}" | gpg --batch --yes --passphrase-fd 0 --import gpg.asc
+          gpg -k
       - name: Create Maven package
         run: ant -f build.xml package-maven
