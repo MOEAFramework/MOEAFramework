@@ -19,5 +19,18 @@ jobs:
           echo "${{ secrets.GPG_PRIVATE_KEY }}" | base64 --decode > gpg.asc
           echo "${{ secrets.GPG_PASSPHRASE }}" | gpg --batch --yes --passphrase-fd 0 --import gpg.asc
           gpg -k
-      - name: Create Maven package
+      - name: Create maven bundle contents
         run: ant -f build.xml package-maven
+      - name: Sign and create artifact bundle
+        run: |
+          shortname=cat META-INF/build.properties | awk '{split($0,a,"="); if (a[1]=="shortname") print a[2]}'
+          version=cat META-INF/build.properties | awk '{split($0,a,"="); if (a[1]=="version") print a[2]}'
+          pushd maven
+          echo "${{ secrets.GPG_PASSPHRASE }}" | gpg --batch --passphrase-fd 0 -ab *
+          jar -cf ${shortname}-${version}-bundle.jar *
+          popd
+      - uses: actions/upload-artifact@v3
+        with:
+          name:  Maven Bundle
+          path: maven/*-bundle.jar
+
