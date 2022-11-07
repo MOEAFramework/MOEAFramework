@@ -4,14 +4,11 @@ The following is a list of the known errors and warning messages along with the 
 
 ## Errors
 
-Errors halt the execution of the program and produce an error message to the
-standard error stream (i.e., the console).  Most errors can be corrected by the
+Errors halt the execution of the program and produce an error message to the standard error stream (i.e., the console).  Most errors can be corrected by the
 user.
 
-#### Exception in thread "main" java.lang.NoClassDefFoundError: \<class\>
-
-Thrown when Java is starting but is unable to find the specified class.
-Ensure the specified class is located on the Java classpath.  If the class
+**Exception in thread "main" java.lang.NoClassDefFoundError: \<class\>**  
+Thrown when Java is starting but is unable to find the specified class.  Ensure the specified class is located on the Java classpath.  If the class
 is located in a JAR file, use
 ```
 java -classpath "$CLASSPATH:/path/to/library.jar" ...
@@ -20,152 +17,110 @@ If the class is an individual `.class` file in a folder, use
 ```
 java -classpath "$CLASSPATH:/path/to/folder/"
 ```
-  
-Also ensure you are using the correct classpath separator.  Linux users will
-use the colon (:) as the above examples demonstrate.  Windows and Cygwin
+Also ensure you are using the correct classpath separator.  Linux users will use the colon (:) as the above examples demonstrate.  Windows and Cygwin
 users should use the semi-colon (;).
 
-#### Error occurred during initialization of VM / Too small initial heap for new size specified
+**Error occurred during initialization of VM**  
+**Too small initial heap for new size specified**  
+This Java error occurs when the initial heap size (allocated memory) is too small to instantiate the Java virtual machine (VM).  This error is likely
+caused by the `-Xmx` command line option requesting less memory than is necessary to start the VM.  Increasing the `-Xmx` value may resolve this issue.
+Also ensure the `-Xmx` argument is properly formatted.  For instance, use `-Xmx128m` and NOT `-Xmx128`.
 
-This Java error occurs when the initial heap size (allocated memory) is too
-small to instantiate the Java virtual machine (VM).  This error is likely
-caused by the `-Xmx` command line option requesting less memory than is
-necessary to start the VM.  Increasing the `-Xmx` value may resolve this issue.
-Also ensure the `-Xmx` argument is properly formatted.  For instance, use
-`-Xmx128m` and NOT `-Xmx128`.
-
-#### Error occurred during initialization of VM / Could not reserve enough space for object heap / Could not create the Java virtual machine
-This Java error occurs when there is insufficient heap size (allocated
-memory) to instantiate the Java virtual machine (VM).  This error is likely
-caused by the -Xmx command line option requesting more memory than is
-available on the host system.  This error may also occur if other running
-processes consume large quantities of memory.  Lowering the `-Xmx` value may 
-resolve this issue.
+**Error occurred during initialization of VM**  
+**Could not reserve enough space for object heap**  
+**Could not create the Java virtual machine**  
+This Java error occurs when there is insufficient heap size (allocated memory) to instantiate the Java virtual machine (VM).  This error is likely
+caused by the `-Xmx` command line option requesting more memory than is available on the host system.  This error may also occur if other running
+processes consume large quantities of memory.  Lowering the `-Xmx` value may resolve this issue.
   
-#### Exception in thread "main" java.lang.OutOfMemoryError: GC overhead limit exceeded
-Java relies on a garbage collector to detect and free memory which is no
-longer in use.  This process is usually fast.  However, if Java determines it
-is spending too much time performing garbage collection (98% of the time) and
-is only recovering a small amount of memory (2% of the heap), this error is
-thrown.  This is likely caused when the in-use memory approaches the maximum
-heap size, leaving little unallocated memory for temporary objects.  Try 
-increasing the maximum heap size with the -Xmx command line argument.
+**Exception in thread "main" java.lang.OutOfMemoryError: GC overhead limit exceeded**  
+Java relies on a garbage collector to detect and free memory which is no longer in use.  This process is usually fast.  However, if Java determines it
+is spending too much time performing garbage collection (98% of the time) and is only recovering a small amount of memory (2% of the heap), this error is
+thrown.  This is likely caused when the in-use memory approaches the maximum heap size, leaving little unallocated memory for temporary objects.  Try 
+increasing the maximum heap size with the `-Xmx` command line argument.
   
-#### Assertion failed: fp != NULL, file \<filename\>, line \<linenumber\>
-PISA modules communicate using the file system.  Some anti-virus software
-scans the contents of files before read and after write operations.  This may
-cause one of the PISA communication files to become inaccessible and cause
-this error.  To test if this is the cause, try disabling your anti-virus
+**Assertion failed: fp != NULL, file \<filename\>, line \<linenumber\>**  
+PISA modules communicate using the file system.  Some anti-virus software scans the contents of files before read and after write operations.  This may
+cause one of the PISA communication files to become inaccessible and cause this error.  To test if this is the cause, try disabling your anti-virus
 and re-run the program.
   
-A more permanent and secure solution involves adding an exception to the 
-anti-virus software to prevent active monitoring of PISA communication files.
+A more permanent and secure solution involves adding an exception to the anti-virus software to prevent active monitoring of PISA communication files.
 For example, first add the line
 ```
 java.io.tmpdir=<folder>
 ```
-to `moeaframework.properties` and set `<folder>` to some temporary folder where the PISA
-communication files will be stored.  Then configure your anti-virus software
-to ignore the contents of `<folder>`.
+to `moeaframework.properties` and set `<folder>` to some temporary folder where the PISA communication files will be stored.  Then configure your anti-virus 
+software to ignore the contents of `<folder>`.
 
-#### problem does not have an analytical solution
-Attempted to use `SetGenerator` to produce a reference set for a problem which
-does not implement `AnalyticalProblem`.  Only AnalyticalProblems, which
-provide a method for generating Pareto optimal solutions, can be used with
-`SetGenerator`.
+**problem does not have an analytical solution**  
+Attempted to use `SetGenerator` to produce a reference set for a problem which does not implement `AnalyticalProblem`.  Only `AnalyticalProblem`s, which
+provide a method for generating Pareto optimal solutions, can be used with `SetGenerator`.
   
-#### input appears to be newer than output
-Several of the command line utilities read entries in an input file and
-write the corresponding outputs to a separate output file.  If the last
-modified date on the input file is newer than the date on the output file,
-this exception is thrown.  This suggests that the input file has been
-modified unexpectedly, and attempting to resume with a partially evaluated
-output file may result in incorrect results.  To resolve:
+**input appears to be newer than output**  
+Several of the command line utilities read entries in an input file and write the corresponding outputs to a separate output file.  If the last
+modified date on the input file is newer than the date on the output file, this exception is thrown.  This suggests that the input file has been
+modified unexpectedly, and attempting to resume with a partially evaluated output file may result in incorrect results.  To resolve:
   
-1. If the input file is unchanged, use the `--force` command line option to
-   override this check.
+1. If the input file is unchanged, use the `--force` command line option to override this check.
        
-2. If the input file is changed, delete the output file and restart
-   evaluation from the beginning.
+2. If the input file is changed, delete the output file and restart evaluation from the beginning.
   
-#### no reference set available
-Several of the command line utilities require a reference set.  The reference
-set either is provided by the problem (through the `ProblemProvider`), or
-supplied by the user via a command line argument.  This exception occurs
-if neither approach provides a reference set.
+**no reference set available**  
+Several of the command line utilities require a reference set.  The reference set either is provided by the problem (through the `ProblemProvider`), or
+supplied by the user via a command line argument.  This exception occurs if neither approach provides a reference set.
   
-#### reference set contains invalid number of objectives
-Several of the command line utilities require a reference set.  The reference
-set file should contain only the objectives.  This error is thrown when the
-reference set file contains solutions with an incorrect number of objectives.
-Ensure the reference set file is valid and only includes objectives.
+**reference set contains invalid number of objectives**  
+Several of the command line utilities require a reference set.  The reference set file should contain only the objectives.  This error is thrown when the
+reference set file contains solutions with an incorrect number of objectives.  Ensure the reference set file is valid and only includes objectives.
   
-#### unable to load reference set
-Indicates that a reference set is specified, but it could not be loaded.
-The error message should contain additional information about the underlying
+**unable to load reference set**  
+Indicates that a reference set is specified, but it could not be loaded.  The error message should contain additional information about the underlying
 cause for the load failure.
   
-#### output has more entries than input
-Thrown by the `Evaluator` or `ResultFileEvaluator` command line utilities when
-attempting to resume evaluation of a partially evaluated file, but the
-output file contains more entries than the input file.  This implies the
-input file was either modified, or a different input file was supplied
-than originally used to produce the output file.  Unless the original input
-file is found, do not attempt to recover from this exception.  Delete the
+**output has more entries than input**  
+Thrown by the `Evaluator` or `ResultFileEvaluator` command line utilities when attempting to resume evaluation of a partially evaluated file, but the
+output file contains more entries than the input file.  This implies the input file was either modified, or a different input file was supplied
+than originally used to produce the output file.  Unless the original input file is found, do not attempt to recover from this exception.  Delete the
 output file and restart evaluation from the beginning.
   
-#### maxEvaluations not defined
-Thrown by the `Evaluator` command line utility if the `maxEvaluations` property
-has not been defined.  This property must either be defined in the
-parameter input file or through the `-x maxEvaluations=<value>` command line
-argument.
+**maxEvaluations not defined**  
+Thrown by the `Evaluator` command line utility if the `maxEvaluations` property has not been defined.  This property must either be defined in the
+parameter input file or through the `-x maxEvaluations=<value>` command line argument.
   
-#### unsupported decision variable type
-Thrown when the user attempts to use an algorithm that does not support the
-given problem's decision variable encoding.  For instance, GDE3 only supports
-real-valued encodings, and will throw this exception if binary or permutation
-encoded problems are provided.
+**unsupported decision variable type**  
+Thrown when the user attempts to use an algorithm that does not support the given problem's decision variable encoding.  For instance, GDE3 only supports
+real-valued encodings, and will throw this exception if binary or permutation encoded problems are provided.
   
-#### not enough bits / not enough dimensions
-The Sobol sequence generator supports up to 21000 dimensions and can produce
-up to 2147483647 samples (2^31-1).  While unlikely, if either of these two
+**not enough bits / not enough dimensions**  
+The Sobol sequence generator supports up to 21000 dimensions and can produce up to 2147483647 samples (2^31-1).  While unlikely, if either of these two
 limits are exceeded, these exceptions are thrown.
   
-#### invalid number of parents
-Attempting to use `CompoundVariation` in a manner inconsistent with its API
-specification will result in this exception.  Refer to the API documentation
+**invalid number of parents**  
+Attempting to use `CompoundVariation` in a manner inconsistent with its API specification will result in this exception.  Refer to the API documentation
 and the restrictions on the number of parents for a variation operator.
   
-#### binary variables not same length / permutations not same size
-Thrown by variation operators which require binary variables or permutations
-of equal length, but the supplied variables differ in length.
+**binary variables not same length / permutations not same size**  
+Thrown by variation operators which require binary variables or permutations of equal length, but the supplied variables differ in length.
   
-#### invalid bit string
-Thrown by `ResultFileReader` if either of the following two cases occurs:
-1) the binary variable length differs from that specified in the problem
-definition; and 2) the string encoding in the file contains invalid
-characters.  In either case, the binary variable stored in the result file
+**invalid bit string**  
+Thrown by `ResultFileReader` if either of the following two cases occurs: 1) the binary variable length differs from that specified in the problem
+definition; and 2) the string encoding in the file contains invalid characters.  In either case, the binary variable stored in the result file
 could not be read.
   
-#### invalid permutation
-Thrown by `ResultFileReader` if either of the following two cases occurs:
-1) the permutation length differs from that specified in the problem
-definition; and 2) the string encoding in the file does not represent a valid
-permutation.  In either case, the permutation stored in the result file
+**invalid permutation**  
+Thrown by `ResultFileReader` if either of the following two cases occurs: 1) the permutation length differs from that specified in the problem
+definition; and 2) the string encoding in the file does not represent a valid permutation.  In either case, the permutation stored in the result file
 could not be read.
   
-#### no provider for <name>
-Thrown by the service provider interface (`org.moeaframework.core.spi`) codes
-when no provider for the requested service is available.  Check the
+**no provider for \<name\>**
+Thrown by the service provider interface (`org.moeaframework.core.spi`) codes when no provider for the requested service is available.  Check the
 following:
   
 1. If a nested exception is reported, the nested exception will identify the failure.
        
-2. Ensure `<name>` is in fact provided by a built-in or third-party provider.
-   Check spelling and case sensitivity.
+2. Ensure `<name>` is in fact provided by a built-in or third-party provider.  Check spelling and case sensitivity.
        
-3. If `<name>` is supplied by a third-party provider, ensure the provider is
-   located on the Java classpath.  If the provider is in a JAR file, use
+3. If `<name>` is supplied by a third-party provider, ensure the provider is located on the Java classpath.  If the provider is in a JAR file, use
    ```
    java -classpath "$CLASSPATH:/path/to/provider.jar" ...
    ```
@@ -173,141 +128,105 @@ following:
    ```
    java -classpath "$CLASSPATH:/path/to/folder/"
    ```
-   Also ensure you are using the correct classpath separator.  Linux users
-   will use the colon (:) as the above examples demonstrate.  Windows and
+   Also ensure you are using the correct classpath separator.  Linux users will use the colon (:) as the above examples demonstrate.  Windows and
    Cygwin users should use the semi-colon (;).
 
-#### error sending variables to external process / error receiving variables from external process
-Thrown when communicating with an external problem, but an I/O error occurred
-that disrupted the communication.  Numerous situations may cause this
+**error sending variables to external process**  
+**error receiving variables from external process**  
+Thrown when communicating with an external problem, but an I/O error occurred that disrupted the communication.  Numerous situations may cause this
 exception, such as the external process terminating unexpectedly.
   
-#### end of stream reached when response expected
-Thrown when communicating with an external process, but the connection to the
-external process closed.  This is most likely the result of an error on the
-external process side which caused the external process to terminate
-unexpectedly.  Error messages printed to the standard error stream should
+**end of stream reached when response expected**  
+Thrown when communicating with an external process, but the connection to the external process closed.  This is most likely the result of an error on the
+external process side which caused the external process to terminate unexpectedly.  Error messages printed to the standard error stream should
 appear in the Java error stream.
 
-#### response contained fewer tokens than expected
-Thrown when communicating with an external problem, and the external process
-has returned an unexpected number of entries.  This is most likely a
-configuration error where the defined number of objectives or constraints
-differs from what is actually returned by the external process.
+**response contained fewer tokens than expected**  
+Thrown when communicating with an external problem, and the external process has returned an unexpected number of entries.  This is most likely a
+configuration error where the defined number of objectives or constraints differs from what is actually returned by the external process.
   
-#### unable to serialize variable
-Attempted to serialize a decision variable to send to an external problem,
-but the decision variable is not one of the supported types.  Only real
+**unable to serialize variable**  
+Attempted to serialize a decision variable to send to an external problem, but the decision variable is not one of the supported types.  Only real
 variables are supported.
 
-#### restart not supported
-PISA supports the ability to reuse a selector after a run has completed.
-The MOEA Framework currently does not support this feature.  This exception
+**restart not supported**  
+PISA supports the ability to reuse a selector after a run has completed.  The MOEA Framework currently does not support this feature.  This exception
 is thrown if the PISA selector attempts to reset.
 
-#### expected END on last line
-#### unexpected end of file
-#### invalid selection length
-These exceptions are thrown when communicating with PISA processes, and the
-files produced by the PISA process appear to be incomplete or malformed.
-Check the implementation of the PISA codes to ensure they follow the correct
-protocol and syntax.
+**expected END on last line**  
+**unexpected end of file**  
+**invalid selection length**  
+These exceptions are thrown when communicating with PISA processes, and the files produced by the PISA process appear to be incomplete or malformed.
+Check the implementation of the PISA codes to ensure they follow the correct protocol and syntax.
   
-#### invalid variation length
-This exception is caused by an incorrect configuration of PISA.  The
-following equality must hold
-  children * (mu / parents) = lambda,
-where mu is the number of parents selected by the PISA process, parents is
-the number of parent solutions required by the variation operator, children
-is the number of offspring produced by a single invocation of the variation
-operator, and lambda is the total number of offspring produced during a
+**invalid variation length**  
+This exception is caused by an incorrect configuration of PISA.  The following equality must hold
+```
+children * (mu / parents) = lambda,
+```
+where `mu` is the number of parents selected by the PISA process, `parents` is the number of parent solutions required by the variation operator, `children`
+is the number of offspring produced by a single invocation of the variation operator, and `lambda` is the total number of offspring produced during a
 generation.
 
-#### no digest file
-Thrown when attempting to validate a data file using a digest file, but no
-such digest file exists.  Processing of the data file should cease 
-immediately for sensitive applications where data integrity is essential.
-If the digest file simply hasn't yet been produced but the file contents are 
-verified, the FileProtection command line utility can optionally generate 
-digest files.
+**no digest file**  
+Thrown when attempting to validate a data file using a digest file, but no such digest file exists.  Processing of the data file should cease 
+immediately for sensitive applications where data integrity is essential.  If the digest file simply hasn't yet been produced but the file contents are 
+verified, the FileProtection command line utility can optionally generate digest files.
   
-#### invalid digest file
-Thrown when attempting to validate a date file using a digest file, but the
-digest file is corrupted or does not contain a valid digest.  Processing of 
-the data file should cease immediately for sensitive applications where data 
-integrity is essential.
+**invalid digest file**  
+Thrown when attempting to validate a date file using a digest file, but the digest file is corrupted or does not contain a valid digest.  Processing of 
+the data file should cease immediately for sensitive applications where data  integrity is essential.
 
-#### digest does not match
-Thrown when attempting to validate a data file using a digest file, but the
-actual digest of the data file does not match the expected digest contained
-in the digest file.  This indicates that the data file or the digest file
-are corrupted.  Processing of the data file should cease immediately for 
+**digest does not match**  
+Thrown when attempting to validate a data file using a digest file, but the actual digest of the data file does not match the expected digest contained
+in the digest file.  This indicates that the data file or the digest file are corrupted.  Processing of the data file should cease immediately for 
 sensitive applications where data integrity is essential.
   
-#### unexpected rule separator / rule must contain at least one production / invalid symbol / rule must start with non-terminal / rule must contain at least one production / codon array is empty
-Each of these exceptions originates in the grammatical evolution code, and
-indicate specific errors when loading or processing a context free grammar.
+**unexpected rule separator**  
+**rule must contain at least one production**  
+**invalid symbol**  
+**rule must start with non-terminal**  
+**rule must contain at least one production**  
+**codon array is empty**  
+Each of these exceptions originates in the grammatical evolution code, and indicate specific errors when loading or processing a context free grammar.
 The specific error message details the cause.
 
-#### unable to mkdir <directory>
-For an unknown reason, the underlying operating system was unable to create
-a directory.  Check to ensure the location of the directory is writable.  One
+**unable to mkdir \<directory\>**  
+For an unknown reason, the underlying operating system was unable to create a directory.  Check to ensure the location of the directory is writable.  One
 may also manually create the directory.
   
-#### no scripting engine for extension <ext>
-Attempted to use the Java Scripting APIs, but no engine for the specified
-file extension could be found.  To resolve:
+**no scripting engine for extension \<ext\>**  
+**no scripting engine for \<name\>**  
+Attempted to use the Java Scripting APIs, but no engine for the specified file extension or name could be found.  To resolve:
   
-1) Check that the extension is valid.  If not, supply the file extension
-   for the scripting language required.
+1. Check that the extension is valid.  If not, supply the file extension for the scripting language required.
        
-2) Ensure the scripting language engine is listed on the classpath.  The
-   engine, if packaged in a JAR, can be specified with:
-     java -classpath "$CLASSPATH:/path/to/engine.jar"
-   Also ensure you are using the correct classpath separator.  Linux users
-   will use the colon (:) as the above example demonstrates.  Windows and
+2. Ensure the scripting language engine is listed on the classpath.  The engine, if packaged in a JAR, can be specified with:
+   ```
+   java -classpath "$CLASSPATH:/path/to/engine.jar"
+   ```
+   Also ensure you are using the correct classpath separator.  Linux users will use the colon (:) as the above example demonstrates.  Windows and
    Cygwin users should use the semi-colon (;).
 
-#### no scripting engine for <name>
-Attempted to use the Java Scripting APIs, but no engine with the specified
-name was found.
-  
-1) Check that the name is valid.  If not, supply the correct name for the
-   scripting language engine as required.
-       
-2) Ensure the scripting language engine is listed on the classpath.  The
-   engine, if packaged in a JAR, can be specified with:
-     java -classpath "$CLASSPATH:/path/to/engine.jar"
-   Also ensure you are using the correct classpath separator.  Linux users
-   will use the colon (:) as the above example demonstrates.  Windows and
-   Cygwin users should use the semi-colon (;).
+**file has no extension**  
+Attempted to use a script file with `ScriptedProblem`, but the filename does not contain a valid extension.  Either supply the file extension for the
+scripting language required, or use the constructor which accepts the engine name as an argument.
 
-#### file has no extension
-Attempted to use a script file with ScriptedProblem, but the filename does
-not contain a valid extension.  Either supply the file extension for the
-scripting language required, or use the constructor which accepts the engine
-name as an argument.
-
-#### scripting engine not invocable
-Thrown when using a scripting language engine which does not implement the
-Invocable interface.  The scripting language does not support methods or
+**scripting engine not invocable**  
+Thrown when using a scripting language engine which does not implement the `Invocable` interface.  The scripting language does not support methods or
 functions, and thus can not be used as intended.
   
-#### requires two or more groups
-Attempted to use one of the n-ary statistical tests which require at least
-two groups.  Either add a second group to compare against, or remove the
+**requires two or more groups**  
+Attempted to use one of the n-ary statistical tests which require at least two groups.  Either add a second group to compare against, or remove the
 statistical test.
   
-#### could not locate resource <name>
-Thrown when attempting to access a resource packages within the MOEA
-Framework, but the resource could not be located.  This is an error with the
+**could not locate resource \<name\>**  
+Thrown when attempting to access a resource packages within the MOEA Framework, but the resource could not be located.  This is an error with the
 distribution.  Please contact the distributor to correct this issue.
   
-#### insufficient number of entries in row
-Attempted to read a data file, but the row was missing one or more entries.
-The exact meaning depends on the specific data file, but generally this error
-means the file is incomplete, improperly formatted or corrupted.  See the
-documentation on the various file types to determine if this error can be
+**insufficient number of entries in row**  
+Attempted to read a data file, but the row was missing one or more entries.  The exact meaning depends on the specific data file, but generally this error
+means the file is incomplete, improperly formatted or corrupted.  See the documentation on the various file types to determine if this error can be
 corrected.
   
 #### invalid entry in row
