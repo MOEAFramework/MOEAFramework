@@ -23,8 +23,8 @@ jobs:
         run: ant -f build.xml package-maven
       - name: Sign and create artifact bundle
         run: |
-          shortname=$(cat META-INF/build.properties | awk '{split($0,a,"="); if (a[1]=="shortname") print tolower(gsub(/ /,"",a[2]))}')
-          version=$(cat META-INF/build.properties | awk '{split($0,a,"="); if (a[1]=="version") print tolower(gsub(/ /,"",a[2]))}')
+          shortname=$(cat META-INF/build.properties | awk '{split($0,a,"="); if (a[1]=="shortname") print tolower(a[2])}' |  tr -d '[:space:]')
+          version=$(cat META-INF/build.properties | awk '{split($0,a,"="); if (a[1]=="version") print tolower(a[2])}' |  tr -d '[:space:]')
           echo "Building artifact bundle for ${shortname}-${version}"
           pushd maven
           export GPG_TTY=$(tty)
