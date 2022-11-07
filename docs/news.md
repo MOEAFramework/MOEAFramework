@@ -9,7 +9,7 @@ This page documents notable changes introduced in each chronological release of 
 
   * Upgrades all dependencies to their latest version.
   
-  * Adds support for JMetal 5.9.
+  * Upgrades to JMetal 5.9.
   
     - Includes new algorithms added to JMetal, including CDG, ESPEA,
       NSGA-III, and additional MOEA/D variants.
@@ -19,7 +19,8 @@ This page documents notable changes introduced in each chronological release of 
 
   * Rename the settings file `global.properties` to `moeaframework.properties`.
   
-  * Converted text files to Markdown and moved into `docs/` folder.
+  * Converted NEWS, HELP, README, etc. to Markdown and moved into `docs/` folder.  Also replaces the
+    quick start guide (PDF) with Markdown files in `docs/`.
 
 
 ## Version 2.13 (30 Dec 2019)
