@@ -27,6 +27,7 @@ jobs:
           version=$(cat META-INF/build.properties | awk '{split($0,a,"="); if (a[1]=="version") print tolower(a[2])}' |  tr -d '[:space:]')
           echo "Building artifact bundle for ${shortname}-${version}"
           pushd maven
+          ls
           export GPG_TTY=$(tty)
           echo "${{ secrets.GPG_PASSPHRASE }}" | gpg --batch --passphrase-fd 0 -ab ${shortname}-${version}.pom
           echo "${{ secrets.GPG_PASSPHRASE }}" | gpg --batch --passphrase-fd 0 -ab ${shortname}-${version}.jar
