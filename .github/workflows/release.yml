@@ -23,10 +23,10 @@ jobs:
         run: ant -f build.xml package-maven
       - name: Sign and create artifact bundle
         run: |
-          shortname=cat META-INF/build.properties | awk '{split($0,a,"="); if (a[1]=="shortname") print a[2]}'
-          version=cat META-INF/build.properties | awk '{split($0,a,"="); if (a[1]=="version") print a[2]}'
+          shortname=$(cat META-INF/build.properties | awk '{split($0,a,"="); if (a[1]=="shortname") print a[2]}')
+          version=$(cat META-INF/build.properties | awk '{split($0,a,"="); if (a[1]=="version") print a[2]}')
           pushd maven
-          echo "${{ secrets.GPG_PASSPHRASE }}" | gpg --batch --passphrase-fd 0 -ab *
+          echo "${{ secrets.GPG_PASSPHRASE }}" | gpg --batch --no-tty --passphrase-fd 0 -ab *
           jar -cf ${shortname}-${version}-bundle.jar *
           popd
       - uses: actions/upload-artifact@v3
