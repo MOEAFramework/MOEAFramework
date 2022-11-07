@@ -400,7 +400,7 @@ NondominatedPopulation result = new Executor()
 public static class DTLZ2 extends ExternalProblem {
 
   public DTLZ2() throws IOException {
-    super("./auxiliary/c/dtlz2_stdio.exe");
+    super("./examples/dtlz2_stdio.exe");
   }
 
   @Override
