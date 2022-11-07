@@ -64,10 +64,10 @@
         <li class="folder">lib/</li>
         <li class="folder">licenses/</li>
         <li class="folder">pf/</li>
-        <li>global.properties</li>
         <li>HELP</li>
         <li>launch-diagnostic-tool.bat</li>
         <li>LICENSE</li>
+        <li>moeaframework.properties</li>
         <li>NEWS</li>
         <li>README</li>
       </ul>
