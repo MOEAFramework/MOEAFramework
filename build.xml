@@ -59,7 +59,6 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		<fileset file="README" />
 		<fileset file="LICENSE" />
 		<fileset file="NEWS" />
-		<fileset file="HELP" />
 	</path>
 
 	<!-- Generates the Javadoc webpages -->
@@ -143,6 +142,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 			description="Creates the binary distribution file">
 		<delete dir="${build}" />
 		<mkdir dir="${base}" />
+		<mkdir dir="${base}/docs" />
 		<mkdir dir="${base}/lib" />
 		<mkdir dir="${base}/pf" />
 		<mkdir dir="${base}/licenses" />
@@ -162,6 +162,10 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		<copy todir="${base}/licenses">
 			<fileset dir="META-INF" includes="*-LICENSE" 
 					excludes="ZHANG-LICENSE" />
+		</copy>
+		
+		<copy todir="${base}/docs">
+			<fileset dir="docs" />
 		</copy>
 
 		<copy todir="${base}/lib">
@@ -196,6 +200,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 				<include name=".project" />
 				<include name=".classpath" />
 				<include name="auxiliary/**" />
+				<include name="docs/**" />
 				<include name="examples/**" />
 				<exclude name="examples/*.exe" />
 				<exclude name="examples/*.o" />
