@@ -65,10 +65,10 @@
         <li class="folder">lib/</li>
         <li class="folder">licenses/</li>
         <li class="folder">pf/</li>
+        <li>COPYING</li>
         <li>launch-diagnostic-tool.bat</li>
-        <li>LICENSE</li>
         <li>moeaframework.properties</li>
-        <li>README</li>
+        <li>README.md</li>
       </ul>
     </li>
   </ul>
