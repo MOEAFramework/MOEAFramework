@@ -14,5 +14,8 @@ jobs:
         with:
           java-version: 8
           distribution: temurin
+      - name: Set up GPG
+        run: |
+          gpg --keyserver ${{ secrets.GPG_KEYSERVER }} --recv-keys ${{ secrets.GPG_KEYID }}
       - name: Create Maven package
         run: ant -f build.xml package-maven
