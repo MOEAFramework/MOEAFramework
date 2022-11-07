@@ -4,14 +4,11 @@ on: [push]
 
 jobs:
   ant-tests:
-
     runs-on: ubuntu-latest
-    
     strategy:
       fail-fast: false
       matrix:
         java: [ '8', '11', '16', '17', '18', '19' ]
-
     steps:
     - uses: actions/checkout@v3
     - name: Set up JDK ${{ matrix.java }}
@@ -24,8 +21,6 @@ jobs:
         cd lib
         wget https://search.maven.org/remotecontent?filepath=junit/junit/4.13.2/junit-4.13.2.jar
         wget https://search.maven.org/remotecontent?filepath=org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar
-    - name: Build with Ant - Java ${{ matrix.java }}
-      run: ant -noinput -buildfile build.xml
     - name: Test with Ant - Java ${{ matrix.java }}
       run: ant -DON_CI=true -f test.xml
     - name: Upload test results
@@ -36,25 +31,18 @@ jobs:
         path: test-results
 
   maven-test:
-
     runs-on: ubuntu-latest
-    
-    strategy:
-      fail-fast: false
-      matrix:
-        java: [ '8' ]
-
     steps:
     - uses: actions/checkout@v3
-    - name: Set up JDK ${{ matrix.java }}
+    - name: Set up JDK 8
       uses: actions/setup-java@v2
       with:
-        java-version: ${{ matrix.java }}
+        java-version: 8
         distribution: temurin
         cache: maven
-    - name: Prepare Maven project - Java ${{ matrix.java }}
+    - name: Prepare Maven project - Java 8
       run: ant -f test.xml build-maven-tests
-    - name: Run Maven tests - Java ${{ matrix.java }}
+    - name: Run Maven tests - Java 8
       run: |
         cd build
         mvn test
@@ -66,3 +54,23 @@ jobs:
       with:
         name: maven-test-results-${{ matrix.java }}
         path: build/target/surefire-reports
+
+  package-tests:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up JDK 8
+      uses: actions/setup-java@v2
+      with:
+        java-version: 8
+        distribution: temurin
+    - name: Package binary
+      run: ant -f build.xml package-binary
+    - name: Package source
+      run: ant -f build.xml package-source
+    #- name: Package maven
+    #  run: ant -f build.xml package-maven
+    - name: Package demo
+      run: ant -f build.xml package-demo
+    - name: Package website
+      run: ant -f build.xml package-website
