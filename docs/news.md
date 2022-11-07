@@ -1,11 +1,11 @@
-This file documents the major changes implemented in each release of the MOEA
-Framework.
+# Release Notes
 
----------------------
- Version vNext (TBD)
----------------------
+This page documents notable changes introduced in each chronological release of the MOEA Framework.
 
-  * Upgrades minimum JDK version to 1.8.
+
+## Version 3.0 (TBD)
+
+  * Upgrades minimum JDK version to 8.
 
   * Upgrades all dependencies to their latest version.
   
@@ -17,15 +17,16 @@ Framework.
     - Removes DENSEA and FastPGA, which appear to have been removed from
       JMetal.  As a result, they will no longer be supported.
 
-  * Rename the settings file global.properties to moeaframework.properties.
+  * Rename the settings file `global.properties` to `moeaframework.properties`.
 
-----------------------------
- Version 2.13 (30 Dec 2019)
-----------------------------
+
+## Version 2.13 (30 Dec 2019)
 
   * Adds debugging mode to ExternalProblem by setting
-        org.moeaframework.problem.external_problem_debugging = true
-    in global.properties.
+    ```
+    org.moeaframework.problem.external_problem_debugging = true
+    ```
+    in `global.properties`.
 
   * Enable variable-length subsets in addition to the fixed-length subsets
     currently supported.
@@ -33,28 +34,27 @@ Framework.
   * Distributed problem provides an evaluation id that can be used to
     replicate results when the problem is stochastic.
     
-  * Guard against NaNs in NondominatedSorting that would occasionally produce
-    IllegalArgumentExceptions when calling Population#sort.
+  * Guard against NaNs in `NondominatedSorting` that would occasionally produce
+    `IllegalArgumentExceptions` when calling `Population#sort`.
     
   * Support all decision variable types in MOEA/D (previously only supported
     real variables).
 
   * Several improvements to the progress listener, including:
     
-    - ProgressListener now provides access to the current algorithm being run by
-      the Executor.  This can be used, for example, to get the contents of the
+    - `ProgressListener` now provides access to the current algorithm being run by
+      the `Executor`.  This can be used, for example, to get the contents of the
       population each iteration.
 
-    - Fixes an "off by one" error in the ProgressListener, where it would report
+    - Fixes an "off by one" error in the `ProgressListener`, where it would report
       100% complete while the last seed was still running.
 
-    - The ProgressListener is now called when running a single seed. Previously
-      it was only called inside runSeeds().
+    - The `ProgressListener` is now called when running a single seed. Previously
+      it was only called inside `runSeeds()`.
 
 
-----------------------------
- Version 2.12 (04 Jan 2017)
-----------------------------
+
+## Version 2.12 (04 Jan 2017)
 
   * Adds single-objective implementations of a genetic algorithm (GA),
     evolution strategies (ES), and differential evolution (DE).
@@ -66,13 +66,12 @@ Framework.
   * Updated examples so problems with only one objective (TSP, Ant, etc.) use
     a single-objective optimizer.
     
-  * The Instrumenter collection frequency can now be set to either number of
+  * The `Instrumenter` collection frequency can now be set to either number of
     evaluations or number of steps (issue #92).
     
 
-----------------------------
- Version 2.11 (18 Aug 2016)
-----------------------------
+
+## Version 2.11 (18 Aug 2016)
 
   * Removes the populationSize parameter from DBEA.  The population size is
     determined by the number of reference points.  Setting to a different value
@@ -94,27 +93,28 @@ Framework.
     original NSGA-II algorithm more closely.  Note that on many test problems,
     there is no statistically significant change in end-of-run indicators.
     To use, run:
-    
+    ```
         new Executor()
                 .withAlgorithm("NSGAII")
                 .withProperty("withReplacement", false)
                 ...
+    ```
     
   * Adds more control over handling duplicate solutions within non-dominated
     populations.  Previously, solutions with identical objectives were excluded.
     Now, this behavior is controlled with one of three options:
     
-      - NO_DUPLICATE_OBJECTIVES (default) - Exclude solutions with identical
+      - `NO_DUPLICATE_OBJECTIVES` (default) - Exclude solutions with identical
             objectives
-      - ALLOW_DUPLICATE_OBJECTIVES - Allow solutions with identical objectives
+      - `ALLOW_DUPLICATE_OBJECTIVES` - Allow solutions with identical objectives
             as long as their decision variables differ
-      - ALLOW_DUPLICATES - Allow solutions with identical objectives and
+      - `ALLOW_DUPLICATES` - Allow solutions with identical objectives and
             decision variables
       
     This can also be controlled by the new global property:
-    
-      org.moeaframework.core.duplicate_mode = ALLOW_DUPLICATE_OBJECTIVES
-      
+    ```
+    `org.moeaframework.core.duplicate_mode = ALLOW_DUPLICATE_OBJECTIVES
+    ```
     This also ensures duplicate solutions are assigned a crowding distance of 0
     so they are truncated/pruned from a population first.  Thanks to @Nozo
     (issue #15) for reporting this issue.
@@ -125,9 +125,7 @@ Framework.
     fast non-dominated sorting implementation has better worst-case runtime.
     
 
-----------------------------
- Version 2.10 (11 May 2016)
-----------------------------
+## Version 2.10 (11 May 2016)
 
   * Adds the reference vector guided evolutionary algorithm (RVEA) by
     Cheng, Jin, Olhofer, and Sendhoff.
@@ -135,10 +133,10 @@ Framework.
   * A new version of the SBX operator is included.  This version includes two
     new parameters:
     
-      sbx.swap - controls if the variables are randomly swapped between parents;
-                 set to false to replicate NSGA-III
-      sbx.symmetric - controls if the offspring distribution is symmetric or
-                 asymmetric
+      - `sbx.swap` - controls if the variables are randomly swapped between parents;
+         set to false to replicate NSGA-III
+      - `sbx.symmetric` - controls if the offspring distribution is symmetric or
+         asymmetric
 
   * Prevent crashing MOEA/D if the user selects a neighborhood size larger than
     the population size.
@@ -147,30 +145,30 @@ Framework.
     all arguments with their descriptions.
     
   * Ability to define custom ideal and reference points when calculating
-    hypervolume in global.properties.  For example:
-    
-       org.moeaframework.core.indicator.hypervolume_idealpt.DTLZ3 = 0
-       org.moeaframework.core.indicator.hypervolume_refpt.DTLZ3 = 2
-       
+    hypervolume in `global.properties`.  For example:
+    ```
+    org.moeaframework.core.indicator.hypervolume_idealpt.DTLZ3 = 0
+    org.moeaframework.core.indicator.hypervolume_refpt.DTLZ3 = 2
+    ```
     indicates the hypervolume will be calculated with the volume between
-    (0,...,0) and (2,...,2).
+    `(0,...,0)` and `(2,...,2)`.
     
-  * Analyzer now includes withIdealPoint(...) and withReferencePoint(...) for
+  * `Analyzer` now includes `withIdealPoint(...)` and `withReferencePoint(...)` for
     use with the hypervolume calculations.
 
 
---------------------------
- Version 2.9 (9 Mar 2016)
---------------------------
+
+## Version 2.9 (9 Mar 2016)
 
   * Adds support for termination conditions.  The Executor can now support
     running for fixed wall-clock times:
-    
-       executor.withMaxTime(1000) // run for 1 second (1000 milliseconds)
-       
+    ```
+    executor.withMaxTime(1000) // run for 1 second (1000 milliseconds)
+    ```
     or with user-defined termination conditions:
-    
-       executor.withTerminationCondition(...)
+    ```
+    executor.withTerminationCondition(...)
+    ```
        
   * Adds the 55 bi-objective test problems that will be appearing in the BBOB
     Workshop this year at GECCO 2016.
@@ -178,9 +176,8 @@ Framework.
   * Adds subset decision variable for representing fixed-size subsets.
     
 
----------------------------
- Version 2.8 (13 Jan 2016)
----------------------------
+
+## Version 2.8 (13 Jan 2016)
 
   * Adds the Plot class to facilitate quick and simple plots of Pareto fronts,
     runtime dynamics, box-and-whisker comparisons, and more.  Able to save
@@ -198,16 +195,15 @@ Framework.
     help raise funds to continue development of this software.
 
 
----------------------------
- Version 2.7 (11 Dec 2015)
----------------------------
+
+## Version 2.7 (11 Dec 2015)
 
   * Adds ability to incorporate new problems or algorithms without having to
     use Java's service provider interface (SPI).  Now, providers can be
     programatically added via:
     
-      - AlgorithmFactory.getInstance().addProvider(...) or
-      - ProblemFactory.getInstance().addProvider(...)
+      - `AlgorithmFactory.getInstance().addProvider(...)` or
+      - `ProblemFactory.getInstance().addProvider(...)`
       
   * Fixes bug in MOEA/D-DRA's update utility calculation (this was a bug in the
     official MOEA/D-DRA implementation that has since been corrected).
@@ -218,27 +214,26 @@ Framework.
     distance.  For consistency, inverted generational distance is now computed
     using the average.  This can also be controlled by two new global
     properties:
-    
-      org.moeaframework.core.indicator.gd_power = 2.0
-      org.moeaframework.core.indicator.igd_power = 1.0
+    ```
+    org.moeaframework.core.indicator.gd_power = 2.0
+    org.moeaframework.core.indicator.igd_power = 1.0
+    ```
       
   * Adds more flexible SPI for introducing new variation operators.  This also
     improves support for defining new decision variable types.
     
-  * Introduces the BinaryIntegerVariable for representing integer values
+  * Introduces the `BinaryIntegerVariable` for representing integer values
     encoded as binary strings.
 
 
-----------------------------
- Version 2.6 (28 Sept 2015)
-----------------------------
+## Version 2.6 (28 Sept 2015)
 
   * Fixes several bugs:
    
       - Fixes bug where the R indicators were not being included by the
-        Instrumenter.
+        `Instrumenter`.
        
-      - Fixes NullPointerException when combining parallelization with the
+      - Fixes `NullPointerException` when combining parallelization with the
         program encoding.
    
   * Improves NSGA-III's ability to handle problems with 8+ objectives.  With
@@ -254,16 +249,14 @@ Framework.
     decomposition and reference point methods.  MOEA/D now accepts a weight
     generator as an argument, allowing the use of non-standard weights.
     
-  * The Analyzer can now return an AnalyzerResults object storing all the
+  * The `Analyzer` can now return an AnalyzerResults object storing all the
     statistical results.
    
   * Transitioned hosting of the MOEA Framework to Github.  We welcome all
     contributors!
     
 
-----------------------------
- Version 2.5 (30 June 2015)
-----------------------------
+## Version 2.5 (30 June 2015)
 
   * Adds support for single and multi-objective CMA-ES.
   
@@ -296,9 +289,7 @@ Framework.
     Instrumenter#addAllowedPackage.
 
 
---------------------------
- Version 2.4 (2 Jan 2015)
---------------------------
+## Version 2.4 (2 Jan 2015)
 
   * Replace several hard-coded parameters for e-NSGA-II with customizable
     parameters.  The new parameters are windowSize, maxWindowSize,
@@ -324,9 +315,7 @@ Framework.
     additively decomposable problems.
 
 
---------------------------
- Version 2.3 (5 Oct 2014)
- -------------------------
+## Version 2.3 (5 Oct 2014)
  
   * Fixes bug #25.  The original PISA implementation of IBEA had a typo in the
     binary hypervolume calculation that was recently discovered by researchers.
@@ -337,9 +326,7 @@ Framework.
     the academic foundations for the MOEA Framework.
 
 
-----------------------------
- Version 2.2 (28 Sept 2014)
-----------------------------
+## Version 2.2 (28 Sept 2014)
 
   * Adds the recently published NSGA-III algorithm.
   
@@ -349,13 +336,11 @@ Framework.
     in response to bug #23.
 
 
----------------------------
- Version 2.1 (19 Feb 2014)
----------------------------
+## Version 2.1 (19 Feb 2014)
  
   * Fixes several reported issues when running in Cygwin
   
-    - The C wrapper file (moeaframework.c) now correctly handles Windows-style
+    - The C wrapper file (`moeaframework.c`) now correctly handles Windows-style
       newlines.  Previously, the executable would crash when running on Cygwin.
       
     - Updates documentation to clarify how to specify the classpath on Cygwin.
@@ -363,7 +348,7 @@ Framework.
       separator is ';'.  However, the Cygwin command line interprets the ';'
       as a command separator unless the classpath is surrounded by quotes.
       
-  * Moves the C example files from the auxiliary/c/ folder to the examples/
+  * Moves the C example files from the `auxiliary/c/` folder to the `examples/`
     folder.  This ensures the necessary C code is distributed in the binary
     distribution for running Example5 and Example6.
     
@@ -384,9 +369,7 @@ Framework.
     Framework.
 
 
----------------------------
- Version 2.0 (11 Sep 2013)
----------------------------
+## Version 2.0 (11 Sep 2013)
 
   * The release of version 2.0 brings about significant changes to the MOEA
     Framework.  Old, deprecated APIs have been removed.  Third-party libraries
@@ -408,9 +391,7 @@ Framework.
   * Fixes integer overflow bug in epsilon-dominance calculations.
 
 
-----------------------------
- Version 1.17 (14 Nov 2012)
-----------------------------
+## Version 1.17 (14 Nov 2012)
 
   * Adds constructors to EpsilonBoxDominanceArchive for passing arrays of
     epsilon values.
@@ -450,9 +431,7 @@ Framework.
   * Adds NetBeans installation instructions to the user manual.
 
 
------------------------------
- Version 1.16 (23 Sept 2012)
------------------------------
+## Version 1.16 (23 Sept 2012)
 
   * Adds several new examples, including:
       - Two new symbolic regression functions: QuarticExample and SexticExample
@@ -476,9 +455,7 @@ Framework.
         flexibility of these methods, such whitespace is now trimmed.
 
 
-------------------------------
- Version 1.15 (31 July 2012)
-------------------------------
+## Version 1.15 (31 July 2012)
 
   * Adds genetic programming (GP) support for evolving expression trees.  This
     includes over 45 program building blocks (logic functions, arithmetic
@@ -529,9 +506,7 @@ Framework.
         guarded against.
 
 
------------------------------
- Version 1.14 (26 June 2012)
------------------------------
+## Version 1.14 (26 June 2012)
 
   * The MOEAD algorithm now provides both the original MOEA/D implementation as
     well as the utility-based search extension introduced in 2009.  See the
@@ -570,9 +545,7 @@ Framework.
     generated dynamically using the parameters set inside the MOEA Framework.
 
 
-----------------------------
- Version 1.13 (10 May 2012)
-----------------------------
+## Version 1.13 (10 May 2012)
 
   * Significant improvements to the user manual, including
       - Restructuring into beginner, advanced and developer sections
@@ -619,9 +592,7 @@ Framework.
     replaced by calls to existing code in DTLZ2, DTLZ3 and WFG1.
 
 
-----------------------------
- Version 1.12 (10 Apr 2012)
-----------------------------
+## Version 1.12 (10 Apr 2012)
 
   * Improved support for custom hypervolume calculators.  It is known to work
     with the following implementations:
@@ -655,9 +626,7 @@ Framework.
     problem.
 
 
-----------------------------
- Version 1.11 (29 Feb 2012)
-----------------------------
+## Version 1.11 (29 Feb 2012)
 
   * Adds the MOEA_Finalize() method to the C/C++ interface code.  This method
     will be used to release any resources (memory, sockets, etc.) used by the
@@ -687,9 +656,7 @@ Framework.
         uses a CopyOnWriteArrayList.
 
 
-----------------------------
- Version 1.10 (22 Jan 2012)
-----------------------------
+## Version 1.10 (22 Jan 2012)
 
   * ExternalProblem, the class allowing the MOEA Framework to use problems
     implemented in C/C++ and other compiled languages, now supports real-valued,
@@ -725,9 +692,7 @@ Framework.
         preventing compilation in OpenJDK 7.
     
 
----------------------------
- Version 1.9 (03 Jan 2012)
----------------------------
+## Version 1.9 (03 Jan 2012)
 
   * Adds 31 test problems to the misc package.  This includes Belegundu, Binh,
     Binh2, Binh3, Binh4, Fonseca, Fonseca2, Jimenez, Kita, Kursawe, Laumanns,
@@ -765,9 +730,7 @@ Framework.
   * Updated copyright notices for 2012.
   
 
----------------------------
- Version 1.8 (21 Nov 2011)
----------------------------
+## Version 1.8 (21 Nov 2011)
 
   * Adds a new diagnostics GUI for analyzing the runtime dynamics of algorithms.
 
@@ -808,9 +771,7 @@ Framework.
   * Miscellaneous bug fixes and enhancements.
    
 
-----------------------------
- Version 1.7 (29 Sept 2011)
-----------------------------
+## Version 1.7 (29 Sept 2011)
 
   * Adds Analyzer class, similar in nature to Executor, to reduce the amount of
     boilerplate code necessary to analyze end-of-run results.
@@ -833,9 +794,7 @@ Framework.
     and normalized additive epsilon indicator values.
 
 
----------------------------------
- Version 1.6 (10 September 2011)
----------------------------------
+## Version 1.6 (10 September 2011)
 
   * New result file format enables storing additional data alongside end-of-run
     approximation sets.  The new format is backwards compatible.  
@@ -860,9 +819,7 @@ Framework.
     factories, allowing the default factories to be replaced at runtime.
    
 
-------------------------------
- Version 1.5 (28 August 2011)
-------------------------------
+## Version 1.5 (28 August 2011)
 
   * Fixes bug in SinglePointCrossover and TwoPointCrossover causing an exception
     when operating on decision variables of length <= 1.
@@ -876,9 +833,7 @@ Framework.
     Ant script to automatically download and install all Windows PISA selectors.
 
 
-------------------------------
- Version 1.4 (10 August 2011)
-------------------------------
+## Version 1.4 (10 August 2011)
 
   * Adds RotatedProblems problem provider to allow instantiating rotated
     instances of any available problems by prefixing their names with UNROT_ and
@@ -898,9 +853,7 @@ Framework.
     combining multiple seeds.
 
 
-----------------------------
- Version 1.3 (26 July 2011)
-----------------------------
+## Version 1.3 (26 July 2011)
 
   * All problems now implement the close() method to free any underlying
     resources.  This is in contrast to previous versions where only
@@ -915,9 +868,13 @@ Framework.
     of numeric values.
 
   * Problems can now be defined in the global.properties file with
-      org.moeaframework.problem.NAME.class = ...
+    ```
+    org.moeaframework.problem.NAME.class = ...
+    ```
     and optionally
-      org.moeaframework.problem.NAME.referenceSet = ...
+    ```
+    org.moeaframework.problem.NAME.referenceSet = ...
+    ```
 
   * ReferenceSetMerger now emits a warning if duplicate solutions exist.
  
@@ -927,9 +884,7 @@ Framework.
     problems.
 
 
----------------------------
- Version 1.2 (5 July 2011)
----------------------------
+## Version 1.2 (5 July 2011)
 
   * Adds SetContribution class to determine the percentage of a reference set 
     that individual algorithms contributed.  Unlike ReferenceSetMerger, this 
@@ -942,9 +897,7 @@ Framework.
   * Miscellaneous bug fixes.
 
 
-----------------------------
- Version 1.1 (24 June 2011)
-----------------------------
+## Version 1.1 (24 June 2011)
 
   * Adds global.properties file to store configuration data.  The Settings
     class facilitates access to the properties.
@@ -956,9 +909,7 @@ Framework.
     valid entries in a result file.
 
 
-----------------------------
- Version 1.0 (14 June 2011)
-----------------------------
+## Version 1.0 (14 June 2011)
 
   * First major release.
   
