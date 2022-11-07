@@ -59,12 +59,12 @@
     <li class="folder">MOEAFramework-%VERSION%/</li>
     <li class="empty">
       <ul>
+        <li class="folder">docs/</li>
         <li class="folder">examples/</li>
         <li class="folder">javadoc/</li>
         <li class="folder">lib/</li>
         <li class="folder">licenses/</li>
         <li class="folder">pf/</li>
-        <li>HELP</li>
         <li>launch-diagnostic-tool.bat</li>
         <li>LICENSE</li>
         <li>moeaframework.properties</li>
