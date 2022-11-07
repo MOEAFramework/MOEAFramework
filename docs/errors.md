@@ -229,226 +229,177 @@ Attempted to read a data file, but the row was missing one or more entries.  The
 means the file is incomplete, improperly formatted or corrupted.  See the documentation on the various file types to determine if this error can be
 corrected.
   
-#### invalid entry in row
-Attempted to read a data file, but an entry was not formatted correctly.
-See the documentation on the various file types to determine if this error
+**invalid entry in row**  
+Attempted to read a data file, but an entry was not formatted correctly.  See the documentation on the various file types to determine if this error
 can be corrected.
 
-#### invoke calculate prior to getting indicator values
-Attempted to retrieve one of the indicator values prior to invoking the
-calculate method.  Ensure the calculate method is invoked first, prior
-When using QualityIndicator, the calculate method must be invoked prior to
-retrieving any of the indicator values.
+**invoke calculate prior to getting indicator values**  
+Attempted to retrieve one of the indicator values prior to invoking the calculate method.  Ensure the calculate method is invoked first, prior
+When using QualityIndicator, the calculate method must be invoked prior to retrieving any of the indicator values.
   
-#### not a real variable / not a binary variable / not a boolean variable / not a permutation
-The EncodingUtils class handles all the type checking internally.  If any of
-the arguments are not of the expected type, one of these exceptions is
-thrown.  Ensure the argument is of the expected type.  For example, ensure
-variable is a BinaryVariable when calling getBinary(variable).
+**not a real variable**  
+**not a binary variable**  
+**not a boolean variable**  
+**not a permutation**  
+The `EncodingUtils` class handles all the type checking internally.  If any of the arguments are not of the expected type, one of these exceptions is
+thrown.  Ensure the argument is of the expected type.  For example, ensure variable is a `BinaryVariable` when calling `getBinary(variable)`.
 
-#### invalid number of values / invalid number of bits
-Attempted to set the decision variable values using an array, but the number
-of elements in the array does not match the required number of elements.
-For setReal and setInt, ensure the number of real-valued/integer-valued
-decision variables being set matches the array length.  For setBinary,
-ensure the number of bits expressed in the binary variable matches the array
-length.
+**invalid number of values**  
+**invalid number of bits**  
+Attempted to set the decision variable values using an array, but the number of elements in the array does not match the required number of elements.
+For `setReal` and `setInt`, ensure the number of real-valued/integer-valued decision variables being set matches the array length.  For `setBinary`,
+ensure the number of bits expressed in the binary variable matches the array length.
   
-#### lambda function is not valid
-In genetic programming, a lambda function was created with an invalid body.
-The body of a lambda function must be fully defined and strongly typed.  If
-not, this exception is thrown.  Check the definition of the lambda function
-and ensure all arguments are non-null and are of the correct type.  Check the
-error output to see if any warning messages were printed that detail the
-cause of this exception.
+**lambda function is not valid**  
+In genetic programming, a lambda function was created with an invalid body.  The body of a lambda function must be fully defined and strongly typed.  If
+not, this exception is thrown.  Check the definition of the lambda function and ensure all arguments are non-null and are of the correct type.  Check the
+error output to see if any warning messages were printed that detail the cause of this exception.
   
-#### index does not reference node in tree
-Attempted to use one of the node.getXXXAt() methods, but the index referred
-to a node not within the tree.  This is similar to an out-of-bounds
-exception, as the index pointed to a node outside the tree.  Ensure the index
-is valid.
+**index does not reference node in tree**  
+Attempted to use one of the `node.getXXXAt()` methods, but the index referred to a node not within the tree.  This is similar to an out-of-bounds
+exception, as the index pointed to a node outside the tree.  Ensure the index is valid.
   
-#### malformed property argument
-The Evaluator and Solve command line utilities support setting algorithm
-parameters on the command line with the -x option.  The parameters should be
+**malformed property argument**  
+The `Evaluator` and `Solve` command line utilities support setting algorithm parameters on the command line with the `-x` option.  The parameters should be
 of the form:
-  -x name=value
+```
+-x name=value
+```
 or if multiple parameters are set:
-  -x name1=value1;name2=value2;name3=value3
-This error is thrown if the command line argument is not in either of these
-two forms.  Check the command line argument to ensure it is formatted
+```
+-x name1=value1;name2=value2;name3=value3
+```
+This error is thrown if the command line argument is not in either of these two forms.  Check the command line argument to ensure it is formatted
 correctly.
   
-#### key not defined in accumulator: <key>
-Thrown when attempting to access a key in an Accumulator object that is not
-contained within the Accumulator.  Use accumulator.keySet() to see what keys
+**key not defined in accumulator: \<key\>**  
+Thrown when attempting to access a key in an `Accumulator` object that is not contained within the `Accumulator`.  Use `accumulator.keySet()` to see what keys
 are available and ensure the requested key exists within the accumulator.
   
-#### an unclean version of the file exists from a previous run, requires manual intervention
-Thrown when ResultFileWriter or MetricFileWriter attempt to recover data from
-an interrupted run, but it appears there already exists an "unclean" file from
-a previous recovery attempt.  If the user believes the unclean file contains
-valid data, she can copy the unclean file to its original location.  Or, she
-can delete the unclean file to start fresh.  The
-org.moeaframework.analysis.sensitivity.cleanup property in global.properties
-controls the default behavior in this scenario.
+**an unclean version of the file exists from a previous run, requires manual intervention**  
+Thrown when `ResultFileWriter` or `MetricFileWriter` attempt to recover data from an interrupted run, but it appears there already exists an "unclean" file from
+a previous recovery attempt.  If the user believes the unclean file contains valid data, she can copy the unclean file to its original location.  Or, she
+can delete the unclean file to start fresh.  The `org.moeaframework.analysis.sensitivity.cleanup` property in `moeaframework.properties` controls the default
+behavior in this scenario.
   
-#### requires at least two solutions / objective with empty range
-These two exceptions are thrown when using the Normalizer with a degenerate
-population.  A degenerate population either has fewer than two solutions or
-the range of any objective is below computer precision.  In this scenario,
-the population can not be normalized.
+**requires at least two solutions**  
+**objective with empty range**  
+These two exceptions are thrown when using the `Normalizer` with a degenerate population.  A degenerate population either has fewer than two solutions or
+the range of any objective is below computer precision.  In this scenario, the population can not be normalized.
 
-#### lower bound and upper bounds not the same length
-When specifying the --lowerBounds and --upperBounds arguments to the Solve
-utility, the number of values in the comma-separated list must match.
+**lower bound and upper bounds not the same length**  
+When specifying the `--lowerBounds` and `--upperBounds` arguments to the `Solve` utility, the number of values in the comma-separated list must match.
 
-#### invalid variable specification <value>, not properly formatted
-#### invalid real specification <value>, expected R(<lb>,<ub>)
-#### invalid binary specification <value>, expected B(<length>)
-#### invalid permutation specification <value>, expected P(<length>)
-#### invalid variable specification <value>, unknown type
-The --variables argument to the Solve utility allows specifying the types and
-ranges of the decision variables.  These error messages indicate that one or
-more of the variable specifications is invalid.  The message will identify
-the problem.  An example variable specification is provided below:
-  --variables "R(0;1),B(5),P(10),R(-1;1)"
+**invalid variable specification \<value\>, not properly formatted**  
+**invalid real specification \<value\>, expected R(\<lb\>,\<ub\>)**  
+**invalid binary specification \<value\>, expected B(\<length\>)**  
+**invalid permutation specification \<value\>, expected P(\<length\>)**  
+**invalid variable specification \<value\>, unknown type**  
+The `--variables` argument to the `Solve` utility allows specifying the types and ranges of the decision variables.  These error messages indicate that one or
+more of the variable specifications is invalid.  The message will identify the problem.  An example variable specification is provided below:
+```
+--variables "R(0;1),B(5),P(10),R(-1;1)"
+```
 Also, always surround the argument with quotes as shown in this example.
 
-#### must specify either the problem, the variables, or the lower and upper bounds arguments
-The Solve command line utility operates on both problems defined within the
-MOEA Framework (by name) or problems external to the MOEA Framework, such as
-an executable.  For problems identified by name, the --problem argument must
-be specified.  For external problems, (1) if the problem is real-valued, you
-can use the --lowerBounds and --upperBounds arguments; or (2) use the
---variables argument to specify the decision variables and their types.
-
+**must specify either the problem, the variables, or the lower and upper bounds arguments**  
+The `Solve` command line utility operates on both problems defined within the MOEA Framework (by name) or problems external to the MOEA Framework, such as
+an executable.  For problems identified by name, the `--problem` argument must be specified.  For external problems, (1) if the problem is real-valued, you
+can use the `--lowerBounds` and `--upperBounds` arguments; or (2) use the `--variables` argument to specify the decision variables and their types.
 
 ## Warnings
 
-Warnings are messages printed to the standard error stream (i.e., the console)
-that indicate an abnormal or unsafe condition.  While warnings do not indicate
+Warnings are messages printed to the standard error stream (i.e., the console) that indicate an abnormal or unsafe condition.  While warnings do not indicate
 an error occurred, they do indicate caution is required by the user.
 
-#### no digest file exists to validate <FILE>
-Attempted to validate the file but no digest file exists.  This indicates
-that the framework could not verify the authenticity of the file.  
+**no digest file exists to validate \<FILE\>**  
+Attempted to validate the file but no digest file exists.  This indicates that the framework could not verify the authenticity of the file.  
   
-#### saving result file without variables, may become unstable
-Occurs when writing a result file with the output of decision variables
-suppressed.  The suppression of decision variable output is a user-specified
-option.  The warning "may become unstable" indicates that further use of the
-result file may result in unexpected errors if the decision variables are
+**saving result file without variables, may become unstable**  
+Occurs when writing a result file with the output of decision variables suppressed.  The suppression of decision variable output is a user-specified
+option.  The warning "may become unstable" indicates that further use of the result file may result in unexpected errors if the decision variables are
 required.
   
-#### unsupported decision variable type, may become unstable
-Occurs when reading or writing result files which use unsupported decision
-variable types.  When this occurs, the program is unable to read or write
-the decision variable, and its value is therefore lost.  The warning "may
-become unstable" indicates that further use of the result file may result
+**unsupported decision variable type, may become unstable**  
+Occurs when reading or writing result files which use unsupported decision variable types.  When this occurs, the program is unable to read or write
+the decision variable, and its value is therefore lost.  The warning "may become unstable" indicates that further use of the result file may result
 in unexpected errors if the decision variables are required.
   
-#### duplicate solution found
-Issued by ReferenceSetMerger if any of the algorithms contribute identical
-solutions.  If this warning is emitted, the contribution of each algorithm
-to the reference set is invalid.  Use SetContribution instead to compute the
-contribution of overlapping sets to a reference set.
+**duplicate solution found**  
+Issued by `ReferenceSetMerger` if any of the algorithms contribute identical solutions.  If this warning is emitted, the contribution of each algorithm
+to the reference set is invalid.  Use `SetContribution` instead to compute the contribution of overlapping sets to a reference set.
   
-#### can not initialize unknown type
-Emitted by RandomInitialization if the problem uses unsupported decision
-variable types.  The algorithm will continue to run, but the unsupported
+**can not initialize unknown type**  
+Emitted by `RandomInitialization` if the problem uses unsupported decision variable types.  The algorithm will continue to run, but the unsupported
 decision variables will remain initialized to their default values.
 
-#### an error occurred while writing the state file / an error occurred while reading the state file
-Occurs when checkpoints are enabled, but the algorithm does not support
-checkpoints or an error occurred while reading or writing the checkpoint.  
-The execution of the algorithm will continue normally, but no checkpoints 
-will be produced.
+**an error occurred while writing the state file**  
+**an error occurred while reading the state file**  
+Occurs when checkpoints are enabled, but the algorithm does not support checkpoints or an error occurred while reading or writing the checkpoint.  
+The execution of the algorithm will continue normally, but no checkpoints will be produced.
   
-#### multiple constraints not supported, aggregating into first constraint
-Occurs when an algorithm implementation does not support multiple constraints.
-This occurs primarily with the JMetal library, which only uses a single
-aggregate constraint violation value.  When translating between JMetal and
-the MOEA Framework, the first objective in the MOEA Framework is assigned
+**multiple constraints not supported, aggregating into first constraint**  
+Occurs when an algorithm implementation does not support multiple constraints.  This occurs primarily with the JMetal library, which only uses a single
+aggregate constraint violation value.  When translating between JMetal and the MOEA Framework, the first objective in the MOEA Framework is assigned
 the aggregate constraint violation value; the remaining objectives become 0.
 
-#### increasing MOEA/D population size
-The population size of MOEA/D must be at least the number of objectives of
-the problem.  If not, the population size is automatically increased.
+**increasing MOEA/D population size**  
+The population size of MOEA/D must be at least the number of objectives of the problem.  If not, the population size is automatically increased.
   
-#### checkpoints not supported when running multiple seeds
-Emitted by the Executor when the withCheckpointFile(...) and 
-accumulateAcrossSeeds(...) options are both used.  Checkpoints are only
-supported for single-seed evaluation.  The Executor will continue without
-checkpoints.
+**checkpoints not supported when running multiple seeds**  
+Emitted by the `Executor` when the `withCheckpointFile(...)` and `accumulateAcrossSeeds(...)` options are both used.  Checkpoints are only
+supported for single-seed evaluation.  The `Executor` will continue without checkpoints.
   
-#### checkpoints not supported by algorithm
-Emitted by the Executor if the algorithm is not Resumable (i.e., does not
-support checkpoints).  The Executor will continue without checkpoints.
+**checkpoints not supported by algorithm**  
+Emitted by the `Executor` if the algorithm is not `Resumable` (i.e., does not support checkpoints).  The `Executor` will continue without checkpoints.
   
-#### Provider org.moeaframework.algorithm.jmetal.JMetalAlgorithms could not be instantiated: java.lang.NoClassDefFoundError: <class>
-This warning occurs when attempting to instantiate the JMetal algorithm
-provider, but the JMetal library could not be found on the classpath.  This
-is treated as a warning and not an exception since a secondary provider may
-exist for the specified algorithm.  If no secondary provider exists, a
-ProviderNotFoundException will be thrown.  To correct, obtain the latest 
-JMetal library from http://jmetal.sourceforge.net/ and list it on the 
+**Provider org.moeaframework.algorithm.jmetal.JMetalAlgorithms could not be instantiated: java.lang.NoClassDefFoundError: \<class\>**  
+This warning occurs when attempting to instantiate the JMetal algorithm provider, but the JMetal library could not be found on the classpath.  This
+is treated as a warning and not an exception since a secondary provider may exist for the specified algorithm.  If no secondary provider exists, a
+`ProviderNotFoundException` will be thrown.  To correct, obtain the latest JMetal library from http://jmetal.sourceforge.net/ and list it on the 
 classpath as follows:
-  java -classpath "$CLASSPATH:/path/to/JMetal.jar"
-Also ensure you are using the correct classpath separator.  Linux users will
-use the colon (:) as the above example demonstrates.  Windows and Cygwin
+```
+java -classpath "$CLASSPATH:/path/to/JMetal.jar"
+```
+Also ensure you are using the correct classpath separator.  Linux users will use the colon (:) as the above example demonstrates.  Windows and Cygwin
 users should use the semi-colon (;).
     
-#### unable to negate values in <file>, incorrect number of values in a row
-Emitted by the Negater command line utility when one of the files it is
-processing contains an invalid number of values in a row.  The file is
-expected to contain the same number of values in a row as values passed to
-the -d,--direction command line argument.  The file will not be modified if
+**unable to negate values in \<file\>, incorrect number of values in a row**  
+Emitted by the `Negater` command line utility when one of the files it is processing contains an invalid number of values in a row.  The file is
+expected to contain the same number of values in a row as values passed to the `-d,--direction` command line argument.  The file will not be modified if
 this issue is detected.
 
-#### unable to negate values in <file>, unable to parse number
-Emitted by the Negater command line utility when one of the files it is
-processing encounters a value it is unable to parse.  The columns being
-negated must be numeric values.  The file will not be modified if this issue
-is detected.
+**unable to negate values in \<file\>, unable to parse number**  
+Emitted by the `Negater` command line utility when one of the files it is processing encounters a value it is unable to parse.  The columns being
+negated must be numeric values.  The file will not be modified if this issue is detected.
   
-#### argument is null / <class> not assignable from <class>
-When validating an expression tree using the node.isValid() method, details
-identifying why the tree is invalid are printed.  The warning "argument is
-null" indicates the tree is incomplete and contains a missing argument.
-Check to ensure all arguments of all nodes within the tree are non-null.
-The warning "<class> not assignable from <class>" indicates the required type
-of an argument did not match the return type of the argument.  If this
-warning appears when using Sequence, For or While, ensure you specify the
-return type of these nodes using the appropriate constructor.
+**argument is null**  
+**\<class\> not assignable from \<class\>**  
+When validating an expression tree using the `node.isValid()` method, details identifying why the tree is invalid are printed.  The warning "argument is
+null" indicates the tree is incomplete and contains a missing argument.  Check to ensure all arguments of all nodes within the tree are non-null.
+The warning "<class> not assignable from <class>" indicates the required type of an argument did not match the return type of the argument.  If this
+warning appears when using Sequence, For or While, ensure you specify the return type of these nodes using the appropriate constructor.
   
-#### unable to parse solution, ignoring remaining entries in the file / #### insufficient number of entries in row, ignoring remaining rows in the file
-Occurs when MetricFileReader or ResultFileReader encounter invalid data in
-an input file.  They automatically discard any remaining entries in the
-file, assuming they are corrupt.  This is primarily intended to allow the
-software to automatically recover from a previous, interrupted execution.
-These warnings are provided to inform the user that invalid entries are
-being discarded.
+**unable to parse solution, ignoring remaining entries in the file**  
+**insufficient number of entries in row, ignoring remaining rows in the file**  
+Occurs when `MetricFileReader` or `ResultFileReader` encounter invalid data in an input file.  They automatically discard any remaining entries in the
+file, assuming they are corrupt.  This is primarily intended to allow the software to automatically recover from a previous, interrupted execution.
+These warnings are provided to inform the user that invalid entries are being discarded.
 
-Unable to find the file <file>
-This warning is shown when running an example that must load a data file but
-the data file could not be found.  Ensure that the examples directory is
+**Unable to find the file \<file\>**  
+This warning is shown when running an example that must load a data file but the data file could not be found.  Ensure that the examples directory is
 located on your classpath:
-  java -classpath "$CLASSPATH:examples" ...
-Also ensure you are using the correct classpath separator.  Linux users will
-use the colon (:) as the above example demonstrates.  Windows and Cygwin
+```
+java -classpath "$CLASSPATH:examples" ...
+```
+Also ensure you are using the correct classpath separator.  Linux users will use the colon (:) as the above example demonstrates.  Windows and Cygwin
 users should use the semi-colon (;).
 
-#### incorrect number of names, using defaults
-Occurs when using the --names argument provided by ARFFConverter and
-AerovisConverter to provide custom names for the decision variables and/or
-objectives, but the number of names provided is not correct.  When providing
-names for only the objectives, the number of names must match the number of
-objectives.  When providing names for both variables and objectives, the
-number of names must match the number of variables and objectives in the data
-file.  Otherwise, this warning is displayed and the program uses default
-names.
+**incorrect number of names, using defaults**  
+Occurs when using the `--names` argument provided by `ARFFConverter` and `AerovisConverter` to provide custom names for the decision variables and/or
+objectives, but the number of names provided is not correct.  When providing names for only the objectives, the number of names must match the number of
+objectives.  When providing names for both variables and objectives, the number of names must match the number of variables and objectives in the data
+file.  Otherwise, this warning is displayed and the program uses default names.
 
-#### population is empty, can not generate ARFF file
-The ARFFConverter outputs an ARFF file using the last entry in a result file.
-If the last entry is empty, then no ARFF file is generated.
+**population is empty, can not generate ARFF file**  
+The `ARFFConverter` outputs an ARFF file using the last entry in a result file. If the last entry is empty, then no ARFF file is generated.
