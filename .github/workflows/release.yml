@@ -27,7 +27,10 @@ jobs:
           version=$(cat META-INF/build.properties | awk '{split($0,a,"="); if (a[1]=="version") print a[2]}')
           pushd maven
           export GPG_TTY=$(tty)
-          echo "${{ secrets.GPG_PASSPHRASE }}" | gpg --batch --no-tty --passphrase-fd 0 -ab *
+          echo "${{ secrets.GPG_PASSPHRASE }}" | gpg --batch --passphrase-fd 0 -ab ${shortname}-${version}.pom
+          echo "${{ secrets.GPG_PASSPHRASE }}" | gpg --batch --passphrase-fd 0 -ab ${shortname}-${version}.jar
+          echo "${{ secrets.GPG_PASSPHRASE }}" | gpg --batch --passphrase-fd 0 -ab ${shortname}-${version}-sources.jar
+          echo "${{ secrets.GPG_PASSPHRASE }}" | gpg --batch --passphrase-fd 0 -ab ${shortname}-${version}-javadoc.jar
           jar -cf ${shortname}-${version}-bundle.jar *
           popd
       - uses: actions/upload-artifact@v3
