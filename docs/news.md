@@ -3,7 +3,7 @@
 This page documents notable changes introduced in each chronological release of the MOEA Framework.
 
 
-## Version 3.0 (TBD)
+## Version 3.0 (7 Nov 2022)
 
   * Upgrades minimum JDK version to 8.
 
