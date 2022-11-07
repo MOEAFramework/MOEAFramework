@@ -29,10 +29,15 @@ jobs:
           pushd maven
           ls
           export GPG_TTY=$(tty)
+          echo "Signing ${shortname}-${version}.pom"
           echo "${{ secrets.GPG_PASSPHRASE }}" | gpg --batch --passphrase-fd 0 -ab ${shortname}-${version}.pom
+          echo "Signing ${shortname}-${version}.jar"
           echo "${{ secrets.GPG_PASSPHRASE }}" | gpg --batch --passphrase-fd 0 -ab ${shortname}-${version}.jar
+          echo "Signing {shortname}-${version}-sources.jar"
           echo "${{ secrets.GPG_PASSPHRASE }}" | gpg --batch --passphrase-fd 0 -ab ${shortname}-${version}-sources.jar
+          echo "Signing ${shortname}-${version}-javadoc.jar"
           echo "${{ secrets.GPG_PASSPHRASE }}" | gpg --batch --passphrase-fd 0 -ab ${shortname}-${version}-javadoc.jar
+          echo "Creating bundle"
           jar -cf ${shortname}-${version}-bundle.jar *
           popd
       - uses: actions/upload-artifact@v3
