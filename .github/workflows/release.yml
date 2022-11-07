@@ -26,6 +26,7 @@ jobs:
           shortname=$(cat META-INF/build.properties | awk '{split($0,a,"="); if (a[1]=="shortname") print a[2]}')
           version=$(cat META-INF/build.properties | awk '{split($0,a,"="); if (a[1]=="version") print a[2]}')
           pushd maven
+          export GPG_TTY=$(tty)
           echo "${{ secrets.GPG_PASSPHRASE }}" | gpg --batch --no-tty --passphrase-fd 0 -ab *
           jar -cf ${shortname}-${version}-bundle.jar *
           popd
