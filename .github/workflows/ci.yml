@@ -68,8 +68,8 @@ jobs:
       run: ant -f build.xml package-binary
     - name: Package source
       run: ant -f build.xml package-source
-    - name: Package maven
-      run: ant -f build.xml package-maven
+    #- name: Package maven
+    #  run: ant -f build.xml package-maven
     - name: Package demo
       run: ant -f build.xml package-demo
     - name: Package website
