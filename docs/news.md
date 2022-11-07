@@ -18,6 +18,8 @@ This page documents notable changes introduced in each chronological release of 
       JMetal.  As a result, they will no longer be supported.
 
   * Rename the settings file `global.properties` to `moeaframework.properties`.
+  
+  * Converted text files to Markdown and moved into `docs/` folder.
 
 
 ## Version 2.13 (30 Dec 2019)

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!--
-Copyright 2009-2020 David Hadka
+Copyright 2009-2022 David Hadka
 
 This file is part of the MOEA Framework.
 
@@ -344,19 +344,19 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		<mkdir dir="${build}" />
 
 		<!-- download PISA binaries -->
-		<get src="http://www.tik.ee.ethz.ch/pisa/selectors/spam/spam_win.zip" dest="${build}/spam_win.zip" />
-		<get src="http://www.tik.ee.ethz.ch/pisa/selectors/shv/shv_win.zip" dest="${build}/shv_win.zip" />
-		<get src="http://www.tik.ee.ethz.ch/pisa/selectors/sibea/sibea_binary.zip" dest="${build}/sibea_win.zip" />
-		<get src="http://www.tik.ee.ethz.ch/pisa/selectors/hype/hype_win.zip" dest="${build}/hype_win.zip" />
-		<get src="http://www.tik.ee.ethz.ch/pisa/lotz_semo/semo_win.zip" dest="${build}/semo_win.zip" />
-		<get src="http://www.tik.ee.ethz.ch/pisa/selectors/semo2/semo2_win.zip" dest="${build}/semo2_win.zip" />
-		<get src="http://www.tik.ee.ethz.ch/pisa/selectors/femo/femo_win.zip" dest="${build}/femo_win.zip" />
-		<get src="http://www.tik.ee.ethz.ch/pisa/selectors/spea2/spea2_win.zip" dest="${build}/spea2_win.zip" />
-		<get src="http://www.tik.ee.ethz.ch/pisa/selectors/nsga2/nsga2_win.zip" dest="${build}/nsga2_win.zip" />
-		<get src="http://www.tik.ee.ethz.ch/pisa/selectors/ecea/ecea_win.zip" dest="${build}/ecea_win.zip" />
-		<get src="http://www.tik.ee.ethz.ch/pisa/selectors/ibea/ibea_win.zip" dest="${build}/ibea_win.zip" />
-		<get src="http://www.tik.ee.ethz.ch/pisa/selectors/msops/msops_win.zip" dest="${build}/msops_win.zip" />
-		<get src="http://www.tik.ee.ethz.ch/pisa/selectors/epsmoea/epsmoea_win.tar.gz" dest="${build}/epsmoea_win.tar.gz" />
+		<get src="http://sop.tik.ee.ethz.ch/pisa/selectors/spam/spam_win.zip" dest="${build}/spam_win.zip" />
+		<get src="http://sop.tik.ee.ethz.ch/pisa/selectors/shv/shv_win.zip" dest="${build}/shv_win.zip" />
+		<get src="http://sop.tik.ee.ethz.ch/pisa/selectors/sibea/sibea_binary.zip" dest="${build}/sibea_win.zip" />
+		<get src="http://sop.tik.ee.ethz.ch/pisa/selectors/hype/hype_win.zip" dest="${build}/hype_win.zip" />
+		<get src="http://sop.tik.ee.ethz.ch/pisa/lotz_semo/semo_win.zip" dest="${build}/semo_win.zip" />
+		<get src="http://sop.tik.ee.ethz.ch/pisa/selectors/semo2/semo2_win.zip" dest="${build}/semo2_win.zip" />
+		<get src="http://sop.tik.ee.ethz.ch/pisa/selectors/femo/femo_win.zip" dest="${build}/femo_win.zip" />
+		<get src="http://sop.tik.ee.ethz.ch/pisa/selectors/spea2/spea2_win.zip" dest="${build}/spea2_win.zip" />
+		<get src="http://sop.tik.ee.ethz.ch/pisa/selectors/nsga2/nsga2_win.zip" dest="${build}/nsga2_win.zip" />
+		<get src="http://sop.tik.ee.ethz.ch/pisa/selectors/ecea/ecea_win.zip" dest="${build}/ecea_win.zip" />
+		<get src="http://sop.tik.ee.ethz.ch/pisa/selectors/ibea/ibea_win.zip" dest="${build}/ibea_win.zip" />
+		<get src="http://sop.tik.ee.ethz.ch/pisa/selectors/msops/msops_win.zip" dest="${build}/msops_win.zip" />
+		<get src="http://sop.tik.ee.ethz.ch/pisa/selectors/epsmoea/epsmoea_win.tar.gz" dest="${build}/epsmoea_win.tar.gz" />
 
 		<!-- extract PISA binaries -->
 		<unzip src="${build}/spam_win.zip" dest="${build}" />
@@ -394,19 +394,19 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		<mkdir dir="${build}" />
 
 		<!-- download PISA binaries -->
-		<get src="http://www.tik.ee.ethz.ch/pisa/selectors/spam/spam_linux_32.tar.gz" dest="${build}" />
-		<!--<get src="http://www.tik.ee.ethz.ch/pisa/selectors/shv/shv_linux32.rar" dest="${build}" />-->
-		<get src="http://www.tik.ee.ethz.ch/pisa/selectors/sibea/sibea_binary.zip" dest="${build}" />
-		<get src="http://www.tik.ee.ethz.ch/pisa/selectors/hype/hype_linux_32.tar.gz" dest="${build}" />
-		<get src="http://www.tik.ee.ethz.ch/pisa/lotz_semo/semo_linux.tar.gz" dest="${build}" />
-		<get src="http://www.tik.ee.ethz.ch/pisa/selectors/semo2/semo2_linux.tar.gz" dest="${build}" />
-		<get src="http://www.tik.ee.ethz.ch/pisa/selectors/femo/femo_linux.tar.gz" dest="${build}" />
-		<get src="http://www.tik.ee.ethz.ch/pisa/selectors/spea2/spea2_linux.tar.gz" dest="${build}" />
-		<get src="http://www.tik.ee.ethz.ch/pisa/selectors/nsga2/nsga2_linux.tar.gz" dest="${build}" />
-		<get src="http://www.tik.ee.ethz.ch/pisa/selectors/ecea/ecea_linux.tar.gz" dest="${build}" />
-		<get src="http://www.tik.ee.ethz.ch/pisa/selectors/ibea/ibea_linux.tar.gz" dest="${build}" />
-		<get src="http://www.tik.ee.ethz.ch/pisa/selectors/msops/msops_linux.tar.gz" dest="${build}" />
-		<get src="http://www.tik.ee.ethz.ch/pisa/selectors/epsmoea/epsmoea_linux.tar.gz" dest="${build}" />
+		<get src="http://sop.tik.ee.ethz.ch/pisa/selectors/spam/spam_linux_32.tar.gz" dest="${build}" />
+		<!--<get src="http://sop.tik.ee.ethz.ch/pisa/selectors/shv/shv_linux32.rar" dest="${build}" />-->
+		<get src="http://sop.tik.ee.ethz.ch/pisa/selectors/sibea/sibea_binary.zip" dest="${build}" />
+		<get src="http://sop.tik.ee.ethz.ch/pisa/selectors/hype/hype_linux_32.tar.gz" dest="${build}" />
+		<get src="http://sop.tik.ee.ethz.ch/pisa/lotz_semo/semo_linux.tar.gz" dest="${build}" />
+		<get src="http://sop.tik.ee.ethz.ch/pisa/selectors/semo2/semo2_linux.tar.gz" dest="${build}" />
+		<get src="http://sop.tik.ee.ethz.ch/pisa/selectors/femo/femo_linux.tar.gz" dest="${build}" />
+		<get src="http://sop.tik.ee.ethz.ch/pisa/selectors/spea2/spea2_linux.tar.gz" dest="${build}" />
+		<get src="http://sop.tik.ee.ethz.ch/pisa/selectors/nsga2/nsga2_linux.tar.gz" dest="${build}" />
+		<get src="http://sop.tik.ee.ethz.ch/pisa/selectors/ecea/ecea_linux.tar.gz" dest="${build}" />
+		<get src="http://sop.tik.ee.ethz.ch/pisa/selectors/ibea/ibea_linux.tar.gz" dest="${build}" />
+		<get src="http://sop.tik.ee.ethz.ch/pisa/selectors/msops/msops_linux.tar.gz" dest="${build}" />
+		<get src="http://sop.tik.ee.ethz.ch/pisa/selectors/epsmoea/epsmoea_linux.tar.gz" dest="${build}" />
 
 		<!-- extract PISA binaries -->
 		<untar src="${build}/spam_linux_32.tar.gz" compression="gzip" dest="${build}/spam_linux" />
