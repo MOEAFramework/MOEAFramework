@@ -56,8 +56,8 @@ Use of these build scripts requires Apache Ant to be installed.  See
 
 	<!-- List of files required in every distribution -->
 	<path id="requiredfiles">
-		<fileset file="README" />
-		<fileset file="LICENSE" />
+		<fileset file="README.md" />
+		<fileset file="COPYING" />
 	</path>
 
 	<!-- Generates the Javadoc webpages -->
@@ -101,11 +101,6 @@ Use of these build scripts requires Apache Ant to be installed.  See
 			<fileset dir="META-INF" excludes="ZHANG-LICENSE" />
 			<path refid="requiredfiles" />
 		</copy>
-
-		<replace file="${build}/META-INF/README">
-			<replacefilter token="%VERSION%" value="${version}" />
-			<replacefilter token="%DATE%" value="${TODAY}" />
-		</replace>
 		
 		<exec executable="git" outputproperty="impl.version"
 				errorproperty="impl.error" failifexecutionfails="false">
@@ -152,11 +147,6 @@ Use of these build scripts requires Apache Ant to be installed.  See
 			<fileset file="moeaframework.properties" />
 			<fileset file="auxiliary/windows/launch-diagnostic-tool.bat" />
 		</copy>
-
-		<replace file="${base}/README">
-			<replacefilter token="%VERSION%" value="${version}" />
-			<replacefilter token="%DATE%" value="${TODAY}" />
-		</replace>
 
 		<copy todir="${base}/licenses">
 			<fileset dir="META-INF" includes="*-LICENSE" 
@@ -285,29 +275,30 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		<delete dir="${build}" />
 		<mkdir dir="${build}" />
 		
-		<unjar dest="${build}" src="lib/commons-cli-1.4.jar" />
+		<unjar dest="${build}" src="lib/commons-cli-1.5.0.jar" />
 		<move file="${build}/META-INF/NOTICE.txt" tofile="${build}/META-INF/COMMONS-CLI-NOTICE.txt" />
 		
-		<unjar dest="${build}" src="lib/commons-codec-1.13.jar" />
+		<unjar dest="${build}" src="lib/commons-codec-1.15.jar" />
 		<move file="${build}/META-INF/NOTICE.txt" tofile="${build}/META-INF/COMMONS-CODEC-NOTICE.txt" />
 		
-		<unjar dest="${build}" src="lib/commons-io-2.6.jar" />
+		<unjar dest="${build}" src="lib/commons-io-2.11.0.jar" />
 		<move file="${build}/META-INF/NOTICE.txt" tofile="${build}/META-INF/COMMONS-IO-NOTICE.txt" />
 		
-		<unjar dest="${build}" src="lib/commons-text-1.8.jar" />
+		<unjar dest="${build}" src="lib/commons-text-1.10.0.jar" />
 		<move file="${build}/META-INF/NOTICE.txt" tofile="${build}/META-INF/COMMONS-TEXT-NOTICE.txt" />
 		
-		<unjar dest="${build}" src="lib/commons-lang3-3.9.jar" />
+		<unjar dest="${build}" src="lib/commons-lang3-3.12.0.jar" />
 		<move file="${build}/META-INF/NOTICE.txt" tofile="${build}/META-INF/COMMONS-LANG3-NOTICE.txt" />
 		
 		<unjar dest="${build}" src="lib/commons-math3-3.6.1.jar" />
 		<move file="${build}/META-INF/NOTICE.txt" tofile="${build}/META-INF/COMMONS-MATH3-NOTICE.txt" />
 		
-		<unjar dest="${build}" src="lib/rsyntaxtextarea-3.0.6.jar" />
-		<unjar dest="${build}" src="lib/jcommon-1.0.23.jar" />
-		<unjar dest="${build}" src="lib/jfreechart-1.5.0.jar" />
+		<unjar dest="${build}" src="lib/rsyntaxtextarea-3.3.0.jar" />
+		<unjar dest="${build}" src="lib/jcommon-1.0.24.jar" />
+		<unjar dest="${build}" src="lib/jfreechart-1.5.3.jar" />
 		<unjar dest="${build}" src="lib/jmetal-algorithm-5.9.jar" />
 		<unjar dest="${build}" src="lib/jmetal-core-5.9.jar" />
+		<unjar dest="${build}" src="lib/jmetal-problem-5.9.jar" />
 		
 		<delete dir="${build}/META-INF/maven" />
 		<delete file="${build}/META-INF/LICENSE.txt" />

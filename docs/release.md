@@ -11,7 +11,7 @@
 ## Release Steps
 
 1. Update `META-INF/build.properties` with new version number.
-2. Update `NEWS` with version number, release date, and release notes.
+2. Update `news.md` with version number, release date, and release notes.
 3. Update `website/xslt/archive.xml` with links to the last version.
 4. If necessary, update the copyright year.
    1. Source code is updated using the `update-header` Ant task in `auxiliary/checkstyle/build.xml`.
@@ -21,11 +21,10 @@
    2. `ant -f test.xml build-maven-tests & cd build & mvn test`
 6. Run all of the `package-*` Ant tasks in `build.xml`.
 7. Create a new Github Release using a tag in the format `vX.XX`.
-   1. Copy the release notes from `NEWS`
+   1. Copy the release notes from `news.md`
    2. Publish the following files in the `dist` folder:
       - `MOEAFramework-X.XX.tar.gz`
       - `MOEAFramework-X.XX-Demo.jar`
-      - `MOEAFramework-X.XX-BeginnersGuidePreview.pdf`
       - `MOEAFramework-X.XX-Source.tar.gz`
 8. Publish the Maven package:
    1. Run the `package-maven` Ant task in `build.xml`.
