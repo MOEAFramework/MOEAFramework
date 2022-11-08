@@ -171,6 +171,11 @@ public class StandardAlgorithmsResumeTest {
 	}
 	
 	@Test
+	public void testAMOSA() throws IOException {
+		test("AMOSA");
+	}
+	
+	@Test
 	public void testInstrumentedAlgorithm() throws IOException {
 		testInstrumented("NSGAII");
 	}
@@ -191,7 +196,7 @@ public class StandardAlgorithmsResumeTest {
 		Algorithm algorithm = AlgorithmFactory.getInstance().getAlgorithm(
 				algorithmName, new Properties(), problem);
 		
-		for (int i = 0; i < N; i++) {
+		for (int i = 0; i < N && !algorithm.isTerminated(); i++) {
 			// Due to how NondominatedSortingPopulation automatically
 			// recalculates ranks and crowding distances, the checkpoint
 			// version slightly differs due to an extra update.  This hack
@@ -215,7 +220,7 @@ public class StandardAlgorithmsResumeTest {
 		Checkpoints checkpoints = null;
 		PRNG.setSeed(seed);
 
-		for (int i = 0; i < N; i++) {
+		for (int i = 0; i < N && (checkpoints == null || !checkpoints.isTerminated()); i++) {
 			checkpoints = new Checkpoints(
 					AlgorithmFactory.getInstance().getAlgorithm(
 							algorithmName, new Properties(), problem),

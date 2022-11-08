@@ -19,11 +19,13 @@ package org.moeaframework.algorithm.sa;
 
 import java.io.NotSerializableException;
 import java.io.Serializable;
-import java.util.Random;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.moeaframework.algorithm.AlgorithmInitializationException;
 import org.moeaframework.core.Initialization;
 import org.moeaframework.core.NondominatedPopulation;
+import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
@@ -103,7 +105,7 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 			cluster();
 		}
 		
-		currentPT = archive.get(new Random().nextInt(archive.size()));
+		currentPT = archive.get(PRNG.nextInt(archive.size()));
 		this.temperature = tMax;
 	}
 	
@@ -126,7 +128,7 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 					double averageDeltaDominance = calculateAverageDeltaDominance(newPT,r,comparator);
 					double probability = 1d/(1d+Math.exp(averageDeltaDominance*temperature));
 					
-					if (new Random().nextDouble() < probability) {
+					if (PRNG.nextDouble() < probability) {
 						this.currentPT=newPT;
 					}
 				}else if(comparisonResult == 0) {	// Case 2 : currentPt and newPT are non-dominating to each other
@@ -136,7 +138,7 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 						double averageDeltaDominance = calculateAverageDeltaDominance(newPT,r,comparator);
 						double probability = 1d/(1d+Math.exp(averageDeltaDominance*temperature));
 						
-						if (new Random().nextDouble() < probability) {
+						if (PRNG.nextDouble() < probability) {
 							this.currentPT = newPT;
 						}
 					} else if (dominationAmount.getDominatedAmount() == 0 && dominationAmount.getDominatesAmount() == 0) {    // Case 2(b) : newPT is non-dominating w.r.t all the points in the archive
@@ -157,7 +159,7 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 						MinimumDeltaDominance minimumDeltaDominance = calculateMinimumDeltaDominance(newPT,r,comparator);
 						double probability = 1d/(1d+Math.exp(-1d*minimumDeltaDominance.getMinimumDeltaDominance()));
 						
-						if (new Random().nextDouble() < probability) {
+						if (PRNG.nextDouble() < probability) {
 							this.currentPT = archive.get(minimumDeltaDominance.getIndex());
 						} else {
 							this.currentPT = newPT;
@@ -189,7 +191,7 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 	}
 
 	//with respect to III.C. Amount of Domination
-	private double[] calculateR (Solution newPT) {
+	private double[] calculateR(Solution newPT) {
 		double[] r = new double[newPT.getNumberOfObjectives()];
 		double[] worsts = new double[newPT.getNumberOfObjectives()];
 		double[] bests = new double[newPT.getNumberOfObjectives()];
@@ -249,7 +251,7 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 	private DominationAmount calculateDominationAmounts(Solution newPT, DominanceComparator comparator) {
 		DominationAmount dominationAmount = new DominationAmount();
 		
-		for (int i=0; i < archive.size();i++) {
+		for (int i=0; i < archive.size(); i++) {
 			int result = comparator.compare(newPT, archive.get(i));
 			
 			if (result == -1) {
@@ -258,6 +260,7 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 				dominationAmount.increaseDominatedAmount();
 			}
 		}
+		
 		return dominationAmount;
 	}
 	
@@ -332,8 +335,8 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 		}
 
 		Solution current = this.currentPT;
-		NondominatedPopulation archiveList = new NondominatedPopulation();
-
+		List<Solution> archiveList = new ArrayList<Solution>();
+		
 		if (archive != null) {
 			for (Solution solution : archive) {
 				archiveList.add(solution);
@@ -345,12 +348,14 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 
 	@Override
 	public void setState(Object objState) throws NotSerializableException {
+		super.initialize();
+		
 		AMOSAAlgorithmState state = (AMOSAAlgorithmState)objState;
 
 		numberOfEvaluations = state.getNumberOfEvaluations();
 		currentPT = state.getCurrent();
 		temperature = state.getTemperature();
-
+		
 		if (archive != null) {
 			archive.addAll(state.getArchive());
 		}
@@ -383,7 +388,7 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 		/**
 		 * The archive stored in a serializable list.
 		 */
-		private final NondominatedPopulation archive;
+		private final List<Solution> archive;
 
 		/**
 		 * Constructs a proxy to serialize and deserialize the state of an 
@@ -395,12 +400,12 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 		 * @param archive the archive stored in a serializable list
 		 */
 		public AMOSAAlgorithmState(int numberOfEvaluations,
-				Solution current, NondominatedPopulation archive, double temperature) {
+				Solution current, List<Solution> archive, double temperature) {
 			super();
 			this.numberOfEvaluations = numberOfEvaluations;
 			this.current = current;
 			this.archive = archive;
-			this.temperature=temperature;
+			this.temperature = temperature;
 		}
 
 		/**
@@ -426,7 +431,7 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 		 * 
 		 * @return the archive stored in a serializable list
 		 */
-		public NondominatedPopulation getArchive() {
+		public List<Solution> getArchive() {
 			return archive;
 		}
 		
@@ -438,8 +443,5 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 		public double getTemperature() {
 			return temperature;
 		}
-
 	}
-
-
 }
