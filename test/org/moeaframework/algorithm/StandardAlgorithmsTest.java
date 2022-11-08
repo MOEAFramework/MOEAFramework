@@ -25,7 +25,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.moeaframework.algorithm.sa.AbstractSimulatedAnnealingAlgorithm;
+import org.moeaframework.algorithm.sa.AMOSA;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.spi.AlgorithmFactory;
@@ -575,7 +575,7 @@ public class StandardAlgorithmsTest {
 		
 		algorithm.terminate();
 		
-		if (!(algorithm instanceof AbstractSimulatedAnnealingAlgorithm)) {
+		if (!(algorithm instanceof AMOSA)) {
 			Assert.assertTrue((algorithm.getNumberOfEvaluations() - NFE) < 100);
 		}
 		
