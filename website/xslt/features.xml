@@ -54,6 +54,10 @@ using existing components.</p>
     <td>Multiobjective Scatter Search<sup>1</sup></td>
   </tr>
   <tr>
+    <td style="font-weight: bold">AMOSA</td>
+    <td>Archived Multi-objective Simulated Annealing</td>
+  </tr>
+  <tr>
     <td style="font-weight: bold">Borg&nbsp;MOEA</td>
     <td>Adaptive Multioperator Search with &epsilon;-Dominance and &epsilon;-Progress Triggered Restarts<sup>3</sup></td>
   </tr>

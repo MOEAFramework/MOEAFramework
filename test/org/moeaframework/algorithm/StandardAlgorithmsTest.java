@@ -25,6 +25,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.moeaframework.algorithm.sa.AMOSA;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.spi.AlgorithmFactory;
@@ -205,6 +206,11 @@ public class StandardAlgorithmsTest {
 	}
 	
 	@Test
+	public void testAMOSA_Real() {
+		test("AMOSA", realProblem);
+	}
+	
+	@Test
 	public void testEpsilonMOEA_Binary() {
 		test("eMOEA", binaryProblem);
 	}
@@ -312,6 +318,11 @@ public class StandardAlgorithmsTest {
 	@Test(expected = ProviderNotFoundException.class)
 	public void testMSOPS_Binary() {
 		test("MSOPS", binaryProblem);
+	}
+	
+	@Test
+	public void testAMOSA_Binary() {
+		test("AMOSA", binaryProblem);
 	}
 	
 	@Test
@@ -425,6 +436,11 @@ public class StandardAlgorithmsTest {
 	}
 	
 	@Test
+	public void testAMOSA_Permutation() {
+		test("AMOSA", permutationProblem);
+	}
+	
+	@Test
 	public void testEpsilonMOEA_Subset() {
 		test("eMOEA", subsetProblem);
 	}
@@ -534,12 +550,18 @@ public class StandardAlgorithmsTest {
 		test("MSOPS", subsetProblem);
 	}
 	
+	@Test
+	public void testAMOSA_Subset() {
+		test("AMOSA", subsetProblem);
+	}
+	
 	/**
 	 * Tests if the given algorithm operates correctly.
 	 * 
 	 * @param algorithm the algorithm
 	 */
 	protected void test(String name, Problem problem) {
+		int NFE = 1000;
 		Algorithm algorithm = AlgorithmFactory.getInstance().getAlgorithm(name, 
 				properties, problem);
 		
@@ -547,13 +569,16 @@ public class StandardAlgorithmsTest {
 		Assert.assertEquals(0, algorithm.getResult().size());
 		Assert.assertFalse(algorithm.isTerminated());
 		
-		while (algorithm.getNumberOfEvaluations() < 1000) {
+		while (algorithm.getNumberOfEvaluations() < NFE) {
 			algorithm.step();
 		}
 		
 		algorithm.terminate();
 		
-		Assert.assertTrue((algorithm.getNumberOfEvaluations() - 1000) < 100);
+		if (!(algorithm instanceof AMOSA)) {
+			Assert.assertTrue((algorithm.getNumberOfEvaluations() - NFE) < 100);
+		}
+		
 		Assert.assertTrue(algorithm.getResult().size() > 0);
 		Assert.assertTrue(algorithm.isTerminated());
 	}

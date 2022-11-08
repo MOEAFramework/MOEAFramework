@@ -39,7 +39,7 @@ public class AMOSAProvider extends AlgorithmProvider {
 			
 			// to be used at initialization the archive by the size of gamma*SL (default to 100)(gamma > 1)
 			double gamma = typedProperties.getDouble("gamma", 2.0d);
-			gamma = gamma<1.0d?2.0d:gamma;
+			gamma = gamma < 1.0d ? 2.0d : gamma;
 			
 			// Soft Limit SL (default to 100)
 			int softLimit = typedProperties.getInt("SL", 100);

@@ -832,7 +832,7 @@ public class Executor extends ProblemBuilder {
 					
 					progress.setCurrentAlgorithm(null);
 				} finally {
-					if (algorithm != null) {
+					if (algorithm != null && !algorithm.isTerminated()) {
 						algorithm.terminate();
 					}
 				}
