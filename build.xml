@@ -208,7 +208,6 @@ Use of these build scripts requires Apache Ant to be installed.  See
 				<include name="moeaframework.properties" />
 				<include name="build.xml" />
 				<include name="test.xml" />
-				<include name="TODO" />
 			</fileset>
 			<path refid="requiredfiles" />
 		</copy>
