@@ -27,9 +27,12 @@ import org.moeaframework.core.Solution;
 
 /**
  * Abstract class providing default implementations for several
- * {@link Algorithm} methods. All method extending this class must use the
- * {@link #evaluate} method to evaluate a solution. This is mandatory to ensure
- * the {@link #getNumberOfEvaluations()} method returns the correct result.
+ * {@link Algorithm} methods.
+ * <p>
+ * All subclasses must use the {@link #evaluate} or {@link #evaluateAll}
+ * methods to evaluate a solution. Do not call {@link Problem#evaluate}
+ * directly. This will ensure the number of function evaluations is tracked
+ * correctly.
  * <p>
  * Subclasses should avoid overriding the {@link #step()} method and instead
  * override the {@link #initialize()} and {@link #iterate()} methods
