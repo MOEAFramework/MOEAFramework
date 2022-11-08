@@ -53,6 +53,7 @@ public class CompoundTerminationCondition implements TerminationCondition {
 		boolean shouldTerminate = false;
 		
 		for (TerminationCondition condition : conditions) {
+			System.out.println(condition.getClass() + " " + condition.shouldTerminate(algorithm));
 			if (condition.shouldTerminate(algorithm)) {
 				// do not break here in case an implementation needs to be
 				// executed every step

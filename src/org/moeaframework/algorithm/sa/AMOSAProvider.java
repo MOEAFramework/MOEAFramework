@@ -29,7 +29,7 @@ import org.moeaframework.core.spi.AlgorithmProvider;
 import org.moeaframework.core.spi.OperatorFactory;
 import org.moeaframework.util.TypedProperties;
 
-public class AmosaProvider extends AlgorithmProvider {
+public class AMOSAProvider extends AlgorithmProvider {
 
 	@Override
 	public Algorithm getAlgorithm(String name, Properties properties, Problem problem) {
@@ -46,7 +46,6 @@ public class AmosaProvider extends AlgorithmProvider {
 			
 			// Hard Limit HL (default to 10)
 			int hardLimit = typedProperties.getInt("HL", 10);
-			
 
 			double tMin = typedProperties.getDouble("tMin", 0.0000001d);
 			double tMax = typedProperties.getDouble("tMax", 200d);
@@ -58,7 +57,10 @@ public class AmosaProvider extends AlgorithmProvider {
 			Initialization initialization = new RandomInitialization(problem, (int)gamma*softLimit);
 			
 			// Use the operator factory that problem provides
-			Variation variation = OperatorFactory.getInstance().getVariation(null, properties, problem);
+			Variation variation = OperatorFactory.getInstance().getVariation(
+					OperatorFactory.getInstance().getDefaultMutation(problem), 
+					properties,
+					problem);
 			
 			// Construct and return the RandomWalker algorithm
 			return new AMOSA(problem, initialization, variation, softLimit, hardLimit, tMin, tMax, alpha, numberOfIterationPerTemperature, numberOfHillClimbingIterationsForRefinement);
