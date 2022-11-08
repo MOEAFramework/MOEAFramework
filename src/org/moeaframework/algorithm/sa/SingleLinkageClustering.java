@@ -24,6 +24,7 @@ import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Solution;
 
 public class SingleLinkageClustering {
+	
 	private final NondominatedPopulation population;
 	
 	private final List<Cluster> clusters;
@@ -32,34 +33,41 @@ public class SingleLinkageClustering {
 		super();
 		this.population = population;
 		clusters = new ArrayList<Cluster>();
-		for(Solution solution:population) {
+		
+		for (Solution solution : population) {
 			clusters.add(new Cluster(solution));
 		}
 	}
 	
 	public NondominatedPopulation cluster(int n) {
-		if(n>=population.size() || population.size()<=1)
+		if (n >= population.size() || population.size() <= 1)
 			return population;
-		for(int i=population.size();i>n;i--) {
+		
+		for (int i = population.size(); i > n; i--) {
 			Cluster minClusterA= null;
 			Cluster minClusterB= null;
 			double minDistance=Double.MAX_VALUE;
-			for(int a=0;a<clusters.size();a++) {
-				for(int b=a+1;b<clusters.size();b++) {
+			
+			for (int a = 0; a < clusters.size(); a++) {
+				for (int b = a+1; b < clusters.size(); b++) {
 					double distance = clusters.get(a).distance(clusters.get(b));
-					if(distance<minDistance) {
+					
+					if (distance < minDistance) {
 						minDistance = distance;
 						minClusterA = clusters.get(a);
 						minClusterB = clusters.get(b);
 					}
 				}
 			}
+			
 			merge(minClusterA,minClusterB);
 		}
 		
 		NondominatedPopulation reducedPopulation = new NondominatedPopulation();
-		for(Cluster cluster : clusters)
+		
+		for(Cluster cluster : clusters) {
 			reducedPopulation.add(cluster.getRepresentativeMember());
+		}
 		
 		return reducedPopulation;
 	}
@@ -92,13 +100,17 @@ public class SingleLinkageClustering {
 		 */
 		public double distance(Cluster reference) {
 			double minDistance = Double.MAX_VALUE;
-			for(Solution solution: this.elements) {
-				for(Solution referenceSolution: reference.elements) {
+			
+			for (Solution solution : this.elements) {
+				for (Solution referenceSolution : reference.elements) {
 					double distance = distance(solution,referenceSolution);
-					if(distance<minDistance)
+					
+					if (distance < minDistance) {
 						minDistance=distance;
+					}
 				}
 			}
+			
 			return minDistance;
 		}
 		
@@ -127,22 +139,25 @@ public class SingleLinkageClustering {
 		public Solution getRepresentativeMember() {
 			Solution minSolution=null;
 			double minDistance = Double.MAX_VALUE;
-			for(int i=0;i<elements.size();i++) {
+			
+			for (int i = 0; i < elements.size(); i++) {
 				double distance = 0;
-				for(int j=0;j<elements.size();j++) {
-					if(i==j)
+				
+				for (int j = 0; j < elements.size(); j++) {
+					if(i == j) {
 						continue;
-					distance += distance(elements.get(i),elements.get(j));
+					}
 					
+					distance += distance(elements.get(i),elements.get(j));
 				}
-				if(distance<minDistance) {
+				
+				if (distance < minDistance) {
 					minDistance = distance;
 					minSolution = elements.get(i); 
 				}
 			}
+			
 			return minSolution;
 		}
-		
-		
 	}
 }
