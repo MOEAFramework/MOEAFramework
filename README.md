@@ -36,7 +36,7 @@ Maven users can add our dependency to their `pom.xml` file:
     <dependency>
         <groupId>org.moeaframework</groupId>
         <artifactId>moeaframework</artifactId>
-        <version>2.13</version>
+        <version>3.0</version>
     </dependency>
 
 ### License ###
