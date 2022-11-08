@@ -19,7 +19,6 @@ package org.moeaframework.algorithm;
 
 import java.io.IOException;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.moeaframework.IgnoreOnCI;

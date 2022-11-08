@@ -19,7 +19,6 @@ package org.moeaframework.algorithm.sa;
 
 import java.util.Properties;
 
-import org.moeaframework.algorithm.sa.AMOSA;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.Initialization;
 import org.moeaframework.core.Problem;
