@@ -4,7 +4,7 @@
 for downloads, documentation, and examples.**
 
 ﻿<a href="https://github.com/MOEAFramework/MOEAFramework"><img alt="GitHub Actions status" src="https://github.com/MOEAFramework/MOEAFramework/workflows/Tests/badge.svg?branch=master&event=push"></a>
-﻿[![Maven Central](https://img.shields.io/maven-central/v/org.moeaframework/moeaframework.svg)](http://mvnrepository.com/artifact/org.moeaframework/moeaframework/3.0)
+﻿[![Maven Central](https://img.shields.io/maven-central/v/org.moeaframework/moeaframework.svg)](https://search.maven.org/artifact/org.moeaframework/moeaframework)
 ![GitHub all releases](https://img.shields.io/github/downloads/MOEAFramework/MOEAFramework/total)
 
 The MOEA Framework is a free and open source Java library for developing and
