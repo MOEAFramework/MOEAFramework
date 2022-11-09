@@ -71,7 +71,10 @@ jobs:
           echo -n "${{ secrets.GPG_SIGNING_KEY }}" | base64 --decode | gpg --import
           
           pushd maven
-          gpg -ab *
+          gpg -ab ${BUILD_NAME}-${BUILD_VERSION}-pom.xml
+          gpg -ab ${BUILD_NAME}-${BUILD_VERSION}.jar
+          gpg -ab ${BUILD_NAME}-${BUILD_VERSION}-sources.jar
+          gpg -ab ${BUILD_NAME}-${BUILD_VERSION}-javadoc.jar
           
           jar -cvf ${BUILD_NAME}-${BUILD_VERSION}-bundle.jar *
       - name: Upload Maven bundle
