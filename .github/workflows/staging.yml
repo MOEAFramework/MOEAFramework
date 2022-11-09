@@ -7,11 +7,18 @@ on:
         type: string
         description: The version to publish
         required: true
-      stage_release:
-        description: 'Create defat GitHub release'
-        required: true 
+      publish_website:
+        description: 'Create draft Website release'
         default: true
         type: boolean 
+      publish_github:
+        description: 'Create draft GitHub release'
+        default: true
+        type: boolean
+      publish_maven:
+        description: 'Create Maven bundle'
+        default: true
+        type: boolean
 
 jobs:
   stage:
@@ -60,6 +67,7 @@ jobs:
           name: Release artifacts
           path: dist/
       - name: Stage website
+        if: ${{ inputs.publish_website }}
         run: |
           ant package-website
           
@@ -81,7 +89,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
       - name: Stage GitHub release
-        if: ${{ inputs.stage_release }}
+        if: ${{ inputs.publish_github }}
         run: |
           gh release create "v${{ inputs.version }}" --draft --title "Version ${{ inputs.version }}" --notes-file dist/release_notes.md \
               MOEAFramework-${{ inputs.version }}.tar.gz \
