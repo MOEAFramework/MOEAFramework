@@ -39,6 +39,10 @@ jobs:
         run: |
           cat docs/news.md | awk '/## Version ${{ inputs.version }}/{flag=1; next} /##/{flag=0} flag' > dist/release_notes.md
           [ "$(wc -l < dist/release_notes.md)" -gt 0 ] || (>&2 echo "Unable to read release notes from docs/news.md"; exit -1)
+      - uses: actions/upload-artifact@v3
+        with:
+          name: Release artifacts
+          path: dist/
       - name: Stage website
         run: |
           ant package-website
@@ -53,7 +57,7 @@ jobs:
           git checkout v${{ inputs.version }} || git checkout -b v${{ inputs.version }}
           
           rm -rf *
-          cp -R ../MOEAFramework/build/ .
+          cp -R ../MOEAFramework/build/* .
           
           git add .
           
@@ -64,10 +68,6 @@ jobs:
           fi
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
-      #- uses: actions/upload-artifact@v3
-      #  with:
-      #    name: Release Bundle
-      #    path: dist/
       #- name: Stage GitHub release
       #  uses: ncipollo/release-action@v1
       #  with:
