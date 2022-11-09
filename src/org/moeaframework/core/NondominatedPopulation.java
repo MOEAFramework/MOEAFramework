@@ -102,25 +102,6 @@ public class NondominatedPopulation extends Population {
 	 * 
 	 * @param comparator the dominance relation used by this non-dominated
 	 *        population
-	 * @param allowDuplicates allow duplicate solutions into the non-dominated
-	 *        population
-	 * @deprecated Use {@link #NondominatedPopulation(DominanceComparator,
-	 * 		  DuplicateMode)} instead.
-	 */
-	@Deprecated
-	public NondominatedPopulation(DominanceComparator comparator,
-			boolean allowDuplicates) {
-		this(comparator, allowDuplicates ?
-				DuplicateMode.ALLOW_DUPLICATES :
-				DuplicateMode.NO_DUPLICATE_OBJECTIVES);
-	}
-	
-	/**
-	 * Constructs an empty non-dominated population using the specified 
-	 * dominance relation.
-	 * 
-	 * @param comparator the dominance relation used by this non-dominated
-	 *        population
 	 * @param duplicateMode specifies how duplicate solutions are handled
 	 */
 	public NondominatedPopulation(DominanceComparator comparator,

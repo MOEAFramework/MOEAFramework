@@ -83,6 +83,8 @@ public class R1Indicator extends RIndicator {
 	 * @param subdivisions the number of subdivisions along each objective
 	 * @param referenceSet the reference set
 	 * @param utilityFunction the utility function
+	 * @param epsilon resolution when comparing two utility function values
+	 *                for equality
 	 */
 	public R1Indicator(Problem problem, int subdivisions,
 			NondominatedPopulation referenceSet,

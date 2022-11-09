@@ -1036,6 +1036,8 @@ public class Plot {
 
 	/**
 	 * Displays the chart in a standalone window.
+	 * 
+	 * @return the window that was created
 	 */
 	public JFrame show() {
 		return show(800, 600);
@@ -1067,6 +1069,8 @@ public class Plot {
 	
 	/**
 	 * Displays the chart in a blocking JDialog.
+	 * 
+	 * @return the window that was created
 	 */
 	public JDialog showDialog() {
 		return showDialog(800, 600);

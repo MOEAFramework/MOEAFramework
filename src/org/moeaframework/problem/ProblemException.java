@@ -48,6 +48,7 @@ public class ProblemException extends FrameworkException {
 	 * problem with the given cause.
 	 * 
 	 * @param problem the problem responsible for this exception
+	 * @param message the message describing this exception
 	 * @param cause the cause of this exception
 	 */
 	public ProblemException(Problem problem, String message, Throwable cause) {

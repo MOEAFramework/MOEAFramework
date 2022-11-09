@@ -51,6 +51,12 @@ public class Quagliarella extends AbstractProblem {
 		this(16);
 	}
 
+	/**
+	 * Constructs the Quagliarella problem with the given number of decision
+	 * variables.
+	 * 
+	 * @param numberOfVariables the number of decision variables
+	 */
 	public Quagliarella(int numberOfVariables) {
 		super(numberOfVariables, 2);
 	}

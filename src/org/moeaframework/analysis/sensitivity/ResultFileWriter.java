@@ -120,7 +120,7 @@ public class ResultFileWriter implements OutputWriter {
 	 * 
 	 * @param problem the problem
 	 * @param file the file to which the results are stored
-	 * @throws IOException
+	 * @throws IOException if an I/O error occurred
 	 */
 	public ResultFileWriter(Problem problem, File file) throws IOException {
 		this(problem, file, true);
@@ -141,7 +141,7 @@ public class ResultFileWriter implements OutputWriter {
 	 * @param file the file to which the results are stored
 	 * @param includeVariables {@code true} if this writer should save the 
 	 *        decision variables; {@code false} otherwise.
-	 * @throws IOException
+	 * @throws IOException if an I/O error occurred
 	 */
 	public ResultFileWriter(Problem problem, File file, 
 			boolean includeVariables) throws IOException {

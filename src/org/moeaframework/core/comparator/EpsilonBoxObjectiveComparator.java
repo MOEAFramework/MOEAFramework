@@ -108,6 +108,7 @@ Serializable {
 	 * last &epsilon; value in this array is used
 	 * {@code (epsilons[epsilons.length-1])}.
 	 * 
+	 * @param objective the index of the objective
 	 * @return the &epsilon; value used by this comparator for the specified
 	 *         objective
 	 */

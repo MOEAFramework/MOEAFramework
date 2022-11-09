@@ -108,6 +108,15 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 	 */
 	private final int divisionsInner;
 
+	/**
+	 * Constructs a new instance of the DBEA algorithm.
+	 * 
+	 * @param problem the problem being solved
+	 * @param initialization the initialization method
+	 * @param variation the variation operator
+	 * @param divisionsOuter the number of outer divisions
+	 * @param divisionsInner the number of inner divisions
+	 */
 	public DBEA(Problem problem, Initialization initialization,
 			Variation variation, int divisionsOuter, int divisionsInner) {
 		super(problem, new Population(), null, initialization);
