@@ -30,4 +30,25 @@ jobs:
           [ "${{ inputs.version }}" == "${BUILD_VERSION}" ] || (>&2 echo "Version does not match value in build.properties"; exit -1)
           [ "${{ inputs.version }}" == "$(cat README.md | grep '<version>' | tr -d '<>/[:alpha:][:space:]')" ] || (>&2 echo "Version does not match value in README.md"; exit -1)
           [ "${{ inputs.version }}" == "$(cat docs/news.md | grep "## " | head -n 1 | grep -oEi '[0-9]+\.[0-9]+(\.[0-9]+)?')" ] || (>&2 echo "Version does not match value in docs/news.md"; exit -1)
-         
+      - name: Build artifacts
+        run: |
+          ant package-binary
+          ant package-demo
+          ant package-source
+      - name: Generate release notes
+        run: |
+          cat docs/news.md | awk '/## Version ${{ inputs.version }}/{flag=1; next} /##/{flag=0} flag' > dist/release_notes.md
+          [ "$(wc -l < release_notes.md)" -gt 0 ] || (>&2 echo "Unable to read release notes from docs/news.md"; exit -1)
+      - uses: actions/upload-artifact@v3
+        with:
+          name: Release Bundle
+          path: dist/
+      #- name: Stage GitHub release
+      #  uses: ncipollo/release-action@v1
+      #  with:
+      #    artifacts: "dist/*.tar.gz"
+      #    bodyFile: "dist/release_notes.md"
+      #    name: "Version ${{ inputs.version }}"
+      #    tag: "v${{ inputs.version }}"
+      #    draft: true
+      #    prerelease: true
