@@ -39,14 +39,14 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		<fileset dir="${checkstyle}" includes="*.jar" />
 	</path>
 
-	<taskdef resource="checkstyletask.properties"
-	         classpath="${checkstyle}/checkstyle-5.6-all.jar"/>
+	<taskdef resource="com/puppycrawl/tools/checkstyle/ant/checkstyle-ant-task.properties"
+	         classpathref="classpath" />
 
 	<target name="check-style">
 		<delete dir="${build}" />
 		<mkdir dir="${build}" />
 		
-		<checkstyle config="${checkstyle}/checks.xml" failOnViolation="false"
+		<checkstyle config="checks.xml" failOnViolation="false"
 				classpathref="classpath" failureProperty="checkstyle.failed">
 			<formatter type="xml" tofile="${build}/checkstyle-result.xml" />
 			<fileset dir="auxiliary" includes="**/*.c,**/*.h" />
@@ -60,7 +60,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		
 		<xslt in="${build}/checkstyle-result.xml"
 				out="${build}/checkstyle-result.html"
-				style="${checkstyle}/checkstyle-frames.xsl">
+				style="${checkstyle}/checkstyle-frames-errors.xsl">
 			<param name="output.dir" expression="${output.dir}" />
 		</xslt>
 
