@@ -7,6 +7,11 @@ on:
         type: string
         description: The version to publish
         required: true
+      stage_release:
+        description: 'Create defat GitHub release'
+        required: true 
+        default: true
+        type: boolean 
 
 jobs:
   stage:
@@ -18,6 +23,13 @@ jobs:
         with:
           java-version: 8
           distribution: temurin
+      - name: Setup Git and GitHub CLI
+        run: |
+          gh auth setup-git
+          git config --global user.email "${{ secrets.EMAIL }}"
+          git config --global user.name "${{ secrets.USERNAME }}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT }}
       - name: Get project settings
         run: |
           shortname=$(cat META-INF/build.properties | awk '{split($0,a,"="); if (a[1]=="shortname") print tolower(a[2])}' |  tr -d '[:space:]')
@@ -35,21 +47,21 @@ jobs:
           ant package-binary
           ant package-demo
           ant package-source
+      - name: Download beginners guide
+        run: |
+          wget -O dist/MOEAFramework-${{ inputs.version }}-BeginnersGuidePreview.pdf https://github.com/MOEAFramework/MOEAFramework/releases/download/v3.0/MOEAFramework-3.0-BeginnersGuidePreview.pdf
       - name: Generate release notes
         run: |
           cat docs/news.md | awk '/## Version ${{ inputs.version }}/{flag=1; next} /##/{flag=0} flag' > dist/release_notes.md
           [ "$(wc -l < dist/release_notes.md)" -gt 0 ] || (>&2 echo "Unable to read release notes from docs/news.md"; exit -1)
-      - uses: actions/upload-artifact@v3
+      - name: Upload release artifacts
+        uses: actions/upload-artifact@v3
         with:
           name: Release artifacts
           path: dist/
       - name: Stage website
         run: |
           ant package-website
-          
-          gh auth setup-git
-          git config --global user.email "${{ secrets.EMAIL }}"
-          git config --global user.name "${{ secrets.USERNAME }}"
           
           pushd ..
           gh repo clone MOEAFramework/Website
@@ -68,12 +80,13 @@ jobs:
           fi
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
-      #- name: Stage GitHub release
-      #  uses: ncipollo/release-action@v1
-      #  with:
-      #    artifacts: "dist/*.tar.gz"
-      #    bodyFile: "dist/release_notes.md"
-      #    name: "Version ${{ inputs.version }}"
-      #    tag: "v${{ inputs.version }}"
-      #    draft: true
-      #    prerelease: true
+      - name: Stage GitHub release
+        if: ${{ inputs.stage_release }}
+        run: |
+          gh release create "v${{ inputs.version }}" --draft --title "Version ${{ inputs.version }}" --notes-file dist/release_notes.md \
+              MOEAFramework-${{ inputs.version }}.tar.gz \
+              MOEAFramework-${{ inputs.version }}-Demo.jar \
+              MOEAFramework-${{ inputs.version }}-Source.tar.gz \
+              MOEAFramework-${{ inputs.version }}-BeginnersGuidePreview.pdf
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT }}
