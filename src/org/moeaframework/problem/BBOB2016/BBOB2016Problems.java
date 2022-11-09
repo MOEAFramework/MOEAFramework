@@ -59,7 +59,7 @@ public class BBOB2016Problems extends ProblemProvider {
 	/**
 	 * Constructs the problem provider for BBOB 2016 test suite.
 	 */
-	private BBOB2016Problems() {
+	public BBOB2016Problems() {
 		super();
 	}
 
