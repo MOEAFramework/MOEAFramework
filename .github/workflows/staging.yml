@@ -1,7 +1,6 @@
 name: Validate and stage release
 
 on:
-  push:
   workflow_dispatch:
     inputs:
       version:
