@@ -35,10 +35,12 @@ jobs:
           ant package-binary
           ant package-demo
           ant package-source
+          ant package-website
+          tar -czf dist/website.tar.gz build
       - name: Generate release notes
         run: |
           cat docs/news.md | awk '/## Version ${{ inputs.version }}/{flag=1; next} /##/{flag=0} flag' > dist/release_notes.md
-          [ "$(wc -l < release_notes.md)" -gt 0 ] || (>&2 echo "Unable to read release notes from docs/news.md"; exit -1)
+          [ "$(wc -l < dist/release_notes.md)" -gt 0 ] || (>&2 echo "Unable to read release notes from docs/news.md"; exit -1)
       - uses: actions/upload-artifact@v3
         with:
           name: Release Bundle
