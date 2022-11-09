@@ -61,15 +61,17 @@ jobs:
         run: |
           cat docs/news.md | awk '/## Version ${{ inputs.version }}/{flag=1; next} /##/{flag=0} flag' > dist/release_notes.md
           [ "$(wc -l < dist/release_notes.md)" -gt 0 ] || (>&2 echo "Unable to read release notes from docs/news.md"; exit -1)
-      - name: Stage Maven bundle
+      - name: Build Maven artifacts
         if: ${{ inputs.publish_maven }}
         run: |
           ant package-maven
-          
+      - name: Sign Maven artifacts and create bundle
+        if: ${{ inputs.publish_maven }}
+        run: |
           echo -n "${{ secrets.GPG_SIGNING_KEY }}" | base64 --decode | gpg --import
           
           pushd maven
-          gpg -ab maven/*
+          gpg -ab *
           
           jar -cvf ${BUILD_NAME}-${BUILD_VERSION}-bundle.jar *
       - name: Upload Maven bundle
