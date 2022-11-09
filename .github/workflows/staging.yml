@@ -61,11 +61,6 @@ jobs:
         run: |
           cat docs/news.md | awk '/## Version ${{ inputs.version }}/{flag=1; next} /##/{flag=0} flag' > dist/release_notes.md
           [ "$(wc -l < dist/release_notes.md)" -gt 0 ] || (>&2 echo "Unable to read release notes from docs/news.md"; exit -1)
-      - name: Upload release artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: Release artifacts
-          path: dist/
       - name: Stage Maven bundle
         if: ${{ inputs.publish_maven }}
         run: |
@@ -109,9 +104,14 @@ jobs:
         if: ${{ inputs.publish_github }}
         run: |
           gh release create "v${{ inputs.version }}" --draft --title "Version ${{ inputs.version }}" --notes-file dist/release_notes.md \
-              MOEAFramework-${{ inputs.version }}.tar.gz \
-              MOEAFramework-${{ inputs.version }}-Demo.jar \
-              MOEAFramework-${{ inputs.version }}-Source.tar.gz \
-              MOEAFramework-${{ inputs.version }}-BeginnersGuidePreview.pdf
+              dist/MOEAFramework-${{ inputs.version }}.tar.gz \
+              dist/MOEAFramework-${{ inputs.version }}-Demo.jar \
+              dist/MOEAFramework-${{ inputs.version }}-Source.tar.gz \
+              dist/MOEAFramework-${{ inputs.version }}-BeginnersGuidePreview.pdf
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
+      - name: Upload release artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: Release artifacts
+          path: dist/
