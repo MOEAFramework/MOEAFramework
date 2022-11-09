@@ -24,7 +24,6 @@ Its key features includes:
   * Extensible with custom algorithms, problems and operators
   * Supports master-slave, island-model, and hybrid parallelization
   * Tools for building and statistically testing new optimization algorithms
-  * [Professional support for businesses](http://moeaframework.org/support.html)
   * Permissive open source license
   * Fully documented and tested source code
 
