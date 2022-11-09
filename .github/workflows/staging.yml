@@ -35,16 +35,39 @@ jobs:
           ant package-binary
           ant package-demo
           ant package-source
-          ant package-website
-          tar -czf dist/website.tar.gz build
       - name: Generate release notes
         run: |
           cat docs/news.md | awk '/## Version ${{ inputs.version }}/{flag=1; next} /##/{flag=0} flag' > dist/release_notes.md
           [ "$(wc -l < dist/release_notes.md)" -gt 0 ] || (>&2 echo "Unable to read release notes from docs/news.md"; exit -1)
-      - uses: actions/upload-artifact@v3
-        with:
-          name: Release Bundle
-          path: dist/
+      - name: Stage website
+        run: |
+          ant package-website
+          
+          gh auth setup-git
+          git config --global user.email "${{ secrets.EMAIL }}"
+          git config --global user.name "${{ secrets.USERNAME }}"
+          
+          pushd ..
+          gh repo clone MOEAFramework/Website
+          pushd Website
+          git checkout v${{ inputs.version }} || git checkout -b v${{ inputs.version }}
+          
+          rm -rf *
+          cp -R ../MOEAFramework/build/ .
+          
+          git add .
+          
+          if [[ -n "$(git status -s)" ]]; then
+            git commit -m "Update for v${{ inputs.version }}"
+            git push origin v${{ inputs.version }}
+            gh pr create --head v${{ inputs.version }} --fill --repo MOEAFramework/Website || true
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT }}
+      #- uses: actions/upload-artifact@v3
+      #  with:
+      #    name: Release Bundle
+      #    path: dist/
       #- name: Stage GitHub release
       #  uses: ncipollo/release-action@v1
       #  with:
