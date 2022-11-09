@@ -74,6 +74,7 @@ public class BitFlip implements Variation {
 	 * Mutates the specified variable using bit flip mutation.
 	 * 
 	 * @param variable the variable to be mutated
+	 * @param probability the probability of flipping a bit
 	 */
 	public static void evolve(BinaryVariable variable, double probability) {
 		for (int i = 0; i < variable.getNumberOfBits(); i++) {

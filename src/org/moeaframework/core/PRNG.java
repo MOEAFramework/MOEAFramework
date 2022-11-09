@@ -102,6 +102,8 @@ public class PRNG {
 	 * Returns the next random, uniformly distributed {@code float} value
 	 * between {@code min} and {@code max}.
 	 * 
+	 * @param min the minimum value (inclusive)
+	 * @param max the maximum value (exclusive)
 	 * @return the next random, uniformly distributed {@code float} value
 	 *         between {@code min} and {@code max}
 	 */
@@ -124,6 +126,8 @@ public class PRNG {
 	 * Returns the next random, uniformly distributed {@code double} value
 	 * between {@code min} and {@code max}.
 	 * 
+	 * @param min the minimum value (inclusive)
+	 * @param max the maximum value (exclusive)
 	 * @return the next random, uniformly distributed {@code double} value
 	 *         between {@code min} and {@code max}
 	 */
@@ -146,6 +150,7 @@ public class PRNG {
 	 * Returns the next random, uniformly distributed {@code int} value between
 	 * {@code 0} (inclusive) and {@code n} (exclusive).
 	 * 
+	 * @param n the maximum value (exclusive)
 	 * @return the next random, uniformly distributed {@code int} value between
 	 *         {@code 0} (inclusive) and {@code n} (exclusive).
 	 */
@@ -157,6 +162,8 @@ public class PRNG {
 	 * Returns the next random, uniformly distributed {@code int} value between
 	 * {@code min} and {@code max} (both inclusive).
 	 * 
+	 * @param min the minimum value (inclusive)
+	 * @param max the maximum value (inclusive)
 	 * @return the next random, uniformly distributed {@code int} value between
 	 *         {@code min} and {@code max} (both inclusive).
 	 */
@@ -188,6 +195,8 @@ public class PRNG {
 	 * Returns the next random, Gaussian distributed {@code double} value with
 	 * mean {@code mean} and standard deviation {@code stdev}.
 	 * 
+	 * @param mean the mean
+	 * @param stdev the standard deviation
 	 * @return the next random, Gaussian distributed {@code double} value with
 	 *         mean {@code mean} and standard deviation {@code stdev}.
 	 */

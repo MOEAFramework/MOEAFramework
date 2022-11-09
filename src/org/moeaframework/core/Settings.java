@@ -215,16 +215,6 @@ public class Settings {
 			"problem.external_problem_debugging";
 	
 	/**
-	 * The property key for listing the allowed packages that can be
-	 * instrumented.
-	 * 
-	 * @deprecated no longer used
-	 */
-	@Deprecated
-	public static final String KEY_ALLOWED_PACKAGES = KEY_PREFIX +
-			"allowed_packages";
-	
-	/**
 	 * Loads the properties.
 	 */
 	static {
@@ -638,18 +628,6 @@ public class Settings {
 	 */
 	public static boolean getExternalProblemDebuggingEnabled() {
 		return PROPERTIES.getBoolean(KEY_EXTERNAL_PROBLEM_DEBUGGING, false);
-	}
-	
-	/**
-	 * Returns the allowed packages that can be instrumented.  By default, only
-	 * packages in "org.moeaframework" can be instrumented.
-	 * 
-	 * @return the allowed packages that can be instrumented
-	 * @deprecated no longer used
-	 */
-	@Deprecated
-	public static String[] getAllowedPackages() {
-		return PROPERTIES.getStringArray(KEY_ALLOWED_PACKAGES, new String[0]);
 	}
 	
 	/**

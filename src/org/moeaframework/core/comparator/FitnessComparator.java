@@ -40,19 +40,6 @@ Comparator<Solution>, Serializable {
 	 * fitness values are preferred.
 	 */
 	private final boolean largerValuesPreferred;
-
-	/**
-	 * Constructs a dominance comparator for comparing solutions based on their
-	 * {@code FITNESS_ATTRIBUTE} value.  By default, smaller fitness values
-	 * are preferred.
-	 * 
-	 * @deprecated Use {@link #FitnessComparator(boolean)} instead; this method
-	 *             will be removed in a future version
-	 */
-	@Deprecated
-	public FitnessComparator() {
-		this(false);
-	}
 	
 	/**
 	 * Constructs a dominance comparator for comparing solutions based on their

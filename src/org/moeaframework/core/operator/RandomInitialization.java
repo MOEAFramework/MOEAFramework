@@ -68,16 +68,4 @@ public class RandomInitialization implements Initialization {
 		return initialPopulation;
 	}
 
-	/**
-	 * Initializes the specified decision variable randomly. This method
-	 * supports all built-in types, and can be extended to support custom types.
-	 * 
-	 * @param variable the variable to be initialized
-	 * @deprecated Call variable.randomize() instead
-	 */
-	@Deprecated
-	protected void initialize(Variable variable) {
-		variable.randomize();
-	}
-
 }

@@ -257,6 +257,14 @@ public class Executor extends ProblemBuilder {
 				problemArguments);
 	}
 	
+	/**
+	 * Adds a custom termination condition for use with this executor. Use
+	 * {@link #withMaxEvaluations(int) and {@link #withMaxTime(long) to set
+	 * NFE or time limits.
+	 * 
+	 * @param condition the termination condition to add
+	 * @return a reference to this executor
+	 */
 	public Executor withTerminationCondition(TerminationCondition condition) {
 		terminationConditions.add(condition);
 		
