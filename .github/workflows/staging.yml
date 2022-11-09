@@ -68,7 +68,7 @@ jobs:
       - name: Sign Maven artifacts and create bundle
         if: ${{ inputs.publish_maven }}
         run: |
-          echo -n "${{ secrets.GPG_SIGNING_KEY }}" | base64 --decode | gpg --import
+          echo -n "${GPG_SIGNING_KEY}" | base64 --decode | gpg --import
           
           pushd maven
           gpg -ab ${BUILD_NAME}-${BUILD_VERSION}.pom
@@ -77,6 +77,8 @@ jobs:
           gpg -ab ${BUILD_NAME}-${BUILD_VERSION}-javadoc.jar
           
           jar -cvf ${BUILD_NAME}-${BUILD_VERSION}-bundle.jar *
+        env:
+          GPG_SIGNING_KEY: ${{ secrets.GPG_SIGNING_KEY }}
       - name: Upload Maven bundle
         if: ${{ inputs.publish_maven }}
         uses: actions/upload-artifact@v3
