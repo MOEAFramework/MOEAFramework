@@ -36,8 +36,7 @@ public class TestProgressListener implements ProgressListener {
 			Assert.assertTrue(event.getCurrentSeed() >= 0);
 			Assert.assertTrue(event.getCurrentNFE() == 0);
 			seedCount++;
-		}
-		else {
+		} else {
 			Assert.assertNotNull(event.getCurrentAlgorithm());
 			Assert.assertTrue(event.getCurrentSeed() >= 0 && event.getCurrentSeed() <= event.getTotalSeeds());
 			Assert.assertTrue(event.getCurrentNFE() >= 0);
@@ -47,7 +46,6 @@ public class TestProgressListener implements ProgressListener {
 		Assert.assertTrue(event.getElapsedTime() >= 0.0);
 		Assert.assertTrue(event.getRemainingTime() >= 0.0 || Double.isNaN(event.getRemainingTime()));
 		Assert.assertTrue(event.getMaxTime() == -1.0); // Will be negative if not set
-
 		
 		callCount++;
 		lastEvent = event;
