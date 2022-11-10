@@ -41,7 +41,7 @@ import org.moeaframework.util.io.RedirectStream;
  * Evaluate solutions using an externally-defined problem.  Two modes of
  * operation are supported: standard I/O and sockets.
  * 
- * <h4>Standard I/O Mode</h4>
+ * <h2>Standard I/O Mode</h2>
  * Standard I/O is the easiest mode to setup and run.  First, an executable
  * program on the computer is launched by invoking the constructor with the
  * program name (and any optional arguments):
@@ -50,20 +50,18 @@ import org.moeaframework.util.io.RedirectStream;
  * </pre>
  * Then, solutions are sent to the process on its standard input (stdin) stream,
  * and the objectives and constraints are read from its standard output (stdout)
- * stream.
- * <p>
- * The program can not use the standard I/O for any other purpose.  Programs
- * which read from or write to the standard I/O streams should instead use
- * sockets, as discussed below.
+ * stream.  The program can not use the standard I/O for any other purpose.
+ * Programs which read from or write to the standard I/O streams should instead
+ * use sockets, as discussed below.
  * 
- * <h4>Socket Mode</h4>
+ * <h2>Socket Mode</h2>
  * Socket mode is more complicated to setup, but is more flexible and robust.
  * It has the ability to not only evaluate the problem on the host computer,
  * but can be spread across a computer network.  To use sockets, use either the
  * {@link #ExternalProblem(String, int)} or
  * {@link #ExternalProblem(InetAddress, int)} constructor.
  * 
- * <h4>C/C++ Interface</h4>
+ * <h2>C/C++ Interface</h2>
  * A C/C++ interface is provided for implementing problems.  This interface
  * supports both modes of communication, depending on which initialization
  * routine is invoked.  See the {@code moeaframework.c} and

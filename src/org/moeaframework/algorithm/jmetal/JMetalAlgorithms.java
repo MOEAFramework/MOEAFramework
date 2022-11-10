@@ -86,13 +86,14 @@ import org.uma.jmetal.util.evaluator.impl.SequentialSolutionListEvaluator;
 import org.uma.jmetal.util.neighborhood.impl.C9;
 
 /**
- * Algorithm provider for JMetal algorithms. Supports the following algorithms:
- * <p>
- * <table width="100%" border="1" cellpadding="3" cellspacing="0">
- *   <tr class="TableHeadingColor">
- *     <th width="10%" align="left">Name</th>
- *     <th width="10%" align="left">Type</th>
- *     <th width="80%" align="left">Properties</th>
+ * Algorithm provider for JMetal algorithms.
+ * 
+ * <table style="margin-top: 1em; width: 100%">
+ *   <caption>List of JMetal algorithms</caption>
+ *   <tr>
+ *     <th style="width: 10%; text-align: left">Name</th>
+ *     <th style="width: 10%; text-align: left">Type</th>
+ *     <th style="width: 80%; text-align: left">Properties</th>
  *   </tr>
  *   <tr>
  *     <td>AbYSS</td>
@@ -112,24 +113,6 @@ import org.uma.jmetal.util.neighborhood.impl.C9;
  *     <td>{@code populationSize, archiveSize, maxEvaluations, feedBack,
  *         de.crossoverRate, de.stepSize, de.variant}</td>
  *   </tr>
- *   <tr>
- *     <td>DENSEA</td>
- *     <td>Any</td>
- *     <td>{@code populationSize, maxEvaluations}</td>
- *   </tr>
- *   <!--
- *   <tr>
- *     <td>ESPEA</td>
- *     <td>Any</td>
- *     <td>{@code populationSize, maxEvaluations}</td>
- *   </tr>
- *   <tr>
- *     <td>FastPGA</td>
- *     <td>Any</td>
- *     <td>{@code maxPopSize, initialPopulationSize, maxEvaluations, a, b, c, d,
- *         termination}</td>
- *   </tr>
- *   -->
  *   <tr>
  *     <td>GDE3</td>
  *     <td>Real*</td>
@@ -163,7 +146,6 @@ import org.uma.jmetal.util.neighborhood.impl.C9;
  *     <td>Any</td>
  *     <td>{@code populationSize, maxEvaluations}</td>
  *   </tr>
- *   
  *   <tr>
  *     <td>OMOPSO</td>
  *     <td>Real*</td>
@@ -199,19 +181,20 @@ import org.uma.jmetal.util.neighborhood.impl.C9;
  * </table>
  * <p>
  * You may also append {@code "-JMetal"} to any algorithm name to use the
- * JMetal implementation incase it is overridden by another implementation.
+ * JMetal implementation in case it is overridden by another implementation.
  * For example, use {@code "NSGAII-JMetal"}.
  * <p>
  * Unless the type is marked with *, the algorithm uses one of the types listed
  * below.  Note that only the types below are supported.  Algorithms marked 
  * with * define operators specific to that algorithm.  See the JMetal 
  * documentation for additional details.
- * <p>
- * <table width="100%" border="1" cellpadding="3" cellspacing="0">
- *   <tr class="TableHeadingColor">
- *     <th width="10%" align="left">Type</th>
- *     <th width="20%" align="left">Operators</th>
- *     <th width="70%" align="left">Parameters</th>
+ * 
+ * <table style="margin-top: 1em; width: 100%">
+ *   <caption>List of JMetal operators</caption>
+ *   <tr>
+ *     <th style="width: 10%; text-align: left">Type</th>
+ *     <th style="width: 20%; text-align: left">Operators</th>
+ *     <th style="width: 70%; text-align: left">Parameters</th>
  *   </tr>
  *   <tr>
  *     <td>Real</td>

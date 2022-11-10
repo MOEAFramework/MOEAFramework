@@ -23,7 +23,6 @@ import org.apache.commons.math3.distribution.ChiSquaredDistribution;
  * The Kruskal-Wallis One-Way Analysis of Variance by Ranks is a non-parametric
  * statistical test determining if (at least) two out of K >= 2 populations have
  * differing medians.
- * <p>
  * <ul>
  * <li>Null Hypothesis: All populations have equal medians.
  * <li>Alternative Hypothesis: Not all populations have equal medians.
@@ -43,7 +42,7 @@ import org.apache.commons.math3.distribution.ChiSquaredDistribution;
  * Analysis." Journal of the American Statistical Association, 47(260):583-621,
  * 1952.
  * <li>Sheskin, D.J. "Handbook of Parametric and Nonparametric Statistical
- * Procedures, Third Edition." Chapman & Hall/CRC. 2004.
+ * Procedures, Third Edition." Chapman &amp; Hall/CRC. 2004.
  * </ol>
  */
 public class KruskalWallisTest extends OrdinalStatisticalTest {

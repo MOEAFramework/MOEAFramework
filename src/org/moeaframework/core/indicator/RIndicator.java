@@ -54,9 +54,16 @@ public abstract class RIndicator extends NormalizedIndicator {
 	}
 	
 	/**
-	 * Utility computed as the sum of the weighted objective values.
+	 * Linear-weighted sum utility function.
 	 */
 	public static class LinearWeightedSumUtility implements UtilityFunction {
+		
+		/**
+		 * Constructs an instance of the linear-weighted sum utility function.
+		 */
+		public LinearWeightedSumUtility() {
+			super();
+		}
 
 		@Override
 		public double computeUtility(Solution solution, double[] weights) {
@@ -75,6 +82,13 @@ public abstract class RIndicator extends NormalizedIndicator {
 	 * Chebychev (also referred to as Tchebycheff) utility function.
 	 */
 	public static class ChebychevUtility implements UtilityFunction {
+		
+		/**
+		 * Constructs an instance of the Chebychev utility function.
+		 */
+		public ChebychevUtility() {
+			super();
+		}
 
 		@Override
 		public double computeUtility(Solution solution, double[] weights) {

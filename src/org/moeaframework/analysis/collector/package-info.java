@@ -25,11 +25,12 @@
  * column shows the string used to retrieve the data from the
  * {@link org.moeaframework.analysis.collector.Accumulator}.
  * 
- * <table width="100%" border="1" cellpadding="3" cellspacing="0">
- *   <tr class="TableHeadingColor">
- *     <th width="25%" align="left">Key</th>
- *     <th width="50%" align="left">Description</th>
- *     <th width="25%" align="left">Collector</th>
+ * <table style="margin-top: 1em; width: 100%">
+ *   <caption>List of collectors</caption>
+ *   <tr>
+ *     <th style="width: 25%; text-align: left">Key</th>
+ *     <th style="width: 70%; text-align: left">Description</th>
+ *     <th style="width: 25%; text-align: left">Collector</th>
  *   </tr>
  *   <tr>
  *     <td>{@code NFE}</td>

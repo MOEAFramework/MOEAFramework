@@ -311,14 +311,29 @@ public abstract class AbstractPSOAlgorithm extends AbstractAlgorithm {
 		}
 	}
 	
+	/**
+	 * Returns the current particles.
+	 * 
+	 * @return the current particles
+	 */
 	public List<Solution> getParticles() {
 		return SolutionUtils.copyToList(particles);
 	}
 	
+	/**
+	 * Returns the local best particles.
+	 * 
+	 * @return the local best particles
+	 */
 	public List<Solution> getLocalBestParticles() {
 		return SolutionUtils.copyToList(localBestParticles);
 	}
 	
+	/**
+	 * Returns the current leaders.
+	 * 
+	 * @return the current leaders
+	 */
 	public List<Solution> getLeaders() {
 		return SolutionUtils.copyToList(leaders);
 	}

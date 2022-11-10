@@ -34,9 +34,9 @@ import org.moeaframework.util.CommandLineUtility;
  * successfully and generated the correct number of entries in the result file.
  * <p>
  * Usage: {@code java -cp "..." org.moeaframework.analysis.sensitivity.ResultFileInfo <options> <files>}
- * <p>
- * Arguments:
- * <table border="0" style="margin-left: 1em">
+ * 
+ * <table>
+ *   <caption style="text-align: left">Arguments:</caption>
  *   <tr>
  *     <td>{@code -b, --problem}</td>
  *     <td>The name of the problem.  This name should reference one of the

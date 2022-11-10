@@ -26,7 +26,6 @@ import org.moeaframework.core.Settings;
 /**
  * The Wilcoxon Signed-Ranks test determines if the population median is equal
  * to a specified value.
- * <p>
  * <ul>
  * <li>Null Hypothesis: The population median equals X.</li>
  * <li>Alternative Hypothesis: The population median does not equal X.</li>
@@ -41,7 +40,7 @@ import org.moeaframework.core.Settings;
  * References:
  * <ol>
  * <li>Sheskin, D.J. "Handbook of Parametric and Nonparametric Statistical
- * Procedures, Third Edition." Chapman & Hall/CRC. 2004.
+ * Procedures, Third Edition." Chapman &amp; Hall/CRC. 2004.
  * </ol>
  */
 public class WilcoxonSignedRanksTest extends OrdinalStatisticalTest {

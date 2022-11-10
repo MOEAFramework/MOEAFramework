@@ -32,11 +32,12 @@ import org.moeaframework.util.RotationMatrixBuilder;
  * RotatedProblem} for details on how rotation is supported.  Rotated problems
  * are instantiated by providing the problem name prefixed with one of the
  * following prefix patterns.
- * <p>
- * <table width="100%" border="1" cellpadding="3" cellspacing="0">
- *   <tr class="TableHeadingColor">
- *     <th width="20%" align="left">Prefix Pattern</th>
- *     <th width="80%" align="left">Result</th>
+ * 
+ * <table style="margin-top: 1em; width: 100%">
+ *   <caption>List of rotated problem prefixes</caption>
+ *   <tr>
+ *     <th style="width: 20%; text-align: left">Prefix Pattern</th>
+ *     <th style="width: 80%; text-align: left">Result</th>
  *   </tr>
  *   <tr>
  *     <td>{@code UNROT_}</td>

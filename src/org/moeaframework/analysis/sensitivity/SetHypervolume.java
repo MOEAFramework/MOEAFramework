@@ -33,9 +33,9 @@ import org.moeaframework.util.TypedProperties;
  * Command line utility for calculating the hypervolume of approximation sets.
  * <p>
  * Usage: {@code java -cp "..." org.moeaframework.analysis.sensitivity.SetHypervolume <options> <files>}
- * <p>
- * Arguments:
- * <table border="0" style="margin-left: 1em">
+ * 
+ * <table>
+ *   <caption style="text-align: left">Arguments:</caption>
  *   <tr>
  *     <td>{@code -e, --epsilon}</td>
  *     <td>The epsilon values for limiting the size of the results.  This

@@ -43,6 +43,7 @@ import org.moeaframework.core.operator.TournamentSelection;
  *   <li>Emmerich, M., N. Beume, and B. Naujoks (2007).  An EMO Algorithm Using
  *       the Hypervolume Measure as Selection Criterion.  European Journal of
  *       Operational Research, 3:1653-1669.
+ * </ol>
  */
 public class SMSEMOA extends AbstractEvolutionaryAlgorithm {
 	

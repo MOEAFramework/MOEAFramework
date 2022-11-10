@@ -36,7 +36,7 @@ import org.apache.commons.math3.primes.Primes;
  * <ol>
  *   <li>Tan Y., Y. Jiao, H. Li, and X. Wang (2013).  "MOEA/D + uniform design:
  *       A new version of MOEA/D for optimization problems with many
- *       objectives."  Computers & Operations Research, 40, 1648-1660.
+ *       objectives."  Computers &amp; Operations Research, 40, 1648-1660.
  *   <li>Berenguer, J.A.M. and C.A. Coello Coello (2015).  "Evolutionary Many-
  *       Objective Optimization Based on Kuhn-Munkres' Algorithm."  Evolutionary
  *       Multi-Criterion Optimization: 8th International Conference, pp. 3-17.

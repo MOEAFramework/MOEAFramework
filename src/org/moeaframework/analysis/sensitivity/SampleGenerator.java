@@ -41,9 +41,9 @@ import org.moeaframework.util.sequence.Uniform;
  * parameter sample file.
  * <p>
  * Usage: {@code java -cp "..." org.moeaframework.analysis.sensitivity.SampleGenerator}
- * <p>
- * Arguments:
- * <table border="0" style="margin-left: 1em">
+ * 
+ * <table>
+ *   <caption style="text-align: left">Arguments:</caption>
  *   <tr>
  *     <td>{@code -n, --numberOfSamples}</td>
  *     <td>The number of samples to generate.  Depending on the selected method,

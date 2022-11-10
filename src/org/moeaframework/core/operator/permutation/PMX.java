@@ -67,7 +67,7 @@ public class PMX implements Variation {
 	 * 
 	 * @param p1 the first permutation
 	 * @param p2 the second permutation
-	 * @throws VariationException if the permutations are not the same size
+	 * @throws FrameworkException if the permutations are not the same size
 	 */
 	public static void evolve(Permutation p1, Permutation p2) {
 		int n = p1.size();

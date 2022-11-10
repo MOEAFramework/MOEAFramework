@@ -36,9 +36,9 @@ import org.moeaframework.util.OptionCompleter;
  * contain the same number of rows and columns.
  * <p>
  * Usage: {@code java -cp "..." org.moeaframework.analysis.sensitivity.SimpleStatistics <options> <files>}
- * <p>
- * Arguments:
- * <table border="0" style="margin-left: 1em">
+ * 
+ * <table>
+ *   <caption style="text-align: left">Arguments:</caption>
  *   <tr>
  *     <td>{@code -m, --mode}</td>
  *     <td>The mode of operation, such as {@code minimum}, {@code maximum}, 

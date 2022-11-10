@@ -22,7 +22,6 @@ import org.moeaframework.core.Settings;
 
 /**
  * The Mann-Whitney U test determines if two populations have different medians.
- * <p>
  * <ul>
  * <li>Null Hypothesis: The two populations have the same medians.
  * <li>Alternative Hypothesis: The two populations have different medians.
@@ -39,7 +38,7 @@ import org.moeaframework.core.Settings;
  * References:
  * <ol>
  * <li>Sheskin, D.J. "Handbook of Parametric and Nonparametric Statistical
- * Procedures, Third Edition." Chapman & Hall/CRC. 2004.
+ * Procedures, Third Edition." Chapman &amp; Hall/CRC. 2004.
  * </ol>
  */
 public class MannWhitneyUTest extends OrdinalStatisticalTest {

@@ -43,9 +43,9 @@ import org.moeaframework.util.CommandLineUtility;
  * available for non-commercial academic use at https://www.decisionvis.com/.
  * <p>
  * Usage: {@code java -cp "..." org.moeaframework.analysis.tools.AerovisConverter <options>}
- * <p>
- * Arguments:
- * <table border="0" style="margin-left: 1em">
+ * 
+ * <table>
+ *   <caption style="text-align: left">Arguments:</caption>
  *   <tr>
  *     <td>{@code -b, --problem}</td>
  *     <td>The name of the problem.  This name should reference one of the

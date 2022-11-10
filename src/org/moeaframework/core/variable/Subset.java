@@ -233,7 +233,7 @@ public class Subset implements Variable {
 	/**
 	 * Populates this subset from an array.  Any duplicate values in the array will be ignored.
 	 * 
-	 * @param members the array containing the subset members
+	 * @param array the array containing the subset members
 	 */
 	public void fromArray(int[] array) {
 		if (array.length < l || array.length > u) {
@@ -331,7 +331,7 @@ public class Subset implements Variable {
 	/**
 	 * Randomly pick a value that is not contained in this subset.
 	 * 
-	 * @returns the randomly-selected non-member
+	 * @return the randomly-selected non-member
 	 */
 	public int randomNonmember() {
 		if (members.size() == n) {

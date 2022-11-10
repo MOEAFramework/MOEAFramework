@@ -28,16 +28,16 @@ import java.util.ResourceBundle;
  * named {@code LocalStrings.properties}, 
  * {@code LocalStrings_{locale}.properties} or any other format supported by
  * {@link ResourceBundle}.  This class supports two modes of localization:
- * <p>
- * <h3>Package-specific</h3>
+ * 
+ * <h2>Package-specific</h2>
  * This is useful when classes in a package share common resources.  All
  * classes have access to all stored resources.  Use the
  * {@link #getLocalization(String)} method to create instances of the
  * {@code Localization} class for a specific package.  Here, you use the
  * {@link #getString(String)} and {@link #getString(String, Object...)}
  * methods on the {@code Localization} instance you previously created.
- * <p>
- * <h3>Class-specific</h3>
+ * 
+ * <h2>Class-specific</h2>
  * The {@link #getString(Class, String)} and
  * {@link #getString(Class, String, Object...)} static methods do not require
  * you to explicitly create a new {@code Localization} instance.  In addition,

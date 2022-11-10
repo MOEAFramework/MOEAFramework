@@ -23,7 +23,10 @@ import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.util.TypedProperties;
 
 /**
- * An entry in a result file.
+ * An entry in a result file. This captures the non-dominated population
+ * along with properties associated with the entry. The properties could
+ * include, for example, the number of function evaluations or performance
+ * metrics.
  * 
  * @see ResultFileWriter
  * @see ResultFileReader

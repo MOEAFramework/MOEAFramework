@@ -28,12 +28,6 @@ Use of these build scripts requires Apache Ant to be installed.  See
 	<property file="META-INF/build.properties" />
 	<property environment="env" />
 	
-	<!-- Path to Java JDK source code (optional for inheriting javadoc comments) -->
-	<property name="jdk.source" value="../OpenJDK${java.major}/jdk/src/share/classes" />
-	
-	<!-- URL to Java API -->
-	<property name="jdk.api" value="http://download.oracle.com/javase/${java.major}/docs/api/" />
-	
 	<!-- The working folder for these Ant build targets -->
 	<property name="build" value="build" />
 	
@@ -65,20 +59,22 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		<delete dir="${javadoc}" />
 		<mkdir dir="${javadoc}" />
 		
-		<javadoc sourcepath="src;${jdk.source}"
-				destdir="${javadoc}" notree="true"
+		<javadoc sourcepath="src"
+				source="${java.major}"
+				destdir="${javadoc}"
 				packagenames="org.moeaframework.*"
-				maxmemory="256m" noindex="true" nohelp="true"
+				maxmemory="256m"
+				noindex="true"
+				nohelp="true"
+				notree="true"
 				overview="src/overview.html"
 				windowtitle="${name} ${version} API">
 			<header><![CDATA[${javadoc.title}]]></header>
 			<doctitle><![CDATA[${javadoc.title}]]></doctitle>
-			<footer><![CDATA[${javadoc.title}]]></footer>
 			<bottom><![CDATA[${javadoc.bottom}]]></bottom>
 			<classpath>
 				<path refid="classpath" />
 			</classpath>
-			<link href="${jdk.api}" />
 			<arg value="-notimestamp" />
 		</javadoc>
 	</target>

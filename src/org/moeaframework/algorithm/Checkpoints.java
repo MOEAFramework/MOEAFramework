@@ -32,7 +32,6 @@ import org.moeaframework.core.Algorithm;
 /**
  * Decorates an {@link Algorithm} to periodically save checkpoint files from
  * which the algorithm can resume itself if unexpectedly terminated.
- * <p>
  * <pre>
  * File stateFile = new File("last.state");
  * 

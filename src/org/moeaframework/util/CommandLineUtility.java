@@ -110,6 +110,7 @@ public abstract class CommandLineUtility {
 	 * Runs this command line utility with the specified command line arguments.
 	 * 
 	 * @param commandLine the command line arguments
+	 * @throws Exception if any exception occurred while running this command
 	 */
 	public abstract void run(CommandLine commandLine) throws Exception;
 
@@ -127,6 +128,7 @@ public abstract class CommandLineUtility {
 	 * on the command line.
 	 * 
 	 * @param args the command line arguments
+	 * @throws Exception if any exception occurred while running this command
 	 */
 	public void start(String[] args) throws Exception {
 		Thread.currentThread().setUncaughtExceptionHandler(

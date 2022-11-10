@@ -55,10 +55,19 @@ public class SMPSO extends AbstractPSOAlgorithm {
 	private double[] minimumVelocity;
 	
 	/**
-	 * The maximum velocity for each varaible.
+	 * The maximum velocity for each variable.
 	 */
 	private double[] maximumVelocity;
 	
+	/**
+	 * Constructs a new SMPSO instance.
+	 * 
+	 * @param problem the problem
+	 * @param swarmSize the number of particles
+	 * @param leaderSize the number of leaders
+	 * @param mutationProbability the mutation probability for {@link PM}
+	 * @param distributionIndex the distribution index for {@link PM}
+	 */
 	public SMPSO(Problem problem, int swarmSize, int leaderSize,
 			double mutationProbability, double distributionIndex) {
 		super(problem, swarmSize, leaderSize, new CrowdingComparator(),
