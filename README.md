@@ -33,11 +33,16 @@ The latest release can be downloaded from our [website](http://moeaframework.org
 or from the [releases page](https://github.com/MOEAFramework/MOEAFramework/releases).
 Maven users can add our dependency to their `pom.xml` file:
 
-    <dependency>
-        <groupId>org.moeaframework</groupId>
-        <artifactId>moeaframework</artifactId>
-        <version>3.0</version>
-    </dependency>
+```xml
+<dependency>
+    <groupId>org.moeaframework</groupId>
+    <artifactId>moeaframework</artifactId>
+    <version>3.0</version>
+</dependency>
+```
+
+Visit the [Maven distribution page](https://search.maven.org/artifact/org.moeaframework/moeaframework/3.0/jar)
+for setup instructions for other package management tools.
 
 ### License ###
 
