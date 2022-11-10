@@ -11,6 +11,7 @@ This page documents notable changes introduced in each chronological release of 
   
   * Updates Javadoc formatting to fix linter warnings.
 
+
 ## Version 3.0 (7 Nov 2022)
 
   * Upgrades minimum JDK version to 8.
@@ -29,6 +30,9 @@ This page documents notable changes introduced in each chronological release of 
   
   * Converted NEWS, HELP, README, etc. to Markdown and moved into `docs/` folder.  Also replaces the
     quick start guide (PDF) with Markdown files in `docs/`.
+    
+  * Published new version of the Beginner's Guide to the MOEA Framework with updates for 
+    newer Java versions.
 
 
 ## Version 2.13 (30 Dec 2019)
