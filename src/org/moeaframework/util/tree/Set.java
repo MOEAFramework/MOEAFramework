@@ -20,14 +20,14 @@ package org.moeaframework.util.tree;
 /**
  * The node for assigning the value of a named variable within the current
  * scope.  Variables are locally-scoped within functions (i.e., {@link Define}
- * and {@link Lambda}) and globally-scoped elsewhere.  The inputs and
- * outputs to this node are shown below:
+ * and {@link Lambda}) and globally-scoped elsewhere.
  * 
- * <table border="1" cellpadding="3" cellspacing="0">
- *   <tr class="TableHeadingColor">
- *     <th width="25%" align="left">Name</th>
- *     <th width="25%" align="left">Type</th>
- *     <th width="50%" align="left">Description</th>
+ * <table style="margin-top: 1em; width: 100%">
+ *   <caption style="text-align: left">Node signature:</caption>
+ *   <tr>
+ *     <th style="width: 15%; text-align: left">Name</th>
+ *     <th style="width: 15%; text-align: left">Type</th>
+ *     <th style="width: 70%; text-align: left">Description</th>
  *   </tr>
  *   <tr>
  *     <td>Argument 1</td>

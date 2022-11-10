@@ -41,9 +41,9 @@ import org.moeaframework.util.TypedProperties;
  * {@code AnalyticalProblem} interface can be used.
  * <p>
  * Usage: {@code java -cp "..." org.moeaframework.analysis.sensitivity.SetGenerator <options>}
- * <p>
- * Arguments:
- * <table border="0" style="margin-left: 1em">
+ * 
+ * <table>
+ *   <caption style="text-align: left">Arguments:</caption>
  *   <tr>
  *     <td>{@code -b, --problem}</td>
  *     <td>The name of the problem (required).  This name should reference one

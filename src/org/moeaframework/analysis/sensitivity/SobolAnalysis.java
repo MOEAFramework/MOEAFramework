@@ -42,7 +42,7 @@ import org.moeaframework.util.CommandLineUtility;
  * and Evaluation," Hydrology and Earth System Sciences, vol. 11, no. 2, pp.
  * 793-817, 2007.
  * <li>Saltelli, A., et al. "Global Sensitivity Analysis: The Primer." John
- * Wiley & Sons Ltd, 2008.
+ * Wiley &amp; Sons Ltd, 2008.
  * </ol>
  */
 public class SobolAnalysis extends CommandLineUtility {

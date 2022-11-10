@@ -119,13 +119,14 @@ import org.moeaframework.util.io.CommentedLineReader;
  * {@link #getProblem(String)}.  Names with {@code %D} indicate that the number
  * of objectives must be specified as an integer.  For instance, {@code DTLZ2_2}
  * creates an instance of DTLZ2 with 2 objectives.
- * <p>
- * <table width="100%" border="1" cellpadding="3" cellspacing="0">
- *   <tr class="TableHeadingColor">
- *     <th width="10%" align="left">Class</th>
- *     <th width="10%" align="left">Name</th>
- *     <th width="10%" align="left">Type</th>
- *     <th width="70%" align="left">Characteristics</th>
+ * 
+ * <table style="margin-top: 1em; width: 100%">
+ *   <caption>List of standard problems and their characteristics</caption>
+ *   <tr>
+ *     <th style="width: 10%; text-align: left">Class</th>
+ *     <th style="width: 10%; text-align: left">Name</th>
+ *     <th style="width: 10%; text-align: left">Type</th>
+ *     <th style="width: 70%; text-align: left">Characteristics</th>
  *   </tr>
  *   <tr>
  *     <td>{@link CF1}</td>

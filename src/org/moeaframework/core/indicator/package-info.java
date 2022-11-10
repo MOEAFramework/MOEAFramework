@@ -22,14 +22,15 @@
  * indicators and key properties. <em>Pareto compliant</em> implies that
  * better indicator values correspond to approximation sets that are 
  * preferred by weak Pareto dominance. 
- * <p>
- * <table width="100%" border="1" cellpadding="3" cellspacing="0">
- *   <tr class="TableHeadingColor">
- *     <th width="20%" align="left">Indicator</th>
- *     <th width="20%" align="left">Pareto Compliant</th>
- *     <th width="20%" align="left">Reference Set Required</th>
- *     <th width="20%" align="left">Normalized</th>
- *     <th width="20%" align="left">Target</th>
+ * 
+ * <table style="margin-top: 1em; width: 100%">
+ *   <caption>List of quality indicators</caption>
+ *   <tr>
+ *     <th style="width: 20%; text-align: left">Indicator</th>
+ *     <th style="width: 20%; text-align: left">Pareto Compliant</th>
+ *     <th style="width: 20%; text-align: left">Reference Set Required</th>
+ *     <th style="width: 20%; text-align: left">Normalized</th>
+ *     <th style="width: 20%; text-align: left">Target</th>
  *   </tr>
  *   <tr>
  *     <td>{@link org.moeaframework.core.indicator.Hypervolume}</td>

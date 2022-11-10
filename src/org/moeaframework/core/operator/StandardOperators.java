@@ -59,13 +59,14 @@ import org.moeaframework.util.TypedProperties;
 /**
  * Default provider of operators.  The name and properties columns show the
  * values accepted by {@link #getVariation(String, Properties, Problem)}.
- * <p>
- * <table width="100%" border="1" cellpadding="3" cellspacing="0">
- *   <tr class="TableHeadingColor">
- *     <th width="15%" align="left">Operator</th>
- *     <th width="10%" align="left">Type</th>
- *     <th width="10%" align="left">Name</th>
- *     <th width="65%" align="left">Properties</th>
+ * 
+ * <table style="margin-top: 1em; width: 100%">
+ *   <caption>List of standard operators and their properties</caption>
+ *   <tr>
+ *     <th style="width: 15%; text-align: left">Operator</th>
+ *     <th style="width: 10%; text-align: left">Type</th>
+ *     <th style="width: 10%; text-align: left">Name</th>
+ *     <th style="width: 65%; text-align: left">Properties</th>
  *   </tr>
  *   <tr>
  *     <td>{@link SBX}</td>

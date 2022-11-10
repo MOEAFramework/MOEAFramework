@@ -39,6 +39,14 @@ public class SelfAdaptiveNormalVariation implements Variation {
 	 * The attribute for storing the self adaptive parameter.
 	 */
 	public static final String SIGMA = "sigma";
+	
+	/**
+	 * Constructs a new instance of the self-adaptive variation based on the
+	 * normal distribution.
+	 */
+	public SelfAdaptiveNormalVariation() {
+		super();
+	}
 
 	@Override
 	public int getArity() {

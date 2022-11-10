@@ -33,7 +33,7 @@ import org.moeaframework.analysis.sensitivity.SobolAnalysis;
  * References:
  * <ol>
  * <li>Saltelli, A., et al. "Global Sensitivity Analysis: The Primer." John
- * Wiley & Sons Ltd, 2008.
+ * Wiley &amp; Sons Ltd, 2008.
  * </ol>
  */
 public class Saltelli implements Sequence {

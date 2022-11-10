@@ -40,9 +40,9 @@ import org.moeaframework.util.TypedProperties;
  * so may leave the file(s) in a corrupted state.
  * <p>
  * Usage: {@code java -cp "..." org.moeaframework.analysis.sensitivity.Negater <options> <files>}
- * <p>
- * Arguments:
- * <table border="0" style="margin-left: 1em">
+ * 
+ * <table>
+ *   <caption style="text-align: left">Arguments:</caption>
  *   <tr>
  *     <td>{@code -d, --direction}</td>
  *     <td>The optimization direction (required).  A comma-separated list with

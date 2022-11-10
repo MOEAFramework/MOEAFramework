@@ -42,9 +42,9 @@ import org.moeaframework.util.TypedProperties;
  * combining the approximation sets for that record across all seeds.
  * <p>
  * Usage: {@code java -cp "..." org.moeaframework.analysis.sensitivity.ResultFileSeedMerger <options> <files>}
- * <p>
- * Arguments:
- * <table border="0" style="margin-left: 1em">
+ * 
+ * <table>
+ *   <caption style="text-align: left">Arguments:</caption>
  *   <tr>
  *     <td>{@code -b, --problem}</td>
  *     <td>The name of the problem.  This name should reference one of the
@@ -53,7 +53,6 @@ import org.moeaframework.util.TypedProperties;
  *   <tr>
  *     <td>{@code -d, --dimension}</td>
  *     <td>The number of objectives (use instead of -b).</td>
- *   </tr>
  *   </tr>
  *   <tr>
  *     <td>{@code -o, --output}</td>

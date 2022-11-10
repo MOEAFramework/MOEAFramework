@@ -35,9 +35,9 @@ import org.moeaframework.util.TypedProperties;
  * during the reference set construction.
  * <p>
  * Usage: {@code java -cp "..." org.moeaframework.analysis.sensitivity.SetContribution <options> <files>}
- * <p>
- * Arguments:
- * <table border="0" style="margin-left: 1em">
+ * 
+ * <table>
+ *   <caption style="text-align: left">Arguments:</caption>
  *   <tr>
  *     <td>{@code -e, --epsilon}</td>
  *     <td>The epsilon values for limiting the size of the results.  This

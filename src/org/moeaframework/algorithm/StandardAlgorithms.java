@@ -74,18 +74,20 @@ import org.moeaframework.util.weights.RandomGenerator;
  * A provider of standard algorithms. The following table contains all
  * available algorithms and the customizable properties.  These properties are
  * tailored for real-valued operators.  If using a different representation,
- * see {@link OperatorFactory} for the appropriate parameters.  See the user
- * manual for a more detailed description of the algorithms and parameters.
+ * see {@link OperatorFactory} for the appropriate parameters.
  * <p>
- * <strong>For a more detailed description of each algorithm, their properties,
+ * <strong>
+ * For a more detailed description of each algorithm, their properties,
  * and their default values, please refer to Appendix A in the Beginner's Guide
- * to the MOEA Framework.</strong>
- * <p>
- * <table width="100%" border="1" cellpadding="3" cellspacing="0">
- *   <tr class="TableHeadingColor">
- *     <th width="10%" align="left">Name</th>
- *     <th width="10%" align="left">Type</th>
- *     <th width="80%" align="left">Properties</th>
+ * to the MOEA Framework or the Javadoc pages for the specific algorithm.
+ * </strong>
+ * 
+ * <table style="margin-top: 1em; width: 100%">
+ *   <caption>List of standard algorithms</caption>
+ *   <tr>
+ *     <th style="width: 10%; text-align: left">Name</th>
+ *     <th style="width: 10%; text-align: left">Type</th>
+ *     <th style="width: 80%; text-align: left">Properties</th>
  *   </tr>
  *   <tr>
  *     <td>CMA-ES</td>
@@ -213,12 +215,13 @@ import org.moeaframework.util.weights.RandomGenerator;
  * Several single-objective algorithms are also supported.  These
  * single-objective algorithms support an optional weighting method, which can
  * be either {@code "linear"} or {@code "min-max"}.
- * <p>
- * <table width="100%" border="1" cellpadding="3" cellspacing="0">
- *   <tr class="TableHeadingColor">
- *     <th width="10%" align="left">Name</th>
- *     <th width="10%" align="left">Type</th>
- *     <th width="80%" align="left">Properties</th>
+ * 
+ * <table style="margin-top: 1em; width: 100%">
+ *   <caption>List of single-objective algorithms</caption>
+ *   <tr>
+ *     <th style="width: 10%; text-align: left">Name</th>
+ *     <th style="width: 10%; text-align: left">Type</th>
+ *     <th style="width: 80%; text-align: left">Properties</th>
  *   </tr>
  *   <tr>
  *     <td>GA</td>

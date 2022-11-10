@@ -58,7 +58,6 @@ import org.moeaframework.util.statistics.MannWhitneyUTest;
 /**
  * Performs basic end-of-run analysis.  For example, the following demonstrates
  * its typical use.  First construct and configure the analyzer:
- * <p>
  * <pre>
  *   Analyzer analyzer = new Analyzer()
  *       .withProblem("DTLZ2_2")
@@ -69,9 +68,7 @@ import org.moeaframework.util.statistics.MannWhitneyUTest;
  *       .showAggregate()
  *       .showStatisticalSignificance();
  * </pre>
- * <p>
  * The problem must always be specified.  Next, add the data to be analyzed:
- * <p>
  * <pre>
  *   Executor executor = new Executor().withProblem("DTLZ2_2");
  *   add("NSGAII", executor.withAlgorithm("NSGAII").run());
@@ -948,7 +945,6 @@ public class Analyzer extends ProblemBuilder {
 	 * 
 	 * @param ps the stream to which the analysis is written
 	 * @return a reference to this analyzer
-	 * @throws IOException if an I/O error occurred
 	 */
 	public Analyzer printAnalysis(PrintStream ps) {
 		getAnalysis().print(ps);

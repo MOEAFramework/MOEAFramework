@@ -85,7 +85,7 @@ public class Permutation implements Variable {
 	 * 
 	 * @param index the index of the permutation value to be returned
 	 * @return the permutation element at the specified index
-	 * @throws ArrayOutOfBoundsException if the index is out of range {@code [0,
+	 * @throws ArrayIndexOutOfBoundsException if the index is out of range {@code [0,
 	 *         size()-1]}
 	 */
 	public int get(int index) {

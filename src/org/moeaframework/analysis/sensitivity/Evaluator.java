@@ -43,9 +43,9 @@ import org.moeaframework.util.TypedProperties;
  * parameterizations.
  * <p>
  * Usage: {@code java -cp "..." org.moeaframework.analysis.sensitivity.Evaluator <options>}
- * <p>
- * Arguments:
- * <table border="0" style="margin-left: 1em">
+ * 
+ * <table>
+ *   <caption style="text-align: left">Arguments:</caption>
  *   <tr>
  *     <td>{@code -p, --parameterFile}</td>
  *     <td>Location of the parameter configuration file (required)</td>

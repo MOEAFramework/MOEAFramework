@@ -46,7 +46,6 @@ import org.moeaframework.util.progress.ProgressListener;
  * Configures and executes algorithms while hiding the underlying boilerplate 
  * code needed to setup and safely execute an algorithm.  For example, the 
  * following demonstrates its typical use:
- * <p>
  * <pre>
  *   NondominatedPopulation result = new Executor()
  *       .withAlgorithm("NSGAII")
@@ -58,7 +57,6 @@ import org.moeaframework.util.progress.ProgressListener;
  * The problem and algorithm must be specified prior to calling {@link #run()}.
  * Additional parameters for each algorithm can be assigned using the
  * {@code withProperty} methods:
- * <p>
  * <pre>
  *   NondominatedPopulation result = new Executor()
  *       .withAlgorithm("NSGAII")
@@ -78,7 +76,6 @@ import org.moeaframework.util.progress.ProgressListener;
  * Checkpoint files can be saved in order to resume interrupted runs using the
  * {@link #withCheckpointFrequency(int)} and {@link #withCheckpointFile(File)}
  * methods.  For example:
- * <p>
  * <pre>
  *   NondominatedPopulation result = new Executor()
  *       .withAlgorithm("NSGAII")
@@ -259,7 +256,7 @@ public class Executor extends ProblemBuilder {
 	
 	/**
 	 * Adds a custom termination condition for use with this executor. Use
-	 * {@link #withMaxEvaluations(int) and {@link #withMaxTime(long) to set
+	 * {@link #withMaxEvaluations(int)} and {@link #withMaxTime(long)} to set
 	 * NFE or time limits.
 	 * 
 	 * @param condition the termination condition to add

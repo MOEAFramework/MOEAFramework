@@ -53,9 +53,9 @@ import org.moeaframework.util.io.FileUtils;
  * See {@link ExternalProblem} for details on developing an external problem.
  * <p>
  * Usage: {@code java -cp "..." org.moeaframework.analysis.sensitivity.ResultFileEvaluator <options>}
- * <p>
- * Arguments:
- * <table border="0" style="margin-left: 1em">
+ * 
+ * <table>
+ *   <caption style="text-align: left">Arguments:</caption>
  *   <tr>
  *     <td>{@code -f, --output}</td>
  *     <td>The output file location.</td>

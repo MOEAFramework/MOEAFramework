@@ -3,6 +3,14 @@
 This page documents notable changes introduced in each chronological release of the MOEA Framework.
 
 
+## Version 3.1 (TBD)
+
+  * Adds AMOSA (simulated annealing) algorithm.
+  
+  * Removes all deprecated methods from `2.x` release.
+  
+  * Updates Javadoc formatting to fix linter warnings.
+
 ## Version 3.0 (7 Nov 2022)
 
   * Upgrades minimum JDK version to 8.
