@@ -19,6 +19,10 @@ on:
         description: 'Create Maven bundle'
         default: true
         type: boolean
+      skip_validation:
+        description: 'Skip version validations'
+        default: false
+        type: boolean
 
 jobs:
   stage:
@@ -44,6 +48,7 @@ jobs:
           echo "BUILD_NAME=${shortname}" >> $GITHUB_ENV
           echo "BUILD_VERSION=${version}" >> $GITHUB_ENV
       - name: Validate version number
+        if: ${{ ! inputs.skip_validation }}
         run: |
           echo "${{ inputs.version }}" | grep -E '^[0-9]+\.[0-9]+(\.[0-9]+)?$' || (>&2 echo "Invalid version number format"; exit -1)
           [ "${{ inputs.version }}" == "${BUILD_VERSION}" ] || (>&2 echo "Version does not match value in build.properties"; exit -1)
