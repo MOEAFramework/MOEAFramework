@@ -227,7 +227,7 @@ public class AerovisConverter extends CommandLineUtility {
 			}
 			
 			if (properties.contains("NFE")) {
-				writer.print(properties.getString("NFE", "0"));
+				writer.print(properties.getString("NFE", null));
 			} else {
 				writer.print("0");
 			}
@@ -235,7 +235,7 @@ public class AerovisConverter extends CommandLineUtility {
 			writer.print(" ");
 			
 			if (properties.contains("ElapsedTime")) {
-				writer.println(properties.getString("ElapsedTime", "0"));
+				writer.println(properties.getString("ElapsedTime", null));
 			} else {
 				writer.println("0");
 			}

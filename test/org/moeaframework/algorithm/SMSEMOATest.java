@@ -19,6 +19,7 @@ package org.moeaframework.algorithm;
 
 import java.io.IOException;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.moeaframework.IgnoreOnCI;
@@ -29,6 +30,7 @@ import org.moeaframework.CIRunner;
  */
 @RunWith(CIRunner.class)
 @IgnoreOnCI("exceeds 10 minute timeout")
+@Ignore
 public class SMSEMOATest extends AlgorithmTest {
 	
 	@Test

@@ -330,11 +330,11 @@ public class Evaluator extends CommandLineUtility {
 				algorithmName, properties, timingProblem);
 
 		// find the maximum NFE to run
-		if (!properties.contains("maxEvaluations")) {
-			throw new FrameworkException("maxEvaluations not defined");
-		}
-
 		int maxEvaluations = (int)properties.getDouble("maxEvaluations", -1);
+		
+		if (maxEvaluations < 0) {
+			throw new FrameworkException("maxEvaluations not defined or invalid");
+		}
 
 		// run the algorithm
 		long startTime = System.nanoTime();
