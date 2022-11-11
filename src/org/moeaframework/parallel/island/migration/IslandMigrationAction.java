@@ -35,10 +35,9 @@ public class IslandMigrationAction extends PeriodicAction {
 	@Override
 	public void doAction() {
 		List<Island> islands = model.getIslands();
-		int N = islands.size();
 
 		//no migrations if there is only one island
-		if (N <= 1) {
+		if (islands.size() <= 1) {
 			return;
 		}
 
