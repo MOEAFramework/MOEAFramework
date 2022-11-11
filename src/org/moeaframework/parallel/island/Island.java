@@ -1,7 +1,11 @@
 package org.moeaframework.parallel.island;
 
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
+
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.Population;
+import org.moeaframework.core.Solution;
 
 /**
  * Represents an island in an island model for parallelization.
@@ -20,6 +24,11 @@ public class Island {
 	 * The current population of this island.
 	 */
 	private final Population population;
+	
+	/**
+	 * Synchronized queue of incoming solutions migrating from other islands.
+	 */
+	private final Queue<Solution> immigrationQueue;
 
 	/**
 	 * Creates a new island with the given algorithm and population.
@@ -31,6 +40,8 @@ public class Island {
 		super();
 		this.algorithm = algorithm;
 		this.population = population;
+		
+		immigrationQueue = new ConcurrentLinkedQueue<Solution>();
 	}
 
 	/**
@@ -43,12 +54,23 @@ public class Island {
 	}
 
 	/**
-	 * The current population of this island.
+	 * Returns the current population of this island.
 	 * 
 	 * @return the population
 	 */
 	public Population getPopulation() {
 		return population;
+	}
+	
+	/**
+	 * Returns the immigration queue for this island.  Neighboring islands should
+	 * add solutions into the immigration queue, which will then get injected into the
+	 * population at an opportune time.
+	 * 
+	 * @return the immigration queue
+	 */
+	public Queue<Solution> getImmigrationQueue() {
+		return immigrationQueue;
 	}
 
 }

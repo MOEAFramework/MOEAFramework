@@ -17,9 +17,6 @@
  */
 
 /**
- * Utilities for building parallel algorithms, including thead-safe versions of
- * some classes.
- * 
- * @preview
+ * Implementation of the island model parallelization strategy.
  */
-package org.moeaframework.parallel.util;
+package org.moeaframework.parallel.island.executor;

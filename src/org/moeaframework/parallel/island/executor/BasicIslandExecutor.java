@@ -1,5 +1,7 @@
 package org.moeaframework.parallel.island.executor;
 
+import java.io.Closeable;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -30,37 +32,19 @@ public class BasicIslandExecutor implements IslandExecutor {
 		
 		this.islands = model.getIslands();
 	}
-	
-	/**
-	 * Sums the number of function evaluations across all islands.
-	 * 
-	 * @return the total number of function evaluations
-	 */
-	public int getNumberOfEvaluations() {
-		synchronized (islands) {
-			int total = 0;
-			
-			for (Island island : islands) {
-				total += island.getAlgorithm().getNumberOfEvaluations();
-			}
-			
-			return total;
-		}
-	}
 
 	@Override
 	public NondominatedPopulation run(final int maxEvaluations) {
-		final int startingEvaluations = getNumberOfEvaluations();
-		List<IslandMigrationAction> migrationActions = new ArrayList<IslandMigrationAction>();
+		final int evaluationsPerIsland = maxEvaluations / islands.size();
 		
 		//initialize the migration actions
-		synchronized (islands) {
-			for (Island island : islands) {
-				migrationActions.add(new IslandMigrationAction(island, model));
-			}
+		List<IslandMigrationAction> migrationActions = new ArrayList<IslandMigrationAction>();
+
+		for (Island island : islands) {
+			migrationActions.add(new IslandMigrationAction(island, model));
 		}
 			
-		//execute each island
+		//process each island
 		List<Future<?>> futures = new ArrayList<Future<?>>();
 			
 		for (final IslandMigrationAction action : migrationActions) {
@@ -68,7 +52,7 @@ public class BasicIslandExecutor implements IslandExecutor {
 
 				@Override
 				public void run() {
-					while (getNumberOfEvaluations() - startingEvaluations < maxEvaluations) {
+					while (action.getNumberOfEvaluations() < evaluationsPerIsland) {
 						action.step();
 					}
 				}
@@ -95,6 +79,11 @@ public class BasicIslandExecutor implements IslandExecutor {
 		}
 
 		return result;
+	}
+
+	@Override
+	public void close() throws IOException {
+		executorService.shutdown();
 	}
 
 }
