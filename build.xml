@@ -76,6 +76,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 				<path refid="classpath" />
 			</classpath>
 			<arg value="-notimestamp" />
+			<tag name="preview" description="This feature is in preview and subject to change!" />
 		</javadoc>
 	</target>
 

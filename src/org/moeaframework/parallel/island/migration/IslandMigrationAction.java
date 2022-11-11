@@ -1,8 +1,10 @@
-package org.moeaframework.parallel.island;
+package org.moeaframework.parallel.island.migration;
 
 import java.util.List;
 import org.moeaframework.algorithm.PeriodicAction;
 import org.moeaframework.core.PRNG;
+import org.moeaframework.parallel.island.Island;
+import org.moeaframework.parallel.island.IslandModel;
 
 /**
  * A periodic action that triggers island migrations.
@@ -36,12 +38,12 @@ public class IslandMigrationAction extends PeriodicAction {
 		List<Island> islands = model.getIslands();
 		int N = islands.size();
 
-		// no migrations if there is only one island
+		//no migrations if there is only one island
 		if (N <= 1) {
 			return;
 		}
 
-		// pick a random neighboring island to migrate from
+		//pick a random neighboring island to migrate from
 		List<Island> neighbors = model.getTopology().getNeighbors(island, islands);
 		Island target = PRNG.nextItem(neighbors);
 
