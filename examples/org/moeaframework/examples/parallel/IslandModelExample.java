@@ -16,14 +16,15 @@ import org.moeaframework.core.operator.TournamentSelection;
 import org.moeaframework.core.operator.real.PM;
 import org.moeaframework.core.operator.real.SBX;
 import org.moeaframework.core.spi.ProblemFactory;
-import org.moeaframework.parallel.SynchronizedMersenneTwister;
-import org.moeaframework.parallel.SynchronizedNondominatedSortingPopulation;
 import org.moeaframework.parallel.island.Island;
-import org.moeaframework.parallel.island.ThreadedIslandModel;
+import org.moeaframework.parallel.island.IslandModel;
+import org.moeaframework.parallel.island.executor.ThreadedIslandExecutor;
 import org.moeaframework.parallel.island.migration.Migration;
 import org.moeaframework.parallel.island.migration.OneWayMigration;
 import org.moeaframework.parallel.island.topology.FullyConnectedTopology;
 import org.moeaframework.parallel.island.topology.Topology;
+import org.moeaframework.parallel.util.SynchronizedMersenneTwister;
+import org.moeaframework.parallel.util.SynchronizedNondominatedSortingPopulation;
 
 /**
  * Compares the result from running an algorithm serially versus an island
@@ -45,7 +46,7 @@ public class IslandModelExample {
 		
 		Migration migration = new OneWayMigration(1, migrationSelection);
 		Topology topology = new FullyConnectedTopology();
-		ThreadedIslandModel model = new ThreadedIslandModel(1000, migration, topology);
+		IslandModel model = new IslandModel(1000, migration, topology);
 		
 		for (int i = 0; i < 8; i++) {
 			SynchronizedNondominatedSortingPopulation population =
@@ -65,7 +66,8 @@ public class IslandModelExample {
 			model.addIsland(new Island(algorithm, population));
 		}
 		
-		NondominatedPopulation resultIsland = model.run(100000);
+		NondominatedPopulation resultIsland = new ThreadedIslandExecutor(model)
+				.run(100000);
 		
 		NondominatedPopulation resultSerial = new Executor()
 				.withProblem("UF1")

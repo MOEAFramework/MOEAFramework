@@ -1,25 +1,41 @@
-package org.moeaframework.parallel;
+package org.moeaframework.parallel.util;
 
 import java.util.Comparator;
 import java.util.Iterator;
-import org.moeaframework.core.Population;
+import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.comparator.EpsilonBoxDominanceComparator;
 
 /**
- * Synchronized (thread-safe) version of {@see Population}.
+ * Synchronized (thread-safe) version of {@see EpsilonBoxDominanceArchive}.
  */
-public class SynchronizedPopulation extends Population {
+public class SynchronizedEpsilonBoxDominanceArchive extends EpsilonBoxDominanceArchive {
 
-	public SynchronizedPopulation() {
-		super();
+	public SynchronizedEpsilonBoxDominanceArchive(double epsilon,
+			Iterable<? extends Solution> iterable) {
+		super(epsilon, iterable);
 	}
 
-	public SynchronizedPopulation(Iterable<? extends Solution> iterable) {
-		super(iterable);
+	public SynchronizedEpsilonBoxDominanceArchive(double epsilon) {
+		super(epsilon);
 	}
 
-	public <T extends Solution> SynchronizedPopulation(T[] solutions) {
-		super(solutions);
+	public SynchronizedEpsilonBoxDominanceArchive(double[] epsilon,
+			Iterable<? extends Solution> iterable) {
+		super(epsilon, iterable);
+	}
+
+	public SynchronizedEpsilonBoxDominanceArchive(double[] epsilon) {
+		super(epsilon);
+	}
+
+	public SynchronizedEpsilonBoxDominanceArchive(EpsilonBoxDominanceComparator comparator,
+			Iterable<? extends Solution> iterable) {
+		super(comparator, iterable);
+	}
+
+	public SynchronizedEpsilonBoxDominanceArchive(EpsilonBoxDominanceComparator comparator) {
+		super(comparator);
 	}
 
 	@Override
@@ -115,6 +131,26 @@ public class SynchronizedPopulation extends Population {
 	@Override
 	public synchronized int size() {
 		return super.size();
+	}
+
+	@Override
+	protected synchronized boolean forceAddWithoutCheck(Solution newSolution) {
+		return super.forceAddWithoutCheck(newSolution);
+	}
+
+	@Override
+	public synchronized EpsilonBoxDominanceComparator getComparator() {
+		return super.getComparator();
+	}
+
+	@Override
+	public synchronized int getNumberOfDominatingImprovements() {
+		return super.getNumberOfDominatingImprovements();
+	}
+
+	@Override
+	public synchronized int getNumberOfImprovements() {
+		return super.getNumberOfImprovements();
 	}
 
 }

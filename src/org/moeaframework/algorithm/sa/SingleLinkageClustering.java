@@ -23,6 +23,9 @@ import java.util.List;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Solution;
 
+/**
+ * @preview
+ */
 public class SingleLinkageClustering {
 	
 	private final NondominatedPopulation population;
