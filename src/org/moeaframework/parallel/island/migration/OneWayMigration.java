@@ -8,7 +8,6 @@ import org.moeaframework.core.Selection;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
 import org.moeaframework.parallel.island.Island;
-import org.moeaframework.util.SolutionUtils;
 
 /**
  * A one-way migration where we send migrants from the current island
@@ -47,16 +46,12 @@ public class OneWayMigration implements Migration {
 		
 		//send solutions to the immigration queue of neighboring islands
 		Solution[] emigrants = selection.select(size, current);
-		targetIsland.getImmigrationQueue().addAll(SolutionUtils.copyToList(emigrants));
+		targetIsland.getImmigrationQueue().addAll(emigrants);
 		
 		//receive any migrants in the immigration queue, possibly replacing
 		//current population members
 		int originalSize = current.size();
-		List<Solution> immigrants = new ArrayList<Solution>();
-		
-		while (!currentIsland.getImmigrationQueue().isEmpty()) {
-			immigrants.add(currentIsland.getImmigrationQueue().remove());
-		}
+		List<Solution> immigrants = currentIsland.getImmigrationQueue().popAll();
 		
 		current.addAll(immigrants);
 		

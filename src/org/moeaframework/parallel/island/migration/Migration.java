@@ -14,6 +14,10 @@ import org.moeaframework.parallel.island.Island;
  * Each island has a thread-safe immigration queue.  This stores the migrants that
  * are arriving to the current island.  Therefore, avoid reading or writing to any
  * neighboring islands directly, use their immigration queue!
+ * <p>
+ * The migration code should also create copies of migrating solutions.  By convention,
+ * this should be done when adding the solution to an immigration queue.  This is
+ * especially important when running in a shared memory environment (threaded).
  */
 public interface Migration {
 	
