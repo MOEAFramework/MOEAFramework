@@ -7,7 +7,6 @@ on the [contributors page](https://github.com/MOEAFramework/MOEAFramework/graphs
 
 * **Apache Commons**
    * **CLI** - Copyright 2001-2017 The Apache Software Foundation. Licensed under the Apache License, version 2.0
-   * **Codec** - Copyright 2002-2019 The Apache Software Foundation. Licensed under the Apache License, version 2.0
    * **IO** - Copyright 2002-2017 The Apache Software Foundation. Licensed under the Apache License, version 2.0
    * **Text** - Copyright 2014-2019 The Apache Software Foundation. Licensed under the Apache License, version 2.0
    * **Lang3** - Copyright 2001-2018 The Apache Software Foundation. Licensed under the Apache License, version 2.0

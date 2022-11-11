@@ -31,7 +31,6 @@ import java.util.List;
 import java.util.Properties;
 
 import org.moeaframework.util.TypedProperties;
-import org.moeaframework.util.io.FileProtection;
 import org.apache.commons.text.StringTokenizer;
 import org.moeaframework.core.NondominatedPopulation.DuplicateMode;
 import org.moeaframework.core.indicator.Hypervolume;
@@ -169,18 +168,6 @@ public class Settings {
 	 * The property key for the poll rate.
 	 */
 	public static final String KEY_PISA_POLL = KEY_PISA_PREFIX + "poll";
-	
-	/**
-	 * The property key for the file protection mode.
-	 */
-	public static final String KEY_FILE_PROTECTION_MODE = KEY_PREFIX + 
-			"util.io.file_protection_mode";
-	
-	/**
-	 * The property key for the file protection file name format.
-	 */
-	public static final String KEY_FILE_PROTECTION_FORMAT = KEY_PREFIX +
-			"util.io.file_protection_format";
 	
 	/**
 	 * The property key for the algorithms available in the diagnostic tool.
@@ -515,35 +502,6 @@ public class Settings {
 			String parameterName) {
 		return PROPERTIES.getString(KEY_PISA_PREFIX + algorithmName +
 				".parameter." + parameterName, null);
-	}
-	
-	/**
-	 * Returns the file protection mode.  Valid modes include
-	 * <ul>
-	 *   <li>STRICT
-	 *   <li>SAFE
-	 *   <li>DISABLED
-	 * </ul>
-	 * 
-	 * @return the file protection mode
-	 */
-	public static String getFileProtectionMode() {
-		return PROPERTIES.getString(KEY_FILE_PROTECTION_MODE, 
-				FileProtection.SAFE_MODE);
-	}
-	
-	/**
-	 * Returns the file protection file name format.  The following variable 
-	 * substitutions are provided:
-	 * <ul>
-	 *   <li>{0} the filename of the file being validated
-	 * </ul>
-	 * 
-	 * @return the file protection file name format
-	 */
-	public static String getFileProtectionFormat() {
-		return PROPERTIES.getString(KEY_FILE_PROTECTION_FORMAT, 
-				".{0}.md5");
 	}
 	
 	/**
