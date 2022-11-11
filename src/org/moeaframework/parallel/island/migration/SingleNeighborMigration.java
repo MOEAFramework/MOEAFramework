@@ -10,10 +10,10 @@ import org.moeaframework.core.comparator.ParetoDominanceComparator;
 import org.moeaframework.parallel.island.Island;
 
 /**
- * A one-way migration where we send migrants from the current island
- * to one of its neighbors.
+ * Migration strategy that sends migrants to exactly one neighboring
+ * island each iteration.
  */
-public class OneWayMigration implements Migration {
+public class SingleNeighborMigration implements Migration {
 	
 	/**
 	 * The number of solutions migrated each iteration.
@@ -31,7 +31,7 @@ public class OneWayMigration implements Migration {
 	 * @param size the number of solutions migrated each iteration
 	 * @param selection the process for selecting emigrants
 	 */
-	public OneWayMigration(int size, Selection selection) {
+	public SingleNeighborMigration(int size, Selection selection) {
 		super();
 		this.size = size;
 		this.selection = selection;
