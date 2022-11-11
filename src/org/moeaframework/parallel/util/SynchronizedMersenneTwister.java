@@ -53,6 +53,9 @@ public class SynchronizedMersenneTwister extends Random {
 		INSTANCE = new SynchronizedMersenneTwister();
 	}
 
+	/**
+	 * Constructs a new thread-safe Mersenne Twister instance.
+	 */
 	private SynchronizedMersenneTwister() {
 		super();
 	}
