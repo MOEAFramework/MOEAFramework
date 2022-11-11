@@ -298,9 +298,6 @@ can use the `--lowerBounds` and `--upperBounds` arguments; or (2) use the `--var
 Warnings are messages printed to the standard error stream (i.e., the console) that indicate an abnormal or unsafe condition.  While warnings do not indicate
 an error occurred, they do indicate caution is required by the user.
 
-**no digest file exists to validate \<FILE\>**  
-Attempted to validate the file but no digest file exists.  This indicates that the framework could not verify the authenticity of the file.  
-  
 **saving result file without variables, may become unstable**  
 Occurs when writing a result file with the output of decision variables suppressed.  The suppression of decision variable output is a user-specified
 option.  The warning "may become unstable" indicates that further use of the result file may result in unexpected errors if the decision variables are
