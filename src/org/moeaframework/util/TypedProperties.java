@@ -25,6 +25,9 @@ import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 /**
  * Wrapper for {@link Properties} providing getters for reading specific
  * primitive types. For primitive arrays, either the default "," separator or a
@@ -119,13 +122,13 @@ public class TypedProperties {
 		return properties.containsKey(key);
 	}
 
-	/**
-	 * Returns the internal {@code Properties} object storing the actual 
-	 * key/value pairs.
-	 * 
-	 * @return the internal {@code Properties} object storing the actual 
-	 *         key/value pairs 
-	 */
+//	/**
+//	 * Returns the internal {@code Properties} object storing the actual 
+//	 * key/value pairs.
+//	 * 
+//	 * @return the internal {@code Properties} object storing the actual 
+//	 *         key/value pairs 
+//	 */
 //	public Properties getProperties() {
 //		return properties;
 //	}
@@ -671,6 +674,7 @@ public class TypedProperties {
 	 */
 	public void clear() {
 		properties.clear();
+		accessedProperties.clear();
 	}
 	
 	/**
@@ -746,6 +750,28 @@ public class TypedProperties {
 		return properties.isEmpty();
 	}
 	
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder()
+				.append(properties)
+				.toHashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == this) {
+			return true;
+		} else if ((obj == null) || (obj.getClass() != getClass())) {
+			return false;
+		} else {
+			TypedProperties rhs = (TypedProperties)obj;
+			
+			return new EqualsBuilder()
+					.append(properties, rhs.properties)
+					.isEquals();
+		}
+	}
+
 	/**
 	 * Loads the properties from a reader.
 	 * 
@@ -776,7 +802,7 @@ public class TypedProperties {
 	
 	/**
 	 * Returns the properties that were accessed since the last call to
-	 * {@see #clearAccessedProperties()}.
+	 * {@link #clearAccessedProperties()} or {@link #clear()}.
 	 * 
 	 * @return the accessed properties
 	 */
@@ -786,7 +812,7 @@ public class TypedProperties {
 	
 	/**
 	 * Returns the properties that were never accessed since the last call to
-	 * {@see #clearAccessedProperties()}.
+	 * {@link #clearAccessedProperties()} or {@link #clear()}
 	 * 
 	 * @return the unaccessed or orphaned properties
 	 */
