@@ -22,21 +22,21 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.Iterator;
-import java.util.Properties;
 
 import org.moeaframework.core.FrameworkException;
+import org.moeaframework.util.TypedProperties;
 
 /**
  * Reads the parameter samples from the output of {@link SampleGenerator}. The
  * column ordering in the sample file matches the ordering of parameters in a
- * {@link ParameterFile}. The read {@link Properties} map the parameter name
+ * {@link ParameterFile}. The read {@link TypedProperties} map the parameter name
  * to the parameter value.
  * 
  * @see SampleGenerator
  * @see ParameterFile
  */
-public class SampleReader implements Iterable<Properties>,
-		Iterator<Properties>, Closeable {
+public class SampleReader implements Iterable<TypedProperties>,
+		Iterator<TypedProperties>, Closeable {
 
 	/**
 	 * The underlying reader.
@@ -86,7 +86,7 @@ public class SampleReader implements Iterable<Properties>,
 	}
 
 	@Override
-	public Iterator<Properties> iterator() {
+	public Iterator<TypedProperties> iterator() {
 		return this;
 	}
 
@@ -96,9 +96,9 @@ public class SampleReader implements Iterable<Properties>,
 	}
 
 	@Override
-	public Properties next() {
+	public TypedProperties next() {
 		double[] values = reader.next();
-		Properties parameters = new Properties();
+		TypedProperties parameters = new TypedProperties();
 
 		for (int i = 0; i < values.length; i++) {
 			Parameter parameter = parameterFile.get(i);
@@ -108,8 +108,7 @@ public class SampleReader implements Iterable<Properties>,
 				throw new FrameworkException("parameter out of bounds");
 			}
 
-			parameters.setProperty(parameterFile.get(i).getName(),
-					Double.toString(values[i]));
+			parameters.setDouble(parameterFile.get(i).getName(), values[i]);
 		}
 		
 		return parameters;

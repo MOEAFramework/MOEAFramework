@@ -17,12 +17,11 @@
  */
 package org.moeaframework.examples.ga.onemax;
 
-import java.util.Properties;
-
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.spi.AlgorithmFactory;
+import org.moeaframework.util.TypedProperties;
 
 /**
  * Example of binary optimization on the {@link OneMax} problem.  The goal of
@@ -33,8 +32,8 @@ import org.moeaframework.core.spi.AlgorithmFactory;
 public class OneMaxExample {
 
 	public static void main(String[] args) {
-		Properties properties = new Properties();
-		properties.setProperty("populationSize", "100");
+		TypedProperties properties = new TypedProperties();
+		properties.setInt("populationSize", 100);
 		
 		Problem problem = new OneMax(100);
 		Algorithm algorithm = AlgorithmFactory.getInstance().getAlgorithm(

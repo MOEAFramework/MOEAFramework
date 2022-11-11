@@ -19,13 +19,13 @@ package org.moeaframework.analysis.sensitivity;
 
 import java.io.IOException;
 import java.io.StringReader;
-import java.util.Properties;
 
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.TestUtils;
+import org.moeaframework.util.TypedProperties;
 
 /**
  * Tests the {@link SampleReader} class.
@@ -113,23 +113,23 @@ public class SampleReaderTest {
 	 * @param reader the parameter sample file reader
 	 */
 	public void validateComplete(SampleReader reader) {
-		Properties properties = null;
+		TypedProperties properties = null;
 
 		Assert.assertTrue(reader.hasNext());
 
 		properties = reader.next();
 		Assert.assertEquals(3, properties.size());
-		Assert.assertEquals("0.0", properties.getProperty("entry1"));
-		Assert.assertEquals("100.0", properties.getProperty("entry2"));
-		Assert.assertEquals("0.0", properties.getProperty("entry3"));
+		Assert.assertEquals("0.0", properties.getString("entry1", null));
+		Assert.assertEquals("100.0", properties.getString("entry2", null));
+		Assert.assertEquals("0.0", properties.getString("entry3", null));
 
 		Assert.assertTrue(reader.hasNext());
 
 		properties = reader.next();
 		Assert.assertEquals(3, properties.size());
-		Assert.assertEquals("1.0", properties.getProperty("entry1"));
-		Assert.assertEquals("10000.0", properties.getProperty("entry2"));
-		Assert.assertEquals("1.0", properties.getProperty("entry3"));
+		Assert.assertEquals("1.0", properties.getString("entry1", null));
+		Assert.assertEquals("10000.0", properties.getString("entry2", null));
+		Assert.assertEquals("1.0", properties.getString("entry3", null));
 
 		Assert.assertFalse(reader.hasNext());
 		Assert.assertFalse(reader.hasNext());

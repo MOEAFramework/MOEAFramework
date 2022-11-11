@@ -20,13 +20,13 @@ package org.moeaframework.core.spi;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Properties;
 import java.util.ServiceConfigurationError;
 import java.util.ServiceLoader;
 
 import org.moeaframework.algorithm.StandardAlgorithms;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.Problem;
+import org.moeaframework.util.TypedProperties;
 
 /**
  * Factory for creating algorithm instances. See {@link AlgorithmProvider} for
@@ -112,7 +112,7 @@ public class AlgorithmFactory {
 	 *         available
 	 */
 	public synchronized Algorithm getAlgorithm(String name, 
-			Properties properties, Problem problem) {
+			TypedProperties properties, Problem problem) {
 		boolean hasStandardAlgorithms = false;
 		
 		// loop over all providers that have been manually added
@@ -170,7 +170,7 @@ public class AlgorithmFactory {
 	 *         {@code null} if the provider does not implement the algorithm
 	 */
 	private Algorithm instantiateAlgorithm(AlgorithmProvider provider,
-			String name, Properties properties, Problem problem) {
+			String name, TypedProperties properties, Problem problem) {
 		try {
 			return provider.getAlgorithm(name, properties, problem);
 		} catch (ServiceConfigurationError e) {

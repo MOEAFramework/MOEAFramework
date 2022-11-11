@@ -19,9 +19,6 @@ package org.moeaframework.algorithm;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Properties;
-import java.util.Set;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -30,6 +27,7 @@ import org.moeaframework.analysis.sensitivity.ParameterFile;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.core.spi.ProblemFactory;
+import org.moeaframework.util.TypedProperties;
 
 /**
  * Tests the parameterization of algorithms, ensuring the parameters defined in
@@ -48,43 +46,6 @@ public class ParameterizationTest {
 	 */
 	private final String[] algorithms = { "eMOEA", "eNSGAII", "GDE3",
 			"IBEA", "MOEAD", "NSGAII", "OMOPSO", "SPEA2" };
-	
-	/**
-	 * Extends the {@link Properties} class to record the set of accessed
-	 * property names.
-	 */
-	private static class AccessedProperties extends Properties {
-
-		private static final long serialVersionUID = 3456470701296856372L;
-		
-		/**
-		 * The set of accessed property names.
-		 */
-		private final Set<String> accessedProperties;
-		
-		/**
-		 * Constructs a new {@code Properties} instance that records the set of
-		 * accessed property names.
-		 */
-		public AccessedProperties() {
-			super();
-			
-			accessedProperties = new HashSet<String>();
-		}
-
-		@Override
-		public String getProperty(String key) {
-			accessedProperties.add(key);
-			return super.getProperty(key);
-		}
-
-		@Override
-		public String getProperty(String key, String defaultValue) {
-			accessedProperties.add(key);
-			return super.getProperty(key, defaultValue);
-		}
-		
-	}
 	
 	/**
 	 * Tests all listed algorithms to ensure all parameters in their associated
@@ -106,7 +67,7 @@ public class ParameterizationTest {
 			}
 			
 			ParameterFile pf = new ParameterFile(file);
-			AccessedProperties properties = new AccessedProperties();
+			TypedProperties properties = new TypedProperties();
 
 			AlgorithmFactory.getInstance().getAlgorithm(algorithm, properties, 
 					problem);
@@ -119,8 +80,7 @@ public class ParameterizationTest {
 				}
 				
 				Assert.assertTrue(algorithm + " not accessing all parameters",
-						properties.accessedProperties.contains(
-								parameter.getName()));
+						properties.getAccessedProperties().contains(parameter.getName()));
 			}
 			
 		}

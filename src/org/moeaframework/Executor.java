@@ -21,7 +21,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -643,7 +642,7 @@ public class Executor extends ProblemBuilder {
 	 * @param properties the properties
 	 * @return a reference to this executor
 	 */
-	public Executor withProperties(Properties properties) {
+	public Executor withProperties(TypedProperties properties) {
 		this.properties.clear();
 		this.properties.addAll(properties);
 		
@@ -724,8 +723,7 @@ public class Executor extends ProblemBuilder {
 		progress.start(numberOfSeeds, maxEvaluations, maxTime);
 		
 		for (int i = 0; i < numberOfSeeds && !isCanceled.get(); i++) {
-			NondominatedPopulation result = runSingleSeed(i+1, numberOfSeeds,
-					createTerminationCondition());
+			NondominatedPopulation result = runSingleSeed(i+1, numberOfSeeds);
 			
 			results.add(result);
 				
@@ -750,7 +748,7 @@ public class Executor extends ProblemBuilder {
 		
 		progress.start(1, maxEvaluations, maxTime);
 		
-		NondominatedPopulation result = runSingleSeed(1, 1, createTerminationCondition());
+		NondominatedPopulation result = runSingleSeed(1, 1);
 		
 		progress.nextSeed();
 		progress.stop();
@@ -764,12 +762,10 @@ public class Executor extends ProblemBuilder {
 	 * @param seed the current seed being run, such that
 	 *        {@code 1 <= seed <= numberOfSeeds}
 	 * @param numberOfSeeds to total number of seeds being run
-	 * @param terminationCondition the termination conditions for the run
 	 * 
 	 * @return the end-of-run approximation set; or {@code null} if canceled
 	 */
-	protected NondominatedPopulation runSingleSeed(int seed, int numberOfSeeds,
-			TerminationCondition terminationCondition) {
+	protected NondominatedPopulation runSingleSeed(int seed, int numberOfSeeds) {
 		if (algorithmName == null) {
 			throw new IllegalArgumentException("no algorithm specified");
 		}
@@ -793,18 +789,20 @@ public class Executor extends ProblemBuilder {
 					problem = new DistributedProblem(problem, executor);
 				}
 				
+				properties.clearAccessedProperties();
+				
 				NondominatedPopulation result = newArchive();
 				
-				try {
+				try {					
 					if (algorithmFactory == null) {
 						algorithm = AlgorithmFactory.getInstance().getAlgorithm(
 								algorithmName, 
-								properties.getProperties(), 
+								properties, 
 								problem);
 					} else {
 						algorithm = algorithmFactory.getAlgorithm(
 								algorithmName, 
-								properties.getProperties(), 
+								properties, 
 								problem);
 					}
 
@@ -819,7 +817,10 @@ public class Executor extends ProblemBuilder {
 						algorithm = instrumenter.instrument(algorithm);
 					}
 					
+					TerminationCondition terminationCondition = createTerminationCondition();
 					terminationCondition.initialize(algorithm);
+					
+					properties.warnIfUnaccessedProperties();
 					progress.setCurrentAlgorithm(algorithm);
 
 					while (!algorithm.isTerminated() &&

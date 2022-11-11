@@ -244,5 +244,26 @@ public class TypedPropertiesTest {
 		Assert.assertArrayEquals(new byte[0], properties.getByteArray(
 				"byte_array_empty", null));
 	}
+	
+	@Test
+	public void testAccessedProperties() {
+		TypedProperties properties = new TypedProperties();
+		Assert.assertTrue(properties.getAccessedProperties().isEmpty());
+		Assert.assertTrue(properties.getUnaccessedProperties().isEmpty());
+		
+		properties.setString("foo", "bar");
+		properties.getString("baz", null);
+		Assert.assertTrue(properties.getAccessedProperties().contains("baz"));
+		Assert.assertTrue(properties.getUnaccessedProperties().contains("foo"));
+		
+		properties.getString("foo", null);
+		Assert.assertTrue(properties.getAccessedProperties().contains("baz"));
+		Assert.assertTrue(properties.getAccessedProperties().contains("foo"));
+		Assert.assertTrue(properties.getUnaccessedProperties().isEmpty());
+		
+		properties.clearAccessedProperties();
+		Assert.assertTrue(properties.getAccessedProperties().isEmpty());
+		Assert.assertTrue(properties.getUnaccessedProperties().contains("foo"));
+	}
 
 }

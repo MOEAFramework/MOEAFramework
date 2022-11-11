@@ -22,7 +22,6 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.MissingOptionException;
@@ -30,6 +29,7 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.util.CommandLineUtility;
+import org.moeaframework.util.TypedProperties;
 
 /**
  * Command line utility for calculating the best, probability of attainment,
@@ -143,12 +143,17 @@ public class Analysis extends CommandLineUtility {
 	 * @return an array of the parameters in the same order as they appear in
 	 *         {@code parameterFile}
 	 */
-	private double[] toArray(Properties properties) {
+	private double[] toArray(TypedProperties properties) {
 		double[] result = new double[parameterFile.size()];
 		
 		for (int i=0; i<parameterFile.size(); i++) {
-			result[i] = Double.parseDouble(properties.getProperty(
-					parameterFile.get(i).getName()));
+			String name = parameterFile.get(i).getName();
+			
+			if (!properties.contains(name)) {
+				throw new FrameworkException(name + " not defined");
+			}
+			
+			result[i] = properties.getDouble(name, Double.NaN);
 		}
 		
 		return result;

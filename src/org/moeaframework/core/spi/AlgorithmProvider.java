@@ -17,14 +17,13 @@
  */
 package org.moeaframework.core.spi;
 
-import java.util.Properties;
-
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.Problem;
+import org.moeaframework.util.TypedProperties;
 
 /**
  * Defines an SPI for algorithms. Algorithms are identified by a unique name and
- * may be given optional {@link Properties}. The methods of the provider must
+ * may be given optional {@link TypedProperties}. The methods of the provider must
  * return {@code null} if the algorithm is not supported by the provider.
  * <p>
  * If the provider can supply the algorithm but an error occurred during
@@ -66,7 +65,7 @@ public abstract class AlgorithmProvider {
 	 * @return the algorithm with the specified name, or {@code null} if this
 	 *         provider does not support the algorithm
 	 */
-	public abstract Algorithm getAlgorithm(String name, Properties properties,
+	public abstract Algorithm getAlgorithm(String name, TypedProperties properties,
 			Problem problem);
 
 }

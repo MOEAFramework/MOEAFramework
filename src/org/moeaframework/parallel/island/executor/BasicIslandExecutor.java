@@ -49,7 +49,7 @@ public class BasicIslandExecutor implements IslandExecutor {
 	}
 
 	@Override
-	public NondominatedPopulation run(int maxEvaluations) {
+	public NondominatedPopulation run(final int maxEvaluations) {
 		final int startingEvaluations = getNumberOfEvaluations();
 		List<IslandMigrationAction> migrationActions = new ArrayList<IslandMigrationAction>();
 		

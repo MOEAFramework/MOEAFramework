@@ -403,3 +403,7 @@ file.  Otherwise, this warning is displayed and the program uses default names.
 
 **population is empty, can not generate ARFF file**  
 The `ARFFConverter` outputs an ARFF file using the last entry in a result file. If the last entry is empty, then no ARFF file is generated.
+
+**properties not accessed: \<property\>**
+Warns when a property was set but never read when executing the algorithm.  This is not necessarily a problem, but could indicate a typo or
+incorrectly configured algorithm or operator.

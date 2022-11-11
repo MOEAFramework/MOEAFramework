@@ -18,7 +18,6 @@
 package org.moeaframework.algorithm;
 
 import java.io.IOException;
-import java.util.Properties;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -28,6 +27,7 @@ import org.moeaframework.CIRunner;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.problem.MockRealProblem;
+import org.moeaframework.util.TypedProperties;
 
 /**
  * Tests the {@link MOEAD} class.
@@ -61,7 +61,7 @@ public class MOEADTest extends AlgorithmTest {
 		org.moeaframework.algorithm.MOEAD moead = null;
 		
 		Problem problem = new MockRealProblem();
-		Properties properties = new Properties();
+		TypedProperties properties = new TypedProperties();
 		
 		//the default is de+pm
 		moead = (org.moeaframework.algorithm.MOEAD)AlgorithmFactory.getInstance()
@@ -70,7 +70,7 @@ public class MOEADTest extends AlgorithmTest {
 		Assert.assertTrue(moead.useDE);
 		
 		//test with just de
-		properties.setProperty("operator", "de");
+		properties.setString("operator", "de");
 		
 		moead = (org.moeaframework.algorithm.MOEAD)AlgorithmFactory.getInstance()
 				.getAlgorithm("MOEA/D", properties, problem);
@@ -78,7 +78,7 @@ public class MOEADTest extends AlgorithmTest {
 		Assert.assertTrue(moead.useDE);
 		
 		//test with a different operator
-		properties.setProperty("operator", "sbx+pm");
+		properties.setString("operator", "sbx+pm");
 		
 		moead = (org.moeaframework.algorithm.MOEAD)AlgorithmFactory.getInstance()
 				.getAlgorithm("MOEA/D", properties, problem);

@@ -22,8 +22,6 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
-
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.OptionGroup;
@@ -36,6 +34,7 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.util.CommandLineUtility;
+import org.moeaframework.util.TypedProperties;
 
 /**
  * Converts a result file into an Aerovis input file.  Aerovis is a commercial
@@ -221,22 +220,22 @@ public class AerovisConverter extends CommandLineUtility {
 		while (reader.hasNext()) {
 			ResultEntry entry = reader.next();
 			Population population = entry.getPopulation();
-			Properties properties = entry.getProperties();
+			TypedProperties properties = entry.getProperties();
 			
 			if (population.isEmpty()) {
 				continue;
 			}
 			
-			if (properties.containsKey("NFE")) {
-				writer.print(properties.getProperty("NFE"));
+			if (properties.contains("NFE")) {
+				writer.print(properties.getString("NFE", null));
 			} else {
 				writer.print("0");
 			}
 			
 			writer.print(" ");
 			
-			if (properties.containsKey("ElapsedTime")) {
-				writer.println(properties.getProperty("ElapsedTime"));
+			if (properties.contains("ElapsedTime")) {
+				writer.println(properties.getString("ElapsedTime", null));
 			} else {
 				writer.println("0");
 			}

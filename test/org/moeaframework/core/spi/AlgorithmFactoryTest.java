@@ -17,8 +17,6 @@
  */
 package org.moeaframework.core.spi;
 
-import java.util.Properties;
-
 import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.algorithm.AbstractEvolutionaryAlgorithm;
@@ -27,6 +25,7 @@ import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.operator.RandomInitialization;
 import org.moeaframework.problem.MockRealProblem;
+import org.moeaframework.util.TypedProperties;
 
 /**
  * Tests the {@link AlgorithmFactory} class.  Note that most of the
@@ -39,7 +38,7 @@ public class AlgorithmFactoryTest {
 		AlgorithmProvider provider = new AlgorithmProvider() {
 
 			@Override
-			public Algorithm getAlgorithm(String name, Properties properties, Problem problem) {
+			public Algorithm getAlgorithm(String name, TypedProperties properties, Problem problem) {
 				if (name.equalsIgnoreCase("testAlgorithm")) {
 					return new AbstractEvolutionaryAlgorithm(
 							problem,
@@ -67,12 +66,12 @@ public class AlgorithmFactoryTest {
 		AlgorithmFactory.setInstance(factory);
 		
 		Assert.assertNotNull(factory.getAlgorithm("testAlgorithm",
-				new Properties(),
+				new TypedProperties(),
 				new MockRealProblem()));
 		
 		try {
 			factory.getAlgorithm("testAlgorithmNonExistant",
-					new Properties(),
+					new TypedProperties(),
 					new MockRealProblem());
 			
 			Assert.fail("failed to throw ProviderNotFoundException");

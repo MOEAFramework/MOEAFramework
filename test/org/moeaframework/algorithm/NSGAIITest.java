@@ -71,11 +71,9 @@ public class NSGAIITest extends AlgorithmTest {
 	public void testSelection() {
 		test("UF1",
 				"NSGAII",
-				TypedProperties.withProperty("withReplacement", "false")
-							   .getProperties(),
+				TypedProperties.withProperty("withReplacement", "false"),
 				"NSGAII",
-				TypedProperties.withProperty("withReplacement", "true")
-							   .getProperties(),
+				TypedProperties.withProperty("withReplacement", "true"),
 				false,
 				AlgorithmFactory.getInstance());
 	}

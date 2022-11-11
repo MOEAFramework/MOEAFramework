@@ -29,7 +29,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Set;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -121,11 +120,10 @@ public class PISAAlgorithm extends AbstractAlgorithm {
 	 * @throws IOException if an I/O error occurred
 	 */
 	public PISAAlgorithm(String name, Problem problem, Variation variation,
-			Properties properties) throws IOException {
+			TypedProperties properties) throws IOException {
 		super(problem);
 		this.variation = variation;
 		
-		TypedProperties typedProperties = new TypedProperties(properties);
 		String command = Settings.getPISACommand(name);
 		String configuration = Settings.getPISAConfiguration(name);
 		int pollRate = Settings.getPISAPollRate();
@@ -141,8 +139,8 @@ public class PISAAlgorithm extends AbstractAlgorithm {
 		filePrefix = File.createTempFile("pisa", "").getCanonicalPath();
 		
 		//ensure the seed property is set
-		if (!properties.containsKey("seed")) {
-			properties.setProperty("seed", Integer.toString(PRNG.nextInt()));
+		if (!properties.contains("seed")) {
+			properties.setInt("seed", PRNG.nextInt());
 		}
 		
 		//write the configuration file if one is not specified
@@ -157,7 +155,7 @@ public class PISAAlgorithm extends AbstractAlgorithm {
 				for (String parameter : Settings.getPISAParameters(name)) {
 					writer.print(parameter);
 					writer.print(' ');
-					writer.println(typedProperties.getString(parameter,
+					writer.println(properties.getString(parameter,
 							Settings.getPISAParameterDefaultValue(name,
 									parameter)));
 				}
@@ -176,7 +174,7 @@ public class PISAAlgorithm extends AbstractAlgorithm {
 				Double.toString(pollRate/(double)1000)));
 		
 		//ensure population size is a multiple of the # of parents
-		int populationSize = (int)typedProperties.getDouble("populationSize",
+		int populationSize = (int)properties.getDouble("populationSize",
 				100);
 		
 		while (populationSize % variation.getArity() != 0) {
@@ -185,8 +183,8 @@ public class PISAAlgorithm extends AbstractAlgorithm {
 		
 		//configure the remaining options
 		alpha = populationSize;
-		mu = (int)typedProperties.getDouble("mu", alpha);
-		lambda = (int)typedProperties.getDouble("lambda", alpha);
+		mu = (int)properties.getDouble("mu", alpha);
+		lambda = (int)properties.getDouble("lambda", alpha);
 		state = new State(new File(filePrefix + "sta"));
 		solutions = new HashMap<Integer, Solution>();
 	}

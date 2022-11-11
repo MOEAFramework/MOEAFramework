@@ -30,7 +30,6 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import java.util.Properties;
 
 import org.apache.commons.codec.binary.Base64;
 import org.moeaframework.core.FrameworkException;
@@ -41,6 +40,7 @@ import org.moeaframework.core.Variable;
 import org.moeaframework.core.variable.BinaryVariable;
 import org.moeaframework.core.variable.Permutation;
 import org.moeaframework.core.variable.RealVariable;
+import org.moeaframework.util.TypedProperties;
 
 /**
  * Reads result files created by {@link ResultFileWriter}.  See the documentation
@@ -167,7 +167,7 @@ Iterable<ResultEntry> {
 			line = reader.readLine();
 		}
 		
-		Properties properties = new Properties();
+		TypedProperties properties = new TypedProperties();
 		properties.load(new StringReader(stringBuffer.toString()));
 
 		// return population only if non-empty and terminated by a #

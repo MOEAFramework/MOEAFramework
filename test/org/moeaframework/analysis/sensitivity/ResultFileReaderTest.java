@@ -19,7 +19,6 @@ package org.moeaframework.analysis.sensitivity;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Properties;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -36,6 +35,7 @@ import org.moeaframework.core.variable.Grammar;
 import org.moeaframework.core.variable.Permutation;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.AbstractProblem;
+import org.moeaframework.util.TypedProperties;
 
 /**
  * Tests the {@link ResultFileReader} class.
@@ -413,9 +413,9 @@ public class ResultFileReaderTest {
 	public void testReaderCompleteProperties() throws IOException {
 		ResultFileReader reader = null;
 		
-		Properties properties = new Properties();
-		properties.setProperty("foo", "bar");
-		properties.setProperty("answer", "42");
+		TypedProperties properties = new TypedProperties();
+		properties.setString("foo", "bar");
+		properties.setString("answer", "42");
 
 		try {
 			reader = new ResultFileReader(problem, TestUtils.createTempFile(
@@ -437,7 +437,7 @@ public class ResultFileReaderTest {
 	public void testReaderNoProperties() throws IOException {
 		ResultFileReader reader = null;
 		
-		Properties properties = new Properties();
+		TypedProperties properties = new TypedProperties();
 
 		try {
 			reader = new ResultFileReader(problem, TestUtils.createTempFile(
@@ -459,7 +459,7 @@ public class ResultFileReaderTest {
 	public void testReaderEmptyProperties() throws IOException {
 		ResultFileReader reader = null;
 		
-		Properties properties = new Properties();
+		TypedProperties properties = new TypedProperties();
 
 		try {
 			reader = new ResultFileReader(problem, TestUtils.createTempFile(
@@ -483,8 +483,8 @@ public class ResultFileReaderTest {
 	public void testReaderOldStyleProperties() throws IOException {
 		ResultFileReader reader = null;
 		
-		Properties properties = new Properties();
-		properties.setProperty("foo", "");
+		TypedProperties properties = new TypedProperties();
+		properties.setString("foo", "");
 
 		try {
 			reader = new ResultFileReader(problem, TestUtils.createTempFile(
@@ -727,7 +727,7 @@ public class ResultFileReaderTest {
 	 * @throws IOException should not occur
 	 */
 	private void validateProperties(ResultFileReader reader, 
-			Properties properties) throws IOException {
+			TypedProperties properties) throws IOException {
 		while (reader.hasNext()) {
 			Assert.assertEquals(properties, reader.next().getProperties());
 		}

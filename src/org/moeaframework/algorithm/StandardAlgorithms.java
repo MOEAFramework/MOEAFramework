@@ -18,7 +18,6 @@
 package org.moeaframework.algorithm;
 
 import java.util.List;
-import java.util.Properties;
 
 import org.apache.commons.math3.util.CombinatoricsUtils;
 import org.moeaframework.algorithm.pso.OMOPSO;
@@ -258,75 +257,73 @@ public class StandardAlgorithms extends AlgorithmProvider {
 	}
 
 	@Override
-	public Algorithm getAlgorithm(String name, Properties properties,
+	public Algorithm getAlgorithm(String name, TypedProperties properties,
 			Problem problem) {
-		TypedProperties typedProperties = new TypedProperties(properties);
-
 		try {
 			if (name.equalsIgnoreCase("MOEAD") ||
 					name.equalsIgnoreCase("MOEA/D")) {
-				return newMOEAD(typedProperties, problem);
+				return newMOEAD(properties, problem);
 			} else if (name.equalsIgnoreCase("GDE3")) {
-				return newGDE3(typedProperties, problem);
+				return newGDE3(properties, problem);
 			} else if (name.equalsIgnoreCase("NSGAII") ||
 					name.equalsIgnoreCase("NSGA-II") ||
 					name.equalsIgnoreCase("NSGA2")) {
-				return newNSGAII(typedProperties, problem);
+				return newNSGAII(properties, problem);
 			} else if (name.equalsIgnoreCase("NSGAIII") ||
 					name.equalsIgnoreCase("NSGA-III") ||
 					name.equalsIgnoreCase("NSGA3")) {
-				return newNSGAIII(typedProperties, problem);
+				return newNSGAIII(properties, problem);
 			} else if (name.equalsIgnoreCase("eNSGAII") ||
 					name.equalsIgnoreCase("e-NSGA-II") ||
 					name.equalsIgnoreCase("eNSGA2")) {
-				return neweNSGAII(typedProperties, problem);
+				return neweNSGAII(properties, problem);
 			} else if (name.equalsIgnoreCase("eMOEA")) {
-				return neweMOEA(typedProperties, problem);
+				return neweMOEA(properties, problem);
 			} else if (name.equalsIgnoreCase("CMA-ES") ||
 					name.equalsIgnoreCase("CMAES") ||
 					name.equalsIgnoreCase("MO-CMA-ES")) {
-				return newCMAES(typedProperties, problem);
+				return newCMAES(properties, problem);
 			} else if (name.equalsIgnoreCase("SPEA2")) {
-				return newSPEA2(typedProperties, problem);
+				return newSPEA2(properties, problem);
 			} else if (name.equalsIgnoreCase("PAES")) {
-				return newPAES(typedProperties, problem);
+				return newPAES(properties, problem);
 			} else if (name.equalsIgnoreCase("PESA2")) {
-				return newPESA2(typedProperties, problem);
+				return newPESA2(properties, problem);
 			} else if (name.equalsIgnoreCase("OMOPSO")) {
-				return newOMOPSO(typedProperties, problem);
+				return newOMOPSO(properties, problem);
 			} else if (name.equalsIgnoreCase("SMPSO")) {
-				return newSMPSO(typedProperties, problem);
+				return newSMPSO(properties, problem);
 			} else if (name.equalsIgnoreCase("IBEA")) {
-				return newIBEA(typedProperties, problem);
+				return newIBEA(properties, problem);
 			} else if (name.equalsIgnoreCase("SMSEMOA") ||
 					name.equalsIgnoreCase("SMS-EMOA")) {
-				return newSMSEMOA(typedProperties, problem);
+				return newSMSEMOA(properties, problem);
 			} else if (name.equalsIgnoreCase("VEGA")) {
-				return newVEGA(typedProperties, problem);
+				return newVEGA(properties, problem);
 			} else if (name.equalsIgnoreCase("DBEA") ||
 					name.equalsIgnoreCase("I-DBEA")) {
-				return newDBEA(typedProperties, problem);
+				return newDBEA(properties, problem);
 			} else if (name.equalsIgnoreCase("RVEA")) {
-				return newRVEA(typedProperties, problem);
+				return newRVEA(properties, problem);
 			} else if (name.equalsIgnoreCase("MSOPS")) {
-				return newMSOPS(typedProperties, problem);
+				return newMSOPS(properties, problem);
 			} else if (name.equalsIgnoreCase("Random")) {
-				return newRandomSearch(typedProperties, problem);
+				return newRandomSearch(properties, problem);
 			} else if (name.equalsIgnoreCase("DifferentialEvolution") ||
 					name.equalsIgnoreCase("DE") ||
 					name.equalsIgnoreCase("DE/rand/1/bin")) {
-				return newDifferentialEvolution(typedProperties, problem);
+				return newDifferentialEvolution(properties, problem);
 			} else if (name.equalsIgnoreCase("GeneticAlgorithm") ||
 					name.equalsIgnoreCase("GA")) {
-				return newGeneticAlgorithm(typedProperties, problem);
+				return newGeneticAlgorithm(properties, problem);
 			} else if (name.equalsIgnoreCase("EvolutionStrategy") ||
 					name.equalsIgnoreCase("ES")) {
-				return newEvolutionaryStrategy(typedProperties, problem);
+				return newEvolutionaryStrategy(properties, problem);
 			} else if (name.equalsIgnoreCase("RSO")) {
-				return newRSO(typedProperties, problem);
+				return newRSO(properties, problem);
 			} else if (name.toUpperCase().startsWith("RSO(") && name.endsWith(")")) {
-				typedProperties.setString("algorithm", name.substring(4, name.length()-1));
-				return newRSO(typedProperties, problem);
+				properties.setString("algorithm", name.substring(4, name.length()-1));
+				return newRSO(properties, problem);
 			} else {
 				return null;
 			}
@@ -1158,7 +1155,7 @@ public class StandardAlgorithms extends AlgorithmProvider {
 		}
 
 		return new RepeatedSingleObjective(problem, algorithmName,
-				properties.getProperties(), instances);
+				properties, instances);
 	}
 	
 	/**

@@ -19,7 +19,6 @@ package org.moeaframework.algorithm;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Properties;
 
 import org.junit.Assert;
 import org.junit.Ignore;
@@ -50,6 +49,7 @@ import org.moeaframework.core.operator.real.UM;
 import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.core.spi.OperatorFactory;
 import org.moeaframework.core.spi.ProblemFactory;
+import org.moeaframework.util.TypedProperties;
 
 /**
  * Tests if algorithm state can be saved and restored for various algorithms.
@@ -194,7 +194,7 @@ public class StandardAlgorithmsResumeTest {
 		// first, run the algorithm normally
 		PRNG.setSeed(seed);
 		Algorithm algorithm = AlgorithmFactory.getInstance().getAlgorithm(
-				algorithmName, new Properties(), problem);
+				algorithmName, new TypedProperties(), problem);
 		
 		for (int i = 0; i < N && !algorithm.isTerminated(); i++) {
 			// Due to how NondominatedSortingPopulation automatically
@@ -223,7 +223,7 @@ public class StandardAlgorithmsResumeTest {
 		for (int i = 0; i < N && (checkpoints == null || !checkpoints.isTerminated()); i++) {
 			checkpoints = new Checkpoints(
 					AlgorithmFactory.getInstance().getAlgorithm(
-							algorithmName, new Properties(), problem),
+							algorithmName, new TypedProperties(), problem),
 							file, 0);
 
 			checkpoints.step();
@@ -244,7 +244,7 @@ public class StandardAlgorithmsResumeTest {
 		// first, run the algorithm normally
 		PRNG.setSeed(seed);
 		Algorithm algorithm = AlgorithmFactory.getInstance().getAlgorithm(
-				algorithmName, new Properties(), problem);
+				algorithmName, new TypedProperties(), problem);
 		InstrumentedAlgorithm instrumentedAlgorithm = new InstrumentedAlgorithm(
 				algorithm, 100);
 		instrumentedAlgorithm.addCollector(new IndicatorCollector(
@@ -276,7 +276,7 @@ public class StandardAlgorithmsResumeTest {
 
 		for (int i = 0; i < N; i++) {
 			algorithm = AlgorithmFactory.getInstance().getAlgorithm(
-					algorithmName, new Properties(), problem);
+					algorithmName, new TypedProperties(), problem);
 			instrumentedAlgorithm = new InstrumentedAlgorithm(
 					algorithm, 100);
 			instrumentedAlgorithm.addCollector(new IndicatorCollector(
@@ -313,7 +313,7 @@ public class StandardAlgorithmsResumeTest {
 	private static class TestAlgorithmFactory extends AlgorithmFactory {
 
 		@Override
-		public synchronized Algorithm getAlgorithm(String name, Properties properties,
+		public synchronized Algorithm getAlgorithm(String name, TypedProperties properties,
 				Problem problem) {
 			if (name.equalsIgnoreCase("EpsilonProgressContinuationTest")) {
 				Initialization initialization = new RandomInitialization(
@@ -334,7 +334,7 @@ public class StandardAlgorithmsResumeTest {
 	
 				Variation variation = 
 						OperatorFactory.getInstance().getVariation(null,
-								new Properties(), problem);
+								new TypedProperties(), problem);
 	
 				NSGAII nsgaii = new NSGAII(problem, population, archive,
 						selection, variation, initialization);

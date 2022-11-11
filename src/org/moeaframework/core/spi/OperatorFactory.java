@@ -20,7 +20,6 @@ package org.moeaframework.core.spi;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Properties;
 import java.util.ServiceConfigurationError;
 import java.util.ServiceLoader;
 
@@ -94,7 +93,7 @@ public class OperatorFactory {
 	
 	/**
 	 * Adds an operator provider to this operator factory.  Subsequent calls
-	 * to {@link #getVariation(String, Properties, Problem)} will search the
+	 * to {@link #getVariation(String, TypedProperties, Problem)} will search the
 	 * given provider for a match.
 	 * 
 	 * @param provider the new operator provider
@@ -141,24 +140,6 @@ public class OperatorFactory {
 		
 		return result;
 	}
-	
-	/**
-	 * Returns an instance of the variation operator with the specified name.
-	 * This method must throw an {@link ProviderNotFoundException} if no 
-	 * suitable operator is found.  If {@code name} is null, the factory should
-	 * return a default variation operator appropriate for the problem.
-	 * 
-	 * @param name the name identifying the variation operator
-	 * @param properties the implementation-specific properties
-	 * @param problem the problem to be solved
-	 * @return an instance of the variation operator with the specified name
-	 * @throws ProviderNotFoundException if no provider for the algorithm is 
-	 *         available
-	 */
-	public Variation getVariation(String name, TypedProperties properties,
-			Problem problem) {
-		return getVariation(name, properties.getProperties(), problem);
-	}
 
 	/**
 	 * Returns an instance of the variation operator with the specified name.
@@ -173,10 +154,10 @@ public class OperatorFactory {
 	 * @throws ProviderNotFoundException if no provider for the algorithm is 
 	 *         available
 	 */
-	public Variation getVariation(String name, Properties properties, 
+	public Variation getVariation(String name, TypedProperties properties, 
 			Problem problem) {
 		if (name == null) {
-			String operator = properties.getProperty("operator", null);
+			String operator = properties.getString("operator", null);
 			
 			if (operator == null) {
 				String hint = lookupVariationHint(problem);
@@ -200,7 +181,7 @@ public class OperatorFactory {
 	}
 	
 	private Variation instantiateVariation(OperatorProvider provider,
-			String name, Properties properties, Problem problem) {
+			String name, TypedProperties properties, Problem problem) {
 		try {
 			return provider.getVariation(name, properties, problem);
 		} catch (ServiceConfigurationError e) {
@@ -210,7 +191,7 @@ public class OperatorFactory {
 		return null;
 	}
 	
-	private Variation instantiateVariation(String name, Properties properties,
+	private Variation instantiateVariation(String name, TypedProperties properties,
 			Problem problem) {
 		boolean hasStandardOperators = false;
 		

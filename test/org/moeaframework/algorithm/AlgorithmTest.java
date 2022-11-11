@@ -17,12 +17,11 @@
  */
 package org.moeaframework.algorithm;
 
-import java.util.Properties;
-
 import org.junit.Assert;
 import org.moeaframework.Analyzer;
 import org.moeaframework.Executor;
 import org.moeaframework.core.spi.AlgorithmFactory;
+import org.moeaframework.util.TypedProperties;
 
 /**
  * Methods for comparing two algorithm implementations statistically.
@@ -83,8 +82,8 @@ public abstract class AlgorithmTest {
 	 */
 	public void test(String problem, String algorithm1, String algorithm2, 
 			boolean allowBetterPerformance, AlgorithmFactory factory) {
-		test(problem, algorithm1, new Properties(), algorithm2,
-				new Properties(), allowBetterPerformance, factory);
+		test(problem, algorithm1, new TypedProperties(), algorithm2,
+				new TypedProperties(), allowBetterPerformance, factory);
 	}
 	
 	/**
@@ -99,8 +98,8 @@ public abstract class AlgorithmTest {
 	 *        algorithm exceeds the performance
 	 * @param factory the factory used to construct the algorithms
 	 */
-	public void test(String problem, String algorithm1, Properties properties1,
-			String algorithm2, Properties properties2,
+	public void test(String problem, String algorithm1, TypedProperties properties1,
+			String algorithm2, TypedProperties properties2,
 			boolean allowBetterPerformance, AlgorithmFactory factory) {
 		Analyzer analyzer = new Analyzer()
 				.withProblem(problem)

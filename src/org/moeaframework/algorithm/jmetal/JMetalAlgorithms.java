@@ -17,8 +17,6 @@
  */
 package org.moeaframework.algorithm.jmetal;
 
-import java.util.Properties;
-
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.spi.AlgorithmProvider;
@@ -225,70 +223,69 @@ public class JMetalAlgorithms extends AlgorithmProvider {
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public Algorithm getAlgorithm(String name, Properties properties,
+	public Algorithm getAlgorithm(String name, TypedProperties properties,
 			Problem problem) {
-		TypedProperties typedProperties = new TypedProperties(properties);
 		ProblemAdapter<?> adapter = JMetalUtils.createProblemAdapter(problem);
 		org.uma.jmetal.algorithm.Algorithm algorithm = null;
 
 		try {
 			if (name.equalsIgnoreCase("AbYSS") ||
 					name.equalsIgnoreCase("AbYSS-JMetal")) {
-				algorithm = newAbYSS(typedProperties, adapter);
+				algorithm = newAbYSS(properties, adapter);
 			} else if (name.equalsIgnoreCase("CDG") ||
 					name.equalsIgnoreCase("CDG-JMetal")) {
-				algorithm = newCDG(typedProperties, adapter);
+				algorithm = newCDG(properties, adapter);
 			} else if (name.equalsIgnoreCase("CellDE") ||
 					name.equalsIgnoreCase("CellDE-JMetal")) {
-				algorithm = newCellDE(typedProperties, adapter);
+				algorithm = newCellDE(properties, adapter);
 //			} else if (name.equalsIgnoreCase("DENSEA") ||
 //					name.equalsIgnoreCase("DENSEA-JMetal")) {
-//				algorithm = newDENSEA(typedProperties, adapter);
+//				algorithm = newDENSEA(properties, adapter);
 			} else if (name.equalsIgnoreCase("ESPEA") ||
 					name.equalsIgnoreCase("ESPEA-JMetal")) {
-				algorithm = newESPEA(typedProperties, adapter);
+				algorithm = newESPEA(properties, adapter);
 //			} else if (name.equalsIgnoreCase("FastPGA") ||
 //					name.equalsIgnoreCase("FastPGA-JMetal")) {
-//				algorithm = newFastPGA(typedProperties, adapter);
+//				algorithm = newFastPGA(properties, adapter);
 			} else if (name.equalsIgnoreCase("GDE3") ||
 					name.equalsIgnoreCase("GDE3-JMetal")) {
-				algorithm = newGDE3(typedProperties, adapter);
+				algorithm = newGDE3(properties, adapter);
 			} else if (name.equalsIgnoreCase("IBEA") ||
 					name.equalsIgnoreCase("IBEA-JMetal")) {
-				algorithm = newIBEA(typedProperties, adapter);
+				algorithm = newIBEA(properties, adapter);
 			} else if (name.equalsIgnoreCase("MOCell") ||
 					name.equalsIgnoreCase("MOCell-JMetal")) {
-				algorithm = newMOCell(typedProperties, adapter);
+				algorithm = newMOCell(properties, adapter);
 			} else if (name.equalsIgnoreCase("MOCHC") ||
 					name.equalsIgnoreCase("MOCHC-JMetal")) {
-				algorithm = newMOCHC(typedProperties, adapter);
+				algorithm = newMOCHC(properties, adapter);
 			} else if (name.equalsIgnoreCase("MOEAD") ||
 					name.equalsIgnoreCase("MOEAD-JMetal")) {
-				algorithm = newMOEAD(typedProperties, adapter);
+				algorithm = newMOEAD(properties, adapter);
 			} else if (name.equalsIgnoreCase("NSGAII") ||
 					name.equalsIgnoreCase("NSGAII-JMetal")) {
-				algorithm = newNSGAII(typedProperties, adapter);
+				algorithm = newNSGAII(properties, adapter);
 			} else if (name.equalsIgnoreCase("NSGAIII") ||
 					name.equalsIgnoreCase("NSGAIII-JMetal")) {
-				algorithm = newNSGAIII(typedProperties, adapter);
+				algorithm = newNSGAIII(properties, adapter);
 			} else if (name.equalsIgnoreCase("OMOPSO") ||
 					name.equalsIgnoreCase("OMOPSO-JMetal")) {
-				algorithm = newOMOPSO(typedProperties, adapter);
+				algorithm = newOMOPSO(properties, adapter);
 			} else if (name.equalsIgnoreCase("PAES") ||
 					name.equalsIgnoreCase("PAES-JMetal")) {
-				algorithm = newPAES(typedProperties, adapter);
+				algorithm = newPAES(properties, adapter);
 			} else if (name.equalsIgnoreCase("PESA2") ||
 					name.equalsIgnoreCase("PESA2-JMetal")) {
-				algorithm = newPESA2(typedProperties, adapter);
+				algorithm = newPESA2(properties, adapter);
 			} else if (name.equalsIgnoreCase("SMPSO") ||
 					name.equalsIgnoreCase("SMPSO-JMetal")) {
-				algorithm = newSMPSO(typedProperties, adapter);
+				algorithm = newSMPSO(properties, adapter);
 			} else if (name.equalsIgnoreCase("SMSEMOA") ||
 					name.equalsIgnoreCase("SMSEMOA-JMetal")) {
-				algorithm = newSMSEMOA(typedProperties, adapter);
+				algorithm = newSMSEMOA(properties, adapter);
 			} else if (name.equalsIgnoreCase("SPEA2") ||
 					name.equalsIgnoreCase("SPEA2-JMetal")) {
-				algorithm = newSPEA2(typedProperties, adapter);
+				algorithm = newSPEA2(properties, adapter);
 			}
 		} catch (JMetalException e) {
 			throw new ProviderNotFoundException(name, e);
@@ -298,7 +295,7 @@ public class JMetalAlgorithms extends AlgorithmProvider {
 			return null;
 		} else {
 			return new JMetalAlgorithmAdapter(algorithm,
-					(int)typedProperties.getDouble("maxEvaluations", 25000),
+					(int)properties.getDouble("maxEvaluations", 25000),
 					adapter);
 		}
 	}

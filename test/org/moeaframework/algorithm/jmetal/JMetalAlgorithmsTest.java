@@ -18,7 +18,6 @@
 package org.moeaframework.algorithm.jmetal;
 
 import java.io.IOException;
-import java.util.Properties;
 import java.util.concurrent.Executors;
 
 import org.junit.After;
@@ -35,6 +34,7 @@ import org.moeaframework.problem.MockPermutationProblem;
 import org.moeaframework.problem.MockRealProblem;
 import org.moeaframework.problem.MockSubsetProblem;
 import org.moeaframework.problem.ProblemException;
+import org.moeaframework.util.TypedProperties;
 import org.moeaframework.util.distributed.DistributedProblem;
 import org.moeaframework.util.distributed.FutureSolution;
 import org.uma.jmetal.solution.DoubleSolution;
@@ -69,7 +69,7 @@ public class JMetalAlgorithmsTest {
 	/**
 	 * The properties for controlling the test problems.
 	 */
-	private Properties properties;
+	private TypedProperties properties;
 
 	/**
 	 * Creates the shared JMetal algorithm provider instance.
@@ -82,9 +82,9 @@ public class JMetalAlgorithmsTest {
 		binaryProblem = new MockBinaryProblem();
 		permutationProblem = new MockPermutationProblem();
 		subsetProblem = new MockSubsetProblem();
-		properties = new Properties();
+		properties = new TypedProperties();
 		
-		properties.setProperty("maxEvaluations", "1000");
+		properties.setInt("maxEvaluations", 1000);
 	}
 
 	/**

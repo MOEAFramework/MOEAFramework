@@ -19,7 +19,6 @@ package org.moeaframework.algorithm.pisa;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Properties;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -33,6 +32,7 @@ import org.moeaframework.core.Settings;
 import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.core.spi.ProviderNotFoundException;
+import org.moeaframework.util.TypedProperties;
 import org.moeaframework.util.io.FileUtils;
 
 /**
@@ -49,7 +49,7 @@ public class PISAAlgorithmsStaticConfigurationTest {
 	/**
 	 * The properties for controlling the test problems.
 	 */
-	private Properties properties;
+	private TypedProperties properties;
 	
 	/**
 	 * Creates the shared problem.
@@ -59,10 +59,10 @@ public class PISAAlgorithmsStaticConfigurationTest {
 	@Before
 	public void setUp() throws IOException {
 		realProblem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
-		properties = new Properties();
+		properties = new TypedProperties();
 		
-		properties.setProperty("populationSize", "100");
-		properties.setProperty("maxEvaluations", "1000");
+		properties.setInt("populationSize", 100);
+		properties.setInt("maxEvaluations", 1000);
 	}
 
 	/**
@@ -113,15 +113,15 @@ public class PISAAlgorithmsStaticConfigurationTest {
 	
 	@Test
 	public void testECEA() {
-		properties.setProperty("maxIterations", "100");
+		properties.setInt("maxIterations", 100);
 		run("ecea", "win");
 	}
 	
 	@Test
 	@Ignore("possible memory leak, favor built-in implementation")
 	public void testEpsilonMOEA() {
-		properties.setProperty("mu", "2");
-		properties.setProperty("lambda", "2");
+		properties.setInt("mu", 2);
+		properties.setInt("lambda", 2);
 		run("epsmoea", "win");
 	}
 	
@@ -145,7 +145,7 @@ public class PISAAlgorithmsStaticConfigurationTest {
 	public void testMSOPS() throws IOException {
 		FileUtils.copy(
 				new File("./pisa/msops_win/msops_weights/" + 
-						properties.getProperty("populationSize") + 
+						properties.getString("populationSize", "") + 
 						"/space-filling-" +
 						realProblem.getNumberOfObjectives() + "dim.des"), 
 				new File("space-filling-" +
@@ -161,8 +161,8 @@ public class PISAAlgorithmsStaticConfigurationTest {
 	@Test
 	@Ignore("crashes with fp != NULL assertion on line 135 in semo_io.c, but recompiling from source fixes this bug")
 	public void testSEMO() {
-		properties.setProperty("populationSize", "1");
-		properties.setProperty("operator", "PM");
+		properties.setInt("populationSize", 1);
+		properties.setString("operator", "PM");
 		run("semo", "win");
 	}
 	
@@ -210,14 +210,14 @@ public class PISAAlgorithmsStaticConfigurationTest {
 	
 	@Test
 	public void testUnaryOperators() {
-		properties.setProperty("operator", "PM");
+		properties.setString("operator", "PM");
 		run("semo2", "win");
 	}
 	
 	@Test
 	public void testMultiparentOperators() {
-		properties.setProperty("mu", "500");
-		properties.setProperty("operator", "PCX");
+		properties.setInt("mu", 500);
+		properties.setString("operator", "PCX");
 		run("semo2", "win");
 	}
 	
@@ -231,7 +231,7 @@ public class PISAAlgorithmsStaticConfigurationTest {
 				name + ".command", "foo");
 		
 		Algorithm algorithm = AlgorithmFactory.getInstance().getAlgorithm(
-				name.toUpperCase(), new Properties(), realProblem);
+				name.toUpperCase(), new TypedProperties(), realProblem);
 		
 		Assert.assertNotNull(algorithm);
 		

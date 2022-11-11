@@ -20,7 +20,6 @@ package org.moeaframework.analysis.sensitivity;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.util.Properties;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
@@ -233,15 +232,15 @@ public class ExtractData extends CommandLineUtility {
 					// process entries
 					while (input.hasNext()) {
 						ResultEntry entry = input.next();
-						Properties properties = entry.getProperties();
+						TypedProperties properties = entry.getProperties();
 
 						for (int i = 0; i < fields.length; i++) {
 							if (i > 0) {
 								output.print(separator);
 							}
 
-							if (properties.containsKey(fields[i])) {
-								output.print(properties.getProperty(fields[i]));
+							if (properties.contains(fields[i])) {
+								output.print(properties.getString(fields[i], null));
 							} else if (fields[i].startsWith("+")) {
 								output.print(evaluate(fields[i].substring(1),
 										entry, commandLine));

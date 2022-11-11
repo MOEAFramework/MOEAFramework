@@ -18,7 +18,6 @@
 package org.moeaframework.algorithm.pisa;
 
 import java.io.IOException;
-import java.util.Properties;
 
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.Problem;
@@ -28,6 +27,7 @@ import org.moeaframework.core.spi.AlgorithmProvider;
 import org.moeaframework.core.spi.OperatorFactory;
 import org.moeaframework.core.spi.ProviderLookupException;
 import org.moeaframework.core.spi.ProviderNotFoundException;
+import org.moeaframework.util.TypedProperties;
 
 /**
  * Algorithm provider for PISA selectors. In order to make a PISA selector
@@ -99,7 +99,7 @@ public class PISAAlgorithms extends AlgorithmProvider {
 	}
 
 	@Override
-	public Algorithm getAlgorithm(String name, Properties properties,
+	public Algorithm getAlgorithm(String name, TypedProperties properties,
 			Problem problem) {
 		//lookup the case-sensitive version of the PISA algorithm name to 
 		//generate the correct property keys

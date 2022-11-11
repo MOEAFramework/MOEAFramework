@@ -21,7 +21,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
@@ -44,6 +43,7 @@ import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.problem.ExternalProblem;
 import org.moeaframework.util.CommandLineUtility;
+import org.moeaframework.util.TypedProperties;
 import org.moeaframework.util.io.FileUtils;
 
 /**
@@ -555,14 +555,14 @@ public class Solve extends CommandLineUtility {
 	@Override
 	public void run(CommandLine commandLine) throws IOException {
 		// parse the algorithm parameters
-		Properties properties = new Properties();
+		TypedProperties properties = new TypedProperties();
 
 		if (commandLine.hasOption("properties")) {
 			for (String property : commandLine.getOptionValues("properties")) {
 				String[] tokens = property.split("=");
 
 				if (tokens.length == 2) {
-					properties.setProperty(tokens[0], tokens[1]);
+					properties.setString(tokens[0], tokens[1]);
 				} else {
 					throw new FrameworkException("malformed property argument");
 				}
@@ -570,7 +570,7 @@ public class Solve extends CommandLineUtility {
 		}
 
 		if (commandLine.hasOption("epsilon")) {
-			properties.setProperty("epsilon", 
+			properties.setString("epsilon", 
 					commandLine.getOptionValue("epsilon"));
 		}
 
@@ -686,11 +686,9 @@ public class Solve extends CommandLineUtility {
 			double elapsedTime = (System.nanoTime() - startTime) * 1e-9;
 			NondominatedPopulation result = algorithm.getResult();
 
-			Properties properties = new Properties();
-			properties.setProperty("NFE",
-					Integer.toString(algorithm.getNumberOfEvaluations()));
-			properties.setProperty("ElapsedTime",
-					Double.toString(elapsedTime));
+			TypedProperties properties = new TypedProperties();
+			properties.setInt("NFE", algorithm.getNumberOfEvaluations());
+			properties.setDouble("ElapsedTime", elapsedTime);
 
 			try {
 				writer.append(new ResultEntry(result, properties));

@@ -18,7 +18,6 @@
 package org.moeaframework.algorithm;
 
 import java.io.IOException;
-import java.util.Properties;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -35,6 +34,7 @@ import org.moeaframework.problem.MockPermutationProblem;
 import org.moeaframework.problem.MockRealProblem;
 import org.moeaframework.problem.MockSubsetProblem;
 import org.moeaframework.problem.DTLZ.DTLZ2;
+import org.moeaframework.util.TypedProperties;
 
 /**
  * Tests the {@link StandardAlgorithms} class.
@@ -64,7 +64,7 @@ public class StandardAlgorithmsTest {
 	/**
 	 * The properties for controlling the test problems.
 	 */
-	protected Properties properties;
+	protected TypedProperties properties;
 
 	/**
 	 * Creates the shared problem.
@@ -77,10 +77,10 @@ public class StandardAlgorithmsTest {
 		binaryProblem = new MockBinaryProblem();
 		permutationProblem = new MockPermutationProblem();
 		subsetProblem = new MockSubsetProblem();
-		properties = new Properties();
+		properties = new TypedProperties();
 		
-		properties.setProperty("maxEvaluations", "1000");
-		properties.setProperty("instances", "10"); // for RSO: maxEvaluations (1000) / instances (10) == GA population size (100)
+		properties.setInt("maxEvaluations", 1000);
+		properties.setInt("instances", 10); // for RSO: maxEvaluations (1000) / instances (10) == GA population size (100)
 	}
 
 	/**
