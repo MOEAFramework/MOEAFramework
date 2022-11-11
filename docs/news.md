@@ -11,6 +11,9 @@ This page documents notable changes introduced in each chronological release of 
   
   * Updates Javadoc formatting to fix linter warnings.
 
+  * Adds island model parallelization support under `org.moeaframework.parallel` along
+    with examples.
+
 
 ## Version 3.0 (7 Nov 2022)
 
