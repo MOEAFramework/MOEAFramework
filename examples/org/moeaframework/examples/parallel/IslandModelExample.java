@@ -17,7 +17,7 @@ import org.moeaframework.parallel.island.Island;
 import org.moeaframework.parallel.island.IslandModel;
 import org.moeaframework.parallel.island.executor.ThreadedIslandExecutor;
 import org.moeaframework.parallel.island.migration.Migration;
-import org.moeaframework.parallel.island.migration.OneWayMigration;
+import org.moeaframework.parallel.island.migration.SingleNeighborMigration;
 import org.moeaframework.parallel.island.topology.FullyConnectedTopology;
 import org.moeaframework.parallel.island.topology.Topology;
 import org.moeaframework.parallel.util.ThreadLocalMersenneTwister;
@@ -41,7 +41,7 @@ public class IslandModelExample {
 						new ParetoDominanceComparator(),
 						new CrowdingComparator()));
 		
-		Migration migration = new OneWayMigration(1, migrationSelection);
+		Migration migration = new SingleNeighborMigration(1, migrationSelection);
 		Topology topology = new FullyConnectedTopology();
 		IslandModel model = new IslandModel(1000, migration, topology);
 		
