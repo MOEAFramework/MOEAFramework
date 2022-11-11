@@ -63,7 +63,7 @@ public class ExamplesGUI extends JFrame {
 	/**
 	 * The list displaying all available examples.
 	 */
-	private JList list;
+	private JList<Example> list;
 	
 	/**
 	 * The button for running the currently-selected example.
@@ -171,7 +171,7 @@ public class ExamplesGUI extends JFrame {
 	 * Layout the components on the GUI.
 	 */
 	public void layoutComponents() {
-		list = new JList(examples);
+		list = new JList<Example>(examples);
 		runButton = new JButton("Run Example");
 		exitButton = new JButton("Exit");
 		tabbedPane = new JTabbedPane();

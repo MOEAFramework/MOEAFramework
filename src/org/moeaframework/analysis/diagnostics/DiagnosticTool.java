@@ -31,6 +31,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -86,7 +87,7 @@ ControllerListener {
 	/**
 	 * The list of all available metrics.
 	 */
-	private JList metricList;
+	private JList<String> metricList;
 	
 	/**
 	 * The underlying data model storing all available results.
@@ -127,12 +128,12 @@ ControllerListener {
 	/**
 	 * The control for setting the algorithm used by evaluation jobs.
 	 */
-	private JComboBox algorithm;
+	private JComboBox<String> algorithm;
 	
 	/**
 	 * The control for setting the problem used by evaluation jobs.
 	 */
-	private JComboBox problem;
+	private JComboBox<String> problem;
 	
 	/**
 	 * The control for setting the number of seeds used by evaluation jobs.
@@ -207,7 +208,7 @@ ControllerListener {
 		actionFactory = new ActionFactory(this, controller);
 		resultListModel = new SortedListModel<ResultKey>();
 		metricListModel = new SortedListModel<String>();
-		metricList = new JList(metricListModel);
+		metricList = new JList<String>(metricListModel);
 		paintHelper = new PaintHelper();
 		chartContainer = new JPanel();
 		
@@ -315,11 +316,10 @@ ControllerListener {
 			algorithmNames.add(algorithm);
 		}
 		
-		List<String> sortedAlgorithmNames = new ArrayList<String>(
-				algorithmNames);
+		Vector<String> sortedAlgorithmNames = new Vector<String>(algorithmNames);
 		Collections.sort(sortedAlgorithmNames);
 		
-		algorithm = new JComboBox(sortedAlgorithmNames.toArray());
+		algorithm = new JComboBox<String>(sortedAlgorithmNames);
 		
 		//initialize the sorted list of problems
 		Set<String> problemNames = new HashSet<String>();
@@ -332,10 +332,10 @@ ControllerListener {
 			problemNames.add(problem);
 		}
 		
-		List<String> sortedProblemNames = new ArrayList<String>(problemNames);
+		Vector<String> sortedProblemNames = new Vector<String>(problemNames);
 		Collections.sort(sortedProblemNames);
 		
-		problem = new JComboBox(sortedProblemNames.toArray());
+		problem = new JComboBox<String>(sortedProblemNames);
 		
 		//initialize miscellaneous components
 		numberOfSeeds = new JSpinner(new SpinnerNumberModel(10, 1, 

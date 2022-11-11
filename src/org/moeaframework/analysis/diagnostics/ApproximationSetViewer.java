@@ -155,7 +155,7 @@ ActionListener, ChartChangeListener, ListSelectionListener {
 	/**
 	 * The control for selecting which seeds to display in the plot.
 	 */
-	private JList seedList;
+	private JList<String> seedList;
 	
 	/**
 	 * The control for selecting all seeds.
@@ -166,13 +166,13 @@ ActionListener, ChartChangeListener, ListSelectionListener {
 	 * The control for selecting which objective, constraint or decision
 	 * variable will be displayed on the x-axis.
 	 */
-	private JComboBox xAxisSelection;
+	private JComboBox<String> xAxisSelection;
 	
 	/**
 	 * The control for selecting which objective, constraint or decision
 	 * variable will be displayed on the y-axis.
 	 */
-	private JComboBox yAxisSelection;
+	private JComboBox<String> yAxisSelection;
 	
 	/**
 	 * Maintains a mapping from series key to paints displayed in the plot.
@@ -270,8 +270,8 @@ ActionListener, ChartChangeListener, ListSelectionListener {
 			objectives.add(localization.getString("text.variable", i+1));
 		}
 		
-		xAxisSelection = new JComboBox(objectives);
-		yAxisSelection = new JComboBox(objectives);
+		xAxisSelection = new JComboBox<String>(objectives);
+		yAxisSelection = new JComboBox<String>(objectives);
 		
 		xAxisSelection.setSelectedIndex(0);
 		yAxisSelection.setSelectedIndex(1);
@@ -324,7 +324,7 @@ ActionListener, ChartChangeListener, ListSelectionListener {
 			seeds[i] = localization.getString("text.seed", i+1);
 		}
 		
-		seedList = new JList(seeds);
+		seedList = new JList<String>(seeds);
 		seedList.addListSelectionListener(this);
 		
 		selectAll = new JButton(new AbstractAction() {
