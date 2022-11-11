@@ -168,20 +168,6 @@ where `mu` is the number of parents selected by the PISA process, `parents` is t
 is the number of offspring produced by a single invocation of the variation operator, and `lambda` is the total number of offspring produced during a
 generation.
 
-**no digest file**  
-Thrown when attempting to validate a data file using a digest file, but no such digest file exists.  Processing of the data file should cease 
-immediately for sensitive applications where data integrity is essential.  If the digest file simply hasn't yet been produced but the file contents are 
-verified, the FileProtection command line utility can optionally generate digest files.
-  
-**invalid digest file**  
-Thrown when attempting to validate a date file using a digest file, but the digest file is corrupted or does not contain a valid digest.  Processing of 
-the data file should cease immediately for sensitive applications where data  integrity is essential.
-
-**digest does not match**  
-Thrown when attempting to validate a data file using a digest file, but the actual digest of the data file does not match the expected digest contained
-in the digest file.  This indicates that the data file or the digest file are corrupted.  Processing of the data file should cease immediately for 
-sensitive applications where data integrity is essential.
-  
 **unexpected rule separator**  
 **rule must contain at least one production**  
 **invalid symbol**  
