@@ -1,7 +1,6 @@
 package org.moeaframework.examples.parallel;
 
 import java.io.IOException;
-
 import org.moeaframework.Executor;
 import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.analysis.plot.Plot;
