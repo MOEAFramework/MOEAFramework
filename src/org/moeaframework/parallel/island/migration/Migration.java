@@ -1,28 +1,33 @@
 package org.moeaframework.parallel.island.migration;
 
+import java.util.List;
+
 import org.moeaframework.parallel.island.Island;
 
 /**
- * A migration strategy for an island model.  A strategy typically
- * specifies:
- * <ol>
- *   <li>The number of solutions that emigrate
- *   <li>Whether solutions are moved or copied
- *   <li>The direction of the migration (one-way, bi-directional)
- *   <li>The replacement strategy - do emigrants replace current members
- *       of the population?
- * </ol>
+ * A migration strategy for an island model.  Since each island can execute in
+ * separate threads or processes, be mindful of thread safety.
+ * <p>
+ * Migrations execute in the same thread as the current island.  Therefore, you can
+ * freely read and write to the current population without synchronization.
+ * <p>
+ * Each island has a thread-safe immigration queue.  This stores the migrants that
+ * are arriving to the current island.  Therefore, avoid reading or writing to any
+ * neighboring islands directly, use their immigration queue!
+ * <p>
+ * The migration code should also create copies of migrating solutions.  By convention,
+ * this should be done when adding the solution to an immigration queue.  This is
+ * especially important when running in a shared memory environment (threaded).
  */
 public interface Migration {
 	
 	/**
-	 * Performs a single migration operation between two islands.  While
-	 * not mandatory, it is convention to migrate solutions from the
-	 * {@code target} to the {@code current} island.
+	 * Performs a single migration operation between the current island and its
+	 * neighbors.
 	 * 
 	 * @param current the current island
-	 * @param target the target island
+	 * @param target the neighboring islands
 	 */
-	public void migrate(Island current, Island target);
+	public void migrate(Island current, List<Island> neighbors);
 
 }

@@ -10,17 +10,15 @@ import org.moeaframework.core.comparator.ParetoDominanceComparator;
 import org.moeaframework.parallel.island.Island;
 
 /**
- * A one-way migration where some number of emigrants are copied
- * from the target island to the current island.  Solutions that are
- * dominated are replaced by the emigrants, otherwise random solutions
- * are replaced.
+ * A one-way migration where we send migrants from the current island
+ * to one of its neighbors.
  */
 public class OneWayMigration implements Migration {
 	
 	/**
-	 * The number of solutions moved between the islands.
+	 * The number of solutions migrated each iteration.
 	 */
-	private final int numberOfEmigrants;
+	private final int size;
 	
 	/**
 	 * The process for selecting emigrants.
@@ -30,40 +28,42 @@ public class OneWayMigration implements Migration {
 	/**
 	 * Creates a new one-way migration strategy.
 	 * 
-	 * @param numberOfEmigrants the number of solutions moved between the islands
+	 * @param size the number of solutions migrated each iteration
 	 * @param selection the process for selecting emigrants
 	 */
-	public OneWayMigration(int numberOfEmigrants, Selection selection) {
+	public OneWayMigration(int size, Selection selection) {
 		super();
-		this.numberOfEmigrants = numberOfEmigrants;
+		this.size = size;
 		this.selection = selection;
 	}
 
 	@Override
-	public void migrate(Island currentIsland, Island targetIsland) {
+	public void migrate(Island currentIsland, List<Island> neighbors) {
 		Population current = currentIsland.getPopulation();
-		Population target = targetIsland.getPopulation();
 		
-		synchronized (target) {
-			synchronized (current) {
-				int originalSize = current.size();
-				Solution[] emigrants = selection.select(numberOfEmigrants, target);
+		//pick one neighboring island for migration
+		Island targetIsland = PRNG.nextItem(neighbors);
+		
+		//send solutions to the immigration queue of neighboring islands
+		Solution[] emigrants = selection.select(size, current);
+		targetIsland.getImmigrationQueue().addAll(emigrants);
+		
+		//receive any migrants in the immigration queue, possibly replacing
+		//current population members
+		int originalSize = current.size();
+		List<Solution> immigrants = currentIsland.getImmigrationQueue().popAll();
+		
+		current.addAll(immigrants);
+		
+		if (current.size() > originalSize) {
+			List<Solution> dominated = findDominated(current, immigrants);
 				
-				for (int i = 0; i < emigrants.length; i++) {
-					current.add(emigrants[i].copy());
-				}
-				
-				if (current.size() > originalSize) {
-					List<Solution> dominated = findDominated(current, emigrants);
-					
-					while (!dominated.isEmpty() && (current.size() > originalSize)) {
-						current.remove(dominated.remove(dominated.size()-1));
-					}
-					
-					while (current.size() > originalSize) {
-						current.remove(PRNG.nextInt(current.size()));
-					}
-				}
+			while (!dominated.isEmpty() && (current.size() > originalSize)) {
+				current.remove(dominated.remove(dominated.size()-1));
+			}
+			
+			while (current.size() > originalSize) {
+				current.remove(PRNG.nextInt(current.size()));
 			}
 		}
 	}
@@ -76,7 +76,7 @@ public class OneWayMigration implements Migration {
 	 * @param emigrants the emigrating solutions
 	 * @return all solutions in the population that are dominated
 	 */
-	private List<Solution> findDominated(Population population, Solution[] emigrants) {
+	private List<Solution> findDominated(Population population, List<Solution> emigrants) {
 		List<Solution> result = new ArrayList<Solution>();
 		ParetoDominanceComparator comparator = new ParetoDominanceComparator();
 		
