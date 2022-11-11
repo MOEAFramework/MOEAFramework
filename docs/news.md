@@ -8,6 +8,10 @@ This page documents notable changes introduced in each chronological release of 
   * Removes all deprecated methods from `2.x` release.
   
   * Updates Javadoc formatting to fix linter warnings.
+  
+  * Removes all use of java.util.Properties and replaces with TypedProperties.
+    This provides stronger typing and string conversions.  Also now warns if any
+    properties are unused.
     
   * Adds two preview features
   
