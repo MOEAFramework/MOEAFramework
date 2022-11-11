@@ -17,6 +17,7 @@
  */
 
 /**
- * Implementation of the island model parallelization strategy.
+ * Executes an island model in some environment.  For example, single core,
+ * multi-threaded, multi-process, or across multiple machines.
  */
 package org.moeaframework.parallel.island.executor;

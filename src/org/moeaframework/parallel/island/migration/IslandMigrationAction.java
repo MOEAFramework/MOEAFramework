@@ -43,11 +43,9 @@ public class IslandMigrationAction extends PeriodicAction {
 			return;
 		}
 
-		//pick a random neighboring island to migrate from
+		//perform the migration
 		List<Island> neighbors = model.getTopology().getNeighbors(island, islands);
-		Island target = PRNG.nextItem(neighbors);
-
-		model.getMigration().migrate(island, target);
+		model.getMigration().migrate(island, neighbors);
 	}
 
 }

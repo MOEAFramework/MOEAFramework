@@ -1,6 +1,5 @@
 package org.moeaframework.parallel.island.executor;
 
-import java.io.Closeable;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;

@@ -12,7 +12,7 @@ import org.moeaframework.util.SolutionUtils;
 
 /**
  * A one-way migration where we send migrants from the current island
- * to neighboring islands.
+ * to one of its neighbors.
  */
 public class OneWayMigration implements Migration {
 	
@@ -39,15 +39,18 @@ public class OneWayMigration implements Migration {
 	}
 
 	@Override
-	public void migrate(Island currentIsland, Island targetIsland) {
+	public void migrate(Island currentIsland, List<Island> neighbors) {
 		Population current = currentIsland.getPopulation();
 		
-		//first, send solutions to the immigration queue of neighboring islands
+		//pick one neighboring island for migration
+		Island targetIsland = PRNG.nextItem(neighbors);
+		
+		//send solutions to the immigration queue of neighboring islands
 		Solution[] emigrants = selection.select(size, current);
 		targetIsland.getImmigrationQueue().addAll(SolutionUtils.copyToList(emigrants));
 		
-		//second, add any waiting migrants to the current population, possibly
-		//replacing existing members
+		//receive any migrants in the immigration queue, possibly replacing
+		//current population members
 		int originalSize = current.size();
 		List<Solution> immigrants = new ArrayList<Solution>();
 		

@@ -1,25 +1,29 @@
 package org.moeaframework.parallel.island.migration;
 
+import java.util.List;
+
 import org.moeaframework.parallel.island.Island;
 
 /**
  * A migration strategy for an island model.  Since each island can execute in
- * separate threads or processes, some best practices are:
- * <ol>
- *   <li>The migration executes in the same thread as the current island.
- *       Therefore, you can modify the current population without synchronization.
- *   <li>Use the immigration queue on each island to send or receive solutions.
- *       Do not read or modify other islands directly.  Use their immigration queue!
- * </ol>
+ * separate threads or processes, be mindful of thread safety.
+ * <p>
+ * Migrations execute in the same thread as the current island.  Therefore, you can
+ * freely read and write to the current population without synchronization.
+ * <p>
+ * Each island has a thread-safe immigration queue.  This stores the migrants that
+ * are arriving to the current island.  Therefore, avoid reading or writing to any
+ * neighboring islands directly, use their immigration queue!
  */
 public interface Migration {
 	
 	/**
-	 * Performs a single migration operation between two islands.
+	 * Performs a single migration operation between the current island and its
+	 * neighbors.
 	 * 
 	 * @param current the current island
-	 * @param target the target island
+	 * @param target the neighboring islands
 	 */
-	public void migrate(Island current, Island target);
+	public void migrate(Island current, List<Island> neighbors);
 
 }
