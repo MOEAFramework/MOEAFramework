@@ -25,7 +25,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.util.Properties;
 
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
@@ -40,6 +39,7 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.problem.AbstractProblem;
+import org.moeaframework.util.TypedProperties;
 
 /**
  * Demonstration of optimizing a TSP problem using the MOEA Framework
@@ -177,10 +177,10 @@ public class TSPExample {
 		// create the optimization problem and evolutionary algorithm
 		Problem problem = new TSPProblem(instance);
 		
-		Properties properties = new Properties();
-		properties.setProperty("swap.rate", "0.7");
-		properties.setProperty("insertion.rate", "0.9");
-		properties.setProperty("pmx.rate", "0.4");
+		TypedProperties properties = new TypedProperties();
+		properties.setDouble("swap.rate", 0.7);
+		properties.setDouble("insertion.rate", 0.9);
+		properties.setDouble("pmx.rate", 0.4);
 		
 		Algorithm algorithm = AlgorithmFactory.getInstance().getAlgorithm(
 				"GA", properties, problem);

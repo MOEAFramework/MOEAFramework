@@ -17,8 +17,6 @@
  */
 package org.moeaframework.algorithm.sa;
 
-import java.util.Properties;
-
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.Initialization;
 import org.moeaframework.core.Problem;
@@ -31,26 +29,23 @@ import org.moeaframework.util.TypedProperties;
 public class AMOSAProvider extends AlgorithmProvider {
 
 	@Override
-	public Algorithm getAlgorithm(String name, Properties properties, Problem problem) {
+	public Algorithm getAlgorithm(String name, TypedProperties properties, Problem problem) {
 		if (name.equalsIgnoreCase("AMOSA")) {
-			// if the user requested the RandomWalker algorithm
-			TypedProperties typedProperties = new TypedProperties(properties);
-			
 			// to be used at initialization the archive by the size of gamma*SL (default to 100)(gamma > 1)
-			double gamma = typedProperties.getDouble("gamma", 2.0d);
+			double gamma = properties.getDouble("gamma", 2.0d);
 			gamma = gamma < 1.0d ? 2.0d : gamma;
 			
 			// Soft Limit SL (default to 100)
-			int softLimit = typedProperties.getInt("SL", 100);
+			int softLimit = properties.getInt("SL", 100);
 			
 			// Hard Limit HL (default to 10)
-			int hardLimit = typedProperties.getInt("HL", 10);
+			int hardLimit = properties.getInt("HL", 10);
 
-			double tMin = typedProperties.getDouble("tMin", 0.0000001d);
-			double tMax = typedProperties.getDouble("tMax", 200d);
-			double alpha = typedProperties.getDouble("alpha", 0.8d);
-			int numberOfIterationPerTemperature = typedProperties.getInt("iter", 500);
-			int numberOfHillClimbingIterationsForRefinement = typedProperties.getInt("hillClimbIter", 20);
+			double tMin = properties.getDouble("tMin", 0.0000001d);
+			double tMax = properties.getDouble("tMax", 200d);
+			double alpha = properties.getDouble("alpha", 0.8d);
+			int numberOfIterationPerTemperature = properties.getInt("iter", 500);
+			int numberOfHillClimbingIterationsForRefinement = properties.getInt("hillClimbIter", 20);
 			
 			// Initialize the algorithm with randomly-generated solutions
 			Initialization initialization = new RandomInitialization(problem, (int)gamma*softLimit);

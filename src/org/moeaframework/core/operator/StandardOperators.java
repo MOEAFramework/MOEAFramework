@@ -18,7 +18,6 @@
 package org.moeaframework.core.operator;
 
 import java.util.HashSet;
-import java.util.Properties;
 import java.util.Set;
 
 import org.moeaframework.core.Problem;
@@ -58,7 +57,7 @@ import org.moeaframework.util.TypedProperties;
 
 /**
  * Default provider of operators.  The name and properties columns show the
- * values accepted by {@link #getVariation(String, Properties, Problem)}.
+ * values accepted by {@link #getVariation(String, TypedProperties, Problem)}.
  * 
  * <table style="margin-top: 1em; width: 100%">
  *   <caption>List of standard operators and their properties</caption>
@@ -293,99 +292,97 @@ public class StandardOperators extends OperatorProvider {
 	}
 
 	@Override
-	public Variation getVariation(String name, Properties properties,
+	public Variation getVariation(String name, TypedProperties properties,
 			Problem problem) {
-		TypedProperties typedProperties = new TypedProperties(properties);
-		
 		if (name.equalsIgnoreCase("sbx")) {
 			return new SBX(
-					typedProperties.getDouble("sbx.rate", 1.0), 
-					typedProperties.getDouble("sbx.distributionIndex", 15.0),
-					typedProperties.getBoolean("sbx.swap", true),
-					typedProperties.getBoolean("sbx.symmetric", false));
+					properties.getDouble("sbx.rate", 1.0), 
+					properties.getDouble("sbx.distributionIndex", 15.0),
+					properties.getBoolean("sbx.swap", true),
+					properties.getBoolean("sbx.symmetric", false));
 		} else if (name.equalsIgnoreCase("pm")) {
 			return new PM(
-					typedProperties.getDouble("pm.rate", 
+					properties.getDouble("pm.rate", 
 							1.0 / problem.getNumberOfVariables()), 
-							typedProperties.getDouble("pm.distributionIndex", 20.0));
+							properties.getDouble("pm.distributionIndex", 20.0));
 		} else if (name.equalsIgnoreCase("de")) {	
 			return new DifferentialEvolutionVariation(
-					typedProperties.getDouble("de.crossoverRate", 0.1), 
-					typedProperties.getDouble("de.stepSize", 0.5));
+					properties.getDouble("de.crossoverRate", 0.1), 
+					properties.getDouble("de.stepSize", 0.5));
 		} else if (name.equalsIgnoreCase("pcx")) {
 			return new PCX(
-					(int)typedProperties.getDouble("pcx.parents", 10),
-					(int)typedProperties.getDouble("pcx.offspring", 2), 
-					typedProperties.getDouble("pcx.eta", 0.1), 
-					typedProperties.getDouble("pcx.zeta", 0.1));
+					(int)properties.getDouble("pcx.parents", 10),
+					(int)properties.getDouble("pcx.offspring", 2), 
+					properties.getDouble("pcx.eta", 0.1), 
+					properties.getDouble("pcx.zeta", 0.1));
 		} else if (name.equalsIgnoreCase("spx")) {
 			return new SPX(
-					(int)typedProperties.getDouble("spx.parents", 10),
-					(int)typedProperties.getDouble("spx.offspring", 2),
-					typedProperties.getDouble("spx.epsilon", 3));
+					(int)properties.getDouble("spx.parents", 10),
+					(int)properties.getDouble("spx.offspring", 2),
+					properties.getDouble("spx.epsilon", 3));
 		} else if (name.equalsIgnoreCase("undx")) {
 			return new UNDX(
-					(int)typedProperties.getDouble("undx.parents", 10),
-					(int)typedProperties.getDouble("undx.offspring", 2), 
-					typedProperties.getDouble("undx.zeta", 0.5), 
-					typedProperties.getDouble("undx.eta", 0.35));
+					(int)properties.getDouble("undx.parents", 10),
+					(int)properties.getDouble("undx.offspring", 2), 
+					properties.getDouble("undx.zeta", 0.5), 
+					properties.getDouble("undx.eta", 0.35));
 		} else if (name.equalsIgnoreCase("um")) {
 			return new UM(
-					typedProperties.getDouble("um.rate", 
+					properties.getDouble("um.rate", 
 							1.0 / problem.getNumberOfVariables()));
 		} else if (name.equalsIgnoreCase("am")) {
 			return new AdaptiveMetropolis(
-					(int)typedProperties.getDouble("am.parents", 10),
-					(int)typedProperties.getDouble("am.offspring", 2), 
-					typedProperties.getDouble("am.coefficient", 2.4));
+					(int)properties.getDouble("am.parents", 10),
+					(int)properties.getDouble("am.offspring", 2), 
+					properties.getDouble("am.coefficient", 2.4));
 		} else if (name.equalsIgnoreCase("hux")) {
 			return new HUX(
-					typedProperties.getDouble("hux.rate", 1.0));
+					properties.getDouble("hux.rate", 1.0));
 		} else if (name.equalsIgnoreCase("bf")) {
 			return new BitFlip(
-					typedProperties.getDouble("bf.rate", 0.01));
+					properties.getDouble("bf.rate", 0.01));
 		} else if (name.equalsIgnoreCase("pmx")) {
 			return new PMX(
-					typedProperties.getDouble("pmx.rate", 1.0));
+					properties.getDouble("pmx.rate", 1.0));
 		} else if (name.equalsIgnoreCase("insertion")) {
 			return new Insertion(
-					typedProperties.getDouble("insertion.rate", 0.3));
+					properties.getDouble("insertion.rate", 0.3));
 		} else if (name.equalsIgnoreCase("swap")) {
 			return new Swap(
-					typedProperties.getDouble("swap.rate", 0.3));
+					properties.getDouble("swap.rate", 0.3));
 		} else if (name.equalsIgnoreCase("1x")) {
 			return new OnePointCrossover(
-					typedProperties.getDouble("1x.rate", 1.0));
+					properties.getDouble("1x.rate", 1.0));
 		} else if (name.equalsIgnoreCase("2x")) {
 			return new TwoPointCrossover(
-					typedProperties.getDouble("2x.rate", 1.0));
+					properties.getDouble("2x.rate", 1.0));
 		} else if (name.equalsIgnoreCase("ux")) {
 			return new UniformCrossover(
-					typedProperties.getDouble("ux.rate", 1.0));
+					properties.getDouble("ux.rate", 1.0));
 		} else if (name.equalsIgnoreCase("gx")) {
 			return new GrammarCrossover(
-					typedProperties.getDouble("gx.rate", 1.0));
+					properties.getDouble("gx.rate", 1.0));
 		} else if (name.equalsIgnoreCase("gm")) {
 			return new GrammarMutation(
-					typedProperties.getDouble("gm.rate", 1.0));
+					properties.getDouble("gm.rate", 1.0));
 		} else if (name.equalsIgnoreCase("ptm")) {
 			return new PointMutation(
-					typedProperties.getDouble("ptm.rate", 0.01));
+					properties.getDouble("ptm.rate", 0.01));
 		} else if (name.equalsIgnoreCase("bx")) {
 			return new SubtreeCrossover(
-					typedProperties.getDouble("bx.rate", 0.9));
+					properties.getDouble("bx.rate", 0.9));
 		} else if (name.equalsIgnoreCase("replace")) {
 			return new Replace(
-					typedProperties.getDouble("replace.rate", 0.9));
+					properties.getDouble("replace.rate", 0.9));
 		} else if (name.equalsIgnoreCase("add")) {
 			return new Add(
-					typedProperties.getDouble("add.rate", 0.1));
+					properties.getDouble("add.rate", 0.1));
 		} else if (name.equalsIgnoreCase("remove")) {
 			return new Remove(
-					typedProperties.getDouble("remove.rate", 0.1));
+					properties.getDouble("remove.rate", 0.1));
 		} else if (name.equalsIgnoreCase("ssx")) {
 			return new SSX(
-					typedProperties.getDouble("ssx.rate", 0.3));
+					properties.getDouble("ssx.rate", 0.3));
 		} else {
 			return null;
 		}

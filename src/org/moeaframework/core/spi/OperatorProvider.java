@@ -17,10 +17,9 @@
  */
 package org.moeaframework.core.spi;
 
-import java.util.Properties;
-
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Variation;
+import org.moeaframework.util.TypedProperties;
 
 /**
  * Defines an SPI for initializing different operators.  Operators are
@@ -78,7 +77,7 @@ public abstract class OperatorProvider {
 	 * @param problem the problem to be solved
 	 * @return an instance of the variation operator with the specified name
 	 */
-	public abstract Variation getVariation(String name, Properties properties, 
+	public abstract Variation getVariation(String name, TypedProperties properties, 
 			Problem problem);
 
 }

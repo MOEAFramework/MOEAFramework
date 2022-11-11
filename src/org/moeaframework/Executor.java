@@ -21,7 +21,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -643,7 +642,7 @@ public class Executor extends ProblemBuilder {
 	 * @param properties the properties
 	 * @return a reference to this executor
 	 */
-	public Executor withProperties(Properties properties) {
+	public Executor withProperties(TypedProperties properties) {
 		this.properties.clear();
 		this.properties.addAll(properties);
 		
@@ -799,12 +798,12 @@ public class Executor extends ProblemBuilder {
 					if (algorithmFactory == null) {
 						algorithm = AlgorithmFactory.getInstance().getAlgorithm(
 								algorithmName, 
-								properties.getProperties(), 
+								properties, 
 								problem);
 					} else {
 						algorithm = algorithmFactory.getAlgorithm(
 								algorithmName, 
-								properties.getProperties(), 
+								properties, 
 								problem);
 					}
 

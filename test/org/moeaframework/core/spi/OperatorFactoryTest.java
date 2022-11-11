@@ -17,8 +17,6 @@
  */
 package org.moeaframework.core.spi;
 
-import java.util.Properties;
-
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -33,6 +31,7 @@ import org.moeaframework.core.variable.BinaryVariable;
 import org.moeaframework.core.variable.Grammar;
 import org.moeaframework.core.variable.Permutation;
 import org.moeaframework.core.variable.RealVariable;
+import org.moeaframework.util.TypedProperties;
 
 /**
  * Tests the {@link OperatorFactory} class.
@@ -59,7 +58,7 @@ public class OperatorFactoryTest {
 	public void testCommonOperators() {
 		for (String operator : operators) {
 			Variation variation = OperatorFactory.getInstance().getVariation(
-					operator, new Properties(), problem);
+					operator, new TypedProperties(), problem);
 			
 			test(variation);
 		}
@@ -88,7 +87,7 @@ public class OperatorFactoryTest {
 		};
 		
 		Assert.assertNotNull(OperatorFactory.getInstance().getVariation(null, 
-				new Properties(), problem));
+				new TypedProperties(), problem));
 	}
 	
 	@Test
@@ -105,7 +104,7 @@ public class OperatorFactoryTest {
 		};
 		
 		Assert.assertNotNull(OperatorFactory.getInstance().getVariation(null, 
-				new Properties(), problem));
+				new TypedProperties(), problem));
 	}
 	
 	@Test
@@ -122,7 +121,7 @@ public class OperatorFactoryTest {
 		};
 		
 		Assert.assertNotNull(OperatorFactory.getInstance().getVariation(null, 
-				new Properties(), problem));
+				new TypedProperties(), problem));
 	}
 	
 	@Test
@@ -139,7 +138,7 @@ public class OperatorFactoryTest {
 		};
 		
 		Assert.assertNotNull(OperatorFactory.getInstance().getVariation(null, 
-				new Properties(), problem));
+				new TypedProperties(), problem));
 	}
 	
 	@Test(expected = ProviderLookupException.class)
@@ -158,7 +157,7 @@ public class OperatorFactoryTest {
 
 		};
 		
-		OperatorFactory.getInstance().getVariation(null, new Properties(), 
+		OperatorFactory.getInstance().getVariation(null, new TypedProperties(), 
 				problem);
 	}
 	
@@ -191,7 +190,7 @@ public class OperatorFactoryTest {
 
 		};
 		
-		OperatorFactory.getInstance().getVariation(null, new Properties(), 
+		OperatorFactory.getInstance().getVariation(null, new TypedProperties(), 
 				problem);
 	}
 	
@@ -199,7 +198,7 @@ public class OperatorFactoryTest {
 	public void testEmptyType() {
 		Problem problem = new ProblemStub(0);
 		
-		OperatorFactory.getInstance().getVariation(null, new Properties(), 
+		OperatorFactory.getInstance().getVariation(null, new TypedProperties(), 
 				problem);
 	}
 	
@@ -208,7 +207,7 @@ public class OperatorFactoryTest {
 		Problem problem = new ProblemStub(0);
 		
 		OperatorFactory.getInstance().getVariation("sbx+test_fake_operator", 
-				new Properties(), problem);
+				new TypedProperties(), problem);
 	}
 
 }

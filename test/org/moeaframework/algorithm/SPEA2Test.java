@@ -18,7 +18,6 @@
 package org.moeaframework.algorithm;
 
 import java.io.IOException;
-import java.util.Properties;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -34,6 +33,7 @@ import org.moeaframework.core.operator.RandomInitialization;
 import org.moeaframework.core.spi.OperatorFactory;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.problem.MockRealProblem;
+import org.moeaframework.util.TypedProperties;
 
 /**
  * Tests the {@link SPEA2} class.
@@ -184,7 +184,7 @@ public class SPEA2Test extends AlgorithmTest {
 		Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
 		SPEA2 spea2 = new SPEA2(problem,
 				new RandomInitialization(problem, 100),
-				OperatorFactory.getInstance().getVariation(null, new Properties(), problem),
+				OperatorFactory.getInstance().getVariation(null, new TypedProperties(), problem),
 				0,
 				10000);
 		

@@ -17,14 +17,13 @@
  */
 package org.moeaframework.analysis.collector;
 
-import java.util.Properties;
-
 import org.junit.Assert;
 import org.moeaframework.Instrumenter;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.core.spi.ProblemFactory;
+import org.moeaframework.util.TypedProperties;
 
 /**
  * Helper functions for testing collectors.  This primarily ensures that the
@@ -83,9 +82,8 @@ public class CollectorTest {
 					.withFrequency(100)
 					.attach(testCollector);
 
-			Properties properties = new Properties();
-			properties.setProperty("maxEvaluations", 
-					Integer.toString(numberOfEvaluations));
+			TypedProperties properties = new TypedProperties();
+			properties.setInt("maxEvaluations", numberOfEvaluations);
 
 			Algorithm algorithm = null;
 

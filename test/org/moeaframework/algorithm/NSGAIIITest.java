@@ -145,7 +145,7 @@ public class NSGAIIITest {
 			}
 			
 			Algorithm algorithm = AlgorithmFactory.getInstance().getAlgorithm(
-					"NSGAIII", properties.getProperties(), problem);
+					"NSGAIII", properties, problem);
 			
 			while (algorithm.getNumberOfEvaluations() < maxGen*populationSize) {
 				algorithm.step();

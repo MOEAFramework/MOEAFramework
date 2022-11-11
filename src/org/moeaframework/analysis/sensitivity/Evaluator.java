@@ -20,7 +20,6 @@ package org.moeaframework.analysis.sensitivity;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Properties;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
@@ -262,7 +261,7 @@ public class Evaluator extends CommandLineUtility {
 					}
 
 					// setup any default parameters
-					Properties defaultProperties = new Properties();
+					TypedProperties defaultProperties = new TypedProperties();
 
 					if (commandLine.hasOption("properties")) {
 						for (String property : commandLine
@@ -270,7 +269,7 @@ public class Evaluator extends CommandLineUtility {
 							String[] tokens = property.split("=");
 							
 							if (tokens.length == 2) {
-								defaultProperties.setProperty(tokens[0],
+								defaultProperties.setString(tokens[0],
 										tokens[1]);
 							} else {
 								throw new FrameworkException(
@@ -280,7 +279,7 @@ public class Evaluator extends CommandLineUtility {
 					}
 
 					if (commandLine.hasOption("epsilon")) {
-						defaultProperties.setProperty("epsilon", commandLine
+						defaultProperties.setString("epsilon", commandLine
 								.getOptionValue("epsilon"));
 					}
 
@@ -292,8 +291,8 @@ public class Evaluator extends CommandLineUtility {
 
 					// process the remaining runs
 					while (input.hasNext()) {
-						Properties properties = input.next();
-						properties.putAll(defaultProperties);
+						TypedProperties properties = input.next();
+						properties.addAll(defaultProperties);
 
 						process(commandLine.getOptionValue("algorithm"),
 								properties);
@@ -322,7 +321,7 @@ public class Evaluator extends CommandLineUtility {
 	 * @param properties the parameters stored in a properties object
 	 * @throws IOException if an I/O error occurred
 	 */
-	protected void process(String algorithmName, Properties properties)
+	protected void process(String algorithmName, TypedProperties properties)
 			throws IOException {
 		// instrument the problem to record timing information
 		TimingProblem timingProblem = new TimingProblem(problem);
@@ -331,12 +330,11 @@ public class Evaluator extends CommandLineUtility {
 				algorithmName, properties, timingProblem);
 
 		// find the maximum NFE to run
-		if (!properties.containsKey("maxEvaluations")) {
+		if (!properties.contains("maxEvaluations")) {
 			throw new FrameworkException("maxEvaluations not defined");
 		}
 
-		int maxEvaluations = (int) Double.parseDouble(properties
-				.getProperty("maxEvaluations"));
+		int maxEvaluations = (int)properties.getDouble("maxEvaluations", -1);
 
 		// run the algorithm
 		long startTime = System.nanoTime();
@@ -351,19 +349,15 @@ public class Evaluator extends CommandLineUtility {
 		algorithm.terminate();
 
 		// apply epsilon-dominance if required
-		if (properties.containsKey("epsilon")) {
-			TypedProperties typedProperties = new TypedProperties(properties);
-			double[] epsilon = typedProperties.getDoubleArray("epsilon", null);
-			
+		if (properties.contains("epsilon")) {
+			double[] epsilon = properties.getDoubleArray("epsilon", null);
 			result = EpsilonHelper.convert(result, epsilon);
 		}
 
 		// record instrumented data
-		Properties timingData = new Properties();
-		timingData.setProperty("EvaluationTime",
-				Double.toString(timingProblem.getTime()));
-		timingData.setProperty("TotalTime",
-				Double.toString((endTime - startTime) / 1e9));
+		TypedProperties timingData = new TypedProperties();
+		timingData.setDouble("EvaluationTime", timingProblem.getTime());
+		timingData.setDouble("TotalTime", (endTime - startTime) / 1e9);
 
 		// write result to output
 		output.append(new ResultEntry(result, timingData));

@@ -17,8 +17,6 @@
  */
 package org.moeaframework.algorithm;
 
-import java.util.Properties;
-
 import org.junit.Test;
 import org.moeaframework.IgnoreOnCI;
 import org.moeaframework.TestUtils;
@@ -28,6 +26,7 @@ import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.core.spi.ProblemFactory;
+import org.moeaframework.util.TypedProperties;
 
 /**
  * Tests each of the standard algorithms to ensure reusing random seeds results
@@ -230,7 +229,7 @@ public class ReproducibilityTest {
 			Problem problem = ProblemFactory.getInstance().getProblem(
 					"DTLZ2_2");
 			Algorithm algorithm = AlgorithmFactory.getInstance().getAlgorithm(
-					algorithmName, new Properties(), problem);
+					algorithmName, new TypedProperties(), problem);
 
 			while (!algorithm.isTerminated()
 					&& (algorithm.getNumberOfEvaluations() < 10000)) {

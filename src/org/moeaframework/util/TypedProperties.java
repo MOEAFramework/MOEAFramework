@@ -17,8 +17,13 @@
  */
 package org.moeaframework.util;
 
+import java.io.IOException;
+import java.io.Reader;
+import java.io.Writer;
 import java.lang.reflect.Array;
+import java.util.HashSet;
 import java.util.Properties;
+import java.util.Set;
 
 /**
  * Wrapper for {@link Properties} providing getters for reading specific
@@ -44,6 +49,11 @@ public class TypedProperties {
 	 * The {@code Properties} object storing the actual key/value pairs.
 	 */
 	private final Properties properties;
+	
+	/**
+	 * The keys that were read from this {@code Properties} object.
+	 */
+	private final Set<String> accessedProperties;
 	
 	/**
 	 * Decorates an empty {@code Properties} object to provide type-safe access
@@ -73,6 +83,8 @@ public class TypedProperties {
 	public TypedProperties(Properties properties, String separator) {
 		this.properties = properties;
 		this.separator = separator;
+		
+		accessedProperties = new HashSet<String>();
 	}
 	
 	/**
@@ -103,6 +115,7 @@ public class TypedProperties {
 	 *         properties object; {@code false} otherwise
 	 */
 	public boolean contains(String key) {
+		accessedProperties.add(key);
 		return properties.containsKey(key);
 	}
 
@@ -113,9 +126,9 @@ public class TypedProperties {
 	 * @return the internal {@code Properties} object storing the actual 
 	 *         key/value pairs 
 	 */
-	public Properties getProperties() {
-		return properties;
-	}
+//	public Properties getProperties() {
+//		return properties;
+//	}
 
 	/**
 	 * Returns the value of the property with the specified name as a string; or
@@ -129,6 +142,7 @@ public class TypedProperties {
 	 */
 	public String getString(String key, String defaultValue) {
 		String value = properties.getProperty(key);
+		accessedProperties.add(key);
 
 		if (value == null) {
 			return defaultValue;
@@ -683,7 +697,7 @@ public class TypedProperties {
 	 * @param properties the properties
 	 */
 	public void addAll(TypedProperties properties) {
-		addAll(properties.getProperties());
+		addAll(properties.properties);
 	}
 	
 	/**
@@ -712,6 +726,96 @@ public class TypedProperties {
 		}
 		
 		return sb.toString();
+	}
+	
+	/**
+	 * Returns the number of properties that are defined.
+	 * 
+	 * @return the number of properties
+	 */
+	public int size() {
+		return properties.size();
+	}
+	
+	/**
+	 * Returns {@code true} if there are no properties set.
+	 * 
+	 * @return {@code true} if no properties are set; {@code false} otherwise
+	 */
+	public boolean isEmpty() {
+		return properties.isEmpty();
+	}
+	
+	/**
+	 * Loads the properties from a reader.
+	 * 
+	 * @param reader the reader
+	 * @throws IOException if an I/O error occurred
+	 */
+	public void load(Reader reader) throws IOException {
+		properties.load(reader);
+	}
+	
+	/**
+	 * Writes the properties to a writer.
+	 * 
+	 * @param writer the writer
+	 * @throws IOException if an I/O error occurred
+	 */
+	public void store(Writer writer) throws IOException {
+		properties.store(writer, null);
+	}
+	
+	/**
+	 * Clears the tracking information for properties that have
+	 * been accessed.
+	 */
+	public void clearAccessedProperties() {
+		accessedProperties.clear();
+	}
+	
+	/**
+	 * Returns the properties that were accessed since the last call to
+	 * {@see #clearAccessedProperties()}.
+	 * 
+	 * @return the accessed properties
+	 */
+	public Set<String> getAccessedProperties() {
+		return new HashSet<String>(accessedProperties);
+	}
+	
+	/**
+	 * Returns the properties that were never accessed since the last call to
+	 * {@see #clearAccessedProperties()}.
+	 * 
+	 * @return the unaccessed or orphaned properties
+	 */
+	public Set<String> getUnaccessedProperties() {
+		Set<String> orphanedProperties = new HashSet<String>(
+				properties.stringPropertyNames());
+		
+		orphanedProperties.removeAll(accessedProperties);
+		return orphanedProperties;
+	}
+	
+	/**
+	 * Prints a warning if any properties were not accessed.  For example:
+	 * <pre>
+	 *     TypedProperties properties = new TypedProperties();
+	 *     ... write properties ...
+	 *     
+	 *     properties.clearAccessedProperties();
+	 *     ... read properties ...
+	 *     properties.warnIfUnaccessedProperties();
+	 * </pre>
+	 */
+	public void warnIfUnaccessedProperties() {
+		Set<String> orphanedProperties = getUnaccessedProperties();
+		
+		if (!orphanedProperties.isEmpty()) {
+			System.err.println("properties not accessed: " +
+					String.join(", ", orphanedProperties));
+		}
 	}
 
 }

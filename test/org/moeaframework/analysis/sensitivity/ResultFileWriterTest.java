@@ -19,7 +19,6 @@ package org.moeaframework.analysis.sensitivity;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Properties;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -132,8 +131,8 @@ public class ResultFileWriterTest {
 		
 		NondominatedPopulation population = new NondominatedPopulation();
 
-		Properties properties = new Properties();
-		properties.setProperty("\"'!@#$=:%^&*()\\\r\n//\t ", "\"'!@#$=:%^&*()\\\r\n//\t ");
+		TypedProperties properties = new TypedProperties();
+		properties.setString("\"'!@#$=:%^&*()\\\r\n//\t ", "\"'!@#$=:%^&*()\\\r\n//\t ");
 		
 		try {
 			writer = new ResultFileWriter(problem, file);
@@ -167,7 +166,7 @@ public class ResultFileWriterTest {
 		ResultFileReader reader = null;
 		
 		NondominatedPopulation population = new NondominatedPopulation();
-		Properties properties = new Properties();
+		TypedProperties properties = new TypedProperties();
 		
 		try {
 			writer = new ResultFileWriter(problem, file);
@@ -201,7 +200,7 @@ public class ResultFileWriterTest {
 		ResultFileReader reader = null;
 		
 		NondominatedPopulation population = new NondominatedPopulation();
-		Properties properties = new Properties();
+		TypedProperties properties = new TypedProperties();
 		
 		try {
 			writer = new ResultFileWriter(problem, file);
@@ -238,8 +237,8 @@ public class ResultFileWriterTest {
 		population.add(solution1);
 		population.add(solution2);
 		
-		Properties properties = new Properties();
-		properties.setProperty("foo", "bar");
+		TypedProperties properties = new TypedProperties();
+		properties.setString("foo", "bar");
 		
 		try {
 			writer = new ResultFileWriter(problem, file);
@@ -279,8 +278,8 @@ public class ResultFileWriterTest {
 		population.add(solution1);
 		population.add(solution2);
 		
-		Properties properties = new Properties();
-		properties.setProperty("foo", "bar");
+		TypedProperties properties = new TypedProperties();
+		properties.setString("foo", "bar");
 		
 		try {
 			writer = new ResultFileWriter(problem, file, false);
@@ -323,8 +322,8 @@ public class ResultFileWriterTest {
 		NondominatedPopulation population = new NondominatedPopulation();
 		population.add(solution3);
 		
-		Properties properties = new Properties();
-		properties.setProperty("foo", "bar");
+		TypedProperties properties = new TypedProperties();
+		properties.setString("foo", "bar");
 		
 		try {
 			writer = new ResultFileWriter(problem, file);
@@ -364,8 +363,8 @@ public class ResultFileWriterTest {
 		population.add(solution1);
 		population.add(solution2);
 		
-		Properties properties = new Properties();
-		properties.setProperty("foo", "bar");
+		TypedProperties properties = new TypedProperties();
+		properties.setString("foo", "bar");
 
 		try {
 			writer = new ResultFileWriter(problem, file);
@@ -466,7 +465,7 @@ public class ResultFileWriterTest {
 		
 		try {
 			writer = new ResultFileWriter(problem, file);
-			writer.append(new ResultEntry(population, (Properties)null));
+			writer.append(new ResultEntry(population, null));
 		} finally {
 			if (writer != null) {
 				writer.close();

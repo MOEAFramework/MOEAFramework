@@ -17,13 +17,12 @@
  */
 package org.moeaframework.algorithm;
 
-import java.util.Properties;
-
 import org.junit.Test;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.core.spi.ProviderNotFoundException;
 import org.moeaframework.problem.MockBinaryProblem;
+import org.moeaframework.util.TypedProperties;
 
 /**
  * Tests the {@link RVEA} class.
@@ -37,7 +36,7 @@ public class RVEATest {
 	@Test(expected=ProviderNotFoundException.class)
 	public void testInitialConditions() {
 		Problem problem = new MockBinaryProblem();
-		AlgorithmFactory.getInstance().getAlgorithm("RVEA", new Properties(), problem);
+		AlgorithmFactory.getInstance().getAlgorithm("RVEA", new TypedProperties(), problem);
 	}
 
 }

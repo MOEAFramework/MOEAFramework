@@ -19,8 +19,6 @@ package org.moeaframework.algorithm.single;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
-
 import org.moeaframework.algorithm.AbstractAlgorithm;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.NondominatedPopulation;
@@ -60,7 +58,7 @@ public class RepeatedSingleObjective extends AbstractAlgorithm {
 	/**
 	 * Any additional algorithm properties.
 	 */
-	private final Properties properties;
+	private final TypedProperties properties;
 	
 	/**
 	 * A list of the instantiated algorithms.
@@ -76,7 +74,8 @@ public class RepeatedSingleObjective extends AbstractAlgorithm {
 	 * @param properties the algorithm properties
 	 * @param instances the number of instances
 	 */
-	public RepeatedSingleObjective(Problem problem, String algorithmName, Properties properties, int instances) {
+	public RepeatedSingleObjective(Problem problem, String algorithmName,
+			TypedProperties properties, int instances) {
 		super(problem);
 		this.algorithmName = algorithmName;
 		this.properties = properties;
@@ -136,13 +135,10 @@ public class RepeatedSingleObjective extends AbstractAlgorithm {
 	 * @return the new algorithm instance
 	 */
 	protected Algorithm createInstance(double[] weights) {
-		TypedProperties typedProperties = new TypedProperties(
-				new Properties(properties));
-		
-		typedProperties.setDoubleArray("weights", weights);
+		properties.setDoubleArray("weights", weights);
 		
 		return AlgorithmFactory.getInstance().getAlgorithm(
-				algorithmName, typedProperties.getProperties(), problem);
+				algorithmName, properties, problem);
 	}
 
 }

@@ -20,7 +20,6 @@ package org.moeaframework.analysis.sensitivity;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Properties;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
@@ -35,6 +34,7 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.util.CommandLineUtility;
+import org.moeaframework.util.TypedProperties;
 
 /**
  * Command line utility for evaluating an algorithm using many 
@@ -215,14 +215,14 @@ public class DetailedEvaluator extends CommandLineUtility {
 						output = new ResultFileWriter(problem, outputFile, !commandLine.hasOption("novariables"));
 	
 						// setup any default parameters
-						Properties defaultProperties = new Properties();
+						TypedProperties defaultProperties = new TypedProperties();
 	
 						if (commandLine.hasOption("properties")) {
 							for (String property : commandLine.getOptionValues("properties")) {
 								String[] tokens = property.split("=");
 								
 								if (tokens.length == 2) {
-									defaultProperties.setProperty(tokens[0], tokens[1]);
+									defaultProperties.setString(tokens[0], tokens[1]);
 								} else {
 									throw new FrameworkException("malformed property argument");
 								}
@@ -230,7 +230,7 @@ public class DetailedEvaluator extends CommandLineUtility {
 						}
 	
 						if (commandLine.hasOption("epsilon")) {
-							defaultProperties.setProperty("epsilon", commandLine.getOptionValue("epsilon"));
+							defaultProperties.setString("epsilon", commandLine.getOptionValue("epsilon"));
 						}
 	
 						// seed the pseudo-random number generator
@@ -238,8 +238,8 @@ public class DetailedEvaluator extends CommandLineUtility {
 							PRNG.setSeed(Long.parseLong(commandLine.getOptionValue("seed")));
 						}
 	
-						Properties properties = input.next();
-						properties.putAll(defaultProperties);
+						TypedProperties properties = input.next();
+						properties.addAll(defaultProperties);
 	
 						process(commandLine.getOptionValue("algorithm"), properties, frequency);
 						
@@ -267,13 +267,13 @@ public class DetailedEvaluator extends CommandLineUtility {
 	}
 
 	@SuppressWarnings("unchecked")
-	protected void process(String algorithmName, Properties properties, int frequency)
+	protected void process(String algorithmName, TypedProperties properties, int frequency)
 			throws IOException {
-		if (!properties.containsKey("maxEvaluations")) {
+		if (!properties.contains("maxEvaluations")) {
 			throw new FrameworkException("maxEvaluations not defined");
 		}
 		
-		int maxEvaluations = (int)Double.parseDouble(properties.getProperty("maxEvaluations"));
+		int maxEvaluations = (int)properties.getDouble("maxEvaluations", -1);
 		
 		Instrumenter instrumenter = new Instrumenter()
 				.withProblem(problem)
@@ -292,9 +292,9 @@ public class DetailedEvaluator extends CommandLineUtility {
 		Accumulator accumulator = instrumenter.getLastAccumulator();
 
 		for (int i=0; i<accumulator.size("NFE"); i++) {
-			Properties metadata = new Properties();
-			metadata.setProperty("NFE", accumulator.get("NFE", i).toString());
-			metadata.setProperty("ElapsedTime", accumulator.get("Elapsed Time", i).toString());
+			TypedProperties metadata = new TypedProperties();
+			metadata.setString("NFE", accumulator.get("NFE", i).toString());
+			metadata.setString("ElapsedTime", accumulator.get("Elapsed Time", i).toString());
 			
 			Iterable<Solution> solutions = (Iterable<Solution>)accumulator.get("Approximation Set", i);
 			NondominatedPopulation result = new NondominatedPopulation(solutions);

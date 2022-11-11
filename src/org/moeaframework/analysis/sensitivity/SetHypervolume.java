@@ -74,11 +74,11 @@ public class SetHypervolume extends CommandLineUtility {
 					PopulationIO.readObjectives(new File(filename)));
 			
 			if (commandLine.hasOption("epsilon")) {
-				TypedProperties typedProperties = TypedProperties.withProperty(
+				TypedProperties properties = TypedProperties.withProperty(
 						"epsilon", commandLine.getOptionValue("epsilon"));
 				
 				set = new EpsilonBoxDominanceArchive(
-						typedProperties.getDoubleArray("epsilon", null), set);
+						properties.getDoubleArray("epsilon", null), set);
 			}
 			
 			System.out.print(filename);

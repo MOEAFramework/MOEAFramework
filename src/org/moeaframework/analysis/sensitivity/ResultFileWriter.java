@@ -29,7 +29,6 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.StringUtils;
@@ -41,6 +40,7 @@ import org.moeaframework.core.Variable;
 import org.moeaframework.core.variable.BinaryVariable;
 import org.moeaframework.core.variable.Permutation;
 import org.moeaframework.core.variable.RealVariable;
+import org.moeaframework.util.TypedProperties;
 import org.moeaframework.util.io.FileUtils;
 
 /**
@@ -50,7 +50,7 @@ import org.moeaframework.util.io.FileUtils;
  * contained on these lines after the {@code #} character are ignored.
  * <p>
  * An entry contains two pieces of data: 1) properties which are defined on
- * lines starting with {@code //} in the same format as {@link Properties}; and
+ * lines starting with {@code //} in the same format as {@link TypedProperties}; and
  * 2) lines containing a sequence of floating-point numbers listing, in order,
  * the real-valued decision variables and objectives. Each decision variable is
  * separated by one or more whitespace characters. Decision variables that can 
@@ -243,7 +243,7 @@ public class ResultFileWriter implements OutputWriter {
 		}
 		
 		//ensure a non-empty entry is written
-		Properties properties = entry.getProperties();
+		TypedProperties properties = entry.getProperties();
 		
 		if (feasibleSolutions.isEmpty() && 
 				((properties == null) || (properties.isEmpty()))) {
@@ -302,11 +302,11 @@ public class ResultFileWriter implements OutputWriter {
 	 * @param properties the properties
 	 * @throws IOException if an I/O error occurred
 	 */
-	private void printProperties(Properties properties) throws IOException {
+	private void printProperties(TypedProperties properties) throws IOException {
 		StringWriter stringBuffer = new StringWriter();
 		BufferedReader reader = null;
 		
-		properties.store(stringBuffer, null);
+		properties.store(stringBuffer);
 		
 		try {
 			reader = new BufferedReader(new StringReader(

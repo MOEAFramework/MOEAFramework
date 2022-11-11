@@ -211,10 +211,10 @@ public class ResultFileEvaluator extends CommandLineUtility {
 						ResultEntry entry = reader.next();
 						
 						if (commandLine.hasOption("epsilon")) {
-							TypedProperties typedProperties = new TypedProperties();
-							typedProperties.getProperties().setProperty("epsilon", commandLine.getOptionValue("epsilon"));
+							TypedProperties properties = new TypedProperties();
+							properties.setString("epsilon", commandLine.getOptionValue("epsilon"));
 
-							double[] epsilon = typedProperties.getDoubleArray("epsilon", null);
+							double[] epsilon = properties.getDoubleArray("epsilon", null);
 							
 							entry = new ResultEntry(EpsilonHelper.convert(entry.getPopulation(), epsilon), entry.getProperties());
 						}

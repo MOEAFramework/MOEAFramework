@@ -24,7 +24,6 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.util.Properties;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
@@ -47,6 +46,7 @@ import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.spi.AlgorithmFactory;
+import org.moeaframework.util.TypedProperties;
 
 /**
  * A GUI for displaying the actual and approximated functions used in a
@@ -312,8 +312,9 @@ public class SymbolicRegressionGUI extends JFrame implements WindowListener {
 		int generation = 0;
 		int maxGenerations = 1000;
 		Algorithm algorithm = null;
-		Properties properties = new Properties();
-		properties.setProperty("populationSize", "500");
+		
+		TypedProperties properties = new TypedProperties();
+		properties.setInt("populationSize", 500);
 
 		try {
 			algorithm = AlgorithmFactory.getInstance().getAlgorithm(
