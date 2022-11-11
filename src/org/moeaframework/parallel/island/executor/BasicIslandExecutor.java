@@ -40,7 +40,7 @@ public class BasicIslandExecutor implements IslandExecutor {
 		//start threads to process each island
 		List<Future<NondominatedPopulation>> futures = new ArrayList<Future<NondominatedPopulation>>();
 			
-		for (Island island : islands) {
+		for (final Island island : islands) {
 			futures.add(executorService.submit(new Callable<NondominatedPopulation>() {
 
 				@Override
