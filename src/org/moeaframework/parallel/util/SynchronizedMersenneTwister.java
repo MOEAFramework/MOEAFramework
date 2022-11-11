@@ -1,4 +1,4 @@
-package org.moeaframework.parallel;
+package org.moeaframework.parallel.util;
 
 import java.security.SecureRandom;
 import java.util.Random;
@@ -7,10 +7,15 @@ import org.apache.commons.math3.random.MersenneTwister;
 /**
  * A thread-safe version of the {@link MersenneTwister} random number
  * generator (RNG).  Each thread is assigned a unique instance of the 
- * RNG with its own seed.
+ * RNG with its own seed.  To use:
  * <pre>
  *     PRNG.setRandom(SynchronizedMersenneTwister.getInstance());
  * </pre>
+ * <p>
+ * Note: Java also has the {@see java.util.concurrent.ThreadLocalRandom}
+ * that can provide similar access to random numbers across threads.
+ * The Mersenne Twister, however, has better characteristics
+ * (extremely long period, high equidistribution, etc.).
  */
 public class SynchronizedMersenneTwister extends Random {
 

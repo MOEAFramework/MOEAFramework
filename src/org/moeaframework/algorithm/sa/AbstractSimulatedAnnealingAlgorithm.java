@@ -24,6 +24,8 @@ import org.moeaframework.core.Problem;
  * Abstract class of fundamental simulated annealing algorithm. While the iterations of evolving SA algorithms vary,
  * fundamental mechanics of SA algorithm stands on solidification of fluids. So every SA algorithm has an initial high
  * temperature {@code tMax} and final low temperature {@code tMin}.
+ * 
+ * @preview
  */
 public abstract class AbstractSimulatedAnnealingAlgorithm extends AbstractAlgorithm{
 

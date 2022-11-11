@@ -5,14 +5,15 @@ This page documents notable changes introduced in each chronological release of 
 
 ## Version 3.1 (TBD)
 
-  * Adds AMOSA (simulated annealing) algorithm.
-  
   * Removes all deprecated methods from `2.x` release.
   
   * Updates Javadoc formatting to fix linter warnings.
-
-  * Adds island model parallelization support under `org.moeaframework.parallel` along
-    with examples.
+    
+  * Adds two preview features
+  
+    - The simulated annealing algorithm AMOSA in `org.moeaframework.algorithm.sa`.
+    
+    - Support for island model parallelization in `org.moeaframework.parallel`
 
 
 ## Version 3.0 (7 Nov 2022)

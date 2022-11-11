@@ -15,14 +15,14 @@ import org.moeaframework.core.operator.TournamentSelection;
 import org.moeaframework.core.operator.real.PM;
 import org.moeaframework.core.operator.real.SBX;
 import org.moeaframework.core.spi.ProblemFactory;
-import org.moeaframework.parallel.SynchronizedMersenneTwister;
-import org.moeaframework.parallel.SynchronizedNondominatedSortingPopulation;
 import org.moeaframework.parallel.island.Island;
 import org.moeaframework.parallel.island.ThreadedIslandModel;
 import org.moeaframework.parallel.island.migration.Migration;
 import org.moeaframework.parallel.island.migration.OneWayMigration;
 import org.moeaframework.parallel.island.topology.FullyConnectedTopology;
 import org.moeaframework.parallel.island.topology.Topology;
+import org.moeaframework.parallel.util.SynchronizedMersenneTwister;
+import org.moeaframework.parallel.util.SynchronizedNondominatedSortingPopulation;
 
 public class ThreadedIslandModelExample {
 	

@@ -1,39 +1,30 @@
-package org.moeaframework.parallel;
+package org.moeaframework.parallel.util;
 
 import java.util.Comparator;
 import java.util.Iterator;
-import org.moeaframework.core.NondominatedPopulation;
+import org.moeaframework.core.NondominatedSortingPopulation;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.comparator.DominanceComparator;
 
 /**
- * Synchronized (thread-safe) version of {@see NondominatedPopulation}.
+ * Synchronized (thread-safe) version of {@see NondominatedSortingPopulation}.
  */
-public class SynchronizedNondominatedPopulation extends NondominatedPopulation {
+public class SynchronizedNondominatedSortingPopulation extends NondominatedSortingPopulation {
 
-	public SynchronizedNondominatedPopulation() {
+	public SynchronizedNondominatedSortingPopulation() {
 		super();
 	}
 
-	public SynchronizedNondominatedPopulation(DominanceComparator comparator,
-			DuplicateMode duplicateMode) {
-		super(comparator, duplicateMode);
-	}
-
-	public SynchronizedNondominatedPopulation(DominanceComparator comparator,
+	public SynchronizedNondominatedSortingPopulation(DominanceComparator comparator,
 			Iterable<? extends Solution> iterable) {
 		super(comparator, iterable);
 	}
 
-	public SynchronizedNondominatedPopulation(DominanceComparator comparator) {
+	public SynchronizedNondominatedSortingPopulation(DominanceComparator comparator) {
 		super(comparator);
 	}
 
-	public SynchronizedNondominatedPopulation(DuplicateMode duplicateMode) {
-		super(duplicateMode);
-	}
-
-	public SynchronizedNondominatedPopulation(Iterable<? extends Solution> iterable) {
+	public SynchronizedNondominatedSortingPopulation(Iterable<? extends Solution> iterable) {
 		super(iterable);
 	}
 
@@ -80,6 +71,21 @@ public class SynchronizedNondominatedPopulation extends NondominatedPopulation {
 	@Override
 	public synchronized void truncate(int size, Comparator<? super Solution> comparator) {
 		super.truncate(size, comparator);
+	}
+
+	@Override
+	public synchronized void truncate(int size) {
+		super.truncate(size);
+	}
+
+	@Override
+	public synchronized void prune(int size) {
+		super.prune(size);
+	}
+
+	@Override
+	public synchronized void update() {
+		super.update();
 	}
 
 	@Override
@@ -130,16 +136,6 @@ public class SynchronizedNondominatedPopulation extends NondominatedPopulation {
 	@Override
 	public synchronized int size() {
 		return super.size();
-	}
-
-	@Override
-	protected synchronized boolean forceAddWithoutCheck(Solution newSolution) {
-		return super.forceAddWithoutCheck(newSolution);
-	}
-
-	@Override
-	public synchronized DominanceComparator getComparator() {
-		return super.getComparator();
 	}
 
 }
