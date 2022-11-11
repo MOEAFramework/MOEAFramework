@@ -441,5 +441,35 @@ public class SolutionTest {
 		// solution with no constraints
 		Assert.assertFalse(new Solution(0, 0, 0).violatesConstraints());
 	}
+	
+	/**
+	 * Tests the {@code distanceTo} method to ensure it computes the Euclidean
+	 * distance between solutions correctly.
+	 */
+	@Test
+	public void testDistanceTo() {
+		Solution s1 = new Solution(new double[] { 0.0, 1.0, 0.0 });
+		Solution s2 = new Solution(new double[] { 0.0, 0.0, -1.0 });
+
+		Assert.assertEquals(Math.sqrt(2.0),
+				s1.distanceTo(s2),
+				Settings.EPS);
+		Assert.assertEquals(Math.sqrt(2.0),
+				s2.distanceTo(s1),
+				Settings.EPS);
+		Assert.assertEquals(0.0,
+				s1.distanceTo(s1),
+				Settings.EPS);
+		Assert.assertEquals(0.0,
+				s2.distanceTo(s2),
+				Settings.EPS);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testDistanceToThrows() {
+		Solution s1 = new Solution(new double[] { 0.0, 1.0, 0.0 });
+		Solution s2 = new Solution(new double[] { 0.0, -1.0 });
+		s1.distanceTo(s2);
+	}
 
 }

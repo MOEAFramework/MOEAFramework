@@ -105,7 +105,7 @@ public class SingleLinkageClustering {
 			
 			for (Solution solution : this.elements) {
 				for (Solution referenceSolution : reference.elements) {
-					double distance = distance(solution, referenceSolution);
+					double distance = solution.distanceTo(referenceSolution);
 					
 					if (distance < minDistance) {
 						minDistance=distance;
@@ -114,25 +114,6 @@ public class SingleLinkageClustering {
 			}
 			
 			return minDistance;
-		}
-		
-		/**
-		 * Returns the Euclidean distance between two solutions in objective space.
-		 * 
-		 * @param s1
-		 *            the first solution
-		 * @param s2
-		 *            the second solution
-		 * @return the distance between the two solutions in objective space
-		 */
-		private double distance(Solution s1, Solution s2) {
-			double distance = 0.0;
-
-			for (int i = 0; i < s1.getNumberOfObjectives(); i++) {
-				distance += Math.pow(s1.getObjective(i) - s2.getObjective(i), 2.0);
-			}
-
-			return Math.sqrt(distance);
 		}
 		
 		/**
@@ -150,7 +131,7 @@ public class SingleLinkageClustering {
 						continue;
 					}
 					
-					distance += distance(elements.get(i), elements.get(j));
+					distance += elements.get(i).distanceTo(elements.get(j));
 				}
 				
 				if (distance < minDistance) {

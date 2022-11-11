@@ -405,5 +405,28 @@ public class Solution implements Serializable {
 	public void clearAttributes() {
 		attributes.clear();
 	}
+	
+	/**
+	 * Computes the Euclidean distance between two solutions in objective space.
+	 * The order here doesn't matter. {@code s1.distanceTo(s2) == s2.distanceTo(s1)}.
+	 * 
+	 * @param otherSolution the other solution
+	 * @return the Euclidean distance
+	 * @throws IllegalArgumentException if the solutions have differing numbers
+	 *         of objectives
+	 */
+	public double distanceTo(Solution otherSolution) {
+		if (getNumberOfObjectives() != otherSolution.getNumberOfObjectives()) {
+			throw new IllegalArgumentException("solutions have different number of objectives");
+		}
+		
+		double distance = 0.0;
+
+		for (int i = 0; i < getNumberOfObjectives(); i++) {
+			distance += Math.pow(getObjective(i) - otherSolution.getObjective(i), 2.0);
+		}
+
+		return Math.sqrt(distance);
+	}
 
 }
