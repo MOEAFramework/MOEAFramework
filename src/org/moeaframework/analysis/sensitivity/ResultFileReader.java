@@ -28,10 +28,10 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.Base64;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import org.apache.commons.codec.binary.Base64;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
@@ -329,7 +329,7 @@ Iterable<ResultEntry> {
 		ObjectInputStream ois = null;
 		
 		try {
-			byte[] encoding = Base64.decodeBase64(string);
+			byte[] encoding = Base64.getDecoder().decode(string);
 			ByteArrayInputStream baos = new ByteArrayInputStream(encoding);
 			ois = new ObjectInputStream(baos);
 			
