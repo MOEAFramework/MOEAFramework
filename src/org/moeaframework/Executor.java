@@ -789,11 +789,11 @@ public class Executor extends ProblemBuilder {
 					problem = new DistributedProblem(problem, executor);
 				}
 				
+				properties.clearAccessedProperties();
+				
 				NondominatedPopulation result = newArchive();
 				
-				try {
-					properties.clearAccessedProperties();
-					
+				try {					
 					if (algorithmFactory == null) {
 						algorithm = AlgorithmFactory.getInstance().getAlgorithm(
 								algorithmName, 
