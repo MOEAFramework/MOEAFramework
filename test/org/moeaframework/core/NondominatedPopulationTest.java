@@ -31,29 +31,6 @@ import org.moeaframework.problem.MockBinaryProblem;
 public class NondominatedPopulationTest {
 
 	/**
-	 * Tests the {@code distance} method to ensure it computes the Euclidean
-	 * distance between solutions correctly.
-	 */
-	@Test
-	public void testDistance() {
-		Solution s1 = new Solution(new double[] { 0.0, 1.0, 0.0 });
-		Solution s2 = new Solution(new double[] { 0.0, 0.0, -1.0 });
-
-		Assert.assertEquals(Math.sqrt(2.0),
-				NondominatedPopulation.distance(s1, s2),
-				Settings.EPS);
-		Assert.assertEquals(Math.sqrt(2.0),
-				NondominatedPopulation.distance(s2, s1),
-				Settings.EPS);
-		Assert.assertEquals(0.0,
-				NondominatedPopulation.distance(s1, s1),
-				Settings.EPS);
-		Assert.assertEquals(0.0,
-				NondominatedPopulation.distance(s2, s2),
-				Settings.EPS);
-	}
-
-	/**
 	 * Tests that a {@code NonDominatedPopulation} rejects adding nearly
 	 * identical solutions.
 	 */
