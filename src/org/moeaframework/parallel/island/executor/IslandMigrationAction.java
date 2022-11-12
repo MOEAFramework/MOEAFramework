@@ -1,4 +1,4 @@
-package org.moeaframework.parallel.island.migration;
+package org.moeaframework.parallel.island.executor;
 
 import java.util.List;
 import org.moeaframework.algorithm.PeriodicAction;
@@ -8,7 +8,7 @@ import org.moeaframework.parallel.island.IslandModel;
 /**
  * A periodic action that triggers island migrations.
  */
-public class IslandMigrationAction extends PeriodicAction {
+class IslandMigrationAction extends PeriodicAction {
 
 	/**
 	 * The island associated with this migration action.

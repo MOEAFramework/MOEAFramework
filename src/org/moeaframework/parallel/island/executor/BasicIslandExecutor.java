@@ -12,7 +12,6 @@ import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.parallel.island.Island;
 import org.moeaframework.parallel.island.IslandModel;
-import org.moeaframework.parallel.island.migration.IslandMigrationAction;
 
 /**
  * Executes an island model using an {@see ExecutorService}.

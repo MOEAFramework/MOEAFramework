@@ -52,7 +52,7 @@ import org.moeaframework.util.io.FileUtils;
  * defined within the MOEA Framework as well as compatible external problems.
  * See {@link ExternalProblem} for details on developing an external problem.
  * <p>
- * Usage: {@code java -cp "..." org.moeaframework.analysis.sensitivity.ResultFileEvaluator <options>}
+ * Usage: {@code java -cp "..." org.moeaframework.analysis.tools.Solve <options>}
  * 
  * <table>
  *   <caption style="text-align: left">Arguments:</caption>
