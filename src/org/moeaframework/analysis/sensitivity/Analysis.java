@@ -169,12 +169,9 @@ public class Analysis extends CommandLineUtility {
 	 * @throws IOException if an I/O error occurred
 	 */
 	private double[][] loadMetrics(File file) throws IOException {
-		MetricFileReader reader = null;
 		List<double[]> metricList = new ArrayList<double[]>();
 		
-		try {
-			reader = new MetricFileReader(file);
-			
+		try (MetricFileReader reader = new MetricFileReader(file)) {
 			while (reader.hasNext()) {
 				double[] metrics = reader.next();
 				
@@ -186,10 +183,6 @@ public class Analysis extends CommandLineUtility {
 				}
 				
 				metricList.add(metrics);
-			}
-		} finally {
-			if (reader != null) {
-				reader.close();
 			}
 		}
 		
@@ -204,18 +197,11 @@ public class Analysis extends CommandLineUtility {
 	 * @throws IOException if an I/O error occurred
 	 */
 	private double[][] loadParameters(File file) throws IOException {
-		SampleReader reader = null;
 		List<double[]> parameterList = new ArrayList<double[]>();
 		
-		try {
-			reader = new SampleReader(file, parameterFile);
-			
+		try (SampleReader reader = new SampleReader(file, parameterFile)) {
 			while (reader.hasNext()) {
 				parameterList.add(toArray(reader.next()));
-			}
-		} finally {
-			if (reader != null) {
-				reader.close();
 			}
 		}
 		

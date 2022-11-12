@@ -117,7 +117,6 @@ public class ResultFileMerger extends CommandLineUtility {
 	public void run(CommandLine commandLine) throws Exception {
 		Problem problem = null;
 		NondominatedPopulation mergedSet = null;
-		ResultFileReader reader = null;
 
 		// setup the merged non-dominated population
 		if (commandLine.hasOption("epsilon")) {
@@ -141,15 +140,9 @@ public class ResultFileMerger extends CommandLineUtility {
 
 			// read in result files
 			for (String filename : commandLine.getArgs()) {
-				try {
-					reader = new ResultFileReader(problem, new File(filename));
-
+				try (ResultFileReader reader = new ResultFileReader(problem, new File(filename))) {
 					while (reader.hasNext()) {
 						mergedSet.addAll(reader.next().getPopulation());
-					}
-				} finally {
-					if (reader != null) {
-						reader.close();
 					}
 				}
 			}
@@ -157,20 +150,12 @@ public class ResultFileMerger extends CommandLineUtility {
 			File output = new File(commandLine.getOptionValue("output"));
 
 			// output merged set
-			if (commandLine.hasOption("resultFile")) {
-				ResultFileWriter writer = null;
-				
+			if (commandLine.hasOption("resultFile")) {			
 				//delete the file to avoid appending
 				FileUtils.delete(output);
 				
-				try {
-					writer = new ResultFileWriter(problem, output);
-					
+				try (ResultFileWriter writer = new ResultFileWriter(problem, output)) {
 					writer.append(new ResultEntry(mergedSet));
-				} finally {
-					if (writer != null) {
-						writer.close();
-					}
 				}
 			} else {
 				PopulationIO.writeObjectives(output, mergedSet);

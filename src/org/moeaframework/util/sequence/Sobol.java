@@ -74,12 +74,8 @@ public class Sobol implements Sequence {
 	 * from Kuo and Joe's site.
 	 */
 	private static void loadDirectionNumbers() throws IOException {
-		BufferedReader reader = null;
-
-		try {
-			reader = new BufferedReader(new InputStreamReader(
-					Sobol.class.getResourceAsStream(DIRECTIONS_RESOURCE)));
-
+		try (BufferedReader reader = new BufferedReader(new InputStreamReader(
+					Sobol.class.getResourceAsStream(DIRECTIONS_RESOURCE)))) {
 			List<int[]> directions = new ArrayList<int[]>();
 
 			String line = reader.readLine(); // remove header line
@@ -100,10 +96,6 @@ public class Sobol implements Sequence {
 			}
 
 			Sobol.DIRECTIONS = directions.toArray(new int[0][0]);
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
 		}
 	}
 

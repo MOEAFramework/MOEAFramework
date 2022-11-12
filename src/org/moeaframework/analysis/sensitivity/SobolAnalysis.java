@@ -110,11 +110,7 @@ public class SobolAnalysis extends CommandLineUtility {
 	 * @throws IOException if an I/O error occurred
 	 */
 	private void load(File file) throws IOException {
-		MatrixReader reader = null;
-		
-		try {
-			reader = new MatrixReader(file);
-
+		try (MatrixReader reader = new MatrixReader(file)) {
 			A = new double[N];
 			B = new double[N];
 			C_A = new double[N][P];
@@ -132,10 +128,6 @@ public class SobolAnalysis extends CommandLineUtility {
 				}
 
 				B[i] = reader.next()[index];
-			}
-		} finally {
-			if (reader != null) {
-				reader.close();
 			}
 		}
 	}
@@ -565,10 +557,7 @@ public class SobolAnalysis extends CommandLineUtility {
 	 * @throws IOException
 	 */
 	private int validate(File file) throws IOException {
-		MatrixReader reader = null;
-		
-		try {
-			reader = new MatrixReader(file);
+		try (MatrixReader reader = new MatrixReader(file)) {
 			int count = 0;
 
 			while (reader.hasNext()) {
@@ -584,10 +573,6 @@ public class SobolAnalysis extends CommandLineUtility {
 			}
 
 			return count / (2 * P + 2);
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
 		}
 	}
 

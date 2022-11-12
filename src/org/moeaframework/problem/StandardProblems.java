@@ -1031,17 +1031,13 @@ public class StandardProblems extends ProblemProvider {
 			return new NondominatedPopulation(PopulationIO.readObjectives(
 					file));
 		} else {
-			InputStream input = getClass().getResourceAsStream("/" + resource);
-			
-			if (input == null) {
-				throw new FileNotFoundException(resource);
-			} else {
-				try {
+			try (InputStream input = getClass().getResourceAsStream("/" + resource)) {
+				if (input == null) {
+					throw new FileNotFoundException(resource);
+				} else {
 					return new NondominatedPopulation(
 							PopulationIO.readObjectives(new CommentedLineReader(
 									new InputStreamReader(input))));
-				} finally {
-					input.close();
 				}
 			}
 		}

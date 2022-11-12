@@ -575,20 +575,13 @@ public class Analyzer extends ProblemBuilder {
 	 */
 	public Analyzer loadAs(String name, File resultFile) throws IOException {
 		Problem problem = null;
-		ResultFileReader reader = null;
 		
 		try {
 			problem = getProblemInstance();
 
-			try {
-				reader = new ResultFileReader(problem, resultFile);
-						
+			try (ResultFileReader reader = new ResultFileReader(problem, resultFile)) {	
 				while (reader.hasNext()) {
 					add(name, reader.next().getPopulation());
-				}
-			} finally {
-				if (reader != null) {
-					reader.close();
 				}
 			}
 		} finally {
@@ -612,7 +605,6 @@ public class Analyzer extends ProblemBuilder {
 	 */
 	public Analyzer saveAs(String name, File resultFile) throws IOException {
 		Problem problem = null;
-		ResultFileWriter writer = null;
 		
 		try {
 			problem = getProblemInstance();
@@ -620,19 +612,13 @@ public class Analyzer extends ProblemBuilder {
 			//delete the file to avoid appending
 			FileUtils.delete(resultFile);
 
-			try {
-				writer = new ResultFileWriter(problem, resultFile);
-				
+			try (ResultFileWriter writer = new ResultFileWriter(problem, resultFile)) {
 				if (name == null) {
 					writer.append(new ResultEntry(getReferenceSet()));
 				} else {
 					for (NondominatedPopulation result : data.get(name)) {
 						writer.append(new ResultEntry(result));
 					}
-				}
-			} finally {
-				if (writer != null) {
-					writer.close();
 				}
 			}
 		} finally {
@@ -653,17 +639,9 @@ public class Analyzer extends ProblemBuilder {
 	 * @throws IOException if an I/O error occurred
 	 */
 	public Analyzer saveAnalysis(File file) throws IOException {
-		PrintStream ps = null;
-		
-		try {
-			ps = new PrintStream(new BufferedOutputStream(new FileOutputStream(
-					file)));
-			
+		try (PrintStream ps = new PrintStream(new BufferedOutputStream(
+				new FileOutputStream(file)))) {
 			printAnalysis(ps);
-		} finally {
-			if (ps != null) {
-				ps.close();
-			}
 		}
 		
 		return this;

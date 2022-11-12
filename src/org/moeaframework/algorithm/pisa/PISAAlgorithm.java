@@ -145,23 +145,16 @@ public class PISAAlgorithm extends AbstractAlgorithm {
 		
 		//write the configuration file if one is not specified
 		if (configuration == null) {
-			PrintWriter writer = null;
 			configuration = new File(filePrefix + "par").getCanonicalPath();
 
-			try {
-				writer = new PrintWriter(new BufferedWriter(new FileWriter(
-						configuration)));
-				
+			try (PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(
+						configuration)))) {
 				for (String parameter : Settings.getPISAParameters(name)) {
 					writer.print(parameter);
 					writer.print(' ');
 					writer.println(properties.getString(parameter,
 							Settings.getPISAParameterDefaultValue(name,
 									parameter)));
-				}
-			} finally {
-				if (writer != null) {
-					writer.close();
 				}
 			}
 		}
@@ -278,15 +271,8 @@ public class PISAAlgorithm extends AbstractAlgorithm {
 	 * @throws IOException if an I/O error occurred
 	 */
 	private void clearFile(File file) throws IOException {
-		PrintWriter writer = null;
-
-		try {
-			writer = new PrintWriter(new BufferedWriter(new FileWriter(file)));
+		try (PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(file)))) {
 			writer.println('0');
-		} finally {
-			if (writer != null) {
-				writer.close();
-			}
 		}
 	}
 
@@ -426,11 +412,9 @@ public class PISAAlgorithm extends AbstractAlgorithm {
 	 * @throws IOException if an I/O error occurred
 	 */
 	private int[] readList(File file) throws IOException {
-		BufferedReader reader = null;
 		String line = null;
 
-		try {
-			reader = new BufferedReader(new FileReader(file));
+		try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
 			line = reader.readLine();
 
 			if (line == null) {
@@ -456,10 +440,6 @@ public class PISAAlgorithm extends AbstractAlgorithm {
 			}
 
 			return result;
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
 		}
 	}
 
@@ -472,11 +452,7 @@ public class PISAAlgorithm extends AbstractAlgorithm {
 	 * @throws IOException if an I/O error occurred
 	 */
 	private void writePopulation(File file, int[] ids) throws IOException {
-		PrintWriter writer = null;
-
-		try {
-			writer = new PrintWriter(new BufferedWriter(new FileWriter(file)));
-
+		try (PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(file)))) {
 			writer.println(ids.length * (problem.getNumberOfObjectives() + 1));
 
 			for (int i = 0; i < ids.length; i++) {
@@ -491,10 +467,6 @@ public class PISAAlgorithm extends AbstractAlgorithm {
 			}
 
 			writer.println("END");
-		} finally {
-			if (writer != null) {
-				writer.close();
-			}
 		}
 	}
 
@@ -511,12 +483,8 @@ public class PISAAlgorithm extends AbstractAlgorithm {
 		FileUtils.delete(new File(filePrefix + "sel"));
 		FileUtils.delete(new File(filePrefix + "sta"));
 
-		PrintWriter writer = null;
-
-		try {
-			writer = new PrintWriter(new BufferedWriter(new FileWriter(
-					new File(filePrefix + "cfg"))));
-
+		try (PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(
+					new File(filePrefix + "cfg"))))) {
 			writer.print("alpha ");
 			writer.println(alpha);
 			writer.print("mu ");
@@ -525,10 +493,6 @@ public class PISAAlgorithm extends AbstractAlgorithm {
 			writer.println(lambda);
 			writer.print("dim ");
 			writer.print(problem.getNumberOfObjectives());
-		} finally {
-			if (writer != null) {
-				writer.close();
-			}
 		}
 	}
 

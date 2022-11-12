@@ -80,20 +80,13 @@ public class SolveTest {
 	
 	private void checkOutput(File outputFile) throws IOException {
 		int count = 0;
-		ResultFileReader reader = null;
 		
-		try {
-			reader = new ResultFileReader(
+		try (ResultFileReader reader = new ResultFileReader(
 					ProblemFactory.getInstance().getProblem("DTLZ2_2"),
-					outputFile);
-		
+					outputFile)) {
 			while (reader.hasNext()) {
 				Assert.assertTrue(reader.next().getPopulation().size() > 0);
 				count++;
-			}
-		} finally {
-			if (reader != null) {
-				reader.close();
 			}
 		}
 		

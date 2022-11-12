@@ -109,11 +109,6 @@ public class DetailedEvaluator extends CommandLineUtility {
 	protected OutputWriter output;
 
 	/**
-	 * The sample reader from which input parameters are read.
-	 */
-	protected SampleReader input;
-
-	/**
 	 * Constructs the command line utility for evaluating an algorithm using
 	 * many parameterizations.
 	 */
@@ -198,8 +193,7 @@ public class DetailedEvaluator extends CommandLineUtility {
 		try {
 			problem = ProblemFactory.getInstance().getProblem(commandLine.getOptionValue("problem"));
 
-			try {
-				input = new SampleReader(new FileReader(inputFile), parameterFile);
+			try (SampleReader input = new SampleReader(new FileReader(inputFile), parameterFile)) {
 				int count = 1;
 
 				while (input.hasNext()) {
@@ -251,10 +245,6 @@ public class DetailedEvaluator extends CommandLineUtility {
 					}
 					
 					count++;
-				}
-			} finally {
-				if (input != null) {
-					input.close();
 				}
 			}
 		} finally {

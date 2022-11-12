@@ -324,20 +324,12 @@ Iterable<ResultEntry> {
 	 * @throws ClassNotFoundException if the class of the deserialized variable
 	 *         could not be found
 	 */
-	private Variable deserialize(String string) throws IOException, 
-	ClassNotFoundException {
-		ObjectInputStream ois = null;
+	private Variable deserialize(String string) throws IOException, ClassNotFoundException {
+		byte[] encoding = Base64.getDecoder().decode(string);
 		
-		try {
-			byte[] encoding = Base64.getDecoder().decode(string);
-			ByteArrayInputStream baos = new ByteArrayInputStream(encoding);
-			ois = new ObjectInputStream(baos);
-			
+		try (ByteArrayInputStream baos = new ByteArrayInputStream(encoding);
+				ObjectInputStream ois = new ObjectInputStream(baos)) {
 			return (Variable)ois.readObject();
-		} finally {
-			if (ois != null) {
-				ois.close();
-			}
 		}
 	}
 

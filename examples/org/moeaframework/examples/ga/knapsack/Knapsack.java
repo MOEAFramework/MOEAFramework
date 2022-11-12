@@ -115,12 +115,10 @@ public class Knapsack implements Problem {
 		Pattern weightLine = Pattern.compile("  weight: \\+(\\d+)");
 		Pattern profitLine = Pattern.compile("  profit: \\+(\\d+)");
 
-		CommentedLineReader lineReader = null;
 		String line = null;
 		Matcher matcher = null;
 		
-		try {
-			lineReader = new CommentedLineReader(reader);
+		try (CommentedLineReader lineReader = new CommentedLineReader(reader)) {
 			line = lineReader.readLine(); // the problem specification line
 			matcher = specificationLine.matcher(line);
 			
@@ -167,10 +165,6 @@ public class Knapsack implements Problem {
 						throw new IOException("knapsack data file not properly formatted: invalid profit line");
 					}
 				}
-			}
-		} finally {
-			if (lineReader != null) {
-				lineReader.close();
 			}
 		}
 	}

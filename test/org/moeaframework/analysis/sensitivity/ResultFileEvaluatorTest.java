@@ -56,20 +56,12 @@ public class ResultFileEvaluatorTest {
 			"--input", input.getAbsolutePath(),
 			"--output", output.getAbsolutePath()});
 		
-		MetricFileReader reader = null;
-		
-		try {
-			reader = new MetricFileReader(output);
-			
+		try (MetricFileReader reader = new MetricFileReader(output)) {
 			Assert.assertTrue(reader.hasNext());
 			Assert.assertNotNull(reader.next());
 			Assert.assertTrue(reader.hasNext());
 			Assert.assertNotNull(reader.next());
 			Assert.assertFalse(reader.hasNext());
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
 		}
 	}
 	
@@ -84,16 +76,8 @@ public class ResultFileEvaluatorTest {
 			"--input", input.getAbsolutePath(),
 			"--output", output.getAbsolutePath()});
 		
-		MetricFileReader reader = null;
-		
-		try {
-			reader = new MetricFileReader(output);
-			
+		try (MetricFileReader reader = new MetricFileReader(output)) {
 			Assert.assertFalse(reader.hasNext());
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
 		}
 	}
 	

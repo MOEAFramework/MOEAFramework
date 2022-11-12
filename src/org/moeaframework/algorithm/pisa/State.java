@@ -65,20 +65,13 @@ public class State {
 	 * @throws IOException if an I/O error occurred
 	 */
 	public int get() throws IOException {
-		BufferedReader reader = null;
-
-		try {
-			reader = new BufferedReader(new FileReader(file));
+		try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
 			String line = reader.readLine();
 
 			if (line == null) {
 				return -1;
 			} else {
 				return Integer.parseInt(line);
-			}
-		} finally {
-			if (reader != null) {
-				reader.close();
 			}
 		}
 	}
@@ -92,12 +85,10 @@ public class State {
 	 *         interrupted
 	 */
 	public void set(int state) throws IOException, InterruptedException {
-		PrintWriter writer = null;
 		int retriesRemaining = numberOfRetries;
 
 		while (true) {
-			try {
-				writer = new PrintWriter(new FileWriter(file));
+			try (PrintWriter writer = new PrintWriter(new FileWriter(file))) {
 				writer.print(state);
 				break;
 			} catch (IOException e) {
@@ -105,10 +96,6 @@ public class State {
 				
 				if (retriesRemaining <= 0) {
 					throw e;
-				}
-			} finally {
-				if (writer != null) {
-					writer.close();
 				}
 			}
 			

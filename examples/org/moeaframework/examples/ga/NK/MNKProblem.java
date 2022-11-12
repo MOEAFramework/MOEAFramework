@@ -218,11 +218,7 @@ public class MNKProblem implements Problem {
 	 *         invalid
 	 */
 	private void load(File file) throws IOException {
-		BufferedReader reader = null;
-
-		try {
-			reader = new BufferedReader(new FileReader(file));
-			
+		try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
 			// read M, N, and K
 			String line = reader.readLine();
 			String[] tokens = line.split("\\s+");
@@ -260,10 +256,6 @@ public class MNKProblem implements Problem {
 					}
 				}
 			}
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
 		}
 	}
 	
@@ -274,11 +266,7 @@ public class MNKProblem implements Problem {
 	 * @throws IOException if an I/O error occurred while saving the file
 	 */
 	public void save(File file) throws IOException {
-		PrintWriter writer = null;
-		
-		try {
-			writer = new PrintWriter(new FileWriter(file));
-			
+		try (PrintWriter writer = new PrintWriter(new FileWriter(file))) {		
 			if (M > 1) {
 				writer.print(M);
 				writer.print(" ");
@@ -305,10 +293,6 @@ public class MNKProblem implements Problem {
 			}
 			
 			writer.println("Optimum: ?");
-		} finally {
-			if (writer != null) {
-				writer.close();
-			}
 		}
 	}
 	

@@ -125,31 +125,18 @@ public class ResultFileWriterTest {
 	@Test
 	public void testSpecialCharactersInProperties() throws IOException {
 		File file = TestUtils.createTempFile();
-
-		ResultFileWriter writer = null;
-		ResultFileReader reader = null;
 		
 		NondominatedPopulation population = new NondominatedPopulation();
 
 		TypedProperties properties = new TypedProperties();
 		properties.setString("\"'!@#$=:%^&*()\\\r\n//\t ", "\"'!@#$=:%^&*()\\\r\n//\t ");
 		
-		try {
-			writer = new ResultFileWriter(problem, file);
+		try (ResultFileWriter writer = new ResultFileWriter(problem, file)) {
 			writer.append(new ResultEntry(population, properties));
-		} finally {
-			if (writer != null) {
-				writer.close();
-			}
 		}
 		
-		try {
-			reader = new ResultFileReader(problem, file);
+		try (ResultFileReader reader = new ResultFileReader(problem, file)) {
 			Assert.assertEquals(properties, reader.next().getProperties());
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
 		}
 	}
 	
@@ -161,29 +148,16 @@ public class ResultFileWriterTest {
 	@Test
 	public void testNullProperties() throws IOException {
 		File file = TestUtils.createTempFile();
-
-		ResultFileWriter writer = null;
-		ResultFileReader reader = null;
 		
 		NondominatedPopulation population = new NondominatedPopulation();
 		TypedProperties properties = new TypedProperties();
 		
-		try {
-			writer = new ResultFileWriter(problem, file);
+		try (ResultFileWriter writer = new ResultFileWriter(problem, file)) {
 			writer.append(new ResultEntry(population, (TypedProperties)null));
-		} finally {
-			if (writer != null) {
-				writer.close();
-			}
 		}
 		
-		try {
-			reader = new ResultFileReader(problem, file);
+		try (ResultFileReader reader = new ResultFileReader(problem, file)) {
 			Assert.assertEquals(properties, reader.next().getProperties());
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
 		}
 	}
 	
@@ -195,29 +169,16 @@ public class ResultFileWriterTest {
 	@Test
 	public void testEmptyProperties() throws IOException {
 		File file = TestUtils.createTempFile();
-
-		ResultFileWriter writer = null;
-		ResultFileReader reader = null;
 		
 		NondominatedPopulation population = new NondominatedPopulation();
 		TypedProperties properties = new TypedProperties();
 		
-		try {
-			writer = new ResultFileWriter(problem, file);
+		try (ResultFileWriter writer = new ResultFileWriter(problem, file)) {
 			writer.append(new ResultEntry(population, properties));
-		} finally {
-			if (writer != null) {
-				writer.close();
-			}
 		}
 		
-		try {
-			reader = new ResultFileReader(problem, file);
+		try (ResultFileReader reader = new ResultFileReader(problem, file)) {
 			Assert.assertEquals(properties, reader.next().getProperties());
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
 		}
 	}
 	
@@ -230,9 +191,6 @@ public class ResultFileWriterTest {
 	public void testNormal() throws IOException {
 		File file = TestUtils.createTempFile();
 
-		ResultFileWriter writer = null;
-		ResultFileReader reader = null;
-		
 		NondominatedPopulation population = new NondominatedPopulation();
 		population.add(solution1);
 		population.add(solution2);
@@ -240,24 +198,14 @@ public class ResultFileWriterTest {
 		TypedProperties properties = new TypedProperties();
 		properties.setString("foo", "bar");
 		
-		try {
-			writer = new ResultFileWriter(problem, file);
+		try (ResultFileWriter writer = new ResultFileWriter(problem, file)) {
 			writer.append(new ResultEntry(population, properties));
-		} finally {
-			if (writer != null) {
-				writer.close();
-			}
 		}
 		
-		try {
-			reader = new ResultFileReader(problem, file);
+		try (ResultFileReader reader = new ResultFileReader(problem, file)) {
 			ResultEntry entry = reader.next();
 			TestUtils.assertEquals(population, entry.getPopulation());
 			Assert.assertEquals(properties, entry.getProperties());
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
 		}
 	}
 	
@@ -271,9 +219,6 @@ public class ResultFileWriterTest {
 	public void testNoVariables() throws IOException {
 		File file = TestUtils.createTempFile();
 
-		ResultFileWriter writer = null;
-		ResultFileReader reader = null;
-		
 		NondominatedPopulation population = new NondominatedPopulation();
 		population.add(solution1);
 		population.add(solution2);
@@ -281,28 +226,18 @@ public class ResultFileWriterTest {
 		TypedProperties properties = new TypedProperties();
 		properties.setString("foo", "bar");
 		
-		try {
-			writer = new ResultFileWriter(problem, file, false);
+		try (ResultFileWriter writer = new ResultFileWriter(problem, file, false)) {
 			writer.append(new ResultEntry(population, properties));
-		} finally {
-			if (writer != null) {
-				writer.close();
-			}
 		}
 		
 		population.clear();
 		population.add(new Solution(solution1.getObjectives()));
 		population.add(new Solution(solution2.getObjectives()));
 		
-		try {
-			reader = new ResultFileReader(problem, file);
+		try (ResultFileReader reader = new ResultFileReader(problem, file)) {
 			ResultEntry entry = reader.next();
 			TestUtils.assertEquals(population, entry.getPopulation());
 			Assert.assertEquals(properties, entry.getProperties());
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
 		}
 	}
 	
@@ -316,33 +251,20 @@ public class ResultFileWriterTest {
 	public void testConstrainedSolution() throws IOException {
 		File file = TestUtils.createTempFile();
 
-		ResultFileWriter writer = null;
-		ResultFileReader reader = null;
-		
 		NondominatedPopulation population = new NondominatedPopulation();
 		population.add(solution3);
 		
 		TypedProperties properties = new TypedProperties();
 		properties.setString("foo", "bar");
 		
-		try {
-			writer = new ResultFileWriter(problem, file);
+		try (ResultFileWriter writer = new ResultFileWriter(problem, file)) {
 			writer.append(new ResultEntry(population, properties));
-		} finally {
-			if (writer != null) {
-				writer.close();
-			}
 		}
 		
-		try {
-			reader = new ResultFileReader(problem, file);
+		try (ResultFileReader reader = new ResultFileReader(problem, file)) {
 			ResultEntry entry = reader.next();
 			Assert.assertEquals(0, entry.getPopulation().size());
 			Assert.assertEquals(properties, entry.getProperties());
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
 		}
 	}
 
@@ -356,9 +278,6 @@ public class ResultFileWriterTest {
 	public void testResume() throws IOException {
 		File file = TestUtils.createTempFile();
 
-		ResultFileWriter writer = null;
-		ResultFileReader reader = null;
-
 		NondominatedPopulation population = new NondominatedPopulation();
 		population.add(solution1);
 		population.add(solution2);
@@ -366,31 +285,20 @@ public class ResultFileWriterTest {
 		TypedProperties properties = new TypedProperties();
 		properties.setString("foo", "bar");
 
-		try {
-			writer = new ResultFileWriter(problem, file);
+		try (ResultFileWriter writer = new ResultFileWriter(problem, file)) {
 			Assert.assertEquals(0, writer.getNumberOfEntries());
 			writer.append(new ResultEntry(population, properties));
 			writer.append(new ResultEntry(population, properties));
 			Assert.assertEquals(2, writer.getNumberOfEntries());
-		} finally {
-			if (writer != null) {
-				writer.close();
-			}
 		}
 
-		try {
-			writer = new ResultFileWriter(problem, file);
+		try (ResultFileWriter writer = new ResultFileWriter(problem, file)) {
 			Assert.assertEquals(2, writer.getNumberOfEntries());
 			writer.append(new ResultEntry(population, properties));
 			Assert.assertEquals(3, writer.getNumberOfEntries());
-		} finally {
-			if (writer != null) {
-				writer.close();
-			}
 		}
 
-		try {
-			reader = new ResultFileReader(problem, file);
+		try (ResultFileReader reader = new ResultFileReader(problem, file)) {
 			ResultEntry entry = null;
 
 			Assert.assertTrue(reader.hasNext());
@@ -409,10 +317,6 @@ public class ResultFileWriterTest {
 			Assert.assertEquals(properties, entry.getProperties());
 			
 			Assert.assertFalse(reader.hasNext());
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
 		}
 	}
 	
@@ -453,9 +357,6 @@ public class ResultFileWriterTest {
 			
 		};
 
-		ResultFileWriter writer = null;
-		ResultFileReader reader = null;
-		
 		NondominatedPopulation population = new NondominatedPopulation();
 		
 		Solution solution = problem.newSolution();
@@ -463,38 +364,25 @@ public class ResultFileWriterTest {
 		solution.setObjectives(new double[] { 0.0, 1.0 });
 		population.add(solution);
 		
-		try {
-			writer = new ResultFileWriter(problem, file);
+		try (ResultFileWriter writer = new ResultFileWriter(problem, file)) {
 			writer.append(new ResultEntry(population, null));
-		} finally {
-			if (writer != null) {
-				writer.close();
-			}
 		}
 		
-		try {
-			reader = new ResultFileReader(problem, file);
+		try (ResultFileReader reader = new ResultFileReader(problem, file)) {
 			ResultEntry entry = reader.next();
 			Assert.assertEquals(1, entry.getPopulation().size());
 			Assert.assertArrayEquals(solution.getObjectives(), 
 					entry.getPopulation().get(0).getObjectives(), Settings.EPS);
 			Assert.assertEquals(solution.getVariable(0), 
 					entry.getPopulation().get(0).getVariable(0));
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
 		}
 	}
 	
 	@Test
 	public void testEncode() throws IOException {
 		File file = TestUtils.createTempFile();
-		ResultFileWriter writer = null;
 		
-		try {
-			writer = new ResultFileWriter(problem, file);
-			
+		try (ResultFileWriter writer = new ResultFileWriter(problem, file)) {
 			RealVariable rv = new RealVariable(0.5, 0.0, 1.0);
 			Assert.assertEquals("0.5", writer.encode(rv));
 			Assert.assertFalse(writer.encode(rv).matches(".*\\s.*"));
@@ -511,10 +399,6 @@ public class ResultFileWriterTest {
 			Grammar g = new Grammar(5);
 			//Assert.assertEquals("-", writer.encode(g));
 			Assert.assertFalse(writer.encode(g).matches(".*\\s.*"));
-		} finally {
-			if (writer != null) {
-				writer.close();
-			}
 		}
 	}
 	

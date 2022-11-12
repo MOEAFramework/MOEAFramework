@@ -453,20 +453,14 @@ public class Hypervolume extends NormalizedIndicator {
 		Process process = new ProcessBuilder(
 				Settings.parseCommand(command)).start();
 		RedirectStream.redirect(process.getErrorStream(), System.err);
-		BufferedReader reader = null;
 		String lastLine = null;
 
-		try {
-			reader = new BufferedReader(new InputStreamReader(process
-					.getInputStream()));
+		try (BufferedReader reader = new BufferedReader(new InputStreamReader(
+				process.getInputStream()))) {
 			String line = null;
 
 			while ((line = reader.readLine()) != null) {
 				lastLine = line;
-			}
-		} finally {
-			if (reader != null) {
-				reader.close();
 			}
 		}
 
