@@ -14,7 +14,7 @@ import java.io.PrintStream;
  */
 class OutputLogger implements Closeable {
 	
-	private PrintStream writer;
+	private final PrintStream writer;
 	
 	public OutputLogger() {
 		this((PrintStream)null);
