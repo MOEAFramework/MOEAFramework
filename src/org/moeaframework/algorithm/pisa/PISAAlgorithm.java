@@ -369,11 +369,6 @@ public class PISAAlgorithm extends AbstractAlgorithm {
 			throw new IOException("invalid selection length");
 		}
 
-		//if (archivedIds.length != alpha) {
-		//	System.out.println(archivedIds.length + " " + alpha);
-		//	throw new IOException("invalid archive length");
-		//}
-
 		updatePopulation(archivedIds);
 		clearFile(new File(filePrefix + "sel"));
 		clearFile(new File(filePrefix + "arc"));

@@ -19,8 +19,6 @@ package org.moeaframework.analysis.sensitivity;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintStream;
-
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.OptionGroup;
@@ -44,6 +42,7 @@ import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.util.CommandLineUtility;
 import org.moeaframework.util.OptionCompleter;
 import org.moeaframework.util.TypedProperties;
+import org.moeaframework.util.io.OutputLogger;
 
 /**
  * Command line utility for extracting data from a result file.  The data that
@@ -192,9 +191,6 @@ public class ExtractData extends CommandLineUtility {
 		String[] fields = commandLine.getArgs();
 
 		// indicators are prepared, run the data extraction routine
-		ResultFileReader input = null;
-		PrintStream output = null;
-
 		try {
 			// setup the problem
 			if (commandLine.hasOption("problem")) {
@@ -205,60 +201,46 @@ public class ExtractData extends CommandLineUtility {
 						.getOptionValue("dimension")));
 			}
 			
-			try {
-				input = new ResultFileReader(problem, new File(commandLine
-						.getOptionValue("input")));
-
-				try {
-					output = commandLine.hasOption("output") ? new PrintStream(
-							new File(commandLine.getOptionValue("output"))) :
-								System.out;
-
-					// optionally print header line
-					if (!commandLine.hasOption("noheader")) {
-						output.print('#');
+			try (ResultFileReader input = new ResultFileReader(problem,
+						new File(commandLine.getOptionValue("input")));
+				 OutputLogger output = new OutputLogger(commandLine.hasOption("output") ?
+						new File(commandLine.getOptionValue("output")) : null)) {
+				// optionally print header line
+				if (!commandLine.hasOption("noheader")) {
+					output.print('#');
 						
-						for (int i = 0; i < fields.length; i++) {
-							if (i > 0) {
-								output.print(separator);
-							}
-
-							output.print(fields[i]);
+					for (int i = 0; i < fields.length; i++) {
+						if (i > 0) {
+							output.print(separator);
 						}
 
-						output.println();
+						output.print(fields[i]);
 					}
 
-					// process entries
-					while (input.hasNext()) {
-						ResultEntry entry = input.next();
-						TypedProperties properties = entry.getProperties();
-
-						for (int i = 0; i < fields.length; i++) {
-							if (i > 0) {
-								output.print(separator);
-							}
-
-							if (properties.contains(fields[i])) {
-								output.print(properties.getString(fields[i], null));
-							} else if (fields[i].startsWith("+")) {
-								output.print(evaluate(fields[i].substring(1),
-										entry, commandLine));
-							} else {
-								throw new FrameworkException("missing field");
-							}
-						}
-
-						output.println();
-					}
-				} finally {
-					if ((output != null) && (output != System.out)) {
-						output.close();
-					}
+					output.println();
 				}
-			} finally {
-				if (input != null) {
-					input.close();
+
+				// process entries
+				while (input.hasNext()) {
+					ResultEntry entry = input.next();
+					TypedProperties properties = entry.getProperties();
+
+					for (int i = 0; i < fields.length; i++) {
+						if (i > 0) {
+							output.print(separator);
+						}
+
+						if (properties.contains(fields[i])) {
+							output.print(properties.getString(fields[i], null));
+						} else if (fields[i].startsWith("+")) {
+							output.print(evaluate(fields[i].substring(1),
+									entry, commandLine));
+						} else {
+							throw new FrameworkException("missing field");
+						}
+					}
+
+					output.println();
 				}
 			}
 		} finally {

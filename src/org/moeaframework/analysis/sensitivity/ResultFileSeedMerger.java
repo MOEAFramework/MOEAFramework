@@ -119,12 +119,8 @@ public class ResultFileSeedMerger extends CommandLineUtility {
 	 *         file
 	 * @throws IOException if an I/O error occurred
 	 */
-	private List<NondominatedPopulation> load(File file, Problem problem)
-			throws IOException {
-		ResultFileReader reader = null;
-
-		try {
-			reader = new ResultFileReader(problem, file);
+	private List<NondominatedPopulation> load(File file, Problem problem) throws IOException {
+		try (ResultFileReader reader = new ResultFileReader(problem, file)) {
 			List<NondominatedPopulation> data = 
 					new ArrayList<NondominatedPopulation>();
 
@@ -133,10 +129,6 @@ public class ResultFileSeedMerger extends CommandLineUtility {
 			}
 
 			return data;
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
 		}
 	}
 
@@ -145,7 +137,6 @@ public class ResultFileSeedMerger extends CommandLineUtility {
 		List<List<NondominatedPopulation>> entries = 
 				new ArrayList<List<NondominatedPopulation>>();
 		Problem problem = null;
-		ResultFileWriter writer = null;
 
 		try {
 			// setup the problem
@@ -181,9 +172,8 @@ public class ResultFileSeedMerger extends CommandLineUtility {
 			}
 
 			// process and output the merged sets
-			try {
-				writer = new ResultFileWriter(problem, new File(
-						commandLine.getOptionValue("output")));
+			try (ResultFileWriter writer = new ResultFileWriter(problem,
+					new File(commandLine.getOptionValue("output")))) {
 
 				for (int i = 0; i < numberOfEntries; i++) {
 					NondominatedPopulation mergedSet = null;
@@ -203,10 +193,6 @@ public class ResultFileSeedMerger extends CommandLineUtility {
 					}
 
 					writer.append(new ResultEntry(mergedSet));
-				}
-			} finally {
-				if (writer != null) {
-					writer.close();
 				}
 			}
 		} finally {

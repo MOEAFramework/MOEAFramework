@@ -18,8 +18,6 @@
 package org.moeaframework.analysis.sensitivity;
 
 import java.io.File;
-import java.io.PrintStream;
-
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.OptionGroup;
@@ -27,6 +25,7 @@ import org.apache.commons.cli.Options;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.util.CommandLineUtility;
+import org.moeaframework.util.io.OutputLogger;
 
 /**
  * Command line utility for counting the number of entries in a result file.
@@ -92,7 +91,6 @@ public class ResultFileInfo extends CommandLineUtility {
 	@Override
 	public void run(CommandLine commandLine) throws Exception {
 		Problem problem = null;
-		PrintStream output = null;
 
 		try {
 			// setup the problem
@@ -104,15 +102,8 @@ public class ResultFileInfo extends CommandLineUtility {
 						.getOptionValue("dimension")));
 			}
 
-			try {
-				// setup the output stream
-				if (commandLine.hasOption("output")) {
-					output = new PrintStream(new File(commandLine
-							.getOptionValue("output")));
-				} else {
-					output = System.out;
-				}
-
+			try (OutputLogger output = new OutputLogger(commandLine.hasOption("output") ?
+					new File(commandLine.getOptionValue("output")) : null)) {
 				// display info for all result files
 				for (String filename : commandLine.getArgs()) {
 					try (ResultFileReader reader = new ResultFileReader(problem, new File(filename))) {
@@ -125,10 +116,6 @@ public class ResultFileInfo extends CommandLineUtility {
 
 						output.println(filename + " " + count);
 					}
-				}
-			} finally {
-				if ((output != null) && (output != System.out)) {
-					output.close();
 				}
 			}
 		} finally {
