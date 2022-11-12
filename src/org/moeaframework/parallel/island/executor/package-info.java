@@ -17,9 +17,7 @@
  */
 
 /**
- * Utilities for building parallel algorithms, including thead-safe versions of
- * some classes.
- * 
- * @preview
+ * Executes an island model in some environment.  For example, single core,
+ * multi-threaded, multi-process, or across multiple machines.
  */
-package org.moeaframework.parallel.util;
+package org.moeaframework.parallel.island.executor;

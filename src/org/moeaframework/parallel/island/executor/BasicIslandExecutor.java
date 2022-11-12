@@ -1,7 +1,9 @@
 package org.moeaframework.parallel.island.executor;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
@@ -30,71 +32,50 @@ public class BasicIslandExecutor implements IslandExecutor {
 		
 		this.islands = model.getIslands();
 	}
-	
-	/**
-	 * Sums the number of function evaluations across all islands.
-	 * 
-	 * @return the total number of function evaluations
-	 */
-	public int getNumberOfEvaluations() {
-		synchronized (islands) {
-			int total = 0;
-			
-			for (Island island : islands) {
-				total += island.getAlgorithm().getNumberOfEvaluations();
-			}
-			
-			return total;
-		}
-	}
 
 	@Override
 	public NondominatedPopulation run(final int maxEvaluations) {
-		final int startingEvaluations = getNumberOfEvaluations();
-		List<IslandMigrationAction> migrationActions = new ArrayList<IslandMigrationAction>();
-		
-		//initialize the migration actions
-		synchronized (islands) {
-			for (Island island : islands) {
-				migrationActions.add(new IslandMigrationAction(island, model));
-			}
-		}
+		final int evaluationsPerIsland = maxEvaluations / islands.size();
 			
-		//execute each island
-		List<Future<?>> futures = new ArrayList<Future<?>>();
+		//start threads to process each island
+		List<Future<NondominatedPopulation>> futures = new ArrayList<Future<NondominatedPopulation>>();
 			
-		for (final IslandMigrationAction action : migrationActions) {
-			futures.add(executorService.submit(new Runnable() {
+		for (final Island island : islands) {
+			futures.add(executorService.submit(new Callable<NondominatedPopulation>() {
 
 				@Override
-				public void run() {
-					while (getNumberOfEvaluations() - startingEvaluations < maxEvaluations) {
+				public NondominatedPopulation call() {
+					IslandMigrationAction action = new IslandMigrationAction(island, model);
+					
+					while (action.getNumberOfEvaluations() < evaluationsPerIsland) {
 						action.step();
 					}
+					
+					return action.getResult();
 				}
 				
 			}));
 		}
 
-		//wait for all to complete
-		for (Future<?> future : futures) {
+		//wait for all to complete and aggregate the result
+		NondominatedPopulation result = new NondominatedPopulation();
+
+		for (Future<NondominatedPopulation> future : futures) {
 			try {
-				future.get();
+				result.addAll(future.get());
 			} catch (InterruptedException e) {
 				throw new FrameworkException("execution was interrupted", e);
 			} catch (ExecutionException e) {
 				throw new FrameworkException("execution failed", e);
 			}
 		}
-		
-		//aggregate the result
-		NondominatedPopulation result = new NondominatedPopulation();
-
-		for (IslandMigrationAction action : migrationActions) {
-			result.addAll(action.getResult());
-		}
 
 		return result;
+	}
+
+	@Override
+	public void close() throws IOException {
+		executorService.shutdown();
 	}
 
 }

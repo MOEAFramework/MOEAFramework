@@ -9,7 +9,7 @@ import org.apache.commons.math3.random.MersenneTwister;
  * generator (RNG).  Each thread is assigned a unique instance of the 
  * RNG with its own seed.  To use:
  * <pre>
- *     PRNG.setRandom(SynchronizedMersenneTwister.getInstance());
+ *     PRNG.setRandom(ThreadLocalMersenneTwister.getInstance());
  * </pre>
  * <p>
  * Note: Java also has the {@see java.util.concurrent.ThreadLocalRandom}
@@ -17,7 +17,7 @@ import org.apache.commons.math3.random.MersenneTwister;
  * The Mersenne Twister, however, has better characteristics
  * (extremely long period, high equidistribution, etc.).
  */
-public class SynchronizedMersenneTwister extends Random {
+public class ThreadLocalMersenneTwister extends Random {
 
 	private static final long serialVersionUID = -4586969514356530381L;
 
@@ -29,7 +29,7 @@ public class SynchronizedMersenneTwister extends Random {
 	/**
 	 * A singleton instance of this class.
 	 */
-	private static SynchronizedMersenneTwister INSTANCE;
+	private static ThreadLocalMersenneTwister INSTANCE;
 	
 	/**
 	 * Local RNGs for each thread.
@@ -50,13 +50,13 @@ public class SynchronizedMersenneTwister extends Random {
 			
 		};
 		
-		INSTANCE = new SynchronizedMersenneTwister();
+		INSTANCE = new ThreadLocalMersenneTwister();
 	}
 
 	/**
 	 * Constructs a new thread-safe Mersenne Twister instance.
 	 */
-	private SynchronizedMersenneTwister() {
+	private ThreadLocalMersenneTwister() {
 		super();
 	}
 	
@@ -66,7 +66,7 @@ public class SynchronizedMersenneTwister extends Random {
 	 * 
 	 * @return the singleton instance
 	 */
-	public static SynchronizedMersenneTwister getInstance() {
+	public static ThreadLocalMersenneTwister getInstance() {
 		return INSTANCE;
 	}
 	

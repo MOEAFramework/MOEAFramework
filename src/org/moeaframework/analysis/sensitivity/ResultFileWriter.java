@@ -28,10 +28,9 @@ import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
-import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.codec.binary.StringUtils;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
@@ -396,10 +395,7 @@ public class ResultFileWriter implements OutputWriter {
 			oos = new ObjectOutputStream(baos);
 			oos.writeObject(variable);
 			
-			//encode without calling Base64#encodeBase64String as versions 
-			//prior to 1.5 chunked the output
-			byte[] encoding = Base64.encodeBase64(baos.toByteArray(), false);
-			return StringUtils.newStringUtf8(encoding);
+			return Base64.getEncoder().encodeToString(baos.toByteArray());
 		} finally {
 			if (oos != null) {
 				oos.close();

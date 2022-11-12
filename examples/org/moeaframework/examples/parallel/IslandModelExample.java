@@ -1,30 +1,27 @@
 package org.moeaframework.examples.parallel;
 
+import java.io.IOException;
 import org.moeaframework.Executor;
 import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.analysis.plot.Plot;
-import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Selection;
 import org.moeaframework.core.comparator.ChainedComparator;
 import org.moeaframework.core.comparator.CrowdingComparator;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
-import org.moeaframework.core.operator.GAVariation;
-import org.moeaframework.core.operator.RandomInitialization;
 import org.moeaframework.core.operator.TournamentSelection;
-import org.moeaframework.core.operator.real.PM;
-import org.moeaframework.core.operator.real.SBX;
+import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.parallel.island.Island;
 import org.moeaframework.parallel.island.IslandModel;
 import org.moeaframework.parallel.island.executor.ThreadedIslandExecutor;
 import org.moeaframework.parallel.island.migration.Migration;
-import org.moeaframework.parallel.island.migration.OneWayMigration;
+import org.moeaframework.parallel.island.migration.SingleNeighborMigration;
 import org.moeaframework.parallel.island.topology.FullyConnectedTopology;
 import org.moeaframework.parallel.island.topology.Topology;
-import org.moeaframework.parallel.util.SynchronizedMersenneTwister;
-import org.moeaframework.parallel.util.SynchronizedNondominatedSortingPopulation;
+import org.moeaframework.parallel.util.ThreadLocalMersenneTwister;
+import org.moeaframework.util.TypedProperties;
 
 /**
  * Compares the result from running an algorithm serially versus an island
@@ -34,51 +31,40 @@ import org.moeaframework.parallel.util.SynchronizedNondominatedSortingPopulation
  */
 public class IslandModelExample {
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		Problem problem = ProblemFactory.getInstance().getProblem("UF1");
 		
-		PRNG.setRandom(SynchronizedMersenneTwister.getInstance());
+		PRNG.setRandom(ThreadLocalMersenneTwister.getInstance());
 		
 		Selection migrationSelection = new TournamentSelection(2, 
 				new ChainedComparator(
 						new ParetoDominanceComparator(),
 						new CrowdingComparator()));
 		
-		Migration migration = new OneWayMigration(1, migrationSelection);
+		Migration migration = new SingleNeighborMigration(1, migrationSelection);
 		Topology topology = new FullyConnectedTopology();
 		IslandModel model = new IslandModel(1000, migration, topology);
 		
 		for (int i = 0; i < 8; i++) {
-			SynchronizedNondominatedSortingPopulation population =
-					new SynchronizedNondominatedSortingPopulation();
+			NSGAII algorithm = (NSGAII)AlgorithmFactory.getInstance().getAlgorithm(
+					"NSGAII", new TypedProperties(), problem);
 			
-			NSGAII algorithm = new NSGAII(
-					problem,
-					population,
-					null,
-					new TournamentSelection(2, 
-							new ChainedComparator(
-									new ParetoDominanceComparator(),
-									new CrowdingComparator())),
-					new GAVariation(new SBX(1.0, 25.0), new PM(0.1, 30.0)),
-					new RandomInitialization(problem, 100));
-			
-			model.addIsland(new Island(algorithm, population));
+			model.addIsland(new Island(algorithm, algorithm.getPopulation()));
 		}
 		
-		NondominatedPopulation resultIsland = new ThreadedIslandExecutor(model)
-				.run(100000);
+		Plot plot = new Plot();
 		
-		NondominatedPopulation resultSerial = new Executor()
+		try (ThreadedIslandExecutor executor = new ThreadedIslandExecutor(model)) {
+			plot.add("Island Model", executor.run(100000));
+		}
+		
+		plot.add("Serial", new Executor()
 				.withProblem("UF1")
 				.withAlgorithm("NSGAII")
 				.withMaxEvaluations(100000)
-				.run();
+				.run());
 		
-		new Plot()
-				.add("Island Model", resultIsland)
-				.add("Serial", resultSerial)
-				.show();
+		plot.show();
 	}
 
 }

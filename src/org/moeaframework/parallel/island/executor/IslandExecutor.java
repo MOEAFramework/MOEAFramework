@@ -1,5 +1,7 @@
 package org.moeaframework.parallel.island.executor;
 
+import java.io.Closeable;
+
 import org.moeaframework.core.NondominatedPopulation;
 
 /**
@@ -8,7 +10,7 @@ import org.moeaframework.core.NondominatedPopulation;
  * executing it on physical hardware, whether that is a single core, multiple cores,
  * or multiple machines.
  */
-public interface IslandExecutor {
+public interface IslandExecutor extends Closeable {
 
 	/**
 	 * Executes this island model for the given number of function evaluations.
