@@ -753,16 +753,9 @@ public class ActionFactory implements ControllerListener {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					Properties properties = new Properties();
-					InputStream stream = null;
 					
-					try {
-						stream = getClass().getResourceAsStream(
-								"/META-INF/build.properties");
+					try (InputStream stream = getClass().getResourceAsStream("/META-INF/build.properties")) {
 						properties.load(stream);
-					} finally {
-						if (stream != null) {
-							stream.close();
-						}
 					}
 					
 					ProjectInfo info = new ProjectInfo(
@@ -893,14 +886,11 @@ public class ActionFactory implements ControllerListener {
 	 */
 	private String loadLicense() throws IOException {
 		StringBuilder sb = new StringBuilder();
-		BufferedReader reader = null;
 		String line = null;
 		boolean isNewParagraph = false;
 		
-		try {
-			reader = new BufferedReader(new InputStreamReader(
-					getClass().getResourceAsStream("/META-INF/LGPL-LICENSE")));
-			
+		try (BufferedReader reader = new BufferedReader(new InputStreamReader(
+					getClass().getResourceAsStream("/META-INF/LGPL-LICENSE")))) {
 			while ((line = reader.readLine()) != null) {
 				line = line.trim();
 				
@@ -920,10 +910,6 @@ public class ActionFactory implements ControllerListener {
 			}
 			
 			return sb.toString();
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
 		}
 	}
 

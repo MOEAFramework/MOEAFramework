@@ -108,10 +108,7 @@ public class SimpleStatistics extends CommandLineUtility {
 	 * @throws IOException if an I/O error occurred
 	 */
 	private double[][] load(File file) throws IOException {
-		MatrixReader reader = null;
-		
-		try {
-			reader = new MatrixReader(file);
+		try (MatrixReader reader = new MatrixReader(file)) {
 			List<double[]> data = new ArrayList<double[]>();
 			
 			while (reader.hasNext()) {
@@ -119,10 +116,6 @@ public class SimpleStatistics extends CommandLineUtility {
 			}
 			
 			return data.toArray(new double[0][]);
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
 		}
 	}
 

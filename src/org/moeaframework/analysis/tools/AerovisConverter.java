@@ -268,8 +268,6 @@ public class AerovisConverter extends CommandLineUtility {
 	@Override
 	public void run(CommandLine commandLine) throws Exception {
 		Problem problem = null;
-		ResultFileReader reader = null;
-		PrintWriter writer = null;
 		boolean reduced = false;
 		List<String> attributes = new ArrayList<String>();
 		
@@ -294,25 +292,12 @@ public class AerovisConverter extends CommandLineUtility {
 						commandLine.getOptionValue("dimension")));
 			}
 			
-			try {
-				reader = new ResultFileReader(problem,
+			try (ResultFileReader reader = new ResultFileReader(problem,
 						new File(commandLine.getOptionValue("input")));
-				
-				try {
-					writer = new PrintWriter(new FileWriter(
-							commandLine.getOptionValue("output")));
-					
-					printHeader(problem, reduced, attributes, writer);
-					convert(problem, reduced, reader, writer);
-				} finally {
-					if (writer != null) {
-						writer.close();
-					}
-				}
-			} finally {
-				if (reader != null) {
-					reader.close();
-				}
+				 PrintWriter writer = new PrintWriter(new FileWriter(
+							commandLine.getOptionValue("output")))) {
+				printHeader(problem, reduced, attributes, writer);
+				convert(problem, reduced, reader, writer);
 			}
 		} finally {
 			if (problem != null) {

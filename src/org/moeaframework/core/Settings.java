@@ -25,7 +25,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -222,27 +221,19 @@ public class Settings {
 		//attempt to access properties file
 		try {
 			File file = new File(resource);
-			Reader reader = null;
 			
-			try {
-				if (file.exists()) {
-					reader = new BufferedReader(new FileReader(file));
-				} else {
-					InputStream stream = Settings.class.getResourceAsStream(
-							"/" + resource);
-					
-					if (stream != null) {
-						reader = new BufferedReader(new InputStreamReader(
-								stream));
-					}
-				}
-				
-				if (reader != null) {
+			if (file.exists()) {
+				try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
 					properties.load(reader);
 				}
-			} finally {
-				if (reader != null) {
-					reader.close();
+			} else {
+				try (InputStream stream = Settings.class.getResourceAsStream("/" + resource)) {
+					if (stream != null) {
+						try (BufferedReader reader = new BufferedReader(new InputStreamReader(stream))) {
+							properties.load(reader);
+						}
+					}
+					
 				}
 			}
 		} catch (IOException e) {

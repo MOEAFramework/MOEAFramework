@@ -272,19 +272,12 @@ public class ARFFConverter extends CommandLineUtility {
 			}
 			
 			// read in the last entry from the result file
-			ResultFileReader reader = null;
 			NondominatedPopulation population = null;
 			
-			try {
-				reader = new ResultFileReader(problem,
-						new File(commandLine.getOptionValue("input")));
-
+			try (ResultFileReader reader = new ResultFileReader(problem,
+						new File(commandLine.getOptionValue("input")))) {
 				while (reader.hasNext()) {
 					population = reader.next().getPopulation();
-				}
-			} finally {
-				if (reader != null) {
-					reader.close();
 				}
 			}
 			
@@ -295,18 +288,10 @@ public class ARFFConverter extends CommandLineUtility {
 			}
 			
 			// write the ARFF file
-			PrintWriter writer = null;
-			
-			try {
-				writer = new PrintWriter(new FileWriter(
-						commandLine.getOptionValue("output")));
-				
+			try (PrintWriter writer = new PrintWriter(new FileWriter(
+						commandLine.getOptionValue("output")))) {
 				printHeader(problem, reduced, attributes, writer);
 				printData(problem, reduced, population, writer);
-			} finally {
-				if (writer != null) {
-					writer.close();
-				}
 			}
 		} finally {
 			if (problem != null) {

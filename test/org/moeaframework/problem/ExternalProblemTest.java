@@ -106,14 +106,10 @@ public class ExternalProblemTest {
 	public void testNormalUse() throws Exception {
 		run(new Thread() {
 			public void run() {
-				BufferedReader reader = null;
-				PrintStream writer = null;
-				
-				try {
+				try (BufferedReader reader = new BufferedReader(new InputStreamReader(i2));
+					 PrintStream writer = new PrintStream(o1)) {
 					String line = null;
-					reader = new BufferedReader(new InputStreamReader(i2));
-					writer = new PrintStream(o1);
-	
+
 					while ((line = reader.readLine()) != null) {
 						String[] tokens = line.split("\\s+");
 	
@@ -124,18 +120,6 @@ public class ExternalProblemTest {
 					}
 				} catch (IOException e) {
 					throw new RuntimeException(e);
-				} finally {
-					try {
-						if (reader != null) {
-							reader.close();
-						}
-						
-						if (writer != null) {
-							writer.close();
-						}
-					} catch (IOException e) {
-						throw new RuntimeException(e);
-					}
 				}
 			}
 		});

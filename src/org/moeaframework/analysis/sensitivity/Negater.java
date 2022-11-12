@@ -89,19 +89,11 @@ public class Negater extends CommandLineUtility {
         outer: for (String filename : commandLine.getArgs()) {
             List<String> lines = new ArrayList<String>();
             String entry = null;
-            BufferedReader reader = null;
-            PrintStream writer = null;
 
             // read the entire file
-            try {
-                reader = new BufferedReader(new FileReader(filename));
-
+            try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
                 while ((entry = reader.readLine()) != null) {
                     lines.add(entry);
-                }
-            } finally {
-                if (reader != null) {
-                    reader.close();
                 }
             }
             
@@ -129,9 +121,7 @@ public class Negater extends CommandLineUtility {
             }
 
             // overwrite the file
-            try {
-                writer = new PrintStream(new File(filename));
-
+            try (PrintStream writer = new PrintStream(new File(filename))) {
                 for (String line : lines) {
                     if (line.startsWith("#") || line.startsWith("//")) {
                         writer.println(line);
@@ -153,10 +143,6 @@ public class Negater extends CommandLineUtility {
 
                         writer.println();
                     }
-                }
-            } finally {
-                if (writer != null) {
-                    writer.close();
                 }
             }
         }

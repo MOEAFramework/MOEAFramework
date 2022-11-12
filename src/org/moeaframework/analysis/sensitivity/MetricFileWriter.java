@@ -110,11 +110,7 @@ public class MetricFileWriter implements OutputWriter {
 
 		// if the file already existed, copy all complete entries
 		if (existingFile.exists()) {
-			MetricFileReader reader = null;
-
-			try {
-				reader = new MetricFileReader(existingFile);
-
+			try (MetricFileReader reader = new MetricFileReader(existingFile)) {
 				while (reader.hasNext()) {
 					double[] data = reader.next();
 
@@ -128,10 +124,6 @@ public class MetricFileWriter implements OutputWriter {
 					writer.println();
 
 					numberOfEntries++;
-				}
-			} finally {
-				if (reader != null) {
-					reader.close();
 				}
 			}
 

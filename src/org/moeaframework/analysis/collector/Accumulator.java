@@ -132,15 +132,8 @@ public class Accumulator implements Serializable {
 	 * @throws IOException if an I/O error occurred
 	 */
 	public void saveCSV(File file) throws IOException {
-		FileWriter writer = null;
-		
-		try {
-			writer = new FileWriter(file);
+		try (FileWriter writer = new FileWriter(file)) {
 			writer.write(toCSV());
-		} finally {
-			if (writer != null) {
-				writer.close();
-			}
 		}
 	}
 	

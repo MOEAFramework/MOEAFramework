@@ -138,8 +138,6 @@ public class ResultFileEvaluator extends CommandLineUtility {
 
 	@Override
 	public void run(CommandLine commandLine) throws Exception {
-		ResultFileReader reader = null;
-		MetricFileWriter writer = null;
 		Problem problem = null;
 		NondominatedPopulation referenceSet = null;
 
@@ -190,45 +188,32 @@ public class ResultFileEvaluator extends CommandLineUtility {
 			QualityIndicator indicator = new QualityIndicator(problem,
 					referenceSet);
 
-			try {
-				reader = new ResultFileReader(problem, inputFile);
-
-				try {
-					writer = new MetricFileWriter(indicator, outputFile);
-
-					// resume at the last good output
-					for (int i = 0; i < writer.getNumberOfEntries(); i++) {
-						if (reader.hasNext()) {
-							reader.next();
-						} else {
-							throw new FrameworkException(
-									"output has more entries than input");
-						}
-					}
-
-					// evaluate the remaining entries
-					while (reader.hasNext()) {
-						ResultEntry entry = reader.next();
-						
-						if (commandLine.hasOption("epsilon")) {
-							TypedProperties properties = new TypedProperties();
-							properties.setString("epsilon", commandLine.getOptionValue("epsilon"));
-
-							double[] epsilon = properties.getDoubleArray("epsilon", null);
-							
-							entry = new ResultEntry(EpsilonHelper.convert(entry.getPopulation(), epsilon), entry.getProperties());
-						}
-						
-						writer.append(entry);
-					}
-				} finally {
-					if (writer != null) {
-						writer.close();
+			try (ResultFileReader reader = new ResultFileReader(problem, inputFile);
+					MetricFileWriter writer = new MetricFileWriter(indicator, outputFile)) {
+				// resume at the last good output
+				for (int i = 0; i < writer.getNumberOfEntries(); i++) {
+					if (reader.hasNext()) {
+						reader.next();
+					} else {
+						throw new FrameworkException(
+								"output has more entries than input");
 					}
 				}
-			} finally {
-				if (reader != null) {
-					reader.close();
+
+				// evaluate the remaining entries
+				while (reader.hasNext()) {
+					ResultEntry entry = reader.next();
+						
+					if (commandLine.hasOption("epsilon")) {
+						TypedProperties properties = new TypedProperties();
+						properties.setString("epsilon", commandLine.getOptionValue("epsilon"));
+
+						double[] epsilon = properties.getDoubleArray("epsilon", null);
+							
+						entry = new ResultEntry(EpsilonHelper.convert(entry.getPopulation(), epsilon), entry.getProperties());
+					}
+						
+					writer.append(entry);
 				}
 			}
 		} finally {

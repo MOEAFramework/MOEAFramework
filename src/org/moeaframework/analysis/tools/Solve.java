@@ -593,7 +593,6 @@ public class Solve extends CommandLineUtility {
 		// open the resources and begin processing
 		Problem problem = null;
 		Algorithm algorithm = null;
-		ResultFileWriter writer = null;
 		File file = new File(commandLine.getOptionValue("output"));
 		
 		try {
@@ -618,19 +617,13 @@ public class Solve extends CommandLineUtility {
 				// if the output file exists, delete first to avoid appending
 				FileUtils.delete(file);
 				
-				try {
-					writer = new ResultFileWriter(problem, file);
-
+				try (ResultFileWriter writer = new ResultFileWriter(problem, file)) {
 					algorithm = new RuntimeCollector(algorithm,
 							runtimeFrequency, writer);
 					
 					while (!algorithm.isTerminated() &&
 							(algorithm.getNumberOfEvaluations() < maxEvaluations)) {
 						algorithm.step();
-					}
-				} finally {
-					if (writer != null) {
-						writer.close();
 					}
 				}
 			} finally {

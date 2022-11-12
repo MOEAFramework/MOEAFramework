@@ -93,7 +93,6 @@ public class ResultFileInfo extends CommandLineUtility {
 	public void run(CommandLine commandLine) throws Exception {
 		Problem problem = null;
 		PrintStream output = null;
-		ResultFileReader reader = null;
 
 		try {
 			// setup the problem
@@ -116,21 +115,15 @@ public class ResultFileInfo extends CommandLineUtility {
 
 				// display info for all result files
 				for (String filename : commandLine.getArgs()) {
-					try {
+					try (ResultFileReader reader = new ResultFileReader(problem, new File(filename))) {
 						int count = 0;
-						reader = new ResultFileReader(problem, new File(
-								filename));
-
+						
 						while (reader.hasNext()) {
 							reader.next();
 							count++;
 						}
 
 						output.println(filename + " " + count);
-					} finally {
-						if (reader != null) {
-							reader.close();
-						}
 					}
 				}
 			} finally {

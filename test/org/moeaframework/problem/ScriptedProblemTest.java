@@ -77,17 +77,9 @@ public class ScriptedProblemTest {
 	
 	@Test
 	public void testJavascriptReader() throws IOException, ScriptException {
-		Reader reader = null;
-		
-		try {
-			reader = new InputStreamReader(getClass().getResourceAsStream(
-					RESOURCE_JAVASCRIPT));
-			
+		try (Reader reader = new InputStreamReader(getClass().getResourceAsStream(
+					RESOURCE_JAVASCRIPT))) {
 			test(new ScriptedProblem(reader, "nashorn"));
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
 		}
 	}
 	

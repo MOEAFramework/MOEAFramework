@@ -142,11 +142,7 @@ public class World {
 	 * @throws IOException if an I/O error occurred
 	 */
 	protected void load(Reader reader) throws IOException {
-		BufferedReader lineReader = null;
-		
-		try {
-			lineReader = new BufferedReader(reader);
-			
+		try (BufferedReader lineReader = new BufferedReader(reader)) {
 			//read out the world dimension
 			String line = lineReader.readLine();
 			
@@ -202,10 +198,6 @@ public class World {
 				}
 				
 				j++;
-			}
-		} finally {
-			if (lineReader != null) {
-				lineReader.close();
 			}
 		}
 	}

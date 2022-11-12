@@ -115,11 +115,6 @@ public class Evaluator extends CommandLineUtility {
 	protected OutputWriter output;
 
 	/**
-	 * The sample reader from which input parameters are read.
-	 */
-	protected SampleReader input;
-
-	/**
 	 * Constructs the command line utility for evaluating an algorithm using
 	 * many parameterizations.
 	 */
@@ -216,10 +211,7 @@ public class Evaluator extends CommandLineUtility {
 			problem = ProblemFactory.getInstance().getProblem(commandLine
 					.getOptionValue("problem"));
 
-			try {
-				input = new SampleReader(new FileReader(inputFile),
-						parameterFile);
-
+			try (SampleReader input = new SampleReader(new FileReader(inputFile), parameterFile)) {
 				try {
 					if (commandLine.hasOption("metrics")) {
 						NondominatedPopulation referenceSet = null;
@@ -301,10 +293,6 @@ public class Evaluator extends CommandLineUtility {
 					if (output != null) {
 						output.close();
 					}
-				}
-			} finally {
-				if (input != null) {
-					input.close();
 				}
 			}
 		} finally {

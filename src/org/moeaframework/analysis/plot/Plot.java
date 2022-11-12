@@ -923,19 +923,13 @@ public class Plot {
 					height);
 		} else if (format.equalsIgnoreCase("SVG")) {
 			String svg = generateSVG(width, height);
-			BufferedWriter writer = null;
-			
-			try {
-				writer = new BufferedWriter(new FileWriter(file));
+
+			try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
 				writer.write("<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\n");
 				writer.write(svg);
 				writer.write("\n");
 				writer.flush();
-			} finally {
-				if (writer != null) {
-					writer.close();
-				}
-			} 
+			}
 		}
 		
 		return this;

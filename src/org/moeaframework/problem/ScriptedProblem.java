@@ -89,17 +89,10 @@ public class ScriptedProblem implements Problem {
 	 */
 	public ScriptedProblem(File file) throws ScriptException, IOException {
 		super();
-		
-		BufferedReader reader = null;
-		
-		try {
-			reader = new BufferedReader(new FileReader(file));
+
+		try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
 			engine = newScriptEngine(file);
 			internalProblem = createInvocableInstance(reader);
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
 		}
 	}
 	

@@ -306,16 +306,8 @@ public class ResultFileReaderTest {
 	 */
 	@Test
 	public void testReaderComplete() throws IOException {
-		ResultFileReader reader = null;
-
-		try {
-			reader = new ResultFileReader(problem, TestUtils.createTempFile(
-					COMPLETE));
+		try (ResultFileReader reader = new ResultFileReader(problem, TestUtils.createTempFile(COMPLETE))) {
 			validateComplete(reader);
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
 		}
 	}
 	
@@ -327,16 +319,8 @@ public class ResultFileReaderTest {
 	 */
 	@Test
 	public void testReaderCompleteWhitespace() throws IOException {
-		ResultFileReader reader = null;
-
-		try {
-			reader = new ResultFileReader(problem, TestUtils.createTempFile(
-					COMPLETE_WHITESPACE));
+		try (ResultFileReader reader = new ResultFileReader(problem, TestUtils.createTempFile(COMPLETE_WHITESPACE))) {
 			validateComplete(reader);
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
 		}
 	}
 	
@@ -348,17 +332,8 @@ public class ResultFileReaderTest {
 	 */
 	@Test
 	public void testReaderCompleteNoVariables() throws IOException {
-		ResultFileReader reader = null;
-		
-
-		try {
-			reader = new ResultFileReader(problem, TestUtils.createTempFile(
-					COMPLETE_NOVARIABLES));
+		try (ResultFileReader reader = new ResultFileReader(problem, TestUtils.createTempFile(COMPLETE_NOVARIABLES))) {
 			validateCompleteNoVariables(reader);
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
 		}
 	}
 	
@@ -370,16 +345,8 @@ public class ResultFileReaderTest {
 	 */
 	@Test
 	public void testReaderCompleteNoHeader() throws IOException {
-		ResultFileReader reader = null;
-
-		try {
-			reader = new ResultFileReader(problem, TestUtils.createTempFile(
-					COMPLETE_NOHEADER));
+		try (ResultFileReader reader = new ResultFileReader(problem, TestUtils.createTempFile(COMPLETE_NOHEADER))) {
 			validateComplete(reader);
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
 		}
 	}
 	
@@ -391,16 +358,8 @@ public class ResultFileReaderTest {
 	 */
 	@Test
 	public void testReaderMultipound() throws IOException {
-		ResultFileReader reader = null;
-
-		try {
-			reader = new ResultFileReader(problem, TestUtils.createTempFile(
-					MULTIPOUND));
+		try (ResultFileReader reader = new ResultFileReader(problem, TestUtils.createTempFile(MULTIPOUND))) {
 			validateComplete(reader);
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
 		}
 	}
 	
@@ -411,20 +370,12 @@ public class ResultFileReaderTest {
 	 */
 	@Test
 	public void testReaderCompleteProperties() throws IOException {
-		ResultFileReader reader = null;
-		
 		TypedProperties properties = new TypedProperties();
 		properties.setString("foo", "bar");
 		properties.setString("answer", "42");
 
-		try {
-			reader = new ResultFileReader(problem, TestUtils.createTempFile(
-					COMPLETE_PROPERTIES));
+		try (ResultFileReader reader = new ResultFileReader(problem, TestUtils.createTempFile(COMPLETE_PROPERTIES))) {
 			validateProperties(reader, properties);
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
 		}
 	}
 	
@@ -435,18 +386,10 @@ public class ResultFileReaderTest {
 	 */
 	@Test
 	public void testReaderNoProperties() throws IOException {
-		ResultFileReader reader = null;
-		
 		TypedProperties properties = new TypedProperties();
 
-		try {
-			reader = new ResultFileReader(problem, TestUtils.createTempFile(
-					NO_PROPERTIES));
+		try (ResultFileReader reader = new ResultFileReader(problem, TestUtils.createTempFile(NO_PROPERTIES))) {
 			validateProperties(reader, properties);
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
 		}
 	}
 	
@@ -457,18 +400,10 @@ public class ResultFileReaderTest {
 	 */
 	@Test
 	public void testReaderEmptyProperties() throws IOException {
-		ResultFileReader reader = null;
-		
 		TypedProperties properties = new TypedProperties();
 
-		try {
-			reader = new ResultFileReader(problem, TestUtils.createTempFile(
-					EMPTY_PROPERTIES));
+		try (ResultFileReader reader = new ResultFileReader(problem, TestUtils.createTempFile(EMPTY_PROPERTIES))) {
 			validateProperties(reader, properties);
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
 		}
 	}
 	
@@ -481,19 +416,11 @@ public class ResultFileReaderTest {
 	 */
 	@Test
 	public void testReaderOldStyleProperties() throws IOException {
-		ResultFileReader reader = null;
-		
 		TypedProperties properties = new TypedProperties();
 		properties.setString("foo", "");
 
-		try {
-			reader = new ResultFileReader(problem, TestUtils.createTempFile(
-					OLDSTYLE_PROPERTIES));
+		try (ResultFileReader reader = new ResultFileReader(problem, TestUtils.createTempFile(OLDSTYLE_PROPERTIES))) {
 			validateProperties(reader, properties);
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
 		}
 	}
 
@@ -504,16 +431,8 @@ public class ResultFileReaderTest {
 	 */
 	@Test
 	public void testReaderEmpty() throws IOException {
-		ResultFileReader reader = null;
-
-		try {
-			reader = new ResultFileReader(problem, TestUtils.createTempFile(
-					EMPTY));
+		try (ResultFileReader reader = new ResultFileReader(problem, TestUtils.createTempFile(EMPTY))) {
 			validateEmpty(reader);
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
 		}
 	}
 
@@ -524,16 +443,8 @@ public class ResultFileReaderTest {
 	 */
 	@Test
 	public void testReaderEmptyEntry() throws IOException {
-		ResultFileReader reader = null;
-
-		try {
-			reader = new ResultFileReader(problem, TestUtils.createTempFile(
-					EMPTY_ENTRY));
+		try (ResultFileReader reader = new ResultFileReader(problem, TestUtils.createTempFile(EMPTY_ENTRY))) {
 			validateEmptyEntry(reader);
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
 		}
 	}
 
@@ -545,16 +456,8 @@ public class ResultFileReaderTest {
 	 */
 	@Test
 	public void testReaderOnlyHeader() throws IOException {
-		ResultFileReader reader = null;
-
-		try {
-			reader = new ResultFileReader(problem, TestUtils.createTempFile(
-					ONLY_HEADER));
+		try (ResultFileReader reader = new ResultFileReader(problem, TestUtils.createTempFile(ONLY_HEADER))) {
 			validateEmpty(reader);
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
 		}
 	}
 
@@ -566,16 +469,8 @@ public class ResultFileReaderTest {
 	 */
 	@Test
 	public void testReaderIncomplete1() throws IOException {
-		ResultFileReader reader = null;
-
-		try {
-			reader = new ResultFileReader(problem, TestUtils.createTempFile(
-					INCOMPLETE1));
+		try (ResultFileReader reader = new ResultFileReader(problem, TestUtils.createTempFile(INCOMPLETE1))) {
 			validateIncomplete(reader);
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
 		}
 	}
 
@@ -587,16 +482,8 @@ public class ResultFileReaderTest {
 	 */
 	@Test
 	public void testReaderIncomplete2() throws IOException {
-		ResultFileReader reader = null;
-
-		try {
-			reader = new ResultFileReader(problem, TestUtils.createTempFile(
-					INCOMPLETE2));
+		try (ResultFileReader reader = new ResultFileReader(problem, TestUtils.createTempFile(INCOMPLETE2))) {
 			validateIncomplete(reader);
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
 		}
 	}
 
@@ -607,16 +494,8 @@ public class ResultFileReaderTest {
 	 */
 	@Test
 	public void testReaderIncomplete3() throws IOException {
-		ResultFileReader reader = null;
-
-		try {
-			reader = new ResultFileReader(problem, TestUtils.createTempFile(
-					INCOMPLETE3));
+		try (ResultFileReader reader = new ResultFileReader(problem, TestUtils.createTempFile(INCOMPLETE3))) {
 			validateIncomplete(reader);
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
 		}
 	}
 	
@@ -628,16 +507,8 @@ public class ResultFileReaderTest {
 	 */
 	@Test
 	public void testReaderIncomplete4() throws IOException {
-		ResultFileReader reader = null;
-
-		try {
-			reader = new ResultFileReader(problem, TestUtils.createTempFile(
-					INCOMPLETE4));
+		try (ResultFileReader reader = new ResultFileReader(problem, TestUtils.createTempFile(INCOMPLETE4))) {
 			validateIncomplete(reader);
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
 		}
 	}
 
@@ -736,11 +607,8 @@ public class ResultFileReaderTest {
 	@Test
 	public void testDecode() throws IOException {
 		File file = TestUtils.createTempFile();
-		ResultFileReader reader = null;
 		
-		try {
-			reader = new ResultFileReader(problem, file);
-			
+		try (ResultFileReader reader = new ResultFileReader(problem, file)) {
 			RealVariable rv = new RealVariable(0.0, 1.0);
 			reader.decode(rv, "0.5");
 			Assert.assertEquals(0.5, rv.getValue(), Settings.EPS);
@@ -758,97 +626,58 @@ public class ResultFileReaderTest {
 			//unsupported decision variable type entry
 			Grammar g = new Grammar(5);
 			reader.decode(g, "-");
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
 		}
 	}
 	
 	@Test(expected = NumberFormatException.class)
 	public void testDecodeInvalidReal() throws IOException {
 		File file = TestUtils.createTempFile();
-		ResultFileReader reader = null;
 		
-		try {
-			reader = new ResultFileReader(problem, file);
-			
+		try (ResultFileReader reader = new ResultFileReader(problem, file)) {
 			RealVariable rv = new RealVariable(0.0, 1.0);
 			reader.decode(rv, "0.5foo");
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
 		}
 	}
 	
 	@Test(expected = FrameworkException.class)
 	public void testDecodeInvalidBinary1() throws IOException {
 		File file = TestUtils.createTempFile();
-		ResultFileReader reader = null;
-		
-		try {
-			reader = new ResultFileReader(problem, file);
 
+		try (ResultFileReader reader = new ResultFileReader(problem, file)) {
 			BinaryVariable bv = new BinaryVariable(5);
 			reader.decode(bv, "001");
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
 		}
 	}
 	
 	@Test(expected = FrameworkException.class)
 	public void testDecodeInvalidBinary2() throws IOException {
 		File file = TestUtils.createTempFile();
-		ResultFileReader reader = null;
-		
-		try {
-			reader = new ResultFileReader(problem, file);
 
+		try (ResultFileReader reader = new ResultFileReader(problem, file)) {
 			BinaryVariable bv = new BinaryVariable(5);
 			reader.decode(bv, "00200");
 			Assert.assertEquals(1, bv.cardinality());
 			Assert.assertTrue(bv.get(2));
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
 		}
 	}
 	
 	@Test(expected = FrameworkException.class)
 	public void testDecodeInvalidPermutation1() throws IOException {
 		File file = TestUtils.createTempFile();
-		ResultFileReader reader = null;
-		
-		try {
-			reader = new ResultFileReader(problem, file);
 
+		try (ResultFileReader reader = new ResultFileReader(problem, file)) {
 			Permutation p = new Permutation(5);
 			reader.decode(p, "2,0,1");
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
 		}
 	}
 	
 	@Test(expected = FrameworkException.class)
 	public void testDecodeInvalidPermutation2() throws IOException {
 		File file = TestUtils.createTempFile();
-		ResultFileReader reader = null;
-		
-		try {
-			reader = new ResultFileReader(problem, file);
 
+		try (ResultFileReader reader = new ResultFileReader(problem, file)) {
 			Permutation p = new Permutation(5);
 			reader.decode(p, "2,0,1,5,3");
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
 		}
 	}
 	

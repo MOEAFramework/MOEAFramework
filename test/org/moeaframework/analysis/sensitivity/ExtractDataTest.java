@@ -76,18 +76,11 @@ public class ExtractDataTest {
 			"--output", output.getPath(),
 			"ElapsedTime", "TotalTime"});
 		
-		BufferedReader reader = null;
-		
-		try {
-			reader = new BufferedReader(new FileReader(output));
+		try (BufferedReader reader = new BufferedReader(new FileReader(output))) {
 			Assert.assertEquals("#ElapsedTime TotalTime", reader.readLine());
 			Assert.assertEquals("0.0125 0.214", reader.readLine());
 			Assert.assertEquals("0.01549 0.209186", reader.readLine());
 			Assert.assertNull(reader.readLine());
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
 		}
 	}
 	
@@ -123,52 +116,36 @@ public class ExtractDataTest {
 			"--output", output.getPath(),
 			"+ge", "+hyp", "+inv", "+err", "+spa", "+eps" });
 		
-		BufferedReader reader = null;
-		ResultFileReader resultReader = null;
-		
 		QualityIndicator indicator = new QualityIndicator(problem, 
 				referenceSet);
 		
-		try {
-			reader = new BufferedReader(new FileReader(output));
-			
-			try {
-				resultReader = new ResultFileReader(problem, input);
+		try (BufferedReader reader = new BufferedReader(new FileReader(output));
+			 ResultFileReader resultReader = new ResultFileReader(problem, input)) {
+			Assert.assertEquals("#+ge +hyp +inv +err +spa +eps", 
+					reader.readLine());
 				
-				Assert.assertEquals("#+ge +hyp +inv +err +spa +eps", 
-						reader.readLine());
+			NondominatedPopulation population = 
+					resultReader.next().getPopulation();
+			indicator.calculate(population);
+			Assert.assertEquals(indicator.getGenerationalDistance() + " " + 
+					indicator.getHypervolume() + " " +
+					indicator.getInvertedGenerationalDistance() + " " +
+					indicator.getMaximumParetoFrontError() + " " + 
+					indicator.getSpacing() + " " + 
+					indicator.getAdditiveEpsilonIndicator(), 
+					reader.readLine());
 				
-				NondominatedPopulation population = 
-						resultReader.next().getPopulation();
-				indicator.calculate(population);
-				Assert.assertEquals(indicator.getGenerationalDistance() + " " + 
-						indicator.getHypervolume() + " " +
-						indicator.getInvertedGenerationalDistance() + " " +
-						indicator.getMaximumParetoFrontError() + " " + 
-						indicator.getSpacing() + " " + 
-						indicator.getAdditiveEpsilonIndicator(), 
-						reader.readLine());
+			population = resultReader.next().getPopulation();
+			indicator.calculate(population);
+			Assert.assertEquals(indicator.getGenerationalDistance() + " " + 
+					indicator.getHypervolume() + " " +
+					indicator.getInvertedGenerationalDistance() + " " +
+					indicator.getMaximumParetoFrontError() + " " + 
+					indicator.getSpacing() + " " + 
+					indicator.getAdditiveEpsilonIndicator(), 
+					reader.readLine());
 				
-				population = resultReader.next().getPopulation();
-				indicator.calculate(population);
-				Assert.assertEquals(indicator.getGenerationalDistance() + " " + 
-						indicator.getHypervolume() + " " +
-						indicator.getInvertedGenerationalDistance() + " " +
-						indicator.getMaximumParetoFrontError() + " " + 
-						indicator.getSpacing() + " " + 
-						indicator.getAdditiveEpsilonIndicator(), 
-						reader.readLine());
-				
-				Assert.assertNull(reader.readLine());
-			} finally {
-				if (resultReader != null) {
-					resultReader.close();
-				}
-			}
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
+			Assert.assertNull(reader.readLine());
 		}
 	}
 	
@@ -188,38 +165,23 @@ public class ExtractDataTest {
 			"--output", output.getPath(),
 			"--epsilon", Double.toString(epsilon),
 			"+con" });
-		
-		BufferedReader reader = null;
-		ResultFileReader resultReader = null;
+
 		Contribution contribution = new Contribution(referenceSet, epsilon);
 		
-		try {
-			reader = new BufferedReader(new FileReader(output));
-			
-			try {
-				resultReader = new ResultFileReader(problem, input);
+		try (BufferedReader reader = new BufferedReader(new FileReader(output));
+			 ResultFileReader resultReader = new ResultFileReader(problem, input)) {
+			Assert.assertEquals("#+con", reader.readLine());
 				
-				Assert.assertEquals("#+con", reader.readLine());
+			NondominatedPopulation population = 
+					resultReader.next().getPopulation();
+			Assert.assertEquals("" + contribution.evaluate(population), 
+					reader.readLine());
 				
-				NondominatedPopulation population = 
-						resultReader.next().getPopulation();
-				Assert.assertEquals("" + contribution.evaluate(population), 
-						reader.readLine());
+			population = resultReader.next().getPopulation();
+			Assert.assertEquals("" + contribution.evaluate(population), 
+					reader.readLine());
 				
-				population = resultReader.next().getPopulation();
-				Assert.assertEquals("" + contribution.evaluate(population), 
-						reader.readLine());
-				
-				Assert.assertNull(reader.readLine());
-			} finally {
-				if (resultReader != null) {
-					resultReader.close();
-				}
-			}
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
+			Assert.assertNull(reader.readLine());
 		}
 	}
 	
@@ -238,37 +200,22 @@ public class ExtractDataTest {
 			"--output", output.getPath(),
 			"+con" });
 		
-		BufferedReader reader = null;
-		ResultFileReader resultReader = null;
 		Contribution contribution = new Contribution(referenceSet);
 		
-		try {
-			reader = new BufferedReader(new FileReader(output));
-			
-			try {
-				resultReader = new ResultFileReader(problem, input);
+		try (BufferedReader reader = new BufferedReader(new FileReader(output));
+			 ResultFileReader resultReader = new ResultFileReader(problem, input)) {
+			Assert.assertEquals("#+con", reader.readLine());
 				
-				Assert.assertEquals("#+con", reader.readLine());
+			NondominatedPopulation population = 
+					resultReader.next().getPopulation();
+			Assert.assertEquals("" + contribution.evaluate(population), 
+					reader.readLine());
 				
-				NondominatedPopulation population = 
-						resultReader.next().getPopulation();
-				Assert.assertEquals("" + contribution.evaluate(population), 
-						reader.readLine());
+			population = resultReader.next().getPopulation();
+			Assert.assertEquals("" + contribution.evaluate(population), 
+					reader.readLine());
 				
-				population = resultReader.next().getPopulation();
-				Assert.assertEquals("" + contribution.evaluate(population), 
-						reader.readLine());
-				
-				Assert.assertNull(reader.readLine());
-			} finally {
-				if (resultReader != null) {
-					resultReader.close();
-				}
-			}
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
+			Assert.assertNull(reader.readLine());
 		}
 	}
 	

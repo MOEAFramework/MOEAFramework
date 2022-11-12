@@ -192,17 +192,9 @@ public class ResultFileWriter implements OutputWriter {
 
 		// if the file already existed, copy all complete entries
 		if (existingFile.exists()) {
-			ResultFileReader reader = null;
-
-			try {
-				reader = new ResultFileReader(problem, existingFile);
-
+			try (ResultFileReader reader = new ResultFileReader(problem, existingFile)) {
 				while (reader.hasNext()) {
 					append(reader.next());
-				}
-			} finally {
-				if (reader != null) {
-					reader.close();
 				}
 			}
 
@@ -302,27 +294,19 @@ public class ResultFileWriter implements OutputWriter {
 	 * @throws IOException if an I/O error occurred
 	 */
 	private void printProperties(TypedProperties properties) throws IOException {
-		StringWriter stringBuffer = new StringWriter();
-		BufferedReader reader = null;
+		try (StringWriter stringBuffer = new StringWriter()) {
+			properties.store(stringBuffer);
 		
-		properties.store(stringBuffer);
-		
-		try {
-			reader = new BufferedReader(new StringReader(
-					stringBuffer.toString()));
-			
-			reader.readLine(); //skip first line that contains the timestamp
-			
-			String line = null;
-			while ((line = reader.readLine()) != null) {
-				writer.print("//");
-				writer.println(line);
+			try (BufferedReader reader = new BufferedReader(new StringReader(stringBuffer.toString()))) {
+				reader.readLine(); //skip first line that contains the timestamp
+				
+				String line = null;
+				while ((line = reader.readLine()) != null) {
+					writer.print("//");
+					writer.println(line);
+				}
 			}
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
-		}
+		} 
 	}
 
 	@Override
@@ -388,19 +372,10 @@ public class ResultFileWriter implements OutputWriter {
 	 * @throws IOException if the variable count not be serialized
 	 */
 	private String serialize(Variable variable) throws IOException {
-		ObjectOutputStream oos = null;
-		
-		try {
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			oos = new ObjectOutputStream(baos);
+		try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
+				ObjectOutputStream oos = new ObjectOutputStream(baos)) {
 			oos.writeObject(variable);
-			
 			return Base64.getEncoder().encodeToString(baos.toByteArray());
-		} finally {
-			if (oos != null) {
-				oos.close();
-			}
 		}
 	}
-
 }

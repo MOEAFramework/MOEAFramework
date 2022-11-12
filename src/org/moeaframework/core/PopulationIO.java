@@ -89,16 +89,8 @@ public class PopulationIO {
 	 * @throws IOException if an I/O exception occurred
 	 */
 	public static Population readObjectives(File file) throws IOException {
-		BufferedReader reader = null;
-
-		try {
-			reader = new CommentedLineReader(new FileReader(file));
-
+		try (BufferedReader reader = new CommentedLineReader(new FileReader(file))) {
 			return readObjectives(reader);
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
 		}
 	}
 	
@@ -114,11 +106,7 @@ public class PopulationIO {
 	 */
 	public static void writeObjectives(File file, Iterable<Solution> solutions)
 			throws IOException {
-		BufferedWriter writer = null;
-
-		try {
-			writer = new BufferedWriter(new FileWriter(file));
-
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
 			for (Solution solution : solutions) {
 				writer.write(Double.toString(solution.getObjective(0)));
 
@@ -128,10 +116,6 @@ public class PopulationIO {
 				}
 
 				writer.newLine();
-			}
-		} finally {
-			if (writer != null) {
-				writer.close();
 			}
 		}
 	}
@@ -147,11 +131,8 @@ public class PopulationIO {
 	 */
 	public static void write(File file, Iterable<Solution> solutions)
 			throws IOException {
-		ObjectOutputStream oos = null;
-
-		try {
-			oos = new ObjectOutputStream(new BufferedOutputStream(
-					new FileOutputStream(file)));
+		try (ObjectOutputStream oos = new ObjectOutputStream(new BufferedOutputStream(
+					new FileOutputStream(file)))) {
 			List<Solution> list = new ArrayList<Solution>();
 
 			for (Solution solution : solutions) {
@@ -159,10 +140,6 @@ public class PopulationIO {
 			}
 
 			oos.writeObject(list);
-		} finally {
-			if (oos != null) {
-				oos.close();
-			}
 		}
 	}
 
@@ -176,11 +153,8 @@ public class PopulationIO {
 	 * @throws IOException if an I/O exception occurred
 	 */
 	public static Population read(File file) throws IOException {
-		ObjectInputStream ois = null;
-
-		try {
-			ois = new ObjectInputStream(new BufferedInputStream(
-					new FileInputStream(file)));
+		try (ObjectInputStream ois = new ObjectInputStream(new BufferedInputStream(
+					new FileInputStream(file)))) {
 			Population population = new Population();
 
 			for (Object solution : (List<?>)ois.readObject()) {
@@ -190,10 +164,6 @@ public class PopulationIO {
 			return population;
 		} catch (ClassNotFoundException e) {
 			throw new IOException(e);
-		} finally {
-			if (ois != null) {
-				ois.close();
-			}
 		}
 	}
 
