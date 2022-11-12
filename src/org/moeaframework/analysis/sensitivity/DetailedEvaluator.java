@@ -197,17 +197,16 @@ public class DetailedEvaluator extends CommandLineUtility {
 				int count = 1;
 
 				while (input.hasNext()) {
-					try {
-						String outputFileName = String.format(outputFilePattern, count);
-						System.out.print("Processing " + outputFileName + "...");
-						File outputFile = new File(outputFileName);
+					String outputFileName = String.format(outputFilePattern, count);
+					System.out.print("Processing " + outputFileName + "...");
+					File outputFile = new File(outputFileName);
 						
-						if (outputFile.exists()) {
-							outputFile.delete();
-						}
+					if (outputFile.exists()) {
+						outputFile.delete();
+					}	
 						
-						output = new ResultFileWriter(problem, outputFile, !commandLine.hasOption("novariables"));
-	
+					try (ResultFileWriter output = new ResultFileWriter(problem, outputFile,
+							!commandLine.hasOption("novariables"))) {
 						// setup any default parameters
 						TypedProperties defaultProperties = new TypedProperties();
 	
@@ -238,10 +237,6 @@ public class DetailedEvaluator extends CommandLineUtility {
 						process(commandLine.getOptionValue("algorithm"), properties, frequency);
 						
 						System.out.println("done.");
-					} finally {
-						if (output != null) {
-							output.close();
-						}
 					}
 					
 					count++;

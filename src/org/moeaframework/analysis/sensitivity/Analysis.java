@@ -19,7 +19,6 @@ package org.moeaframework.analysis.sensitivity;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -416,8 +415,6 @@ public class Analysis extends CommandLineUtility {
 
 	@Override
 	public void run(CommandLine commandLine) throws Exception {
-		PrintStream output = null;
-		
 		//parse required parameters
 		parameterFile = new ParameterFile(new File(
 				commandLine.getOptionValue("parameterFile")));
@@ -445,15 +442,8 @@ public class Analysis extends CommandLineUtility {
 			}
 		}
 		
-		try {
-			//setup the output stream
-			if (commandLine.hasOption("output")) {
-				output = new PrintStream(new File(
-						commandLine.getOptionValue("output")));
-			} else {
-				output = System.out;
-			}
-			
+		try (OutputLogger output = new OutputLogger(commandLine.hasOption("output") ?
+				new File(commandLine.getOptionValue("output")) : null)) {
 			//process all the files listed on the command line
 			String[] filenames = commandLine.getArgs();
 			
@@ -480,10 +470,6 @@ public class Analysis extends CommandLineUtility {
 					output.print("  Efficiency: ");
 					output.println(calculateEfficiency());
 				}
-			}
-		} finally {
-			if ((output != null) && (output != System.out)) {
-				output.close();
 			}
 		}
 	}

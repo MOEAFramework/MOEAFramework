@@ -17,12 +17,8 @@
  */
 package org.moeaframework.analysis.sensitivity;
 
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.PrintStream;
-
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
@@ -167,15 +163,8 @@ public class SampleGenerator extends CommandLineUtility {
 			PRNG.setSeed(Long.parseLong(commandLine.getOptionValue("seed")));
 		}
 
-		PrintStream output = System.out;
-
-		try {
-			if (commandLine.hasOption("output")) {
-				output = new PrintStream(new BufferedOutputStream(
-						new FileOutputStream(
-								commandLine.getOptionValue("output"))));
-			}
-
+		try (OutputLogger output = new OutputLogger(commandLine.hasOption("output") ?
+				new File(commandLine.getOptionValue("output")) : null)) {
 			double[][] samples = sequence.generate(N, D);
 
 			for (int i = 0; i < N; i++) {
@@ -193,10 +182,6 @@ public class SampleGenerator extends CommandLineUtility {
 				}
 
 				output.println();
-			}
-		} finally {
-			if ((output != null) && (output != System.out)) {
-				output.close();
 			}
 		}
 	}

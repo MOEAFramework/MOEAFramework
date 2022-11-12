@@ -169,7 +169,7 @@ public class ExtractDataTest {
 		Contribution contribution = new Contribution(referenceSet, epsilon);
 		
 		try (BufferedReader reader = new BufferedReader(new FileReader(output));
-			 ResultFileReader resultReader = new ResultFileReader(problem, input)) {
+				ResultFileReader resultReader = new ResultFileReader(problem, input)) {
 			Assert.assertEquals("#+con", reader.readLine());
 				
 			NondominatedPopulation population = 
