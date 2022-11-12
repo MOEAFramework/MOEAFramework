@@ -70,35 +70,35 @@ class OutputLogger implements Closeable {
 	}
 	
 	public void println(boolean b) {
-		writer.print(b);
+		writer.println(b);
 	}
 
 	public void println(char c) {
-		writer.print(c);
+		writer.println(c);
 	}
 	
 	public void println(char[] cs) {
-		writer.print(cs);
+		writer.println(cs);
 	}
 	
 	public void println(double d) {
-		writer.print(d);
+		writer.println(d);
 	}
 	
 	public void println(float f) {
-		writer.print(f);
+		writer.println(f);
 	}
 	
 	public void println(int i) {
-		writer.print(i);
+		writer.println(i);
 	}
 	
 	public void println(long l) {
-		writer.print(l);
+		writer.println(l);
 	}
 	
 	public void println(Object o) {
-		writer.print(o);
+		writer.println(o);
 	}
 	
 	public void println(String s) {
