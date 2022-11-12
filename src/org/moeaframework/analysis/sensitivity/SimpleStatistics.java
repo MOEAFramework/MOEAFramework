@@ -28,7 +28,6 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
 import org.moeaframework.util.CommandLineUtility;
 import org.moeaframework.util.OptionCompleter;
-import org.moeaframework.util.io.OutputLogger;
 
  /**
  * Command line utility for computing statistics across multiple data files.

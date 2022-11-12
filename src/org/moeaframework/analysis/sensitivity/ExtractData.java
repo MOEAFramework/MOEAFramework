@@ -42,7 +42,6 @@ import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.util.CommandLineUtility;
 import org.moeaframework.util.OptionCompleter;
 import org.moeaframework.util.TypedProperties;
-import org.moeaframework.util.io.OutputLogger;
 
 /**
  * Command line utility for extracting data from a result file.  The data that

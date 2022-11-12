@@ -29,7 +29,6 @@ import org.apache.commons.cli.Options;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.util.CommandLineUtility;
 import org.moeaframework.util.TypedProperties;
-import org.moeaframework.util.io.OutputLogger;
 
 /**
  * Command line utility for calculating the best, probability of attainment,

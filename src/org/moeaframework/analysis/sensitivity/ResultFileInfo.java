@@ -25,7 +25,6 @@ import org.apache.commons.cli.Options;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.util.CommandLineUtility;
-import org.moeaframework.util.io.OutputLogger;
 
 /**
  * Command line utility for counting the number of entries in a result file.

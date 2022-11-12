@@ -25,7 +25,6 @@ import org.apache.commons.cli.Options;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.util.CommandLineUtility;
 import org.moeaframework.util.OptionCompleter;
-import org.moeaframework.util.io.OutputLogger;
 import org.moeaframework.util.sequence.LatinHypercube;
 import org.moeaframework.util.sequence.Saltelli;
 import org.moeaframework.util.sequence.Sequence;

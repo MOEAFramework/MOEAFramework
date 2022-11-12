@@ -1,4 +1,4 @@
-package org.moeaframework.util.io;
+package org.moeaframework.analysis.sensitivity;
 
 import java.io.Closeable;
 import java.io.File;
@@ -7,16 +7,15 @@ import java.io.IOException;
 import java.io.PrintStream;
 
 /**
- * Convenience class used by several tools when needing to write to either
- * {@code System.out} or a user-defined file.
+ * Internal class used by several tools in this package for writing either to
+ * {@see System.out} or a file.  In particular, this will not allow callers
+ * to close {@code System.out}, such as when it appears in a try-with-resources
+ * block.
  */
-public class OutputLogger implements Closeable {
+class OutputLogger implements Closeable {
 	
 	private PrintStream writer;
 	
-	/**
-	 * Creates a new output logger.
-	 */
 	public OutputLogger() {
 		this((PrintStream)null);
 	}

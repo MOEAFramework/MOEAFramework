@@ -25,7 +25,6 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.math3.stat.StatUtils;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.util.CommandLineUtility;
-import org.moeaframework.util.io.OutputLogger;
 
 /**
  * Global sensitivity analysis of blackbox model output using Saltelli's
