@@ -9,7 +9,6 @@
 	<classpathentry kind="lib" path="lib/jmetal-core-5.9.jar"/>
 	<classpathentry kind="lib" path="lib/jmetal-problem-5.9.jar"/>
 	<classpathentry kind="lib" path="lib/commons-cli-1.5.0.jar"/>
-	<classpathentry kind="lib" path="lib/commons-io-2.11.0.jar"/>
 	<classpathentry kind="lib" path="lib/commons-text-1.10.0.jar"/>
 	<classpathentry kind="lib" path="lib/commons-lang3-3.12.0.jar"/>
 	<classpathentry kind="lib" path="lib/jcommon-1.0.24.jar"/>
