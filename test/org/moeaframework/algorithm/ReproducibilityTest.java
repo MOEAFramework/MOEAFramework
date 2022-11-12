@@ -18,6 +18,8 @@
 package org.moeaframework.algorithm;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.moeaframework.CIRunner;
 import org.moeaframework.IgnoreOnCI;
 import org.moeaframework.TestUtils;
 import org.moeaframework.core.Algorithm;
@@ -33,6 +35,7 @@ import org.moeaframework.util.TypedProperties;
  * in reproducible results. This also serves to test the accessibility of
  * the standard algorithms via {@link AlgorithmFactory} and their basic use.
  */
+@RunWith(CIRunner.class)
 public class ReproducibilityTest {
 
 	/**
