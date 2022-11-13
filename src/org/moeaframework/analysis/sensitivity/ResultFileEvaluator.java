@@ -88,7 +88,7 @@ public class ResultFileEvaluator extends CommandLineUtility {
 	public Options getOptions() {
 		Options options = super.getOptions();
 		
-		OptionUtils.addProblemOptionGroup(options);
+		OptionUtils.addProblemOption(options, true);
 		OptionUtils.addReferenceSetOption(options);
 		OptionUtils.addEpsilonOption(options);
 		
@@ -127,7 +127,7 @@ public class ResultFileEvaluator extends CommandLineUtility {
 		NondominatedPopulation referenceSet = OptionUtils.getReferenceSet(commandLine);
 
 		// open the resources and begin processing
-		try (Problem problem = OptionUtils.getProblemInstance(commandLine)) {
+		try (Problem problem = OptionUtils.getProblemInstance(commandLine, true)) {
 			// validate the reference set
 			for (Solution solution : referenceSet) {
 				if (solution.getNumberOfObjectives() != problem.getNumberOfObjectives()) {

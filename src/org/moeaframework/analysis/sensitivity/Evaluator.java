@@ -31,7 +31,6 @@ import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.indicator.QualityIndicator;
 import org.moeaframework.core.spi.AlgorithmFactory;
-import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.problem.TimingProblem;
 import org.moeaframework.util.CommandLineUtility;
 import org.moeaframework.util.TypedProperties;
@@ -104,11 +103,6 @@ import org.moeaframework.util.TypedProperties;
 public class Evaluator extends CommandLineUtility {
 
 	/**
-	 * The problem being evaluated.
-	 */
-	protected Problem problem;
-
-	/**
 	 * The output writer where end-of-run results are stored.
 	 */
 	protected OutputWriter output;
@@ -124,6 +118,10 @@ public class Evaluator extends CommandLineUtility {
 	@Override
 	public Options getOptions() {
 		Options options = super.getOptions();
+		
+		OptionUtils.addProblemOption(options, false);
+		OptionUtils.addReferenceSetOption(options);
+		OptionUtils.addEpsilonOption(options);
 
 		options.addOption(Option.builder("p")
 				.longOpt("parameterFile")
@@ -141,12 +139,6 @@ public class Evaluator extends CommandLineUtility {
 				.longOpt("output")
 				.hasArg()
 				.argName("file")
-				.required()
-				.build());
-		options.addOption(Option.builder("b")
-				.longOpt("problem")
-				.hasArg()
-				.argName("name")
 				.required()
 				.build());
 		options.addOption(Option.builder("a")
@@ -175,9 +167,6 @@ public class Evaluator extends CommandLineUtility {
 		options.addOption(Option.builder("f")
 				.longOpt("force")
 				.build());
-		
-		OptionUtils.addReferenceSetOption(options);
-		OptionUtils.addEpsilonOption(options);
 
 		return options;
 	}
@@ -186,6 +175,7 @@ public class Evaluator extends CommandLineUtility {
 	public void run(CommandLine commandLine) throws IOException {
 		File outputFile = new File(commandLine.getOptionValue("output"));
 		File inputFile = new File(commandLine.getOptionValue("input"));
+		double[] epsilon = OptionUtils.getEpsilon(commandLine);
 
 		ParameterFile parameterFile = new ParameterFile(new File(
 				commandLine.getOptionValue("parameterFile")));
@@ -198,8 +188,7 @@ public class Evaluator extends CommandLineUtility {
 		}
 
 		// open the resources and begin processing
-		try (Problem problem = ProblemFactory.getInstance().getProblem(
-				commandLine.getOptionValue("problem"));
+		try (Problem problem = OptionUtils.getProblemInstance(commandLine, false);
 				SampleReader input = new SampleReader(new FileReader(inputFile), parameterFile)) {
 			try {
 				if (commandLine.hasOption("metrics")) {
@@ -236,8 +225,8 @@ public class Evaluator extends CommandLineUtility {
 					}
 				}
 
-				if (commandLine.hasOption("epsilon")) {
-					defaultProperties.setString("epsilon", commandLine.getOptionValue("epsilon"));
+				if (epsilon != null) {
+					defaultProperties.setDoubleArray("epsilon", epsilon);
 				}
 
 				// seed the pseudo-random number generator
@@ -250,7 +239,7 @@ public class Evaluator extends CommandLineUtility {
 					TypedProperties properties = input.next();
 					properties.addAll(defaultProperties);
 
-					process(commandLine.getOptionValue("algorithm"), properties);
+					process(commandLine.getOptionValue("algorithm"), properties, problem);
 				}
 			} finally {
 				if (output != null) {
@@ -267,7 +256,7 @@ public class Evaluator extends CommandLineUtility {
 	 * @param properties the parameters stored in a properties object
 	 * @throws IOException if an I/O error occurred
 	 */
-	protected void process(String algorithmName, TypedProperties properties)
+	protected void process(String algorithmName, TypedProperties properties, Problem problem)
 			throws IOException {
 		// instrument the problem to record timing information
 		TimingProblem timingProblem = new TimingProblem(problem);

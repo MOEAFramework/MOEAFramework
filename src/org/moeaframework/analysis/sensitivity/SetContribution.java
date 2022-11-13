@@ -26,7 +26,6 @@ import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PopulationIO;
 import org.moeaframework.core.indicator.Contribution;
 import org.moeaframework.util.CommandLineUtility;
-import org.moeaframework.util.TypedProperties;
 
 /**
  * Command line utility for reporting the number of solutions in a set that are
@@ -75,11 +74,8 @@ public class SetContribution extends CommandLineUtility {
 				.argName("file")
 				.required()
 				.build());
-		options.addOption(Option.builder("e")
-				.longOpt("epsilon")
-				.hasArg()
-				.argName("e1,e2,...")
-				.build());
+
+		OptionUtils.addEpsilonOption(options);
 		
 		return options;
 	}
@@ -87,14 +83,11 @@ public class SetContribution extends CommandLineUtility {
 	@Override
 	public void run(CommandLine commandLine) throws Exception {
 		NondominatedPopulation referenceSet = new NondominatedPopulation(
-				PopulationIO.readObjectives(new File(
-						commandLine.getOptionValue("reference"))));
+				PopulationIO.readObjectives(new File(commandLine.getOptionValue("reference"))));
+		double[] epsilon = OptionUtils.getEpsilon(commandLine);
 		Contribution contribution = null;
 
-		if (commandLine.hasOption("epsilon")) {
-			double[] epsilon = TypedProperties.withProperty("epsilon",
-					commandLine.getOptionValue("epsilon")).getDoubleArray(
-					"epsilon", null);
+		if (epsilon != null) {
 			contribution = new Contribution(referenceSet, epsilon);
 		} else {
 			contribution = new Contribution(referenceSet);

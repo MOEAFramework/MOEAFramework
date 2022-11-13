@@ -28,7 +28,6 @@ import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.PopulationIO;
 import org.moeaframework.core.Problem;
-import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.problem.AnalyticalProblem;
 import org.moeaframework.util.CommandLineUtility;
 
@@ -81,12 +80,9 @@ public class SetGenerator extends CommandLineUtility {
 	public Options getOptions() {
 		Options options = super.getOptions();
 		
-		options.addOption(Option.builder("b")
-				.longOpt("problem")
-				.hasArg()
-				.argName("name")
-				.required()
-				.build());
+		OptionUtils.addProblemOption(options, false);
+		OptionUtils.addEpsilonOption(options);
+		
 		options.addOption(Option.builder("n")
 				.longOpt("numberOfPoints")
 				.hasArg()
@@ -104,8 +100,6 @@ public class SetGenerator extends CommandLineUtility {
 				.argName("file")
 				.required()
 				.build());
-
-		OptionUtils.addEpsilonOption(options);
 		
 		return options;
 	}
@@ -123,8 +117,7 @@ public class SetGenerator extends CommandLineUtility {
 		}
 		
 		//generate the points
-		try (Problem problem = ProblemFactory.getInstance().getProblem(
-				commandLine.getOptionValue("problem"))) {
+		try (Problem problem = OptionUtils.getProblemInstance(commandLine, false)) {
 			if (problem instanceof AnalyticalProblem) {
 				for (int i=0; i<numberOfPoints; i++) {
 					set.add(((AnalyticalProblem)problem).generate());

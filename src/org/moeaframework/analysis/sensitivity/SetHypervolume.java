@@ -20,14 +20,12 @@ package org.moeaframework.analysis.sensitivity;
 import java.io.File;
 
 import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PopulationIO;
 import org.moeaframework.core.indicator.Hypervolume;
 import org.moeaframework.util.CommandLineUtility;
-import org.moeaframework.util.TypedProperties;
 
 /**
  * Command line utility for calculating the hypervolume of approximation sets.
@@ -57,28 +55,20 @@ public class SetHypervolume extends CommandLineUtility {
 	@Override
 	public Options getOptions() {
 		Options options = super.getOptions();
-		
-		options.addOption(Option.builder("e")
-				.longOpt("epsilon")
-				.hasArg()
-				.argName("e1,e2,...")
-				.build());
-		
+		OptionUtils.addEpsilonOption(options);
 		return options;
 	}
 
 	@Override
 	public void run(CommandLine commandLine) throws Exception {
+		double[] epsilon = OptionUtils.getEpsilon(commandLine);
+		
 		for (String filename : commandLine.getArgs()) {
 			NondominatedPopulation set = new NondominatedPopulation(
 					PopulationIO.readObjectives(new File(filename)));
 			
-			if (commandLine.hasOption("epsilon")) {
-				TypedProperties properties = TypedProperties.withProperty(
-						"epsilon", commandLine.getOptionValue("epsilon"));
-				
-				set = new EpsilonBoxDominanceArchive(
-						properties.getDoubleArray("epsilon", null), set);
+			if (epsilon != null) {
+				set = new EpsilonBoxDominanceArchive(epsilon, set);
 			}
 			
 			System.out.print(filename);

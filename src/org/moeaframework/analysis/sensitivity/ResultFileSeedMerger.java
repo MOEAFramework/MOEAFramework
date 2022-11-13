@@ -77,7 +77,7 @@ public class ResultFileSeedMerger extends CommandLineUtility {
 	public Options getOptions() {
 		Options options = super.getOptions();
 
-		OptionUtils.addProblemOptionGroup(options);
+		OptionUtils.addProblemOption(options, true);
 		OptionUtils.addEpsilonOption(options);
 
 		options.addOption(Option.builder("o")
@@ -118,7 +118,7 @@ public class ResultFileSeedMerger extends CommandLineUtility {
 		double[] epsilon = OptionUtils.getEpsilon(commandLine);
 
 
-		try (Problem problem = OptionUtils.getProblemInstance(commandLine)) {
+		try (Problem problem = OptionUtils.getProblemInstance(commandLine, true)) {
 			// load data from all input files
 			for (String filename : commandLine.getArgs()) {
 				entries.add(load(new File(filename), problem));

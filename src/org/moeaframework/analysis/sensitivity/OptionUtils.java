@@ -15,28 +15,52 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.util.TypedProperties;
 
+/**
+ * Create and parse command line options shared by multiple tools.
+ */
 public class OptionUtils {
 	
 	private OptionUtils() {
 		super();
 	}
 	
-	public static void addProblemOptionGroup(Options options) {
-		OptionGroup group = new OptionGroup();
-		group.setRequired(true);
-		group.addOption(Option.builder("b")
-				.longOpt("problem")
-				.hasArg()
-				.argName("name")
-				.build());
-		group.addOption(Option.builder("d")
-				.longOpt("dimension")
-				.hasArg()
-				.argName("number")
-				.build());
-		options.addOptionGroup(group);
+	/**
+	 * Adds an option group for specifying problems, either explicitly by name or
+	 * by the dimensionality (using a problem stub).
+	 * 
+	 * @param options the current set of options
+	 * @param allowStub if {@code true}, use a problem stub to handle data files
+	 *        just using the problem dimensionality
+	 */
+	public static void addProblemOption(Options options, boolean allowStub) {
+		if (allowStub) {
+			OptionGroup group = new OptionGroup();
+			group.setRequired(true);
+			group.addOption(Option.builder("b")
+					.longOpt("problem")
+					.hasArg()
+					.argName("name")
+					.build());
+			group.addOption(Option.builder("d")
+					.longOpt("dimension")
+					.hasArg()
+					.argName("number")
+					.build());
+			options.addOptionGroup(group);
+		} else {
+			options.addOption(Option.builder("b")
+					.longOpt("problem")
+					.hasArg()
+					.argName("name")
+					.build());
+		}
 	}
 	
+	/**
+	 * Adds an option for setting the reference set.
+	 * 
+	 * @param options the current set of options
+	 */
 	public static void addReferenceSetOption(Options options) {
 		options.addOption(Option.builder("r")
 				.longOpt("reference")
@@ -45,6 +69,12 @@ public class OptionUtils {
 				.build());
 	}
 	
+	/**
+	 * Adds an option for setting the epsilon value used in epsilon-dominated
+	 * archives.
+	 * 
+	 * @param options the current set of options
+	 */
 	public static void addEpsilonOption(Options options) {
 		options.addOption(Option.builder("e")
 				.longOpt("epsilon")
@@ -53,16 +83,34 @@ public class OptionUtils {
 				.build());
 	}
 	
-	public static Problem getProblemInstance(CommandLine commandLine) {
+	/**
+	 * Creates the problem instance specified on the command line.
+	 * 
+	 * @param commandLine the command line inputs
+	 * @param allowStub if {@code true}, use a problem stub to handle data files
+	 *        just using the problem dimensionality
+	 * @return the problem instance
+	 */
+	public static Problem getProblemInstance(CommandLine commandLine, boolean allowStub) {
 		if (commandLine.hasOption("problem")) {
-			return ProblemFactory.getInstance().getProblem(
-					commandLine.getOptionValue("problem"));
-		} else {
-			return new ProblemStub(Integer.parseInt(
-					commandLine.getOptionValue("dimension")));
+			return ProblemFactory.getInstance().getProblem(commandLine.getOptionValue("problem"));
 		}
+		
+		if (allowStub && commandLine.hasOption("dimension")) {
+			return new ProblemStub(Integer.parseInt(commandLine.getOptionValue("dimension")));
+		}
+		
+		throw new FrameworkException("no problem specified");
 	}
 	
+	/**
+	 * Loads the reference set based on the command line inputs.  This will either read from a file or
+	 * load the predefined reference set.
+	 * 
+	 * @param commandLine the command line inputs
+	 * @return the loaded reference set
+	 * @throws IOException if an I/O error occurred
+	 */
 	public static NondominatedPopulation getReferenceSet(CommandLine commandLine) throws IOException {
 		NondominatedPopulation referenceSet = null;
 		
@@ -81,6 +129,12 @@ public class OptionUtils {
 		return referenceSet;
 	}
 	
+	/**
+	 * Returns the array of epsilon values specified on the command line, if any.
+	 * 
+	 * @param commandLine the command line input
+	 * @return the epsilon values or {@code null} if unspecified
+	 */
 	public static double[] getEpsilon(CommandLine commandLine) {
 		if (commandLine.hasOption("epsilon")) {
 			TypedProperties properties = TypedProperties.withProperty("epsilon",
@@ -92,6 +146,12 @@ public class OptionUtils {
 		return null;
 	}
 	
+	/**
+	 * Returns an empty archive using the epsilon values specified on the command line.
+	 * 
+	 * @param commandLine the command line inputs
+	 * @return the empty archive
+	 */
 	public static NondominatedPopulation getArchive(CommandLine commandLine) {
 		double[] epsilon = getEpsilon(commandLine);
 		

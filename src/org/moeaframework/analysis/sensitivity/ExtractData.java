@@ -121,7 +121,7 @@ public class ExtractData extends CommandLineUtility {
 	public Options getOptions() {
 		Options options = super.getOptions();
 		
-		OptionUtils.addProblemOptionGroup(options);
+		OptionUtils.addProblemOption(options, true);
 		OptionUtils.addReferenceSetOption(options);
 		OptionUtils.addEpsilonOption(options);
 		
@@ -156,7 +156,7 @@ public class ExtractData extends CommandLineUtility {
 		String[] fields = commandLine.getArgs();
 
 		// indicators are prepared, run the data extraction routine
-		try (Problem problem = OptionUtils.getProblemInstance(commandLine);
+		try (Problem problem = OptionUtils.getProblemInstance(commandLine, true);
 				ResultFileReader input = new ResultFileReader(problem,
 						new File(commandLine.getOptionValue("input")));
 				OutputLogger output = new OutputLogger(commandLine.hasOption("output") ?

@@ -86,7 +86,7 @@ public class AerovisConverter extends CommandLineUtility {
 	public Options getOptions() {
 		Options options = super.getOptions();
 		
-		OptionUtils.addProblemOptionGroup(options);
+		OptionUtils.addProblemOption(options, true);
 		
 		options.addOption(Option.builder("i")
 				.longOpt("input")
@@ -268,7 +268,7 @@ public class AerovisConverter extends CommandLineUtility {
 			}
 		}
 		
-		try (Problem problem = OptionUtils.getProblemInstance(commandLine);			
+		try (Problem problem = OptionUtils.getProblemInstance(commandLine, true);			
 				ResultFileReader reader = new ResultFileReader(problem,
 						new File(commandLine.getOptionValue("input")));
 				PrintWriter writer = new PrintWriter(new FileWriter(

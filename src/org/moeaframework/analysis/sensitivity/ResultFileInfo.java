@@ -62,7 +62,7 @@ public class ResultFileInfo extends CommandLineUtility {
 	public Options getOptions() {
 		Options options = super.getOptions();
 		
-		OptionUtils.addProblemOptionGroup(options);
+		OptionUtils.addProblemOption(options, true);
 		
 		options.addOption(Option.builder("o")
 				.longOpt("output")
@@ -75,7 +75,7 @@ public class ResultFileInfo extends CommandLineUtility {
 
 	@Override
 	public void run(CommandLine commandLine) throws Exception {
-		try (Problem problem = OptionUtils.getProblemInstance(commandLine);
+		try (Problem problem = OptionUtils.getProblemInstance(commandLine, true);
 				OutputLogger output = new OutputLogger(commandLine.hasOption("output") ?
 					new File(commandLine.getOptionValue("output")) : null)) {
 			// display info for all result files

@@ -40,7 +40,6 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variable;
 import org.moeaframework.core.operator.RandomInitialization;
 import org.moeaframework.core.spi.AlgorithmFactory;
-import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.problem.ExternalProblem;
 import org.moeaframework.util.CommandLineUtility;
@@ -156,17 +155,15 @@ public class Solve extends CommandLineUtility {
 	@Override
 	public Options getOptions() {
 		Options options = super.getOptions();
+		
+		OptionUtils.addProblemOption(options, false);
+		OptionUtils.addEpsilonOption(options);
 
 		options.addOption(Option.builder("f")
 				.longOpt("output")
 				.hasArg()
 				.argName("file")
 				.required()
-				.build());
-		options.addOption(Option.builder("b")
-				.longOpt("problem")
-				.hasArg()
-				.argName("name")
 				.build());
 		options.addOption(Option.builder("a")
 				.longOpt("algorithm")
@@ -247,8 +244,6 @@ public class Solve extends CommandLineUtility {
 				.argName("trials")
 				.build());
 		
-		OptionUtils.addEpsilonOption(options);
-
 		return options;
 	}
 	
@@ -566,14 +561,14 @@ public class Solve extends CommandLineUtility {
 				}
 			}
 		}
+		
+		double[] epsilon = OptionUtils.getEpsilon(commandLine);
 
-		if (commandLine.hasOption("epsilon")) {
-			properties.setString("epsilon", 
-					commandLine.getOptionValue("epsilon"));
+		if (epsilon != null) {
+			properties.setDoubleArray("epsilon", epsilon);
 		}
 
-		int maxEvaluations = Integer.parseInt(
-				commandLine.getOptionValue("numberOfEvaluations"));
+		int maxEvaluations = Integer.parseInt(commandLine.getOptionValue("numberOfEvaluations"));
 
 		// seed the pseudo-random number generator
 		if (commandLine.hasOption("seed")) {
@@ -584,8 +579,7 @@ public class Solve extends CommandLineUtility {
 		int runtimeFrequency = 100;
 
 		if (commandLine.hasOption("runtimeFrequency")) {
-			runtimeFrequency = Integer.parseInt(
-					commandLine.getOptionValue("runtimeFrequency"));
+			runtimeFrequency = Integer.parseInt(commandLine.getOptionValue("runtimeFrequency"));
 		}
 
 		// open the resources and begin processing
@@ -595,8 +589,7 @@ public class Solve extends CommandLineUtility {
 		
 		try {
 			if (commandLine.hasOption("problem")) {
-				problem = ProblemFactory.getInstance().getProblem(
-						commandLine.getOptionValue("problem"));
+				problem = OptionUtils.getProblemInstance(commandLine, false);
 			} else {
 				problem = createExternalProblem(commandLine);
 			}
@@ -616,8 +609,7 @@ public class Solve extends CommandLineUtility {
 				FileUtils.delete(file);
 				
 				try (ResultFileWriter writer = new ResultFileWriter(problem, file)) {
-					algorithm = new RuntimeCollector(algorithm,
-							runtimeFrequency, writer);
+					algorithm = new RuntimeCollector(algorithm, runtimeFrequency, writer);
 					
 					while (!algorithm.isTerminated() &&
 							(algorithm.getNumberOfEvaluations() < maxEvaluations)) {

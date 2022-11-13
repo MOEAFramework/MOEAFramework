@@ -77,7 +77,7 @@ public class ResultFileMerger extends CommandLineUtility {
 	public Options getOptions() {
 		Options options = super.getOptions();
 		
-		OptionUtils.addProblemOptionGroup(options);
+		OptionUtils.addProblemOption(options, true);
 		OptionUtils.addEpsilonOption(options);
 		
 		options.addOption(Option.builder("o")
@@ -97,7 +97,7 @@ public class ResultFileMerger extends CommandLineUtility {
 	public void run(CommandLine commandLine) throws Exception {
 		NondominatedPopulation mergedSet = OptionUtils.getArchive(commandLine);
 
-		try (Problem problem = OptionUtils.getProblemInstance(commandLine)) {
+		try (Problem problem = OptionUtils.getProblemInstance(commandLine, true)) {
 			// read in result files
 			for (String filename : commandLine.getArgs()) {
 				try (ResultFileReader reader = new ResultFileReader(problem, new File(filename))) {
