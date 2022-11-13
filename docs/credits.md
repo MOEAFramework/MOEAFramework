@@ -29,5 +29,4 @@ code, but we also highlight these contributions below.
 * **Walking Fish Group (WFG) test problem suite** - Copyright 2006 Walking Fish Group. http://www.wfg.csse.uwa.edu.au/
 * **2009 Congress on Evolutionary Computation (CEC 2009) Test Problem Suite** - Permission to distribute these modified source codes under the GNU Lesser General Public License was obtained via e-mail correspondence with the authors. http://www.cec-2009.org/
 * **Hui Li and Qingfu Zhang's Complicated Pareto Set Test Problem Suite** - Permission to distribute these modified source codes under the GNU Lesser General Public License was obtained via e-mail correspondence with the authors.
-* **File moving, copying and deleting codes by Chris Nokleberg** - Copyright (C) 2007 The Guava Authors. Licensed under the Apache License, version 2.0
 * **List iterator implementation based on the Apache Commons Collections 3.1** - Licensed under the Apache License, version 2.0

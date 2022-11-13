@@ -19,8 +19,6 @@ package org.moeaframework.analysis.sensitivity;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintStream;
-
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
@@ -138,7 +136,7 @@ public class SobolAnalysis extends CommandLineUtility {
 	 * 
 	 * @param output the output stream
 	 */
-	private void display(PrintStream output) {
+	private void display(OutputLogger output) {
 		output.println("Parameter	Sensitivity [Confidence]");
 
 		output.println("First-Order Effects");
@@ -220,7 +218,7 @@ public class SobolAnalysis extends CommandLineUtility {
 	 * 
 	 * @param output the output stream
 	 */
-	private void displaySimple(PrintStream output) {
+	private void displaySimple(OutputLogger output) {
 		output.println("First-Order Effects");
 		for (int j = 0; j < P; j++) {
 			double[] a0 = new double[N];
@@ -617,8 +615,6 @@ public class SobolAnalysis extends CommandLineUtility {
 
 	@Override
 	public void run(CommandLine commandLine) throws Exception {
-		PrintStream output = null;
-		
 		//setup the parameters
 		parameterFile = new ParameterFile(new File(
 				commandLine.getOptionValue("parameterFile")));
@@ -635,24 +631,13 @@ public class SobolAnalysis extends CommandLineUtility {
 		N = validate(input);
 		load(input);
 
-		try {
-			//setup the output stream
-			if (commandLine.hasOption("output")) {
-				output = new PrintStream(new File(
-						commandLine.getOptionValue("output")));
-			} else {
-				output = System.out;
-			}
-			
+		try (OutputLogger output = new OutputLogger(commandLine.hasOption("output") ?
+				new File(commandLine.getOptionValue("output")) : null)) {
 			//perform the Sobol analysis and display the results
 			if (commandLine.hasOption("simple")) {
 				displaySimple(output);
 			} else {
 				display(output);
-			}
-		} finally {
-			if ((output != null) && (output != System.out)) {
-				output.close();
 			}
 		}
 	}
