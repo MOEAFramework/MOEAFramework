@@ -67,7 +67,6 @@ public class CollectorTest {
 	
 	protected void test(String algorithmName, Collector collector, 
 			boolean willAttach) {
-		Problem problem = null;
 		Accumulator accumulator = null;
 		int numberOfEvaluations = 1000;
 		String problemName = "DTLZ2_2";
@@ -75,8 +74,7 @@ public class CollectorTest {
 		
 		Assert.assertNotNull(collector.getAttachPoint());
 
-		try {
-			problem = ProblemFactory.getInstance().getProblem(problemName);
+		try (Problem problem = ProblemFactory.getInstance().getProblem(problemName)) {
 
 			Instrumenter instrumenter = new Instrumenter()
 					.withFrequency(100)
@@ -104,10 +102,6 @@ public class CollectorTest {
 				if (algorithm != null) {
 					algorithm.terminate();
 				}
-			}
-		} finally {
-			if (problem != null) {
-				problem.close();
 			}
 		}
 		

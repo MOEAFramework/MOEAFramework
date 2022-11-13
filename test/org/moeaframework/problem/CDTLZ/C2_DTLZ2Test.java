@@ -77,48 +77,47 @@ public class C2_DTLZ2Test {
 	 * @param numberOfObjectives the number of objectives
 	 */
 	public void test(int numberOfObjectives, double r) {
-		C2_DTLZ2 problem = new C2_DTLZ2(numberOfObjectives);
-		DTLZ2 originalProblem = new DTLZ2(numberOfObjectives);
-		
-		for (int i = 0; i <TestThresholds.SAMPLES; i++) {
-			Solution originalSlution = originalProblem.generate();
-			Solution solution = problem.newSolution();
-			
-			EncodingUtils.setReal(solution,
-					EncodingUtils.getReal(originalSlution));
-			
-			problem.evaluate(solution);
-			
-			// compute the minimum distance from the solution to either
-			//    1) the M corner solutions, e.g. (1, 0, ..., 0)
-			//    2) the center, e.g., (1/sqrt(M), ..., 1/sqrt(M))
-			double minDistance = Double.POSITIVE_INFINITY;
-			
-			for (int j = 0; j < numberOfObjectives; j++) {
-				double distance = Math.pow(solution.getObjective(j)-1.0, 2.0);
+		try (C2_DTLZ2 problem = new C2_DTLZ2(numberOfObjectives);
+				DTLZ2 originalProblem = new DTLZ2(numberOfObjectives)) {
+			for (int i = 0; i <TestThresholds.SAMPLES; i++) {
+				Solution originalSlution = originalProblem.generate();
+				Solution solution = problem.newSolution();
 				
-				for (int k = 0; k < numberOfObjectives; k++) {
-					if (k != j) {
-						distance += Math.pow(solution.getObjective(k), 2.0);
+				EncodingUtils.setReal(solution, EncodingUtils.getReal(originalSlution));
+				
+				problem.evaluate(solution);
+				
+				// compute the minimum distance from the solution to either
+				//    1) the M corner solutions, e.g. (1, 0, ..., 0)
+				//    2) the center, e.g., (1/sqrt(M), ..., 1/sqrt(M))
+				double minDistance = Double.POSITIVE_INFINITY;
+				
+				for (int j = 0; j < numberOfObjectives; j++) {
+					double distance = Math.pow(solution.getObjective(j)-1.0, 2.0);
+					
+					for (int k = 0; k < numberOfObjectives; k++) {
+						if (k != j) {
+							distance += Math.pow(solution.getObjective(k), 2.0);
+						}
 					}
+					
+					minDistance = Math.min(minDistance, distance);
 				}
 				
+				double distance = 0.0;
+	
+				for (int j = 0; j < numberOfObjectives; j++) {
+					distance += Math.pow(solution.getObjective(j) -
+						        1 / Math.sqrt(numberOfObjectives), 2.0);
+				}
+	
 				minDistance = Math.min(minDistance, distance);
-			}
-			
-			double distance = 0.0;
-
-			for (int j = 0; j < numberOfObjectives; j++) {
-				distance += Math.pow(solution.getObjective(j) -
-					        1 / Math.sqrt(numberOfObjectives), 2.0);
-			}
-
-			minDistance = Math.min(minDistance, distance);
-			
-			if (minDistance < Math.pow(r, 2.0)) {
-				Assert.assertFalse(solution.violatesConstraints());
-			} else {
-				Assert.assertTrue(solution.violatesConstraints());
+				
+				if (minDistance < Math.pow(r, 2.0)) {
+					Assert.assertFalse(solution.violatesConstraints());
+				} else {
+					Assert.assertTrue(solution.violatesConstraints());
+				}
 			}
 		}
 	}

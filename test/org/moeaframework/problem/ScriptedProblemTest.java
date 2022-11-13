@@ -43,9 +43,9 @@ import org.moeaframework.core.variable.RealVariable;
 @IgnoreOnCI("the scripting engine may not be available")
 public class ScriptedProblemTest {
 	
-	private static final String RESOURCE_JAVASCRIPT = 
-			"/org/moeaframework/problem/TestJavascript.js";
+	private static final String RESOURCE_JAVASCRIPT = "/org/moeaframework/problem/TestJavascript.js";
 	
+	@SuppressWarnings("resource")
 	@Test(expected = ScriptException.class)
 	public void testNoExtension() throws ScriptException, IOException {
 		File file = File.createTempFile("test", "");
@@ -54,6 +54,7 @@ public class ScriptedProblemTest {
 		new ScriptedProblem(file);
 	}
 	
+	@SuppressWarnings("resource")
 	@Test(expected = ScriptException.class)
 	public void testNoEngineForExtension() throws ScriptException, IOException {
 		File file = File.createTempFile("test", ".noscriptinglang");
@@ -62,6 +63,7 @@ public class ScriptedProblemTest {
 		new ScriptedProblem(file);
 	}
 	
+	@SuppressWarnings("resource")
 	@Test(expected = ScriptException.class)
 	public void testNoEngineWithName() throws ScriptException, IOException {
 		new ScriptedProblem("", "noscriptinglang");
@@ -72,14 +74,16 @@ public class ScriptedProblemTest {
 	URISyntaxException {
 		File file = TestUtils.extractResource(RESOURCE_JAVASCRIPT);
 		
-		test(new ScriptedProblem(file));
+		try (Problem problem = new ScriptedProblem(file)) {
+			test(problem);
+		}
 	}
 	
 	@Test
 	public void testJavascriptReader() throws IOException, ScriptException {
-		try (Reader reader = new InputStreamReader(getClass().getResourceAsStream(
-					RESOURCE_JAVASCRIPT))) {
-			test(new ScriptedProblem(reader, "nashorn"));
+		try (Reader reader = new InputStreamReader(getClass().getResourceAsStream(RESOURCE_JAVASCRIPT));
+				Problem problem = new ScriptedProblem(reader, "nashorn")) {
+			test(problem);
 		}
 	}
 	
@@ -95,10 +99,7 @@ public class ScriptedProblemTest {
 		variable.setValue(Math.PI / 10);
 		problem.evaluate(solution);
 		
-		Assert.assertEquals(variable.getValue(), solution.getObjective(0), 
-				Settings.EPS);
-		
-		problem.close();
+		Assert.assertEquals(variable.getValue(), solution.getObjective(0), Settings.EPS);
 	}
 
 }

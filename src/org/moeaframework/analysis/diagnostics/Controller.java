@@ -449,11 +449,8 @@ public class Controller {
 	public void showStatistics() {
 		List<ResultKey> selectedResults = frame.getSelectedResults();
 		String problemName = selectedResults.get(0).getProblem();
-		Problem problem = null;
 		
-		try {
-			problem = ProblemFactory.getInstance().getProblem(problemName);
-			
+		try (Problem problem = ProblemFactory.getInstance().getProblem(problemName)) {
 			double epsilon = EpsilonHelper.getEpsilon(problem);
 			
 			Analyzer analyzer = new Analyzer()
@@ -525,10 +522,6 @@ public class Controller {
 			viewer.setLocationRelativeTo(frame);
 			viewer.setIconImages(frame.getIconImages());
 			viewer.setVisible(true);
-		} finally {
-			if (problem != null) {
-				problem.close();
-			}
 		}
 	}
 	
@@ -618,18 +611,8 @@ public class Controller {
 					}
 					
 					// lookup predefined epsilons for this problem
-					Problem problem = null;
-					
-					try {
-						problem = ProblemFactory.getInstance().getProblem(
-								problemName);
-						
-						instrumenter.withEpsilon(EpsilonHelper.getEpsilon(
-								problem));
-					} finally {
-						if (problem != null) {
-							problem.close();
-						}
+					try (Problem problem = ProblemFactory.getInstance().getProblem(problemName)) {
+						instrumenter.withEpsilon(EpsilonHelper.getEpsilon(problem));
 					}
 					
 					// setup the progress listener to receive updates

@@ -123,18 +123,17 @@ public class DTLZ4Test extends ProblemTest {
 	 * @param M the number of objectives
 	 */
 	protected void testReferenceSet(int M) {
-		AnalyticalProblem problem = new org.moeaframework.problem.DTLZ.DTLZ4(M);
-
-		for (int i = 0; i < TestThresholds.SAMPLES; i++) {
-			Solution solution = problem.generate();
-			double sum = 0.0;
-
-			for (int j = 0; j < solution.getNumberOfObjectives(); j++) {
-				sum += Math.pow(solution.getObjective(j), 2.0);
+		try (AnalyticalProblem problem = new org.moeaframework.problem.DTLZ.DTLZ4(M)) {
+			for (int i = 0; i < TestThresholds.SAMPLES; i++) {
+				Solution solution = problem.generate();
+				double sum = 0.0;
+	
+				for (int j = 0; j < solution.getNumberOfObjectives(); j++) {
+					sum += Math.pow(solution.getObjective(j), 2.0);
+				}
+	
+				Assert.assertEquals(1.0, Math.sqrt(sum), TestThresholds.SOLUTION_EPS);
 			}
-
-			Assert.assertEquals(1.0, Math.sqrt(sum),
-					TestThresholds.SOLUTION_EPS);
 		}
 	}
 

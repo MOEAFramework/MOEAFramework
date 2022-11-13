@@ -38,12 +38,7 @@ import org.moeaframework.util.Vector;
  * rotations, which ensures the volume of the constraint-violating expanded
  * region is constant across all instances of a problem.
  */
-public class RotatedProblem implements Problem {
-	
-	/**
-	 * The original unrotated problem.
-	 */
-	private final Problem problem;
+public class RotatedProblem extends ProblemWrapper {
 	
 	/**
 	 * The rotation matrix.
@@ -73,8 +68,7 @@ public class RotatedProblem implements Problem {
 	 * @param rotation the rotation matrix
 	 */
 	public RotatedProblem(Problem problem, RealMatrix rotation) {
-		super();
-		this.problem = problem;
+		super(problem);
 		this.rotation = rotation;
 		
 		//calculate the expanded lower and upper bounds
@@ -98,27 +92,17 @@ public class RotatedProblem implements Problem {
 
 	@Override
 	public String getName() {
-		return "Rotated " + problem.getName();
-	}
-
-	@Override
-	public int getNumberOfVariables() {
-		return problem.getNumberOfVariables();
-	}
-
-	@Override
-	public int getNumberOfObjectives() {
-		return problem.getNumberOfObjectives();
+		return "Rotated " + super.getName();
 	}
 
 	@Override
 	public int getNumberOfConstraints() {
-		return problem.getNumberOfConstraints() + 1;
+		return super.getNumberOfConstraints() + 1;
 	}
 
 	@Override
 	public void evaluate(Solution solution) {
-		Solution temp = problem.newSolution();
+		Solution temp = super.newSolution();
 		
 		//apply the rotation
 		double[] x = EncodingUtils.getReal(solution);
@@ -143,17 +127,17 @@ public class RotatedProblem implements Problem {
 		}
 		
 		//evaluate the solution
-		problem.evaluate(temp);
+		super.evaluate(temp);
 		
 		//extract the results
 		solution.setObjectives(temp.getObjectives());
 		
-		for (int i = 0; i < problem.getNumberOfConstraints(); i++) {
+		for (int i = 0; i < super.getNumberOfConstraints(); i++) {
 			solution.setConstraint(i, temp.getConstraint(i));
 		}
 		
 		//set the bounds violation constraint
-		solution.setConstraint(problem.getNumberOfConstraints(), 
+		solution.setConstraint(super.getNumberOfConstraints(), 
 				boundsViolation);
 	}
 
@@ -168,11 +152,6 @@ public class RotatedProblem implements Problem {
 		}
 		
 		return result;
-	}
-
-	@Override
-	public void close() {
-		problem.close();
 	}
 
 }

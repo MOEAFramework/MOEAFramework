@@ -25,6 +25,7 @@ import java.util.concurrent.Future;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.problem.ProblemException;
+import org.moeaframework.problem.ProblemWrapper;
 
 /**
  * Distributes the {@link #evaluate(Solution)} method across multiple threads,
@@ -32,18 +33,20 @@ import org.moeaframework.problem.ProblemException;
  * {@code ExecutorService} defines the type and method of distribution. The
  * problem must be {@link Serializable} if executing on remote nodes.
  */
-public class DistributedProblem implements Problem {
+public class DistributedProblem extends ProblemWrapper {
 
 	/**
 	 * The {@code ExecutorService} for distributing jobs across multiple
 	 * threads, cores or compute nodes.
 	 */
 	private final ExecutorService executor;
-
+	
 	/**
-	 * The problem.
+	 * If {@code true}, the executor service will be shutdown when this
+	 * problem is closed; if {@code false}, it's the caller's responsibility to manage
+	 * the lifecycle of the executor.
 	 */
-	private final Problem innerProblem;
+	private final boolean shutdownWhenClosed;
 
 	/**
 	 * By assigning a unique id to each FutureSolution that this 
@@ -56,18 +59,35 @@ public class DistributedProblem implements Problem {
 	/**
 	 * Decorates a problem for distributing the evaluation of the problem across
 	 * multiple threads, cores or compute nodes as defined by the specified
-	 * {@code ExecutorService}.
+	 * {@code ExecutorService}.  This will not shutdown the executor and is
+	 * equivalent to calling the constructor with {@code shutdownWhenClosed} set to
+	 * {@code false}.
 	 * 
 	 * @param problem the problem being distributed
 	 * @param executor the {@code ExecutorService} for distributing jobs across
 	 *        multiple threads, cores or compute nodes
 	 */
 	public DistributedProblem(Problem problem, ExecutorService executor) {
-		super();
-		this.innerProblem = problem;
-		this.executor = executor;
+		this(problem, executor, false);
 	}
-
+	
+	/**
+	 * Decorates a problem for distributing the evaluation of the problem across
+	 * multiple threads, cores or compute nodes as defined by the specified
+	 * {@code ExecutorService}.
+	 * 
+	 * @param problem the problem being distributed
+	 * @param executor the {@code ExecutorService} for distributing jobs across
+	 *        multiple threads, cores or compute nodes
+	 * @param shutdownWhenClosed {@code true} to shutdown the executor when this
+	 *        problem instance is closed; {@code false} otherwise
+	 */
+	public DistributedProblem(Problem problem, ExecutorService executor, boolean shutdownWhenClosed) {
+		super(problem);
+		this.executor = executor;
+		this.shutdownWhenClosed = shutdownWhenClosed;
+	}
+	
 	/**
 	 * The {@link Callable} sent to the {@code ExecutorService} for distributed
 	 * processing. Note that serialization may result in the solution being
@@ -115,8 +135,8 @@ public class DistributedProblem implements Problem {
 		if (solution instanceof FutureSolution) {
 			FutureSolution futureSolution = (FutureSolution)solution;
 			futureSolution.setDistributedEvaluationID(nextDistributedEvaluationID());
-			Future<Solution> future = executor.submit(new ProblemEvaluator(
-					innerProblem, futureSolution));
+			
+			Future<Solution> future = executor.submit(new ProblemEvaluator(problem, futureSolution));
 			futureSolution.setFuture(future);
 		} else {
 			throw new ProblemException(this, "requires FutureSolution");
@@ -127,35 +147,20 @@ public class DistributedProblem implements Problem {
 		return nextDistributedEvaluationID++;
 	}
 
-
-	@Override
-	public String getName() {
-		return innerProblem.getName();
-	}
-
-	@Override
-	public int getNumberOfConstraints() {
-		return innerProblem.getNumberOfConstraints();
-	}
-
-	@Override
-	public int getNumberOfObjectives() {
-		return innerProblem.getNumberOfObjectives();
-	}
-
-	@Override
-	public int getNumberOfVariables() {
-		return innerProblem.getNumberOfVariables();
-	}
-
 	@Override
 	public Solution newSolution() {
-		return new FutureSolution(innerProblem.newSolution());
+		return new FutureSolution(super.newSolution());
 	}
 	
 	@Override
 	public void close() {
-		innerProblem.close();
+		try {
+			super.close();
+		} finally {
+			if (shutdownWhenClosed && !executor.isShutdown()) {
+				executor.shutdown();
+			}
+		}
 	}
 
 }

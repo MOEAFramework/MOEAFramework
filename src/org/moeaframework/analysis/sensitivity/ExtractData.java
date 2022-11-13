@@ -21,12 +21,10 @@ import java.io.File;
 import java.io.IOException;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
-import org.apache.commons.cli.OptionGroup;
 import org.apache.commons.cli.Options;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Indicator;
 import org.moeaframework.core.NondominatedPopulation;
-import org.moeaframework.core.PopulationIO;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.indicator.AdditiveEpsilonIndicator;
 import org.moeaframework.core.indicator.Contribution;
@@ -38,7 +36,6 @@ import org.moeaframework.core.indicator.R1Indicator;
 import org.moeaframework.core.indicator.R2Indicator;
 import org.moeaframework.core.indicator.R3Indicator;
 import org.moeaframework.core.indicator.Spacing;
-import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.util.CommandLineUtility;
 import org.moeaframework.util.OptionCompleter;
 import org.moeaframework.util.TypedProperties;
@@ -111,17 +108,6 @@ import org.moeaframework.util.TypedProperties;
  * </table>
  */
 public class ExtractData extends CommandLineUtility {
-	
-	/**
-	 * The problem.
-	 */
-	private Problem problem;
-	
-	/**
-	 * The reference set; {@code null} if the reference set has not yet been
-	 * loaded.
-	 */
-	private NondominatedPopulation referenceSet;
 
 	/**
 	 * Constructs the command line utility for extracting data from a result
@@ -135,19 +121,9 @@ public class ExtractData extends CommandLineUtility {
 	public Options getOptions() {
 		Options options = super.getOptions();
 		
-		OptionGroup group = new OptionGroup();
-		group.setRequired(true);
-		group.addOption(Option.builder("b")
-				.longOpt("problem")
-				.hasArg()
-				.argName("name")
-				.build());
-		group.addOption(Option.builder("d")
-				.longOpt("dimension")
-				.hasArg()
-				.argName("number")
-				.build());
-		options.addOptionGroup(group);
+		OptionUtils.addProblemOption(options, true);
+		OptionUtils.addReferenceSetOption(options);
+		OptionUtils.addEpsilonOption(options);
 		
 		options.addOption(Option.builder("i")
 				.longOpt("input")
@@ -165,16 +141,6 @@ public class ExtractData extends CommandLineUtility {
 				.hasArg()
 				.argName("value")
 				.build());
-		options.addOption(Option.builder("r")
-				.longOpt("reference")
-				.hasArg()
-				.argName("file")
-				.build());
-		options.addOption(Option.builder("e")
-				.longOpt("epsilon")
-				.hasArg()
-				.argName("e1,e2,...")
-				.build());
 		options.addOption(Option.builder("n")
 				.longOpt("noheader")
 				.build());
@@ -184,67 +150,55 @@ public class ExtractData extends CommandLineUtility {
 
 	@Override
 	public void run(CommandLine commandLine) throws Exception {
-		String separator = commandLine.hasOption("separator") ? commandLine
-				.getOptionValue("separator") : " ";
+		String separator = commandLine.hasOption("separator") ?
+				commandLine.getOptionValue("separator") : " ";
 
 		String[] fields = commandLine.getArgs();
 
 		// indicators are prepared, run the data extraction routine
-		try {
-			// setup the problem
-			if (commandLine.hasOption("problem")) {
-				problem = ProblemFactory.getInstance().getProblem(commandLine
-						.getOptionValue("problem"));
-			} else {
-				problem = new ProblemStub(Integer.parseInt(commandLine
-						.getOptionValue("dimension")));
-			}
-			
-			try (ResultFileReader input = new ResultFileReader(problem,
+		try (Problem problem = OptionUtils.getProblemInstance(commandLine, true);
+				ResultFileReader input = new ResultFileReader(problem,
 						new File(commandLine.getOptionValue("input")));
-				 OutputLogger output = new OutputLogger(commandLine.hasOption("output") ?
+				OutputLogger output = new OutputLogger(commandLine.hasOption("output") ?
 						new File(commandLine.getOptionValue("output")) : null)) {
-				// optionally print header line
-				if (!commandLine.hasOption("noheader")) {
-					output.print('#');
+			NondominatedPopulation referenceSet = OptionUtils.getReferenceSet(commandLine);
+			
+			// optionally print header line
+			if (!commandLine.hasOption("noheader")) {
+				output.print('#');
 						
-					for (int i = 0; i < fields.length; i++) {
-						if (i > 0) {
-							output.print(separator);
-						}
-
-						output.print(fields[i]);
+				for (int i = 0; i < fields.length; i++) {
+					if (i > 0) {
+						output.print(separator);
 					}
 
-					output.println();
+					output.print(fields[i]);
 				}
 
-				// process entries
-				while (input.hasNext()) {
-					ResultEntry entry = input.next();
-					TypedProperties properties = entry.getProperties();
-
-					for (int i = 0; i < fields.length; i++) {
-						if (i > 0) {
-							output.print(separator);
-						}
-
-						if (properties.contains(fields[i])) {
-							output.print(properties.getString(fields[i], null));
-						} else if (fields[i].startsWith("+")) {
-							output.print(evaluate(fields[i].substring(1),
-									entry, commandLine));
-						} else {
-							throw new FrameworkException("missing field");
-						}
-					}
-
-					output.println();
-				}
+				output.println();
 			}
-		} finally {
-			if (problem != null) {
-				problem.close();
+
+			// process entries
+			while (input.hasNext()) {
+				ResultEntry entry = input.next();
+				TypedProperties properties = entry.getProperties();
+
+				for (int i = 0; i < fields.length; i++) {
+					if (i > 0) {
+						output.print(separator);
+					}
+
+					if (properties.contains(fields[i])) {
+						output.print(properties.getString(fields[i], null));
+					} else if (fields[i].startsWith("+")) {
+						output.print(evaluate(fields[i].substring(1), entry,
+								problem, referenceSet, commandLine));
+					} else {
+						throw new FrameworkException("missing field");
+					}
+				}
+
+				output.println();
 			}
 		}
 	}
@@ -256,13 +210,15 @@ public class ExtractData extends CommandLineUtility {
 	 * 
 	 * @param command the command identifier
 	 * @param entry the entry in the result file
+	 * @param problem the problem instance
+	 * @param referenceSet the reference set for the problem
 	 * @param commandLine the command line options
 	 * @return the value of the special command
 	 * @throws FrameworkException if the command is not supported
 	 * @throws IOException if an I/O error occurred
 	 */
-	protected String evaluate(String command, ResultEntry entry, 
-			CommandLine commandLine) throws IOException {
+	protected String evaluate(String command, ResultEntry entry, Problem problem,
+			NondominatedPopulation referenceSet, CommandLine commandLine) throws IOException {
 		OptionCompleter completer = new OptionCompleter("hypervolume",
 				"generational", "inverted", "epsilon", "error", "spacing",
 				"contribution", "R1", "R2", "R3");
@@ -270,22 +226,6 @@ public class ExtractData extends CommandLineUtility {
 		
 		if (option == null) {
 			throw new FrameworkException("unsupported command");
-		}
-		
-		//load the reference set
-		if (referenceSet == null) {
-			if (commandLine.hasOption("reference")) {
-				referenceSet = new NondominatedPopulation(
-						PopulationIO.readObjectives(new File(
-								commandLine.getOptionValue("reference"))));
-			} else {
-				referenceSet = ProblemFactory.getInstance().getReferenceSet(
-						commandLine.getOptionValue("problem"));
-			}
-			
-			if (referenceSet == null) {
-				throw new FrameworkException("no reference set available");
-			}
 		}
 		
 		//create the indicator, these should perhaps be cached for speed
@@ -304,10 +244,9 @@ public class ExtractData extends CommandLineUtility {
 		} else if (option.equals("spacing")) {
 			indicator = new Spacing(problem);
 		} else if (option.equals("contribution")) {
-			if (commandLine.hasOption("epsilon")) {
-				double[] epsilon = TypedProperties.withProperty("epsilon",
-						commandLine.getOptionValue("epsilon")).getDoubleArray(
-						"epsilon", null);
+			double[] epsilon = OptionUtils.getEpsilon(commandLine);
+			
+			if (epsilon != null) {
 				indicator = new Contribution(referenceSet, epsilon);
 			} else {
 				indicator = new Contribution(referenceSet);

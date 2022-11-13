@@ -20,6 +20,7 @@ package org.moeaframework.core.spi;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.problem.AnalyticalProblem;
+import org.moeaframework.problem.ProblemWrapper;
 
 /**
  * Problem factory which instruments {@link Problem} instances with testing
@@ -37,86 +38,21 @@ public class ProblemFactoryTestWrapper extends ProblemFactory {
 		final Problem problem = super.getProblem(name);
 		
 		if (problem instanceof AnalyticalProblem) {
-			return new AnalyticalProblem() {
-				
-				@Override
-				public String getName() {
-					return problem.getName();
-				}
-	
-				@Override
-				public int getNumberOfVariables() {
-					return problem.getNumberOfVariables();
-				}
-	
-				@Override
-				public int getNumberOfObjectives() {
-					return problem.getNumberOfObjectives();
-				}
-	
-				@Override
-				public int getNumberOfConstraints() {
-					return problem.getNumberOfConstraints();
-				}
-	
-				@Override
-				public void evaluate(Solution solution) {
-					problem.evaluate(solution);
-				}
-	
-				@Override
-				public Solution newSolution() {
-					return problem.newSolution();
-				}
+			return new AnalyticalProblemWrapper((AnalyticalProblem)problem) {
 	
 				@Override
 				public void close() {
-					problem.close();
+					super.close();
 					closeCount++;
-				}
-
-				@Override
-				public Solution generate() {
-					return ((AnalyticalProblem)problem).generate();
 				}
 				
 			};
 		} else {
-			return new Problem() {
-	
-				@Override
-				public String getName() {
-					return problem.getName();
-				}
-	
-				@Override
-				public int getNumberOfVariables() {
-					return problem.getNumberOfVariables();
-				}
-	
-				@Override
-				public int getNumberOfObjectives() {
-					return problem.getNumberOfObjectives();
-				}
-	
-				@Override
-				public int getNumberOfConstraints() {
-					return problem.getNumberOfConstraints();
-				}
-	
-				@Override
-				public void evaluate(Solution solution) {
-					problem.evaluate(solution);
-				}
-	
-				@Override
-				public Solution newSolution() {
-					return problem.newSolution();
-				}
-	
+			return new ProblemWrapper(problem) {
+
 				@Override
 				public void close() {
-					problem.close();
+					super.close();
 					closeCount++;
 				}
 				
@@ -131,6 +67,19 @@ public class ProblemFactoryTestWrapper extends ProblemFactory {
 	 */
 	public int getCloseCount() {
 		return closeCount;
+	}
+	
+	private class AnalyticalProblemWrapper extends ProblemWrapper implements AnalyticalProblem {
+
+		protected AnalyticalProblemWrapper(AnalyticalProblem problem) {
+			super(problem);
+		}
+
+		@Override
+		public Solution generate() {
+			return ((AnalyticalProblem)problem).generate();
+		}
+		
 	}
 	
 }

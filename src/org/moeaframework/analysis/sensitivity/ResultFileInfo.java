@@ -20,10 +20,8 @@ package org.moeaframework.analysis.sensitivity;
 import java.io.File;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
-import org.apache.commons.cli.OptionGroup;
 import org.apache.commons.cli.Options;
 import org.moeaframework.core.Problem;
-import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.util.CommandLineUtility;
 
 /**
@@ -64,19 +62,7 @@ public class ResultFileInfo extends CommandLineUtility {
 	public Options getOptions() {
 		Options options = super.getOptions();
 		
-		OptionGroup group = new OptionGroup();
-		group.setRequired(true);
-		group.addOption(Option.builder("b")
-				.longOpt("problem")
-				.hasArg()
-				.argName("name")
-				.build());
-		group.addOption(Option.builder("d")
-				.longOpt("dimension")
-				.hasArg()
-				.argName("number")
-				.build());
-		options.addOptionGroup(group);
+		OptionUtils.addProblemOption(options, true);
 		
 		options.addOption(Option.builder("o")
 				.longOpt("output")
@@ -89,37 +75,21 @@ public class ResultFileInfo extends CommandLineUtility {
 
 	@Override
 	public void run(CommandLine commandLine) throws Exception {
-		Problem problem = null;
-
-		try {
-			// setup the problem
-			if (commandLine.hasOption("problem")) {
-				problem = ProblemFactory.getInstance().getProblem(commandLine
-						.getOptionValue("problem"));
-			} else {
-				problem = new ProblemStub(Integer.parseInt(commandLine
-						.getOptionValue("dimension")));
-			}
-
-			try (OutputLogger output = new OutputLogger(commandLine.hasOption("output") ?
+		try (Problem problem = OptionUtils.getProblemInstance(commandLine, true);
+				OutputLogger output = new OutputLogger(commandLine.hasOption("output") ?
 					new File(commandLine.getOptionValue("output")) : null)) {
-				// display info for all result files
-				for (String filename : commandLine.getArgs()) {
-					try (ResultFileReader reader = new ResultFileReader(problem, new File(filename))) {
-						int count = 0;
+			// display info for all result files
+			for (String filename : commandLine.getArgs()) {
+				try (ResultFileReader reader = new ResultFileReader(problem, new File(filename))) {
+					int count = 0;
 						
-						while (reader.hasNext()) {
-							reader.next();
-							count++;
-						}
-
-						output.println(filename + " " + count);
+					while (reader.hasNext()) {
+						reader.next();
+						count++;
 					}
+
+					output.println(filename + " " + count);
 				}
-			}
-		} finally {
-			if (problem != null) {
-				problem.close();
 			}
 		}
 	}

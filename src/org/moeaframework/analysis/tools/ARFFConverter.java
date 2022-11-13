@@ -26,16 +26,14 @@ import java.util.List;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
-import org.apache.commons.cli.OptionGroup;
 import org.apache.commons.cli.Options;
-import org.moeaframework.analysis.sensitivity.ProblemStub;
+import org.moeaframework.analysis.sensitivity.OptionUtils;
 import org.moeaframework.analysis.sensitivity.ResultFileReader;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.util.CommandLineUtility;
@@ -96,19 +94,7 @@ public class ARFFConverter extends CommandLineUtility {
 	public Options getOptions() {
 		Options options = super.getOptions();
 		
-		OptionGroup group = new OptionGroup();
-		group.setRequired(true);
-		group.addOption(Option.builder("b")
-				.longOpt("problem")
-				.hasArg()
-				.argName("name")
-				.build());
-		group.addOption(Option.builder("d")
-				.longOpt("dimension")
-				.hasArg()
-				.argName("number")
-				.build());
-		options.addOptionGroup(group);
+		OptionUtils.addProblemOption(options, true);
 		
 		options.addOption(Option.builder("i")
 				.longOpt("input")
@@ -223,8 +209,7 @@ public class ARFFConverter extends CommandLineUtility {
 				}
 					
 				if (solution.getVariable(i) instanceof RealVariable) {
-					writer.print(EncodingUtils.getReal(
-							solution.getVariable(i)));
+					writer.print(EncodingUtils.getReal(solution.getVariable(i)));
 				} else {
 					writer.print("?");
 				}
@@ -244,8 +229,6 @@ public class ARFFConverter extends CommandLineUtility {
 
 	@Override
 	public void run(CommandLine commandLine) throws Exception {
-		Problem problem = null;
-		
 		boolean reduced = false;
 		List<String> attributes = new ArrayList<String>();
 		
@@ -261,16 +244,7 @@ public class ARFFConverter extends CommandLineUtility {
 			}
 		}
 		
-		try {
-			// setup the problem
-			if (commandLine.hasOption("problem")) {
-				problem = ProblemFactory.getInstance().getProblem(
-						commandLine.getOptionValue("problem"));
-			} else {
-				problem = new ProblemStub(Integer.parseInt(
-						commandLine.getOptionValue("dimension")));
-			}
-			
+		try (Problem problem = OptionUtils.getProblemInstance(commandLine, true)) {
 			// read in the last entry from the result file
 			NondominatedPopulation population = null;
 			
@@ -292,10 +266,6 @@ public class ARFFConverter extends CommandLineUtility {
 						commandLine.getOptionValue("output")))) {
 				printHeader(problem, reduced, attributes, writer);
 				printData(problem, reduced, population, writer);
-			}
-		} finally {
-			if (problem != null) {
-				problem.close();
 			}
 		}
 	}

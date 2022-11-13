@@ -574,19 +574,11 @@ public class Analyzer extends ProblemBuilder {
 	 * @throws IOException if an I/O error occurred
 	 */
 	public Analyzer loadAs(String name, File resultFile) throws IOException {
-		Problem problem = null;
-		
-		try {
-			problem = getProblemInstance();
-
+		try (Problem problem = getProblemInstance()) {
 			try (ResultFileReader reader = new ResultFileReader(problem, resultFile)) {	
 				while (reader.hasNext()) {
 					add(name, reader.next().getPopulation());
 				}
-			}
-		} finally {
-			if ((problem != null) && (problem != this.problemInstance)) {
-				problem.close();
 			}
 		}
 		
@@ -604,11 +596,7 @@ public class Analyzer extends ProblemBuilder {
 	 * @throws IOException if an I/O error occurred
 	 */
 	public Analyzer saveAs(String name, File resultFile) throws IOException {
-		Problem problem = null;
-		
-		try {
-			problem = getProblemInstance();
-			
+		try (Problem problem = getProblemInstance()) {	
 			//delete the file to avoid appending
 			FileUtils.delete(resultFile);
 
@@ -620,10 +608,6 @@ public class Analyzer extends ProblemBuilder {
 						writer.append(new ResultEntry(result));
 					}
 				}
-			}
-		} finally {
-			if ((problem != null) && (problem != this.problemInstance)) {
-				problem.close();
 			}
 		}
 		
@@ -720,11 +704,7 @@ public class Analyzer extends ProblemBuilder {
 			return new AnalyzerResults();
 		}
 		
-		Problem problem = null;
-		
-		try {
-			problem = getProblemInstance();
-			
+		try (Problem problem = getProblemInstance()) {
 			//instantiate the reference set
 			NondominatedPopulation referenceSet = getReferenceSet();
 			
@@ -911,10 +891,6 @@ public class Analyzer extends ProblemBuilder {
 			}
 					
 			return analyzerResults;
-		} finally {
-			if ((problem != null) && (problem != this.problemInstance)) {
-				problem.close();
-			}
 		}
 	}
 	

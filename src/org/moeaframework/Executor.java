@@ -755,6 +755,26 @@ public class Executor extends ProblemBuilder {
 		
 		return result;
 	}
+	
+	/**
+	 * When configured to run on multiple threads or with an {@see ExecutorService},
+	 * will wrap the problem instance in a distributed problem.
+	 * 
+	 * @return the wrapped problem instance
+	 */
+	protected Problem getDistributedProblemInstance() {
+		if (executorService != null) {
+			return new DistributedProblem(getProblemInstance(),
+					executorService,
+					false);
+		} else if (numberOfThreads > 1) {
+			return new DistributedProblem(getProblemInstance(),
+					Executors.newFixedThreadPool(numberOfThreads),
+					true);
+		}
+		
+		return getProblemInstance();
+	}
 
 	/**
 	 * Runs this executor with its configured settings.
@@ -774,85 +794,64 @@ public class Executor extends ProblemBuilder {
 			throw new IllegalArgumentException("no problem specified");
 		}
 		
-		Problem problem = null;
 		Algorithm algorithm = null;
-		ExecutorService executor = null;
 		
-		try {
-			problem = getProblemInstance();
-			
-			try {
-				if (executorService != null) {
-					problem = new DistributedProblem(problem, executorService);
-				} else if (numberOfThreads > 1) {
-					executor = Executors.newFixedThreadPool(numberOfThreads);
-					problem = new DistributedProblem(problem, executor);
+		try (Problem problem = getDistributedProblemInstance()) {
+			properties.clearAccessedProperties();
+				
+			NondominatedPopulation result = newArchive();
+				
+			try {					
+				if (algorithmFactory == null) {
+					algorithm = AlgorithmFactory.getInstance().getAlgorithm(
+							algorithmName, 
+							properties, 
+							problem);
+				} else {
+					algorithm = algorithmFactory.getAlgorithm(
+							algorithmName, 
+							properties, 
+							problem);
 				}
-				
-				properties.clearAccessedProperties();
-				
-				NondominatedPopulation result = newArchive();
-				
-				try {					
-					if (algorithmFactory == null) {
-						algorithm = AlgorithmFactory.getInstance().getAlgorithm(
-								algorithmName, 
-								properties, 
-								problem);
-					} else {
-						algorithm = algorithmFactory.getAlgorithm(
-								algorithmName, 
-								properties, 
-								problem);
-					}
 
-					if (checkpointFile != null) {
-						algorithm = new Checkpoints(
-								algorithm, 
-								checkpointFile,
-								checkpointFrequency);
-					}
+				if (checkpointFile != null) {
+					algorithm = new Checkpoints(
+							algorithm, 
+							checkpointFile,
+							checkpointFrequency);
+				}
 					
-					if (instrumenter != null) {
-						algorithm = instrumenter.instrument(algorithm);
-					}
+				if (instrumenter != null) {
+					algorithm = instrumenter.instrument(algorithm);
+				}
 					
-					TerminationCondition terminationCondition = createTerminationCondition();
-					terminationCondition.initialize(algorithm);
+				TerminationCondition terminationCondition = createTerminationCondition();
+				terminationCondition.initialize(algorithm);
 					
-					properties.warnIfUnaccessedProperties();
-					progress.setCurrentAlgorithm(algorithm);
+				properties.warnIfUnaccessedProperties();
+				progress.setCurrentAlgorithm(algorithm);
 
-					while (!algorithm.isTerminated() &&
-							!terminationCondition.shouldTerminate(algorithm)) {
-						// stop and return null if canceled and not yet complete
-						if (isCanceled.get()) {
-							return null;
-						}
+				while (!algorithm.isTerminated() &&
+						!terminationCondition.shouldTerminate(algorithm)) {
+					// stop and return null if canceled and not yet complete
+					if (isCanceled.get()) {
+						return null;
+					}
 						
-						algorithm.step();
-						progress.setCurrentNFE(algorithm.getNumberOfEvaluations());
-					}
+					algorithm.step();
+					progress.setCurrentNFE(algorithm.getNumberOfEvaluations());
+				}
 
-					result.addAll(algorithm.getResult());
+				result.addAll(algorithm.getResult());
 					
-					progress.setCurrentAlgorithm(null);
-				} finally {
-					if (algorithm != null && !algorithm.isTerminated()) {
-						algorithm.terminate();
-					}
-				}
-				
-				return result;
+				progress.setCurrentAlgorithm(null);
 			} finally {
-				if (executor != null) {
-					executor.shutdown();
+				if (algorithm != null && !algorithm.isTerminated()) {
+					algorithm.terminate();
 				}
 			}
-		} finally {
-			if ((problem != null) && (problem != this.problemInstance)) {
-				problem.close();
-			}
+				
+			return result;
 		}
 	}
 

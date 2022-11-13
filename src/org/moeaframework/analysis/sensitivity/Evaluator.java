@@ -28,11 +28,9 @@ import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PRNG;
-import org.moeaframework.core.PopulationIO;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.indicator.QualityIndicator;
 import org.moeaframework.core.spi.AlgorithmFactory;
-import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.problem.TimingProblem;
 import org.moeaframework.util.CommandLineUtility;
 import org.moeaframework.util.TypedProperties;
@@ -105,11 +103,6 @@ import org.moeaframework.util.TypedProperties;
 public class Evaluator extends CommandLineUtility {
 
 	/**
-	 * The problem being evaluated.
-	 */
-	protected Problem problem;
-
-	/**
 	 * The output writer where end-of-run results are stored.
 	 */
 	protected OutputWriter output;
@@ -125,6 +118,10 @@ public class Evaluator extends CommandLineUtility {
 	@Override
 	public Options getOptions() {
 		Options options = super.getOptions();
+		
+		OptionUtils.addProblemOption(options, false);
+		OptionUtils.addReferenceSetOption(options);
+		OptionUtils.addEpsilonOption(options);
 
 		options.addOption(Option.builder("p")
 				.longOpt("parameterFile")
@@ -144,12 +141,6 @@ public class Evaluator extends CommandLineUtility {
 				.argName("file")
 				.required()
 				.build());
-		options.addOption(Option.builder("b")
-				.longOpt("problem")
-				.hasArg()
-				.argName("name")
-				.required()
-				.build());
 		options.addOption(Option.builder("a")
 				.longOpt("algorithm")
 				.hasArg()
@@ -167,18 +158,8 @@ public class Evaluator extends CommandLineUtility {
 				.hasArg()
 				.argName("value")
 				.build());
-		options.addOption(Option.builder("e")
-				.longOpt("epsilon")
-				.hasArg()
-				.argName("e1,e2,...")
-				.build());
 		options.addOption(Option.builder("m")
 				.longOpt("metrics")
-				.build());
-		options.addOption(Option.builder("r")
-				.longOpt("reference")
-				.hasArg()
-				.argName("file")
 				.build());
 		options.addOption(Option.builder("n")
 				.longOpt("novariables")
@@ -194,110 +175,76 @@ public class Evaluator extends CommandLineUtility {
 	public void run(CommandLine commandLine) throws IOException {
 		File outputFile = new File(commandLine.getOptionValue("output"));
 		File inputFile = new File(commandLine.getOptionValue("input"));
+		double[] epsilon = OptionUtils.getEpsilon(commandLine);
 
-		ParameterFile parameterFile = new ParameterFile(new File(commandLine
-				.getOptionValue("parameterFile")));
+		ParameterFile parameterFile = new ParameterFile(new File(
+				commandLine.getOptionValue("parameterFile")));
 
 		// sanity check to ensure input hasn't been modified after the output
 		if (!commandLine.hasOption("force") &&
 				(outputFile.lastModified() > 0L) && 
 				(inputFile.lastModified() > outputFile.lastModified())) {
-			throw new FrameworkException(
-					"input appears to be newer than output");
+			throw new FrameworkException("input appears to be newer than output");
 		}
 
 		// open the resources and begin processing
-		try {
-			problem = ProblemFactory.getInstance().getProblem(commandLine
-					.getOptionValue("problem"));
+		try (Problem problem = OptionUtils.getProblemInstance(commandLine, false);
+				SampleReader input = new SampleReader(new FileReader(inputFile), parameterFile)) {
+			try {
+				if (commandLine.hasOption("metrics")) {
+					NondominatedPopulation referenceSet = OptionUtils.getReferenceSet(commandLine);
+					QualityIndicator indicator = new QualityIndicator(problem, referenceSet);
 
-			try (SampleReader input = new SampleReader(new FileReader(inputFile), parameterFile)) {
-				try {
-					if (commandLine.hasOption("metrics")) {
-						NondominatedPopulation referenceSet = null;
+					output = new MetricFileWriter(indicator, outputFile);
+				} else {
+					output = new ResultFileWriter(problem, outputFile,
+							!commandLine.hasOption("novariables"));
+				}
 
-						// load reference set and create the quality indicator
-						if (commandLine.hasOption("reference")) {
-							referenceSet = new NondominatedPopulation(
-									PopulationIO.readObjectives(new File(
-											commandLine.getOptionValue(
-													"reference"))));
-						} else {
-							referenceSet = ProblemFactory.getInstance()
-									.getReferenceSet(commandLine.getOptionValue(
-											"problem"));
-						}
-
-						if (referenceSet == null) {
-							throw new FrameworkException(
-									"no reference set available");
-						}
-
-						QualityIndicator indicator = new QualityIndicator(
-								problem, referenceSet);
-
-						output = new MetricFileWriter(indicator, outputFile);
+				// resume at the last good output
+				for (int i = 0; i < output.getNumberOfEntries(); i++) {
+					if (input.hasNext()) {
+						input.next();
 					} else {
-						output = new ResultFileWriter(problem, outputFile,
-								!commandLine.hasOption("novariables"));
-					}
-
-					// resume at the last good output
-					for (int i = 0; i < output.getNumberOfEntries(); i++) {
-						if (input.hasNext()) {
-							input.next();
-						} else {
-							throw new FrameworkException(
-									"output has more entries than input");
-						}
-					}
-
-					// setup any default parameters
-					TypedProperties defaultProperties = new TypedProperties();
-
-					if (commandLine.hasOption("properties")) {
-						for (String property : commandLine
-								.getOptionValues("properties")) {
-							String[] tokens = property.split("=");
-							
-							if (tokens.length == 2) {
-								defaultProperties.setString(tokens[0],
-										tokens[1]);
-							} else {
-								throw new FrameworkException(
-										"malformed property argument");
-							}
-						}
-					}
-
-					if (commandLine.hasOption("epsilon")) {
-						defaultProperties.setString("epsilon", commandLine
-								.getOptionValue("epsilon"));
-					}
-
-					// seed the pseudo-random number generator
-					if (commandLine.hasOption("seed")) {
-						PRNG.setSeed(Long.parseLong(commandLine
-								.getOptionValue("seed")));
-					}
-
-					// process the remaining runs
-					while (input.hasNext()) {
-						TypedProperties properties = input.next();
-						properties.addAll(defaultProperties);
-
-						process(commandLine.getOptionValue("algorithm"),
-								properties);
-					}
-				} finally {
-					if (output != null) {
-						output.close();
+						throw new FrameworkException("output has more entries than input");
 					}
 				}
-			}
-		} finally {
-			if (problem != null) {
-				problem.close();
+
+				// setup any default parameters
+				TypedProperties defaultProperties = new TypedProperties();
+
+				if (commandLine.hasOption("properties")) {
+					for (String property : commandLine.getOptionValues("properties")) {
+						String[] tokens = property.split("=");
+							
+						if (tokens.length == 2) {
+							defaultProperties.setString(tokens[0], tokens[1]);
+						} else {
+							throw new FrameworkException("malformed property argument");
+						}
+					}
+				}
+
+				if (epsilon != null) {
+					defaultProperties.setDoubleArray("epsilon", epsilon);
+				}
+
+				// seed the pseudo-random number generator
+				if (commandLine.hasOption("seed")) {
+					PRNG.setSeed(Long.parseLong(commandLine.getOptionValue("seed")));
+				}
+
+				// process the remaining runs
+				while (input.hasNext()) {
+					TypedProperties properties = input.next();
+					properties.addAll(defaultProperties);
+
+					process(commandLine.getOptionValue("algorithm"), properties, problem);
+				}
+			} finally {
+				if (output != null) {
+					output.close();
+				}
 			}
 		}
 	}
@@ -309,7 +256,7 @@ public class Evaluator extends CommandLineUtility {
 	 * @param properties the parameters stored in a properties object
 	 * @throws IOException if an I/O error occurred
 	 */
-	protected void process(String algorithmName, TypedProperties properties)
+	protected void process(String algorithmName, TypedProperties properties, Problem problem)
 			throws IOException {
 		// instrument the problem to record timing information
 		TimingProblem timingProblem = new TimingProblem(problem);
@@ -326,8 +273,7 @@ public class Evaluator extends CommandLineUtility {
 
 		// run the algorithm
 		long startTime = System.nanoTime();
-		while (!algorithm.isTerminated()
-				&& (algorithm.getNumberOfEvaluations() < maxEvaluations)) {
+		while (!algorithm.isTerminated() && (algorithm.getNumberOfEvaluations() < maxEvaluations)) {
 			algorithm.step();
 		}
 		long endTime = System.nanoTime();
