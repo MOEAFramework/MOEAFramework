@@ -21,7 +21,7 @@ This page documents notable changes introduced in each chronological release of 
     
   * Upgrades code to use try-with-resource for automatically closing resources.  This also includes
     making some classes `AutoCloseable`.  This may produce compiler warnings that can be fixed by
-    wrapping the resource in a try-with-resource block.i
+    wrapping the resource in a try-with-resource block.
 
 
 ## Version 3.0 (7 Nov 2022)
