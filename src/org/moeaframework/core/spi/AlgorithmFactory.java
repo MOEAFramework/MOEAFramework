@@ -96,6 +96,23 @@ public class AlgorithmFactory {
 	public void addProvider(AlgorithmProvider provider) {
 		customProviders.add(provider);
 	}
+	
+	/**
+	 * Searches through all discovered {@code AlgorithmProvider} instances,
+	 * returning an instance of the algorithm with the registered name. The
+	 * algorithm is initialized using implementation-specific properties.  This
+	 * method must throw an {@link ProviderNotFoundException} if no suitable
+	 * algorithm is found.
+	 * 
+	 * @param name the name identifying the algorithm
+	 * @param problem the problem to be solved
+	 * @return an instance of the algorithm with the registered name
+	 * @throws ProviderNotFoundException if no provider for the algorithm is 
+	 *         available
+	 */
+	public Algorithm getAlgorithm(String name, Problem problem) {
+		return getAlgorithm(name, new TypedProperties(), problem);
+	}
 
 	/**
 	 * Searches through all discovered {@code AlgorithmProvider} instances,

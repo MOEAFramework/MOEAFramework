@@ -21,7 +21,6 @@ import org.moeaframework.parallel.island.migration.SingleNeighborMigration;
 import org.moeaframework.parallel.island.topology.FullyConnectedTopology;
 import org.moeaframework.parallel.island.topology.Topology;
 import org.moeaframework.parallel.util.ThreadLocalMersenneTwister;
-import org.moeaframework.util.TypedProperties;
 
 /**
  * Compares the result from running an algorithm serially versus an island
@@ -47,7 +46,7 @@ public class IslandModelExample {
 		
 		for (int i = 0; i < 8; i++) {
 			NSGAII algorithm = (NSGAII)AlgorithmFactory.getInstance().getAlgorithm(
-					"NSGAII", new TypedProperties(), problem);
+					"NSGAII", problem);
 			
 			model.addIsland(new Island(algorithm, algorithm.getPopulation()));
 		}

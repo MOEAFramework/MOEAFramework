@@ -85,8 +85,7 @@ public class PISAAlgorithmsStaticConfigurationTest {
 		Settings.PROPERTIES.setString("org.moeaframework.algorithm.pisa." +
 				name + ".configuration", configuration);
 		
-		test(AlgorithmFactory.getInstance().getAlgorithm(name, properties, 
-				problem));
+		test(AlgorithmFactory.getInstance().getAlgorithm(name, properties, problem));
 		
 		Settings.PROPERTIES.remove(
 				"org.moeaframework.algorithm.pisa.algorithms");

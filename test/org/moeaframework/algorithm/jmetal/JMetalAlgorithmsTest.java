@@ -448,8 +448,8 @@ public class JMetalAlgorithmsTest {
 	 * @param problem the problem
 	 */
 	private void test(String name, Problem problem) {
-		Algorithm algorithm = AlgorithmFactory.getInstance().getAlgorithm(name, 
-				properties, problem);
+		Algorithm algorithm = AlgorithmFactory.getInstance().getAlgorithm(
+				name, properties, problem);
 		
 		Assert.assertTrue(algorithm instanceof JMetalAlgorithmAdapter);
 		Assert.assertEquals(0, algorithm.getNumberOfEvaluations());
