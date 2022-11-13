@@ -24,15 +24,13 @@ import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
-import org.apache.commons.cli.OptionGroup;
 import org.apache.commons.cli.Options;
-import org.moeaframework.analysis.sensitivity.ProblemStub;
+import org.moeaframework.analysis.sensitivity.OptionUtils;
 import org.moeaframework.analysis.sensitivity.ResultEntry;
 import org.moeaframework.analysis.sensitivity.ResultFileReader;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.util.CommandLineUtility;
 import org.moeaframework.util.TypedProperties;
 
@@ -88,19 +86,7 @@ public class AerovisConverter extends CommandLineUtility {
 	public Options getOptions() {
 		Options options = super.getOptions();
 		
-		OptionGroup group = new OptionGroup();
-		group.setRequired(true);
-		group.addOption(Option.builder("b")
-				.longOpt("problem")
-				.hasArg()
-				.argName("name")
-				.build());
-		group.addOption(Option.builder("d")
-				.longOpt("dimension")
-				.hasArg()
-				.argName("number")
-				.build());
-		options.addOptionGroup(group);
+		OptionUtils.addProblemOptionGroup(options);
 		
 		options.addOption(Option.builder("i")
 				.longOpt("input")
@@ -267,7 +253,6 @@ public class AerovisConverter extends CommandLineUtility {
 
 	@Override
 	public void run(CommandLine commandLine) throws Exception {
-		Problem problem = null;
 		boolean reduced = false;
 		List<String> attributes = new ArrayList<String>();
 		
@@ -283,26 +268,13 @@ public class AerovisConverter extends CommandLineUtility {
 			}
 		}
 		
-		try {
-			if (commandLine.hasOption("problem")) {
-				problem = ProblemFactory.getInstance().getProblem(
-						commandLine.getOptionValue("problem"));
-			} else {
-				problem = new ProblemStub(Integer.parseInt(
-						commandLine.getOptionValue("dimension")));
-			}
-			
-			try (ResultFileReader reader = new ResultFileReader(problem,
+		try (Problem problem = OptionUtils.getProblemInstance(commandLine);			
+				ResultFileReader reader = new ResultFileReader(problem,
 						new File(commandLine.getOptionValue("input")));
-				 PrintWriter writer = new PrintWriter(new FileWriter(
-							commandLine.getOptionValue("output")))) {
-				printHeader(problem, reduced, attributes, writer);
-				convert(problem, reduced, reader, writer);
-			}
-		} finally {
-			if (problem != null) {
-				problem.close();
-			}
+				PrintWriter writer = new PrintWriter(new FileWriter(
+						commandLine.getOptionValue("output")))) {
+			printHeader(problem, reduced, attributes, writer);
+			convert(problem, reduced, reader, writer);
 		}
 	}
 	

@@ -24,14 +24,11 @@ import java.util.List;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
-import org.apache.commons.cli.OptionGroup;
 import org.apache.commons.cli.Options;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
-import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.util.CommandLineUtility;
-import org.moeaframework.util.TypedProperties;
 
 /**
  * Command line utility for merging the approximation sets in one or more result
@@ -80,30 +77,14 @@ public class ResultFileSeedMerger extends CommandLineUtility {
 	public Options getOptions() {
 		Options options = super.getOptions();
 
-		OptionGroup group = new OptionGroup();
-		group.setRequired(true);
-		group.addOption(Option.builder("b")
-				.longOpt("problem")
-				.hasArg()
-				.argName("name")
-				.build());
-		group.addOption(Option.builder("d")
-				.longOpt("dimension")
-				.hasArg()
-				.argName("number")
-				.build());
-		options.addOptionGroup(group);
+		OptionUtils.addProblemOptionGroup(options);
+		OptionUtils.addEpsilonOption(options);
 
 		options.addOption(Option.builder("o")
 				.longOpt("output")
 				.hasArg()
 				.argName("file")
 				.required()
-				.build());
-		options.addOption(Option.builder("e")
-				.longOpt("epsilon")
-				.hasArg()
-				.argName("e1,e2,...")
 				.build());
 
 		return options;
@@ -121,8 +102,7 @@ public class ResultFileSeedMerger extends CommandLineUtility {
 	 */
 	private List<NondominatedPopulation> load(File file, Problem problem) throws IOException {
 		try (ResultFileReader reader = new ResultFileReader(problem, file)) {
-			List<NondominatedPopulation> data = 
-					new ArrayList<NondominatedPopulation>();
+			List<NondominatedPopulation> data = new ArrayList<NondominatedPopulation>();
 
 			while (reader.hasNext()) {
 				data.add(reader.next().getPopulation());
@@ -134,20 +114,11 @@ public class ResultFileSeedMerger extends CommandLineUtility {
 
 	@Override
 	public void run(CommandLine commandLine) throws Exception {
-		List<List<NondominatedPopulation>> entries = 
-				new ArrayList<List<NondominatedPopulation>>();
-		Problem problem = null;
+		List<List<NondominatedPopulation>> entries = new ArrayList<List<NondominatedPopulation>>();
+		double[] epsilon = OptionUtils.getEpsilon(commandLine);
 
-		try {
-			// setup the problem
-			if (commandLine.hasOption("problem")) {
-				problem = ProblemFactory.getInstance().getProblem(commandLine
-						.getOptionValue("problem"));
-			} else {
-				problem = new ProblemStub(Integer.parseInt(commandLine
-						.getOptionValue("dimension")));
-			}
 
+		try (Problem problem = OptionUtils.getProblemInstance(commandLine)) {
 			// load data from all input files
 			for (String filename : commandLine.getArgs()) {
 				entries.add(load(new File(filename), problem));
@@ -155,8 +126,7 @@ public class ResultFileSeedMerger extends CommandLineUtility {
 
 			// validate the inputs
 			if (entries.isEmpty()) {
-				throw new IllegalArgumentException(
-						"requires at least one file");
+				throw new IllegalArgumentException("requires at least one file");
 			}
 
 			int numberOfEntries = -1;
@@ -165,9 +135,8 @@ public class ResultFileSeedMerger extends CommandLineUtility {
 				if (numberOfEntries < 0) {
 					numberOfEntries = entries.get(i).size();
 				} else if (numberOfEntries != entries.get(i).size()) {
-					throw new IllegalArgumentException(
-							"unbalanced number of entries: "
-									+ commandLine.getArgs()[i]);
+					throw new IllegalArgumentException("unbalanced number of entries: " +
+							commandLine.getArgs()[i]);
 				}
 			}
 
@@ -178,11 +147,8 @@ public class ResultFileSeedMerger extends CommandLineUtility {
 				for (int i = 0; i < numberOfEntries; i++) {
 					NondominatedPopulation mergedSet = null;
 
-					// configure epsilon-dominance
-					if (commandLine.hasOption("epsilon")) {
-						double[] epsilon = TypedProperties.withProperty(
-								"epsilon", commandLine.getOptionValue(
-								"epsilon")).getDoubleArray("epsilon", null);
+					// configure epsilon-dominance					
+					if (epsilon != null) {
 						mergedSet = new EpsilonBoxDominanceArchive(epsilon);
 					} else {
 						mergedSet = new NondominatedPopulation();
@@ -194,10 +160,6 @@ public class ResultFileSeedMerger extends CommandLineUtility {
 
 					writer.append(new ResultEntry(mergedSet));
 				}
-			}
-		} finally {
-			if (problem != null) {
-				problem.close();
 			}
 		}
 	}

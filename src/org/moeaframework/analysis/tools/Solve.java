@@ -28,6 +28,7 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.lang3.StringUtils;
 import org.moeaframework.algorithm.PeriodicAction;
+import org.moeaframework.analysis.sensitivity.OptionUtils;
 import org.moeaframework.analysis.sensitivity.ResultEntry;
 import org.moeaframework.analysis.sensitivity.ResultFileWriter;
 import org.moeaframework.core.Algorithm;
@@ -184,11 +185,6 @@ public class Solve extends CommandLineUtility {
 				.hasArg()
 				.argName("value")
 				.build());
-		options.addOption(Option.builder("e")
-				.longOpt("epsilon")
-				.hasArg()
-				.argName("e1,e2,...")
-				.build());
 		options.addOption(Option.builder("n")
 				.longOpt("numberOfEvaluations")
 				.hasArg()
@@ -250,6 +246,8 @@ public class Solve extends CommandLineUtility {
 				.optionalArg(true)
 				.argName("trials")
 				.build());
+		
+		OptionUtils.addEpsilonOption(options);
 
 		return options;
 	}

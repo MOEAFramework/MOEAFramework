@@ -99,11 +99,6 @@ import org.moeaframework.util.TypedProperties;
 public class DetailedEvaluator extends CommandLineUtility {
 
 	/**
-	 * The problem being evaluated.
-	 */
-	protected Problem problem;
-
-	/**
 	 * The output writer where end-of-run results are stored.
 	 */
 	protected OutputWriter output;
@@ -190,61 +185,54 @@ public class DetailedEvaluator extends CommandLineUtility {
 		}
 		
 		// open the resources and begin processing
-		try {
-			problem = ProblemFactory.getInstance().getProblem(commandLine.getOptionValue("problem"));
+		try (Problem problem = ProblemFactory.getInstance().getProblem(commandLine.getOptionValue("problem"));
+				SampleReader input = new SampleReader(new FileReader(inputFile), parameterFile)) {
+			int count = 1;
 
-			try (SampleReader input = new SampleReader(new FileReader(inputFile), parameterFile)) {
-				int count = 1;
-
-				while (input.hasNext()) {
-					String outputFileName = String.format(outputFilePattern, count);
-					System.out.print("Processing " + outputFileName + "...");
-					File outputFile = new File(outputFileName);
+			while (input.hasNext()) {
+				String outputFileName = String.format(outputFilePattern, count);
+				System.out.print("Processing " + outputFileName + "...");
+				File outputFile = new File(outputFileName);
 						
-					if (outputFile.exists()) {
-						outputFile.delete();
-					}	
+				if (outputFile.exists()) {
+					outputFile.delete();
+				}	
 						
-					try (ResultFileWriter output = new ResultFileWriter(problem, outputFile,
-							!commandLine.hasOption("novariables"))) {
-						// setup any default parameters
-						TypedProperties defaultProperties = new TypedProperties();
+				try (ResultFileWriter output = new ResultFileWriter(problem, outputFile,
+						!commandLine.hasOption("novariables"))) {
+					// setup any default parameters
+					TypedProperties defaultProperties = new TypedProperties();
 	
-						if (commandLine.hasOption("properties")) {
-							for (String property : commandLine.getOptionValues("properties")) {
-								String[] tokens = property.split("=");
+					if (commandLine.hasOption("properties")) {
+						for (String property : commandLine.getOptionValues("properties")) {
+							String[] tokens = property.split("=");
 								
-								if (tokens.length == 2) {
-									defaultProperties.setString(tokens[0], tokens[1]);
-								} else {
-									throw new FrameworkException("malformed property argument");
-								}
+							if (tokens.length == 2) {
+								defaultProperties.setString(tokens[0], tokens[1]);
+							} else {
+								throw new FrameworkException("malformed property argument");
 							}
 						}
-	
-						if (commandLine.hasOption("epsilon")) {
-							defaultProperties.setString("epsilon", commandLine.getOptionValue("epsilon"));
-						}
-	
-						// seed the pseudo-random number generator
-						if (commandLine.hasOption("seed")) {
-							PRNG.setSeed(Long.parseLong(commandLine.getOptionValue("seed")));
-						}
-	
-						TypedProperties properties = input.next();
-						properties.addAll(defaultProperties);
-	
-						process(commandLine.getOptionValue("algorithm"), properties, frequency);
-						
-						System.out.println("done.");
 					}
-					
-					count++;
+	
+					if (commandLine.hasOption("epsilon")) {
+						defaultProperties.setString("epsilon", commandLine.getOptionValue("epsilon"));
+					}
+	
+					// seed the pseudo-random number generator
+					if (commandLine.hasOption("seed")) {
+						PRNG.setSeed(Long.parseLong(commandLine.getOptionValue("seed")));
+					}
+	
+					TypedProperties properties = input.next();
+					properties.addAll(defaultProperties);
+	
+					process(commandLine.getOptionValue("algorithm"), properties, problem, frequency);
+						
+					System.out.println("done.");
 				}
-			}
-		} finally {
-			if (problem != null) {
-				problem.close();
+					
+				count++;
 			}
 		}
 		
@@ -252,7 +240,7 @@ public class DetailedEvaluator extends CommandLineUtility {
 	}
 
 	@SuppressWarnings("unchecked")
-	protected void process(String algorithmName, TypedProperties properties, int frequency)
+	protected void process(String algorithmName, TypedProperties properties, Problem problem, int frequency)
 			throws IOException {
 		int maxEvaluations = (int)properties.getDouble("maxEvaluations", -1);
 		

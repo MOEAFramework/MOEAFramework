@@ -23,7 +23,6 @@ import java.io.IOException;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
-import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PRNG;
@@ -32,7 +31,6 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.problem.AnalyticalProblem;
 import org.moeaframework.util.CommandLineUtility;
-import org.moeaframework.util.TypedProperties;
 
 /**
  * Command line utility for generating reference sets for a given problem.  The
@@ -106,63 +104,38 @@ public class SetGenerator extends CommandLineUtility {
 				.argName("file")
 				.required()
 				.build());
-		options.addOption(Option.builder("e")
-				.longOpt("epsilon")
-				.hasArg()
-				.argName("e1,e2,...")
-				.build());
+
+		OptionUtils.addEpsilonOption(options);
 		
 		return options;
 	}
 
 	@Override
 	public void run(CommandLine commandLine) throws IOException {
-		NondominatedPopulation set = null;
-		Problem problem = null;
+		NondominatedPopulation set = OptionUtils.getArchive(commandLine);
 		
 		int numberOfPoints = Integer.parseInt(commandLine.getOptionValue(
 				"numberOfPoints"));
-
-		// setup the merged non-dominated population
-		if (commandLine.hasOption("epsilon")) {
-			double[] epsilon = TypedProperties.withProperty("epsilon",
-					commandLine.getOptionValue("epsilon")).getDoubleArray(
-					"epsilon", null);
-			set = new EpsilonBoxDominanceArchive(epsilon);
-		} else {
-			set = new NondominatedPopulation();
-		}
 		
 		// seed the pseudo-random number generator
 		if (commandLine.hasOption("seed")) {
-			PRNG.setSeed(Long.parseLong(commandLine
-					.getOptionValue("seed")));
+			PRNG.setSeed(Long.parseLong(commandLine.getOptionValue("seed")));
 		}
 		
 		//generate the points
-		try {
-			problem = ProblemFactory.getInstance().getProblem(commandLine
-					.getOptionValue("problem"));
-			
+		try (Problem problem = ProblemFactory.getInstance().getProblem(
+				commandLine.getOptionValue("problem"))) {
 			if (problem instanceof AnalyticalProblem) {
-				AnalyticalProblem generator = (AnalyticalProblem)problem;
-				
 				for (int i=0; i<numberOfPoints; i++) {
-					set.add(generator.generate());
+					set.add(((AnalyticalProblem)problem).generate());
 				}
 			} else {
-				throw new FrameworkException(
-						"problem does not have an analytical solution");
-			}
-		} finally {
-			if (problem != null) {
-				problem.close();
+				throw new FrameworkException("problem does not have an analytical solution");
 			}
 		}
 		
 		//output set
-		PopulationIO.writeObjectives(new File(commandLine.getOptionValue(
-				"output")), set);
+		PopulationIO.writeObjectives(new File(commandLine.getOptionValue("output")), set);
 	}
 	
 	/**
