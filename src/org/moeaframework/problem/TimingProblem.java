@@ -21,16 +21,11 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 
 /**
- * Decorates a problem to collect objective function evaluation timing data.
+ * Wraps a problem to collect objective function evaluation timing data.
  * Precision and accuracy of the timing data is dependent on {@link 
  * System#nanoTime()}.
  */
-public class TimingProblem implements Problem {
-	
-	/**
-	 * The decorated problem.
-	 */
-	private final Problem problem;
+public class TimingProblem extends ProblemWrapper {
 	
 	/**
 	 * The time, in seconds, expended on objective function evaluation.
@@ -44,28 +39,7 @@ public class TimingProblem implements Problem {
 	 * @param problem the problem to decorate
 	 */
 	public TimingProblem(Problem problem) {
-		super();
-		this.problem = problem;
-	}
-
-	@Override
-	public String getName() {
-		return problem.getName();
-	}
-
-	@Override
-	public int getNumberOfVariables() {
-		return problem.getNumberOfVariables();
-	}
-
-	@Override
-	public int getNumberOfObjectives() {
-		return problem.getNumberOfObjectives();
-	}
-
-	@Override
-	public int getNumberOfConstraints() {
-		return problem.getNumberOfConstraints();
+		super(problem);
 	}
 
 	@Override
@@ -75,11 +49,6 @@ public class TimingProblem implements Problem {
 		long end = System.nanoTime();
 		
 		time += (end - start) / 1e9;
-	}
-
-	@Override
-	public Solution newSolution() {
-		return problem.newSolution();
 	}
 	
 	/**
@@ -96,11 +65,6 @@ public class TimingProblem implements Problem {
 	 */
 	public double getTime() {
 		return time;
-	}
-
-	@Override
-	public void close() {
-		problem.close();
 	}
 
 }

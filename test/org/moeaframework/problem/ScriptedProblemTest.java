@@ -46,6 +46,7 @@ public class ScriptedProblemTest {
 	private static final String RESOURCE_JAVASCRIPT = 
 			"/org/moeaframework/problem/TestJavascript.js";
 	
+	@SuppressWarnings("resource")
 	@Test(expected = ScriptException.class)
 	public void testNoExtension() throws ScriptException, IOException {
 		File file = File.createTempFile("test", "");
@@ -54,6 +55,7 @@ public class ScriptedProblemTest {
 		new ScriptedProblem(file);
 	}
 	
+	@SuppressWarnings("resource")
 	@Test(expected = ScriptException.class)
 	public void testNoEngineForExtension() throws ScriptException, IOException {
 		File file = File.createTempFile("test", ".noscriptinglang");
@@ -62,6 +64,7 @@ public class ScriptedProblemTest {
 		new ScriptedProblem(file);
 	}
 	
+	@SuppressWarnings("resource")
 	@Test(expected = ScriptException.class)
 	public void testNoEngineWithName() throws ScriptException, IOException {
 		new ScriptedProblem("", "noscriptinglang");

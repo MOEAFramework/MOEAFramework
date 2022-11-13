@@ -32,6 +32,7 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.indicator.InvertedGenerationalDistance;
 import org.moeaframework.core.spi.AlgorithmFactory;
+import org.moeaframework.problem.ProblemWrapper;
 import org.moeaframework.problem.DTLZ.DTLZ1;
 import org.moeaframework.problem.DTLZ.DTLZ2;
 import org.moeaframework.problem.DTLZ.DTLZ3;
@@ -47,6 +48,7 @@ public class NSGAIIITest {
 	 * Replicates the unscaled and scaled DTLZ experiments performed in the
 	 * original NSGA-III paper.
 	 */
+	@SuppressWarnings("resource")
 	@Test
 	@Ignore("Must download reference sets from http://web.ntnu.edu.tw/~tcchiang/publications/nsga3cpp/nsga3cpp.htm")
 	public void test() throws IOException {
@@ -161,15 +163,12 @@ public class NSGAIIITest {
 		System.out.println("  Max: " + new Max().evaluate(igdValues));
 	}
 
-	public class ScaledProblem implements Problem {
-		
-		private final Problem problem;
+	public class ScaledProblem extends ProblemWrapper {
 		
 		private final double[] factors;
 		
 		public ScaledProblem(Problem problem, double base) {
-			super();
-			this.problem = problem;
+			super(problem);
 			
 			factors = new double[problem.getNumberOfObjectives()];
 			
@@ -180,41 +179,16 @@ public class NSGAIIITest {
 
 		@Override
 		public String getName() {
-			return "Scaled " + problem.getName();
-		}
-
-		@Override
-		public int getNumberOfVariables() {
-			return problem.getNumberOfVariables();
-		}
-
-		@Override
-		public int getNumberOfObjectives() {
-			return problem.getNumberOfObjectives();
-		}
-
-		@Override
-		public int getNumberOfConstraints() {
-			return problem.getNumberOfConstraints();
+			return "Scaled " + super.getName();
 		}
 
 		@Override
 		public void evaluate(Solution solution) {
-			problem.evaluate(solution);
+			super.evaluate(solution);
 			
-			for (int i = 0; i < problem.getNumberOfObjectives(); i++) {
+			for (int i = 0; i < super.getNumberOfObjectives(); i++) {
 				solution.setObjective(i, solution.getObjective(i) * factors[i]);
 			}
-		}
-
-		@Override
-		public Solution newSolution() {
-			return problem.newSolution();
-		}
-
-		@Override
-		public void close() {
-			problem.close();
 		}
 		
 		public void scaleReferenceSet(File file, File scaledFile) throws IOException {

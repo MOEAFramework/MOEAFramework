@@ -29,6 +29,7 @@ import org.moeaframework.core.PopulationIO;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
 import org.moeaframework.core.spi.ProblemFactory;
+import org.moeaframework.problem.ProblemWrapper;
 
 /**
  * Provides builder methods for instantiating problems and their reference sets.
@@ -53,7 +54,7 @@ class ProblemBuilder {
 	 * The specific instance of the problem.  If {@code null}, the problem is
 	 * specified by {@code problemName} or {@code problemClass}.
 	 */
-	Problem problemInstance;
+	UserProvidedProblemInstance problemInstance;
 	
 	/**
 	 * The arguments used when constructing an instance of the problem class.
@@ -133,7 +134,7 @@ class ProblemBuilder {
 	}
 	
 	/**
-	 * Sets the problem instance used by this builder.  Until the other
+	 * Sets the problem instance used by this builder.  Unlike the other
 	 * {@code withProblem} methods, using a problem instance will not close the
 	 * problem.  It is the responsibility of the user to ensure any problems
 	 * holding resources are properly closed.
@@ -142,7 +143,9 @@ class ProblemBuilder {
 	 * @return a reference to this builder
 	 */
 	ProblemBuilder withProblem(Problem problemInstance) {
-		this.problemInstance = problemInstance;
+		this.problemInstance = problemInstance instanceof UserProvidedProblemInstance ?
+				(UserProvidedProblemInstance)problemInstance :
+				new UserProvidedProblemInstance(problemInstance);
 		this.problemName = null;
 		this.problemClass = null;
 		
@@ -329,6 +332,24 @@ class ProblemBuilder {
 		} else {
 			return problemFactory.getProblem(problemName);
 		}
+	}
+	
+	/**
+	 * Internal problem wrapper used on user-defined problems (see 
+	 * {@link ProblemBuilder#withProblem(Problem)}) that does not automatically
+	 * close the problem.
+	 */
+	private class UserProvidedProblemInstance extends ProblemWrapper {
+		
+		public UserProvidedProblemInstance(Problem problem) {
+			super(problem);
+		}
+
+		@Override
+		public void close() {
+			//do nothing
+		}
+		
 	}
 	
 }

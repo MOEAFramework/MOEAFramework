@@ -21,7 +21,7 @@ package org.moeaframework.core;
  * Interface for defining optimization problems.  All methods must be thread
  * safe.
  */
-public interface Problem {
+public interface Problem extends AutoCloseable {
 
 	/**
 	 * Returns the user-friendly name for this problem.
