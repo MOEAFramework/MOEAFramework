@@ -135,10 +135,12 @@ public class RepeatedSingleObjective extends AbstractAlgorithm {
 	 * @return the new algorithm instance
 	 */
 	protected Algorithm createInstance(double[] weights) {
-		properties.setDoubleArray("weights", weights);
+		TypedProperties localProperties = new TypedProperties();
+		localProperties.addAll(properties);
+		localProperties.setDoubleArray("weights", weights);
 		
 		return AlgorithmFactory.getInstance().getAlgorithm(
-				algorithmName, properties, problem);
+				algorithmName, localProperties, problem);
 	}
 
 }

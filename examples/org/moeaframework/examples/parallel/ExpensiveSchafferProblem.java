@@ -17,7 +17,7 @@ public class ExpensiveSchafferProblem extends AbstractProblem {
 		// perform some expensive calculation
 		double sum = 0.0;
 		
-		for (int i = 0; i < 1000000; i++) {
+		for (int i = 0; i < 100000; i++) {
 			sum += i;
 		}
 		
