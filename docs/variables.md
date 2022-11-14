@@ -1,5 +1,8 @@
 # Decision Variable Types
 
+Decision variables implement the `Variable` interface.  We provide concrete classes for the following types.  Please note that for convenience,
+we recommend using the `EncodingUtils` to create, read, and write to decision variables.  It handles type checking and casting so you don't have to!
+
 ## Real
 
 Real-valued decision variables store numbers between $\pm \inf$ but are typically restricted to some finite lower and upper bounds.  Internally these are
@@ -14,7 +17,8 @@ double value = EncodingUtils.getReal(solution.getVariable(i));
 
 ## Binary
 
-Binary decision variables represent a bit string of a fixed length.  Each bit has the value `0` or `1` (or `false` and `true`).  
+Binary decision variables represent a bit string of a fixed length.  Each bit has the value `0` or `1` (or `false` and `true`).  In Java, you can read
+the value either as a `boolean[]` or using a `BitSet`.
 
 ```java
 
