@@ -16,7 +16,7 @@
 ## Extending the MOEA Framework
 
 * [Developers Guide](developers.md)
-* [Contributing to the MOEA Framework](contributing.md)
+* [How to Contribute](contributing.md)
 
 ## Debugging
 
