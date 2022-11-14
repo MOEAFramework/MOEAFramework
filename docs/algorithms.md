@@ -121,222 +121,149 @@ Parameters           | Default Value     | Description
 `eta`                | `0.01`            | The maximum number of spots in the population that an offspring can replace, given as a percentage of the population size
 `updateUtility`      | Unset             | The frequency, in generations, at which utility values are updated.  If set, this uses the MOEA/D-DRA variant; if unset, then then MOEA/D-DE variant is used
 
-\subsection{MSOPS}
+### MSOPS
 
-MSOPS is the Multiple Single-Objective Pareto Search algorithm \citep{hughes03}.  MSOPS works by enumerating $k$ reference vectors and applying a rank ordering based on two aggregate functions: weighted min-max and vector angle distance scaling (VADS).  Solutions with higher rankings with respect to both metrics are preferred.  MSOPS only supports real-valued solutions using differential evolution.
-\newline
-\newline
-\noindent
-\begin{tabularx}{\linewidth}{l>{\hsize=9cm}XX}
-  \hline
-  Parameter & Description & Default Value \\
-  \hline
-  populationSize & The size of the population & $100$ \\
-	numberOfWeights & The number of weight vectors & $50$ \\
-  de.crossoverRate & The crossover rate for differential evolution & $0.1$ \\
-  de.stepSize & Control the size of each step taken by differential evolution & $0.5$ \\
-  \hline
-\end{tabularx}
+MSOPS is the Multiple Single-Objective Pareto Search algorithm \citep{hughes03}.  MSOPS works by enumerating $k$ reference vectors and applying a rank ordering
+based on two aggregate functions: weighted min-max and vector angle distance scaling (VADS).  Solutions with higher rankings with respect to both metrics are
+preferred.  MSOPS only supports real-valued solutions using differential evolution.
 
-\subsection{NSGA-II}
+Parameters           | Default Value     | Description
+:------------------- | :---------------- | :----------
+`populationSize`     | `100`             | The size of the population
+`numberOfWeights`    | `50`              | The number of weight vectors
+`de.crossoverRate`   | `0.1`             | The crossover rate for differential evolution
+`de.stepSize`        | `0.5`             | Control the size of each step taken by differential evolution
 
-NSGA-II is one of the first and most widely used MOEAs \citep{deb00}.  It enhanced it predecessor, NSGA, by introducing fast non-dominated sorting and using the more computationally efficient crowding distance metric during survival selection.
-\newline
-\newline
-\noindent
-\begin{tabularx}{\linewidth}{l>{\hsize=9cm}XX}
-  \hline
-  Parameter & Description & Default Value \\
-  \hline
-  populationSize & The size of the population & $100$ \\
-	withReplacement & Uses binary tournament selection with (\texttt{true}) or without (\texttt{false}) replacement & \texttt{true} \\
-  \hline
-\end{tabularx}
+### NSGA-II
 
-\subsection{NSGA-III}
+NSGA-II is one of the first and most widely used MOEAs \citep{deb00}.  It enhanced it predecessor, NSGA, by introducing fast non-dominated sorting and using
+the more computationally efficient crowding distance metric during survival selection.
 
-NSGA-III is the many-objective successor to NSGA-II, using reference points to direct solutions towards a diverse set \citep{deb14}.  The number of reference points is controlled by the number of objectives and the \java{divisions} parameter.  For an $M$-objective problem, the number of reference points is:
-\begin{equation}
-  H = {M+divisions-1 \choose divisions}
-\end{equation}
-The authors also propose a two-layer approach for divisions for many-objective problems where an outer and inner division number is specified.  To use the two-layer approach, replace the \java{divisions} parameter with \java{divisionsOuter} and \java{divisionsInner}.
-\newline
-\newline
-\noindent
-\begin{tabularx}{\linewidth}{l>{\hsize=9cm}XX}
-  \hline
-  Parameter & Description & Default Value \\
-  \hline
-  populationSize & The size of the population.  If unset, the population size is equal to the number of reference points & Unset \\
-  divisions & The number of divisions & Problem dependent \\
-  \hline
-\end{tabularx}
+Parameters           | Default Value     | Description
+:------------------- | :---------------- | :----------
+`populationSize`     | `100`             | The size of the population
+`withReplacement`    | `true`            | Uses binary tournament selection with (`true`) or without (`false`) replacement
 
-\subsection{OMOPSO}
+### NSGA-III
+
+NSGA-III is the many-objective successor to NSGA-II, using reference points to direct solutions towards a diverse set \citep{deb14}.  The number of reference
+points is controlled by the number of objectives and the `divisions` parameter.  For an $M$-objective problem, the number of reference points is:
+
+$H = {M+divisions-1 \choose divisions}$
+
+The authors also propose a two-layer approach for divisions for many-objective problems where an outer and inner division number is specified.  To use the two-layer approach, replace the `divisions` parameter with `divisionsOuter` and `divisionsInner`.
+
+Parameters           | Default Value     | Description
+:------------------- | :---------------- | :----------
+`populationSize`     | Unset             | The size of the population.  If unset, the population size is equal to the number of reference points
+`divisions`          | Problem dependent | The number of divisions
+
+### OMOPSO
 
 OMOPSO is a multiobjective particle swarm optimization algorithm that includes an $\epsilon$-dominance archive to discover a diverse set of Pareto optimal solutions \citep{sierra05}.  This implementation of OMOPSO differs slightly from the original author's implementation in JMetal due to a discrepancy between the author's code and the paper.  The paper returns the $\epsilon$-dominance archive while the code returns the leaders.  This discrepancy causes a small difference in performance. 
-\newline
-\newline
-\noindent
-\begin{tabularx}{\linewidth}{l>{\hsize=7.5cm}XX}
-  \hline
-  Parameter & Description & Default Value \\
-  \hline
-  populationSize & The size of the population & $100$ \\
-  archiveSize & The size of the archive & $100$ \\
-  maxEvaluations & The maximum number of evaluations for adapting non-uniform mutation & $25000$ \\
-  mutationProbability & The mutation probability for uniform and non-uniform mutation & $1/N$ \\
-  perturbationIndex & Controls the shape of the distribution for uniform and non-uniform mutation & $0.5$ \\
-  epsilon & The $\epsilon$ values used by the $\epsilon$-dominance archive & Problem dependent \\
-  \hline
-\end{tabularx}
 
-\subsection{PAES}
+Parameters           | Default Value     | Description
+:------------------- | :---------------- | :----------
+`populationSize`     | `100`             | The size of the population
+`archiveSize`        | `100`             | The size of the archive
+`maxEvaluations`     | `25000`           | The maximum number of evaluations for adapting non-uniform mutation
+`mutationProbability` | `1/N`            | The mutation probability for uniform and non-uniform mutation
+`perturbationIndex`  | `0.5`             | Controls the shape of the distribution for uniform and non-uniform mutation
+`epsilon`            | Problem dependent | The $\epsilon$ values used by the $\epsilon$-dominance archive
+
+### PAES
 
 PAES is a multiobjective version of evolution strategy \citep{knowles99}.  PAES tends to underperform when compared to other MOEAs, but it is often used as a baseline algorithm for comparisons.  Like PESA-II, PAES uses the adaptive grid archive to maintain a fixed-size archive of solutions.
-\newline
-\newline
-\noindent
-\begin{tabularx}{\linewidth}{l>{\hsize=9cm}XX}
-  \hline
-  Parameter & Description & Default Value \\
-  \hline
-  archiveSize & The size of the archive & $100$ \\
-  bisections & The number of bisections in the adaptive grid archive & $8$ \\
-  pm.rate & The mutation rate for polynomial mutation & $1/N$ \\
-  pm.distributionIndex & The distribution index for polynomial mutation & $20.0$ \\
-  \hline
-\end{tabularx}
 
-\subsection{PESA-II}
+Parameters           | Default Value     | Description
+:------------------- | :---------------- | :----------
+`archiveSize`        | `100`             | The size of the archive
+`bisections`         | `8`               | The number of bisections in the adaptive grid archive
+`pm.rate`            | `1/N`             | The mutation rate for polynomial mutation
+`pm.distributionIndex` | `20.0`          | The distribution index for polynomial mutation
+
+### PESA-II
 
 PESA-II is another multiobjective evolutionary algorithm that tends to underperform other MOEAs but is often used as a baseline algorithm in comparative studies \citep{corne01}.  It is the successor to PESA \citep{corne00}.  Like PAES, PESA-II uses the adaptive grid archive to maintain a fixed-size archive of solutions.
-\newline
-\newline
-\noindent
-\begin{tabularx}{\linewidth}{l>{\hsize=9cm}XX}
-  \hline
-  Parameter & Description & Default Value \\
-  \hline
-  populationSize & The size of the population & $10$ \\
-  archiveSize & The size of the archive & $100$ \\
-  bisections & The number of bisections in the adaptive grid archive & $8$ \\
-  \hline
-\end{tabularx}
 
-\subsection{Random}
+Parameters           | Default Value     | Description
+:------------------- | :---------------- | :----------
+`populationSize`     | `10`              | The size of the population
+`archiveSize`        | `100`             | The size of the archive
+`bisections`         | `8`               | The number of bisections in the adaptive grid archive
+
+### Random
 
 The random search algorithm simply randomly generates new solutions uniformly throughout the search space.  It is not intended as an ``optimization algorithm'' \emph{per se}, but as a way to compare the performance of other MOEAs against random search.  If an optimization algorithm can not beat random search, then continued use of that optimization algorithm should be questioned.
-\newline
-\newline
-\noindent
-\begin{tabularx}{\linewidth}{l>{\hsize=9cm}XX}
-  \hline
-  Parameter & Description & Default Value \\
-  \hline
-  populationSize & This parameter only has a use when parallelizing evaluations; it controls the number of solutions that are generated and evaluated in parallel & $100$ \\
-  epsilon & The $\epsilon$ values used by the $\epsilon$-dominance archive, which can either be a single value or a comma-separated array (this parameter is optional) & Unset \\
-  \hline
-\end{tabularx}
 
-\subsection{RSO}
+Parameters           | Default Value     | Description
+:------------------- | :---------------- | :----------
+`populationSize`     | `100`             | This parameter only has a use when parallelizing evaluations; it controls the number of solutions that are generated and evaluated in parallel
+`epsilon`            | Unset             | The $\epsilon$ values used by the $\epsilon$-dominance archive, which can either be a single value or a comma-separated array (this parameter is optional)
+
+### RSO
 
 The repeated single objectives (RSO) algorithm solves multiobjective problems by running several single-objective optimizers independently with varying weights \citep{hughes05}.  Any of the single-objective optimizers supported by the MOEA Framework can be utilized, and any properties supported by that optimizer can be defined.  RSO is a useful tool for comparing single and multiobjective optimizers.  The maximum number of evaluations is spread evenly across each single-objective instance.
-\newline
-\newline
-\noindent
-\begin{tabularx}{\linewidth}{l>{\hsize=9cm}XX}
-  \hline
-  Parameter & Description & Default Value \\
-  \hline
-  algorithm & The single-objective optimizer & \java{"GA"} \\
-  method & The scalarizing method & \java{"min-max"} \\
-	instances & The number of single-objective optimizers & $100$ \\
-  \hline
-\end{tabularx}
 
-\subsection{RVEA}
+Parameters           | Default Value     | Description
+:------------------- | :---------------- | :----------
+`algorithm`          | `GA`              | The single-objective optimizer - `GA`, `ES`, `DE`
+`method`             | `min-max`         | The scalarizing method - `min-max`, `linear`
+`instances`          | `100`             | The number of single-objective optimizers
 
-The reference vector guided evolutionary algorithm (RVEA) has many similarities with NSGA-III, but avoids use of Pareto dominance and uses an angle-penalized distance function for survival selection \citep{cheng16}.  RVEA only works on problems with at least two objectives and can only use genetic operators requiring two parents.  Like NSGA-III, the number of reference vectors is controlled by the number of objectives and the \java{divisions} parameter.  For an $M$-objective problem, the number of reference vectors is:
-\begin{equation}
-  H = {M+divisions-1 \choose divisions}
-\end{equation}
-To use the two-layer approach, replace the \java{divisions} parameter with \java{divisionsOuter} and \java{divisionsInner}.
-\newline
-\newline
-\noindent
-\begin{tabularx}{\linewidth}{l>{\hsize=8cm}XX}
-  \hline
-  Parameter & Description & Default Value \\
-  \hline
-  populationSize & The size of the population.  If unset, the population size is equal to the number of reference vectors & Unset \\
-  divisions & The number of divisions & Problem dependent \\
-	alpha & Controls the rate of change in the angle-penalized distance function & 2 \\
-	adaptFrequency & The frequency (in generations) in which the weights are adapted / scaled & \texttt{maxEvaluations / (populationSize * 10)} \\
-  \hline
-\end{tabularx}
+### RVEA
 
-\subsection{SMPSO}
+The reference vector guided evolutionary algorithm (RVEA) has many similarities with NSGA-III, but avoids use of Pareto dominance and uses an angle-penalized distance function for survival selection \citep{cheng16}.  RVEA only works on problems with at least two objectives and can only use genetic operators requiring two parents.  Like NSGA-III, the number of reference vectors is controlled by the number of objectives and the `divisions` parameter.  For an $M$-objective problem, the number of reference vectors is:
+
+$H = {M+divisions-1 \choose divisions}$
+
+To use the two-layer approach, replace the `divisions` parameter with `divisionsOuter` and `divisionsInner`.
+
+Parameters           | Default Value     | Description
+:------------------- | :---------------- | :----------
+`populationSize`     | Unset             | The size of the population.  If unset, the population size is equal to the number of reference vectors
+`divisions`          | Problem dependent | The number of divisions
+`alpha`              | `2`               | Controls the rate of change in the angle-penalized distance function
+`adaptFrequency`     | $\texttt{maxEvaluations / (populationSize * 10)}$ | The frequency (in generations) in which the weights are adapted / scaled
+
+### SMPSO
 
 SMPSO is a multiobjective particle swarm optimization algorithm \citep{nebro09}.
-\newline
-\newline
-\noindent
-\begin{tabularx}{\linewidth}{l>{\hsize=9cm}XX}
-  \hline
-  Parameter & Description & Default Value \\
-  \hline
-  populationSize & The size of the population & $100$ \\
-  archiveSize & The size of the archive & $100$ \\
-  pm.rate & The mutation rate for polynomial mutation & $1/N$ \\
-  pm.distributionIndex & The distribution index for polynomial mutation & $20.0$ \\
-  \hline
-\end{tabularx}
 
-\subsection{SMS-EMOA}
+Parameters           | Default Value     | Description
+:------------------- | :---------------- | :----------
+`populationSize`     | `100`             | The size of the population
+`archiveSize`        | `100`             | The size of the archive
+`pm.rate`            | `1/N`             | The mutation rate for polynomial mutation
+`pm.distributionIndex` | `20.0`          | The distribution index for polynomial mutation
+
+### SMS-EMOA
 
 SMS-EMOA is an indicator-based MOEA that uses the volume of the dominated hypervolume to rank individuals \citep{beume07}.
-\newline
-\newline
-\noindent
-\begin{tabularx}{\linewidth}{l>{\hsize=9cm}XX}
-  \hline
-  Parameter & Description & Default Value \\
-  \hline
-  populationSize & The size of the population & $100$ \\
-  offset & The reference point offset for computing hypervolume & $100$ \\
-  \hline
-\end{tabularx}
 
-\subsection{SPEA2}
+Parameters           | Default Value     | Description
+:------------------- | :---------------- | :----------
+`populationSize`     | `100`             | The size of the population
+`offset`             | `100`             | The reference point offset for computing hypervolume
+
+### SPEA2
 
 SPEA2 is an older but popular benchmark MOEA that uses the so-called ``strength-based'' method for ranking solutions \citep{zitzler02}.  The general idea is that the strength or quality of a solution is related to the strength of solutions it dominates.
-\newline
-\newline
-\noindent
-\begin{tabularx}{\linewidth}{l>{\hsize=9cm}XX}
-  \hline
-  Parameter & Description & Default Value \\
-  \hline
-  populationSize & The size of the population & $100$ \\
-  offspringSize & The number of offspring generated every iteration & $100$ \\
-  k & Crowding is based on the distance to the $k$-th nearest neighbor & $1$ \\
-  \hline
-\end{tabularx}
 
-\subsection{VEGA}
+Parameters           | Default Value     | Description
+:------------------- | :---------------- | :----------
+`populationSize`     | `100`             | The size of the population
+`offspringSize`      | `100`             | The number of offspring generated every iteration
+`k`                  | `1`               | Crowding is based on the distance to the $k$-th nearest neighbor
+
+### VEGA
 
 VEGA is considered the earliest documented MOEA.  While we provide support for VEGA, other MOEAs should be preferred as they exhibit better performance.  VEGA is provided for its historical significance \citep{schaffer85}.
-\newline
-\newline
-\noindent
-\begin{tabularx}{\linewidth}{l>{\hsize=9cm}XX}
-  \hline
-  Parameter & Description & Default Value \\
-  \hline
-  populationSize & The size of the population & $100$ \\
-  \hline
-\end{tabularx}
+
+
+Parameters           | Default Value     | Description
+:------------------- | :---------------- | :----------
+`populationSize`     | `100`             | The size of the population
 
 \section{Single-Objective Optimizers}
 
