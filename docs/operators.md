@@ -10,7 +10,6 @@ SBX attempts to simulate the offspring distribution of binary-encoded single-poi
 
 ![SBX](/src/org/moeaframework/core/operator/real/doc-files/SBX-1.png)
 
-\noindent
 The distribution index controls the shape of the offspring distribution. Larger values for the distribution index generates offspring closer to the parents. 
 
 Parameter            | Default Value     | Description
