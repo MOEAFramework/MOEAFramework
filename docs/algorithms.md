@@ -3,7 +3,28 @@
 Multiobjective Optimizers
 * [CMA-ES](#cma-es)
 * [DBEA](#dbea)
-* [$\epsilon$-MOEA](#e-moea)
+* [e-MOEA](#e-moea)
+* [e-NSGA-II](#e-nsga-ii)
+* [GDE3](#gde3)
+* [IBEA](#ibea)
+* [MOEA/D](#moead)
+* [MSOPS](#msops)
+* [NSGA-II](#nsga-ii)
+* [NSGA-III](#nsga-iii)
+* [OMOPSO](#omopso)
+* [PAES](#paes)
+* [PESA2](#pesa2)
+* [Random](#random)
+* [RSO](#rso)
+* [RVEA](#rvea)
+* [SMPSO](#smpos)
+* [SMS-EMOA](#sms-emoa)
+* [SPEA2](#spea2)
+* [VEGA](#vega)
+Single-objective Optimizers
+* [GA](#ga)
+* [ES](#es)
+* [DE](#de)
 
 ## Multiobjective Optimizers
 
