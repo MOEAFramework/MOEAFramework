@@ -24,7 +24,6 @@ public class MiscProblemProvider extends RegisteredProblemProvider {
 		register("OKA2", () -> new OKA2(), "pf/OKA2.pf");
 		register("Osyczka", () -> new Osyczka(), "pf/Osyczka.pf");
 		register("Osyczka2", () -> new Osyczka2(), "pf/Osyczka2.pf");
-		
 		register("Poloni", () -> new Poloni(), "pf/Poloni.pf");
 		register("Quagliarella", () -> new Quagliarella(), "pf/Quagliarella.pf");
 		register("Rendon", () -> new Rendon(), "pf/Rendon.pf");
