@@ -52,8 +52,9 @@ int[] permutation = EncodingUtils.getPermutation(solution.getVariable(i));
 
 ## Subset
 
-A subset is a fixed or variable-length array of numbers from the set $0, ..., N-1$.  Unlikes a permutation that contains all elements, subsets only contain some
-of the elements.  For example, subsets are often used in Bin Packing / Knapsack problems where we pick some assortment of items to fill the bag.
+A subset is a fixed or variable-length array of numbers from the set $0, ..., N-1$.  There is some overlap in functionality between subsets and binary
+encodings, where the membership in the set can be represented by the value of each bit.  However, subsets provide more control over the number of members
+in the set, whereas a binary encoding has no way to limit the number of bits set to `0` or `1`.
 
 ```java
 
@@ -65,7 +66,7 @@ int[] subset = EncodingUtils.getSubset(solution.getVariable(i));
 
 ## Program
 
-Program decision variables are useful when generating computer code, rule systems, or decision trees.  The MOEA Framework has a strongly-typed programming
+The program type is useful when generating computer code, rule systems, or decision trees.  The MOEA Framework has a strongly-typed programming
 language built into it that can generate executable programs.
 
 It works by constructing a program tree, where each leaf in the tree is a "node".  A node represents some operation, like a function, that takes some
@@ -77,60 +78,29 @@ graph TD;
     Add --> Get("x");
     Add --> Multiply;
     Multiply --> Get("y");
-    Multiple --> Constant(2);
+    Multiply --> Constant(2);
 ```
 
-where each node is like a function with some number of inputs and a single output.  Furthermore, the inputs and
-outputs are typed.  This way, when we attempt to connect the output from one node to the input of another, we can validate the types are compatible.
-For example, the `Add` node takes two numbers as input and produces a single output - their sum.
-
-As an example, let's consider constructing a simple mathematical program.  The first step is to define a rule set, which defines the supported nodes along
-with the program's return type.  Also note we can create inputs, in this case the variable `x`.
-
-```java
-
-		Rules rules = new Rules();
-		rules.add(new Add());
-		rules.add(new Multiply());
-		rules.add(new Subtract());
-		rules.add(new Divide());
-		rules.add(new Sin());
-		rules.add(new Cos());
-		rules.add(new Exp());
-		rules.add(new Log());
-		rules.add(new Get(Number.class, "x"));
-		rules.setReturnType(Number.class);
-```
-
-Our problem creates new solutions as follows:
-
-```java
-public class SimpleCalculatorProblem implements Problem
-
-    public Solution newSolution() {
-        Solution solution = new Solution(1, 1);
-        solution.setVariable(0, new Program(rules));
-        return solution;
-    }
-
-    public void evaluate(Solution solution) {
-        Program program = (Program)solution.getVariable(0);
-
-        Environment environment = new Environment();
-        environment.set("x", 15);
-    
-        double result = (Number)program.evaluate(environment)).doubleValue();
-    
-        solution.setObjective
-    }
-}
-```
-
-
+Check out the code samples in [examples/org/moeaframework/examples/gp](examples/org/moeaframework/examples/gp) for examples.
 
 ## Grammar
 
-Grammatical evolution 
+The grammar type facilitates grammatical evolution.  This is similar in functionality to programs, except it used a well-defined grammar given in
+[Backus-Naur form](https://en.wikipedia.org/wiki/Backus%E2%80%93Naur_form).  For example, the following grammar specification:
+
+```bnf
+
+<expr> ::= <func> | (<expr> <op> <expr>) | <value>
+<func> ::= <func-name> ( <expr> )
+<func-name> ::= sin | cos | exp | log
+<op> ::= + | * | - | /
+<value> ::= x | y
+```
+
+would generate expressions like `sin(x) + cos(x)`, `log(x / y)`, `y - x`, etc.
+
+The MOEA Framework then evolves valid programs for the grammar, which can then be fed into a scripting language to evaluate the program.
+Check out the code samples in [examples/org/moeaframework/examples/ge](examples/org/moeaframework/examples/ge) for examples.
 
 ## Mixing Types
 
