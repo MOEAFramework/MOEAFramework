@@ -8,9 +8,6 @@ CMA-ES is a sophisticated covariance matrix adaptation evolution strategy algori
 offspring by sampling a distribution formed by a covariance matrix, hence the name, and updating the covariance matrix based on the surviving offspring.
 Single and multi-objective variants exist in the literature and both are supported by the MOEA Framework.  
 
-[^hansen04]: Hansen and Kern (2004). Evaluating the cma evolution strategy on multimodal test functions.  In Eighth International Conference on Parallel Problem Solving from Nature PPSN VIII, pages 282–291.
-[^igel07]: Igel, C., Hansen, N., and Roth, S. (2007). Covariance matrix adaptation for multi-objective optimization. Evolutionary Computation, 15:1–28.
-
 **Supported Types:** Real
 
 **Supported Operators:** None (provides its own variation and mutation)
@@ -39,16 +36,16 @@ of reference points is:
 
 $H = {M+divisions-1 \choose divisions}$
 
-To use the two-layer approach also used by NSGA-III, replace the \java{divisions} parameter with \java{divisionsOuter} and \java{divisionsInner}.
+To use the two-layer approach also used by NSGA-III, replace the `divisions` parameter with `divisionsOuter` and `divisionsInner`.
 
 Parameters           | Default Value     | Description
 :------------------- | :---------------- | :----------
 `divisions`          | Problem dependent | The number of divisions
 
 ### $\epsilon$-MOEA
-$\epsilon$-MOEA is a steady-state MOEA that uses $\epsilon$-dominance archiving to record a diverse set of Pareto optimal solutions \cite{deb03}.
+$\epsilon$-MOEA is a steady-state MOEA that uses $\epsilon$-dominance archiving to record a diverse set of Pareto optimal solutions [^deb03].
 The term steady-state means that the algorithm evolves one solution at a time.  This is in contrast to generational algorithms, which evolve the
-entire population every iteration.  $\epsilon$-dominance archives are useful since they ensure convergence and diversity throughout search \cite{laumanns02}.
+entire population every iteration.  $\epsilon$-dominance archives are useful since they ensure convergence and diversity throughout search [^laumanns02].
 However, the algorithm requires an additional $\epsilon$ parameter which is problem dependent.  The $\epsilon$ parameter controls the granularity or
 resolution of the solutions in objective space.  Smaller values produce larger, more dense sets while larger values produce smaller sets.  In general,
 the $\epsilon$ values should be chosen to yield a moderately-sized Pareto approximate set.
@@ -60,14 +57,14 @@ Parameters           | Default Value     | Description
 
 ### $\epsilon$-NSGA-II
 
-$\epsilon$-NSGA-II combines the generational search of NSGA-II with the guaranteed convergence provided by an $\epsilon$-dominance archive \cite{kollat06}.  It also features randomized restarts to enhance search and find a diverse set of Pareto optimal solutions.  During a random restart, the algorithm empties the current population and fills it with new, randomly-generated solutions.
+$\epsilon$-NSGA-II combines the generational search of NSGA-II with the guaranteed convergence provided by an $\epsilon$-dominance archive [^kollat06].  It also features randomized restarts to enhance search and find a diverse set of Pareto optimal solutions.  During a random restart, the algorithm empties the current population and fills it with new, randomly-generated solutions.
 
 
 Parameters           | Default Value     | Description
 :------------------- | :---------------- | :----------
 `populationSize`     | `100`             | The size of the population
 `epsilon`            | Problem dependent | The $\epsilon$ values used by the $\epsilon$-dominance archive, which can either be a single value or a comma-separated array
-`injectionRate`      | `0.25`            | Controls the percentage of the population after a restart this is ``injected'', or copied, from the $\epsilon$-dominance archive
+`injectionRate`      | `0.25`            | Controls the percentage of the population after a restart this is "injected", or copied, from the $\epsilon$-dominance archive
 `windowSize`         | `100`             | Frequency of checking if a randomized restart should be triggered (number of iterations)
 `maxWindowSize`      | `100`             | The maximum number of iterations between successive randomized restarts
 `minimumPopulationSize` | `100`          | The smallest possible population size when injecting new solutions after a randomized restart
@@ -75,7 +72,7 @@ Parameters           | Default Value     | Description
 
 ### GDE3
 
-GDE3 is the third version of the generalized differential evolution algorithm \cite{kukkonen05}.  The name differential evolution comes from how the algorithm
+GDE3 is the third version of the generalized differential evolution algorithm [^kukkonen05].  The name differential evolution comes from how the algorithm
 evolves offspring.  It randomly selects three parents.  Next, it computes the difference (the differential) between two of the parents.  Finally, it offsets
 the remaining parent by this differential.
 
@@ -102,8 +99,8 @@ Parameters           | Default Value     | Description
 MOEA/D is a relatively new optimization algorithm based on the concept of decomposing the problem into many single-objective formulations .  Several versions
 of MOEA/D exist in the literature.  The most common variant seen in the literature, MOEA/D-DE [^li09], is the default implementation in the MOEA Framework.
 
-An extension to MOEA/D-DE variant called MOEA/D-DRA introduced a utility function that aimed to reduce the amount of ``wasted'' effort by the algorithm
-\citep{zhang09}.  This variant is enabled by setting the \plaintext{updateUtility} parameter to a non-zero value.
+An extension to MOEA/D-DE variant called MOEA/D-DRA introduced a utility function that aimed to reduce the amount of "wasted" effort by the algorithm
+[^zhang09].  This variant is enabled by setting the `updateUtility` parameter to a non-zero value.
 
 Parameters           | Default Value     | Description
 :------------------- | :---------------- | :----------
@@ -119,7 +116,7 @@ Parameters           | Default Value     | Description
 
 ### MSOPS
 
-MSOPS is the Multiple Single-Objective Pareto Search algorithm \citep{hughes03}.  MSOPS works by enumerating $k$ reference vectors and applying a rank ordering
+MSOPS is the Multiple Single-Objective Pareto Search algorithm [^hughes03].  MSOPS works by enumerating $k$ reference vectors and applying a rank ordering
 based on two aggregate functions: weighted min-max and vector angle distance scaling (VADS).  Solutions with higher rankings with respect to both metrics are
 preferred.  MSOPS only supports real-valued solutions using differential evolution.
 
@@ -132,7 +129,7 @@ Parameters           | Default Value     | Description
 
 ### NSGA-II
 
-NSGA-II is one of the first and most widely used MOEAs \citep{deb00}.  It enhanced it predecessor, NSGA, by introducing fast non-dominated sorting and using
+NSGA-II is one of the first and most widely used MOEAs [^deb00].  It enhanced it predecessor, NSGA, by introducing fast non-dominated sorting and using
 the more computationally efficient crowding distance metric during survival selection.
 
 Parameters           | Default Value     | Description
@@ -300,14 +297,23 @@ Parameters           | Default Value     | Description
 [^asafuddoula15]: Asafuddoula, M., Ray, T., and Sarker, R. (2015). A decomposition-based evolutionary algorithm for many-objective optimization. IEEE Transactions on Evolutionary Computation, 19:445–460.
 [^cheng16]: Cheng, R., Jin, Y., Olhofer, M., and Sendhoff, B. (2016). A reference vector guided evolutionary algorithm for many-objective optimization. IEEE Transactions on Evolutionary Computation, 99.
 [^corne00]: Corne, D. W. and Knowles, J. D. (2000). The Pareto envelope-based selection algorithm for multiobjective optimization. In Proceedings of the 6th International Conference on Parallel Problem Solving from Nature (PPSN VI), pages 839–848, Paris, France.
+[^deb00]: Deb, K., Pratap, A., Agarwal, S., and Meyarivan, T. (2000). A fast elitist multi-objective genetic algorithm: NSGA-II. IEEE Transactions on Evolutionary Computation, 6(2):182–197.
+[^deb03]: Deb, K., Mohan, M., and Mishra, S. (2003). A fast multi-objective evolutionary algorithm for finding well-spread Pareto-optimal solutions. KanGAL Report No. 2003002, Kanpur Genetic Algorithms Laboratory (KanGAL), Indian Institute of Technology, Kanpur, India.
 [^deb14]: Deb, K. and Jain, H. (2014). An evolutionary many-objective optimization algorithm using reference-point-based nondominated sorting approach, part i: Solving problems with box constraints. IEEE Transactions on Evolutionary Computation, 18(4):577–601.
+[^hansen04]: Hansen and Kern (2004). Evaluating the cma evolution strategy on multimodal test functions.  In Eighth International Conference on Parallel Problem Solving from Nature PPSN VIII, pages 282–291.
 [^holland75]: Holland, J. H. (1975). Adaptation in Natural and Artificial Systems. University of Michigan Press, Ann Arbor, MI.
+[^hughes03]: Hughes, E. J. (2003). Multiple single objective pareto sampling. In Congress on Evolutionary Computation, pages 2678–2684.
 [^hughes05]: Hughes, E. J. (2005). Evolutionary many-objective optimisation: Many once or one many? In The 2005 IEEE Congress on Evolutionary Computation (CEC 2005), pages 222–227, Edinburgh, UK.
+[^igel07]: Igel, C., Hansen, N., and Roth, S. (2007). Covariance matrix adaptation for multi-objective optimization. Evolutionary Computation, 15:1–28.
 [^knowles99]: Knowles, J. D. and Corne, D. W. (1999). Approximating the nondominated front using the Pareto Archived Evolution Strategy. Evolutionary Computation, 8:149–172.
+[^kollat06]: Kollat, J. B. and Reed, P. M. (2006). Comparison of multi-objective evolutionary algorithms for long-term monitoring design. Advances in Water Resources, 29(6):792–807.
+[^kukkonen05]: Kukkonen, S. and Lampinen, J. (2005). GDE3: The third evolution step of generalized differential evolution. In The 2005 IEEE Congress on Evolutionary Computation (CEC 2005), pages 443–450, Guanajuato, Mexico.
+[^laumanns02]: Laumanns, M., Thiele, L., Deb, K., and Zitzler, E. (2002). Combining convergence and diversity in evolutionary multi-objective optimization. Evolutionary Computation, 10(3):263–282.
 [^li09]: Li, H. and Zhang, Q. (2009). Multiobjective optimization problems with complicated Pareto sets, MOEA/D and NSGA-II. IEEE Transactions on Evolutionary Computation, 13(2):284–302.
 [^rechenberg71]: Rechenberg, I. (1971). Evolutionsstrategie: Optimierung technischer Systeme nach Prinzipiender biologischen Evolution. PhD thesis, Fromman-Holzboog.
 [^schaffer85]: Schaffer, D. J. (1985). Multiple objective optimization with vector evaluated genetic algorithms. In 1st International Conference on Genetic Algorithms, pages 93–100.
 [^sierra05]: Sierra, M. R. and Coello Coello, C. A. (2005). Improving PSO-based multi-objective optimization using crowding, mutation and ϵ-dominance. In Evolutionary Multi-Criterion Optimization (EMO 2005), pages 505–519, Guanajuato, Mexico.
 [^storn97]: Storn, R. and Price, K. (1997). Differential evolution — a simple and efficient heuristic for global optimization over continuous spaces. Journal of Global Optimization, 11(4):341–359.
+[^zhang09]: Zhang, Q., Liu, W., and Li, H. (2009). The performance of a new version of MOEA/D on CEC09 unconstrained MOP test instances. In Congress on Evolutionary Computation (CEC 2009), pages 203–208, Trondheim, Norway.
 [^zitzler02]: Zitzler, E., Laumanns, M., and Thiele, L. (2002a). SPEA2: Improving the Strength Pareto Evolutionary Algorithm For Multiobjective Optimization. International Center for Numerical Methods in Engineering (CIMNE), Barcelona, Spain.
 [^zitzler04]: Zitzler, E. and K¨unzli, S. (2004). Indicator-based selection in multiobjective search. In Parallel Problem Solving from Nature (PPSN VIII), pages 832–842, Birmingham, UK.
