@@ -32,7 +32,34 @@ Note that `DTLZ5` and `DTLZ6` are not included as they are degenerate at higher 
 
 ### CEC2009
 
+Constrained (CF) and unconstrained (UF) test problems used for the CEC 2009 special session and competition [^zhang09].
 
+Problem | # of Vars | # of Objs | # of Constrs | Type 
+:------ | :-------: | :-------: | :----------: | :---
+`CF1` | 10 | 2 | 1 | Real
+`CF2` | 10 | 2 | 1 | Real
+`CF3` | 10 | 2 | 1 | Real
+`CF4` | 10 | 2 | 1 | Real
+`CF5` | 10 | 2 | 1 | Real
+`CF6` | 10 | 2 | 2 | Real
+`CF7` | 10 | 2 | 2 | Real
+`CF8` | 10 | 3 | 1 | Real
+`CF9` | 10 | 3 | 1 | Real
+`CF10` | 10 | 3 | 1 | Real
+`UF1` | 30 | 2 | 0 | Real
+`UF2` | 30 | 2 | 0 | Real
+`UF3` | 30 | 2 | 0 | Real
+`UF4` | 30 | 2 | 0 | Real
+`UF5` | 30 | 2 | 0 | Real
+`UF6` | 30 | 2 | 0 | Real
+`UF7` | 30 | 2 | 0 | Real
+`UF8` | 30 | 3 | 0 | Real
+`UF9` | 30 | 3 | 0 | Real
+`UF10` | 30 | 3 | 0 | Real
+`UF11` | 30 | 5 | 0 | Real
+`UF12` | 30 | 5 | 0 | Real
+`UF13` | 30 | 5 | 0 | Real
+```
 
 Test suites exhibit certain problem characteristics and are useful for comparing the performance of different algorithms across a range of problem.
 
@@ -137,4 +164,5 @@ DTLZ2 problem.
 
 [^deb01]: Deb et al.  "Scalable Test Problems for Evolutionary Multi-Objective Optimization."  TIK-Technical Report No 112, 2001.
 [^deb02]: Deb et al. "Scalable Multi-Objective Optimization Test Problems." Congress on Evolutionary Computation. pp 825-830, 2002.
+[^zhang09]: Zhang et al (2009).  "Multiobjective Optimization Test Instances for the CEC 2009 Special Session and Competition."  Technical Report CES-487, The School of Computer Science and Electronic Engineering, University of Essex.
 [^zitzler00]: Zitzler et al.  "Comparison of Multiobjective Evolutionary Algorithms: Empirical Results."  Evolutionary Computation Journal.  8(2):125-148, 2000.
