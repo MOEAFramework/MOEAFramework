@@ -1,4 +1,4 @@
-# List of Decision Variable Types and Variation Operators
+# List of Variation Operators
 
 ## Real-Valued Operators
 
@@ -8,7 +8,7 @@ Real-valued decision variable store floating-point numbers ranging from $\pm \in
 
 SBX attempts to simulate the offspring distribution of binary-encoded single-point crossover on real-valued decision variables [^deb94].  It accepts two parents and produces two offspring.  An example of this distribution, which favors offspring nearer to the two parents, is shown below. 
 
-![SBX](src/org/moeaframework/core/operator/real/doc-files/SBX-1.png)
+![SBX](/src/org/moeaframework/core/operator/real/doc-files/SBX-1.png)
 
 \noindent
 The distribution index controls the shape of the offspring distribution. Larger values for the distribution index generates offspring closer to the parents. 
@@ -33,7 +33,7 @@ Parameter            | Default Value     | Description
 
 Differential evolution works by randomly selecting three distinct individuals from a population. A difference vector is calculated between the first two individuals (shown as the left-most arrow in the figure below), which is subsequently applied to the third individual (shown as the right-most arrow in the figure below). 
 
-![DE](src/org/moeaframework/core/operator/real/doc-files/DifferentialEvolution-1.png)
+![DE](/src/org/moeaframework/core/operator/real/doc-files/DifferentialEvolution-1.png)
 
 The scaling factor parameter adjusts the magnitude of the difference vector, allowing the user to decrease or increase the magnitude in relation to the actual difference between the individuals \citep{storn97}. The crossover rate parameter controls the fraction of decision variables which are modified by the DE operator. 
 
@@ -46,7 +46,7 @@ Parameter            | Default Value     | Description
 
 PCX is a multiparent operator, allowing a user-defined number of parents and offspring [^deb02d]. Offspring are clustered around the parents, as depicted in the figure below.
 
-![SBX](src/org/moeaframework/core/operator/real/doc-files/PCX-1.png)
+![SBX](/src/org/moeaframework/core/operator/real/doc-files/PCX-1.png)
 
 Parameter            | Default Value     | Description
 :------------------- | :---------------- | :----------
@@ -59,7 +59,7 @@ Parameter            | Default Value     | Description
 
 UNDX is a multiparent operator, allowing a user-defined number of parents and offspring [^kita99] [^deb02]. Offspring are centered around the centroid, forming a normal distribution whose shape is controlled by the positions of the parents, as depicted in the figure below.
 
-![SBX](src/org/moeaframework/core/operator/real/doc-files/UNDX-1.png)
+![SBX](/src/org/moeaframework/core/operator/real/doc-files/UNDX-1.png)
 
 Parameter            | Default Value     | Description
 :------------------- | :---------------- | :----------
@@ -72,7 +72,7 @@ Parameter            | Default Value     | Description
 
 SPX is a multiparent operator, allowing a user-defined number of parents and offspring [^tsutsui99] [^higuchi00]. The parents form a convex hull, called a simplex. Offspring are generated uniformly at random from within the simplex. The expansion rate parameter can be used to expand the size of the simplex beyond the bounds of the parents. For example, the figure below shows three parent points and the offspring distribution, clearly filling an expanded triangular simplex. 
 
-![SBX](src/org/moeaframework/core/operator/real/doc-files/SPX-1.png)
+![SBX](/src/org/moeaframework/core/operator/real/doc-files/SPX-1.png)
 
 Parameter            | Default Value     | Description
 :------------------- | :---------------- | :----------
@@ -84,7 +84,7 @@ Parameter            | Default Value     | Description
 
 Each decision variable is mutated by selecting a new value within its bounds uniformly at random. The figure below depicts the offspring distribution. It is recommended each decision variable is mutated with a probability of $1/N$, where $N$ is the number of decision variables. This results in one mutation per offspring on average. 
 
-![SBX](src/org/moeaframework/core/operator/real/doc-files/UM-1.png)
+![SBX](/src/org/moeaframework/core/operator/real/doc-files/UM-1.png)
 
 Parameter            | Default Value     | Description
 :------------------- | :---------------- | :----------
@@ -200,9 +200,10 @@ Parameter            | Default Value     | Description
 :------------------- | :---------------- | :----------
 `gm.rate`            | `1.0`             | The probability that the PTM operator is applied to a program tree decision variable
 
-## Generic Operators
+## Crossover Operators
 
-Generic operators can be applied to any type.  They work by simply swapping the value of the decision variable between the parents.
+These crossover operators can be applied to any decision variable type.  They work by swapping decision variables between solutions.  They do not change
+the actual value of the decision variable.
 
 ### One-Point Crossover (1X)
 
