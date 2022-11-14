@@ -1,5 +1,7 @@
 # List of Algorithms
 
+* [CMA-ES](#cma-es)
+
 ## Multiobjective Optimizers
 
 ### CMA-ES
@@ -177,7 +179,7 @@ Parameters           | Default Value     | Description
 
 ### PESA-II
 
-PESA-II is another multiobjective evolutionary algorithm that tends to underperform other MOEAs but is often used as a baseline algorithm in comparative studies \citep{corne01}.  It is the successor to PESA [^corne00].  Like PAES, PESA-II uses the adaptive grid archive to maintain a fixed-size archive of solutions.
+PESA-II is another multiobjective evolutionary algorithm that tends to underperform other MOEAs but is often used as a baseline algorithm in comparative studies [^corne01].  It is the successor to PESA [^corne00].  Like PAES, PESA-II uses the adaptive grid archive to maintain a fixed-size archive of solutions.
 
 Parameters           | Default Value     | Description
 :------------------- | :---------------- | :----------
@@ -298,6 +300,7 @@ Parameters           | Default Value     | Description
 [^beume07]: Beume, N., Naujoks, B., and Emmerich, M. (2007). Sms-emoa: Multiobjective selection based on dominated hypervolume. European Journal of Operational Research, 181(3):1653–1669.
 [^cheng16]: Cheng, R., Jin, Y., Olhofer, M., and Sendhoff, B. (2016). A reference vector guided evolutionary algorithm for many-objective optimization. IEEE Transactions on Evolutionary Computation, 99.
 [^corne00]: Corne, D. W. and Knowles, J. D. (2000). The Pareto envelope-based selection algorithm for multiobjective optimization. In Proceedings of the 6th International Conference on Parallel Problem Solving from Nature (PPSN VI), pages 839–848, Paris, France.
+[^corne01]: Corne, D. W., Jerram, N. R., Knowles, J. D., and Oates, M. J. (2001). PESA-II: Region based selection in evolutionary multiobjective optimization. In Proceedings of the Genetic and Evolutionary Computation Conference (GECCO 2001), pages 283–290, San Francisco, CA.
 [^deb00]: Deb, K., Pratap, A., Agarwal, S., and Meyarivan, T. (2000). A fast elitist multi-objective genetic algorithm: NSGA-II. IEEE Transactions on Evolutionary Computation, 6(2):182–197.
 [^deb03]: Deb, K., Mohan, M., and Mishra, S. (2003). A fast multi-objective evolutionary algorithm for finding well-spread Pareto-optimal solutions. KanGAL Report No. 2003002, Kanpur Genetic Algorithms Laboratory (KanGAL), Indian Institute of Technology, Kanpur, India.
 [^deb14]: Deb, K. and Jain, H. (2014). An evolutionary many-objective optimization algorithm using reference-point-based nondominated sorting approach, part i: Solving problems with box constraints. IEEE Transactions on Evolutionary Computation, 18(4):577–601.
