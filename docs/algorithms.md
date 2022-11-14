@@ -1,5 +1,25 @@
 # List of Algorithms
 
+## Overview
+
+This page provides a high-level view of the optimization algorithms native to the MOEA Framework.  Additionally, it lists out the parameters used to
+customize each algorithm.  For example:
+
+```java
+
+		NondominatedPopulation results = new Executor()
+				.withProblem("UF1")
+				.withAlgorithm("NSGA-II")
+				.withProperty("populationSize", 250)
+				.withMaxEvaluations(10000)
+				.run();
+```
+
+Many of these algorithms change what mutation and variation operators they use based on the problem type.  See the [List of Operators](operators.md) for
+instructions on customizing the parameters for specific operators.
+
+## Index
+
 * Multiobjective Optimizers
   * [CMA-ES](#cma-es)
   * [DBEA](#dbea)
@@ -318,7 +338,7 @@ Parameter            | Default Value     | Description
 `de.crossoverRate`   | `0.1`             | The crossover rate for differential evolution
 `de.stepSize`        | `0.5`             | Control the size of each step taken by differential evolution
 
-# References
+## References
 
 [^asafuddoula15]: Asafuddoula, M., Ray, T., and Sarker, R. (2015). A decomposition-based evolutionary algorithm for many-objective optimization. IEEE Transactions on Evolutionary Computation, 19:445–460.
 [^beume07]: Beume, N., Naujoks, B., and Emmerich, M. (2007). Sms-emoa: Multiobjective selection based on dominated hypervolume. European Journal of Operational Research, 181(3):1653–1669.
