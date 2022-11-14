@@ -70,69 +70,56 @@ $\epsilon$-NSGA-II combines the generational search of NSGA-II with the guarante
 Parameters           | Default Value     | Description
 :------------------- | :---------------- | :----------
 `populationSize`     | `100`             | The size of the population
-	epsilon & The $\epsilon$ values used by the $\epsilon$-dominance archive, which can either be a single value or a comma-separated array & Problem dependent \\
-	injectionRate & Controls the percentage of the population after a restart this is ``injected'', or copied, from the $\epsilon$-dominance archive & $0.25$ \\
-	windowSize & Frequency of checking if a randomized restart should be triggered (number of iterations) & $100$ \\
-	maxWindowSize & The maximum number of iterations between successive randomized restarts & $100$ \\
-	minimumPopulationSize & The smallest possible population size when injecting new solutions after a randomized restart & $100$ \\
-	maximumPopulationSize & The largest possible population size when injecting new solutions after a randomized restart & $10000$ \\
-	\hline
-\end{tabularx}
+`epsilon`            | Problem dependent | The $\epsilon$ values used by the $\epsilon$-dominance archive, which can either be a single value or a comma-separated array
+`injectionRate`      | `0.25`            | Controls the percentage of the population after a restart this is ``injected'', or copied, from the $\epsilon$-dominance archive
+`windowSize`         | `100`             | Frequency of checking if a randomized restart should be triggered (number of iterations)
+`maxWindowSize`      | `100`             | The maximum number of iterations between successive randomized restarts
+`minimumPopulationSize` | `100`          | The smallest possible population size when injecting new solutions after a randomized restart
+`maximumPopulationSize` | `10000`        | The largest possible population size when injecting new solutions after a randomized restart
 
-\subsection{GDE3}
+### GDE3
 
-GDE3 is the third version of the generalized differential evolution algorithm \cite{kukkonen05}.  The name differential evolution comes from how the algorithm evolves offspring.  It randomly selects three parents.  Next, it computes the difference (the differential) between two of the parents.  Finally, it offsets the remaining parent by this differential.
-\newline
-\newline
-\noindent
-\begin{tabularx}{\linewidth}{l>{\hsize=9cm}XX}
-  \hline
-  Parameter & Description & Default Values \\
-  \hline
-  populationSize & The size of the population & $100$ \\
-  de.crossoverRate & The crossover rate for differential evolution & $0.1$ \\
-  de.stepSize & Control the size of each step taken by differential evolution & $0.5$ \\
-  \hline
-\end{tabularx}
+GDE3 is the third version of the generalized differential evolution algorithm \cite{kukkonen05}.  The name differential evolution comes from how the algorithm
+evolves offspring.  It randomly selects three parents.  Next, it computes the difference (the differential) between two of the parents.  Finally, it offsets
+the remaining parent by this differential.
 
-\subsection{IBEA}
+Parameters           | Default Value     | Description
+:------------------- | :---------------- | :----------
+`populationSize`     | `100`             | The size of the population
+`de.crossoverRate`   | `0.1`             | The crossover rate for differential evolution
+`de.stepSize`        | `0.5`             | Control the size of each step taken by differential evolution
 
-IBEA is a indicator-based MOEA that uses the hypervolume performance indicator as a means to rank solutions \cite{zitzler04}.  Indicator-based algorithms are based on the idea that a performance indicator, such as hypervolume or additive $\epsilon$-indicator, highlight solutions with desirable qualities.  The primary disadvantage of indicator-based methods is that the calculation of the performance indicator can become computationally expensive, particularly as the number of objectives increases.
-\newline
-\newline
-\noindent
-\begin{tabularx}{\linewidth}{l>{\hsize=9cm}XX}
-  \hline
-  Parameter & Description & Default Value \\
-  \hline
-  populationSize & The size of the population & $100$ \\
-  indicator & The indicator function (e.g., \java{"hypervolume"}, \java{"epsilon"}) & \java{"hypervolume"} \\
-  \hline
-\end{tabularx}
+### IBEA
 
-\subsection{MOEA/D}
+IBEA is a indicator-based MOEA that uses the hypervolume performance indicator as a means to rank solutions \cite{zitzler04}.  Indicator-based algorithms
+are based on the idea that a performance indicator, such as hypervolume or additive $\epsilon$-indicator, highlight solutions with desirable qualities.
+The primary disadvantage of indicator-based methods is that the calculation of the performance indicator can become computationally expensive, particularly
+as the number of objectives increases.
 
-MOEA/D is a relatively new optimization algorithm based on the concept of decomposing the problem into many single-objective formulations .  Several version of MOEA/D exist in the literature.  The most common variant seen in the literature, MOEA/D-DE \citep{li09}, is the default implementation in the MOEA Framework.
+Parameters           | Default Value     | Description
+:------------------- | :---------------- | :----------
+`populationSize`     | `100`             | The size of the population
+`indicator`          | `hypervolume`     | The indicator function - `hypervolume`, `epsilon
 
-An extension to MOEA/D-DE variant called MOEA/D-DRA introduced a utility function that aimed to reduce the amount of ``wasted'' effort by the algorithm \citep{zhang09}.  This variant is enabled by setting the \plaintext{updateUtility} parameter to a non-zero value.
-\newline
-\newline
-\noindent
-\begin{tabularx}{\linewidth}{l>{\hsize=9cm}XX}
-  \hline
-  Parameter & Description & Default Value \\
-  \hline
-  populationSize & The size of the population & $100$ \\
-  de.crossoverRate & The crossover rate for differential evolution & $0.1$ \\
-  de.stepSize & Control the size of each step taken by differential evolution & $0.5$ \\
-  pm.rate & The mutation rate for polynomial mutation & $1/N$ \\
-  pm.distributionIndex & The distribution index for polynomial mutation & $20.0$ \\
-  neighborhoodSize & The size of the neighborhood used for mating, given as a percentage of the population size & $0.1$ \\
-  delta & The probability of mating with an individual from the neighborhood versus the entire population & $0.9$ \\
-  eta & The maximum number of spots in the population that an offspring can replace, given as a percentage of the population size & $0.01$ \\
-  updateUtility & The frequency, in generations, at which utility values are updated.  If set, this uses the MOEA/D-DRA variant; if unset, then then MOEA/D-DE variant is used & Unset \\
-  \hline
-\end{tabularx}
+### MOEA/D
+
+MOEA/D is a relatively new optimization algorithm based on the concept of decomposing the problem into many single-objective formulations .  Several versions
+of MOEA/D exist in the literature.  The most common variant seen in the literature, MOEA/D-DE \citep{li09}, is the default implementation in the MOEA Framework.
+
+An extension to MOEA/D-DE variant called MOEA/D-DRA introduced a utility function that aimed to reduce the amount of ``wasted'' effort by the algorithm
+\citep{zhang09}.  This variant is enabled by setting the \plaintext{updateUtility} parameter to a non-zero value.
+
+Parameters           | Default Value     | Description
+:------------------- | :---------------- | :----------
+`populationSize`     | `100`             | The size of the population
+`de.crossoverRate`   | `0.1`             | The crossover rate for differential evolution
+`de.stepSize`        | `0.5`             | Control the size of each step taken by differential evolution
+`pm.rate`            | `1/N`             | The mutation rate for polynomial mutation
+`pm.distributionIndex` | `20.0`          | The distribution index for polynomial mutation
+`neighborhoodSize`   | `0.1`             | The size of the neighborhood used for mating, given as a percentage of the population size
+`delta`              | `0.9`             | The probability of mating with an individual from the neighborhood versus the entire population
+`eta`                | `0.01`            | The maximum number of spots in the population that an offspring can replace, given as a percentage of the population size
+`updateUtility`      | Unset             | The frequency, in generations, at which utility values are updated.  If set, this uses the MOEA/D-DRA variant; if unset, then then MOEA/D-DE variant is used
 
 \subsection{MSOPS}
 
