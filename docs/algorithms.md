@@ -4,14 +4,12 @@
 
 ### CMA-ES
 
-CMA-ES is a sophisticated covariance matrix adaptation evolution strategy algorithm for real-valued global optimization.  CMA-ES produces offspring by
-sampling a distribution formed by a covariance matrix, hence the name, and updating the covariance matrix based on the surviving offspring.  Single and
-multi-objective variants exist in the literature and both are supported by the MOEA Framework.  
+CMA-ES is a sophisticated covariance matrix adaptation evolution strategy algorithm for real-valued global optimization[^hansen04][^igel07].  CMA-ES produces 
+offspring by sampling a distribution formed by a covariance matrix, hence the name, and updating the covariance matrix based on the surviving offspring.
+Single and multi-objective variants exist in the literature and both are supported by the MOEA Framework.  
 
-> Hansen and Kern (2004). Evaluating the cma evolution strategy on multimodal test functions.  In Eighth International Conference on Parallel Problem Solving
-> from Nature PPSN VIII, pages 282–291.
-> 
-> Igel, C., Hansen, N., and Roth, S. (2007). Covariance matrix adaptation for multi-objective optimization. Evolutionary Computation, 15:1–28.
+[^hansen04]: Hansen and Kern (2004). Evaluating the cma evolution strategy on multimodal test functions.  In Eighth International Conference on Parallel Problem Solving from Nature PPSN VIII, pages 282–291.
+[^igel07]: Igel, C., Hansen, N., and Roth, S. (2007). Covariance matrix adaptation for multi-objective optimization. Evolutionary Computation, 15:1–28.
 
 **Supported Types:** Real
 
@@ -36,43 +34,42 @@ Derived means the default values are calculated from other settings, but can be 
 
 DBEA, or I-DBEA, is the Improved Decomposition-Based Evolutionary Algorithm.  DBEA uses the same systematic sampling of reference points as NSGA-III,
 but utilizes distance along each reference vector to measure convergence and the perpendicular distance to reference vectors to measure diversity
-\citep{asafuddoula15}.  DBEA also proposes corner-sort as a means to identify exteme points for normalization. For an $M$-objective problem, the number
+[^asafuddoula15].  DBEA also proposes corner-sort as a means to identify exteme points for normalization. For an $M$-objective problem, the number
 of reference points is:
 
 $H = {M+divisions-1 \choose divisions}$
 
 To use the two-layer approach also used by NSGA-III, replace the \java{divisions} parameter with \java{divisionsOuter} and \java{divisionsInner}.
 
-Parameters           | Default Value | Description
-:------------------- | :------------ | :----------
-divisions            | Derived       | The number of divisions
+Parameters           | Default Value     | Description
+:------------------- | :---------------- | :----------
+`divisions`          | Problem dependent | The number of divisions
 
-# $\epsilon$-MOEA
+[^asafuddoula15]: Asafuddoula, M., Ray, T., and Sarker, R. (2015). A decomposition-based evolutionary algorithm
+for many-objective optimization. IEEE Transactions on Evolutionary Computation,
+19:445–460.
 
-$\epsilon$-MOEA is a steady-state MOEA that uses $\epsilon$-dominance archiving to record a diverse set of Pareto optimal solutions \cite{deb03}.  The term steady-state means that the algorithm evolves one solution at a time.  This is in contrast to generational algorithms, which evolve the entire population every iteration.  $\epsilon$-dominance archives are useful since they ensure convergence and diversity throughout search \cite{laumanns02}.  However, the algorithm requires an additional $\epsilon$ parameter which is problem dependent.  The $\epsilon$ parameter controls the granularity or resolution of the solutions in objective space.  Smaller values produce larger, more dense sets while larger values produce smaller sets.  In general, the $\epsilon$ values should be chosen to yield a moderately-sized Pareto approximate set.
-\newline
-\newline
-\noindent
-\begin{tabularx}{\linewidth}{l>{\hsize=9cm}XX}
-	\hline
-	Parameter & Description & Default Value \\
-	\hline
-	populationSize & The size of the population & $100$ \\
-	epsilon & The $\epsilon$ values used by the $\epsilon$-dominance archive, which can either be a single value or a comma-separated array & Problem dependent \\
-	\hline
-\end{tabularx}
+### $\epsilon$-MOEA
+$\epsilon$-MOEA is a steady-state MOEA that uses $\epsilon$-dominance archiving to record a diverse set of Pareto optimal solutions \cite{deb03}.
+The term steady-state means that the algorithm evolves one solution at a time.  This is in contrast to generational algorithms, which evolve the
+entire population every iteration.  $\epsilon$-dominance archives are useful since they ensure convergence and diversity throughout search \cite{laumanns02}.
+However, the algorithm requires an additional $\epsilon$ parameter which is problem dependent.  The $\epsilon$ parameter controls the granularity or
+resolution of the solutions in objective space.  Smaller values produce larger, more dense sets while larger values produce smaller sets.  In general,
+the $\epsilon$ values should be chosen to yield a moderately-sized Pareto approximate set.
 
-\subsection{$\epsilon$-NSGA-II}
+Parameters           | Default Value     | Description
+:------------------- | :---------------- | :----------
+`populationSize`     | `100`             | The size of the population
+`epsilon`            | Problem dependent | The $\epsilon$ values used by the $\epsilon$-dominance archive, which can either be a single value or a comma-separated array
+
+### $\epsilon$-NSGA-II
 
 $\epsilon$-NSGA-II combines the generational search of NSGA-II with the guaranteed convergence provided by an $\epsilon$-dominance archive \cite{kollat06}.  It also features randomized restarts to enhance search and find a diverse set of Pareto optimal solutions.  During a random restart, the algorithm empties the current population and fills it with new, randomly-generated solutions.
-\newline
-\newline
-\noindent
-\begin{tabularx}{\linewidth}{l>{\hsize=7.5cm}XX}
-	\hline
-	Parameter & Description & Default Values \\
-	\hline
-	populationSize & The size of the population & $100$ \\
+
+
+Parameters           | Default Value     | Description
+:------------------- | :---------------- | :----------
+`populationSize`     | `100`             | The size of the population
 	epsilon & The $\epsilon$ values used by the $\epsilon$-dominance archive, which can either be a single value or a comma-separated array & Problem dependent \\
 	injectionRate & Controls the percentage of the population after a restart this is ``injected'', or copied, from the $\epsilon$-dominance archive & $0.25$ \\
 	windowSize & Frequency of checking if a randomized restart should be triggered (number of iterations) & $100$ \\
