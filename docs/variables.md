@@ -2,8 +2,8 @@
 
 ## Real
 
-Real-valued decision variables store numbers between $\pm \inf$.  Internally these are represented as double precision (64-bit) floating point values.  They always
-have a defined lower and upper bound.
+Real-valued decision variables store numbers between $\pm \inf$ but are typically restricted to some finite lower and upper bounds.  Internally these are
+represented as double precision (64-bit) floating point values.
 
 ```java
 
@@ -65,5 +65,77 @@ int[] subset = EncodingUtils.getSubset(solution.getVariable(i));
 
 ## Program
 
+Program decision variables are useful when generating computer code, rule systems, or decision trees.  The MOEA Framework has a strongly-typed programming
+language built into it that can generate executable programs.
+
+It works by constructing a program tree, where each leaf in the tree is a "node".  A node represents some operation, like a function, that takes some
+inputs and produce an output.  The inputs and output are typed.  This way, when we evolve the program, we can ensure the types of inputs and outputs
+are compatible.
+
+```mermaid
+graph TD;
+    Add --> Get("x");
+    Add --> Multiply;
+    Multiply --> Get("y");
+    Multiple --> Constant(2);
+```
+
+where each node is like a function with some number of inputs and a single output.  Furthermore, the inputs and
+outputs are typed.  This way, when we attempt to connect the output from one node to the input of another, we can validate the types are compatible.
+For example, the `Add` node takes two numbers as input and produces a single output - their sum.
+
+As an example, let's consider constructing a simple mathematical program.  The first step is to define a rule set, which defines the supported nodes along
+with the program's return type.  Also note we can create inputs, in this case the variable `x`.
+
+```java
+
+		Rules rules = new Rules();
+		rules.add(new Add());
+		rules.add(new Multiply());
+		rules.add(new Subtract());
+		rules.add(new Divide());
+		rules.add(new Sin());
+		rules.add(new Cos());
+		rules.add(new Exp());
+		rules.add(new Log());
+		rules.add(new Get(Number.class, "x"));
+		rules.setReturnType(Number.class);
+```
+
+Our problem creates new solutions as follows:
+
+```java
+public class SimpleCalculatorProblem implements Problem
+
+    public Solution newSolution() {
+        Solution solution = new Solution(1, 1);
+        solution.setVariable(0, new Program(rules));
+        return solution;
+    }
+
+    public void evaluate(Solution solution) {
+        Program program = (Program)solution.getVariable(0);
+
+        Environment environment = new Environment();
+        environment.set("x", 15);
+    
+        double result = (Number)program.evaluate(environment)).doubleValue();
+    
+        solution.setObjective
+    }
+}
+```
+
+
+
 ## Grammar
+
+Grammatical evolution 
+
+## Mixing Types
+
+The MOEA Framework is able to automatically recognize and select appropriate variation operators when a solution contains a single type.  However, it is
+unable to do so when mixing differen types in the same solution.  Instead, we need to explicitly set the variation operators.
+
+
 
