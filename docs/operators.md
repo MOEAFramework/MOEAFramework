@@ -44,7 +44,7 @@ Parameter            | Default Value     | Description
 
 ### Parent Centric Crossover (PCX)
 
-PCX is a multiparent operator, allowing a user-defined number of parents and offspring \citep{deb02d}. Offspring are clustered around the parents, as depicted in the figure below.
+PCX is a multiparent operator, allowing a user-defined number of parents and offspring [^deb02d]. Offspring are clustered around the parents, as depicted in the figure below.
 
 ![SBX](src/org/moeaframework/core/operator/real/doc-files/PCX-1.png)
 
@@ -57,7 +57,7 @@ Parameter            | Default Value     | Description
 
 ### Unimodal Distribution Crossover (UNDX)
 
-UNDX is a multiparent operator, allowing a user-defined number of parents and offspring \citep{kita99, deb02d}. Offspring are centered around the centroid, forming a normal distribution whose shape is controlled by the positions of the parents, as depicted in the figure below.
+UNDX is a multiparent operator, allowing a user-defined number of parents and offspring [^kita99] [^deb02]. Offspring are centered around the centroid, forming a normal distribution whose shape is controlled by the positions of the parents, as depicted in the figure below.
 
 ![SBX](src/org/moeaframework/core/operator/real/doc-files/UNDX-1.png)
 
@@ -70,7 +70,7 @@ Parameter            | Default Value     | Description
 
 ### Simplex Crossover (SPX)
 
-SPX is a multiparent operator, allowing a user-defined number of parents and offspring \citep{tsutsui99, higuchi00}. The parents form a convex hull, called a simplex. Offspring are generated uniformly at random from within the simplex. The expansion rate parameter can be used to expand the size of the simplex beyond the bounds of the parents. For example, the figure below shows three parent points and the offspring distribution, clearly filling an expanded triangular simplex. 
+SPX is a multiparent operator, allowing a user-defined number of parents and offspring [^tsutsui99] [^higuchi00]. The parents form a convex hull, called a simplex. Offspring are generated uniformly at random from within the simplex. The expansion rate parameter can be used to expand the size of the simplex beyond the bounds of the parents. For example, the figure below shows three parent points and the offspring distribution, clearly filling an expanded triangular simplex. 
 
 ![SBX](src/org/moeaframework/core/operator/real/doc-files/SPX-1.png)
 
@@ -92,7 +92,7 @@ Parameter            | Default Value     | Description
 
 ### Adaptive Metropolis (AM)
 
-AM is a multiparent operator, allowing a user-defined number of parents and offspring \citep{vrugt07, vrugt09}. AM produces normally-distributed clusters around each parent, where the shape of the distribution is controlled by the covariance of the parents.
+AM is a multiparent operator, allowing a user-defined number of parents and offspring [^vrugt07] [^vrugt09]. AM produces normally-distributed clusters around each parent, where the shape of the distribution is controlled by the covariance of the parents.
 
 Internally, the Cholesky decomposition is used to update the resulting offspring distribution. Cholesky decomposition requires that its input be positive definite. In order to guarantee this condition is satisfied, all parents must be unique. In the event that the positive definite condition is not satisifed, no offspring are produced and an empty array is returned by 
 
@@ -124,7 +124,7 @@ Parameter            | Default Value     | Description
 
 ### Partially Mapped Crossover (PMX)
 
-PMX is similar to two-point crossover, but includes a repair operator to ensure the offspring are valid permutations \citep{goldberg85}.
+PMX is similar to two-point crossover, but includes a repair operator to ensure the offspring are valid permutations [^goldberg85].
 
 Parameter            | Default Value     | Description
 :------------------- | :---------------- | :----------
@@ -232,3 +232,10 @@ Parameter            | Default Value     | Description
 
 [^deb94]: Deb, K. and Agrawal, R. B. (1994). Simulated binary crossover for continuous search space. Technical Report No. IITK/ME/SMD-94027, Indian Institute of Technology, Kanpur, India.
 [^deb96]: Deb, K. and Goyal, M. (1996). A combined genetic adaptive search (geneas) for engineering design. Computer Science and Informatics, 26(4):30–45.
+[^deb02]: Deb, K., Anand, A., and Joshi, D. (2002). A computationally efficient evolutionary algorithm for real-parameter optimization. Evolutionary Computation, 10:371–395.
+[^goldberg85]: Goldberg, D. E. and Jr., R. L. (1985). Alleles, loci, and the traveling salesman problem. In 1st International Conference on Genetic Algorithms and Their Applications.
+[^higuchi00]: Higuchi, T., Tsutsui, S., and Yamamura, M. (2000). Theoretical analysis of simplex crossover for real-coded genetic algorithms. In Parallel Problem Solving from Nature (PPSN VI), pages 365–374.
+[^kita99]: Kita, H., Ono, I., and Kobayashi, S. (1999). Multi-parental extension of the unimodal normal distribution crossover for real-coded genetic algorithms. In Proceedings of the 1999 Congress on Evolutionary Computation (CEC 1999), pages 1581–1588, Washington, DC.
+[^tsutsui99]: Tsutsui, S., Yamamura, M., and Higuchi, T. (1999). Multi-parent recombination with simplex crossover in real coded genetic algorithms. In Genetic and Evolutionary Computation Conference (GECCO 1999), pages 657–664, Orlando, FL.
+[^vrugt07]: Vrugt, J. A. and Robinson, B. A. (2007). Improved evolutionary optimization from genetically adaptive multimethod search. Proceedings of the National Academy of Sciences, 104(3):708–711.
+[^vrugt09]: Vrugt, J. A., Robinson, B. A., and Hyman, J. M. (2009). Self-adaptive multimethod search for global optimization in real-parameter spaces. IEEE Transactions on Evolutionary Computation, 13(2):243–259.
