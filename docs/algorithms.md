@@ -45,10 +45,6 @@ Parameters           | Default Value     | Description
 :------------------- | :---------------- | :----------
 `divisions`          | Problem dependent | The number of divisions
 
-[^asafuddoula15]: Asafuddoula, M., Ray, T., and Sarker, R. (2015). A decomposition-based evolutionary algorithm
-for many-objective optimization. IEEE Transactions on Evolutionary Computation,
-19:445–460.
-
 ### $\epsilon$-MOEA
 $\epsilon$-MOEA is a steady-state MOEA that uses $\epsilon$-dominance archiving to record a diverse set of Pareto optimal solutions \cite{deb03}.
 The term steady-state means that the algorithm evolves one solution at a time.  This is in contrast to generational algorithms, which evolve the
@@ -91,7 +87,7 @@ Parameters           | Default Value     | Description
 
 ### IBEA
 
-IBEA is a indicator-based MOEA that uses the hypervolume performance indicator as a means to rank solutions \cite{zitzler04}.  Indicator-based algorithms
+IBEA is a indicator-based MOEA that uses the hypervolume performance indicator as a means to rank solutions [^zitzler04].  Indicator-based algorithms
 are based on the idea that a performance indicator, such as hypervolume or additive $\epsilon$-indicator, highlight solutions with desirable qualities.
 The primary disadvantage of indicator-based methods is that the calculation of the performance indicator can become computationally expensive, particularly
 as the number of objectives increases.
@@ -104,7 +100,7 @@ Parameters           | Default Value     | Description
 ### MOEA/D
 
 MOEA/D is a relatively new optimization algorithm based on the concept of decomposing the problem into many single-objective formulations .  Several versions
-of MOEA/D exist in the literature.  The most common variant seen in the literature, MOEA/D-DE \citep{li09}, is the default implementation in the MOEA Framework.
+of MOEA/D exist in the literature.  The most common variant seen in the literature, MOEA/D-DE [^li09], is the default implementation in the MOEA Framework.
 
 An extension to MOEA/D-DE variant called MOEA/D-DRA introduced a utility function that aimed to reduce the amount of ``wasted'' effort by the algorithm
 \citep{zhang09}.  This variant is enabled by setting the \plaintext{updateUtility} parameter to a non-zero value.
@@ -146,7 +142,7 @@ Parameters           | Default Value     | Description
 
 ### NSGA-III
 
-NSGA-III is the many-objective successor to NSGA-II, using reference points to direct solutions towards a diverse set \citep{deb14}.  The number of reference
+NSGA-III is the many-objective successor to NSGA-II, using reference points to direct solutions towards a diverse set [^deb14].  The number of reference
 points is controlled by the number of objectives and the `divisions` parameter.  For an $M$-objective problem, the number of reference points is:
 
 $H = {M+divisions-1 \choose divisions}$
@@ -160,7 +156,7 @@ Parameters           | Default Value     | Description
 
 ### OMOPSO
 
-OMOPSO is a multiobjective particle swarm optimization algorithm that includes an $\epsilon$-dominance archive to discover a diverse set of Pareto optimal solutions \citep{sierra05}.  This implementation of OMOPSO differs slightly from the original author's implementation in JMetal due to a discrepancy between the author's code and the paper.  The paper returns the $\epsilon$-dominance archive while the code returns the leaders.  This discrepancy causes a small difference in performance. 
+OMOPSO is a multiobjective particle swarm optimization algorithm that includes an $\epsilon$-dominance archive to discover a diverse set of Pareto optimal solutions [^sierra05].  This implementation of OMOPSO differs slightly from the original author's implementation in JMetal due to a discrepancy between the author's code and the paper.  The paper returns the $\epsilon$-dominance archive while the code returns the leaders.  This discrepancy causes a small difference in performance. 
 
 Parameters           | Default Value     | Description
 :------------------- | :---------------- | :----------
@@ -173,7 +169,7 @@ Parameters           | Default Value     | Description
 
 ### PAES
 
-PAES is a multiobjective version of evolution strategy \citep{knowles99}.  PAES tends to underperform when compared to other MOEAs, but it is often used as a baseline algorithm for comparisons.  Like PESA-II, PAES uses the adaptive grid archive to maintain a fixed-size archive of solutions.
+PAES is a multiobjective version of evolution strategy [^knowles99].  PAES tends to underperform when compared to other MOEAs, but it is often used as a baseline algorithm for comparisons.  Like PESA-II, PAES uses the adaptive grid archive to maintain a fixed-size archive of solutions.
 
 Parameters           | Default Value     | Description
 :------------------- | :---------------- | :----------
@@ -184,7 +180,7 @@ Parameters           | Default Value     | Description
 
 ### PESA-II
 
-PESA-II is another multiobjective evolutionary algorithm that tends to underperform other MOEAs but is often used as a baseline algorithm in comparative studies \citep{corne01}.  It is the successor to PESA \citep{corne00}.  Like PAES, PESA-II uses the adaptive grid archive to maintain a fixed-size archive of solutions.
+PESA-II is another multiobjective evolutionary algorithm that tends to underperform other MOEAs but is often used as a baseline algorithm in comparative studies \citep{corne01}.  It is the successor to PESA [^corne00].  Like PAES, PESA-II uses the adaptive grid archive to maintain a fixed-size archive of solutions.
 
 Parameters           | Default Value     | Description
 :------------------- | :---------------- | :----------
@@ -194,7 +190,7 @@ Parameters           | Default Value     | Description
 
 ### Random
 
-The random search algorithm simply randomly generates new solutions uniformly throughout the search space.  It is not intended as an ``optimization algorithm'' \emph{per se}, but as a way to compare the performance of other MOEAs against random search.  If an optimization algorithm can not beat random search, then continued use of that optimization algorithm should be questioned.
+The random search algorithm simply randomly generates new solutions uniformly throughout the search space.  It is not intended as an "optimization algorithm" *per se*, but as a way to compare the performance of other MOEAs against random search.  If an optimization algorithm can not beat random search, then continued use of that optimization algorithm should be questioned.
 
 Parameters           | Default Value     | Description
 :------------------- | :---------------- | :----------
@@ -203,7 +199,7 @@ Parameters           | Default Value     | Description
 
 ### RSO
 
-The repeated single objectives (RSO) algorithm solves multiobjective problems by running several single-objective optimizers independently with varying weights \citep{hughes05}.  Any of the single-objective optimizers supported by the MOEA Framework can be utilized, and any properties supported by that optimizer can be defined.  RSO is a useful tool for comparing single and multiobjective optimizers.  The maximum number of evaluations is spread evenly across each single-objective instance.
+The repeated single objectives (RSO) algorithm solves multiobjective problems by running several single-objective optimizers independently with varying weights [^hughes05].  Any of the single-objective optimizers supported by the MOEA Framework can be utilized, and any properties supported by that optimizer can be defined.  RSO is a useful tool for comparing single and multiobjective optimizers.  The maximum number of evaluations is spread evenly across each single-objective instance.
 
 Parameters           | Default Value     | Description
 :------------------- | :---------------- | :----------
@@ -213,7 +209,7 @@ Parameters           | Default Value     | Description
 
 ### RVEA
 
-The reference vector guided evolutionary algorithm (RVEA) has many similarities with NSGA-III, but avoids use of Pareto dominance and uses an angle-penalized distance function for survival selection \citep{cheng16}.  RVEA only works on problems with at least two objectives and can only use genetic operators requiring two parents.  Like NSGA-III, the number of reference vectors is controlled by the number of objectives and the `divisions` parameter.  For an $M$-objective problem, the number of reference vectors is:
+The reference vector guided evolutionary algorithm (RVEA) has many similarities with NSGA-III, but avoids use of Pareto dominance and uses an angle-penalized distance function for survival selection [^cheng16].  RVEA only works on problems with at least two objectives and can only use genetic operators requiring two parents.  Like NSGA-III, the number of reference vectors is controlled by the number of objectives and the `divisions` parameter.  For an $M$-objective problem, the number of reference vectors is:
 
 $H = {M+divisions-1 \choose divisions}$
 
@@ -248,7 +244,7 @@ Parameters           | Default Value     | Description
 
 ### SPEA2
 
-SPEA2 is an older but popular benchmark MOEA that uses the so-called ``strength-based'' method for ranking solutions \citep{zitzler02}.  The general idea is that the strength or quality of a solution is related to the strength of solutions it dominates.
+SPEA2 is an older but popular benchmark MOEA that uses the so-called ``strength-based'' method for ranking solutions [^zitzler02].  The general idea is that the strength or quality of a solution is related to the strength of solutions it dominates.
 
 Parameters           | Default Value     | Description
 :------------------- | :---------------- | :----------
@@ -258,65 +254,60 @@ Parameters           | Default Value     | Description
 
 ### VEGA
 
-VEGA is considered the earliest documented MOEA.  While we provide support for VEGA, other MOEAs should be preferred as they exhibit better performance.  VEGA is provided for its historical significance \citep{schaffer85}.
+VEGA is considered the earliest documented MOEA.  While we provide support for VEGA, other MOEAs should be preferred as they exhibit better performance.  VEGA is provided for its historical significance [^schaffer85].
 
 
 Parameters           | Default Value     | Description
 :------------------- | :---------------- | :----------
 `populationSize`     | `100`             | The size of the population
 
-\section{Single-Objective Optimizers}
+## Single-Objective Optimizers
 
-In addition to the multiobjective optimizers listed above, the MOEA Framework supports several single-objective optimizers.  These single-objective optimizers can be used to solve both single and multiobjective problems.  For multiobjective problems, additional weighting properties are provided.
+In addition to the multiobjective optimizers listed above, the MOEA Framework supports several single-objective optimizers.  These single-objective optimizers can be used to solve both single and multiobjective problems.  For multiobjective problems, additional properties are supported to scalarize the objectives into a single value.
 
-All single objective algorithms support the \java{"weights"} and \java{"method"} properties.  Both are optional.  If not weights are given, the default is equal weights.  \java{"method"} can either be \java{"linear"} or \java{"min-max"}.
+### GA
 
-\subsection{GA}
+GA is the standard genetic algorithm with elitism[^holland75].  A single elite individual is guaranteed to survive between generations.
 
-GA is the standard genetic algorithm with elitism \citep{holland75}.  A single elite individual is guaranteed to survive between generations.
-\newline
-\newline
-\noindent
-\begin{tabularx}{\linewidth}{l>{\hsize=9cm}XX}
-  \hline
-  Parameter & Description & Default Value \\
-  \hline
-  populationSize & The size of the population & $100$ \\
-	method & The scalarization method & \java{"linear"} \\
-	weights & The scalarization weights & Equal weights \\
-  \hline
-\end{tabularx}
+Parameters           | Default Value     | Description
+:------------------- | :---------------- | :----------
+`populationSize`     | `100`             | The size of the population
+`method`             | `linear`          | The scalarization method - `linear`, `min-max`
+`weights`            | `1.0,1.0,...`     | The scalarization weights
 
-\subsection{ES}
+### ES
 
-ES is the standard $(1+1)$ evolution strategies algorithm \citep{rechenberg71}.  ES only supports real-valued variables.  This means the population is size $1$ and only $1$ offspring is generated each iteration.  The fittest solution survives to the next iteration.  Additionally, ES uses a self-adaptive variation operator.
-\newline
-\newline
-\noindent
-\begin{tabularx}{\linewidth}{l>{\hsize=9cm}XX}
-  \hline
-  Parameter & Description & Default Value \\
-  \hline
-  populationSize & The size of the population & $100$ \\
-	method & The scalarization method & \java{"linear"} \\
-	weights & The scalarization weights & Equal weights \\
-  \hline
-\end{tabularx}
+ES is the standard $(1+1)$ evolution strategies algorithm[^rechenberg71].  ES only supports real-valued variables.  This means the population is size `1` and only `1` offspring is generated each iteration.  The fittest solution survives to the next iteration.  Additionally, ES uses a self-adaptive variation operator.
 
-\subsection{DE}
+Parameters           | Default Value     | Description
+:------------------- | :---------------- | :----------
+`populationSize`     | `100`             | The size of the population
+`method`             | `linear`          | The scalarization method - `linear`, `min-max`
+`weights`            | `1.0,1.0,...`     | The scalarization weights
 
-DE is the standard differential evolution algorithm \citep{storn97}.  DE only supports real-valued variables using the differential evolution operator.  DE works by calculating the difference between two randomly-selected points and applying that difference to a third point.
-\newline
-\newline
-\noindent
-\begin{tabularx}{\linewidth}{l>{\hsize=9cm}XX}
-  \hline
-  Parameter & Description & Default Value \\
-  \hline
-  populationSize & The size of the population & $100$ \\
-	method & The scalarization method & \java{"linear"} \\
-	weights & The scalarization weights & Equal weights \\
-	de.crossoverRate & The DE crossover rate & See documentation \\
-	de.stepSize & The DE step size & See documentation \\
-  \hline
-\end{tabularx}
+### DE
+
+DE is the standard differential evolution algorithm[^storn97].  DE only supports real-valued variables using the differential evolution operator.  DE works by calculating the difference between two randomly-selected points and applying that difference to a third point.
+
+Parameters           | Default Value     | Description
+:------------------- | :---------------- | :----------
+`populationSize`     | `100`             | The size of the population
+`method`             | `linear`          | The scalarization method - `linear`, `min-max`
+`weights`            | `1.0,1.0,...`     | The scalarization weights
+`de.crossoverRate`   | `0.1`             | The crossover rate for differential evolution
+`de.stepSize`        | `0.5`             | Control the size of each step taken by differential evolution
+
+[^asafuddoula15]: Asafuddoula, M., Ray, T., and Sarker, R. (2015). A decomposition-based evolutionary algorithm for many-objective optimization. IEEE Transactions on Evolutionary Computation, 19:445–460.
+[^cheng16]: Cheng, R., Jin, Y., Olhofer, M., and Sendhoff, B. (2016). A reference vector guided evolutionary algorithm for many-objective optimization. IEEE Transactions on Evolutionary Computation, 99.
+[^corne00]: Corne, D. W. and Knowles, J. D. (2000). The Pareto envelope-based selection algorithm for multiobjective optimization. In Proceedings of the 6th International Conference on Parallel Problem Solving from Nature (PPSN VI), pages 839–848, Paris, France.
+[^deb14]: Deb, K. and Jain, H. (2014). An evolutionary many-objective optimization algorithm using reference-point-based nondominated sorting approach, part i: Solving problems with box constraints. IEEE Transactions on Evolutionary Computation, 18(4):577–601.
+[^holland75]: Holland, J. H. (1975). Adaptation in Natural and Artificial Systems. University of Michigan Press, Ann Arbor, MI.
+[^hughes05]: Hughes, E. J. (2005). Evolutionary many-objective optimisation: Many once or one many? In The 2005 IEEE Congress on Evolutionary Computation (CEC 2005), pages 222–227, Edinburgh, UK.
+[^knowles99]: Knowles, J. D. and Corne, D. W. (1999). Approximating the nondominated front using the Pareto Archived Evolution Strategy. Evolutionary Computation, 8:149–172.
+[^li09]: Li, H. and Zhang, Q. (2009). Multiobjective optimization problems with complicated Pareto sets, MOEA/D and NSGA-II. IEEE Transactions on Evolutionary Computation, 13(2):284–302.
+[^rechenberg71]: Rechenberg, I. (1971). Evolutionsstrategie: Optimierung technischer Systeme nach Prinzipiender biologischen Evolution. PhD thesis, Fromman-Holzboog.
+[^schaffer85]: Schaffer, D. J. (1985). Multiple objective optimization with vector evaluated genetic algorithms. In 1st International Conference on Genetic Algorithms, pages 93–100.
+[^sierra05]: Sierra, M. R. and Coello Coello, C. A. (2005). Improving PSO-based multi-objective optimization using crowding, mutation and ϵ-dominance. In Evolutionary Multi-Criterion Optimization (EMO 2005), pages 505–519, Guanajuato, Mexico.
+[^storn97]: Storn, R. and Price, K. (1997). Differential evolution — a simple and efficient heuristic for global optimization over continuous spaces. Journal of Global Optimization, 11(4):341–359.
+[^zitzler02]: Zitzler, E., Laumanns, M., and Thiele, L. (2002a). SPEA2: Improving the Strength Pareto Evolutionary Algorithm For Multiobjective Optimization. International Center for Numerical Methods in Engineering (CIMNE), Barcelona, Spain.
+[^zitzler04]: Zitzler, E. and K¨unzli, S. (2004). Indicator-based selection in multiobjective search. In Parallel Problem Solving from Nature (PPSN VIII), pages 832–842, Birmingham, UK.
