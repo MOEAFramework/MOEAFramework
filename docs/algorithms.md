@@ -221,7 +221,7 @@ Parameters           | Default Value     | Description
 
 ### SMPSO
 
-SMPSO is a multiobjective particle swarm optimization algorithm \citep{nebro09}.
+SMPSO is a multiobjective particle swarm optimization algorithm [^nebro09].
 
 Parameters           | Default Value     | Description
 :------------------- | :---------------- | :----------
@@ -232,7 +232,7 @@ Parameters           | Default Value     | Description
 
 ### SMS-EMOA
 
-SMS-EMOA is an indicator-based MOEA that uses the volume of the dominated hypervolume to rank individuals \citep{beume07}.
+SMS-EMOA is an indicator-based MOEA that uses the volume of the dominated hypervolume to rank individuals [^beume07].
 
 Parameters           | Default Value     | Description
 :------------------- | :---------------- | :----------
@@ -295,6 +295,7 @@ Parameters           | Default Value     | Description
 `de.stepSize`        | `0.5`             | Control the size of each step taken by differential evolution
 
 [^asafuddoula15]: Asafuddoula, M., Ray, T., and Sarker, R. (2015). A decomposition-based evolutionary algorithm for many-objective optimization. IEEE Transactions on Evolutionary Computation, 19:445–460.
+[^beume07]: Beume, N., Naujoks, B., and Emmerich, M. (2007). Sms-emoa: Multiobjective selection based on dominated hypervolume. European Journal of Operational Research, 181(3):1653–1669.
 [^cheng16]: Cheng, R., Jin, Y., Olhofer, M., and Sendhoff, B. (2016). A reference vector guided evolutionary algorithm for many-objective optimization. IEEE Transactions on Evolutionary Computation, 99.
 [^corne00]: Corne, D. W. and Knowles, J. D. (2000). The Pareto envelope-based selection algorithm for multiobjective optimization. In Proceedings of the 6th International Conference on Parallel Problem Solving from Nature (PPSN VI), pages 839–848, Paris, France.
 [^deb00]: Deb, K., Pratap, A., Agarwal, S., and Meyarivan, T. (2000). A fast elitist multi-objective genetic algorithm: NSGA-II. IEEE Transactions on Evolutionary Computation, 6(2):182–197.
@@ -310,6 +311,8 @@ Parameters           | Default Value     | Description
 [^kukkonen05]: Kukkonen, S. and Lampinen, J. (2005). GDE3: The third evolution step of generalized differential evolution. In The 2005 IEEE Congress on Evolutionary Computation (CEC 2005), pages 443–450, Guanajuato, Mexico.
 [^laumanns02]: Laumanns, M., Thiele, L., Deb, K., and Zitzler, E. (2002). Combining convergence and diversity in evolutionary multi-objective optimization. Evolutionary Computation, 10(3):263–282.
 [^li09]: Li, H. and Zhang, Q. (2009). Multiobjective optimization problems with complicated Pareto sets, MOEA/D and NSGA-II. IEEE Transactions on Evolutionary Computation, 13(2):284–302.
+[^nebro09]: Nebro, A. J., Durillo, J. J., Garc´ıa-Nieto, J., Coello Coello, C. A., Luna, F., and Alba, E. (2009). SMPSO: A new PSO-based metaheuristic for multi-objective optimization. In IEEE Symposium on Computational Intelligence in Multicriteria Decision-Making
+(MCDM 2009), pages 66–73, Nashville, TN.
 [^rechenberg71]: Rechenberg, I. (1971). Evolutionsstrategie: Optimierung technischer Systeme nach Prinzipiender biologischen Evolution. PhD thesis, Fromman-Holzboog.
 [^schaffer85]: Schaffer, D. J. (1985). Multiple objective optimization with vector evaluated genetic algorithms. In 1st International Conference on Genetic Algorithms, pages 93–100.
 [^sierra05]: Sierra, M. R. and Coello Coello, C. A. (2005). Improving PSO-based multi-objective optimization using crowding, mutation and ϵ-dominance. In Evolutionary Multi-Criterion Optimization (EMO 2005), pages 505–519, Guanajuato, Mexico.
