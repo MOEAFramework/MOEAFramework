@@ -80,7 +80,7 @@ but utilizes distance along each reference vector to measure convergence and the
 [^asafuddoula15].  DBEA also proposes corner-sort as a means to identify exteme points for normalization. For an $M$-objective problem, the number
 of reference points is:
 
-$H = {M+divisions-1 \choose divisions}$
+$$H = {M+divisions-1 \choose divisions}$$
 
 To use the two-layer approach also used by NSGA-III, replace the `divisions` parameter with `divisionsOuter` and `divisionsInner`.
 
@@ -187,7 +187,7 @@ Parameter            | Default Value     | Description
 NSGA-III is the many-objective successor to NSGA-II, using reference points to direct solutions towards a diverse set [^deb14].  The number of reference
 points is controlled by the number of objectives and the `divisions` parameter.  For an $M$-objective problem, the number of reference points is:
 
-$H = {M+divisions-1 \choose divisions}$
+$$H = {M+divisions-1 \choose divisions}$$
 
 The authors also propose a two-layer approach for divisions for many-objective problems where an outer and inner division number is specified.  To use the two-layer approach, replace the `divisions` parameter with `divisionsOuter` and `divisionsInner`.
 
@@ -253,7 +253,7 @@ Parameter            | Default Value     | Description
 
 The reference vector guided evolutionary algorithm (RVEA) has many similarities with NSGA-III, but avoids use of Pareto dominance and uses an angle-penalized distance function for survival selection [^cheng16].  RVEA only works on problems with at least two objectives and can only use genetic operators requiring two parents.  Like NSGA-III, the number of reference vectors is controlled by the number of objectives and the `divisions` parameter.  For an $M$-objective problem, the number of reference vectors is:
 
-$H = {M+divisions-1 \choose divisions}$
+$$H = {M+divisions-1 \choose divisions}$$
 
 To use the two-layer approach, replace the `divisions` parameter with `divisionsOuter` and `divisionsInner`.
 
