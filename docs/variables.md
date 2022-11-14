@@ -81,7 +81,7 @@ graph TD;
     Multiply --> C["Constant(2)"];
 ```
 
-Check out the code samples in [examples/org/moeaframework/examples/gp](examples/org/moeaframework/examples/gp) for examples.
+Check out the code samples in [/examples/org/moeaframework/examples/gp](examples/org/moeaframework/examples/gp) for examples.
 
 ## Grammar
 
@@ -100,12 +100,4 @@ The grammar type facilitates grammatical evolution.  This is similar in function
 would generate expressions like `sin(x) + cos(x)`, `log(x / y)`, `y - x`, etc.
 
 The MOEA Framework then evolves valid programs for the grammar, which can then be fed into a scripting language to evaluate the program.
-Check out the code samples in [examples/org/moeaframework/examples/ge](examples/org/moeaframework/examples/ge) for examples.
-
-## Mixing Types
-
-The MOEA Framework is able to automatically recognize and select appropriate variation operators when a solution contains a single type.  However, it is
-unable to do so when mixing differen types in the same solution.  Instead, we need to explicitly set the variation operators.
-
-
-
+Check out the code samples in [/examples/org/moeaframework/examples/ge](examples/org/moeaframework/examples/ge) for examples.
