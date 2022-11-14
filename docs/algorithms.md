@@ -7,12 +7,12 @@ customize each algorithm.  For example:
 
 ```java
 
-		NondominatedPopulation results = new Executor()
-				.withProblem("UF1")
-				.withAlgorithm("NSGA-II")
-				.withProperty("populationSize", 250)
-				.withMaxEvaluations(10000)
-				.run();
+NondominatedPopulation results = new Executor()
+    .withProblem("UF1")
+    .withAlgorithm("NSGA-II")
+    .withProperty("populationSize", 250)
+    .withMaxEvaluations(10000)
+    .run();
 ```
 
 Many of these algorithms change what mutation and variation operators they use based on the problem type.  See the [List of Operators](operators.md) for
