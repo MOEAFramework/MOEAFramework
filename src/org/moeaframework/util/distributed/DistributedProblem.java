@@ -42,7 +42,7 @@ public class DistributedProblem extends ProblemWrapper {
 	private final ExecutorService executor;
 	
 	/**
-	 * If {@code true}, the executor service will be shutdown when this
+	 * If {@code true}, the {@code ExecutorService} will be shutdown when this
 	 * problem is closed; if {@code false}, it's the caller's responsibility to manage
 	 * the lifecycle of the executor.
 	 */
@@ -95,8 +95,7 @@ public class DistributedProblem extends ProblemWrapper {
 	 * constructor. It is therefore necessary to ensure the required fields are
 	 * copied when appropriate.
 	 */
-	private static class ProblemEvaluator implements Callable<Solution>,
-			Serializable {
+	private static class ProblemEvaluator implements Callable<Solution>, Serializable {
 
 		private static final long serialVersionUID = -4812427470992224532L;
 
