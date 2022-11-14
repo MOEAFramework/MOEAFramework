@@ -75,10 +75,10 @@ are compatible.
 
 ```mermaid
 graph TD;
-    Add --> Get("x");
+    Add --> X;
     Add --> Multiply;
-    Multiply --> Get("y");
-    Multiply --> Constant(2);
+    Multiply --> Y;
+    Multiply --> "Constant(2)";
 ```
 
 Check out the code samples in [examples/org/moeaframework/examples/gp](examples/org/moeaframework/examples/gp) for examples.
