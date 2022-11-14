@@ -75,9 +75,9 @@ are compatible.
 
 ```mermaid
 graph TD;
-    Add --> A[Get("X")];
+    Add --> A[Get(#quot;X#quot;)];
     Add --> Multiply;
-    Multiply --> B[Get("Y")];
+    Multiply --> B[Get(#quot;Y#quot;)];
     Multiply --> C[Constant(2)];
 ```
 
