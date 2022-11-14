@@ -75,10 +75,10 @@ are compatible.
 
 ```mermaid
 graph TD;
-    Add --> A[Get(#quot;X#quot;)];
+    Add --> A["Get(#quot;X#quot;)"];
     Add --> Multiply;
-    Multiply --> B[Get(#quot;Y#quot;)];
-    Multiply --> C[Constant(2)];
+    Multiply --> B["Get(#quot;Y#quot;)"];
+    Multiply --> C["Constant(2)"];
 ```
 
 Check out the code samples in [examples/org/moeaframework/examples/gp](examples/org/moeaframework/examples/gp) for examples.
