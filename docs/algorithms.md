@@ -1,6 +1,9 @@
 # List of Algorithms
 
+Multiobjective Optimizers
 * [CMA-ES](#cma-es)
+* [DBEA](#dbea)
+* [$\epsilon$-MOEA](#e-moea)
 
 ## Multiobjective Optimizers
 
