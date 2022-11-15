@@ -25,10 +25,6 @@ import java.util.ServiceLoader;
 
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
-import org.moeaframework.problem.ClassLoaderProblems;
-import org.moeaframework.problem.PropertiesProblems;
-import org.moeaframework.problem.RotatedProblems;
-import org.moeaframework.problem.StandardProblems;
 
 /**
  * Factory for creating optimization problem instances and their corresponding
@@ -135,25 +131,6 @@ public class ProblemFactory {
 				return problem;
 			}
 		}
-		
-		// ensure standard problems can always be found
-		Problem problem = instantiateProblem(new StandardProblems(), name);
-			
-		if (problem == null) {
-			problem = instantiateProblem(new PropertiesProblems(), name);
-		}
-			
-		if (problem == null) {
-			problem = instantiateProblem(new ClassLoaderProblems(), name);
-		}
-			
-		if (problem == null) {
-			problem = instantiateProblem(new RotatedProblems(), name);
-		}
-			
-		if (problem != null) {
-			return problem;
-		}
 
 		// throw an exception if no match found
 		throw new ProviderNotFoundException(name);
@@ -209,26 +186,6 @@ public class ProblemFactory {
 			if (referenceSet != null) {
 				return referenceSet;
 			}
-		}
-		
-		// ensure standard problems can always be found
-		NondominatedPopulation referenceSet =
-				new StandardProblems().getReferenceSet(name);
-
-		if (referenceSet == null) {
-			referenceSet = new PropertiesProblems().getReferenceSet(name);
-		}
-			
-		if (referenceSet == null) {
-			referenceSet = new ClassLoaderProblems().getReferenceSet(name);
-		}
-			
-		if (referenceSet == null) {
-			referenceSet = new RotatedProblems().getReferenceSet(name);
-		}
-			
-		if (referenceSet != null) {
-			return referenceSet;
 		}
 
 		// return null if no match is found
