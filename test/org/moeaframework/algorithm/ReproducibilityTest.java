@@ -31,13 +31,13 @@ import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.util.TypedProperties;
 
 /**
- * Tests each of the standard algorithms to ensure reusing random seeds results
+ * Tests each of the built in algorithms to ensure reusing random seeds results
  * in reproducible results. This also serves to test the accessibility of
- * the standard algorithms via {@link AlgorithmFactory} and their basic use.
+ * the built in algorithms via {@link AlgorithmFactory} and their basic use.
  */
 @RunWith(CIRunner.class)
 public class ReproducibilityTest {
-
+	
 	/**
 	 * Tests NSGAII for reproducibility.
 	 */

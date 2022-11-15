@@ -1,8 +1,11 @@
 package org.moeaframework.core.spi;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.function.BiFunction;
 import org.moeaframework.core.Algorithm;
+import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Problem;
 import org.moeaframework.util.TypedProperties;
 
@@ -42,7 +45,11 @@ public class RegisteredAlgorithmProvider extends AlgorithmProvider {
 		BiFunction<TypedProperties, Problem, Algorithm> constructor = constructorMap.get(name);
 		
 		if (constructor != null) {
-			return constructor.apply(properties, problem);
+			try {
+				return constructor.apply(properties, problem);
+			} catch (FrameworkException e) {
+				throw new ProviderNotFoundException(name, e);
+			}
 		}
 		
 		return null;

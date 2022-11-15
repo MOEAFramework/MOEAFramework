@@ -37,9 +37,9 @@ import org.moeaframework.problem.DTLZ.DTLZ2;
 import org.moeaframework.util.TypedProperties;
 
 /**
- * Tests the {@link StandardAlgorithms} class.
+ * Tests the {@link DefaultAlgorithms} class.
  */
-public class StandardAlgorithmsTest {
+public class DefaultAlgorithmsTest {
 	
 	/**
 	 * The real encoded test problem.

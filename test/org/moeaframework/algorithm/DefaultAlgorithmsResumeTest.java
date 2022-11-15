@@ -54,7 +54,7 @@ import org.moeaframework.util.TypedProperties;
 /**
  * Tests if algorithm state can be saved and restored for various algorithms.
  */
-public class StandardAlgorithmsResumeTest {
+public class DefaultAlgorithmsResumeTest {
 	
 	/**
 	 * The number of steps to perform.  Must be > 100 to test
