@@ -1,7 +1,5 @@
 package org.moeaframework.core.spi;
 
-import java.util.HashSet;
-import java.util.Set;
 import java.util.TreeMap;
 import java.util.function.BiFunction;
 import org.moeaframework.core.Algorithm;
