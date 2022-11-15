@@ -16,7 +16,7 @@ public class ProblemProviderTest {
 	 * can be instantiated, and the reference set has the expected number of objective values.
 	 */
 	@Test
-	public void testReferenceSets() {
+	public void testBuiltInProblems() {
 		ServiceLoader<ProblemProvider> providers = ServiceLoader.load(ProblemProvider.class);
 		Iterator<ProblemProvider> iterator = providers.iterator();
 		
@@ -26,8 +26,9 @@ public class ProblemProviderTest {
 			if (provider instanceof RegisteredProblemProvider) {
 				RegisteredProblemProvider registeredProvider = (RegisteredProblemProvider)provider;
 				
-				for (String name : registeredProvider.getRegisteredNames()) {
-					System.out.println(name);
+				for (String name : registeredProvider.getTestableProblems()) {
+					System.out.println("Testing " + name);
+					
 					NondominatedPopulation referenceSet = registeredProvider.getReferenceSet(name);
 					Assert.assertNotNull(referenceSet);
 					Assert.assertTrue(referenceSet.size() > 0);

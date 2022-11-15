@@ -35,6 +35,9 @@ public class RegisteredProblemProvider extends ProblemProvider {
 	 */
 	private final TreeMap<String, String> referenceSetMap;
 	
+	/**
+	 * Creates a new, empty problem provider.
+	 */
 	public RegisteredProblemProvider() {
 		super();
 		constructorMap = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
@@ -54,11 +57,11 @@ public class RegisteredProblemProvider extends ProblemProvider {
 	}
 	
 	/**
-	 * Returns the names of all registered problems.
+	 * For testing only.  Returns the names of all testable problems.
 	 * 
 	 * @return the problem names
 	 */
-	public Set<String> getRegisteredNames() {
+	public Set<String> getTestableProblems() {
 		return constructorMap.keySet();
 	}
 

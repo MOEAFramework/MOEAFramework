@@ -26,7 +26,9 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variable;
 import org.moeaframework.core.Variation;
+import org.moeaframework.core.operator.DefaultOperators;
 import org.moeaframework.core.operator.RandomInitialization;
+import org.moeaframework.core.variable.BinaryIntegerVariable;
 import org.moeaframework.core.variable.BinaryVariable;
 import org.moeaframework.core.variable.Grammar;
 import org.moeaframework.core.variable.Permutation;
@@ -38,10 +40,6 @@ import org.moeaframework.util.TypedProperties;
  */
 public class OperatorFactoryTest {
 
-	private static final String[] operators = { "sbx+pm", "hux+bf", 
-		"pmx+insertion+swap", "de", "de+pm", "pcx", "spx", "undx", "pm", "um", 
-		"1x+um", "2x+um", "ux+um", "gx+gm", "bx", "ptm", "bx+ptm" };
-	
 	private Problem problem;
 	
 	@Before
@@ -55,8 +53,10 @@ public class OperatorFactoryTest {
 	}
 	
 	@Test
-	public void testCommonOperators() {
-		for (String operator : operators) {
+	public void testOperators() {
+		for (String operator : new DefaultOperators().getTestableOperators()) {
+			System.out.println("Testing " + operator);
+			
 			Variation variation = OperatorFactory.getInstance().getVariation(
 					operator, new TypedProperties(), problem);
 			
@@ -98,6 +98,24 @@ public class OperatorFactoryTest {
 			public Solution newSolution() {
 				Solution solution = new Solution(1, 0);
 				solution.setVariable(0, new BinaryVariable(10));
+				return solution;
+			}
+
+		};
+		
+		Assert.assertNotNull(OperatorFactory.getInstance().getVariation(null, 
+				new TypedProperties(), problem));
+	}
+	
+	@Test
+	public void testCombiningBinary() {
+		Problem problem = new ProblemStub(1) {
+			
+			@Override
+			public Solution newSolution() {
+				Solution solution = new Solution(2, 0);
+				solution.setVariable(0, new BinaryVariable(10));
+				solution.setVariable(1, new BinaryIntegerVariable(5, 10));
 				return solution;
 			}
 
