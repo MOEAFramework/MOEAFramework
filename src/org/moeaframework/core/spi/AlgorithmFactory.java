@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.ServiceConfigurationError;
 import java.util.ServiceLoader;
 
-import org.moeaframework.algorithm.StandardAlgorithms;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.Problem;
 import org.moeaframework.util.TypedProperties;
@@ -130,16 +129,10 @@ public class AlgorithmFactory {
 	 */
 	public synchronized Algorithm getAlgorithm(String name, 
 			TypedProperties properties, Problem problem) {
-		boolean hasStandardAlgorithms = false;
-		
 		// loop over all providers that have been manually added
 		for (AlgorithmProvider provider : customProviders) {
 			Algorithm algorithm = instantiateAlgorithm(provider, name,
 					properties, problem);
-			
-			if (provider.getClass() == StandardAlgorithms.class) {
-				hasStandardAlgorithms = true;
-			}
 			
 			if (algorithm != null) {
 				return algorithm;
@@ -153,21 +146,7 @@ public class AlgorithmFactory {
 			AlgorithmProvider provider = iterator.next();
 			Algorithm algorithm = instantiateAlgorithm(provider, name,
 					properties, problem);
-			
-			if (provider.getClass() == StandardAlgorithms.class) {
-				hasStandardAlgorithms = true;
-			}
-			
-			if (algorithm != null) {
-				return algorithm;
-			}
-		}
-		
-		// always ensure we check the standard algorithms
-		if (!hasStandardAlgorithms) {
-			Algorithm algorithm = instantiateAlgorithm(
-					new StandardAlgorithms(), name, properties, problem);
-			
+
 			if (algorithm != null) {
 				return algorithm;
 			}

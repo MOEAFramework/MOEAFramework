@@ -1,4 +1,3 @@
-org.moeaframework.algorithm.StandardAlgorithms
-org.moeaframework.algorithm.sa.AMOSAProvider
+org.moeaframework.algorithm.DefaultAlgorithms
 org.moeaframework.algorithm.pisa.PISAAlgorithms
 org.moeaframework.algorithm.jmetal.JMetalAlgorithms
