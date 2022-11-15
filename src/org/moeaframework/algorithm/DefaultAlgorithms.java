@@ -22,6 +22,7 @@ import java.util.List;
 import org.apache.commons.math3.util.CombinatoricsUtils;
 import org.moeaframework.algorithm.pso.OMOPSO;
 import org.moeaframework.algorithm.pso.SMPSO;
+import org.moeaframework.algorithm.sa.AMOSA;
 import org.moeaframework.algorithm.single.DifferentialEvolution;
 import org.moeaframework.algorithm.single.EvolutionStrategy;
 import org.moeaframework.algorithm.single.GeneticAlgorithm;
@@ -60,276 +61,52 @@ import org.moeaframework.core.operator.UniformSelection;
 import org.moeaframework.core.operator.real.DifferentialEvolutionSelection;
 import org.moeaframework.core.operator.real.DifferentialEvolutionVariation;
 import org.moeaframework.core.operator.real.UM;
-import org.moeaframework.core.spi.AlgorithmProvider;
 import org.moeaframework.core.spi.OperatorFactory;
 import org.moeaframework.core.spi.ProviderLookupException;
 import org.moeaframework.core.spi.ProviderNotFoundException;
+import org.moeaframework.core.spi.RegisteredAlgorithmProvider;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.util.TypedProperties;
 import org.moeaframework.util.Vector;
 import org.moeaframework.util.weights.RandomGenerator;
 
 /**
- * A provider of standard algorithms. The following table contains all
- * available algorithms and the customizable properties.  These properties are
- * tailored for real-valued operators.  If using a different representation,
- * see {@link OperatorFactory} for the appropriate parameters.
- * <p>
- * <strong>
- * For a more detailed description of each algorithm, their properties,
- * and their default values, please refer to Appendix A in the Beginner's Guide
- * to the MOEA Framework or the Javadoc pages for the specific algorithm.
- * </strong>
- * 
- * <table style="margin-top: 1em; width: 100%">
- *   <caption>List of standard algorithms</caption>
- *   <tr>
- *     <th style="width: 10%; text-align: left">Name</th>
- *     <th style="width: 10%; text-align: left">Type</th>
- *     <th style="width: 80%; text-align: left">Properties</th>
- *   </tr>
- *   <tr>
- *     <td>CMA-ES</td>
- *     <td>Real</td>
- *     <td>{@code lambda, cc, cs, damps, ccov, ccovsep, sigma,
- *         diagonalIterations, indicator, initialSearchPoint}</td>
- *   </tr>
- *   <tr>
- *     <td>DBEA</td>
- *     <td>Any</td>
- *     <td>{@code divisions, sbx.rate, sbx.distributionIndex,
- *         pm.rate, pm.distributionIndex} (for the two-layer approach, replace
- *         {@code divisions} by {@code divisionsOuter} and
- *         {@code divisionsInner})</td>
- *   </tr>
- *   <tr>
- *     <td>eMOEA</td>
- *     <td>Any</td>
- *     <td>{@code populationSize, epsilon, sbx.rate,
- *         sbx.distributionIndex, pm.rate, pm.distributionIndex}</td>
- *   </tr>
- *   <tr>
- *     <td>eNSGAII</td>
- *     <td>Any</td>
- *     <td>{@code populationSize, epsilon, sbx.rate,
- *         sbx.distributionIndex, pm.rate, pm.distributionIndex, 
- *         injectionRate, windowSize, maxWindowSize, minimumPopulationSize,
- *         maximumPopulationSize}</td>
- *   </tr>
- *   <tr>
- *     <td>GDE3</td>
- *     <td>Real</td>
- *     <td>{@code populationSize, de.crossoverRate, de.stepSize}</td>
- *   </tr>
- *   <tr>
- *     <td>IBEA</td>
- *     <td>Any</td>
- *     <td>{@code populationSize, sbx.rate, sbx.distributionIndex, pm.rate,
- *         pm.distributionIndex, indicator}</td>
- *   </tr>
- *   <tr>
- *     <td>MOEAD</td>
- *     <td>Real</td>
- *     <td>{@code populationSize, de.crossoverRate, de.stepSize, pm.rate,
- *         pm.distributionIndex, neighborhoodSize, delta, eta, 
- *         updateUtility}</td>
- *   </tr>
- *   <tr>
- *     <td>MSOPS</td>
- *     <td>Real</td>
- *     <td>{@code populationSize, numberOfWeights, de.crossoverRate,
- *         de.stepSize}</td>
- *   </tr>
- *   <tr>
- *     <td>NSGAII</td>
- *     <td>Any</td>
- *     <td>{@code populationSize, sbx.rate, sbx.distributionIndex,
- *         pm.rate, pm.distributionIndex, withReplacement}</td>
- *   </tr>
- *   <tr>
- *     <td>NSGAIII</td>
- *     <td>Any</td>
- *     <td>{@code populationSize, divisions, sbx.rate, sbx.distributionIndex,
- *         pm.rate, pm.distributionIndex} (for the two-layer approach, replace
- *         {@code divisions} by {@code divisionsOuter} and
- *         {@code divisionsInner})</td>
- *   </tr>
- *   <tr>
- *     <td>OMOPSO</td>
- *     <td>Real</td>
- *     <td>{@code populationSize, archiveSize, maxEvaluations,
- *         mutationProbability, perturbationIndex, epsilon}</td>
- *   </tr>
- *   <tr>
- *     <td>PAES</td>
- *     <td>Any</td>
- *     <td>{@code archiveSize, bisections, pm.rate, pm.distributionIndex}</td>
- *   </tr>
- *   <tr>
- *     <td>PESA2</td>
- *     <td>Any</td>
- *     <td>{@code populationSize, archiveSize, bisections, sbx.rate,
- *         sbx.distributionIndex, pm.rate, pm.distributionIndex}</td>
- *   </tr>
- *   <tr>
- *     <td>Random</td>
- *     <td>Any</td>
- *     <td>{@code populationSize, epsilon}</td>
- *   </tr>
- *   <tr>
- *     <td>RVEA</td>
- *     <td>Any</td>
- *     <td>{@code populationSize, divisions, alpha, maxEvaluations,
- *         adaptFrequency, sbx.rate, sbx.distributionIndex, pm.rate,
- *         pm.distributionIndex} (for the two-layer approach, replace
- *         {@code divisions} by {@code divisionsOuter} and
- *         {@code divisionsInner})</td>
- *   </tr>
- *   <tr>
- *     <td>SMPSO</td>
- *     <td>Real</td>
- *     <td>{@code populationSize, archiveSize, pm.rate,
- *         pm.distributionIndex}</td>
- *   </tr>
- *   <tr>
- *     <td>SMS-EMOA</td>
- *     <td>Any</td>
- *     <td>{@code populationSize, offset, sbx.rate, sbx.distributionIndex,
- *         pm.rate, pm.distributionIndex}</td>
- *   </tr>
- *   <tr>
- *     <td>SPEA2</td>
- *     <td>Any</td>
- *     <td>{@code populationSize, offspringSize, k, sbx.rate,
- *         sbx.distributionIndex, pm.rate, pm.distributionIndex}</td>
- *   </tr>
- *   <tr>
- *     <td>VEGA</td>
- *     <td>Any</td>
- *     <td>{@code populationSize, sbx.rate, sbx.distributionIndex, pm.rate,
- *         pm.distributionIndex}</td>
- *   </tr>
- * </table>
- * <p>
- * Several single-objective algorithms are also supported.  These
- * single-objective algorithms support an optional weighting method, which can
- * be either {@code "linear"} or {@code "min-max"}.
- * 
- * <table style="margin-top: 1em; width: 100%">
- *   <caption>List of single-objective algorithms</caption>
- *   <tr>
- *     <th style="width: 10%; text-align: left">Name</th>
- *     <th style="width: 10%; text-align: left">Type</th>
- *     <th style="width: 80%; text-align: left">Properties</th>
- *   </tr>
- *   <tr>
- *     <td>GA</td>
- *     <td>Any</td>
- *     <td>{@code populationSize, method, weights, sbx.rate,
- *         sbx.distributionIndex, pm.rate, pm.distributionIndex}</td>
- *   </tr>
- *   <tr>
- *     <td>ES</td>
- *     <td>Real</td>
- *     <td>{@code populationSize, method, weights}</td>
- *   </tr>
- *   <tr>
- *     <td>DE</td>
- *     <td>Real</td>
- *     <td>{@code populationSize, method, weights, de.crossoverRate,
- *         de.stepSize}</td>
- *   </tr>
- * </table>
- * <p>
- * Lastly, the Repeated Single Objective ({@code RSO}) algorithm is a special
- * case that runs a single-objective algorithm multiple times while aggregating
- * the result.  For example, you can create the algorithm {@code RSO(GA)} to
- * run the single-objective genetic algorithm ({@code GA}) multiple times.  The
- * {@code instances} property controls the number of repeated runs.
+ * A provider of default algorithms.  Refer to {@code docs/algorithms.md}, Appendix A in the
+ * Beginner's Guide to the MOEA Framework, or the Javadoc for the specific algorithm
+ * for the specifics of parameterizing the algorithms.
  */
-public class StandardAlgorithms extends AlgorithmProvider {
+public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 
 	/**
-	 * Constructs the standard algorithm provider.
+	 * Constructs the default algorithm provider.
 	 */
-	public StandardAlgorithms() {
+	public DefaultAlgorithms() {
 		super();
-	}
-
-	@Override
-	public Algorithm getAlgorithm(String name, TypedProperties properties,
-			Problem problem) {
-		try {
-			if (name.equalsIgnoreCase("MOEAD") ||
-					name.equalsIgnoreCase("MOEA/D")) {
-				return newMOEAD(properties, problem);
-			} else if (name.equalsIgnoreCase("GDE3")) {
-				return newGDE3(properties, problem);
-			} else if (name.equalsIgnoreCase("NSGAII") ||
-					name.equalsIgnoreCase("NSGA-II") ||
-					name.equalsIgnoreCase("NSGA2")) {
-				return newNSGAII(properties, problem);
-			} else if (name.equalsIgnoreCase("NSGAIII") ||
-					name.equalsIgnoreCase("NSGA-III") ||
-					name.equalsIgnoreCase("NSGA3")) {
-				return newNSGAIII(properties, problem);
-			} else if (name.equalsIgnoreCase("eNSGAII") ||
-					name.equalsIgnoreCase("e-NSGA-II") ||
-					name.equalsIgnoreCase("eNSGA2")) {
-				return neweNSGAII(properties, problem);
-			} else if (name.equalsIgnoreCase("eMOEA")) {
-				return neweMOEA(properties, problem);
-			} else if (name.equalsIgnoreCase("CMA-ES") ||
-					name.equalsIgnoreCase("CMAES") ||
-					name.equalsIgnoreCase("MO-CMA-ES")) {
-				return newCMAES(properties, problem);
-			} else if (name.equalsIgnoreCase("SPEA2")) {
-				return newSPEA2(properties, problem);
-			} else if (name.equalsIgnoreCase("PAES")) {
-				return newPAES(properties, problem);
-			} else if (name.equalsIgnoreCase("PESA2")) {
-				return newPESA2(properties, problem);
-			} else if (name.equalsIgnoreCase("OMOPSO")) {
-				return newOMOPSO(properties, problem);
-			} else if (name.equalsIgnoreCase("SMPSO")) {
-				return newSMPSO(properties, problem);
-			} else if (name.equalsIgnoreCase("IBEA")) {
-				return newIBEA(properties, problem);
-			} else if (name.equalsIgnoreCase("SMSEMOA") ||
-					name.equalsIgnoreCase("SMS-EMOA")) {
-				return newSMSEMOA(properties, problem);
-			} else if (name.equalsIgnoreCase("VEGA")) {
-				return newVEGA(properties, problem);
-			} else if (name.equalsIgnoreCase("DBEA") ||
-					name.equalsIgnoreCase("I-DBEA")) {
-				return newDBEA(properties, problem);
-			} else if (name.equalsIgnoreCase("RVEA")) {
-				return newRVEA(properties, problem);
-			} else if (name.equalsIgnoreCase("MSOPS")) {
-				return newMSOPS(properties, problem);
-			} else if (name.equalsIgnoreCase("Random")) {
-				return newRandomSearch(properties, problem);
-			} else if (name.equalsIgnoreCase("DifferentialEvolution") ||
-					name.equalsIgnoreCase("DE") ||
-					name.equalsIgnoreCase("DE/rand/1/bin")) {
-				return newDifferentialEvolution(properties, problem);
-			} else if (name.equalsIgnoreCase("GeneticAlgorithm") ||
-					name.equalsIgnoreCase("GA")) {
-				return newGeneticAlgorithm(properties, problem);
-			} else if (name.equalsIgnoreCase("EvolutionStrategy") ||
-					name.equalsIgnoreCase("ES")) {
-				return newEvolutionaryStrategy(properties, problem);
-			} else if (name.equalsIgnoreCase("RSO")) {
-				return newRSO(properties, problem);
-			} else if (name.toUpperCase().startsWith("RSO(") && name.endsWith(")")) {
-				properties.setString("algorithm", name.substring(4, name.length()-1));
-				return newRSO(properties, problem);
-			} else {
-				return null;
-			}
-		} catch (FrameworkException e) {
-			throw new ProviderNotFoundException(name, e);
-		}
+		
+		register(this::newMOEAD, "MOEAD", "MOEA/D");
+		register(this::newGDE3, "GDE3");
+		register(this::newNSGAII, "NSGAII", "NSGA-II", "NSGA2");
+		register(this::newNSGAIII, "NSGAIII", "NSGA-III", "NSGA3");
+		register(this::neweNSGAII, "eNSGAII", "e-NSGA-II", "eNSGA2");
+		register(this::neweMOEA, "eMOEA");
+		register(this::newCMAES, "CMA-ES", "CMAES", "MO-CMA-ES");
+		register(this::newSPEA2, "SPEA2");
+		register(this::newPAES, "PAES");
+		register(this::newPESA2, "PESA2");
+		register(this::newOMOPSO, "OMOPSO");
+		register(this::newSMPSO, "SMPSO");
+		register(this::newIBEA, "IBEA");
+		register(this::newSMSEMOA, "SMSEMOA", "SMS-EMOA");
+		register(this::newVEGA, "VEGA");
+		register(this::newDBEA, "DBEA", "I-DBEA");
+		register(this::newRVEA, "RVEA");
+		register(this::newMSOPS, "MSOPS");
+		register(this::newAMOSA, "AMOSA");
+		register(this::newRandomSearch, "Random");
+		register(this::newDifferentialEvolution, "DifferentialEvolution", "DE", "DE/rand/1/bin");
+		register(this::newGeneticAlgorithm, "GeneticAlgorithm", "GA");
+		register(this::newEvolutionaryStrategy, "EvolutionStrategy", "EvolutionaryStrategy", "ES");
+		register(this::newRSO, "RSO");
 	}
 	
 	/**
@@ -1259,6 +1036,36 @@ public class StandardAlgorithms extends AlgorithmProvider {
 				.getVariation("de", properties, problem);
 
 		return new DifferentialEvolution(problem, comparator, initialization, selection, variation);
+	}
+	
+	private Algorithm newAMOSA(TypedProperties properties, Problem problem) {
+		// to be used at initialization the archive by the size of gamma*SL (default to 100)(gamma > 1)
+		double gamma = properties.getDouble("gamma", 2.0d);
+		gamma = gamma < 1.0d ? 2.0d : gamma;
+			
+		// Soft Limit SL (default to 100)
+		int softLimit = properties.getInt("SL", 100);
+			
+		// Hard Limit HL (default to 10)
+		int hardLimit = properties.getInt("HL", 10);
+
+		double tMin = properties.getDouble("tMin", 0.0000001d);
+		double tMax = properties.getDouble("tMax", 200d);
+		double alpha = properties.getDouble("alpha", 0.8d);
+		int numberOfIterationPerTemperature = properties.getInt("iter", 500);
+		int numberOfHillClimbingIterationsForRefinement = properties.getInt("hillClimbIter", 20);
+			
+		// Initialize the algorithm with randomly-generated solutions
+		Initialization initialization = new RandomInitialization(problem, (int)gamma*softLimit);
+			
+		// Use the operator factory that problem provides
+		Variation variation = OperatorFactory.getInstance().getVariation(
+				OperatorFactory.getInstance().getDefaultMutation(problem), 
+				properties,
+				problem);
+			
+		return new AMOSA(problem, initialization, variation, softLimit, hardLimit, tMin, tMax,
+				alpha, numberOfIterationPerTemperature, numberOfHillClimbingIterationsForRefinement);
 	}
 	
 }
