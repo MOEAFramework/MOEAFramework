@@ -2,8 +2,14 @@ package org.moeaframework.problem.misc;
 
 import org.moeaframework.core.spi.RegisteredProblemProvider;
 
+/**
+ * Problem provider for the miscellaneous test problems.
+ */
 public class MiscProblemProvider extends RegisteredProblemProvider {
 
+	/**
+	 * Constructs and registers the miscellaneous problems.
+	 */
 	public MiscProblemProvider() {
 		super();
 		

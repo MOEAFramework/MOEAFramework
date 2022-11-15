@@ -5,8 +5,14 @@ import java.util.Locale;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.spi.RegisteredProblemProvider;
 
+/**
+ * Problem provider for the WFG test problems.
+ */
 public class WFGProblemProvider extends RegisteredProblemProvider {
 
+	/**
+	 * Constructs and registers the WFG problems.
+	 */
 	public WFGProblemProvider() {
 		super();
 		

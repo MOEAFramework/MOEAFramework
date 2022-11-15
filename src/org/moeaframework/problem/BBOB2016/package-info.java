@@ -38,6 +38,8 @@
  *       Optimization Benchmarking 2010: Presentation of the Noiseless
  *       Functions."  Working Paper 2009/20, compiled November 17, 2015.
  *       <a href="http://coco.lri.fr/downloads/download15.03/bbobdocfunctions.pdf">(PDF)</a>
+ *   <li>http://numbbo.github.io/coco-doc/bbob-biobj/functions/
+ *   <li>https://arxiv.org/abs/1604.00359
  * </ol>
  */
 package org.moeaframework.problem.BBOB2016;

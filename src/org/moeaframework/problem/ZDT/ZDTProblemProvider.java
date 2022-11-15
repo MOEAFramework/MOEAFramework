@@ -2,8 +2,14 @@ package org.moeaframework.problem.ZDT;
 
 import org.moeaframework.core.spi.RegisteredProblemProvider;
 
+/**
+ * Problem provider for the ZDT test problems.
+ */
 public class ZDTProblemProvider extends RegisteredProblemProvider {
 
+	/**
+	 * Constructs and registers the ZDT problems.
+	 */
 	public ZDTProblemProvider() {
 		super();
 		

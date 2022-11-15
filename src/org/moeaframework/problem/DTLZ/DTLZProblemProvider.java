@@ -3,8 +3,14 @@ package org.moeaframework.problem.DTLZ;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.spi.RegisteredProblemProvider;
 
+/**
+ * Problem provider for the DTLZ test problems.
+ */
 public class DTLZProblemProvider extends RegisteredProblemProvider {
 
+	/**
+	 * Constructs and registers the DTLZ problems.
+	 */
 	public DTLZProblemProvider() {
 		super();
 		

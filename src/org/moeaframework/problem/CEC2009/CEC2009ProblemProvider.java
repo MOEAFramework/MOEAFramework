@@ -2,8 +2,14 @@ package org.moeaframework.problem.CEC2009;
 
 import org.moeaframework.core.spi.RegisteredProblemProvider;
 
+/**
+ * Constructs and configures the CEC2009 problems.
+ */
 public class CEC2009ProblemProvider extends RegisteredProblemProvider {
 
+	/**
+	 * Constructs and registers the CEC2009 problems.
+	 */
 	public CEC2009ProblemProvider() {
 		super();
 		

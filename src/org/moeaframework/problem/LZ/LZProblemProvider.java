@@ -2,8 +2,14 @@ package org.moeaframework.problem.LZ;
 
 import org.moeaframework.core.spi.RegisteredProblemProvider;
 
+/**
+ * Problem provider for the LZ test problems.
+ */
 public class LZProblemProvider extends RegisteredProblemProvider {
 
+	/**
+	 * Constructs and registers the LZ problems.
+	 */
 	public LZProblemProvider() {
 		super();
 		

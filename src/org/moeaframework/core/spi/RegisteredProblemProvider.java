@@ -14,10 +14,25 @@ import org.moeaframework.core.PopulationIO;
 import org.moeaframework.core.Problem;
 import org.moeaframework.util.io.CommentedLineReader;
 
+/**
+ * Problem provider that lets callers register problems by name.  For example:
+ * <pre>
+ *    RegisteredProblemProvider myProvider = new RegisteredProblemProvider();
+ *    myProvider.register("MyProblem", () -> new MyProblem(), "pf/myProbem.pf");
+ *    
+ *    ProblemFactory.getInstance().addProvider(myProvider);
+ * </pre>
+ */
 public class RegisteredProblemProvider extends ProblemProvider {
 	
+	/**
+	 * Mapping of problem names to a constructor function.
+	 */
 	private final TreeMap<String, Supplier<Problem>> constructorMap;
 	
+	/**
+	 * Mapping of problem names to their reference set.
+	 */
 	private final TreeMap<String, String> referenceSetMap;
 	
 	public RegisteredProblemProvider() {
@@ -26,11 +41,23 @@ public class RegisteredProblemProvider extends ProblemProvider {
 		referenceSetMap = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 	}
 	
+	/**
+	 * Registers a new problem with this provider.
+	 * 
+	 * @param name the problem name
+	 * @param constructor the function that creates a new instance of the problem
+	 * @param referenceSet the path of the file containing the reference set
+	 */
 	public final void register(String name, Supplier<Problem> constructor, String referenceSet) {
 		constructorMap.put(name, constructor);
 		referenceSetMap.put(name, referenceSet);
 	}
 	
+	/**
+	 * Returns the names of all registered problems.
+	 * 
+	 * @return the problem names
+	 */
 	public Set<String> getRegisteredNames() {
 		return constructorMap.keySet();
 	}
@@ -61,6 +88,14 @@ public class RegisteredProblemProvider extends ProblemProvider {
 		return null;
 	}
 	
+	/**
+	 * Loads a reference set either from a file on disk or from a resource bundled in
+	 * the JAR file.
+	 * 
+	 * @param resource the path of the file or resource
+	 * @return the reference set, or {@code null} if the file or resource was not found
+	 * @throws IOException if an I/O error occurred
+	 */
 	private NondominatedPopulation loadReferenceSet(String resource) throws IOException {
 		File file = new File(resource);
 		
