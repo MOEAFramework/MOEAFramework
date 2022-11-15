@@ -26,7 +26,6 @@ import java.util.ServiceLoader;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.operator.CompoundVariation;
-import org.moeaframework.core.operator.StandardOperators;
 import org.moeaframework.util.TypedProperties;
 
 /**
@@ -154,8 +153,7 @@ public class OperatorFactory {
 	 * @throws ProviderNotFoundException if no provider for the algorithm is 
 	 *         available
 	 */
-	public Variation getVariation(String name, TypedProperties properties, 
-			Problem problem) {
+	public Variation getVariation(String name, TypedProperties properties, Problem problem) {
 		if (name == null) {
 			String operator = properties.getString("operator", null);
 			
@@ -166,12 +164,11 @@ public class OperatorFactory {
 				return getVariation(operator, properties, problem);
 			}
 		} else if (name.contains("+")) {
-			String[] entries = name.split("\\s*\\+\\s*");
+			String[] entries = name.split("\\+");
 			CompoundVariation variation = new CompoundVariation();
 			
 			for (String entry : entries) {
-				variation.appendOperator(
-						getVariation(entry, properties, problem));
+				variation.appendOperator(getVariation(entry.trim(), properties, problem));
 			}
 			
 			return variation;
@@ -193,16 +190,10 @@ public class OperatorFactory {
 	
 	private Variation instantiateVariation(String name, TypedProperties properties,
 			Problem problem) {
-		boolean hasStandardOperators = false;
-		
 		// loop over all providers that have been manually added
 		for (OperatorProvider provider : customProviders) {
 			Variation variation = instantiateVariation(provider, name,
 					properties, problem);
-			
-			if (provider.getClass() == StandardOperators.class) {
-				hasStandardOperators = true;
-			}
 			
 			if (variation != null) {
 				return variation;
@@ -216,20 +207,6 @@ public class OperatorFactory {
 			OperatorProvider provider = iterator.next();
 			Variation variation = instantiateVariation(provider, name,
 					properties, problem);
-			
-			if (provider.getClass() == StandardOperators.class) {
-				hasStandardOperators = true;
-			}
-			
-			if (variation != null) {
-				return variation;
-			}
-		}
-		
-		// always ensure we check the standard algorithms
-		if (!hasStandardOperators) {
-			Variation variation = instantiateVariation(new StandardOperators(),
-					name, properties, problem);
 			
 			if (variation != null) {
 				return variation;
@@ -240,15 +217,9 @@ public class OperatorFactory {
 	}
 	
 	private String lookupMutationHint(Problem problem) {
-		boolean hasStandardOperators = false;
-		
 		// loop over all providers that have been manually added
 		for (OperatorProvider provider : customProviders) {
 			String hint = provider.getMutationHint(problem);
-
-			if (provider.getClass() == StandardOperators.class) {
-				hasStandardOperators = true;
-			}
 			
 			if (hint != null) {
 				return hint;
@@ -262,19 +233,6 @@ public class OperatorFactory {
 			OperatorProvider provider = iterator.next();
 			String hint = provider.getMutationHint(problem);
 			
-			if (provider.getClass() == StandardOperators.class) {
-				hasStandardOperators = true;
-			}
-			
-			if (hint != null) {
-				return hint;
-			}
-		}
-		
-		// always ensure we check the standard algorithms
-		if (!hasStandardOperators) {
-			String hint = new StandardOperators().getMutationHint(problem);
-
 			if (hint != null) {
 				return hint;
 			}
@@ -285,15 +243,9 @@ public class OperatorFactory {
 	}
 	
 	private String lookupVariationHint(Problem problem) {
-		boolean hasStandardOperators = false;
-		
 		// loop over all providers that have been manually added
 		for (OperatorProvider provider : customProviders) {
 			String hint = provider.getVariationHint(problem);
-
-			if (provider.getClass() == StandardOperators.class) {
-				hasStandardOperators = true;
-			}
 			
 			if (hint != null) {
 				return hint;
@@ -306,19 +258,6 @@ public class OperatorFactory {
 		while (iterator.hasNext()) {
 			OperatorProvider provider = iterator.next();
 			String hint = provider.getVariationHint(problem);
-			
-			if (provider.getClass() == StandardOperators.class) {
-				hasStandardOperators = true;
-			}
-			
-			if (hint != null) {
-				return hint;
-			}
-		}
-		
-		// always ensure we check the standard algorithms
-		if (!hasStandardOperators) {
-			String hint = new StandardOperators().getVariationHint(problem);
 
 			if (hint != null) {
 				return hint;

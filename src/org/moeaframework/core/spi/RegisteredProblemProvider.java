@@ -54,11 +54,11 @@ public class RegisteredProblemProvider extends ProblemProvider {
 	}
 	
 	/**
-	 * Returns the names of all registered problems.
+	 * For testing only.  Returns the names of all testable problems.
 	 * 
 	 * @return the problem names
 	 */
-	public Set<String> getRegisteredNames() {
+	public Set<String> getTestableProblems() {
 		return constructorMap.keySet();
 	}
 
