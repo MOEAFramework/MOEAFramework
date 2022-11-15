@@ -35,6 +35,9 @@ public class RegisteredProblemProvider extends ProblemProvider {
 	 */
 	private final TreeMap<String, String> referenceSetMap;
 	
+	/**
+	 * Creates a new, empty problem provider.
+	 */
 	public RegisteredProblemProvider() {
 		super();
 		constructorMap = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
