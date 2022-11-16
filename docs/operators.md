@@ -1,5 +1,26 @@
 # List of Variation Operators
 
+## Overview
+
+This page details mutation and crossover operators built into the MOEA Framework.  For problems with a single decision variable type, a default operator is
+automatically selected.  For problems with mixed types, you will need to explicitly set the operators.  Do this by setting the `operator` parameter:
+
+```java
+
+NondominatedPopulation results = new Executor()
+    .withProblem("UF1")
+    .withAlgorithm("NSGA-II")
+    .withProperty("populationSize", 250)
+    .withProperty("operator", "sbx+pm")
+    .withProperty("sbx.rate", 0.9)
+    .withProperty("sbx.distributionIndex", 20.0)
+    .withMaxEvaluations(10000)
+    .run();
+```
+
+Note that the operator above is in fact the combination of a crossover (`sbx`) and a mutation (`pm`) operator.  Many operators can be combined in this way
+by joining them with the `+` symbol.  
+
 ## Real-Valued Operators
 
 Real-valued decision variable store floating-point numbers ranging from $\pm \inf$.
@@ -12,10 +33,10 @@ SBX attempts to simulate the offspring distribution of binary-encoded single-poi
 
 The distribution index controls the shape of the offspring distribution. Larger values for the distribution index generates offspring closer to the parents. 
 
-Parameter            | Default Value     | Description
-:------------------- | :---------------- | :----------
-`sbx.rate`           | `1.0`             | The probability that the SBX operator is applied to a decision variable
-`sbx.distributionIndex` | `15.0`         | The shape of the offspring distribution
+Parameter               | Default Value     | Description
+:---------------------- | :---------------- | :----------
+`sbx.rate`              | `1.0`             | The probability that the SBX operator is applied to a decision variable
+`sbx.distributionIndex` | `15.0`            | The shape of the offspring distribution
 
 ### Polynomial Mutation (PM)
 
@@ -23,10 +44,10 @@ PM attempts to simulate the offspring distribution of binary-encoded bit-flip mu
 
 The distribution index controls the shape of the offspring distribution. Larger values for the distribution index generates offspring closer to the parents.
 
-Parameter            | Default Value     | Description
-:------------------- | :---------------- | :----------
-`pm.rate             | `1/N`             | The probability that the PM operator is applied to a decision variable
-`pm.distributionIndex` | `20.0`          | The shape of the offspring distribution (larger values produce offspring closer to the parent)
+Parameter              | Default Value     | Description
+:--------------------- | :---------------- | :----------
+`pm.rate               | `1/N`             | The probability that the PM operator is applied to a decision variable
+`pm.distributionIndex` | `20.0`            | The shape of the offspring distribution (larger values produce offspring closer to the parent)
 
 ### Differential Evolution (DE)
 
