@@ -29,7 +29,8 @@ NondominatedPopulation results = new Executor()
 ```
 
 Many of these algorithms support any decision variable type, and thus the selected mutation and/or crossover operators will depend on the problem
-type.  These mutation and crossover operators have their own set of parameters.  See the [List of Operators](operators.md) for specifics.
+type.  A default operators is used unless explicitly overridden by the `operator` parameter, where supported.  See the [List of Operators](operators.md)
+for specifics.
 
 ## Multiobjective Optimizers
 
