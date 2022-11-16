@@ -88,7 +88,7 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 		register(this::newNSGAII, "NSGAII", "NSGA-II", "NSGA2");
 		register(this::newNSGAIII, "NSGAIII", "NSGA-III", "NSGA3");
 		register(this::neweNSGAII, "eNSGAII", "e-NSGA-II", "eNSGA2");
-		register(this::neweMOEA, "eMOEA");
+		register(this::neweMOEA, "eMOEA", "e-MOEA");
 		register(this::newCMAES, "CMA-ES", "CMAES", "MO-CMA-ES");
 		register(this::newSPEA2, "SPEA2");
 		register(this::newPAES, "PAES");
