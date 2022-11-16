@@ -92,8 +92,7 @@ Check out the code samples in [/examples/org/moeaframework/examples/gp](examples
 The grammar type facilitates grammatical evolution.  This is similar in functionality to programs, except it used a well-defined grammar given in
 [Backus-Naur form](https://en.wikipedia.org/wiki/Backus%E2%80%93Naur_form).  For example, the following grammar specification:
 
-```bnf
-
+```
 <expr> ::= <func> | (<expr> <op> <expr>) | <value>
 <func> ::= <func-name> ( <expr> )
 <func-name> ::= sin | cos | exp | log
