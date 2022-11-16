@@ -142,7 +142,33 @@ Viennet4 | 2 | 3 | 3 | Real
 
 Problems marked with $\dagger$ have maximized objectives.  Since the MOEA Framework only works with minimized objectives, the objective values are negated.
 
-## References
+## Special Problem Classes
+
+### Rotated Problems
+
+In many test problems, there is a direct relationship between decision variables and objectives, often to the point where once can tweak each variable
+independently to find the optimum.  Any real-valued problem can be rotated in decision variable space to remove this independence and create a linear
+relationship between the variables.  This is accomplished by prepending one of the following to the problem name:
+
+* `ROT_` - Rotates all decision variables by 45 degrees
+* `ROT(X)_` - Rotates all decision variables by `X` degrees.  Replace `X` with `RAND` to randomly rotated each axis.
+* `ROT(K,X)_` - Makes K rotatations along random planes.  Replace `K` with `ALL` to rotate all axes.
+
+For example:
+
+```java
+NondominatedPopulation results = new Executor()
+    .withProblem("ROT_DTLZ2_2")
+    .withAlgorithm("NSGA-II")
+    .withProperty("populationSize", 250)
+    .withMaxEvaluations(10000)
+    .run();
+```
+
+### Scripted or External Problems
+
+The MOEA Framework also has the capability to execute problems written in a scripting language (using the appropriate Java plugin) or external, compiled
+programs.  Refer to `ScriptedProblem` and `ExternalProblem` for details.
 
 [^deb01]: Deb et al.  "Scalable Test Problems for Evolutionary Multi-Objective Optimization."  TIK-Technical Report No 112, 2001.
 [^deb02]: Deb et al. "Scalable Multi-Objective Optimization Test Problems." Congress on Evolutionary Computation. pp 825-830, 2002.
