@@ -17,12 +17,7 @@
  */
 package org.moeaframework.core.spi;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 import java.util.ServiceConfigurationError;
-import java.util.ServiceLoader;
-
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 
@@ -37,29 +32,18 @@ import org.moeaframework.core.Problem;
  * <p>
  * This class is thread safe.
  */
-public class ProblemFactory {
-	
-	/**
-	 * The static service loader for loading problem providers.
-	 */
-	private static final ServiceLoader<ProblemProvider> PROVIDERS;
+public class ProblemFactory extends AbstractFactory<ProblemProvider> {
 	
 	/**
 	 * The default problem factory.
 	 */
-	private static ProblemFactory instance;
+	private static ProblemFactory INSTANCE;
 	
 	/**
-	 * Collection of providers that have been manually added.
-	 */
-	private List<ProblemProvider> customProviders;
-	
-	/**
-	 * Instantiates the static {@code PROVIDERS} and {@code instance} objects.
+	 * Instantiates the static {@code INSTANCE} object.
 	 */
 	static {
-		PROVIDERS = ServiceLoader.load(ProblemProvider.class);
-		instance = new ProblemFactory();
+		INSTANCE = new ProblemFactory();
 	}
 	
 	/**
@@ -68,7 +52,7 @@ public class ProblemFactory {
 	 * @return the default problem factory
 	 */
 	public static synchronized ProblemFactory getInstance() {
-		return instance;
+		return INSTANCE;
 	}
 
 	/**
@@ -77,29 +61,16 @@ public class ProblemFactory {
 	 * @param instance the default problem factory
 	 */
 	public static synchronized void setInstance(ProblemFactory instance) {
-		ProblemFactory.instance = instance;
+		ProblemFactory.INSTANCE = instance;
 	}
 	
 	/**
 	 * Constructs a new problem factory.
 	 */
 	public ProblemFactory() {
-		super();
-		
-		customProviders = new ArrayList<ProblemProvider>();
+		super(ProblemProvider.class);
 	}
 	
-	/**
-	 * Adds a problem provider to this problem factory.  Subsequent calls
-	 * to {@link #getProblem(String)} or {@link #getReferenceSet(String)} will
-	 * search the given provider for a match.
-	 * 
-	 * @param provider the new problem provider
-	 */
-	public void addProvider(ProblemProvider provider) {
-		customProviders.add(provider);
-	}
-
 	/**
 	 * Searches through all discovered {@code ProblemProvider} instances,
 	 * returning an instance of the problem with the registered name.  This
@@ -112,27 +83,14 @@ public class ProblemFactory {
 	 *         available
 	 */
 	public synchronized Problem getProblem(String name) {
-		// loop over all providers that have been manually added
-		for (ProblemProvider provider : customProviders) {
+		for (ProblemProvider provider : this) {
 			Problem problem = instantiateProblem(provider, name);
 			
 			if (problem != null) {
 				return problem;
 			}
 		}
-		
-		// loop over all providers available via the SPI
-		Iterator<ProblemProvider> iterator = PROVIDERS.iterator();
-		
-		while (iterator.hasNext()) {
-			Problem problem = instantiateProblem(iterator.next(), name);
-			
-			if (problem != null) {
-				return problem;
-			}
-		}
 
-		// throw an exception if no match found
 		throw new ProviderNotFoundException(name);
 	}
 	
@@ -165,30 +123,14 @@ public class ProblemFactory {
 	 *         {@code null} if no reference set is available
 	 */
 	public synchronized NondominatedPopulation getReferenceSet(String name) {
-		// loop over all providers that have been manually added
-		for (ProblemProvider provider : customProviders) {
-			NondominatedPopulation referenceSet =
-					provider.getReferenceSet(name);
-					
-			if (referenceSet != null) {
-				return referenceSet;
-			}
-		}
-		
-		// loop over all providers available via the SPI
-		Iterator<ProblemProvider> iterator = PROVIDERS.iterator();
-		
-		while (iterator.hasNext()) {
-			ProblemProvider provider = iterator.next();
-			NondominatedPopulation referenceSet =
-					provider.getReferenceSet(name);
+		for (ProblemProvider provider : this) {
+			NondominatedPopulation referenceSet = provider.getReferenceSet(name);
 
 			if (referenceSet != null) {
 				return referenceSet;
 			}
 		}
 
-		// return null if no match is found
 		return null;
 	}
 

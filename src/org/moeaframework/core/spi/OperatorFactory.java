@@ -17,12 +17,7 @@
  */
 package org.moeaframework.core.spi;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 import java.util.ServiceConfigurationError;
-import java.util.ServiceLoader;
-
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.operator.CompoundVariation;
@@ -38,29 +33,18 @@ import org.moeaframework.util.TypedProperties;
  * <p>
  * This class is thread safe.
  */
-public class OperatorFactory {
-	
-	/**
-	 * The static service loader for loading operator providers.
-	 */
-	private static final ServiceLoader<OperatorProvider> PROVIDERS;
+public class OperatorFactory extends AbstractFactory<OperatorProvider> {
 	
 	/**
 	 * The default operator factory.
 	 */
-	private static OperatorFactory instance;
+	private static OperatorFactory INSTANCE;
 	
 	/**
-	 * Collection of providers that have been manually added.
-	 */
-	private List<OperatorProvider> customProviders;
-	
-	/**
-	 * Instantiates the static {@code instance} object.
+	 * Instantiates the static {@code INSTANCE} object.
 	 */
 	static {
-		PROVIDERS = ServiceLoader.load(OperatorProvider.class);
-		instance = new OperatorFactory();
+		INSTANCE = new OperatorFactory();
 	}
 	
 	/**
@@ -69,7 +53,7 @@ public class OperatorFactory {
 	 * @return the default operator factory
 	 */
 	public static synchronized OperatorFactory getInstance() {
-		return instance;
+		return INSTANCE;
 	}
 
 	/**
@@ -78,27 +62,14 @@ public class OperatorFactory {
 	 * @param instance the default operator factory
 	 */
 	public static synchronized void setInstance(OperatorFactory instance) {
-		OperatorFactory.instance = instance;
+		OperatorFactory.INSTANCE = instance;
 	}
 	
 	/**
 	 * Constructs a new operator factory.
 	 */
 	public OperatorFactory() {
-		super();
-		
-		customProviders = new ArrayList<OperatorProvider>();
-	}
-	
-	/**
-	 * Adds an operator provider to this operator factory.  Subsequent calls
-	 * to {@link #getVariation(String, TypedProperties, Problem)} will search the
-	 * given provider for a match.
-	 * 
-	 * @param provider the new operator provider
-	 */
-	public void addProvider(OperatorProvider provider) {
-		customProviders.add(provider);
+		super(OperatorProvider.class);
 	}
 	
 	/**
@@ -177,8 +148,8 @@ public class OperatorFactory {
 		}
 	}
 	
-	private Variation instantiateVariation(OperatorProvider provider,
-			String name, TypedProperties properties, Problem problem) {
+	private Variation instantiateVariation(OperatorProvider provider, String name,
+			TypedProperties properties, Problem problem) {
 		try {
 			return provider.getVariation(name, properties, problem);
 		} catch (ServiceConfigurationError e) {
@@ -188,25 +159,9 @@ public class OperatorFactory {
 		return null;
 	}
 	
-	private Variation instantiateVariation(String name, TypedProperties properties,
-			Problem problem) {
-		// loop over all providers that have been manually added
-		for (OperatorProvider provider : customProviders) {
-			Variation variation = instantiateVariation(provider, name,
-					properties, problem);
-			
-			if (variation != null) {
-				return variation;
-			}
-		}
-
-		// loop over all providers available via the SPI
-		Iterator<OperatorProvider> iterator = PROVIDERS.iterator();
-		
-		while (iterator.hasNext()) {
-			OperatorProvider provider = iterator.next();
-			Variation variation = instantiateVariation(provider, name,
-					properties, problem);
+	private Variation instantiateVariation(String name, TypedProperties properties, Problem problem) {
+		for (OperatorProvider provider : this) {
+			Variation variation = instantiateVariation(provider, name, properties, problem);
 			
 			if (variation != null) {
 				return variation;
@@ -217,20 +172,7 @@ public class OperatorFactory {
 	}
 	
 	private String lookupMutationHint(Problem problem) {
-		// loop over all providers that have been manually added
-		for (OperatorProvider provider : customProviders) {
-			String hint = provider.getMutationHint(problem);
-			
-			if (hint != null) {
-				return hint;
-			}
-		}
-
-		// loop over all providers available via the SPI
-		Iterator<OperatorProvider> iterator = PROVIDERS.iterator();
-		
-		while (iterator.hasNext()) {
-			OperatorProvider provider = iterator.next();
+		for (OperatorProvider provider : this) {
 			String hint = provider.getMutationHint(problem);
 			
 			if (hint != null) {
@@ -238,25 +180,11 @@ public class OperatorFactory {
 			}
 		}
 		
-		throw new ProviderLookupException(
-				"unable to find suitable variation operator");
+		throw new ProviderLookupException("unable to find suitable variation operator");
 	}
 	
 	private String lookupVariationHint(Problem problem) {
-		// loop over all providers that have been manually added
-		for (OperatorProvider provider : customProviders) {
-			String hint = provider.getVariationHint(problem);
-			
-			if (hint != null) {
-				return hint;
-			}
-		}
-
-		// loop over all providers available via the SPI
-		Iterator<OperatorProvider> iterator = PROVIDERS.iterator();
-		
-		while (iterator.hasNext()) {
-			OperatorProvider provider = iterator.next();
+		for (OperatorProvider provider : this) {
 			String hint = provider.getVariationHint(problem);
 
 			if (hint != null) {
@@ -264,8 +192,7 @@ public class OperatorFactory {
 			}
 		}
 		
-		throw new ProviderLookupException(
-				"unable to find suitable variation operator");
+		throw new ProviderLookupException("unable to find suitable variation operator");
 	}
 	
 }

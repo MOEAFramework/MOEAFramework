@@ -17,12 +17,7 @@
  */
 package org.moeaframework.core.spi;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 import java.util.ServiceConfigurationError;
-import java.util.ServiceLoader;
-
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.Problem;
 import org.moeaframework.util.TypedProperties;
@@ -33,29 +28,18 @@ import org.moeaframework.util.TypedProperties;
  * <p>
  * This class is thread safe.
  */
-public class AlgorithmFactory {
+public class AlgorithmFactory extends AbstractFactory<AlgorithmProvider> {
 
-	/**
-	 * The static service loader for loading algorithm providers.
-	 */
-	private static final ServiceLoader<AlgorithmProvider> PROVIDERS;
-	
 	/**
 	 * The default algorithm factory.
 	 */
-	private static AlgorithmFactory instance;
-	
+	private static AlgorithmFactory INSTANCE;
+
 	/**
-	 * Collection of providers that have been manually added.
-	 */
-	private List<AlgorithmProvider> customProviders;
-	
-	/**
-	 * Instantiates the static {@code PROVIDERS} and {@code instance} objects.
+	 * Instantiates the static {@code INSTANCE} object.
 	 */
 	static {
-		PROVIDERS = ServiceLoader.load(AlgorithmProvider.class);
-		instance = new AlgorithmFactory();
+		INSTANCE = new AlgorithmFactory();
 	}
 	
 	/**
@@ -64,7 +48,7 @@ public class AlgorithmFactory {
 	 * @return the default algorithm factory
 	 */
 	public static synchronized AlgorithmFactory getInstance() {
-		return instance;
+		return INSTANCE;
 	}
 
 	/**
@@ -73,27 +57,14 @@ public class AlgorithmFactory {
 	 * @param instance the default algorithm factory
 	 */
 	public static synchronized void setInstance(AlgorithmFactory instance) {
-		AlgorithmFactory.instance = instance;
+		AlgorithmFactory.INSTANCE = instance;
 	}
 	
 	/**
 	 * Constructs a new algorithm factory.
 	 */
 	public AlgorithmFactory() {
-		super();
-		
-		customProviders = new ArrayList<AlgorithmProvider>();
-	}
-	
-	/**
-	 * Adds an algorithm provider to this algorithm factory.  Subsequent calls
-	 * to {@link #getAlgorithm(String, Properties, Problem)} will search the
-	 * given provider for a match.
-	 * 
-	 * @param provider the new algorithm provider
-	 */
-	public void addProvider(AlgorithmProvider provider) {
-		customProviders.add(provider);
+		super(AlgorithmProvider.class);
 	}
 	
 	/**
@@ -127,28 +98,12 @@ public class AlgorithmFactory {
 	 * @throws ProviderNotFoundException if no provider for the algorithm is 
 	 *         available
 	 */
-	public synchronized Algorithm getAlgorithm(String name, 
-			TypedProperties properties, Problem problem) {
-		// loop over all providers that have been manually added
-		for (AlgorithmProvider provider : customProviders) {
-			Algorithm algorithm = instantiateAlgorithm(provider, name,
-					properties, problem);
+	public synchronized Algorithm getAlgorithm(String name, TypedProperties properties, Problem problem) {
+		for (AlgorithmProvider provider : this) {
+			Algorithm algorithm = instantiateAlgorithm(provider, name, properties, problem);
 			
 			if (algorithm != null) {
-				return algorithm;
-			}
-		}
-
-		// loop over all providers available via the SPI
-		Iterator<AlgorithmProvider> iterator = PROVIDERS.iterator();
-		
-		while (iterator.hasNext()) {
-			AlgorithmProvider provider = iterator.next();
-			Algorithm algorithm = instantiateAlgorithm(provider, name,
-					properties, problem);
-
-			if (algorithm != null) {
-				return algorithm;
+				return null;
 			}
 		}
 

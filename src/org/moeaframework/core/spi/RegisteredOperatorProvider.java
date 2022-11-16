@@ -21,12 +21,12 @@ public class RegisteredOperatorProvider extends OperatorProvider {
 	/**
 	 * Mapping of decision variable types to the suggested mutation operator.
 	 */
-	private Map<Class<? extends Variable>, String> mutationHints;
+	private final Map<Class<? extends Variable>, String> mutationHints;
 	
 	/**
 	 * Mapping of decision variable types to the suggested variation operator.
 	 */
-	private Map<Class<? extends Variable>, String> variationHints;
+	private final Map<Class<? extends Variable>, String> variationHints;
 	
 	/**
 	 * Mapping of operators names to a constructor function.
