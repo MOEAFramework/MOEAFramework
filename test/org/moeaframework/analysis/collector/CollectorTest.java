@@ -75,7 +75,6 @@ public class CollectorTest {
 		Assert.assertNotNull(collector.getAttachPoint());
 
 		try (Problem problem = ProblemFactory.getInstance().getProblem(problemName)) {
-
 			Instrumenter instrumenter = new Instrumenter()
 					.withFrequency(100)
 					.attach(testCollector);

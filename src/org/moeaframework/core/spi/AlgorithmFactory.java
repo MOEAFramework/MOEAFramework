@@ -103,7 +103,7 @@ public class AlgorithmFactory extends AbstractFactory<AlgorithmProvider> {
 			Algorithm algorithm = instantiateAlgorithm(provider, name, properties, problem);
 			
 			if (algorithm != null) {
-				return null;
+				return algorithm;
 			}
 		}
 
