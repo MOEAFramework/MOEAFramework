@@ -21,19 +21,25 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
 import java.lang.reflect.Array;
-import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
- * Wrapper for {@link Properties} providing getters for reading specific
- * primitive types. For primitive arrays, either the default "," separator or a
- * custom separator is used for splitting the string into individual components;
- * the formatting of this separator is defined in {@link String#split}. In
- * addition, whitespace surrounding each array entry is trimmed.
+ * Stores a collection of key-value pairs similar to {@link Properties} but has support for
+ * reading and writing primitive types.  Internally, this handles converting specific types to
+ * a string representation that can be saved and read from files.
+ * 
+ * In addition to primitive types, arrays of those primitives are also supported using either the
+ * default "," separator or a user-configurable string.  Leading and trailing whitespace is
+ * automatically trimmed from each entry.  <strong>Be mindful that values saved in arrays should
+ * not include the separator character(s) - no escaping is performed!</strong>
+ * 
+ * From version 3.0+, keys are case-insensitive.
  */
 public class TypedProperties {
 
@@ -43,27 +49,38 @@ public class TypedProperties {
 	public static final String DEFAULT_SEPARATOR = ",";
 
 	/**
-	 * Regular expression for the array separator, as used by the
-	 * {@link String#split} methods.
+	 * The separator for arrays.
 	 */
 	private final String separator;
 
 	/**
-	 * The {@code Properties} object storing the actual key/value pairs.
+	 * Storage of the key-value pairs.
 	 */
-	private final Properties properties;
+	private final TreeMap<String, String> properties;
 	
 	/**
 	 * The keys that were read from this {@code Properties} object.
 	 */
-	private final Set<String> accessedProperties;
+	private final TreeSet<String> accessedProperties;
 	
 	/**
-	 * Decorates an empty {@code Properties} object to provide type-safe access
-	 * using the default "," separator for arrays.
+	 * Creates a new, empty instance of this class using the default "," separator for arrays.
 	 */
 	public TypedProperties() {
-		this(new Properties());
+		this(DEFAULT_SEPARATOR);
+	}
+	
+	/**
+	 * Creates a new, empty instance of this class using the given separator string for arrays.
+	 * 
+	 * @param separator the separator string
+	 */
+	public TypedProperties(String separator) {
+		super();
+		this.separator = separator;
+
+		this.properties = new TreeMap<String, String>(String.CASE_INSENSITIVE_ORDER);
+		this.accessedProperties = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
 	}
 
 	/**
@@ -73,7 +90,8 @@ public class TypedProperties {
 	 * @param properties the existing {@code Properties} object
 	 */
 	public TypedProperties(Properties properties) {
-		this(properties, DEFAULT_SEPARATOR);
+		this(DEFAULT_SEPARATOR);
+		addAll(properties);
 	}
 
 	/**
@@ -84,10 +102,8 @@ public class TypedProperties {
 	 * @param separator the separator for arrays
 	 */
 	public TypedProperties(Properties properties, String separator) {
-		this.properties = properties;
-		this.separator = separator;
-		
-		accessedProperties = new HashSet<String>();
+		this(separator);
+		addAll(properties);
 	}
 	
 	/**
@@ -103,10 +119,9 @@ public class TypedProperties {
 	 * @return a typed properties instance with the specified key-value pair
 	 */
 	public static TypedProperties withProperty(String key, String value) {
-		Properties properties = new Properties();
-		properties.setProperty(key, value);
-		
-		return new TypedProperties(properties);
+		TypedProperties properties = new TypedProperties();
+		properties.setString(key, value);
+		return properties;
 	}
 	
 	/**
@@ -122,17 +137,6 @@ public class TypedProperties {
 		return properties.containsKey(key);
 	}
 
-//	/**
-//	 * Returns the internal {@code Properties} object storing the actual 
-//	 * key/value pairs.
-//	 * 
-//	 * @return the internal {@code Properties} object storing the actual 
-//	 *         key/value pairs 
-//	 */
-//	public Properties getProperties() {
-//		return properties;
-//	}
-
 	/**
 	 * Returns the value of the property with the specified name as a string; or
 	 * {@code defaultValue} if no property with the specified name exists.
@@ -144,7 +148,7 @@ public class TypedProperties {
 	 *         exists
 	 */
 	public String getString(String key, String defaultValue) {
-		String value = properties.getProperty(key);
+		String value = properties.get(key);
 		accessedProperties.add(key);
 
 		if (value == null) {
@@ -512,7 +516,7 @@ public class TypedProperties {
 	 * @param value the property value
 	 */
 	public void setString(String key, String value) {
-		properties.setProperty(key, value);
+		properties.put(key, value);
 	}
 	
 	/**
@@ -692,7 +696,9 @@ public class TypedProperties {
 	 * @param properties the properties
 	 */
 	public void addAll(Properties properties) {
-		this.properties.putAll(properties);
+		for (String key : properties.stringPropertyNames()) {
+			this.properties.put(key, properties.getProperty(key));
+		}
 	}
 	
 	/**
@@ -701,7 +707,7 @@ public class TypedProperties {
 	 * @param properties the properties
 	 */
 	public void addAll(TypedProperties properties) {
-		addAll(properties.properties);
+		this.properties.putAll(properties.properties);
 	}
 	
 	/**
@@ -779,7 +785,10 @@ public class TypedProperties {
 	 * @throws IOException if an I/O error occurred
 	 */
 	public void load(Reader reader) throws IOException {
+		Properties properties = new Properties();
 		properties.load(reader);
+		
+		addAll(properties);
 	}
 	
 	/**
@@ -789,6 +798,9 @@ public class TypedProperties {
 	 * @throws IOException if an I/O error occurred
 	 */
 	public void store(Writer writer) throws IOException {
+		Properties properties = new Properties();
+		properties.putAll(this.properties);
+		
 		properties.store(writer, null);
 	}
 	
@@ -807,7 +819,9 @@ public class TypedProperties {
 	 * @return the accessed properties
 	 */
 	public Set<String> getAccessedProperties() {
-		return new HashSet<String>(accessedProperties);
+		Set<String> result = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
+		result.addAll(accessedProperties);
+		return result;
 	}
 	
 	/**
@@ -817,9 +831,8 @@ public class TypedProperties {
 	 * @return the unaccessed or orphaned properties
 	 */
 	public Set<String> getUnaccessedProperties() {
-		Set<String> orphanedProperties = new HashSet<String>(
-				properties.stringPropertyNames());
-		
+		Set<String> orphanedProperties = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
+		orphanedProperties.addAll(properties.keySet());
 		orphanedProperties.removeAll(accessedProperties);
 		return orphanedProperties;
 	}
