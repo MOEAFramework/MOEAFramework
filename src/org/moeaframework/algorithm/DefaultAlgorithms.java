@@ -19,7 +19,6 @@ package org.moeaframework.algorithm;
 
 import java.util.List;
 
-import org.apache.commons.math3.util.CombinatoricsUtils;
 import org.moeaframework.algorithm.pso.OMOPSO;
 import org.moeaframework.algorithm.pso.SMPSO;
 import org.moeaframework.algorithm.sa.AMOSA;
@@ -199,68 +198,29 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 	/**
 	 * Returns a new {@link NSGAIII} instance.
 	 * 
-	 * @param properties the properties for customizing the new {@code NSGAIII}
-	 *        instance
+	 * @param properties the properties for customizing the new {@code NSGAIII} instance
 	 * @param problem the problem
 	 * @return a new {@code NSGAIII} instance
 	 */
 	private Algorithm newNSGAIII(TypedProperties properties, Problem problem) {
-		int divisionsOuter = 4;
-		int divisionsInner = 0;
-		
-		if (properties.contains("divisionsOuter") && properties.contains("divisionsInner")) {
-			divisionsOuter = (int)properties.getDouble("divisionsOuter", 4);
-			divisionsInner = (int)properties.getDouble("divisionsInner", 0);
-		} else if (properties.contains("divisions")){
-			divisionsOuter = (int)properties.getDouble("divisions", 4);
-		} else if (problem.getNumberOfObjectives() == 1) {
-			divisionsOuter = 100;
-		} else if (problem.getNumberOfObjectives() == 2) {
-			divisionsOuter = 99;
-		} else if (problem.getNumberOfObjectives() == 3) {
-			divisionsOuter = 12;
-		} else if (problem.getNumberOfObjectives() == 4) {
-			divisionsOuter = 8;
-		} else if (problem.getNumberOfObjectives() == 5) {
-			divisionsOuter = 6;
-		} else if (problem.getNumberOfObjectives() == 6) {
-			divisionsOuter = 4;
-			divisionsInner = 1;
-		} else if (problem.getNumberOfObjectives() == 7) {
-			divisionsOuter = 3;
-			divisionsInner = 2;
-		} else if (problem.getNumberOfObjectives() == 8) {
-			divisionsOuter = 3;
-			divisionsInner = 2;
-		} else if (problem.getNumberOfObjectives() == 9) {
-			divisionsOuter = 3;
-			divisionsInner = 2;
-		} else if (problem.getNumberOfObjectives() == 10) {
-			divisionsOuter = 3;
-			divisionsInner = 2;
-		} else {
-			divisionsOuter = 2;
-			divisionsInner = 1;
-		}
-		
+		ReferencePointDivisions divisions = ReferencePointDivisions.fromProperties(properties, problem);
 		int populationSize;
 		
 		if (properties.contains("populationSize")) {
 			populationSize = (int)properties.getDouble("populationSize", 100);
 		} else {
-			// compute number of reference points
-			populationSize = (int)(CombinatoricsUtils.binomialCoefficient(problem.getNumberOfObjectives() + divisionsOuter - 1, divisionsOuter) +
-					(divisionsInner == 0 ? 0 : CombinatoricsUtils.binomialCoefficient(problem.getNumberOfObjectives() + divisionsInner - 1, divisionsInner)));
+			// get the number of reference points
+			int referencePoints = divisions.getNumberOfReferencePoints(problem);
 
 			// round up to a multiple of 4
-			populationSize = (int)Math.ceil(populationSize / 4d) * 4;
+			populationSize = (int)Math.ceil(referencePoints / 4.0) * 4;
 		}
 		
 		Initialization initialization = new RandomInitialization(problem,
 				populationSize);
 		
 		ReferencePointNondominatedSortingPopulation population = new ReferencePointNondominatedSortingPopulation(
-				problem.getNumberOfObjectives(), divisionsOuter, divisionsInner);
+				problem.getNumberOfObjectives(), divisions.getDivisionsOuter(), divisions.getDivisionsInner());
 
 		Selection selection = null;
 		
@@ -715,46 +675,8 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 	 * @return a new {@code DBEA} instance
 	 */
 	private Algorithm newDBEA(TypedProperties properties, Problem problem) {
-		int divisionsOuter = 4;
-		int divisionsInner = 0;
-		
-		if (properties.contains("divisionsOuter") && properties.contains("divisionsInner")) {
-			divisionsOuter = (int)properties.getDouble("divisionsOuter", 4);
-			divisionsInner = (int)properties.getDouble("divisionsInner", 0);
-		} else if (properties.contains("divisions")){
-			divisionsOuter = (int)properties.getDouble("divisions", 4);
-		} else if (problem.getNumberOfObjectives() == 1) {
-			divisionsOuter = 100;
-		} else if (problem.getNumberOfObjectives() == 2) {
-			divisionsOuter = 99;
-		} else if (problem.getNumberOfObjectives() == 3) {
-			divisionsOuter = 12;
-		} else if (problem.getNumberOfObjectives() == 4) {
-			divisionsOuter = 8;
-		} else if (problem.getNumberOfObjectives() == 5) {
-			divisionsOuter = 6;
-		} else if (problem.getNumberOfObjectives() == 6) {
-			divisionsOuter = 4;
-			divisionsInner = 1;
-		} else if (problem.getNumberOfObjectives() == 7) {
-			divisionsOuter = 3;
-			divisionsInner = 2;
-		} else if (problem.getNumberOfObjectives() == 8) {
-			divisionsOuter = 3;
-			divisionsInner = 2;
-		} else if (problem.getNumberOfObjectives() == 9) {
-			divisionsOuter = 3;
-			divisionsInner = 2;
-		} else if (problem.getNumberOfObjectives() == 10) {
-			divisionsOuter = 3;
-			divisionsInner = 2;
-		} else {
-			divisionsOuter = 2;
-			divisionsInner = 1;
-		}
-		
-		int populationSize = (int)(CombinatoricsUtils.binomialCoefficient(problem.getNumberOfObjectives() + divisionsOuter - 1, divisionsOuter) +
-					(divisionsInner == 0 ? 0 : CombinatoricsUtils.binomialCoefficient(problem.getNumberOfObjectives() + divisionsInner - 1, divisionsInner)));
+		ReferencePointDivisions divisions = ReferencePointDivisions.fromProperties(properties, problem);
+		int populationSize = divisions.getNumberOfReferencePoints(problem);
 		
 		Initialization initialization = new RandomInitialization(problem,
 				populationSize);
@@ -763,7 +685,7 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 				properties, problem);
 		
 		return new DBEA(problem, initialization,
-				variation, divisionsOuter, divisionsInner);
+				variation, divisions.getDivisionsOuter(), divisions.getDivisionsInner());
 	}
 	
 	/**
@@ -775,57 +697,18 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 	 * @return a new {@code RVEA} instance
 	 */
 	private Algorithm newRVEA(TypedProperties properties, Problem problem) {
-		int divisionsOuter = 4;
-		int divisionsInner = 0;
-		
 		if (problem.getNumberOfObjectives() < 2) {
 			throw new FrameworkException("RVEA requires at least two objectives");
 		}
 		
-		if (properties.contains("divisionsOuter") && properties.contains("divisionsInner")) {
-			divisionsOuter = (int)properties.getDouble("divisionsOuter", 4);
-			divisionsInner = (int)properties.getDouble("divisionsInner", 0);
-		} else if (properties.contains("divisions")){
-			divisionsOuter = (int)properties.getDouble("divisions", 4);
-		} else if (problem.getNumberOfObjectives() == 1) {
-			divisionsOuter = 100;
-		} else if (problem.getNumberOfObjectives() == 2) {
-			divisionsOuter = 99;
-		} else if (problem.getNumberOfObjectives() == 3) {
-			divisionsOuter = 12;
-		} else if (problem.getNumberOfObjectives() == 4) {
-			divisionsOuter = 8;
-		} else if (problem.getNumberOfObjectives() == 5) {
-			divisionsOuter = 6;
-		} else if (problem.getNumberOfObjectives() == 6) {
-			divisionsOuter = 4;
-			divisionsInner = 1;
-		} else if (problem.getNumberOfObjectives() == 7) {
-			divisionsOuter = 3;
-			divisionsInner = 2;
-		} else if (problem.getNumberOfObjectives() == 8) {
-			divisionsOuter = 3;
-			divisionsInner = 2;
-		} else if (problem.getNumberOfObjectives() == 9) {
-			divisionsOuter = 3;
-			divisionsInner = 2;
-		} else if (problem.getNumberOfObjectives() == 10) {
-			divisionsOuter = 3;
-			divisionsInner = 2;
-		} else {
-			divisionsOuter = 2;
-			divisionsInner = 1;
-		}
-		
-		// compute number of reference vectors
-		int populationSize = (int)(CombinatoricsUtils.binomialCoefficient(problem.getNumberOfObjectives() + divisionsOuter - 1, divisionsOuter) +
-					(divisionsInner == 0 ? 0 : CombinatoricsUtils.binomialCoefficient(problem.getNumberOfObjectives() + divisionsInner - 1, divisionsInner)));
+		ReferencePointDivisions divisions = ReferencePointDivisions.fromProperties(properties, problem);
+		int populationSize = divisions.getNumberOfReferencePoints(problem);
 		
 		Initialization initialization = new RandomInitialization(problem,
 				populationSize);
 		
 		ReferenceVectorGuidedPopulation population = new ReferenceVectorGuidedPopulation(
-				problem.getNumberOfObjectives(), divisionsOuter, divisionsInner,
+				problem.getNumberOfObjectives(), divisions.getDivisionsOuter(), divisions.getDivisionsInner(),
 				properties.getDouble("alpha", 2.0));
 
 		if (!properties.contains("sbx.swap")) {
