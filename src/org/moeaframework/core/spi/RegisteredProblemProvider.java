@@ -51,7 +51,7 @@ public class RegisteredProblemProvider extends ProblemProvider {
 	 * @param constructor the function that creates a new instance of the problem
 	 * @param referenceSet the path of the file containing the reference set
 	 */
-	public final void register(String name, Supplier<Problem> constructor, String referenceSet) {
+	protected final void register(String name, Supplier<Problem> constructor, String referenceSet) {
 		constructorMap.put(name, constructor);
 		referenceSetMap.put(name, referenceSet);
 	}

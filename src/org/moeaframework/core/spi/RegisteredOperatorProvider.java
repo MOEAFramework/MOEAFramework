@@ -49,7 +49,7 @@ public class RegisteredOperatorProvider extends OperatorProvider {
 	 * @param type the decision variable type
 	 * @param operator the suggested operator
 	 */
-	public final void setMutationHint(Class<? extends Variable> type, String operator) {
+	protected final void setMutationHint(Class<? extends Variable> type, String operator) {
 		mutationHints.put(type, operator);
 	}
 	
@@ -59,7 +59,7 @@ public class RegisteredOperatorProvider extends OperatorProvider {
 	 * @param type the decision variable type
 	 * @param operator the suggested operator
 	 */
-	public final void setVariationHint(Class<? extends Variable> type, String operator) {
+	protected final void setVariationHint(Class<? extends Variable> type, String operator) {
 		variationHints.put(type, operator);
 	}
 	
@@ -69,7 +69,7 @@ public class RegisteredOperatorProvider extends OperatorProvider {
 	 * @param name the operator name
 	 * @param constructor the function that creates a new instance of the operator
 	 */
-	public final void register(String name, BiFunction<TypedProperties, Problem, Variation> constructor) {
+	protected final void register(String name, BiFunction<TypedProperties, Problem, Variation> constructor) {
 		constructorMap.put(name, constructor);
 	}
 	

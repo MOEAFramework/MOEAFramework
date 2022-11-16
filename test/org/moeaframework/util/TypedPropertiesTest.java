@@ -68,10 +68,8 @@ public class TypedPropertiesTest {
 	@Test
 	public void testPrimitivesDefaultValue() {
 		Assert.assertEquals("foo", properties.getString("-", "foo"));
-		Assert.assertEquals(2.71, properties.getDouble("-", 2.71), 
-				Settings.EPS);
-		Assert.assertEquals(2.71f, properties.getFloat("-", 2.71f),
-				(float)Settings.EPS);
+		Assert.assertEquals(2.71, properties.getDouble("-", 2.71), Settings.EPS);
+		Assert.assertEquals(2.71f, properties.getFloat("-", 2.71f), (float)Settings.EPS);
 		Assert.assertEquals(42, properties.getInt("-", 42));
 		Assert.assertEquals(42, properties.getLong("-", 42));
 		Assert.assertEquals(42, properties.getShort("-", (short)42));
@@ -181,10 +179,8 @@ public class TypedPropertiesTest {
 		properties.setBoolean("boolean_false", false);
 		
 		Assert.assertEquals("foo,bar", properties.getString("string", null));
-		Assert.assertEquals(2.71, properties.getDouble("double", 0.0),
-				Settings.EPS);
-		Assert.assertEquals(2.71f, properties.getFloat("float", 0.0f),
-				(float)Settings.EPS);
+		Assert.assertEquals(2.71, properties.getDouble("double", 0.0), Settings.EPS);
+		Assert.assertEquals(2.71f, properties.getFloat("float", 0.0f), (float)Settings.EPS);
 		Assert.assertEquals(42, properties.getInt("int", 0));
 		Assert.assertEquals(42, properties.getLong("long", 0));
 		Assert.assertEquals(42, properties.getShort("short", (short)0));
@@ -264,6 +260,27 @@ public class TypedPropertiesTest {
 		properties.clearAccessedProperties();
 		Assert.assertTrue(properties.getAccessedProperties().isEmpty());
 		Assert.assertTrue(properties.getUnaccessedProperties().contains("foo"));
+	}
+	
+	@Test
+	public void testCaseInsensitive() {
+		TypedProperties properties = new TypedProperties();
+		properties.setString("foo", "bar");
+		
+		Assert.assertTrue(properties.contains("Foo"));
+		Assert.assertTrue(properties.contains("FOO"));
+		
+		Assert.assertEquals("bar", properties.getString("Foo", null));
+		Assert.assertEquals("bar", properties.getString("FOO", null));
+		
+		Assert.assertTrue(properties.getAccessedProperties().contains("Foo"));
+		Assert.assertTrue(properties.getAccessedProperties().contains("FOO"));
+		Assert.assertTrue(properties.getUnaccessedProperties().isEmpty());
+		
+		properties.setString("baz", "value");
+		Assert.assertFalse(properties.getUnaccessedProperties().isEmpty());
+		Assert.assertTrue(properties.getUnaccessedProperties().contains("Baz"));
+		Assert.assertTrue(properties.getUnaccessedProperties().contains("BAZ"));
 	}
 
 }
