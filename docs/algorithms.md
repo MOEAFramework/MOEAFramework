@@ -39,6 +39,7 @@ CMA-ES is a sophisticated covariance matrix adaptation evolution strategy algori
 offspring by sampling a distribution formed by a covariance matrix, hence the name, and updating the covariance matrix based on the surviving offspring.
 Single and multi-objective variants exist in the literature and both are supported by the MOEA Framework.  
 
+**Algorithm Name:** `"CMA-ES"`  
 **Supported Types:** Real  
 **Supported Operators:** None (provides its own variation and mutation)
 
@@ -63,11 +64,13 @@ DBEA, or I-DBEA, is the Improved Decomposition-Based Evolutionary Algorithm.  DB
 but utilizes distance along each reference vector to measure convergence and the perpendicular distance to reference vectors to measure diversity
 [^asafuddoula15].  DBEA also proposes corner-sort as a means to identify exteme points for normalization.
 
+**Algorithm Name:** `"DBEA"`  
 **Supported Types:** Any  
 **Supported Operators:** Any
 
 Parameter            | Default Value     | Description
 :------------------- | :---------------- | :----------
+`operator`           | Problem dependent | The variation (crossover and/or mutation) operator
 `divisions`          | Problem dependent | The number of divisions
 `divisionsInner`     | Unset             | The number of inner divisions when using the two-layer approach
 `divisionsOuter`     | Unset             | The number of outer divisions when using the two-layer approach
@@ -82,24 +85,28 @@ However, the algorithm requires an additional $\epsilon$ parameter which is prob
 resolution of the solutions in objective space.  Smaller values produce larger, more dense sets while larger values produce smaller sets.  In general,
 the $\epsilon$ values should be chosen to yield a moderately-sized Pareto approximate set.
 
+**Algorithm Name:** `"eMOEA"` 
 **Supported Types:** Any  
 **Supported Operators:** Any
 
 Parameter            | Default Value     | Description
 :------------------- | :---------------- | :----------
 `populationSize`     | `100`             | The size of the population
+`operator`           | Problem dependent | The variation (crossover and/or mutation) operator
 `epsilon`            | Problem dependent | The $\epsilon$ values used by the $\epsilon$-dominance archive, which can either be a single value or a comma-separated array
 
 ### e-NSGA-II
 
 $\epsilon$-NSGA-II combines the generational search of NSGA-II with the guaranteed convergence provided by an $\epsilon$-dominance archive [^kollat06].  It also features randomized restarts to enhance search and find a diverse set of Pareto optimal solutions.  During a random restart, the algorithm empties the current population and fills it with new, randomly-generated solutions.
 
+**Algorithm Name:** `"e-NSGA-II"` 
 **Supported Types:** Any  
 **Supported Operators:** Any
 
 Parameter            | Default Value     | Description
 :------------------- | :---------------- | :----------
 `populationSize`     | `100`             | The size of the population
+`operator`           | Problem dependent | The variation (crossover and/or mutation) operator
 `epsilon`            | Problem dependent | The $\epsilon$ values used by the $\epsilon$-dominance archive, which can either be a single value or a comma-separated array
 `injectionRate`      | `0.25`            | Controls the percentage of the population after a restart this is "injected", or copied, from the $\epsilon$-dominance archive
 `windowSize`         | `100`             | Frequency of checking if a randomized restart should be triggered (number of iterations)
@@ -113,6 +120,7 @@ GDE3 is the third version of the generalized differential evolution algorithm [^
 evolves offspring.  It randomly selects three parents.  Next, it computes the difference (the differential) between two of the parents.  Finally, it offsets
 the remaining parent by this differential.
 
+**Algorithm Name:** `"GDE3"` 
 **Supported Types:** Real  
 **Supported Operators:** DE
 
@@ -129,12 +137,14 @@ are based on the idea that a performance indicator, such as hypervolume or addit
 The primary disadvantage of indicator-based methods is that the calculation of the performance indicator can become computationally expensive, particularly
 as the number of objectives increases.
 
+**Algorithm Name:** `"IBEA"` 
 **Supported Types:** Any  
 **Supported Operators:** Any
 
 Parameter            | Default Value     | Description
 :------------------- | :---------------- | :----------
 `populationSize`     | `100`             | The size of the population
+`operator`           | Problem dependent | The variation (crossover and/or mutation) operator
 `indicator`          | `hypervolume`     | The indicator function - `hypervolume`, `epsilon
 
 ### MOEA/D
@@ -145,12 +155,14 @@ of MOEA/D exist in the literature.  The most common variant seen in the literatu
 An extension to MOEA/D-DE variant called MOEA/D-DRA introduced a utility function that aimed to reduce the amount of "wasted" effort by the algorithm
 [^zhang09].  This variant is enabled by setting the `updateUtility` parameter to a non-zero value.
 
+**Algorithm Name:** `"MOEA/D"` 
 **Supported Types:** Any  
 **Supported Operators:** Any
 
 Parameter            | Default Value     | Description
 :------------------- | :---------------- | :----------
 `populationSize`     | `100`             | The size of the population
+`operator`           | Problem dependent | The variation (crossover and/or mutation) operator
 `de.crossoverRate`   | `0.1`             | The crossover rate for differential evolution
 `de.stepSize`        | `0.5`             | Control the size of each step taken by differential evolution
 `pm.rate`            | `1/N`             | The mutation rate for polynomial mutation
@@ -166,6 +178,7 @@ MSOPS is the Multiple Single-Objective Pareto Search algorithm [^hughes03].  MSO
 based on two aggregate functions: weighted min-max and vector angle distance scaling (VADS).  Solutions with higher rankings with respect to both metrics are
 preferred.  MSOPS only supports real-valued solutions using differential evolution.
 
+**Algorithm Name:** `"MSOPS"` 
 **Supported Types:** Real  
 **Supported Operators:** DE
 
@@ -181,12 +194,14 @@ Parameter            | Default Value     | Description
 NSGA-II is one of the first and most widely used MOEAs [^deb00].  It enhanced it predecessor, NSGA, by introducing fast non-dominated sorting and using
 the more computationally efficient crowding distance metric during survival selection.
 
+**Algorithm Name:** `"NSGA-II"` 
 **Supported Types:** Any  
 **Supported Operators:** Any
 
 Parameter            | Default Value     | Description
 :------------------- | :---------------- | :----------
 `populationSize`     | `100`             | The size of the population
+`operator`           | Problem dependent | The variation (crossover and/or mutation) operator
 `withReplacement`    | `true`            | Uses binary tournament selection with (`true`) or without (`false`) replacement
 
 ### NSGA-III
@@ -201,12 +216,14 @@ two-layer approach, replace the `divisions` parameter with `divisionsOuter` and 
 on the boundary of the objective space; `divisionsInner` controls the number of reference points on the interior of the objective space.  Please refer
 to the cited paper for more details.
 
+**Algorithm Name:** `"NSGA-III"` 
 **Supported Types:** Any  
 **Supported Operators:** Any
 
 Parameter            | Default Value     | Description
 :------------------- | :---------------- | :----------
 `populationSize`     | Unset             | The size of the population.  If unset, the population size is equal to the number of reference points
+`operator`           | Problem dependent | The variation (crossover and/or mutation) operator
 `divisions`          | Problem dependent | The number of divisions
 `divisionsInner`     | Unset             | The number of inner divisions when using the two-layer approach
 `divisionsOuter`     | Unset             | The number of outer divisions when using the two-layer approach
@@ -215,6 +232,7 @@ Parameter            | Default Value     | Description
 
 OMOPSO is a multiobjective particle swarm optimization algorithm that includes an $\epsilon$-dominance archive to discover a diverse set of Pareto optimal solutions [^sierra05].  This implementation of OMOPSO differs slightly from the original author's implementation in JMetal due to a discrepancy between the author's code and the paper.  The paper returns the $\epsilon$-dominance archive while the code returns the leaders.  This discrepancy causes a small difference in performance. 
 
+**Algorithm Name:** `"OMOPSO"` 
 **Supported Types:** Any  
 **Supported Operators:** None (provides its own variation and mutation)
 
@@ -231,20 +249,20 @@ Parameter            | Default Value     | Description
 
 PAES is a multiobjective version of evolution strategy [^knowles99].  PAES tends to underperform when compared to other MOEAs, but it is often used as a baseline algorithm for comparisons.  Like PESA-II, PAES uses the adaptive grid archive to maintain a fixed-size archive of solutions.
 
+**Algorithm Name:** `"PAES"` 
 **Supported Types:** Any  
-**Supported Operators:** Any
+**Supported Operators:** Any *mutation* operator
 
 Parameter            | Default Value     | Description
 :------------------- | :---------------- | :----------
 `archiveSize`        | `100`             | The size of the archive
 `bisections`         | `8`               | The number of bisections in the adaptive grid archive
-`pm.rate`            | `1/N`             | The mutation rate for polynomial mutation
-`pm.distributionIndex` | `20.0`          | The distribution index for polynomial mutation
 
 ### PESA2
 
 PESA2 is another multiobjective evolutionary algorithm that tends to underperform other MOEAs but is often used as a baseline algorithm in comparative studies [^corne01].  It is the successor to PESA [^corne00].  Like PAES, PESA2 uses the adaptive grid archive to maintain a fixed-size archive of solutions.
 
+**Algorithm Name:** `"PESA2"` 
 **Supported Types:** Any  
 **Supported Operators:** Any
 
@@ -253,23 +271,27 @@ Parameter            | Default Value     | Description
 `populationSize`     | `10`              | The size of the population
 `archiveSize`        | `100`             | The size of the archive
 `bisections`         | `8`               | The number of bisections in the adaptive grid archive
+`operator`           | Problem dependent | The variation (crossover and/or mutation) operator
 
 ### Random
 
 The random search algorithm simply randomly generates new solutions uniformly throughout the search space.  It is not intended as an "optimization algorithm" *per se*, but as a way to compare the performance of other MOEAs against random search.  If an optimization algorithm can not beat random search, then continued use of that optimization algorithm should be questioned.
 
+**Algorithm Name:** `"Random"` 
 **Supported Types:** Any  
 **Supported Operators:** Any
 
 Parameter            | Default Value     | Description
 :------------------- | :---------------- | :----------
 `populationSize`     | `100`             | This parameter only has a use when parallelizing evaluations; it controls the number of solutions that are generated and evaluated in parallel
+`operator`           | Problem dependent | The variation (crossover and/or mutation) operator
 `epsilon`            | Unset             | The $\epsilon$ values used by the $\epsilon$-dominance archive, which can either be a single value or a comma-separated array (this parameter is optional)
 
 ### RSO
 
 The repeated single objectives (RSO) algorithm solves multiobjective problems by running several single-objective optimizers independently with varying weights [^hughes05].  Any of the single-objective optimizers supported by the MOEA Framework can be utilized, and any properties supported by that optimizer can be defined.  RSO is a useful tool for comparing single and multiobjective optimizers.  The maximum number of evaluations is spread evenly across each single-objective instance.
 
+**Algorithm Name:** `"RSO"` 
 **Supported Types:** Any  
 **Supported Operators:** Any
 
@@ -283,12 +305,14 @@ Parameter            | Default Value     | Description
 
 The reference vector guided evolutionary algorithm (RVEA) has many similarities with NSGA-III, but avoids use of Pareto dominance and uses an angle-penalized distance function for survival selection [^cheng16].  RVEA only works on problems with at least two objectives and can only use genetic operators requiring two parents.
 
+**Algorithm Name:** `"RVEA"` 
 **Supported Types:** Any  
 **Supported Operators:** Any
 
 Parameter            | Default Value     | Description
 :------------------- | :---------------- | :----------
 `populationSize`     | Unset             | The size of the population.  If unset, the population size is equal to the number of reference vectors
+`operator`           | Problem dependent | The variation (crossover and/or mutation) operator
 `divisions`          | Problem dependent | The number of divisions
 `divisionsInner`     | Unset             | The number of inner divisions when using the two-layer approach
 `divisionsOuter`     | Unset             | The number of outer divisions when using the two-layer approach
@@ -301,6 +325,7 @@ See the [NSGA-III](#nsga-iii) documentation for details on generating reference 
 
 SMPSO is a multiobjective particle swarm optimization algorithm [^nebro09].
 
+**Algorithm Name:** `"SMPSO"` 
 **Supported Types:** Real  
 **Supported Operators:** PM
 
@@ -315,6 +340,7 @@ Parameter            | Default Value     | Description
 
 SMS-EMOA is an indicator-based MOEA that uses the volume of the dominated hypervolume to rank individuals [^beume07].
 
+**Algorithm Name:** `"SMS-EMOA"` 
 **Supported Types:** Any  
 **Supported Operators:** Any
 
@@ -322,11 +348,13 @@ Parameter            | Default Value     | Description
 :------------------- | :---------------- | :----------
 `populationSize`     | `100`             | The size of the population
 `offset`             | `100`             | The reference point offset for computing hypervolume
+`operator`           | Problem dependent | The variation (crossover and/or mutation) operator
 
 ### SPEA2
 
 SPEA2 is an older but popular benchmark MOEA that uses the so-called ``strength-based'' method for ranking solutions [^zitzler02].  The general idea is that the strength or quality of a solution is related to the strength of solutions it dominates.
 
+**Algorithm Name:** `"SPEA2"` 
 **Supported Types:** Any  
 **Supported Operators:** Any
 
@@ -335,17 +363,20 @@ Parameter            | Default Value     | Description
 `populationSize`     | `100`             | The size of the population
 `offspringSize`      | `100`             | The number of offspring generated every iteration
 `k`                  | `1`               | Crowding is based on the distance to the $k$-th nearest neighbor
+`operator`           | Problem dependent | The variation (crossover and/or mutation) operator
 
 ### VEGA
 
 VEGA is considered the earliest documented MOEA.  While we provide support for VEGA, other MOEAs should be preferred as they exhibit better performance.  VEGA is provided for its historical significance [^schaffer85].
 
+**Algorithm Name:** `"VEGA"` 
 **Supported Types:** Any  
 **Supported Operators:** Any
 
 Parameter            | Default Value     | Description
 :------------------- | :---------------- | :----------
 `populationSize`     | `100`             | The size of the population
+`operator`           | Problem dependent | The variation (crossover and/or mutation) operator
 
 ## Single-Objective Optimizers
 
@@ -355,12 +386,14 @@ In addition to the multiobjective optimizers listed above, the MOEA Framework su
 
 GA is the standard genetic algorithm with elitism[^holland75].  A single elite individual is guaranteed to survive between generations.
 
+**Algorithm Name:** `"GA"` 
 **Supported Types:** Any  
 **Supported Operators:** Any
 
 Parameter            | Default Value     | Description
 :------------------- | :---------------- | :----------
 `populationSize`     | `100`             | The size of the population
+`operator`           | Problem dependent | The variation (crossover and/or mutation) operator
 `method`             | `linear`          | The scalarization method - `linear`, `min-max`
 `weights`            | `1.0,1.0,...`     | The scalarization weights
 
@@ -368,6 +401,7 @@ Parameter            | Default Value     | Description
 
 ES is the standard $(1+1)$ evolution strategies algorithm[^rechenberg71].  ES only supports real-valued variables.  This means the population is size `1` and only `1` offspring is generated each iteration.  The fittest solution survives to the next iteration.  Additionally, ES uses a self-adaptive variation operator.
 
+**Algorithm Name:** `"ES"` 
 **Supported Types:** Real  
 **Supported Operators:** None (uses self-adaptive variation)
 
@@ -381,6 +415,7 @@ Parameter            | Default Value     | Description
 
 DE is the standard differential evolution algorithm[^storn97], also known as `DE/rand/1/bin`.  DE only supports real-valued variables using the differential evolution operator.  DE works by calculating the difference between two randomly-selected points and applying that difference to a third point.
 
+**Algorithm Name:** `"DE"` 
 **Supported Types:** Real  
 **Supported Operators:** DE
 
