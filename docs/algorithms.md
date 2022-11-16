@@ -1,9 +1,22 @@
 # List of Algorithms
 
-## Overview
+## Contents
 
-This page provides a high-level view of the optimization algorithms native to the MOEA Framework.  Additionally, it lists out the parameters used to
-customize each algorithm.  For example:
+Below lists the optimization algorithms provided by the MOEA Framework organized into categories.
+
+* Multi-objective
+  * Classical - [NSGA-II](#nsga-ii), [MOEA/D](#moead), [GDE3](#gde3), [PAES](#paes), [PESA2](#pesa2), [SPEA2](#spea2), [VEGA](#vega)
+  * Epsilon-dominance - [e-MOEA](#e-moea), [e-NSGA-II](#e-nsga-ii)
+  * Reference point / vector - [NSGA-III](#nsga-iii), [DBEA](#dbea), [RVEA](#rvea)
+  * Particle swarm - [OMOPSO](#omopso), [SMPSO](#smpso)
+  * Indicator based - [IBEA](#ibea), [SMS-EMOA](#sms-emoa)
+  * Other - [CMA-ES](#cma-es), [MSOPS](#msops), [RSO](#rso), [Random](#random)
+* Single-objective - [GA](#ga), [ES](#es), [DE](#de)
+
+## Instantiating an Algorithm
+
+Each algorithm has a collection of parameters (called properties) used to configure specific details, such as their population size, mutation and
+crossover rates, etc.  Using the `Executor` class, we can quickly create, configure, and execute an algorithm on a given problem:
 
 ```java
 
@@ -15,36 +28,8 @@ NondominatedPopulation results = new Executor()
     .run();
 ```
 
-Many of these algorithms change what mutation and variation operators they use based on the problem type.  See the [List of Operators](operators.md) for
-instructions on customizing the parameters for specific operators.
-
-## Index
-
-* Multiobjective Optimizers
-  * [CMA-ES](#cma-es)
-  * [DBEA](#dbea)
-  * [e-MOEA](#e-moea)
-  * [e-NSGA-II](#e-nsga-ii)
-  * [GDE3](#gde3)
-  * [IBEA](#ibea)
-  * [MOEA/D](#moead)
-  * [MSOPS](#msops)
-  * [NSGA-II](#nsga-ii)
-  * [NSGA-III](#nsga-iii)
-  * [OMOPSO](#omopso)
-  * [PAES](#paes)
-  * [PESA2](#pesa2)
-  * [Random](#random)
-  * [RSO](#rso)
-  * [RVEA](#rvea)
-  * [SMPSO](#smpos)
-  * [SMS-EMOA](#sms-emoa)
-  * [SPEA2](#spea2)
-  * [VEGA](#vega)
-* Single-objective Optimizers
-  * [GA](#ga)
-  * [ES](#es)
-  * [DE](#de)
+Many of these algorithms support any decision variable type, and thus the selected mutation and/or crossover operators will depend on the problem
+type.  These mutation and crossover operators have their own set of parameters.  See the [List of Operators](operators.md) for specifics.
 
 ## Multiobjective Optimizers
 
@@ -88,7 +73,7 @@ Parameter            | Default Value     | Description
 :------------------- | :---------------- | :----------
 `divisions`          | Problem dependent | The number of divisions
 
-### $\epsilon$-MOEA
+### e-MOEA
 $\epsilon$-MOEA is a steady-state MOEA that uses $\epsilon$-dominance archiving to record a diverse set of Pareto optimal solutions [^deb03].
 The term steady-state means that the algorithm evolves one solution at a time.  This is in contrast to generational algorithms, which evolve the
 entire population every iteration.  $\epsilon$-dominance archives are useful since they ensure convergence and diversity throughout search [^laumanns02].
@@ -101,7 +86,7 @@ Parameter            | Default Value     | Description
 `populationSize`     | `100`             | The size of the population
 `epsilon`            | Problem dependent | The $\epsilon$ values used by the $\epsilon$-dominance archive, which can either be a single value or a comma-separated array
 
-### $\epsilon$-NSGA-II
+### e-NSGA-II
 
 $\epsilon$-NSGA-II combines the generational search of NSGA-II with the guaranteed convergence provided by an $\epsilon$-dominance archive [^kollat06].  It also features randomized restarts to enhance search and find a diverse set of Pareto optimal solutions.  During a random restart, the algorithm empties the current population and fills it with new, randomly-generated solutions.
 
@@ -220,9 +205,9 @@ Parameter            | Default Value     | Description
 `pm.rate`            | `1/N`             | The mutation rate for polynomial mutation
 `pm.distributionIndex` | `20.0`          | The distribution index for polynomial mutation
 
-### PESA-II
+### PESA2
 
-PESA-II is another multiobjective evolutionary algorithm that tends to underperform other MOEAs but is often used as a baseline algorithm in comparative studies [^corne01].  It is the successor to PESA [^corne00].  Like PAES, PESA-II uses the adaptive grid archive to maintain a fixed-size archive of solutions.
+PESA2 is another multiobjective evolutionary algorithm that tends to underperform other MOEAs but is often used as a baseline algorithm in comparative studies [^corne01].  It is the successor to PESA [^corne00].  Like PAES, PESA2 uses the adaptive grid archive to maintain a fixed-size archive of solutions.
 
 Parameter            | Default Value     | Description
 :------------------- | :---------------- | :----------
