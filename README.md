@@ -44,6 +44,11 @@ Maven users can add our dependency to their `pom.xml` file:
 Visit the [Maven distribution page](https://search.maven.org/artifact/org.moeaframework/moeaframework/3.0/jar)
 for setup instructions for other package management tools.
 
+### Documentation ###
+
+Find our [documentation](docs/README.md), [examples](examples/), and online resources at [moeaframework.org](http://moeaframework.org)
+for instructions for using the MOEA Framework.
+
 ### License ###
 
 Copyright 2009-2022 David Hadka and other contributors.  All rights reserved.
