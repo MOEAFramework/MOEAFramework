@@ -39,8 +39,7 @@ CMA-ES is a sophisticated covariance matrix adaptation evolution strategy algori
 offspring by sampling a distribution formed by a covariance matrix, hence the name, and updating the covariance matrix based on the surviving offspring.
 Single and multi-objective variants exist in the literature and both are supported by the MOEA Framework.  
 
-**Supported Types:** Real
-
+**Supported Types:** Real  
 **Supported Operators:** None (provides its own variation and mutation)
 
 Parameter            | Default Value | Description
@@ -62,16 +61,15 @@ Derived means the default values are calculated from other settings, but can be 
 
 DBEA, or I-DBEA, is the Improved Decomposition-Based Evolutionary Algorithm.  DBEA uses the same systematic sampling of reference points as NSGA-III,
 but utilizes distance along each reference vector to measure convergence and the perpendicular distance to reference vectors to measure diversity
-[^asafuddoula15].  DBEA also proposes corner-sort as a means to identify exteme points for normalization. For an $M$-objective problem, the number
-of reference points is:
-
-$$H = {M+divisions-1 \choose divisions}$$
-
-To use the two-layer approach also used by NSGA-III, replace the `divisions` parameter with `divisionsOuter` and `divisionsInner`.
+[^asafuddoula15].  DBEA also proposes corner-sort as a means to identify exteme points for normalization.
 
 Parameter            | Default Value     | Description
 :------------------- | :---------------- | :----------
 `divisions`          | Problem dependent | The number of divisions
+`divisionsInner`     | Unset             | The number of inner divisions when using the two-layer approach
+`divisionsOuter`     | Unset             | The number of outer divisions when using the two-layer approach
+
+See the [NSGA-III](#nsga-iii) documentation for details on generating reference vectors and the two-layer approach.
 
 ### e-MOEA
 $\epsilon$-MOEA is a steady-state MOEA that uses $\epsilon$-dominance archiving to record a diverse set of Pareto optimal solutions [^deb03].
@@ -172,14 +170,19 @@ Parameter            | Default Value     | Description
 NSGA-III is the many-objective successor to NSGA-II, using reference points to direct solutions towards a diverse set [^deb14].  The number of reference
 points is controlled by the number of objectives and the `divisions` parameter.  For an $M$-objective problem, the number of reference points is:
 
-$$H = {M+divisions-1 \choose divisions}$$
+$$ H = {M+divisions-1 \choose divisions} $$
 
-The authors also propose a two-layer approach for divisions for many-objective problems where an outer and inner division number is specified.  To use the two-layer approach, replace the `divisions` parameter with `divisionsOuter` and `divisionsInner`.
+The authors also propose a two-layer approach for divisions for many-objective problems where an outer and inner division number is specified.  To use the
+two-layer approach, replace the `divisions` parameter with `divisionsOuter` and `divisionsInner`.  `divisionsOuter` controls the number of reference points
+on the boundary of the objective space; `divisionsInner` controls the number of reference points on the interior of the objective space.  Please refer
+to the cited paper for more details.
 
 Parameter            | Default Value     | Description
 :------------------- | :---------------- | :----------
 `populationSize`     | Unset             | The size of the population.  If unset, the population size is equal to the number of reference points
 `divisions`          | Problem dependent | The number of divisions
+`divisionsInner`     | Unset             | The number of inner divisions when using the two-layer approach
+`divisionsOuter`     | Unset             | The number of outer divisions when using the two-layer approach
 
 ### OMOPSO
 
@@ -236,18 +239,18 @@ Parameter            | Default Value     | Description
 
 ### RVEA
 
-The reference vector guided evolutionary algorithm (RVEA) has many similarities with NSGA-III, but avoids use of Pareto dominance and uses an angle-penalized distance function for survival selection [^cheng16].  RVEA only works on problems with at least two objectives and can only use genetic operators requiring two parents.  Like NSGA-III, the number of reference vectors is controlled by the number of objectives and the `divisions` parameter.  For an $M$-objective problem, the number of reference vectors is:
-
-$$H = {M+divisions-1 \choose divisions}$$
-
-To use the two-layer approach, replace the `divisions` parameter with `divisionsOuter` and `divisionsInner`.
+The reference vector guided evolutionary algorithm (RVEA) has many similarities with NSGA-III, but avoids use of Pareto dominance and uses an angle-penalized distance function for survival selection [^cheng16].  RVEA only works on problems with at least two objectives and can only use genetic operators requiring two parents.
 
 Parameter            | Default Value     | Description
 :------------------- | :---------------- | :----------
 `populationSize`     | Unset             | The size of the population.  If unset, the population size is equal to the number of reference vectors
 `divisions`          | Problem dependent | The number of divisions
+`divisionsInner`     | Unset             | The number of inner divisions when using the two-layer approach
+`divisionsOuter`     | Unset             | The number of outer divisions when using the two-layer approach
 `alpha`              | `2`               | Controls the rate of change in the angle-penalized distance function
 `adaptFrequency`     | $\texttt{maxEvaluations / (populationSize * 10)}$ | The frequency (in generations) in which the weights are adapted / scaled
+
+See the [NSGA-III](#nsga-iii) documentation for details on generating reference vectors and the two-layer approach.
 
 ### SMPSO
 
@@ -313,7 +316,7 @@ Parameter            | Default Value     | Description
 
 ### DE
 
-DE is the standard differential evolution algorithm[^storn97].  DE only supports real-valued variables using the differential evolution operator.  DE works by calculating the difference between two randomly-selected points and applying that difference to a third point.
+DE is the standard differential evolution algorithm[^storn97], also known as `DE/rand/1/bin`.  DE only supports real-valued variables using the differential evolution operator.  DE works by calculating the difference between two randomly-selected points and applying that difference to a third point.
 
 Parameter            | Default Value     | Description
 :------------------- | :---------------- | :----------
