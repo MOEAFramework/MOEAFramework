@@ -11,7 +11,7 @@ Below lists the optimization algorithms provided by the MOEA Framework organized
   * Particle swarm - [OMOPSO](#omopso), [SMPSO](#smpso)
   * Indicator based - [IBEA](#ibea), [SMS-EMOA](#sms-emoa)
   * Other - [CMA-ES](#cma-es), [MSOPS](#msops), [RSO](#rso), [Random](#random)
-* Single-objective - [GA](#ga), [ES](#es), [DE](#de)
+* Single-objective - [GA](#ga), [ES](#es), [DE](#de), [CMA-ES](#cma-es)
 
 ## Instantiating an Algorithm
 
