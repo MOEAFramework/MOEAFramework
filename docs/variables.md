@@ -47,7 +47,7 @@ EncodingUtils.setBinary(solution.getVariable(i), bits);
 
 Integers can be represented internally using either the real or binary encoding.  The choice of encoding affects what operators are available.  We generally
 recommend using binary.  By default, the binary representation uses [Gray code](https://en.wikipedia.org/wiki/Gray_code) to ensure a single bit
-flip can produce an adjacent integer ($N-1$ or $N+1$).
+flip can produce an adjacent integer (`X-1` or `X+1`).
 
 ```java
 
