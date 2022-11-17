@@ -7,7 +7,7 @@
 * [Credits](credits.md)
 
 ## Working with the MOEA Framework
-* [Decision Variable Types](variables.md)
+* [List of Decision Variables](variables.md)
 * [List of Algorithms](algorithms.md)
 * [List of Variation Operators](operators.md)
 * [List of Test Problems](problems.md)
