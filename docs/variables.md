@@ -111,11 +111,13 @@ another number.  These types determine how connections can be formed between nod
 
 ```mermaid
 graph TD;
-    -->|Number| Add
+    START[ ] -->|Number| Add
     Add -->|Number| A["Get(#quot;X#quot;)"];
     Add -->|Number| Multiply;
     Multiply -->|Number| B["Get(#quot;Y#quot;)"];
     Multiply -->|Number| C["Constant(2)"];
+    
+    style START fill-opacity:0, stroke-opacity:0;
 ```
 
 Check out the code samples in [/examples/org/moeaframework/examples/gp](examples/org/moeaframework/examples/gp).
