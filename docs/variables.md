@@ -111,11 +111,11 @@ another number.  These types determine how connections can be formed between nod
 
 ```mermaid
 graph TD;
-    START[ ] -->|Number| Add
-    Add -->|Number| A["Get(#quot;X#quot;)"];
-    Add -->|Number| Multiply;
-    Multiply -->|Number| B["Get(#quot;Y#quot;)"];
-    Multiply -->|Number| C["Constant(2)"];
+    START[ ] ---|Number| Add
+    Add ---|Number| A["Get(#quot;X#quot;)"];
+    Add ---|Number| Multiply;
+    Multiply ---|Number| B["Get(#quot;Y#quot;)"];
+    Multiply ---|Number| C["Constant(2)"];
     
     style START fill-opacity:0, stroke-opacity:0;
 ```
@@ -138,5 +138,5 @@ The grammar type facilitates grammatical evolution.  This is similar in function
 would generate statements like `sin(x) + cos(x)`, `log(x / y)`, `y - x`, etc.  However, unlike a program, a grammar can generate arbitrary statements,
 not necessarily just executable programs.
 
-The MOEA Framework then evolves valid programs for the grammar, which can then be fed into a scripting language to evaluate the program.
-Check out the code samples in [/examples/org/moeaframework/examples/ge](examples/org/moeaframework/examples/ge).
+Regardless of what statements the grammar produces, one then needs a way to "evaluate" the program in terms of fitness.  For executable programs, the
+statement can be fed into a scripting language, including any of [Java's supported scripting languages](https://objectcomputing.com/resources/publications/sett/march-2001-scripting-languages-for-java).  Find code samples in [/examples/org/moeaframework/examples/ge](examples/org/moeaframework/examples/ge).
