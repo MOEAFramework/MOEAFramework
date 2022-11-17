@@ -29,6 +29,9 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.comparator.ObjectiveComparator;
+import org.moeaframework.util.Vector;
+import org.moeaframework.util.weights.NormalBoundaryDivisions;
+import org.moeaframework.util.weights.NormalBoundaryIntersectionGenerator;
 import org.apache.commons.math3.linear.Array2DRowRealMatrix;
 import org.apache.commons.math3.linear.LUDecomposition;
 import org.apache.commons.math3.linear.MatrixUtils;
@@ -99,14 +102,9 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 	private final Variation variation;
 	
 	/**
-	 * The number of outer divisions for generating reference points.
+	 * The number of divisions for generating reference points.
 	 */
-	private final int divisionsOuter;
-	
-	/**
-	 * The number of inner divisions for generating reference points.
-	 */
-	private final int divisionsInner;
+	private final NormalBoundaryDivisions divisions;
 
 	/**
 	 * Constructs a new instance of the DBEA algorithm.
@@ -114,15 +112,13 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 	 * @param problem the problem being solved
 	 * @param initialization the initialization method
 	 * @param variation the variation operator
-	 * @param divisionsOuter the number of outer divisions
-	 * @param divisionsInner the number of inner divisions
+	 * @param divisions the number of divisions
 	 */
 	public DBEA(Problem problem, Initialization initialization,
-			Variation variation, int divisionsOuter, int divisionsInner) {
+			Variation variation, NormalBoundaryDivisions divisions) {
 		super(problem, new Population(), null, initialization);
 		this.variation = variation;
-		this.divisionsOuter = divisionsOuter;
-		this.divisionsInner = divisionsInner;
+		this.divisions = divisions;
 	}
 
 	@Override
@@ -139,32 +135,10 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 	 * outer and inner divisions.
 	 */
 	void generateWeights() {
-		if (divisionsInner > 0) {
-			if (divisionsOuter >= problem.getNumberOfObjectives()) {
-				System.err.println("The specified number of outer divisions produces intermediate reference points, recommend setting divisionsOuter < numberOfObjectives.");
-			}
-
-			weights = generateWeights(divisionsOuter);
-
-			// offset the inner weights
-			List<double[]> inner = generateWeights(divisionsInner);
-
-			for (int i = 0; i < inner.size(); i++) {
-				double[] weight = inner.get(i);
-
-				for (int j = 0; j < weight.length; j++) {
-					weight[j] = (1.0/problem.getNumberOfObjectives() + weight[j])/2;
-				}
-			}
-
-			weights.addAll(inner);
-		} else {
-			if (divisionsOuter < problem.getNumberOfObjectives()) {
-				System.err.println("No intermediate reference points will be generated for the specified number of divisions, recommend increasing divisions");
-			}
-
-			weights = generateWeights(divisionsOuter);
-		}
+		NormalBoundaryIntersectionGenerator generator = new NormalBoundaryIntersectionGenerator(
+				problem.getNumberOfObjectives(), divisions);
+		
+		weights = generator.generate();
 	}
 	
 	/**
@@ -271,10 +245,8 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 		if (!feasibleSolutions.isEmpty()) {
 			for (int i = 0; i < feasibleSolutions.size(); i++) {
 				for (int j = 0; j < problem.getNumberOfObjectives(); j++) {
-					idealPoint[j] = Math.min(idealPoint[j],
-							feasibleSolutions.get(i).getObjective(j));
-					intercepts[j] = Math.max(intercepts[j],
-							feasibleSolutions.get(i).getObjective(j));
+					idealPoint[j] = Math.min(idealPoint[j], feasibleSolutions.get(i).getObjective(j));
+					intercepts[j] = Math.max(intercepts[j], feasibleSolutions.get(i).getObjective(j));
 				}
 			}
 		}
@@ -288,8 +260,7 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 	 * @param population the population of solutions
 	 * @return the solution with the largest objective value
 	 */
-	private Solution largestObjectiveValue(int objective,
-			Population population) {
+	private Solution largestObjectiveValue(int objective, Population population) {
 		Solution largest = null;
 		double value = Double.NEGATIVE_INFINITY;
 		
@@ -311,8 +282,7 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 	 * @param population the population
 	 * @return a copy of the population ordered by the objective value
 	 */
-	private Population orderBySmallestObjective(int objective,
-			Population population) {
+	private Population orderBySmallestObjective(int objective, Population population) {
 		Population result = new Population();
 		result.addAll(population);
 		result.sort(new ObjectiveComparator(objective));
@@ -328,8 +298,7 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 	 * @return a copy of the population ordered by the sum-of-squares of all
 	 *         but one objective
 	 */
-	private Population orderBySmallestSquaredValue(final int objective,
-			Population population) {
+	private Population orderBySmallestSquaredValue(final int objective, Population population) {
 		Population result = new Population();
 		result.addAll(population);
 		
@@ -623,8 +592,7 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 	 * population.
 	 * 
 	 * @param solution the solution
-	 * @return {@code true} if the solution is dominated; {@code false}
-	 *         otherwise
+	 * @return {@code true} if the solution is dominated; {@code false} otherwise
 	 */
 	boolean checkDomination(Solution solution) {
 		if (solution.violatesConstraints()) {
@@ -667,13 +635,13 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 	 * @return the distance
 	 */
 	private double distanceD1(double[] f, double[] w) {
-		double dn = normVector(w);
+		double dn = Vector.magnitude(w);
 		
 		for (int j = 0; j < problem.getNumberOfObjectives(); j++) {
 			w[j] = w[j] / dn;
 		}
 		
-		return innerproduct(f, w);
+		return Vector.dot(f, w);
 	}
 
 	/**
@@ -684,40 +652,7 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 	 * @return the perpendicular distance
 	 */
 	private double distanceD2(double[] f, double d1) {
-		return Math.sqrt(Math.pow(normVector(f), 2) - Math.pow(d1, 2));
-	}
-
-	/**
-	 * Computes the norm of a vector.
-	 * 
-	 * @param z the vector
-	 * @return the norm value
-	 */
-	private double normVector(double[] z) {
-		double sum = 0;
-
-		for (int i = 0; i < problem.getNumberOfObjectives(); i++) {
-			sum += z[i] * z[i];
-		}
-
-		return Math.sqrt(sum);
-	}
-
-	/**
-	 * Computes the inner product of two vectors.
-	 * 
-	 * @param vec1 the first vector
-	 * @param vec2 the second vector
-	 * @return the inner product value
-	 */
-	private double innerproduct(double[] vec1, double[] vec2) {
-		double sum = 0;
-
-		for (int i = 0; i < vec1.length; i++) {
-			sum += vec1[i] * vec2[i];
-		}
-
-		return sum;
+		return Math.sqrt(Math.pow(Vector.magnitude(f), 2) - Math.pow(d1, 2));
 	}
 
 	/**
@@ -760,45 +695,6 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 		}
 		
 		return objectiveValues;
-	}
-	
-	/**
-	 * Generates the reference points (weights) for the given number of
-	 * divisions.
-	 * 
-	 * @param divisions the number of divisions
-	 * @return the list of reference points
-	 */
-	private List<double[]> generateWeights(int divisions) {
-		List<double[]> result = new ArrayList<double[]>();
-		double[] weight = new double[problem.getNumberOfObjectives()];
-		
-		generateRecursive(result, weight, problem.getNumberOfObjectives(), divisions, divisions, 0);
-		
-		return result;
-	}
-	
-	/**
-	 * Generate reference points (weights) recursively.
-	 * 
-	 * @param weights list storing the generated reference points
-	 * @param weight the partial reference point being recursively generated
-	 * @param numberOfObjectives the number of objectives
-	 * @param left the number of remaining divisions
-	 * @param total the total number of divisions
-	 * @param index the current index being generated
-	 */
-	private void generateRecursive(List<double[]> weights,
-			double[] weight, int numberOfObjectives, int left, int total, int index) {
-		if (index == (numberOfObjectives - 1)) {
-			weight[index] = (double)left/total;
-			weights.add(weight.clone());
-		} else {
-			for (int i = 0; i <= left; i += 1) {
-				weight[index] = (double) i / total;
-				generateRecursive(weights, weight, numberOfObjectives, left - i, total, index + 1);
-			}
-		}
 	}
 
 	@Override

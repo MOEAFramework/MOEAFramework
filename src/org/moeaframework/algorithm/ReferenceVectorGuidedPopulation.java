@@ -28,6 +28,7 @@ import org.moeaframework.core.Population;
 import org.moeaframework.core.Solution;
 import org.moeaframework.util.Vector;
 import org.moeaframework.util.weights.NormalBoundaryIntersectionGenerator;
+import org.moeaframework.util.weights.NormalBoundaryDivisions;
 
 /**
  * A reference vector guided population, for use with RVEA, that truncates
@@ -53,15 +54,9 @@ public class ReferenceVectorGuidedPopulation extends Population {
 	private final int numberOfObjectives;
 
 	/**
-	 * The number of outer divisions.
+	 * The number of divisions.
 	 */
-	private final int divisionsOuter;
-
-	/**
-	 * The number of inner divisions, or {@code 0} if no inner divisions should
-	 * be used.
-	 */
-	private final int divisionsInner;
+	private final NormalBoundaryDivisions divisions;
 
 	/**
 	 * The ideal point.
@@ -99,15 +94,13 @@ public class ReferenceVectorGuidedPopulation extends Population {
 	 * 
 	 * @param numberOfObjectives the number of objectives
 	 * @param divisions the number of divisions
-	 * @param alpha controls the rate of change in the angle-penalized distance
-	 *        function
+	 * @param alpha controls the rate of change in the angle-penalized distance function
 	 */
-	public ReferenceVectorGuidedPopulation(int numberOfObjectives,
-			int divisions, double alpha) {
+	public ReferenceVectorGuidedPopulation(int numberOfObjectives, NormalBoundaryDivisions divisions,
+			double alpha) {
 		super();
 		this.numberOfObjectives = numberOfObjectives;
-		this.divisionsOuter = divisions;
-		this.divisionsInner = 0;
+		this.divisions = divisions;
 		this.alpha = alpha;
 		
 		initialize();
@@ -118,59 +111,14 @@ public class ReferenceVectorGuidedPopulation extends Population {
 	 * 
 	 * @param numberOfObjectives the number of objectives
 	 * @param divisions the number of divisions
-	 * @param alpha controls the rate of change in the angle-penalized distance
-	 *        function
+	 * @param alpha controls the rate of change in the angle-penalized distance function
 	 * @param iterable the solutions used to initialize this population
 	 */
-	public ReferenceVectorGuidedPopulation(
-			int numberOfObjectives, int divisions, double alpha,
-			Iterable<? extends Solution> iterable) {
-		super(iterable);
-		this.numberOfObjectives = numberOfObjectives;
-		this.divisionsOuter = divisions;
-		this.divisionsInner = 0;
-		this.alpha = alpha;
-
-		initialize();
-	}
-
-	/**
-	 * Constructs a new population for RVEA.
-	 * 
-	 * @param numberOfObjectives the number of objectives
-	 * @param divisionsOuter the number of outer divisions
-	 * @param divisionsInner the number of inner divisions
-	 * @param alpha controls the rate of change in the angle-penalized distance
-	 *        function
-	 */
-	public ReferenceVectorGuidedPopulation(int numberOfObjectives,
-			int divisionsOuter, int divisionsInner, double alpha) {
-		super();
-		this.numberOfObjectives = numberOfObjectives;
-		this.divisionsOuter = divisionsOuter;
-		this.divisionsInner = divisionsInner;
-		this.alpha = alpha;
-
-		initialize();
-	}
-
-	/**
-	 * Constructs a new population for RVEA.
-	 * 
-	 * @param numberOfObjectives the number of objectives
-	 * @param divisionsOuter the number of outer divisions
-	 * @param divisionsInner the number of inner divisions
-	 * @param alpha controls the rate of change in the angle-penalized distance
-	 *        function
-	 * @param iterable the solutions used to initialize this population
-	 */
-	public ReferenceVectorGuidedPopulation(
-			int numberOfObjectives, int divisionsOuter, int divisionsInner,
+	public ReferenceVectorGuidedPopulation(int numberOfObjectives, NormalBoundaryDivisions divisions,
 			double alpha, Iterable<? extends Solution> iterable) {
 		super(iterable);
 		this.numberOfObjectives = numberOfObjectives;
-		this.divisionsOuter = divisionsOuter;
-		this.divisionsInner = divisionsInner;
+		this.divisions = divisions;
 		this.alpha = alpha;
 
 		initialize();
@@ -244,7 +192,7 @@ public class ReferenceVectorGuidedPopulation extends Population {
 		
 		// create the reference vectors
 		originalWeights = new NormalBoundaryIntersectionGenerator(
-				numberOfObjectives, divisionsOuter, divisionsInner).generate();
+				numberOfObjectives, divisions).generate();
 		
 		for (int i = 0; i < originalWeights.size(); i++) {
 			originalWeights.set(i, Vector.normalize(originalWeights.get(i)));

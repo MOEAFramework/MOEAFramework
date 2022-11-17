@@ -29,6 +29,7 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.problem.DTLZ.DTLZ2;
+import org.moeaframework.util.weights.NormalBoundaryDivisions;
 
 /**
  * Tests the {@link DBEA} class.
@@ -47,7 +48,7 @@ public class DBEATest {
 		Problem problem = new DTLZ2(15);
 		
 		DBEA.TESTING_MODE = true;
-		DBEA dbea = new DBEA(problem, null, null, 3, 0);
+		DBEA dbea = new DBEA(problem, null, null, new NormalBoundaryDivisions(3, 0));
 		dbea.generateWeights();
 		
 		String line = null;

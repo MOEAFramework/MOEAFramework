@@ -26,6 +26,7 @@ import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.util.Vector;
+import org.moeaframework.util.weights.NormalBoundaryDivisions;
 
 /**
  * Tests the {@link ReferenceVectorGuidedPopulation} class.
@@ -64,8 +65,8 @@ public class ReferenceVectorGuidedPopulationTest {
 	
 	@Test
 	public void testCalculateIdealPoint() {
-		ReferenceVectorGuidedPopulation population =
-				new ReferenceVectorGuidedPopulation(2, 4, 2.0);
+		ReferenceVectorGuidedPopulation population = new ReferenceVectorGuidedPopulation(
+				2, new NormalBoundaryDivisions(4), 2.0);
 		
 		population.add(TestUtils.newSolution(0.5, 0.5));
 		population.add(TestUtils.newSolution(0.0, 1.0));
@@ -78,8 +79,8 @@ public class ReferenceVectorGuidedPopulationTest {
 	
 	@Test
 	public void testTranslateByIdealPoint() {
-		ReferenceVectorGuidedPopulation population =
-				new ReferenceVectorGuidedPopulation(2, 4, 2.0);
+		ReferenceVectorGuidedPopulation population = new ReferenceVectorGuidedPopulation(
+				2, new NormalBoundaryDivisions(4), 2.0);
 		
 		population.add(TestUtils.newSolution(0.5, 0.5));
 		population.add(TestUtils.newSolution(0.0, 1.0));
@@ -96,8 +97,8 @@ public class ReferenceVectorGuidedPopulationTest {
 
 	@Test
 	public void testAssociateToReferencePoint() {
-		ReferenceVectorGuidedPopulation population =
-				new ReferenceVectorGuidedPopulation(2, 1, 2.0);
+		ReferenceVectorGuidedPopulation population = new ReferenceVectorGuidedPopulation(
+				2, new NormalBoundaryDivisions(1), 2.0);
 		
 		Solution s1 = TestUtils.newSolution(0.5, 0.5);
 		Solution s2 = TestUtils.newSolution(0.25, 0.75);
@@ -124,8 +125,8 @@ public class ReferenceVectorGuidedPopulationTest {
 	 */
 	@Test
 	public void testTruncate1() {
-		ReferenceVectorGuidedPopulation population =
-				new ReferenceVectorGuidedPopulation(2, 1, 2.0);
+		ReferenceVectorGuidedPopulation population = new ReferenceVectorGuidedPopulation(
+				2, new NormalBoundaryDivisions(1), 2.0);
 		
 		Solution s1 = TestUtils.newSolution(0.5, 0.5);
 		Solution s2 = TestUtils.newSolution(0.25, 0.75);
@@ -149,8 +150,8 @@ public class ReferenceVectorGuidedPopulationTest {
 	 */
 	@Test
 	public void testTruncate2() {
-		ReferenceVectorGuidedPopulation population =
-				new ReferenceVectorGuidedPopulation(2, 1, 2.0);
+		ReferenceVectorGuidedPopulation population = new ReferenceVectorGuidedPopulation(
+				2, new NormalBoundaryDivisions(1), 2.0);
 		
 		Solution s1 = TestUtils.newSolution(0.5, 0.5);
 		Solution s2 = TestUtils.newSolution(0.25, 0.75);
@@ -175,8 +176,8 @@ public class ReferenceVectorGuidedPopulationTest {
 	 */
 	@Test
 	public void testAdapt() {
-		ReferenceVectorGuidedPopulation population =
-				new ReferenceVectorGuidedPopulation(2, 2, 2.0);
+		ReferenceVectorGuidedPopulation population = new ReferenceVectorGuidedPopulation(
+				2, new NormalBoundaryDivisions(2), 2.0);
 		
 		population.add(TestUtils.newSolution(0.4, 0.5));
 		population.add(TestUtils.newSolution(0.25, 2.75));
