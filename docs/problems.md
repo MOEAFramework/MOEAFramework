@@ -99,12 +99,12 @@ These bi-objective problems are formed by combining two single-objective functio
 by the dimension (number of decision variables) and instance number (which varies the location of the optimum point).
 
 The MOEA Framework uses a special name format for these problems.  Each single-objective function has a unique name in the form
-`bbob_f<N>_d<N>_i<N>` where `f`, `d`, and `i` represent the test function number, dimension, and instance, respectively.  The `<N>` is
-replaced by a specific value for each.  For example, `bbob_f1_d2_i5` represents the first BBOB function (the Sphere function) with two
-variables and instance `5`.
+`bbob_f<N>_i<N>_d<N>` where `f`, `i`, and `d` represent the test function number, instance, and dimension, respectively.  The `<N>` is
+replaced by a specific value for each.  For example, `bbob_f1_i2_d5` represents the first BBOB function (the Sphere function), instance `2`, with 
+five decision variables.
 
 Next, two of these single-objective functions are combined to get the bi-objective problem name, separated the names by two underscores ( `"__"`).
-For example, `bbob_f1_d2_i5__bbob_f21_d2_i5` would produce the $(f_1, f_{21})$ bi-objective problem with two decision variables.
+For example, `bbob_f1_i2_d5__bbob_f21_i2_d5` would produce the $(f_1, f_{21})$ bi-objective problem with five decision variables
 
 To recreate the bbob-biobj test suite from the BBOB workshop, we can enumerate the set of problems using:
 
@@ -117,10 +117,10 @@ List<String> bbob_biobj_names = new ArrayList<String>();
 
 for (int i = 0; i < functions.length; i++) {
     for (int j = i; j < functions.length; j++) {
-        for (int dimension : dimensions) {
-            for (int instance : instances) {
-            	bbob_biobj_names.add(String.format("bbob_f%d_d%d_i%d__bbob_f%d_d%d_i%d",
-            			functions[i], dimension, instance, functions[j], dimension, instance));
+        for (int instance : instances) {
+            for (int dimension : dimensions) {
+            	bbob_biobj_names.add(String.format("bbob_f%d_i%d_d%d__bbob_f%d_i%d_d%d",
+            			functions[i], instance, dimension, functions[j], instance, dimension));
             }
         }
     }
