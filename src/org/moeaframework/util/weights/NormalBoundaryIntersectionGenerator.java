@@ -20,8 +20,6 @@ package org.moeaframework.util.weights;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.math3.util.CombinatoricsUtils;
-
 /**
  * Generates weights using the Normal Boundary Intersection (NBI) method.
  * For {@code d} divisions and {@code M} objectives, this class will generate
@@ -46,71 +44,41 @@ public class NormalBoundaryIntersectionGenerator implements WeightGenerator {
 	private final int numberOfObjectives;
 	
 	/**
-	 * The number of outer divisions.
+	 * The number of divisions.
 	 */
-	private final int divisionsOuter;
+	private final NormalBoundaryDivisions divisions;
 	
 	/**
-	 * The number of inner divisions, or {@code 0} if no inner divisions should
-	 * be used.
-	 */
-	private final int divisionsInner;
-	
-	/**
-	 * Constructs a new normal-boundary intersection weight generator.
+	 * Constructs a new normal-boundary intersection weight generator.  If divisions specifies both an
+	 * inner and outer division, the two-layer approach of Deb and Jain (2014) is used.
 	 * 
 	 * @param numberOfObjectives the number of objectives
 	 * @param divisions the number of divisions
 	 */
-	public NormalBoundaryIntersectionGenerator(int numberOfObjectives, int divisions) {
-		this(numberOfObjectives, divisions, 0);
-	}
-	
-	/**
-	 * Constructs a new normal-boundary intersection weight generator using the
-	 * two-layer approach of Deb and Jain (2014).
-	 * 
-	 * @param numberOfObjectives the number of objectives
-	 * @param divisionsOuter the number of outer divisions
-	 * @param divisionsInner the number of inner divisions
-	 */
-	public NormalBoundaryIntersectionGenerator(int numberOfObjectives, int divisionsOuter, int divisionsInner) {
+	public NormalBoundaryIntersectionGenerator(int numberOfObjectives, NormalBoundaryDivisions divisions) {
 		super();
 		this.numberOfObjectives = numberOfObjectives;
-		this.divisionsOuter = divisionsOuter;
-		this.divisionsInner = divisionsInner;
+		this.divisions = divisions;
 	}
 
 	@Override
 	public int size() {
-		long size = 0;
-		
-		size += CombinatoricsUtils.binomialCoefficient(
-				numberOfObjectives + divisionsOuter - 1,
-				divisionsOuter);
-		
-		if (divisionsInner > 0) {
-			size += CombinatoricsUtils.binomialCoefficient(
-					numberOfObjectives + divisionsInner - 1,
-					divisionsInner);
-		}
-		
-		return (int)size;
+		return divisions.getNumberOfReferencePoints(numberOfObjectives);
 	}
 
 	@Override
 	public List<double[]> generate() {
 		List<double[]> weights = null;
 		
-		if (divisionsInner > 0) {
-			if (divisionsOuter >= numberOfObjectives) {
+		if (divisions.getInnerDivisions() > 0) {
+			if (divisions.getOuterDivisions() >= numberOfObjectives) {
 				System.err.println("The specified number of outer divisions produces intermediate reference points, recommend setting divisionsOuter < numberOfObjectives.");
 			}
 
-			weights = generateWeights(divisionsOuter);
+			weights = generateWeights(divisions.getOuterDivisions());
 
 			// offset the inner weights
-			List<double[]> inner = generateWeights(divisionsInner);
+			List<double[]> inner = generateWeights(divisions.getInnerDivisions());
 
 			for (int i = 0; i < inner.size(); i++) {
 				double[] weight = inner.get(i);
@@ -122,11 +90,11 @@ public class NormalBoundaryIntersectionGenerator implements WeightGenerator {
 
 			weights.addAll(inner);
 		} else {
-			if (divisionsOuter < numberOfObjectives) {
+			if (divisions.getOuterDivisions() < numberOfObjectives) {
 				System.err.println("No intermediate reference points will be generated for the specified number of divisions, recommend increasing divisions");
 			}
 
-			weights = generateWeights(divisionsOuter);
+			weights = generateWeights(divisions.getOuterDivisions());
 		}
 		
 		return weights;

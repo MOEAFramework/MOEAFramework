@@ -68,6 +68,7 @@ import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.util.TypedProperties;
 import org.moeaframework.util.Vector;
 import org.moeaframework.util.weights.RandomGenerator;
+import org.moeaframework.util.weights.NormalBoundaryDivisions;
 
 /**
  * A provider of default algorithms.  Refer to {@code docs/algorithms.md}, Appendix A in the
@@ -132,17 +133,14 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 	/**
 	 * Returns a new {@link eMOEA} instance.
 	 * 
-	 * @param properties the properties for customizing the new {@code eMOEA}
-	 *        instance
+	 * @param properties the properties for customizing the new {@code eMOEA} instance
 	 * @param problem the problem
 	 * @return a new {@code eMOEA} instance
 	 */
 	private Algorithm neweMOEA(TypedProperties properties, Problem problem) {
 		int populationSize = (int)properties.getDouble("populationSize", 100);
 
-		Initialization initialization = new RandomInitialization(problem,
-				populationSize);
-
+		Initialization initialization = new RandomInitialization(problem, populationSize);
 		Population population = new Population();
 
 		DominanceComparator comparator = new ParetoDominanceComparator();
@@ -151,34 +149,27 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 				properties.getDoubleArray("epsilon", 
 						new double[] { EpsilonHelper.getEpsilon(problem) }));
 
-		final TournamentSelection selection = new TournamentSelection(
-				2, comparator);
+		TournamentSelection selection = new TournamentSelection(2, comparator);
 		
-		Variation variation = OperatorFactory.getInstance().getVariation(null, 
-				properties, problem);
+		Variation variation = OperatorFactory.getInstance().getVariation(null, properties, problem);
 
-		EpsilonMOEA emoea = new EpsilonMOEA(problem, population, archive,
+		return new EpsilonMOEA(problem, population, archive,
 				selection, variation, initialization, comparator);
-
-		return emoea;
 	}
 
 	/**
 	 * Returns a new {@link NSGAII} instance.
 	 * 
-	 * @param properties the properties for customizing the new {@code NSGAII}
-	 *        instance
+	 * @param properties the properties for customizing the new {@code NSGAII} instance
 	 * @param problem the problem
 	 * @return a new {@code NSGAII} instance
 	 */
 	private Algorithm newNSGAII(TypedProperties properties, Problem problem) {
 		int populationSize = (int)properties.getDouble("populationSize", 100);
 
-		Initialization initialization = new RandomInitialization(problem,
-				populationSize);
+		Initialization initialization = new RandomInitialization(problem, populationSize);
 
-		NondominatedSortingPopulation population = 
-				new NondominatedSortingPopulation();
+		NondominatedSortingPopulation population = new NondominatedSortingPopulation();
 
 		TournamentSelection selection = null;
 		
@@ -188,11 +179,9 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 					new CrowdingComparator()));
 		}
 
-		Variation variation = OperatorFactory.getInstance().getVariation(null, 
-				properties, problem);
+		Variation variation = OperatorFactory.getInstance().getVariation(null, properties, problem);
 
-		return new NSGAII(problem, population, null, selection, variation,
-				initialization);
+		return new NSGAII(problem, population, null, selection, variation, initialization);
 	}
 	
 	/**
@@ -203,7 +192,7 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 	 * @return a new {@code NSGAIII} instance
 	 */
 	private Algorithm newNSGAIII(TypedProperties properties, Problem problem) {
-		ReferencePointDivisions divisions = ReferencePointDivisions.fromProperties(properties, problem);
+		NormalBoundaryDivisions divisions = NormalBoundaryDivisions.fromProperties(properties, problem);
 		int populationSize;
 		
 		if (properties.contains("populationSize")) {
@@ -216,11 +205,10 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 			populationSize = (int)Math.ceil(referencePoints / 4.0) * 4;
 		}
 		
-		Initialization initialization = new RandomInitialization(problem,
-				populationSize);
+		Initialization initialization = new RandomInitialization(problem, populationSize);
 		
 		ReferencePointNondominatedSortingPopulation population = new ReferencePointNondominatedSortingPopulation(
-				problem.getNumberOfObjectives(), divisions.getDivisionsOuter(), divisions.getDivisionsInner());
+				problem.getNumberOfObjectives(), divisions);
 
 		Selection selection = null;
 		
@@ -675,17 +663,13 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 	 * @return a new {@code DBEA} instance
 	 */
 	private Algorithm newDBEA(TypedProperties properties, Problem problem) {
-		ReferencePointDivisions divisions = ReferencePointDivisions.fromProperties(properties, problem);
+		NormalBoundaryDivisions divisions = NormalBoundaryDivisions.fromProperties(properties, problem);
 		int populationSize = divisions.getNumberOfReferencePoints(problem);
 		
-		Initialization initialization = new RandomInitialization(problem,
-				populationSize);
+		Initialization initialization = new RandomInitialization(problem, populationSize);
+		Variation variation = OperatorFactory.getInstance().getVariation(null, properties, problem);
 		
-		Variation variation = OperatorFactory.getInstance().getVariation(null, 
-				properties, problem);
-		
-		return new DBEA(problem, initialization,
-				variation, divisions.getDivisionsOuter(), divisions.getDivisionsInner());
+		return new DBEA(problem, initialization, variation, divisions);
 	}
 	
 	/**
@@ -701,14 +685,13 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 			throw new FrameworkException("RVEA requires at least two objectives");
 		}
 		
-		ReferencePointDivisions divisions = ReferencePointDivisions.fromProperties(properties, problem);
+		NormalBoundaryDivisions divisions = NormalBoundaryDivisions.fromProperties(properties, problem);
 		int populationSize = divisions.getNumberOfReferencePoints(problem);
 		
-		Initialization initialization = new RandomInitialization(problem,
-				populationSize);
+		Initialization initialization = new RandomInitialization(problem, populationSize);
 		
 		ReferenceVectorGuidedPopulation population = new ReferenceVectorGuidedPopulation(
-				problem.getNumberOfObjectives(), divisions.getDivisionsOuter(), divisions.getDivisionsInner(),
+				problem.getNumberOfObjectives(), divisions,
 				properties.getDouble("alpha", 2.0));
 
 		if (!properties.contains("sbx.swap")) {

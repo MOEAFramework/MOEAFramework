@@ -1,4 +1,4 @@
-package org.moeaframework.algorithm;
+package org.moeaframework.util.weights;
 
 import org.apache.commons.math3.util.CombinatoricsUtils;
 import org.moeaframework.core.FrameworkException;
@@ -8,20 +8,20 @@ import org.moeaframework.util.TypedProperties;
 /**
  * Stores the number of reference point divisions and calculations based on those values.
  */
-public class ReferencePointDivisions {
+public class NormalBoundaryDivisions {
 
-	private final int divisionsOuter;
+	private final int outerDivisions;
 	
-	private final int divisionsInner;
+	private final int innerDivisions;
 	
-	private ReferencePointDivisions(int divisions) {
+	public NormalBoundaryDivisions(int divisions) {
 		this(divisions, 0);
 	}
 	
-	private ReferencePointDivisions(int divisionsOuter, int divisionsInner) {
+	public NormalBoundaryDivisions(int outerDivisions, int innerDivisions) {
 		super();
-		this.divisionsOuter = divisionsOuter;
-		this.divisionsInner = divisionsInner;
+		this.outerDivisions = outerDivisions;
+		this.innerDivisions = innerDivisions;
 	}
 	
 	/**
@@ -29,8 +29,8 @@ public class ReferencePointDivisions {
 	 * 
 	 * @return the number of outer divisions
 	 */
-	public int getDivisionsOuter() {
-		return divisionsOuter;
+	public int getOuterDivisions() {
+		return outerDivisions;
 	}
 	
 	/**
@@ -39,8 +39,8 @@ public class ReferencePointDivisions {
 	 * 
 	 * @return the number of inner divisions
 	 */
-	public int getDivisionsInner() {
-		return divisionsInner;
+	public int getInnerDivisions() {
+		return innerDivisions;
 	}
 	
 	/**
@@ -51,8 +51,29 @@ public class ReferencePointDivisions {
 	 * @return the number of reference points
 	 */
 	public int getNumberOfReferencePoints(Problem problem) {
-		return (int)(CombinatoricsUtils.binomialCoefficient(problem.getNumberOfObjectives() + divisionsOuter - 1, divisionsOuter) +
-				(divisionsInner == 0 ? 0 : CombinatoricsUtils.binomialCoefficient(problem.getNumberOfObjectives() + divisionsInner - 1, divisionsInner)));
+		return getNumberOfReferencePoints(problem.getNumberOfObjectives());
+	}
+	
+	/**
+	 * Determines the number of reference points that would be produced using the given
+	 * number of objectives and divisions.
+	 * 
+	 * @param numberOfObjectives the number of objectives
+	 * @return the number of reference points
+	 */
+	public int getNumberOfReferencePoints(int numberOfObjectives) {
+		return (int)(CombinatoricsUtils.binomialCoefficient(numberOfObjectives + outerDivisions - 1, outerDivisions) +
+				(innerDivisions == 0 ? 0 : CombinatoricsUtils.binomialCoefficient(numberOfObjectives + innerDivisions - 1, innerDivisions)));
+	}
+	
+	/**
+	 * Returns {@code true} if this represents the two-layer approach where inner and outer
+	 * divisions are specified.
+	 * 
+	 * @return {@code true} if the two-layer approach is used; {@code false} otherwise
+	 */
+	public boolean isTwoLayer() {
+		return innerDivisions > 0;
 	}
 	
 	/**
@@ -62,9 +83,9 @@ public class ReferencePointDivisions {
 	 * @param problem the problem
 	 * @return the reference point divisions
 	 */
-	public static ReferencePointDivisions fromProperties(TypedProperties properties, Problem problem) {
+	public static NormalBoundaryDivisions fromProperties(TypedProperties properties, Problem problem) {
 		if (properties.contains("divisionsOuter") && properties.contains("divisionsInner")) {
-			return new ReferencePointDivisions(
+			return new NormalBoundaryDivisions(
 					(int)properties.getDouble("divisionsOuter", 4),
 					(int)properties.getDouble("divisionsInner", 0));
 		} 
@@ -74,7 +95,7 @@ public class ReferencePointDivisions {
 		}
 		
 		if (properties.contains("divisions")) {
-			return new ReferencePointDivisions((int)properties.getDouble("divisions", 4));
+			return new NormalBoundaryDivisions((int)properties.getDouble("divisions", 4));
 		}
 		
 		int divisionsOuter;
@@ -115,7 +136,7 @@ public class ReferencePointDivisions {
 			divisionsInner = 1;
 		}
 		
-		return new ReferencePointDivisions(divisionsOuter, divisionsInner);
+		return new NormalBoundaryDivisions(divisionsOuter, divisionsInner);
 	}
 
 }
