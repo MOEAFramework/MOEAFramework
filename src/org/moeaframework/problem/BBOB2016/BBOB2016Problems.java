@@ -41,20 +41,26 @@ import org.moeaframework.core.spi.ProblemProvider;
  * suite consists of bi-objective problems constructed from two single-objective
  * functions.  Each single-objective function name follows the pattern:
  * <pre>
- *     bbob_f001_d02_i05
+ *     bbob_f001_i02_d05
  * </pre>
- * In this case, we are requesting the fifth instance of the first BBOB
- * function with 2 decision variables.  The location of the optimum differs in
+ * In this case, we are requesting the second instance of the first BBOB
+ * function with five decision variables.  The location of the optimum differs in
  * each instance.  To create the name of a BBOB 2016 problem supported by this
- * problem provider, separate two function names with two underscores, such
+ * problem provider, separate two function names a comma, such
  * as:
  * <pre>
- *     bbob_f001_d02_i05__bbob_f021_d02_i07
+ *     bbob_f001_i02_d05,bbob_f021_i02_d07
  * </pre>
  * The dimension or number of decision variables must be identical in both
  * functions.
  */
 public class BBOB2016Problems extends ProblemProvider {
+	
+	private static final Pattern singleProblemPattern = Pattern.compile(
+			"^bbob_f([0-9]+)_i([0-9]+)_d([0-9]+)$");
+	
+	private static final Pattern pattern = Pattern.compile(
+			"^bbob_f([0-9]+)_i([0-9]+)_d([0-9]+)(\\,bbob_f([0-9]+)_i([0-9]+)_d([0-9]+))*$");
 	
 	/**
 	 * Constructs the problem provider for BBOB 2016 test suite.
@@ -65,20 +71,26 @@ public class BBOB2016Problems extends ProblemProvider {
 
 	@Override
 	public Problem getProblem(String name) {
-		Pattern pattern = Pattern.compile(
-				"^bbob_f([0-9]+)_i([0-9]+)_d([0-9]+)__bbob_f([0-9]+)_i([0-9]+)_d([0-9]+)$");
 		Matcher matcher = pattern.matcher(name);
 
 		if (matcher.matches()) {
-			return new StackedProblem(
-					createInstance(
-							Integer.parseInt(matcher.group(1)),
-							Integer.parseInt(matcher.group(3)),
-							Integer.parseInt(matcher.group(2))),
-							createInstance(
-									Integer.parseInt(matcher.group(4)),
-									Integer.parseInt(matcher.group(6)),
-									Integer.parseInt(matcher.group(5))));
+			String[] parts = name.split(",");
+			BBOBFunction[] functions = new BBOBFunction[parts.length];
+			
+			for (int i = 0; i < parts.length; i++) {
+				Matcher singleMatcher = singleProblemPattern.matcher(parts[i]);
+				
+				if (singleMatcher.matches()) {
+					functions[i] = createInstance(
+							Integer.parseInt(singleMatcher.group(1)),
+							Integer.parseInt(singleMatcher.group(3)),
+							Integer.parseInt(singleMatcher.group(2)));
+				} else {
+					throw new FrameworkException("unable to parse BBOB function " + parts[i]);
+				}
+			}
+			
+			return new StackedProblem(functions);
 		} else {
 			return null;
 		}

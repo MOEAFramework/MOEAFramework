@@ -31,6 +31,8 @@ import org.moeaframework.Executor;
 import org.moeaframework.TestUtils;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PRNG;
+import org.moeaframework.core.Problem;
+import org.moeaframework.core.spi.ProblemFactory;
 
 /**
  * To run these tests, you'll first need to compile CocoJNI.dll.  Copy the
@@ -65,7 +67,28 @@ import org.moeaframework.core.PRNG;
 public class BBOB2016Test {
 	
 	@Test
-	public void test() throws IOException {
+	public void test() {
+		int[] functions = new int[] { 1, 2, 6, 8, 13, 14, 15, 17, 20, 21 };
+		int[] dimensions = new int[] { 2, 3, 5, 10, 20, 40 };
+		int[] instances = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
+
+		for (int i = 0; i < functions.length; i++) {
+		    for (int j = i; j < functions.length; j++) {
+		        for (int instance : instances) {
+		            for (int dimension : dimensions) {
+		            	Problem problem = ProblemFactory.getInstance().getProblem(String.format(
+		            			"bbob_f%d_i%d_d%d,bbob_f%d_i%d_d%d",
+		            			functions[i], instance, dimension, functions[j], instance, dimension));
+		            	
+		            	Assert.assertNotNull(problem);
+		            }
+		        }
+		    }
+		}
+	}
+	
+	@Test
+	public void testCoco() throws IOException {
 		// skip test if the Coco DLL does not exist
 		TestUtils.assumeFileExists(new File("CocoJNI.dll"));
 		
