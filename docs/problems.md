@@ -103,8 +103,8 @@ The MOEA Framework uses a special name format for these problems.  Each single-o
 replaced by a specific value for each.  For example, `bbob_f1_i2_d5` represents the first BBOB function (the Sphere function), instance `2`, with 
 five decision variables.
 
-Next, two of these single-objective functions are combined to get the bi-objective problem name, separated the names by two underscores ( `"__"`).
-For example, `bbob_f1_i2_d5__bbob_f21_i2_d5` would produce the $(f_1, f_{21})$ bi-objective problem with five decision variables
+Next, two of these single-objective functions are combined to get the bi-objective problem name, separating the names by a comma.
+For example, `bbob_f1_i2_d5,bbob_f21_i2_d5` would produce the $(f_1, f_{21})$ bi-objective problem with five decision variables
 
 To recreate the bbob-biobj test suite from the BBOB workshop, we can enumerate the set of problems using:
 
@@ -119,7 +119,7 @@ for (int i = 0; i < functions.length; i++) {
     for (int j = i; j < functions.length; j++) {
         for (int instance : instances) {
             for (int dimension : dimensions) {
-            	bbob_biobj_names.add(String.format("bbob_f%d_i%d_d%d__bbob_f%d_i%d_d%d",
+            	bbob_biobj_names.add(String.format("bbob_f%d_i%d_d%d,bbob_f%d_i%d_d%d",
             			functions[i], instance, dimension, functions[j], instance, dimension));
             }
         }
