@@ -36,7 +36,7 @@ public interface WeightGenerator {
 	/**
 	 * Returns the generated weights.
 	 * 
-	 * @return the genreated weights
+	 * @return the generated weights
 	 */
 	public List<double[]> generate();
 

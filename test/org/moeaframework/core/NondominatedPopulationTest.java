@@ -88,22 +88,22 @@ public class NondominatedPopulationTest {
 		NondominatedPopulation population = new NondominatedPopulation(
 				DuplicateMode.NO_DUPLICATE_OBJECTIVES);
 		
-		MockBinaryProblem problem = new MockBinaryProblem();
-		
-		Solution solution1 = problem.newSolution();
-		EncodingUtils.setBitSet(solution1.getVariable(0), new BitSet(10));
-		solution1.setObjectives(new double[] { 0.5 });
-		
-		Solution solution2 = solution1.copy();
-		
-		Solution solution3 = solution1.copy();
-		BitSet bits = new BitSet(10);
-		bits.set(3);
-		EncodingUtils.setBitSet(solution3.getVariable(0), bits);
-		
-		Assert.assertTrue(population.add(solution1));
-		Assert.assertFalse(population.add(solution2));
-		Assert.assertFalse(population.add(solution3));
+		try (MockBinaryProblem problem = new MockBinaryProblem()) {
+			Solution solution1 = problem.newSolution();
+			EncodingUtils.setBitSet(solution1.getVariable(0), new BitSet(10));
+			solution1.setObjectives(new double[] { 0.5 });
+			
+			Solution solution2 = solution1.copy();
+			
+			Solution solution3 = solution1.copy();
+			BitSet bits = new BitSet(10);
+			bits.set(3);
+			EncodingUtils.setBitSet(solution3.getVariable(0), bits);
+			
+			Assert.assertTrue(population.add(solution1));
+			Assert.assertFalse(population.add(solution2));
+			Assert.assertFalse(population.add(solution3));
+		}
 	}
 	
 	@Test
@@ -111,22 +111,22 @@ public class NondominatedPopulationTest {
 		NondominatedPopulation population = new NondominatedPopulation(
 				DuplicateMode.ALLOW_DUPLICATES);
 		
-		MockBinaryProblem problem = new MockBinaryProblem();
-		
-		Solution solution1 = problem.newSolution();
-		EncodingUtils.setBitSet(solution1.getVariable(0), new BitSet(10));
-		solution1.setObjectives(new double[] { 0.5 });
-		
-		Solution solution2 = solution1.copy();
-		
-		Solution solution3 = solution1.copy();
-		BitSet bits = new BitSet(10);
-		bits.set(3);
-		EncodingUtils.setBitSet(solution3.getVariable(0), bits);
-		
-		Assert.assertTrue(population.add(solution1));
-		Assert.assertTrue(population.add(solution2));
-		Assert.assertTrue(population.add(solution3));
+		try (MockBinaryProblem problem = new MockBinaryProblem()) {
+			Solution solution1 = problem.newSolution();
+			EncodingUtils.setBitSet(solution1.getVariable(0), new BitSet(10));
+			solution1.setObjectives(new double[] { 0.5 });
+			
+			Solution solution2 = solution1.copy();
+			
+			Solution solution3 = solution1.copy();
+			BitSet bits = new BitSet(10);
+			bits.set(3);
+			EncodingUtils.setBitSet(solution3.getVariable(0), bits);
+			
+			Assert.assertTrue(population.add(solution1));
+			Assert.assertTrue(population.add(solution2));
+			Assert.assertTrue(population.add(solution3));
+		}
 	}
 	
 	@Test
@@ -134,22 +134,22 @@ public class NondominatedPopulationTest {
 		NondominatedPopulation population = new NondominatedPopulation(
 				DuplicateMode.ALLOW_DUPLICATE_OBJECTIVES);
 		
-		MockBinaryProblem problem = new MockBinaryProblem();
-		
-		Solution solution1 = problem.newSolution();
-		EncodingUtils.setBitSet(solution1.getVariable(0), new BitSet(10));
-		solution1.setObjectives(new double[] { 0.5 });
-		
-		Solution solution2 = solution1.copy();
-		
-		Solution solution3 = solution1.copy();
-		BitSet bits = new BitSet(10);
-		bits.set(3);
-		EncodingUtils.setBitSet(solution3.getVariable(0), bits);
-		
-		Assert.assertTrue(population.add(solution1));
-		Assert.assertFalse(population.add(solution2));
-		Assert.assertTrue(population.add(solution3));
+		try (MockBinaryProblem problem = new MockBinaryProblem()) {
+			Solution solution1 = problem.newSolution();
+			EncodingUtils.setBitSet(solution1.getVariable(0), new BitSet(10));
+			solution1.setObjectives(new double[] { 0.5 });
+			
+			Solution solution2 = solution1.copy();
+			
+			Solution solution3 = solution1.copy();
+			BitSet bits = new BitSet(10);
+			bits.set(3);
+			EncodingUtils.setBitSet(solution3.getVariable(0), bits);
+			
+			Assert.assertTrue(population.add(solution1));
+			Assert.assertFalse(population.add(solution2));
+			Assert.assertTrue(population.add(solution3));
+		}
 	}
 
 }
