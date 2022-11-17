@@ -94,15 +94,37 @@ Problem | # of Vars | # of Objs | # of Constrs | Type
 
 ### BBOB-2016
 
-Contains 55 bi-objective problems from the BBOB worksop hosted at GECCO 2016 [^finck15].
+Contains the 55 bi-objective problems as part of the "bbob-biobj" test suite from the BBOB worksop hosted at GECCO 2016 [^finck15].
+These bi-objective problems are formed by combining two single-objective functions.  Additionally, each problem is further customizable
+by the dimension (number of decision variables) and instance number (which varies the location of the optimum point).
 
-These problems use a special naming convention.  The name is created by concatenating two single-objective functions of the form
-`bbob_f<index>_d<index>_i<index>`.  `f<index>` selects the test function, `d<index>` selects the dimension (number of decision variables), and
-`i<index>` selects the instance.  For example, `bbob_f001_d02_i05` uses the first function with two variables.  The instance changes the
-location of the optimum point.
+The MOEA Framework uses a special name format for these problems.  Each single-objective function has a unique name in the form
+`bbob_f<N>_d<N>_i<N>` where `f`, `d`, and `i` represent the test function number, dimension, and instance, respectively.  The `<N>` is
+replaced by a specific value for each.
 
-Then, to create the bi-objective problem, combine two of these function definitions separated by `__`, such as `bbob_f001_d02_i05__bbob_f021_d02_i07`.
-Refer to the cited paper for details on the available functions.
+Two of these single-objective functions are combined to get the bi-objective problem name, separated by two underscores ( `"__"`).
+For example, `bbob_f1_d2_i5__bbob_f21_d2_i5` would produce the $(f_1, f_21)$ bi-objective problem with two decision variables using instance 5.
+
+We can then enumerate all test instances included in the bbob-biobj test suite by looping over all possible combinations:
+
+```java
+
+int[] functions = new int[] { 1, 2, 6, 8, 13, 14, 15, 17, 20, 21 };
+int[] dimensions = new int[] { 2, 3, 5, 10, 20, 40 };
+int[] instances = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
+List<String> bbob_biobj_names = new ArrayList<String>();
+
+for (int i = 0; i < functions.length; i++) {
+    for (int j = i; j < functions.length; j++) {
+        for (int dimension : dimensions) {
+            for (int instance : instances) {
+            	bbob_biobj_names.add(String.format("bbob_f%d_d%d_i%d__bbob_f%d_d%d_i%d",
+            			functions[i], dimension, instance, functions[j], dimension, instance));
+            }
+        }
+    }
+}
+```
 
 ## Individual Problems
 
