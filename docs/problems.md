@@ -104,15 +104,16 @@ replaced by a specific value for each.  For example, `bbob_f1_i2_d5` represents 
 five decision variables.
 
 Next, two of these single-objective functions are combined to get the bi-objective problem name, separating the names by a comma.
-For example, `bbob_f1_i2_d5,bbob_f21_i2_d5` would produce the $(f_1, f_{21})$ bi-objective problem with five decision variables
+For example, `bbob_f1_i2_d5,bbob_f21_i2_d5` would produce the $(f_1, f_{21})$ bi-objective problem with five decision variables.
 
 To recreate the bbob-biobj test suite from the BBOB workshop, we can enumerate the set of problems using:
 
 ```java
 
 int[] functions = new int[] { 1, 2, 6, 8, 13, 14, 15, 17, 20, 21 };
-int[] dimensions = new int[] { 2, 3, 5, 10, 20, 40 };
 int[] instances = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
+int[] dimensions = new int[] { 2, 3, 5, 10, 20, 40 };
+
 List<String> bbob_biobj_names = new ArrayList<String>();
 
 for (int i = 0; i < functions.length; i++) {
