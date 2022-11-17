@@ -7,6 +7,13 @@ import java.util.ServiceLoader;
 
 import org.moeaframework.util.Concaterator;
 
+/**
+ * Abstract factory for service providers.  This contains convenience methods
+ * for enumerating the providers using a {@link ServiceLoader} along with
+ * explicit providers registered with {@link #addProvider}.
+ *
+ * @param <T> the generic type of the provider
+ */
 public class AbstractFactory<T> implements Iterable<T> {
 	
 	/**
@@ -21,6 +28,9 @@ public class AbstractFactory<T> implements Iterable<T> {
 	
 	/**
 	 * Constructs a new factory for the given type.
+	 * 
+	 * @param <T> the generic type of the provider
+	 * @param type the class of the provider
 	 */
 	public AbstractFactory(Class<T> type) {
 		super();

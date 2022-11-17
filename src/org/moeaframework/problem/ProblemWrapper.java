@@ -15,6 +15,12 @@ public abstract class ProblemWrapper implements Problem {
 	 */
 	protected final Problem problem;
 	
+	/**
+	 * Constructs a new problem wrapper to modify or extend the functionality of the
+	 * given problem.
+	 * 
+	 * @param problem the problem being modified or extended
+	 */
 	protected ProblemWrapper(Problem problem) {
 		super();
 		this.problem = problem;

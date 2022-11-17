@@ -24,6 +24,12 @@ public class BasicIslandExecutor implements IslandExecutor {
 	
 	private final List<Island> islands;
 	
+	/**
+	 * Constructs an island model executor using an {@code ExecutorService}.
+	 * 
+	 * @param model the island model
+	 * @param executorService the executor service that drives each island
+	 */
 	public BasicIslandExecutor(IslandModel model, ExecutorService executorService) {
 		super();
 		this.model = model;

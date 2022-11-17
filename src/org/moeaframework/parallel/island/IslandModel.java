@@ -19,6 +19,13 @@ public class IslandModel {
 	
 	private final List<Island> islands;
 	
+	/**
+	 * Constructs a new island model.
+	 * 
+	 * @param migrationFrequency the migration frequency, in function evaluations
+	 * @param migration the migration strategy
+	 * @param topology the island topology
+	 */
 	public IslandModel(int migrationFrequency, Migration migration, Topology topology) {
 		super();
 		this.migrationFrequency = migrationFrequency;

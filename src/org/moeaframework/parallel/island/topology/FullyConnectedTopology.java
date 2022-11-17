@@ -9,6 +9,13 @@ import org.moeaframework.parallel.island.Island;
  * to every other island.
  */
 public class FullyConnectedTopology implements Topology {
+	
+	/**
+	 * Constructs a fully-connected topology instance.
+	 */
+	public FullyConnectedTopology() {
+		super();
+	}
 
 	@Override
 	public List<Island> getNeighbors(Island current, List<Island> allIslands) {

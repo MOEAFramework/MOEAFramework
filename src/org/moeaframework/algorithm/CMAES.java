@@ -786,7 +786,7 @@ public class CMAES extends AbstractAlgorithm {
 	 * Reinsch, and Wilkinson, Handbook for Auto. Comp., Vol.ii-Linear Algebra,
 	 * and the corresponding Fortran subroutine in EISPACK.
 	 */
-	public static void tred2(int n, double[][] V, double[] d, double[] e) {
+	private static void tred2(int n, double[][] V, double[] d, double[] e) {
 		for (int j = 0; j < n; j++) {
 			d[j] = V[n-1][j];
 		}
@@ -896,7 +896,7 @@ public class CMAES extends AbstractAlgorithm {
 	 * Reinsch, and Wilkinson, Handbook for Auto. Comp., Vol.ii-Linear Algebra,
 	 * and the corresponding Fortran subroutine in EISPACK.
 	 */
-	public static void tql2(int n, double[] d, double[] e, double[][] V) {
+	private static void tql2(int n, double[] d, double[] e, double[][] V) {
 		for (int i = 1; i < n; i++) {
 			e[i-1] = e[i];
 		}

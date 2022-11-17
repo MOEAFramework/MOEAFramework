@@ -26,7 +26,7 @@ public interface Migration {
 	 * neighbors.
 	 * 
 	 * @param current the current island
-	 * @param target the neighboring islands
+	 * @param neighbors the neighboring islands
 	 */
 	public void migrate(Island current, List<Island> neighbors);
 

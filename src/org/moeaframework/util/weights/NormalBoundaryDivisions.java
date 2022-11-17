@@ -14,10 +14,21 @@ public class NormalBoundaryDivisions {
 	
 	private final int innerDivisions;
 	
+	/**
+	 * Use a single layer approach with a single division argument.
+	 * 
+	 * @param divisions the number of divisions
+	 */
 	public NormalBoundaryDivisions(int divisions) {
 		this(divisions, 0);
 	}
 	
+	/**
+	 * Use the two-layer approach with inner and outer divisions.
+	 * 
+	 * @param outerDivisions the number of outer divisions
+	 * @param innerDivisions the number of inner divisions
+	 */
 	public NormalBoundaryDivisions(int outerDivisions, int innerDivisions) {
 		super();
 		this.outerDivisions = outerDivisions;

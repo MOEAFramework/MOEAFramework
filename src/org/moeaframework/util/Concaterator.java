@@ -12,6 +12,11 @@ public class Concaterator<T> implements Iterator<T> {
 	
 	private int index;
 	
+	/**
+	 * Constructs an iterator of the given iterators.
+	 * 
+	 * @param iterators the individual iterators
+	 */
 	@SafeVarargs
 	public Concaterator(Iterator<T>... iterators) {
 		super();
