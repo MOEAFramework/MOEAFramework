@@ -26,7 +26,7 @@ import org.moeaframework.core.Solution;
 /**
  * @preview
  */
-public class SingleLinkageClustering {
+class SingleLinkageClustering {
 	
 	private final NondominatedPopulation population;
 	

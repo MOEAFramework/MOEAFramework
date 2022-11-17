@@ -10,6 +10,13 @@ import org.moeaframework.parallel.island.Island;
  */
 public class RingTopology implements Topology {
 
+	/**
+	 * Constructs a ring topology instance.
+	 */
+	public RingTopology() {
+		super();
+	}
+	
 	@Override
 	public List<Island> getNeighbors(Island current, List<Island> allIslands) {
 		List<Island> result = new ArrayList<Island>();

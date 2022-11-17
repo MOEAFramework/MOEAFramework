@@ -254,6 +254,7 @@ public class Evaluator extends CommandLineUtility {
 	 * 
 	 * @param algorithmName the algorithm name
 	 * @param properties the parameters stored in a properties object
+	 * @param problem the problem being evaluated
 	 * @throws IOException if an I/O error occurred
 	 */
 	protected void process(String algorithmName, TypedProperties properties, Problem problem)
