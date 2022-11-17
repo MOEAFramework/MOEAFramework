@@ -94,18 +94,19 @@ Problem | # of Vars | # of Objs | # of Constrs | Type
 
 ### BBOB-2016
 
-Contains the 55 bi-objective problems as part of the "bbob-biobj" test suite from the BBOB worksop hosted at GECCO 2016 [^finck15].
+Contains the 55 bi-objective problems as part of the "bbob-biobj" test suite from the BBOB workshop hosted at GECCO 2016 [^finck15].
 These bi-objective problems are formed by combining two single-objective functions.  Additionally, each problem is further customizable
 by the dimension (number of decision variables) and instance number (which varies the location of the optimum point).
 
 The MOEA Framework uses a special name format for these problems.  Each single-objective function has a unique name in the form
 `bbob_f<N>_d<N>_i<N>` where `f`, `d`, and `i` represent the test function number, dimension, and instance, respectively.  The `<N>` is
-replaced by a specific value for each.
+replaced by a specific value for each.  For example, `bbob_f1_d2_i5` represents the first BBOB function (the Sphere function) with two
+variables and instance `5`.
 
-Two of these single-objective functions are combined to get the bi-objective problem name, separated by two underscores ( `"__"`).
-For example, `bbob_f1_d2_i5__bbob_f21_d2_i5` would produce the $(f_1, f_{21})$ bi-objective problem with two decision variables using instance 5.
+Next, two of these single-objective functions are combined to get the bi-objective problem name, separated the names by two underscores ( `"__"`).
+For example, `bbob_f1_d2_i5__bbob_f21_d2_i5` would produce the $(f_1, f_{21})$ bi-objective problem with two decision variables.
 
-We can then enumerate all test instances included in the bbob-biobj test suite by looping over all possible combinations:
+To recreate the bbob-biobj test suite from the BBOB workshop, we can enumerate the set of problems using:
 
 ```java
 
