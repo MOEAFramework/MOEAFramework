@@ -103,7 +103,7 @@ The MOEA Framework uses a special name format for these problems.  Each single-o
 replaced by a specific value for each.
 
 Two of these single-objective functions are combined to get the bi-objective problem name, separated by two underscores ( `"__"`).
-For example, `bbob_f1_d2_i5__bbob_f21_d2_i5` would produce the $(f_1, f_21)$ bi-objective problem with two decision variables using instance 5.
+For example, `bbob_f1_d2_i5__bbob_f21_d2_i5` would produce the $(f_1, f_{21})$ bi-objective problem with two decision variables using instance 5.
 
 We can then enumerate all test instances included in the bbob-biobj test suite by looping over all possible combinations:
 
