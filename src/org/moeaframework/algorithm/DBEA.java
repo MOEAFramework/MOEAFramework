@@ -21,6 +21,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+
+import org.apache.commons.math3.linear.Array2DRowRealMatrix;
+import org.apache.commons.math3.linear.LUDecomposition;
+import org.apache.commons.math3.linear.MatrixUtils;
+import org.apache.commons.math3.linear.RealMatrix;
 import org.moeaframework.core.Initialization;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PRNG;
@@ -29,13 +34,8 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.comparator.ObjectiveComparator;
-import org.moeaframework.util.Vector;
 import org.moeaframework.util.weights.NormalBoundaryDivisions;
 import org.moeaframework.util.weights.NormalBoundaryIntersectionGenerator;
-import org.apache.commons.math3.linear.Array2DRowRealMatrix;
-import org.apache.commons.math3.linear.LUDecomposition;
-import org.apache.commons.math3.linear.MatrixUtils;
-import org.apache.commons.math3.linear.RealMatrix;
 
 /* The original Matlab version of I-DBEA was written by Md. Asafuddoula,
  * Tapabrata Ray and Ruhul Sarker.  This class has been tested against their
@@ -635,13 +635,13 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 	 * @return the distance
 	 */
 	private double distanceD1(double[] f, double[] w) {
-		double dn = Vector.magnitude(w);
+		double dn = normVector(w);
 		
 		for (int j = 0; j < problem.getNumberOfObjectives(); j++) {
 			w[j] = w[j] / dn;
 		}
 		
-		return Vector.dot(f, w);
+		return innerproduct(f, w);
 	}
 
 	/**
@@ -652,7 +652,40 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 	 * @return the perpendicular distance
 	 */
 	private double distanceD2(double[] f, double d1) {
-		return Math.sqrt(Math.pow(Vector.magnitude(f), 2) - Math.pow(d1, 2));
+		return Math.sqrt(Math.pow(normVector(f), 2) - Math.pow(d1, 2));
+	}
+	
+	/**
+	 * Computes the norm of a vector.
+	 * 
+	 * @param z the vector
+	 * @return the norm value
+	 */
+	private double normVector(double[] z) {
+		double sum = 0;
+
+		for (int i = 0; i < problem.getNumberOfObjectives(); i++) {
+			sum += z[i] * z[i];
+		}
+
+		return Math.sqrt(sum);
+	}
+
+	/**
+	 * Computes the inner product of two vectors.
+	 * 
+	 * @param vec1 the first vector
+	 * @param vec2 the second vector
+	 * @return the inner product value
+	 */
+	private double innerproduct(double[] vec1, double[] vec2) {
+		double sum = 0;
+
+		for (int i = 0; i < vec1.length; i++) {
+			sum += vec1[i] * vec2[i];
+		}
+
+		return sum;
 	}
 
 	/**
