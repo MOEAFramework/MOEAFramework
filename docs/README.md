@@ -3,8 +3,7 @@
 ## General
 
 * [Release Notes](news.md)
-* [Beginner's Guide](http://moeaframework.org/documentation.html)
-* [Credits](credits.md)
+* [Online Documentation](http://moeaframework.org/documentation.html)
 
 ## Working with the MOEA Framework
 * [List of Decision Variables](variables.md)
@@ -18,7 +17,7 @@
 * [Developers Guide](developers.md)
 * [How to Contribute](contributing.md)
 
-## Debugging
+## Appendix
 
 * [Known Error and Warning Messages](errors.md)
-
+* [Credits](credits.md)
