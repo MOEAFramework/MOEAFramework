@@ -9,8 +9,8 @@ This page documents notable changes introduced in each chronological release of 
   
   * Updates Javadoc formatting to fix linter warnings.
   
-  * Removes all use of `java.util.Properties` and replaces with `TypedProperties`,
-    makes properties case-insensitive, and now warns if any properties are unused.
+  * Removes all use of `java.util.Properties` and replaces with `TypedProperties`.  Also modifies
+    `TypedProperties` be case-insensitive and warn if any properties are unused.
     
   * Adds two preview features:
   
