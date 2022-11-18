@@ -3,6 +3,7 @@ org.moeaframework.problem.ZDT.ZDTProblemProvider
 org.moeaframework.problem.LZ.LZProblemProvider
 org.moeaframework.problem.WFG.WFGProblemProvider
 org.moeaframework.problem.CEC2009.CEC2009ProblemProvider
+org.moeaframework.problem.CDTLZ.CDTLZProblemProvider
 org.moeaframework.problem.BBOB2016.BBOB2016Problems
 org.moeaframework.problem.misc.MiscProblemProvider
 org.moeaframework.problem.PropertiesProblems
