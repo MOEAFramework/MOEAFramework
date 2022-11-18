@@ -1,8 +1,8 @@
-# Contributing to the MOEA Framework
+# How to Contribute
 
 ## Setting up a Development Environment
 
-We recommend using [Eclipse](http://eclipse.org/) when working with the MOEA Framework as all dependencies come prepackaged in Eclipse.  If you choose to use a
+We recommend using [Eclipse](http://eclipse.org/) when working with the MOEA Framework as all dependencies are included in Eclipse.  If you choose to use a
 different IDE, you might need to install the following dependencies separately:
 
 > **Java 8**, or any newer version, is required to use the MOEA Framework. Today, due to licensing concerns with Oracle, a number of third-party Java 
