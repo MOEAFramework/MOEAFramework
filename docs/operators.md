@@ -210,7 +210,7 @@ Exchanges a randomly-selected subtree from one program with a compatible, random
 
 Parameter            | Default Value     | Description
 :------------------- | :---------------- | :----------
-`gm.rate`            | `1.0`             | The probability that the BX operator is applied to a program tree decision variable
+`bx.rate`            | `1.0`             | The probability that the BX operator is applied to a program tree decision variable
 
 ### Point Mutation (PTM)
 
@@ -218,7 +218,7 @@ Mutates a program by randomly selecting nodes in the expression tree and replaci
 
 Parameter            | Default Value     | Description
 :------------------- | :---------------- | :----------
-`gm.rate`            | `1.0`             | The probability that the PTM operator is applied to a program tree decision variable
+`ptm.rate`            | `1.0`             | The probability that the PTM operator is applied to a program tree decision variable
 
 ## Crossover Operators
 
