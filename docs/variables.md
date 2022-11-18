@@ -1,6 +1,6 @@
 # List of Decision Variable
 
-A `Solution` consists of one or more decision variables.  All decision varibles derive from the `Variable` interface.  There are a number of built-in
+A `Solution` consists of one or more decision variables.  All decision variables derive from the `Variable` interface.  There are a number of built-in
 decision variable types along with [mutation and crossover operators](operators.md) for evolving those types.
 
 For convenience, we also provide an `EncodingUtils` class that handles creating, reading, and writing values to decision variables.  It makes converting
