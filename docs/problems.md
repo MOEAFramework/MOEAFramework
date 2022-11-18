@@ -92,6 +92,20 @@ Problem | # of Vars | # of Objs | # of Constrs | Type
 `WFG8_N` | `9+N` | N | 0 | Real
 `WFG9_N` | `9+N` | N | 0 | Real
 
+### CDTLZ
+
+A constrained version of the DTLZ problem suite [^deb14] [^jain14].  These problems are scalable in the number of objectives.  Control this by replacing
+`N` in the name.
+
+Problem | # of Vars | # of Objs | # of Constrs | Type 
+:------ | :-------: | :-------: | :----------: | :---
+`C1_DTLZ1_N` | `4+N` | N | 1 | Real
+`C1_DTLZ3_N` | `9+N` | N | 1 | Real
+`C2_DTLZ2_N` | `9+N` | N | 1 | Real
+`C3_DTLZ1_N` | `4+N` | N | N | Real
+`C3_DTLZ4_N` | `9+N` | N | N | Real
+`Convex_C2_DTLZ2_N` | `9+N` | N | 1 | Real
+
 ### BBOB-2016
 
 Contains the 55 bi-objective problems as part of the "bbob-biobj" test suite from the BBOB workshop hosted at GECCO 2016 [^finck15].
@@ -196,6 +210,8 @@ programs.  Refer to `ScriptedProblem` and `ExternalProblem` for details.
 
 [^deb01]: Deb et al.  "Scalable Test Problems for Evolutionary Multi-Objective Optimization."  TIK-Technical Report No 112, 2001.
 [^deb02]: Deb et al. "Scalable Multi-Objective Optimization Test Problems." Congress on Evolutionary Computation. pp 825-830, 2002.
+[^deb14]: Deb, K. and H. Jain.  "An Evolutionary Many-Objective Optimization Algorithm Using Reference-Point-Based Nondominated Sorting Approach, Part I: Solving Problems With Box Constraints."  IEEE Transactions on Evolutionary Computation, 18(4):577-601, 2014.
+[^jain14]: Jain, H. and K. Deb.  "An Evolutionary Many-Objective Optimization Algorithm Using Reference-Point-Based Nondominated Sorting Approach, Part II: Handling Constraints and Extending to an Adaptive Approach." IEEE Transactions on Evolutionary Computation, 18(4):602-622, 2014.
 [^finck15]: Finck, S., N. Hansen, R. Ros, and A. Auger.  "Real-Parameter Black-Box Optimization Benchmarking 2010: Presentation of the Noiseless Functions."  Working Paper 2009/20, compiled November 17, 2015.
 [^huband07]: Huband et al. "A Review of Multi-Objective Test Problems and a Scalable Test Problem Toolkit." IEEE Transactions on Evolutionary Computation. 10(5):477-506, 2007.
 [^huband05]: Huband et al. "A Scalable Multi-Objective Test Problem Toolkit." 3rd International Conference on Evolutionary Multi-Criterion Optimization. pp 280-294, 2005.
