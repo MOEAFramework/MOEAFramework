@@ -3,7 +3,7 @@
 This page documents notable changes introduced in each chronological release of the MOEA Framework.
 
 
-## Version 3.1 (TBD)
+## Version 3.1 (19 Nov 2022)
 
   * Removes all deprecated methods from `2.x` release.
   
