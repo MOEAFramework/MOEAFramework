@@ -47,14 +47,14 @@ Typically this is evaluating the quality of a Pareto set, using hypervolume, gen
 ```java
 
 Executor executor = new Executor()
-		    .withProblem("UF1")
-		    .withAlgorithm("NSGAII")
-				.withMaxEvaluations(10000);
+        .withProblem("UF1")
+        .withAlgorithm("NSGAII")
+        .withMaxEvaluations(10000);
 
 Analyzer analyzer = new Analyzer()
-				.withSameProblemAs(executor)
-				.includeHypervolume()
-				.includeGenerationalDistance();
+        .withSameProblemAs(executor)
+        .includeHypervolume()
+        .includeGenerationalDistance();
 		
 analyzer.addAll("NSGAII", executor.runSeeds(50));
 analyzer.printAnalysis();
@@ -84,13 +84,13 @@ String problem = "UF1";
 String[] algorithms = { "NSGAII", "GDE3", "eMOEA" };
 
 Executor executor = new Executor()
-				.withProblem(problem)
-				.withMaxEvaluations(10000);
+        .withProblem(problem)
+        .withMaxEvaluations(10000);
 
 Analyzer analyzer = new Analyzer()
-				.withProblem(problem)
-				.includeHypervolume()
-				.showStatisticalSignificance();
+        .withProblem(problem)
+        .includeHypervolume()
+        .showStatisticalSignificance();
 
 for (String algorithm : algorithms) {
     analyzer.addAll(algorithm, executor.withAlgorithm(algorithm).runSeeds(50));
@@ -108,16 +108,16 @@ information about each algorithm while it is running:
 
 Instrumenter instrumenter = new Instrumenter()
         .withProblem("UF1")
-				.withFrequency(100)
-				.attachElapsedTimeCollector()
-				.attachGenerationalDistanceCollector();
+        .withFrequency(100)
+        .attachElapsedTimeCollector()
+        .attachGenerationalDistanceCollector();
 		
 new Executor()
-				.withProblem("UF1")
-				.withAlgorithm("NSGAII")
-				.withMaxEvaluations(10000)
-				.withInstrumenter(instrumenter)
-				.run();
+        .withProblem("UF1")
+        .withAlgorithm("NSGAII")
+        .withMaxEvaluations(10000)
+        .withInstrumenter(instrumenter)
+        .run();
 		
 Accumulator accumulator = instrumenter.getLastAccumulator();
 		
@@ -125,9 +125,9 @@ System.out.format("  NFE    Time      Generational Distance%n");
 		
 for (int i=0; i<accumulator.size("NFE"); i++) {
     System.out.format("%5d    %-8.4f  %-8.4f%n",
-					accumulator.get("NFE", i),
-					accumulator.get("Elapsed Time", i),
-					accumulator.get("GenerationalDistance", i));
+        accumulator.get("NFE", i),
+        accumulator.get("Elapsed Time", i),
+        accumulator.get("GenerationalDistance", i));
 }
 ```
 
