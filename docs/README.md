@@ -4,6 +4,7 @@
 
 * [Release Notes](news.md)
 * [Getting Started](start.md)
+* [The Executor, Analyzer, and Instrumenter](executor.md)
 
 ## Advanced
 * [List of Decision Variables](variables.md)
