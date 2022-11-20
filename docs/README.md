@@ -12,6 +12,7 @@
 * [List of Algorithms](algorithms.md)
 * [List of Variation Operators](operators.md)
 * [List of Test Problems](problems.md)
+* [Third-Party Algorithm Providers](providers.md)
 
 ## For Developers
 
