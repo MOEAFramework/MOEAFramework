@@ -317,7 +317,7 @@ ControllerListener {
 		}
 		
 		Vector<String> sortedAlgorithmNames = new Vector<String>(algorithmNames);
-		Collections.sort(sortedAlgorithmNames);
+		Collections.sort(sortedAlgorithmNames, String.CASE_INSENSITIVE_ORDER);
 		
 		algorithm = new JComboBox<String>(sortedAlgorithmNames);
 		
@@ -333,7 +333,7 @@ ControllerListener {
 		}
 		
 		Vector<String> sortedProblemNames = new Vector<String>(problemNames);
-		Collections.sort(sortedProblemNames);
+		Collections.sort(sortedProblemNames, String.CASE_INSENSITIVE_ORDER);
 		
 		problem = new JComboBox<String>(sortedProblemNames);
 		
