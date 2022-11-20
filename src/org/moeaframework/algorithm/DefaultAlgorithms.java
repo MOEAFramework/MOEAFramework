@@ -43,7 +43,6 @@ import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Selection;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.Variable;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.comparator.AggregateConstraintComparator;
 import org.moeaframework.core.comparator.ChainedComparator;
@@ -108,27 +107,6 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 		register(this::newEvolutionaryStrategy, "EvolutionStrategy", "EvolutionaryStrategy", "ES");
 		register(this::newRSO, "RSO");
 	}
-	
-	/**
-	 * Returns {@code true} if all decision variables are assignment-compatible
-	 * with the specified type; {@code false} otherwise.
-	 * 
-	 * @param type the type of decision variable
-	 * @param problem the problem
-	 * @return {@code true} if all decision variables are assignment-compatible
-	 *         with the specified type; {@code false} otherwise
-	 */
-	private boolean checkType(Class<? extends Variable> type, Problem problem) {
-		Solution solution = problem.newSolution();
-		
-		for (int i=0; i<solution.getNumberOfVariables(); i++) {
-			if (!type.isInstance(solution.getVariable(i))) {
-				return false;
-			}
-		}
-		
-		return true;
-	}
 
 	/**
 	 * Returns a new {@link eMOEA} instance.
@@ -150,7 +128,6 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 						new double[] { EpsilonHelper.getEpsilon(problem) }));
 
 		TournamentSelection selection = new TournamentSelection(2, comparator);
-		
 		Variation variation = OperatorFactory.getInstance().getVariation(null, properties, problem);
 
 		return new EpsilonMOEA(problem, population, archive,
@@ -168,9 +145,7 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 		int populationSize = (int)properties.getDouble("populationSize", 100);
 
 		Initialization initialization = new RandomInitialization(problem, populationSize);
-
 		NondominatedSortingPopulation population = new NondominatedSortingPopulation();
-
 		TournamentSelection selection = null;
 		
 		if (properties.getBoolean("withReplacement", true)) {
@@ -243,30 +218,29 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 		// disable swapping variables in SBX operator to remain consistent with
 		// Deb's implementation (thanks to Haitham Seada for identifying this
 		// discrepancy)
-		if (!properties.contains("sbx.swap")) {
-			properties.setBoolean("sbx.swap", false);
-		}
-		
-		if (!properties.contains("sbx.distributionIndex")) {
-			properties.setDouble("sbx.distributionIndex", 30.0);
-		}
-		
-		if (!properties.contains("pm.distributionIndex")) {
-			properties.setDouble("pm.distributionIndex", 20.0);
+		if (!properties.contains("operator") && problem.isType(RealVariable.class)) {
+			if (!properties.contains("sbx.swap")) {
+				properties.setBoolean("sbx.swap", false);
+			}
+			
+			if (!properties.contains("sbx.distributionIndex")) {
+				properties.setDouble("sbx.distributionIndex", 30.0);
+			}
+			
+			if (!properties.contains("pm.distributionIndex")) {
+				properties.setDouble("pm.distributionIndex", 20.0);
+			}
 		}
 
-		Variation variation = OperatorFactory.getInstance().getVariation(null, 
-				properties, problem);
+		Variation variation = OperatorFactory.getInstance().getVariation(null, properties, problem);
 
-		return new NSGAII(problem, population, null, selection, variation,
-				initialization);
+		return new NSGAII(problem, population, null, selection, variation, initialization);
 	}
 
 	/**
 	 * Returns a new {@link MOEAD} instance.  Only real encodings are supported.
 	 * 
-	 * @param properties the properties for customizing the new {@code MOEAD}
-	 *        instance
+	 * @param properties the properties for customizing the new {@code MOEAD} instance
 	 * @param problem the problem
 	 * @return a new {@code MOEAD} instance
 	 * @throws FrameworkException if the decision variables are not real valued
@@ -280,26 +254,23 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 			populationSize = problem.getNumberOfObjectives();
 		}
 
-		Initialization initialization = new RandomInitialization(problem,
-				populationSize);
+		Initialization initialization = new RandomInitialization(problem, populationSize);
 		
 		//default to de+pm for real-encodings
 		String operator = properties.getString("operator", null);
 		
-		if ((operator == null) && checkType(RealVariable.class, problem)) {
+		if ((operator == null) && problem.isType(RealVariable.class)) {
 			operator = "de+pm";
 		}
 
-		Variation variation = OperatorFactory.getInstance().getVariation(
-				operator, properties, problem);
+		Variation variation = OperatorFactory.getInstance().getVariation(operator, properties, problem);
 		
 		int neighborhoodSize = 20;
 		int eta = 2;
 		
 		if (properties.contains("neighborhoodSize")) {
 			neighborhoodSize = Math.max(2, 
-					(int)(properties.getDouble("neighborhoodSize", 0.1)
-							* populationSize));
+					(int)(properties.getDouble("neighborhoodSize", 0.1) * populationSize));
 		}
 		
 		if (neighborhoodSize > populationSize) {
@@ -307,11 +278,10 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 		}
 		
 		if (properties.contains("eta")) {
-			eta = Math.max(2, (int)(properties.getDouble("eta", 0.01) 
-					* populationSize));
+			eta = Math.max(2, (int)(properties.getDouble("eta", 0.01) * populationSize));
 		}
 
-		MOEAD algorithm = new MOEAD(
+		return new MOEAD(
 				problem,
 				neighborhoodSize,
 				initialization,
@@ -319,78 +289,58 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 				properties.getDouble("delta", 0.9),
 				eta,
 				(int)properties.getDouble("updateUtility", -1));
-
-		return algorithm;
 	}
 
 	/**
 	 * Returns a new {@link GDE3} instance.  Only real encodings are supported.
 	 * 
-	 * @param properties the properties for customizing the new {@code GDE3}
-	 *        instance
+	 * @param properties the properties for customizing the new {@code GDE3} instance
 	 * @param problem the problem
 	 * @return a new {@code GDE3} instance
 	 * @throws FrameworkException if the decision variables are not real valued
 	 */
 	private Algorithm newGDE3(TypedProperties properties, Problem problem) {
-		if (!checkType(RealVariable.class, problem)) {
-			throw new FrameworkException("unsupported decision variable type");
-		}
+		problem.assertType(RealVariable.class);
 		
 		int populationSize = (int)properties.getDouble("populationSize", 100);
 		
 		DominanceComparator comparator = new ParetoDominanceComparator();
-
-		NondominatedSortingPopulation population = 
-				new NondominatedSortingPopulation(comparator);
-
-		Initialization initialization = new RandomInitialization(problem,
-				populationSize);
-
-		DifferentialEvolutionSelection selection = 
-				new DifferentialEvolutionSelection();
-
+		NondominatedSortingPopulation population = new NondominatedSortingPopulation(comparator);
+		Initialization initialization = new RandomInitialization(problem, populationSize);
+		DifferentialEvolutionSelection selection = new DifferentialEvolutionSelection();
 		DifferentialEvolutionVariation variation = (DifferentialEvolutionVariation)OperatorFactory
 				.getInstance().getVariation("de", properties, problem);
 
-		return new GDE3(problem, population, comparator, selection, variation,
-				initialization);
+		return new GDE3(problem, population, comparator, selection, variation, initialization);
 	}
 
 	/**
 	 * Returns a new {@link eNSGAII} instance.
 	 * 
-	 * @param properties the properties for customizing the new {@code eNSGAII}
-	 *        instance
+	 * @param properties the properties for customizing the new {@code eNSGAII} instance
 	 * @param problem the problem
 	 * @return a new {@code eNSGAII} instance
 	 */
 	private Algorithm neweNSGAII(TypedProperties properties, Problem problem) {
 		int populationSize = (int)properties.getDouble("populationSize", 100);
 
-		Initialization initialization = new RandomInitialization(problem,
-				populationSize);
+		Initialization initialization = new RandomInitialization(problem, populationSize);
 
-		NondominatedSortingPopulation population = 
-				new NondominatedSortingPopulation(
-						new ParetoDominanceComparator());
+		NondominatedSortingPopulation population = new NondominatedSortingPopulation(
+				new ParetoDominanceComparator());
 
 		EpsilonBoxDominanceArchive archive = new EpsilonBoxDominanceArchive(
 				properties.getDoubleArray("epsilon", 
 						new double[] { EpsilonHelper.getEpsilon(problem) }));
 
-		TournamentSelection selection = new TournamentSelection(2, 
-				new ChainedComparator(
-						new ParetoDominanceComparator(),
-						new CrowdingComparator()));
+		TournamentSelection selection = new TournamentSelection(2, new ChainedComparator(
+						new ParetoDominanceComparator(), new CrowdingComparator()));
 
-		Variation variation = OperatorFactory.getInstance().getVariation(null, 
-				properties, problem);
+		Variation variation = OperatorFactory.getInstance().getVariation(null, properties, problem);
 
-		NSGAII nsgaii = new NSGAII(problem, population, archive, selection,
-				variation, initialization);
+		NSGAII nsgaii = new NSGAII(problem, population, archive, selection, variation, initialization);
 
-		AdaptiveTimeContinuation algorithm = new AdaptiveTimeContinuation(
+		return new AdaptiveTimeContinuation(
 				nsgaii,
 				properties.getInt("windowSize", 100),
 				Math.max(properties.getInt("windowSize", 100),
@@ -400,22 +350,17 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 				properties.getInt("maximumPopulationSize", 10000),
 				new UniformSelection(),
 				new UM(1.0));
-
-		return algorithm;
 	}
 	
 	/**
 	 * Returns a new {@link CMAES} instance.
 	 * 
-	 * @param properties the properties for customizing the new {@code CMAES}
-	 *        instance
+	 * @param properties the properties for customizing the new {@code CMAES} instance
 	 * @param problem the problem
 	 * @return a new {@code CMAES} instance
 	 */
 	private Algorithm newCMAES(TypedProperties properties, Problem problem) {
-		if (!checkType(RealVariable.class, problem)) {
-			throw new FrameworkException("unsupported decision variable type");
-		}
+		problem.assertType(RealVariable.class);
 		
 		int lambda = (int)properties.getDouble("lambda", 100);
 		double cc = properties.getDouble("cc", -1.0);
@@ -438,24 +383,24 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 							new double[] { EpsilonHelper.getEpsilon(problem) }));
 		}
 		
-		if ("hypervolume".equals(indicator)) {
+		if ("hypervolume".equalsIgnoreCase(indicator)) {
 			fitnessEvaluator = new HypervolumeFitnessEvaluator(problem);
-		} else if ("epsilon".equals(indicator)) {
+		} else if ("epsilon".equalsIgnoreCase(indicator)) {
 			fitnessEvaluator = new AdditiveEpsilonIndicatorFitnessEvaluator(problem);
+		} else if ("crowding".equalsIgnoreCase(indicator)) {
+			fitnessEvaluator = null;
+		} else {
+			throw new IllegalArgumentException("invalid indicator: " + indicator);
 		}
 		
-		CMAES cmaes = new CMAES(problem, lambda, fitnessEvaluator, archive,
-				initialSearchPoint, false, cc, cs, damps, ccov, ccovsep, sigma,
-				diagonalIterations);
-
-		return cmaes;
+		return new CMAES(problem, lambda, fitnessEvaluator, archive, initialSearchPoint, false,
+				cc, cs, damps, ccov, ccovsep, sigma, diagonalIterations);
 	}
 	
 	/**
 	 * Returns a new {@link SPEA2} instance.
 	 * 
-	 * @param properties the properties for customizing the new {@code SPEA2}
-	 *        instance
+	 * @param properties the properties for customizing the new {@code SPEA2} instance
 	 * @param problem the problem
 	 * @return a new {@code SPEA2} instance
 	 */
@@ -464,11 +409,8 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 		int offspringSize = (int)properties.getDouble("offspringSize", 100);
 		int k = (int)properties.getDouble("k", 1);
 		
-		Initialization initialization = new RandomInitialization(problem,
-				populationSize);
-
-		Variation variation = OperatorFactory.getInstance().getVariation(null, 
-				properties, problem);
+		Initialization initialization = new RandomInitialization(problem, populationSize);
+		Variation variation = OperatorFactory.getInstance().getVariation(null, properties, problem);
 
 		return new SPEA2(problem, initialization, variation, offspringSize, k);
 	}
@@ -476,8 +418,7 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 	/**
 	 * Returns a new {@link PAES} instance.
 	 * 
-	 * @param properties the properties for customizing the new {@code PAES}
-	 *        instance
+	 * @param properties the properties for customizing the new {@code PAES} instance
 	 * @param problem the problem
 	 * @return a new {@code PAES} instance
 	 */
@@ -496,8 +437,7 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 	/**
 	 * Returns a new {@link PESA2} instance.
 	 * 
-	 * @param properties the properties for customizing the new {@code PESA2}
-	 *        instance
+	 * @param properties the properties for customizing the new {@code PESA2} instance
 	 * @param problem the problem
 	 * @return a new {@code PESA2} instance
 	 */
@@ -506,11 +446,8 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 		int archiveSize = (int)properties.getDouble("archiveSize", 100);
 		int bisections = (int)properties.getDouble("bisections", 8);
 		
-		Initialization initialization = new RandomInitialization(problem,
-				populationSize);
-
-		Variation variation = OperatorFactory.getInstance().getVariation(null, 
-				properties, problem);
+		Initialization initialization = new RandomInitialization(problem, populationSize);
+		Variation variation = OperatorFactory.getInstance().getVariation(null, properties, problem);
 
 		return new PESA2(problem, variation, initialization, bisections, archiveSize);
 	}
@@ -518,60 +455,46 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 	/**
 	 * Returns a new {@link OMOPSO} instance.
 	 * 
-	 * @param properties the properties for customizing the new {@code OMOPSO}
-	 *        instance
+	 * @param properties the properties for customizing the new {@code OMOPSO} instance
 	 * @param problem the problem
 	 * @return a new {@code OMOPSO} instance
 	 */
 	private Algorithm newOMOPSO(TypedProperties properties, Problem problem) {
-		if (!checkType(RealVariable.class, problem)) {
-			throw new FrameworkException("unsupported decision variable type");
-		}
+		problem.assertType(RealVariable.class);
 		
 		int populationSize = (int)properties.getDouble("populationSize", 100);
 		int archiveSize = (int)properties.getDouble("archiveSize", 100);
-		int maxIterations = (int)properties.getDouble("maxEvaluations", 25000) /
-				populationSize;
-		double mutationProbability = properties.getDouble("mutationProbability",
-				1.0 / problem.getNumberOfVariables());
-		double perturbationIndex = properties.getDouble("perturbationIndex",
-				0.5);
-		double[] epsilon = properties.getDoubleArray("epsilon",
-				new double[] { EpsilonHelper.getEpsilon(problem) });
+		int maxIterations = (int)properties.getDouble("maxEvaluations", 25000) / populationSize;
+		double mutationProbability = properties.getDouble("mutationProbability", 1.0 / problem.getNumberOfVariables());
+		double perturbationIndex = properties.getDouble("perturbationIndex", 0.5);
+		double[] epsilon = properties.getDoubleArray("epsilon", new double[] { EpsilonHelper.getEpsilon(problem) });
 		
-		return new OMOPSO(problem, populationSize, archiveSize,
-				epsilon, mutationProbability, perturbationIndex, maxIterations);
+		return new OMOPSO(problem, populationSize, archiveSize, epsilon, mutationProbability,
+				perturbationIndex, maxIterations);
 	}
 	
 	/**
 	 * Returns a new {@link SMPSO} instance.
 	 * 
-	 * @param properties the properties for customizing the new {@code SMPSO}
-	 *        instance
+	 * @param properties the properties for customizing the new {@code SMPSO} instance
 	 * @param problem the problem
 	 * @return a new {@code SMPSO} instance
 	 */
 	private Algorithm newSMPSO(TypedProperties properties, Problem problem) {
-		if (!checkType(RealVariable.class, problem)) {
-			throw new FrameworkException("unsupported decision variable type");
-		}
+		problem.assertType(RealVariable.class);
 		
 		int populationSize = (int)properties.getDouble("populationSize", 100);
 		int archiveSize = (int)properties.getDouble("archiveSize", 100);
-		double mutationProbability = properties.getDouble("pm.rate",
-				1.0 / problem.getNumberOfVariables());
-		double distributionIndex = properties.getDouble("pm.distributionIndex",
-				20.0);
+		double mutationProbability = properties.getDouble("pm.rate", 1.0 / problem.getNumberOfVariables());
+		double distributionIndex = properties.getDouble("pm.distributionIndex", 20.0);
 		
-		return new SMPSO(problem, populationSize, archiveSize,
-				mutationProbability, distributionIndex);
+		return new SMPSO(problem, populationSize, archiveSize, mutationProbability, distributionIndex);
 	}
 	
 	/**
 	 * Returns a new {@link IBEA} instance.
 	 * 
-	 * @param properties the properties for customizing the new {@code IBEA}
-	 *        instance
+	 * @param properties the properties for customizing the new {@code IBEA} instance
 	 * @param problem the problem
 	 * @return a new {@code IBEA} instance
 	 */
@@ -585,31 +508,25 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 		String indicator = properties.getString("indicator", "hypervolume");
 		IndicatorFitnessEvaluator fitnessEvaluator = null;
 
-		Initialization initialization = new RandomInitialization(problem,
-				populationSize);
+		Initialization initialization = new RandomInitialization(problem, populationSize);
 
-		Variation variation = OperatorFactory.getInstance().getVariation(null, 
-				properties, problem);
+		Variation variation = OperatorFactory.getInstance().getVariation(null, properties, problem);
 		
-		if ("hypervolume".equals(indicator)) {
+		if ("hypervolume".equalsIgnoreCase(indicator)) {
 			fitnessEvaluator = new HypervolumeFitnessEvaluator(problem);
-		} else if ("epsilon".equals(indicator)) {
-			fitnessEvaluator = new AdditiveEpsilonIndicatorFitnessEvaluator(
-					problem);
+		} else if ("epsilon".equalsIgnoreCase(indicator)) {
+			fitnessEvaluator = new AdditiveEpsilonIndicatorFitnessEvaluator(problem);
 		} else {
-			throw new IllegalArgumentException("invalid indicator: " +
-					indicator);
+			throw new IllegalArgumentException("invalid indicator: " + indicator);
 		}
 
-		return new IBEA(problem, null, initialization, variation,
-				fitnessEvaluator);
+		return new IBEA(problem, null, initialization, variation, fitnessEvaluator);
 	}
 	
 	/**
 	 * Returns a new {@link SMSEMOA} instance.
 	 * 
-	 * @param properties the properties for customizing the new {@code SMSEMOA}
-	 *        instance
+	 * @param properties the properties for customizing the new {@code SMSEMOA} instance
 	 * @param problem the problem
 	 * @return a new {@code SMSEMOA} instance
 	 */
@@ -619,46 +536,37 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 		String indicator = properties.getString("indicator", "hypervolume");
 		FitnessEvaluator fitnessEvaluator = null;
 		
-		Initialization initialization = new RandomInitialization(problem,
-				populationSize);
+		Initialization initialization = new RandomInitialization(problem, populationSize);
 
-		Variation variation = OperatorFactory.getInstance().getVariation(null, 
-				properties, problem);
+		Variation variation = OperatorFactory.getInstance().getVariation(null, properties, problem);
 		
-		if ("hypervolume".equals(indicator)) {
-			fitnessEvaluator = new HypervolumeContributionFitnessEvaluator(
-					problem, offset);
+		if ("hypervolume".equalsIgnoreCase(indicator)) {
+			fitnessEvaluator = new HypervolumeContributionFitnessEvaluator(problem, offset);
 		}
 
-		return new SMSEMOA(problem, initialization, variation,
-				fitnessEvaluator);
+		return new SMSEMOA(problem, initialization, variation, fitnessEvaluator);
 	}
 	
 	/**
 	 * Returns a new {@link VEGA} instance.
 	 * 
-	 * @param properties the properties for customizing the new {@code VEGA}
-	 *        instance
+	 * @param properties the properties for customizing the new {@code VEGA} instance
 	 * @param problem the problem
 	 * @return a new {@code VEGA} instance
 	 */
 	private Algorithm newVEGA(TypedProperties properties, Problem problem) {
 		int populationSize = (int)properties.getDouble("populationSize", 100);
 
-		Initialization initialization = new RandomInitialization(problem,
-				populationSize);
-
-		Variation variation = OperatorFactory.getInstance().getVariation(null, 
-				properties, problem);
-		return new VEGA(problem, new Population(), null, initialization,
-				variation);
+		Initialization initialization = new RandomInitialization(problem, populationSize);
+		Variation variation = OperatorFactory.getInstance().getVariation(null, properties, problem);
+		
+		return new VEGA(problem, new Population(), null, initialization, variation);
 	}
 	
 	/**
 	 * Returns a new {@link DBEA} instance.
 	 * 
-	 * @param properties the properties for customizing the new {@code DBEA}
-	 *        instance
+	 * @param properties the properties for customizing the new {@code DBEA} instance
 	 * @param problem the problem
 	 * @return a new {@code DBEA} instance
 	 */
@@ -694,49 +602,45 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 				problem.getNumberOfObjectives(), divisions,
 				properties.getDouble("alpha", 2.0));
 
-		if (!properties.contains("sbx.swap")) {
-			properties.setBoolean("sbx.swap", false);
-		}
-		
-		if (!properties.contains("sbx.distributionIndex")) {
-			properties.setDouble("sbx.distributionIndex", 30.0);
-		}
-		
-		if (!properties.contains("pm.distributionIndex")) {
-			properties.setDouble("pm.distributionIndex", 20.0);
+		if (!properties.contains("operator") && problem.isType(RealVariable.class)) {
+			if (!properties.contains("sbx.swap")) {
+				properties.setBoolean("sbx.swap", false);
+			}
+			
+			if (!properties.contains("sbx.distributionIndex")) {
+				properties.setDouble("sbx.distributionIndex", 30.0);
+			}
+			
+			if (!properties.contains("pm.distributionIndex")) {
+				properties.setDouble("pm.distributionIndex", 20.0);
+			}
 		}
 
-		Variation variation = OperatorFactory.getInstance().getVariation(null, 
-				properties, problem);
+		Variation variation = OperatorFactory.getInstance().getVariation(null, properties, problem);
 		
 		int maxGenerations = (int)(properties.getDouble("maxEvaluations", 10000) / populationSize);
 		int adaptFrequency = (int)properties.getDouble("adaptFrequency", maxGenerations / 10);
 
-		return new RVEA(problem, population, variation, initialization,
-				maxGenerations, adaptFrequency);
+		return new RVEA(problem, population, variation, initialization, maxGenerations, adaptFrequency);
 	}
 	
 	/**
 	 * Returns a new {@link RandomSearch} instance.
 	 * 
-	 * @param properties the properties for customizing the new
-	 *        {@code RandomSearch} instance
+	 * @param properties the properties for customizing the new {@code RandomSearch} instance
 	 * @param problem the problem
 	 * @return a new {@code RandomSearch} instance
 	 */
-	private Algorithm newRandomSearch(TypedProperties properties, 
-			Problem problem) {
+	private Algorithm newRandomSearch(TypedProperties properties, Problem problem) {
 		int populationSize = (int)properties.getDouble("populationSize", 100);
 		
-		Initialization generator = new RandomInitialization(problem,
-				populationSize);
+		Initialization generator = new RandomInitialization(problem, populationSize);
 		
 		NondominatedPopulation archive = null;
 		
 		if (properties.contains("epsilon")) {
-			archive = new EpsilonBoxDominanceArchive(
-					properties.getDoubleArray("epsilon", new double[] {
-							EpsilonHelper.getEpsilon(problem) }));
+			archive = new EpsilonBoxDominanceArchive(properties.getDoubleArray("epsilon",
+					new double[] { EpsilonHelper.getEpsilon(problem) }));
 		} else {
 			archive = new NondominatedPopulation();
 		}
@@ -747,21 +651,17 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 	/**
 	 * Returns a new {@link MSOPS} instance.
 	 * 
-	 * @param properties the properties for customizing the new {@code MSOPS}
-	 *        instance
+	 * @param properties the properties for customizing the new {@code MSOPS} instance
 	 * @param problem the problem
 	 * @return a new {@code MSOPS} instance
 	 */
 	private Algorithm newMSOPS(TypedProperties properties, Problem problem) {
-		if (!checkType(RealVariable.class, problem)) {
-			throw new FrameworkException("unsupported decision variable type");
-		}
+		problem.assertType(RealVariable.class);
 		
 		int populationSize = (int)properties.getDouble("populationSize", 100);
 		int numberOfWeights = (int)properties.getDouble("numberOfWeights", 50);
 
-		Initialization initialization = new RandomInitialization(problem,
-				populationSize);
+		Initialization initialization = new RandomInitialization(problem, populationSize);
 		
 		List<double[]> weights = new RandomGenerator(problem.getNumberOfObjectives(), numberOfWeights).generate();
 		
@@ -771,21 +671,17 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 		}
 
 		MSOPSRankedPopulation population = new MSOPSRankedPopulation(weights);
-		
 		DifferentialEvolutionSelection selection = new DifferentialEvolutionSelection();
-
 		DifferentialEvolutionVariation variation = (DifferentialEvolutionVariation)OperatorFactory.getInstance().getVariation(
 				"de", properties, problem);
 
-		return new MSOPS(problem, population, selection, variation,
-				initialization);
+		return new MSOPS(problem, population, selection, variation, initialization);
 	}
 	
 	/**
 	 * Returns a new single-objective {@link RepeatedSingleObjective} instance.
 	 * 
-	 * @param properties the properties for customizing the new
-	 *        {@code RepeatedSingleObjective} instance
+	 * @param properties the properties for customizing the new {@code RepeatedSingleObjective} instance
 	 * @param problem the problem
 	 * @return a new {@code RepeatedSingleObjective} instance
 	 */
@@ -797,15 +693,13 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 			properties.setString("method", "min-max");
 		}
 
-		return new RepeatedSingleObjective(problem, algorithmName,
-				properties, instances);
+		return new RepeatedSingleObjective(problem, algorithmName, properties, instances);
 	}
 	
 	/**
 	 * Returns a new single-objective {@link GeneticAlgorithm} instance.
 	 * 
-	 * @param properties the properties for customizing the new
-	 *        {@code GeneticAlgorithm} instance
+	 * @param properties the properties for customizing the new {@code GeneticAlgorithm} instance
 	 * @param problem the problem
 	 * @return a new {@code GeneticAlgorithm} instance
 	 */
@@ -825,9 +719,7 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 		}
 
 		Initialization initialization = new RandomInitialization(problem, populationSize);
-		
 		Selection selection = new TournamentSelection(2, comparator);
-
 		Variation variation = OperatorFactory.getInstance().getVariation(null, properties, problem);
 
 		return new GeneticAlgorithm(problem, comparator, initialization, selection, variation);
@@ -836,15 +728,12 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 	/**
 	 * Returns a new single-objective {@link EvolutionStrategy} instance.
 	 * 
-	 * @param properties the properties for customizing the new
-	 *        {@code EvolutionaryStrategy} instance
+	 * @param properties the properties for customizing the new {@code EvolutionaryStrategy} instance
 	 * @param problem the problem
 	 * @return a new {@code EvolutionaryStrategy} instance
 	 */
 	private Algorithm newEvolutionaryStrategy(TypedProperties properties, Problem problem) {
-		if (!checkType(RealVariable.class, problem)) {
-			throw new FrameworkException("unsupported decision variable type");
-		}
+		problem.assertType(RealVariable.class);
 		
 		int populationSize = (int)properties.getDouble("populationSize", 100);
 		double[] weights = properties.getDoubleArray("weights", new double[] { 1.0 });
@@ -861,7 +750,6 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 		}
 
 		Initialization initialization = new RandomInitialization(problem, populationSize);
-		
 		Variation variation = new SelfAdaptiveNormalVariation();
 
 		return new EvolutionStrategy(problem, comparator, initialization, variation);
@@ -870,15 +758,12 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 	/**
 	 * Returns a new single-objective {@link DE/rand/1/bin} instance.
 	 * 
-	 * @param properties the properties for customizing the new
-	 *        {@code DE/rand/1/bin} instance
+	 * @param properties the properties for customizing the new {@code DE/rand/1/bin} instance
 	 * @param problem the problem
 	 * @return a new {@code DE/rand/1/bin} instance
 	 */
 	private Algorithm newDifferentialEvolution(TypedProperties properties, Problem problem) {
-		if (!checkType(RealVariable.class, problem)) {
-			throw new FrameworkException("unsupported decision variable type");
-		}
+		problem.assertType(RealVariable.class);
 		
 		int populationSize = (int)properties.getDouble("populationSize", 100);
 		double[] weights = properties.getDoubleArray("weights", new double[] { 1.0 });
@@ -895,9 +780,7 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 		}
 
 		Initialization initialization = new RandomInitialization(problem, populationSize);
-
 		DifferentialEvolutionSelection selection = new DifferentialEvolutionSelection();
-
 		DifferentialEvolutionVariation variation = (DifferentialEvolutionVariation)OperatorFactory.getInstance()
 				.getVariation("de", properties, problem);
 
