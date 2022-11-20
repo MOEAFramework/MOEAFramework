@@ -1,10 +1,6 @@
 package org.moeaframework.core.spi;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.function.Supplier;
@@ -12,7 +8,6 @@ import java.util.function.Supplier;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PopulationIO;
 import org.moeaframework.core.Problem;
-import org.moeaframework.util.io.CommentedLineReader;
 
 /**
  * Problem provider that lets callers register problems by name.  For example:
@@ -82,38 +77,13 @@ public class RegisteredProblemProvider extends ProblemProvider {
 		
 		if (referenceSet != null) {
 			try {
-				return loadReferenceSet(referenceSet);
+				return PopulationIO.readReferenceSet(referenceSet);
 			} catch (IOException e) {
 				return null;
 			}
 		}
 		
 		return null;
-	}
-	
-	/**
-	 * Loads a reference set either from a file on disk or from a resource bundled in
-	 * the JAR file.
-	 * 
-	 * @param resource the path of the file or resource
-	 * @return the reference set, or {@code null} if the file or resource was not found
-	 * @throws IOException if an I/O error occurred
-	 */
-	private NondominatedPopulation loadReferenceSet(String resource) throws IOException {
-		File file = new File(resource);
-		
-		if (file.exists()) {
-			return new NondominatedPopulation(PopulationIO.readObjectives(file));
-		} else {
-			try (InputStream input = getClass().getResourceAsStream("/" + resource)) {
-				if (input == null) {
-					throw new FileNotFoundException(resource);
-				} else {
-					return new NondominatedPopulation(PopulationIO.readObjectives(
-							new CommentedLineReader(new InputStreamReader(input))));
-				}
-			}
-		}
 	}
 
 }
