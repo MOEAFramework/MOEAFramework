@@ -23,7 +23,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -34,7 +34,7 @@ public class JMetalReferenceTest {
 
 	@Test
 	public void testForJMetalReferences() throws IOException {
-		Files.walk(Path.of("src/")).forEach((path) -> {
+		Files.walk(new File("src/").toPath()).forEach((path) -> {
 			if (path.startsWith("src/org/moeaframework/algorithm/jmetal")) {
 				return;
 			}
