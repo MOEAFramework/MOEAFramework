@@ -182,9 +182,7 @@ public abstract class AbstractAlgorithm implements Algorithm {
 
 	/**
 	 * Implementations should always invoke {@code super.terminate()} to ensure
-	 * the hierarchy is terminated correctly. This method is automatically
-	 * invoked during finalization, and need only be called directly if
-	 * non-Java resources are in use.
+	 * the hierarchy is terminated correctly.
 	 * 
 	 * @throws AlgorithmTerminationException if the algorithm has already 
 	 *         terminated
@@ -197,17 +195,6 @@ public abstract class AbstractAlgorithm implements Algorithm {
 		}
 
 		terminated = true;
-	}
-
-	@Override
-	protected void finalize() throws Throwable {
-		try {
-			if (!isTerminated()) {
-				terminate();
-			}
-		} finally {
-			super.finalize();
-		}
 	}
 
 	@Override
