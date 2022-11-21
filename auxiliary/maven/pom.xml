@@ -83,13 +83,13 @@
 		    <groupId>org.uma.jmetal</groupId>
 		    <artifactId>jmetal-algorithm</artifactId>
 		    <version>5.9</version>
-		    <scope>test</scope>
+		    <scope>provided</scope>
 		</dependency>
 		<dependency>
 		    <groupId>org.uma.jmetal</groupId>
 		    <artifactId>jmetal-core</artifactId>
 		    <version>5.9</version>
-		    <scope>test</scope>
+		    <scope>provided</scope>
 		</dependency>
 		<dependency>
 		    <groupId>org.uma.jmetal</groupId>
