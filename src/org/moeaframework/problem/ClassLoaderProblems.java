@@ -34,7 +34,7 @@ public class ClassLoaderProblems extends ProblemProvider {
 	@Override
 	public Problem getProblem(String name) {
 		try {
-			return (Problem)Class.forName(name).newInstance();
+			return (Problem)Class.forName(name).getConstructor().newInstance();
 		} catch (ClassNotFoundException e) {
 			return null;
 		} catch (Exception e) {

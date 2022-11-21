@@ -569,7 +569,7 @@ public class TestUtils {
 		System.out.println("Running make to build test executables");
 		
 		try {
-			Process process = Runtime.getRuntime().exec("make", null, folder);
+			Process process = Runtime.getRuntime().exec(new String[] { "make" }, null, folder);
 			
 			if (process.waitFor() != 0) {
 				System.err.println("make exited with an error status ("
