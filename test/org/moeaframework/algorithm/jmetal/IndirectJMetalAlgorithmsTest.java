@@ -23,15 +23,14 @@ import org.moeaframework.problem.MockRealProblem;
 import org.moeaframework.util.TypedProperties;
 
 /**
- * Tests the {@link IndirectJMetalAlgorithms} to ensure the weak class reference
- * is valid.
+ * Tests the {@link IndirectJMetalAlgorithms} to ensure the weak class reference is valid.
  */
 public class IndirectJMetalAlgorithmsTest {
 
 	@Test
 	public void test() {
 		IndirectJMetalAlgorithms provider = new IndirectJMetalAlgorithms();
-		Assert.assertNotNull(provider.getAlgorithm("AbYSS", new TypedProperties(), new MockRealProblem()));
+		Assert.assertNotNull(provider.getAlgorithm("NSGAII-JMetal", new TypedProperties(), new MockRealProblem()));
 	}
 
 }
