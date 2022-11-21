@@ -21,6 +21,10 @@ import org.moeaframework.Executor;
 import org.moeaframework.analysis.plot.Plot;
 import org.moeaframework.core.NondominatedPopulation;
 
+/**
+ * Displays a plot comparing the final Pareto approximation sets found by
+ * NSGAII and eMOEA on the 2D DTLZ2 problem.
+ */
 public class PlotApproximationSets {
 
 	public static void main(String[] args) {

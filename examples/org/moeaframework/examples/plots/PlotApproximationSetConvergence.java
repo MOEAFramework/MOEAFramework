@@ -25,6 +25,10 @@ import org.moeaframework.analysis.diagnostics.ApproximationSetViewer;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Settings;
 
+/**
+ * Displays an interactive plot showing the convergence of the NSGA-II algorithm on
+ * UF1 at each iteration.
+ */
 public class PlotApproximationSetConvergence {
 
 	public static void main(String[] args) {
