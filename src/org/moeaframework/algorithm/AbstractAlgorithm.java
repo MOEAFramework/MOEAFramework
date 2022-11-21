@@ -128,8 +128,7 @@ public abstract class AbstractAlgorithm implements Algorithm {
 	 */
 	protected void initialize() {
 		if (initialized) {
-			throw new AlgorithmInitializationException(this, 
-					"algorithm already initialized");
+			throw new AlgorithmInitializationException(this, "algorithm already initialized");
 		}
 
 		initialized = true;
@@ -153,14 +152,12 @@ public abstract class AbstractAlgorithm implements Algorithm {
 	 * Implementations should override the {@code initialize} and
 	 * {@code iterate} methods in preference to modifying this method.
 	 * 
-	 * @throws AlgorithmTerminationException if the algorithm has already 
-	 *         terminated
+	 * @throws AlgorithmTerminationException if the algorithm has already terminated
 	 */
 	@Override
 	public void step() {
 		if (isTerminated()) {
-			throw new AlgorithmTerminationException(this, 
-					"algorithm already terminated");
+			throw new AlgorithmTerminationException(this, "algorithm already terminated");
 		} else if (!isInitialized()) {
 			initialize();
 		} else {
@@ -184,14 +181,12 @@ public abstract class AbstractAlgorithm implements Algorithm {
 	 * Implementations should always invoke {@code super.terminate()} to ensure
 	 * the hierarchy is terminated correctly.
 	 * 
-	 * @throws AlgorithmTerminationException if the algorithm has already 
-	 *         terminated
+	 * @throws AlgorithmTerminationException if the algorithm has already terminated
 	 */
 	@Override
 	public void terminate() {
 		if (terminated) {
-			throw new AlgorithmTerminationException(this, 
-					"algorithm already terminated");
+			throw new AlgorithmTerminationException(this, "algorithm already terminated");
 		}
 
 		terminated = true;

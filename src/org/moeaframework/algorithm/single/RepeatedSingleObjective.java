@@ -81,8 +81,7 @@ public class RepeatedSingleObjective extends AbstractAlgorithm {
 		this.properties = properties;
 		
 		// setup the algorithm instances		
-		List<double[]> weights = new RandomGenerator(
-				problem.getNumberOfObjectives(), instances).generate();
+		List<double[]> weights = new RandomGenerator(problem.getNumberOfObjectives(), instances).generate();
 		algorithms = new ArrayList<Algorithm>();
 		
 		for (double[] weight : weights) {
@@ -139,8 +138,7 @@ public class RepeatedSingleObjective extends AbstractAlgorithm {
 		localProperties.addAll(properties);
 		localProperties.setDoubleArray("weights", weights);
 		
-		return AlgorithmFactory.getInstance().getAlgorithm(
-				algorithmName, localProperties, problem);
+		return AlgorithmFactory.getInstance().getAlgorithm(algorithmName, localProperties, problem);
 	}
 
 }

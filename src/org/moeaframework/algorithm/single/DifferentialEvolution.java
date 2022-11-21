@@ -84,8 +84,7 @@ public class DifferentialEvolution extends AbstractEvolutionaryAlgorithm {
 		for (int i = 0; i < population.size(); i++) {
 			selection.setCurrentIndex(i);
 
-			Solution[] parents = selection.select(variation.getArity(),
-					population);
+			Solution[] parents = selection.select(variation.getArity(), population);
 			children.add(variation.evolve(parents)[0]);
 		}
 		

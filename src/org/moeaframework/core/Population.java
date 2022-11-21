@@ -298,6 +298,32 @@ public class Population implements Iterable<Solution> {
 			data.remove(data.size() - 1);
 		}
 	}
+	
+	/**
+	 * Returns a list of all solutions in this population.  This is equivalent
+	 * to calling {@link #asList(boolean)} with a value of {@code true}.
+	 * 
+	 * @return a list of all solutions in this population
+	 */
+	public List<Solution> asList() {
+		return asList(false);
+	}
+	
+	/**
+	 * Returns a list of all solutions in this population.
+	 * 
+	 * @param copy if {@code true}, copies of each solution are returned
+	 * @return a list of all solutions in this population
+	 */
+	public List<Solution> asList(boolean copy) {
+		List<Solution> result = new ArrayList<Solution>(size());
+		
+		for (Solution solution : this) {
+			result.add(copy ? solution.copy() : solution);
+		}
+		
+		return result;
+	}
 
 	/*
 	 * The following code is based on the Apache Commons Collections library.

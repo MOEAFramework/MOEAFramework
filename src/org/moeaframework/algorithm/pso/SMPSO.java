@@ -70,7 +70,8 @@ public class SMPSO extends AbstractPSOAlgorithm {
 	 */
 	public SMPSO(Problem problem, int swarmSize, int leaderSize,
 			double mutationProbability, double distributionIndex) {
-		super(problem, swarmSize, leaderSize, new CrowdingComparator(),
+		super(problem, swarmSize, leaderSize,
+				new CrowdingComparator(),
 				new ParetoDominanceComparator(),
 				new FitnessBasedArchive(new CrowdingDistanceFitnessEvaluator(), leaderSize),
 				null,
