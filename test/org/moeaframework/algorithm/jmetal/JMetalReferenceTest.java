@@ -35,7 +35,8 @@ public class JMetalReferenceTest {
 	@Test
 	public void testForJMetalReferences() throws IOException {
 		Files.walk(new File("src/").toPath()).forEach((path) -> {
-			if (path.startsWith("src/org/moeaframework/algorithm/jmetal")) {
+			if (path.startsWith("src/org/moeaframework/algorithm/jmetal") ||
+					path.startsWith("src/main/java/org/moeaframework/algorithm/jmetal")) {
 				return;
 			}
 			
