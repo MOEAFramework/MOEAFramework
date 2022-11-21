@@ -75,12 +75,6 @@
 			<version>1.5.3</version>
 		</dependency>
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.13.2</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
 			<groupId>com.fifesoft</groupId>
 			<artifactId>rsyntaxtextarea</artifactId>
 			<version>3.3.0</version>
@@ -89,19 +83,25 @@
 		    <groupId>org.uma.jmetal</groupId>
 		    <artifactId>jmetal-algorithm</artifactId>
 		    <version>5.9</version>
-		    <scope>runtime</scope>
+		    <scope>test</scope>
 		</dependency>
 		<dependency>
 		    <groupId>org.uma.jmetal</groupId>
 		    <artifactId>jmetal-core</artifactId>
 		    <version>5.9</version>
-		    <scope>runtime</scope>
+		    <scope>test</scope>
 		</dependency>
 		<dependency>
 		    <groupId>org.uma.jmetal</groupId>
 		    <artifactId>jmetal-problem</artifactId>
 		    <version>5.9</version>
 		    <scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.13.2</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 	
