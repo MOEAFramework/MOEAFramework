@@ -17,16 +17,21 @@
  */
 package org.moeaframework.algorithm.jmetal;
 
-import org.moeaframework.core.spi.IndirectAlgorithmProvider;
+import org.junit.Assert;
+import org.junit.Test;
+import org.moeaframework.problem.MockRealProblem;
+import org.moeaframework.util.TypedProperties;
 
 /**
- * Allows dynamically loading JMetal algorithms without creating a runtime dependency on JMetal.
+ * Tests the {@link IndirectJMetalAlgorithms} to ensure the weak class reference
+ * is valid.
  */
-public class IndirectJMetalAlgorithms extends IndirectAlgorithmProvider {
+public class IndirectJMetalAlgorithmsTest {
 
-	public IndirectJMetalAlgorithms() {
-		super("org.moeaframework.algorithm.jmetal.JMetalAlgorithms");
+	@Test
+	public void test() {
+		IndirectJMetalAlgorithms provider = new IndirectJMetalAlgorithms();
+		Assert.assertNotNull(provider.getAlgorithm("AbYSS", new TypedProperties(), new MockRealProblem()));
 	}
-	
-}
 
+}
