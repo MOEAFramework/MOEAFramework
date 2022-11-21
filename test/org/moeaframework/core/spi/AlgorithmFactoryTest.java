@@ -19,11 +19,6 @@ package org.moeaframework.core.spi;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.moeaframework.algorithm.AbstractEvolutionaryAlgorithm;
-import org.moeaframework.core.Algorithm;
-import org.moeaframework.core.Population;
-import org.moeaframework.core.Problem;
-import org.moeaframework.core.operator.RandomInitialization;
 import org.moeaframework.problem.MockRealProblem;
 import org.moeaframework.util.TypedProperties;
 
@@ -35,30 +30,7 @@ public class AlgorithmFactoryTest {
 
 	@Test
 	public void testCustomProvider() {
-		AlgorithmProvider provider = new AlgorithmProvider() {
-
-			@Override
-			public Algorithm getAlgorithm(String name, TypedProperties properties, Problem problem) {
-				if (name.equalsIgnoreCase("testAlgorithm")) {
-					return new AbstractEvolutionaryAlgorithm(
-							problem,
-							new Population(),
-							null,
-							new RandomInitialization(problem, 100)) {
-
-						@Override
-						protected void iterate() {
-							// do nothing
-						}
-						
-					};
-				} else {
-					return null;
-				}
-			}
-			
-		};
-		
+		AlgorithmProvider provider = new TestAlgorithmProvider();
 		AlgorithmFactory originalFactory = AlgorithmFactory.getInstance();
 		
 		AlgorithmFactory factory = new AlgorithmFactory();
