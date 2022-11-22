@@ -66,35 +66,30 @@ public class OMOPSO extends AbstractPSOAlgorithm {
 	 * @param swarmSize the number of particles
 	 * @param leaderSize the number of leaders
 	 * @param epsilons the &epsilon;-values used in the external archive
-	 * @param mutationProbability the mutation probability for uniform and
-	 *        non-uniform mutation
-	 * @param mutationPerturbation the perturbation index for uniform and
-	 *        non-uniform mutation
-	 * @param maxIterations the maximum iterations for scaling the non-uniform
-	 *        mutation
+	 * @param mutationProbability the mutation probability for uniform and non-uniform mutation
+	 * @param mutationPerturbation the perturbation index for uniform and non-uniform mutation
+	 * @param maxIterations the maximum iterations for scaling the non-uniform mutation
 	 */
 	public OMOPSO(Problem problem, int swarmSize, int leaderSize,
 			double[] epsilons, double mutationProbability,
 			double mutationPerturbation, int maxIterations) {
-		super(problem, swarmSize, leaderSize, new CrowdingComparator(),
+		super(problem, swarmSize, leaderSize,
+				new CrowdingComparator(),
 				new ParetoDominanceComparator(),
 				new FitnessBasedArchive(new CrowdingDistanceFitnessEvaluator(), leaderSize),
 				new EpsilonBoxDominanceArchive(epsilons),
 				null);
-		this.uniformMutation = new UniformMutation(mutationProbability,
-				mutationPerturbation);
-		this.nonUniformMutation = new NonUniformMutation(mutationProbability,
-				mutationPerturbation, maxIterations);
+		
+		this.uniformMutation = new UniformMutation(mutationProbability, mutationPerturbation);
+		this.nonUniformMutation = new NonUniformMutation(mutationProbability, mutationPerturbation, maxIterations);
 	}
 	
 	@Override
 	protected void mutate(int i) {
 		if (i % 3 == 0) {
-			particles[i] = nonUniformMutation.evolve(new Solution[] {
-					particles[i] })[0];
+			particles[i] = nonUniformMutation.evolve(new Solution[] { particles[i] })[0];
 		} else if (i % 3 == 1) {
-			particles[i] = uniformMutation.evolve(new Solution[] {
-					particles[i] })[0];
+			particles[i] = uniformMutation.evolve(new Solution[] { particles[i] })[0];
 		}
 	}
 	
@@ -154,8 +149,7 @@ public class OMOPSO extends AbstractPSOAlgorithm {
 			int currentIteration = getNumberOfEvaluations() / swarmSize;
 			double fraction = currentIteration / (double)maxIterations;
 			
-			return difference * (1.0 - Math.pow(PRNG.nextDouble(), 
-					Math.pow(1.0 - fraction, perturbation)));
+			return difference * (1.0 - Math.pow(PRNG.nextDouble(), Math.pow(1.0 - fraction, perturbation)));
 		}
 
 	}

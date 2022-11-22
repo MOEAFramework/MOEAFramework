@@ -96,8 +96,7 @@ public class GeneticAlgorithm extends AbstractEvolutionaryAlgorithm {
 		int populationSize = population.size();
 
 		while (offspring.size() < populationSize) {
-			Solution[] parents = selection.select(variation.getArity(),
-					population);
+			Solution[] parents = selection.select(variation.getArity(), population);
 			Solution[] children = variation.evolve(parents);
 
 			offspring.addAll(children);

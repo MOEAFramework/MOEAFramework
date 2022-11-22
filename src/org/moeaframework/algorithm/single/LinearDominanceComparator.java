@@ -38,8 +38,7 @@ AggregateObjectiveComparator, Serializable {
 	 * function and constraints.  Equal weights are used for each objective.
 	 */
 	public LinearDominanceComparator() {
-		super(new AggregateConstraintComparator(),
-				new LinearObjectiveComparator());
+		super(new AggregateConstraintComparator(), new LinearObjectiveComparator());
 	}
 
 	/**
@@ -51,8 +50,7 @@ AggregateObjectiveComparator, Serializable {
 	 * @param weights the weight vector
 	 */
 	public LinearDominanceComparator(double... weights) {
-		super(new AggregateConstraintComparator(),
-				new LinearObjectiveComparator(weights));
+		super(new AggregateConstraintComparator(), new LinearObjectiveComparator(weights));
 	}
 
 }
