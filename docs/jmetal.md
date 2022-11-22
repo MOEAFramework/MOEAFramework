@@ -88,6 +88,18 @@ Parameter            | Default Value | Description
 `de.stepSize`        | 0.5           | Control the size of each step taken by differential evolution
 `de.variant`         | `rand/1/bin`  | The DE variant
 
+### ESPEA
+
+ESPEA is an Electro-Static Potential Energy Evolutionary Algorithm [^braun15].
+
+**Algorithm Name:** `"ESPEA"`  
+**Supported Types:** Real, Binary, Permutation  
+**Supported Operators:** `sbx+pm`, `1x+pf`, `pmx+swap`
+
+Parameter            | Default Value | Description
+:------------------- | :------------ | :----------
+`populationSize`     | 100           | The size of the population
+
 ### MOCell
 
 MOCell is the multiobjective version of a cellular genetic algorithm [^nebro07a].
@@ -123,6 +135,7 @@ Parameter                 | Default Value | Description
 In many cases, both the MOEA Framework and JMetal provide the same optimization algorithm.  In such cases, you can explicitly reference the JMetal
 version by appending `-JMetal` to the name.  For example, `NSGAII-JMetal`.
 
+[^braun15]: Braun, M.A., Shukla, P.K., Schmeck, H.: ‘Obtaining optimal pareto front approximations using scalarized preference information’. ACM Annual Conf. on Genetic and Evolutionary Computation, Madrid, Spain, 2015
 [^cai18]: X. Cai, Z. Mei, Z. Fan and Q. Zhang, "A Constrained Decomposition Approach With Grids for Evolutionary Multiobjective Optimization," in IEEE Transactions on Evolutionary Computation, vol. 22, no. 4, pp. 564-577, Aug. 2018, doi: 10.1109/TEVC.2017.2744674.
 [^durillo08]: Durillo, J. J., Nebro, A. J., Luna, F., and Alba, E. (2008). Solving three-objective optimization problems using a new hybrid cellular genetic algorithm. In Parallel Problem Solving form Nature - PPSN X, pages 661–670. Springer.
 [^nebro07a]: Nebro, A. J., Durillo, J. J., Luna, F., and Dorronsoro, B. (2007). MOCell: A cellular genetic algorithm for multiobjective optimization. International Journal of Intelligent Systems, pages 25–36.
