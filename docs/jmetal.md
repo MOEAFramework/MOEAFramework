@@ -106,7 +106,7 @@ Parameter            | Default Value | Description
 MOCHC is a genetic algorithm that combines a conservative selection strategy with highly disruptive recombination, which unlike traditional MOEAs aims to produce offspring that are maximally different from both parents [^nebro07b].
 
 **Algorithm Name:** `"MOCHC"`  
-**Supported Types:** Real
+**Supported Types:** Real  
 **Supported Operators:** `hux+bf`
 
 Parameter                 | Default Value | Description
