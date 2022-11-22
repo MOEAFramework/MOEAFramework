@@ -3,6 +3,12 @@
 This page documents notable changes introduced in each chronological release of the MOEA Framework.
 
 
+## Version 3.2 (TBD)
+
+  * Removes JMetal as a required dependency at runtime.  Not only does this reduce the jar file size by
+    ~20 MBs, it removes overlapping class names shared by both libraries.
+
+
 ## Version 3.1 (19 Nov 2022)
 
   * Removes all deprecated methods from `2.x` release.

@@ -157,7 +157,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 
 		<copy todir="${base}/lib">
 			<fileset file="${dist}/${shortname}-${version}.jar" />
-			<fileset dir="lib" excludes="junit-*.jar,hamcrest-core-*.jar,checkstyle-*.jar" />
+			<fileset dir="lib" excludes="junit-*.jar,hamcrest-core-*.jar,checkstyle-*.jar,jmetal-*.jar" />
 		</copy>
 
 		<copy todir="${base}/pf">
@@ -290,9 +290,6 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		<unjar dest="${build}" src="lib/rsyntaxtextarea-3.3.0.jar" />
 		<unjar dest="${build}" src="lib/jcommon-1.0.24.jar" />
 		<unjar dest="${build}" src="lib/jfreechart-1.5.3.jar" />
-		<unjar dest="${build}" src="lib/jmetal-algorithm-5.9.jar" />
-		<unjar dest="${build}" src="lib/jmetal-core-5.9.jar" />
-		<unjar dest="${build}" src="lib/jmetal-problem-5.9.jar" />
 		
 		<delete dir="${build}/META-INF/maven" />
 		<delete file="${build}/META-INF/LICENSE.txt" />
