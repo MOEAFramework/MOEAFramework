@@ -33,7 +33,6 @@ import org.moeaframework.problem.MockBinaryProblem;
 import org.moeaframework.problem.MockPermutationProblem;
 import org.moeaframework.problem.MockRealProblem;
 import org.moeaframework.problem.MockSubsetProblem;
-import org.moeaframework.problem.ProblemException;
 import org.moeaframework.util.TypedProperties;
 import org.moeaframework.util.distributed.DistributedProblem;
 import org.moeaframework.util.distributed.FutureSolution;
@@ -356,87 +355,87 @@ public class JMetalAlgorithmsTest {
 		test("SPEA2-JMetal", permutationProblem);
 	}
 	
-	@Test(expected = ProblemException.class)
+	@Test(expected = ProviderNotFoundException.class)
 	public void testAbYSS_Subset() {
 		test("AbYSS", subsetProblem);
 	}
 	
-	@Test(expected = ProblemException.class)
+	@Test(expected = ProviderNotFoundException.class)
 	public void testCDG_Subset() {
 		test("CDG", subsetProblem);
 	}
 
-	@Test(expected = ProblemException.class)
+	@Test(expected = ProviderNotFoundException.class)
 	public void testCellDE_Subset() {
 		test("CellDE", subsetProblem);
 	}
 
-	@Test(expected = ProblemException.class)
+	@Test(expected = ProviderNotFoundException.class)
 	public void testESPEA_Subset() {
 		test("ESPEA", subsetProblem);
 	}
 	
-	@Test(expected = ProblemException.class)
+	@Test(expected = ProviderNotFoundException.class)
 	public void testGDE3_Subset() {
 		test("GDE3-JMetal", subsetProblem);
 	}
 
-	@Test(expected = ProblemException.class)
+	@Test(expected = ProviderNotFoundException.class)
 	public void testIBEA_Subset() {
 		test("IBEA-JMetal", subsetProblem);
 	}
 
-	@Test(expected = ProblemException.class)
+	@Test(expected = ProviderNotFoundException.class)
 	public void testMOCell_Subset() {
 		test("MOCell", subsetProblem);
 	}
 	
-	@Test(expected = ProblemException.class)
+	@Test(expected = ProviderNotFoundException.class)
 	public void testMOEAD_Subset() {
 		test("MOEAD-JMetal", subsetProblem);
 	}
 
-	@Test(expected = ProblemException.class)
+	@Test(expected = ProviderNotFoundException.class)
 	public void testMOCHC_Subset() {
 		test("MOCHC", subsetProblem);
 	}
 	
-	@Test(expected = ProblemException.class)
+	@Test(expected = ProviderNotFoundException.class)
 	public void testNSGAII_Subset() {
 		test("NSGAII-JMetal", subsetProblem);
 	}
 	
-	@Test(expected = ProblemException.class)
+	@Test(expected = ProviderNotFoundException.class)
 	public void testNSGAIII_Subset() {
 		test("NSGAIII-JMetal", subsetProblem);
 	}
 
-	@Test(expected = ProblemException.class)
+	@Test(expected = ProviderNotFoundException.class)
 	public void testOMOPSO_Subset() {
 		test("OMOPSO-JMetal", subsetProblem);
 	}
 
-	@Test(expected = ProblemException.class)
+	@Test(expected = ProviderNotFoundException.class)
 	public void testPAES_Subset() {
 		test("PAES-JMetal", subsetProblem);
 	}
 
-	@Test(expected = ProblemException.class)
+	@Test(expected = ProviderNotFoundException.class)
 	public void testPESA2_Subset() {
 		test("PESA2-JMetal", subsetProblem);
 	}
 
-	@Test(expected = ProblemException.class)
+	@Test(expected = ProviderNotFoundException.class)
 	public void testSMPSO_Subset() {
 		test("SMPSO-JMetal", subsetProblem);
 	}
 	
-	@Test(expected = ProblemException.class)
+	@Test(expected = ProviderNotFoundException.class)
 	public void testSMSEMOA_Subset() {
 		test("SMSEMOA-JMetal", subsetProblem);
 	}
 
-	@Test(expected = ProblemException.class)
+	@Test(expected = ProviderNotFoundException.class)
 	public void testSPEA2_Subset() {
 		test("SPEA2-JMetal", subsetProblem);
 	}
