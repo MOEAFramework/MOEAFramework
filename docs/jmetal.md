@@ -96,9 +96,10 @@ ESPEA is an Electro-Static Potential Energy Evolutionary Algorithm [^braun15].
 **Supported Types:** Real, Binary, Permutation  
 **Supported Operators:** `sbx+pm`, `1x+pf`, `pmx+swap`
 
-Parameter            | Default Value | Description
-:------------------- | :------------ | :----------
-`populationSize`     | 100           | The size of the population
+Parameter             | Default Value      | Description
+:-------------------- | :----------------- | :----------
+`populationSize`      | 100                | The size of the population
+`replacementStrategy` | `WORST_IN_ARCHIVE` | The replacement strategy - `WORST_IN_ARCHIVE`, `BEST_FEASIBLE_POSITION`, `LARGEST_DIFFERENCE`
 
 ### MOCell
 
