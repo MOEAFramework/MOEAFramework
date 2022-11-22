@@ -118,6 +118,10 @@ Parameter                 | Default Value | Description
 `hux.rate`                | 1.0           | The crossover rate for the highly disruptive recombination operator
 `bf.rate`                 | 0.35          | The mutation rate for bit-flip mutation
 
+### JMetal Variants
+
+In many cases, both the MOEA Framework and JMetal provide the same optimization algorithm.  In such cases, you can explicitly reference the JMetal
+version by appending `-JMetal` to the name.  For example, `NSGAII-JMetal`.
 
 [^cai18]: X. Cai, Z. Mei, Z. Fan and Q. Zhang, "A Constrained Decomposition Approach With Grids for Evolutionary Multiobjective Optimization," in IEEE Transactions on Evolutionary Computation, vol. 22, no. 4, pp. 564-577, Aug. 2018, doi: 10.1109/TEVC.2017.2744674.
 [^durillo08]: Durillo, J. J., Nebro, A. J., Luna, F., and Alba, E. (2008). Solving three-objective optimization problems using a new hybrid cellular genetic algorithm. In Parallel Problem Solving form Nature - PPSN X, pages 661–670. Springer.
