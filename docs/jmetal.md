@@ -133,8 +133,8 @@ Parameter                 | Default Value | Description
 
 ### JMetal Variants
 
-In many cases, both the MOEA Framework and JMetal provide the same optimization algorithm.  In such cases, you can explicitly reference the JMetal
-version by appending `-JMetal` to the name.  For example, `NSGAII-JMetal`.
+In many cases, both the MOEA Framework and JMetal provide the same optimization algorithm.  Appending `-JMetal` to the name will force the creation
+of the JMetal variant, for example, `NSGAII-JMetal`.
 
 [^braun15]: Braun, M.A., Shukla, P.K., Schmeck, H.: ‘Obtaining optimal pareto front approximations using scalarized preference information’. ACM Annual Conf. on Genetic and Evolutionary Computation, Madrid, Spain, 2015
 [^cai18]: X. Cai, Z. Mei, Z. Fan and Q. Zhang, "A Constrained Decomposition Approach With Grids for Evolutionary Multiobjective Optimization," in IEEE Transactions on Evolutionary Computation, vol. 22, no. 4, pp. 564-577, Aug. 2018, doi: 10.1109/TEVC.2017.2744674.
