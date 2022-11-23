@@ -39,8 +39,7 @@ public class HypervolumeTest extends IndicatorTest {
 	public void testEmptyReferenceSet() {
 		Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
 		NondominatedPopulation referenceSet = new NondominatedPopulation();
-		NondominatedPopulation approximationSet = ProblemFactory.getInstance()
-				.getReferenceSet("DTLZ2_2");
+		NondominatedPopulation approximationSet = ProblemFactory.getInstance().getReferenceSet("DTLZ2_2");
 
 		Hypervolume hypervolume = new Hypervolume(problem, referenceSet);
 		hypervolume.evaluate(approximationSet);
@@ -52,13 +51,11 @@ public class HypervolumeTest extends IndicatorTest {
 	@Test
 	public void testEmptyApproximationSet() {
 		Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
-		NondominatedPopulation referenceSet = ProblemFactory.getInstance()
-				.getReferenceSet("DTLZ2_2");
+		NondominatedPopulation referenceSet = ProblemFactory.getInstance().getReferenceSet("DTLZ2_2");
 		NondominatedPopulation approximationSet = new NondominatedPopulation();
 
 		Hypervolume hypervolume = new Hypervolume(problem, referenceSet);
-		Assert.assertEquals(0.0, hypervolume.evaluate(approximationSet), 
-				Settings.EPS);
+		Assert.assertEquals(0.0, hypervolume.evaluate(approximationSet), Settings.EPS);
 	}
 	
 	/**
@@ -67,8 +64,7 @@ public class HypervolumeTest extends IndicatorTest {
 	@Test
 	public void testInfeasibleApproximationSet() {
 		Problem problem = ProblemFactory.getInstance().getProblem("CF1");
-		NondominatedPopulation referenceSet = ProblemFactory.getInstance()
-				.getReferenceSet("CF1");
+		NondominatedPopulation referenceSet = ProblemFactory.getInstance().getReferenceSet("CF1");
 		NondominatedPopulation approximationSet = new NondominatedPopulation();
 		
 		Solution solution = problem.newSolution();
@@ -77,45 +73,37 @@ public class HypervolumeTest extends IndicatorTest {
 		approximationSet.add(solution);
 
 		Hypervolume hypervolume = new Hypervolume(problem, referenceSet);
-		Assert.assertEquals(0.0, hypervolume.evaluate(approximationSet), 
-				Settings.EPS);
+		Assert.assertEquals(0.0, hypervolume.evaluate(approximationSet), Settings.EPS);
 	}
 	
 	public void test(Hypervolume hypervolume) {
 		NondominatedPopulation approximationSet = new NondominatedPopulation();
 		
-		Assert.assertEquals(0.0, hypervolume.evaluate(approximationSet), 
-				Settings.EPS);
+		Assert.assertEquals(0.0, hypervolume.evaluate(approximationSet), Settings.EPS);
 		
 		approximationSet.add(TestUtils.newSolution(0.5, 0.5));
-		Assert.assertEquals(0.25, hypervolume.evaluate(approximationSet), 
-				Settings.EPS);
+		Assert.assertEquals(0.25, hypervolume.evaluate(approximationSet), Settings.EPS);
 		
 		approximationSet.clear();
 		approximationSet.add(TestUtils.newSolution(0.0, 0.0));
-		Assert.assertEquals(1.0, hypervolume.evaluate(approximationSet), 
-				Settings.EPS);
+		Assert.assertEquals(1.0, hypervolume.evaluate(approximationSet), Settings.EPS);
 		
 		approximationSet.clear();
 		approximationSet.add(TestUtils.newSolution(1.0, 1.0));
-		Assert.assertEquals(0.0, hypervolume.evaluate(approximationSet), 
-				Settings.EPS);
+		Assert.assertEquals(0.0, hypervolume.evaluate(approximationSet), Settings.EPS);
 		
 		approximationSet.clear();
 		approximationSet.add(TestUtils.newSolution(2.0, 2.0));
-		Assert.assertEquals(0.0, hypervolume.evaluate(approximationSet), 
-				Settings.EPS);
+		Assert.assertEquals(0.0, hypervolume.evaluate(approximationSet), Settings.EPS);
 		
 		approximationSet.clear();
 		approximationSet.add(TestUtils.newSolution(-0.5, -0.5));
-		Assert.assertEquals(1.0, hypervolume.evaluate(approximationSet), 
-				Settings.EPS);
+		Assert.assertEquals(1.0, hypervolume.evaluate(approximationSet), Settings.EPS);
 		
 		approximationSet.clear();
 		approximationSet.add(TestUtils.newSolution(0.5, 0.0));
 		approximationSet.add(TestUtils.newSolution(0.0, 0.5));
-		Assert.assertEquals(0.75, hypervolume.evaluate(approximationSet), 
-				Settings.EPS);
+		Assert.assertEquals(0.75, hypervolume.evaluate(approximationSet), Settings.EPS);
 	}
 
 	/**
@@ -149,28 +137,23 @@ public class HypervolumeTest extends IndicatorTest {
 	public void test2(Hypervolume hypervolume) {
 		NondominatedPopulation approximationSet = new NondominatedPopulation();
 		
-		Assert.assertEquals(0.0, hypervolume.evaluate(approximationSet), 
-				Settings.EPS);
+		Assert.assertEquals(0.0, hypervolume.evaluate(approximationSet), Settings.EPS);
 		
 		// target value is 1.5^2 / 2^2
 		approximationSet.add(TestUtils.newSolution(0.5, 0.5));
-		Assert.assertEquals(0.5625, hypervolume.evaluate(approximationSet),
-				Settings.EPS);
+		Assert.assertEquals(0.5625, hypervolume.evaluate(approximationSet),Settings.EPS);
 		
 		approximationSet.clear();
 		approximationSet.add(TestUtils.newSolution(0.0, 0.0));
-		Assert.assertEquals(1.0, hypervolume.evaluate(approximationSet), 
-				Settings.EPS);
+		Assert.assertEquals(1.0, hypervolume.evaluate(approximationSet), Settings.EPS);
 		
 		approximationSet.clear();
 		approximationSet.add(TestUtils.newSolution(1.0, 1.0));
-		Assert.assertEquals(0.25, hypervolume.evaluate(approximationSet), 
-				Settings.EPS);
+		Assert.assertEquals(0.25, hypervolume.evaluate(approximationSet), Settings.EPS);
 		
 		approximationSet.clear();
 		approximationSet.add(TestUtils.newSolution(2.0, 2.0));
-		Assert.assertEquals(0.0, hypervolume.evaluate(approximationSet), 
-				Settings.EPS);
+		Assert.assertEquals(0.0, hypervolume.evaluate(approximationSet), Settings.EPS);
 	}
 	
 	@Test
@@ -212,107 +195,5 @@ public class HypervolumeTest extends IndicatorTest {
 		Settings.PROPERTIES.remove("org.moeaframework.core.indicator.hypervolume_idealpt.DTLZ2");
 		Settings.PROPERTIES.remove("org.moeaframework.core.indicator.hypervolume_refpt.DTLZ2");
 	}
-	
-	// TODO: Replace these tests
-
-//	/**
-//	 * Tests the hypervolume calculation on a 2D continuous Pareto front.
-//	 */
-//	@Test
-//	public void testDTLZ2_2D() {
-//		test("DTLZ2_2");
-//	}
-//
-//	/**
-//	 * Tests the hypervolume calculation on a 4D continuous Pareto front.
-//	 */
-//	@Test
-//	public void testDTLZ2_4D() {
-//		test("DTLZ2_4");
-//	}
-//
-//	/**
-//	 * Tests the hypervolume calculation on a 6D continuous Pareto front.
-//	 */
-//	@Test
-//	public void testDTLZ2_6D() {
-//		test("DTLZ2_6");
-//	}
-//
-//	/**
-//	 * Tests the hypervolume calculation on a 8D continuous Pareto front.
-//	 */
-//	@Test
-//	public void testDTLZ2_8D() {
-//		test("DTLZ2_8");
-//	}
-//
-//	/**
-//	 * Tests the hypervolume calculation on a 2D disconnected Pareto front.
-//	 */
-//	@Test
-//	public void testDTLZ7_2D() {
-//		test("DTLZ7_2");
-//	}
-//
-//	/**
-//	 * Tests the hypervolume calculation on a 4D disconnected Pareto front.
-//	 */
-//	@Test
-//	public void testDTLZ7_4D() {
-//		test("DTLZ7_4");
-//	}
-//
-//	/**
-//	 * Tests the hypervolume calculation on a 6D disconnected Pareto front.
-//	 */
-//	@Test
-//	public void testDTLZ7_6D() {
-//		test("DTLZ7_6");
-//	}
-//
-//	/**
-//	 * Tests the hypervolume calculation on a 8D disconnected Pareto front.
-//	 */
-//	@Test
-//	public void testDTLZ7_8D() {
-//		test("DTLZ7_8");
-//	}
-//
-//	/**
-//	 * Generates a subset of the reference set and tests if the hypervolume
-//	 * metric is computed correctly. Evaluating only the subset is necessary
-//	 * for performance at higher dimensions.
-//	 * 
-//	 * @param problemName the problem being tested
-//	 * @throws IOException should not occur
-//	 */
-//	@SuppressWarnings({ "rawtypes", "unchecked" })
-//	protected void test(String problemName) {
-//		Problem problem = ProblemFactory.getInstance().getProblem(problemName);
-//		NondominatedPopulation referenceSet = ProblemFactory.getInstance()
-//				.getReferenceSet(problemName);
-//		NondominatedPopulation approximationSet = new NondominatedPopulation();
-//
-//		for (int i = 0; i < 25; i++) {
-//			approximationSet.add(referenceSet.get(PRNG.nextInt(referenceSet
-//					.size())));
-//		}
-//		
-//		ProblemAdapter adapter = JMetalUtils.createProblemAdapter(problem);
-//		Front theirReferenceSet = JMetalUtils.toFront(adapter, referenceSet);
-//		List theirApproximationSet = JMetalUtils.toSolutionSet(adapter, approximationSet);
-//		FrontNormalizer normalizer = new FrontNormalizer(theirReferenceSet);
-//
-//		Hypervolume myHypervolume = new Hypervolume(problem, referenceSet);
-//		org.uma.jmetal.qualityindicator.impl.hypervolume.PISAHypervolume theirHypervolume = 
-//				new org.uma.jmetal.qualityindicator.impl.hypervolume.PISAHypervolume(
-//						normalizer.normalize(theirReferenceSet));
-//
-//		double actual = myHypervolume.evaluate(approximationSet);
-//		double expected = theirHypervolume.evaluate(normalizer.normalize(theirApproximationSet));
-//
-//		Assert.assertEquals(expected, actual, TestThresholds.INDICATOR_EPS);
-//	}
 
 }
