@@ -20,6 +20,9 @@ jobs:
       with:
         java-version: ${{ matrix.java }}
         distribution: zulu
+    - name: Install required software
+      run: |
+        sudo apt install xmlstarlet
     - name: Setup up JUnit 4
       run: |
         cd lib
