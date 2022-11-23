@@ -12,7 +12,7 @@
 * [List of Algorithms](algorithms.md)
 * [List of Variation Operators](operators.md)
 * [List of Test Problems](problems.md)
-* [Integrating with JMetal](jmetal.md)
+* [Extensions (JMetal-Plugin, Generalized Decomposition, Hypervolume)](extensions.md)
 
 ## For Developers
 
