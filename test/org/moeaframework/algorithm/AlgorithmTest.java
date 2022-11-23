@@ -18,6 +18,7 @@
 package org.moeaframework.algorithm;
 
 import org.junit.Assert;
+import org.junit.Assume;
 import org.moeaframework.Analyzer;
 import org.moeaframework.Executor;
 import org.moeaframework.core.spi.AlgorithmFactory;
@@ -27,6 +28,14 @@ import org.moeaframework.util.TypedProperties;
  * Methods for comparing two algorithm implementations statistically.
  */
 public abstract class AlgorithmTest {
+	
+	/**
+	 * Call from any test to skip if JMetal does not exist.
+	 */
+	public void assumeJMetalExists() {
+		Assume.assumeTrue(AlgorithmFactory.getInstance().hasProvider(
+				"org.moeaframework.algorithm.jmetal.JMetalAlgorithms"));
+	}
 	
 	/**
 	 * Tests if two algorithms are statistically indifferent.  The default

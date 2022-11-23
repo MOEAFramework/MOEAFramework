@@ -27,6 +27,10 @@ public class ProblemProviderTest {
 				RegisteredProblemProvider registeredProvider = (RegisteredProblemProvider)provider;
 				
 				for (String name : registeredProvider.getTestableProblems()) {
+					if (name.endsWith("-JMetal")) {
+						continue;
+					}
+					
 					System.out.println("Testing " + name);
 					
 					NondominatedPopulation referenceSet = registeredProvider.getReferenceSet(name);

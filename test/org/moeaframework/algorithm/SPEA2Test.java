@@ -44,21 +44,25 @@ public class SPEA2Test extends AlgorithmTest {
 	
 	@Test
 	public void testDTLZ1() throws IOException {
+		assumeJMetalExists();
 		test("DTLZ1_2", "SPEA2", "SPEA2-JMetal", true);
 	}
 	
 	@Test
 	public void testDTLZ2() throws IOException {
+		assumeJMetalExists();
 		test("DTLZ2_2", "SPEA2", "SPEA2-JMetal", true);
 	}
 	
 	@Test
 	public void testDTLZ7() throws IOException {
+		assumeJMetalExists();
 		test("DTLZ7_2", "SPEA2", "SPEA2-JMetal", true);
 	}
 	
 	@Test
 	public void testUF1() throws IOException {
+		assumeJMetalExists();
 		test("UF1", "SPEA2", "SPEA2-JMetal", true);
 	}
 	

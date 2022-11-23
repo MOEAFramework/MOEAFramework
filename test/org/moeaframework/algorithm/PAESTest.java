@@ -34,21 +34,25 @@ public class PAESTest extends AlgorithmTest {
 	
 	@Test
 	public void testDTLZ1() throws IOException {
+		assumeJMetalExists();
 		test("DTLZ1_2", "PAES", "PAES-JMetal", true);
 	}
 	
 	@Test
 	public void testDTLZ2() throws IOException {
+		assumeJMetalExists();
 		test("DTLZ2_2", "PAES", "PAES-JMetal", true);
 	}
 	
 	@Test
 	public void testDTLZ7() throws IOException {
+		assumeJMetalExists();
 		test("DTLZ7_2", "PAES", "PAES-JMetal", true);
 	}
 	
 	@Test
 	public void testUF1() throws IOException {
+		assumeJMetalExists();
 		test("UF1", "PAES", "PAES-JMetal", true);
 	}
 

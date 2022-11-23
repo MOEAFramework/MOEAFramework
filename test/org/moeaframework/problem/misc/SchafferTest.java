@@ -29,8 +29,8 @@ public class SchafferTest extends ProblemTest {
 
 	@Test
 	@Ignore("JMetal 5.9 uses different lower and upper bounds")
-	public void testJMetal() throws Exception {
-		test(new org.uma.jmetal.problem.multiobjective.Schaffer(), new Schaffer());
+	public void testJMetal() {
+		test("Schaffer");
 	}
 	
 	@Test

@@ -35,22 +35,26 @@ public class GDE3Test extends AlgorithmTest {
 	@Test
 	@Flaky("need to investigate - differences showing up after upgrading to JMetal 5.9")
 	public void testDTLZ1() throws IOException {
+		assumeJMetalExists();
 		test("DTLZ1_2", "GDE3", "GDE3-JMetal");
 	}
 	
 	@Test
 	@Flaky("need to investigate - differences showing up after upgrading to JMetal 5.9")
 	public void testDTLZ2() throws IOException {
+		assumeJMetalExists();
 		test("DTLZ2_2", "GDE3", "GDE3-JMetal");
 	}
 	
 	@Test
 	public void testDTLZ7() throws IOException {
+		assumeJMetalExists();
 		test("DTLZ7_2", "GDE3", "GDE3-JMetal");
 	}
 	
 	@Test
 	public void testUF1() throws IOException {
+		assumeJMetalExists();
 		test("UF1", "GDE3", "GDE3-JMetal");
 	}
 

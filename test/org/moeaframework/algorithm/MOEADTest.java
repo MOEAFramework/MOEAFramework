@@ -38,21 +38,25 @@ public class MOEADTest extends AlgorithmTest {
 	
 	@Test
 	public void testDTLZ1() throws IOException {
+		assumeJMetalExists();
 		test("DTLZ1_2", "MOEAD", "MOEAD-JMetal");
 	}
 	
 	@Test
 	public void testDTLZ2() throws IOException {
+		assumeJMetalExists();
 		test("DTLZ2_2", "MOEAD", "MOEAD-JMetal");
 	}
 	
 	@Test
 	public void testDTLZ7() throws IOException {
+		assumeJMetalExists();
 		test("DTLZ7_2", "MOEAD", "MOEAD-JMetal");
 	}
 	
 	@Test
 	public void testUF1() throws IOException {
+		assumeJMetalExists();
 		test("UF1", "MOEAD", "MOEAD-JMetal");
 	}
 	

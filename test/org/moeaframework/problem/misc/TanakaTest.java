@@ -29,8 +29,8 @@ public class TanakaTest extends ProblemTest {
 
 	@Test
 	@Ignore("JMetal 5.9 modifies the constraint values causing a difference")
-	public void testJMetal() throws Exception {
-		test(new org.uma.jmetal.problem.multiobjective.Tanaka(), new Tanaka());
+	public void testJMetal() {
+		test("Tanaka");
 	}
 	
 	@Test

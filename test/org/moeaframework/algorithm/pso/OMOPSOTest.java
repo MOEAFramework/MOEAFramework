@@ -47,22 +47,26 @@ public class OMOPSOTest extends AlgorithmTest {
 	
 	@Test
 	public void testDTLZ1() throws IOException {
+		assumeJMetalExists();
 		test("DTLZ1_2", "OMOPSO", "OMOPSO-JMetal");
 	}
 	
 	@Test
 	@Ignore("need to investigate - differences showing up after upgrading to JMetal 5.9")
 	public void testDTLZ2() throws IOException {
+		assumeJMetalExists();
 		test("DTLZ2_2", "OMOPSO", "OMOPSO-JMetal");
 	}
 	
 	@Test
 	public void testDTLZ7() throws IOException {
+		assumeJMetalExists();
 		test("DTLZ7_2", "OMOPSO", "OMOPSO-JMetal");
 	}
 	
 	@Test
 	public void testUF1() throws IOException {
+		assumeJMetalExists();
 		test("UF1", "OMOPSO", "OMOPSO-JMetal");
 	}
 

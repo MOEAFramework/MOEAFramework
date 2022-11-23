@@ -26,8 +26,8 @@ import org.moeaframework.problem.ProblemTest;
 public class Viennet3Test extends ProblemTest {
 
 	@Test
-	public void testJMetal() throws Exception {
-		test(new org.uma.jmetal.problem.multiobjective.Viennet3(), new Viennet3());
+	public void testJMetal() {
+		test("Viennet3");
 	}
 	
 	@Test

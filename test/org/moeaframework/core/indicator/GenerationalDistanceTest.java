@@ -17,22 +17,14 @@
  */
 package org.moeaframework.core.indicator;
 
-import java.io.IOException;
-import java.util.List;
-
 import org.junit.Assert;
 import org.junit.Test;
-import org.moeaframework.TestThresholds;
 import org.moeaframework.TestUtils;
-import org.moeaframework.algorithm.jmetal.JMetalUtils;
-import org.moeaframework.algorithm.jmetal.ProblemAdapter;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.spi.ProblemFactory;
-import org.uma.jmetal.util.front.Front;
-import org.uma.jmetal.util.front.util.FrontNormalizer;
 
 /**
  * Tests the {@link GenerationalDistance} class against the JMetal
@@ -135,115 +127,117 @@ public class GenerationalDistanceTest extends IndicatorTest {
 		Assert.assertEquals(Math.sqrt(0.5)/2.0, gd.evaluate(approximationSet), 
 				Settings.EPS);
 	}
+	
+	// TODO: Replace these tests
 
-	/**
-	 * Tests the generational distance calculation on a 2D continuous Pareto
-	 * front.
-	 */
-	@Test
-	public void testDTLZ2_2D() {
-		test("DTLZ2_2");
-	}
-
-	/**
-	 * Tests the generational distance calculation on a 4D continuous Pareto
-	 * front.
-	 */
-	@Test
-	public void testDTLZ2_4D() {
-		test("DTLZ2_4");
-	}
-
-	/**
-	 * Tests the generational distance calculation on a 6D continuous Pareto
-	 * front.
-	 */
-	@Test
-	public void testDTLZ2_6D() {
-		test("DTLZ2_6");
-	}
-
-	/**
-	 * Tests the generational distance calculation on a 8D continuous Pareto
-	 * front.
-	 */
-	@Test
-	public void testDTLZ2_8D() {
-		test("DTLZ2_8");
-	}
-
-	/**
-	 * Tests the generational distance calculation on a 2D disconnected Pareto
-	 * front.
-	 */
-	@Test
-	public void testDTLZ7_2D() {
-		test("DTLZ7_2");
-	}
-
-	/**
-	 * Tests the generational distance calculation on a 4D disconnected Pareto
-	 * front.
-	 */
-	@Test
-	public void testDTLZ7_4D() {
-		test("DTLZ7_4");
-	}
-
-	/**
-	 * Tests the generational distance calculation on a 6D disconnected Pareto
-	 * front.
-	 */
-	@Test
-	public void testDTLZ7_6D() {
-		test("DTLZ7_6");
-	}
-
-	/**
-	 * Tests the generational distance calculation on a 8D disconnected Pareto
-	 * front.
-	 */
-	@Test
-	public void testDTLZ7_8D() {
-		test("DTLZ7_8");
-	}
-
-	/**
-	 * Generates a random approximation set and tests if the generational
-	 * distance is computed correctly.
-	 * 
-	 * @param problemName the problem being tested
-	 * @throws IOException should not occur
-	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	protected void test(String problemName) {
-		Problem problem = ProblemFactory.getInstance().getProblem(problemName);
-		NondominatedPopulation referenceSet = ProblemFactory.getInstance()
-				.getReferenceSet(problemName);
-		NondominatedPopulation approximationSet = generateApproximationSet(
-				problemName, 100);
-		
-		ProblemAdapter adapter = JMetalUtils.createProblemAdapter(problem);
-		Front theirReferenceSet = JMetalUtils.toFront(adapter, JMetalUtils.toSolutionSet(adapter, referenceSet));
-		List theirApproximationSet = JMetalUtils.toSolutionSet(adapter, approximationSet);
-		FrontNormalizer normalizer = new FrontNormalizer(theirReferenceSet);
-
-		GenerationalDistance myIndicator = new GenerationalDistance(problem,
-				referenceSet);
-		org.uma.jmetal.qualityindicator.impl.GenerationalDistance theirIndicator = 
-				new org.uma.jmetal.qualityindicator.impl.GenerationalDistance(
-						normalizer.normalize(theirReferenceSet));
-
-		// test against random approximation set
-		double actual = myIndicator.evaluate(approximationSet);
-		double expected = theirIndicator.evaluate(normalizer.normalize(theirApproximationSet));
-
-		Assert.assertEquals(expected, actual, TestThresholds.INDICATOR_EPS);
-
-		// test against reference set
-		actual = myIndicator.evaluate(referenceSet);
-
-		Assert.assertEquals(0.0, actual, TestThresholds.INDICATOR_EPS);
-	}
+//	/**
+//	 * Tests the generational distance calculation on a 2D continuous Pareto
+//	 * front.
+//	 */
+//	@Test
+//	public void testDTLZ2_2D() {
+//		test("DTLZ2_2");
+//	}
+//
+//	/**
+//	 * Tests the generational distance calculation on a 4D continuous Pareto
+//	 * front.
+//	 */
+//	@Test
+//	public void testDTLZ2_4D() {
+//		test("DTLZ2_4");
+//	}
+//
+//	/**
+//	 * Tests the generational distance calculation on a 6D continuous Pareto
+//	 * front.
+//	 */
+//	@Test
+//	public void testDTLZ2_6D() {
+//		test("DTLZ2_6");
+//	}
+//
+//	/**
+//	 * Tests the generational distance calculation on a 8D continuous Pareto
+//	 * front.
+//	 */
+//	@Test
+//	public void testDTLZ2_8D() {
+//		test("DTLZ2_8");
+//	}
+//
+//	/**
+//	 * Tests the generational distance calculation on a 2D disconnected Pareto
+//	 * front.
+//	 */
+//	@Test
+//	public void testDTLZ7_2D() {
+//		test("DTLZ7_2");
+//	}
+//
+//	/**
+//	 * Tests the generational distance calculation on a 4D disconnected Pareto
+//	 * front.
+//	 */
+//	@Test
+//	public void testDTLZ7_4D() {
+//		test("DTLZ7_4");
+//	}
+//
+//	/**
+//	 * Tests the generational distance calculation on a 6D disconnected Pareto
+//	 * front.
+//	 */
+//	@Test
+//	public void testDTLZ7_6D() {
+//		test("DTLZ7_6");
+//	}
+//
+//	/**
+//	 * Tests the generational distance calculation on a 8D disconnected Pareto
+//	 * front.
+//	 */
+//	@Test
+//	public void testDTLZ7_8D() {
+//		test("DTLZ7_8");
+//	}
+//
+//	/**
+//	 * Generates a random approximation set and tests if the generational
+//	 * distance is computed correctly.
+//	 * 
+//	 * @param problemName the problem being tested
+//	 * @throws IOException should not occur
+//	 */
+//	@SuppressWarnings({ "rawtypes", "unchecked" })
+//	protected void test(String problemName) {
+//		Problem problem = ProblemFactory.getInstance().getProblem(problemName);
+//		NondominatedPopulation referenceSet = ProblemFactory.getInstance()
+//				.getReferenceSet(problemName);
+//		NondominatedPopulation approximationSet = generateApproximationSet(
+//				problemName, 100);
+//		
+//		ProblemAdapter adapter = JMetalUtils.createProblemAdapter(problem);
+//		Front theirReferenceSet = JMetalUtils.toFront(adapter, JMetalUtils.toSolutionSet(adapter, referenceSet));
+//		List theirApproximationSet = JMetalUtils.toSolutionSet(adapter, approximationSet);
+//		FrontNormalizer normalizer = new FrontNormalizer(theirReferenceSet);
+//
+//		GenerationalDistance myIndicator = new GenerationalDistance(problem,
+//				referenceSet);
+//		org.uma.jmetal.qualityindicator.impl.GenerationalDistance theirIndicator = 
+//				new org.uma.jmetal.qualityindicator.impl.GenerationalDistance(
+//						normalizer.normalize(theirReferenceSet));
+//
+//		// test against random approximation set
+//		double actual = myIndicator.evaluate(approximationSet);
+//		double expected = theirIndicator.evaluate(normalizer.normalize(theirApproximationSet));
+//
+//		Assert.assertEquals(expected, actual, TestThresholds.INDICATOR_EPS);
+//
+//		// test against reference set
+//		actual = myIndicator.evaluate(referenceSet);
+//
+//		Assert.assertEquals(0.0, actual, TestThresholds.INDICATOR_EPS);
+//	}
 
 }

@@ -29,8 +29,8 @@ public class SrinivasTest extends ProblemTest {
 
 	@Test
 	@Ignore("JMetal 5.9 modifies the constraint values")
-	public void testJMetal() throws Exception {
-		test(new org.uma.jmetal.problem.multiobjective.Srinivas(), new Srinivas());
+	public void testJMetal() {
+		test("Srinivas");
 	}
 	
 	@Test
