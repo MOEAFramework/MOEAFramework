@@ -36,8 +36,7 @@ jobs:
       
         cd lib
         #wget https://search.maven.org/remotecontent?filepath=org/moeaframework/jmetal-plugin/${version}/jmetal-plugin-${version}-jar-with-dependencies.jar
-        #https://github.com/MOEAFramework/JMetal-Plugin/releases/download/v${version}/jmetal-plugin-${version}-jar-with-dependencies.jar
-        https://github.com/MOEAFramework/JMetal-Plugin/releases/download/untagged-7ea50f6f36f149430024/jmetal-plugin-5.11-jar-with-dependencies.jar
+        wget https://github.com/MOEAFramework/JMetal-Plugin/releases/download/v${version}/jmetal-plugin-${version}-jar-with-dependencies.jar
     - name: Test with Ant - Java ${{ matrix.java }}
       run: ant -DON_CI=true -f test.xml
     - name: Upload test results
