@@ -19,8 +19,6 @@ package org.moeaframework.algorithm.pso;
 
 import java.io.IOException;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,16 +32,6 @@ import org.moeaframework.algorithm.AlgorithmTest;
 @RunWith(CIRunner.class)
 @Retryable
 public class OMOPSOTest extends AlgorithmTest {
-	
-	@BeforeClass
-	public static void setUp() {
-		OMOPSO.TESTING_MODE = true;
-	}
-	
-	@AfterClass
-	public static void tearDown() {
-		OMOPSO.TESTING_MODE = false;
-	}
 	
 	@Test
 	public void testDTLZ1() throws IOException {
