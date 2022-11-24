@@ -20,12 +20,11 @@ package org.moeaframework.algorithm;
 import java.io.IOException;
 
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.moeaframework.Retryable;
 import org.moeaframework.CIRunner;
 import org.moeaframework.Flaky;
+import org.moeaframework.Retryable;
 import org.moeaframework.core.NondominatedSortingPopulation;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;

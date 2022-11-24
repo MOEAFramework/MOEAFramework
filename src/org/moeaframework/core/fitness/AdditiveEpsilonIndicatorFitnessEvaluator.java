@@ -23,8 +23,7 @@ import org.moeaframework.core.Solution;
 /**
  * Indicator-based fitness using the additive &epsilon;-indicator.
  */
-public class AdditiveEpsilonIndicatorFitnessEvaluator extends
-		IndicatorFitnessEvaluator {
+public class AdditiveEpsilonIndicatorFitnessEvaluator extends IndicatorFitnessEvaluator {
 
 	/**
 	 * Constructs an additive &epsilon;-indicator fitness evaluator.
@@ -71,13 +70,11 @@ public class AdditiveEpsilonIndicatorFitnessEvaluator extends
 	 * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 	 */
 	@Override
-	protected double calculateIndicator(Solution solution1, 
-			Solution solution2) {
+	protected double calculateIndicator(Solution solution1, Solution solution2) {
 		double eps = Double.NEGATIVE_INFINITY;
 
 		for (int i = 0; i < getProblem().getNumberOfObjectives(); i++) {
-			double temp_eps = solution1.getObjective(i) - 
-					solution2.getObjective(i);
+			double temp_eps = solution1.getObjective(i) - solution2.getObjective(i);
 
 			if (temp_eps > eps) {
 				eps = temp_eps;

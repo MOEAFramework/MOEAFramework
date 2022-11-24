@@ -36,7 +36,7 @@ public class IndicatorFitnessEvaluatorTest {
 	 */
 	@Test
 	public void testRemoveAndUpdate() {
-		Problem problem = new MockRealProblem();
+		Problem problem = new MockRealProblem(2);
 		
 		Population population = new Population();
 		population.add(TestUtils.newSolution(0.0, 1.0));

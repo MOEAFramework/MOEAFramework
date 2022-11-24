@@ -52,11 +52,9 @@ public class HypervolumeFitnessEvaluator extends IndicatorFitnessEvaluator {
 	protected double calculateIndicator(Solution solution1, 
 			Solution solution2) {
 		if (dominanceComparator.compare(solution1, solution2) < 0) {
-			return -calculateHypervolume(solution1, solution2, getProblem()
-					.getNumberOfObjectives());
+			return -calculateHypervolume(solution1, solution2, getProblem().getNumberOfObjectives());
 		} else {
-			return calculateHypervolume(solution2, solution1, getProblem()
-					.getNumberOfObjectives());
+			return calculateHypervolume(solution2, solution1, getProblem().getNumberOfObjectives());
 		}
 	}
 
@@ -105,8 +103,7 @@ public class HypervolumeFitnessEvaluator extends IndicatorFitnessEvaluator {
 	 * @return the hypervolume of the portion of the objective space that is
 	 *         dominated by {@code solution1} but not by {@code solution2}.
 	 */
-	protected double calculateHypervolume(Solution solution1,
-			Solution solution2, int d) {
+	public double calculateHypervolume(Solution solution1, Solution solution2, int d) {
 		double max = rho;
 		double a = solution1.getObjective(d - 1);
 		double b = max;
@@ -123,13 +120,10 @@ public class HypervolumeFitnessEvaluator extends IndicatorFitnessEvaluator {
 			}
 		} else {
 			if (a < b) {
-				volume = calculateHypervolume(solution1, null, d - 1) * 
-						(b - a) / rho
-						+ calculateHypervolume(solution1, solution2, d - 1) * 
-						(max - b) / rho;
+				volume = calculateHypervolume(solution1, null, d - 1) * (b - a) / rho
+						+ calculateHypervolume(solution1, solution2, d - 1) * (max - b) / rho;
 			} else {
-				volume = calculateHypervolume(solution1, solution2, d - 1) *
-						(max - a) / rho;
+				volume = calculateHypervolume(solution1, solution2, d - 1) * (max - a) / rho;
 			}
 		}
 
