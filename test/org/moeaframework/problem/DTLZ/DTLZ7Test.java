@@ -27,83 +27,27 @@ public class DTLZ7Test extends ProblemTest {
 
 	/**
 	 * Tests the 2D case.
-	 * 
-	 * @throws Exception if a JMetal error occurred
 	 */
 	@Test
-	public void testDTLZ7_2D() throws Exception {
+	public void testDTLZ7_2D() {
 		test(2);
 	}
 
 	/**
 	 * Tests the 3D case.
-	 * 
-	 * @throws Exception if a JMetal error occurred
 	 */
 	@Test
-	public void testDTLZ7_3D() throws Exception {
+	public void testDTLZ7_3D() {
 		test(3);
-	}
-
-	/**
-	 * Tests the 4D case.
-	 * 
-	 * @throws Exception if a JMetal error occurred
-	 */
-	@Test
-	public void testDTLZ7_4D() throws Exception {
-		test(4);
-	}
-
-	/**
-	 * Tests the 5D case.
-	 * 
-	 * @throws Exception if a JMetal error occurred
-	 */
-	@Test
-	public void testDTLZ7_5D() throws Exception {
-		test(5);
-	}
-
-	/**
-	 * Tests the 6D case.
-	 * 
-	 * @throws Exception if a JMetal error occurred
-	 */
-	@Test
-	public void testDTLZ7_6D() throws Exception {
-		test(6);
-	}
-
-	/**
-	 * Tests the 7D case.
-	 * 
-	 * @throws Exception if a JMetal error occurred
-	 */
-	@Test
-	public void testDTLZ7_7D() throws Exception {
-		test(7);
-	}
-
-	/**
-	 * Tests the 8D case.
-	 * 
-	 * @throws Exception if a JMetal error occurred
-	 */
-	@Test
-	public void testDTLZ7_8D() throws Exception {
-		test(8);
 	}
 
 	/**
 	 * Asserts that the {@link DTLZ7#evaluate} method works correctly.
 	 * 
 	 * @param M the number of objectives
-	 * @throws Exception if a JMetal error occurred
 	 */
-	protected void test(int M) throws Exception {
-		test(new org.uma.jmetal.problem.multiobjective.dtlz.DTLZ7(M + 19, M),
-				new org.moeaframework.problem.DTLZ.DTLZ7(M));
+	protected void test(int M) {
+		test("DTLZ7_" + M);
 	}
 
 }

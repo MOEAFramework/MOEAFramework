@@ -57,4 +57,24 @@ public class AbstractFactory<T> implements Iterable<T> {
 		return new Concaterator<T>(customProviders.iterator(), providers.iterator());
 	}
 	
+	/**
+	 * Returns {@code true} if this factory contains a provider with the given name.
+	 * This will match either the class' fully-qualified name or simple name.
+	 * 
+	 * @param name the class name, either simple or including the package
+	 * @return {@code true} if this factory contains the provider; {@code false} otherwise
+	 */
+	public boolean hasProvider(String name) {
+		for (T provider : this) {
+			Class<?> providerType = provider.getClass();
+			
+			if (name.equalsIgnoreCase(providerType.getSimpleName()) ||
+					name.equalsIgnoreCase(providerType.getName())) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
 }

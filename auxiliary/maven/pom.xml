@@ -78,21 +78,9 @@
 			<version>3.3.0</version>
 		</dependency>
 		<dependency>
-			<groupId>org.uma.jmetal</groupId>
-			<artifactId>jmetal-algorithm</artifactId>
-			<version>5.9</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.uma.jmetal</groupId>
-			<artifactId>jmetal-core</artifactId>
-			<version>5.9</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.uma.jmetal</groupId>
-			<artifactId>jmetal-problem</artifactId>
-			<version>5.9</version>
+			<groupId>org.moeaframework</groupId>
+			<artifactId>jmetal-plugin</artifactId>
+			<version>5.11.1</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>

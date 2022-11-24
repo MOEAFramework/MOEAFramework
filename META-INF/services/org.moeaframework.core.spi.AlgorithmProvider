@@ -1,3 +1,2 @@
 org.moeaframework.algorithm.DefaultAlgorithms
 org.moeaframework.algorithm.pisa.PISAAlgorithms
-org.moeaframework.algorithm.jmetal.IndirectJMetalAlgorithms

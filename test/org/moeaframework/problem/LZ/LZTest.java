@@ -19,93 +19,54 @@ package org.moeaframework.problem.LZ;
 
 import org.junit.Ignore;
 import org.junit.Test;
-import org.moeaframework.core.Problem;
 import org.moeaframework.problem.ProblemTest;
 
 public class LZTest extends ProblemTest {
 
 	@Test
-	@Ignore("JMetal 5.9 uses the incorrect number of variables (10 instead of 30)")
-	public void testLZ1() throws Exception {
+	@Ignore("JMetal uses 10 variables instead of 30")
+	public void testLZ1() {
 		test("LZ1");
 	}
 
 	@Test
-	public void testLZ2() throws Exception {
+	public void testLZ2() {
 		test("LZ2");
 	}
 
 	@Test
-	public void testLZ3() throws Exception {
+	public void testLZ3() {
 		test("LZ3");
 	}
 
 	@Test
-	public void testLZ4() throws Exception {
+	public void testLZ4() {
 		test("LZ4");
 	}
 
 	@Test
-	public void testLZ5() throws Exception {
+	public void testLZ5() {
 		test("LZ5");
 	}
 
 	@Test
-	public void testLZ6() throws Exception {
+	public void testLZ6() {
 		test("LZ6");
 	}
 
 	@Test
-	public void testLZ7() throws Exception {
+	public void testLZ7() {
 		test("LZ7");
 	}
 
 	@Test
-	public void testLZ8() throws Exception {
+	public void testLZ8() {
 		test("LZ8");
 	}
 
 	@Test
-	public void testLZ9() throws Exception {
+	public void testLZ9() {
 		test("LZ9");
-	}
-
-	public void test(String problem) throws Exception {
-		org.uma.jmetal.problem.DoubleProblem problemA;
-		Problem problemB;
-
-		if (problem.equals("LZ1")) {
-			problemA = new org.uma.jmetal.problem.multiobjective.lz09.LZ09F1();
-			problemB = new org.moeaframework.problem.LZ.LZ1();
-		} else if (problem.equals("LZ2")) {
-			problemA = new org.uma.jmetal.problem.multiobjective.lz09.LZ09F2();
-			problemB = new org.moeaframework.problem.LZ.LZ2();
-		} else if (problem.equals("LZ3")) {
-			problemA = new org.uma.jmetal.problem.multiobjective.lz09.LZ09F3();
-			problemB = new org.moeaframework.problem.LZ.LZ3();
-		} else if (problem.equals("LZ4")) {
-			problemA = new org.uma.jmetal.problem.multiobjective.lz09.LZ09F4();
-			problemB = new org.moeaframework.problem.LZ.LZ4();
-		} else if (problem.equals("LZ5")) {
-			problemA = new org.uma.jmetal.problem.multiobjective.lz09.LZ09F5();
-			problemB = new org.moeaframework.problem.LZ.LZ5();
-		} else if (problem.equals("LZ6")) {
-			problemA = new org.uma.jmetal.problem.multiobjective.lz09.LZ09F6();
-			problemB = new org.moeaframework.problem.LZ.LZ6();
-		} else if (problem.equals("LZ7")) {
-			problemA = new org.uma.jmetal.problem.multiobjective.lz09.LZ09F7();
-			problemB = new org.moeaframework.problem.LZ.LZ7();
-		} else if (problem.equals("LZ8")) {
-			problemA = new org.uma.jmetal.problem.multiobjective.lz09.LZ09F8();
-			problemB = new org.moeaframework.problem.LZ.LZ8();
-		} else if (problem.equals("LZ9")) {
-			problemA = new org.uma.jmetal.problem.multiobjective.lz09.LZ09F9();
-			problemB = new org.moeaframework.problem.LZ.LZ9();
-		} else {
-			throw new IllegalArgumentException();
-		}
-
-		test(problemA, problemB);
 	}
 
 }

@@ -44,21 +44,25 @@ public class SPEA2Test extends AlgorithmTest {
 	
 	@Test
 	public void testDTLZ1() throws IOException {
+		assumeJMetalExists();
 		test("DTLZ1_2", "SPEA2", "SPEA2-JMetal", true);
 	}
 	
 	@Test
 	public void testDTLZ2() throws IOException {
+		assumeJMetalExists();
 		test("DTLZ2_2", "SPEA2", "SPEA2-JMetal", true);
 	}
 	
 	@Test
 	public void testDTLZ7() throws IOException {
+		assumeJMetalExists();
 		test("DTLZ7_2", "SPEA2", "SPEA2-JMetal", true);
 	}
 	
 	@Test
 	public void testUF1() throws IOException {
+		assumeJMetalExists();
 		test("UF1", "SPEA2", "SPEA2-JMetal", true);
 	}
 	
@@ -90,7 +94,7 @@ public class SPEA2Test extends AlgorithmTest {
 	
 	@Test
 	public void testTruncate1() {
-		SPEA2 spea2 = new SPEA2(new MockRealProblem(), null, null, 0, 1);
+		SPEA2 spea2 = new SPEA2(new MockRealProblem(2), null, null, 0, 1);
 		
 		Solution solution1 = TestUtils.newSolution(0.0, 1.0);
 		Solution solution2 = TestUtils.newSolution(1.0, 0.0);
@@ -112,7 +116,7 @@ public class SPEA2Test extends AlgorithmTest {
 	
 	@Test
 	public void testTruncate2() {
-		SPEA2 spea2 = new SPEA2(new MockRealProblem(), null, null, 0, 1);
+		SPEA2 spea2 = new SPEA2(new MockRealProblem(2), null, null, 0, 1);
 		
 		Solution solution1 = TestUtils.newSolution(0.0, 1.0);
 		Solution solution2 = TestUtils.newSolution(1.0, 0.0);
@@ -133,7 +137,7 @@ public class SPEA2Test extends AlgorithmTest {
 	
 	@Test
 	public void testFitnessNondominated() {
-		SPEA2 spea2 = new SPEA2(new MockRealProblem(), null, null, 0, 1);
+		SPEA2 spea2 = new SPEA2(new MockRealProblem(2), null, null, 0, 1);
 		
 		Solution solution1 = TestUtils.newSolution(0.0, 1.0);
 		Solution solution2 = TestUtils.newSolution(1.0, 0.0);
@@ -153,7 +157,7 @@ public class SPEA2Test extends AlgorithmTest {
 	
 	@Test
 	public void testFitnessDominated() {
-		SPEA2 spea2 = new SPEA2(new MockRealProblem(), null, null, 0, 1);
+		SPEA2 spea2 = new SPEA2(new MockRealProblem(2), null, null, 0, 1);
 		
 		Solution solution1 = TestUtils.newSolution(0.0, 0.0);
 		Solution solution2 = TestUtils.newSolution(1.0, 1.0);

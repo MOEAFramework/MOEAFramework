@@ -47,7 +47,7 @@ public class PESA2Test extends AlgorithmTest {
 		Solution solution2 = TestUtils.newSolution(1.0, 0.0);
 		Solution solution3 = TestUtils.newSolution(0.001, 0.999);
 		
-		Problem problem = new MockRealProblem();
+		Problem problem = new MockRealProblem(2);
 		PESA2 pesa2 = new PESA2(problem, null, null, 8, 100);
 		pesa2.getArchive().add(solution1);
 		pesa2.getArchive().add(solution2);
@@ -71,7 +71,7 @@ public class PESA2Test extends AlgorithmTest {
 		Solution solution2 = TestUtils.newSolution(1.0, 0.0);
 		Solution solution3 = TestUtils.newSolution(0.001, 0.999);
 		
-		Problem problem = new MockRealProblem();
+		Problem problem = new MockRealProblem(2);
 		PESA2 pesa2 = new PESA2(problem, null, null, 8, 100);
 		pesa2.getArchive().add(solution1);
 		pesa2.getArchive().add(solution2);
@@ -104,21 +104,25 @@ public class PESA2Test extends AlgorithmTest {
 	
 	@Test
 	public void testDTLZ1() throws IOException {
+		assumeJMetalExists();
 		test("DTLZ1_2", "PESA2", "PESA2-JMetal", true);
 	}
 	
 	@Test
 	public void testDTLZ2() throws IOException {
+		assumeJMetalExists();
 		test("DTLZ2_2", "PESA2", "PESA2-JMetal", true);
 	}
 	
 	@Test
 	public void testDTLZ7() throws IOException {
+		assumeJMetalExists();
 		test("DTLZ7_2", "PESA2", "PESA2-JMetal", true);
 	}
 	
 	@Test
 	public void testUF1() throws IOException {
+		assumeJMetalExists();
 		test("UF1", "PESA2", "PESA2-JMetal", true);
 	}
 
