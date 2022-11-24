@@ -23,7 +23,7 @@ import org.moeaframework.problem.ProblemTest;
 public class KursaweTest extends ProblemTest {
 
 	@Test
-	public void testJMetal() throws Exception {
+	public void testJMetal() {
 		test("Kursawe");
 	}
 

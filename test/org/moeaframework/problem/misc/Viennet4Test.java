@@ -18,7 +18,6 @@
 package org.moeaframework.problem.misc;
 
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.moeaframework.TestUtils;
 import org.moeaframework.core.Problem;
@@ -28,7 +27,6 @@ import org.moeaframework.problem.ProblemTest;
 public class Viennet4Test extends ProblemTest {
 
 	@Test
-	@Ignore("showing different in JMetal, need to investigate")
 	public void testJMetal() {
 		test("Viennet4");
 	}

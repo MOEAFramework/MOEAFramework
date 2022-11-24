@@ -34,7 +34,7 @@ public class DTLZ1Test extends ProblemTest {
 	 * Tests the 2D case.
 	 */
 	@Test
-	public void testDTLZ1_2D() throws Exception {
+	public void testDTLZ1_2D() {
 		test(2);
 		testReferenceSet(2);
 	}
@@ -43,7 +43,7 @@ public class DTLZ1Test extends ProblemTest {
 	 * Tests the 3D case.
 	 */
 	@Test
-	public void testDTLZ1_3D() throws Exception {
+	public void testDTLZ1_3D() {
 		test(3);
 		testReferenceSet(3);
 	}

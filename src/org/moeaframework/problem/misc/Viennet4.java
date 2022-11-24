@@ -61,7 +61,7 @@ public class Viennet4 extends AbstractProblem {
 		//subtract Double.MIN_VALUE so that the constraint is satisfied only if
 		//its values is strictly greater than 0
 		double c1 = -4.0*x + 4.0 - y - Double.MIN_VALUE;
-		double c2 = x + 1 - Double.MIN_VALUE;
+		double c2 = x + 1.0 - Double.MIN_VALUE;
 		double c3 = y - x + 2.0 - Double.MIN_VALUE;
 		
 		solution.setObjective(0, f1);

@@ -11,3 +11,4 @@ maven/
 *~
 .pydevproject
 jMetal.log*
+lib/jmetal-plugin-*.jar

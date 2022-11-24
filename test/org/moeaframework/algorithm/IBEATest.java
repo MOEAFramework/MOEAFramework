@@ -45,7 +45,7 @@ public class IBEATest extends AlgorithmTest {
 	}
 	
 	@Test
-	@Flaky("need to investigate - flaky after upgrading to JMetal 5.9")
+	@Flaky
 	public void testDTLZ7() throws IOException {
 		assumeJMetalExists();
 		test("DTLZ7_2", "IBEA", "IBEA-JMetal");

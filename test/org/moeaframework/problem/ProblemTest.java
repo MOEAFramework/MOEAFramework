@@ -17,6 +17,7 @@
  */
 package org.moeaframework.problem;
 
+import org.junit.Assert;
 import org.junit.Assume;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.TestUtils;
@@ -37,19 +38,29 @@ public abstract class ProblemTest {
 		Assume.assumeTrue(ProblemFactory.getInstance().hasProvider(
 				"org.moeaframework.problem.jmetal.JMetalProblems"));
 	}
-
+	
 	/**
 	 * Tests the MOEA Framework implementation against the JMetal implementation.
 	 * 
 	 * @param problem the problem name
 	 */
 	public void test(String problem) {
+		test(problem, true);
+	}
+
+	/**
+	 * Tests the MOEA Framework implementation against the JMetal implementation.
+	 * 
+	 * @param problem the problem name
+	 * @param exactConstraints if {@code true}, require identical constraint values
+	 */
+	public void test(String problem, boolean exactConstraints) {
 		assumeJMetalExists();
 		
 		Problem problemA = ProblemFactory.getInstance().getProblem(problem);
 		Problem problemB = ProblemFactory.getInstance().getProblem(problem + "-JMetal");
 
-		test(problemA, problemB);
+		test(problemA, problemB, exactConstraints);
 	}
 	
 	/**
@@ -57,8 +68,9 @@ public abstract class ProblemTest {
 	 * 
 	 * @param problemA the first problem
 	 * @param problemB the second problem
+	 * @param exactConstraints if {@code true}, require identical constraint values
 	 */
-	protected void test(Problem problemA, Problem problemB) {
+	protected void test(Problem problemA, Problem problemB, boolean exactConstraints) {
 		RandomInitialization initialization = new RandomInitialization(problemA, 1);
 		
 		for (int i = 0; i < TestThresholds.SAMPLES; i++) {
@@ -67,8 +79,8 @@ public abstract class ProblemTest {
 			
 			problemA.evaluate(solutionA);
 			problemB.evaluate(solutionB);
-
-			compare(solutionA, solutionB);
+			
+			compare(solutionA, solutionB, exactConstraints);
 		}
 	}
 
@@ -77,14 +89,20 @@ public abstract class ProblemTest {
 	 * 
 	 * @param solutionA the first solution
 	 * @param solutionB the second solution
+	 * @param exactConstraints if {@code true}, require identical constraint values
 	 */
-	protected void compare(Solution solutionA, Solution solutionB) {
+	protected void compare(Solution solutionA, Solution solutionB, boolean exactConstraints) {
 		for (int i = 0; i < solutionA.getNumberOfObjectives(); i++) {
 			TestUtils.assertEquals(solutionA.getObjective(i), solutionB.getObjective(i));
 		}
 		
 		for (int i = 0; i < solutionA.getNumberOfConstraints(); i++) {
-			TestUtils.assertEquals(solutionA.getConstraint(i), solutionB.getConstraint(i));
+			if (exactConstraints) {
+				TestUtils.assertEquals(solutionA.getConstraint(i), solutionB.getConstraint(i));
+			} else {
+				// only check if constraints are feasible (== 0) or infeasible (!= 0)
+				Assert.assertEquals(solutionA.getConstraint(i) != 0, solutionB.getConstraint(i) != 0);
+			}
 		}
 	}
 

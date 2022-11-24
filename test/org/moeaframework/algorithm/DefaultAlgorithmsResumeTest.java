@@ -57,8 +57,7 @@ import org.moeaframework.util.TypedProperties;
 public class DefaultAlgorithmsResumeTest {
 	
 	/**
-	 * The number of steps to perform.  Must be > 100 to test
-	 * {@link AdaptiveTimeContinuation}.
+	 * The number of steps to perform.  Must be > 100 to test {@link AdaptiveTimeContinuation}.
 	 */
 	private static final int N = 200;
 

@@ -25,8 +25,8 @@ public class OKA1Test extends ProblemTest {
 
 	@Test
 	@Ignore("Problem no longer in JMetal 5.9")
-	public void testJMetal() throws Exception {
-		//test(new org.uma.jmetal.problem.multiobjective.OKA1(), new OKA1());
+	public void testJMetal() {
+		//test("OKA1");
 	}
 
 }
