@@ -316,7 +316,47 @@ public class TypedProperties {
 			return Boolean.parseBoolean(value);
 		}
 	}
+	
+	/**
+	 * Returns the value of the property with the specified name as an Enum.  If
+	 * no such property is set, returns the default Enum value.
+	 * 
+	 * @param <T> the Enum type
+	 * @param key the property name
+	 * @param enumType the Enum class
+	 * @return the value of the property with the specified name as an Enum
+	 */
+	public <T extends Enum<?>> T getEnum(String key, Class<T> enumType) {
+		return getEnum(key, enumType, enumType.getEnumConstants()[0]);
+	}
+	
+	/**
+	 * Returns the value of the property with the specified name as an Enum; or
+	 * {@code defaultValue} if no property with the specified name exists.  Unlike using
+	 * {@link Enum#valueOf(Class, String)}, this version is case-insensitive.
+	 * 
+	 * @param <T> the Enum type
+	 * @param key the property name
+	 * @param enumType the Enum class
+	 * @param defaultValue the default value
+	 * @return the value of the property with the specified name as an Enum
+	 */
+	public <T extends Enum<?>> T getEnum(String key, Class<T> enumType, T defaultValue) {
+		String value = getString(key, null);
+		
+		if (value == null) {
+			return defaultValue;
+		} else {
+			for (T enumConstant : enumType.getEnumConstants()) {
+				if (enumConstant.name().equalsIgnoreCase(value)) {
+					return enumConstant;
+				}
+			}
 
+			throw new IllegalArgumentException("enum " + enumType.getSimpleName() + " has no constant of value " + value);
+		}
+	}
+	
 	/**
 	 * Returns the value of the property with the specified name as a
 	 * {@code String} array; or {@code defaultValues} if no property with the
