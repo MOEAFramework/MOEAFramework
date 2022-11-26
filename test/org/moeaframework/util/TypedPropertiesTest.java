@@ -167,6 +167,29 @@ public class TypedPropertiesTest {
 	}
 	
 	@Test
+	public void testEnum() {
+		properties.setEnum("enum", TestEnum.FOO);
+		Assert.assertEquals(TestEnum.FOO, properties.getEnum("enum", TestEnum.class));
+		
+		properties.setString("enum_string", "bar");
+		Assert.assertEquals(TestEnum.BAR, properties.getEnum("enum_string", TestEnum.class));
+		
+		Assert.assertEquals(TestEnum.FOO, properties.getEnum("missing_enum", TestEnum.class));
+		Assert.assertEquals(TestEnum.BAR, properties.getEnum("missing_enum", TestEnum.class, TestEnum.BAR));
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testInvalidEnum() {
+		properties.setString("enum_invalid", "baz");
+		Assert.assertEquals(TestEnum.BAR, properties.getEnum("enum_invalid", TestEnum.class));
+	}
+	
+	@Test(expected = NullPointerException.class)
+	public void testSetNullEnum() {
+		properties.setEnum("enum_null", null);
+	}
+	
+	@Test
 	public void testPrimitives() {
 		properties.setString("string", "foo,bar");
 		properties.setDouble("double", 2.71);
@@ -281,6 +304,11 @@ public class TypedPropertiesTest {
 		Assert.assertFalse(properties.getUnaccessedProperties().isEmpty());
 		Assert.assertTrue(properties.getUnaccessedProperties().contains("Baz"));
 		Assert.assertTrue(properties.getUnaccessedProperties().contains("BAZ"));
+	}
+	
+	private enum TestEnum {
+		FOO,
+		BAR
 	}
 
 }
