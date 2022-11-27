@@ -316,7 +316,47 @@ public class TypedProperties {
 			return Boolean.parseBoolean(value);
 		}
 	}
+	
+	/**
+	 * Returns the value of the property with the specified name as an Enum.  If
+	 * no such property is set, returns the default Enum value.
+	 * 
+	 * @param <T> the Enum type
+	 * @param key the property name
+	 * @param enumType the Enum class
+	 * @return the value of the property with the specified name as an Enum
+	 */
+	public <T extends Enum<?>> T getEnum(String key, Class<T> enumType) {
+		return getEnum(key, enumType, enumType.getEnumConstants()[0]);
+	}
+	
+	/**
+	 * Returns the value of the property with the specified name as an Enum; or
+	 * {@code defaultValue} if no property with the specified name exists.  Unlike using
+	 * {@link Enum#valueOf(Class, String)}, this version is case-insensitive.
+	 * 
+	 * @param <T> the Enum type
+	 * @param key the property name
+	 * @param enumType the Enum class
+	 * @param defaultValue the default value
+	 * @return the value of the property with the specified name as an Enum
+	 */
+	public <T extends Enum<?>> T getEnum(String key, Class<T> enumType, T defaultValue) {
+		String value = getString(key, null);
+		
+		if (value == null) {
+			return defaultValue;
+		} else {
+			for (T enumConstant : enumType.getEnumConstants()) {
+				if (enumConstant.name().equalsIgnoreCase(value)) {
+					return enumConstant;
+				}
+			}
 
+			throw new IllegalArgumentException("enum " + enumType.getSimpleName() + " has no constant of value " + value);
+		}
+	}
+	
 	/**
 	 * Returns the value of the property with the specified name as a
 	 * {@code String} array; or {@code defaultValues} if no property with the
@@ -509,8 +549,7 @@ public class TypedProperties {
 	}
 	
 	/**
-	 * Sets the value of the property with the specified name as a
-	 * {@code String}.
+	 * Sets the value of the property to the given {@code String}.
 	 * 
 	 * @param key the property name
 	 * @param value the property value
@@ -520,8 +559,7 @@ public class TypedProperties {
 	}
 	
 	/**
-	 * Sets the value of the property with the specified name as a
-	 * {@code float}.
+	 * Sets the value of the property to the given {@code float}.
 	 * 
 	 * @param key the property name
 	 * @param value the property value
@@ -531,8 +569,7 @@ public class TypedProperties {
 	}
 	
 	/**
-	 * Sets the value of the property with the specified name as a
-	 * {@code double}.
+	 * Sets the value of the property to the given {@code double}.
 	 * 
 	 * @param key the property name
 	 * @param value the property value
@@ -542,8 +579,7 @@ public class TypedProperties {
 	}
 	
 	/**
-	 * Sets the value of the property with the specified name as a
-	 * {@code byte}.
+	 * Sets the value of the property to the given {@code byte}.
 	 * 
 	 * @param key the property name
 	 * @param value the property value
@@ -553,8 +589,7 @@ public class TypedProperties {
 	}
 	
 	/**
-	 * Sets the value of the property with the specified name as a
-	 * {@code short}.
+	 * Sets the value of the property to the given {@code short}.
 	 * 
 	 * @param key the property name
 	 * @param value the property value
@@ -564,8 +599,7 @@ public class TypedProperties {
 	}
 
 	/**
-	 * Sets the value of the property with the specified name as an
-	 * {@code int}.
+	 * Sets the value of the property to the given {@code int}.
 	 * 
 	 * @param key the property name
 	 * @param value the property value
@@ -575,8 +609,7 @@ public class TypedProperties {
 	}
 	
 	/**
-	 * Sets the value of the property with the specified name as a
-	 * {@code long}.
+	 * Sets the value of the property to the given {@code long}.
 	 * 
 	 * @param key the property name
 	 * @param value the property value
@@ -586,14 +619,24 @@ public class TypedProperties {
 	}
 
 	/**
-	 * Sets the value of the property with the specified name as a
-	 * {@code boolean}.
+	 * Sets the value of the property to the given {@code boolean}.
 	 * 
 	 * @param key the property name
 	 * @param value the property value
 	 */
 	public void setBoolean(String key, boolean value) {
 		setString(key, Boolean.toString(value));
+	}
+	
+	/**
+	 * Sets the value of the property to the given enum value.
+	 * 
+	 * @param <T> the type of the enum
+	 * @param key the property name
+	 * @param value the property value
+	 */
+	public <T extends Enum<?>> void setEnum(String key, T value) {
+		setString(key, value.name());
 	}
 	
 	/**
