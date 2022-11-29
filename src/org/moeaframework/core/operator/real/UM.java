@@ -18,9 +18,7 @@
 package org.moeaframework.core.operator.real;
 
 import org.moeaframework.core.PRNG;
-import org.moeaframework.core.Solution;
-import org.moeaframework.core.Variable;
-import org.moeaframework.core.Variation;
+import org.moeaframework.core.operator.AbstractMutation;
 import org.moeaframework.core.variable.RealVariable;
 
 /**
@@ -36,47 +34,22 @@ import org.moeaframework.core.variable.RealVariable;
  * <p>
  * This operator is type-safe.
  */
-public class UM implements Variation {
-
+public class UM extends AbstractMutation<RealVariable> {
+	
 	/**
-	 * The probability of mutating each variable in a solution.
+	 * Constructs a uniform mutation operator with default settings.
 	 */
-	private final double probability;
+	public UM() {
+		this(0.1);
+	}
 
 	/**
 	 * Constructs a uniform mutation operator.
 	 * 
-	 * @param probability the probability of mutating each variable in a
-	 *        solution
+	 * @param probability the probability of mutating each variable in a solution
 	 */
 	public UM(double probability) {
-		super();
-		this.probability = probability;
-	}
-
-	/**
-	 * Returns the probability of mutating each variable in a solution.
-	 * 
-	 * @return the probability of mutating each variable in a solution
-	 */
-	public double getProbability() {
-		return probability;
-	}
-
-	@Override
-	public Solution[] evolve(Solution[] parents) {
-		Solution result = parents[0].copy();
-
-		for (int i = 0; i < result.getNumberOfVariables(); i++) {
-			Variable variable = result.getVariable(i);
-
-			if ((PRNG.nextDouble() <= probability)
-					&& (variable instanceof RealVariable)) {
-				evolve((RealVariable)variable);
-			}
-		}
-
-		return new Solution[] { result };
+		super(RealVariable.class, probability);
 	}
 
 	/**
@@ -84,14 +57,8 @@ public class UM implements Variation {
 	 * 
 	 * @param variable the variable to be mutated
 	 */
-	public static void evolve(RealVariable variable) {
-		variable.setValue(PRNG.nextDouble(variable.getLowerBound(), variable
-				.getUpperBound()));
-	}
-
-	@Override
-	public int getArity() {
-		return 1;
+	public void mutate(RealVariable variable) {
+		variable.setValue(PRNG.nextDouble(variable.getLowerBound(), variable.getUpperBound()));
 	}
 
 }

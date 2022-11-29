@@ -33,7 +33,8 @@ public class TestAlgorithmProvider extends AlgorithmProvider {
 					problem,
 					new Population(),
 					null,
-					new RandomInitialization(problem, 100)) {
+					new RandomInitialization(problem, 100),
+					OperatorFactory.getInstance().getVariation(problem)) {
 
 				@Override
 				protected void iterate() {

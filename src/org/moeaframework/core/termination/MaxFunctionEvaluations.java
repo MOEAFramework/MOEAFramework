@@ -21,10 +21,14 @@ import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.TerminationCondition;
 
 /**
- * Terminates a run when the maximum number of function evaluations is
- * exceeded.
+ * Terminates a run when the maximum number of function evaluations is exceeded.
  */
 public class MaxFunctionEvaluations implements TerminationCondition {
+	
+	/**
+	 * The number of function evaluations at the start.
+	 */
+	private int startingEvaluations;
 	
 	/**
 	 * The maximum number of function evaluations.
@@ -44,12 +48,12 @@ public class MaxFunctionEvaluations implements TerminationCondition {
 
 	@Override
 	public void initialize(Algorithm algorithm) {
-		// do nothing
+		startingEvaluations = algorithm.getNumberOfEvaluations();
 	}
 
 	@Override
 	public boolean shouldTerminate(Algorithm algorithm) {
-		return algorithm.getNumberOfEvaluations() >= maxEvaluations;
+		return (algorithm.getNumberOfEvaluations() - startingEvaluations) >= maxEvaluations;
 	}
 
 }

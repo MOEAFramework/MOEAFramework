@@ -22,7 +22,7 @@ import java.util.List;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variable;
-import org.moeaframework.core.Variation;
+import org.moeaframework.core.operator.Mutation;
 import org.moeaframework.core.variable.Program;
 import org.moeaframework.util.tree.Node;
 import org.moeaframework.util.tree.Rules;
@@ -33,7 +33,7 @@ import org.moeaframework.util.tree.Rules;
  * <p>
  * This operator is type-safe.
  */
-public class PointMutation implements Variation {
+public class PointMutation implements Mutation {
 	
 	/**
 	 * The probability of mutating a node in the tree.
@@ -41,7 +41,14 @@ public class PointMutation implements Variation {
 	private double probability;
 	
 	/**
-	 * Constructs a new point mutation instance.
+	 * Constructs a new point mutation operator with the default settings.
+	 */
+	public PointMutation() {
+		this(1.0);
+	}
+	
+	/**
+	 * Constructs a new point mutation operator.
 	 * 
 	 * @param probability the probability of mutating a node in the tree
 	 */
@@ -50,14 +57,27 @@ public class PointMutation implements Variation {
 		this.probability = probability;
 	}
 
-	@Override
-	public int getArity() {
-		return 1;
+	/**
+	 * Gets the probability of mutating a node in the tree.
+	 * 
+	 * @return the probability
+	 */
+	public double getProbability() {
+		return probability;
+	}
+
+	/**
+	 * Sets the probability of mutating a node in the tree.
+	 * 
+	 * @param probability the probability (0.0 - 1.0)
+	 */
+	public void setProbability(double probability) {
+		this.probability = probability;
 	}
 
 	@Override
-	public Solution[] evolve(Solution[] parents) {
-		Solution result = parents[0].copy();
+	public Solution mutate(Solution parent) {
+		Solution result = parent.copy();
 		
 		for (int i = 0; i < result.getNumberOfVariables(); i++) {
 			Variable variable = result.getVariable(i);
@@ -68,7 +88,7 @@ public class PointMutation implements Variation {
 			}
 		}
 		
-		return new Solution[] { result };
+		return result;
 	}
 	
 	/**

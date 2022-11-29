@@ -18,9 +18,11 @@
 package org.moeaframework.core.spi;
 
 import java.util.ServiceConfigurationError;
+
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.operator.CompoundVariation;
+import org.moeaframework.core.operator.Mutation;
 import org.moeaframework.util.TypedProperties;
 
 /**
@@ -81,6 +83,7 @@ public class OperatorFactory extends AbstractFactory<OperatorProvider> {
 	 * @throws ProviderLookupException if no default mutation operator could
 	 *         be determined
 	 */
+	@Deprecated
 	public String getDefaultMutation(Problem problem) {
 		String result = lookupMutationHint(problem);
 		
@@ -101,6 +104,7 @@ public class OperatorFactory extends AbstractFactory<OperatorProvider> {
 	 * @throws ProviderLookupException if no default variation operator could
 	 *         be determined
 	 */
+	@Deprecated
 	public String getDefaultVariation(Problem problem) {
 		String result = lookupVariationHint(problem);
 		
@@ -109,6 +113,44 @@ public class OperatorFactory extends AbstractFactory<OperatorProvider> {
 		}
 		
 		return result;
+	}
+	
+	/**
+	 * Returns the suggested mutation operator for the given problem.
+	 * 
+	 * @param problem the problem
+	 * @return an instance of the mutation operator
+	 */
+	public Mutation getMutation(Problem problem) {
+		String hint = lookupMutationHint(problem);
+		Variation variation = getVariation(hint, new TypedProperties(), problem);
+		
+		if (!(variation instanceof Mutation)) {
+			throw new ProviderLookupException("the operator '" + hint + "' is not a mutation operator");
+		}
+		
+		return (Mutation)variation;
+	}
+	
+	/**
+	 * Returns the suggested variation operator for the given problem.
+	 * 
+	 * @param problem the problem to be solved
+	 * @return an instance of the variation operator
+	 */
+	public Variation getVariation(Problem problem) {
+		return getVariation(null, problem);
+	}
+	
+	/**
+	 * Returns the named variation operator using default settings.
+	 * 
+	 * @param name the name identifying the variation operator
+	 * @param problem the problem to be solved
+	 * @return an instance of the variation operator
+	 */
+	public Variation getVariation(String name, Problem problem) {
+		return getVariation(name, new TypedProperties(), problem);
 	}
 
 	/**
@@ -120,7 +162,7 @@ public class OperatorFactory extends AbstractFactory<OperatorProvider> {
 	 * @param name the name identifying the variation operator
 	 * @param properties the implementation-specific properties
 	 * @param problem the problem to be solved
-	 * @return an instance of the variation operator with the specified name
+	 * @return an instance of the variation operator
 	 * @throws ProviderNotFoundException if no provider for the algorithm is 
 	 *         available
 	 */

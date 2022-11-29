@@ -62,7 +62,7 @@ public class BitFlipTest {
 		for (int i = 0; i < TestThresholds.SAMPLES; i++) {
 			BinaryVariable original = new BinaryVariable(100);
 			BinaryVariable mutated = original.copy();
-			BitFlip.evolve(mutated, probability);
+			BitFlip.mutate(mutated, probability);
 
 			sum += original.hammingDistance(mutated);
 		}

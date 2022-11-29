@@ -26,8 +26,12 @@ import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Selection;
+import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
+import org.moeaframework.core.operator.RandomInitialization;
+import org.moeaframework.core.operator.TournamentSelection;
+import org.moeaframework.core.spi.OperatorFactory;
 
 /**
  * Single-objective genetic algorithm (GA) implementation with elitism.  A
@@ -52,14 +56,27 @@ public class GeneticAlgorithm extends AbstractEvolutionaryAlgorithm {
 	private final Selection selection;
 
 	/**
-	 * The mutation operator.
-	 */
-	private final Variation variation;
-	
-	/**
 	 * The solution with the best fitness score.
 	 */
 	private Solution eliteSolution;
+	
+	/**
+	 * Constructs a new instance of the genetic algorithm (GA) with default settings.
+	 * 
+	 * @param problem the problem
+	 */
+	public GeneticAlgorithm(Problem problem) {
+		this(problem,
+				new LinearDominanceComparator(),
+				new RandomInitialization(problem, Settings.DEFAULT_POPULATION_SIZE),
+				OperatorFactory.getInstance().getVariation(problem));
+	}
+	
+	// Internal constructor to ensure tournament selection uses provided comparator
+	private GeneticAlgorithm(Problem problem, AggregateObjectiveComparator comparator, Initialization initialization,
+			Variation variation) {
+		this(problem, comparator, initialization, new TournamentSelection(2, comparator), variation);
+	}
 
 	/**
 	 * Constructs a new instance of the genetic algorithm (GA).
@@ -70,14 +87,10 @@ public class GeneticAlgorithm extends AbstractEvolutionaryAlgorithm {
 	 * @param selection the selection operator
 	 * @param variation the variation operator
 	 */
-	public GeneticAlgorithm(Problem problem,
-			AggregateObjectiveComparator comparator,
-			Initialization initialization,
-			Selection selection,
-			Variation variation) {
-		super(problem, new Population(), null, initialization);
+	public GeneticAlgorithm(Problem problem, AggregateObjectiveComparator comparator, Initialization initialization,
+			Selection selection, Variation variation) {
+		super(problem, new Population(), null, initialization, variation);
 		this.comparator = comparator;
-		this.variation = variation;
 		this.selection = selection;
 	}
 

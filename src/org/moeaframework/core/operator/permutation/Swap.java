@@ -18,9 +18,7 @@
 package org.moeaframework.core.operator.permutation;
 
 import org.moeaframework.core.PRNG;
-import org.moeaframework.core.Solution;
-import org.moeaframework.core.Variable;
-import org.moeaframework.core.Variation;
+import org.moeaframework.core.operator.AbstractMutation;
 import org.moeaframework.core.variable.Permutation;
 
 /**
@@ -29,46 +27,30 @@ import org.moeaframework.core.variable.Permutation;
  * <p>
  * This operator is type-safe.
  */
-public class Swap implements Variation {
+public class Swap extends AbstractMutation<Permutation> {
 
 	/**
-	 * The probability of mutating a variable.
+	 * Constructs a swap mutation operator with the default settings.
 	 */
-	private final double probability;
+	public Swap() {
+		this(0.3);
+	}
 
 	/**
-	 * Constructs a swap mutation operator with the specified probability of 
-	 * mutating a variable.
+	 * Constructs a swap mutation operator with the specified probability of mutating a variable.
 	 * 
 	 * @param probability the probability of mutating a variable
 	 */
 	public Swap(double probability) {
-		super();
-		this.probability = probability;
-	}
-
-	@Override
-	public Solution[] evolve(Solution[] parents) {
-		Solution result = parents[0].copy();
-
-		for (int i = 0; i < result.getNumberOfVariables(); i++) {
-			Variable variable = result.getVariable(i);
-
-			if ((PRNG.nextDouble() <= probability)
-					&& (variable instanceof Permutation)) {
-				evolve((Permutation)variable);
-			}
-		}
-
-		return new Solution[] { result };
+		super(Permutation.class, probability);
 	}
 
 	/**
-	 * Evolves the specified permutation using the swap mutation operator.
+	 * Mutates the specified permutation using the swap mutation operator.
 	 * 
 	 * @param permutation the permutation to be mutated
 	 */
-	public static void evolve(Permutation permutation) {
+	public void mutate(Permutation permutation) {
 		int i = PRNG.nextInt(permutation.size());
 		int j = PRNG.nextInt(permutation.size() - 1);
 
@@ -77,11 +59,6 @@ public class Swap implements Variation {
 		}
 
 		permutation.swap(i, j);
-	}
-
-	@Override
-	public int getArity() {
-		return 1;
 	}
 
 }

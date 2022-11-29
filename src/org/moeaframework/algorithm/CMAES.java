@@ -31,6 +31,7 @@ import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
+import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.comparator.AggregateConstraintComparator;
 import org.moeaframework.core.comparator.ChainedComparator;
@@ -199,6 +200,15 @@ public class CMAES extends AbstractAlgorithm {
 	 * Last iteration were the eigenvalue decomposition was calculated.
 	 */
 	private int lastEigenupdate;
+	
+	/**
+	 * Constructs a new CMA-ES intance using default parameters.
+	 * 
+	 * @param problem the problem to optimize
+	 */
+	public CMAES(Problem problem) {
+		this(problem, Settings.DEFAULT_POPULATION_SIZE);
+	}
 	
 	/**
 	 * Constructs a new CMA-ES instance using default parameters.

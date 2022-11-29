@@ -17,10 +17,7 @@
  */
 package org.moeaframework.core.operator.subset;
 
-import org.moeaframework.core.PRNG;
-import org.moeaframework.core.Solution;
-import org.moeaframework.core.Variable;
-import org.moeaframework.core.Variation;
+import org.moeaframework.core.operator.AbstractMutation;
 import org.moeaframework.core.variable.Subset;
 
 /**
@@ -28,54 +25,33 @@ import org.moeaframework.core.variable.Subset;
  * <p>
  * This operator is type-safe.
  */
-public class Remove implements Variation {
-
+public class Remove extends AbstractMutation<Subset> {
+	
 	/**
-	 * The probability of mutating a variable.
+	 * Constructs a remove mutation operator with the default settings.
 	 */
-	private final double probability;
+	public Remove() {
+		this(0.1);
+	}
 
 	/**
-	 * Constructs a remove mutation operator with the specified
-	 * probability of mutating a variable.
+	 * Constructs a remove mutation operator with the specified probability of mutating a variable.
 	 * 
 	 * @param probability the probability of mutating a variable
 	 */
 	public Remove(double probability) {
-		super();
-		this.probability = probability;
-	}
-
-	@Override
-	public Solution[] evolve(Solution[] parents) {
-		Solution result = parents[0].copy();
-
-		for (int i = 0; i < result.getNumberOfVariables(); i++) {
-			Variable variable = result.getVariable(i);
-
-			if ((PRNG.nextDouble() <= probability)
-					&& (variable instanceof Subset)) {
-				evolve((Subset)variable);
-			}
-		}
-
-		return new Solution[] { result };
+		super(Subset.class, probability);
 	}
 
 	/**
-	 * Evolves the specified subset using the remove mutation operator.
+	 * Mutates the specified subset using the remove mutation operator.
 	 * 
 	 * @param subset the subset to be mutated
 	 */
-	public static void evolve(Subset subset) {
+	public void mutate(Subset subset) {
 		if (subset.size() > subset.getL()) {
 			subset.remove(subset.randomMember());
 		}
-	}
-
-	@Override
-	public int getArity() {
-		return 1;
 	}
 
 }

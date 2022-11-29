@@ -18,13 +18,15 @@
 package org.moeaframework.algorithm.single;
 
 import org.moeaframework.algorithm.AbstractEvolutionaryAlgorithm;
-import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Initialization;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
+import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.Variation;
+import org.moeaframework.core.operator.Mutation;
+import org.moeaframework.core.operator.RandomInitialization;
+import org.moeaframework.core.variable.RealVariable;
 
 /**
  * Single-objective (mu + lambda) evolution strategy (ES) algorithm.  In this
@@ -46,11 +48,13 @@ public class EvolutionStrategy extends AbstractEvolutionaryAlgorithm {
 	 * The aggregate objective comparator.
 	 */
 	private final AggregateObjectiveComparator comparator;
-
-	/**
-	 * The variation operator.
-	 */
-	private final Variation variation;
+	
+	public EvolutionStrategy(Problem problem) {
+		this(problem,
+				new LinearDominanceComparator(),
+				new RandomInitialization(problem, Settings.DEFAULT_POPULATION_SIZE),
+				new SelfAdaptiveNormalVariation());
+	}
 
 	/**
 	 * Constructs a new instance of the evolution strategy (ES) algorithm.
@@ -58,19 +62,14 @@ public class EvolutionStrategy extends AbstractEvolutionaryAlgorithm {
 	 * @param problem the problem
 	 * @param comparator the aggregate objective comparator
 	 * @param initialization the initialization method
-	 * @param variation the variation operator
+	 * @param mutation the mutation operator
 	 */
-	public EvolutionStrategy(Problem problem,
-			AggregateObjectiveComparator comparator,
-			Initialization initialization,
-			Variation variation) {
-		super(problem, new Population(), null, initialization);
+	public EvolutionStrategy(Problem problem, AggregateObjectiveComparator comparator, Initialization initialization,
+			Mutation mutation) {
+		super(problem, new Population(), null, initialization, mutation);
 		this.comparator = comparator;
-		this.variation = variation;
 		
-		if (variation.getArity() != 1) {
-			throw new FrameworkException("only supports variation operators with 1 parent");
-		}
+		problem.assertType(RealVariable.class);
 	}
 
 	@Override

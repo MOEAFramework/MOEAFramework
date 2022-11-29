@@ -28,6 +28,7 @@ import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.Variation;
 
 /**
  * Abstract class providing default implementations for several
@@ -55,6 +56,11 @@ public abstract class AbstractEvolutionaryAlgorithm extends AbstractAlgorithm
 	 * The initialization operator.
 	 */
 	protected final Initialization initialization;
+	
+	/**
+	 * The variation operator.
+	 */
+	protected Variation variation;
 
 	/**
 	 * Constructs an abstract evolutionary algorithm.
@@ -63,14 +69,15 @@ public abstract class AbstractEvolutionaryAlgorithm extends AbstractAlgorithm
 	 * @param population the population
 	 * @param archive the archive storing the non-dominated solutions
 	 * @param initialization the initialization operator
+	 * @param variation the variation operator
 	 */
-	public AbstractEvolutionaryAlgorithm(Problem problem,
-			Population population, NondominatedPopulation archive,
-			Initialization initialization) {
+	public AbstractEvolutionaryAlgorithm(Problem problem, Population population, NondominatedPopulation archive,
+			Initialization initialization, Variation variation) {
 		super(problem);
 		this.population = population;
 		this.archive = archive;
 		this.initialization = initialization;
+		this.variation = variation;
 	}
 
 	@Override
@@ -112,6 +119,24 @@ public abstract class AbstractEvolutionaryAlgorithm extends AbstractAlgorithm
 	@Override
 	public Population getPopulation() {
 		return population;
+	}
+	
+	/**
+	 * Returns the variation operator currently in use by this algorithm.
+	 * 
+	 * @return the variation operator
+	 */
+	public Variation getVariation() {
+		return variation;
+	}
+	
+	/**
+	 * Replaces the variation operator to be used by this algorithm.
+	 * 
+	 * @param variation the variation operator
+	 */
+	protected void setVariation(Variation variation) {
+		this.variation = variation;
 	}
 
 	@Override

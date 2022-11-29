@@ -90,6 +90,16 @@ public class ReferenceVectorGuidedPopulation extends Population {
 	private final double alpha;
 	
 	/**
+	 * Constructs a new populationf or RVEA using default settings.
+	 * 
+	 * @param numberOfObjectives the number of objectives
+	 * @param divisions the number of divisions
+	 */
+	public ReferenceVectorGuidedPopulation(int numberOfObjectives, NormalBoundaryDivisions divisions) {
+		this(numberOfObjectives, divisions, 2.0);
+	}
+	
+	/**
 	 * Constructs a new population for RVEA.
 	 * 
 	 * @param numberOfObjectives the number of objectives
@@ -332,8 +342,7 @@ public class ReferenceVectorGuidedPopulation extends Population {
 		
 		for (int i = 0; i < weights.size(); i++) {
 			if (i != index) {
-				smallestAngle = Math.min(smallestAngle,
-						acosine(weights.get(index), weights.get(i)));
+				smallestAngle = Math.min(smallestAngle, acosine(weights.get(index), weights.get(i)));
 			}
 		}
 		
@@ -354,8 +363,7 @@ public class ReferenceVectorGuidedPopulation extends Population {
 		
 		for (Solution solution : solutions) {
 			if (!solution.violatesConstraints()) {
-				double[] objectives = (double[])solution.getAttribute(
-						NORMALIZED_OBJECTIVES);
+				double[] objectives = (double[])solution.getAttribute(NORMALIZED_OBJECTIVES);
 				
 				double penalty = numberOfObjectives *
 						Math.pow(scalingFactor, alpha) *

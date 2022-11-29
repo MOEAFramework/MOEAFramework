@@ -29,13 +29,16 @@ import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Selection;
+import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.comparator.ChainedComparator;
 import org.moeaframework.core.comparator.CrowdingComparator;
 import org.moeaframework.core.comparator.DominanceComparator;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
+import org.moeaframework.core.operator.RandomInitialization;
 import org.moeaframework.core.operator.TournamentSelection;
+import org.moeaframework.core.spi.OperatorFactory;
 
 /**
  * Implementation of NSGA-II, with the ability to attach an optional 
@@ -51,8 +54,7 @@ import org.moeaframework.core.operator.TournamentSelection;
  *       Water Resources, 29(6):792-807, 2006.
  * </ol>
  */
-public class NSGAII extends AbstractEvolutionaryAlgorithm implements
-		EpsilonBoxEvolutionaryAlgorithm {
+public class NSGAII extends AbstractEvolutionaryAlgorithm implements EpsilonBoxEvolutionaryAlgorithm {
 
 	/**
 	 * The selection operator.  If {@code null}, this algorithm uses binary
@@ -60,11 +62,20 @@ public class NSGAII extends AbstractEvolutionaryAlgorithm implements
 	 * original NSGA-II implementation.
 	 */
 	private final Selection selection;
-
+	
 	/**
-	 * The variation operator.
+	 * Constructs the NSGA-II algorithm with default settings.
+	 * 
+	 * @param problem the problem being solved
 	 */
-	private final Variation variation;
+	public NSGAII(Problem problem) {
+		this(problem,
+				new NondominatedSortingPopulation(),
+				null,
+				new TournamentSelection(2, new ChainedComparator(new ParetoDominanceComparator(), new CrowdingComparator())),
+				OperatorFactory.getInstance().getVariation(problem),
+				new RandomInitialization(problem, Settings.DEFAULT_POPULATION_SIZE));
+	}
 
 	/**
 	 * Constructs the NSGA-II algorithm with the specified components.
@@ -76,12 +87,10 @@ public class NSGAII extends AbstractEvolutionaryAlgorithm implements
 	 * @param variation the variation operator
 	 * @param initialization the initialization method
 	 */
-	public NSGAII(Problem problem, NondominatedSortingPopulation population,
-			EpsilonBoxDominanceArchive archive, Selection selection,
-			Variation variation, Initialization initialization) {
-		super(problem, population, archive, initialization);
+	public NSGAII(Problem problem, NondominatedSortingPopulation population, EpsilonBoxDominanceArchive archive,
+			Selection selection, Variation variation, Initialization initialization) {
+		super(problem, population, archive, initialization, variation);
 		this.selection = selection;
-		this.variation = variation;
 	}
 
 	@Override
@@ -131,8 +140,7 @@ public class NSGAII extends AbstractEvolutionaryAlgorithm implements
 			// run NSGA-II using selection with replacement; this version allows
 			// using custom selection operators
 			while (offspring.size() < populationSize) {
-				Solution[] parents = selection.select(variation.getArity(),
-						population);
+				Solution[] parents = selection.select(variation.getArity(), population);
 
 				offspring.addAll(variation.evolve(parents));
 			}
@@ -146,6 +154,11 @@ public class NSGAII extends AbstractEvolutionaryAlgorithm implements
 
 		population.addAll(offspring);
 		population.truncate(populationSize);
+	}
+	
+	@Override
+	public void setVariation(Variation variation) {
+		super.setVariation(variation);
 	}
 
 	@Override

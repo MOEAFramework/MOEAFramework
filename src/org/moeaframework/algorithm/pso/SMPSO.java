@@ -19,6 +19,7 @@ package org.moeaframework.algorithm.pso;
 
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Problem;
+import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.comparator.CrowdingComparator;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
@@ -60,6 +61,19 @@ public class SMPSO extends AbstractPSOAlgorithm {
 	private double[] maximumVelocity;
 	
 	/**
+	 * Constructs a new SMPSO instance with default settings.
+	 * 
+	 * @param problem the problem
+	 */
+	public SMPSO(Problem problem) {
+		this(problem,
+				Settings.DEFAULT_POPULATION_SIZE,
+				Settings.DEFAULT_POPULATION_SIZE,
+				1.0 / problem.getNumberOfVariables(),
+				20.0);
+	}
+	
+	/**
 	 * Constructs a new SMPSO instance.
 	 * 
 	 * @param problem the problem
@@ -76,6 +90,8 @@ public class SMPSO extends AbstractPSOAlgorithm {
 				new FitnessBasedArchive(new CrowdingDistanceFitnessEvaluator(), leaderSize),
 				null,
 				new PM(mutationProbability, distributionIndex));
+		
+		problem.assertType(RealVariable.class);
 
 		// initialize the minimum and maximum velocities
 		minimumVelocity = new double[problem.getNumberOfVariables()];

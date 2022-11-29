@@ -21,6 +21,8 @@ import org.moeaframework.core.Initialization;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
+import org.moeaframework.core.Settings;
+import org.moeaframework.core.operator.RandomInitialization;
 
 /**
  * Random search implementation.  An {@link Initialization} instance is used
@@ -38,17 +40,26 @@ public class RandomSearch extends AbstractAlgorithm {
 	 * The archive of non-dominated solutions.
 	 */
 	private final NondominatedPopulation archive;
+	
+	/**
+	 * Constructs a new random search procedure with default settings.
+	 * 
+	 * @param problem the problem being solved
+	 */
+	public RandomSearch(Problem problem) {
+		this(problem,
+				new RandomInitialization(problem, Settings.DEFAULT_POPULATION_SIZE),
+				new NondominatedPopulation());
+	}
 
 	/**
 	 * Constructs a new random search procedure for the given problem.
 	 * 
 	 * @param problem the problem being solved
-	 * @param generator the initialization routine used to generate random
-	 *        solutions
+	 * @param generator the initialization routine used to generate random solutions
 	 * @param archive the archive of non-dominated solutions
 	 */
-	public RandomSearch(Problem problem, Initialization generator,
-			NondominatedPopulation archive) {
+	public RandomSearch(Problem problem, Initialization generator, NondominatedPopulation archive) {
 		super(problem);
 		this.generator = generator;
 		this.archive = archive;

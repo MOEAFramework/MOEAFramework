@@ -33,7 +33,7 @@ public class GAVariation extends CompoundVariation {
 	 * @param crossover the crossover operator
 	 * @param mutation the mutation operator
 	 */
-	public GAVariation(Variation crossover, Variation mutation) {
+	public GAVariation(Variation crossover, Mutation mutation) {
 		super(crossover, mutation);
 		setName(crossover.getClass().getSimpleName());
 	}

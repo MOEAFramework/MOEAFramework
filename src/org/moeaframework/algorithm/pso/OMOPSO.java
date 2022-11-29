@@ -17,15 +17,17 @@
  */
 package org.moeaframework.algorithm.pso;
 
+import org.moeaframework.analysis.sensitivity.EpsilonHelper;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Problem;
-import org.moeaframework.core.Solution;
-import org.moeaframework.core.Variation;
+import org.moeaframework.core.Settings;
 import org.moeaframework.core.comparator.CrowdingComparator;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
 import org.moeaframework.core.fitness.CrowdingDistanceFitnessEvaluator;
 import org.moeaframework.core.fitness.FitnessBasedArchive;
+import org.moeaframework.core.operator.AbstractMutation;
+import org.moeaframework.core.operator.Mutation;
 import org.moeaframework.core.variable.RealVariable;
 
 // NOTE: This implementation is derived from the original manuscripts and the
@@ -52,12 +54,29 @@ public class OMOPSO extends AbstractPSOAlgorithm {
 	/**
 	 * The uniform mutation operator, whose parameters remain unchanged.
 	 */
-	private final Variation uniformMutation;
+	private final Mutation uniformMutation;
 	
 	/**
 	 * The non-uniform mutation operator, whose parameters change during a run.
 	 */
-	private final Variation nonUniformMutation;
+	private final Mutation nonUniformMutation;
+	
+	/**
+	 * Constructs a new OMOPSO instance with default settings.
+	 * 
+	 * @param problem the problem
+	 * @param maxIterations the maximum number of iterations for scaling non-uniform mutation;
+	 *        typically this should be {@code maxEvaluations / swarmSize}
+	 */
+	public OMOPSO(Problem problem, int maxIterations) {
+		this(problem,
+				Settings.DEFAULT_POPULATION_SIZE,
+				Settings.DEFAULT_POPULATION_SIZE,
+				new double[] { EpsilonHelper.getEpsilon(problem) },
+				1.0 / problem.getNumberOfVariables(),
+				0.5,
+				maxIterations);
+	}
 	
 	/**
 	 * Constructs a new OMOPSO instance.
@@ -82,67 +101,51 @@ public class OMOPSO extends AbstractPSOAlgorithm {
 		
 		this.uniformMutation = new UniformMutation(mutationProbability, mutationPerturbation);
 		this.nonUniformMutation = new NonUniformMutation(mutationProbability, mutationPerturbation, maxIterations);
+		
+		problem.assertType(RealVariable.class);
 	}
 	
 	@Override
 	protected void mutate(int i) {
 		if (i % 3 == 0) {
-			particles[i] = nonUniformMutation.evolve(new Solution[] { particles[i] })[0];
+			particles[i] = nonUniformMutation.mutate(particles[i]);
 		} else if (i % 3 == 1) {
-			particles[i] = uniformMutation.evolve(new Solution[] { particles[i] })[0];
+			particles[i] = uniformMutation.mutate(particles[i]);
 		}
 	}
 	
 	/**
 	 * The non-uniform mutation operator.
 	 */
-	private class NonUniformMutation implements Variation {
-		
-		private final double probability;
+	private class NonUniformMutation extends AbstractMutation<RealVariable> {
 		
 		private final double perturbation;
 		
 		private final int maxIterations;
 		
-		public NonUniformMutation(double probability, double perturbation,
-				int maxIterations) {
-			super();
-			this.probability = probability;
+		public NonUniformMutation(double probability, double perturbation, int maxIterations) {
+			super(RealVariable.class, probability);
 			this.perturbation = perturbation;
 			this.maxIterations = maxIterations;
 		}
-
+		
 		@Override
-		public int getArity() {
-			return 1;
-		}
-
-		@Override
-		public Solution[] evolve(Solution[] parents) {
-			Solution offspring = parents[0].copy();
-			
-			for (int i = 0; i < offspring.getNumberOfVariables(); i++) {
-				if (PRNG.nextDouble() < probability) {
-					RealVariable variable = (RealVariable)offspring.getVariable(i);
-					double value = variable.getValue();
-					
-					if (PRNG.nextBoolean()) {
-						value += getDelta(variable.getUpperBound() - value);
-					} else {
-						value += getDelta(variable.getLowerBound() - value);
-					}
-
-					if (value < variable.getLowerBound()) {
-						value = variable.getLowerBound();
-					} else if (value > variable.getUpperBound()) {
-						value = variable.getUpperBound();
-					}
-					
-					variable.setValue(value);
-				}
+		public void mutate(RealVariable variable) {
+			double value = variable.getValue();
+				
+			if (PRNG.nextBoolean()) {
+				value += getDelta(variable.getUpperBound() - value);
+			} else {
+				value += getDelta(variable.getLowerBound() - value);
 			}
-			
-			return new Solution[] { offspring };
+
+			if (value < variable.getLowerBound()) {
+				value = variable.getLowerBound();
+			} else if (value > variable.getUpperBound()) {
+				value = variable.getUpperBound();
+			}
+					
+			variable.setValue(value);
 		}
 		
 		public double getDelta(double difference) {
@@ -157,45 +160,28 @@ public class OMOPSO extends AbstractPSOAlgorithm {
 	/**
 	 * The uniform mutation operator.
 	 */
-	private class UniformMutation implements Variation {
-		
-		private final double probability;
+	private class UniformMutation extends AbstractMutation<RealVariable> {
 		
 		private final double perturbation;
 		
 		public UniformMutation(double probability, double perturbation) {
-			super();
-			this.probability = probability;
+			super(RealVariable.class, probability);
 			this.perturbation = perturbation;
 		}
 
 		@Override
-		public int getArity() {
-			return 1;
-		}
-
-		@Override
-		public Solution[] evolve(Solution[] parents) {
-			Solution offspring = parents[0].copy();
-			
-			for (int i = 0; i < offspring.getNumberOfVariables(); i++) {
-				if (PRNG.nextDouble() < probability) {
-					RealVariable variable = (RealVariable)offspring.getVariable(i);
-					double value = variable.getValue();
+		public void mutate(RealVariable variable) {
+			double value = variable.getValue();
 					
-					value += (PRNG.nextDouble() - 0.5) * perturbation;
+			value += (PRNG.nextDouble() - 0.5) * perturbation;
 					
-					if (value < variable.getLowerBound()) {
-						value = variable.getLowerBound();
-					} else if (value > variable.getUpperBound()) {
-						value = variable.getUpperBound();
-					}
-					
-					variable.setValue(value);
-				}
+			if (value < variable.getLowerBound()) {
+				value = variable.getLowerBound();
+			} else if (value > variable.getUpperBound()) {
+				value = variable.getUpperBound();
 			}
-			
-			return new Solution[] { offspring };
+					
+			variable.setValue(value);
 		}
 		
 	}
