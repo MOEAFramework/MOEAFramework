@@ -52,77 +52,85 @@ public class EpsilonBoxDominanceArchive extends NondominatedPopulation {
 	private int numberOfDominatingImprovements;
 
 	/**
-	 * Constructs an empty &epsilon;-box dominance archive using an additive
-	 * &epsilon;-box dominance comparator with the specified &epsilon;.
+	 * Constructs an empty &epsilon;-box dominance archive using an additive &epsilon;-box dominance comparator
+	 * with the specified &epsilon;.
 	 * 
-	 * @param epsilon the &epsilon; value used by the additive &epsilon;-box
-	 *        dominance comparator
+	 * @param epsilon the &epsilon; value used by the additive &epsilon;-box dominance comparator
 	 */
 	public EpsilonBoxDominanceArchive(double epsilon) {
-		super(new EpsilonBoxDominanceComparator(epsilon));
+		this(new Epsilons(epsilon));
 	}
 
 	/**
-	 * Constructs an &epsilon;-box dominance archive using an additive
-	 * &epsilon;-box dominance comparator with the specified &epsilon; and
-	 * initialized with the specified solutions.
+	 * Constructs an &epsilon;-box dominance archive using an additive &epsilon;-box dominance comparator
+	 * with the specified &epsilon; and initialized with the specified solutions.
 	 * 
-	 * @param epsilon the &epsilon; value used by the additive &epsilon;-box
-	 *        dominance comparator
+	 * @param epsilon the &epsilon; value used by the additive &epsilon;-box dominance comparator
 	 * @param iterable the solutions used to initialize this archive
 	 */
-	public EpsilonBoxDominanceArchive(double epsilon,
-			Iterable<? extends Solution> iterable) {
-		super(new EpsilonBoxDominanceComparator(epsilon), iterable);
+	public EpsilonBoxDominanceArchive(double epsilon, Iterable<? extends Solution> iterable) {
+		this(new Epsilons(epsilon), iterable);
 	}
 	
 	/**
-	 * Constructs an empty &epsilon;-box dominance archive using an additive
-	 * &epsilon;-box dominance comparator with the specified &epsilon; values.
+	 * Constructs an empty &epsilon;-box dominance archive using an additive &epsilon;-box dominance comparator
+	 * with the specified &epsilon; values.
 	 * 
-	 * @param epsilon the &epsilon; values used by the additive &epsilon;-box
-	 *        dominance comparator
+	 * @param epsilons the &epsilon; values used by the additive &epsilon;-box dominance comparator
 	 */
-	public EpsilonBoxDominanceArchive(double[] epsilon) {
-		super(new EpsilonBoxDominanceComparator(epsilon));
+	public EpsilonBoxDominanceArchive(double[] epsilons) {
+		this(new Epsilons(epsilons));
 	}
 	
 	/**
-	 * Constructs an &epsilon;-box dominance archive using an additive
-	 * &epsilon;-box dominance comparator with the specified &epsilon; values
-	 * and initialized with the specified solutions.
+	 * Constructs an &epsilon;-box dominance archive using an additive &epsilon;-box dominance comparator
+	 * with the specified &epsilon; values and initialized with the specified solutions.
 	 * 
-	 * @param epsilon the &epsilon; values used by the additive &epsilon;-box
-	 *        dominance comparator
+	 * @param epsilons the &epsilon; values used by the additive &epsilon;-box dominance comparator
 	 * @param iterable the solutions used to initialize this archive
 	 */
-	public EpsilonBoxDominanceArchive(double[] epsilon,
-			Iterable<? extends Solution> iterable) {
-		super(new EpsilonBoxDominanceComparator(epsilon), iterable);
+	public EpsilonBoxDominanceArchive(double[] epsilons, Iterable<? extends Solution> iterable) {
+		this(new Epsilons(epsilons), iterable);
+	}
+	
+	/**
+	 * Constructs an empty &epsilon;-box dominance archive using an additive &epsilon;-box dominance comparator
+	 * with the specified &epsilon; values.
+	 * 
+	 * @param epsilons the &epsilon; values used by the additive &epsilon;-box dominance comparator
+	 */
+	public EpsilonBoxDominanceArchive(Epsilons epsilons) {
+		this(new EpsilonBoxDominanceComparator(epsilons));
+	}
+	
+	/**
+	 * Constructs an &epsilon;-box dominance archive using an additive &epsilon;-box dominance comparator
+	 * with the specified &epsilon; values and initialized with the specified solutions.
+	 * 
+	 * @param epsilons the &epsilon; values used by the additive &epsilon;-box dominance comparator
+	 * @param iterable the solutions used to initialize this archive
+	 */
+	public EpsilonBoxDominanceArchive(Epsilons epsilons, Iterable<? extends Solution> iterable) {
+		this(new EpsilonBoxDominanceComparator(epsilons), iterable);
 	}
 
 	/**
-	 * Constructs an empty &epsilon;-box dominance archive using the specified
-	 * &epsilon;-box dominance comparator.
+	 * Constructs an empty &epsilon;-box dominance archive using the specified &epsilon;-box dominance comparator.
 	 * 
-	 * @param comparator the &epsilon;-box dominance comparator used by this
-	 *        archive
+	 * @param comparator the &epsilon;-box dominance comparator used by this archive
 	 */
 	public EpsilonBoxDominanceArchive(EpsilonBoxDominanceComparator comparator) {
 		super(comparator);
 	}
 
 	/**
-	 * Constructs an &epsilon;-box dominance archive using the specified
-	 * &epsilon;-box dominance comparator and initialized with the specified
-	 * solutions.
+	 * Constructs an &epsilon;-box dominance archive using the specified &epsilon;-box dominance comparator
+	 * and initialized with the specified solutions.
 	 * 
-	 * @param comparator the &epsilon;-box dominance comparator used by this
-	 *        archive
+	 * @param comparator the &epsilon;-box dominance comparator used by this archive
 	 * @param iterable the solutions used to initialize this archive
 	 */
-	public EpsilonBoxDominanceArchive(EpsilonBoxDominanceComparator comparator,
-			Iterable<? extends Solution> iterable) {
+	public EpsilonBoxDominanceArchive(EpsilonBoxDominanceComparator comparator, Iterable<? extends Solution> iterable) {
 		super(comparator, iterable);
 	}
 
@@ -181,11 +189,9 @@ public class EpsilonBoxDominanceArchive extends NondominatedPopulation {
 	}
 
 	/**
-	 * Returns the number of &epsilon;-box improvements dominating existing
-	 * solutions that have occurred.
+	 * Returns the number of &epsilon;-box improvements dominating existing solutions that have occurred.
 	 * 
-	 * @return the number of &epsilon;-box improvements dominating existing
-	 *         solutions that have occurred
+	 * @return the number of &epsilon;-box improvements dominating existing solutions that have occurred
 	 */
 	public int getNumberOfDominatingImprovements() {
 		return numberOfDominatingImprovements;
