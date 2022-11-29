@@ -26,13 +26,17 @@ import org.moeaframework.core.Initialization;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Selection;
+import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.comparator.ChainedComparator;
 import org.moeaframework.core.comparator.FitnessComparator;
 import org.moeaframework.core.comparator.NondominatedSortingComparator;
 import org.moeaframework.core.comparator.RankComparator;
+import org.moeaframework.core.fitness.HypervolumeContributionFitnessEvaluator;
+import org.moeaframework.core.operator.RandomInitialization;
 import org.moeaframework.core.operator.TournamentSelection;
+import org.moeaframework.core.spi.OperatorFactory;
 
 /**
  * Implementation of the S-metric Selection MOEA (SMS-MOEA).  The S metric is
@@ -48,20 +52,26 @@ import org.moeaframework.core.operator.TournamentSelection;
 public class SMSEMOA extends AbstractEvolutionaryAlgorithm {
 	
 	/**
-	 * The fitness evaluator to use (e.g., hypervolume or additive-epsilon
-	 * indicator).
+	 * The fitness evaluator to use (e.g., hypervolume or additive-epsilon indicator).
 	 */
-	private FitnessEvaluator fitnessEvaluator;
+	private final FitnessEvaluator fitnessEvaluator;
 	
 	/**
 	 * The selection operator.
 	 */
-	private Selection selection;
+	private final Selection selection;
 	
 	/**
-	 * The variation operator.
+	 * Constructs a new SMS-EMOA instance with default settings.
+	 * 
+	 * @param problem the problem
 	 */
-	private Variation variation;
+	public SMSEMOA(Problem problem) {
+		this(problem,
+				new RandomInitialization(problem, Settings.DEFAULT_POPULATION_SIZE),
+				OperatorFactory.getInstance().getVariation(problem),
+				new HypervolumeContributionFitnessEvaluator(problem));
+	}
 
 	/**
 	 * Constructs a new SMS-EMOA instance.
@@ -73,19 +83,13 @@ public class SMSEMOA extends AbstractEvolutionaryAlgorithm {
 	 */
 	public SMSEMOA(Problem problem, Initialization initialization,
 			Variation variation, FitnessEvaluator fitnessEvaluator) {
-		super(problem,
-				new Population(),
-				null,
-				initialization);
-		this.variation = variation;
+		super(problem, new Population(), null, initialization, variation);
 		this.fitnessEvaluator = fitnessEvaluator;
 		
 		if (fitnessEvaluator ==  null) {
-			selection = new TournamentSelection(
-					new NondominatedSortingComparator());
+			selection = new TournamentSelection(new NondominatedSortingComparator());
 		} else {
-			selection = new TournamentSelection(
-					new NondominatedFitnessComparator());
+			selection = new TournamentSelection(new NondominatedFitnessComparator());
 		}
 	}
 
@@ -114,13 +118,11 @@ public class SMSEMOA extends AbstractEvolutionaryAlgorithm {
 		new FastNondominatedSorting().evaluate(population);
 		
 		if (fitnessEvaluator == null) {
-			population.truncate(populationSize, 
-					new NondominatedSortingComparator());
+			population.truncate(populationSize, new NondominatedSortingComparator());
 		} else {
 			computeFitnessForLastFront();
 			
-			population.truncate(populationSize, 
-					new NondominatedFitnessComparator());
+			population.truncate(populationSize, new NondominatedFitnessComparator());
 		}
 	}
 	
@@ -132,8 +134,7 @@ public class SMSEMOA extends AbstractEvolutionaryAlgorithm {
 		int rank = 0;
 		
 		for (Solution solution : population) {
-			int solutionRank = (Integer)solution.getAttribute(
-					FastNondominatedSorting.RANK_ATTRIBUTE);
+			int solutionRank = (Integer)solution.getAttribute(FastNondominatedSorting.RANK_ATTRIBUTE);
 			
 			if (solutionRank > rank) {
 				front.clear();
@@ -150,14 +151,12 @@ public class SMSEMOA extends AbstractEvolutionaryAlgorithm {
 		fitnessEvaluator.evaluate(front);
 	}
 	
-	private class NondominatedFitnessComparator extends ChainedComparator
-	implements Comparator<Solution>, Serializable {
+	private class NondominatedFitnessComparator extends ChainedComparator implements Comparator<Solution>, Serializable {
 
 		private static final long serialVersionUID = -4088873047790962685L;
 
 		public NondominatedFitnessComparator() {
-			super(new RankComparator(), new FitnessComparator(
-					fitnessEvaluator.areLargerValuesPreferred()));
+			super(new RankComparator(), new FitnessComparator(fitnessEvaluator.areLargerValuesPreferred()));
 		}
 
 	}

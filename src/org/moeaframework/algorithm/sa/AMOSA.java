@@ -27,10 +27,13 @@ import org.moeaframework.core.Initialization;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Problem;
+import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.Variation;
 import org.moeaframework.core.comparator.DominanceComparator;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
+import org.moeaframework.core.operator.Mutation;
+import org.moeaframework.core.operator.RandomInitialization;
+import org.moeaframework.core.spi.OperatorFactory;
 
 /**
  * Implementation of the simulated annealing-based multiobjective optimization algorithm (AMOSA).
@@ -49,7 +52,7 @@ import org.moeaframework.core.comparator.ParetoDominanceComparator;
 public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 	
 	protected final Initialization initialization;
-	protected final Variation variation;
+	protected final Mutation mutation;
 
 	/**
 	 * The archive storing the non-dominated solutions.
@@ -65,11 +68,25 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 	protected final int numberOfIterationsPerTemperature;
 	protected final int numberOfHillClimbingIterationsForRefinement;
 	
-	public AMOSA(Problem problem, Initialization initialization, Variation variation, int softLimit, int hardLimit, double tMin, double tMax, double alpha, int numberOfIterationsPerTemperature,
+	public AMOSA(Problem problem) {
+		this(problem,
+				new RandomInitialization(problem, 2 * Settings.DEFAULT_POPULATION_SIZE), // gamma * softLimit
+				OperatorFactory.getInstance().getMutation(problem),
+				Settings.DEFAULT_POPULATION_SIZE, // softLimit
+				10, // hardLimit
+				0.0000001, // tMin
+				200.0, // tMax
+				0.8, // alpha
+				500, // numberOfIterationPerTemperature
+				20); //numberOfHillClimbingIterationsForRefinement
+	}
+	
+	public AMOSA(Problem problem, Initialization initialization, Mutation mutation, int softLimit, int hardLimit,
+			double tMin, double tMax, double alpha, int numberOfIterationsPerTemperature,
 			int numberOfHillClimbingIterationsForRefinement) {
 		super(problem,tMin,tMax);
 		this.initialization = initialization;
-		this.variation = variation;
+		this.mutation = mutation;
 		this.softLimit = softLimit;
 		this.hardLimit = hardLimit;
 		this.alpha = alpha;
@@ -90,7 +107,7 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 		
 		for (int i=0; i < initialSolutions.length; i++) {
 			for (int j=0; j < this.numberOfHillClimbingIterationsForRefinement; j++) {
-				Solution child = this.variation.evolve(new Solution[] { initialSolutions[i] })[0];
+				Solution child = this.mutation.mutate(initialSolutions[i]);
 				evaluate(child);
 				
 				if (paretoDominanceComparator.compare(initialSolutions[i], child) > 0) {
@@ -117,7 +134,7 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 		if (temperature >= tMin) {
 			for (int i=0; i < this.numberOfIterationsPerTemperature; i++) {
 				DominanceComparator comparator = new ParetoDominanceComparator();
-				Solution newPT = variation.evolve(new Solution[] {currentPT})[0];
+				Solution newPT = mutation.mutate(currentPT);
 				evaluate(newPT);
 				
 				// r is the array of range of each Objective in the archive along with newPT

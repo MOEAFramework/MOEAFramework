@@ -55,6 +55,11 @@ public class Settings {
 	public static final int BUFFER_SIZE = 0x1000;
 	
 	/**
+	 * The default population size.
+	 */
+	public static final int DEFAULT_POPULATION_SIZE = 100;
+	
+	/**
 	 * Store the new line character to prevent repetitive calls to
 	 * {@code System.getProperty("line.separator")}.
 	 */

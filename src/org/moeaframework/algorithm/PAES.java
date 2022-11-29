@@ -22,10 +22,11 @@ import org.moeaframework.core.AdaptiveGridArchive;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.Variation;
 import org.moeaframework.core.comparator.DominanceComparator;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
+import org.moeaframework.core.operator.Mutation;
 import org.moeaframework.core.operator.RandomInitialization;
+import org.moeaframework.core.spi.OperatorFactory;
 
 /**
  * Implementation of the (1+1) Pareto Archived Evolution Strategy (PAES).  PAES
@@ -42,40 +43,44 @@ import org.moeaframework.core.operator.RandomInitialization;
 public class PAES extends AbstractEvolutionaryAlgorithm {
 	
 	/**
-	 * The mutation operator
-	 */
-	private final Variation variation;
-	
-	/**
 	 * The dominance comparator.
 	 */
 	private final DominanceComparator comparator;
 	
 	/**
+	 * Constructs a new PAES instance with default settings.
+	 * 
+	 * @param problem the problem
+	 */
+	public PAES(Problem problem) {
+		this(problem, OperatorFactory.getInstance().getMutation(problem), 8, 100);
+	}
+	
+	/**
 	 * Constructs a new PAES instance.
 	 * 
 	 * @param problem the problem
-	 * @param variation the mutation operator
+	 * @param mutation the mutation operator
 	 * @param bisections the number of bisections in the adaptive grid archive
 	 * @param archiveSize the capacity of the adaptive grid archive
-	 * @throws IllegalArgumentException if the variation operator requires more
-	 *         than one parent
 	 */
-	public PAES(Problem problem, Variation variation, int bisections,
-			int archiveSize) {
+	public PAES(Problem problem, Mutation mutation, int bisections, int archiveSize) {
 		super(problem,
 				new Population(),
-				new AdaptiveGridArchive(archiveSize, problem, 
-						ArithmeticUtils.pow(2, bisections)),
-				null);
-		this.variation = variation;
-		
-		if (variation.getArity() != 1) {
-			throw new IllegalArgumentException(
-					"PAES only supports mutation operators with 1 parent");
-		}
+				new AdaptiveGridArchive(archiveSize, problem, ArithmeticUtils.pow(2, bisections)),
+				null,
+				mutation);
 		
 		comparator = new ParetoDominanceComparator();
+	}
+	
+	public void setVariation(Mutation mutation) {
+		super.setVariation(mutation);
+	}
+	
+	@Override
+	public Mutation getVariation() {
+		return (Mutation)super.getVariation();
 	}
 
 	@Override
@@ -87,8 +92,7 @@ public class PAES extends AbstractEvolutionaryAlgorithm {
 	protected void initialize() {
 		// avoid calling super.initialize() since no initializer is set
 		if (initialized) {
-			throw new AlgorithmInitializationException(this, 
-					"algorithm already initialized");
+			throw new AlgorithmInitializationException(this, "algorithm already initialized");
 		}
 
 		initialized = true;
@@ -131,7 +135,7 @@ public class PAES extends AbstractEvolutionaryAlgorithm {
 	@Override
 	protected void iterate() {
 		Solution parent = population.get(0);
-		Solution offspring = variation.evolve(new Solution[] { parent })[0];
+		Solution offspring = getVariation().mutate(parent);
 		
 		evaluate(offspring);
 		

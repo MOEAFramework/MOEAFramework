@@ -22,10 +22,13 @@ import org.moeaframework.core.Initialization;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
+import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.comparator.DominanceComparator;
+import org.moeaframework.core.operator.RandomInitialization;
 import org.moeaframework.core.operator.real.DifferentialEvolutionSelection;
 import org.moeaframework.core.operator.real.DifferentialEvolutionVariation;
+import org.moeaframework.core.variable.RealVariable;
 
 /**
  * Single-objective differential evolution (DE) algorithm.
@@ -50,13 +53,20 @@ public class DifferentialEvolution extends AbstractEvolutionaryAlgorithm {
 	private final DifferentialEvolutionSelection selection;
 	
 	/**
-	 * The differential evolution variation operator.
+	 * Constructs a new single-objective differential evolution algorithm with default settings.
+	 * 
+	 * @param problem the problem
 	 */
-	private final DifferentialEvolutionVariation variation;
+	public DifferentialEvolution(Problem problem) {
+		this(problem,
+				new LinearDominanceComparator(),
+				new RandomInitialization(problem, Settings.DEFAULT_POPULATION_SIZE),
+				new DifferentialEvolutionSelection(),
+				new DifferentialEvolutionVariation());
+	}
 
 	/**
-	 * Constructs a new instance of the single-objective differential evolution
-	 * (DE) algorithm.
+	 * Constructs a new instance of the single-objective differential evolution (DE) algorithm.
 	 * 
 	 * @param problem the problem
 	 * @param comparator the aggregate objective comparator
@@ -64,15 +74,13 @@ public class DifferentialEvolution extends AbstractEvolutionaryAlgorithm {
 	 * @param selection the differential evolution selection operator
 	 * @param variation the differential evolution variation operator
 	 */
-	public DifferentialEvolution(Problem problem,
-			AggregateObjectiveComparator comparator,
-			Initialization initialization,
-			DifferentialEvolutionSelection selection,
-			DifferentialEvolutionVariation variation) {
-		super(problem, new Population(), null, initialization);
+	public DifferentialEvolution(Problem problem, AggregateObjectiveComparator comparator, Initialization initialization,
+			DifferentialEvolutionSelection selection, DifferentialEvolutionVariation variation) {
+		super(problem, new Population(), null, initialization, variation);
 		this.comparator = comparator;
 		this.selection = selection;
-		this.variation = variation;
+		
+		problem.assertType(RealVariable.class);
 	}
 
 	@Override
@@ -106,4 +114,8 @@ public class DifferentialEvolution extends AbstractEvolutionaryAlgorithm {
 		return result;
 	}
 	
+	@Override
+	public DifferentialEvolutionVariation getVariation() {
+		return (DifferentialEvolutionVariation)variation;
+	}
 }

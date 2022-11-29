@@ -23,10 +23,13 @@ import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Selection;
+import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.comparator.ObjectiveComparator;
+import org.moeaframework.core.operator.RandomInitialization;
 import org.moeaframework.core.operator.TournamentSelection;
+import org.moeaframework.core.spi.OperatorFactory;
 
 /**
  * Implementation of the Vector Evaluated Genetic Algorithm (VEGA).  VEGA should
@@ -57,26 +60,31 @@ public class VEGA extends AbstractEvolutionaryAlgorithm {
 	private Selection selection;
 	
 	/**
-	 * The variation operator.
+	 * Constructs a new VEGA instance with default settings.
+	 * 
+	 * @param problem the problem
 	 */
-	private Variation variation;
+	public VEGA(Problem problem) {
+		this(problem,
+				new Population(),
+				null,
+				new RandomInitialization(problem, Settings.DEFAULT_POPULATION_SIZE),
+				OperatorFactory.getInstance().getVariation(problem));
+	}
 
 	/**
 	 * Constructs a new VEGA instance.
 	 * 
 	 * @param problem the problem
 	 * @param population the population
-	 * @param archive the external archive; or {@code null} if no external
-	 *        archive is used
+	 * @param archive the external archive; or {@code null} if no external archive is used
 	 * @param initialization the initialization operator
 	 * @param variation the variation operator
 	 */
 	public VEGA(Problem problem, Population population,
 			NondominatedPopulation archive, Initialization initialization,
 			Variation variation) {
-		super(problem, population, archive, initialization);
-		this.variation = variation;
-		
+		super(problem, population, archive, initialization, variation);		
 		selection = new VEGASelection();
 	}
 
@@ -97,8 +105,7 @@ public class VEGA extends AbstractEvolutionaryAlgorithm {
 		population.clear();
 		
 		while (!filled) {
-			Solution[] offspring = variation.evolve(
-					select(parents, index, variation.getArity()));
+			Solution[] offspring = variation.evolve(select(parents, index, variation.getArity()));
 			
 			for (int i = 0; i < offspring.length; i++) {
 				population.add(offspring[i]);
@@ -135,8 +142,7 @@ public class VEGA extends AbstractEvolutionaryAlgorithm {
 	}
 
 	/**
-	 * VEGA selection operator that selects parents based on only one of the
-	 * objectives.  
+	 * VEGA selection operator that selects parents based on only one of the objectives.  
 	 */
 	private class VEGASelection implements Selection {
 		
@@ -148,8 +154,7 @@ public class VEGA extends AbstractEvolutionaryAlgorithm {
 			selectors = new Selection[problem.getNumberOfObjectives()];
 			
 			for (int i = 0; i < problem.getNumberOfObjectives(); i++) {
-				selectors[i] = new TournamentSelection(
-						new ObjectiveComparator(i));
+				selectors[i] = new TournamentSelection(new ObjectiveComparator(i));
 			}
 		}
 

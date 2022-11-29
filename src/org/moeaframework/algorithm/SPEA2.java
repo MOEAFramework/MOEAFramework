@@ -31,13 +31,16 @@ import org.moeaframework.core.Initialization;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Selection;
+import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.comparator.DominanceComparator;
 import org.moeaframework.core.comparator.FitnessComparator;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
 import org.moeaframework.core.indicator.IndicatorUtils;
+import org.moeaframework.core.operator.RandomInitialization;
 import org.moeaframework.core.operator.TournamentSelection;
+import org.moeaframework.core.spi.OperatorFactory;
 
 /**
  * Implementation of the strength-based evolutionary algorithm (SPEA2).  SPEA2
@@ -69,11 +72,6 @@ public class SPEA2 extends AbstractEvolutionaryAlgorithm {
 	private final Selection selection;
 	
 	/**
-	 * The variation operator.
-	 */
-	private final Variation variation;
-	
-	/**
 	 * The number of offspring.
 	 */
 	private final int numberOfOffspring;
@@ -87,6 +85,19 @@ public class SPEA2 extends AbstractEvolutionaryAlgorithm {
 	 * Compares solutions based on strength.
 	 */
 	protected final FitnessComparator fitnessComparator;
+	
+	/**
+	 * Constructs a new instance of SPEA2 with default settings.
+	 * 
+	 * @param problem the problem
+	 */
+	public SPEA2(Problem problem) {
+		this(problem,
+				new RandomInitialization(problem, Settings.DEFAULT_POPULATION_SIZE),
+				OperatorFactory.getInstance().getVariation(problem),
+				Settings.DEFAULT_POPULATION_SIZE,
+				1);
+	}
 
 	/**
 	 * Constructs a new instance of SPEA2.
@@ -100,8 +111,7 @@ public class SPEA2 extends AbstractEvolutionaryAlgorithm {
 	 */
 	public SPEA2(Problem problem, Initialization initialization,
 			Variation variation, int numberOfOffspring, int k) {
-		super(problem, new Population(), null, initialization);
-		this.variation = variation;
+		super(problem, new Population(), null, initialization, variation);
 		this.numberOfOffspring = numberOfOffspring;
 		
 		fitnessEvaluator = new StrengthFitnessEvaluator(k);

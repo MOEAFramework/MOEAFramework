@@ -50,30 +50,36 @@ public class SBX implements Variation {
 	/**
 	 * The probability of applying this SBX operator to each variable.
 	 */
-	private final double probability;
+	private double probability;
 
 	/**
 	 * The distribution index of this SBX operator.
 	 */
-	private final double distributionIndex;
+	private double distributionIndex;
 
 	/**
 	 * Enable randomly swapping decision variables between the parents.
 	 */
-	private final boolean swap;
+	private boolean swap;
 
 	/**
 	 * If {@code true}, use symmetric distributions; otherwise asymmetric
 	 * distributions are used.
 	 */
-	private final boolean symmetric;
+	private boolean symmetric;
+	
+	/**
+	 * Constructs a SBX operator with the default parameters.
+	 */
+	public SBX() {
+		this(1.0, 15.0);
+	}
 	
 	/**
 	 * Constructs a SBX operator with the specified probability and
 	 * distribution index.
 	 * 
-	 * @param probability the probability of applying this SBX operator to each
-	 *        variable
+	 * @param probability the probability of applying this SBX operator to each variable
 	 * @param distributionIndex the distribution index of this SBX operator
 	 */
 	public SBX(double probability, double distributionIndex) {
@@ -86,11 +92,9 @@ public class SBX implements Variation {
 	 * traditional SBX operation; and to {@code false} to use the SBX variant
 	 * used by NSGA-III.
 	 * 
-	 * @param probability the probability of applying this SBX operator to each
-	 *        variable
+	 * @param probability the probability of applying this SBX operator to each variable
 	 * @param distributionIndex the distribution index of this SBX operator
-	 * @param swap if {@code true}, randomly swap the variables between the two
-	 *        parents
+	 * @param swap if {@code true}, randomly swap the variables between the two parents
 	 * @param symmetric if {@code true}, symmetric distrubutions are used
 	 */
 	public SBX(double probability, double distributionIndex, boolean swap,
@@ -110,6 +114,15 @@ public class SBX implements Variation {
 	public double getProbability() {
 		return probability;
 	}
+	
+	/**
+	 * Sets the probability of applying this SBX operator to each variable.
+	 * 
+	 * @param probability the probability (0.0 - 1.0)
+	 */
+	public void setProbability(double probability) {
+		this.probability = probability;
+	}
 
 	/**
 	 * Returns the distribution index of this SBX operator.
@@ -119,17 +132,34 @@ public class SBX implements Variation {
 	public double getDistributionIndex() {
 		return distributionIndex;
 	}
+	
+	/**
+	 * Sets the distribution index of this SBX operator.
+	 * 
+	 * @param distributionIndex the distribution index
+	 */
+	public void setDistributionIndex(double distributionIndex) {
+		this.distributionIndex = distributionIndex;
+	}
 
 	/**
 	 * Returns {@code true} if this SBX operator swaps variables between the
 	 * two parents.  Disabling this swapping produces offspring closer to the
 	 * two parents, which is beneficial for NSGA-III.
 	 * 
-	 * @return {@code true} if this SBX operator swaps variables between the
-	 *         two parents
+	 * @return {@code true} if this SBX operator swaps variables between the two parents
 	 */
 	public boolean isSwap() {
 		return swap;
+	}
+	
+	/**
+	 * Sets whether this SBX operator swaps variables between the two parents.
+	 * 
+	 * @param swap {@code true} if this SBX operator swaps variables between the two parents
+	 */
+	public void setSwap(boolean swap) {
+		this.swap = swap;
 	}
 
 	/**
@@ -141,6 +171,16 @@ public class SBX implements Variation {
 	 */
 	public boolean isSymmetric() {
 		return symmetric;
+	}
+	
+	/**
+	 * Sets if offspring are distributed symmetrically or asymmetrically.
+	 * 
+	 * @param symmetric {@code true} if the offspring are distributed symmetrically; or
+	 *         {@code false} if asymmetric distributions are used
+	 */
+	public void setSymmetric(boolean symmetric) {
+		this.symmetric = symmetric;
 	}
 
 	@Override

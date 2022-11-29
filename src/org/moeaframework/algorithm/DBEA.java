@@ -34,6 +34,8 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.comparator.ObjectiveComparator;
+import org.moeaframework.core.operator.RandomInitialization;
+import org.moeaframework.core.spi.OperatorFactory;
 import org.moeaframework.util.weights.NormalBoundaryDivisions;
 import org.moeaframework.util.weights.NormalBoundaryIntersectionGenerator;
 
@@ -97,14 +99,31 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 	Population corner;
 	
 	/**
-	 * The variation operator.
-	 */
-	private final Variation variation;
-	
-	/**
 	 * The number of divisions for generating reference points.
 	 */
 	private final NormalBoundaryDivisions divisions;
+	
+	/**
+	 * Constructs a new instance of the DBEA algorithm with default settings.
+	 * 
+	 * @param problem the problem being solved
+	 */
+	public DBEA(Problem problem) {
+		this(problem, NormalBoundaryDivisions.forProblem(problem));
+	}
+	
+	/**
+	 * Constructs a new instance of the DBEA algorithm with the given number of divisions.
+	 * 
+	 * @param problem the problem being solved
+	 * @param divisions the number of divisions
+	 */
+	public DBEA(Problem problem, NormalBoundaryDivisions divisions) {
+		this(problem,
+				new RandomInitialization(problem, divisions.getNumberOfReferencePoints(problem)),
+				OperatorFactory.getInstance().getVariation(problem),
+				divisions);
+	}
 
 	/**
 	 * Constructs a new instance of the DBEA algorithm.
@@ -116,8 +135,7 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 	 */
 	public DBEA(Problem problem, Initialization initialization,
 			Variation variation, NormalBoundaryDivisions divisions) {
-		super(problem, new Population(), null, initialization);
-		this.variation = variation;
+		super(problem, new Population(), null, initialization, variation);
 		this.divisions = divisions;
 	}
 
@@ -191,8 +209,7 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 			}
 		}
 		
-		// this call is likely not necessary, but is included in the Matlab
-		// version
+		// this call is likely not necessary, but is included in the Matlab version
 		preserveCorner();
 	}
 	
@@ -253,8 +270,7 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 	}
 
 	/**
-	 * Returns the solution with the largest objective value for the given
-	 * objective.
+	 * Returns the solution with the largest objective value for the given objective.
 	 * 
 	 * @param objective the objective
 	 * @param population the population of solutions
@@ -275,8 +291,7 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 	}
 	
 	/**
-	 * Returns a copy of the population sorted by the objective value in
-	 * ascending order.
+	 * Returns a copy of the population sorted by the objective value in ascending order.
 	 * 
 	 * @param objective the objective
 	 * @param population the population
@@ -290,13 +305,11 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 	}
 	
 	/**
-	 * Returns a copy of the population sorted by the sum-of-squares of all
-	 * but one objective.
+	 * Returns a copy of the population sorted by the sum-of-squares of all but one objective.
 	 * 
 	 * @param objective the ignored objective
 	 * @param population the population
-	 * @return a copy of the population ordered by the sum-of-squares of all
-	 *         but one objective
+	 * @return a copy of the population ordered by the sum-of-squares of all but one objective
 	 */
 	private Population orderBySmallestSquaredValue(final int objective, Population population) {
 		Population result = new Population();
@@ -723,8 +736,7 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 		double[] objectiveValues = new double[problem.getNumberOfObjectives()];
 		
 		for (int j = 0; j < problem.getNumberOfObjectives(); j++) {
-			objectiveValues[j] = (solution.getObjective(j) - idealPoint[j]) /
-					(intercepts[j] - idealPoint[j]);
+			objectiveValues[j] = (solution.getObjective(j) - idealPoint[j]) / (intercepts[j] - idealPoint[j]);
 		}
 		
 		return objectiveValues;

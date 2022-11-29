@@ -47,8 +47,8 @@ public class HUXTest {
 			BinaryVariable parent1 = new BinaryVariable(100);
 			BinaryVariable parent2 = new BinaryVariable(100);
 
-			BitFlip.evolve(parent1, 0.5);
-			BitFlip.evolve(parent2, 0.5);
+			BitFlip.mutate(parent1, 0.5);
+			BitFlip.mutate(parent2, 0.5);
 
 			BinaryVariable offspring1 = parent1.copy();
 			BinaryVariable offspring2 = parent2.copy();
@@ -75,8 +75,8 @@ public class HUXTest {
 			BinaryVariable parent1 = new BinaryVariable(100);
 			BinaryVariable parent2 = new BinaryVariable(100);
 
-			BitFlip.evolve(parent1, 0.5);
-			BitFlip.evolve(parent2, 0.5);
+			BitFlip.mutate(parent1, 0.5);
+			BitFlip.mutate(parent2, 0.5);
 
 			BinaryVariable offspring1 = parent1.copy();
 			BinaryVariable offspring2 = parent2.copy();
@@ -106,8 +106,8 @@ public class HUXTest {
 		BinaryVariable bv1 = new BinaryVariable(100);
 		BinaryVariable bv2 = new BinaryVariable(100);
 
-		BitFlip.evolve(bv1, 0.5);
-		BitFlip.evolve(bv2, 0.5);
+		BitFlip.mutate(bv1, 0.5);
+		BitFlip.mutate(bv2, 0.5);
 
 		Solution s1 = new Solution(1, 0);
 		s1.setVariable(0, bv1);

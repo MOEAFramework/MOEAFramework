@@ -32,8 +32,11 @@ import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Selection;
+import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
+import org.moeaframework.core.operator.RandomInitialization;
+import org.moeaframework.core.spi.OperatorFactory;
 
 /**
  * Implementation of the Pareto Envelope-based Selection Algorithm (PESA2).
@@ -55,17 +58,25 @@ public class PESA2 extends AbstractEvolutionaryAlgorithm {
 	 * The selection operator.
 	 */
 	protected final Selection selection;
-
-	/**
-	 * The variation operator.
-	 */
-	protected final Variation variation;
 	
 	/**
 	 * A mapping from grid index to the solutions occupying that grid index.
 	 * This enables PESA2's region-based selection.
 	 */
 	protected Map<Integer, List<Solution>> gridMap;
+	
+	/**
+	 * Constructs a new PESA2 instance with default settings.
+	 * 
+	 * @param problem the problem
+	 */
+	public PESA2(Problem problem) {
+		this(problem,
+				OperatorFactory.getInstance().getVariation(problem),
+				new RandomInitialization(problem, Settings.DEFAULT_POPULATION_SIZE),
+				8,
+				100);
+	}
 
 	/**
 	 * Constructs a new PESA2 instance.
@@ -82,8 +93,8 @@ public class PESA2 extends AbstractEvolutionaryAlgorithm {
 				new Population(),
 				new AdaptiveGridArchive(archiveSize, problem,
 						ArithmeticUtils.pow(2, bisections)),
-				initialization);
-		this.variation = variation;
+				initialization,
+				variation);
 		
 		selection = new RegionBasedSelection();
 	}

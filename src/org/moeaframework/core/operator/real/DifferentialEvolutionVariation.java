@@ -56,6 +56,13 @@ public class DifferentialEvolutionVariation implements Variation {
 	 * The scaling factor or step size.
 	 */
 	private final double F;
+	
+	/**
+	 * Constructs a differential evolution operator with default settings.
+	 */
+	public DifferentialEvolutionVariation() {
+		this(0.1, 0.5);
+	}
 
 	/**
 	 * Constructs a differential evolution operator with the specified crossover

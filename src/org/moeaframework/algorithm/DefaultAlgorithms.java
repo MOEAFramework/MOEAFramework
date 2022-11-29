@@ -53,6 +53,7 @@ import org.moeaframework.core.fitness.AdditiveEpsilonIndicatorFitnessEvaluator;
 import org.moeaframework.core.fitness.HypervolumeContributionFitnessEvaluator;
 import org.moeaframework.core.fitness.HypervolumeFitnessEvaluator;
 import org.moeaframework.core.fitness.IndicatorFitnessEvaluator;
+import org.moeaframework.core.operator.Mutation;
 import org.moeaframework.core.operator.RandomInitialization;
 import org.moeaframework.core.operator.TournamentSelection;
 import org.moeaframework.core.operator.UniformSelection;
@@ -65,8 +66,6 @@ import org.moeaframework.core.spi.ProviderNotFoundException;
 import org.moeaframework.core.spi.RegisteredAlgorithmProvider;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.util.TypedProperties;
-import org.moeaframework.util.Vector;
-import org.moeaframework.util.weights.RandomGenerator;
 import org.moeaframework.util.weights.NormalBoundaryDivisions;
 
 /**
@@ -426,12 +425,17 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 		int archiveSize = (int)properties.getDouble("archiveSize", 100);
 		int bisections = (int)properties.getDouble("bisections", 8);
 
+		String hint = OperatorFactory.getInstance().getDefaultMutation(problem);
 		Variation variation = OperatorFactory.getInstance().getVariation(
-				OperatorFactory.getInstance().getDefaultMutation(problem), 
+				hint, 
 				properties,
 				problem);
+		
+		if (!(variation instanceof Mutation)) {
+			throw new ProviderLookupException("the operator '" + hint + "' is not a mutation operator");
+		}
 
-		return new PAES(problem, variation, bisections, archiveSize);
+		return new PAES(problem, (Mutation)variation, bisections, archiveSize);
 	}
 	
 	/**
@@ -662,14 +666,8 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 		int numberOfWeights = (int)properties.getDouble("numberOfWeights", 50);
 
 		Initialization initialization = new RandomInitialization(problem, populationSize);
+		List<double[]> weights = MSOPS.generateWeights(problem, numberOfWeights);
 		
-		List<double[]> weights = new RandomGenerator(problem.getNumberOfObjectives(), numberOfWeights).generate();
-		
-		// normalize weights so their magnitude is 1
-		for (int i = 0; i < weights.size(); i++) {
-			weights.set(i, Vector.normalize(weights.get(i)));
-		}
-
 		MSOPSRankedPopulation population = new MSOPSRankedPopulation(weights);
 		DifferentialEvolutionSelection selection = new DifferentialEvolutionSelection();
 		DifferentialEvolutionVariation variation = (DifferentialEvolutionVariation)OperatorFactory.getInstance().getVariation(
@@ -750,9 +748,9 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 		}
 
 		Initialization initialization = new RandomInitialization(problem, populationSize);
-		Variation variation = new SelfAdaptiveNormalVariation();
+		Mutation mutation = new SelfAdaptiveNormalVariation();
 
-		return new EvolutionStrategy(problem, comparator, initialization, variation);
+		return new EvolutionStrategy(problem, comparator, initialization, mutation);
 	}
 
 	/**
@@ -808,12 +806,17 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 		Initialization initialization = new RandomInitialization(problem, (int)gamma*softLimit);
 			
 		// Use the operator factory that problem provides
+		String operator = OperatorFactory.getInstance().getDefaultMutation(problem);
 		Variation variation = OperatorFactory.getInstance().getVariation(
-				OperatorFactory.getInstance().getDefaultMutation(problem), 
+				operator, 
 				properties,
 				problem);
+		
+		if (!(variation instanceof Mutation)) {
+			throw new ProviderLookupException("the operator '" + operator + "' is not a mutation operator");
+		}
 			
-		return new AMOSA(problem, initialization, variation, softLimit, hardLimit, tMin, tMax,
+		return new AMOSA(problem, initialization, (Mutation)variation, softLimit, hardLimit, tMin, tMax,
 				alpha, numberOfIterationPerTemperature, numberOfHillClimbingIterationsForRefinement);
 	}
 	

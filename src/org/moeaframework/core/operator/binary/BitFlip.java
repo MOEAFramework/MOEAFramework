@@ -20,7 +20,7 @@ package org.moeaframework.core.operator.binary;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variable;
-import org.moeaframework.core.Variation;
+import org.moeaframework.core.operator.Mutation;
 import org.moeaframework.core.variable.BinaryVariable;
 
 /**
@@ -29,12 +29,19 @@ import org.moeaframework.core.variable.BinaryVariable;
  * <p>
  * This operator is type-safe.
  */
-public class BitFlip implements Variation {
+public class BitFlip implements Mutation {
 
 	/**
 	 * The probability of flipping a bit.
 	 */
-	private final double probability;
+	private double probability;
+	
+	/**
+	 * Constructs a bit flip operator with the default settings.
+	 */
+	public BitFlip() {
+		this(0.01);
+	}
 
 	/**
 	 * Constructs a bit flip operator.
@@ -54,20 +61,29 @@ public class BitFlip implements Variation {
 	public double getProbability() {
 		return probability;
 	}
+	
+	/**
+	 * Sets the probability of flipping a bit.
+	 * 
+	 * @param probability the probability of flipping a bit
+	 */
+	public void setProbability(double probability) {
+		this.probability = probability;
+	}
 
 	@Override
-	public Solution[] evolve(Solution[] parents) {
-		Solution result = parents[0].copy();
+	public Solution mutate(Solution parent) {
+		Solution result = parent.copy();
 
 		for (int i = 0; i < result.getNumberOfVariables(); i++) {
 			Variable variable = result.getVariable(i);
 
 			if (variable instanceof BinaryVariable) {
-				evolve((BinaryVariable)variable, probability);
+				mutate((BinaryVariable)variable, probability);
 			}
 		}
 
-		return new Solution[] { result };
+		return result;
 	}
 
 	/**
@@ -76,17 +92,12 @@ public class BitFlip implements Variation {
 	 * @param variable the variable to be mutated
 	 * @param probability the probability of flipping a bit
 	 */
-	public static void evolve(BinaryVariable variable, double probability) {
+	public static void mutate(BinaryVariable variable, double probability) {
 		for (int i = 0; i < variable.getNumberOfBits(); i++) {
 			if (PRNG.nextDouble() <= probability) {
 				variable.set(i, !variable.get(i));
 			}
 		}
-	}
-
-	@Override
-	public int getArity() {
-		return 1;
 	}
 
 }

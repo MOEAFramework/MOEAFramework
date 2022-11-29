@@ -109,6 +109,16 @@ public class NormalBoundaryDivisions {
 			return new NormalBoundaryDivisions((int)properties.getDouble("divisions", 4));
 		}
 		
+		return forProblem(problem);
+	}
+	
+	/**
+	 * Returns the default number of divisions based on the number of objectives.
+	 * 
+	 * @param problem the problem
+	 * @return the reference point divisions
+	 */
+	public static NormalBoundaryDivisions forProblem(Problem problem) {
 		int divisionsOuter;
 		int divisionsInner;
 		
