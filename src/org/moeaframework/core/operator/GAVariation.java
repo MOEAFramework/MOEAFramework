@@ -23,7 +23,10 @@ import org.moeaframework.core.Variation;
  * Operator for applying a crossover and mutation operation in succession. The
  * crossover can produce any number of offspring while the mutation operator
  * should only produce one offspring.
+ * 
+ * @deprecated Use {@link CompoundVariation} or {@link CompoundMutation}
  */
+@Deprecated
 public class GAVariation extends CompoundVariation {
 
 	/**

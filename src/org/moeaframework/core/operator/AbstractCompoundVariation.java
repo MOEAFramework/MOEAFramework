@@ -104,7 +104,7 @@ public class AbstractCompoundVariation<T extends Variation> implements Variation
 	 * 
 	 * @param variation the variation operator to append
 	 */
-	public void appendOperator(T variation) {
+	void appendOperator(T variation) {
 		operators.add(variation);
 	}
 
