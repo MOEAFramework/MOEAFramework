@@ -21,6 +21,7 @@ import java.util.ServiceConfigurationError;
 
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Variation;
+import org.moeaframework.core.operator.CompoundMutation;
 import org.moeaframework.core.operator.CompoundVariation;
 import org.moeaframework.core.operator.Mutation;
 import org.moeaframework.util.TypedProperties;
@@ -178,15 +179,38 @@ public class OperatorFactory extends AbstractFactory<OperatorProvider> {
 			}
 		} else if (name.contains("+")) {
 			String[] entries = name.split("\\+");
-			CompoundVariation variation = new CompoundVariation();
+			Variation[] operators = new Variation[entries.length];
 			
-			for (String entry : entries) {
-				variation.appendOperator(getVariation(entry.trim(), properties, problem));
+			for (int i = 0; i < entries.length; i++) {
+				operators[i] = getVariation(entries[i].trim(), properties, problem);
 			}
 			
-			return variation;
+			return createCompoundOperator(operators);
 		} else {
 			return instantiateVariation(name, properties, problem);
+		}
+	}
+	
+	private Variation createCompoundOperator(Variation[] operators) {
+		boolean isMutation = true;
+		
+		for (int i = 0; i < operators.length; i++) {
+			if (!(operators[i] instanceof Mutation)) {
+				isMutation = false;
+				break;
+			}
+		}
+		
+		if (isMutation) {
+			Mutation[] mutation = new Mutation[operators.length];
+
+			for (int i = 0; i < operators.length; i++) {
+				mutation[i] = (Mutation)operators[i];
+			}
+			
+			return new CompoundMutation(mutation);
+		} else {
+			return new CompoundVariation(operators);
 		}
 	}
 	
