@@ -112,6 +112,7 @@ public class Population implements Iterable<Solution> {
 	 *         method; {@code false} otherwise.
 	 */
 	public boolean add(Solution solution) {
+		modCount++;
 		return data.add(solution);
 	}
 
@@ -280,6 +281,7 @@ public class Population implements Iterable<Solution> {
 	 * @param comparator the comparator to be used for sorting
 	 */
 	public void sort(Comparator<? super Solution> comparator) {
+		modCount++;
 		Collections.sort(data, comparator);
 	}
 
@@ -350,7 +352,7 @@ public class Population implements Iterable<Solution> {
 	/**
 	 * The modification count.
 	 */
-	private int modCount;
+	int modCount;
 
 	/**
 	 * An iterator over the solutions in a population.
