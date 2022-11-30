@@ -18,6 +18,7 @@
 package org.moeaframework.core.operator.program;
 
 import org.moeaframework.core.PRNG;
+import org.moeaframework.core.Solution;
 import org.moeaframework.core.operator.TypeSafeCrossover;
 import org.moeaframework.core.variable.Program;
 import org.moeaframework.util.tree.Node;
@@ -48,12 +49,17 @@ public class SubtreeCrossover extends TypeSafeCrossover<Program> {
 		super(Program.class, probability);
 	}
 	
+	@Override
+	public Solution[] evolve(Solution[] parents) {
+		// only return the first offspring
+		return new Solution[] { super.evolve(parents)[0] };
+	}
+
 	/**
 	 * Applies subtree crossover to the programs.
 	 * 
 	 * @param program1 the first program, which is the parent program
 	 * @param program2 the second program, which provides the replacement subtree
-	 * @param rules the rules defining the program syntax
 	 */
 	public void evolve(Program program1, Program program2) {
 		Node node = null;
