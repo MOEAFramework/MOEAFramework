@@ -71,7 +71,7 @@ public class AbstractCompoundVariation<T extends Variation> implements Variation
 	 * @param type the variation type
 	 * @return {@code true} if any operators are the given type
 	 */
-	public boolean contains(Class<? extends T> type) {
+	public boolean contains(Class<? extends Variation> type) {
 		for (T operator : operators) {
 			if (type.isInstance(operator)) {
 				return true;

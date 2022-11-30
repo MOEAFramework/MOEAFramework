@@ -66,30 +66,27 @@ public class MOEADTest extends AlgorithmTest {
 	
 	@Test
 	public void testSelection() {
-		org.moeaframework.algorithm.MOEAD moead = null;
+		MOEAD moead = null;
 		
 		Problem problem = new MockRealProblem();
 		TypedProperties properties = new TypedProperties();
 		
 		//the default is de+pm
-		moead = (org.moeaframework.algorithm.MOEAD)AlgorithmFactory.getInstance()
-				.getAlgorithm("MOEA/D", properties, problem);
+		moead = (MOEAD)AlgorithmFactory.getInstance().getAlgorithm("MOEA/D", properties, problem);
 		
 		Assert.assertTrue(moead.useDE);
 		
 		//test with just de
 		properties.setString("operator", "de");
 		
-		moead = (org.moeaframework.algorithm.MOEAD)AlgorithmFactory.getInstance()
-				.getAlgorithm("MOEA/D", properties, problem);
+		moead = (MOEAD)AlgorithmFactory.getInstance().getAlgorithm("MOEA/D", properties, problem);
 		
 		Assert.assertTrue(moead.useDE);
 		
 		//test with a different operator
 		properties.setString("operator", "sbx+pm");
 		
-		moead = (org.moeaframework.algorithm.MOEAD)AlgorithmFactory.getInstance()
-				.getAlgorithm("MOEA/D", properties, problem);
+		moead = (MOEAD)AlgorithmFactory.getInstance().getAlgorithm("MOEA/D", properties, problem);
 		
 		Assert.assertFalse(moead.useDE);
 	}

@@ -680,7 +680,7 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 			properties.setString("method", "min-max");
 		}
 
-		return new RepeatedSingleObjective(problem, algorithmName, properties, instances);
+		return new RepeatedSingleObjective(problem, instances, algorithmName, properties);
 	}
 	
 	/**
