@@ -46,6 +46,11 @@ public class HUX extends TypeSafeCrossover<BinaryVariable> {
 	public HUX(double probability) {
 		super(BinaryVariable.class, probability);
 	}
+	
+	@Override
+	public String getName() {
+		return "hux";
+	}
 
 	/**
 	 * Evolves the specified variables using the HUX operator.

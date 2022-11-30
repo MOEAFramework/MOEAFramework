@@ -54,6 +54,11 @@ public class GrammarMutation implements Mutation {
 		super();
 		this.probability = probability;
 	}
+	
+	@Override
+	public String getName() {
+		return "gm";
+	}
 
 	/**
 	 * Returns the probability of mutating each integer codon in the grammar representation.

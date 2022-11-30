@@ -86,6 +86,11 @@ public class AdaptiveMetropolis extends MultiParentVariation {
 		this.jumpRateCoefficient = jumpRateCoefficient;
 	}
 	
+	@Override
+	public String getName() {
+		return "am";
+	}
+	
 	/**
 	 * Returns the jump rate coefficient value.
 	 * 

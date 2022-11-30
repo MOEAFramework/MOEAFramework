@@ -103,6 +103,11 @@ public class UNDX extends MultiParentVariation {
 		this.zeta = zeta;
 		this.eta = eta;
 	}
+	
+	@Override
+	public String getName() {
+		return "undx";
+	}
 
 	/**
 	 * Returns the standard deviation of the normal distribution controlling the

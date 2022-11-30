@@ -141,7 +141,7 @@ public class DefaultOperators extends RegisteredOperatorProvider {
 				properties.getDouble("ptm.rate", 0.01)));
 		
 		register("bx", (properties, problem) -> new SubtreeCrossover(
-				properties.getDouble("bx.rate", 0.9)));
+				properties.getDouble("stx.rate", 0.9)));
 		
 		register("replace", (properties, problem) -> new Replace(
 				properties.getDouble("replace.rate", 0.9)));

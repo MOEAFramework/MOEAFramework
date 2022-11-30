@@ -47,6 +47,11 @@ public class GrammarCrossover extends TypeSafeCrossover<Grammar> {
 	public GrammarCrossover(double probability) {
 		super(Grammar.class, probability);
 	}
+	
+	@Override
+	public String getName() {
+		return "gx";
+	}
 
 	/**
 	 * Performs single-point crossover on the specified grammars. Crossover

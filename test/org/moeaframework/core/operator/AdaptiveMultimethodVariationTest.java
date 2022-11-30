@@ -70,6 +70,11 @@ public class AdaptiveMultimethodVariationTest {
 		}
 		
 		@Override
+		public String getName() {
+			return "dummy";
+		}
+		
+		@Override
 		public int getArity() {
 			return arity;
 		}

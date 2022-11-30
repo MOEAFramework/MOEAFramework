@@ -56,6 +56,11 @@ public class PointMutation implements Mutation {
 		super();
 		this.probability = probability;
 	}
+	
+	@Override
+	public String getName() {
+		return "ptm";
+	}
 
 	/**
 	 * Gets the probability of mutating a node in the tree.

@@ -52,6 +52,11 @@ public class BitFlip implements Mutation {
 		super();
 		this.probability = probability;
 	}
+	
+	@Override
+	public String getName() {
+		return "bf";
+	}
 
 	/**
 	 * Returns the probability of flipping a bit.

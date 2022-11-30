@@ -76,6 +76,11 @@ public class DifferentialEvolutionVariation implements Variation {
 		this.CR = CR;
 		this.F = F;
 	}
+	
+	@Override
+	public String getName() {
+		return "de";
+	}
 
 	/**
 	 * Returns the crossover rate of this differential evolution operator.

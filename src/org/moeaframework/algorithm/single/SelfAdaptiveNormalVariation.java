@@ -47,6 +47,11 @@ public class SelfAdaptiveNormalVariation implements Mutation {
 	public SelfAdaptiveNormalVariation() {
 		super();
 	}
+	
+	@Override
+	public String getName() {
+		return "selfadaptive";
+	}
 
 	@Override
 	public Solution mutate(Solution parent) {

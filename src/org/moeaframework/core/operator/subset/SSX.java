@@ -48,6 +48,11 @@ public class SSX extends TypeSafeCrossover<Subset> {
 	public SSX(double probability) {
 		super(Subset.class, probability);
 	}
+	
+	@Override
+	public String getName() {
+		return "ssx";
+	}
 
 	/**
 	 * Evolves the specified variables using the SSX operator.

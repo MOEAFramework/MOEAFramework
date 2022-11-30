@@ -106,6 +106,11 @@ public class SBX implements Variation {
 		this.swap = swap;
 		this.symmetric = symmetric;
 	}
+	
+	@Override
+	public String getName() {
+		return "sbx";
+	}
 
 	/**
 	 * Returns the probability of applying this SBX operator to each variable.

@@ -87,6 +87,11 @@ public class SPX extends MultiParentVariation {
 		super(numberOfParents, numberOfOffspring);
 		this.epsilon = epsilon;
 	}
+	
+	@Override
+	public String getName() {
+		return "spx";
+	}
 
 	@Override
 	public Solution[] evolve(Solution[] parents) {

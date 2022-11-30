@@ -69,6 +69,11 @@ public class PM extends TypeSafeMutation<RealVariable> {
 		this.distributionIndex = distributionIndex;
 	}
 	
+	@Override
+	public String getName() {
+		return "pm";
+	}
+	
 	/**
 	 * Returns the distribution index controlling the shape of the polynomial mutation.
 	 * 

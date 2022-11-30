@@ -106,7 +106,7 @@ public class NSGAIII extends NSGAII {
 	 */
 	private static final void fixDefaultParameters(Variation variation) {
 		if (variation instanceof AbstractCompoundVariation<?>) {
-			for (Variation innerVariation : (AbstractCompoundVariation<?>)variation) {
+			for (Variation innerVariation : ((AbstractCompoundVariation<?>)variation).getOperators()) {
 				fixDefaultParameters(innerVariation);
 			}
 		} else if (variation instanceof SBX) {

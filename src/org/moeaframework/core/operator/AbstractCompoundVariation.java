@@ -19,7 +19,7 @@ package org.moeaframework.core.operator;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
+import java.util.Collections;
 import java.util.List;
 
 import org.moeaframework.core.FrameworkException;
@@ -44,7 +44,7 @@ import org.moeaframework.core.Variation;
  *   <li>Otherwise, an exception is thrown.
  * </ol>
  */
-public class AbstractCompoundVariation<T extends Variation> implements Variation, Iterable<T> {
+public class AbstractCompoundVariation<T extends Variation> implements Variation {
 
 	/**
 	 * The variation operators in the order they are applied.
@@ -72,6 +72,7 @@ public class AbstractCompoundVariation<T extends Variation> implements Variation
 	 * 
 	 * @return the name of this variation operator
 	 */
+	@Override
 	public String getName() {
 		if (name == null) {
 			StringBuilder sb = new StringBuilder();
@@ -81,7 +82,7 @@ public class AbstractCompoundVariation<T extends Variation> implements Variation
 					sb.append('+');
 				}
 				
-				sb.append(operator.getClass().getSimpleName());
+				sb.append(operator.getName());
 			}
 			
 			return sb.toString();
@@ -131,10 +132,14 @@ public class AbstractCompoundVariation<T extends Variation> implements Variation
 	public int getArity() {
 		return operators.get(0).getArity();
 	}
-
-	@Override
-	public Iterator<T> iterator() {
-		return operators.iterator();
+	
+	/**
+	 * Returns an unmodifiable list of the operations included in this compound variation instance.
+	 * 
+	 * @return the operators
+	 */
+	public List<T> getOperators() {
+		return Collections.unmodifiableList(operators);
 	}
 
 }

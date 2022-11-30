@@ -50,6 +50,11 @@ public class OnePointCrossover implements Variation {
 	public OnePointCrossover(double probability) {
 		this.probability = probability;
 	}
+	
+	@Override
+	public String getName() {
+		return "1x";
+	}
 
 	/**
 	 * Returns the probability of applying this operator to solutions.

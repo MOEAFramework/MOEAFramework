@@ -44,6 +44,11 @@ public class Insertion extends TypeSafeMutation<Permutation> {
 	public Insertion(double probability) {
 		super(Permutation.class, probability);
 	}
+	
+	@Override
+	public String getName() {
+		return "insertion";
+	}
 
 	/**
 	 * Evolves the specified permutation using the insertion mutation operator.

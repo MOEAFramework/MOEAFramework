@@ -45,6 +45,11 @@ public class CompoundVariationTest {
 			this.arity = arity;
 			this.numberOfOffspring = numberOfOffspring;
 		}
+		
+		@Override
+		public String getName() {
+			return "stub";
+		}
 
 		@Override
 		public int getArity() {

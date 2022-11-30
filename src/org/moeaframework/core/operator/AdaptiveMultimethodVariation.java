@@ -17,10 +17,7 @@
  */
 package org.moeaframework.core.operator;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-
 import org.apache.commons.math3.stat.StatUtils;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Population;
@@ -28,11 +25,10 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
 
 /**
- * Auto-adaptive multi-method recombination operator. Applies operators with
- * probabilities proportional to the number of offspring produced by each
- * operator in the archive.
+ * Auto-adaptive multi-method recombination operator. Applies operators with probabilities proportional to the number
+ * of offspring produced by each operator in the archive.
  */
-public class AdaptiveMultimethodVariation implements Variation {
+public class AdaptiveMultimethodVariation extends AbstractCompoundVariation<Variation> {
 	
 	/**
 	 * The attribute for the operator index.
@@ -40,18 +36,12 @@ public class AdaptiveMultimethodVariation implements Variation {
 	public static final String OPERATOR_ATTRIBUTE = "operator";
 
 	/**
-	 * The available operators.
-	 */
-	private List<Variation> operators;
-
-	/**
 	 * The probabilities for applying each operator.
 	 */
 	private double[] probabilities;
 
 	/**
-	 * The number of invocations of the {@code evolve} method when the
-	 * probabilities were last updated.
+	 * The number of invocations of the {@code evolve} method when the probabilities were last updated.
 	 */
 	private int lastUpdate;
 
@@ -67,36 +57,51 @@ public class AdaptiveMultimethodVariation implements Variation {
 	private static final int UPDATE_WINDOW = 100;
 
 	/**
-	 * Constructs an auto-adaptive multi-method recombination operator with the
-	 * specified archive for updating probabilities.
+	 * Constructs an auto-adaptive multi-method recombination operator with the specified archive for updating
+	 * probabilities.
 	 * 
 	 * @param archive the archive used to update the probabilities
 	 */
 	public AdaptiveMultimethodVariation(Population archive) {
+		super();
 		this.archive = archive;
-
-		operators = new ArrayList<Variation>();
+	}
+	
+	@Override
+	public String getName() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("adaptive(");
+			
+		for (Variation operator : operators) {
+			if (sb.length() > 0) {
+				sb.append(',');
+			}
+				
+			sb.append(operator.getName());
+		}
+		
+		sb.append(")");
+		return sb.toString();
 	}
 	
 	/**
-	 * Returns the number of invocations of the {@code evolve} method between
-	 * updating the operator selection probabilities.
+	 * Returns the number of invocations of the {@code evolve} method between updating the operator selection
+	 * probabilities.
 	 * 
-	 * @return the number of invocations of the {@code evolve} method between
-	 *         updating the operator selection probabilities
+	 * @return the number of invocations of the {@code evolve} method between updating the operator selection
+	 *         probabilities
 	 */
 	public int getUpdateWindow() {
 		return UPDATE_WINDOW;
 	}
 
 	/**
-	 * Adds an operator to be used in the auto-adaptive multi-method
-	 * recombination.
+	 * Adds an operator to be used in the auto-adaptive multi-method recombination.
 	 * 
 	 * @param operator the operator
 	 */
 	public void addOperator(Variation operator) {
-		operators.add(operator);
+		super.appendOperator(operator);
 	}
 
 	/**
@@ -119,12 +124,10 @@ public class AdaptiveMultimethodVariation implements Variation {
 	}
 
 	/**
-	 * Returns the probability that the operator at the specified index is
-	 * applied.
+	 * Returns the probability that the operator at the specified index is applied.
 	 * 
 	 * @param index the index of the operator whose probability is returned
-	 * @return the probability that the operator at the specified index is
-	 *         applied
+	 * @return the probability that the operator at the specified index is applied
 	 */
 	public double getOperatorProbability(int index) {
 		if (probabilities == null) {
@@ -200,8 +203,7 @@ public class AdaptiveMultimethodVariation implements Variation {
 
 		int index = selectOperator();
 		Variation operator = operators.get(index);
-		Solution[] result = operator.evolve(Arrays.copyOf(parents, 
-				operator.getArity()));
+		Solution[] result = operator.evolve(Arrays.copyOf(parents, operator.getArity()));
 
 		for (int i = 0; i < result.length; i++) {
 			result[i].setAttribute(OPERATOR_ATTRIBUTE, index);
@@ -217,6 +219,7 @@ public class AdaptiveMultimethodVariation implements Variation {
 		}
 
 		int arity = 0;
+		
 		for (Variation operator : operators) {
 			arity = Math.max(arity, operator.getArity());
 		}
