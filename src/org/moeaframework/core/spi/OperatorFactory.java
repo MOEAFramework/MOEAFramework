@@ -123,11 +123,27 @@ public class OperatorFactory extends AbstractFactory<OperatorProvider> {
 	 * @return an instance of the mutation operator
 	 */
 	public Mutation getMutation(Problem problem) {
-		String hint = lookupMutationHint(problem);
-		Variation variation = getVariation(hint, new TypedProperties(), problem);
+		return getMutation(new TypedProperties(), problem);
+	}
+	
+	/**
+	 * Returns the suggested mutation operator for the given problem.
+	 * 
+	 * @param properties the implementation-specific properties
+	 * @param problem the problem
+	 * @return an instance of the mutation operator
+	 */
+	public Mutation getMutation(TypedProperties properties, Problem problem) {
+		String operator = properties.getString("operator", null);
+		
+		if (operator == null) {
+			operator = lookupMutationHint(problem);
+		}
+		
+		Variation variation = getVariation(operator, properties, problem);
 		
 		if (!(variation instanceof Mutation)) {
-			throw new ProviderLookupException("the operator '" + hint + "' is not a mutation operator");
+			throw new ProviderLookupException("the operator '" + operator + "' is not a mutation operator");
 		}
 		
 		return (Mutation)variation;
@@ -169,15 +185,14 @@ public class OperatorFactory extends AbstractFactory<OperatorProvider> {
 	 */
 	public Variation getVariation(String name, TypedProperties properties, Problem problem) {
 		if (name == null) {
-			String operator = properties.getString("operator", null);
+			name = properties.getString("operator", null);
+		}
+		
+		if (name == null) {
+			name = lookupVariationHint(problem);
+		}
 			
-			if (operator == null) {
-				String hint = lookupVariationHint(problem);
-				return getVariation(hint, properties, problem);
-			} else {
-				return getVariation(operator, properties, problem);
-			}
-		} else if (name.contains("+")) {
+		if (name.contains("+")) {
 			String[] entries = name.split("\\+");
 			Variation[] operators = new Variation[entries.length];
 			

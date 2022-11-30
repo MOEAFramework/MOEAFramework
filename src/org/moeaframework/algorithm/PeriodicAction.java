@@ -92,6 +92,15 @@ public abstract class PeriodicAction implements Algorithm {
 		this.frequency = frequency;
 		this.frequencyType = frequencyType;
 	}
+	
+	/**
+	 * Returns the algorithm that is wrapped by this periodic action.
+	 * 
+	 * @return the inner algorithm
+	 */
+	Algorithm getAlgorithm() {
+		return algorithm;
+	}
 
 	@Override
 	public Problem getProblem() {
