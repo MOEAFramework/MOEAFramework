@@ -17,7 +17,7 @@
  */
 package org.moeaframework.core.operator.subset;
 
-import org.moeaframework.core.operator.AbstractMutation;
+import org.moeaframework.core.operator.TypeSafeMutation;
 import org.moeaframework.core.variable.Subset;
 
 /**
@@ -25,7 +25,7 @@ import org.moeaframework.core.variable.Subset;
  * <p>
  * This operator is type-safe.
  */
-public class Remove extends AbstractMutation<Subset> {
+public class Remove extends TypeSafeMutation<Subset> {
 	
 	/**
 	 * Constructs a remove mutation operator with the default settings.

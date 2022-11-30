@@ -18,9 +18,7 @@
 package org.moeaframework.core.operator.program;
 
 import org.moeaframework.core.PRNG;
-import org.moeaframework.core.Solution;
-import org.moeaframework.core.Variable;
-import org.moeaframework.core.Variation;
+import org.moeaframework.core.operator.TypeSafeCrossover;
 import org.moeaframework.core.variable.Program;
 import org.moeaframework.util.tree.Node;
 import org.moeaframework.util.tree.Rules;
@@ -31,62 +29,36 @@ import org.moeaframework.util.tree.Rules;
  * <p>
  * This operator is type-safe.
  */
-public class SubtreeCrossover implements Variation {
+public class SubtreeCrossover extends TypeSafeCrossover<Program> {
 	
 	/**
-	 * The probability that subtree crossover is applied to a program.
+	 * Constructs a new subtree crossover instance with a 90% chance of being
+	 * applied to each solution.
 	 */
-	private double probability;
+	public SubtreeCrossover() {
+		this(0.9);
+	}
 	
 	/**
 	 * Constructs a new subtree crossover instance.
 	 * 
-	 * @param probability the probability that subtree crossover is applied to
-	 *        a program
+	 * @param probability the probability that subtree crossover is applied to a program
 	 */
 	public SubtreeCrossover(double probability) {
-		super();
-		this.probability = probability;
-	}
-
-	@Override
-	public int getArity() {
-		return 2;
-	}
-
-	@Override
-	public Solution[] evolve(Solution[] parents) {
-		Solution result1 = parents[0].copy();
-		Solution result2 = parents[1].copy();
-		
-		for (int i = 0; i < result1.getNumberOfVariables(); i++) {
-			Variable variable1 = result1.getVariable(i);
-			Variable variable2 = result2.getVariable(i);
-			
-			if ((PRNG.nextDouble() <= probability) &&
-					(variable1 instanceof Program) &&
-					(variable2 instanceof Program)) {
-				Program program1 = (Program)variable1;
-				Program program2 = (Program)variable2;
-				
-				crossover(program1, program2, program1.getRules());
-			}
-		}
-		
-		return new Solution[] { result1 };
+		super(Program.class, probability);
 	}
 	
 	/**
 	 * Applies subtree crossover to the programs.
 	 * 
 	 * @param program1 the first program, which is the parent program
-	 * @param program2 the second program, which provides the replacement
-	 *        subtree
+	 * @param program2 the second program, which provides the replacement subtree
 	 * @param rules the rules defining the program syntax
 	 */
-	protected void crossover(Program program1, Program program2, Rules rules) {
+	public void evolve(Program program1, Program program2) {
 		Node node = null;
 		Node replacement = null;
+		Rules rules = program1.getRules();
 		
 		// pick the node to be replaced (destination) from the first parent
 		if (PRNG.nextDouble() <= rules.getFunctionCrossoverProbability()) {
@@ -111,27 +83,23 @@ public class SubtreeCrossover implements Variation {
 		
 		// pick the replacement (source) from the second parent
 		if (PRNG.nextDouble() <= rules.getFunctionCrossoverProbability()) {
-			int size = program2.getArgument(0).getNumberOfFunctions(
-					node.getReturnType());
+			int size = program2.getArgument(0).getNumberOfFunctions(node.getReturnType());
 			
 			if (size == 0) {
 				// no valid crossover, no change is made
 				return;
 			}
 
-			replacement = program2.getArgument(0).getFunctionAt(
-					node.getReturnType(), PRNG.nextInt(size));
+			replacement = program2.getArgument(0).getFunctionAt(node.getReturnType(), PRNG.nextInt(size));
 		} else {
-			int size = program2.getArgument(0).getNumberOfTerminals(
-					node.getReturnType());
+			int size = program2.getArgument(0).getNumberOfTerminals(node.getReturnType());
 			
 			if (size == 0) {
 				// no valid crossover, no change is made
 				return;
 			}
 
-			replacement = program2.getArgument(0).getTerminalAt(
-					node.getReturnType(), PRNG.nextInt(size));
+			replacement = program2.getArgument(0).getTerminalAt(node.getReturnType(), PRNG.nextInt(size));
 		}
 		
 		// if either node is fixed, no change is made
@@ -140,8 +108,7 @@ public class SubtreeCrossover implements Variation {
 		}
 		
 		// if this replacement violates the depth limit, no change is made
-		if (node.getDepth() + replacement.getMaximumHeight() > 
-				rules.getMaxVariationDepth()) {
+		if (node.getDepth() + replacement.getMaximumHeight() > rules.getMaxVariationDepth()) {
 			return;
 		}
 		

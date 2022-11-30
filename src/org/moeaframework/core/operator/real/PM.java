@@ -18,7 +18,7 @@
 package org.moeaframework.core.operator.real;
 
 import org.moeaframework.core.PRNG;
-import org.moeaframework.core.operator.AbstractMutation;
+import org.moeaframework.core.operator.TypeSafeMutation;
 import org.moeaframework.core.variable.RealVariable;
 
 /**
@@ -43,7 +43,7 @@ import org.moeaframework.core.variable.RealVariable;
  *       26(4):30-45, 1996.
  * </ol>
  */
-public class PM extends AbstractMutation<RealVariable> {
+public class PM extends TypeSafeMutation<RealVariable> {
 
 	/**
 	 * The distribution index controlling the shape of the polynomial mutation.
@@ -51,7 +51,8 @@ public class PM extends AbstractMutation<RealVariable> {
 	private double distributionIndex;
 	
 	/**
-	 * Constructs a polynomial mutation operator with the default parameters.
+	 * Constructs a polynomial mutation operator with the default settings.  This includes
+	 * a mutation probability of {@code 0.1} and a distribution index of {@code 20.0}.
 	 */
 	public PM() {
 		this(0.1, 20.0);

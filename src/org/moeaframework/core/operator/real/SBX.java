@@ -69,7 +69,8 @@ public class SBX implements Variation {
 	private boolean symmetric;
 	
 	/**
-	 * Constructs a SBX operator with the default parameters.
+	 * Constructs a SBX operator with default settings.  This includes a 
+	 * probability of {@code 1.0} and a distribution index of {@code 15.0}.
 	 */
 	public SBX() {
 		this(1.0, 15.0);

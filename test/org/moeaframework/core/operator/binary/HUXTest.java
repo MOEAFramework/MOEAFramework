@@ -53,7 +53,7 @@ public class HUXTest {
 			BinaryVariable offspring1 = parent1.copy();
 			BinaryVariable offspring2 = parent2.copy();
 
-			HUX.evolve(offspring1, offspring2);
+			new HUX().evolve(offspring1, offspring2);
 
 			for (int j = 0; j < 100; j++) {
 				if (parent1.get(j) == parent2.get(j)) {
@@ -81,7 +81,7 @@ public class HUXTest {
 			BinaryVariable offspring1 = parent1.copy();
 			BinaryVariable offspring2 = parent2.copy();
 
-			HUX.evolve(offspring1, offspring2);
+			new HUX().evolve(offspring1, offspring2);
 
 			int differingBits = parent1.hammingDistance(parent2);
 			int changedBits1 = offspring1.hammingDistance(parent1);

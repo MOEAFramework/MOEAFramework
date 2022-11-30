@@ -5,12 +5,12 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variable;
 
 /**
- * An abstract mutation class that supports mutating each decision variable with a
- * given probability.
+ * An abstract mutation class that validates the types of each variable before
+ * applying the mutation operation with a given probability.
  * 
  * @param <T> the type of decision variable this operator supports
  */
-public abstract class AbstractMutation<T extends Variable> implements Mutation {
+public abstract class TypeSafeMutation<T extends Variable> implements Mutation {
 	
 	/**
 	 * The probability of mutating each decision variable.
@@ -28,7 +28,7 @@ public abstract class AbstractMutation<T extends Variable> implements Mutation {
 	 * @param type the type of decision variable this operator supports
 	 * @param probability the probability of mutating each decision variable
 	 */
-	public AbstractMutation(Class<T> type, double probability) {
+	public TypeSafeMutation(Class<T> type, double probability) {
 		super();
 		this.type = type;
 		this.probability = probability;

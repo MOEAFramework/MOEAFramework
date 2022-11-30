@@ -50,15 +50,16 @@ public class DifferentialEvolutionVariation implements Variation {
 	/**
 	 * The crossover rate.
 	 */
-	private final double CR;
+	private double CR;
 
 	/**
 	 * The scaling factor or step size.
 	 */
-	private final double F;
+	private double F;
 	
 	/**
-	 * Constructs a differential evolution operator with default settings.
+	 * Constructs a differential evolution operator with default settings,
+	 * including a crossover rate of {@code 0.1} and scaling factor of {@code 0.5}.
 	 */
 	public DifferentialEvolutionVariation() {
 		this(0.1, 0.5);
@@ -84,6 +85,16 @@ public class DifferentialEvolutionVariation implements Variation {
 	public double getCrossoverRate() {
 		return CR;
 	}
+	
+	/**
+	 * Sets the crossover rate of this differential evolution operator.  The default
+	 * value is {@code 0.1}.
+	 * 
+	 * @param CR the crossover rate
+	 */
+	public void setCrossoverRate(double CR) {
+		this.CR = CR;
+	}
 
 	/**
 	 * Returns the scaling factor of this differential evolution operator.
@@ -92,6 +103,16 @@ public class DifferentialEvolutionVariation implements Variation {
 	 */
 	public double getScalingFactor() {
 		return F;
+	}
+	
+	/**
+	 * Sets the scaling factor of this differential evolution operator.  The default
+	 * value is {@code 0.5}.
+	 * 
+	 * @param F the scaling factor
+	 */
+	public void setScalingFactor(double F) {
+		this.F = F;
 	}
 
 	@Override

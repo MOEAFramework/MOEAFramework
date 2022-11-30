@@ -26,7 +26,7 @@ import org.moeaframework.core.comparator.CrowdingComparator;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
 import org.moeaframework.core.fitness.CrowdingDistanceFitnessEvaluator;
 import org.moeaframework.core.fitness.FitnessBasedArchive;
-import org.moeaframework.core.operator.AbstractMutation;
+import org.moeaframework.core.operator.TypeSafeMutation;
 import org.moeaframework.core.operator.Mutation;
 import org.moeaframework.core.variable.RealVariable;
 
@@ -117,7 +117,7 @@ public class OMOPSO extends AbstractPSOAlgorithm {
 	/**
 	 * The non-uniform mutation operator.
 	 */
-	private class NonUniformMutation extends AbstractMutation<RealVariable> {
+	private class NonUniformMutation extends TypeSafeMutation<RealVariable> {
 		
 		private final double perturbation;
 		
@@ -160,7 +160,7 @@ public class OMOPSO extends AbstractPSOAlgorithm {
 	/**
 	 * The uniform mutation operator.
 	 */
-	private class UniformMutation extends AbstractMutation<RealVariable> {
+	private class UniformMutation extends TypeSafeMutation<RealVariable> {
 		
 		private final double perturbation;
 		

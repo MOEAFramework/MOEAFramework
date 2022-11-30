@@ -18,7 +18,7 @@
 package org.moeaframework.core.operator.real;
 
 import org.moeaframework.core.PRNG;
-import org.moeaframework.core.operator.AbstractMutation;
+import org.moeaframework.core.operator.TypeSafeMutation;
 import org.moeaframework.core.variable.RealVariable;
 
 /**
@@ -34,7 +34,7 @@ import org.moeaframework.core.variable.RealVariable;
  * <p>
  * This operator is type-safe.
  */
-public class UM extends AbstractMutation<RealVariable> {
+public class UM extends TypeSafeMutation<RealVariable> {
 	
 	/**
 	 * Constructs a uniform mutation operator with default settings.
