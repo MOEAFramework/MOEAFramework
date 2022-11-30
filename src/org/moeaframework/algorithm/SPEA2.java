@@ -118,6 +118,11 @@ public class SPEA2 extends AbstractEvolutionaryAlgorithm {
 		fitnessComparator = new FitnessComparator(fitnessEvaluator.areLargerValuesPreferred());
 		selection = new TournamentSelection(fitnessComparator);
 	}
+	
+	@Override
+	public void setVariation(Variation variation) {
+		super.setVariation(variation);
+	}
 
 	@Override
 	protected void initialize() {

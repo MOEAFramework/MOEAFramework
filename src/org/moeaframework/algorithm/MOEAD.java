@@ -98,7 +98,7 @@ public class MOEAD extends AbstractAlgorithm {
 	/**
 	 * The variation operator.
 	 */
-	private final Variation variation;
+	private Variation variation;
 
 	/**
 	 * The frequency, in generations, in which utility values are updated.  Set to {@code -1} to disable
@@ -196,8 +196,7 @@ public class MOEAD extends AbstractAlgorithm {
 		if (variation instanceof DifferentialEvolutionVariation) {
 			useDE = true;
 		} else if (variation instanceof CompoundVariation) {
-			CompoundVariation compoundVariation = (CompoundVariation)variation;
-			useDE = compoundVariation.getName().startsWith(DifferentialEvolutionVariation.class.getSimpleName());
+			useDE = ((CompoundVariation)variation).contains(DifferentialEvolutionVariation.class);
 		} else {
 			useDE = false;
 		}

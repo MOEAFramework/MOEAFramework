@@ -66,6 +66,22 @@ public class AbstractCompoundVariation<T extends Variation> implements Variation
 	}
 	
 	/**
+	 * Returns {@code true} if one or more of the operators are the given type.
+	 * 
+	 * @param type the variation type
+	 * @return {@code true} if any operators are the given type
+	 */
+	public boolean contains(Class<? extends T> type) {
+		for (T operator : operators) {
+			if (type.isInstance(operator)) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	/**
 	 * Returns the name of this variation operator.  If no name has been
 	 * assigned through {@link #setName(String)}, a name is generated which
 	 * identifies the underlying operators.
@@ -76,7 +92,7 @@ public class AbstractCompoundVariation<T extends Variation> implements Variation
 		if (name == null) {
 			StringBuilder sb = new StringBuilder();
 			
-			for (Variation operator : operators) {
+			for (T operator : operators) {
 				if (sb.length() > 0) {
 					sb.append('+');
 				}

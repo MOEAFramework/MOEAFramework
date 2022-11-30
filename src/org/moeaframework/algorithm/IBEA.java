@@ -144,5 +144,10 @@ public class IBEA extends AbstractEvolutionaryAlgorithm {
 		
 		return worstIndex;
 	}
+	
+	@Override
+	public void setVariation(Variation variation) {
+		super.setVariation(variation);
+	}
 
 }

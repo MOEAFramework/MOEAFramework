@@ -118,4 +118,8 @@ public class DifferentialEvolution extends AbstractEvolutionaryAlgorithm {
 	public DifferentialEvolutionVariation getVariation() {
 		return (DifferentialEvolutionVariation)variation;
 	}
+	
+	public void setVariation(DifferentialEvolutionVariation variation) {
+		super.setVariation(variation);
+	}
 }

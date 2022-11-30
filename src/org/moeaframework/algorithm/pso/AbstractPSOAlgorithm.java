@@ -28,9 +28,9 @@ import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.Variation;
 import org.moeaframework.core.comparator.DominanceComparator;
 import org.moeaframework.core.fitness.FitnessBasedArchive;
+import org.moeaframework.core.operator.Mutation;
 import org.moeaframework.core.operator.RandomInitialization;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
@@ -89,7 +89,7 @@ public abstract class AbstractPSOAlgorithm extends AbstractAlgorithm {
 	/**
 	 * Mutation operator, or {@code null} if no mutation is defined.
 	 */
-	protected Variation mutation;
+	protected Mutation mutation;
 	
 	/**
 	 * Constructs a new abstract PSO algorithm.
@@ -109,7 +109,7 @@ public abstract class AbstractPSOAlgorithm extends AbstractAlgorithm {
 			DominanceComparator dominanceComparator,
 			FitnessBasedArchive leaders,
 			NondominatedPopulation archive,
-			Variation mutation) {
+			Mutation mutation) {
 		super(problem);
 		this.swarmSize = swarmSize;
 		this.leaderSize = leaderSize;
@@ -246,7 +246,7 @@ public abstract class AbstractPSOAlgorithm extends AbstractAlgorithm {
 	 */
 	protected void mutate(int i) {
 		if (mutation != null) {
-			particles[i] = mutation.evolve(new Solution[] { particles[i] })[0];
+			particles[i] = mutation.mutate(particles[i]);
 		}
 	}
 

@@ -27,7 +27,7 @@ import org.moeaframework.core.Problem;
  * 
  * @preview
  */
-public abstract class AbstractSimulatedAnnealingAlgorithm extends AbstractAlgorithm{
+public abstract class AbstractSimulatedAnnealingAlgorithm extends AbstractAlgorithm {
 
 	protected final double tMin;
 	protected final double tMax;

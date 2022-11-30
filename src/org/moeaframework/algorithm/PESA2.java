@@ -91,8 +91,7 @@ public class PESA2 extends AbstractEvolutionaryAlgorithm {
 			Initialization initialization, int bisections, int archiveSize) {
 		super(problem,
 				new Population(),
-				new AdaptiveGridArchive(archiveSize, problem,
-						ArithmeticUtils.pow(2, bisections)),
+				new AdaptiveGridArchive(archiveSize, problem, ArithmeticUtils.pow(2, bisections)),
 				initialization,
 				variation);
 		
@@ -102,6 +101,11 @@ public class PESA2 extends AbstractEvolutionaryAlgorithm {
 	@Override
 	public AdaptiveGridArchive getArchive() {
 		return (AdaptiveGridArchive)super.getArchive();
+	}
+	
+	@Override
+	public void setVariation(Variation variation) {
+		super.setVariation(variation);
 	}
 
 	@Override
