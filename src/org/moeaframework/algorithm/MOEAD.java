@@ -34,7 +34,7 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
-import org.moeaframework.core.operator.CompoundVariation;
+import org.moeaframework.core.operator.AbstractCompoundVariation;
 import org.moeaframework.core.operator.RandomInitialization;
 import org.moeaframework.core.operator.real.DifferentialEvolutionVariation;
 import org.moeaframework.core.spi.OperatorFactory;
@@ -195,8 +195,8 @@ public class MOEAD extends AbstractAlgorithm {
 		
 		if (variation instanceof DifferentialEvolutionVariation) {
 			useDE = true;
-		} else if (variation instanceof CompoundVariation) {
-			useDE = ((CompoundVariation)variation).contains(DifferentialEvolutionVariation.class);
+		} else if (variation instanceof AbstractCompoundVariation<?>) {
+			useDE = ((AbstractCompoundVariation<?>)variation).contains(DifferentialEvolutionVariation.class);
 		} else {
 			useDE = false;
 		}
