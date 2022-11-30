@@ -63,7 +63,7 @@ public class SSXTest {
 			Subset s1copy = s1.copy();
 			Subset s2copy = s2.copy();
 			
-			SSX.evolve(s1copy, s2copy);
+			new SSX().evolve(s1copy, s2copy);
 
 			s1copy.validate();
 			s2copy.validate();
@@ -100,7 +100,7 @@ public class SSXTest {
 			int size1 = s1copy.size();
 			int size2 = s2copy.size();
 			
-			SSX.evolve(s1copy, s2copy);
+			new SSX().evolve(s1copy, s2copy);
 
 			s1copy.validate();
 			s2copy.validate();

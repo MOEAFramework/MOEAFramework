@@ -32,7 +32,14 @@ public class TwoPointCrossover implements Variation {
 	/**
 	 * The probability of applying this operator to solutions.
 	 */
-	private final double probability;
+	private double probability;
+	
+	/**
+	 * Constructs a two-point crossover operator with a 100% probability.
+	 */
+	public TwoPointCrossover() {
+		this(1.0);
+	}
 
 	/**
 	 * Constructs a two-point crossover operator with the specified probability
@@ -47,10 +54,19 @@ public class TwoPointCrossover implements Variation {
 	/**
 	 * Returns the probability of applying this operator to solutions.
 	 * 
-	 * @return the probability of applying this operator to solutions
+	 * @return the probability
 	 */
 	public double getProbability() {
 		return probability;
+	}
+	
+	/**
+	 * Sets the probability of applying this operator to solutions.
+	 * 
+	 * @param probability the probability between 0.0 and 1.0, inclusive
+	 */
+	public void setProbability(double probability) {
+		this.probability = probability;
 	}
 
 	@Override
@@ -58,12 +74,9 @@ public class TwoPointCrossover implements Variation {
 		Solution result1 = parents[0].copy();
 		Solution result2 = parents[1].copy();
 
-		if ((PRNG.nextDouble() <= probability) && 
-				(result1.getNumberOfVariables() > 1)) {
-			int crossoverPoint1 = PRNG.nextInt(
-					result1.getNumberOfVariables() - 1);
-			int crossoverPoint2 = PRNG.nextInt(
-					result1.getNumberOfVariables() - 1);
+		if ((PRNG.nextDouble() <= probability) && (result1.getNumberOfVariables() > 1)) {
+			int crossoverPoint1 = PRNG.nextInt(result1.getNumberOfVariables() - 1);
+			int crossoverPoint2 = PRNG.nextInt(result1.getNumberOfVariables() - 1);
 
 			if (crossoverPoint1 > crossoverPoint2) {
 				int temp = crossoverPoint1;

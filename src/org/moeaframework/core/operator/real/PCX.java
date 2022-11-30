@@ -22,7 +22,6 @@ import java.util.List;
 
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.Variation;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.util.Vector;
 
@@ -35,34 +34,34 @@ import org.moeaframework.util.Vector;
  * <p>
  * References:
  * <ol>
- * <li>Deb, K., Anand, A., and Joshi, D., "A Computationally Efficient
- * Evolutionary Algorithm for Real-Parameter Optimization," Evolutionary
- * Computation, 10(4):371-395, 2002.
+ *   <li>Deb, K., Anand, A., and Joshi, D., "A Computationally Efficient
+ *       Evolutionary Algorithm for Real-Parameter Optimization," Evolutionary
+ *       Computation, 10(4):371-395, 2002.
  * </ol>
  */
-public class PCX implements Variation {
-
-	/**
-	 * The number of parents required by this operator.
-	 */
-	private final int numberOfParents;
-
-	/**
-	 * The number of offspring produced by this operator.
-	 */
-	private final int numberOfOffspring;
-
+public class PCX extends MultiParentVariation {
+	
 	/**
 	 * The standard deviation of the normal distribution controlling the spread
 	 * of solutions in the direction of the selected parent.
 	 */
-	private final double eta;
+	private double eta;
 
 	/**
 	 * The standard deviation of the normal distribution controlling the spread
 	 * of solutions in the directions defined by the remaining parents.
 	 */
-	private final double zeta;
+	private double zeta;
+	
+	/**
+	 * Constructs a PCX operator with default settings, taking {@code 10}
+	 * parents and producing {@code 2} offspring.  The {@code eta} and
+	 * {@code zeta} parameters are set to {@code 0.1}, as suggested by
+	 * Deb et al. (2002).
+	 */
+	public PCX() {
+		this(10, 2);
+	}
 
 	/**
 	 * Constructs a PCX operator with the specified number of parents and 
@@ -91,58 +90,52 @@ public class PCX implements Variation {
 	 *        the spread of solutions in the directions defined by the remaining
 	 *        parents
 	 */
-	public PCX(int numberOfParents, int numberOfOffspring, double eta,
-			double zeta) {
-		this.numberOfParents = numberOfParents;
-		this.numberOfOffspring = numberOfOffspring;
+	public PCX(int numberOfParents, int numberOfOffspring, double eta, double zeta) {
+		super(numberOfParents, numberOfOffspring);
 		this.eta = eta;
 		this.zeta = zeta;
-	}
-
-	/**
-	 * Returns the number of parents required by this operator.
-	 * 
-	 * @return the number of parents required by this operator
-	 */
-	public int getNumberOfParents() {
-		return numberOfParents;
-	}
-
-	/**
-	 * Returns the number of offspring produced by this operator.
-	 * 
-	 * @return the number of offspring produced by this operator
-	 */
-	public int getNumberOfOffspring() {
-		return numberOfOffspring;
 	}
 
 	/**
 	 * Returns the standard deviation of the normal distribution controlling the
 	 * spread of solutions in the direction of the selected parent.
 	 * 
-	 * @return the standard deviation of the normal distribution controlling the
-	 *         spread of solutions in the direction of the selected parent
+	 * @return the standard deviation value
 	 */
 	public double getEta() {
 		return eta;
+	}
+	
+	/**
+	 * Sets the standard deviation of the normal distribution controlling the
+	 * spread of solutions in the direction of the selected parent.  The default
+	 * value is {@code 0.1}.
+	 * 
+	 * @param eta the standard deviation value
+	 */
+	public void setEta(double eta) {
+		this.eta = eta;
 	}
 
 	/**
 	 * Returns the standard deviation of the normal distribution controlling the
 	 * spread of solutions in the directions defined by the remaining parents.
 	 * 
-	 * @return the standard deviation of the normal distribution controlling the
-	 *         spread of solutions in the directions defined by the remaining
-	 *         parents
+	 * @return the standard deviation value
 	 */
 	public double getZeta() {
 		return zeta;
 	}
-
-	@Override
-	public int getArity() {
-		return numberOfParents;
+	
+	/**
+	 * Sets the standard deviation of the normal distribution controlling the
+	 * spread of solutions in the directions defined by the remaining parents.
+	 * The default value is {@code 0.1}.
+	 * 
+	 * @param zeta the standard deviation value
+	 */
+	public void setZeta(double zeta) {
+		this.zeta = zeta;
 	}
 
 	@Override
@@ -214,13 +207,11 @@ public class PCX implements Variation {
 		// construct the offspring
 		double[] variables = x[k - 1];
 
-		variables = Vector.add(variables, Vector.multiply(PRNG.nextGaussian(
-				0.0, zeta), e_eta.get(0)));
+		variables = Vector.add(variables, Vector.multiply(PRNG.nextGaussian(0.0, zeta), e_eta.get(0)));
 
 		double eta = PRNG.nextGaussian(0.0, this.eta);
 		for (int i = 1; i < e_eta.size(); i++) {
-			variables = Vector.add(variables, Vector.multiply(eta * D, e_eta
-					.get(i)));
+			variables = Vector.add(variables, Vector.multiply(eta * D, e_eta.get(i)));
 		}
 
 		Solution result = parents[k - 1].copy();

@@ -18,7 +18,7 @@
 package org.moeaframework.core.operator.permutation;
 
 import org.moeaframework.core.PRNG;
-import org.moeaframework.core.operator.AbstractMutation;
+import org.moeaframework.core.operator.TypeSafeMutation;
 import org.moeaframework.core.variable.Permutation;
 
 /**
@@ -27,7 +27,7 @@ import org.moeaframework.core.variable.Permutation;
  * <p>
  * This operator is type-safe.
  */
-public class Insertion extends AbstractMutation<Permutation> {
+public class Insertion extends TypeSafeMutation<Permutation> {
 
 	/**
 	 * Constructs an insertion mutation operator with the default settings.

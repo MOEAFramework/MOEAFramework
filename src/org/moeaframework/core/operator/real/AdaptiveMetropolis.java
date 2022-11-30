@@ -25,7 +25,6 @@ import org.apache.commons.math3.linear.RealVector;
 import org.apache.commons.math3.stat.correlation.Covariance;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.Variation;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
 
@@ -55,17 +54,7 @@ import org.moeaframework.core.variable.RealVariable;
  *       Jumping Rules."  Bayesian Statistics, vol. 5, pp. 599-607, 1996.
  * </ol>
  */
-public class AdaptiveMetropolis implements Variation {
-	
-	/**
-	 * The number of parents required by this operator.
-	 */
-	private final int numberOfParents;
-
-	/**
-	 * The number of offspring produced by this operator.
-	 */
-	private final int numberOfOffspring;
+public class AdaptiveMetropolis extends MultiParentVariation {
 	
 	/**
 	 * The jump rate coefficient, controlling the standard deviation of the 
@@ -73,7 +62,16 @@ public class AdaptiveMetropolis implements Variation {
 	 * Math.pow(jumpRateCoefficient / Math.sqrt(n), 2.0)}, where  {@code n} is
 	 * the number of decision variables.  The recommended value is {@code 2.4}.
 	 */
-	private final double jumpRateCoefficient;
+	private double jumpRateCoefficient;
+	
+	/**
+	 * Constructs an adaptive metropolis operator with default settings, taking 10
+	 * parents and producing 2 offspring.  The recommended value of {2code 2.4} is
+	 * used for the jump rate coefficient.
+	 */
+	public AdaptiveMetropolis() {
+		this(10, 2, 2.4);
+	}
 	
 	/**
 	 * Constructs an adaptive metropolis operator.
@@ -83,17 +81,30 @@ public class AdaptiveMetropolis implements Variation {
 	 * @param jumpRateCoefficient the jump raote coefficient, controlling the
 	 *        standard deviation of the covariance matrix
 	 */
-	public AdaptiveMetropolis(int numberOfParents, int numberOfOffspring, 
-			double jumpRateCoefficient) {
-		super();
-		this.numberOfParents = numberOfParents;
-		this.numberOfOffspring = numberOfOffspring;
+	public AdaptiveMetropolis(int numberOfParents, int numberOfOffspring, double jumpRateCoefficient) {
+		super(numberOfParents, numberOfOffspring);
 		this.jumpRateCoefficient = jumpRateCoefficient;
 	}
-
-	@Override
-	public int getArity() {
-		return numberOfParents;
+	
+	/**
+	 * Returns the jump rate coefficient value.
+	 * 
+	 * @return the jump rate coefficient value
+	 */
+	public double getJumpRateCoefficient() {
+		return jumpRateCoefficient;
+	}
+	
+	/**
+	 * Sets the jump rate coefficient, controlling the standard deviation of the 
+	 * covariance matrix.  The actual jump rate is calculated as {@code 
+	 * Math.pow(jumpRateCoefficient / Math.sqrt(n), 2.0)}, where  {@code n} is
+	 * the number of decision variables.  The recommended value is {@code 2.4}.
+	 * 
+	 * @param jumpRateCoefficient the jump rate coefficient value
+	 */
+	public void setJumpRateCoefficient(double jumpRateCoefficient) {
+		this.jumpRateCoefficient = jumpRateCoefficient;
 	}
 
 	@Override
@@ -111,8 +122,7 @@ public class AdaptiveMetropolis implements Variation {
 			double jumpRate = Math.pow(jumpRateCoefficient / Math.sqrt(n), 2.0);
 
 			RealMatrix chol = new CholeskyDecomposition(
-						new Covariance(x.scalarMultiply(jumpRate))
-						.getCovarianceMatrix()).getLT();
+						new Covariance(x.scalarMultiply(jumpRate)).getCovarianceMatrix()).getLT();
 			
 			//produce the offspring
 			Solution[] offspring = new Solution[numberOfOffspring];
@@ -121,8 +131,7 @@ public class AdaptiveMetropolis implements Variation {
 				Solution child = parents[PRNG.nextInt(parents.length)].copy();
 				
 				//apply adaptive metropolis step to solution
-				RealVector muC = new ArrayRealVector(
-						EncodingUtils.getReal(child));
+				RealVector muC = new ArrayRealVector(EncodingUtils.getReal(child));
 				RealVector ru = new ArrayRealVector(n);
 				
 				for (int j=0; j<n; j++) {
