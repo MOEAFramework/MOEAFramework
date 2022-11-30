@@ -41,8 +41,7 @@ import org.moeaframework.core.operator.TournamentSelection;
 import org.moeaframework.core.spi.OperatorFactory;
 
 /**
- * Implementation of NSGA-II, with the ability to attach an optional 
- * &epsilon;-dominance archive.
+ * Implementation of NSGA-II, with the ability to attach an optional &epsilon;-dominance archive.
  * <p>
  * References:
  * <ol>

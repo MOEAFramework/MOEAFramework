@@ -32,10 +32,10 @@ import org.moeaframework.core.Variation;
  * Decorator for {@link EvolutionaryAlgorithm}s to add time continuation
  * (restarts). Restarts occur if either
  * <ol>
- * <li>the number of fitness function evaluations since the last restart exceeds
- * {@code maxWindowSize}; or
- * <li>the population-to-archive ratio exceeds {@code populationRatio} by more
- * than {@code 25%}.
+ *   <li>the number of fitness function evaluations since the last restart exceeds
+ *       {@code maxWindowSize}; or
+ *   <li>the population-to-archive ratio exceeds {@code populationRatio} by more
+ *       than {@code 25%}.
  * </ol>
  * If a restart occurs, the population is emptied, the population size is
  * adapted to maintain the {@code populationRatio}, the the new population is
@@ -55,8 +55,7 @@ import org.moeaframework.core.Variation;
  *       Water Resources, 29(6):792-807, 2006.
  * </ol>
  */
-public class AdaptiveTimeContinuation extends PeriodicAction 
-implements EvolutionaryAlgorithm {
+public class AdaptiveTimeContinuation extends PeriodicAction implements EvolutionaryAlgorithm {
 
 	/**
 	 * The maximum number of iterations allowed since the last restart before 
@@ -105,8 +104,7 @@ implements EvolutionaryAlgorithm {
 	 * Decorates the specified algorithm with adaptive time continuation.
 	 * 
 	 * @param algorithm the algorithm being decorated
-	 * @param windowSize the number of iterations between invocations of
-	 *        {@code check}
+	 * @param windowSize the number of iterations between invocations of {@code check}
 	 * @param maxWindowSize the maximum number of iterations allowed since the
 	 *        last restart before forcing a restart
 	 * @param populationRatio the population-to-archive ratio
@@ -206,8 +204,7 @@ implements EvolutionaryAlgorithm {
 		}
 
 		while (population.size() < newPopulationSize) {
-			Solution[] parents = selection.select(variation.getArity(), 
-					archive);
+			Solution[] parents = selection.select(variation.getArity(), archive);
 			Solution[] children = variation.evolve(parents);
 
 			for (Solution child : children) {
@@ -232,15 +229,20 @@ implements EvolutionaryAlgorithm {
 			restart(type);
 		}
 	}
+	
+	@Override
+	EvolutionaryAlgorithm getAlgorithm() {
+		return (EvolutionaryAlgorithm)super.getAlgorithm();
+	}
 
 	@Override
 	public Population getPopulation() {
-		return ((EvolutionaryAlgorithm)algorithm).getPopulation();
+		return getAlgorithm().getPopulation();
 	}
 
 	@Override
 	public NondominatedPopulation getArchive() {
-		return ((EvolutionaryAlgorithm)algorithm).getArchive();
+		return getAlgorithm().getArchive();
 	}
 	
 	/**
@@ -302,14 +304,12 @@ implements EvolutionaryAlgorithm {
 
 	@Override
 	public Serializable getState() throws NotSerializableException {
-		return new AdaptiveTimeContinuationState(super.getState(),
-				iterationAtLastRestart);
+		return new AdaptiveTimeContinuationState(super.getState(), iterationAtLastRestart);
 	}
 
 	@Override
 	public void setState(Object objState) throws NotSerializableException {
-		AdaptiveTimeContinuationState state =
-				(AdaptiveTimeContinuationState)objState;
+		AdaptiveTimeContinuationState state = (AdaptiveTimeContinuationState)objState;
 		
 		super.setState(state.getAlgorithmState());
 		iterationAtLastRestart = state.getIterationAtLastRestart();

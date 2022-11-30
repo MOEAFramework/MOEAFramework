@@ -56,10 +56,8 @@ import org.moeaframework.core.fitness.IndicatorFitnessEvaluator;
 import org.moeaframework.core.operator.Mutation;
 import org.moeaframework.core.operator.RandomInitialization;
 import org.moeaframework.core.operator.TournamentSelection;
-import org.moeaframework.core.operator.UniformSelection;
 import org.moeaframework.core.operator.real.DifferentialEvolutionSelection;
 import org.moeaframework.core.operator.real.DifferentialEvolutionVariation;
-import org.moeaframework.core.operator.real.UM;
 import org.moeaframework.core.spi.OperatorFactory;
 import org.moeaframework.core.spi.ProviderLookupException;
 import org.moeaframework.core.spi.ProviderNotFoundException;
@@ -233,7 +231,7 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 
 		Variation variation = OperatorFactory.getInstance().getVariation(null, properties, problem);
 
-		return new NSGAII(problem, population, null, selection, variation, initialization);
+		return new NSGAIII(problem, population, selection, variation, initialization);
 	}
 
 	/**
@@ -336,19 +334,19 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 						new ParetoDominanceComparator(), new CrowdingComparator()));
 
 		Variation variation = OperatorFactory.getInstance().getVariation(null, properties, problem);
-
-		NSGAII nsgaii = new NSGAII(problem, population, archive, selection, variation, initialization);
-
-		return new AdaptiveTimeContinuation(
-				nsgaii,
+		
+		return new EpsilonNSGAII(
+				problem,
+				population,
+				archive,
+				selection,
+				variation,
+				initialization,
 				properties.getInt("windowSize", 100),
-				Math.max(properties.getInt("windowSize", 100),
-						 properties.getInt("maxWindowSize", 100)),
+				Math.max(properties.getInt("windowSize", 100), properties.getInt("maxWindowSize", 100)),
 				1.0 / properties.getDouble("injectionRate", 0.25),
 				properties.getInt("minimumPopulationSize", 100),
-				properties.getInt("maximumPopulationSize", 10000),
-				new UniformSelection(),
-				new UM(1.0));
+				properties.getInt("maximumPopulationSize", 10000));
 	}
 	
 	/**
@@ -424,18 +422,9 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 	private Algorithm newPAES(TypedProperties properties, Problem problem) {
 		int archiveSize = (int)properties.getDouble("archiveSize", 100);
 		int bisections = (int)properties.getDouble("bisections", 8);
-
-		String hint = OperatorFactory.getInstance().getDefaultMutation(problem);
-		Variation variation = OperatorFactory.getInstance().getVariation(
-				hint, 
-				properties,
-				problem);
+		Mutation mutation = OperatorFactory.getInstance().getMutation(properties, problem);
 		
-		if (!(variation instanceof Mutation)) {
-			throw new ProviderLookupException("the operator '" + hint + "' is not a mutation operator");
-		}
-
-		return new PAES(problem, (Mutation)variation, bisections, archiveSize);
+		return new PAES(problem, mutation, bisections, archiveSize);
 	}
 	
 	/**
@@ -806,17 +795,9 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 		Initialization initialization = new RandomInitialization(problem, (int)gamma*softLimit);
 			
 		// Use the operator factory that problem provides
-		String operator = OperatorFactory.getInstance().getDefaultMutation(problem);
-		Variation variation = OperatorFactory.getInstance().getVariation(
-				operator, 
-				properties,
-				problem);
-		
-		if (!(variation instanceof Mutation)) {
-			throw new ProviderLookupException("the operator '" + operator + "' is not a mutation operator");
-		}
-			
-		return new AMOSA(problem, initialization, (Mutation)variation, softLimit, hardLimit, tMin, tMax,
+		Mutation mutation = OperatorFactory.getInstance().getMutation(properties, problem);
+
+		return new AMOSA(problem, initialization, mutation, softLimit, hardLimit, tMin, tMax,
 				alpha, numberOfIterationPerTemperature, numberOfHillClimbingIterationsForRefinement);
 	}
 	

@@ -77,6 +77,15 @@ public class PM extends AbstractMutation<RealVariable> {
 		return distributionIndex;
 	}
 
+	/**
+	 * Sets the distribution index controlling the shape of the polynomial mutation.
+	 * 
+	 * @param distributionIndex the distribution index controlling the shape of the polynomial mutation
+	 */
+	public void setDistributionIndex(double distributionIndex) {
+		this.distributionIndex = distributionIndex;
+	}
+
 	/*
 	 * The following source code is modified from the DTLZ variator module for
 	 * PISA. This implementation was chosen over Kalyanmoy Deb's original PM
