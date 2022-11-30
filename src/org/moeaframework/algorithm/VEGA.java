@@ -87,6 +87,11 @@ public class VEGA extends AbstractEvolutionaryAlgorithm {
 		super(problem, population, archive, initialization, variation);		
 		selection = new VEGASelection();
 	}
+	
+	@Override
+	public void setVariation(Variation variation) {
+		super.setVariation(variation);
+	}
 
 	@Override
 	protected void iterate() {

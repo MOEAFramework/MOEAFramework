@@ -161,7 +161,7 @@ public class SMPSO extends AbstractPSOAlgorithm {
 		// but the JMetal implementation applies to every 6th particle.  Should
 		// the application of mutation be random instead?
 		if (i % 6 == 0) {
-			particles[i] = mutation.evolve(new Solution[] { particles[i] })[0];
+			particles[i] = mutation.mutate(particles[i]);
 		}
 	}
 

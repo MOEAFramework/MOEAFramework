@@ -176,6 +176,11 @@ public class RVEA extends AbstractEvolutionaryAlgorithm {
 	}
 	
 	@Override
+	public void setVariation(Variation variation) {
+		super.setVariation(variation);
+	}
+	
+	@Override
 	public Serializable getState() throws NotSerializableException {
 		if (!isInitialized()) {
 			throw new AlgorithmInitializationException(this, "algorithm not initialized");

@@ -748,5 +748,10 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 		result.addAll(corner);
 		return result;
 	}
+	
+	@Override
+	public void setVariation(Variation variation) {
+		super.setVariation(variation);
+	}
 
 }

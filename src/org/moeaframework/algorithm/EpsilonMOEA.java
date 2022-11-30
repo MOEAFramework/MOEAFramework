@@ -166,5 +166,10 @@ public class EpsilonMOEA extends AbstractEvolutionaryAlgorithm implements Epsilo
 	public EpsilonBoxDominanceArchive getArchive() {
 		return (EpsilonBoxDominanceArchive)super.getArchive();
 	}
+	
+	@Override
+	public void setVariation(Variation variation) {
+		super.setVariation(variation);
+	}
 
 }

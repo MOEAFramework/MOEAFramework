@@ -105,6 +105,10 @@ public class MSOPS extends AbstractEvolutionaryAlgorithm {
 		return (DifferentialEvolutionVariation)super.getVariation();
 	}
 	
+	public void setVariation(DifferentialEvolutionVariation variation) {
+		super.setVariation(variation);
+	}
+	
 	@Override
 	public MSOPSRankedPopulation getPopulation() {
 		return (MSOPSRankedPopulation)super.getPopulation();

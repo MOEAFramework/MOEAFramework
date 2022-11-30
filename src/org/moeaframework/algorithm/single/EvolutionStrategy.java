@@ -24,7 +24,6 @@ import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.operator.Mutation;
 import org.moeaframework.core.operator.RandomInitialization;
 import org.moeaframework.core.variable.RealVariable;
 
@@ -65,8 +64,8 @@ public class EvolutionStrategy extends AbstractEvolutionaryAlgorithm {
 	 * @param mutation the mutation operator
 	 */
 	public EvolutionStrategy(Problem problem, AggregateObjectiveComparator comparator, Initialization initialization,
-			Mutation mutation) {
-		super(problem, new Population(), null, initialization, mutation);
+			SelfAdaptiveNormalVariation variation) {
+		super(problem, new Population(), null, initialization, variation);
 		this.comparator = comparator;
 		
 		problem.assertType(RealVariable.class);
@@ -96,6 +95,15 @@ public class EvolutionStrategy extends AbstractEvolutionaryAlgorithm {
 		NondominatedPopulation result = new NondominatedPopulation(comparator);
 		result.addAll(getPopulation());
 		return result;
+	}
+	
+	@Override
+	public SelfAdaptiveNormalVariation getVariation() {
+		return (SelfAdaptiveNormalVariation)super.getVariation();
+	}
+	
+	public void setVariation(SelfAdaptiveNormalVariation variation) {
+		super.setVariation(variation);
 	}
 
 }

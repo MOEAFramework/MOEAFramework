@@ -146,6 +146,11 @@ public class GeneticAlgorithm extends AbstractEvolutionaryAlgorithm {
 		
 		return result;
 	}
+	
+	@Override
+	public void setVariation(Variation variation) {
+		super.setVariation(variation);
+	}
 
 	@Override
 	public void setState(Object objState) throws NotSerializableException {

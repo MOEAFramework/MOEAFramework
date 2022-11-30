@@ -52,6 +52,11 @@ public class GDE3 extends AbstractEvolutionaryAlgorithm {
 	 */
 	private final DifferentialEvolutionSelection selection;
 	
+	/**
+	 * Constructs the GDE3 algorithm with default settings.
+	 * 
+	 * @param problem the problem being solved
+	 */
 	public GDE3(Problem problem) {
 		this(problem,
 				new NondominatedSortingPopulation(),
@@ -128,6 +133,10 @@ public class GDE3 extends AbstractEvolutionaryAlgorithm {
 	@Override
 	public DifferentialEvolutionVariation getVariation() {
 		return (DifferentialEvolutionVariation)super.getVariation();
+	}
+	
+	public void setVariation(DifferentialEvolutionVariation variation) {
+		super.setVariation(variation);
 	}
 
 }

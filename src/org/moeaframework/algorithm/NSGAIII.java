@@ -92,6 +92,12 @@ public class NSGAIII extends NSGAII {
 		return new RandomInitialization(problem, populationSize);
 	}
 	
+	/**
+	 * Returns the default variation operator for the problem type.
+	 * 
+	 * @param problem the problem
+	 * @return the default variation operator
+	 */
 	private static final Variation getDefaultVariation(Problem problem) {
 		Variation result = OperatorFactory.getInstance().getVariation(problem);
 		fixDefaultParameters(result);
