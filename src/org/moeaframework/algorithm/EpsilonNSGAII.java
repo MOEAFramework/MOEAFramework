@@ -83,5 +83,13 @@ public class EpsilonNSGAII extends AdaptiveTimeContinuation {
 	public NondominatedSortingPopulation getPopulation() {
 		return (NondominatedSortingPopulation)super.getPopulation();
 	}
+	
+	public Variation getVariation() {
+		return getAlgorithm().getVariation();
+	}
+	
+	public void setVariation(Variation variation) {
+		getAlgorithm().setVariation(variation);
+	}
 
 }

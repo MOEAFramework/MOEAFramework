@@ -281,6 +281,8 @@ public class CMAES extends AbstractAlgorithm {
 		this.diagonalIterations = diagonalIterations;
 		
 		population = new Population();
+		
+		problem.assertType(RealVariable.class);
 	}
 	
 	/**

@@ -737,9 +737,9 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 		}
 
 		Initialization initialization = new RandomInitialization(problem, populationSize);
-		Mutation mutation = new SelfAdaptiveNormalVariation();
+		SelfAdaptiveNormalVariation variation = new SelfAdaptiveNormalVariation();
 
-		return new EvolutionStrategy(problem, comparator, initialization, mutation);
+		return new EvolutionStrategy(problem, comparator, initialization, variation);
 	}
 
 	/**

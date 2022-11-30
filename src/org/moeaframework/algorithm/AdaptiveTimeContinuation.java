@@ -82,13 +82,13 @@ public class AdaptiveTimeContinuation extends PeriodicAction implements Evolutio
 	 * The selection operator for selecting solutions from the archive during a
 	 * restart.
 	 */
-	private final Selection selection;
+	private final Selection restartSelection;
 
 	/**
 	 * The variation operator for mutating solutions selected from the archive
 	 * during a restart.
 	 */
-	private final Variation variation;
+	private final Variation restartVariation;
 
 	/**
 	 * The number of iterations at the last invocation of {@code restart}.
@@ -110,22 +110,22 @@ public class AdaptiveTimeContinuation extends PeriodicAction implements Evolutio
 	 * @param populationRatio the population-to-archive ratio
 	 * @param minimumPopulationSize the minimum size of the population
 	 * @param maximumPopulationSize the maximum size of the population
-	 * @param selection the selection operator for selecting solutions from the
+	 * @param restartSelection the selection operator for selecting solutions from the
 	 *        archive during a restart
-	 * @param variation the variation operator for mutating solutions selected
+	 * @param restartVariation the variation operator for mutating solutions selected
 	 *        from the archive during a restart
 	 */
 	public AdaptiveTimeContinuation(EvolutionaryAlgorithm algorithm,
 			int windowSize, int maxWindowSize, double populationRatio,
 			int minimumPopulationSize, int maximumPopulationSize,
-			Selection selection, Variation variation) {
+			Selection restartSelection, Variation restartVariation) {
 		super(algorithm, windowSize, FrequencyType.STEPS);
 		this.maxWindowSize = maxWindowSize;
 		this.populationRatio = populationRatio;
 		this.minimumPopulationSize = minimumPopulationSize;
 		this.maximumPopulationSize = maximumPopulationSize;
-		this.selection = selection;
-		this.variation = variation;
+		this.restartSelection = restartSelection;
+		this.restartVariation = restartVariation;
 
 		listeners = EventListenerSupport.create(RestartListener.class);
 	}
@@ -204,8 +204,8 @@ public class AdaptiveTimeContinuation extends PeriodicAction implements Evolutio
 		}
 
 		while (population.size() < newPopulationSize) {
-			Solution[] parents = selection.select(variation.getArity(), archive);
-			Solution[] children = variation.evolve(parents);
+			Solution[] parents = restartSelection.select(restartVariation.getArity(), archive);
+			Solution[] children = restartVariation.evolve(parents);
 
 			for (Solution child : children) {
 				algorithm.evaluate(child);

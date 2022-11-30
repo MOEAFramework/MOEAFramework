@@ -92,6 +92,11 @@ public class SMSEMOA extends AbstractEvolutionaryAlgorithm {
 			selection = new TournamentSelection(new NondominatedFitnessComparator());
 		}
 	}
+	
+	@Override
+	public void setVariation(Variation variation) {
+		super.setVariation(variation);
+	}
 
 	@Override
 	protected void initialize() {

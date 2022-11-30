@@ -52,21 +52,17 @@ import org.moeaframework.core.spi.OperatorFactory;
 public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 	
 	protected final Initialization initialization;
-	protected final Mutation mutation;
-
-	/**
-	 * The archive storing the non-dominated solutions.
-	 */
-	protected NondominatedPopulation archive;
+	protected Mutation mutation;
 	
 	protected final int softLimit;
 	protected final int hardLimit;
 	
-	protected Solution currentPT;
-	
 	protected final double alpha;
 	protected final int numberOfIterationsPerTemperature;
 	protected final int numberOfHillClimbingIterationsForRefinement;
+	
+	protected Solution currentPT;
+	protected NondominatedPopulation archive;
 	
 	public AMOSA(Problem problem) {
 		this(problem,
@@ -344,6 +340,14 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 	@Override
 	public NondominatedPopulation getResult() {
 		return archive;
+	}
+	
+	public Mutation getVariation() {
+		return mutation;
+	}
+	
+	public void setVariation(Mutation mutation) {
+		this.mutation = mutation;
 	}
 
 	@Override
