@@ -56,12 +56,17 @@ public class PMX extends TypeSafeCrossover<Permutation> {
 	public PMX(double probability) {
 		super(Permutation.class, probability);
 	}
+	
+	@Override
+	public String getName() {
+		return "pmx";
+	}
 
 	/*
-	 * Modified from JMetal 3.0 by David Hadka on 18 September 2010. The
-	 * original implementation in JMetal by Antonio J. Nebro is licensed under
+	 * The following is based on the implementation in JMetal by Antonio J. Nebro and licensed under
 	 * the GNU Lesser General Public License.
 	 */
+	
 	/**
 	 * Evolves the specified permutations using the PMX operator.
 	 * 

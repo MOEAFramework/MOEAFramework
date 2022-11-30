@@ -44,6 +44,11 @@ public class Swap extends TypeSafeMutation<Permutation> {
 	public Swap(double probability) {
 		super(Permutation.class, probability);
 	}
+	
+	@Override
+	public String getName() {
+		return "swap";
+	}
 
 	/**
 	 * Mutates the specified permutation using the swap mutation operator.

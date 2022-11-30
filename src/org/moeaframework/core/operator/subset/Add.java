@@ -42,6 +42,11 @@ public class Add extends TypeSafeMutation<Subset> {
 	public Add(double probability) {
 		super(Subset.class, probability);
 	}
+	
+	@Override
+	public String getName() {
+		return "add";
+	}
 
 	/**
 	 * Mutates the specified subset using the add mutation operator.

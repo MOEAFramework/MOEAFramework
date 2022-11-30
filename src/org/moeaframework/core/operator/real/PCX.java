@@ -95,6 +95,11 @@ public class PCX extends MultiParentVariation {
 		this.eta = eta;
 		this.zeta = zeta;
 	}
+	
+	@Override
+	public String getName() {
+		return "pcx";
+	}
 
 	/**
 	 * Returns the standard deviation of the normal distribution controlling the

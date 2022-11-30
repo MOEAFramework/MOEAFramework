@@ -50,6 +50,11 @@ public class UniformCrossover implements Variation {
 	public UniformCrossover(double probability) {
 		this.probability = probability;
 	}
+	
+	@Override
+	public String getName() {
+		return "ux";
+	}
 
 	/**
 	 * Returns the probability of applying this operator to solutions

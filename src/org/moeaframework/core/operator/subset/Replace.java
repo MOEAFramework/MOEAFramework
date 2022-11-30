@@ -42,6 +42,11 @@ public class Replace extends TypeSafeMutation<Subset> {
 	public Replace(double probability) {
 		super(Subset.class, probability);
 	}
+	
+	@Override
+	public String getName() {
+		return "replace";
+	}
 
 	/**
 	 * Mutates the specified subset using the replacement mutation operator.

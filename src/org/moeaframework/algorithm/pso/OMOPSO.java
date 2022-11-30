@@ -130,6 +130,11 @@ public class OMOPSO extends AbstractPSOAlgorithm {
 		}
 		
 		@Override
+		public String getName() {
+			return "omopso.nonuniform";
+		}
+		
+		@Override
 		public void mutate(RealVariable variable) {
 			double value = variable.getValue();
 				
@@ -167,6 +172,11 @@ public class OMOPSO extends AbstractPSOAlgorithm {
 		public UniformMutation(double probability, double perturbation) {
 			super(RealVariable.class, probability);
 			this.perturbation = perturbation;
+		}
+		
+		@Override
+		public String getName() {
+			return "omopso.uniform";
 		}
 
 		@Override

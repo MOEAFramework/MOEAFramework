@@ -42,6 +42,11 @@ public class Remove extends TypeSafeMutation<Subset> {
 	public Remove(double probability) {
 		super(Subset.class, probability);
 	}
+	
+	@Override
+	public String getName() {
+		return "remove";
+	}
 
 	/**
 	 * Mutates the specified subset using the remove mutation operator.

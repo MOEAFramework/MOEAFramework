@@ -50,6 +50,11 @@ public class SubtreeCrossover extends TypeSafeCrossover<Program> {
 	}
 	
 	@Override
+	public String getName() {
+		return "stx";
+	}
+	
+	@Override
 	public Solution[] evolve(Solution[] parents) {
 		// only return the first offspring
 		return new Solution[] { super.evolve(parents)[0] };

@@ -51,6 +51,11 @@ public class UM extends TypeSafeMutation<RealVariable> {
 	public UM(double probability) {
 		super(RealVariable.class, probability);
 	}
+	
+	@Override
+	public String getName() {
+		return "um";
+	}
 
 	/**
 	 * Mutates the specified variable using uniform mutation.

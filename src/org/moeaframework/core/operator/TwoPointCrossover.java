@@ -50,6 +50,11 @@ public class TwoPointCrossover implements Variation {
 	public TwoPointCrossover(double probability) {
 		this.probability = probability;
 	}
+	
+	@Override
+	public String getName() {
+		return "2x";
+	}
 
 	/**
 	 * Returns the probability of applying this operator to solutions.
