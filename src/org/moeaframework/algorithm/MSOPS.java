@@ -24,10 +24,12 @@ import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.configuration.Property;
 import org.moeaframework.core.operator.RandomInitialization;
 import org.moeaframework.core.operator.real.DifferentialEvolutionSelection;
 import org.moeaframework.core.operator.real.DifferentialEvolutionVariation;
 import org.moeaframework.core.variable.RealVariable;
+import org.moeaframework.util.TypedProperties;
 import org.moeaframework.util.Vector;
 import org.moeaframework.util.weights.RandomGenerator;
 
@@ -105,6 +107,7 @@ public class MSOPS extends AbstractEvolutionaryAlgorithm {
 		return (DifferentialEvolutionVariation)super.getVariation();
 	}
 	
+	@Property("operator")
 	public void setVariation(DifferentialEvolutionVariation variation) {
 		super.setVariation(variation);
 	}
@@ -135,6 +138,22 @@ public class MSOPS extends AbstractEvolutionaryAlgorithm {
 		
 		population.addAll(offspring);
 		population.truncate(populationSize);
+	}
+	
+	@Override
+	public void applyConfiguration(TypedProperties properties) {
+		if (properties.contains("numberOfWeights")) {
+			setPopulation(new MSOPSRankedPopulation(generateWeights(problem, properties.getInt("numberOfWeights", 0))));
+		}
+		
+		super.applyConfiguration(properties);
+	}
+
+	@Override
+	public TypedProperties getConfiguration() {
+		TypedProperties properties = super.getConfiguration();
+		properties.setInt("numberOfWeights", getPopulation().getNumberOfWeights());
+		return properties;
 	}
 
 }

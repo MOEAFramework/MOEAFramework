@@ -34,9 +34,11 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.comparator.DominanceComparator;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
+import org.moeaframework.core.configuration.Property;
 import org.moeaframework.core.operator.RandomInitialization;
 import org.moeaframework.core.operator.TournamentSelection;
 import org.moeaframework.core.spi.OperatorFactory;
+import org.moeaframework.util.TypedProperties;
 
 /**
  * Implementation of the &epsilon;-MOEA algorithm.  The &epsilon;-MOEA is a
@@ -167,9 +169,30 @@ public class EpsilonMOEA extends AbstractEvolutionaryAlgorithm implements Epsilo
 		return (EpsilonBoxDominanceArchive)super.getArchive();
 	}
 	
+	public void setArchive(EpsilonBoxDominanceArchive archive) {
+		super.setArchive(archive);
+	}
+	
 	@Override
+	@Property("operator")
 	public void setVariation(Variation variation) {
 		super.setVariation(variation);
+	}
+	
+	@Override
+	public void applyConfiguration(TypedProperties properties) {
+		if (properties.contains("epsilon")) {
+			setArchive(new EpsilonBoxDominanceArchive(properties.getDoubleArray("epsilon", null)));
+		}
+		
+		super.applyConfiguration(properties);
+	}
+
+	@Override
+	public TypedProperties getConfiguration() {
+		TypedProperties properties = super.getConfiguration();
+		properties.setDoubleArray("epsilon", getArchive().getComparator().getEpsilons().toArray());
+		return properties;
 	}
 
 }

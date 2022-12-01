@@ -17,13 +17,12 @@
  */
 package org.moeaframework.algorithm.single;
 
-import org.moeaframework.algorithm.AbstractEvolutionaryAlgorithm;
 import org.moeaframework.core.Initialization;
-import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.configuration.Property;
 import org.moeaframework.core.operator.RandomInitialization;
 import org.moeaframework.core.variable.RealVariable;
 
@@ -41,13 +40,13 @@ import org.moeaframework.core.variable.RealVariable;
  *       Fromman-Holzboog, 1971.
  * </ol>
  */
-public class EvolutionStrategy extends AbstractEvolutionaryAlgorithm {
-	
+public class EvolutionStrategy extends SingleObjectiveEvolutionaryAlgorithm {
+
 	/**
-	 * The aggregate objective comparator.
+	 * Constructs a new instance of the evolution strategy (ES) algorithm with default settings.
+	 * 
+	 * @param problem the problem to solve
 	 */
-	private final AggregateObjectiveComparator comparator;
-	
 	public EvolutionStrategy(Problem problem) {
 		this(problem,
 				new LinearDominanceComparator(),
@@ -58,15 +57,14 @@ public class EvolutionStrategy extends AbstractEvolutionaryAlgorithm {
 	/**
 	 * Constructs a new instance of the evolution strategy (ES) algorithm.
 	 * 
-	 * @param problem the problem
+	 * @param problem the problem to solve
 	 * @param comparator the aggregate objective comparator
 	 * @param initialization the initialization method
 	 * @param mutation the mutation operator
 	 */
 	public EvolutionStrategy(Problem problem, AggregateObjectiveComparator comparator, Initialization initialization,
 			SelfAdaptiveNormalVariation variation) {
-		super(problem, new Population(), null, initialization, variation);
-		this.comparator = comparator;
+		super(problem, new Population(), null, comparator, initialization, variation);
 		
 		problem.assertType(RealVariable.class);
 	}
@@ -91,17 +89,11 @@ public class EvolutionStrategy extends AbstractEvolutionaryAlgorithm {
 	}
 	
 	@Override
-	public NondominatedPopulation getResult() {
-		NondominatedPopulation result = new NondominatedPopulation(comparator);
-		result.addAll(getPopulation());
-		return result;
-	}
-	
-	@Override
 	public SelfAdaptiveNormalVariation getVariation() {
 		return (SelfAdaptiveNormalVariation)super.getVariation();
 	}
 	
+	@Property("operator")
 	public void setVariation(SelfAdaptiveNormalVariation variation) {
 		super.setVariation(variation);
 	}

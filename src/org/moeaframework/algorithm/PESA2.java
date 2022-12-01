@@ -35,8 +35,10 @@ import org.moeaframework.core.Selection;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
+import org.moeaframework.core.configuration.Property;
 import org.moeaframework.core.operator.RandomInitialization;
 import org.moeaframework.core.spi.OperatorFactory;
+import org.moeaframework.util.TypedProperties;
 
 /**
  * Implementation of the Pareto Envelope-based Selection Algorithm (PESA2).
@@ -104,6 +106,7 @@ public class PESA2 extends AbstractEvolutionaryAlgorithm {
 	}
 	
 	@Override
+	@Property("operator")
 	public void setVariation(Variation variation) {
 		super.setVariation(variation);
 	}
@@ -154,6 +157,27 @@ public class PESA2 extends AbstractEvolutionaryAlgorithm {
 		}
 		
 		return result;
+	}
+	
+	@Override
+	public void applyConfiguration(TypedProperties properties) {
+		if (properties.contains("archiveSize") || properties.contains("bisections")) {
+			int archiveSize = properties.getInt("archiveSize", getArchive().getCapacity());
+			int bisections = properties.getInt("bisections", getArchive().getBisections());
+			setArchive(new AdaptiveGridArchive(archiveSize, problem, ArithmeticUtils.pow(2, bisections)));
+		}
+		
+		super.applyConfiguration(properties);
+	}
+
+	@Override
+	public TypedProperties getConfiguration() {
+		TypedProperties properties = super.getConfiguration();
+		
+		properties.setInt("archiveSize", getArchive().getCapacity());
+		properties.setInt("bisections", getArchive().getBisections());
+		
+		return properties;
 	}
 	
 	/**

@@ -297,6 +297,7 @@ public class ResultFileWriter implements OutputWriter {
 		try (StringWriter stringBuffer = new StringWriter()) {
 			properties.store(stringBuffer);
 		
+			// TODO: use CommentedLineReader
 			try (BufferedReader reader = new BufferedReader(new StringReader(stringBuffer.toString()))) {
 				reader.readLine(); //skip first line that contains the timestamp
 				

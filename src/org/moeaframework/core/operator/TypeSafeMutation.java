@@ -3,6 +3,7 @@ package org.moeaframework.core.operator;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variable;
+import org.moeaframework.core.configuration.Property;
 
 /**
  * An abstract mutation class that validates the types of each variable before
@@ -48,6 +49,7 @@ public abstract class TypeSafeMutation<T extends Variable> implements Mutation {
 	 * 
 	 * @param probability the probability between 0.0 and 1.0, inclusive
 	 */
+	@Property("rate")
 	public void setProbability(double probability) {
 		this.probability = probability;
 	}

@@ -52,5 +52,10 @@ AggregateObjectiveComparator, Serializable {
 	public MinMaxDominanceComparator(double... weights) {
 		super(new AggregateConstraintComparator(), new MinMaxObjectiveComparator(weights));
 	}
+	
+	@Override
+	public double[] getWeights() {
+		return ((MinMaxObjectiveComparator)comparators[1]).getWeights();
+	}
 
 }

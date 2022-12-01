@@ -21,6 +21,7 @@ import java.util.Arrays;
 
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.PRNG;
+import org.moeaframework.core.configuration.Prefix;
 import org.moeaframework.core.operator.TypeSafeCrossover;
 import org.moeaframework.core.variable.Permutation;
 
@@ -38,6 +39,7 @@ import org.moeaframework.core.variable.Permutation;
  * International Conference on Genetic Algorithms and Their Applications. 1985.
  * </ol>
  */
+@Prefix("pmx")
 public class PMX extends TypeSafeCrossover<Permutation> {
 
 	/**

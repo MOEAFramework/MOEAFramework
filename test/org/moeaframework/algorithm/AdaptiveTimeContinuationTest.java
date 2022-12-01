@@ -123,7 +123,7 @@ public class AdaptiveTimeContinuationTest {
 				algorithm,
 				10,
 				100,
-				4.0,
+				0.25,
 				4,
 				20,
 				new UniformSelection(),

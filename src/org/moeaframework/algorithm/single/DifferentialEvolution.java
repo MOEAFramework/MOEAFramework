@@ -17,7 +17,6 @@
  */
 package org.moeaframework.algorithm.single;
 
-import org.moeaframework.algorithm.AbstractEvolutionaryAlgorithm;
 import org.moeaframework.core.Initialization;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Population;
@@ -40,12 +39,7 @@ import org.moeaframework.core.variable.RealVariable;
  *       Journal of Global Optimization, 11(4):341-359, 1997.
  * </ol>
  */
-public class DifferentialEvolution extends AbstractEvolutionaryAlgorithm {
-	
-	/**
-	 * The aggregate objective comparator.
-	 */
-	private final AggregateObjectiveComparator comparator;
+public class DifferentialEvolution extends SingleObjectiveEvolutionaryAlgorithm {
 	
 	/**
 	 * The differential evolution selection operator.
@@ -74,10 +68,10 @@ public class DifferentialEvolution extends AbstractEvolutionaryAlgorithm {
 	 * @param selection the differential evolution selection operator
 	 * @param variation the differential evolution variation operator
 	 */
-	public DifferentialEvolution(Problem problem, AggregateObjectiveComparator comparator, Initialization initialization,
-			DifferentialEvolutionSelection selection, DifferentialEvolutionVariation variation) {
-		super(problem, new Population(), null, initialization, variation);
-		this.comparator = comparator;
+	public DifferentialEvolution(Problem problem, AggregateObjectiveComparator comparator,
+			Initialization initialization, DifferentialEvolutionSelection selection,
+			DifferentialEvolutionVariation variation) {
+		super(problem, new Population(), null, comparator, initialization, variation);
 		this.selection = selection;
 		
 		problem.assertType(RealVariable.class);

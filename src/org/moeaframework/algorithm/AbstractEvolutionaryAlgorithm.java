@@ -29,6 +29,7 @@ import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
+import org.moeaframework.core.configuration.Configurable;
 
 /**
  * Abstract class providing default implementations for several
@@ -40,17 +41,17 @@ import org.moeaframework.core.Variation;
  * {@link #iterate()} method.
  */
 public abstract class AbstractEvolutionaryAlgorithm extends AbstractAlgorithm
-		implements EvolutionaryAlgorithm {
+		implements EvolutionaryAlgorithm, Configurable {
 
 	/**
 	 * The current population.
 	 */
-	protected final Population population;
+	protected Population population; // TODO: Make these fields private to ensure callers go through the getters / setters
 
 	/**
 	 * The archive storing the non-dominated solutions.
 	 */
-	protected final NondominatedPopulation archive;
+	protected NondominatedPopulation archive;
 
 	/**
 	 * The initialization operator.
@@ -115,10 +116,20 @@ public abstract class AbstractEvolutionaryAlgorithm extends AbstractAlgorithm
 	public NondominatedPopulation getArchive() {
 		return archive;
 	}
+	
+	protected void setArchive(NondominatedPopulation archive) {
+		assertNotInitialized();
+		this.archive = archive;
+	}
 
 	@Override
 	public Population getPopulation() {
 		return population;
+	}
+	
+	protected void setPopulation(Population population) {
+		assertNotInitialized();
+		this.population = population;
 	}
 	
 	/**
@@ -142,8 +153,7 @@ public abstract class AbstractEvolutionaryAlgorithm extends AbstractAlgorithm
 	@Override
 	public Serializable getState() throws NotSerializableException {
 		if (!isInitialized()) {
-			throw new AlgorithmInitializationException(this, 
-					"algorithm not initialized");
+			throw new AlgorithmInitializationException(this, "algorithm not initialized");
 		}
 
 		List<Solution> populationList = new ArrayList<Solution>();

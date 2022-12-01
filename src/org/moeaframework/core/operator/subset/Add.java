@@ -17,6 +17,7 @@
  */
 package org.moeaframework.core.operator.subset;
 
+import org.moeaframework.core.configuration.Prefix;
 import org.moeaframework.core.operator.TypeSafeMutation;
 import org.moeaframework.core.variable.Subset;
 
@@ -25,6 +26,7 @@ import org.moeaframework.core.variable.Subset;
  * <p>
  * This operator is type-safe.
  */
+@Prefix("add")
 public class Add extends TypeSafeMutation<Subset> {
 
 	/**

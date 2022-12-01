@@ -24,14 +24,12 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.comparator.CrowdingComparator;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
+import org.moeaframework.core.configuration.Property;
 import org.moeaframework.core.fitness.CrowdingDistanceFitnessEvaluator;
 import org.moeaframework.core.fitness.FitnessBasedArchive;
 import org.moeaframework.core.operator.TypeSafeMutation;
-import org.moeaframework.core.operator.Mutation;
 import org.moeaframework.core.variable.RealVariable;
-
-// NOTE: This implementation is derived from the original manuscripts and the
-// JMetal implementation.
+import org.moeaframework.util.TypedProperties;
 
 /**
  * Implementation of OMOPSO, a multi-objective particle swarm optimizer (MOPSO).
@@ -54,12 +52,12 @@ public class OMOPSO extends AbstractPSOAlgorithm {
 	/**
 	 * The uniform mutation operator, whose parameters remain unchanged.
 	 */
-	private final Mutation uniformMutation;
+	private final UniformMutation uniformMutation;
 	
 	/**
 	 * The non-uniform mutation operator, whose parameters change during a run.
 	 */
-	private final Mutation nonUniformMutation;
+	private final NonUniformMutation nonUniformMutation;
 	
 	/**
 	 * Constructs a new OMOPSO instance with default settings.
@@ -105,6 +103,35 @@ public class OMOPSO extends AbstractPSOAlgorithm {
 		problem.assertType(RealVariable.class);
 	}
 	
+	public double getMutationProbability() {
+		return uniformMutation.getProbability();
+	}
+	
+	public double getPerturbationIndex() {
+		return uniformMutation.perturbationIndex;
+	}
+	
+	@Property
+	public void setMutationProbability(double mutationProbability) {
+		uniformMutation.setProbability(mutationProbability);
+		nonUniformMutation.setProbability(mutationProbability);
+	}
+	
+	@Property
+	public void setPerturbationIndex(double perturbationIndex) {
+		uniformMutation.perturbationIndex = perturbationIndex;
+		nonUniformMutation.perturbationIndex = perturbationIndex;
+	}
+	
+	@Override
+	protected EpsilonBoxDominanceArchive getArchive() {
+		return (EpsilonBoxDominanceArchive)super.getArchive();
+	}
+	
+	protected void setArchive(EpsilonBoxDominanceArchive archive) {
+		super.setArchive(archive);
+	}
+	
 	@Override
 	protected void mutate(int i) {
 		if (i % 3 == 0) {
@@ -114,18 +141,34 @@ public class OMOPSO extends AbstractPSOAlgorithm {
 		}
 	}
 	
+	@Override
+	public void applyConfiguration(TypedProperties properties) {
+		if (properties.contains("epsilon")) {
+			setArchive(new EpsilonBoxDominanceArchive(properties.getDoubleArray("epsilon", null)));
+		}
+		
+		super.applyConfiguration(properties);
+	}
+
+	@Override
+	public TypedProperties getConfiguration() {
+		TypedProperties properties = super.getConfiguration();
+		properties.setDoubleArray("epsilon", getArchive().getComparator().getEpsilons().toArray());
+		return properties;
+	}
+	
 	/**
 	 * The non-uniform mutation operator.
 	 */
 	private class NonUniformMutation extends TypeSafeMutation<RealVariable> {
 		
-		private final double perturbation;
+		private double perturbationIndex;
 		
 		private final int maxIterations;
 		
-		public NonUniformMutation(double probability, double perturbation, int maxIterations) {
+		public NonUniformMutation(double probability, double perturbationIndex, int maxIterations) {
 			super(RealVariable.class, probability);
-			this.perturbation = perturbation;
+			this.perturbationIndex = perturbationIndex;
 			this.maxIterations = maxIterations;
 		}
 		
@@ -157,7 +200,7 @@ public class OMOPSO extends AbstractPSOAlgorithm {
 			int currentIteration = getNumberOfEvaluations() / swarmSize;
 			double fraction = currentIteration / (double)maxIterations;
 			
-			return difference * (1.0 - Math.pow(PRNG.nextDouble(), Math.pow(1.0 - fraction, perturbation)));
+			return difference * (1.0 - Math.pow(PRNG.nextDouble(), Math.pow(1.0 - fraction, perturbationIndex)));
 		}
 
 	}
@@ -167,11 +210,11 @@ public class OMOPSO extends AbstractPSOAlgorithm {
 	 */
 	private class UniformMutation extends TypeSafeMutation<RealVariable> {
 		
-		private final double perturbation;
+		private double perturbationIndex;
 		
-		public UniformMutation(double probability, double perturbation) {
+		public UniformMutation(double probability, double perturbationIndex) {
 			super(RealVariable.class, probability);
-			this.perturbation = perturbation;
+			this.perturbationIndex = perturbationIndex;
 		}
 		
 		@Override
@@ -183,7 +226,7 @@ public class OMOPSO extends AbstractPSOAlgorithm {
 		public void mutate(RealVariable variable) {
 			double value = variable.getValue();
 					
-			value += (PRNG.nextDouble() - 0.5) * perturbation;
+			value += (PRNG.nextDouble() - 0.5) * perturbationIndex;
 					
 			if (value < variable.getLowerBound()) {
 				value = variable.getLowerBound();

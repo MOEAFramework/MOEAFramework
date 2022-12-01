@@ -29,9 +29,6 @@ import org.moeaframework.core.operator.real.PM;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
 
-//NOTE: This implementation is derived from the original manuscripts and the
-//JMetal implementation.
-
 /**
  * Implementation of SMPSO, the speed-constrained multi-objective particle
  * swarm optimizer.

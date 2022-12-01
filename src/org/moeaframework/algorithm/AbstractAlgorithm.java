@@ -127,10 +127,7 @@ public abstract class AbstractAlgorithm implements Algorithm {
 	 *         been initialized
 	 */
 	protected void initialize() {
-		if (initialized) {
-			throw new AlgorithmInitializationException(this, "algorithm already initialized");
-		}
-
+		assertNotInitialized();
 		initialized = true;
 	}
 
@@ -143,6 +140,16 @@ public abstract class AbstractAlgorithm implements Algorithm {
 	 */
 	public boolean isInitialized() {
 		return initialized;
+	}
+	
+	/**
+	 * Throws an exception if the algorithm is initialized.  Use this anywhere
+	 * to check and fail if the algorithm is already initialized.
+	 */
+	public void assertNotInitialized() {
+		if (initialized) {
+			throw new AlgorithmInitializationException(this, "algorithm already initialized");
+		}
 	}
 
 	/**

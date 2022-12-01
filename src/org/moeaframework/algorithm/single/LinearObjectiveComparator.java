@@ -57,6 +57,11 @@ public class LinearObjectiveComparator implements AggregateObjectiveComparator, 
 			this.weights = new double[] { 1.0 };
 		}
 	}
+	
+	@Override
+	public double[] getWeights() {
+		return weights;
+	}
 
 	@Override
 	public int compare(Solution solution1, Solution solution2) {

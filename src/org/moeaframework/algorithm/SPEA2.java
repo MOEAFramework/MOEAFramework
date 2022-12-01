@@ -37,6 +37,8 @@ import org.moeaframework.core.Variation;
 import org.moeaframework.core.comparator.DominanceComparator;
 import org.moeaframework.core.comparator.FitnessComparator;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
+import org.moeaframework.core.configuration.Configurable;
+import org.moeaframework.core.configuration.Property;
 import org.moeaframework.core.indicator.IndicatorUtils;
 import org.moeaframework.core.operator.RandomInitialization;
 import org.moeaframework.core.operator.TournamentSelection;
@@ -74,12 +76,12 @@ public class SPEA2 extends AbstractEvolutionaryAlgorithm {
 	/**
 	 * The number of offspring.
 	 */
-	private final int numberOfOffspring;
+	private int numberOfOffspring;
 	
 	/**
 	 * Strength-based fitness evaluator.
 	 */
-	protected final StrengthFitnessEvaluator fitnessEvaluator;
+	protected StrengthFitnessEvaluator fitnessEvaluator;
 	
 	/**
 	 * Compares solutions based on strength.
@@ -120,8 +122,22 @@ public class SPEA2 extends AbstractEvolutionaryAlgorithm {
 	}
 	
 	@Override
+	@Property("operator")
 	public void setVariation(Variation variation) {
 		super.setVariation(variation);
+	}
+	
+	public int getNumberOfOffspring() {
+		return numberOfOffspring;
+	}
+	
+	@Property("offspringSize")
+	public void setNumberOfOffspring(int numberOfOffspring) {
+		this.numberOfOffspring = numberOfOffspring;
+	}
+	
+	public StrengthFitnessEvaluator getFitnessEvaluator() {
+		return fitnessEvaluator;
 	}
 
 	@Override
@@ -347,13 +363,12 @@ public class SPEA2 extends AbstractEvolutionaryAlgorithm {
 	/**
 	 * Fitness evaluator for the strength measure with crowding-based niching.
 	 */
-	public class StrengthFitnessEvaluator implements FitnessEvaluator {
+	public class StrengthFitnessEvaluator implements FitnessEvaluator, Configurable {
 		
 		/**
-		 * Crowding is based on the distance to the {@code k}-th nearest
-		 * neighbor.
+		 * Crowding is based on the distance to the {@code k}-th nearest neighbor.
 		 */
-		private final int k;
+		private int k;
 		
 		/**
 		 * Pareto dominance comparator.
@@ -364,14 +379,22 @@ public class SPEA2 extends AbstractEvolutionaryAlgorithm {
 		 * Constructs a new fitness evaluator for computing the strength
 		 * measure with crowding-based niching.
 		 * 
-		 * @param k crowding is based on the distance to the {@code k}-th
-		 *        nearest neighbor
+		 * @param k crowding is based on the distance to the {@code k}-th nearest neighbor
 		 */
 		public StrengthFitnessEvaluator(int k) {
 			super();
 			this.k = k;
 			
 			comparator = new ParetoDominanceComparator();
+		}
+		
+		public int getK() {
+			return k;
+		}
+		
+		@Property
+		public void setK(int k) {
+			this.k = k;
 		}
 
 		@Override

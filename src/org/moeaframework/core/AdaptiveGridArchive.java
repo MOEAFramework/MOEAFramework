@@ -24,6 +24,9 @@ import org.apache.commons.math3.exception.MathArithmeticException;
 import org.apache.commons.math3.util.ArithmeticUtils;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
 
+// TODO: if the capacity is significantly less than the number of divisions,
+// using a sparse array would be much more memory efficient.
+
 /**
  * Adaptive grid archive. Divides objective space into a number of grid cells,
  * maintaining a count of the number of solutions within each grid cell. When
@@ -89,10 +92,8 @@ public class AdaptiveGridArchive extends NondominatedPopulation {
 	 *         {@code pow(numberOfDivisions, numberOfObjectives)} exceeds the
 	 *         storage capacity of an array
 	 */
-	public AdaptiveGridArchive(int capacity, Problem problem,
-			int numberOfDivisions) {
-		super(new ParetoDominanceComparator(),
-				DuplicateMode.ALLOW_DUPLICATES);
+	public AdaptiveGridArchive(int capacity, Problem problem, int numberOfDivisions) {
+		super(new ParetoDominanceComparator(), DuplicateMode.ALLOW_DUPLICATES);
 		this.capacity = capacity;
 		this.problem = problem;
 		this.numberOfDivisions = numberOfDivisions;
@@ -102,17 +103,35 @@ public class AdaptiveGridArchive extends NondominatedPopulation {
 		
 		// guard against integer overflow
 		try {
-			density = new int[ArithmeticUtils.pow(
-					numberOfDivisions,
-					problem.getNumberOfObjectives())];
+			density = new int[ArithmeticUtils.pow(numberOfDivisions, problem.getNumberOfObjectives())];
 		} catch (MathArithmeticException e) {
-			throw new FrameworkException("number of divisions (bisections) " +
-					"too large for adaptive grid archive", e);
+			throw new FrameworkException("number of divisions (bisections) too large for adaptive grid archive", e);
 		}
 
 		adaptGrid();
 	}
-
+	
+	/**
+	 * Calculates the largest possible value for the {@code bisections} parameter.  This is limited by
+	 * the available Java heap size and the maximum integer value (2^31-1), whichever is smaller.
+	 * 
+	 * @param numberOfObjectives the number of objectives
+	 * @return the maximum number of bisections
+	 */
+	public static int getMaximumBisections(int numberOfObjectives) {
+		long maxLength = Math.min(Runtime.getRuntime().maxMemory() / 4, Integer.MAX_VALUE);
+		return (int)Math.round(Math.log(Math.pow(maxLength, 1.0 / numberOfObjectives)) / Math.log(2.0));
+	}
+	
+	/**
+	 * Returns the equivalent number of bisections to produce the number of divisions.
+	 * 
+	 * @return the number of bisections
+	 */
+	public int getBisections() {
+		return (int)Math.round(Math.log(numberOfDivisions) / Math.log(2));
+	}
+	
 	/**
 	 * Returns the maximum number of solutions stored in this archive.
 	 * 
@@ -123,8 +142,7 @@ public class AdaptiveGridArchive extends NondominatedPopulation {
 	}
 
 	/**
-	 * Returns the number of divisions this archive uses to split each
-	 * objective.
+	 * Returns the number of divisions this archive uses to split each objective.
 	 * 
 	 * @return the number of divisions this archive uses to split each objective
 	 */
@@ -314,8 +332,7 @@ public class AdaptiveGridArchive extends NondominatedPopulation {
 			if ((value < minimum[i]) || (value > maximum[i])) {
 				return -1;
 			} else {
-				int tempIndex = (int)(numberOfDivisions * 
-						((value - minimum[i]) / (maximum[i] - minimum[i])));
+				int tempIndex = (int)(numberOfDivisions * ((value - minimum[i]) / (maximum[i] - minimum[i])));
 
 				// handle special case where value = maximum[i]
 				if (tempIndex == numberOfDivisions) {

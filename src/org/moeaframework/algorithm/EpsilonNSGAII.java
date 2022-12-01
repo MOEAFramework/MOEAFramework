@@ -11,11 +11,14 @@ import org.moeaframework.core.Variation;
 import org.moeaframework.core.comparator.ChainedComparator;
 import org.moeaframework.core.comparator.CrowdingComparator;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
+import org.moeaframework.core.configuration.Configurable;
+import org.moeaframework.core.configuration.Property;
 import org.moeaframework.core.operator.RandomInitialization;
 import org.moeaframework.core.operator.TournamentSelection;
 import org.moeaframework.core.operator.UniformSelection;
 import org.moeaframework.core.operator.real.UM;
 import org.moeaframework.core.spi.OperatorFactory;
+import org.moeaframework.util.TypedProperties;
 
 /**
  * Implements the &epsilon;-NSGA-II algorithm.  This algorithm extends NSGA-II with
@@ -28,7 +31,7 @@ import org.moeaframework.core.spi.OperatorFactory;
  *       Water Resources, 29(6):792-807, 2006.
  * </ol>
  */
-public class EpsilonNSGAII extends AdaptiveTimeContinuation {
+public class EpsilonNSGAII extends AdaptiveTimeContinuation implements Configurable {
 	
 	/**
 	 * Constructs a new &epsilon;-NSGA-II instance with default settings.
@@ -44,7 +47,7 @@ public class EpsilonNSGAII extends AdaptiveTimeContinuation {
 				new RandomInitialization(problem, Settings.DEFAULT_POPULATION_SIZE),
 				100, // windowSize
 				100, // maxwindowSize
-				4.0, // populationRatio - 1 / injectionRate
+				0.25, // injectionRate
 				100, // minimumPopulationSize
 				10000); // maximumPopulationSize
 	}
@@ -61,16 +64,16 @@ public class EpsilonNSGAII extends AdaptiveTimeContinuation {
 	 * @param windowSize the number of iterations between invocations of {@code check}
 	 * @param maxWindowSize the maximum number of iterations allowed since the
 	 *        last restart before forcing a restart
-	 * @param populationRatio the population-to-archive ratio
+	 * @param injectionRate the injection rate
 	 * @param minimumPopulationSize the minimum size of the population
 	 * @param maximumPopulationSize the maximum size of the population
 	 */
 	public EpsilonNSGAII(Problem problem, NondominatedSortingPopulation population,
 			EpsilonBoxDominanceArchive archive, Selection selection, Variation variation,
-			Initialization initialization, int windowSize, int maxWindowSize, double populationRatio,
+			Initialization initialization, int windowSize, int maxWindowSize, double injectionRate,
 			int minimumPopulationSize, int maximumPopulationSize) {
 		super(new NSGAII(problem, population, archive, selection, variation, initialization),
-				windowSize, maxWindowSize, populationRatio, minimumPopulationSize, maximumPopulationSize,
+				windowSize, maxWindowSize, injectionRate, minimumPopulationSize, maximumPopulationSize,
 				new UniformSelection(), new UM(1.0));
 	}
 	
@@ -88,8 +91,33 @@ public class EpsilonNSGAII extends AdaptiveTimeContinuation {
 		return getAlgorithm().getVariation();
 	}
 	
+	@Property("operator")
 	public void setVariation(Variation variation) {
 		getAlgorithm().setVariation(variation);
+	}
+	
+	public EpsilonBoxDominanceArchive getArchive() {
+		return (EpsilonBoxDominanceArchive)super.getAlgorithm().getArchive();
+	}
+	
+	public void setArchive(EpsilonBoxDominanceArchive archive) {
+		getAlgorithm().setArchive(archive);
+	}
+	
+	@Override
+	public void applyConfiguration(TypedProperties properties) {
+		if (properties.contains("epsilon")) {
+			setArchive(new EpsilonBoxDominanceArchive(properties.getDoubleArray("epsilon", null)));
+		}
+		
+		super.applyConfiguration(properties);
+	}
+
+	@Override
+	public TypedProperties getConfiguration() {
+		TypedProperties properties = super.getConfiguration();
+		properties.setDoubleArray("epsilon", getArchive().getComparator().getEpsilons().toArray());
+		return properties;
 	}
 
 }

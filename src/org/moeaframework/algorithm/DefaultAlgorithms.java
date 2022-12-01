@@ -344,7 +344,7 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 				initialization,
 				properties.getInt("windowSize", 100),
 				Math.max(properties.getInt("windowSize", 100), properties.getInt("maxWindowSize", 100)),
-				1.0 / properties.getDouble("injectionRate", 0.25),
+				properties.getDouble("injectionRate", 0.25),
 				properties.getInt("minimumPopulationSize", 100),
 				properties.getInt("maximumPopulationSize", 10000));
 	}

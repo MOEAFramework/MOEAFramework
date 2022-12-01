@@ -28,6 +28,7 @@ import java.util.TreeSet;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.moeaframework.core.configuration.ConfigurationException;
 
 /**
  * Stores a collection of key-value pairs similar to {@link Properties} but has support for
@@ -353,7 +354,8 @@ public class TypedProperties {
 				}
 			}
 
-			throw new IllegalArgumentException("enum " + enumType.getSimpleName() + " has no constant of value " + value);
+			throw new IllegalArgumentException("enum " + enumType.getSimpleName() +
+					" has no constant of value " + value);
 		}
 	}
 	
@@ -895,8 +897,18 @@ public class TypedProperties {
 		Set<String> orphanedProperties = getUnaccessedProperties();
 		
 		if (!orphanedProperties.isEmpty()) {
-			System.err.println("properties not accessed: " +
-					String.join(", ", orphanedProperties));
+			System.err.println("properties not accessed: " + String.join(", ", orphanedProperties));
+		}
+	}
+	
+	/**
+	 * Throws a {@link ConfigurationException} if any properties were not accessed.
+	 */
+	public void throwIfUnaccessedProperties() {
+		Set<String> orphanedProperties = getUnaccessedProperties();
+		
+		if (!orphanedProperties.isEmpty()) {
+			throw new ConfigurationException("properties not accessed: " + String.join(", ", orphanedProperties));
 		}
 	}
 

@@ -29,6 +29,8 @@ import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.comparator.DominanceComparator;
+import org.moeaframework.core.configuration.Configurable;
+import org.moeaframework.core.configuration.Property;
 import org.moeaframework.core.fitness.FitnessBasedArchive;
 import org.moeaframework.core.operator.Mutation;
 import org.moeaframework.core.operator.RandomInitialization;
@@ -38,7 +40,7 @@ import org.moeaframework.core.variable.RealVariable;
 /**
  * Abstract multi-objective particle swarm optimizer (MOPSO).
  */
-public abstract class AbstractPSOAlgorithm extends AbstractAlgorithm {
+public abstract class AbstractPSOAlgorithm extends AbstractAlgorithm implements Configurable {
 	
 	/**
 	 * The number of particles.
@@ -118,12 +120,79 @@ public abstract class AbstractPSOAlgorithm extends AbstractAlgorithm {
 		this.leaders = leaders;
 		this.archive = archive;
 		this.mutation = mutation;
-
-		particles = new Solution[swarmSize];
-		localBestParticles = new Solution[swarmSize];
-		velocities = new double[swarmSize][problem.getNumberOfVariables()];
 	}
 	
+	/**
+	 * Returns the number of particles (aka swarm size or population size).
+	 * 
+	 * @return the swarm size
+	 */
+	public int getSwarmSize() {
+		return swarmSize;
+	}
+
+	/**
+	 * Sets the number of particles (aka swarm size or population size).  This value can only be set before
+	 * initialization.
+	 * 
+	 * @param swarmSize the swarm size
+	 */
+	@Property(synonym="populationSize")
+	public void setSwarmSize(int swarmSize) {
+		assertNotInitialized();
+		this.swarmSize = swarmSize;
+	}
+
+	/**
+	 * Returns the number of leaders, which tracks the best particles according to some fitness criteria.
+	 * 
+	 * @return the leader size
+	 */
+	public int getLeaderSize() {
+		return leaderSize;
+	}
+
+	/**
+	 * Sets the number of leaders, which tracks the best particles according to some fitness criteria.  This value
+	 * can only be set before initialization.
+	 * 
+	 * @param leader the leader size
+	 */
+	@Property(synonym="archiveSize")
+	public void setLeaderSize(int leaderSize) {
+		assertNotInitialized();
+		this.leaderSize = leaderSize;
+	}
+	
+	/**
+	 * Returns the mutation operator, or {@code null} if no mutation is defined.
+	 * 
+	 * @return the mutation operator or {@code null}
+	 */
+	public Mutation getMutation() {
+		return mutation;
+	}
+	
+	/**
+	 * Returns the archive of non-dominated solutions; or {@code null} of no external archive is used.
+	 * 
+	 * @return the archive or {@code null}
+	 */
+	protected NondominatedPopulation getArchive() {
+		return archive;
+	}
+	
+	/**
+	 * Sets the archive of non-dominated solutions; or {@code null} of no external archive is used.  This value
+	 * can only be set before initialization.
+	 * 
+	 * @param archive the archive or {@code null}.
+	 */
+	protected void setArchive(NondominatedPopulation archive) {
+		assertNotInitialized();
+		this.archive = archive;
+	}
+
 	/**
 	 * Update the speeds of all particles.
 	 */
@@ -264,8 +333,11 @@ public abstract class AbstractPSOAlgorithm extends AbstractAlgorithm {
 		super.initialize();
 		
 		Solution[] initialParticles = new RandomInitialization(problem, swarmSize).initialize();
-		
 		evaluateAll(initialParticles);
+		
+		particles = new Solution[swarmSize];
+		localBestParticles = new Solution[swarmSize];
+		velocities = new double[swarmSize][problem.getNumberOfVariables()];
 		
 		for (int i = 0; i < swarmSize; i++) {
 			particles[i] = initialParticles[i];

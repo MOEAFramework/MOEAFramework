@@ -34,6 +34,8 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
+import org.moeaframework.core.configuration.Configurable;
+import org.moeaframework.core.configuration.Property;
 import org.moeaframework.core.operator.AbstractCompoundVariation;
 import org.moeaframework.core.operator.RandomInitialization;
 import org.moeaframework.core.operator.real.DifferentialEvolutionVariation;
@@ -50,15 +52,15 @@ import org.moeaframework.util.weights.WeightGenerator;
  * <p>
  * References:
  * <ol>
- * <li>Li, H. and Zhang, Q. "Multiobjective Optimization problems with
- * Complicated Pareto Sets, MOEA/D and NSGA-II." IEEE Transactions on
- * Evolutionary Computation, 13(2):284-302, 2009.
- * <li>Zhang, Q., et al.  "The Performance of a New Version of MOEA/D on
- * CEC09 Unconstrained MOP Test Instances."  IEEE Congress on Evolutionary
- * Computation, 2009.
+ *   <li>Li, H. and Zhang, Q. "Multiobjective Optimization problems with
+ *       Complicated Pareto Sets, MOEA/D and NSGA-II." IEEE Transactions on
+ *       Evolutionary Computation, 13(2):284-302, 2009.
+ *   <li>Zhang, Q., et al.  "The Performance of a New Version of MOEA/D on
+ *       CEC09 Unconstrained MOP Test Instances."  IEEE Congress on Evolutionary
+ *       Computation, 2009.
  * </ol>
  */
-public class MOEAD extends AbstractAlgorithm {
+public class MOEAD extends AbstractAlgorithm implements Configurable {
 
 	/**
 	 * The current population.
@@ -73,7 +75,7 @@ public class MOEAD extends AbstractAlgorithm {
 	/**
 	 * The size of the neighborhood used for mating.
 	 */
-	private final int neighborhoodSize;
+	private int neighborhoodSize;
 	
 	/**
 	 * The weight generator; or {@code null} if the default weight generator is used.
@@ -83,12 +85,12 @@ public class MOEAD extends AbstractAlgorithm {
 	/**
 	 * The probability of mating with a solution in the neighborhood rather than the entire population.
 	 */
-	private final double delta;
+	private double delta;
 
 	/**
 	 * The maximum number of population slots a solution can replace.
 	 */
-	private final double eta;
+	private double eta;
 
 	/**
 	 * The initialization operator.
@@ -104,12 +106,13 @@ public class MOEAD extends AbstractAlgorithm {
 	 * The frequency, in generations, in which utility values are updated.  Set to {@code -1} to disable
 	 * utility-based search.  [2] recommends to update every {@code 50} generations.
 	 */
-	private final int updateUtility;
+	private int updateUtility;
 
 	/**
-	 * Set to {@code true} if using differential evolution.
+	 * Set to {@code true} if using differential evolution.  This ensures the parents are ordered correctly
+	 * for differential evolution variation.
 	 */
-	final boolean useDE;
+	boolean useDE;
 	
 	/**
 	 * The current generation number.
@@ -180,7 +183,7 @@ public class MOEAD extends AbstractAlgorithm {
 	 * @param delta the probability of mating with a solution in the neighborhood rather than the entire population
 	 * @param eta the maximum number of population slots a solution can replace
 	 * @param updateUtility the frequency, in generations, in which utility values are updated; set to {@code 50} to
-	 *        use the recommended update frequency or {@code -1} to disable utility-based search.
+	 *        use the recommended update frequency or {@code -1} to disable utility-based search
 	 */
 	public MOEAD(Problem problem, int neighborhoodSize, WeightGenerator weightGenerator, Initialization initialization,
 			Variation variation, double delta, double eta, int updateUtility) {
@@ -188,18 +191,11 @@ public class MOEAD extends AbstractAlgorithm {
 		this.neighborhoodSize = neighborhoodSize;
 		this.weightGenerator = weightGenerator;
 		this.initialization = initialization;
-		this.variation = variation;
 		this.delta = delta;
 		this.eta = eta;
 		this.updateUtility = updateUtility;
 		
-		if (variation instanceof DifferentialEvolutionVariation) {
-			useDE = true;
-		} else if (variation instanceof AbstractCompoundVariation<?>) {
-			useDE = ((AbstractCompoundVariation<?>)variation).contains(DifferentialEvolutionVariation.class);
-		} else {
-			useDE = false;
-		}
+		setVariation(variation);
 	}
 	
 	/**
@@ -218,6 +214,111 @@ public class MOEAD extends AbstractAlgorithm {
 	public MOEAD(Problem problem, int neighborhoodSize, WeightGenerator weightGenerator, Initialization initialization,
 			Variation variation, double delta, double eta) {
 		this(problem, neighborhoodSize, weightGenerator, initialization, variation, delta, eta, -1);
+	}
+
+	/**
+	 * Returns the size of the neighborhood used for mating.
+	 * 
+	 * @return the neighborhood size
+	 */
+	public int getNeighborhoodSize() {
+		return neighborhoodSize;
+	}
+
+	/**
+	 * Sets the size of the neighborhood used for mating, which must be at least {@code variation.getArity()-1}.
+	 * 
+	 * @param neighborhoodSize the neighborhood size
+	 */
+	@Property
+	public void setNeighborhoodSize(int neighborhoodSize) {
+		this.neighborhoodSize = neighborhoodSize;
+	}
+
+	/**
+	 * Returns the probability of mating with a solution in the neighborhood rather than the entire population.
+	 * 
+	 * @return the delta value
+	 */
+	public double getDelta() {
+		return delta;
+	}
+
+	/**
+	 * Sets the probability of mating with a solution in the neighborhood rather than the entire population.
+	 * 
+	 * @param delta the delta value
+	 */
+	@Property
+	public void setDelta(double delta) {
+		this.delta = delta;
+	}
+
+	/**
+	 * Returns the maximum number of population slots a solution can replace.
+	 * 
+	 * @return the eta value
+	 */
+	public double getEta() {
+		return eta;
+	}
+
+	/**
+	 * Sets the maximum number of population slots a solution can replace.
+	 * 
+	 * @param eta the eta value
+	 */
+	@Property
+	public void setEta(double eta) {
+		this.eta = eta;
+	}
+
+	/**
+	 * Returns the frequency, in generations, in which utility values are updated.
+	 * 
+	 * @return the nmber of generations between each utility update
+	 */
+	public int getUpdateUtility() {
+		return updateUtility;
+	}
+
+	/**
+	 * Sets the frequency, in generations, in which utility values are updated; set to {@code 50} to use the
+	 * recommended update frequency or {@code -1} to disable utility-based search.
+	 * 
+	 * @param updateUtility the number of generations between each utility update
+	 */
+	@Property
+	public void setUpdateUtility(int updateUtility) {
+		this.updateUtility = updateUtility;
+	}
+
+	/**
+	 * Returns the variation operator.
+	 * 
+	 * @return the variation operator
+	 */
+	public Variation getVariation() {
+		return variation;
+	}
+
+	/**
+	 * Sets the variation operator.  MOEA/D typically uses differential evolution but other variation operators
+	 * are supported.
+	 * 
+	 * @param variation the variation to set
+	 */
+	@Property("operator")
+	public void setVariation(Variation variation) {
+		this.variation = variation;
+		
+		if (variation instanceof DifferentialEvolutionVariation) {
+			useDE = true;
+		} else if (variation instanceof AbstractCompoundVariation<?>) {
+			useDE = ((AbstractCompoundVariation<?>)variation).contains(DifferentialEvolutionVariation.class);
+		} else {
+			useDE = false;
+		}
 	}
 
 	@Override

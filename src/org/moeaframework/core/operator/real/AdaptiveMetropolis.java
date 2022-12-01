@@ -25,6 +25,8 @@ import org.apache.commons.math3.linear.RealVector;
 import org.apache.commons.math3.stat.correlation.Covariance;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.configuration.Prefix;
+import org.moeaframework.core.configuration.Property;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
 
@@ -54,6 +56,7 @@ import org.moeaframework.core.variable.RealVariable;
  *       Jumping Rules."  Bayesian Statistics, vol. 5, pp. 599-607, 1996.
  * </ol>
  */
+@Prefix("am")
 public class AdaptiveMetropolis extends MultiParentVariation {
 	
 	/**
@@ -108,6 +111,7 @@ public class AdaptiveMetropolis extends MultiParentVariation {
 	 * 
 	 * @param jumpRateCoefficient the jump rate coefficient value
 	 */
+	@Property("coefficient")
 	public void setJumpRateCoefficient(double jumpRateCoefficient) {
 		this.jumpRateCoefficient = jumpRateCoefficient;
 	}

@@ -20,6 +20,8 @@ package org.moeaframework.core.operator.real;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
+import org.moeaframework.core.configuration.Prefix;
+import org.moeaframework.core.configuration.Property;
 import org.moeaframework.core.variable.RealVariable;
 
 /**
@@ -45,6 +47,7 @@ import org.moeaframework.core.variable.RealVariable;
  * Optimization, 11:341-359, 1997.
  * </ol>
  */
+@Prefix("de")
 public class DifferentialEvolutionVariation implements Variation {
 
 	/**
@@ -97,6 +100,7 @@ public class DifferentialEvolutionVariation implements Variation {
 	 * 
 	 * @param CR the crossover rate
 	 */
+	@Property
 	public void setCrossoverRate(double CR) {
 		this.CR = CR;
 	}
@@ -116,6 +120,7 @@ public class DifferentialEvolutionVariation implements Variation {
 	 * 
 	 * @param F the scaling factor
 	 */
+	@Property("stepSize")
 	public void setScalingFactor(double F) {
 		this.F = F;
 	}

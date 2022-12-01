@@ -87,18 +87,47 @@ public class NormalBoundaryDivisions {
 		return innerDivisions > 0;
 	}
 	
+	public TypedProperties toProperties() {
+		TypedProperties properties = new TypedProperties();
+		
+		if (isTwoLayer()) {
+			properties.setInt("divisionsInner", innerDivisions);
+			properties.setInt("divisionsOuter", outerDivisions);
+		} else {
+			properties.setInt("divisions", outerDivisions);
+		}
+		
+		return properties;
+	}
+	
 	/**
 	 * Reads the divisions properties, if set, or provides default values for the problem.
 	 * 
 	 * @param properties the properties
 	 * @param problem the problem
-	 * @return the reference point divisions
+	 * @return the divisions
 	 */
 	public static NormalBoundaryDivisions fromProperties(TypedProperties properties, Problem problem) {
+		NormalBoundaryDivisions divisions = tryFromProperties(properties);
+		
+		if (divisions != null) {
+			return divisions;
+		}
+		
+		return forProblem(problem);
+	}
+	
+	/**
+	 * Reads the division properties, if set.  Otherwise, returns {@code null}.
+	 * 
+	 * @param properties the properties
+	 * @return the divisions or {@code null}
+	 */
+	public static NormalBoundaryDivisions tryFromProperties(TypedProperties properties) {
 		if (properties.contains("divisionsOuter") && properties.contains("divisionsInner")) {
 			return new NormalBoundaryDivisions(
-					(int)properties.getDouble("divisionsOuter", 4),
-					(int)properties.getDouble("divisionsInner", 0));
+					properties.getInt("divisionsOuter", 4),
+					properties.getInt("divisionsInner", 0));
 		} 
 		
 		if (properties.contains("divisionsOuter") || properties.contains("divisionsInner")) {
@@ -106,10 +135,10 @@ public class NormalBoundaryDivisions {
 		}
 		
 		if (properties.contains("divisions")) {
-			return new NormalBoundaryDivisions((int)properties.getDouble("divisions", 4));
+			return new NormalBoundaryDivisions(properties.getInt("divisions", 4));
 		}
 		
-		return forProblem(problem);
+		return null;
 	}
 	
 	/**

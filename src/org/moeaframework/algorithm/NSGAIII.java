@@ -16,6 +16,7 @@ import org.moeaframework.core.operator.TournamentSelection;
 import org.moeaframework.core.operator.real.PM;
 import org.moeaframework.core.operator.real.SBX;
 import org.moeaframework.core.spi.OperatorFactory;
+import org.moeaframework.util.TypedProperties;
 import org.moeaframework.util.weights.NormalBoundaryDivisions;
 
 /**
@@ -164,6 +165,24 @@ public class NSGAIII extends NSGAII {
 	@Override
 	public ReferencePointNondominatedSortingPopulation getPopulation() {
 		return (ReferencePointNondominatedSortingPopulation)super.getPopulation();
+	}
+
+	@Override
+	public void applyConfiguration(TypedProperties properties) {
+		NormalBoundaryDivisions divisions = NormalBoundaryDivisions.tryFromProperties(properties);
+		
+		if (divisions != null) {
+			setPopulation(new ReferencePointNondominatedSortingPopulation(problem.getNumberOfObjectives(), divisions));
+		}
+		
+		super.applyConfiguration(properties);
+	}
+
+	@Override
+	public TypedProperties getConfiguration() {
+		TypedProperties properties = super.getConfiguration();
+		properties.addAll(getPopulation().getDivisions().toProperties());
+		return properties;
 	}
 
 }

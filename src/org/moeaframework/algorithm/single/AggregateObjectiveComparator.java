@@ -42,5 +42,12 @@ import org.moeaframework.core.comparator.DominanceComparator;
  * to invoke the {@code compare} method and avoid the compilation error.
  */
 public interface AggregateObjectiveComparator extends DominanceComparator, Comparator<Solution> {
+	
+	/**
+	 * Returns the weights used by this linear aggregate function.
+	 * 
+	 * @return the weights
+	 */
+	public double[] getWeights();
 
 }

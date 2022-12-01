@@ -168,6 +168,15 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 	}
 	
 	/**
+	 * Returns the number of divisions used to create the reference points.
+	 * 
+	 * @return the divisions object
+	 */
+	public NormalBoundaryDivisions getDivisions() {
+		return divisions;
+	}
+	
+	/**
 	 * Initializes the ideal point and reference points (weights).
 	 */
 	private void initialize() {

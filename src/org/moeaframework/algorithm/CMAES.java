@@ -39,8 +39,14 @@ import org.moeaframework.core.comparator.FitnessComparator;
 import org.moeaframework.core.comparator.NondominatedSortingComparator;
 import org.moeaframework.core.comparator.ObjectiveComparator;
 import org.moeaframework.core.comparator.RankComparator;
+import org.moeaframework.core.configuration.Configurable;
+import org.moeaframework.core.configuration.ConfigurationException;
+import org.moeaframework.core.configuration.Property;
+import org.moeaframework.core.fitness.AdditiveEpsilonIndicatorFitnessEvaluator;
+import org.moeaframework.core.fitness.HypervolumeFitnessEvaluator;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
+import org.moeaframework.util.TypedProperties;
 
 /**
  * The Covariance Matrix Adaption Evolution Strategy (CMA-ES) algorithm for
@@ -67,7 +73,7 @@ import org.moeaframework.core.variable.RealVariable;
  *       15(1):1-28.
  * </ol>
  */
-public class CMAES extends AbstractAlgorithm {
+public class CMAES extends AbstractAlgorithm implements Configurable {
 	
 	/**
 	 * An initial search point to start searching from, or {@code null} if no
@@ -86,12 +92,12 @@ public class CMAES extends AbstractAlgorithm {
 	 * with the same rank.  If {@code null}, the default crowding distance
 	 * metric is used.
 	 */
-	private final FitnessEvaluator fitnessEvaluator;
+	private FitnessEvaluator fitnessEvaluator;
 	
 	/**
 	 * Nondominated archive of the best solutions found.
 	 */
-	private final NondominatedPopulation archive;
+	private NondominatedPopulation archive;
 
 	/**
 	 * The number of iterations already performed.
@@ -284,7 +290,127 @@ public class CMAES extends AbstractAlgorithm {
 		
 		problem.assertType(RealVariable.class);
 	}
+
+	public int getDiagonalIterations() {
+		return diagonalIterations;
+	}
+
+	@Property
+	public void setDiagonalIterations(int diagonalIterations) {
+		this.diagonalIterations = diagonalIterations;
+	}
+
 	
+	public int getLambda() {
+		return lambda;
+	}
+
+	@Property
+	public void setLambda(int lambda) {
+		this.lambda = lambda;
+	}
+
+	public double getSigma() {
+		return sigma;
+	}
+
+	@Property
+	public void setSigma(double sigma) {
+		this.sigma = sigma;
+	}
+
+	public double getCcov() {
+		return ccov;
+	}
+
+	@Property
+	public void setCcov(double ccov) {
+		this.ccov = ccov;
+	}
+
+	public double getCcovsep() {
+		return ccovsep;
+	}
+
+	@Property
+	public void setCcovsep(double ccovsep) {
+		this.ccovsep = ccovsep;
+	}
+
+	public double getCs() {
+		return cs;
+	}
+
+	@Property
+	public void setCs(double cs) {
+		this.cs = cs;
+	}
+
+	public double getCc() {
+		return cc;
+	}
+
+	@Property
+	public void setCc(double cc) {
+		this.cc = cc;
+	}
+
+	public double getDamps() {
+		return damps;
+	}
+
+	@Property
+	public void setDamps(double damps) {
+		this.damps = damps;
+	}
+
+	public double[] getInitialSearchPoint() {
+		return initialSearchPoint;
+	}
+	
+	public NondominatedPopulation getArchive() {
+		return archive;
+	}
+	
+	public void setArchive(NondominatedPopulation archive) {
+		assertNotInitialized();
+		this.archive = archive;
+	}
+
+	@Override
+	public void applyConfiguration(TypedProperties properties) {
+		if (properties.contains("indicator")) {
+			String indicator = properties.getString("indicator", null);
+			
+			if ("hypervolume".equalsIgnoreCase(indicator)) {
+				fitnessEvaluator = new HypervolumeFitnessEvaluator(problem);
+			} else if ("epsilon".equalsIgnoreCase(indicator)) {
+				fitnessEvaluator = new AdditiveEpsilonIndicatorFitnessEvaluator(problem);
+			} else if ("crowding".equalsIgnoreCase(indicator)) {
+				fitnessEvaluator = null;
+			} else {
+				throw new ConfigurationException("invalid indicator: " + indicator);
+			}
+		}
+		
+		Configurable.super.applyConfiguration(properties);
+	}
+
+	@Override
+	public TypedProperties getConfiguration() {
+		TypedProperties properties = Configurable.super.getConfiguration();
+		
+		if (fitnessEvaluator instanceof HypervolumeFitnessEvaluator) {
+			properties.setString("indicator", "hypervolume");
+		} else if (fitnessEvaluator instanceof AdditiveEpsilonIndicatorFitnessEvaluator) {
+			properties.setString("indicator", "epsilon");
+		} else {
+			properties.setString("indicator", "crowding");
+		}
+		
+		return properties;
+	}
+
 	/**
 	 * Validates parameters prior to calling the {@link #initialize()} method.
 	 * Checks include ensuring the initial search point is valid and ensures

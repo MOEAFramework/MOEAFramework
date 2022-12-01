@@ -24,9 +24,11 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.comparator.DominanceComparator;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
+import org.moeaframework.core.configuration.Property;
 import org.moeaframework.core.operator.Mutation;
 import org.moeaframework.core.operator.RandomInitialization;
 import org.moeaframework.core.spi.OperatorFactory;
+import org.moeaframework.util.TypedProperties;
 
 /**
  * Implementation of the (1+1) Pareto Archived Evolution Strategy (PAES).  PAES
@@ -74,6 +76,7 @@ public class PAES extends AbstractEvolutionaryAlgorithm {
 		comparator = new ParetoDominanceComparator();
 	}
 	
+	@Property("operator")
 	public void setVariation(Mutation mutation) {
 		super.setVariation(mutation);
 	}
@@ -151,6 +154,27 @@ public class PAES extends AbstractEvolutionaryAlgorithm {
 				population.replace(0, test(parent, offspring));
 			}
 		}
+	}
+	
+	@Override
+	public void applyConfiguration(TypedProperties properties) {
+		if (properties.contains("archiveSize") || properties.contains("bisections")) {
+			int archiveSize = properties.getInt("archiveSize", getArchive().getCapacity());
+			int bisections = properties.getInt("bisections", getArchive().getBisections());
+			setArchive(new AdaptiveGridArchive(archiveSize, problem, ArithmeticUtils.pow(2, bisections)));
+		}
+		
+		super.applyConfiguration(properties);
+	}
+
+	@Override
+	public TypedProperties getConfiguration() {
+		TypedProperties properties = super.getConfiguration();
+		
+		properties.setInt("archiveSize", getArchive().getCapacity());
+		properties.setInt("bisections", getArchive().getBisections());
+		
+		return properties;
 	}
 
 }

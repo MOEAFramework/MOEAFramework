@@ -25,6 +25,7 @@ import java.util.List;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
+import org.moeaframework.util.TypedProperties;
 
 /**
  * Construct a variation operator applying one or more variations sequentially.
@@ -156,6 +157,24 @@ public class AbstractCompoundVariation<T extends Variation> implements Variation
 	 */
 	public List<T> getOperators() {
 		return Collections.unmodifiableList(operators);
+	}
+	
+	@Override
+	public void applyConfiguration(TypedProperties properties) {
+		for (T operator : operators) {
+			operator.applyConfiguration(properties);
+		}
+	}
+	
+	@Override
+	public TypedProperties getConfiguration() {
+		TypedProperties result = new TypedProperties();
+		
+		for (T operator : operators) {
+			result.addAll(operator.getConfiguration());
+		}
+		
+		return result;
 	}
 
 }

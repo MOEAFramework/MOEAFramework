@@ -59,7 +59,7 @@ public abstract class PeriodicAction implements Algorithm {
 	/**
 	 * The frequency that the {@link #doAction()} method is invoked.
 	 */
-	protected final int frequency;
+	protected int frequency;
 	
 	/**
 	 * The type of frequency.

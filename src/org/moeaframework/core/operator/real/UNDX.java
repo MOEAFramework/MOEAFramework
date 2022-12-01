@@ -22,6 +22,8 @@ import java.util.List;
 
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.configuration.Prefix;
+import org.moeaframework.core.configuration.Property;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.util.Vector;
 
@@ -45,6 +47,7 @@ import org.moeaframework.util.Vector;
  * Computation, vol. 10, no. 4, pp. 371-395, 2002.
  * </ol>
  */
+@Prefix("undx")
 public class UNDX extends MultiParentVariation {
 
 	/**
@@ -126,6 +129,7 @@ public class UNDX extends MultiParentVariation {
 	 * 
 	 * @param zeta the standard deviation value
 	 */
+	@Property
 	public void setZeta(double zeta) {
 		this.zeta = zeta;
 	}
@@ -150,6 +154,7 @@ public class UNDX extends MultiParentVariation {
 	 * 
 	 * @param eta the standard deviation value
 	 */
+	@Property
 	public void setEta(double eta) {
 		this.eta = eta;
 	}

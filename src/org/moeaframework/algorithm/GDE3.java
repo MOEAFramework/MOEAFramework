@@ -25,6 +25,7 @@ import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.comparator.DominanceComparator;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
+import org.moeaframework.core.configuration.Property;
 import org.moeaframework.core.operator.RandomInitialization;
 import org.moeaframework.core.operator.real.DifferentialEvolutionSelection;
 import org.moeaframework.core.operator.real.DifferentialEvolutionVariation;
@@ -135,6 +136,7 @@ public class GDE3 extends AbstractEvolutionaryAlgorithm {
 		return (DifferentialEvolutionVariation)super.getVariation();
 	}
 	
+	@Property("operator")
 	public void setVariation(DifferentialEvolutionVariation variation) {
 		super.setVariation(variation);
 	}

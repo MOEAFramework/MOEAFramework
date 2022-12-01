@@ -30,8 +30,10 @@ import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
+import org.moeaframework.core.configuration.Property;
 import org.moeaframework.core.operator.RandomInitialization;
 import org.moeaframework.core.spi.OperatorFactory;
+import org.moeaframework.util.TypedProperties;
 import org.moeaframework.util.weights.NormalBoundaryDivisions;
 
 /**
@@ -68,7 +70,7 @@ public class RVEA extends AbstractEvolutionaryAlgorithm {
 	/**
 	 * The frequency, in generations, that the reference vectors are normalized.
 	 */
-	private final int adaptFrequency;
+	private int adaptFrequency;
 	
 	/**
 	 * Constructs a new instance of RVEA with default settings.
@@ -77,7 +79,7 @@ public class RVEA extends AbstractEvolutionaryAlgorithm {
 	 * @param maxGeneration the maximum number of generations for the angle-penalized distance to transition
 	 *        between convergence and diversity
 	 */
-	public RVEA(Problem problem, int maxGeneration) {
+	public RVEA(Problem problem, int maxGeneration) { // TODO: can we remove maxGenerations?
 		this(problem, NormalBoundaryDivisions.forProblem(problem), maxGeneration);
 	}
 	
@@ -170,14 +172,67 @@ public class RVEA extends AbstractEvolutionaryAlgorithm {
 		generation++;
 	}
 	
+	/**
+	 * Returns the frequency, in generations, that the reference vectors are normalized.
+	 * 
+	 * @return the frequency, in generations
+	 */
+	public int getAdaptFrequency() {
+		return adaptFrequency;
+	}
+	
+	/**
+	 * Sets the frequency, in generations, that the reference vectors are normalized.
+	 * 
+	 * @param adaptFrequency the frequency, in generations
+	 */
+	@Property
+	public void setAdaptFrequency(int adaptFrequency) {
+		this.adaptFrequency = adaptFrequency;
+	}
+	
 	@Override
 	public ReferenceVectorGuidedPopulation getPopulation() {
 		return (ReferenceVectorGuidedPopulation)super.getPopulation();
 	}
 	
 	@Override
+	@Property("operator")
 	public void setVariation(Variation variation) {
 		super.setVariation(variation);
+	}
+	
+	@Override
+	public void applyConfiguration(TypedProperties properties) {		
+		NormalBoundaryDivisions divisions = getPopulation().getDivisions();
+		double alpha = getPopulation().getAlpha();
+		boolean changed = false;
+		
+		NormalBoundaryDivisions newDivisions = NormalBoundaryDivisions.tryFromProperties(properties);
+		
+		if (newDivisions != null) {
+			divisions = newDivisions;
+			changed = true;
+		}
+		
+		if (properties.contains("alpha")) {
+			alpha = properties.getDouble("alpha", alpha);
+			changed = true;
+		}
+		
+		if (changed) {
+			setPopulation(new ReferenceVectorGuidedPopulation(problem.getNumberOfObjectives(), divisions, alpha));
+		}
+		
+		super.applyConfiguration(properties);
+	}
+
+	@Override
+	public TypedProperties getConfiguration() {
+		TypedProperties properties = super.getConfiguration();
+		properties.addAll(getPopulation().getDivisions().toProperties());
+		properties.setDouble("alpha", getPopulation().getAlpha());
+		return properties;
 	}
 	
 	@Override
