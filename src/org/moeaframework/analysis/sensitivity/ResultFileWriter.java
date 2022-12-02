@@ -17,7 +17,6 @@
  */
 package org.moeaframework.analysis.sensitivity;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -40,6 +39,7 @@ import org.moeaframework.core.variable.BinaryVariable;
 import org.moeaframework.core.variable.Permutation;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.util.TypedProperties;
+import org.moeaframework.util.io.CommentedLineReader;
 import org.moeaframework.util.io.FileUtils;
 
 /**
@@ -297,10 +297,7 @@ public class ResultFileWriter implements OutputWriter {
 		try (StringWriter stringBuffer = new StringWriter()) {
 			properties.store(stringBuffer);
 		
-			// TODO: use CommentedLineReader
-			try (BufferedReader reader = new BufferedReader(new StringReader(stringBuffer.toString()))) {
-				reader.readLine(); //skip first line that contains the timestamp
-				
+			try (CommentedLineReader reader = new CommentedLineReader(new StringReader(stringBuffer.toString()))) {
 				String line = null;
 				while ((line = reader.readLine()) != null) {
 					writer.print("//");

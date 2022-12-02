@@ -156,13 +156,6 @@ public class ConfigurationUtils {
 			value = properties.getBoolean(propertyName, false);
 		} else if (parameterType.isAssignableFrom(String.class)) {
 			value = properties.getString(propertyName, null);
-		} else if (parameterType.isAssignableFrom(Mutation.class)) {
-			if (problem == null) {
-				throw new ConfigurationException("must provide problem if setting mutation operator");
-			}
-			
-			String operator = properties.getString(propertyName, null);
-			value = OperatorFactory.getInstance().getMutation(operator, properties, problem);
 		} else if (parameterType.isAssignableFrom(Variation.class)) {
 			if (problem == null) {
 				throw new ConfigurationException("must provide problem if setting variation operator");
@@ -170,6 +163,13 @@ public class ConfigurationUtils {
 			
 			String operator = properties.getString(propertyName, null);
 			value = OperatorFactory.getInstance().getVariation(operator, properties, problem);
+		} else if (parameterType.isAssignableFrom(Mutation.class)) {
+			if (problem == null) {
+				throw new ConfigurationException("must provide problem if setting mutation operator");
+			}
+			
+			String operator = properties.getString(propertyName, null);
+			value = OperatorFactory.getInstance().getMutation(operator, properties, problem);
 		} else {
 			throw new ConfigurationException("unsupported type " + parameterType + " for property " + propertyName);
 		}
