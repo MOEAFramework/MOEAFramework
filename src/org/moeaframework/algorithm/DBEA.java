@@ -122,7 +122,8 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 	 */
 	public DBEA(Problem problem, NormalBoundaryDivisions divisions) {
 		this(problem,
-				new RandomInitialization(problem, divisions.getNumberOfReferencePoints(problem)),
+				divisions.getNumberOfReferencePoints(problem),
+				new RandomInitialization(problem),
 				OperatorFactory.getInstance().getVariation(problem),
 				divisions);
 	}
@@ -131,13 +132,14 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 	 * Constructs a new instance of the DBEA algorithm.
 	 * 
 	 * @param problem the problem being solved
+	 * @param initialPopulationSize the initial population size
 	 * @param initialization the initialization method
 	 * @param variation the variation operator
 	 * @param divisions the number of divisions
 	 */
-	public DBEA(Problem problem, Initialization initialization,
+	public DBEA(Problem problem, int initialPopulationSize, Initialization initialization,
 			Variation variation, NormalBoundaryDivisions divisions) {
-		super(problem, new Population(), null, initialization, variation);
+		super(problem, initialPopulationSize, new Population(), null, initialization, variation);
 		this.divisions = divisions;
 	}
 	
@@ -165,6 +167,12 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 	@Property("operator")
 	public void setVariation(Variation variation) {
 		super.setVariation(variation);
+	}
+	
+	@Override
+	@Property("populationSize")
+	public void setInitialPopulationSize(int initialPopulationSize) {
+		super.setInitialPopulationSize(initialPopulationSize);
 	}
 
 	@Override

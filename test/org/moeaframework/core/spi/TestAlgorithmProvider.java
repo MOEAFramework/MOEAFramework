@@ -31,9 +31,10 @@ public class TestAlgorithmProvider extends AlgorithmProvider {
 		if (name.equalsIgnoreCase("testAlgorithm")) {
 			return new AbstractEvolutionaryAlgorithm(
 					problem,
+					100,
 					new Population(),
 					null,
-					new RandomInitialization(problem, 100),
+					new RandomInitialization(problem),
 					OperatorFactory.getInstance().getVariation(problem)) {
 
 				@Override

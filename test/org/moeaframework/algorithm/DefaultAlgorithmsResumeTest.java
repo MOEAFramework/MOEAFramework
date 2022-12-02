@@ -315,8 +315,7 @@ public class DefaultAlgorithmsResumeTest {
 		public synchronized Algorithm getAlgorithm(String name, TypedProperties properties,
 				Problem problem) {
 			if (name.equalsIgnoreCase("EpsilonProgressContinuationTest")) {
-				Initialization initialization = new RandomInitialization(
-						problem, 100);
+				Initialization initialization = new RandomInitialization(problem);
 	
 				NondominatedSortingPopulation population = 
 						new NondominatedSortingPopulation(
@@ -335,7 +334,7 @@ public class DefaultAlgorithmsResumeTest {
 						OperatorFactory.getInstance().getVariation(null,
 								new TypedProperties(), problem);
 	
-				NSGAII nsgaii = new NSGAII(problem, population, archive,
+				NSGAII nsgaii = new NSGAII(problem, 100, population, archive,
 						selection, variation, initialization);
 	
 				return new EpsilonProgressContinuation(nsgaii, 100, 100, 4.0,

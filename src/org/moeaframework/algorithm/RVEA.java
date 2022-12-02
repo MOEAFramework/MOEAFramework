@@ -93,9 +93,10 @@ public class RVEA extends AbstractEvolutionaryAlgorithm {
 	 */
 	public RVEA(Problem problem, NormalBoundaryDivisions divisions, int maxGeneration) {
 		this(problem,
+				divisions.getNumberOfReferencePoints(problem),
 				new ReferenceVectorGuidedPopulation(problem.getNumberOfObjectives(), divisions),
 				OperatorFactory.getInstance().getVariation(problem),
-				new RandomInitialization(problem, divisions.getNumberOfReferencePoints(problem)),
+				new RandomInitialization(problem),
 				maxGeneration,
 				maxGeneration / 10);
 	}
@@ -104,6 +105,7 @@ public class RVEA extends AbstractEvolutionaryAlgorithm {
 	 * Constructs a new instance of the RVEA algorithm.
 	 * 
 	 * @param problem the problem being solved
+	 * @param initialPopulationSize the initial population size
 	 * @param population the population used to store solutions
 	 * @param variation the variation operator
 	 * @param initialization the initialization method
@@ -111,9 +113,9 @@ public class RVEA extends AbstractEvolutionaryAlgorithm {
 	 *        between convergence and diversity
 	 * @param adaptFrequency the frequency, in generations, that the reference vectors are normalized
 	 */
-	public RVEA(Problem problem, ReferenceVectorGuidedPopulation population, Variation variation,
-			Initialization initialization, int maxGeneration, int adaptFrequency) {
-		super(problem, population, null, initialization, variation);
+	public RVEA(Problem problem, int initialPopulationSize, ReferenceVectorGuidedPopulation population,
+			Variation variation, Initialization initialization, int maxGeneration, int adaptFrequency) {
+		super(problem, initialPopulationSize, population, null, initialization, variation);
 		this.maxGeneration = maxGeneration;
 		this.adaptFrequency = adaptFrequency;
 		
@@ -200,6 +202,12 @@ public class RVEA extends AbstractEvolutionaryAlgorithm {
 	@Property("operator")
 	public void setVariation(Variation variation) {
 		super.setVariation(variation);
+	}
+	
+	@Override
+	@Property("populationSize")
+	public void setInitialPopulationSize(int initialPopulationSize) {
+		super.setInitialPopulationSize(initialPopulationSize);
 	}
 	
 	@Override

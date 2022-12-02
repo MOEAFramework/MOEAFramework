@@ -103,8 +103,8 @@ public class NSGAIITest extends AlgorithmTest {
 			
 		};
 
-		NSGAII nsgaii = new NSGAII(problem, new NondominatedSortingPopulation(),
-				null, null, variation, new RandomInitialization(problem, 100));
+		NSGAII nsgaii = new NSGAII(problem, 100, new NondominatedSortingPopulation(),
+				null, null, variation, new RandomInitialization(problem));
 		
 		while (nsgaii.getNumberOfEvaluations() < 100000) {
 			nsgaii.step();

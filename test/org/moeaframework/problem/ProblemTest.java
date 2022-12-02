@@ -71,10 +71,10 @@ public abstract class ProblemTest {
 	 * @param exactConstraints if {@code true}, require identical constraint values
 	 */
 	protected void test(Problem problemA, Problem problemB, boolean exactConstraints) {
-		RandomInitialization initialization = new RandomInitialization(problemA, 1);
+		RandomInitialization initialization = new RandomInitialization(problemA);
 		
 		for (int i = 0; i < TestThresholds.SAMPLES; i++) {
-			Solution solutionA = initialization.initialize()[0];
+			Solution solutionA = initialization.initialize(1)[0];
 			Solution solutionB = solutionA.copy();
 			
 			problemA.evaluate(solutionA);

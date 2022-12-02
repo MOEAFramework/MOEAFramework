@@ -67,9 +67,10 @@ public class VEGA extends AbstractEvolutionaryAlgorithm {
 	 */
 	public VEGA(Problem problem) {
 		this(problem,
+				Settings.DEFAULT_POPULATION_SIZE,
 				new Population(),
 				null,
-				new RandomInitialization(problem, Settings.DEFAULT_POPULATION_SIZE),
+				new RandomInitialization(problem),
 				OperatorFactory.getInstance().getVariation(problem));
 	}
 
@@ -77,15 +78,16 @@ public class VEGA extends AbstractEvolutionaryAlgorithm {
 	 * Constructs a new VEGA instance.
 	 * 
 	 * @param problem the problem
+	 * @param initialPopulationSize the initial population size
 	 * @param population the population
 	 * @param archive the external archive; or {@code null} if no external archive is used
 	 * @param initialization the initialization operator
 	 * @param variation the variation operator
 	 */
-	public VEGA(Problem problem, Population population,
+	public VEGA(Problem problem, int initialPopulationSize, Population population,
 			NondominatedPopulation archive, Initialization initialization,
 			Variation variation) {
-		super(problem, population, archive, initialization, variation);		
+		super(problem, initialPopulationSize, population, archive, initialization, variation);		
 		selection = new VEGASelection();
 	}
 	
@@ -93,6 +95,12 @@ public class VEGA extends AbstractEvolutionaryAlgorithm {
 	@Property("operator")
 	public void setVariation(Variation variation) {
 		super.setVariation(variation);
+	}
+	
+	@Override
+	@Property("populationSize")
+	public void setInitialPopulationSize(int initialPopulationSize) {
+		super.setInitialPopulationSize(initialPopulationSize);
 	}
 
 	@Override

@@ -73,7 +73,8 @@ public class SMSEMOA extends AbstractEvolutionaryAlgorithm {
 	 */
 	public SMSEMOA(Problem problem) {
 		this(problem,
-				new RandomInitialization(problem, Settings.DEFAULT_POPULATION_SIZE),
+				Settings.DEFAULT_POPULATION_SIZE,
+				new RandomInitialization(problem),
 				OperatorFactory.getInstance().getVariation(problem),
 				new HypervolumeContributionFitnessEvaluator(problem));
 	}
@@ -82,13 +83,14 @@ public class SMSEMOA extends AbstractEvolutionaryAlgorithm {
 	 * Constructs a new SMS-EMOA instance.
 	 * 
 	 * @param problem the problem
+	 * @param initialPopulationSize the initial population size
 	 * @param initialization the initialization operator
 	 * @param variation the variation operator
 	 * @param fitnessEvaluator the fitness evaluator
 	 */
-	public SMSEMOA(Problem problem, Initialization initialization,
+	public SMSEMOA(Problem problem, int initialPopulationSize, Initialization initialization,
 			Variation variation, FitnessEvaluator fitnessEvaluator) {
-		super(problem, new Population(), null, initialization, variation);
+		super(problem, initialPopulationSize, new Population(), null, initialization, variation);
 		this.fitnessEvaluator = fitnessEvaluator;
 		
 		if (fitnessEvaluator ==  null) {
@@ -102,6 +104,12 @@ public class SMSEMOA extends AbstractEvolutionaryAlgorithm {
 	@Property("operator")
 	public void setVariation(Variation variation) {
 		super.setVariation(variation);
+	}
+	
+	@Override
+	@Property("populationSize")
+	public void setInitialPopulationSize(int initialPopulationSize) {
+		super.setInitialPopulationSize(initialPopulationSize);
 	}
 
 	@Override

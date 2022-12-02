@@ -61,6 +61,11 @@ import org.moeaframework.util.weights.WeightGenerator;
  * </ol>
  */
 public class MOEAD extends AbstractAlgorithm implements Configurable {
+	
+	/**
+	 * The initial population size.
+	 */
+	private int initialPopulationSize;
 
 	/**
 	 * The current population.
@@ -126,8 +131,9 @@ public class MOEAD extends AbstractAlgorithm implements Configurable {
 	 */
 	public MOEAD(Problem problem) {
 		this(problem,
+				Settings.DEFAULT_POPULATION_SIZE,
 				20, //neighborhoodSize
-				new RandomInitialization(problem, Math.max(Settings.DEFAULT_POPULATION_SIZE, problem.getNumberOfObjectives())),
+				new RandomInitialization(problem),
 				OperatorFactory.getInstance().getVariation(problem.isType(RealVariable.class)? "de+pm": null, problem),
 				0.9, //delta
 				2, //eta
@@ -139,6 +145,7 @@ public class MOEAD extends AbstractAlgorithm implements Configurable {
 	 * version of MOEA/D uses utility-based search as described in [2].
 	 * 
 	 * @param problem the problem being solved
+	 * @param initialPopulationSize the initial population size
 	 * @param neighborhoodSize the size of the neighborhood used for mating, which must be at least
 	 *        {@code variation.getArity()-1}.
 	 * @param initialization the initialization method
@@ -148,9 +155,10 @@ public class MOEAD extends AbstractAlgorithm implements Configurable {
 	 * @param updateUtility the frequency, in generations, in which utility values are updated; set to {@code 50} to
 	 *        use the recommended update frequency or {@code -1} to disable utility-based search.
 	 */
-	public MOEAD(Problem problem, int neighborhoodSize, Initialization initialization, Variation variation,
-			double delta, double eta, int updateUtility) {
-		this(problem, neighborhoodSize, null, initialization, variation, delta, eta, updateUtility);
+	public MOEAD(Problem problem, int initialPopulationSize, int neighborhoodSize, Initialization initialization,
+			Variation variation, double delta, double eta, int updateUtility) {
+		this(problem, initialPopulationSize, neighborhoodSize, null, initialization, variation, delta, eta,
+				updateUtility);
 	}
 	
 	/**
@@ -158,6 +166,7 @@ public class MOEAD extends AbstractAlgorithm implements Configurable {
 	 * implementation without utility-based search.
 	 * 
 	 * @param problem the problem being solved
+	 * @param initialPopulationSize the initial population size
 	 * @param neighborhoodSize the size of the neighborhood used for mating, which must be at least
 	 *        {@code variation.getArity()-1}.
 	 * @param initialization the initialization method
@@ -165,9 +174,9 @@ public class MOEAD extends AbstractAlgorithm implements Configurable {
 	 * @param delta the probability of mating with a solution in the neighborhood rather than the entire population
 	 * @param eta the maximum number of population slots a solution can replace
 	 */
-	public MOEAD(Problem problem, int neighborhoodSize, Initialization initialization, Variation variation,
-			double delta, double eta) {
-		this(problem, neighborhoodSize, initialization, variation, delta, eta, -1);
+	public MOEAD(Problem problem, int initialPopulationSize, int neighborhoodSize, Initialization initialization,
+			Variation variation, double delta, double eta) {
+		this(problem, initialPopulationSize, neighborhoodSize, initialization, variation, delta, eta, -1);
 	}
 
 	/**
@@ -175,6 +184,7 @@ public class MOEAD extends AbstractAlgorithm implements Configurable {
 	 * search as described in [2].
 	 * 
 	 * @param problem the problem being solved
+	 * @param initialPopulationSize the initial population size
 	 * @param neighborhoodSize the size of the neighborhood used for mating, which must be at least
 	 *        {@code variation.getArity()-1}.
 	 * @param weightGenerator the weight generator
@@ -185,9 +195,10 @@ public class MOEAD extends AbstractAlgorithm implements Configurable {
 	 * @param updateUtility the frequency, in generations, in which utility values are updated; set to {@code 50} to
 	 *        use the recommended update frequency or {@code -1} to disable utility-based search
 	 */
-	public MOEAD(Problem problem, int neighborhoodSize, WeightGenerator weightGenerator, Initialization initialization,
-			Variation variation, double delta, double eta, int updateUtility) {
+	public MOEAD(Problem problem, int initialPopulationSize, int neighborhoodSize, WeightGenerator weightGenerator,
+			Initialization initialization, Variation variation, double delta, double eta, int updateUtility) {
 		super(problem);
+		this.initialPopulationSize = initialPopulationSize;
 		this.neighborhoodSize = neighborhoodSize;
 		this.weightGenerator = weightGenerator;
 		this.initialization = initialization;
@@ -203,6 +214,7 @@ public class MOEAD extends AbstractAlgorithm implements Configurable {
 	 * implementation without utility-based search.
 	 * 
 	 * @param problem the problem being solved
+	 * @param initialPopulationSize the initial population size
 	 * @param neighborhoodSize the size of the neighborhood used for mating, which must be at least
 	 *        {@code variation.getArity()-1}.
 	 * @param weightGenerator the weight generator
@@ -211,9 +223,30 @@ public class MOEAD extends AbstractAlgorithm implements Configurable {
 	 * @param delta the probability of mating with a solution in the neighborhood rather than the entire population
 	 * @param eta the maximum number of population slots a solution can replace
 	 */
-	public MOEAD(Problem problem, int neighborhoodSize, WeightGenerator weightGenerator, Initialization initialization,
-			Variation variation, double delta, double eta) {
-		this(problem, neighborhoodSize, weightGenerator, initialization, variation, delta, eta, -1);
+	public MOEAD(Problem problem, int initialPopulationSize, int neighborhoodSize, WeightGenerator weightGenerator,
+			Initialization initialization, Variation variation, double delta, double eta) {
+		this(problem, initialPopulationSize, neighborhoodSize, weightGenerator, initialization, variation, delta,
+				eta, -1);
+	}
+
+	/**
+	 * Returns the initial population size.
+	 * 
+	 * @return the initial population size
+	 */
+	public int getInitialPopulationSize() {
+		return initialPopulationSize;
+	}
+	
+	/**
+	 * Sets the initial population size.  This value can not be set after initialization.
+	 * 
+	 * @param initialPopulationSize the initial population size
+	 */
+	@Property("populationSize")
+	public void setInitialPopulationSize(int initialPopulationSize) {
+		assertNotInitialized();
+		this.initialPopulationSize = initialPopulationSize;
 	}
 
 	/**
@@ -325,7 +358,7 @@ public class MOEAD extends AbstractAlgorithm implements Configurable {
 	public void initialize() {
 		super.initialize();
 
-		Solution[] initialSolutions = initialization.initialize();
+		Solution[] initialSolutions = initialization.initialize(initialPopulationSize);
 		
 		if (initialSolutions.length < problem.getNumberOfObjectives()) {
 			throw new FrameworkException("popultion size must be >= the number of objectives");

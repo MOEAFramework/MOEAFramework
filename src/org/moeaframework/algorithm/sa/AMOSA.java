@@ -55,6 +55,7 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 	protected final Initialization initialization;
 	protected Mutation mutation;
 	
+	protected final double gamma;
 	protected final int softLimit;
 	protected final int hardLimit;
 	
@@ -67,8 +68,9 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 	
 	public AMOSA(Problem problem) {
 		this(problem,
-				new RandomInitialization(problem, 2 * Settings.DEFAULT_POPULATION_SIZE), // gamma * softLimit
+				new RandomInitialization(problem),
 				OperatorFactory.getInstance().getMutation(problem),
+				2.0, // gamma
 				Settings.DEFAULT_POPULATION_SIZE, // softLimit
 				10, // hardLimit
 				0.0000001, // tMin
@@ -78,12 +80,13 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 				20); //numberOfHillClimbingIterationsForRefinement
 	}
 	
-	public AMOSA(Problem problem, Initialization initialization, Mutation mutation, int softLimit, int hardLimit,
-			double tMin, double tMax, double alpha, int numberOfIterationsPerTemperature,
+	public AMOSA(Problem problem, Initialization initialization, Mutation mutation, double gamma, int softLimit,
+			int hardLimit, double tMin, double tMax, double alpha, int numberOfIterationsPerTemperature,
 			int numberOfHillClimbingIterationsForRefinement) {
 		super(problem,tMin,tMax);
 		this.initialization = initialization;
 		this.mutation = mutation;
+		this.gamma = gamma;
 		this.softLimit = softLimit;
 		this.hardLimit = hardLimit;
 		this.alpha = alpha;
@@ -96,7 +99,7 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 	public void initialize() {
 		super.initialize();
 
-		Solution[] initialSolutions = initialization.initialize();
+		Solution[] initialSolutions = initialization.initialize((int)(gamma * softLimit));
 		evaluateAll(initialSolutions);
 
 		//refine all initial solutions and add into pareto set: archive
@@ -110,7 +113,6 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 				if (paretoDominanceComparator.compare(initialSolutions[i], child) > 0) {
 					initialSolutions[i] = child;
 				}
-				
 			}
 			
 			archive.add(initialSolutions[i]);

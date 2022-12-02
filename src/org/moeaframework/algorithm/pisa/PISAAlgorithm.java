@@ -327,8 +327,8 @@ public class PISAAlgorithm extends AbstractAlgorithm {
 	 * @throws IOException if an I/O error occurred
 	 */
 	private void state0() throws IOException {
-		Initialization initialization = new RandomInitialization(problem, alpha);
-		Solution[] initialPopulation = initialization.initialize();
+		Initialization initialization = new RandomInitialization(problem);
+		Solution[] initialPopulation = initialization.initialize(alpha);
 		int[] initialIds = new int[alpha];
 
 		evaluateAll(initialPopulation);

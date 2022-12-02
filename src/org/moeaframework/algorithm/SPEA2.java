@@ -95,7 +95,8 @@ public class SPEA2 extends AbstractEvolutionaryAlgorithm {
 	 */
 	public SPEA2(Problem problem) {
 		this(problem,
-				new RandomInitialization(problem, Settings.DEFAULT_POPULATION_SIZE),
+				Settings.DEFAULT_POPULATION_SIZE,
+				new RandomInitialization(problem),
 				OperatorFactory.getInstance().getVariation(problem),
 				Settings.DEFAULT_POPULATION_SIZE,
 				1);
@@ -105,15 +106,16 @@ public class SPEA2 extends AbstractEvolutionaryAlgorithm {
 	 * Constructs a new instance of SPEA2.
 	 * 
 	 * @param problem the problem
+	 * @param initialPopulationSize the initial population size
 	 * @param initialization the initialization procedure
 	 * @param variation the variation operator
 	 * @param numberOfOffspring the number of offspring generated each iteration
 	 * @param k niching parameter specifying that crowding is computed using
 	 *        the {@code k}-th nearest neighbor, recommend {@code k=1}
 	 */
-	public SPEA2(Problem problem, Initialization initialization,
+	public SPEA2(Problem problem, int initialPopulationSize, Initialization initialization,
 			Variation variation, int numberOfOffspring, int k) {
-		super(problem, new Population(), null, initialization, variation);
+		super(problem, initialPopulationSize, new Population(), null, initialization, variation);
 		this.numberOfOffspring = numberOfOffspring;
 		
 		fitnessEvaluator = new StrengthFitnessEvaluator(k);
@@ -125,6 +127,12 @@ public class SPEA2 extends AbstractEvolutionaryAlgorithm {
 	@Property("operator")
 	public void setVariation(Variation variation) {
 		super.setVariation(variation);
+	}
+	
+	@Override
+	@Property("populationSize")
+	public void setInitialPopulationSize(int initialPopulationSize) {
+		super.setInitialPopulationSize(initialPopulationSize);
 	}
 	
 	public int getNumberOfOffspring() {

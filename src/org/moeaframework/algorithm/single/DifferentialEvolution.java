@@ -53,8 +53,9 @@ public class DifferentialEvolution extends SingleObjectiveEvolutionaryAlgorithm 
 	 */
 	public DifferentialEvolution(Problem problem) {
 		this(problem,
+				Settings.DEFAULT_POPULATION_SIZE,
 				new LinearDominanceComparator(),
-				new RandomInitialization(problem, Settings.DEFAULT_POPULATION_SIZE),
+				new RandomInitialization(problem),
 				new DifferentialEvolutionSelection(),
 				new DifferentialEvolutionVariation());
 	}
@@ -63,15 +64,16 @@ public class DifferentialEvolution extends SingleObjectiveEvolutionaryAlgorithm 
 	 * Constructs a new instance of the single-objective differential evolution (DE) algorithm.
 	 * 
 	 * @param problem the problem
+	 * @param initialPopulationSize the initial population size
 	 * @param comparator the aggregate objective comparator
 	 * @param initialization the initialization method
 	 * @param selection the differential evolution selection operator
 	 * @param variation the differential evolution variation operator
 	 */
-	public DifferentialEvolution(Problem problem, AggregateObjectiveComparator comparator,
+	public DifferentialEvolution(Problem problem, int initialPopulationSize, AggregateObjectiveComparator comparator,
 			Initialization initialization, DifferentialEvolutionSelection selection,
 			DifferentialEvolutionVariation variation) {
-		super(problem, new Population(), null, comparator, initialization, variation);
+		super(problem, initialPopulationSize, new Population(), null, comparator, initialization, variation);
 		this.selection = selection;
 		
 		problem.assertType(RealVariable.class);

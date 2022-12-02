@@ -40,11 +40,12 @@ public class EpsilonNSGAII extends AdaptiveTimeContinuation implements Configura
 	 */
 	public EpsilonNSGAII(Problem problem) {
 		this(problem,
+				Settings.DEFAULT_POPULATION_SIZE,
 				new NondominatedSortingPopulation(),
 				new EpsilonBoxDominanceArchive(EpsilonHelper.getEpsilon(problem)),
 				new TournamentSelection(2, new ChainedComparator(new ParetoDominanceComparator(), new CrowdingComparator())),
 				OperatorFactory.getInstance().getVariation(problem),
-				new RandomInitialization(problem, Settings.DEFAULT_POPULATION_SIZE),
+				new RandomInitialization(problem),
 				100, // windowSize
 				100, // maxwindowSize
 				0.25, // injectionRate
@@ -56,23 +57,23 @@ public class EpsilonNSGAII extends AdaptiveTimeContinuation implements Configura
 	 * Constructs the &epsilon;-NSGA-II instance with the specified components.
 	 * 
 	 * @param problem the problem being solved
+	 * @param initialPopulationSize the initial population size
 	 * @param population the population used to store solutions
 	 * @param archive the &epsilon;-dominance archive
 	 * @param selection the selection operator
 	 * @param variation the variation operator
 	 * @param initialization the initialization method
 	 * @param windowSize the number of iterations between invocations of {@code check}
-	 * @param maxWindowSize the maximum number of iterations allowed since the
-	 *        last restart before forcing a restart
+	 * @param maxWindowSize the maximum number of iterations allowed since the last restart before forcing a restart
 	 * @param injectionRate the injection rate
 	 * @param minimumPopulationSize the minimum size of the population
 	 * @param maximumPopulationSize the maximum size of the population
 	 */
-	public EpsilonNSGAII(Problem problem, NondominatedSortingPopulation population,
+	public EpsilonNSGAII(Problem problem, int initialPopulationSize, NondominatedSortingPopulation population,
 			EpsilonBoxDominanceArchive archive, Selection selection, Variation variation,
 			Initialization initialization, int windowSize, int maxWindowSize, double injectionRate,
 			int minimumPopulationSize, int maximumPopulationSize) {
-		super(new NSGAII(problem, population, archive, selection, variation, initialization),
+		super(new NSGAII(problem, initialPopulationSize, population, archive, selection, variation, initialization),
 				windowSize, maxWindowSize, injectionRate, minimumPopulationSize, maximumPopulationSize,
 				new UniformSelection(), new UM(1.0));
 	}
@@ -94,6 +95,11 @@ public class EpsilonNSGAII extends AdaptiveTimeContinuation implements Configura
 	@Property("operator")
 	public void setVariation(Variation variation) {
 		getAlgorithm().setVariation(variation);
+	}
+	
+	@Property("populationSize")
+	public void setInitialPopulationSize(int initialPopulationSize) {
+		getAlgorithm().setInitialPopulationSize(initialPopulationSize);
 	}
 	
 	public EpsilonBoxDominanceArchive getArchive() {

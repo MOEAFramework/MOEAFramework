@@ -65,9 +65,8 @@ public class OperatorFactoryTest {
 	}
 	
 	private void test(Variation variation) {
-		RandomInitialization initialization = new RandomInitialization(problem, 
-				variation.getArity());
-		Solution[] parents = initialization.initialize();
+		RandomInitialization initialization = new RandomInitialization(problem);
+		Solution[] parents = initialization.initialize(variation.getArity());
 		Solution[] offspring = variation.evolve(parents);
 		
 		Assert.assertNotNull(offspring);

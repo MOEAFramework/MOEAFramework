@@ -49,8 +49,9 @@ public class EvolutionStrategy extends SingleObjectiveEvolutionaryAlgorithm {
 	 */
 	public EvolutionStrategy(Problem problem) {
 		this(problem,
+				Settings.DEFAULT_POPULATION_SIZE,
 				new LinearDominanceComparator(),
-				new RandomInitialization(problem, Settings.DEFAULT_POPULATION_SIZE),
+				new RandomInitialization(problem),
 				new SelfAdaptiveNormalVariation());
 	}
 
@@ -58,13 +59,14 @@ public class EvolutionStrategy extends SingleObjectiveEvolutionaryAlgorithm {
 	 * Constructs a new instance of the evolution strategy (ES) algorithm.
 	 * 
 	 * @param problem the problem to solve
+	 * @param initialPopulationSize the initial population size
 	 * @param comparator the aggregate objective comparator
 	 * @param initialization the initialization method
 	 * @param mutation the mutation operator
 	 */
-	public EvolutionStrategy(Problem problem, AggregateObjectiveComparator comparator, Initialization initialization,
-			SelfAdaptiveNormalVariation variation) {
-		super(problem, new Population(), null, comparator, initialization, variation);
+	public EvolutionStrategy(Problem problem, int initialPopulationSize, AggregateObjectiveComparator comparator,
+			Initialization initialization, SelfAdaptiveNormalVariation variation) {
+		super(problem, initialPopulationSize, new Population(), null, comparator, initialization, variation);
 		
 		problem.assertType(RealVariable.class);
 	}

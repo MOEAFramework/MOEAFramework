@@ -118,10 +118,9 @@ public class ExternalProblemWithCStdioTest {
 	
 	@Test
 	public void test() throws IOException {
-		Initialization initialization = new RandomInitialization(problem, 
-				TestThresholds.SAMPLES);
+		Initialization initialization = new RandomInitialization(problem);
 
-		Solution[] solutions = initialization.initialize();
+		Solution[] solutions = initialization.initialize(TestThresholds.SAMPLES);
 		
 		for (int i=0; i<solutions.length; i++) {
 			Solution solution = solutions[i];

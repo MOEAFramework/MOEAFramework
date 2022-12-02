@@ -68,9 +68,10 @@ public class PAES extends AbstractEvolutionaryAlgorithm {
 	 */
 	public PAES(Problem problem, Mutation mutation, int bisections, int archiveSize) {
 		super(problem,
+				1,
 				new Population(),
 				new AdaptiveGridArchive(archiveSize, problem, ArithmeticUtils.pow(2, bisections)),
-				null,
+				new RandomInitialization(problem),
 				mutation);
 		
 		comparator = new ParetoDominanceComparator();
@@ -91,21 +92,6 @@ public class PAES extends AbstractEvolutionaryAlgorithm {
 		return (AdaptiveGridArchive)super.getArchive();
 	}
 	
-	@Override
-	protected void initialize() {
-		// avoid calling super.initialize() since no initializer is set
-		if (initialized) {
-			throw new AlgorithmInitializationException(this, "algorithm already initialized");
-		}
-
-		initialized = true;
-		
-		Solution solution = new RandomInitialization(problem, 1).initialize()[0];
-		evaluate(solution);
-		population.add(solution);
-		archive.add(solution);
-	}
-
 	/**
 	 * The test procedure to determine which solution, the parent or offspring,
 	 * moves on to the next generation.  The solution in a lower density region

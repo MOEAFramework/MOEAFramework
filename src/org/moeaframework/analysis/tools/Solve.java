@@ -497,10 +497,9 @@ public class Solve extends CommandLineUtility {
 		
 		try {
 			int count = 0;
-			RandomInitialization initialization = new RandomInitialization(
-					problem, trials);
+			RandomInitialization initialization = new RandomInitialization(problem);
 			
-			Solution[] solutions = initialization.initialize();
+			Solution[] solutions = initialization.initialize(trials);
 			
 			for (Solution solution : solutions) {
 				System.out.println("Running test " + (++count) + ":");

@@ -42,6 +42,11 @@ import org.moeaframework.core.configuration.Configurable;
  */
 public abstract class AbstractEvolutionaryAlgorithm extends AbstractAlgorithm
 		implements EvolutionaryAlgorithm, Configurable {
+	
+	/**
+	 * The initial population size.
+	 */
+	protected int initialPopulationSize;
 
 	/**
 	 * The current population.
@@ -67,14 +72,16 @@ public abstract class AbstractEvolutionaryAlgorithm extends AbstractAlgorithm
 	 * Constructs an abstract evolutionary algorithm.
 	 * 
 	 * @param problem the problem being solved
+	 * @param initialPopulationSize the initial population size
 	 * @param population the population
 	 * @param archive the archive storing the non-dominated solutions
 	 * @param initialization the initialization operator
 	 * @param variation the variation operator
 	 */
-	public AbstractEvolutionaryAlgorithm(Problem problem, Population population, NondominatedPopulation archive,
-			Initialization initialization, Variation variation) {
+	public AbstractEvolutionaryAlgorithm(Problem problem, int initialPopulationSize, Population population,
+			NondominatedPopulation archive, Initialization initialization, Variation variation) {
 		super(problem);
+		this.initialPopulationSize = initialPopulationSize;
 		this.population = population;
 		this.archive = archive;
 		this.initialization = initialization;
@@ -102,7 +109,7 @@ public abstract class AbstractEvolutionaryAlgorithm extends AbstractAlgorithm
 
 		Population population = getPopulation();
 		NondominatedPopulation archive = getArchive();
-		Solution[] initialSolutions = initialization.initialize();
+		Solution[] initialSolutions = initialization.initialize(initialPopulationSize);
 		
 		evaluateAll(initialSolutions);
 		population.addAll(initialSolutions);
@@ -120,6 +127,25 @@ public abstract class AbstractEvolutionaryAlgorithm extends AbstractAlgorithm
 	protected void setArchive(NondominatedPopulation archive) {
 		assertNotInitialized();
 		this.archive = archive;
+	}
+	
+	/**
+	 * Returns the initial population size.
+	 * 
+	 * @return the initial population size
+	 */
+	public int getInitialPopulationSize() {
+		return initialPopulationSize;
+	}
+	
+	/**
+	 * Sets the initial population size.  This value can not be set after initialization.
+	 * 
+	 * @param initialPopulationSize the initial population size
+	 */
+	protected void setInitialPopulationSize(int initialPopulationSize) {
+		assertNotInitialized();
+		this.initialPopulationSize = initialPopulationSize;
 	}
 
 	@Override

@@ -74,8 +74,9 @@ public class PESA2 extends AbstractEvolutionaryAlgorithm {
 	 */
 	public PESA2(Problem problem) {
 		this(problem,
+				Settings.DEFAULT_POPULATION_SIZE,
 				OperatorFactory.getInstance().getVariation(problem),
-				new RandomInitialization(problem, Settings.DEFAULT_POPULATION_SIZE),
+				new RandomInitialization(problem),
 				8,
 				100);
 	}
@@ -84,14 +85,16 @@ public class PESA2 extends AbstractEvolutionaryAlgorithm {
 	 * Constructs a new PESA2 instance.
 	 * 
 	 * @param problem the problem
+	 * @param initialPopulationSize the initial population size
 	 * @param variation the mutation operator
 	 * @param initialization the initialization operator
 	 * @param bisections the number of bisections in the adaptive grid archive
 	 * @param archiveSize the capacity of the adaptive grid archive
 	 */
-	public PESA2(Problem problem, Variation variation,
+	public PESA2(Problem problem, int initialPopulationSize, Variation variation,
 			Initialization initialization, int bisections, int archiveSize) {
 		super(problem,
+				initialPopulationSize,
 				new Population(),
 				new AdaptiveGridArchive(archiveSize, problem, ArithmeticUtils.pow(2, bisections)),
 				initialization,
@@ -109,6 +112,12 @@ public class PESA2 extends AbstractEvolutionaryAlgorithm {
 	@Property("operator")
 	public void setVariation(Variation variation) {
 		super.setVariation(variation);
+	}
+	
+	@Override
+	@Property("populationSize")
+	public void setInitialPopulationSize(int initialPopulationSize) {
+		super.setInitialPopulationSize(initialPopulationSize);
 	}
 
 	@Override

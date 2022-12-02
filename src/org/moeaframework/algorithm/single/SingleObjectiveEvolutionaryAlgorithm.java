@@ -24,6 +24,7 @@ import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.configuration.ConfigurationException;
+import org.moeaframework.core.configuration.Property;
 import org.moeaframework.util.TypedProperties;
 
 /**
@@ -41,15 +42,17 @@ public abstract class SingleObjectiveEvolutionaryAlgorithm extends AbstractEvolu
 	 * Constructs a new single-objective algorithm.
 	 * 
 	 * @param problem the problem to solve
+	 * @param initialPopulationSize the initial population size
 	 * @param population the population
 	 * @param archive the archive storing the non-dominated solutions
 	 * @param comparator the aggregate objective comparator
 	 * @param initialization the initialization method
 	 * @param variation the variation operator
 	 */
-	public SingleObjectiveEvolutionaryAlgorithm(Problem problem, Population population, NondominatedPopulation archive,
-			AggregateObjectiveComparator comparator, Initialization initialization, Variation variation) {
-		super(problem, population, archive, initialization, variation);
+	public SingleObjectiveEvolutionaryAlgorithm(Problem problem, int initialPopulationSize, Population population,
+			NondominatedPopulation archive, AggregateObjectiveComparator comparator, Initialization initialization,
+			Variation variation) {
+		super(problem, initialPopulationSize, population, archive, initialization, variation);
 		this.comparator = comparator;
 	}
 	
@@ -76,6 +79,12 @@ public abstract class SingleObjectiveEvolutionaryAlgorithm extends AbstractEvolu
 	 */
 	public void setComparator(AggregateObjectiveComparator comparator) {
 		this.comparator = comparator;
+	}
+	
+	@Override
+	@Property("populationSize")
+	public void setInitialPopulationSize(int initialPopulationSize) {
+		super.setInitialPopulationSize(initialPopulationSize);
 	}
 
 	@Override

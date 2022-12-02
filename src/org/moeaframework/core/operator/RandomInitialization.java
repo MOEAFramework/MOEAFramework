@@ -34,24 +34,17 @@ public class RandomInitialization implements Initialization {
 	protected final Problem problem;
 
 	/**
-	 * The initial population size.
-	 */
-	protected final int populationSize;
-
-	/**
 	 * Constructs a random initialization operator.
 	 * 
 	 * @param problem the problem
-	 * @param populationSize the initial population size
 	 */
-	public RandomInitialization(Problem problem, int populationSize) {
+	public RandomInitialization(Problem problem) {
 		super();
 		this.problem = problem;
-		this.populationSize = populationSize;
 	}
 
 	@Override
-	public Solution[] initialize() {
+	public Solution[] initialize(int populationSize) {
 		Solution[] initialPopulation = new Solution[populationSize];
 
 		for (int i = 0; i < populationSize; i++) {

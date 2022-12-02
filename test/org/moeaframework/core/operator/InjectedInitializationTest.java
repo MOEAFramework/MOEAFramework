@@ -32,9 +32,9 @@ public class InjectedInitializationTest {
 		Solution solution = problem.newSolution();
 		
 		InjectedInitialization initialization = new InjectedInitialization(
-				problem, 100, solution);
+				problem, solution);
 		
-		Solution[] solutions = initialization.initialize();
+		Solution[] solutions = initialization.initialize(100);
 		boolean found = false;
 		
 		for (Solution s : solutions) {

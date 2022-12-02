@@ -62,36 +62,39 @@ public class GeneticAlgorithm extends SingleObjectiveEvolutionaryAlgorithm {
 	 */
 	public GeneticAlgorithm(Problem problem) {
 		this(problem,
+				Settings.DEFAULT_POPULATION_SIZE,
 				new LinearDominanceComparator(),
-				new RandomInitialization(problem, Settings.DEFAULT_POPULATION_SIZE),
+				new RandomInitialization(problem),
 				OperatorFactory.getInstance().getVariation(problem));
 	}
 	
 	// Internal constructor to ensure tournament selection uses provided comparator
-	private GeneticAlgorithm(Problem problem, AggregateObjectiveComparator comparator, Initialization initialization,
-			Variation variation) {
-		this(problem, comparator, initialization, new TournamentSelection(2, comparator), variation);
+	private GeneticAlgorithm(Problem problem, int initialPopulationSize, AggregateObjectiveComparator comparator,
+			Initialization initialization, Variation variation) {
+		this(problem, initialPopulationSize, comparator, initialization, new TournamentSelection(2, comparator),
+				variation);
 	}
 
 	/**
 	 * Constructs a new instance of the genetic algorithm (GA).
 	 * 
 	 * @param problem the problem
+	 * @param initialPopulationSize the initial population size
 	 * @param comparator the aggregate objective comparator
 	 * @param initialization the initialization method
 	 * @param selection the selection operator
 	 * @param variation the variation operator
 	 */
-	public GeneticAlgorithm(Problem problem, AggregateObjectiveComparator comparator, Initialization initialization,
-			Selection selection, Variation variation) {
-		super(problem, new Population(), null, comparator, initialization, variation);
+	public GeneticAlgorithm(Problem problem, int initialPopulationSize, AggregateObjectiveComparator comparator,
+			Initialization initialization, Selection selection, Variation variation) {
+		super(problem, initialPopulationSize, new Population(), null, comparator, initialization, variation);
 		this.selection = selection;
 	}
 
 	@Override
 	protected void initialize() {
 		super.initialize();
-		
+
 		eliteSolution = getPopulation().get(0);
 		updateEliteSolution();
 	}

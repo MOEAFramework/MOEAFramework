@@ -332,7 +332,7 @@ public abstract class AbstractPSOAlgorithm extends AbstractAlgorithm implements 
 	protected void initialize() {
 		super.initialize();
 		
-		Solution[] initialParticles = new RandomInitialization(problem, swarmSize).initialize();
+		Solution[] initialParticles = new RandomInitialization(problem).initialize(swarmSize);
 		evaluateAll(initialParticles);
 		
 		particles = new Solution[swarmSize];
@@ -401,7 +401,7 @@ public abstract class AbstractPSOAlgorithm extends AbstractAlgorithm implements 
 		if (!isInitialized()) {
 			throw new AlgorithmInitializationException(this, "algorithm not initialized");
 		}
-
+		
 		List<Solution> particlesList = copyToList(particles);
 		List<Solution> localBestParticlesList = copyToList(localBestParticles);
 		List<Solution> leadersList = leaders.asList(true);
@@ -421,8 +421,11 @@ public abstract class AbstractPSOAlgorithm extends AbstractAlgorithm implements 
 		super.initialize();
 
 		PSOAlgorithmState state = (PSOAlgorithmState)objState;
-
+		
 		numberOfEvaluations = state.getNumberOfEvaluations();
+		particles = new Solution[swarmSize];
+		localBestParticles = new Solution[swarmSize];
+		velocities = new double[swarmSize][problem.getNumberOfVariables()];
 		
 		if (state.getParticles().size() != swarmSize) {
 			throw new NotSerializableException("swarmSize does not match serialized state");
