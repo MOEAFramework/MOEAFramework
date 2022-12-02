@@ -4,6 +4,7 @@ import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variable;
 import org.moeaframework.core.Variation;
+import org.moeaframework.core.configuration.Property;
 
 /**
  * An abstract variation class that validates the types of each variable before
@@ -49,6 +50,7 @@ public abstract class TypeSafeCrossover<T extends Variable> implements Variation
 	 * 
 	 * @param probability the probability between 0.0 and 1.0, inclusive
 	 */
+	@Property("rate")
 	public void setProbability(double probability) {
 		this.probability = probability;
 	}

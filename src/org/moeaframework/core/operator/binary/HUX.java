@@ -19,6 +19,7 @@ package org.moeaframework.core.operator.binary;
 
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.PRNG;
+import org.moeaframework.core.configuration.Prefix;
 import org.moeaframework.core.operator.TypeSafeCrossover;
 import org.moeaframework.core.variable.BinaryVariable;
 
@@ -28,6 +29,7 @@ import org.moeaframework.core.variable.BinaryVariable;
  * <p>
  * This variation operator is type-safe.
  */
+@Prefix("hux")
 public class HUX extends TypeSafeCrossover<BinaryVariable> {
 
 	/**

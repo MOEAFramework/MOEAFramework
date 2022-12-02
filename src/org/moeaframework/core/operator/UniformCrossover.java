@@ -21,11 +21,14 @@ import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variable;
 import org.moeaframework.core.Variation;
+import org.moeaframework.core.configuration.Prefix;
+import org.moeaframework.core.configuration.Property;
 
 /**
  * Crossover operator where each index is randomly swapped between the
  * parents with a 50% chance.
  */
+@Prefix("ux")
 public class UniformCrossover implements Variation {
 
 	/**
@@ -70,6 +73,7 @@ public class UniformCrossover implements Variation {
 	 * 
 	 * @param probability the probability between 0.0 and 1.0, inclusive
 	 */
+	@Property("rate")
 	public void setProbability(double probability) {
 		this.probability = probability;
 	}

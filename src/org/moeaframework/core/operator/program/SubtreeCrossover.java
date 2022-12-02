@@ -19,6 +19,7 @@ package org.moeaframework.core.operator.program;
 
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.configuration.Prefix;
 import org.moeaframework.core.operator.TypeSafeCrossover;
 import org.moeaframework.core.variable.Program;
 import org.moeaframework.util.tree.Node;
@@ -30,6 +31,7 @@ import org.moeaframework.util.tree.Rules;
  * <p>
  * This operator is type-safe.
  */
+@Prefix("stx")
 public class SubtreeCrossover extends TypeSafeCrossover<Program> {
 	
 	/**

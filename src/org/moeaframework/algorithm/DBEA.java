@@ -34,8 +34,10 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.comparator.ObjectiveComparator;
+import org.moeaframework.core.configuration.Property;
 import org.moeaframework.core.operator.RandomInitialization;
 import org.moeaframework.core.spi.OperatorFactory;
+import org.moeaframework.util.TypedProperties;
 import org.moeaframework.util.weights.NormalBoundaryDivisions;
 import org.moeaframework.util.weights.NormalBoundaryIntersectionGenerator;
 
@@ -101,7 +103,7 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 	/**
 	 * The number of divisions for generating reference points.
 	 */
-	private final NormalBoundaryDivisions divisions;
+	private NormalBoundaryDivisions divisions;
 	
 	/**
 	 * Constructs a new instance of the DBEA algorithm with default settings.
@@ -120,7 +122,8 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 	 */
 	public DBEA(Problem problem, NormalBoundaryDivisions divisions) {
 		this(problem,
-				new RandomInitialization(problem, divisions.getNumberOfReferencePoints(problem)),
+				divisions.getNumberOfReferencePoints(problem),
+				new RandomInitialization(problem),
 				OperatorFactory.getInstance().getVariation(problem),
 				divisions);
 	}
@@ -129,14 +132,47 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 	 * Constructs a new instance of the DBEA algorithm.
 	 * 
 	 * @param problem the problem being solved
+	 * @param initialPopulationSize the initial population size
 	 * @param initialization the initialization method
 	 * @param variation the variation operator
 	 * @param divisions the number of divisions
 	 */
-	public DBEA(Problem problem, Initialization initialization,
+	public DBEA(Problem problem, int initialPopulationSize, Initialization initialization,
 			Variation variation, NormalBoundaryDivisions divisions) {
-		super(problem, new Population(), null, initialization, variation);
+		super(problem, initialPopulationSize, new Population(), null, initialization, variation);
 		this.divisions = divisions;
+	}
+	
+	/**
+	 * Returns the number of divisions used to generate reference points.
+	 * 
+	 * @return the number of divisions
+	 */
+	public NormalBoundaryDivisions getDivisions() {
+		return divisions;
+	}
+	
+	/**
+	 * Sets the number of divisions used to generate reference points.  This method can only be called
+	 * before initializing the algorithm.
+	 * 
+	 * @param divisions the number of divisions
+	 */
+	public void setDivisions(NormalBoundaryDivisions divisions) {
+		assertNotInitialized();
+		this.divisions = divisions;
+	}
+	
+	@Override
+	@Property("operator")
+	public void setVariation(Variation variation) {
+		super.setVariation(variation);
+	}
+	
+	@Override
+	@Property("populationSize")
+	public void setInitialPopulationSize(int initialPopulationSize) {
+		super.setInitialPopulationSize(initialPopulationSize);
 	}
 
 	@Override
@@ -750,8 +786,21 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 	}
 	
 	@Override
-	public void setVariation(Variation variation) {
-		super.setVariation(variation);
+	public void applyConfiguration(TypedProperties properties) {		
+		NormalBoundaryDivisions divisions = NormalBoundaryDivisions.tryFromProperties(properties);
+		
+		if (divisions != null) {
+			setPopulation(new ReferencePointNondominatedSortingPopulation(problem.getNumberOfObjectives(), divisions));
+		}
+		
+		super.applyConfiguration(properties);
+	}
+
+	@Override
+	public TypedProperties getConfiguration() {
+		TypedProperties properties = super.getConfiguration();
+		properties.addAll(divisions.toProperties());
+		return properties;
 	}
 
 }

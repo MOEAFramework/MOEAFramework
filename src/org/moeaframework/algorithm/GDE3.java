@@ -25,6 +25,7 @@ import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.comparator.DominanceComparator;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
+import org.moeaframework.core.configuration.Property;
 import org.moeaframework.core.operator.RandomInitialization;
 import org.moeaframework.core.operator.real.DifferentialEvolutionSelection;
 import org.moeaframework.core.operator.real.DifferentialEvolutionVariation;
@@ -59,17 +60,19 @@ public class GDE3 extends AbstractEvolutionaryAlgorithm {
 	 */
 	public GDE3(Problem problem) {
 		this(problem,
+				Settings.DEFAULT_POPULATION_SIZE,
 				new NondominatedSortingPopulation(),
 				new ParetoDominanceComparator(), // TODO: we should get this from NondominatedSortingPopulation
 				new DifferentialEvolutionSelection(),
 				new DifferentialEvolutionVariation(),
-				new RandomInitialization(problem, Settings.DEFAULT_POPULATION_SIZE));
+				new RandomInitialization(problem));
 	}
 
 	/**
 	 * Constructs the GDE3 algorithm with the specified components.
 	 * 
 	 * @param problem the problem being solved
+	 * @param initialPopulationSize the initial population size
 	 * @param population the population used to store solutions
 	 * @param comparator the dominance comparator used to determine if offspring
 	 *        survive until the non-dominated sorting step
@@ -77,10 +80,10 @@ public class GDE3 extends AbstractEvolutionaryAlgorithm {
 	 * @param variation the variation operator
 	 * @param initialization the initialization method
 	 */
-	public GDE3(Problem problem, NondominatedSortingPopulation population, DominanceComparator comparator,
-			DifferentialEvolutionSelection selection, DifferentialEvolutionVariation variation,
-			Initialization initialization) {
-		super(problem, population, null, initialization, variation);
+	public GDE3(Problem problem, int initialPopulationSize, NondominatedSortingPopulation population,
+			DominanceComparator comparator, DifferentialEvolutionSelection selection,
+			DifferentialEvolutionVariation variation, Initialization initialization) {
+		super(problem, initialPopulationSize, population, null, initialization, variation);
 		this.comparator = comparator;
 		this.selection = selection;
 		
@@ -135,8 +138,15 @@ public class GDE3 extends AbstractEvolutionaryAlgorithm {
 		return (DifferentialEvolutionVariation)super.getVariation();
 	}
 	
+	@Property("operator")
 	public void setVariation(DifferentialEvolutionVariation variation) {
 		super.setVariation(variation);
+	}
+	
+	@Override
+	@Property("populationSize")
+	public void setInitialPopulationSize(int initialPopulationSize) {
+		super.setInitialPopulationSize(initialPopulationSize);
 	}
 
 }

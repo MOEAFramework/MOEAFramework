@@ -52,5 +52,10 @@ AggregateObjectiveComparator, Serializable {
 	public LinearDominanceComparator(double... weights) {
 		super(new AggregateConstraintComparator(), new LinearObjectiveComparator(weights));
 	}
+	
+	@Override
+	public double[] getWeights() {
+		return ((LinearObjectiveComparator)comparators[1]).getWeights();
+	}
 
 }

@@ -24,9 +24,11 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.comparator.DominanceComparator;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
+import org.moeaframework.core.configuration.Property;
 import org.moeaframework.core.operator.Mutation;
 import org.moeaframework.core.operator.RandomInitialization;
 import org.moeaframework.core.spi.OperatorFactory;
+import org.moeaframework.util.TypedProperties;
 
 /**
  * Implementation of the (1+1) Pareto Archived Evolution Strategy (PAES).  PAES
@@ -66,14 +68,16 @@ public class PAES extends AbstractEvolutionaryAlgorithm {
 	 */
 	public PAES(Problem problem, Mutation mutation, int bisections, int archiveSize) {
 		super(problem,
+				1,
 				new Population(),
 				new AdaptiveGridArchive(archiveSize, problem, ArithmeticUtils.pow(2, bisections)),
-				null,
+				new RandomInitialization(problem),
 				mutation);
 		
 		comparator = new ParetoDominanceComparator();
 	}
 	
+	@Property("operator")
 	public void setVariation(Mutation mutation) {
 		super.setVariation(mutation);
 	}
@@ -88,21 +92,6 @@ public class PAES extends AbstractEvolutionaryAlgorithm {
 		return (AdaptiveGridArchive)super.getArchive();
 	}
 	
-	@Override
-	protected void initialize() {
-		// avoid calling super.initialize() since no initializer is set
-		if (initialized) {
-			throw new AlgorithmInitializationException(this, "algorithm already initialized");
-		}
-
-		initialized = true;
-		
-		Solution solution = new RandomInitialization(problem, 1).initialize()[0];
-		evaluate(solution);
-		population.add(solution);
-		archive.add(solution);
-	}
-
 	/**
 	 * The test procedure to determine which solution, the parent or offspring,
 	 * moves on to the next generation.  The solution in a lower density region
@@ -151,6 +140,27 @@ public class PAES extends AbstractEvolutionaryAlgorithm {
 				population.replace(0, test(parent, offspring));
 			}
 		}
+	}
+	
+	@Override
+	public void applyConfiguration(TypedProperties properties) {
+		if (properties.contains("archiveSize") || properties.contains("bisections")) {
+			int archiveSize = properties.getInt("archiveSize", getArchive().getCapacity());
+			int bisections = properties.getInt("bisections", getArchive().getBisections());
+			setArchive(new AdaptiveGridArchive(archiveSize, problem, ArithmeticUtils.pow(2, bisections)));
+		}
+		
+		super.applyConfiguration(properties);
+	}
+
+	@Override
+	public TypedProperties getConfiguration() {
+		TypedProperties properties = super.getConfiguration();
+		
+		properties.setInt("archiveSize", getArchive().getCapacity());
+		properties.setInt("bisections", getArchive().getBisections());
+		
+		return properties;
 	}
 
 }

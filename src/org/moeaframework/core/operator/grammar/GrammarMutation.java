@@ -20,6 +20,7 @@ package org.moeaframework.core.operator.grammar;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variable;
+import org.moeaframework.core.configuration.Prefix;
 import org.moeaframework.core.operator.Mutation;
 import org.moeaframework.core.variable.Grammar;
 
@@ -29,6 +30,7 @@ import org.moeaframework.core.variable.Grammar;
  * <p>
  * This variation operator is type-safe.
  */
+@Prefix("gm")
 public class GrammarMutation implements Mutation {
 
 	/**

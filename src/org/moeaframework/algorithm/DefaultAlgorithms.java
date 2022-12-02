@@ -115,7 +115,7 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 	private Algorithm neweMOEA(TypedProperties properties, Problem problem) {
 		int populationSize = (int)properties.getDouble("populationSize", 100);
 
-		Initialization initialization = new RandomInitialization(problem, populationSize);
+		Initialization initialization = new RandomInitialization(problem);
 		Population population = new Population();
 
 		DominanceComparator comparator = new ParetoDominanceComparator();
@@ -127,7 +127,7 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 		TournamentSelection selection = new TournamentSelection(2, comparator);
 		Variation variation = OperatorFactory.getInstance().getVariation(null, properties, problem);
 
-		return new EpsilonMOEA(problem, population, archive,
+		return new EpsilonMOEA(problem, populationSize, population, archive,
 				selection, variation, initialization, comparator);
 	}
 
@@ -141,7 +141,7 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 	private Algorithm newNSGAII(TypedProperties properties, Problem problem) {
 		int populationSize = (int)properties.getDouble("populationSize", 100);
 
-		Initialization initialization = new RandomInitialization(problem, populationSize);
+		Initialization initialization = new RandomInitialization(problem);
 		NondominatedSortingPopulation population = new NondominatedSortingPopulation();
 		TournamentSelection selection = null;
 		
@@ -153,7 +153,7 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 
 		Variation variation = OperatorFactory.getInstance().getVariation(null, properties, problem);
 
-		return new NSGAII(problem, population, null, selection, variation, initialization);
+		return new NSGAII(problem, populationSize, population, null, selection, variation, initialization);
 	}
 	
 	/**
@@ -177,7 +177,7 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 			populationSize = (int)Math.ceil(referencePoints / 4.0) * 4;
 		}
 		
-		Initialization initialization = new RandomInitialization(problem, populationSize);
+		Initialization initialization = new RandomInitialization(problem);
 		
 		ReferencePointNondominatedSortingPopulation population = new ReferencePointNondominatedSortingPopulation(
 				problem.getNumberOfObjectives(), divisions);
@@ -231,7 +231,7 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 
 		Variation variation = OperatorFactory.getInstance().getVariation(null, properties, problem);
 
-		return new NSGAIII(problem, population, selection, variation, initialization);
+		return new NSGAIII(problem, populationSize, population, selection, variation, initialization);
 	}
 
 	/**
@@ -251,7 +251,7 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 			populationSize = problem.getNumberOfObjectives();
 		}
 
-		Initialization initialization = new RandomInitialization(problem, populationSize);
+		Initialization initialization = new RandomInitialization(problem);
 		
 		//default to de+pm for real-encodings
 		String operator = properties.getString("operator", null);
@@ -280,6 +280,7 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 
 		return new MOEAD(
 				problem,
+				populationSize,
 				neighborhoodSize,
 				initialization,
 				variation,
@@ -303,12 +304,12 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 		
 		DominanceComparator comparator = new ParetoDominanceComparator();
 		NondominatedSortingPopulation population = new NondominatedSortingPopulation(comparator);
-		Initialization initialization = new RandomInitialization(problem, populationSize);
+		Initialization initialization = new RandomInitialization(problem);
 		DifferentialEvolutionSelection selection = new DifferentialEvolutionSelection();
 		DifferentialEvolutionVariation variation = (DifferentialEvolutionVariation)OperatorFactory
 				.getInstance().getVariation("de", properties, problem);
 
-		return new GDE3(problem, population, comparator, selection, variation, initialization);
+		return new GDE3(problem, populationSize, population, comparator, selection, variation, initialization);
 	}
 
 	/**
@@ -321,7 +322,7 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 	private Algorithm neweNSGAII(TypedProperties properties, Problem problem) {
 		int populationSize = (int)properties.getDouble("populationSize", 100);
 
-		Initialization initialization = new RandomInitialization(problem, populationSize);
+		Initialization initialization = new RandomInitialization(problem);
 
 		NondominatedSortingPopulation population = new NondominatedSortingPopulation(
 				new ParetoDominanceComparator());
@@ -337,6 +338,7 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 		
 		return new EpsilonNSGAII(
 				problem,
+				populationSize,
 				population,
 				archive,
 				selection,
@@ -344,7 +346,7 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 				initialization,
 				properties.getInt("windowSize", 100),
 				Math.max(properties.getInt("windowSize", 100), properties.getInt("maxWindowSize", 100)),
-				1.0 / properties.getDouble("injectionRate", 0.25),
+				properties.getDouble("injectionRate", 0.25),
 				properties.getInt("minimumPopulationSize", 100),
 				properties.getInt("maximumPopulationSize", 10000));
 	}
@@ -406,10 +408,10 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 		int offspringSize = (int)properties.getDouble("offspringSize", 100);
 		int k = (int)properties.getDouble("k", 1);
 		
-		Initialization initialization = new RandomInitialization(problem, populationSize);
+		Initialization initialization = new RandomInitialization(problem);
 		Variation variation = OperatorFactory.getInstance().getVariation(null, properties, problem);
 
-		return new SPEA2(problem, initialization, variation, offspringSize, k);
+		return new SPEA2(problem, populationSize, initialization, variation, offspringSize, k);
 	}
 	
 	/**
@@ -439,10 +441,10 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 		int archiveSize = (int)properties.getDouble("archiveSize", 100);
 		int bisections = (int)properties.getDouble("bisections", 8);
 		
-		Initialization initialization = new RandomInitialization(problem, populationSize);
+		Initialization initialization = new RandomInitialization(problem);
 		Variation variation = OperatorFactory.getInstance().getVariation(null, properties, problem);
 
-		return new PESA2(problem, variation, initialization, bisections, archiveSize);
+		return new PESA2(problem, populationSize, variation, initialization, bisections, archiveSize);
 	}
 	
 	/**
@@ -501,8 +503,7 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 		String indicator = properties.getString("indicator", "hypervolume");
 		IndicatorFitnessEvaluator fitnessEvaluator = null;
 
-		Initialization initialization = new RandomInitialization(problem, populationSize);
-
+		Initialization initialization = new RandomInitialization(problem);
 		Variation variation = OperatorFactory.getInstance().getVariation(null, properties, problem);
 		
 		if ("hypervolume".equalsIgnoreCase(indicator)) {
@@ -513,7 +514,7 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 			throw new IllegalArgumentException("invalid indicator: " + indicator);
 		}
 
-		return new IBEA(problem, null, initialization, variation, fitnessEvaluator);
+		return new IBEA(problem, populationSize, null, initialization, variation, fitnessEvaluator);
 	}
 	
 	/**
@@ -529,15 +530,14 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 		String indicator = properties.getString("indicator", "hypervolume");
 		FitnessEvaluator fitnessEvaluator = null;
 		
-		Initialization initialization = new RandomInitialization(problem, populationSize);
-
+		Initialization initialization = new RandomInitialization(problem);
 		Variation variation = OperatorFactory.getInstance().getVariation(null, properties, problem);
 		
 		if ("hypervolume".equalsIgnoreCase(indicator)) {
 			fitnessEvaluator = new HypervolumeContributionFitnessEvaluator(problem, offset);
 		}
 
-		return new SMSEMOA(problem, initialization, variation, fitnessEvaluator);
+		return new SMSEMOA(problem, populationSize, initialization, variation, fitnessEvaluator);
 	}
 	
 	/**
@@ -550,10 +550,10 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 	private Algorithm newVEGA(TypedProperties properties, Problem problem) {
 		int populationSize = (int)properties.getDouble("populationSize", 100);
 
-		Initialization initialization = new RandomInitialization(problem, populationSize);
+		Initialization initialization = new RandomInitialization(problem);
 		Variation variation = OperatorFactory.getInstance().getVariation(null, properties, problem);
 		
-		return new VEGA(problem, new Population(), null, initialization, variation);
+		return new VEGA(problem, populationSize, new Population(), null, initialization, variation);
 	}
 	
 	/**
@@ -567,10 +567,10 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 		NormalBoundaryDivisions divisions = NormalBoundaryDivisions.fromProperties(properties, problem);
 		int populationSize = divisions.getNumberOfReferencePoints(problem);
 		
-		Initialization initialization = new RandomInitialization(problem, populationSize);
+		Initialization initialization = new RandomInitialization(problem);
 		Variation variation = OperatorFactory.getInstance().getVariation(null, properties, problem);
 		
-		return new DBEA(problem, initialization, variation, divisions);
+		return new DBEA(problem, populationSize, initialization, variation, divisions);
 	}
 	
 	/**
@@ -589,7 +589,7 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 		NormalBoundaryDivisions divisions = NormalBoundaryDivisions.fromProperties(properties, problem);
 		int populationSize = divisions.getNumberOfReferencePoints(problem);
 		
-		Initialization initialization = new RandomInitialization(problem, populationSize);
+		Initialization initialization = new RandomInitialization(problem);
 		
 		ReferenceVectorGuidedPopulation population = new ReferenceVectorGuidedPopulation(
 				problem.getNumberOfObjectives(), divisions,
@@ -614,7 +614,7 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 		int maxGenerations = (int)(properties.getDouble("maxEvaluations", 10000) / populationSize);
 		int adaptFrequency = (int)properties.getDouble("adaptFrequency", maxGenerations / 10);
 
-		return new RVEA(problem, population, variation, initialization, maxGenerations, adaptFrequency);
+		return new RVEA(problem, populationSize, population, variation, initialization, maxGenerations, adaptFrequency);
 	}
 	
 	/**
@@ -626,8 +626,7 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 	 */
 	private Algorithm newRandomSearch(TypedProperties properties, Problem problem) {
 		int populationSize = (int)properties.getDouble("populationSize", 100);
-		
-		Initialization generator = new RandomInitialization(problem, populationSize);
+		Initialization generator = new RandomInitialization(problem);
 		
 		NondominatedPopulation archive = null;
 		
@@ -638,7 +637,7 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 			archive = new NondominatedPopulation();
 		}
 		
-		return new RandomSearch(problem, generator, archive);
+		return new RandomSearch(problem, populationSize, generator, archive);
 	}
 	
 	/**
@@ -654,7 +653,7 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 		int populationSize = (int)properties.getDouble("populationSize", 100);
 		int numberOfWeights = (int)properties.getDouble("numberOfWeights", 50);
 
-		Initialization initialization = new RandomInitialization(problem, populationSize);
+		Initialization initialization = new RandomInitialization(problem);
 		List<double[]> weights = MSOPS.generateWeights(problem, numberOfWeights);
 		
 		MSOPSRankedPopulation population = new MSOPSRankedPopulation(weights);
@@ -662,7 +661,7 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 		DifferentialEvolutionVariation variation = (DifferentialEvolutionVariation)OperatorFactory.getInstance().getVariation(
 				"de", properties, problem);
 
-		return new MSOPS(problem, population, selection, variation, initialization);
+		return new MSOPS(problem, populationSize, population, selection, variation, initialization);
 	}
 	
 	/**
@@ -705,11 +704,11 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 			throw new FrameworkException("unrecognized weighting method: " + method);
 		}
 
-		Initialization initialization = new RandomInitialization(problem, populationSize);
+		Initialization initialization = new RandomInitialization(problem);
 		Selection selection = new TournamentSelection(2, comparator);
 		Variation variation = OperatorFactory.getInstance().getVariation(null, properties, problem);
 
-		return new GeneticAlgorithm(problem, comparator, initialization, selection, variation);
+		return new GeneticAlgorithm(problem, populationSize, comparator, initialization, selection, variation);
 	}
 	
 	/**
@@ -736,10 +735,10 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 			throw new FrameworkException("unrecognized weighting method: " + method);
 		}
 
-		Initialization initialization = new RandomInitialization(problem, populationSize);
+		Initialization initialization = new RandomInitialization(problem);
 		SelfAdaptiveNormalVariation variation = new SelfAdaptiveNormalVariation();
 
-		return new EvolutionStrategy(problem, comparator, initialization, variation);
+		return new EvolutionStrategy(problem, populationSize, comparator, initialization, variation);
 	}
 
 	/**
@@ -766,12 +765,12 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 			throw new FrameworkException("unrecognized weighting method: " + method);
 		}
 
-		Initialization initialization = new RandomInitialization(problem, populationSize);
+		Initialization initialization = new RandomInitialization(problem);
 		DifferentialEvolutionSelection selection = new DifferentialEvolutionSelection();
 		DifferentialEvolutionVariation variation = (DifferentialEvolutionVariation)OperatorFactory.getInstance()
 				.getVariation("de", properties, problem);
 
-		return new DifferentialEvolution(problem, comparator, initialization, selection, variation);
+		return new DifferentialEvolution(problem, populationSize, comparator, initialization, selection, variation);
 	}
 	
 	private Algorithm newAMOSA(TypedProperties properties, Problem problem) {
@@ -792,12 +791,12 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 		int numberOfHillClimbingIterationsForRefinement = properties.getInt("hillClimbIter", 20);
 			
 		// Initialize the algorithm with randomly-generated solutions
-		Initialization initialization = new RandomInitialization(problem, (int)gamma*softLimit);
+		Initialization initialization = new RandomInitialization(problem);
 			
 		// Use the operator factory that problem provides
 		Mutation mutation = OperatorFactory.getInstance().getMutation(properties, problem);
 
-		return new AMOSA(problem, initialization, mutation, softLimit, hardLimit, tMin, tMax,
+		return new AMOSA(problem, initialization, mutation, gamma, softLimit, hardLimit, tMin, tMax,
 				alpha, numberOfIterationPerTemperature, numberOfHillClimbingIterationsForRefinement);
 	}
 	

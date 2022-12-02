@@ -55,7 +55,7 @@ public class EpsilonProgressContinuation extends AdaptiveTimeContinuation {
 	 *        {@code check}
 	 * @param maxWindowSize the maximum number of iterations allowed since the
 	 *        last restart before forcing a restart
-	 * @param populationRatio the population-to-archive ratio
+	 * @param injectionRate the injection rate
 	 * @param minimumPopulationSize the minimum size of the population
 	 * @param maximumPopulationSize the maximum size of the population
 	 * @param selection the selection operator for selecting solutions from the
@@ -65,10 +65,10 @@ public class EpsilonProgressContinuation extends AdaptiveTimeContinuation {
 	 */
 	public EpsilonProgressContinuation(
 			EpsilonBoxEvolutionaryAlgorithm algorithm, int windowSize,
-			int maxWindowSize, double populationRatio,
+			int maxWindowSize, double injectionRate,
 			int minimumPopulationSize, int maximumPopulationSize,
 			Selection selection, Variation variation) {
-		super(algorithm, windowSize, maxWindowSize, populationRatio,
+		super(algorithm, windowSize, maxWindowSize, injectionRate,
 				minimumPopulationSize, maximumPopulationSize, selection,
 				variation);
 	}

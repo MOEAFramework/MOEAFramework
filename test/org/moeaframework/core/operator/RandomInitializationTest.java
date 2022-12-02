@@ -69,8 +69,8 @@ public class RandomInitializationTest {
 
 		};
 
-		Initialization initialization = new RandomInitialization(problem, 100);
-		Assert.assertEquals(100, initialization.initialize().length);
+		Initialization initialization = new RandomInitialization(problem);
+		Assert.assertEquals(100, initialization.initialize(100).length);
 	}
 
 }

@@ -18,6 +18,7 @@
 package org.moeaframework.core.operator.real;
 
 import org.moeaframework.core.PRNG;
+import org.moeaframework.core.configuration.Prefix;
 import org.moeaframework.core.operator.TypeSafeMutation;
 import org.moeaframework.core.variable.RealVariable;
 
@@ -34,6 +35,7 @@ import org.moeaframework.core.variable.RealVariable;
  * <p>
  * This operator is type-safe.
  */
+@Prefix("um")
 public class UM extends TypeSafeMutation<RealVariable> {
 	
 	/**

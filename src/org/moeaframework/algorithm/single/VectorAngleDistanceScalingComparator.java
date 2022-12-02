@@ -69,6 +69,11 @@ public class VectorAngleDistanceScalingComparator implements AggregateObjectiveC
 		this.weights = weights;
 		this.q = q;
 	}
+	
+	@Override
+	public double[] getWeights() {
+		return weights;
+	}
 
 	@Override
 	public int compare(Solution solution1, Solution solution2) {

@@ -135,6 +135,25 @@ public class ReferenceVectorGuidedPopulation extends Population {
 	}
 	
 	/**
+	 * Returns the number of divisions used to generate the reference vectors.
+	 * 
+	 * @return the number of divisions
+	 */
+	public NormalBoundaryDivisions getDivisions() {
+		return divisions;
+	}
+	
+	/**
+	 * Returns the {@code alpha} parameter, which controls the rate of change in the angle-penalized
+	 * distance function.
+	 * 
+	 * @return the {@code alpha} parameter value
+	 */
+	public double getAlpha() {
+		return alpha;
+	}
+	
+	/**
 	 * Scaling factor used in the angle-penalized distance function.  This
 	 * should be set to {@code currentGeneration / maxGenerations}.  Smaller
 	 * values favor convergence while larger values favor diversity.

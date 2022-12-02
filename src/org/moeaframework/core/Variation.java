@@ -17,6 +17,8 @@
  */
 package org.moeaframework.core;
 
+import org.moeaframework.core.configuration.Configurable;
+
 /**
  * Interface for variation operators. Variation operators manipulate one or more existing solutions, called
  * <em>parents</em>, to produce one or more new solutions, called <em>children</em> or <em>offspring</em>.
@@ -29,7 +31,7 @@ package org.moeaframework.core;
  * Mixed-type encodings are supported by using type-safe variation operators. Variation operators for each type in the
  * encoding are applied sequentially, each operating on only those variables with the correct type.
  */
-public interface Variation {
+public interface Variation extends Configurable {
 	
 	/**
 	 * Returns the name of this variation operator.  This name should also be used as the prefix for any

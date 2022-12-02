@@ -48,16 +48,16 @@ public class AbstractEvolutionaryAlgorithmTest {
 		Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
 		Population population = new Population();
 		NondominatedPopulation archive = new NondominatedPopulation();
-		Initialization initialization = new RandomInitialization(problem, 50);
+		Initialization initialization = new RandomInitialization(problem);
 		Variation variation = OperatorFactory.getInstance().getVariation(problem);
 
-		return new AbstractEvolutionaryAlgorithm(problem, population, archive,
+		return new AbstractEvolutionaryAlgorithm(problem, 50, population, archive,
 				initialization, variation) {
 
 			@Override
 			protected void iterate() {
 				population.clear();
-				population.addAll(initialization.initialize());
+				population.addAll(initialization.initialize(50));
 				evaluateAll(population);
 				archive.addAll(population);
 			}

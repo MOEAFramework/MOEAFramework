@@ -33,10 +33,15 @@ import org.moeaframework.core.comparator.ChainedComparator;
 import org.moeaframework.core.comparator.FitnessComparator;
 import org.moeaframework.core.comparator.NondominatedSortingComparator;
 import org.moeaframework.core.comparator.RankComparator;
+import org.moeaframework.core.configuration.ConfigurationException;
+import org.moeaframework.core.configuration.Property;
+import org.moeaframework.core.fitness.AdditiveEpsilonIndicatorFitnessEvaluator;
 import org.moeaframework.core.fitness.HypervolumeContributionFitnessEvaluator;
+import org.moeaframework.core.fitness.HypervolumeFitnessEvaluator;
 import org.moeaframework.core.operator.RandomInitialization;
 import org.moeaframework.core.operator.TournamentSelection;
 import org.moeaframework.core.spi.OperatorFactory;
+import org.moeaframework.util.TypedProperties;
 
 /**
  * Implementation of the S-metric Selection MOEA (SMS-MOEA).  The S metric is
@@ -54,7 +59,7 @@ public class SMSEMOA extends AbstractEvolutionaryAlgorithm {
 	/**
 	 * The fitness evaluator to use (e.g., hypervolume or additive-epsilon indicator).
 	 */
-	private final FitnessEvaluator fitnessEvaluator;
+	private FitnessEvaluator fitnessEvaluator;
 	
 	/**
 	 * The selection operator.
@@ -68,7 +73,8 @@ public class SMSEMOA extends AbstractEvolutionaryAlgorithm {
 	 */
 	public SMSEMOA(Problem problem) {
 		this(problem,
-				new RandomInitialization(problem, Settings.DEFAULT_POPULATION_SIZE),
+				Settings.DEFAULT_POPULATION_SIZE,
+				new RandomInitialization(problem),
 				OperatorFactory.getInstance().getVariation(problem),
 				new HypervolumeContributionFitnessEvaluator(problem));
 	}
@@ -77,13 +83,14 @@ public class SMSEMOA extends AbstractEvolutionaryAlgorithm {
 	 * Constructs a new SMS-EMOA instance.
 	 * 
 	 * @param problem the problem
+	 * @param initialPopulationSize the initial population size
 	 * @param initialization the initialization operator
 	 * @param variation the variation operator
 	 * @param fitnessEvaluator the fitness evaluator
 	 */
-	public SMSEMOA(Problem problem, Initialization initialization,
+	public SMSEMOA(Problem problem, int initialPopulationSize, Initialization initialization,
 			Variation variation, FitnessEvaluator fitnessEvaluator) {
-		super(problem, new Population(), null, initialization, variation);
+		super(problem, initialPopulationSize, new Population(), null, initialization, variation);
 		this.fitnessEvaluator = fitnessEvaluator;
 		
 		if (fitnessEvaluator ==  null) {
@@ -94,8 +101,15 @@ public class SMSEMOA extends AbstractEvolutionaryAlgorithm {
 	}
 	
 	@Override
+	@Property("operator")
 	public void setVariation(Variation variation) {
 		super.setVariation(variation);
+	}
+	
+	@Override
+	@Property("populationSize")
+	public void setInitialPopulationSize(int initialPopulationSize) {
+		super.setInitialPopulationSize(initialPopulationSize);
 	}
 
 	@Override
@@ -154,6 +168,37 @@ public class SMSEMOA extends AbstractEvolutionaryAlgorithm {
 		}
 		
 		fitnessEvaluator.evaluate(front);
+	}
+	
+	@Override
+	public void applyConfiguration(TypedProperties properties) {
+		if (properties.contains("indicator")) {
+			String indicator = properties.getString("indicator", null);
+			
+			if ("hypervolume".equalsIgnoreCase(indicator)) {
+				fitnessEvaluator = new HypervolumeFitnessEvaluator(problem);
+			} else if ("epsilon".equalsIgnoreCase(indicator)) {
+				fitnessEvaluator = new AdditiveEpsilonIndicatorFitnessEvaluator(problem);
+			} else {
+				throw new ConfigurationException("invalid indicator: " + indicator);
+			}
+		}
+		
+		super.applyConfiguration(properties);
+		
+	}
+
+	@Override
+	public TypedProperties getConfiguration() {
+		TypedProperties properties = super.getConfiguration();
+		
+		if (fitnessEvaluator instanceof HypervolumeFitnessEvaluator) {
+			properties.setString("indicator", "hypervolume");
+		} else if (fitnessEvaluator instanceof AdditiveEpsilonIndicatorFitnessEvaluator) {
+			properties.setString("indicator", "epsilon");
+		}
+		
+		return properties;
 	}
 	
 	private class NondominatedFitnessComparator extends ChainedComparator implements Comparator<Solution>, Serializable {

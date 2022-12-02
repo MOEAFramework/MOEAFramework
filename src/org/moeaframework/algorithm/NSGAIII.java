@@ -16,6 +16,7 @@ import org.moeaframework.core.operator.TournamentSelection;
 import org.moeaframework.core.operator.real.PM;
 import org.moeaframework.core.operator.real.SBX;
 import org.moeaframework.core.spi.OperatorFactory;
+import org.moeaframework.util.TypedProperties;
 import org.moeaframework.util.weights.NormalBoundaryDivisions;
 
 /**
@@ -52,24 +53,27 @@ public class NSGAIII extends NSGAII {
 	 */
 	public NSGAIII(Problem problem, NormalBoundaryDivisions divisions) {
 		this(problem,
+				getInitialPopulationSize(problem, divisions),
 				new ReferencePointNondominatedSortingPopulation(problem.getNumberOfObjectives(), divisions),
 				getDefaultSelection(problem),
 				getDefaultVariation(problem),
-				getDefaultInitialization(problem, divisions));
+				new RandomInitialization(problem));
 	}
 	
 	/**
 	 * Constructs a new NSGA-III instance with the specified components.
 	 * 
 	 * @param problem the problem being solved
+	 * @param initialPopulationSize the initial population size
 	 * @param population the reference point population used to store solutions
 	 * @param selection the selection operator
 	 * @param variation the variation operator
 	 * @param initialization the initialization method
 	 */
-	public NSGAIII(Problem problem, ReferencePointNondominatedSortingPopulation population,
+	public NSGAIII(Problem problem, int initialPopulationSize, ReferencePointNondominatedSortingPopulation population,
 			Selection selection, Variation variation, Initialization initialization) {
 		super(problem,
+				initialPopulationSize,
 				population,
 				null,
 				selection,
@@ -78,18 +82,15 @@ public class NSGAIII extends NSGAII {
 	}
 	
 	/**
-	 * Returns the default initialization method that creates one population member for each reference point.
-	 * The population size is rounded up to the nearest multiple of 4.
+	 * Returns the population size, which is the number of reference points rounded up to the nearest multiple of 4.
 	 * 
 	 * @param problem the problem
 	 * @param divisions the number of divisions for generating reference points
-	 * @return the initialization method
+	 * @return the initial population size
 	 */
-	private static final Initialization getDefaultInitialization(Problem problem, NormalBoundaryDivisions divisions) {
+	private static final int getInitialPopulationSize(Problem problem, NormalBoundaryDivisions divisions) {
 		int referencePoints = divisions.getNumberOfReferencePoints(problem);
-		int populationSize = (int)Math.ceil(referencePoints / 4.0) * 4;
-		
-		return new RandomInitialization(problem, populationSize);
+		return (int)Math.ceil(referencePoints / 4.0) * 4;
 	}
 	
 	/**
@@ -164,6 +165,24 @@ public class NSGAIII extends NSGAII {
 	@Override
 	public ReferencePointNondominatedSortingPopulation getPopulation() {
 		return (ReferencePointNondominatedSortingPopulation)super.getPopulation();
+	}
+
+	@Override
+	public void applyConfiguration(TypedProperties properties) {
+		NormalBoundaryDivisions divisions = NormalBoundaryDivisions.tryFromProperties(properties);
+		
+		if (divisions != null) {
+			setPopulation(new ReferencePointNondominatedSortingPopulation(problem.getNumberOfObjectives(), divisions));
+		}
+		
+		super.applyConfiguration(properties);
+	}
+
+	@Override
+	public TypedProperties getConfiguration() {
+		TypedProperties properties = super.getConfiguration();
+		properties.addAll(getPopulation().getDivisions().toProperties());
+		return properties;
 	}
 
 }

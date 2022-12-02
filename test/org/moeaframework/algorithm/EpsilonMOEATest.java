@@ -72,10 +72,10 @@ public class EpsilonMOEATest {
 		
 		population = new TestPopulation();
 		
-		algorithm = new EpsilonMOEA(problem, population, 
+		algorithm = new EpsilonMOEA(problem, 100, population, 
 				new EpsilonBoxDominanceArchive(0.01),
 				new TournamentSelection(2), new CompoundVariation(),
-				new RandomInitialization(problem, 0));
+				new RandomInitialization(problem));
 	}
 	
 	@After

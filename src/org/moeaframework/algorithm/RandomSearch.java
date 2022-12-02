@@ -22,6 +22,7 @@ import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
+import org.moeaframework.core.configuration.Property;
 import org.moeaframework.core.operator.RandomInitialization;
 
 /**
@@ -30,6 +31,8 @@ import org.moeaframework.core.operator.RandomInitialization;
  * solutions retained.  The result is the set of all non-dominated solutions.
  */
 public class RandomSearch extends AbstractAlgorithm {
+	
+	private int sampleSize;
 	
 	/**
 	 * The initialization routine used to generate random solutions.
@@ -48,7 +51,8 @@ public class RandomSearch extends AbstractAlgorithm {
 	 */
 	public RandomSearch(Problem problem) {
 		this(problem,
-				new RandomInitialization(problem, Settings.DEFAULT_POPULATION_SIZE),
+				Settings.DEFAULT_POPULATION_SIZE,
+				new RandomInitialization(problem),
 				new NondominatedPopulation());
 	}
 
@@ -56,13 +60,36 @@ public class RandomSearch extends AbstractAlgorithm {
 	 * Constructs a new random search procedure for the given problem.
 	 * 
 	 * @param problem the problem being solved
+	 * @param sampleSize the number of solutions sampled each iteration
 	 * @param generator the initialization routine used to generate random solutions
 	 * @param archive the archive of non-dominated solutions
 	 */
-	public RandomSearch(Problem problem, Initialization generator, NondominatedPopulation archive) {
+	public RandomSearch(Problem problem, int sampleSize, Initialization generator, NondominatedPopulation archive) {
 		super(problem);
+		this.sampleSize = sampleSize;
 		this.generator = generator;
 		this.archive = archive;
+	}
+
+	/**
+	 * Returns the number of solutions sampled each iteration.
+	 * 
+	 * @return the sample size
+	 */
+	public int getSampleSize() {
+		return sampleSize;
+	}
+
+	/**
+	 * Sets the number of solutions sampled each iteration.  The main reason to set the sample size is when
+	 * distributed solution evaluations, as the sample size at least the number of threads.  The default value
+	 * is 100.
+	 * 
+	 * @param sampleSize the sample size
+	 */
+	@Property(synonym="populationSize")
+	public void setSampleSize(int sampleSize) {
+		this.sampleSize = sampleSize;
 	}
 
 	@Override
@@ -78,7 +105,7 @@ public class RandomSearch extends AbstractAlgorithm {
 
 	@Override
 	protected void iterate() {
-		Population solutions = new Population(generator.initialize());
+		Population solutions = new Population(generator.initialize(sampleSize));
 		evaluateAll(solutions);
 		archive.addAll(solutions);
 	}

@@ -22,6 +22,8 @@ import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variable;
 import org.moeaframework.core.Variation;
+import org.moeaframework.core.configuration.Prefix;
+import org.moeaframework.core.configuration.Property;
 import org.moeaframework.core.variable.RealVariable;
 
 /**
@@ -45,6 +47,7 @@ import org.moeaframework.core.variable.RealVariable;
  *       Technical Report No. IITK/ME/SMD-94027, 1994.
  * </ol>
  */
+@Prefix("sbx")
 public class SBX implements Variation {
 
 	/**
@@ -98,8 +101,7 @@ public class SBX implements Variation {
 	 * @param swap if {@code true}, randomly swap the variables between the two parents
 	 * @param symmetric if {@code true}, symmetric distrubutions are used
 	 */
-	public SBX(double probability, double distributionIndex, boolean swap,
-			boolean symmetric) {
+	public SBX(double probability, double distributionIndex, boolean swap, boolean symmetric) {
 		super();
 		this.probability = probability;
 		this.distributionIndex = distributionIndex;
@@ -126,6 +128,7 @@ public class SBX implements Variation {
 	 * 
 	 * @param probability the probability (0.0 - 1.0)
 	 */
+	@Property("rate")
 	public void setProbability(double probability) {
 		this.probability = probability;
 	}
@@ -144,6 +147,7 @@ public class SBX implements Variation {
 	 * 
 	 * @param distributionIndex the distribution index
 	 */
+	@Property("distributionIndex")
 	public void setDistributionIndex(double distributionIndex) {
 		this.distributionIndex = distributionIndex;
 	}
@@ -164,6 +168,7 @@ public class SBX implements Variation {
 	 * 
 	 * @param swap {@code true} if this SBX operator swaps variables between the two parents
 	 */
+	@Property
 	public void setSwap(boolean swap) {
 		this.swap = swap;
 	}
@@ -185,6 +190,7 @@ public class SBX implements Variation {
 	 * @param symmetric {@code true} if the offspring are distributed symmetrically; or
 	 *         {@code false} if asymmetric distributions are used
 	 */
+	@Property
 	public void setSymmetric(boolean symmetric) {
 		this.symmetric = symmetric;
 	}
@@ -204,8 +210,7 @@ public class SBX implements Variation {
 				Variable variable1 = result1.getVariable(i);
 				Variable variable2 = result2.getVariable(i);
 
-				if (PRNG.nextBoolean() && (variable1 instanceof RealVariable)
-						&& (variable2 instanceof RealVariable)) {
+				if (PRNG.nextBoolean() && (variable1 instanceof RealVariable) && (variable2 instanceof RealVariable)) {
 					if (symmetric) {
 						evolve_symmetric((RealVariable)variable1,
 								(RealVariable)variable2, distributionIndex,

@@ -114,10 +114,10 @@ public class RotatedProblemsTest {
 	}
 	
 	private void assertEquals(Problem problemA, Problem problemB) {
-		Initialization initialization = new RandomInitialization(problemA, 1);
+		Initialization initialization = new RandomInitialization(problemA);
 
 		for (int i=0; i<TestThresholds.SAMPLES; i++) {
-			Solution solutionA = initialization.initialize()[0];
+			Solution solutionA = initialization.initialize(1)[0];
 			Solution solutionB = solutionA.copy();
 			
 			problemA.evaluate(solutionA);
@@ -130,10 +130,10 @@ public class RotatedProblemsTest {
 	}
 	
 	private void assertNotEquals(Problem problemA, Problem problemB) {
-		Initialization initialization = new RandomInitialization(problemA, 1);
+		Initialization initialization = new RandomInitialization(problemA);
 
 		for (int i=0; i<TestThresholds.SAMPLES; i++) {
-			Solution solutionA = initialization.initialize()[0];
+			Solution solutionA = initialization.initialize(1)[0];
 			Solution solutionB = solutionA.copy();
 			
 			problemA.evaluate(solutionA);

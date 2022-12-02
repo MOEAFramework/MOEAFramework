@@ -48,7 +48,7 @@ public class ChainedComparator implements DominanceComparator, Serializable {
 	/**
 	 * The comparators in the order they are to be applied.
 	 */
-	private DominanceComparator[] comparators;
+	protected DominanceComparator[] comparators;
 
 	/**
 	 * Constructs a chained comparator for applying the specified comparators in

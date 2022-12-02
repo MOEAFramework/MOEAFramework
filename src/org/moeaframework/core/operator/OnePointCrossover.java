@@ -21,12 +21,15 @@ import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variable;
 import org.moeaframework.core.Variation;
+import org.moeaframework.core.configuration.Prefix;
+import org.moeaframework.core.configuration.Property;
 
 /**
  * One-point or single-point crossover. A crossover point is selected and all
  * decision variables to the left/right are swapped between the two parents. The
  * two children resulting from this swapping are returned.
  */
+@Prefix("1x")
 public class OnePointCrossover implements Variation {
 
 	/**
@@ -70,6 +73,7 @@ public class OnePointCrossover implements Variation {
 	 * 
 	 * @param probability the probability between 0.0 and 1.0, inclusive
 	 */
+	@Property("rate")
 	public void setProbability(double probability) {
 		this.probability = probability;
 	}

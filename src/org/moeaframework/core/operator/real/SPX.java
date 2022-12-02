@@ -19,6 +19,8 @@ package org.moeaframework.core.operator.real;
 
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.configuration.Prefix;
+import org.moeaframework.core.configuration.Property;
 import org.moeaframework.core.variable.RealVariable;
 
 /**
@@ -42,6 +44,7 @@ import org.moeaframework.core.variable.RealVariable;
  * Solving from Nature PPSN VI, pp. 365-374, 2000.
  * </ol>
  */
+@Prefix("spx")
 public class SPX extends MultiParentVariation {
 
 	/**
@@ -177,6 +180,7 @@ public class SPX extends MultiParentVariation {
 	 * 
 	 * @param epsilon the expansion rate
 	 */
+	@Property
 	public void setEpsilon(double epsilon) {
 		this.epsilon = epsilon;
 	}
