@@ -5,8 +5,25 @@ This page documents notable changes introduced in each chronological release of 
 
 ## Version 3.2 (TBD)
 
+  * Adds simple constructors for all built-in algorithms and getters / setters for configuration:
+    ```java
+    Problem problem = new DTLZ2(2);
+    
+    NSGAII algorithm = new NSGAII(problem);
+    algorithm.setInitialPopulationSize(250);
+    algorithm.run(10000);
+    
+    NondominatedPopulation result = algorithm.getResult();
+    ```
+    
+  * Adds Configurable interface to built-in algorithms to get and/or set settings:
+    ```java
+    algorithm.getConfiguration().display();
+    ```
+
   * Removes JMetal as a required dependency at runtime.  Not only does this reduce the jar file size by
-    ~20 MBs, it removes overlapping class names shared by both libraries.
+    ~20 MBs, it removes overlapping class names shared by both libraries.  It is now available as
+    an extension library (see below).
     
   * Set up the following repos and add documentation for these extensions:
   

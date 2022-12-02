@@ -213,17 +213,7 @@ public class CMAES extends AbstractAlgorithm implements Configurable {
 	 * @param problem the problem to optimize
 	 */
 	public CMAES(Problem problem) {
-		this(problem, Settings.DEFAULT_POPULATION_SIZE);
-	}
-	
-	/**
-	 * Constructs a new CMA-ES instance using default parameters.
-	 *
-	 * @param problem the problem to optimize
-	 * @param lambda the offspring population size
-	 */
-	public CMAES(Problem problem, int lambda) {
-		this(problem, lambda, null, new NondominatedPopulation());
+		this(problem, Settings.DEFAULT_POPULATION_SIZE, null, new NondominatedPopulation());
 	}
 	
 	/**

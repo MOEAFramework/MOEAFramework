@@ -44,8 +44,8 @@ import org.moeaframework.core.spi.OperatorFactory;
  * References:
  * <ol>
  *   <li>Sanghamitra Bandyopadhyay, Sriparna Saha, Ujjwal Maulik, Kalyanmoy Deb(2008).
- *   A Simulated Annealing-Based Multiobjective Optimization Algorithm: AMOSA.
- *   IEEE Transactions on Evolutionary Computation, vol. 12, no. 3, pp. 269-283.
+ *       A Simulated Annealing-Based Multiobjective Optimization Algorithm: AMOSA.
+ *       IEEE Transactions on Evolutionary Computation, vol. 12, no. 3, pp. 269-283.
  * </ol>
  * 
  * @preview
@@ -55,13 +55,13 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 	protected final Initialization initialization;
 	protected Mutation mutation;
 	
-	protected final double gamma;
-	protected final int softLimit;
-	protected final int hardLimit;
+	protected double gamma;
+	protected int softLimit;
+	protected int hardLimit;
 	
-	protected final double alpha;
-	protected final int numberOfIterationsPerTemperature;
-	protected final int numberOfHillClimbingIterationsForRefinement;
+	protected double alpha;
+	protected int numberOfIterationsPerTemperature;
+	protected int numberOfHillClimbingIterationsForRefinement;
 	
 	protected Solution currentPT;
 	protected NondominatedPopulation archive;
@@ -73,17 +73,17 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 				2.0, // gamma
 				Settings.DEFAULT_POPULATION_SIZE, // softLimit
 				10, // hardLimit
-				0.0000001, // tMin
-				200.0, // tMax
+				0.0000001, // stoppingTemperature
+				200.0, // initialTemperature
 				0.8, // alpha
 				500, // numberOfIterationPerTemperature
 				20); //numberOfHillClimbingIterationsForRefinement
 	}
 	
 	public AMOSA(Problem problem, Initialization initialization, Mutation mutation, double gamma, int softLimit,
-			int hardLimit, double tMin, double tMax, double alpha, int numberOfIterationsPerTemperature,
-			int numberOfHillClimbingIterationsForRefinement) {
-		super(problem,tMin,tMax);
+			int hardLimit, double stoppingTemperature, double initialTemperature, double alpha,
+			int numberOfIterationsPerTemperature, int numberOfHillClimbingIterationsForRefinement) {
+		super(problem, stoppingTemperature, initialTemperature);
 		this.initialization = initialization;
 		this.mutation = mutation;
 		this.gamma = gamma;
@@ -95,6 +95,146 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 		this.archive = new NondominatedPopulation();
 	}
 	
+	/**
+	 * Returns the gamma value.
+	 * 
+	 * @return the gamma value
+	 */
+	public double getGamma() {
+		return gamma;
+	}
+
+	/**
+	 * Sets the value of gamma, which determines the number of random solutions generated to fill the
+	 * initial population.  This value must be >= 1 and is typically set to 2.
+	 * 
+	 * @param gamma the gamma value
+	 */
+	@Property
+	public void setGamma(double gamma) {
+		gamma = gamma < 1.0d ? 2.0d : gamma;
+		this.gamma = gamma;
+	}
+
+	/**
+	 * Returns the soft limit.
+	 * 
+	 * @return the soft limit
+	 */
+	public int getSoftLimit() {
+		return softLimit;
+	}
+	
+	/**
+	 * Sets the soft limit, which controls the maximum size that the archive can be filled before clustering is used
+	 * to reduce the size to the hard limit.
+	 * 
+	 * @param softLimit the soft limit
+	 */
+	@Property(synonym="SL")
+	public void setSoftLimit(int softLimit) {
+		this.softLimit = softLimit;
+	}
+
+	/**
+	 * Returns the hard limit.
+	 * 
+	 * @return the hard limit
+	 */
+	public int getHardLimit() {
+		return hardLimit;
+	}
+	
+	/**
+	 * Sets the hard limit, which controls the maximum size of the archive or result set at termination.
+	 * 
+	 * @param hardLimit the hard limit
+	 */
+	@Property(synonym="HL")
+	public void setHardLimit(int hardLimit) {
+		this.hardLimit = hardLimit;
+	}
+	
+	/**
+	 * Returns the mutation operator.
+	 * 
+	 * @return the mutation operator
+	 */
+	public Mutation getMutation() {
+		return mutation;
+	}
+	
+	/**
+	 * Sets the mutation operator.
+	 * 
+	 * @param mutation the mutation operator
+	 */
+	@Property("operator")
+	public void setMutation(Mutation mutation) {
+		this.mutation = mutation;
+	}
+
+	/**
+	 * Returns the cooling rate.
+	 * 
+	 * @return the cooling rate
+	 */
+	public double getAlpha() {
+		return alpha;
+	}
+
+	/**
+	 * Sets the cooling rate.  When combined with {@link #setNumberOfIterationsPerTemperature(int)}, this
+	 * controls the rate at which the temperature decreases.
+	 * 
+	 * @param alpha the cooling rate
+	 */
+	@Property
+	public void setAlpha(double alpha) {
+		this.alpha = alpha;
+	}
+
+	/**
+	 * Returns the number of iterations performed at each temperature.  Note that all iterations for the same
+	 * temperature are evaluated in a single call to {@link #step()}.
+	 * 
+	 * @return the number of iterations
+	 */
+	public int getNumberOfIterationsPerTemperature() {
+		return numberOfIterationsPerTemperature;
+	}
+
+	/**
+	 * Sets the number of iterations performed at each temperature.
+	 * 
+	 * @param numberOfIterationsPerTemperature the number of iterations
+	 */
+	@Property(synonym="iter")
+	public void setNumberOfIterationsPerTemperature(int numberOfIterationsPerTemperature) {
+		this.numberOfIterationsPerTemperature = numberOfIterationsPerTemperature;
+	}
+
+	/**
+	 * Returns the number of hill climbing iterations for refinement.
+	 * 
+	 * @return the number of iterations
+	 */
+	public int getNumberOfHillClimbingIterationsForRefinement() {
+		return numberOfHillClimbingIterationsForRefinement;
+	}
+
+	/**
+	 * Sets the number of hill climbing iterations to refine initial solutions.  This is only performed during
+	 * initialization and, as such, this value can only be set before initialization.
+	 * 
+	 * @param numberOfHillClimbingIterationsForRefinement the number of iterations
+	 */
+	@Property(synonym="hillClimbIter")
+	public void setNumberOfHillClimbingIterationsForRefinement(int numberOfHillClimbingIterationsForRefinement) {
+		assertNotInitialized();
+		this.numberOfHillClimbingIterationsForRefinement = numberOfHillClimbingIterationsForRefinement;
+	}
+
 	@Override
 	public void initialize() {
 		super.initialize();
@@ -124,13 +264,12 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 		}
 		
 		currentPT = archive.get(PRNG.nextInt(archive.size()));
-		this.temperature = tMax;
+		this.temperature = initialTemperature;
 	}
-	
 
 	@Override
 	protected void iterate() {
-		if (temperature >= tMin) {
+		if (temperature >= stoppingTemperature) {
 			for (int i=0; i < this.numberOfIterationsPerTemperature; i++) {
 				DominanceComparator comparator = new ParetoDominanceComparator();
 				Solution newPT = mutation.mutate(currentPT);
@@ -149,7 +288,7 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 					if (PRNG.nextDouble() < probability) {
 						this.currentPT=newPT;
 					}
-				}else if(comparisonResult == 0) {	// Case 2 : currentPt and newPT are non-dominating to each other
+				} else if(comparisonResult == 0) {	// Case 2 : currentPt and newPT are non-dominating to each other
 					DominationAmount dominationAmount = calculateDominationAmounts(newPT,comparator);
 					
 					if (dominationAmount.getDominatedAmount() > 0) {   // Case 2(a) : newPT is dominated by k(k>=1) points in the archive

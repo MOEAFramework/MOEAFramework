@@ -19,6 +19,8 @@ package org.moeaframework.util;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.io.Writer;
 import java.lang.reflect.Array;
 import java.util.Properties;
@@ -29,6 +31,7 @@ import java.util.TreeSet;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.moeaframework.core.configuration.ConfigurationException;
+import org.moeaframework.util.io.CommentedLineReader;
 
 /**
  * Stores a collection of key-value pairs similar to {@link Properties} but has support for
@@ -847,6 +850,25 @@ public class TypedProperties {
 		properties.putAll(this.properties);
 		
 		properties.store(writer, null);
+	}
+	
+	/**
+	 * Prints the properties to standard output.
+	 * 
+	 * @throws IOException if an I/O error occurred
+	 */
+	public void display() throws IOException {
+		try (StringWriter stringBuffer = new StringWriter()) {
+			store(stringBuffer);
+		
+			try (CommentedLineReader reader = new CommentedLineReader(new StringReader(stringBuffer.toString()))) {
+				String line = null;
+				
+				while ((line = reader.readLine()) != null) {
+					System.out.println(line);
+				}
+			}
+		}
 	}
 	
 	/**

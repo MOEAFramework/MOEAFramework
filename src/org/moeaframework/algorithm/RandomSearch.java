@@ -22,6 +22,7 @@ import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
+import org.moeaframework.core.configuration.Configurable;
 import org.moeaframework.core.configuration.Property;
 import org.moeaframework.core.operator.RandomInitialization;
 
@@ -30,8 +31,11 @@ import org.moeaframework.core.operator.RandomInitialization;
  * to generate random solutions, which are evaluated and all non-dominated
  * solutions retained.  The result is the set of all non-dominated solutions.
  */
-public class RandomSearch extends AbstractAlgorithm {
+public class RandomSearch extends AbstractAlgorithm implements Configurable {
 	
+	/**
+	 * The number of solutions sampled each iteration.
+	 */
 	private int sampleSize;
 	
 	/**

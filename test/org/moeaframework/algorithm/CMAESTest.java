@@ -59,7 +59,7 @@ public class CMAESTest {
 
 		};
 
-		CMAES cmaes = new CMAES(problem, 100);
+		CMAES cmaes = new CMAES(problem);
 
 		for (int i = 0; i < 100; i++) {
 			cmaes.step();
@@ -71,7 +71,7 @@ public class CMAESTest {
 	@Test
 	public void testMultiObjective() {
 		Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
-		CMAES cmaes = new CMAES(problem, 100);
+		CMAES cmaes = new CMAES(problem);
 
 		for (int i = 0; i < 100; i++) {
 			cmaes.step();

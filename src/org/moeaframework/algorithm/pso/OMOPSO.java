@@ -107,14 +107,14 @@ public class OMOPSO extends AbstractPSOAlgorithm {
 		return uniformMutation.getProbability();
 	}
 	
-	public double getPerturbationIndex() {
-		return uniformMutation.perturbationIndex;
-	}
-	
 	@Property
 	public void setMutationProbability(double mutationProbability) {
 		uniformMutation.setProbability(mutationProbability);
 		nonUniformMutation.setProbability(mutationProbability);
+	}
+	
+	public double getPerturbationIndex() {
+		return uniformMutation.perturbationIndex;
 	}
 	
 	@Property
@@ -130,6 +130,10 @@ public class OMOPSO extends AbstractPSOAlgorithm {
 	
 	protected void setArchive(EpsilonBoxDominanceArchive archive) {
 		super.setArchive(archive);
+	}
+	
+	protected void setMaxIterations(int maxIterations) {
+		nonUniformMutation.maxIterations = maxIterations;
 	}
 	
 	@Override
@@ -164,7 +168,7 @@ public class OMOPSO extends AbstractPSOAlgorithm {
 		
 		private double perturbationIndex;
 		
-		private final int maxIterations;
+		private int maxIterations;
 		
 		public NonUniformMutation(double probability, double perturbationIndex, int maxIterations) {
 			super(RealVariable.class, probability);

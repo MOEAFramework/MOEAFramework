@@ -123,7 +123,7 @@ public class OperatorFactory extends AbstractFactory<OperatorProvider> {
 	 * @return an instance of the mutation operator
 	 */
 	public Mutation getMutation(Problem problem) {
-		return getMutation(new TypedProperties(), problem);
+		return getMutation(null, new TypedProperties(), problem);
 	}
 	
 	/**
@@ -133,17 +133,19 @@ public class OperatorFactory extends AbstractFactory<OperatorProvider> {
 	 * @param problem the problem
 	 * @return an instance of the mutation operator
 	 */
-	public Mutation getMutation(TypedProperties properties, Problem problem) {
-		String operator = properties.getString("operator", null);
-		
-		if (operator == null) {
-			operator = lookupMutationHint(problem);
+	public Mutation getMutation(String name, TypedProperties properties, Problem problem) {
+		if (name == null) {
+			name = properties.getString("operator", null);
 		}
 		
-		Variation variation = getVariation(operator, properties, problem);
+		if (name == null) {
+			name = lookupMutationHint(problem);
+		}
+		
+		Variation variation = getVariation(name, properties, problem);
 		
 		if (!(variation instanceof Mutation)) {
-			throw new ProviderLookupException("the operator '" + operator + "' is not a mutation operator");
+			throw new ProviderLookupException("the operator '" + name + "' is not a mutation operator");
 		}
 		
 		return (Mutation)variation;
