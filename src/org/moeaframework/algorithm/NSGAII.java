@@ -40,6 +40,7 @@ import org.moeaframework.core.configuration.Property;
 import org.moeaframework.core.operator.RandomInitialization;
 import org.moeaframework.core.operator.TournamentSelection;
 import org.moeaframework.core.spi.OperatorFactory;
+import org.moeaframework.util.TypedProperties;
 
 /**
  * Implementation of NSGA-II, with the ability to attach an optional &epsilon;-dominance archive.
@@ -61,7 +62,7 @@ public class NSGAII extends AbstractEvolutionaryAlgorithm implements EpsilonBoxE
 	 * tournament selection without replacement, replicating the behavior of the
 	 * original NSGA-II implementation.
 	 */
-	private final Selection selection;
+	private Selection selection;
 	
 	/**
 	 * Constructs the NSGA-II algorithm with default settings.
@@ -179,6 +180,28 @@ public class NSGAII extends AbstractEvolutionaryAlgorithm implements EpsilonBoxE
 	@Override
 	public NondominatedSortingPopulation getPopulation() {
 		return (NondominatedSortingPopulation)super.getPopulation();
+	}
+
+	@Override
+	public void applyConfiguration(TypedProperties properties) {
+		if (properties.contains("withReplacement")) {
+			if (!properties.getBoolean("withReplacement", true)) {
+				selection = null;
+			}
+		}
+		
+		super.applyConfiguration(properties);
+	}
+
+	@Override
+	public TypedProperties getConfiguration() {
+		TypedProperties properties = super.getConfiguration();
+		
+		if (selection == null) {
+			properties.setBoolean("withReplacement", false);
+		}
+		
+		return properties;
 	}
 
 }

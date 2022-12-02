@@ -141,7 +141,16 @@ public class ConfigurationUtils {
 		if (double.class.isAssignableFrom(parameterType)) {
 			value = properties.getDouble(propertyName, 0.0);
 		} else if (int.class.isAssignableFrom(parameterType)) {
-			value = properties.getInt(propertyName, 0);
+			try {
+				value = properties.getInt(propertyName, 0);
+			} catch (NumberFormatException e) {
+				// TODO: In the past, we have allowed automatic conversion from double to int.  This handles that
+				// conversion, but I would like to discontinue this practice.
+				value = (int)properties.getDouble(propertyName, 0.0);
+				
+				System.err.println(propertyName + " given as floating-point but expected an int, converting " +
+						properties.getString(propertyName, "") + " to " + value);
+			}
 		} else if (boolean.class.isAssignableFrom(parameterType)) {
 			value = properties.getBoolean(propertyName, false);
 		} else if (String.class.isAssignableFrom(parameterType)) {
