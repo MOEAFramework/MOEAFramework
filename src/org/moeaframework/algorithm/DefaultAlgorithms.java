@@ -27,12 +27,8 @@ import org.moeaframework.algorithm.single.EvolutionStrategy;
 import org.moeaframework.algorithm.single.GeneticAlgorithm;
 import org.moeaframework.algorithm.single.RepeatedSingleObjective;
 import org.moeaframework.core.Algorithm;
-import org.moeaframework.core.Initialization;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.configuration.Configurable;
-import org.moeaframework.core.operator.Mutation;
-import org.moeaframework.core.operator.RandomInitialization;
-import org.moeaframework.core.spi.OperatorFactory;
 import org.moeaframework.core.spi.RegisteredAlgorithmProvider;
 import org.moeaframework.util.TypedProperties;
 
@@ -50,10 +46,11 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 		super();
 		
 		// multi-objective
+		register(fromProblem(AMOSA::new), "AMOSA");
 		register(fromProblem(CMAES::new), "CMA-ES", "CMAES", "MO-CMA-ES");
 		register(fromProblem(DBEA::new), "DBEA", "I-DBEA");
-		register(fromProblem(EpsilonMOEA::new), "eMOEA", "e-MOEA");
-		register(fromProblem(EpsilonNSGAII::new), "eNSGAII", "e-NSGA-II", "eNSGA2");
+		register(fromProblem(EpsilonMOEA::new), "eMOEA", "e-MOEA", "EpsilonMOEA");
+		register(fromProblem(EpsilonNSGAII::new), "eNSGAII", "e-NSGA-II", "eNSGA2", "EpsilonNSGAII");
 		register(fromProblem(GDE3::new), "GDE3");
 		register(fromProblem(IBEA::new), "IBEA");
 		register(fromProblem(MOEAD::new), "MOEAD", "MOEA/D");
@@ -76,7 +73,6 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 		register(fromProblem(EvolutionStrategy::new), "EvolutionStrategy", "EvolutionaryStrategy", "ES");
 		
 		// special cases
-		register(this::newAMOSA, "AMOSA");
 		register(this::newRSO, "RSO");
 	}
 	
@@ -147,33 +143,6 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 		}
 
 		return new RepeatedSingleObjective(problem, instances, algorithmName, properties);
-	}
-
-	private Algorithm newAMOSA(TypedProperties properties, Problem problem) {
-		// to be used at initialization the archive by the size of gamma*SL (default to 100)(gamma > 1)
-		double gamma = properties.getDouble("gamma", 2.0d);
-		gamma = gamma < 1.0d ? 2.0d : gamma;
-			
-		// Soft Limit SL (default to 100)
-		int softLimit = properties.getInt("SL", 100);
-			
-		// Hard Limit HL (default to 10)
-		int hardLimit = properties.getInt("HL", 10);
-
-		double tMin = properties.getDouble("tMin", 0.0000001d);
-		double tMax = properties.getDouble("tMax", 200d);
-		double alpha = properties.getDouble("alpha", 0.8d);
-		int numberOfIterationPerTemperature = properties.getInt("iter", 500);
-		int numberOfHillClimbingIterationsForRefinement = properties.getInt("hillClimbIter", 20);
-			
-		// Initialize the algorithm with randomly-generated solutions
-		Initialization initialization = new RandomInitialization(problem);
-			
-		// Use the operator factory that problem provides
-		Mutation mutation = OperatorFactory.getInstance().getMutation(properties, problem);
-
-		return new AMOSA(problem, initialization, mutation, gamma, softLimit, hardLimit, tMin, tMax,
-				alpha, numberOfIterationPerTemperature, numberOfHillClimbingIterationsForRefinement);
 	}
 	
 }

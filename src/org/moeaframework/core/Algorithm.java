@@ -57,7 +57,11 @@ public interface Algorithm {
 	public void step();
 	
 	/**
-	 * Executes this algorithm for the given number of function evaluations.
+	 * Executes this algorithm, terminating when it reaches a target number of function
+	 * evaluations.  Please note that algorithms may have additional termination
+	 * conditions that could cause this method to return before reaching the target
+	 * number of evaluations.  Use {@link #getNumberOfEvaluations()} to verify the
+	 * actual number of evaluations.
 	 * 
 	 * @param evaluations the number of function evaluations
 	 */

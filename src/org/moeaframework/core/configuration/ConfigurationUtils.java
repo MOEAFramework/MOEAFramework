@@ -26,6 +26,7 @@ import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Variation;
+import org.moeaframework.core.operator.Mutation;
 import org.moeaframework.core.spi.OperatorFactory;
 import org.moeaframework.util.TypedProperties;
 
@@ -138,9 +139,9 @@ public class ConfigurationUtils {
 		Class<?> parameterType = method.getParameterTypes()[0];
 		Object value = null;
 
-		if (double.class.isAssignableFrom(parameterType)) {
+		if (parameterType.isAssignableFrom(double.class)) {
 			value = properties.getDouble(propertyName, 0.0);
-		} else if (int.class.isAssignableFrom(parameterType)) {
+		} else if (parameterType.isAssignableFrom(int.class)) {
 			try {
 				value = properties.getInt(propertyName, 0);
 			} catch (NumberFormatException e) {
@@ -151,11 +152,18 @@ public class ConfigurationUtils {
 				System.err.println(propertyName + " given as floating-point but expected an int, converting " +
 						properties.getString(propertyName, "") + " to " + value);
 			}
-		} else if (boolean.class.isAssignableFrom(parameterType)) {
+		} else if (parameterType.isAssignableFrom(boolean.class)) {
 			value = properties.getBoolean(propertyName, false);
-		} else if (String.class.isAssignableFrom(parameterType)) {
+		} else if (parameterType.isAssignableFrom(String.class)) {
 			value = properties.getString(propertyName, null);
-		} else if (Variation.class.isAssignableFrom(parameterType)) {
+		} else if (parameterType.isAssignableFrom(Mutation.class)) {
+			if (problem == null) {
+				throw new ConfigurationException("must provide problem if setting mutation operator");
+			}
+			
+			String operator = properties.getString(propertyName, null);
+			value = OperatorFactory.getInstance().getMutation(operator, properties, problem);
+		} else if (parameterType.isAssignableFrom(Variation.class)) {
 			if (problem == null) {
 				throw new ConfigurationException("must provide problem if setting variation operator");
 			}

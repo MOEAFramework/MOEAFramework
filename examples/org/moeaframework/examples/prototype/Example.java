@@ -17,12 +17,18 @@ public class Example {
 		Problem problem = new DTLZ2(2);
 		
 		NSGAII algorithm = new NSGAII(problem);
+		algorithm.setInitialPopulationSize(250);
+		
+		System.out.println("Configuration:");
+		algorithm.getConfiguration().display();
+		
 		algorithm.run(10000);
 
 		NondominatedPopulation result = algorithm.getResult();
 		
 		//display the results
-		System.out.format("Objective1  Objective2%n");
+		System.out.println();
+		System.out.println("Objective1  Objective2");
 		
 		for (Solution solution : result) {
 			System.out.format("%.4f      %.4f%n",
