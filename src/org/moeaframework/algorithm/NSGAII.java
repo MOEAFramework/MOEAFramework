@@ -176,6 +176,10 @@ public class NSGAII extends AbstractEvolutionaryAlgorithm implements EpsilonBoxE
 	public EpsilonBoxDominanceArchive getArchive() {
 		return (EpsilonBoxDominanceArchive)super.getArchive();
 	}
+	
+	public void setArchive(EpsilonBoxDominanceArchive archive) {
+		super.setArchive(archive);
+	}
 
 	@Override
 	public NondominatedSortingPopulation getPopulation() {

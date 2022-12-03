@@ -26,6 +26,7 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variable;
 import org.moeaframework.core.Variation;
+import org.moeaframework.core.configuration.ConfigurationException;
 import org.moeaframework.core.operator.DefaultOperators;
 import org.moeaframework.core.operator.RandomInitialization;
 import org.moeaframework.core.variable.BinaryIntegerVariable;
@@ -57,10 +58,16 @@ public class OperatorFactoryTest {
 		for (String operator : new DefaultOperators().getTestableOperators()) {
 			System.out.println("Testing " + operator);
 			
-			Variation variation = OperatorFactory.getInstance().getVariation(
-					operator, new TypedProperties(), problem);
-			
-			test(variation);
+			try {
+				Variation variation = OperatorFactory.getInstance().getVariation(
+						operator, new TypedProperties(), problem);
+				test(variation);
+			} catch (ConfigurationException e) {
+				// this operator is renamed and displays an error
+				if (!operator.equalsIgnoreCase("bx")) {
+					throw e;
+				}
+			}
 		}
 	}
 	
