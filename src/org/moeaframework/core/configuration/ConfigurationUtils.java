@@ -48,6 +48,7 @@ public class ConfigurationUtils {
 	
 	public static void applyConfiguration(TypedProperties properties, Configurable object, Problem problem) {
 		Class<?> type = object.getClass();
+		Prefix prefix = type.getAnnotation(Prefix.class);
 
 		// process properties defined in this class
 		for (Method method : MethodUtils.getMethodsWithAnnotation(type, Property.class, false, false)) {
@@ -58,6 +59,10 @@ public class ConfigurationUtils {
 				String propertyName = property.value().isEmpty() ?
 						WordUtils.uncapitalize(methodName.substring(3)) :
 						property.value();
+				
+				if (prefix != null && !prefix.value().isEmpty()) {
+					propertyName = prefix.value() + "." + propertyName;
+				}
 
 				ConfigurationUtils.applyValue(properties, propertyName, property.synonym(), method, object, problem);
 			} else {
@@ -87,8 +92,8 @@ public class ConfigurationUtils {
 		for (Method method : MethodUtils.getMethodsWithAnnotation(type, Property.class, false, false)) {
 			String methodName = method.getName();
 			Property property = method.getAnnotation(Property.class);
-			
-			if (methodName.startsWith("set") && method.getParameterCount() == 1) {
+
+			if (isSetter(method)) {
 				String propertyName = property.value().isEmpty() ?
 						WordUtils.uncapitalize(methodName.substring(3)) :
 						property.value();
@@ -145,7 +150,7 @@ public class ConfigurationUtils {
 			try {
 				value = properties.getInt(propertyName, 0);
 			} catch (NumberFormatException e) {
-				// TODO: In the past, we have allowed automatic conversion from double to int.  This handles that
+				// TODO: In the past, we have allowed reading most int parameters as doubles.  This handles that
 				// conversion, but I would like to discontinue this practice.
 				value = (int)properties.getDouble(propertyName, 0.0);
 				

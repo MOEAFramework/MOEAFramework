@@ -17,6 +17,12 @@
  */
 package org.moeaframework.core.operator;
 
+import java.util.function.BiFunction;
+import java.util.function.Supplier;
+
+import org.moeaframework.core.Problem;
+import org.moeaframework.core.Variation;
+import org.moeaframework.core.configuration.Configurable;
 import org.moeaframework.core.operator.binary.BitFlip;
 import org.moeaframework.core.operator.binary.HUX;
 import org.moeaframework.core.operator.grammar.GrammarCrossover;
@@ -45,6 +51,7 @@ import org.moeaframework.core.variable.Permutation;
 import org.moeaframework.core.variable.Program;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.core.variable.Subset;
+import org.moeaframework.util.TypedProperties;
 
 /**
  * Default provider of operators.
@@ -68,92 +75,59 @@ public class DefaultOperators extends RegisteredOperatorProvider {
 		setVariationHint(Program.class, "bx+ptm");
 		setVariationHint(Subset.class, "ssx+replace+add+remove");
 		
-		register("sbx", (properties, problem) -> new SBX(
-				properties.getDouble("sbx.rate", 1.0), 
-				properties.getDouble("sbx.distributionIndex", 15.0),
-				properties.getBoolean("sbx.swap", true),
-				properties.getBoolean("sbx.symmetric", false)));
-		
+		// real
+		registerConfigurable("sbx", SBX::new);
+		registerConfigurable("de", DifferentialEvolutionVariation::new);
+		registerConfigurable("pcx", PCX::new);
+		registerConfigurable("spx", SPX::new);
+		registerConfigurable("undx", UNDX::new);
+		registerConfigurable("am", AdaptiveMetropolis::new);
+
+		// these are two special cases where we have historically set the default rate to 1/N
 		register("pm", (properties, problem) -> new PM(
 				properties.getDouble("pm.rate", 1.0 / problem.getNumberOfVariables()), 
 				properties.getDouble("pm.distributionIndex", 20.0)));
 		
-		register("de", (properties, problem) -> new DifferentialEvolutionVariation(
-				properties.getDouble("de.crossoverRate", 0.1), 
-				properties.getDouble("de.stepSize", 0.5)));
-		
-		register("pcx", (properties, problem) -> new PCX(
-				(int)properties.getDouble("pcx.parents", 10),
-				(int)properties.getDouble("pcx.offspring", 2), 
-				properties.getDouble("pcx.eta", 0.1), 
-				properties.getDouble("pcx.zeta", 0.1)));
-		
-		register("spx", (properties, problem) -> new SPX(
-				(int)properties.getDouble("spx.parents", 10),
-				(int)properties.getDouble("spx.offspring", 2),
-				properties.getDouble("spx.epsilon", 3)));
-		
-		register("undx", (properties, problem) -> new UNDX(
-				(int)properties.getDouble("undx.parents", 10),
-				(int)properties.getDouble("undx.offspring", 2), 
-				properties.getDouble("undx.zeta", 0.5), 
-				properties.getDouble("undx.eta", 0.35)));
-		
 		register("um", (properties, problem) -> new UM(
 					properties.getDouble("um.rate", 1.0 / problem.getNumberOfVariables())));
+				
+		// binary
+		registerConfigurable("hux", HUX::new);
+		registerConfigurable("bf", BitFlip::new);
 		
-		register("am", (properties, problem) -> new AdaptiveMetropolis(
-				(int)properties.getDouble("am.parents", 10),
-				(int)properties.getDouble("am.offspring", 2), 
-				properties.getDouble("am.coefficient", 2.4)));
+		// permutation
+		registerConfigurable("pmx", PMX::new);
+		registerConfigurable("insertion", Insertion::new);
+		registerConfigurable("swap", Swap::new);
 		
-		register("hux", (properties, problem) -> new HUX(
-				properties.getDouble("hux.rate", 1.0)));
+		// generic (any type)
+		registerConfigurable("1x", OnePointCrossover::new);
+		registerConfigurable("2x", TwoPointCrossover::new);
+		registerConfigurable("ux", UniformCrossover::new);
 		
-		register("bf", (properties, problem) -> new BitFlip(
-				properties.getDouble("bf.rate", 0.01)));
+		// grammar
+		registerConfigurable("gx", GrammarCrossover::new);
+		registerConfigurable("gm", GrammarMutation::new);
 		
-		register("pmx", (properties, problem) -> new PMX(
-				properties.getDouble("pmx.rate", 1.0)));
+		// program
+		registerConfigurable("ptm", PointMutation::new);
+		registerConfigurable("stx", SubtreeCrossover::new);
 		
-		register("insertion", (properties, problem) -> new Insertion(
-				properties.getDouble("insertion.rate", 0.3)));
+		// subset
+		registerConfigurable("replace", Replace::new);
+		registerConfigurable("add", Add::new);
+		registerConfigurable("remove", Remove::new);
+		registerConfigurable("ssx", SSX::new);
+	}
+	
+	private <T extends Variation & Configurable> void registerConfigurable(String name, Supplier<T> constructor) {
+		BiFunction<TypedProperties, Problem, Variation> callback = (properties, problem) -> {
+			T operator = constructor.get();
+			operator.applyConfiguration(properties);
+			return operator;
+		};
 		
-		register("swap", (properties, problem) -> new Swap(
-				properties.getDouble("swap.rate", 0.3)));
-		
-		register("1x", (properties, problem) -> new OnePointCrossover(
-				properties.getDouble("1x.rate", 1.0)));
-		
-		register("2x", (properties, problem) -> new TwoPointCrossover(
-				properties.getDouble("2x.rate", 1.0)));
-		
-		register("ux", (properties, problem) -> new UniformCrossover(
-				properties.getDouble("ux.rate", 1.0)));
-		
-		register("gx", (properties, problem) -> new GrammarCrossover(
-				properties.getDouble("gx.rate", 1.0)));
-		
-		register("gm", (properties, problem) -> new GrammarMutation(
-				properties.getDouble("gm.rate", 1.0)));
-		
-		register("ptm", (properties, problem) -> new PointMutation(
-				properties.getDouble("ptm.rate", 0.01)));
-		
-		register("bx", (properties, problem) -> new SubtreeCrossover(
-				properties.getDouble("stx.rate", 0.9)));
-		
-		register("replace", (properties, problem) -> new Replace(
-				properties.getDouble("replace.rate", 0.9)));
-		
-		register("add", (properties, problem) -> new Add(
-				properties.getDouble("add.rate", 0.1)));
-		
-		register("remove", (properties, problem) -> new Remove(
-				properties.getDouble("remove.rate", 0.1)));
-		
-		register("ssx", (properties, problem) -> new SSX(
-				properties.getDouble("ssx.rate", 0.3)));
+		super.register(name, callback);
 	}
 
 }
