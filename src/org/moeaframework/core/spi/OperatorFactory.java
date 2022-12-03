@@ -144,7 +144,7 @@ public class OperatorFactory extends AbstractFactory<OperatorProvider> {
 		
 		Variation variation = getVariation(name, properties, problem);
 		
-		if (!(variation instanceof Mutation)) {
+		if (variation != null && !(variation instanceof Mutation)) {
 			throw new ProviderLookupException("the operator '" + name + "' is not a mutation operator");
 		}
 		
@@ -192,6 +192,10 @@ public class OperatorFactory extends AbstractFactory<OperatorProvider> {
 		
 		if (name == null) {
 			name = lookupVariationHint(problem);
+		}
+		
+		if (name == null) {
+			return null;
 		}
 			
 		if (name.contains("+")) {
@@ -263,7 +267,7 @@ public class OperatorFactory extends AbstractFactory<OperatorProvider> {
 			}
 		}
 		
-		throw new ProviderLookupException("unable to find suitable variation operator");
+		return null;
 	}
 	
 	private String lookupVariationHint(Problem problem) {
@@ -275,7 +279,7 @@ public class OperatorFactory extends AbstractFactory<OperatorProvider> {
 			}
 		}
 		
-		throw new ProviderLookupException("unable to find suitable variation operator");
+		return null;
 	}
 	
 }

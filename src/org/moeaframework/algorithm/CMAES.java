@@ -486,7 +486,7 @@ public class CMAES extends AbstractAlgorithm implements Configurable {
 	}
 
 	@Override
-	public void initialize() {
+	protected void initialize() {
 		super.initialize();
 		
 		int N = problem.getNumberOfVariables();

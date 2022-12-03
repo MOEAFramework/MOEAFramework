@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.moeaframework.core.EvolutionaryAlgorithm;
+import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Initialization;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Population;
@@ -106,6 +107,10 @@ public abstract class AbstractEvolutionaryAlgorithm extends AbstractAlgorithm
 	@Override
 	protected void initialize() {
 		super.initialize();
+		
+		if (variation == null) {
+			throw new FrameworkException("no variation operator set, must set one by calling setVariation(...)");
+		}
 
 		Population population = getPopulation();
 		NondominatedPopulation archive = getArchive();

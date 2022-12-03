@@ -355,8 +355,12 @@ public class MOEAD extends AbstractAlgorithm implements Configurable {
 	}
 
 	@Override
-	public void initialize() {
+	protected void initialize() {
 		super.initialize();
+		
+		if (variation == null) {
+			throw new FrameworkException("no variation operator set, must set one by calling setVariation(...)");
+		}
 
 		Solution[] initialSolutions = initialization.initialize(initialPopulationSize);
 		
