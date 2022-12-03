@@ -21,6 +21,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import org.apache.commons.lang3.reflect.MethodUtils;
+import org.apache.commons.lang3.reflect.TypeUtils;
 import org.apache.commons.text.WordUtils;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.FrameworkException;
@@ -64,7 +65,8 @@ public class ConfigurationUtils {
 					propertyName = prefix.value() + "." + propertyName;
 				}
 
-				ConfigurationUtils.applyValue(properties, propertyName, property.synonym(), method, object, problem);
+				ConfigurationUtils.applyValue(properties, prefix, propertyName, property.synonym(), method,
+						object, problem);
 			} else {
 				System.err.println("found @Property annotation on non-setter method " + methodName + " in class " +
 					type.getSimpleName() + ", ignoring");
@@ -98,10 +100,8 @@ public class ConfigurationUtils {
 						WordUtils.uncapitalize(methodName.substring(3)) :
 						property.value();
 				
-				if (prefix != null && !prefix.value().isEmpty()) {
-					propertyName = prefix.value() + "." + propertyName;
-				}
-				
+				propertyName = prefixName(prefix, propertyName);
+
 				Method getter = MethodUtils.getAccessibleMethod(type, "get" + methodName.substring(3));
 				
 				if (getter == null && boolean.class.isAssignableFrom(method.getParameterTypes()[0])) {
@@ -133,9 +133,10 @@ public class ConfigurationUtils {
 		return properties;
 	}
 	
-	private static void applyValue(TypedProperties properties, String propertyName, String[] synonyms,
+	@SuppressWarnings("unchecked")
+	private static void applyValue(TypedProperties properties, Prefix prefix, String propertyName, String[] synonyms,
 			Method method, Configurable object, Problem problem) {
-		propertyName = findPropertyName(properties, propertyName, synonyms);
+		propertyName = findPropertyName(properties, prefix, propertyName, synonyms);
 		
 		if (propertyName == null) {
 			return;
@@ -143,10 +144,15 @@ public class ConfigurationUtils {
 		
 		Class<?> parameterType = method.getParameterTypes()[0];
 		Object value = null;
-
-		if (parameterType.isAssignableFrom(double.class)) {
+		
+		// order widest to shortest
+		if (TypeUtils.isAssignable(double.class, parameterType)) {
 			value = properties.getDouble(propertyName, 0.0);
-		} else if (parameterType.isAssignableFrom(int.class)) {
+		} else if (TypeUtils.isAssignable(float.class, parameterType)) {
+			value = properties.getFloat(propertyName, 0.0f);
+		} else if (TypeUtils.isAssignable(long.class, parameterType)) {
+			value = properties.getLong(propertyName, 0L);
+		} else if (TypeUtils.isAssignable(int.class, parameterType)) {
 			try {
 				value = properties.getInt(propertyName, 0);
 			} catch (NumberFormatException e) {
@@ -157,18 +163,24 @@ public class ConfigurationUtils {
 				System.err.println(propertyName + " given as floating-point but expected an int, converting " +
 						properties.getString(propertyName, "") + " to " + value);
 			}
-		} else if (parameterType.isAssignableFrom(boolean.class)) {
+		} else if (TypeUtils.isAssignable(short.class, parameterType)) {
+			value = properties.getShort(propertyName, (short)0);
+		} else if (TypeUtils.isAssignable(byte.class, parameterType)) {
+			value = properties.getByte(propertyName, (byte)0);
+		} else if (TypeUtils.isAssignable(boolean.class, parameterType)) {
 			value = properties.getBoolean(propertyName, false);
-		} else if (parameterType.isAssignableFrom(String.class)) {
+		} else if (TypeUtils.isAssignable(parameterType, Enum.class)) {
+			value = properties.getEnum(propertyName, (Class<? extends Enum<?>>)parameterType);
+		} else if (TypeUtils.isAssignable(String.class, parameterType)) {
 			value = properties.getString(propertyName, null);
-		} else if (parameterType.isAssignableFrom(Variation.class)) {
+		} else if (TypeUtils.isAssignable(Variation.class, parameterType)) {
 			if (problem == null) {
 				throw new ConfigurationException("must provide problem if setting variation operator");
 			}
 			
 			String operator = properties.getString(propertyName, null);
 			value = OperatorFactory.getInstance().getVariation(operator, properties, problem);
-		} else if (parameterType.isAssignableFrom(Mutation.class)) {
+		} else if (TypeUtils.isAssignable(Mutation.class, parameterType)) {
 			if (problem == null) {
 				throw new ConfigurationException("must provide problem if setting mutation operator");
 			}
@@ -193,15 +205,30 @@ public class ConfigurationUtils {
 		try {
 			Object value = method.invoke(object);
 			
-			if (double.class.isAssignableFrom(parameterType)) {
-				properties.setDouble(propertyName, (double)value);
-			} else if (int.class.isAssignableFrom(parameterType)) {
-				properties.setInt(propertyName, (int)value);
-			} else if (boolean.class.isAssignableFrom(parameterType)) {
+			if (value == null) {
+				return;
+			}
+
+			// order shortest to widest
+			if (TypeUtils.isAssignable(parameterType, boolean.class)) {
 				properties.setBoolean(propertyName, (boolean)value);
-			} else if (String.class.isAssignableFrom(parameterType)) {
+			} else if (TypeUtils.isAssignable(parameterType, byte.class)) {
+				properties.setByte(propertyName, (byte)value);
+			} else if (TypeUtils.isAssignable(parameterType, short.class)) {
+				properties.setShort(propertyName, (short)value);	
+			} else if (TypeUtils.isAssignable(parameterType, int.class)) {
+				properties.setInt(propertyName, (int)value);
+			} else if (TypeUtils.isAssignable(parameterType, long.class)) {
+				properties.setLong(propertyName, (long)value);
+			} else if (TypeUtils.isAssignable(parameterType, float.class)) {
+				properties.setDouble(propertyName, (float)value);
+			} else if (TypeUtils.isAssignable(parameterType, double.class)) {
+				properties.setDouble(propertyName, (double)value);
+			} else if (TypeUtils.isAssignable(parameterType, Enum.class)) {
+				properties.setEnum(propertyName, (Enum<?>)value);
+			} else if (TypeUtils.isAssignable(parameterType, String.class)) {
 				properties.setString(propertyName, (String)value);
-			} else if (Variation.class.isAssignableFrom(parameterType)) {
+			} else if (TypeUtils.isAssignable(parameterType, Variation.class)) {
 				properties.setString(propertyName, ((Variation)value).getName());
 			} else {
 				throw new ConfigurationException("unsupported type " + parameterType + " for property " + propertyName);
@@ -216,18 +243,27 @@ public class ConfigurationUtils {
 		}
 	}
 	
-	private static String findPropertyName(TypedProperties properties, String propertyName, String[] synonyms) {
-		if (properties.contains(propertyName)) {
+	private static String findPropertyName(TypedProperties properties, Prefix prefix, String propertyName,
+			String[] synonyms) {
+		if (properties.contains(prefixName(prefix, propertyName))) {
 			return propertyName;
 		}
 		
 		for (String synonym : synonyms) {
-			if (properties.contains(synonym)) {
+			if (properties.contains(prefixName(prefix, synonym))) {
 				return synonym;
 			}
 		}
 				
 		return null;
+	}
+	
+	private static String prefixName(Prefix prefix, String propertyName) {
+		if (prefix != null && !prefix.value().isEmpty()) {
+			propertyName = prefix.value() + "." + propertyName;
+		}
+		
+		return propertyName;
 	}
 	
 	private static boolean isGetter(Method method, Class<?> returnType) {
