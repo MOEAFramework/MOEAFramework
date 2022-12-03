@@ -4,7 +4,7 @@
 
 * [Release Notes](news.md)
 * [Setup](setup.md)
-* [Quick Example](example.md)
+* [An Example](example.md)
 * [The Executor, Analyzer, and Instrumenter](executor.md)
 * [The Diagnostic Tool](diagnostic.md)
 
