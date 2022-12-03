@@ -5,7 +5,7 @@
 * [Release Notes](news.md)
 * [Setup](setup.md)
 * [An Example](example.md)
-* [The Executor, Analyzer, and Instrumenter](executor.md)
+* [Running Experiments](experiment.md)
 * [The Diagnostic Tool](diagnostic.md)
 
 ## Advanced
