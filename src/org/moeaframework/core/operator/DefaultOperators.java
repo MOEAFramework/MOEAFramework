@@ -23,6 +23,7 @@ import java.util.function.Supplier;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.configuration.Configurable;
+import org.moeaframework.core.configuration.ConfigurationException;
 import org.moeaframework.core.operator.binary.BitFlip;
 import org.moeaframework.core.operator.binary.HUX;
 import org.moeaframework.core.operator.grammar.GrammarCrossover;
@@ -112,6 +113,9 @@ public class DefaultOperators extends RegisteredOperatorProvider {
 		// program
 		registerConfigurable("ptm", PointMutation::new);
 		registerConfigurable("stx", SubtreeCrossover::new);
+		registerConfigurable("bx", () -> {
+			throw new ConfigurationException("use 'stx' instead of 'bx' for subtree crossover");
+		});
 		
 		// subset
 		registerConfigurable("replace", Replace::new);
