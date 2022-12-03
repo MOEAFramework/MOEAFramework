@@ -72,7 +72,7 @@ public class DefaultOperators extends RegisteredOperatorProvider {
 		setVariationHint(BinaryVariable.class, "hux+bf");
 		setVariationHint(Permutation.class, "pmx+insertion+swap");
 		setVariationHint(Grammar.class, "gx+gm");
-		setVariationHint(Program.class, "bx+ptm");
+		setVariationHint(Program.class, "stx+ptm");
 		setVariationHint(Subset.class, "ssx+replace+add+remove");
 		
 		// real
