@@ -148,7 +148,7 @@ public class OMOPSO extends AbstractPSOAlgorithm {
 	@Override
 	public void applyConfiguration(TypedProperties properties) {
 		if (properties.contains("epsilon")) {
-			setArchive(new EpsilonBoxDominanceArchive(properties.getDoubleArray("epsilon", null)));
+			setArchive(new EpsilonBoxDominanceArchive(properties.getDoubleArray("epsilon")));
 		}
 		
 		super.applyConfiguration(properties);

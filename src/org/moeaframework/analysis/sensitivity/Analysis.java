@@ -147,12 +147,7 @@ public class Analysis extends CommandLineUtility {
 		
 		for (int i=0; i<parameterFile.size(); i++) {
 			String name = parameterFile.get(i).getName();
-			
-			if (!properties.contains(name)) {
-				throw new FrameworkException(name + " not defined");
-			}
-			
-			result[i] = properties.getDouble(name, Double.NaN);
+			result[i] = properties.getDouble(name);
 		}
 		
 		return result;

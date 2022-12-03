@@ -152,7 +152,7 @@ public class MSOPS extends AbstractEvolutionaryAlgorithm {
 	@Override
 	public void applyConfiguration(TypedProperties properties) {
 		if (properties.contains("numberOfWeights")) {
-			setPopulation(new MSOPSRankedPopulation(generateWeights(problem, properties.getInt("numberOfWeights", 0))));
+			setPopulation(new MSOPSRankedPopulation(generateWeights(problem, properties.getInt("numberOfWeights"))));
 		}
 		
 		super.applyConfiguration(properties);

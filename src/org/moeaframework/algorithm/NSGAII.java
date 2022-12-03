@@ -188,10 +188,8 @@ public class NSGAII extends AbstractEvolutionaryAlgorithm implements EpsilonBoxE
 
 	@Override
 	public void applyConfiguration(TypedProperties properties) {
-		if (properties.contains("withReplacement")) {
-			if (!properties.getBoolean("withReplacement", true)) {
-				selection = null;
-			}
+		if (!properties.getBoolean("withReplacement", true)) {
+			selection = null;
 		}
 		
 		super.applyConfiguration(properties);

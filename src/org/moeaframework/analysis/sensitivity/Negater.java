@@ -84,7 +84,7 @@ public class Negater extends CommandLineUtility {
     public void run(CommandLine commandLine) throws Exception {
         TypedProperties properties = TypedProperties.withProperty("direction",
                 commandLine.getOptionValue("direction"));
-        int[] directions = properties.getIntArray("direction", null);
+        int[] directions = properties.getIntArray("direction");
 
         outer: for (String filename : commandLine.getArgs()) {
             List<String> lines = new ArrayList<String>();

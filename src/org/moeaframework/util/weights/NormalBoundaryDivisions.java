@@ -126,8 +126,8 @@ public class NormalBoundaryDivisions {
 	public static NormalBoundaryDivisions tryFromProperties(TypedProperties properties) {
 		if (properties.contains("divisionsOuter") && properties.contains("divisionsInner")) {
 			return new NormalBoundaryDivisions(
-					properties.getInt("divisionsOuter", 4),
-					properties.getInt("divisionsInner", 0));
+					properties.getInt("divisionsOuter"),
+					properties.getInt("divisionsInner"));
 		} 
 		
 		if (properties.contains("divisionsOuter") || properties.contains("divisionsInner")) {
@@ -135,7 +135,7 @@ public class NormalBoundaryDivisions {
 		}
 		
 		if (properties.contains("divisions")) {
-			return new NormalBoundaryDivisions(properties.getInt("divisions", 4));
+			return new NormalBoundaryDivisions(properties.getInt("divisions"));
 		}
 		
 		return null;

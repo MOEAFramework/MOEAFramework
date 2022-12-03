@@ -194,7 +194,7 @@ public class EpsilonMOEA extends AbstractEvolutionaryAlgorithm implements Epsilo
 	@Override
 	public void applyConfiguration(TypedProperties properties) {
 		if (properties.contains("epsilon")) {
-			setArchive(new EpsilonBoxDominanceArchive(properties.getDoubleArray("epsilon", null)));
+			setArchive(new EpsilonBoxDominanceArchive(properties.getDoubleArray("epsilon")));
 		}
 		
 		super.applyConfiguration(properties);

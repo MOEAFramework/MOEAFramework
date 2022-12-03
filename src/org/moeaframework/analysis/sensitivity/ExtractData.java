@@ -189,7 +189,7 @@ public class ExtractData extends CommandLineUtility {
 					}
 
 					if (properties.contains(fields[i])) {
-						output.print(properties.getString(fields[i], null));
+						output.print(properties.getString(fields[i]));
 					} else if (fields[i].startsWith("+")) {
 						output.print(evaluate(fields[i].substring(1), entry,
 								problem, referenceSet, commandLine));
