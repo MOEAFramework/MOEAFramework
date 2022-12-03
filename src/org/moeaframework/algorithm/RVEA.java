@@ -224,7 +224,7 @@ public class RVEA extends AbstractEvolutionaryAlgorithm {
 		}
 		
 		if (properties.contains("alpha")) {
-			alpha = properties.getDouble("alpha", alpha);
+			alpha = properties.getDouble("alpha");
 			changed = true;
 		}
 		

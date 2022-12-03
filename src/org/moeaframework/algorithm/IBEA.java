@@ -174,7 +174,7 @@ public class IBEA extends AbstractEvolutionaryAlgorithm {
 	@Override
 	public void applyConfiguration(TypedProperties properties) {
 		if (properties.contains("indicator")) {
-			String indicator = properties.getString("indicator", null);
+			String indicator = properties.getString("indicator");
 			
 			if ("hypervolume".equalsIgnoreCase(indicator)) {
 				fitnessEvaluator = new HypervolumeFitnessEvaluator(problem);

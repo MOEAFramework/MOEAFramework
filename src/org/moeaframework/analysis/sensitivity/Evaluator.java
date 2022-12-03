@@ -285,7 +285,7 @@ public class Evaluator extends CommandLineUtility {
 
 		// apply epsilon-dominance if required
 		if (properties.contains("epsilon")) {
-			double[] epsilon = properties.getDoubleArray("epsilon", null);
+			double[] epsilon = properties.getDoubleArray("epsilon");
 			result = EpsilonHelper.convert(result, epsilon);
 		}
 

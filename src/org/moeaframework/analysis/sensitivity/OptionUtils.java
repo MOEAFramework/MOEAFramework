@@ -140,7 +140,7 @@ public class OptionUtils {
 			TypedProperties properties = TypedProperties.withProperty("epsilon",
 					commandLine.getOptionValue("epsilon"));
 			
-			return properties.getDoubleArray("epsilon", null);
+			return properties.getDoubleArray("epsilon");
 		}
 		
 		return null;

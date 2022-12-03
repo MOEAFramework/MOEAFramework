@@ -125,7 +125,7 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 	 */
 	private int getMaxIterations(TypedProperties properties) {
 		if (properties.contains("maxIterations")) {
-			return properties.getInt("maxIterations", 0);
+			return properties.getInt("maxIterations");
 		} else {
 			int maxEvaluations = properties.getInt("maxEvaluations", 25000);
 			int populationSize = properties.getInt("populationSize", properties.getInt("swarmSize", 100));

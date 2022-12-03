@@ -115,8 +115,9 @@ public class TypedProperties {
 	 * a single key-value pair.  This is particularly useful for parsing,
 	 * for instance, command line arguments:
 	 * <p>
-	 * {@code TypedProperties.withProperty("epsilon", 
-	 * commandLine.getOptionValue("epsilon")).getDoubleArray("epsilon", null);}
+	 * <pre>
+	 * TypedProperties.withProperty("epsilon", commandLine.getOptionValue("epsilon")).getDoubleArray("epsilon");
+	 * </pre>
 	 *   
 	 * @param key the key
 	 * @param value the value assigned to the key
@@ -161,6 +162,25 @@ public class TypedProperties {
 			return value;
 		}
 	}
+	
+	/**
+	 * Returns the value of the property as a string, or throws an exception.  One should either
+	 * use the variant that takes a default value or check {@link #contains(String)} to ensure the
+	 * property exists.
+	 * 
+	 * @param key the property name
+	 * @return the value of the property
+	 * @throws PropertyNotFoundException if the property was not found
+	 */
+	public String getString(String key) {
+		String value = getString(key, null);
+		
+		if (value == null) {
+			throw new PropertyNotFoundException("property '" + key + "' is not set");
+		} else {
+			return value;
+		}
+	}
 
 	/**
 	 * Returns the value of the property with the specified name as a
@@ -183,6 +203,19 @@ public class TypedProperties {
 		} else {
 			return Double.parseDouble(value);
 		}
+	}
+	
+	/**
+	 * Returns the value of the property as a {@code double}, or throws an exception.  One should either
+	 * use the variant that takes a default value or check {@link #contains(String)} to ensure the
+	 * property exists.
+	 * 
+	 * @param key the property name
+	 * @return the value of the property
+	 * @throws PropertyNotFoundException if the property was not found
+	 */
+	public double getDouble(String key) {
+		return Double.parseDouble(getString(key));
 	}
 
 	/**
@@ -207,6 +240,19 @@ public class TypedProperties {
 			return Float.parseFloat(value);
 		}
 	}
+	
+	/**
+	 * Returns the value of the property as a {@code float}, or throws an exception.  One should either
+	 * use the variant that takes a default value or check {@link #contains(String)} to ensure the
+	 * property exists.
+	 * 
+	 * @param key the property name
+	 * @return the value of the property
+	 * @throws PropertyNotFoundException if the property was not found
+	 */
+	public float getFloat(String key) {
+		return Float.parseFloat(getString(key));
+	}
 
 	/**
 	 * Returns the value of the property with the specified name as a
@@ -229,6 +275,19 @@ public class TypedProperties {
 		} else {
 			return Long.parseLong(value);
 		}
+	}
+	
+	/**
+	 * Returns the value of the property as a {@code long}, or throws an exception.  One should either
+	 * use the variant that takes a default value or check {@link #contains(String)} to ensure the
+	 * property exists.
+	 * 
+	 * @param key the property name
+	 * @return the value of the property
+	 * @throws PropertyNotFoundException if the property was not found
+	 */
+	public long getLong(String key) {
+		return Long.parseLong(getString(key));
 	}
 
 	/**
@@ -253,6 +312,19 @@ public class TypedProperties {
 			return Integer.parseInt(value);
 		}
 	}
+	
+	/**
+	 * Returns the value of the property as a {@code int}, or throws an exception.  One should either
+	 * use the variant that takes a default value or check {@link #contains(String)} to ensure the
+	 * property exists.
+	 * 
+	 * @param key the property name
+	 * @return the value of the property
+	 * @throws PropertyNotFoundException if the property was not found
+	 */
+	public int getInt(String key) {
+		return Integer.parseInt(getString(key));
+	}
 
 	/**
 	 * Returns the value of the property with the specified name as a
@@ -275,6 +347,19 @@ public class TypedProperties {
 		} else {
 			return Short.parseShort(value);
 		}
+	}
+	
+	/**
+	 * Returns the value of the property as a {@code short}, or throws an exception.  One should either
+	 * use the variant that takes a default value or check {@link #contains(String)} to ensure the
+	 * property exists.
+	 * 
+	 * @param key the property name
+	 * @return the value of the property
+	 * @throws PropertyNotFoundException if the property was not found
+	 */
+	public short getShort(String key) {
+		return Short.parseShort(getString(key));
 	}
 
 	/**
@@ -299,6 +384,19 @@ public class TypedProperties {
 			return Byte.parseByte(value);
 		}
 	}
+	
+	/**
+	 * Returns the value of the property as a {@code byte}, or throws an exception.  One should either
+	 * use the variant that takes a default value or check {@link #contains(String)} to ensure the
+	 * property exists.
+	 * 
+	 * @param key the property name
+	 * @return the value of the property
+	 * @throws PropertyNotFoundException if the property was not found
+	 */
+	public byte getByte(String key) {
+		return Byte.parseByte(getString(key));
+	}
 
 	/**
 	 * Returns the value of the property with the specified name as a
@@ -319,6 +417,19 @@ public class TypedProperties {
 		} else {
 			return Boolean.parseBoolean(value);
 		}
+	}
+	
+	/**
+	 * Returns the value of the property as a {@code boolean}, or throws an exception.  One should either
+	 * use the variant that takes a default value or check {@link #contains(String)} to ensure the
+	 * property exists.
+	 * 
+	 * @param key the property name
+	 * @return the value of the property
+	 * @throws PropertyNotFoundException if the property was not found
+	 */
+	public boolean getBoolean(String key) {
+		return Boolean.parseBoolean(getString(key));
 	}
 	
 	/**
@@ -390,6 +501,25 @@ public class TypedProperties {
 			return tokens;
 		}
 	}
+	
+	/**
+	 * Returns the value of the property as a {@code String} array, or throws an exception.
+	 * One should either use the variant that takes a default value or check {@link #contains(String)} 
+	 * to ensure the property exists.
+	 * 
+	 * @param key the property name
+	 * @return the value of the property as an array
+	 * @throws PropertyNotFoundException if the property was not found
+	 */
+	public String[] getStringArray(String key) {
+		String[] values = getStringArray(key, null);
+		
+		if (values == null) {
+			throw new PropertyNotFoundException("property '" + key + "' is not set");
+		}
+		
+		return values;
+	}
 
 	/**
 	 * Returns the value of the property with the specified name as a
@@ -416,6 +546,25 @@ public class TypedProperties {
 
 			return result;
 		}
+	}
+	
+	/**
+	 * Returns the value of the property as a {@code double} array, or throws an exception.
+	 * One should either use the variant that takes a default value or check {@link #contains(String)} 
+	 * to ensure the property exists.
+	 * 
+	 * @param key the property name
+	 * @return the value of the property as an array
+	 * @throws PropertyNotFoundException if the property was not found
+	 */
+	public double[] getDoubleArray(String key) {
+		double[] values = getDoubleArray(key, null);
+		
+		if (values == null) {
+			throw new PropertyNotFoundException("property '" + key + "' is not set");
+		}
+		
+		return values;
 	}
 
 	/**
@@ -444,6 +593,25 @@ public class TypedProperties {
 			return result;
 		}
 	}
+	
+	/**
+	 * Returns the value of the property as a {@code float} array, or throws an exception.
+	 * One should either use the variant that takes a default value or check {@link #contains(String)} 
+	 * to ensure the property exists.
+	 * 
+	 * @param key the property name
+	 * @return the value of the property as an array
+	 * @throws PropertyNotFoundException if the property was not found
+	 */
+	public float[] getFloatArray(String key) {
+		float[] values = getFloatArray(key, null);
+		
+		if (values == null) {
+			throw new PropertyNotFoundException("property '" + key + "' is not set");
+		}
+		
+		return values;
+	}
 
 	/**
 	 * Returns the value of the property with the specified name as a
@@ -470,6 +638,25 @@ public class TypedProperties {
 
 			return result;
 		}
+	}
+	
+	/**
+	 * Returns the value of the property as a {@code long} array, or throws an exception.
+	 * One should either use the variant that takes a default value or check {@link #contains(String)} 
+	 * to ensure the property exists.
+	 * 
+	 * @param key the property name
+	 * @return the value of the property as an array
+	 * @throws PropertyNotFoundException if the property was not found
+	 */
+	public long[] getLongArray(String key) {
+		long[] values = getLongArray(key, null);
+		
+		if (values == null) {
+			throw new PropertyNotFoundException("property '" + key + "' is not set");
+		}
+		
+		return values;
 	}
 
 	/**
@@ -498,6 +685,25 @@ public class TypedProperties {
 			return result;
 		}
 	}
+	
+	/**
+	 * Returns the value of the property as a {@code int} array, or throws an exception.
+	 * One should either use the variant that takes a default value or check {@link #contains(String)} 
+	 * to ensure the property exists.
+	 * 
+	 * @param key the property name
+	 * @return the value of the property as an array
+	 * @throws PropertyNotFoundException if the property was not found
+	 */
+	public int[] getIntArray(String key) {
+		int[] values = getIntArray(key, null);
+		
+		if (values == null) {
+			throw new PropertyNotFoundException("property '" + key + "' is not set");
+		}
+		
+		return values;
+	}
 
 	/**
 	 * Returns the value of the property with the specified name as a
@@ -525,6 +731,25 @@ public class TypedProperties {
 			return result;
 		}
 	}
+	
+	/**
+	 * Returns the value of the property as a {@code short} array, or throws an exception.
+	 * One should either use the variant that takes a default value or check {@link #contains(String)} 
+	 * to ensure the property exists.
+	 * 
+	 * @param key the property name
+	 * @return the value of the property as an array
+	 * @throws PropertyNotFoundException if the property was not found
+	 */
+	public short[] getShortArray(String key) {
+		short[] values = getShortArray(key, null);
+		
+		if (values == null) {
+			throw new PropertyNotFoundException("property '" + key + "' is not set");
+		}
+		
+		return values;
+	}
 
 	/**
 	 * Returns the value of the property with the specified name as a
@@ -551,6 +776,25 @@ public class TypedProperties {
 
 			return result;
 		}
+	}
+	
+	/**
+	 * Returns the value of the property as a {@code byte} array, or throws an exception.
+	 * One should either use the variant that takes a default value or check {@link #contains(String)} 
+	 * to ensure the property exists.
+	 * 
+	 * @param key the property name
+	 * @return the value of the property as an array
+	 * @throws PropertyNotFoundException if the property was not found
+	 */
+	public byte[] getByteArray(String key) {
+		byte[] values = getByteArray(key, null);
+		
+		if (values == null) {
+			throw new PropertyNotFoundException("property '" + key + "' is not set");
+		}
+		
+		return values;
 	}
 	
 	/**

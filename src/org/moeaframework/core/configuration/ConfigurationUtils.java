@@ -147,45 +147,45 @@ public class ConfigurationUtils {
 		
 		// order widest to shortest
 		if (TypeUtils.isAssignable(double.class, parameterType)) {
-			value = properties.getDouble(propertyName, 0.0);
+			value = properties.getDouble(propertyName);
 		} else if (TypeUtils.isAssignable(float.class, parameterType)) {
-			value = properties.getFloat(propertyName, 0.0f);
+			value = properties.getFloat(propertyName);
 		} else if (TypeUtils.isAssignable(long.class, parameterType)) {
-			value = properties.getLong(propertyName, 0L);
+			value = properties.getLong(propertyName);
 		} else if (TypeUtils.isAssignable(int.class, parameterType)) {
 			try {
-				value = properties.getInt(propertyName, 0);
+				value = properties.getInt(propertyName);
 			} catch (NumberFormatException e) {
 				// TODO: In the past, we have allowed reading most int parameters as doubles.  This handles that
 				// conversion, but I would like to discontinue this practice.
-				value = (int)properties.getDouble(propertyName, 0.0);
+				value = (int)properties.getDouble(propertyName);
 				
 				System.err.println(propertyName + " given as floating-point but expected an int, converting " +
-						properties.getString(propertyName, "") + " to " + value);
+						properties.getString(propertyName) + " to " + value);
 			}
 		} else if (TypeUtils.isAssignable(short.class, parameterType)) {
-			value = properties.getShort(propertyName, (short)0);
+			value = properties.getShort(propertyName);
 		} else if (TypeUtils.isAssignable(byte.class, parameterType)) {
-			value = properties.getByte(propertyName, (byte)0);
+			value = properties.getByte(propertyName);
 		} else if (TypeUtils.isAssignable(boolean.class, parameterType)) {
-			value = properties.getBoolean(propertyName, false);
+			value = properties.getBoolean(propertyName);
 		} else if (TypeUtils.isAssignable(parameterType, Enum.class)) {
 			value = properties.getEnum(propertyName, (Class<? extends Enum<?>>)parameterType);
 		} else if (TypeUtils.isAssignable(String.class, parameterType)) {
-			value = properties.getString(propertyName, null);
+			value = properties.getString(propertyName);
 		} else if (TypeUtils.isAssignable(Variation.class, parameterType)) {
 			if (problem == null) {
 				throw new ConfigurationException("must provide problem if setting variation operator");
 			}
 			
-			String operator = properties.getString(propertyName, null);
+			String operator = properties.getString(propertyName);
 			value = OperatorFactory.getInstance().getVariation(operator, properties, problem);
 		} else if (TypeUtils.isAssignable(Mutation.class, parameterType)) {
 			if (problem == null) {
 				throw new ConfigurationException("must provide problem if setting mutation operator");
 			}
 			
-			String operator = properties.getString(propertyName, null);
+			String operator = properties.getString(propertyName);
 			value = OperatorFactory.getInstance().getMutation(operator, properties, problem);
 		} else {
 			throw new ConfigurationException("unsupported type " + parameterType + " for property " + propertyName);
