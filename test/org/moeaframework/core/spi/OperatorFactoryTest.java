@@ -92,8 +92,7 @@ public class OperatorFactoryTest {
 
 		};
 		
-		Assert.assertNotNull(OperatorFactory.getInstance().getVariation(null, 
-				new TypedProperties(), problem));
+		Assert.assertNotNull(OperatorFactory.getInstance().getVariation(null, new TypedProperties(), problem));
 	}
 	
 	@Test
@@ -109,8 +108,7 @@ public class OperatorFactoryTest {
 
 		};
 		
-		Assert.assertNotNull(OperatorFactory.getInstance().getVariation(null, 
-				new TypedProperties(), problem));
+		Assert.assertNotNull(OperatorFactory.getInstance().getVariation(null, new TypedProperties(), problem));
 	}
 	
 	@Test
@@ -127,8 +125,7 @@ public class OperatorFactoryTest {
 
 		};
 		
-		Assert.assertNotNull(OperatorFactory.getInstance().getVariation(null, 
-				new TypedProperties(), problem));
+		Assert.assertNotNull(OperatorFactory.getInstance().getVariation(null, new TypedProperties(), problem));
 	}
 	
 	@Test
@@ -144,8 +141,7 @@ public class OperatorFactoryTest {
 
 		};
 		
-		Assert.assertNotNull(OperatorFactory.getInstance().getVariation(null, 
-				new TypedProperties(), problem));
+		Assert.assertNotNull(OperatorFactory.getInstance().getVariation(null, new TypedProperties(), problem));
 	}
 	
 	@Test
@@ -161,11 +157,10 @@ public class OperatorFactoryTest {
 
 		};
 		
-		Assert.assertNotNull(OperatorFactory.getInstance().getVariation(null, 
-				new TypedProperties(), problem));
+		Assert.assertNotNull(OperatorFactory.getInstance().getVariation(null, new TypedProperties(), problem));
 	}
 	
-	@Test(expected = ProviderLookupException.class)
+	@Test
 	public void testMixedType() {
 		Problem problem = new ProblemStub(5) {
 			
@@ -181,11 +176,10 @@ public class OperatorFactoryTest {
 
 		};
 		
-		OperatorFactory.getInstance().getVariation(null, new TypedProperties(), 
-				problem);
+		Assert.assertNull(OperatorFactory.getInstance().getVariation(null, new TypedProperties(), problem));
 	}
 	
-	@Test(expected = ProviderLookupException.class)
+	@Test
 	public void testUnknownType() {
 		Problem problem = new ProblemStub(1) {
 			
@@ -214,24 +208,21 @@ public class OperatorFactoryTest {
 
 		};
 		
-		OperatorFactory.getInstance().getVariation(null, new TypedProperties(), 
-				problem);
+		Assert.assertNull(OperatorFactory.getInstance().getVariation(null, new TypedProperties(), problem));
 	}
 	
-	@Test(expected = ProviderLookupException.class)
+	@Test
 	public void testEmptyType() {
 		Problem problem = new ProblemStub(0);
 		
-		OperatorFactory.getInstance().getVariation(null, new TypedProperties(), 
-				problem);
+		Assert.assertNull(OperatorFactory.getInstance().getVariation(null, new TypedProperties(), problem));
 	}
 	
 	@Test(expected = ProviderNotFoundException.class)
 	public void testNonexistentOperator() {
 		Problem problem = new ProblemStub(0);
 		
-		OperatorFactory.getInstance().getVariation("sbx+test_fake_operator", 
-				new TypedProperties(), problem);
+		OperatorFactory.getInstance().getVariation("sbx+test_fake_operator", new TypedProperties(), problem);
 	}
 
 }
