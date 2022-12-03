@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.moeaframework.algorithm.AlgorithmInitializationException;
+import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Initialization;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PRNG;
@@ -236,8 +237,12 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 	}
 
 	@Override
-	public void initialize() {
+	protected void initialize() {
 		super.initialize();
+		
+		if (mutation == null) {
+			throw new FrameworkException("no mutation operator set, must set one by calling setMutation(...)");
+		}
 
 		Solution[] initialSolutions = initialization.initialize((int)(gamma * softLimit));
 		evaluateAll(initialSolutions);

@@ -34,6 +34,7 @@ import java.util.Set;
 import org.apache.commons.lang3.ArrayUtils;
 import org.moeaframework.algorithm.AbstractAlgorithm;
 import org.moeaframework.algorithm.AlgorithmException;
+import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Initialization;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PRNG;
@@ -183,8 +184,12 @@ public class PISAAlgorithm extends AbstractAlgorithm {
 	}
 
 	@Override
-	public void initialize() {
+	protected void initialize() {
 		super.initialize();
+		
+		if (variation == null) {
+			throw new FrameworkException("no variation operator set, must set one by calling setVariation(...)");
+		}
 
 		try {
 			configure();
