@@ -3,7 +3,8 @@
 ## General
 
 * [Release Notes](news.md)
-* [Getting Started](start.md)
+* [Setup](setup.md)
+* [Quick Example](example.md)
 * [The Executor, Analyzer, and Instrumenter](executor.md)
 * [The Diagnostic Tool](diagnostic.md)
 
