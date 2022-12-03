@@ -1,8 +1,11 @@
-# The Executor, Analyzer, and Instrumenter
+# Experiments
+
+This library also supports running experiments where we analayze the performance of one or more algorithms.  This capability
+is split into three classes: the `Executor`, `Analyzer`, and `Instrumenter`.
 
 ## Executor
 
-The `Executor`'s sole responsibility is to apply an optimization algorithm to a problem.  For example, here we run
+The `Executor`'s sole responsibility is to configure and execute an optimization algorithm on a problem.  For example, here we run
 NSGA-II on the UF1 test problem for 10,000 function evaluations.
 
 ```java
