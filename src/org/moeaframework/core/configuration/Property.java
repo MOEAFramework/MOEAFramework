@@ -24,13 +24,20 @@ import java.lang.annotation.Target;
 
 /**
  * Annotation added to setter methods that identify auto-configurable properties.  The methods must follow
- * JavaBean naming conventions.  For a property named {@code foo}, then we expected to see the methods:
+ * JavaBean conventions.  For a property named {@code foo}, then we expected to see the methods:
  * <pre>
  *    public void setFoo(T value) { ... }
  *    public T getFoo() { ... }
  * </pre>
- * for one of the supported types {@code T}.  If the type is {@code boolean}, then the getter can alternatively
- * be named {@code isFoo}.
+ * The following types are supported:
+ * <ul>
+ *   <li>Any Java primitive type (int, double, boolean, etc.)
+ *   <li>{@code String}
+ *   <li>Any enumeration - the properties are automatically converted to strings
+ *   <li>{@code Variation} - the instance is created using {@code OperatorFactory.getInstance().getVariation(value)}
+ *   <li>{@code Mutation} - same as {@code Variation} except only supports one parent
+ * </ul>
+ * If the type is {@code boolean}, then the getter can alternatively be named {@code isFoo}.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD})
@@ -47,8 +54,8 @@ public @interface Property {
 	/**
 	 * One or more alternate names used by this property.
 	 * 
-	 * @return the synonyms for this property
+	 * @return the alternate names for this property
 	 */
-	String[] synonym() default {};
+	String[] alias() default {};
 
 }

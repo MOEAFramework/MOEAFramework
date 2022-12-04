@@ -31,12 +31,23 @@ import org.moeaframework.core.operator.Mutation;
 import org.moeaframework.core.spi.OperatorFactory;
 import org.moeaframework.util.TypedProperties;
 
+/**
+ * Utility methods for scanning classes to identify properties, reading the configured values, or setting new values.
+ * @author dahadka
+ *
+ */
 public class ConfigurationUtils {
 	
 	private ConfigurationUtils() {
 		super();
 	}
 	
+	/**
+	 * Updates the properties in the configurable object (and all nested configurable objects recursively).
+	 * 
+	 * @param properties the new properties
+	 * @param object the configurable object
+	 */
 	public static void applyConfiguration(TypedProperties properties, Configurable object) {
 		Problem problem = null;
 		
@@ -47,6 +58,13 @@ public class ConfigurationUtils {
 		applyConfiguration(properties, object, problem);
 	}
 	
+	/**
+	 * Updates the properties in the configurable object (and all nested configurable objects recursively).
+	 * 
+	 * @param properties the new properties
+	 * @param object the configurable object
+	 * @param problem the problem instance, which is needed if constructing any variation or mutation operators
+	 */
 	public static void applyConfiguration(TypedProperties properties, Configurable object, Problem problem) {
 		Class<?> type = object.getClass();
 		Prefix prefix = type.getAnnotation(Prefix.class);
@@ -65,7 +83,7 @@ public class ConfigurationUtils {
 					propertyName = prefix.value() + "." + propertyName;
 				}
 
-				ConfigurationUtils.applyValue(properties, prefix, propertyName, property.synonym(), method,
+				ConfigurationUtils.applyValue(properties, prefix, propertyName, property.alias(), method,
 						object, problem);
 			} else {
 				System.err.println("found @Property annotation on non-setter method " + methodName + " in class " +
@@ -85,6 +103,12 @@ public class ConfigurationUtils {
 		}
 	}
 	
+	/**
+	 * Reads and returns all properties used by the configurable object.
+	 * 
+	 * @param object the configurable object
+	 * @return the properties
+	 */
 	public static TypedProperties getConfiguration(Configurable object) {
 		TypedProperties properties = new TypedProperties();
 		Class<?> type = object.getClass();
@@ -133,10 +157,21 @@ public class ConfigurationUtils {
 		return properties;
 	}
 	
+	/**
+	 * Updates the value of a single property.
+	 * 
+	 * @param properties the properties and their values
+	 * @param prefix the prefix or {@code null} if no prefix is set
+	 * @param propertyName the property name
+	 * @param aliases any aliases or alternate names used by the property
+	 * @param method the method to call to set the property value
+	 * @param object the configurable object defining this property
+	 * @param problem the problem instance
+	 */
 	@SuppressWarnings("unchecked")
-	private static void applyValue(TypedProperties properties, Prefix prefix, String propertyName, String[] synonyms,
+	private static void applyValue(TypedProperties properties, Prefix prefix, String propertyName, String[] aliases,
 			Method method, Configurable object, Problem problem) {
-		propertyName = findPropertyName(properties, prefix, propertyName, synonyms);
+		propertyName = findPropertyName(properties, prefix, propertyName, aliases);
 		
 		if (propertyName == null) {
 			return;
@@ -198,6 +233,14 @@ public class ConfigurationUtils {
 		}
 	}
 	
+	/**
+	 * Reads the value for a single property.
+	 * 
+	 * @param properties the collection of properties read from the object
+	 * @param propertyName the property name
+	 * @param method the method for reading the property value
+	 * @param object the configurable object defining the property
+	 */
 	private static void extractValue(TypedProperties properties, String propertyName, Method method,
 			Configurable object) {
 		Class<?> parameterType = method.getReturnType();
@@ -243,21 +286,38 @@ public class ConfigurationUtils {
 		}
 	}
 	
+	/**
+	 * Locates and returns the property name.  This checks if the properties contain the primary name or an
+	 * alias, in the order given, and returns the matching name.
+	 * 
+	 * @param properties the collection of all configured properties
+	 * @param prefix the prefix or {@code null} if none is set
+	 * @param propertyName the property name
+	 * @param aliases any aliases or alternate names
+	 * @return the property name that was found or {@code null}
+	 */
 	private static String findPropertyName(TypedProperties properties, Prefix prefix, String propertyName,
-			String[] synonyms) {
+			String[] aliases) {
 		if (properties.contains(prefixName(prefix, propertyName))) {
 			return propertyName;
 		}
 		
-		for (String synonym : synonyms) {
-			if (properties.contains(prefixName(prefix, synonym))) {
-				return synonym;
+		for (String alias : aliases) {
+			if (properties.contains(prefixName(prefix, alias))) {
+				return alias;
 			}
 		}
 				
 		return null;
 	}
 	
+	/**
+	 * Adds the prefix to the property name.
+	 * 
+	 * @param prefix the prefix or {@code null} if no prefix was set
+	 * @param propertyName the property name
+	 * @return the prefix added to the property name
+	 */
 	private static String prefixName(Prefix prefix, String propertyName) {
 		if (prefix != null && !prefix.value().isEmpty()) {
 			propertyName = prefix.value() + "." + propertyName;
@@ -266,15 +326,39 @@ public class ConfigurationUtils {
 		return propertyName;
 	}
 	
+	/**
+	 * Returns {@code true} if the given method is a getter following JavaBean conventions.
+	 * 
+	 * @param method the method to check
+	 * @param returnType the expected return type
+	 * @return {@code true} if this is a getter method for the given return type; {@code false} otherwise
+	 */
 	private static boolean isGetter(Method method, Class<?> returnType) {
 		return method.getName().startsWith("get") && method.getParameterCount() == 0 &&
-				returnType.isAssignableFrom(method.getReturnType());
+				TypeUtils.isAssignable(method.getReturnType(), returnType);
 	}
 	
+	/**
+	 * Returns {@code true} if the given method is a setter following JavaBean conventions.
+	 * 
+	 * @param method the method to check
+	 * @return {@code true} if this is a setter method; {@code false} otherwise
+	 */
 	private static boolean isSetter(Method method) {
 		return method.getName().startsWith("set") && method.getParameterCount() == 1;
 	}
 	
+	/**
+	 * Safely invoke the getter method and cast the returned object to the given type.  Any exceptions
+	 * thrown while calling the method are wrapped in a {@link ConfigurationException}.
+	 * 
+	 * @param <T> the type of the return object
+	 * @param method the getter method
+	 * @param object the object to call the getter method on
+	 * @param returnType the type of the return object
+	 * @return the returned value
+	 * @throws ConfigurationException if an exception was thrown while calling the getter
+	 */
 	private static <T> T safeInvokeGetter(Method method, Configurable object, Class<T> returnType) {
 		try {
 			return returnType.cast(method.invoke(object));

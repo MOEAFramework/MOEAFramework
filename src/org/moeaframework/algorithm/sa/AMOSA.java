@@ -132,7 +132,7 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 	 * 
 	 * @param softLimit the soft limit
 	 */
-	@Property(synonym="SL")
+	@Property(alias="SL")
 	public void setSoftLimit(int softLimit) {
 		this.softLimit = softLimit;
 	}
@@ -151,7 +151,7 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 	 * 
 	 * @param hardLimit the hard limit
 	 */
-	@Property(synonym="HL")
+	@Property(alias="HL")
 	public void setHardLimit(int hardLimit) {
 		this.hardLimit = hardLimit;
 	}
@@ -210,7 +210,7 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 	 * 
 	 * @param numberOfIterationsPerTemperature the number of iterations
 	 */
-	@Property(synonym="iter")
+	@Property(alias="iter")
 	public void setNumberOfIterationsPerTemperature(int numberOfIterationsPerTemperature) {
 		this.numberOfIterationsPerTemperature = numberOfIterationsPerTemperature;
 	}
@@ -230,7 +230,7 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 	 * 
 	 * @param numberOfHillClimbingIterationsForRefinement the number of iterations
 	 */
-	@Property(synonym="hillClimbIter")
+	@Property(alias="hillClimbIter")
 	public void setNumberOfHillClimbingIterationsForRefinement(int numberOfHillClimbingIterationsForRefinement) {
 		assertNotInitialized();
 		this.numberOfHillClimbingIterationsForRefinement = numberOfHillClimbingIterationsForRefinement;
