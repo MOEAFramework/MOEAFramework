@@ -67,6 +67,11 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 	protected Solution currentPT;
 	protected NondominatedPopulation archive;
 	
+	/**
+	 * Creates a new instance of the AMOSA algorithm with default settings.
+	 * 
+	 * @param problem the problem to solve
+	 */
 	public AMOSA(Problem problem) {
 		this(problem,
 				new RandomInitialization(problem),
@@ -81,6 +86,22 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 				20); //numberOfHillClimbingIterationsForRefinement
 	}
 	
+	/**
+	 * Creates a new instance of the AMOSA algorithm.
+	 * 
+	 * @param problem the problem to solve
+	 * @param initialization the method for initializing solutions
+	 * @param mutation the mutation operator
+	 * @param gamma the gamma value
+	 * @param softLimit the soft limit
+	 * @param hardLimit the hard limit
+	 * @param stoppingTemperature the stopping (minimum) temperature
+	 * @param initialTemperature the initial (maximum) temperature
+	 * @param alpha the cooling rate
+	 * @param numberOfIterationsPerTemperature the number of iterations at each temperature
+	 * @param numberOfHillClimbingIterationsForRefinement the number of hill climbing iterations performed on initial
+	 *        solutions
+	 */
 	public AMOSA(Problem problem, Initialization initialization, Mutation mutation, double gamma, int softLimit,
 			int hardLimit, double stoppingTemperature, double initialTemperature, double alpha,
 			int numberOfIterationsPerTemperature, int numberOfHillClimbingIterationsForRefinement) {
