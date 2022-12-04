@@ -137,7 +137,7 @@ public abstract class AbstractPSOAlgorithm extends AbstractAlgorithm implements 
 	 * 
 	 * @param swarmSize the swarm size
 	 */
-	@Property(synonym="populationSize")
+	@Property(alias="populationSize")
 	public void setSwarmSize(int swarmSize) {
 		assertNotInitialized();
 		this.swarmSize = swarmSize;
@@ -158,7 +158,7 @@ public abstract class AbstractPSOAlgorithm extends AbstractAlgorithm implements 
 	 * 
 	 * @param leader the leader size
 	 */
-	@Property(synonym="archiveSize")
+	@Property(alias="archiveSize")
 	public void setLeaderSize(int leaderSize) {
 		assertNotInitialized();
 		this.leaderSize = leaderSize;

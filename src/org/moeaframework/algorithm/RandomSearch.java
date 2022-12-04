@@ -91,7 +91,7 @@ public class RandomSearch extends AbstractAlgorithm implements Configurable {
 	 * 
 	 * @param sampleSize the sample size
 	 */
-	@Property(synonym="populationSize")
+	@Property(alias="populationSize")
 	public void setSampleSize(int sampleSize) {
 		this.sampleSize = sampleSize;
 	}

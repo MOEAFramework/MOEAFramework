@@ -23,7 +23,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Annotation identifying the prefix used on all properties contained within the annotated class.
+ * Annotation identifying the prefix used on all properties contained within the annotated class.  The prefix
+ * and property name are separated by a ".".
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})

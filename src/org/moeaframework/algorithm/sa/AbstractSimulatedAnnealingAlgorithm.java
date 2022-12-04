@@ -82,7 +82,7 @@ public abstract class AbstractSimulatedAnnealingAlgorithm extends AbstractAlgori
 	 * 
 	 * @param stoppingTemperature the stopping temperature
 	 */
-	@Property(synonym="tMin")
+	@Property(alias="tMin")
 	public void setStoppingTemperature(double stoppingTemperature) {
 		this.stoppingTemperature = stoppingTemperature;
 	}
@@ -101,7 +101,7 @@ public abstract class AbstractSimulatedAnnealingAlgorithm extends AbstractAlgori
 	 * 
 	 * @param initialTemperature the initial temperature
 	 */
-	@Property(synonym="tMax")
+	@Property(alias="tMax")
 	public void setInitialTemperature(double initialTemperature) {
 		assertNotInitialized();
 		this.initialTemperature = initialTemperature;
