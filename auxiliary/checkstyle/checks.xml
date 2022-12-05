@@ -137,7 +137,7 @@ along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
 		<module name="SuperFinalize"/>
 		
 		<!-- Every package must have a package declaration -->
-		<!-- <module name="PackageDeclaration"/> -->
+		<module name="PackageDeclaration"/>
 		
 		<!-- Contents of a class/interface appear in a standard order -->
 		<!-- <module name="DeclarationOrder"/> -->

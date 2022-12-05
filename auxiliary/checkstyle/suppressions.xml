@@ -8,4 +8,5 @@
 	<suppress checks="RegexpHeader" files="test[\\/]org[\\/]moeaframework[\\/]problem[\\/]BBOB2016[\\/]" />
 	<suppress checks="TypeName" files="src[\\/]org[\\/]moeaframework[\\/]problem[\\/]CDTLZ[\\/]" />
 	<suppress checks="TypeName" files="test[\\/]org[\\/]moeaframework[\\/]problem[\\/]CDTLZ[\\/]" />
+	<suppress checks="PackageDeclaration" files="examples[\\/]Example[a-z0-9]+.java" />
 </suppressions>
