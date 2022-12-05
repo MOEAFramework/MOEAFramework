@@ -83,7 +83,7 @@ public class ScriptedProblem extends ProblemWrapper {
 	 * @return a new scripting engine for the specified scripting language
 	 * @throws ScriptException if an error occurred in the Scripting APIs
 	 */
-	private final static ScriptEngine newScriptEngine(String name) throws ScriptException {
+	private static final ScriptEngine newScriptEngine(String name) throws ScriptException {
 		ScriptEngineManager manager = new ScriptEngineManager();
 		ScriptEngine engine = manager.getEngineByName(name);
 		
@@ -102,7 +102,7 @@ public class ScriptedProblem extends ProblemWrapper {
 	 * @return a new scripting engine for the scripting language
 	 * @throws ScriptException if an error occurred in the Scripting APIs
 	 */
-	private final static ScriptEngine newScriptEngine(File file) throws ScriptException {
+	private static final ScriptEngine newScriptEngine(File file) throws ScriptException {
 		String filename = file.getName();
 		int index = filename.lastIndexOf('.');
 		
@@ -122,7 +122,7 @@ public class ScriptedProblem extends ProblemWrapper {
 		return engine;
 	}
 	
-	private final static Problem createInvocableInstance(File file) throws ScriptException, IOException {
+	private static final Problem createInvocableInstance(File file) throws ScriptException, IOException {
 		try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
 			ScriptEngine engine = newScriptEngine(file);
 			return createInvocableInstance(engine, reader);
@@ -140,7 +140,7 @@ public class ScriptedProblem extends ProblemWrapper {
 	 *         not support invocable methods/functions
 	 * @throws ScriptException if an error occurred in the Scripting APIs
 	 */
-	private final static Problem createInvocableInstance(ScriptEngine engine, Reader reader) throws ScriptException {
+	private static final Problem createInvocableInstance(ScriptEngine engine, Reader reader) throws ScriptException {
 		Problem problem = null;
 		
 		if (engine instanceof Invocable) {

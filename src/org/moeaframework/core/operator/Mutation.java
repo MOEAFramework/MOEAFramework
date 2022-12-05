@@ -34,12 +34,12 @@ public interface Mutation extends Variation {
 	public Solution mutate(Solution parent);
 	
 	@Override
-	default public int getArity() {
+	public default int getArity() {
 		return 1;
 	}
 
 	@Override
-	default public Solution[] evolve(Solution[] parents) {
+	public default Solution[] evolve(Solution[] parents) {
 		return new Solution[] { mutate(parents[0]) };
 	}
 

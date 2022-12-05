@@ -38,11 +38,13 @@ public interface Configurable {
 	 * After calling this method, we encourage users to call {@link TypedProperties#warnIfUnaccessedProperties()}
 	 * to verify all properties were processed.  This can identify simple mistakes like typos.
 	 * 
-	 * If overriding this method, properties should only be updated if a new value is provided.
+	 * If overriding this method, properties should only be updated if a new value is provided.  Additionally, if
+	 * updating any {@code Configurable} objects inside this object, they should be updated before calling
+	 * {@code super.applyConfiguration(properties)}.
 	 * 
 	 * @param properties the user-defined properties
 	 */
-	default public void applyConfiguration(TypedProperties properties) {
+	public default void applyConfiguration(TypedProperties properties) {
 		ConfigurationUtils.applyConfiguration(properties, this);
 	}
 	
@@ -53,7 +55,7 @@ public interface Configurable {
 	 * 
 	 * @return the properties defining this instance
 	 */
-	default public TypedProperties getConfiguration() {
+	public default TypedProperties getConfiguration() {
 		return ConfigurationUtils.getConfiguration(this);
 	}
 
