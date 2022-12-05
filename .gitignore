@@ -12,3 +12,4 @@ maven/
 .pydevproject
 jMetal.log*
 lib/jmetal-plugin-*.jar
+auxiliary/checkstyle/checkstyle-*.jar

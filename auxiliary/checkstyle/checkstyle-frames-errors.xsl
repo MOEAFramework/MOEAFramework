@@ -5,38 +5,30 @@
 
 <!--
  The Apache Software License, Version 1.1
-
  Copyright (c) 2002 The Apache Software Foundation.  All rights
  reserved.
-
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions
  are met:
-
  1. Redistributions of source code must retain the above copyright
     notice, this list of conditions and the following disclaimer.
-
  2. Redistributions in binary form must reproduce the above copyright
     notice, this list of conditions and the following disclaimer in
     the documentation and/or other materials provided with the
     distribution.
-
  3. The end-user documentation included with the redistribution, if
     any, must include the following acknowlegement:
        "This product includes software developed by the
         Apache Software Foundation (http://www.apache.org/)."
     Alternately, this acknowlegement may appear in the software itself,
     if and wherever such third-party acknowlegements normally appear.
-
  4. The names "The Jakarta Project", "Ant", and "Apache Software
     Foundation" must not be used to endorse or promote products derived
     from this software without prior written permission. For written
     permission, please contact apache@apache.org.
-
  5. Products derived from this software may not be called "Apache"
     nor may "Apache" appear in their names without prior written
     permission of the Apache Group.
-
  THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -50,7 +42,6 @@
  OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  SUCH DAMAGE.
  ====================================================================
-
  This software consists of voluntary contributions made by many
  individuals on behalf of the Apache Software Foundation.  For more
  information on the Apache Software Foundation, please see
@@ -64,7 +55,7 @@
     <xsl:key name="errorfiles" match="file[count(error)>0]" use="@name"/>
     <xsl:key name="violations" match="file/error" use="@source"/>
 
-    <xsl:param name="output.dir" />
+    <xsl:param name="output.dir" select="'.'"/>
 
 	<xsl:variable name="allFiles" select="/checkstyle/file[@name and generate-id(.) = generate-id(key('files', @name))]"/>
 	<xsl:variable name="allFilesWithError" select="/checkstyle/file[@name and generate-id(.) = generate-id(key('errorfiles', @name))]"/>
@@ -97,7 +88,7 @@
     <xsl:template name="index.html">
         <html>
             <head>
-                <title>CheckStyle Audit ${output.dir}</title>
+                <title>CheckStyle Audit</title>
             </head>
             <frameset cols="20%,80%">
                 <frame src="allclasses-frame.html" name="fileListFrame"/>
@@ -118,7 +109,7 @@
                 <td class="text-align:right"><h2>CheckStyle Audit</h2></td>
             </tr>
             <tr>
-                <td class="text-align:right">Designed for use with <a href='http://checkstyle.sourceforge.net/'>CheckStyle</a> and <a href='http://jakarta.apache.org'>Ant</a>.</td>
+                <td class="text-align:right">Designed for use with <a href='https://checkstyle.org/'>CheckStyle</a> and <a href='http://jakarta.apache.org'>Ant</a>.</td>
             </tr>
         </table>
         <hr size="1"/>
