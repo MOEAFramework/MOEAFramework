@@ -15,37 +15,38 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.examples.parallel;
+package org.moeaframework.problem;
+
+import java.util.BitSet;
 
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.variable.BinaryIntegerVariable;
+import org.moeaframework.core.variable.BinaryVariable;
 import org.moeaframework.core.variable.EncodingUtils;
-import org.moeaframework.problem.AbstractProblem;
 
-public class ExpensiveSchafferProblem extends AbstractProblem {
+/**
+ * A mock problem with a binary variable and a binary-encoded integer variable.
+ */
+public class MockMixedBinaryProblem extends AbstractProblem {
 
-	public ExpensiveSchafferProblem() {
-		super(1, 2);
+	public MockMixedBinaryProblem() {
+		super(2, 2);
 	}
 
 	@Override
 	public void evaluate(Solution solution) {
-		double x = EncodingUtils.getReal(solution.getVariable(0));
+		BitSet binaryValue = EncodingUtils.getBitSet(solution.getVariable(0));
+		int intValue = EncodingUtils.getInt(solution.getVariable(1));
 		
-		// perform some expensive calculation
-		double sum = 0.0;
-		
-		for (int i = 0; i < 100000; i++) {
-			sum += i;
-		}
-		
-		solution.setObjective(0, Math.pow(x, 2.0));
-		solution.setObjective(1, Math.pow(x - 2.0, 2.0));
+		solution.setObjective(0, 10 - binaryValue.cardinality());
+		solution.setObjective(1, intValue);
 	}
 
 	@Override
 	public Solution newSolution() {
-		Solution solution = new Solution(1, 2);
-		solution.setVariable(0, EncodingUtils.newReal(-10.0, 10.0));
+		Solution solution = new Solution(2, 2);
+		solution.setVariable(0, new BinaryVariable(10));
+		solution.setVariable(1, new BinaryIntegerVariable(5, 10));
 		return solution;
 	}
 

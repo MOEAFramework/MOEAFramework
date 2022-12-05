@@ -123,6 +123,8 @@ public class PAES extends AbstractEvolutionaryAlgorithm {
 
 	@Override
 	protected void iterate() {
+		Population population = getPopulation();
+		AdaptiveGridArchive archive = getArchive();
 		Solution parent = population.get(0);
 		Solution offspring = getVariation().mutate(parent);
 		

@@ -23,6 +23,7 @@ import org.moeaframework.core.Variable;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.configuration.Prefix;
 import org.moeaframework.core.configuration.Property;
+import org.moeaframework.core.configuration.Validate;
 
 /**
  * Two-point crossover. Two crossover points are selected and all decision
@@ -51,7 +52,8 @@ public class TwoPointCrossover implements Variation {
 	 * @param probability the probability of applying this operator to solutions
 	 */
 	public TwoPointCrossover(double probability) {
-		this.probability = probability;
+		super();
+		setProbability(probability);
 	}
 	
 	@Override
@@ -75,6 +77,7 @@ public class TwoPointCrossover implements Variation {
 	 */
 	@Property("rate")
 	public void setProbability(double probability) {
+		Validate.probability("probability", probability);
 		this.probability = probability;
 	}
 

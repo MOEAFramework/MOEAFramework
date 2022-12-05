@@ -20,6 +20,11 @@ You should have received a copy of the GNU Lesser General Public License
 along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <module name="Checker">
+	<module name="SuppressionFilter">
+	  <property name="file" value="${basedir}/auxiliary/checkstyle/suppressions.xml"/>
+	  <property name="optional" value="false"/>
+	</module>
+
 	<!-- Source code files contain appropriate copyright and license notices -->
 	<module name="RegexpHeader">
 		<property name="headerFile" value="${basedir}/auxiliary/checkstyle/header.txt" />
@@ -132,7 +137,7 @@ along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
 		<module name="SuperFinalize"/>
 		
 		<!-- Every package must have a package declaration -->
-		<!-- <module name="PackageDeclaration"/> -->
+		<module name="PackageDeclaration"/>
 		
 		<!-- Contents of a class/interface appear in a standard order -->
 		<!-- <module name="DeclarationOrder"/> -->

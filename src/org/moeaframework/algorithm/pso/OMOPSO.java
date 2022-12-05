@@ -25,6 +25,7 @@ import org.moeaframework.core.Settings;
 import org.moeaframework.core.comparator.CrowdingComparator;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
 import org.moeaframework.core.configuration.Property;
+import org.moeaframework.core.configuration.Validate;
 import org.moeaframework.core.fitness.CrowdingDistanceFitnessEvaluator;
 import org.moeaframework.core.fitness.FitnessBasedArchive;
 import org.moeaframework.core.operator.TypeSafeMutation;
@@ -99,8 +100,6 @@ public class OMOPSO extends AbstractPSOAlgorithm {
 		
 		this.uniformMutation = new UniformMutation(mutationProbability, mutationPerturbation);
 		this.nonUniformMutation = new NonUniformMutation(mutationProbability, mutationPerturbation, maxIterations);
-		
-		problem.assertType(RealVariable.class);
 	}
 	
 	public double getMutationProbability() {
@@ -109,6 +108,8 @@ public class OMOPSO extends AbstractPSOAlgorithm {
 	
 	@Property
 	public void setMutationProbability(double mutationProbability) {
+		Validate.probability("mutationProbability", mutationProbability);
+		
 		uniformMutation.setProbability(mutationProbability);
 		nonUniformMutation.setProbability(mutationProbability);
 	}
@@ -119,6 +120,8 @@ public class OMOPSO extends AbstractPSOAlgorithm {
 	
 	@Property
 	public void setPerturbationIndex(double perturbationIndex) {
+		Validate.greaterThanZero("perturbationIndex", perturbationIndex);
+		
 		uniformMutation.perturbationIndex = perturbationIndex;
 		nonUniformMutation.perturbationIndex = perturbationIndex;
 	}
@@ -133,6 +136,8 @@ public class OMOPSO extends AbstractPSOAlgorithm {
 	}
 	
 	protected void setMaxIterations(int maxIterations) {
+		Validate.greaterThanZero("maxIterations", maxIterations);
+		
 		nonUniformMutation.maxIterations = maxIterations;
 	}
 	
@@ -201,7 +206,7 @@ public class OMOPSO extends AbstractPSOAlgorithm {
 		}
 		
 		public double getDelta(double difference) {
-			int currentIteration = getNumberOfEvaluations() / swarmSize;
+			int currentIteration = getNumberOfEvaluations() / getSwarmSize();
 			double fraction = currentIteration / (double)maxIterations;
 			
 			return difference * (1.0 - Math.pow(PRNG.nextDouble(), Math.pow(1.0 - fraction, perturbationIndex)));

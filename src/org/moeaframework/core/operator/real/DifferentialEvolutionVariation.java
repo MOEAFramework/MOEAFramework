@@ -22,6 +22,7 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.configuration.Prefix;
 import org.moeaframework.core.configuration.Property;
+import org.moeaframework.core.configuration.Validate;
 import org.moeaframework.core.variable.RealVariable;
 
 /**
@@ -53,12 +54,12 @@ public class DifferentialEvolutionVariation implements Variation {
 	/**
 	 * The crossover rate.
 	 */
-	private double CR;
+	private double crossoverRate;
 
 	/**
 	 * The scaling factor or step size.
 	 */
-	private double F;
+	private double scalingFactor;
 	
 	/**
 	 * Constructs a differential evolution operator with default settings,
@@ -72,12 +73,13 @@ public class DifferentialEvolutionVariation implements Variation {
 	 * Constructs a differential evolution operator with the specified crossover
 	 * rate and scaling factor.
 	 * 
-	 * @param CR the crossover rate
-	 * @param F the scaling factor
+	 * @param crossoverRate the crossover rate
+	 * @param scalingFactor the scaling factor
 	 */
-	public DifferentialEvolutionVariation(double CR, double F) {
-		this.CR = CR;
-		this.F = F;
+	public DifferentialEvolutionVariation(double crossoverRate, double scalingFactor) {
+		super();
+		setCrossoverRate(crossoverRate);
+		setScalingFactor(scalingFactor);
 	}
 	
 	@Override
@@ -91,18 +93,19 @@ public class DifferentialEvolutionVariation implements Variation {
 	 * @return the crossover rate
 	 */
 	public double getCrossoverRate() {
-		return CR;
+		return crossoverRate;
 	}
 	
 	/**
 	 * Sets the crossover rate of this differential evolution operator.  The default
 	 * value is {@code 0.1}.
 	 * 
-	 * @param CR the crossover rate
+	 * @param crossoverRate the crossover rate
 	 */
 	@Property
-	public void setCrossoverRate(double CR) {
-		this.CR = CR;
+	public void setCrossoverRate(double crossoverRate) {
+		Validate.probability("crossoverRate", crossoverRate);
+		this.crossoverRate = crossoverRate;
 	}
 
 	/**
@@ -111,18 +114,19 @@ public class DifferentialEvolutionVariation implements Variation {
 	 * @return the scaling factor
 	 */
 	public double getScalingFactor() {
-		return F;
+		return scalingFactor;
 	}
 	
 	/**
 	 * Sets the scaling factor of this differential evolution operator.  The default
 	 * value is {@code 0.5}.
 	 * 
-	 * @param F the scaling factor
+	 * @param scalingFactor the scaling factor
 	 */
 	@Property("stepSize")
-	public void setScalingFactor(double F) {
-		this.F = F;
+	public void setScalingFactor(double scalingFactor) {
+		Validate.greaterThanZero("scalingFactor", scalingFactor);
+		this.scalingFactor = scalingFactor;
 	}
 
 	@Override
@@ -137,13 +141,13 @@ public class DifferentialEvolutionVariation implements Variation {
 		int jrand = PRNG.nextInt(result.getNumberOfVariables());
 
 		for (int j = 0; j < result.getNumberOfVariables(); j++) {
-			if ((PRNG.nextDouble() <= CR) || (j == jrand)) {
+			if ((PRNG.nextDouble() <= crossoverRate) || (j == jrand)) {
 				RealVariable v0 = (RealVariable)result.getVariable(j);
 				RealVariable v1 = (RealVariable)parents[1].getVariable(j);
 				RealVariable v2 = (RealVariable)parents[2].getVariable(j);
 				RealVariable v3 = (RealVariable)parents[3].getVariable(j);
 
-				double y = v3.getValue() + F * (v1.getValue() - v2.getValue());
+				double y = v3.getValue() + scalingFactor * (v1.getValue() - v2.getValue());
 
 				if (y < v0.getLowerBound()) {
 					y = v0.getLowerBound();

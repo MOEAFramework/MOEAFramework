@@ -31,6 +31,7 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.configuration.Configurable;
+import org.moeaframework.core.configuration.Validate;
 
 /**
  * Abstract class providing default implementations for several
@@ -47,27 +48,27 @@ public abstract class AbstractEvolutionaryAlgorithm extends AbstractAlgorithm
 	/**
 	 * The initial population size.
 	 */
-	protected int initialPopulationSize;
+	private int initialPopulationSize;
 
 	/**
 	 * The current population.
 	 */
-	protected Population population; // TODO: Make these fields private to ensure callers go through the getters / setters
+	private Population population;
 
 	/**
 	 * The archive storing the non-dominated solutions.
 	 */
-	protected NondominatedPopulation archive;
+	private NondominatedPopulation archive;
 
 	/**
 	 * The initialization operator.
 	 */
-	protected final Initialization initialization;
+	private Initialization initialization;
 	
 	/**
 	 * The variation operator.
 	 */
-	protected Variation variation;
+	private Variation variation;
 
 	/**
 	 * Constructs an abstract evolutionary algorithm.
@@ -82,11 +83,11 @@ public abstract class AbstractEvolutionaryAlgorithm extends AbstractAlgorithm
 	public AbstractEvolutionaryAlgorithm(Problem problem, int initialPopulationSize, Population population,
 			NondominatedPopulation archive, Initialization initialization, Variation variation) {
 		super(problem);
-		this.initialPopulationSize = initialPopulationSize;
-		this.population = population;
-		this.archive = archive;
-		this.initialization = initialization;
-		this.variation = variation;
+		setInitialPopulationSize(initialPopulationSize);
+		setPopulation(population);
+		setArchive(archive);
+		setVariation(variation);
+		setInitialization(initialization);
 	}
 
 	@Override
@@ -150,6 +151,7 @@ public abstract class AbstractEvolutionaryAlgorithm extends AbstractAlgorithm
 	 */
 	protected void setInitialPopulationSize(int initialPopulationSize) {
 		assertNotInitialized();
+		Validate.greaterThanZero("initialPopulationSize", initialPopulationSize);
 		this.initialPopulationSize = initialPopulationSize;
 	}
 
@@ -160,6 +162,7 @@ public abstract class AbstractEvolutionaryAlgorithm extends AbstractAlgorithm
 	
 	protected void setPopulation(Population population) {
 		assertNotInitialized();
+		Validate.notNull("population", population);
 		this.population = population;
 	}
 	
@@ -178,7 +181,29 @@ public abstract class AbstractEvolutionaryAlgorithm extends AbstractAlgorithm
 	 * @param variation the variation operator
 	 */
 	protected void setVariation(Variation variation) {
+		Validate.notNull("variation", variation);
 		this.variation = variation;
+	}
+
+	/**
+	 * Returns the initialization method for generating solutions in the initial population.
+	 * 
+	 * @return the initialization method
+	 */
+	public Initialization getInitialization() {
+		return initialization;
+	}
+
+	/**
+	 * Sets the initialization method for generating solutions in the initial population.  This can only
+	 * be set before initializing the algorithm.
+	 * 
+	 * @param initialization the initialization method
+	 */
+	public void setInitialization(Initialization initialization) {
+		assertNotInitialized();
+		Validate.notNull("initialization", initialization);
+		this.initialization = initialization;
 	}
 
 	@Override

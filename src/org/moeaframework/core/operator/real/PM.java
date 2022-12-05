@@ -20,6 +20,7 @@ package org.moeaframework.core.operator.real;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.configuration.Prefix;
 import org.moeaframework.core.configuration.Property;
+import org.moeaframework.core.configuration.Validate;
 import org.moeaframework.core.operator.TypeSafeMutation;
 import org.moeaframework.core.variable.RealVariable;
 
@@ -69,7 +70,7 @@ public class PM extends TypeSafeMutation<RealVariable> {
 	 */
 	public PM(double probability, double distributionIndex) {
 		super(RealVariable.class, probability);
-		this.distributionIndex = distributionIndex;
+		setDistributionIndex(distributionIndex);
 	}
 	
 	@Override
@@ -93,6 +94,7 @@ public class PM extends TypeSafeMutation<RealVariable> {
 	 */
 	@Property
 	public void setDistributionIndex(double distributionIndex) {
+		Validate.greaterThanZero("distributionIndex", distributionIndex);
 		this.distributionIndex = distributionIndex;
 	}
 

@@ -88,8 +88,6 @@ public class SMPSO extends AbstractPSOAlgorithm {
 				null,
 				new PM(mutationProbability, distributionIndex));
 		
-		problem.assertType(RealVariable.class);
-
 		// initialize the minimum and maximum velocities
 		minimumVelocity = new double[problem.getNumberOfVariables()];
 		maximumVelocity = new double[problem.getNumberOfVariables()];

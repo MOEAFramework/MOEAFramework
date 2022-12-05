@@ -35,6 +35,7 @@ import org.moeaframework.core.Variation;
 import org.moeaframework.core.comparator.DominanceComparator;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
 import org.moeaframework.core.configuration.Property;
+import org.moeaframework.core.configuration.Validate;
 import org.moeaframework.core.operator.RandomInitialization;
 import org.moeaframework.core.operator.TournamentSelection;
 import org.moeaframework.core.spi.OperatorFactory;
@@ -113,12 +114,19 @@ public class EpsilonMOEA extends AbstractEvolutionaryAlgorithm implements Epsilo
 			EpsilonBoxDominanceArchive archive, Selection selection, Variation variation,
 			Initialization initialization, DominanceComparator dominanceComparator) {
 		super(problem, initialPopulationSize, population, archive, initialization, variation);
+		
+		Validate.notNull("selection", selection);
+		Validate.notNull("dominanceComparator", dominanceComparator);
+		
 		this.selection = selection;
 		this.dominanceComparator = dominanceComparator;
 	}
 
 	@Override
 	public void iterate() {
+		Population population = getPopulation();
+		EpsilonBoxDominanceArchive archive = getArchive();
+		Variation variation = getVariation();
 		Solution[] parents = null;
 		
 		if (archive.size() <= 1) {
@@ -148,6 +156,7 @@ public class EpsilonMOEA extends AbstractEvolutionaryAlgorithm implements Epsilo
 	 * @param newSolution the new solution being added to the population
 	 */
 	protected void addToPopulation(Solution newSolution) {
+		Population population = getPopulation();
 		List<Integer> dominates = new ArrayList<Integer>();
 		boolean dominated = false;
 
@@ -176,6 +185,7 @@ public class EpsilonMOEA extends AbstractEvolutionaryAlgorithm implements Epsilo
 	}
 	
 	public void setArchive(EpsilonBoxDominanceArchive archive) {
+		Validate.notNull("archive", archive);
 		super.setArchive(archive);
 	}
 	

@@ -68,7 +68,7 @@ public class SPEA2Test extends AlgorithmTest {
 	
 	@Test
 	public void testComputeDistances() {
-		SPEA2 spea2 = new SPEA2(new MockRealProblem(2), 0, null, null, 0, 1);
+		SPEA2 spea2 = new SPEA2(new MockRealProblem(2));
 		
 		Solution solution1 = TestUtils.newSolution(0.0, 1.0);
 		Solution solution2 = TestUtils.newSolution(1.0, 0.0);
@@ -94,7 +94,7 @@ public class SPEA2Test extends AlgorithmTest {
 	
 	@Test
 	public void testTruncate1() {
-		SPEA2 spea2 = new SPEA2(new MockRealProblem(2), 0, null, null, 0, 1);
+		SPEA2 spea2 = new SPEA2(new MockRealProblem(2));
 		
 		Solution solution1 = TestUtils.newSolution(0.0, 1.0);
 		Solution solution2 = TestUtils.newSolution(1.0, 0.0);
@@ -105,7 +105,7 @@ public class SPEA2Test extends AlgorithmTest {
 		population.add(solution2);
 		population.add(solution3);
 		
-		spea2.fitnessEvaluator.evaluate(population);
+		spea2.getFitnessEvaluator().evaluate(population);
 		Population result = spea2.truncate(population, 2);
 		
 		Assert.assertEquals(2, result.size());
@@ -116,7 +116,7 @@ public class SPEA2Test extends AlgorithmTest {
 	
 	@Test
 	public void testTruncate2() {
-		SPEA2 spea2 = new SPEA2(new MockRealProblem(2), 0, null, null, 0, 1);
+		SPEA2 spea2 = new SPEA2(new MockRealProblem(2));
 		
 		Solution solution1 = TestUtils.newSolution(0.0, 1.0);
 		Solution solution2 = TestUtils.newSolution(1.0, 0.0);
@@ -127,7 +127,7 @@ public class SPEA2Test extends AlgorithmTest {
 		population.add(solution2);
 		population.add(solution3);
 		
-		spea2.fitnessEvaluator.evaluate(population);
+		spea2.getFitnessEvaluator().evaluate(population);
 		Population result = spea2.truncate(population, 1);
 		
 		Assert.assertEquals(1, result.size());
@@ -137,7 +137,7 @@ public class SPEA2Test extends AlgorithmTest {
 	
 	@Test
 	public void testFitnessNondominated() {
-		SPEA2 spea2 = new SPEA2(new MockRealProblem(2), 0, null, null, 0, 1);
+		SPEA2 spea2 = new SPEA2(new MockRealProblem(2));
 		
 		Solution solution1 = TestUtils.newSolution(0.0, 1.0);
 		Solution solution2 = TestUtils.newSolution(1.0, 0.0);
@@ -148,7 +148,7 @@ public class SPEA2Test extends AlgorithmTest {
 		population.add(solution2);
 		population.add(solution3);
 		
-		spea2.fitnessEvaluator.evaluate(population);
+		spea2.getFitnessEvaluator().evaluate(population);
 		
 		assertFitnessInRange(solution1, 0, 0.9999);
 		assertFitnessInRange(solution2, 0, 0.9999);
@@ -157,7 +157,7 @@ public class SPEA2Test extends AlgorithmTest {
 	
 	@Test
 	public void testFitnessDominated() {
-		SPEA2 spea2 = new SPEA2(new MockRealProblem(2), 0, null, null, 0, 1);
+		SPEA2 spea2 = new SPEA2(new MockRealProblem(2));
 		
 		Solution solution1 = TestUtils.newSolution(0.0, 0.0);
 		Solution solution2 = TestUtils.newSolution(1.0, 1.0);
@@ -168,7 +168,7 @@ public class SPEA2Test extends AlgorithmTest {
 		population.add(solution2);
 		population.add(solution3);
 		
-		spea2.fitnessEvaluator.evaluate(population);
+		spea2.getFitnessEvaluator().evaluate(population);
 		
 		assertFitnessInRange(solution1, 0, 0.9999);
 		assertFitnessInRange(solution2, 2, 2.9999); // ~= S(1) = 2
@@ -190,7 +190,7 @@ public class SPEA2Test extends AlgorithmTest {
 				100,
 				new RandomInitialization(problem),
 				OperatorFactory.getInstance().getVariation(null, new TypedProperties(), problem),
-				0,
+				100,
 				10000);
 		
 		for (int i = 0; i < 10; i++) {

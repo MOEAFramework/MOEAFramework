@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<!DOCTYPE suppressions PUBLIC
+  "-//Checkstyle//DTD SuppressionFilter Configuration 1.2//EN"
+  "https://checkstyle.org/dtds/suppressions_1_2.dtd">
+
+<suppressions>
+	<suppress checks="RegexpHeader" files="src[\\/]org[\\/]moeaframework[\\/]problem[\\/]BBOB2016[\\/]" />
+	<suppress checks="RegexpHeader" files="test[\\/]org[\\/]moeaframework[\\/]problem[\\/]BBOB2016[\\/]" />
+	<suppress checks="TypeName" files="src[\\/]org[\\/]moeaframework[\\/]problem[\\/]CDTLZ[\\/]" />
+	<suppress checks="TypeName" files="test[\\/]org[\\/]moeaframework[\\/]problem[\\/]CDTLZ[\\/]" />
+	<suppress checks="PackageDeclaration" files="examples[\\/]Example[a-z0-9]+.java" />
+</suppressions>

@@ -23,6 +23,7 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.configuration.Property;
+import org.moeaframework.core.configuration.Validate;
 import org.moeaframework.core.operator.RandomInitialization;
 import org.moeaframework.core.variable.RealVariable;
 
@@ -68,12 +69,13 @@ public class EvolutionStrategy extends SingleObjectiveEvolutionaryAlgorithm {
 			Initialization initialization, SelfAdaptiveNormalVariation variation) {
 		super(problem, initialPopulationSize, new Population(), null, comparator, initialization, variation);
 		
-		problem.assertType(RealVariable.class);
+		Validate.problemType(problem, RealVariable.class);
 	}
 
 	@Override
 	public void iterate() {
 		Population population = getPopulation();
+		SelfAdaptiveNormalVariation variation = getVariation();
 		Population offspring = new Population();
 		int populationSize = population.size();
 		

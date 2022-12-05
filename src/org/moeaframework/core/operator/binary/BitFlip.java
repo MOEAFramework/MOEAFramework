@@ -22,6 +22,7 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variable;
 import org.moeaframework.core.configuration.Prefix;
 import org.moeaframework.core.configuration.Property;
+import org.moeaframework.core.configuration.Validate;
 import org.moeaframework.core.operator.Mutation;
 import org.moeaframework.core.variable.BinaryVariable;
 
@@ -53,7 +54,7 @@ public class BitFlip implements Mutation {
 	 */
 	public BitFlip(double probability) {
 		super();
-		this.probability = probability;
+		setProbability(probability);
 	}
 	
 	@Override
@@ -77,6 +78,7 @@ public class BitFlip implements Mutation {
 	 */
 	@Property("rate")
 	public void setProbability(double probability) {
+		Validate.probability("probability", probability);
 		this.probability = probability;
 	}
 

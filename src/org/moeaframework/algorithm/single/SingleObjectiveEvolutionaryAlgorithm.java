@@ -25,6 +25,7 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.configuration.ConfigurationException;
 import org.moeaframework.core.configuration.Property;
+import org.moeaframework.core.configuration.Validate;
 import org.moeaframework.util.TypedProperties;
 
 /**
@@ -53,7 +54,7 @@ public abstract class SingleObjectiveEvolutionaryAlgorithm extends AbstractEvolu
 			NondominatedPopulation archive, AggregateObjectiveComparator comparator, Initialization initialization,
 			Variation variation) {
 		super(problem, initialPopulationSize, population, archive, initialization, variation);
-		this.comparator = comparator;
+		setComparator(comparator);
 	}
 	
 	@Override
@@ -78,6 +79,7 @@ public abstract class SingleObjectiveEvolutionaryAlgorithm extends AbstractEvolu
 	 * @param comparator the aggregate objective comparator
 	 */
 	public void setComparator(AggregateObjectiveComparator comparator) {
+		Validate.notNull("comparator", comparator);
 		this.comparator = comparator;
 	}
 	

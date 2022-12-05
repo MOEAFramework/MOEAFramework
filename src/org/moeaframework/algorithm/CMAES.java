@@ -42,6 +42,7 @@ import org.moeaframework.core.comparator.RankComparator;
 import org.moeaframework.core.configuration.Configurable;
 import org.moeaframework.core.configuration.ConfigurationException;
 import org.moeaframework.core.configuration.Property;
+import org.moeaframework.core.configuration.Validate;
 import org.moeaframework.core.fitness.AdditiveEpsilonIndicatorFitnessEvaluator;
 import org.moeaframework.core.fitness.HypervolumeFitnessEvaluator;
 import org.moeaframework.core.variable.EncodingUtils;
@@ -263,22 +264,23 @@ public class CMAES extends AbstractAlgorithm implements Configurable {
 			boolean checkConsistency, double cc, double cs, double damps,
 			double ccov, double ccovsep, double sigma, int diagonalIterations) {
 		super(problem);
-		this.lambda = lambda;
+		setLambda(lambda);
+		setArchive(archive);
+		setCc(cc);
+		setCs(cs);
+		setDamps(damps);
+		setCcov(ccov);
+		setCcovsep(ccovsep);
+		setSigma(sigma);
+		setDiagonalIterations(diagonalIterations);
+		
+		Validate.problemType(problem, RealVariable.class);
+		
 		this.initialSearchPoint = initialSearchPoint;
 		this.checkConsistency = checkConsistency;
 		this.fitnessEvaluator = fitnessEvaluator;
-		this.archive = archive;
-		this.cc = cc;
-		this.cs = cs;
-		this.damps = damps;
-		this.ccov = ccov;
-		this.ccovsep = ccovsep;
-		this.sigma = sigma;
-		this.diagonalIterations = diagonalIterations;
 		
 		population = new Population();
-		
-		problem.assertType(RealVariable.class);
 	}
 
 	public int getDiagonalIterations() {

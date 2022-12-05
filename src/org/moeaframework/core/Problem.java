@@ -91,17 +91,4 @@ public interface Problem extends AutoCloseable {
 		
 		return true;
 	}
-	
-	/**
-	 * Asserts that this problem is the given type and, if not, throws an exception.
-	 * 
-	 * @param type the type of decision variable
-	 * @throws FrameworkException if any decision variable is not compatible with the given type
-	 */
-	default void assertType(Class<? extends Variable> type) {
-		if (!isType(type)) {
-			throw new FrameworkException("problem not of type " + type.getSimpleName());
-		}
-	}
-
 }

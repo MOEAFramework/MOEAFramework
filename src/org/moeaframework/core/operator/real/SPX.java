@@ -21,6 +21,7 @@ import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.configuration.Prefix;
 import org.moeaframework.core.configuration.Property;
+import org.moeaframework.core.configuration.Validate;
 import org.moeaframework.core.variable.RealVariable;
 
 /**
@@ -88,7 +89,7 @@ public class SPX extends MultiParentVariation {
 	 */
 	public SPX(int numberOfParents, int numberOfOffspring, double epsilon) {
 		super(numberOfParents, numberOfOffspring);
-		this.epsilon = epsilon;
+		setEpsilon(epsilon);
 	}
 	
 	@Override
@@ -182,6 +183,7 @@ public class SPX extends MultiParentVariation {
 	 */
 	@Property
 	public void setEpsilon(double epsilon) {
+		Validate.greaterThanZero("epsilon", epsilon);
 		this.epsilon = epsilon;
 	}
 

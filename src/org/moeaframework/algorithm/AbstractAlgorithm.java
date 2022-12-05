@@ -24,6 +24,7 @@ import java.util.Arrays;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.configuration.Validate;
 
 /**
  * Abstract class providing default implementations for several
@@ -73,6 +74,8 @@ public abstract class AbstractAlgorithm implements Algorithm {
 	 */
 	public AbstractAlgorithm(Problem problem) {
 		super();
+		
+		Validate.notNull("problem", problem);
 		this.problem = problem;
 	}
 
@@ -145,6 +148,8 @@ public abstract class AbstractAlgorithm implements Algorithm {
 	/**
 	 * Throws an exception if the algorithm is initialized.  Use this anywhere
 	 * to check and fail if the algorithm is already initialized.
+	 * 
+	 * @throws AlgorithmInitializationException if the algorithm is initialized
 	 */
 	public void assertNotInitialized() {
 		if (initialized) {

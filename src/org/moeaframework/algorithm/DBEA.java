@@ -35,6 +35,7 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.comparator.ObjectiveComparator;
 import org.moeaframework.core.configuration.Property;
+import org.moeaframework.core.configuration.Validate;
 import org.moeaframework.core.operator.RandomInitialization;
 import org.moeaframework.core.spi.OperatorFactory;
 import org.moeaframework.util.TypedProperties;
@@ -140,7 +141,7 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 	public DBEA(Problem problem, int initialPopulationSize, Initialization initialization,
 			Variation variation, NormalBoundaryDivisions divisions) {
 		super(problem, initialPopulationSize, new Population(), null, initialization, variation);
-		this.divisions = divisions;
+		setDivisions(divisions);
 	}
 	
 	/**
@@ -160,6 +161,7 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 	 */
 	public void setDivisions(NormalBoundaryDivisions divisions) {
 		assertNotInitialized();
+		Validate.notNull("divisions", divisions);
 		this.divisions = divisions;
 	}
 	
@@ -199,7 +201,7 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 	 * Preserve the solutions that comprise the corners of the Pareto front.
 	 */
 	void preserveCorner() {
-		Population feasibleSolutions = getFeasibleSolutions(population);
+		Population feasibleSolutions = getFeasibleSolutions(getPopulation());
 		
 		if (feasibleSolutions.size() >= 2*problem.getNumberOfObjectives()) {
 			corner = corner_sort(feasibleSolutions);
@@ -226,6 +228,9 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 
 	@Override
 	protected void iterate() {
+		Population population = getPopulation();
+		Variation variation = getVariation();
+		
 		int[] permutation = randomPermutation(population.size());
 
 		for (int i = 0; i < population.size(); i++) {
@@ -293,7 +298,7 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 			intercepts[i] = Double.NEGATIVE_INFINITY;
 		}
 		
-		Population feasibleSolutions = getFeasibleSolutions(population);
+		Population feasibleSolutions = getFeasibleSolutions(getPopulation());
 
 		if (!feasibleSolutions.isEmpty()) {
 			for (int i = 0; i < feasibleSolutions.size(); i++) {
@@ -418,7 +423,7 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 			}
 
 			// compute the axis intercepts
-			Population feasibleSolutions = getFeasibleSolutions(population);
+			Population feasibleSolutions = getFeasibleSolutions(getPopulation());
 			feasibleSolutions.add(solution);
 			
 			Population nondominatedSolutions = getNondominatedFront(feasibleSolutions);
@@ -512,6 +517,8 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 	 * @param child the child solution
 	 */
 	void updatePopulation(Solution child) {
+		Population population = getPopulation();
+		
 		double eps = 0; // unused in I-DBEA
 		double eps_con = constraintApproach(population);
 		boolean success = false;
@@ -650,7 +657,7 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 		
 		// include the corner solutions
 		Population combinedPopulation = new Population();
-		combinedPopulation.addAll(population);
+		combinedPopulation.addAll(getPopulation());
 		
 		if (corner != null) {
 			combinedPopulation.addAll(corner);
