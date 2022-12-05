@@ -22,8 +22,7 @@ along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
 Use of these build scripts requires Apache Ant to be installed.  See
 <http://ant.apache.org/> for instructions on installing Apache Ant.
 -->
-<project name="MOEA Framework Checkstyle" basedir="../../"
-		default="check-style">
+<project name="MOEA Framework Checkstyle" basedir="../../" default="check-style">
 
 	<!-- Loads properties from properties file and environment -->
 	<property file="META-INF/build.properties" />
@@ -33,21 +32,31 @@ Use of these build scripts requires Apache Ant to be installed.  See
 	<property name="build" value="build" />
 	
 	<!-- The location of the checkstyle library and configuration files -->
-	<property name="checkstyle" value="auxiliary/checkstyle" />
+	<property name="checkstyle-path" value="auxiliary/checkstyle" />
+	<property name="checkstyle-version" value="10.5.0" />
 
 	<path id="classpath">
-		<fileset dir="${checkstyle}" includes="*.jar" />
+		<fileset dir="${checkstyle-path}" includes="*.jar" />
 	</path>
+	
+	<target name="has-checkstyle">
+		<available file="${checkstyle-path}/checkstyle-${checkstyle-version}-all.jar" property="checkstyle-exists" />
+	</target>
+	
+	<target name="get-checkstyle" depends="has-checkstyle" unless="checkstyle-exists">
+		<get src="https://github.com/checkstyle/checkstyle/releases/download/checkstyle-${checkstyle-version}/checkstyle-${checkstyle-version}-all.jar"
+			dest="${checkstyle-path}/checkstyle-${checkstyle-version}-all.jar" />
+	</target>
 
-	<taskdef resource="com/puppycrawl/tools/checkstyle/ant/checkstyle-ant-task.properties"
-	         classpathref="classpath" />
-
-	<target name="check-style">
+	<target name="check-style" depends="get-checkstyle">
 		<delete dir="${build}" />
 		<mkdir dir="${build}" />
 		
-		<checkstyle config="checks.xml" failOnViolation="false"
-				classpathref="classpath" failureProperty="checkstyle.failed">
+		<taskdef resource="com/puppycrawl/tools/checkstyle/ant/checkstyle-ant-task.properties"
+		         classpathref="classpath" />
+		
+		<checkstyle config="checks.xml" failOnViolation="false" classpathref="classpath"
+				failureProperty="checkstyle.failed">
 			<formatter type="xml" tofile="${build}/checkstyle-result.xml" />
 			<fileset dir="auxiliary" includes="**/*.c,**/*.h" />
 			<fileset dir="src" includes="**/*.java" />
@@ -58,61 +67,12 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		<!-- Convert relative path of build to absolute path -->
 		<property name="output.dir" location="${build}" />
 		
-		<xslt in="${build}/checkstyle-result.xml"
-				out="${build}/checkstyle-result.html"
-				style="${checkstyle}/checkstyle-frames-errors.xsl">
+		<xslt in="${build}/checkstyle-result.xml" out="${build}/checkstyle-result.html"
+				style="${checkstyle-path}/checkstyle-frames-errors.xsl">
 			<param name="output.dir" expression="${output.dir}" />
 		</xslt>
 
 		<fail if="checkstyle.failed">Checkstyle identified one or more violations!  See build/index.html for details.</fail>
-	</target>
-
-	<target name="update-header">
-		<input message="Do you want to replace all copyright/license headers?"
-				validargs="Yes,No" defaultvalue="No" addproperty="user.input" />
-		
-		<condition property="do.update">
-			<equals arg1="Yes" arg2="${user.input}"/>
-		</condition>
-		
-		<fail unless="do.update">Build aborted by user.</fail>
-
-		<replace dir="." includes="**/*.java,**/*.c,**/*.h">
-			<replacetoken><![CDATA[/* Copyright 2009-2020 David Hadka
- *
- * This file is part of the MOEA Framework.
- *
- * The MOEA Framework is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or (at your
- * option) any later version.
- *
- * The MOEA Framework is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
- * License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
- */]]></replacetoken>
-			<replacevalue><![CDATA[/* Copyright 2009-2022 David Hadka
- *
- * This file is part of the MOEA Framework.
- *
- * The MOEA Framework is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or (at your
- * option) any later version.
- *
- * The MOEA Framework is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
- * License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
- */]]></replacevalue>
-		</replace>
 	</target>
 
 </project>
