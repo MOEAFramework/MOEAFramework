@@ -22,21 +22,20 @@ import org.junit.Test;
 /**
  * Tests the {@link NormalBoundaryIntersectionGenerator} class.
  */
-public class NormalBoundaryIntersectionGeneratorTest extends
-WeightGeneratorTest {
+public class NormalBoundaryIntersectionGeneratorTest extends WeightGeneratorTest {
 
 	@Test
 	public void testSingleLayer() {
-		test(new NormalBoundaryIntersectionGenerator(2, 30), 2);
-		test(new NormalBoundaryIntersectionGenerator(3, 12), 3);
-		test(new NormalBoundaryIntersectionGenerator(5, 4), 5);
+		test(new NormalBoundaryIntersectionGenerator(2, new NormalBoundaryDivisions(30)), 2);
+		test(new NormalBoundaryIntersectionGenerator(3, new NormalBoundaryDivisions(12)), 3);
+		test(new NormalBoundaryIntersectionGenerator(5, new NormalBoundaryDivisions(4)), 5);
 	}
 	
 	@Test
 	public void testTwoLayer() {
-		test(new NormalBoundaryIntersectionGenerator(8, 4, 3), 8);
-		test(new NormalBoundaryIntersectionGenerator(10, 3, 2), 10);
-		test(new NormalBoundaryIntersectionGenerator(15, 3, 2), 15);
+		test(new NormalBoundaryIntersectionGenerator(8, new NormalBoundaryDivisions(4, 3)), 8);
+		test(new NormalBoundaryIntersectionGenerator(10, new NormalBoundaryDivisions(3, 2)), 10);
+		test(new NormalBoundaryIntersectionGenerator(15, new NormalBoundaryDivisions(3, 2)), 15);
 	}
 	
 }

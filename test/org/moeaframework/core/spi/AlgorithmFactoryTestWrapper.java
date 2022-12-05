@@ -19,12 +19,12 @@ package org.moeaframework.core.spi;
 
 import java.io.NotSerializableException;
 import java.io.Serializable;
-import java.util.Properties;
 
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
+import org.moeaframework.util.TypedProperties;
 
 /**
  * Algorithm factory that instruments {@link Algorithm} instances with testing
@@ -39,7 +39,7 @@ public class AlgorithmFactoryTestWrapper extends AlgorithmFactory {
 
 	@Override
 	public synchronized Algorithm getAlgorithm(String name,
-			Properties properties, Problem problem) {
+			TypedProperties properties, Problem problem) {
 		final Algorithm algorithm = super.getAlgorithm(name, properties, 
 				problem);
 		

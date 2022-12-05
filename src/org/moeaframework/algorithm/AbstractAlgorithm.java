@@ -29,14 +29,18 @@ import org.moeaframework.core.Solution;
  * Abstract class providing default implementations for several
  * {@link Algorithm} methods.
  * <p>
- * All subclasses must use the {@link #evaluate} or {@link #evaluateAll}
- * methods to evaluate a solution. Do not call {@link Problem#evaluate}
- * directly. This will ensure the number of function evaluations is tracked
- * correctly.
- * <p>
- * Subclasses should avoid overriding the {@link #step()} method and instead
- * override the {@link #initialize()} and {@link #iterate()} methods
- * individually.
+ * When creating a new subclass, one should:
+ * <ol>
+ *   <li>Use the {@link #evaluate} or {@link #evaluateAll} methods
+ *       provided by this class. Do not call {@link Problem#evaluate}
+ *       directly as that will not count the number of function evaluations
+ *       correctly.
+ *   <li>When possible, prefer evaluating all solutions at once by calling
+ *       {@link #evaluateAll}. Doing so allows function evaluations to run
+ *       in parallel when enabled (see {@code Executor#distributeOnAllCores()}).
+ *   <li>Implement the algorithm by overriding the {@link #initialize()} and
+ *       {@link #iterate()} methods.
+ * </ol>
  */
 public abstract class AbstractAlgorithm implements Algorithm {
 
@@ -114,21 +118,16 @@ public abstract class AbstractAlgorithm implements Algorithm {
 
 	/**
 	 * Performs any initialization that is required by this algorithm. This
-	 * method is called automatically by the first invocation of
-	 * {@link #step()}, but may also be called manually prior to any invocations
-	 * of {@code step}. Implementations should always invoke
-	 * {@code super.initialize()} to ensure the hierarchy is initialized
+	 * method is called automatically on the first invocation of
+	 * {@link #step()}.  Implementations should always invoke
+	 * {@code super.initialize()} to ensure the algorithm is initialized
 	 * correctly.
 	 * 
 	 * @throws AlgorithmInitializationException if the algorithm has already
 	 *         been initialized
 	 */
 	protected void initialize() {
-		if (initialized) {
-			throw new AlgorithmInitializationException(this, 
-					"algorithm already initialized");
-		}
-
+		assertNotInitialized();
 		initialized = true;
 	}
 
@@ -142,22 +141,30 @@ public abstract class AbstractAlgorithm implements Algorithm {
 	public boolean isInitialized() {
 		return initialized;
 	}
+	
+	/**
+	 * Throws an exception if the algorithm is initialized.  Use this anywhere
+	 * to check and fail if the algorithm is already initialized.
+	 */
+	public void assertNotInitialized() {
+		if (initialized) {
+			throw new AlgorithmInitializationException(this, "algorithm already initialized");
+		}
+	}
 
 	/**
 	 * This method first checks if the algorithm is initialized. If not, the
-	 * {@link #initialize()} method is invoked. If initialized, all calls to
-	 * {@code step} invoke {@link #iterate()}. Implementations should override
-	 * the {@code initialize} and {@code iterate} methods in preference to
-	 * modifying this method.
+	 * {@link #initialize()} method is invoked. Once initialized, all 
+	 * subsequent calls to {@code step} invoke {@link #iterate()}.
+	 * Implementations should override the {@code initialize} and
+	 * {@code iterate} methods in preference to modifying this method.
 	 * 
-	 * @throws AlgorithmTerminationException if the algorithm has already 
-	 *         terminated
+	 * @throws AlgorithmTerminationException if the algorithm has already terminated
 	 */
 	@Override
 	public void step() {
 		if (isTerminated()) {
-			throw new AlgorithmTerminationException(this, 
-					"algorithm already terminated");
+			throw new AlgorithmTerminationException(this, "algorithm already terminated");
 		} else if (!isInitialized()) {
 			initialize();
 		} else {
@@ -179,32 +186,17 @@ public abstract class AbstractAlgorithm implements Algorithm {
 
 	/**
 	 * Implementations should always invoke {@code super.terminate()} to ensure
-	 * the hierarchy is terminated correctly. This method is automatically
-	 * invoked during finalization, and need only be called directly if
-	 * non-Java resources are in use.
+	 * the hierarchy is terminated correctly.
 	 * 
-	 * @throws AlgorithmTerminationException if the algorithm has already 
-	 *         terminated
+	 * @throws AlgorithmTerminationException if the algorithm has already terminated
 	 */
 	@Override
 	public void terminate() {
 		if (terminated) {
-			throw new AlgorithmTerminationException(this, 
-					"algorithm already terminated");
+			throw new AlgorithmTerminationException(this, "algorithm already terminated");
 		}
 
 		terminated = true;
-	}
-
-	@Override
-	protected void finalize() throws Throwable {
-		try {
-			if (!isTerminated()) {
-				terminate();
-			}
-		} finally {
-			super.finalize();
-		}
 	}
 
 	@Override

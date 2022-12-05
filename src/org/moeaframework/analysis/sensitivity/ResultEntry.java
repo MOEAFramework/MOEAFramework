@@ -17,13 +17,14 @@
  */
 package org.moeaframework.analysis.sensitivity;
 
-import java.util.Properties;
-
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.util.TypedProperties;
 
 /**
- * An entry in a result file.
+ * An entry in a result file. This captures the non-dominated population
+ * along with properties associated with the entry. The properties could
+ * include, for example, the number of function evaluations or performance
+ * metrics.
  * 
  * @see ResultFileWriter
  * @see ResultFileReader
@@ -38,7 +39,7 @@ public class ResultEntry {
 	/**
 	 * The auxiliary properties stored in this entry.
 	 */
-	private final Properties properties;
+	private final TypedProperties properties;
 	
 	/**
 	 * Constructs a result file entry with the specified non-dominated
@@ -47,7 +48,7 @@ public class ResultEntry {
 	 * @param population the non-dominated population stored in this entry
 	 */
 	public ResultEntry(NondominatedPopulation population) {
-		this(population, new Properties());
+		this(population, new TypedProperties());
 	}
 
 	/**
@@ -58,23 +59,10 @@ public class ResultEntry {
 	 * @param properties the auxiliary properties stored in this entry
 	 */
 	public ResultEntry(NondominatedPopulation population, 
-			Properties properties) {
+			TypedProperties properties) {
 		super();
 		this.population = population;
 		this.properties = properties;
-	}
-	
-	/**
-	 * Constructs a result file entry with the specified non-dominated
-	 * population and auxiliary properties.
-	 * 
-	 * @param population the non-dominated population stored in this entry
-	 * @param properties the auxiliary properties stored in this entry
-	 */
-	public ResultEntry(NondominatedPopulation population,
-			TypedProperties properties) {
-		this(population, properties == null ? null : 
-				properties.getProperties());
 	}
 
 	/**
@@ -91,7 +79,7 @@ public class ResultEntry {
 	 * 
 	 * @return the auxiliary properties stored in this entry
 	 */
-	public Properties getProperties() {
+	public TypedProperties getProperties() {
 		return properties;
 	}
 

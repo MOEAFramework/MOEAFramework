@@ -19,8 +19,7 @@ package org.moeaframework.algorithm.single;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
-
+import java.util.function.BiFunction;
 import org.moeaframework.algorithm.AbstractAlgorithm;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.NondominatedPopulation;
@@ -28,12 +27,13 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.util.TypedProperties;
 import org.moeaframework.util.weights.RandomGenerator;
+import org.moeaframework.util.weights.WeightGenerator;
 
 /**
  * Instantiates and runs several instances of a single objective algorithm.
  * This is intended to be used with single-objective optimizers that use
  * weighted aggregation of the objectives.  This is based on the Repeated Single
- * Objective (RSO) algorithm by E. J. Hughes [1], where he investigates running
+ * Objective (RSO) algorithm by E. J. Hughes [1], where they investigate running
  * many single-objective optimizers (one many) compared to running a single
  * many-objective optimizer (many once).
  * <p>
@@ -53,41 +53,70 @@ import org.moeaframework.util.weights.RandomGenerator;
 public class RepeatedSingleObjective extends AbstractAlgorithm {
 	
 	/**
-	 * The name of the algorithm.
-	 */
-	private final String algorithmName;
-	
-	/**
-	 * Any additional algorithm properties.
-	 */
-	private final Properties properties;
-	
-	/**
 	 * A list of the instantiated algorithms.
 	 */
 	private final List<Algorithm> algorithms;
 
 	/**
-	 * Constructs a new instance of the Many-Once algorithm, which runs many
-	 * instances of a single-objective optimizer with varying weights.
+	 * Constructs a new instance of the RSO algorithm, which runs many instances of a single-objective optimizer with
+	 * varying weights.
 	 * 
 	 * @param problem the problem
 	 * @param algorithmName the algorithm name
 	 * @param properties the algorithm properties
 	 * @param instances the number of instances
 	 */
-	public RepeatedSingleObjective(Problem problem, String algorithmName, Properties properties, int instances) {
+	@Deprecated
+	public RepeatedSingleObjective(Problem problem, String algorithmName, TypedProperties properties, int instances) {
+		this(problem, instances, algorithmName, properties);
+	}
+	
+	/**
+	 * Constructs a new instance of the RSO algorithm using the given single-objective algorithm.  The properties
+	 * are passed to each individual algorithm with the addition of a {@code "weights"} parameter, which is
+	 * randomly-generated for each instance.
+	 * 
+	 * @param problem the problem to solve
+	 * @param algorithmName the algorithm name
+	 * @param properties the algorithm properties
+	 * @param instances the number of instances
+	 */
+	public RepeatedSingleObjective(Problem problem, int instances, String algorithmName, TypedProperties properties) {
+		this(problem, instances, (p, w) -> {
+			TypedProperties localProperties = new TypedProperties();
+			localProperties.addAll(properties);
+			localProperties.setDoubleArray("weights", w);
+			
+			return AlgorithmFactory.getInstance().getAlgorithm(algorithmName, localProperties, p);
+		});
+	}
+
+	
+	/**
+	 * Constructs a new instance of the RSO algorithm using randomly-generated weights.
+	 * 
+	 * @param problem the problem to solve
+	 * @param instances the number of single-objective algorithm instances to create using random weights
+	 * @param creator function that creates a single-objective algorithm for the given weight vector
+	 */
+	public RepeatedSingleObjective(Problem problem, int instances, BiFunction<Problem, double[], Algorithm> creator) {
+		this(problem, new RandomGenerator(problem.getNumberOfObjectives(), instances), creator);
+	}
+	
+	/**
+	 * Constructs a new instance of the RSO algorithm.  The weight generator defines the number of instances.
+	 * 
+	 * @param problem the problem to solve
+	 * @param weightGenerator generates the weight vectors used to configure each single-objective algorithm
+	 * @param creator function that creates a single-objective algorithm for the given weight vector
+	 */
+	public RepeatedSingleObjective(Problem problem, WeightGenerator weightGenerator,
+			BiFunction<Problem, double[], Algorithm> creator) {
 		super(problem);
-		this.algorithmName = algorithmName;
-		this.properties = properties;
-		
-		// setup the algorithm instances		
-		List<double[]> weights = new RandomGenerator(
-				problem.getNumberOfObjectives(), instances).generate();
 		algorithms = new ArrayList<Algorithm>();
 		
-		for (double[] weight : weights) {
-			algorithms.add(createInstance(weight));
+		for (double[] weight : weightGenerator.generate()) {
+			algorithms.add(creator.apply(problem, weight));
 		}
 	}
 
@@ -126,23 +155,6 @@ public class RepeatedSingleObjective extends AbstractAlgorithm {
 		for (Algorithm algorithm : algorithms) {
 			algorithm.step();
 		}
-	}
-	
-	/**
-	 * Constructs a new instance of the algorithm using the given weights.
-	 * This assumes the weights are passed using the {@code "weights"} property.
-	 * 
-	 * @param weights the weights
-	 * @return the new algorithm instance
-	 */
-	protected Algorithm createInstance(double[] weights) {
-		TypedProperties typedProperties = new TypedProperties(
-				new Properties(properties));
-		
-		typedProperties.setDoubleArray("weights", weights);
-		
-		return AlgorithmFactory.getInstance().getAlgorithm(
-				algorithmName, typedProperties.getProperties(), problem);
 	}
 
 }

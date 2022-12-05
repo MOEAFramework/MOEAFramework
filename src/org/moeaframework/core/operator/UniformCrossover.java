@@ -21,35 +21,61 @@ import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variable;
 import org.moeaframework.core.Variation;
+import org.moeaframework.core.configuration.Prefix;
+import org.moeaframework.core.configuration.Property;
 
 /**
- * Crossover operator where each index is swapped with a specified probability.
+ * Crossover operator where each index is randomly swapped between the
+ * parents with a 50% chance.
  */
+@Prefix("ux")
 public class UniformCrossover implements Variation {
 
 	/**
-	 * The probability an index is swapped between two solutions.
+	 * The probability of applying this operator to solutions.
 	 */
-	private final double probability;
+	private double probability;
+	
+	/**
+	 * Constructs a uniform crossover operator with a 100% probability of
+	 * mutating the parents.
+	 */
+	public UniformCrossover() {
+		this(1.0);
+	}
 
 	/**
-	 * Constructs a uniform crossover operator with the specified probability an
-	 * index is swapped between two solutions.
+	 * Constructs a uniform crossover operator with the specified probability of
+	 * applying this operator to solutions.
 	 * 
-	 * @param probability the probability an index is swapped between two
-	 *        solutions
+	 * @param probability the probability of applying this operator to solutions
 	 */
 	public UniformCrossover(double probability) {
 		this.probability = probability;
 	}
+	
+	@Override
+	public String getName() {
+		return "ux";
+	}
 
 	/**
-	 * Returns the probability an index is swapped between two solutions.
+	 * Returns the probability of applying this operator to solutions
 	 * 
-	 * @return the probability an index is swapped between two solutions
+	 * @return the probability
 	 */
 	public double getProbability() {
 		return probability;
+	}
+	
+	/**
+	 * Sets the probability of applying this operator to solutions.
+	 * 
+	 * @param probability the probability between 0.0 and 1.0, inclusive
+	 */
+	@Property("rate")
+	public void setProbability(double probability) {
+		this.probability = probability;
 	}
 
 	@Override

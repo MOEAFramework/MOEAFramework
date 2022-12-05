@@ -21,15 +21,11 @@ import java.io.File;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
-import org.apache.commons.cli.OptionGroup;
 import org.apache.commons.cli.Options;
-import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PopulationIO;
 import org.moeaframework.core.Problem;
-import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.util.CommandLineUtility;
-import org.moeaframework.util.TypedProperties;
 import org.moeaframework.util.io.FileUtils;
 
 /**
@@ -38,9 +34,9 @@ import org.moeaframework.util.io.FileUtils;
  * non-dominated solutions from all input files.
  * <p>
  * Usage: {@code java -cp "..." org.moeaframework.analysis.sensitivity.ResultFileMerger <options> <files>}
- * <p>
- * Arguments:
- * <table border="0" style="margin-left: 1em">
+ * 
+ * <table>
+ *   <caption style="text-align: left">Arguments:</caption>
  *   <tr>
  *     <td>{@code -b, --problem}</td>
  *     <td>The name of the problem.  This name should reference one of the
@@ -49,7 +45,6 @@ import org.moeaframework.util.io.FileUtils;
  *   <tr>
  *     <td>{@code -d, --dimension}</td>
  *     <td>The number of objectives (use instead of -b).</td>
- *   </tr>
  *   </tr>
  *   <tr>
  *     <td>{@code -o, --output}</td>
@@ -82,25 +77,9 @@ public class ResultFileMerger extends CommandLineUtility {
 	public Options getOptions() {
 		Options options = super.getOptions();
 		
-		OptionGroup group = new OptionGroup();
-		group.setRequired(true);
-		group.addOption(Option.builder("b")
-				.longOpt("problem")
-				.hasArg()
-				.argName("name")
-				.build());
-		group.addOption(Option.builder("d")
-				.longOpt("dimension")
-				.hasArg()
-				.argName("number")
-				.build());
-		options.addOptionGroup(group);
+		OptionUtils.addProblemOption(options, true);
+		OptionUtils.addEpsilonOption(options);
 		
-		options.addOption(Option.builder("e")
-				.longOpt("epsilon")
-				.hasArg()
-				.argName("e1,e2,...")
-				.build());
 		options.addOption(Option.builder("o")
 				.longOpt("output")
 				.hasArg()
@@ -116,41 +95,14 @@ public class ResultFileMerger extends CommandLineUtility {
 
 	@Override
 	public void run(CommandLine commandLine) throws Exception {
-		Problem problem = null;
-		NondominatedPopulation mergedSet = null;
-		ResultFileReader reader = null;
+		NondominatedPopulation mergedSet = OptionUtils.getArchive(commandLine);
 
-		// setup the merged non-dominated population
-		if (commandLine.hasOption("epsilon")) {
-			double[] epsilon = TypedProperties.withProperty("epsilon",
-					commandLine.getOptionValue("epsilon")).getDoubleArray(
-					"epsilon", null);
-			mergedSet = new EpsilonBoxDominanceArchive(epsilon);
-		} else {
-			mergedSet = new NondominatedPopulation();
-		}
-
-		try {
-			// setup the problem
-			if (commandLine.hasOption("problem")) {
-				problem = ProblemFactory.getInstance().getProblem(commandLine
-						.getOptionValue("problem"));
-			} else {
-				problem = new ProblemStub(Integer.parseInt(commandLine
-						.getOptionValue("dimension")));
-			}
-
+		try (Problem problem = OptionUtils.getProblemInstance(commandLine, true)) {
 			// read in result files
 			for (String filename : commandLine.getArgs()) {
-				try {
-					reader = new ResultFileReader(problem, new File(filename));
-
+				try (ResultFileReader reader = new ResultFileReader(problem, new File(filename))) {
 					while (reader.hasNext()) {
 						mergedSet.addAll(reader.next().getPopulation());
-					}
-				} finally {
-					if (reader != null) {
-						reader.close();
 					}
 				}
 			}
@@ -158,29 +110,17 @@ public class ResultFileMerger extends CommandLineUtility {
 			File output = new File(commandLine.getOptionValue("output"));
 
 			// output merged set
-			if (commandLine.hasOption("resultFile")) {
-				ResultFileWriter writer = null;
-				
+			if (commandLine.hasOption("resultFile")) {			
 				//delete the file to avoid appending
 				FileUtils.delete(output);
 				
-				try {
-					writer = new ResultFileWriter(problem, output);
-					
+				try (ResultFileWriter writer = new ResultFileWriter(problem, output)) {
 					writer.append(new ResultEntry(mergedSet));
-				} finally {
-					if (writer != null) {
-						writer.close();
-					}
 				}
 			} else {
 				PopulationIO.writeObjectives(output, mergedSet);
 			}
 
-		} finally {
-			if (problem != null) {
-				problem.close();
-			}
 		}
 	}
 	

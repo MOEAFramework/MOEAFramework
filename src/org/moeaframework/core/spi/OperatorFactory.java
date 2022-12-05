@@ -17,17 +17,13 @@
  */
 package org.moeaframework.core.spi;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Properties;
 import java.util.ServiceConfigurationError;
-import java.util.ServiceLoader;
 
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Variation;
+import org.moeaframework.core.operator.CompoundMutation;
 import org.moeaframework.core.operator.CompoundVariation;
-import org.moeaframework.core.operator.StandardOperators;
+import org.moeaframework.core.operator.Mutation;
 import org.moeaframework.util.TypedProperties;
 
 /**
@@ -40,29 +36,18 @@ import org.moeaframework.util.TypedProperties;
  * <p>
  * This class is thread safe.
  */
-public class OperatorFactory {
-	
-	/**
-	 * The static service loader for loading operator providers.
-	 */
-	private static final ServiceLoader<OperatorProvider> PROVIDERS;
+public class OperatorFactory extends AbstractFactory<OperatorProvider> {
 	
 	/**
 	 * The default operator factory.
 	 */
-	private static OperatorFactory instance;
+	private static OperatorFactory INSTANCE;
 	
 	/**
-	 * Collection of providers that have been manually added.
-	 */
-	private List<OperatorProvider> customProviders;
-	
-	/**
-	 * Instantiates the static {@code instance} object.
+	 * Instantiates the static {@code INSTANCE} object.
 	 */
 	static {
-		PROVIDERS = ServiceLoader.load(OperatorProvider.class);
-		instance = new OperatorFactory();
+		INSTANCE = new OperatorFactory();
 	}
 	
 	/**
@@ -71,7 +56,7 @@ public class OperatorFactory {
 	 * @return the default operator factory
 	 */
 	public static synchronized OperatorFactory getInstance() {
-		return instance;
+		return INSTANCE;
 	}
 
 	/**
@@ -80,27 +65,14 @@ public class OperatorFactory {
 	 * @param instance the default operator factory
 	 */
 	public static synchronized void setInstance(OperatorFactory instance) {
-		OperatorFactory.instance = instance;
+		OperatorFactory.INSTANCE = instance;
 	}
 	
 	/**
 	 * Constructs a new operator factory.
 	 */
 	public OperatorFactory() {
-		super();
-		
-		customProviders = new ArrayList<OperatorProvider>();
-	}
-	
-	/**
-	 * Adds an operator provider to this operator factory.  Subsequent calls
-	 * to {@link #getVariation(String, Properties, Problem)} will search the
-	 * given provider for a match.
-	 * 
-	 * @param provider the new operator provider
-	 */
-	public void addProvider(OperatorProvider provider) {
-		customProviders.add(provider);
+		super(OperatorProvider.class);
 	}
 	
 	/**
@@ -112,6 +84,7 @@ public class OperatorFactory {
 	 * @throws ProviderLookupException if no default mutation operator could
 	 *         be determined
 	 */
+	@Deprecated
 	public String getDefaultMutation(Problem problem) {
 		String result = lookupMutationHint(problem);
 		
@@ -132,6 +105,7 @@ public class OperatorFactory {
 	 * @throws ProviderLookupException if no default variation operator could
 	 *         be determined
 	 */
+	@Deprecated
 	public String getDefaultVariation(Problem problem) {
 		String result = lookupVariationHint(problem);
 		
@@ -143,21 +117,59 @@ public class OperatorFactory {
 	}
 	
 	/**
-	 * Returns an instance of the variation operator with the specified name.
-	 * This method must throw an {@link ProviderNotFoundException} if no 
-	 * suitable operator is found.  If {@code name} is null, the factory should
-	 * return a default variation operator appropriate for the problem.
+	 * Returns the suggested mutation operator for the given problem.
+	 * 
+	 * @param problem the problem
+	 * @return an instance of the mutation operator
+	 */
+	public Mutation getMutation(Problem problem) {
+		return getMutation(null, new TypedProperties(), problem);
+	}
+	
+	/**
+	 * Returns the suggested mutation operator for the given problem.
+	 * 
+	 * @param properties the implementation-specific properties
+	 * @param problem the problem
+	 * @return an instance of the mutation operator
+	 */
+	public Mutation getMutation(String name, TypedProperties properties, Problem problem) {
+		if (name == null) {
+			name = properties.getString("operator", null);
+		}
+		
+		if (name == null) {
+			name = lookupMutationHint(problem);
+		}
+		
+		Variation variation = getVariation(name, properties, problem);
+		
+		if (variation != null && !(variation instanceof Mutation)) {
+			throw new ProviderLookupException("the operator '" + name + "' is not a mutation operator");
+		}
+		
+		return (Mutation)variation;
+	}
+	
+	/**
+	 * Returns the suggested variation operator for the given problem.
+	 * 
+	 * @param problem the problem to be solved
+	 * @return an instance of the variation operator
+	 */
+	public Variation getVariation(Problem problem) {
+		return getVariation(null, problem);
+	}
+	
+	/**
+	 * Returns the named variation operator using default settings.
 	 * 
 	 * @param name the name identifying the variation operator
-	 * @param properties the implementation-specific properties
 	 * @param problem the problem to be solved
-	 * @return an instance of the variation operator with the specified name
-	 * @throws ProviderNotFoundException if no provider for the algorithm is 
-	 *         available
+	 * @return an instance of the variation operator
 	 */
-	public Variation getVariation(String name, TypedProperties properties,
-			Problem problem) {
-		return getVariation(name, properties.getProperties(), problem);
+	public Variation getVariation(String name, Problem problem) {
+		return getVariation(name, new TypedProperties(), problem);
 	}
 
 	/**
@@ -169,38 +181,62 @@ public class OperatorFactory {
 	 * @param name the name identifying the variation operator
 	 * @param properties the implementation-specific properties
 	 * @param problem the problem to be solved
-	 * @return an instance of the variation operator with the specified name
+	 * @return an instance of the variation operator
 	 * @throws ProviderNotFoundException if no provider for the algorithm is 
 	 *         available
 	 */
-	public Variation getVariation(String name, Properties properties, 
-			Problem problem) {
+	public Variation getVariation(String name, TypedProperties properties, Problem problem) {
 		if (name == null) {
-			String operator = properties.getProperty("operator", null);
+			name = properties.getString("operator", null);
+		}
+		
+		if (name == null) {
+			name = lookupVariationHint(problem);
+		}
+		
+		if (name == null) {
+			return null;
+		}
 			
-			if (operator == null) {
-				String hint = lookupVariationHint(problem);
-				return getVariation(hint, properties, problem);
-			} else {
-				return getVariation(operator, properties, problem);
+		if (name.contains("+")) {
+			String[] entries = name.split("\\+");
+			Variation[] operators = new Variation[entries.length];
+			
+			for (int i = 0; i < entries.length; i++) {
+				operators[i] = getVariation(entries[i].trim(), properties, problem);
 			}
-		} else if (name.contains("+")) {
-			String[] entries = name.split("\\s*\\+\\s*");
-			CompoundVariation variation = new CompoundVariation();
 			
-			for (String entry : entries) {
-				variation.appendOperator(
-						getVariation(entry, properties, problem));
-			}
-			
-			return variation;
+			return createCompoundOperator(operators);
 		} else {
 			return instantiateVariation(name, properties, problem);
 		}
 	}
 	
-	private Variation instantiateVariation(OperatorProvider provider,
-			String name, Properties properties, Problem problem) {
+	private Variation createCompoundOperator(Variation[] operators) {
+		boolean isMutation = true;
+		
+		for (int i = 0; i < operators.length; i++) {
+			if (!(operators[i] instanceof Mutation)) {
+				isMutation = false;
+				break;
+			}
+		}
+		
+		if (isMutation) {
+			Mutation[] mutation = new Mutation[operators.length];
+
+			for (int i = 0; i < operators.length; i++) {
+				mutation[i] = (Mutation)operators[i];
+			}
+			
+			return new CompoundMutation(mutation);
+		} else {
+			return new CompoundVariation(operators);
+		}
+	}
+	
+	private Variation instantiateVariation(OperatorProvider provider, String name,
+			TypedProperties properties, Problem problem) {
 		try {
 			return provider.getVariation(name, properties, problem);
 		} catch (ServiceConfigurationError e) {
@@ -210,45 +246,9 @@ public class OperatorFactory {
 		return null;
 	}
 	
-	private Variation instantiateVariation(String name, Properties properties,
-			Problem problem) {
-		boolean hasStandardOperators = false;
-		
-		// loop over all providers that have been manually added
-		for (OperatorProvider provider : customProviders) {
-			Variation variation = instantiateVariation(provider, name,
-					properties, problem);
-			
-			if (provider.getClass() == StandardOperators.class) {
-				hasStandardOperators = true;
-			}
-			
-			if (variation != null) {
-				return variation;
-			}
-		}
-
-		// loop over all providers available via the SPI
-		Iterator<OperatorProvider> iterator = PROVIDERS.iterator();
-		
-		while (iterator.hasNext()) {
-			OperatorProvider provider = iterator.next();
-			Variation variation = instantiateVariation(provider, name,
-					properties, problem);
-			
-			if (provider.getClass() == StandardOperators.class) {
-				hasStandardOperators = true;
-			}
-			
-			if (variation != null) {
-				return variation;
-			}
-		}
-		
-		// always ensure we check the standard algorithms
-		if (!hasStandardOperators) {
-			Variation variation = instantiateVariation(new StandardOperators(),
-					name, properties, problem);
+	private Variation instantiateVariation(String name, TypedProperties properties, Problem problem) {
+		for (OperatorProvider provider : this) {
+			Variation variation = instantiateVariation(provider, name, properties, problem);
 			
 			if (variation != null) {
 				return variation;
@@ -259,93 +259,27 @@ public class OperatorFactory {
 	}
 	
 	private String lookupMutationHint(Problem problem) {
-		boolean hasStandardOperators = false;
-		
-		// loop over all providers that have been manually added
-		for (OperatorProvider provider : customProviders) {
-			String hint = provider.getMutationHint(problem);
-
-			if (provider.getClass() == StandardOperators.class) {
-				hasStandardOperators = true;
-			}
-			
-			if (hint != null) {
-				return hint;
-			}
-		}
-
-		// loop over all providers available via the SPI
-		Iterator<OperatorProvider> iterator = PROVIDERS.iterator();
-		
-		while (iterator.hasNext()) {
-			OperatorProvider provider = iterator.next();
+		for (OperatorProvider provider : this) {
 			String hint = provider.getMutationHint(problem);
 			
-			if (provider.getClass() == StandardOperators.class) {
-				hasStandardOperators = true;
-			}
-			
 			if (hint != null) {
 				return hint;
 			}
 		}
 		
-		// always ensure we check the standard algorithms
-		if (!hasStandardOperators) {
-			String hint = new StandardOperators().getMutationHint(problem);
-
-			if (hint != null) {
-				return hint;
-			}
-		}
-		
-		throw new ProviderLookupException(
-				"unable to find suitable variation operator");
+		return null;
 	}
 	
 	private String lookupVariationHint(Problem problem) {
-		boolean hasStandardOperators = false;
-		
-		// loop over all providers that have been manually added
-		for (OperatorProvider provider : customProviders) {
+		for (OperatorProvider provider : this) {
 			String hint = provider.getVariationHint(problem);
 
-			if (provider.getClass() == StandardOperators.class) {
-				hasStandardOperators = true;
-			}
-			
-			if (hint != null) {
-				return hint;
-			}
-		}
-
-		// loop over all providers available via the SPI
-		Iterator<OperatorProvider> iterator = PROVIDERS.iterator();
-		
-		while (iterator.hasNext()) {
-			OperatorProvider provider = iterator.next();
-			String hint = provider.getVariationHint(problem);
-			
-			if (provider.getClass() == StandardOperators.class) {
-				hasStandardOperators = true;
-			}
-			
 			if (hint != null) {
 				return hint;
 			}
 		}
 		
-		// always ensure we check the standard algorithms
-		if (!hasStandardOperators) {
-			String hint = new StandardOperators().getVariationHint(problem);
-
-			if (hint != null) {
-				return hint;
-			}
-		}
-		
-		throw new ProviderLookupException(
-				"unable to find suitable variation operator");
+		return null;
 	}
 	
 }

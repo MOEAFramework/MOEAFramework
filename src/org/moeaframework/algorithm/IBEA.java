@@ -17,16 +17,25 @@
  */
 package org.moeaframework.algorithm;
 
+import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Initialization;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Selection;
+import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.comparator.FitnessComparator;
+import org.moeaframework.core.configuration.ConfigurationException;
+import org.moeaframework.core.configuration.Property;
+import org.moeaframework.core.fitness.AdditiveEpsilonIndicatorFitnessEvaluator;
+import org.moeaframework.core.fitness.HypervolumeFitnessEvaluator;
 import org.moeaframework.core.fitness.IndicatorFitnessEvaluator;
+import org.moeaframework.core.operator.RandomInitialization;
 import org.moeaframework.core.operator.TournamentSelection;
+import org.moeaframework.core.spi.OperatorFactory;
+import org.moeaframework.util.TypedProperties;
 
 /**
  * Implementation of the Indicator-Based Evolutionary Algorithm (IBEA).  Instead
@@ -57,34 +66,51 @@ public class IBEA extends AbstractEvolutionaryAlgorithm {
 	/**
 	 * The selection operator.
 	 */
-	private Selection selection;
+	private final Selection selection;
 	
 	/**
-	 * The variation operator.
+	 * Constructs a new IBEA instance with default settings.
+	 * 
+	 * @param problem the problem
 	 */
-	private Variation variation;
+	public IBEA(Problem problem) {
+		this(problem,
+				Settings.DEFAULT_POPULATION_SIZE,
+				null,
+				new RandomInitialization(problem),
+				OperatorFactory.getInstance().getVariation(problem),
+				new HypervolumeFitnessEvaluator(problem));
+	}
 
 	/**
 	 * Constructs a new IBEA instance.
 	 * 
 	 * @param problem the problem
-	 * @param archive the external archive; or {@code null} if no external
-	 *        archive is used
+	 * @param initialPopulationSize the initial population size
+	 * @param archive the external archive; or {@code null} if no external archive is used
 	 * @param initialization the initialization operator
 	 * @param variation the variation operator
-	 * @param fitnessEvaluator the indicator fitness evaluator to use (e.g.,
-	 *        hypervolume additive-epsilon indicator)
+	 * @param fitnessEvaluator the indicator fitness evaluator to use (e.g., hypervolume additive-epsilon indicator)
 	 */
-	public IBEA(Problem problem, NondominatedPopulation archive,
-			Initialization initialization, Variation variation,
-			IndicatorFitnessEvaluator fitnessEvaluator) {
-		super(problem, new Population(), archive, initialization);
-		this.variation = variation;
-		this.fitnessEvaluator = fitnessEvaluator;
-		
-		fitnessComparator = new FitnessComparator(
-				fitnessEvaluator.areLargerValuesPreferred());
+	public IBEA(Problem problem, int initialPopulationSize, NondominatedPopulation archive,
+			Initialization initialization, Variation variation, IndicatorFitnessEvaluator fitnessEvaluator) {
+		super(problem, initialPopulationSize, new Population(), archive, initialization, variation);
+		setFitnessEvaluator(fitnessEvaluator);
+
 		selection = new TournamentSelection(fitnessComparator);
+		
+		if (problem.getNumberOfConstraints() > 0) {
+			throw new FrameworkException("constraints not supported");
+		}
+	}
+	
+	public IndicatorFitnessEvaluator getFitnessEvaluator() {
+		return fitnessEvaluator;
+	}
+	
+	public void setFitnessEvaluator(IndicatorFitnessEvaluator fitnessEvaluator) {
+		this.fitnessEvaluator = fitnessEvaluator;
+		fitnessComparator = new FitnessComparator(fitnessEvaluator.areLargerValuesPreferred());
 	}
 	
 	@Override
@@ -100,8 +126,7 @@ public class IBEA extends AbstractEvolutionaryAlgorithm {
 		int populationSize = population.size();
 		
 		while (offspring.size() < populationSize) {
-			Solution[] parents = selection.select(variation.getArity(),
-					population);
+			Solution[] parents = selection.select(variation.getArity(), population);
 			Solution[] children = variation.evolve(parents);
 
 			offspring.addAll(children);
@@ -126,13 +151,55 @@ public class IBEA extends AbstractEvolutionaryAlgorithm {
 		int worstIndex = 0;
 		
 		for (int i = 1; i < population.size(); i++) {
-			if (fitnessComparator.compare(population.get(worstIndex),
-					population.get(i)) == -1) {
+			if (fitnessComparator.compare(population.get(worstIndex), population.get(i)) == -1) {
 				worstIndex = i;
 			}
 		}
 		
 		return worstIndex;
+	}
+	
+	@Override
+	@Property("operator")
+	public void setVariation(Variation variation) {
+		super.setVariation(variation);
+	}
+	
+	@Override
+	@Property("populationSize")
+	public void setInitialPopulationSize(int initialPopulationSize) {
+		super.setInitialPopulationSize(initialPopulationSize);
+	}
+	
+	@Override
+	public void applyConfiguration(TypedProperties properties) {
+		if (properties.contains("indicator")) {
+			String indicator = properties.getString("indicator");
+			
+			if ("hypervolume".equalsIgnoreCase(indicator)) {
+				fitnessEvaluator = new HypervolumeFitnessEvaluator(problem);
+			} else if ("epsilon".equalsIgnoreCase(indicator)) {
+				fitnessEvaluator = new AdditiveEpsilonIndicatorFitnessEvaluator(problem);
+			} else {
+				throw new ConfigurationException("invalid indicator: " + indicator);
+			}
+		}
+		
+		super.applyConfiguration(properties);
+		
+	}
+
+	@Override
+	public TypedProperties getConfiguration() {
+		TypedProperties properties = super.getConfiguration();
+		
+		if (fitnessEvaluator instanceof HypervolumeFitnessEvaluator) {
+			properties.setString("indicator", "hypervolume");
+		} else if (fitnessEvaluator instanceof AdditiveEpsilonIndicatorFitnessEvaluator) {
+			properties.setString("indicator", "epsilon");
+		}
+		
+		return properties;
 	}
 
 }

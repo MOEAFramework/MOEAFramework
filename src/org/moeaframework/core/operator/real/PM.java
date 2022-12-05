@@ -18,9 +18,9 @@
 package org.moeaframework.core.operator.real;
 
 import org.moeaframework.core.PRNG;
-import org.moeaframework.core.Solution;
-import org.moeaframework.core.Variable;
-import org.moeaframework.core.Variation;
+import org.moeaframework.core.configuration.Prefix;
+import org.moeaframework.core.configuration.Property;
+import org.moeaframework.core.operator.TypeSafeMutation;
 import org.moeaframework.core.variable.RealVariable;
 
 /**
@@ -45,69 +45,55 @@ import org.moeaframework.core.variable.RealVariable;
  *       26(4):30-45, 1996.
  * </ol>
  */
-public class PM implements Variation {
-
-	/**
-	 * The probability this operator is applied to each decision variable.
-	 */
-	private final double probability;
+@Prefix("pm")
+public class PM extends TypeSafeMutation<RealVariable> {
 
 	/**
 	 * The distribution index controlling the shape of the polynomial mutation.
 	 */
-	private final double distributionIndex;
+	private double distributionIndex;
+	
+	/**
+	 * Constructs a polynomial mutation operator with the default settings.  This includes
+	 * a mutation probability of {@code 0.1} and a distribution index of {@code 20.0}.
+	 */
+	public PM() {
+		this(0.1, 20.0);
+	}
 
 	/**
-	 * Constructs a polynomial mutation operator with the specified probability
-	 * and distribution index.
+	 * Constructs a polynomial mutation operator with the specified probability and distribution index.
 	 * 
-	 * @param probability the probability this operator is applied to each
-	 *        decision variable
-	 * @param distributionIndex the distribution index controlling the shape of
-	 *        the polynomial mutation.
+	 * @param probability the probability this operator is applied to each decision variable
+	 * @param distributionIndex the distribution index controlling the shape of the polynomial mutation.
 	 */
 	public PM(double probability, double distributionIndex) {
-		super();
-		this.probability = probability;
+		super(RealVariable.class, probability);
 		this.distributionIndex = distributionIndex;
 	}
-
-	/**
-	 * Returns the probability this operator is applied to each decision
-	 * variable.
-	 * 
-	 * @return the probability this operator is applied to each decision
-	 *         variable
-	 */
-	public double getProbability() {
-		return probability;
+	
+	@Override
+	public String getName() {
+		return "pm";
 	}
-
+	
 	/**
-	 * Returns the distribution index controlling the shape of the polynomial
-	 * mutation.
+	 * Returns the distribution index controlling the shape of the polynomial mutation.
 	 * 
-	 * @return the distribution index controlling the shape of the polynomial
-	 *         mutation
+	 * @return the distribution index controlling the shape of the polynomial mutation
 	 */
 	public double getDistributionIndex() {
 		return distributionIndex;
 	}
 
-	@Override
-	public Solution[] evolve(Solution[] parents) {
-		Solution result = parents[0].copy();
-
-		for (int i = 0; i < result.getNumberOfVariables(); i++) {
-			Variable variable = result.getVariable(i);
-
-			if ((PRNG.nextDouble() <= probability)
-					&& (variable instanceof RealVariable)) {
-				evolve((RealVariable)variable, distributionIndex);
-			}
-		}
-
-		return new Solution[] { result };
+	/**
+	 * Sets the distribution index controlling the shape of the polynomial mutation.
+	 * 
+	 * @param distributionIndex the distribution index controlling the shape of the polynomial mutation
+	 */
+	@Property
+	public void setDistributionIndex(double distributionIndex) {
+		this.distributionIndex = distributionIndex;
 	}
 
 	/*
@@ -152,7 +138,7 @@ public class PM implements Variation {
 	 * @param distributionIndex the distribution index controlling the shape of
 	 *        the polynomial mutation
 	 */
-	public static void evolve(RealVariable v, double distributionIndex) {
+	public void mutate(RealVariable v) {
 		double u = PRNG.nextDouble();
 		double x = v.getValue();
 		double lb = v.getLowerBound();
@@ -162,13 +148,11 @@ public class PM implements Variation {
 
 		if (u < 0.5) {
 			double bl = (x - lb) / dx;
-			double b = 2 * u + (1 - 2 * u)
-					* (Math.pow(1 - bl, (distributionIndex + 1)));
+			double b = 2 * u + (1 - 2 * u) * (Math.pow(1 - bl, (distributionIndex + 1)));
 			delta = Math.pow(b, (1.0 / (distributionIndex + 1))) - 1.0;
 		} else {
 			double bu = (ub - x) / dx;
-			double b = 2 * (1 - u) + 2 * (u - 0.5)
-					* (Math.pow(1 - bu, (distributionIndex + 1)));
+			double b = 2 * (1 - u) + 2 * (u - 0.5) * (Math.pow(1 - bu, (distributionIndex + 1)));
 			delta = 1.0 - Math.pow(b, (1.0 / (distributionIndex + 1)));
 		}
 
@@ -181,11 +165,6 @@ public class PM implements Variation {
 		}
 
 		v.setValue(x);
-	}
-
-	@Override
-	public int getArity() {
-		return 1;
 	}
 
 }

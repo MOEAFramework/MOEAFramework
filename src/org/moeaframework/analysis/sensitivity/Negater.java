@@ -40,9 +40,9 @@ import org.moeaframework.util.TypedProperties;
  * so may leave the file(s) in a corrupted state.
  * <p>
  * Usage: {@code java -cp "..." org.moeaframework.analysis.sensitivity.Negater <options> <files>}
- * <p>
- * Arguments:
- * <table border="0" style="margin-left: 1em">
+ * 
+ * <table>
+ *   <caption style="text-align: left">Arguments:</caption>
  *   <tr>
  *     <td>{@code -d, --direction}</td>
  *     <td>The optimization direction (required).  A comma-separated list with
@@ -84,24 +84,16 @@ public class Negater extends CommandLineUtility {
     public void run(CommandLine commandLine) throws Exception {
         TypedProperties properties = TypedProperties.withProperty("direction",
                 commandLine.getOptionValue("direction"));
-        int[] directions = properties.getIntArray("direction", null);
+        int[] directions = properties.getIntArray("direction");
 
         outer: for (String filename : commandLine.getArgs()) {
             List<String> lines = new ArrayList<String>();
             String entry = null;
-            BufferedReader reader = null;
-            PrintStream writer = null;
 
             // read the entire file
-            try {
-                reader = new BufferedReader(new FileReader(filename));
-
+            try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
                 while ((entry = reader.readLine()) != null) {
                     lines.add(entry);
-                }
-            } finally {
-                if (reader != null) {
-                    reader.close();
                 }
             }
             
@@ -129,9 +121,7 @@ public class Negater extends CommandLineUtility {
             }
 
             // overwrite the file
-            try {
-                writer = new PrintStream(new File(filename));
-
+            try (PrintStream writer = new PrintStream(new File(filename))) {
                 for (String line : lines) {
                     if (line.startsWith("#") || line.startsWith("//")) {
                         writer.println(line);
@@ -153,10 +143,6 @@ public class Negater extends CommandLineUtility {
 
                         writer.println();
                     }
-                }
-            } finally {
-                if (writer != null) {
-                    writer.close();
                 }
             }
         }

@@ -21,9 +21,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.moeaframework.core.PRNG;
-import org.moeaframework.core.Solution;
-import org.moeaframework.core.Variable;
-import org.moeaframework.core.Variation;
+import org.moeaframework.core.configuration.Prefix;
+import org.moeaframework.core.operator.TypeSafeCrossover;
 import org.moeaframework.core.variable.Subset;
 
 /**
@@ -32,21 +31,29 @@ import org.moeaframework.core.variable.Subset;
  * <p>
  * This variation operator is type-safe.
  */
-public class SSX implements Variation {
+@Prefix("ssx")
+public class SSX extends TypeSafeCrossover<Subset> {
 
 	/**
-	 * The probability of applying this operator.
+	 * Constructs a SSX operator with a 30% chance of being applied to each
+	 * subset variable.
 	 */
-	private final double probability;
-
+	public SSX() {
+		this(0.3);
+	}
+	
 	/**
 	 * Constructs a SSX operator.
 	 * 
 	 * @param probability the probability of applying this operator
 	 */
 	public SSX(double probability) {
-		super();
-		this.probability = probability;
+		super(Subset.class, probability);
+	}
+	
+	@Override
+	public String getName() {
+		return "ssx";
 	}
 
 	/**
@@ -55,7 +62,7 @@ public class SSX implements Variation {
 	 * @param s1 the first subset
 	 * @param s2 the second subset
 	 */
-	public static void evolve(Subset s1, Subset s2) {
+	public void evolve(Subset s1, Subset s2) {
 		Set<Integer> s1set = s1.getSet();
 		Set<Integer> s2set = s2.getSet();
 		
@@ -78,29 +85,5 @@ public class SSX implements Variation {
 			s2set.remove(s2member);
 		}
 	}
-
-	@Override
-	public Solution[] evolve(Solution[] parents) {
-		Solution result1 = parents[0].copy();
-		Solution result2 = parents[1].copy();
-
-		for (int i = 0; i < result1.getNumberOfVariables(); i++) {
-			Variable variable1 = result1.getVariable(i);
-			Variable variable2 = result2.getVariable(i);
-
-			if ((PRNG.nextDouble() <= probability)
-					&& (variable1 instanceof Subset)
-					&& (variable2 instanceof Subset)) {
-				evolve((Subset)variable1, (Subset)variable2);
-			}
-		}
-
-		return new Solution[] { result1, result2 };
-	}
-
-	@Override
-	public int getArity() {
-		return 2;
-	}
-
+	
 }

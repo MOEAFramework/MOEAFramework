@@ -26,8 +26,8 @@ import org.moeaframework.problem.ProblemTest;
 public class Fonseca2Test extends ProblemTest {
 
 	@Test
-	public void testJMetal() throws Exception {
-		test(new org.uma.jmetal.problem.multiobjective.Fonseca(), new Fonseca2(3));
+	public void testJMetal() {
+		test("Fonseca2");
 	}
 	
 	@Test

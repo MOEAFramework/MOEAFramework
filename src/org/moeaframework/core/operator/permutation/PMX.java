@@ -21,9 +21,8 @@ import java.util.Arrays;
 
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.PRNG;
-import org.moeaframework.core.Solution;
-import org.moeaframework.core.Variable;
-import org.moeaframework.core.Variation;
+import org.moeaframework.core.configuration.Prefix;
+import org.moeaframework.core.operator.TypeSafeCrossover;
 import org.moeaframework.core.variable.Permutation;
 
 /**
@@ -40,36 +39,44 @@ import org.moeaframework.core.variable.Permutation;
  * International Conference on Genetic Algorithms and Their Applications. 1985.
  * </ol>
  */
-public class PMX implements Variation {
+@Prefix("pmx")
+public class PMX extends TypeSafeCrossover<Permutation> {
 
 	/**
-	 * The probability of applying this operator.
+	 * Constructs a PMX operator that is applied with 100% probability to
+	 * every solution.
 	 */
-	private final double probability;
-
+	public PMX() {
+		this(1.0);
+	}
+	
 	/**
 	 * Constructs a PMX operator with the specified probability.
 	 * 
 	 * @param probability the probability of applying this operator
 	 */
 	public PMX(double probability) {
-		super();
-		this.probability = probability;
+		super(Permutation.class, probability);
+	}
+	
+	@Override
+	public String getName() {
+		return "pmx";
 	}
 
 	/*
-	 * Modified from JMetal 3.0 by David Hadka on 18 September 2010. The
-	 * original implementation in JMetal by Antonio J. Nebro is licensed under
+	 * The following is based on the implementation in JMetal by Antonio J. Nebro and licensed under
 	 * the GNU Lesser General Public License.
 	 */
+	
 	/**
 	 * Evolves the specified permutations using the PMX operator.
 	 * 
 	 * @param p1 the first permutation
 	 * @param p2 the second permutation
-	 * @throws VariationException if the permutations are not the same size
+	 * @throws FrameworkException if the permutations are not the same size
 	 */
-	public static void evolve(Permutation p1, Permutation p2) {
+	public void evolve(Permutation p1, Permutation p2) {
 		int n = p1.size();
 
 		if (n != p2.size()) {
@@ -133,30 +140,6 @@ public class PMX implements Variation {
 
 		p1.fromArray(offspring1);
 		p2.fromArray(offspring2);
-	}
-
-	@Override
-	public Solution[] evolve(Solution[] parents) {
-		Solution result1 = parents[0].copy();
-		Solution result2 = parents[1].copy();
-
-		for (int i = 0; i < result1.getNumberOfVariables(); i++) {
-			Variable variable1 = result1.getVariable(i);
-			Variable variable2 = result2.getVariable(i);
-
-			if ((PRNG.nextDouble() <= probability)
-					&& (variable1 instanceof Permutation)
-					&& (variable2 instanceof Permutation)) {
-				evolve((Permutation)variable1, (Permutation)variable2);
-			}
-		}
-
-		return new Solution[] { result1, result2 };
-	}
-
-	@Override
-	public int getArity() {
-		return 2;
 	}
 
 }

@@ -33,21 +33,13 @@ public class PR76Example {
 	 * @throws IOException if an I/O error occurred
 	 */
 	public static void main(String[] args) throws IOException {
-		InputStream is = null;
-		
-		try {
-			is = PR76Example.class.getResourceAsStream("pr76.tsp");
-			
+		try (InputStream is = PR76Example.class.getResourceAsStream("pr76.tsp")) {
 			if (is == null) {
 				System.err.println("Unable to find the file pr76.tsp");
 				System.exit(-1);
 			}
 			
 			TSPExample.solve(is);
-		} finally {
-			if (is != null) {
-				is.close();
-			}
 		}
 	}
 	

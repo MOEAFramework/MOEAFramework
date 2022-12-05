@@ -22,7 +22,8 @@ import java.util.List;
 
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.Variation;
+import org.moeaframework.core.configuration.Prefix;
+import org.moeaframework.core.configuration.Property;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.util.Vector;
 
@@ -46,23 +47,14 @@ import org.moeaframework.util.Vector;
  * Computation, vol. 10, no. 4, pp. 371-395, 2002.
  * </ol>
  */
-public class UNDX implements Variation {
-
-	/**
-	 * The number of parents required by this operator.
-	 */
-	private final int numberOfParents;
-
-	/**
-	 * The number of offspring produced by this operator.
-	 */
-	private final int numberOfOffspring;
+@Prefix("undx")
+public class UNDX extends MultiParentVariation {
 
 	/**
 	 * The standard deviation of the normal distribution controlling the spread
 	 * of solutions in the orthogonal directions defined by the parents.
 	 */
-	private final double zeta;
+	private double zeta;
 
 	/**
 	 * The standard deviation of the normal distribution controlling the spread
@@ -70,7 +62,16 @@ public class UNDX implements Variation {
 	 * parents. This value is divided by {@code Math.sqrt(n)} prior to use,
 	 * where {@code n} is the number of decision variables.
 	 */
-	private final double eta;
+	private double eta;
+	
+	/**
+	 * Constructs a UNDX operator with default settings, taking 10 parents and producing
+	 * 2 offspring. The parameters {@code zeta=0.5} and {@code eta=0.35} are used
+	 * as suggested by Kita et al. (1999).
+	 */
+	public UNDX() {
+		this(10, 2);
+	}
 
 	/**
 	 * Constructs a UNDX operator with the specified number of parents and 
@@ -100,42 +101,37 @@ public class UNDX implements Variation {
 	 *        the spread of solutions in the remaining orthogonal directions not
 	 *        defined by the parents
 	 */
-	public UNDX(int numberOfParents, int numberOfOffspring, double zeta,
-			double eta) {
-		this.numberOfParents = numberOfParents;
-		this.numberOfOffspring = numberOfOffspring;
+	public UNDX(int numberOfParents, int numberOfOffspring, double zeta, double eta) {
+		super(numberOfParents, numberOfOffspring);
 		this.zeta = zeta;
 		this.eta = eta;
 	}
-
-	/**
-	 * Returns the number of parents required by this operator.
-	 * 
-	 * @return the number of parents required by this operator
-	 */
-	public int getNumberOfParents() {
-		return numberOfParents;
-	}
-
-	/**
-	 * Returns the number of offspring produced by this operator.
-	 * 
-	 * @return the number of offspring produced by this operator
-	 */
-	public int getNumberOfOffspring() {
-		return numberOfOffspring;
+	
+	@Override
+	public String getName() {
+		return "undx";
 	}
 
 	/**
 	 * Returns the standard deviation of the normal distribution controlling the
 	 * spread of solutions in the orthogonal directions defined by the parents.
 	 * 
-	 * @return the standard deviation of the normal distribution controlling the
-	 *         spread of solutions in the orthogonal directions defined by the
-	 *         parents
+	 * @return the standard deviation value
 	 */
 	public double getZeta() {
 		return zeta;
+	}
+	
+	/**
+	 * Sets the standard deviation of the normal distribution controlling the
+	 * spread of solutions in the orthogonal directions defined by the parents.
+	 * The default value is {@code 0.5}.
+	 * 
+	 * @param zeta the standard deviation value
+	 */
+	@Property
+	public void setZeta(double zeta) {
+		this.zeta = zeta;
 	}
 
 	/**
@@ -150,10 +146,17 @@ public class UNDX implements Variation {
 	public double getEta() {
 		return eta;
 	}
-
-	@Override
-	public int getArity() {
-		return numberOfParents;
+	
+	/**
+	 * Sets the standard deviation of the normal distribution controlling the
+	 * spread of solutions in the remaining orthogonal directions not defined by
+	 * the parents.  The default value is {@code 0.35}.
+	 * 
+	 * @param eta the standard deviation value
+	 */
+	@Property
+	public void setEta(double eta) {
+		this.eta = eta;
 	}
 
 	@Override

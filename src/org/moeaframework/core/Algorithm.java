@@ -21,6 +21,7 @@ import java.io.NotSerializableException;
 import java.io.Serializable;
 
 import org.moeaframework.algorithm.AlgorithmException;
+import org.moeaframework.core.termination.MaxFunctionEvaluations;
 
 /**
  * Interface for an optimization algorithm. An optimization algorithm operates
@@ -54,6 +55,32 @@ public interface Algorithm {
 	 * {@code true}.
 	 */
 	public void step();
+	
+	/**
+	 * Executes this algorithm, terminating when it reaches a target number of function
+	 * evaluations.  Please note that algorithms may have additional termination
+	 * conditions that could cause this method to return before reaching the target
+	 * number of evaluations.  Use {@link #getNumberOfEvaluations()} to verify the
+	 * actual number of evaluations.
+	 * 
+	 * @param evaluations the number of function evaluations
+	 */
+	public default void run(int evaluations) {
+		run(new MaxFunctionEvaluations(evaluations));
+	}
+	
+	/**
+	 * Executes this algorithm until the terminal condition signals it to stop.
+	 * 
+	 * @param terminationCondition the termination condition
+	 */
+	public default void run(TerminationCondition terminationCondition) {
+		terminationCondition.initialize(this);
+		
+		while (!isTerminated() && !terminationCondition.shouldTerminate(this)) {
+			step();
+		}
+	}
 
 	/**
 	 * Evaluates the specified solution for the problem being solved by this

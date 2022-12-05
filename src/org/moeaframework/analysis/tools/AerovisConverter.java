@@ -22,20 +22,17 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
-
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
-import org.apache.commons.cli.OptionGroup;
 import org.apache.commons.cli.Options;
-import org.moeaframework.analysis.sensitivity.ProblemStub;
+import org.moeaframework.analysis.sensitivity.OptionUtils;
 import org.moeaframework.analysis.sensitivity.ResultEntry;
 import org.moeaframework.analysis.sensitivity.ResultFileReader;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.util.CommandLineUtility;
+import org.moeaframework.util.TypedProperties;
 
 /**
  * Converts a result file into an Aerovis input file.  Aerovis is a commercial
@@ -43,9 +40,9 @@ import org.moeaframework.util.CommandLineUtility;
  * available for non-commercial academic use at https://www.decisionvis.com/.
  * <p>
  * Usage: {@code java -cp "..." org.moeaframework.analysis.tools.AerovisConverter <options>}
- * <p>
- * Arguments:
- * <table border="0" style="margin-left: 1em">
+ * 
+ * <table>
+ *   <caption style="text-align: left">Arguments:</caption>
  *   <tr>
  *     <td>{@code -b, --problem}</td>
  *     <td>The name of the problem.  This name should reference one of the
@@ -89,19 +86,7 @@ public class AerovisConverter extends CommandLineUtility {
 	public Options getOptions() {
 		Options options = super.getOptions();
 		
-		OptionGroup group = new OptionGroup();
-		group.setRequired(true);
-		group.addOption(Option.builder("b")
-				.longOpt("problem")
-				.hasArg()
-				.argName("name")
-				.build());
-		group.addOption(Option.builder("d")
-				.longOpt("dimension")
-				.hasArg()
-				.argName("number")
-				.build());
-		options.addOptionGroup(group);
+		OptionUtils.addProblemOption(options, true);
 		
 		options.addOption(Option.builder("i")
 				.longOpt("input")
@@ -221,22 +206,22 @@ public class AerovisConverter extends CommandLineUtility {
 		while (reader.hasNext()) {
 			ResultEntry entry = reader.next();
 			Population population = entry.getPopulation();
-			Properties properties = entry.getProperties();
+			TypedProperties properties = entry.getProperties();
 			
 			if (population.isEmpty()) {
 				continue;
 			}
 			
-			if (properties.containsKey("NFE")) {
-				writer.print(properties.getProperty("NFE"));
+			if (properties.contains("NFE")) {
+				writer.print(properties.getString("NFE"));
 			} else {
 				writer.print("0");
 			}
 			
 			writer.print(" ");
 			
-			if (properties.containsKey("ElapsedTime")) {
-				writer.println(properties.getProperty("ElapsedTime"));
+			if (properties.contains("ElapsedTime")) {
+				writer.println(properties.getString("ElapsedTime"));
 			} else {
 				writer.println("0");
 			}
@@ -268,9 +253,6 @@ public class AerovisConverter extends CommandLineUtility {
 
 	@Override
 	public void run(CommandLine commandLine) throws Exception {
-		Problem problem = null;
-		ResultFileReader reader = null;
-		PrintWriter writer = null;
 		boolean reduced = false;
 		List<String> attributes = new ArrayList<String>();
 		
@@ -286,39 +268,13 @@ public class AerovisConverter extends CommandLineUtility {
 			}
 		}
 		
-		try {
-			if (commandLine.hasOption("problem")) {
-				problem = ProblemFactory.getInstance().getProblem(
-						commandLine.getOptionValue("problem"));
-			} else {
-				problem = new ProblemStub(Integer.parseInt(
-						commandLine.getOptionValue("dimension")));
-			}
-			
-			try {
-				reader = new ResultFileReader(problem,
+		try (Problem problem = OptionUtils.getProblemInstance(commandLine, true);			
+				ResultFileReader reader = new ResultFileReader(problem,
 						new File(commandLine.getOptionValue("input")));
-				
-				try {
-					writer = new PrintWriter(new FileWriter(
-							commandLine.getOptionValue("output")));
-					
-					printHeader(problem, reduced, attributes, writer);
-					convert(problem, reduced, reader, writer);
-				} finally {
-					if (writer != null) {
-						writer.close();
-					}
-				}
-			} finally {
-				if (reader != null) {
-					reader.close();
-				}
-			}
-		} finally {
-			if (problem != null) {
-				problem.close();
-			}
+				PrintWriter writer = new PrintWriter(new FileWriter(
+						commandLine.getOptionValue("output")))) {
+			printHeader(problem, reduced, attributes, writer);
+			convert(problem, reduced, reader, writer);
 		}
 	}
 	

@@ -17,14 +17,13 @@
  */
 package org.moeaframework.analysis.collector;
 
-import java.util.Properties;
-
 import org.junit.Assert;
 import org.moeaframework.Instrumenter;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.core.spi.ProblemFactory;
+import org.moeaframework.util.TypedProperties;
 
 /**
  * Helper functions for testing collectors.  This primarily ensures that the
@@ -68,7 +67,6 @@ public class CollectorTest {
 	
 	protected void test(String algorithmName, Collector collector, 
 			boolean willAttach) {
-		Problem problem = null;
 		Accumulator accumulator = null;
 		int numberOfEvaluations = 1000;
 		String problemName = "DTLZ2_2";
@@ -76,16 +74,13 @@ public class CollectorTest {
 		
 		Assert.assertNotNull(collector.getAttachPoint());
 
-		try {
-			problem = ProblemFactory.getInstance().getProblem(problemName);
-
+		try (Problem problem = ProblemFactory.getInstance().getProblem(problemName)) {
 			Instrumenter instrumenter = new Instrumenter()
 					.withFrequency(100)
 					.attach(testCollector);
 
-			Properties properties = new Properties();
-			properties.setProperty("maxEvaluations", 
-					Integer.toString(numberOfEvaluations));
+			TypedProperties properties = new TypedProperties();
+			properties.setInt("maxEvaluations", numberOfEvaluations);
 
 			Algorithm algorithm = null;
 
@@ -106,10 +101,6 @@ public class CollectorTest {
 				if (algorithm != null) {
 					algorithm.terminate();
 				}
-			}
-		} finally {
-			if (problem != null) {
-				problem.close();
 			}
 		}
 		

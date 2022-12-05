@@ -17,10 +17,8 @@
  */
 package org.moeaframework.core.operator.subset;
 
-import org.moeaframework.core.PRNG;
-import org.moeaframework.core.Solution;
-import org.moeaframework.core.Variable;
-import org.moeaframework.core.Variation;
+import org.moeaframework.core.configuration.Prefix;
+import org.moeaframework.core.operator.TypeSafeMutation;
 import org.moeaframework.core.variable.Subset;
 
 /**
@@ -28,54 +26,40 @@ import org.moeaframework.core.variable.Subset;
  * <p>
  * This operator is type-safe.
  */
-public class Add implements Variation {
+@Prefix("add")
+public class Add extends TypeSafeMutation<Subset> {
 
 	/**
-	 * The probability of mutating a variable.
+	 * Constructs an add mutation operators with the default settings.
 	 */
-	private final double probability;
+	public Add() {
+		this(0.1);
+	}
 
 	/**
-	 * Constructs an add mutation operator with the specified
-	 * probability of mutating a variable.
+	 * Constructs an add mutation operator with the specified probability of mutating a variable.
 	 * 
 	 * @param probability the probability of mutating a variable
 	 */
 	public Add(double probability) {
-		super();
-		this.probability = probability;
+		super(Subset.class, probability);
 	}
-
+	
 	@Override
-	public Solution[] evolve(Solution[] parents) {
-		Solution result = parents[0].copy();
-
-		for (int i = 0; i < result.getNumberOfVariables(); i++) {
-			Variable variable = result.getVariable(i);
-
-			if ((PRNG.nextDouble() <= probability)
-					&& (variable instanceof Subset)) {
-				evolve((Subset)variable);
-			}
-		}
-
-		return new Solution[] { result };
+	public String getName() {
+		return "add";
 	}
 
 	/**
-	 * Evolves the specified subset using the add mutation operator.
+	 * Mutates the specified subset using the add mutation operator.
 	 * 
 	 * @param subset the subset to be mutated
 	 */
-	public static void evolve(Subset subset) {
+	@Override
+	public void mutate(Subset subset) {
 		if (subset.size() < subset.getU()) {
 			subset.add(subset.randomNonmember());
 		}
-	}
-
-	@Override
-	public int getArity() {
-		return 1;
 	}
 
 }

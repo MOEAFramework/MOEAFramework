@@ -17,8 +17,6 @@
  */
 package org.moeaframework.core.spi;
 
-import java.util.Properties;
-
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -28,21 +26,21 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variable;
 import org.moeaframework.core.Variation;
+import org.moeaframework.core.configuration.ConfigurationException;
+import org.moeaframework.core.operator.DefaultOperators;
 import org.moeaframework.core.operator.RandomInitialization;
+import org.moeaframework.core.variable.BinaryIntegerVariable;
 import org.moeaframework.core.variable.BinaryVariable;
 import org.moeaframework.core.variable.Grammar;
 import org.moeaframework.core.variable.Permutation;
 import org.moeaframework.core.variable.RealVariable;
+import org.moeaframework.util.TypedProperties;
 
 /**
  * Tests the {@link OperatorFactory} class.
  */
 public class OperatorFactoryTest {
 
-	private static final String[] operators = { "sbx+pm", "hux+bf", 
-		"pmx+insertion+swap", "de", "de+pm", "pcx", "spx", "undx", "pm", "um", 
-		"1x+um", "2x+um", "ux+um", "gx+gm", "bx", "ptm", "bx+ptm" };
-	
 	private Problem problem;
 	
 	@Before
@@ -56,19 +54,26 @@ public class OperatorFactoryTest {
 	}
 	
 	@Test
-	public void testCommonOperators() {
-		for (String operator : operators) {
-			Variation variation = OperatorFactory.getInstance().getVariation(
-					operator, new Properties(), problem);
+	public void testOperators() {
+		for (String operator : new DefaultOperators().getTestableOperators()) {
+			System.out.println("Testing " + operator);
 			
-			test(variation);
+			try {
+				Variation variation = OperatorFactory.getInstance().getVariation(
+						operator, new TypedProperties(), problem);
+				test(variation);
+			} catch (ConfigurationException e) {
+				// this operator is renamed and displays an error
+				if (!operator.equalsIgnoreCase("bx")) {
+					throw e;
+				}
+			}
 		}
 	}
 	
 	private void test(Variation variation) {
-		RandomInitialization initialization = new RandomInitialization(problem, 
-				variation.getArity());
-		Solution[] parents = initialization.initialize();
+		RandomInitialization initialization = new RandomInitialization(problem);
+		Solution[] parents = initialization.initialize(variation.getArity());
 		Solution[] offspring = variation.evolve(parents);
 		
 		Assert.assertNotNull(offspring);
@@ -87,8 +92,7 @@ public class OperatorFactoryTest {
 
 		};
 		
-		Assert.assertNotNull(OperatorFactory.getInstance().getVariation(null, 
-				new Properties(), problem));
+		Assert.assertNotNull(OperatorFactory.getInstance().getVariation(null, new TypedProperties(), problem));
 	}
 	
 	@Test
@@ -104,8 +108,24 @@ public class OperatorFactoryTest {
 
 		};
 		
-		Assert.assertNotNull(OperatorFactory.getInstance().getVariation(null, 
-				new Properties(), problem));
+		Assert.assertNotNull(OperatorFactory.getInstance().getVariation(null, new TypedProperties(), problem));
+	}
+	
+	@Test
+	public void testCombiningBinary() {
+		Problem problem = new ProblemStub(1) {
+			
+			@Override
+			public Solution newSolution() {
+				Solution solution = new Solution(2, 0);
+				solution.setVariable(0, new BinaryVariable(10));
+				solution.setVariable(1, new BinaryIntegerVariable(5, 10));
+				return solution;
+			}
+
+		};
+		
+		Assert.assertNotNull(OperatorFactory.getInstance().getVariation(null, new TypedProperties(), problem));
 	}
 	
 	@Test
@@ -121,8 +141,7 @@ public class OperatorFactoryTest {
 
 		};
 		
-		Assert.assertNotNull(OperatorFactory.getInstance().getVariation(null, 
-				new Properties(), problem));
+		Assert.assertNotNull(OperatorFactory.getInstance().getVariation(null, new TypedProperties(), problem));
 	}
 	
 	@Test
@@ -138,11 +157,10 @@ public class OperatorFactoryTest {
 
 		};
 		
-		Assert.assertNotNull(OperatorFactory.getInstance().getVariation(null, 
-				new Properties(), problem));
+		Assert.assertNotNull(OperatorFactory.getInstance().getVariation(null, new TypedProperties(), problem));
 	}
 	
-	@Test(expected = ProviderLookupException.class)
+	@Test
 	public void testMixedType() {
 		Problem problem = new ProblemStub(5) {
 			
@@ -158,11 +176,10 @@ public class OperatorFactoryTest {
 
 		};
 		
-		OperatorFactory.getInstance().getVariation(null, new Properties(), 
-				problem);
+		Assert.assertNull(OperatorFactory.getInstance().getVariation(null, new TypedProperties(), problem));
 	}
 	
-	@Test(expected = ProviderLookupException.class)
+	@Test
 	public void testUnknownType() {
 		Problem problem = new ProblemStub(1) {
 			
@@ -191,24 +208,21 @@ public class OperatorFactoryTest {
 
 		};
 		
-		OperatorFactory.getInstance().getVariation(null, new Properties(), 
-				problem);
+		Assert.assertNull(OperatorFactory.getInstance().getVariation(null, new TypedProperties(), problem));
 	}
 	
-	@Test(expected = ProviderLookupException.class)
+	@Test
 	public void testEmptyType() {
 		Problem problem = new ProblemStub(0);
 		
-		OperatorFactory.getInstance().getVariation(null, new Properties(), 
-				problem);
+		Assert.assertNull(OperatorFactory.getInstance().getVariation(null, new TypedProperties(), problem));
 	}
 	
 	@Test(expected = ProviderNotFoundException.class)
 	public void testNonexistentOperator() {
 		Problem problem = new ProblemStub(0);
 		
-		OperatorFactory.getInstance().getVariation("sbx+test_fake_operator", 
-				new Properties(), problem);
+		OperatorFactory.getInstance().getVariation("sbx+test_fake_operator", new TypedProperties(), problem);
 	}
 
 }

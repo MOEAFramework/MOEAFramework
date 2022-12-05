@@ -62,6 +62,7 @@ public class Environment {
 	 * its enclosing environment; or {@code null} if the variable has not yet
 	 * been defined.
 	 * 
+	 * @param <T> the type of the variable
 	 * @param type the type of the variable
 	 * @param name the name of the variable
 	 * @return the content of the named variable stored in this environment or

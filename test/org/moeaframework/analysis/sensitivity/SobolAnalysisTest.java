@@ -255,15 +255,12 @@ public class SobolAnalysisTest {
 	 */
 	protected double getEntryValue(File file, String key, int skip) throws 
 	IOException {
-		BufferedReader reader = null;
 		String line = null;
 		Pattern pattern = Pattern.compile("^\\s*" + key + "\\s+" + 
 				TestUtils.getSpaceSeparatedNumericPattern(1) + "\\s+\\[" + 
 				TestUtils.getSpaceSeparatedNumericPattern(1) + "\\]\\s*$");
 		
-		try {
-			reader = new BufferedReader(new FileReader(file));
-			
+		try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
 			while ((line = reader.readLine()) != null) {
 				Matcher matcher = pattern.matcher(line);
 				
@@ -275,10 +272,6 @@ public class SobolAnalysisTest {
 			}
 			
 			return Double.POSITIVE_INFINITY;
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
 		}
 	}
 	
@@ -313,17 +306,9 @@ public class SobolAnalysisTest {
 	 * @throws IOException if an I/O error occurred
 	 */
 	protected void save(File file, double[] data) throws IOException {
-		PrintWriter writer = null;
-		
-		try {
-			writer = new PrintWriter(file);
-			
+		try (PrintWriter writer = new PrintWriter(file)) {
 			for (int i=0; i<data.length; i++) {
 				writer.println(data[i]);
-			}
-		} finally {
-			if (writer != null) {
-				writer.close();
 			}
 		}
 	}
@@ -340,11 +325,7 @@ public class SobolAnalysisTest {
 	 */
 	protected void createParameterFile(File file, int dimension) throws 
 	IOException {
-		PrintWriter writer = null;
-		
-		try {
-			writer = new PrintWriter(file);
-			
+		try (PrintWriter writer = new PrintWriter(file)) {
 			for (int i=0; i<dimension; i++) {
 				writer.print("Variable");
 				writer.print(i+1);
@@ -352,10 +333,6 @@ public class SobolAnalysisTest {
 				writer.print(0.0);
 				writer.print(' ');
 				writer.println(1.0);
-			}
-		} finally {
-			if (writer != null) {
-				writer.close();
 			}
 		}
 	}

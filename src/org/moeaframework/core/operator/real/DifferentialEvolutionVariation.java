@@ -20,6 +20,8 @@ package org.moeaframework.core.operator.real;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
+import org.moeaframework.core.configuration.Prefix;
+import org.moeaframework.core.configuration.Property;
 import org.moeaframework.core.variable.RealVariable;
 
 /**
@@ -45,17 +47,26 @@ import org.moeaframework.core.variable.RealVariable;
  * Optimization, 11:341-359, 1997.
  * </ol>
  */
+@Prefix("de")
 public class DifferentialEvolutionVariation implements Variation {
 
 	/**
 	 * The crossover rate.
 	 */
-	private final double CR;
+	private double CR;
 
 	/**
 	 * The scaling factor or step size.
 	 */
-	private final double F;
+	private double F;
+	
+	/**
+	 * Constructs a differential evolution operator with default settings,
+	 * including a crossover rate of {@code 0.1} and scaling factor of {@code 0.5}.
+	 */
+	public DifferentialEvolutionVariation() {
+		this(0.1, 0.5);
+	}
 
 	/**
 	 * Constructs a differential evolution operator with the specified crossover
@@ -68,6 +79,11 @@ public class DifferentialEvolutionVariation implements Variation {
 		this.CR = CR;
 		this.F = F;
 	}
+	
+	@Override
+	public String getName() {
+		return "de";
+	}
 
 	/**
 	 * Returns the crossover rate of this differential evolution operator.
@@ -77,6 +93,17 @@ public class DifferentialEvolutionVariation implements Variation {
 	public double getCrossoverRate() {
 		return CR;
 	}
+	
+	/**
+	 * Sets the crossover rate of this differential evolution operator.  The default
+	 * value is {@code 0.1}.
+	 * 
+	 * @param CR the crossover rate
+	 */
+	@Property
+	public void setCrossoverRate(double CR) {
+		this.CR = CR;
+	}
 
 	/**
 	 * Returns the scaling factor of this differential evolution operator.
@@ -85,6 +112,17 @@ public class DifferentialEvolutionVariation implements Variation {
 	 */
 	public double getScalingFactor() {
 		return F;
+	}
+	
+	/**
+	 * Sets the scaling factor of this differential evolution operator.  The default
+	 * value is {@code 0.5}.
+	 * 
+	 * @param F the scaling factor
+	 */
+	@Property("stepSize")
+	public void setScalingFactor(double F) {
+		this.F = F;
 	}
 
 	@Override

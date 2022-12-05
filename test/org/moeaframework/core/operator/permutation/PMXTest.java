@@ -46,7 +46,7 @@ public class PMXTest {
 			Permutation p1 = new Permutation(new int[] { 0, 1, 2, 3, 4, 5 });
 			Permutation p2 = new Permutation(new int[] { 5, 4, 3, 2, 1, 0 });
 
-			PMX.evolve(p1, p2);
+			new PMX().evolve(p1, p2);
 
 			Assert.assertTrue(Permutation.isPermutation(p1.toArray()));
 			Assert.assertTrue(Permutation.isPermutation(p2.toArray()));

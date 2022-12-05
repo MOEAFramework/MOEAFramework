@@ -57,6 +57,11 @@ public class LinearObjectiveComparator implements AggregateObjectiveComparator, 
 			this.weights = new double[] { 1.0 };
 		}
 	}
+	
+	@Override
+	public double[] getWeights() {
+		return weights;
+	}
 
 	@Override
 	public int compare(Solution solution1, Solution solution2) {
@@ -79,8 +84,7 @@ public class LinearObjectiveComparator implements AggregateObjectiveComparator, 
 		double fitness = 0.0;
 		
 		for (int i = 0; i < solution.getNumberOfObjectives(); i++) {
-			fitness += weights[i >= weights.length ? weights.length-1 : i] *
-					solution.getObjective(i);
+			fitness += weights[i >= weights.length ? weights.length-1 : i] * solution.getObjective(i);
 		}
 		
 		return fitness;

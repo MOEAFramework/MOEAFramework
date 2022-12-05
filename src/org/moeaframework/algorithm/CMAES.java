@@ -31,6 +31,7 @@ import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
+import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.comparator.AggregateConstraintComparator;
 import org.moeaframework.core.comparator.ChainedComparator;
@@ -38,8 +39,14 @@ import org.moeaframework.core.comparator.FitnessComparator;
 import org.moeaframework.core.comparator.NondominatedSortingComparator;
 import org.moeaframework.core.comparator.ObjectiveComparator;
 import org.moeaframework.core.comparator.RankComparator;
+import org.moeaframework.core.configuration.Configurable;
+import org.moeaframework.core.configuration.ConfigurationException;
+import org.moeaframework.core.configuration.Property;
+import org.moeaframework.core.fitness.AdditiveEpsilonIndicatorFitnessEvaluator;
+import org.moeaframework.core.fitness.HypervolumeFitnessEvaluator;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
+import org.moeaframework.util.TypedProperties;
 
 /**
  * The Covariance Matrix Adaption Evolution Strategy (CMA-ES) algorithm for
@@ -66,7 +73,7 @@ import org.moeaframework.core.variable.RealVariable;
  *       15(1):1-28.
  * </ol>
  */
-public class CMAES extends AbstractAlgorithm {
+public class CMAES extends AbstractAlgorithm implements Configurable {
 	
 	/**
 	 * An initial search point to start searching from, or {@code null} if no
@@ -85,12 +92,12 @@ public class CMAES extends AbstractAlgorithm {
 	 * with the same rank.  If {@code null}, the default crowding distance
 	 * metric is used.
 	 */
-	private final FitnessEvaluator fitnessEvaluator;
+	private FitnessEvaluator fitnessEvaluator;
 	
 	/**
 	 * Nondominated archive of the best solutions found.
 	 */
-	private final NondominatedPopulation archive;
+	private NondominatedPopulation archive;
 
 	/**
 	 * The number of iterations already performed.
@@ -201,13 +208,12 @@ public class CMAES extends AbstractAlgorithm {
 	private int lastEigenupdate;
 	
 	/**
-	 * Constructs a new CMA-ES instance using default parameters.
-	 *
+	 * Constructs a new CMA-ES intance using default parameters.
+	 * 
 	 * @param problem the problem to optimize
-	 * @param lambda the offspring population size
 	 */
-	public CMAES(Problem problem, int lambda) {
-		this(problem, lambda, null, new NondominatedPopulation());
+	public CMAES(Problem problem) {
+		this(problem, Settings.DEFAULT_POPULATION_SIZE, null, new NondominatedPopulation());
 	}
 	
 	/**
@@ -271,8 +277,130 @@ public class CMAES extends AbstractAlgorithm {
 		this.diagonalIterations = diagonalIterations;
 		
 		population = new Population();
+		
+		problem.assertType(RealVariable.class);
+	}
+
+	public int getDiagonalIterations() {
+		return diagonalIterations;
+	}
+
+	@Property
+	public void setDiagonalIterations(int diagonalIterations) {
+		this.diagonalIterations = diagonalIterations;
+	}
+
+	
+	public int getLambda() {
+		return lambda;
+	}
+
+	@Property
+	public void setLambda(int lambda) {
+		this.lambda = lambda;
+	}
+
+	public double getSigma() {
+		return sigma;
+	}
+
+	@Property
+	public void setSigma(double sigma) {
+		this.sigma = sigma;
+	}
+
+	public double getCcov() {
+		return ccov;
+	}
+
+	@Property
+	public void setCcov(double ccov) {
+		this.ccov = ccov;
+	}
+
+	public double getCcovsep() {
+		return ccovsep;
+	}
+
+	@Property
+	public void setCcovsep(double ccovsep) {
+		this.ccovsep = ccovsep;
+	}
+
+	public double getCs() {
+		return cs;
+	}
+
+	@Property
+	public void setCs(double cs) {
+		this.cs = cs;
+	}
+
+	public double getCc() {
+		return cc;
+	}
+
+	@Property
+	public void setCc(double cc) {
+		this.cc = cc;
+	}
+
+	public double getDamps() {
+		return damps;
+	}
+
+	@Property
+	public void setDamps(double damps) {
+		this.damps = damps;
+	}
+
+	public double[] getInitialSearchPoint() {
+		return initialSearchPoint;
 	}
 	
+	public NondominatedPopulation getArchive() {
+		return archive;
+	}
+	
+	public void setArchive(NondominatedPopulation archive) {
+		assertNotInitialized();
+		this.archive = archive;
+	}
+
+	@Override
+	public void applyConfiguration(TypedProperties properties) {
+		if (properties.contains("indicator")) {
+			String indicator = properties.getString("indicator");
+			
+			if ("hypervolume".equalsIgnoreCase(indicator)) {
+				fitnessEvaluator = new HypervolumeFitnessEvaluator(problem);
+			} else if ("epsilon".equalsIgnoreCase(indicator)) {
+				fitnessEvaluator = new AdditiveEpsilonIndicatorFitnessEvaluator(problem);
+			} else if ("crowding".equalsIgnoreCase(indicator)) {
+				fitnessEvaluator = null;
+			} else {
+				throw new ConfigurationException("invalid indicator: " + indicator);
+			}
+		}
+		
+		Configurable.super.applyConfiguration(properties);
+	}
+
+	@Override
+	public TypedProperties getConfiguration() {
+		TypedProperties properties = Configurable.super.getConfiguration();
+		
+		if (fitnessEvaluator instanceof HypervolumeFitnessEvaluator) {
+			properties.setString("indicator", "hypervolume");
+		} else if (fitnessEvaluator instanceof AdditiveEpsilonIndicatorFitnessEvaluator) {
+			properties.setString("indicator", "epsilon");
+		} else {
+			properties.setString("indicator", "crowding");
+		}
+		
+		return properties;
+	}
+
 	/**
 	 * Validates parameters prior to calling the {@link #initialize()} method.
 	 * Checks include ensuring the initial search point is valid and ensures
@@ -358,7 +486,7 @@ public class CMAES extends AbstractAlgorithm {
 	}
 
 	@Override
-	public void initialize() {
+	protected void initialize() {
 		super.initialize();
 		
 		int N = problem.getNumberOfVariables();
@@ -786,7 +914,7 @@ public class CMAES extends AbstractAlgorithm {
 	 * Reinsch, and Wilkinson, Handbook for Auto. Comp., Vol.ii-Linear Algebra,
 	 * and the corresponding Fortran subroutine in EISPACK.
 	 */
-	public static void tred2(int n, double[][] V, double[] d, double[] e) {
+	private static void tred2(int n, double[][] V, double[] d, double[] e) {
 		for (int j = 0; j < n; j++) {
 			d[j] = V[n-1][j];
 		}
@@ -896,7 +1024,7 @@ public class CMAES extends AbstractAlgorithm {
 	 * Reinsch, and Wilkinson, Handbook for Auto. Comp., Vol.ii-Linear Algebra,
 	 * and the corresponding Fortran subroutine in EISPACK.
 	 */
-	public static void tql2(int n, double[] d, double[] e, double[][] V) {
+	private static void tql2(int n, double[] d, double[] e, double[][] V) {
 		for (int i = 1; i < n; i++) {
 			e[i-1] = e[i];
 		}

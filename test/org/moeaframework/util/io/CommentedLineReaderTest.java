@@ -36,13 +36,11 @@ public class CommentedLineReaderTest {
 	 */
 	@Test
 	public void testExample() throws IOException {
-		CommentedLineReader reader = new CommentedLineReader(new StringReader(
-				"#comment line\nnon-comment line\n# comment line"));
-
-		Assert.assertEquals("non-comment line", reader.readLine());
-		Assert.assertNull(reader.readLine());
-
-		reader.close();
+		try (CommentedLineReader reader = new CommentedLineReader(
+				new StringReader("#comment line\nnon-comment line\n# comment line"))) {
+			Assert.assertEquals("non-comment line", reader.readLine());
+			Assert.assertNull(reader.readLine());
+		}
 	}
 	
 	/**
@@ -52,12 +50,9 @@ public class CommentedLineReaderTest {
 	 */
 	@Test
 	public void testEmpty1() throws IOException {
-		CommentedLineReader reader = new CommentedLineReader(new StringReader(
-				""));
-
-		Assert.assertNull(reader.readLine());
-
-		reader.close();
+		try (CommentedLineReader reader = new CommentedLineReader(new StringReader(""))) {
+			Assert.assertNull(reader.readLine());
+		}
 	}
 	
 	/**
@@ -68,12 +63,10 @@ public class CommentedLineReaderTest {
 	 */
 	@Test
 	public void testEmpty2() throws IOException {
-		CommentedLineReader reader = new CommentedLineReader(new StringReader(
-				"#comment line\n# comment line"));
-
-		Assert.assertNull(reader.readLine());
-
-		reader.close();
+		try (CommentedLineReader reader = new CommentedLineReader(
+				new StringReader("#comment line\n# comment line"))) {
+			Assert.assertNull(reader.readLine());
+		}
 	}
 
 }

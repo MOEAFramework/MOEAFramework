@@ -26,6 +26,7 @@ import org.moeaframework.TestUtils;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
+import org.moeaframework.util.weights.NormalBoundaryDivisions;
 
 /**
  * Tests the {@link ReferencePointNondominatedSortingPopulation} class.
@@ -77,7 +78,8 @@ public class ReferencePointNondominatedSortingPopulationTest {
 		solutions.add(TestUtils.newSolution(0.75, 0.25));
 		
 		ReferencePointNondominatedSortingPopulation population =
-				new ReferencePointNondominatedSortingPopulation(2, 4);
+				new ReferencePointNondominatedSortingPopulation(2,
+						new NormalBoundaryDivisions(4));
 		
 		population.addAll(solutions);
 		population.updateIdealPoint();
@@ -97,7 +99,8 @@ public class ReferencePointNondominatedSortingPopulationTest {
 	@Test
 	public void testUpdateIdealPoint() {
 		ReferencePointNondominatedSortingPopulation population =
-				new ReferencePointNondominatedSortingPopulation(2, 4);
+				new ReferencePointNondominatedSortingPopulation(2,
+						new NormalBoundaryDivisions(4));
 		
 		population.add(TestUtils.newSolution(0.5, 0.5));
 		population.add(TestUtils.newSolution(0.0, 1.0));
@@ -111,7 +114,8 @@ public class ReferencePointNondominatedSortingPopulationTest {
 	@Test
 	public void testTranslateByIdealPoint() {
 		ReferencePointNondominatedSortingPopulation population =
-				new ReferencePointNondominatedSortingPopulation(2, 4);
+				new ReferencePointNondominatedSortingPopulation(2,
+						new NormalBoundaryDivisions(4));
 		
 		population.add(TestUtils.newSolution(0.5, 0.5));
 		population.add(TestUtils.newSolution(0.0, 1.0));
@@ -131,7 +135,8 @@ public class ReferencePointNondominatedSortingPopulationTest {
 		double[] intercepts = { 0.5, 2.0 };
 		
 		ReferencePointNondominatedSortingPopulation population =
-				new ReferencePointNondominatedSortingPopulation(2, 4);
+				new ReferencePointNondominatedSortingPopulation(2,
+						new NormalBoundaryDivisions(4));
 		
 		population.add(TestUtils.newSolution(0.5, 0.5));
 		population.add(TestUtils.newSolution(0.0, 1.0));
@@ -152,7 +157,8 @@ public class ReferencePointNondominatedSortingPopulationTest {
 		double[] intercepts = { 1.0, 1.0 };
 		
 		ReferencePointNondominatedSortingPopulation population =
-				new ReferencePointNondominatedSortingPopulation(2, 4);
+				new ReferencePointNondominatedSortingPopulation(2,
+						new NormalBoundaryDivisions(4));
 		
 		population.add(TestUtils.newSolution(0.5, 0.5));
 		population.add(TestUtils.newSolution(0.0, 1.0));
@@ -168,7 +174,8 @@ public class ReferencePointNondominatedSortingPopulationTest {
 	@Test
 	public void testCalculateIntercepts() {
 		ReferencePointNondominatedSortingPopulation population =
-				new ReferencePointNondominatedSortingPopulation(2, 4);
+				new ReferencePointNondominatedSortingPopulation(2,
+						new NormalBoundaryDivisions(4));
 		
 		population.add(TestUtils.newSolution(0.5, 0.5));
 		population.add(TestUtils.newSolution(0.0, 1.0));
@@ -190,7 +197,8 @@ public class ReferencePointNondominatedSortingPopulationTest {
 	@Test
 	public void testTruncate1() {
 		ReferencePointNondominatedSortingPopulation population =
-				new ReferencePointNondominatedSortingPopulation(2, 4);
+				new ReferencePointNondominatedSortingPopulation(2,
+						new NormalBoundaryDivisions(4));
 		
 		Solution s1 = TestUtils.newSolution(0.5, 0.5);
 		Solution s2 = TestUtils.newSolution(0.4, 1.5);
@@ -215,7 +223,8 @@ public class ReferencePointNondominatedSortingPopulationTest {
 	@Test
 	public void testTruncate2() {
 		ReferencePointNondominatedSortingPopulation population =
-				new ReferencePointNondominatedSortingPopulation(2, 1);
+				new ReferencePointNondominatedSortingPopulation(2,
+						new NormalBoundaryDivisions(1));
 		
 		Solution s1 = TestUtils.newSolution(0.5, 0.5);
 		Solution s2 = TestUtils.newSolution(0.25, 0.75);

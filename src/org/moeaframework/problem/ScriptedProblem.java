@@ -30,7 +30,6 @@ import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
 import org.moeaframework.core.Problem;
-import org.moeaframework.core.Solution;
 
 /**
  * Permits interfacing with problems implemented by one of the many scripting
@@ -41,19 +40,8 @@ import org.moeaframework.core.Solution;
  * equivalent to the methods in {@link Problem}, with the same names, arguments
  * and return values.
  */
-public class ScriptedProblem implements Problem {
-	
-	/**
-	 * The invocable {@code Problem} interface produced by 
-	 * {@link Invocable#getInterface(Class)}.
-	 */
-	private final Problem internalProblem;
-	
-	/**
-	 * The scripting engine used by this instance.
-	 */
-	private final ScriptEngine engine;
-	
+public class ScriptedProblem extends ProblemWrapper {
+
 	/**
 	 * Constructs a new problem implemented in a scripting language.
 	 * 
@@ -73,10 +61,7 @@ public class ScriptedProblem implements Problem {
 	 * @throws ScriptException if an error occurred in the Scripting APIs
 	 */
 	public ScriptedProblem(Reader reader, String name) throws ScriptException {
-		super();
-		
-		engine = newScriptEngine(name);
-		internalProblem = createInvocableInstance(reader);
+		super(createInvocableInstance(newScriptEngine(name), reader));
 	}
 	
 	/**
@@ -88,19 +73,7 @@ public class ScriptedProblem implements Problem {
 	 * @throws IOException if an I/O error occurred
 	 */
 	public ScriptedProblem(File file) throws ScriptException, IOException {
-		super();
-		
-		BufferedReader reader = null;
-		
-		try {
-			reader = new BufferedReader(new FileReader(file));
-			engine = newScriptEngine(file);
-			internalProblem = createInvocableInstance(reader);
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
-		}
+		super(createInvocableInstance(file));
 	}
 	
 	/**
@@ -110,7 +83,7 @@ public class ScriptedProblem implements Problem {
 	 * @return a new scripting engine for the specified scripting language
 	 * @throws ScriptException if an error occurred in the Scripting APIs
 	 */
-	private ScriptEngine newScriptEngine(String name) throws ScriptException {
+	private final static ScriptEngine newScriptEngine(String name) throws ScriptException {
 		ScriptEngineManager manager = new ScriptEngineManager();
 		ScriptEngine engine = manager.getEngineByName(name);
 		
@@ -129,7 +102,7 @@ public class ScriptedProblem implements Problem {
 	 * @return a new scripting engine for the scripting language
 	 * @throws ScriptException if an error occurred in the Scripting APIs
 	 */
-	private ScriptEngine newScriptEngine(File file) throws ScriptException {
+	private final static ScriptEngine newScriptEngine(File file) throws ScriptException {
 		String filename = file.getName();
 		int index = filename.lastIndexOf('.');
 		
@@ -149,6 +122,13 @@ public class ScriptedProblem implements Problem {
 		return engine;
 	}
 	
+	private final static Problem createInvocableInstance(File file) throws ScriptException, IOException {
+		try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+			ScriptEngine engine = newScriptEngine(file);
+			return createInvocableInstance(engine, reader);
+		}
+	}
+	
 	/**
 	 * Returns a {@code Problem} instance whose methods invoke the underlying
 	 * scripting engine; or {@code null} if the scripting engine does not
@@ -160,8 +140,7 @@ public class ScriptedProblem implements Problem {
 	 *         not support invocable methods/functions
 	 * @throws ScriptException if an error occurred in the Scripting APIs
 	 */
-	private Problem createInvocableInstance(Reader reader) 
-	throws ScriptException {
+	private final static Problem createInvocableInstance(ScriptEngine engine, Reader reader) throws ScriptException {
 		Problem problem = null;
 		
 		if (engine instanceof Invocable) {
@@ -174,41 +153,6 @@ public class ScriptedProblem implements Problem {
 		}
 		
 		return problem;
-	}
-
-	@Override
-	public String getName() {
-		return internalProblem.getName();
-	}
-
-	@Override
-	public int getNumberOfVariables() {
-		return internalProblem.getNumberOfVariables();
-	}
-
-	@Override
-	public int getNumberOfObjectives() {
-		return internalProblem.getNumberOfObjectives();
-	}
-
-	@Override
-	public int getNumberOfConstraints() {
-		return internalProblem.getNumberOfConstraints();
-	}
-
-	@Override
-	public void evaluate(Solution solution) {
-		internalProblem.evaluate(solution);
-	}
-
-	@Override
-	public Solution newSolution() {
-		return internalProblem.newSolution();
-	}
-
-	@Override
-	public void close() {
-		internalProblem.close();
 	}
 
 }

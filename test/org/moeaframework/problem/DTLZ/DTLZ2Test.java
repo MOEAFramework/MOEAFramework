@@ -31,90 +31,29 @@ public class DTLZ2Test extends ProblemTest {
 
 	/**
 	 * Tests the 2D case.
-	 * 
-	 * @throws Exception if a JMetal error occurred
 	 */
 	@Test
-	public void testDTLZ2_2D() throws Exception {
+	public void testDTLZ2_2D() {
 		test(2);
 		testReferenceSet(2);
 	}
 
 	/**
 	 * Tests the 3D case.
-	 * 
-	 * @throws Exception if a JMetal error occurred
 	 */
 	@Test
-	public void testDTLZ2_3D() throws Exception {
+	public void testDTLZ2_3D() {
 		test(3);
 		testReferenceSet(3);
-	}
-
-	/**
-	 * Tests the 4D case.
-	 * 
-	 * @throws Exception if a JMetal error occurred
-	 */
-	@Test
-	public void testDTLZ2_4D() throws Exception {
-		test(4);
-		testReferenceSet(4);
-	}
-
-	/**
-	 * Tests the 5D case.
-	 * 
-	 * @throws Exception if a JMetal error occurred
-	 */
-	@Test
-	public void testDTLZ2_5D() throws Exception {
-		test(5);
-		testReferenceSet(5);
-	}
-
-	/**
-	 * Tests the 6D case.
-	 * 
-	 * @throws Exception if a JMetal error occurred
-	 */
-	@Test
-	public void testDTLZ2_6D() throws Exception {
-		test(6);
-		testReferenceSet(6);
-	}
-
-	/**
-	 * Tests the 7D case.
-	 * 
-	 * @throws Exception if a JMetal error occurred
-	 */
-	@Test
-	public void testDTLZ2_7D() throws Exception {
-		test(7);
-		testReferenceSet(7);
-	}
-
-	/**
-	 * Tests the 8D case.
-	 * 
-	 * @throws Exception if a JMetal error occurred
-	 */
-	@Test
-	public void testDTLZ2_8D() throws Exception {
-		test(8);
-		testReferenceSet(8);
 	}
 
 	/**
 	 * Asserts that the {@link DTLZ2#evaluate} method works correctly.
 	 * 
 	 * @param M the number of objectives
-	 * @throws Exception if a JMetal error occurred
 	 */
-	protected void test(int M) throws Exception {
-		test(new org.uma.jmetal.problem.multiobjective.dtlz.DTLZ2(M + 9, M),
-				new org.moeaframework.problem.DTLZ.DTLZ2(M));
+	protected void test(int M) {
+		test("DTLZ2_" + M);
 	}
 
 	/**
@@ -123,18 +62,17 @@ public class DTLZ2Test extends ProblemTest {
 	 * @param M the number of objectives
 	 */
 	protected void testReferenceSet(int M) {
-		AnalyticalProblem problem = new org.moeaframework.problem.DTLZ.DTLZ2(M);
-
-		for (int i = 0; i < TestThresholds.SAMPLES; i++) {
-			Solution solution = problem.generate();
-			double sum = 0.0;
-
-			for (int j = 0; j < solution.getNumberOfObjectives(); j++) {
-				sum += Math.pow(solution.getObjective(j), 2.0);
+		try (AnalyticalProblem problem = new DTLZ2(M)) {
+			for (int i = 0; i < TestThresholds.SAMPLES; i++) {
+				Solution solution = problem.generate();
+				double sum = 0.0;
+	
+				for (int j = 0; j < solution.getNumberOfObjectives(); j++) {
+					sum += Math.pow(solution.getObjective(j), 2.0);
+				}
+	
+				Assert.assertEquals(1.0, Math.sqrt(sum), TestThresholds.SOLUTION_EPS);
 			}
-
-			Assert.assertEquals(1.0, Math.sqrt(sum),
-					TestThresholds.SOLUTION_EPS);
 		}
 	}
 

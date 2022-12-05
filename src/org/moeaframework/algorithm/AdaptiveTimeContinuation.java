@@ -27,15 +27,17 @@ import org.moeaframework.core.Population;
 import org.moeaframework.core.Selection;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
+import org.moeaframework.core.configuration.Configurable;
+import org.moeaframework.core.configuration.Property;
 
 /**
  * Decorator for {@link EvolutionaryAlgorithm}s to add time continuation
  * (restarts). Restarts occur if either
  * <ol>
- * <li>the number of fitness function evaluations since the last restart exceeds
- * {@code maxWindowSize}; or
- * <li>the population-to-archive ratio exceeds {@code populationRatio} by more
- * than {@code 25%}.
+ *   <li>the number of fitness function evaluations since the last restart exceeds
+ *       {@code maxWindowSize}; or
+ *   <li>the population-to-archive ratio exceeds {@code populationRatio} by more
+ *       than {@code 25%}.
  * </ol>
  * If a restart occurs, the population is emptied, the population size is
  * adapted to maintain the {@code populationRatio}, the the new population is
@@ -55,41 +57,40 @@ import org.moeaframework.core.Variation;
  *       Water Resources, 29(6):792-807, 2006.
  * </ol>
  */
-public class AdaptiveTimeContinuation extends PeriodicAction 
-implements EvolutionaryAlgorithm {
+public class AdaptiveTimeContinuation extends PeriodicAction implements EvolutionaryAlgorithm, Configurable {
 
 	/**
 	 * The maximum number of iterations allowed since the last restart before 
 	 * forcing a restart.
 	 */
-	private final int maxWindowSize;
+	private int maxWindowSize;
 
 	/**
-	 * The population-to-archive ratio.
+	 * The percentage of the population that, during a restart, are introduced into the new population.
 	 */
-	private final double populationRatio;
+	private double injectionRate;
 
 	/**
 	 * The minimum size of the population.
 	 */
-	private final int minimumPopulationSize;
+	private int minimumPopulationSize;
 
 	/**
 	 * The maximum size of the population.
 	 */
-	private final int maximumPopulationSize;
+	private int maximumPopulationSize;
 
 	/**
 	 * The selection operator for selecting solutions from the archive during a
 	 * restart.
 	 */
-	private final Selection selection;
+	private final Selection restartSelection;
 
 	/**
 	 * The variation operator for mutating solutions selected from the archive
 	 * during a restart.
 	 */
-	private final Variation variation;
+	private final Variation restartVariation;
 
 	/**
 	 * The number of iterations at the last invocation of {@code restart}.
@@ -105,31 +106,126 @@ implements EvolutionaryAlgorithm {
 	 * Decorates the specified algorithm with adaptive time continuation.
 	 * 
 	 * @param algorithm the algorithm being decorated
-	 * @param windowSize the number of iterations between invocations of
-	 *        {@code check}
+	 * @param windowSize the number of iterations between invocations of {@code check}
 	 * @param maxWindowSize the maximum number of iterations allowed since the
 	 *        last restart before forcing a restart
-	 * @param populationRatio the population-to-archive ratio
+	 * @param injectionRate the injection rate percentage
 	 * @param minimumPopulationSize the minimum size of the population
 	 * @param maximumPopulationSize the maximum size of the population
-	 * @param selection the selection operator for selecting solutions from the
+	 * @param restartSelection the selection operator for selecting solutions from the
 	 *        archive during a restart
-	 * @param variation the variation operator for mutating solutions selected
+	 * @param restartVariation the variation operator for mutating solutions selected
 	 *        from the archive during a restart
 	 */
 	public AdaptiveTimeContinuation(EvolutionaryAlgorithm algorithm,
-			int windowSize, int maxWindowSize, double populationRatio,
+			int windowSize, int maxWindowSize, double injectionRate,
 			int minimumPopulationSize, int maximumPopulationSize,
-			Selection selection, Variation variation) {
+			Selection restartSelection, Variation restartVariation) {
 		super(algorithm, windowSize, FrequencyType.STEPS);
 		this.maxWindowSize = maxWindowSize;
-		this.populationRatio = populationRatio;
+		this.injectionRate = injectionRate;
 		this.minimumPopulationSize = minimumPopulationSize;
 		this.maximumPopulationSize = maximumPopulationSize;
-		this.selection = selection;
-		this.variation = variation;
+		this.restartSelection = restartSelection;
+		this.restartVariation = restartVariation;
 
 		listeners = EventListenerSupport.create(RestartListener.class);
+	}
+	
+	/**
+	 * Returns the number of iterations between invocations of {@code check}.
+	 * 
+	 * @return the window size, in iterations
+	 */
+	public int getWindowSize() {
+		return frequency;
+	}
+	
+	/**
+	 * Sets the number of iterations between invocations of {@code check}.
+	 * 
+	 * @param windowSize the window size, in iterations
+	 */
+	@Property
+	public void setWindowSize(int windowSize) {
+		this.frequency = windowSize;
+	}
+
+	/**
+	 * Returns the maximum number of iterations allowed since the last restart before forcing a restart.
+	 * 
+	 * @return the maximum window size, in iterations
+	 */
+	public int getMaxWindowSize() {
+		return maxWindowSize;
+	}
+
+	/**
+	 * Sets the maximum number of iterations allowed since the last restart before forcing a restart.
+	 * 
+	 * @param maxWindowSize the maximum window size, in iterations
+	 */
+	@Property
+	public void setMaxWindowSize(int maxWindowSize) {
+		this.maxWindowSize = maxWindowSize;
+	}
+
+	/**
+	 * Returns the percentage of the population that, during a restart, are introduced into the new population.
+	 * 
+	 * @return the injection rate
+	 */
+	public double getInjectionRate() {
+		return injectionRate;
+	}
+
+	/**
+	 * Sets the percentage of the population that, during a restart, are introduced into the new population.  The
+	 * population will be resized to hold {@code archive.size() / injectionRate} solutions.
+	 * 
+	 * @param injectionRate the injection rate
+	 */
+	@Property
+	public void setInjectionRate(double injectionRate) {
+		this.injectionRate = injectionRate;
+	}
+
+	/**
+	 * Returns the minimum size of the population.
+	 * 
+	 * @return the minimum size of the population
+	 */
+	public int getMinimumPopulationSize() {
+		return minimumPopulationSize;
+	}
+
+	/**
+	 * Sets the minimum size of the population.
+	 * 
+	 * @param minimumPopulationSize the minimum size of the population
+	 */
+	@Property
+	public void setMinimumPopulationSize(int minimumPopulationSize) {
+		this.minimumPopulationSize = minimumPopulationSize;
+	}
+
+	/**
+	 * Returns the maximum size of the population.
+	 * 
+	 * @return the maximum size of the population
+	 */
+	public int getMaximumPopulationSize() {
+		return maximumPopulationSize;
+	}
+
+	/**
+	 * Sets the maximum size of the population.
+	 * 
+	 * @param maximumPopulationSize the maximum size of the population
+	 */
+	@Property
+	public void setMaximumPopulationSize(int maximumPopulationSize) {
+		this.maximumPopulationSize = maximumPopulationSize;
 	}
 
 	/**
@@ -166,7 +262,7 @@ implements EvolutionaryAlgorithm {
 	 */
 	protected RestartType check() {
 		int populationSize = getPopulation().size();
-		double targetSize = populationRatio * getArchive().size();
+		double targetSize = getArchive().size() / injectionRate;
 
 		if (iteration - iterationAtLastRestart >= maxWindowSize) {
 			return RestartType.HARD;
@@ -197,7 +293,7 @@ implements EvolutionaryAlgorithm {
 			population.addAll(archive);
 		}
 
-		int newPopulationSize = (int)(populationRatio * archive.size());
+		int newPopulationSize = (int)(archive.size() / injectionRate);
 
 		if (newPopulationSize < minimumPopulationSize) {
 			newPopulationSize = minimumPopulationSize;
@@ -206,9 +302,8 @@ implements EvolutionaryAlgorithm {
 		}
 
 		while (population.size() < newPopulationSize) {
-			Solution[] parents = selection.select(variation.getArity(), 
-					archive);
-			Solution[] children = variation.evolve(parents);
+			Solution[] parents = restartSelection.select(restartVariation.getArity(), archive);
+			Solution[] children = restartVariation.evolve(parents);
 
 			for (Solution child : children) {
 				algorithm.evaluate(child);
@@ -232,15 +327,20 @@ implements EvolutionaryAlgorithm {
 			restart(type);
 		}
 	}
+	
+	@Override
+	EvolutionaryAlgorithm getAlgorithm() {
+		return (EvolutionaryAlgorithm)super.getAlgorithm();
+	}
 
 	@Override
 	public Population getPopulation() {
-		return ((EvolutionaryAlgorithm)algorithm).getPopulation();
+		return getAlgorithm().getPopulation();
 	}
 
 	@Override
 	public NondominatedPopulation getArchive() {
-		return ((EvolutionaryAlgorithm)algorithm).getArchive();
+		return getAlgorithm().getArchive();
 	}
 	
 	/**
@@ -302,14 +402,12 @@ implements EvolutionaryAlgorithm {
 
 	@Override
 	public Serializable getState() throws NotSerializableException {
-		return new AdaptiveTimeContinuationState(super.getState(),
-				iterationAtLastRestart);
+		return new AdaptiveTimeContinuationState(super.getState(), iterationAtLastRestart);
 	}
 
 	@Override
 	public void setState(Object objState) throws NotSerializableException {
-		AdaptiveTimeContinuationState state =
-				(AdaptiveTimeContinuationState)objState;
+		AdaptiveTimeContinuationState state = (AdaptiveTimeContinuationState)objState;
 		
 		super.setState(state.getAlgorithmState());
 		iterationAtLastRestart = state.getIterationAtLastRestart();

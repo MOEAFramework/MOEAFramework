@@ -59,6 +59,11 @@ public class MinMaxObjectiveComparator implements AggregateObjectiveComparator, 
 			this.weights = new double[] { 1.0 };
 		}
 	}
+	
+	@Override
+	public double[] getWeights() {
+		return weights;
+	}
 
 	@Override
 	public int compare(Solution solution1, Solution solution2) {
@@ -81,9 +86,8 @@ public class MinMaxObjectiveComparator implements AggregateObjectiveComparator, 
 		double max = Double.NEGATIVE_INFINITY;
 
 		for (int i = 0; i < solution.getNumberOfObjectives(); i++) {
-			max = Math.max(max, Math.max(
-					weights[i >= weights.length ? weights.length-1 : i],
-					0.0001) * solution.getObjective(i));
+			max = Math.max(max, Math.max(weights[i >= weights.length ? weights.length-1 : i], 0.0001)
+					* solution.getObjective(i));
 		}
 
 		return max;

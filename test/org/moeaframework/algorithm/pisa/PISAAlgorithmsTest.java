@@ -19,7 +19,6 @@ package org.moeaframework.algorithm.pisa;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Properties;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -33,6 +32,7 @@ import org.moeaframework.core.Settings;
 import org.moeaframework.core.indicator.QualityIndicator;
 import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.core.spi.ProblemFactory;
+import org.moeaframework.util.TypedProperties;
 
 /**
  * Tests the {@link PISAAlgorithms} class ussing the new, parameter-based
@@ -48,7 +48,7 @@ public class PISAAlgorithmsTest {
 	/**
 	 * The properties for controlling the test problems.
 	 */
-	private Properties properties;
+	private TypedProperties properties;
 	
 	/**
 	 * The quality indicator for comparing solutions to the test problem.
@@ -63,12 +63,12 @@ public class PISAAlgorithmsTest {
 	@Before
 	public void setUp() throws IOException {
 		problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
-		properties = new Properties();
+		properties = new TypedProperties();
 		qualityIndicator = new QualityIndicator(problem,
 				ProblemFactory.getInstance().getReferenceSet("DTLZ2_2"));
 		
-		properties.setProperty("populationSize", "100");
-		properties.setProperty("maxEvaluations", "1000");
+		properties.setInt("populationSize", 100);
+		properties.setInt("maxEvaluations", 1000);
 	}
 
 	/**
@@ -112,12 +112,12 @@ public class PISAAlgorithmsTest {
 		double result1 = test(AlgorithmFactory.getInstance().getAlgorithm(name,
 				properties, problem), seed1);
 		
-		properties.setProperty("seed", Integer.toString(PRNG.nextInt()));
+		properties.setInt("seed", PRNG.nextInt());
 		
 		double result2 = test(AlgorithmFactory.getInstance().getAlgorithm(name,
 				properties, problem), seed2);
 		
-		properties.setProperty("tournament", "3");
+		properties.setInt("tournament", 3);
 		
 		double result3 = test(AlgorithmFactory.getInstance().getAlgorithm(name,
 				properties, problem), seed1);

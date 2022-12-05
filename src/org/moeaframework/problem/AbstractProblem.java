@@ -44,12 +44,6 @@ public abstract class AbstractProblem implements Problem {
 	protected final int numberOfConstraints;
 	
 	/**
-	 * {@code true} if the {@code close()} method has been invoked; {@code 
-	 * false} otherwise.
-	 */
-	private boolean isClosed;
-	
-	/**
 	 * Constructs an unconstrained abstract problem with the specified number
 	 * of decision variables and objectives.
 	 * 
@@ -96,22 +90,9 @@ public abstract class AbstractProblem implements Problem {
 		return numberOfConstraints;
 	}
 
-	/**
-	 * Calls {@code close()} if this problem has not yet been closed prior to
-	 * finalization.
-	 */
-	@Override
-	protected void finalize() throws Throwable {
-		if (!isClosed) {
-			close();
-		}
-		
-		super.finalize();
-	}
-
 	@Override
 	public void close() {
-		isClosed = true;
+		// do nothing
 	}
 
 }

@@ -17,15 +17,17 @@
  */
 package org.moeaframework.algorithm.single;
 
-import org.moeaframework.algorithm.AbstractEvolutionaryAlgorithm;
 import org.moeaframework.core.Initialization;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
+import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.comparator.DominanceComparator;
+import org.moeaframework.core.operator.RandomInitialization;
 import org.moeaframework.core.operator.real.DifferentialEvolutionSelection;
 import org.moeaframework.core.operator.real.DifferentialEvolutionVariation;
+import org.moeaframework.core.variable.RealVariable;
 
 /**
  * Single-objective differential evolution (DE) algorithm.
@@ -37,12 +39,7 @@ import org.moeaframework.core.operator.real.DifferentialEvolutionVariation;
  *       Journal of Global Optimization, 11(4):341-359, 1997.
  * </ol>
  */
-public class DifferentialEvolution extends AbstractEvolutionaryAlgorithm {
-	
-	/**
-	 * The aggregate objective comparator.
-	 */
-	private final AggregateObjectiveComparator comparator;
+public class DifferentialEvolution extends SingleObjectiveEvolutionaryAlgorithm {
 	
 	/**
 	 * The differential evolution selection operator.
@@ -50,29 +47,36 @@ public class DifferentialEvolution extends AbstractEvolutionaryAlgorithm {
 	private final DifferentialEvolutionSelection selection;
 	
 	/**
-	 * The differential evolution variation operator.
-	 */
-	private final DifferentialEvolutionVariation variation;
-
-	/**
-	 * Constructs a new instance of the single-objective differential evolution
-	 * (DE) algorithm.
+	 * Constructs a new single-objective differential evolution algorithm with default settings.
 	 * 
 	 * @param problem the problem
+	 */
+	public DifferentialEvolution(Problem problem) {
+		this(problem,
+				Settings.DEFAULT_POPULATION_SIZE,
+				new LinearDominanceComparator(),
+				new RandomInitialization(problem),
+				new DifferentialEvolutionSelection(),
+				new DifferentialEvolutionVariation());
+	}
+
+	/**
+	 * Constructs a new instance of the single-objective differential evolution (DE) algorithm.
+	 * 
+	 * @param problem the problem
+	 * @param initialPopulationSize the initial population size
 	 * @param comparator the aggregate objective comparator
 	 * @param initialization the initialization method
 	 * @param selection the differential evolution selection operator
 	 * @param variation the differential evolution variation operator
 	 */
-	public DifferentialEvolution(Problem problem,
-			AggregateObjectiveComparator comparator,
-			Initialization initialization,
-			DifferentialEvolutionSelection selection,
+	public DifferentialEvolution(Problem problem, int initialPopulationSize, AggregateObjectiveComparator comparator,
+			Initialization initialization, DifferentialEvolutionSelection selection,
 			DifferentialEvolutionVariation variation) {
-		super(problem, new Population(), null, initialization);
-		this.comparator = comparator;
+		super(problem, initialPopulationSize, new Population(), null, comparator, initialization, variation);
 		this.selection = selection;
-		this.variation = variation;
+		
+		problem.assertType(RealVariable.class);
 	}
 
 	@Override
@@ -84,8 +88,7 @@ public class DifferentialEvolution extends AbstractEvolutionaryAlgorithm {
 		for (int i = 0; i < population.size(); i++) {
 			selection.setCurrentIndex(i);
 
-			Solution[] parents = selection.select(variation.getArity(),
-					population);
+			Solution[] parents = selection.select(variation.getArity(), population);
 			children.add(variation.evolve(parents)[0]);
 		}
 		
@@ -107,4 +110,12 @@ public class DifferentialEvolution extends AbstractEvolutionaryAlgorithm {
 		return result;
 	}
 	
+	@Override
+	public DifferentialEvolutionVariation getVariation() {
+		return (DifferentialEvolutionVariation)variation;
+	}
+	
+	public void setVariation(DifferentialEvolutionVariation variation) {
+		super.setVariation(variation);
+	}
 }

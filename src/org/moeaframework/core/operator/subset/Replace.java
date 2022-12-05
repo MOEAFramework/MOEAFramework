@@ -17,66 +17,48 @@
  */
 package org.moeaframework.core.operator.subset;
 
-import org.moeaframework.core.PRNG;
-import org.moeaframework.core.Solution;
-import org.moeaframework.core.Variable;
-import org.moeaframework.core.Variation;
+import org.moeaframework.core.configuration.Prefix;
+import org.moeaframework.core.operator.TypeSafeMutation;
 import org.moeaframework.core.variable.Subset;
 
 /**
- * Replacement mutation operator.  Randomly replaces one of the members in the
- * subset with a non-member.
+ * Replacement mutation operator.  Randomly replaces one of the members in the subset with a non-member.
  * <p>
  * This operator is type-safe.
  */
-public class Replace implements Variation {
-
+@Prefix("replace")
+public class Replace extends TypeSafeMutation<Subset> {
+	
 	/**
-	 * The probability of mutating a variable.
+	 * Constructs a replacement mutation operator with default settings.
 	 */
-	private final double probability;
+	public Replace() {
+		this(0.3);
+	}
 
 	/**
-	 * Constructs a replacement mutation operator with the specified
-	 * probability of mutating a variable.
+	 * Constructs a replacement mutation operator with the specified probability of mutating a variable.
 	 * 
 	 * @param probability the probability of mutating a variable
 	 */
 	public Replace(double probability) {
-		super();
-		this.probability = probability;
+		super(Subset.class, probability);
 	}
-
+	
 	@Override
-	public Solution[] evolve(Solution[] parents) {
-		Solution result = parents[0].copy();
-
-		for (int i = 0; i < result.getNumberOfVariables(); i++) {
-			Variable variable = result.getVariable(i);
-
-			if ((PRNG.nextDouble() <= probability)
-					&& (variable instanceof Subset)) {
-				evolve((Subset)variable);
-			}
-		}
-
-		return new Solution[] { result };
+	public String getName() {
+		return "replace";
 	}
 
 	/**
-	 * Evolves the specified subset using the replacement mutation operator.
+	 * Mutates the specified subset using the replacement mutation operator.
 	 * 
 	 * @param subset the subset to be mutated
 	 */
-	public static void evolve(Subset subset) {
+	public void mutate(Subset subset) {
 		if ((subset.size() < subset.getN()) && (subset.size() > 0)) {
 			subset.replace(subset.randomMember(), subset.randomNonmember());
 		}
-	}
-
-	@Override
-	public int getArity() {
-		return 1;
 	}
 
 }

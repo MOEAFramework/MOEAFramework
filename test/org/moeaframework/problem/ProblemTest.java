@@ -17,61 +17,92 @@
  */
 package org.moeaframework.problem;
 
-import org.apache.commons.math3.stat.StatUtils;
+import org.junit.Assert;
+import org.junit.Assume;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.TestUtils;
-import org.moeaframework.algorithm.jmetal.JMetalUtils;
-import org.moeaframework.algorithm.jmetal.ProblemAdapter;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.operator.RandomInitialization;
+import org.moeaframework.core.spi.ProblemFactory;
 
 /**
- * Utilities for testing problems against their implementations in JMetal.
+ * Utilities for testing problems against multiple implementations.
  */
 public abstract class ProblemTest {
+	
+	/**
+	 * Call from any test to skip if JMetal does not exist.
+	 */
+	public void assumeJMetalExists() {
+		Assume.assumeTrue(ProblemFactory.getInstance().hasProvider(
+				"org.moeaframework.problem.jmetal.JMetalProblems"));
+	}
+	
+	/**
+	 * Tests the MOEA Framework implementation against the JMetal implementation.
+	 * 
+	 * @param problem the problem name
+	 */
+	public void test(String problem) {
+		test(problem, true);
+	}
 
 	/**
-	 * Tests if a problem implementation in the MOEA Framework matches the
-	 * corresponding implementation in JMetal.
+	 * Tests the MOEA Framework implementation against the JMetal implementation.
 	 * 
-	 * @param problemA the JMetal problem
-	 * @param problemB the MOEA Framework problem
-	 * @throws Exception if an error occurred in JMetal
+	 * @param problem the problem name
+	 * @param exactConstraints if {@code true}, require identical constraint values
 	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	protected <T extends org.uma.jmetal.solution.Solution<?>> void test(
-			org.uma.jmetal.problem.Problem<T> problemA, Problem problemB) throws Exception {
-		ProblemAdapter adapter = JMetalUtils.createProblemAdapter(problemB);
+	public void test(String problem, boolean exactConstraints) {
+		assumeJMetalExists();
+		
+		Problem problemA = ProblemFactory.getInstance().getProblem(problem);
+		Problem problemB = ProblemFactory.getInstance().getProblem(problem + "-JMetal");
+
+		test(problemA, problemB, exactConstraints);
+	}
+	
+	/**
+	 * Tests if two problems produce identical results.
+	 * 
+	 * @param problemA the first problem
+	 * @param problemB the second problem
+	 * @param exactConstraints if {@code true}, require identical constraint values
+	 */
+	protected void test(Problem problemA, Problem problemB, boolean exactConstraints) {
+		RandomInitialization initialization = new RandomInitialization(problemA);
 		
 		for (int i = 0; i < TestThresholds.SAMPLES; i++) {
-			T solutionA = problemA.createSolution();
-			Solution solutionB = adapter.convert(solutionA);
-
+			Solution solutionA = initialization.initialize(1)[0];
+			Solution solutionB = solutionA.copy();
+			
 			problemA.evaluate(solutionA);
 			problemB.evaluate(solutionB);
-
-			compare(solutionA, solutionB);
+			
+			compare(solutionA, solutionB, exactConstraints);
 		}
 	}
 
 	/**
-	 * Compares a JMetal solution against an MOEA Framework solution to ensure
-	 * their objectives and constraint violations match.
+	 * Compares the objectives and constraint values of two solutions.
 	 * 
-	 * @param solutionA the JMetal solution
-	 * @param solutionB the MOEA Framework solution
+	 * @param solutionA the first solution
+	 * @param solutionB the second solution
+	 * @param exactConstraints if {@code true}, require identical constraint values
 	 */
-	protected <T extends org.uma.jmetal.solution.Solution<?>> void compare(T solutionA, Solution solutionB) {
+	protected void compare(Solution solutionA, Solution solutionB, boolean exactConstraints) {
 		for (int i = 0; i < solutionA.getNumberOfObjectives(); i++) {
-			TestUtils.assertEquals(
-					solutionA.getObjective(i), 
-					solutionB.getObjective(i));
+			TestUtils.assertEquals(solutionA.getObjective(i), solutionB.getObjective(i));
 		}
 		
-		if (solutionB.getNumberOfConstraints() > 0) {
-			TestUtils.assertEquals(
-					Math.abs(JMetalUtils.getOverallConstraintViolation(solutionA)), 
-					Math.abs(StatUtils.sum(solutionB.getConstraints())));
+		for (int i = 0; i < solutionA.getNumberOfConstraints(); i++) {
+			if (exactConstraints) {
+				TestUtils.assertEquals(solutionA.getConstraint(i), solutionB.getConstraint(i));
+			} else {
+				// only check if constraints are feasible (== 0) or infeasible (!= 0)
+				Assert.assertEquals(solutionA.getConstraint(i) != 0, solutionB.getConstraint(i) != 0);
+			}
 		}
 	}
 

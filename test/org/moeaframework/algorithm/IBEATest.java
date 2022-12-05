@@ -34,22 +34,26 @@ public class IBEATest extends AlgorithmTest {
 	
 	@Test
 	public void testDTLZ1() throws IOException {
+		assumeJMetalExists();
 		test("DTLZ1_2", "IBEA", "IBEA-JMetal");
 	}
 	
 	@Test
 	public void testDTLZ2() throws IOException {
+		assumeJMetalExists();
 		test("DTLZ2_2", "IBEA", "IBEA-JMetal");
 	}
 	
 	@Test
-	@Flaky("need to investigate - flaky after upgrading to JMetal 5.9")
+	@Flaky
 	public void testDTLZ7() throws IOException {
+		assumeJMetalExists();
 		test("DTLZ7_2", "IBEA", "IBEA-JMetal");
 	}
 	
 	@Test
 	public void testUF1() throws IOException {
+		assumeJMetalExists();
 		test("UF1", "IBEA", "IBEA-JMetal");
 	}
 

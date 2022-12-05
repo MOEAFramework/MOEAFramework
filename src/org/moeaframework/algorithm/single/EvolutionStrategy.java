@@ -17,14 +17,14 @@
  */
 package org.moeaframework.algorithm.single;
 
-import org.moeaframework.algorithm.AbstractEvolutionaryAlgorithm;
-import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Initialization;
-import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
+import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.Variation;
+import org.moeaframework.core.configuration.Property;
+import org.moeaframework.core.operator.RandomInitialization;
+import org.moeaframework.core.variable.RealVariable;
 
 /**
  * Single-objective (mu + lambda) evolution strategy (ES) algorithm.  In this
@@ -40,37 +40,35 @@ import org.moeaframework.core.Variation;
  *       Fromman-Holzboog, 1971.
  * </ol>
  */
-public class EvolutionStrategy extends AbstractEvolutionaryAlgorithm {
-	
-	/**
-	 * The aggregate objective comparator.
-	 */
-	private final AggregateObjectiveComparator comparator;
+public class EvolutionStrategy extends SingleObjectiveEvolutionaryAlgorithm {
 
 	/**
-	 * The variation operator.
+	 * Constructs a new instance of the evolution strategy (ES) algorithm with default settings.
+	 * 
+	 * @param problem the problem to solve
 	 */
-	private final Variation variation;
+	public EvolutionStrategy(Problem problem) {
+		this(problem,
+				Settings.DEFAULT_POPULATION_SIZE,
+				new LinearDominanceComparator(),
+				new RandomInitialization(problem),
+				new SelfAdaptiveNormalVariation());
+	}
 
 	/**
 	 * Constructs a new instance of the evolution strategy (ES) algorithm.
 	 * 
-	 * @param problem the problem
+	 * @param problem the problem to solve
+	 * @param initialPopulationSize the initial population size
 	 * @param comparator the aggregate objective comparator
 	 * @param initialization the initialization method
-	 * @param variation the variation operator
+	 * @param mutation the mutation operator
 	 */
-	public EvolutionStrategy(Problem problem,
-			AggregateObjectiveComparator comparator,
-			Initialization initialization,
-			Variation variation) {
-		super(problem, new Population(), null, initialization);
-		this.comparator = comparator;
-		this.variation = variation;
+	public EvolutionStrategy(Problem problem, int initialPopulationSize, AggregateObjectiveComparator comparator,
+			Initialization initialization, SelfAdaptiveNormalVariation variation) {
+		super(problem, initialPopulationSize, new Population(), null, comparator, initialization, variation);
 		
-		if (variation.getArity() != 1) {
-			throw new FrameworkException("only supports variation operators with 1 parent");
-		}
+		problem.assertType(RealVariable.class);
 	}
 
 	@Override
@@ -93,10 +91,13 @@ public class EvolutionStrategy extends AbstractEvolutionaryAlgorithm {
 	}
 	
 	@Override
-	public NondominatedPopulation getResult() {
-		NondominatedPopulation result = new NondominatedPopulation(comparator);
-		result.addAll(getPopulation());
-		return result;
+	public SelfAdaptiveNormalVariation getVariation() {
+		return (SelfAdaptiveNormalVariation)super.getVariation();
+	}
+	
+	@Property("operator")
+	public void setVariation(SelfAdaptiveNormalVariation variation) {
+		super.setVariation(variation);
 	}
 
 }

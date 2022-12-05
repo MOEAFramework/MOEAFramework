@@ -38,8 +38,7 @@ AggregateObjectiveComparator, Serializable {
 	 * function and constraints.  Equal weights are used for each objective.
 	 */
 	public MinMaxDominanceComparator() {
-		super(new AggregateConstraintComparator(),
-				new MinMaxObjectiveComparator());
+		super(new AggregateConstraintComparator(), new MinMaxObjectiveComparator());
 	}
 	
 	/**
@@ -51,8 +50,12 @@ AggregateObjectiveComparator, Serializable {
 	 * @param weights the weight vector
 	 */
 	public MinMaxDominanceComparator(double... weights) {
-		super(new AggregateConstraintComparator(),
-				new MinMaxObjectiveComparator(weights));
+		super(new AggregateConstraintComparator(), new MinMaxObjectiveComparator(weights));
+	}
+	
+	@Override
+	public double[] getWeights() {
+		return ((MinMaxObjectiveComparator)comparators[1]).getWeights();
 	}
 
 }

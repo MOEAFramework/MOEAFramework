@@ -100,15 +100,8 @@ public class MetricFileReaderTest {
 	 */
 	@Test
 	public void testFileComplete() throws IOException {
-		MetricFileReader reader = null;
-
-		try {
-			reader = new MetricFileReader(TestUtils.createTempFile(COMPLETE));
+		try (MetricFileReader reader = new MetricFileReader(TestUtils.createTempFile(COMPLETE))) {
 			validateComplete(reader);
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
 		}
 	}
 
@@ -119,16 +112,8 @@ public class MetricFileReaderTest {
 	 */
 	@Test
 	public void testFileIncomplete1() throws IOException {
-		MetricFileReader reader = null;
-
-		try {
-			reader = new MetricFileReader(TestUtils.createTempFile(
-					INCOMPLETE1));
+		try (MetricFileReader reader = new MetricFileReader(TestUtils.createTempFile(INCOMPLETE1))) {
 			validateIncomplete(reader);
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
 		}
 	}
 
@@ -139,16 +124,8 @@ public class MetricFileReaderTest {
 	 */
 	@Test
 	public void testFileIncomplete2() throws IOException {
-		MetricFileReader reader = null;
-
-		try {
-			reader = new MetricFileReader(TestUtils.createTempFile(
-					INCOMPLETE2));
+		try (MetricFileReader reader = new MetricFileReader(TestUtils.createTempFile(INCOMPLETE2))) {
 			validateIncomplete(reader);
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
 		}
 	}
 
@@ -159,16 +136,8 @@ public class MetricFileReaderTest {
 	 */
 	@Test
 	public void testFileIncomplete3() throws IOException {
-		MetricFileReader reader = null;
-
-		try {
-			reader = new MetricFileReader(TestUtils.createTempFile(
-					INCOMPLETE3));
+		try (MetricFileReader reader = new MetricFileReader(TestUtils.createTempFile(INCOMPLETE3))) {
 			validateIncomplete(reader);
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
 		}
 	}
 
@@ -179,15 +148,8 @@ public class MetricFileReaderTest {
 	 */
 	@Test
 	public void testReaderComplete() throws IOException {
-		MetricFileReader reader = null;
-
-		try {
-			reader = new MetricFileReader(new StringReader(COMPLETE));
+		try (MetricFileReader reader = new MetricFileReader(new StringReader(COMPLETE))) {
 			validateComplete(reader);
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
 		}
 	}
 
@@ -198,15 +160,8 @@ public class MetricFileReaderTest {
 	 */
 	@Test
 	public void testReaderIncomplete1() throws IOException {
-		MetricFileReader reader = null;
-
-		try {
-			reader = new MetricFileReader(new StringReader(INCOMPLETE1));
+		try (MetricFileReader reader = new MetricFileReader(new StringReader(INCOMPLETE1))) {
 			validateIncomplete(reader);
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
 		}
 	}
 
@@ -217,15 +172,8 @@ public class MetricFileReaderTest {
 	 */
 	@Test
 	public void testReaderIncomplete2() throws IOException {
-		MetricFileReader reader = null;
-
-		try {
-			reader = new MetricFileReader(new StringReader(INCOMPLETE2));
+		try (MetricFileReader reader = new MetricFileReader(new StringReader(INCOMPLETE2))) {
 			validateIncomplete(reader);
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
 		}
 	}
 
@@ -236,15 +184,8 @@ public class MetricFileReaderTest {
 	 */
 	@Test
 	public void testReaderIncomplete3() throws IOException {
-		MetricFileReader reader = null;
-
-		try {
-			reader = new MetricFileReader(new StringReader(INCOMPLETE3));
+		try (MetricFileReader reader = new MetricFileReader(new StringReader(INCOMPLETE3))) {
 			validateIncomplete(reader);
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
 		}
 	}
 

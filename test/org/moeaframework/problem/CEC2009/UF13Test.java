@@ -33,10 +33,9 @@ public class UF13Test {
 	@Test
 	public void test() {
 		UF13 uf13 = new UF13();
-		RandomInitialization initialization = new RandomInitialization(uf13, 
-				TestThresholds.SAMPLES);
+		RandomInitialization initialization = new RandomInitialization(uf13);
 		
-		for (Solution solution : initialization.initialize()) {
+		for (Solution solution : initialization.initialize(TestThresholds.SAMPLES)) {
 			double[] x = EncodingUtils.getReal(solution);
 			double[] f = new double[uf13.getNumberOfObjectives()];
 			

@@ -59,7 +59,7 @@ public abstract class PeriodicAction implements Algorithm {
 	/**
 	 * The frequency that the {@link #doAction()} method is invoked.
 	 */
-	protected final int frequency;
+	protected int frequency;
 	
 	/**
 	 * The type of frequency.
@@ -91,6 +91,15 @@ public abstract class PeriodicAction implements Algorithm {
 		this.algorithm = algorithm;
 		this.frequency = frequency;
 		this.frequencyType = frequencyType;
+	}
+	
+	/**
+	 * Returns the algorithm that is wrapped by this periodic action.
+	 * 
+	 * @return the inner algorithm
+	 */
+	Algorithm getAlgorithm() {
+		return algorithm;
 	}
 
 	@Override

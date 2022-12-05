@@ -112,6 +112,7 @@ public class Population implements Iterable<Solution> {
 	 *         method; {@code false} otherwise.
 	 */
 	public boolean add(Solution solution) {
+		modCount++;
 		return data.add(solution);
 	}
 
@@ -280,6 +281,7 @@ public class Population implements Iterable<Solution> {
 	 * @param comparator the comparator to be used for sorting
 	 */
 	public void sort(Comparator<? super Solution> comparator) {
+		modCount++;
 		Collections.sort(data, comparator);
 	}
 
@@ -297,6 +299,32 @@ public class Population implements Iterable<Solution> {
 		while (data.size() > size) {
 			data.remove(data.size() - 1);
 		}
+	}
+	
+	/**
+	 * Returns a list of all solutions in this population.  This is equivalent
+	 * to calling {@link #asList(boolean)} with a value of {@code true}.
+	 * 
+	 * @return a list of all solutions in this population
+	 */
+	public List<Solution> asList() {
+		return asList(false);
+	}
+	
+	/**
+	 * Returns a list of all solutions in this population.
+	 * 
+	 * @param copy if {@code true}, copies of each solution are returned
+	 * @return a list of all solutions in this population
+	 */
+	public List<Solution> asList(boolean copy) {
+		List<Solution> result = new ArrayList<Solution>(size());
+		
+		for (Solution solution : this) {
+			result.add(copy ? solution.copy() : solution);
+		}
+		
+		return result;
 	}
 
 	/*
@@ -324,7 +352,7 @@ public class Population implements Iterable<Solution> {
 	/**
 	 * The modification count.
 	 */
-	private int modCount;
+	int modCount;
 
 	/**
 	 * An iterator over the solutions in a population.

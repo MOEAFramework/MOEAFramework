@@ -18,13 +18,12 @@
 package org.moeaframework.analysis.sensitivity;
 
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
+import org.moeaframework.core.Epsilons;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
-import org.moeaframework.core.comparator.EpsilonBoxDominanceComparator;
 
 /**
- * Provides &epsilon; values for algorithms using &epsilon;-dominance archives
- * on the standard test problems.
+ * Provides &epsilon; values for algorithms using &epsilon;-dominance archives on the standard test problems.
  */
 public class EpsilonHelper {
 	
@@ -36,22 +35,18 @@ public class EpsilonHelper {
 	}
 
 	/**
-	 * Returns the &epsilon; value used for the standard problems in sensitivity
-	 * analysis.  If the problem is not recognized, the default &epsilon; value
-	 * of {@code 0.01} is returned.
+	 * Returns the &epsilon; value used for the standard problems in sensitivity analysis.  If the problem
+	 * is not recognized, the default &epsilon; value of {@code 0.01} is returned.
 	 * 
 	 * @param problem the problem
-	 * @return the &epsilon; value used for the standard problems in sensitivity
-	 *         analysis
+	 * @return the &epsilon; value used for the standard problems in sensitivity analysis
 	 */
 	public static double getEpsilon(Problem problem) {
 		String name = problem.getName();
 		int numberOfObjectives = problem.getNumberOfObjectives();
 		
 		if (name.startsWith("DTLZ")) {
-			return numberOfObjectives == 2 ? 0.01 : 
-					numberOfObjectives == 3 ? 0.05 :
-						0.1 + 0.05*(numberOfObjectives-3);
+			return numberOfObjectives == 2 ? 0.01 : numberOfObjectives == 3 ? 0.05 : 0.1 + 0.05*(numberOfObjectives-3);
 		} else if (name.startsWith("UF")) {
 			if (name.equals("UF1")) {
 				return 0.001;
@@ -75,8 +70,7 @@ public class EpsilonHelper {
 				} else if (numberOfObjectives == 5) {
 					return 0.2;
 				} else {
-					throw new IllegalArgumentException(
-							"number of objectives not supported");
+					throw new IllegalArgumentException("number of objectives not supported");
 				}
 			}
 		} else if (name.equalsIgnoreCase("Belegundu")) {
@@ -147,43 +141,34 @@ public class EpsilonHelper {
 	}
 	
 	/**
-	 * Converts the population to an {@link EpsilonBoxDominanceArchive} with
-	 * the given &epsilon; values.  To prevent unnecessary computations, this
-	 * conversion only occurs if the original population is not an
-	 * {@code EpsilonBoxDominanceArchive} and does not have matching &epsilon;
-	 * values.
+	 * Converts the population to an {@link EpsilonBoxDominanceArchive} with the given &epsilon; values.
+	 * To prevent unnecessary computations, this conversion only occurs if the original population is not an
+	 * {@code EpsilonBoxDominanceArchive} and does not have matching &epsilon; values.
 	 * 
 	 * @param population the population to convert
-	 * @param epsilon the &epsilon; values
-	 * @return the population converted to an {@code EpsilonBoxDominanceArchive}
-	 *         with the given &epsilon; values
+	 * @param epsilons the &epsilon; values
+	 * @return the population converted to an {@code EpsilonBoxDominanceArchive} with the given &epsilon; values
 	 */
-	public static EpsilonBoxDominanceArchive convert(Population population, 
-			double[] epsilon) {
-		boolean isSameEpsilon = false;
-
-		//check if population already has the correct epsilons
+	public static EpsilonBoxDominanceArchive convert(Population population, double[] epsilons) {
+		return convert(population, new Epsilons(epsilons));
+	}
+	
+	/**
+	 * Converts the population to an {@link EpsilonBoxDominanceArchive} with the given &epsilon; values.
+	 * To prevent unnecessary computations, this conversion only occurs if the original population is not an
+	 * {@code EpsilonBoxDominanceArchive} and does not have matching &epsilon; values.
+	 * 
+	 * @param population the population to convert
+	 * @param epsilons the &epsilon; values
+	 * @return the population converted to an {@code EpsilonBoxDominanceArchive} with the given &epsilon; values
+	 */
+	public static EpsilonBoxDominanceArchive convert(Population population, Epsilons epsilons) {
 		if (population instanceof EpsilonBoxDominanceArchive) {
-			EpsilonBoxDominanceArchive result =
-					(EpsilonBoxDominanceArchive)population;
-			EpsilonBoxDominanceComparator comparator = 
-					result.getComparator();
-
-			isSameEpsilon = true;
-
-			for (int i=0; i<epsilon.length; i++) {
-				if (epsilon[i] != comparator.getEpsilon(i)) {
-					isSameEpsilon = false;
-					break;
-				}
+			if (epsilons.equals(((EpsilonBoxDominanceArchive)population).getComparator().getEpsilons())) {
+				return (EpsilonBoxDominanceArchive)population;
 			}
 		}
 
-		//apply epsilons only if necessary
-		if (isSameEpsilon) {
-			return (EpsilonBoxDominanceArchive)population;
-		} else {
-			return new EpsilonBoxDominanceArchive(epsilon, population);
-		}	
+		return new EpsilonBoxDominanceArchive(epsilons, population);
 	}
 }

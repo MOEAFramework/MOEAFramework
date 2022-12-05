@@ -37,47 +37,43 @@ public class InjectedInitialization extends RandomInitialization {
 	private List<Solution> injectedSolutions;
 
 	/**
-	 * Constructs a random initialization operator that includes one or more
-	 * pre-defined solutions.
+	 * Constructs a random initialization operator that includes one or more pre-defined solutions.
 	 * 
 	 * @param problem the problem
-	 * @param populationSize the initial population size
-	 * @param injectedSolutions the pre-defined solutions injected into the
-	 *        initial population
+	 * @param injectedSolutions the pre-defined solutions injected into the initial population
 	 */
-	public InjectedInitialization(Problem problem, int populationSize,
-			Solution... injectedSolutions) {
-		this(problem, populationSize, Arrays.asList(injectedSolutions));
+	public InjectedInitialization(Problem problem, Solution... injectedSolutions) {
+		this(problem, Arrays.asList(injectedSolutions));
 	}
 	
 	/**
-	 * Constructs a random initialization operator that includes one or more
-	 * pre-defined solutions.
+	 * Constructs a random initialization operator that includes one or more pre-defined solutions.
 	 * 
 	 * @param problem the problem
-	 * @param populationSize the initial population size
-	 * @param injectedSolutions the pre-defined solutions injected into the
-	 *        initial population
+	 * @param injectedSolutions the pre-defined solutions injected into the initial population
 	 */
-	public InjectedInitialization(Problem problem, int populationSize,
-			List<Solution> injectedSolutions) {
-		super(problem, populationSize);
+	public InjectedInitialization(Problem problem, List<Solution> injectedSolutions) {
+		super(problem);
 		this.injectedSolutions = new ArrayList<Solution>(injectedSolutions);
 	}
 
 	@Override
-	public Solution[] initialize() {
-		if (populationSize <= injectedSolutions.size()) {
-			return injectedSolutions.toArray(new Solution[0]);
-		} else {
-			Solution[] initialPopulation = super.initialize();
-			
-			for (int i = 0; i < injectedSolutions.size(); i++) {
-				initialPopulation[i] = injectedSolutions.get(i);
-			}
-			
-			return initialPopulation;
+	public Solution[] initialize(int populationSize) {
+		Solution[] initialPopulation = new Solution[populationSize];
+		
+		for (int i = 0; i < Math.min(injectedSolutions.size(), populationSize); i++) {
+			initialPopulation[i] = injectedSolutions.get(i);
 		}
+		
+		if (injectedSolutions.size() < populationSize) {
+			Solution[] randomSolutions = super.initialize(populationSize - injectedSolutions.size());
+			
+			for (int i = injectedSolutions.size(); i < populationSize; i++) {
+				initialPopulation[i] = randomSolutions[i - injectedSolutions.size()];
+			}
+		}
+
+		return initialPopulation;
 	}
 
 }

@@ -216,32 +216,6 @@ Closeable {
 	public void close() throws IOException {
 		reader.close();
 	}
-
-	/**
-	 * Returns {@code true} if exceptions are suppressed; {@code false}
-	 * otherwise.  Low-level I/O exceptions will still be thrown.  
-	 * 
-	 * @return {@code true} if exceptions are suppressed; {@code false}
-	 *         otherwise
-	 * @deprecated use {@link #isSuppressExceptions()} instead
-	 */
-	@Deprecated
-	boolean isSupressExceptions() {
-		return suppressExceptions;
-	}
-
-	/**
-	 * Set to {@code true} to suppress exceptions; {@code false} otherwise.
-	 * Low-level I/O exceptions will still be thrown.
-	 * 
-	 * @param supressExceptions {@code true} if exceptions are suppressed; 
-	 *        {@code false} otherwise
-	 * @deprecated use {@link #setSuppressExceptions(boolean)} instead
-	 */
-	@Deprecated
-	void setSupressExceptions(boolean supressExceptions) {
-		this.suppressExceptions = supressExceptions;
-	}
 	
 	/**
 	 * Returns {@code true} if exceptions are suppressed; {@code false}

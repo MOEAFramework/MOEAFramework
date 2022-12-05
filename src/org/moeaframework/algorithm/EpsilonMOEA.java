@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.moeaframework.analysis.sensitivity.EpsilonHelper;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.EpsilonBoxEvolutionaryAlgorithm;
 import org.moeaframework.core.Initialization;
@@ -28,10 +29,16 @@ import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Selection;
+import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.comparator.DominanceComparator;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
+import org.moeaframework.core.configuration.Property;
+import org.moeaframework.core.operator.RandomInitialization;
+import org.moeaframework.core.operator.TournamentSelection;
+import org.moeaframework.core.spi.OperatorFactory;
+import org.moeaframework.util.TypedProperties;
 
 /**
  * Implementation of the &epsilon;-MOEA algorithm.  The &epsilon;-MOEA is a
@@ -45,8 +52,7 @@ import org.moeaframework.core.comparator.ParetoDominanceComparator;
  *   Well-Spread Pareto-Optimal Solutions." KanGAL Report No 2003002. Feb 2003.
  * </ol>
  */
-public class EpsilonMOEA extends AbstractEvolutionaryAlgorithm implements
-		EpsilonBoxEvolutionaryAlgorithm {
+public class EpsilonMOEA extends AbstractEvolutionaryAlgorithm implements EpsilonBoxEvolutionaryAlgorithm {
 
 	/**
 	 * The dominance comparator used for updating the population.
@@ -57,47 +63,56 @@ public class EpsilonMOEA extends AbstractEvolutionaryAlgorithm implements
 	 * The selection operator.
 	 */
 	private final Selection selection;
-
+	
 	/**
-	 * The variation operator.
-	 */
-	private final Variation variation;
-
-	/**
-	 * Constructs the &epsilon;-MOEA algorithm with the specified components.
+	 * Constructs the &epsilon;-MOEA algorithm with default settings.
 	 * 
-	 * @param problem the problem being solved
-	 * @param population the population used to store solutions
-	 * @param archive the archive used to store the result
-	 * @param selection the selection operator
-	 * @param variation the variation operator
-	 * @param initialization the initialization method
+	 * @param problem the problem
 	 */
-	public EpsilonMOEA(Problem problem, Population population,
-			EpsilonBoxDominanceArchive archive, Selection selection,
-			Variation variation, Initialization initialization) {
-		this(problem, population, archive, selection, variation,
-				initialization, new ParetoDominanceComparator());
+	public EpsilonMOEA(Problem problem) {
+		this(problem,
+				Settings.DEFAULT_POPULATION_SIZE,
+				new Population(),
+				new EpsilonBoxDominanceArchive(EpsilonHelper.getEpsilon(problem)),
+				new TournamentSelection(2),
+				OperatorFactory.getInstance().getVariation(problem),
+				new RandomInitialization(problem));
 	}
 
 	/**
 	 * Constructs the &epsilon;-MOEA algorithm with the specified components.
 	 * 
 	 * @param problem the problem being solved
+	 * @param initialPopulationSize the initial population size
 	 * @param population the population used to store solutions
 	 * @param archive the archive used to store the result
 	 * @param selection the selection operator
 	 * @param variation the variation operator
 	 * @param initialization the initialization method
-	 * @param dominanceComparator the dominance comparator used by the
-	 *        {@link #addToPopulation} method
 	 */
-	public EpsilonMOEA(Problem problem, Population population,
-			EpsilonBoxDominanceArchive archive, Selection selection,
-			Variation variation, Initialization initialization,
-			DominanceComparator dominanceComparator) {
-		super(problem, population, archive, initialization);
-		this.variation = variation;
+	public EpsilonMOEA(Problem problem, int initialPopulationSize, Population population,
+			EpsilonBoxDominanceArchive archive, Selection selection, Variation variation,
+			Initialization initialization) {
+		this(problem, initialPopulationSize, population, archive, selection, variation, initialization,
+				new ParetoDominanceComparator());
+	}
+
+	/**
+	 * Constructs the &epsilon;-MOEA algorithm with the specified components.
+	 * 
+	 * @param problem the problem being solved
+	 * @param initialPopulationSize the initial population size
+	 * @param population the population used to store solutions
+	 * @param archive the archive used to store the result
+	 * @param selection the selection operator
+	 * @param variation the variation operator
+	 * @param initialization the initialization method
+	 * @param dominanceComparator the dominance comparator used by the {@link #addToPopulation} method
+	 */
+	public EpsilonMOEA(Problem problem, int initialPopulationSize, Population population,
+			EpsilonBoxDominanceArchive archive, Selection selection, Variation variation,
+			Initialization initialization, DominanceComparator dominanceComparator) {
+		super(problem, initialPopulationSize, population, archive, initialization, variation);
 		this.selection = selection;
 		this.dominanceComparator = dominanceComparator;
 	}
@@ -137,8 +152,7 @@ public class EpsilonMOEA extends AbstractEvolutionaryAlgorithm implements
 		boolean dominated = false;
 
 		for (int i = 0; i < population.size(); i++) {
-			int flag = dominanceComparator.compare(newSolution, 
-			        population.get(i));
+			int flag = dominanceComparator.compare(newSolution, population.get(i));
 
 			if (flag < 0) {
 				dominates.add(i);
@@ -159,6 +173,38 @@ public class EpsilonMOEA extends AbstractEvolutionaryAlgorithm implements
 	@Override
 	public EpsilonBoxDominanceArchive getArchive() {
 		return (EpsilonBoxDominanceArchive)super.getArchive();
+	}
+	
+	public void setArchive(EpsilonBoxDominanceArchive archive) {
+		super.setArchive(archive);
+	}
+	
+	@Override
+	@Property("operator")
+	public void setVariation(Variation variation) {
+		super.setVariation(variation);
+	}
+	
+	@Override
+	@Property("populationSize")
+	public void setInitialPopulationSize(int initialPopulationSize) {
+		super.setInitialPopulationSize(initialPopulationSize);
+	}
+	
+	@Override
+	public void applyConfiguration(TypedProperties properties) {
+		if (properties.contains("epsilon")) {
+			setArchive(new EpsilonBoxDominanceArchive(properties.getDoubleArray("epsilon")));
+		}
+		
+		super.applyConfiguration(properties);
+	}
+
+	@Override
+	public TypedProperties getConfiguration() {
+		TypedProperties properties = super.getConfiguration();
+		properties.setDoubleArray("epsilon", getArchive().getComparator().getEpsilons().toArray());
+		return properties;
 	}
 
 }

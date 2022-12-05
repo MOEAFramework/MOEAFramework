@@ -56,7 +56,7 @@ public class ParameterFile {
 	 * @param reader the reader of the parameters
 	 * @throws IOException if an I/O error occurred
 	 */
-	public ParameterFile(Reader reader) throws IOException {
+	ParameterFile(Reader reader) throws IOException {
 		super();
 
 		if (reader instanceof CommentedLineReader) {

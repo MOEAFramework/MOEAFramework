@@ -17,15 +17,33 @@
  */
 package org.moeaframework.util;
 
+import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.lang.reflect.Array;
 import java.util.Properties;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
+
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.moeaframework.core.configuration.ConfigurationException;
+import org.moeaframework.util.io.CommentedLineReader;
 
 /**
- * Wrapper for {@link Properties} providing getters for reading specific
- * primitive types. For primitive arrays, either the default "," separator or a
- * custom separator is used for splitting the string into individual components;
- * the formatting of this separator is defined in {@link String#split}. In
- * addition, whitespace surrounding each array entry is trimmed.
+ * Stores a collection of key-value pairs similar to {@link Properties} but has support for
+ * reading and writing primitive types.  Internally, this handles converting specific types to
+ * a string representation that can be saved and read from files.
+ * 
+ * In addition to primitive types, arrays of those primitives are also supported using either the
+ * default "," separator or a user-configurable string.  Leading and trailing whitespace is
+ * automatically trimmed from each entry.  <strong>Be mindful that values saved in arrays should
+ * not include the separator character(s) - no escaping is performed!</strong>
+ * 
+ * From version 3.0+, keys are case-insensitive.
  */
 public class TypedProperties {
 
@@ -35,22 +53,38 @@ public class TypedProperties {
 	public static final String DEFAULT_SEPARATOR = ",";
 
 	/**
-	 * Regular expression for the array separator, as used by the
-	 * {@link String#split} methods.
+	 * The separator for arrays.
 	 */
 	private final String separator;
 
 	/**
-	 * The {@code Properties} object storing the actual key/value pairs.
+	 * Storage of the key-value pairs.
 	 */
-	private final Properties properties;
+	private final TreeMap<String, String> properties;
 	
 	/**
-	 * Decorates an empty {@code Properties} object to provide type-safe access
-	 * using the default "," separator for arrays.
+	 * The keys that were read from this {@code Properties} object.
+	 */
+	private final TreeSet<String> accessedProperties;
+	
+	/**
+	 * Creates a new, empty instance of this class using the default "," separator for arrays.
 	 */
 	public TypedProperties() {
-		this(new Properties());
+		this(DEFAULT_SEPARATOR);
+	}
+	
+	/**
+	 * Creates a new, empty instance of this class using the given separator string for arrays.
+	 * 
+	 * @param separator the separator string
+	 */
+	public TypedProperties(String separator) {
+		super();
+		this.separator = separator;
+
+		this.properties = new TreeMap<String, String>(String.CASE_INSENSITIVE_ORDER);
+		this.accessedProperties = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
 	}
 
 	/**
@@ -60,7 +94,8 @@ public class TypedProperties {
 	 * @param properties the existing {@code Properties} object
 	 */
 	public TypedProperties(Properties properties) {
-		this(properties, DEFAULT_SEPARATOR);
+		this(DEFAULT_SEPARATOR);
+		addAll(properties);
 	}
 
 	/**
@@ -71,8 +106,8 @@ public class TypedProperties {
 	 * @param separator the separator for arrays
 	 */
 	public TypedProperties(Properties properties, String separator) {
-		this.properties = properties;
-		this.separator = separator;
+		this(separator);
+		addAll(properties);
 	}
 	
 	/**
@@ -80,18 +115,18 @@ public class TypedProperties {
 	 * a single key-value pair.  This is particularly useful for parsing,
 	 * for instance, command line arguments:
 	 * <p>
-	 * {@code TypedProperties.withProperty("epsilon", 
-	 * commandLine.getOptionValue("epsilon")).getDoubleArray("epsilon", null);}
+	 * <pre>
+	 * TypedProperties.withProperty("epsilon", commandLine.getOptionValue("epsilon")).getDoubleArray("epsilon");
+	 * </pre>
 	 *   
 	 * @param key the key
 	 * @param value the value assigned to the key
 	 * @return a typed properties instance with the specified key-value pair
 	 */
 	public static TypedProperties withProperty(String key, String value) {
-		Properties properties = new Properties();
-		properties.setProperty(key, value);
-		
-		return new TypedProperties(properties);
+		TypedProperties properties = new TypedProperties();
+		properties.setString(key, value);
+		return properties;
 	}
 	
 	/**
@@ -103,18 +138,8 @@ public class TypedProperties {
 	 *         properties object; {@code false} otherwise
 	 */
 	public boolean contains(String key) {
+		accessedProperties.add(key);
 		return properties.containsKey(key);
-	}
-
-	/**
-	 * Returns the internal {@code Properties} object storing the actual 
-	 * key/value pairs.
-	 * 
-	 * @return the internal {@code Properties} object storing the actual 
-	 *         key/value pairs 
-	 */
-	public Properties getProperties() {
-		return properties;
 	}
 
 	/**
@@ -128,10 +153,30 @@ public class TypedProperties {
 	 *         exists
 	 */
 	public String getString(String key, String defaultValue) {
-		String value = properties.getProperty(key);
+		String value = properties.get(key);
+		accessedProperties.add(key);
 
 		if (value == null) {
 			return defaultValue;
+		} else {
+			return value;
+		}
+	}
+	
+	/**
+	 * Returns the value of the property as a string, or throws an exception.  One should either
+	 * use the variant that takes a default value or check {@link #contains(String)} to ensure the
+	 * property exists.
+	 * 
+	 * @param key the property name
+	 * @return the value of the property
+	 * @throws PropertyNotFoundException if the property was not found
+	 */
+	public String getString(String key) {
+		String value = getString(key, null);
+		
+		if (value == null) {
+			throw new PropertyNotFoundException("property '" + key + "' is not set");
 		} else {
 			return value;
 		}
@@ -159,6 +204,19 @@ public class TypedProperties {
 			return Double.parseDouble(value);
 		}
 	}
+	
+	/**
+	 * Returns the value of the property as a {@code double}, or throws an exception.  One should either
+	 * use the variant that takes a default value or check {@link #contains(String)} to ensure the
+	 * property exists.
+	 * 
+	 * @param key the property name
+	 * @return the value of the property
+	 * @throws PropertyNotFoundException if the property was not found
+	 */
+	public double getDouble(String key) {
+		return Double.parseDouble(getString(key));
+	}
 
 	/**
 	 * Returns the value of the property with the specified name as a
@@ -181,6 +239,19 @@ public class TypedProperties {
 		} else {
 			return Float.parseFloat(value);
 		}
+	}
+	
+	/**
+	 * Returns the value of the property as a {@code float}, or throws an exception.  One should either
+	 * use the variant that takes a default value or check {@link #contains(String)} to ensure the
+	 * property exists.
+	 * 
+	 * @param key the property name
+	 * @return the value of the property
+	 * @throws PropertyNotFoundException if the property was not found
+	 */
+	public float getFloat(String key) {
+		return Float.parseFloat(getString(key));
 	}
 
 	/**
@@ -205,6 +276,19 @@ public class TypedProperties {
 			return Long.parseLong(value);
 		}
 	}
+	
+	/**
+	 * Returns the value of the property as a {@code long}, or throws an exception.  One should either
+	 * use the variant that takes a default value or check {@link #contains(String)} to ensure the
+	 * property exists.
+	 * 
+	 * @param key the property name
+	 * @return the value of the property
+	 * @throws PropertyNotFoundException if the property was not found
+	 */
+	public long getLong(String key) {
+		return Long.parseLong(getString(key));
+	}
 
 	/**
 	 * Returns the value of the property with the specified name as an
@@ -227,6 +311,19 @@ public class TypedProperties {
 		} else {
 			return Integer.parseInt(value);
 		}
+	}
+	
+	/**
+	 * Returns the value of the property as a {@code int}, or throws an exception.  One should either
+	 * use the variant that takes a default value or check {@link #contains(String)} to ensure the
+	 * property exists.
+	 * 
+	 * @param key the property name
+	 * @return the value of the property
+	 * @throws PropertyNotFoundException if the property was not found
+	 */
+	public int getInt(String key) {
+		return Integer.parseInt(getString(key));
 	}
 
 	/**
@@ -251,6 +348,19 @@ public class TypedProperties {
 			return Short.parseShort(value);
 		}
 	}
+	
+	/**
+	 * Returns the value of the property as a {@code short}, or throws an exception.  One should either
+	 * use the variant that takes a default value or check {@link #contains(String)} to ensure the
+	 * property exists.
+	 * 
+	 * @param key the property name
+	 * @return the value of the property
+	 * @throws PropertyNotFoundException if the property was not found
+	 */
+	public short getShort(String key) {
+		return Short.parseShort(getString(key));
+	}
 
 	/**
 	 * Returns the value of the property with the specified name as a
@@ -274,6 +384,19 @@ public class TypedProperties {
 			return Byte.parseByte(value);
 		}
 	}
+	
+	/**
+	 * Returns the value of the property as a {@code byte}, or throws an exception.  One should either
+	 * use the variant that takes a default value or check {@link #contains(String)} to ensure the
+	 * property exists.
+	 * 
+	 * @param key the property name
+	 * @return the value of the property
+	 * @throws PropertyNotFoundException if the property was not found
+	 */
+	public byte getByte(String key) {
+		return Byte.parseByte(getString(key));
+	}
 
 	/**
 	 * Returns the value of the property with the specified name as a
@@ -295,7 +418,61 @@ public class TypedProperties {
 			return Boolean.parseBoolean(value);
 		}
 	}
+	
+	/**
+	 * Returns the value of the property as a {@code boolean}, or throws an exception.  One should either
+	 * use the variant that takes a default value or check {@link #contains(String)} to ensure the
+	 * property exists.
+	 * 
+	 * @param key the property name
+	 * @return the value of the property
+	 * @throws PropertyNotFoundException if the property was not found
+	 */
+	public boolean getBoolean(String key) {
+		return Boolean.parseBoolean(getString(key));
+	}
+	
+	/**
+	 * Returns the value of the property with the specified name as an Enum.  If
+	 * no such property is set, returns the default Enum value.
+	 * 
+	 * @param <T> the Enum type
+	 * @param key the property name
+	 * @param enumType the Enum class
+	 * @return the value of the property with the specified name as an Enum
+	 */
+	public <T extends Enum<?>> T getEnum(String key, Class<T> enumType) {
+		return getEnum(key, enumType, enumType.getEnumConstants()[0]);
+	}
+	
+	/**
+	 * Returns the value of the property with the specified name as an Enum; or
+	 * {@code defaultValue} if no property with the specified name exists.  Unlike using
+	 * {@link Enum#valueOf(Class, String)}, this version is case-insensitive.
+	 * 
+	 * @param <T> the Enum type
+	 * @param key the property name
+	 * @param enumType the Enum class
+	 * @param defaultValue the default value
+	 * @return the value of the property with the specified name as an Enum
+	 */
+	public <T extends Enum<?>> T getEnum(String key, Class<T> enumType, T defaultValue) {
+		String value = getString(key, null);
+		
+		if (value == null) {
+			return defaultValue;
+		} else {
+			for (T enumConstant : enumType.getEnumConstants()) {
+				if (enumConstant.name().equalsIgnoreCase(value)) {
+					return enumConstant;
+				}
+			}
 
+			throw new IllegalArgumentException("enum " + enumType.getSimpleName() +
+					" has no constant of value " + value);
+		}
+	}
+	
 	/**
 	 * Returns the value of the property with the specified name as a
 	 * {@code String} array; or {@code defaultValues} if no property with the
@@ -324,6 +501,25 @@ public class TypedProperties {
 			return tokens;
 		}
 	}
+	
+	/**
+	 * Returns the value of the property as a {@code String} array, or throws an exception.
+	 * One should either use the variant that takes a default value or check {@link #contains(String)} 
+	 * to ensure the property exists.
+	 * 
+	 * @param key the property name
+	 * @return the value of the property as an array
+	 * @throws PropertyNotFoundException if the property was not found
+	 */
+	public String[] getStringArray(String key) {
+		String[] values = getStringArray(key, null);
+		
+		if (values == null) {
+			throw new PropertyNotFoundException("property '" + key + "' is not set");
+		}
+		
+		return values;
+	}
 
 	/**
 	 * Returns the value of the property with the specified name as a
@@ -350,6 +546,25 @@ public class TypedProperties {
 
 			return result;
 		}
+	}
+	
+	/**
+	 * Returns the value of the property as a {@code double} array, or throws an exception.
+	 * One should either use the variant that takes a default value or check {@link #contains(String)} 
+	 * to ensure the property exists.
+	 * 
+	 * @param key the property name
+	 * @return the value of the property as an array
+	 * @throws PropertyNotFoundException if the property was not found
+	 */
+	public double[] getDoubleArray(String key) {
+		double[] values = getDoubleArray(key, null);
+		
+		if (values == null) {
+			throw new PropertyNotFoundException("property '" + key + "' is not set");
+		}
+		
+		return values;
 	}
 
 	/**
@@ -378,6 +593,25 @@ public class TypedProperties {
 			return result;
 		}
 	}
+	
+	/**
+	 * Returns the value of the property as a {@code float} array, or throws an exception.
+	 * One should either use the variant that takes a default value or check {@link #contains(String)} 
+	 * to ensure the property exists.
+	 * 
+	 * @param key the property name
+	 * @return the value of the property as an array
+	 * @throws PropertyNotFoundException if the property was not found
+	 */
+	public float[] getFloatArray(String key) {
+		float[] values = getFloatArray(key, null);
+		
+		if (values == null) {
+			throw new PropertyNotFoundException("property '" + key + "' is not set");
+		}
+		
+		return values;
+	}
 
 	/**
 	 * Returns the value of the property with the specified name as a
@@ -404,6 +638,25 @@ public class TypedProperties {
 
 			return result;
 		}
+	}
+	
+	/**
+	 * Returns the value of the property as a {@code long} array, or throws an exception.
+	 * One should either use the variant that takes a default value or check {@link #contains(String)} 
+	 * to ensure the property exists.
+	 * 
+	 * @param key the property name
+	 * @return the value of the property as an array
+	 * @throws PropertyNotFoundException if the property was not found
+	 */
+	public long[] getLongArray(String key) {
+		long[] values = getLongArray(key, null);
+		
+		if (values == null) {
+			throw new PropertyNotFoundException("property '" + key + "' is not set");
+		}
+		
+		return values;
 	}
 
 	/**
@@ -432,6 +685,25 @@ public class TypedProperties {
 			return result;
 		}
 	}
+	
+	/**
+	 * Returns the value of the property as a {@code int} array, or throws an exception.
+	 * One should either use the variant that takes a default value or check {@link #contains(String)} 
+	 * to ensure the property exists.
+	 * 
+	 * @param key the property name
+	 * @return the value of the property as an array
+	 * @throws PropertyNotFoundException if the property was not found
+	 */
+	public int[] getIntArray(String key) {
+		int[] values = getIntArray(key, null);
+		
+		if (values == null) {
+			throw new PropertyNotFoundException("property '" + key + "' is not set");
+		}
+		
+		return values;
+	}
 
 	/**
 	 * Returns the value of the property with the specified name as a
@@ -458,6 +730,25 @@ public class TypedProperties {
 
 			return result;
 		}
+	}
+	
+	/**
+	 * Returns the value of the property as a {@code short} array, or throws an exception.
+	 * One should either use the variant that takes a default value or check {@link #contains(String)} 
+	 * to ensure the property exists.
+	 * 
+	 * @param key the property name
+	 * @return the value of the property as an array
+	 * @throws PropertyNotFoundException if the property was not found
+	 */
+	public short[] getShortArray(String key) {
+		short[] values = getShortArray(key, null);
+		
+		if (values == null) {
+			throw new PropertyNotFoundException("property '" + key + "' is not set");
+		}
+		
+		return values;
 	}
 
 	/**
@@ -488,19 +779,36 @@ public class TypedProperties {
 	}
 	
 	/**
-	 * Sets the value of the property with the specified name as a
-	 * {@code String}.
+	 * Returns the value of the property as a {@code byte} array, or throws an exception.
+	 * One should either use the variant that takes a default value or check {@link #contains(String)} 
+	 * to ensure the property exists.
+	 * 
+	 * @param key the property name
+	 * @return the value of the property as an array
+	 * @throws PropertyNotFoundException if the property was not found
+	 */
+	public byte[] getByteArray(String key) {
+		byte[] values = getByteArray(key, null);
+		
+		if (values == null) {
+			throw new PropertyNotFoundException("property '" + key + "' is not set");
+		}
+		
+		return values;
+	}
+	
+	/**
+	 * Sets the value of the property to the given {@code String}.
 	 * 
 	 * @param key the property name
 	 * @param value the property value
 	 */
 	public void setString(String key, String value) {
-		properties.setProperty(key, value);
+		properties.put(key, value);
 	}
 	
 	/**
-	 * Sets the value of the property with the specified name as a
-	 * {@code float}.
+	 * Sets the value of the property to the given {@code float}.
 	 * 
 	 * @param key the property name
 	 * @param value the property value
@@ -510,8 +818,7 @@ public class TypedProperties {
 	}
 	
 	/**
-	 * Sets the value of the property with the specified name as a
-	 * {@code double}.
+	 * Sets the value of the property to the given {@code double}.
 	 * 
 	 * @param key the property name
 	 * @param value the property value
@@ -521,8 +828,7 @@ public class TypedProperties {
 	}
 	
 	/**
-	 * Sets the value of the property with the specified name as a
-	 * {@code byte}.
+	 * Sets the value of the property to the given {@code byte}.
 	 * 
 	 * @param key the property name
 	 * @param value the property value
@@ -532,8 +838,7 @@ public class TypedProperties {
 	}
 	
 	/**
-	 * Sets the value of the property with the specified name as a
-	 * {@code short}.
+	 * Sets the value of the property to the given {@code short}.
 	 * 
 	 * @param key the property name
 	 * @param value the property value
@@ -543,8 +848,7 @@ public class TypedProperties {
 	}
 
 	/**
-	 * Sets the value of the property with the specified name as an
-	 * {@code int}.
+	 * Sets the value of the property to the given {@code int}.
 	 * 
 	 * @param key the property name
 	 * @param value the property value
@@ -554,8 +858,7 @@ public class TypedProperties {
 	}
 	
 	/**
-	 * Sets the value of the property with the specified name as a
-	 * {@code long}.
+	 * Sets the value of the property to the given {@code long}.
 	 * 
 	 * @param key the property name
 	 * @param value the property value
@@ -565,14 +868,24 @@ public class TypedProperties {
 	}
 
 	/**
-	 * Sets the value of the property with the specified name as a
-	 * {@code boolean}.
+	 * Sets the value of the property to the given {@code boolean}.
 	 * 
 	 * @param key the property name
 	 * @param value the property value
 	 */
 	public void setBoolean(String key, boolean value) {
 		setString(key, Boolean.toString(value));
+	}
+	
+	/**
+	 * Sets the value of the property to the given enum value.
+	 * 
+	 * @param <T> the type of the enum
+	 * @param key the property name
+	 * @param value the property value
+	 */
+	public <T extends Enum<?>> void setEnum(String key, T value) {
+		setString(key, value.name());
 	}
 	
 	/**
@@ -657,6 +970,7 @@ public class TypedProperties {
 	 */
 	public void clear() {
 		properties.clear();
+		accessedProperties.clear();
 	}
 	
 	/**
@@ -674,7 +988,9 @@ public class TypedProperties {
 	 * @param properties the properties
 	 */
 	public void addAll(Properties properties) {
-		this.properties.putAll(properties);
+		for (String key : properties.stringPropertyNames()) {
+			this.properties.put(key, properties.getProperty(key));
+		}
 	}
 	
 	/**
@@ -683,7 +999,7 @@ public class TypedProperties {
 	 * @param properties the properties
 	 */
 	public void addAll(TypedProperties properties) {
-		addAll(properties.getProperties());
+		this.properties.putAll(properties.properties);
 	}
 	
 	/**
@@ -712,6 +1028,154 @@ public class TypedProperties {
 		}
 		
 		return sb.toString();
+	}
+	
+	/**
+	 * Returns the number of properties that are defined.
+	 * 
+	 * @return the number of properties
+	 */
+	public int size() {
+		return properties.size();
+	}
+	
+	/**
+	 * Returns {@code true} if there are no properties set.
+	 * 
+	 * @return {@code true} if no properties are set; {@code false} otherwise
+	 */
+	public boolean isEmpty() {
+		return properties.isEmpty();
+	}
+	
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder()
+				.append(properties)
+				.toHashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == this) {
+			return true;
+		} else if ((obj == null) || (obj.getClass() != getClass())) {
+			return false;
+		} else {
+			TypedProperties rhs = (TypedProperties)obj;
+			
+			return new EqualsBuilder()
+					.append(properties, rhs.properties)
+					.isEquals();
+		}
+	}
+
+	/**
+	 * Loads the properties from a reader.
+	 * 
+	 * @param reader the reader
+	 * @throws IOException if an I/O error occurred
+	 */
+	public void load(Reader reader) throws IOException {
+		Properties properties = new Properties();
+		properties.load(reader);
+		
+		addAll(properties);
+	}
+	
+	/**
+	 * Writes the properties to a writer.
+	 * 
+	 * @param writer the writer
+	 * @throws IOException if an I/O error occurred
+	 */
+	public void store(Writer writer) throws IOException {
+		Properties properties = new Properties();
+		properties.putAll(this.properties);
+		
+		properties.store(writer, null);
+	}
+	
+	/**
+	 * Prints the properties to standard output.
+	 * 
+	 * @throws IOException if an I/O error occurred
+	 */
+	public void display() throws IOException {
+		try (StringWriter stringBuffer = new StringWriter()) {
+			store(stringBuffer);
+		
+			try (CommentedLineReader reader = new CommentedLineReader(new StringReader(stringBuffer.toString()))) {
+				String line = null;
+				
+				while ((line = reader.readLine()) != null) {
+					System.out.println(line);
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Clears the tracking information for properties that have
+	 * been accessed.
+	 */
+	public void clearAccessedProperties() {
+		accessedProperties.clear();
+	}
+	
+	/**
+	 * Returns the properties that were accessed since the last call to
+	 * {@link #clearAccessedProperties()} or {@link #clear()}.
+	 * 
+	 * @return the accessed properties
+	 */
+	public Set<String> getAccessedProperties() {
+		Set<String> result = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
+		result.addAll(accessedProperties);
+		return result;
+	}
+	
+	/**
+	 * Returns the properties that were never accessed since the last call to
+	 * {@link #clearAccessedProperties()} or {@link #clear()}
+	 * 
+	 * @return the unaccessed or orphaned properties
+	 */
+	public Set<String> getUnaccessedProperties() {
+		Set<String> orphanedProperties = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
+		orphanedProperties.addAll(properties.keySet());
+		orphanedProperties.removeAll(accessedProperties);
+		return orphanedProperties;
+	}
+	
+	/**
+	 * Prints a warning if any properties were not accessed.  For example:
+	 * <pre>
+	 *     TypedProperties properties = new TypedProperties();
+	 *     ... write properties ...
+	 *     
+	 *     properties.clearAccessedProperties();
+	 *     ... read properties ...
+	 *     properties.warnIfUnaccessedProperties();
+	 * </pre>
+	 */
+	public void warnIfUnaccessedProperties() {
+		Set<String> orphanedProperties = getUnaccessedProperties();
+		
+		if (!orphanedProperties.isEmpty()) {
+			System.err.println("properties not accessed: " + String.join(", ", orphanedProperties));
+		}
+	}
+	
+	/**
+	 * Throws a {@link ConfigurationException} if any properties were not accessed.
+	 */
+	public void throwIfUnaccessedProperties() {
+		Set<String> orphanedProperties = getUnaccessedProperties();
+		
+		if (!orphanedProperties.isEmpty()) {
+			throw new ConfigurationException("properties not accessed: " + String.join(", ", orphanedProperties));
+		}
 	}
 
 }

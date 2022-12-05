@@ -31,29 +31,6 @@ import org.moeaframework.problem.MockBinaryProblem;
 public class NondominatedPopulationTest {
 
 	/**
-	 * Tests the {@code distance} method to ensure it computes the Euclidean
-	 * distance between solutions correctly.
-	 */
-	@Test
-	public void testDistance() {
-		Solution s1 = new Solution(new double[] { 0.0, 1.0, 0.0 });
-		Solution s2 = new Solution(new double[] { 0.0, 0.0, -1.0 });
-
-		Assert.assertEquals(Math.sqrt(2.0),
-				NondominatedPopulation.distance(s1, s2),
-				Settings.EPS);
-		Assert.assertEquals(Math.sqrt(2.0),
-				NondominatedPopulation.distance(s2, s1),
-				Settings.EPS);
-		Assert.assertEquals(0.0,
-				NondominatedPopulation.distance(s1, s1),
-				Settings.EPS);
-		Assert.assertEquals(0.0,
-				NondominatedPopulation.distance(s2, s2),
-				Settings.EPS);
-	}
-
-	/**
 	 * Tests that a {@code NonDominatedPopulation} rejects adding nearly
 	 * identical solutions.
 	 */
@@ -111,22 +88,22 @@ public class NondominatedPopulationTest {
 		NondominatedPopulation population = new NondominatedPopulation(
 				DuplicateMode.NO_DUPLICATE_OBJECTIVES);
 		
-		MockBinaryProblem problem = new MockBinaryProblem();
-		
-		Solution solution1 = problem.newSolution();
-		EncodingUtils.setBitSet(solution1.getVariable(0), new BitSet(10));
-		solution1.setObjectives(new double[] { 0.5 });
-		
-		Solution solution2 = solution1.copy();
-		
-		Solution solution3 = solution1.copy();
-		BitSet bits = new BitSet(10);
-		bits.set(3);
-		EncodingUtils.setBitSet(solution3.getVariable(0), bits);
-		
-		Assert.assertTrue(population.add(solution1));
-		Assert.assertFalse(population.add(solution2));
-		Assert.assertFalse(population.add(solution3));
+		try (MockBinaryProblem problem = new MockBinaryProblem()) {
+			Solution solution1 = problem.newSolution();
+			EncodingUtils.setBitSet(solution1.getVariable(0), new BitSet(10));
+			solution1.setObjectives(new double[] { 0.5 });
+			
+			Solution solution2 = solution1.copy();
+			
+			Solution solution3 = solution1.copy();
+			BitSet bits = new BitSet(10);
+			bits.set(3);
+			EncodingUtils.setBitSet(solution3.getVariable(0), bits);
+			
+			Assert.assertTrue(population.add(solution1));
+			Assert.assertFalse(population.add(solution2));
+			Assert.assertFalse(population.add(solution3));
+		}
 	}
 	
 	@Test
@@ -134,22 +111,22 @@ public class NondominatedPopulationTest {
 		NondominatedPopulation population = new NondominatedPopulation(
 				DuplicateMode.ALLOW_DUPLICATES);
 		
-		MockBinaryProblem problem = new MockBinaryProblem();
-		
-		Solution solution1 = problem.newSolution();
-		EncodingUtils.setBitSet(solution1.getVariable(0), new BitSet(10));
-		solution1.setObjectives(new double[] { 0.5 });
-		
-		Solution solution2 = solution1.copy();
-		
-		Solution solution3 = solution1.copy();
-		BitSet bits = new BitSet(10);
-		bits.set(3);
-		EncodingUtils.setBitSet(solution3.getVariable(0), bits);
-		
-		Assert.assertTrue(population.add(solution1));
-		Assert.assertTrue(population.add(solution2));
-		Assert.assertTrue(population.add(solution3));
+		try (MockBinaryProblem problem = new MockBinaryProblem()) {
+			Solution solution1 = problem.newSolution();
+			EncodingUtils.setBitSet(solution1.getVariable(0), new BitSet(10));
+			solution1.setObjectives(new double[] { 0.5 });
+			
+			Solution solution2 = solution1.copy();
+			
+			Solution solution3 = solution1.copy();
+			BitSet bits = new BitSet(10);
+			bits.set(3);
+			EncodingUtils.setBitSet(solution3.getVariable(0), bits);
+			
+			Assert.assertTrue(population.add(solution1));
+			Assert.assertTrue(population.add(solution2));
+			Assert.assertTrue(population.add(solution3));
+		}
 	}
 	
 	@Test
@@ -157,22 +134,22 @@ public class NondominatedPopulationTest {
 		NondominatedPopulation population = new NondominatedPopulation(
 				DuplicateMode.ALLOW_DUPLICATE_OBJECTIVES);
 		
-		MockBinaryProblem problem = new MockBinaryProblem();
-		
-		Solution solution1 = problem.newSolution();
-		EncodingUtils.setBitSet(solution1.getVariable(0), new BitSet(10));
-		solution1.setObjectives(new double[] { 0.5 });
-		
-		Solution solution2 = solution1.copy();
-		
-		Solution solution3 = solution1.copy();
-		BitSet bits = new BitSet(10);
-		bits.set(3);
-		EncodingUtils.setBitSet(solution3.getVariable(0), bits);
-		
-		Assert.assertTrue(population.add(solution1));
-		Assert.assertFalse(population.add(solution2));
-		Assert.assertTrue(population.add(solution3));
+		try (MockBinaryProblem problem = new MockBinaryProblem()) {
+			Solution solution1 = problem.newSolution();
+			EncodingUtils.setBitSet(solution1.getVariable(0), new BitSet(10));
+			solution1.setObjectives(new double[] { 0.5 });
+			
+			Solution solution2 = solution1.copy();
+			
+			Solution solution3 = solution1.copy();
+			BitSet bits = new BitSet(10);
+			bits.set(3);
+			EncodingUtils.setBitSet(solution3.getVariable(0), bits);
+			
+			Assert.assertTrue(population.add(solution1));
+			Assert.assertFalse(population.add(solution2));
+			Assert.assertTrue(population.add(solution3));
+		}
 	}
 
 }

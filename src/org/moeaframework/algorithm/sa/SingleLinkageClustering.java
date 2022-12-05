@@ -23,7 +23,10 @@ import java.util.List;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Solution;
 
-public class SingleLinkageClustering {
+/**
+ * @preview
+ */
+class SingleLinkageClustering {
 	
 	private final NondominatedPopulation population;
 	
@@ -40,13 +43,14 @@ public class SingleLinkageClustering {
 	}
 	
 	public NondominatedPopulation cluster(int n) {
-		if (n >= population.size() || population.size() <= 1)
+		if (n >= population.size() || population.size() <= 1) {
 			return population;
+		}
 		
 		for (int i = population.size(); i > n; i--) {
-			Cluster minClusterA= null;
-			Cluster minClusterB= null;
-			double minDistance=Double.MAX_VALUE;
+			Cluster minClusterA = null;
+			Cluster minClusterB = null;
+			double minDistance = Double.MAX_VALUE;
 			
 			for (int a = 0; a < clusters.size(); a++) {
 				for (int b = a+1; b < clusters.size(); b++) {
@@ -72,12 +76,13 @@ public class SingleLinkageClustering {
 		return reducedPopulation;
 	}
 	
-	private void merge(Cluster clusterA,Cluster clusterB) {
+	private void merge(Cluster clusterA, Cluster clusterB) {
 		clusterA.addAllElements(clusterB);
 		clusters.remove(clusterB);
 	}
 	
-	private class Cluster{
+	private class Cluster {
+		
 		private List<Solution> elements = new ArrayList<Solution>();
 		
 		public Cluster(Solution element) {
@@ -103,7 +108,7 @@ public class SingleLinkageClustering {
 			
 			for (Solution solution : this.elements) {
 				for (Solution referenceSolution : reference.elements) {
-					double distance = distance(solution,referenceSolution);
+					double distance = solution.distanceTo(referenceSolution);
 					
 					if (distance < minDistance) {
 						minDistance=distance;
@@ -115,40 +120,21 @@ public class SingleLinkageClustering {
 		}
 		
 		/**
-		 * Returns the Euclidean distance between two solutions in objective space.
-		 * 
-		 * @param s1
-		 *            the first solution
-		 * @param s2
-		 *            the second solution
-		 * @return the distance between the two solutions in objective space
-		 */
-		private double distance(Solution s1, Solution s2) {
-			double distance = 0.0;
-
-			for (int i = 0; i < s1.getNumberOfObjectives(); i++) {
-				distance += Math.pow(s1.getObjective(i) - s2.getObjective(i), 2.0);
-			}
-
-			return Math.sqrt(distance);
-		}
-		
-		/**
 		 * @return the solution which has the shortest crowding distance
 		 */
 		public Solution getRepresentativeMember() {
-			Solution minSolution=null;
+			Solution minSolution = null;
 			double minDistance = Double.MAX_VALUE;
 			
 			for (int i = 0; i < elements.size(); i++) {
 				double distance = 0;
 				
 				for (int j = 0; j < elements.size(); j++) {
-					if(i == j) {
+					if (i == j) {
 						continue;
 					}
 					
-					distance += distance(elements.get(i),elements.get(j));
+					distance += elements.get(i).distanceTo(elements.get(j));
 				}
 				
 				if (distance < minDistance) {

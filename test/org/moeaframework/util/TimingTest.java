@@ -98,16 +98,9 @@ public class TimingTest {
 	
 	private File saveStatistics() throws IOException {
 		File file = TestUtils.createTempFile();
-		PrintStream ps = null;
 		
-		try {
-			ps = new PrintStream(new FileOutputStream(file));
-			
+		try (PrintStream ps = new PrintStream(new FileOutputStream(file))) {	
 			Timing.printStatistics(ps);
-		} finally {
-			if (ps != null) {
-				ps.close();
-			}
 		}
 		
 		return file;
@@ -115,16 +108,9 @@ public class TimingTest {
 	
 	private File saveMagnitudes() throws IOException {
 		File file = TestUtils.createTempFile();
-		PrintStream ps = null;
 		
-		try {
-			ps = new PrintStream(new FileOutputStream(file));
-			
+		try (PrintStream ps = new PrintStream(new FileOutputStream(file))) {
 			Timing.printMagnitudes(ps);
-		} finally {
-			if (ps != null) {
-				ps.close();
-			}
 		}
 		
 		return file;

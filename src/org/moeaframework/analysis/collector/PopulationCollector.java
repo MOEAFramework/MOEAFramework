@@ -21,7 +21,6 @@ import java.util.ArrayList;
 
 import org.moeaframework.core.EvolutionaryAlgorithm;
 import org.moeaframework.core.Solution;
-import org.moeaframework.util.SolutionUtils;
 
 /**
  * Collects the population from an {@link EvolutionaryAlgorithm}.
@@ -55,21 +54,18 @@ public class PopulationCollector implements Collector {
 
 	@Override
 	public AttachPoint getAttachPoint() {
-		return AttachPoint.isSubclass(EvolutionaryAlgorithm.class).and(
-				AttachPoint.not(AttachPoint.isNestedIn(
-						EvolutionaryAlgorithm.class)));
+		return AttachPoint.isSubclass(EvolutionaryAlgorithm.class)
+				.and(AttachPoint.not(AttachPoint.isNestedIn(EvolutionaryAlgorithm.class)));
 	}
 
 	@Override
 	public Collector attach(Object object) {
-		return new PopulationCollector(
-				(EvolutionaryAlgorithm)object);
+		return new PopulationCollector((EvolutionaryAlgorithm)object);
 	}
 
 	@Override
 	public void collect(Accumulator accumulator) {
-		accumulator.add("Population", new ArrayList<Solution>(
-				SolutionUtils.toList(algorithm.getPopulation())));
+		accumulator.add("Population", new ArrayList<Solution>(algorithm.getPopulation().asList(true)));
 	}
 
 }

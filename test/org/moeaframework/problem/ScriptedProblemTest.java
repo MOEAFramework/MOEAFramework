@@ -23,14 +23,16 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URISyntaxException;
 
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.moeaframework.IgnoreOnCI;
-import org.moeaframework.TestUtils;
 import org.moeaframework.CIRunner;
+import org.moeaframework.TestUtils;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
@@ -40,12 +42,11 @@ import org.moeaframework.core.variable.RealVariable;
  * Tests the {@link ScriptedProblem} class.
  */
 @RunWith(CIRunner.class)
-@IgnoreOnCI("the scripting engine may not be available")
 public class ScriptedProblemTest {
 	
-	private static final String RESOURCE_JAVASCRIPT = 
-			"/org/moeaframework/problem/TestJavascript.js";
+	private static final String RESOURCE_JAVASCRIPT = "/org/moeaframework/problem/TestJavascript.js";
 	
+	@SuppressWarnings("resource")
 	@Test(expected = ScriptException.class)
 	public void testNoExtension() throws ScriptException, IOException {
 		File file = File.createTempFile("test", "");
@@ -54,6 +55,7 @@ public class ScriptedProblemTest {
 		new ScriptedProblem(file);
 	}
 	
+	@SuppressWarnings("resource")
 	@Test(expected = ScriptException.class)
 	public void testNoEngineForExtension() throws ScriptException, IOException {
 		File file = File.createTempFile("test", ".noscriptinglang");
@@ -62,33 +64,38 @@ public class ScriptedProblemTest {
 		new ScriptedProblem(file);
 	}
 	
+	@SuppressWarnings("resource")
 	@Test(expected = ScriptException.class)
 	public void testNoEngineWithName() throws ScriptException, IOException {
 		new ScriptedProblem("", "noscriptinglang");
 	}
 	
 	@Test
-	public void testJavascriptFile() throws ScriptException, IOException, 
-	URISyntaxException {
+	public void testJavascriptFile() throws ScriptException, IOException, URISyntaxException {
+		ignoreIfScriptingNotAvailbale();
+		
 		File file = TestUtils.extractResource(RESOURCE_JAVASCRIPT);
 		
-		test(new ScriptedProblem(file));
+		try (Problem problem = new ScriptedProblem(file)) {
+			test(problem);
+		}
 	}
 	
 	@Test
 	public void testJavascriptReader() throws IOException, ScriptException {
-		Reader reader = null;
+		ignoreIfScriptingNotAvailbale();
 		
-		try {
-			reader = new InputStreamReader(getClass().getResourceAsStream(
-					RESOURCE_JAVASCRIPT));
-			
-			test(new ScriptedProblem(reader, "nashorn"));
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
+		try (Reader reader = new InputStreamReader(getClass().getResourceAsStream(RESOURCE_JAVASCRIPT));
+				Problem problem = new ScriptedProblem(reader, "nashorn")) {
+			test(problem);
 		}
+	}
+	
+	private void ignoreIfScriptingNotAvailbale() {
+		ScriptEngineManager manager = new ScriptEngineManager();
+		ScriptEngine engine = manager.getEngineByName("nashorn");
+		
+		Assume.assumeTrue("nashorn scripting engine not available", engine != null);
 	}
 	
 	private void test(Problem problem) {
@@ -103,10 +110,7 @@ public class ScriptedProblemTest {
 		variable.setValue(Math.PI / 10);
 		problem.evaluate(solution);
 		
-		Assert.assertEquals(variable.getValue(), solution.getObjective(0), 
-				Settings.EPS);
-		
-		problem.close();
+		Assert.assertEquals(variable.getValue(), solution.getObjective(0), Settings.EPS);
 	}
 
 }

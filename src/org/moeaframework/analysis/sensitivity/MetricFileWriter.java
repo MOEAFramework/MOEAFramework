@@ -80,8 +80,7 @@ public class MetricFileWriter implements OutputWriter {
 		this.qualityIndicator = qualityIndicator;
 
 		// if the file already exists, move it to a temporary location
-		File existingFile = new File(file.getParent(), "." + file.getName()
-				+ ".unclean");
+		File existingFile = new File(file.getParent(), "." + file.getName() + ".unclean");
 		
 		if (existingFile.exists()) {
 			if (Settings.getCleanupStrategy().equalsIgnoreCase("restore")) {
@@ -103,18 +102,13 @@ public class MetricFileWriter implements OutputWriter {
 		
 		// prepare this class for writing
 		numberOfEntries = 0;
-		writer = new PrintWriter(new BufferedWriter(new FileWriter(file)), 
-				true);
+		writer = new PrintWriter(new BufferedWriter(new FileWriter(file)), true);
 		
 		writer.println("#Hypervolume GenerationalDistance InvertedGenerationalDistance Spacing EpsilonIndicator MaximumParetoFrontError");
 
 		// if the file already existed, copy all complete entries
 		if (existingFile.exists()) {
-			MetricFileReader reader = null;
-
-			try {
-				reader = new MetricFileReader(existingFile);
-
+			try (MetricFileReader reader = new MetricFileReader(existingFile)) {
 				while (reader.hasNext()) {
 					double[] data = reader.next();
 
@@ -128,10 +122,6 @@ public class MetricFileWriter implements OutputWriter {
 					writer.println();
 
 					numberOfEntries++;
-				}
-			} finally {
-				if (reader != null) {
-					reader.close();
 				}
 			}
 

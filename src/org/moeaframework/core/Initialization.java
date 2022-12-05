@@ -28,6 +28,6 @@ public interface Initialization {
 	 * 
 	 * @return an array of solutions to become the initial population
 	 */
-	public Solution[] initialize();
+	public Solution[] initialize(int populationSize);
 
 }

@@ -17,13 +17,13 @@
  */
 
 /**
- * Tools for analyzing the runtime and end-of-run behavior of algorithms.  The
- * table below details the tools supplied by the various subpackages.
- * <p>
- * <table width="100%" border="1" cellpadding="3" cellspacing="0">
- *   <tr class="TableHeadingColor">
- *     <th width="25%" align="left">Package</th>
- *     <th width="75%" align="left">Description</th>
+ * Tools for analyzing the runtime and end-of-run behavior of algorithms.
+ * 
+ * <table style="margin-top: 1em; width: 100%">
+ *   <caption>List of subpackages</caption>
+ *   <tr>
+ *     <th style="width: 25%; text-align: left">Package</th>
+ *     <th style="width: 75%; text-align: left">Description</th>
  *   </tr>
  *   <tr>
  *     <td>{@link org.moeaframework.analysis.collector}</td>

@@ -222,15 +222,8 @@ public class TestUtils {
 	public static File createTempFile(String data) throws IOException {
 		File file = createTempFile();
 
-		Writer writer = null;
-
-		try {
-			writer = new BufferedWriter(new FileWriter(file));
+		try (Writer writer = new BufferedWriter(new FileWriter(file))) {
 			writer.write(data);
-		} finally {
-			if (writer != null) {
-				writer.close();
-			}
 		}
 
 		return file;
@@ -271,18 +264,11 @@ public class TestUtils {
 	 * @throws IOException if an I/O error occurred
 	 */
 	public static int lineCount(File file) throws IOException {
-		BufferedReader reader = null;
 		int count = 0;
 		
-		try {
-			reader = new BufferedReader(new FileReader(file));
-			
+		try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
 			while (reader.readLine() != null) {
 				count++;
-			}
-		} finally {
-			if (reader != null) {
-				reader.close();
 			}
 		}
 		
@@ -299,21 +285,15 @@ public class TestUtils {
 	 */
 	public static void assertLinePattern(File file, String regex) 
 	throws IOException {
-		CommentedLineReader reader = null;
 		Pattern pattern = Pattern.compile(regex);
 		
-		try {
-			reader = new CommentedLineReader(new FileReader(file));
+		try (CommentedLineReader reader = new CommentedLineReader(new FileReader(file))) {
 			String line = null;
 			
 			while ((line = reader.readLine()) != null) {
 				if (!pattern.matcher(line).matches()) {
 					Assert.fail("line does not match pattern: " + line);
 				}
-			}
-		} finally {
-			if (reader != null) {
-				reader.close();
 			}
 		}
 	}
@@ -333,19 +313,13 @@ public class TestUtils {
 	public static void pipeCommandLine(File output, Class<?> tool, 
 			String... args) throws Exception {
 		PrintStream oldOut = System.out;
-		PrintStream newOut = null;
 		
-		try {
-			newOut = new PrintStream(new FileOutputStream(output));
+		try (PrintStream newOut = new PrintStream(new FileOutputStream(output))) {
 			System.setOut(newOut);
 		
 			Method mainMethod = tool.getMethod("main", String[].class);
 			mainMethod.invoke(null, (Object)args);
 		} finally {
-			if (newOut != null) {
-				newOut.close();
-			}
-			
 			System.setOut(oldOut);
 		}
 	}
@@ -367,18 +341,12 @@ public class TestUtils {
 	public static void pipeCommandLine(File output, File error, Class<?> tool,
 			String... args) throws Exception {
 		PrintStream oldErr = System.err;
-		PrintStream newErr = null;
 		
-		try {
-			newErr = new PrintStream(new FileOutputStream(error));
+		try (PrintStream newErr = new PrintStream(new FileOutputStream(error))) {
 			System.setErr(newErr);
 		
 			pipeCommandLine(output, tool, args);
 		} finally {
-			if (newErr != null) {
-				newErr.close();
-			}
-			
 			System.setErr(oldErr);
 		}
 	}
@@ -429,23 +397,16 @@ public class TestUtils {
 	 * @throws IOException if an I/O error occurred
 	 */
 	public static byte[] loadFile(File file) throws IOException {
-		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-		FileInputStream fis = null;
 		int length = 0;
 		byte[] buffer = new byte[Settings.BUFFER_SIZE];
 		
-		try {
-			fis = new FileInputStream(file);
-			
+		try (FileInputStream fis = new FileInputStream(file);
+			 ByteArrayOutputStream bytes = new ByteArrayOutputStream()) {
 			while ((length = fis.read(buffer)) != -1) {
 				bytes.write(buffer, 0, length);
 			}
 			
 			return bytes.toByteArray();
-		} finally {
-			if (fis != null) {
-				fis.close();
-			}
 		}
 	}
 	
@@ -459,12 +420,10 @@ public class TestUtils {
 	 */
     public static double[][] loadMatrix(File file) throws IOException {
         List<double[]> data = new ArrayList<double[]>();
-        CommentedLineReader reader = null;
-        String line = null;
         
-        try {
-            reader = new CommentedLineReader(new FileReader(file));
-            
+        try (CommentedLineReader reader = new CommentedLineReader(new FileReader(file))) {
+            String line = null;
+
             while ((line = reader.readLine()) != null) {
             	String[] tokens = line.split("\\s+");
             	double[] row = new double[tokens.length];
@@ -475,13 +434,9 @@ public class TestUtils {
             	
             	data.add(row);
             }
-            
-            return data.toArray(new double[data.size()][]);
-        } finally {
-            if (reader != null) {
-                reader.close();
-            }
         }
+        
+        return data.toArray(new double[data.size()][]);
     }
 	
 	/**
@@ -552,8 +507,6 @@ public class TestUtils {
 	 * @throws IOException if an I/O error occurred
 	 */
 	public static File extractResource(String resource) throws IOException {
-		InputStream input = null;
-		OutputStream output = null;
 		byte[] buffer = new byte[Settings.BUFFER_SIZE];
 		int len = -1;
 		
@@ -569,27 +522,15 @@ public class TestUtils {
 		}
 		
 		//copy the resource contents to the file
-		try {
-			input = TestUtils.class.getResourceAsStream(resource);
-			
+		try (InputStream input = TestUtils.class.getResourceAsStream(resource)) {
 			if (input == null) {
 				throw new IOException("resource not found: " + resource);
 			}
 			
-			try {
-				output = new FileOutputStream(file);
-				
+			try (OutputStream output = new FileOutputStream(file)) {
 				while ((len = input.read(buffer)) != -1) {
 					output.write(buffer, 0, len);
 				}
-			} finally {
-				if (output != null) {
-					output.close();
-				}
-			}
-		} finally {
-			if (input != null) {
-				input.close();
 			}
 		}
 		
@@ -628,7 +569,7 @@ public class TestUtils {
 		System.out.println("Running make to build test executables");
 		
 		try {
-			Process process = Runtime.getRuntime().exec("make", null, folder);
+			Process process = Runtime.getRuntime().exec(new String[] { "make" }, null, folder);
 			
 			if (process.waitFor() != 0) {
 				System.err.println("make exited with an error status ("

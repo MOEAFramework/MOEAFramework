@@ -23,10 +23,13 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
@@ -35,12 +38,16 @@ import java.util.List;
 import org.moeaframework.util.io.CommentedLineReader;
 
 /**
- * Collection of static methods for reading and writing populations to files.
- * The {@link #write} and {@link #read} methods should be used when storing and
- * retrieving solutions to be used by this framework. The
- * {@link #writeObjectives} and {@link #readObjectives} should be used when the
- * data is accessed by external programs, as these two methods store the data in
- * a human-readable form.
+ * Collection of static methods for reading and writing populations to files.  Included
+ * are the following methods:
+ * <ul>
+ *   <li>{@link #read} / {@link #write} - Stores the entire solution, including decision variables,
+ *       objectives, and constraints, in an encoded format.
+ *   <li>{@link #readObjectives} / {@link #writeObjectives} - Stores just the objective values in
+ *       a human-readable format.
+ *   <li>{@link #readReferenceSet} - Similar to {@code readObjectives} except any dominated solutions
+ *       are discarded.
+ * </ul>
  */
 public class PopulationIO {
 
@@ -59,8 +66,7 @@ public class PopulationIO {
 	 * @return a population containing all objective vectors read
 	 * @throws IOException if an I/O error occurred
 	 */
-	public static Population readObjectives(BufferedReader reader) throws
-	IOException {
+	public static Population readObjectives(BufferedReader reader) throws IOException {
 		Population population = new Population();
 		String line = null;
 		
@@ -84,21 +90,12 @@ public class PopulationIO {
 	 * {@code writeObjectives} method.
 	 * 
 	 * @param file the file containing the objective vectors
-	 * @return a population containing all objective vectors in the specified
-	 *         file
+	 * @return a population containing all objective vectors in the specified file
 	 * @throws IOException if an I/O exception occurred
 	 */
 	public static Population readObjectives(File file) throws IOException {
-		BufferedReader reader = null;
-
-		try {
-			reader = new CommentedLineReader(new FileReader(file));
-
+		try (BufferedReader reader = new CommentedLineReader(new FileReader(file))) {
 			return readObjectives(reader);
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
 		}
 	}
 	
@@ -108,17 +105,11 @@ public class PopulationIO {
 	 * {@code loadObjectives} method.
 	 * 
 	 * @param file the file to which the objective vectors are written
-	 * @param solutions the solutions whose objective vectors are written to
-	 *        the specified file
+	 * @param solutions the solutions whose objective vectors are written to the specified file
 	 * @throws IOException if an I/O exception occurred
 	 */
-	public static void writeObjectives(File file, Iterable<Solution> solutions)
-			throws IOException {
-		BufferedWriter writer = null;
-
-		try {
-			writer = new BufferedWriter(new FileWriter(file));
-
+	public static void writeObjectives(File file, Iterable<Solution> solutions) throws IOException {
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
 			for (Solution solution : solutions) {
 				writer.write(Double.toString(solution.getObjective(0)));
 
@@ -128,10 +119,6 @@ public class PopulationIO {
 				}
 
 				writer.newLine();
-			}
-		} finally {
-			if (writer != null) {
-				writer.close();
 			}
 		}
 	}
@@ -145,13 +132,9 @@ public class PopulationIO {
 	 * @param solutions the solutions to be written in the specified file
 	 * @throws IOException if an I/O exception occurred
 	 */
-	public static void write(File file, Iterable<Solution> solutions)
-			throws IOException {
-		ObjectOutputStream oos = null;
-
-		try {
-			oos = new ObjectOutputStream(new BufferedOutputStream(
-					new FileOutputStream(file)));
+	public static void write(File file, Iterable<Solution> solutions) throws IOException {
+		try (ObjectOutputStream oos = new ObjectOutputStream(new BufferedOutputStream(
+					new FileOutputStream(file)))) {
 			List<Solution> list = new ArrayList<Solution>();
 
 			for (Solution solution : solutions) {
@@ -159,10 +142,6 @@ public class PopulationIO {
 			}
 
 			oos.writeObject(list);
-		} finally {
-			if (oos != null) {
-				oos.close();
-			}
 		}
 	}
 
@@ -176,11 +155,8 @@ public class PopulationIO {
 	 * @throws IOException if an I/O exception occurred
 	 */
 	public static Population read(File file) throws IOException {
-		ObjectInputStream ois = null;
-
-		try {
-			ois = new ObjectInputStream(new BufferedInputStream(
-					new FileInputStream(file)));
+		try (ObjectInputStream ois = new ObjectInputStream(new BufferedInputStream(
+					new FileInputStream(file)))) {
 			Population population = new Population();
 
 			for (Object solution : (List<?>)ois.readObject()) {
@@ -190,11 +166,33 @@ public class PopulationIO {
 			return population;
 		} catch (ClassNotFoundException e) {
 			throw new IOException(e);
-		} finally {
-			if (ois != null) {
-				ois.close();
+		}
+	}
+	
+	/**
+	 * Reads a reference set file, which contains the objective values for a set of
+	 * non-dominated solutions.  Any dominated solutions are discarded.  The given resource
+	 * can either reference a file on disk or a resource within a JAR.
+	 * 
+	 * @param resource the path of the file or resource
+	 * @return the reference set, or {@code null} if the file or resource was not found
+	 * @throws IOException if an I/O error occurred
+	 */
+	public static NondominatedPopulation readReferenceSet(String resource) throws IOException {
+		File file = new File(resource);
+		
+		if (file.exists()) {
+			return new NondominatedPopulation(readObjectives(file));
+		} else {
+			try (InputStream input = PopulationIO.class.getResourceAsStream("/" + resource)) {
+				if (input != null) {
+					return new NondominatedPopulation(readObjectives(
+							new CommentedLineReader(new InputStreamReader(input))));
+				}
 			}
 		}
+		
+		throw new FileNotFoundException(resource);
 	}
 
 }

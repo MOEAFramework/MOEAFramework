@@ -158,8 +158,7 @@ public abstract class IndicatorFitnessEvaluator implements FitnessEvaluator {
 		for (int i = 0; i < population.size(); i++) {
 			if (i != removeIndex) {
 				Solution solution = population.get(i);
-				double fitness = (Double)solution.getAttribute(
-						FitnessEvaluator.FITNESS_ATTRIBUTE);
+				double fitness = (Double)solution.getAttribute(FitnessEvaluator.FITNESS_ATTRIBUTE);
 				
 				fitness -= Math.exp((-fitcomp[removeIndex][i] / maxAbsIndicatorValue) / kappa);
 				
@@ -187,7 +186,6 @@ public abstract class IndicatorFitnessEvaluator implements FitnessEvaluator {
 	 * @param solution2 the second solution
 	 * @return the indicator value relative to the two solutions
 	 */
-	protected abstract double calculateIndicator(Solution solution1,
-			Solution solution2);
+	protected abstract double calculateIndicator(Solution solution1, Solution solution2);
 
 }

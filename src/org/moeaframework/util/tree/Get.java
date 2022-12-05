@@ -19,19 +19,19 @@ package org.moeaframework.util.tree;
 
 /**
  * The node for reading the value stored in a named variable within the current
- * scope.  See {@link Set} for details on scoping.  The inputs and outputs to
- * this node are shown below:
+ * scope.  See {@link Set} for details on scoping.
  * <p>
  * If the named variable has not yet been set, a default value is returned
  * depending on the return type.  For numeric values, the default is
  * {@code 0}.  For boolean values, the default is {@code false}.  For objects,
  * the default is {@code null}.
  * 
- * <table border="1" cellpadding="3" cellspacing="0">
- *   <tr class="TableHeadingColor">
- *     <th width="25%" align="left">Name</th>
- *     <th width="25%" align="left">Type</th>
- *     <th width="50%" align="left">Description</th>
+ * <table style="margin-top: 1em; width: 100%">
+ *   <caption style="text-align: left">Node signature:</caption>
+ *   <tr>
+ *     <th style="width: 15%; text-align: left">Name</th>
+ *     <th style="width: 15%; text-align: left">Type</th>
+ *     <th style="width: 70%; text-align: left">Description</th>
  *   </tr>
  *   <tr>
  *     <td>Return Value</td>

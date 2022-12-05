@@ -831,7 +831,7 @@ public class EncodingUtils {
 	 * Sets the value of a subset decision variable using a BitSet representation.
 	 * 
 	 * @param variable the decision variable
-	 * @param values the BitSet representation of a subset
+	 * @param bitSet the BitSet representation of a subset
 	 * @throws IllegalArgumentException if the BitSet representation is not a
 	 *         valid subset
 	 */

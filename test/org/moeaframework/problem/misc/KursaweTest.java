@@ -23,8 +23,8 @@ import org.moeaframework.problem.ProblemTest;
 public class KursaweTest extends ProblemTest {
 
 	@Test
-	public void testJMetal() throws Exception {
-		test(new org.uma.jmetal.problem.multiobjective.Kursawe(3), new Kursawe(3));
+	public void testJMetal() {
+		test("Kursawe");
 	}
 
 }

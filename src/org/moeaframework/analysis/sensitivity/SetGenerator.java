@@ -23,16 +23,13 @@ import java.io.IOException;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
-import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.PopulationIO;
 import org.moeaframework.core.Problem;
-import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.problem.AnalyticalProblem;
 import org.moeaframework.util.CommandLineUtility;
-import org.moeaframework.util.TypedProperties;
 
 /**
  * Command line utility for generating reference sets for a given problem.  The
@@ -41,9 +38,9 @@ import org.moeaframework.util.TypedProperties;
  * {@code AnalyticalProblem} interface can be used.
  * <p>
  * Usage: {@code java -cp "..." org.moeaframework.analysis.sensitivity.SetGenerator <options>}
- * <p>
- * Arguments:
- * <table border="0" style="margin-left: 1em">
+ * 
+ * <table>
+ *   <caption style="text-align: left">Arguments:</caption>
  *   <tr>
  *     <td>{@code -b, --problem}</td>
  *     <td>The name of the problem (required).  This name should reference one
@@ -83,12 +80,9 @@ public class SetGenerator extends CommandLineUtility {
 	public Options getOptions() {
 		Options options = super.getOptions();
 		
-		options.addOption(Option.builder("b")
-				.longOpt("problem")
-				.hasArg()
-				.argName("name")
-				.required()
-				.build());
+		OptionUtils.addProblemOption(options, false);
+		OptionUtils.addEpsilonOption(options);
+		
 		options.addOption(Option.builder("n")
 				.longOpt("numberOfPoints")
 				.hasArg()
@@ -106,63 +100,35 @@ public class SetGenerator extends CommandLineUtility {
 				.argName("file")
 				.required()
 				.build());
-		options.addOption(Option.builder("e")
-				.longOpt("epsilon")
-				.hasArg()
-				.argName("e1,e2,...")
-				.build());
 		
 		return options;
 	}
 
 	@Override
 	public void run(CommandLine commandLine) throws IOException {
-		NondominatedPopulation set = null;
-		Problem problem = null;
+		NondominatedPopulation set = OptionUtils.getArchive(commandLine);
 		
 		int numberOfPoints = Integer.parseInt(commandLine.getOptionValue(
 				"numberOfPoints"));
-
-		// setup the merged non-dominated population
-		if (commandLine.hasOption("epsilon")) {
-			double[] epsilon = TypedProperties.withProperty("epsilon",
-					commandLine.getOptionValue("epsilon")).getDoubleArray(
-					"epsilon", null);
-			set = new EpsilonBoxDominanceArchive(epsilon);
-		} else {
-			set = new NondominatedPopulation();
-		}
 		
 		// seed the pseudo-random number generator
 		if (commandLine.hasOption("seed")) {
-			PRNG.setSeed(Long.parseLong(commandLine
-					.getOptionValue("seed")));
+			PRNG.setSeed(Long.parseLong(commandLine.getOptionValue("seed")));
 		}
 		
 		//generate the points
-		try {
-			problem = ProblemFactory.getInstance().getProblem(commandLine
-					.getOptionValue("problem"));
-			
+		try (Problem problem = OptionUtils.getProblemInstance(commandLine, false)) {
 			if (problem instanceof AnalyticalProblem) {
-				AnalyticalProblem generator = (AnalyticalProblem)problem;
-				
 				for (int i=0; i<numberOfPoints; i++) {
-					set.add(generator.generate());
+					set.add(((AnalyticalProblem)problem).generate());
 				}
 			} else {
-				throw new FrameworkException(
-						"problem does not have an analytical solution");
-			}
-		} finally {
-			if (problem != null) {
-				problem.close();
+				throw new FrameworkException("problem does not have an analytical solution");
 			}
 		}
 		
 		//output set
-		PopulationIO.writeObjectives(new File(commandLine.getOptionValue(
-				"output")), set);
+		PopulationIO.writeObjectives(new File(commandLine.getOptionValue("output")), set);
 	}
 	
 	/**

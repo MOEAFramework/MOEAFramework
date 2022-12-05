@@ -27,7 +27,9 @@ import org.moeaframework.core.Initialization;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
+import org.moeaframework.core.Variation;
 import org.moeaframework.core.operator.RandomInitialization;
+import org.moeaframework.core.spi.OperatorFactory;
 import org.moeaframework.core.spi.ProblemFactory;
 
 /**
@@ -46,15 +48,16 @@ public class AbstractEvolutionaryAlgorithmTest {
 		Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
 		Population population = new Population();
 		NondominatedPopulation archive = new NondominatedPopulation();
-		Initialization initialization = new RandomInitialization(problem, 50);
+		Initialization initialization = new RandomInitialization(problem);
+		Variation variation = OperatorFactory.getInstance().getVariation(problem);
 
-		return new AbstractEvolutionaryAlgorithm(problem, population, archive,
-				initialization) {
+		return new AbstractEvolutionaryAlgorithm(problem, 50, population, archive,
+				initialization, variation) {
 
 			@Override
 			protected void iterate() {
 				population.clear();
-				population.addAll(initialization.initialize());
+				population.addAll(initialization.initialize(50));
 				evaluateAll(population);
 				archive.addAll(population);
 			}

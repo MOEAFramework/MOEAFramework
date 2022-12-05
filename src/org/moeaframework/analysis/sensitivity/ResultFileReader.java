@@ -28,11 +28,10 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.Base64;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import java.util.Properties;
 
-import org.apache.commons.codec.binary.Base64;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
@@ -41,6 +40,7 @@ import org.moeaframework.core.Variable;
 import org.moeaframework.core.variable.BinaryVariable;
 import org.moeaframework.core.variable.Permutation;
 import org.moeaframework.core.variable.RealVariable;
+import org.moeaframework.util.TypedProperties;
 
 /**
  * Reads result files created by {@link ResultFileWriter}.  See the documentation
@@ -167,7 +167,7 @@ Iterable<ResultEntry> {
 			line = reader.readLine();
 		}
 		
-		Properties properties = new Properties();
+		TypedProperties properties = new TypedProperties();
 		properties.load(new StringReader(stringBuffer.toString()));
 
 		// return population only if non-empty and terminated by a #
@@ -324,20 +324,12 @@ Iterable<ResultEntry> {
 	 * @throws ClassNotFoundException if the class of the deserialized variable
 	 *         could not be found
 	 */
-	private Variable deserialize(String string) throws IOException, 
-	ClassNotFoundException {
-		ObjectInputStream ois = null;
+	private Variable deserialize(String string) throws IOException, ClassNotFoundException {
+		byte[] encoding = Base64.getDecoder().decode(string);
 		
-		try {
-			byte[] encoding = Base64.decodeBase64(string);
-			ByteArrayInputStream baos = new ByteArrayInputStream(encoding);
-			ois = new ObjectInputStream(baos);
-			
+		try (ByteArrayInputStream baos = new ByteArrayInputStream(encoding);
+				ObjectInputStream ois = new ObjectInputStream(baos)) {
 			return (Variable)ois.readObject();
-		} finally {
-			if (ois != null) {
-				ois.close();
-			}
 		}
 	}
 

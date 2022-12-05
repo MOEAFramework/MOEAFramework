@@ -32,7 +32,6 @@ import org.moeaframework.core.Algorithm;
 /**
  * Decorates an {@link Algorithm} to periodically save checkpoint files from
  * which the algorithm can resume itself if unexpectedly terminated.
- * <p>
  * <pre>
  * File stateFile = new File("last.state");
  * 
@@ -83,16 +82,9 @@ public class Checkpoints extends PeriodicAction {
 	 * @throws IOException if an I/O error occurred
 	 */
 	private void saveState(Serializable state) throws IOException {
-		ObjectOutputStream oos = null;
-
-		try {
-			oos = new ObjectOutputStream(new BufferedOutputStream(
-					new FileOutputStream(stateFile)));
+		try (ObjectOutputStream oos = new ObjectOutputStream(new BufferedOutputStream(
+					new FileOutputStream(stateFile)))) {
 			oos.writeObject(state);
-		} finally {
-			if (oos != null) {
-				oos.close();
-			}
 		}
 	}
 
@@ -105,16 +97,9 @@ public class Checkpoints extends PeriodicAction {
 	 *         not be found.
 	 */
 	private Object loadState() throws IOException, ClassNotFoundException {
-		ObjectInputStream ois = null;
-
-		try {
-			ois = new ObjectInputStream(new BufferedInputStream(
-					new FileInputStream(stateFile)));
+		try (ObjectInputStream ois = new ObjectInputStream(new BufferedInputStream(
+					new FileInputStream(stateFile)))) {
 			return ois.readObject();
-		} finally {
-			if (ois != null) {
-				ois.close();
-			}
 		}
 	}
 	

@@ -20,7 +20,6 @@ package org.moeaframework.analysis.sensitivity;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Properties;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
@@ -33,8 +32,8 @@ import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.util.CommandLineUtility;
+import org.moeaframework.util.TypedProperties;
 
 /**
  * Command line utility for evaluating an algorithm using many 
@@ -42,9 +41,9 @@ import org.moeaframework.util.CommandLineUtility;
  * data.  Each run is stored in a separate file.
  * <p>
  * Usage: {@code java -cp "..." org.moeaframework.analysis.sensitivity.DetailedEvaluator <options>}
- * <p>
- * Arguments:
- * <table border="0" style="margin-left: 1em">
+ * 
+ * <table>
+ *   <caption style="text-align: left">Arguments:</caption>
  *   <tr>
  *     <td>{@code -p, --parameterFile}</td>
  *     <td>Location of the parameter configuration file (required)</td>
@@ -99,19 +98,9 @@ import org.moeaframework.util.CommandLineUtility;
 public class DetailedEvaluator extends CommandLineUtility {
 
 	/**
-	 * The problem being evaluated.
-	 */
-	protected Problem problem;
-
-	/**
 	 * The output writer where end-of-run results are stored.
 	 */
 	protected OutputWriter output;
-
-	/**
-	 * The sample reader from which input parameters are read.
-	 */
-	protected SampleReader input;
 
 	/**
 	 * Constructs the command line utility for evaluating an algorithm using
@@ -124,6 +113,10 @@ public class DetailedEvaluator extends CommandLineUtility {
 	@Override
 	public Options getOptions() {
 		Options options = super.getOptions();
+		
+		OptionUtils.addProblemOption(options, false);
+		OptionUtils.addEpsilonOption(options);
+
 
 		options.addOption(Option.builder("p")
 				.longOpt("parameterFile")
@@ -141,12 +134,6 @@ public class DetailedEvaluator extends CommandLineUtility {
 				.longOpt("output")
 				.hasArg()
 				.argName("file")
-				.required()
-				.build());
-		options.addOption(Option.builder("b")
-				.longOpt("problem")
-				.hasArg()
-				.argName("name")
 				.required()
 				.build());
 		options.addOption(Option.builder("a")
@@ -171,15 +158,10 @@ public class DetailedEvaluator extends CommandLineUtility {
 				.hasArg()
 				.argName("value")
 				.build());
-		options.addOption(Option.builder("e")
-				.longOpt("epsilon")
-				.hasArg()
-				.argName("e1,e2,...")
-				.build());
 		options.addOption(Option.builder("n")
 				.longOpt("novariables")
 				.build());
-
+		
 		return options;
 	}
 
@@ -188,6 +170,8 @@ public class DetailedEvaluator extends CommandLineUtility {
 		String outputFilePattern = commandLine.getOptionValue("output");
 		ParameterFile parameterFile = new ParameterFile(new File(commandLine.getOptionValue("parameterFile")));
 		File inputFile = new File(commandLine.getOptionValue("input"));
+		double[] epsilon = OptionUtils.getEpsilon(commandLine);
+		
 		int frequency = 1000;
 		
 		if (commandLine.hasOption("frequency")) {
@@ -195,71 +179,54 @@ public class DetailedEvaluator extends CommandLineUtility {
 		}
 		
 		// open the resources and begin processing
-		try {
-			problem = ProblemFactory.getInstance().getProblem(commandLine.getOptionValue("problem"));
+		try (Problem problem = OptionUtils.getProblemInstance(commandLine, false);
+				SampleReader input = new SampleReader(new FileReader(inputFile), parameterFile)) {
+			int count = 1;
 
-			try {
-				input = new SampleReader(new FileReader(inputFile), parameterFile);
-				int count = 1;
-
-				while (input.hasNext()) {
-					try {
-						String outputFileName = String.format(outputFilePattern, count);
-						System.out.print("Processing " + outputFileName + "...");
-						File outputFile = new File(outputFileName);
+			while (input.hasNext()) {
+				String outputFileName = String.format(outputFilePattern, count);
+				System.out.print("Processing " + outputFileName + "...");
+				File outputFile = new File(outputFileName);
 						
-						if (outputFile.exists()) {
-							outputFile.delete();
-						}
+				if (outputFile.exists()) {
+					outputFile.delete();
+				}	
 						
-						output = new ResultFileWriter(problem, outputFile, !commandLine.hasOption("novariables"));
+				try (ResultFileWriter output = new ResultFileWriter(problem, outputFile,
+						!commandLine.hasOption("novariables"))) {
+					// setup any default parameters
+					TypedProperties defaultProperties = new TypedProperties();
 	
-						// setup any default parameters
-						Properties defaultProperties = new Properties();
-	
-						if (commandLine.hasOption("properties")) {
-							for (String property : commandLine.getOptionValues("properties")) {
-								String[] tokens = property.split("=");
+					if (commandLine.hasOption("properties")) {
+						for (String property : commandLine.getOptionValues("properties")) {
+							String[] tokens = property.split("=");
 								
-								if (tokens.length == 2) {
-									defaultProperties.setProperty(tokens[0], tokens[1]);
-								} else {
-									throw new FrameworkException("malformed property argument");
-								}
+							if (tokens.length == 2) {
+								defaultProperties.setString(tokens[0], tokens[1]);
+							} else {
+								throw new FrameworkException("malformed property argument");
 							}
 						}
-	
-						if (commandLine.hasOption("epsilon")) {
-							defaultProperties.setProperty("epsilon", commandLine.getOptionValue("epsilon"));
-						}
-	
-						// seed the pseudo-random number generator
-						if (commandLine.hasOption("seed")) {
-							PRNG.setSeed(Long.parseLong(commandLine.getOptionValue("seed")));
-						}
-	
-						Properties properties = input.next();
-						properties.putAll(defaultProperties);
-	
-						process(commandLine.getOptionValue("algorithm"), properties, frequency);
-						
-						System.out.println("done.");
-					} finally {
-						if (output != null) {
-							output.close();
-						}
 					}
+	
+					if (epsilon != null) {
+						defaultProperties.setDoubleArray("epsilon", epsilon);
+					}
+	
+					// seed the pseudo-random number generator
+					if (commandLine.hasOption("seed")) {
+						PRNG.setSeed(Long.parseLong(commandLine.getOptionValue("seed")));
+					}
+	
+					TypedProperties properties = input.next();
+					properties.addAll(defaultProperties);
+	
+					process(commandLine.getOptionValue("algorithm"), properties, problem, frequency);
+						
+					System.out.println("done.");
+				}
 					
-					count++;
-				}
-			} finally {
-				if (input != null) {
-					input.close();
-				}
-			}
-		} finally {
-			if (problem != null) {
-				problem.close();
+				count++;
 			}
 		}
 		
@@ -267,13 +234,13 @@ public class DetailedEvaluator extends CommandLineUtility {
 	}
 
 	@SuppressWarnings("unchecked")
-	protected void process(String algorithmName, Properties properties, int frequency)
+	protected void process(String algorithmName, TypedProperties properties, Problem problem, int frequency)
 			throws IOException {
-		if (!properties.containsKey("maxEvaluations")) {
-			throw new FrameworkException("maxEvaluations not defined");
-		}
+		int maxEvaluations = (int)properties.getDouble("maxEvaluations", -1);
 		
-		int maxEvaluations = (int)Double.parseDouble(properties.getProperty("maxEvaluations"));
+		if (maxEvaluations < 0) {
+			throw new FrameworkException("maxEvaluations not defined or invalid");
+		}
 		
 		Instrumenter instrumenter = new Instrumenter()
 				.withProblem(problem)
@@ -292,9 +259,9 @@ public class DetailedEvaluator extends CommandLineUtility {
 		Accumulator accumulator = instrumenter.getLastAccumulator();
 
 		for (int i=0; i<accumulator.size("NFE"); i++) {
-			Properties metadata = new Properties();
-			metadata.setProperty("NFE", accumulator.get("NFE", i).toString());
-			metadata.setProperty("ElapsedTime", accumulator.get("Elapsed Time", i).toString());
+			TypedProperties metadata = new TypedProperties();
+			metadata.setString("NFE", accumulator.get("NFE", i).toString());
+			metadata.setString("ElapsedTime", accumulator.get("Elapsed Time", i).toString());
 			
 			Iterable<Solution> solutions = (Iterable<Solution>)accumulator.get("Approximation Set", i);
 			NondominatedPopulation result = new NondominatedPopulation(solutions);

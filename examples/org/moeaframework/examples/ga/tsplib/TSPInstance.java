@@ -152,15 +152,8 @@ public class TSPInstance {
 	 *         file
 	 */
 	protected void load(File file) throws IOException {
-		BufferedReader reader = null;
-		
-		try {
-			reader = new BufferedReader(new FileReader(file));
+		try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
 			load(reader);
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
 		}
 	}
 	

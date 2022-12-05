@@ -1,0 +1,130 @@
+name: Validate and stage release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        type: string
+        description: The version to publish
+        required: true
+      publish_website:
+        description: 'Create draft Website release'
+        default: true
+        type: boolean 
+      publish_github:
+        description: 'Create draft GitHub release'
+        default: true
+        type: boolean
+      publish_maven:
+        description: 'Create Maven bundle'
+        default: true
+        type: boolean
+      skip_validation:
+        description: 'Skip version validations'
+        default: false
+        type: boolean
+
+jobs:
+  stage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK 8
+        uses: actions/setup-java@v2
+        with:
+          java-version: 8
+          distribution: temurin
+      - name: Setup Git and GitHub CLI
+        run: |
+          gh auth setup-git
+          git config --global user.email "${{ secrets.EMAIL }}"
+          git config --global user.name "${{ secrets.USERNAME }}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT }}
+      - name: Get project settings
+        run: |
+          shortname=$(cat META-INF/build.properties | awk '{split($0,a,"="); if (a[1]=="shortname") print tolower(a[2])}' |  tr -d '[:space:]')
+          version=$(cat META-INF/build.properties | awk '{split($0,a,"="); if (a[1]=="version") print tolower(a[2])}' |  tr -d '[:space:]')
+          echo "BUILD_NAME=${shortname}" >> $GITHUB_ENV
+          echo "BUILD_VERSION=${version}" >> $GITHUB_ENV
+      - name: Validate version number
+        if: ${{ ! inputs.skip_validation }}
+        run: |
+          echo "${{ inputs.version }}" | grep -E '^[0-9]+\.[0-9]+(\.[0-9]+)?$' || (>&2 echo "Invalid version number format"; exit -1)
+          [ "${{ inputs.version }}" == "${BUILD_VERSION}" ] || (>&2 echo "Version does not match value in build.properties"; exit -1)
+          [ "${{ inputs.version }}" == "$(cat README.md | grep '<version>' | tr -d '<>/[:alpha:][:space:]')" ] || (>&2 echo "Version does not match value in the Maven instructions in README.md"; exit -1)
+          [ "${{ inputs.version }}" == "$(cat README.md | grep "search.maven.org" | grep -oEi '[0-9]+\.[0-9]+(\.[0-9]+)?')" ] || (>&2 echo "Version does not match value in the Maven URL in README.md"; exit -1)
+          [ "${{ inputs.version }}" == "$(cat docs/news.md | grep "## " | head -n 1 | grep -oEi '[0-9]+\.[0-9]+(\.[0-9]+)?')" ] || (>&2 echo "Version does not match value in docs/news.md"; exit -1)
+      - name: Build artifacts
+        run: |
+          ant package-binary
+          ant package-demo
+          ant package-source
+      - name: Download beginners guide
+        run: |
+          wget -O dist/MOEAFramework-${{ inputs.version }}-BeginnersGuidePreview.pdf https://github.com/MOEAFramework/MOEAFramework/releases/download/v3.0/MOEAFramework-3.0-BeginnersGuidePreview.pdf
+      - name: Generate release notes
+        run: |
+          cat docs/news.md | awk '/## Version ${{ inputs.version }}/{flag=1; next} /##/{flag=0} flag' > dist/release_notes.md
+          [ "$(wc -l < dist/release_notes.md)" -gt 0 ] || (>&2 echo "Unable to read release notes from docs/news.md"; exit -1)
+      - name: Build Maven artifacts
+        if: ${{ inputs.publish_maven }}
+        run: |
+          ant package-maven
+      - name: Sign Maven artifacts and create bundle
+        if: ${{ inputs.publish_maven }}
+        run: |
+          echo -n "${GPG_SIGNING_KEY}" | base64 --decode | gpg --import
+          
+          pushd maven
+          gpg -ab ${BUILD_NAME}-${BUILD_VERSION}.pom
+          gpg -ab ${BUILD_NAME}-${BUILD_VERSION}.jar
+          gpg -ab ${BUILD_NAME}-${BUILD_VERSION}-sources.jar
+          gpg -ab ${BUILD_NAME}-${BUILD_VERSION}-javadoc.jar
+          
+          jar -cvf ${BUILD_NAME}-${BUILD_VERSION}-bundle.jar *
+        env:
+          GPG_SIGNING_KEY: ${{ secrets.GPG_SIGNING_KEY }}
+      - name: Upload Maven bundle
+        if: ${{ inputs.publish_maven }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: Maven bundle
+          path: maven/*-bundle.jar
+      - name: Stage website
+        if: ${{ inputs.publish_website }}
+        run: |
+          ant package-website
+          
+          pushd ..
+          gh repo clone MOEAFramework/Website
+          pushd Website
+          git checkout v${{ inputs.version }} || git checkout -b v${{ inputs.version }}
+          
+          rm -rf *
+          cp -R ../MOEAFramework/build/* .
+          
+          git add .
+          
+          if [[ -n "$(git status -s)" ]]; then
+            git commit -m "Update for v${{ inputs.version }}"
+            git push origin v${{ inputs.version }}
+            gh pr create --head v${{ inputs.version }} --fill --repo MOEAFramework/Website || true
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT }}
+      - name: Stage GitHub release
+        if: ${{ inputs.publish_github }}
+        run: |
+          gh release create "v${{ inputs.version }}" --draft --title "Version ${{ inputs.version }}" --notes-file dist/release_notes.md \
+              dist/MOEAFramework-${{ inputs.version }}.tar.gz \
+              dist/MOEAFramework-${{ inputs.version }}-Demo.jar \
+              dist/MOEAFramework-${{ inputs.version }}-Source.tar.gz \
+              dist/MOEAFramework-${{ inputs.version }}-BeginnersGuidePreview.pdf
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT }}
+      - name: Upload release artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: Release artifacts
+          path: dist/

@@ -5,7 +5,8 @@ for downloads, documentation, and examples.**
 
 ﻿<a href="https://github.com/MOEAFramework/MOEAFramework"><img alt="GitHub Actions status" src="https://github.com/MOEAFramework/MOEAFramework/workflows/Tests/badge.svg?branch=master&event=push"></a>
 ![Maven Central](https://img.shields.io/maven-central/v/org.moeaframework/moeaframework)
-![GitHub all releases](https://img.shields.io/github/downloads/MOEAFramework/MOEAFramework/total)
+![GitHub all releases](https://img.shields.io/github/downloads/MOEAFramework/MOEAFramework/total?label=GitHub)
+![SourceForge](https://img.shields.io/sourceforge/dt/moeaframework?label=SourceForge)
 
 The MOEA Framework is a free and open source Java library for developing and
 experimenting with multiobjective evolutionary algorithms (MOEAs) and other
@@ -23,7 +24,6 @@ Its key features includes:
   * Extensible with custom algorithms, problems and operators
   * Supports master-slave, island-model, and hybrid parallelization
   * Tools for building and statistically testing new optimization algorithms
-  * [Professional support for businesses](http://moeaframework.org/support.html)
   * Permissive open source license
   * Fully documented and tested source code
 
@@ -33,11 +33,21 @@ The latest release can be downloaded from our [website](http://moeaframework.org
 or from the [releases page](https://github.com/MOEAFramework/MOEAFramework/releases).
 Maven users can add our dependency to their `pom.xml` file:
 
-    <dependency>
-        <groupId>org.moeaframework</groupId>
-        <artifactId>moeaframework</artifactId>
-        <version>3.0</version>
-    </dependency>
+```xml
+<dependency>
+    <groupId>org.moeaframework</groupId>
+    <artifactId>moeaframework</artifactId>
+    <version>3.1</version>
+</dependency>
+```
+
+Visit the [Maven distribution page](https://search.maven.org/artifact/org.moeaframework/moeaframework/3.1/jar)
+for setup instructions for other package management tools.
+
+### Documentation ###
+
+Find our [documentation](docs/README.md), [examples](examples/), and online resources at [moeaframework.org](http://moeaframework.org)
+for instructions for using the MOEA Framework.
 
 ### License ###
 

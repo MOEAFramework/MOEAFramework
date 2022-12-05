@@ -104,20 +104,17 @@ public class EpsilonBoxObjectiveComparatorTest {
 	}
 
 	/**
-	 * Tests if an {@code EpsilonBoxObjectiveComparator} correctly extends the
-	 * epsilon array.
+	 * Tests if an {@code EpsilonBoxObjectiveComparator} correctly extends the epsilon array.
 	 */
 	@Test
 	public void testEpsilonExtension() {
-		EpsilonBoxDominanceComparator comparator = 
-				new EpsilonBoxDominanceComparator(new double[] { 0.1, 0.2 });
+		EpsilonBoxDominanceComparator comparator = new EpsilonBoxDominanceComparator(new double[] { 0.1, 0.2 });
 
-		Assert.assertEquals(0.1, comparator.getEpsilon(0), Settings.EPS);
-		Assert.assertEquals(0.2, comparator.getEpsilon(1), Settings.EPS);
-		Assert.assertEquals(0.2, comparator.getEpsilon(2), Settings.EPS);
-		Assert.assertEquals(0.2, comparator.getEpsilon(Integer.MAX_VALUE),
-				Settings.EPS);
-		Assert.assertEquals(2, comparator.getNumberOfDefinedEpsilons());
+		Assert.assertEquals(0.1, comparator.getEpsilons().get(0), Settings.EPS);
+		Assert.assertEquals(0.2, comparator.getEpsilons().get(1), Settings.EPS);
+		Assert.assertEquals(0.2, comparator.getEpsilons().get(2), Settings.EPS);
+		Assert.assertEquals(0.2, comparator.getEpsilons().get(Integer.MAX_VALUE), Settings.EPS);
+		Assert.assertEquals(2, comparator.getEpsilons().size());
 	}
 
 }

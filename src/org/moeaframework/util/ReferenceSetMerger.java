@@ -26,6 +26,7 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.math3.util.MathArrays;
+import org.moeaframework.analysis.sensitivity.OptionUtils;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Population;
@@ -168,14 +169,11 @@ public class ReferenceSetMerger extends CommandLineUtility {
 				.hasArg()
 				.argName("file")
 				.build());
-		options.addOption(Option.builder("e")
-				.longOpt("epsilon")
-				.hasArg()
-				.argName("e1,e2,...")
-				.build());
 		options.addOption(Option.builder("d")
 				.longOpt("diff")
 				.build());
+		
+		OptionUtils.addEpsilonOption(options);
 
 		return options;
 	}
@@ -183,12 +181,10 @@ public class ReferenceSetMerger extends CommandLineUtility {
 	@Override
 	public void run(CommandLine commandLine) throws Exception {
 		//use an epsilon-dominance archive if necessary
-		if (commandLine.hasOption("epsilon")) {
-			TypedProperties properties = TypedProperties.withProperty(
-					"epsilon", commandLine.getOptionValue("epsilon"));
-			
-			combinedPopulation = new EpsilonBoxDominanceArchive(
-					properties.getDoubleArray("epsilon", null));
+		double[] epsilon = OptionUtils.getEpsilon(commandLine);
+		
+		if (epsilon != null) {
+			combinedPopulation = new EpsilonBoxDominanceArchive(epsilon);
 		}
 
 		//read the population files

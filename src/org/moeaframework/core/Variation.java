@@ -17,43 +17,47 @@
  */
 package org.moeaframework.core;
 
+import org.moeaframework.core.configuration.Configurable;
+
 /**
- * Interface for variation operators. Variation operators manipulate one or more
- * existing solutions, called <em>parents</em>, to produce one or more new
- * solutions, called <em>children</em> or <em>offspring</em>.
+ * Interface for variation operators. Variation operators manipulate one or more existing solutions, called
+ * <em>parents</em>, to produce one or more new solutions, called <em>children</em> or <em>offspring</em>.
  * <p>
- * A variation operator is <em>type-safe</em> if it checks variable types at
- * runtime and operates only on those variables it supports. Unsupported
- * variables must be left unmodified. A type-safe variation operator must ensure
- * casts are valid and never throw a {@code ClassCastException}. A type-safe
- * variation class should indicate this fact by stating
- * "This variation operator is type-safe" in the class comments.
+ * A variation operator is <em>type-safe</em> if it checks variable types at runtime and operates only on those
+ * variables it supports. Unsupported variables must be left unmodified. A type-safe variation operator must ensure
+ * casts are valid and never throw a {@code ClassCastException}. A type-safe variation class should indicate this fact
+ * by stating "This variation operator is type-safe" in the class comments.
  * <p>
- * Mixed-type encodings are supported by using type-safe variation operators.
- * Variation operators for each type in the encoding are applied sequentially,
- * each operating on only those variables with the correct type.
+ * Mixed-type encodings are supported by using type-safe variation operators. Variation operators for each type in the
+ * encoding are applied sequentially, each operating on only those variables with the correct type.
  */
-public interface Variation {
+public interface Variation extends Configurable {
+	
+	/**
+	 * Returns the name of this variation operator.  This name should also be used as the prefix for any
+	 * parameters.  As such, the name should only contain alphanumeric characters, avoid using whitespace and other
+	 * symbols.
+	 * 
+	 * @return the name of this variation operator
+	 */
+	public String getName();
 
 	/**
-	 * Returns the number of solutions that must be supplied to the
-	 * {@code evolve} method.
+	 * Returns the number of solutions that must be supplied to the {@code evolve} method.
 	 * 
-	 * @return the number of solutions that must be supplied to the
-	 *         {@code evolve} method
+	 * @return the number of solutions that must be supplied to the {@code evolve} method
 	 */
 	public int getArity();
 
 	/**
-	 * Evolves one or more parent solutions (specified by {@code getArity}) and
-	 * produces one or more child solutions. By contract, the parents must not
-	 * be modified. The copy constructor should be used to create copies of the
+	 * Evolves one or more parent solutions (specified by {@code getArity}) and produces one or more child solutions.
+	 * By contract, the parents must not be modified. The copy constructor should be used to create copies of the
 	 * parents with these copies subsequently modified.
 	 * 
 	 * @param parents the array of parent solutions
 	 * @return an array of child solutions
-	 * @throws IllegalArgumentException if an incorrect number of parents was
-	 *         supplied {@code (parents.length != getArity())}
+	 * @throws IllegalArgumentException if an incorrect number of parents was supplied
+	 *         {@code (parents.length != getArity())}
 	 */
 	public Solution[] evolve(Solution[] parents);
 

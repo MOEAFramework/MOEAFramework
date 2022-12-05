@@ -32,8 +32,13 @@ import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Selection;
+import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
+import org.moeaframework.core.configuration.Property;
+import org.moeaframework.core.operator.RandomInitialization;
+import org.moeaframework.core.spi.OperatorFactory;
+import org.moeaframework.util.TypedProperties;
 
 /**
  * Implementation of the Pareto Envelope-based Selection Algorithm (PESA2).
@@ -55,35 +60,45 @@ public class PESA2 extends AbstractEvolutionaryAlgorithm {
 	 * The selection operator.
 	 */
 	protected final Selection selection;
-
-	/**
-	 * The variation operator.
-	 */
-	protected final Variation variation;
 	
 	/**
 	 * A mapping from grid index to the solutions occupying that grid index.
 	 * This enables PESA2's region-based selection.
 	 */
 	protected Map<Integer, List<Solution>> gridMap;
+	
+	/**
+	 * Constructs a new PESA2 instance with default settings.
+	 * 
+	 * @param problem the problem
+	 */
+	public PESA2(Problem problem) {
+		this(problem,
+				Settings.DEFAULT_POPULATION_SIZE,
+				OperatorFactory.getInstance().getVariation(problem),
+				new RandomInitialization(problem),
+				8,
+				100);
+	}
 
 	/**
 	 * Constructs a new PESA2 instance.
 	 * 
 	 * @param problem the problem
+	 * @param initialPopulationSize the initial population size
 	 * @param variation the mutation operator
 	 * @param initialization the initialization operator
 	 * @param bisections the number of bisections in the adaptive grid archive
 	 * @param archiveSize the capacity of the adaptive grid archive
 	 */
-	public PESA2(Problem problem, Variation variation,
+	public PESA2(Problem problem, int initialPopulationSize, Variation variation,
 			Initialization initialization, int bisections, int archiveSize) {
 		super(problem,
+				initialPopulationSize,
 				new Population(),
-				new AdaptiveGridArchive(archiveSize, problem,
-						ArithmeticUtils.pow(2, bisections)),
-				initialization);
-		this.variation = variation;
+				new AdaptiveGridArchive(archiveSize, problem, ArithmeticUtils.pow(2, bisections)),
+				initialization,
+				variation);
 		
 		selection = new RegionBasedSelection();
 	}
@@ -91,6 +106,18 @@ public class PESA2 extends AbstractEvolutionaryAlgorithm {
 	@Override
 	public AdaptiveGridArchive getArchive() {
 		return (AdaptiveGridArchive)super.getArchive();
+	}
+	
+	@Override
+	@Property("operator")
+	public void setVariation(Variation variation) {
+		super.setVariation(variation);
+	}
+	
+	@Override
+	@Property("populationSize")
+	public void setInitialPopulationSize(int initialPopulationSize) {
+		super.setInitialPopulationSize(initialPopulationSize);
 	}
 
 	@Override
@@ -139,6 +166,27 @@ public class PESA2 extends AbstractEvolutionaryAlgorithm {
 		}
 		
 		return result;
+	}
+	
+	@Override
+	public void applyConfiguration(TypedProperties properties) {
+		if (properties.contains("archiveSize") || properties.contains("bisections")) {
+			int archiveSize = properties.getInt("archiveSize", getArchive().getCapacity());
+			int bisections = properties.getInt("bisections", getArchive().getBisections());
+			setArchive(new AdaptiveGridArchive(archiveSize, problem, ArithmeticUtils.pow(2, bisections)));
+		}
+		
+		super.applyConfiguration(properties);
+	}
+
+	@Override
+	public TypedProperties getConfiguration() {
+		TypedProperties properties = super.getConfiguration();
+		
+		properties.setInt("archiveSize", getArchive().getCapacity());
+		properties.setInt("bisections", getArchive().getBisections());
+		
+		return properties;
 	}
 	
 	/**

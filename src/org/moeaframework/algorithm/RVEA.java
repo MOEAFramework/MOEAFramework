@@ -30,6 +30,11 @@ import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
+import org.moeaframework.core.configuration.Property;
+import org.moeaframework.core.operator.RandomInitialization;
+import org.moeaframework.core.spi.OperatorFactory;
+import org.moeaframework.util.TypedProperties;
+import org.moeaframework.util.weights.NormalBoundaryDivisions;
 
 /**
  * Implementation of the Reference Vector Guided Evolutionary Algorithm (RVEA).
@@ -52,11 +57,6 @@ import org.moeaframework.core.Variation;
 public class RVEA extends AbstractEvolutionaryAlgorithm {
 	
 	/**
-	 * The variation operator.
-	 */
-	private final Variation variation;
-	
-	/**
 	 * The current generation;
 	 */
 	private int generation;
@@ -65,36 +65,67 @@ public class RVEA extends AbstractEvolutionaryAlgorithm {
 	 * The maximum number of generations for the angle-penalized distance to
 	 * transition between convergence and diversity.
 	 */
-	private int maxGeneration = 1000;
+	private final int maxGeneration;
 	
 	/**
 	 * The frequency, in generations, that the reference vectors are normalized.
 	 */
-	private int adaptFrequency = maxGeneration / 10;
+	private int adaptFrequency;
+	
+	/**
+	 * Constructs a new instance of RVEA with default settings.
+	 * 
+	 * @param problem the problem being solved
+	 * @param maxGeneration the maximum number of generations for the angle-penalized distance to transition
+	 *        between convergence and diversity
+	 */
+	public RVEA(Problem problem, int maxGeneration) { // TODO: can we remove maxGenerations?
+		this(problem, NormalBoundaryDivisions.forProblem(problem), maxGeneration);
+	}
+	
+	/**
+	 * Constructs a new instance of RVEA with default settings.
+	 * 
+	 * @param problem the problem being solved
+	 * @param divisions the number of divisions used by the reference vector guided population
+	 * @param maxGeneration the maximum number of generations for the angle-penalized distance to transition
+	 *        between convergence and diversity
+	 */
+	public RVEA(Problem problem, NormalBoundaryDivisions divisions, int maxGeneration) {
+		this(problem,
+				divisions.getNumberOfReferencePoints(problem),
+				new ReferenceVectorGuidedPopulation(problem.getNumberOfObjectives(), divisions),
+				OperatorFactory.getInstance().getVariation(problem),
+				new RandomInitialization(problem),
+				maxGeneration,
+				maxGeneration / 10);
+	}
 
 	/**
 	 * Constructs a new instance of the RVEA algorithm.
 	 * 
 	 * @param problem the problem being solved
+	 * @param initialPopulationSize the initial population size
 	 * @param population the population used to store solutions
 	 * @param variation the variation operator
 	 * @param initialization the initialization method
-	 * @param maxGeneration the maximum number of generations for the
-	 *        angle-penalized distance to transition between convergence and
-	 *        diversity
-	 * @param adaptFrequency the frequency, in generations, that the reference
-	 *        vectors are normalized.
+	 * @param maxGeneration the maximum number of generations for the angle-penalized distance to transition
+	 *        between convergence and diversity
+	 * @param adaptFrequency the frequency, in generations, that the reference vectors are normalized
 	 */
-	public RVEA(Problem problem, ReferenceVectorGuidedPopulation population,
-			Variation variation, Initialization initialization,
-			int maxGeneration, int adaptFrequency) {
-		super(problem, population, null, initialization);
-		this.variation = variation;
+	public RVEA(Problem problem, int initialPopulationSize, ReferenceVectorGuidedPopulation population,
+			Variation variation, Initialization initialization, int maxGeneration, int adaptFrequency) {
+		super(problem, initialPopulationSize, population, null, initialization, variation);
+		this.maxGeneration = maxGeneration;
+		this.adaptFrequency = adaptFrequency;
 		
 		// catch potential errors
 		if (variation.getArity() != 2) {
-			throw new FrameworkException(
-					"RVEA only supports operators requiring 2 parents");
+			throw new FrameworkException("RVEA only supports operators requiring 2 parents");
+		}
+		
+		if (problem.getNumberOfObjectives() < 2) {
+			throw new FrameworkException("RVEA requires at least two objectives");
 		}
 	}
 
@@ -105,8 +136,7 @@ public class RVEA extends AbstractEvolutionaryAlgorithm {
 		int populationSize = population.size();
 		
 		// update the scaling factor for computing the angle-penalized distance
-		population.setScalingFactor(Math.min(generation / (double)maxGeneration,
-				1.0));
+		population.setScalingFactor(Math.min(generation / (double)maxGeneration, 1.0));
 		
 		// create a random permutation of the population indices
 		List<Integer> indices = new ArrayList<Integer>();
@@ -144,20 +174,82 @@ public class RVEA extends AbstractEvolutionaryAlgorithm {
 		generation++;
 	}
 	
+	/**
+	 * Returns the frequency, in generations, that the reference vectors are normalized.
+	 * 
+	 * @return the frequency, in generations
+	 */
+	public int getAdaptFrequency() {
+		return adaptFrequency;
+	}
+	
+	/**
+	 * Sets the frequency, in generations, that the reference vectors are normalized.
+	 * 
+	 * @param adaptFrequency the frequency, in generations
+	 */
+	@Property
+	public void setAdaptFrequency(int adaptFrequency) {
+		this.adaptFrequency = adaptFrequency;
+	}
+	
 	@Override
 	public ReferenceVectorGuidedPopulation getPopulation() {
 		return (ReferenceVectorGuidedPopulation)super.getPopulation();
 	}
 	
 	@Override
+	@Property("operator")
+	public void setVariation(Variation variation) {
+		super.setVariation(variation);
+	}
+	
+	@Override
+	@Property("populationSize")
+	public void setInitialPopulationSize(int initialPopulationSize) {
+		super.setInitialPopulationSize(initialPopulationSize);
+	}
+	
+	@Override
+	public void applyConfiguration(TypedProperties properties) {		
+		NormalBoundaryDivisions divisions = getPopulation().getDivisions();
+		double alpha = getPopulation().getAlpha();
+		boolean changed = false;
+		
+		NormalBoundaryDivisions newDivisions = NormalBoundaryDivisions.tryFromProperties(properties);
+		
+		if (newDivisions != null) {
+			divisions = newDivisions;
+			changed = true;
+		}
+		
+		if (properties.contains("alpha")) {
+			alpha = properties.getDouble("alpha");
+			changed = true;
+		}
+		
+		if (changed) {
+			setPopulation(new ReferenceVectorGuidedPopulation(problem.getNumberOfObjectives(), divisions, alpha));
+		}
+		
+		super.applyConfiguration(properties);
+	}
+
+	@Override
+	public TypedProperties getConfiguration() {
+		TypedProperties properties = super.getConfiguration();
+		properties.addAll(getPopulation().getDivisions().toProperties());
+		properties.setDouble("alpha", getPopulation().getAlpha());
+		return properties;
+	}
+	
+	@Override
 	public Serializable getState() throws NotSerializableException {
 		if (!isInitialized()) {
-			throw new AlgorithmInitializationException(this, 
-					"algorithm not initialized");
+			throw new AlgorithmInitializationException(this, "algorithm not initialized");
 		}
 
-		return new RVEAState(getNumberOfEvaluations(), generation,
-				getPopulation().getState());
+		return new RVEAState(getNumberOfEvaluations(), generation, getPopulation().getState());
 	}
 
 	@Override
@@ -199,13 +291,11 @@ public class RVEA extends AbstractEvolutionaryAlgorithm {
 		 * Constructs a proxy to serialize and deserialize the state of an 
 		 * {@code RVEA} instance.
 		 * 
-		 * @param numberOfEvaluations the number of objective function
-		 *        evaluations
+		 * @param numberOfEvaluations the number of objective function evaluations
 		 * @param generation the current generation
 		 * @param population the population stored in a serializable object
 		 */
-		public RVEAState(int numberOfEvaluations, int generation,
-				ReferenceVectorGuidedPopulationState populationState) {
+		public RVEAState(int numberOfEvaluations, int generation, ReferenceVectorGuidedPopulationState populationState) {
 			super();
 			this.numberOfEvaluations = numberOfEvaluations;
 			this.generation = generation;

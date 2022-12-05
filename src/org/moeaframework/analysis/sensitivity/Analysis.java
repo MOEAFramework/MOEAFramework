@@ -19,10 +19,8 @@ package org.moeaframework.analysis.sensitivity;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.MissingOptionException;
@@ -30,6 +28,7 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.util.CommandLineUtility;
+import org.moeaframework.util.TypedProperties;
 
 /**
  * Command line utility for calculating the best, probability of attainment,
@@ -37,9 +36,9 @@ import org.moeaframework.util.CommandLineUtility;
  * discussed in detail in [1].
  * <p>
  * Usage: {@code java -cp "..." org.moeaframework.analysis.sensitivity.Analysis <options> <files>}
- * <p>
- * Arguments:
- * <table border="0" style="margin-left: 1em">
+ * 
+ * <table>
+ *   <caption style="text-align: left">Arguments:</caption>
  *   <tr>
  *     <td>{@code -p, --parameterFile}</td>
  *     <td>Location of the parameter configuration file (required)</td>
@@ -143,12 +142,12 @@ public class Analysis extends CommandLineUtility {
 	 * @return an array of the parameters in the same order as they appear in
 	 *         {@code parameterFile}
 	 */
-	private double[] toArray(Properties properties) {
+	private double[] toArray(TypedProperties properties) {
 		double[] result = new double[parameterFile.size()];
 		
 		for (int i=0; i<parameterFile.size(); i++) {
-			result[i] = Double.parseDouble(properties.getProperty(
-					parameterFile.get(i).getName()));
+			String name = parameterFile.get(i).getName();
+			result[i] = properties.getDouble(name);
 		}
 		
 		return result;
@@ -164,12 +163,9 @@ public class Analysis extends CommandLineUtility {
 	 * @throws IOException if an I/O error occurred
 	 */
 	private double[][] loadMetrics(File file) throws IOException {
-		MetricFileReader reader = null;
 		List<double[]> metricList = new ArrayList<double[]>();
 		
-		try {
-			reader = new MetricFileReader(file);
-			
+		try (MetricFileReader reader = new MetricFileReader(file)) {
 			while (reader.hasNext()) {
 				double[] metrics = reader.next();
 				
@@ -181,10 +177,6 @@ public class Analysis extends CommandLineUtility {
 				}
 				
 				metricList.add(metrics);
-			}
-		} finally {
-			if (reader != null) {
-				reader.close();
 			}
 		}
 		
@@ -199,18 +191,11 @@ public class Analysis extends CommandLineUtility {
 	 * @throws IOException if an I/O error occurred
 	 */
 	private double[][] loadParameters(File file) throws IOException {
-		SampleReader reader = null;
 		List<double[]> parameterList = new ArrayList<double[]>();
 		
-		try {
-			reader = new SampleReader(file, parameterFile);
-			
+		try (SampleReader reader = new SampleReader(file, parameterFile)) {
 			while (reader.hasNext()) {
 				parameterList.add(toArray(reader.next()));
-			}
-		} finally {
-			if (reader != null) {
-				reader.close();
 			}
 		}
 		
@@ -425,8 +410,6 @@ public class Analysis extends CommandLineUtility {
 
 	@Override
 	public void run(CommandLine commandLine) throws Exception {
-		PrintStream output = null;
-		
 		//parse required parameters
 		parameterFile = new ParameterFile(new File(
 				commandLine.getOptionValue("parameterFile")));
@@ -454,15 +437,8 @@ public class Analysis extends CommandLineUtility {
 			}
 		}
 		
-		try {
-			//setup the output stream
-			if (commandLine.hasOption("output")) {
-				output = new PrintStream(new File(
-						commandLine.getOptionValue("output")));
-			} else {
-				output = System.out;
-			}
-			
+		try (OutputLogger output = new OutputLogger(commandLine.hasOption("output") ?
+				new File(commandLine.getOptionValue("output")) : null)) {
 			//process all the files listed on the command line
 			String[] filenames = commandLine.getArgs();
 			
@@ -489,10 +465,6 @@ public class Analysis extends CommandLineUtility {
 					output.print("  Efficiency: ");
 					output.println(calculateEfficiency());
 				}
-			}
-		} finally {
-			if ((output != null) && (output != System.out)) {
-				output.close();
 			}
 		}
 	}

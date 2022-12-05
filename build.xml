@@ -28,12 +28,6 @@ Use of these build scripts requires Apache Ant to be installed.  See
 	<property file="META-INF/build.properties" />
 	<property environment="env" />
 	
-	<!-- Path to Java JDK source code (optional for inheriting javadoc comments) -->
-	<property name="jdk.source" value="../OpenJDK${java.major}/jdk/src/share/classes" />
-	
-	<!-- URL to Java API -->
-	<property name="jdk.api" value="http://download.oracle.com/javase/${java.major}/docs/api/" />
-	
 	<!-- The working folder for these Ant build targets -->
 	<property name="build" value="build" />
 	
@@ -65,20 +59,24 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		<delete dir="${javadoc}" />
 		<mkdir dir="${javadoc}" />
 		
-		<javadoc sourcepath="src;${jdk.source}"
-				destdir="${javadoc}" notree="true"
+		<javadoc sourcepath="src"
+				source="${java.major}"
+				destdir="${javadoc}"
 				packagenames="org.moeaframework.*"
-				maxmemory="256m" noindex="true" nohelp="true"
+				maxmemory="256m"
+				noindex="true"
+				nohelp="true"
+				notree="true"
 				overview="src/overview.html"
 				windowtitle="${name} ${version} API">
 			<header><![CDATA[${javadoc.title}]]></header>
 			<doctitle><![CDATA[${javadoc.title}]]></doctitle>
-			<footer><![CDATA[${javadoc.title}]]></footer>
 			<bottom><![CDATA[${javadoc.bottom}]]></bottom>
 			<classpath>
 				<path refid="classpath" />
 			</classpath>
-			<link href="${jdk.api}" />
+			<arg value="-notimestamp" />
+			<tag name="preview" description="This feature is in preview and subject to change!" />
 		</javadoc>
 	</target>
 
@@ -267,8 +265,6 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		<copy todir="${build}">
 			<fileset file="examples/dtlz2.c" />
 		</copy>
-		
-		<echo file="${build}/CNAME">moeaframework.org</echo>
 	</target>
 	
 	<!-- Packages the demo distribution -->
@@ -278,9 +274,6 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		
 		<unjar dest="${build}" src="lib/commons-cli-1.5.0.jar" />
 		<move file="${build}/META-INF/NOTICE.txt" tofile="${build}/META-INF/COMMONS-CLI-NOTICE.txt" />
-		
-		<unjar dest="${build}" src="lib/commons-codec-1.15.jar" />
-		<move file="${build}/META-INF/NOTICE.txt" tofile="${build}/META-INF/COMMONS-CODEC-NOTICE.txt" />
 		
 		<unjar dest="${build}" src="lib/commons-io-2.11.0.jar" />
 		<move file="${build}/META-INF/NOTICE.txt" tofile="${build}/META-INF/COMMONS-IO-NOTICE.txt" />
@@ -297,9 +290,6 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		<unjar dest="${build}" src="lib/rsyntaxtextarea-3.3.0.jar" />
 		<unjar dest="${build}" src="lib/jcommon-1.0.24.jar" />
 		<unjar dest="${build}" src="lib/jfreechart-1.5.3.jar" />
-		<unjar dest="${build}" src="lib/jmetal-algorithm-5.9.jar" />
-		<unjar dest="${build}" src="lib/jmetal-core-5.9.jar" />
-		<unjar dest="${build}" src="lib/jmetal-problem-5.9.jar" />
 		
 		<delete dir="${build}/META-INF/maven" />
 		<delete file="${build}/META-INF/LICENSE.txt" />
@@ -489,6 +479,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		<jar destfile="${maven}/${artifact}-${version}-javadoc.jar"
 				basedir="${javadoc}" />
 		
+		<!--
 		<exec executable="gpg" failonerror="true">
 			<arg value="-ab" />
 			<arg value="${maven}/${artifact}-${version}.pom" />
@@ -511,6 +502,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		
 		<jar destfile="${maven}/${artifact}-${version}-bundle.jar"
 				basedir="${maven}" />
+		-->
 	</target>
 	
 </project>

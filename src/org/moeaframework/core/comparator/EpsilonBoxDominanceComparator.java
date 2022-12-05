@@ -19,6 +19,7 @@ package org.moeaframework.core.comparator;
 
 import java.io.Serializable;
 
+import org.moeaframework.core.Epsilons;
 import org.moeaframework.core.Solution;
 
 /**
@@ -30,8 +31,7 @@ import org.moeaframework.core.Solution;
  * @see AggregateConstraintComparator
  * @see EpsilonBoxObjectiveComparator
  */
-public class EpsilonBoxDominanceComparator extends 
-EpsilonBoxObjectiveComparator implements Serializable {
+public class EpsilonBoxDominanceComparator extends EpsilonBoxObjectiveComparator implements Serializable {
 
 	private static final long serialVersionUID = -5691444587961578117L;
 
@@ -41,25 +41,32 @@ EpsilonBoxObjectiveComparator implements Serializable {
 	private final AggregateConstraintComparator comparator;
 
 	/**
-	 * Constructs a dominance comparator for comparing solutions first using the
-	 * {@link AggregateConstraintComparator} followed by the
-	 * {@link EpsilonBoxObjectiveComparator} with the specified &epsilon; value.
+	 * Constructs a dominance comparator for comparing solutions first using the {@link AggregateConstraintComparator}
+	 * followed by the {@link EpsilonBoxObjectiveComparator} with the specified &epsilon; value.
 	 * 
-	 * @param epsilon the epsilon value used by this comparator
+	 * @param epsilons the &epsilon; value used by this comparator
 	 */
 	public EpsilonBoxDominanceComparator(double epsilon) {
-		super(epsilon);
-		comparator = new AggregateConstraintComparator();
+		this(new Epsilons(epsilon));
 	}
 
 	/**
-	 * Constructs a dominance comparator for comparing solutions first using the
-	 * {@link AggregateConstraintComparator} followed by the
-	 * {@link EpsilonBoxObjectiveComparator} with the specified &epsilon; value.
+	 * Constructs a dominance comparator for comparing solutions first using the {@link AggregateConstraintComparator}
+	 * followed by the {@link EpsilonBoxObjectiveComparator} with the specified &epsilon; values.
 	 * 
-	 * @param epsilons the epsilon values used by this comparator
+	 * @param epsilons the &epsilon; values used by this comparator
 	 */
 	public EpsilonBoxDominanceComparator(double[] epsilons) {
+		this(new Epsilons(epsilons));
+	}
+	
+	/**
+	 * Constructs a dominance comparator for comparing solutions first using the {@link AggregateConstraintComparator}
+	 * followed by the {@link EpsilonBoxObjectiveComparator} with the specified &epsilon; values.
+	 * 
+	 * @param epsilons the &epsilon; values used by this comparator
+	 */
+	public EpsilonBoxDominanceComparator(Epsilons epsilons) {
 		super(epsilons);
 		comparator = new AggregateConstraintComparator();
 	}

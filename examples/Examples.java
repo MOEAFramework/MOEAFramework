@@ -36,6 +36,8 @@ import org.moeaframework.examples.gp.regression.SexticExample;
 import org.moeaframework.examples.gui.Example;
 import org.moeaframework.examples.gui.ExamplesGUI;
 import org.moeaframework.examples.gui.TerminalExample;
+import org.moeaframework.examples.parallel.IslandModelExample;
+import org.moeaframework.examples.parallel.ParallelizationExample;
 
 /**
  * Launches the demo application allowing users to learn about and experiment
@@ -186,6 +188,19 @@ public class Examples {
 				"examples/org/moeaframework/examples/ga/tsplib/A280Example.java",
 				"examples/org/moeaframework/examples/ga/tsplib/TSPExample.java",
 				"examples/org/moeaframework/examples/ga/tsplib/a280.tsp"));
+		
+		examples.add(new TerminalExample(
+				resourceBundle.getString("parallelization.name"),
+				resourceBundle.getString("parallelization.description"),
+				ParallelizationExample.class,
+				"examples/org/moeaframework/examples/parallel/ParallelizationExample.java",
+				"examples/org/moeaframework/examples/parallel/ExpensiveSchafferProblem.java"));
+		
+		examples.add(new Example(
+				resourceBundle.getString("island.name"),
+				resourceBundle.getString("island.description"),
+				IslandModelExample.class,
+				"examples/org/moeaframework/examples/parallel/IslandModelExample.java"));
 		
 		examples.add(new Example(
 				resourceBundle.getString("diagnostic.name"),

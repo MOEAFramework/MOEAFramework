@@ -18,29 +18,24 @@
 package org.moeaframework.analysis.sensitivity;
 
 import java.io.File;
-
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
-import org.apache.commons.cli.OptionGroup;
 import org.apache.commons.cli.Options;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.NondominatedPopulation;
-import org.moeaframework.core.PopulationIO;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.indicator.QualityIndicator;
-import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.util.CommandLineUtility;
-import org.moeaframework.util.TypedProperties;
 
 /**
  * Command line utility for evaluating the approximation sets stored in a
  * result file and computing its metric file.
  * <p>
  * Usage: {@code java -cp "..." org.moeaframework.analysis.sensitivity.ResultFileEvaluator <options>}
- * <p>
- * Arguments:
- * <table border="0" style="margin-left: 1em">
+ * 
+ * <table>
+ *   <caption style="text-align: left">Arguments:</caption>
  *   <tr>
  *     <td>{@code -b, --problem}</td>
  *     <td>The name of the problem.  This name should reference one of the
@@ -93,19 +88,9 @@ public class ResultFileEvaluator extends CommandLineUtility {
 	public Options getOptions() {
 		Options options = super.getOptions();
 		
-		OptionGroup group = new OptionGroup();
-		group.setRequired(true);
-		group.addOption(Option.builder("b")
-				.longOpt("problem")
-				.hasArg()
-				.argName("name")
-				.build());
-		group.addOption(Option.builder("d")
-				.longOpt("dimension")
-				.hasArg()
-				.argName("number")
-				.build());
-		options.addOptionGroup(group);
+		OptionUtils.addProblemOption(options, true);
+		OptionUtils.addReferenceSetOption(options);
+		OptionUtils.addEpsilonOption(options);
 		
 		options.addOption(Option.builder("i")
 				.longOpt("input")
@@ -119,16 +104,6 @@ public class ResultFileEvaluator extends CommandLineUtility {
 				.argName("file")
 				.required()
 				.build());
-		options.addOption(Option.builder("e")
-				.longOpt("epsilon")
-				.hasArg()
-				.argName("e1,e2,...")
-				.build());
-		options.addOption(Option.builder("r")
-				.longOpt("reference")
-				.hasArg()
-				.argName("file")
-				.build());
 		options.addOption(Option.builder("f")
 				.longOpt("force")
 				.build());
@@ -138,47 +113,21 @@ public class ResultFileEvaluator extends CommandLineUtility {
 
 	@Override
 	public void run(CommandLine commandLine) throws Exception {
-		ResultFileReader reader = null;
-		MetricFileWriter writer = null;
-		Problem problem = null;
-		NondominatedPopulation referenceSet = null;
-
 		File inputFile = new File(commandLine.getOptionValue("input"));
 		File outputFile = new File(commandLine.getOptionValue("output"));
+		double[] epsilon = OptionUtils.getEpsilon(commandLine);
 
 		// sanity check to ensure input hasn't been modified after the output
 		if (!commandLine.hasOption("force") &&
 				(outputFile.lastModified() > 0L) && 
 				(inputFile.lastModified() > outputFile.lastModified())) {
-			throw new FrameworkException(
-					"input appears to be newer than output");
+			throw new FrameworkException("input appears to be newer than output");
 		}
 
-		// load reference set and create the quality indicator
-		if (commandLine.hasOption("reference")) {
-			referenceSet = new NondominatedPopulation(PopulationIO
-					.readObjectives(new File(commandLine
-							.getOptionValue("reference"))));
-		} else {
-			referenceSet = ProblemFactory.getInstance().getReferenceSet(
-					commandLine.getOptionValue("problem"));
-		}
-
-		if (referenceSet == null) {
-			throw new FrameworkException("no reference set available");
-		}
+		NondominatedPopulation referenceSet = OptionUtils.getReferenceSet(commandLine);
 
 		// open the resources and begin processing
-		try {
-			// setup the problem
-			if (commandLine.hasOption("problem")) {
-				problem = ProblemFactory.getInstance().getProblem(commandLine
-						.getOptionValue("problem"));
-			} else {
-				problem = new ProblemStub(Integer.parseInt(commandLine
-						.getOptionValue("dimension")));
-			}
-			
+		try (Problem problem = OptionUtils.getProblemInstance(commandLine, true)) {
 			// validate the reference set
 			for (Solution solution : referenceSet) {
 				if (solution.getNumberOfObjectives() != problem.getNumberOfObjectives()) {
@@ -187,53 +136,30 @@ public class ResultFileEvaluator extends CommandLineUtility {
 				}
 			}
 
-			QualityIndicator indicator = new QualityIndicator(problem,
-					referenceSet);
+			QualityIndicator indicator = new QualityIndicator(problem, referenceSet);
 
-			try {
-				reader = new ResultFileReader(problem, inputFile);
-
-				try {
-					writer = new MetricFileWriter(indicator, outputFile);
-
-					// resume at the last good output
-					for (int i = 0; i < writer.getNumberOfEntries(); i++) {
-						if (reader.hasNext()) {
-							reader.next();
-						} else {
-							throw new FrameworkException(
-									"output has more entries than input");
-						}
-					}
-
-					// evaluate the remaining entries
-					while (reader.hasNext()) {
-						ResultEntry entry = reader.next();
-						
-						if (commandLine.hasOption("epsilon")) {
-							TypedProperties typedProperties = new TypedProperties();
-							typedProperties.getProperties().setProperty("epsilon", commandLine.getOptionValue("epsilon"));
-
-							double[] epsilon = typedProperties.getDoubleArray("epsilon", null);
-							
-							entry = new ResultEntry(EpsilonHelper.convert(entry.getPopulation(), epsilon), entry.getProperties());
-						}
-						
-						writer.append(entry);
-					}
-				} finally {
-					if (writer != null) {
-						writer.close();
+			try (ResultFileReader reader = new ResultFileReader(problem, inputFile);
+					MetricFileWriter writer = new MetricFileWriter(indicator, outputFile)) {
+				// resume at the last good output
+				for (int i = 0; i < writer.getNumberOfEntries(); i++) {
+					if (reader.hasNext()) {
+						reader.next();
+					} else {
+						throw new FrameworkException("output has more entries than input");
 					}
 				}
-			} finally {
-				if (reader != null) {
-					reader.close();
+
+				// evaluate the remaining entries
+				while (reader.hasNext()) {
+					ResultEntry entry = reader.next();
+
+					if (epsilon != null) {
+						entry = new ResultEntry(EpsilonHelper.convert(entry.getPopulation(), epsilon),
+								entry.getProperties());
+					}
+						
+					writer.append(entry);
 				}
-			}
-		} finally {
-			if (problem != null) {
-				problem.close();
 			}
 		}
 	}

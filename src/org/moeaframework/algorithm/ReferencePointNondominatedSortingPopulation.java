@@ -36,6 +36,7 @@ import org.moeaframework.core.comparator.DominanceComparator;
 import org.moeaframework.core.comparator.RankComparator;
 import org.moeaframework.util.Vector;
 import org.moeaframework.util.weights.NormalBoundaryIntersectionGenerator;
+import org.moeaframework.util.weights.NormalBoundaryDivisions;
 
 /**
  * Implementation of the reference-point-based nondominated sorting method
@@ -80,15 +81,9 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 	private final int numberOfObjectives;
 
 	/**
-	 * The number of outer divisions.
+	 * The number of divisions.
 	 */
-	private final int divisionsOuter;
-
-	/**
-	 * The number of inner divisions, or {@code 0} if no inner divisions should
-	 * be used.
-	 */
-	private final int divisionsInner;
+	private final NormalBoundaryDivisions divisions;
 
 	/**
 	 * The ideal point, updated each iteration.
@@ -107,12 +102,10 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 	 * @param numberOfObjectives the number of objectives
 	 * @param divisions the number of divisions
 	 */
-	public ReferencePointNondominatedSortingPopulation(int numberOfObjectives,
-			int divisions) {
+	public ReferencePointNondominatedSortingPopulation(int numberOfObjectives,NormalBoundaryDivisions divisions) {
 		super();
 		this.numberOfObjectives = numberOfObjectives;
-		this.divisionsOuter = divisions;
-		this.divisionsInner = 0;
+		this.divisions = divisions;
 
 		initialize();
 	}
@@ -127,13 +120,12 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 	 * @param iterable the solutions used to initialize this population
 	 */
 	public ReferencePointNondominatedSortingPopulation(
-			int numberOfObjectives, int divisions,
+			int numberOfObjectives, NormalBoundaryDivisions divisions,
 			DominanceComparator comparator,
 			Iterable<? extends Solution> iterable) {
 		super(comparator, iterable);
 		this.numberOfObjectives = numberOfObjectives;
-		this.divisionsOuter = divisions;
-		this.divisionsInner = 0;
+		this.divisions = divisions;
 
 		initialize();
 	}
@@ -147,12 +139,11 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 	 * @param comparator the dominance comparator
 	 */
 	public ReferencePointNondominatedSortingPopulation(
-			int numberOfObjectives, int divisions,
+			int numberOfObjectives, NormalBoundaryDivisions divisions,
 			DominanceComparator comparator) {
 		super(comparator);
 		this.numberOfObjectives = numberOfObjectives;
-		this.divisionsOuter = divisions;
-		this.divisionsInner = 0;
+		this.divisions = divisions;
 
 		initialize();
 	}
@@ -166,96 +157,24 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 	 * @param iterable the solutions used to initialize this population
 	 */
 	public ReferencePointNondominatedSortingPopulation(
-			int numberOfObjectives, int divisions,
+			int numberOfObjectives, NormalBoundaryDivisions divisions,
 			Iterable<? extends Solution> iterable) {
 		super(iterable);
 		this.numberOfObjectives = numberOfObjectives;
-		this.divisionsOuter = divisions;
-		this.divisionsInner = 0;
+		this.divisions = divisions;
 
 		initialize();
 	}
-
+	
 	/**
-	 * Constructs an empty population that maintains the {@code rank} attribute
-	 * for its solutions.
+	 * Returns the number of divisions used to create the reference points.
 	 * 
-	 * @param numberOfObjectives the number of objectives
-	 * @param divisionsOuter the number of outer divisions
-	 * @param divisionsInner the number of inner divisions
+	 * @return the divisions object
 	 */
-	public ReferencePointNondominatedSortingPopulation(int numberOfObjectives,
-			int divisionsOuter, int divisionsInner) {
-		super();
-		this.numberOfObjectives = numberOfObjectives;
-		this.divisionsOuter = divisionsOuter;
-		this.divisionsInner = divisionsInner;
-
-		initialize();
+	public NormalBoundaryDivisions getDivisions() {
+		return divisions;
 	}
-
-	/**
-	 * Constructs a new population with the specified solutions that maintains
-	 * the {@code rank} attribute for its solutions.
-	 * 
-	 * @param numberOfObjectives the number of objectives
-	 * @param divisionsOuter the number of outer divisions
-	 * @param divisionsInner the number of inner divisions
-	 * @param comparator the dominance comparator
-	 * @param iterable the solutions used to initialize this population
-	 */
-	public ReferencePointNondominatedSortingPopulation(
-			int numberOfObjectives, int divisionsOuter, int divisionsInner,
-			DominanceComparator comparator,
-			Iterable<? extends Solution> iterable) {
-		super(comparator, iterable);
-		this.numberOfObjectives = numberOfObjectives;
-		this.divisionsOuter = divisionsOuter;
-		this.divisionsInner = divisionsInner;
-
-		initialize();
-	}
-
-	/**
-	 * Constructs an empty population that maintains the {@code rank} attribute
-	 * for its solutions.
-	 * 
-	 * @param numberOfObjectives the number of objectives
-	 * @param divisionsOuter the number of outer divisions
-	 * @param divisionsInner the number of inner divisions
-	 * @param comparator the dominance comparator
-	 */
-	public ReferencePointNondominatedSortingPopulation(
-			int numberOfObjectives, int divisionsOuter, int divisionsInner,
-			DominanceComparator comparator) {
-		super(comparator);
-		this.numberOfObjectives = numberOfObjectives;
-		this.divisionsOuter = divisionsOuter;
-		this.divisionsInner = divisionsInner;
-
-		initialize();
-	}
-
-	/**
-	 * Constructs a new population with the specified solutions that maintains
-	 * the {@code rank} attribute for its solutions.
-	 * 
-	 * @param numberOfObjectives the number of objectives
-	 * @param divisionsOuter the number of outer divisions
-	 * @param divisionsInner the number of inner divisions
-	 * @param iterable the solutions used to initialize this population
-	 */
-	public ReferencePointNondominatedSortingPopulation(
-			int numberOfObjectives, int divisionsOuter, int divisionsInner,
-			Iterable<? extends Solution> iterable) {
-		super(iterable);
-		this.numberOfObjectives = numberOfObjectives;
-		this.divisionsOuter = divisionsOuter;
-		this.divisionsInner = divisionsInner;
-
-		initialize();
-	}
-
+	
 	/**
 	 * Initializes the ideal point and reference points (weights).
 	 */
@@ -263,8 +182,7 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 		idealPoint = new double[numberOfObjectives];
 		Arrays.fill(idealPoint, Double.POSITIVE_INFINITY);
 		
-		weights = new NormalBoundaryIntersectionGenerator(numberOfObjectives,
-				divisionsOuter, divisionsInner).generate();
+		weights = new NormalBoundaryIntersectionGenerator(numberOfObjectives, divisions).generate();
 	}
 
 	/**

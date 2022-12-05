@@ -23,9 +23,8 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variable;
 
 /**
- * Initializes all built-in decision variables randomly. The
- * {@link #initialize(Variable)} method can be extended to provide support for
- * other types.
+ * Initializes all built-in decision variables randomly. This invokes
+ * {@link Variable#randomize()} on each decision variable.
  */
 public class RandomInitialization implements Initialization {
 
@@ -35,24 +34,17 @@ public class RandomInitialization implements Initialization {
 	protected final Problem problem;
 
 	/**
-	 * The initial population size.
-	 */
-	protected final int populationSize;
-
-	/**
 	 * Constructs a random initialization operator.
 	 * 
 	 * @param problem the problem
-	 * @param populationSize the initial population size
 	 */
-	public RandomInitialization(Problem problem, int populationSize) {
+	public RandomInitialization(Problem problem) {
 		super();
 		this.problem = problem;
-		this.populationSize = populationSize;
 	}
 
 	@Override
-	public Solution[] initialize() {
+	public Solution[] initialize(int populationSize) {
 		Solution[] initialPopulation = new Solution[populationSize];
 
 		for (int i = 0; i < populationSize; i++) {
@@ -66,18 +58,6 @@ public class RandomInitialization implements Initialization {
 		}
 
 		return initialPopulation;
-	}
-
-	/**
-	 * Initializes the specified decision variable randomly. This method
-	 * supports all built-in types, and can be extended to support custom types.
-	 * 
-	 * @param variable the variable to be initialized
-	 * @deprecated Call variable.randomize() instead
-	 */
-	@Deprecated
-	protected void initialize(Variable variable) {
-		variable.randomize();
 	}
 
 }

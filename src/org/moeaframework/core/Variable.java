@@ -22,8 +22,8 @@ import java.io.Serializable;
 /**
  * Interface for decision variables. This interface ensures independent copies
  * of decision variables can be constructed.  Implementations are strongly
- * encouraged to also override {@link #equals(Object)} and
- * {@link #hashCode()}.
+ * encouraged to also override {@link Object#equals(Object)} and
+ * {@link Object#hashCode()}.
  */
 public interface Variable extends Serializable {
 

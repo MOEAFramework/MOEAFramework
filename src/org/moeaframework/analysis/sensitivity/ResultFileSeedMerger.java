@@ -24,14 +24,11 @@ import java.util.List;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
-import org.apache.commons.cli.OptionGroup;
 import org.apache.commons.cli.Options;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
-import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.util.CommandLineUtility;
-import org.moeaframework.util.TypedProperties;
 
 /**
  * Command line utility for merging the approximation sets in one or more result
@@ -42,9 +39,9 @@ import org.moeaframework.util.TypedProperties;
  * combining the approximation sets for that record across all seeds.
  * <p>
  * Usage: {@code java -cp "..." org.moeaframework.analysis.sensitivity.ResultFileSeedMerger <options> <files>}
- * <p>
- * Arguments:
- * <table border="0" style="margin-left: 1em">
+ * 
+ * <table>
+ *   <caption style="text-align: left">Arguments:</caption>
  *   <tr>
  *     <td>{@code -b, --problem}</td>
  *     <td>The name of the problem.  This name should reference one of the
@@ -53,7 +50,6 @@ import org.moeaframework.util.TypedProperties;
  *   <tr>
  *     <td>{@code -d, --dimension}</td>
  *     <td>The number of objectives (use instead of -b).</td>
- *   </tr>
  *   </tr>
  *   <tr>
  *     <td>{@code -o, --output}</td>
@@ -81,30 +77,14 @@ public class ResultFileSeedMerger extends CommandLineUtility {
 	public Options getOptions() {
 		Options options = super.getOptions();
 
-		OptionGroup group = new OptionGroup();
-		group.setRequired(true);
-		group.addOption(Option.builder("b")
-				.longOpt("problem")
-				.hasArg()
-				.argName("name")
-				.build());
-		group.addOption(Option.builder("d")
-				.longOpt("dimension")
-				.hasArg()
-				.argName("number")
-				.build());
-		options.addOptionGroup(group);
+		OptionUtils.addProblemOption(options, true);
+		OptionUtils.addEpsilonOption(options);
 
 		options.addOption(Option.builder("o")
 				.longOpt("output")
 				.hasArg()
 				.argName("file")
 				.required()
-				.build());
-		options.addOption(Option.builder("e")
-				.longOpt("epsilon")
-				.hasArg()
-				.argName("e1,e2,...")
 				.build());
 
 		return options;
@@ -120,44 +100,25 @@ public class ResultFileSeedMerger extends CommandLineUtility {
 	 *         file
 	 * @throws IOException if an I/O error occurred
 	 */
-	private List<NondominatedPopulation> load(File file, Problem problem)
-			throws IOException {
-		ResultFileReader reader = null;
-
-		try {
-			reader = new ResultFileReader(problem, file);
-			List<NondominatedPopulation> data = 
-					new ArrayList<NondominatedPopulation>();
+	private List<NondominatedPopulation> load(File file, Problem problem) throws IOException {
+		try (ResultFileReader reader = new ResultFileReader(problem, file)) {
+			List<NondominatedPopulation> data = new ArrayList<NondominatedPopulation>();
 
 			while (reader.hasNext()) {
 				data.add(reader.next().getPopulation());
 			}
 
 			return data;
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
 		}
 	}
 
 	@Override
 	public void run(CommandLine commandLine) throws Exception {
-		List<List<NondominatedPopulation>> entries = 
-				new ArrayList<List<NondominatedPopulation>>();
-		Problem problem = null;
-		ResultFileWriter writer = null;
+		List<List<NondominatedPopulation>> entries = new ArrayList<List<NondominatedPopulation>>();
+		double[] epsilon = OptionUtils.getEpsilon(commandLine);
 
-		try {
-			// setup the problem
-			if (commandLine.hasOption("problem")) {
-				problem = ProblemFactory.getInstance().getProblem(commandLine
-						.getOptionValue("problem"));
-			} else {
-				problem = new ProblemStub(Integer.parseInt(commandLine
-						.getOptionValue("dimension")));
-			}
 
+		try (Problem problem = OptionUtils.getProblemInstance(commandLine, true)) {
 			// load data from all input files
 			for (String filename : commandLine.getArgs()) {
 				entries.add(load(new File(filename), problem));
@@ -165,8 +126,7 @@ public class ResultFileSeedMerger extends CommandLineUtility {
 
 			// validate the inputs
 			if (entries.isEmpty()) {
-				throw new IllegalArgumentException(
-						"requires at least one file");
+				throw new IllegalArgumentException("requires at least one file");
 			}
 
 			int numberOfEntries = -1;
@@ -175,25 +135,20 @@ public class ResultFileSeedMerger extends CommandLineUtility {
 				if (numberOfEntries < 0) {
 					numberOfEntries = entries.get(i).size();
 				} else if (numberOfEntries != entries.get(i).size()) {
-					throw new IllegalArgumentException(
-							"unbalanced number of entries: "
-									+ commandLine.getArgs()[i]);
+					throw new IllegalArgumentException("unbalanced number of entries: " +
+							commandLine.getArgs()[i]);
 				}
 			}
 
 			// process and output the merged sets
-			try {
-				writer = new ResultFileWriter(problem, new File(
-						commandLine.getOptionValue("output")));
+			try (ResultFileWriter writer = new ResultFileWriter(problem,
+					new File(commandLine.getOptionValue("output")))) {
 
 				for (int i = 0; i < numberOfEntries; i++) {
 					NondominatedPopulation mergedSet = null;
 
-					// configure epsilon-dominance
-					if (commandLine.hasOption("epsilon")) {
-						double[] epsilon = TypedProperties.withProperty(
-								"epsilon", commandLine.getOptionValue(
-								"epsilon")).getDoubleArray("epsilon", null);
+					// configure epsilon-dominance					
+					if (epsilon != null) {
 						mergedSet = new EpsilonBoxDominanceArchive(epsilon);
 					} else {
 						mergedSet = new NondominatedPopulation();
@@ -205,14 +160,6 @@ public class ResultFileSeedMerger extends CommandLineUtility {
 
 					writer.append(new ResultEntry(mergedSet));
 				}
-			} finally {
-				if (writer != null) {
-					writer.close();
-				}
-			}
-		} finally {
-			if (problem != null) {
-				problem.close();
 			}
 		}
 	}

@@ -19,6 +19,7 @@ package org.moeaframework.core.comparator;
 
 import java.io.Serializable;
 
+import org.moeaframework.core.Epsilons;
 import org.moeaframework.core.Solution;
 
 /**
@@ -39,8 +40,7 @@ import org.moeaframework.core.Solution;
  * Well-Spread Pareto-Optimal Solutions." KanGAL Report No 2003002. Feb 2003.
  * </ol>
  */
-public class EpsilonBoxObjectiveComparator implements DominanceComparator,
-Serializable {
+public class EpsilonBoxObjectiveComparator implements DominanceComparator, Serializable {
 
 	private static final long serialVersionUID = -5454497496983459905L;
 
@@ -54,7 +54,7 @@ Serializable {
 	/**
 	 * The &epsilon; values used by this comparator.
 	 */
-	protected final double[] epsilons;
+	protected final Epsilons epsilons;
 
 	/**
 	 * Constructs an additive &epsilon;-box dominance comparator with the 
@@ -63,7 +63,7 @@ Serializable {
 	 * @param epsilon the &epsilon; value used by this comparator
 	 */
 	public EpsilonBoxObjectiveComparator(double epsilon) {
-		this.epsilons = new double[] { epsilon };
+		this(new Epsilons(epsilon));
 	}
 
 	/**
@@ -73,7 +73,18 @@ Serializable {
 	 * @param epsilons the &epsilon; values used by this comparator
 	 */
 	public EpsilonBoxObjectiveComparator(double[] epsilons) {
-		this.epsilons = epsilons.clone();
+		this(new Epsilons(epsilons));
+	}
+	
+	/**
+	 * Constructs an additive &epsilon;-box dominance comparator with the 
+	 * specified &epsilon; values.
+	 * 
+	 * @param epsilon the &epsilon; values used by this comparator
+	 */
+	public EpsilonBoxObjectiveComparator(Epsilons epsilons) {
+		super();
+		this.epsilons = epsilons;
 	}
 
 	/**
@@ -101,6 +112,15 @@ Serializable {
 	protected void setSameBox(boolean isSameBox) {
 		this.isSameBox = isSameBox;
 	}
+	
+	/**
+	 * Returns the &epsilon; values in use by this comparator.
+	 * 
+	 * @return the &epsilon; values
+	 */
+	public Epsilons getEpsilons() {
+		return epsilons;
+	}
 
 	/**
 	 * Returns the &epsilon; value used by this comparator for the specified
@@ -108,12 +128,13 @@ Serializable {
 	 * last &epsilon; value in this array is used
 	 * {@code (epsilons[epsilons.length-1])}.
 	 * 
+	 * @param objective the index of the objective
 	 * @return the &epsilon; value used by this comparator for the specified
 	 *         objective
 	 */
+	@Deprecated
 	public double getEpsilon(int objective) {
-		return epsilons[objective < epsilons.length ? objective
-				: epsilons.length - 1];
+		return epsilons.get(objective);
 	}
 
 	/**
@@ -123,8 +144,9 @@ Serializable {
 	 * 
 	 * @return the number of defined &epsilon; values
 	 */
+	@Deprecated
 	public int getNumberOfDefinedEpsilons() {
-		return epsilons.length;
+		return epsilons.size();
 	}
 
 	/**
@@ -139,7 +161,7 @@ Serializable {
 		boolean dominate2 = false;
 
 		for (int i = 0; i < solution1.getNumberOfObjectives(); i++) {
-			double epsilon = getEpsilon(i);
+			double epsilon = epsilons.get(i);
 			double index1 = Math.floor(solution1.getObjective(i) / epsilon);
 			double index2 = Math.floor(solution2.getObjective(i) / epsilon);
 			int flag = Double.compare(index1, index2);
@@ -166,7 +188,7 @@ Serializable {
 			double dist2 = 0.0;
 
 			for (int i = 0; i < solution1.getNumberOfObjectives(); i++) {
-				double epsilon = getEpsilon(i);
+				double epsilon = epsilons.get(i);
 				double index1 = Math.floor(solution1.getObjective(i) / epsilon);
 				double index2 = Math.floor(solution2.getObjective(i) / epsilon);
 

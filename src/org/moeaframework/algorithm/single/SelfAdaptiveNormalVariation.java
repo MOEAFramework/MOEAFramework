@@ -19,7 +19,7 @@ package org.moeaframework.algorithm.single;
 
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.Variation;
+import org.moeaframework.core.operator.Mutation;
 import org.moeaframework.core.variable.RealVariable;
 
 /**
@@ -33,21 +33,29 @@ import org.moeaframework.core.variable.RealVariable;
  * where {@code N(0,1)} and {@code N(0,I)} are normally-distributed random
  * numbers with mean {@code 0} and standard deviation {@code 1}.
  */
-public class SelfAdaptiveNormalVariation implements Variation {
+public class SelfAdaptiveNormalVariation implements Mutation {
 	
 	/**
 	 * The attribute for storing the self adaptive parameter.
 	 */
 	public static final String SIGMA = "sigma";
-
+	
+	/**
+	 * Constructs a new instance of the self-adaptive variation based on the
+	 * normal distribution.
+	 */
+	public SelfAdaptiveNormalVariation() {
+		super();
+	}
+	
 	@Override
-	public int getArity() {
-		return 1;
+	public String getName() {
+		return "selfadaptive";
 	}
 
 	@Override
-	public Solution[] evolve(Solution[] parents) {
-		Solution child = parents[0].copy();
+	public Solution mutate(Solution parent) {
+		Solution child = parent.copy();
 		double sigma = 1.0;
 		double tau = 1.0 / Math.sqrt(2.0 * child.getNumberOfVariables());
 		
@@ -72,7 +80,7 @@ public class SelfAdaptiveNormalVariation implements Variation {
 			variable.setValue(value);
 		}
 		
-		return new Solution[] { child };
+		return child;
 	}
 
 }

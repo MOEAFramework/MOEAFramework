@@ -34,13 +34,20 @@ import org.moeaframework.core.comparator.DominanceComparator;
  * compilation error indicating the use of the {@code compare} method is
  * ambiguous.  This is the result of an important distinction between
  * {@code DominanceComparator} and {@code Comparator<Solution>}.
- * {@link DominanceComparator} induces a <emph>partial</emph> ordering while
- * {@code Comparator<Solution>} provides a <emph>total</emph> ordering.  In
+ * {@link DominanceComparator} induces a <i>partial</i> ordering while
+ * {@code Comparator<Solution>} provides a <i>total</i> ordering.  In
  * general, the two can not be interchanged except in cases where the
  * {@code DominanceComparator} produces a total ordering, which is the case
  * here.  However, you will need to cast to one of these two interfaces in order
  * to invoke the {@code compare} method and avoid the compilation error.
  */
 public interface AggregateObjectiveComparator extends DominanceComparator, Comparator<Solution> {
+	
+	/**
+	 * Returns the weights used by this linear aggregate function.
+	 * 
+	 * @return the weights
+	 */
+	public double[] getWeights();
 
 }

@@ -18,100 +18,58 @@
 package org.moeaframework.problem.CEC2009;
 
 import org.junit.Test;
-import org.moeaframework.core.Problem;
 import org.moeaframework.problem.ProblemTest;
 
 public class CEC2009Test extends ProblemTest {
 
 	@Test
-	public void testUF1() throws Exception {
+	public void testUF1() {
 		test("UF1");
 	}
 
 	@Test
-	public void testUF2() throws Exception {
+	public void testUF2() {
 		test("UF2");
 	}
 
 	@Test
-	public void testUF3() throws Exception {
+	public void testUF3() {
 		test("UF3");
 	}
 
 	@Test
-	public void testUF4() throws Exception {
+	public void testUF4() {
 		test("UF4");
 	}
 
 	@Test
-	public void testUF5() throws Exception {
+	public void testUF5() {
 		test("UF5");
 	}
 
 	@Test
-	public void testUF6() throws Exception {
+	public void testUF6() {
 		test("UF6");
 	}
 
 	@Test
-	public void testUF7() throws Exception {
+	public void testUF7() {
 		test("UF7");
 	}
 
 	@Test
-	public void testUF8() throws Exception {
+	public void testUF8() {
 		test("UF8");
 	}
 
 	@Test
-	public void testUF9() throws Exception {
+	public void testUF9() {
 		test("UF9");
 	}
 
 	@Test
-	public void testUF10() throws Exception {
+	public void testUF10() {
 		test("UF10");
-	}
-
-	public void test(String problem) throws Exception {
-		org.uma.jmetal.problem.DoubleProblem problemA;
-		Problem problemB;
-
-		if (problem.equals("UF1")) {
-			problemA = new org.uma.jmetal.problem.multiobjective.UF.UF1();
-			problemB = new org.moeaframework.problem.CEC2009.UF1();
-		} else if (problem.equals("UF2")) {
-			problemA = new org.uma.jmetal.problem.multiobjective.UF.UF2();
-			problemB = new org.moeaframework.problem.CEC2009.UF2();
-		} else if (problem.equals("UF3")) {
-			problemA = new org.uma.jmetal.problem.multiobjective.UF.UF3();
-			problemB = new org.moeaframework.problem.CEC2009.UF3();
-		} else if (problem.equals("UF4")) {
-			problemA = new org.uma.jmetal.problem.multiobjective.UF.UF4();
-			problemB = new org.moeaframework.problem.CEC2009.UF4();
-		} else if (problem.equals("UF5")) {
-			problemA = new org.uma.jmetal.problem.multiobjective.UF.UF5();
-			problemB = new org.moeaframework.problem.CEC2009.UF5();
-		} else if (problem.equals("UF6")) {
-			problemA = new org.uma.jmetal.problem.multiobjective.UF.UF6();
-			problemB = new org.moeaframework.problem.CEC2009.UF6();
-		} else if (problem.equals("UF7")) {
-			problemA = new org.uma.jmetal.problem.multiobjective.UF.UF7();
-			problemB = new org.moeaframework.problem.CEC2009.UF7();
-		} else if (problem.equals("UF8")) {
-			problemA = new org.uma.jmetal.problem.multiobjective.UF.UF8();
-			problemB = new org.moeaframework.problem.CEC2009.UF8();
-		} else if (problem.equals("UF9")) {
-			problemA = new org.uma.jmetal.problem.multiobjective.UF.UF9();
-			problemB = new org.moeaframework.problem.CEC2009.UF9();
-		} else if (problem.equals("UF10")) {
-			problemA = new org.uma.jmetal.problem.multiobjective.UF.UF10();
-			problemB = new org.moeaframework.problem.CEC2009.UF10();
-		} else {
-			throw new IllegalArgumentException();
-		}
-
-		test(problemA, problemB);
 	}
 
 }

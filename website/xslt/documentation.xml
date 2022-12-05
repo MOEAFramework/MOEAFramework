@@ -13,20 +13,9 @@
 <h2>Documentation</h2>
 
 <p>
-  In addition to the
-  <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v%VERSION%/MOEAFramework-%VERSION%-QuickStart.pdf"
-          onClick="_gaq.push(['_trackEvent', 'Downloads', 'Manual', '%VERSION%']);">Quick Start Guide</a> 
-  and examples provided with each downloads, please find additional documentation below.  While we would like to
-  provide free access to all materials, there are expenses associated with
-  hosting and maintaining open source software.  To help recoup these costs and
-  encourage continued development of this software, we charge a small fee for
-  our instruction manuals.  Please consider supporting this software by
-  purchasing our guides below.  Thank you!
+  In addition to the examples included with the source code, additional documentation is provided below.
+  Please consider purchasing a copy of the Beginner's Guide to help support this project.  Thank you!
 </p>
-
-<!--
-<p><font color="#FF409F"><strong>Fall savings - Save 33% off of our user guides today!</strong></font></p>
--->
 
 <div class="listing">
   <ul>
@@ -72,12 +61,11 @@
         |
         <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v%VERSION%/MOEAFramework-%VERSION%-BeginnersGuidePreview.pdf" style="text-transform: none"
           onClick="_gaq.push(['_trackEvent', 'Downloads', 'Manual', '%VERSION%']);">Preview</a>
-        <!-- |
-        <a href="http://www.amazon.com/gp/product/1523374764/ref=as_li_tl?ie=UTF8&amp;camp=1789&amp;creative=390957&amp;creativeASIN=1523374764&amp;linkCode=as2&amp;tag=mofr-20&amp;linkId=K2VMTPIDA3Y4URUE" style="text-transform: none"><span class="price">$35</span> - Paperback</a>
-         -->
       </span>
       <div class="fix"></div>
     </li>
+    
+    <!--
     <li>
       <a href="http://www.lulu.com/shop/david-hadka/high-performance-computing-with-the-moea-framework-and-ignite/ebook/product-22531100.html">
         <img src="images/hpcmoea_small.png" class="float-left" width="107" height="140"
@@ -98,20 +86,11 @@
       <br /><br />
       <span style="font-size: 10pt">
         <a href="http://www.lulu.com/shop/david-hadka/high-performance-computing-with-the-moea-framework-and-ignite/ebook/product-22531100.html" style="text-transform: none"><span class="price">$6</span> - Digital Copy (PDF)</a>
-        <!-- |
-        <a href="http://www.amazon.com/gp/product/1523475463/ref=as_li_tl?ie=UTF8&amp;camp=1789&amp;creative=390957&amp;creativeASIN=1523475463&amp;linkCode=as2&amp;tag=mofr-20&amp;linkId=2H6X3GBK5UTCZCQX" style="text-transform: none"><span class="price">$20</span> - Paperback</a>
-         -->
       </span>
       <div class="fix"></div>
     </li>
+    -->
   </ul>
-</div>
-
-<div>
-  <p>
-    Older versions of the user manual can be accessed on the
-    <a href="archive.html">archive page</a>.
-  </p>
 </div>
 
   </content>

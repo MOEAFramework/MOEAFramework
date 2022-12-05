@@ -144,7 +144,7 @@ public class NondominatedSorting {
 			boolean isDuplicate = false;
 			
 			for (Solution s2 : uniqueFront) {
-				if (NondominatedPopulation.distance(s1, s2) < Settings.EPS) {
+				if (s1.distanceTo(s2) < Settings.EPS) {
 					isDuplicate = true;
 					break;
 				}

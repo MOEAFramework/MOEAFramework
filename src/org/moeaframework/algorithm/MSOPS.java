@@ -17,12 +17,21 @@
  */
 package org.moeaframework.algorithm;
 
+import java.util.List;
+
 import org.moeaframework.core.Initialization;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
+import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.configuration.Property;
+import org.moeaframework.core.operator.RandomInitialization;
 import org.moeaframework.core.operator.real.DifferentialEvolutionSelection;
 import org.moeaframework.core.operator.real.DifferentialEvolutionVariation;
+import org.moeaframework.core.variable.RealVariable;
+import org.moeaframework.util.TypedProperties;
+import org.moeaframework.util.Vector;
+import org.moeaframework.util.weights.RandomGenerator;
 
 /**
  * Implementation of the Multiple Single Objective Pareto Sampling (MSOPS)
@@ -44,28 +53,72 @@ public class MSOPS extends AbstractEvolutionaryAlgorithm {
 	 * The selection operator.
 	 */
 	private final DifferentialEvolutionSelection selection;
-
+	
 	/**
-	 * The variation operator.
+	 * Constructs a new MSOPS instance with default settings.
+	 * 
+	 * @param problem the problem being solved
 	 */
-	private final DifferentialEvolutionVariation variation;
+	public MSOPS(Problem problem) {
+		this(problem,
+				Settings.DEFAULT_POPULATION_SIZE,
+				new MSOPSRankedPopulation(generateWeights(problem, Settings.DEFAULT_POPULATION_SIZE / 2)),
+				new DifferentialEvolutionSelection(),
+				new DifferentialEvolutionVariation(),
+				new RandomInitialization(problem));
+	}
 
 	/**
 	 * Constructs a new instance of the MSOPS algorithm.
 	 * 
-	 * @param problem the problem
+	 * @param problem the problem being solved
+	 * @param initialPopulationSize the initial population size
 	 * @param population the population supporting MSOPS ranking
 	 * @param selection the differential evolution selection operator
 	 * @param variation the differential evolution variation operator
 	 * @param initialization the initialization method
 	 */
-	public MSOPS(Problem problem, MSOPSRankedPopulation population,
-			DifferentialEvolutionSelection selection,
-			DifferentialEvolutionVariation variation,
+	public MSOPS(Problem problem, int initialPopulationSize, MSOPSRankedPopulation population,
+			DifferentialEvolutionSelection selection, DifferentialEvolutionVariation variation,
 			Initialization initialization) {
-		super(problem, population, null, initialization);
-		this.variation = variation;
+		super(problem, initialPopulationSize, population, null, initialization, variation);
 		this.selection = selection;
+		
+		problem.assertType(RealVariable.class);
+	}
+	
+	/**
+	 * Generates randomly-distributed, normalized weights.
+	 * 
+	 * @param problem the problem
+	 * @param numberOfWeights the number of weights
+	 * @return the normalized weights
+	 */
+	static final List<double[]> generateWeights(Problem problem, int numberOfWeights) {
+		List<double[]> weights = new RandomGenerator(problem.getNumberOfObjectives(), numberOfWeights).generate();
+		
+		// normalize weights so their magnitude is 1
+		for (int i = 0; i < weights.size(); i++) {
+			weights.set(i, Vector.normalize(weights.get(i)));
+		}
+		
+		return weights;
+	}
+	
+	@Override
+	public DifferentialEvolutionVariation getVariation() {
+		return (DifferentialEvolutionVariation)super.getVariation();
+	}
+	
+	@Property("operator")
+	public void setVariation(DifferentialEvolutionVariation variation) {
+		super.setVariation(variation);
+	}
+	
+	@Override
+	@Property("populationSize")
+	public void setInitialPopulationSize(int initialPopulationSize) {
+		super.setInitialPopulationSize(initialPopulationSize);
 	}
 	
 	@Override
@@ -84,8 +137,7 @@ public class MSOPS extends AbstractEvolutionaryAlgorithm {
 			// findNearest(i, ...) always puts the i-th solution at index 0
 			selection.setCurrentIndex(0);
 			
-			Solution[] parents = selection.select(variation.getArity(),
-					population.findNearest(i, neighborhoodSize));
+			Solution[] parents = selection.select(variation.getArity(), population.findNearest(i, neighborhoodSize));
 			Solution[] children = variation.evolve(parents);
 
 			offspring.addAll(children);
@@ -95,6 +147,22 @@ public class MSOPS extends AbstractEvolutionaryAlgorithm {
 		
 		population.addAll(offspring);
 		population.truncate(populationSize);
+	}
+	
+	@Override
+	public void applyConfiguration(TypedProperties properties) {
+		if (properties.contains("numberOfWeights")) {
+			setPopulation(new MSOPSRankedPopulation(generateWeights(problem, properties.getInt("numberOfWeights"))));
+		}
+		
+		super.applyConfiguration(properties);
+	}
+
+	@Override
+	public TypedProperties getConfiguration() {
+		TypedProperties properties = super.getConfiguration();
+		properties.setInt("numberOfWeights", getPopulation().getNumberOfWeights());
+		return properties;
 	}
 
 }

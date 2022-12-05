@@ -25,13 +25,11 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
 import org.moeaframework.util.TypedProperties;
-import org.moeaframework.util.io.FileProtection;
 import org.apache.commons.text.StringTokenizer;
 import org.moeaframework.core.NondominatedPopulation.DuplicateMode;
 import org.moeaframework.core.indicator.Hypervolume;
@@ -55,6 +53,11 @@ public class Settings {
 	 * The default buffer size.  Currently set to 4096 bytes.
 	 */
 	public static final int BUFFER_SIZE = 0x1000;
+	
+	/**
+	 * The default population size.
+	 */
+	public static final int DEFAULT_POPULATION_SIZE = 100;
 	
 	/**
 	 * Store the new line character to prevent repetitive calls to
@@ -171,18 +174,6 @@ public class Settings {
 	public static final String KEY_PISA_POLL = KEY_PISA_PREFIX + "poll";
 	
 	/**
-	 * The property key for the file protection mode.
-	 */
-	public static final String KEY_FILE_PROTECTION_MODE = KEY_PREFIX + 
-			"util.io.file_protection_mode";
-	
-	/**
-	 * The property key for the file protection file name format.
-	 */
-	public static final String KEY_FILE_PROTECTION_FORMAT = KEY_PREFIX +
-			"util.io.file_protection_format";
-	
-	/**
 	 * The property key for the algorithms available in the diagnostic tool.
 	 */
 	public static final String KEY_DIAGNOSTIC_TOOL_ALGORITHMS = KEY_PREFIX +
@@ -215,16 +206,6 @@ public class Settings {
 			"problem.external_problem_debugging";
 	
 	/**
-	 * The property key for listing the allowed packages that can be
-	 * instrumented.
-	 * 
-	 * @deprecated no longer used
-	 */
-	@Deprecated
-	public static final String KEY_ALLOWED_PACKAGES = KEY_PREFIX +
-			"allowed_packages";
-	
-	/**
 	 * Loads the properties.
 	 */
 	static {
@@ -245,27 +226,19 @@ public class Settings {
 		//attempt to access properties file
 		try {
 			File file = new File(resource);
-			Reader reader = null;
 			
-			try {
-				if (file.exists()) {
-					reader = new BufferedReader(new FileReader(file));
-				} else {
-					InputStream stream = Settings.class.getResourceAsStream(
-							"/" + resource);
-					
-					if (stream != null) {
-						reader = new BufferedReader(new InputStreamReader(
-								stream));
-					}
-				}
-				
-				if (reader != null) {
+			if (file.exists()) {
+				try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
 					properties.load(reader);
 				}
-			} finally {
-				if (reader != null) {
-					reader.close();
+			} else {
+				try (InputStream stream = Settings.class.getResourceAsStream("/" + resource)) {
+					if (stream != null) {
+						try (BufferedReader reader = new BufferedReader(new InputStreamReader(stream))) {
+							properties.load(reader);
+						}
+					}
+					
 				}
 			}
 		} catch (IOException e) {
@@ -528,35 +501,6 @@ public class Settings {
 	}
 	
 	/**
-	 * Returns the file protection mode.  Valid modes include
-	 * <ul>
-	 *   <li>STRICT
-	 *   <li>SAFE
-	 *   <li>DISABLED
-	 * </ul>
-	 * 
-	 * @return the file protection mode
-	 */
-	public static String getFileProtectionMode() {
-		return PROPERTIES.getString(KEY_FILE_PROTECTION_MODE, 
-				FileProtection.SAFE_MODE);
-	}
-	
-	/**
-	 * Returns the file protection file name format.  The following variable 
-	 * substitutions are provided:
-	 * <ul>
-	 *   <li>{0} the filename of the file being validated
-	 * </ul>
-	 * 
-	 * @return the file protection file name format
-	 */
-	public static String getFileProtectionFormat() {
-		return PROPERTIES.getString(KEY_FILE_PROTECTION_FORMAT, 
-				".{0}.md5");
-	}
-	
-	/**
 	 * Returns the list of algorithms displayed in the diagnostic tool GUI.
 	 * 
 	 * @return the list of algorithms displayed in the diagnostic tool GUI
@@ -638,18 +582,6 @@ public class Settings {
 	 */
 	public static boolean getExternalProblemDebuggingEnabled() {
 		return PROPERTIES.getBoolean(KEY_EXTERNAL_PROBLEM_DEBUGGING, false);
-	}
-	
-	/**
-	 * Returns the allowed packages that can be instrumented.  By default, only
-	 * packages in "org.moeaframework" can be instrumented.
-	 * 
-	 * @return the allowed packages that can be instrumented
-	 * @deprecated no longer used
-	 */
-	@Deprecated
-	public static String[] getAllowedPackages() {
-		return PROPERTIES.getStringArray(KEY_ALLOWED_PACKAGES, new String[0]);
 	}
 	
 	/**

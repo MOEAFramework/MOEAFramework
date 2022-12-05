@@ -168,20 +168,6 @@ where `mu` is the number of parents selected by the PISA process, `parents` is t
 is the number of offspring produced by a single invocation of the variation operator, and `lambda` is the total number of offspring produced during a
 generation.
 
-**no digest file**  
-Thrown when attempting to validate a data file using a digest file, but no such digest file exists.  Processing of the data file should cease 
-immediately for sensitive applications where data integrity is essential.  If the digest file simply hasn't yet been produced but the file contents are 
-verified, the FileProtection command line utility can optionally generate digest files.
-  
-**invalid digest file**  
-Thrown when attempting to validate a date file using a digest file, but the digest file is corrupted or does not contain a valid digest.  Processing of 
-the data file should cease immediately for sensitive applications where data  integrity is essential.
-
-**digest does not match**  
-Thrown when attempting to validate a data file using a digest file, but the actual digest of the data file does not match the expected digest contained
-in the digest file.  This indicates that the data file or the digest file are corrupted.  Processing of the data file should cease immediately for 
-sensitive applications where data integrity is essential.
-  
 **unexpected rule separator**  
 **rule must contain at least one production**  
 **invalid symbol**  
@@ -312,9 +298,6 @@ can use the `--lowerBounds` and `--upperBounds` arguments; or (2) use the `--var
 Warnings are messages printed to the standard error stream (i.e., the console) that indicate an abnormal or unsafe condition.  While warnings do not indicate
 an error occurred, they do indicate caution is required by the user.
 
-**no digest file exists to validate \<FILE\>**  
-Attempted to validate the file but no digest file exists.  This indicates that the framework could not verify the authenticity of the file.  
-  
 **saving result file without variables, may become unstable**  
 Occurs when writing a result file with the output of decision variables suppressed.  The suppression of decision variable output is a user-specified
 option.  The warning "may become unstable" indicates that further use of the result file may result in unexpected errors if the decision variables are
@@ -403,3 +386,7 @@ file.  Otherwise, this warning is displayed and the program uses default names.
 
 **population is empty, can not generate ARFF file**  
 The `ARFFConverter` outputs an ARFF file using the last entry in a result file. If the last entry is empty, then no ARFF file is generated.
+
+**properties not accessed: \<property\>**
+Warns when a property was set but never read when executing the algorithm.  This is not necessarily a problem, but could indicate a typo or
+incorrectly configured algorithm or operator.

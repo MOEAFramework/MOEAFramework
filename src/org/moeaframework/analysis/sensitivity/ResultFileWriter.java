@@ -17,7 +17,6 @@
  */
 package org.moeaframework.analysis.sensitivity;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -28,11 +27,9 @@ import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
-import java.util.Properties;
 
-import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.codec.binary.StringUtils;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
@@ -41,6 +38,8 @@ import org.moeaframework.core.Variable;
 import org.moeaframework.core.variable.BinaryVariable;
 import org.moeaframework.core.variable.Permutation;
 import org.moeaframework.core.variable.RealVariable;
+import org.moeaframework.util.TypedProperties;
+import org.moeaframework.util.io.CommentedLineReader;
 import org.moeaframework.util.io.FileUtils;
 
 /**
@@ -50,7 +49,7 @@ import org.moeaframework.util.io.FileUtils;
  * contained on these lines after the {@code #} character are ignored.
  * <p>
  * An entry contains two pieces of data: 1) properties which are defined on
- * lines starting with {@code //} in the same format as {@link Properties}; and
+ * lines starting with {@code //} in the same format as {@link TypedProperties}; and
  * 2) lines containing a sequence of floating-point numbers listing, in order,
  * the real-valued decision variables and objectives. Each decision variable is
  * separated by one or more whitespace characters. Decision variables that can 
@@ -120,7 +119,7 @@ public class ResultFileWriter implements OutputWriter {
 	 * 
 	 * @param problem the problem
 	 * @param file the file to which the results are stored
-	 * @throws IOException
+	 * @throws IOException if an I/O error occurred
 	 */
 	public ResultFileWriter(Problem problem, File file) throws IOException {
 		this(problem, file, true);
@@ -141,7 +140,7 @@ public class ResultFileWriter implements OutputWriter {
 	 * @param file the file to which the results are stored
 	 * @param includeVariables {@code true} if this writer should save the 
 	 *        decision variables; {@code false} otherwise.
-	 * @throws IOException
+	 * @throws IOException if an I/O error occurred
 	 */
 	public ResultFileWriter(Problem problem, File file, 
 			boolean includeVariables) throws IOException {
@@ -193,17 +192,9 @@ public class ResultFileWriter implements OutputWriter {
 
 		// if the file already existed, copy all complete entries
 		if (existingFile.exists()) {
-			ResultFileReader reader = null;
-
-			try {
-				reader = new ResultFileReader(problem, existingFile);
-
+			try (ResultFileReader reader = new ResultFileReader(problem, existingFile)) {
 				while (reader.hasNext()) {
 					append(reader.next());
-				}
-			} finally {
-				if (reader != null) {
-					reader.close();
 				}
 			}
 
@@ -243,7 +234,7 @@ public class ResultFileWriter implements OutputWriter {
 		}
 		
 		//ensure a non-empty entry is written
-		Properties properties = entry.getProperties();
+		TypedProperties properties = entry.getProperties();
 		
 		if (feasibleSolutions.isEmpty() && 
 				((properties == null) || (properties.isEmpty()))) {
@@ -302,28 +293,18 @@ public class ResultFileWriter implements OutputWriter {
 	 * @param properties the properties
 	 * @throws IOException if an I/O error occurred
 	 */
-	private void printProperties(Properties properties) throws IOException {
-		StringWriter stringBuffer = new StringWriter();
-		BufferedReader reader = null;
+	private void printProperties(TypedProperties properties) throws IOException {
+		try (StringWriter stringBuffer = new StringWriter()) {
+			properties.store(stringBuffer);
 		
-		properties.store(stringBuffer, null);
-		
-		try {
-			reader = new BufferedReader(new StringReader(
-					stringBuffer.toString()));
-			
-			reader.readLine(); //skip first line that contains the timestamp
-			
-			String line = null;
-			while ((line = reader.readLine()) != null) {
-				writer.print("//");
-				writer.println(line);
+			try (CommentedLineReader reader = new CommentedLineReader(new StringReader(stringBuffer.toString()))) {
+				String line = null;
+				while ((line = reader.readLine()) != null) {
+					writer.print("//");
+					writer.println(line);
+				}
 			}
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
-		}
+		} 
 	}
 
 	@Override
@@ -389,22 +370,10 @@ public class ResultFileWriter implements OutputWriter {
 	 * @throws IOException if the variable count not be serialized
 	 */
 	private String serialize(Variable variable) throws IOException {
-		ObjectOutputStream oos = null;
-		
-		try {
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			oos = new ObjectOutputStream(baos);
+		try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
+				ObjectOutputStream oos = new ObjectOutputStream(baos)) {
 			oos.writeObject(variable);
-			
-			//encode without calling Base64#encodeBase64String as versions 
-			//prior to 1.5 chunked the output
-			byte[] encoding = Base64.encodeBase64(baos.toByteArray(), false);
-			return StringUtils.newStringUtf8(encoding);
-		} finally {
-			if (oos != null) {
-				oos.close();
-			}
+			return Base64.getEncoder().encodeToString(baos.toByteArray());
 		}
 	}
-
 }

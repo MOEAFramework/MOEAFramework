@@ -19,13 +19,13 @@ package org.moeaframework.analysis.sensitivity;
 
 import java.io.IOException;
 import java.io.StringReader;
-import java.util.Properties;
 
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.TestUtils;
+import org.moeaframework.util.TypedProperties;
 
 /**
  * Tests the {@link SampleReader} class.
@@ -113,23 +113,23 @@ public class SampleReaderTest {
 	 * @param reader the parameter sample file reader
 	 */
 	public void validateComplete(SampleReader reader) {
-		Properties properties = null;
+		TypedProperties properties = null;
 
 		Assert.assertTrue(reader.hasNext());
 
 		properties = reader.next();
 		Assert.assertEquals(3, properties.size());
-		Assert.assertEquals("0.0", properties.getProperty("entry1"));
-		Assert.assertEquals("100.0", properties.getProperty("entry2"));
-		Assert.assertEquals("0.0", properties.getProperty("entry3"));
+		Assert.assertEquals("0.0", properties.getString("entry1", null));
+		Assert.assertEquals("100.0", properties.getString("entry2", null));
+		Assert.assertEquals("0.0", properties.getString("entry3", null));
 
 		Assert.assertTrue(reader.hasNext());
 
 		properties = reader.next();
 		Assert.assertEquals(3, properties.size());
-		Assert.assertEquals("1.0", properties.getProperty("entry1"));
-		Assert.assertEquals("10000.0", properties.getProperty("entry2"));
-		Assert.assertEquals("1.0", properties.getProperty("entry3"));
+		Assert.assertEquals("1.0", properties.getString("entry1", null));
+		Assert.assertEquals("10000.0", properties.getString("entry2", null));
+		Assert.assertEquals("1.0", properties.getString("entry3", null));
 
 		Assert.assertFalse(reader.hasNext());
 		Assert.assertFalse(reader.hasNext());
@@ -155,16 +155,8 @@ public class SampleReaderTest {
 	 */
 	@Test
 	public void testFileComplete() throws IOException {
-		SampleReader reader = null;
-
-		try {
-			reader = new SampleReader(TestUtils.createTempFile(COMPLETE),
-					parameterFile);
+		try (SampleReader reader = new SampleReader(TestUtils.createTempFile(COMPLETE), parameterFile)) {
 			validateComplete(reader);
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
 		}
 	}
 
@@ -175,16 +167,8 @@ public class SampleReaderTest {
 	 */
 	@Test(expected = Exception.class)
 	public void testFileInvalid1() throws IOException {
-		SampleReader reader = null;
-
-		try {
-			reader = new SampleReader(TestUtils.createTempFile(INVALID1),
-					parameterFile);
+		try (SampleReader reader = new SampleReader(TestUtils.createTempFile(INVALID1), parameterFile)) {
 			validateInvalid(reader);
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
 		}
 	}
 
@@ -195,16 +179,8 @@ public class SampleReaderTest {
 	 */
 	@Test(expected = Exception.class)
 	public void testFileInvalid2() throws IOException {
-		SampleReader reader = null;
-
-		try {
-			reader = new SampleReader(TestUtils.createTempFile(INVALID2),
-					parameterFile);
+		try (SampleReader reader = new SampleReader(TestUtils.createTempFile(INVALID2), parameterFile)) {
 			validateInvalid(reader);
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
 		}
 	}
 
@@ -215,16 +191,8 @@ public class SampleReaderTest {
 	 */
 	@Test(expected = Exception.class)
 	public void testFileInvalid3() throws IOException {
-		SampleReader reader = null;
-
-		try {
-			reader = new SampleReader(TestUtils.createTempFile(INVALID3),
-					parameterFile);
+		try (SampleReader reader = new SampleReader(TestUtils.createTempFile(INVALID3), parameterFile)) {
 			validateInvalid(reader);
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
 		}
 	}
 
@@ -235,16 +203,8 @@ public class SampleReaderTest {
 	 */
 	@Test(expected = Exception.class)
 	public void testFileInvalid4() throws IOException {
-		SampleReader reader = null;
-
-		try {
-			reader = new SampleReader(TestUtils.createTempFile(INVALID4),
-					parameterFile);
+		try (SampleReader reader = new SampleReader(TestUtils.createTempFile(INVALID4), parameterFile)) {
 			validateInvalid(reader);
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
 		}
 	}
 
@@ -255,16 +215,8 @@ public class SampleReaderTest {
 	 */
 	@Test(expected = Exception.class)
 	public void testFileInvalid5() throws IOException {
-		SampleReader reader = null;
-
-		try {
-			reader = new SampleReader(TestUtils.createTempFile(INVALID5),
-					parameterFile);
+		try (SampleReader reader = new SampleReader(TestUtils.createTempFile(INVALID5), parameterFile)) {
 			validateInvalid(reader);
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
 		}
 	}
 
@@ -275,16 +227,8 @@ public class SampleReaderTest {
 	 */
 	@Test
 	public void testReaderComplete() throws IOException {
-		SampleReader reader = null;
-
-		try {
-			reader = new SampleReader(new StringReader(COMPLETE), 
-					parameterFile);
+		try (SampleReader reader = new SampleReader(new StringReader(COMPLETE), parameterFile)) {
 			validateComplete(reader);
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
 		}
 	}
 
@@ -295,16 +239,8 @@ public class SampleReaderTest {
 	 */
 	@Test(expected = Exception.class)
 	public void testReaderInvalid1() throws IOException {
-		SampleReader reader = null;
-
-		try {
-			reader = new SampleReader(new StringReader(INVALID1), 
-					parameterFile);
+		try (SampleReader reader = new SampleReader(new StringReader(INVALID1), parameterFile)) {
 			validateInvalid(reader);
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
 		}
 	}
 
@@ -315,16 +251,8 @@ public class SampleReaderTest {
 	 */
 	@Test(expected = Exception.class)
 	public void testReaderInvalid2() throws IOException {
-		SampleReader reader = null;
-
-		try {
-			reader = new SampleReader(new StringReader(INVALID2), 
-					parameterFile);
+		try (SampleReader reader = new SampleReader(new StringReader(INVALID2), parameterFile)) {
 			validateInvalid(reader);
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
 		}
 	}
 
@@ -335,16 +263,8 @@ public class SampleReaderTest {
 	 */
 	@Test(expected = Exception.class)
 	public void testReaderInvalid3() throws IOException {
-		SampleReader reader = null;
-
-		try {
-			reader = new SampleReader(new StringReader(INVALID3), 
-					parameterFile);
+		try (SampleReader reader = new SampleReader(new StringReader(INVALID3), parameterFile)) {
 			validateInvalid(reader);
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
 		}
 	}
 
@@ -355,16 +275,8 @@ public class SampleReaderTest {
 	 */
 	@Test(expected = Exception.class)
 	public void testReaderInvalid4() throws IOException {
-		SampleReader reader = null;
-
-		try {
-			reader = new SampleReader(new StringReader(INVALID4), 
-					parameterFile);
+		try (SampleReader reader = new SampleReader(new StringReader(INVALID4), parameterFile)) {
 			validateInvalid(reader);
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
 		}
 	}
 
@@ -375,16 +287,8 @@ public class SampleReaderTest {
 	 */
 	@Test(expected = Exception.class)
 	public void testReaderInvalid5() throws IOException {
-		SampleReader reader = null;
-
-		try {
-			reader = new SampleReader(new StringReader(INVALID5), 
-					parameterFile);
+		try (SampleReader reader = new SampleReader(new StringReader(INVALID5), parameterFile)) {
 			validateInvalid(reader);
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
 		}
 	}
 

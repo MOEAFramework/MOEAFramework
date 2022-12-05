@@ -21,18 +21,28 @@ import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variable;
 import org.moeaframework.core.Variation;
+import org.moeaframework.core.configuration.Prefix;
+import org.moeaframework.core.configuration.Property;
 
 /**
  * Two-point crossover. Two crossover points are selected and all decision
  * variables between the two points are swapped between the two parents. The two
  * children resulting from this swapping are returned.
  */
+@Prefix("2x")
 public class TwoPointCrossover implements Variation {
 
 	/**
 	 * The probability of applying this operator to solutions.
 	 */
-	private final double probability;
+	private double probability;
+	
+	/**
+	 * Constructs a two-point crossover operator with a 100% probability.
+	 */
+	public TwoPointCrossover() {
+		this(1.0);
+	}
 
 	/**
 	 * Constructs a two-point crossover operator with the specified probability
@@ -43,14 +53,29 @@ public class TwoPointCrossover implements Variation {
 	public TwoPointCrossover(double probability) {
 		this.probability = probability;
 	}
+	
+	@Override
+	public String getName() {
+		return "2x";
+	}
 
 	/**
 	 * Returns the probability of applying this operator to solutions.
 	 * 
-	 * @return the probability of applying this operator to solutions
+	 * @return the probability
 	 */
 	public double getProbability() {
 		return probability;
+	}
+	
+	/**
+	 * Sets the probability of applying this operator to solutions.
+	 * 
+	 * @param probability the probability between 0.0 and 1.0, inclusive
+	 */
+	@Property("rate")
+	public void setProbability(double probability) {
+		this.probability = probability;
 	}
 
 	@Override
@@ -58,12 +83,9 @@ public class TwoPointCrossover implements Variation {
 		Solution result1 = parents[0].copy();
 		Solution result2 = parents[1].copy();
 
-		if ((PRNG.nextDouble() <= probability) && 
-				(result1.getNumberOfVariables() > 1)) {
-			int crossoverPoint1 = PRNG.nextInt(
-					result1.getNumberOfVariables() - 1);
-			int crossoverPoint2 = PRNG.nextInt(
-					result1.getNumberOfVariables() - 1);
+		if ((PRNG.nextDouble() <= probability) && (result1.getNumberOfVariables() > 1)) {
+			int crossoverPoint1 = PRNG.nextInt(result1.getNumberOfVariables() - 1);
+			int crossoverPoint2 = PRNG.nextInt(result1.getNumberOfVariables() - 1);
 
 			if (crossoverPoint1 > crossoverPoint2) {
 				int temp = crossoverPoint1;

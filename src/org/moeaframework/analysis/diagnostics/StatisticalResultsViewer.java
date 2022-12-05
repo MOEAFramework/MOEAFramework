@@ -116,22 +116,16 @@ public class StatisticalResultsViewer extends JFrame {
 				
 				if (result == JFileChooser.APPROVE_OPTION) {
 					File file = fileChooser.getSelectedFile();
-					PrintWriter writer = null;
 						
 					if (!file.getName().toLowerCase().endsWith(".txt")) {
 						file = new File(file.getParent(), file.getName() + 
 								".txt");
 					}
 					
-					try {
-						writer = new PrintWriter(new FileWriter(file));
+					try (PrintWriter writer = new PrintWriter(new FileWriter(file))) {
 						writer.print(results);
 					} catch (IOException e) {
 						controller.handleException(e);
-					} finally {
-						if (writer != null) {
-							writer.close();
-						}
 					}
 				}
 			}

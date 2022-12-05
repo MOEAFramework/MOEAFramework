@@ -7,7 +7,6 @@ on the [contributors page](https://github.com/MOEAFramework/MOEAFramework/graphs
 
 * **Apache Commons**
    * **CLI** - Copyright 2001-2017 The Apache Software Foundation. Licensed under the Apache License, version 2.0
-   * **Codec** - Copyright 2002-2019 The Apache Software Foundation. Licensed under the Apache License, version 2.0
    * **IO** - Copyright 2002-2017 The Apache Software Foundation. Licensed under the Apache License, version 2.0
    * **Text** - Copyright 2014-2019 The Apache Software Foundation. Licensed under the Apache License, version 2.0
    * **Lang3** - Copyright 2001-2018 The Apache Software Foundation. Licensed under the Apache License, version 2.0
@@ -30,5 +29,4 @@ code, but we also highlight these contributions below.
 * **Walking Fish Group (WFG) test problem suite** - Copyright 2006 Walking Fish Group. http://www.wfg.csse.uwa.edu.au/
 * **2009 Congress on Evolutionary Computation (CEC 2009) Test Problem Suite** - Permission to distribute these modified source codes under the GNU Lesser General Public License was obtained via e-mail correspondence with the authors. http://www.cec-2009.org/
 * **Hui Li and Qingfu Zhang's Complicated Pareto Set Test Problem Suite** - Permission to distribute these modified source codes under the GNU Lesser General Public License was obtained via e-mail correspondence with the authors.
-* **File moving, copying and deleting codes by Chris Nokleberg** - Copyright (C) 2007 The Guava Authors. Licensed under the Apache License, version 2.0
 * **List iterator implementation based on the Apache Commons Collections 3.1** - Licensed under the Apache License, version 2.0

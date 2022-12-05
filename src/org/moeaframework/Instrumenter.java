@@ -64,7 +64,6 @@ import org.moeaframework.core.spi.ProblemFactory;
  * the collection of runtime information as the algorithm is executed.  Lastly,
  * the {@code InstrumentedAlgorithm} stores the runtime information, which can
  * subsequently be accessed and analyzed.
- * <p>
  * <pre>
  *   Instrumenter instrumenter = new Instrumenter()
  *     .withProblem(problemName)
@@ -249,49 +248,7 @@ public class Instrumenter extends ProblemBuilder {
 		
 		return this;
 	}
-	
-	/**
-	 * Allows this instrumenter to visit classes in the given package.  Some
-	 * Java classes can not be readily visited/discovered by this instrumenter,
-	 * possibly resulting in a {@code NullPointerException} or a
-	 * {@code SecurityException}.  Therefore, the instrumenter can only visit
-	 * classes explicitly allowed by the user.  By default,
-	 * {@code org.moeaframework} is allowed.
-	 * 
-	 * @param packageName a package name or the package name prefix
-	 * @return a reference to this instrumenter
-	 * @deprecated has no effect
-	 */
-	@Deprecated
-	public Instrumenter addAllowedPackage(String packageName) {
-		return this;
-	}
-	
-	/**
-	 * Removes one of the packages this instrumenter is allowed to visit.
-	 * Note that the given string must match the string passed to
-	 * {@link #addAllowedPackage(String)}.
-	 * 
-	 * @param packageName the package name or package name prefix to remove
-	 * @return a reference to this instrumenter
-	 * @deprecated has no effect
-	 */
-	@Deprecated
-	public Instrumenter removeAllowedPackage(String packageName) {
-		return this;
-	}
-	
-	/**
-	 * Returns all packages this instrumenter is allowed to visit.
-	 * 
-	 * @return the list of allowed package names
-	 * @deprecated has no effect
-	 */
-	@Deprecated
-	public List<String> getAllowedPackages() {
-		return new ArrayList<String>();
-	}
-	
+
 	/**
 	 * Sets the frequency that data is collected.  
 	 * 

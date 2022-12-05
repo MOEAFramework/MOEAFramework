@@ -31,37 +31,32 @@ public class EpsilonHelperTest {
 	
 	@Test
 	public void testConvertNoEpsilons() {
-		NondominatedPopulation population = 
-				ProblemFactory.getInstance().getReferenceSet("DTLZ2_2");
-		EpsilonBoxDominanceArchive expected = 
-				new EpsilonBoxDominanceArchive(0.1, population);
-		EpsilonBoxDominanceArchive actual = 
-				EpsilonHelper.convert(population, new double[] { 0.1 });
+		NondominatedPopulation referenceSet = ProblemFactory.getInstance().getReferenceSet("DTLZ2_2");
+		EpsilonBoxDominanceArchive expected = new EpsilonBoxDominanceArchive(0.1, referenceSet);
+		EpsilonBoxDominanceArchive actual = EpsilonHelper.convert(referenceSet, new double[] { 0.1 });
 		
 		TestUtils.assertEquals(expected, actual);
-		TestUtils.assertEquals(0.1, actual.getComparator().getEpsilon(0));
+		TestUtils.assertEquals(0.1, actual.getComparator().getEpsilons().get(0));
 	}
 	
 	@Test
 	public void testConvertDifferentEpsilons() {
-		NondominatedPopulation population = new EpsilonBoxDominanceArchive(0.1,
-				ProblemFactory.getInstance().getReferenceSet("DTLZ2_2"));
-		EpsilonBoxDominanceArchive actual = 
-				EpsilonHelper.convert(population, new double[] { 0.25 });
+		NondominatedPopulation referenceSet = ProblemFactory.getInstance().getReferenceSet("DTLZ2_2");
+		NondominatedPopulation population = new EpsilonBoxDominanceArchive(0.1, referenceSet);
+		EpsilonBoxDominanceArchive actual = EpsilonHelper.convert(population, new double[] { 0.25 });
 		
 		Assert.assertNotSame(actual, population);
-		TestUtils.assertEquals(0.25, actual.getComparator().getEpsilon(0));
+		TestUtils.assertEquals(0.25, actual.getComparator().getEpsilons().get(0));
 	}
 	
 	@Test
 	public void testConvertSameEpsilons() {
-		NondominatedPopulation population = new EpsilonBoxDominanceArchive(0.1,
-				ProblemFactory.getInstance().getReferenceSet("DTLZ2_2"));
-		EpsilonBoxDominanceArchive actual = 
-				EpsilonHelper.convert(population, new double[] { 0.1 });
+		NondominatedPopulation referenceSet = ProblemFactory.getInstance().getReferenceSet("DTLZ2_2");
+		NondominatedPopulation population = new EpsilonBoxDominanceArchive(0.1, referenceSet);
+		EpsilonBoxDominanceArchive actual = EpsilonHelper.convert(population, new double[] { 0.1 });
 		
 		Assert.assertSame(actual, population);
-		TestUtils.assertEquals(0.1, actual.getComparator().getEpsilon(0));
+		TestUtils.assertEquals(0.1, actual.getComparator().getEpsilons().get(0));
 	}
 	
 }

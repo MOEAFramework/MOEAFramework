@@ -73,8 +73,7 @@ public class FitnessBasedArchive extends NondominatedPopulation {
 		this.fitnessEvaluator = evaluator;
 		this.capacity = capacity;
 		
-		fitnessComparator = new FitnessComparator(
-				evaluator.areLargerValuesPreferred());
+		fitnessComparator = new FitnessComparator(evaluator.areLargerValuesPreferred());
 	}
 
 	/**

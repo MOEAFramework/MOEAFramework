@@ -224,11 +224,7 @@ public class AdditivelyDecomposableProblem implements Problem {
 	 *         invalid
 	 */
 	private void load(File file) throws IOException {
-		BufferedReader reader = null;
-		
-		try {
-			reader = new BufferedReader(new FileReader(file));
-			
+		try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
 			// head first line containing n, k, offset
 			String[] tokens = reader.readLine().split("\\s+");
 			
@@ -276,10 +272,6 @@ public class AdditivelyDecomposableProblem implements Problem {
 			for (int i = 0; i < n; i++) {
 				permutation[i] = Integer.parseInt(tokens[i]);
 			}
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
 		}
 	}
 	
@@ -290,11 +282,7 @@ public class AdditivelyDecomposableProblem implements Problem {
 	 * @throws IOException if an I/O error occurred while saving the file
 	 */
 	public void save(File file) throws IOException {
-		PrintWriter writer = null;
-		
-		try {
-			writer = new PrintWriter(new FileWriter(file));
-			
+		try (PrintWriter writer = new PrintWriter(new FileWriter(file))) {
 			writer.print(n);
 			writer.print(" ");
 			writer.print(k);
@@ -322,10 +310,6 @@ public class AdditivelyDecomposableProblem implements Problem {
 				}
 				
 				writer.print(permutation[i]);
-			}
-		} finally {
-			if (writer != null) {
-				writer.close();
 			}
 		}
 	}

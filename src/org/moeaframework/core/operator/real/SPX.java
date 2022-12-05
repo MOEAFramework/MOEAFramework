@@ -19,7 +19,8 @@ package org.moeaframework.core.operator.real;
 
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.Variation;
+import org.moeaframework.core.configuration.Prefix;
+import org.moeaframework.core.configuration.Property;
 import org.moeaframework.core.variable.RealVariable;
 
 /**
@@ -43,22 +44,26 @@ import org.moeaframework.core.variable.RealVariable;
  * Solving from Nature PPSN VI, pp. 365-374, 2000.
  * </ol>
  */
-public class SPX implements Variation {
-
-	/**
-	 * The number of parents required by this operator.
-	 */
-	private final int numberOfParents;
-
-	/**
-	 * The number of offspring produced by this operator.
-	 */
-	private final int numberOfOffspring;
+@Prefix("spx")
+public class SPX extends MultiParentVariation {
 
 	/**
 	 * The expansion rate of this operator.
 	 */
-	private final double epsilon;
+	private double epsilon;
+	
+	/**
+	 * Constructs a SPX operator with default settings, taking 10 parents and
+	 * producing 2 offspring. The expansion rate is set to
+	 * {@code sqrt(numberOfParents+1)} to preserve the covariance matrix of the
+	 * population.
+	 * 
+	 * @param numberOfParents the number of parents
+	 * @param numberOfOffspring the number of offspring
+	 */
+	public SPX() {
+		this(10, 2);
+	}
 
 	/**
 	 * Constructs a SPX operator with the specified number of parents and 
@@ -82,9 +87,13 @@ public class SPX implements Variation {
 	 * @param epsilon the expansion rate
 	 */
 	public SPX(int numberOfParents, int numberOfOffspring, double epsilon) {
-		this.numberOfParents = numberOfParents;
-		this.numberOfOffspring = numberOfOffspring;
+		super(numberOfParents, numberOfOffspring);
 		this.epsilon = epsilon;
+	}
+	
+	@Override
+	public String getName() {
+		return "spx";
 	}
 
 	@Override
@@ -156,36 +165,24 @@ public class SPX implements Variation {
 		return offspring;
 	}
 
-	@Override
-	public int getArity() {
-		return numberOfParents;
-	}
-
-	/**
-	 * Returns the number of parents required by this operator.
-	 * 
-	 * @return the number of parents required by this operator
-	 */
-	public int getNumberOfParents() {
-		return numberOfParents;
-	}
-
-	/**
-	 * Returns the number of offspring produced by this operator.
-	 * 
-	 * @return the number of offspring produced by this operator
-	 */
-	public int getNumberOfOffspring() {
-		return numberOfOffspring;
-	}
-
 	/**
 	 * Returns the expansion rate of this operator.
 	 * 
-	 * @return the expansion rate of this operator
+	 * @return the expansion rate
 	 */
 	public double getEpsilon() {
 		return epsilon;
+	}
+	
+	/**
+	 * Sets the expansion rate of this operator.  The recommended default is
+	 * @code sqrt(numberOfParents+1).
+	 * 
+	 * @param epsilon the expansion rate
+	 */
+	@Property
+	public void setEpsilon(double epsilon) {
+		this.epsilon = epsilon;
 	}
 
 }

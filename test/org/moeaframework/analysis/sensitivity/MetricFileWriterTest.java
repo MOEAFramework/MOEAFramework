@@ -47,45 +47,29 @@ public class MetricFileWriterTest {
 				.getReferenceSet("DTLZ2_2");
 		QualityIndicator qualityIndicator = new QualityIndicator(problem,
 				referenceSet);
-		MetricFileWriter writer = null;
 
 		NondominatedPopulation approximationSet = new NondominatedPopulation();
 		approximationSet.add(new Solution(new double[] { 0.0, 1.0 }));
 		approximationSet.add(new Solution(new double[] { 1.0, 0.0 }));
 
-		try {
-			writer = new MetricFileWriter(qualityIndicator, file);
-
+		try (MetricFileWriter writer = new MetricFileWriter(qualityIndicator, file)) {
 			Assert.assertEquals(0, writer.getNumberOfEntries());
 
 			writer.append(new ResultEntry(approximationSet));
 			writer.append(new ResultEntry(approximationSet));
 
 			Assert.assertEquals(2, writer.getNumberOfEntries());
-		} finally {
-			if (writer != null) {
-				writer.close();
-			}
 		}
 
-		try {
-			writer = new MetricFileWriter(qualityIndicator, file);
-
+		try (MetricFileWriter writer = new MetricFileWriter(qualityIndicator, file)) {
 			Assert.assertEquals(2, writer.getNumberOfEntries());
 
 			writer.append(new ResultEntry(approximationSet));
 
 			Assert.assertEquals(3, writer.getNumberOfEntries());
-		} finally {
-			if (writer != null) {
-				writer.close();
-			}
 		}
 
-		MetricFileReader reader = null;
-
-		try {
-			reader = new MetricFileReader(file);
+		try (MetricFileReader reader = new MetricFileReader(file)) {
 			Assert.assertTrue(reader.hasNext());
 			reader.next();
 			Assert.assertTrue(reader.hasNext());
@@ -93,12 +77,7 @@ public class MetricFileWriterTest {
 			Assert.assertTrue(reader.hasNext());
 			reader.next();
 			Assert.assertFalse(reader.hasNext());
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
 		}
-
 	}
 
 }

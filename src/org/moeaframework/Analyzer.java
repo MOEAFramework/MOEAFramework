@@ -58,7 +58,6 @@ import org.moeaframework.util.statistics.MannWhitneyUTest;
 /**
  * Performs basic end-of-run analysis.  For example, the following demonstrates
  * its typical use.  First construct and configure the analyzer:
- * <p>
  * <pre>
  *   Analyzer analyzer = new Analyzer()
  *       .withProblem("DTLZ2_2")
@@ -69,9 +68,7 @@ import org.moeaframework.util.statistics.MannWhitneyUTest;
  *       .showAggregate()
  *       .showStatisticalSignificance();
  * </pre>
- * <p>
  * The problem must always be specified.  Next, add the data to be analyzed:
- * <p>
  * <pre>
  *   Executor executor = new Executor().withProblem("DTLZ2_2");
  *   add("NSGAII", executor.withAlgorithm("NSGAII").run());
@@ -577,26 +574,11 @@ public class Analyzer extends ProblemBuilder {
 	 * @throws IOException if an I/O error occurred
 	 */
 	public Analyzer loadAs(String name, File resultFile) throws IOException {
-		Problem problem = null;
-		ResultFileReader reader = null;
-		
-		try {
-			problem = getProblemInstance();
-
-			try {
-				reader = new ResultFileReader(problem, resultFile);
-						
+		try (Problem problem = getProblemInstance()) {
+			try (ResultFileReader reader = new ResultFileReader(problem, resultFile)) {	
 				while (reader.hasNext()) {
 					add(name, reader.next().getPopulation());
 				}
-			} finally {
-				if (reader != null) {
-					reader.close();
-				}
-			}
-		} finally {
-			if ((problem != null) && (problem != this.problemInstance)) {
-				problem.close();
 			}
 		}
 		
@@ -614,18 +596,11 @@ public class Analyzer extends ProblemBuilder {
 	 * @throws IOException if an I/O error occurred
 	 */
 	public Analyzer saveAs(String name, File resultFile) throws IOException {
-		Problem problem = null;
-		ResultFileWriter writer = null;
-		
-		try {
-			problem = getProblemInstance();
-			
+		try (Problem problem = getProblemInstance()) {	
 			//delete the file to avoid appending
 			FileUtils.delete(resultFile);
 
-			try {
-				writer = new ResultFileWriter(problem, resultFile);
-				
+			try (ResultFileWriter writer = new ResultFileWriter(problem, resultFile)) {
 				if (name == null) {
 					writer.append(new ResultEntry(getReferenceSet()));
 				} else {
@@ -633,14 +608,6 @@ public class Analyzer extends ProblemBuilder {
 						writer.append(new ResultEntry(result));
 					}
 				}
-			} finally {
-				if (writer != null) {
-					writer.close();
-				}
-			}
-		} finally {
-			if ((problem != null) && (problem != this.problemInstance)) {
-				problem.close();
 			}
 		}
 		
@@ -656,17 +623,9 @@ public class Analyzer extends ProblemBuilder {
 	 * @throws IOException if an I/O error occurred
 	 */
 	public Analyzer saveAnalysis(File file) throws IOException {
-		PrintStream ps = null;
-		
-		try {
-			ps = new PrintStream(new BufferedOutputStream(new FileOutputStream(
-					file)));
-			
+		try (PrintStream ps = new PrintStream(new BufferedOutputStream(
+				new FileOutputStream(file)))) {
 			printAnalysis(ps);
-		} finally {
-			if (ps != null) {
-				ps.close();
-			}
 		}
 		
 		return this;
@@ -745,11 +704,7 @@ public class Analyzer extends ProblemBuilder {
 			return new AnalyzerResults();
 		}
 		
-		Problem problem = null;
-		
-		try {
-			problem = getProblemInstance();
-			
+		try (Problem problem = getProblemInstance()) {
 			//instantiate the reference set
 			NondominatedPopulation referenceSet = getReferenceSet();
 			
@@ -936,10 +891,6 @@ public class Analyzer extends ProblemBuilder {
 			}
 					
 			return analyzerResults;
-		} finally {
-			if ((problem != null) && (problem != this.problemInstance)) {
-				problem.close();
-			}
 		}
 	}
 	
@@ -948,7 +899,6 @@ public class Analyzer extends ProblemBuilder {
 	 * 
 	 * @param ps the stream to which the analysis is written
 	 * @return a reference to this analyzer
-	 * @throws IOException if an I/O error occurred
 	 */
 	public Analyzer printAnalysis(PrintStream ps) {
 		getAnalysis().print(ps);

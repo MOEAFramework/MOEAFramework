@@ -102,25 +102,6 @@ public class NondominatedPopulation extends Population {
 	 * 
 	 * @param comparator the dominance relation used by this non-dominated
 	 *        population
-	 * @param allowDuplicates allow duplicate solutions into the non-dominated
-	 *        population
-	 * @deprecated Use {@link #NondominatedPopulation(DominanceComparator,
-	 * 		  DuplicateMode)} instead.
-	 */
-	@Deprecated
-	public NondominatedPopulation(DominanceComparator comparator,
-			boolean allowDuplicates) {
-		this(comparator, allowDuplicates ?
-				DuplicateMode.ALLOW_DUPLICATES :
-				DuplicateMode.NO_DUPLICATE_OBJECTIVES);
-	}
-	
-	/**
-	 * Constructs an empty non-dominated population using the specified 
-	 * dominance relation.
-	 * 
-	 * @param comparator the dominance relation used by this non-dominated
-	 *        population
 	 * @param duplicateMode specifies how duplicate solutions are handled
 	 */
 	public NondominatedPopulation(DominanceComparator comparator,
@@ -230,15 +211,11 @@ public class NondominatedPopulation extends Population {
 	 * @param s1 the first solution
 	 * @param s2 the second solution
 	 * @return the distance between the two solutions in objective space
+	 * @deprecated use {@see Solution#distanceTo(Solution)} instead
 	 */
+	@Deprecated
 	protected static double distance(Solution s1, Solution s2) {
-		double distance = 0.0;
-
-		for (int i = 0; i < s1.getNumberOfObjectives(); i++) {
-			distance += Math.pow(s1.getObjective(i) - s2.getObjective(i), 2.0);
-		}
-
-		return Math.sqrt(distance);
+		return s1.distanceTo(s2);
 	}
 	
 	/**
@@ -255,7 +232,7 @@ public class NondominatedPopulation extends Population {
 	protected boolean isDuplicate(Solution s1, Solution s2) {
 		switch (duplicateMode) {
 		case NO_DUPLICATE_OBJECTIVES:
-			return distance(s1, s2) < Settings.EPS;
+			return s1.distanceTo(s2) < Settings.EPS;
 		case ALLOW_DUPLICATE_OBJECTIVES:
 			if (s1.getNumberOfVariables() != s2.getNumberOfVariables()) {
 				return false;

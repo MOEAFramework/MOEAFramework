@@ -20,14 +20,18 @@ package org.moeaframework.algorithm.single;
 import java.io.NotSerializableException;
 import java.util.Comparator;
 
-import org.moeaframework.algorithm.AbstractEvolutionaryAlgorithm;
 import org.moeaframework.core.Initialization;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Selection;
+import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
+import org.moeaframework.core.configuration.Property;
+import org.moeaframework.core.operator.RandomInitialization;
+import org.moeaframework.core.operator.TournamentSelection;
+import org.moeaframework.core.spi.OperatorFactory;
 
 /**
  * Single-objective genetic algorithm (GA) implementation with elitism.  A
@@ -39,52 +43,58 @@ import org.moeaframework.core.Variation;
  *       MIT Press, ISBN: 9780262082136.
  * </ol>
  */
-public class GeneticAlgorithm extends AbstractEvolutionaryAlgorithm {
+public class GeneticAlgorithm extends SingleObjectiveEvolutionaryAlgorithm {
 	
-	/**
-	 * The aggregate objective comparator.
-	 */
-	private final AggregateObjectiveComparator comparator;
-
 	/**
 	 * The selection operator.
 	 */
 	private final Selection selection;
 
 	/**
-	 * The mutation operator.
-	 */
-	private final Variation variation;
-	
-	/**
 	 * The solution with the best fitness score.
 	 */
 	private Solution eliteSolution;
+	
+	/**
+	 * Constructs a new instance of the genetic algorithm (GA) with default settings.
+	 * 
+	 * @param problem the problem
+	 */
+	public GeneticAlgorithm(Problem problem) {
+		this(problem,
+				Settings.DEFAULT_POPULATION_SIZE,
+				new LinearDominanceComparator(),
+				new RandomInitialization(problem),
+				OperatorFactory.getInstance().getVariation(problem));
+	}
+	
+	// Internal constructor to ensure tournament selection uses provided comparator
+	private GeneticAlgorithm(Problem problem, int initialPopulationSize, AggregateObjectiveComparator comparator,
+			Initialization initialization, Variation variation) {
+		this(problem, initialPopulationSize, comparator, initialization, new TournamentSelection(2, comparator),
+				variation);
+	}
 
 	/**
 	 * Constructs a new instance of the genetic algorithm (GA).
 	 * 
 	 * @param problem the problem
+	 * @param initialPopulationSize the initial population size
 	 * @param comparator the aggregate objective comparator
 	 * @param initialization the initialization method
 	 * @param selection the selection operator
 	 * @param variation the variation operator
 	 */
-	public GeneticAlgorithm(Problem problem,
-			AggregateObjectiveComparator comparator,
-			Initialization initialization,
-			Selection selection,
-			Variation variation) {
-		super(problem, new Population(), null, initialization);
-		this.comparator = comparator;
-		this.variation = variation;
+	public GeneticAlgorithm(Problem problem, int initialPopulationSize, AggregateObjectiveComparator comparator,
+			Initialization initialization, Selection selection, Variation variation) {
+		super(problem, initialPopulationSize, new Population(), null, comparator, initialization, variation);
 		this.selection = selection;
 	}
 
 	@Override
 	protected void initialize() {
 		super.initialize();
-		
+
 		eliteSolution = getPopulation().get(0);
 		updateEliteSolution();
 	}
@@ -96,8 +106,7 @@ public class GeneticAlgorithm extends AbstractEvolutionaryAlgorithm {
 		int populationSize = population.size();
 
 		while (offspring.size() < populationSize) {
-			Solution[] parents = selection.select(variation.getArity(),
-					population);
+			Solution[] parents = selection.select(variation.getArity(), population);
 			Solution[] children = variation.evolve(parents);
 
 			offspring.addAll(children);
@@ -133,6 +142,12 @@ public class GeneticAlgorithm extends AbstractEvolutionaryAlgorithm {
 		}
 		
 		return result;
+	}
+	
+	@Override
+	@Property("operator")
+	public void setVariation(Variation variation) {
+		super.setVariation(variation);
 	}
 
 	@Override

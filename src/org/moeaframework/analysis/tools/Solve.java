@@ -21,7 +21,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
@@ -29,6 +28,7 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.lang3.StringUtils;
 import org.moeaframework.algorithm.PeriodicAction;
+import org.moeaframework.analysis.sensitivity.OptionUtils;
 import org.moeaframework.analysis.sensitivity.ResultEntry;
 import org.moeaframework.analysis.sensitivity.ResultFileWriter;
 import org.moeaframework.core.Algorithm;
@@ -40,10 +40,10 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variable;
 import org.moeaframework.core.operator.RandomInitialization;
 import org.moeaframework.core.spi.AlgorithmFactory;
-import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.problem.ExternalProblem;
 import org.moeaframework.util.CommandLineUtility;
+import org.moeaframework.util.TypedProperties;
 import org.moeaframework.util.io.FileUtils;
 
 /**
@@ -52,10 +52,10 @@ import org.moeaframework.util.io.FileUtils;
  * defined within the MOEA Framework as well as compatible external problems.
  * See {@link ExternalProblem} for details on developing an external problem.
  * <p>
- * Usage: {@code java -cp "..." org.moeaframework.analysis.sensitivity.ResultFileEvaluator <options>}
- * <p>
- * Arguments:
- * <table border="0" style="margin-left: 1em">
+ * Usage: {@code java -cp "..." org.moeaframework.analysis.tools.Solve <options>}
+ * 
+ * <table>
+ *   <caption style="text-align: left">Arguments:</caption>
  *   <tr>
  *     <td>{@code -f, --output}</td>
  *     <td>The output file location.</td>
@@ -155,17 +155,15 @@ public class Solve extends CommandLineUtility {
 	@Override
 	public Options getOptions() {
 		Options options = super.getOptions();
+		
+		OptionUtils.addProblemOption(options, false);
+		OptionUtils.addEpsilonOption(options);
 
 		options.addOption(Option.builder("f")
 				.longOpt("output")
 				.hasArg()
 				.argName("file")
 				.required()
-				.build());
-		options.addOption(Option.builder("b")
-				.longOpt("problem")
-				.hasArg()
-				.argName("name")
 				.build());
 		options.addOption(Option.builder("a")
 				.longOpt("algorithm")
@@ -183,11 +181,6 @@ public class Solve extends CommandLineUtility {
 				.longOpt("seed")
 				.hasArg()
 				.argName("value")
-				.build());
-		options.addOption(Option.builder("e")
-				.longOpt("epsilon")
-				.hasArg()
-				.argName("e1,e2,...")
 				.build());
 		options.addOption(Option.builder("n")
 				.longOpt("numberOfEvaluations")
@@ -250,7 +243,7 @@ public class Solve extends CommandLineUtility {
 				.optionalArg(true)
 				.argName("trials")
 				.build());
-
+		
 		return options;
 	}
 	
@@ -504,10 +497,9 @@ public class Solve extends CommandLineUtility {
 		
 		try {
 			int count = 0;
-			RandomInitialization initialization = new RandomInitialization(
-					problem, trials);
+			RandomInitialization initialization = new RandomInitialization(problem);
 			
-			Solution[] solutions = initialization.initialize();
+			Solution[] solutions = initialization.initialize(trials);
 			
 			for (Solution solution : solutions) {
 				System.out.println("Running test " + (++count) + ":");
@@ -555,27 +547,27 @@ public class Solve extends CommandLineUtility {
 	@Override
 	public void run(CommandLine commandLine) throws IOException {
 		// parse the algorithm parameters
-		Properties properties = new Properties();
+		TypedProperties properties = new TypedProperties();
 
 		if (commandLine.hasOption("properties")) {
 			for (String property : commandLine.getOptionValues("properties")) {
 				String[] tokens = property.split("=");
 
 				if (tokens.length == 2) {
-					properties.setProperty(tokens[0], tokens[1]);
+					properties.setString(tokens[0], tokens[1]);
 				} else {
 					throw new FrameworkException("malformed property argument");
 				}
 			}
 		}
+		
+		double[] epsilon = OptionUtils.getEpsilon(commandLine);
 
-		if (commandLine.hasOption("epsilon")) {
-			properties.setProperty("epsilon", 
-					commandLine.getOptionValue("epsilon"));
+		if (epsilon != null) {
+			properties.setDoubleArray("epsilon", epsilon);
 		}
 
-		int maxEvaluations = Integer.parseInt(
-				commandLine.getOptionValue("numberOfEvaluations"));
+		int maxEvaluations = Integer.parseInt(commandLine.getOptionValue("numberOfEvaluations"));
 
 		// seed the pseudo-random number generator
 		if (commandLine.hasOption("seed")) {
@@ -586,20 +578,17 @@ public class Solve extends CommandLineUtility {
 		int runtimeFrequency = 100;
 
 		if (commandLine.hasOption("runtimeFrequency")) {
-			runtimeFrequency = Integer.parseInt(
-					commandLine.getOptionValue("runtimeFrequency"));
+			runtimeFrequency = Integer.parseInt(commandLine.getOptionValue("runtimeFrequency"));
 		}
 
 		// open the resources and begin processing
 		Problem problem = null;
 		Algorithm algorithm = null;
-		ResultFileWriter writer = null;
 		File file = new File(commandLine.getOptionValue("output"));
 		
 		try {
 			if (commandLine.hasOption("problem")) {
-				problem = ProblemFactory.getInstance().getProblem(
-						commandLine.getOptionValue("problem"));
+				problem = OptionUtils.getProblemInstance(commandLine, false);
 			} else {
 				problem = createExternalProblem(commandLine);
 			}
@@ -618,19 +607,12 @@ public class Solve extends CommandLineUtility {
 				// if the output file exists, delete first to avoid appending
 				FileUtils.delete(file);
 				
-				try {
-					writer = new ResultFileWriter(problem, file);
-
-					algorithm = new RuntimeCollector(algorithm,
-							runtimeFrequency, writer);
+				try (ResultFileWriter writer = new ResultFileWriter(problem, file)) {
+					algorithm = new RuntimeCollector(algorithm, runtimeFrequency, writer);
 					
 					while (!algorithm.isTerminated() &&
 							(algorithm.getNumberOfEvaluations() < maxEvaluations)) {
 						algorithm.step();
-					}
-				} finally {
-					if (writer != null) {
-						writer.close();
 					}
 				}
 			} finally {
@@ -686,11 +668,9 @@ public class Solve extends CommandLineUtility {
 			double elapsedTime = (System.nanoTime() - startTime) * 1e-9;
 			NondominatedPopulation result = algorithm.getResult();
 
-			Properties properties = new Properties();
-			properties.setProperty("NFE",
-					Integer.toString(algorithm.getNumberOfEvaluations()));
-			properties.setProperty("ElapsedTime",
-					Double.toString(elapsedTime));
+			TypedProperties properties = new TypedProperties();
+			properties.setInt("NFE", algorithm.getNumberOfEvaluations());
+			properties.setDouble("ElapsedTime", elapsedTime);
 
 			try {
 				writer.append(new ResultEntry(result, properties));

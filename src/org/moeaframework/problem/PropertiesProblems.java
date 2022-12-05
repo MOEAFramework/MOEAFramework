@@ -72,7 +72,7 @@ public class PropertiesProblems extends ProblemProvider {
 			
 			if (className != null) {
 				try {
-					return (Problem)Class.forName(className).newInstance();
+					return (Problem)Class.forName(className).getConstructor().newInstance();
 				} catch (Exception e) {
 					throw new ProviderNotFoundException(name, e);
 				}

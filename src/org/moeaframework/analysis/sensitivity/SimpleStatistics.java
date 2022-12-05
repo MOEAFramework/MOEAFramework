@@ -19,7 +19,6 @@ package org.moeaframework.analysis.sensitivity;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,9 +35,9 @@ import org.moeaframework.util.OptionCompleter;
  * contain the same number of rows and columns.
  * <p>
  * Usage: {@code java -cp "..." org.moeaframework.analysis.sensitivity.SimpleStatistics <options> <files>}
- * <p>
- * Arguments:
- * <table border="0" style="margin-left: 1em">
+ * 
+ * <table>
+ *   <caption style="text-align: left">Arguments:</caption>
  *   <tr>
  *     <td>{@code -m, --mode}</td>
  *     <td>The mode of operation, such as {@code minimum}, {@code maximum}, 
@@ -108,10 +107,7 @@ public class SimpleStatistics extends CommandLineUtility {
 	 * @throws IOException if an I/O error occurred
 	 */
 	private double[][] load(File file) throws IOException {
-		MatrixReader reader = null;
-		
-		try {
-			reader = new MatrixReader(file);
+		try (MatrixReader reader = new MatrixReader(file)) {
 			List<double[]> data = new ArrayList<double[]>();
 			
 			while (reader.hasNext()) {
@@ -119,17 +115,12 @@ public class SimpleStatistics extends CommandLineUtility {
 			}
 			
 			return data.toArray(new double[0][]);
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
 		}
 	}
 
 	@Override
 	public void run(CommandLine commandLine) throws Exception {
 		String mode = null;
-		PrintStream out = null;
 		List<double[][]> entries = new ArrayList<double[][]>();
 		SummaryStatistics statistics = new SummaryStatistics();
 		OptionCompleter completer = new OptionCompleter("minimum", "maximum", 
@@ -180,14 +171,8 @@ public class SimpleStatistics extends CommandLineUtility {
 			mode = "average";
 		}
 		
-		try {
-			//instantiate the writer
-			if (commandLine.hasOption("output")) {
-				out = new PrintStream(commandLine.getOptionValue("output"));
-			} else {
-				out = System.out;
-			}
-		
+		try (OutputLogger output = new OutputLogger(commandLine.hasOption("output") ?
+				new File(commandLine.getOptionValue("output")) : null)) {
 			//compute the statistics
 			for (int i=0; i<numberOfRows; i++) {
 				for (int j=0; j<numberOfColumns; j++) {
@@ -211,30 +196,26 @@ public class SimpleStatistics extends CommandLineUtility {
 					}
 					
 					if (j > 0) {
-						out.print(' ');
+						output.print(' ');
 					}
 					
 					if (mode.equals("minimum")) {
-						out.print(statistics.getMin());
+						output.print(statistics.getMin());
 					} else if (mode.equals("maximum")) {
-						out.print(statistics.getMax());
+						output.print(statistics.getMax());
 					} else if (mode.equals("average")) {
-						out.print(statistics.getMean());
+						output.print(statistics.getMean());
 					} else if (mode.equals("stdev")) {
-						out.print(statistics.getStandardDeviation());
+						output.print(statistics.getStandardDeviation());
 					} else if (mode.equals("count")) {
-						out.print(statistics.getN());
+						output.print(statistics.getN());
 					} else {
 						throw new IllegalArgumentException("unknown mode: " +
 								mode);
 					}
 				}
 				
-				out.println();
-			}
-		} finally {
-			if ((out != null) && (out != System.out)) {
-				out.close();
+				output.println();
 			}
 		}
 	}

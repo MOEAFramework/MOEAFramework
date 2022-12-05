@@ -196,6 +196,15 @@ public class MSOPSRankedPopulation extends Population {
 	}
 	
 	/**
+	 * Returns the number of weight vectors.
+	 * 
+	 * @return the number of weight vectors
+	 */
+	public int getNumberOfWeights() {
+		return weights.size();
+	}
+	
+	/**
 	 * Returns the neighborhood of solutions nearest to and including the
 	 * given solution.
 	 * 

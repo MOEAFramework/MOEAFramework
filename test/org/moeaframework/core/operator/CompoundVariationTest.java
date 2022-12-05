@@ -45,6 +45,11 @@ public class CompoundVariationTest {
 			this.arity = arity;
 			this.numberOfOffspring = numberOfOffspring;
 		}
+		
+		@Override
+		public String getName() {
+			return "stub";
+		}
 
 		@Override
 		public int getArity() {
@@ -65,7 +70,7 @@ public class CompoundVariationTest {
 		VariationStub vs1 = new VariationStub(1, 1);
 		CompoundVariation variation = new CompoundVariation(vs1);
 		
-		Assert.assertEquals("VariationStub", variation.getName());
+		Assert.assertEquals("stub", variation.getName());
 		Assert.assertEquals(1, variation.getArity());
 		
 		for (int i=0; i<TestThresholds.SAMPLES; i++) {
@@ -82,7 +87,7 @@ public class CompoundVariationTest {
 		VariationStub vs2 = new VariationStub(1, 1);
 		CompoundVariation variation = new CompoundVariation(vs1, vs2);
 		
-		Assert.assertEquals("VariationStub+VariationStub", variation.getName());
+		Assert.assertEquals("stub+stub", variation.getName());
 		Assert.assertEquals(2, variation.getArity());
 		
 		for (int i=0; i<TestThresholds.SAMPLES; i++) {
@@ -101,9 +106,9 @@ public class CompoundVariationTest {
 		VariationStub vs2 = new VariationStub(2, 2);
 		VariationStub vs3 = new VariationStub(1, 1);
 		CompoundVariation variation = new CompoundVariation(vs1, vs2, vs3);
-		variation.setName("Complex");
+		variation.setName("complex");
 		
-		Assert.assertEquals("Complex", variation.getName());
+		Assert.assertEquals("complex", variation.getName());
 		Assert.assertEquals(3, variation.getArity());
 		
 		for (int i=0; i<TestThresholds.SAMPLES; i++) {

@@ -18,7 +18,6 @@
 package org.moeaframework.problem.misc;
 
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.moeaframework.TestUtils;
 import org.moeaframework.core.Problem;
@@ -28,9 +27,8 @@ import org.moeaframework.problem.ProblemTest;
 public class TanakaTest extends ProblemTest {
 
 	@Test
-	@Ignore("JMetal 5.9 modifies the constraint values causing a difference")
-	public void testJMetal() throws Exception {
-		test(new org.uma.jmetal.problem.multiobjective.Tanaka(), new Tanaka());
+	public void testJMetal() {
+		test("Tanaka", false);
 	}
 	
 	@Test

@@ -63,7 +63,7 @@ public class ExamplesGUI extends JFrame {
 	/**
 	 * The list displaying all available examples.
 	 */
-	private JList list;
+	private JList<Example> list;
 	
 	/**
 	 * The button for running the currently-selected example.
@@ -112,16 +112,12 @@ public class ExamplesGUI extends JFrame {
 		if (file.exists()) {
 			return load(file);
 		} else {
-			InputStream input = getClass().getResourceAsStream("/" + resource);
-			
-			if (input == null) {
-				throw new FileNotFoundException(resource);
-			} else {
-				try {
+			try (InputStream input = getClass().getResourceAsStream("/" + resource)) {
+				if (input == null) {
+					throw new FileNotFoundException(resource);
+				} else {
 					return load(new BufferedReader(new InputStreamReader(
 							input)));
-				} finally {
-					input.close();
 				}
 			}
 		}
@@ -155,15 +151,8 @@ public class ExamplesGUI extends JFrame {
 	 * @throws IOException if an I/O error occurred
 	 */
 	private String load(File file) throws IOException {
-		BufferedReader reader = null;
-		
-		try {
-			reader = new BufferedReader(new FileReader(file));
+		try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
 			return load(reader);
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
 		}
 	}
 	
@@ -171,7 +160,7 @@ public class ExamplesGUI extends JFrame {
 	 * Layout the components on the GUI.
 	 */
 	public void layoutComponents() {
-		list = new JList(examples);
+		list = new JList<Example>(examples);
 		runButton = new JButton("Run Example");
 		exitButton = new JButton("Exit");
 		tabbedPane = new JTabbedPane();

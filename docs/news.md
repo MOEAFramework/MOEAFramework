@@ -3,6 +3,54 @@
 This page documents notable changes introduced in each chronological release of the MOEA Framework.
 
 
+## Version 3.2 (TBD)
+
+  * Adds simple constructors for all built-in algorithms and getters / setters for configuration:
+    ```java
+    Problem problem = new DTLZ2(2);
+    
+    NSGAII algorithm = new NSGAII(problem);
+    algorithm.setInitialPopulationSize(250);
+    algorithm.run(10000);
+    
+    NondominatedPopulation result = algorithm.getResult();
+    ```
+    
+  * Adds Configurable interface to built-in algorithms to get and/or set settings:
+    ```java
+    algorithm.getConfiguration().display();
+    ```
+
+  * Removes JMetal as a required dependency at runtime.  Not only does this reduce the jar file size by
+    ~20 MBs, it removes overlapping class names shared by both libraries.  It is now available as
+    an extension library (see below).
+    
+  * Set up the following repos and add documentation for these extensions:
+  
+    - http://github.com/MOEAFramework/JMetal-Plugin
+    - http://github.com/MOEAFramework/GeneralizedDecomposition
+
+
+## Version 3.1 (19 Nov 2022)
+
+  * Removes all deprecated methods from `2.x` release.
+  
+  * Updates Javadoc formatting to fix linter warnings.
+  
+  * Removes all use of `java.util.Properties` and replaces with `TypedProperties`.  Also modifies
+    `TypedProperties` be case-insensitive and warn if any properties are unused.
+    
+  * Adds two preview features:
+  
+    - The simulated annealing algorithm AMOSA in `org.moeaframework.algorithm.sa`.
+    
+    - Support for island model parallelization in `org.moeaframework.parallel`
+    
+  * Upgrades code to use try-with-resource for automatically closing resources.  This also includes
+    making some classes `AutoCloseable`.  This may produce compiler warnings that can be fixed by
+    wrapping the resource in a try-with-resource block.
+
+
 ## Version 3.0 (7 Nov 2022)
 
   * Upgrades minimum JDK version to 8.
@@ -21,6 +69,9 @@ This page documents notable changes introduced in each chronological release of 
   
   * Converted NEWS, HELP, README, etc. to Markdown and moved into `docs/` folder.  Also replaces the
     quick start guide (PDF) with Markdown files in `docs/`.
+    
+  * Published new version of the Beginner's Guide to the MOEA Framework with updates for 
+    newer Java versions.
 
 
 ## Version 2.13 (30 Dec 2019)

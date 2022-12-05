@@ -29,10 +29,9 @@ public class UF11Test {
 	@Test
 	public void test() {
 		UF11 uf11 = new UF11();
-		RandomInitialization initialization = new RandomInitialization(uf11, 
-				TestThresholds.SAMPLES);
+		RandomInitialization initialization = new RandomInitialization(uf11);
 		
-		for (Solution solution : initialization.initialize()) {
+		for (Solution solution : initialization.initialize(TestThresholds.SAMPLES)) {
 			double[] x = EncodingUtils.getReal(solution);
 			double[] f = new double[uf11.getNumberOfObjectives()];
 			
