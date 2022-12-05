@@ -24,6 +24,7 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.comparator.DominanceComparator;
+import org.moeaframework.core.configuration.Validate;
 import org.moeaframework.core.operator.RandomInitialization;
 import org.moeaframework.core.operator.real.DifferentialEvolutionSelection;
 import org.moeaframework.core.operator.real.DifferentialEvolutionVariation;
@@ -74,14 +75,17 @@ public class DifferentialEvolution extends SingleObjectiveEvolutionaryAlgorithm 
 			Initialization initialization, DifferentialEvolutionSelection selection,
 			DifferentialEvolutionVariation variation) {
 		super(problem, initialPopulationSize, new Population(), null, comparator, initialization, variation);
-		this.selection = selection;
 		
-		problem.assertType(RealVariable.class);
+		Validate.problemType(problem, RealVariable.class);
+		Validate.notNull("selection", selection);
+		
+		this.selection = selection;
 	}
-
+	
 	@Override
 	protected void iterate() {
 		Population population = getPopulation();
+		DifferentialEvolutionVariation variation = getVariation();
 		Population children = new Population();
 
 		//generate children
@@ -112,7 +116,7 @@ public class DifferentialEvolution extends SingleObjectiveEvolutionaryAlgorithm 
 	
 	@Override
 	public DifferentialEvolutionVariation getVariation() {
-		return (DifferentialEvolutionVariation)variation;
+		return (DifferentialEvolutionVariation)super.getVariation();
 	}
 	
 	public void setVariation(DifferentialEvolutionVariation variation) {

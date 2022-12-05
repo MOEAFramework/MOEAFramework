@@ -191,8 +191,6 @@ public class ConfigurationUtils {
 			try {
 				value = properties.getInt(propertyName);
 			} catch (NumberFormatException e) {
-				// TODO: In the past, we have allowed reading most int parameters as doubles.  This handles that
-				// conversion, but I would like to discontinue this practice.
 				value = (int)properties.getDouble(propertyName);
 				
 				System.err.println(propertyName + " given as floating-point but expected an int, converting " +

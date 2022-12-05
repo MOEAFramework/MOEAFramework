@@ -27,6 +27,7 @@ import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.configuration.Prefix;
 import org.moeaframework.core.configuration.Property;
+import org.moeaframework.core.configuration.Validate;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
 
@@ -86,7 +87,7 @@ public class AdaptiveMetropolis extends MultiParentVariation {
 	 */
 	public AdaptiveMetropolis(int numberOfParents, int numberOfOffspring, double jumpRateCoefficient) {
 		super(numberOfParents, numberOfOffspring);
-		this.jumpRateCoefficient = jumpRateCoefficient;
+		setJumpRateCoefficient(jumpRateCoefficient);
 	}
 	
 	@Override
@@ -113,6 +114,7 @@ public class AdaptiveMetropolis extends MultiParentVariation {
 	 */
 	@Property("coefficient")
 	public void setJumpRateCoefficient(double jumpRateCoefficient) {
+		Validate.greaterThanZero("jumpRateCoefficient", jumpRateCoefficient);
 		this.jumpRateCoefficient = jumpRateCoefficient;
 	}
 

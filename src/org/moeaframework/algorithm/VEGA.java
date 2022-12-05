@@ -105,6 +105,8 @@ public class VEGA extends AbstractEvolutionaryAlgorithm {
 
 	@Override
 	protected void iterate() {
+		Population population = getPopulation();
+		Variation variation = getVariation();
 		int populationSize = population.size();
 		
 		// select the parents from the M different subgroups

@@ -24,6 +24,7 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.configuration.Configurable;
 import org.moeaframework.core.configuration.Property;
+import org.moeaframework.core.configuration.Validate;
 import org.moeaframework.core.operator.RandomInitialization;
 
 /**
@@ -70,7 +71,11 @@ public class RandomSearch extends AbstractAlgorithm implements Configurable {
 	 */
 	public RandomSearch(Problem problem, int sampleSize, Initialization generator, NondominatedPopulation archive) {
 		super(problem);
-		this.sampleSize = sampleSize;
+		setSampleSize(sampleSize);
+		
+		Validate.notNull("generator", generator);
+		Validate.notNull("archive", archive);
+		
 		this.generator = generator;
 		this.archive = archive;
 	}
@@ -93,6 +98,7 @@ public class RandomSearch extends AbstractAlgorithm implements Configurable {
 	 */
 	@Property(alias="populationSize")
 	public void setSampleSize(int sampleSize) {
+		Validate.greaterThanZero("sampleSize", sampleSize);
 		this.sampleSize = sampleSize;
 	}
 

@@ -45,7 +45,7 @@ public class RegisteredAlgorithmProvider extends AlgorithmProvider {
 		if (constructor != null) {
 			try {
 				return constructor.apply(properties, problem);
-			} catch (FrameworkException e) {
+			} catch (FrameworkException | IllegalArgumentException e) {
 				throw new ProviderNotFoundException(name, e);
 			}
 		}

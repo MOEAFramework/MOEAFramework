@@ -36,6 +36,7 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.configuration.Configurable;
 import org.moeaframework.core.configuration.Property;
+import org.moeaframework.core.configuration.Validate;
 import org.moeaframework.core.operator.AbstractCompoundVariation;
 import org.moeaframework.core.operator.RandomInitialization;
 import org.moeaframework.core.operator.real.DifferentialEvolutionVariation;
@@ -100,7 +101,7 @@ public class MOEAD extends AbstractAlgorithm implements Configurable {
 	/**
 	 * The initialization operator.
 	 */
-	private final Initialization initialization;
+	private Initialization initialization;
 
 	/**
 	 * The variation operator.
@@ -187,7 +188,7 @@ public class MOEAD extends AbstractAlgorithm implements Configurable {
 	 * @param initialPopulationSize the initial population size
 	 * @param neighborhoodSize the size of the neighborhood used for mating, which must be at least
 	 *        {@code variation.getArity()-1}.
-	 * @param weightGenerator the weight generator
+	 * @param weightGenerator the weight generator, or {@code null} to use randomly-generated weights
 	 * @param initialization the initialization method, which must generate the same number of solutions as weights
 	 * @param variation the variation operator
 	 * @param delta the probability of mating with a solution in the neighborhood rather than the entire population
@@ -198,15 +199,17 @@ public class MOEAD extends AbstractAlgorithm implements Configurable {
 	public MOEAD(Problem problem, int initialPopulationSize, int neighborhoodSize, WeightGenerator weightGenerator,
 			Initialization initialization, Variation variation, double delta, double eta, int updateUtility) {
 		super(problem);
-		this.initialPopulationSize = initialPopulationSize;
-		this.neighborhoodSize = neighborhoodSize;
-		this.weightGenerator = weightGenerator;
-		this.initialization = initialization;
-		this.delta = delta;
-		this.eta = eta;
-		this.updateUtility = updateUtility;
-		
+		setInitialPopulationSize(initialPopulationSize);
+		setNeighborhoodSize(neighborhoodSize);
+		setDelta(delta);
+		setEta(eta);
+		setUpdateUtility(updateUtility);
 		setVariation(variation);
+		setInitialization(initialization);
+		
+		Validate.notNull("initialization", initialization);
+		
+		this.weightGenerator = weightGenerator;
 	}
 	
 	/**
@@ -217,7 +220,7 @@ public class MOEAD extends AbstractAlgorithm implements Configurable {
 	 * @param initialPopulationSize the initial population size
 	 * @param neighborhoodSize the size of the neighborhood used for mating, which must be at least
 	 *        {@code variation.getArity()-1}.
-	 * @param weightGenerator the weight generator
+	 * @param weightGenerator the weight generator, or {@code null} to use randomly-generated weights
 	 * @param initialization the initialization method, which must generate the same number of solutions as weights
 	 * @param variation the variation operator
 	 * @param delta the probability of mating with a solution in the neighborhood rather than the entire population
@@ -246,6 +249,7 @@ public class MOEAD extends AbstractAlgorithm implements Configurable {
 	@Property("populationSize")
 	public void setInitialPopulationSize(int initialPopulationSize) {
 		assertNotInitialized();
+		Validate.greaterThanZero("initialPopulationSize", initialPopulationSize);
 		this.initialPopulationSize = initialPopulationSize;
 	}
 
@@ -265,6 +269,7 @@ public class MOEAD extends AbstractAlgorithm implements Configurable {
 	 */
 	@Property
 	public void setNeighborhoodSize(int neighborhoodSize) {
+		Validate.greaterThanZero("neighborhoodSize", neighborhoodSize);
 		this.neighborhoodSize = neighborhoodSize;
 	}
 
@@ -284,6 +289,7 @@ public class MOEAD extends AbstractAlgorithm implements Configurable {
 	 */
 	@Property
 	public void setDelta(double delta) {
+		Validate.probability("delta", delta);
 		this.delta = delta;
 	}
 
@@ -303,6 +309,7 @@ public class MOEAD extends AbstractAlgorithm implements Configurable {
 	 */
 	@Property
 	public void setEta(double eta) {
+		Validate.greaterThanZero("eta", eta);
 		this.eta = eta;
 	}
 
@@ -343,6 +350,7 @@ public class MOEAD extends AbstractAlgorithm implements Configurable {
 	 */
 	@Property("operator")
 	public void setVariation(Variation variation) {
+		Validate.notNull("variation", variation);
 		this.variation = variation;
 		
 		if (variation instanceof DifferentialEvolutionVariation) {
@@ -352,6 +360,27 @@ public class MOEAD extends AbstractAlgorithm implements Configurable {
 		} else {
 			useDE = false;
 		}
+	}
+	
+	/**
+	 * Returns the initialization method for generating solutions in the initial population.
+	 * 
+	 * @return the initialization method
+	 */
+	public Initialization getInitialization() {
+		return initialization;
+	}
+
+	/**
+	 * Sets the initialization method for generating solutions in the initial population.  This can only
+	 * be set before initializing the algorithm.
+	 * 
+	 * @param initialization the initialization method
+	 */
+	public void setInitialization(Initialization initialization) {
+		assertNotInitialized();
+		Validate.notNull("initialization", initialization);
+		this.initialization = initialization;
 	}
 
 	@Override

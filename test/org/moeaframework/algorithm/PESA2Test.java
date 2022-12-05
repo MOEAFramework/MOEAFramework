@@ -48,7 +48,7 @@ public class PESA2Test extends AlgorithmTest {
 		Solution solution3 = TestUtils.newSolution(0.001, 0.999);
 		
 		Problem problem = new MockRealProblem(2);
-		PESA2 pesa2 = new PESA2(problem, 0, null, null, 8, 100);
+		PESA2 pesa2 = new PESA2(problem);
 		pesa2.getArchive().add(solution1);
 		pesa2.getArchive().add(solution2);
 		pesa2.getArchive().add(solution3);
@@ -72,7 +72,7 @@ public class PESA2Test extends AlgorithmTest {
 		Solution solution3 = TestUtils.newSolution(0.001, 0.999);
 		
 		Problem problem = new MockRealProblem(2);
-		PESA2 pesa2 = new PESA2(problem, 0, null, null, 8, 100);
+		PESA2 pesa2 = new PESA2(problem);
 		pesa2.getArchive().add(solution1);
 		pesa2.getArchive().add(solution2);
 		pesa2.getArchive().add(solution3);

@@ -26,6 +26,7 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.comparator.DominanceComparator;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
 import org.moeaframework.core.configuration.Property;
+import org.moeaframework.core.configuration.Validate;
 import org.moeaframework.core.operator.RandomInitialization;
 import org.moeaframework.core.operator.real.DifferentialEvolutionSelection;
 import org.moeaframework.core.operator.real.DifferentialEvolutionVariation;
@@ -84,15 +85,19 @@ public class GDE3 extends AbstractEvolutionaryAlgorithm {
 			DominanceComparator comparator, DifferentialEvolutionSelection selection,
 			DifferentialEvolutionVariation variation, Initialization initialization) {
 		super(problem, initialPopulationSize, population, null, initialization, variation);
+		
+		Validate.problemType(problem, RealVariable.class);
+		Validate.notNull("comparator", comparator);
+		Validate.notNull("selection", selection);
+		
 		this.comparator = comparator;
 		this.selection = selection;
-		
-		problem.assertType(RealVariable.class);
 	}
 
 	@Override
 	public void iterate() {
 		NondominatedSortingPopulation population = getPopulation();
+		DifferentialEvolutionVariation variation = getVariation();
 		Population children = new Population();
 		int populationSize = population.size();
 

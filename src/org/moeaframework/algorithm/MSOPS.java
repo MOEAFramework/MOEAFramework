@@ -24,7 +24,9 @@ import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.Variation;
 import org.moeaframework.core.configuration.Property;
+import org.moeaframework.core.configuration.Validate;
 import org.moeaframework.core.operator.RandomInitialization;
 import org.moeaframework.core.operator.real.DifferentialEvolutionSelection;
 import org.moeaframework.core.operator.real.DifferentialEvolutionVariation;
@@ -82,9 +84,11 @@ public class MSOPS extends AbstractEvolutionaryAlgorithm {
 			DifferentialEvolutionSelection selection, DifferentialEvolutionVariation variation,
 			Initialization initialization) {
 		super(problem, initialPopulationSize, population, null, initialization, variation);
-		this.selection = selection;
 		
-		problem.assertType(RealVariable.class);
+		Validate.problemType(problem, RealVariable.class);
+		Validate.notNull("selection", selection);
+		
+		this.selection = selection;
 	}
 	
 	/**
@@ -129,6 +133,7 @@ public class MSOPS extends AbstractEvolutionaryAlgorithm {
 	@Override
 	protected void iterate() {
 		MSOPSRankedPopulation population = getPopulation();
+		Variation variation = getVariation();
 		Population offspring = new Population();
 		int populationSize = population.size();
 		int neighborhoodSize = (int)Math.ceil(populationSize/2.0);

@@ -31,6 +31,7 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.configuration.Property;
+import org.moeaframework.core.configuration.Validate;
 import org.moeaframework.core.operator.RandomInitialization;
 import org.moeaframework.core.spi.OperatorFactory;
 import org.moeaframework.util.TypedProperties;
@@ -132,6 +133,7 @@ public class RVEA extends AbstractEvolutionaryAlgorithm {
 	@Override
 	protected void iterate() {
 		ReferenceVectorGuidedPopulation population = getPopulation();
+		Variation variation = getVariation();
 		Population offspring = new Population();
 		int populationSize = population.size();
 		
@@ -190,6 +192,7 @@ public class RVEA extends AbstractEvolutionaryAlgorithm {
 	 */
 	@Property
 	public void setAdaptFrequency(int adaptFrequency) {
+		Validate.greaterThanZero("adaptFrequency", adaptFrequency);
 		this.adaptFrequency = adaptFrequency;
 	}
 	

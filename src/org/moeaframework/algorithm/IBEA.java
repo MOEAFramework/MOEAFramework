@@ -17,7 +17,6 @@
  */
 package org.moeaframework.algorithm;
 
-import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Initialization;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Population;
@@ -29,6 +28,7 @@ import org.moeaframework.core.Variation;
 import org.moeaframework.core.comparator.FitnessComparator;
 import org.moeaframework.core.configuration.ConfigurationException;
 import org.moeaframework.core.configuration.Property;
+import org.moeaframework.core.configuration.Validate;
 import org.moeaframework.core.fitness.AdditiveEpsilonIndicatorFitnessEvaluator;
 import org.moeaframework.core.fitness.HypervolumeFitnessEvaluator;
 import org.moeaframework.core.fitness.IndicatorFitnessEvaluator;
@@ -66,7 +66,7 @@ public class IBEA extends AbstractEvolutionaryAlgorithm {
 	/**
 	 * The selection operator.
 	 */
-	private final Selection selection;
+	private Selection selection;
 	
 	/**
 	 * Constructs a new IBEA instance with default settings.
@@ -96,12 +96,8 @@ public class IBEA extends AbstractEvolutionaryAlgorithm {
 			Initialization initialization, Variation variation, IndicatorFitnessEvaluator fitnessEvaluator) {
 		super(problem, initialPopulationSize, new Population(), archive, initialization, variation);
 		setFitnessEvaluator(fitnessEvaluator);
-
-		selection = new TournamentSelection(fitnessComparator);
 		
-		if (problem.getNumberOfConstraints() > 0) {
-			throw new FrameworkException("constraints not supported");
-		}
+		Validate.problemHasNoConstraints(problem);
 	}
 	
 	public IndicatorFitnessEvaluator getFitnessEvaluator() {
@@ -109,19 +105,24 @@ public class IBEA extends AbstractEvolutionaryAlgorithm {
 	}
 	
 	public void setFitnessEvaluator(IndicatorFitnessEvaluator fitnessEvaluator) {
+		Validate.notNull("fitnessEvaluator", fitnessEvaluator);
+		
 		this.fitnessEvaluator = fitnessEvaluator;
 		fitnessComparator = new FitnessComparator(fitnessEvaluator.areLargerValuesPreferred());
+		selection = new TournamentSelection(fitnessComparator);
 	}
 	
 	@Override
 	protected void initialize() {
 		super.initialize();
 		
-		fitnessEvaluator.evaluate(population);
+		fitnessEvaluator.evaluate(getPopulation());
 	}
 
 	@Override
 	protected void iterate() {
+		Population population = getPopulation();
+		Variation variation = getVariation();
 		Population offspring = new Population();
 		int populationSize = population.size();
 		
@@ -148,6 +149,7 @@ public class IBEA extends AbstractEvolutionaryAlgorithm {
 	 * @return the index of the solution with the worst fitness value
 	 */
 	private int findWorstIndex() {
+		Population population = getPopulation();
 		int worstIndex = 0;
 		
 		for (int i = 1; i < population.size(); i++) {

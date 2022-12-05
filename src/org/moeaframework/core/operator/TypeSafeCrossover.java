@@ -22,6 +22,7 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variable;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.configuration.Property;
+import org.moeaframework.core.configuration.Validate;
 
 /**
  * An abstract variation class that validates the types of each variable before
@@ -34,7 +35,7 @@ public abstract class TypeSafeCrossover<T extends Variable> implements Variation
 	/**
 	 * The probability of applying this operator to each decision variable.
 	 */
-	protected double probability;
+	private double probability;
 	
 	/**
 	 * The type of decision variable this operator supports.
@@ -50,7 +51,8 @@ public abstract class TypeSafeCrossover<T extends Variable> implements Variation
 	public TypeSafeCrossover(Class<T> type, double probability) {
 		super();
 		this.type = type;
-		this.probability = probability;
+		
+		setProbability(probability);
 	}
 	
 	/**
@@ -69,6 +71,7 @@ public abstract class TypeSafeCrossover<T extends Variable> implements Variation
 	 */
 	@Property("rate")
 	public void setProbability(double probability) {
+		Validate.probability("probability", probability);
 		this.probability = probability;
 	}
 

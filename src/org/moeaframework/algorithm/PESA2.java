@@ -59,13 +59,13 @@ public class PESA2 extends AbstractEvolutionaryAlgorithm {
 	/**
 	 * The selection operator.
 	 */
-	protected final Selection selection;
+	final Selection selection;
 	
 	/**
 	 * A mapping from grid index to the solutions occupying that grid index.
 	 * This enables PESA2's region-based selection.
 	 */
-	protected Map<Integer, List<Solution>> gridMap;
+	Map<Integer, List<Solution>> gridMap;
 	
 	/**
 	 * Constructs a new PESA2 instance with default settings.
@@ -122,6 +122,9 @@ public class PESA2 extends AbstractEvolutionaryAlgorithm {
 
 	@Override
 	protected void iterate() {
+		Population population = getPopulation();
+		AdaptiveGridArchive archive = getArchive();
+		Variation variation = getVariation();
 		int populationSize = population.size();
 		
 		// clear the population; selection draws from archive only

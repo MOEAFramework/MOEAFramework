@@ -24,6 +24,7 @@ import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.configuration.Prefix;
 import org.moeaframework.core.configuration.Property;
+import org.moeaframework.core.configuration.Validate;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.util.Vector;
 
@@ -95,8 +96,8 @@ public class PCX extends MultiParentVariation {
 	 */
 	public PCX(int numberOfParents, int numberOfOffspring, double eta, double zeta) {
 		super(numberOfParents, numberOfOffspring);
-		this.eta = eta;
-		this.zeta = zeta;
+		setEta(eta);
+		setZeta(zeta);
 	}
 	
 	@Override
@@ -123,6 +124,7 @@ public class PCX extends MultiParentVariation {
 	 */
 	@Property
 	public void setEta(double eta) {
+		Validate.greaterThanZero("eta", eta);
 		this.eta = eta;
 	}
 
@@ -145,6 +147,7 @@ public class PCX extends MultiParentVariation {
 	 */
 	@Property
 	public void setZeta(double zeta) {
+		Validate.greaterThanZero("zeta", zeta);
 		this.zeta = zeta;
 	}
 

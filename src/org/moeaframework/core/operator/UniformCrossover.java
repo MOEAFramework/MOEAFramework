@@ -23,6 +23,7 @@ import org.moeaframework.core.Variable;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.configuration.Prefix;
 import org.moeaframework.core.configuration.Property;
+import org.moeaframework.core.configuration.Validate;
 
 /**
  * Crossover operator where each index is randomly swapped between the
@@ -51,7 +52,8 @@ public class UniformCrossover implements Variation {
 	 * @param probability the probability of applying this operator to solutions
 	 */
 	public UniformCrossover(double probability) {
-		this.probability = probability;
+		super();
+		setProbability(probability);
 	}
 	
 	@Override
@@ -75,6 +77,7 @@ public class UniformCrossover implements Variation {
 	 */
 	@Property("rate")
 	public void setProbability(double probability) {
+		Validate.probability("probability", probability);
 		this.probability = probability;
 	}
 

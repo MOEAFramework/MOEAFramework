@@ -29,6 +29,7 @@ import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.configuration.Property;
+import org.moeaframework.core.configuration.Validate;
 import org.moeaframework.core.operator.RandomInitialization;
 import org.moeaframework.core.operator.TournamentSelection;
 import org.moeaframework.core.spi.OperatorFactory;
@@ -88,6 +89,9 @@ public class GeneticAlgorithm extends SingleObjectiveEvolutionaryAlgorithm {
 	public GeneticAlgorithm(Problem problem, int initialPopulationSize, AggregateObjectiveComparator comparator,
 			Initialization initialization, Selection selection, Variation variation) {
 		super(problem, initialPopulationSize, new Population(), null, comparator, initialization, variation);
+		
+		Validate.notNull("selection", selection);
+		
 		this.selection = selection;
 	}
 
@@ -102,6 +106,7 @@ public class GeneticAlgorithm extends SingleObjectiveEvolutionaryAlgorithm {
 	@Override
 	public void iterate() {
 		Population population = getPopulation();
+		Variation variation = getVariation();
 		Population offspring = new Population();
 		int populationSize = population.size();
 

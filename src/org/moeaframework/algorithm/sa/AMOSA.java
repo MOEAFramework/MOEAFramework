@@ -33,6 +33,7 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.comparator.DominanceComparator;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
 import org.moeaframework.core.configuration.Property;
+import org.moeaframework.core.configuration.Validate;
 import org.moeaframework.core.operator.Mutation;
 import org.moeaframework.core.operator.RandomInitialization;
 import org.moeaframework.core.spi.OperatorFactory;
@@ -106,14 +107,17 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 			int hardLimit, double stoppingTemperature, double initialTemperature, double alpha,
 			int numberOfIterationsPerTemperature, int numberOfHillClimbingIterationsForRefinement) {
 		super(problem, stoppingTemperature, initialTemperature);
+		setMutation(mutation);
+		setGamma(gamma);
+		setSoftLimit(softLimit);
+		setHardLimit(hardLimit);
+		setAlpha(alpha);
+		setNumberOfIterationsPerTemperature(numberOfIterationsPerTemperature);
+		setNumberOfHillClimbingIterationsForRefinement(numberOfHillClimbingIterationsForRefinement);
+		
+		Validate.notNull("initialization", initialization);
+		
 		this.initialization = initialization;
-		this.mutation = mutation;
-		this.gamma = gamma;
-		this.softLimit = softLimit;
-		this.hardLimit = hardLimit;
-		this.alpha = alpha;
-		this.numberOfIterationsPerTemperature = numberOfIterationsPerTemperature;
-		this.numberOfHillClimbingIterationsForRefinement = numberOfHillClimbingIterationsForRefinement;
 		this.archive = new NondominatedPopulation();
 	}
 	
@@ -134,7 +138,7 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 	 */
 	@Property
 	public void setGamma(double gamma) {
-		gamma = gamma < 1.0d ? 2.0d : gamma;
+		Validate.greaterThanOrEqual("gamma", 1, gamma);
 		this.gamma = gamma;
 	}
 
@@ -155,6 +159,7 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 	 */
 	@Property(alias="SL")
 	public void setSoftLimit(int softLimit) {
+		Validate.greaterThanZero("softLimit", softLimit);
 		this.softLimit = softLimit;
 	}
 
@@ -174,6 +179,7 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 	 */
 	@Property(alias="HL")
 	public void setHardLimit(int hardLimit) {
+		Validate.greaterThanZero("hardLimit", hardLimit);
 		this.hardLimit = hardLimit;
 	}
 	
@@ -193,6 +199,7 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 	 */
 	@Property("operator")
 	public void setMutation(Mutation mutation) {
+		Validate.notNull("mutation", mutation);
 		this.mutation = mutation;
 	}
 
@@ -213,6 +220,7 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 	 */
 	@Property
 	public void setAlpha(double alpha) {
+		Validate.greaterThanZero("alpha", alpha);
 		this.alpha = alpha;
 	}
 
@@ -233,6 +241,7 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 	 */
 	@Property(alias="iter")
 	public void setNumberOfIterationsPerTemperature(int numberOfIterationsPerTemperature) {
+		Validate.greaterThanZero("numberOfIterationsPerTemperature", numberOfIterationsPerTemperature);
 		this.numberOfIterationsPerTemperature = numberOfIterationsPerTemperature;
 	}
 
@@ -254,6 +263,7 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 	@Property(alias="hillClimbIter")
 	public void setNumberOfHillClimbingIterationsForRefinement(int numberOfHillClimbingIterationsForRefinement) {
 		assertNotInitialized();
+		Validate.greaterThanOrEqualToZero("numberOfHillClimbingIterationsForRefinement", numberOfHillClimbingIterationsForRefinement);
 		this.numberOfHillClimbingIterationsForRefinement = numberOfHillClimbingIterationsForRefinement;
 	}
 

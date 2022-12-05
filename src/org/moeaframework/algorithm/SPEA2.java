@@ -39,6 +39,7 @@ import org.moeaframework.core.comparator.FitnessComparator;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
 import org.moeaframework.core.configuration.Configurable;
 import org.moeaframework.core.configuration.Property;
+import org.moeaframework.core.configuration.Validate;
 import org.moeaframework.core.indicator.IndicatorUtils;
 import org.moeaframework.core.operator.RandomInitialization;
 import org.moeaframework.core.operator.TournamentSelection;
@@ -81,12 +82,12 @@ public class SPEA2 extends AbstractEvolutionaryAlgorithm {
 	/**
 	 * Strength-based fitness evaluator.
 	 */
-	protected StrengthFitnessEvaluator fitnessEvaluator;
+	private StrengthFitnessEvaluator fitnessEvaluator;
 	
 	/**
 	 * Compares solutions based on strength.
 	 */
-	protected final FitnessComparator fitnessComparator;
+	private final FitnessComparator fitnessComparator;
 	
 	/**
 	 * Constructs a new instance of SPEA2 with default settings.
@@ -116,7 +117,7 @@ public class SPEA2 extends AbstractEvolutionaryAlgorithm {
 	public SPEA2(Problem problem, int initialPopulationSize, Initialization initialization,
 			Variation variation, int numberOfOffspring, int k) {
 		super(problem, initialPopulationSize, new Population(), null, initialization, variation);
-		this.numberOfOffspring = numberOfOffspring;
+		setNumberOfOffspring(numberOfOffspring);
 		
 		fitnessEvaluator = new StrengthFitnessEvaluator(k);
 		fitnessComparator = new FitnessComparator(fitnessEvaluator.areLargerValuesPreferred());
@@ -141,6 +142,7 @@ public class SPEA2 extends AbstractEvolutionaryAlgorithm {
 	
 	@Property("offspringSize")
 	public void setNumberOfOffspring(int numberOfOffspring) {
+		Validate.greaterThanZero("numberOfOffspring", numberOfOffspring);
 		this.numberOfOffspring = numberOfOffspring;
 	}
 	
@@ -152,18 +154,19 @@ public class SPEA2 extends AbstractEvolutionaryAlgorithm {
 	protected void initialize() {
 		super.initialize();
 		
-		fitnessEvaluator.evaluate(population);
+		fitnessEvaluator.evaluate(getPopulation());
 	}
 
 	@Override
 	protected void iterate() {
 		// mating and selection to generate offspring
+		Population population = getPopulation();
+		Variation variation = getVariation();
 		Population offspring = new Population();
 		int populationSize = population.size();
 
 		while (offspring.size() < numberOfOffspring) {
-			Solution[] parents = selection.select(variation.getArity(),
-					population);
+			Solution[] parents = selection.select(variation.getArity(), population);
 			Solution[] children = variation.evolve(parents);
 
 			offspring.addAll(children);
@@ -391,7 +394,7 @@ public class SPEA2 extends AbstractEvolutionaryAlgorithm {
 		 */
 		public StrengthFitnessEvaluator(int k) {
 			super();
-			this.k = k;
+			setK(k);
 			
 			comparator = new ParetoDominanceComparator();
 		}
@@ -402,6 +405,7 @@ public class SPEA2 extends AbstractEvolutionaryAlgorithm {
 		
 		@Property
 		public void setK(int k) {
+			Validate.greaterThanZero("k", k);
 			this.k = k;
 		}
 

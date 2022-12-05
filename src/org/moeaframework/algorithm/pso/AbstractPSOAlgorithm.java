@@ -31,6 +31,7 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.comparator.DominanceComparator;
 import org.moeaframework.core.configuration.Configurable;
 import org.moeaframework.core.configuration.Property;
+import org.moeaframework.core.configuration.Validate;
 import org.moeaframework.core.fitness.FitnessBasedArchive;
 import org.moeaframework.core.operator.Mutation;
 import org.moeaframework.core.operator.RandomInitialization;
@@ -45,12 +46,12 @@ public abstract class AbstractPSOAlgorithm extends AbstractAlgorithm implements 
 	/**
 	 * The number of particles.
 	 */
-	protected int swarmSize;
+	private int swarmSize;
 	
 	/**
 	 * The number of leaders.
 	 */
-	protected int leaderSize;
+	private int leaderSize;
 	
 	/**
 	 * The particles.
@@ -113,8 +114,14 @@ public abstract class AbstractPSOAlgorithm extends AbstractAlgorithm implements 
 			NondominatedPopulation archive,
 			Mutation mutation) {
 		super(problem);
-		this.swarmSize = swarmSize;
-		this.leaderSize = leaderSize;
+		setSwarmSize(swarmSize);
+		setLeaderSize(leaderSize);
+		
+		Validate.problemType(problem, RealVariable.class);
+		Validate.notNull("leaderComparer", leaderComparator);
+		Validate.notNull("dominanceComparator", dominanceComparator);
+		Validate.notNull("leaders", leaders);
+
 		this.leaderComparator = leaderComparator;
 		this.dominanceComparator = dominanceComparator;
 		this.leaders = leaders;
@@ -140,6 +147,7 @@ public abstract class AbstractPSOAlgorithm extends AbstractAlgorithm implements 
 	@Property(alias="populationSize")
 	public void setSwarmSize(int swarmSize) {
 		assertNotInitialized();
+		Validate.greaterThanZero("swarmSize", swarmSize);
 		this.swarmSize = swarmSize;
 	}
 
@@ -161,6 +169,7 @@ public abstract class AbstractPSOAlgorithm extends AbstractAlgorithm implements 
 	@Property(alias="archiveSize")
 	public void setLeaderSize(int leaderSize) {
 		assertNotInitialized();
+		Validate.greaterThanZero("leaderSize", leaderSize);
 		this.leaderSize = leaderSize;
 	}
 	

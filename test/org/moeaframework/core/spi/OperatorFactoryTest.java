@@ -29,11 +29,12 @@ import org.moeaframework.core.Variation;
 import org.moeaframework.core.configuration.ConfigurationException;
 import org.moeaframework.core.operator.DefaultOperators;
 import org.moeaframework.core.operator.RandomInitialization;
-import org.moeaframework.core.variable.BinaryIntegerVariable;
-import org.moeaframework.core.variable.BinaryVariable;
 import org.moeaframework.core.variable.Grammar;
-import org.moeaframework.core.variable.Permutation;
-import org.moeaframework.core.variable.RealVariable;
+import org.moeaframework.problem.MockBinaryProblem;
+import org.moeaframework.problem.MockMixedBinaryProblem;
+import org.moeaframework.problem.MockMultiTypeProblem;
+import org.moeaframework.problem.MockPermutationProblem;
+import org.moeaframework.problem.MockRealProblem;
 import org.moeaframework.util.TypedProperties;
 
 /**
@@ -81,66 +82,25 @@ public class OperatorFactoryTest {
 	
 	@Test
 	public void testDefaultReal() {
-		Problem problem = new ProblemStub(1) {
-			
-			@Override
-			public Solution newSolution() {
-				Solution solution = new Solution(1, 0);
-				solution.setVariable(0, new RealVariable(0, 1));
-				return solution;
-			}
-
-		};
-		
+		Problem problem = new MockRealProblem();		
 		Assert.assertNotNull(OperatorFactory.getInstance().getVariation(null, new TypedProperties(), problem));
 	}
 	
 	@Test
 	public void testDefaultBinary() {
-		Problem problem = new ProblemStub(1) {
-			
-			@Override
-			public Solution newSolution() {
-				Solution solution = new Solution(1, 0);
-				solution.setVariable(0, new BinaryVariable(10));
-				return solution;
-			}
-
-		};
-		
+		Problem problem = new MockBinaryProblem();
 		Assert.assertNotNull(OperatorFactory.getInstance().getVariation(null, new TypedProperties(), problem));
 	}
 	
 	@Test
 	public void testCombiningBinary() {
-		Problem problem = new ProblemStub(1) {
-			
-			@Override
-			public Solution newSolution() {
-				Solution solution = new Solution(2, 0);
-				solution.setVariable(0, new BinaryVariable(10));
-				solution.setVariable(1, new BinaryIntegerVariable(5, 10));
-				return solution;
-			}
-
-		};
-		
+		Problem problem = new MockMixedBinaryProblem();
 		Assert.assertNotNull(OperatorFactory.getInstance().getVariation(null, new TypedProperties(), problem));
 	}
 	
 	@Test
 	public void testDefaultPermutation() {
-		Problem problem = new ProblemStub(1) {
-			
-			@Override
-			public Solution newSolution() {
-				Solution solution = new Solution(1, 0);
-				solution.setVariable(0, new Permutation(4));
-				return solution;
-			}
-
-		};
-		
+		Problem problem = new MockPermutationProblem();
 		Assert.assertNotNull(OperatorFactory.getInstance().getVariation(null, new TypedProperties(), problem));
 	}
 	
@@ -162,20 +122,7 @@ public class OperatorFactoryTest {
 	
 	@Test
 	public void testMixedType() {
-		Problem problem = new ProblemStub(5) {
-			
-			@Override
-			public Solution newSolution() {
-				Solution solution = new Solution(5, 0);
-				solution.setVariable(0, new RealVariable(0, 1));
-				solution.setVariable(1, new BinaryVariable(10));
-				solution.setVariable(2, new Permutation(4));
-				solution.setVariable(3, new Grammar(4));
-				return solution;
-			}
-
-		};
-		
+		Problem problem = new MockMultiTypeProblem();
 		Assert.assertNull(OperatorFactory.getInstance().getVariation(null, new TypedProperties(), problem));
 	}
 	
@@ -214,14 +161,12 @@ public class OperatorFactoryTest {
 	@Test
 	public void testEmptyType() {
 		Problem problem = new ProblemStub(0);
-		
 		Assert.assertNull(OperatorFactory.getInstance().getVariation(null, new TypedProperties(), problem));
 	}
 	
 	@Test(expected = ProviderNotFoundException.class)
 	public void testNonexistentOperator() {
 		Problem problem = new ProblemStub(0);
-		
 		OperatorFactory.getInstance().getVariation("sbx+test_fake_operator", new TypedProperties(), problem);
 	}
 

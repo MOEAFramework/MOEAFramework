@@ -24,6 +24,7 @@ import org.moeaframework.core.Variable;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.configuration.Prefix;
 import org.moeaframework.core.configuration.Property;
+import org.moeaframework.core.configuration.Validate;
 import org.moeaframework.core.variable.RealVariable;
 
 /**
@@ -103,10 +104,10 @@ public class SBX implements Variation {
 	 */
 	public SBX(double probability, double distributionIndex, boolean swap, boolean symmetric) {
 		super();
-		this.probability = probability;
-		this.distributionIndex = distributionIndex;
-		this.swap = swap;
-		this.symmetric = symmetric;
+		setProbability(probability);
+		setDistributionIndex(distributionIndex);
+		setSwap(swap);
+		setSymmetric(symmetric);
 	}
 	
 	@Override
@@ -130,6 +131,7 @@ public class SBX implements Variation {
 	 */
 	@Property("rate")
 	public void setProbability(double probability) {
+		Validate.probability("probability", probability);
 		this.probability = probability;
 	}
 
@@ -149,6 +151,7 @@ public class SBX implements Variation {
 	 */
 	@Property("distributionIndex")
 	public void setDistributionIndex(double distributionIndex) {
+		Validate.greaterThanZero("distributionIndex", distributionIndex);
 		this.distributionIndex = distributionIndex;
 	}
 

@@ -117,6 +117,7 @@ public class SMSEMOA extends AbstractEvolutionaryAlgorithm {
 		super.initialize();
 		
 		// rank the solutions
+		Population population = getPopulation();
 		new FastNondominatedSorting().evaluate(population);
 		
 		if (fitnessEvaluator != null) {
@@ -126,6 +127,8 @@ public class SMSEMOA extends AbstractEvolutionaryAlgorithm {
 
 	@Override
 	protected void iterate() {
+		Population population = getPopulation();
+		Variation variation = getVariation();
 		int populationSize = population.size();
 		Solution[] parents = selection.select(variation.getArity(), population);
 		Solution[] offspring = variation.evolve(parents);
@@ -152,7 +155,7 @@ public class SMSEMOA extends AbstractEvolutionaryAlgorithm {
 		Population front = new Population();
 		int rank = 0;
 		
-		for (Solution solution : population) {
+		for (Solution solution : getPopulation()) {
 			int solutionRank = (Integer)solution.getAttribute(FastNondominatedSorting.RANK_ATTRIBUTE);
 			
 			if (solutionRank > rank) {

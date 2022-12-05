@@ -24,6 +24,7 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variable;
 import org.moeaframework.core.configuration.Prefix;
 import org.moeaframework.core.configuration.Property;
+import org.moeaframework.core.configuration.Validate;
 import org.moeaframework.core.operator.Mutation;
 import org.moeaframework.core.variable.Program;
 import org.moeaframework.util.tree.Node;
@@ -57,7 +58,7 @@ public class PointMutation implements Mutation {
 	 */
 	public PointMutation(double probability) {
 		super();
-		this.probability = probability;
+		setProbability(probability);
 	}
 	
 	@Override
@@ -81,6 +82,7 @@ public class PointMutation implements Mutation {
 	 */
 	@Property("rate")
 	public void setProbability(double probability) {
+		Validate.probability("probability", probability);
 		this.probability = probability;
 	}
 
