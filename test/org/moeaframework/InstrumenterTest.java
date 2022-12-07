@@ -27,9 +27,10 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.moeaframework.analysis.collector.Accumulator;
 import org.moeaframework.analysis.collector.AttachPoint;
 import org.moeaframework.analysis.collector.Collector;
+import org.moeaframework.analysis.collector.Observation;
+import org.moeaframework.analysis.collector.Observations;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Population;
@@ -82,7 +83,7 @@ public class InstrumenterTest {
 		}
 
 		@Override
-		public void collect(Accumulator accumulator) {
+		public void collect(Observation observation) {
 			//do nothing
 		}
 		
@@ -239,9 +240,9 @@ public class InstrumenterTest {
 		
 		executor.run();
 		
-		Accumulator accumulator = instrumenter.getLastAccumulator();
+		Observations observations = instrumenter.getObservations();
 		
-		Assert.assertEquals(13, accumulator.keySet().size());
+		Assert.assertEquals(12, observations.keys().size());
 	}
 	
 }

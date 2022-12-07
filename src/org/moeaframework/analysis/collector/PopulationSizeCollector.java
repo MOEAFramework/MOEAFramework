@@ -53,22 +53,20 @@ public class PopulationSizeCollector implements Collector {
 	@Override
 	public AttachPoint getAttachPoint() {
 		return AttachPoint.isSubclass(EvolutionaryAlgorithm.class).and(
-				AttachPoint.not(AttachPoint.isNestedIn(
-						EvolutionaryAlgorithm.class)));
+				AttachPoint.not(AttachPoint.isNestedIn(EvolutionaryAlgorithm.class)));
 	}
 
 	@Override
 	public Collector attach(Object object) {
-		return new PopulationSizeCollector(
-				(EvolutionaryAlgorithm)object);
+		return new PopulationSizeCollector((EvolutionaryAlgorithm)object);
 	}
 
 	@Override
-	public void collect(Accumulator accumulator) {
-		accumulator.add("Population Size", algorithm.getPopulation().size());
+	public void collect(Observation observation) {
+		observation.set("Population Size", algorithm.getPopulation().size());
 		
 		if (algorithm.getArchive() != null) {
-			accumulator.add("Archive Size", algorithm.getArchive().size());
+			observation.set("Archive Size", algorithm.getArchive().size());
 		}
 	}
 

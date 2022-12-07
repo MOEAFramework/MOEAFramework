@@ -26,10 +26,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import org.moeaframework.util.format.Column;
+import org.moeaframework.util.format.Formattable;
+import org.moeaframework.util.format.TabularData;
+
 /**
  * A collection of solutions and common methods for manipulating the collection.
  */
-public class Population implements Iterable<Solution> {
+public class Population implements Iterable<Solution>, Formattable<Solution> {
 
 	/**
 	 * The internal data storage for solutions.
@@ -325,6 +329,31 @@ public class Population implements Iterable<Solution> {
 		}
 		
 		return result;
+	}
+	
+	public TabularData<Solution> asTabularData() {
+		TabularData<Solution> data = new TabularData<Solution>(this);
+		
+		if (!isEmpty()) {	
+			Solution solution = get(0);
+			
+			for (int i = 0; i < solution.getNumberOfVariables(); i++) {
+				final int index = i;
+				data.addColumn(new Column<Solution, Variable>("Var" + (index+1), s -> s.getVariable(index)));
+			}
+			
+			for (int i = 0; i < solution.getNumberOfObjectives(); i++) {
+				final int index = i;
+				data.addColumn(new Column<Solution, Double>("Obj" + (index+1), s -> s.getObjective(index)));
+			}
+			
+			for (int i = 0; i < solution.getNumberOfConstraints(); i++) {
+				final int index = i;
+				data.addColumn(new Column<Solution, Double>("Constr" + (index+1), s -> s.getConstraint(index)));
+			}
+		}
+		
+		return data;
 	}
 
 	/*

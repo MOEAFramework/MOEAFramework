@@ -51,7 +51,8 @@ import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.YIntervalSeries;
 import org.jfree.data.xy.YIntervalSeriesCollection;
-import org.moeaframework.analysis.collector.Accumulator;
+import org.moeaframework.analysis.collector.Observation;
+import org.moeaframework.analysis.collector.Observations;
 import org.moeaframework.util.Localization;
 
 /**
@@ -65,8 +66,7 @@ public class LinePlot extends ResultPlot {
 	/**
 	 * The localization instance for produce locale-specific strings.
 	 */
-	private static Localization localization = Localization.getLocalization(
-			LinePlot.class);
+	private static Localization localization = Localization.getLocalization(LinePlot.class);
 	
 	/**
 	 * The resolution of the line plot, controlling the number of collected
@@ -135,18 +135,16 @@ public class LinePlot extends ResultPlot {
 	 * @param key the key identifying which result to plot
 	 * @param dataset the dataset to store the generated series
 	 */
-	protected void generateIndividualSeries(ResultKey key, 
-			DefaultTableXYDataset dataset) {
-		for (Accumulator accumulator : controller.get(key)) {
-			if (!accumulator.keySet().contains(metric)) {
+	protected void generateIndividualSeries(ResultKey key, DefaultTableXYDataset dataset) {
+		for (Observations observations : controller.get(key)) {
+			if (!observations.keys().contains(metric)) {
 				continue;
 			}
 		
 			XYSeries series = new XYSeries(key, false, false);
 
-			for (int i=0; i<accumulator.size(metric); i++) {
-				series.add((Number)accumulator.get("NFE", i), 
-						(Number)accumulator.get(metric, i));
+			for (Observation observation : observations) {
+				series.add(observation.getNFE(), (Number)observation.get(metric));
 			}
 			
 			dataset.addSeries(series);
@@ -159,19 +157,16 @@ public class LinePlot extends ResultPlot {
 	 * @param key the key identifying which result to plot
 	 * @param dataset the dataset to store the generated series
 	 */
-	protected void generateQuantileSeries(ResultKey key, 
-			YIntervalSeriesCollection dataset) {
+	protected void generateQuantileSeries(ResultKey key, YIntervalSeriesCollection dataset) {
 		List<DataPoint> dataPoints = new ArrayList<DataPoint>();
 		
-		for (Accumulator accumulator : controller.get(key)) {
-			if (!accumulator.keySet().contains(metric)) {
+		for (Observations observations : controller.get(key)) {
+			if (!observations.keys().contains(metric)) {
 				continue;
 			}
 			
-			for (int i=0; i<accumulator.size(metric); i++) {
-				dataPoints.add(new DataPoint(
-						(Integer)accumulator.get("NFE", i), 
-						((Number)accumulator.get(metric, i)).doubleValue()));
+			for (Observation observation : observations) {
+				dataPoints.add(new DataPoint(observation.getNFE(), ((Number)observation.get(metric)).doubleValue()));
 			}
 		}
 			
@@ -252,12 +247,10 @@ public class LinePlot extends ResultPlot {
 		
 		//setup the series renderer
 		if (controller.getShowIndividualTraces()) {
-			XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer(true, 
-					false);
+			XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer(true, false);
 			
 			for (int i=0; i<dataset.getSeriesCount(); i++) {
-				Paint paint = frame.getPaintHelper().get(
-						dataset.getSeriesKey(i));
+				Paint paint = frame.getPaintHelper().get(dataset.getSeriesKey(i));
 	
 				renderer.setSeriesStroke(i, new BasicStroke(1f, 1, 1));
 				renderer.setSeriesPaint(i, paint);
@@ -268,8 +261,7 @@ public class LinePlot extends ResultPlot {
 			DeviationRenderer renderer = new DeviationRenderer(true, false);
 	
 			for (int i=0; i<dataset.getSeriesCount(); i++) {
-				Paint paint = frame.getPaintHelper().get(
-						dataset.getSeriesKey(i));
+				Paint paint = frame.getPaintHelper().get(dataset.getSeriesKey(i));
 	
 				renderer.setSeriesStroke(i, new BasicStroke(3f, 1, 1));
 				renderer.setSeriesPaint(i, paint);
@@ -318,23 +310,18 @@ public class LinePlot extends ResultPlot {
 		//add overlay
 		if (controller.getShowLastTrace() && 
 				!controller.getShowIndividualTraces() &&
-				(controller.getLastAccumulator() != null) && 
-				controller.getLastAccumulator().keySet().contains(metric)) {
+				(controller.getLastObservation() != null) && 
+				controller.getLastObservation().keys().contains(metric)) {
 			DefaultTableXYDataset dataset2 = new DefaultTableXYDataset();
-			XYSeries series = new XYSeries(
-					localization.getString("text.last"),
-					false, false);
+			XYSeries series = new XYSeries(localization.getString("text.last"), false, false);
 			
-			for (int i=0; i<controller.getLastAccumulator().size(metric); i++) {
-				series.add(
-						(Number)controller.getLastAccumulator().get("NFE", i), 
-						(Number)controller.getLastAccumulator().get(metric, i));
+			for (Observation observation : controller.getLastObservation()) {
+				series.add(observation.getNFE(), (Number)observation.get(metric));
 			}
 			
 			dataset2.addSeries(series);
 			
-			XYLineAndShapeRenderer renderer2 = new XYLineAndShapeRenderer(true, 
-					false);
+			XYLineAndShapeRenderer renderer2 = new XYLineAndShapeRenderer(true, false);
 			renderer2.setSeriesStroke(0, new BasicStroke(1f, 1, 1));
 			renderer2.setSeriesPaint(0, Color.BLACK);
 			

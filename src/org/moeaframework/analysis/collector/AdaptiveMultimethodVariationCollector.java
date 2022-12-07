@@ -19,11 +19,9 @@ package org.moeaframework.analysis.collector;
 
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.operator.AdaptiveMultimethodVariation;
-import org.moeaframework.core.operator.CompoundVariation;
 
 /**
- * Collects the individual operator probabilities from 
- * {@link AdaptiveMultimethodVariation}.
+ * Collects the individual operator probabilities from {@link AdaptiveMultimethodVariation}.
  */
 public class AdaptiveMultimethodVariationCollector implements Collector {
 
@@ -48,24 +46,16 @@ public class AdaptiveMultimethodVariationCollector implements Collector {
 	 * @param variation the {@code AdaptiveMultimethodVariation} instance this
 	 *        collector records data from
 	 */
-	public AdaptiveMultimethodVariationCollector(
-			AdaptiveMultimethodVariation variation) {
+	public AdaptiveMultimethodVariationCollector(AdaptiveMultimethodVariation variation) {
 		super();
 		this.variation = variation;
 	}
 
 	@Override
-	public void collect(Accumulator accumulator) {
+	public void collect(Observation observation) {
 		for (int i = 0; i < variation.getNumberOfOperators(); i++) {
 			Variation operator = variation.getOperator(i);
-			
-			if (operator instanceof CompoundVariation) {
-				accumulator.add(((CompoundVariation)operator).getName(), 
-						variation.getOperatorProbability(i));
-			} else {
-				accumulator.add(operator.getClass().getSimpleName(), 
-						variation.getOperatorProbability(i));
-			}
+			observation.set(operator.getName(), variation.getOperatorProbability(i));
 		}
 	}
 
@@ -76,8 +66,7 @@ public class AdaptiveMultimethodVariationCollector implements Collector {
 
 	@Override
 	public Collector attach(Object object) {
-		return new AdaptiveMultimethodVariationCollector(
-				(AdaptiveMultimethodVariation)object);
+		return new AdaptiveMultimethodVariationCollector((AdaptiveMultimethodVariation)object);
 	}
 
 }

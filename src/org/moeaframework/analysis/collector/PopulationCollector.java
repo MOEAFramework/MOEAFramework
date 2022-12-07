@@ -64,8 +64,8 @@ public class PopulationCollector implements Collector {
 	}
 
 	@Override
-	public void collect(Accumulator accumulator) {
-		accumulator.add("Population", new ArrayList<Solution>(algorithm.getPopulation().asList(true)));
+	public void collect(Observation observation) {
+		observation.set("Population", new ArrayList<Solution>(algorithm.getPopulation().asList(true)));
 	}
 
 }

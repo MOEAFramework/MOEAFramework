@@ -24,7 +24,7 @@ import org.junit.Test;
 import org.moeaframework.Analyzer;
 import org.moeaframework.Executor;
 import org.moeaframework.Instrumenter;
-import org.moeaframework.analysis.collector.Accumulator;
+import org.moeaframework.analysis.collector.Observations;
 import org.moeaframework.core.NondominatedPopulation;
 
 /**
@@ -127,9 +127,9 @@ public class PlotTest {
 				.withInstrumenter(instrumenter)
 				.run();
 
-		Accumulator accumulator = instrumenter.getLastAccumulator();
+		Observations observations = instrumenter.getObservations();
 		
-		runTest(new Plot().add(accumulator));
+		runTest(new Plot().add(observations));
 	}
 	
 	public void runTest(Plot plot) {

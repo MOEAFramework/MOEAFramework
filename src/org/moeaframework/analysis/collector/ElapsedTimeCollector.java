@@ -41,9 +41,9 @@ public class ElapsedTimeCollector implements Collector {
 	}
 
 	@Override
-	public void collect(Accumulator accumulator) {
+	public void collect(Observation observation) {
 		double elapsedTime = (System.nanoTime() - startTime) * 1e-9;
-		accumulator.add("Elapsed Time", elapsedTime);
+		observation.set("Elapsed Time", elapsedTime);
 	}
 
 	@Override

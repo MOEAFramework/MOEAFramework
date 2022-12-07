@@ -96,7 +96,7 @@ public class ApproximationSetCollector implements Collector {
 	}
 
 	@Override
-	public void collect(Accumulator accumulator) {
+	public void collect(Observation observation) {
 		ArrayList<Solution> list = new ArrayList<Solution>();
 		NondominatedPopulation result = algorithm.getResult();
 		
@@ -109,7 +109,7 @@ public class ApproximationSetCollector implements Collector {
 			list.add(solution);
 		}
 		
-		accumulator.add("Approximation Set", list);
+		observation.set("Approximation Set", list);
 	}
 
 }

@@ -55,8 +55,8 @@ public class CollectorTest {
 		}
 
 		@Override
-		public void collect(Accumulator accumulator) {
-			collector.collect(accumulator);
+		public void collect(Observation observation) {
+			collector.collect(observation);
 		}
 
 		public int getNumberOfAttachments() {
@@ -65,9 +65,8 @@ public class CollectorTest {
 		
 	}
 	
-	protected void test(String algorithmName, Collector collector, 
-			boolean willAttach) {
-		Accumulator accumulator = null;
+	protected void test(String algorithmName, Collector collector, boolean willAttach) {
+		Observations observations = null;
 		int numberOfEvaluations = 1000;
 		String problemName = "DTLZ2_2";
 		TestCollector testCollector = new TestCollector(collector);
@@ -85,18 +84,15 @@ public class CollectorTest {
 			Algorithm algorithm = null;
 
 			try {
-				algorithm = AlgorithmFactory.getInstance().getAlgorithm(
-						algorithmName, properties, problem);
+				algorithm = AlgorithmFactory.getInstance().getAlgorithm(algorithmName, properties, problem);
 
-				InstrumentedAlgorithm instrumentedAlgorithm = 
-					instrumenter.instrument(algorithm);
+				InstrumentedAlgorithm instrumentedAlgorithm = instrumenter.instrument(algorithm);
 
-				while (instrumentedAlgorithm.getNumberOfEvaluations() < 
-						numberOfEvaluations) {
+				while (instrumentedAlgorithm.getNumberOfEvaluations() < numberOfEvaluations) {
 					instrumentedAlgorithm.step();
 				}
 				
-				accumulator = instrumentedAlgorithm.getAccumulator();
+				observations = instrumentedAlgorithm.getObservations();
 			} finally {
 				if (algorithm != null) {
 					algorithm.terminate();
@@ -104,16 +100,11 @@ public class CollectorTest {
 			}
 		}
 		
-		Assert.assertEquals(willAttach ? 1 : 0, 
-				testCollector.getNumberOfAttachments());
-		Assert.assertNotNull(accumulator);
+		Assert.assertEquals(willAttach ? 1 : 0, testCollector.getNumberOfAttachments());
+		Assert.assertNotNull(observations);
 		
 		if (willAttach) {
-			for (String key : accumulator.keySet()) {
-				Assert.assertTrue(accumulator.size(key) > 0);
-				Assert.assertEquals(accumulator.size("NFE"), 
-						accumulator.size(key));
-			}
+			Assert.assertTrue(observations.size() > 0);
 		}
 	}
 

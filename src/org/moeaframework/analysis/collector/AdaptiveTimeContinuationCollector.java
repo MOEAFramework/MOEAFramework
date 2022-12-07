@@ -25,8 +25,7 @@ import org.moeaframework.algorithm.RestartListener;
  * Collects the number of restart events resulting from
  * {@link AdaptiveTimeContinuation}.
  */
-public class AdaptiveTimeContinuationCollector implements Collector,
-RestartListener {
+public class AdaptiveTimeContinuationCollector implements Collector, RestartListener {
 
 	/**
 	 * The number of restart events.
@@ -47,16 +46,15 @@ RestartListener {
 	 * 
 	 * @param algorithm the algorithm this collector records data from
 	 */
-	public AdaptiveTimeContinuationCollector(
-			AdaptiveTimeContinuation algorithm) {
+	public AdaptiveTimeContinuationCollector(AdaptiveTimeContinuation algorithm) {
 		super();
 
 		algorithm.addRestartListener(this);
 	}
 
 	@Override
-	public void collect(Accumulator accumulator) {
-		accumulator.add("Number of Restarts", numberOfRestarts);
+	public void collect(Observation observation) {
+		observation.set("Number of Restarts", numberOfRestarts);
 	}
 
 	@Override
@@ -71,8 +69,7 @@ RestartListener {
 
 	@Override
 	public Collector attach(Object object) {
-		return new AdaptiveTimeContinuationCollector(
-				(AdaptiveTimeContinuation)object);
+		return new AdaptiveTimeContinuationCollector((AdaptiveTimeContinuation)object);
 	}
 
 }
