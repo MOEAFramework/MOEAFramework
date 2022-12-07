@@ -1,5 +1,9 @@
 package org.moeaframework.util.format;
 
+/**
+ * Formatter for numeric data.  This supports all primitive numeric types as well
+ * as their boxed types.
+ */
 public class NumberFormatter implements Formatter<Number> {
 	
 	private int width = -1;
@@ -12,10 +16,14 @@ public class NumberFormatter implements Formatter<Number> {
 	
 	private boolean scientificNotation = false;
 	
+	/**
+	 * Creates a new formatter for numeric types with default settings.
+	 */
 	public NumberFormatter() {
 		super();
 	}
 	
+	@Override
 	public Class<Number> getType() {
 		return Number.class;
 	}

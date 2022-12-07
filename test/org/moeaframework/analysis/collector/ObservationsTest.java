@@ -17,8 +17,6 @@
  */
 package org.moeaframework.analysis.collector;
 
-import java.util.NoSuchElementException;
-
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;

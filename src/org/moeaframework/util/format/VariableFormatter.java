@@ -6,6 +6,9 @@ import org.moeaframework.core.variable.Permutation;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.core.variable.Subset;
 
+/**
+ * Formatter for {@link Variable}s.
+ */
 public class VariableFormatter implements Formatter<Variable> {
 	
 	private NumberFormatter numberFormatter;

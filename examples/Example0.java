@@ -26,14 +26,11 @@ import org.moeaframework.problem.DTLZ.DTLZ2;
 public class Example0 {
 
 	public static void main(String[] args) {
-		// create the problem
 		Problem problem = new DTLZ2(2);
 		
-		// create and run the algorithm
 		NSGAII algorithm = new NSGAII(problem);
 		algorithm.run(10000);
 		
-		// display the results
 		algorithm.getResult().display();
 	}
 
