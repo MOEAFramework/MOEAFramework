@@ -24,9 +24,10 @@ import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.moeaframework.TestUtils;
-import org.moeaframework.analysis.collector.Accumulator;
 import org.moeaframework.analysis.collector.IndicatorCollector;
 import org.moeaframework.analysis.collector.InstrumentedAlgorithm;
+import org.moeaframework.analysis.collector.Observation;
+import org.moeaframework.analysis.collector.Observations;
 import org.moeaframework.analysis.sensitivity.EpsilonHelper;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
@@ -266,7 +267,7 @@ public class DefaultAlgorithmsResumeTest {
 			instrumentedAlgorithm.step();
 		}
 
-		Accumulator normalResult = instrumentedAlgorithm.getAccumulator();
+		Observations normalResult = instrumentedAlgorithm.getObservations();
 		
 		// second, run the algorithm using checkpoints
 		File file = TestUtils.createTempFile();
@@ -285,19 +286,16 @@ public class DefaultAlgorithmsResumeTest {
 			checkpoints.step();
 		}
 		
-		Accumulator checkpointResult = instrumentedAlgorithm.getAccumulator();
+		Observations checkpointResult = instrumentedAlgorithm.getObservations();
 
-		// finally, compare the two accumulators
-		Assert.assertTrue(normalResult.keySet().equals(
-				checkpointResult.keySet()));
+		// finally, compare the two observations
+		Assert.assertEquals(normalResult.keys(), checkpointResult.keys());
+		Assert.assertEquals(normalResult.size(), checkpointResult.size());
 		
-		for (String key : normalResult.keySet()) {
-			Assert.assertEquals(normalResult.size(key),
-					checkpointResult.size(key));
-			
-			for (int i = 0; i < normalResult.size(key); i++) {
-				Assert.assertEquals(normalResult.get(key, i),
-						checkpointResult.get(key, i));
+		for (String key : normalResult.keys()) {
+			for (Observation normalObservation : normalResult) {
+				Observation checkpointObservation = checkpointResult.at(normalObservation.getNFE());
+				Assert.assertEquals(normalObservation.get(key), checkpointObservation.get(key));
 			}
 		}
 	}

@@ -54,8 +54,7 @@ public class ActionFactory implements ControllerListener {
 	/**
 	 * The localization instance for produce locale-specific strings.
 	 */
-	private static Localization localization = Localization.getLocalization(
-			ActionFactory.class);
+	private static Localization localization = Localization.getLocalization(ActionFactory.class);
 	
 	/**
 	 * The file extension.
@@ -275,8 +274,7 @@ public class ActionFactory implements ControllerListener {
 					File file = fileChooser.getSelectedFile();
 						
 					if (!file.getName().toLowerCase().endsWith(EXTENSION)) {
-						file = new File(file.getParent(), file.getName() + 
-								EXTENSION);
+						file = new File(file.getParent(), file.getName() + EXTENSION);
 					}
 					
 					try {
@@ -767,27 +765,16 @@ public class ActionFactory implements ControllerListener {
 							null,
 							loadLicense());
 					
-					info.addLibrary(new Library("Apache Commons CLI", "1.2", 
-							"Apache License", null));
-					info.addLibrary(new Library("Apache Commons Codec", "1.8", 
-							"Apache License", null));
-					info.addLibrary(new Library("Apache Commons Lang", "3.1",
-							"Apache License", null));
-					info.addLibrary(new Library("Apache Commons Math", "3.4.1", 
-							"Apache License", null));
-					info.addLibrary(new Library("JCommon", "1.0.20", "GNU LGPL",
-							null));
-					info.addLibrary(new Library("JFreeChart", "1.0.15", 
-							"GNU LGPL", null));
-					info.addLibrary(new Library("JMetal", "4.3", "GNU LGPL", 
-							null));
-					info.addLibrary(new Library("MOEAFramework", 
-							properties.getProperty("version"), "GNU LGPL", 
-							null));
+					info.addLibrary(new Library("Apache Commons CLI", "1.2", "Apache License", null));
+					info.addLibrary(new Library("Apache Commons Codec", "1.8", "Apache License", null));
+					info.addLibrary(new Library("Apache Commons Lang", "3.1", "Apache License", null));
+					info.addLibrary(new Library("Apache Commons Math", "3.4.1", "Apache License", null));
+					info.addLibrary(new Library("JCommon", "1.0.20", "GNU LGPL", null));
+					info.addLibrary(new Library("JFreeChart", "1.0.15", "GNU LGPL", null));
+					info.addLibrary(new Library("JMetal", "4.3", "GNU LGPL", null));
+					info.addLibrary(new Library("MOEAFramework", properties.getProperty("version"), "GNU LGPL", null));
 						
-					AboutDialog dialog = new AboutDialog(frame,
-							localization.getString("title.about"),
-							info);
+					AboutDialog dialog = new AboutDialog(frame, localization.getString("title.about"), info);
 					dialog.setLocationRelativeTo(frame);
 					dialog.setVisible(true);
 				} catch (Exception ex) {
@@ -858,8 +845,7 @@ public class ActionFactory implements ControllerListener {
 				double used = (total - free) / DIVISOR;
 				double available = max / DIVISOR;
 
-				memoryUsageAction.putValue(Action.NAME, 
-						localization.getString("text.memory", used, available));
+				memoryUsageAction.putValue(Action.NAME, localization.getString("text.memory", used, available));
 			}
 			
 		});
@@ -1223,8 +1209,7 @@ public class ActionFactory implements ControllerListener {
 				NondominatedPopulation referenceSet = null;
 				
 				try {
-					Instrumenter instrumenter = new Instrumenter()
-							.withProblem(key.getProblem());
+					Instrumenter instrumenter = new Instrumenter().withProblem(key.getProblem());
 					
 					referenceSet = instrumenter.getReferenceSet();
 				} catch (Exception ex) {
@@ -1263,8 +1248,7 @@ public class ActionFactory implements ControllerListener {
 			public void actionPerformed(ActionEvent e) {
 				if (table.getModel().getRowCount() > 0) {
 					table.getSelectionModel().setValueIsAdjusting(true);
-					table.addRowSelectionInterval(0, 
-							table.getModel().getRowCount()-1);
+					table.addRowSelectionInterval(0, table.getModel().getRowCount()-1);
 					table.getSelectionModel().setValueIsAdjusting(false);
 				}
 			}
@@ -1288,8 +1272,7 @@ public class ActionFactory implements ControllerListener {
 				algorithms.add(key.getAlgorithm());
 			}
 			
-			getShowStatisticsAction().setEnabled((problems.size() == 1) && 
-					(algorithms.size() > 1));
+			getShowStatisticsAction().setEnabled((problems.size() == 1) && (algorithms.size() > 1));
 		}
 	}
 	

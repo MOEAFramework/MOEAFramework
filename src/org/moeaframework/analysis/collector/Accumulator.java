@@ -34,7 +34,10 @@ import org.moeaframework.core.Settings;
 
 /**
  * An accumulator stores collected data from a single run of an algorithm.
+ * 
+ * @deprecated Use {@link Observations} instead
  */
+@Deprecated
 public class Accumulator implements Serializable {
 
 	private static final long serialVersionUID = -7483439787468468601L;
@@ -55,7 +58,23 @@ public class Accumulator implements Serializable {
 	 * Constructs an empty accumulator.
 	 */
 	public Accumulator() {
+		super();
 		data = new HashMap<String, List<Serializable>>();
+	}
+	
+	/**
+	 * Converts observations into an accumulator for backwards compatibility.
+	 * 
+	 * @param observations the observations
+	 */
+	public Accumulator(Observations observations) {
+		this();
+		
+		for (Observation observation : observations) {
+			for (String key : observation.keys()) {
+				add(key, observation.get(key));
+			}
+		}
 	}
 
 	/**

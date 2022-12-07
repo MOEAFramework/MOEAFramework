@@ -63,8 +63,7 @@ public class IndicatorCollector implements Collector {
 	 *        approximation set to a desired resolution; or {@code null} if 
 	 *        no such pruning is used
 	 */
-	public IndicatorCollector(Indicator indicator, 
-			EpsilonBoxDominanceArchive archive) {
+	public IndicatorCollector(Indicator indicator, EpsilonBoxDominanceArchive archive) {
 		this(indicator, archive, null);
 	}
 
@@ -78,8 +77,7 @@ public class IndicatorCollector implements Collector {
 	 *        no such pruning is used
 	 * @param algorithm the algorithm this collector records data from
 	 */
-	public IndicatorCollector(Indicator indicator, 
-			EpsilonBoxDominanceArchive archive, Algorithm algorithm) {
+	public IndicatorCollector(Indicator indicator, EpsilonBoxDominanceArchive archive, Algorithm algorithm) {
 		super();
 		this.indicator = indicator;
 		this.archive = archive;
@@ -87,16 +85,14 @@ public class IndicatorCollector implements Collector {
 	}
 
 	@Override
-	public void collect(Accumulator accumulator) {
+	public void collect(Observation observation) {
 		if (archive == null) {
-			accumulator.add(indicator.getClass().getSimpleName(),
-					indicator.evaluate(algorithm.getResult()));
+			observation.set(indicator.getClass().getSimpleName(), indicator.evaluate(algorithm.getResult()));
 		} else {
 			archive.clear();
 			archive.addAll(algorithm.getResult());
 			
-			accumulator.add(indicator.getClass().getSimpleName(),
-					indicator.evaluate(archive));
+			observation.set(indicator.getClass().getSimpleName(), indicator.evaluate(archive));
 		}
 	}
 

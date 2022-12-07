@@ -15,37 +15,23 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.examples.plots;
-
-import org.moeaframework.Executor;
-import org.moeaframework.Instrumenter;
-import org.moeaframework.analysis.collector.Observations;
-import org.moeaframework.analysis.plot.Plot;
+import org.moeaframework.algorithm.NSGAII;
+import org.moeaframework.core.Problem;
+import org.moeaframework.problem.DTLZ.DTLZ2;
 
 /**
- * Displays a plot showing the hypervolume and generational distance runtime dynamics.
+ * Demonstrates the new way of creating and running algorithms, starting with version 3.2.
+ * The algorithm is automatically populated with default settings.
  */
-public class PlotRuntimeDynamics {
+public class Example0 {
 
 	public static void main(String[] args) {
-		Instrumenter instrumenter = new Instrumenter()
-				.withProblem("UF1")
-				.withFrequency(100)
-				.attachHypervolumeCollector()
-				.attachGenerationalDistanceCollector();
+		Problem problem = new DTLZ2(2);
 		
-		new Executor()
-				.withSameProblemAs(instrumenter)
-				.withAlgorithm("NSGAII")
-				.withMaxEvaluations(10000)
-				.withInstrumenter(instrumenter)
-				.run();
+		NSGAII algorithm = new NSGAII(problem);
+		algorithm.run(10000);
 		
-		Observations observations = instrumenter.getObservations();
-		
-		Plot plot = new Plot();
-		plot.add(observations);
-		plot.show();
+		algorithm.getResult().display();
 	}
 
 }

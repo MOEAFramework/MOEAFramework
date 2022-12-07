@@ -32,9 +32,9 @@ import org.moeaframework.core.Algorithm;
 public class InstrumentedAlgorithm extends PeriodicAction {
 	
 	/**
-	 * The accumulator to which all recorded information is stored.
+	 * The observations recorded from this algorithm.
 	 */
-	private final Accumulator accumulator;
+	private final Observations observations;
 	
 	/**
 	 * The collectors responsible for recording the necessary information.
@@ -60,11 +60,10 @@ public class InstrumentedAlgorithm extends PeriodicAction {
 	 * @param frequency the frequency that data is collected
 	 * @param frequencyType if frequency is defined by EVALUATIONS or STEPS
 	 */
-	public InstrumentedAlgorithm(Algorithm algorithm, int frequency,
-			FrequencyType frequencyType) {
+	public InstrumentedAlgorithm(Algorithm algorithm, int frequency, FrequencyType frequencyType) {
 		super(algorithm, frequency, frequencyType);
 		
-		accumulator = new Accumulator();
+		observations = new Observations();
 		collectors = new ArrayList<Collector>();
 	}
 	
@@ -82,27 +81,39 @@ public class InstrumentedAlgorithm extends PeriodicAction {
 	 * Returns the accumulator to which all recorded information is stored.
 	 * 
 	 * @return the accumulator to which all recorded information is stored
+	 * @deprecated use {{@link #getObservations()} instead
 	 */
+	@Deprecated
 	public Accumulator getAccumulator() {
-		return accumulator;
+		return new Accumulator(observations);
+	}
+	
+	/**
+	 * Returns the observations collected from this algorithm.
+	 * 
+	 * @return the observations
+	 */
+	public Observations getObservations() {
+		return observations;
 	}
 
 	@Override
 	public void doAction() {
-		accumulator.add("NFE", algorithm.getNumberOfEvaluations());
+		Observation observation = new Observation(algorithm.getNumberOfEvaluations());
 		
 		for (Collector collector : collectors) {
-			collector.collect(accumulator);
+			collector.collect(observation);
 		}
+		
+		observations.add(observation);
 	}
 	
 	/**
 	 * Proxy for serializing and deserializing the state of an
 	 * {@code InstrumentedAlgorithm} instance. This proxy supports saving
-	 * the underlying algorithm state and the {@code accumulator}.
+	 * the underlying algorithm state and the observations.
 	 */
-	private static class InstrumentedAlgorithmState implements
-	Serializable {
+	private static class InstrumentedAlgorithmState implements Serializable {
 
 		private static final long serialVersionUID = -313598408729472790L;
 
@@ -112,24 +123,20 @@ public class InstrumentedAlgorithm extends PeriodicAction {
 		private final Serializable algorithmState;
 		
 		/**
-		 * The {@code accumulator} from the {@code InstrumentedAlgorithm}
-		 * instance.
+		 * The {@code observations} from the {@code InstrumentedAlgorithm} instance.
 		 */
-		private final Accumulator accumulator;
+		private final Observations observations;
 
 		/**
-		 * Constructs a proxy for storing the state of an
-		 * {@code InstrumentedAlgorithm} instance.
+		 * Constructs a proxy for storing the state of an {@code InstrumentedAlgorithm} instance.
 		 * 
 		 * @param algorithmState the state of the underlying algorithm
-		 * @param accumulator the {@code accumulator} from the
-		 *        {@code InstrumentedAlgorithm} instance
+		 * @param observations the {@code observations} from the {@code InstrumentedAlgorithm} instance
 		 */
-		public InstrumentedAlgorithmState(Serializable algorithmState,
-				Accumulator accumulator) {
+		public InstrumentedAlgorithmState(Serializable algorithmState, Observations observations) {
 			super();
 			this.algorithmState = algorithmState;
-			this.accumulator = accumulator;
+			this.observations = observations;
 		}
 
 		/**
@@ -142,38 +149,32 @@ public class InstrumentedAlgorithm extends PeriodicAction {
 		}
 
 		/**
-		 * Returns the {@code accumulator} from the
-		 * {@code InstrumentedAlgorithm} instance.
+		 * Returns the {@code observations} from the {@code InstrumentedAlgorithm} instance.
 		 * 
-		 * @return the {@code accumulator} from the
-		 *         {@code InstrumentedAlgorithm} instance
+		 * @return the {@code observations} from the {@code InstrumentedAlgorithm} instance
 		 */
-		public Accumulator getAccumulator() {
-			return accumulator;
+		public Observations getObservations() {
+			return observations;
 		}
 		
 	}
 
 	@Override
 	public Serializable getState() throws NotSerializableException {
-		return new InstrumentedAlgorithmState(super.getState(),
-				accumulator);
+		return new InstrumentedAlgorithmState(super.getState(), observations);
 	}
 
 	@Override
 	public void setState(Object objState) throws NotSerializableException {
-		InstrumentedAlgorithmState state =
-				(InstrumentedAlgorithmState)objState;
+		InstrumentedAlgorithmState state = (InstrumentedAlgorithmState)objState;
 		
 		super.setState(state.getAlgorithmState());
 		
-		//copy the stored accumulator contents to this accumulator
-		Accumulator storedAccumulator = state.getAccumulator();
+		//copy the stored observations content
+		Observations storedObservations = state.getObservations();
 		
-		for (String key : storedAccumulator.keySet()) {
-			for (int i=0; i<storedAccumulator.size(key); i++) {
-				accumulator.add(key, storedAccumulator.get(key, i));
-			}
+		for (Observation observation : storedObservations) {
+			observations.add(observation);
 		}
 	}
 	

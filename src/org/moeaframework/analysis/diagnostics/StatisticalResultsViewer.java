@@ -48,8 +48,7 @@ public class StatisticalResultsViewer extends JFrame {
 	/**
 	 * The localization instance for produce locale-specific strings.
 	 */
-	private static Localization localization = Localization.getLocalization(
-			StatisticalResultsViewer.class);
+	private static Localization localization = Localization.getLocalization(StatisticalResultsViewer.class);
 	
 	/**
 	 * The controller instance.
@@ -99,27 +98,22 @@ public class StatisticalResultsViewer extends JFrame {
 			private static final long serialVersionUID = -4467620869954438555L;
 
 			{
-				putValue(Action.NAME,
-						localization.getString("action.saveStatistics.name"));
-				putValue(Action.SHORT_DESCRIPTION,
-						localization.getString("action.saveStatistics.description"));
+				putValue(Action.NAME, localization.getString("action.saveStatistics.name"));
+				putValue(Action.SHORT_DESCRIPTION, localization.getString("action.saveStatistics.description"));
 			}
 
 			@Override
 			public void actionPerformed(ActionEvent event) {
 				JFileChooser fileChooser = new JFileChooser();
-				fileChooser.setFileFilter(new FileNameExtensionFilter(
-						"Text File (*.txt)", "txt"));
+				fileChooser.setFileFilter(new FileNameExtensionFilter("Text File (*.txt)", "txt"));
 				
-				int result = fileChooser.showSaveDialog(
-						StatisticalResultsViewer.this);
+				int result = fileChooser.showSaveDialog(StatisticalResultsViewer.this);
 				
 				if (result == JFileChooser.APPROVE_OPTION) {
 					File file = fileChooser.getSelectedFile();
 						
 					if (!file.getName().toLowerCase().endsWith(".txt")) {
-						file = new File(file.getParent(), file.getName() + 
-								".txt");
+						file = new File(file.getParent(), file.getName() + ".txt");
 					}
 					
 					try (PrintWriter writer = new PrintWriter(new FileWriter(file))) {
@@ -137,10 +131,8 @@ public class StatisticalResultsViewer extends JFrame {
 			private static final long serialVersionUID = -4467620869954438555L;
 
 			{
-				putValue(Action.NAME,
-						localization.getString("action.exit.name"));
-				putValue(Action.SHORT_DESCRIPTION,
-						localization.getString("action.exit.description"));
+				putValue(Action.NAME, localization.getString("action.exit.name"));
+				putValue(Action.SHORT_DESCRIPTION, localization.getString("action.exit.description"));
 			}
 
 			@Override

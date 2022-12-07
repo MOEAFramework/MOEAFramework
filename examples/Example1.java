@@ -17,7 +17,6 @@
  */
 import org.moeaframework.Executor;
 import org.moeaframework.core.NondominatedPopulation;
-import org.moeaframework.core.Solution;
 
 /**
  * Demonstrates using an Executor to solve the UF1 test problem with NSGA-II,
@@ -34,13 +33,7 @@ public class Example1 {
 				.run();
 		
 		//display the results
-		System.out.format("Objective1  Objective2%n");
-		
-		for (Solution solution : result) {
-			System.out.format("%.4f      %.4f%n",
-					solution.getObjective(0),
-					solution.getObjective(1));
-		}
+		result.display();
 	}
 
 }

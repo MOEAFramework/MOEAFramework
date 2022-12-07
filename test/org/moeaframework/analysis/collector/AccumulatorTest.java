@@ -27,6 +27,7 @@ import org.junit.Test;
 import org.moeaframework.TestUtils;
 import org.moeaframework.core.Settings;
 
+@Deprecated
 public class AccumulatorTest {
 	
 	private Accumulator accumulator;

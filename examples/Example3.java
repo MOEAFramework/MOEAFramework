@@ -19,7 +19,6 @@ import java.io.IOException;
 
 import org.moeaframework.Executor;
 import org.moeaframework.Instrumenter;
-import org.moeaframework.analysis.collector.Accumulator;
 
 /**
  * Demonstrates the use of the {@code Instrumenter} to collect run-time
@@ -44,17 +43,8 @@ public class Example3 {
 				.withInstrumenter(instrumenter)
 				.run();
 		
-		Accumulator accumulator = instrumenter.getLastAccumulator();
-		
 		// print the runtime dynamics
-		System.out.format("  NFE    Time      Generational Distance%n");
-		
-		for (int i=0; i<accumulator.size("NFE"); i++) {
-			System.out.format("%5d    %-8.4f  %-8.4f%n",
-					accumulator.get("NFE", i),
-					accumulator.get("Elapsed Time", i),
-					accumulator.get("GenerationalDistance", i));
-		}
+		instrumenter.getObservations().display();
 	}
 
 }

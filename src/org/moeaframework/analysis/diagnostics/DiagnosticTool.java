@@ -60,23 +60,21 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 
-import org.moeaframework.analysis.collector.Accumulator;
+import org.moeaframework.analysis.collector.Observations;
 import org.moeaframework.core.Settings;
 import org.moeaframework.util.Localization;
 
 /**
  * The main window of the diagnostic tool.
  */
-public class DiagnosticTool extends JFrame implements ListSelectionListener, 
-ControllerListener {
+public class DiagnosticTool extends JFrame implements ListSelectionListener, ControllerListener {
 
 	private static final long serialVersionUID = -8770087330810075627L;
 	
 	/**
 	 * The localization instance for produce locale-specific strings.
 	 */
-	private static Localization localization = Localization.getLocalization(
-			DiagnosticTool.class);
+	private static Localization localization = Localization.getLocalization(DiagnosticTool.class);
 
 	/**
 	 * The controller which stores the underlying data model and notifies this
@@ -278,11 +276,11 @@ ControllerListener {
 					
 					ResultKey key = resultListModel.getElementAt(index);
 					
-					//verify that at least one accumulator contains data
-					for (Accumulator accumulator : controller.get(key)) {
-						if (accumulator.keySet().contains(
-								"Approximation Set")) {
+					//verify that at least one observation contains data
+					for (Observations observations : controller.get(key)) {
+						if (observations.keys().contains("Approximation Set")) {
 							containsSet = true;
+							break;
 						}
 					}
 					
@@ -293,8 +291,7 @@ ControllerListener {
 					JPopupMenu popupMenu = new JPopupMenu();
 					
 					popupMenu.add(new JMenuItem(
-							actionFactory.getShowApproximationSetAction(
-									resultListModel.getElementAt(index))));
+							actionFactory.getShowApproximationSetAction(resultListModel.getElementAt(index))));
 					
 					popupMenu.show(resultTable, e.getX(), e.getY());
 				}
@@ -338,10 +335,8 @@ ControllerListener {
 		problem = new JComboBox<String>(sortedProblemNames);
 		
 		//initialize miscellaneous components
-		numberOfSeeds = new JSpinner(new SpinnerNumberModel(10, 1, 
-				Integer.MAX_VALUE, 10));
-		numberOfEvaluations = new JSpinner(new SpinnerNumberModel(10000, 500, 
-				Integer.MAX_VALUE, 1000));
+		numberOfSeeds = new JSpinner(new SpinnerNumberModel(10, 1, Integer.MAX_VALUE, 10));
+		numberOfEvaluations = new JSpinner(new SpinnerNumberModel(10000, 500, Integer.MAX_VALUE, 1000));
 		run = new JButton(actionFactory.getRunAction());
 		cancel = new JButton(actionFactory.getCancelAction());
 		clear = new JButton(actionFactory.getClearAction());
@@ -365,56 +360,36 @@ ControllerListener {
 		file.add(new JMenuItem(actionFactory.getExitAction()));
 		
 		JMenu view = new JMenu(localization.getString("menu.view"));
-		JMenuItem individualTraces = new JRadioButtonMenuItem(
-				actionFactory.getShowIndividualTracesAction());
-		JMenuItem quantiles = new JRadioButtonMenuItem(
-				actionFactory.getShowQuantilesAction());
+		JMenuItem individualTraces = new JRadioButtonMenuItem(actionFactory.getShowIndividualTracesAction());
+		JMenuItem quantiles = new JRadioButtonMenuItem(actionFactory.getShowQuantilesAction());
 		ButtonGroup traceGroup = new ButtonGroup();
 		traceGroup.add(individualTraces);
 		traceGroup.add(quantiles);
 		view.add(individualTraces);
 		view.add(quantiles);
 		view.addSeparator();
-		view.add(new JCheckBoxMenuItem(
-				actionFactory.getShowLastTraceAction()));
+		view.add(new JCheckBoxMenuItem(actionFactory.getShowLastTraceAction()));
 		
 		JMenu metrics = new JMenu(localization.getString("menu.collect"));
-		metrics.add(new JMenuItem(
-				actionFactory.getEnableAllIndicatorsAction()));
-		metrics.add(new JMenuItem(
-				actionFactory.getDisableAllIndicatorsAction()));
+		metrics.add(new JMenuItem(actionFactory.getEnableAllIndicatorsAction()));
+		metrics.add(new JMenuItem(actionFactory.getDisableAllIndicatorsAction()));
 		metrics.addSeparator();
-		metrics.add(new JCheckBoxMenuItem(
-				actionFactory.getIncludeHypervolumeAction()));
-		metrics.add(new JCheckBoxMenuItem(
-				actionFactory.getIncludeGenerationalDistanceAction()));
-		metrics.add(new JCheckBoxMenuItem(
-				actionFactory.getIncludeInvertedGenerationalDistanceAction()));
-		metrics.add(new JCheckBoxMenuItem(
-				actionFactory.getIncludeSpacingAction()));
-		metrics.add(new JCheckBoxMenuItem(
-				actionFactory.getIncludeAdditiveEpsilonIndicatorAction()));
-		metrics.add(new JCheckBoxMenuItem(
-				actionFactory.getIncludeContributionAction()));
-		metrics.add(new JCheckBoxMenuItem(
-				actionFactory.getIncludeR1Action()));
-		metrics.add(new JCheckBoxMenuItem(
-				actionFactory.getIncludeR2Action()));
-		metrics.add(new JCheckBoxMenuItem(
-				actionFactory.getIncludeR3Action()));
+		metrics.add(new JCheckBoxMenuItem(actionFactory.getIncludeHypervolumeAction()));
+		metrics.add(new JCheckBoxMenuItem(actionFactory.getIncludeGenerationalDistanceAction()));
+		metrics.add(new JCheckBoxMenuItem(actionFactory.getIncludeInvertedGenerationalDistanceAction()));
+		metrics.add(new JCheckBoxMenuItem(actionFactory.getIncludeSpacingAction()));
+		metrics.add(new JCheckBoxMenuItem(actionFactory.getIncludeAdditiveEpsilonIndicatorAction()));
+		metrics.add(new JCheckBoxMenuItem(actionFactory.getIncludeContributionAction()));
+		metrics.add(new JCheckBoxMenuItem(actionFactory.getIncludeR1Action()));
+		metrics.add(new JCheckBoxMenuItem(actionFactory.getIncludeR2Action()));
+		metrics.add(new JCheckBoxMenuItem(actionFactory.getIncludeR3Action()));
 		metrics.addSeparator();
-		metrics.add(new JCheckBoxMenuItem(
-				actionFactory.getIncludeEpsilonProgressAction()));
-		metrics.add(new JCheckBoxMenuItem(
-				actionFactory.getIncludeAdaptiveMultimethodVariationAction()));
-		metrics.add(new JCheckBoxMenuItem(
-				actionFactory.getIncludeAdaptiveTimeContinuationAction()));
-		metrics.add(new JCheckBoxMenuItem(
-				actionFactory.getIncludeElapsedTimeAction()));
-		metrics.add(new JCheckBoxMenuItem(
-				actionFactory.getIncludePopulationSizeAction()));
-		metrics.add(new JCheckBoxMenuItem(
-				actionFactory.getIncludeApproximationSetAction()));
+		metrics.add(new JCheckBoxMenuItem(actionFactory.getIncludeEpsilonProgressAction()));
+		metrics.add(new JCheckBoxMenuItem(actionFactory.getIncludeAdaptiveMultimethodVariationAction()));
+		metrics.add(new JCheckBoxMenuItem(actionFactory.getIncludeAdaptiveTimeContinuationAction()));
+		metrics.add(new JCheckBoxMenuItem(actionFactory.getIncludeElapsedTimeAction()));
+		metrics.add(new JCheckBoxMenuItem(actionFactory.getIncludePopulationSizeAction()));
+		metrics.add(new JCheckBoxMenuItem(actionFactory.getIncludeApproximationSetAction()));
 		
 		JMenu help = new JMenu(localization.getString("menu.help"));
 		help.add(new JMenuItem(actionFactory.getAboutDialogAction()));
@@ -461,15 +436,13 @@ ControllerListener {
 		analysisPane.add(showStatistics);
 		
 		JPanel resultPane = new JPanel(new BorderLayout());
-		resultPane.setBorder(BorderFactory.createTitledBorder(
-				localization.getString("text.displayedResults")));
+		resultPane.setBorder(BorderFactory.createTitledBorder(localization.getString("text.displayedResults")));
 		resultPane.add(new JScrollPane(resultTable), BorderLayout.CENTER);
 		resultPane.add(analysisPane, BorderLayout.SOUTH);
 		resultPane.setMinimumSize(new Dimension(100, 100));
 		
 		JPanel metricPane = new JPanel(new BorderLayout());
-		metricPane.setBorder(BorderFactory.createTitledBorder(
-				localization.getString("text.displayedMetrics")));
+		metricPane.setBorder(BorderFactory.createTitledBorder(localization.getString("text.displayedMetrics")));
 		metricPane.add(new JScrollPane(metricList), BorderLayout.CENTER);
 		metricPane.setMinimumSize(new Dimension(100, 100));
 		
@@ -483,28 +456,20 @@ ControllerListener {
 		buttonPane.add(clear);
 		
 		JPanel controlPane = new JPanel(new GridBagLayout());
-		controlPane.setBorder(BorderFactory.createTitledBorder(
-				localization.getString("text.controls")));
-		controlPane.add(new JLabel(
-				localization.getString("text.algorithm") + ":"), label);
+		controlPane.setBorder(BorderFactory.createTitledBorder(localization.getString("text.controls")));
+		controlPane.add(new JLabel(localization.getString("text.algorithm") + ":"), label);
 		controlPane.add(algorithm, field);
-		controlPane.add(new JLabel(
-				localization.getString("text.problem") + ":"), label);
+		controlPane.add(new JLabel(localization.getString("text.problem") + ":"), label);
 		controlPane.add(problem, field);
-		controlPane.add(new JLabel(
-				localization.getString("text.numberOfSeeds") + ":"), label);
+		controlPane.add(new JLabel(localization.getString("text.numberOfSeeds") + ":"), label);
 		controlPane.add(numberOfSeeds, field);
-		controlPane.add(new JLabel(
-				localization.getString("text.numberOfEvaluations") + ":"),
-				label);
+		controlPane.add(new JLabel(localization.getString("text.numberOfEvaluations") + ":"), label);
 		controlPane.add(numberOfEvaluations, field);
 		controlPane.add(buttonPane, button);
 		controlPane.add(new JPanel(), button);
-		controlPane.add(new JLabel(
-				localization.getString("text.runProgress") + ":"), label);
+		controlPane.add(new JLabel(localization.getString("text.runProgress") + ":"), label);
 		controlPane.add(runProgress, field);
-		controlPane.add(new JLabel(
-				localization.getString("text.overallProgress") + ":"), label);
+		controlPane.add(new JLabel(localization.getString("text.overallProgress") + ":"), label);
 		controlPane.add(overallProgress, field);
 		
 		JPanel controls = new JPanel();
@@ -514,8 +479,7 @@ ControllerListener {
 		controls.setMinimumSize(controlPane.getPreferredSize());
 		controls.setPreferredSize(controlPane.getPreferredSize());
 		
-		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, 
-				controls, chartContainer);
+		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, controls, chartContainer);
 		splitPane.setDividerLocation(-1);
 
 		getContentPane().setLayout(new BorderLayout());
@@ -545,8 +509,8 @@ ControllerListener {
 		resultListModel.addAll(controller.getKeys());
 		
 		for (ResultKey key : controller.getKeys()) {
-			for (Accumulator accumulator : controller.get(key)) {
-				metricListModel.addAll(accumulator.keySet());
+			for (Observations observations : controller.get(key)) {
+				metricListModel.addAll(observations.keys());
 			}
 		}
 		
@@ -559,8 +523,7 @@ ControllerListener {
 		} else {
 			for (String metric : selectedMetrics) {
 				int index = metricListModel.getIndexOf(metric);
-				metricList.getSelectionModel().addSelectionInterval(index, 
-						index);
+				metricList.getSelectionModel().addSelectionInterval(index, index);
 			}
 		}
 		
@@ -570,15 +533,12 @@ ControllerListener {
 		resultTable.getSelectionModel().removeListSelectionListener(this);
 		resultTableModel.fireTableDataChanged();
 		
-		if (selectAllResults && (selectedResults.size() < 
-				resultListModel.getSize())) {
-			resultTable.getSelectionModel().addSelectionInterval(0, 
-					resultListModel.getSize()-1);
+		if (selectAllResults && (selectedResults.size() < resultListModel.getSize())) {
+			resultTable.getSelectionModel().addSelectionInterval(0, resultListModel.getSize()-1);
 		} else {
 			for (ResultKey key : selectedResults) {
 				int index = resultListModel.getIndexOf(key);
-				resultTable.getSelectionModel().addSelectionInterval(index, 
-						index);
+				resultTable.getSelectionModel().addSelectionInterval(index, index);
 			}
 		}
 
@@ -653,8 +613,7 @@ ControllerListener {
 			} else if (selectedMetrics.size() <= 6) {
 				chartContainer.setLayout(new GridLayout(3, 2));
 			} else {
-				chartContainer.setLayout(new GridLayout(
-						(int)Math.ceil(selectedMetrics.size()/3.0), 3));
+				chartContainer.setLayout(new GridLayout((int)Math.ceil(selectedMetrics.size()/3.0), 3));
 			}
 			
 			GridLayout layout = (GridLayout)chartContainer.getLayout();
@@ -760,8 +719,7 @@ ControllerListener {
 			} else {
 				updateModel();
 			}
-		} else if (event.getType().equals(
-				ControllerEvent.Type.PROGRESS_CHANGED)) {
+		} else if (event.getType().equals(ControllerEvent.Type.PROGRESS_CHANGED)) {
 			runProgress.setValue(controller.getRunProgress());
 			overallProgress.setValue(controller.getOverallProgress());
 		} else if (event.getType().equals(ControllerEvent.Type.VIEW_CHANGED)) {

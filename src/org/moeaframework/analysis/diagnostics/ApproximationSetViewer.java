@@ -58,7 +58,7 @@ import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.Range;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
-import org.moeaframework.analysis.collector.Accumulator;
+import org.moeaframework.analysis.collector.Observations;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.RealVariable;
@@ -75,13 +75,12 @@ ActionListener, ChartChangeListener, ListSelectionListener {
 	/**
 	 * The localization instance for produce locale-specific strings.
 	 */
-	private static Localization localization = Localization.getLocalization(
-			ApproximationSetViewer.class);
+	private static Localization localization = Localization.getLocalization(ApproximationSetViewer.class);
 
 	/**
-	 * The accumulators which contain {@code "Approximation Set"} entries.
+	 * The observations which contain {@code "Approximation Set"} entries.
 	 */
-	private List<Accumulator> accumulators;
+	private List<Observations> results;
 	
 	/**
 	 * The container of the plot.
@@ -184,13 +183,13 @@ ActionListener, ChartChangeListener, ListSelectionListener {
 	 * constructor must only be invoked on the event dispatch thread.
 	 * 
 	 * @param name the name or title for the data
-	 * @param accumulators the accumulators containing approximation set data
+	 * @param results the observations containing approximation set data
 	 * @param referenceSet the reference set for the problem
 	 */
-	public ApproximationSetViewer(String name, List<Accumulator> accumulators, 
+	public ApproximationSetViewer(String name, List<Observations> results, 
 			NondominatedPopulation referenceSet) {
 		super(localization.getString("title.approximationSetViewer", name));
-		this.accumulators = accumulators;
+		this.results = results;
 		this.referenceSet = referenceSet;
 		
 		setSize(800, 600);
@@ -240,11 +239,9 @@ ActionListener, ChartChangeListener, ListSelectionListener {
 		int minimumNFE = Integer.MAX_VALUE;
 		int maximumNFE = Integer.MIN_VALUE;
 		
-		for (Accumulator accumulator : accumulators) {
-			minimumNFE = Math.min(minimumNFE, 
-					(Integer)accumulator.get("NFE", 0));
-			maximumNFE = Math.max(maximumNFE, 
-					(Integer)accumulator.get("NFE", accumulator.size("NFE")-1));
+		for (Observations observations : results) {
+			minimumNFE = Math.min(minimumNFE, observations.first().getNFE());
+			maximumNFE = Math.max(maximumNFE, observations.last().getNFE());
 		}
 		
 		slider = new JSlider(minimumNFE, maximumNFE, minimumNFE);
@@ -254,8 +251,7 @@ ActionListener, ChartChangeListener, ListSelectionListener {
 		slider.addChangeListener(this);
 		
 		//initializes the options available for axis plotting
-		Solution solution = (Solution)((List<?>)accumulators.get(0).get(
-				"Approximation Set", 0)).get(0);
+		Solution solution = (Solution)((List<?>)results.get(0).first().get("Approximation Set")).get(0);
 		Vector<String> objectives = new Vector<String>();
 		
 		for (int i=0; i<solution.getNumberOfObjectives(); i++) {
@@ -283,23 +279,15 @@ ActionListener, ChartChangeListener, ListSelectionListener {
 		initializeReferenceSetBounds();
 		
 		//initialize plotting controls
-		useInitialBounds = new JRadioButton(
-				localization.getString("action.useInitialBounds.name"));
-		useReferenceSetBounds = new JRadioButton(
-				localization.getString("action.useReferenceSetBounds.name"));
-		useDynamicBounds = new JRadioButton(
-				localization.getString("action.useDynamicBounds.name"));
-		useZoomBounds = new JRadioButton(
-				localization.getString("action.useZoom.name"));
+		useInitialBounds = new JRadioButton(localization.getString("action.useInitialBounds.name"));
+		useReferenceSetBounds = new JRadioButton(localization.getString("action.useReferenceSetBounds.name"));
+		useDynamicBounds = new JRadioButton(localization.getString("action.useDynamicBounds.name"));
+		useZoomBounds = new JRadioButton(localization.getString("action.useZoom.name"));
 		
-		useInitialBounds.setToolTipText(
-				localization.getString("action.useInitialBounds.description"));
-		useReferenceSetBounds.setToolTipText(
-				localization.getString("action.useReferenceSetBounds.description"));
-		useDynamicBounds.setToolTipText(
-				localization.getString("action.useDynamicBounds.description"));
-		useZoomBounds.setToolTipText(
-				localization.getString("action.useZoom.description"));
+		useInitialBounds.setToolTipText(localization.getString("action.useInitialBounds.description"));
+		useReferenceSetBounds.setToolTipText(localization.getString("action.useReferenceSetBounds.description"));
+		useDynamicBounds.setToolTipText(localization.getString("action.useDynamicBounds.description"));
+		useZoomBounds.setToolTipText(localization.getString("action.useZoom.description"));
 		
 		ButtonGroup rangeButtonGroup = new ButtonGroup();
 		rangeButtonGroup.add(useInitialBounds);
@@ -318,9 +306,9 @@ ActionListener, ChartChangeListener, ListSelectionListener {
 		useZoomBounds.addActionListener(this);
 		
 		//initialize the seed list
-		String[] seeds = new String[accumulators.size()];
+		String[] seeds = new String[results.size()];
 		
-		for (int i=0; i<accumulators.size(); i++) {
+		for (int i=0; i<results.size(); i++) {
 			seeds[i] = localization.getString("text.seed", i+1);
 		}
 		
@@ -332,22 +320,19 @@ ActionListener, ChartChangeListener, ListSelectionListener {
 			private static final long serialVersionUID = -3709557130361259485L;
 			
 			{
-				putValue(Action.NAME,
-						localization.getString("action.selectAll.name"));
+				putValue(Action.NAME, localization.getString("action.selectAll.name"));
 			}
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				seedList.getSelectionModel().setSelectionInterval(0, 
-						seedList.getModel().getSize()-1);
+				seedList.getSelectionModel().setSelectionInterval(0, seedList.getModel().getSize()-1);
 			}
 			
 		});
 		
 		//initialize miscellaneous components
 		paintHelper = new PaintHelper();
-		paintHelper.set(localization.getString("text.referenceSet"),
-				Color.BLACK);
+		paintHelper.set(localization.getString("text.referenceSet"), Color.BLACK);
 		
 		chartContainer = new JPanel(new BorderLayout());
 	}
@@ -381,14 +366,12 @@ ActionListener, ChartChangeListener, ListSelectionListener {
 		rightPane.add(controlPane, BorderLayout.SOUTH);
 		
 		JPanel leftPane = new JPanel(new BorderLayout());
-		leftPane.setBorder(BorderFactory.createTitledBorder(
-				localization.getString("text.seeds")));
+		leftPane.setBorder(BorderFactory.createTitledBorder(localization.getString("text.seeds")));
 		leftPane.add(new JScrollPane(seedList), BorderLayout.CENTER);
 		leftPane.add(selectAll, BorderLayout.SOUTH);
 		leftPane.setMinimumSize(new Dimension(100, 100));
 		
-		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, 
-				leftPane, rightPane);
+		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftPane, rightPane);
 
 		add(splitPane, BorderLayout.CENTER);
 	}
@@ -404,8 +387,7 @@ ActionListener, ChartChangeListener, ListSelectionListener {
 	 * @return the x- or y-axis value for the specified solution
 	 */
 	protected double getValue(Solution solution, int axis) {
-		int selection = axis == 0 ? xAxisSelection.getSelectedIndex() : 
-				yAxisSelection.getSelectedIndex();
+		int selection = axis == 0 ? xAxisSelection.getSelectedIndex() : yAxisSelection.getSelectedIndex();
 		
 		if (selection < solution.getNumberOfObjectives()) {
 			return solution.getObjective(selection);
@@ -421,8 +403,7 @@ ActionListener, ChartChangeListener, ListSelectionListener {
 		
 		if (selection < solution.getNumberOfVariables()) {
 			if (solution.getVariable(selection) instanceof RealVariable) {
-				return ((RealVariable)solution.getVariable(selection))
-						.getValue();
+				return ((RealVariable)solution.getVariable(selection)).getValue();
 			} else {
 				return 0.0;
 			}
@@ -440,22 +421,14 @@ ActionListener, ChartChangeListener, ListSelectionListener {
 		
 		//generate approximation set
 		for (int seedIndex : seedList.getSelectedIndices()) {
-			Accumulator accumulator = accumulators.get(seedIndex);
-			int index = 0;
+			Observations observations = results.get(seedIndex);
 			
-			if (!accumulator.keySet().contains("Approximation Set")) {
+			if (!observations.keys().contains("Approximation Set")) {
 				continue;
 			}
 				
-			while ((index < accumulator.size("NFE")-1) && 
-					((Integer)accumulator.get("NFE", index) < slider.getValue())) {
-				index++;
-			}
-				
-			List<?> list = (List<?>)accumulator.get("Approximation Set", index);
-			XYSeries series = new XYSeries(
-					localization.getString("text.seed", seedIndex+1),
-					false, true);
+			List<?> list = (List<?>)observations.at(slider.getValue()).get("Approximation Set");
+			XYSeries series = new XYSeries(localization.getString("text.seed", seedIndex+1), false, true);
 				
 			for (Object object : list) {
 				Solution solution = (Solution)object;
@@ -467,9 +440,7 @@ ActionListener, ChartChangeListener, ListSelectionListener {
 		
 		//generate reference set
 		if (referenceSet != null) {
-			XYSeries series = new XYSeries(
-					localization.getString("text.referenceSet"),
-					false, true);
+			XYSeries series = new XYSeries(localization.getString("text.referenceSet"), false, true);
 				
 			for (Solution solution : referenceSet) {
 				series.add(getValue(solution, 0), getValue(solution, 1));
@@ -490,8 +461,7 @@ ActionListener, ChartChangeListener, ListSelectionListener {
 		
 		//set the renderer to only display shapes
 		XYPlot plot = chart.getXYPlot();
-		XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer(false, 
-				true);
+		XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer(false, true);
 		
 		for (int i=0; i<dataset.getSeriesCount(); i++) {
 			Paint paint = paintHelper.get(dataset.getSeriesKey(i));
@@ -543,8 +513,7 @@ ActionListener, ChartChangeListener, ListSelectionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if ((e.getSource() == xAxisSelection) || 
-				(e.getSource() == yAxisSelection)) {
+		if ((e.getSource() == xAxisSelection) || (e.getSource() == yAxisSelection)) {
 			initialRangeBounds = null;
 			initialDomainBounds = null;
 			initializeReferenceSetBounds();

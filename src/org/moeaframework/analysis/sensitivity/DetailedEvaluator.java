@@ -26,7 +26,8 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.moeaframework.Executor;
 import org.moeaframework.Instrumenter;
-import org.moeaframework.analysis.collector.Accumulator;
+import org.moeaframework.analysis.collector.Observation;
+import org.moeaframework.analysis.collector.Observations;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PRNG;
@@ -256,14 +257,14 @@ public class DetailedEvaluator extends CommandLineUtility {
 				.withProperties(properties)
 				.run();
 
-		Accumulator accumulator = instrumenter.getLastAccumulator();
+		Observations observations = instrumenter.getObservations();
 
-		for (int i=0; i<accumulator.size("NFE"); i++) {
+		for (Observation observation : observations) {
 			TypedProperties metadata = new TypedProperties();
-			metadata.setString("NFE", accumulator.get("NFE", i).toString());
-			metadata.setString("ElapsedTime", accumulator.get("Elapsed Time", i).toString());
+			metadata.setInt("NFE", observation.getNFE());
+			metadata.setString("ElapsedTime", observation.get("Elapsed Time").toString());
 			
-			Iterable<Solution> solutions = (Iterable<Solution>)accumulator.get("Approximation Set", i);
+			Iterable<Solution> solutions = (Iterable<Solution>)observation.get("Approximation Set");
 			NondominatedPopulation result = new NondominatedPopulation(solutions);
 			
 			output.append(new ResultEntry(result, metadata));

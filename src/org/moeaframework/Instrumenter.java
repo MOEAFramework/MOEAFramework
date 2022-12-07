@@ -38,6 +38,7 @@ import org.moeaframework.analysis.collector.ElapsedTimeCollector;
 import org.moeaframework.analysis.collector.EpsilonProgressCollector;
 import org.moeaframework.analysis.collector.IndicatorCollector;
 import org.moeaframework.analysis.collector.InstrumentedAlgorithm;
+import org.moeaframework.analysis.collector.Observations;
 import org.moeaframework.analysis.collector.PopulationSizeCollector;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
@@ -196,9 +197,9 @@ public class Instrumenter extends ProblemBuilder {
 	private final List<String> excludedPackages;
 	
 	/**
-	 * The accumulator from the last instrumented algorithm.
+	 * The observations from the last instrumented algorithm.
 	 */
-	private Accumulator lastAccumulator;
+	private Observations observations;
 	
 	/**
 	 * Constructs a new instrumenter instance, initially with no collectors.
@@ -220,9 +221,22 @@ public class Instrumenter extends ProblemBuilder {
 	 * is executed.
 	 * 
 	 * @return the accumulator from the last instrumented algorithm
+	 * @deprecated use {@link #getObservations()} instead
 	 */
+	@Deprecated
 	public Accumulator getLastAccumulator() {
-		return lastAccumulator;
+		return new Accumulator(observations);
+	}
+	
+	/**
+	 * Returns the observations from the last instrumented algorithm.  The
+	 * accumulator will be filled with the runtime information as the algorithm
+	 * is executed.
+	 * 
+	 * @return the observations from the last instrumented algorithm
+	 */
+	public Observations getObservations() {
+		return observations;
 	}
 	
 	/**
@@ -806,7 +820,7 @@ public class Instrumenter extends ProblemBuilder {
 		instrument(instrumentedAlgorithm, collectors, new HashSet<Object>(), 
 				new Stack<Object>(), algorithm, null);
 		
-		lastAccumulator = instrumentedAlgorithm.getAccumulator();
+		observations = instrumentedAlgorithm.getObservations();
 		
 		return instrumentedAlgorithm;
 	}

@@ -40,7 +40,7 @@ import org.apache.commons.lang3.event.EventListenerSupport;
 import org.moeaframework.Analyzer;
 import org.moeaframework.Executor;
 import org.moeaframework.Instrumenter;
-import org.moeaframework.analysis.collector.Accumulator;
+import org.moeaframework.analysis.collector.Observations;
 import org.moeaframework.analysis.sensitivity.EpsilonHelper;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.NondominatedPopulation;
@@ -65,13 +65,13 @@ public class Controller {
 	/**
 	 * The collection of all results.
 	 */
-	private final Map<ResultKey, List<Accumulator>> accumulators;
+	private final Map<ResultKey, List<Observations>> results;
 	
 	/**
-	 * The last accumulator to be generated; or {@code null} if no last
-	 * accumulator exists or has been previously cleared.
+	 * The last observation to be generated; or {@code null} if there is none or
+	 * has been cleared.
 	 */
-	private Accumulator lastAccumulator;
+	private Observations lastObservation;
 	
 	/**
 	 * {@code true} if the last run's trace should be drawn separately;
@@ -212,7 +212,7 @@ public class Controller {
 		this.frame = frame;
 		
 		listeners = EventListenerSupport.create(ControllerListener.class);
-		accumulators = new HashMap<ResultKey, List<Accumulator>>();
+		results = new HashMap<ResultKey, List<Observations>>();
 	}
 	
 	/**
@@ -238,32 +238,28 @@ public class Controller {
 	 * Fires a {@code MODEL_CHANGED} controller event.
 	 */
 	protected void fireModelChangedEvent() {
-		fireEvent(new ControllerEvent(this, 
-				ControllerEvent.Type.MODEL_CHANGED));
+		fireEvent(new ControllerEvent(this, ControllerEvent.Type.MODEL_CHANGED));
 	}
 	
 	/**
 	 * Fires a {@code STATE_CHANGED} controller event.
 	 */
 	protected void fireStateChangedEvent() {
-		fireEvent(new ControllerEvent(this, 
-				ControllerEvent.Type.STATE_CHANGED));
+		fireEvent(new ControllerEvent(this, ControllerEvent.Type.STATE_CHANGED));
 	}
 	
 	/**
 	 * Fires a {@code PROGRESS_CHANGED} controller event.
 	 */
 	protected void fireProgressChangedEvent() {
-		fireEvent(new ControllerEvent(this,
-				ControllerEvent.Type.PROGRESS_CHANGED));
+		fireEvent(new ControllerEvent(this, ControllerEvent.Type.PROGRESS_CHANGED));
 	}
 	
 	/**
 	 * Fires a {@code VIEW_CHANGED} controller event.
 	 */
 	protected void fireViewChangedEvent() {
-		fireEvent(new ControllerEvent(this,
-				ControllerEvent.Type.VIEW_CHANGED));
+		fireEvent(new ControllerEvent(this, ControllerEvent.Type.VIEW_CHANGED));
 	}
 	
 	/**
@@ -285,21 +281,21 @@ public class Controller {
 	
 	/**
 	 * Adds a new result to this controller.  If the specified key already
-	 * exists, the accumulator is appended to the existing results.  A
+	 * exists, the observation is appended to the existing results.  A
 	 * {@code MODEL_CHANGED} event is fired.
 	 * 
 	 * @param key the result key identifying the algorithm and problem
 	 *        associated with these results
-	 * @param accumulator the accumulator storing the results
+	 * @param observation the observation storing the results
 	 */
-	public void add(ResultKey key, Accumulator accumulator) {
-		synchronized (accumulators) {
-			if (!accumulators.containsKey(key)) {
-				accumulators.put(key, new CopyOnWriteArrayList<Accumulator>());
+	public void add(ResultKey key, Observations observation) {
+		synchronized (results) {
+			if (!results.containsKey(key)) {
+				results.put(key, new CopyOnWriteArrayList<Observations>());
 			}
 			
-			accumulators.get(key).add(accumulator);
-			lastAccumulator = accumulator;
+			results.get(key).add(observation);
+			lastObservation = observation;
 		}
 		
 		fireModelChangedEvent();
@@ -311,10 +307,10 @@ public class Controller {
 	 * 
 	 * @param algorithm the algorithm associated with these results
 	 * @param problem the problem associated with these results
-	 * @param accumulator the accumulator storing the results
+	 * @param observation the observation storing the results
 	 */
-	public void add(String algorithm, String problem, Accumulator accumulator) {
-		add(new ResultKey(algorithm, problem), accumulator);
+	public void add(String algorithm, String problem, Observations observation) {
+		add(new ResultKey(algorithm, problem), observation);
 	}
 	
 	/**
@@ -322,14 +318,14 @@ public class Controller {
 	 * is fired.
 	 */
 	public void clear() {
-		if (accumulators.isEmpty()) {
+		if (results.isEmpty()) {
 			return;
 		}
 		
-		synchronized (accumulators) {
-			accumulators.clear();
+		synchronized (results) {
+			results.clear();
 			frame.getPaintHelper().clear();
-			lastAccumulator = null;
+			lastObservation = null;
 		}
 		
 		fireModelChangedEvent();
@@ -343,9 +339,9 @@ public class Controller {
 	 * @return an unmodifiable collection containing the results associated
 	 *         with the specified key
 	 */
-	public List<Accumulator> get(ResultKey key) {
-		synchronized (accumulators) {
-			return Collections.unmodifiableList(accumulators.get(key));
+	public List<Observations> get(ResultKey key) {
+		synchronized (results) {
+			return Collections.unmodifiableList(results.get(key));
 		}
 	}
 	
@@ -355,32 +351,31 @@ public class Controller {
 	 * @return an unmodifiable set of result keys contained in this controller
 	 */
 	public Set<ResultKey> getKeys() {
-		synchronized (accumulators) {
-			return Collections.unmodifiableSet(accumulators.keySet());
+		synchronized (results) {
+			return Collections.unmodifiableSet(results.keySet());
 		}
 	}
 	
 	/**
-	 * Returns the last accumulator to be generated; or {@code null} if no last
-	 * accumulator exists or has been previously cleared.
+	 * Returns the last observation to be generated; or {@code null} if there is none
+	 * or has been cleared
 	 * 
-	 * @return the last accumulator to be generated; or {@code null} if no last
-	 *         accumulator exists or has been previously cleared
+	 * @return the last observation to be generated; or {@code null}
 	 */
-	public Accumulator getLastAccumulator() {
-		synchronized (accumulators) {
-			return lastAccumulator;
+	public Observations getLastObservation() {
+		synchronized (results) {
+			return lastObservation;
 		}
 	}
 	
 	/**
-	 * Clears the last accumulator.  Subsequent invocations of
-	 * {@link #getLastAccumulator()} will return {@code null} until a new
-	 * accumulator is generated.
+	 * Clears the last observation.  Subsequent invocations of
+	 * {@link #getLastObservation()} will return {@code null} until a new
+	 * observation is generated.
 	 */
-	public void clearLastAccumulator() {
-		synchronized (accumulators) {
-			lastAccumulator = null;
+	public void clearLastObservation() {
+		synchronized (results) {
+			lastObservation = null;
 		}
 	}
 	
@@ -391,9 +386,9 @@ public class Controller {
 	 * @throws IOException if an I/O error occurred
 	 */
 	public void saveData(File file) throws IOException {
-		synchronized (accumulators) {
+		synchronized (results) {
 			try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file))) {
-				oos.writeObject(accumulators);
+				oos.writeObject(results);
 			}
 		}
 	}
@@ -414,12 +409,11 @@ public class Controller {
 				List<?> list = (List<?>)entry.getValue();
 				
 				for (Object element : list) {
-					add(key, (Accumulator)element);
+					add(key, (Observations)element);
 				}
 			}
 		} catch (StreamCorruptedException e) {
-			throw new IOException("This file does not appear to be a data " +
-					"file generated by the diagnostic tool.", e);
+			throw new IOException("This file does not appear to be a data file generated by the diagnostic tool.", e);
 		} catch (Exception e) {
 			throw new IOException(e);
 		}
@@ -434,8 +428,7 @@ public class Controller {
 	 * @param totalEvaluations the total number of evaluations
 	 * @param totalSeeds the total number of seeds
 	 */
-	protected void updateProgress(int currentEvaluation, int currentSeed,
-			int totalEvaluations, int totalSeeds) {
+	protected void updateProgress(int currentEvaluation, int currentSeed, int totalEvaluations, int totalSeeds) {
 		runProgress = (int)(100*currentEvaluation/(double)totalEvaluations);
 		overallProgress = (int)(100*(currentSeed > 0 ? currentSeed - 1 : 0)/(double)totalSeeds);
 		
@@ -496,15 +489,13 @@ public class Controller {
 			}
 			
 			for (ResultKey key : selectedResults) {
-				for (Accumulator accumulator : get(key)) {
-					if (!accumulator.keySet().contains("Approximation Set")) {
+				for (Observations observations : get(key)) {
+					if (!observations.keys().contains("Approximation Set")) {
 						continue;
 					}
 					
-					NondominatedPopulation population = 
-							new EpsilonBoxDominanceArchive(epsilon);
-					List<?> list = (List<?>)accumulator.get("Approximation Set",
-							accumulator.size("Approximation Set")-1);
+					NondominatedPopulation population = new EpsilonBoxDominanceArchive(epsilon);
+					List<?> list = (List<?>)observations.last().get("Approximation Set");
 					
 					for (Object object : list) {
 						population.add((Solution)object);
@@ -517,8 +508,7 @@ public class Controller {
 			ByteArrayOutputStream stream = new ByteArrayOutputStream();
 			analyzer.printAnalysis(new PrintStream(stream));
 			
-			StatisticalResultsViewer viewer = new StatisticalResultsViewer(
-					this, stream.toString());
+			StatisticalResultsViewer viewer = new StatisticalResultsViewer(this, stream.toString());
 			viewer.setLocationRelativeTo(frame);
 			viewer.setIconImages(frame.getIconImages());
 			viewer.setVisible(true);
@@ -628,11 +618,9 @@ public class Controller {
 							
 							if (event.isSeedFinished()) {
 								Executor executor = event.getExecutor();
-								Instrumenter instrumenter =
-										executor.getInstrumenter();
+								Instrumenter instrumenter = executor.getInstrumenter();
 								
-								add(algorithmName, problemName,
-										instrumenter.getLastAccumulator());
+								add(algorithmName, problemName, instrumenter.getObservations());
 							}
 						}
 						

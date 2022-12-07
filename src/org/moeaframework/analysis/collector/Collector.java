@@ -47,12 +47,12 @@ public interface Collector {
 	public Collector attach(Object object);
 
 	/**
-	 * Collects the necessary information from the object, storing the data
-	 * to the specified accumulator.  This method must only be invoked after
+	 * Collects the requested information from the object, storing the data
+	 * to the specified observation.  This method must only be invoked after
 	 * this collector has been attached to an appropriate object.
 	 * 
-	 * @param accumulator the accumulator to which the collected data is stored
+	 * @param observation the observation to which the collected data is stored
 	 */
-	public void collect(Accumulator accumulator);
+	public void collect(Observation observation);
 
 }

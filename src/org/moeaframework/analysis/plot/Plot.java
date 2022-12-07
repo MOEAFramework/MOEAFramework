@@ -66,6 +66,8 @@ import org.jfree.data.xy.XYSeriesCollection;
 import org.moeaframework.Analyzer;
 import org.moeaframework.Analyzer.AnalyzerResults;
 import org.moeaframework.analysis.collector.Accumulator;
+import org.moeaframework.analysis.collector.Observation;
+import org.moeaframework.analysis.collector.Observations;
 import org.moeaframework.analysis.diagnostics.PaintHelper;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Population;
@@ -477,7 +479,9 @@ public class Plot {
 	 * 
 	 * @param accumulator the {@code Accumulator} instance
 	 * @return a reference to this {@code Plot} instance
+	 * @deprecated use {@link #add(Observations)} instead
 	 */
+	@Deprecated
 	public Plot add(Accumulator accumulator) {
 		createXYPlot();
 		currentDataset++;
@@ -491,6 +495,25 @@ public class Plot {
 
 		return this;
 	}
+	
+	/**
+	 * Displays the runtime data stored in an {@link Observations} as one or
+	 * more line plots.
+	 * 
+	 * @param observations the {@code Observations} instance
+	 * @return a reference to this {@code Plot} instance
+	 */
+	public Plot add(Observations observations) {
+		createXYPlot();
+		currentDataset++;
+		XYSeriesCollection dataset = new XYSeriesCollection();
+
+		for (String key : observations.keys()) {
+			add(key, observations, key, dataset);
+		}
+
+		return this;
+	}
 
 	/**
 	 * Displays the runtime data for the given metric as a line plot.
@@ -499,9 +522,23 @@ public class Plot {
 	 * @param accumulator the {@code Accumulator} instance
 	 * @param metric the name of the performance metric to plot
 	 * @return a reference to this {@code Plot} instance
+	 * @deprecated use {@link #add(String, Observations, String)} instead
 	 */
+	@Deprecated
 	public Plot add(String label, Accumulator accumulator, String metric) {
 		return add(label, accumulator, metric, null);
+	}
+	
+	/**
+	 * Displays the runtime data for the given metric as a line plot.
+	 * 
+	 * @param label the label for the series
+	 * @param observations the {@code Observations} instance
+	 * @param metric the name of the performance metric to plot
+	 * @return a reference to this {@code Plot} instance
+	 */
+	public Plot add(String label, Observations observations, String metric) {
+		return add(label, observations, metric, null);
 	}
 
 	/**
@@ -515,7 +552,9 @@ public class Plot {
 	 * @param dataset the dataset, or {@code null} if a new dataset should be
 	 *        created
 	 * @return a reference to this {@code Plot} instance
+	 * @deprecated
 	 */
+	@Deprecated
 	private Plot add(String label, Accumulator accumulator, String metric, XYSeriesCollection dataset) {
 		List<Number> xs = new ArrayList<Number>();
 		List<Number> ys = new ArrayList<Number>();
@@ -524,6 +563,37 @@ public class Plot {
 			for (int i = 0; i < accumulator.size("NFE"); i++) {
 				xs.add((Number)accumulator.get("NFE", i));
 				ys.add((Number)accumulator.get(metric, i));
+			}
+		} catch (ClassCastException e) {
+			return this;
+		}
+		
+		line(label, xs, ys, dataset);
+		setLabelsIfBlank("NFE", "Value");
+
+		return this;
+	}
+	
+	/**
+	 * Displays the runtime data for the given metric as a line plot.  The
+	 * series is added to the given dataset, or if {@code null} a new dataset
+	 * is created.
+	 * 
+	 * @param label the label for the series
+	 * @param accumulator the {@code Accumulator} instance
+	 * @param metric the name of the performance metric to plot
+	 * @param dataset the dataset, or {@code null} if a new dataset should be
+	 *        created
+	 * @return a reference to this {@code Plot} instance
+	 */
+	private Plot add(String label, Observations observations, String metric, XYSeriesCollection dataset) {
+		List<Number> xs = new ArrayList<Number>();
+		List<Number> ys = new ArrayList<Number>();
+		
+		try {
+			for (Observation observation : observations) {
+				xs.add(observation.getNFE());
+				ys.add((Number)observation.get(metric));
 			}
 		} catch (ClassCastException e) {
 			return this;

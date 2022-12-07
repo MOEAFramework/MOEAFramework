@@ -32,7 +32,7 @@ import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
-import org.moeaframework.analysis.collector.Accumulator;
+import org.moeaframework.analysis.collector.Observations;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Solution;
@@ -48,8 +48,7 @@ public class ApproximationSetPlot extends ResultPlot {
 	/**
 	 * The localization instance for produce locale-specific strings.
 	 */
-	private static Localization localization = Localization.getLocalization(
-			ApproximationSetPlot.class);
+	private static Localization localization = Localization.getLocalization(ApproximationSetPlot.class);
 	
 	/**
 	 * The &epsilon; value used when displaying the approximation set.
@@ -73,16 +72,14 @@ public class ApproximationSetPlot extends ResultPlot {
 		XYSeriesCollection dataset = new XYSeriesCollection();
 		
 		for (ResultKey key : frame.getSelectedResults()) {
-			NondominatedPopulation population = new EpsilonBoxDominanceArchive(
-					EPSILON);
+			NondominatedPopulation population = new EpsilonBoxDominanceArchive(EPSILON);
 			
-			for (Accumulator accumulator : controller.get(key)) {
-				if (!accumulator.keySet().contains(metric)) {
+			for (Observations observations : controller.get(key)) {
+				if (!observations.keys().contains(metric)) {
 					continue;
 				}
 				
-				List<?> list = (List<?>)accumulator.get(metric, 
-						accumulator.size(metric)-1);
+				List<?> list = (List<?>)observations.last().get(metric);
 				
 				for (Object object : list) {
 					population.add((Solution)object);
@@ -94,11 +91,9 @@ public class ApproximationSetPlot extends ResultPlot {
 				
 				for (Solution solution : population) {
 					if (solution.getNumberOfObjectives() == 1) {
-						series.add(solution.getObjective(0), 
-								solution.getObjective(0));
+						series.add(solution.getObjective(0), solution.getObjective(0));
 					} else if (solution.getNumberOfObjectives() > 1) {
-						series.add(solution.getObjective(0), 
-								solution.getObjective(1));
+						series.add(solution.getObjective(0), solution.getObjective(1));
 					}
 				}
 				
@@ -116,8 +111,7 @@ public class ApproximationSetPlot extends ResultPlot {
 				false);
 		
 		XYPlot plot = chart.getXYPlot();
-		XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer(false, 
-				true);
+		XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer(false, true);
 		
 		for (int i=0; i<dataset.getSeriesCount(); i++) {
 			Paint paint = frame.getPaintHelper().get(dataset.getSeriesKey(i));
@@ -131,37 +125,29 @@ public class ApproximationSetPlot extends ResultPlot {
 		
 		//add overlay
 		if (controller.getShowLastTrace() &&
-				(controller.getLastAccumulator() != null) && 
-				controller.getLastAccumulator().keySet().contains(metric)) {
+				(controller.getLastObservation() != null) && 
+				controller.getLastObservation().keys().contains(metric)) {
+			Observations observations = controller.getLastObservation();
 			XYSeriesCollection dataset2 = new XYSeriesCollection();
-			NondominatedPopulation population = new EpsilonBoxDominanceArchive(
-					EPSILON);
+			NondominatedPopulation population = new EpsilonBoxDominanceArchive(EPSILON);
 			
-			if (controller.getLastAccumulator().keySet().contains(metric)) {
-				List<?> list = (List<?>)controller.getLastAccumulator().get(
-						metric, controller.getLastAccumulator().size(metric)-1);
+			List<?> list = (List<?>)observations.last().get(metric);
 				
-				for (Object object : list) {
-					population.add((Solution)object);
-				}
+			for (Object object : list) {
+				population.add((Solution)object);
 			}
 			
 			if (!population.isEmpty()) {
-				XYSeries series = new XYSeries(
-						localization.getString("text.last"),
-						false,
-						true);
+				XYSeries series = new XYSeries(localization.getString("text.last"), false, true);
 				
 				for (Solution solution : population) {
-					series.add(solution.getObjective(0), 
-							solution.getObjective(1));
+					series.add(solution.getObjective(0), solution.getObjective(1));
 				}
 				
 				dataset2.addSeries(series);
 			}
 			
-			XYLineAndShapeRenderer renderer2 = new XYLineAndShapeRenderer(false,
-					true);
+			XYLineAndShapeRenderer renderer2 = new XYLineAndShapeRenderer(false, true);
 			renderer2.setSeriesPaint(0, Color.BLACK);
 			
 			plot.setDataset(1, dataset2);

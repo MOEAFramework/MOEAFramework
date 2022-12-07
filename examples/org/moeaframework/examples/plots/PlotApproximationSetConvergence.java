@@ -50,7 +50,7 @@ public class PlotApproximationSetConvergence {
 		NondominatedPopulation referenceSet = instrumenter.getReferenceSet();
 		
 		ApproximationSetViewer viewer = new ApproximationSetViewer(
-				algorithm, Arrays.asList(instrumenter.getLastAccumulator()), referenceSet);
+				algorithm, Arrays.asList(instrumenter.getObservations()), referenceSet);
 		
 		viewer.setIconImages(Settings.getIconImages());
 		viewer.setVisible(true);	

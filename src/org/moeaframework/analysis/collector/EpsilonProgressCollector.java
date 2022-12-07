@@ -55,14 +55,12 @@ public class EpsilonProgressCollector implements Collector {
 	}
 
 	@Override
-	public void collect(Accumulator accumulator) {
+	public void collect(Observation observation) {
 		EpsilonBoxDominanceArchive archive = algorithm.getArchive();
 
 		if (archive != null) {
-			accumulator.add("Number of Improvements", archive
-					.getNumberOfImprovements());
-			accumulator.add("Number of Dominating Improvements", archive
-					.getNumberOfDominatingImprovements());
+			observation.set("Number of Improvements", archive.getNumberOfImprovements());
+			observation.set("Number of Dominating Improvements", archive.getNumberOfDominatingImprovements());
 		}
 	}
 
@@ -73,8 +71,7 @@ public class EpsilonProgressCollector implements Collector {
 
 	@Override
 	public Collector attach(Object object) {
-		return new EpsilonProgressCollector(
-				(EpsilonBoxEvolutionaryAlgorithm)object);
+		return new EpsilonProgressCollector((EpsilonBoxEvolutionaryAlgorithm)object);
 	}
 
 }

@@ -27,8 +27,7 @@ import javax.swing.JPanel;
  * determines the type of plot.  The results displayed in the plot are
  * specified by {@link DiagnosticTool#getSelectedResults()}.
  */
-public abstract class ResultPlot extends JPanel implements ControllerListener, 
-HierarchyListener {
+public abstract class ResultPlot extends JPanel implements ControllerListener, HierarchyListener {
 
 	private static final long serialVersionUID = -4484341164088815299L;
 

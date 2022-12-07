@@ -54,21 +54,19 @@ public class PSOCollector implements Collector {
 	@Override
 	public AttachPoint getAttachPoint() {
 		return AttachPoint.isSubclass(AbstractPSOAlgorithm.class).and(
-				AttachPoint.not(AttachPoint.isNestedIn(
-						AbstractPSOAlgorithm.class)));
+				AttachPoint.not(AttachPoint.isNestedIn(AbstractPSOAlgorithm.class)));
 	}
 
 	@Override
 	public Collector attach(Object object) {
-		return new PSOCollector(
-				(AbstractPSOAlgorithm)object);
+		return new PSOCollector((AbstractPSOAlgorithm)object);
 	}
 
 	@Override
-	public void collect(Accumulator accumulator) {
-		accumulator.add("Particles", new ArrayList<Solution>(algorithm.getParticles()));
-		accumulator.add("LocalBestParticles", new ArrayList<Solution>(algorithm.getLocalBestParticles()));
-		accumulator.add("Leaders", new ArrayList<Solution>(algorithm.getLeaders()));
+	public void collect(Observation observation) {
+		observation.set("Particles", new ArrayList<Solution>(algorithm.getParticles()));
+		observation.set("LocalBestParticles", new ArrayList<Solution>(algorithm.getLocalBestParticles()));
+		observation.set("Leaders", new ArrayList<Solution>(algorithm.getLeaders()));
 	}
 
 }
