@@ -28,9 +28,6 @@ import org.moeaframework.problem.AbstractProblem;
  */
 public class Example4 {
 
-	/**
-	 * Implementation of the DTLZ2 function.
-	 */
 	public static class Srinivas extends AbstractProblem {
 
 		/**
