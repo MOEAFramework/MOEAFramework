@@ -9,7 +9,8 @@ import java.io.PrintStream;
 public interface Displayable {
 	
 	/**
-	 * Formats and prints the content of this object to standard output.
+	 * Formats and prints the content of this object to standard output.  Avoid overriding this
+	 * method, instead implements the display logic in {@link #display(PrintStream)}.
 	 */
 	public default void display() {
 		display(System.out);
