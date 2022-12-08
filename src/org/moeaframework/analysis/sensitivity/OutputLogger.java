@@ -37,6 +37,10 @@ class OutputLogger implements Closeable {
 		this((PrintStream)null);
 	}
 	
+	public OutputLogger(String filename) throws FileNotFoundException {
+		this(new File(filename));
+	}
+	
 	public OutputLogger(File file) throws FileNotFoundException {
 		this(file == null ? null : new PrintStream(file));
 	}

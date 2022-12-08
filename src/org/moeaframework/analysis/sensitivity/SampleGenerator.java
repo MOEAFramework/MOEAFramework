@@ -163,8 +163,7 @@ public class SampleGenerator extends CommandLineUtility {
 			PRNG.setSeed(Long.parseLong(commandLine.getOptionValue("seed")));
 		}
 
-		try (OutputLogger output = new OutputLogger(commandLine.hasOption("output") ?
-				new File(commandLine.getOptionValue("output")) : null)) {
+		try (OutputLogger output = new OutputLogger(commandLine.getOptionValue("output"))) {
 			double[][] samples = sequence.generate(N, D);
 
 			for (int i = 0; i < N; i++) {

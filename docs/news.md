@@ -20,6 +20,11 @@ This page documents notable changes introduced in each chronological release of 
     ```java
     algorithm.getConfiguration().display();
     ```
+    
+  * Easily display results:
+    ```java
+    algorithm.getResult().display();
+    ```
 
   * Removes JMetal as a required dependency at runtime.  Not only does this reduce the jar file size by
     ~20 MBs, it removes overlapping class names shared by both libraries.  It is now available as
