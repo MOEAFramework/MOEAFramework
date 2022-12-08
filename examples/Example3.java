@@ -21,9 +21,15 @@ import org.moeaframework.Executor;
 import org.moeaframework.Instrumenter;
 
 /**
- * Demonstrates the use of the {@code Instrumenter} to collect run-time
- * dynamics.  The output lists the NFE, elapsed time and generational distance
- * throughout the run.
+ * The Instrumenter collects runtime dynamics from an algorithm.  That is, at some
+ * fixed frequency, it will record information about the current algorithm, including
+ * the number of function evaluations, elapsed time, and performance indicators using
+ * the current population.  This data is aggregated into a table (the Observations)
+ * which can be displayed or saved to a file.
+ * 
+ * In the example below, we will record the elapsed time and generational distance
+ * every 100 function evaluations while solving the UF1 problem with NSGA-II.  This
+ * data is then displayed on the console.
  */
 public class Example3 {
 

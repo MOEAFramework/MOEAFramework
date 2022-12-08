@@ -51,6 +51,7 @@ import org.moeaframework.core.indicator.R2Indicator;
 import org.moeaframework.core.indicator.R3Indicator;
 import org.moeaframework.core.indicator.Spacing;
 import org.moeaframework.core.spi.ProblemFactory;
+import org.moeaframework.util.format.Displayable;
 import org.moeaframework.util.io.FileUtils;
 import org.moeaframework.util.statistics.KruskalWallisTest;
 import org.moeaframework.util.statistics.MannWhitneyUTest;
@@ -83,7 +84,7 @@ import org.moeaframework.util.statistics.MannWhitneyUTest;
  * easily with any YAML parser.  The results can also be accessed
  * programatically by calling {@link #getAnalysis()}.
  */
-public class Analyzer extends ProblemBuilder {
+public class Analyzer extends ProblemBuilder implements Displayable {
 	
 	/**
 	 * {@code true} if the hypervolume metric is to be computed; {@code false}
@@ -901,9 +902,14 @@ public class Analyzer extends ProblemBuilder {
 	 * @return a reference to this analyzer
 	 */
 	public Analyzer printAnalysis(PrintStream ps) {
-		getAnalysis().print(ps);
+		display(ps);
 		
 		return this;
+	}
+	
+	@Override
+	public void display(PrintStream ps) {
+		getAnalysis().display(ps);
 	}
 	
 	/**
@@ -920,7 +926,7 @@ public class Analyzer extends ProblemBuilder {
 	/**
 	 * Stores the results produced by this analyzer.
 	 */
-	public class AnalyzerResults {
+	public class AnalyzerResults implements Displayable {
 		
 		/**
 		 * The results for each algorithm.
@@ -980,7 +986,10 @@ public class Analyzer extends ProblemBuilder {
 		
 		/**
 		 * Prints the results to standard output.
+		 * 
+		 * @deprecated use {@link #display()} instead
 		 */
+		@Deprecated
 		public void print() {
 			print(System.out);
 		}
@@ -989,10 +998,17 @@ public class Analyzer extends ProblemBuilder {
 		 * Prints the results to the given stream.
 		 * 
 		 * @param ps the stream where the results are printed
+		 * @deprecated use {@link #display(PrintStream)} instead
 		 */
+		@Deprecated
 		public void print(PrintStream ps) {
+			display(ps);
+		}
+		
+		@Override
+		public void display(PrintStream ps) {
 			for (AlgorithmResult algorithmResult : algorithmResults) {
-				algorithmResult.print(ps);
+				algorithmResult.display(ps);
 			}
 		}
 		
@@ -1001,7 +1017,7 @@ public class Analyzer extends ProblemBuilder {
 	/**
 	 * Stores the results for a single algorithm.
 	 */
-	public class AlgorithmResult {
+	public class AlgorithmResult implements Displayable {
 		
 		/**
 		 * The name of the algorithm.
@@ -1080,13 +1096,20 @@ public class Analyzer extends ProblemBuilder {
 		 * Prints the results to the given stream.
 		 * 
 		 * @param ps the stream where the results are printed
+		 * @deprecated use {@link #display(PrintStream)} instead
 		 */
+		@Deprecated
 		void print(PrintStream ps) {
+			display(ps);
+		}
+		
+		@Override
+		public void display(PrintStream ps) {
 			ps.print(getAlgorithm());
 			ps.println(':');
 			
 			for (IndicatorResult indicatorResult : indicatorResults) {
-				indicatorResult.print(ps);
+				indicatorResult.display(ps);
 			}
 		}
 		
@@ -1095,7 +1118,7 @@ public class Analyzer extends ProblemBuilder {
 	/**
 	 * Inner class for storing the results for a single performance indicator.
 	 */
-	public class IndicatorResult {
+	public class IndicatorResult implements Displayable {
 		
 		/**
 		 * The name of the indicator.
@@ -1245,8 +1268,15 @@ public class Analyzer extends ProblemBuilder {
 		 * Prints the results to the given stream.
 		 * 
 		 * @param ps the stream where the results are printed
+		 * @deprecated use {@link #display(PrintStream)} instead
 		 */
+		@Deprecated
 		void print(PrintStream ps) {
+			display(ps);
+		}
+		
+		@Override
+		public void display(PrintStream ps) {
 			double[] values = getValues();
 			
 			ps.print("    ");
