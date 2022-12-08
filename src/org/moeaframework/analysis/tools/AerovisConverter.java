@@ -72,6 +72,7 @@ import org.moeaframework.util.TypedProperties;
  *   </tr>
  * </table>
  */
+@Deprecated
 public class AerovisConverter extends CommandLineUtility {
 	
 	/**
