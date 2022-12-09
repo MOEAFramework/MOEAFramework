@@ -3,7 +3,7 @@
 This page documents notable changes introduced in each chronological release of the MOEA Framework.
 
 
-## Version 3.2 (08 Dec 2022)
+## Version 3.2 (09 Dec 2022)
 
   * Adds simple constructors for all built-in algorithms and getters / setters for configuration:
     ```java
