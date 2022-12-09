@@ -19,7 +19,7 @@ import org.moeaframework.core.Settings;
  *
  * @param <T> the type of records (rows)
  */
-public class TabularData<T> {
+public class TabularData<T> implements Displayable {
 	
 	private final Iterable<T> dataSource;
 	
@@ -61,10 +61,7 @@ public class TabularData<T> {
 		return value.toString();
 	}
 	
-	public void display() {
-		display(System.out);
-	}
-	
+	@Override
 	public void display(PrintStream out) {
 		List<String[]> formattedData = new ArrayList<String[]>();
 		int[] columnWidths = new int[columns.size()];

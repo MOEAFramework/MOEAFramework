@@ -22,7 +22,6 @@ import java.io.IOException;
 import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.Problem;
-import org.moeaframework.core.Solution;
 import org.moeaframework.core.operator.real.PCX;
 import org.moeaframework.problem.DTLZ.DTLZ2;
 
@@ -42,13 +41,7 @@ public class DirectConfiguration {
 		
 		algorithm.run(10000);
 
-		System.out.format("Objective1  Objective2%n");
-		
-		for (Solution solution : algorithm.getResult()) {
-			System.out.format("%.4f      %.4f%n",
-					solution.getObjective(0),
-					solution.getObjective(1));
-		}
+		algorithm.getResult().display();
 	}
 
 }

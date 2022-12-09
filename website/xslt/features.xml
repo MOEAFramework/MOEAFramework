@@ -215,7 +215,7 @@ using existing components.</p>
   </tr>
 </table>
 <p>
-<sup>1</sup> - Algorithms provided by the <a href="http://jmetal.sourceforge.net/">JMetal</a> library (included with the MOEA Framework).<br />
+<sup>1</sup> - Algorithms provided by the <a href="http://jmetal.sourceforge.net/">JMetal</a> library (requires jmetal-plugin).<br />
 <sup>2</sup> - Algorithms provided by the <a href="http://www.tik.ee.ethz.ch/sop/pisa/">PISA</a> library.<br />
 <sup>3</sup> - Available as a JAR plugin from <a href="http://borgmoea.org">borgmoea.org</a>.
 </p>

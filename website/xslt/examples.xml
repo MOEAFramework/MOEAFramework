@@ -32,7 +32,6 @@
   <li><a href="#example2">Example 2: Statistical Comparison of Algorithms</a></li>
   <li><a href="#example3">Example 3: Collecting Runtime Dynamics</a></li>
   <li><a href="#example4">Example 4: Defining New Problems</a></li>
-  <li><a href="#example5">Example 5: Defining Problems in C/C++</a></li>
 </ul>
 
 <div class="section">
@@ -105,36 +104,36 @@
 </div>
 
 <p>
-  The Executor provides all the necessary features to execute an algorithm on
-  a specific problem.  For example, the following runs NSGA-II on the UF1 test
-  problem.  The executor provides many useful functions, such as enabling
-  distributed evaluations across multiple cores or computers, checkpoints,
-  instrumentation, etc.
+  Create and solve the bi-objective DTLZ2 test problem using NSGA-II.  At the end,
+  we display the Pareto front.
 </p>
 
 <div class="code">
   <pre class="brush: java; toolbar: false;">
-NondominatedPopulation result = new Executor()
-    .withProblem("UF1")
-    .withAlgorithm("NSGAII")
-    .withMaxEvaluations(10000)
-    .run();
+<![CDATA[
+Problem problem = new DTLZ2(2);
+
+NSGAII algorithm = new NSGAII(problem);
+algorithm.run(10000);
+
+algorithm.getResult().display();
+]]>
   </pre>
 </div>
 
 <p>
-  Since UF1 is a bi-objective problem, printing the results will list the two
-  objective function values for each non-dominated (Pareto optimal) solution
-  found by NSGA-II:
+  Displaying the Pareto front will print all the decision variables, objectives, an
+  constraints (if any).
 </p>
 
 <div class="code">
   <pre class="brush: plain; toolbar: false;">
-Objective1  Objective2
-0.9465      0.0466
-0.1355      2.0513
-0.1403      1.9960
-0.2520      0.5120
+Var1     Var2     Var3     Var4     Var5     Var6     Var7     Var8     Var9     Var10    Var11    Obj1     Obj2     
+-------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- 
+0.000001 0.499800 0.499459 0.493195 0.512840 0.501684 0.496219 0.510478 0.497724 0.490473 0.498708 1.000436 0.000002 
+1.000000 0.493931 0.496459 0.504963 0.492117 0.487517 0.495901 0.506916 0.498368 0.508016 0.504378 0.000000 1.000443 
+0.967343 0.500695 0.493870 0.493354 0.496931 0.489186 0.496910 0.489151 0.498778 0.499109 0.496012 0.051294 0.999038 
+0.570016 0.500760 0.493834 0.485232 0.492111 0.487856 0.498199 0.507383 0.498864 0.502869 0.504378 0.625569 0.780878 
 ...
   </pre>
 </div>
@@ -152,13 +151,14 @@ Objective1  Objective2
 </div>
 
 <p>
-  Statistical analyses are provided by the Analyzer.  The Analyzer can display
-  the min, median, max and aggregate values for multiple performance indicators,
-  including hypervolume, generational distance, inverted generational distance,
-  additive &epsilon;-indicator, spacing and contribution.  Additionally,
-  Kruskal-Wallis and Mann-Whitney U tests provide statistical significance
-  results.  In the example below, we compare the algorithms using the
-  hypervolume metric.
+  Larger experiments are performed using the Executor and Analyzer.  The Executor
+  is resonsible for configuring and running algorithms.  Unlike the previous example
+  where we solved one problem, the Executor is useful when running multiple seeds,
+  multiple algorithms, or different configurations.  The Analyzer performs the
+  statistical analysis.  It can compute various performance indicators, including
+  hypervolume, generational distance, inverted generational distance, additive
+  &epsilon;-indicator, spacing and contribution.  Additionally, Kruskal-Wallis and
+  Mann-Whitney U tests measure the statistical significance of results.
 </p>
 
 <div class="code">
@@ -184,7 +184,7 @@ for (String algorithm : algorithms) {
 }
 
 //print the results
-analyzer.printAnalysis();
+analyzer.display();
 ]]>
   </pre>
 </div>
@@ -256,13 +256,7 @@ new Executor()
     .withInstrumenter(instrumenter)
     .run();
 		
-Accumulator accumulator = instrumenter.getLastAccumulator();
-		
-for (int i=0; i<accumulator.size("NFE"); i++) {
-  System.out.println(accumulator.get("NFE", i) + "\t" + 
-      accumulator.get("Elapsed Time", i) + "\t" +
-      accumulator.get("GenerationalDistance", i));
-}
+instrumenter.getObservations().display();
 ]]>
   </pre>
 </div>
@@ -276,13 +270,20 @@ for (int i=0; i<accumulator.size("NFE"); i++) {
 
 <div class="code">
   <pre class="brush: plain; toolbar: false">
- NFE    Time      Generational Distance
- 100    0.0256    0.7616  
- 200    0.0421    0.6645  
- 300    0.0543    0.4847  
- 400    0.0636    0.4425  
- 500    0.0713    0.4178  
- ...
+NFE   Elapsed Time GenerationalDistance 
+----- ------------ -------------------- 
+100   0.048455     0.554547             
+200   0.068240     0.486866             
+300   0.076951     0.876918             
+400   0.082156     0.690796             
+500   0.087247     0.542534             
+...                 
+9500  0.351868     0.044477             
+9600  0.354273     0.037876             
+9700  0.356552     0.038029             
+9800  0.358757     0.038815             
+9900  0.361296     0.032959             
+10000 0.363735     0.020477   
   </pre>
 </div>
 </div>
@@ -298,10 +299,9 @@ for (int i=0; i<accumulator.size("NFE"); i++) {
 </div>
 
 <p>
-  A number of methods are available to provide custom, user-defined problems
-  that cleanly integrate with all other components of the MOEA Framework.  The
-  following demonstrates the two-objective DTLZ2 problem.  Note that you only
-  need to define two methods: newSolution and evaluate.  The newSolution
+  While we provide many test problem suites for comparing optimization algorithms,
+  we can also introduce new problems.  As demonstrated below, we need to define
+  two methods: newSolution and evaluate.  The newSolution
   method defines the problem representation (the number and types of its
   decision variables).  The evaluate method takes a solution and computes its
   objective function values.
@@ -310,48 +310,38 @@ for (int i=0; i<accumulator.size("NFE"); i++) {
 <div class="code">
   <pre class="brush: java; toolbar: false;">
 <![CDATA[
-public class DTLZ2 extends AbstractProblem {
+public class Srinivas extends AbstractProblem {
 
-  public DTLZ2() {
-    super(11, 2);
-  }
+	public Srinivas() {
+		super(2, 2, 2);
+	}
 
-  public Solution newSolution() {
-    Solution solution = new Solution(getNumberOfVariables(), 
-        getNumberOfObjectives());
+	@Override
+	public void evaluate(Solution solution) {
+		double[] x = EncodingUtils.getReal(solution);
+		double f1 = Math.pow(x[0] - 2.0, 2.0) + Math.pow(x[1] - 1.0, 2.0) + 2.0;
+		double f2 = 9.0*x[0] - Math.pow(x[1] - 1.0, 2.0);
+		double c1 = Math.pow(x[0], 2.0) + Math.pow(x[1], 2.0) - 225.0;
+		double c2 = x[0] - 3.0*x[1] + 10.0;
+		
+		// set the objective values - these are being minimized
+		solution.setObjective(0, f1);
+		solution.setObjective(1, f2);
+		
+		// set the constraint values - we treat any non-zero value as a constraint violation!
+		solution.setConstraint(0, c1 <= 0.0 ? 0.0 : c1);
+		solution.setConstraint(1, c2 <= 0.0 ? 0.0 : c2);
+	}
 
-    for (int i = 0; i < getNumberOfVariables(); i++) {
-      solution.setVariable(i, new RealVariable(0.0, 1.0));
-    }
-
-    return solution;
-  }
-
-  public void evaluate(Solution solution) {
-    double[] x = EncodingUtils.getReal(solution);
-    double[] f = new double[numberOfObjectives];
-
-    int k = numberOfVariables - numberOfObjectives + 1;
-
-    double g = 0.0;
-    for (int i = numberOfVariables - k; i < numberOfVariables; i++) {
-      g += Math.pow(x[i] - 0.5, 2.0);
-    }
-
-    for (int i = 0; i < numberOfObjectives; i++) {
-      f[i] = 1.0 + g;
-
-      for (int j = 0; j < numberOfObjectives - i - 1; j++) {
-        f[i] *= Math.cos(0.5 * Math.PI * x[j]);
-      }
-
-      if (i != 0) {
-        f[i] *= Math.sin(0.5 * Math.PI * x[numberOfObjectives - i - 1]);
-      }
-    }
-
-    solution.setObjectives(f);
-  }
+	@Override
+	public Solution newSolution() {
+		Solution solution = new Solution(2, 2, 2);
+		
+		solution.setVariable(0, new RealVariable(-20.0, 20.0));
+		solution.setVariable(1, new RealVariable(-20.0, 20.0));
+		
+		return solution;
+	}
 		
 }
 ]]>
@@ -359,170 +349,31 @@ public class DTLZ2 extends AbstractProblem {
 </div>
 
 <p>
-  This can subsequently be used with the Executor.
+  Then, we can solve this problem using:
 </p>
 
 <div class="code">
   <pre class="brush: java; toolbar: false;">
 <![CDATA[
-NondominatedPopulation result = new Executor()
-    .withProblemClass(DTLZ2.class)
-    .withAlgorithm("GDE3")
-    .withMaxEvaluations(10000)
-    .distributeOnAllCores()
-    .run();
+Problem problem = new Srinivas();
+
+NSGAII algorithm = new NSGAII(problem);
+algorithm.run(10000);
+
+algorithm.getResult().display();
 ]]>
   </pre>
 </div>
 </div>
 
 <div class="section">
-<a name="example5" />
-<h3>Example 5: Defining Problems in C/C++</h3>
-
-<div class="files">
-  <ul>
-    <li><a href="Example5.java">Example5.java</a></li>
-    <li><a href="dtlz2.c">dtlz2.c</a></li>
-  </ul>
-</div>
+<h3>Conclusion</h3>
 
 <p>
-  The MOEA Framework also supports defining new problems in other programming
-  languages, such as C/C++.  First, a Java stub for the problem must be
-  created, as shown below.  Note how the C/C++ executable is defined in the
-  constructor. 
-</p>
-
-<div class="code">
-  <pre class="brush: java; toolbar: false;">
-<![CDATA[
-public static class DTLZ2 extends ExternalProblem {
-
-  public DTLZ2() throws IOException {
-    super("./examples/dtlz2_stdio.exe");
-  }
-
-  @Override
-  public String getName() {
-    return "DTLZ2";
-  }
-
-  @Override
-  public int getNumberOfVariables() {
-    return 11;
-  }
-
-  @Override
-  public int getNumberOfObjectives() {
-    return 2;
-  }
-
-  @Override
-  public int getNumberOfConstraints() {
-    return 0;
-  }
-
-  @Override
-  public Solution newSolution() {
-    Solution solution = new Solution(getNumberOfVariables(), 
-        getNumberOfObjectives());
-
-    for (int i = 0; i < getNumberOfVariables(); i++) {
-      solution.setVariable(i, new RealVariable(0.0, 1.0));
-    }
-
-    return solution;
-  }
-		
-}
-]]>
-  </pre>
-</div>
-
-<p>
-  Next, we create the C/C++ program that defines the problem.  Note the use of
-  several methods with names beginning with the MOEA_ prefix.  These methods
-  are provided by the <code>moeaframework.h</code> library, which is
-  provided provided in the examples/ folder.
-</p>
-
-<div class="code">
-  <pre class="brush: cpp; toolbar: false;">
-<![CDATA[
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
-#include "moeaframework.h"
-
-#define PI 3.14159265358979323846
-
-int nvars = 11;
-int nobjs = 2;
-
-void evaluate(double* vars, double* objs) {
-	int i;
-	int j;
-	int k = nvars - nobjs + 1;
-	double g = 0.0;
-
-	for (i=nvars-k; i<nvars; i++) {
-		g += pow(vars[i] - 0.5, 2.0);
-	}
-
-	for (i=0; i<nobjs; i++) {
-		objs[i] = 1.0 + g;
-
-		for (j=0; j<nobjs-i-1; j++) {
-			objs[i] *= cos(0.5*PI*vars[j]);
-		}
-
-		if (i != 0) {
-			objs[i] *= sin(0.5*PI*vars[nobjs-i-1]);
-		}
-	}
-}
-
-int main(int argc, char* argv[]) {
-	double vars[nvars];
-	double objs[nobjs];
-
-	MOEA_Init(nobjs, 0);
-
-	while (MOEA_Next_solution() == MOEA_SUCCESS) {
-		MOEA_Read_doubles(nvars, vars);
-		evaluate(vars, objs);
-		MOEA_Write(objs, NULL);
-	}
-	
-	MOEA_Terminate();
-
-	return EXIT_SUCCESS;
-}
-]]>
-  </pre>
-</div>
-
-<p>
-  The MOEA_Init method establishes a communication channel with the MOEA
-  Framework.  This communication channel can use standard I/O streams or
-  sockets.  The MOEA_Next_solution and MOEA_Read_doubles methods are used to
-  read the next solution to be evaluated.  Once the solution is evaluated, the
-  computed objective function values are sent back to the MOEA Framework.
-  Finally, once all solutions are evaluated, we shutdown the communication
-  channel by calling MOEA_Terminate.
-</p>
-
-</div>
-
-<div class="section">
-<h3>Concluding Remarks</h3>
-
-<p>
-  We hope that you find the MOEA Framework useful.  We strive to make this
-  framework reliable and easy-to-use, and feedback from users like yourself
-  help us meet these goals.  If you encounter any issues using this software,
-  please <a href="support.html">notify us</a>.
+  In addition to the above examples, we provide many more inside the
+  <a href="https://github.com/MOEAFramework/MOEAFramework/tree/master/examples">examples</a> folder.
+  Navigate to the <a href="downloads.html">downloads</a> page to download the MOEA Framework or
+  visit our <a href="https://github.com/MOEAFramework/MOEAFramework">GitHub page</a> for more information.
 </p>
 </div>
   </content>

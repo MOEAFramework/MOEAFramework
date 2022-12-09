@@ -437,8 +437,7 @@ public class Analysis extends CommandLineUtility {
 			}
 		}
 		
-		try (OutputLogger output = new OutputLogger(commandLine.hasOption("output") ?
-				new File(commandLine.getOptionValue("output")) : null)) {
+		try (OutputLogger output = new OutputLogger(commandLine.getOptionValue("output"))) {
 			//process all the files listed on the command line
 			String[] filenames = commandLine.getArgs();
 			

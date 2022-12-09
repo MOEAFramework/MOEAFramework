@@ -60,7 +60,7 @@ Analyzer analyzer = new Analyzer()
         .includeGenerationalDistance();
 		
 analyzer.addAll("NSGAII", executor.runSeeds(50));
-analyzer.printAnalysis();
+analyzer.display();
 ```
 
 produces the output:
@@ -99,7 +99,7 @@ for (String algorithm : algorithms) {
     analyzer.addAll(algorithm, executor.withAlgorithm(algorithm).runSeeds(50));
 }
 
-analyzer.printAnalysis();
+analyzer.display();
 ```
 
 ## Instrumenter
@@ -122,30 +122,22 @@ new Executor()
         .withInstrumenter(instrumenter)
         .run();
 		
-Accumulator accumulator = instrumenter.getLastAccumulator();
-		
-System.out.format("  NFE    Time      Generational Distance%n");
-		
-for (int i=0; i<accumulator.size("NFE"); i++) {
-    System.out.format("%5d    %-8.4f  %-8.4f%n",
-        accumulator.get("NFE", i),
-        accumulator.get("Elapsed Time", i),
-        accumulator.get("GenerationalDistance", i));
-}
+instrumenter.getObservations().display();
 ```
 
 ```
-  NFE    Time      Generational Distance
-  100    0.0484    0.5520  
-  200    0.0701    0.4409  
-  300    0.0792    0.3811  
-  400    0.0860    0.4267  
-  500    0.0915    0.3590  
-  ...    ...       ...
- 9500    0.3894    0.0021  
- 9600    0.3923    0.0022  
- 9700    0.3953    0.0021  
- 9800    0.3985    0.0022  
- 9900    0.4016    0.0023  
-10000    0.4060    0.0022  
+NFE   Elapsed Time GenerationalDistance 
+----- ------------ -------------------- 
+100   0.048455     0.554547             
+200   0.068240     0.486866             
+300   0.076951     0.876918             
+400   0.082156     0.690796             
+500   0.087247     0.542534             
+...                 
+9500  0.351868     0.044477             
+9600  0.354273     0.037876             
+9700  0.356552     0.038029             
+9800  0.358757     0.038815             
+9900  0.361296     0.032959             
+10000 0.363735     0.020477             
 ```

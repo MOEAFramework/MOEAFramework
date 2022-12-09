@@ -21,8 +21,13 @@ import org.moeaframework.Analyzer;
 import org.moeaframework.Executor;
 
 /**
- * Demonstrates how only a few lines of code are necessary to setup, run
- * and statistically compare multiple algorithms.
+ * The Executor and Analyzer are used to drive experiments where we compare the
+ * performance of algorithms.  The Executor creates and executes the named algorithm,
+ * typically repeating for multiple seeds.  The Analyzer collects the Pareto front
+ * results, computes various performance indicators, and displays the results.
+ * 
+ * In the example below, we compare NSGA-II, GDE3, and eMOEA on the UF1 test problem
+ * using the Hypervolume indicator.
  */
 public class Example2 {
 
@@ -47,7 +52,7 @@ public class Example2 {
 		}
 
 		//print the results
-		analyzer.printAnalysis();
+		analyzer.display();
 	}
 	
 }

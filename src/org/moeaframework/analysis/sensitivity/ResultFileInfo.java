@@ -76,8 +76,7 @@ public class ResultFileInfo extends CommandLineUtility {
 	@Override
 	public void run(CommandLine commandLine) throws Exception {
 		try (Problem problem = OptionUtils.getProblemInstance(commandLine, true);
-				OutputLogger output = new OutputLogger(commandLine.hasOption("output") ?
-					new File(commandLine.getOptionValue("output")) : null)) {
+				OutputLogger output = new OutputLogger(commandLine.getOptionValue("output"))) {
 			// display info for all result files
 			for (String filename : commandLine.getArgs()) {
 				try (ResultFileReader reader = new ResultFileReader(problem, new File(filename))) {

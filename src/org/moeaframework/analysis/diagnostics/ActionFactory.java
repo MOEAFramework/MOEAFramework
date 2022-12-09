@@ -765,14 +765,15 @@ public class ActionFactory implements ControllerListener {
 							null,
 							loadLicense());
 					
-					info.addLibrary(new Library("Apache Commons CLI", "1.2", "Apache License", null));
-					info.addLibrary(new Library("Apache Commons Codec", "1.8", "Apache License", null));
-					info.addLibrary(new Library("Apache Commons Lang", "3.1", "Apache License", null));
-					info.addLibrary(new Library("Apache Commons Math", "3.4.1", "Apache License", null));
-					info.addLibrary(new Library("JCommon", "1.0.20", "GNU LGPL", null));
-					info.addLibrary(new Library("JFreeChart", "1.0.15", "GNU LGPL", null));
-					info.addLibrary(new Library("JMetal", "4.3", "GNU LGPL", null));
+					info.addLibrary(new Library("Apache Commons CLI", "1.5.0", "Apache License", null));
+					info.addLibrary(new Library("Apache Commons IO", "2.11.0", "Apache License", null));
+					info.addLibrary(new Library("Apache Commons Lang3", "3.12.0", "Apache License", null));
+					info.addLibrary(new Library("Apache Commons Math3", "3.6.1", "Apache License", null));
+					info.addLibrary(new Library("Apache Commons Text", "1.10.0", "Apache License", null));
+					info.addLibrary(new Library("JCommon", "1.0.24", "GNU LGPL", null));
+					info.addLibrary(new Library("JFreeChart", "1.5.3", "GNU LGPL", null));
 					info.addLibrary(new Library("MOEAFramework", properties.getProperty("version"), "GNU LGPL", null));
+					info.addLibrary(new Library("RSyntaxTextArea", "3.3.0", "Modified BSD License", null));
 						
 					AboutDialog dialog = new AboutDialog(frame, localization.getString("title.about"), info);
 					dialog.setLocationRelativeTo(frame);

@@ -51,6 +51,7 @@ public class IntegrationTest {
 	}
 	
 	@Test
+	@Deprecated
 	public void testAerovisConverter() throws Exception {
 		File resultFile = TestUtils.createTempFile();
 		File aerovisFile = TestUtils.createTempFile();

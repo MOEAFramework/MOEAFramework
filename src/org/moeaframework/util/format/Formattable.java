@@ -8,7 +8,7 @@ import java.io.PrintStream;
  *
  * @param <T> the type of records
  */
-public interface Formattable<T> {
+public interface Formattable<T> extends Displayable {
 	
 	/**
 	 * Returns the contents of this object as a {@link TabularData} instance, which can
@@ -18,18 +18,7 @@ public interface Formattable<T> {
 	 */
 	public TabularData<T> asTabularData();
 	
-	/**
-	 * Formats and prints the content of this object to standard output.
-	 */
-	public default void display() {
-		display(System.out);
-	}
-	
-	/**
-	 * Formats and prints the contents of this object to the given output stream.
-	 * 
-	 * @param out the output stream
-	 */
+	@Override
 	public default void display(PrintStream out) {
 		TabularData<T> data = asTabularData();
 		data.display(out);

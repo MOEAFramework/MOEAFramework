@@ -171,8 +171,7 @@ public class SimpleStatistics extends CommandLineUtility {
 			mode = "average";
 		}
 		
-		try (OutputLogger output = new OutputLogger(commandLine.hasOption("output") ?
-				new File(commandLine.getOptionValue("output")) : null)) {
+		try (OutputLogger output = new OutputLogger(commandLine.getOptionValue("output"))) {
 			//compute the statistics
 			for (int i=0; i<numberOfRows; i++) {
 				for (int j=0; j<numberOfColumns; j++) {

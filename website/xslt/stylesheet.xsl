@@ -86,12 +86,6 @@
 									</xsl:if>
 									<a href="documentation.html">Documentation</a>
 								</li>
-								<li>
-									<xsl:if test="$filename = 'support.xml'">
-										<xsl:attribute name="id">current</xsl:attribute>
-									</xsl:if>
-									<a href="support.html">Support</a>
-								</li>
 							</ul>
 						</div>
 					</div>

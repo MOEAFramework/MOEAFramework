@@ -37,11 +37,11 @@ Maven users can add our dependency to their `pom.xml` file:
 <dependency>
     <groupId>org.moeaframework</groupId>
     <artifactId>moeaframework</artifactId>
-    <version>3.1</version>
+    <version>3.2</version>
 </dependency>
 ```
 
-Visit the [Maven distribution page](https://search.maven.org/artifact/org.moeaframework/moeaframework/3.1/jar)
+Visit the [Maven distribution page](https://search.maven.org/artifact/org.moeaframework/moeaframework/3.2/jar)
 for setup instructions for other package management tools.
 
 ### Documentation ###

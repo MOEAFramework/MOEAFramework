@@ -159,8 +159,7 @@ public class ExtractData extends CommandLineUtility {
 		try (Problem problem = OptionUtils.getProblemInstance(commandLine, true);
 				ResultFileReader input = new ResultFileReader(problem,
 						new File(commandLine.getOptionValue("input")));
-				OutputLogger output = new OutputLogger(commandLine.hasOption("output") ?
-						new File(commandLine.getOptionValue("output")) : null)) {
+				OutputLogger output = new OutputLogger(commandLine.getOptionValue("output"))) {
 			NondominatedPopulation referenceSet = OptionUtils.getReferenceSet(commandLine);
 			
 			// optionally print header line

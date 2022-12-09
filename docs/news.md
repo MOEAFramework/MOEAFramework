@@ -3,7 +3,7 @@
 This page documents notable changes introduced in each chronological release of the MOEA Framework.
 
 
-## Version 3.2 (TBD)
+## Version 3.2 (09 Dec 2022)
 
   * Adds simple constructors for all built-in algorithms and getters / setters for configuration:
     ```java
@@ -19,6 +19,11 @@ This page documents notable changes introduced in each chronological release of 
   * Adds Configurable interface to built-in algorithms to get and/or set settings:
     ```java
     algorithm.getConfiguration().display();
+    ```
+    
+  * Easily display results:
+    ```java
+    algorithm.getResult().display();
     ```
 
   * Removes JMetal as a required dependency at runtime.  Not only does this reduce the jar file size by

@@ -18,6 +18,7 @@
 package org.moeaframework.util;
 
 import java.io.IOException;
+import java.io.PrintStream;
 import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -30,7 +31,9 @@ import java.util.TreeSet;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.configuration.ConfigurationException;
+import org.moeaframework.util.format.Displayable;
 import org.moeaframework.util.io.CommentedLineReader;
 
 /**
@@ -45,7 +48,7 @@ import org.moeaframework.util.io.CommentedLineReader;
  * 
  * From version 3.0+, keys are case-insensitive.
  */
-public class TypedProperties {
+public class TypedProperties implements Displayable {
 
 	/**
 	 * The default separator for arrays.
@@ -1101,7 +1104,7 @@ public class TypedProperties {
 	 * 
 	 * @throws IOException if an I/O error occurred
 	 */
-	public void display() throws IOException {
+	public void display(PrintStream out) {
 		try (StringWriter stringBuffer = new StringWriter()) {
 			store(stringBuffer);
 		
@@ -1109,9 +1112,11 @@ public class TypedProperties {
 				String line = null;
 				
 				while ((line = reader.readLine()) != null) {
-					System.out.println(line);
+					out.println(line);
 				}
 			}
+		} catch (IOException e) {
+			throw new FrameworkException(e);
 		}
 	}
 	

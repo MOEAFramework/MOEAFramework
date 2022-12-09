@@ -631,8 +631,7 @@ public class SobolAnalysis extends CommandLineUtility {
 		N = validate(input);
 		load(input);
 
-		try (OutputLogger output = new OutputLogger(commandLine.hasOption("output") ?
-				new File(commandLine.getOptionValue("output")) : null)) {
+		try (OutputLogger output = new OutputLogger(commandLine.getOptionValue("output"))) {
 			//perform the Sobol analysis and display the results
 			if (commandLine.hasOption("simple")) {
 				displaySimple(output);
