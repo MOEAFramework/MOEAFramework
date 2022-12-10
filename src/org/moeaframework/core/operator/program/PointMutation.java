@@ -48,7 +48,7 @@ public class PointMutation implements Mutation {
 	 * Constructs a new point mutation operator with the default settings.
 	 */
 	public PointMutation() {
-		this(1.0);
+		this(0.01);
 	}
 	
 	/**
