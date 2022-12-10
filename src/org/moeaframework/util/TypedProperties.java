@@ -117,7 +117,6 @@ public class TypedProperties implements Displayable {
 	 * Convenience method to quickly construct a typed properties instance with
 	 * a single key-value pair.  This is particularly useful for parsing,
 	 * for instance, command line arguments:
-	 * <p>
 	 * <pre>
 	 * TypedProperties.withProperty("epsilon", commandLine.getOptionValue("epsilon")).getDoubleArray("epsilon");
 	 * </pre>
@@ -179,7 +178,7 @@ public class TypedProperties implements Displayable {
 		String value = getString(key, null);
 		
 		if (value == null) {
-			throw new PropertyNotFoundException("property '" + key + "' is not set");
+			throw new PropertyNotFoundException(key);
 		} else {
 			return value;
 		}
@@ -518,7 +517,7 @@ public class TypedProperties implements Displayable {
 		String[] values = getStringArray(key, null);
 		
 		if (values == null) {
-			throw new PropertyNotFoundException("property '" + key + "' is not set");
+			throw new PropertyNotFoundException(key);
 		}
 		
 		return values;
@@ -564,7 +563,7 @@ public class TypedProperties implements Displayable {
 		double[] values = getDoubleArray(key, null);
 		
 		if (values == null) {
-			throw new PropertyNotFoundException("property '" + key + "' is not set");
+			throw new PropertyNotFoundException(key);
 		}
 		
 		return values;
@@ -610,7 +609,7 @@ public class TypedProperties implements Displayable {
 		float[] values = getFloatArray(key, null);
 		
 		if (values == null) {
-			throw new PropertyNotFoundException("property '" + key + "' is not set");
+			throw new PropertyNotFoundException(key);
 		}
 		
 		return values;
@@ -656,7 +655,7 @@ public class TypedProperties implements Displayable {
 		long[] values = getLongArray(key, null);
 		
 		if (values == null) {
-			throw new PropertyNotFoundException("property '" + key + "' is not set");
+			throw new PropertyNotFoundException(key);
 		}
 		
 		return values;
@@ -702,7 +701,7 @@ public class TypedProperties implements Displayable {
 		int[] values = getIntArray(key, null);
 		
 		if (values == null) {
-			throw new PropertyNotFoundException("property '" + key + "' is not set");
+			throw new PropertyNotFoundException(key);
 		}
 		
 		return values;
@@ -748,7 +747,7 @@ public class TypedProperties implements Displayable {
 		short[] values = getShortArray(key, null);
 		
 		if (values == null) {
-			throw new PropertyNotFoundException("property '" + key + "' is not set");
+			throw new PropertyNotFoundException(key);
 		}
 		
 		return values;
@@ -794,7 +793,7 @@ public class TypedProperties implements Displayable {
 		byte[] values = getByteArray(key, null);
 		
 		if (values == null) {
-			throw new PropertyNotFoundException("property '" + key + "' is not set");
+			throw new PropertyNotFoundException(key);
 		}
 		
 		return values;
@@ -1101,8 +1100,6 @@ public class TypedProperties implements Displayable {
 	
 	/**
 	 * Prints the properties to standard output.
-	 * 
-	 * @throws IOException if an I/O error occurred
 	 */
 	public void display(PrintStream out) {
 		try (StringWriter stringBuffer = new StringWriter()) {

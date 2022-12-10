@@ -26,20 +26,23 @@ public class ConfigurationException extends FrameworkException {
 
 	private static final long serialVersionUID = -2401741284126446554L;
 
-	public ConfigurationException() {
-		super();
-	}
-
+	/**
+	 * Creates a new exception indicating an error occurred while configuring an object.
+	 * 
+	 * @param message a message describing what caused the error
+	 * @param cause the underlying cause
+	 */
 	public ConfigurationException(String message, Throwable cause) {
 		super(message, cause);
 	}
 
+	/**
+	 * Creates a new exception indicating an error occurred while configuring an object.
+	 * 
+	 * @param message a message describing what caused the error
+	 */
 	public ConfigurationException(String message) {
 		super(message);
-	}
-
-	public ConfigurationException(Throwable cause) {
-		super(cause);
 	}
 
 }

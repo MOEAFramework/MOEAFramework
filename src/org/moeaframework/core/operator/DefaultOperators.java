@@ -59,6 +59,9 @@ import org.moeaframework.util.TypedProperties;
  */
 public class DefaultOperators extends RegisteredOperatorProvider {
 	
+	/**
+	 * Constructs a provider for the default operators.
+	 */
 	public DefaultOperators() {
 		super();
 		

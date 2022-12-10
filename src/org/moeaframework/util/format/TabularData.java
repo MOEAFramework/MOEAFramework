@@ -6,9 +6,10 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.io.Writer;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.TypeUtils;
 import org.apache.commons.text.StringEscapeUtils;
@@ -27,24 +28,49 @@ public class TabularData<T> implements Displayable {
 	
 	private final Map<Class<?>, Formatter<?>> defaultFormatters;
 	
+	/**
+	 * Creates a new tabular data object using the given data source.
+	 * 
+	 * @param dataSource the source of data
+	 */
 	public TabularData(Iterable<T> dataSource) {
 		super();
 		this.dataSource = dataSource;
 		this.columns = new ArrayList<Column<T, ?>>();
-		this.defaultFormatters = new HashMap<Class<?>, Formatter<?>>();
+		this.defaultFormatters = new LinkedHashMap<Class<?>, Formatter<?>>();
 		
 		addDefaultFormatter(new NumberFormatter());
 		addDefaultFormatter(new VariableFormatter());
 	}
 	
+	/**
+	 * Adds a default formatter.  This will be used to format any values matching the
+	 * formatter's type (see {@link Formatter#getType()}.  This will replace any existing
+	 * formatters for the given type.
+	 * 
+	 * @param formatter the default formatter
+	 */
 	public void addDefaultFormatter(Formatter<?> formatter) {
 		defaultFormatters.put(formatter.getType(), formatter);
 	}
 	
+	/**
+	 * Adds a column to this data.  The columns will be displayed in the order they
+	 * are added.
+	 * 
+	 * @param column the column
+	 */
 	public void addColumn(Column<T, ?> column) {
 		this.columns.add(column);
 	}
 	
+	/**
+	 * Reads the value of the specified column and formats it as a string.
+	 * 
+	 * @param row the record (row) to read from
+	 * @param column the column to read from
+	 * @return the formatted value
+	 */
 	private String format(T row, Column<T, ?> column) {
 		Object value = column.getValue(row);
 		
@@ -101,12 +127,24 @@ public class TabularData<T> implements Displayable {
 		}
 	}
 	
+	/**
+	 * Saves the data to a CSV file.
+	 * 
+	 * @param file the resulting file
+	 * @throws IOException if an I/O error occurred while writing the file
+	 */
 	public void saveCSV(File file) throws IOException {
 		try (FileWriter writer = new FileWriter(file)) {
 			toCSV(writer);
 		}
 	}
 	
+	/**
+	 * Writes the data formatted as CSV.
+	 * 
+	 * @param out the output writer
+	 * @throws IOException if an I/O error occurred while writing the data
+	 */
 	public void toCSV(Writer out) throws IOException {
 		for (int i = 0; i < columns.size(); i++) {
 			if (i > 0) {

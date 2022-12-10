@@ -136,16 +136,32 @@ public class SPEA2 extends AbstractEvolutionaryAlgorithm {
 		super.setInitialPopulationSize(initialPopulationSize);
 	}
 	
+	/**
+	 * Returns the number of offspring produced each iteration.
+	 * 
+	 * @return the number of offspring
+	 */
 	public int getNumberOfOffspring() {
 		return numberOfOffspring;
 	}
 	
+	/**
+	 * Sets the number of offspring produced each iteration.  This is typically set to the
+	 * same value as the population size.
+	 * 
+	 * @param numberOfOffspring the number of offspring
+	 */
 	@Property("offspringSize")
 	public void setNumberOfOffspring(int numberOfOffspring) {
 		Validate.greaterThanZero("numberOfOffspring", numberOfOffspring);
 		this.numberOfOffspring = numberOfOffspring;
 	}
 	
+	/**
+	 * Returns the strength-based fitness evaluator.
+	 * 
+	 * @return the strength-based fitness evaluator
+	 */
 	public StrengthFitnessEvaluator getFitnessEvaluator() {
 		return fitnessEvaluator;
 	}
@@ -399,10 +415,22 @@ public class SPEA2 extends AbstractEvolutionaryAlgorithm {
 			comparator = new ParetoDominanceComparator();
 		}
 		
+		/**
+		 * Returns the value {@code k} that controls which nearest neighbor is used to compute
+		 * the crowding distance.
+		 * 
+		 * @return the value {@code k}
+		 */
 		public int getK() {
 			return k;
 		}
 		
+		/**
+		 * Sets the value {@code k} that controls which nearest neighbor is used to compute the
+		 * crowding distance.  This is set to {@code 1} by default.
+		 * 
+		 * @param k the value {@code k}
+		 */
 		@Property
 		public void setK(int k) {
 			Validate.greaterThanZero("k", k);

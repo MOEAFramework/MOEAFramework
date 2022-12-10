@@ -77,6 +77,9 @@ public class PAES extends AbstractEvolutionaryAlgorithm {
 		comparator = new ParetoDominanceComparator();
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Property("operator")
 	public void setVariation(Mutation mutation) {
 		super.setVariation(mutation);

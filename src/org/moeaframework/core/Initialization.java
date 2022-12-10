@@ -26,7 +26,8 @@ public interface Initialization {
 	/**
 	 * Returns an array of solutions to become the initial population.
 	 * 
-	 * @return an array of solutions to become the initial population
+	 * @param populationSize the number of solutions to create and initialize
+	 * @return an array of the initial solutions
 	 */
 	public Solution[] initialize(int populationSize);
 

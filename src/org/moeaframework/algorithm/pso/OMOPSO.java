@@ -102,10 +102,21 @@ public class OMOPSO extends AbstractPSOAlgorithm {
 		this.nonUniformMutation = new NonUniformMutation(mutationProbability, mutationPerturbation, maxIterations);
 	}
 	
+	/**
+	 * Returns the mutation probability used by the uniform and non-uniform mutation operators.
+	 * 
+	 * @return the mutation probability
+	 */
 	public double getMutationProbability() {
 		return uniformMutation.getProbability();
 	}
 	
+	/**
+	 * Sets the mutation probability used by the uniform and non-uniform mutation operators.  The default
+	 * value is {@code 1 / N}, where {@code N} is the number of decision variables.
+	 * 
+	 * @param mutationProbability the mutation probability
+	 */
 	@Property
 	public void setMutationProbability(double mutationProbability) {
 		Validate.probability("mutationProbability", mutationProbability);
@@ -114,10 +125,21 @@ public class OMOPSO extends AbstractPSOAlgorithm {
 		nonUniformMutation.setProbability(mutationProbability);
 	}
 	
+	/**
+	 * Returns the perturbation index used by uniform and non-uniform mutation.
+	 * 
+	 * @return the perturbation index
+	 */
 	public double getPerturbationIndex() {
 		return uniformMutation.perturbationIndex;
 	}
 	
+	/**
+	 * Sets the perturbation index used by uniform and non-uniform mutation.  The default value
+	 * is {@code 0.5}.
+	 * 
+	 * @param perturbationIndex the perturbation index
+	 */
 	@Property
 	public void setPerturbationIndex(double perturbationIndex) {
 		Validate.greaterThanZero("perturbationIndex", perturbationIndex);
@@ -131,10 +153,19 @@ public class OMOPSO extends AbstractPSOAlgorithm {
 		return (EpsilonBoxDominanceArchive)super.getArchive();
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	protected void setArchive(EpsilonBoxDominanceArchive archive) {
 		super.setArchive(archive);
 	}
 	
+	/**
+	 * Sets the maximum number of iterations for scaling the non-uniform mutation.  Typically
+	 * this should be set to {@code maxEvaluations / swarmSize}.
+	 * 
+	 * @param maxIterations the maximum number of iterations
+	 */
 	protected void setMaxIterations(int maxIterations) {
 		Validate.greaterThanZero("maxIterations", maxIterations);
 		

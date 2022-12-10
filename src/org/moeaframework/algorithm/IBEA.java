@@ -100,10 +100,20 @@ public class IBEA extends AbstractEvolutionaryAlgorithm {
 		Validate.problemHasNoConstraints(problem);
 	}
 	
+	/**
+	 * Returns the indicator-based fitness evaluator.
+	 * 
+	 * @return the indicator-based fitness evaluator
+	 */
 	public IndicatorFitnessEvaluator getFitnessEvaluator() {
 		return fitnessEvaluator;
 	}
 	
+	/**
+	 * Sets the indicator-based fitness evaluator.  This value can not be {@code null}.
+	 * 
+	 * @param fitnessEvaluator the indicator-based fitness evaluator
+	 */
 	public void setFitnessEvaluator(IndicatorFitnessEvaluator fitnessEvaluator) {
 		Validate.notNull("fitnessEvaluator", fitnessEvaluator);
 		

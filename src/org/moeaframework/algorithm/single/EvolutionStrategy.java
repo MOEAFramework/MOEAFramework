@@ -63,7 +63,7 @@ public class EvolutionStrategy extends SingleObjectiveEvolutionaryAlgorithm {
 	 * @param initialPopulationSize the initial population size
 	 * @param comparator the aggregate objective comparator
 	 * @param initialization the initialization method
-	 * @param mutation the mutation operator
+	 * @param variation the variation operator
 	 */
 	public EvolutionStrategy(Problem problem, int initialPopulationSize, AggregateObjectiveComparator comparator,
 			Initialization initialization, SelfAdaptiveNormalVariation variation) {
@@ -97,6 +97,9 @@ public class EvolutionStrategy extends SingleObjectiveEvolutionaryAlgorithm {
 		return (SelfAdaptiveNormalVariation)super.getVariation();
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Property("operator")
 	public void setVariation(SelfAdaptiveNormalVariation variation) {
 		super.setVariation(variation);

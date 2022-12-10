@@ -80,7 +80,7 @@ public class EpsilonBoxObjectiveComparator implements DominanceComparator, Seria
 	 * Constructs an additive &epsilon;-box dominance comparator with the 
 	 * specified &epsilon; values.
 	 * 
-	 * @param epsilon the &epsilon; values used by this comparator
+	 * @param epsilons the &epsilon; values used by this comparator
 	 */
 	public EpsilonBoxObjectiveComparator(Epsilons epsilons) {
 		super();

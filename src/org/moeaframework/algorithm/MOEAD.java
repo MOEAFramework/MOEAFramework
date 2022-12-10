@@ -86,7 +86,7 @@ public class MOEAD extends AbstractAlgorithm implements Configurable {
 	/**
 	 * The weight generator; or {@code null} if the default weight generator is used.
 	 */
-	private final WeightGenerator weightGenerator;
+	private WeightGenerator weightGenerator;
 
 	/**
 	 * The probability of mating with a solution in the neighborhood rather than the entire population.
@@ -381,6 +381,27 @@ public class MOEAD extends AbstractAlgorithm implements Configurable {
 		assertNotInitialized();
 		Validate.notNull("initialization", initialization);
 		this.initialization = initialization;
+	}
+	
+	/**
+	 * Returns the weight generator method.
+	 * 
+	 * @return the weight generator
+	 */
+	public WeightGenerator getWeightGenerator() {
+		return weightGenerator;
+	}
+	
+	/**
+	 * Sets the weight generator, or {@code null} to use randomly-generated weights produced by
+	 * {@link RandomGenerator}.  The number of weights produced must exactly match the initial population
+	 * size.  This can only be set before initializing the algorithm.
+	 * 
+	 * @param weightGenerator the weight generator
+	 */
+	public void setWeightGenerator(WeightGenerator weightGenerator) {
+		assertNotInitialized();
+		this.weightGenerator = weightGenerator;
 	}
 
 	@Override

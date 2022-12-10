@@ -13,6 +13,9 @@ public class VariableFormatter implements Formatter<Variable> {
 	
 	private NumberFormatter numberFormatter;
 
+	/**
+	 * Constructs a new variable formatter.
+	 */
 	public VariableFormatter() {
 		super();
 		numberFormatter = new NumberFormatter();

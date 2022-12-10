@@ -127,8 +127,11 @@ public class OperatorFactory extends AbstractFactory<OperatorProvider> {
 	}
 	
 	/**
-	 * Returns the suggested mutation operator for the given problem.
+	 * Returns the suggested mutation operator for the given problem.  If {@code name} is
+	 * {@code null}, this will attempt to return a mutation operator appropriate for the
+	 * problem.
 	 * 
+	 * @param name the name of the mutation operator
 	 * @param properties the implementation-specific properties
 	 * @param problem the problem
 	 * @return an instance of the mutation operator
@@ -178,7 +181,7 @@ public class OperatorFactory extends AbstractFactory<OperatorProvider> {
 	 * suitable operator is found.  If {@code name} is null, the factory should
 	 * return a default variation operator appropriate for the problem.
 	 * 
-	 * @param name the name identifying the variation operator
+	 * @param name the name of the variation operator
 	 * @param properties the implementation-specific properties
 	 * @param problem the problem to be solved
 	 * @return an instance of the variation operator

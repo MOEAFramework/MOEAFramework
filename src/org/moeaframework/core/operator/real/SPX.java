@@ -58,9 +58,6 @@ public class SPX extends MultiParentVariation {
 	 * producing 2 offspring. The expansion rate is set to
 	 * {@code sqrt(numberOfParents+1)} to preserve the covariance matrix of the
 	 * population.
-	 * 
-	 * @param numberOfParents the number of parents
-	 * @param numberOfOffspring the number of offspring
 	 */
 	public SPX() {
 		this(10, 2);
@@ -177,7 +174,7 @@ public class SPX extends MultiParentVariation {
 	
 	/**
 	 * Sets the expansion rate of this operator.  The recommended default is
-	 * @code sqrt(numberOfParents+1).
+	 * {@code sqrt(numberOfParents+1)}.
 	 * 
 	 * @param epsilon the expansion rate
 	 */

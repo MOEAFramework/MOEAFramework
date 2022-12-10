@@ -44,7 +44,7 @@ public class EpsilonBoxDominanceComparator extends EpsilonBoxObjectiveComparator
 	 * Constructs a dominance comparator for comparing solutions first using the {@link AggregateConstraintComparator}
 	 * followed by the {@link EpsilonBoxObjectiveComparator} with the specified &epsilon; value.
 	 * 
-	 * @param epsilons the &epsilon; value used by this comparator
+	 * @param epsilon the &epsilon; value used by this comparator
 	 */
 	public EpsilonBoxDominanceComparator(double epsilon) {
 		this(new Epsilons(epsilon));

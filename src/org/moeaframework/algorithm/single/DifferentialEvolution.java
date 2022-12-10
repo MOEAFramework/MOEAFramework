@@ -119,6 +119,9 @@ public class DifferentialEvolution extends SingleObjectiveEvolutionaryAlgorithm 
 		return (DifferentialEvolutionVariation)super.getVariation();
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	public void setVariation(DifferentialEvolutionVariation variation) {
 		super.setVariation(variation);
 	}

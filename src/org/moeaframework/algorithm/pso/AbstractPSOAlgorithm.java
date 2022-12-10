@@ -164,7 +164,7 @@ public abstract class AbstractPSOAlgorithm extends AbstractAlgorithm implements 
 	 * Sets the number of leaders, which tracks the best particles according to some fitness criteria.  This value
 	 * can only be set before initialization.
 	 * 
-	 * @param leader the leader size
+	 * @param leaderSize the leader size
 	 */
 	@Property(alias="archiveSize")
 	public void setLeaderSize(int leaderSize) {

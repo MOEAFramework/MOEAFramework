@@ -114,6 +114,9 @@ public class MSOPS extends AbstractEvolutionaryAlgorithm {
 		return (DifferentialEvolutionVariation)super.getVariation();
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Property("operator")
 	public void setVariation(DifferentialEvolutionVariation variation) {
 		super.setVariation(variation);

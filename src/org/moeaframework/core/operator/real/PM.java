@@ -137,8 +137,6 @@ public class PM extends TypeSafeMutation<RealVariable> {
 	 * Mutates the specified variable using polynomial mutation.
 	 * 
 	 * @param v the variable to be mutated
-	 * @param distributionIndex the distribution index controlling the shape of
-	 *        the polynomial mutation
 	 */
 	public void mutate(RealVariable v) {
 		double u = PRNG.nextDouble();

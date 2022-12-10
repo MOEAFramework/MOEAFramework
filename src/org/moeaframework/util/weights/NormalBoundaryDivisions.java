@@ -104,6 +104,11 @@ public class NormalBoundaryDivisions {
 		return innerDivisions > 0;
 	}
 	
+	/**
+	 * Returns the properties used to configure an identical number of divisions.
+	 * 
+	 * @return the properties
+	 */
 	public TypedProperties toProperties() {
 		TypedProperties properties = new TypedProperties();
 		
