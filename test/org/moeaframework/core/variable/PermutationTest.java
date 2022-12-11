@@ -17,10 +17,15 @@
  */
 package org.moeaframework.core.variable;
 
+import java.io.File;
+import java.io.IOException;
+
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.moeaframework.TestUtils;
+import org.moeaframework.analysis.sensitivity.ResultFileReader;
 
 /**
  * Tests the {@link Permutation} class.
@@ -221,5 +226,23 @@ public class PermutationTest {
 		permutation.get(7);
 	}
 
+	@Test
+	public void testEncodeDecode() {
+		Permutation newVariable = new Permutation(5);
+		newVariable.decode(permutation.encode());
+		Assert.assertArrayEquals(permutation.toArray(), newVariable.toArray());
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testDecodeInvalidPermutation1() throws IOException {
+		Permutation p = new Permutation(5);
+		p.decode("2,0,1");
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testDecodeInvalidPermutation2() throws IOException {
+		Permutation p = new Permutation(5);
+		p.decode("2,0,1,5,3");
+	}
 
 }

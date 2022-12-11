@@ -17,10 +17,15 @@
  */
 package org.moeaframework.core.variable;
 
+import java.io.File;
+import java.io.IOException;
+
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.moeaframework.TestUtils;
+import org.moeaframework.analysis.sensitivity.ResultFileReader;
 import org.moeaframework.core.Settings;
 
 public class RealVariableTest {
@@ -103,6 +108,19 @@ public class RealVariableTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void testSetValueBoundsCheckUpper() {
 		value.setValue(value.getUpperBound() + Settings.EPS);
+	}
+	
+	@Test
+	public void testEncodeDecode() {
+		RealVariable newVariable = new RealVariable(0.0, 1.0);
+		newVariable.decode(value.encode());
+		Assert.assertEquals(value.getValue(), newVariable.getValue(), Settings.EPS);
+	}
+	
+	@Test(expected = NumberFormatException.class)
+	public void testDecodeInvalidReal() throws IOException {
+		RealVariable rv = new RealVariable(0.0, 1.0);
+		rv.decode("0.5foo");
 	}
 
 }

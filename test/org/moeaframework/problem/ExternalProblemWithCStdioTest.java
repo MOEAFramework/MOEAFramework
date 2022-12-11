@@ -31,7 +31,7 @@ import org.moeaframework.TestUtils;
 import org.moeaframework.core.Initialization;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.Variable;
+import org.moeaframework.core.UnsupportedVariable;
 import org.moeaframework.core.operator.RandomInitialization;
 import org.moeaframework.core.variable.BinaryVariable;
 import org.moeaframework.core.variable.Permutation;
@@ -214,21 +214,7 @@ public class ExternalProblemWithCStdioTest {
 	public void testUnsupportedVariableType() {
 		Solution solution = new Solution(4, 2, 2);
 		copy(solution, problem.newSolution(), 3);
-		solution.setVariable(3, new Variable() {
-
-			private static final long serialVersionUID = 7614517658356868257L;
-
-			@Override
-			public Variable copy() {
-				throw new UnsupportedOperationException();
-			}
-
-			@Override
-			public void randomize() {
-				throw new UnsupportedOperationException();
-			}
-			
-		});
+		solution.setVariable(3, new UnsupportedVariable());
 		problem.evaluate(solution);
 	}
 	

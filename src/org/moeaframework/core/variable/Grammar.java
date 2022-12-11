@@ -266,5 +266,40 @@ public class Grammar implements Variable {
 			codon[i] = PRNG.nextInt(getMaximumValue());
 		}
 	}
+	
+	@Override
+	public String encode() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("Grammar(");
+		
+		int[] array = toArray();
+		
+		for (int i=0; i<array.length; i++) {
+			if (i > 0) {
+				sb.append(',');
+			}
+			
+			sb.append(array[i]);
+		}
+		
+		sb.append(")");
+		return sb.toString();
+	}
+	
+	@Override
+	public void decode(String value) {
+		if (!value.startsWith("Grammar(") || !value.endsWith(")")) {
+			throw new IllegalArgumentException("invalid variable encoding, missing Grammar(...)");
+		}
+		
+		String[] tokens = value.substring(8, value.length()-1).split(",");
+		int[] array = new int[tokens.length];
+		
+		for (int i=0; i<tokens.length; i++) {
+			array[i] = Integer.parseInt(tokens[i]);
+		}
+		
+		fromArray(array);
+	}
 
 }

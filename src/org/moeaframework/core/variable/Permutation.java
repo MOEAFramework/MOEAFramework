@@ -209,5 +209,38 @@ public class Permutation implements Variable {
 	public void randomize() {
 		PRNG.shuffle(permutation);
 	}
+	
+	@Override
+	public String toString() {
+		return encode();
+	}
+	
+	@Override
+	public String encode() {
+		StringBuilder sb = new StringBuilder();
+		int[] array = toArray();
+
+		for (int i=0; i<array.length; i++) {
+			if (i > 0) {
+				sb.append(',');
+			}
+			
+			sb.append(array[i]);
+		}
+		
+		return sb.toString();
+	}
+	
+	@Override
+	public void decode(String value) {
+		String[] tokens = value.split(",");
+		int[] array = new int[tokens.length];
+		
+		for (int i=0; i<tokens.length; i++) {
+			array[i] = Integer.parseInt(tokens[i]);
+		}
+		
+		fromArray(array);
+	}
 
 }

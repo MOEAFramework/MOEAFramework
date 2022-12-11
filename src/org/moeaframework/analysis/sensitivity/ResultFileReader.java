@@ -20,15 +20,12 @@ package org.moeaframework.analysis.sensitivity;
 import static org.moeaframework.analysis.sensitivity.ResultFileWriter.ENCODING_WARNING;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
 import java.io.Closeable;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.util.Base64;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -37,9 +34,6 @@ import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variable;
-import org.moeaframework.core.variable.BinaryVariable;
-import org.moeaframework.core.variable.Permutation;
-import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.util.TypedProperties;
 
 /**
@@ -257,80 +251,16 @@ Iterable<ResultEntry> {
 	 * @see ResultFileWriter#encode(Variable)
 	 */
 	public Variable decode(Variable variable, String string) {
-		if (variable instanceof RealVariable) {
-			RealVariable rv = (RealVariable)variable;
-			rv.setValue(Double.parseDouble(string));
-			return rv;
-		} else if (variable instanceof BinaryVariable) {
-			BinaryVariable bv = (BinaryVariable)variable;
-			
-			if (bv.getNumberOfBits() != string.length()) {
-				throw new FrameworkException("invalid bit string");
+		if (string.equals("-")) {
+			if (!printedWarning) {
+				System.err.println(ENCODING_WARNING);
+				printedWarning = true;
 			}
-
-			for (int i=0; i<bv.getNumberOfBits(); i++) {
-				char c = string.charAt(i);
-				
-				if (c == '0') {
-					bv.set(i, false);
-				} else if (c == '1') {
-					bv.set(i, true);
-				} else {
-					throw new FrameworkException("invalid bit string");
-				}
-			}
-			
-			return bv;
-		} else if (variable instanceof Permutation) {
-			Permutation p = (Permutation)variable;
-			String[] tokens = string.split(",");
-			int[] array = new int[tokens.length];
-			
-			for (int i=0; i<tokens.length; i++) {
-				array[i] = Integer.parseInt(tokens[i]);
-			}
-			
-			try {
-				p.fromArray(array);
-			} catch (IllegalArgumentException e) {
-				throw new FrameworkException("invalid permutation", e);
-			}
-			
-			return p;
 		} else {
-			if (string.equals("-")) {
-				if (!printedWarning) {
-					System.err.println(ENCODING_WARNING);
-					printedWarning = true;
-				}
-				
-				return variable;
-			} else {
-				try {
-					return deserialize(string);
-				} catch (Exception e) {
-					throw new FrameworkException("deserialization failed", e);
-				}
-			}
+			variable.decode(string);
 		}
-	}
-	
-	/**
-	 * Returns the variable represented by the Base64 encoded string.
-	 * 
-	 * @param string the Base64 encoded representation of the variable
-	 * @return the variable represented by the Base64 encoded string
-	 * @throws IOException if the variable could not be deserialized
-	 * @throws ClassNotFoundException if the class of the deserialized variable
-	 *         could not be found
-	 */
-	private Variable deserialize(String string) throws IOException, ClassNotFoundException {
-		byte[] encoding = Base64.getDecoder().decode(string);
 		
-		try (ByteArrayInputStream baos = new ByteArrayInputStream(encoding);
-				ObjectInputStream ois = new ObjectInputStream(baos)) {
-			return (Variable)ois.readObject();
-		}
+		return variable;
 	}
 
 }

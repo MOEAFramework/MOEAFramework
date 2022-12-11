@@ -29,7 +29,7 @@ import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.Variable;
+import org.moeaframework.core.UnsupportedVariable;
 import org.moeaframework.core.variable.BinaryVariable;
 import org.moeaframework.core.variable.Grammar;
 import org.moeaframework.core.variable.Permutation;
@@ -324,22 +324,6 @@ public class ResultFileWriterTest {
 	public void testUnsupportedDecisionVariable() throws IOException {
 		File file = TestUtils.createTempFile();
 		
-		final Variable variable = new Variable() {
-
-			private static final long serialVersionUID = -54413529004858950L;
-
-			@Override
-			public Variable copy() {
-				throw new UnsupportedOperationException();
-			}
-
-			@Override
-			public void randomize() {
-				throw new UnsupportedOperationException();
-			}
-			
-		};
-		
 		problem = new AbstractProblem(2, 2, 1) {
 
 			@Override
@@ -351,7 +335,7 @@ public class ResultFileWriterTest {
 			public Solution newSolution() {
 				Solution solution = new Solution(2, 2, 1);
 				solution.setVariable(0, new RealVariable(0.0, 1.0));
-				solution.setVariable(1, variable);
+				solution.setVariable(1, new UnsupportedVariable());
 				return solution;
 			}
 			
