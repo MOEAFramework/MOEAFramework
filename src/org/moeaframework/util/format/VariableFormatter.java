@@ -1,21 +1,23 @@
 package org.moeaframework.util.format;
 
 import org.moeaframework.core.Variable;
+import org.moeaframework.core.variable.BinaryIntegerVariable;
 import org.moeaframework.core.variable.RealVariable;
 
 /**
- * Formatter for {@link Variable}s.
+ * Formatter for {@link Variable}s.  Primarily, this uses the registered formatter,
+ * if any, for numeric types.
  */
 public class VariableFormatter implements Formatter<Variable> {
 	
-	private NumberFormatter numberFormatter;
+	private TabularData<?> data;
 
 	/**
 	 * Constructs a new variable formatter.
 	 */
-	public VariableFormatter() {
+	public VariableFormatter(TabularData<?> data) {
 		super();
-		numberFormatter = new NumberFormatter();
+		this.data = data;
 	}
 	
 	@Override
@@ -24,12 +26,13 @@ public class VariableFormatter implements Formatter<Variable> {
 	}
 
 	@Override
-	public String format(Object value) {
-		if (value instanceof RealVariable) {
-			RealVariable real = (RealVariable)value;
-			return numberFormatter.format(real.getValue());
+	public String format(Object variable) {
+		if (variable instanceof RealVariable) {
+			return data.formatValue(((RealVariable)variable).getValue());
+		} else if (variable instanceof BinaryIntegerVariable) {
+			return data.formatValue(((BinaryIntegerVariable)variable).getValue());
 		} else {
-			return ((Variable)value).toString();
+			return variable.toString();
 		}
 	}
 

@@ -17,15 +17,12 @@
  */
 package org.moeaframework.core.variable;
 
-import java.io.File;
 import java.io.IOException;
 
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.moeaframework.TestUtils;
-import org.moeaframework.analysis.sensitivity.ResultFileReader;
 import org.moeaframework.core.Settings;
 
 public class RealVariableTest {
