@@ -18,6 +18,7 @@
 package org.moeaframework.core.operator;
 
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.UnsupportedVariable;
 import org.moeaframework.core.Variable;
 import org.moeaframework.core.Variation;
 
@@ -30,18 +31,13 @@ public class TypeSafetyTest {
 	 * Variable for testing type safety. Since this variable is unknown to the
 	 * operators, only the copy() method is valid.
 	 */
-	private static class NewVariable implements Variable {
+	private static class NewVariable extends UnsupportedVariable {
 
 		private static final long serialVersionUID = 4720298250812900192L;
 
 		@Override
 		public Variable copy() {
 			return new NewVariable();
-		}
-
-		@Override
-		public void randomize() {
-			throw new UnsupportedOperationException();
 		}
 
 	}

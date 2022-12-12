@@ -17,6 +17,7 @@
  */
 package org.moeaframework.core.variable;
 
+import java.io.IOException;
 import java.util.BitSet;
 
 import org.junit.After;
@@ -178,5 +179,24 @@ public class BinaryVariableTest {
 		
 		b1.hammingDistance(b2);
 	}
+	
+	@Test
+	public void testEncodeDecode() {
+		BinaryVariable newVariable = new BinaryVariable(2);
+		newVariable.decode(value.encode());
+		Assert.assertEquals(value.getBitSet(), newVariable.getBitSet());
+	}
 
+	@Test(expected = IllegalArgumentException.class)
+	public void testDecodeInvalidBinary1() throws IOException {
+		BinaryVariable bv = new BinaryVariable(5);
+		bv.decode("001");
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testDecodeInvalidBinary2() throws IOException {
+		BinaryVariable bv = new BinaryVariable(5);
+		bv.decode("00200");
+	}
+	
 }

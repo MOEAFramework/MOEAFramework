@@ -23,7 +23,7 @@ import org.moeaframework.analysis.sensitivity.ProblemStub;
 import org.moeaframework.core.Initialization;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.Variable;
+import org.moeaframework.core.UnsupportedVariable;
 import org.moeaframework.core.variable.BinaryVariable;
 import org.moeaframework.core.variable.Grammar;
 import org.moeaframework.core.variable.Permutation;
@@ -37,6 +37,7 @@ public class RandomInitializationTest {
 	public void testMixedType() {
 		Problem problem = new ProblemStub(6) {
 			
+			@SuppressWarnings("serial")
 			@Override
 			public Solution newSolution() {
 				Rules rules = new Rules();
@@ -49,14 +50,7 @@ public class RandomInitializationTest {
 				solution.setVariable(2, new Permutation(4));
 				solution.setVariable(3, new Grammar(4));
 				solution.setVariable(4, new Program(rules));
-				solution.setVariable(5, new Variable() {
-
-					private static final long serialVersionUID = -5453570189207466169L;
-
-					@Override
-					public Variable copy() {
-						throw new UnsupportedOperationException();
-					}
+				solution.setVariable(5, new UnsupportedVariable() {
 
 					@Override
 					public void randomize() {

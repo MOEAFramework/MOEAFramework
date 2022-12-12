@@ -132,7 +132,7 @@ public class RealVariable implements Variable {
 
 	@Override
 	public String toString() {
-		return Double.toString(value);
+		return encode();
 	}
 	
 	@Override
@@ -164,6 +164,16 @@ public class RealVariable implements Variable {
 	@Override
 	public void randomize() {
 		setValue(PRNG.nextDouble(lowerBound, upperBound));
+	}
+	
+	@Override
+	public String encode() {
+		return Double.toString(value);
+	}
+	
+	@Override
+	public void decode(String value) {
+		this.value = Double.parseDouble(value);
 	}
 
 }

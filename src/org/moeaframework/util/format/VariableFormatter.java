@@ -1,24 +1,23 @@
 package org.moeaframework.util.format;
 
 import org.moeaframework.core.Variable;
-import org.moeaframework.core.variable.BinaryVariable;
-import org.moeaframework.core.variable.Permutation;
+import org.moeaframework.core.variable.BinaryIntegerVariable;
 import org.moeaframework.core.variable.RealVariable;
-import org.moeaframework.core.variable.Subset;
 
 /**
- * Formatter for {@link Variable}s.
+ * Formatter for {@link Variable}s.  Primarily, this uses the registered formatter,
+ * if any, for numeric types.
  */
 public class VariableFormatter implements Formatter<Variable> {
 	
-	private NumberFormatter numberFormatter;
+	private TabularData<?> data;
 
 	/**
 	 * Constructs a new variable formatter.
 	 */
-	public VariableFormatter() {
+	public VariableFormatter(TabularData<?> data) {
 		super();
-		numberFormatter = new NumberFormatter();
+		this.data = data;
 	}
 	
 	@Override
@@ -27,43 +26,14 @@ public class VariableFormatter implements Formatter<Variable> {
 	}
 
 	@Override
-	public String format(Object value) {
-		StringBuilder sb = new StringBuilder();
-
-		if (value instanceof RealVariable) {
-			RealVariable real = (RealVariable)value;
-			sb.append(numberFormatter.format(real.getValue()));
-		} else if (value instanceof BinaryVariable) {
-			BinaryVariable binary = (BinaryVariable)value;
-			
-			for (int i = 0; i < binary.getNumberOfBits(); i++) {
-				sb.append(binary.get(i) ? "1" : "0");
-			}
-		} else if (value instanceof Permutation) {
-			int[] permutation = ((Permutation)value).toArray();
-
-			for (int i = 0; i < permutation.length; i++) {
-				if (i > 0) {
-					sb.append(',');
-				}
-				
-				sb.append(permutation[i]);
-			}
-		} else if (value instanceof Subset) {
-			int[] subset = ((Subset)value).toArray();
-			
-			for (int i = 0; i < subset.length; i++) {
-				if (i > 0) {
-					sb.append(',');
-				}
-				
-				sb.append(subset[i]);
-			}
+	public String format(Object variable) {
+		if (variable instanceof RealVariable) {
+			return data.formatValue(((RealVariable)variable).getValue());
+		} else if (variable instanceof BinaryIntegerVariable) {
+			return data.formatValue(((BinaryIntegerVariable)variable).getValue());
 		} else {
-			sb.append("-");
+			return variable.toString();
 		}
-		
-		return sb.toString();
 	}
 
 }

@@ -344,5 +344,12 @@ public class GrammarTest {
 	public void testInsertException2() {
 		grammar.insert(-1, new int[] { 0, 1 });
 	}
+	
+	@Test
+	public void testEncodeDecode() {
+		Grammar newVariable = new Grammar(5);
+		newVariable.decode(grammar.encode());
+		Assert.assertArrayEquals(grammar.toArray(), newVariable.toArray());
+	}
 
 }

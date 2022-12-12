@@ -6,10 +6,9 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.io.Writer;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
+import java.util.Deque;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.TypeUtils;
 import org.apache.commons.text.StringEscapeUtils;
@@ -26,7 +25,7 @@ public class TabularData<T> implements Displayable {
 	
 	private final List<Column<T, ?>> columns;
 	
-	private final Map<Class<?>, Formatter<?>> defaultFormatters;
+	private final Deque<Formatter<?>> formatters;
 	
 	/**
 	 * Creates a new tabular data object using the given data source.
@@ -37,21 +36,27 @@ public class TabularData<T> implements Displayable {
 		super();
 		this.dataSource = dataSource;
 		this.columns = new ArrayList<Column<T, ?>>();
-		this.defaultFormatters = new LinkedHashMap<Class<?>, Formatter<?>>();
+		this.formatters = new LinkedList<Formatter<?>>();
 		
-		addDefaultFormatter(new NumberFormatter());
-		addDefaultFormatter(new VariableFormatter());
+		addFormatter(new NumberFormatter());
+		addFormatter(new VariableFormatter(this));
 	}
 	
 	/**
-	 * Adds a default formatter.  This will be used to format any values matching the
-	 * formatter's type (see {@link Formatter#getType()}.  This will replace any existing
-	 * formatters for the given type.
+	 * Adds a formatter.  This will be used to format any values matching the
+	 * formatter's type (see {@link Formatter#getType()}.
 	 * 
 	 * @param formatter the default formatter
 	 */
-	public void addDefaultFormatter(Formatter<?> formatter) {
-		defaultFormatters.put(formatter.getType(), formatter);
+	public void addFormatter(Formatter<?> formatter) {
+		formatters.push(formatter);
+	}
+	
+	/**
+	 * Removes any existing formatters.
+	 */
+	public void removeAllFormatters() {
+		formatters.clear();
 	}
 	
 	/**
@@ -71,16 +76,26 @@ public class TabularData<T> implements Displayable {
 	 * @param column the column to read from
 	 * @return the formatted value
 	 */
-	private String format(T row, Column<T, ?> column) {
+	protected String format(T row, Column<T, ?> column) {
 		Object value = column.getValue(row);
 		
 		if (column.getCustomFormatter() != null) {
 			return column.getCustomFormatter().format(value);
 		}
 		
-		for (Class<?> type : defaultFormatters.keySet()) {
-			if (TypeUtils.isInstance(value, type)) {
-				return defaultFormatters.get(type).format(value);
+		return formatValue(value);
+	}
+	
+	/**
+	 * Formats the value using the default formatter, if available, or with {@link #toString()}.
+	 * 
+	 * @param value the value to format
+	 * @return the formatted value
+	 */
+	protected String formatValue(Object value) {
+		for (Formatter<?> formatter : formatters) {
+			if (TypeUtils.isInstance(value, formatter.getType())) {
+				return formatter.format(value);
 			}
 		}
 		

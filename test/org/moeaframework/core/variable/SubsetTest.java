@@ -223,4 +223,16 @@ public class SubsetTest {
 		subset.randomMember();
 	}
 	
+	@Test
+	public void testEncodeDecode() {
+		int[] content = new int[] {3, 5, 9};
+		
+		Subset subset = new Subset(0, 10, 10);
+		subset.fromArray(content);
+		
+		Subset newSubset = new Subset(0, 10, 10);
+		newSubset.decode(subset.encode());
+		Assert.assertArrayEquals(subset.toArray(), newSubset.toArray());
+	}
+	
 }

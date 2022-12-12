@@ -24,7 +24,7 @@ import org.junit.Test;
 import org.moeaframework.analysis.sensitivity.ProblemStub;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.Variable;
+import org.moeaframework.core.UnsupportedVariable;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.configuration.ConfigurationException;
 import org.moeaframework.core.operator.DefaultOperators;
@@ -133,23 +133,7 @@ public class OperatorFactoryTest {
 			@Override
 			public Solution newSolution() {
 				Solution solution = new Solution(1, 0);
-				
-				solution.setVariable(0, new Variable() {
-
-					private static final long serialVersionUID = -5453570189207466169L;
-
-					@Override
-					public Variable copy() {
-						throw new UnsupportedOperationException();
-					}
-
-					@Override
-					public void randomize() {
-						throw new UnsupportedOperationException();
-					}
-
-				});
-				
+				solution.setVariable(0, new UnsupportedVariable());
 				return solution;
 			}
 

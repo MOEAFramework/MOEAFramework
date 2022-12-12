@@ -191,6 +191,11 @@ public class BinaryVariable implements Variable {
 	
 	@Override
 	public String toString() {
+		return encode();
+	}
+	
+	@Override
+	public String encode() {
 		StringBuilder sb = new StringBuilder();
 		
 		for (int i = 0; i < numberOfBits; i++) {
@@ -198,6 +203,27 @@ public class BinaryVariable implements Variable {
 		}
 		
 		return sb.toString();
+	}
+	
+	@Override
+	public void decode(String value) {
+		if (getNumberOfBits() != value.length()) {
+			throw new IllegalArgumentException("invalid bit string, expected " + getNumberOfBits() +
+					" bits but given " + value.length());
+		}
+
+		for (int i=0; i<getNumberOfBits(); i++) {
+			char c = value.charAt(i);
+			
+			if (c == '0') {
+				set(i, false);
+			} else if (c == '1') {
+				set(i, true);
+			} else {
+				throw new IllegalArgumentException("invalid bit string, unexpected character '" + c + "' at index " +
+						i);
+			}
+		}
 	}
 
 	@Override

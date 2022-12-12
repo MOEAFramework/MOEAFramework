@@ -18,16 +18,13 @@
 package org.moeaframework.analysis.sensitivity;
 
 import java.io.BufferedWriter;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 
 import org.moeaframework.core.FrameworkException;
@@ -35,9 +32,6 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variable;
-import org.moeaframework.core.variable.BinaryVariable;
-import org.moeaframework.core.variable.Permutation;
-import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.util.TypedProperties;
 import org.moeaframework.util.io.CommentedLineReader;
 import org.moeaframework.util.io.FileUtils;
@@ -323,57 +317,16 @@ public class ResultFileWriter implements OutputWriter {
 	 * @return the string representation of the decision variable
 	 */
 	public String encode(Variable variable) {
-		StringBuilder sb = new StringBuilder();
-		
-		if (variable instanceof RealVariable) {
-			RealVariable rv = (RealVariable)variable;
-			sb.append(rv.getValue());
-		} else if (variable instanceof BinaryVariable) {
-			BinaryVariable bv = (BinaryVariable)variable;
+		try {
+			return variable.encode();
+		} catch (Exception e) {				
+			if (!printedWarning) {
+				System.err.println(ENCODING_WARNING);
+				printedWarning = true;
+			}
 			
-			for (int i=0; i<bv.getNumberOfBits(); i++) {
-				sb.append(bv.get(i) ? "1" : "0");
-			}
-		} else if (variable instanceof Permutation) {
-			Permutation p = (Permutation)variable;
-
-			for (int i=0; i<p.size(); i++) {
-				if (i > 0) {
-					sb.append(',');
-				}
-				
-				sb.append(p.get(i));
-			}
-		} else {
-			//attempt to serialize the variable, but print '-' and a warning
-			//if serialization fails
-			try {
-				sb.append(serialize(variable));
-			} catch (IOException e) {
-				sb.append('-');
-				
-				if (!printedWarning) {
-					System.err.println(ENCODING_WARNING);
-					printedWarning = true;
-				}
-			}
+			return "-";
 		}
-		
-		return sb.toString();
 	}
 	
-	/**
-	 * Returns the Base64 encoded serialized string representing the variable.
-	 * 
-	 * @param variable the variable to serialize
-	 * @return the Base64 encoded serialized string representing the variable
-	 * @throws IOException if the variable count not be serialized
-	 */
-	private String serialize(Variable variable) throws IOException {
-		try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
-				ObjectOutputStream oos = new ObjectOutputStream(baos)) {
-			oos.writeObject(variable);
-			return Base64.getEncoder().encodeToString(baos.toByteArray());
-		}
-	}
 }

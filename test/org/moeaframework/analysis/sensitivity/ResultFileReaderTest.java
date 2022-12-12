@@ -25,7 +25,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.TestUtils;
-import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
@@ -626,58 +625,6 @@ public class ResultFileReaderTest {
 			//unsupported decision variable type entry
 			Grammar g = new Grammar(5);
 			reader.decode(g, "-");
-		}
-	}
-	
-	@Test(expected = NumberFormatException.class)
-	public void testDecodeInvalidReal() throws IOException {
-		File file = TestUtils.createTempFile();
-		
-		try (ResultFileReader reader = new ResultFileReader(problem, file)) {
-			RealVariable rv = new RealVariable(0.0, 1.0);
-			reader.decode(rv, "0.5foo");
-		}
-	}
-	
-	@Test(expected = FrameworkException.class)
-	public void testDecodeInvalidBinary1() throws IOException {
-		File file = TestUtils.createTempFile();
-
-		try (ResultFileReader reader = new ResultFileReader(problem, file)) {
-			BinaryVariable bv = new BinaryVariable(5);
-			reader.decode(bv, "001");
-		}
-	}
-	
-	@Test(expected = FrameworkException.class)
-	public void testDecodeInvalidBinary2() throws IOException {
-		File file = TestUtils.createTempFile();
-
-		try (ResultFileReader reader = new ResultFileReader(problem, file)) {
-			BinaryVariable bv = new BinaryVariable(5);
-			reader.decode(bv, "00200");
-			Assert.assertEquals(1, bv.cardinality());
-			Assert.assertTrue(bv.get(2));
-		}
-	}
-	
-	@Test(expected = FrameworkException.class)
-	public void testDecodeInvalidPermutation1() throws IOException {
-		File file = TestUtils.createTempFile();
-
-		try (ResultFileReader reader = new ResultFileReader(problem, file)) {
-			Permutation p = new Permutation(5);
-			reader.decode(p, "2,0,1");
-		}
-	}
-	
-	@Test(expected = FrameworkException.class)
-	public void testDecodeInvalidPermutation2() throws IOException {
-		File file = TestUtils.createTempFile();
-
-		try (ResultFileReader reader = new ResultFileReader(problem, file)) {
-			Permutation p = new Permutation(5);
-			reader.decode(p, "2,0,1,5,3");
 		}
 	}
 	

@@ -101,5 +101,12 @@ public class BinaryIntegerVariableTest {
 	public void testSetValueBoundsCheckUpper() {
 		value.setValue(11);
 	}
+	
+	@Test
+	public void testEncodeDecode() {
+		BinaryIntegerVariable newVariable = new BinaryIntegerVariable(5, 10);		
+		newVariable.decode(value.encode());
+		Assert.assertEquals(value.getValue(), newVariable.getValue());
+	}
 
 }

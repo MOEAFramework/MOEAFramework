@@ -17,6 +17,14 @@
  */
 package org.moeaframework.core.variable;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.Base64;
+
+import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Variable;
 import org.moeaframework.util.tree.Environment;
@@ -99,6 +107,33 @@ public class Program extends Node implements Variable {
 		}
 		
 		setArgument(0, root);
+	}
+	
+	@Override
+	public String encode() {
+		try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
+				ObjectOutputStream oos = new ObjectOutputStream(baos)) {
+			oos.writeObject(getArgument(0));
+			return "Program(" + Base64.getEncoder().encodeToString(baos.toByteArray()) + ")";
+		} catch (IOException e) {
+			throw new FrameworkException("failed to encode program", e);
+		}
+	}
+	
+	@Override
+	public void decode(String value) {
+		if (!value.startsWith("Program(") || !value.endsWith(")")) {
+			throw new IllegalArgumentException("invalid variable encoding, missing Program(...)");
+		}
+		
+		byte[] encoding = Base64.getDecoder().decode(value.substring(8, value.length()-1));
+		
+		try (ByteArrayInputStream baos = new ByteArrayInputStream(encoding);
+				ObjectInputStream ois = new ObjectInputStream(baos)) {
+			setArgument(0, (Node)ois.readObject());
+		} catch (IOException | ClassNotFoundException e) {
+			throw new FrameworkException("failed to decode program", e);
+		}
 	}
 
 }
