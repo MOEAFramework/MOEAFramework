@@ -206,10 +206,7 @@ public class MOEAD extends AbstractAlgorithm implements Configurable {
 		setUpdateUtility(updateUtility);
 		setVariation(variation);
 		setInitialization(initialization);
-		
-		Validate.notNull("initialization", initialization);
-		
-		this.weightGenerator = weightGenerator;
+		setWeightGenerator(weightGenerator);
 	}
 	
 	/**
