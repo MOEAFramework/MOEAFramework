@@ -19,13 +19,37 @@ package org.moeaframework.core.configuration;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.moeaframework.algorithm.NSGAII;
+import org.moeaframework.algorithm.NSGAIII;
+import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.operator.Mutation;
 import org.moeaframework.problem.MockRealProblem;
+import org.moeaframework.problem.DTLZ.DTLZ2;
+import org.moeaframework.problem.ZDT.ZDT5;
 import org.moeaframework.util.TypedProperties;
 
 public class ConfigurationTest {
+	
+	@Test
+	public void testEndToEnd() {
+		Problem problem = new ZDT5();
+		NSGAIII algorithm = new NSGAIII(problem);
+		
+		TypedProperties expectedProperties = new TypedProperties();
+		expectedProperties.setInt("populationSize", 200);
+		expectedProperties.setDouble("hux.rate", 0.8);
+		expectedProperties.setDouble("bf.rate", 2.0 / 500.0);
+
+		algorithm.applyConfiguration(expectedProperties);
+
+		TypedProperties actualProperties = algorithm.getConfiguration();
+		
+		Assert.assertEquals(expectedProperties.getInt("populationSize"), actualProperties.getInt("populationSize"));
+		Assert.assertEquals(expectedProperties.getDouble("hux.rate"), actualProperties.getDouble("hux.rate"), Settings.EPS);
+		Assert.assertEquals(expectedProperties.getDouble("bf.rate"), actualProperties.getDouble("bf.rate"), Settings.EPS);
+	}
 	
 	@Test
 	public void testDefaultValues() {

@@ -79,10 +79,6 @@ public class ConfigurationUtils {
 						WordUtils.uncapitalize(methodName.substring(3)) :
 						property.value();
 				
-				if (prefix != null && !prefix.value().isEmpty()) {
-					propertyName = prefix.value() + "." + propertyName;
-				}
-
 				ConfigurationUtils.applyValue(properties, prefix, propertyName, property.alias(), method,
 						object, problem);
 			} else {
@@ -172,7 +168,7 @@ public class ConfigurationUtils {
 	private static void applyValue(TypedProperties properties, Prefix prefix, String propertyName, String[] aliases,
 			Method method, Configurable object, Problem problem) {
 		propertyName = findPropertyName(properties, prefix, propertyName, aliases);
-		
+
 		if (propertyName == null) {
 			return;
 		}
@@ -296,13 +292,17 @@ public class ConfigurationUtils {
 	 */
 	private static String findPropertyName(TypedProperties properties, Prefix prefix, String propertyName,
 			String[] aliases) {
-		if (properties.contains(prefixName(prefix, propertyName))) {
-			return propertyName;
+		String prefixedName = prefixName(prefix, propertyName);
+		
+		if (properties.contains(prefixedName)) {
+			return prefixedName;
 		}
 		
 		for (String alias : aliases) {
-			if (properties.contains(prefixName(prefix, alias))) {
-				return alias;
+			prefixedName = prefixName(prefix, alias);
+					
+			if (properties.contains(prefixedName)) {
+				return prefixedName;
 			}
 		}
 				
