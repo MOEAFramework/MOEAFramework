@@ -17,16 +17,19 @@
  */
 package org.moeaframework.core.configuration;
 
+import java.util.List;
+
 import org.junit.Assert;
 import org.junit.Test;
-import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.algorithm.NSGAIII;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Variation;
+import org.moeaframework.core.operator.CompoundVariation;
 import org.moeaframework.core.operator.Mutation;
+import org.moeaframework.core.operator.binary.BitFlip;
+import org.moeaframework.core.operator.binary.HUX;
 import org.moeaframework.problem.MockRealProblem;
-import org.moeaframework.problem.DTLZ.DTLZ2;
 import org.moeaframework.problem.ZDT.ZDT5;
 import org.moeaframework.util.TypedProperties;
 
@@ -44,11 +47,25 @@ public class ConfigurationTest {
 
 		algorithm.applyConfiguration(expectedProperties);
 
+		// Verify getConfiguration returns the correct values
 		TypedProperties actualProperties = algorithm.getConfiguration();
 		
+		Assert.assertEquals("hux+bf", actualProperties.getString("operator"));
 		Assert.assertEquals(expectedProperties.getInt("populationSize"), actualProperties.getInt("populationSize"));
 		Assert.assertEquals(expectedProperties.getDouble("hux.rate"), actualProperties.getDouble("hux.rate"), Settings.EPS);
 		Assert.assertEquals(expectedProperties.getDouble("bf.rate"), actualProperties.getDouble("bf.rate"), Settings.EPS);
+		
+		// Verify the actual algorithm setup
+		Assert.assertEquals(expectedProperties.getInt("populationSize"), algorithm.getInitialPopulationSize());
+		
+		Variation variation = algorithm.getVariation();
+		Assert.assertTrue(variation instanceof CompoundVariation);
+		
+		List<Variation> operators = ((CompoundVariation)variation).getOperators();
+		Assert.assertTrue(operators.get(0) instanceof HUX);
+		Assert.assertEquals(expectedProperties.getDouble("hux.rate"), ((HUX)operators.get(0)).getProbability(), Settings.EPS);
+		Assert.assertTrue(operators.get(1) instanceof BitFlip);
+		Assert.assertEquals(expectedProperties.getDouble("bf.rate"), ((BitFlip)operators.get(1)).getProbability(), Settings.EPS);
 	}
 	
 	@Test

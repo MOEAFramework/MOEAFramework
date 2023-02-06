@@ -3,6 +3,13 @@
 This page documents notable changes introduced in each chronological release of the MOEA Framework.
 
 
+## Version 3.3 (TBD)
+
+  * Moves encode and decode methods to the Variable interface.
+  
+  * Fixes a bug with prefixed properties not being configured properly with the new `Configurable` interface.
+
+
 ## Version 3.2 (09 Dec 2022)
 
   * Adds simple constructors for all built-in algorithms and getters / setters for configuration:
