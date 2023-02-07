@@ -85,7 +85,9 @@ jobs:
     - name: Test examples in binary package
       run: |
         cd build/MOEAFramework-*
+        make -C examples
         javac -cp "lib/*" examples/Example[1-6].java
+        ls examples/
         java -cp "lib/*;examples" Example1
         java -cp "lib/*;examples" Example2
         java -cp "lib/*;examples" Example3
