@@ -44,7 +44,7 @@ jobs:
       if: always()
       with:
         name: ant-test-results-${{ matrix.java }}
-        path: test-results
+        path: test-results     
 
   maven-test:
     runs-on: ubuntu-latest
@@ -82,9 +82,20 @@ jobs:
         distribution: temurin
     - name: Package binary
       run: ant -f build.xml package-binary
+    - name: Test examples in binary package
+      run: |
+        cd build/MOEAFramework-*
+        javac -cp "lib/*" examples/Example[1-6].java
+        java -cp "lib/*;examples" Example1
+        java -cp "lib/*;examples" Example2
+        java -cp "lib/*;examples" Example3
+        java -cp "lib/*;examples" Example4
+        java -cp "lib/*;examples" Example5
+        java -cp "lib/*;examples" Example6
     - name: Package source
       run: ant -f build.xml package-source
     - name: Package demo
       run: ant -f build.xml package-demo
     - name: Package website
       run: ant -f build.xml package-website
+
