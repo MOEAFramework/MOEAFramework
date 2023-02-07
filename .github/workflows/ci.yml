@@ -87,13 +87,12 @@ jobs:
         cd build/MOEAFramework-*
         make -C examples
         javac -cp "lib/*" examples/Example[1-6].java
-        ls examples/
-        java -cp "lib/*;examples" Example1
-        java -cp "lib/*;examples" Example2
-        java -cp "lib/*;examples" Example3
-        java -cp "lib/*;examples" Example4
-        java -cp "lib/*;examples" Example5
-        java -cp "lib/*;examples" Example6
+        java -cp "lib/*:examples" Example1
+        java -cp "lib/*:examples" Example2
+        java -cp "lib/*:examples" Example3
+        java -cp "lib/*:examples" Example4
+        java -cp "lib/*:examples" Example5
+        java -cp "lib/*:examples" Example6
     - name: Package source
       run: ant -f build.xml package-source
     - name: Package demo
