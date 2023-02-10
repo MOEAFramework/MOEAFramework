@@ -3,7 +3,7 @@
 This page documents notable changes introduced in each chronological release of the MOEA Framework.
 
 
-## Version 3.3 (TBD)
+## Version 3.3 (10 Feb 2023)
 
   * Moves encode and decode methods to the Variable interface.
   
