@@ -25,7 +25,7 @@ import org.moeaframework.core.FitnessEvaluator;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.indicator.Hypervolume;
+import org.moeaframework.core.indicator.PISAHypervolume;
 
 /**
  * Assigns the fitness of solutions based on their contribution to the overall
@@ -77,13 +77,13 @@ public class HypervolumeContributionFitnessEvaluator implements FitnessEvaluator
 			int numberOfObjectives = problem.getNumberOfObjectives();
 			List<Solution> solutions = normalize(population);
 			List<Solution> solutionsCopy = new ArrayList<Solution>(solutions);
-			double totalVolume = Hypervolume.calculateHypervolume(solutionsCopy, solutionsCopy.size(), numberOfObjectives);
+			double totalVolume = PISAHypervolume.calculateHypervolume(solutionsCopy, solutionsCopy.size(), numberOfObjectives);
 			
 			for (int i = 0; i < population.size(); i++) {
 				solutionsCopy = new ArrayList<Solution>(solutions);
 				solutionsCopy.remove(i);
 				
-				double volume = Hypervolume.calculateHypervolume(solutionsCopy, solutionsCopy.size(), numberOfObjectives);
+				double volume = PISAHypervolume.calculateHypervolume(solutionsCopy, solutionsCopy.size(), numberOfObjectives);
 				population.get(i).setAttribute(FITNESS_ATTRIBUTE, totalVolume - volume);
 			}
 		}

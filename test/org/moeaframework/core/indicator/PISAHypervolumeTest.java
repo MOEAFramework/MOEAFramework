@@ -27,10 +27,9 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.spi.ProblemFactory;
 
 /**
- * Tests the {@link Hypervolume} class against the JMetal implementation. Due
- * to performance, these tests only go up to 4 dimensions.
+ * Tests the {@link PISAHypervolume} class. Due to performance, these tests only go up to 4 dimensions.
  */
-public class HypervolumeTest extends IndicatorTest {
+public class PISAHypervolumeTest extends IndicatorTest {
 	
 	/**
 	 * Tests if an exception is thrown when using an empty reference set.
@@ -41,7 +40,7 @@ public class HypervolumeTest extends IndicatorTest {
 		NondominatedPopulation referenceSet = new NondominatedPopulation();
 		NondominatedPopulation approximationSet = ProblemFactory.getInstance().getReferenceSet("DTLZ2_2");
 
-		Hypervolume hypervolume = new Hypervolume(problem, referenceSet);
+		PISAHypervolume hypervolume = new PISAHypervolume(problem, referenceSet);
 		hypervolume.evaluate(approximationSet);
 	}
 	
@@ -54,7 +53,7 @@ public class HypervolumeTest extends IndicatorTest {
 		NondominatedPopulation referenceSet = ProblemFactory.getInstance().getReferenceSet("DTLZ2_2");
 		NondominatedPopulation approximationSet = new NondominatedPopulation();
 
-		Hypervolume hypervolume = new Hypervolume(problem, referenceSet);
+		PISAHypervolume hypervolume = new PISAHypervolume(problem, referenceSet);
 		Assert.assertEquals(0.0, hypervolume.evaluate(approximationSet), Settings.EPS);
 	}
 	
@@ -72,11 +71,11 @@ public class HypervolumeTest extends IndicatorTest {
 		solution.setConstraints(new double[] { 10.0 });
 		approximationSet.add(solution);
 
-		Hypervolume hypervolume = new Hypervolume(problem, referenceSet);
+		PISAHypervolume hypervolume = new PISAHypervolume(problem, referenceSet);
 		Assert.assertEquals(0.0, hypervolume.evaluate(approximationSet), Settings.EPS);
 	}
 	
-	public void test(Hypervolume hypervolume) {
+	public void test(PISAHypervolume hypervolume) {
 		NondominatedPopulation approximationSet = new NondominatedPopulation();
 		
 		Assert.assertEquals(0.0, hypervolume.evaluate(approximationSet), Settings.EPS);
@@ -118,7 +117,7 @@ public class HypervolumeTest extends IndicatorTest {
 		referenceSet.add(TestUtils.newSolution(0.0, 1.0));
 		referenceSet.add(TestUtils.newSolution(1.0, 0.0));
 		
-		Hypervolume hypervolume = new Hypervolume(problem, referenceSet);
+		PISAHypervolume hypervolume = new PISAHypervolume(problem, referenceSet);
 		
 		test(hypervolume);
 	}
@@ -127,14 +126,14 @@ public class HypervolumeTest extends IndicatorTest {
 	public void testExplicitBounds() {
 		Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
 		
-		Hypervolume hypervolume = new Hypervolume(problem,
+		PISAHypervolume hypervolume = new PISAHypervolume(problem,
 				new double[] { 0.0, 0.0 },
 				new double[] { 1.0, 1.0 });
 		
 		test(hypervolume);
 	}
 	
-	public void test2(Hypervolume hypervolume) {
+	public void test2(PISAHypervolume hypervolume) {
 		NondominatedPopulation approximationSet = new NondominatedPopulation();
 		
 		Assert.assertEquals(0.0, hypervolume.evaluate(approximationSet), Settings.EPS);
@@ -164,7 +163,7 @@ public class HypervolumeTest extends IndicatorTest {
 		referenceSet.add(TestUtils.newSolution(0.0, 1.0));
 		referenceSet.add(TestUtils.newSolution(1.0, 0.0));
 		
-		Hypervolume hypervolume = new Hypervolume(problem, referenceSet,
+		PISAHypervolume hypervolume = new PISAHypervolume(problem, referenceSet,
 				new double[] { 2.0, 2.0 });
 		
 		test2(hypervolume);
@@ -174,7 +173,7 @@ public class HypervolumeTest extends IndicatorTest {
 	public void testExplicitBounds2_Both() {
 		Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
 		
-		Hypervolume hypervolume = new Hypervolume(problem,
+		PISAHypervolume hypervolume = new PISAHypervolume(problem,
 				new double[] { 0.0, 0.0 },
 				new double[] { 2.0, 2.0 });
 		
@@ -188,7 +187,7 @@ public class HypervolumeTest extends IndicatorTest {
 		
 		Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
 		
-		Hypervolume hypervolume = new Hypervolume(problem, new NondominatedPopulation());
+		PISAHypervolume hypervolume = new PISAHypervolume(problem, new NondominatedPopulation());
 		
 		test2(hypervolume);
 		
