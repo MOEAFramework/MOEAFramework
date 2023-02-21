@@ -73,7 +73,7 @@ public class SetHypervolume extends CommandLineUtility {
 			
 			System.out.print(filename);
 			System.out.print(' ');
-			System.out.println(new Hypervolume(new ProblemStub(
+			System.out.println(Hypervolume.getInstance(new ProblemStub(
 					set.get(0).getNumberOfObjectives()), set).evaluate(set));
 		}
 	}

@@ -726,7 +726,7 @@ public class Instrumenter extends ProblemBuilder {
 			
 			if (includeHypervolume) {
 				collectors.add(new IndicatorCollector(
-						new Hypervolume(problem, referenceSet), archive));
+						Hypervolume.getInstance(problem, referenceSet), archive));
 			}
 			
 			if (includeGenerationalDistance) {
