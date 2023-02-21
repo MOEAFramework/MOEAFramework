@@ -714,11 +714,11 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 			
 			if (includeHypervolume) {
 				if ((idealPoint != null) && (referencePoint != null)) {
-					indicators.add(Hypervolume.getInstance(problem, idealPoint, referencePoint));
+					indicators.add(new Hypervolume(problem, idealPoint, referencePoint));
 				} else if (referencePoint != null) {
-					indicators.add(Hypervolume.getInstance(problem, referenceSet, referencePoint));
+					indicators.add(new Hypervolume(problem, referenceSet, referencePoint));
 				} else {
-					indicators.add(Hypervolume.getInstance(problem, referenceSet));
+					indicators.add(new Hypervolume(problem, referenceSet));
 				}
 			}
 			

@@ -18,7 +18,7 @@ import org.moeaframework.core.Problem;
 public class WFGNormalizedHypervolume extends NormalizedIndicator {
 	
 	/**
-	 * The unnormalized hypervolume calculation.
+	 * The un-normalized hypervolume calculation.
 	 */
 	private WFGHypervolume hypervolume;
 

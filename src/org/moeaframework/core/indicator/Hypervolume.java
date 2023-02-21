@@ -25,48 +25,51 @@ import org.moeaframework.core.Settings;
 /**
  * Methods for calculating the hypervolume using different implementations.
  */
-public class Hypervolume {
+public class Hypervolume implements Indicator {
 	
-	private Hypervolume() {
-		super();
-	}
+	private Indicator instance;
 	
-	public static Indicator getInstance(Problem problem, NondominatedPopulation referenceSet) {
+	public Hypervolume(Problem problem, NondominatedPopulation referenceSet) {
 		if (Settings.getHypervolume() != null) {
 			if (Settings.getHypervolume().equalsIgnoreCase("PISA")) {
-				return new PISAHypervolume(problem, referenceSet);
+				instance = new PISAHypervolume(problem, referenceSet);
 			} else {
-				return new NativeHypervolume(problem, referenceSet);
+				instance = new NativeHypervolume(problem, referenceSet);
 			}
 		} else {
-			return new WFGNormalizedHypervolume(problem, referenceSet);
+			instance = new WFGNormalizedHypervolume(problem, referenceSet);
 		}
 	}
 	
-	public static Indicator getInstance(Problem problem, NondominatedPopulation referenceSet, double[] referencePoint) {
+	public Hypervolume(Problem problem, NondominatedPopulation referenceSet, double[] referencePoint) {
 		if (Settings.getHypervolume() != null) {
 			if (Settings.getHypervolume().equalsIgnoreCase("PISA")) {
-				return new PISAHypervolume(problem, referenceSet, referencePoint);
+				instance = new PISAHypervolume(problem, referenceSet, referencePoint);
 			} else {
-				return new NativeHypervolume(problem, referenceSet, referencePoint);
+				instance = new NativeHypervolume(problem, referenceSet, referencePoint);
 			}
 		} else {
-			return new WFGNormalizedHypervolume(problem, referenceSet, referencePoint);
+			instance = new WFGNormalizedHypervolume(problem, referenceSet, referencePoint);
 		}
 	}
 
-	public static Indicator getInstance(Problem problem, double[] minimum, double[] maximum) {
+	public Hypervolume(Problem problem, double[] minimum, double[] maximum) {
 		if (Settings.getHypervolume() != null) {
 			if (Settings.getHypervolume().equalsIgnoreCase("PISA")) {
-				return new PISAHypervolume(problem, minimum, maximum);
+				instance = new PISAHypervolume(problem, minimum, maximum);
 			} else {
-				return new NativeHypervolume(problem, minimum, maximum);
+				instance = new NativeHypervolume(problem, minimum, maximum);
 			}
 		} else {
-			return new WFGNormalizedHypervolume(problem, minimum, maximum);
+			instance = new WFGNormalizedHypervolume(problem, minimum, maximum);
 		}
 	}
 	
+	@Override
+	public double evaluate(NondominatedPopulation approximationSet) {
+		return instance.evaluate(approximationSet);
+	}
+
 	/**
 	 * Computes the hypervolume of a normalized approximation set.
 	 * 

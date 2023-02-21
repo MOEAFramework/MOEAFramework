@@ -248,7 +248,7 @@ public class DefaultAlgorithmsResumeTest {
 		InstrumentedAlgorithm instrumentedAlgorithm = new InstrumentedAlgorithm(
 				algorithm, 100);
 		instrumentedAlgorithm.addCollector(new IndicatorCollector(
-				Hypervolume.getInstance(problem, referenceSet)).attach(algorithm));
+				new Hypervolume(problem, referenceSet)).attach(algorithm));
 		
 		for (int i = 0; i < N; i++) {
 			// Due to how NondominatedSortingPopulation automatically
@@ -280,7 +280,7 @@ public class DefaultAlgorithmsResumeTest {
 			instrumentedAlgorithm = new InstrumentedAlgorithm(
 					algorithm, 100);
 			instrumentedAlgorithm.addCollector(new IndicatorCollector(
-					Hypervolume.getInstance(problem, referenceSet)).attach(algorithm));
+					new Hypervolume(problem, referenceSet)).attach(algorithm));
 			checkpoints = new Checkpoints(instrumentedAlgorithm, file, 0);
 
 			checkpoints.step();

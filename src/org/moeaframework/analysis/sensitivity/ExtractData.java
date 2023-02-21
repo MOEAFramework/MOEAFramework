@@ -231,7 +231,7 @@ public class ExtractData extends CommandLineUtility {
 		Indicator indicator = null;
 		
 		if (option.equals("hypervolume")) {
-			indicator = Hypervolume.getInstance(problem, referenceSet);
+			indicator = new Hypervolume(problem, referenceSet);
 		} else if (option.equals("generational")) {
 			indicator = new GenerationalDistance(problem, referenceSet);
 		} else if (option.equals("inverted")) {
