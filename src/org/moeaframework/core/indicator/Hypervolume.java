@@ -38,9 +38,15 @@ public class Hypervolume implements Indicator {
 	 * @param referenceSet the reference set
 	 */
 	public Hypervolume(Problem problem, NondominatedPopulation referenceSet) {
-		if (Settings.getHypervolume() != null) {
-			if (Settings.getHypervolume().equalsIgnoreCase("PISA")) {
+		String selection = Settings.getHypervolume();
+		
+		if (selection != null) {
+			if (selection.equalsIgnoreCase(PISAHypervolume.class.getSimpleName())) {
 				instance = new PISAHypervolume(problem, referenceSet);
+			} else if (selection.equalsIgnoreCase(WFGHypervolume.class.getSimpleName())) {
+				instance = new WFGHypervolume(problem, referenceSet);
+			} else if (selection.equalsIgnoreCase(WFGNormalizedHypervolume.class.getSimpleName())) {
+				instance = new WFGNormalizedHypervolume(problem, referenceSet);
 			} else {
 				instance = new NativeHypervolume(problem, referenceSet);
 			}
@@ -58,9 +64,15 @@ public class Hypervolume implements Indicator {
 	 * @param referencePoint the reference point
 	 */
 	public Hypervolume(Problem problem, NondominatedPopulation referenceSet, double[] referencePoint) {
-		if (Settings.getHypervolume() != null) {
-			if (Settings.getHypervolume().equalsIgnoreCase("PISA")) {
+		String selection = Settings.getHypervolume();
+		
+		if (selection != null) {
+			if (selection.equalsIgnoreCase(PISAHypervolume.class.getSimpleName())) {
 				instance = new PISAHypervolume(problem, referenceSet, referencePoint);
+			} else if (selection.equalsIgnoreCase(WFGHypervolume.class.getSimpleName())) {
+				instance = new WFGHypervolume(problem, referencePoint);
+			} else if (selection.equalsIgnoreCase(WFGNormalizedHypervolume.class.getSimpleName())) {
+				instance = new WFGNormalizedHypervolume(problem, referenceSet, referencePoint);
 			} else {
 				instance = new NativeHypervolume(problem, referenceSet, referencePoint);
 			}
@@ -78,9 +90,15 @@ public class Hypervolume implements Indicator {
 	 * @param maximum the maximum bounds of the set
 	 */
 	public Hypervolume(Problem problem, double[] minimum, double[] maximum) {
-		if (Settings.getHypervolume() != null) {
-			if (Settings.getHypervolume().equalsIgnoreCase("PISA")) {
+		String selection = Settings.getHypervolume();
+		
+		if (selection != null) {
+			if (selection.equalsIgnoreCase(PISAHypervolume.class.getSimpleName())) {
 				instance = new PISAHypervolume(problem, minimum, maximum);
+			} else if (selection.equalsIgnoreCase(WFGHypervolume.class.getSimpleName())) {
+				instance = new WFGHypervolume(problem, maximum);
+			} else if (selection.equalsIgnoreCase(WFGNormalizedHypervolume.class.getSimpleName())) {
+				instance = new WFGNormalizedHypervolume(problem, minimum, maximum);
 			} else {
 				instance = new NativeHypervolume(problem, minimum, maximum);
 			}
@@ -102,9 +120,14 @@ public class Hypervolume implements Indicator {
 	 * @return the hypervolume value
 	 */
 	public static double evaluate(Problem problem, NondominatedPopulation approximationSet) {
-		if (Settings.getHypervolume() != null) {
-			if (Settings.getHypervolume().equalsIgnoreCase("PISA")) {
+		String selection = Settings.getHypervolume();
+		
+		if (selection != null) {
+			if (selection.equalsIgnoreCase(PISAHypervolume.class.getSimpleName())) {
 				return PISAHypervolume.evaluate(problem, approximationSet);
+			} else if (selection.equalsIgnoreCase(WFGHypervolume.class.getSimpleName()) ||
+					selection.equalsIgnoreCase(WFGNormalizedHypervolume.class.getSimpleName())) {
+				return WFGNormalizedHypervolume.evaluate(problem, approximationSet);
 			} else {
 				return NativeHypervolume.evaluate(problem, approximationSet);
 			}
