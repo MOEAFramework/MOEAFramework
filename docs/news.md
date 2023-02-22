@@ -5,7 +5,15 @@ This page documents notable changes introduced in each chronological release of 
 
 ## Version 3.4 (TBD)
 
-  * New, fast implementation of the hypervolume calculation.
+  * New, fast implementation of the hypervolume calculation.  The difference in speed becomes evident at 6+ objectives:
+  
+    Data Set    | Objectives | Old      | New
+    ----------- | ---------- | -------- | -------
+    DTLZ2.2D.pf | 2          | 234 ms   | 252 ms    
+    DTLZ2.3D.pf | 3          | 241 ms   | 251 ms
+    DTLZ2.4D.pf | 4          | 336 ms   | 296 ms
+    DTLZ2.6D.pf | 6          | 31.9 sec | 468 ms
+    DTLZ2.8D.pf | 8          | ???      | 5.8 sec
 
 
 ## Version 3.3 (10 Feb 2023)
