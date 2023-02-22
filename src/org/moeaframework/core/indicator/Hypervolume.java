@@ -30,6 +30,13 @@ public class Hypervolume implements Indicator {
 	
 	private final Indicator instance;
 	
+	/**
+	 * Constructs a hypervolume evaluator for the specified problem and 
+	 * reference set.
+	 * 
+	 * @param problem the problem
+	 * @param referenceSet the reference set
+	 */
 	public Hypervolume(Problem problem, NondominatedPopulation referenceSet) {
 		if (Settings.getHypervolume() != null) {
 			if (Settings.getHypervolume().equalsIgnoreCase("PISA")) {
@@ -42,6 +49,14 @@ public class Hypervolume implements Indicator {
 		}
 	}
 	
+	/**
+	 * Constructs a hypervolume evaluator for the specified problem using the
+	 * given reference set and reference point.
+	 * 
+	 * @param problem the problem
+	 * @param referenceSet the reference set
+	 * @param referencePoint the reference point
+	 */
 	public Hypervolume(Problem problem, NondominatedPopulation referenceSet, double[] referencePoint) {
 		if (Settings.getHypervolume() != null) {
 			if (Settings.getHypervolume().equalsIgnoreCase("PISA")) {
@@ -54,6 +69,14 @@ public class Hypervolume implements Indicator {
 		}
 	}
 
+	/**
+	 * Constructs a hypervolume evaluator for the specified problem using the
+	 * given minimum and maximum bounds.
+	 * 
+	 * @param problem the problem
+	 * @param minimum the minimum bounds of the set
+	 * @param maximum the maximum bounds of the set
+	 */
 	public Hypervolume(Problem problem, double[] minimum, double[] maximum) {
 		if (Settings.getHypervolume() != null) {
 			if (Settings.getHypervolume().equalsIgnoreCase("PISA")) {

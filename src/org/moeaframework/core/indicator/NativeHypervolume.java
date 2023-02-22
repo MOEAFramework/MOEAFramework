@@ -127,13 +127,12 @@ public class NativeHypervolume extends NormalizedIndicator {
 	 */
 	static double evaluate(Problem problem,
 			NondominatedPopulation approximationSet) {
-		boolean isInverted = true;
-		boolean isCustomHypervolume = (Settings.getHypervolume() != null) && 
-				(problem.getNumberOfObjectives() > 2) ;
-		
-		if (isCustomHypervolume) {
-			isInverted = Settings.isHypervolumeInverted();
+		if (Settings.getHypervolume() == null) {
+			throw new FrameworkException(
+					"must specify hypervolume command as system property or in moeaframework.properties");
 		}
+		
+		boolean isInverted = Settings.isHypervolumeInverted();
 
 		List<Solution> solutions = new ArrayList<Solution>();
 
@@ -154,11 +153,7 @@ public class NativeHypervolume extends NormalizedIndicator {
 			solutions.add(clone);
 		}
 
-		if (isCustomHypervolume) {
-			return invokeNativeHypervolume(problem, solutions, isInverted);
-		} else {
-			throw new RuntimeException("no native hypervolume specified in moeaframework.properties");
-		}
+		return invokeNativeHypervolume(problem, solutions, isInverted);
 	}
 
 	/**
