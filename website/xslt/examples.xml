@@ -29,9 +29,11 @@
 <ul>
   <li><a href="#setup">Setup</a></li>
   <li><a href="#example1">Example 1: Simple Run</a></li>
-  <li><a href="#example2">Example 2: Statistical Comparison of Algorithms</a></li>
-  <li><a href="#example3">Example 3: Collecting Runtime Dynamics</a></li>
-  <li><a href="#example4">Example 4: Defining New Problems</a></li>
+  <li><a href="#example2">Example 2: Quality Indicators</a></li>
+  <li><a href="#example3">Example 3: Customizing Algorithms</a></li>
+  <li><a href="#example4">Example 4: Statistical Comparison of Algorithms</a></li>
+  <li><a href="#example5">Example 5: Collecting Runtime Dynamics</a></li>
+  <li><a href="#example6">Example 6: Defining New Problems</a></li>
 </ul>
 
 <div class="section">
@@ -137,16 +139,96 @@ Var1     Var2     Var3     Var4     Var5     Var6     Var7     Var8     Var9    
 ...
   </pre>
 </div>
-
 </div>
 
 <div class="section">
 <a name="example2" />
-<h3>Example 2: Statistical Comparison of Algorithms</h3>
+<h3>Example 2: Quality Indicators</h3>
 
 <div class="files">
   <ul>
     <li><a href="Example2.java">Example2.java</a></li>
+  </ul>
+</div>
+
+<p>
+  Quality indicators are used to compare results between different algorithms.  Here,
+  we calculate the hypervolume and generational distance relative to a reference set.
+</p>
+
+<div class="code">
+  <pre class="brush: java; toolbar: false;">
+<![CDATA[
+Problem problem = new DTLZ2(2);
+
+NSGAII algorithm = new NSGAII(problem);
+algorithm.run(10000);
+
+NondominatedPopulation result = algorithm.getResult();
+
+NondominatedPopulation referenceSet = PopulationIO.readReferenceSet("./pf/DTLZ2.2D.pf");
+Hypervolume hypervolume = new Hypervolume(problem, referenceSet);
+GenerationalDistance gd = new GenerationalDistance(problem, referenceSet);
+
+System.out.println("Hypervolume: " + hypervolume.evaluate(result));
+System.out.println("GD: " + gd.evaluate(result));
+]]>
+  </pre>
+</div>
+
+<p>
+  Running this program produces the following output:
+</p>
+
+<div class="code">
+  <pre class="brush: plain; toolbar: false;">
+Hypervolume: 0.20834956047273037
+GD: 0.001119315294859704
+  </pre>
+</div>
+</div>
+
+<div class="section">
+<a name="example3" />
+<h3>Example 3: Customizing Algorithms</h3>
+
+<div class="files">
+  <ul>
+    <li><a href="Example3.java">Example3.java</a></li>
+  </ul>
+</div>
+
+<p>
+  The examples above used default parameters for each algorithms.  But, each algorithms
+  is customizable!  In this example, we setup NSGA-II to use the Parent Centric Crossover (PCX)
+  operator, use a population size of 250, and include an archive to store the best solutions.
+</p>
+
+<div class="code">
+  <pre class="brush: java; toolbar: false;">
+<![CDATA[
+Problem problem = new DTLZ2(2);
+NSGAII algorithm = new NSGAII(problem);
+
+algorithm.setInitialPopulationSize(250);
+algorithm.setVariation(new PCX(5, 2));
+algorithm.setArchive(new EpsilonBoxDominanceArchive(0.01));
+
+algorithm.run(10000);
+
+algorithm.getResult().display();
+]]>
+  </pre>
+</div>
+</div>
+
+<div class="section">
+<a name="example4" />
+<h3>Example 4: Statistical Comparison of Algorithms</h3>
+
+<div class="files">
+  <ul>
+    <li><a href="Example4.java">Example4.java</a></li>
   </ul>
 </div>
 
@@ -224,12 +306,12 @@ NSGAII:
 </div>
 
 <div class="section">
-<a name="example3" />
-<h3>Example 3: Collecting Runtime Dynamics</h3>
+<a name="example5" />
+<h3>Example 5: Collecting Runtime Dynamics</h3>
 
 <div class="files">
   <ul>
-    <li><a href="Example3.java">Example3.java</a></li>
+    <li><a href="Example5.java">Example5.java</a></li>
   </ul>
 </div>
 
@@ -289,12 +371,12 @@ NFE   Elapsed Time GenerationalDistance
 </div>
 
 <div class="section">
-<a name="example4" />
-<h3>Example 4: Defining New Problems</h3>
+<a name="example6" />
+<h3>Example 6: Defining New Problems</h3>
 
 <div class="files">
   <ul>
-    <li><a href="Example4.java">Example4.java</a></li>
+    <li><a href="Example6.java">Example6.java</a></li>
   </ul>
 </div>
 

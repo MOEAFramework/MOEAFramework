@@ -15,92 +15,72 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-import java.io.File;
-import java.io.IOException;
-
-import org.apache.commons.lang3.SystemUtils;
 import org.moeaframework.algorithm.NSGAII;
-import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
-import org.moeaframework.problem.ExternalProblem;
+import org.moeaframework.problem.AbstractProblem;
 
 /**
- * Similar to Example4, sockets can be used instead of standard I/O for
- * communicating with the external process.  Run the command 'make' in the
- * ./examples/ folder to compile the executable.  This example will only
- * work on POSIX (Unix-like) systems.
+ * It's also very easy to add your own test or real-world problems for use in the MOEA
+ * Framework.  Here we recreate the Srinivas test problem and solve it using NSGA-II. 
  */
 public class Example6 {
 
-	/**
-	 * Notice that the only change is in the constructor, where the hostname and
-	 * port are specified.
-	 */
-	public static class MyDTLZ2 extends ExternalProblem {
+	public static class Srinivas extends AbstractProblem {
 
-		public MyDTLZ2() throws IOException {
-			super("localhost", ExternalProblem.DEFAULT_PORT);
+		/**
+		 * Creates the problem with two decision variables, two objectives, and two constraints.
+		 */
+		public Srinivas() {
+			super(2, 2, 2);
 		}
 
+		/**
+		 * Function to evaluate each solution.
+		 */
 		@Override
-		public String getName() {
-			return "DTLZ2";
+		public void evaluate(Solution solution) {
+			double[] x = EncodingUtils.getReal(solution);
+			double f1 = Math.pow(x[0] - 2.0, 2.0) + Math.pow(x[1] - 1.0, 2.0) + 2.0;
+			double f2 = 9.0*x[0] - Math.pow(x[1] - 1.0, 2.0);
+			double c1 = Math.pow(x[0], 2.0) + Math.pow(x[1], 2.0) - 225.0;
+			double c2 = x[0] - 3.0*x[1] + 10.0;
+			
+			// set the objective values - these are being minimized
+			solution.setObjective(0, f1);
+			solution.setObjective(1, f2);
+			
+			// set the constraint values - we treat any non-zero value as a constraint violation!
+			solution.setConstraint(0, c1 <= 0.0 ? 0.0 : c1);
+			solution.setConstraint(1, c2 <= 0.0 ? 0.0 : c2);
 		}
 
-		@Override
-		public int getNumberOfVariables() {
-			return 11;
-		}
-
-		@Override
-		public int getNumberOfObjectives() {
-			return 2;
-		}
-
-		@Override
-		public int getNumberOfConstraints() {
-			return 0;
-		}
-
+		/**
+		 * Function to create a new solution.  Here is where we define the types and
+		 * bounds of each decision variables.  In this example, we have two real-valued
+		 * variables ranging from -20 to 20.
+		 */
 		@Override
 		public Solution newSolution() {
-			Solution solution = new Solution(getNumberOfVariables(), getNumberOfObjectives());
-
-			for (int i = 0; i < getNumberOfVariables(); i++) {
-				solution.setVariable(i, new RealVariable(0.0, 1.0));
-			}
-
+			Solution solution = new Solution(2, 2, 2);
+			
+			solution.setVariable(0, new RealVariable(-20.0, 20.0));
+			solution.setVariable(1, new RealVariable(-20.0, 20.0));
+			
 			return solution;
 		}
 		
 	}
 	
-	public static void main(String[] args) throws IOException, InterruptedException {
-		//check if the executable exists
-		File file = new File("./examples/dtlz2_socket.exe");
+	public static void main(String[] args) {
+		Problem problem = new Srinivas();
 		
-		if (!file.exists()) {
-			if (!SystemUtils.IS_OS_UNIX) {
-				System.err.println("This example only works on POSIX-compliant systems; see the Makefile for details");
-				return;
-			}
-			
-			System.err.println("Please compile the executable by running make in the ./examples/ folder");
-			return;
-		}
+		NSGAII algorithm = new NSGAII(problem);
+		algorithm.run(10000);
 		
-		//run the executable and wait one second for the process to startup
-		new ProcessBuilder(file.toString()).start();
-		Thread.sleep(1000);
-		
-		//configure and run this example problem
-		try (Problem problem = new MyDTLZ2()) {
-			Algorithm algorithm = new NSGAII(problem);
-			algorithm.run(10000);
-			algorithm.getResult().display();
-		}
+		algorithm.getResult().display();
 	}
 	
 }

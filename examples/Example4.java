@@ -15,72 +15,49 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-import org.moeaframework.algorithm.NSGAII;
-import org.moeaframework.core.Problem;
-import org.moeaframework.core.Solution;
-import org.moeaframework.core.variable.EncodingUtils;
-import org.moeaframework.core.variable.RealVariable;
-import org.moeaframework.problem.AbstractProblem;
+import java.io.IOException;
+
+import org.moeaframework.Analyzer;
+import org.moeaframework.Executor;
 
 /**
- * It's also very easy to add your own test or real-world problems for use in the MOEA
- * Framework.  Here we recreate the Srinivas test problem and solve it using NSGA-II. 
+ * In Example 2, we computed the hypervolume and generational distance for a single
+ * run.  We can perform more extensive experiments comparing multiple algorithms
+ * using multiple repetitions to statistically compare results.
+ * 
+ * Below, we use the Executor and Analyzer classes to help perform this analysis.
+ * The Executor creates and runs each of the algorithms, possibly with multiple
+ * repetitions (seeds).  The Analyzer collects the resulting Pareto fronts,
+ * computes selected quality indicators, and displays the results.
+ * 
+ * In this example, we will compare NSGA-II, GDE3, and eMOEA on the UF1 test problem
+ * using the Hypervolume indicator.
  */
 public class Example4 {
 
-	public static class Srinivas extends AbstractProblem {
+	public static void main(String[] args) throws IOException {
+		String problem = "UF1";
+		String[] algorithms = { "NSGAII", "GDE3", "eMOEA" };
 
-		/**
-		 * Creates the problem with two decision variables, two objectives, and two constraints.
-		 */
-		public Srinivas() {
-			super(2, 2, 2);
+		// setup the Executor to run each test for 10,000 function evaluations
+		Executor executor = new Executor()
+				.withProblem(problem)
+				.withMaxEvaluations(10000);
+
+		// setup the Analyzer to measure the hypervolume
+		Analyzer analyzer = new Analyzer()
+				.withProblem(problem)
+				.includeHypervolume()
+				.showStatisticalSignificance();
+
+		// run each algorithm for 50 seeds
+		for (String algorithm : algorithms) {
+			analyzer.addAll(algorithm, 
+					executor.withAlgorithm(algorithm).runSeeds(50));
 		}
 
-		/**
-		 * Function to evaluate each solution.
-		 */
-		@Override
-		public void evaluate(Solution solution) {
-			double[] x = EncodingUtils.getReal(solution);
-			double f1 = Math.pow(x[0] - 2.0, 2.0) + Math.pow(x[1] - 1.0, 2.0) + 2.0;
-			double f2 = 9.0*x[0] - Math.pow(x[1] - 1.0, 2.0);
-			double c1 = Math.pow(x[0], 2.0) + Math.pow(x[1], 2.0) - 225.0;
-			double c2 = x[0] - 3.0*x[1] + 10.0;
-			
-			// set the objective values - these are being minimized
-			solution.setObjective(0, f1);
-			solution.setObjective(1, f2);
-			
-			// set the constraint values - we treat any non-zero value as a constraint violation!
-			solution.setConstraint(0, c1 <= 0.0 ? 0.0 : c1);
-			solution.setConstraint(1, c2 <= 0.0 ? 0.0 : c2);
-		}
-
-		/**
-		 * Function to create a new solution.  Here is where we define the types and
-		 * bounds of each decision variables.  In this example, we have two real-valued
-		 * variables ranging from -20 to 20.
-		 */
-		@Override
-		public Solution newSolution() {
-			Solution solution = new Solution(2, 2, 2);
-			
-			solution.setVariable(0, new RealVariable(-20.0, 20.0));
-			solution.setVariable(1, new RealVariable(-20.0, 20.0));
-			
-			return solution;
-		}
-		
-	}
-	
-	public static void main(String[] args) {
-		Problem problem = new Srinivas();
-		
-		NSGAII algorithm = new NSGAII(problem);
-		algorithm.run(10000);
-		
-		algorithm.getResult().display();
+		// display the results
+		analyzer.display();
 	}
 	
 }

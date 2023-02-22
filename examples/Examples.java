@@ -111,6 +111,18 @@ public class Examples {
 				Example4.class,
 				"examples/Example4.java"));
 		
+		examples.add(new TerminalExample(
+				resourceBundle.getString("example5.name"),
+				resourceBundle.getString("example5.description"),
+				Example5.class,
+				"examples/Example5.java"));
+		
+		examples.add(new TerminalExample(
+				resourceBundle.getString("example6.name"),
+				resourceBundle.getString("example6.description"),
+				Example6.class,
+				"examples/Example6.java"));
+		
 		examples.add(new Example(
 				resourceBundle.getString("regression1.name"),
 				resourceBundle.getString("regression1.description"),
