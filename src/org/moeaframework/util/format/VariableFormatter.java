@@ -31,6 +31,9 @@ public class VariableFormatter implements Formatter<Variable> {
 
 	/**
 	 * Constructs a new variable formatter.
+	 * 
+	 * @param data reference back to the tabular data object this formatter is associated, so it
+	 *             can call the {@link TabularData#formatValue(Object)} method on primitive types
 	 */
 	public VariableFormatter(TabularData<?> data) {
 		super();

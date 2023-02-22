@@ -32,6 +32,7 @@ import java.util.Properties;
 import org.moeaframework.util.TypedProperties;
 import org.apache.commons.text.StringTokenizer;
 import org.moeaframework.core.NondominatedPopulation.DuplicateMode;
+import org.moeaframework.core.indicator.Hypervolume;
 
 /**
  * Global settings used by this framework.  The {@code PROPERTIES} object

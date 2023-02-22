@@ -130,6 +130,11 @@ public abstract class AbstractEvolutionaryAlgorithm extends AbstractAlgorithm
 		return archive;
 	}
 	
+	/**
+	 * Sets the archive used by this algorithm.  This value can not be set after initialization.
+	 * 
+	 * @param archive the archive
+	 */
 	protected void setArchive(NondominatedPopulation archive) {
 		assertNotInitialized();
 		this.archive = archive;
@@ -160,6 +165,11 @@ public abstract class AbstractEvolutionaryAlgorithm extends AbstractAlgorithm
 		return population;
 	}
 	
+	/**
+	 * Sets the population used by this algorithm.  This value can not be set after initialization.
+	 * 
+	 * @param population the population
+	 */
 	protected void setPopulation(Population population) {
 		assertNotInitialized();
 		Validate.notNull("population", population);

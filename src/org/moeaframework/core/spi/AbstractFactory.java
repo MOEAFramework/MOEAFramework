@@ -46,7 +46,6 @@ public class AbstractFactory<T> implements Iterable<T> {
 	/**
 	 * Constructs a new factory for the given type.
 	 * 
-	 * @param <T> the generic type of the provider
 	 * @param type the class of the provider
 	 */
 	public AbstractFactory(Class<T> type) {

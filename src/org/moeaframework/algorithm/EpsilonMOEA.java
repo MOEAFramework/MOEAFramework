@@ -184,6 +184,9 @@ public class EpsilonMOEA extends AbstractEvolutionaryAlgorithm implements Epsilo
 		return (EpsilonBoxDominanceArchive)super.getArchive();
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	public void setArchive(EpsilonBoxDominanceArchive archive) {
 		Validate.notNull("archive", archive);
 		super.setArchive(archive);

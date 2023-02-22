@@ -46,8 +46,9 @@ public interface Variable extends Serializable {
 	public void randomize();
 	
 	/**
-	 * Returns a human-readable representation of this value.  
-	 * @return
+	 * Returns a human-readable representation of this value.
+	 * 
+	 * @return the value of this variable formatted as a string
 	 */
 	@Override
 	public String toString();
