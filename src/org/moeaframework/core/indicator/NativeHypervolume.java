@@ -35,8 +35,25 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.util.io.RedirectStream;
 
 /**
- * Invokes a hypervolume calculation provided by a third-party executable.  This is typically
- * configured using {@code moeaframework.properties}.
+ * Calculates hypervolume using a compiled executable.  This originally was
+ * intended to allow use of faster, natively compiled codes.  However, today
+ * the MOEA Framework's default hypervolume code is sufficient for most purposes.
+ * <p>
+ * If this feature is still required, it can be configured by setting the
+ * {@code org.moeaframework.core.indicator.native.hypervolume}
+ * system property or in {@code moeaframework.properties}.  This setting specifies
+ * the command line for running the executable.  The command can be customized using
+ * the following substitutions:
+ * <ul>
+ * <li>{0} number of objectives
+ * <li>{1} approximation set size
+ * <li>{2} file containing the approximation set
+ * <li>{3} file containing the reference point
+ * <li>{4} the reference point, separated by spaces
+ * </ul>
+ * Note: To avoid unnecessarily writing files, the command is first checked
+ * if the above arguments are specified.  Use the exact argument string as
+ * shown above (e.g., {@code {3}}) in the command.
  */
 public class NativeHypervolume extends NormalizedIndicator {
 
@@ -145,23 +162,7 @@ public class NativeHypervolume extends NormalizedIndicator {
 	}
 
 	/**
-	 * Since hypervolume calculation is expensive, this method provides the
-	 * ability to execute a native process to calculate hypervolume. If
-	 * provided, the {@code org.moeaframework.core.indicator.native.hypervolume}
-	 * system property defines the command for invoking the native hypervolume
-	 * executable. The command is a {@link MessageFormat} pattern with the
-	 * following arguments available for use:
-	 * <ul>
-	 * <li>{0} number of objectives
-	 * <li>{1} approximation set size
-	 * <li>{2} file containing the approximation set
-	 * <li>{3} file containing the reference point
-	 * <li>{4} the reference point, separated by spaces
-	 * </ul>
-	 * <p>
-	 * Note: To avoid unnecessarily writing files, the command is first checked
-	 * if the above arguments are specified.  Use the exact argument string as
-	 * shown above (e.g., {@code {3}}) in the command.
+	 * Generates the input files and calls the executable to calculate hypervolume.
 	 * 
 	 * @param problem the problem
 	 * @param solutions the normalized and possibly inverted solutions

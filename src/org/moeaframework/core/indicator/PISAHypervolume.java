@@ -53,11 +53,8 @@ import org.moeaframework.core.Solution;
  */
 
 /**
- * Hypervolume indicator. Represents the volume of objective space dominated by
- * solutions in the approximation set.
- * <p>
- * This version is computationally expensive and is being replaced by
- * {@link WFGNormalizedHypervolume}.
+ * Hypervolume indicator as implemented by the PISA library.  This version is
+ * computationally expensive and is being replaced by {@link WFGNormalizedHypervolume}.
  */
 public class PISAHypervolume extends NormalizedIndicator {
 

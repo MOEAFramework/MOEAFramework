@@ -23,11 +23,12 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 
 /**
- * Methods for calculating the hypervolume using different implementations.
+ * Hypervolume indicator. Represents the volume of objective space dominated by
+ * solutions in the approximation set.
  */
 public class Hypervolume implements Indicator {
 	
-	private Indicator instance;
+	private final Indicator instance;
 	
 	public Hypervolume(Problem problem, NondominatedPopulation referenceSet) {
 		if (Settings.getHypervolume() != null) {
