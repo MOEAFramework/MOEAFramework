@@ -113,7 +113,7 @@ public class PlotTest {
 	
 	@Test
 	@Ignore("Fails on CI due to missing display")
-	public void testAccumulator() {
+	public void testObservations() {
 		Instrumenter instrumenter = new Instrumenter()
 				.withProblem("UF1")
 				.withFrequency(100)
@@ -147,7 +147,7 @@ public class PlotTest {
 		new PlotTest().testOutOfOrder();
 		new PlotTest().testParetoFront();
 		new PlotTest().testAnalyzer();
-		new PlotTest().testAccumulator();
+		new PlotTest().testObservations();
 	}
 
 }

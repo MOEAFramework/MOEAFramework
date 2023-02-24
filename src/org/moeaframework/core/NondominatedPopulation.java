@@ -204,19 +204,6 @@ public class NondominatedPopulation extends Population {
 	protected boolean forceAddWithoutCheck(Solution newSolution) {
 		return super.add(newSolution);
 	}
-
-	/**
-	 * Returns the Euclidean distance between two solutions in objective space.
-	 * 
-	 * @param s1 the first solution
-	 * @param s2 the second solution
-	 * @return the distance between the two solutions in objective space
-	 * @deprecated use {@see Solution#distanceTo(Solution)} instead
-	 */
-	@Deprecated
-	protected static double distance(Solution s1, Solution s2) {
-		return s1.distanceTo(s2);
-	}
 	
 	/**
 	 * Returns {@code true} if the two solutions are duplicates and one should

@@ -76,47 +76,6 @@ public class OperatorFactory extends AbstractFactory<OperatorProvider> {
 	}
 	
 	/**
-	 * Returns the name of the default mutation operator for the given problem.
-	 * Mixed types are currently not supported.
-	 * 
-	 * @param problem the problem
-	 * @return the name of the default mutation operator for the given problem
-	 * @throws ProviderLookupException if no default mutation operator could
-	 *         be determined
-	 */
-	@Deprecated
-	public String getDefaultMutation(Problem problem) {
-		String result = lookupMutationHint(problem);
-		
-		if (result == null) {
-			throw new ProviderLookupException("unsupported or unknown type");
-		}
-		
-		return result;
-	}
-	
-	/**
-	 * Returns the name of the default variation operator (e.g., crossover with
-	 * mutation) for the given problem.  Mixed types are currently not
-	 * supported.
-	 * 
-	 * @param problem the problem
-	 * @return the name of the default variation operator for the given problem
-	 * @throws ProviderLookupException if no default variation operator could
-	 *         be determined
-	 */
-	@Deprecated
-	public String getDefaultVariation(Problem problem) {
-		String result = lookupVariationHint(problem);
-		
-		if (result == null) {
-			throw new ProviderLookupException("unsupported or unknown type");
-		}
-		
-		return result;
-	}
-	
-	/**
 	 * Returns the suggested mutation operator for the given problem.
 	 * 
 	 * @param problem the problem

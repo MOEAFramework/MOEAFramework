@@ -23,7 +23,7 @@ package org.moeaframework.analysis.collector;
  * states: attached and unattached.  Collectors are initially unattached,
  * and are attached to an appropriate object, called the attach point, by
  * invoking {@link #attach(Object)}.  Once attached, the 
- * {@link #collect(Accumulator)} may be invoked.
+ * {@link #collect(Observation)} may be invoked.
  */
 public interface Collector {
 	

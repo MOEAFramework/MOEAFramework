@@ -23,7 +23,7 @@
  * collectors is through the {@link org.moeaframework.Instrumenter}.  The table
  * below contains the potential data collected by the instrumenter.  The key
  * column shows the string used to retrieve the data from the
- * {@link org.moeaframework.analysis.collector.Accumulator}.
+ * {@link org.moeaframework.analysis.collector.Observation}.
  * 
  * <table style="margin-top: 1em; width: 100%">
  *   <caption>List of collectors</caption>

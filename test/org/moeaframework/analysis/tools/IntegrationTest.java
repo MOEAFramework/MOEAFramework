@@ -50,29 +50,4 @@ public class IntegrationTest {
 				TestUtils.getCommaSeparatedNumericPattern(13) + ")$");
 	}
 	
-	@Test
-	@Deprecated
-	public void testAerovisConverter() throws Exception {
-		File resultFile = TestUtils.createTempFile();
-		File aerovisFile = TestUtils.createTempFile();
-		
-		Solve.main(new String[] {
-				"-a", "NSGAII",
-				"-b", "DTLZ2_2",
-				"-n", "1000",
-				"-f", resultFile.getPath() });
-		
-		AerovisConverter.main(new String[] {
-				"-b", "DTLZ2_2",
-				"-i", resultFile.getPath(),
-				"-o", aerovisFile.getPath() });
-		
-		TestUtils.assertLinePattern(aerovisFile,
-				"^(#.*)|(" +
-				TestUtils.getSpaceSeparatedNumericPattern(2) +
-				")|(" +
-				TestUtils.getSpaceSeparatedNumericPattern(13) +
-				")$");
-	}
-	
 }
