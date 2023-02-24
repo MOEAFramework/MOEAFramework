@@ -6,6 +6,11 @@ This page documents notable changes introduced in each chronological release of 
 ## Version 3.4 (TBD)
 
   * New, fast implementation of the hypervolume calculation.
+  
+  * Removes methods and classes that have been deprecated for several release versions, including:
+    
+    * `class Accumulator` - Replace with `Observations` and the `Instrumenter#getObservations` method.
+    * `print(...)` methods - Replace with `display(...)` that supports newer output formatting.
 
 
 ## Version 3.3 (10 Feb 2023)
