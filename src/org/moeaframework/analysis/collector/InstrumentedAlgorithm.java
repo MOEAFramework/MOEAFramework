@@ -78,17 +78,6 @@ public class InstrumentedAlgorithm extends PeriodicAction {
 	}
 	
 	/**
-	 * Returns the accumulator to which all recorded information is stored.
-	 * 
-	 * @return the accumulator to which all recorded information is stored
-	 * @deprecated use {{@link #getObservations()} instead
-	 */
-	@Deprecated
-	public Accumulator getAccumulator() {
-		return new Accumulator(observations);
-	}
-	
-	/**
 	 * Returns the observations collected from this algorithm.
 	 * 
 	 * @return the observations

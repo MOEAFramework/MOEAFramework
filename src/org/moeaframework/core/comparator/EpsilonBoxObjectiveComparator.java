@@ -123,33 +123,6 @@ public class EpsilonBoxObjectiveComparator implements DominanceComparator, Seria
 	}
 
 	/**
-	 * Returns the &epsilon; value used by this comparator for the specified
-	 * objective. For cases where {@code (objective >= epsilons.length)}, the
-	 * last &epsilon; value in this array is used
-	 * {@code (epsilons[epsilons.length-1])}.
-	 * 
-	 * @param objective the index of the objective
-	 * @return the &epsilon; value used by this comparator for the specified
-	 *         objective
-	 */
-	@Deprecated
-	public double getEpsilon(int objective) {
-		return epsilons.get(objective);
-	}
-
-	/**
-	 * Returns the number of defined &epsilon; values. If {@code getEpsilon} is
-	 * invoked with an index larger than the number of defined &epsilon;s, the
-	 * value of the last defined &epsilon; is returned.
-	 * 
-	 * @return the number of defined &epsilon; values
-	 */
-	@Deprecated
-	public int getNumberOfDefinedEpsilons() {
-		return epsilons.size();
-	}
-
-	/**
 	 * Compares the two solutions using the additive &epsilon;-box dominance
 	 * relation.
 	 */

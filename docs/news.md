@@ -15,6 +15,11 @@ This page documents notable changes introduced in each chronological release of 
     DTLZ2.6D.pf | 6          | 31.9 sec | 468 ms
     DTLZ2.8D.pf | 8          | ???      | 5.8 sec
 
+  * Removes methods and classes that have been deprecated for several release versions, including:
+    
+    * `class Accumulator` - Replace with `Observations` and the `Instrumenter#getObservations` method.
+    * `print(...)` methods - Replace with `display(...)` that supports newer output formatting.
+
 
 ## Version 3.3 (10 Feb 2023)
 

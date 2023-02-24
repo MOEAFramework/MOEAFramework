@@ -303,7 +303,7 @@ public class Controller {
 	
 	/**
 	 * Adds a new result to this controller.  This method invokes
-	 * {@link #add(ResultKey, Accumulator)}.
+	 * {@link #add(ResultKey, Observations)}.
 	 * 
 	 * @param algorithm the algorithm associated with these results
 	 * @param problem the problem associated with these results

@@ -56,20 +56,6 @@ public class RepeatedSingleObjective extends AbstractAlgorithm {
 	 * A list of the instantiated algorithms.
 	 */
 	private final List<Algorithm> algorithms;
-
-	/**
-	 * Constructs a new instance of the RSO algorithm, which runs many instances of a single-objective optimizer with
-	 * varying weights.
-	 * 
-	 * @param problem the problem
-	 * @param algorithmName the algorithm name
-	 * @param properties the algorithm properties
-	 * @param instances the number of instances
-	 */
-	@Deprecated
-	public RepeatedSingleObjective(Problem problem, String algorithmName, TypedProperties properties, int instances) {
-		this(problem, instances, algorithmName, properties);
-	}
 	
 	/**
 	 * Constructs a new instance of the RSO algorithm using the given single-objective algorithm.  The properties

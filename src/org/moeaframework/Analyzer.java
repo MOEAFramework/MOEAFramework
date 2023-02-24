@@ -984,27 +984,6 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 			algorithmResults.add(result);
 		}
 		
-		/**
-		 * Prints the results to standard output.
-		 * 
-		 * @deprecated use {@link #display()} instead
-		 */
-		@Deprecated
-		public void print() {
-			print(System.out);
-		}
-		
-		/**
-		 * Prints the results to the given stream.
-		 * 
-		 * @param ps the stream where the results are printed
-		 * @deprecated use {@link #display(PrintStream)} instead
-		 */
-		@Deprecated
-		public void print(PrintStream ps) {
-			display(ps);
-		}
-		
 		@Override
 		public void display(PrintStream ps) {
 			for (AlgorithmResult algorithmResult : algorithmResults) {
@@ -1090,17 +1069,6 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 		 */
 		void add(IndicatorResult result) {
 			indicatorResults.add(result);
-		}
-		
-		/**
-		 * Prints the results to the given stream.
-		 * 
-		 * @param ps the stream where the results are printed
-		 * @deprecated use {@link #display(PrintStream)} instead
-		 */
-		@Deprecated
-		void print(PrintStream ps) {
-			display(ps);
 		}
 		
 		@Override
@@ -1262,17 +1230,6 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 		 */
 		public String getIndicator() {
 			return indicator;
-		}
-		
-		/**
-		 * Prints the results to the given stream.
-		 * 
-		 * @param ps the stream where the results are printed
-		 * @deprecated use {@link #display(PrintStream)} instead
-		 */
-		@Deprecated
-		void print(PrintStream ps) {
-			display(ps);
 		}
 		
 		@Override

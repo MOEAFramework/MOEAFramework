@@ -29,7 +29,6 @@ import java.util.Stack;
 
 import org.apache.commons.lang3.StringUtils;
 import org.moeaframework.algorithm.PeriodicAction.FrequencyType;
-import org.moeaframework.analysis.collector.Accumulator;
 import org.moeaframework.analysis.collector.AdaptiveMultimethodVariationCollector;
 import org.moeaframework.analysis.collector.AdaptiveTimeContinuationCollector;
 import org.moeaframework.analysis.collector.ApproximationSetCollector;
@@ -77,7 +76,7 @@ import org.moeaframework.core.spi.ProblemFactory;
  *     .withInstrumenter(instrumenter)
  *     .run();
  * 
- *   Accumulator accumulator = instrumenter.getLastAccumulator();
+ *   Observations observations = instrumenter.getObservations();
  * </pre>
  * Note that the Instrumenter will not scan the contents of {@link Solution} or
  * {@link Problem}.  Instead, use the Instrumenter to enumerate these objects
@@ -216,21 +215,8 @@ public class Instrumenter extends ProblemBuilder {
 	}
 	
 	/**
-	 * Returns the accumulator from the last instrumented algorithm.  The
-	 * accumulator will be filled with the runtime information as the algorithm
-	 * is executed.
-	 * 
-	 * @return the accumulator from the last instrumented algorithm
-	 * @deprecated use {@link #getObservations()} instead
-	 */
-	@Deprecated
-	public Accumulator getLastAccumulator() {
-		return new Accumulator(observations);
-	}
-	
-	/**
 	 * Returns the observations from the last instrumented algorithm.  The
-	 * accumulator will be filled with the runtime information as the algorithm
+	 * observations will be filled with the runtime information as the algorithm
 	 * is executed.
 	 * 
 	 * @return the observations from the last instrumented algorithm
