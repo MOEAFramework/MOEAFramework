@@ -44,7 +44,7 @@ public class Example2 {
 		NondominatedPopulation result = algorithm.getResult();
 		
 		// load the reference set and evaluate the quality indicators
-		NondominatedPopulation referenceSet = PopulationIO.readReferenceSet("./pf/DTLZ2.2D.pf");
+		NondominatedPopulation referenceSet = PopulationIO.readReferenceSet("pf/DTLZ2.2D.pf");
 		Hypervolume hypervolume = new Hypervolume(problem, referenceSet);
 		GenerationalDistance gd = new GenerationalDistance(problem, referenceSet);
 		
