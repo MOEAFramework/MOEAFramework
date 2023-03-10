@@ -3,7 +3,7 @@
 This page documents notable changes introduced in each chronological release of the MOEA Framework.
 
 
-## Version 3.4 (TBD)
+## Version 3.4 (10 Mar 2023)
 
   * New, fast implementation of the hypervolume calculation.  The difference in speed becomes evident at 6+ objectives:
   
