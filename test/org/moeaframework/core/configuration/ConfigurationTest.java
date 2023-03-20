@@ -21,14 +21,18 @@ import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.algorithm.NSGAIII;
+import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.operator.CompoundVariation;
 import org.moeaframework.core.operator.Mutation;
+import org.moeaframework.core.operator.TwoPointCrossover;
 import org.moeaframework.core.operator.binary.BitFlip;
 import org.moeaframework.core.operator.binary.HUX;
+import org.moeaframework.problem.MockMultiTypeProblem;
 import org.moeaframework.problem.MockRealProblem;
 import org.moeaframework.problem.ZDT.ZDT5;
 import org.moeaframework.util.TypedProperties;
@@ -66,6 +70,40 @@ public class ConfigurationTest {
 		Assert.assertEquals(expectedProperties.getDouble("hux.rate"), ((HUX)operators.get(0)).getProbability(), Settings.EPS);
 		Assert.assertTrue(operators.get(1) instanceof BitFlip);
 		Assert.assertEquals(expectedProperties.getDouble("bf.rate"), ((BitFlip)operators.get(1)).getProbability(), Settings.EPS);
+	}
+	
+	@Test(expected = FrameworkException.class)
+	public void testMixedTypesNoVariationOperator() {
+		Problem problem = new MockMultiTypeProblem();
+		NSGAII algorithm = new NSGAII(problem);
+		
+		TypedProperties properties = new TypedProperties();
+		properties.setInt("populationSize", 200);
+		
+		algorithm.applyConfiguration(properties);
+		algorithm.run(1000);
+	}
+	
+	@Test
+	public void testMixedTypes1() {
+		Problem problem = new MockMultiTypeProblem();
+		NSGAII algorithm = new NSGAII(problem);
+		
+		TypedProperties properties = new TypedProperties();
+		properties.setInt("populationSize", 200);
+		properties.setString("operator", "2x");
+		
+		algorithm.applyConfiguration(properties);
+		algorithm.run(1000);
+	}
+	
+	@Test
+	public void testMixedTypes2() {
+		Problem problem = new MockMultiTypeProblem();
+		NSGAII algorithm = new NSGAII(problem);
+		
+		algorithm.setVariation(new TwoPointCrossover());
+		algorithm.run(1000);
 	}
 	
 	@Test

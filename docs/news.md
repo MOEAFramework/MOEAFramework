@@ -3,6 +3,12 @@
 This page documents notable changes introduced in each chronological release of the MOEA Framework.
 
 
+## Version 3.5 (TBD)
+
+  * Fixes bug causing `variation can not be null` errors when attempting to setup an algorithm with a problem
+    containing two or more decision variable types. 
+
+
 ## Version 3.4 (10 Mar 2023)
 
   * New, fast implementation of the hypervolume calculation.  The difference in speed becomes evident at 6+ objectives:
