@@ -22,8 +22,10 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.spi.AlgorithmFactoryTestWrapper;
 import org.moeaframework.core.spi.ProblemFactoryTestWrapper;
+import org.moeaframework.problem.MockMultiTypeProblem;
 
 /**
  * Tests the {@link Executor} class.
@@ -133,6 +135,25 @@ public class ExecutorTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void testNoAlgorithm() {
 		new Executor().withProblem("DTLZ2_2").run();
+	}
+	
+	@Test(expected = FrameworkException.class)
+	public void testMixedTypesNoVariationOperator() {
+		new Executor()
+			.withProblem(new MockMultiTypeProblem())
+			.withAlgorithm("NSGAII")
+			.withMaxEvaluations(1000)
+			.run();
+	}
+	
+	@Test
+	public void testMixedTypes() {
+		new Executor()
+			.withProblem(new MockMultiTypeProblem())
+			.withAlgorithm("NSGAII")
+			.withProperty("operator", "2x")
+			.withMaxEvaluations(1000)
+			.run();
 	}
 	
 }
