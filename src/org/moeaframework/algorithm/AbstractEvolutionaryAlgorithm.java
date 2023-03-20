@@ -86,8 +86,11 @@ public abstract class AbstractEvolutionaryAlgorithm extends AbstractAlgorithm
 		setInitialPopulationSize(initialPopulationSize);
 		setPopulation(population);
 		setArchive(archive);
-		setVariation(variation);
 		setInitialization(initialization);
+		
+		if (variation != null) {
+			setVariation(variation);
+		}
 	}
 
 	@Override

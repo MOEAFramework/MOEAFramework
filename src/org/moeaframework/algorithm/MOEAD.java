@@ -204,9 +204,12 @@ public class MOEAD extends AbstractAlgorithm implements Configurable {
 		setDelta(delta);
 		setEta(eta);
 		setUpdateUtility(updateUtility);
-		setVariation(variation);
 		setInitialization(initialization);
 		setWeightGenerator(weightGenerator);
+		
+		if (variation != null) {
+			setVariation(variation);
+		}
 	}
 	
 	/**
