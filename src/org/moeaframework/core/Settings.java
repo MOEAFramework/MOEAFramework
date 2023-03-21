@@ -60,8 +60,7 @@ public class Settings {
 	public static final int DEFAULT_POPULATION_SIZE = 100;
 	
 	/**
-	 * Store the new line character to prevent repetitive calls to
-	 * {@code System.getProperty("line.separator")}.
+	 * Store the new line character to prevent repetitive calls to {@code System.getProperty("line.separator")}.
 	 */
 	public static final String NEW_LINE = System.getProperty("line.separator");
 
@@ -73,137 +72,112 @@ public class Settings {
 	/**
 	 * The prefix for all property keys.
 	 */
-	public static final String KEY_PREFIX = "org.moeaframework.";
+	static final String KEY_PREFIX = createKey("org", "moeaframework");
 	
 	/**
-	 * The property key for how to handle duplicate solutions in a nondominated
-	 * population.
+	 * The property key for how to handle duplicate solutions in a nondominated population.
 	 */
-	public static final String KEY_DUPLICATE_MODE = KEY_PREFIX +
-			"core.duplicate_mode";
+	static final String KEY_DUPLICATE_MODE = createKey(KEY_PREFIX, "core", "duplicate_mode");
 	
 	/**
-	 * The property key for the power used in the generational distance
-	 * calculation.
+	 * The property key for the power used in the generational distance calculation.
 	 */
-	public static final String KEY_GD_POWER = KEY_PREFIX + 
-			"core.indicator.gd_power";
+	static final String KEY_GD_POWER = createKey(KEY_PREFIX, "core", "indicator", "gd_power");
 	
 	/**
-	 * The property key for the power used in the inverted generational
-	 * distance calculation.
+	 * The property key for the power used in the inverted generational distance calculation.
 	 */
-	public static final String KEY_IGD_POWER = KEY_PREFIX +
-			"core.indicator.igd_power";
+	static final String KEY_IGD_POWER = createKey(KEY_PREFIX, "core", "indicator", "igd_power");
 	
 	/**
-	 * The property key to indicate that fast non-dominated sorting should be
-	 * used.
+	 * The property key to indicate that fast non-dominated sorting should be used.
 	 */
-	public static final String KEY_FAST_NONDOMINATED_SORTING = KEY_PREFIX +
-			"core.fast_nondominated_sorting";
+	static final String KEY_FAST_NONDOMINATED_SORTING = createKey(KEY_PREFIX, "core", "fast_nondominated_sorting");
 	
 	/**
 	 * The property key for the continuity correction flag.
 	 */
-	public static final String KEY_CONTINUITY_CORRECTION = KEY_PREFIX +
-			"util.statistics.continuity_correction";
+	static final String KEY_CONTINUITY_CORRECTION = createKey(KEY_PREFIX, "util", "statistics", "continuity_correction");
 	
 	/**
-	 * The property key for the hypervolume delta when determining the
-	 * reference point.
+	 * The property key for the hypervolume delta when determining the reference point.
 	 */
-	public static final String KEY_HYPERVOLUME_DELTA = KEY_PREFIX +
-			"core.indicator.hypervolume_delta";
+	static final String KEY_HYPERVOLUME_DELTA = createKey(KEY_PREFIX, "core", "indicator", "hypervolume_delta");
 	
 	/**
 	 * The prefix for specifying custom ideal points for different problems.
 	 */
-	public static final String KEY_IDEALPT_PREFIX = KEY_PREFIX + 
-			"core.indicator.hypervolume_idealpt.";
+	static final String KEY_IDEALPT_PREFIX = createKey(KEY_PREFIX, "core", "indicator", "hypervolume_idealpt");
 	
 	/**
 	 * The prefix for specifying custom reference points for different problems.
 	 */
-	public static final String KEY_REFPT_PREFIX = KEY_PREFIX + 
-			"core.indicator.hypervolume_refpt.";
+	static final String KEY_REFPT_PREFIX = createKey(KEY_PREFIX, "core", "indicator", "hypervolume_refpt");
 	
 	/**
 	 * The property key for the hypervolume command.
 	 */
-	public static final String KEY_HYPERVOLUME = KEY_PREFIX +
-			"core.indicator.hypervolume";
+	static final String KEY_HYPERVOLUME = createKey(KEY_PREFIX, "core", "indicator", "hypervolume");
 	
 	/**
 	 * The property key for the hypervolume inversion flag.
 	 */
-	public static final String KEY_HYPERVOLUME_INVERTED = KEY_PREFIX + 
-			"core.indicator.hypervolume_inverted";
+	static final String KEY_HYPERVOLUME_INVERTED = createKey(KEY_PREFIX, "core", "indicator", "hypervolume_inverted");
 	
 	/**
 	 * The property key for the hypervolume flag.
 	 */
-	public static final String KEY_HYPERVOLUME_ENABLED = KEY_PREFIX +
-			"core.indicator.hypervolume_enabled";
+	static final String KEY_HYPERVOLUME_ENABLED = createKey(KEY_PREFIX, "core", "indicator", "hypervolume_enabled");
 	
 	/**
 	 * The prefix for all problem property keys.
 	 */
-	public static final String KEY_PROBLEM_PREFIX = KEY_PREFIX + "problem.";
+	static final String KEY_PROBLEM_PREFIX = createKey(KEY_PREFIX, "problem");
 	
 	/**
 	 * The property key for the list of available problems.
 	 */
-	public static final String KEY_PROBLEM_LIST = KEY_PROBLEM_PREFIX +
-			"problems";
+	static final String KEY_PROBLEM_LIST = createKey(KEY_PROBLEM_PREFIX, "problems");
 	
 	/**
 	 * The prefix for all PISA property keys.
 	 */
-	public static final String KEY_PISA_PREFIX = KEY_PREFIX + "algorithm.pisa.";
+	static final String KEY_PISA_PREFIX = createKey(KEY_PREFIX, "algorithm", "pisa");
 	
 	/**
 	 * The property key for the list of available PISA algorithms.
 	 */
-	public static final String KEY_PISA_ALGORITHMS = KEY_PISA_PREFIX + 
-			"algorithms";
+	static final String KEY_PISA_ALGORITHMS = createKey(KEY_PISA_PREFIX, "algorithms");
 	
 	/**
 	 * The property key for the poll rate.
 	 */
-	public static final String KEY_PISA_POLL = KEY_PISA_PREFIX + "poll";
+	static final String KEY_PISA_POLL = createKey(KEY_PISA_PREFIX, "poll");
 	
 	/**
 	 * The property key for the algorithms available in the diagnostic tool.
 	 */
-	public static final String KEY_DIAGNOSTIC_TOOL_ALGORITHMS = KEY_PREFIX +
-			"analysis.diagnostics.algorithms";
+	static final String KEY_DIAGNOSTIC_TOOL_ALGORITHMS = createKey(KEY_PREFIX, "analysis", "diagnostics", "algorithms");
 	
 	/**
 	 * The property key for the problems available in the diagnostic tool.
 	 */
-	public static final String KEY_DIAGNOSTIC_TOOL_PROBLEMS = KEY_PREFIX +
-			"analysis.diagnostics.problems";
+	static final String KEY_DIAGNOSTIC_TOOL_PROBLEMS = createKey(KEY_PREFIX, "analysis", "diagnostics", "problems");
 	
 	/**
 	 * The property key for the genetic programming protected functions flag.
 	 */
-	public static final String KEY_GP_PROTECTED_FUNCTIONS = KEY_PREFIX +
-			"util.tree.protected_functions";
+	static final String KEY_GP_PROTECTED_FUNCTIONS = createKey(KEY_PREFIX, "util", "tree", "protected_functions");
 	
 	/**
-	 * The property key for the cleanup strategy when restarting from previous
-	 * runs.
+	 * The property key for the cleanup strategy when restarting from previous runs.
 	 */
-	public static final String KEY_CLEANUP_STRATEGY = KEY_PREFIX + 
-			"analysis.sensitivity.cleanup";
+	static final String KEY_CLEANUP_STRATEGY = createKey(KEY_PREFIX, "analysis", "sensitivity", "cleanup");
 	
 	/**
-	 * The property key for enabling debugging info when running external
-	 * problems.
+	 * The property key for enabling debugging info when running external problems.
 	 */
-	public static final String KEY_EXTERNAL_PROBLEM_DEBUGGING = KEY_PREFIX + 
-			"problem.external_problem_debugging";
+	static final String KEY_EXTERNAL_PROBLEM_DEBUGGING = createKey(KEY_PREFIX, "problem", "external_problem_debugging");
 	
 	/**
 	 * Loads the properties.
@@ -215,9 +189,10 @@ public class Settings {
 		//attempt to access system properties
 		try {
 			properties = new Properties(System.getProperties());
+			String configurationKey = createKey(KEY_PREFIX, "configuration");
 			
-			if (properties.containsKey(KEY_PREFIX + "configuration")) {
-				resource = properties.getProperty(KEY_PREFIX + "configuration");
+			if (properties.containsKey(configurationKey)) {
+				resource = properties.getProperty(configurationKey);
 			}
 		} catch (SecurityException e) {
 			properties = new Properties();
@@ -309,8 +284,7 @@ public class Settings {
 	 * @return the ideal point
 	 */
 	public static double[] getIdealPoint(String problem) {
-		return PROPERTIES.getDoubleArray(KEY_IDEALPT_PREFIX + problem,
-				null);
+		return PROPERTIES.getDoubleArray(createKey(KEY_IDEALPT_PREFIX, problem), null);
 	}
 	
 	/**
@@ -321,8 +295,7 @@ public class Settings {
 	 * @return the reference point
 	 */
 	public static double[] getReferencePoint(String problem) {
-		return PROPERTIES.getDoubleArray(KEY_REFPT_PREFIX + problem,
-				null);
+		return PROPERTIES.getDoubleArray(createKey(KEY_REFPT_PREFIX, problem), null);
 	}
 	
 	/**
@@ -415,8 +388,7 @@ public class Settings {
 	 * @return the class for the specified problem
 	 */
 	public static String getProblemClass(String name) {
-		return PROPERTIES.getString(KEY_PROBLEM_PREFIX + name + ".class", 
-				null);
+		return PROPERTIES.getString(createKey(KEY_PROBLEM_PREFIX, name, "class"), null);
 	}
 	
 	/**
@@ -426,8 +398,7 @@ public class Settings {
 	 * @return the reference set filename for the specified problem
 	 */
 	public static String getProblemReferenceSet(String name) {
-		return PROPERTIES.getString(KEY_PROBLEM_PREFIX + name + ".referenceSet",
-				null);
+		return PROPERTIES.getString(createKey(KEY_PROBLEM_PREFIX, name, "referenceSet"), null);
 	}
 	
 	/**
@@ -459,8 +430,7 @@ public class Settings {
 	 *         starting the PISA selector
 	 */
 	public static String getPISACommand(String algorithmName) {
-		return PROPERTIES.getString(KEY_PISA_PREFIX + algorithmName +
-				".command", null);
+		return PROPERTIES.getString(createKey(KEY_PISA_PREFIX, algorithmName, "command"), null);
 	}
 	
 	/**
@@ -470,8 +440,7 @@ public class Settings {
 	 * @return the configuration file for the PISA selector
 	 */
 	public static String getPISAConfiguration(String algorithmName) {
-		return PROPERTIES.getString(KEY_PISA_PREFIX + algorithmName +
-				".configuration", null);
+		return PROPERTIES.getString(createKey(KEY_PISA_PREFIX, algorithmName, "configuration"), null);
 	}
 	
 	/**
@@ -481,8 +450,7 @@ public class Settings {
 	 * @return the list of parameter names for the PISA selector
 	 */
 	public static String[] getPISAParameters(String algorithmName) {
-		return PROPERTIES.getStringArray(KEY_PISA_PREFIX + algorithmName +
-				".parameters", new String[0]);
+		return PROPERTIES.getStringArray(createKey(KEY_PISA_PREFIX, algorithmName, "parameters"), new String[0]);
 	}
 	
 	/**
@@ -494,10 +462,8 @@ public class Settings {
 	 * @return the default value of the specified parameter for the PISA
 	 *         selector
 	 */
-	public static String getPISAParameterDefaultValue(String algorithmName,
-			String parameterName) {
-		return PROPERTIES.getString(KEY_PISA_PREFIX + algorithmName +
-				".parameter." + parameterName, null);
+	public static String getPISAParameterDefaultValue(String algorithmName, String parameterName) {
+		return PROPERTIES.getString(createKey(KEY_PISA_PREFIX, algorithmName, "parameter", parameterName), null);
 	}
 	
 	/**
@@ -506,8 +472,8 @@ public class Settings {
 	 * @return the list of algorithms displayed in the diagnostic tool GUI
 	 */
 	public static String[] getDiagnosticToolAlgorithms() {
-		return PROPERTIES.getStringArray(KEY_DIAGNOSTIC_TOOL_ALGORITHMS, 
-				new String[] { "NSGAII", "NSGAIII", "GDE3", "eMOEA", "eNSGAII", 
+		return PROPERTIES.getStringArray(KEY_DIAGNOSTIC_TOOL_ALGORITHMS, new String[] {
+				"NSGAII", "NSGAIII", "GDE3", "eMOEA", "eNSGAII", 
 				"MOEAD", "MSOPS", "CMA-ES", "SPEA2", "PAES", "PESA2", "OMOPSO",
 				"SMPSO", "IBEA", "SMS-EMOA", "VEGA", "DBEA", "Random", "RVEA",
 				"RSO", "AMOSA" });
@@ -519,8 +485,7 @@ public class Settings {
 	 * @return the list of problems displayed in the diagnostic tool GUI
 	 */
 	public static String[] getDiagnosticToolProblems() {
-		return PROPERTIES.getStringArray(KEY_DIAGNOSTIC_TOOL_PROBLEMS, 
-				new String[] { 
+		return PROPERTIES.getStringArray(KEY_DIAGNOSTIC_TOOL_PROBLEMS, new String[] { 
 				"DTLZ1_2", "DTLZ2_2", "DTLZ3_2", "DTLZ4_2", "DTLZ7_2", 
 				"ROT_DTLZ1_2", "ROT_DTLZ2_2", "ROT_DTLZ3_2", "ROT_DTLZ4_2", "ROT_DTLZ7_2", 
 				"UF1", "UF2", "UF3", "UF4", "UF5", "UF6", "UF7", "UF8", "UF9", "UF10", "UF11", "UF12", "UF13",
@@ -602,6 +567,26 @@ public class Settings {
 		icons.add(toolkit.getImage(Settings.class.getResource("logo256.png")));
 
 		return icons;
+	}
+	
+	/**
+	 * Creates the key for a property by concatenating an optional prefix with one or more parts.
+	 * 
+	 * @param prefix the prefix or first part of the key
+	 * @param parts remaining parts of the key
+	 * @return the full key
+	 */
+	public static String createKey(String prefix, String... parts) {
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append(prefix, 0, prefix.endsWith(".") ? prefix.length()-1 : prefix.length());
+		
+		for (String part : parts) {
+			sb.append(".");
+			sb.append(part);
+		}
+		
+		return sb.toString();
 	}
 	
 }

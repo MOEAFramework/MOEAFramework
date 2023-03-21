@@ -123,5 +123,19 @@ public class SettingsTest {
 		
 		Settings.PROPERTIES.remove(Settings.KEY_DUPLICATE_MODE);
 	}
+	
+	@Test
+	public void testCreateKey() {
+		Assert.assertEquals("", Settings.createKey(""));
+		
+		Assert.assertEquals("foo", Settings.createKey("foo"));
+		Assert.assertEquals("foo", Settings.createKey("foo."));
+		
+		Assert.assertEquals("foo.bar", Settings.createKey("foo", "bar"));
+		Assert.assertEquals("foo.bar", Settings.createKey("foo.", "bar"));
+		
+		Assert.assertEquals("foo.bar.1.2", Settings.createKey("foo", "bar", "1", "2"));
+		Assert.assertEquals("foo.bar.1.2", Settings.createKey("foo.", "bar", "1", "2"));
+	}
 
 }
