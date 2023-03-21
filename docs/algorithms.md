@@ -16,7 +16,21 @@ Below lists the optimization algorithms provided by the MOEA Framework organized
 ## Instantiating an Algorithm
 
 Each algorithm has a collection of parameters (called properties) used to configure specific details, such as their population size, mutation and
-crossover rates, etc.  Using the `Executor` class, we can quickly create, configure, and execute an algorithm on a given problem:
+crossover rates, etc.  We can create and configure these algorithms by calling their setter methods:
+
+```java
+
+Problem problem = new UF1();
+
+NSGAII algorithm = new NSGAII(problem);
+algorithm.setInitialPopulationSize(250);
+algorithm.run(10000);
+
+NondominatedPopulation result = algorithm.getResult();
+```
+
+Alternatively, we can use the `Executor` class and configure algorithms by setting the properties.  See
+[Running Experiments](experiment.md) for more details on using the `Executor`.
 
 ```java
 
