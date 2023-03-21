@@ -10,7 +10,7 @@ Below lists the optimization algorithms provided by the MOEA Framework organized
   * Reference point / vector - [NSGA-III](#nsga-iii), [DBEA](#dbea), [RVEA](#rvea)
   * Particle swarm - [OMOPSO](#omopso), [SMPSO](#smpso)
   * Indicator based - [IBEA](#ibea), [SMS-EMOA](#sms-emoa)
-  * Other - [CMA-ES](#cma-es), [MSOPS](#msops), [RSO](#rso), [Random](#random)
+  * Other - [AMOSA](#amosa), [CMA-ES](#cma-es), [MSOPS](#msops), [RSO](#rso), [Random](#random)
 * Single-objective - [GA](#ga), [ES](#es), [DE](#de), [CMA-ES](#cma-es)
 
 ## Instantiating an Algorithm
@@ -33,6 +33,28 @@ type.  A default operators is used unless explicitly overridden by the `operator
 for specifics.
 
 ## Multiobjective Optimizers
+
+### AMOSA
+
+The simulated annealing-based multiobjective optimization algorithm (AMOSA) incorporates an archive mechanism to track a set of
+Pareto solutions[^bandyopadhyay08].
+
+**Algorithm Name:** `"AMOSA"`  
+**Supported Types:** Any  
+**Supported Operators:** Mutation-only
+
+Parameter            | Default Value | Description
+:------------------- | :------------ | :----------
+`operator`           | Problem dependent | The mutation operator
+`gamma`             | `2.0`         | The number of random solutions generated to fill the initial population
+`softLimit`        | `100`       | The maximum population size before clustering is used to truncate to the hard limit
+`hardLimit`        | `10`       | The maximum size of the archive at termination
+`alpha`              | `0.8`       | The cooling rate
+`iter`               | `500`       | The number of iterations per temperature
+`hillClimbIter`    | `20`       | The number of hill climbing iterations used when generating the initial population
+`tMin`              | `0.0000001`         | The minimum, or stopping, temperature
+`tMax` | `200.0`           | The maximum, or starting, temperature
+
 
 ### CMA-ES
 
@@ -431,6 +453,7 @@ Parameter            | Default Value     | Description
 ## References
 
 [^asafuddoula15]: Asafuddoula, M., Ray, T., and Sarker, R. (2015). A decomposition-based evolutionary algorithm for many-objective optimization. IEEE Transactions on Evolutionary Computation, 19:445–460.
+[^bandyopadhyay08]: Bandyopadhyay, S., Saha, S., Maulik, U., and Deb, K. (2008). A Simulated Annealing-Based Multiobjective Optimization Algorithm: AMOSA. IEEE Transactions on Evolutionary Computation, vol. 12, no. 3, pp. 269-283.
 [^beume07]: Beume, N., Naujoks, B., and Emmerich, M. (2007). Sms-emoa: Multiobjective selection based on dominated hypervolume. European Journal of Operational Research, 181(3):1653–1669.
 [^cheng16]: Cheng, R., Jin, Y., Olhofer, M., and Sendhoff, B. (2016). A reference vector guided evolutionary algorithm for many-objective optimization. IEEE Transactions on Evolutionary Computation, 99.
 [^corne00]: Corne, D. W. and Knowles, J. D. (2000). The Pareto envelope-based selection algorithm for multiobjective optimization. In Proceedings of the 6th International Conference on Parallel Problem Solving from Nature (PPSN VI), pages 839–848, Paris, France.

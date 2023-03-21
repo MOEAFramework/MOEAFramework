@@ -38,6 +38,8 @@ public class ExpensiveSchafferProblem extends AbstractProblem {
 			sum += i;
 		}
 		
+		solution.setAttribute("sum", sum);
+		
 		solution.setObjective(0, Math.pow(x, 2.0));
 		solution.setObjective(1, Math.pow(x - 2.0, 2.0));
 	}
