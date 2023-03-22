@@ -4,7 +4,7 @@
 
 We use [semantic versioning](https://semver.org/) following the pattern `{major}.{minor}`.  Two versions with the same
 `{major}` number are expected to be backwards compatible, for example allowing one to upgrade from `3.0` to `3.2`
-without difficulty.
+without difficulty.  
 
 ### Preview Code
 
@@ -29,44 +29,65 @@ This library uses Java's Service Provider Interface (SPI) to support extensibili
 supported algorithm, operator, or problem by name and load it dynamically.  Furthermore, the providers automatically inspect
 the problem, such as looking at the decision variable types, to select the appropriate default operators.
 
-With this approach, one can quickly construct an algorithm appropriate for a given problem:
+Additionally, we now recommend each algorithm support a single-argument constructor using just the problem.  This simplifies
+the creation of the algorithm, which should configure itself appropriately for the problem.
 
 ```java
 
 DTLZ2 problem = new DTLZ2(2);
-Algorithm algorithm = AlgorithmFactory.getInstance().getAlgorithm("NSGAII", problem);
+NSGAII algorithm = new NSGAII(problem);
 ```
 
-Furthermore, we can provide properties to customize the algorithm:
+Algorithms and operators are customized with "properties".  Each property should have a getter and setter method following
+Java Bean naming conventions, e.g., `getFoo` and `setFoo`.  Additionally, the setter method must be annotated with the
+`@Property` tag.  This lets us configure algorithms in two ways.  First, we can call the setters directly:
 
 ```java
 
-DTLZ2 problem = new DTLZ2(2);
+NSGAII algorithm = new NSGAII(problem);
+algorithm.setInitialPopulationSize(250);
+```
+
+or passing in a key-value collection of properties:
+
+```java
 
 TypedProperties properties = new TypedProperties();
-properties.withInt("populationSize", 200);
+properties.withInt("populationSize", 250);
 
-Algorithm algorithm = AlgorithmFactory.getInstance().getAlgorithm("NSGAII", properties, problem);
+NSGAII algorithm = new NSGAII(problem);
+algorithm.applyConfiguration(properties);
 ```
 
-Even going so far to let one dynamically change the operators, in this case using a combination of Parent Centric Crossover (PCX)
-and Uniform Mutation (UM):
+Wherever possible, algorithms should also let the caller configure the variation operators.  The problem type or nature of
+the optimization algorithm may restrict what operators are supported.  Again, these can be set using the setter method:
 
 ```java
 
-DTLZ2 problem = new DTLZ2(2);
+NSGAII algorithm = new NSGAII(problem);
+algorithm.setVariation(new CompoundVariation(new PCX(), new UM()));
+```
+
+or with key-value properties:
+
+```java
 
 TypedProperties properties = new TypedProperties();
 properties.withString("operator", "pcx+um");
-
-Algorithm algorithm = AlgorithmFactory.getInstance().getAlgorithm("NSGAII", properties, problem);
 ```
 
-We have providers for algorithms (see `AlgorithmProvider` and `AlgorithmFactory`), operators (see `OperatorProvider`
-and `OperatorFactory`), and problems (see `ProblemProvider` and `ProblemFactory`).  Additionally, these are used by
-the `Executor` and `Analyzer` classes to further simplify the creation and use of optimization algorithms.
+One major advantage of this approach is it also allows us to read the configuration of an algorithm at any time:
 
-The following steps are needed to add a new algorithm, operator, and problem using service providers:
+```java
+
+NSGAII algorithm = new NSGAII(problem);
+algorithm.getConfiguration().display();
+```
+
+### Adding a New Service Provider
+
+To add a new service provider, we have several extension points for introducing new algorithms (see `AlgorithmProvider`),
+operators (see `OperatorProvider`), and problems (see `ProblemProvider`).
 
 1. First decide if the new algorithm, operator, or problem belongs in the MOEA Framework or a separate library.  The required
    changes are identical, the only difference is whether you compile it as part of the `MOEAFramework-X.X.jar` or a
