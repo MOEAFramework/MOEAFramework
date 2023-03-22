@@ -141,3 +141,23 @@ NFE   Elapsed Time GenerationalDistance
 9900  0.361296     0.032959             
 10000 0.363735     0.020477             
 ```
+
+We can also plot these results:
+
+```java
+
+Observations observations = instrumenter.getObservations();
+		
+Plot plot = new Plot();
+plot.add(observations);
+plot.show();
+```
+
+![image](https://user-images.githubusercontent.com/2496211/226907939-8d8569e6-b7f1-4574-badd-3d6d5800f380.png)
+
+Or export the data into another format, such as comma-separated values (CSV), that can be loaded into Excel or other tools:
+
+```java
+
+instrumenter.getObservations().saveCSV(new File("NSGAII_UF1_Runtime.csv"));
+```
