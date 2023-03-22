@@ -1,4 +1,3 @@
-package org.moeaframework.examples.external;
 /* Copyright 2009-2023 David Hadka
  *
  * This file is part of the MOEA Framework.
@@ -16,6 +15,8 @@ package org.moeaframework.examples.external;
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
+package org.moeaframework.examples.external;
+
 import java.io.File;
 import java.io.IOException;
 
