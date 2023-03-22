@@ -38,6 +38,7 @@ import org.moeaframework.parallel.island.migration.SingleNeighborMigration;
 import org.moeaframework.parallel.island.topology.FullyConnectedTopology;
 import org.moeaframework.parallel.island.topology.Topology;
 import org.moeaframework.parallel.util.ThreadLocalMersenneTwister;
+import org.moeaframework.problem.CEC2009.UF1;
 
 /**
  * Compares the result from running an algorithm serially versus an island
@@ -48,7 +49,7 @@ import org.moeaframework.parallel.util.ThreadLocalMersenneTwister;
 public class IslandModelExample {
 	
 	public static void main(String[] args) throws IOException {
-		Problem problem = ProblemFactory.getInstance().getProblem("UF1");
+		Problem problem = new UF1();
 		
 		PRNG.setRandom(ThreadLocalMersenneTwister.getInstance());
 		
@@ -62,9 +63,7 @@ public class IslandModelExample {
 		IslandModel model = new IslandModel(1000, migration, topology);
 		
 		for (int i = 0; i < 8; i++) {
-			NSGAII algorithm = (NSGAII)AlgorithmFactory.getInstance().getAlgorithm(
-					"NSGAII", problem);
-			
+			NSGAII algorithm = new NSGAII(problem);
 			model.addIsland(new Island(algorithm, algorithm.getPopulation()));
 		}
 		

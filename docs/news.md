@@ -7,6 +7,16 @@ This page documents notable changes introduced in each chronological release of 
 
   * Fixes bug causing `variation can not be null` errors when attempting to setup an algorithm with a problem
     containing mixed decision variable types. 
+    
+  * Adds `DistributedProblem.from(...)` method to make it easier to parallelize function evaluations
+    ```
+    try (Problem problem = DistributedProblem.from(new UF1())) {
+        NSGAII algorithm = new NSGAII(problem);
+        algorithm.run(10000);
+    }
+    ```
+    
+  * Improvements to online documentation and examples, adds details for parallelization.
 
 
 ## Version 3.4 (10 Mar 2023)

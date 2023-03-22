@@ -7,6 +7,7 @@
 * [An Example](example.md)
 * [Running Experiments](experiment.md)
 * [The Diagnostic Tool](diagnostic.md)
+* [Parallelization (Distributing Evaluations and Island Models)](parallelization.md)
 
 ## Advanced
 * [List of Decision Variables](variables.md)

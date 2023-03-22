@@ -20,6 +20,7 @@ package org.moeaframework.util.distributed;
 import java.io.Serializable;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import org.moeaframework.core.Problem;
@@ -55,6 +56,33 @@ public class DistributedProblem extends ProblemWrapper {
 	 * in order to get replicability of results even when run in parallel.      
 	 */
 	private long nextDistributedEvaluationID = 0;
+	
+	/**
+	 * Creates a distributed problem using the number of available processors on
+	 * the local computer.  Callers should ensure the returned problem is closed, preferably
+	 * using a try-with-resources block, to clean up the underlying resources.
+	 * 
+	 * @param problem the problem to distribute
+	 * @return the distributed problem
+	 */
+	public static DistributedProblem from(Problem problem) {
+		return from(problem, Runtime.getRuntime().availableProcessors());
+	}
+	
+	/**
+	 * Creates a distributed problem using a fixed number of threads.  Callers should
+	 * ensure the returned problem is closed, preferably using a try-with-resources block,
+	 * to clean up the underlying resources.
+	 * 
+	 * @param problem the problem to distribute
+	 * @param numberOfThreads the number of threads
+	 * @return the distributed problem
+	 */
+	public static DistributedProblem from(Problem problem, int numberOfThreads) {
+		return new DistributedProblem(problem,
+				Executors.newFixedThreadPool(numberOfThreads),
+				true);
+	}
 	
 	/**
 	 * Decorates a problem for distributing the evaluation of the problem across
