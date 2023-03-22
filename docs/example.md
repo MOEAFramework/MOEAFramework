@@ -1,7 +1,6 @@
 # An Example
 
-Starting in version 3.2, we can now create, configure, and run algorithms directly using classes.  Below, we create and solve
-the 2-dimension DTLZ2 test problem using NSGA-II:
+Let's create and solve the 2-dimension DTLZ2 test problem using NSGA-II:
 
 ```java
 
