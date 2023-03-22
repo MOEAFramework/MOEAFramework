@@ -37,8 +37,9 @@ There are a few key points to call out:
 2. Be sure to close the the problem when finished to ensure all underlying resources are cleaned up.  The easiest way is using a
    try-with-resources block as demonstrated in this example.
    
-3. When distributed problems, we must balance the speedup provided by parallelization against communication and overhead cost.
-   If each function evaluation only takes milliseconds, parallelization is unlikely to provide any performance benefit.
+3. When distributed problems, we must balance the speedup provided by parallelization against communication and overhead costs.
+   If each function evaluation only takes milliseconds, parallelization is unlikely to provide any performance benefit (or could
+   even make it slower!).
 
 ## Island Model Parallelization
 
