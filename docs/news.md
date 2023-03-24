@@ -3,7 +3,7 @@
 This page documents notable changes introduced in each chronological release of the MOEA Framework.
 
 
-## Version 3.5 (TBD)
+## Version 3.5 (24 Mar 2023)
 
   * Fixes bug causing `variation can not be null` errors when attempting to setup an algorithm with a problem
     containing mixed decision variable types. 
