@@ -32,6 +32,20 @@
     <th>Downloads</th>
   </tr>
   <tr>
+  	<td>3.4</td>
+  	<td>10 Mar 2023</td>
+  	<td>
+      <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v3.4/MOEAFramework-3.4.tar.gz"
+          onClick="_gaq.push(['_trackEvent', 'Downloads', 'Binary', '3.4']);">Binary</a> |
+      <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v3.4/MOEAFramework-3.4-Source.tar.gz"
+          onClick="_gaq.push(['_trackEvent', 'Downloads', 'Source', '3.4']);">Source</a> |
+      <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v3.4/MOEAFramework-3.4-Demo.jar"
+          onClick="_gaq.push(['_trackEvent', 'Downloads', 'Demo', '3.4']);">Demo</a> |
+      <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v3.4/MOEAFramework-3.4-QuickStart.pdf"
+          onClick="_gaq.push(['_trackEvent', 'Downloads', 'Manual', '3.4']);">Quick Start Guide</a>
+  	</td>
+  </tr>
+  <tr>
   	<td>3.3</td>
   	<td>10 Feb 2023</td>
   	<td>
