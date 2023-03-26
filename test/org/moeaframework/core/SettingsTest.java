@@ -18,7 +18,6 @@
 package org.moeaframework.core;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
 
 import org.junit.Assert;
 import org.junit.Test;
