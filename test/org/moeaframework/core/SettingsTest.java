@@ -18,6 +18,7 @@
 package org.moeaframework.core;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -32,7 +33,7 @@ public class SettingsTest {
 
 	@Test
 	public void testContinuityCorrection() {
-		Settings.isContinuityCorrection();
+		Assert.assertFalse(Settings.isContinuityCorrection());
 	}
 
 	@Test
@@ -42,12 +43,12 @@ public class SettingsTest {
 
 	@Test
 	public void testHypervolume() {
-		Settings.getHypervolume();
+		Assert.assertNull(Settings.getHypervolume());
 	}
 
 	@Test
 	public void testHypervolumeEnabled() {
-		Settings.isHypervolumeEnabled();
+		Assert.assertTrue(Settings.isHypervolumeEnabled());
 	}
 
 	@Test
