@@ -1,4 +1,4 @@
-/* Copyright 2018-2019 Ibrahim DEMIR
+/* Copyright 2018-2019 Ibrahim DEMIR, 2023 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.moeaframework.algorithm.AlgorithmInitializationException;
-import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Initialization;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PRNG;
@@ -45,7 +44,7 @@ import org.moeaframework.core.spi.OperatorFactory;
  * <p>
  * References:
  * <ol>
- *   <li>Sanghamitra Bandyopadhyay, Sriparna Saha, Ujjwal Maulik, Kalyanmoy Deb(2008).
+ *   <li>Sanghamitra Bandyopadhyay, Sriparna Saha, Ujjwal Maulik, Kalyanmoy Deb (2008).
  *       A Simulated Annealing-Based Multiobjective Optimization Algorithm: AMOSA.
  *       IEEE Transactions on Evolutionary Computation, vol. 12, no. 3, pp. 269-283.
  * </ol>
@@ -53,19 +52,16 @@ import org.moeaframework.core.spi.OperatorFactory;
  * @preview
  */
 public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
-	
+
 	protected final Initialization initialization;
-	protected Mutation mutation;
-	
+
 	protected double gamma;
 	protected int softLimit;
 	protected int hardLimit;
-	
-	protected double alpha;
+
 	protected int numberOfIterationsPerTemperature;
 	protected int numberOfHillClimbingIterationsForRefinement;
-	
-	protected Solution currentPT;
+
 	protected NondominatedPopulation archive;
 	
 	/**
@@ -86,7 +82,7 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 				500, // numberOfIterationPerTemperature
 				20); //numberOfHillClimbingIterationsForRefinement
 	}
-	
+
 	/**
 	 * Creates a new instance of the AMOSA algorithm.
 	 * 
@@ -106,21 +102,20 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 	public AMOSA(Problem problem, Initialization initialization, Mutation mutation, double gamma, int softLimit,
 			int hardLimit, double stoppingTemperature, double initialTemperature, double alpha,
 			int numberOfIterationsPerTemperature, int numberOfHillClimbingIterationsForRefinement) {
-		super(problem, stoppingTemperature, initialTemperature);
-		setMutation(mutation);
+		super(problem, initialTemperature, new GeometricCoolingSchedule(alpha), mutation);
 		setGamma(gamma);
 		setSoftLimit(softLimit);
 		setHardLimit(hardLimit);
-		setAlpha(alpha);
 		setNumberOfIterationsPerTemperature(numberOfIterationsPerTemperature);
 		setNumberOfHillClimbingIterationsForRefinement(numberOfHillClimbingIterationsForRefinement);
-		
+
 		Validate.notNull("initialization", initialization);
-		
+
+		this.terminationCondition = new TemperatureBasedTerminationCondition();
 		this.initialization = initialization;
 		this.archive = new NondominatedPopulation();
 	}
-	
+
 	/**
 	 * Returns the gamma value.
 	 * 
@@ -150,7 +145,7 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 	public int getSoftLimit() {
 		return softLimit;
 	}
-	
+
 	/**
 	 * Sets the soft limit, which controls the maximum size that the archive can be filled before clustering is used
 	 * to reduce the size to the hard limit.
@@ -171,7 +166,7 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 	public int getHardLimit() {
 		return hardLimit;
 	}
-	
+
 	/**
 	 * Sets the hard limit, which controls the maximum size of the archive or result set at termination.
 	 * 
@@ -181,47 +176,6 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 	public void setHardLimit(int hardLimit) {
 		Validate.greaterThanZero("hardLimit", hardLimit);
 		this.hardLimit = hardLimit;
-	}
-	
-	/**
-	 * Returns the mutation operator.
-	 * 
-	 * @return the mutation operator
-	 */
-	public Mutation getMutation() {
-		return mutation;
-	}
-	
-	/**
-	 * Sets the mutation operator.
-	 * 
-	 * @param mutation the mutation operator
-	 */
-	@Property("operator")
-	public void setMutation(Mutation mutation) {
-		Validate.notNull("mutation", mutation);
-		this.mutation = mutation;
-	}
-
-	/**
-	 * Returns the cooling rate.
-	 * 
-	 * @return the cooling rate
-	 */
-	public double getAlpha() {
-		return alpha;
-	}
-
-	/**
-	 * Sets the cooling rate.  When combined with {@link #setNumberOfIterationsPerTemperature(int)}, this
-	 * controls the rate at which the temperature decreases.
-	 * 
-	 * @param alpha the cooling rate
-	 */
-	@Property
-	public void setAlpha(double alpha) {
-		Validate.greaterThanZero("alpha", alpha);
-		this.alpha = alpha;
 	}
 
 	/**
@@ -270,131 +224,125 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 	@Override
 	protected void initialize() {
 		super.initialize();
-		
-		if (mutation == null) {
-			throw new FrameworkException("no mutation operator set, must set one by calling setMutation(...)");
-		}
 
 		Solution[] initialSolutions = initialization.initialize((int)(gamma * softLimit));
 		evaluateAll(initialSolutions);
 
 		//refine all initial solutions and add into pareto set: archive
 		ParetoDominanceComparator paretoDominanceComparator = new ParetoDominanceComparator();
-		
+
 		for (int i=0; i < initialSolutions.length; i++) {
 			for (int j=0; j < this.numberOfHillClimbingIterationsForRefinement; j++) {
 				Solution child = this.mutation.mutate(initialSolutions[i]);
 				evaluate(child);
-				
+
 				if (paretoDominanceComparator.compare(initialSolutions[i], child) > 0) {
 					initialSolutions[i] = child;
 				}
 			}
-			
+
 			archive.add(initialSolutions[i]);
 		}
-		
+
 		//if archive is bigger than hard limit (HL), apply clustering
 		if (archive.size() > hardLimit) {
 			cluster();
 		}
-		
-		currentPT = archive.get(PRNG.nextInt(archive.size()));
-		this.temperature = initialTemperature;
+
+		currentPoint = archive.get(PRNG.nextInt(archive.size()));
 	}
 
 	@Override
 	protected void iterate() {
-		if (temperature >= stoppingTemperature) {
-			for (int i=0; i < this.numberOfIterationsPerTemperature; i++) {
-				DominanceComparator comparator = new ParetoDominanceComparator();
-				Solution newPT = mutation.mutate(currentPT);
-				evaluate(newPT);
-				
-				// r is the array of range of each Objective in the archive along with newPT
-				double[] r = calculateR(newPT);
-				
-				// Check The domination status of newPT and currentPT
-				int comparisonResult = comparator.compare(currentPT, newPT);
-				
-				if (comparisonResult == -1) {	// Case 1 : currentPT dominates newPT 
-					double averageDeltaDominance = calculateAverageDeltaDominance(newPT,r,comparator);
+		for (int i=0; i < this.numberOfIterationsPerTemperature; i++) {
+			DominanceComparator comparator = new ParetoDominanceComparator();
+			Solution newPoint = mutation.mutate(currentPoint);
+			evaluate(newPoint);
+
+			// r is the array of range of each Objective in the archive along with newPoint
+			double[] r = calculateR(newPoint);
+
+			// Check The domination status of newPoint and currentPoint
+			int comparisonResult = comparator.compare(currentPoint, newPoint);
+
+			if (comparisonResult == -1) {	// Case 1 : currentPoint dominates newPoint 
+				double averageDeltaDominance = calculateAverageDeltaDominance(newPoint,r,comparator);
+				double probability = 1d/(1d+Math.exp(averageDeltaDominance*temperature));
+
+				if (PRNG.nextDouble() < probability) {
+					this.currentPoint = newPoint;
+				}
+			} else if(comparisonResult == 0) {	// Case 2 : currentPoint and newPoint are non-dominating to each other
+				DominationAmount dominationAmount = calculateDominationAmounts(newPoint,comparator);
+
+				if (dominationAmount.getDominatedAmount() > 0) {   // Case 2(a) : newPoint is dominated by k(k>=1) points in the archive
+					double averageDeltaDominance = calculateAverageDeltaDominance(newPoint,r,comparator);
 					double probability = 1d/(1d+Math.exp(averageDeltaDominance*temperature));
-					
+
 					if (PRNG.nextDouble() < probability) {
-						this.currentPT=newPT;
+						this.currentPoint = newPoint;
 					}
-				} else if(comparisonResult == 0) {	// Case 2 : currentPt and newPT are non-dominating to each other
-					DominationAmount dominationAmount = calculateDominationAmounts(newPT,comparator);
-					
-					if (dominationAmount.getDominatedAmount() > 0) {   // Case 2(a) : newPT is dominated by k(k>=1) points in the archive
-						double averageDeltaDominance = calculateAverageDeltaDominance(newPT,r,comparator);
-						double probability = 1d/(1d+Math.exp(averageDeltaDominance*temperature));
-						
-						if (PRNG.nextDouble() < probability) {
-							this.currentPT = newPT;
-						}
-					} else if (dominationAmount.getDominatedAmount() == 0 && dominationAmount.getDominatesAmount() == 0) {    // Case 2(b) : newPT is non-dominating w.r.t all the points in the archive
-						this.currentPT = newPT;
-						this.archive.add(this.currentPT);
-						
-						if(archive.size() > this.softLimit) {
-							cluster();
-						}
-					} else if (dominationAmount.getDominatesAmount() > 0) {    // Case 2(c) : newPT dominates by k(k>=1) points of the archive
-						this.currentPT=newPT;
-						this.archive.add(this.currentPT); // Since archive is an instance of NonDominatedPopulation, adding operator automatically removes dominated solutions
+				} else if (dominationAmount.getDominatedAmount() == 0 && dominationAmount.getDominatesAmount() == 0) {    // Case 2(b) : newPoint is non-dominating w.r.t all the points in the archive
+					this.currentPoint = newPoint;
+					this.archive.add(this.currentPoint);
+
+					if(archive.size() > this.softLimit) {
+						cluster();
 					}
-				} else {		// Case 3 : newPT dominates currentPT
-					DominationAmount dominationAmount = calculateDominationAmounts(newPT,comparator);
-					
-					if (dominationAmount.getDominatedAmount()>0) {   // Case 3(a) : newPT is dominated by k(k>=1) points in the archive
-						MinimumDeltaDominance minimumDeltaDominance = calculateMinimumDeltaDominance(newPT,r,comparator);
-						double probability = 1d/(1d+Math.exp(-1d*minimumDeltaDominance.getMinimumDeltaDominance()));
-						
-						if (PRNG.nextDouble() < probability) {
-							this.currentPT = archive.get(minimumDeltaDominance.getIndex());
-						} else {
-							this.currentPT = newPT;
-						}
-					} else if (dominationAmount.getDominatedAmount()==0 && dominationAmount.getDominatesAmount()==0) {    // Case 3(b) : newPT is non-dominating w.r.t all the points in the archive
-						this.currentPT = newPT;
-						
-						if (!this.archive.add(this.currentPT)) {
-							archive.remove(this.currentPT);
-						} else if (archive.size() > this.softLimit) {
-							cluster();
-						}
-					} else if (dominationAmount.getDominatesAmount() > 0) {    // Case 3(c) : newPT dominates by k(k>=1) points of the archive
-						this.currentPT = newPT;
-						this.archive.add(this.currentPT); // Since archive is an instance of NonDominatedPopulation, adding operator automatically removes dominated solutions
+				} else if (dominationAmount.getDominatesAmount() > 0) {    // Case 2(c) : newPoint dominates by k(k>=1) points of the archive
+					this.currentPoint = newPoint;
+					this.archive.add(this.currentPoint); // Since archive is an instance of NonDominatedPopulation, adding operator automatically removes dominated solutions
+				}
+			} else {		// Case 3 : newPoint dominates currentPoint
+				DominationAmount dominationAmount = calculateDominationAmounts(newPoint,comparator);
+
+				if (dominationAmount.getDominatedAmount()>0) {   // Case 3(a) : newPoint is dominated by k(k>=1) points in the archive
+					MinimumDeltaDominance minimumDeltaDominance = calculateMinimumDeltaDominance(newPoint,r,comparator);
+					double probability = 1d/(1d+Math.exp(-1d*minimumDeltaDominance.getMinimumDeltaDominance()));
+
+					if (PRNG.nextDouble() < probability) {
+						this.currentPoint = archive.get(minimumDeltaDominance.getIndex());
+					} else {
+						this.currentPoint = newPoint;
 					}
+				} else if (dominationAmount.getDominatedAmount()==0 && dominationAmount.getDominatesAmount()==0) {    // Case 3(b) : newPoint is non-dominating w.r.t all the points in the archive
+					this.currentPoint = newPoint;
+
+					if (!this.archive.add(this.currentPoint)) {
+						archive.remove(this.currentPoint);
+					} else if (archive.size() > this.softLimit) {
+						cluster();
+					}
+				} else if (dominationAmount.getDominatesAmount() > 0) {    // Case 3(c) : newPoint dominates by k(k>=1) points of the archive
+					this.currentPoint = newPoint;
+					this.archive.add(this.currentPoint); // Since archive is an instance of NonDominatedPopulation, adding operator automatically removes dominated solutions
 				}
 			}
-		} else {
-			if (archive.size() > softLimit) {
-				cluster();
-			}
-			
-			terminate();
-			return;
 		}
-		
-		temperature *= alpha;
 	}
+	
+	@Override
+	public void terminate() {
+		if (archive.size() > softLimit) {
+			cluster();
+		}
+
+		super.terminate();
+	}
+		
 
 	//with respect to III.C. Amount of Domination
-	private double[] calculateR(Solution newPT) {
-		double[] r = new double[newPT.getNumberOfObjectives()];
-		double[] worsts = new double[newPT.getNumberOfObjectives()];
-		double[] bests = new double[newPT.getNumberOfObjectives()];
-		
-		for (int i=0; i < newPT.getNumberOfObjectives(); i++) {
-			worsts[i] = newPT.getObjective(i);
-			bests[i] = newPT.getObjective(i);
+	private double[] calculateR(Solution newPoint) {
+		double[] r = new double[newPoint.getNumberOfObjectives()];
+		double[] worsts = new double[newPoint.getNumberOfObjectives()];
+		double[] bests = new double[newPoint.getNumberOfObjectives()];
+
+		for (int i=0; i < newPoint.getNumberOfObjectives(); i++) {
+			worsts[i] = newPoint.getObjective(i);
+			bests[i] = newPoint.getObjective(i);
 		}
-		
-		for (int i=0; i < newPT.getNumberOfObjectives(); i++) {
+
+		for (int i=0; i < newPoint.getNumberOfObjectives(); i++) {
 			for (int j=0; j < archive.size(); j++) {
 				if (archive.get(j).getObjective(i) < bests[i]) {
 					bests[i] = archive.get(j).getObjective(i);
@@ -402,115 +350,115 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 					worsts[i] = archive.get(j).getObjective(i);
 				}
 			}
-			
+
 			r[i] = worsts[i] - bests[i];
 		}
-		
+
 		return r;
 	}
-	
+
 	//calculates delta dominanance between 2 given solutions with respect to III.C. Amount of Domination
 	private double calculateDeltaDominance(Solution solutionA, Solution solutionB, double[] r) {
 		double deltaDominance = 0d;
-		
+
 		for (int i=0; i < solutionA.getNumberOfObjectives(); i++) {
 			deltaDominance *= Math.abs(solutionA.getObjective(i) - solutionB.getObjective(i)) / r[i];
 		}
-		
+
 		return deltaDominance;
 	}
-	
+
 	// Calculates total delta dominance between the given solution and all solutions in the archive with respect to III.C. Amount of Domination
 	// Has if control to be able to support both calculations at cases {1} and {2a}
-	private double calculateAverageDeltaDominance(Solution newPT, double[] r, DominanceComparator comparator) {
+	private double calculateAverageDeltaDominance(Solution newPoint, double[] r, DominanceComparator comparator) {
 		double totalDeltaDominance = 0d;
 		int k = 0;
-		
+
 		for (int i=0; i < archive.size();i++) {
-			if (comparator.compare(archive.get(i), newPT) == -1) {
+			if (comparator.compare(archive.get(i), newPoint) == -1) {
 				k++;
-				totalDeltaDominance += calculateDeltaDominance(newPT, archive.get(i),r);
+				totalDeltaDominance += calculateDeltaDominance(newPoint, archive.get(i),r);
 			}
 		}
-		
-		if (comparator.compare(currentPT, newPT) == -1) {
+
+		if (comparator.compare(currentPoint, newPoint) == -1) {
 			k++;
-			totalDeltaDominance += calculateDeltaDominance(newPT, currentPT,r);
+			totalDeltaDominance += calculateDeltaDominance(newPoint, currentPoint, r);
 		}
-		
+
 		return totalDeltaDominance/k;
 	}
-	
-	private DominationAmount calculateDominationAmounts(Solution newPT, DominanceComparator comparator) {
+
+	private DominationAmount calculateDominationAmounts(Solution newPoint, DominanceComparator comparator) {
 		DominationAmount dominationAmount = new DominationAmount();
-		
+
 		for (int i=0; i < archive.size(); i++) {
-			int result = comparator.compare(newPT, archive.get(i));
-			
+			int result = comparator.compare(newPoint, archive.get(i));
+
 			if (result == -1) {
 				dominationAmount.increaseDominatesAmount();
 			} else if (result == 1) {
 				dominationAmount.increaseDominatedAmount();
 			}
 		}
-		
+
 		return dominationAmount;
 	}
-	
+
 	private class DominationAmount{
 		private int dominatedAmount;
 		private int dominatesAmount;
-		
+
 		public int getDominatedAmount() {
 			return dominatedAmount;
 		}
-		
+
 		public void increaseDominatedAmount() {
 			this.dominatedAmount++;
 		}
-		
+
 		public int getDominatesAmount() {
 			return dominatesAmount;
 		}
-		
+
 		public void increaseDominatesAmount() {
 			this.dominatesAmount++;
 		}
 	}
 
-	private MinimumDeltaDominance calculateMinimumDeltaDominance(Solution newPT, double[] r, DominanceComparator comparator) {
+	private MinimumDeltaDominance calculateMinimumDeltaDominance(Solution newPoint, double[] r, DominanceComparator comparator) {
 		MinimumDeltaDominance minimumDeltaDominance = new MinimumDeltaDominance();
-		
+
 		for (int i=0; i < archive.size();i++) {
-			if (comparator.compare(newPT, archive.get(i)) == -1) {
-				double deltaDominance = calculateDeltaDominance(newPT, archive.get(i), r);
+			if (comparator.compare(newPoint, archive.get(i)) == -1) {
+				double deltaDominance = calculateDeltaDominance(newPoint, archive.get(i), r);
 				minimumDeltaDominance.update(deltaDominance, i);
 			}
 		}
-		
+
 		return minimumDeltaDominance;
 	}
-	
+
 	private class MinimumDeltaDominance{
 		double minimumDeltaDominance = Double.MAX_VALUE;
 		int index=0;
-		
+
 		public void update(double deltaDominance, int index) {
 			if (deltaDominance < this.minimumDeltaDominance) {
 				this.minimumDeltaDominance = deltaDominance;
 				this.index=index;
 			}
 		}
-		
+
 		public double getMinimumDeltaDominance() {
 			return minimumDeltaDominance;
 		}
-		
+
 		public int getIndex() {
 			return index;
 		}
 	}
-	
+
 	protected void cluster() {
 		this.archive = new SingleLinkageClustering(archive).cluster(hardLimit);
 	}
@@ -518,15 +466,6 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 	@Override
 	public NondominatedPopulation getResult() {
 		return archive;
-	}
-	
-	public Mutation getVariation() {
-		return mutation;
-	}
-	
-	@Property("operator")
-	public void setVariation(Mutation mutation) {
-		this.mutation = mutation;
 	}
 
 	@Override
@@ -536,9 +475,9 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 					"algorithm not initialized");
 		}
 
-		Solution current = this.currentPT;
+		Solution current = this.currentPoint;
 		List<Solution> archiveList = new ArrayList<Solution>();
-		
+
 		if (archive != null) {
 			for (Solution solution : archive) {
 				archiveList.add(solution);
@@ -551,18 +490,18 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 	@Override
 	public void setState(Object objState) throws NotSerializableException {
 		super.initialize();
-		
+
 		AMOSAAlgorithmState state = (AMOSAAlgorithmState)objState;
 
 		numberOfEvaluations = state.getNumberOfEvaluations();
-		currentPT = state.getCurrent();
+		currentPoint = state.getCurrent();
 		temperature = state.getTemperature();
-		
+
 		if (archive != null) {
 			archive.addAll(state.getArchive());
 		}
 	}
-	
+
 	/**
 	 * Proxy for serializing and deserializing the state of an
 	 * {@code AMOSAAlgorithm}. This proxy supports saving
@@ -581,7 +520,7 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 		 * The current object is stored in a serializable object.
 		 */
 		private final Solution current;
-		
+
 		/**
 		 * The temperature
 		 */
@@ -636,7 +575,7 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 		public List<Solution> getArchive() {
 			return archive;
 		}
-		
+
 		/**
 		 * Returns the temperature.
 		 * 
