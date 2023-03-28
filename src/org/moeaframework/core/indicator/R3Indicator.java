@@ -69,7 +69,7 @@ public class R3Indicator extends RIndicator {
 			double max1 = Double.NEGATIVE_INFINITY;
 			double max2 = Double.NEGATIVE_INFINITY;
 			
-			for (Solution solution : population) {
+			for (Solution solution : normalize(population)) {
 				max1 = Math.max(max1, utilityFunction.computeUtility(solution,
 						weights[i]));
 			}
