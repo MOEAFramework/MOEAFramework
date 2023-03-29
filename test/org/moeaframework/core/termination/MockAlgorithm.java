@@ -17,8 +17,9 @@
  */
 package org.moeaframework.core.termination;
 
-import java.io.NotSerializableException;
-import java.io.Serializable;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.NondominatedPopulation;
@@ -69,12 +70,12 @@ public class MockAlgorithm implements Algorithm {
 	}
 
 	@Override
-	public Serializable getState() throws NotSerializableException {
+	public void saveState(ObjectOutputStream stream) throws IOException {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public void setState(Object state) throws NotSerializableException {
+	public void loadState(ObjectInputStream stream) throws IOException, ClassNotFoundException {
 		throw new UnsupportedOperationException();
 	}
 

@@ -17,7 +17,9 @@
  */
 package org.moeaframework.algorithm;
 
-import java.io.NotSerializableException;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -876,111 +878,21 @@ public class MOEAD extends AbstractAlgorithm implements Configurable {
 
 	}
 	
-	/**
-	 * Proxy for serializing and deserializing the state of a {@code MOEAD} instance. This proxy supports saving
-	 * the {@code population}, {@code idealPoint} and {@code generation}.
-	 */
-	private static class MOEADState implements Serializable {
-
-		private static final long serialVersionUID = 8694911146929397897L;
-
-		/**
-		 * The {@code population} from the {@code MOEAD} instance.
-		 */
-		private final List<Individual> population;
-		
-		/**
-		 * The value of the {@code idealPoint} from the {@code MOEAD} instance.
-		 */
-		private final double[] idealPoint;
-		
-		/**
-		 * The value of {@code numberOfEvaluations} from the {@code MOEAD}
-		 * instance.
-		 */
-		private final int numberOfEvaluations;
-		
-		/**
-		 * The value of {@code generation} from the {@code MOEAD} instance.
-		 */
-		private final int generation;
-		
-		/**
-		 * Constructs a proxy for serializing and deserializing the state of a {@code MOEAD} instance.
-		 * 
-		 * @param population the {@code population} from the {@code MOEAD} instance
-		 * @param idealPoint the value of the {@code idealPoint} from the {@code MOEAD} instance
-		 * @param numberOfEvaluations the value of {@code numberOfEvaluations} from the {@code MOEAD} instance
-		 * @param generation the value of {@code generation} from the {@code MOEAD} instance
-		 */
-		public MOEADState(List<Individual> population, double[] idealPoint,
-				int numberOfEvaluations, int generation) {
-			super();
-			this.population = population;
-			this.idealPoint = idealPoint;
-			this.numberOfEvaluations = numberOfEvaluations;
-			this.generation = generation;
-		}
-
-		/**
-		 * Returns the {@code population} from the {@code MOEAD} instance.
-		 * 
-		 * @return the {@code population} from the {@code MOEAD} instance
-		 */
-		public List<Individual> getPopulation() {
-			return population;
-		}
-
-		/**
-		 * Returns the value of the {@code idealPoint} from the {@code MOEAD}
-		 * instance.
-		 * 
-		 * @return the value of the {@code idealPoint} from the {@code MOEAD}
-		 *         instance
-		 */
-		public double[] getIdealPoint() {
-			return idealPoint;
-		}
-		
-		/**
-		 * Returns the value of {@code numberOfEvaluations} from the
-		 * {@code MOEAD} instance.
-		 * 
-		 * @return the value of {@code numberOfEvaluations} from the
-		 *         {@code MOEAD} instance
-		 */
-		public int getNumberOfEvaluations() {
-			return numberOfEvaluations;
-		}
-
-		/**
-		 * Returns the value of {@code generation} from the {@code MOEAD}
-		 * instance.
-		 * 
-		 * @return the value of {@code generation} from the {@code MOEAD}
-		 *         instance
-		 */
-		public int getGeneration() {
-			return generation;
-		}
-		
+	@Override
+	public void saveState(ObjectOutputStream stream) throws IOException {
+		super.saveState(stream);
+		stream.writeObject(population);
+		stream.writeObject(idealPoint);
+		stream.writeInt(generation);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public Serializable getState() throws NotSerializableException {
-		return new MOEADState(population, idealPoint, numberOfEvaluations, generation);
-	}
-
-	@Override
-	public void setState(Object objState) throws NotSerializableException {
-		super.initialize();
-
-		MOEADState state = (MOEADState)objState;
-
-		population = state.getPopulation();
-		idealPoint = state.getIdealPoint();
-		numberOfEvaluations = state.getNumberOfEvaluations();
-		generation = state.getGeneration();
+	public void loadState(ObjectInputStream stream) throws IOException, ClassNotFoundException {
+		super.loadState(stream);
+		population = (List<Individual>)stream.readObject();
+		idealPoint = (double[])stream.readObject();
+		generation = stream.readInt();
 	}
 	
 }

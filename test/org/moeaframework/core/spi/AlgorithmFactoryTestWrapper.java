@@ -17,8 +17,9 @@
  */
 package org.moeaframework.core.spi;
 
-import java.io.NotSerializableException;
-import java.io.Serializable;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.NondominatedPopulation;
@@ -82,13 +83,13 @@ public class AlgorithmFactoryTestWrapper extends AlgorithmFactory {
 			}
 
 			@Override
-			public Serializable getState() throws NotSerializableException {
-				return algorithm.getState();
+			public void saveState(ObjectOutputStream stream) throws IOException {
+				algorithm.saveState(stream);
 			}
 
 			@Override
-			public void setState(Object state) throws NotSerializableException {
-				algorithm.setState(state);
+			public void loadState(ObjectInputStream stream) throws IOException, ClassNotFoundException {
+				algorithm.loadState(stream);
 			}
 			
 		};

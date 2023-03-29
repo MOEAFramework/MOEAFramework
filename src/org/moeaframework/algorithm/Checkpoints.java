@@ -25,7 +25,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.Serializable;
 
 import org.moeaframework.core.Algorithm;
 
@@ -66,7 +65,7 @@ public class Checkpoints extends PeriodicAction {
 
 		if (stateFile.exists() && (stateFile.length() != 0L)) {
 			try {
-				algorithm.setState(loadState());
+				loadFromStateFile();
 			} catch (Exception e) {
 				e.printStackTrace();
 				System.err.println(
@@ -81,10 +80,10 @@ public class Checkpoints extends PeriodicAction {
 	 * @param state the state
 	 * @throws IOException if an I/O error occurred
 	 */
-	private void saveState(Serializable state) throws IOException {
+	private void saveToStateFile() throws IOException {
 		try (ObjectOutputStream oos = new ObjectOutputStream(new BufferedOutputStream(
 					new FileOutputStream(stateFile)))) {
-			oos.writeObject(state);
+			algorithm.saveState(oos);
 		}
 	}
 
@@ -96,17 +95,17 @@ public class Checkpoints extends PeriodicAction {
 	 * @throws ClassNotFoundException if the class of a serialized object could
 	 *         not be found.
 	 */
-	private Object loadState() throws IOException, ClassNotFoundException {
+	private void loadFromStateFile() throws IOException, ClassNotFoundException {
 		try (ObjectInputStream ois = new ObjectInputStream(new BufferedInputStream(
 					new FileInputStream(stateFile)))) {
-			return ois.readObject();
+			algorithm.loadState(ois);
 		}
 	}
 	
 	@Override
 	public void doAction() {
 		try {
-			saveState(algorithm.getState());
+			saveToStateFile();
 		} catch (IOException e) {
 			System.err.println(
 					"an error occurred while writing the state file");

@@ -17,12 +17,12 @@
  */
 package org.moeaframework.algorithm;
 
-import java.io.NotSerializableException;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.List;
 
 import org.apache.commons.math3.stat.StatUtils;
 import org.moeaframework.core.FastNondominatedSorting;
@@ -1181,151 +1181,53 @@ public class CMAES extends AbstractAlgorithm implements Configurable {
 		return r;
 	}
 	
-	/**
-	 * Proxy for serializing and deserializing the state of a {@code CMAES}
-	 * instance.
-	 */
-	private static class CMAESState implements Serializable {
-
-		private static final long serialVersionUID = 2634186176589891715L;
-
-		/**
-		 * The {@code population} from the {@code MOEAD} instance.
-		 */
-		private final List<Solution> population;
-		
-		/**
-		 * The archive stored in a serializable list.
-		 */
-		private final List<Solution> archive;
-		
-		/**
-		 * The value of {@code iteration} from the {@code CMAES} instance.
-		 */
-		private int iteration;
-
-		/**
-		 * The value of {@code sigma} from the {@code CMAES} instance.
-		 */
-		private double sigma;
-
-		/**
-		 * The value of {@code diagD} from the {@code CMAES} instance.
-		 */
-		private double[] diagD;
-
-		/**
-		 * The value of {@code xmean} from the {@code CMAES} instance.
-		 */
-		private double[] xmean;
-
-		/**
-		 * The value of {@code pc} from the {@code CMAES} instance.
-		 */
-		private double[] pc;
-
-		/**
-		 * The value of {@code ps} from the {@code CMAES} instance.
-		 */
-		private double[] ps;
-
-		/**
-		 * The value of {@code B} from the {@code CMAES} instance.
-		 */
-		private double[][] B;
-
-		/**
-		 * The value of {@code C} from the {@code CMAES} instance.
-		 */
-		private double[][] C;
-
-		/**
-		 * The value of {@code lastEigenupdate} from the {@code CMAES} instance.
-		 */
-		private int lastEigenupdate;
-		
-		/**
-		 * Constructs a proxy for serializing and deserializing the state of a
-		 * {@code CMAES} instance.
-		 * 
-		 * @param population the value of {@code population} from the {@code CMAES} instance
-		 * @param archive the value of {@code archive} from the {@code CMAES} instance
-		 * @param iteration the value of {@code iteration} from the {@code CMAES} instance
-		 * @param sigma the value of {@code sigma} from the {@code CMAES} instance
-		 * @param diagD the value of {@code diagD} from the {@code CMAES} instance
-		 * @param xmean the value of {@code xmean} from the {@code CMAES} instance
-		 * @param pc the value of {@code pc} from the {@code CMAES} instance
-		 * @param ps the value of {@code ps} from the {@code CMAES} instance
-		 * @param B the value of {@code B} from the {@code CMAES} instance
-		 * @param C the value of {@code C} from the {@code CMAES} instance
-		 * @param lastDigenupdate the value of {@code lastEigenupdate} from the {@code CMAES} instance
-		 */
-		public CMAESState(List<Solution> population, List<Solution> archive,
-				int iteration, double sigma, double[] diagD, double[] xmean,
-				double[] pc, double[] ps, double[][] B, double[][] C,
-				int lastEigenupdate) {
-			super();
-			this.population = population;
-			this.archive = archive;
-			this.iteration = iteration;
-			this.sigma = sigma;
-			this.diagD = diagD;
-			this.xmean = xmean;
-			this.pc = pc;
-			this.ps = ps;
-			this.B = B;
-			this.C = C;
-			this.lastEigenupdate = lastEigenupdate;
-		}
-
-	}
-
 	@Override
-	public Serializable getState() throws NotSerializableException {
-		if (!isInitialized()) {
-			throw new AlgorithmInitializationException(this, 
-					"algorithm not initialized");
-		}
-
-		List<Solution> populationList = new ArrayList<Solution>();
-		List<Solution> archiveList = new ArrayList<Solution>();
-
-		for (Solution solution : population) {
-			populationList.add(solution);
-		}
-
+	public void saveState(ObjectOutputStream stream) throws IOException {
+		stream.writeObject(getClass().getCanonicalName());
+		stream.writeInt(numberOfEvaluations);
+		stream.writeObject(xmean);
+		stream.writeInt(iteration);
+		stream.writeDouble(sigma);
+		stream.writeObject(diagD);
+		stream.writeObject(pc);
+		stream.writeObject(ps);
+		stream.writeObject(B);
+		stream.writeObject(C);
+		stream.writeInt(lastEigenupdate);
+		population.saveState(stream);
+		
 		if (archive != null) {
-			for (Solution solution : archive) {
-				archiveList.add(solution);
-			}
+			archive.saveState(stream);
 		}
-
-		return new CMAESState(populationList, archiveList, iteration, sigma,
-				diagD.clone(), xmean.clone(), pc.clone(), ps.clone(),
-				B.clone(), C.clone(), lastEigenupdate);
 	}
 
 	@Override
-	public void setState(Object objState) throws NotSerializableException {
-		CMAESState state = (CMAESState)objState;
+	public void loadState(ObjectInputStream stream) throws IOException, ClassNotFoundException {
+		String className = (String)stream.readObject();
 		
-		xmean = state.xmean.clone();
+		if (className != null && !className.equals(getClass().getCanonicalName())) {
+			throw new IOException("attempting to restore state of " + getClass().getCanonicalName() +
+					" with data from " + className);
+		}
+		
+		numberOfEvaluations = stream.readInt();
+		xmean = (double[])stream.readObject();
+		
 		initialize();
 		
-		population.addAll(state.population);
-		
+		iteration = stream.readInt();
+		sigma = stream.readDouble();
+		diagD = (double[])stream.readObject();
+		pc = (double[])stream.readObject();
+		ps = (double[])stream.readObject();
+		B = (double[][])stream.readObject();
+		C = (double[][])stream.readObject();
+		lastEigenupdate = stream.readInt();
+		population.loadState(stream);
+
 		if (archive != null) {
-			archive.addAll(state.archive);
+			archive.loadState(stream);
 		}
-		
-		iteration = state.iteration;
-		sigma = state.sigma;
-		diagD = state.diagD.clone();
-		pc = state.pc.clone();
-		ps = state.ps.clone();
-		B = state.B.clone();
-		C = state.C.clone();
-		lastEigenupdate = state.lastEigenupdate;
 	}
 
 }

@@ -108,7 +108,6 @@ public class DefaultAlgorithmsResumeTest {
 	}
 
 	@Test
-	@Ignore("occasionally fails due to the AdaptiveGridArchive not being serialized properly")
 	public void testPESA2() throws IOException {
 		test("PESA2");
 	}

@@ -17,8 +17,9 @@
  */
 package org.moeaframework.algorithm;
 
-import java.io.NotSerializableException;
-import java.io.Serializable;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Arrays;
 
 import org.moeaframework.core.Algorithm;
@@ -203,15 +204,30 @@ public abstract class AbstractAlgorithm implements Algorithm {
 
 		terminated = true;
 	}
-
+	
 	@Override
-	public Serializable getState() throws NotSerializableException {
-		throw new NotSerializableException(getClass().getName());
+	public void saveState(ObjectOutputStream stream) throws IOException {
+		if (!isInitialized()) {
+			throw new AlgorithmInitializationException(this, "algorithm not initialized");
+		}
+		
+		stream.writeObject(getClass().getCanonicalName());
+		stream.writeInt(numberOfEvaluations);
 	}
 
 	@Override
-	public void setState(Object state) throws NotSerializableException {
-		throw new NotSerializableException(getClass().getName());
+	public void loadState(ObjectInputStream stream) throws IOException, ClassNotFoundException {
+		assertNotInitialized();
+		initialized = true;
+		
+		String className = (String)stream.readObject();
+		
+		if (className != null && !className.equals(getClass().getCanonicalName())) {
+			throw new IOException("attempting to restore state of " + getClass().getCanonicalName() +
+					" with data from " + className);
+		}
+		
+		numberOfEvaluations = stream.readInt();
 	}
 
 }

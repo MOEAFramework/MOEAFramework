@@ -17,6 +17,9 @@
  */
 package org.moeaframework.core;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Arrays;
 import java.util.Iterator;
 
@@ -168,7 +171,7 @@ public class AdaptiveGridArchive extends NondominatedPopulation {
 		while (iterator.hasNext()) {
 			Solution oldSolution = iterator.next();
 			int flag = comparator.compare(solution, oldSolution);
-
+			
 			if (flag < 0) {
 				// candidate dominates a member of the archive
 				iterator.remove();
@@ -354,6 +357,22 @@ public class AdaptiveGridArchive extends NondominatedPopulation {
 	 */
 	public int getDensity(int index) {
 		return density[index];
+	}
+	
+	@Override
+	public void saveState(ObjectOutputStream stream) throws IOException {
+		super.saveState(stream);
+		stream.writeObject(minimum);
+		stream.writeObject(maximum);
+		stream.writeObject(density);
+	}
+
+	@Override
+	public void loadState(ObjectInputStream stream) throws IOException, ClassNotFoundException {
+		super.loadState(stream);
+		minimum = (double[])stream.readObject();
+		maximum = (double[])stream.readObject();
+		density = (int[])stream.readObject();
 	}
 
 }

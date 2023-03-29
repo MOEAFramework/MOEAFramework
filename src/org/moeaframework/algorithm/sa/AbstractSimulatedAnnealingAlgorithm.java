@@ -17,6 +17,10 @@
  */
 package org.moeaframework.algorithm.sa;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
 import org.moeaframework.algorithm.AbstractAlgorithm;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.configuration.Configurable;
@@ -105,6 +109,18 @@ public abstract class AbstractSimulatedAnnealingAlgorithm extends AbstractAlgori
 	public void setInitialTemperature(double initialTemperature) {
 		assertNotInitialized();
 		this.initialTemperature = initialTemperature;
+	}
+	
+	@Override
+	public void saveState(ObjectOutputStream stream) throws IOException {
+		super.saveState(stream);
+		stream.writeDouble(temperature);
+	}
+
+	@Override
+	public void loadState(ObjectInputStream stream) throws IOException, ClassNotFoundException {
+		super.loadState(stream);
+		temperature = stream.readDouble();
 	}
 		
 }

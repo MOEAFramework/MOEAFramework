@@ -17,7 +17,8 @@
  */
 package org.moeaframework.algorithm.single;
 
-import java.io.NotSerializableException;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.Comparator;
 
 import org.moeaframework.core.Initialization;
@@ -156,8 +157,8 @@ public class GeneticAlgorithm extends SingleObjectiveEvolutionaryAlgorithm {
 	}
 
 	@Override
-	public void setState(Object objState) throws NotSerializableException {
-		super.setState(objState);
+	public void loadState(ObjectInputStream stream) throws IOException, ClassNotFoundException {
+		super.loadState(stream);
 		
 		eliteSolution = getPopulation().get(0);
 		updateEliteSolution();

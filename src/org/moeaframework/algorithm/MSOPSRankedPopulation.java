@@ -19,6 +19,8 @@ package org.moeaframework.algorithm;
 
 import static org.moeaframework.core.FastNondominatedSorting.RANK_ATTRIBUTE;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -368,6 +370,12 @@ public class MSOPSRankedPopulation extends Population {
 		for (int i = 0; i < P; i++) {
 			get(indices[i]).setAttribute(RANK_ATTRIBUTE, i);
 		}
+	}
+	
+	@Override
+	public void loadState(ObjectInputStream stream) throws IOException, ClassNotFoundException {
+		super.loadState(stream);
+		update();
 	}
 
 }
