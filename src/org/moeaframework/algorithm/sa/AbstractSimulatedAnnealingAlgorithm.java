@@ -1,4 +1,4 @@
-/* Copyright 2018-2019 Ibrahim DEMIR
+/* Copyright 2018-2019 Ibrahim DEMIR, 2023 David Hadka
  *
  * This file is part of the MOEA Framework.
  *
@@ -22,9 +22,15 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import org.moeaframework.algorithm.AbstractAlgorithm;
+import org.moeaframework.algorithm.AlgorithmTerminationException;
+import org.moeaframework.core.FrameworkException;
+import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
+import org.moeaframework.core.Solution;
 import org.moeaframework.core.configuration.Configurable;
 import org.moeaframework.core.configuration.Property;
+import org.moeaframework.core.configuration.Validate;
+import org.moeaframework.core.operator.Mutation;
 
 /**
  * Abstract class of fundamental simulated annealing algorithm. While the iterations of evolving SA algorithms vary,
@@ -36,14 +42,26 @@ import org.moeaframework.core.configuration.Property;
 public abstract class AbstractSimulatedAnnealingAlgorithm extends AbstractAlgorithm implements Configurable {
 
 	/**
-	 * The stopping, or minimum, temperature at which point the algorithm stops.
-	 */
-	protected double stoppingTemperature;
-	
-	/**
 	 * The initial, or maximum, temperature.
 	 */
 	protected double initialTemperature;
+	
+	/**
+	 * The cooling (or reduction) schedule that determines how the temperature decreases over time.
+	 */
+	protected CoolingSchedule coolingSchedule;
+	
+	/**
+	 * Self-terminates the execution of this algorithm when the temperature drops below a minimum threshold.
+	 * If {@code null}, will not self-terminate and instead runs until some other termination condition is
+	 * reached.
+	 */
+	protected TemperatureBasedTerminationCondition terminationCondition;
+	
+	/**
+	 * The mutation operator used to generate neighbors of the current point.
+	 */
+	protected Mutation mutation;
 	
 	/**
 	 * The current temperature.
@@ -51,46 +69,26 @@ public abstract class AbstractSimulatedAnnealingAlgorithm extends AbstractAlgori
 	protected double temperature;
 	
 	/**
+	 * The current point.
+	 */
+	protected Solution currentPoint;
+
+	
+	/**
 	 * Constructs a new, abstract simulated annealing algorithm.
 	 * 
 	 * @param problem the problem to solve
-	 * @param stoppingTemperature the stopping, or minimum, temperature
 	 * @param initialTemperature the initial, or maximum temperature
+	 * @param coolingSchedule the cooling schedule that determines how the temperature decreases over time
 	 */
-	public AbstractSimulatedAnnealingAlgorithm(Problem problem, double stoppingTemperature, double initialTemperature) {
+	public AbstractSimulatedAnnealingAlgorithm(Problem problem, double initialTemperature,
+			CoolingSchedule coolingSchedule, Mutation mutation) {
 		super(problem);
-		this.stoppingTemperature = stoppingTemperature;
 		this.initialTemperature = initialTemperature;
-	}
-
-	/**
-	 * Returns the current temperature.
-	 * 
-	 * @return the current temperature
-	 */
-	public double getTemperature() {
-		return temperature;
-	}
-
-	/**
-	 * Returns the stopping, or minimum, temperature at which point the algorithm stops.
-	 * 
-	 * @return the stopping temperature
-	 */
-	public double getStoppingTemperature() {
-		return stoppingTemperature;
+		this.coolingSchedule = coolingSchedule;
+		this.mutation = mutation;
 	}
 	
-	/**
-	 * Sets the stopping, or minimum, temperature at which point the algorithm stops.
-	 * 
-	 * @param stoppingTemperature the stopping temperature
-	 */
-	@Property(alias="tMin")
-	public void setStoppingTemperature(double stoppingTemperature) {
-		this.stoppingTemperature = stoppingTemperature;
-	}
-
 	/**
 	 * Returns the initial, or maximum, temperature.
 	 * 
@@ -110,17 +108,111 @@ public abstract class AbstractSimulatedAnnealingAlgorithm extends AbstractAlgori
 		assertNotInitialized();
 		this.initialTemperature = initialTemperature;
 	}
+
+	/**
+	 * Returns the cooling (or reduction) schedule that determines how the temperature decreases over time.
+	 * 
+	 * @return the cooling schedule
+	 */
+	public CoolingSchedule getCoolingSchedule() {
+		return coolingSchedule;
+	}
+	
+	/**
+	 * Returns the temperature-based termination condition.
+	 * 
+	 * @return the temperature-based termination condition, or {@code null} if not set
+	 */
+	public TemperatureBasedTerminationCondition getTerminationCondition() {
+		return terminationCondition;
+	}
+	
+	/**
+	 * Returns the mutation operator.
+	 * 
+	 * @return the mutation operator
+	 */
+	public Mutation getMutation() {
+		return mutation;
+	}
+
+	/**
+	 * Sets the mutation operator.
+	 * 
+	 * @param mutation the mutation operator
+	 */
+	@Property("operator")
+	public void setMutation(Mutation mutation) {
+		Validate.notNull("mutation", mutation);
+		this.mutation = mutation;
+	}
+
+	/**
+	 * Returns the current temperature.
+	 * 
+	 * @return the current temperature
+	 */
+	public double getTemperature() {
+		return temperature;
+	}
+	
+	/**
+	 * Returns the current point.
+	 * 
+	 * @return the current point
+	 */
+	public Solution getCurrentPoint() {
+		return currentPoint;
+	}
+	
+	@Override
+	protected void initialize() {
+		super.initialize();
+		
+		if (mutation == null) {
+			throw new FrameworkException("no mutation operator set, must set one by calling setMutation(...)");
+		}
+		
+		temperature = initialTemperature;
+		terminationCondition.initialize(this);
+	}
+	
+	@Override
+	public void step() {
+		if (isTerminated()) {
+			throw new AlgorithmTerminationException(this, "algorithm already terminated");
+		} else if (!isInitialized()) {
+			initialize();
+		} else {
+			if (terminationCondition != null && terminationCondition.shouldTerminate(this)) {
+				terminate();
+				return;
+			}
+			
+			iterate();
+			temperature = coolingSchedule.nextTemperature(temperature);
+		}
+	}
+	
+	@Override
+	public NondominatedPopulation getResult() {
+		NondominatedPopulation result = new NondominatedPopulation();
+		result.add(currentPoint);
+		return result;
+	}
 	
 	@Override
 	public void saveState(ObjectOutputStream stream) throws IOException {
 		super.saveState(stream);
 		stream.writeDouble(temperature);
+		stream.writeObject(currentPoint);
 	}
 
 	@Override
 	public void loadState(ObjectInputStream stream) throws IOException, ClassNotFoundException {
 		super.loadState(stream);
 		temperature = stream.readDouble();
+		currentPoint = (Solution)stream.readObject();
 	}
-		
+	
 }
