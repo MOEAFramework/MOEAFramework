@@ -24,6 +24,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.moeaframework.Retryable;
 import org.moeaframework.CIRunner;
+import org.moeaframework.Flaky;
 import org.moeaframework.algorithm.AlgorithmTest;
 
 /**
@@ -47,6 +48,7 @@ public class OMOPSOTest extends AlgorithmTest {
 	}
 	
 	@Test
+	@Flaky
 	public void testDTLZ7() throws IOException {
 		assumeJMetalExists();
 		test("DTLZ7_2", "OMOPSO", "OMOPSO-JMetal");

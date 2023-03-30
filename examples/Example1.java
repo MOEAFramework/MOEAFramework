@@ -16,7 +16,6 @@
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
 import org.moeaframework.algorithm.NSGAII;
-import org.moeaframework.algorithm.sa.AMOSA;
 import org.moeaframework.core.Problem;
 import org.moeaframework.problem.DTLZ.DTLZ2;
 
@@ -29,9 +28,7 @@ public class Example1 {
 	public static void main(String[] args) {
 		Problem problem = new DTLZ2(2);
 		
-		AMOSA algorithm = new AMOSA(problem);
-		algorithm.getConfiguration().display();
-		
+		NSGAII algorithm = new NSGAII(problem);		
 		algorithm.run(10000);
 		
 		algorithm.getResult().display();

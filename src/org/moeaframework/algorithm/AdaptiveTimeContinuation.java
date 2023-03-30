@@ -17,9 +17,9 @@
  */
 package org.moeaframework.algorithm;
 
-import java.io.NotSerializableException;
-import java.io.Serializable;
-
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import org.apache.commons.lang3.event.EventListenerSupport;
 import org.moeaframework.core.EvolutionaryAlgorithm;
 import org.moeaframework.core.NondominatedPopulation;
@@ -354,74 +354,16 @@ public class AdaptiveTimeContinuation extends PeriodicAction implements Evolutio
 		return getAlgorithm().getArchive();
 	}
 	
-	/**
-	 * Proxy for serializing and deserializing the state of an
-	 * {@code AdaptiveTimeContinuation} instance. This proxy supports saving
-	 * the underlying algorithm state and {@code iterationAtLastRestart}.
-	 */
-	private static class AdaptiveTimeContinuationState implements Serializable {
-
-		private static final long serialVersionUID = -4773227519517581809L;
-
-		/**
-		 * The state of the underlying algorithm.
-		 */
-		private final Serializable algorithmState;
-		
-		/**
-		 * The {@code iterationAtLastRestart} value of the
-		 * {@code AdaptiveTimeContinuation} instance.
-		 */
-		private final int iterationAtLastRestart;
-
-		/**
-		 * Constructs a proxy for storing the state of an
-		 * {@code AdaptiveTimeContinuation} instance.
-		 * 
-		 * @param algorithmState the state of the underlying algorithm
-		 * @param iterationAtLastRestart the {@code iterationAtLastRestart}
-		 *        value of the {@code AdaptiveTimeContinuation} instance
-		 */
-		public AdaptiveTimeContinuationState(Serializable algorithmState,
-				int iterationAtLastRestart) {
-			super();
-			this.algorithmState = algorithmState;
-			this.iterationAtLastRestart = iterationAtLastRestart;
-		}
-
-		/**
-		 * Returns the underlying algorithm state.
-		 * 
-		 * @return the underlying algorithm state
-		 */
-		public Serializable getAlgorithmState() {
-			return algorithmState;
-		}
-
-		/**
-		 * Returns the {@code iterationAtLastRestart} value of the
-		 * {@code AdaptiveTimeContinuation} instance.
-		 * 
-		 * @return the {@code iterationAtLastRestart} value of the
-		 *         {@code AdaptiveTimeContinuation} instance
-		 */
-		public int getIterationAtLastRestart() {
-			return iterationAtLastRestart;
-		}
-		
+	@Override
+	public void saveState(ObjectOutputStream stream) throws IOException {
+		super.saveState(stream);
+		stream.writeInt(iterationAtLastRestart);
 	}
 
 	@Override
-	public Serializable getState() throws NotSerializableException {
-		return new AdaptiveTimeContinuationState(super.getState(), iterationAtLastRestart);
-	}
-
-	@Override
-	public void setState(Object objState) throws NotSerializableException {
-		AdaptiveTimeContinuationState state = (AdaptiveTimeContinuationState)objState;
-		
-		super.setState(state.getAlgorithmState());
-		iterationAtLastRestart = state.getIterationAtLastRestart();
+	public void loadState(ObjectInputStream stream) throws IOException, ClassNotFoundException {
+		super.loadState(stream);
+		iterationAtLastRestart = stream.readInt();
 	}
 
 }

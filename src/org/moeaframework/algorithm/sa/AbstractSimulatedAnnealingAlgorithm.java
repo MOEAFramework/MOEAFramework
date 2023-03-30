@@ -17,6 +17,10 @@
  */
 package org.moeaframework.algorithm.sa;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
 import org.moeaframework.algorithm.AbstractAlgorithm;
 import org.moeaframework.algorithm.AlgorithmTerminationException;
 import org.moeaframework.core.FrameworkException;
@@ -195,6 +199,20 @@ public abstract class AbstractSimulatedAnnealingAlgorithm extends AbstractAlgori
 		NondominatedPopulation result = new NondominatedPopulation();
 		result.add(currentPoint);
 		return result;
+	}
+	
+	@Override
+	public void saveState(ObjectOutputStream stream) throws IOException {
+		super.saveState(stream);
+		stream.writeDouble(temperature);
+		stream.writeObject(currentPoint);
+	}
+
+	@Override
+	public void loadState(ObjectInputStream stream) throws IOException, ClassNotFoundException {
+		super.loadState(stream);
+		temperature = stream.readDouble();
+		currentPoint = (Solution)stream.readObject();
 	}
 	
 }

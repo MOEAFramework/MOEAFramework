@@ -96,12 +96,13 @@ public class R1Indicator extends RIndicator {
 	@Override
 	public double evaluate(NondominatedPopulation population) {
 		double sum = 0.0;
+		NondominatedPopulation normalizedPopulation = normalize(population);
 		
 		for (int i = 0; i < weights.length; i++) {
 			double max1 = Double.NEGATIVE_INFINITY;
 			double max2 = Double.NEGATIVE_INFINITY;
 			
-			for (Solution solution : population) {
+			for (Solution solution : normalizedPopulation) {
 				max1 = Math.max(max1, utilityFunction.computeUtility(solution,
 						weights[i]));
 			}

@@ -17,13 +17,13 @@
  */
 package org.moeaframework.algorithm.pso;
 
-import java.io.NotSerializableException;
-import java.io.Serializable;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.moeaframework.algorithm.AbstractAlgorithm;
-import org.moeaframework.algorithm.AlgorithmInitializationException;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Problem;
@@ -406,59 +406,28 @@ public abstract class AbstractPSOAlgorithm extends AbstractAlgorithm implements 
 	}
 	
 	@Override
-	public Serializable getState() throws NotSerializableException {
-		if (!isInitialized()) {
-			throw new AlgorithmInitializationException(this, "algorithm not initialized");
-		}
+	public void saveState(ObjectOutputStream stream) throws IOException {
+		super.saveState(stream);
+		stream.writeObject(particles);
+		stream.writeObject(localBestParticles);
+		stream.writeObject(velocities);
+		leaders.saveState(stream);
 		
-		List<Solution> particlesList = copyToList(particles);
-		List<Solution> localBestParticlesList = copyToList(localBestParticles);
-		List<Solution> leadersList = leaders.asList(true);
-		List<Solution> archiveList = archive == null ? null : archive.asList(true);
-		double[][] velocitiesClone = new double[velocities.length][];
-		
-		for (int i = 0; i < velocities.length; i++) {
-			velocitiesClone[i] = velocities[i].clone();
+		if (archive != null) {
+			archive.saveState(stream);
 		}
-
-		return new PSOAlgorithmState(getNumberOfEvaluations(), particlesList,
-				localBestParticlesList, leadersList, archiveList, velocitiesClone);
 	}
 
 	@Override
-	public void setState(Object objState) throws NotSerializableException {
-		super.initialize();
-
-		PSOAlgorithmState state = (PSOAlgorithmState)objState;
+	public void loadState(ObjectInputStream stream) throws IOException, ClassNotFoundException {
+		super.loadState(stream);
+		particles = (Solution[])stream.readObject();
+		localBestParticles = (Solution[])stream.readObject();
+		velocities = (double[][])stream.readObject();
+		leaders.loadState(stream);
 		
-		numberOfEvaluations = state.getNumberOfEvaluations();
-		particles = new Solution[swarmSize];
-		localBestParticles = new Solution[swarmSize];
-		velocities = new double[swarmSize][problem.getNumberOfVariables()];
-		
-		if (state.getParticles().size() != swarmSize) {
-			throw new NotSerializableException("swarmSize does not match serialized state");
-		}
-
-		for (int i = 0; i < swarmSize; i++) {
-			particles[i] = state.getParticles().get(i);
-		}
-		
-		for (int i = 0; i < swarmSize; i++) {
-			localBestParticles[i] = state.getLocalBestParticles().get(i);
-		}
-		
-		leaders.addAll(state.getLeaders());
-		leaders.update();
-
 		if (archive != null) {
-			archive.addAll(state.getArchive());
-		}
-		
-		for (int i = 0; i < swarmSize; i++) {
-			for (int j = 0; j < problem.getNumberOfVariables(); j++) {
-				velocities[i][j] = state.getVelocities()[i][j];
-			}
+			archive.loadState(stream);
 		}
 	}
 	
@@ -478,123 +447,4 @@ public abstract class AbstractPSOAlgorithm extends AbstractAlgorithm implements 
 		return result;
 	}
 	
-	/**
-	 * Proxy for serializing and deserializing the state of an
-	 * {@code AbstractPSOAlgorithm}. This proxy supports saving
-	 * the {@code numberOfEvaluations}, {@code population} and {@code archive}.
-	 */
-	private static class PSOAlgorithmState implements Serializable {
-
-		private static final long serialVersionUID = -1895823731827106938L;
-
-		/**
-		 * The number of objective function evaluations.
-		 */
-		private final int numberOfEvaluations;
-
-		/**
-		 * The particles stored in a serializable list.
-		 */
-		private final List<Solution> particles;
-
-		/**
-		 * The local best particles stored in a serializable list.
-		 */
-		private final List<Solution> localBestParticles;
-		
-		/**
-		 * The leaders stored in a serializable list.
-		 */
-		private final List<Solution> leaders;
-		
-		/**
-		 * The archive stored in a serializable list.
-		 */
-		private final List<Solution> archive;
-		
-		/**
-		 * The velocities.
-		 */
-		private final double[][] velocities;
-
-		/**
-		 * Constructs a proxy to serialize and deserialize the state of an 
-		 * {@code AbstractPSOAlgorithm}.
-		 * 
-		 * @param numberOfEvaluations the number of objective function
-		 *        evaluations
-		 * @param population the population stored in a serializable list
-		 * @param archive the archive stored in a serializable list
-		 */
-		public PSOAlgorithmState(int numberOfEvaluations,
-				List<Solution> particles,
-				List<Solution> localBestParticles,
-				List<Solution> leaders,
-				List<Solution> archive,
-				double[][] velocities) {
-			super();
-			this.numberOfEvaluations = numberOfEvaluations;
-			this.particles = particles;
-			this.localBestParticles = localBestParticles;
-			this.leaders = leaders;
-			this.archive = archive;
-			this.velocities = velocities;
-		}
-
-		/**
-		 * Returns the number of objective function evaluations.
-		 * 
-		 * @return the number of objective function evaluations
-		 */
-		public int getNumberOfEvaluations() {
-			return numberOfEvaluations;
-		}
-
-		/**
-		 * Returns the particles stored in a serializable list.
-		 * 
-		 * @return the particles stored in a serializable list
-		 */
-		public List<Solution> getParticles() {
-			return particles;
-		}
-
-		/**
-		 * Returns the local best particles stored in a serializable list.
-		 * 
-		 * @return the local best particles stored in a serializable list
-		 */
-		public List<Solution> getLocalBestParticles() {
-			return localBestParticles;
-		}
-
-		/**
-		 * Returns the leaders stored in a serializable list.
-		 * 
-		 * @return the leaders stored in a serializable list
-		 */
-		public List<Solution> getLeaders() {
-			return leaders;
-		}
-
-		/**
-		 * Returns the velocities.
-		 * 
-		 * @return the velocities
-		 */
-		public double[][] getVelocities() {
-			return velocities;
-		}
-
-		/**
-		 * Returns the archive stored in a serializable list.
-		 * 
-		 * @return the archive stored in a serializable list
-		 */
-		public List<Solution> getArchive() {
-			return archive;
-		}
-
-	}
-
 }

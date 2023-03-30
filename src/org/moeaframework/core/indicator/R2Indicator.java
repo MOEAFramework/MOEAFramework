@@ -65,7 +65,7 @@ public class R2Indicator extends RIndicator {
 	@Override
 	public double evaluate(NondominatedPopulation population) {
 		return expectedUtility(
-				getNormalizedReferenceSet()) - expectedUtility(population);
+				getNormalizedReferenceSet()) - expectedUtility(normalize(population));
 	}
 
 }

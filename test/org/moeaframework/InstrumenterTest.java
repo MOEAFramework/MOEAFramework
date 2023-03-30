@@ -17,8 +17,9 @@
  */
 package org.moeaframework;
 
-import java.io.NotSerializableException;
-import java.io.Serializable;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Stack;
@@ -127,12 +128,12 @@ public class InstrumenterTest {
 		}
 
 		@Override
-		public Serializable getState() throws NotSerializableException {
+		public void saveState(ObjectOutputStream stream) throws IOException {
 			throw new UnsupportedOperationException();
 		}
 
 		@Override
-		public void setState(Object state) throws NotSerializableException {
+		public void loadState(ObjectInputStream stream) throws IOException, ClassNotFoundException {
 			throw new UnsupportedOperationException();
 		}
 		

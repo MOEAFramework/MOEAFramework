@@ -19,6 +19,9 @@ package org.moeaframework.algorithm;
 
 import static org.moeaframework.core.FastNondominatedSorting.RANK_ATTRIBUTE;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -607,6 +610,21 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 	@Override
 	public void truncate(int size) {
 		truncate(size, new RankComparator());
+	}
+	
+	@Override
+	public void saveState(ObjectOutputStream stream) throws IOException {
+		super.saveState(stream);
+		stream.writeObject(idealPoint);
+		stream.writeObject(weights);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public void loadState(ObjectInputStream stream) throws IOException, ClassNotFoundException {
+		super.loadState(stream);
+		idealPoint = (double[])stream.readObject();
+		weights = (List<double[]>)stream.readObject();
 	}
 	
 }

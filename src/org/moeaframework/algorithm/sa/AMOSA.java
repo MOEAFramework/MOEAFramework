@@ -17,12 +17,10 @@
  */
 package org.moeaframework.algorithm.sa;
 
-import java.io.NotSerializableException;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
-import org.moeaframework.algorithm.AlgorithmInitializationException;
 import org.moeaframework.core.Initialization;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PRNG;
@@ -467,122 +465,23 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 	public NondominatedPopulation getResult() {
 		return archive;
 	}
-
+	
 	@Override
-	public Serializable getState() throws NotSerializableException {
-		if (!isInitialized()) {
-			throw new AlgorithmInitializationException(this, 
-					"algorithm not initialized");
-		}
-
-		Solution current = this.currentPoint;
-		List<Solution> archiveList = new ArrayList<Solution>();
+	public void saveState(ObjectOutputStream stream) throws IOException {
+		super.saveState(stream);
 
 		if (archive != null) {
-			for (Solution solution : archive) {
-				archiveList.add(solution);
-			}
+			archive.saveState(stream);
 		}
-
-		return new AMOSAAlgorithmState(getNumberOfEvaluations(), current, archiveList, temperature);
 	}
 
 	@Override
-	public void setState(Object objState) throws NotSerializableException {
-		super.initialize();
+	public void loadState(ObjectInputStream stream) throws IOException, ClassNotFoundException {
+		super.loadState(stream);
 
-		AMOSAAlgorithmState state = (AMOSAAlgorithmState)objState;
-
-		numberOfEvaluations = state.getNumberOfEvaluations();
-		currentPoint = state.getCurrent();
-		temperature = state.getTemperature();
-
-		if (archive != null) {
-			archive.addAll(state.getArchive());
+		if (this.archive != null) {
+			archive.loadState(stream);
 		}
 	}
 
-	/**
-	 * Proxy for serializing and deserializing the state of an
-	 * {@code AMOSAAlgorithm}. This proxy supports saving
-	 * the {@code numberOfEvaluations}, {@code current} and {@code archive}.
-	 */
-	private static class AMOSAAlgorithmState implements Serializable {
-
-		private static final long serialVersionUID = 5456685096695481165L;
-
-		/**
-		 * The number of objective function evaluations.
-		 */
-		private final int numberOfEvaluations;
-
-		/**
-		 * The current object is stored in a serializable object.
-		 */
-		private final Solution current;
-
-		/**
-		 * The temperature
-		 */
-		private final double temperature;
-
-		/**
-		 * The archive stored in a serializable list.
-		 */
-		private final List<Solution> archive;
-
-		/**
-		 * Constructs a proxy to serialize and deserialize the state of an 
-		 * {@code AbstractEvolutionaryAlgorithm}.
-		 * 
-		 * @param numberOfEvaluations the number of objective function
-		 *        evaluations
-		 * @param population the population stored in a serializable list
-		 * @param archive the archive stored in a serializable list
-		 */
-		public AMOSAAlgorithmState(int numberOfEvaluations,
-				Solution current, List<Solution> archive, double temperature) {
-			super();
-			this.numberOfEvaluations = numberOfEvaluations;
-			this.current = current;
-			this.archive = archive;
-			this.temperature = temperature;
-		}
-
-		/**
-		 * Returns the number of objective function evaluations.
-		 * 
-		 * @return the number of objective function evaluations
-		 */
-		public int getNumberOfEvaluations() {
-			return numberOfEvaluations;
-		}
-
-		/**
-		 * Returns the population stored in a serializable list.
-		 * 
-		 * @return the population stored in a serializable list
-		 */
-		public Solution getCurrent() {
-			return current;
-		}
-
-		/**
-		 * Returns the archive stored in a serializable list.
-		 * 
-		 * @return the archive stored in a serializable list
-		 */
-		public List<Solution> getArchive() {
-			return archive;
-		}
-
-		/**
-		 * Returns the temperature.
-		 * 
-		 * @return the temperature
-		 */
-		public double getTemperature() {
-			return temperature;
-		}
-	}
 }

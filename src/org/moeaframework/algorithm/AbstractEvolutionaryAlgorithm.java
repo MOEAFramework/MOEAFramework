@@ -17,10 +17,9 @@
  */
 package org.moeaframework.algorithm;
 
-import java.io.NotSerializableException;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 import org.moeaframework.core.EvolutionaryAlgorithm;
 import org.moeaframework.core.FrameworkException;
@@ -218,112 +217,25 @@ public abstract class AbstractEvolutionaryAlgorithm extends AbstractAlgorithm
 		Validate.notNull("initialization", initialization);
 		this.initialization = initialization;
 	}
-
+	
 	@Override
-	public Serializable getState() throws NotSerializableException {
-		if (!isInitialized()) {
-			throw new AlgorithmInitializationException(this, "algorithm not initialized");
-		}
-
-		List<Solution> populationList = new ArrayList<Solution>();
-		List<Solution> archiveList = new ArrayList<Solution>();
-
-		for (Solution solution : population) {
-			populationList.add(solution);
-		}
-
+	public void saveState(ObjectOutputStream stream) throws IOException {
+		super.saveState(stream);
+		population.saveState(stream);
+		
 		if (archive != null) {
-			for (Solution solution : archive) {
-				archiveList.add(solution);
-			}
+			archive.saveState(stream);
 		}
-
-		return new EvolutionaryAlgorithmState(getNumberOfEvaluations(),
-				populationList, archiveList);
 	}
 
 	@Override
-	public void setState(Object objState) throws NotSerializableException {
-		super.initialize();
-
-		EvolutionaryAlgorithmState state = (EvolutionaryAlgorithmState)objState;
-
-		numberOfEvaluations = state.getNumberOfEvaluations();
-		population.addAll(state.getPopulation());
-
+	public void loadState(ObjectInputStream stream) throws IOException, ClassNotFoundException {
+		super.loadState(stream);
+		population.loadState(stream);
+		
 		if (archive != null) {
-			archive.addAll(state.getArchive());
+			archive.loadState(stream);
 		}
-	}
-
-	/**
-	 * Proxy for serializing and deserializing the state of an
-	 * {@code AbstractEvolutionaryAlgorithm}. This proxy supports saving
-	 * the {@code numberOfEvaluations}, {@code population} and {@code archive}.
-	 */
-	private static class EvolutionaryAlgorithmState implements Serializable {
-
-		private static final long serialVersionUID = -6186688380313335557L;
-
-		/**
-		 * The number of objective function evaluations.
-		 */
-		private final int numberOfEvaluations;
-
-		/**
-		 * The population stored in a serializable list.
-		 */
-		private final List<Solution> population;
-
-		/**
-		 * The archive stored in a serializable list.
-		 */
-		private final List<Solution> archive;
-
-		/**
-		 * Constructs a proxy to serialize and deserialize the state of an 
-		 * {@code AbstractEvolutionaryAlgorithm}.
-		 * 
-		 * @param numberOfEvaluations the number of objective function
-		 *        evaluations
-		 * @param population the population stored in a serializable list
-		 * @param archive the archive stored in a serializable list
-		 */
-		public EvolutionaryAlgorithmState(int numberOfEvaluations,
-				List<Solution> population, List<Solution> archive) {
-			super();
-			this.numberOfEvaluations = numberOfEvaluations;
-			this.population = population;
-			this.archive = archive;
-		}
-
-		/**
-		 * Returns the number of objective function evaluations.
-		 * 
-		 * @return the number of objective function evaluations
-		 */
-		public int getNumberOfEvaluations() {
-			return numberOfEvaluations;
-		}
-
-		/**
-		 * Returns the population stored in a serializable list.
-		 * 
-		 * @return the population stored in a serializable list
-		 */
-		public List<Solution> getPopulation() {
-			return population;
-		}
-
-		/**
-		 * Returns the archive stored in a serializable list.
-		 * 
-		 * @return the archive stored in a serializable list
-		 */
-		public List<Solution> getArchive() {
-			return archive;
-		}
-
 	}
 
 }

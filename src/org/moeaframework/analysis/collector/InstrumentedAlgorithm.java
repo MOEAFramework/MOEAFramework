@@ -17,8 +17,9 @@
  */
 package org.moeaframework.analysis.collector;
 
-import java.io.NotSerializableException;
-import java.io.Serializable;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,12 +35,12 @@ public class InstrumentedAlgorithm extends PeriodicAction {
 	/**
 	 * The observations recorded from this algorithm.
 	 */
-	private final Observations observations;
+	private Observations observations;
 	
 	/**
 	 * The collectors responsible for recording the necessary information.
 	 */
-	private final List<Collector> collectors;
+	private List<Collector> collectors;
 
 	/**
 	 * Decorates the specified algorithm to periodically collect information
@@ -97,74 +98,16 @@ public class InstrumentedAlgorithm extends PeriodicAction {
 		observations.add(observation);
 	}
 	
-	/**
-	 * Proxy for serializing and deserializing the state of an
-	 * {@code InstrumentedAlgorithm} instance. This proxy supports saving
-	 * the underlying algorithm state and the observations.
-	 */
-	private static class InstrumentedAlgorithmState implements Serializable {
-
-		private static final long serialVersionUID = -313598408729472790L;
-
-		/**
-		 * The state of the underlying algorithm.
-		 */
-		private final Serializable algorithmState;
-		
-		/**
-		 * The {@code observations} from the {@code InstrumentedAlgorithm} instance.
-		 */
-		private final Observations observations;
-
-		/**
-		 * Constructs a proxy for storing the state of an {@code InstrumentedAlgorithm} instance.
-		 * 
-		 * @param algorithmState the state of the underlying algorithm
-		 * @param observations the {@code observations} from the {@code InstrumentedAlgorithm} instance
-		 */
-		public InstrumentedAlgorithmState(Serializable algorithmState, Observations observations) {
-			super();
-			this.algorithmState = algorithmState;
-			this.observations = observations;
-		}
-
-		/**
-		 * Returns the underlying algorithm state.
-		 * 
-		 * @return the underlying algorithm state
-		 */
-		public Serializable getAlgorithmState() {
-			return algorithmState;
-		}
-
-		/**
-		 * Returns the {@code observations} from the {@code InstrumentedAlgorithm} instance.
-		 * 
-		 * @return the {@code observations} from the {@code InstrumentedAlgorithm} instance
-		 */
-		public Observations getObservations() {
-			return observations;
-		}
-		
+	@Override
+	public void saveState(ObjectOutputStream stream) throws IOException {
+		super.saveState(stream);
+		stream.writeObject(observations);
 	}
 
 	@Override
-	public Serializable getState() throws NotSerializableException {
-		return new InstrumentedAlgorithmState(super.getState(), observations);
-	}
-
-	@Override
-	public void setState(Object objState) throws NotSerializableException {
-		InstrumentedAlgorithmState state = (InstrumentedAlgorithmState)objState;
-		
-		super.setState(state.getAlgorithmState());
-		
-		//copy the stored observations content
-		Observations storedObservations = state.getObservations();
-		
-		for (Observation observation : storedObservations) {
-			observations.add(observation);
-		}
+	public void loadState(ObjectInputStream stream) throws IOException, ClassNotFoundException {
+		super.loadState(stream);
+		observations = (Observations)stream.readObject();
 	}
 	
 }

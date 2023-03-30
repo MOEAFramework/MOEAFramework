@@ -17,6 +17,9 @@
  */
 package org.moeaframework.core;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -33,7 +36,7 @@ import org.moeaframework.util.format.TabularData;
 /**
  * A collection of solutions and common methods for manipulating the collection.
  */
-public class Population implements Iterable<Solution>, Formattable<Solution> {
+public class Population implements Iterable<Solution>, Formattable<Solution>, Stateful {
 
 	/**
 	 * The internal data storage for solutions.
@@ -455,6 +458,7 @@ public class Population implements Iterable<Solution>, Formattable<Solution> {
 				currentIndex = -1;
 				expectedModCount++;
 			} catch (IndexOutOfBoundsException e) {
+				System.out.println(e + " " + size() + " " + currentIndex + " " + nextIndex + " " + expectedModCount);
 				throw new ConcurrentModificationException();
 			}
 		}
@@ -471,6 +475,18 @@ public class Population implements Iterable<Solution>, Formattable<Solution> {
 				throw new ConcurrentModificationException();
 			}
 		}
+	}
+
+	@Override
+	public void saveState(ObjectOutputStream stream) throws IOException {
+		stream.writeObject(data);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public void loadState(ObjectInputStream stream) throws IOException, ClassNotFoundException {
+		data.clear();
+		data.addAll((List<Solution>)stream.readObject());
 	}
 
 }

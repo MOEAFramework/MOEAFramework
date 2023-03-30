@@ -2,6 +2,13 @@
 
 This page documents notable changes introduced in each chronological release of the MOEA Framework.
 
+## Version 3.6 (TBD)
+
+  * Fixes bug in R indicators where the approximation set was not being normalized.
+  
+  * Redesigns and simplifies how state and resumability work.  All algorithms can now be resumed using the
+    Checkpoints wrapper.
+  
 
 ## Version 3.5 (24 Mar 2023)
 
