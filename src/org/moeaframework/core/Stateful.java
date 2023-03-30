@@ -12,7 +12,9 @@ import java.io.Serializable;
 public interface Stateful {
 	
 	/**
-	 * Writes the state of this object to the stream.
+	 * Writes the state of this object to the stream.  The order that objects are written to the stream
+	 * is important.  We recommend first calling {@code super.saveState(stream)} followed by writing each
+	 * field.
 	 * 
 	 * @param stream the stream
 	 * @throws IOException if an I/O error occurred
@@ -22,7 +24,8 @@ public interface Stateful {
 	}
 
 	/**
-	 * Loads the state of this object from the stream.
+	 * Loads the state of this object from the stream.  The order for reading objects from the stream must match
+	 * the order they are written to the stream in {@link #saveState(ObjectOutputStream)}.
 	 * 
 	 * @param stream the stream
 	 * @throws IOException if an I/O error occurred
@@ -58,6 +61,33 @@ public interface Stateful {
 	public default void setState(Object state) throws NotSerializableException {
 		throw new NotSerializableException(getClass().getSimpleName());
 	}
+	
+	/**
+	 * Writes a field into the object stream that can be validated using
+	 * {@link #checkTypeSafety(ObjectInputStream, Object)}.
+	 * 
+	 * @param stream the stream
+	 * @param object the stateful object
+	 * @throws IOException if an I/O error occurred
+	 */
+	public static void writeTypeSafety(ObjectOutputStream stream, Object object) throws IOException {
+		stream.writeUTF(object.getClass().getCanonicalName());
+	}
 
+	/**
+	 * Validates the type safety information embedded in the object stream.
+	 * 
+	 * @param stream the stream
+	 * @param object the stateful object
+	 * @throws IOException if an I/O error occurred or the type safety check failed
+	 */
+	public static void checkTypeSafety(ObjectInputStream stream, Object object) throws IOException {
+		String expectedClassName = stream.readUTF();
+		
+		if (expectedClassName != null && !expectedClassName.equals(object.getClass().getCanonicalName())) {
+			throw new IOException("failed to load state created from " + expectedClassName + " into " +
+					object.getClass().getCanonicalName());
+		}
+	}
 
 }

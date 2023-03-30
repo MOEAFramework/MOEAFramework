@@ -33,6 +33,7 @@ import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.Stateful;
 import org.moeaframework.core.comparator.AggregateConstraintComparator;
 import org.moeaframework.core.comparator.ChainedComparator;
 import org.moeaframework.core.comparator.FitnessComparator;
@@ -1183,7 +1184,7 @@ public class CMAES extends AbstractAlgorithm implements Configurable {
 	
 	@Override
 	public void saveState(ObjectOutputStream stream) throws IOException {
-		stream.writeObject(getClass().getCanonicalName());
+		Stateful.writeTypeSafety(stream, this);
 		stream.writeInt(numberOfEvaluations);
 		stream.writeObject(xmean);
 		stream.writeInt(iteration);
@@ -1203,13 +1204,7 @@ public class CMAES extends AbstractAlgorithm implements Configurable {
 
 	@Override
 	public void loadState(ObjectInputStream stream) throws IOException, ClassNotFoundException {
-		String className = (String)stream.readObject();
-		
-		if (className != null && !className.equals(getClass().getCanonicalName())) {
-			throw new IOException("attempting to restore state of " + getClass().getCanonicalName() +
-					" with data from " + className);
-		}
-		
+		Stateful.checkTypeSafety(stream, this);
 		numberOfEvaluations = stream.readInt();
 		xmean = (double[])stream.readObject();
 		

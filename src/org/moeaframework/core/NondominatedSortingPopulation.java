@@ -21,6 +21,7 @@ import static org.moeaframework.core.NondominatedSorting.RANK_ATTRIBUTE;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Comparator;
 import java.util.Iterator;
 
@@ -237,9 +238,15 @@ public class NondominatedSortingPopulation extends Population {
 	}
 	
 	@Override
+	public void saveState(ObjectOutputStream stream) throws IOException {
+		super.saveState(stream);
+		stream.writeBoolean(modified);
+	}
+	
+	@Override
 	public void loadState(ObjectInputStream stream) throws IOException, ClassNotFoundException {
 		super.loadState(stream);
-		update();
+		modified = stream.readBoolean();
 	}
 
 }

@@ -25,6 +25,7 @@ import java.util.Arrays;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.Stateful;
 import org.moeaframework.core.configuration.Validate;
 
 /**
@@ -211,7 +212,7 @@ public abstract class AbstractAlgorithm implements Algorithm {
 			throw new AlgorithmInitializationException(this, "algorithm not initialized");
 		}
 		
-		stream.writeObject(getClass().getCanonicalName());
+		Stateful.writeTypeSafety(stream, this);
 		stream.writeInt(numberOfEvaluations);
 	}
 
@@ -220,13 +221,7 @@ public abstract class AbstractAlgorithm implements Algorithm {
 		assertNotInitialized();
 		initialized = true;
 		
-		String className = (String)stream.readObject();
-		
-		if (className != null && !className.equals(getClass().getCanonicalName())) {
-			throw new IOException("attempting to restore state of " + getClass().getCanonicalName() +
-					" with data from " + className);
-		}
-		
+		Stateful.checkTypeSafety(stream, this);
 		numberOfEvaluations = stream.readInt();
 	}
 

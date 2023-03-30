@@ -27,6 +27,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import org.moeaframework.core.Algorithm;
+import org.moeaframework.util.io.FileUtils;
 
 /**
  * Decorates an {@link Algorithm} to periodically save checkpoint files from
@@ -58,8 +59,7 @@ public class Checkpoints extends PeriodicAction {
 	 * @param checkpointFrequency the number of objective function evaluations
 	 *        between checkpoints
 	 */
-	public Checkpoints(Algorithm algorithm, File stateFile,
-			int checkpointFrequency) {
+	public Checkpoints(Algorithm algorithm, File stateFile, int checkpointFrequency) {
 		super(algorithm, checkpointFrequency, FrequencyType.EVALUATIONS);
 		this.stateFile = stateFile;
 
@@ -68,8 +68,7 @@ public class Checkpoints extends PeriodicAction {
 				loadFromStateFile();
 			} catch (Exception e) {
 				e.printStackTrace();
-				System.err.println(
-						"an error occurred while reading the state file");
+				System.err.println("an error occurred while reading the state file");
 			}
 		}
 	}
@@ -81,10 +80,14 @@ public class Checkpoints extends PeriodicAction {
 	 * @throws IOException if an I/O error occurred
 	 */
 	private void saveToStateFile() throws IOException {
+		File tempFile = File.createTempFile("checkpoint", "state");
+		
 		try (ObjectOutputStream oos = new ObjectOutputStream(new BufferedOutputStream(
-					new FileOutputStream(stateFile)))) {
+					new FileOutputStream(tempFile)))) {
 			algorithm.saveState(oos);
 		}
+		
+		FileUtils.move(tempFile, stateFile);
 	}
 
 	/**
@@ -92,8 +95,7 @@ public class Checkpoints extends PeriodicAction {
 	 * 
 	 * @return the state
 	 * @throws IOException if an I/O error occurred
-	 * @throws ClassNotFoundException if the class of a serialized object could
-	 *         not be found.
+	 * @throws ClassNotFoundException if the class of a serialized object could not be found.
 	 */
 	private void loadFromStateFile() throws IOException, ClassNotFoundException {
 		try (ObjectInputStream ois = new ObjectInputStream(new BufferedInputStream(
@@ -107,8 +109,7 @@ public class Checkpoints extends PeriodicAction {
 		try {
 			saveToStateFile();
 		} catch (IOException e) {
-			System.err.println(
-					"an error occurred while writing the state file");
+			System.err.println("an error occurred while writing the state file");
 		}
 	}
 
