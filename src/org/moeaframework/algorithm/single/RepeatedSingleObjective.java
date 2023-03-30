@@ -17,6 +17,9 @@
  */
 package org.moeaframework.algorithm.single;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiFunction;
@@ -140,6 +143,30 @@ public class RepeatedSingleObjective extends AbstractAlgorithm {
 	protected void iterate() {
 		for (Algorithm algorithm : algorithms) {
 			algorithm.step();
+		}
+	}
+	
+	@Override
+	public void saveState(ObjectOutputStream stream) throws IOException {
+		super.saveState(stream);
+		stream.writeInt(algorithms.size());
+		
+		for (Algorithm algorithm : algorithms) {
+			algorithm.saveState(stream);
+		}
+	}
+
+	@Override
+	public void loadState(ObjectInputStream stream) throws IOException, ClassNotFoundException {
+		super.loadState(stream);
+		int expectedSize = stream.readInt();
+		
+		if (algorithms.size() != expectedSize) {
+			throw new IOException("the number of instances used by RSO differs from the loaded state");
+		}
+		
+		for (Algorithm algorithm : algorithms) {
+			algorithm.loadState(stream);
 		}
 	}
 

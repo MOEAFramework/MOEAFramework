@@ -17,6 +17,9 @@
  */
 package org.moeaframework.core;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Iterator;
 
 import org.moeaframework.core.comparator.EpsilonBoxDominanceComparator;
@@ -195,6 +198,20 @@ public class EpsilonBoxDominanceArchive extends NondominatedPopulation {
 	 */
 	public int getNumberOfDominatingImprovements() {
 		return numberOfDominatingImprovements;
+	}
+	
+	@Override
+	public void saveState(ObjectOutputStream stream) throws IOException {
+		super.saveState(stream);
+		stream.writeInt(numberOfImprovements);
+		stream.writeInt(numberOfDominatingImprovements);
+	}
+
+	@Override
+	public void loadState(ObjectInputStream stream) throws IOException, ClassNotFoundException {
+		super.loadState(stream);
+		numberOfImprovements = stream.readInt();
+		numberOfDominatingImprovements = stream.readInt();
 	}
 
 }

@@ -17,9 +17,9 @@
  */
 package org.moeaframework.algorithm;
 
-import java.io.NotSerializableException;
-import java.io.Serializable;
-
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
@@ -161,92 +161,18 @@ public abstract class PeriodicAction implements Algorithm {
 	 */
 	public abstract void doAction();
 	
-	/**
-	 * Proxy for serializing and deserializing the state of a
-	 * {@code PeriodicAction}. This proxy supports saving
-	 * the underlying algorithm state, {@code iteration} and
-	 * {@code lastInvocation}.
-	 */
-	private static class PeriodicActionState implements Serializable {
-
-		private static final long serialVersionUID = -8654866332843263225L;
-
-		/**
-		 * The state of the underlying algorithm.
-		 */
-		private final Serializable algorithmState;
-		
-		/**
-		 * The {@code iteration} value of the {@code PeriodicAction}.
-		 */
-		private final int iteration;
-
-		/**
-		 * The {@code lastInvocation} value of the {@code PeriodicAction}.
-		 */
-		private final int lastInvocation;
-		
-		/**
-		 * Constructs a proxy for storing the state of a {@code PeriodicAction}.
-		 * 
-		 * @param algorithmState the state of the underlying algorithm
-		 * @param iteration the {@code iteration} value of the
-		 *        {@code PeriodicAction}
-		 * @param lastInvocation the {@code lastInvocation} value of the
-		 *        {@code PeriodicAction}
-		 */
-		public PeriodicActionState(Serializable algorithmState, int iteration,
-				int lastInvocation) {
-			super();
-			this.algorithmState = algorithmState;
-			this.iteration = iteration;
-			this.lastInvocation = lastInvocation;
-		}
-
-		/**
-		 * Returns the underlying algorithm state.
-		 * 
-		 * @return the underlying algorithm state
-		 */
-		public Serializable getAlgorithmState() {
-			return algorithmState;
-		}
-
-		/**
-		 * Returns the {@code iteration} value of the {@code PeriodicAction}.
-		 * 
-		 * @return the {@code iteration} value of the {@code PeriodicAction}
-		 */
-		public int getIteration() {
-			return iteration;
-		}
-
-		/**
-		 * Returns the {@code lastInvocation} value of the
-		 * {@code PeriodicAction}.
-		 * 
-		 * @return the {@code lastInvocation} value of the
-		 *         {@code PeriodicAction}
-		 */
-		public int getLastInvocation() {
-			return lastInvocation;
-		}
-		
+	@Override
+	public void saveState(ObjectOutputStream stream) throws IOException {
+		algorithm.saveState(stream);
+		stream.writeInt(iteration);
+		stream.writeInt(lastInvocation);
 	}
 
 	@Override
-	public Serializable getState() throws NotSerializableException {
-		return new PeriodicActionState(algorithm.getState(), iteration,
-				lastInvocation);
-	}
-
-	@Override
-	public void setState(Object state) throws NotSerializableException {
-		PeriodicActionState periodicActionState = (PeriodicActionState)state;
-		
-		algorithm.setState(periodicActionState.getAlgorithmState());
-		iteration = periodicActionState.getIteration();
-		lastInvocation = periodicActionState.getLastInvocation();
+	public void loadState(ObjectInputStream stream) throws IOException, ClassNotFoundException {
+		algorithm.loadState(stream);
+		iteration = stream.readInt();
+		lastInvocation = stream.readInt();
 	}
 
 }

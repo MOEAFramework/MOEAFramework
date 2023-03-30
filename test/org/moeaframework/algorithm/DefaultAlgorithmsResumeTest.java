@@ -21,7 +21,6 @@ import java.io.File;
 import java.io.IOException;
 
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.moeaframework.TestUtils;
 import org.moeaframework.analysis.collector.IndicatorCollector;
@@ -31,12 +30,10 @@ import org.moeaframework.analysis.collector.Observations;
 import org.moeaframework.analysis.sensitivity.EpsilonHelper;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
-import org.moeaframework.core.EvolutionaryAlgorithm;
 import org.moeaframework.core.Initialization;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.NondominatedSortingPopulation;
 import org.moeaframework.core.PRNG;
-import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.comparator.ChainedComparator;
@@ -108,7 +105,6 @@ public class DefaultAlgorithmsResumeTest {
 	}
 
 	@Test
-	@Ignore("occasionally fails due to the AdaptiveGridArchive not being serialized properly")
 	public void testPESA2() throws IOException {
 		test("PESA2");
 	}
@@ -159,13 +155,11 @@ public class DefaultAlgorithmsResumeTest {
 	}
 	
 	@Test
-	@Ignore("currently resume capability is not supported")
 	public void testRSO() throws IOException {
 		test("RSO");
 	}
 	
 	@Test
-	@Ignore("currently resume capability is not supported")
 	public void testMSOPS() throws IOException {
 		test("MSOPS");
 	}
@@ -197,19 +191,6 @@ public class DefaultAlgorithmsResumeTest {
 				algorithmName, new TypedProperties(), problem);
 		
 		for (int i = 0; i < N && !algorithm.isTerminated(); i++) {
-			// Due to how NondominatedSortingPopulation automatically
-			// recalculates ranks and crowding distances, the checkpoint
-			// version slightly differs due to an extra update.  This hack
-			// allows this test to align with the checkpoint version.
-			if (algorithm instanceof EvolutionaryAlgorithm) {
-				Population population = 
-						((EvolutionaryAlgorithm)algorithm).getPopulation();
-							
-				if (population instanceof NondominatedSortingPopulation) {
-					((NondominatedSortingPopulation)population).update();
-				}
-			}
-			
 			algorithm.step();
 		}
 		
@@ -251,19 +232,6 @@ public class DefaultAlgorithmsResumeTest {
 				new Hypervolume(problem, referenceSet)).attach(algorithm));
 		
 		for (int i = 0; i < N; i++) {
-			// Due to how NondominatedSortingPopulation automatically
-			// recalculates ranks and crowding distances, the checkpoint
-			// version slightly differs due to an extra update.  This hack
-			// allows this test to align with the checkpoint version.
-			if (algorithm instanceof EvolutionaryAlgorithm) {
-				Population population = 
-						((EvolutionaryAlgorithm)algorithm).getPopulation();
-							
-				if (population instanceof NondominatedSortingPopulation) {
-					((NondominatedSortingPopulation)population).update();
-				}
-			}
-			
 			instrumentedAlgorithm.step();
 		}
 

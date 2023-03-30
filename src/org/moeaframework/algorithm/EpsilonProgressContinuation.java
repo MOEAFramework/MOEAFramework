@@ -17,8 +17,9 @@
  */
 package org.moeaframework.algorithm;
 
-import java.io.NotSerializableException;
-import java.io.Serializable;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.EpsilonBoxEvolutionaryAlgorithm;
@@ -97,81 +98,19 @@ public class EpsilonProgressContinuation extends AdaptiveTimeContinuation {
 	@Override
 	protected void restart(RestartType type) {
 		super.restart(type);
-
 		improvementsAtLastCheck = getArchive().getNumberOfImprovements();
 	}
 	
-	/**
-	 * Proxy for serializing and deserializing the state of an
-	 * {@code EpsilonProgressContinuation} instance. This proxy supports saving
-	 * the underlying algorithm state and {@code improvementsAtLastCheck}.
-	 */
-	private static class EpsilonProgressContinuationState implements
-	Serializable {
-
-		private static final long serialVersionUID = -4773227519517581809L;
-
-		/**
-		 * The state of the underlying algorithm.
-		 */
-		private final Serializable algorithmState;
-		
-		/**
-		 * The {@code improvementsAtLastCheck} value of the
-		 * {@code EpsilonProgressContinuation} instance.
-		 */
-		private final int improvementsAtLastCheck;
-
-		/**
-		 * Constructs a proxy for storing the state of an
-		 * {@code EpsilonProgressContinuation} instance.
-		 * 
-		 * @param algorithmState the state of the underlying algorithm
-		 * @param improvementsAtLastCheck the {@code improvementsAtLastCheck}
-		 *        value of the {@code EpsilonProgressContinuation} instance
-		 */
-		public EpsilonProgressContinuationState(Serializable algorithmState,
-				int improvementsAtLastCheck) {
-			super();
-			this.algorithmState = algorithmState;
-			this.improvementsAtLastCheck = improvementsAtLastCheck;
-		}
-
-		/**
-		 * Returns the underlying algorithm state.
-		 * 
-		 * @return the underlying algorithm state
-		 */
-		public Serializable getAlgorithmState() {
-			return algorithmState;
-		}
-
-		/**
-		 * Returns the {@code improvementsAtLastCheck} value of the
-		 * {@code EpsilonProgressContinuation} instance.
-		 * 
-		 * @return the {@code improvementsAtLastCheck} value of the
-		 *         {@code EpsilonProgressContinuation} instance
-		 */
-		public int getImprovementsAtLastCheck() {
-			return improvementsAtLastCheck;
-		}
-		
+	@Override
+	public void saveState(ObjectOutputStream stream) throws IOException {
+		super.saveState(stream);
+		stream.writeInt(improvementsAtLastCheck);
 	}
 
 	@Override
-	public Serializable getState() throws NotSerializableException {
-		return new EpsilonProgressContinuationState(super.getState(),
-				improvementsAtLastCheck);
-	}
-
-	@Override
-	public void setState(Object objState) throws NotSerializableException {
-		EpsilonProgressContinuationState state =
-				(EpsilonProgressContinuationState)objState;
-		
-		super.setState(state.getAlgorithmState());
-		improvementsAtLastCheck = state.getImprovementsAtLastCheck();
+	public void loadState(ObjectInputStream stream) throws IOException, ClassNotFoundException {
+		super.loadState(stream);
+		improvementsAtLastCheck = stream.readInt();
 	}
 
 }

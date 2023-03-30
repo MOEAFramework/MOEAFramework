@@ -17,13 +17,15 @@
  */
 package org.moeaframework.algorithm;
 
-import java.io.NotSerializableException;
-import java.io.Serializable;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Arrays;
 
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.Stateful;
 import org.moeaframework.core.configuration.Validate;
 
 /**
@@ -203,15 +205,24 @@ public abstract class AbstractAlgorithm implements Algorithm {
 
 		terminated = true;
 	}
-
+	
 	@Override
-	public Serializable getState() throws NotSerializableException {
-		throw new NotSerializableException(getClass().getName());
+	public void saveState(ObjectOutputStream stream) throws IOException {
+		if (!isInitialized()) {
+			throw new AlgorithmInitializationException(this, "algorithm not initialized");
+		}
+		
+		Stateful.writeTypeSafety(stream, this);
+		stream.writeInt(numberOfEvaluations);
 	}
 
 	@Override
-	public void setState(Object state) throws NotSerializableException {
-		throw new NotSerializableException(getClass().getName());
+	public void loadState(ObjectInputStream stream) throws IOException, ClassNotFoundException {
+		assertNotInitialized();
+		initialized = true;
+		
+		Stateful.checkTypeSafety(stream, this);
+		numberOfEvaluations = stream.readInt();
 	}
 
 }

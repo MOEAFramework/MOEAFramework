@@ -17,10 +17,6 @@
  */
 package org.moeaframework.core;
 
-import java.io.NotSerializableException;
-import java.io.Serializable;
-
-import org.moeaframework.algorithm.AlgorithmException;
 import org.moeaframework.core.termination.MaxFunctionEvaluations;
 
 /**
@@ -30,7 +26,7 @@ import org.moeaframework.core.termination.MaxFunctionEvaluations;
  * may completely solve a problem in one step or may require hundreds of
  * thousands of steps.
  */
-public interface Algorithm {
+public interface Algorithm extends Stateful {
 
 	/**
 	 * Returns the problem being solved by this algorithm.
@@ -117,28 +113,4 @@ public interface Algorithm {
 	 */
 	public void terminate();
 	
-	/**
-	 * Returns a {@code Serializable} object representing the internal state of
-	 * this algorithm.
-	 * 
-	 * @return a {@code Serializable} object representing the internal state of
-	 *         this algorithm
-	 * @throws NotSerializableException if this algorithm does not support
-	 *         serialization
-	 * @throws AlgorithmException if this algorithm has not yet been
-	 *         initialized
-	 */
-	public Serializable getState() throws NotSerializableException;
-
-	/**
-	 * Sets the internal state of of this algorithm.
-	 * 
-	 * @param state the internal state of this algorithm
-	 * @throws NotSerializableException if this algorithm does not support
-	 *         serialization
-	 * @throws AlgorithmException if this algorithm has already been
-	 *         initialized
-	 */
-	public void setState(Object state) throws NotSerializableException;
-
 }
