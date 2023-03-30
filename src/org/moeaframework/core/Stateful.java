@@ -71,7 +71,7 @@ public interface Stateful {
 	 * @throws IOException if an I/O error occurred
 	 */
 	public static void writeTypeSafety(ObjectOutputStream stream, Object object) throws IOException {
-		stream.writeUTF(object.getClass().getCanonicalName());
+		stream.writeObject(object.getClass().getCanonicalName());
 	}
 
 	/**
@@ -80,9 +80,10 @@ public interface Stateful {
 	 * @param stream the stream
 	 * @param object the stateful object
 	 * @throws IOException if an I/O error occurred or the type safety check failed
+	 * @throws ClassNotFoundException if the stream referenced a class that is not defined
 	 */
-	public static void checkTypeSafety(ObjectInputStream stream, Object object) throws IOException {
-		String expectedClassName = stream.readUTF();
+	public static void checkTypeSafety(ObjectInputStream stream, Object object) throws IOException, ClassNotFoundException {
+		String expectedClassName = (String)stream.readObject();
 		
 		if (expectedClassName != null && !expectedClassName.equals(object.getClass().getCanonicalName())) {
 			throw new IOException("failed to load state created from " + expectedClassName + " into " +
