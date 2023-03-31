@@ -17,11 +17,22 @@
  */
 package org.moeaframework.algorithm;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.LineNumberReader;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.junit.Assert;
 import org.junit.Assume;
 import org.moeaframework.Analyzer;
 import org.moeaframework.Executor;
+import org.moeaframework.core.Algorithm;
+import org.moeaframework.core.configuration.Configurable;
 import org.moeaframework.core.spi.AlgorithmFactory;
+import org.moeaframework.problem.MockRealProblem;
 import org.moeaframework.util.TypedProperties;
 
 /**
@@ -46,8 +57,7 @@ public abstract class AlgorithmTest {
 	 * @param algorithm2 the name of the second algorithm to test
 	 */
 	public void test(String problem, String algorithm1, String algorithm2) {
-		test(problem, algorithm1, algorithm2, false,
-				AlgorithmFactory.getInstance());
+		test(problem, algorithm1, algorithm2, false, AlgorithmFactory.getInstance());
 	}
 	
 	/**
@@ -60,10 +70,8 @@ public abstract class AlgorithmTest {
 	 * @param allowBetterPerformance do not fail if the MOEA Framework
 	 *        algorithm exceeds the performance
 	 */
-	public void test(String problem, String algorithm1, String algorithm2,
-			boolean allowBetterPerformance) {
-		test(problem, algorithm1, algorithm2, allowBetterPerformance,
-				AlgorithmFactory.getInstance());
+	public void test(String problem, String algorithm1, String algorithm2, boolean allowBetterPerformance) {
+		test(problem, algorithm1, algorithm2, allowBetterPerformance, AlgorithmFactory.getInstance());
 	}
 
 	/**
@@ -74,8 +82,7 @@ public abstract class AlgorithmTest {
 	 * @param algorithm2 the name of the second algorithm to test
 	 * @param factory the factory used to construct the algorithms
 	 */
-	public void test(String problem, String algorithm1, String algorithm2, 
-			AlgorithmFactory factory) {
+	public void test(String problem, String algorithm1, String algorithm2, AlgorithmFactory factory) {
 		test(problem, algorithm1, algorithm2, false, factory);
 	}
 	
@@ -89,8 +96,8 @@ public abstract class AlgorithmTest {
 	 *        algorithm exceeds the performance
 	 * @param factory the factory used to construct the algorithms
 	 */
-	public void test(String problem, String algorithm1, String algorithm2, 
-			boolean allowBetterPerformance, AlgorithmFactory factory) {
+	public void test(String problem, String algorithm1, String algorithm2, boolean allowBetterPerformance,
+			AlgorithmFactory factory) {
 		test(problem, algorithm1, new TypedProperties(), algorithm2,
 				new TypedProperties(), allowBetterPerformance, factory);
 	}
@@ -133,14 +140,12 @@ public abstract class AlgorithmTest {
 						.runSeeds(10));
 		
 		Analyzer.AnalyzerResults analyzerResults = analyzer.getAnalysis();
-		Analyzer.AlgorithmResult algorithmResult =
-				analyzerResults.get("A");
+		Analyzer.AlgorithmResult algorithmResult = analyzerResults.get("A");
 
 		int indifferences = 0;
 		
 		for (String indicator : algorithmResult.getIndicators()) {
-			indifferences += algorithmResult.get(indicator)
-					.getIndifferentAlgorithms().size();
+			indifferences += algorithmResult.get(indicator).getIndifferentAlgorithms().size();
 		}
 		
 		if (indifferences < 5) {
@@ -148,10 +153,8 @@ public abstract class AlgorithmTest {
 				int outperformance = 0;
 				
 				for (String indicator : algorithmResult.getIndicators()) {
-					double value1 = analyzerResults.get("A")
-							.get(indicator).getMedian();
-					double value2 = analyzerResults.get("B")
-							.get(indicator).getMedian();
+					double value1 = analyzerResults.get("A").get(indicator).getMedian();
+					double value2 = analyzerResults.get("B").get(indicator).getMedian();
 					
 					if (indicator.equals("Spacing") ||
 							indicator.equals("Hypervolume") ||

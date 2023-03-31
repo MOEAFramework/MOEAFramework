@@ -28,7 +28,7 @@ import org.moeaframework.util.TypedProperties;
  * Demonstrates the new configuration API to dynamically read and update
  * an algorithm's parameters.
  */
-public class GetAndSetConfiguration {
+public class ConfigurationExample {
 	
 	public static void main(String[] args) throws IOException {
 		Problem problem = new DTLZ2(2);

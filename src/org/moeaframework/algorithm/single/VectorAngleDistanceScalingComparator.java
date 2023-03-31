@@ -66,6 +66,11 @@ public class VectorAngleDistanceScalingComparator implements AggregateObjectiveC
 		this.q = q;
 	}
 	
+	/**
+	 * Returns the factor for scaling the effects of the angle.
+	 * 
+	 * @return the factor for scaling the effects of the angle
+	 */
 	public double getAngleScalingFactor() {
 		return q;
 	}

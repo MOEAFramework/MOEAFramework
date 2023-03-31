@@ -84,13 +84,14 @@ public abstract class AbstractSimulatedAnnealingAlgorithm extends AbstractAlgori
 	 */
 	protected NondominatedPopulation archive;
 
-	
 	/**
 	 * Constructs a new, abstract simulated annealing algorithm.
 	 * 
 	 * @param problem the problem to solve
-	 * @param initialTemperature the initial, or maximum temperature
+	 * @param initialTemperature the initial, or maximum, temperature
 	 * @param coolingSchedule the cooling schedule that determines how the temperature decreases over time
+	 * @param initialization the initialization method
+	 * @param mutation the mutation operator used to generate neighbors of the current point
 	 */
 	public AbstractSimulatedAnnealingAlgorithm(Problem problem, double initialTemperature,
 			CoolingSchedule coolingSchedule, Initialization initialization, Mutation mutation) {

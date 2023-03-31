@@ -29,8 +29,6 @@ import org.moeaframework.core.comparator.ChainedComparator;
  */
 public class LinearDominanceComparator extends ChainedComparator implements AggregateObjectiveComparator {
 
-	private static final long serialVersionUID = -2110850728860429004L;
-
 	/**
 	 * Constructs a new dominance comparator using a weighted linear aggregate
 	 * function and constraints.  Equal weights are used for each objective.

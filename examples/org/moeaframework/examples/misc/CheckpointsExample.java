@@ -32,7 +32,7 @@ import org.moeaframework.problem.DTLZ.DTLZ2;
  * Try running this example a few times.  Observe how the starting NFE picks up where the
  * prior run finished.
  */
-public class ResumeWithCheckpoints {
+public class CheckpointsExample {
 	
 	public static void main(String[] args) throws IOException {
 		Problem problem = new DTLZ2(2);

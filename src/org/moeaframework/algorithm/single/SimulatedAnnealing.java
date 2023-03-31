@@ -76,6 +76,8 @@ public class SimulatedAnnealing extends AbstractSimulatedAnnealingAlgorithm {
 	 * Creates a new instance of the Simulated Annealing (SA) algorithm.
 	 * 
 	 * @param problem the problem to solve
+	 * @param initialTemperature the initial temperature
+	 * @param coolingSchedule the cooling schedule
 	 * @param initialization the method for initializing solutions
 	 * @param mutation the mutation operator
 	 * @param terminationCondition the termination condition

@@ -26,6 +26,11 @@ import org.moeaframework.parallel.island.IslandModel;
  */
 public class ThreadedIslandExecutor extends BasicIslandExecutor {
 	
+	/**
+	 * Constructs a new executor that runs each island on a separate thread.
+	 * 
+	 * @param model the island model
+	 */
 	public ThreadedIslandExecutor(IslandModel model) {
 		super(model, Executors.newFixedThreadPool(model.getIslands().size()));
 	}

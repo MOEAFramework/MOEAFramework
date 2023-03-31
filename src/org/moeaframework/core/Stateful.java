@@ -41,7 +41,6 @@ public interface Stateful {
 	 * 
 	 * @return a {@code Serializable} object representing the internal state of this algorithm
 	 * @throws NotSerializableException if this algorithm does not support serialization
-	 * @throws AlgorithmException if this algorithm has not yet been initialized
 	 * @deprecated use {@link #loadState(ObjectInputStream)} instead
 	 */
 	@Deprecated
@@ -54,8 +53,7 @@ public interface Stateful {
 	 * 
 	 * @param state the internal state of this algorithm
 	 * @throws NotSerializableException if this algorithm does not support serialization
-	 * @throws AlgorithmException if this algorithm has already been initialized
-	 * @deprecated use {@link #saveState(ObjectOutputStream) instead
+	 * @deprecated use {@link #saveState(ObjectOutputStream)} instead
 	 */
 	@Deprecated
 	public default void setState(Object state) throws NotSerializableException {

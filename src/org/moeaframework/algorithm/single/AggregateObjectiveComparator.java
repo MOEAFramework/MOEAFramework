@@ -60,6 +60,12 @@ public interface AggregateObjectiveComparator extends DominanceComparator, Compa
 	 */
 	public double calculateFitness(Solution solution);
 	
+	/**
+	 * Creates an aggregate objective comparator from the given configuration.
+	 * 
+	 * @param properties the configuration
+	 * @return the comparator, or {@code null} if one is not explicitly configured
+	 */
 	public static AggregateObjectiveComparator fromConfiguration(TypedProperties properties) {
 		if (properties.contains("method") || properties.contains("weights")) {
 			String method = properties.getString("method", "linear");
@@ -80,6 +86,12 @@ public interface AggregateObjectiveComparator extends DominanceComparator, Compa
 		return null;
 	}
 	
+	/**
+	 * Returns the configuration for the given aggregate objective comparator.
+	 * 
+	 * @param comparator the comparator
+	 * @return the configuration
+	 */
 	public static TypedProperties toConfiguration(AggregateObjectiveComparator comparator) {
 		TypedProperties properties = new TypedProperties();
 		
