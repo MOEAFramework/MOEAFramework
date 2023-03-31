@@ -17,6 +17,8 @@
  */
 package org.moeaframework.algorithm.single;
 
+import java.util.Comparator;
+
 import org.moeaframework.algorithm.sa.AbstractSimulatedAnnealingAlgorithm;
 import org.moeaframework.algorithm.sa.CoolingSchedule;
 import org.moeaframework.algorithm.sa.GeometricCoolingSchedule;
@@ -146,7 +148,7 @@ public class SimulatedAnnealing extends AbstractSimulatedAnnealingAlgorithm {
 			Solution newPoint = mutation.mutate(currentPoint);
 			evaluate(newPoint);
 			
-			int comparisonResult = comparator.compare(currentPoint, newPoint);
+			int comparisonResult = ((Comparator<Solution>)comparator).compare(currentPoint, newPoint);
 			
 			if (comparisonResult < 0) {
 				double currentPointFitness = comparator.calculateFitness(currentPoint);
