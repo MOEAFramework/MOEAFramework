@@ -107,7 +107,6 @@ public class Checkpoints extends PeriodicAction {
 	@Override
 	public void doAction() {
 		try {
-			System.out.println("Saving state " + getNumberOfEvaluations());
 			saveToStateFile();
 		} catch (IOException e) {
 			System.err.println("an error occurred while writing the state file");

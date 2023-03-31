@@ -44,8 +44,7 @@ public abstract class PeriodicAction implements Algorithm {
 		EVALUATIONS,
 		
 		/**
-		 * The frequency measures the number of invocations of 
-		 * {@link Algorithm#step()}.
+		 * The frequency measures the number of invocations of {@link Algorithm#step()}.
 		 */
 		STEPS
 		
@@ -59,7 +58,7 @@ public abstract class PeriodicAction implements Algorithm {
 	/**
 	 * The frequency that the {@link #doAction()} method is invoked.
 	 */
-	protected final int frequency;
+	protected int frequency;
 	
 	/**
 	 * The type of frequency.
@@ -86,8 +85,7 @@ public abstract class PeriodicAction implements Algorithm {
 	 * @param frequency the frequency the {@link #doAction()} method is invoked
 	 * @param frequencyType the type of frequency
 	 */
-	public PeriodicAction(Algorithm algorithm, int frequency, 
-			FrequencyType frequencyType) {
+	public PeriodicAction(Algorithm algorithm, int frequency, FrequencyType frequencyType) {
 		super();
 		this.algorithm = algorithm;
 		this.frequency = frequency;
@@ -177,6 +175,7 @@ public abstract class PeriodicAction implements Algorithm {
 	@Override
 	public void saveState(ObjectOutputStream stream) throws IOException {
 		algorithm.saveState(stream);
+		stream.writeInt(frequency);
 		stream.writeInt(iteration);
 		stream.writeInt(lastInvocation);
 	}
@@ -184,6 +183,7 @@ public abstract class PeriodicAction implements Algorithm {
 	@Override
 	public void loadState(ObjectInputStream stream) throws IOException, ClassNotFoundException {
 		algorithm.loadState(stream);
+		frequency = stream.readInt();
 		iteration = stream.readInt();
 		lastInvocation = stream.readInt();
 	}
