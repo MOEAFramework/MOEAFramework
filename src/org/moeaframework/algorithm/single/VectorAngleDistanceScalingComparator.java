@@ -17,8 +17,6 @@
  */
 package org.moeaframework.algorithm.single;
 
-import java.io.Serializable;
-
 import org.moeaframework.core.Solution;
 import org.moeaframework.util.Vector;
 
@@ -33,9 +31,7 @@ import org.moeaframework.util.Vector;
  *       Congress on Evolutionary Computation, pp. 2678-2684.
  * </ol>
  */
-public class VectorAngleDistanceScalingComparator implements AggregateObjectiveComparator, Serializable {
-
-	private static final long serialVersionUID = -2535092560377062714L;
+public class VectorAngleDistanceScalingComparator implements AggregateObjectiveComparator {
 
 	/**
 	 * Factor for scaling the effects of the angle.

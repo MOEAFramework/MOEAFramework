@@ -17,8 +17,6 @@
  */
 package org.moeaframework.core.comparator;
 
-import java.io.Serializable;
-
 import org.moeaframework.core.Solution;
 
 /**
@@ -41,9 +39,7 @@ import org.moeaframework.core.Solution;
  * }
  * </pre>
  */
-public class ChainedComparator implements DominanceComparator, Serializable {
-
-	private static final long serialVersionUID = 4907755397965363873L;
+public class ChainedComparator implements DominanceComparator {
 
 	/**
 	 * The comparators in the order they are to be applied.

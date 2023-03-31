@@ -17,7 +17,6 @@
  */
 package org.moeaframework.core.comparator;
 
-import java.io.Serializable;
 import java.util.Comparator;
 
 import org.moeaframework.core.FastNondominatedSorting;
@@ -29,10 +28,7 @@ import org.moeaframework.core.Solution;
  * 
  * @see FastNondominatedSorting
  */
-public class NondominatedSortingComparator extends ChainedComparator implements
-Comparator<Solution>, Serializable {
-
-	private static final long serialVersionUID = 4973403102558586390L;
+public class NondominatedSortingComparator extends ChainedComparator implements Comparator<Solution> {
 
 	/**
 	 * Constructs a dominance comparator for comparing solutions using their 

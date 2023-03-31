@@ -17,8 +17,6 @@
  */
 package org.moeaframework.core.comparator;
 
-import java.io.Serializable;
-
 /**
  * Compares two solutions using aggregate constraint violation and the Pareto
  * dominance relation as originally proposed by Kalyanmoy Deb.
@@ -33,10 +31,7 @@ import java.io.Serializable;
  * @see AggregateConstraintComparator
  * @see ParetoObjectiveComparator
  */
-public class ParetoDominanceComparator extends ChainedComparator implements
-Serializable {
-
-	private static final long serialVersionUID = -3198596505754896119L;
+public class ParetoDominanceComparator extends ChainedComparator {
 
 	/**
 	 * Constructs a Pareto dominance comparator.

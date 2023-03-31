@@ -17,8 +17,6 @@
  */
 package org.moeaframework.core.comparator;
 
-import java.io.Serializable;
-
 import org.moeaframework.core.Epsilons;
 import org.moeaframework.core.Solution;
 
@@ -31,9 +29,7 @@ import org.moeaframework.core.Solution;
  * @see AggregateConstraintComparator
  * @see EpsilonBoxObjectiveComparator
  */
-public class EpsilonBoxDominanceComparator extends EpsilonBoxObjectiveComparator implements Serializable {
-
-	private static final long serialVersionUID = -5691444587961578117L;
+public class EpsilonBoxDominanceComparator extends EpsilonBoxObjectiveComparator {
 
 	/**
 	 * The aggregate constraint comparator.

@@ -17,18 +17,14 @@
  */
 package org.moeaframework.algorithm.single;
 
-import java.io.Serializable;
-
 import org.moeaframework.core.Solution;
 
 /**
  * The weighted linear aggregate function.  By default, this method assumes
  * equal weights for all objectives.
  */
-public class LinearObjectiveComparator implements AggregateObjectiveComparator, Serializable {
-	
-	private static final long serialVersionUID = 5157359855613094380L;
-	
+public class LinearObjectiveComparator implements AggregateObjectiveComparator {
+		
 	/**
 	 * The weight vector.
 	 */

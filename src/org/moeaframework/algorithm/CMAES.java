@@ -20,7 +20,6 @@ package org.moeaframework.algorithm;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Comparator;
 
@@ -752,9 +751,7 @@ public class CMAES extends AbstractAlgorithm implements Configurable {
 	/**
 	 * Comparator using indicator-based fitness to break ties.
 	 */
-	private class NondominatedFitnessComparator extends ChainedComparator implements Comparator<Solution>, Serializable {
-
-		private static final long serialVersionUID = -4088873047790962685L;
+	private class NondominatedFitnessComparator extends ChainedComparator implements Comparator<Solution> {
 
 		public NondominatedFitnessComparator() {
 			super(new RankComparator(), new FitnessComparator(fitnessEvaluator.areLargerValuesPreferred()));
@@ -765,9 +762,7 @@ public class CMAES extends AbstractAlgorithm implements Configurable {
 	/**
 	 * Comparator for single-objective problems using aggregate constraint violations to handle constrained optimization problems.
 	 */
-	private class SingleObjectiveComparator extends ChainedComparator implements Comparator<Solution>, Serializable {
-
-		private static final long serialVersionUID = 6182830776461513578L;
+	private class SingleObjectiveComparator extends ChainedComparator implements Comparator<Solution> {
 
 		public SingleObjectiveComparator() {
 			super(new AggregateConstraintComparator(), new ObjectiveComparator(0));

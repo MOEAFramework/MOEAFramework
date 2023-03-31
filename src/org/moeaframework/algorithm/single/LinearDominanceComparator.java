@@ -17,8 +17,6 @@
  */
 package org.moeaframework.algorithm.single;
 
-import java.io.Serializable;
-
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.comparator.AggregateConstraintComparator;
 import org.moeaframework.core.comparator.ChainedComparator;
@@ -29,8 +27,7 @@ import org.moeaframework.core.comparator.ChainedComparator;
  * @see AggregateConstraintComparator
  * @see LinearObjectiveComparator
  */
-public class LinearDominanceComparator extends ChainedComparator implements
-AggregateObjectiveComparator, Serializable {
+public class LinearDominanceComparator extends ChainedComparator implements AggregateObjectiveComparator {
 
 	private static final long serialVersionUID = -2110850728860429004L;
 

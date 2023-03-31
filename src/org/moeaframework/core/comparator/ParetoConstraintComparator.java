@@ -17,17 +17,12 @@
  */
 package org.moeaframework.core.comparator;
 
-import java.io.Serializable;
-
 import org.moeaframework.core.Solution;
 
 /**
  * Compares solutions based on the Pareto efficiency of their constraints.
  */
-public class ParetoConstraintComparator implements DominanceComparator,
-Serializable {
-
-	private static final long serialVersionUID = -5411858051618916035L;
+public class ParetoConstraintComparator implements DominanceComparator {
 
 	/**
 	 * Constructs a Pareto constraint comparator.

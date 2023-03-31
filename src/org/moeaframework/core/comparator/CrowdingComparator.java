@@ -17,9 +17,8 @@
  */
 package org.moeaframework.core.comparator;
 
-import static org.moeaframework.core.FastNondominatedSorting.CROWDING_ATTRIBUTE;
+import static org.moeaframework.core.NondominatedSorting.CROWDING_ATTRIBUTE;
 
-import java.io.Serializable;
 import java.util.Comparator;
 
 import org.moeaframework.core.Solution;
@@ -28,8 +27,7 @@ import org.moeaframework.core.Solution;
  * Compares solutions using their crowding distance. Solutions with larger
  * crowding distances are preferred.
  */
-public class CrowdingComparator implements DominanceComparator,
-Comparator<Solution>, Serializable {
+public class CrowdingComparator implements DominanceComparator, Comparator<Solution> {
 
 	private static final long serialVersionUID = 4973403102558586390L;
 

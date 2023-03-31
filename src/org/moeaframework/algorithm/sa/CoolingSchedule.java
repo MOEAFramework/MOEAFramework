@@ -19,8 +19,17 @@ package org.moeaframework.algorithm.sa;
 
 import org.moeaframework.core.configuration.Configurable;
 
+/**
+ * Defines a cooling schedule for simulated annealing algorithms.
+ */
 public interface CoolingSchedule extends Configurable {
 	
+	/**
+	 * Returns the next temperature based on the current temperature.
+	 * 
+	 * @param currentTemperature the current temperature
+	 * @return the next temperature
+	 */
 	double nextTemperature(double currentTemperature);
 
 }

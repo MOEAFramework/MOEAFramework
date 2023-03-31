@@ -17,7 +17,6 @@
  */
 package org.moeaframework.core.comparator;
 
-import java.io.Serializable;
 import java.util.Comparator;
 
 import org.moeaframework.core.Solution;
@@ -27,10 +26,7 @@ import org.moeaframework.core.Solution;
  * Absolute values of constraints are used, so only the magnitude of the
  * constraint violation is important.
  */
-public class AggregateConstraintComparator implements DominanceComparator,
-Comparator<Solution>, Serializable {
-
-	private static final long serialVersionUID = 2876962422278502088L;
+public class AggregateConstraintComparator implements DominanceComparator, Comparator<Solution> {
 
 	/**
 	 * Constructs an aggregate constraint comparator.

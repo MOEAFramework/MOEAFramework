@@ -17,8 +17,6 @@
  */
 package org.moeaframework.core.comparator;
 
-import java.io.Serializable;
-
 import org.moeaframework.core.Epsilons;
 import org.moeaframework.core.Solution;
 
@@ -40,9 +38,7 @@ import org.moeaframework.core.Solution;
  * Well-Spread Pareto-Optimal Solutions." KanGAL Report No 2003002. Feb 2003.
  * </ol>
  */
-public class EpsilonBoxObjectiveComparator implements DominanceComparator, Serializable {
-
-	private static final long serialVersionUID = -5454497496983459905L;
+public class EpsilonBoxObjectiveComparator implements DominanceComparator {
 
 	/**
 	 * {@code true} if the the two solutions passed to the previous invocation

@@ -19,7 +19,6 @@ package org.moeaframework.core.comparator;
 
 import static org.moeaframework.core.FitnessEvaluator.FITNESS_ATTRIBUTE;
 
-import java.io.Serializable;
 import java.util.Comparator;
 
 import org.moeaframework.core.FitnessEvaluator;
@@ -30,10 +29,7 @@ import org.moeaframework.core.Solution;
  * 
  * @see FitnessEvaluator
  */
-public class FitnessComparator implements DominanceComparator, 
-Comparator<Solution>, Serializable {
-
-	private static final long serialVersionUID = -3480841924543305614L;
+public class FitnessComparator implements DominanceComparator, Comparator<Solution> {
 	
 	/**
 	 * {@code true} if larger fitness values are preferred; otherwise smaller

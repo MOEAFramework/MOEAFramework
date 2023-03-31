@@ -97,7 +97,6 @@ public class ApproximationSetCollector implements Collector {
 
 	@Override
 	public void collect(Observation observation) {
-		ArrayList<Solution> list = new ArrayList<Solution>();
 		NondominatedPopulation result = algorithm.getResult();
 		
 		//if epsilons are provided, convert result to epsilon-dominance archive
@@ -105,11 +104,7 @@ public class ApproximationSetCollector implements Collector {
 			result = EpsilonHelper.convert(result, epsilon);
 		}
 		
-		for (Solution solution : result) {
-			list.add(solution);
-		}
-		
-		observation.set("Approximation Set", list);
+		observation.set("Approximation Set", new ArrayList<Solution>(result.asList(true)));
 	}
 
 }

@@ -17,9 +17,8 @@
  */
 package org.moeaframework.core.comparator;
 
-import static org.moeaframework.core.FastNondominatedSorting.RANK_ATTRIBUTE;
+import static org.moeaframework.core.NondominatedSorting.RANK_ATTRIBUTE;
 
-import java.io.Serializable;
 import java.util.Comparator;
 
 import org.moeaframework.core.Solution;
@@ -27,10 +26,7 @@ import org.moeaframework.core.Solution;
 /**
  * Compares solutions using their {@code RANK_ATTRIBUTE} value.
  */
-public class RankComparator implements DominanceComparator, 
-Comparator<Solution>, Serializable {
-
-	private static final long serialVersionUID = 4973403102558586390L;
+public class RankComparator implements DominanceComparator, Comparator<Solution> {
 
 	/**
 	 * Constructs a dominance comparator for comparing solutions using their

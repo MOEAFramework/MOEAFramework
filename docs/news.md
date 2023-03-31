@@ -8,6 +8,8 @@ This page documents notable changes introduced in each chronological release of 
   
   * Redesigns and simplifies how state and resumability work.  All algorithms can now be resumed using the
     Checkpoints wrapper.
+    
+  * Adds single-objective simulated annealing (SA) algorithm.
   
 
 ## Version 3.5 (24 Mar 2023)

@@ -17,8 +17,6 @@
  */
 package org.moeaframework.core.comparator;
 
-import java.io.Serializable;
-
 import org.moeaframework.core.Solution;
 
 /**
@@ -27,10 +25,7 @@ import org.moeaframework.core.Solution;
  * In general, the {@link ParetoDominanceComparator} should be used instead as
  * it also incorporates constraint violation checks.
  */
-public class ParetoObjectiveComparator implements DominanceComparator,
-Serializable {
-
-	private static final long serialVersionUID = 5086102885918799148L;
+public class ParetoObjectiveComparator implements DominanceComparator {
 
 	/**
 	 * Constructs a Pareto dominance comparator.
