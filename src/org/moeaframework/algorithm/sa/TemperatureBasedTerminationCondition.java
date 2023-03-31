@@ -30,12 +30,23 @@ import org.moeaframework.core.configuration.Validate;
  */
 public class TemperatureBasedTerminationCondition implements TerminationCondition, Configurable {
 	
+	/**
+	 * The stopping temperature.
+	 */
 	protected double stoppingTemperature;
 	
+	/**
+	 * Constructs a new termination condition based on the simulated annealing temperature.
+	 */
 	public TemperatureBasedTerminationCondition() {
 		this(0.0000001);
 	}
 	
+	/**
+	 * Constructs a new termination condition based on the simulated annealing temperature.
+	 * 
+	 * @param stoppingTemperature the stopping temperature
+	 */
 	public TemperatureBasedTerminationCondition(double stoppingTemperature) {
 		super();
 		setStoppingTemperature(stoppingTemperature);

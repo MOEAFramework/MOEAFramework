@@ -17,7 +17,6 @@
  */
 package org.moeaframework.core.comparator;
 
-import java.io.Serializable;
 import java.util.Comparator;
 
 import org.moeaframework.core.Solution;
@@ -25,10 +24,7 @@ import org.moeaframework.core.Solution;
 /**
  * Compares two solutions using the value of a specific objective.
  */
-public class ObjectiveComparator implements DominanceComparator, 
-Comparator<Solution>, Serializable {
-
-	private static final long serialVersionUID = -6718367624398691971L;
+public class ObjectiveComparator implements DominanceComparator, Comparator<Solution> {
 
 	/**
 	 * The objective to be compared.

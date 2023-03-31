@@ -28,12 +28,23 @@ import org.moeaframework.core.configuration.Validate;
  */
 public class GeometricCoolingSchedule implements CoolingSchedule {
 	
+	/**
+	 * The cooling rate.
+	 */
 	protected double alpha;
 	
+	/**
+	 * Constructs a new geometric cooling schedule.
+	 */
 	public GeometricCoolingSchedule() {
 		this(0.8);
 	}
 	
+	/**
+	 * Constructs a new geometric cooling schedule.
+	 * 
+	 * @param alpha the cooling rate
+	 */
 	public GeometricCoolingSchedule(double alpha) {
 		super();
 		setAlpha(alpha);

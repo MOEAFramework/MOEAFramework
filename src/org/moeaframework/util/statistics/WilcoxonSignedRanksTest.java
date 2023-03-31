@@ -17,7 +17,6 @@
  */
 package org.moeaframework.util.statistics;
 
-import java.io.Serializable;
 import java.util.Comparator;
 
 import org.apache.commons.math3.distribution.NormalDistribution;
@@ -48,10 +47,7 @@ public class WilcoxonSignedRanksTest extends OrdinalStatisticalTest {
 	/**
 	 * Compares observations based on their absolute value.
 	 */
-	private static class AbsoluteObservationComparator implements
-			Comparator<RankedObservation>, Serializable {
-
-		private static final long serialVersionUID = 7337112773629454794L;
+	private static class AbsoluteObservationComparator implements Comparator<RankedObservation> {
 
 		@Override
 		public int compare(RankedObservation o1, RankedObservation o2) {

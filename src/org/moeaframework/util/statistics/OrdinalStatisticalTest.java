@@ -17,7 +17,6 @@
  */
 package org.moeaframework.util.statistics;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -33,10 +32,7 @@ public abstract class OrdinalStatisticalTest implements StatisticalTest {
 	/**
 	 * Compares two {@code RankedObservation} objects based on their value.
 	 */
-	private static class ObservationComparator implements
-			Comparator<RankedObservation>, Serializable {
-
-		private static final long serialVersionUID = 284381611483212771L;
+	private static class ObservationComparator implements Comparator<RankedObservation> {
 
 		@Override
 		public int compare(RankedObservation o1, RankedObservation o2) {

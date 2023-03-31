@@ -17,8 +17,6 @@
  */
 package org.moeaframework.algorithm.single;
 
-import java.io.Serializable;
-
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.comparator.AggregateConstraintComparator;
 import org.moeaframework.core.comparator.ChainedComparator;
@@ -29,10 +27,7 @@ import org.moeaframework.core.comparator.ChainedComparator;
  * @see AggregateConstraintComparator
  * @see MinMaxObjectiveComparator
  */
-public class MinMaxDominanceComparator extends ChainedComparator implements
-AggregateObjectiveComparator, Serializable {
-
-	private static final long serialVersionUID = -1433954844334603655L;
+public class MinMaxDominanceComparator extends ChainedComparator implements AggregateObjectiveComparator {
 
 	/**
 	 * Constructs a new dominance comparator using a weighted min-max aggregate

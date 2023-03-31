@@ -17,8 +17,6 @@
  */
 package org.moeaframework.core.comparator;
 
-import java.io.Serializable;
-
 import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.core.Solution;
@@ -31,10 +29,7 @@ public class ChainedComparatorTest {
 	/**
 	 * A comparator used for testing that always returns a fixed value.
 	 */
-	private static class FixedComparator implements DominanceComparator,
-			Serializable {
-
-		private static final long serialVersionUID = -2071270485299281615L;
+	private static class FixedComparator implements DominanceComparator {
 
 		/**
 		 * The value returned by the {@link compare} method.

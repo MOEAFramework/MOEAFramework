@@ -17,8 +17,6 @@
  */
 package org.moeaframework.algorithm.single;
 
-import java.io.Serializable;
-
 import org.moeaframework.core.Solution;
 
 /**
@@ -27,10 +25,8 @@ import org.moeaframework.core.Solution;
  * 
  * @see MinMaxDominanceComparator
  */
-public class MinMaxObjectiveComparator implements AggregateObjectiveComparator, Serializable {
-	
-	private static final long serialVersionUID = 5018011451944335718L;
-	
+public class MinMaxObjectiveComparator implements AggregateObjectiveComparator {
+		
 	/**
 	 * The weight vector.
 	 */

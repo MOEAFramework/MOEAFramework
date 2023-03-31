@@ -17,7 +17,6 @@
  */
 package org.moeaframework.algorithm;
 
-import java.io.Serializable;
 import java.util.Comparator;
 
 import org.moeaframework.core.FastNondominatedSorting;
@@ -204,9 +203,7 @@ public class SMSEMOA extends AbstractEvolutionaryAlgorithm {
 		return properties;
 	}
 	
-	private class NondominatedFitnessComparator extends ChainedComparator implements Comparator<Solution>, Serializable {
-
-		private static final long serialVersionUID = -4088873047790962685L;
+	private class NondominatedFitnessComparator extends ChainedComparator implements Comparator<Solution> {
 
 		public NondominatedFitnessComparator() {
 			super(new RankComparator(), new FitnessComparator(fitnessEvaluator.areLargerValuesPreferred()));
