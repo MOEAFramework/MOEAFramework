@@ -196,6 +196,11 @@ public class DefaultAlgorithmsTest {
 	}
 	
 	@Test
+	public void testSA_Real() {
+		test("SA", realProblem);
+	}
+	
+	@Test
 	public void testRSO_Real() {
 		test("RSO", realProblem);
 	}
@@ -308,6 +313,11 @@ public class DefaultAlgorithmsTest {
 	@Test(expected = ProviderNotFoundException.class)
 	public void testDE_Binary() {
 		test("DE", binaryProblem);
+	}
+	
+	@Test
+	public void testSA_Binary() {
+		test("SA", binaryProblem);
 	}
 	
 	@Test
@@ -426,6 +436,11 @@ public class DefaultAlgorithmsTest {
 	}
 	
 	@Test
+	public void testSA_Permutation() {
+		test("SA", permutationProblem);
+	}
+	
+	@Test
 	public void testRSO_Permutation() {
 		test("RSO", permutationProblem);
 	}
@@ -538,6 +553,11 @@ public class DefaultAlgorithmsTest {
 	@Test(expected = ProviderNotFoundException.class)
 	public void testDE_Subset() {
 		test("DE", subsetProblem);
+	}
+	
+	@Test
+	public void testSA_Subset() {
+		test("SA", subsetProblem);
 	}
 	
 	@Test

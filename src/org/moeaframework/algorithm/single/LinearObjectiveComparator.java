@@ -65,10 +65,15 @@ public class LinearObjectiveComparator implements AggregateObjectiveComparator, 
 
 	@Override
 	public int compare(Solution solution1, Solution solution2) {
-		double fitness1 = calculateFitness(solution1, weights);
-		double fitness2 = calculateFitness(solution2, weights);
+		double fitness1 = calculateFitness(solution1);
+		double fitness2 = calculateFitness(solution2);
 		
 		return Double.compare(fitness1, fitness2);
+	}
+	
+	@Override
+	public double calculateFitness(Solution solution) {
+		return calculateFitness(solution, weights);
 	}
 	
 	/**

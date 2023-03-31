@@ -26,6 +26,7 @@ import org.moeaframework.algorithm.single.DifferentialEvolution;
 import org.moeaframework.algorithm.single.EvolutionStrategy;
 import org.moeaframework.algorithm.single.GeneticAlgorithm;
 import org.moeaframework.algorithm.single.RepeatedSingleObjective;
+import org.moeaframework.algorithm.single.SimulatedAnnealing;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.configuration.Configurable;
@@ -71,6 +72,7 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 		register(fromProblem(DifferentialEvolution::new), "DifferentialEvolution", "DE", "DE/rand/1/bin");
 		register(fromProblem(GeneticAlgorithm::new), "GeneticAlgorithm", "GA");
 		register(fromProblem(EvolutionStrategy::new), "EvolutionStrategy", "EvolutionaryStrategy", "ES");
+		register(fromProblem(SimulatedAnnealing::new), "SimulatedAnnealing", "SA");
 		
 		// special cases
 		register(this::newRSO, "RSO");

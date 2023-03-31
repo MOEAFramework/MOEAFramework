@@ -155,6 +155,11 @@ public class DefaultAlgorithmsResumeTest {
 	}
 	
 	@Test
+	public void testSA() throws IOException {
+		test("SA");
+	}
+	
+	@Test
 	public void testRSO() throws IOException {
 		test("RSO");
 	}
