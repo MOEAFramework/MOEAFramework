@@ -154,22 +154,26 @@ public class SimulatedAnnealing extends AbstractSimulatedAnnealingAlgorithm {
 				double currentPointFitness = comparator.calculateFitness(currentPoint);
 				double newPointFitness = comparator.calculateFitness(newPoint);
 				double probability = Math.exp(-(newPointFitness - currentPointFitness) / temperature);
-				System.out.println(currentPointFitness + " " + newPointFitness + " " + probability + " " + temperature);
 				
 				if (PRNG.nextDouble() < probability) {
-					currentPoint = newPoint;
-					
-					if (archive != null) {
-						archive.add(newPoint);
-					}
+					updateCurrentPoint(newPoint);
 				}
 			} else {
-				currentPoint = newPoint;
-				
-				if (archive != null) {
-					archive.add(newPoint);
-				}
+				updateCurrentPoint(newPoint);
 			}
+		}
+	}
+	
+	/**
+	 * Updates the current point and, if configured, adds the point to the archive.
+	 * 
+	 * @param newPoint the new point
+	 */
+	protected void updateCurrentPoint(Solution newPoint) {
+		currentPoint = newPoint;
+		
+		if (archive != null) {
+			archive.add(newPoint);
 		}
 	}
 	

@@ -274,7 +274,11 @@ public abstract class AbstractSimulatedAnnealingAlgorithm extends AbstractAlgori
 	public NondominatedPopulation getResult() {
 		if (archive == null) {
 			NondominatedPopulation result = new NondominatedPopulation();
-			result.add(currentPoint);
+			
+			if (currentPoint != null) {
+				result.add(currentPoint);
+			}
+			
 			return result;
 		} else {
 			return archive;
