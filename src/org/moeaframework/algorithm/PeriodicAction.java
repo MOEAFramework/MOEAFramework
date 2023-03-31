@@ -59,7 +59,7 @@ public abstract class PeriodicAction implements Algorithm {
 	/**
 	 * The frequency that the {@link #doAction()} method is invoked.
 	 */
-	protected int frequency;
+	protected final int frequency;
 	
 	/**
 	 * The type of frequency.
@@ -73,8 +73,9 @@ public abstract class PeriodicAction implements Algorithm {
 	protected int iteration;
 
 	/**
-	 * The last invocation {@link #doAction()} was invoked.  Only used if the
-	 * frequency type is {@code STEPS}.
+	 * The last invocation {@link #doAction()} was invoked, either as iterations or
+	 * evaluations depending on the frequency type.  A value of {@code -1} indicates
+	 * the run hasn't started yet.
 	 */
 	protected int lastInvocation;
 	
@@ -91,6 +92,8 @@ public abstract class PeriodicAction implements Algorithm {
 		this.algorithm = algorithm;
 		this.frequency = frequency;
 		this.frequencyType = frequencyType;
+		
+		lastInvocation = -1;
 	}
 	
 	/**
@@ -114,6 +117,16 @@ public abstract class PeriodicAction implements Algorithm {
 
 	@Override
 	public void step() {
+		if (lastInvocation < 0) {
+			if (frequencyType.equals(FrequencyType.EVALUATIONS)) {
+				lastInvocation = algorithm.getNumberOfEvaluations();
+			} else if (frequencyType.equals(FrequencyType.STEPS)) {
+				lastInvocation = 0;
+			} else {
+				throw new IllegalStateException("unsupported frequencyType: " + frequencyType);
+			}
+		}
+		
 		algorithm.step();
 
 		if (frequencyType.equals(FrequencyType.EVALUATIONS)) {
@@ -129,7 +142,7 @@ public abstract class PeriodicAction implements Algorithm {
 				lastInvocation = iteration;
 			}
 		} else {
-			throw new IllegalStateException();
+			throw new IllegalStateException("unsupported frequencyType: " + frequencyType);
 		}
 	}
 

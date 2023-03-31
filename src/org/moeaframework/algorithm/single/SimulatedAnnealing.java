@@ -146,7 +146,7 @@ public class SimulatedAnnealing extends AbstractSimulatedAnnealingAlgorithm {
 
 	@Override
 	protected void iterate() {
-		for (int i=0; i < numberOfIterationsPerTemperature; i++) {
+		for (int i = 0; i < numberOfIterationsPerTemperature; i++) {
 			Solution newPoint = mutation.mutate(currentPoint);
 			evaluate(newPoint);
 			

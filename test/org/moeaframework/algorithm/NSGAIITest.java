@@ -17,7 +17,6 @@
  */
 package org.moeaframework.algorithm;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import org.junit.Assert;

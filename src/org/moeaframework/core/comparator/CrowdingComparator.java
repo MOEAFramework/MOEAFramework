@@ -29,8 +29,6 @@ import org.moeaframework.core.Solution;
  */
 public class CrowdingComparator implements DominanceComparator, Comparator<Solution> {
 
-	private static final long serialVersionUID = 4973403102558586390L;
-
 	/**
 	 * Constructs a dominance comparator for comparing solutions using their 
 	 * crowding distance.

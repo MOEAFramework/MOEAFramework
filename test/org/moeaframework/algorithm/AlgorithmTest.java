@@ -17,22 +17,11 @@
  */
 package org.moeaframework.algorithm;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.LineNumberReader;
-import java.util.HashSet;
-import java.util.Set;
-
 import org.junit.Assert;
 import org.junit.Assume;
 import org.moeaframework.Analyzer;
 import org.moeaframework.Executor;
-import org.moeaframework.core.Algorithm;
-import org.moeaframework.core.configuration.Configurable;
 import org.moeaframework.core.spi.AlgorithmFactory;
-import org.moeaframework.problem.MockRealProblem;
 import org.moeaframework.util.TypedProperties;
 
 /**

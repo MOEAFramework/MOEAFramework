@@ -18,6 +18,7 @@
 package org.moeaframework.core;
 
 import java.util.Collections;
+import java.util.ConcurrentModificationException;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
@@ -391,7 +392,7 @@ public class PRNG {
 			count++;
 		}
 		
-		throw new IllegalStateException();
+		throw new ConcurrentModificationException("set modified while selecting item");
 	}
 
 }
