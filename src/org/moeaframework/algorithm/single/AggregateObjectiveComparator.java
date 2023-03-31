@@ -21,6 +21,8 @@ import java.util.Comparator;
 
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.comparator.DominanceComparator;
+import org.moeaframework.core.configuration.ConfigurationException;
+import org.moeaframework.util.TypedProperties;
 
 /**
  * Compares solutions based on a computed aggregate fitness from the objective
@@ -44,10 +46,56 @@ import org.moeaframework.core.comparator.DominanceComparator;
 public interface AggregateObjectiveComparator extends DominanceComparator, Comparator<Solution> {
 	
 	/**
-	 * Returns the weights used by this linear aggregate function.
+	 * Returns the weights used by this aggregate function.
 	 * 
 	 * @return the weights
 	 */
 	public double[] getWeights();
+	
+	/**
+	 * Calculates the aggregate (fitness) value of the solution using this aggregate function.
+	 * 
+	 * @param solution the solution
+	 * @return the aggregate value (smaller is better)
+	 */
+	public double calculateFitness(Solution solution);
+	
+	public static AggregateObjectiveComparator fromConfiguration(TypedProperties properties) {
+		if (properties.contains("method") || properties.contains("weights")) {
+			String method = properties.getString("method", "linear");
+			double[] weights = properties.getDoubleArray("weights", new double[] { 1.0 });
+
+			if (method.equalsIgnoreCase("linear")) {
+				return new LinearDominanceComparator(weights);
+			} else if (method.equalsIgnoreCase("min-max")) {
+				return new MinMaxDominanceComparator(weights);
+			} else if (method.equalsIgnoreCase("angle")) {
+				double q = properties.getDouble("angleScalingFactor", 100.0);
+				return new VectorAngleDistanceScalingComparator(weights, q);
+			} else {
+				throw new ConfigurationException("unrecognized weighting method: " + method);
+			}
+		}
+		
+		return null;
+	}
+	
+	public static TypedProperties toConfiguration(AggregateObjectiveComparator comparator) {
+		TypedProperties properties = new TypedProperties();
+		
+		if (comparator instanceof LinearDominanceComparator) {
+			properties.setString("method", "linear");
+		} else if (comparator instanceof MinMaxDominanceComparator) {
+			properties.setString("method", "min-max");
+		} else if (comparator instanceof VectorAngleDistanceScalingComparator) {
+			properties.setString("method", "angle");
+			properties.setDouble("angleScalingFactor",
+					((VectorAngleDistanceScalingComparator)comparator).getAngleScalingFactor());
+		}
+		
+		properties.setDoubleArray("weights", comparator.getWeights());
+		
+		return properties;
+	}
 
 }

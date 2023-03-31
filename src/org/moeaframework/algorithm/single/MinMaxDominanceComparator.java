@@ -19,6 +19,7 @@ package org.moeaframework.algorithm.single;
 
 import java.io.Serializable;
 
+import org.moeaframework.core.Solution;
 import org.moeaframework.core.comparator.AggregateConstraintComparator;
 import org.moeaframework.core.comparator.ChainedComparator;
 
@@ -56,6 +57,11 @@ AggregateObjectiveComparator, Serializable {
 	@Override
 	public double[] getWeights() {
 		return ((MinMaxObjectiveComparator)comparators[1]).getWeights();
+	}
+	
+	@Override
+	public double calculateFitness(Solution solution) {
+		return ((MinMaxObjectiveComparator)comparators[1]).calculateFitness(solution);
 	}
 
 }

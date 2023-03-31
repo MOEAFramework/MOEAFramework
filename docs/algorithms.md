@@ -11,7 +11,7 @@ Below lists the optimization algorithms provided by the MOEA Framework organized
   * Particle swarm - [OMOPSO](#omopso), [SMPSO](#smpso)
   * Indicator based - [IBEA](#ibea), [SMS-EMOA](#sms-emoa)
   * Other - [AMOSA](#amosa), [CMA-ES](#cma-es), [MSOPS](#msops), [RSO](#rso), [Random](#random)
-* Single-objective - [GA](#ga), [ES](#es), [DE](#de), [CMA-ES](#cma-es)
+* Single-objective - [GA](#ga), [ES](#es), [DE](#de), [SA](#sa), [CMA-ES](#cma-es)
 
 ## Instantiating an Algorithm
 
@@ -463,6 +463,26 @@ Parameter            | Default Value     | Description
 `weights`            | `1.0,1.0,...`     | The scalarization weights
 `de.crossoverRate`   | `0.1`             | The crossover rate for differential evolution
 `de.stepSize`        | `0.5`             | Control the size of each step taken by differential evolution
+
+### SA
+
+SA is the simulated annealing algorithm.  The algorithm is allowed to select a worse offspring for survival with
+decreasing probability over time.  This decreasing probability is controlled by the initial temperature and the
+cooling rate.
+
+**Algorithm Name:** `"SA"`  
+**Supported Types:** Any  
+**Supported Operators:** Any Mutation
+
+Parameter            | Default Value     | Description
+:------------------- | :---------------- | :----------
+`operator`           | Problem dependent | The mutation operator
+`method`             | `linear`          | The scalarization method - `linear`, `min-max`
+`weights`            | `1.0,1.0,...`     | The scalarization weights
+`initialTemperature` | `1.0`          | The initial temperature
+`alpha`              | `0.8`       | The cooling rate
+`numberOfIterationsPerTemperature` | `500` | The number of offspring produced per temperature
+
 
 ## References
 

@@ -24,6 +24,7 @@ import java.io.ObjectOutputStream;
 import org.moeaframework.algorithm.AbstractAlgorithm;
 import org.moeaframework.algorithm.AlgorithmTerminationException;
 import org.moeaframework.core.FrameworkException;
+import org.moeaframework.core.Initialization;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
@@ -59,6 +60,11 @@ public abstract class AbstractSimulatedAnnealingAlgorithm extends AbstractAlgori
 	protected TemperatureBasedTerminationCondition terminationCondition;
 	
 	/**
+	 * The initialization operator.
+	 */
+	protected Initialization initialization;
+	
+	/**
 	 * The mutation operator used to generate neighbors of the current point.
 	 */
 	protected Mutation mutation;
@@ -72,6 +78,11 @@ public abstract class AbstractSimulatedAnnealingAlgorithm extends AbstractAlgori
 	 * The current point.
 	 */
 	protected Solution currentPoint;
+	
+	/**
+	 * The archive storing the non-dominated solutions.
+	 */
+	protected NondominatedPopulation archive;
 
 	
 	/**
@@ -82,11 +93,12 @@ public abstract class AbstractSimulatedAnnealingAlgorithm extends AbstractAlgori
 	 * @param coolingSchedule the cooling schedule that determines how the temperature decreases over time
 	 */
 	public AbstractSimulatedAnnealingAlgorithm(Problem problem, double initialTemperature,
-			CoolingSchedule coolingSchedule, Mutation mutation) {
+			CoolingSchedule coolingSchedule, Initialization initialization, Mutation mutation) {
 		super(problem);
-		this.initialTemperature = initialTemperature;
-		this.coolingSchedule = coolingSchedule;
-		this.mutation = mutation;
+		setInitialTemperature(initialTemperature);
+		setCoolingSchedule(coolingSchedule);
+		setMutation(mutation);
+		setInitialization(initialization);
 	}
 	
 	/**
@@ -119,12 +131,54 @@ public abstract class AbstractSimulatedAnnealingAlgorithm extends AbstractAlgori
 	}
 	
 	/**
+	 * Sets the cooling (or reduction) schedule that determines how the temperature decreases over time.  This can only
+	 * be set before initializing the algorithm.
+	 * 
+	 * @param coolingSchedule the cooling schedule
+	 */
+	protected void setCoolingSchedule(CoolingSchedule coolingSchedule) {
+		assertNotInitialized();
+		Validate.notNull("coolingSchedule", coolingSchedule);
+		this.coolingSchedule = coolingSchedule;
+	}
+	
+	/**
 	 * Returns the temperature-based termination condition.
 	 * 
 	 * @return the temperature-based termination condition, or {@code null} if not set
 	 */
 	public TemperatureBasedTerminationCondition getTerminationCondition() {
 		return terminationCondition;
+	}
+	
+	/**
+	 * Sets the temperature-based termination condition.
+	 * 
+	 * @param terminationCondition the temperature-based termination condition, or {@code null} if none is used
+	 */
+	protected void setTerminationCondition(TemperatureBasedTerminationCondition terminationCondition) {
+		this.terminationCondition = terminationCondition;
+	}
+	
+	/**
+	 * Returns the initialization method for generating solutions in the initial population.
+	 * 
+	 * @return the initialization method
+	 */
+	public Initialization getInitialization() {
+		return initialization;
+	}
+
+	/**
+	 * Sets the initialization method for generating solutions in the initial population.  This can only
+	 * be set before initializing the algorithm.
+	 * 
+	 * @param initialization the initialization method
+	 */
+	public void setInitialization(Initialization initialization) {
+		assertNotInitialized();
+		Validate.notNull("initialization", initialization);
+		this.initialization = initialization;
 	}
 	
 	/**
@@ -165,6 +219,25 @@ public abstract class AbstractSimulatedAnnealingAlgorithm extends AbstractAlgori
 		return currentPoint;
 	}
 	
+	/**
+	 * Returns the archive used by this algorithm.
+	 * 
+	 * @return the archive used by this algorithm
+	 */
+	protected NondominatedPopulation getArchive() {
+		return archive;
+	}
+	
+	/**
+	 * Sets the archive used by this algorithm.  This value can not be set after initialization.
+	 * 
+	 * @param archive the archive
+	 */
+	protected void setArchive(NondominatedPopulation archive) {
+		assertNotInitialized();
+		this.archive = archive;
+	}
+	
 	@Override
 	protected void initialize() {
 		super.initialize();
@@ -174,7 +247,10 @@ public abstract class AbstractSimulatedAnnealingAlgorithm extends AbstractAlgori
 		}
 		
 		temperature = initialTemperature;
-		terminationCondition.initialize(this);
+		
+		if (terminationCondition != null) {
+			terminationCondition.initialize(this);
+		}
 	}
 	
 	@Override
@@ -196,9 +272,13 @@ public abstract class AbstractSimulatedAnnealingAlgorithm extends AbstractAlgori
 	
 	@Override
 	public NondominatedPopulation getResult() {
-		NondominatedPopulation result = new NondominatedPopulation();
-		result.add(currentPoint);
-		return result;
+		if (archive == null) {
+			NondominatedPopulation result = new NondominatedPopulation();
+			result.add(currentPoint);
+			return result;
+		} else {
+			return archive;
+		}
 	}
 	
 	@Override
@@ -206,6 +286,10 @@ public abstract class AbstractSimulatedAnnealingAlgorithm extends AbstractAlgori
 		super.saveState(stream);
 		stream.writeDouble(temperature);
 		stream.writeObject(currentPoint);
+		
+		if (archive != null) {
+			archive.saveState(stream);
+		}
 	}
 
 	@Override
@@ -213,6 +297,10 @@ public abstract class AbstractSimulatedAnnealingAlgorithm extends AbstractAlgori
 		super.loadState(stream);
 		temperature = stream.readDouble();
 		currentPoint = (Solution)stream.readObject();
+		
+		if (this.archive != null) {
+			archive.loadState(stream);
+		}
 	}
 	
 }

@@ -476,7 +476,8 @@ public class Settings {
 				"NSGAII", "NSGAIII", "GDE3", "eMOEA", "eNSGAII", 
 				"MOEAD", "MSOPS", "CMA-ES", "SPEA2", "PAES", "PESA2", "OMOPSO",
 				"SMPSO", "IBEA", "SMS-EMOA", "VEGA", "DBEA", "Random", "RVEA",
-				"RSO", "AMOSA" });
+				"RSO", "AMOSA", "GeneticAlgorithm", "DifferentialEvolution", "EvolutionStrategy",
+				"SimulatedAnnealing" });
 	}
 	
 	/**

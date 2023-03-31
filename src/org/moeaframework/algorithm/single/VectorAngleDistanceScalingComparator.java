@@ -70,6 +70,10 @@ public class VectorAngleDistanceScalingComparator implements AggregateObjectiveC
 		this.q = q;
 	}
 	
+	public double getAngleScalingFactor() {
+		return q;
+	}
+	
 	@Override
 	public double[] getWeights() {
 		return weights;
@@ -77,10 +81,15 @@ public class VectorAngleDistanceScalingComparator implements AggregateObjectiveC
 
 	@Override
 	public int compare(Solution solution1, Solution solution2) {
-		double fitness1 = calculateFitness(solution1, weights, q);
-		double fitness2 = calculateFitness(solution2, weights, q);
+		double fitness1 = calculateFitness(solution1);
+		double fitness2 = calculateFitness(solution2);
 		
 		return Double.compare(fitness1, fitness2);
+	}
+	
+	@Override
+	public double calculateFitness(Solution solution) {
+		return calculateFitness(solution, weights, q);
 	}
 
 	/**

@@ -23,7 +23,6 @@ import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Variation;
-import org.moeaframework.core.configuration.ConfigurationException;
 import org.moeaframework.core.configuration.Property;
 import org.moeaframework.core.configuration.Validate;
 import org.moeaframework.util.TypedProperties;
@@ -91,17 +90,10 @@ public abstract class SingleObjectiveEvolutionaryAlgorithm extends AbstractEvolu
 
 	@Override
 	public void applyConfiguration(TypedProperties properties) {
-		if (properties.contains("method") || properties.contains("weights")) {
-			String method = properties.getString("method", "linear");
-			double[] weights = properties.getDoubleArray("weights", new double[] { 1.0 });
-
-			if (method.equalsIgnoreCase("linear")) {
-				setComparator(new LinearDominanceComparator(weights));
-			} else if (method.equalsIgnoreCase("min-max")) {
-				setComparator(new MinMaxDominanceComparator(weights));
-			} else {
-				throw new ConfigurationException("unrecognized weighting method: " + method);
-			}
+		AggregateObjectiveComparator comparator = AggregateObjectiveComparator.fromConfiguration(properties);
+		
+		if (comparator != null) {
+			setComparator(comparator);
 		}
 		
 		super.applyConfiguration(properties);
@@ -110,17 +102,9 @@ public abstract class SingleObjectiveEvolutionaryAlgorithm extends AbstractEvolu
 
 	@Override
 	public TypedProperties getConfiguration() {
-		TypedProperties properties = super.getConfiguration();
-		
-		if (comparator instanceof LinearDominanceComparator) {
-			properties.setString("method", "linear");
-		} else if (comparator instanceof MinMaxDominanceComparator) {
-			properties.setString("method", "min-max");
-		}
-		
-		properties.setDoubleArray("weights", comparator.getWeights());
-		
-		return properties;
+		TypedProperties configuration = super.getConfiguration();
+		configuration.addAll(AggregateObjectiveComparator.toConfiguration(comparator));
+		return configuration;
 	}
 
 }

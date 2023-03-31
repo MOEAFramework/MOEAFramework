@@ -17,10 +17,6 @@
  */
 package org.moeaframework.algorithm.sa;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-
 import org.moeaframework.core.Initialization;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PRNG;
@@ -51,16 +47,12 @@ import org.moeaframework.core.spi.OperatorFactory;
  */
 public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 
-	protected final Initialization initialization;
-
 	protected double gamma;
 	protected int softLimit;
 	protected int hardLimit;
 
 	protected int numberOfIterationsPerTemperature;
 	protected int numberOfHillClimbingIterationsForRefinement;
-
-	protected NondominatedPopulation archive;
 	
 	/**
 	 * Creates a new instance of the AMOSA algorithm with default settings.
@@ -100,18 +92,14 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 	public AMOSA(Problem problem, Initialization initialization, Mutation mutation, double gamma, int softLimit,
 			int hardLimit, double stoppingTemperature, double initialTemperature, double alpha,
 			int numberOfIterationsPerTemperature, int numberOfHillClimbingIterationsForRefinement) {
-		super(problem, initialTemperature, new GeometricCoolingSchedule(alpha), mutation);
+		super(problem, initialTemperature, new GeometricCoolingSchedule(alpha), initialization, mutation);
 		setGamma(gamma);
 		setSoftLimit(softLimit);
 		setHardLimit(hardLimit);
 		setNumberOfIterationsPerTemperature(numberOfIterationsPerTemperature);
 		setNumberOfHillClimbingIterationsForRefinement(numberOfHillClimbingIterationsForRefinement);
-
-		Validate.notNull("initialization", initialization);
-
-		this.terminationCondition = new TemperatureBasedTerminationCondition();
-		this.initialization = initialization;
-		this.archive = new NondominatedPopulation();
+		setArchive(new NondominatedPopulation());
+		setTerminationCondition(new TemperatureBasedTerminationCondition());
 	}
 
 	/**
@@ -459,29 +447,6 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 
 	protected void cluster() {
 		this.archive = new SingleLinkageClustering(archive).cluster(hardLimit);
-	}
-
-	@Override
-	public NondominatedPopulation getResult() {
-		return archive;
-	}
-	
-	@Override
-	public void saveState(ObjectOutputStream stream) throws IOException {
-		super.saveState(stream);
-
-		if (archive != null) {
-			archive.saveState(stream);
-		}
-	}
-
-	@Override
-	public void loadState(ObjectInputStream stream) throws IOException, ClassNotFoundException {
-		super.loadState(stream);
-
-		if (this.archive != null) {
-			archive.loadState(stream);
-		}
 	}
 
 }
