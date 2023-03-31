@@ -59,8 +59,9 @@ public class SelfAdaptiveNormalVariation implements Mutation {
 		double sigma = 1.0;
 		double tau = 1.0 / Math.sqrt(2.0 * child.getNumberOfVariables());
 		
-		if (child.hasAttribute(SIGMA)) {
-			sigma = (Double)child.getAttribute(SIGMA);
+		// copy attribute from parent
+		if (parent.hasAttribute(SIGMA)) {
+			sigma = (Double)parent.getAttribute(SIGMA);
 		}
 		
 		sigma *= Math.exp(tau*PRNG.nextGaussian());
