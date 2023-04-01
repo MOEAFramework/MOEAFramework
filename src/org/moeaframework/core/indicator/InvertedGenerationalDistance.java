@@ -41,8 +41,7 @@ public class InvertedGenerationalDistance extends NormalizedIndicator {
 	 * @param problem the problem
 	 * @param referenceSet the reference set for the problem
 	 */
-	public InvertedGenerationalDistance(Problem problem,
-			NondominatedPopulation referenceSet) {
+	public InvertedGenerationalDistance(Problem problem, NondominatedPopulation referenceSet) {
 		this(problem, referenceSet, Settings.getIGDPower());
 	}
 	
@@ -54,17 +53,14 @@ public class InvertedGenerationalDistance extends NormalizedIndicator {
 	 * @param referenceSet the reference set for the problem
 	 * @param d the power, typically {@code 1.0}
 	 */
-	public InvertedGenerationalDistance(Problem problem,
-			NondominatedPopulation referenceSet,
-			double d) {
+	public InvertedGenerationalDistance(Problem problem, NondominatedPopulation referenceSet, double d) {
 		super(problem, referenceSet);
 		this.d = d;
 	}
 
 	@Override
 	public double evaluate(NondominatedPopulation approximationSet) {
-		return evaluate(problem, normalize(approximationSet), 
-				getNormalizedReferenceSet(), d);
+		return evaluate(problem, normalize(approximationSet), getNormalizedReferenceSet(), d);
 	}
 
 	/**
@@ -80,15 +76,12 @@ public class InvertedGenerationalDistance extends NormalizedIndicator {
 	 * @return the inverted generational distance for the specified problem 
 	 *         given an approximation set and reference set
 	 */
-	static double evaluate(Problem problem,
-			NondominatedPopulation approximationSet,
-			NondominatedPopulation referenceSet,
-			double d) {
+	static double evaluate(Problem problem, NondominatedPopulation approximationSet,
+			NondominatedPopulation referenceSet, double d) {
 		double sum = 0.0;
 
 		for (int i = 0; i < referenceSet.size(); i++) {
-			sum += Math.pow(IndicatorUtils.distanceToNearestSolution(problem,
-					referenceSet.get(i), approximationSet), d);
+			sum += Math.pow(IndicatorUtils.distanceToNearestSolution(problem, referenceSet.get(i), approximationSet), d);
 		}
 
 		return Math.pow(sum, 1.0 / d) / referenceSet.size();

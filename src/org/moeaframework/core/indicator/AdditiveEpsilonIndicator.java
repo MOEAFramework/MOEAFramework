@@ -35,15 +35,13 @@ public class AdditiveEpsilonIndicator extends NormalizedIndicator {
 	 * @param problem the problem
 	 * @param referenceSet the reference set for the problem
 	 */
-	public AdditiveEpsilonIndicator(Problem problem,
-			NondominatedPopulation referenceSet) {
+	public AdditiveEpsilonIndicator(Problem problem, NondominatedPopulation referenceSet) {
 		super(problem, referenceSet);
 	}
 
 	@Override
 	public double evaluate(NondominatedPopulation approximationSet) {
-		return evaluate(problem, normalize(approximationSet), 
-				getNormalizedReferenceSet());
+		return evaluate(problem, normalize(approximationSet), getNormalizedReferenceSet());
 	}
 
 	/**
@@ -58,8 +56,7 @@ public class AdditiveEpsilonIndicator extends NormalizedIndicator {
 	 * @return the additive &epsilon;-indicator value for the specified problem
 	 *         given an approximation set and reference set
 	 */
-	static double evaluate(Problem problem,
-			NondominatedPopulation approximationSet,
+	static double evaluate(Problem problem, NondominatedPopulation approximationSet,
 			NondominatedPopulation referenceSet) {
 		double eps_i = 0.0;
 
@@ -72,8 +69,7 @@ public class AdditiveEpsilonIndicator extends NormalizedIndicator {
 				double eps_k = 0.0;
 
 				for (int k = 0; k < problem.getNumberOfObjectives(); k++) {
-					eps_k = Math.max(eps_k, solution2.getObjective(k)
-							- solution1.getObjective(k));
+					eps_k = Math.max(eps_k, solution2.getObjective(k) - solution1.getObjective(k));
 				}
 
 				eps_j = Math.min(eps_j, eps_k);

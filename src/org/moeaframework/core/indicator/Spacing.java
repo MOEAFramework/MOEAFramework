@@ -56,8 +56,7 @@ public class Spacing implements Indicator {
 	 * @return the spread metric for the specified problem given an
 	 *         approximation set
 	 */
-	static double evaluate(Problem problem,
-			NondominatedPopulation approximationSet) {
+	static double evaluate(Problem problem, NondominatedPopulation approximationSet) {
 		if (approximationSet.size() < 2) {
 			return 0.0;
 		}
@@ -81,8 +80,7 @@ public class Spacing implements Indicator {
 						continue;
 					}
 					
-					min = Math.min(min, IndicatorUtils.manhattanDistance(
-							problem, solutionI, solutionJ));
+					min = Math.min(min, IndicatorUtils.manhattanDistance(problem, solutionI, solutionJ));
 				}
 			}
 

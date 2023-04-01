@@ -92,8 +92,7 @@ public class Contribution implements Indicator {
 	 *        matching is used
 	 * @throws IllegalArgumentException if the reference set is empty
 	 */
-	public Contribution(NondominatedPopulation referenceSet, 
-			EpsilonBoxDominanceComparator comparator) {
+	public Contribution(NondominatedPopulation referenceSet, EpsilonBoxDominanceComparator comparator) {
 		super();
 		this.comparator = comparator;
 		
@@ -104,8 +103,7 @@ public class Contribution implements Indicator {
 		if (comparator == null) {
 			this.referenceSet = referenceSet;
 		} else {
-			this.referenceSet = new EpsilonBoxDominanceArchive(comparator, 
-					referenceSet);
+			this.referenceSet = new EpsilonBoxDominanceArchive(comparator, referenceSet);
 		}
 	}
 
@@ -118,9 +116,7 @@ public class Contribution implements Indicator {
 			
 			for (Solution solution2 : approximationSet) {
 				if (comparator == null) {
-					double distance = MathArrays.distance(
-							solution1.getObjectives(), 
-							solution2.getObjectives());
+					double distance = MathArrays.distance(solution1.getObjectives(), solution2.getObjectives());
 					
 					if (distance < Settings.EPS) {
 						match = true;

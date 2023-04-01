@@ -34,15 +34,13 @@ public class MaximumParetoFrontError extends NormalizedIndicator {
 	 * @param problem the problem
 	 * @param referenceSet the reference set for the problem
 	 */
-	public MaximumParetoFrontError(Problem problem,
-			NondominatedPopulation referenceSet) {
+	public MaximumParetoFrontError(Problem problem, NondominatedPopulation referenceSet) {
 		super(problem, referenceSet);
 	}
 
 	@Override
 	public double evaluate(NondominatedPopulation approximationSet) {
-		return evaluate(problem, normalize(approximationSet), 
-				getNormalizedReferenceSet());
+		return evaluate(problem, normalize(approximationSet), getNormalizedReferenceSet());
 	}
 
 	/**
@@ -57,8 +55,7 @@ public class MaximumParetoFrontError extends NormalizedIndicator {
 	 * @return the generational distance for the specified problem given an
 	 *         approximation set and reference set
 	 */
-	static double evaluate(Problem problem,
-			NondominatedPopulation approximationSet,
+	static double evaluate(Problem problem, NondominatedPopulation approximationSet,
 			NondominatedPopulation referenceSet) {
 		if (approximationSet.isEmpty()) {
 			return Double.POSITIVE_INFINITY;
@@ -67,8 +64,7 @@ public class MaximumParetoFrontError extends NormalizedIndicator {
 		double max = 0.0;
 
 		for (int i = 0; i < approximationSet.size(); i++) {
-			max = Math.max(max, IndicatorUtils.distanceToNearestSolution(
-					problem, approximationSet.get(i), referenceSet));
+			max = Math.max(max, IndicatorUtils.distanceToNearestSolution(problem, approximationSet.get(i), referenceSet));
 		}
 
 		return max;

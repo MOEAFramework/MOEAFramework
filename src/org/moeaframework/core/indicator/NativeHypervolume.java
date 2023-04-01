@@ -45,11 +45,11 @@ import org.moeaframework.util.io.RedirectStream;
  * the command line for running the executable.  The command can be customized using
  * the following substitutions:
  * <ul>
- * <li>{0} number of objectives
- * <li>{1} approximation set size
- * <li>{2} file containing the approximation set
- * <li>{3} file containing the reference point
- * <li>{4} the reference point, separated by spaces
+ *   <li>{0} number of objectives
+ *   <li>{1} approximation set size
+ *   <li>{2} file containing the approximation set
+ *   <li>{3} file containing the reference point
+ *   <li>{4} the reference point, separated by spaces
  * </ul>
  * Note: To avoid unnecessarily writing files, the command is first checked
  * if the above arguments are specified.  Use the exact argument string as
@@ -165,8 +165,7 @@ public class NativeHypervolume extends NormalizedIndicator {
 	 *        {@code false} otherwise
 	 * @return the hypervolume value
 	 */
-	protected static double invokeNativeHypervolume(Problem problem,
-			List<Solution> solutions, boolean isInverted) {
+	protected static double invokeNativeHypervolume(Problem problem, List<Solution> solutions, boolean isInverted) {
 		try {
 			String command = Settings.getHypervolume();
 			
@@ -180,8 +179,7 @@ public class NativeHypervolume extends NormalizedIndicator {
 			}
 			
 			//generate approximation set file
-			File approximationSetFile = File.createTempFile(
-						"approximationSet", null);
+			File approximationSetFile = File.createTempFile("approximationSet", null);
 			approximationSetFile.deleteOnExit();
 				
 			PopulationIO.writeObjectives(approximationSetFile, solutions);
@@ -190,19 +188,16 @@ public class NativeHypervolume extends NormalizedIndicator {
 			File referencePointFile = null;
 			
 			if (command.contains("{3}")) {
-				referencePointFile = File.createTempFile("referencePoint",
-						null);
+				referencePointFile = File.createTempFile("referencePoint", null);
 				referencePointFile.deleteOnExit();
 
-				Solution referencePoint = new Solution(
-						new double[problem.getNumberOfObjectives()]);
+				Solution referencePoint = new Solution(new double[problem.getNumberOfObjectives()]);
 
 				for (int i = 0; i < problem.getNumberOfObjectives(); i++) {
 					referencePoint.setObjective(i, nadirPoint);
 				}
 
-				PopulationIO.writeObjectives(referencePointFile, 
-						new Population(new Solution[] { referencePoint }));
+				PopulationIO.writeObjectives(referencePointFile, new Population(new Solution[] { referencePoint }));
 			}
 			
 			//conditionally generate reference point argument
@@ -225,14 +220,11 @@ public class NativeHypervolume extends NormalizedIndicator {
 					(Integer)problem.getNumberOfObjectives(),
 					(Integer)solutions.size(),
 					approximationSetFile.getCanonicalPath(),
-					referencePointFile == null ? "" : 
-						referencePointFile.getCanonicalPath(),
-					referencePointString == null ? "" : 
-						referencePointString.toString()};
+					referencePointFile == null ? "" : referencePointFile.getCanonicalPath(),
+					referencePointString == null ? "" : referencePointString.toString()};
 
 			// invoke the native process
-			return invokeNativeProcess(MessageFormat.format(command, 
-					arguments));
+			return invokeNativeProcess(MessageFormat.format(command, arguments));
 		} catch (IOException e) {
 			throw new FrameworkException(e);
 		}
@@ -248,13 +240,11 @@ public class NativeHypervolume extends NormalizedIndicator {
 	 */
 	private static double invokeNativeProcess(String command)
 			throws IOException {
-		Process process = new ProcessBuilder(
-				Settings.parseCommand(command)).start();
+		Process process = new ProcessBuilder(Settings.parseCommand(command)).start();
 		RedirectStream.redirect(process.getErrorStream(), System.err);
 		String lastLine = null;
 
-		try (BufferedReader reader = new BufferedReader(new InputStreamReader(
-				process.getInputStream()))) {
+		try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
 			String line = null;
 
 			while ((line = reader.readLine()) != null) {

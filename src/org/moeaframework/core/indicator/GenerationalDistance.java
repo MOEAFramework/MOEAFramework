@@ -41,8 +41,7 @@ public class GenerationalDistance extends NormalizedIndicator {
 	 * @param problem the problem
 	 * @param referenceSet the reference set for the problem
 	 */
-	public GenerationalDistance(Problem problem,
-			NondominatedPopulation referenceSet) {
+	public GenerationalDistance(Problem problem, NondominatedPopulation referenceSet) {
 		this(problem, referenceSet, Settings.getGDPower());
 	}
 	
@@ -54,17 +53,14 @@ public class GenerationalDistance extends NormalizedIndicator {
 	 * @param referenceSet the reference set for the problem
 	 * @param d the power, typically {@code 2.0}
 	 */
-	public GenerationalDistance(Problem problem,
-			NondominatedPopulation referenceSet,
-			double d) {
+	public GenerationalDistance(Problem problem, NondominatedPopulation referenceSet, double d) {
 		super(problem, referenceSet);
 		this.d = d;
 	}
 
 	@Override
 	public double evaluate(NondominatedPopulation approximationSet) {
-		return evaluate(problem, normalize(approximationSet), 
-				getNormalizedReferenceSet(), d);
+		return evaluate(problem, normalize(approximationSet), getNormalizedReferenceSet(), d);
 	}
 
 	/**
@@ -80,10 +76,8 @@ public class GenerationalDistance extends NormalizedIndicator {
 	 * @return the generational distance for the specified problem given an
 	 *         approximation set and reference set
 	 */
-	static double evaluate(Problem problem,
-			NondominatedPopulation approximationSet,
-			NondominatedPopulation referenceSet,
-			double d) {
+	static double evaluate(Problem problem, NondominatedPopulation approximationSet,
+			NondominatedPopulation referenceSet, double d) {
 		double sum = 0.0;
 		
 		if (approximationSet.isEmpty()) {
@@ -91,8 +85,7 @@ public class GenerationalDistance extends NormalizedIndicator {
 		}
 
 		for (int i = 0; i < approximationSet.size(); i++) {
-			sum += Math.pow(IndicatorUtils.distanceToNearestSolution(problem,
-					approximationSet.get(i), referenceSet), d);
+			sum += Math.pow(IndicatorUtils.distanceToNearestSolution(problem, approximationSet.get(i), referenceSet), d);
 		}
 		
 		return Math.pow(sum, 1.0 / d) / approximationSet.size();

@@ -53,8 +53,7 @@ public abstract class NormalizedIndicator implements Indicator {
 	 * @throws IllegalArgumentException if the reference set contains fewer
 	 *         than two solutions
 	 */
-	public NormalizedIndicator(Problem problem,
-			NondominatedPopulation referenceSet) {
+	public NormalizedIndicator(Problem problem, NondominatedPopulation referenceSet) {
 		this(problem, referenceSet, false);
 	}
 	
@@ -71,8 +70,7 @@ public abstract class NormalizedIndicator implements Indicator {
 	 * @throws IllegalArgumentException if the reference set contains fewer
 	 *         than two solutions
 	 */
-	public NormalizedIndicator(Problem problem,
-			NondominatedPopulation referenceSet, boolean useReferencePoint) {
+	public NormalizedIndicator(Problem problem, NondominatedPopulation referenceSet, boolean useReferencePoint) {
 		super();
 		this.problem = problem;
 		
@@ -85,8 +83,7 @@ public abstract class NormalizedIndicator implements Indicator {
 			} else if (referencePoint != null) {
 				normalizer = new Normalizer(problem, referenceSet, referencePoint);
 			} else {
-				normalizer = new Normalizer(problem, referenceSet,
-						Settings.getHypervolumeDelta());
+				normalizer = new Normalizer(problem, referenceSet, Settings.getHypervolumeDelta());
 			}
 		} else {
 			normalizer = new Normalizer(problem, referenceSet);
@@ -107,8 +104,7 @@ public abstract class NormalizedIndicator implements Indicator {
 	 * @throws IllegalArgumentException if the reference set contains fewer
 	 *         than two solutions
 	 */
-	public NormalizedIndicator(Problem problem,
-			NondominatedPopulation referenceSet, double[] referencePoint) {
+	public NormalizedIndicator(Problem problem, NondominatedPopulation referenceSet, double[] referencePoint) {
 		super();
 		this.problem = problem;
 		
@@ -126,8 +122,7 @@ public abstract class NormalizedIndicator implements Indicator {
 	 * @param minimum the minimum bounds
 	 * @param maximum the maximum bounds
 	 */
-	public NormalizedIndicator(Problem problem,
-			NondominatedPopulation referenceSet, double[] minimum,
+	public NormalizedIndicator(Problem problem, NondominatedPopulation referenceSet, double[] minimum,
 			double[] maximum) {
 		super();
 		this.problem = problem;
@@ -142,8 +137,7 @@ public abstract class NormalizedIndicator implements Indicator {
 	 * @param approximationSet the approximation set to be normalized
 	 * @return a new population representing the normalized approximation set
 	 */
-	protected NondominatedPopulation normalize(
-			NondominatedPopulation approximationSet) {
+	protected NondominatedPopulation normalize(NondominatedPopulation approximationSet) {
 		return normalizer.normalize(approximationSet);
 	}
 	

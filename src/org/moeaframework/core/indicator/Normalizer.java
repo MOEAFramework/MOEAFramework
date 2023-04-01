@@ -170,8 +170,7 @@ public class Normalizer {
 	 */
 	private void calculateRanges(Population population) {
 		if (population.size() < 2) {
-			throw new IllegalArgumentException(
-					"requires at least two solutions");
+			throw new IllegalArgumentException("requires at least two solutions");
 		}
 		
 		for (int i = 0; i < problem.getNumberOfObjectives(); i++) {
@@ -194,19 +193,16 @@ public class Normalizer {
 		
 		if (referencePoint != null) {
 			for (int j = 0; j < problem.getNumberOfObjectives(); j++) {
-				maximum[j] = referencePoint[j >= referencePoint.length ?
-						referencePoint.length-1 : j];
+				maximum[j] = referencePoint[j >= referencePoint.length ? referencePoint.length-1 : j];
 			}
 			
-			System.err.println("Using reference point: " +
-					Arrays.toString(maximum));
+			System.err.println("Using reference point: " + Arrays.toString(maximum));
 		} else if (delta > 0.0) {
 			for (int j = 0; j < problem.getNumberOfObjectives(); j++) {
 				maximum[j] += delta * (maximum[j] - minimum[j]);
 			}
 			
-			System.err.println("Using reference point: " +
-					Arrays.toString(maximum));
+			System.err.println("Using reference point: " + Arrays.toString(maximum));
 		}
 	}
 	
@@ -220,8 +216,7 @@ public class Normalizer {
 	private void checkRanges() {
 		for (int i = 0; i < problem.getNumberOfObjectives(); i++) {
 			if (Math.abs(minimum[i] - maximum[i]) < Settings.EPS) {
-				throw new IllegalArgumentException(
-						"objective with empty range");
+				throw new IllegalArgumentException("objective with empty range");
 			}
 		}
 	}
@@ -281,9 +276,7 @@ public class Normalizer {
 			Solution clone = solution.copy();
 	
 			for (int j = 0; j < problem.getNumberOfObjectives(); j++) {
-				clone.setObjective(j,
-						(clone.getObjective(j) - minimum[j]) /
-						(maximum[j] - minimum[j]));
+				clone.setObjective(j, (clone.getObjective(j) - minimum[j]) / (maximum[j] - minimum[j]));
 			}
 	
 			normalizedSet.add(clone);

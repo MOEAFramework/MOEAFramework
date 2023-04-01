@@ -56,8 +56,7 @@ public class R1Indicator extends RIndicator {
 	 * @param subdivisions the number of subdivisions along each objective
 	 * @param referenceSet the reference set
 	 */
-	public R1Indicator(Problem problem, int subdivisions,
-			NondominatedPopulation referenceSet) {
+	public R1Indicator(Problem problem, int subdivisions, NondominatedPopulation referenceSet) {
 		this(problem, subdivisions, referenceSet, new ChebychevUtility());
 	}
 	
@@ -69,11 +68,9 @@ public class R1Indicator extends RIndicator {
 	 * @param referenceSet the reference set
 	 * @param utilityFunction the utility function
 	 */
-	public R1Indicator(Problem problem, int subdivisions,
-			NondominatedPopulation referenceSet,
+	public R1Indicator(Problem problem, int subdivisions, NondominatedPopulation referenceSet,
 			UtilityFunction utilityFunction) {
-		this(problem, subdivisions, referenceSet, utilityFunction,
-				DEFAULT_EPSILON);
+		this(problem, subdivisions, referenceSet, utilityFunction, DEFAULT_EPSILON);
 	}
 	
 	/**
@@ -86,8 +83,7 @@ public class R1Indicator extends RIndicator {
 	 * @param epsilon resolution when comparing two utility function values
 	 *                for equality
 	 */
-	public R1Indicator(Problem problem, int subdivisions,
-			NondominatedPopulation referenceSet,
+	public R1Indicator(Problem problem, int subdivisions, NondominatedPopulation referenceSet,
 			UtilityFunction utilityFunction, double epsilon) {
 		super(problem, subdivisions, referenceSet, utilityFunction);
 		this.epsilon = epsilon;
@@ -103,13 +99,11 @@ public class R1Indicator extends RIndicator {
 			double max2 = Double.NEGATIVE_INFINITY;
 			
 			for (Solution solution : normalizedPopulation) {
-				max1 = Math.max(max1, utilityFunction.computeUtility(solution,
-						weights[i]));
+				max1 = Math.max(max1, utilityFunction.computeUtility(solution, weights[i]));
 			}
 			
 			for (Solution solution : getNormalizedReferenceSet()) {
-				max2 = Math.max(max2, utilityFunction.computeUtility(solution,
-						weights[i]));
+				max2 = Math.max(max2, utilityFunction.computeUtility(solution, weights[i]));
 			}
 
 			if (Math.abs(max2 - max1) < epsilon) {

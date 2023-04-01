@@ -43,8 +43,7 @@ public class R2Indicator extends RIndicator {
 	 * @param subdivisions the number of subdivisions along each objective
 	 * @param referenceSet the reference set
 	 */
-	public R2Indicator(Problem problem, int subdivisions,
-			NondominatedPopulation referenceSet) {
+	public R2Indicator(Problem problem, int subdivisions, NondominatedPopulation referenceSet) {
 		this(problem, subdivisions, referenceSet, new ChebychevUtility());
 	}
 	
@@ -56,16 +55,14 @@ public class R2Indicator extends RIndicator {
 	 * @param referenceSet the reference set
 	 * @param utilityFunction the utility function
 	 */
-	public R2Indicator(Problem problem, int subdivisions,
-			NondominatedPopulation referenceSet,
+	public R2Indicator(Problem problem, int subdivisions, NondominatedPopulation referenceSet,
 			UtilityFunction utilityFunction) {
 		super(problem, subdivisions, referenceSet, utilityFunction);
 	}
 	
 	@Override
 	public double evaluate(NondominatedPopulation population) {
-		return expectedUtility(
-				getNormalizedReferenceSet()) - expectedUtility(normalize(population));
+		return expectedUtility(getNormalizedReferenceSet()) - expectedUtility(normalize(population));
 	}
 
 }

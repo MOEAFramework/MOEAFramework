@@ -128,8 +128,7 @@ public class PISAHypervolume extends NormalizedIndicator {
 	 *         respect to the first {@code numberOfObjectives} objectives;
 	 *         {@code false} otherwise
 	 */
-	private static boolean dominates(Solution solution1, Solution solution2,
-			int numberOfObjectives) {
+	private static boolean dominates(Solution solution1, Solution solution2, int numberOfObjectives) {
 		boolean betterInAnyObjective = false;
 		boolean worseInAnyObjective = false;
 
@@ -167,21 +166,18 @@ public class PISAHypervolume extends NormalizedIndicator {
 	 * points in 'front' are resorted, such that points [0..n-1] represent the
 	 * nondominated points; n is returned
 	 */
-	private static int filterNondominatedSet(List<Solution> population,
-			int numberOfSolutions, int numberOfObjectives) {
+	private static int filterNondominatedSet(List<Solution> population, int numberOfSolutions, int numberOfObjectives) {
 		int i = 0;
 		int n = numberOfSolutions;
 
 		while (i < n) {
 			int j = i + 1;
 			while (j < n) {
-				if (dominates(population.get(i), population.get(j),
-						numberOfObjectives)) {
+				if (dominates(population.get(i), population.get(j), numberOfObjectives)) {
 					/* remove point j */
 					n--;
 					swap(population, j, n);
-				} else if (dominates(population.get(j), population.get(i),
-						numberOfObjectives)) {
+				} else if (dominates(population.get(j), population.get(i), numberOfObjectives)) {
 					/*
 					 * remove point i; ensure that the point copied to index i
 					 * is considered in the next outer loop (thus, decrement i)
@@ -205,8 +201,7 @@ public class PISAHypervolume extends NormalizedIndicator {
 	 * calculate next value regarding dimension 'objective'; consider points
 	 * 0..no_points-1 in 'front'
 	 */
-	private static double surfaceUnchangedTo(List<Solution> population,
-			int numberOfSolutions, int objective) {
+	private static double surfaceUnchangedTo(List<Solution> population, int numberOfSolutions, int objective) {
 		double min = population.get(0).getObjective(objective);
 
 		for (int i = 1; i < numberOfSolutions; i++) {
@@ -222,8 +217,8 @@ public class PISAHypervolume extends NormalizedIndicator {
 	 * considered; 'front' is resorted, such that points [0..n-1] represent the
 	 * remaining points; 'n' is returned
 	 */
-	private static int reduceNondominatedSet(List<Solution> population,
-			int numberOfSolutions, int objective, double threshold) {
+	private static int reduceNondominatedSet(List<Solution> population, int numberOfSolutions, int objective,
+			double threshold) {
 		int n = numberOfSolutions;
 
 		for (int i = 0; i < n; i++) {
@@ -248,30 +243,26 @@ public class PISAHypervolume extends NormalizedIndicator {
 	 * @param numberOfObjectives the number of objectives
 	 * @return the hypervolume metric
 	 */
-	public static double calculateHypervolume(List<Solution> population,
-			int numberOfSolutions, int numberOfObjectives) {
+	public static double calculateHypervolume(List<Solution> population, int numberOfSolutions,
+			int numberOfObjectives) {
 		double volume = 0.0;
 		double distance = 0.0;
 		int n = numberOfSolutions;
 
 		while (n > 0) {
-			int numberOfNondominatedPoints = filterNondominatedSet(population,
-					n, numberOfObjectives - 1);
+			int numberOfNondominatedPoints = filterNondominatedSet(population, n, numberOfObjectives - 1);
 
 			double tempVolume = 0.0;
 			if (numberOfObjectives < 3) {
 				tempVolume = population.get(0).getObjective(0);
 			} else {
-				tempVolume = calculateHypervolume(population,
-						numberOfNondominatedPoints, numberOfObjectives - 1);
+				tempVolume = calculateHypervolume(population, numberOfNondominatedPoints, numberOfObjectives - 1);
 			}
 
-			double tempDistance = surfaceUnchangedTo(population, n,
-					numberOfObjectives - 1);
+			double tempDistance = surfaceUnchangedTo(population, n, numberOfObjectives - 1);
 			volume += tempVolume * (tempDistance - distance);
 			distance = tempDistance;
-			n = reduceNondominatedSet(population, n, numberOfObjectives - 1,
-					distance);
+			n = reduceNondominatedSet(population, n, numberOfObjectives - 1, distance);
 		}
 
 		return volume;
@@ -289,8 +280,7 @@ public class PISAHypervolume extends NormalizedIndicator {
 	 * @param approximationSet the normalized approximation set
 	 * @return the hypervolume of the normalized approximation set
 	 */
-	static double evaluate(Problem problem,
-			NondominatedPopulation approximationSet) {
+	static double evaluate(Problem problem, NondominatedPopulation approximationSet) {
 		List<Solution> solutions = new ArrayList<Solution>();
 
 		outer: for (Solution solution : approximationSet) {
@@ -306,8 +296,7 @@ public class PISAHypervolume extends NormalizedIndicator {
 			solutions.add(clone);
 		}
 
-		return calculateHypervolume(solutions, solutions.size(),
-				problem.getNumberOfObjectives());
+		return calculateHypervolume(solutions, solutions.size(), problem.getNumberOfObjectives());
 	}
 
 }

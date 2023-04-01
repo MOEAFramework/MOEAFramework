@@ -42,8 +42,7 @@ public class R3Indicator extends RIndicator {
 	 * @param subdivisions the number of subdivisions along each objective
 	 * @param referenceSet the reference set
 	 */
-	public R3Indicator(Problem problem, int subdivisions,
-			NondominatedPopulation referenceSet) {
+	public R3Indicator(Problem problem, int subdivisions, NondominatedPopulation referenceSet) {
 		this(problem, subdivisions, referenceSet, new ChebychevUtility());
 	}
 	
@@ -55,8 +54,7 @@ public class R3Indicator extends RIndicator {
 	 * @param referenceSet the reference set
 	 * @param utilityFunction the utility function
 	 */
-	public R3Indicator(Problem problem, int subdivisions,
-			NondominatedPopulation referenceSet,
+	public R3Indicator(Problem problem, int subdivisions, NondominatedPopulation referenceSet,
 			UtilityFunction utilityFunction) {
 		super(problem, subdivisions, referenceSet, utilityFunction);
 	}
@@ -71,13 +69,11 @@ public class R3Indicator extends RIndicator {
 			double max2 = Double.NEGATIVE_INFINITY;
 			
 			for (Solution solution : normalizedPopulation) {
-				max1 = Math.max(max1, utilityFunction.computeUtility(solution,
-						weights[i]));
+				max1 = Math.max(max1, utilityFunction.computeUtility(solution, weights[i]));
 			}
 			
 			for (Solution solution : getNormalizedReferenceSet()) {
-				max2 = Math.max(max2, utilityFunction.computeUtility(solution,
-						weights[i]));
+				max2 = Math.max(max2, utilityFunction.computeUtility(solution, weights[i]));
 			}
 			
 			sum += (max2 - max1) / (max2 + 1e-30);

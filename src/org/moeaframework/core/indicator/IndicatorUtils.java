@@ -43,8 +43,7 @@ public class IndicatorUtils {
 	 * @return the Manhattan distance in objective space between the two
 	 *         solutions
 	 */
-	public static double manhattanDistance(Problem problem, Solution a,
-			Solution b) {
+	public static double manhattanDistance(Problem problem, Solution a, Solution b) {
 		return distance(problem, a, b, 1.0);
 	}
 
@@ -58,8 +57,7 @@ public class IndicatorUtils {
 	 * @return the Euclidean distance in objective space between the two
 	 *         solutions
 	 */
-	public static double euclideanDistance(Problem problem, Solution a,
-			Solution b) {
+	public static double euclideanDistance(Problem problem, Solution a, Solution b) {
 		return distance(problem, a, b, 2.0);
 	}
 
@@ -73,13 +71,11 @@ public class IndicatorUtils {
 	 *        for Euclidean distance)
 	 * @return the distance in objective space between the two solutions
 	 */
-	private static double distance(Problem problem, Solution a, Solution b,
-			double power) {
+	private static double distance(Problem problem, Solution a, Solution b, double power) {
 		double distance = 0.0;
 
 		for (int i = 0; i < problem.getNumberOfObjectives(); i++) {
-			distance += Math.pow(Math.abs(a.getObjective(i) - 
-					b.getObjective(i)), power);
+			distance += Math.pow(Math.abs(a.getObjective(i) - b.getObjective(i)), power);
 		}
 
 		return Math.pow(distance, 1.0 / power);
@@ -95,13 +91,12 @@ public class IndicatorUtils {
 	 * @return the Euclidean distance in objective space between the specified
 	 *         solution and the nearest solution in the population
 	 */
-	public static double distanceToNearestSolution(Problem problem,
-			Solution solution, NondominatedPopulation population) {
+	public static double distanceToNearestSolution(Problem problem, Solution solution,
+			NondominatedPopulation population) {
 		double minimum = Double.POSITIVE_INFINITY;
 
 		for (int i = 0; i < population.size(); i++) {
-			minimum = Math.min(minimum, euclideanDistance(problem, solution,
-					population.get(i)));
+			minimum = Math.min(minimum, euclideanDistance(problem, solution, population.get(i)));
 		}
 
 		return minimum;

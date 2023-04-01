@@ -120,8 +120,7 @@ public abstract class RIndicator extends NormalizedIndicator {
 	 * @param subdivisions the number of subdivisions along each objective
 	 * @param referenceSet the reference set
 	 */
-	public RIndicator(Problem problem, int subdivisions,
-			NondominatedPopulation referenceSet) {
+	public RIndicator(Problem problem, int subdivisions, NondominatedPopulation referenceSet) {
 		this(problem, subdivisions, referenceSet, new ChebychevUtility());
 	}
 	
@@ -133,14 +132,12 @@ public abstract class RIndicator extends NormalizedIndicator {
 	 * @param referenceSet the reference set
 	 * @param utilityFunction the utility function
 	 */
-	public RIndicator(Problem problem, int subdivisions,
-			NondominatedPopulation referenceSet,
+	public RIndicator(Problem problem, int subdivisions, NondominatedPopulation referenceSet,
 			UtilityFunction utilityFunction) {
 		super(problem, referenceSet);
 		this.utilityFunction = utilityFunction;
 		
-		weights = generateUniformWeights(subdivisions,
-				problem.getNumberOfObjectives());
+		weights = generateUniformWeights(subdivisions, problem.getNumberOfObjectives());
 	}
 	
 	/**
@@ -156,8 +153,7 @@ public abstract class RIndicator extends NormalizedIndicator {
 			double max = Double.NEGATIVE_INFINITY;
 			
 			for (Solution solution : population) {
-				max = Math.max(max, utilityFunction.computeUtility(solution,
-						weights[i]));
+				max = Math.max(max, utilityFunction.computeUtility(solution, weights[i]));
 			}
 			
 			sum += max;
@@ -177,8 +173,7 @@ public abstract class RIndicator extends NormalizedIndicator {
 		int counter = 0;
 		int N = ArithmeticUtils.pow(s+1, k);
 		
-		double[][] weights = new double[
-				(int)CombinatoricsUtils.binomialCoefficient(s+k-1, k-1)][k];
+		double[][] weights = new double[(int)CombinatoricsUtils.binomialCoefficient(s+k-1, k-1)][k];
 		
 		for (int i = 0; i < N; i++) {
 			int sum = 0;
@@ -214,8 +209,7 @@ public abstract class RIndicator extends NormalizedIndicator {
 		int i = 0;
 		
 		if (number >= ArithmeticUtils.pow(k, length)) {
-			throw new FrameworkException("number can not be represented in " +
-					"base-k with specified number of digits");
+			throw new FrameworkException("number can not be represented in base-k with specified number of digits");
 		}
 		
 		while (number != 0) {

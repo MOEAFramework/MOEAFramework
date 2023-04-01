@@ -101,16 +101,14 @@ public class QualityIndicator {
 	 * @param problem the problem
 	 * @param referenceSet the reference set for the problem
 	 */
-	public QualityIndicator(Problem problem, 
-			NondominatedPopulation referenceSet) {
+	public QualityIndicator(Problem problem, NondominatedPopulation referenceSet) {
 		this.problem = problem;
 		this.referenceSet = referenceSet;
 		
 		normalizer = new Normalizer(problem, referenceSet);
 		normalizedReferenceSet = normalizer.normalize(referenceSet);
 		
-		hypervolumeNormalizer = new Normalizer(problem, referenceSet,
-				Settings.getHypervolumeDelta());
+		hypervolumeNormalizer = new Normalizer(problem, referenceSet, Settings.getHypervolumeDelta());
 	}
 
 	/**
@@ -232,8 +230,7 @@ public class QualityIndicator {
 	 */
 	private void checkCalculateInvocation() {
 		if (normalizedApproximationSet == null) {
-			throw new IllegalStateException(
-					"invoke calculate prior to getting indicator values");
+			throw new IllegalStateException("invoke calculate prior to getting indicator values");
 		}
 	}
 
@@ -246,8 +243,7 @@ public class QualityIndicator {
 	 */
 	public void calculate(NondominatedPopulation approximationSet) {
 		if (Settings.isHypervolumeEnabled()) {
-			hypervolume = Hypervolume.evaluate(problem, 
-					hypervolumeNormalizer.normalize(approximationSet));
+			hypervolume = Hypervolume.evaluate(problem, hypervolumeNormalizer.normalize(approximationSet));
 		} else {
 			hypervolume = Double.NaN;
 		}
