@@ -37,6 +37,7 @@ jobs:
         cd lib
         wget https://github.com/MOEAFramework/JMetal-Plugin/releases/download/v${version}/jmetal-plugin-${version}-jar-with-dependencies.jar
     - name: Setup scripting plugin
+      if: ${{ matrix.java >= 11 }}
       run: |
         # Nashorn is GPL v2 with the Classpath Exception
         # ASM is BSD 3-clause
