@@ -58,7 +58,7 @@ public class VEGA extends AbstractEvolutionaryAlgorithm {
 	/**
 	 * The selection operator.
 	 */
-	private Selection selection;
+	private final Selection selection;
 	
 	/**
 	 * Constructs a new VEGA instance with default settings.

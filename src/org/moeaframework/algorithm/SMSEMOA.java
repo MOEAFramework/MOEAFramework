@@ -92,7 +92,7 @@ public class SMSEMOA extends AbstractEvolutionaryAlgorithm {
 		super(problem, initialPopulationSize, new Population(), null, initialization, variation);
 		this.fitnessEvaluator = fitnessEvaluator;
 		
-		if (fitnessEvaluator ==  null) {
+		if (fitnessEvaluator == null) {
 			selection = new TournamentSelection(new NondominatedSortingComparator());
 		} else {
 			selection = new TournamentSelection(new NondominatedFitnessComparator());
@@ -142,7 +142,6 @@ public class SMSEMOA extends AbstractEvolutionaryAlgorithm {
 			population.truncate(populationSize, new NondominatedSortingComparator());
 		} else {
 			computeFitnessForLastFront();
-			
 			population.truncate(populationSize, new NondominatedFitnessComparator());
 		}
 	}

@@ -215,8 +215,7 @@ public class SPEA2 extends AbstractEvolutionaryAlgorithm {
 		
 		while (iterator.hasNext()) {
 			Solution solution = iterator.next();
-			double fitness = (Double)solution.getAttribute(
-					FitnessEvaluator.FITNESS_ATTRIBUTE);
+			double fitness = (Double)solution.getAttribute(FitnessEvaluator.FITNESS_ATTRIBUTE);
 			
 			if (fitness < 1.0) {
 				survivors.add(solution);
@@ -261,9 +260,8 @@ public class SPEA2 extends AbstractEvolutionaryAlgorithm {
 			distances[i][i] = 0.0;
 			
 			for (int j = i+1; j < population.size(); j++) {
-				distances[i][j] = distances[j][i] = 
-						IndicatorUtils.euclideanDistance(problem,
-								population.get(i), population.get(j));
+				distances[i][j] = distances[j][i] = IndicatorUtils.euclideanDistance(
+						problem, population.get(i), population.get(j));
 			}
 		}
 		
@@ -311,8 +309,7 @@ public class SPEA2 extends AbstractEvolutionaryAlgorithm {
 				Collections.sort(distances, new Comparator<Pair<Integer, Double>>() {
 
 					@Override
-					public int compare(Pair<Integer, Double> o1,
-							Pair<Integer, Double> o2) {
+					public int compare(Pair<Integer, Double> o1, Pair<Integer, Double> o2) {
 						return Double.compare(o1.getSecond(), o2.getSecond());
 					}
 					
@@ -376,10 +373,8 @@ public class SPEA2 extends AbstractEvolutionaryAlgorithm {
 					if (point.getFirst() == index) {
 						iterator.remove();
 					} else if (point.getFirst() > index) {
-						// decrement the index so it stays aligned with the
-						// index in distanceMatrix
-						iterator.set(new Pair<Integer, Double>(
-								point.getFirst()-1, point.getSecond()));
+						// decrement the index so it stays aligned with the index in distanceMatrix
+						iterator.set(new Pair<Integer, Double>(point.getFirst()-1, point.getSecond()));
 					}
 				}
 			}
@@ -445,8 +440,7 @@ public class SPEA2 extends AbstractEvolutionaryAlgorithm {
 			// count the number of individuals each solution dominates
 			for (int i = 0; i < population.size()-1; i++) {
 				for (int j = i+1; j < population.size(); j++) {
-					int comparison = comparator.compare(population.get(i),
-							population.get(j));
+					int comparison = comparator.compare(population.get(i), population.get(j));
 					
 					if (comparison < 0) {
 						strength[i]++;
@@ -456,12 +450,10 @@ public class SPEA2 extends AbstractEvolutionaryAlgorithm {
 				}
 			}
 			
-			// the raw fitness is the sum of the dominance counts (strength)
-			// of all dominated solutions
+			// the raw fitness is the sum of the dominance counts (strength) of all dominated solutions
 			for (int i = 0; i < population.size()-1; i++) {
 				for (int j = i+1; j < population.size(); j++) {
-					int comparison = comparator.compare(population.get(i),
-							population.get(j));
+					int comparison = comparator.compare(population.get(i), population.get(j));
 					
 					if (comparison < 0) {
 						fitness[j] += strength[i];
