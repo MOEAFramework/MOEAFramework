@@ -36,8 +36,7 @@ public class HypervolumeFitnessEvaluator extends IndicatorFitnessEvaluator {
 	/**
 	 * Pareto dominance comparator.
 	 */
-	private static final ParetoDominanceComparator dominanceComparator = 
-			new ParetoDominanceComparator();
+	private static final ParetoDominanceComparator dominanceComparator = new ParetoDominanceComparator();
 
 	/**
 	 * Constructs a hypervolume fitness evaluator.
@@ -49,8 +48,7 @@ public class HypervolumeFitnessEvaluator extends IndicatorFitnessEvaluator {
 	}
 
 	@Override
-	protected double calculateIndicator(Solution solution1, 
-			Solution solution2) {
+	protected double calculateIndicator(Solution solution1, Solution solution2) {
 		if (dominanceComparator.compare(solution1, solution2) < 0) {
 			return -calculateHypervolume(solution1, solution2, getProblem().getNumberOfObjectives());
 		} else {

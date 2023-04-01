@@ -58,8 +58,7 @@ public abstract class CommandLineUtility {
 	 * Exception handler for formatting and printing the error message to the
 	 * command line.
 	 */
-	private class CommandLineUncaughtExceptionHandler implements
-	UncaughtExceptionHandler {
+	private class CommandLineUncaughtExceptionHandler implements UncaughtExceptionHandler {
 
 		@Override
 		public void uncaughtException(Thread t, Throwable e) {
@@ -131,8 +130,7 @@ public abstract class CommandLineUtility {
 	 * @throws Exception if any exception occurred while running this command
 	 */
 	public void start(String[] args) throws Exception {
-		Thread.currentThread().setUncaughtExceptionHandler(
-				new CommandLineUncaughtExceptionHandler());
+		Thread.currentThread().setUncaughtExceptionHandler(new CommandLineUncaughtExceptionHandler());
 		
 		// trim last argument because of an error with Windows newline
 		// characters
@@ -169,8 +167,7 @@ public abstract class CommandLineUtility {
 			
 			while (CommandLineUtility.class.isAssignableFrom(type)) {
 				if (Localization.containsKey(type, key)) {
-					option.setDescription(
-							Localization.getString(type, key));
+					option.setDescription(Localization.getString(type, key));
 					break;
 				} else {
 					type = type.getSuperclass();

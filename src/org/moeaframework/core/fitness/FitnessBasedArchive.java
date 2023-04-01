@@ -87,8 +87,7 @@ public class FitnessBasedArchive extends NondominatedPopulation {
 	 * @param iterable the solutions used to initialize this population
 	 */
 	public FitnessBasedArchive(FitnessEvaluator evaluator, int capacity,
-			DominanceComparator comparator,
-			Iterable<? extends Solution> iterable) {
+			DominanceComparator comparator, Iterable<? extends Solution> iterable) {
 		this(evaluator, capacity, comparator);
 		addAll(iterable);
 	}

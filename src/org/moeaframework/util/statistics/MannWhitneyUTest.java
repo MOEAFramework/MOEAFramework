@@ -23,22 +23,22 @@ import org.moeaframework.core.Settings;
 /**
  * The Mann-Whitney U test determines if two populations have different medians.
  * <ul>
- * <li>Null Hypothesis: The two populations have the same medians.
- * <li>Alternative Hypothesis: The two populations have different medians.
+ *   <li>Null Hypothesis: The two populations have the same medians.
+ *   <li>Alternative Hypothesis: The two populations have different medians.
  * </ul>
  * <p>
  * Assumptions:
  * <ol>
- * <li>Samples are randomly selected from their corresponding populations
- * <li>Samples are independent
- * <li>The dependent variable (value being sampled) is continuous
- * <li>The underlying distributions of the populations are identical in shape
+ *   <li>Samples are randomly selected from their corresponding populations
+ *   <li>Samples are independent
+ *   <li>The dependent variable (value being sampled) is continuous
+ *   <li>The underlying distributions of the populations are identical in shape
  * </ol>
  * <p>
  * References:
  * <ol>
- * <li>Sheskin, D.J. "Handbook of Parametric and Nonparametric Statistical
- * Procedures, Third Edition." Chapman &amp; Hall/CRC. 2004.
+ *   <li>Sheskin, D.J. "Handbook of Parametric and Nonparametric Statistical
+ *       Procedures, Third Edition." Chapman &amp; Hall/CRC. 2004.
  * </ol>
  */
 public class MannWhitneyUTest extends OrdinalStatisticalTest {

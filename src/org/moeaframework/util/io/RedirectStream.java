@@ -101,8 +101,7 @@ public class RedirectStream extends Thread {
 	 * @param inputStream the input stream from which content is read
 	 * @param outputStream the output stream to which the content is redirected
 	 */
-	public static void redirect(InputStream inputStream,
-			OutputStream outputStream) {
+	public static void redirect(InputStream inputStream, OutputStream outputStream) {
 		new RedirectStream(inputStream, outputStream).start();
 	}
 

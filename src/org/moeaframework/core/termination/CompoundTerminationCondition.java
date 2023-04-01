@@ -54,8 +54,7 @@ public class CompoundTerminationCondition implements TerminationCondition {
 		
 		for (TerminationCondition condition : conditions) {
 			if (condition.shouldTerminate(algorithm)) {
-				// do not break here in case an implementation needs to be
-				// executed every step
+				// do not break here in case an implementation needs to be executed every step
 				shouldTerminate = true;
 			}
 		}

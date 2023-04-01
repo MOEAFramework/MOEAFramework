@@ -156,8 +156,7 @@ public class RotationMatrixBuilder {
 	 * @return a reference to this rotation matrix builder
 	 */
 	public RotationMatrixBuilder rotatePlane(int i, int j) {
-		if ((i < 0) || (i >= dimension) || (j < 0) || 
-				(j >= dimension) || (i == j)) {
+		if ((i < 0) || (i >= dimension) || (j < 0) || (j >= dimension) || (i == j)) {
 			throw new IllegalArgumentException("invalid plane");
 		}
 		
@@ -281,8 +280,7 @@ public class RotationMatrixBuilder {
 				continue;
 			}
 
-			rotation = rotation.multiply(newRotationMatrix(
-					plane.getFirstAxis(), plane.getSecondAxis(), theta));
+			rotation = rotation.multiply(newRotationMatrix(plane.getFirstAxis(), plane.getSecondAxis(), theta));
 		}
 		
 		return rotation;
@@ -294,8 +292,7 @@ public class RotationMatrixBuilder {
 	 * @return an identity matrix
 	 */
 	private RealMatrix newIdentityMatrix() {
-		RealMatrix identity = MatrixUtils.createRealMatrix(dimension, 
-				dimension); 
+		RealMatrix identity = MatrixUtils.createRealMatrix(dimension, dimension); 
 		
 		for (int i = 0; i < dimension; i++) {
 			identity.setEntry(i, i, 1.0);

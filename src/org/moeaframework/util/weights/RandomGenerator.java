@@ -33,9 +33,9 @@ import org.moeaframework.core.PRNG;
  * <p>
  * References:
  * <ol>
- * <li>Zhang, Q., et al.  "The Performance of a New Version of MOEA/D on
- *     CEC09 Unconstrained MOP Test Instances."  IEEE Congress on Evolutionary
- *     Computation, 2009.
+ *   <li>Zhang, Q., et al.  "The Performance of a New Version of MOEA/D on
+ *       CEC09 Unconstrained MOP Test Instances."  IEEE Congress on Evolutionary
+ *       Computation, 2009.
  * </ol>
  */
 public class RandomGenerator implements WeightGenerator {
@@ -128,8 +128,7 @@ public class RandomGenerator implements WeightGenerator {
 				double d = Double.POSITIVE_INFINITY;
 
 				for (int j = 0; j < weights.size(); j++) {
-					d = Math.min(d, MathArrays.distance(candidates.get(i),
-							weights.get(j)));
+					d = Math.min(d, MathArrays.distance(candidates.get(i), weights.get(j)));
 				}
 
 				if (d > distance) {

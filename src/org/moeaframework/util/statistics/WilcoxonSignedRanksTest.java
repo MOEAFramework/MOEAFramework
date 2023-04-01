@@ -26,20 +26,20 @@ import org.moeaframework.core.Settings;
  * The Wilcoxon Signed-Ranks test determines if the population median is equal
  * to a specified value.
  * <ul>
- * <li>Null Hypothesis: The population median equals X.</li>
- * <li>Alternative Hypothesis: The population median does not equal X.</li>
+ *   <li>Null Hypothesis: The population median equals X.</li>
+ *   <li>Alternative Hypothesis: The population median does not equal X.</li>
  * </ul>
  * <p>
  * Assumptions:
  * <ol>
- * <li>Samples are randomly selected from the population</li>
- * <li>The underlying population distribution is symmetrical</li>
+ *   <li>Samples are randomly selected from the population</li>
+ *   <li>The underlying population distribution is symmetrical</li>
  * </ol>
  * <p>
  * References:
  * <ol>
- * <li>Sheskin, D.J. "Handbook of Parametric and Nonparametric Statistical
- * Procedures, Third Edition." Chapman &amp; Hall/CRC. 2004.
+ *   <li>Sheskin, D.J. "Handbook of Parametric and Nonparametric Statistical
+ *       Procedures, Third Edition." Chapman &amp; Hall/CRC. 2004.
  * </ol>
  */
 public class WilcoxonSignedRanksTest extends OrdinalStatisticalTest {
@@ -156,15 +156,12 @@ public class WilcoxonSignedRanksTest extends OrdinalStatisticalTest {
 			NormalDistribution dist = new NormalDistribution();
 
 			if (Settings.isContinuityCorrection()) {
-				z = (Math.abs(T - n * (n + 1) / 4.0) - 0.5)
-						/ Math.sqrt(n * (n + 1) * (n + n + 1) / 24.0);
+				z = (Math.abs(T - n * (n + 1) / 4.0) - 0.5) / Math.sqrt(n * (n + 1) * (n + n + 1) / 24.0);
 			} else {
-				z = (T - n * (n + 1) / 4.0)
-						/ Math.sqrt(n * (n + 1) * (n + n + 1) / 24.0);
+				z = (T - n * (n + 1) / 4.0) / Math.sqrt(n * (n + 1) * (n + n + 1) / 24.0);
 			}
 
-			return Math.abs(z) >= Math.abs(
-					dist.inverseCumulativeProbability(alpha));
+			return Math.abs(z) >= Math.abs(dist.inverseCumulativeProbability(alpha));
 		}
 	}
 

@@ -220,8 +220,8 @@ public class BinaryVariable implements Variable {
 			} else if (c == '1') {
 				set(i, true);
 			} else {
-				throw new IllegalArgumentException("invalid bit string, unexpected character '" + c + "' at index " +
-						i);
+				throw new IllegalArgumentException("invalid bit string, unexpected character '" + c +
+						"' at index " + i);
 			}
 		}
 	}

@@ -81,12 +81,9 @@ public class RotatedProblem extends ProblemWrapper {
 		for (int i = 0; i < getNumberOfVariables(); i++) {
 			RealVariable variable = (RealVariable)solution.getVariable(i);
 			
-			center[i] = (variable.getLowerBound() + variable.getUpperBound()) /
-					2.0;
-			lowerBounds[i] = Math.sqrt(2.0) *
-					(variable.getLowerBound() - center[i]);
-			upperBounds[i] = Math.sqrt(2.0) *
-					(variable.getUpperBound() - center[i]);
+			center[i] = (variable.getLowerBound() + variable.getUpperBound()) / 2.0;
+			lowerBounds[i] = Math.sqrt(2.0) * (variable.getLowerBound() - center[i]);
+			upperBounds[i] = Math.sqrt(2.0) * (variable.getUpperBound() - center[i]);
 		}
 	}
 
@@ -137,18 +134,15 @@ public class RotatedProblem extends ProblemWrapper {
 		}
 		
 		//set the bounds violation constraint
-		solution.setConstraint(super.getNumberOfConstraints(), 
-				boundsViolation);
+		solution.setConstraint(super.getNumberOfConstraints(), boundsViolation);
 	}
 
 	@Override
 	public Solution newSolution() {
-		Solution result = new Solution(getNumberOfVariables(), 
-				getNumberOfObjectives(), getNumberOfConstraints());
+		Solution result = new Solution(getNumberOfVariables(), getNumberOfObjectives(), getNumberOfConstraints());
 		
 		for (int i = 0; i < getNumberOfVariables(); i++) {
-			result.setVariable(i, new RealVariable(lowerBounds[i], 
-					upperBounds[i]));
+			result.setVariable(i, new RealVariable(lowerBounds[i], upperBounds[i]));
 		}
 		
 		return result;

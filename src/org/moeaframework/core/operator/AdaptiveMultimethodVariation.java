@@ -192,9 +192,6 @@ public class AdaptiveMultimethodVariation extends AbstractCompoundVariation<Vari
 		throw new IllegalStateException();
 	}
 
-	//TODO: getArity should only request the # of parents required for the next
-	//invocation of evolve, but this will require all uses to not cache the
-	//variation operator arity.
 	@Override
 	public Solution[] evolve(Solution[] parents) {
 		if (operators.isEmpty()) {
@@ -226,34 +223,5 @@ public class AdaptiveMultimethodVariation extends AbstractCompoundVariation<Vari
 
 		return arity;
 	}
-
-//	/**
-//	 * Procedure for adjusting an array of probabilities to ensure the
-//	 * probabilities are at least {@code minimum}.
-//	 * 
-//	 * @param probabilities the array of probabilities
-//	 * @param minimum the minimum probability
-//	 */
-//	public static void correctProbabilities(double[] probabilities,
-//			double minimum) {
-//		double diff = 0.0;
-//		double allowance = 0.0;
-//
-//		for (int i = 0; i < probabilities.length; i++) {
-//			if (probabilities[i] <= minimum) {
-//				diff += minimum - probabilities[i];
-//				probabilities[i] = minimum;
-//			} else {
-//				allowance += probabilities[i] - minimum;
-//			}
-//		}
-//
-//		for (int i = 0; i < probabilities.length; i++) {
-//			if (probabilities[i] > minimum) {
-//				probabilities[i] -= diff
-//						* ((probabilities[i] - minimum) / allowance);
-//			}
-//		}
-//	}
 
 }

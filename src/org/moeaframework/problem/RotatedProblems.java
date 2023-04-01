@@ -93,10 +93,8 @@ public class RotatedProblems extends ProblemProvider {
 		Matcher matcher = PATTERN.matcher(name);
 		
 		if (matcher.matches()) {
-			Problem problem = ProblemFactory.getInstance().getProblem(
-					matcher.group(4));
-			RotationMatrixBuilder rotationMatrix = new RotationMatrixBuilder(
-					problem.getNumberOfVariables());
+			Problem problem = ProblemFactory.getInstance().getProblem(matcher.group(4));
+			RotationMatrixBuilder rotationMatrix = new RotationMatrixBuilder(problem.getNumberOfVariables());
 			
 			//if rotated, apply the requested rotations
 			if (matcher.group(1) != null) {
@@ -114,8 +112,7 @@ public class RotatedProblems extends ProblemProvider {
 				} else if (angle.equalsIgnoreCase("RAND")) {
 					rotationMatrix.withRandomThetas();
 				} else {
-					rotationMatrix.withThetas(Math.toRadians(
-							Double.parseDouble(angle)));
+					rotationMatrix.withThetas(Math.toRadians(Double.parseDouble(angle)));
 				}
 			}
 			
@@ -130,8 +127,7 @@ public class RotatedProblems extends ProblemProvider {
 		Matcher matcher = PATTERN.matcher(name);
 		
 		if (matcher.matches()) {
-			return ProblemFactory.getInstance().getReferenceSet(
-					matcher.group(4));
+			return ProblemFactory.getInstance().getReferenceSet(matcher.group(4));
 		} else {
 			return null;
 		}

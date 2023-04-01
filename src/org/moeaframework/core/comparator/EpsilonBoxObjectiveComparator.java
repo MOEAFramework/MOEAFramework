@@ -161,10 +161,8 @@ public class EpsilonBoxObjectiveComparator implements DominanceComparator {
 				double index1 = Math.floor(solution1.getObjective(i) / epsilon);
 				double index2 = Math.floor(solution2.getObjective(i) / epsilon);
 
-				dist1 += Math.pow(solution1.getObjective(i) - index1 * epsilon,
-						2.0);
-				dist2 += Math.pow(solution2.getObjective(i) - index2 * epsilon,
-						2.0);
+				dist1 += Math.pow(solution1.getObjective(i) - index1 * epsilon, 2.0);
+				dist2 += Math.pow(solution2.getObjective(i) - index2 * epsilon, 2.0);
 			}
 
 			return Double.compare(dist1, dist2) < 0 ? -1 : 1;

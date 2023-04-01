@@ -136,8 +136,7 @@ public class Localization {
 	 * @return the localized string for the given key and formatting arguments
 	 */
 	public String getString(String key, Object... arguments) {
-		MessageFormat format = new MessageFormat(getString(key), 
-				getLocale());
+		MessageFormat format = new MessageFormat(getString(key), getLocale());
 
 		return format.format(arguments, new StringBuffer(), null).toString();
 	}
@@ -159,13 +158,11 @@ public class Localization {
 	 * @param locale the target locale
 	 * @return the localization object for the given package
 	 */
-	public static Localization getLocalization(String packageName,
-			Locale locale) {
+	public static Localization getLocalization(String packageName, Locale locale) {
 		ResourceBundle bundle = null;
 
 		try {
-			bundle = ResourceBundle.getBundle(packageName + ".LocalStrings", 
-					locale);
+			bundle = ResourceBundle.getBundle(packageName + ".LocalStrings", locale);
 		} catch (MissingResourceException e) {
 			//bundle remains null, so the localization returns the key to
 			//provide a visual clue for debugging
@@ -206,8 +203,7 @@ public class Localization {
 	 *         {@code false} otherwise
 	 */
 	public static boolean containsKey(Class<?> type, String key) {
-		return getLocalization(type).containsKey(type.getSimpleName() + "." +
-				key);
+		return getLocalization(type).containsKey(type.getSimpleName() + "." + key);
 	}
 
 	/**
@@ -222,8 +218,7 @@ public class Localization {
 	 * @return the localized string for the given key
 	 */
 	public static String getString(Class<?> type, String key) {
-		return getLocalization(type).getString(type.getSimpleName() + "." +
-				key);
+		return getLocalization(type).getString(type.getSimpleName() + "." + key);
 	}
 
 	/**
@@ -238,10 +233,8 @@ public class Localization {
 	 * @param arguments the formatting arguments
 	 * @return the localized string for the given key
 	 */
-	public static String getString(Class<?> type, String key, 
-			Object... arguments) {
-		return getLocalization(type).getString(type.getSimpleName() + "." + key,
-				arguments);
+	public static String getString(Class<?> type, String key, Object... arguments) {
+		return getLocalization(type).getString(type.getSimpleName() + "." + key, arguments);
 	}
 
 }

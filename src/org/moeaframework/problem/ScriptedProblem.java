@@ -115,8 +115,7 @@ public class ScriptedProblem extends ProblemWrapper {
 		ScriptEngine engine = manager.getEngineByExtension(extension);
 		
 		if (engine == null) {
-			throw new ScriptException("no scripting engine for extension ." +
-					extension);
+			throw new ScriptException("no scripting engine for extension ." + extension);
 		}
 		
 		return engine;

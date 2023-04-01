@@ -24,25 +24,25 @@ import org.apache.commons.math3.distribution.ChiSquaredDistribution;
  * statistical test determining if (at least) two out of K >= 2 populations have
  * differing medians.
  * <ul>
- * <li>Null Hypothesis: All populations have equal medians.
- * <li>Alternative Hypothesis: Not all populations have equal medians.
+ *   <li>Null Hypothesis: All populations have equal medians.
+ *   <li>Alternative Hypothesis: Not all populations have equal medians.
  * </ul>
  * <p>
  * Assumptions:
  * <ol>
- * <li>Samples are randomly selected from their corresponding populations
- * <li>Samples are independent
- * <li>The dependent variable (value being sampled) is continuous
- * <li>The underlying distributions of the populations are identical in shape
+ *   <li>Samples are randomly selected from their corresponding populations
+ *   <li>Samples are independent
+ *   <li>The dependent variable (value being sampled) is continuous
+ *   <li>The underlying distributions of the populations are identical in shape
  * </ol>
  * <p>
  * References:
  * <ol>
- * <li>Kruskal, W.H. and Wallis W.A. "Use of Ranks in One-Criterion Variance
- * Analysis." Journal of the American Statistical Association, 47(260):583-621,
- * 1952.
- * <li>Sheskin, D.J. "Handbook of Parametric and Nonparametric Statistical
- * Procedures, Third Edition." Chapman &amp; Hall/CRC. 2004.
+ *   <li>Kruskal, W.H. and Wallis W.A. "Use of Ranks in One-Criterion Variance
+ *       Analysis." Journal of the American Statistical Association, 47(260):583-621,
+ *       1952.
+ *   <li>Sheskin, D.J. "Handbook of Parametric and Nonparametric Statistical
+ *       Procedures, Third Edition." Chapman &amp; Hall/CRC. 2004.
  * </ol>
  */
 public class KruskalWallisTest extends OrdinalStatisticalTest {
@@ -111,8 +111,7 @@ public class KruskalWallisTest extends OrdinalStatisticalTest {
 		while (i < N) {
 			int j = i + 1;
 
-			while ((j < N)
-					&& (data.get(i).getValue() == data.get(j).getValue())) {
+			while ((j < N) && (data.get(i).getValue() == data.get(j).getValue())) {
 				j++;
 			}
 
@@ -127,8 +126,7 @@ public class KruskalWallisTest extends OrdinalStatisticalTest {
 	public boolean test(double alpha) {
 		update();
 
-		ChiSquaredDistribution dist = new ChiSquaredDistribution(
-				numberOfGroups - 1);
+		ChiSquaredDistribution dist = new ChiSquaredDistribution(numberOfGroups - 1);
 		double H = H();
 		double C = C();
 

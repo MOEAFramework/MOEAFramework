@@ -37,8 +37,7 @@ public class ParetoDominanceComparator extends ChainedComparator {
 	 * Constructs a Pareto dominance comparator.
 	 */
 	public ParetoDominanceComparator() {
-		super(new AggregateConstraintComparator(),
-				new ParetoObjectiveComparator());
+		super(new AggregateConstraintComparator(), new ParetoObjectiveComparator());
 	}
 
 }

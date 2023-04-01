@@ -23,20 +23,20 @@ import org.apache.commons.math3.stat.inference.TestUtils;
  * The Single-Sample t test determines if the population's mean equals some
  * specified value.
  * <ul>
- * <li>Null Hypothesis: The population's mean equals X.
- * <li>Alternative Hypothesis: The population's mean does not equal X.
+ *   <li>Null Hypothesis: The population's mean equals X.
+ *   <li>Alternative Hypothesis: The population's mean does not equal X.
  * </ul>
  * <p>
  * Assumptions:
  * <ol>
- * <li>Samples are randomly selected from the population
- * <li>The distribution of the underlying population is normal
+ *   <li>Samples are randomly selected from the population
+ *   <li>The distribution of the underlying population is normal
  * </ol>
  * <p>
  * References:
  * <ol>
- * <li>Sheskin, D.J. "Handbook of Parametric and Nonparametric Statistical
- * Procedures, Third Edition." Chapman &amp; Hall/CRC. 2004.
+ *   <li>Sheskin, D.J. "Handbook of Parametric and Nonparametric Statistical
+ *       Procedures, Third Edition." Chapman &amp; Hall/CRC. 2004.
  * </ol>
  */
 public class SingleSampleTTest extends IntervalRatioStatisticalTest {

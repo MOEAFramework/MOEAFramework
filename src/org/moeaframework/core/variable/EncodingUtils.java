@@ -149,8 +149,7 @@ public class EncodingUtils {
 		}
 
 		if ((1L << numberOfBits) <= value) {
-			throw new IllegalArgumentException(
-					"number of bits not sufficient to represent value");
+			throw new IllegalArgumentException("number of bits not sufficient to represent value");
 		}
 
 		for (int i = 0; i < numberOfBits; i++) {
@@ -240,8 +239,7 @@ public class EncodingUtils {
 	 *         specified range
 	 */
 	public static RealVariable newInt(int lowerBound, int upperBound) {
-		return new RealVariable(lowerBound, Math.nextAfter(
-				(double)(upperBound+1), Double.NEGATIVE_INFINITY));
+		return new RealVariable(lowerBound, Math.nextAfter((double)(upperBound+1), Double.NEGATIVE_INFINITY));
 	}
 	
 	/**
@@ -254,8 +252,7 @@ public class EncodingUtils {
 	 * @return a new integer-valued decision variable bounded within the
 	 *         specified range
 	 */
-	public static BinaryIntegerVariable newBinaryInt(int lowerBound,
-			int upperBound) {
+	public static BinaryIntegerVariable newBinaryInt(int lowerBound, int upperBound) {
 		return new BinaryIntegerVariable(lowerBound, upperBound);
 	}
 	
@@ -530,8 +527,7 @@ public class EncodingUtils {
 	 *         the solution between the start and end index is not of type
 	 *         {@link RealVariable}
 	 */
-	public static double[] getReal(Solution solution, int startIndex,
-			int endIndex) {
+	public static double[] getReal(Solution solution, int startIndex, int endIndex) {
 		double[] result = new double[endIndex - startIndex];
 		
 		for (int i=startIndex; i<endIndex; i++) {
@@ -634,8 +630,7 @@ public class EncodingUtils {
 	 * @throws IllegalArgumentException if any of the values are out of bounds
 	 *         ({@code value < getLowerBound()) || (value > getUpperBound()})
 	 */
-	public static void setReal(Solution solution, int startIndex, int endIndex,
-			double[] values) {
+	public static void setReal(Solution solution, int startIndex, int endIndex, double[] values) {
 		if (values.length != (endIndex - startIndex)) {
 			throw new IllegalArgumentException(INVALID_LENGTH);
 		}
@@ -700,8 +695,7 @@ public class EncodingUtils {
 	 * @throws IllegalArgumentException if any of the values are out of bounds
 	 *         ({@code value < getLowerBound()) || (value > getUpperBound()})
 	 */
-	public static void setInt(Solution solution, int startIndex, int endIndex,
-			int[] values) {
+	public static void setInt(Solution solution, int startIndex, int endIndex, int[] values) {
 		if (values.length != (endIndex - startIndex)) {
 			throw new IllegalArgumentException(INVALID_LENGTH);
 		}

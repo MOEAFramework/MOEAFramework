@@ -142,8 +142,7 @@ public abstract class ExternalProblem implements Problem {
 	 *         could not be determined
 	 * @throws IOException if an I/O error occurred
 	 */
-	public ExternalProblem(String host, int port) throws IOException, 
-	UnknownHostException {
+	public ExternalProblem(String host, int port) throws IOException, UnknownHostException {
 		this(new Socket(host, port));
 	}
 	
@@ -303,8 +302,7 @@ public abstract class ExternalProblem implements Problem {
 			
 			String[] tokens = line.split("\\s+");
 			
-			if (tokens.length != (solution.getNumberOfObjectives() + 
-					solution.getNumberOfConstraints())) {
+			if (tokens.length != (solution.getNumberOfObjectives() + solution.getNumberOfConstraints())) {
 				throw new ProblemException(this, "response contained fewer tokens than expected");
 			}
 			

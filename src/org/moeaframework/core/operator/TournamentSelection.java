@@ -162,8 +162,8 @@ public class TournamentSelection implements Selection {
 	 * @param comparator the comparison operator
 	 * @return the solution that wins the tournament
 	 */
-	public static Solution binaryTournament(Solution solution1,
-			Solution solution2, DominanceComparator comparator) {
+	public static Solution binaryTournament(Solution solution1, Solution solution2,
+			DominanceComparator comparator) {
 		int flag = comparator.compare(solution1, solution2);
 
 		if (flag > 0) {
@@ -180,10 +180,8 @@ public class TournamentSelection implements Selection {
 	 * @param solution2 the second solution
 	 * @return the solution that wins the tournament
 	 */
-	public static Solution binaryTournament(Solution solution1,
-			Solution solution2) {
-		return binaryTournament(solution1, solution2,
-				new ParetoDominanceComparator());
+	public static Solution binaryTournament(Solution solution1, Solution solution2) {
+		return binaryTournament(solution1, solution2, new ParetoDominanceComparator());
 	}
 
 }

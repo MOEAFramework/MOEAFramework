@@ -62,8 +62,7 @@ public abstract class AbstractProblem implements Problem {
 	 * @param numberOfObjectives the number of objectives
 	 * @param numberOfConstraints the number of constraints
 	 */
-	public AbstractProblem(int numberOfVariables, int numberOfObjectives, 
-			int numberOfConstraints) {
+	public AbstractProblem(int numberOfVariables, int numberOfObjectives, int numberOfConstraints) {
 		super();
 		this.numberOfVariables = numberOfVariables;
 		this.numberOfObjectives = numberOfObjectives;

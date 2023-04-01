@@ -91,8 +91,7 @@ public class PropertiesProblems extends ProblemProvider {
 			
 			if (fileName != null) {
 				try {
-					return new NondominatedPopulation(
-							PopulationIO.readObjectives(new File(fileName)));
+					return new NondominatedPopulation(PopulationIO.readObjectives(new File(fileName)));
 				} catch (Exception e) {
 					return null;
 				}

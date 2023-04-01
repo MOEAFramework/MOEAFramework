@@ -171,6 +171,7 @@ public class Permutation implements Variable {
 	public static boolean isPermutation(int[] permutation) {
 		for (int i = 0; i < permutation.length; i++) {
 			boolean contains = false;
+			
 			for (int j = 0; j < permutation.length; j++) {
 				if (permutation[j] == i) {
 					contains = true;
@@ -188,7 +189,9 @@ public class Permutation implements Variable {
 	
 	@Override
 	public int hashCode() {
-		return new HashCodeBuilder().append(permutation).toHashCode();
+		return new HashCodeBuilder()
+				.append(permutation)
+				.toHashCode();
 	}
 
 	@Override
@@ -200,7 +203,8 @@ public class Permutation implements Variable {
 		} else {
 			Permutation rhs = (Permutation)obj;
 			
-			return new EqualsBuilder().append(permutation, rhs.permutation)
+			return new EqualsBuilder()
+					.append(permutation, rhs.permutation)
 					.isEquals();
 		}
 	}

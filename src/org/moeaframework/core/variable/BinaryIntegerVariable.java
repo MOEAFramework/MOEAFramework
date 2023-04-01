@@ -32,8 +32,7 @@ public class BinaryIntegerVariable extends BinaryVariable {
 
 	private static final long serialVersionUID = 5045946885389529638L;
 
-	private static final String VALUE_OUT_OF_BOUNDS = 
-			"value out of bounds (value: {0}, min: {1}, max: {2})";
+	private static final String VALUE_OUT_OF_BOUNDS = "value out of bounds (value: {0}, min: {1}, max: {2})";
 
 	/**
 	 * The lower bound of this decision variable.
@@ -105,8 +104,7 @@ public class BinaryIntegerVariable extends BinaryVariable {
 	 * @throws IllegalArgumentException if the value is out of bounds
 	 *         {@code (value < lowerBound) || (value > upperBound)}
 	 */
-	public BinaryIntegerVariable(int value, int lowerBound, int upperBound,
-			boolean gray) {
+	public BinaryIntegerVariable(int value, int lowerBound, int upperBound, boolean gray) {
 		this(lowerBound, upperBound, gray);
 		setValue(value);
 	}
@@ -158,8 +156,8 @@ public class BinaryIntegerVariable extends BinaryVariable {
 	 */
 	public void setValue(int value) {
 		if ((value < lowerBound) || (value > upperBound)) {
-			throw new IllegalArgumentException(MessageFormat.format(
-					VALUE_OUT_OF_BOUNDS, value, lowerBound, upperBound));
+			throw new IllegalArgumentException(MessageFormat.format(VALUE_OUT_OF_BOUNDS,
+					value, lowerBound, upperBound));
 		}
 
 		EncodingUtils.encode(value - lowerBound, this);
@@ -200,8 +198,7 @@ public class BinaryIntegerVariable extends BinaryVariable {
 	
 	@Override
 	public BinaryIntegerVariable copy() {
-		BinaryIntegerVariable result = new BinaryIntegerVariable(getValue(),
-				lowerBound, upperBound);
+		BinaryIntegerVariable result = new BinaryIntegerVariable(getValue(), lowerBound, upperBound);
 	
 		// ensure the copy has the same internal binary string
 		for (int i = 0; i < result.getNumberOfBits(); i++) {

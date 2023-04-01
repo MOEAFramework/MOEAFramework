@@ -31,8 +31,7 @@ public class RealVariable implements Variable {
 
 	private static final long serialVersionUID = 3141851312155686224L;
 	
-	private static final String VALUE_OUT_OF_BOUNDS = 
-		"value out of bounds (value: {0}, min: {1}, max: {2})";
+	private static final String VALUE_OUT_OF_BOUNDS = "value out of bounds (value: {0}, min: {1}, max: {2})";
 
 	/**
 	 * The current value of this decision variable.

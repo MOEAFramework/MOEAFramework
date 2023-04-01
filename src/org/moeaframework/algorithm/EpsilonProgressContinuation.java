@@ -84,8 +84,7 @@ public class EpsilonProgressContinuation extends AdaptiveTimeContinuation {
 		RestartType superType = super.check();
 
 		if (superType.equals(RestartType.NONE)) {
-			if (getArchive().getNumberOfImprovements() <= 
-					improvementsAtLastCheck) {
+			if (getArchive().getNumberOfImprovements() <= improvementsAtLastCheck) {
 				superType = RestartType.HARD;
 			}
 		}

@@ -79,8 +79,7 @@ public abstract class OrdinalStatisticalTest implements StatisticalTest {
 	 * @param numberOfGroups the number of groups being tested
 	 * @param comparator the comparator for ordering observations
 	 */
-	public OrdinalStatisticalTest(int numberOfGroups,
-			Comparator<RankedObservation> comparator) {
+	public OrdinalStatisticalTest(int numberOfGroups, Comparator<RankedObservation> comparator) {
 		super();
 		this.numberOfGroups = numberOfGroups;
 		this.comparator = comparator;
@@ -125,8 +124,7 @@ public abstract class OrdinalStatisticalTest implements StatisticalTest {
 			int j = i + 1;
 			double rank = i + 1;
 
-			while ((j < data.size())
-					&& (data.get(i).getValue() == data.get(j).getValue())) {
+			while ((j < data.size()) && (data.get(i).getValue() == data.get(j).getValue())) {
 				rank += j + 1;
 				j++;
 			}

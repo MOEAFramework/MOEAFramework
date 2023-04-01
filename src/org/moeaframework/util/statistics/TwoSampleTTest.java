@@ -26,20 +26,20 @@ import org.apache.commons.math3.stat.inference.TestUtils;
  * different. The independent flag in the constructor is used to choose between
  * the unpaired (independent) and paired (dependent) test.
  * <ul>
- * <li>Null Hypothesis: The two population means are equal.
- * <li>Alternative Hypothesis: The two population means are not equal.
+ *   <li>Null Hypothesis: The two population means are equal.
+ *   <li>Alternative Hypothesis: The two population means are not equal.
  * </ul>
  * <p>
  * Assumptions:
  * <ol>
- * <li>Samples are randomly selected from the corresponding population
- * <li>The distribution of the underlying populations is normal
+ *   <li>Samples are randomly selected from the corresponding population
+ *   <li>The distribution of the underlying populations is normal
  * </ol>
  * <p>
  * References:
  * <ol>
- * <li>Sheskin, D.J. "Handbook of Parametric and Nonparametric Statistical
- * Procedures, Third Edition." Chapman &amp; Hall/CRC. 2004.
+ *   <li>Sheskin, D.J. "Handbook of Parametric and Nonparametric Statistical
+ *       Procedures, Third Edition." Chapman &amp; Hall/CRC. 2004.
  * </ol>
  */
 public class TwoSampleTTest extends IntervalRatioStatisticalTest {
@@ -86,8 +86,7 @@ public class TwoSampleTTest extends IntervalRatioStatisticalTest {
 		if (independent) {
 			return TestUtils.tTest(categories.get(0), categories.get(1), alpha);
 		} else {
-			return TestUtils.pairedTTest(categories.get(0), categories.get(1),
-					alpha);
+			return TestUtils.pairedTTest(categories.get(0), categories.get(1), alpha);
 		}
 	}
 

@@ -99,8 +99,7 @@ public class ReferenceSetMerger extends CommandLineUtility {
 			
 			//print warning if duplicate solutions found
 			for (Solution s : combinedPopulation) {
-				if (MathArrays.distance(s.getObjectives(), 
-						solution.getObjectives()) < Settings.EPS) {
+				if (MathArrays.distance(s.getObjectives(), solution.getObjectives()) < Settings.EPS) {
 					System.err.println("duplicate solution found");
 				}
 			}
@@ -194,15 +193,13 @@ public class ReferenceSetMerger extends CommandLineUtility {
 
 		//write combined set to the output file
 		if (commandLine.hasOption("output")) {
-			PopulationIO.writeObjectives(new File(commandLine
-					.getOptionValue("output")), getCombinedPopulation());
+			PopulationIO.writeObjectives(new File(commandLine.getOptionValue("output")), getCombinedPopulation());
 		}
 
 		//write diff files
 		if (commandLine.hasOption("diff")) {
 			for (String filename : commandLine.getArgs()) {
-				PopulationIO.writeObjectives(new File(filename + ".diff"), 
-						getContributionFrom(filename));
+				PopulationIO.writeObjectives(new File(filename + ".diff"), getContributionFrom(filename));
 			}
 		}
 

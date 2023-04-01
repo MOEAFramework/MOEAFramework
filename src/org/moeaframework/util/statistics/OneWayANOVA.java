@@ -23,21 +23,21 @@ import org.apache.commons.math3.stat.inference.TestUtils;
  * The Single-Factor Between-Subjects Analysis of Variance determines if (at
  * least) two out of K >= 2 populations have differing means.
  * <ul>
- * <li>Null Hypothesis: All populations have equal means.
- * <li>Alternative Hypothesis: Not all populations have equal means.
+ *   <li>Null Hypothesis: All populations have equal means.
+ *   <li>Alternative Hypothesis: Not all populations have equal means.
  * </ul>
  * <p>
  * Assumptions:
  * <ol>
- * <li>Samples are randomly selected from their corresponding populations
- * <li>The distribution of the underlying populations are normal
- * <li>The variances of the underlying populations are identical
+ *   <li>Samples are randomly selected from their corresponding populations
+ *   <li>The distribution of the underlying populations are normal
+ *   <li>The variances of the underlying populations are identical
  * </ol>
  * <p>
  * References:
  * <ol>
- * <li>Sheskin, D.J. "Handbook of Parametric and Nonparametric Statistical
- * Procedures, Third Edition." Chapman &amp; Hall/CRC. 2004.
+ *   <li>Sheskin, D.J. "Handbook of Parametric and Nonparametric Statistical
+ *       Procedures, Third Edition." Chapman &amp; Hall/CRC. 2004.
  * </ol>
  */
 public class OneWayANOVA extends IntervalRatioStatisticalTest {

@@ -69,8 +69,7 @@ public class Subset implements Variable {
 	 * {@code k} from a set of size {@code n}.
 	 * 
 	 * @param k the fixed size of the subset
-	 * @param n the size of the original set (i.e., the number of candidate
-	 *          members)
+	 * @param n the size of the original set (i.e., the number of candidate members)
 	 */	
 	public Subset(int k, int n) {
 		this(k, k, n);
@@ -83,8 +82,7 @@ public class Subset implements Variable {
 	 * 
 	 * @param l the minimum size of the subset
 	 * @param u the maximum size of the subset
-	 * @param n the size of the original set (i.e., the number of candidate
-	 *          members)
+	 * @param n the size of the original set (i.e., the number of candidate members)
 	 */
 	public Subset(int l, int u, int n) {
 		super();
