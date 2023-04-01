@@ -163,8 +163,7 @@ class ProblemBuilder {
 	 * @param problemArguments the arguments passed to the problem constructor
 	 * @return a reference to this builder
 	 */
-	ProblemBuilder withProblemClass(Class<?> problemClass, 
-			Object... problemArguments) {
+	ProblemBuilder withProblemClass(Class<?> problemClass, Object... problemArguments) {
 		this.problemClass = problemClass;
 		this.problemArguments = problemArguments;
 		this.problemName = null;
@@ -186,8 +185,7 @@ class ProblemBuilder {
 	 * @throws ClassNotFoundException if the specified problem class name could
 	 *         not be found
 	 */
-	ProblemBuilder withProblemClass(String problemClassName, 
-			Object... problemArguments) 
+	ProblemBuilder withProblemClass(String problemClassName, Object... problemArguments) 
 	throws ClassNotFoundException {
 		withProblemClass(Class.forName(problemClassName), problemArguments);
 		
@@ -266,26 +264,22 @@ class ProblemBuilder {
 			
 			if (problemName != null) {
 				if (problemFactory == null) {
-					factorySet = ProblemFactory.getInstance().getReferenceSet(
-							problemName);
+					factorySet = ProblemFactory.getInstance().getReferenceSet(problemName);
 				} else {
 					factorySet = problemFactory.getReferenceSet(problemName);
 				}
 			}
 			
 			if (factorySet == null) {
-				throw new IllegalArgumentException(
-						"no reference set available");
+				throw new IllegalArgumentException("no reference set available");
 			} else {
 				referenceSet.addAll(factorySet);
 			}
 		} else {
 			try {
-				referenceSet.addAll(PopulationIO.readObjectives(
-						referenceSetFile));
+				referenceSet.addAll(PopulationIO.readObjectives(referenceSetFile));
 			} catch (IOException e) {
-				throw new IllegalArgumentException(
-						"unable to load reference set", e);
+				throw new IllegalArgumentException("unable to load reference set", e);
 			}
 		}
 		
@@ -307,8 +301,7 @@ class ProblemBuilder {
 	 *         {@link NoSuchMethodException}.
 	 */
 	Problem getProblemInstance() {
-		if ((problemName == null) && (problemClass == null) &&
-				(problemInstance == null)) {
+		if ((problemName == null) && (problemClass == null) && (problemInstance == null)) {
 			throw new IllegalArgumentException("no problem specified");
 		}
 		
@@ -316,8 +309,7 @@ class ProblemBuilder {
 			return problemInstance;
 		} else if (problemClass != null) {
 			try {
-				return (Problem)ConstructorUtils.invokeConstructor(problemClass,
-						problemArguments);
+				return (Problem)ConstructorUtils.invokeConstructor(problemClass, problemArguments);
 			} catch (InstantiationException e) {
 				throw new FrameworkException(e);
 			} catch (IllegalAccessException e) {

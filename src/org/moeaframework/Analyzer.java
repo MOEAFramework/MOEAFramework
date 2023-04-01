@@ -236,8 +236,7 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 	@Override
 	public Analyzer withProblemClass(String problemClassName, 
 			Object... problemArguments) throws ClassNotFoundException {
-		return (Analyzer)super.withProblemClass(problemClassName,
-				problemArguments);
+		return (Analyzer)super.withProblemClass(problemClassName, problemArguments);
 	}
 	
 	@Override
@@ -528,13 +527,11 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 	 * @return a reference to this analyzer
 	 * @throws IOException if an I/O error occurred
 	 */
-	public Analyzer saveData(File directory, String prefix, String suffix) 
-	throws IOException {
+	public Analyzer saveData(File directory, String prefix, String suffix) throws IOException {
 		FileUtils.mkdir(directory);
 
 		for (String algorithm : data.keySet()) {
-			saveAs(algorithm, new File(directory, prefix + algorithm + 
-					suffix));
+			saveAs(algorithm, new File(directory, prefix + algorithm + suffix));
 		}
 		
 		return this;
@@ -550,15 +547,12 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 	 * @return a reference to this analyzer
 	 * @throws IOException if an I/O error occurred
 	 */
-	public Analyzer loadData(File directory, String prefix, String suffix) 
-	throws IOException {
+	public Analyzer loadData(File directory, String prefix, String suffix) throws IOException {
 		for (File file : directory.listFiles()) {
 			String filename = file.getName();
 
 			if (filename.startsWith(prefix) && filename.endsWith(suffix)) {
-				String name = filename.substring(prefix.length(), 
-						filename.length()-suffix.length());
-
+				String name = filename.substring(prefix.length(), filename.length()-suffix.length());
 				loadAs(name, file);
 			}
 		}
@@ -624,8 +618,7 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 	 * @throws IOException if an I/O error occurred
 	 */
 	public Analyzer saveAnalysis(File file) throws IOException {
-		try (PrintStream ps = new PrintStream(new BufferedOutputStream(
-				new FileOutputStream(file)))) {
+		try (PrintStream ps = new PrintStream(new BufferedOutputStream(new FileOutputStream(file)))) {
 			printAnalysis(ps);
 		}
 		
@@ -727,18 +720,15 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 			}
 			
 			if (includeInvertedGenerationalDistance) {
-				indicators.add(new InvertedGenerationalDistance(problem, 
-						referenceSet));
+				indicators.add(new InvertedGenerationalDistance(problem, referenceSet));
 			}
 			
 			if (includeAdditiveEpsilonIndicator) {
-				indicators.add(new AdditiveEpsilonIndicator(problem, 
-						referenceSet));
+				indicators.add(new AdditiveEpsilonIndicator(problem, referenceSet));
 			}
 			
 			if (includeMaximumParetoFrontError) {
-				indicators.add(new MaximumParetoFrontError(problem, 
-						referenceSet));
+				indicators.add(new MaximumParetoFrontError(problem, referenceSet));
 			}
 			
 			if (includeSpacing) {
@@ -777,8 +767,7 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 			}
 			
 			//generate the aggregate sets
-			Map<String, NondominatedPopulation> aggregateSets =
-					new HashMap<String, NondominatedPopulation>();
+			Map<String, NondominatedPopulation> aggregateSets = new HashMap<String, NondominatedPopulation>();
 			
 			if (showAggregate) {
 				for (String algorithm : data.keySet()) {
@@ -809,13 +798,11 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 						values[i] = indicator.evaluate(sets.get(i));
 					}
 					
-					algorithmResult.add(new IndicatorResult(
-							indicatorName, values));
+					algorithmResult.add(new IndicatorResult(indicatorName, values));
 					
 					if (showAggregate) {
 						algorithmResult.get(indicatorName).setAggregateValue(
-								indicator.evaluate(
-										aggregateSets.get(algorithm)));
+								indicator.evaluate(aggregateSets.get(algorithm)));
 					}
 				}
 				
@@ -834,13 +821,11 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 						continue;
 					}
 					
-					KruskalWallisTest kwTest = new KruskalWallisTest(
-							algorithms.size());
+					KruskalWallisTest kwTest = new KruskalWallisTest(algorithms.size());
 					
 					for (int i=0; i<algorithms.size(); i++) {
 						String algorithm = algorithms.get(i);
-						double[] values = analyzerResults.get(algorithm)
-								.get(indicatorName).getValues();
+						double[] values = analyzerResults.get(algorithm).get(indicatorName).getValues();
 						
 						kwTest.addAll(values, i);
 					}
@@ -851,19 +836,16 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 								for (int j=i+1; j<algorithms.size(); j++) {
 									analyzerResults.get(algorithms.get(i))
 											.get(indicatorName)
-											.addIndifferentAlgorithm(
-													algorithms.get(j));
+											.addIndifferentAlgorithm(algorithms.get(j));
 									analyzerResults.get(algorithms.get(j))
 											.get(indicatorName)
-											.addIndifferentAlgorithm(
-													algorithms.get(i));
+											.addIndifferentAlgorithm(algorithms.get(i));
 								}
 							}
 						} else {
 							for (int i=0; i<algorithms.size()-1; i++) {
 								for (int j=i+1; j<algorithms.size(); j++) {
-									MannWhitneyUTest mwTest = 
-											new MannWhitneyUTest();
+									MannWhitneyUTest mwTest = new MannWhitneyUTest();
 									
 									mwTest.addAll(analyzerResults
 											.get(algorithms.get(i))
@@ -875,12 +857,10 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 									if (!mwTest.test(significanceLevel)) {
 										analyzerResults.get(algorithms.get(i))
 												.get(indicatorName)
-												.addIndifferentAlgorithm(
-														algorithms.get(j));
+												.addIndifferentAlgorithm(algorithms.get(j));
 										analyzerResults.get(algorithms.get(j))
 												.get(indicatorName)
-												.addIndifferentAlgorithm(
-														algorithms.get(i));
+												.addIndifferentAlgorithm(algorithms.get(i));
 									}
 								}
 							}

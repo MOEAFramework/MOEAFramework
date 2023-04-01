@@ -148,14 +148,12 @@ public class PISAAlgorithm extends AbstractAlgorithm {
 		if (configuration == null) {
 			configuration = new File(filePrefix + "par").getCanonicalPath();
 
-			try (PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(
-						configuration)))) {
+			try (PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(configuration)))) {
 				for (String parameter : Settings.getPISAParameters(name)) {
 					writer.print(parameter);
 					writer.print(' ');
 					writer.println(properties.getString(parameter,
-							Settings.getPISAParameterDefaultValue(name,
-									parameter)));
+							Settings.getPISAParameterDefaultValue(name, parameter)));
 				}
 			}
 		}
@@ -168,8 +166,7 @@ public class PISAAlgorithm extends AbstractAlgorithm {
 				Double.toString(pollRate/(double)1000)));
 		
 		//ensure population size is a multiple of the # of parents
-		int populationSize = (int)properties.getDouble("populationSize",
-				100);
+		int populationSize = (int)properties.getDouble("populationSize", 100);
 		
 		while (populationSize % variation.getArity() != 0) {
 			populationSize++;

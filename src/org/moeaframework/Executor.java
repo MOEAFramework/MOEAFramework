@@ -685,15 +685,12 @@ public class Executor extends ProblemBuilder {
 		
 		// return the termination conditions
 		if (conditions.size() == 0) {
-			System.err.println("no termination conditions set, setting to " +
-					"25,000 max evaluations");
-			
+			System.err.println("no termination conditions set, setting to 25,000 max evaluations");
 			return new MaxFunctionEvaluations(25000);
 		} else if (conditions.size() == 1) {
 			return conditions.get(0);
 		} else {
-			return new CompoundTerminationCondition(conditions.toArray(
-					new TerminationCondition[conditions.size()]));
+			return new CompoundTerminationCondition(conditions.toArray(new TerminationCondition[conditions.size()]));
 		}
 	}
 	
@@ -710,23 +707,19 @@ public class Executor extends ProblemBuilder {
 		isCanceled.set(false);
 		
 		if ((checkpointFile != null) && (numberOfSeeds > 1)) {
-			System.err.println(
-					"checkpoints not supported when running multiple seeds");
+			System.err.println("checkpoints not supported when running multiple seeds");
 			checkpointFile = null;
 		}
 		
 		int maxEvaluations = properties.getInt("maxEvaluations", -1);
 		long maxTime = properties.getLong("maxTime", -1);
-		List<NondominatedPopulation> results =
-				new ArrayList<NondominatedPopulation>();
+		List<NondominatedPopulation> results = new ArrayList<NondominatedPopulation>();
 		
 		progress.start(numberOfSeeds, maxEvaluations, maxTime);
 		
 		for (int i = 0; i < numberOfSeeds && !isCanceled.get(); i++) {
 			NondominatedPopulation result = runSingleSeed(i+1, numberOfSeeds);
-			
 			results.add(result);
-				
 			progress.nextSeed();
 		}
 		
@@ -831,8 +824,7 @@ public class Executor extends ProblemBuilder {
 				properties.warnIfUnaccessedProperties();
 				progress.setCurrentAlgorithm(algorithm);
 
-				while (!algorithm.isTerminated() &&
-						!terminationCondition.shouldTerminate(algorithm)) {
+				while (!algorithm.isTerminated() && !terminationCondition.shouldTerminate(algorithm)) {
 					// stop and return null if canceled and not yet complete
 					if (isCanceled.get()) {
 						return null;

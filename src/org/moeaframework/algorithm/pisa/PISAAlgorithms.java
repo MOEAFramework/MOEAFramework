@@ -99,22 +99,18 @@ public class PISAAlgorithms extends AlgorithmProvider {
 	}
 
 	@Override
-	public Algorithm getAlgorithm(String name, TypedProperties properties,
-			Problem problem) {
+	public Algorithm getAlgorithm(String name, TypedProperties properties, Problem problem) {
 		//lookup the case-sensitive version of the PISA algorithm name to 
 		//generate the correct property keys
 		name = getCaseSensitiveSelectorName(name);
 
 		if (name != null) {
 			if (problem.getNumberOfConstraints() > 0) {
-				throw new ProviderNotFoundException(name, 
-						new ProviderLookupException("constraints not supported"));
+				throw new ProviderNotFoundException(name, new ProviderLookupException("constraints not supported"));
 			}
 			
 			try {
-				Variation variation = OperatorFactory.getInstance()
-						.getVariation(null, properties, problem);
-				
+				Variation variation = OperatorFactory.getInstance().getVariation(null, properties, problem);
 				return new PISAAlgorithm(name, problem, variation, properties);
 			} catch (IOException e) {
 				throw new ProviderNotFoundException(name, e);

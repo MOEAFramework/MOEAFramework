@@ -518,15 +518,13 @@ public class Instrumenter extends ProblemBuilder {
 	@Override
 	public Instrumenter withProblemClass(Class<?> problemClass, 
 			Object... problemArguments) {
-		return (Instrumenter)super.withProblemClass(problemClass,
-				problemArguments);
+		return (Instrumenter)super.withProblemClass(problemClass, problemArguments);
 	}
 
 	@Override
 	public Instrumenter withProblemClass(String problemClassName, 
 			Object... problemArguments) throws ClassNotFoundException {
-		return (Instrumenter)super.withProblemClass(problemClassName,
-				problemArguments);
+		return (Instrumenter)super.withProblemClass(problemClassName, problemArguments);
 	}
 
 	@Override
@@ -599,14 +597,12 @@ public class Instrumenter extends ProblemBuilder {
 		} else if (type.isArray()) {
 			//recursively walk the elements in the array
 			for (int i=0; i<Array.getLength(object); i++) {
-				instrument(algorithm, collectors, visited, parents, 
-						Array.get(object, i), null);
+				instrument(algorithm, collectors, visited, parents, Array.get(object, i), null);
 			}
 		} else if (object instanceof Collection) {
 			//recursively walk the elements in the array
 			for (Object element : (Collection<?>)object) {
-				instrument(algorithm, collectors, visited, parents, element, 
-						null);
+				instrument(algorithm, collectors, visited, parents, element, null);
 			}
 		}
 		
@@ -655,8 +651,7 @@ public class Instrumenter extends ProblemBuilder {
 		Class<?> superclass = type.getSuperclass();
 		
 		if (superclass != null) {
-			instrument(algorithm, collectors, visited, parents, object, 
-					superclass);
+			instrument(algorithm, collectors, visited, parents, object, superclass);
 		}
 		
 		//recursively walk fields
@@ -671,8 +666,7 @@ public class Instrumenter extends ProblemBuilder {
 			field.setAccessible(true);
 			
 			try {
-				instrument(algorithm, collectors, visited, parents, 
-						field.get(object), null);
+				instrument(algorithm, collectors, visited, parents, field.get(object), null);
 			} catch (IllegalArgumentException e) {
 				//should never occur since object is of the specified type
 				e.printStackTrace();
@@ -711,38 +705,28 @@ public class Instrumenter extends ProblemBuilder {
 			}
 			
 			if (includeHypervolume) {
-				collectors.add(new IndicatorCollector(
-						new Hypervolume(problem, referenceSet), archive));
+				collectors.add(new IndicatorCollector(new Hypervolume(problem, referenceSet), archive));
 			}
 			
 			if (includeGenerationalDistance) {
-				collectors.add(new IndicatorCollector(
-						new GenerationalDistance(problem, referenceSet), 
-						archive));
+				collectors.add(new IndicatorCollector(new GenerationalDistance(problem, referenceSet), archive));
 			}
 			
 			if (includeInvertedGenerationalDistance) {
-				collectors.add(new IndicatorCollector(
-						new InvertedGenerationalDistance(problem, 
-								referenceSet), archive));
+				collectors.add(new IndicatorCollector(new InvertedGenerationalDistance(problem, referenceSet), archive));
 			}
 			
 			if (includeSpacing) {
-				collectors.add(new IndicatorCollector(new Spacing(problem), 
-						archive));
+				collectors.add(new IndicatorCollector(new Spacing(problem), archive));
 			}
 			
 			if (includeAdditiveEpsilonIndicator) {
-				collectors.add(new IndicatorCollector(
-						new AdditiveEpsilonIndicator(problem, referenceSet),
-						archive));
+				collectors.add(new IndicatorCollector(new AdditiveEpsilonIndicator(problem, referenceSet), archive));
 			}
 			
 			if (includeContribution) {
-				collectors.add(new IndicatorCollector(
-						archive == null ? new Contribution(referenceSet) :
-						new Contribution(referenceSet, archive.getComparator()),
-						archive));
+				collectors.add(new IndicatorCollector(archive == null ? new Contribution(referenceSet) :
+						new Contribution(referenceSet, archive.getComparator()), archive));
 			}
 			
 			if (includeR1) {
@@ -800,11 +784,9 @@ public class Instrumenter extends ProblemBuilder {
 		
 		collectors.addAll(customCollectors);
 		
-		InstrumentedAlgorithm instrumentedAlgorithm = new InstrumentedAlgorithm(
-				algorithm, frequency, frequencyType);
+		InstrumentedAlgorithm instrumentedAlgorithm = new InstrumentedAlgorithm(algorithm, frequency, frequencyType);
 		
-		instrument(instrumentedAlgorithm, collectors, new HashSet<Object>(), 
-				new Stack<Object>(), algorithm, null);
+		instrument(instrumentedAlgorithm, collectors, new HashSet<Object>(), new Stack<Object>(), algorithm, null);
 		
 		observations = instrumentedAlgorithm.getObservations();
 		
