@@ -394,8 +394,7 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 			
 			for (int j = 0; j < i; j++) {
 				if ((population.get(j) == population.get(i)) ||
-						Arrays.equals(population.get(j).getObjectives(),
-								population.get(i).getObjectives())) {
+						Arrays.equals(population.get(j).getObjectives(), population.get(i).getObjectives())) {
 					isDuplicate = true;
 					break;
 				}

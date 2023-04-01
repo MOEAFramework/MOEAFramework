@@ -117,8 +117,7 @@ public class MSOPSRankedPopulation extends Population {
 	 * @param weights the weight vectors
 	 * @param iterable the solutions used to initialize this population
 	 */
-	public MSOPSRankedPopulation(List<double[]> weights,
-			Iterable<? extends Solution> iterable) {
+	public MSOPSRankedPopulation(List<double[]> weights, Iterable<? extends Solution> iterable) {
 		this(weights);
 		addAll(iterable);
 	}
@@ -304,8 +303,7 @@ public class MSOPSRankedPopulation extends Population {
 			
 			if (solution.violatesConstraints()) {
 				for (int j = 0; j < T; j++) {
-					scores[i][j] = scores[i][j] + maxScore +
-							AggregateConstraintComparator.getConstraints(solution);
+					scores[i][j] = scores[i][j] + maxScore + AggregateConstraintComparator.getConstraints(solution);
 				}
 			}
 		}
