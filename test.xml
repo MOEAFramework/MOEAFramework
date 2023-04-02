@@ -57,8 +57,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 	</target>
 
 	<!-- Conditionally builds the MOEA Framework JAR -->
-	<target name="check-binary" depends="check-dependencies" 
-			unless="binary-exists">
+	<target name="check-binary" depends="check-dependencies" unless="binary-exists">
 		<ant target="build-binary" />
 	</target>
 
@@ -96,8 +95,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 			<path refid="requiredfiles" />
 		</copy>
 
-		<jar basedir="${build}" 
-			jarfile="${dist}/${shortname}-${version}-Test.jar" />
+		<jar basedir="${build}" jarfile="${dist}/${shortname}-${version}-Test.jar" />
 	</target>
 
 	<!-- Runs all JUnit tests -->
