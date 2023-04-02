@@ -8,7 +8,14 @@
 CC = gcc
 FLAGS = -Wall -O3
 UNAME := $(shell uname -s)
-EXAMPLES = ../../../../examples
+
+# Search file tree for examples/ folder - the relative path can change based on the
+# execution environment (Ant vs Maven)
+EXAMPLES := $(shell dir=$$(pwd); \
+	while [ "$$dir" != "/" ] && [ ! -d "$$dir/examples" ]; \
+    	do dir=$$(dirname "$$dir"); \
+	done; \
+	echo "$$dir/examples")
 
 main: test_stdio.exe test_socket.exe
 
