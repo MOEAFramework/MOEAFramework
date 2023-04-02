@@ -40,7 +40,11 @@ ExternalProblemWithCStdioTest {
 		//skip this test if the machine is not POSIX compliant
 		TestUtils.assumePOSIX();
 		
-		file = new File("./test/org/moeaframework/problem/test_socket.exe");
+		if (new File("src/test/resources").exists()) {
+			file = new File("src/test/resources/org/moeaframework/problem/test_socket.exe");
+		} else {
+			file = new File("test/org/moeaframework/problem/test_socket.exe");
+		}
 		
 		//attempt to run make if the file does not exist
 		if (!file.exists()) {

@@ -21,6 +21,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.file.Paths;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -50,7 +51,11 @@ public class ExternalProblemWithCStdioTest {
 	
 	@Before
 	public void setUp() throws IOException {
-		file = new File("./test/org/moeaframework/problem/test_stdio.exe");
+		if (new File("src/test/resources").exists()) {
+			file = new File("src/test/resources/org/moeaframework/problem/test_stdio.exe");
+		} else {
+			file = new File("test/org/moeaframework/problem/test_stdio.exe");
+		}
 		
 		//attempt to run make if the file does not exist
 		if (!file.exists()) {
