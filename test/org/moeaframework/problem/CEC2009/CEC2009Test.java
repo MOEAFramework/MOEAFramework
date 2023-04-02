@@ -17,6 +17,7 @@
  */
 package org.moeaframework.problem.CEC2009;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.moeaframework.problem.ProblemTest;
 
@@ -63,6 +64,7 @@ public class CEC2009Test extends ProblemTest {
 	}
 
 	@Test
+	@Ignore("broken in JMetal 6.0 - submitted fix in https://github.com/jMetal/jMetal/pull/460")
 	public void testUF9() {
 		test("UF9");
 	}
