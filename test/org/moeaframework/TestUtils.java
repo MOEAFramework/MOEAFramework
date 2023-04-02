@@ -545,8 +545,7 @@ public class TestUtils {
 	 */
 	public static void assumeFileExists(File file) {
 		if (!file.exists()) {
-			System.err.println(file + " does not exist, skipping test");
-			Assume.assumeTrue(false);
+			Assume.assumeTrue(file + " does not exist, skipping test", false);
 		}
 	}
 	
@@ -555,8 +554,7 @@ public class TestUtils {
 	 */
 	public static void assumePOSIX() {
 		if (!SystemUtils.IS_OS_UNIX) {
-			System.err.println("system is not POSIX-compliant, skipping test");
-			Assume.assumeTrue(false);
+			Assume.assumeTrue("system is not POSIX-compliant, skipping test", false);
 		}
 	}
 	
