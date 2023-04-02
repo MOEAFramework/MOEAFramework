@@ -87,11 +87,8 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		<delete dir="${build}" />
 		<mkdir dir="${build}" />
 
-		<javac destdir="${build}" srcdir="src" debug="${java.debug}"
-				release="${java.major}"
-				excludes="**/package-info.java"
-				includeantruntime="false"
-				encoding="UTF-8">
+		<javac destdir="${build}" srcdir="src" debug="${java.debug}" release="${java.major}"
+				excludes="**/package-info.java" includeantruntime="false" encoding="UTF-8">
 			<classpath refid="classpath" />
 		</javac>
 
@@ -100,8 +97,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 			<path refid="requiredfiles" />
 		</copy>
 		
-		<exec executable="git" outputproperty="impl.version"
-				errorproperty="impl.error" failifexecutionfails="false">
+		<exec executable="git" outputproperty="impl.version" errorproperty="impl.error" failifexecutionfails="false">
 			<arg value="rev-parse" />
 			<arg value="--short" />
 			<arg value="HEAD" />
@@ -129,8 +125,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 	</target>
 
 	<!-- Packages the MOEA Framework JAR file along with javadocs and required files -->
-	<target name="package-binary" 
-			depends="build-binary, build-javadoc"
+	<target name="package-binary" depends="build-binary, build-javadoc"
 			description="Creates the binary distribution file">
 		<delete dir="${build}" />
 		<mkdir dir="${base}" />
@@ -147,8 +142,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		</copy>
 
 		<copy todir="${base}/licenses">
-			<fileset dir="META-INF" includes="*-LICENSE" 
-					excludes="ZHANG-LICENSE" />
+			<fileset dir="META-INF" includes="*-LICENSE" excludes="ZHANG-LICENSE" />
 		</copy>
 		
 		<copy todir="${base}/docs">
@@ -172,13 +166,11 @@ Use of these build scripts requires Apache Ant to be installed.  See
 			<fileset dir="examples" excludes="*.exe,*.o,*.a" />
 		</copy>
 
-		<tar destfile="${dist}/${shortname}-${version}.tar.gz" 
-				basedir="${build}" compression="gzip" longfile="gnu" />
+		<tar destfile="${dist}/${shortname}-${version}.tar.gz" basedir="${build}" compression="gzip" longfile="gnu" />
 	</target>
 
 	<!-- Packages the MOEA Framework source code, libraries and required files  -->
-	<target name="package-source" 
-			description="Creates the source code distribution file">
+	<target name="package-source" description="Creates the source code distribution file">
 		<delete dir="${build}" />
 		<mkdir dir="${base}" />
 
@@ -214,13 +206,12 @@ Use of these build scripts requires Apache Ant to be installed.  See
 			<replacefilter token="MOEAFramework" value="MOEAFramework-${version}" />
 		</replace>
 		
-		<tar destfile="${dist}/${shortname}-${version}-Source.tar.gz" 
-				basedir="${build}" compression="gzip" longfile="gnu" />
+		<tar destfile="${dist}/${shortname}-${version}-Source.tar.gz" basedir="${build}" compression="gzip"
+				longfile="gnu" />
 	</target>
 
 	<!-- Builds the http://www.moeaframework.org website -->
-	<target name="package-website" depends="build-javadoc"
-			description="Creates the website">
+	<target name="package-website" depends="build-javadoc" description="Creates the website">
 		<delete dir="${build}" />
 		<mkdir dir="${build}" />
 
@@ -239,8 +230,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 
 		<loadfile property="website.tracker" srcFile="website/tracker.partial" />
 
-		<xslt basedir="website/xslt" destdir="${build}" 
-				style="website/xslt/stylesheet.xsl" 
+		<xslt basedir="website/xslt" destdir="${build}" style="website/xslt/stylesheet.xsl" 
 				includes="*.xml" filenameparameter="filename">
 			<param name="version" expression="${version}" />
 			<param name="today" expression="${today}" />
@@ -298,11 +288,8 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		
 		<unjar dest="${build}" src="${dist}/${shortname}-${version}.jar" />
 		
-		<javac destdir="${build}" srcdir="examples" debug="${java.debug}"
-				release="${java.major}"
-				excludes="**/package-info.java"
-				includeantruntime="false"
-				encoding="UTF-8">
+		<javac destdir="${build}" srcdir="examples" debug="${java.debug}" release="${java.major}"
+				excludes="**/package-info.java" includeantruntime="false" encoding="UTF-8">
 			<classpath refid="classpath" />
 		</javac>
 		
@@ -324,13 +311,12 @@ Use of these build scripts requires Apache Ant to be installed.  See
 			<attribute name="Class-Path" value="." />
 		</manifest>
 		
-		<jar destfile="${dist}/${shortname}-${version}-Demo.jar"
-			basedir="${build}" manifest="${build}/META-INF/MANIFEST.mf" />
+		<jar destfile="${dist}/${shortname}-${version}-Demo.jar" basedir="${build}"
+				manifest="${build}/META-INF/MANIFEST.mf" />
 	</target>
 
 	<!-- Downloads and extracts all PISA selectors for Windows -->
-	<target name="download-pisa-windows"
-			description="Downloads all PISA selectors for Windows">
+	<target name="download-pisa-windows" description="Downloads all PISA selectors for Windows">
 		<delete dir="${build}" />
 		<mkdir dir="${build}" />
 
@@ -379,8 +365,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 	</target>
 
 	<!-- Downloads and extracts all PISA selectors for Linux -->
-	<target name="download-pisa-linux" 
-			description="Downloads all PISA selectors for Linux">
+	<target name="download-pisa-linux" description="Downloads all PISA selectors for Linux">
 		<delete dir="${build}" />
 		<mkdir dir="${build}" />
 
@@ -458,8 +443,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		<mkdir dir="${maven}" />
 		<property name="artifact" value="moeaframework" />
 		
-		<copy file="auxiliary/maven/pom.xml"
-				tofile="${maven}/${artifact}-${version}.pom" />
+		<copy file="auxiliary/maven/pom.xml" tofile="${maven}/${artifact}-${version}.pom" />
 		<replace file="${maven}/${artifact}-${version}.pom">
 			<replacefilter token="%VERSION%" value="${version}" />
 		</replace>
@@ -468,16 +452,13 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		<copy todir="${build}/pf">
 			<fileset dir="pf" />
 		</copy>
-		<jar destfile="${maven}/${artifact}-${version}.jar" 
-				basedir="${build}" />
+		<jar destfile="${maven}/${artifact}-${version}.jar" basedir="${build}" />
 		
 		<antcall target="package-source" />
-		<jar destfile="${maven}/${artifact}-${version}-sources.jar" 
-				basedir="${build}" />
+		<jar destfile="${maven}/${artifact}-${version}-sources.jar" basedir="${build}" />
 		
 		<antcall target="build-javadoc" />
-		<jar destfile="${maven}/${artifact}-${version}-javadoc.jar"
-				basedir="${javadoc}" />
+		<jar destfile="${maven}/${artifact}-${version}-javadoc.jar" basedir="${javadoc}" />
 		
 		<!--
 		<exec executable="gpg" failonerror="true">

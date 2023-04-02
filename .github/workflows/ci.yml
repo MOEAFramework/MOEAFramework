@@ -35,8 +35,18 @@ jobs:
         echo "Downloading jmetal-plugin $version"
       
         cd lib
-        #wget https://search.maven.org/remotecontent?filepath=org/moeaframework/jmetal-plugin/${version}/jmetal-plugin-${version}-jar-with-dependencies.jar
         wget https://github.com/MOEAFramework/JMetal-Plugin/releases/download/v${version}/jmetal-plugin-${version}-jar-with-dependencies.jar
+    - name: Setup scripting plugin
+      if: ${{ matrix.java >= 11 }}
+      run: |
+        # Nashorn is GPL v2 with the Classpath Exception
+        # ASM is BSD 3-clause
+        cd lib
+        wget https://repo1.maven.org/maven2/org/ow2/asm/asm/9.5/asm-9.5.jar
+        wget https://repo1.maven.org/maven2/org/ow2/asm/asm-commons/9.5/asm-commons-9.5.jar
+        wget https://repo1.maven.org/maven2/org/ow2/asm/asm-tree/9.5/asm-tree-9.5.jar
+        wget https://repo1.maven.org/maven2/org/ow2/asm/asm-util/9.5/asm-util-9.5.jar
+        wget https://repo1.maven.org/maven2/org/openjdk/nashorn/nashorn-core/15.4/nashorn-core-15.4.jar
     - name: Test with Ant - Java ${{ matrix.java }}
       run: ant -DON_CI=true -f test.xml
     - name: Upload test results

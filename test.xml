@@ -50,12 +50,10 @@ Use of these build scripts requires Apache Ant to be installed.  See
 
 	<!-- Determines which dependencies are available -->
 	<target name="check-dependencies">
-		<available classname="org.junit.Assert" classpathref="classpath"
-				property="junit-exists" />
+		<available classname="org.junit.Assert" classpathref="classpath" property="junit-exists" />
 
 		<!-- Commented to always force recompiling of the JAR -->
-		<!--<available file="${dist}/${shortname}-${version}.jar" 
-				property="binary-exists" />-->
+		<!--<available file="${dist}/${shortname}-${version}.jar" property="binary-exists" />-->
 	</target>
 
 	<!-- Conditionally builds the MOEA Framework JAR -->
@@ -65,8 +63,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 	</target>
 
 	<!-- Displays message and fails build if JUnit is not available -->
-	<target name="check-junit" depends="check-dependencies"
-			unless="junit-exists">
+	<target name="check-junit" depends="check-dependencies" unless="junit-exists">
 		<echo>==================================================================</echo>
 		<echo> The JUnit library is missing from your classpath.  Please</echo>
 		<echo> download the latest JUnit 4 library from http://www.junit.org/,</echo>
@@ -77,14 +74,11 @@ Use of these build scripts requires Apache Ant to be installed.  See
 	</target>
 
 	<!-- Builds the MOEA Framework Test JAR -->
-	<target name="build-tests" 
-			depends="check-dependencies,check-binary,check-junit">
+	<target name="build-tests" depends="check-dependencies,check-binary,check-junit">
 		<delete dir="${build}" />
 		<mkdir dir="${build}" />
 
-		<javac destdir="${build}" debug="${java.debug}"
-				release="${java.major}"
-				includeantruntime="false"
+		<javac destdir="${build}" debug="${java.debug}" release="${java.major}" includeantruntime="false"
 				encoding="UTF-8">
 			<src path="test" />
 			<src path="examples" />
@@ -112,8 +106,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		<mkdir dir="${results}" />
 		<mkdir dir="${results}/raw" />
 
-		<junit haltonfailure="false" tempdir="${results}/raw"
-				errorproperty="junit.failure"
+		<junit haltonfailure="false" tempdir="${results}/raw" errorproperty="junit.failure"
 				failureproperty="junit.failure" fork="true">
 			<classpath>
 				<path refid="classpath" />
@@ -161,8 +154,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 	</target>
 
 	<!-- The main test target, running all JUnit tests and displaying the results -->
-	<target name="test" depends="run-tests" if="junit.failure" 
-			description="Run the unit tests">
+	<target name="test" depends="run-tests" if="junit.failure" description="Run the unit tests">
 		<echo>==================================================================</echo>
 		<echo> One or more unit tests failed!  Open test-results/index.html to</echo>
 		<echo> see which tests failed.</echo>
