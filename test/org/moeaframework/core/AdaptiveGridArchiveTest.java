@@ -58,10 +58,8 @@ public class AdaptiveGridArchiveTest {
 	public void testFindIndexEmpty() {
 		AdaptiveGridArchive archive = new AdaptiveGridArchive(2, problem, 2);
 
-		Assert.assertEquals(-1, archive.findIndex(TestUtils.newSolution(0.0,
-				0.0)));
-		Assert.assertEquals(-1, archive.findIndex(TestUtils.newSolution(1.0,
-				1.0)));
+		Assert.assertEquals(-1, archive.findIndex(TestUtils.newSolution(0.0, 0.0)));
+		Assert.assertEquals(-1, archive.findIndex(TestUtils.newSolution(1.0, 1.0)));
 	}
 
 	/**
@@ -74,10 +72,8 @@ public class AdaptiveGridArchiveTest {
 
 		archive.add(TestUtils.newSolution(0.0, 0.0));
 
-		Assert.assertEquals(0, archive.findIndex(TestUtils
-				.newSolution(0.0, 0.0)));
-		Assert.assertEquals(-1, archive.findIndex(TestUtils.newSolution(1.0,
-				1.0)));
+		Assert.assertEquals(0, archive.findIndex(TestUtils.newSolution(0.0, 0.0)));
+		Assert.assertEquals(-1, archive.findIndex(TestUtils.newSolution(1.0, 1.0)));
 	}
 
 	/**
@@ -91,14 +87,10 @@ public class AdaptiveGridArchiveTest {
 		archive.add(TestUtils.newSolution(0.0, 1.0));
 		archive.add(TestUtils.newSolution(1.0, 0.0));
 
-		Assert.assertEquals(0, archive.findIndex(TestUtils.newSolution(0.25,
-				0.25)));
-		Assert.assertEquals(1, archive.findIndex(TestUtils.newSolution(0.75,
-				0.25)));
-		Assert.assertEquals(2, archive.findIndex(TestUtils.newSolution(0.25,
-				0.75)));
-		Assert.assertEquals(3, archive.findIndex(TestUtils.newSolution(0.75,
-				0.75)));
+		Assert.assertEquals(0, archive.findIndex(TestUtils.newSolution(0.25, 0.25)));
+		Assert.assertEquals(1, archive.findIndex(TestUtils.newSolution(0.75, 0.25)));
+		Assert.assertEquals(2, archive.findIndex(TestUtils.newSolution(0.25, 0.75)));
+		Assert.assertEquals(3, archive.findIndex(TestUtils.newSolution(0.75, 0.75)));
 	}
 
 	/**
@@ -115,8 +107,7 @@ public class AdaptiveGridArchiveTest {
 		
 		Solution densestSolution = archive.pickSolutionFromDensestCell();
 
-		Assert.assertTrue(archive.get(1) == densestSolution ||
-				archive.get(2) == densestSolution);
+		Assert.assertTrue(archive.get(1) == densestSolution || archive.get(2) == densestSolution);
 	}
 
 	/**
@@ -133,10 +124,8 @@ public class AdaptiveGridArchiveTest {
 		archive.add(TestUtils.newSolution(0.8, 0.1));
 
 		Assert.assertArrayEquals(new int[] { 0, 3, 1, 0 }, archive.density);
-		Assert.assertArrayEquals(new double[] { 0.0, 0.1 }, archive.minimum,
-				Settings.EPS);
-		Assert.assertArrayEquals(new double[] { 0.8, 1.0 }, archive.maximum,
-				Settings.EPS);
+		Assert.assertArrayEquals(new double[] { 0.0, 0.1 }, archive.minimum, Settings.EPS);
+		Assert.assertArrayEquals(new double[] { 0.8, 1.0 }, archive.maximum, Settings.EPS);
 	}
 
 	/**

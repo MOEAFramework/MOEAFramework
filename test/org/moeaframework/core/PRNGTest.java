@@ -132,14 +132,10 @@ public class PRNGTest {
 			}
 		}
 
-		Assert.assertEquals(N / 2.0, lessThanEqualZero,
-				TestThresholds.STATISTICS_EPS * N / 2.0);
-		Assert.assertEquals(N / 2.0, greaterThanZero,
-				TestThresholds.STATISTICS_EPS * N / 2.0);
-		Assert.assertEquals(N / 4.0, lessThanHalfNegative,
-				TestThresholds.STATISTICS_EPS * N / 4.0);
-		Assert.assertEquals(N / 4.0, greaterThanHalfPositive,
-				TestThresholds.STATISTICS_EPS * N / 4.0);
+		Assert.assertEquals(N / 2.0, lessThanEqualZero, TestThresholds.STATISTICS_EPS * N / 2.0);
+		Assert.assertEquals(N / 2.0, greaterThanZero, TestThresholds.STATISTICS_EPS * N / 2.0);
+		Assert.assertEquals(N / 4.0, lessThanHalfNegative, TestThresholds.STATISTICS_EPS * N / 4.0);
+		Assert.assertEquals(N / 4.0, greaterThanHalfPositive, TestThresholds.STATISTICS_EPS * N / 4.0);
 	}
 
 	/**
@@ -226,8 +222,7 @@ public class PRNGTest {
 	public void testShuffleList() {
 		int P = 7;
 		List<Integer> list = new ArrayList<Integer>();
-		List<DescriptiveStatistics> statistics = 
-				new ArrayList<DescriptiveStatistics>();
+		List<DescriptiveStatistics> statistics = new ArrayList<DescriptiveStatistics>();
 
 		for (int i = 0; i < P; i++) {
 			list.add(i);
@@ -481,20 +476,13 @@ public class PRNGTest {
 	 * @param max the maximum bounds of the uniform distribution
 	 * @param statistics the captures statistics of a sampled distribution
 	 */
-	private void testUniformDistribution(double min, double max,
-			DescriptiveStatistics statistics) {
-		Assert.assertEquals((min + max) / 2.0, statistics.getMean(),
-				TestThresholds.STATISTICS_EPS);
-		Assert.assertEquals(Math.pow(max - min, 2.0) / 12.0, statistics
-				.getVariance(), TestThresholds.STATISTICS_EPS);
-		Assert.assertEquals(0.0, statistics.getSkewness(),
-				TestThresholds.STATISTICS_EPS);
-		Assert.assertEquals(-6.0 / 5.0, statistics.getKurtosis(),
-				TestThresholds.STATISTICS_EPS);
-		Assert.assertEquals(min, statistics.getMin(),
-				TestThresholds.STATISTICS_EPS);
-		Assert.assertEquals(max, statistics.getMax(),
-				TestThresholds.STATISTICS_EPS);
+	private void testUniformDistribution(double min, double max, DescriptiveStatistics statistics) {
+		Assert.assertEquals((min + max) / 2.0, statistics.getMean(), TestThresholds.STATISTICS_EPS);
+		Assert.assertEquals(Math.pow(max - min, 2.0) / 12.0, statistics.getVariance(), TestThresholds.STATISTICS_EPS);
+		Assert.assertEquals(0.0, statistics.getSkewness(), TestThresholds.STATISTICS_EPS);
+		Assert.assertEquals(-6.0 / 5.0, statistics.getKurtosis(), TestThresholds.STATISTICS_EPS);
+		Assert.assertEquals(min, statistics.getMin(), TestThresholds.STATISTICS_EPS);
+		Assert.assertEquals(max, statistics.getMax(), TestThresholds.STATISTICS_EPS);
 	}
 
 	/**
@@ -505,23 +493,16 @@ public class PRNGTest {
 	 * @param max the maximum bounds of the uniform distribution
 	 * @param statistics the captures statistics of a sampled distribution
 	 */
-	private void testUniformDistribution(int min, int max,
-			DescriptiveStatistics statistics) {
+	private void testUniformDistribution(int min, int max, DescriptiveStatistics statistics) {
 		int n = max - min + 1;
 		int nn = n * n;
 
-		Assert.assertEquals((min + max) / 2.0, statistics.getMean(),
-				TestThresholds.STATISTICS_EPS);
-		Assert.assertEquals((nn - 1) / 12.0, statistics.getVariance(),
-				TestThresholds.STATISTICS_EPS);
-		Assert.assertEquals(0.0, statistics.getSkewness(),
-				TestThresholds.STATISTICS_EPS);
-		Assert.assertEquals(-(6.0 * (nn + 1)) / (5.0 * (nn - 1)), statistics
-				.getKurtosis(), TestThresholds.STATISTICS_EPS);
-		Assert.assertEquals(min, statistics.getMin(),
-				TestThresholds.STATISTICS_EPS);
-		Assert.assertEquals(max, statistics.getMax(),
-				TestThresholds.STATISTICS_EPS);
+		Assert.assertEquals((min + max) / 2.0, statistics.getMean(), TestThresholds.STATISTICS_EPS);
+		Assert.assertEquals((nn - 1) / 12.0, statistics.getVariance(), TestThresholds.STATISTICS_EPS);
+		Assert.assertEquals(0.0, statistics.getSkewness(), TestThresholds.STATISTICS_EPS);
+		Assert.assertEquals(-(6.0 * (nn + 1)) / (5.0 * (nn - 1)), statistics.getKurtosis(), TestThresholds.STATISTICS_EPS);
+		Assert.assertEquals(min, statistics.getMin(), TestThresholds.STATISTICS_EPS);
+		Assert.assertEquals(max, statistics.getMax(), TestThresholds.STATISTICS_EPS);
 	}
 
 	/**
@@ -532,16 +513,11 @@ public class PRNGTest {
 	 * @param sigma the standard deviation of the distribution
 	 * @param statistics the captures statistics of a sampled distribution
 	 */
-	private void testGaussianDistribution(double mu, double sigma,
-			DescriptiveStatistics statistics) {
-		Assert.assertEquals(mu, statistics.getMean(),
-				TestThresholds.STATISTICS_EPS);
-		Assert.assertEquals(sigma * sigma, statistics.getVariance(),
-				TestThresholds.STATISTICS_EPS);
-		Assert.assertEquals(0.0, statistics.getSkewness(),
-				TestThresholds.STATISTICS_EPS);
-		Assert.assertEquals(0.0, statistics.getKurtosis(),
-				TestThresholds.STATISTICS_EPS);
+	private void testGaussianDistribution(double mu, double sigma, DescriptiveStatistics statistics) {
+		Assert.assertEquals(mu, statistics.getMean(), TestThresholds.STATISTICS_EPS);
+		Assert.assertEquals(sigma * sigma, statistics.getVariance(), TestThresholds.STATISTICS_EPS);
+		Assert.assertEquals(0.0, statistics.getSkewness(), TestThresholds.STATISTICS_EPS);
+		Assert.assertEquals(0.0, statistics.getKurtosis(), TestThresholds.STATISTICS_EPS);
 	}
 
 	/**

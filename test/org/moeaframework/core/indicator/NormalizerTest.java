@@ -91,8 +91,7 @@ public class NormalizerTest {
 		population.add(TestUtils.newSolution(10.0, -0.1));
 		population.add(TestUtils.newSolution(5.0, 0.0));
 		
-		Normalizer normalizer = new Normalizer(new ProblemStub(2), 
-				population, new double[] { 20.0, 0.2 });
+		Normalizer normalizer = new Normalizer(new ProblemStub(2), population, new double[] { 20.0, 0.2 });
 		
 		NondominatedPopulation expected = new NondominatedPopulation();
 		expected.add(TestUtils.newSolution(0.0, 0.6666666));
@@ -112,8 +111,7 @@ public class NormalizerTest {
 		population.add(TestUtils.newSolution(10.0, -0.1));
 		population.add(TestUtils.newSolution(5.0, 0.0));
 		
-		Normalizer normalizer = new Normalizer(new ProblemStub(2), 
-				new double[] { 0.0, -0.2 }, new double[] { 20.0, 0.2 });
+		Normalizer normalizer = new Normalizer(new ProblemStub(2), new double[] { 0.0, -0.2 }, new double[] { 20.0, 0.2 });
 		
 		NondominatedPopulation expected = new NondominatedPopulation();
 		expected.add(TestUtils.newSolution(0.0, 0.75));

@@ -67,8 +67,7 @@ public class BinaryIntegerVariableTest {
 	@Test
 	public void testHashCode() {
 		Assert.assertEquals(value.hashCode(), value.hashCode());
-		Assert.assertEquals(value.hashCode(),
-				new BinaryIntegerVariable(7, 5, 10).hashCode());
+		Assert.assertEquals(value.hashCode(), new BinaryIntegerVariable(7, 5, 10).hashCode());
 	}
 
 	@Test

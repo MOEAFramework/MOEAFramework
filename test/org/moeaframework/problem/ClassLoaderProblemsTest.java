@@ -51,8 +51,7 @@ public class ClassLoaderProblemsTest {
 	public void testProblemFactoryClassFound() {
 		String problem = "org.moeaframework.problem.misc.Kita";
 		Assert.assertNotNull(ProblemFactory.getInstance().getProblem(problem));
-		Assert.assertNull(ProblemFactory.getInstance().getReferenceSet(
-				problem));
+		Assert.assertNull(ProblemFactory.getInstance().getReferenceSet(problem));
 	}
 
 }

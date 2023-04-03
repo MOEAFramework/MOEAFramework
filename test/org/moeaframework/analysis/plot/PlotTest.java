@@ -104,8 +104,7 @@ public class PlotTest {
 				.includeInvertedGenerationalDistance();
 
 		for (String algorithm : algorithms) {
-			analyzer.addAll(algorithm, 
-					executor.withAlgorithm(algorithm).runSeeds(10));
+			analyzer.addAll(algorithm, executor.withAlgorithm(algorithm).runSeeds(10));
 		}
 
 		runTest(new Plot().add(analyzer));

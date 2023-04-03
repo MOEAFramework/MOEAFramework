@@ -65,11 +65,9 @@ public class GrammarTest {
 	@Test
 	public void testDerivations() {
 		Assert.assertEquals("func(x)-x", grammar.build(new int[] { 0, 1, 2 }));
-		Assert.assertEquals("func(func(y))", grammar
-				.build(new int[] { 1, 1, 2 }));
+		Assert.assertEquals("func(func(y))", grammar.build(new int[] { 1, 1, 2 }));
 		Assert.assertEquals("x", grammar.build(new int[] { 2, 0, 2 }));
-		Assert.assertEquals("func(x*func(y))", grammar.build(new int[] { 1, 0,
-				2, 0, 2, 1, 2 }));
+		Assert.assertEquals("func(x*func(y))", grammar.build(new int[] { 1, 0, 2, 0, 2, 1, 2 }));
 	}
 
 	/**
@@ -89,8 +87,7 @@ public class GrammarTest {
 	}
 
 	/**
-	 * Tests if the {@link Grammar#isValid} method correctly identifies valid
-	 * and invalid grammars.
+	 * Tests if the {@link Grammar#isValid} method correctly identifies valid and invalid grammars.
 	 * 
 	 * @throws IOException if an I/O error occurred
 	 */
@@ -99,8 +96,7 @@ public class GrammarTest {
 		Assert.assertTrue(grammar.isValid());
 
 		Assert.assertFalse(Parser.load(new StringReader("")).isValid());
-		Assert.assertFalse(Parser.load(new StringReader("<foo> ::= <bar>"))
-				.isValid());
+		Assert.assertFalse(Parser.load(new StringReader("<foo> ::= <bar>")).isValid());
 	}
 
 }

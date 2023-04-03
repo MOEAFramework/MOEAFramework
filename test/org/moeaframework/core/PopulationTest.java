@@ -203,8 +203,7 @@ public class PopulationTest {
 		});
 
 		Assert.assertEquals(1, population.size());
-		Assert.assertEquals(1.0, population.get(0).getObjective(0),
-				Settings.EPS);
+		Assert.assertEquals(1.0, population.get(0).getObjective(0), Settings.EPS);
 	}
 
 }

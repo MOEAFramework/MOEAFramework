@@ -31,8 +31,7 @@ public class ProgressHelperTest {
 	/**
 	 * Tests progress reporting for a single seed.
 	 * 
-	 * @throws InterruptedException if the simulation failed to execute
-	 *         properly due to an interruption
+	 * @throws InterruptedException if the simulation failed to execute properly due to an interruption
 	 */
 	@Test
 	public void testTimingSingleSeed() throws InterruptedException {
@@ -42,8 +41,7 @@ public class ProgressHelperTest {
 	/**
 	 * Tests progress reporting for many seeds.
 	 * 
-	 * @throws InterruptedException if the simulation failed to execute
-	 *         properly due to an interruption
+	 * @throws InterruptedException if the simulation failed to execute properly due to an interruption
 	 */
 	@Test
 	public void testTimingManySeeds() throws InterruptedException {
@@ -53,8 +51,7 @@ public class ProgressHelperTest {
 	/**
 	 * Tests progress reporting for a single seed with fine-grain step sizes.
 	 * 
-	 * @throws InterruptedException if the simulation failed to execute
-	 *         properly due to an interruption
+	 * @throws InterruptedException if the simulation failed to execute properly due to an interruption
 	 */
 	@Test
 	public void testTimingFineGrained() throws InterruptedException {
@@ -62,18 +59,15 @@ public class ProgressHelperTest {
 	}
 	
 	/**
-	 * Tests if ProgressHelper functions correctly by simulating the execution
-	 * of an algorithm.
+	 * Tests if ProgressHelper functions correctly by simulating the execution of an algorithm.
 	 * 
 	 * @param totalSeeds the total number of seeds to simulate
 	 * @param maxNFE the maximum NFE per seed to simulate
 	 * @param frequency the frequency of progress updates
 	 * @param time the simulated time per step
-	 * @throws InterruptedException if the simulation failed to execute
-	 *         properly due to an interruption
+	 * @throws InterruptedException if the simulation failed to execute properly due to an interruption
 	 */
-	private void test(int totalSeeds, int maxNFE, int frequency, int time)
-			throws InterruptedException {
+	private void test(int totalSeeds, int maxNFE, int frequency, int time) throws InterruptedException {
 		ProgressHelper helper = new ProgressHelper(null);
 		final List<ProgressEvent> events = new ArrayList<ProgressEvent>();
 		
@@ -112,31 +106,23 @@ public class ProgressHelperTest {
 		
 		// test seed count
 		Assert.assertEquals(1, events.get(0).getCurrentSeed());
-		Assert.assertEquals(totalSeeds/2 + 1,
-				events.get(events.size()/2).getCurrentSeed());
-		Assert.assertEquals(totalSeeds,
-				events.get(events.size() - 2).getCurrentSeed());
+		Assert.assertEquals(totalSeeds/2 + 1, events.get(events.size()/2).getCurrentSeed());
+		Assert.assertEquals(totalSeeds, events.get(events.size() - 2).getCurrentSeed());
 		
 		// test elapsed time
-		Assert.assertEquals(expectedTime / 2.0,
-				events.get(events.size()/2 - 1).getElapsedTime(), error);
-		Assert.assertEquals(expectedTime,
-				events.get(events.size()-1).getElapsedTime(), error);
+		Assert.assertEquals(expectedTime / 2.0, events.get(events.size()/2 - 1).getElapsedTime(), error);
+		Assert.assertEquals(expectedTime, events.get(events.size()-1).getElapsedTime(), error);
 		
 		// test remaining time
-		Assert.assertEquals(expectedTime / 2.0,
-				events.get(events.size()/2 - 1).getRemainingTime(), error);
-		Assert.assertEquals(0.0,
-				events.get(events.size() - 1).getRemainingTime(), error);
+		Assert.assertEquals(expectedTime / 2.0, events.get(events.size()/2 - 1).getRemainingTime(), error);
+		Assert.assertEquals(0.0, events.get(events.size() - 1).getRemainingTime(), error);
 		Assert.assertEquals(events.get(events.size()-1).getElapsedTime(),
 				events.get(events.size()/2).getElapsedTime() +
 				events.get(events.size()/2).getRemainingTime(), error);
 		
 		// test percent complete
-		Assert.assertEquals(0.5,
-				events.get(events.size()/2 - 1).getPercentComplete(), 0.05);
-		Assert.assertEquals(1.0,
-				events.get(events.size() - 1).getPercentComplete(), 0.05);
+		Assert.assertEquals(0.5, events.get(events.size()/2 - 1).getPercentComplete(), 0.05);
+		Assert.assertEquals(1.0, events.get(events.size() - 1).getPercentComplete(), 0.05);
 		
 		// test constant attributes
 		for (ProgressEvent event : events) {
@@ -146,11 +132,9 @@ public class ProgressHelperTest {
 	}
 
 	/**
-	 * Tests if progress reporting handles situations where no change in NFE
-	 * occurs.
+	 * Tests if progress reporting handles situations where no change in NFE occurs.
 	 * 
-	 * @throws InterruptedException if the simulation failed to execute
-	 *         properly due to an interruption
+	 * @throws InterruptedException if the simulation failed to execute properly due to an interruption
 	 */
 	@Test
 	public void testNoProgress() throws InterruptedException {
@@ -180,11 +164,9 @@ public class ProgressHelperTest {
 	}
 	
 	/**
-	 * Tests if progress reporting handles the situation where no change in
-	 * time occurs.
+	 * Tests if progress reporting handles the situation where no change in time occurs.
 	 * 
-	 * @throws InterruptedException if the simulation failed to execute
-	 *         properly due to an interruption@throws InterruptedException
+	 * @throws InterruptedException if the simulation failed to execute properly due to an interruption
 	 */
 	@Test
 	public void testNoTime() throws InterruptedException {
@@ -208,8 +190,7 @@ public class ProgressHelperTest {
 		
 		Assert.assertEquals(3, events.size());
 		Assert.assertTrue(Double.isNaN(events.get(0).getRemainingTime()));
-		Assert.assertTrue(Double.isNaN(events.get(1).getRemainingTime()) ||
-				events.get(1).getRemainingTime() > 0.0);
+		Assert.assertTrue(Double.isNaN(events.get(1).getRemainingTime()) || events.get(1).getRemainingTime() > 0.0);
 		Assert.assertTrue(events.get(2).getRemainingTime() > 0.0);
 	}
 	

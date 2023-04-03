@@ -64,8 +64,7 @@ public class InsertionTest {
 
 			Solution mutated = insertion.evolve(new Solution[] { original })[0];
 
-			if (testInsertion((Permutation)original.getVariable(0),
-					(Permutation)mutated.getVariable(0))) {
+			if (testInsertion((Permutation)original.getVariable(0), (Permutation)mutated.getVariable(0))) {
 				count++;
 			}
 		}
@@ -75,13 +74,11 @@ public class InsertionTest {
 	}
 
 	/**
-	 * Returns {@code true} if the result is a valid insertion; {@code false}
-	 * otherwise.
+	 * Returns {@code true} if the result is a valid insertion; {@code false} otherwise.
 	 * 
 	 * @param v1 the first permutation
 	 * @param v2 the second permutation
-	 * @return {@code true} if the result is a valid insertion; {@code false}
-	 *         otherwise
+	 * @return {@code true} if the result is a valid insertion; {@code false} otherwise
 	 */
 	protected boolean testInsertion(Permutation v1, Permutation v2) {
 		// find first index where permutations differ

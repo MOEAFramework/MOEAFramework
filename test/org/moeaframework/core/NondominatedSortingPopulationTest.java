@@ -29,8 +29,7 @@ import org.moeaframework.core.comparator.NondominatedSortingComparator;
  */
 public class NondominatedSortingPopulationTest {
 	
-	private static class TestNondominatedSortingPopulation 
-	extends NondominatedSortingPopulation {
+	private static class TestNondominatedSortingPopulation extends NondominatedSortingPopulation {
 		
 		private int numberOfUpdates;
 
@@ -38,8 +37,7 @@ public class NondominatedSortingPopulationTest {
 			super();
 		}
 
-		public TestNondominatedSortingPopulation(
-				Iterable<? extends Solution> iterable) {
+		public TestNondominatedSortingPopulation(Iterable<? extends Solution> iterable) {
 			super(iterable);
 		}
 
@@ -56,13 +54,11 @@ public class NondominatedSortingPopulationTest {
 	}
 
 	/**
-	 * Tests if the {@code truncate} method works correctly with solutions of
-	 * differing ranks.
+	 * Tests if the {@code truncate} method works correctly with solutions of differing ranks.
 	 */
 	@Test
 	public void testRankTruncation() {
-		NondominatedSortingPopulation population = 
-				new NondominatedSortingPopulation();
+		NondominatedSortingPopulation population = new NondominatedSortingPopulation();
 
 		Solution solution1 = new Solution(new double[] { 0.5, 0.5 });
 		Solution solution2 = new Solution(new double[] { 0.0, 0.0 });
@@ -80,13 +76,11 @@ public class NondominatedSortingPopulationTest {
 	}
 
 	/**
-	 * Tests if {@code truncate} method works correctly with equally-ranked
-	 * solutions.
+	 * Tests if {@code truncate} method works correctly with equally-ranked solutions.
 	 */
 	@Test
 	public void testCrowdingTruncation() {
-		NondominatedSortingPopulation population = 
-				new NondominatedSortingPopulation();
+		NondominatedSortingPopulation population = new NondominatedSortingPopulation();
 
 		Solution solution1 = new Solution(new double[] { 0.0, 1.0 });
 		Solution solution2 = new Solution(new double[] { 0.5, 0.5 });
@@ -105,8 +99,7 @@ public class NondominatedSortingPopulationTest {
 	
 	@Test
 	public void testSingularObjective() {
-		NondominatedSortingPopulation population = 
-				new NondominatedSortingPopulation();
+		NondominatedSortingPopulation population = new NondominatedSortingPopulation();
 
 		Solution solution1 = new Solution(new double[] { 0.0, 0.0, 1.0 });
 		Solution solution2 = new Solution(new double[] { 0.5, 0.0, 0.5 });
@@ -125,8 +118,7 @@ public class NondominatedSortingPopulationTest {
 	
 	@Test
 	public void testTruncate() {
-		TestNondominatedSortingPopulation population = 
-				new TestNondominatedSortingPopulation();
+		TestNondominatedSortingPopulation population = new TestNondominatedSortingPopulation();
 
 		Solution solution1 = new Solution(new double[] { 0.0, 0.0 });
 		Solution solution2 = new Solution(new double[] { 0.0, 1.0 });
@@ -162,8 +154,7 @@ public class NondominatedSortingPopulationTest {
 	
 	@Test
 	public void testPruning() {
-		TestNondominatedSortingPopulation population = 
-				new TestNondominatedSortingPopulation();
+		TestNondominatedSortingPopulation population = new TestNondominatedSortingPopulation();
 
 		Solution solution1 = new Solution(new double[] { 0.0, 0.0 });
 		Solution solution2 = new Solution(new double[] { 0.0, 1.0 });
@@ -208,9 +199,8 @@ public class NondominatedSortingPopulationTest {
 		Solution solution7 = new Solution(new double[] { 0.75, 0.25 });
 		Solution solution8 = new Solution(new double[] { 1.0, 0.0 });
 		
-		TestNondominatedSortingPopulation population = 
-			new TestNondominatedSortingPopulation(
-					Arrays.asList(solution1, solution2));
+		TestNondominatedSortingPopulation population = new TestNondominatedSortingPopulation(
+				Arrays.asList(solution1, solution2));
 
 		population.get(0); //update
 		population.add(solution3);

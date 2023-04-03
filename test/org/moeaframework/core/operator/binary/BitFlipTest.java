@@ -51,8 +51,7 @@ public class BitFlipTest {
 	}
 
 	/**
-	 * Tests if the correct number of bits are flipped given the specified
-	 * probability.
+	 * Tests if the correct number of bits are flipped given the specified probability.
 	 * 
 	 * @param probability the probability of flipping a bit
 	 */
@@ -67,8 +66,7 @@ public class BitFlipTest {
 			sum += original.hammingDistance(mutated);
 		}
 
-		Assert.assertEquals((sum / TestThresholds.SAMPLES) / 100, probability,
-				TestThresholds.VARIATION_EPS);
+		Assert.assertEquals((sum / TestThresholds.SAMPLES) / 100, probability, TestThresholds.VARIATION_EPS);
 	}
 
 	/**

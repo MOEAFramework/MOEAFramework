@@ -78,8 +78,7 @@ public class CommandLineUtilityTest {
 		try {
 			new MockCommandLineUtility().start(new String[] { "--invalid" });
 		} catch (ParseException e) {
-			// this always throws a parse exception due to missing required
-			// option and invalid option
+			// this always throws a parse exception due to missing required option and invalid option
 		}
 		
 		Assert.assertFalse(invoked);
@@ -90,8 +89,7 @@ public class CommandLineUtilityTest {
 		try {
 			new MockCommandLineUtility().start(new String[] {});
 		} catch (ParseException e) {
-			// this always throws a parse exception due to missing required
-			// option
+			// this always throws a parse exception due to missing required option
 		}
 		
 		Assert.assertFalse(invoked);

@@ -69,8 +69,7 @@ public class GrammarCrossoverTest {
 			Solution[] offspring = crossover.evolve(new Solution[] { p1, p2 });
 
 			if (check((Grammar)p1.getVariable(0), (Grammar)p2.getVariable(0),
-					(Grammar)offspring[0].getVariable(0), (Grammar)offspring[1]
-							.getVariable(0))) {
+					(Grammar)offspring[0].getVariable(0), (Grammar)offspring[1].getVariable(0))) {
 				count++;
 			}
 		}

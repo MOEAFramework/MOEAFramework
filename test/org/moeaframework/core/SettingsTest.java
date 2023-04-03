@@ -78,8 +78,7 @@ public class SettingsTest {
 	public void testPISAParameters() {
 		for (String algorithm : Settings.getPISAAlgorithms()) {
 			for (String parameter : Settings.getPISAParameters(algorithm)) {
-				Assert.assertNotNull(Settings.getPISAParameterDefaultValue(
-						algorithm, parameter));
+				Assert.assertNotNull(Settings.getPISAParameterDefaultValue(algorithm, parameter));
 			}
 		}
 	}
@@ -97,8 +96,7 @@ public class SettingsTest {
 	@Test
 	public void testParseCommand() throws IOException {
 		String command = "java -jar \"C:\\Program Files\\Test\\test.jar\" \"\"\"";
-		String[] expected = new String[] { "java", "-jar", 
-				"C:\\Program Files\\Test\\test.jar", "\"" };
+		String[] expected = new String[] { "java", "-jar", "C:\\Program Files\\Test\\test.jar", "\"" };
 		String[] actual = Settings.parseCommand(command);
 		
 		Assert.assertArrayEquals(expected, actual);
@@ -106,20 +104,16 @@ public class SettingsTest {
 	
 	@Test
 	public void testDuplicateMode() {
-		Assert.assertEquals(DuplicateMode.NO_DUPLICATE_OBJECTIVES,
-				Settings.getDuplicateMode());
+		Assert.assertEquals(DuplicateMode.NO_DUPLICATE_OBJECTIVES, Settings.getDuplicateMode());
 	}
 	
 	@Test
 	public void testDuplicateModeCaseSensitivity() {
-		Settings.PROPERTIES.setString(Settings.KEY_DUPLICATE_MODE,
-				DuplicateMode.ALLOW_DUPLICATES.name().toLowerCase());
+		Settings.PROPERTIES.setString(Settings.KEY_DUPLICATE_MODE, DuplicateMode.ALLOW_DUPLICATES.name().toLowerCase());
 		
-		Assert.assertEquals(DuplicateMode.ALLOW_DUPLICATES,
-				Settings.getDuplicateMode());
+		Assert.assertEquals(DuplicateMode.ALLOW_DUPLICATES, Settings.getDuplicateMode());
 		
-		Assert.assertEquals(DuplicateMode.ALLOW_DUPLICATES,
-				new NondominatedPopulation().duplicateMode);
+		Assert.assertEquals(DuplicateMode.ALLOW_DUPLICATES, new NondominatedPopulation().duplicateMode);
 		
 		Settings.PROPERTIES.remove(Settings.KEY_DUPLICATE_MODE);
 	}

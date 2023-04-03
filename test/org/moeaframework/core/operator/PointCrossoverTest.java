@@ -56,8 +56,7 @@ public abstract class PointCrossoverTest {
 			Variable o1 = offspring[0].getVariable(i);
 			Variable o2 = offspring[1].getVariable(i);
 
-			Assert.assertTrue((o1.equals(p1) && o2.equals(p2))
-					|| (o1.equals(p2) && o2.equals(p1)));
+			Assert.assertTrue((o1.equals(p1) && o2.equals(p2)) || (o1.equals(p2) && o2.equals(p1)));
 		}
 	}
 

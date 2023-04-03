@@ -79,7 +79,7 @@ public class C2_DTLZ2Test {
 	public void test(int numberOfObjectives, double r) {
 		try (C2_DTLZ2 problem = new C2_DTLZ2(numberOfObjectives);
 				DTLZ2 originalProblem = new DTLZ2(numberOfObjectives)) {
-			for (int i = 0; i <TestThresholds.SAMPLES; i++) {
+			for (int i = 0; i < TestThresholds.SAMPLES; i++) {
 				Solution originalSlution = originalProblem.generate();
 				Solution solution = problem.newSolution();
 				
@@ -107,8 +107,7 @@ public class C2_DTLZ2Test {
 				double distance = 0.0;
 	
 				for (int j = 0; j < numberOfObjectives; j++) {
-					distance += Math.pow(solution.getObjective(j) -
-						        1 / Math.sqrt(numberOfObjectives), 2.0);
+					distance += Math.pow(solution.getObjective(j) - 1 / Math.sqrt(numberOfObjectives), 2.0);
 				}
 	
 				minDistance = Math.min(minDistance, distance);

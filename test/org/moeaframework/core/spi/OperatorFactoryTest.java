@@ -60,8 +60,7 @@ public class OperatorFactoryTest {
 			System.out.println("Testing " + operator);
 			
 			try {
-				Variation variation = OperatorFactory.getInstance().getVariation(
-						operator, new TypedProperties(), problem);
+				Variation variation = OperatorFactory.getInstance().getVariation(operator, new TypedProperties(), problem);
 				test(variation);
 			} catch (ConfigurationException e) {
 				// this operator is renamed and displays an error

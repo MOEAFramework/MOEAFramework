@@ -64,14 +64,12 @@ public class SwapTest {
 
 			Solution mutated = swap.evolve(new Solution[] { original })[0];
 
-			if (testSwap((Permutation)original.getVariable(0),
-					(Permutation)mutated.getVariable(0))) {
+			if (testSwap((Permutation)original.getVariable(0), (Permutation)mutated.getVariable(0))) {
 				count++;
 			}
 		}
 
-		Assert.assertEquals((double)count / TestThresholds.SAMPLES,
-				probability, TestThresholds.VARIATION_EPS);
+		Assert.assertEquals((double)count / TestThresholds.SAMPLES, probability, TestThresholds.VARIATION_EPS);
 	}
 
 	/**

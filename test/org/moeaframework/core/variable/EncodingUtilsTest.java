@@ -223,8 +223,7 @@ public class EncodingUtilsTest {
 		RealVariable doubleVariable = new RealVariable(lowerBound, upperBound);
 		BinaryVariable binaryVariable = new BinaryVariable(numberOfBits);
 
-		double diff = (upperBound - lowerBound)
-				/ (2.0 * ((1L << numberOfBits) - 1));
+		double diff = (upperBound - lowerBound) / (2.0 * ((1L << numberOfBits) - 1));
 
 		for (double i = lowerBound; i <= upperBound; i += 0.333) {
 			doubleVariable.setValue(i);
@@ -305,8 +304,7 @@ public class EncodingUtilsTest {
 		Variable variable = EncodingUtils.newPermutation(3);
 		
 		EncodingUtils.setPermutation(variable, new int[] { 0, 2, 1 });
-		Assert.assertArrayEquals(new int[] { 0, 2, 1 },
-				EncodingUtils.getPermutation(variable));
+		Assert.assertArrayEquals(new int[] { 0, 2, 1 }, EncodingUtils.getPermutation(variable));
 	}
 	
 	@Test
@@ -314,19 +312,16 @@ public class EncodingUtilsTest {
 		Variable variable = EncodingUtils.newSubset(5, 10);
 		
 		EncodingUtils.setSubset(variable, new int[] { 1, 3, 5, 6, 7 });
-		Assert.assertArrayEquals(new int[] { 1, 3, 5, 6, 7 },
-				EncodingUtils.getSubset(variable));
+		Assert.assertArrayEquals(new int[] { 1, 3, 5, 6, 7 }, EncodingUtils.getSubset(variable));
 	}
 	
 	@Test
 	public void testSubsetEncodingAsBinary() {
 		Variable variable = EncodingUtils.newSubset(5, 10);
-		boolean[] values = new boolean[] { false, false, true, true,
-				false, true, false, true, true, false};
+		boolean[] values = new boolean[] { false, false, true, true, false, true, false, true, true, false};
 		
 		EncodingUtils.setSubset(variable, values);
-		Assert.assertArrayEquals(new int[] { 2, 3, 5, 7, 8 },
-				EncodingUtils.getSubset(variable));
+		Assert.assertArrayEquals(new int[] { 2, 3, 5, 7, 8 }, EncodingUtils.getSubset(variable));
 		
 		TestUtils.assertEquals(values, EncodingUtils.getSubsetAsBinary(variable));
 	}
@@ -343,8 +338,7 @@ public class EncodingUtilsTest {
 		bitSet.set(8);
 		
 		EncodingUtils.setSubset(variable, bitSet);
-		Assert.assertArrayEquals(new int[] { 2, 3, 5, 7, 8 },
-				EncodingUtils.getSubset(variable));
+		Assert.assertArrayEquals(new int[] { 2, 3, 5, 7, 8 }, EncodingUtils.getSubset(variable));
 		Assert.assertEquals(bitSet, EncodingUtils.getSubsetAsBitSet(variable));
 	}
 	
@@ -356,32 +350,25 @@ public class EncodingUtilsTest {
 		solution.setVariable(2, EncodingUtils.newReal(-1.0, 1.0));
 		
 		EncodingUtils.setReal(solution, new double[] { 0.5, 3.0, 0.0 });
-		Assert.assertArrayEquals(new double[] { 0.5, 3.0, 0.0 },
-				EncodingUtils.getReal(solution), Settings.EPS);
+		Assert.assertArrayEquals(new double[] { 0.5, 3.0, 0.0 }, EncodingUtils.getReal(solution), Settings.EPS);
 		
-		Assert.assertArrayEquals(new double[] { 3.0, 0.0 }, 
-				EncodingUtils.getReal(solution, 1, 3), Settings.EPS);
+		Assert.assertArrayEquals(new double[] { 3.0, 0.0 }, EncodingUtils.getReal(solution, 1, 3), Settings.EPS);
 		
-		Assert.assertArrayEquals(new double[] { 3.0 },
-				EncodingUtils.getReal(solution, 1, 2), Settings.EPS);
+		Assert.assertArrayEquals(new double[] { 3.0 }, EncodingUtils.getReal(solution, 1, 2), Settings.EPS);
 		
-		Assert.assertArrayEquals(new double[0],
-				EncodingUtils.getReal(solution, 1, 1), Settings.EPS);
+		Assert.assertArrayEquals(new double[0], EncodingUtils.getReal(solution, 1, 1), Settings.EPS);
 		
 		EncodingUtils.setReal(solution, 1, 3, new double[] { 2.0, -1.0 });
 		
-		Assert.assertArrayEquals(new double[] { 0.5, 2.0, -1.0 },
-				EncodingUtils.getReal(solution), Settings.EPS);
+		Assert.assertArrayEquals(new double[] { 0.5, 2.0, -1.0 }, EncodingUtils.getReal(solution), Settings.EPS);
 		
 		EncodingUtils.setReal(solution, 2, 3, new double[] { 1.0 });
 		
-		Assert.assertArrayEquals(new double[] { 0.5, 2.0, 1.0 },
-				EncodingUtils.getReal(solution), Settings.EPS);
+		Assert.assertArrayEquals(new double[] { 0.5, 2.0, 1.0 }, EncodingUtils.getReal(solution), Settings.EPS);
 		
 		EncodingUtils.setReal(solution, 2, 2, new double[0]);
 		
-		Assert.assertArrayEquals(new double[] { 0.5, 2.0, 1.0 },
-				EncodingUtils.getReal(solution), Settings.EPS);
+		Assert.assertArrayEquals(new double[] { 0.5, 2.0, 1.0 }, EncodingUtils.getReal(solution), Settings.EPS);
 	}
 	
 	@Test
@@ -392,32 +379,25 @@ public class EncodingUtilsTest {
 		solution.setVariable(2, EncodingUtils.newInt(-1, 1));
 		
 		EncodingUtils.setInt(solution, new int[] { 0, 3, 0 });
-		Assert.assertArrayEquals(new int[] { 0, 3, 0 },
-				EncodingUtils.getInt(solution));
+		Assert.assertArrayEquals(new int[] { 0, 3, 0 }, EncodingUtils.getInt(solution));
 		
-		Assert.assertArrayEquals(new int[] { 3, 0 }, 
-				EncodingUtils.getInt(solution, 1, 3));
+		Assert.assertArrayEquals(new int[] { 3, 0 }, EncodingUtils.getInt(solution, 1, 3));
 		
-		Assert.assertArrayEquals(new int[] { 3 },
-				EncodingUtils.getInt(solution, 1, 2));
+		Assert.assertArrayEquals(new int[] { 3 }, EncodingUtils.getInt(solution, 1, 2));
 		
-		Assert.assertArrayEquals(new int[0],
-				EncodingUtils.getInt(solution, 1, 1));
+		Assert.assertArrayEquals(new int[0], EncodingUtils.getInt(solution, 1, 1));
 		
 		EncodingUtils.setInt(solution, 1, 3, new int[] { 2, -1 });
 		
-		Assert.assertArrayEquals(new int[] { 0, 2, -1 },
-				EncodingUtils.getInt(solution));
+		Assert.assertArrayEquals(new int[] { 0, 2, -1 }, EncodingUtils.getInt(solution));
 		
 		EncodingUtils.setInt(solution, 2, 3, new int[] { 1 });
 		
-		Assert.assertArrayEquals(new int[] { 0, 2, 1 },
-				EncodingUtils.getInt(solution));
+		Assert.assertArrayEquals(new int[] { 0, 2, 1 }, EncodingUtils.getInt(solution));
 		
 		EncodingUtils.setInt(solution, 2, 2, new int[0]);
 		
-		Assert.assertArrayEquals(new int[] { 0, 2, 1 },
-				EncodingUtils.getInt(solution));
+		Assert.assertArrayEquals(new int[] { 0, 2, 1 }, EncodingUtils.getInt(solution));
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
@@ -432,8 +412,7 @@ public class EncodingUtilsTest {
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void testBinaryInvalidType1() {
-		EncodingUtils.setBinary(EncodingUtils.newReal(0.0, 1.0),
-				new boolean[] { false, false, true });
+		EncodingUtils.setBinary(EncodingUtils.newReal(0.0, 1.0), new boolean[] { false, false, true });
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
@@ -448,14 +427,12 @@ public class EncodingUtilsTest {
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void testPermutationInvalidType1() {
-		EncodingUtils.setPermutation(EncodingUtils.newBinary(3),
-				new int[] { 0, 2, 1 });
+		EncodingUtils.setPermutation(EncodingUtils.newBinary(3), new int[] { 0, 2, 1 });
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void testSubsetInvalidType1() {
-		EncodingUtils.setSubset(EncodingUtils.newBinary(3),
-				new int[] { 1, 3, 5, 6, 7 });
+		EncodingUtils.setSubset(EncodingUtils.newBinary(3), new int[] { 1, 3, 5, 6, 7 });
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
@@ -627,8 +604,7 @@ public class EncodingUtilsTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void testSubsetInvalidValue3() {
 		Subset subset = new Subset(5, 10);
-		EncodingUtils.setSubset(subset, new boolean[] { false, false, true, true,
-				true, true, false, false, false, false, true });
+		EncodingUtils.setSubset(subset, new boolean[] { false, false, true, true, true, true, false, false, false, false, true });
 	}
 	
 	@Test(expected = IllegalArgumentException.class)

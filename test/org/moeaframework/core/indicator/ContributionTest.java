@@ -37,8 +37,7 @@ public class ContributionTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void testEmptyReferenceSet() {
 		NondominatedPopulation referenceSet = new NondominatedPopulation();
-		NondominatedPopulation approximationSet = ProblemFactory.getInstance()
-				.getReferenceSet("DTLZ2_2");
+		NondominatedPopulation approximationSet = ProblemFactory.getInstance().getReferenceSet("DTLZ2_2");
 
 		Contribution c = new Contribution(referenceSet, 0.25);
 		c.evaluate(approximationSet);
@@ -49,13 +48,11 @@ public class ContributionTest {
 	 */
 	@Test
 	public void testEmptyApproximationSet() {
-		NondominatedPopulation referenceSet = ProblemFactory.getInstance()
-				.getReferenceSet("DTLZ2_2");
+		NondominatedPopulation referenceSet = ProblemFactory.getInstance().getReferenceSet("DTLZ2_2");
 		NondominatedPopulation approximationSet = new NondominatedPopulation();
 
 		Contribution c = new Contribution(referenceSet, 0.25);
-		Assert.assertEquals(0.0, c.evaluate(approximationSet), 
-				Settings.EPS);
+		Assert.assertEquals(0.0, c.evaluate(approximationSet), Settings.EPS);
 	}
 	
 	/**
@@ -64,8 +61,7 @@ public class ContributionTest {
 	@Test
 	public void testInfeasibleApproximationSet() {
 		Problem problem = ProblemFactory.getInstance().getProblem("CF1");
-		NondominatedPopulation referenceSet = ProblemFactory.getInstance()
-				.getReferenceSet("CF1");
+		NondominatedPopulation referenceSet = ProblemFactory.getInstance().getReferenceSet("CF1");
 		NondominatedPopulation approximationSet = new NondominatedPopulation();
 		
 		Solution solution = problem.newSolution();
@@ -74,8 +70,7 @@ public class ContributionTest {
 		approximationSet.add(solution);
 
 		Contribution c = new Contribution(referenceSet, 0.25);
-		Assert.assertEquals(0.0, c.evaluate(approximationSet), 
-				Settings.EPS);
+		Assert.assertEquals(0.0, c.evaluate(approximationSet), Settings.EPS);
 	}
 	
 	/**

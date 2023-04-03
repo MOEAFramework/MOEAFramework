@@ -30,8 +30,7 @@ import org.moeaframework.util.TypedProperties;
 public class RVEATest {
 	
 	/**
-	 * Ensure RVEA can not be applied to problems with fewer than two
-	 * objectives.
+	 * Ensure RVEA can not be applied to problems with fewer than two objectives.
 	 */
 	@Test(expected=ProviderNotFoundException.class)
 	public void testInitialConditions() {

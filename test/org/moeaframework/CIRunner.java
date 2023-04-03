@@ -65,8 +65,7 @@ public class CIRunner extends BlockJUnit4ClassRunner {
 		if (method.getAnnotation(Ignore.class) != null) {
 			notifier.fireTestIgnored(description);
 		} else if ((method.getAnnotation(IgnoreOnCI.class) != null ||
-				getTestClass().getJavaClass().getAnnotation(IgnoreOnCI.class) != null) &&
-				isRunningOnCI()) {
+				getTestClass().getJavaClass().getAnnotation(IgnoreOnCI.class) != null) && isRunningOnCI()) {
 			System.out.println("Ignoring " + description.getDisplayName() + " on CI build");
 			notifier.fireTestIgnored(description);
 		} else {
@@ -120,12 +119,10 @@ public class CIRunner extends BlockJUnit4ClassRunner {
 
 		while (retries > failedAttempts) {
 			try {
-				System.out.println(description.getDisplayName() +
-						" failed, retrying (attempt " + failedAttempts +
+				System.out.println(description.getDisplayName() + " failed, retrying (attempt " + failedAttempts +
 						" of " + retries + ")");
 				statement.evaluate();
-				System.out.println(description.getDisplayName() +
-						" was successful after retry");
+				System.out.println(description.getDisplayName() + " was successful after retry");
 				return;
 			} catch (Throwable t) {
 				failedAttempts++;
@@ -136,15 +133,13 @@ public class CIRunner extends BlockJUnit4ClassRunner {
 		if (flaky) {
 			fireFlakyTest(description, caughtThrowable);
 		} else {
-			System.out.println(description.getDisplayName() + " failed after " +
-					failedAttempts + " attempts");
+			System.out.println(description.getDisplayName() + " failed after " + failedAttempts + " attempts");
 			notifier.addFailure(caughtThrowable);
 		}
 	}
 	
 	protected void fireFlakyTest(Description description, Throwable e) {
-		System.out.println(description.getDisplayName() +
-				" failed. This test is flaky and will be ignored!");
+		System.out.println(description.getDisplayName() + " failed. This test is flaky and will be ignored!");
 		System.out.println(e.toString());
 	}
 }

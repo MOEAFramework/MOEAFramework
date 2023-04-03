@@ -167,13 +167,10 @@ public class ReproducibilityTest {
 		for (int i = 0; i < 2; i++) {
 			PRNG.setSeed(seed);
 
-			Problem problem = ProblemFactory.getInstance().getProblem(
-					"DTLZ2_2");
-			Algorithm algorithm = AlgorithmFactory.getInstance().getAlgorithm(
-					algorithmName, new TypedProperties(), problem);
+			Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
+			Algorithm algorithm = AlgorithmFactory.getInstance().getAlgorithm(algorithmName, new TypedProperties(), problem);
 
-			while (!algorithm.isTerminated()
-					&& (algorithm.getNumberOfEvaluations() < 10000)) {
+			while (!algorithm.isTerminated() && (algorithm.getNumberOfEvaluations() < 10000)) {
 				algorithm.step();
 			}
 

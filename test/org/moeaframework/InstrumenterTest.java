@@ -143,8 +143,7 @@ public class InstrumenterTest {
 		
 		protected Variation variation = new UM(1.0);
 		
-		protected TournamentSelection selection = new TournamentSelection(2,
-				new ParetoDominanceComparator());
+		protected TournamentSelection selection = new TournamentSelection(2, new ParetoDominanceComparator());
 		
 		protected Population population = null;
 		

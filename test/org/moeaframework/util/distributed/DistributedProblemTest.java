@@ -38,8 +38,7 @@ import org.moeaframework.problem.MockRealStochasticProblem;
 public class DistributedProblemTest {
 	
 	/**
-	 * Tests if the synchronized keyword is sufficient to force a problem to
-	 * be evaluated serially.
+	 * Tests if the synchronized keyword is sufficient to force a problem to be evaluated serially.
 	 */
 	@Test
 	public void testSerialProblem() {
@@ -109,8 +108,7 @@ public class DistributedProblemTest {
 	}
 
 	/**
-	 * Tests running a large test with half as many threads as there are
-	 * solutions to evaluate.
+	 * Tests running a large test with half as many threads as there are solutions to evaluate.
 	 */
 	@Test
 	public void testLargeHalfThread() {
@@ -118,8 +116,7 @@ public class DistributedProblemTest {
 	}
 
 	/**
-	 * Tests running a large test with the same number of threads as there are
-	 * solutions to evaluate.
+	 * Tests running a large test with the same number of threads as there are solutions to evaluate.
 	 */
 	@Test
 	public void testLargeFullThread() {
@@ -127,16 +124,14 @@ public class DistributedProblemTest {
 	}
 
 	/**
-	 * Tests the blocking functionality of the {@code DistributedProblem} and
-	 * {@code FutureSolution} classes, ensuring the methods block when
-	 * appropriate.
+	 * Tests the blocking functionality of the {@code DistributedProblem} and {@code FutureSolution} classes, ensuring
+	 * the methods block when appropriate.
 	 * 
 	 * @param N the number of solutions to evaluate
 	 * @param P the number of processing threads
 	 */
 	public void testRun(int N, int P) {
-		DistributedProblem problem = new DistributedProblem(
-				new AbstractProblem(0, 0) {
+		DistributedProblem problem = new DistributedProblem(new AbstractProblem(0, 0) {
 
 			@Override
 			public void evaluate(Solution solution) {
@@ -177,8 +172,7 @@ public class DistributedProblemTest {
 			population.get(i).getConstraint(0);
 		}
 
-		Assert.assertTrue(Math.abs(1000 * N / (double)P
-				- (System.currentTimeMillis() - startTime)) < 1000);
+		Assert.assertTrue(Math.abs(1000 * N / (double)P - (System.currentTimeMillis() - startTime)) < 1000);
 	}
 	
 	@Test
@@ -186,7 +180,7 @@ public class DistributedProblemTest {
 		double bestSingle = getResultFromStochasticRun(1);
 		double bestQuad = getResultFromStochasticRun(4);
 		double bestSixteen = getResultFromStochasticRun(16);
-		Assert.assertEquals(bestSingle, bestQuad,    0.000000000001);
+		Assert.assertEquals(bestSingle, bestQuad, 0.000000000001);
 		Assert.assertEquals(bestQuad, bestSixteen, 0.000000000001);
 	}
 	

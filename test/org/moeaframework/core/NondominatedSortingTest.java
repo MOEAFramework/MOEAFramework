@@ -120,11 +120,9 @@ public class NondominatedSortingTest {
 		Assert.assertEquals(0, getRank(solution1));
 		Assert.assertEquals(0, getRank(solution2));
 		Assert.assertEquals(0, getRank(solution3));
-		Assert.assertEquals(Double.POSITIVE_INFINITY, getCrowding(solution1),
-				Settings.EPS);
+		Assert.assertEquals(Double.POSITIVE_INFINITY, getCrowding(solution1), Settings.EPS);
 		Assert.assertEquals(2.0, getCrowding(solution2), Settings.EPS);
-		Assert.assertEquals(Double.POSITIVE_INFINITY, getCrowding(solution3),
-				Settings.EPS);
+		Assert.assertEquals(Double.POSITIVE_INFINITY, getCrowding(solution3), Settings.EPS);
 	}
 	
 	/**

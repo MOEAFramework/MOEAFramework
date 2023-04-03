@@ -70,8 +70,7 @@ public class IntegerProblemTest {
 				.run();
 		
 		Solution solution = result.get(0);
-		Assert.assertArrayEquals(new int[] { 1, 1 }, 
-				EncodingUtils.getInt(solution));
+		Assert.assertArrayEquals(new int[] { 1, 1 }, EncodingUtils.getInt(solution));
 		Assert.assertEquals(0, solution.getObjective(0), Settings.EPS);
 	}
 

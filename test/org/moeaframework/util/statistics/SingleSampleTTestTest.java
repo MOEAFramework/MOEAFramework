@@ -43,8 +43,7 @@ public class SingleSampleTTestTest {
 		test.add(15);
 		test.add(9);
 
-		Assert.assertEquals(1.94, TestUtils.t(test.getMean(), test.categorize()
-				.get(0)), 0.01);
+		Assert.assertEquals(1.94, TestUtils.t(test.getMean(), test.categorize().get(0)), 0.01);
 		Assert.assertFalse(test.test(0.05));
 	}
 	

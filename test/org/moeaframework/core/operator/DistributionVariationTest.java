@@ -30,8 +30,7 @@ public abstract class DistributionVariationTest {
 		Solution solution = new Solution(variables.length, 0);
 
 		for (int i = 0; i < variables.length; i++) {
-			solution.setVariable(i, new RealVariable(variables[i],
-					Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY));
+			solution.setVariable(i, new RealVariable(variables[i], Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY));
 		}
 
 		return solution;

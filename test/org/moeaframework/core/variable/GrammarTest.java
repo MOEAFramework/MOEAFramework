@@ -93,15 +93,11 @@ public class GrammarTest {
 	public void testEquals() {
 		Assert.assertFalse(grammar.equals(null));
 		Assert.assertTrue(grammar.equals(grammar));
-		Assert.assertTrue(grammar.equals(new Grammar(
-				new int[] { 0, 1, 2, 3, 4 })));
+		Assert.assertTrue(grammar.equals(new Grammar(new int[] { 0, 1, 2, 3, 4 })));
 		Assert.assertFalse(grammar.equals(new Grammar(0)));
-		Assert.assertFalse(grammar
-				.equals(new Grammar(new int[] { 0, 1, 2, 3 })));
-		Assert.assertFalse(grammar.equals(new Grammar(new int[] { 0, 1, 2, 3,
-				4, 5 })));
-		Assert.assertFalse(grammar.equals(new Grammar(
-				new int[] { 0, 2, 1, 3, 4 })));
+		Assert.assertFalse(grammar.equals(new Grammar(new int[] { 0, 1, 2, 3 })));
+		Assert.assertFalse(grammar.equals(new Grammar(new int[] { 0, 1, 2, 3, 4, 5 })));
+		Assert.assertFalse(grammar.equals(new Grammar(new int[] { 0, 2, 1, 3, 4 })));
 	}
 	
 	/**
@@ -110,8 +106,7 @@ public class GrammarTest {
 	@Test
 	public void testHashCode() {
 		Assert.assertEquals(grammar.hashCode(), grammar.hashCode());
-		Assert.assertEquals(grammar.hashCode(), new Grammar(
-				new int[] { 0, 1, 2, 3, 4 }).hashCode());
+		Assert.assertEquals(grammar.hashCode(), new Grammar(new int[] { 0, 1, 2, 3, 4 }).hashCode());
 	}
 
 	/**
@@ -263,8 +258,7 @@ public class GrammarTest {
 	public void testInsert1() {
 		grammar.insert(0, new int[] { 5, 6 });
 
-		Assert.assertArrayEquals(new int[] { 5, 6, 0, 1, 2, 3, 4 }, grammar
-				.toArray());
+		Assert.assertArrayEquals(new int[] { 5, 6, 0, 1, 2, 3, 4 }, grammar.toArray());
 	}
 
 	/**
@@ -275,8 +269,7 @@ public class GrammarTest {
 	public void testInsert2() {
 		grammar.insert(5, new int[] { 5, 6 });
 
-		Assert.assertArrayEquals(new int[] { 0, 1, 2, 3, 4, 5, 6 }, grammar
-				.toArray());
+		Assert.assertArrayEquals(new int[] { 0, 1, 2, 3, 4, 5, 6 }, grammar.toArray());
 	}
 
 	/**
@@ -287,8 +280,7 @@ public class GrammarTest {
 	public void testInsert3() {
 		grammar.insert(2, new int[] { 5, 6 });
 
-		Assert.assertArrayEquals(new int[] { 0, 1, 5, 6, 2, 3, 4 }, grammar
-				.toArray());
+		Assert.assertArrayEquals(new int[] { 0, 1, 5, 6, 2, 3, 4 }, grammar.toArray());
 	}
 
 	/**

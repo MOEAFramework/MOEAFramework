@@ -32,8 +32,8 @@ public class IndirectAlgorithmProviderTest {
 	
 	@Test
 	public void testMissingClassName() {
-		Assert.assertNull(new IndirectAlgorithmProvider("foo.bar").getAlgorithm(
-				"foo", new TypedProperties(), new MockRealProblem()));
+		Assert.assertNull(new IndirectAlgorithmProvider("foo.bar")
+				.getAlgorithm("foo", new TypedProperties(), new MockRealProblem()));
 	}
 
 }

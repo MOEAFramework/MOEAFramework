@@ -54,16 +54,14 @@ public class ReferenceSetMergerTest {
 		merger.add("population1", population1);
 		merger.add("population2", population2);
 		
-		Assert.assertTrue(merger.getSources().containsAll(Arrays.asList(
-				"population1", "population2")));
+		Assert.assertTrue(merger.getSources().containsAll(Arrays.asList("population1", "population2")));
 
 		Assert.assertEquals(1, merger.getContributionFrom("population1").size());
 		Assert.assertEquals(2, merger.getContributionFrom("population2").size());
 		Assert.assertEquals(0, merger.getContributionFrom("population3").size());
 		Assert.assertEquals(3, merger.getCombinedPopulation().size());
 		
-		Assert.assertTrue(merger.getContributionFrom("population1").contains(
-				solution2));
+		Assert.assertTrue(merger.getContributionFrom("population1").contains(solution2));
 		Assert.assertTrue(merger.getContributionFrom("population2").containsAll(
 				new Solution[] { solution4, solution5 }));
 		Assert.assertTrue(merger.getCombinedPopulation().containsAll(

@@ -29,8 +29,7 @@ import org.junit.Test;
 public class ParserTest {
 
 	/**
-	 * Tests if the parser correctly handles an empty file, or a file filled
-	 * with whitespace.
+	 * Tests if the parser correctly handles an empty file, or a file filled with whitespace.
 	 * 
 	 * @throws IOException should not occur
 	 */
@@ -39,8 +38,7 @@ public class ParserTest {
 		ContextFreeGrammar g1 = Parser.load(new StringReader(""));
 		Assert.assertEquals(0, g1.size());
 
-		ContextFreeGrammar g2 = Parser.load(new StringReader(
-				"  \r\n     \r\n\r\n"));
+		ContextFreeGrammar g2 = Parser.load(new StringReader("  \r\n     \r\n\r\n"));
 		Assert.assertEquals(0, g2.size());
 
 		ContextFreeGrammar g3 = Parser.load(new StringReader("  \n     \n\n"));
@@ -54,16 +52,13 @@ public class ParserTest {
 	 */
 	@Test
 	public void testComments() throws IOException {
-		ContextFreeGrammar g1 = Parser.load(new StringReader(
-				"//<test> ::= <foo> <bar>"));
+		ContextFreeGrammar g1 = Parser.load(new StringReader("//<test> ::= <foo> <bar>"));
 		Assert.assertEquals(0, g1.size());
 
-		ContextFreeGrammar g2 = Parser.load(new StringReader(
-				"/*<test> ::= <foo> <bar>*/"));
+		ContextFreeGrammar g2 = Parser.load(new StringReader("/*<test> ::= <foo> <bar>*/"));
 		Assert.assertEquals(0, g2.size());
 
-		ContextFreeGrammar g3 = Parser.load(new StringReader(
-				"//<test> ::= <foo> <bar>\n/*<test> ::= <foo> <bar>*/"));
+		ContextFreeGrammar g3 = Parser.load(new StringReader("//<test> ::= <foo> <bar>\n/*<test> ::= <foo> <bar>*/"));
 		Assert.assertEquals(0, g3.size());
 
 		ContextFreeGrammar g4 = Parser.load(new StringReader(
@@ -71,27 +66,23 @@ public class ParserTest {
 		Assert.assertEquals(1, g4.size());
 		Assert.assertEquals(1, g4.get(0).size());
 
-		ContextFreeGrammar g5 = Parser.load(new StringReader(
-				"<inline> ::= <production> //<test> ::= <foo> <bar>"));
+		ContextFreeGrammar g5 = Parser.load(new StringReader("<inline> ::= <production> //<test> ::= <foo> <bar>"));
 		Assert.assertEquals(1, g5.size());
 		Assert.assertEquals(1, g5.get(0).size());
 
-		ContextFreeGrammar g6 = Parser.load(new StringReader(
-				"<inline> ::= /* <commented> */ <production>"));
+		ContextFreeGrammar g6 = Parser.load(new StringReader("<inline> ::= /* <commented> */ <production>"));
 		Assert.assertEquals(1, g6.size());
 		Assert.assertEquals(1, g6.get(0).size());
 	}
 
 	/**
-	 * Tests if the parser correctly identifies the rule separator in its
-	 * various forms.
+	 * Tests if the parser correctly identifies the rule separator in its various forms.
 	 * 
 	 * @throws IOException should not occur
 	 */
 	@Test
 	public void testRuleSeparator() throws IOException {
-		ContextFreeGrammar g1 = Parser
-				.load(new StringReader("<foo> ::= <bar>"));
+		ContextFreeGrammar g1 = Parser.load(new StringReader("<foo> ::= <bar>"));
 		Assert.assertEquals(1, g1.size());
 		Assert.assertEquals(1, g1.get(0).size());
 
@@ -103,8 +94,7 @@ public class ParserTest {
 		Assert.assertEquals(1, g3.size());
 		Assert.assertEquals(1, g3.get(0).size());
 
-		ContextFreeGrammar g4 = Parser.load(new StringReader(
-				"<foo> ::=:==: <bar>"));
+		ContextFreeGrammar g4 = Parser.load(new StringReader("<foo> ::=:==: <bar>"));
 		Assert.assertEquals(1, g4.size());
 		Assert.assertEquals(1, g4.get(0).size());
 	}
@@ -116,8 +106,7 @@ public class ParserTest {
 	 */
 	@Test
 	public void testSimpleExample() throws IOException {
-		ContextFreeGrammar g = Parser.load(new StringReader(
-				"<foo> ::= <bar>\n<bar> ::= a | (b) | ( c )"));
+		ContextFreeGrammar g = Parser.load(new StringReader("<foo> ::= <bar>\n<bar> ::= a | (b) | ( c )"));
 
 		Assert.assertEquals(2, g.size());
 		Assert.assertEquals(1, g.get(0).size());
@@ -161,8 +150,7 @@ public class ParserTest {
 	}
 
 	/**
-	 * Tests if the parser throws an exception if the rule symbol is not
-	 * surrounded by angle brackets.
+	 * Tests if the parser throws an exception if the rule symbol is not surrounded by angle brackets.
 	 * 
 	 * @throws GrammarException the expected outcome
 	 */
@@ -172,8 +160,7 @@ public class ParserTest {
 	}
 
 	/**
-	 * Tests if the parser throws an exception if the rule symbol is not
-	 * surrounded by angle brackets.
+	 * Tests if the parser throws an exception if the rule symbol is not surrounded by angle brackets.
 	 * 
 	 * @throws GrammarException the expected outcome
 	 */
@@ -203,8 +190,7 @@ public class ParserTest {
 	}
 
 	/**
-	 * Tests if the parser throws an exception if the production is missing a
-	 * rule.
+	 * Tests if the parser throws an exception if the production is missing a rule.
 	 * 
 	 * @throws GrammarException the expected outcome
 	 */
@@ -214,8 +200,7 @@ public class ParserTest {
 	}
 
 	/**
-	 * Tests if the parser throws an exception if the rule symbol is the
-	 * empty string.
+	 * Tests if the parser throws an exception if the rule symbol is the empty string.
 	 * 
 	 * @throws GrammarException the expected outcome
 	 */
@@ -225,8 +210,7 @@ public class ParserTest {
 	}
 
 	/**
-	 * Tests if the parser throws an exception if a production symbol is the
-	 * empty string.
+	 * Tests if the parser throws an exception if a production symbol is the empty string.
 	 * 
 	 * @throws GrammarException the expected outcome
 	 */
@@ -242,8 +226,7 @@ public class ParserTest {
 	 */
 	@Test
 	public void testEscapedCharacters() throws IOException {
-		ContextFreeGrammar g = Parser.load(new StringReader(
-				"<foo> ::= \":\" | '|' | \"<\" | '>'"));
+		ContextFreeGrammar g = Parser.load(new StringReader("<foo> ::= \":\" | '|' | \"<\" | '>'"));
 		Assert.assertEquals(1, g.size());
 		Assert.assertEquals(4, g.get(0).size());
 		Assert.assertEquals(1, g.get(0).get(0).size());
@@ -267,16 +250,14 @@ public class ParserTest {
 	 */
 	@Test
 	public void testQuotes() throws IOException {
-		ContextFreeGrammar g1 = Parser.load(new StringReader(
-				"<foo> ::= \"bar()\""));
+		ContextFreeGrammar g1 = Parser.load(new StringReader("<foo> ::= \"bar()\""));
 		Assert.assertEquals(1, g1.size());
 		Assert.assertEquals(1, g1.get(0).size());
 		Assert.assertEquals(1, g1.get(0).get(0).size());
 		Assert.assertTrue(g1.get(0).get(0).get(0).isTerminal());
 		Assert.assertEquals("bar()", g1.get(0).get(0).get(0).getValue());
 
-		ContextFreeGrammar g2 = Parser.load(new StringReader(
-				"<foo> ::= 'bar()'"));
+		ContextFreeGrammar g2 = Parser.load(new StringReader("<foo> ::= 'bar()'"));
 		Assert.assertEquals(1, g2.size());
 		Assert.assertEquals(1, g2.get(0).size());
 		Assert.assertEquals(1, g2.get(0).get(0).size());
@@ -291,8 +272,7 @@ public class ParserTest {
 	 */
 	@Test
 	public void testIntegers() throws IOException {
-		ContextFreeGrammar g = Parser.load(new StringReader(
-				"<numbers> ::= 8 | -64 256"));
+		ContextFreeGrammar g = Parser.load(new StringReader("<numbers> ::= 8 | -64 256"));
 		Assert.assertEquals(1, g.size());
 		Assert.assertEquals(2, g.get(0).size());
 		Assert.assertEquals(1, g.get(0).get(0).size());
@@ -312,8 +292,7 @@ public class ParserTest {
 	 */
 	@Test
 	public void testDecimals() throws IOException {
-		ContextFreeGrammar g = Parser.load(new StringReader(
-				"<numbers> ::= 0.0 | -1.2 42.24"));
+		ContextFreeGrammar g = Parser.load(new StringReader("<numbers> ::= 0.0 | -1.2 42.24"));
 		Assert.assertEquals(1, g.size());
 		Assert.assertEquals(2, g.get(0).size());
 		Assert.assertEquals(1, g.get(0).get(0).size());

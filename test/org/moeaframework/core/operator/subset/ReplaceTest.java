@@ -81,18 +81,15 @@ public class ReplaceTest {
 			}
 		}
 
-		Assert.assertEquals(probability, (double)count / TestThresholds.SAMPLES,
-				TestThresholds.VARIATION_EPS);
+		Assert.assertEquals(probability, (double)count / TestThresholds.SAMPLES, TestThresholds.VARIATION_EPS);
 	}
 
 	/**
-	 * Returns {@code true} if the result is a valid replacement; {@code false}
-	 * otherwise.
+	 * Returns {@code true} if the result is a valid replacement; {@code false} otherwise.
 	 * 
 	 * @param v1 the first subset
 	 * @param v2 the second subset
-	 * @return {@code true} if the result is a valid replacement; {@code false}
-	 *         otherwise
+	 * @return {@code true} if the result is a valid replacement; {@code false} otherwise
 	 */
 	protected boolean testSubset(Subset v1, Subset v2) {
 		// Size should remain unchanged

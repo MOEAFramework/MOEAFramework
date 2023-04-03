@@ -40,8 +40,7 @@ public class SpacingTest {
 		NondominatedPopulation approximationSet = new NondominatedPopulation();
 
 		Spacing sp = new Spacing(problem);
-		Assert.assertEquals(0.0, sp.evaluate(approximationSet), 
-				Settings.EPS);
+		Assert.assertEquals(0.0, sp.evaluate(approximationSet), Settings.EPS);
 	}
 	
 	/**
@@ -58,8 +57,7 @@ public class SpacingTest {
 		approximationSet.add(solution);
 
 		Spacing sp = new Spacing(problem);
-		Assert.assertEquals(0.0, sp.evaluate(approximationSet), 
-				Settings.EPS);
+		Assert.assertEquals(0.0, sp.evaluate(approximationSet), Settings.EPS);
 	}
 	
 	/**

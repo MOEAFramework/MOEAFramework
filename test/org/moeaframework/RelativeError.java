@@ -57,8 +57,7 @@ public class RelativeError implements FloatingPointError {
 	    	}
 
 	    	if (error > relativeError) {
-	    		Assert.fail("values " + d1 + " " + d2 + " differ by more than "
-	    				+ (relativeError*100.0) + "% error");
+	    		Assert.fail("values " + d1 + " " + d2 + " differ by more than " + (relativeError*100.0) + "% error");
 	    	}
 	    }
 	}

@@ -92,8 +92,7 @@ public class HUXTest {
 			sum += (double)changedBits1 / differingBits;
 		}
 
-		Assert.assertEquals(sum / TestThresholds.SAMPLES, 0.5,
-				TestThresholds.VARIATION_EPS);
+		Assert.assertEquals(sum / TestThresholds.SAMPLES, 0.5, TestThresholds.VARIATION_EPS);
 	}
 
 	/**

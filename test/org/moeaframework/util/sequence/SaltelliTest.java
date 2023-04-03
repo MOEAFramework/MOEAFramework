@@ -32,8 +32,7 @@ import org.moeaframework.CIRunner;
 public class SaltelliTest extends SequenceTest {
 
 	/**
-	 * Tests to ensure the sequence exhibits a uniform distribution in the
-	 * range {@code [0, 1]}.
+	 * Tests to ensure the sequence exhibits a uniform distribution in the range {@code [0, 1]}.
 	 */
 	@Test
 	public void test() {
@@ -54,8 +53,7 @@ public class SaltelliTest extends SequenceTest {
 	}
 
 	/**
-	 * Tests if an exception is thrown when requesting a Saltelli sequence with
-	 * an invalid size.
+	 * Tests if an exception is thrown when requesting a Saltelli sequence with an invalid size.
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testSize() {

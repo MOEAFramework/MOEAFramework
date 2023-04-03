@@ -44,7 +44,7 @@ public class C1_DTLZ1Test {
 	 */
 	public void test(int numberOfObjectives) {
 		try (C1_DTLZ3 problem = new C1_DTLZ3(numberOfObjectives)) {
-			for (int i = 0; i <TestThresholds.SAMPLES; i++) {
+			for (int i = 0; i < TestThresholds.SAMPLES; i++) {
 				Solution solution = problem.generate();
 				problem.evaluate(solution);
 				Assert.assertFalse(solution.violatesConstraints());

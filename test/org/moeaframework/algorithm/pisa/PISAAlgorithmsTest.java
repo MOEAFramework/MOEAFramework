@@ -64,8 +64,7 @@ public class PISAAlgorithmsTest {
 	public void setUp() throws IOException {
 		problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
 		properties = new TypedProperties();
-		qualityIndicator = new QualityIndicator(problem,
-				ProblemFactory.getInstance().getReferenceSet("DTLZ2_2"));
+		qualityIndicator = new QualityIndicator(problem, ProblemFactory.getInstance().getReferenceSet("DTLZ2_2"));
 		
 		properties.setInt("populationSize", 100);
 		properties.setInt("maxEvaluations", 1000);
@@ -93,14 +92,10 @@ public class PISAAlgorithmsTest {
 		
 		TestUtils.assumeFileExists(new File(directory));
 
-		Settings.PROPERTIES.setString(
-				"org.moeaframework.algorithm.pisa.algorithms", name);
-		Settings.PROPERTIES.setString("org.moeaframework.algorithm.pisa." +
-				name + ".command", directory + "/" + "nsga2.exe");
-		Settings.PROPERTIES.setStringArray("org.moeaframework.algorithm.pisa." +
-				name + ".parameters", new String[] { "seed", "tournament" });
-		Settings.PROPERTIES.setInt("org.moeaframework.algorithm.pisa." + name +
-				".parameter.tournament", 2);
+		Settings.PROPERTIES.setString("org.moeaframework.algorithm.pisa.algorithms", name);
+		Settings.PROPERTIES.setString("org.moeaframework.algorithm.pisa." + name + ".command", directory + "/" + "nsga2.exe");
+		Settings.PROPERTIES.setStringArray("org.moeaframework.algorithm.pisa." + name + ".parameters", new String[] { "seed", "tournament" });
+		Settings.PROPERTIES.setInt("org.moeaframework.algorithm.pisa." + name + ".parameter.tournament", 2);
 		
 		long seed1 = PRNG.getRandom().nextLong();
 		long seed2 = PRNG.getRandom().nextLong();
@@ -109,28 +104,23 @@ public class PISAAlgorithmsTest {
 			seed2 = PRNG.getRandom().nextLong();
 		}
 
-		double result1 = test(AlgorithmFactory.getInstance().getAlgorithm(name,
-				properties, problem), seed1);
+		double result1 = test(AlgorithmFactory.getInstance().getAlgorithm(name, properties, problem), seed1);
 		
 		properties.setInt("seed", PRNG.nextInt());
 		
-		double result2 = test(AlgorithmFactory.getInstance().getAlgorithm(name,
-				properties, problem), seed2);
+		double result2 = test(AlgorithmFactory.getInstance().getAlgorithm(name, properties, problem), seed2);
 		
 		properties.setInt("tournament", 3);
 		
-		double result3 = test(AlgorithmFactory.getInstance().getAlgorithm(name,
-				properties, problem), seed1);
+		double result3 = test(AlgorithmFactory.getInstance().getAlgorithm(name, properties, problem), seed1);
 		
-		double result4 = test(AlgorithmFactory.getInstance().getAlgorithm(name,
-				properties, problem), seed1);
+		double result4 = test(AlgorithmFactory.getInstance().getAlgorithm(name, properties, problem), seed1);
 
 		Assert.assertTrue(result1 != result3);
 		Assert.assertTrue(result2 != result3);
 		Assert.assertTrue(result3 == result4);
 		
-		Settings.PROPERTIES.remove(
-				"org.moeaframework.algorithm.pisa.algorithms");
+		Settings.PROPERTIES.remove("org.moeaframework.algorithm.pisa.algorithms");
 	}
 	
 	/**

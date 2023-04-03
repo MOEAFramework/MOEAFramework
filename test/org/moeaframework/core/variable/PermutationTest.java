@@ -106,8 +106,7 @@ public class PermutationTest {
 		Assert.assertTrue(permutation.equals(new Permutation(5)));
 		Assert.assertFalse(permutation.equals(new Permutation(6)));
 		Assert.assertFalse(permutation.equals(new Permutation(4)));
-		Assert.assertFalse(permutation.equals(new Permutation(new int[] { 0, 2,
-				1, 3, 4 })));
+		Assert.assertFalse(permutation.equals(new Permutation(new int[] { 0, 2, 1, 3, 4 })));
 	}
 	
 	/**
@@ -117,8 +116,7 @@ public class PermutationTest {
 	@Test
 	public void testHashCode() {
 		Assert.assertEquals(permutation.hashCode(), permutation.hashCode());
-		Assert.assertEquals(permutation.hashCode(),
-				new Permutation(5).hashCode());
+		Assert.assertEquals(permutation.hashCode(), new Permutation(5).hashCode());
 	}
 
 	/**
@@ -167,20 +165,16 @@ public class PermutationTest {
 	@Test
 	public void testInsert() {
 		permutation.insert(4, 0);
-		Assert.assertTrue(permutation.equals(new Permutation(new int[] { 4, 0,
-				1, 2, 3 })));
+		Assert.assertTrue(permutation.equals(new Permutation(new int[] { 4, 0, 1, 2, 3 })));
 
 		permutation.insert(0, 4);
-		Assert.assertTrue(permutation.equals(new Permutation(new int[] { 0, 1,
-				2, 3, 4 })));
+		Assert.assertTrue(permutation.equals(new Permutation(new int[] { 0, 1, 2, 3, 4 })));
 
 		permutation.insert(2, 2);
-		Assert.assertTrue(permutation.equals(new Permutation(new int[] { 0, 1,
-				2, 3, 4 })));
+		Assert.assertTrue(permutation.equals(new Permutation(new int[] { 0, 1, 2, 3, 4 })));
 
 		permutation.insert(2, 3);
-		Assert.assertTrue(permutation.equals(new Permutation(new int[] { 0, 1,
-				3, 2, 4 })));
+		Assert.assertTrue(permutation.equals(new Permutation(new int[] { 0, 1, 3, 2, 4 })));
 	}
 
 	/**

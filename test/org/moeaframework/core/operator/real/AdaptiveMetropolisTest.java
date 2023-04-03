@@ -95,11 +95,9 @@ public class AdaptiveMetropolisTest extends ParentCentricVariationTest {
 	 */
 	@Test
 	public void testFullDistribution() {
-		AdaptiveMetropolis am = new AdaptiveMetropolis(3, 
-				TestThresholds.SAMPLES, 1.0);
+		AdaptiveMetropolis am = new AdaptiveMetropolis(3, TestThresholds.SAMPLES, 1.0);
 
-		Solution[] parents = new Solution[] { newSolution(0.0, 0.0),
-				newSolution(0.0, 1.0), newSolution(1.0, 0.0) };
+		Solution[] parents = new Solution[] { newSolution(0.0, 0.0), newSolution(0.0, 1.0), newSolution(1.0, 0.0) };
 
 		Solution[] offspring = am.evolve(parents);
 
@@ -108,11 +106,9 @@ public class AdaptiveMetropolisTest extends ParentCentricVariationTest {
 
 	@Test
 	public void testPartialDistribution() {
-		AdaptiveMetropolis am = new AdaptiveMetropolis(3, 
-				TestThresholds.SAMPLES, 1.0);
+		AdaptiveMetropolis am = new AdaptiveMetropolis(3, TestThresholds.SAMPLES, 1.0);
 
-		Solution[] parents = new Solution[] { newSolution(0.0, 0.0),
-				newSolution(0.0, 1.0), newSolution(0.0, 2.0) };
+		Solution[] parents = new Solution[] { newSolution(0.0, 0.0), newSolution(0.0, 1.0), newSolution(0.0, 2.0) };
 
 		Assert.assertEquals(0, am.evolve(parents).length);
 	}
@@ -122,11 +118,9 @@ public class AdaptiveMetropolisTest extends ParentCentricVariationTest {
 	 */
 	@Test
 	public void testParentImmutability() {
-		AdaptiveMetropolis am = new AdaptiveMetropolis(3, 
-				3, 1.0);
+		AdaptiveMetropolis am = new AdaptiveMetropolis(3, 3, 1.0);
 
-		Solution[] parents = new Solution[] { newSolution(0.0, 0.0),
-				newSolution(0.0, 1.0), newSolution(1.0, 0.0) };
+		Solution[] parents = new Solution[] { newSolution(0.0, 0.0), newSolution(0.0, 1.0), newSolution(1.0, 0.0) };
 
 		ParentImmutabilityTest.test(parents, am);
 	}
@@ -155,16 +149,14 @@ public class AdaptiveMetropolisTest extends ParentCentricVariationTest {
 	 * @param jumpRateCoefficient the jump rate coefficient
 	 * @return the covariance matrix for the specified solutions
 	 */
-	private RealMatrix getCovariance(Solution[] parents, 
-			double jumpRateCoefficient) {
+	private RealMatrix getCovariance(Solution[] parents, double jumpRateCoefficient) {
 		RealMatrix rm = MatrixUtils.createRealMatrix(parents.length, 2);
 		
 		for (int i=0; i<parents.length; i++) {
 			rm.setRow(i, EncodingUtils.getReal(parents[i]));
 		}
 		
-		rm = rm.scalarMultiply(Math.pow(jumpRateCoefficient / Math.sqrt(2),
-				2.0));
+		rm = rm.scalarMultiply(Math.pow(jumpRateCoefficient / Math.sqrt(2), 2.0));
 		
 		return new Covariance(rm).getCovarianceMatrix();
 	}
@@ -179,11 +171,9 @@ public class AdaptiveMetropolisTest extends ParentCentricVariationTest {
 		//the smaller jump rate is used to ensure separation between clusters
 		double jumpRateCoefficient = 0.5;
 		
-		AdaptiveMetropolis am = new AdaptiveMetropolis(3, 
-				TestThresholds.SAMPLES, jumpRateCoefficient);
+		AdaptiveMetropolis am = new AdaptiveMetropolis(3, TestThresholds.SAMPLES, jumpRateCoefficient);
 
-		Solution[] parents = new Solution[] { newSolution(0.0, 0.0),
-				newSolution(0.0, 5.0), newSolution(2.0, 0.0) };
+		Solution[] parents = new Solution[] { newSolution(0.0, 0.0), newSolution(0.0, 5.0), newSolution(2.0, 0.0) };
 
 		Solution[] offspring = am.evolve(parents);
 		

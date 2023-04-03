@@ -192,8 +192,7 @@ public class DefaultAlgorithmsResumeTest {
 		
 		// first, run the algorithm normally
 		PRNG.setSeed(seed);
-		Algorithm algorithm = AlgorithmFactory.getInstance().getAlgorithm(
-				algorithmName, new TypedProperties(), problem);
+		Algorithm algorithm = AlgorithmFactory.getInstance().getAlgorithm(algorithmName, new TypedProperties(), problem);
 		
 		for (int i = 0; i < N && !algorithm.isTerminated(); i++) {
 			algorithm.step();
@@ -208,8 +207,7 @@ public class DefaultAlgorithmsResumeTest {
 
 		for (int i = 0; i < N && (checkpoints == null || !checkpoints.isTerminated()); i++) {
 			checkpoints = new Checkpoints(
-					AlgorithmFactory.getInstance().getAlgorithm(
-							algorithmName, new TypedProperties(), problem),
+					AlgorithmFactory.getInstance().getAlgorithm(algorithmName, new TypedProperties(), problem),
 							file, 0);
 
 			checkpoints.step();
@@ -223,18 +221,14 @@ public class DefaultAlgorithmsResumeTest {
 	
 	protected void testInstrumented(String algorithmName) throws IOException {
 		Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
-		NondominatedPopulation referenceSet = 
-				ProblemFactory.getInstance().getReferenceSet("DTLZ2_2");
+		NondominatedPopulation referenceSet = ProblemFactory.getInstance().getReferenceSet("DTLZ2_2");
 		long seed = PRNG.getRandom().nextLong();
 		
 		// first, run the algorithm normally
 		PRNG.setSeed(seed);
-		Algorithm algorithm = AlgorithmFactory.getInstance().getAlgorithm(
-				algorithmName, new TypedProperties(), problem);
-		InstrumentedAlgorithm instrumentedAlgorithm = new InstrumentedAlgorithm(
-				algorithm, 100);
-		instrumentedAlgorithm.addCollector(new IndicatorCollector(
-				new Hypervolume(problem, referenceSet)).attach(algorithm));
+		Algorithm algorithm = AlgorithmFactory.getInstance().getAlgorithm(algorithmName, new TypedProperties(), problem);
+		InstrumentedAlgorithm instrumentedAlgorithm = new InstrumentedAlgorithm(algorithm, 100);
+		instrumentedAlgorithm.addCollector(new IndicatorCollector(new Hypervolume(problem, referenceSet)).attach(algorithm));
 		
 		for (int i = 0; i < N; i++) {
 			instrumentedAlgorithm.step();
@@ -248,12 +242,9 @@ public class DefaultAlgorithmsResumeTest {
 		PRNG.setSeed(seed);
 
 		for (int i = 0; i < N; i++) {
-			algorithm = AlgorithmFactory.getInstance().getAlgorithm(
-					algorithmName, new TypedProperties(), problem);
-			instrumentedAlgorithm = new InstrumentedAlgorithm(
-					algorithm, 100);
-			instrumentedAlgorithm.addCollector(new IndicatorCollector(
-					new Hypervolume(problem, referenceSet)).attach(algorithm));
+			algorithm = AlgorithmFactory.getInstance().getAlgorithm(algorithmName, new TypedProperties(), problem);
+			instrumentedAlgorithm = new InstrumentedAlgorithm(algorithm, 100);
+			instrumentedAlgorithm.addCollector(new IndicatorCollector(new Hypervolume(problem, referenceSet)).attach(algorithm));
 			checkpoints = new Checkpoints(instrumentedAlgorithm, file, 0);
 
 			checkpoints.step();
@@ -283,33 +274,25 @@ public class DefaultAlgorithmsResumeTest {
 	private static class TestAlgorithmFactory extends AlgorithmFactory {
 
 		@Override
-		public synchronized Algorithm getAlgorithm(String name, TypedProperties properties,
-				Problem problem) {
+		public synchronized Algorithm getAlgorithm(String name, TypedProperties properties, Problem problem) {
 			if (name.equalsIgnoreCase("EpsilonProgressContinuationTest")) {
 				Initialization initialization = new RandomInitialization(problem);
 	
-				NondominatedSortingPopulation population = 
-						new NondominatedSortingPopulation(
-								new ParetoDominanceComparator());
+				NondominatedSortingPopulation population = new NondominatedSortingPopulation(
+						new ParetoDominanceComparator());
 	
-				EpsilonBoxDominanceArchive archive = 
-						new EpsilonBoxDominanceArchive(
-								EpsilonHelper.getEpsilon(problem));
+				EpsilonBoxDominanceArchive archive = new EpsilonBoxDominanceArchive(
+						EpsilonHelper.getEpsilon(problem));
 	
-				TournamentSelection selection = new TournamentSelection(2, 
-						new ChainedComparator(
-								new ParetoDominanceComparator(),
-								new CrowdingComparator()));
+				TournamentSelection selection = new TournamentSelection(2, new ChainedComparator(
+						new ParetoDominanceComparator(),
+						new CrowdingComparator()));
 	
-				Variation variation = 
-						OperatorFactory.getInstance().getVariation(null,
-								new TypedProperties(), problem);
+				Variation variation = OperatorFactory.getInstance().getVariation(null, new TypedProperties(), problem);
 	
-				NSGAII nsgaii = new NSGAII(problem, 100, population, archive,
-						selection, variation, initialization);
+				NSGAII nsgaii = new NSGAII(problem, 100, population, archive, selection, variation, initialization);
 	
-				return new EpsilonProgressContinuation(nsgaii, 100, 100, 4.0,
-						100, 10000, new UniformSelection(), new UM(1.0));
+				return new EpsilonProgressContinuation(nsgaii, 100, 100, 4.0, 100, 10000, new UniformSelection(), new UM(1.0));
 			} else {
 				return super.getAlgorithm(name, properties, problem);
 			}

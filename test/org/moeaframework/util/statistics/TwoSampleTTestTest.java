@@ -43,8 +43,7 @@ public class TwoSampleTTestTest {
 		test.add(8, 1);
 		test.add(4, 1);
 
-		Assert.assertEquals(-1.96, TestUtils.t(test.categorize().get(0), test
-				.categorize().get(1)), 0.01);
+		Assert.assertEquals(-1.96, TestUtils.t(test.categorize().get(0), test.categorize().get(1)), 0.01);
 		Assert.assertFalse(test.test(0.05));
 	}
 
@@ -75,8 +74,7 @@ public class TwoSampleTTestTest {
 		test.add(4, 1);
 		test.add(0, 1);
 
-		Assert.assertEquals(2.86, TestUtils.pairedT(test.categorize().get(0),
-				test.categorize().get(1)), 0.02);
+		Assert.assertEquals(2.86, TestUtils.pairedT(test.categorize().get(0), test.categorize().get(1)), 0.02);
 		Assert.assertTrue(test.test(0.05));
 		Assert.assertFalse(test.test(0.01));
 	}

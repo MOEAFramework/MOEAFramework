@@ -31,8 +31,7 @@ public class InjectedInitializationTest {
 		Problem problem = new MockRealProblem();
 		Solution solution = problem.newSolution();
 		
-		InjectedInitialization initialization = new InjectedInitialization(
-				problem, solution);
+		InjectedInitialization initialization = new InjectedInitialization(problem, solution);
 		
 		Solution[] solutions = initialization.initialize(100);
 		boolean found = false;

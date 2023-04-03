@@ -30,8 +30,7 @@ import org.moeaframework.TestUtils;
 public abstract class WeightGeneratorTest {
 
 	/**
-	 * Generates weights using the specified sequence and checks if the weights
-	 * are valid.
+	 * Generates weights using the specified sequence and checks if the weights are valid.
 	 * 
 	 * @param generator the weight generator to test
 	 * @param D the dimension of the generator
@@ -56,8 +55,7 @@ public abstract class WeightGeneratorTest {
 			Assert.assertEquals(D, weight.length);
 
 			for (int j = 0; j < D; j++) {
-				Assert.assertTrue((weight[j] >= 0.0)
-						&& (weight[j] <= 1.0));
+				Assert.assertTrue((weight[j] >= 0.0) && (weight[j] <= 1.0));
 			}
 			
 			TestUtils.assertEquals(1.0, StatUtils.sum(weight));

@@ -30,8 +30,7 @@ import org.moeaframework.CIRunner;
 public class LatinHypercubeTest extends SequenceTest {
 
 	/**
-	 * Tests to ensure the sequence exhibits a uniform distribution in the
-	 * range {@code [0, 1]}.
+	 * Tests to ensure the sequence exhibits a uniform distribution in the range {@code [0, 1]}.
 	 */
 	@Test
 	public void test() {

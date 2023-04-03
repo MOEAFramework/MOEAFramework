@@ -43,8 +43,7 @@ public class RIndicatorTest {
 	}
 	
 	public void testUtility(String file, RIndicator.UtilityFunction utilityFunction, double expectedUtility) throws IOException {
-		NondominatedPopulation referenceSet = new NondominatedPopulation(
-				PopulationIO.readObjectives(new File(file)));
+		NondominatedPopulation referenceSet = new NondominatedPopulation(PopulationIO.readObjectives(new File(file)));
 		
 		RIndicator indicator = new RIndicator(new MockRealProblem(2), 500, referenceSet, utilityFunction) {
 

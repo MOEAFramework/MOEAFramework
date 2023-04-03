@@ -63,8 +63,7 @@ public abstract class IndicatorTest {
 	 * @return a new, randomly-generated approximation set for the specified
 	 *         problem
 	 */
-	protected NondominatedPopulation generateApproximationSet(
-			String problemName, int N) {
+	protected NondominatedPopulation generateApproximationSet(String problemName, int N) {
 		Problem problem = ProblemFactory.getInstance().getProblem(problemName);
 		Initialization initialization = new RandomInitialization(problem);
 		Solution[] solutions = initialization.initialize(N);

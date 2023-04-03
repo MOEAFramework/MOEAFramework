@@ -35,8 +35,7 @@ public class AdditiveEpsilonIndicatorFitnessEvaluatorTest {
 	
 	@Before
 	public void setUp() {
-		fitness = new AdditiveEpsilonIndicatorFitnessEvaluator(
-				new ProblemStub(3));
+		fitness = new AdditiveEpsilonIndicatorFitnessEvaluator(new ProblemStub(3));
 	}
 	
 	@After
@@ -49,8 +48,7 @@ public class AdditiveEpsilonIndicatorFitnessEvaluatorTest {
 		Solution solution1 = TestUtils.newSolution(0.0, 0.5, 1.0);
 		Solution solution2 = TestUtils.newSolution(0.0, 0.5, 1.0);
 		
-		Assert.assertEquals(0.0, fitness.calculateIndicator(solution1, 
-				solution2), Settings.EPS);
+		Assert.assertEquals(0.0, fitness.calculateIndicator(solution1, solution2), Settings.EPS);
 	}
 	
 	@Test
@@ -58,8 +56,7 @@ public class AdditiveEpsilonIndicatorFitnessEvaluatorTest {
 		Solution solution1 = TestUtils.newSolution(0.0, 0.5, 1.0);
 		Solution solution2 = TestUtils.newSolution(0.0, 0.75, 1.0);
 		
-		Assert.assertEquals(0.0, fitness.calculateIndicator(solution1, 
-				solution2), Settings.EPS);
+		Assert.assertEquals(0.0, fitness.calculateIndicator(solution1, solution2), Settings.EPS);
 	}
 	
 	@Test
@@ -67,8 +64,7 @@ public class AdditiveEpsilonIndicatorFitnessEvaluatorTest {
 		Solution solution1 = TestUtils.newSolution(0.5, 0.75, 0.75);
 		Solution solution2 = TestUtils.newSolution(0.0, 0.5, 1.0);
 		
-		Assert.assertEquals(0.5, fitness.calculateIndicator(solution1, 
-				solution2), Settings.EPS);
+		Assert.assertEquals(0.5, fitness.calculateIndicator(solution1, solution2), Settings.EPS);
 	}
 	
 }

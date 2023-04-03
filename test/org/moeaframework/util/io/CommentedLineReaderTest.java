@@ -29,8 +29,7 @@ import org.junit.Test;
 public class CommentedLineReaderTest {
 
 	/**
-	 * Tests if the {@code CommentedLineReader} correctly handles a normal
-	 * input.
+	 * Tests if the {@code CommentedLineReader} correctly handles a normal input.
 	 * 
 	 * @throws IOException should not occur
 	 */
@@ -56,8 +55,7 @@ public class CommentedLineReaderTest {
 	}
 	
 	/**
-	 * Tests if the {@code CommentedLineReader} correctly handles an input file
-	 * containing all commented lines.
+	 * Tests if the {@code CommentedLineReader} correctly handles an input file containing all commented lines.
 	 * 
 	 * @throws IOException should not occur
 	 */

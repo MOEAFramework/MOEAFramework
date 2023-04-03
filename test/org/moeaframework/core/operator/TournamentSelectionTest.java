@@ -55,8 +55,7 @@ public class TournamentSelectionTest {
 
 	private double getPressure(int populationSize, int tournamentSize, int i) {
 		return Math.pow(populationSize, -tournamentSize)
-				* (Math.pow(populationSize - i + 1, tournamentSize) - Math.pow(
-						populationSize - i, tournamentSize));
+				* (Math.pow(populationSize - i + 1, tournamentSize) - Math.pow(populationSize - i, tournamentSize));
 	}
 
 	@Test
@@ -71,8 +70,7 @@ public class TournamentSelectionTest {
 		}
 
 		for (int i = 0; i < 3; i++) {
-			Assert.assertEquals(getPressure(3, 3, i + 1), counts[i]
-					/ (double)TestThresholds.SAMPLES,
+			Assert.assertEquals(getPressure(3, 3, i + 1), counts[i] / (double)TestThresholds.SAMPLES,
 					TestThresholds.SELECTION_EPS);
 		}
 	}
@@ -89,8 +87,7 @@ public class TournamentSelectionTest {
 		}
 
 		for (int i = 0; i < 3; i++) {
-			Assert.assertEquals(getPressure(3, 2, i + 1), counts[i]
-					/ (double)TestThresholds.SAMPLES,
+			Assert.assertEquals(getPressure(3, 2, i + 1), counts[i] / (double)TestThresholds.SAMPLES,
 					TestThresholds.SELECTION_EPS);
 		}
 	}
@@ -107,8 +104,7 @@ public class TournamentSelectionTest {
 		}
 
 		for (int i = 0; i < 3; i++) {
-			Assert.assertEquals(getPressure(3, 1, i + 1), counts[i]
-					/ (double)TestThresholds.SAMPLES,
+			Assert.assertEquals(getPressure(3, 1, i + 1), counts[i] / (double)TestThresholds.SAMPLES,
 					TestThresholds.SELECTION_EPS);
 		}
 	}
@@ -137,8 +133,8 @@ public class TournamentSelectionTest {
 		}
 
 		for (int i = 0; i < populationSize; i++) {
-			Assert.assertEquals(getPressure(populationSize, tournamentSize,
-					i + 1), counts[i] / (double)TestThresholds.SAMPLES,
+			Assert.assertEquals(getPressure(populationSize, tournamentSize, i + 1),
+					counts[i] / (double)TestThresholds.SAMPLES,
 					TestThresholds.SELECTION_EPS);
 		}
 	}

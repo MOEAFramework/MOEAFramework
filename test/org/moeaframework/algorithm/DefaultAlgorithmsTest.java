@@ -582,8 +582,7 @@ public class DefaultAlgorithmsTest {
 	 */
 	protected void test(String name, Problem problem) {
 		int NFE = 1000;
-		Algorithm algorithm = AlgorithmFactory.getInstance().getAlgorithm(name, 
-				properties, problem);
+		Algorithm algorithm = AlgorithmFactory.getInstance().getAlgorithm(name, properties, problem);
 		
 		Assert.assertEquals(0, algorithm.getNumberOfEvaluations());
 		Assert.assertEquals(0, algorithm.getResult().size());

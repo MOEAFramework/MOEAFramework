@@ -37,8 +37,7 @@ public class ChainedComparatorTest {
 		private final int value;
 
 		/**
-		 * Constructs a comparator whose {@link compare} method always returns
-		 * the specified value.
+		 * Constructs a comparator whose {@link compare} method always returns the specified value.
 		 * 
 		 * @param value the value to be returned by the {@link compare} method
 		 */
@@ -54,37 +53,31 @@ public class ChainedComparatorTest {
 	}
 
 	/**
-	 * Tests if the chained comparator uses the first comparator if the first
-	 * has a non-zero value.
+	 * Tests if the chained comparator uses the first comparator if the first has a non-zero value.
 	 */
 	@Test
 	public void testFirstComparator() {
-		ChainedComparator cc = new ChainedComparator(new FixedComparator(1),
-				new FixedComparator(-1));
+		ChainedComparator cc = new ChainedComparator(new FixedComparator(1), new FixedComparator(-1));
 
 		Assert.assertEquals(1, cc.compare(null, null));
 	}
 
 	/**
-	 * Tests if the chained comparator uses the second comparator if the first
-	 * has value zero.
+	 * Tests if the chained comparator uses the second comparator if the first has value zero.
 	 */
 	@Test
 	public void testSecondComparator() {
-		ChainedComparator cc = new ChainedComparator(new FixedComparator(0),
-				new FixedComparator(-1));
+		ChainedComparator cc = new ChainedComparator(new FixedComparator(0), new FixedComparator(-1));
 
 		Assert.assertEquals(-1, cc.compare(null, null));
 	}
 
 	/**
-	 * Tests if the chained comparator returns zero if all comparators have
-	 * value zero.
+	 * Tests if the chained comparator returns zero if all comparators have value zero.
 	 */
 	@Test
 	public void testNoComparators() {
-		ChainedComparator cc = new ChainedComparator(new FixedComparator(0),
-				new FixedComparator(0));
+		ChainedComparator cc = new ChainedComparator(new FixedComparator(0), new FixedComparator(0));
 
 		Assert.assertEquals(0, cc.compare(null, null));
 	}

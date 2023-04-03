@@ -64,8 +64,7 @@ public class SolutionTest {
 	@Test
 	public void testGetVariable() {
 		Assert.assertEquals(1, solution.getNumberOfVariables());
-		Assert.assertEquals(0.5, ((RealVariable)solution.getVariable(0))
-				.getValue(), Settings.EPS);
+		Assert.assertEquals(0.5, ((RealVariable)solution.getVariable(0)).getValue(), Settings.EPS);
 	}
 
 	/**
@@ -94,8 +93,7 @@ public class SolutionTest {
 	@Test
 	public void testSetVariable() {
 		solution.setVariable(0, new RealVariable(0.75, 0.0, 1.0));
-		Assert.assertEquals(0.75, ((RealVariable)solution.getVariable(0))
-				.getValue(), Settings.EPS);
+		Assert.assertEquals(0.75, ((RealVariable)solution.getVariable(0)).getValue(), Settings.EPS);
 	}
 
 	/**
@@ -395,32 +393,26 @@ public class SolutionTest {
 		Assert.assertFalse(copy.equals(solution));
 
 		// copy has the same variables
-		Assert.assertEquals(solution.getNumberOfVariables(), copy
-				.getNumberOfVariables());
+		Assert.assertEquals(solution.getNumberOfVariables(), copy.getNumberOfVariables());
 		for (int i = 0; i < copy.getNumberOfVariables(); i++) {
 			Assert.assertEquals(solution.getVariable(i), copy.getVariable(i));
 		}
 
 		// copy has the same objectives
-		Assert.assertEquals(solution.getNumberOfObjectives(), copy
-				.getNumberOfObjectives());
+		Assert.assertEquals(solution.getNumberOfObjectives(), copy.getNumberOfObjectives());
 		for (int i = 0; i < copy.getNumberOfObjectives(); i++) {
-			Assert.assertEquals(solution.getObjective(i), copy.getObjective(i),
-					Settings.EPS);
+			Assert.assertEquals(solution.getObjective(i), copy.getObjective(i), Settings.EPS);
 		}
 
 		// copy has the same constraints
-		Assert.assertEquals(solution.getNumberOfConstraints(), copy
-				.getNumberOfConstraints());
+		Assert.assertEquals(solution.getNumberOfConstraints(), copy.getNumberOfConstraints());
 		for (int i = 0; i < copy.getNumberOfConstraints(); i++) {
-			Assert.assertEquals(solution.getConstraint(i), copy
-					.getConstraint(i), Settings.EPS);
+			Assert.assertEquals(solution.getConstraint(i), copy.getConstraint(i), Settings.EPS);
 		}
 
 		// the copy's variables are independent from the original
 		((RealVariable)copy.getVariable(0)).setValue(1.0);
-		Assert.assertEquals(0.5, ((RealVariable)solution.getVariable(0))
-				.getValue(), Settings.EPS);
+		Assert.assertEquals(0.5, ((RealVariable)solution.getVariable(0)).getValue(), Settings.EPS);
 
 		// the equals method works to detect the change
 		Assert.assertFalse(solution.equals(copy));
@@ -451,18 +443,10 @@ public class SolutionTest {
 		Solution s1 = new Solution(new double[] { 0.0, 1.0, 0.0 });
 		Solution s2 = new Solution(new double[] { 0.0, 0.0, -1.0 });
 
-		Assert.assertEquals(Math.sqrt(2.0),
-				s1.distanceTo(s2),
-				Settings.EPS);
-		Assert.assertEquals(Math.sqrt(2.0),
-				s2.distanceTo(s1),
-				Settings.EPS);
-		Assert.assertEquals(0.0,
-				s1.distanceTo(s1),
-				Settings.EPS);
-		Assert.assertEquals(0.0,
-				s2.distanceTo(s2),
-				Settings.EPS);
+		Assert.assertEquals(Math.sqrt(2.0), s1.distanceTo(s2), Settings.EPS);
+		Assert.assertEquals(Math.sqrt(2.0), s2.distanceTo(s1), Settings.EPS);
+		Assert.assertEquals(0.0, s1.distanceTo(s1), Settings.EPS);
+		Assert.assertEquals(0.0, s2.distanceTo(s2), Settings.EPS);
 	}
 	
 	@Test(expected = IllegalArgumentException.class)

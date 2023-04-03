@@ -91,8 +91,7 @@ public class CompoundVariationTest {
 		Assert.assertEquals(2, variation.getArity());
 		
 		for (int i=0; i<TestThresholds.SAMPLES; i++) {
-			Solution[] parents = new Solution[] { TestUtils.newSolution(),
-				TestUtils.newSolution() };
+			Solution[] parents = new Solution[] { TestUtils.newSolution(), TestUtils.newSolution() };
 			Assert.assertEquals(2, variation.evolve(parents).length);
 		}
 		
@@ -112,8 +111,7 @@ public class CompoundVariationTest {
 		Assert.assertEquals(3, variation.getArity());
 		
 		for (int i=0; i<TestThresholds.SAMPLES; i++) {
-			Solution[] parents = new Solution[] { TestUtils.newSolution(),
-				TestUtils.newSolution(), TestUtils.newSolution() };
+			Solution[] parents = new Solution[] { TestUtils.newSolution(), TestUtils.newSolution(), TestUtils.newSolution() };
 			Assert.assertEquals(2, variation.evolve(parents).length);
 		}
 		
@@ -131,8 +129,7 @@ public class CompoundVariationTest {
 		
 		Assert.assertEquals(3, variation.getArity());
 		
-		Solution[] parents = new Solution[] { TestUtils.newSolution(),
-			TestUtils.newSolution(), TestUtils.newSolution() };
+		Solution[] parents = new Solution[] { TestUtils.newSolution(), TestUtils.newSolution(), TestUtils.newSolution() };
 		variation.evolve(parents);
 	}
 

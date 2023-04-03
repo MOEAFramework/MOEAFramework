@@ -38,9 +38,7 @@ public class SPXTest extends MeanCentricVariationTest {
 	public void testFullDistribution() {
 		SPX sbx = new SPX(3, TestThresholds.SAMPLES);
 
-		Solution[] parents = new Solution[] { newSolution(0.0, 0.0),
-				newSolution(0.0, 1.0), newSolution(1.0, 0.0) };
-
+		Solution[] parents = new Solution[] { newSolution(0.0, 0.0), newSolution(0.0, 1.0), newSolution(1.0, 0.0) };
 		Solution[] offspring = sbx.evolve(parents);
 
 		check(parents, offspring);
@@ -55,9 +53,7 @@ public class SPXTest extends MeanCentricVariationTest {
 	public void testPartialDistribution() {
 		SPX sbx = new SPX(3, TestThresholds.SAMPLES);
 
-		Solution[] parents = new Solution[] { newSolution(0.0, 0.0),
-				newSolution(0.0, 1.0), newSolution(0.0, 2.0) };
-
+		Solution[] parents = new Solution[] { newSolution(0.0, 0.0), newSolution(0.0, 1.0), newSolution(0.0, 2.0) };
 		Solution[] offspring = sbx.evolve(parents);
 
 		check(parents, offspring);
@@ -70,8 +66,7 @@ public class SPXTest extends MeanCentricVariationTest {
 	public void testParentImmutability() {
 		SPX spx = new SPX(3, 3);
 
-		Solution[] parents = new Solution[] { newSolution(0.0, 0.0),
-				newSolution(0.0, 1.0), newSolution(1.0, 0.0) };
+		Solution[] parents = new Solution[] { newSolution(0.0, 0.0), newSolution(0.0, 1.0), newSolution(1.0, 0.0) };
 
 		ParentImmutabilityTest.test(parents, spx);
 	}

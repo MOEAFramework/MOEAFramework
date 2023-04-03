@@ -46,8 +46,7 @@ public class RotationMatrixBuilderTest {
 		LUDecomposition lu = new LUDecomposition(rm);
 		
 		Assert.assertEquals(1.0, lu.getDeterminant(), Settings.EPS);
-		TestUtils.assertEquals(rm.transpose(), lu.getSolver().getInverse(), 
-				new AbsoluteError(0.05));
+		TestUtils.assertEquals(rm.transpose(), lu.getSolver().getInverse(), new AbsoluteError(0.05));
 	}
 	
 	/**

@@ -72,26 +72,20 @@ public class ProblemBuilderTest {
 		
 		Assert.assertNotNull(builder.withProblem("ZDT5").getProblemInstance());
 		
-		Assert.assertNotNull(builder.withProblemClass(ZDT5.class)
-				.getProblemInstance());
+		Assert.assertNotNull(builder.withProblemClass(ZDT5.class).getProblemInstance());
 		
-		Assert.assertNotNull(builder.withProblem(new ZDT5())
-				.getProblemInstance());
+		Assert.assertNotNull(builder.withProblem(new ZDT5()).getProblemInstance());
 		
-		Assert.assertNotNull(builder.withProblemClass(
-				"org.moeaframework.problem.ZDT.ZDT5").getProblemInstance());
+		Assert.assertNotNull(builder.withProblemClass("org.moeaframework.problem.ZDT.ZDT5").getProblemInstance());
 	}
 	
 	@Test
 	public void testConstructorArguments() throws ClassNotFoundException {
 		ProblemBuilder builder = new ProblemBuilder();
 		
-		Problem problem1 = builder.withProblemClass(DTLZ2.class, 4)
-				.getProblemInstance();
+		Problem problem1 = builder.withProblemClass(DTLZ2.class, 4).getProblemInstance();
 		
-		Problem problem2 = builder
-				.withProblemClass("org.moeaframework.problem.DTLZ.DTLZ2", 6)
-				.getProblemInstance();
+		Problem problem2 = builder.withProblemClass("org.moeaframework.problem.DTLZ.DTLZ2", 6).getProblemInstance();
 		
 		Assert.assertNotNull(problem1);
 		Assert.assertNotNull(problem2);
@@ -103,18 +97,14 @@ public class ProblemBuilderTest {
 	public void testConstructorArgumentsWidening() {
 		ProblemBuilder builder = new ProblemBuilder();
 		
-		Assert.assertNotNull(builder.withProblemClass(DTLZ2.class, (byte)4)
-				.getProblemInstance());
-		Assert.assertNotNull(builder.withProblemClass(DTLZ2.class, (char)4)
-				.getProblemInstance());
-		Assert.assertNotNull(builder.withProblemClass(DTLZ2.class, (short)4)
-				.getProblemInstance());
+		Assert.assertNotNull(builder.withProblemClass(DTLZ2.class, (byte)4).getProblemInstance());
+		Assert.assertNotNull(builder.withProblemClass(DTLZ2.class, (char)4).getProblemInstance());
+		Assert.assertNotNull(builder.withProblemClass(DTLZ2.class, (short)4).getProblemInstance());
 	}
 	
 	@Test(expected = Exception.class)
 	public void testCosntructorArgumentsException() {
-		new ProblemBuilder().withProblemClass(DTLZ2.class, (long)4)
-				.getProblemInstance();
+		new ProblemBuilder().withProblemClass(DTLZ2.class, (long)4).getProblemInstance();
 	}
 	
 	@Test
@@ -154,24 +144,19 @@ public class ProblemBuilderTest {
 				.withSameProblemAs(builder1);
 		
 		Assert.assertEquals(builder1.problemName, builder2.problemName);
-		Assert.assertArrayEquals(builder1.problemArguments, 
-				builder2.problemArguments);
+		Assert.assertArrayEquals(builder1.problemArguments, builder2.problemArguments);
 		Assert.assertEquals(builder1.problemClass, builder2.problemClass);
 		Assert.assertEquals(builder1.problemFactory, builder2.problemFactory);
-		Assert.assertArrayEquals(builder1.epsilon, builder2.epsilon, 
-				Settings.EPS);
+		Assert.assertArrayEquals(builder1.epsilon, builder2.epsilon, Settings.EPS);
 		
-		builder2.withProblemClass(DTLZ2.class, 4).usingProblemFactory(
-				ProblemFactory.getInstance());
+		builder2.withProblemClass(DTLZ2.class, 4).usingProblemFactory(ProblemFactory.getInstance());
 		builder1.withSameProblemAs(builder2);
 		
 		Assert.assertEquals(builder1.problemName, builder2.problemName);
-		Assert.assertArrayEquals(builder1.problemArguments, 
-				builder2.problemArguments);
+		Assert.assertArrayEquals(builder1.problemArguments, builder2.problemArguments);
 		Assert.assertEquals(builder1.problemClass, builder2.problemClass);
 		Assert.assertEquals(builder1.problemFactory, builder2.problemFactory);
-		Assert.assertArrayEquals(builder1.epsilon, builder2.epsilon, 
-				Settings.EPS);
+		Assert.assertArrayEquals(builder1.epsilon, builder2.epsilon, Settings.EPS);
 	}
 
 }

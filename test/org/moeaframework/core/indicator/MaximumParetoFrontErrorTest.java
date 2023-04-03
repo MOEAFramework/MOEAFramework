@@ -95,13 +95,11 @@ public class MaximumParetoFrontErrorTest {
 		referenceSet.add(TestUtils.newSolution(0.0, 1.0));
 		referenceSet.add(TestUtils.newSolution(1.0, 0.0));
 		
-		MaximumParetoFrontError mpfe = new MaximumParetoFrontError(problem, 
-				referenceSet);
+		MaximumParetoFrontError mpfe = new MaximumParetoFrontError(problem, referenceSet);
 		
 		NondominatedPopulation approximationSet = new NondominatedPopulation();
 		
-		Assert.assertEquals(Double.POSITIVE_INFINITY, 
-				mpfe.evaluate(approximationSet), Settings.EPS);
+		Assert.assertEquals(Double.POSITIVE_INFINITY, mpfe.evaluate(approximationSet), Settings.EPS);
 		
 		approximationSet.add(TestUtils.newSolution(0.0, 1.0));
 		Assert.assertEquals(0.0, mpfe.evaluate(approximationSet), Settings.EPS);
@@ -117,8 +115,7 @@ public class MaximumParetoFrontErrorTest {
 		
 		approximationSet.clear();
 		approximationSet.add(TestUtils.newSolution(2.0, 2.0));
-		Assert.assertEquals(Math.sqrt(5), mpfe.evaluate(approximationSet), 
-				Settings.EPS);
+		Assert.assertEquals(Math.sqrt(5), mpfe.evaluate(approximationSet), Settings.EPS);
 
 		approximationSet.clear();
 		approximationSet.add(TestUtils.newSolution(0.5, 0.0));

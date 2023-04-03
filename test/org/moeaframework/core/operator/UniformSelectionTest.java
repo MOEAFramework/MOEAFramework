@@ -65,8 +65,7 @@ public class UniformSelectionTest {
 		}
 
 		for (int i = 0; i < 3; i++) {
-			Assert.assertEquals(0.333, counts[i]
-					/ (double)TestThresholds.SAMPLES,
+			Assert.assertEquals(0.333, counts[i] / (double)TestThresholds.SAMPLES,
 					TestThresholds.SELECTION_EPS);
 		}
 	}

@@ -79,13 +79,15 @@ public class RotatedProblemsTest {
 	
 	@Test
 	public void testNoRotation() {
-		assertEquals(ProblemFactory.getInstance().getProblem("ROT(0)_DTLZ2_2"),
+		assertEquals(
+				ProblemFactory.getInstance().getProblem("ROT(0)_DTLZ2_2"),
 				ProblemFactory.getInstance().getProblem("ROT(360)_DTLZ2_2"));
 	}
 
 	@Test
 	public void testNegativeRotations() {
-		assertEquals(ProblemFactory.getInstance().getProblem("ROT(45)_DTLZ2_2"),
+		assertEquals(
+				ProblemFactory.getInstance().getProblem("ROT(45)_DTLZ2_2"),
 				ProblemFactory.getInstance().getProblem("ROT(-315)_DTLZ2_2"));
 	}
 	
@@ -124,8 +126,7 @@ public class RotatedProblemsTest {
 			problemB.evaluate(solutionB);
 			
 			TestUtils.assertEquals(solutionA, solutionB);
-			Assert.assertTrue(solutionA.violatesConstraints() == 
-					solutionB.violatesConstraints());
+			Assert.assertTrue(solutionA.violatesConstraints() == solutionB.violatesConstraints());
 		}
 	}
 	
@@ -139,8 +140,7 @@ public class RotatedProblemsTest {
 			problemA.evaluate(solutionA);
 			problemB.evaluate(solutionB);
 			
-			Assert.assertTrue(MathArrays.distance(solutionA.getObjectives(), 
-					solutionB.getObjectives()) > Settings.EPS);
+			Assert.assertTrue(MathArrays.distance(solutionA.getObjectives(), solutionB.getObjectives()) > Settings.EPS);
 		}
 	}
 	

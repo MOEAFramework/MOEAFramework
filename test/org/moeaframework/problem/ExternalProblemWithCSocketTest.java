@@ -63,11 +63,9 @@ ExternalProblemWithCStdioTest {
 			//handle silently
 		}
 
-		debugReader = new BufferedReader(new InputStreamReader(
-				process.getErrorStream()));
+		debugReader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
 
-		problem = new ExternalProblem("localhost", 
-				ExternalProblem.DEFAULT_PORT) {
+		problem = new ExternalProblem("localhost", ExternalProblem.DEFAULT_PORT) {
 
 			@Override
 			public String getName() {

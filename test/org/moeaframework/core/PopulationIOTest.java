@@ -123,10 +123,8 @@ public class PopulationIOTest {
 		File file = TestUtils.createTempFile("0   1 \t 2\n\t   3 4 5 \t\n");
 		Population population = PopulationIO.readObjectives(file);
 		
-		Assert.assertArrayEquals(new double[] {0.0, 1.0, 2.0},
-				population.get(0).getObjectives(), Settings.EPS);
-		Assert.assertArrayEquals(new double[] {3.0, 4.0, 5.0},
-				population.get(1).getObjectives(), Settings.EPS);
+		Assert.assertArrayEquals(new double[] {0.0, 1.0, 2.0}, population.get(0).getObjectives(), Settings.EPS);
+		Assert.assertArrayEquals(new double[] {3.0, 4.0, 5.0}, population.get(1).getObjectives(), Settings.EPS);
 	}
 
 }

@@ -57,8 +57,7 @@ public class TestUtils {
 	/**
 	 * Default floating-point equality allowing 5% relative error.
 	 */
-	public static final FloatingPointError DEFAULT_ERROR = 
-			new RelativeError(0.05);
+	public static final FloatingPointError DEFAULT_ERROR = new RelativeError(0.05);
 
 	/**
 	 * Private constructor to prevent instantiation.
@@ -135,8 +134,7 @@ public class TestUtils {
 			}
 		}
 		
-		return (matched1.cardinality() == p1.size())
-				&& (matched2.cardinality() == p2.size());
+		return (matched1.cardinality() == p1.size()) && (matched2.cardinality() == p2.size());
 	}
 
 	/**
@@ -311,8 +309,7 @@ public class TestUtils {
 	 * @throws Exception if any of the many exceptions for reflection or
 	 *         file writing occurred
 	 */
-	public static void pipeCommandLine(File output, Class<?> tool, 
-			String... args) throws Exception {
+	public static void pipeCommandLine(File output, Class<?> tool, String... args) throws Exception {
 		PrintStream oldOut = System.out;
 		
 		try (PrintStream newOut = new PrintStream(new FileOutputStream(output))) {
@@ -339,13 +336,11 @@ public class TestUtils {
 	 * @throws Exception if any of the many exceptions for reflection or
 	 *         file writing occurred
 	 */
-	public static void pipeCommandLine(File output, File error, Class<?> tool,
-			String... args) throws Exception {
+	public static void pipeCommandLine(File output, File error, Class<?> tool, String... args) throws Exception {
 		PrintStream oldErr = System.err;
 		
 		try (PrintStream newErr = new PrintStream(new FileOutputStream(error))) {
 			System.setErr(newErr);
-		
 			pipeCommandLine(output, tool, args);
 		} finally {
 			System.setErr(oldErr);
@@ -378,8 +373,7 @@ public class TestUtils {
 	 * @param error the equality comparison used to assert pairwise values 
 	 *        are equal
 	 */
-	public static void assertEquals(RealMatrix rm1, RealMatrix rm2, 
-			FloatingPointError error) {
+	public static void assertEquals(RealMatrix rm1, RealMatrix rm2, FloatingPointError error) {
 		Assert.assertEquals(rm1.getRowDimension(), rm2.getRowDimension());
 		Assert.assertEquals(rm1.getColumnDimension(), rm2.getColumnDimension());
 		
@@ -448,16 +442,14 @@ public class TestUtils {
 	 * @param max the maximum bounds of the uniform distribution
 	 * @param statistics the captures statistics of a sampled distribution
 	 */
-	public static void assertUniformDistribution(int min, int max,
-			DescriptiveStatistics statistics) {
+	public static void assertUniformDistribution(int min, int max, DescriptiveStatistics statistics) {
 		int n = max - min + 1;
 		int nn = n * n;
 
 		assertEquals((min + max) / 2.0, statistics.getMean());
 		assertEquals((nn - 1) / 12.0, statistics.getVariance());
 		assertEquals(0.0, statistics.getSkewness());
-		assertEquals(-(6.0 * (nn + 1)) / (5.0 * (nn - 1)), 
-				statistics.getKurtosis());
+		assertEquals(-(6.0 * (nn + 1)) / (5.0 * (nn - 1)), statistics.getKurtosis());
 		assertEquals(min, statistics.getMin());
 		assertEquals(max, statistics.getMax());
 	}
@@ -490,9 +482,7 @@ public class TestUtils {
 		}
 		
 		if (n > 1) {
-			pattern += "(\\s*,\\s*-?[0-9]+(\\.[0-9]+(E-?[0-9]+)?)?){" +
-					(n-1) +
-					"}";
+			pattern += "(\\s*,\\s*-?[0-9]+(\\.[0-9]+(E-?[0-9]+)?)?){" + (n-1) + "}";
 		}
 		
 		return pattern;

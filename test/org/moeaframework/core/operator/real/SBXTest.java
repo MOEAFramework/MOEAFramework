@@ -68,8 +68,7 @@ public class SBXTest extends ParentCentricVariationTest {
 			offspring[i + 1] = children[1];
 		}
 
-		Solution[] centroids = new Solution[] { s1, s2, newSolution(2.0, -2.0),
-				newSolution(-2.0, 2.0) };
+		Solution[] centroids = new Solution[] { s1, s2, newSolution(2.0, -2.0), newSolution(-2.0, 2.0) };
 
 		check(centroids, offspring);
 	}
@@ -99,8 +98,7 @@ public class SBXTest extends ParentCentricVariationTest {
 			offspring[i + 1] = children[1];
 		}
 
-		Solution[] centroids = new Solution[] { s1, s2, newSolution(2.0, -2.0),
-				newSolution(-2.0, 2.0) };
+		Solution[] centroids = new Solution[] { s1, s2, newSolution(2.0, -2.0), newSolution(-2.0, 2.0) };
 
 		check(centroids, offspring);
 	}
@@ -112,8 +110,7 @@ public class SBXTest extends ParentCentricVariationTest {
 	public void testParentImmutability() {
 		SBX sbx = new SBX(1.0, 20.0);
 
-		Solution[] parents = new Solution[] { newSolution(0.0, 0.0),
-				newSolution(0.0, 1.0) };
+		Solution[] parents = new Solution[] { newSolution(0.0, 0.0), newSolution(0.0, 1.0) };
 
 		ParentImmutabilityTest.test(parents, sbx);
 	}
@@ -150,8 +147,7 @@ public class SBXTest extends ParentCentricVariationTest {
 
 		Solution[] parents = new Solution[] { s1, s2 };
 
-		// if error, RealVariable#setValue will throw an
-		// IllegalArgumentException 
+		// if error, RealVariable#setValue will throw an IllegalArgumentException 
 		sbx.evolve(parents);
 		
 		PRNG.setRandom(originalRandom);

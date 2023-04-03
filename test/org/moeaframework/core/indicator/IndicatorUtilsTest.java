@@ -57,8 +57,8 @@ public class IndicatorUtilsTest {
 	public void testEuclideanDistance() {
 		Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
 		
-		Assert.assertEquals(Math.sqrt(2.0), IndicatorUtils.euclideanDistance(
-				problem, TestUtils.newSolution(0.0, 1.0), 
+		Assert.assertEquals(Math.sqrt(2.0), IndicatorUtils.euclideanDistance(problem,
+				TestUtils.newSolution(0.0, 1.0), 
 				TestUtils.newSolution(1.0, 0.0)), Settings.EPS);
 		
 		Assert.assertEquals(1.0, IndicatorUtils.euclideanDistance(problem, 
@@ -82,22 +82,20 @@ public class IndicatorUtilsTest {
 		population.add(TestUtils.newSolution(0.0, 1.0));
 		population.add(TestUtils.newSolution(1.0, 0.0));
 		
-		Assert.assertEquals(0.0, IndicatorUtils.distanceToNearestSolution(
-				problem, TestUtils.newSolution(0.0, 1.0), population),
+		Assert.assertEquals(0.0,
+				IndicatorUtils.distanceToNearestSolution(problem, TestUtils.newSolution(0.0, 1.0), population),
 				Settings.EPS);
 		
-		Assert.assertEquals(0.0, IndicatorUtils.distanceToNearestSolution(
-				problem, TestUtils.newSolution(1.0, 0.0), population),
+		Assert.assertEquals(0.0,
+				IndicatorUtils.distanceToNearestSolution(problem, TestUtils.newSolution(1.0, 0.0), population),
 				Settings.EPS);
 		
 		Assert.assertEquals(Math.sqrt(0.5), 
-				IndicatorUtils.distanceToNearestSolution(problem, 
-						TestUtils.newSolution(0.5, 0.5), population),
+				IndicatorUtils.distanceToNearestSolution(problem, TestUtils.newSolution(0.5, 0.5), population),
 				Settings.EPS);
 		
 		Assert.assertEquals(Math.sqrt(0.125), 
-				IndicatorUtils.distanceToNearestSolution(problem, 
-						TestUtils.newSolution(0.25, 0.75), population),
+				IndicatorUtils.distanceToNearestSolution(problem, TestUtils.newSolution(0.25, 0.75), population),
 				Settings.EPS);
 	}
 	

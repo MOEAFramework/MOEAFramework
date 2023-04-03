@@ -55,8 +55,7 @@ public class DifferentialEvolutionSelectionTest {
 		for (int i = 0; i < population.size(); i++) {
 			selection.setCurrentIndex(i);
 			
-			Assert.assertEquals(population.get(i), selection.select(4,
-					population)[0]);
+			Assert.assertEquals(population.get(i), selection.select(4, population)[0]);
 		}
 	}
 

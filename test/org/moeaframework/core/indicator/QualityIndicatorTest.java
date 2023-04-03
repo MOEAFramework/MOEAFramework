@@ -36,8 +36,7 @@ public class QualityIndicatorTest {
 		String problemName = "DTLZ2_2";
 		ProblemFactory problemFactory = ProblemFactory.getInstance();
 		Problem problem = problemFactory.getProblem(problemName);
-		NondominatedPopulation referenceSet = problemFactory.getReferenceSet(
-				problemName);
+		NondominatedPopulation referenceSet = problemFactory.getReferenceSet(problemName);
 		
 		qualityIndicator = new QualityIndicator(problem, referenceSet);
 	}

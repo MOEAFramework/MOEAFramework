@@ -66,8 +66,7 @@ public class PMTest extends MeanCentricVariationTest {
 	public void testParentImmutability() {
 		PM pm = new PM(1.0, 20.0);
 
-		Solution[] parents = new Solution[] { newSolution(0.0, 0.0),
-				newSolution(0.0, 1.0) };
+		Solution[] parents = new Solution[] { newSolution(0.0, 0.0), newSolution(0.0, 1.0) };
 
 		ParentImmutabilityTest.test(parents, pm);
 	}

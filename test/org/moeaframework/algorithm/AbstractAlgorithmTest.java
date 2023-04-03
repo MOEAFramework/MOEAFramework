@@ -275,8 +275,7 @@ public class AbstractAlgorithmTest {
 	@Test
 	public void testResumable() throws IOException {
 		File file = TestUtils.createTempFile();
-		Checkpoints checkpoints = new Checkpoints(new TestAbstractAlgorithm(),
-				file, 0);
+		Checkpoints checkpoints = new Checkpoints(new TestAbstractAlgorithm(), file, 0);
 		checkpoints.step();
 	}
 

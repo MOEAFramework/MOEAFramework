@@ -107,7 +107,7 @@ public class ExternalProblemTest {
 		run(new Thread() {
 			public void run() {
 				try (BufferedReader reader = new BufferedReader(new InputStreamReader(i2));
-					 PrintStream writer = new PrintStream(o1)) {
+						PrintStream writer = new PrintStream(o1)) {
 					String line = null;
 
 					while ((line = reader.readLine()) != null) {

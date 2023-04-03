@@ -35,13 +35,11 @@ public class UF11Test {
 			double[] x = EncodingUtils.getReal(solution);
 			double[] f = new double[uf11.getNumberOfObjectives()];
 			
-			R2_DTLZ2_M5(x, f, uf11.getNumberOfVariables(),
-					uf11.getNumberOfObjectives());
+			R2_DTLZ2_M5(x, f, uf11.getNumberOfVariables(), uf11.getNumberOfObjectives());
 			
 			uf11.evaluate(solution);
 			
-			Assert.assertArrayEquals(f, solution.getObjectives(),
-					TestThresholds.SOLUTION_EPS);
+			Assert.assertArrayEquals(f, solution.getObjectives(), TestThresholds.SOLUTION_EPS);
 		}
 	}
 	
@@ -78,8 +76,7 @@ public class UF11Test {
 				{ 0, 0, 0, 0, 0, 0, 0, 1, 0, 0 },
 				{ 0, 0, 0, 0, 0, 0, 0, 0, 1, 0 },
 				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 } };
-		double[] lamda_l_10D = { 0.313, 0.312, 0.321, 0.316, 0.456, 1, 1, 1, 1,
-				1 };
+		double[] lamda_l_10D = { 0.313, 0.312, 0.321, 0.316, 0.456, 1, 1, 1, 1, 1 };
 		double[][] M_30D = {
 				{ 0.0128, 0.2165, 0.4374, -0.0800, 0.0886, -0.2015, 0.1071,
 						0.2886, 0.2354, 0.2785, -0.1748, 0.2147, 0.1649,
@@ -227,8 +224,7 @@ public class UF11Test {
 			g += Math.pow(zz[i - 1] - 0.5, 2);
 			
 			for (int j = 0; j < n_obj; j++) {
-				psum[j] = Math.sqrt(Math.pow(psum[j], 2)
-						+ Math.pow(p[i - 1], 2));
+				psum[j] = Math.sqrt(Math.pow(psum[j], 2) + Math.pow(p[i - 1], 2));
 			}
 		}
 		
@@ -237,14 +233,12 @@ public class UF11Test {
 			
 			for (int j = n_obj - i; j >= 1; j--) {
 				ff *= Math.cos(zz[j - 1] * PI / 2.0);
-				psum[i - 1] = Math.sqrt(Math.pow(psum[i - 1], 2)
-						+ Math.pow(p[j - 1], 2));
+				psum[i - 1] = Math.sqrt(Math.pow(psum[i - 1], 2) + Math.pow(p[j - 1], 2));
 			}
 			
 			if (i > 1) {
 				ff *= Math.sin(zz[(n_obj - i + 1) - 1] * PI / 2.0);
-				psum[i - 1] = Math.sqrt(Math.pow(psum[i - 1], 2)
-						+ Math.pow(p[(n_obj - i + 1) - 1], 2));
+				psum[i - 1] = Math.sqrt(Math.pow(psum[i - 1], 2) + Math.pow(p[(n_obj - i + 1) - 1], 2));
 			}
 			
 			f[i - 1] = 2.0 / (1 + Math.exp(-psum[i - 1])) * (ff + 1);

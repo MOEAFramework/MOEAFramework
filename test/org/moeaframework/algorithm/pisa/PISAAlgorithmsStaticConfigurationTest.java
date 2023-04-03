@@ -78,25 +78,20 @@ public class PISAAlgorithmsStaticConfigurationTest {
 			String configuration, Problem problem) {
 		TestUtils.assumeFileExists(new File(directory));
 
-		Settings.PROPERTIES.setString(
-				"org.moeaframework.algorithm.pisa.algorithms", name);
-		Settings.PROPERTIES.setString("org.moeaframework.algorithm.pisa." +
-				name + ".command", command);
-		Settings.PROPERTIES.setString("org.moeaframework.algorithm.pisa." +
-				name + ".configuration", configuration);
+		Settings.PROPERTIES.setString("org.moeaframework.algorithm.pisa.algorithms", name);
+		Settings.PROPERTIES.setString("org.moeaframework.algorithm.pisa." + name + ".command", command);
+		Settings.PROPERTIES.setString("org.moeaframework.algorithm.pisa." + name + ".configuration", configuration);
 		
 		test(AlgorithmFactory.getInstance().getAlgorithm(name, properties, problem));
 		
-		Settings.PROPERTIES.remove(
-				"org.moeaframework.algorithm.pisa.algorithms");
+		Settings.PROPERTIES.remove("org.moeaframework.algorithm.pisa.algorithms");
 	}
 	
 	private void run(String algorithm, String os, Problem problem) {
 		String name = algorithm + "_" + os;
 		String directory = "./pisa/" + name;
 		
-		run(name, directory, directory + "/" + algorithm + ".exe", 
-				directory + "/" + algorithm + "_param.txt", problem);
+		run(name, directory, directory + "/" + algorithm + ".exe", directory + "/" + algorithm + "_param.txt", problem);
 	}
 	
 	private void run(String algorithm, String os) {
@@ -182,18 +177,13 @@ public class PISAAlgorithmsStaticConfigurationTest {
 		
 		TestUtils.assumeFileExists(new File(directory));
 
-		Settings.PROPERTIES.setString(
-				"org.moeaframework.algorithm.pisa.algorithms", name);
-		Settings.PROPERTIES.setString("org.moeaframework.algorithm.pisa." +
-				name + ".command", "java -jar " + directory + "/sibea.jar");
-		Settings.PROPERTIES.setString("org.moeaframework.algorithm.pisa." +
-				name + ".configuration", directory + "/sibea_param.txt");
+		Settings.PROPERTIES.setString("org.moeaframework.algorithm.pisa.algorithms", name);
+		Settings.PROPERTIES.setString("org.moeaframework.algorithm.pisa." + name + ".command", "java -jar " + directory + "/sibea.jar");
+		Settings.PROPERTIES.setString("org.moeaframework.algorithm.pisa." + name + ".configuration", directory + "/sibea_param.txt");
 		
-		test(AlgorithmFactory.getInstance().getAlgorithm(name, properties, 
-				realProblem));
+		test(AlgorithmFactory.getInstance().getAlgorithm(name, properties, realProblem));
 		
-		Settings.PROPERTIES.remove(
-				"org.moeaframework.algorithm.pisa.algorithms");
+		Settings.PROPERTIES.remove("org.moeaframework.algorithm.pisa.algorithms");
 	}
 	
 	@Test
@@ -224,20 +214,17 @@ public class PISAAlgorithmsStaticConfigurationTest {
 	public void testCaseSensitivity() {
 		String name = "hype_win";
 		
-		Settings.PROPERTIES.setString(
-				"org.moeaframework.algorithm.pisa.algorithms", name);
-		Settings.PROPERTIES.setString("org.moeaframework.algorithm.pisa." +
-				name + ".command", "foo");
+		Settings.PROPERTIES.setString("org.moeaframework.algorithm.pisa.algorithms", name);
+		Settings.PROPERTIES.setString("org.moeaframework.algorithm.pisa." + name + ".command", "foo");
 		
-		Algorithm algorithm = AlgorithmFactory.getInstance().getAlgorithm(
-				name.toUpperCase(), new TypedProperties(), realProblem);
+		Algorithm algorithm = AlgorithmFactory.getInstance().getAlgorithm(name.toUpperCase(), new TypedProperties(),
+				realProblem);
 		
 		Assert.assertNotNull(algorithm);
 		
 		algorithm.terminate();
 		
-		Settings.PROPERTIES.remove(
-				"org.moeaframework.algorithm.pisa.algorithms");
+		Settings.PROPERTIES.remove("org.moeaframework.algorithm.pisa.algorithms");
 	}
 	
 	/**

@@ -69,8 +69,7 @@ public abstract class SequenceTest {
 			Assert.assertEquals(D, points[i].length);
 
 			for (int j = 0; j < D; j++) {
-				Assert.assertTrue((points[i][j] >= 0.0)
-						&& (points[i][j] <= 1.0));
+				Assert.assertTrue((points[i][j] >= 0.0) && (points[i][j] <= 1.0));
 			}
 		}
 	}
@@ -94,27 +93,19 @@ public abstract class SequenceTest {
 	}
 
 	/**
-	 * Asserts that the collected statistics appear to be from a uniform
-	 * distribution.
+	 * Asserts that the collected statistics appear to be from a uniform distribution.
 	 * 
 	 * @param min the minimum value
 	 * @param max the maximum value
 	 * @param statistics the collected statistics
 	 */
-	public void testUniformDistribution(double min, double max,
-			DescriptiveStatistics statistics) {
-		Assert.assertEquals((min + max) / 2.0, statistics.getMean(),
-				TestThresholds.STATISTICS_EPS);
-		Assert.assertEquals(Math.pow(max - min, 2.0) / 12.0, statistics
-				.getVariance(), TestThresholds.STATISTICS_EPS);
-		Assert.assertEquals(0.0, statistics.getSkewness(),
-				TestThresholds.STATISTICS_EPS);
-		Assert.assertEquals(-6.0 / 5.0, statistics.getKurtosis(),
-				TestThresholds.STATISTICS_EPS);
-		Assert.assertEquals(min, statistics.getMin(),
-				TestThresholds.STATISTICS_EPS);
-		Assert.assertEquals(max, statistics.getMax(),
-				TestThresholds.STATISTICS_EPS);
+	public void testUniformDistribution(double min, double max, DescriptiveStatistics statistics) {
+		Assert.assertEquals((min + max) / 2.0, statistics.getMean(), TestThresholds.STATISTICS_EPS);
+		Assert.assertEquals(Math.pow(max - min, 2.0) / 12.0, statistics.getVariance(), TestThresholds.STATISTICS_EPS);
+		Assert.assertEquals(0.0, statistics.getSkewness(), TestThresholds.STATISTICS_EPS);
+		Assert.assertEquals(-6.0 / 5.0, statistics.getKurtosis(), TestThresholds.STATISTICS_EPS);
+		Assert.assertEquals(min, statistics.getMin(), TestThresholds.STATISTICS_EPS);
+		Assert.assertEquals(max, statistics.getMax(), TestThresholds.STATISTICS_EPS);
 	}
 
 }

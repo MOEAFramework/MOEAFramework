@@ -30,8 +30,7 @@ public class CompoundTerminationConditionTest {
 		MockAlgorithm algorithm = new MockAlgorithm();
 		MaxElapsedTime timeTermination = new MaxElapsedTime(1000);
 		MaxFunctionEvaluations nfeTermination = new MaxFunctionEvaluations(10000);
-		CompoundTerminationCondition compound = new CompoundTerminationCondition(
-				timeTermination, nfeTermination);
+		CompoundTerminationCondition compound = new CompoundTerminationCondition(timeTermination, nfeTermination);
 		
 		compound.initialize(algorithm);
 		Assert.assertFalse(compound.shouldTerminate(algorithm));
@@ -50,8 +49,7 @@ public class CompoundTerminationConditionTest {
 		MockAlgorithm algorithm = new MockAlgorithm();
 		MaxElapsedTime timeTermination = new MaxElapsedTime(1000);
 		MaxFunctionEvaluations nfeTermination = new MaxFunctionEvaluations(10000);
-		CompoundTerminationCondition compound = new CompoundTerminationCondition(
-				timeTermination, nfeTermination);
+		CompoundTerminationCondition compound = new CompoundTerminationCondition(timeTermination, nfeTermination);
 		
 		compound.initialize(algorithm);
 		Assert.assertFalse(compound.shouldTerminate(algorithm));

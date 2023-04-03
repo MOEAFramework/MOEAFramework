@@ -39,13 +39,11 @@ public class UF13Test {
 			double[] x = EncodingUtils.getReal(solution);
 			double[] f = new double[uf13.getNumberOfObjectives()];
 			
-			WFG1_M5(x, f, uf13.getNumberOfVariables(),
-					uf13.getNumberOfObjectives());
+			WFG1_M5(x, f, uf13.getNumberOfVariables(), uf13.getNumberOfObjectives());
 			
 			uf13.evaluate(solution);
 			
-			Assert.assertArrayEquals(f, solution.getObjectives(),
-					TestThresholds.SOLUTION_EPS);
+			Assert.assertArrayEquals(f, solution.getObjectives(), TestThresholds.SOLUTION_EPS);
 		}
 	}
 	
@@ -215,15 +213,13 @@ public class UF13Test {
 
 	private static double b_flat(double y, double A, double B, double C) {
 		double tmp1 = min_double(0.0, Math.floor(y - B)) * A * (B - y) / B;
-		double tmp2 = min_double(0.0, Math.floor(C - y)) * (1.0 - A) * (y - C)
-				/ (1.0 - C);
+		double tmp2 = min_double(0.0, Math.floor(C - y)) * (1.0 - A) * (y - C) / (1.0 - C);
 		
 		return correct_to_01(A + tmp1 - tmp2, EPSILON);
 	}
 
 	private static double s_linear(double y, double A) {
-		return correct_to_01(Math.abs(y - A) / Math.abs(Math.floor(A - y) + A),
-				EPSILON);
+		return correct_to_01(Math.abs(y - A) / Math.abs(Math.floor(A - y) + A), EPSILON);
 	}
 
 	private static double r_sum(double[] y, double[] w, int ny) {

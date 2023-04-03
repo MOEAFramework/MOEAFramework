@@ -31,17 +31,14 @@ import org.moeaframework.problem.MockBinaryProblem;
 public class NondominatedPopulationTest {
 
 	/**
-	 * Tests that a {@code NonDominatedPopulation} rejects adding nearly
-	 * identical solutions.
+	 * Tests that a {@code NonDominatedPopulation} rejects adding nearly identical solutions.
 	 */
 	@Test
 	public void testAddSimilar() {
 		NondominatedPopulation population = new NondominatedPopulation();
 
-		Solution solution1 = new Solution(new double[] { 0.0, 0.0,
-				Settings.EPS / 2.0 });
-		Solution solution2 = new Solution(new double[] { 0.0,
-				Settings.EPS / 2.0, 0.0 });
+		Solution solution1 = new Solution(new double[] { 0.0, 0.0, Settings.EPS / 2.0 });
+		Solution solution2 = new Solution(new double[] { 0.0, Settings.EPS / 2.0, 0.0 });
 
 		Assert.assertTrue(population.add(solution1));
 		Assert.assertFalse(population.add(solution2));
@@ -50,8 +47,7 @@ public class NondominatedPopulationTest {
 	}
 
 	/**
-	 * Tests that a {@code NonDominatedPopulation} maintains a non-dominated
-	 * population.
+	 * Tests that a {@code NonDominatedPopulation} maintains a non-dominated population.
 	 */
 	@Test
 	public void testAdd() {
@@ -80,13 +76,11 @@ public class NondominatedPopulationTest {
 	}
 	
 	/**
-	 * This is similar to {@link #testAddSimilar()} but tests if a solution
-	 * with different variables is also rejected.
+	 * This is similar to {@link #testAddSimilar()} but tests if a solution with different variables is also rejected.
 	 */
 	@Test
 	public void testNoDuplicates() {
-		NondominatedPopulation population = new NondominatedPopulation(
-				DuplicateMode.NO_DUPLICATE_OBJECTIVES);
+		NondominatedPopulation population = new NondominatedPopulation(DuplicateMode.NO_DUPLICATE_OBJECTIVES);
 		
 		try (MockBinaryProblem problem = new MockBinaryProblem()) {
 			Solution solution1 = problem.newSolution();
@@ -108,8 +102,7 @@ public class NondominatedPopulationTest {
 	
 	@Test
 	public void testAllowDuplicates() {
-		NondominatedPopulation population = new NondominatedPopulation(
-				DuplicateMode.ALLOW_DUPLICATES);
+		NondominatedPopulation population = new NondominatedPopulation(DuplicateMode.ALLOW_DUPLICATES);
 		
 		try (MockBinaryProblem problem = new MockBinaryProblem()) {
 			Solution solution1 = problem.newSolution();
@@ -131,8 +124,7 @@ public class NondominatedPopulationTest {
 	
 	@Test
 	public void testAllowDuplicateObjectives() {
-		NondominatedPopulation population = new NondominatedPopulation(
-				DuplicateMode.ALLOW_DUPLICATE_OBJECTIVES);
+		NondominatedPopulation population = new NondominatedPopulation(DuplicateMode.ALLOW_DUPLICATE_OBJECTIVES);
 		
 		try (MockBinaryProblem problem = new MockBinaryProblem()) {
 			Solution solution1 = problem.newSolution();

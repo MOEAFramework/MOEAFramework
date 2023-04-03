@@ -67,62 +67,44 @@ public class AttachPointTest {
 	
 	@Test
 	public void testAnd() {
-		Assert.assertFalse(FALSE.and(FALSE).matches(new Stack<Object>(), 
-				new TypeA()));
-		Assert.assertFalse(FALSE.and(TRUE).matches(new Stack<Object>(), 
-				new TypeA()));
-		Assert.assertFalse(TRUE.and(FALSE).matches(new Stack<Object>(), 
-				new TypeA()));
-		Assert.assertTrue(TRUE.and(TRUE).matches(new Stack<Object>(), 
-				new TypeA()));
+		Assert.assertFalse(FALSE.and(FALSE).matches(new Stack<Object>(), new TypeA()));
+		Assert.assertFalse(FALSE.and(TRUE).matches(new Stack<Object>(), new TypeA()));
+		Assert.assertFalse(TRUE.and(FALSE).matches(new Stack<Object>(), new TypeA()));
+		Assert.assertTrue(TRUE.and(TRUE).matches(new Stack<Object>(), new TypeA()));
 	}
 	
 	@Test
 	public void testOr() {
-		Assert.assertFalse(FALSE.or(FALSE).matches(new Stack<Object>(), 
-				new TypeA()));
-		Assert.assertTrue(FALSE.or(TRUE).matches(new Stack<Object>(), 
-				new TypeA()));
-		Assert.assertTrue(TRUE.or(FALSE).matches(new Stack<Object>(), 
-				new TypeA()));
-		Assert.assertTrue(TRUE.or(TRUE).matches(new Stack<Object>(), 
-				new TypeA()));
+		Assert.assertFalse(FALSE.or(FALSE).matches(new Stack<Object>(), new TypeA()));
+		Assert.assertTrue(FALSE.or(TRUE).matches(new Stack<Object>(), new TypeA()));
+		Assert.assertTrue(TRUE.or(FALSE).matches(new Stack<Object>(), new TypeA()));
+		Assert.assertTrue(TRUE.or(TRUE).matches(new Stack<Object>(), new TypeA()));
 	}
 	
 	@Test
 	public void testNot() {
-		Assert.assertTrue(AttachPoint.not(FALSE).matches(new Stack<Object>(), 
-				new TypeA()));
-		Assert.assertFalse(AttachPoint.not(TRUE).matches(new Stack<Object>(), 
-				new TypeA()));
+		Assert.assertTrue(AttachPoint.not(FALSE).matches(new Stack<Object>(), new TypeA()));
+		Assert.assertFalse(AttachPoint.not(TRUE).matches(new Stack<Object>(), new TypeA()));
 	}
 	
 	@Test
 	public void testIsClass() {
-		Assert.assertFalse(AttachPoint.isClass(TypeB.class).matches(
-				new Stack<Object>(), new TypeA()));
-		Assert.assertTrue(AttachPoint.isClass(TypeB.class).matches(
-				new Stack<Object>(), new TypeB()));
-		Assert.assertFalse(AttachPoint.isClass(TypeB.class).matches(
-				new Stack<Object>(), new TypeC()));
+		Assert.assertFalse(AttachPoint.isClass(TypeB.class).matches(new Stack<Object>(), new TypeA()));
+		Assert.assertTrue(AttachPoint.isClass(TypeB.class).matches(new Stack<Object>(), new TypeB()));
+		Assert.assertFalse(AttachPoint.isClass(TypeB.class).matches(new Stack<Object>(), new TypeC()));
 		
 		//test empty parents
-		Assert.assertFalse(AttachPoint.isClass(TypeB.class).matches(
-				new Stack<Object>(), new TypeA()));
+		Assert.assertFalse(AttachPoint.isClass(TypeB.class).matches(new Stack<Object>(), new TypeA()));
 	}
 	
 	@Test
 	public void testIsSubclass() {
-		Assert.assertFalse(AttachPoint.isSubclass(TypeB.class).matches(
-				new Stack<Object>(), new TypeA()));
-		Assert.assertTrue(AttachPoint.isSubclass(TypeB.class).matches(
-				new Stack<Object>(), new TypeB()));
-		Assert.assertTrue(AttachPoint.isSubclass(TypeB.class).matches(
-				new Stack<Object>(), new TypeC()));
+		Assert.assertFalse(AttachPoint.isSubclass(TypeB.class).matches(new Stack<Object>(), new TypeA()));
+		Assert.assertTrue(AttachPoint.isSubclass(TypeB.class).matches(new Stack<Object>(), new TypeB()));
+		Assert.assertTrue(AttachPoint.isSubclass(TypeB.class).matches(new Stack<Object>(), new TypeC()));
 		
 		//test empty parents
-		Assert.assertFalse(AttachPoint.isSubclass(TypeB.class).matches(
-				new Stack<Object>(), new TypeA()));
+		Assert.assertFalse(AttachPoint.isSubclass(TypeB.class).matches(new Stack<Object>(), new TypeA()));
 	}
 	
 	@Test
@@ -130,16 +112,12 @@ public class AttachPointTest {
 		Stack<Object> parents = new Stack<Object>();
 		parents.add(new TypeB());
 		
-		Assert.assertFalse(AttachPoint.isDeclaredIn(TypeA.class).matches(
-				parents, new TypeA()));
-		Assert.assertTrue(AttachPoint.isDeclaredIn(TypeB.class).matches(
-				parents, new TypeA()));
-		Assert.assertFalse(AttachPoint.isDeclaredIn(TypeC.class).matches(
-				parents, new TypeA()));
+		Assert.assertFalse(AttachPoint.isDeclaredIn(TypeA.class).matches(parents, new TypeA()));
+		Assert.assertTrue(AttachPoint.isDeclaredIn(TypeB.class).matches(parents, new TypeA()));
+		Assert.assertFalse(AttachPoint.isDeclaredIn(TypeC.class).matches(parents, new TypeA()));
 		
 		//test empty parents
-		Assert.assertFalse(AttachPoint.isDeclaredIn(TypeB.class).matches(
-				new Stack<Object>(), new TypeA()));
+		Assert.assertFalse(AttachPoint.isDeclaredIn(TypeB.class).matches(new Stack<Object>(), new TypeA()));
 	}
 	
 	@Test
@@ -148,16 +126,12 @@ public class AttachPointTest {
 		parents.add(new TypeC());
 		parents.add(new TypeB());
 		
-		Assert.assertFalse(AttachPoint.isNestedIn(TypeA.class).matches(
-				parents, new TypeA()));
-		Assert.assertTrue(AttachPoint.isNestedIn(TypeB.class).matches(
-				parents, new TypeA()));
-		Assert.assertTrue(AttachPoint.isNestedIn(TypeC.class).matches(
-				parents, new TypeA()));
+		Assert.assertFalse(AttachPoint.isNestedIn(TypeA.class).matches(parents, new TypeA()));
+		Assert.assertTrue(AttachPoint.isNestedIn(TypeB.class).matches(parents, new TypeA()));
+		Assert.assertTrue(AttachPoint.isNestedIn(TypeC.class).matches(parents, new TypeA()));
 		
 		//test empty parents
-		Assert.assertFalse(AttachPoint.isNestedIn(TypeB.class).matches(
-				new Stack<Object>(), new TypeA()));
+		Assert.assertFalse(AttachPoint.isNestedIn(TypeB.class).matches(new Stack<Object>(), new TypeA()));
 	}
 
 }

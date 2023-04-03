@@ -81,29 +81,19 @@ public class TypedPropertiesTest {
 	@Test
 	public void testStringArrays() {
 		// strings support empty entries
-		Assert.assertArrayEquals(new String[] { "2.71", "" }, properties
-				.getStringArray("float_invalid_array", null));
-		Assert.assertArrayEquals(new String[] { "42", "" }, properties
-				.getStringArray("integer_invalid_array", null));
+		Assert.assertArrayEquals(new String[] { "2.71", "" }, properties.getStringArray("float_invalid_array", null));
+		Assert.assertArrayEquals(new String[] { "42", "" }, properties.getStringArray("integer_invalid_array", null));
 	}
 
 	@Test
 	public void testArraysDefaultValue() {
-		Assert.assertArrayEquals(new String[] { "hello", "world!" }, properties
-				.getStringArray("-", new String[] { "hello", "world!" }));
-		Assert.assertArrayEquals(new double[] { 2.71 }, properties
-				.getDoubleArray("-", new double[] { 2.71 }), Settings.EPS);
-		Assert.assertArrayEquals(new float[] { 2.71f }, properties
-				.getFloatArray("-", new float[] { 2.71f }), 
-				(float)Settings.EPS);
-		Assert.assertArrayEquals(new int[] { 42, 12 }, properties.getIntArray(
-				"-", new int[] { 42, 12 }));
-		Assert.assertArrayEquals(new long[] { 42, 12 }, properties
-				.getLongArray("-", new long[] { 42, 12 }));
-		Assert.assertArrayEquals(new short[] { 42, 12 }, properties
-				.getShortArray("-", new short[] { 42, 12 }));
-		Assert.assertArrayEquals(new byte[] { 42, 12 }, properties
-				.getByteArray("-", new byte[] { 42, 12 }));
+		Assert.assertArrayEquals(new String[] { "hello", "world!" }, properties.getStringArray("-", new String[] { "hello", "world!" }));
+		Assert.assertArrayEquals(new double[] { 2.71 }, properties.getDoubleArray("-", new double[] { 2.71 }), Settings.EPS);
+		Assert.assertArrayEquals(new float[] { 2.71f }, properties.getFloatArray("-", new float[] { 2.71f }), (float)Settings.EPS);
+		Assert.assertArrayEquals(new int[] { 42, 12 }, properties.getIntArray("-", new int[] { 42, 12 }));
+		Assert.assertArrayEquals(new long[] { 42, 12 }, properties.getLongArray("-", new long[] { 42, 12 }));
+		Assert.assertArrayEquals(new short[] { 42, 12 }, properties.getShortArray("-", new short[] { 42, 12 }));
+		Assert.assertArrayEquals(new byte[] { 42, 12 }, properties.getByteArray("-", new byte[] { 42, 12 }));
 	}
 
 	@Test(expected = NumberFormatException.class)
@@ -222,20 +212,13 @@ public class TypedPropertiesTest {
 		properties.setShortArray("short_array", new short[] { 42, 12 });
 		properties.setByteArray("byte_array", new byte[] { 42, 12 });
 		
-		Assert.assertArrayEquals(new String[] { "foo", "bar" }, properties
-				.getStringArray("string_array", null));
-		Assert.assertArrayEquals(new double[] { 2.71, 1.44 }, properties
-				.getDoubleArray("double_array", null), Settings.EPS);
-		Assert.assertArrayEquals(new float[] { 2.71f, 1.44f }, properties
-				.getFloatArray("float_array", null), (float)Settings.EPS);
-		Assert.assertArrayEquals(new int[] { 42, 12 }, properties.getIntArray(
-				"int_array", null));
-		Assert.assertArrayEquals(new long[] { 42, 12 }, properties
-				.getLongArray("long_array", null));
-		Assert.assertArrayEquals(new short[] { 42, 12 }, properties
-				.getShortArray("short_array", null));
-		Assert.assertArrayEquals(new byte[] { 42, 12 }, properties
-				.getByteArray("byte_array", null));
+		Assert.assertArrayEquals(new String[] { "foo", "bar" }, properties.getStringArray("string_array", null));
+		Assert.assertArrayEquals(new double[] { 2.71, 1.44 }, properties.getDoubleArray("double_array", null), Settings.EPS);
+		Assert.assertArrayEquals(new float[] { 2.71f, 1.44f }, properties.getFloatArray("float_array", null), (float)Settings.EPS);
+		Assert.assertArrayEquals(new int[] { 42, 12 }, properties.getIntArray("int_array", null));
+		Assert.assertArrayEquals(new long[] { 42, 12 }, properties.getLongArray("long_array", null));
+		Assert.assertArrayEquals(new short[] { 42, 12 }, properties.getShortArray("short_array", null));
+		Assert.assertArrayEquals(new byte[] { 42, 12 }, properties.getByteArray("byte_array", null));
 	}
 	
 	@Test
@@ -248,20 +231,13 @@ public class TypedPropertiesTest {
 		properties.setShortArray("short_array_empty", new short[0]);
 		properties.setByteArray("byte_array_empty", new byte[0]);
 
-		Assert.assertArrayEquals(new String[0], properties.getStringArray(
-				"string_array_empty", null));
-		Assert.assertArrayEquals(new double[0], properties.getDoubleArray(
-				"double_array_empty", null), Settings.EPS);
-		Assert.assertArrayEquals(new float[0], properties.getFloatArray(
-				"float_array_empty", null), (float)Settings.EPS);
-		Assert.assertArrayEquals(new int[0], properties.getIntArray(
-				"int_array_empty", null));
-		Assert.assertArrayEquals(new long[0], properties.getLongArray(
-				"long_array_empty", null));
-		Assert.assertArrayEquals(new short[0], properties.getShortArray(
-				"short_array_empty", null));
-		Assert.assertArrayEquals(new byte[0], properties.getByteArray(
-				"byte_array_empty", null));
+		Assert.assertArrayEquals(new String[0], properties.getStringArray("string_array_empty", null));
+		Assert.assertArrayEquals(new double[0], properties.getDoubleArray("double_array_empty", null), Settings.EPS);
+		Assert.assertArrayEquals(new float[0], properties.getFloatArray("float_array_empty", null), (float)Settings.EPS);
+		Assert.assertArrayEquals(new int[0], properties.getIntArray("int_array_empty", null));
+		Assert.assertArrayEquals(new long[0], properties.getLongArray("long_array_empty", null));
+		Assert.assertArrayEquals(new short[0], properties.getShortArray("short_array_empty", null));
+		Assert.assertArrayEquals(new byte[0], properties.getByteArray("byte_array_empty", null));
 	}
 	
 	@Test

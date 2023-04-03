@@ -147,10 +147,8 @@ public class AdaptiveMultimethodVariationTest {
 		
 		Assert.assertEquals(3, variation.getArity());
 		
-		Assert.assertEquals(3.0/5.0, variation.getOperatorProbability(0), 
-				Settings.EPS);
-		Assert.assertEquals(2.0/5.0, variation.getOperatorProbability(1),
-				Settings.EPS);
+		Assert.assertEquals(3.0/5.0, variation.getOperatorProbability(0), Settings.EPS);
+		Assert.assertEquals(2.0/5.0, variation.getOperatorProbability(1), Settings.EPS);
 		
 		assertActualSelectionProbabilities(variation, 3.0/5.0, 2.0/5.0);
 	}
@@ -166,14 +164,11 @@ public class AdaptiveMultimethodVariationTest {
 		Assert.assertEquals(2, variation.getArity());
 		
 		for (Solution solution : population) {
-			solution.removeAttribute(
-					AdaptiveMultimethodVariation.OPERATOR_ATTRIBUTE);
+			solution.removeAttribute(AdaptiveMultimethodVariation.OPERATOR_ATTRIBUTE);
 		}
 		
-		Assert.assertEquals(0.5, variation.getOperatorProbability(0), 
-				Settings.EPS);
-		Assert.assertEquals(0.5, variation.getOperatorProbability(1),
-				Settings.EPS);
+		Assert.assertEquals(0.5, variation.getOperatorProbability(0), Settings.EPS);
+		Assert.assertEquals(0.5, variation.getOperatorProbability(1), Settings.EPS);
 		
 		assertActualSelectionProbabilities(variation, 0.5, 0.5);
 	}
@@ -185,17 +180,14 @@ public class AdaptiveMultimethodVariationTest {
 	 * @param variation the variation operator
 	 * @param probabilities the expected selection probabilities
 	 */
-	private void assertActualSelectionProbabilities(
-			AdaptiveMultimethodVariation variation, double... probabilities) {
+	private void assertActualSelectionProbabilities(AdaptiveMultimethodVariation variation, double... probabilities) {
 		UniformSelection selection = new UniformSelection();
 		
 		for (int i=0; i<TestThresholds.SAMPLES; i++) {
-			variation.evolve(selection.select(variation.getArity(), 
-					population));
+			variation.evolve(selection.select(variation.getArity(), population));
 		}
 		
-		Assert.assertEquals(variation.getNumberOfOperators(), 
-				probabilities.length);
+		Assert.assertEquals(variation.getNumberOfOperators(), probabilities.length);
 		
 		for (int i=0; i<variation.getNumberOfOperators(); i++) {
 			int count = ((DummyVariation)variation.getOperator(i)).count;
@@ -210,8 +202,7 @@ public class AdaptiveMultimethodVariationTest {
 	 * Extends {@link AdaptiveMultimethodVariation} to count the number of
 	 * invocations to {@link #getOperatorProbabilities()}.
 	 */
-	private class AdaptiveMultimethodVariationCounter extends
-	AdaptiveMultimethodVariation {
+	private class AdaptiveMultimethodVariationCounter extends AdaptiveMultimethodVariation {
 		
 		private int count = 0;
 
@@ -237,24 +228,20 @@ public class AdaptiveMultimethodVariationTest {
 	 */
 	@Test
 	public void testProbabilityUpdateInvocationCount() {
-		AdaptiveMultimethodVariationCounter variation = 
-				new AdaptiveMultimethodVariationCounter(population);
+		AdaptiveMultimethodVariationCounter variation = new AdaptiveMultimethodVariationCounter(population);
 		variation.addOperator(new DummyVariation(2));
 		variation.addOperator(new DummyVariation(2));
 		
 		UniformSelection selection = new UniformSelection();
 		
 		//ensure sufficient number of samples to trigger off-by-one error
-		int numberOfSamples = ArithmeticUtils.pow(variation.getUpdateWindow(),
-				3);
+		int numberOfSamples = ArithmeticUtils.pow(variation.getUpdateWindow(), 3);
 		
 		for (int i=0; i<numberOfSamples; i++) {
-			variation.evolve(selection.select(variation.getArity(), 
-					population));
+			variation.evolve(selection.select(variation.getArity(), population));
 		}
 		
-		Assert.assertEquals(numberOfSamples / variation.getUpdateWindow(), 
-				variation.getCount());
+		Assert.assertEquals(numberOfSamples / variation.getUpdateWindow(), variation.getCount());
 	}
 	
 }

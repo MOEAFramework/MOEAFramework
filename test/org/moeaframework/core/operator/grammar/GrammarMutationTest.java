@@ -65,8 +65,7 @@ public class GrammarMutationTest {
 
 			Solution mutated = mutation.evolve(new Solution[] { original })[0];
 
-			count += check((Grammar)original.getVariable(0), (Grammar)mutated
-					.getVariable(0));
+			count += check((Grammar)original.getVariable(0), (Grammar)mutated.getVariable(0));
 		}
 
 		Assert.assertEquals((double)count / (5 * TestThresholds.SAMPLES),

@@ -28,8 +28,7 @@ public class UniformDesignGeneratorTest extends WeightGeneratorTest {
 	
 	@Test
 	public void testPrimes() {
-		int[] primes = new UniformDesignGenerator(3, 100)
-				.generateFirstKPrimes(10);
+		int[] primes = new UniformDesignGenerator(3, 100).generateFirstKPrimes(10);
 		
 		for (int prime : primes) {
 			Assert.assertTrue(Primes.isPrime(prime));

@@ -66,11 +66,9 @@ public class ExternalProblemWithCStdioTest {
 		//start the process separately to intercept the error (debug) data
 		Process process = new ProcessBuilder(file.toString()).start();
 
-		debugReader = new BufferedReader(new InputStreamReader(
-				process.getErrorStream()));
+		debugReader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
 
-		problem = new ExternalProblem(process.getInputStream(), 
-				process.getOutputStream()) {
+		problem = new ExternalProblem(process.getInputStream(), process.getOutputStream()) {
 
 			@Override
 			public String getName() {
@@ -131,10 +129,8 @@ public class ExternalProblemWithCStdioTest {
 			problem.evaluate(solution);
 			
 			//check objectives and constraints
-			Assert.assertArrayEquals(new double[] { i+1, 1e-10/(i+1) }, 
-					solution.getObjectives(), Settings.EPS);
-			Assert.assertArrayEquals(new double[] { 1e10*(i+1) }, 
-					solution.getConstraints(), Settings.EPS);
+			Assert.assertArrayEquals(new double[] { i+1, 1e-10/(i+1) }, solution.getObjectives(), Settings.EPS);
+			Assert.assertArrayEquals(new double[] { 1e10*(i+1) }, solution.getConstraints(), Settings.EPS);
 			
 			//check the debug stream
 			String debugLine = debugReader.readLine();
@@ -144,23 +140,20 @@ public class ExternalProblemWithCStdioTest {
 			String[] debugTokens = debugLine.split("\\s+");
 			
 			for (int j=0; j<2; j++) {
-				Assert.assertEquals(
-						((RealVariable)solution.getVariable(j)).getValue(), 
+				Assert.assertEquals(((RealVariable)solution.getVariable(j)).getValue(), 
 						Double.parseDouble(debugTokens[j]), Settings.EPS);
 			}
 			
 			BinaryVariable bv = ((BinaryVariable)solution.getVariable(2));
 
 			for (int j=0; j<bv.getNumberOfBits(); j++) {
-				Assert.assertEquals(bv.get(j) ? 1 : 0, 
-						Integer.parseInt(debugTokens[2+j]));
+				Assert.assertEquals(bv.get(j) ? 1 : 0, Integer.parseInt(debugTokens[2+j]));
 			}
 			
 			Permutation p = ((Permutation)solution.getVariable(3));
 			
 			for (int j=0; j<p.size(); j++) {
-				Assert.assertEquals(p.get(j), 
-						Integer.parseInt(debugTokens[7+j]));
+				Assert.assertEquals(p.get(j), Integer.parseInt(debugTokens[7+j]));
 			}
 		}
 	}

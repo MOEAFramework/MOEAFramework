@@ -38,9 +38,7 @@ public class UNDXTest extends MeanCentricVariationTest {
 	public void testFullDistribution() {
 		UNDX undx = new UNDX(3, TestThresholds.SAMPLES);
 
-		Solution[] parents = new Solution[] { newSolution(0.0, 0.0),
-				newSolution(0.0, 1.0), newSolution(1.0, 0.0) };
-
+		Solution[] parents = new Solution[] { newSolution(0.0, 0.0), newSolution(0.0, 1.0), newSolution(1.0, 0.0) };
 		Solution[] offspring = undx.evolve(parents);
 
 		check(parents, offspring);
@@ -55,9 +53,7 @@ public class UNDXTest extends MeanCentricVariationTest {
 	public void testPartialDistribution() {
 		UNDX undx = new UNDX(3, TestThresholds.SAMPLES);
 
-		Solution[] parents = new Solution[] { newSolution(0.0, 0.0),
-				newSolution(0.0, 1.0), newSolution(0.0, 2.0) };
-
+		Solution[] parents = new Solution[] { newSolution(0.0, 0.0), newSolution(0.0, 1.0), newSolution(0.0, 2.0) };
 		Solution[] offspring = undx.evolve(parents);
 
 		check(parents, offspring);
@@ -70,8 +66,7 @@ public class UNDXTest extends MeanCentricVariationTest {
 	public void testParentImmutability() {
 		UNDX undx = new UNDX(3, 3);
 
-		Solution[] parents = new Solution[] { newSolution(0.0, 0.0),
-				newSolution(0.0, 1.0), newSolution(1.0, 0.0) };
+		Solution[] parents = new Solution[] { newSolution(0.0, 0.0), newSolution(0.0, 1.0), newSolution(1.0, 0.0) };
 
 		ParentImmutabilityTest.test(parents, undx);
 	}

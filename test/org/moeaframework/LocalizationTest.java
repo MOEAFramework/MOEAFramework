@@ -31,14 +31,9 @@ public class LocalizationTest {
 
 	@Test
 	public void testInstanceMethods() {
-		Localization english = Localization.getLocalization(
-				LocalizationTest.class);
-		Localization spanish = Localization.getLocalization(
-				LocalizationTest.class,
-				new Locale("ES"));
-		Localization german = Localization.getLocalization(
-				LocalizationTest.class,
-				new Locale("DE"));
+		Localization english = Localization.getLocalization(LocalizationTest.class);
+		Localization spanish = Localization.getLocalization(LocalizationTest.class, new Locale("ES"));
+		Localization german = Localization.getLocalization(LocalizationTest.class, new Locale("DE"));
 
 		//test without arguments
 		Assert.assertEquals("hello, world", english.getString("test"));
@@ -49,22 +44,17 @@ public class LocalizationTest {
 		Assert.assertTrue(german.containsKey("test"));
 
 		//test with arguments
-		Assert.assertEquals("hello, Foo",
-				english.getString("testArgument", "Foo"));
-		Assert.assertEquals("hola, Foo",
-				spanish.getString("testArgument", "Foo"));
-		Assert.assertEquals("hello, Foo",
-				german.getString("testArgument", "Foo"));
+		Assert.assertEquals("hello, Foo", english.getString("testArgument", "Foo"));
+		Assert.assertEquals("hola, Foo", spanish.getString("testArgument", "Foo"));
+		Assert.assertEquals("hello, Foo", german.getString("testArgument", "Foo"));
 
 		//test if missing key returns the key
 		Assert.assertEquals("missing.key", english.getString("missing.key"));
-		Assert.assertEquals("missing.key", english.getString("missing.key",
-				"Foo"));
+		Assert.assertEquals("missing.key", english.getString("missing.key", "Foo"));
 		Assert.assertFalse(english.containsKey("missing.key"));
 		
 		//test with missing bundle
-		Localization missing = Localization.getLocalization(
-				"org.moeaframework.util.missing");
+		Localization missing = Localization.getLocalization("org.moeaframework.util.missing");
 		Assert.assertEquals("missing.key", missing.getString("missing.key"));
 		Assert.assertFalse(missing.containsKey("missing.key"));
 	}
@@ -73,41 +63,25 @@ public class LocalizationTest {
 	public void testStaticMethods() {
 		Locale defaultLocale = Locale.getDefault();
 
-		Assert.assertEquals("hello, static world", 
-				Localization.getString(LocalizationTest.class, "test"));
-		Assert.assertEquals("hello, static Foo", 
-				Localization.getString(LocalizationTest.class, "testArgument",
-						"Foo"));
-		Assert.assertTrue(Localization.containsKey(LocalizationTest.class, 
-				"test"));
+		Assert.assertEquals("hello, static world", Localization.getString(LocalizationTest.class, "test"));
+		Assert.assertEquals("hello, static Foo", Localization.getString(LocalizationTest.class, "testArgument", "Foo"));
+		Assert.assertTrue(Localization.containsKey(LocalizationTest.class, "test"));
 
 		Locale.setDefault(new Locale("ES"));
-		Assert.assertEquals("hola, estático mundo", 
-				Localization.getString(LocalizationTest.class, "test"));
-		Assert.assertEquals("hola, estático Foo", 
-				Localization.getString(LocalizationTest.class, "testArgument",
-						"Foo"));
-		Assert.assertTrue(Localization.containsKey(LocalizationTest.class, 
-				"test"));
+		Assert.assertEquals("hola, estático mundo", Localization.getString(LocalizationTest.class, "test"));
+		Assert.assertEquals("hola, estático Foo", Localization.getString(LocalizationTest.class, "testArgument", "Foo"));
+		Assert.assertTrue(Localization.containsKey(LocalizationTest.class, "test"));
 
 		Locale.setDefault(new Locale("DE"));
-		Assert.assertEquals("hello, static world", 
-				Localization.getString(LocalizationTest.class, "test"));
-		Assert.assertEquals("hello, static Foo", 
-				Localization.getString(LocalizationTest.class, "testArgument",
-						"Foo"));
-		Assert.assertTrue(Localization.containsKey(LocalizationTest.class, 
-				"test"));
+		Assert.assertEquals("hello, static world", Localization.getString(LocalizationTest.class, "test"));
+		Assert.assertEquals("hello, static Foo", Localization.getString(LocalizationTest.class, "testArgument", "Foo"));
+		Assert.assertTrue(Localization.containsKey(LocalizationTest.class, "test"));
 
 		Locale.setDefault(defaultLocale);
 
-		Assert.assertEquals("LocalizationTest.missing.key",
-				Localization.getString(LocalizationTest.class, "missing.key"));
-		Assert.assertEquals("LocalizationTest.missing.key",
-				Localization.getString(LocalizationTest.class, "missing.key",
-						"Foo"));
-		Assert.assertFalse(Localization.containsKey(LocalizationTest.class, 
-						"missing.key"));
+		Assert.assertEquals("LocalizationTest.missing.key", Localization.getString(LocalizationTest.class, "missing.key"));
+		Assert.assertEquals("LocalizationTest.missing.key", Localization.getString(LocalizationTest.class, "missing.key", "Foo"));
+		Assert.assertFalse(Localization.containsKey(LocalizationTest.class, "missing.key"));
 	}
 
 }

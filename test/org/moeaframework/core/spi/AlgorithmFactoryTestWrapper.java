@@ -39,10 +39,8 @@ public class AlgorithmFactoryTestWrapper extends AlgorithmFactory {
 	private int terminateCount;
 
 	@Override
-	public synchronized Algorithm getAlgorithm(String name,
-			TypedProperties properties, Problem problem) {
-		final Algorithm algorithm = super.getAlgorithm(name, properties, 
-				problem);
+	public synchronized Algorithm getAlgorithm(String name, TypedProperties properties, Problem problem) {
+		final Algorithm algorithm = super.getAlgorithm(name, properties, problem);
 		
 		return new Algorithm() {
 			
@@ -96,11 +94,9 @@ public class AlgorithmFactoryTestWrapper extends AlgorithmFactory {
 	}
 
 	/**
-	 * Returns the number of times the {@code terminate} method has been
-	 * invoked.
+	 * Returns the number of times the {@code terminate} method has been invoked.
 	 * 
-	 * @return the number of times the {@code terminate} method has been
-	 *         invoked
+	 * @return the number of times the {@code terminate} method has been invoked
 	 */
 	public int getTerminateCount() {
 		return terminateCount;

@@ -62,8 +62,7 @@ public class SubtreeCrossoverTest {
 			Solution solution2 = new Solution(1, 1);
 			solution2.setVariable(0, program2);
 			
-			Solution[] offspring = crossover.evolve(new Solution[] {
-					solution1, solution2 });
+			Solution[] offspring = crossover.evolve(new Solution[] { solution1, solution2 });
 			Assert.assertEquals(1, offspring.length);
 			
 			Program result = (Program)offspring[0].getVariable(0);
