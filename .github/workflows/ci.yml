@@ -12,7 +12,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        os: [ 'ubuntu-latest' ]
         java: [ '8', '11', '16', '17', '18', '19' ]
+        include:
+          - os: 'windows-latest'
+            java: '19'
     steps:
     - uses: actions/checkout@v3
     - name: Set up JDK ${{ matrix.java }}
@@ -47,7 +51,7 @@ jobs:
         wget https://repo1.maven.org/maven2/org/ow2/asm/asm-tree/9.5/asm-tree-9.5.jar
         wget https://repo1.maven.org/maven2/org/ow2/asm/asm-util/9.5/asm-util-9.5.jar
         wget https://repo1.maven.org/maven2/org/openjdk/nashorn/nashorn-core/15.4/nashorn-core-15.4.jar
-    - name: Setup Coco Framework
+    - name: Setup Coco Framework (Linux)
       if: runner.os == 'Linux'
       run: |
         # remove extraneous Java binary that is leftover from a previous version (1.8)
@@ -64,6 +68,23 @@ jobs:
         sed 's/Java_CocoJNI_/Java_org_moeaframework_problem_BBOB2016_CocoJNI_/g' CocoJNI.h > org_moeaframework_problem_BBOB2016_CocoJNI.h
         gcc -I $JAVA_HOME/include -I $JAVA_HOME/include/linux -o CocoJNI.so -fPIC -shared org_moeaframework_problem_BBOB2016_CocoJNI.c
         cp CocoJNI.so ../../../../CocoJNI.so
+    - name: Setup Coco Framework (Windows)
+      if: runner.os == 'Windows'
+      run: |
+        # remove old Java version still on path to avoid finding the javah executable
+        $env:PATH = $env:PATH -replace "C:\\hostedtoolcache\\windows\\Java_Temurin-Hotspot_jdk\\8.0.362-9\\x64\\bin;", ""
+
+		# Checkout and build the Java version of the Coco Framework
+        git clone https://github.com/numbbo/coco
+        cd coco
+        python do.py run-java
+        
+        # Customize build to work with the MOEA Framework test package
+        cd code-experiments/build/java
+        sed 's/Java_CocoJNI_/Java_org_moeaframework_problem_BBOB2016_CocoJNI_/g' CocoJNI.c > org_moeaframework_problem_BBOB2016_CocoJNI.c
+        sed 's/Java_CocoJNI_/Java_org_moeaframework_problem_BBOB2016_CocoJNI_/g' CocoJNI.h > org_moeaframework_problem_BBOB2016_CocoJNI.h
+        gcc "-Wl,--kill-at" -I $env:JAVA_HOME/include -I $env:JAVA_HOME/include/win32 -shared -o CocoJNI.dll org_moeaframework_problem_BBOB2016_CocoJNI.c
+        cp CocoJNI.dll ../../../../CocoJNI.dll
     - name: Test with Ant - Java ${{ matrix.java }}
       run: ant -DON_CI=true -f test.xml
     - name: Upload test results
