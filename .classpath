@@ -12,11 +12,6 @@
 	<classpathentry kind="lib" path="lib/jcommon-1.0.24.jar"/>
 	<classpathentry kind="lib" path="lib/jfreechart-1.5.3.jar"/>
 	<classpathentry kind="lib" path="lib/rsyntaxtextarea-3.3.0.jar"/>
-	<classpathentry kind="lib" path="lib/nashorn-core-15.4.jar"/>
-	<classpathentry kind="lib" path="lib/asm-9.5.jar"/>
-	<classpathentry kind="lib" path="lib/asm-util-9.5.jar"/>
-	<classpathentry kind="lib" path="lib/asm-commons-9.5.jar"/>
-	<classpathentry kind="lib" path="lib/asm-tree-9.5.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
 		<attributes>
 			<attribute name="module" value="true"/>
