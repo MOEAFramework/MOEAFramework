@@ -24,7 +24,6 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.comparator.DominanceComparator;
-import org.moeaframework.core.comparator.ParetoDominanceComparator;
 import org.moeaframework.core.configuration.Property;
 import org.moeaframework.core.configuration.Validate;
 import org.moeaframework.core.operator.RandomInitialization;
@@ -63,10 +62,25 @@ public class GDE3 extends AbstractEvolutionaryAlgorithm {
 		this(problem,
 				Settings.DEFAULT_POPULATION_SIZE,
 				new NondominatedSortingPopulation(),
-				new ParetoDominanceComparator(), // TODO: we should get this from NondominatedSortingPopulation
 				new DifferentialEvolutionSelection(),
 				new DifferentialEvolutionVariation(),
 				new RandomInitialization(problem));
+	}
+	
+	/**
+	 * Constructs the GDE3 algorithm with the specified components.
+	 * 
+	 * @param problem the problem being solved
+	 * @param initialPopulationSize the initial population size
+	 * @param population the population used to store solutions
+	 * @param selection the selection operator
+	 * @param variation the variation operator
+	 * @param initialization the initialization method
+	 */
+	public GDE3(Problem problem, int initialPopulationSize, NondominatedSortingPopulation population,
+			DifferentialEvolutionSelection selection, DifferentialEvolutionVariation variation,
+			Initialization initialization) {
+		this(problem, initialPopulationSize, population, population.getComparator(), selection, variation, initialization);
 	}
 
 	/**

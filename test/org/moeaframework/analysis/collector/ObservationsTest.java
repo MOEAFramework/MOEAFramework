@@ -53,6 +53,7 @@ public class ObservationsTest {
 		Assert.assertNotEquals(observations.first(), observations.last());
 		
 		Assert.assertEquals(2, observations.size());
+		Assert.assertFalse(observations.isEmpty());
 		
 		for (Observation observation : observations) {
 			if (observation.getNFE() == 100) {
@@ -63,6 +64,15 @@ public class ObservationsTest {
 				Assert.fail();
 			}
 		}
+	}
+	
+	@Test
+	public void testAt() {
+		Assert.assertEquals(5, observations.at(50).get("test"));
+		Assert.assertEquals(5, observations.at(100).get("test"));
+		Assert.assertEquals(2, observations.at(150).get("test"));
+		Assert.assertEquals(2, observations.at(200).get("test"));
+		Assert.assertNull(observations.at(250));
 	}
 	
 	@Test(expected = IllegalArgumentException.class)

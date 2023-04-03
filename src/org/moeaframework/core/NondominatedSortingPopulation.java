@@ -90,8 +90,7 @@ public class NondominatedSortingPopulation extends Population {
 	 * @param comparator the dominance comparator
 	 * @param iterable the solutions used to initialize this population
 	 */
-	public NondominatedSortingPopulation(DominanceComparator comparator,
-			Iterable<? extends Solution> iterable) {
+	public NondominatedSortingPopulation(DominanceComparator comparator, Iterable<? extends Solution> iterable) {
 		this(comparator);
 		addAll(iterable);
 	}
@@ -105,6 +104,15 @@ public class NondominatedSortingPopulation extends Population {
 	 */
 	public NondominatedSortingPopulation(Iterable<? extends Solution> iterable) {
 		this(new ParetoDominanceComparator(), iterable);
+	}
+	
+	/**
+	 * Returns the dominance comparator used by this non-dominated population.
+	 * 
+	 * @return the dominance comparator
+	 */
+	public DominanceComparator getComparator() {
+		return nondominatedSorting.getComparator();
 	}
 
 	@Override

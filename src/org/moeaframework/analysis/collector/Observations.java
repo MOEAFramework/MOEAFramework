@@ -20,10 +20,10 @@ package org.moeaframework.analysis.collector;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
-
+import java.util.SortedMap;
+import java.util.TreeMap;
 import org.moeaframework.util.format.Column;
 import org.moeaframework.util.format.Formattable;
 import org.moeaframework.util.format.TabularData;
@@ -38,13 +38,13 @@ public class Observations implements Serializable, Iterable<Observation>, Format
 	/**
 	 * The internal storage of observations.
 	 */
-	private final SortedSet<Observation> observations;
+	private final SortedMap<Integer, Observation> observations;
 
 	/**
 	 * Constructs an empty observations object.
 	 */
 	public Observations() {
-		observations = new TreeSet<Observation>();
+		observations = new TreeMap<Integer, Observation>();
 	}
 
 	/**
@@ -53,7 +53,7 @@ public class Observations implements Serializable, Iterable<Observation>, Format
 	 * @param observation the observation
 	 */
 	public void add(Observation observation) {
-		observations.add(observation);
+		observations.put(observation.getNFE(), observation);
 	}
 	
 	/**
@@ -66,6 +66,15 @@ public class Observations implements Serializable, Iterable<Observation>, Format
 	}
 	
 	/**
+	 * Returns {@code true} if this collection of observations is empty; {@code false} otherwise.
+	 * 
+	 * @return {@code true} if this collection of observations is empty; {@code false} otherwise
+	 */
+	public boolean isEmpty() {
+		return observations.isEmpty();
+	}
+	
+	/**
 	 * Returns the keys - the name of individual observations - that have been recorded.
 	 * This assumes that each recorded observation contains identical keys.
 	 * 
@@ -75,7 +84,7 @@ public class Observations implements Serializable, Iterable<Observation>, Format
 		if (observations.isEmpty()) {
 			return Collections.emptySet();
 		} else {
-			return observations.first().keys();
+			return observations.get(observations.firstKey()).keys();
 		}
 	}
 	
@@ -85,7 +94,16 @@ public class Observations implements Serializable, Iterable<Observation>, Format
 	 * @return the first observation
 	 */
 	public Observation first() {
-		return observations.first();
+		return observations.get(observations.firstKey());
+	}
+	
+	/**
+	 * Returns the last observation.
+	 * 
+	 * @return the last observation
+	 */
+	public Observation last() {
+		return observations.get(observations.lastKey());
 	}
 	
 	/**
@@ -96,40 +114,28 @@ public class Observations implements Serializable, Iterable<Observation>, Format
 	 * @return the matching observation
 	 */
 	public Observation at(int NFE) {
-		// TODO: given the data is sorted, there should be a faster way to do this (binary search)
-		for (Observation observation : observations) {
-			if (observation.getNFE() >= NFE) {
-				return observation;
-			}
+		try {
+			return observations.get(observations.tailMap(NFE).firstKey());
+		} catch (NoSuchElementException e) {
+			return null;
 		}
-		
-		return null;
-	}
-	
-	/**
-	 * Returns the last observation.
-	 * 
-	 * @return the last observation
-	 */
-	public Observation last() {
-		return observations.last();
 	}
 
 	@Override
 	public Iterator<Observation> iterator() {
-		return observations.iterator();
+		return observations.values().iterator();
 	}
 
 	@Override
 	public TabularData<Observation> asTabularData() {
 		TabularData<Observation> data = new TabularData<Observation>(this);
 		
-		if (!observations.isEmpty()) {
-			Observation observation = observations.first();
+		if (!isEmpty()) {
+			Observation observation = first();
 			
 			data.addColumn(new Column<Observation, Integer>("NFE", o -> o.getNFE()));
 			
-			for (final String key : observation.keys()) {
+			for (final String key : keys()) {
 				Object value = observation.get(key);
 				
 				// exclude non-numeric values
