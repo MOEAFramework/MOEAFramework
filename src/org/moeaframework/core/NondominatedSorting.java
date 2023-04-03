@@ -78,11 +78,9 @@ public class NondominatedSorting {
 	}
 	
 	/**
-	 * Returns the dominance comparator used by this non-dominated sorting
-	 * routine.
+	 * Returns the dominance comparator used by this non-dominated sorting routine.
 	 * 
-	 * @return the dominance comparator used by this non-dominated sorting
-	 *         routine
+	 * @return the dominance comparator used by this non-dominated sorting routine
 	 */
 	public DominanceComparator getComparator() {
 		return comparator;
