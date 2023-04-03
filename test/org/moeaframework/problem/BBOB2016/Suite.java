@@ -1,7 +1,8 @@
-/* The following source code is copied from the Coco Framework available at
- * <https://github.com/numbbo/coco> under the 3-clause BSD license. The
- * original code is copyright 2013 by the NumBBO/CoCO team.  See the AUTHORS
- * file located in the Coco Framework repository for more details.
+/* The following source code is copied from the Coco Framework available at <https://github.com/numbbo/coco>
+ * under the 3-clause BSD license.
+ * 
+ * The original code is copyright 2013 by the NumBBO/CoCO team.  See the AUTHORS file located in the Coco Framework
+ * repository for more details.
  */
 package org.moeaframework.problem.BBOB2016;
 
@@ -12,7 +13,8 @@ public class Suite {
 
 	/**
 	 * Constructs the suite from the given suiteName, suiteInstance and suiteOptions.
-	 * TODO: Copy explanation of options from the C code
+	 * See http://numbbo.github.io/coco-doc/C/#suite-parameters for more information on 
+	 * valid suite parameters.
 	 * @param suiteName
 	 * @param suiteInstance
 	 * @param suiteOptions

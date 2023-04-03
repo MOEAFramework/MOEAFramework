@@ -1,7 +1,8 @@
-/* The following source code is copied from the Coco Framework available at
- * <https://github.com/numbbo/coco> under the 3-clause BSD license. The
- * original code is copyright 2013 by the NumBBO/CoCO team.  See the AUTHORS
- * file located in the Coco Framework repository for more details.
+/* The following source code is copied from the Coco Framework available at <https://github.com/numbbo/coco>
+ * under the 3-clause BSD license.
+ * 
+ * The original code is copyright 2013 by the NumBBO/CoCO team.  See the AUTHORS file located in the Coco Framework
+ * repository for more details.
  */
 package org.moeaframework.problem.BBOB2016;
 
@@ -19,6 +20,7 @@ public class Problem {
 	
 	private double[] lower_bounds;
 	private double[] upper_bounds;
+	private int number_of_integer_variables;
 	
 	private String id;
 	private String name;
@@ -40,10 +42,11 @@ public class Problem {
 			
 			this.lower_bounds = CocoJNI.cocoProblemGetSmallestValuesOfInterest(pointer);
 			this.upper_bounds = CocoJNI.cocoProblemGetLargestValuesOfInterest(pointer);
+			this.number_of_integer_variables = CocoJNI.cocoProblemGetNumberOfIntegerVariables(pointer);
 			
 			this.id = CocoJNI.cocoProblemGetId(pointer);
 			this.name = CocoJNI.cocoProblemGetName(pointer);
-			
+
 			this.index = CocoJNI.cocoProblemGetIndex(pointer);
 			
 			this.pointer = pointer;
@@ -87,12 +90,28 @@ public class Problem {
 		return this.number_of_constraints;
 	}
 	
+	public double[] getSmallestValuesOfInterest() {
+		return this.lower_bounds;
+	}
+	
 	public double getSmallestValueOfInterest(int index) {
 		return this.lower_bounds[index];
+	}
+
+	public double[] getLargestValuesOfInterest() {
+		return this.upper_bounds;
 	}
 	
 	public double getLargestValueOfInterest(int index) {
 		return this.upper_bounds[index];
+	}
+	
+	public int getNumberOfIntegerVariabls() {
+		return this.number_of_integer_variables;
+	}
+
+	public double[] getLargestFValuesOfInterest() {
+		return CocoJNI.cocoProblemGetLargestFValuesOfInterest(pointer);
 	}
 	
 	public String getId() {
@@ -103,8 +122,20 @@ public class Problem {
 		return this.name;
 	}
 	
+	public long getEvaluations() {
+		return CocoJNI.cocoProblemGetEvaluations(pointer);
+	}
+	
+	public long getEvaluationsConstraints() {
+		return CocoJNI.cocoProblemGetEvaluationsConstraints(pointer);
+	}
+	
 	public long getIndex() {
 		return this.index;
+	}
+	
+	public boolean isFinalTargetHit() {
+		return (CocoJNI.cocoProblemIsFinalTargetHit(pointer) == 1);
 	}
 	
 	/* toString method */
