@@ -50,14 +50,18 @@ jobs:
     - name: Compile Coco Framework for testing
       run: |
         git clone https://github.com/numbbo/coco
-        cp test/org/moeaframework/problem/BBOB2016/org_moeaframework_problem_BBOB2016_CocoJNI.h coco/code-experiments/build/java/org_moeaframework_problem_BBOB2016_CocoJNI.h
-        cp test/org/moeaframework/problem/BBOB2016/org_moeaframework_problem_BBOB2016_CocoJNI.c coco/code-experiments/build/java/org_moeaframework_problem_BBOB2016_CocoJNI.c
-        
         cd coco
         python do.py run-java
-        cd code-experiments/build/java
-        gcc -I "$JAVA_HOME/include" -I "$JAVA_HOME/include/linux" -fPIC -shared -o CocoJNI.so org_moeaframework_problem_BBOB2016_CocoJNI.c
-        cp CocoJNI.so ../../../../CocoJNI.so
+        ls
+        
+        #cp test/org/moeaframework/problem/BBOB2016/org_moeaframework_problem_BBOB2016_CocoJNI.h coco/code-experiments/build/java/org_moeaframework_problem_BBOB2016_CocoJNI.h
+        #cp test/org/moeaframework/problem/BBOB2016/org_moeaframework_problem_BBOB2016_CocoJNI.c coco/code-experiments/build/java/org_moeaframework_problem_BBOB2016_CocoJNI.c
+        #
+        #cd coco
+        #python do.py run-java
+        #cd code-experiments/build/java
+        #gcc -I "$JAVA_HOME/include" -I "$JAVA_HOME/include/linux" -fPIC -shared -o CocoJNI.so org_moeaframework_problem_BBOB2016_CocoJNI.c
+        #cp CocoJNI.so ../../../../CocoJNI.so
     - name: Test with Ant - Java ${{ matrix.java }}
       run: ant -DON_CI=true -f test.xml
     - name: Upload test results
