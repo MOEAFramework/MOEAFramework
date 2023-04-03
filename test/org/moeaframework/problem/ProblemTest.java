@@ -35,10 +35,8 @@ public abstract class ProblemTest {
 	 * Call from any test to skip if JMetal does not exist.
 	 */
 	public void assumeJMetalExists() {
-		ProblemFactory.getInstance().forEach(p -> System.out.println(p.getClass().getName()));
-		
-		Assume.assumeTrue(ProblemFactory.getInstance().hasProvider(
-				"org.moeaframework.problem.jmetal.JMetalProblems"));
+		Assume.assumeTrue("JMetal-Plugin required to run test",
+				ProblemFactory.getInstance().hasProvider("org.moeaframework.problem.jmetal.JMetalProblems"));
 	}
 	
 	/**
