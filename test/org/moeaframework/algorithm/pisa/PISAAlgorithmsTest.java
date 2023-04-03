@@ -35,7 +35,7 @@ import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.util.TypedProperties;
 
 /**
- * Tests the {@link PISAAlgorithms} class ussing the new, parameter-based
+ * Tests the {@link PISAAlgorithms} class using the new, parameter-based
  * configurations.
  */
 public class PISAAlgorithmsTest {

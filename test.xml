@@ -57,8 +57,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 	</target>
 
 	<!-- Conditionally builds the MOEA Framework JAR -->
-	<target name="check-binary" depends="check-dependencies" 
-			unless="binary-exists">
+	<target name="check-binary" depends="check-dependencies" unless="binary-exists">
 		<ant target="build-binary" />
 	</target>
 
@@ -96,8 +95,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 			<path refid="requiredfiles" />
 		</copy>
 
-		<jar basedir="${build}" 
-			jarfile="${dist}/${shortname}-${version}-Test.jar" />
+		<jar basedir="${build}" jarfile="${dist}/${shortname}-${version}-Test.jar" />
 	</target>
 
 	<!-- Runs all JUnit tests -->
@@ -176,6 +174,8 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		<mkdir dir="${build}/src/main/java" />
 		<mkdir dir="${build}/src/main/resources" />
 		<mkdir dir="${build}/src/test/java" />
+		<mkdir dir="${build}/src/test/resources" />
+		<mkdir dir="${build}/examples" />
 		
 		<copy tofile="${build}/pom.xml">
 			<fileset file="auxiliary/maven/pom.xml" />
@@ -199,6 +199,10 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		
 		<copy todir="${build}/src/test/resources">
 			<fileset dir="test" excludes="**/*.java" />
+		</copy>
+		
+		<copy todir="${build}/examples">
+			<fileset dir="examples" />
 		</copy>
 		
 		<copy todir="${build}/pf">

@@ -33,8 +33,8 @@ public abstract class AlgorithmTest {
 	 * Call from any test to skip if JMetal does not exist.
 	 */
 	public void assumeJMetalExists() {
-		Assume.assumeTrue(AlgorithmFactory.getInstance().hasProvider(
-				"org.moeaframework.algorithm.jmetal.JMetalAlgorithms"));
+		Assume.assumeTrue("JMetal-Plugin required to run test", 
+				AlgorithmFactory.getInstance().hasProvider("org.moeaframework.algorithm.jmetal.JMetalAlgorithms"));
 	}
 	
 	/**

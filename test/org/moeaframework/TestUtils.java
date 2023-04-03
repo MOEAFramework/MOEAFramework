@@ -47,6 +47,7 @@ import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.util.io.CommentedLineReader;
+import org.moeaframework.util.io.RedirectStream;
 
 /**
  * Utility methods for testing.
@@ -544,8 +545,7 @@ public class TestUtils {
 	 */
 	public static void assumeFileExists(File file) {
 		if (!file.exists()) {
-			System.err.println(file + " does not exist, skipping test");
-			Assume.assumeTrue(false);
+			Assume.assumeTrue(file + " does not exist, skipping test", false);
 		}
 	}
 	
@@ -554,8 +554,7 @@ public class TestUtils {
 	 */
 	public static void assumePOSIX() {
 		if (!SystemUtils.IS_OS_UNIX) {
-			System.err.println("system is not POSIX-compliant, skipping test");
-			Assume.assumeTrue(false);
+			Assume.assumeTrue("system is not POSIX-compliant, skipping test", false);
 		}
 	}
 	
@@ -570,19 +569,15 @@ public class TestUtils {
 		
 		try {
 			Process process = Runtime.getRuntime().exec(new String[] { "make" }, null, folder);
+			RedirectStream.redirect(process.getInputStream(), System.out);
+			RedirectStream.redirect(process.getErrorStream(), System.err);
 			
 			if (process.waitFor() != 0) {
-				System.err.println("make exited with an error status ("
-						+ process.exitValue() + "), skipping test");
-				Assume.assumeTrue(false);
+				Assume.assumeTrue("make exited with an error code (" + process.exitValue() + "), skipping test", false);
 			}
-		} catch (InterruptedException e) {
-			System.err.println("interrupted while waiting for make to " +
-					"complete, skipping test");
-			Assume.assumeTrue(false);
-		} catch (IOException e) {
-			System.err.println("unable to run make, skipping test");
-			Assume.assumeTrue(false);
+		} catch (InterruptedException | IOException e) {
+			System.err.println(e);
+			Assume.assumeTrue("unable to run make, skipping test", false);
 		}
 	}
 
