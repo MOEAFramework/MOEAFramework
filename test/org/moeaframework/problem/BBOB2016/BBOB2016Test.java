@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 
+import org.apache.commons.lang3.SystemUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.Executor;
@@ -90,7 +91,7 @@ public class BBOB2016Test {
 	@Test
 	public void testCoco() throws IOException {
 		// skip test if the Coco DLL does not exist
-		TestUtils.assumeFileExists(new File("CocoJNI.dll"));
+		TestUtils.assumeFileExists(new File("CocoJNI" + (SystemUtils.IS_OS_WINDOWS ? ".dll" : ".so")));
 		
 		// capture the output to collect all BBOB2016-Biobj problem names
 		PrintStream oldOutput = System.out;
