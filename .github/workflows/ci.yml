@@ -24,24 +24,22 @@ jobs:
       with:
         java-version: ${{ matrix.java }}
         distribution: zulu
-    - name: Install required software
+    - name: Install required software (Linux)
       if: runner.os == 'Linux'
       run: |
         sudo apt install xmlstarlet
-    - name: Setup up JUnit 4 (Linux)
-      if: runner.os == 'Linux'
+    - name: Install required software (Windows)
+      if: runner.os == 'Windows'
+      run: |
+        choco install wget --no-progress
+        choco install xmlstarlet --no-progress
+    - name: Setup up JUnit 4
       run: |
         cd lib
         wget https://search.maven.org/remotecontent?filepath=junit/junit/4.13.2/junit-4.13.2.jar
         wget https://search.maven.org/remotecontent?filepath=org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar
-    - name: Setup up JUnit 4 (Windows)
-      if: runner.os == 'Windows'
-      run: |
-        cd lib
-        Invoke-WebRequest -Uri https://search.maven.org/remotecontent?filepath=junit/junit/4.13.2/junit-4.13.2.jar -OutFile junit-4.13.2.jar
-        Invoke-WebRequest -Uri https://search.maven.org/remotecontent?filepath=org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar -OutFile hamcrest-core-1.3.jar
     - name: Setup JMetal-Plugin
-      if: matrix.java >= 14 && runner.os == 'Linux'
+      if: matrix.java >= 14
       run: |
         version=$(xmlstarlet sel -N x="http://maven.apache.org/POM/4.0.0" -t -v "//x:project/x:dependencies/x:dependency[.//x:artifactId='jmetal-plugin']/x:version/text()" auxiliary/maven/pom.xml)
         echo "Downloading jmetal-plugin $version"
