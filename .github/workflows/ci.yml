@@ -32,7 +32,6 @@ jobs:
       if: runner.os == 'Windows'
       run: |
         choco install wget --no-progress
-        choco install xmlstarlet --no-progress
     - name: Setup up JUnit 4
       run: |
         cd lib
