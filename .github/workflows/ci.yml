@@ -60,7 +60,7 @@ jobs:
       if: runner.os == 'Windows'
       run: |
         # Remove Java 8 from the system path to prevent Coco from locating the javah executable
-        $env:PATH = $env:PATH -replace "$env:JAVA_HOME_8_X64//bin;", ""
+        $env:PATH = $env:PATH -replace "$env:JAVA_HOME_8_X64\\bin;", ""
         echo $env:PATH
 
         git clone https://github.com/numbbo/coco
