@@ -61,7 +61,7 @@ public class BBOB2016Test {
 	@Test
 	public void testCoco() throws Exception {
 		// skip test if the Coco library does not exist
-		TestUtils.assumeFileExists(new File(System.mapLibraryName("CocoJNI"));
+		TestUtils.assumeFileExists(new File(System.mapLibraryName("CocoJNI")));
 		
 		CocoJNI.cocoSetLogLevel("error");
 		
