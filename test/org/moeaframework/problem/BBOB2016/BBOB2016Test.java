@@ -17,10 +17,8 @@
  */
 package org.moeaframework.problem.BBOB2016;
 
-import java.io.File;
-
-import org.apache.commons.lang3.SystemUtils;
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.Test;
 import org.moeaframework.TestUtils;
 import org.moeaframework.core.Problem;
@@ -60,8 +58,11 @@ public class BBOB2016Test {
 	@SuppressWarnings("resource")
 	@Test
 	public void testCoco() throws Exception {
-		// skip test if the Coco library does not exist
-		TestUtils.assumeFileExists(new File(System.mapLibraryName("CocoJNI")));
+		try {
+			System.loadLibrary("CocoJNI");
+		} catch (UnsatisfiedLinkError e) {
+			Assume.assumeTrue("CocoJNI not found, please compile and place on the Java library path", false);
+		}
 		
 		CocoJNI.cocoSetLogLevel("error");
 		
