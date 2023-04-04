@@ -74,6 +74,7 @@ jobs:
       run: |
           $env:PATH = $env:PATH -replace "C:\\hostedtoolcache\\windows\\Java_Temurin-Hotspot_jdk\\8.0.362-9\\x64\\bin;", ""
 
+<<<<<<< HEAD
           git clone https://github.com/numbbo/coco
           cd coco
           python do.py run-java
@@ -84,6 +85,20 @@ jobs:
           gcc "-Wl,--kill-at" -I $env:JAVA_HOME/include -I $env:JAVA_HOME/include/win32 -shared -o CocoJNI.dll org_moeaframework_problem_BBOB2016_CocoJNI.c
           cp CocoJNI.dll ../../../../CocoJNI.dll
     - name: Test with Ant
+=======
+        # Checkout and build the Java version of the Coco Framework
+        git clone https://github.com/numbbo/coco
+        cd coco
+        python do.py run-java
+        
+        # Customize build to work with the MOEA Framework test package
+        cd code-experiments/build/java
+        sed 's/Java_CocoJNI_/Java_org_moeaframework_problem_BBOB2016_CocoJNI_/g' CocoJNI.c > org_moeaframework_problem_BBOB2016_CocoJNI.c
+        sed 's/Java_CocoJNI_/Java_org_moeaframework_problem_BBOB2016_CocoJNI_/g' CocoJNI.h > org_moeaframework_problem_BBOB2016_CocoJNI.h
+        gcc -I $JAVA_HOME/include -I $JAVA_HOME/include/linux -o libCocoJNI.so -fPIC -shared org_moeaframework_problem_BBOB2016_CocoJNI.c
+        cp libCocoJNI.so ../../../../libCocoJNI.so
+    - name: Test with Ant - Java ${{ matrix.java }}
+>>>>>>> 81f10969bd23f7e4123e5e4c22018d850440f2d5
       run: ant -DON_CI=true -f test.xml
     - name: Upload test results
       uses: actions/upload-artifact@v3
