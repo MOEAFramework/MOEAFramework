@@ -1,7 +1,8 @@
-/* The following source code is copied from the Coco Framework available at
- * <https://github.com/numbbo/coco> under the 3-clause BSD license. The
- * original code is copyright 2013 by the NumBBO/CoCO team.  See the AUTHORS
- * file located in the Coco Framework repository for more details.
+/* The following source code is copied from the Coco Framework available at <https://github.com/numbbo/coco>
+ * under the 3-clause BSD license.
+ * 
+ * The original code is copyright 2013 by the NumBBO/CoCO team.  See the AUTHORS file located in the Coco Framework
+ * repository for more details.
  */
 package org.moeaframework.problem.BBOB2016;
 
@@ -30,11 +31,10 @@ public class Benchmark {
 	public Problem getNextProblem() throws Exception {
 		
 		try {		
-			long problemPointer = CocoJNI.cocoGetNextProblem(suite.getPointer(), observer.getPointer());
+			long problemPointer = CocoJNI.cocoSuiteGetNextProblem(suite.getPointer(), observer.getPointer());
 			
-			if (problemPointer == 0) {
+			if (problemPointer == 0)
 				return null;
-			}
 			
 			return new Problem(problemPointer);
 		} catch (Exception e) {

@@ -31,6 +31,11 @@ public class CocoProblemWrapper extends AbstractProblem {
 	}
 
 	@Override
+	public String getName() {
+		return problem.getName();
+	}
+
+	@Override
 	public void evaluate(Solution solution) {
 		double[] x = EncodingUtils.getReal(solution);
 		solution.setObjectives(problem.evaluateFunction(x));
@@ -52,55 +57,4 @@ public class CocoProblemWrapper extends AbstractProblem {
 		return solution;
 	}
 	
-	public static void printProblemNames() {
-		CocoJNI.cocoSetLogLevel("error");
-		
-		try {
-
-			final String observer_options = 
-					  "result_folder: Foobar_on_bbob-biobj " 
-					+ "algorithm_name: Foobar "
-					+ "algorithm_info: \"MOEA Framework implementation of Foobar\"";
-
-			Suite suite = new Suite("bbob-biobj", "year: 2016", "dimensions: 2,3,5,10,20,40");
-			Observer observer = new Observer("bbob-biobj", observer_options);
-			Benchmark benchmark = new Benchmark(suite, observer);
-			Problem problem = null;
-			
-			while ((problem = benchmark.getNextProblem()) != null) {
-				System.out.println(problem.getName());
-			}
-		} catch (Exception e) {
-			System.err.println(e.toString());
-		}
-	}
-	
-	public static CocoProblemWrapper findProblem(String algorithm, String problemName) {
-		CocoJNI.cocoSetLogLevel("error");
-		
-		try {
-
-			final String observer_options = 
-					  "result_folder: " + algorithm + "_on_bbob-biobj " 
-					+ "algorithm_name: " + algorithm + " "
-					+ "algorithm_info: \"MOEA Framework implementation of " + algorithm + "\"";
-
-			Suite suite = new Suite("bbob-biobj", "year: 2016", "dimensions: 2,3,5,10,20,40");
-			Observer observer = new Observer("bbob-biobj", observer_options);
-			Benchmark benchmark = new Benchmark(suite, observer);
-			Problem problem = null;
-			
-			while ((problem = benchmark.getNextProblem()) != null) {
-				if (problem.getName().equals(problemName)) {
-					return new CocoProblemWrapper(problem);
-				}
-			}
-
-			return null;
-		} catch (Exception e) {
-			System.err.println(e.toString());
-			return null;
-		}
-	}
-
 }

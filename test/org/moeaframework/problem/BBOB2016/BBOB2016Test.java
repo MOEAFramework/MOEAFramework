@@ -17,52 +17,16 @@
  */
 package org.moeaframework.problem.BBOB2016;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintStream;
-
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.Test;
-import org.moeaframework.Executor;
 import org.moeaframework.TestUtils;
-import org.moeaframework.core.NondominatedPopulation;
-import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Problem;
+import org.moeaframework.core.Solution;
 import org.moeaframework.core.spi.ProblemFactory;
 
 /**
- * To run these tests, you'll first need to compile CocoJNI.dll.  Copy the
- * .c and .h files from this package into the code-experiments/build/java
- * folder within the Coco Framework repository.  Then run:
- * 
- *     gcc -Wl,--kill-at -I "C:\Program Files\Java\jdk1.7.0_45\include"
- *         -I "C:\Program Files\Java\jdk1.7.0_45\include\win32" -shared
- *         -o CocoJNI.dll org_moeaframework_problem_BBOB2016_CocoJNI.c
- *         
- * You will likely need to change the paths to your version of the Java
- * Development Kit.  If any interfaces changed, you may need to update the
- * .h and .c files.  Run:
- * 
- *     javah -jni -cp test org.moeaframework.problem.BBOB2016.CocoJNI
- *     
- * from the root of the MOEA Framework source code to recreate the header file,
- * rename CocoJNI.c to org_moeaframework_problem_BBOB2016_CocoJNI.c, and
- * replace all occurrences of:
- * 
- *     Java_CocoJNI_
- *     
- * with:
- * 
- *     Java_org_moeaframework_problem_BBOB2016_CocoJNI_
- *     
- * in the C code.
- * 
- * A working version of the DLL is distributed with these tests, but must
- * first be moved to the root MOEA Framework directory.
+ * Tests the {@link BBOB2016PRoblems} class.
  */
 public class BBOB2016Test {
 	
@@ -88,55 +52,78 @@ public class BBOB2016Test {
 	}
 	
 	@Test
-	public void testCoco() throws IOException {
-		// skip test if the Coco DLL does not exist
-		TestUtils.assumeFileExists(new File("CocoJNI.dll"));
+	public void testNameFormat() {
+		Assert.assertNotNull(ProblemFactory.getInstance().getProblem("bbob_f1_i1_d2,bbob_f21_i15_d40"));
+		Assert.assertNotNull(ProblemFactory.getInstance().getProblem("bbob_f1_i1_d2__bbob_f21_i15_d40"));
+		Assert.assertNotNull(ProblemFactory.getInstance().getProblem("bbob-biobj(bbob_f1_i1_d2__bbob_f21_i15_d40)"));
+	}
+	
+	/**
+	 * This test runs against the Coco Framework <https://github.com/numbbo/coco>.  To use, run:
+	 * <pre>
+	 *   git clone https://github.com/numbbo/coco
+     *   cd coco
+     *   python do.py run-java
+     *    
+     *   cd code-experiments/build/java
+     *   sed 's/Java_CocoJNI_/Java_org_moeaframework_problem_BBOB2016_CocoJNI_/g' CocoJNI.c > org_moeaframework_problem_BBOB2016_CocoJNI.c
+     *   sed 's/Java_CocoJNI_/Java_org_moeaframework_problem_BBOB2016_CocoJNI_/g' CocoJNI.h > org_moeaframework_problem_BBOB2016_CocoJNI.h
+     * </pre>
+     * Then compile the shared library:
+     * <pre>
+     *   Windows:
+     *     gcc "-Wl,--kill-at" -I $env:JAVA_HOME/include -I $env:JAVA_HOME/include/win32 -shared -o CocoJNI.dll org_moeaframework_problem_BBOB2016_CocoJNI.c
+     * 
+     *   Linux:
+     *     gcc -I $JAVA_HOME/include -I $JAVA_HOME/include/linux -o CocoJNI.dll -fPIC -shared org_moeaframework_problem_BBOB2016_CocoJNI.c
+     * </pre>
+     * And put the resulting file in the Java library path.  For example, the root folder of this project is fine.
+	 */
+	@SuppressWarnings("resource")
+	@Test
+	public void testCoco() throws Exception {
+		try {
+			System.loadLibrary("CocoJNI");
+		} catch (UnsatisfiedLinkError e) {
+			Assume.assumeTrue("CocoJNI not found, please compile and place on the Java library path", false);
+		}
 		
-		// capture the output to collect all BBOB2016-Biobj problem names
-		PrintStream oldOutput = System.out;
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		System.setOut(new PrintStream(baos));
+		CocoJNI.cocoSetLogLevel("error");
 		
-		CocoProblemWrapper.printProblemNames();
-		
-		System.out.close();
-		System.setOut(oldOutput);
-		
-		// parse the output and test each problem instance
-		BufferedReader reader = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(baos.toByteArray())));
-		String problemName = null;
-		
-		int count = 0;
-		
-		while ((problemName = reader.readLine()) != null) {
-			count++;
+		final String observer_options = 
+				"result_folder: Testing_on_bbob-biobj " 
+				+ "algorithm_name: Testing "
+				+ "algorithm_info: \"MOEA Framework Testing\"";
+
+		Suite suite = new Suite("bbob-biobj", "year: 2016", "dimensions: 2,3,5,10,20,40");
+		Observer observer = new Observer("bbob-biobj", observer_options);
+		Benchmark benchmark = new Benchmark(suite, observer);
+		org.moeaframework.problem.BBOB2016.Problem rawProblem = null;
 			
-			PRNG.setSeed(1000);
-			NondominatedPopulation result1 = new Executor()
-					.withProblem(problemName)
-					.withAlgorithm("NSGAII")
-					.withMaxEvaluations(10000)
-					.run();
+		while ((rawProblem = benchmark.getNextProblem()) != null) {	
+			CocoProblemWrapper cocoProblem = new CocoProblemWrapper(rawProblem);
+			Problem moeaProblem = ProblemFactory.getInstance().getProblem(cocoProblem.getName());
 			
-			PRNG.setSeed(1000);
-			NondominatedPopulation result2 = new Executor()
-					.withProblem(CocoProblemWrapper.findProblem("NSGAII", problemName))
-					.withAlgorithm("NSGAII")
-					.withMaxEvaluations(10000)
-					.run();
+			System.out.println("Testing " + cocoProblem.getName());
 			
-			boolean equal = TestUtils.equals(result1, result2);
-			System.out.println(problemName + " " + (equal ? "ok!" : "does not match!") + " " + count);
+			Assert.assertEquals(cocoProblem.getNumberOfVariables(), moeaProblem.getNumberOfVariables());
+			Assert.assertEquals(cocoProblem.getNumberOfObjectives(), moeaProblem.getNumberOfObjectives());
+			Assert.assertEquals(cocoProblem.getNumberOfConstraints(), moeaProblem.getNumberOfConstraints());
 			
-			if (!equal) {
-				Assert.fail("Output from " + problemName + " differs");
-			}
-			
-			if (count == 100) {
-				// stop after testing every instance at least once
-				break;
+			for (int i = 0; i < 100; i++) {
+				Solution solution1 = moeaProblem.newSolution();
+				Solution solution2 = solution1.copy();
+				
+				moeaProblem.evaluate(solution1);
+				cocoProblem.evaluate(solution2);
+				
+				TestUtils.assertEquals(solution1, solution2);
 			}
 		}
+				
+		benchmark.finalizeBenchmark();
+		observer.finalizeObserver();
+		//suite.finalizeSuite(); // This ends up terminating the JVM and interrputing the tests
 	}
 
 }
