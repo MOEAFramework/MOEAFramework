@@ -75,7 +75,7 @@ public class BBOB2016Test {
      *     gcc "-Wl,--kill-at" -I $env:JAVA_HOME/include -I $env:JAVA_HOME/include/win32 -shared -o CocoJNI.dll org_moeaframework_problem_BBOB2016_CocoJNI.c
      * 
      *   Linux:
-     *     gcc -I $JAVA_HOME/include -I $JAVA_HOME/include/linux -o CocoJNI.dll -fPIC -shared org_moeaframework_problem_BBOB2016_CocoJNI.c
+     *     gcc -I $JAVA_HOME/include -I $JAVA_HOME/include/linux -o libCocoJNI.so -fPIC -shared org_moeaframework_problem_BBOB2016_CocoJNI.c
      * </pre>
      * And put the resulting file in the Java library path.  For example, the root folder of this project is fine.
 	 */
@@ -102,27 +102,27 @@ public class BBOB2016Test {
 			
 		while ((rawProblem = benchmark.getNextProblem()) != null) {	
 			CocoProblemWrapper cocoProblem = new CocoProblemWrapper(rawProblem);
-			Problem moeaProblem = ProblemFactory.getInstance().getProblem(cocoProblem.getName());
+		 	Problem moeaProblem = ProblemFactory.getInstance().getProblem(cocoProblem.getName());
 			
-			System.out.println("Testing " + cocoProblem.getName());
+		 	System.out.println("Testing " + cocoProblem.getName());
 			
-			Assert.assertEquals(cocoProblem.getNumberOfVariables(), moeaProblem.getNumberOfVariables());
-			Assert.assertEquals(cocoProblem.getNumberOfObjectives(), moeaProblem.getNumberOfObjectives());
-			Assert.assertEquals(cocoProblem.getNumberOfConstraints(), moeaProblem.getNumberOfConstraints());
+		 	Assert.assertEquals(cocoProblem.getNumberOfVariables(), moeaProblem.getNumberOfVariables());
+		 	Assert.assertEquals(cocoProblem.getNumberOfObjectives(), moeaProblem.getNumberOfObjectives());
+		 	Assert.assertEquals(cocoProblem.getNumberOfConstraints(), moeaProblem.getNumberOfConstraints());
 			
-			for (int i = 0; i < 100; i++) {
-				Solution solution1 = moeaProblem.newSolution();
-				Solution solution2 = solution1.copy();
+		 	for (int i = 0; i < 100; i++) {
+		 		Solution solution1 = moeaProblem.newSolution();
+		 		Solution solution2 = solution1.copy();
 				
-				moeaProblem.evaluate(solution1);
-				cocoProblem.evaluate(solution2);
+		 		moeaProblem.evaluate(solution1);
+		 		cocoProblem.evaluate(solution2);
 				
-				TestUtils.assertEquals(solution1, solution2);
-			}
+		 		TestUtils.assertEquals(solution1, solution2);
+		 	}
 		}
 				
 		benchmark.finalizeBenchmark();
-		observer.finalizeObserver();
+		//observer.finalizeObserver(); // This causes a free(): double free detected in tcache 2 error
 		//suite.finalizeSuite(); // This ends up terminating the JVM and interrputing the tests
 	}
 
