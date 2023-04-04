@@ -29,6 +29,7 @@ jobs:
       run: |
         sudo apt install xmlstarlet
     - name: Setup up JUnit 4
+      shell: bash
       run: |
         cd lib
         wget https://search.maven.org/remotecontent?filepath=junit/junit/4.13.2/junit-4.13.2.jar
@@ -43,6 +44,7 @@ jobs:
         wget https://github.com/MOEAFramework/JMetal-Plugin/releases/download/v${version}/jmetal-plugin-${version}-jar-with-dependencies.jar
     - name: Setup scripting plugin
       if: matrix.java >= 11
+      shell: bash
       run: |
         # Nashorn is GPL v2 with the Classpath Exception
         # ASM is BSD 3-clause
