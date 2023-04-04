@@ -50,11 +50,18 @@ public class BBOB2016Test {
 		}
 	}
 	
+	@Test
+	public void testNameFormat() {
+		Assert.assertNotNull(ProblemFactory.getInstance().getProblem("bbob_f1_i1_d2,bbob_f21_i15_d40"));
+		Assert.assertNotNull(ProblemFactory.getInstance().getProblem("bbob_f1_i1_d2__bbob_f21_i15_d40"));
+		Assert.assertNotNull(ProblemFactory.getInstance().getProblem("bbob-biobj(bbob_f1_i1_d2__bbob_f21_i15_d40)"));
+	}
+	
 	@SuppressWarnings("resource")
 	@Test
 	public void testCoco() throws Exception {
 		// skip test if the Coco library does not exist
-		TestUtils.assumeFileExists(new File("CocoJNI" + (SystemUtils.IS_OS_WINDOWS ? ".dll" : ".so")));
+		TestUtils.assumeFileExists(new File(System.mapLibraryName("CocoJNI"));
 		
 		CocoJNI.cocoSetLogLevel("error");
 		
@@ -70,7 +77,7 @@ public class BBOB2016Test {
 			
 		while ((rawProblem = benchmark.getNextProblem()) != null) {	
 			CocoProblemWrapper cocoProblem = new CocoProblemWrapper(rawProblem);
-			Problem moeaProblem = ProblemFactory.getInstance().getProblem(convertProblemName(cocoProblem.getName()));
+			Problem moeaProblem = ProblemFactory.getInstance().getProblem(cocoProblem.getName());
 			
 			System.out.println("Testing " + cocoProblem.getName());
 			
@@ -92,20 +99,6 @@ public class BBOB2016Test {
 		benchmark.finalizeBenchmark();
 		observer.finalizeObserver();
 		suite.finalizeSuite();
-	}
-	
-	private String convertProblemName(String cocoName) {
-		String problemName = cocoName;
-		
-		if (problemName.startsWith("bbob-biobj(")) {
-			problemName = problemName.substring(11, problemName.length()-1);
-		}
-		
-		if (problemName.contains("__")) {
-			problemName = problemName.replace("__", ",");
-		}
-		
-		return problemName;
 	}
 
 }

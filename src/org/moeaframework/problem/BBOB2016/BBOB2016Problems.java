@@ -52,7 +52,11 @@ import org.moeaframework.core.spi.ProblemProvider;
  *     bbob_f001_i02_d05,bbob_f021_i02_d07
  * </pre>
  * The dimension or number of decision variables must be identical in both
- * functions.
+ * functions.  This also recognizes the problem name format used by the Coco
+ * Framework:
+ * <pre>
+ *     bbob-biobj(bbob_f001_i02_d05__bbob_f021_i02_d07)
+ * </pre>
  */
 public class BBOB2016Problems extends ProblemProvider {
 	
@@ -60,7 +64,7 @@ public class BBOB2016Problems extends ProblemProvider {
 			"^bbob_f([0-9]+)_i([0-9]+)_d([0-9]+)$");
 	
 	private static final Pattern pattern = Pattern.compile(
-			"^bbob_f([0-9]+)_i([0-9]+)_d([0-9]+)(\\,bbob_f([0-9]+)_i([0-9]+)_d([0-9]+))*$");
+			"^bbob_f([0-9]+)_i([0-9]+)_d([0-9]+)((\\,|__)bbob_f([0-9]+)_i([0-9]+)_d([0-9]+))*$");
 	
 	/**
 	 * Constructs the problem provider for BBOB 2016 test suite.
@@ -71,10 +75,14 @@ public class BBOB2016Problems extends ProblemProvider {
 
 	@Override
 	public Problem getProblem(String name) {
+		if (name.startsWith("bbob-biobj(") && name.endsWith(")")) {
+			name = name.substring(11, name.length()-1);
+		}
+		
 		Matcher matcher = pattern.matcher(name);
 
 		if (matcher.matches()) {
-			String[] parts = name.split(",");
+			String[] parts = name.split("(,|__)");
 			BBOBFunction[] functions = new BBOBFunction[parts.length];
 			
 			for (int i = 0; i < parts.length; i++) {
