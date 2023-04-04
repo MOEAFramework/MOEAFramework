@@ -63,6 +63,8 @@ jobs:
         sed 's/Java_CocoJNI_/Java_org_moeaframework_problem_BBOB2016_CocoJNI_/g' CocoJNI.h > org_moeaframework_problem_BBOB2016_CocoJNI.h
         gcc -I $JAVA_HOME/include -I $JAVA_HOME/include/linux -o CocoJNI.so -fPIC -shared org_moeaframework_problem_BBOB2016_CocoJNI.c
         cp CocoJNI.so ../../../../CocoJNI.so
+    - name: Print directory contents
+      run: ls
     - name: Test with Ant - Java ${{ matrix.java }}
       run: ant -DON_CI=true -f test.xml
     - name: Upload test results
