@@ -47,7 +47,7 @@ jobs:
         wget https://repo1.maven.org/maven2/org/ow2/asm/asm-tree/9.5/asm-tree-9.5.jar
         wget https://repo1.maven.org/maven2/org/ow2/asm/asm-util/9.5/asm-util-9.5.jar
         wget https://repo1.maven.org/maven2/org/openjdk/nashorn/nashorn-core/15.4/nashorn-core-15.4.jar
-    - name: Compile Coco Framework
+    - name: Setup Coco Framework
       run: |
         sudo rm /usr/bin/javah
 
@@ -58,7 +58,7 @@ jobs:
         cd code-experiments/build/java
         sed 's/Java_CocoJNI_/Java_org_moeaframework_problem_BBOB2016_CocoJNI_/g' CocoJNI.c > org_moeaframework_problem_BBOB2016_CocoJNI.c
         sed 's/Java_CocoJNI_/Java_org_moeaframework_problem_BBOB2016_CocoJNI_/g' CocoJNI.h > org_moeaframework_problem_BBOB2016_CocoJNI.h
-        gcc -I $JAVA_HOME/include -I $JAVA_HOME/include/linux -o CocoJNI.dll -fPIC -shared org_moeaframework_problem_BBOB2016_CocoJNI.c
+        gcc -I $JAVA_HOME/include -I $JAVA_HOME/include/linux -o libCocoJNI.so -fPIC -shared org_moeaframework_problem_BBOB2016_CocoJNI.c
 
         sudo mkdir -p /usr/java/packages/lib/
         sudo mv libCocoJNI.so /usr/java/packages/lib/
