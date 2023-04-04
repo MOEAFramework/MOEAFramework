@@ -40,6 +40,7 @@ jobs:
         wget https://search.maven.org/remotecontent?filepath=org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar
     - name: Setup JMetal-Plugin
       if: matrix.java >= 14
+      shell: bash
       run: |
         version=$(xmlstarlet sel -N x="http://maven.apache.org/POM/4.0.0" -t -v "//x:project/x:dependencies/x:dependency[.//x:artifactId='jmetal-plugin']/x:version/text()" auxiliary/maven/pom.xml)
         echo "Downloading jmetal-plugin $version"
@@ -61,7 +62,8 @@ jobs:
       if: runner.os == 'Windows'
       run: |
         # Remove Java 8 from the system path to prevent Coco from locating the javah executable
-        $env:PATH = $env:PATH -replace "$env:JAVA_HOME_8_X64;", ""
+        $env:PATH = $env:PATH -replace "$env:JAVA_HOME_8_X64//bin;", ""
+        echo $env:PATH
 
         git clone https://github.com/numbbo/coco
         cd coco
