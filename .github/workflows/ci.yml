@@ -8,11 +8,15 @@ on:
 
 jobs:
   ant-tests:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}-latest
     strategy:
       fail-fast: false
       matrix:
+        os: [ 'ubuntu' ]
         java: [ '8', '11', '16', '17', '18', '19' ]
+        include:
+          - os: 'windows'
+            java: '19'
     steps:
     - uses: actions/checkout@v3
     - name: Set up JDK ${{ matrix.java }}
@@ -21,6 +25,7 @@ jobs:
         java-version: ${{ matrix.java }}
         distribution: zulu
     - name: Install required software
+      if: runner.os == 'Linux'
       run: |
         sudo apt install xmlstarlet
     - name: Setup up JUnit 4
@@ -29,7 +34,7 @@ jobs:
         wget https://search.maven.org/remotecontent?filepath=junit/junit/4.13.2/junit-4.13.2.jar
         wget https://search.maven.org/remotecontent?filepath=org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar
     - name: Setup JMetal-Plugin
-      if: ${{ matrix.java >= 14 }}
+      if: matrix.java >= 14 && runner.os == 'Linux'
       run: |
         version=$(xmlstarlet sel -N x="http://maven.apache.org/POM/4.0.0" -t -v "//x:project/x:dependencies/x:dependency[.//x:artifactId='jmetal-plugin']/x:version/text()" auxiliary/maven/pom.xml)
         echo "Downloading jmetal-plugin $version"
@@ -37,7 +42,7 @@ jobs:
         cd lib
         wget https://github.com/MOEAFramework/JMetal-Plugin/releases/download/v${version}/jmetal-plugin-${version}-jar-with-dependencies.jar
     - name: Setup scripting plugin
-      if: ${{ matrix.java >= 11 }}
+      if: matrix.java >= 11
       run: |
         # Nashorn is GPL v2 with the Classpath Exception
         # ASM is BSD 3-clause
@@ -47,64 +52,28 @@ jobs:
         wget https://repo1.maven.org/maven2/org/ow2/asm/asm-tree/9.5/asm-tree-9.5.jar
         wget https://repo1.maven.org/maven2/org/ow2/asm/asm-util/9.5/asm-util-9.5.jar
         wget https://repo1.maven.org/maven2/org/openjdk/nashorn/nashorn-core/15.4/nashorn-core-15.4.jar
-    - name: Test with Ant - Java ${{ matrix.java }}
-      run: ant -DON_CI=true -f test.xml
-    - name: Upload test results
-      uses: actions/upload-artifact@v3
-      if: always()
-      with:
-        name: ant-test-results-${{ matrix.java }}
-        path: test-results 
-
-  windows-tests:
-    runs-on: windows-latest
-    steps:
-    - uses: actions/checkout@v3
-    - name: Set up JDK 19
-      uses: actions/setup-java@v2
-      with:
-        java-version: 19
-        distribution: zulu
-    - name: Setup up JUnit 4
-      run: |
-        cd lib
-        wget https://search.maven.org/remotecontent?filepath=junit/junit/4.13.2/junit-4.13.2.jar
-        wget https://search.maven.org/remotecontent?filepath=org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar
     - name: Setup Coco Framework
+      if: runner.os == 'Windows'
       run: |
-          $env:PATH = $env:PATH -replace "C:\\hostedtoolcache\\windows\\Java_Temurin-Hotspot_jdk\\8.0.362-9\\x64\\bin;", ""
+        # Remove Java 8 from the system path to prevent Coco from locating the javah executable
+        $env:PATH = $env:PATH -replace "$env:JAVA_HOME_8_X64;", ""
 
-<<<<<<< HEAD
-          git clone https://github.com/numbbo/coco
-          cd coco
-          python do.py run-java
-          
-          cd code-experiments/build/java
-          sed 's/Java_CocoJNI_/Java_org_moeaframework_problem_BBOB2016_CocoJNI_/g' CocoJNI.c > org_moeaframework_problem_BBOB2016_CocoJNI.c
-          sed 's/Java_CocoJNI_/Java_org_moeaframework_problem_BBOB2016_CocoJNI_/g' CocoJNI.h > org_moeaframework_problem_BBOB2016_CocoJNI.h
-          gcc "-Wl,--kill-at" -I $env:JAVA_HOME/include -I $env:JAVA_HOME/include/win32 -shared -o CocoJNI.dll org_moeaframework_problem_BBOB2016_CocoJNI.c
-          cp CocoJNI.dll ../../../../CocoJNI.dll
-    - name: Test with Ant
-=======
-        # Checkout and build the Java version of the Coco Framework
         git clone https://github.com/numbbo/coco
         cd coco
         python do.py run-java
-        
-        # Customize build to work with the MOEA Framework test package
+          
         cd code-experiments/build/java
         sed 's/Java_CocoJNI_/Java_org_moeaframework_problem_BBOB2016_CocoJNI_/g' CocoJNI.c > org_moeaframework_problem_BBOB2016_CocoJNI.c
         sed 's/Java_CocoJNI_/Java_org_moeaframework_problem_BBOB2016_CocoJNI_/g' CocoJNI.h > org_moeaframework_problem_BBOB2016_CocoJNI.h
-        gcc -I $JAVA_HOME/include -I $JAVA_HOME/include/linux -o libCocoJNI.so -fPIC -shared org_moeaframework_problem_BBOB2016_CocoJNI.c
-        cp libCocoJNI.so ../../../../libCocoJNI.so
+        gcc "-Wl,--kill-at" -I $env:JAVA_HOME/include -I $env:JAVA_HOME/include/win32 -shared -o CocoJNI.dll org_moeaframework_problem_BBOB2016_CocoJNI.c
+        cp CocoJNI.dll ../../../../CocoJNI.dll
     - name: Test with Ant - Java ${{ matrix.java }}
->>>>>>> 81f10969bd23f7e4123e5e4c22018d850440f2d5
       run: ant -DON_CI=true -f test.xml
     - name: Upload test results
       uses: actions/upload-artifact@v3
       if: always()
       with:
-        name: windows-test-results
+        name: ant-test-results-${{ matrix.os }}-JDK${{ matrix.java }}
         path: test-results 
 
   maven-test:
@@ -117,9 +86,9 @@ jobs:
         java-version: 16
         distribution: temurin
         cache: maven
-    - name: Prepare Maven project - Java 8
+    - name: Prepare Maven project
       run: ant -f test.xml build-maven-tests
-    - name: Run Maven tests - Java 8
+    - name: Run Maven tests
       run: |
         cd build
         mvn test
@@ -129,7 +98,7 @@ jobs:
       uses: actions/upload-artifact@v3
       if: always()
       with:
-        name: maven-test-results-${{ matrix.java }}
+        name: maven-test-results
         path: build/target/surefire-reports
 
   package-tests:
@@ -160,4 +129,3 @@ jobs:
       run: ant -f build.xml package-demo
     - name: Package website
       run: ant -f build.xml package-website
-
