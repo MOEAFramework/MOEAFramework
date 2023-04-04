@@ -61,12 +61,10 @@ jobs:
         cd code-experiments/build/java
         sed 's/Java_CocoJNI_/Java_org_moeaframework_problem_BBOB2016_CocoJNI_/g' CocoJNI.c > org_moeaframework_problem_BBOB2016_CocoJNI.c
         sed 's/Java_CocoJNI_/Java_org_moeaframework_problem_BBOB2016_CocoJNI_/g' CocoJNI.h > org_moeaframework_problem_BBOB2016_CocoJNI.h
-        gcc -I $JAVA_HOME/include -I $JAVA_HOME/include/linux -o CocoJNI.so -fPIC -shared org_moeaframework_problem_BBOB2016_CocoJNI.c
-        cp CocoJNI.so ../../../../CocoJNI.so
+        gcc -I $JAVA_HOME/include -I $JAVA_HOME/include/linux -o libCocoJNI.so -fPIC -shared org_moeaframework_problem_BBOB2016_CocoJNI.c
+        cp libCocoJNI.so ../../../../libCocoJNI.so
     - name: Test with Ant - Java ${{ matrix.java }}
-      run: |
-        LD_LIBRARY_PATH=$GITHUB_WORKSPACE
-        ant -DON_CI=true -f test.xml
+      run: ant -DON_CI=true -f test.xml
     - name: Upload test results
       uses: actions/upload-artifact@v3
       if: always()
