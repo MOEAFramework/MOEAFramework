@@ -38,6 +38,7 @@ import org.moeaframework.analysis.collector.EpsilonProgressCollector;
 import org.moeaframework.analysis.collector.IndicatorCollector;
 import org.moeaframework.analysis.collector.InstrumentedAlgorithm;
 import org.moeaframework.analysis.collector.Observations;
+import org.moeaframework.analysis.collector.PopulationCollector;
 import org.moeaframework.analysis.collector.PopulationSizeCollector;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
@@ -85,38 +86,32 @@ import org.moeaframework.core.spi.ProblemFactory;
 public class Instrumenter extends ProblemBuilder {
 
 	/**
-	 * {@code true} if the hypervolume collector is included; {@code false}
-	 * otherwise.
+	 * {@code true} if the hypervolume collector is included; {@code false} otherwise.
 	 */
 	private boolean includeHypervolume;
 	
 	/**
-	 * {@code true} if the generational distance collector is included;
-	 * {@code false} otherwise.
+	 * {@code true} if the generational distance collector is included; {@code false} otherwise.
 	 */
 	private boolean includeGenerationalDistance;
 	
 	/**
-	 * {@code true} if the inverted generational distance collector is included;
-	 * {@code false} otherwise.
+	 * {@code true} if the inverted generational distance collector is included; {@code false} otherwise.
 	 */
 	private boolean includeInvertedGenerationalDistance;
 	
 	/**
-	 * {@code true} if the spacing collector is included; {@code false}
-	 * otherwise.
+	 * {@code true} if the spacing collector is included; {@code false} otherwise.
 	 */
 	private boolean includeSpacing;
 	
 	/**
-	 * {@code true} if the additive &epsilon;-indicator collector is included;
-	 * {@code false} otherwise.
+	 * {@code true} if the additive &epsilon;-indicator collector is included; {@code false} otherwise.
 	 */
 	private boolean includeAdditiveEpsilonIndicator;
 	
 	/**
-	 * {@code true} if the contribution collector is included; {@code false}
-	 * otherwise.
+	 * {@code true} if the contribution collector is included; {@code false} otherwise.
 	 */
 	private boolean includeContribution;
 	
@@ -136,38 +131,37 @@ public class Instrumenter extends ProblemBuilder {
 	private boolean includeR3;
 	
 	/**
-	 * {@code true} if the &epsilon;-progress collector is included;
-	 * {@code false} otherwise.
+	 * {@code true} if the &epsilon;-progress collector is included; {@code false} otherwise.
 	 */
 	private boolean includeEpsilonProgress;
 	
 	/**
-	 * {@code true} if the adaptive multimethod variation collector is included;
-	 * {@code false} otherwise.
+	 * {@code true} if the adaptive multimethod variation collector is included; {@code false} otherwise.
 	 */
 	private boolean includeAdaptiveMultimethodVariation;
 	
 	/**
-	 * {@code true} if the adaptive time continuation collector is included;
-	 * {@code false} otherwise.
+	 * {@code true} if the adaptive time continuation collector is included; {@code false} otherwise.
 	 */
 	private boolean includeAdaptiveTimeContinuation;
 	
 	/**
-	 * {@code true} if the elapsed time collector is included; {@code false}
-	 * otherwise.
+	 * {@code true} if the elapsed time collector is included; {@code false} otherwise.
 	 */
 	private boolean includeElapsedTime;
 	
 	/**
-	 * {@code true} if the approximation set collector is included;
-	 * {@code false} otherwise.
+	 * {@code true} if the approximation set collector is included; {@code false} otherwise.
 	 */
 	private boolean includeApproximationSet;
 	
 	/**
-	 * {@code true} if the population size collector is included; {@code false}
-	 * otherwise.
+	 * {@code true} if the population collector is included; {@code false} otherwise.
+	 */
+	private boolean includePopulation;
+	
+	/**
+	 * {@code true} if the population size collector is included; {@code false} otherwise.
 	 */
 	private boolean includePopulationSize;
 
@@ -468,6 +462,17 @@ public class Instrumenter extends ProblemBuilder {
 	}
 	
 	/**
+	 * Includes the population collector when instrumenting algorithms.
+	 * 
+	 * @return a reference to this instrumenter
+	 */
+	public Instrumenter attachPopulationCollector() {
+		includePopulation = true;
+		
+		return this;
+	}
+	
+	/**
 	 * Includes the population size collector when instrumenting algorithms.
 	 * 
 	 * @return a reference to this instrumenter
@@ -490,6 +495,7 @@ public class Instrumenter extends ProblemBuilder {
 		attachAdaptiveTimeContinuationCollector();
 		attachElapsedTimeCollector();
 		attachApproximationSetCollector();
+		attachPopulationCollector();
 		attachPopulationSizeCollector();
 		
 		return this;
@@ -776,6 +782,10 @@ public class Instrumenter extends ProblemBuilder {
 			} else {
 				collectors.add(new ApproximationSetCollector(epsilon));
 			}
+		}
+		
+		if (includePopulation) {
+			collectors.add(new PopulationCollector());
 		}
 		
 		if (includePopulationSize) {
