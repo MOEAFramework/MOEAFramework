@@ -242,7 +242,7 @@ public class InstrumenterTest {
 		
 		Observations observations = instrumenter.getObservations();
 		
-		Assert.assertEquals(12, observations.keys().size());
+		Assert.assertEquals(13, observations.keys().size());
 	}
 	
 }
