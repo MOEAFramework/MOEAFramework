@@ -2,7 +2,7 @@
 
 This page documents notable changes introduced in each chronological release of the MOEA Framework.
 
-## Version 3.6 (TBD)
+## Version 3.6 (24 Apr 2023)
 
   * Fixes bug in R indicators where the approximation set was not being normalized.
   
