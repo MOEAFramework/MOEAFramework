@@ -54,10 +54,8 @@ Problem problem = new UF1();
 		
 PRNG.setRandom(ThreadLocalMersenneTwister.getInstance());
 		
-Selection migrationSelection = new TournamentSelection(2, 
-		new ChainedComparator(
-				new ParetoDominanceComparator(),
-				new CrowdingComparator()));
+Selection migrationSelection = new TournamentSelection(2, new ChainedComparator(
+	new ParetoDominanceComparator(), new CrowdingComparator()));
 		
 Migration migration = new SingleNeighborMigration(1, migrationSelection);
 Topology topology = new FullyConnectedTopology();
@@ -70,6 +68,6 @@ for (int i = 0; i < 8; i++) {
 		
 try (ThreadedIslandExecutor executor = new ThreadedIslandExecutor(model)) {
 	NondominatedPopulation result = executor.run(100000);
-  result.display();
+	result.display();
 }
 ```
