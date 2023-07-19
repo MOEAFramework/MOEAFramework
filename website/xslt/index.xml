@@ -9,16 +9,9 @@
   <title>MOEA Framework, a Java library for multiobjective evolutionary algorithms</title>
   <description>MOEA Framework, a Java library for multiobjective evolutionary algorithms</description>
   <header>
-    <script type="text/javascript" src="scripts/jquery-1.7.2.min.js"></script>
-    <script type="text/javascript" src="fancybox/jquery.fancybox-1.3.4.pack.js"></script>
-    <script type="text/javascript" src="fancybox/jquery.easing-1.4.pack.js"></script>
-    <script type="text/javascript" src="fancybox/jquery.mousewheel-3.0.4.pack.js"></script>
-    <link rel="stylesheet" href="fancybox/jquery.fancybox-1.3.4.css" type="text/css" media="screen" />
-    <script type="text/javascript">
-      $(document).ready(function() {
-        $("a.grouped_elements").fancybox({titlePosition:'inside'});
-      });
-    </script>
+    <script type="text/javascript" src="scripts/jquery-3.7.0.min.js"></script>
+    <script type="text/javascript" src="scripts/jquery.fancybox.min.js"></script>
+    <link rel="stylesheet" href="css/jquery.fancybox.min.css" type="text/css" media="screen" />
   </header>
   <content>
 <h2>A Framework for Innovation</h2>
@@ -51,37 +44,37 @@
 <h3>Gallery</h3>
 
 <p>
-  <a class="grouped_elements" href="images/screenshot-7.png" rel="gallery"
+  <a data-fancybox="gallery" href="images/screenshot-7.png"
       title="Explore the capabilities of the MOEA Framework with the demo application" itemprop="screenshot">
     <img src="images/screenshot-7-small.png" class="float-left" width="98" height="70" alt="Explore the capabilities of the MOEA Framework with the demo application" />
   </a>
 
-  <a class="grouped_elements" href="images/screenshot-5.png" rel="gallery"
+  <a data-fancybox="gallery" href="images/screenshot-5.png"
       title="Solve interesting and complex problems, such as the famous traveling salesman problem" itemprop="screenshot">
     <img src="images/screenshot-5-small.png" class="float-left" width="70" height="70" alt="Solve interesting and complex problems, such as the famous traveling salesman problem" />
   </a>
   
-  <a class="grouped_elements" href="images/screenshot-6.png" rel="gallery"
+  <a data-fancybox="gallery" href="images/screenshot-6.png"
       title="Use genetic programming or grammatical evolution to evolve programs" itemprop="screenshot">
     <img src="images/screenshot-6-small.png" class="float-left" width="70" height="70" alt="Use genetic programming or grammatical evolution to evolve programs" />
   </a>
   
-  <a class="grouped_elements" href="images/screenshot-1.png" rel="gallery"
+  <a data-fancybox="gallery" href="images/screenshot-1.png"
       title="Compare the performance of multiple MOEAs using the diagnostic tool" itemprop="screenshot">
     <img src="images/screenshot-1-small.png" class="float-left" width="114" height="70" alt="Compare the performance of multiple MOEAs using the diagnostic tool" />
   </a>
   
-  <a class="grouped_elements" href="images/screenshot-3.png" rel="gallery"
+  <a data-fancybox="gallery" href="images/screenshot-3.png"
       title="Multiple plots can be shown side-by-side" itemprop="screenshot">
     <img src="images/screenshot-3-small.png" class="float-left" width="114" height="70" alt="Multiple plots can be shown side-by-side" />
   </a>
   
-  <a class="grouped_elements" href="images/screenshot-2.png" rel="gallery"
+  <a data-fancybox="gallery" href="images/screenshot-2.png"
       title="Plot the convergence of the approximation set over time" itemprop="screenshot">
     <img src="images/screenshot-2-small.png" class="float-left" width="93" height="70" alt="Plot the convergence of the approximation set over time" />
   </a>
   
-  <a class="grouped_elements" href="images/screenshot-4.png" rel="gallery"
+  <a data-fancybox="gallery" href="images/screenshot-4.png"
       title="Perform rigorous statistical studies with ease using our extensive API" itemprop="screenshot">
     <img src="images/screenshot-4-small.png" class="float-left" width="167" height="70" alt="Perform rigorous statistical studies with ease using our extensive API" />
   </a>
