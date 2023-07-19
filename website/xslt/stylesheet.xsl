@@ -147,12 +147,6 @@
 									Licensed under the <a href="http://www.gnu.org/licenses/lgpl.html">GNU Lesser General Public License</a>.
 								</p>
 							</div>
-		
-							<!--
-							<div class="sidemenu">					
-								<script type="text/javascript" src="scripts/jszt.js"></script><script type="text/javascript" src="scripts/referral.js"></script> 
-                            </div>
-                             -->
 						</div>
 					</div>
 				</div>
