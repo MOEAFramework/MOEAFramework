@@ -309,10 +309,6 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 			algorithmNames.add(algorithm);
 		}
 		
-		for (String algorithm : Settings.getPISAAlgorithms()) {
-			algorithmNames.add(algorithm);
-		}
-		
 		Vector<String> sortedAlgorithmNames = new Vector<String>(algorithmNames);
 		Collections.sort(sortedAlgorithmNames, String.CASE_INSENSITIVE_ORDER);
 		
