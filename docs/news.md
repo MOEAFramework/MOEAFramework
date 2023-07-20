@@ -2,24 +2,14 @@
 
 This page documents notable changes introduced in each chronological release of the MOEA Framework.
 
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-=======
 ## Version 3.7 (20 Jul 2023)
-=======
-## Version 3.7 (TBD)
->>>>>>> b61fedf0979dbdcb6c03dd3fa9bcab7142aae2fb
 
   * Removes the PISA algorithms and moves them to a separate plugin at https://github.com/MOEAFramework/PISA-Plugin.
     The new plugin supports automatically downloading and configuring the PISA selectors.  If you are using PISA
     algorithms and want to upgrade to 3.7, simply add the `pisa-plugin` Maven dependency to your `pom.xml`
     or copy the JAR into the `lib/` folder.
-  
 
-<<<<<<< HEAD
->>>>>>> Stashed changes
-=======
->>>>>>> b61fedf0979dbdcb6c03dd3fa9bcab7142aae2fb
+
 ## Version 3.6 (24 Apr 2023)
 
   * Fixes bug in R indicators where the approximation set was not being normalized.
