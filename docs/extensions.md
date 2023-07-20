@@ -11,6 +11,13 @@ The JMetal-Plugin extension adds most of the optimization algorithms from JMetal
 for metaheuristic algorithms.  This includes AbYSS, CDG, DMOPSO, ESPEA, FAME, GWASFGA, MOCell, MOCHC, MOMBI,
 MOMBI2, MOSA, RNSGAII, and WASFGA. 
 
+## PISA-Plugin
+
+**Repository:** https://github.com/MOEAFramework/PISA-Plugin
+
+The PISA-Plugin extension allows using PISA selectors within the MOEA Framework.  The PISA selectors will be
+automatically downloaded and configured when used.
+
 ## Generalized Decomposition
 
 **Repository:** https://github.com/MOEAFramework/GeneralizedDecomposition
