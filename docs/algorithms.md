@@ -13,6 +13,8 @@ Below lists the optimization algorithms provided by the MOEA Framework organized
   * Other - [AMOSA](#amosa), [CMA-ES](#cma-es), [MSOPS](#msops), [RSO](#rso), [Random](#random)
 * Single-objective - [GA](#ga), [ES](#es), [DE](#de), [SA](#sa), [CMA-ES](#cma-es)
 
+In addition, the MOEA Framework provides [JMetal and PISA extensions](extensions.md) to enable additional algorithms.
+
 ## Instantiating an Algorithm
 
 Each algorithm has a collection of parameters (called properties) used to configure specific details, such as their population size, mutation and
