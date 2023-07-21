@@ -11,6 +11,7 @@ maven/
 .pydevproject
 jMetal.log*
 lib/jmetal-plugin-*.jar
+lib/pisa-plugin-*.jar
 lib/nashorn-*.jar
 lib/asm-*.jar
 auxiliary/checkstyle/checkstyle-*.jar
