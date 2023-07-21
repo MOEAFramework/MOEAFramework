@@ -42,11 +42,9 @@ import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.xy.DefaultTableXYDataset;
 import org.jfree.data.xy.XYSeries;
-import org.moeaframework.core.Algorithm;
+import org.moeaframework.algorithm.single.GeneticAlgorithm;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.spi.AlgorithmFactory;
-import org.moeaframework.util.TypedProperties;
 
 /**
  * A GUI for displaying the actual and approximated functions used in a
@@ -162,8 +160,7 @@ public class SymbolicRegressionGUI extends JFrame implements WindowListener {
 		JScrollPane detailsPane = new JScrollPane(details);
 		detailsPane.setMinimumSize(new Dimension(150, 150));
 		
-		JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
-				container, detailsPane);
+		JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, container, detailsPane);
 		splitPane.setResizeWeight(0.5);
 		splitPane.setDividerLocation(0.4);
 		
@@ -194,8 +191,7 @@ public class SymbolicRegressionGUI extends JFrame implements WindowListener {
 	
 			// generate the line series
 			XYSeries actualSeries = new XYSeries("Target Function", false, false);
-			XYSeries approximatedSeries = new XYSeries("Estimated Function", false,
-					false);
+			XYSeries approximatedSeries = new XYSeries("Estimated Function", false, false);
 	
 			for (int i = 0; i < x.length; i++) {
 				actualSeries.add(x[i], actualY[i]);
@@ -207,9 +203,8 @@ public class SymbolicRegressionGUI extends JFrame implements WindowListener {
 			dataset.addSeries(approximatedSeries);
 	
 			// generate the plot
-			JFreeChart chart = ChartFactory.createXYLineChart(
-					"Symbolic Regression Demo (Grammatical Evolution)", "x", "f(x)", dataset,
-					PlotOrientation.VERTICAL, true, true, false);
+			JFreeChart chart = ChartFactory.createXYLineChart("Symbolic Regression Demo (Grammatical Evolution)",
+					"x", "f(x)", dataset, PlotOrientation.VERTICAL, true, true, false);
 			XYPlot plot = chart.getXYPlot();
 			plot.setRenderer(new XYLineAndShapeRenderer());
 			
@@ -299,8 +294,7 @@ public class SymbolicRegressionGUI extends JFrame implements WindowListener {
 	 */
 	public static void runDemo(SymbolicRegression problem) {
 		try {
-			UIManager.setLookAndFeel(
-			        UIManager.getSystemLookAndFeelClassName());
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e) {
 			// couldn't set system look and feel, continue with default
 		}
@@ -311,22 +305,17 @@ public class SymbolicRegressionGUI extends JFrame implements WindowListener {
 		// setup and construct the GP solver
 		int generation = 0;
 		int maxGenerations = 1000;
-		Algorithm algorithm = null;
 		
-		TypedProperties properties = new TypedProperties();
-		properties.setInt("populationSize", 500);
+		GeneticAlgorithm algorithm = new GeneticAlgorithm(problem);
+		algorithm.setInitialPopulationSize(500);
 
 		try {
-			algorithm = AlgorithmFactory.getInstance().getAlgorithm(
-					"GA", properties, problem);
-
 			// run the GP solver
 			while ((generation < maxGenerations) && !gui.isCanceled()) {
 				algorithm.step();
 				generation++;
 
-				gui.update(algorithm.getResult().get(0), generation,
-						maxGenerations);
+				gui.update(algorithm.getResult().get(0), generation, maxGenerations);
 			}
 		} finally {
 			if (algorithm != null) {
