@@ -140,21 +140,6 @@ public class Settings {
 	static final String KEY_PROBLEM_LIST = createKey(KEY_PROBLEM_PREFIX, "problems");
 	
 	/**
-	 * The prefix for all PISA property keys.
-	 */
-	static final String KEY_PISA_PREFIX = createKey(KEY_PREFIX, "algorithm", "pisa");
-	
-	/**
-	 * The property key for the list of available PISA algorithms.
-	 */
-	static final String KEY_PISA_ALGORITHMS = createKey(KEY_PISA_PREFIX, "algorithms");
-	
-	/**
-	 * The property key for the poll rate.
-	 */
-	static final String KEY_PISA_POLL = createKey(KEY_PISA_PREFIX, "poll");
-	
-	/**
 	 * The property key for the algorithms available in the diagnostic tool.
 	 */
 	static final String KEY_DIAGNOSTIC_TOOL_ALGORITHMS = createKey(KEY_PREFIX, "analysis", "diagnostics", "algorithms");
@@ -399,71 +384,6 @@ public class Settings {
 	 */
 	public static String getProblemReferenceSet(String name) {
 		return PROPERTIES.getString(createKey(KEY_PROBLEM_PREFIX, name, "referenceSet"), null);
-	}
-	
-	/**
-	 * Returns the list of available PISA selectors.
-	 * 
-	 * @return the list of available PISA selectors
-	 */
-	public static String[] getPISAAlgorithms() {
-		return PROPERTIES.getStringArray(KEY_PISA_ALGORITHMS, new String[0]);
-	}
-	
-	/**
-	 * Returns the poll rate, in milliseconds, for how often PISA checks the
-	 * state file.
-	 * 
-	 * @return the poll rate, in milliseconds, for how often PISA checks the
-	 *         state file
-	 */
-	public static int getPISAPollRate() {
-		return PROPERTIES.getInt(KEY_PISA_POLL, 100);
-	}
-	
-	/**
-	 * Returns the command, invokable through {@link Runtime#exec(String)}, for
-	 * starting the PISA selector.
-	 * 
-	 * @param algorithmName the name of the PISA selector
-	 * @return the command, invokable through {@link Runtime#exec(String)}, for
-	 *         starting the PISA selector
-	 */
-	public static String getPISACommand(String algorithmName) {
-		return PROPERTIES.getString(createKey(KEY_PISA_PREFIX, algorithmName, "command"), null);
-	}
-	
-	/**
-	 * Returns the configuration file for the PISA selector.
-	 * 
-	 * @param algorithmName the name of the PISA selector
-	 * @return the configuration file for the PISA selector
-	 */
-	public static String getPISAConfiguration(String algorithmName) {
-		return PROPERTIES.getString(createKey(KEY_PISA_PREFIX, algorithmName, "configuration"), null);
-	}
-	
-	/**
-	 * Returns the list of parameter names for the PISA selector.
-	 * 
-	 * @param algorithmName the name of the PISA selector
-	 * @return the list of parameter names for the PISA selector
-	 */
-	public static String[] getPISAParameters(String algorithmName) {
-		return PROPERTIES.getStringArray(createKey(KEY_PISA_PREFIX, algorithmName, "parameters"), new String[0]);
-	}
-	
-	/**
-	 * Returns the default value of the specified parameter for the PISA
-	 * selector.
-	 * 
-	 * @param algorithmName the name of the PISA selector
-	 * @param parameterName the name of the parameter
-	 * @return the default value of the specified parameter for the PISA
-	 *         selector
-	 */
-	public static String getPISAParameterDefaultValue(String algorithmName, String parameterName) {
-		return PROPERTIES.getString(createKey(KEY_PISA_PREFIX, algorithmName, "parameter", parameterName), null);
 	}
 	
 	/**
