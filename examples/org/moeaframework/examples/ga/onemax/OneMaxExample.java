@@ -17,11 +17,9 @@
  */
 package org.moeaframework.examples.ga.onemax;
 
-import org.moeaframework.core.Algorithm;
-import org.moeaframework.core.NondominatedPopulation;
+import org.moeaframework.algorithm.single.GeneticAlgorithm;
 import org.moeaframework.core.Problem;
-import org.moeaframework.core.spi.AlgorithmFactory;
-import org.moeaframework.util.TypedProperties;
+import org.moeaframework.core.termination.TargetObjectiveTermination;
 
 /**
  * Example of binary optimization on the {@link OneMax} problem.  The goal of
@@ -32,25 +30,15 @@ import org.moeaframework.util.TypedProperties;
 public class OneMaxExample {
 
 	public static void main(String[] args) {
-		TypedProperties properties = new TypedProperties();
-		properties.setInt("populationSize", 100);
-		
 		Problem problem = new OneMax(100);
-		Algorithm algorithm = AlgorithmFactory.getInstance().getAlgorithm(
-				"GA", properties, problem);
-
-		while (!algorithm.isTerminated()) {
-			algorithm.step();
-			
-			NondominatedPopulation population = algorithm.getResult();
-
-			if (population.get(0).getObjective(0) == 0) {
-				// if all bits are 1
-				System.out.println("Found optimal solution after "
-						+ algorithm.getNumberOfEvaluations() + " evaluations!");
-				break;
-			}
-		}
+		GeneticAlgorithm algorithm = new GeneticAlgorithm(problem);
+		
+		// run until we find a solution with all bits set to 1 (i.e., an objective value of 0)
+		algorithm.run(new TargetObjectiveTermination(new double[] { 0 }));
+		
+		System.out.println("Found optimal solution after " + algorithm.getNumberOfEvaluations() + " evaluations!");
+		System.out.println();
+		algorithm.getResult().display();
 	}
 
 }

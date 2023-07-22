@@ -31,12 +31,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 
-import org.moeaframework.core.Algorithm;
+import org.moeaframework.algorithm.single.GeneticAlgorithm;
 import org.moeaframework.core.EvolutionaryAlgorithm;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.problem.AbstractProblem;
 import org.moeaframework.util.TypedProperties;
@@ -182,8 +181,8 @@ public class TSPExample {
 		properties.setDouble("insertion.rate", 0.9);
 		properties.setDouble("pmx.rate", 0.4);
 		
-		Algorithm algorithm = AlgorithmFactory.getInstance().getAlgorithm(
-				"GA", properties, problem);
+		GeneticAlgorithm algorithm = new GeneticAlgorithm(problem);
+		algorithm.applyConfiguration(properties);
 		
 		int iteration = 0;
 		
@@ -207,8 +206,7 @@ public class TSPExample {
 			// display current optimal solutions with red line
 			Tour best = toTour(algorithm.getResult().get(0));
 			panel.displayTour(best, Color.RED, new BasicStroke(2.0f));
-			progress.insert(0, "Iteration " + iteration + ": " +
-					best.distance(instance) + "\n");
+			progress.insert(0, "Iteration " + iteration + ": " + best.distance(instance) + "\n");
 			progressText.setText(progress.toString());
 			
 			// repaint the TSP display
