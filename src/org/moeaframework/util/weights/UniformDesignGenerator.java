@@ -82,7 +82,7 @@ public class UniformDesignGenerator implements WeightGenerator {
 		primes[0] = 2;
 		
 		for (int i = 1; i < k; i++) {
-			primes[i] = Primes.nextPrime(primes[i-1]);
+			primes[i] = Primes.nextPrime(primes[i-1] + 1);
 		}
 		
 		return primes;
