@@ -73,10 +73,11 @@ public class ParallelizationExample {
 
 		@Override
 		public void evaluate(Solution solution) {
-			// simulate a computationally expensive problem
+			//simulate a computationally expensive problem; we store the result as an
+			//attribute to prevent Java from treating the loop as "dead code"
 			solution.setAttribute("sum", IntStream.range(0, 100000).asDoubleStream().sum());
 			
-			// evaluate the actual Schaffer problem
+			//evaluate the actual Schaffer problem
 			super.evaluate(solution);
 		}
 
