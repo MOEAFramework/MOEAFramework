@@ -17,6 +17,8 @@
  */
 package org.moeaframework.problem;
 
+import java.util.concurrent.atomic.AtomicLong;
+
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 
@@ -28,9 +30,9 @@ import org.moeaframework.core.Solution;
 public class TimingProblem extends ProblemWrapper {
 	
 	/**
-	 * The time, in seconds, expended on objective function evaluation.
+	 * The time, in nanoseconds, expended on objective function evaluation.
 	 */
-	private double time;
+	private AtomicLong time;
 	
 	/**
 	 * Decorates the specified problem to collecting objective function
@@ -40,6 +42,8 @@ public class TimingProblem extends ProblemWrapper {
 	 */
 	public TimingProblem(Problem problem) {
 		super(problem);
+		
+		time = new AtomicLong();
 	}
 
 	@Override
@@ -48,14 +52,23 @@ public class TimingProblem extends ProblemWrapper {
 		problem.evaluate(solution);
 		long end = System.nanoTime();
 		
-		time += (end - start) / 1e9;
+		time.addAndGet(end - start);
 	}
 	
 	/**
 	 * Clears any timing data collected.  
 	 */
 	public void clear() {
-		time = 0.0;
+		time.set(0);
+	}
+	
+	/**
+	 * Returns the time, in nanoseconds, expended on objective function evaluation.
+	 * 
+	 * @return the time, in nanoseconds, expended on objective function evaluation
+	 */
+	public long getNanoseconds() {
+		return time.get();
 	}
 	
 	/**
@@ -63,8 +76,23 @@ public class TimingProblem extends ProblemWrapper {
 	 * 
 	 * @return the time, in seconds, expended on objective function evaluation
 	 */
+	public double getSeconds() {
+		return time.get() / 1e9;
+	}
+	
+	/**
+	 * Returns the time, in seconds, expended on objective function evaluation.
+	 * 
+	 * @return the time, in seconds, expended on objective function evaluation
+	 * @deprecated Use {@link #getNanoseconds()} or {@link #getSeconds()} instead
+	 */
+	@Deprecated
 	public double getTime() {
-		return time;
+		return getSeconds();
+	}
+	
+	public static void main(String[] args) {
+		System.out.println(28102893829L / 1e9);
 	}
 
 }
