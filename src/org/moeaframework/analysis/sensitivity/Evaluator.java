@@ -291,7 +291,7 @@ public class Evaluator extends CommandLineUtility {
 
 		// record instrumented data
 		TypedProperties timingData = new TypedProperties();
-		timingData.setDouble("EvaluationTime", timingProblem.getTime());
+		timingData.setDouble("EvaluationTime", timingProblem.getSeconds());
 		timingData.setDouble("TotalTime", (endTime - startTime) / 1e9);
 
 		// write result to output

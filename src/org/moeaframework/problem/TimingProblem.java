@@ -84,15 +84,11 @@ public class TimingProblem extends ProblemWrapper {
 	 * Returns the time, in seconds, expended on objective function evaluation.
 	 * 
 	 * @return the time, in seconds, expended on objective function evaluation
-	 * @deprecated Use {@link #getNanoseconds()} or {@link #getSeconds()} instead
+	 * @deprecated Use {@link #getSeconds()} insetad
 	 */
 	@Deprecated
 	public double getTime() {
 		return getSeconds();
-	}
-	
-	public static void main(String[] args) {
-		System.out.println(28102893829L / 1e9);
 	}
 
 }
