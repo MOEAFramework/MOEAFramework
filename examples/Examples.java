@@ -205,8 +205,7 @@ public class Examples {
 				resourceBundle.getString("parallelization.name"),
 				resourceBundle.getString("parallelization.description"),
 				ParallelizationExample.class,
-				"examples/org/moeaframework/examples/parallel/ParallelizationExample.java",
-				"examples/org/moeaframework/examples/parallel/ExpensiveSchafferProblem.java"));
+				"examples/org/moeaframework/examples/parallel/ParallelizationExample.java"));
 		
 		examples.add(new Example(
 				resourceBundle.getString("island.name"),

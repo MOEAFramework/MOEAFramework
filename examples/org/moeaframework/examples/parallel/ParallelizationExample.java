@@ -17,7 +17,11 @@
  */
 package org.moeaframework.examples.parallel;
 
+import java.util.stream.IntStream;
+
 import org.moeaframework.Executor;
+import org.moeaframework.core.Solution;
+import org.moeaframework.problem.misc.Schaffer;
 
 /**
  * Example of parallelizing function evaluations across multiple cores.
@@ -59,6 +63,23 @@ public class ParallelizationExample {
 		
 		double speedup = (endSerial - startSerial) / (double)(endParallel - startParallel);
 		System.out.println("  Speedup  - " + String.format("%.02f", speedup));
+	}
+	
+	public static class ExpensiveSchafferProblem extends Schaffer {
+
+		public ExpensiveSchafferProblem() {
+			super();
+		}
+
+		@Override
+		public void evaluate(Solution solution) {
+			// simulate a computationally expensive problem
+			solution.setAttribute("sum", IntStream.range(0, 100000).asDoubleStream().sum());
+			
+			// evaluate the actual Schaffer problem
+			super.evaluate(solution);
+		}
+
 	}
 
 }
