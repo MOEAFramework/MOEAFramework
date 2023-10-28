@@ -25,7 +25,5 @@
  * where work is distributed across multiple cores or machines.  They can and
  * do support such parallelization, but that typically requires integrating
  * with a third-party compute fabric library like Apache Spark or Apache Ignite.
- * 
- * @preview
  */
 package org.moeaframework.parallel;

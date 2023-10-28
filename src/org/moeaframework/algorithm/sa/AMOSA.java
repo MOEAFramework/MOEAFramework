@@ -42,8 +42,6 @@ import org.moeaframework.core.spi.OperatorFactory;
  *       A Simulated Annealing-Based Multiobjective Optimization Algorithm: AMOSA.
  *       IEEE Transactions on Evolutionary Computation, vol. 12, no. 3, pp. 269-283.
  * </ol>
- * 
- * @preview
  */
 public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 

@@ -19,7 +19,5 @@
 /**
  * Utilities for building parallel algorithms, including thead-safe versions of
  * some classes.
- * 
- * @preview
  */
 package org.moeaframework.parallel.util;

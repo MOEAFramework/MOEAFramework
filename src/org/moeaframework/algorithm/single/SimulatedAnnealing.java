@@ -42,8 +42,6 @@ import org.moeaframework.util.TypedProperties;
  *   <li> Kirkpatrick, S., Gelatt Jr, C. D., and Vecchi, M. P. (1983). "Optimization by Simulated Annealing". Science.
  *        220 (4598): 671–680.
  * </ol>
- * 
- * @preview
  */
 public class SimulatedAnnealing extends AbstractSimulatedAnnealingAlgorithm {
 
