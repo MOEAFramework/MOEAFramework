@@ -23,6 +23,7 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Settings;
 
 /**
@@ -280,6 +281,42 @@ public class TypedPropertiesTest {
 		Assert.assertFalse(properties.getUnaccessedProperties().isEmpty());
 		Assert.assertTrue(properties.getUnaccessedProperties().contains("Baz"));
 		Assert.assertTrue(properties.getUnaccessedProperties().contains("BAZ"));
+	}
+	
+	@Test
+	public void testTruncation() {
+		int intValue = Integer.MAX_VALUE;
+		long longValue = Long.MAX_VALUE;
+		
+		TypedProperties properties = new TypedProperties();
+		properties.setDouble("double", 2.71);
+		properties.setInt("int", intValue);
+		properties.setLong("long", longValue);
+		properties.setDouble("max_double", Double.MAX_VALUE);
+		
+		Assert.assertEquals(intValue, properties.getInt("int"));
+		Assert.assertEquals(intValue, properties.getTruncatedInt("int"));
+		
+		Assert.assertEquals(intValue, properties.getInt("missing", intValue));
+		Assert.assertEquals(intValue, properties.getTruncatedInt("missing", intValue));
+		
+		Assert.assertThrows(NumberFormatException.class, () -> properties.getInt("double"));
+		Assert.assertEquals(2, properties.getTruncatedInt("double"));
+		
+		Assert.assertEquals(longValue, properties.getLong("long"));
+		Assert.assertEquals(longValue, properties.getTruncatedLong("long"));
+		
+		Assert.assertEquals(longValue, properties.getLong("missing", longValue));
+		Assert.assertEquals(longValue, properties.getTruncatedLong("missing", longValue));
+		
+		Assert.assertThrows(NumberFormatException.class, () -> properties.getLong("double"));
+		Assert.assertEquals(2, properties.getTruncatedLong("double"));
+		
+		// if the truncation would change the value by more than 1, throw instead of warn
+		Assert.assertThrows(NumberFormatException.class, () -> properties.getInt("long"));
+		Assert.assertThrows(FrameworkException.class, () -> properties.getTruncatedInt("long"));
+		Assert.assertThrows(FrameworkException.class, () -> properties.getTruncatedInt("max_double"));
+		Assert.assertThrows(FrameworkException.class, () -> properties.getTruncatedLong("max_double"));
 	}
 	
 	private enum TestEnum {

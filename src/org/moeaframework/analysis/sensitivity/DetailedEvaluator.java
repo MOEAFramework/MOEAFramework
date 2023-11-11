@@ -237,10 +237,10 @@ public class DetailedEvaluator extends CommandLineUtility {
 	@SuppressWarnings("unchecked")
 	protected void process(String algorithmName, TypedProperties properties, Problem problem, int frequency)
 			throws IOException {
-		int maxEvaluations = (int)properties.getDouble("maxEvaluations", -1);
+		int maxEvaluations = properties.getTruncatedInt("maxEvaluations");
 		
 		if (maxEvaluations < 0) {
-			throw new FrameworkException("maxEvaluations not defined or invalid");
+			throw new FrameworkException("maxEvaluations must be a non-negative number");
 		}
 		
 		Instrumenter instrumenter = new Instrumenter()

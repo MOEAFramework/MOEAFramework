@@ -95,6 +95,11 @@ public class Settings {
 	static final String KEY_FAST_NONDOMINATED_SORTING = createKey(KEY_PREFIX, "core", "fast_nondominated_sorting");
 	
 	/**
+	 * The property key to indicate that truncation warnings should be suppressed.
+	 */
+	public static final String KEY_SUPPRESS_TRUNCATION_WARNING = createKey(KEY_PREFIX, "core", "suppress_truncation_warning");
+	
+	/**
 	 * The property key for the continuity correction flag.
 	 */
 	static final String KEY_CONTINUITY_CORRECTION = createKey(KEY_PREFIX, "util", "statistics", "continuity_correction");
@@ -296,6 +301,17 @@ public class Settings {
 	 */
 	public static boolean useFastNondominatedSorting() {
 		return PROPERTIES.getBoolean(KEY_FAST_NONDOMINATED_SORTING, false);
+	}
+	
+	/**
+	 * Returns {@code true} if truncation warnings, when implicitly converting a
+	 * real-valued property to an integer and truncating the decimal value, should be
+	 * suppressed.
+	 * 
+	 * @return {@code true} if truncation warnings are suppressed; {@code false} otherwise
+	 */
+	public static boolean isSuppressTruncationWarning() {
+		return PROPERTIES.getBoolean(KEY_SUPPRESS_TRUNCATION_WARNING, false);
 	}
 	
 	/**

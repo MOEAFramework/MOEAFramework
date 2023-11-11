@@ -32,6 +32,7 @@ import java.util.TreeSet;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.moeaframework.core.FrameworkException;
+import org.moeaframework.core.Settings;
 import org.moeaframework.core.configuration.ConfigurationException;
 import org.moeaframework.util.format.Displayable;
 import org.moeaframework.util.io.CommentedLineReader;
@@ -326,6 +327,166 @@ public class TypedProperties implements Displayable {
 	 */
 	public int getInt(String key) {
 		return Integer.parseInt(getString(key));
+	}
+	
+	// The following methods allow truncating the stored value when converting real-valued numbers to integers with
+	// the following rules:
+	//
+	//   1. If no truncation is required, the number is parsed as-is.
+	//   2. If the truncation alters the value more than the defined machine precision, Settings.EPS,
+	//      than a warning is displayed.
+	//   3. If the truncation would alter the value more than 1.0, an exception is thrown. This includes
+	//      trying to parse a value that exceeds the maximum or minimum value that fits within a type.
+	
+	/**
+	 * Returns the value of the property with the specified name as an {@code int}; or {@code defaultValue}
+	 * if no property with the specified name exists.  Any decimal places will be truncated.
+	 * 
+	 * @param key the property name
+	 * @param defaultValue the default value
+	 * @return the value of the property with the specified name as an {@code int}; or {@code defaultValue}
+	 *         if no property with the specified name exists
+	 * @throws NumberFormatException if the property value is not a parseable integer
+	 */
+	public int getTruncatedInt(String key, int defaultValue) {
+		try {
+			return getInt(key, defaultValue);
+		} catch (NumberFormatException e) {
+			if (contains(key)) {
+				try {
+					return truncateInt(key, getLong(key));
+				} catch (NumberFormatException e2) {
+					return truncateInt(key, getDouble(key));
+				}
+			} else {
+				return defaultValue;
+			}
+		}
+	}
+	
+	/**
+	 * Returns the value of the property as a {@code int}, or throws an exception.  One should either
+	 * use the variant that takes a default value or check {@link #contains(String)} to ensure the
+	 * property exists.  Any decimal places will be truncated.
+	 * 
+	 * @param key the property name
+	 * @return the value of the property
+	 * @throws PropertyNotFoundException if the property was not found
+	 */
+	public int getTruncatedInt(String key) {
+		try {
+			return getInt(key);
+		} catch (NumberFormatException e) {
+			try {
+				return truncateInt(key, getLong(key));
+			} catch (NumberFormatException e2) {
+				return truncateInt(key, getDouble(key));
+			}
+		}
+	}
+	
+	/**
+	 * Returns the value of the property with the specified name as a {@code long}; or {@code defaultValue}
+	 * if no property with the specified name exists.  Any decimal places will be truncated.
+	 * 
+	 * @param key the property name
+	 * @param defaultValue the default value
+	 * @return the value of the property with the specified name as a {@code long}; or {@code defaultValue}
+	 *         if no property with the specified name exists
+	 * @throws NumberFormatException if the property value is not a parseable long
+	 */
+	public long getTruncatedLong(String key, long defaultValue) {
+		try {
+			return getLong(key, defaultValue);
+		} catch (NumberFormatException e) {
+			if (contains(key)) {
+				return truncateLong(key, getDouble(key));
+			} else {
+				return defaultValue;
+			}
+		}
+	}
+	
+	/**
+	 * Returns the value of the property as a {@code long}, or throws an exception.  One should either
+	 * use the variant that takes a default value or check {@link #contains(String)} to ensure the
+	 * property exists.  Any decimal places will be truncated.
+	 * 
+	 * @param key the property name
+	 * @return the value of the property
+	 * @throws PropertyNotFoundException if the property was not found
+	 */
+	public long getTruncatedLong(String key) {
+		try {
+			return getLong(key);
+		} catch (NumberFormatException e) {
+			return truncateLong(key, getDouble(key));
+		}
+	}
+	
+	/**
+	 * Convert a double value to an integer with truncation.
+	 * 
+	 * @param key the property name
+	 * @param originalValue the original floating-point value
+	 * @return the integer value
+	 */
+	private int truncateInt(String key, double originalValue) {
+		int truncatedValue = (int)originalValue;
+		double diff = Math.abs(originalValue - truncatedValue);
+		
+		if (diff >= 1.0) {
+			throw new FrameworkException(key + " can not be converted to an integer (" + originalValue + ")");
+		}
+		
+		if (diff > Settings.EPS && !Settings.isSuppressTruncationWarning()) {
+			System.err.println(key + " given as real-valued number but expected an integer, converting " +
+					originalValue + " to " + truncatedValue + ". Set " + Settings.KEY_SUPPRESS_TRUNCATION_WARNING +
+					" to suppress this message.");
+		}
+		
+		return truncatedValue;
+	}
+	
+	/**
+	 * Convert a long value to an integer with truncation.
+	 * 
+	 * @param key the property name
+	 * @param originalValue the original long value
+	 * @return the integer value
+	 */
+	private int truncateInt(String key, long originalValue) {
+		int truncatedValue = (int)originalValue;
+		
+		if (truncatedValue != originalValue) {
+			throw new FrameworkException(key + " can not be converted to an integer (" + originalValue + ")");
+		}
+		
+		return truncatedValue;
+	}
+	
+	/**
+	 * Convert a double value to a long with truncation.
+	 * 
+	 * @param key the property name
+	 * @param originalValue the original floating-point value
+	 * @return the long value
+	 */
+	private long truncateLong(String key, double originalValue) {
+		long truncatedValue = (long)originalValue;
+		double diff = Math.abs(originalValue - truncatedValue);
+		
+		if (diff >= 1.0) {
+			throw new FrameworkException(key + " can not be converted to a long (" + originalValue + ")");
+		}
+		
+		if (diff > Settings.EPS && !Settings.isSuppressTruncationWarning()) {
+			System.err.println(key + " given as real-valued number but expected a long, converting " +
+					originalValue + " to " + truncatedValue + ". Set " + Settings.KEY_SUPPRESS_TRUNCATION_WARNING +
+					" to suppress this message.");
+		}
+		
+		return truncatedValue;
 	}
 
 	/**

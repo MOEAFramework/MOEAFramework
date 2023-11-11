@@ -184,14 +184,7 @@ public class ConfigurationUtils {
 		} else if (TypeUtils.isAssignable(long.class, parameterType)) {
 			value = properties.getLong(propertyName);
 		} else if (TypeUtils.isAssignable(int.class, parameterType)) {
-			try {
-				value = properties.getInt(propertyName);
-			} catch (NumberFormatException e) {
-				value = (int)properties.getDouble(propertyName);
-				
-				System.err.println(propertyName + " given as floating-point but expected an int, converting " +
-						properties.getString(propertyName) + " to " + value);
-			}
+			value = properties.getTruncatedInt(propertyName);
 		} else if (TypeUtils.isAssignable(short.class, parameterType)) {
 			value = properties.getShort(propertyName);
 		} else if (TypeUtils.isAssignable(byte.class, parameterType)) {

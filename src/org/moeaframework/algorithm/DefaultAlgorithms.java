@@ -138,7 +138,7 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 
 	private Algorithm newRSO(TypedProperties properties, Problem problem) {
 		String algorithmName = properties.getString("algorithm", "GA");
-		int instances = (int)properties.getDouble("instances", 100);
+		int instances = properties.getTruncatedInt("instances", 100);
 		
 		if (!properties.contains("method")) {
 			properties.setString("method", "min-max");
