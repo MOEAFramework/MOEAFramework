@@ -8,7 +8,7 @@ This page documents notable changes introduced in each chronological release of 
   
   * Fixes bug in UniformDesignGenerator
   
-  * Improves implement conversion from real values to integers when loading properties.  This also
+  * Improves implicit conversion from real values to integers when loading properties.  This also
     fixes a bug where NormalBoundaryDivisions errored when passing in a real value for the number of
     divisions.
   
