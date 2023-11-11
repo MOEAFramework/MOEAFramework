@@ -334,7 +334,7 @@ public class TypedProperties implements Displayable {
 	//
 	//   1. If no truncation is required, the number is parsed as-is.
 	//   2. If the truncation alters the value more than the defined machine precision, Settings.EPS,
-	//      than a warning is displayed.
+	//      then a warning is displayed.
 	//   3. If the truncation would alter the value more than 1.0, an exception is thrown. This includes
 	//      trying to parse a value that exceeds the maximum or minimum value that fits within a type.
 	

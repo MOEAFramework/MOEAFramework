@@ -293,6 +293,7 @@ public class TypedPropertiesTest {
 		properties.setInt("int", intValue);
 		properties.setLong("long", longValue);
 		properties.setDouble("max_double", Double.MAX_VALUE);
+		properties.setDouble("min_double", -Double.MAX_VALUE);
 		
 		Assert.assertEquals(intValue, properties.getInt("int"));
 		Assert.assertEquals(intValue, properties.getTruncatedInt("int"));
@@ -317,6 +318,8 @@ public class TypedPropertiesTest {
 		Assert.assertThrows(FrameworkException.class, () -> properties.getTruncatedInt("long"));
 		Assert.assertThrows(FrameworkException.class, () -> properties.getTruncatedInt("max_double"));
 		Assert.assertThrows(FrameworkException.class, () -> properties.getTruncatedLong("max_double"));
+		Assert.assertThrows(FrameworkException.class, () -> properties.getTruncatedInt("min_double"));
+		Assert.assertThrows(FrameworkException.class, () -> properties.getTruncatedLong("min_double"));
 	}
 	
 	private enum TestEnum {
