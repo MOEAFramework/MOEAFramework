@@ -668,7 +668,7 @@ public class Executor extends ProblemBuilder {
 	 */
 	protected TerminationCondition createTerminationCondition() {
 		int maxEvaluations = properties.getTruncatedInt("maxEvaluations", -1);
-		long maxTime = (long)properties.getDouble("maxTime", -1); // TODO
+		long maxTime = properties.getTruncatedLong("maxTime", -1);
 		
 		// create a list of the termination conditions
 		List<TerminationCondition> conditions = new ArrayList<TerminationCondition>();
