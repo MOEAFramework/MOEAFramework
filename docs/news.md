@@ -2,6 +2,17 @@
 
 This page documents notable changes introduced in each chronological release of the MOEA Framework.
 
+## Version 3.8 (11 Nov 2023)
+
+  * Adds termination condition based on distance to target solution.
+  
+  * Fixes bug in UniformDesignGenerator
+  
+  * Improves implicit conversion from real values to integers when loading properties.  This also
+    fixes a bug where NormalBoundaryDivisions errored when passing in a real value for the number of
+    divisions.
+  
+
 ## Version 3.7 (20 Jul 2023)
 
   * Removes the PISA algorithms and moves them to a separate plugin at https://github.com/MOEAFramework/PISA-Plugin.
