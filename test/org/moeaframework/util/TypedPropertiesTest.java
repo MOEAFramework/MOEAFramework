@@ -322,6 +322,19 @@ public class TypedPropertiesTest {
 		Assert.assertThrows(FrameworkException.class, () -> properties.getTruncatedLong("min_double"));
 	}
 	
+	// Ensures the largest and smallest integers can be stored as doubles without altering the value.
+	// Note this only works with doubles; floats do not have the range to store all integers.
+	@Test
+	public void testIntegerRange() {
+		TypedProperties properties = new TypedProperties();
+		
+		properties.setDouble("value", Integer.MAX_VALUE);
+		Assert.assertEquals(Integer.MAX_VALUE, properties.getTruncatedInt("value"));
+		
+		properties.setDouble("value", Integer.MIN_VALUE);
+		Assert.assertEquals(Integer.MIN_VALUE, properties.getTruncatedInt("value"));
+	}
+	
 	private enum TestEnum {
 		FOO,
 		BAR
