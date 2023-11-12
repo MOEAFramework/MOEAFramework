@@ -27,9 +27,8 @@ import java.util.List;
 import org.moeaframework.util.io.CommentedLineReader;
 
 /**
- * Loads the parameters in a parameter file. A parameter file contains on each
- * line the name, lower bound, and upper bound of a parameter separated by
- * whitespace.
+ * Loads the parameters in a parameter file. A parameter file contains on each line the name, lower bound,
+ * and upper bound of a parameter separated by whitespace.
  */
 public class ParameterFile {
 
@@ -39,8 +38,7 @@ public class ParameterFile {
 	private final List<Parameter> parameters;
 
 	/**
-	 * Constructs a parameter file with the parameters contained in the
-	 * specified parameter description file.
+	 * Constructs a parameter file with the parameters contained in the specified parameter description file.
 	 * 
 	 * @param file the parameter file
 	 * @throws IOException if an I/O error occurred
@@ -50,25 +48,22 @@ public class ParameterFile {
 	}
 
 	/**
-	 * Constructs a parameter file with the parameters read from the underlying
-	 * reader.  The reader is closed when the parameters are finished loading.
+	 * Constructs a parameter file with the parameters read from the underlying reader.  The reader is closed
+	 * when the parameters are finished loading.
 	 * 
 	 * @param reader the reader of the parameters
 	 * @throws IOException if an I/O error occurred
 	 */
 	ParameterFile(Reader reader) throws IOException {
 		super();
-
-		if (reader instanceof CommentedLineReader) {
-			parameters = load((CommentedLineReader)reader);
-		} else {
-			parameters = load(new CommentedLineReader(reader));
+		
+		try (CommentedLineReader clr = CommentedLineReader.wrap(reader)) {
+			parameters = load(clr);
 		}
 	}
 
 	/**
-	 * Returns the parameters read from the specified reader. The reader is
-	 * closed by this method.
+	 * Returns the parameters read from the specified reader. The reader is closed by this method.
 	 * 
 	 * @param reader the reader of the parameters
 	 * @return the parameters read from the specified reader
@@ -78,23 +73,14 @@ public class ParameterFile {
 		List<Parameter> parameters = new ArrayList<Parameter>();
 		String line = null;
 
-		try {
-			while ((line = reader.readLine()) != null) {
-				String[] tokens = line.split("\\s+");
+		while ((line = reader.readLine()) != null) {
+			String[] tokens = line.split("\\s+");
 
-				if (tokens.length != 3) {
-					throw new IOException("expected only three items per line");
-				}
+			if (tokens.length != 3) {
+				throw new IOException("expected only three items per line");
+			}
 
-				parameters
-						.add(new Parameter(tokens[0], Double
-								.parseDouble(tokens[1]), Double
-								.parseDouble(tokens[2])));
-			}
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
+			parameters.add(new Parameter(tokens[0], Double.parseDouble(tokens[1]), Double.parseDouble(tokens[2])));
 		}
 
 		return parameters;

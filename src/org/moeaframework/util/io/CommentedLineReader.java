@@ -47,6 +47,20 @@ public class CommentedLineReader extends BufferedReader {
 	public CommentedLineReader(Reader in) {
 		super(in);
 	}
+	
+	/**
+	 * Wraps the given reader in a commented line reader.
+	 * 
+	 * @param reader the reader
+	 * @return the reader wrapped in a commented line reader
+	 */
+	public static CommentedLineReader wrap(Reader reader) {
+		if (reader instanceof CommentedLineReader) {
+			return (CommentedLineReader)reader;
+		} else {
+			return new CommentedLineReader(reader);
+		}
+	}
 
 	@Override
 	public String readLine() throws IOException {

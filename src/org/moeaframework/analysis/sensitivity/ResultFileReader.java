@@ -47,8 +47,7 @@ import org.moeaframework.util.TypedProperties;
  * 
  * @see ResultFileWriter
  */
-public class ResultFileReader implements Closeable, Iterator<ResultEntry>,
-Iterable<ResultEntry> {
+public class ResultFileReader implements Closeable, Iterator<ResultEntry>, Iterable<ResultEntry> {
 
 	/**
 	 * The internal stream for reading data from the file.
@@ -123,17 +122,14 @@ Iterable<ResultEntry> {
 	}
 
 	/**
-	 * Returns the next population in the file; or {@code null} if the end of
-	 * the file is reached. If the last entry in the file is incomplete,
-	 * {@code null} is returned.
+	 * Returns the next population in the file; or {@code null} if the end of the file is reached. If the last
+	 * entry in the file is incomplete, {@code null} is returned.
 	 * 
-	 * @return the next population in the file; or {@code null} if the end of
-	 *         the file is reached
+	 * @return the next population in the file; or {@code null} if the end of the file is reached
 	 * @throws NumberFormatException if an error occurred parsing the objectives
 	 * @throws IOException if an I/O error occurred
 	 */
-	private ResultEntry readNextEntry() throws NumberFormatException, 
-	IOException {
+	private ResultEntry readNextEntry() throws NumberFormatException, IOException {
 		NondominatedPopulation population = new NondominatedPopulation();
 		StringWriter stringBuffer = new StringWriter();
 
@@ -189,14 +185,12 @@ Iterable<ResultEntry> {
 
 		try {
 			
-			if (entries.length == (problem.getNumberOfVariables() + 
-					problem.getNumberOfObjectives())) {
+			if (entries.length == (problem.getNumberOfVariables() + problem.getNumberOfObjectives())) {
 				solution = problem.newSolution();
 				
 				// read decision variables
 				for (int i = 0; i < problem.getNumberOfVariables(); i++) {
-					solution.setVariable(i, decode(solution.getVariable(i),
-							entries[i]));
+					solution.setVariable(i, decode(solution.getVariable(i), entries[i]));
 				}
 			} else {
 				solution = new Solution(0, problem.getNumberOfObjectives());
@@ -205,8 +199,7 @@ Iterable<ResultEntry> {
 			// read objectives
 			for (int i = 0; i < problem.getNumberOfObjectives(); i++) {
 				solution.setObjective(i, Double.parseDouble(
-						entries[entries.length - 
-						        problem.getNumberOfObjectives() + i]));
+						entries[entries.length - problem.getNumberOfObjectives() + i]));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

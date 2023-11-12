@@ -35,8 +35,7 @@ import org.moeaframework.util.TypedProperties;
  * @see SampleGenerator
  * @see ParameterFile
  */
-public class SampleReader implements Iterable<TypedProperties>,
-		Iterator<TypedProperties>, Closeable {
+public class SampleReader implements Iterable<TypedProperties>, Iterator<TypedProperties>, Closeable {
 
 	/**
 	 * The underlying reader.
@@ -49,8 +48,7 @@ public class SampleReader implements Iterable<TypedProperties>,
 	private final ParameterFile parameterFile;
 
 	/**
-	 * Constructs a sample reader for reading parameter samples from the
-	 * specified file.
+	 * Constructs a sample reader for reading parameter samples from the specified file.
 	 * 
 	 * @param file the parameter sample file
 	 * @param parameterFile the parameter definition file
@@ -62,8 +60,7 @@ public class SampleReader implements Iterable<TypedProperties>,
 	}
 
 	/**
-	 * Constructs a sample reader for reading parameter samples from the
-	 * underlying reader.
+	 * Constructs a sample reader for reading parameter samples from the underlying reader.
 	 * 
 	 * @param reader the underlying reader
 	 * @param parameterFile the parameter definition file
@@ -73,8 +70,7 @@ public class SampleReader implements Iterable<TypedProperties>,
 	}
 	
 	/**
-	 * Constructs a sample reader for reading parameter samples from the
-	 * underlying reader.
+	 * Constructs a sample reader for reading parameter samples from the underlying reader.
 	 * 
 	 * @param reader the underlying reader
 	 * @param parameterFile the parameter definition file
@@ -103,8 +99,7 @@ public class SampleReader implements Iterable<TypedProperties>,
 		for (int i = 0; i < values.length; i++) {
 			Parameter parameter = parameterFile.get(i);
 
-			if ((values[i] < parameter.getLowerBound())
-					|| (values[i] > parameter.getUpperBound())) {
+			if ((values[i] < parameter.getLowerBound()) || (values[i] > parameter.getUpperBound())) {
 				throw new FrameworkException("parameter out of bounds");
 			}
 

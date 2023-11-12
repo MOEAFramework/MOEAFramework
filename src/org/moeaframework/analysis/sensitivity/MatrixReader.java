@@ -42,8 +42,7 @@ import org.moeaframework.util.io.CommentedLineReader;
  * {@code suppressExceptions} flag.  If exceptions are suppressed, a warning
  * message will be printed.
  */
-class MatrixReader implements Iterable<double[]>, Iterator<double[]>, 
-Closeable {
+class MatrixReader implements Iterable<double[]>, Iterator<double[]>, Closeable {
 
 	/**
 	 * The underlying reader.
@@ -92,8 +91,7 @@ Closeable {
 	 *        the matrix has no fixed column count
 	 * @throws FileNotFoundException if the file was not found
 	 */
-	public MatrixReader(File file, int numberOfColumns)
-			throws FileNotFoundException {
+	public MatrixReader(File file, int numberOfColumns) throws FileNotFoundException {
 		this(new FileReader(file), numberOfColumns);
 	}
 	
@@ -117,13 +115,7 @@ Closeable {
 	 */
 	public MatrixReader(Reader reader, int numberOfColumns) {
 		super();
-
-		if (reader instanceof CommentedLineReader) {
-			this.reader = (CommentedLineReader)reader;
-		} else {
-			this.reader = new CommentedLineReader(reader);
-		}
-		
+		this.reader = CommentedLineReader.wrap(reader);		
 		this.numberOfColumns = numberOfColumns;
 	}
 

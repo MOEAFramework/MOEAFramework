@@ -150,15 +150,13 @@ public class ExtractData extends CommandLineUtility {
 
 	@Override
 	public void run(CommandLine commandLine) throws Exception {
-		String separator = commandLine.hasOption("separator") ?
-				commandLine.getOptionValue("separator") : " ";
+		String separator = commandLine.hasOption("separator") ? commandLine.getOptionValue("separator") : " ";
 
 		String[] fields = commandLine.getArgs();
 
 		// indicators are prepared, run the data extraction routine
 		try (Problem problem = OptionUtils.getProblemInstance(commandLine, true);
-				ResultFileReader input = new ResultFileReader(problem,
-						new File(commandLine.getOptionValue("input")));
+				ResultFileReader input = new ResultFileReader(problem, new File(commandLine.getOptionValue("input")));
 				OutputLogger output = new OutputLogger(commandLine.getOptionValue("output"))) {
 			NondominatedPopulation referenceSet = OptionUtils.getReferenceSet(commandLine);
 			
@@ -190,8 +188,7 @@ public class ExtractData extends CommandLineUtility {
 					if (properties.contains(fields[i])) {
 						output.print(properties.getString(fields[i]));
 					} else if (fields[i].startsWith("+")) {
-						output.print(evaluate(fields[i].substring(1), entry,
-								problem, referenceSet, commandLine));
+						output.print(evaluate(fields[i].substring(1), entry, problem, referenceSet, commandLine));
 					} else {
 						throw new FrameworkException("missing field");
 					}
@@ -251,14 +248,11 @@ public class ExtractData extends CommandLineUtility {
 				indicator = new Contribution(referenceSet);
 			}
 		} else if (option.equals("R1")) {
-			indicator = new R1Indicator(problem,
-					R1Indicator.getDefaultSubdivisions(problem), referenceSet);
+			indicator = new R1Indicator(problem, R1Indicator.getDefaultSubdivisions(problem), referenceSet);
 		} else if (option.equals("R2")) {
-			indicator = new R2Indicator(problem,
-					R2Indicator.getDefaultSubdivisions(problem), referenceSet);
+			indicator = new R2Indicator(problem, R2Indicator.getDefaultSubdivisions(problem), referenceSet);
 		} else if (option.equals("R3")) {
-			indicator = new R3Indicator(problem,
-					R3Indicator.getDefaultSubdivisions(problem), referenceSet);
+			indicator = new R3Indicator(problem, R3Indicator.getDefaultSubdivisions(problem), referenceSet);
 		} else {
 			throw new IllegalStateException();
 		}

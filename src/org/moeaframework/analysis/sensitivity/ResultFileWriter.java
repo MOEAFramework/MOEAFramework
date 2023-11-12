@@ -146,8 +146,7 @@ public class ResultFileWriter implements OutputWriter {
 		}
 
 		// if the file already exists, move it to a temporary location
-		File existingFile = new File(file.getParent(), "." + file.getName()
-				+ ".unclean");
+		File existingFile = new File(file.getParent(), "." + file.getName() + ".unclean");
 		
 		if (existingFile.exists()) {
 			if (Settings.getCleanupStrategy().equalsIgnoreCase("restore")) {
@@ -169,8 +168,7 @@ public class ResultFileWriter implements OutputWriter {
 
 		// prepare this class for writing
 		numberOfEntries = 0;
-		writer = new PrintWriter(new BufferedWriter(new FileWriter(file)), 
-				true);
+		writer = new PrintWriter(new BufferedWriter(new FileWriter(file)), true);
 		
 		// print header information
 		writer.print("# Problem = ");
@@ -230,8 +228,7 @@ public class ResultFileWriter implements OutputWriter {
 		//ensure a non-empty entry is written
 		TypedProperties properties = entry.getProperties();
 		
-		if (feasibleSolutions.isEmpty() && 
-				((properties == null) || (properties.isEmpty()))) {
+		if (feasibleSolutions.isEmpty() && ((properties == null) || (properties.isEmpty()))) {
 			writer.println("//");
 		}
 
@@ -268,8 +265,7 @@ public class ResultFileWriter implements OutputWriter {
 
 		// write objectives
 		for (int i = 0; i < solution.getNumberOfObjectives(); i++) {
-			if ((i > 0) || (includeVariables && 
-					(solution.getNumberOfVariables() > 0))) {
+			if ((i > 0) || (includeVariables && (solution.getNumberOfVariables() > 0))) {
 				writer.print(' ');
 			}
 

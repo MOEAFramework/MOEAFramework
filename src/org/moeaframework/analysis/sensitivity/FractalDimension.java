@@ -43,13 +43,11 @@ class FractalDimension {
 	}
 	
 	/**
-	 * Returns the correlation sum for the specified points using the specified
-	 * radius.
+	 * Returns the correlation sum for the specified points using the specified radius.
 	 * 
 	 * @param points the points
 	 * @param r the radius
-	 * @return the correlation sum for the specified points using the specified
-	 *         radius
+	 * @return the correlation sum for the specified points using the specified radius
 	 */
 	private static double computeCorrelationSum(double[][] points, double r) {
 		double sum = 0.0;
@@ -107,8 +105,7 @@ class FractalDimension {
 			
 			int k = n - 2*i;
 			double correlationCoefficient =  (k*sumXY - sumX*sumY) /
-					(Math.sqrt(k*sumXX - sumX*sumX)*Math.sqrt(k*sumYY - 
-							sumY*sumY));
+					(Math.sqrt(k*sumXX - sumX*sumX)*Math.sqrt(k*sumYY - sumY*sumY));
 			
 			if (correlationCoefficient >= 0.99) {
 				return i;

@@ -38,8 +38,7 @@ public class Parameter {
 	private final double upperBound;
 
 	/**
-	 * Constructs a new parameter with the specified name, lower bound, and 
-	 * upper bound.
+	 * Constructs a new parameter with the specified name, lower bound, and upper bound.
 	 * 
 	 * @param name the parameter name
 	 * @param lowerBound the lower bound of the parameter
