@@ -31,22 +31,17 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.moeaframework.util.TypedProperties;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringTokenizer;
 import org.moeaframework.core.NondominatedPopulation.DuplicateMode;
 import org.moeaframework.core.indicator.Hypervolume;
 
 /**
  * Global settings used by this framework.
- * 
- * The settings are loaded from the following sources (in order):
- * <ol>
- *   <li>The system properties configured when starting Java - e.g., `java -Dorg.moeaframework.core.foo=bar ...`
- *   <li>The environment variables
- *   <li>The properties file
- * </ol>
- * 
- * All properties must start with the prefix {@code org.moeaframework}.
- * 
+ * <p>
+ * The settings are loaded from the system properties, set when starting Java using
+ * `java -Dorg.moeaframework.core.foo=bar ...`, or the properties file.
+ * <p>
  * The default properties file is `moeaframework.properties` and should be located in the working directory where Java
  * is started.  This can be overridden by setting {@code org.moeaframework.configuration=<file>}.
  */
@@ -203,23 +198,12 @@ public class Settings {
 			Properties systemProperties = System.getProperties();
 			
 			for (String key : systemProperties.stringPropertyNames()) {
-				if (key.startsWith(Settings.KEY_PREFIX)) {
+				if (StringUtils.startsWithIgnoreCase(key, Settings.KEY_PREFIX)) {
 					PROPERTIES.setString(key, systemProperties.getProperty(key));
 				}
 			}
 		} catch (SecurityException e) {
 			System.err.println("Unable to read system properties: " + e);
-		}
-		
-		//environment variables
-		try {
-			for (Map.Entry<String, String> entry : System.getenv().entrySet()) {
-				if (entry.getKey().startsWith(Settings.KEY_PREFIX)) {
-					PROPERTIES.setString(entry.getKey(), entry.getValue());
-				}
-			}
-		} catch (SecurityException e) {
-			System.err.println("Unable to read environment variables: " + e);
 		}
 		
 		//properties file
