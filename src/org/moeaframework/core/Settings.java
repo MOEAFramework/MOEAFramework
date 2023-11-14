@@ -68,7 +68,7 @@ public class Settings {
 	/**
 	 * The global properties object.
 	 */
-	public static final TypedProperties PROPERTIES;
+	public static final TypedProperties PROPERTIES = new TypedProperties();
 	
 	/**
 	 * The prefix for all property keys.
@@ -76,24 +76,30 @@ public class Settings {
 	static final String KEY_PREFIX = createKey("org", "moeaframework");
 	
 	/**
+	 * The property key for setting the configuration file.  This defaults to moeaframework.properties
+	 * if unset.
+	 */
+	public static final String KEY_CONFIGURATION_FILE = createKey(KEY_PREFIX, "configuration");
+	
+	/**
 	 * The property key for how to handle duplicate solutions in a nondominated population.
 	 */
-	static final String KEY_DUPLICATE_MODE = createKey(KEY_PREFIX, "core", "duplicate_mode");
+	public static final String KEY_DUPLICATE_MODE = createKey(KEY_PREFIX, "core", "duplicate_mode");
 	
 	/**
 	 * The property key for the power used in the generational distance calculation.
 	 */
-	static final String KEY_GD_POWER = createKey(KEY_PREFIX, "core", "indicator", "gd_power");
+	public static final String KEY_GD_POWER = createKey(KEY_PREFIX, "core", "indicator", "gd_power");
 	
 	/**
 	 * The property key for the power used in the inverted generational distance calculation.
 	 */
-	static final String KEY_IGD_POWER = createKey(KEY_PREFIX, "core", "indicator", "igd_power");
+	public static final String KEY_IGD_POWER = createKey(KEY_PREFIX, "core", "indicator", "igd_power");
 	
 	/**
 	 * The property key to indicate that fast non-dominated sorting should be used.
 	 */
-	static final String KEY_FAST_NONDOMINATED_SORTING = createKey(KEY_PREFIX, "core", "fast_nondominated_sorting");
+	public static final String KEY_FAST_NONDOMINATED_SORTING = createKey(KEY_PREFIX, "core", "fast_nondominated_sorting");
 	
 	/**
 	 * The property key to indicate that truncation warnings should be suppressed.
@@ -103,82 +109,86 @@ public class Settings {
 	/**
 	 * The property key for the continuity correction flag.
 	 */
-	static final String KEY_CONTINUITY_CORRECTION = createKey(KEY_PREFIX, "util", "statistics", "continuity_correction");
+	public static final String KEY_CONTINUITY_CORRECTION = createKey(KEY_PREFIX, "util", "statistics", "continuity_correction");
 	
 	/**
 	 * The property key for the hypervolume delta when determining the reference point.
 	 */
-	static final String KEY_HYPERVOLUME_DELTA = createKey(KEY_PREFIX, "core", "indicator", "hypervolume_delta");
+	public static final String KEY_HYPERVOLUME_DELTA = createKey(KEY_PREFIX, "core", "indicator", "hypervolume_delta");
 	
 	/**
 	 * The prefix for specifying custom ideal points for different problems.
 	 */
-	static final String KEY_IDEALPT_PREFIX = createKey(KEY_PREFIX, "core", "indicator", "hypervolume_idealpt");
+	public static final String KEY_IDEALPT_PREFIX = createKey(KEY_PREFIX, "core", "indicator", "hypervolume_idealpt");
 	
 	/**
 	 * The prefix for specifying custom reference points for different problems.
 	 */
-	static final String KEY_REFPT_PREFIX = createKey(KEY_PREFIX, "core", "indicator", "hypervolume_refpt");
+	public static final String KEY_REFPT_PREFIX = createKey(KEY_PREFIX, "core", "indicator", "hypervolume_refpt");
 	
 	/**
 	 * The property key for the hypervolume command.
 	 */
-	static final String KEY_HYPERVOLUME = createKey(KEY_PREFIX, "core", "indicator", "hypervolume");
+	public static final String KEY_HYPERVOLUME = createKey(KEY_PREFIX, "core", "indicator", "hypervolume");
 	
 	/**
 	 * The property key for the hypervolume inversion flag.
 	 */
-	static final String KEY_HYPERVOLUME_INVERTED = createKey(KEY_PREFIX, "core", "indicator", "hypervolume_inverted");
+	public static final String KEY_HYPERVOLUME_INVERTED = createKey(KEY_PREFIX, "core", "indicator", "hypervolume_inverted");
 	
 	/**
 	 * The property key for the hypervolume flag.
 	 */
-	static final String KEY_HYPERVOLUME_ENABLED = createKey(KEY_PREFIX, "core", "indicator", "hypervolume_enabled");
+	public static final String KEY_HYPERVOLUME_ENABLED = createKey(KEY_PREFIX, "core", "indicator", "hypervolume_enabled");
 	
 	/**
 	 * The prefix for all problem property keys.
 	 */
-	static final String KEY_PROBLEM_PREFIX = createKey(KEY_PREFIX, "problem");
+	public static final String KEY_PROBLEM_PREFIX = createKey(KEY_PREFIX, "problem");
 	
 	/**
 	 * The property key for the list of available problems.
 	 */
-	static final String KEY_PROBLEM_LIST = createKey(KEY_PROBLEM_PREFIX, "problems");
+	public static final String KEY_PROBLEM_LIST = createKey(KEY_PROBLEM_PREFIX, "problems");
 	
 	/**
 	 * The property key for the algorithms available in the diagnostic tool.
 	 */
-	static final String KEY_DIAGNOSTIC_TOOL_ALGORITHMS = createKey(KEY_PREFIX, "analysis", "diagnostics", "algorithms");
+	public static final String KEY_DIAGNOSTIC_TOOL_ALGORITHMS = createKey(KEY_PREFIX, "analysis", "diagnostics", "algorithms");
 	
 	/**
 	 * The property key for the problems available in the diagnostic tool.
 	 */
-	static final String KEY_DIAGNOSTIC_TOOL_PROBLEMS = createKey(KEY_PREFIX, "analysis", "diagnostics", "problems");
+	public static final String KEY_DIAGNOSTIC_TOOL_PROBLEMS = createKey(KEY_PREFIX, "analysis", "diagnostics", "problems");
 	
 	/**
 	 * The property key for the genetic programming protected functions flag.
 	 */
-	static final String KEY_GP_PROTECTED_FUNCTIONS = createKey(KEY_PREFIX, "util", "tree", "protected_functions");
+	public static final String KEY_GP_PROTECTED_FUNCTIONS = createKey(KEY_PREFIX, "util", "tree", "protected_functions");
 	
 	/**
 	 * The property key for the cleanup strategy when restarting from previous runs.
 	 */
-	static final String KEY_CLEANUP_STRATEGY = createKey(KEY_PREFIX, "analysis", "sensitivity", "cleanup");
+	public static final String KEY_CLEANUP_STRATEGY = createKey(KEY_PREFIX, "analysis", "sensitivity", "cleanup");
 	
 	/**
 	 * The property key for enabling debugging info when running external problems.
 	 */
-	static final String KEY_EXTERNAL_PROBLEM_DEBUGGING = createKey(KEY_PREFIX, "problem", "external_problem_debugging");
+	public static final String KEY_EXTERNAL_PROBLEM_DEBUGGING = createKey(KEY_PREFIX, "problem", "external_problem_debugging");
+	
+	static {
+		reload();
+	}
 	
 	/**
-	 * Loads the properties with the following priority:
+	 * Clears any existing settings and reloads the properties from the following sources (in order):
 	 * 
 	 * 1. The system properties configured when starting Java - `java -Dorg.moeaframework.core.foo=bar ...`
 	 * 2. The environment variables
 	 * 3. The properties file - `moeaframework.properties`
 	 */
-	static {
-		Properties properties = new Properties();
+	public static void reload() {
+		PROPERTIES.clear();
 		
 		//system properties
 		try {
@@ -186,7 +196,7 @@ public class Settings {
 			
 			for (String key : systemProperties.stringPropertyNames()) {
 				if (key.startsWith(Settings.KEY_PREFIX)) {
-					properties.setProperty(key, systemProperties.getProperty(key));
+					PROPERTIES.setString(key, systemProperties.getProperty(key));
 				}
 			}
 		} catch (SecurityException e) {
@@ -197,7 +207,7 @@ public class Settings {
 		try {
 			for (Map.Entry<String, String> entry : System.getenv().entrySet()) {
 				if (entry.getKey().startsWith(Settings.KEY_PREFIX)) {
-					properties.setProperty(entry.getKey(), entry.getValue());
+					PROPERTIES.setString(entry.getKey(), entry.getValue());
 				}
 			}
 		} catch (SecurityException e) {
@@ -206,24 +216,18 @@ public class Settings {
 		
 		//properties file
 		try {
-			String resource = "moeaframework.properties";
-			String configurationKey = createKey(KEY_PREFIX, "configuration");
-			
-			if (properties.containsKey(configurationKey)) {
-				resource = properties.getProperty(configurationKey);
-			}
-			
+			String resource = PROPERTIES.getString(KEY_CONFIGURATION_FILE, "moeaframework.properties");			
 			File file = new File(resource);
 			
 			if (file.exists()) {
 				try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-					properties.load(reader);
+					PROPERTIES.load(reader);
 				}
 			} else {
 				try (InputStream stream = Settings.class.getResourceAsStream("/" + resource)) {
 					if (stream != null) {
 						try (BufferedReader reader = new BufferedReader(new InputStreamReader(stream))) {
-							properties.load(reader);
+							PROPERTIES.load(reader);
 						}
 					}
 					
@@ -232,8 +236,6 @@ public class Settings {
 		} catch (IOException e) {
 			throw new FrameworkException(e);
 		}
-		
-		PROPERTIES = new TypedProperties(properties);
 	}
 	
 	/**

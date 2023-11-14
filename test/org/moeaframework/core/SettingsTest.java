@@ -17,10 +17,12 @@
  */
 package org.moeaframework.core;
 
+import java.io.File;
 import java.io.IOException;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.moeaframework.TestUtils;
 import org.moeaframework.core.NondominatedPopulation.DuplicateMode;
 
 /**
@@ -97,6 +99,38 @@ public class SettingsTest {
 		
 		Assert.assertEquals("foo.bar.1.2", Settings.createKey("foo", "bar", "1", "2"));
 		Assert.assertEquals("foo.bar.1.2", Settings.createKey("foo.", "bar", "1", "2"));
+	}
+	
+	@Test
+	public void testReloadClearsProperties() {
+		Assert.assertFalse(Settings.PROPERTIES.contains("foo"));
+		
+		Settings.PROPERTIES.setString("foo", "bar");
+		Assert.assertTrue(Settings.PROPERTIES.contains("foo"));
+		Settings.reload();
+		
+		Assert.assertFalse(Settings.PROPERTIES.contains("foo"));
+	}
+	
+	@Test
+	public void testSystemProperty() {
+		Assert.assertFalse(Settings.PROPERTIES.contains("org.moeaframework.test.test_property"));
+		
+		System.setProperty("org.moeaframework.test.test_property", "foo");
+		Settings.reload();
+		
+		Assert.assertTrue(Settings.PROPERTIES.contains("org.moeaframework.test.test_property"));
+	}
+	
+	@Test
+	public void testPropertiesFile() throws IOException {
+		Assert.assertFalse(Settings.PROPERTIES.contains("org.moeaframework.test.test_property_in_file"));
+		
+		File file = TestUtils.createTempFile("org.moeaframework.test.test_property_in_file=foo");
+		System.setProperty(Settings.KEY_CONFIGURATION_FILE, file.getAbsolutePath());
+		Settings.reload();
+		
+		Assert.assertTrue(Settings.PROPERTIES.contains("org.moeaframework.test.test_property_in_file"));		
 	}
 
 }
