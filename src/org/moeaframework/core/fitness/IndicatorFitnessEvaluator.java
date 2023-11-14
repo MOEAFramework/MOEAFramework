@@ -34,7 +34,7 @@ public abstract class IndicatorFitnessEvaluator implements FitnessEvaluator {
 	/**
 	 * The problem.
 	 */
-	private Problem problem;
+	private final Problem problem;
 
 	/**
 	 * Scaling factor for fitness calculation.

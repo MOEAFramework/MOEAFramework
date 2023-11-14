@@ -33,7 +33,7 @@ public class MaxFunctionEvaluations implements TerminationCondition {
 	/**
 	 * The maximum number of function evaluations.
 	 */
-	private int maxEvaluations;
+	private final int maxEvaluations;
 	
 	/**
 	 * Constructs a new termination condition based on the maximum number of

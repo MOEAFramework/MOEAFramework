@@ -32,12 +32,12 @@ public class TargetObjectiveTermination implements TerminationCondition {
 	/**
 	 * The target solution.
 	 */
-	private Solution target;
+	private final Solution target;
 	
 	/**
 	 * The allowed difference or distance between the solution objectives and target.
 	 */
-	private double epsilon;
+	private final double epsilon;
 	
 	/**
 	 * Constructs a new termination condition using distance to target objective values.
