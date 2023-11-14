@@ -36,12 +36,19 @@ import org.moeaframework.core.NondominatedPopulation.DuplicateMode;
 import org.moeaframework.core.indicator.Hypervolume;
 
 /**
- * Global settings used by this framework.  The {@code PROPERTIES} object
- * contains the system properties and optionally the contents of a 
- * configuration file (properties in the configuration file take precedence).
- * By default, the {@code moeaframework.properties} file is loaded, but can be
- * specified using the {@code org.moeaframework.configuration} system
- * property.
+ * Global settings used by this framework.
+ * 
+ * The settings are loaded from the following sources (in order):
+ * <ol>
+ *   <li>The system properties configured when starting Java - e.g., `java -Dorg.moeaframework.core.foo=bar ...`
+ *   <li>The environment variables
+ *   <li>The properties file
+ * </ol>
+ * 
+ * All properties must start with the prefix {@code org.moeaframework}.
+ * 
+ * The default properties file is `moeaframework.properties` and should be located in the working directory where Java
+ * is started.  This can be overridden by setting {@code org.moeaframework.configuration=<file>}.
  */
 public class Settings {
 
@@ -64,6 +71,11 @@ public class Settings {
 	 * Store the new line character to prevent repetitive calls to {@code System.getProperty("line.separator")}.
 	 */
 	public static final String NEW_LINE = System.getProperty("line.separator");
+	
+	/**
+	 * The default configuration file.
+	 */
+	static final String DEFAULT_CONFIGURATION_FILE = "moeaframework.properties";
 
 	/**
 	 * The global properties object.
@@ -181,11 +193,7 @@ public class Settings {
 	}
 	
 	/**
-	 * Clears any existing settings and reloads the properties from the following sources (in order):
-	 * 
-	 * 1. The system properties configured when starting Java - `java -Dorg.moeaframework.core.foo=bar ...`
-	 * 2. The environment variables
-	 * 3. The properties file - `moeaframework.properties`
+	 * Clears any existing settings and reloads the properties.
 	 */
 	public static void reload() {
 		PROPERTIES.clear();
@@ -216,7 +224,7 @@ public class Settings {
 		
 		//properties file
 		try {
-			String resource = PROPERTIES.getString(KEY_CONFIGURATION_FILE, "moeaframework.properties");			
+			String resource = PROPERTIES.getString(KEY_CONFIGURATION_FILE, DEFAULT_CONFIGURATION_FILE);			
 			File file = new File(resource);
 			
 			if (file.exists()) {
@@ -230,7 +238,6 @@ public class Settings {
 							PROPERTIES.load(reader);
 						}
 					}
-					
 				}
 			}
 		} catch (IOException e) {
