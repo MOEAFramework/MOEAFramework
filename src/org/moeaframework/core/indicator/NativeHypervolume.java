@@ -41,7 +41,7 @@ import org.moeaframework.util.io.RedirectStream;
  * <p>
  * If this feature is still required, it can be configured by setting the
  * {@code org.moeaframework.core.indicator.native.hypervolume}
- * system property or in {@code moeaframework.properties}.  This setting specifies
+ * system property or in {@value Settings#DEFAULT_CONFIGURATION_FILE}.  This setting specifies
  * the command line for running the executable.  The command can be customized using
  * the following substitutions:
  * <ul>
@@ -128,8 +128,8 @@ public class NativeHypervolume extends NormalizedIndicator {
 	static double evaluate(Problem problem,
 			NondominatedPopulation approximationSet) {
 		if (Settings.getHypervolume() == null) {
-			throw new FrameworkException(
-					"must specify hypervolume command as system property or in moeaframework.properties");
+			throw new FrameworkException("must specify hypervolume command as system property or in " +
+					Settings.DEFAULT_CONFIGURATION_FILE);
 		}
 		
 		boolean isInverted = Settings.isHypervolumeInverted();

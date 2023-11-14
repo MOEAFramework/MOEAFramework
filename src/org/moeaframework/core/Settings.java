@@ -27,23 +27,22 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 
-import org.moeaframework.util.TypedProperties;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringTokenizer;
 import org.moeaframework.core.NondominatedPopulation.DuplicateMode;
 import org.moeaframework.core.indicator.Hypervolume;
+import org.moeaframework.util.TypedProperties;
 
 /**
  * Global settings used by this framework.
  * <p>
  * The settings are loaded from the system properties, set when starting Java using
- * `java -Dorg.moeaframework.core.foo=bar ...`, or the properties file.
+ * {@code java -Dorg.moeaframework.core.foo=bar ...}, or the properties file.
  * <p>
- * The default properties file is `moeaframework.properties` and should be located in the working directory where Java
- * is started.  This can be overridden by setting {@code org.moeaframework.configuration=<file>}.
+ * The default properties file is {@value DEFAULT_CONFIGURATION_FILE} and should be located in the working directory
+ * where Java is started.  This can be overridden by setting {@code org.moeaframework.configuration=<file>}.
  */
 public class Settings {
 
@@ -70,7 +69,7 @@ public class Settings {
 	/**
 	 * The default configuration file.
 	 */
-	static final String DEFAULT_CONFIGURATION_FILE = "moeaframework.properties";
+	public static final String DEFAULT_CONFIGURATION_FILE = "moeaframework.properties";
 
 	/**
 	 * The global properties object.
@@ -83,8 +82,8 @@ public class Settings {
 	static final String KEY_PREFIX = createKey("org", "moeaframework");
 	
 	/**
-	 * The property key for setting the configuration file.  This defaults to moeaframework.properties
-	 * if unset.
+	 * The property key for setting the configuration file.  This defaults to
+	 * {@value DEFAULT_CONFIGURATION_FILE} if unset.
 	 */
 	public static final String KEY_CONFIGURATION_FILE = createKey(KEY_PREFIX, "configuration");
 	
