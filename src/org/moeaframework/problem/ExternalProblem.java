@@ -240,8 +240,7 @@ public abstract class ExternalProblem implements Problem {
 	 * @param solution the solution to evaluate
 	 */
 	@Override
-	public synchronized void evaluate(Solution solution) 
-	throws ProblemException {
+	public synchronized void evaluate(Solution solution) throws ProblemException {
 		BufferedWriter debug = this.debug;
 		
 		// send variables to external process

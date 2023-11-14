@@ -27,6 +27,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import org.moeaframework.util.TypedProperties;
@@ -170,26 +171,48 @@ public class Settings {
 	static final String KEY_EXTERNAL_PROBLEM_DEBUGGING = createKey(KEY_PREFIX, "problem", "external_problem_debugging");
 	
 	/**
-	 * Loads the properties.
+	 * Loads the properties with the following priority:
+	 * 
+	 * 1. The system properties configured when starting Java - `java -Dorg.moeaframework.core.foo=bar ...`
+	 * 2. The environment variables
+	 * 3. The properties file - `moeaframework.properties`
 	 */
 	static {
-		String resource = "moeaframework.properties";
-		Properties properties = null;
+		Properties properties = new Properties();
 		
-		//attempt to access system properties
+		//system properties
 		try {
-			properties = new Properties(System.getProperties());
+			Properties systemProperties = System.getProperties();
+			
+			for (String key : systemProperties.stringPropertyNames()) {
+				if (key.startsWith(Settings.KEY_PREFIX)) {
+					properties.setProperty(key, systemProperties.getProperty(key));
+				}
+			}
+		} catch (SecurityException e) {
+			System.err.println("Unable to read system properties: " + e);
+		}
+		
+		//environment variables
+		try {
+			for (Map.Entry<String, String> entry : System.getenv().entrySet()) {
+				if (entry.getKey().startsWith(Settings.KEY_PREFIX)) {
+					properties.setProperty(entry.getKey(), entry.getValue());
+				}
+			}
+		} catch (SecurityException e) {
+			System.err.println("Unable to read environment variables: " + e);
+		}
+		
+		//properties file
+		try {
+			String resource = "moeaframework.properties";
 			String configurationKey = createKey(KEY_PREFIX, "configuration");
 			
 			if (properties.containsKey(configurationKey)) {
 				resource = properties.getProperty(configurationKey);
 			}
-		} catch (SecurityException e) {
-			properties = new Properties();
-		}
-		
-		//attempt to access properties file
-		try {
+			
 			File file = new File(resource);
 			
 			if (file.exists()) {
