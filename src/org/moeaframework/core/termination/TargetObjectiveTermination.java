@@ -64,7 +64,6 @@ public class TargetObjectiveTermination implements TerminationCondition {
 	 * Constructs a new termination condition using distance to a target solution.
 	 * 
 	 * @param target the target solution
-	 * @param epsilon the allowed error
 	 */
 	public TargetObjectiveTermination(Solution target) {
 		this(target, Settings.EPS);

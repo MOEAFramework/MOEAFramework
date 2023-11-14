@@ -125,8 +125,7 @@ public class NativeHypervolume extends NormalizedIndicator {
 	 * @param approximationSet the normalized approximation set
 	 * @return the hypervolume of the normalized approximation set
 	 */
-	static double evaluate(Problem problem,
-			NondominatedPopulation approximationSet) {
+	static double evaluate(Problem problem, NondominatedPopulation approximationSet) {
 		if (Settings.getHypervolume() == null) {
 			throw new FrameworkException("must specify hypervolume command as system property or in " +
 					Settings.DEFAULT_CONFIGURATION_FILE);
@@ -231,15 +230,13 @@ public class NativeHypervolume extends NormalizedIndicator {
 	}
 
 	/**
-	 * Invokes the native process whose last output token should be the
-	 * indicator value.
+	 * Invokes the native process whose last output token should be the indicator value.
 	 * 
 	 * @param command the command to execute
 	 * @return the indicator value
 	 * @throws IOException if an I/O error occurred
 	 */
-	private static double invokeNativeProcess(String command)
-			throws IOException {
+	private static double invokeNativeProcess(String command) throws IOException {
 		Process process = new ProcessBuilder(Settings.parseCommand(command)).start();
 		RedirectStream.redirect(process.getErrorStream(), System.err);
 		String lastLine = null;
