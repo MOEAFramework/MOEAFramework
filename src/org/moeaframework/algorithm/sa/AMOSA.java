@@ -45,12 +45,12 @@ import org.moeaframework.core.spi.OperatorFactory;
  */
 public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 
-	protected double gamma;
-	protected int softLimit;
-	protected int hardLimit;
+	private double gamma;
+	private int softLimit;
+	private int hardLimit;
 
-	protected int numberOfIterationsPerTemperature;
-	protected int numberOfHillClimbingIterationsForRefinement;
+	private int numberOfIterationsPerTemperature;
+	private int numberOfHillClimbingIterationsForRefinement;
 	
 	/**
 	 * Creates a new instance of the AMOSA algorithm with default settings.

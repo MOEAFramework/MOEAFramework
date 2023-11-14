@@ -74,8 +74,8 @@ public interface Problem extends AutoCloseable {
 	
 	/**
 	 * Returns {@code true} if all decision variables used by this solution are the given type.
-	 * This also considers if the given types are compatible.  For example, {@link BinaryIntegerVariable}
-	 * is compatible with {@link BinaryVariable}.
+	 * This also considers if the given types are compatible.  For example, {@code BinaryIntegerVariable}
+	 * is compatible with {@code BinaryVariable}.
 	 * 
 	 * @param type the type of decision variable
 	 * @return {@code true} if all decision variables are the given type; {@code false} otherwise.

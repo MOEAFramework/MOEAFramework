@@ -64,7 +64,7 @@ public class EpsilonNSGAII extends AdaptiveTimeContinuation implements Configura
 				OperatorFactory.getInstance().getVariation(problem),
 				new RandomInitialization(problem),
 				100, // windowSize
-				100, // maxwindowSize
+				100, // maxWindowSize
 				0.25, // injectionRate
 				100, // minimumPopulationSize
 				10000); // maximumPopulationSize

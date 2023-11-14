@@ -33,7 +33,7 @@ public class TemperatureBasedTerminationCondition implements TerminationConditio
 	/**
 	 * The stopping temperature.
 	 */
-	protected double stoppingTemperature;
+	private double stoppingTemperature;
 	
 	/**
 	 * Constructs a new termination condition based on the simulated annealing temperature.

@@ -31,7 +31,7 @@ public class GeometricCoolingSchedule implements CoolingSchedule {
 	/**
 	 * The cooling rate.
 	 */
-	protected double alpha;
+	private double alpha;
 	
 	/**
 	 * Constructs a new geometric cooling schedule.
