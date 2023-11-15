@@ -17,8 +17,6 @@
  */
 package org.moeaframework.core.variable;
 
-import java.text.MessageFormat;
-
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.moeaframework.core.PRNG;
@@ -31,8 +29,6 @@ public class RealVariable implements Variable {
 
 	private static final long serialVersionUID = 3141851312155686224L;
 	
-	private static final String VALUE_OUT_OF_BOUNDS = "value out of bounds (value: {0}, min: {1}, max: {2})";
-
 	/**
 	 * The current value of this decision variable.
 	 */
@@ -71,14 +67,10 @@ public class RealVariable implements Variable {
 	 */
 	public RealVariable(double value, double lowerBound, double upperBound) {
 		super();
-		this.value = value;
 		this.lowerBound = lowerBound;
 		this.upperBound = upperBound;
-
-		if ((value < lowerBound) || (value > upperBound)) {
-			throw new IllegalArgumentException(MessageFormat.format(
-					VALUE_OUT_OF_BOUNDS, value, lowerBound, upperBound));
-		}
+		
+		setValue(value);
 	}
 
 	/**
@@ -99,8 +91,8 @@ public class RealVariable implements Variable {
 	 */
 	public void setValue(double value) {
 		if ((value < lowerBound) || (value > upperBound)) {
-			throw new IllegalArgumentException(MessageFormat.format(
-					VALUE_OUT_OF_BOUNDS, value, lowerBound, upperBound));
+			throw new IllegalArgumentException("value out of bounds (value: " + value + 
+					", min: " + lowerBound + ", max: " + upperBound + ")");
 		}
 
 		this.value = value;

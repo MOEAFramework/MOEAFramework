@@ -18,7 +18,6 @@
 package org.moeaframework.analysis.collector;
 
 import java.io.Serializable;
-import java.text.MessageFormat;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -68,12 +67,13 @@ public class Observation implements Serializable, Comparable<Observation> {
 	 * 
 	 * @param key the key
 	 * @return the value
+	 * @throws IllegalArgumentException if no observation exists for the key
 	 */
 	public Serializable get(String key) {
 		Serializable value = data.get(key);
 		
 		if (value == null) {
-			throw new IllegalArgumentException(MessageFormat.format("no observation with key: {0}", key));
+			throw new IllegalArgumentException("no observation with key: " + key);
 		}
 		
 		return value;

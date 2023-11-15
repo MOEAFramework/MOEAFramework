@@ -17,8 +17,6 @@
  */
 package org.moeaframework.core.variable;
 
-import java.text.MessageFormat;
-
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.moeaframework.core.PRNG;
@@ -31,8 +29,6 @@ import org.moeaframework.core.PRNG;
 public class BinaryIntegerVariable extends BinaryVariable {
 
 	private static final long serialVersionUID = 5045946885389529638L;
-
-	private static final String VALUE_OUT_OF_BOUNDS = "value out of bounds (value: {0}, min: {1}, max: {2})";
 
 	/**
 	 * The lower bound of this decision variable.
@@ -156,8 +152,8 @@ public class BinaryIntegerVariable extends BinaryVariable {
 	 */
 	public void setValue(int value) {
 		if ((value < lowerBound) || (value > upperBound)) {
-			throw new IllegalArgumentException(MessageFormat.format(VALUE_OUT_OF_BOUNDS,
-					value, lowerBound, upperBound));
+			throw new IllegalArgumentException("value out of bounds (value: " + value + 
+					", min: " + lowerBound + ", max: " + upperBound + ")");
 		}
 
 		EncodingUtils.encode(value - lowerBound, this);

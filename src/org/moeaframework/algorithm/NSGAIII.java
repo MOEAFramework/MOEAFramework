@@ -49,7 +49,6 @@ import org.moeaframework.util.weights.NormalBoundaryDivisions;
  *       Improved NSGA-II Procedure.  WCCI 2012 IEEE World Contress on
  *       Computational Intelligence, Brisbane, Australia, June 10-15, 2012.
  * </ol>
- *
  */
 public class NSGAIII extends NSGAII {
 	

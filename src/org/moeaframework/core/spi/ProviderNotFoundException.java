@@ -17,8 +17,6 @@
  */
 package org.moeaframework.core.spi;
 
-import java.text.MessageFormat;
-
 import org.moeaframework.core.FrameworkException;
 
 /**
@@ -44,7 +42,7 @@ public class ProviderNotFoundException extends FrameworkException {
 	 * @param cause the cause of this exception
 	 */
 	public ProviderNotFoundException(String name, Throwable cause) {
-		super(MessageFormat.format("no provider for {0}", name), cause);
+		super("no provider for " + name, cause);
 	}
 	
 }

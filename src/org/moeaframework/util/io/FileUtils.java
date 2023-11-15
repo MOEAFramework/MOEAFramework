@@ -23,17 +23,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.StandardCopyOption;
-import java.text.MessageFormat;
 
 /**
  * Helper methods for working with files beyond what is provided by {@link File}.
  */
 public class FileUtils {
-	
-	/**
-	* Error message when unable to create a directory.
-	*/
-	private static final String UNABLE_TO_MKDIR = "unable to mkdir {0}";
 	
 	/**
 	 * Private constructor to prevent instantiation.
@@ -100,11 +94,11 @@ public class FileUtils {
 	public static void mkdir(File directory) throws IOException {
 		if (directory.exists()) {
 			if (!directory.isDirectory()) {
-				throw new IOException(MessageFormat.format(UNABLE_TO_MKDIR, directory));
+				throw new IOException("the path " + directory + " exists but is not a directory");
 			}
 		} else {
 			if (!directory.mkdirs()) {
-				throw new IOException(MessageFormat.format(UNABLE_TO_MKDIR, directory));
+				throw new IOException("failed to create directory " + directory);
 			}
 		}
 	}
