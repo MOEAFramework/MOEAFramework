@@ -28,10 +28,9 @@ import org.moeaframework.util.RotationMatrixBuilder;
 
 /**
  * Problem provider for rotated problems.  Supports any problem available
- * through {@code ProblemProvider#getProblem(String)}.  See {@link 
- * RotatedProblem} for details on how rotation is supported.  Rotated problems
- * are instantiated by providing the problem name prefixed with one of the
- * following prefix patterns.
+ * through {@code ProblemFactory#getProblem(String)}.  See {@link RotatedProblem}
+ * for details on how rotation is supported.  Rotated problems are instantiated by
+ * providing the problem name prefixed with one of the following prefix patterns.
  * 
  * <table style="margin-top: 1em; width: 100%">
  *   <caption>List of rotated problem prefixes</caption>

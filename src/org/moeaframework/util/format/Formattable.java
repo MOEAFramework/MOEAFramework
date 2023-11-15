@@ -29,7 +29,7 @@ public interface Formattable<T> extends Displayable {
 	
 	/**
 	 * Returns the contents of this object as a {@link TabularData} instance, which can
-	 * be used to save, print, or format the data in variou ways.
+	 * be used to save, print, or format the data in various ways.
 	 * 
 	 * @return the {@link TabularData} instance
 	 */

@@ -21,9 +21,10 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 
 /**
- * Wraps a problem instance to modify or extend its functionality.  All methods
- * call the corresponding method on the wrapped problem, unless overridden by
- * a subclass.
+ * Wraps a problem instance to modify or extend its functionality.
+ * <p>
+ * All methods invoke the corresponding method on the inner problem.  Subclasses need only override
+ * the methods they need to change.
  */
 public abstract class ProblemWrapper implements Problem {
 
@@ -33,8 +34,7 @@ public abstract class ProblemWrapper implements Problem {
 	protected final Problem problem;
 	
 	/**
-	 * Constructs a new problem wrapper to modify or extend the functionality of the
-	 * given problem.
+	 * Constructs a new problem wrapper to modify or extend the functionality of the given problem.
 	 * 
 	 * @param problem the problem being modified or extended
 	 */

@@ -27,12 +27,19 @@ import org.moeaframework.core.spi.ProblemProvider;
 import org.moeaframework.core.spi.ProviderNotFoundException;
 
 /**
- * Problem provider for problems enumerated in {@value Settings#DEFAULT_CONFIGURATION_FILE}.
- * The problems are identified by name as listed in the {@code
- * org.moeaframework.problem.problems} property, with the class and optional
- * reference set defined by the {@code org.moeaframework.problem.NAME.class}
- * and {@code org.moeaframework.problem.NAME.referenceSet} properties.
- * Problems instantiated this way must provide an empty constructor.
+ * Legacy problem provider that loads problems defined in {@value Settings#DEFAULT_CONFIGURATION_FILE}.
+ * For example, we could add the following to the properties file:
+ * <pre>
+ * org.moeaframework.problem.problems = TestLZ1 
+ * org.moeaframework.problem.TestLZ1.class = org.moeaframework.problem.LZ.LZ1
+ * org.moeaframework.problem.TestLZ1.referenceSet = ./pf/LZ09_F1.pf
+ * </pre>
+ * And then instantiate the problem with:
+ * <pre> 
+ * ProblemFactory.getInstance().getProblem("TestLZ1");
+ * </pre>
+ * Defining problems this way is no longer recommended.  Instead, we recommend using a
+ * {@code RegisteredProblemProvider} to register new problems with this framework.
  */
 public class PropertiesProblems extends ProblemProvider {
 	

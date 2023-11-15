@@ -23,11 +23,18 @@ import org.moeaframework.core.spi.ProblemProvider;
 import org.moeaframework.core.spi.ProviderNotFoundException;
 
 /**
- * Problem provider for problems accessible through the current class loader.
- * The name of the problem should be the fully-qualified class name (including
- * the containing package, if any).  Problems instantiated this way must provide
- * an empty constructor.  No reference sets are provided; see 
- * {@link PropertiesProblems} for a way to define problems with reference sets.
+ * Legacy problem provider that locates problems using their fully-qualified class name.
+ * For example:
+ * <pre>
+ *   ProblemFactory.getInstance().getProblem("org.moeaframework.problem.LZ.LZ1");
+ * </pre>
+ * There are a few limitations of this provider, including:
+ * <ol>
+ *   <li>Problems must provide an empty constructor; and
+ *   <li>A reference set can not be defined, so any analysis will need an explicit reference set
+ * </ol>
+ * Defining problems this way is no longer recommended.  Instead, we recommend using a
+ * {@code RegisteredProblemProvider} to register new problems with this framework.
  */
 public class ClassLoaderProblems extends ProblemProvider {
 
