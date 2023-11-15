@@ -25,8 +25,7 @@ import org.moeaframework.problem.AnalyticalProblem;
 /**
  * Implements methods shared by all problems in the DTLZ test suite.
  */
-public abstract class DTLZ extends AbstractProblem 
-implements AnalyticalProblem {
+public abstract class DTLZ extends AbstractProblem  implements AnalyticalProblem {
 
 	/**
 	 * Constructs a new DTLZ problem instance with the specified number of

@@ -30,13 +30,12 @@ import org.moeaframework.core.spi.ProviderNotFoundException;
  * Legacy problem provider that loads problems defined in {@value Settings#DEFAULT_CONFIGURATION_FILE}.
  * For example, we could add the following to the properties file:
  * <pre>
- * org.moeaframework.problem.problems = TestLZ1 
- * org.moeaframework.problem.TestLZ1.class = org.moeaframework.problem.LZ.LZ1
- * org.moeaframework.problem.TestLZ1.referenceSet = ./pf/LZ09_F1.pf
+ *   org.moeaframework.problem.TestLZ1.class = org.moeaframework.problem.LZ.LZ1
+ * ,,org.moeaframework.problem.TestLZ1.referenceSet = ./pf/LZ09_F1.pf
  * </pre>
  * And then instantiate the problem with:
  * <pre> 
- * ProblemFactory.getInstance().getProblem("TestLZ1");
+ *   ProblemFactory.getInstance().getProblem("TestLZ1");
  * </pre>
  * Defining problems this way is no longer recommended.  Instead, we recommend using a
  * {@code RegisteredProblemProvider} to register new problems with this framework.
@@ -49,30 +48,9 @@ public class PropertiesProblems extends ProblemProvider {
 	public PropertiesProblems() {
 		super();
 	}
-	
-	/**
-	 * Returns the case-sensitive version of the problem name.  If the problem
-	 * name was not specifically listed in the
-	 * {@code org.moeaframework.problem.problems} property, {@code name} is
-	 * returned unchanged.
-	 * 
-	 * @param name the case-insensitive name
-	 * @return the case-sensitive name
-	 */
-	protected String getCaseSensitiveProblemName(String name) {
-		for (String problem : Settings.getProblems()) {
-			if (problem.equalsIgnoreCase(name)) {
-				return problem;
-			}
-		}
-		
-		return name;
-	}
 
 	@Override
 	public Problem getProblem(String name) {
-		name = getCaseSensitiveProblemName(name);
-		
 		if (name != null) {
 			String className = Settings.getProblemClass(name);
 			
@@ -90,8 +68,6 @@ public class PropertiesProblems extends ProblemProvider {
 
 	@Override
 	public NondominatedPopulation getReferenceSet(String name) {
-		name = getCaseSensitiveProblemName(name);
-		
 		if (name != null) {
 			String fileName = Settings.getProblemReferenceSet(name);
 			

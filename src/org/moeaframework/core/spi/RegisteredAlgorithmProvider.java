@@ -48,8 +48,7 @@ public class RegisteredAlgorithmProvider extends AlgorithmProvider {
 	 * @param constructor the function that creates a new instance of the algorithm
 	 * @param names the name or names for this algorithm
 	 */
-	protected final void register(BiFunction<TypedProperties, Problem, Algorithm> constructor,
-			String... names) {
+	protected final void register(BiFunction<TypedProperties, Problem, Algorithm> constructor, String... names) {
 		for (String name : names) {
 			constructorMap.put(name, constructor);
 		}
