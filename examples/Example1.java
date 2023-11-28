@@ -28,7 +28,7 @@ public class Example1 {
 	public static void main(String[] args) {
 		Problem problem = new DTLZ2(2);
 		
-		NSGAII algorithm = new NSGAII(problem);		
+		NSGAII algorithm = new NSGAII(problem);
 		algorithm.run(10000);
 		
 		algorithm.getResult().display();
