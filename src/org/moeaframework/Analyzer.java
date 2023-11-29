@@ -671,7 +671,7 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 		try {
 			return super.getReferenceSet();
 		} catch (IllegalArgumentException e) {
-			if (referenceSetFile == null) {
+			if (referenceSet == null) {
 				//return the combination of all approximation sets
 				NondominatedPopulation referenceSet = newArchive();
 				

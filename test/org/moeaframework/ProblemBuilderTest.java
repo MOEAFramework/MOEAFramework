@@ -135,6 +135,19 @@ public class ProblemBuilderTest {
 	}
 	
 	@Test
+	public void testReferenceSet() throws IOException {
+		NondominatedPopulation expected = new NondominatedPopulation(
+				PopulationIO.readObjectives(new File("./pf/DTLZ1.2D.pf")));
+		
+		NondominatedPopulation actual = new ProblemBuilder()
+				.withProblem("DTLZ2_2")
+				.withReferenceSet(expected)
+				.getReferenceSet();
+		
+		TestUtils.assertEquals(expected, actual);
+	}
+	
+	@Test
 	public void testWithSameProblemAs() {
 		ProblemBuilder builder1 = new ProblemBuilder()
 				.withProblem("DTLZ2_2")

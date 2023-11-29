@@ -74,11 +74,10 @@ class ProblemBuilder {
 	double[] epsilon;
 	
 	/**
-	 * The file containing the reference set to be used by this builder; or
-	 * {@code null} if the reference set should be aggregated from all
-	 * individual approximation sets.
+	 * The reference set used by this builder; or {@code null} if no reference set
+	 * was configured.  
 	 */
-	File referenceSetFile;
+	NondominatedPopulation referenceSet;
 	
 	/**
 	 * Constructs a new problem builder.
@@ -102,7 +101,7 @@ class ProblemBuilder {
 		this.problemArguments = builder.problemArguments;
 		this.problemFactory = builder.problemFactory;
 		this.epsilon = builder.epsilon;
-		this.referenceSetFile = builder.referenceSetFile;
+		this.referenceSet = builder.referenceSet;
 		
 		return this;
 	}
@@ -210,15 +209,28 @@ class ProblemBuilder {
 	}
 	
 	/**
-	 * Sets the file containing the reference set to be used by this builder.
-	 * If not specified, the reference set should be aggregated from all
-	 * individual approximation sets.
+	 * Loads a reference set from file.
 	 * 
 	 * @param referenceSetFile the reference set file
 	 * @return a reference to this builder
 	 */
 	ProblemBuilder withReferenceSet(File referenceSetFile) {
-		this.referenceSetFile = referenceSetFile;
+		try {
+			return withReferenceSet(new NondominatedPopulation(PopulationIO.readObjectives(referenceSetFile)));
+		} catch (IOException e) {
+			throw new IllegalArgumentException("unable to load reference set", e);
+		}
+	}
+	
+	/**
+	 * Configures a reference set to use for this problem.  If {@code null},
+	 * then the default reference set, if available, is used.
+	 * 
+	 * @param referenceSet the reference set
+	 * @return a reference to this builder
+	 */
+	ProblemBuilder withReferenceSet(NondominatedPopulation referenceSet) {
+		this.referenceSet = referenceSet;
 		
 		return this;
 	}
@@ -243,11 +255,10 @@ class ProblemBuilder {
 	 * Returns the reference set used by this builder.  The reference set is
 	 * generated as follows:
 	 * <ol>
-	 *   <li>If {@link #withReferenceSet(File)} has been set, the contents of 
-	 *       the reference set file are returned;
-	 *   <li>If the problem factory provides a reference set via the
-	 *       {@link ProblemFactory#getReferenceSet(String)} method, this
-	 *       reference set is returned;
+	 *   <li>The custom reference set configured by {@link #withReferenceSet(NondominatedPopulation)} or
+	 *       {@link #withReferenceSet(File)};
+	 *   <li>The default reference set specified by the
+	 *       {@link ProblemFactory#getReferenceSet(String)} method;
 	 *   <li>Otherwise, an exception is thrown.
 	 * </ol>
 	 * 
@@ -256,9 +267,9 @@ class ProblemBuilder {
 	 *         could not be loaded
 	 */
 	NondominatedPopulation getReferenceSet() {
-		NondominatedPopulation referenceSet = newArchive();
+		NondominatedPopulation result = newArchive();
 		
-		if (referenceSetFile == null) {
+		if (referenceSet == null) {
 			//determine if the problem factory provides a reference set
 			NondominatedPopulation factorySet = null;
 			
@@ -272,18 +283,14 @@ class ProblemBuilder {
 			
 			if (factorySet == null) {
 				throw new IllegalArgumentException("no reference set available");
-			} else {
-				referenceSet.addAll(factorySet);
 			}
+			
+			result.addAll(factorySet);
 		} else {
-			try {
-				referenceSet.addAll(PopulationIO.readObjectives(referenceSetFile));
-			} catch (IOException e) {
-				throw new IllegalArgumentException("unable to load reference set", e);
-			}
+			result.addAll(referenceSet);
 		}
 		
-		return referenceSet;
+		return result;
 	}
 	
 	/**
