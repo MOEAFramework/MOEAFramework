@@ -329,7 +329,6 @@ MOEA_Status MOEA_Read_binary_int(const int lowerBound, const int upperBound, int
   int n = log2(upperBound - lowerBound);
   int gray[sizeof(int) * 8];
   int bin[sizeof(int) * 8];
-  int value;
   
   MOEA_Status status = MOEA_Read_binary(n, gray);
   
@@ -350,7 +349,7 @@ MOEA_Status MOEA_Read_binary_int(const int lowerBound, const int upperBound, int
     }
   }
   
-  return value;
+  return MOEA_SUCCESS;
 }
 
 
