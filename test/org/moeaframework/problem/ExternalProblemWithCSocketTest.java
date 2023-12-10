@@ -25,6 +25,7 @@ import java.io.InputStreamReader;
 import org.junit.Before;
 import org.moeaframework.TestUtils;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.variable.BinaryIntegerVariable;
 import org.moeaframework.core.variable.BinaryVariable;
 import org.moeaframework.core.variable.Permutation;
 import org.moeaframework.core.variable.RealVariable;
@@ -74,7 +75,7 @@ ExternalProblemWithCStdioTest {
 
 			@Override
 			public int getNumberOfVariables() {
-				return 4;
+				return 5;
 			}
 
 			@Override
@@ -89,11 +90,12 @@ ExternalProblemWithCStdioTest {
 
 			@Override
 			public Solution newSolution() {
-				Solution solution = new Solution(4, 2, 1);
+				Solution solution = new Solution(5, 2, 1);
 				solution.setVariable(0, new RealVariable(0.0, 1.0));
 				solution.setVariable(1, new RealVariable(-1e26, 1e26));
 				solution.setVariable(2, new BinaryVariable(5));
-				solution.setVariable(3, new Permutation(3));
+				solution.setVariable(3, new BinaryIntegerVariable(5, 20));
+				solution.setVariable(4, new Permutation(3));
 				return solution;
 			}
 

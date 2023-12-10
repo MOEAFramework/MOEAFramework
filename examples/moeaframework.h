@@ -137,6 +137,18 @@ MOEA_Status MOEA_Read_doubles(const int, double*);
 MOEA_Status MOEA_Read_binary(const int, int*);
 
 /**
+ * Reads the next binary integer decision variable from the current solution.
+ *
+ * @param lowerBound the lower bound of the integer
+ * @param upperBound the upper bound of the integer
+ * @param value a reference to the integer that is assigned the value of the
+ *        decision variable
+ * @return MOEA_SUCCESS if the decision variable was successfully read; or the
+ *         specific error code causing failure
+ */
+MOEA_Status MOEA_Read_binary_int(const int, const int, int*);
+
+/**
  * Reads the next permutation decision variable from the current solution.  Upon
  * the successful completion of this function call, the i-th index in the int
  * array will store the value of the i-th element in the permutation, ranging

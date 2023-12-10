@@ -324,6 +324,36 @@ MOEA_Status MOEA_Read_binary(const int size, int* values) {
   return MOEA_SUCCESS;
 }
 
+MOEA_Status MOEA_Read_binary_int(const int lowerBound, const int upperBound, int* value) {
+  int i;
+  int n = log2(upperBound - lowerBound);
+  int gray[sizeof(int) * 8];
+  int bin[sizeof(int) * 8];
+  int value;
+  
+  MOEA_Status status = MOEA_Read_binary(n, gray);
+  
+  if (status != MOEA_SUCCESS) {
+    return MOEA_Error(status);
+  }
+  
+  bin[n-1] = gray[n-1];
+  for (i=n-2; i>=0; i--) {
+    bin[i] = bin[i+1] ^ gray[i];
+  }
+  
+  value = 0;
+  
+  for (i=0; i<n; i++) {
+    if (bin[i]) {
+      value += (1 << i);
+    }
+  }
+  
+  return value;
+}
+
+
 MOEA_Status MOEA_Read_permutation(const int size, int* values) {
   int i;
   char* token = NULL;

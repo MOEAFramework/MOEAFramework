@@ -331,32 +331,14 @@ public abstract class ExternalProblem implements Problem {
 	 * @throws IOException if an error occurs during serialization
 	 */
 	private String encode(Variable variable) throws IOException {
-		StringBuilder sb = new StringBuilder();
-		
-		if (variable instanceof RealVariable) {
-			RealVariable rv = (RealVariable)variable;
-			sb.append(rv.getValue());
-		} else if (variable instanceof BinaryVariable) {
-			BinaryVariable bv = (BinaryVariable)variable;
-			
-			for (int i=0; i<bv.getNumberOfBits(); i++) {
-				sb.append(bv.get(i) ? "1" : "0");
-			}
-		} else if (variable instanceof Permutation) {
-			Permutation p = (Permutation)variable;
-
-			for (int i=0; i<p.size(); i++) {
-				if (i > 0) {
-					sb.append(',');
-				}
-				
-				sb.append(p.get(i));
-			}
-		} else {
-			throw new IOException("unable to serialize variable");
+		if (!(variable instanceof RealVariable ||
+				variable instanceof BinaryVariable ||
+				variable instanceof Permutation)) {
+			throw new IOException(ExternalProblem.class.getSimpleName() + " does not support encoding type " +
+					variable.getClass().getSimpleName());
 		}
 		
-		return sb.toString();
+		return variable.encode();
 	}
 
 }
