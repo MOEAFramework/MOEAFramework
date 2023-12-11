@@ -63,6 +63,8 @@ const char* MOEA_Status_message(const MOEA_Status status) {
     return "No solution read, missing call to MOEA_Next_solution()";
   case MOEA_PARSE_EOL:
     return "Attempted to parse variable but at end-of-line";
+  case MOEA_PARSE_INTEGER_ERROR:
+    return "Unable to parse integer variable";
   case MOEA_PARSE_DOUBLE_ERROR:
     return "Unable to parse double variable";
   case MOEA_PARSE_BINARY_ERROR:
@@ -363,7 +365,7 @@ MOEA_Status MOEA_Read_int(int* value) {
     return MOEA_Error(status);
   }
   
-  *value = strtol(token, &endptr);
+  *value = strtol(token, &endptr, 10);
   
   if (*endptr != '\0') {
     return MOEA_Error(MOEA_PARSE_INTEGER_ERROR);

@@ -338,7 +338,7 @@ public abstract class ExternalProblem implements Problem {
 					variable.getClass().getSimpleName());
 		}
 		
-		// use toString() instead of encode() as we want to send the computed value
+		// use toString() instead of encode() as we want to send the value
 		return variable.toString();
 	}
 
