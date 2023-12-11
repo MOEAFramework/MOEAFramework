@@ -33,8 +33,7 @@ import org.moeaframework.core.variable.RealVariable;
 /**
  * Tests the {@link ExternalProblem} class using the C/C++ executable.
  */
-public class ExternalProblemWithCSocketTest extends 
-ExternalProblemWithCStdioTest {
+public class ExternalProblemWithCSocketTest extends ExternalProblemWithCStdioTest {
 	
 	@Before
 	public void setUp() throws IOException {
