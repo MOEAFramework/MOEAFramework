@@ -33,6 +33,7 @@ import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.UnsupportedVariable;
 import org.moeaframework.core.operator.RandomInitialization;
+import org.moeaframework.core.variable.BinaryIntegerVariable;
 import org.moeaframework.core.variable.BinaryVariable;
 import org.moeaframework.core.variable.Permutation;
 import org.moeaframework.core.variable.RealVariable;
@@ -77,7 +78,7 @@ public class ExternalProblemWithCStdioTest {
 
 			@Override
 			public int getNumberOfVariables() {
-				return 4;
+				return 5;
 			}
 
 			@Override
@@ -92,11 +93,12 @@ public class ExternalProblemWithCStdioTest {
 
 			@Override
 			public Solution newSolution() {
-				Solution solution = new Solution(4, 2, 1);
+				Solution solution = new Solution(5, 2, 1);
 				solution.setVariable(0, new RealVariable(0.0, 1.0));
 				solution.setVariable(1, new RealVariable(-1e26, 1e26));
 				solution.setVariable(2, new BinaryVariable(5));
-				solution.setVariable(3, new Permutation(3));
+				solution.setVariable(3, new BinaryIntegerVariable(5, 20));
+				solution.setVariable(4, new Permutation(3));
 				return solution;
 			}
 
@@ -150,10 +152,14 @@ public class ExternalProblemWithCStdioTest {
 				Assert.assertEquals(bv.get(j) ? 1 : 0, Integer.parseInt(debugTokens[2+j]));
 			}
 			
-			Permutation p = ((Permutation)solution.getVariable(3));
+			BinaryIntegerVariable biv = ((BinaryIntegerVariable)solution.getVariable(3));
+			
+			Assert.assertEquals(biv.getValue(), Integer.parseInt(debugTokens[7]));
+			
+			Permutation p = ((Permutation)solution.getVariable(4));
 			
 			for (int j=0; j<p.size(); j++) {
-				Assert.assertEquals(p.get(j), Integer.parseInt(debugTokens[7+j]));
+				Assert.assertEquals(p.get(j), Integer.parseInt(debugTokens[8+j]));
 			}
 		}
 	}
