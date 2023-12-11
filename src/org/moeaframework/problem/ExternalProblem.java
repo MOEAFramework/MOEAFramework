@@ -324,10 +324,10 @@ public abstract class ExternalProblem implements Problem {
 	}
 
 	/**
-	 * Serializes a variable to a string form.
+	 * Encodes the variable in a string format sent to the program.
 	 * 
-	 * @param variable the variable whose value is serialized
-	 * @return the serialized version of the variable
+	 * @param variable the variable
+	 * @return the string representation of the variable
 	 * @throws IOException if an error occurs during serialization
 	 */
 	private String encode(Variable variable) throws IOException {
@@ -338,7 +338,8 @@ public abstract class ExternalProblem implements Problem {
 					variable.getClass().getSimpleName());
 		}
 		
-		return variable.encode();
+		// use toString() instead of encode() as we want to send the computed value
+		return variable.toString();
 	}
 
 }

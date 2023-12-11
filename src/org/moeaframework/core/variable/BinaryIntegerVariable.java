@@ -200,7 +200,8 @@ public class BinaryIntegerVariable extends BinaryVariable {
 	public BinaryIntegerVariable copy() {
 		BinaryIntegerVariable result = new BinaryIntegerVariable(lowerBound, upperBound);
 	
-		// ensure the copy has the same internal binary string
+		// copy the bits instead of the value to ensure the clone has the same
+		// internal representation
 		for (int i = 0; i < result.getNumberOfBits(); i++) {
 			result.set(i, get(i));
 		}

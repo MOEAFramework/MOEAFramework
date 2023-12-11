@@ -43,7 +43,7 @@ int main() {
     
     MOEA_Read_doubles(2, doubles);
     MOEA_Read_binary(5, binary);
-    MOEA_Read_binary_int(5, 20, &integer);
+    MOEA_Read_int(&integer);
     MOEA_Read_permutation(3, permutation);
     
     /* echo variables back for verification */

@@ -36,6 +36,7 @@ typedef enum MOEA_Status {
   MOEA_EOF,
   MOEA_PARSE_NO_SOLUTION,
   MOEA_PARSE_EOL,
+  MOEA_PARSE_INTEGER_ERROR,
   MOEA_PARSE_DOUBLE_ERROR,
   MOEA_PARSE_BINARY_ERROR,
   MOEA_PARSE_PERMUTATION_ERROR,
@@ -137,16 +138,14 @@ MOEA_Status MOEA_Read_doubles(const int, double*);
 MOEA_Status MOEA_Read_binary(const int, int*);
 
 /**
- * Reads the next binary integer decision variable from the current solution.
+ * Reads the next integer decision variable from the current solution.
  *
- * @param lowerBound the lower bound of the integer
- * @param upperBound the upper bound of the integer
  * @param value a reference to the integer that is assigned the value of the
  *        decision variable
  * @return MOEA_SUCCESS if the decision variable was successfully read; or the
  *         specific error code causing failure
  */
-MOEA_Status MOEA_Read_binary_int(const int, const int, int*);
+MOEA_Status MOEA_Read_int(int*);
 
 /**
  * Reads the next permutation decision variable from the current solution.  Upon
