@@ -18,6 +18,8 @@
 package org.moeaframework.core.variable;
 
 import java.util.BitSet;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -29,46 +31,32 @@ import org.moeaframework.core.Variable;
 public class EncodingUtilsTest {
 
 	@Test
-	public void test3BitBinaryEncoding() {
-		BitSet bits = EncodingUtils.encode(0);
-		Assert.assertFalse(bits.get(0));
-		Assert.assertFalse(bits.get(1));
-		Assert.assertFalse(bits.get(2));
-
-		bits = EncodingUtils.encode(1);
-		Assert.assertTrue(bits.get(0));
-		Assert.assertFalse(bits.get(1));
-		Assert.assertFalse(bits.get(2));
-
-		bits = EncodingUtils.encode(2);
-		Assert.assertFalse(bits.get(0));
-		Assert.assertTrue(bits.get(1));
-		Assert.assertFalse(bits.get(2));
-
-		bits = EncodingUtils.encode(3);
-		Assert.assertTrue(bits.get(0));
-		Assert.assertTrue(bits.get(1));
-		Assert.assertFalse(bits.get(2));
-
-		bits = EncodingUtils.encode(4);
-		Assert.assertFalse(bits.get(0));
-		Assert.assertFalse(bits.get(1));
-		Assert.assertTrue(bits.get(2));
-
-		bits = EncodingUtils.encode(5);
-		Assert.assertTrue(bits.get(0));
-		Assert.assertFalse(bits.get(1));
-		Assert.assertTrue(bits.get(2));
-
-		bits = EncodingUtils.encode(6);
-		Assert.assertFalse(bits.get(0));
-		Assert.assertTrue(bits.get(1));
-		Assert.assertTrue(bits.get(2));
-
-		bits = EncodingUtils.encode(7);
-		Assert.assertTrue(bits.get(0));
-		Assert.assertTrue(bits.get(1));
-		Assert.assertTrue(bits.get(2));
+	public void testBinaryEncoding() {
+		Consumer<Number> test = (value) -> {
+			BitSet bits = EncodingUtils.encode(value.longValue());
+			String expectedString = Long.toBinaryString(value.longValue());
+			
+			Assert.assertTrue(bits.length() <= expectedString.length());
+			
+			for (int i = 0; i < expectedString.length(); i++) {
+				Assert.assertEquals("bit at index " + i + " differ",
+						expectedString.charAt(expectedString.length() - i - 1) == '1', bits.get(i));
+			}
+		};
+		
+		test.accept(0);
+		test.accept(1);
+		test.accept(2);
+		test.accept(3);
+		test.accept(4);
+		test.accept(5);
+		test.accept(6);
+		test.accept(7);
+		test.accept(-1);
+		test.accept(Integer.MAX_VALUE);
+		test.accept(Integer.MIN_VALUE);
+		test.accept(Long.MAX_VALUE);
+		test.accept(Long.MIN_VALUE);
 	}
 
 	@SuppressWarnings("deprecation")
@@ -88,164 +76,73 @@ public class EncodingUtilsTest {
 	}
 
 	@Test
-	public void test3BitBinaryDecoding() {
-		BitSet bits = EncodingUtils.encode(0);
-		Assert.assertEquals(0, EncodingUtils.decode(bits));
-
-		bits = EncodingUtils.encode(1);
-		Assert.assertEquals(1, EncodingUtils.decode(bits));
-
-		bits = EncodingUtils.encode(2);
-		Assert.assertEquals(2, EncodingUtils.decode(bits));
-
-		bits = EncodingUtils.encode(3);
-		Assert.assertEquals(3, EncodingUtils.decode(bits));
-
-		bits = EncodingUtils.encode(4);
-		Assert.assertEquals(4, EncodingUtils.decode(bits));
-
-		bits = EncodingUtils.encode(5);
-		Assert.assertEquals(5, EncodingUtils.decode(bits));
-
-		bits = EncodingUtils.encode(6);
-		Assert.assertEquals(6, EncodingUtils.decode(bits));
-
-		bits = EncodingUtils.encode(7);
-		Assert.assertEquals(7, EncodingUtils.decode(bits));
+	public void testBinaryDecoding() {
+		Consumer<Number> test = (value) -> {
+			BitSet bits = EncodingUtils.encode(value.longValue());
+			Assert.assertEquals(value.longValue(), EncodingUtils.decode(bits));
+		};
 		
-		bits = EncodingUtils.encode(-1);
-		Assert.assertEquals(-1, EncodingUtils.decode(bits));
-		
-		bits = EncodingUtils.encode(Integer.MAX_VALUE);
-		Assert.assertEquals(Integer.MAX_VALUE, EncodingUtils.decode(bits));
-		
-		bits = EncodingUtils.encode(Integer.MIN_VALUE);
-		Assert.assertEquals(Integer.MIN_VALUE, EncodingUtils.decode(bits));
-		
-		bits = EncodingUtils.encode(Long.MAX_VALUE);
-		Assert.assertEquals(Long.MAX_VALUE, EncodingUtils.decode(bits));
-		
-		bits = EncodingUtils.encode(Long.MIN_VALUE);
-		Assert.assertEquals(Long.MIN_VALUE, EncodingUtils.decode(bits));
+		test.accept(0);
+		test.accept(1);
+		test.accept(2);
+		test.accept(3);
+		test.accept(4);
+		test.accept(5);
+		test.accept(6);
+		test.accept(7);
+		test.accept(-1);
+		test.accept(Integer.MAX_VALUE);
+		test.accept(Integer.MIN_VALUE);
+		test.accept(Long.MAX_VALUE);
+		test.accept(Long.MIN_VALUE);
 	}
 
 	@Test
-	public void test3BitBinaryToGrayConversion() {
-		BitSet bits = EncodingUtils.encode(0);
-		bits = EncodingUtils.binaryToGray(bits);
-		Assert.assertFalse(bits.get(0));
-		Assert.assertFalse(bits.get(1));
-		Assert.assertFalse(bits.get(2));
-
-		bits = EncodingUtils.encode(1);
-		bits = EncodingUtils.binaryToGray(bits);
-		Assert.assertTrue(bits.get(0));
-		Assert.assertFalse(bits.get(1));
-		Assert.assertFalse(bits.get(2));
-
-		bits = EncodingUtils.encode(2);
-		bits = EncodingUtils.binaryToGray(bits);
-		Assert.assertTrue(bits.get(0));
-		Assert.assertTrue(bits.get(1));
-		Assert.assertFalse(bits.get(2));
-
-		bits = EncodingUtils.encode(3);
-		bits = EncodingUtils.binaryToGray(bits);
-		Assert.assertFalse(bits.get(0));
-		Assert.assertTrue(bits.get(1));
-		Assert.assertFalse(bits.get(2));
-
-		bits = EncodingUtils.encode(4);
-		bits = EncodingUtils.binaryToGray(bits);
-		Assert.assertFalse(bits.get(0));
-		Assert.assertTrue(bits.get(1));
-		Assert.assertTrue(bits.get(2));
-
-		bits = EncodingUtils.encode(5);
-		bits = EncodingUtils.binaryToGray(bits);
-		Assert.assertTrue(bits.get(0));
-		Assert.assertTrue(bits.get(1));
-		Assert.assertTrue(bits.get(2));
-
-		bits = EncodingUtils.encode(6);
-		bits = EncodingUtils.binaryToGray(bits);
-		Assert.assertTrue(bits.get(0));
-		Assert.assertFalse(bits.get(1));
-		Assert.assertTrue(bits.get(2));
-
-		bits = EncodingUtils.encode(7);
-		bits = EncodingUtils.binaryToGray(bits);
-		Assert.assertFalse(bits.get(0));
-		Assert.assertFalse(bits.get(1));
-		Assert.assertTrue(bits.get(2));
+	public void testBinaryToGrayConversion() {
+		BiConsumer<Number, String> test = (value, expectedString) -> {
+			BitSet bits = EncodingUtils.encode(value.longValue());
+			bits = EncodingUtils.binaryToGray(bits);
+			
+			Assert.assertTrue(bits.length() <= expectedString.length());
+			
+			for (int i = 0; i < expectedString.length(); i++) {
+				Assert.assertEquals("bit at index " + i + " differ",
+						expectedString.charAt(expectedString.length() - i - 1) == '1', bits.get(i));
+			}
+		};
+		
+		test.accept(0, "000");
+		test.accept(1, "001");
+		test.accept(2, "011");
+		test.accept(3, "010");
+		test.accept(4, "110");
+		test.accept(5, "111");
+		test.accept(6, "101");
+		test.accept(7, "100");
 	}
 
 	@Test
-	public void test3BitGrayToBinaryEncoding() {
-		BitSet bits = EncodingUtils.encode(0);
-		bits = EncodingUtils.binaryToGray(bits);
-		bits = EncodingUtils.grayToBinary(bits);
-		Assert.assertEquals(0, EncodingUtils.decode(bits));
-
-		bits = EncodingUtils.encode(1);
-		bits = EncodingUtils.binaryToGray(bits);
-		bits = EncodingUtils.grayToBinary(bits);
-		Assert.assertEquals(1, EncodingUtils.decode(bits));
-
-		bits = EncodingUtils.encode(2);
-		bits = EncodingUtils.binaryToGray(bits);
-		bits = EncodingUtils.grayToBinary(bits);
-		Assert.assertEquals(2, EncodingUtils.decode(bits));
-
-		bits = EncodingUtils.encode(3);
-		bits = EncodingUtils.binaryToGray(bits);
-		bits = EncodingUtils.grayToBinary(bits);
-		Assert.assertEquals(3, EncodingUtils.decode(bits));
-
-		bits = EncodingUtils.encode(4);
-		bits = EncodingUtils.binaryToGray(bits);
-		bits = EncodingUtils.grayToBinary(bits);
-		Assert.assertEquals(4, EncodingUtils.decode(bits));
-
-		bits = EncodingUtils.encode(5);
-		bits = EncodingUtils.binaryToGray(bits);
-		bits = EncodingUtils.grayToBinary(bits);
-		Assert.assertEquals(5, EncodingUtils.decode(bits));
-
-		bits = EncodingUtils.encode(6);
-		bits = EncodingUtils.binaryToGray(bits);
-		bits = EncodingUtils.grayToBinary(bits);
-		Assert.assertEquals(6, EncodingUtils.decode(bits));
-
-		bits = EncodingUtils.encode(7);
-		bits = EncodingUtils.binaryToGray(bits);
-		bits = EncodingUtils.grayToBinary(bits);
-		Assert.assertEquals(7, EncodingUtils.decode(bits));
+	public void testGrayToBinaryEncoding() {
+		Consumer<Number> test = (value) -> {
+			BitSet bits = EncodingUtils.encode(value.longValue());
+			bits = EncodingUtils.binaryToGray(bits);
+			bits = EncodingUtils.grayToBinary(bits);
+			Assert.assertEquals(value.longValue(), EncodingUtils.decode(bits));
+		};
 		
-		bits = EncodingUtils.encode(-1);
-		bits = EncodingUtils.binaryToGray(bits);
-		bits = EncodingUtils.grayToBinary(bits);
-		Assert.assertEquals(-1, EncodingUtils.decode(bits));
-		
-		bits = EncodingUtils.encode(Integer.MAX_VALUE);
-		bits = EncodingUtils.binaryToGray(bits);
-		bits = EncodingUtils.grayToBinary(bits);
-		Assert.assertEquals(Integer.MAX_VALUE, EncodingUtils.decode(bits));
-		
-		bits = EncodingUtils.encode(Integer.MIN_VALUE);
-		bits = EncodingUtils.binaryToGray(bits);
-		bits = EncodingUtils.grayToBinary(bits);
-		Assert.assertEquals(Integer.MIN_VALUE, EncodingUtils.decode(bits));
-		
-		bits = EncodingUtils.encode(Long.MAX_VALUE);
-		bits = EncodingUtils.binaryToGray(bits);
-		bits = EncodingUtils.grayToBinary(bits);
-		Assert.assertEquals(Long.MAX_VALUE, EncodingUtils.decode(bits));
-		
-		bits = EncodingUtils.encode(Long.MIN_VALUE);
-		bits = EncodingUtils.binaryToGray(bits);
-		bits = EncodingUtils.grayToBinary(bits);
-		Assert.assertEquals(Long.MIN_VALUE, EncodingUtils.decode(bits));
+		test.accept(0);
+		test.accept(1);
+		test.accept(2);
+		test.accept(3);
+		test.accept(4);
+		test.accept(5);
+		test.accept(6);
+		test.accept(7);
+		test.accept(-1);
+		test.accept(Integer.MAX_VALUE);
+		test.accept(Integer.MIN_VALUE);
+		test.accept(Long.MAX_VALUE);
+		test.accept(Long.MIN_VALUE);
 	}
 
 	@Test
@@ -300,7 +197,7 @@ public class EncodingUtilsTest {
 	}
 	
 	@Test
-	public void testBinaryEncoding() {
+	public void testBinaryVariable() {
 		Variable variable = EncodingUtils.newBinary(3);
 		
 		EncodingUtils.setBinary(variable, new boolean[] { false, false, true });
