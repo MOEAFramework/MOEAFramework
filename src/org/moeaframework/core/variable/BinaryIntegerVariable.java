@@ -17,6 +17,8 @@
  */
 package org.moeaframework.core.variable;
 
+import java.util.BitSet;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.moeaframework.core.PRNG;
@@ -124,15 +126,13 @@ public class BinaryIntegerVariable extends BinaryVariable {
 	 * @return the current value of this decision variable
 	 */
 	public int getValue() {
-		if (gray) {
-			EncodingUtils.grayToBinary(this);
-		}
-		
-		int value = (int)EncodingUtils.decode(this);
+		BitSet bits = getBitSet();
 		
 		if (gray) {
-			EncodingUtils.binaryToGray(this);
+			bits = EncodingUtils.grayToBinary(bits);
 		}
+		
+		int value = (int)EncodingUtils.decode(bits);
 		
 		// if difference is not a power of 2, then the decoded value may be
 		// larger than the difference
@@ -155,11 +155,15 @@ public class BinaryIntegerVariable extends BinaryVariable {
 			throw new IllegalArgumentException("value out of bounds (value: " + value + 
 					", min: " + lowerBound + ", max: " + upperBound + ")");
 		}
-
-		EncodingUtils.encode(value - lowerBound, this);
 		
+		BitSet bits = EncodingUtils.encode(value - lowerBound);
+
 		if (gray) {
-			EncodingUtils.binaryToGray(this);
+			bits = EncodingUtils.binaryToGray(bits);
+		}
+		
+		for (int i = 0; i < getNumberOfBits(); i++) {
+			set(i, bits.get(i));
 		}
 	}
 	
@@ -194,7 +198,7 @@ public class BinaryIntegerVariable extends BinaryVariable {
 	
 	@Override
 	public BinaryIntegerVariable copy() {
-		BinaryIntegerVariable result = new BinaryIntegerVariable(getValue(), lowerBound, upperBound);
+		BinaryIntegerVariable result = new BinaryIntegerVariable(lowerBound, upperBound);
 	
 		// ensure the copy has the same internal binary string
 		for (int i = 0; i < result.getNumberOfBits(); i++) {

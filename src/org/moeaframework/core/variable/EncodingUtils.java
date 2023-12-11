@@ -136,19 +136,18 @@ public class EncodingUtils {
 	 * 
 	 * @param value an integer
 	 * @param binary the binary variable to which the value is encoded
+	 * @deprecated Use {@see BinaryIntegerVariable}
 	 */
+	@Deprecated
 	public static void encode(long value, BinaryVariable binary) {
-		int numberOfBits = binary.getNumberOfBits();
-
 		if (value < 0) {
 			throw new IllegalArgumentException("negative value");
 		}
+		
+		int numberOfBits = binary.getNumberOfBits();
+		BitSet bits = encode(value);
 
-		if ((numberOfBits < 1) || (numberOfBits > 63)) {
-			throw new IllegalArgumentException(INVALID_BITS);
-		}
-
-		if ((1L << numberOfBits) <= value) {
+		if (bits.length() > numberOfBits) {
 			throw new IllegalArgumentException("number of bits not sufficient to represent value");
 		}
 
@@ -162,11 +161,39 @@ public class EncodingUtils {
 	 * 
 	 * @param binary the binary variable
 	 * @return the integer value of the specified binary variable
+	 * @deprecated Use {@see BinaryIntegerVariable}
 	 */
+	@Deprecated
 	public static long decode(BinaryVariable binary) {
-		int numberOfBits = binary.getNumberOfBits();
+		return decode(binary.getBitSet());
+	}
+	
+	/**
+	 * Converts the given long value into its binary string representation.
+	 * 
+	 * @param value the long value
+	 * @return the binary string representation
+	 */
+	public static BitSet encode(long value) {
+		BitSet binary = new BitSet();
 
-		if ((numberOfBits < 1) || (numberOfBits > 63)) {
+		for (int i = 0; i < 64; i++) {
+			binary.set(i, (value & (1L << i)) != 0);
+		}
+		
+		return binary;
+	}
+	
+	/**
+	 * Converts the given binary string into its long value.
+	 * 
+	 * @param binary the binary string
+	 * @return the long value
+	 */
+	public static long decode(BitSet binary) {
+		int numberOfBits = binary.length();
+
+		if (numberOfBits > 64) {
 			throw new IllegalArgumentException(INVALID_BITS);
 		}
 
@@ -182,37 +209,45 @@ public class EncodingUtils {
 	}
 
 	/**
-	 * Converts a binary variable from a binary encoding to gray encoding. The
-	 * gray encoding ensures two adjacent values have binary representations
-	 * differing in only {@code 1} bit (a Hamming distance of {@code 1}).
+	 * Converts a binary string from binary code to gray code.  The gray code
+	 * ensures two adjacent values have binary representations differing in only
+	 * one big (i.e., a Hamming distance of {@code 1}).
 	 * 
-	 * @param variable the variable to be converted
+	 * @param binary the binary code string
+	 * @return the gray code string
 	 */
-	public static void binaryToGray(BinaryVariable variable) {
-		int n = variable.getNumberOfBits();
+	public static BitSet binaryToGray(BitSet binary) {
+		int n = binary.length();
+		BitSet gray = new BitSet();
 
-		BitSet binary = variable.getBitSet();
-
-		variable.set(n - 1, binary.get(n - 1));
-		for (int i = n - 2; i >= 0; i--) {
-			variable.set(i, binary.get(i + 1) ^ binary.get(i));
+		if (n > 0) {
+			gray.set(n - 1, binary.get(n - 1));
+			for (int i = n - 2; i >= 0; i--) {
+				gray.set(i, binary.get(i + 1) ^ binary.get(i));
+			}
 		}
+		
+		return gray;
 	}
 
 	/**
-	 * Converts a binary variable from a gray encoding to binary encoding.
+	 * Converts a binary string from gray code to binary code.
 	 * 
-	 * @param variable the variable to be converted
+	 * @param gray the gray code string
+	 * @return the binary code string
 	 */
-	public static void grayToBinary(BinaryVariable variable) {
-		int n = variable.getNumberOfBits();
+	public static BitSet grayToBinary(BitSet gray) {
+		int n = gray.length();
+		BitSet binary = new BitSet();
 
-		BitSet gray = variable.getBitSet();
-
-		variable.set(n - 1, gray.get(n - 1));
-		for (int i = n - 2; i >= 0; i--) {
-			variable.set(i, variable.get(i + 1) ^ gray.get(i));
+		if (n > 0) {
+			binary.set(n - 1, gray.get(n - 1));
+			for (int i = n - 2; i >= 0; i--) {
+				binary.set(i, binary.get(i + 1) ^ gray.get(i));
+			}
 		}
+		
+		return binary;
 	}
 	
 	/**
