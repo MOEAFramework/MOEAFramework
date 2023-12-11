@@ -2,6 +2,14 @@
 
 This page documents notable changes introduced in each chronological release of the MOEA Framework.
 
+## Version 3.9 (TBD)
+
+  * Support BinaryIntegerVariable in externally-defined problems.  Namely, this sends the integer value
+    to the program which can be read using the new MOEA_Read_int function in our C/C++ library.
+
+  * Allow configuring a custom reference set for the Executor / Analyzer / Instrumenter.
+
+
 ## Version 3.8 (11 Nov 2023)
 
   * Adds termination condition based on distance to target solution.
