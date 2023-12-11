@@ -23,9 +23,9 @@ clean:
 	rm -f test_stdio.exe test_socket.exe
 
 test_stdio.exe: test.c $(EXAMPLES)/moeaframework.c
-	$(CC) $(FLAGS) -o test_stdio.exe -I $(EXAMPLES) -lm test.c $(EXAMPLES)/moeaframework.c
+	$(CC) $(FLAGS) -o test_stdio.exe -I $(EXAMPLES) test.c $(EXAMPLES)/moeaframework.c -lm
 	
 test_socket.exe: test.c $(EXAMPLES)/moeaframework.c
 ifeq ($(UNAME),Linux)
-	${CC} ${FLAGS} -DUSE_SOCKET -o test_socket.exe -I $(EXAMPLES) -lm test.c $(EXAMPLES)/moeaframework.c
+	${CC} ${FLAGS} -DUSE_SOCKET -o test_socket.exe -I $(EXAMPLES) test.c $(EXAMPLES)/moeaframework.c -lm
 endif

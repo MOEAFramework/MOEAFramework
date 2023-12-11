@@ -352,7 +352,6 @@ MOEA_Status MOEA_Read_binary_int(const int lowerBound, const int upperBound, int
   return MOEA_SUCCESS;
 }
 
-
 MOEA_Status MOEA_Read_permutation(const int size, int* values) {
   int i;
   char* token = NULL;
