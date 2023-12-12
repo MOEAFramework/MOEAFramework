@@ -164,6 +164,13 @@ public class ExternalProblemWithCStdioTest {
 		}
 	}
 	
+	@Test
+	public void testIntCompat() {
+		Solution solution = problem.newSolution();
+		solution.setVariable(1, new BinaryIntegerVariable(8, 5, 20));
+		problem.evaluate(solution);
+	}
+	
 	@Test(expected = ProblemException.class)
 	public void testError1() {
 		Solution solution = problem.newSolution();
