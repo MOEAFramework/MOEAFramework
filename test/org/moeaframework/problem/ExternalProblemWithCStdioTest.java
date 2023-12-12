@@ -207,7 +207,7 @@ public class ExternalProblemWithCStdioTest {
 	}
 	
 	@Test(expected = ProblemException.class)
-	public void testErrorTooManyariables() {
+	public void testErrorTooManyVariables() {
 		Solution solution = new Solution(6, 2, 1);
 		copy(solution, problem.newSolution(), 5);
 		solution.setVariable(5, new RealVariable(0.5, 0.0, 1.0));
@@ -217,28 +217,28 @@ public class ExternalProblemWithCStdioTest {
 	@Test(expected = ProblemException.class)
 	public void testErrorTooFewObjectives() {
 		Solution solution = new Solution(5, 1, 1);
-		copy(solution, problem.newSolution(), 4);
+		copy(solution, problem.newSolution(), 5);
 		problem.evaluate(solution);
 	}
 	
 	@Test(expected = ProblemException.class)
 	public void testErrorTooManyObjectives() {
 		Solution solution = new Solution(5, 3, 1);
-		copy(solution, problem.newSolution(), 4);
+		copy(solution, problem.newSolution(), 5);
 		problem.evaluate(solution);
 	}
 	
 	@Test(expected = ProblemException.class)
 	public void testErrorTooFewConstraints() {
 		Solution solution = new Solution(5, 2, 0);
-		copy(solution, problem.newSolution(), 4);
+		copy(solution, problem.newSolution(), 5);
 		problem.evaluate(solution);
 	}
 	
 	@Test(expected = ProblemException.class)
 	public void testErrorTooManyConstraints() {
 		Solution solution = new Solution(5, 2, 2);
-		copy(solution, problem.newSolution(), 4);
+		copy(solution, problem.newSolution(), 5);
 		problem.evaluate(solution);
 	}
 	
