@@ -35,7 +35,8 @@ import org.moeaframework.problem.ExternalProblem;
  *      objectives/constraints read back.
  *      
  *   2. If the program appears to be stuck, ensure you are flushing the output after writing
- *      each line.  Otherwise, the system may buffer the output.
+ *      each line.  Often, the output is buffered and must be flushed to write the output
+ *      immediately.
  */
 public class ExternalProblemWithPython {
 
