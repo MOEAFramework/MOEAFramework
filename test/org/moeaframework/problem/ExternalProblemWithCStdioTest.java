@@ -25,6 +25,7 @@ import java.io.InputStreamReader;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.TestUtils;
@@ -164,60 +165,118 @@ public class ExternalProblemWithCStdioTest {
 		}
 	}
 	
+	@Test
+	public void testIntToDoubleCompatibility() {
+		Solution solution = problem.newSolution();
+		solution.setVariable(1, new BinaryIntegerVariable(8, 5, 20));
+		problem.evaluate(solution);
+	}
+	
 	@Test(expected = ProblemException.class)
-	public void testError1() {
+	public void testErrorParsingBinary() {
 		Solution solution = problem.newSolution();
 		solution.setVariable(2, new RealVariable(0.5, 0.0, 1.0));
 		problem.evaluate(solution);
 	}
 	
 	@Test(expected = ProblemException.class)
-	public void testError2() {
+	public void testErrorParsingInteger() {
 		Solution solution = problem.newSolution();
 		solution.setVariable(3, new RealVariable(0.5, 0.0, 1.0));
 		problem.evaluate(solution);
 	}
+
+	@Test(expected = ProblemException.class)
+	public void testErrorParsingPermutation() {
+		Solution solution = problem.newSolution();
+		solution.setVariable(4, new RealVariable(0.5, 0.0, 1.0));
+		problem.evaluate(solution);
+	}
 	
 	@Test(expected = ProblemException.class)
-	public void testError3() {
+	public void testErrorParsingReal() {
 		Solution solution = problem.newSolution();
 		solution.setVariable(1, new Permutation(3));
 		problem.evaluate(solution);
 	}
 	
 	@Test(expected = ProblemException.class)
-	public void testError4() {
-		Solution solution = new Solution(1, 2, 1);
-		copy(solution, problem.newSolution(), 1);
-		problem.evaluate(solution);
-	}
-	
-	@Test(expected = ProblemException.class)
-	public void testError5() {
-		Solution solution = new Solution(2, 2, 1);
-		copy(solution, problem.newSolution(), 2);
-		problem.evaluate(solution);
-	}
-	
-	@Test(expected = ProblemException.class)
-	public void testError6() {
-		Solution solution = new Solution(3, 2, 1);
-		copy(solution, problem.newSolution(), 3);
-		problem.evaluate(solution);
-	}
-	
-	@Test(expected = ProblemException.class)
-	public void testReturnLength() {
-		Solution solution = new Solution(4, 2, 2);
+	public void testErrorTooFewVariables() {
+		Solution solution = new Solution(4, 2, 1);
 		copy(solution, problem.newSolution(), 4);
+		problem.evaluate(solution);
+	}
+	
+	@Ignore("this case is not detected by the C/C++ library")
+	@Test(expected = ProblemException.class)
+	public void testErrorTooManyVariables() {
+		Solution solution = new Solution(6, 2, 1);
+		copy(solution, problem.newSolution(), 5);
+		solution.setVariable(5, new RealVariable(0.5, 0.0, 1.0));
+		problem.evaluate(solution);
+	}
+	
+	@Test(expected = ProblemException.class)
+	public void testErrorTooFewObjectives() {
+		Solution solution = new Solution(5, 1, 1);
+		copy(solution, problem.newSolution(), 5);
+		problem.evaluate(solution);
+	}
+	
+	@Test(expected = ProblemException.class)
+	public void testErrorTooManyObjectives() {
+		Solution solution = new Solution(5, 3, 1);
+		copy(solution, problem.newSolution(), 5);
+		problem.evaluate(solution);
+	}
+	
+	@Test(expected = ProblemException.class)
+	public void testErrorTooFewConstraints() {
+		Solution solution = new Solution(5, 2, 0);
+		copy(solution, problem.newSolution(), 5);
+		problem.evaluate(solution);
+	}
+	
+	@Test(expected = ProblemException.class)
+	public void testErrorTooManyConstraints() {
+		Solution solution = new Solution(5, 2, 2);
+		copy(solution, problem.newSolution(), 5);
+		problem.evaluate(solution);
+	}
+	
+	@Test(expected = ProblemException.class)
+	public void testErrorPermutationTooShort() {
+		Solution solution = problem.newSolution();
+		solution.setVariable(4, new Permutation(2));
+		problem.evaluate(solution);
+	}
+	
+	@Test(expected = ProblemException.class)
+	public void testErrorPermutationTooLong() {
+		Solution solution = problem.newSolution();
+		solution.setVariable(4, new Permutation(4));
+		problem.evaluate(solution);
+	}
+	
+	@Test(expected = ProblemException.class)
+	public void testErrorBinaryTooShort() {
+		Solution solution = problem.newSolution();
+		solution.setVariable(2, new BinaryVariable(4));
+		problem.evaluate(solution);
+	}
+	
+	@Test(expected = ProblemException.class)
+	public void testErrorBinaryTooLong() {
+		Solution solution = problem.newSolution();
+		solution.setVariable(2, new BinaryVariable(6));
 		problem.evaluate(solution);
 	}
 	
 	@Test(expected = ProblemException.class)
 	public void testUnsupportedVariableType() {
-		Solution solution = new Solution(4, 2, 2);
-		copy(solution, problem.newSolution(), 3);
-		solution.setVariable(3, new UnsupportedVariable());
+		Solution solution = new Solution(5, 2, 1);
+		copy(solution, problem.newSolution(), 4);
+		solution.setVariable(4, new UnsupportedVariable());
 		problem.evaluate(solution);
 	}
 	
