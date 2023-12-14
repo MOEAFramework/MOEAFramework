@@ -95,8 +95,10 @@ public class ExternalProblemWithSocket {
 			return;
 		}
 		
-		//run the executable and wait one second for the process to startup
+		//run the executable
 		new ProcessBuilder(file.toString()).start();
+		
+		//wait a short period of time for the process to start and listen to the socket
 		Thread.sleep(1000);
 		
 		//configure and run this example problem

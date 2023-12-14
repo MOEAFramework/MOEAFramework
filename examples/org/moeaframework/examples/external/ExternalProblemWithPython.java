@@ -26,7 +26,7 @@ import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.ExternalProblem;
 
 /**
- * Demonstrates the DTLZ2 written in Python.
+ * Demonstrates writing a external problem (2-objective DTLZ2) in Python.
  * 
  * A few things to note:
  * 

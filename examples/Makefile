@@ -1,5 +1,5 @@
-# This make file compiles the C/C++ executables used by examples/Example5.java
-# and examples/Example6.java.
+# This make file compiles the C/C++ executables used by the external problem
+# examples.
 #
 # This make file assumes it is being run on a Unix-like environment with GCC
 # and Make installed.  Windows users can install MinGW/MSYS or Cygwin.
