@@ -6,7 +6,9 @@
 * [Setup](setup.md)
 * [An Example](example.md)
 * [Running Experiments](experiment.md)
-* [The Diagnostic Tool](diagnostic.md)
+* Visualizations
+  * [The Diagnostic Tool](diagnostic.md)
+  * [J3 - Java 3D Visualization Tool](j3.md)
 * [Parallelization (Distributing Evaluations and Island Models)](parallelization.md)
 
 ## Advanced
