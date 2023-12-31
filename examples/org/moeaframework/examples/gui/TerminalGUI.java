@@ -145,7 +145,7 @@ public class TerminalGUI extends JFrame {
 			output.append(System.getProperty("java.class.path"));
 			output.append("\" ");
 			output.append(example.getMainClass().getName());
-			output.append(Settings.NEW_LINE);
+			output.append(System.lineSeparator());
 			
 			status.setText("Status: Running...");
 			

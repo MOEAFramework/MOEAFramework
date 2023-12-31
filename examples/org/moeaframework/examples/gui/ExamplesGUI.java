@@ -137,7 +137,7 @@ public class ExamplesGUI extends JFrame {
 		
 		while ((line = reader.readLine()) != null) {
 			builder.append(line);
-			builder.append(Settings.NEW_LINE);
+			builder.append(System.lineSeparator());
 		}
 		
 		return builder.toString();

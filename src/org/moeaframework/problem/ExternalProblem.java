@@ -254,7 +254,7 @@ public abstract class ExternalProblem implements Problem {
 				sb.append(encode(solution.getVariable(i)));
 			}
 			
-			sb.append(Settings.NEW_LINE);
+			sb.append(System.lineSeparator());
 			
 			if (debug != null) {
 				debug.write("<< ");

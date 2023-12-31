@@ -63,8 +63,11 @@ public class Settings {
 	
 	/**
 	 * Store the new line character to prevent repetitive calls to {@code System.getProperty("line.separator")}.
+	 * 
+	 * @deprecated Use {@code System.lineSeparator()} instead
 	 */
-	public static final String NEW_LINE = System.getProperty("line.separator");
+	@Deprecated
+	public static final String NEW_LINE = System.lineSeparator();
 	
 	/**
 	 * The default configuration file.

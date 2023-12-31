@@ -26,10 +26,10 @@ import java.util.ArrayList;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.TypeUtils;
 import org.apache.commons.text.StringEscapeUtils;
-import org.moeaframework.core.Settings;
 
 /**
  * Formats and displays tabular data.
@@ -186,7 +186,7 @@ public class TabularData<T> implements Displayable {
 			out.write(StringEscapeUtils.escapeCsv(columns.get(i).getName()));
 		}
 		
-		out.write(Settings.NEW_LINE);
+		out.write(System.lineSeparator());
 
 		for (T record : dataSource) {
 			for (int i = 0; i < columns.size(); i++) {
@@ -197,7 +197,7 @@ public class TabularData<T> implements Displayable {
 				out.write(StringEscapeUtils.escapeCsv(format(record, columns.get(i))));
 			}
 			
-			out.write(Settings.NEW_LINE);
+			out.write(System.lineSeparator());
 		}
 	}
 

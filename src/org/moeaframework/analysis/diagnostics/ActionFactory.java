@@ -43,7 +43,6 @@ import org.jfree.ui.about.AboutDialog;
 import org.jfree.ui.about.ProjectInfo;
 import org.moeaframework.Instrumenter;
 import org.moeaframework.core.NondominatedPopulation;
-import org.moeaframework.core.Settings;
 import org.moeaframework.util.Localization;
 
 /**
@@ -885,8 +884,8 @@ public class ActionFactory implements ControllerListener {
 					isNewParagraph = true;
 				} else {
 					if (isNewParagraph) {
-						sb.append(Settings.NEW_LINE);
-						sb.append(Settings.NEW_LINE);
+						sb.append(System.lineSeparator());
+						sb.append(System.lineSeparator());
 					} else {
 						sb.append(' ');
 					}
