@@ -8,6 +8,8 @@ This page documents notable changes introduced in each chronological release of 
     to the program which can be read using the new MOEA_Read_int function in our C/C++ library.
 
   * Allow configuring a custom reference set for the Executor / Analyzer / Instrumenter.
+  
+  * Adds LSMOP test problem suite.
 
 
 ## Version 3.8 (11 Nov 2023)

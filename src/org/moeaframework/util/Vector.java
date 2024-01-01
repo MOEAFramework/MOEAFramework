@@ -30,6 +30,23 @@ public class Vector {
 	private Vector() {
 		super();
 	}
+	
+	/**
+	 * Returns a vector filled with the given value.
+	 * 
+	 * @param n the length of the vector
+	 * @param v the fill value
+	 * @return the vector containing the given fill value
+	 */
+	public static double[] of(int n, double v) {
+		double[] w = new double[n];
+		
+		for (int i = 0; i < n; i++) {
+			w[i] = v;
+		}
+		
+		return w;
+	}
 
 	/**
 	 * Returns the length of the two specified vectors.
