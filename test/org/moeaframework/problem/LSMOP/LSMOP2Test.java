@@ -29,30 +29,51 @@ public class LSMOP2Test {
 	@Test
 	public void test2() {
 		Problem problem = new LSMOP2(2);
-		double[] x = Vector.of(problem.getNumberOfVariables(), 0.5);
+		
+		Assert.assertArrayEquals(new double[] { 0.0, 1.0 }, 
+				TestUtils.evaluateAtLowerBounds(problem).getObjectives(),
+				0.0001);
+		
+		Assert.assertArrayEquals(new double[] { 1.0635, 0.0 }, 
+				TestUtils.evaluateAtUpperBounds(problem).getObjectives(),
+				0.0001);
 		
 		Assert.assertArrayEquals(new double[] { 0.5441, 0.57265 }, 
-				TestUtils.evaluateAt(problem, x).getObjectives(),
+				TestUtils.evaluateAt(problem, Vector.of(problem.getNumberOfVariables(), 0.5)).getObjectives(),
 				0.0001);
 	}
 	
 	@Test
 	public void test3() {
 		Problem problem = new LSMOP2(3);
-		double[] x = Vector.of(problem.getNumberOfVariables(), 0.5);
+		
+		Assert.assertArrayEquals(new double[] { 0.0, 0.0, 1.0 }, 
+				TestUtils.evaluateAtLowerBounds(problem).getObjectives(),
+				0.0001);
+		
+		Assert.assertArrayEquals(new double[] { 1.0526, 0.0, 0.0 }, 
+				TestUtils.evaluateAtUpperBounds(problem).getObjectives(),
+				0.0001);
 		
 		Assert.assertArrayEquals(new double[] { 0.2705, 0.2846, 0.5315 }, 
-				TestUtils.evaluateAt(problem, x).getObjectives(),
+				TestUtils.evaluateAt(problem, Vector.of(problem.getNumberOfVariables(), 0.5)).getObjectives(),
 				0.0001);
 	}
 	
 	@Test
 	public void test4() {
 		Problem problem = new LSMOP2(4);
-		double[] x = Vector.of(problem.getNumberOfVariables(), 0.5);
+		
+		Assert.assertArrayEquals(new double[] { 0.0, 0.0, 0.0, 1.0 }, 
+				TestUtils.evaluateAtLowerBounds(problem).getObjectives(),
+				0.0001);
+		
+		Assert.assertArrayEquals(new double[] { 1.0462, 0.0, 0.0, 0.0 }, 
+				TestUtils.evaluateAtUpperBounds(problem).getObjectives(),
+				0.0001);
 		
 		Assert.assertArrayEquals(new double[] { 0.1370, 0.1452, 0.2678, 0.5708 }, 
-				TestUtils.evaluateAt(problem, x).getObjectives(),
+				TestUtils.evaluateAt(problem, Vector.of(problem.getNumberOfVariables(), 0.5)).getObjectives(),
 				0.0001);
 	}
 	

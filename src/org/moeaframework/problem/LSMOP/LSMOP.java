@@ -168,6 +168,7 @@ public abstract class LSMOP implements Problem {
 		}
 		
 		double[] x_f = Arrays.copyOfRange(x, 0, M - 1);
+		
 		List<double[]> x_s = new ArrayList<double[]>();
 		
 		for (int i = 0; i < M; i++) {
@@ -196,7 +197,7 @@ public abstract class LSMOP implements Problem {
 			
 			G[i] = g / N_k;
 		}
-				
+						
 		solution.setObjectives(pf.apply(M, G, A, x_f));
 	}
 

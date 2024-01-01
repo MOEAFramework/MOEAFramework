@@ -29,30 +29,51 @@ public class LSMOP6Test {
 	@Test
 	public void test2() {
 		Problem problem = new LSMOP6(2);
-		double[] x = Vector.of(problem.getNumberOfVariables(), 0.5);
+		
+		Assert.assertArrayEquals(new double[] { 1.9167, 0.0 }, 
+				TestUtils.evaluateAtLowerBounds(problem).getObjectives(),
+				0.0001);
+		
+		Assert.assertArrayEquals(new double[] { 0.0, 1.2001 }, 
+				TestUtils.evaluateAtUpperBounds(problem).getObjectives(),
+				0.0001);
 		
 		Assert.assertArrayEquals(new double[] { 26374.0, 1.0 }, 
-				TestUtils.evaluateAt(problem, x).getObjectives(),
+				TestUtils.evaluateAt(problem, Vector.of(problem.getNumberOfVariables(), 0.5)).getObjectives(),
 				1.0);
 	}
 	
 	@Test
 	public void test3() {
 		Problem problem = new LSMOP6(3);
-		double[] x = Vector.of(problem.getNumberOfVariables(), 0.5);
+		
+		Assert.assertArrayEquals(new double[] { 1.9231, 0.0, 0.0 }, 
+				TestUtils.evaluateAtLowerBounds(problem).getObjectives(),
+				0.0001);
+		
+		Assert.assertArrayEquals(new double[] { 0.0, 0.0, 3115.6 }, 
+				TestUtils.evaluateAtUpperBounds(problem).getObjectives(),
+				1.0);
 		
 		Assert.assertArrayEquals(new double[] { 18642.0, 26458.0, 37417.0 }, 
-				TestUtils.evaluateAt(problem, x).getObjectives(),
+				TestUtils.evaluateAt(problem, Vector.of(problem.getNumberOfVariables(), 0.5)).getObjectives(),
 				1.0);
 	}
 	
 	@Test
 	public void test4() {
 		Problem problem = new LSMOP6(4);
-		double[] x = Vector.of(problem.getNumberOfVariables(), 0.5);
+		
+		Assert.assertArrayEquals(new double[] { 1.9091, 0.0, 0.0, 0.0 }, 
+				TestUtils.evaluateAtLowerBounds(problem).getObjectives(),
+				0.0001);
+		
+		Assert.assertArrayEquals(new double[] { 0.0, 0.0, 0.0, 1.1094 }, 
+				TestUtils.evaluateAtUpperBounds(problem).getObjectives(),
+				0.0001);
 		
 		Assert.assertArrayEquals(new double[] { 12915.0, 15503.0, 21924.0, 1.0 }, 
-				TestUtils.evaluateAt(problem, x).getObjectives(),
+				TestUtils.evaluateAt(problem, Vector.of(problem.getNumberOfVariables(), 0.5)).getObjectives(),
 				1.0);
 	}
 	

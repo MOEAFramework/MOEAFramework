@@ -41,11 +41,13 @@ import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.junit.Assert;
 import org.junit.Assume;
+import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
+import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.util.io.CommentedLineReader;
 import org.moeaframework.util.io.RedirectStream;
 
@@ -247,10 +249,53 @@ public class TestUtils {
 	 * @return the solution resulting from evaluating the problem with the
 	 *         specified decision variables
 	 */
-	public static Solution evaluateAt(Problem problem, 
-			double... variables) {
+	public static Solution evaluateAt(Problem problem, double... variables) {
 		Solution solution = problem.newSolution();
 		EncodingUtils.setReal(solution, variables);
+		problem.evaluate(solution);
+		return solution;
+	}
+	
+	/**
+	 * Returns the solution resulting from evaluating the problem at its lower bounds.
+	 * 
+	 * @param problem the problem
+	 * @return the solution evaluated at the lower bounds
+	 */
+	public static Solution evaluateAtLowerBounds(Problem problem) {
+		Solution solution = problem.newSolution();
+		
+		if (!problem.isType(RealVariable.class)) {
+			throw new FrameworkException("method can only be used on real-valued types");
+		}
+		
+		for (int i = 0; i < solution.getNumberOfVariables(); i++) {
+			RealVariable variable = (RealVariable)solution.getVariable(i);
+			variable.setValue(variable.getLowerBound());
+		}
+		
+		problem.evaluate(solution);
+		return solution;
+	}
+	
+	/**
+	 * Returns the solution resulting from evaluating the problem at its upper bounds.
+	 * 
+	 * @param problem the problem
+	 * @return the solution evaluated at the upper bounds
+	 */
+	public static Solution evaluateAtUpperBounds(Problem problem) {
+		Solution solution = problem.newSolution();
+		
+		if (!problem.isType(RealVariable.class)) {
+			throw new FrameworkException("method can only be used on real-valued types");
+		}
+		
+		for (int i = 0; i < solution.getNumberOfVariables(); i++) {
+			RealVariable variable = (RealVariable)solution.getVariable(i);
+			variable.setValue(variable.getUpperBound());
+		}
+		
 		problem.evaluate(solution);
 		return solution;
 	}

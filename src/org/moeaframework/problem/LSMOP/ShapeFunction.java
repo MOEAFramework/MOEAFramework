@@ -78,11 +78,11 @@ public interface ShapeFunction {
         double tmp2 = 1.0;
         
         for (int i = 0; i < x.length; i++) {
-        	tmp1 += (x[i] * x[i]) / 4000.0;
-        	tmp2 *= Math.cos(x[i]) / Math.sqrt(i+1);
+        	tmp1 += x[i] * x[i];
+        	tmp2 *= Math.cos(x[i] / Math.sqrt(i+1));
         }
         
-        return tmp1 - tmp2 + 1.0;
+        return (tmp1 / 4000.0) - tmp2 + 1.0;
 	};
 	
 	// multimodal, separable

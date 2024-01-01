@@ -29,30 +29,51 @@ public class LSMOP3Test {
 	@Test
 	public void test2() {
 		Problem problem = new LSMOP3(2);
-		double[] x = Vector.of(problem.getNumberOfVariables(), 0.5);
+		
+		Assert.assertArrayEquals(new double[] { 0.0, 1.9655 }, 
+				TestUtils.evaluateAtLowerBounds(problem).getObjectives(),
+				0.0001);
+		
+		Assert.assertArrayEquals(new double[] { 14.3374, 0.0 }, 
+				TestUtils.evaluateAtUpperBounds(problem).getObjectives(),
+				0.0001);
 		
 		Assert.assertArrayEquals(new double[] { 20.0, 22628.0 }, 
-				TestUtils.evaluateAt(problem, x).getObjectives(),
+				TestUtils.evaluateAt(problem, Vector.of(problem.getNumberOfVariables(), 0.5)).getObjectives(),
 				1.0);
 	}
 	
 	@Test
 	public void test3() {
 		Problem problem = new LSMOP3(3);
-		double[] x = Vector.of(problem.getNumberOfVariables(), 0.5);
+		
+		Assert.assertArrayEquals(new double[] { 0.0, 0.0, 1.0 }, 
+				TestUtils.evaluateAtLowerBounds(problem).getObjectives(),
+				0.0001);
+		
+		Assert.assertArrayEquals(new double[] { 12.3276, 0.0, 0.0 }, 
+				TestUtils.evaluateAtUpperBounds(problem).getObjectives(),
+				0.0001);
 		
 		Assert.assertArrayEquals(new double[] { 10.0, 12218.0, 9.0 }, 
-				TestUtils.evaluateAt(problem, x).getObjectives(),
+				TestUtils.evaluateAt(problem, Vector.of(problem.getNumberOfVariables(), 0.5)).getObjectives(),
 				1.0);
 	}
 	
 	@Test
 	public void test4() {
 		Problem problem = new LSMOP3(4);
-		double[] x = Vector.of(problem.getNumberOfVariables(), 0.5);
+		
+		Assert.assertArrayEquals(new double[] { 0.0, 0.0, 0.0, 1.9655 }, 
+				TestUtils.evaluateAtLowerBounds(problem).getObjectives(),
+				0.0001);
+		
+		Assert.assertArrayEquals(new double[] { 11.71900, 0.0, 0.0, 0.0 }, 
+				TestUtils.evaluateAtUpperBounds(problem).getObjectives(),
+				0.0001);
 		
 		Assert.assertArrayEquals(new double[] { 5.0, 6515.0, 7.0, 20907.0 }, 
-				TestUtils.evaluateAt(problem, x).getObjectives(),
+				TestUtils.evaluateAt(problem, Vector.of(problem.getNumberOfVariables(), 0.5)).getObjectives(),
 				1.0);
 	}
 	

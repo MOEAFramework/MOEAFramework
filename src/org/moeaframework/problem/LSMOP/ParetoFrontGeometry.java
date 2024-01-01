@@ -60,21 +60,18 @@ public interface ParetoFrontGeometry {
 	public static final ParetoFrontGeometry Disconnected = (M, G, A, x_f) -> {
 		double[] F = new double[M];
 		
-		for (int i = 0; i < M; i++) {
-			double g = 1.0 + Vector.dot(G, A[i]);
-			
-			if (i < M - 1) {
-				F[i] = x_f[i];
-			} else {
-				double sum = 0.0;
-				
-				for (int j = 0; j < M-1; j++) {
-					sum += F[i] / (1.0 + g) * (1.0 + Math.sin(3.0 * Math.PI * F[i]));
-				}
-				
-				F[i] = (1.0 + g) * (M - sum);
-			}
+		for (int i = 0; i < M - 1; i++) {
+			F[i] = x_f[i];
 		}
+		
+		double g = 1.0 + Vector.dot(G, A[M-1]);
+		double sum = 0.0;
+		
+		for (int i = 0; i < M - 1; i++) {
+			sum += F[i] / (1.0 + g) * (1.0 + Math.sin(3.0 * Math.PI * F[i]));
+		}
+		
+		F[M-1] = (1.0 + g) * (M - sum);
 		
 		return F;
 	};
