@@ -106,6 +106,22 @@ Problem | # of Vars | # of Objs | # of Constrs | Type
 `C3_DTLZ4_N` | `9+N` | N | N | Real
 `Convex_C2_DTLZ2_N` | `9+N` | N | 1 | Real
 
+### LSMOP
+
+Large-scale multi- and many-objective problem test suite [^cheng17].  These problems are scalable in the number of objectives.  Control this by replacing `N` in the name.
+
+Problem | # of Vars | # of Objs | # of Constrs | Type 
+:------ | :-------: | :-------: | :----------: | :---
+`LSMOP1_N` | ??? | N | 0 | Real
+`LSMOP2_N` | ??? | N | 0 | Real
+`LSMOP3_N` | ??? | N | 0 | Real
+`LSMOP4_N` | ??? | N | 0 | Real
+`LSMOP5_N` | ??? | N | 0 | Real
+`LSMOP6_N` | ??? | N | 0 | Real
+`LSMOP7_N` | ??? | N | 0 | Real
+`LSMOP8_N` | ??? | N | 0 | Real
+`LSMOP9_N` | ??? | N | 0 | Real
+
 ### BBOB-2016
 
 Contains the 55 bi-objective problems as part of the "bbob-biobj" test suite from the BBOB workshop hosted at GECCO 2016 [^finck15].
@@ -208,6 +224,7 @@ NondominatedPopulation results = new Executor()
 The MOEA Framework also has the capability to execute problems written in a scripting language (using the appropriate Java plugin) or external, compiled
 programs.  Refer to `ScriptedProblem` and `ExternalProblem` for details.
 
+[^cheng17]: Cheng et al. "Test problems for large-scale multiobjective and many-objective optimization." IEEE Transactions on Cybernetics, 7(12): 4108-4121, 2017.
 [^deb01]: Deb et al.  "Scalable Test Problems for Evolutionary Multi-Objective Optimization."  TIK-Technical Report No 112, 2001.
 [^deb02]: Deb et al. "Scalable Multi-Objective Optimization Test Problems." Congress on Evolutionary Computation. pp 825-830, 2002.
 [^deb14]: Deb, K. and H. Jain.  "An Evolutionary Many-Objective Optimization Algorithm Using Reference-Point-Based Nondominated Sorting Approach, Part I: Solving Problems With Box Constraints."  IEEE Transactions on Evolutionary Computation, 18(4):577-601, 2014.
