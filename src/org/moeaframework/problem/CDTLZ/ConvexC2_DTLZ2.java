@@ -54,8 +54,7 @@ public class ConvexC2_DTLZ2 extends ConvexDTLZ2 {
 	
 	@Override
 	public Solution newSolution() {
-		Solution solution = new Solution(numberOfVariables, numberOfObjectives,
-				1);
+		Solution solution = new Solution(numberOfVariables, numberOfObjectives, 1);
 
 		for (int i = 0; i < numberOfVariables; i++) {
 			solution.setVariable(i, new RealVariable(0.0, 1.0));
