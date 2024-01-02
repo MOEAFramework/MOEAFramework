@@ -10,6 +10,11 @@ This page documents notable changes introduced in each chronological release of 
   * Allow configuring a custom reference set for the Executor / Analyzer / Instrumenter.
   
   * Adds LSMOP test problem suite.
+  
+  * Adds Constraint class to make calculating constraint values easier:
+    ```
+    solution.setConstraint(0, Constraint.lessThanOrEqual(c1, 0.0));
+    ```
 
 
 ## Version 3.8 (11 Nov 2023)

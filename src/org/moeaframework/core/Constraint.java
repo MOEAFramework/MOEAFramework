@@ -165,5 +165,75 @@ public class Constraint {
 		double diff = Math.abs(x - y);
 		return x > y && diff > epsilon ? 0.0 : Math.nextUp(diff);
 	}
+	
+	/**
+	 * Constraint requiring the value to be between a lower and upper bounds ({@code l <= x <= u}).
+	 * 
+	 * @param lower the lower bound
+	 * @param value the value
+	 * @param upper the upper bound
+	 * @return the constraint value
+	 */
+	public static double between(double lower, double value, double upper) {
+		return between(lower, value, upper, Settings.EPS);
+	}
+	
+	/**
+	 * Constraint requiring the value to be between a lower and upper bounds ({@code l <= x <= u}).
+	 * 
+	 * @param lower the lower bound
+	 * @param value the value
+	 * @param upper the upper bound
+	 * @param epsilon the precision when considering if two values are equal
+	 * @return the constraint value
+	 */
+	public static double between(double lower, double value, double upper, double epsilon) {
+		if (value < lower) {
+			double diff = Math.abs(lower - value);
+			return diff <= epsilon ? 0.0 : diff;
+		}
+		
+		if (value > upper) {
+			double diff = Math.abs(upper - value);
+			return diff <= epsilon ? 0.0 : diff;
+		}
+		
+		return 0.0;
+	}
+	
+	/**
+	 * Constraint requiring the value to be outside a given range ({@code l < x && x > u}).
+	 * 
+	 * @param lower the lower bound
+	 * @param value the value
+	 * @param upper the upper bound
+	 * @return the constraint value
+	 */
+	public static double outside(double lower, double value, double upper) {
+		return outside(lower, value, upper, Settings.EPS);
+	}
+	
+	/**
+	 * Constraint requiring the value to be outside a given range ({@code x < l && x > u}).
+	 * 
+	 * @param lower the lower bound
+	 * @param value the value
+	 * @param upper the upper bound
+	 * @param epsilon the precision when considering if two values are equal
+	 * @return the constraint value
+	 */
+	public static double outside(double lower, double value, double upper, double epsilon) {
+		if (value < lower) {
+			double diff = Math.abs(lower - value);
+			return diff > epsilon ? 0.0 : Math.nextUp(diff);
+		}
+		
+		if (value > upper) {
+			double diff = Math.abs(upper - value);
+			return diff > epsilon ? 0.0 : Math.nextUp(diff);
+		}
+		
+		return Math.max(Math.abs(lower - value), Math.abs(upper - value));
+	}
 
 }
