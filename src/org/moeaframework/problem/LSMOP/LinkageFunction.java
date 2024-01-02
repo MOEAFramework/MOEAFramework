@@ -17,28 +17,58 @@
  */
 package org.moeaframework.problem.LSMOP;
 
+/**
+ * Linkage functions used by the LSMOP test problem suite.  This serves two goals:
+ * 
+ * 1. Creates a linkage between the first decision variable and each variable in x_s.
+ * 2. Applies a transformation to the decision variables.
+ */
 public interface LinkageFunction {
 	
-	public double[] apply(int M, int D, int N_ns);
+	/**
+	 * Applies the linkage function to the decision variables.
+	 * 
+	 * @param M the number of objectives
+	 * @param D the number of decision variables
+	 * @param x the original decision variables
+	 * @return the decision variables after applying the linkage function
+	 */
+	public double[] apply(int M, int D, double[] x);
 	
-	public static final LinkageFunction Linear = (M, D, N_ns) -> {
-		double[] L = new double[N_ns];
+	/**
+	 * Linear linkage function.
+	 */
+	public static final LinkageFunction Linear = (M, D, x) -> {
+		double[] result = new double[D];
 		
-		for (int i = 0; i < N_ns; i++) {
-			L[i] = 1.0 + (i + M) / (double)D;
+		for (int i = 0; i < M - 1; i++) {
+			result[i] = x[i];
 		}
 		
-		return L;
+		for (int i = 0; i < D - M + 1; i++) {
+			double L = 1.0 + (i + M) / (double)D;
+			result[i + M - 1] = L * x[i + M - 1] - 10.0 * x[0];
+		}
+		
+		return result;
 	};
 	
-	public static final LinkageFunction NonLinear = (M, D, N_ns) -> {
-		double[] L = new double[N_ns];
+	/**
+	 * Nonlinear linkage function.
+	 */
+	public static final LinkageFunction NonLinear = (M, D, x) -> {
+		double[] result = new double[D];
 		
-		for (int i = 0; i < N_ns; i++) {
-			L[i] = 1.0 + Math.cos(0.5 * Math.PI * (i + M) / (double)D);
+		for (int i = 0; i < M - 1; i++) {
+			result[i] = x[i];
 		}
 		
-		return L;
+		for (int i = 0; i < D - M + 1; i++) {
+			double L = 1.0 + Math.cos(0.5 * Math.PI * (i + M) / (double)D);
+			result[i + M - 1] = L * x[i + M - 1] - 10.0 * x[0];
+		}
+		
+		return result;
 	};
 
 }

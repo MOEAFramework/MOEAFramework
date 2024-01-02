@@ -25,6 +25,9 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
 
+/**
+ * Abstract class for defining LSMOP test problems.
+ */
 public abstract class LSMOP implements Problem {
 	
 	/**
@@ -53,9 +56,14 @@ public abstract class LSMOP implements Problem {
 	private final ShapeFunction g2;
 	
 	/**
-	 * The shape of the Pareto front.
+	 * The linkage function.
 	 */
-	private final ParetoFrontGeometry pf;
+	private final LinkageFunction linkage;
+	
+	/**
+	 * The geometry of the Pareto front.
+	 */
+	private final ParetoFrontGeometry geometry;
 		
 	/**
 	 * The computed number of decision variables.
@@ -68,23 +76,19 @@ public abstract class LSMOP implements Problem {
 	private int[] NNg;
 	
 	/**
-	 * The computed linkage function.
-	 */
-	private double[] L;
-	
-	/**
 	 * The computed correlation matrix.
 	 */
 	private double[][] A;
 	
 	public LSMOP(int M, int N_k, ShapeFunction g1, ShapeFunction g2, LinkageFunction linkage,
-			CorrelationMatrix correlationMatrix, ParetoFrontGeometry pf) {
+			CorrelationMatrix correlationMatrix, ParetoFrontGeometry geometry) {
 		super();
 		this.M = M;
 		this.N_k = N_k;
 		this.g1 = g1;
 		this.g2 = g2;
-		this.pf = pf;
+		this.linkage = linkage;
+		this.geometry = geometry;
 		
 		int N_ns = 100 * M;
 		
@@ -114,8 +118,7 @@ public abstract class LSMOP implements Problem {
 		N_ns = sumNNg * N_k;
 		D = (M - 1) + N_ns;
 		
-		// Compute linkage function and correlation matrix
-		L = linkage.apply(M, D, N_ns);
+		// Compute the correlation matrix
 		A = correlationMatrix.apply(M);
 	}
 
@@ -163,12 +166,11 @@ public abstract class LSMOP implements Problem {
 	public void evaluate(Solution solution) {
 		double[] x = EncodingUtils.getReal(solution);
 		
-		for (int i = 0; i < D - M + 1; i++) {
-			x[i + M - 1] = L[i] * x[i + M - 1] - 10.0 * x[0];
-		}
+		// Apply the linkage function
+		x = linkage.apply(M, D, x);
 		
+		// Split out the decision variables in each subcomponent
 		double[] x_f = Arrays.copyOfRange(x, 0, M - 1);
-		
 		List<double[]> x_s = new ArrayList<double[]>();
 		
 		for (int i = 0; i < M; i++) {
@@ -184,6 +186,7 @@ public abstract class LSMOP implements Problem {
 			x_s.add(Arrays.copyOfRange(x, index1, index2));
 		}
 		
+		// Compute the raw objective values
 		double[] G = new double[M];
 		
 		for (int i = 0; i < M; i++) {
@@ -197,8 +200,11 @@ public abstract class LSMOP implements Problem {
 			
 			G[i] = g / N_k;
 		}
+		
+		// Transform the raw objective values using the Pareto Front geometry
+		double[] F = geometry.apply(M, G, A, x_f);
 						
-		solution.setObjectives(pf.apply(M, G, A, x_f));
+		solution.setObjectives(F);
 	}
 
 }

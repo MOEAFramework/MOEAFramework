@@ -17,11 +17,22 @@
  */
 package org.moeaframework.problem.LSMOP;
 
+/**
+ * Shape functions used by the LSMOP test problem suite.
+ */
 public interface ShapeFunction {
 	
+	/**
+	 * Computes the shape function.
+	 * 
+	 * @param x the decision variables
+	 * @return the computed value
+	 */
 	public double apply(double[] x);
 	
-	// unimodal, separable
+	/**
+	 * Sphere function (unimodal, separable).
+	 */
 	public static final ShapeFunction Sphere = x -> {
 		double result = 0.0;
 			
@@ -32,7 +43,9 @@ public interface ShapeFunction {
 		return result;
 	};
 	
-	// multimodal, non-separable
+	/**
+	 * Rosenbrock function (multimodal, non-separable).
+	 */
 	public static final ShapeFunction Rosenbrock = x -> {
 		double s1 = 0.0;
 		double s2 = 0.0;
@@ -48,7 +61,9 @@ public interface ShapeFunction {
 		return 100.0*s1 + s2;
 	};
 	
-	// unimodual, non-separable
+	/**
+	 * Schwefel function (unimodal, non-separable).
+	 */
 	public static final ShapeFunction Schwefel = x -> {
 		double result = Math.abs(x[0]);
 		
@@ -59,7 +74,9 @@ public interface ShapeFunction {
 		return result;
 	};
 	
-	// multimodal, separable
+	/**
+	 * Rastrigin function (multimodal, separable).
+	 */
 	public static final ShapeFunction Rastrigin = x -> {
 		double tmp1 = 0.0;
 		double tmp2 = 0.0;
@@ -72,7 +89,9 @@ public interface ShapeFunction {
 		return 10.0 * (x.length - tmp1) + tmp2;
 	};
 	
-	// multimodal, non-separable
+	/**
+	 * Griewank function (multimodal, non-separable).
+	 */
 	public static final ShapeFunction Griewank = x -> {
         double tmp1 = 0.0;
         double tmp2 = 1.0;
@@ -85,7 +104,9 @@ public interface ShapeFunction {
         return (tmp1 / 4000.0) - tmp2 + 1.0;
 	};
 	
-	// multimodal, separable
+	/**
+	 * Ackley function (multimodal, separable).
+	 */
 	public static final ShapeFunction Ackley = x -> {
 		double tmp1 = 0.0;
 		double tmp2 = 0.0;

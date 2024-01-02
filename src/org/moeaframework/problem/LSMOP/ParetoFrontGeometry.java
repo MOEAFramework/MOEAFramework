@@ -19,10 +19,25 @@ package org.moeaframework.problem.LSMOP;
 
 import org.moeaframework.util.Vector;
 
+/**
+ * Functions specifying the Pareto Front geometry for the LSMOP test problem suite.
+ */
 public interface ParetoFrontGeometry {
 	
+	/**
+	 * Transforms objective values to achieve a specific geometry of the Pareto Front.
+	 * 
+	 * @param M the number of objectives
+	 * @param G the original objective values
+	 * @param A the correlation matrix
+	 * @param x_f the decision variables defining the shape of the Pareto Front
+	 * @return the transformed objective values
+	 */
 	public double[] apply(int M, double[] G, double[][] A, double[] x_f);
 	
+	/**
+	 * Produces a linear Pareto Front.
+	 */
 	public static final ParetoFrontGeometry Linear = (M, G, A, x_f) -> {
 		double[] F = new double[M];
 		
@@ -40,6 +55,9 @@ public interface ParetoFrontGeometry {
 		return F;
 	};
 	
+	/**
+	 * Produces a convex Pareto Front.
+	 */
 	public static final ParetoFrontGeometry Convex = (M, G, A, x_f) -> {
 		double[] F = new double[M];
 		
@@ -57,6 +75,9 @@ public interface ParetoFrontGeometry {
 		return F;
 	};
 	
+	/**
+	 * Produces a disconnected Pareto front.
+	 */
 	public static final ParetoFrontGeometry Disconnected = (M, G, A, x_f) -> {
 		double[] F = new double[M];
 		

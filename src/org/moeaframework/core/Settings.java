@@ -446,6 +446,7 @@ public class Settings {
 				"UF1", "UF2", "UF3", "UF4", "UF5", "UF6", "UF7", "UF8", "UF9", "UF10", "UF11", "UF12", "UF13",
 				"CF1", "CF2", "CF3", "CF4", "CF5", "CF6", "CF7", "CF8", "CF9", "CF10",
 				"LZ1", "LZ2", "LZ3", "LZ4", "LZ5", "LZ6", "LZ7", "LZ8", "LZ9",
+				"LSMOP1_2", "LSMOP2_2", "LSMOP3_2", "LSMOP4_2", "LSMOP5_2", "LSMOP6_2", "LSMOP7_2", "LSMOP8_2", "LSMOP9_2",
 				"WFG1_2", "WFG2_2", "WFG3_2", "WFG4_2", "WFG5_2", "WFG6_2", "WFG7_2", "WFG8_2", "WFG9_2",
 				"ZDT1", "ZDT2", "ZDT3", "ZDT4", "ZDT5", "ZDT6",
 				"Belegundu", "Binh", "Binh2", "Binh3", "Binh4", "Fonseca", 

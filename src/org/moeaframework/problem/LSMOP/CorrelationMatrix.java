@@ -17,10 +17,30 @@
  */
 package org.moeaframework.problem.LSMOP;
 
+/**
+ * Correlation matrices used by the LSMOP test problem suite.  The matrix describes
+ * the correlation between each decision variable group and the corresponding objective
+ * value.
+ * 
+ * A value of 0 indicates the decision variable group does not contribute to the
+ * objective value; whereas a value of 1 includes the decision variable group in the 
+ * calculation.  While it's possible for the matrix to contain values between 0 and 1,
+ * the LSMOP does not use such intermediate values.
+ */
 public interface CorrelationMatrix {
 	
+	/**
+	 * Returns an M x M correlation matrix containing values between [0, 1].
+
+	 * @param M the dimension
+	 * @return the correlation matrix
+	 */
 	public double[][] apply(int M);
 	
+	/**
+	 * Creates a correlation matrix with no correlation.  Each decision variable group is
+	 * associated with a single objective.
+	 */
 	public static final CorrelationMatrix Separable = M -> {
 		double[][] A = new double[M][M];
 		
@@ -31,6 +51,10 @@ public interface CorrelationMatrix {
 		return A;
 	};
 	
+	/**
+	 * Creates a correlation matrix where the i-th and (i+1)-th decision variable groups are
+	 * associated with the i-th objective.
+	 */
 	public static final CorrelationMatrix Overlapped = M -> {
 		double[][] A = new double[M][M];
 		
@@ -45,6 +69,10 @@ public interface CorrelationMatrix {
 		return A;
 	};
 	
+	/**
+	 * Creates a full correlation matrix where every decision variable group is included in the
+	 * objective value calculation.
+	 */
 	public static final CorrelationMatrix Full = M -> {
 		double[][] A = new double[M][M];
 		
