@@ -17,6 +17,9 @@
  */
 package org.moeaframework.problem.LSMOP;
 
+/**
+ * The mixed-modality, partially-separable LSMOP2 problem.
+ */
 public class LSMOP2 extends LSMOP {
 	
 	public LSMOP2(int M) {

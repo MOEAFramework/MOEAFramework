@@ -17,6 +17,9 @@
  */
 package org.moeaframework.problem.LSMOP;
 
+/**
+ * The unimodal, fully-separable LSMOP1 problem.
+ */
 public class LSMOP1 extends LSMOP {
 	
 	public LSMOP1(int M) {

@@ -17,6 +17,9 @@
  */
 package org.moeaframework.problem.LSMOP;
 
+/**
+ * The mixed-modality, mixed-separability LSMOP8 problem.
+ */
 public class LSMOP8 extends LSMOP {
 	
 	public LSMOP8(int M) {
