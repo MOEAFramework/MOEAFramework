@@ -17,9 +17,11 @@
  */
 package org.moeaframework.analysis.plot;
 
+import java.awt.GraphicsEnvironment;
+
 import javax.swing.JFrame;
 
-import org.junit.Ignore;
+import org.junit.Assume;
 import org.junit.Test;
 import org.moeaframework.Analyzer;
 import org.moeaframework.Executor;
@@ -45,14 +47,16 @@ public class PlotTest {
 	    return false;
 	}
 	
+	public static boolean hasDisplay() {
+		return GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices().length > 0;
+	}
+	
 	@Test
-	@Ignore("Fails on CI due to missing display")
 	public void testEmpty() {
 		runTest(new Plot());
 	}
 	
 	@Test
-	@Ignore("Fails on CI due to missing display")
 	public void testBasicShapes() {
 		runTest(new Plot()
 				.scatter("Points", new double[] { 0, 1, 2 }, new double[] { 0, 1, 2 })
@@ -66,7 +70,6 @@ public class PlotTest {
 	}
 	
 	@Test
-	@Ignore("Fails on CI due to missing display")
 	public void testOutOfOrder() {
 		runTest(new Plot()
 				.scatter("Points", new double[] { 0, 2, 1 }, new double[] { 0, 1, 2 })
@@ -75,7 +78,6 @@ public class PlotTest {
 	}
 	
 	@Test
-	@Ignore("Fails on CI due to missing display")
 	public void testParetoFront() {
 		NondominatedPopulation result = new Executor()
 				.withProblem("UF1")
@@ -88,7 +90,6 @@ public class PlotTest {
 	}
 	
 	@Test
-	@Ignore("Fails on CI due to missing display")
 	public void testAnalyzer() {
 		String problem = "ZDT1";
 		String[] algorithms = { "NSGAII", "eMOEA", "OMOPSO" };
@@ -111,7 +112,6 @@ public class PlotTest {
 	}
 	
 	@Test
-	@Ignore("Fails on CI due to missing display")
 	public void testObservations() {
 		Instrumenter instrumenter = new Instrumenter()
 				.withProblem("UF1")
@@ -133,6 +133,8 @@ public class PlotTest {
 	
 	public void runTest(Plot plot) {
 		if (isJUnitTest()) {
+			Assume.assumeTrue("Skipping test as the system has no display", hasDisplay());
+			
 			JFrame frame = plot.show();
 			frame.dispose();
 		} else {
