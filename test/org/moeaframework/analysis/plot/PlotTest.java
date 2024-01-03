@@ -48,7 +48,8 @@ public class PlotTest {
 	}
 	
 	public static boolean hasDisplay() {
-		return GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices().length > 0;
+		return !GraphicsEnvironment.isHeadless() &&
+				GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices().length > 0;
 	}
 	
 	@Test
