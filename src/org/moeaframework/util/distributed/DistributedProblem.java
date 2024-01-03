@@ -22,6 +22,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.atomic.AtomicLong;
 
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
@@ -55,7 +56,7 @@ public class DistributedProblem extends ProblemWrapper {
 	 * (e.g., certain types of simulations) can use this as a random seed
 	 * in order to get replicability of results even when run in parallel.      
 	 */
-	private long nextDistributedEvaluationID = 0;
+	private final AtomicLong nextDistributedEvaluationID;
 	
 	/**
 	 * Creates a distributed problem using the number of available processors on
@@ -114,6 +115,8 @@ public class DistributedProblem extends ProblemWrapper {
 		super(problem);
 		this.executor = executor;
 		this.shutdownWhenClosed = shutdownWhenClosed;
+		
+		nextDistributedEvaluationID = new AtomicLong(0);
 	}
 	
 	/**
@@ -161,17 +164,13 @@ public class DistributedProblem extends ProblemWrapper {
 	public void evaluate(Solution solution) {
 		if (solution instanceof FutureSolution) {
 			FutureSolution futureSolution = (FutureSolution)solution;
-			futureSolution.setDistributedEvaluationID(nextDistributedEvaluationID());
+			futureSolution.setDistributedEvaluationID(nextDistributedEvaluationID.getAndIncrement());
 			
 			Future<Solution> future = executor.submit(new ProblemEvaluator(problem, futureSolution));
 			futureSolution.setFuture(future);
 		} else {
 			throw new ProblemException(this, "requires FutureSolution");
 		}
-	}
-
-	synchronized long nextDistributedEvaluationID() {
-		return nextDistributedEvaluationID++;
 	}
 
 	@Override
