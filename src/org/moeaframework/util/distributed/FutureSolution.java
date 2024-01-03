@@ -100,7 +100,7 @@ public class FutureSolution extends Solution {
 	 * until the result is available. Since the result is a serialized copy of
 	 * this solution, the objectives, constraints, and attributes must be copied.
 	 */
-	private synchronized void update() {
+	synchronized void update() {
 		if (future != null) {
 			try {
 				Solution solution = future.get();
