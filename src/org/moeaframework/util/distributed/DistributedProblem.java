@@ -169,7 +169,7 @@ public class DistributedProblem extends ProblemWrapper {
 			Future<Solution> future = executor.submit(new ProblemEvaluator(problem, futureSolution));
 			futureSolution.setFuture(future);
 		} else {
-			throw new ProblemException(this, "requires FutureSolution");
+			throw new ProblemException(this, "must provide FutureSolution to DistributedProblem");
 		}
 	}
 
