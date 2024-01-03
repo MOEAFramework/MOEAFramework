@@ -27,7 +27,7 @@ import org.moeaframework.util.distributed.FutureSolution;
  * A mock stochastic problem with one real variable. 
  * In this case, the f(x) = x + random.nextDouble();   
  */
-public class MockRealStochasticProblem extends AbstractProblem {
+public class MockRealStochasticProblem extends MockProblem {
 	
 	long evaluationID = 0;
 	
@@ -53,7 +53,7 @@ public class MockRealStochasticProblem extends AbstractProblem {
 
 	@Override
 	public Solution newSolution() {
-		Solution solution = new Solution(1, 1);
+		Solution solution = super.newSolution();
 		solution.setVariable(0, new RealVariable(0, 10));
 		return solution;
 	}

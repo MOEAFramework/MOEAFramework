@@ -23,7 +23,7 @@ import org.moeaframework.core.variable.RealVariable;
 /**
  * A mock problem with real variables.
  */
-public class MockRealProblem extends AbstractProblem {
+public class MockRealProblem extends MockProblem {
 	
 	public MockRealProblem() {
 		this(1);
@@ -34,15 +34,8 @@ public class MockRealProblem extends AbstractProblem {
 	}
 
 	@Override
-	public void evaluate(Solution solution) {
-		for (int i = 0; i < getNumberOfObjectives(); i++) {
-			solution.setObjective(i, 5.0);
-		}
-	}
-
-	@Override
 	public Solution newSolution() {
-		Solution solution = new Solution(1, getNumberOfObjectives());
+		Solution solution = super.newSolution();
 		solution.setVariable(0, new RealVariable(0.0, 1.0));
 		return solution;
 	}

@@ -21,24 +21,21 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.BinaryVariable;
 
 /**
- * A mock problem with binary variables.  The objective of this problem is to
- * maximize the number of 1 bits in the binary string.
+ * A mock problem with binary variables.
  */
-public class MockBinaryProblem extends AbstractProblem {
+public class MockBinaryProblem extends MockProblem {
 
 	public MockBinaryProblem() {
-		super(1, 1);
+		this(1);
 	}
-
-	@Override
-	public void evaluate(Solution solution) {
-		BinaryVariable binary = (BinaryVariable)solution.getVariable(0);
-		solution.setObjective(0, 10 - binary.cardinality());
+	
+	public MockBinaryProblem(int numberOfObjectives) {
+		super(1, numberOfObjectives);
 	}
 
 	@Override
 	public Solution newSolution() {
-		Solution solution = new Solution(1, 1);
+		Solution solution = super.newSolution();
 		solution.setVariable(0, new BinaryVariable(10));
 		return solution;
 	}

@@ -22,7 +22,6 @@ import java.io.IOException;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.moeaframework.algorithm.sa.AMOSA;
 import org.moeaframework.core.Algorithm;
@@ -74,9 +73,9 @@ public class DefaultAlgorithmsTest {
 	@Before
 	public void setUp() throws IOException {
 		realProblem = new MockRealProblem(2);
-		binaryProblem = new MockBinaryProblem();
-		permutationProblem = new MockPermutationProblem();
-		subsetProblem = new MockSubsetProblem();
+		binaryProblem = new MockBinaryProblem(2);
+		permutationProblem = new MockPermutationProblem(2);
+		subsetProblem = new MockSubsetProblem(2);
 		properties = new TypedProperties();
 		
 		properties.setInt("maxEvaluations", 1000);
@@ -290,7 +289,6 @@ public class DefaultAlgorithmsTest {
 	}
 	
 	@Test
-	@Ignore("current does not work since RVEA requires at least two objectives")
 	public void testRVEA_Binary() {
 		test("RVEA", binaryProblem);
 	}
@@ -410,7 +408,6 @@ public class DefaultAlgorithmsTest {
 	}
 	
 	@Test
-	@Ignore("currently broken as RVEA requires at least two objectives")
 	public void testRVEA_Permutation() {
 		test("RVEA", permutationProblem);
 	}
@@ -530,7 +527,6 @@ public class DefaultAlgorithmsTest {
 	}
 	
 	@Test
-	@Ignore("currently broken as RVEA requires at least two objectives")
 	public void testRVEA_Subset() {
 		test("RVEA", subsetProblem);
 	}
