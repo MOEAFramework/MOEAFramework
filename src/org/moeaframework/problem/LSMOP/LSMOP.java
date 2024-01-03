@@ -80,6 +80,17 @@ public abstract class LSMOP implements Problem {
 	 */
 	private double[][] A;
 	
+	/**
+	 * Constructs a new LSMOP problem instance.
+	 * 
+	 * @param M the number of objectives
+	 * @param N_k the number of subcomponents in each decision variable group
+	 * @param g1 the first shape function (for even indices)
+	 * @param g2 the second shape function (for odd indices)
+	 * @param linkage the linkage function
+	 * @param correlationMatrix the correlation matrix
+	 * @param geometry the Pareto front geometry
+	 */
 	public LSMOP(int M, int N_k, ShapeFunction g1, ShapeFunction g2, LinkageFunction linkage,
 			CorrelationMatrix correlationMatrix, ParetoFrontGeometry geometry) {
 		super();

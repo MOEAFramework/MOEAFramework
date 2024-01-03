@@ -21,11 +21,11 @@ package org.moeaframework.problem.LSMOP;
  * Correlation matrices used by the LSMOP test problem suite.  The matrix describes
  * the correlation between each decision variable group and the corresponding objective
  * value.
- * 
- * A value of 0 indicates the decision variable group does not contribute to the
- * objective value; whereas a value of 1 includes the decision variable group in the 
- * calculation.  While it's possible for the matrix to contain values between 0 and 1,
- * the LSMOP does not use such intermediate values.
+ * <p>
+ * A value of {@code 0.0} indicates the decision variable group does not contribute to the
+ * objective value; whereas a value of {@code 1.0} includes the decision variable group in the 
+ * calculation.  While it's possible for the matrix to contain values between {@code [0, 1]},
+ * the LSMOP suite does not use such intermediate values.
  */
 public interface CorrelationMatrix {
 	

@@ -23,7 +23,10 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.spi.RegisteredProblemProvider;
 
 /**
- * Problem provider for the LSMOP test problems.
+ * Problem provider for the LSMOP test problems.  Similar to other scalable
+ * problem suites, append {@code _M} to the problem name, where {@code M} is
+ * the number of objectives, when creating each instance.  For example,
+ * {@code "LSMOP2_3"} creates the 3-objective version of the LSMOP2 problem.
  */
 public class LSMOPProblemProvider extends RegisteredProblemProvider {
 

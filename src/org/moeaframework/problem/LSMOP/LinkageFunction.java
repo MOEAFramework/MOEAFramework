@@ -19,9 +19,10 @@ package org.moeaframework.problem.LSMOP;
 
 /**
  * Linkage functions used by the LSMOP test problem suite.  This serves two goals:
- * 
- * 1. Creates a linkage between the first decision variable and each variable in x_s.
- * 2. Applies a transformation to the decision variables.
+ * <ol>
+ *   <li>Creates a linkage between the first decision variable and each variable in x_s.
+ *   <li>Applies a transformation to the decision variables.
+ * </ol>
  */
 public interface LinkageFunction {
 	
