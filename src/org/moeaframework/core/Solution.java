@@ -270,7 +270,7 @@ public class Solution implements Serializable {
 	 */
 	public boolean violatesConstraints() {
 		for (int i = 0; i < constraints.length; i++) {
-			if (constraints[i] != 0.0) {
+			if (constraints[i] != Constraint.SATISFIED) {
 				return true;
 			}
 		}

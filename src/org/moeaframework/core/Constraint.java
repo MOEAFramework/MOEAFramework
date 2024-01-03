@@ -18,6 +18,11 @@ package org.moeaframework.core;
  */
 public class Constraint {
 	
+	/**
+	 * Constant used to indicate a constraint is satisfied.
+	 */
+	public static final double SATISFIED = 0.0;
+	
 	private Constraint() {
 		super();
 	}
