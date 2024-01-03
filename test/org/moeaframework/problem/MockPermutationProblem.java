@@ -21,30 +21,21 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.Permutation;
 
 /**
- * A mock problem with a permutation variable.  The objective of this problem
- * is to find the ordered permutation.
+ * A mock problem with a permutation variable.
  */
-public class MockPermutationProblem extends AbstractProblem {
+public class MockPermutationProblem extends MockProblem {
 	
 	public MockPermutationProblem() {
-		super(1, 1);
+		this(1);
 	}
-
-	@Override
-	public void evaluate(Solution solution) {
-		int sum = 0;
-		Permutation permutation = (Permutation)solution.getVariable(0);
-		
-		for (int i=0; i<9; i++) {
-			sum += i * permutation.get(i);
-		}
-		
-		solution.setObjective(0, sum);
+	
+	public MockPermutationProblem(int numberOfObjectives) {
+		super(1, numberOfObjectives);
 	}
 
 	@Override
 	public Solution newSolution() {
-		Solution solution = new Solution(1, 1);
+		Solution solution = super.newSolution();
 		solution.setVariable(0, new Permutation(10));
 		return solution;
 	}

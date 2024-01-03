@@ -17,34 +17,26 @@
  */
 package org.moeaframework.problem;
 
-import java.util.BitSet;
-
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.BinaryIntegerVariable;
 import org.moeaframework.core.variable.BinaryVariable;
-import org.moeaframework.core.variable.EncodingUtils;
 
 /**
  * A mock problem with a binary variable and a binary-encoded integer variable.
  */
-public class MockMixedBinaryProblem extends AbstractProblem {
+public class MockMixedBinaryProblem extends MockProblem {
 
 	public MockMixedBinaryProblem() {
 		super(2, 2);
 	}
-
-	@Override
-	public void evaluate(Solution solution) {
-		BitSet binaryValue = EncodingUtils.getBitSet(solution.getVariable(0));
-		int intValue = EncodingUtils.getInt(solution.getVariable(1));
-		
-		solution.setObjective(0, 10 - binaryValue.cardinality());
-		solution.setObjective(1, intValue);
+	
+	public MockMixedBinaryProblem(int numberOfObjectives) {
+		super(2, numberOfObjectives);
 	}
 
 	@Override
 	public Solution newSolution() {
-		Solution solution = new Solution(2, 2);
+		Solution solution = super.newSolution();
 		solution.setVariable(0, new BinaryVariable(10));
 		solution.setVariable(1, new BinaryIntegerVariable(5, 10));
 		return solution;

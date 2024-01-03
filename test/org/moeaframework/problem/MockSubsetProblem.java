@@ -18,34 +18,24 @@
 package org.moeaframework.problem;
 
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.Subset;
 
 /**
- * A mock problem with a subset variable.  The objective of this problem
- * is to find a subset that sums to 10.
+ * A mock problem with a subset variable.
  */
-public class MockSubsetProblem extends AbstractProblem {
+public class MockSubsetProblem extends MockProblem {
 	
 	public MockSubsetProblem() {
-		super(1, 1);
+		this(1);
 	}
-
-	@Override
-	public void evaluate(Solution solution) {
-		int sum = 0;
-		int[] values = EncodingUtils.getSubset(solution.getVariable(0));
-
-		for (int i=0; i<values.length; i++) {
-			sum += values[i];
-		}
-		
-		solution.setObjective(0, Math.abs(10.0 - sum));
+	
+	public MockSubsetProblem(int numberOfObjectives) {
+		super(1, numberOfObjectives);
 	}
 
 	@Override
 	public Solution newSolution() {
-		Solution solution = new Solution(1, 1);
+		Solution solution = super.newSolution();
 		solution.setVariable(0, new Subset(5, 10));
 		return solution;
 	}

@@ -25,20 +25,19 @@ import org.moeaframework.core.variable.RealVariable;
 /**
  * A mock problem with different types of variables.
  */
-public class MockMultiTypeProblem extends AbstractProblem {
+public class MockMultiTypeProblem extends MockProblem {
 	
 	public MockMultiTypeProblem() {
-		super(3, 1);
+		this(1);
 	}
-
-	@Override
-	public void evaluate(Solution solution) {
-		solution.setObjective(0, 5.0);
+	
+	public MockMultiTypeProblem(int numberOfObjectives) {
+		super(3, numberOfObjectives);
 	}
 
 	@Override
 	public Solution newSolution() {
-		Solution solution = new Solution(3, 1);
+		Solution solution = super.newSolution();
 		solution.setVariable(0, new RealVariable(0.0, 1.0));
 		solution.setVariable(1, new BinaryVariable(10));
 		solution.setVariable(2, new Permutation(5));
