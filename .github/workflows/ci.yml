@@ -73,7 +73,10 @@ jobs:
         sudo mkdir -p /usr/java/packages/lib/
         sudo mv libCocoJNI.so /usr/java/packages/lib/
     - name: Test with Ant - Java ${{ matrix.java }}
-      run: ant -DON_CI=true -DALL_TESTS=${{ inputs.all-tests || 'false' }} -f test.xml
+      run: ant -f test.xml
+      env:
+        ON_CI: true
+        ALL_TESTS: ${{ inputs.all-tests || 'false' }}
     - name: Upload test results
       uses: actions/upload-artifact@v4
       if: always()
