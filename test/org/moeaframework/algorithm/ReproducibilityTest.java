@@ -20,7 +20,6 @@ package org.moeaframework.algorithm;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.moeaframework.CIRunner;
-import org.moeaframework.IgnoreOnCI;
 import org.moeaframework.TestUtils;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.NondominatedPopulation;

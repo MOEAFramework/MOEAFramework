@@ -23,7 +23,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.moeaframework.CIRunner;
-import org.moeaframework.Flaky;
 import org.moeaframework.Retryable;
 import org.moeaframework.core.NondominatedSortingPopulation;
 import org.moeaframework.core.Problem;
@@ -43,7 +42,6 @@ import org.moeaframework.util.TypedProperties;
 public class NSGAIITest extends AlgorithmTest {
 	
 	@Test
-	@Flaky
 	public void testDTLZ1() throws IOException {
 		assumeJMetalExists();
 		test("DTLZ1_2", "NSGAII", "NSGAII-JMetal");
@@ -56,7 +54,6 @@ public class NSGAIITest extends AlgorithmTest {
 	}
 	
 	@Test
-	@Flaky
 	public void testDTLZ7() throws IOException {
 		assumeJMetalExists();
 		test("DTLZ7_2", "NSGAII", "NSGAII-JMetal");
