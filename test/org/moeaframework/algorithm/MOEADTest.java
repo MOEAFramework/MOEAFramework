@@ -20,10 +20,10 @@ package org.moeaframework.algorithm;
 import java.io.IOException;
 
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.moeaframework.CIRunner;
+import org.moeaframework.IgnoreOnCI;
 import org.moeaframework.Retryable;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.spi.AlgorithmFactory;
@@ -38,21 +38,21 @@ import org.moeaframework.util.TypedProperties;
 public class MOEADTest extends AlgorithmTest {
 	
 	@Test
-	@Ignore("MOEA/D in JMetal 5.11 performs significantly worse")
+	@IgnoreOnCI("MOEA/D in JMetal 5.11 performs significantly worse")
 	public void testDTLZ1() throws IOException {
 		assumeJMetalExists();
 		test("DTLZ1_2", "MOEAD", "MOEAD-JMetal");
 	}
 	
 	@Test
-	@Ignore("MOEA/D in JMetal 5.11 performs significantly worse")
+	@IgnoreOnCI("MOEA/D in JMetal 5.11 performs significantly worse")
 	public void testDTLZ2() throws IOException {
 		assumeJMetalExists();
 		test("DTLZ2_2", "MOEAD", "MOEAD-JMetal");
 	}
 	
 	@Test
-	@Ignore("MOEA/D in JMetal 5.11 performs significantly worse")
+	@IgnoreOnCI("MOEA/D in JMetal 5.11 performs significantly worse")
 	public void testDTLZ7() throws IOException {
 		assumeJMetalExists();
 		test("DTLZ7_2", "MOEAD", "MOEAD-JMetal");

@@ -19,12 +19,12 @@ package org.moeaframework.algorithm.pso;
 
 import java.io.IOException;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.moeaframework.Retryable;
 import org.moeaframework.CIRunner;
 import org.moeaframework.Flaky;
+import org.moeaframework.IgnoreOnCI;
 import org.moeaframework.algorithm.AlgorithmTest;
 
 /**
@@ -41,7 +41,7 @@ public class OMOPSOTest extends AlgorithmTest {
 	}
 	
 	@Test
-	@Ignore("need to investigate - differences showing up after upgrading to JMetal 5.9")
+	@IgnoreOnCI("need to investigate - differences showing up after upgrading to JMetal 5.9")
 	public void testDTLZ2() throws IOException {
 		assumeJMetalExists();
 		test("DTLZ2_2", "OMOPSO", "OMOPSO-JMetal");

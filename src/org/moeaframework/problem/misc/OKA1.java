@@ -48,9 +48,8 @@ public class OKA1 extends AbstractProblem {
 		double x2 = Math.sin(Math.PI / 12.0) * x[0] + Math.cos(Math.PI / 12.0) * x[1];
 
 		solution.setObjective(0, x1);
-		solution.setObjective(1, Math.sqrt(2.0 * Math.PI)
-				- Math.sqrt(Math.abs(x1)) + 2.0
-				* Math.pow(Math.abs(x2 - 3.0 * Math.cos(x1) - 3), 1.0 / 3.0));
+		solution.setObjective(1, Math.sqrt(2.0 * Math.PI) - Math.sqrt(Math.abs(x1)) +
+				2.0 * Math.pow(Math.abs(x2 - 3.0 * Math.cos(x1) - 3), 1.0 / 3.0));
 	}
 
 	@Override
@@ -58,10 +57,11 @@ public class OKA1 extends AbstractProblem {
 		Solution solution = new Solution(2, 2);
 
 		solution.setVariable(0, new RealVariable(
-				6.0 * Math.sin(Math.PI / 12.0), 6.0 * Math.sin(Math.PI / 12.0)
-						+ 2.0 * Math.PI * Math.cos(Math.PI / 12.0)));
+				6.0 * Math.sin(Math.PI / 12.0),
+				6.0 * Math.sin(Math.PI / 12.0) + 2.0 * Math.PI * Math.cos(Math.PI / 12.0)));
 		solution.setVariable(1, new RealVariable(
-				-2.0 * Math.PI * Math.sin(Math.PI / 12), 6.0 * Math.cos(Math.PI / 12.0)));
+				-2.0 * Math.PI * Math.sin(Math.PI / 12),
+				6.0 * Math.cos(Math.PI / 12.0)));
 
 		return solution;
 	}
