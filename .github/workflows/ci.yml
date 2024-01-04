@@ -9,7 +9,7 @@ on:
     inputs:
       on-ci:
         type: boolean
-        description: Disable certain tests on CI
+        description: Skip IgnoreOnCI tests (uncheck to run all)
         default: true
 
 jobs:
