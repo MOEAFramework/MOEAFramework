@@ -17,7 +17,6 @@
  */
 package org.moeaframework.problem.CEC2009;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.moeaframework.problem.ProblemTest;
 
