@@ -8,9 +8,13 @@ on:
   workflow_dispatch:
     inputs:
       on-ci:
-        type: boolean
-        description: Skip IgnoreOnCI tests (uncheck to run all)
-        default: true
+        type: choice
+        required: true
+        description: Skip IgnoreOnCI tests
+        options:
+          - 'true'
+          - 'false'
+        default: 'true'
 
 jobs:
   ant-tests:
