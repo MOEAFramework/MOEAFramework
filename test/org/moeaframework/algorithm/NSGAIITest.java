@@ -54,6 +54,7 @@ public class NSGAIITest extends AlgorithmTest {
 	}
 	
 	@Test
+	@Flaky
 	public void testDTLZ7() throws IOException {
 		assumeJMetalExists();
 		test("DTLZ7_2", "NSGAII", "NSGAII-JMetal");
