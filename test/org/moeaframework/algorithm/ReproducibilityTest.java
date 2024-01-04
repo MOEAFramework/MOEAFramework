@@ -94,7 +94,6 @@ public class ReproducibilityTest {
 	}
 
 	@Test
-	@IgnoreOnCI("Failing on CI with zulu distribution, passing elsewhere")
 	public void testSMPSO() {
 		test("SMPSO");
 	}

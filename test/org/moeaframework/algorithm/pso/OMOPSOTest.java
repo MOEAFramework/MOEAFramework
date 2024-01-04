@@ -41,7 +41,7 @@ public class OMOPSOTest extends AlgorithmTest {
 	}
 	
 	@Test
-	@IgnoreOnCI("need to investigate - differences showing up after upgrading to JMetal 5.9")
+	@Flaky("need to investigate - differences showing up after upgrading to JMetal 5.9")
 	public void testDTLZ2() throws IOException {
 		assumeJMetalExists();
 		test("DTLZ2_2", "OMOPSO", "OMOPSO-JMetal");
