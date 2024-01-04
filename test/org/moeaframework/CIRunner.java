@@ -88,7 +88,7 @@ public class CIRunner extends BlockJUnit4ClassRunner {
 		T annotation = method.getAnnotation(annotationType);
 		
 		if (annotation == null) {
-			annotation = getTestClass().getJavaClass().getAnnotation(annotationType)
+			annotation = getTestClass().getJavaClass().getAnnotation(annotationType);
 		}
 		
 		return annotation;
