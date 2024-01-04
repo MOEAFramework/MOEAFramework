@@ -17,6 +17,8 @@
  */
 package org.moeaframework;
 
+import java.lang.annotation.Annotation;
+
 import org.junit.Ignore;
 import org.junit.internal.AssumptionViolatedException;
 import org.junit.internal.runners.model.EachTestNotifier;
@@ -28,28 +30,72 @@ import org.junit.runners.model.InitializationError;
 import org.junit.runners.model.Statement;
 
 /**
- * JUnit runner designed to handle some compatibility issues when using an
- * automated continuous integration service, such as Travis CI.  Specifically
- * enables the use of the {@link Retryable} and {@link IgnoreOnCI} annotations.
+ * Custom JUnit runner that enables some custom annotations on tests, including
+ * {@link Retryable}, {@link Flaky}, and {@link IgnoreOnCI}, when running in an
+ * automated continuous integration (CI) environment, including GitHub Actions and
+ * Travis CI.
+ * <p>
+ * The following properties control the behavior of this runner:
+ * <ul>
+ *   <li>{@value ON_CI} - Indicates tests are running in a CI environment and the custom
+ *       retry, flakiness, and ignore rules should apply.
+ *   <li>{@value ALL_TESTS} - Overrides the {@link IgnoreOnCI} attribute and runs these tests.
+ * </ul>
  */
 public class CIRunner extends BlockJUnit4ClassRunner {
+	
+	private static final String ON_CI = "ON_CI";
+	
+	private static final String ALL_TESTS = "ALL_TESTS";
 
 	public CIRunner(Class<?> type) throws InitializationError {
 		super(type);
 	}
 
+	/**
+	 * Returns {@code true} when running in a CI environment.
+	 * 
+	 * @return {@code true} when running in a CI environment; {@code false} otherwise
+	 */
 	public boolean isRunningOnCI() {
-		boolean value = Boolean.parseBoolean(System.getProperty("ON_CI", "false"));
+		return getProperty(ON_CI, false);
+	}
+	
+	/**
+	 * Returns {@code true} when all tests, including those ignored on CI, should be run.
+	 * 
+	 * @return {@code true} when all tests should be run; {@code false} otherwise
+	 */
+	public boolean isIncludingAllTests() {
+		return getProperty(ALL_TESTS, false);
+	}
+	
+	private boolean getProperty(String propertyName, boolean defaultValue) {
+		String rawValue = System.getProperty(propertyName);
 		
-		if (!value) {
-			String env = System.getenv("ON_CI");
-			
-			if (env != null) {
-				value = Boolean.parseBoolean(env);
-			}
+		if (rawValue == null) {
+			rawValue = System.getenv(propertyName);
 		}
 		
-		return value;
+		if (rawValue == null) {
+			return defaultValue;
+		}
+		
+		return Boolean.parseBoolean(rawValue);
+	}
+
+	private <T extends Annotation> T getAnnotation(final FrameworkMethod method, Class<T> annotationType) {
+		T annotation = method.getAnnotation(annotationType);
+		
+		if (annotation == null) {
+			annotation = getTestClass().getJavaClass().getAnnotation(annotationType)
+		}
+		
+		return annotation;
+	}
+	
+	private <T extends Annotation> boolean hasAnnotation(final FrameworkMethod method, Class<T> annotationType) {
+		return getAnnotation(method, annotationType) != null;
 	}
 
 	@Override
@@ -62,30 +108,31 @@ public class CIRunner extends BlockJUnit4ClassRunner {
 	protected void runChild(final FrameworkMethod method, RunNotifier notifier) {
 		Description description = describeChild(method);
 
-		if (method.getAnnotation(Ignore.class) != null) {
+		if (hasAnnotation(method, Ignore.class)) {
 			notifier.fireTestIgnored(description);
-		} else if ((method.getAnnotation(IgnoreOnCI.class) != null ||
-				getTestClass().getJavaClass().getAnnotation(IgnoreOnCI.class) != null) && isRunningOnCI()) {
+			return;
+		}
+		
+		if (hasAnnotation(method, IgnoreOnCI.class) && isRunningOnCI() && !isIncludingAllTests()) {
 			System.out.println("Ignoring " + description.getDisplayName() + " on CI build");
 			notifier.fireTestIgnored(description);
-		} else {
-			int retries = 0;
-			boolean flaky = false;
+			return;
+		}
 			
-			if (isRunningOnCI()) {
-				if (method.getAnnotation(Retryable.class) != null) {
-					retries = method.getAnnotation(Retryable.class).value();
-				} else if (getTestClass().getJavaClass().getAnnotation(Retryable.class) != null) {
-					retries = getTestClass().getJavaClass().getAnnotation(Retryable.class).value();
-				}
-				
-				if (method.getAnnotation(Flaky.class) != null) {
-					flaky = true;
-				}
+		int retries = 0;
+		boolean flaky = false;
+			
+		if (isRunningOnCI()) {
+			Retryable retryable = getAnnotation(method, Retryable.class);
+			
+			if (retryable != null) {
+				retries = retryable.value();
 			}
 			
-			runTestUnit(methodBlock(method), description, notifier, retries, flaky);
+			flaky = hasAnnotation(method, Flaky.class);
 		}
+			
+		runTestUnit(methodBlock(method), description, notifier, retries, flaky);
 	}
 
 	protected final void runTestUnit(Statement statement, Description description,
@@ -112,8 +159,8 @@ public class CIRunner extends BlockJUnit4ClassRunner {
 		}
 	}
 
-	public void retry(EachTestNotifier notifier, Statement statement,
-			Description description, Throwable currentThrowable, int retries, boolean flaky) {
+	public void retry(EachTestNotifier notifier, Statement statement, Description description,
+			Throwable currentThrowable, int retries, boolean flaky) {
 		Throwable caughtThrowable = currentThrowable;
 		int failedAttempts = 1;
 

@@ -7,14 +7,14 @@ on:
     - 'README.md'
   workflow_dispatch:
     inputs:
-      on-ci:
+      all-tests:
         type: choice
         required: true
-        description: Skip IgnoreOnCI tests
+        description: Include IgnoreOnCI tests
         options:
-          - 'true'
           - 'false'
-        default: 'true'
+          - 'true'
+        default: 'false'
 
 jobs:
   ant-tests:
@@ -73,7 +73,7 @@ jobs:
         sudo mkdir -p /usr/java/packages/lib/
         sudo mv libCocoJNI.so /usr/java/packages/lib/
     - name: Test with Ant - Java ${{ matrix.java }}
-      run: ant -DON_CI=${{ inputs.on-ci || 'true' }} -f test.xml
+      run: ant -DON_CI=true -DALL_TESTS=${{ inputs.all-tests || 'false' }} -f test.xml
     - name: Upload test results
       uses: actions/upload-artifact@v4
       if: always()
@@ -98,7 +98,8 @@ jobs:
         cd build
         mvn test
       env:
-        ON_CI: ${{ inputs.on-ci || 'true' }}
+        ON_CI: true
+        ALL_TESTS: ${{ inputs.all-tests || 'false' }}
     - name: Upload test results
       uses: actions/upload-artifact@v4
       if: always()
