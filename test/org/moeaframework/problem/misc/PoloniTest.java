@@ -18,7 +18,6 @@
 package org.moeaframework.problem.misc;
 
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.moeaframework.TestUtils;
 import org.moeaframework.core.Problem;
@@ -26,11 +25,12 @@ import org.moeaframework.problem.ProblemTest;
 
 public class PoloniTest extends ProblemTest {
 
-	@Test
-	@Ignore("Problem no longer in JMetal 5.9")
-	public void testJMetal() {
-		//test("Poloni");
-	}
+	// The Poloni problem was removed from JMetal starting with version 5.  This test is no
+	// longer supported.
+	//@Test
+	//public void testJMetal() {
+	//	test("Poloni");
+	//}
 	
 	@Test
 	public void test() {

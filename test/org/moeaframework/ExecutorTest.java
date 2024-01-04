@@ -101,7 +101,7 @@ public class ExecutorTest {
 		Assert.assertEquals(0, listener.getLastEvent().getCurrentNFE()); // resets to 0 after calling nextSeed
 		Assert.assertEquals(1000, listener.getLastEvent().getMaxNFE());
 		Assert.assertEquals(1, listener.getLastEvent().getTotalSeeds());
-		Assert.assertEquals(2, listener.getLastEvent().getCurrentSeed()); // TODO: is this OK
+		Assert.assertEquals(2, listener.getLastEvent().getCurrentSeed()); // TODO: is this OK?
 		Assert.assertEquals(1.0, listener.getLastEvent().getPercentComplete(), 0.0);
 		Assert.assertEquals(0.0, listener.getLastEvent().getRemainingTime(), 0.0);
 	}
