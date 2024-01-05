@@ -72,8 +72,8 @@ import org.moeaframework.util.statistics.MannWhitneyUTest;
  * The problem must always be specified.  Next, add the data to be analyzed:
  * <pre>
  *   Executor executor = new Executor().withProblem("DTLZ2_2");
- *   add("NSGAII", executor.withAlgorithm("NSGAII").run());
- *   add("eMOEA", executor.withAlgorithm("eMOEA").run());
+ *   analyzer.add("NSGAII", executor.withAlgorithm("NSGAII").run());
+ *   analyzer.add("eMOEA", executor.withAlgorithm("eMOEA").run());
  * </pre>
  * Lastly, print the results of the analysis:
  * <pre>
