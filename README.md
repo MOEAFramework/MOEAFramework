@@ -33,7 +33,7 @@ Maven users can add our dependency to their `pom.xml` file:
 <dependency>
     <groupId>org.moeaframework</groupId>
     <artifactId>moeaframework</artifactId>
-    <version>3.8</version>
+    <version>3.9</version>
 </dependency>
 ```
 
