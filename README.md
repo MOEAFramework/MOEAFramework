@@ -37,7 +37,7 @@ Maven users can add our dependency to their `pom.xml` file:
 </dependency>
 ```
 
-Visit the [Maven distribution page](https://search.maven.org/artifact/org.moeaframework/moeaframework/3.8/jar)
+Visit the [Maven distribution page](https://search.maven.org/artifact/org.moeaframework/moeaframework/3.9/jar)
 for setup instructions for other package management tools.
 
 ### Documentation ###
