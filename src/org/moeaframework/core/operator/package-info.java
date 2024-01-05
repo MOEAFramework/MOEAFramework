@@ -17,6 +17,6 @@
  */
 
 /**
- * Package of various selection, mutation, crossover, and hybrid operators.  
+ * Package of various mutation and crossover operators.  
  */
 package org.moeaframework.core.operator;
