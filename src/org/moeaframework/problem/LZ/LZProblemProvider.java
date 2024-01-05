@@ -39,5 +39,7 @@ public class LZProblemProvider extends RegisteredProblemProvider {
 		register("LZ7", () -> new LZ7(), "pf/LZ09_F7.pf");
 		register("LZ8", () -> new LZ8(), "pf/LZ09_F8.pf");
 		register("LZ9", () -> new LZ9(), "pf/LZ09_F9.pf");
+		
+		registerDiagnosticToolProblems(getRegisteredProblems());
 	}
 }

@@ -54,5 +54,7 @@ public class CEC2009ProblemProvider extends RegisteredProblemProvider {
 		register("UF11", () -> new UF11(), "pf/R2_DTLZ2_M5.dat");
 		register("UF12", () -> new UF12(), "pf/R3_DTLZ3_M5.dat");
 		register("UF13", () -> new UF13(), "pf/WFG1_M5.dat");
+		
+		registerDiagnosticToolProblems(getRegisteredProblems());
 	}
 }

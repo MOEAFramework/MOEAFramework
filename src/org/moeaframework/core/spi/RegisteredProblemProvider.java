@@ -18,8 +18,11 @@
 package org.moeaframework.core.spi;
 
 import java.io.IOException;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 import java.util.function.Supplier;
 
 import org.moeaframework.core.NondominatedPopulation;
@@ -48,12 +51,18 @@ public class RegisteredProblemProvider extends ProblemProvider {
 	private final TreeMap<String, String> referenceSetMap;
 	
 	/**
+	 * Collection of problems to appear in the diagnostic tool.
+	 */
+	private final TreeSet<String> diagnosticToolProblems;
+	
+	/**
 	 * Creates a new, empty problem provider.
 	 */
 	public RegisteredProblemProvider() {
 		super();
 		constructorMap = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 		referenceSetMap = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+		diagnosticToolProblems = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
 	}
 	
 	/**
@@ -69,12 +78,37 @@ public class RegisteredProblemProvider extends ProblemProvider {
 	}
 	
 	/**
-	 * For testing only.  Returns the names of all testable problems.
+	 * Registers the given problem with the diagnostic tool.
+	 * 
+	 * @param name the problem name
+	 */
+	protected final void registerDiagnosticToolProblem(String name) {
+		diagnosticToolProblems.add(name);
+	}
+	
+	/**
+	 * Registers all of the given problems with the diagnostic tool.
+	 * 
+	 * @param names the problem names
+	 */
+	protected final void registerDiagnosticToolProblems(Collection<String> names) {
+		diagnosticToolProblems.addAll(names);
+	}
+	
+	/**
+	 * Returns all problems that have been registered with this provider.  Note that
+	 * this does not necessarily include all problems that can be instantiated by the
+	 * provider, only those that have been explicitly registered.
 	 * 
 	 * @return the problem names
 	 */
-	public Set<String> getTestableProblems() {
+	public Set<String> getRegisteredProblems() {
 		return constructorMap.keySet();
+	}
+	
+	@Override
+	public Set<String> getDiagnosticToolProblems() {
+		return Collections.unmodifiableSet(diagnosticToolProblems);
 	}
 
 	@Override

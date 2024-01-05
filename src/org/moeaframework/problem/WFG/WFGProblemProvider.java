@@ -68,6 +68,16 @@ public class WFGProblemProvider extends RegisteredProblemProvider {
 		register("WFG9",   () -> new WFG9(1, 10, 2), "pf/WFG9.2D.pf");
 		register("WFG9_2", () -> new WFG9(1, 10, 2), "pf/WFG9.2D.pf");
 		register("WFG9_3", () -> new WFG9(2, 10, 3), "pf/WFG9.3D.pf");
+		
+		registerDiagnosticToolProblem("WFG1_2");
+		registerDiagnosticToolProblem("WFG2_2");
+		registerDiagnosticToolProblem("WFG3_2");
+		registerDiagnosticToolProblem("WFG4_2");
+		registerDiagnosticToolProblem("WFG5_2");
+		registerDiagnosticToolProblem("WFG6_2");
+		registerDiagnosticToolProblem("WFG7_2");
+		registerDiagnosticToolProblem("WFG8_2");
+		registerDiagnosticToolProblem("WFG9_2");
 	}
 	
 	@Override

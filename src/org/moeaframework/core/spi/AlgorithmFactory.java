@@ -18,6 +18,9 @@
 package org.moeaframework.core.spi;
 
 import java.util.ServiceConfigurationError;
+import java.util.Set;
+import java.util.TreeSet;
+
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.Problem;
 import org.moeaframework.util.TypedProperties;
@@ -129,6 +132,22 @@ public class AlgorithmFactory extends AbstractFactory<AlgorithmProvider> {
 		}
 		
 		return null;
+	}
+	
+	/**
+	 * Returns the names of all algorithms that have been registered to appear in the
+	 * diagnostic tool.
+	 * 
+	 * @return all diagnostic tool algorithm names
+	 */
+	public synchronized Set<String> getAllDiagnosticToolAlgorithms() {
+		Set<String> result = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
+		
+		for (AlgorithmProvider provider : this) {
+			result.addAll(provider.getDiagnosticToolAlgorithms());
+		}
+		
+		return result;
 	}
 
 }

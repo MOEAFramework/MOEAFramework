@@ -17,6 +17,9 @@
  */
 package org.moeaframework.core.spi;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.Problem;
 import org.moeaframework.util.TypedProperties;
@@ -51,6 +54,16 @@ public abstract class AlgorithmProvider {
 	 */
 	public AlgorithmProvider() {
 		super();
+	}
+	
+	/**
+	 * Returns the algorithms names to appear in the diagnostic tool.  If there are
+	 * multiple aliases for the same algorithm, provide only the canonical name.
+	 * 
+	 * @return the algorithm names
+	 */
+	public Set<String> getDiagnosticToolAlgorithms() {
+		return new HashSet<String>();
 	}
 
 	/**

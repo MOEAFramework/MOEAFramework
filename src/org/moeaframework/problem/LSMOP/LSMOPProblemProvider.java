@@ -45,6 +45,8 @@ public class LSMOPProblemProvider extends RegisteredProblemProvider {
 		register("LSMOP7_2", () -> new LSMOP7(2), "pf/LSMOP7.2D.pf");
 		register("LSMOP8_2", () -> new LSMOP8(2), "pf/LSMOP8.2D.pf");
 		register("LSMOP9_2", () -> new LSMOP9(2), "pf/LSMOP9.2D.pf");
+		
+		registerDiagnosticToolProblems(getRegisteredProblems());
 	}
 	
 	@Override

@@ -62,5 +62,7 @@ public class MiscProblemProvider extends RegisteredProblemProvider {
 		register("Viennet4", () -> new Viennet4(), "pf/Viennet4.pf");
 		register("Osyczka2", () -> new Osyczka2(), "pf/Osyczka2.pf");
 		register("Osyczka2", () -> new Osyczka2(), "pf/Osyczka2.pf");
+		
+		registerDiagnosticToolProblems(getRegisteredProblems());
 	}
 }

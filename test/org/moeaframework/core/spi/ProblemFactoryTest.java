@@ -17,6 +17,7 @@
  */
 package org.moeaframework.core.spi;
 
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.core.NondominatedPopulation;
@@ -53,26 +54,54 @@ public class ProblemFactoryTest {
 			
 		};
 		
-		ProblemFactory originalFactory = ProblemFactory.getInstance();
-		
 		ProblemFactory factory = new ProblemFactory();
 		factory.addProvider(provider);
-		ProblemFactory.setInstance(factory);
 		
 		Assert.assertNotNull(factory.getProblem("testProblem"));
 		Assert.assertNotNull(factory.getReferenceSet("testProblem"));
+	}
+	
+	@Test
+	public void testNoProvider() {
+		ProblemFactory factory = new ProblemFactory();
 		
-		try {
-			factory.getProblem("testProblemNonExistant");
+		Assert.assertThrows(ProviderNotFoundException.class, () -> factory.getProblem("testProblem"));
+		Assert.assertNull(factory.getReferenceSet("testProblem"));
+	}
+	
+	@Test
+	public void testRegisteredProblemProvider() {
+		RegisteredProblemProvider provider = new RegisteredProblemProvider();
+		provider.register("testProblem", MockRealProblem::new, null);
+		provider.registerDiagnosticToolProblem("testProblem");
+		
+		ProblemFactory factory = new ProblemFactory();
+		factory.addProvider(provider);
+		
+		Assert.assertNotNull(factory.getProblem("testProblem"));
+		Assert.assertNull(factory.getReferenceSet("testProblem"));
+		Assert.assertTrue(factory.getAllRegisteredProblems().contains("testProblem"));
+		Assert.assertTrue(factory.getAllDiagnosticToolProblems().contains("testProblem"));	
+	}
+	
+	@Test
+	public void testDiagnosticToolProblems() {
+		for (String name : ProblemFactory.getInstance().getAllDiagnosticToolProblems()) {
+			System.out.println("Testing " + name);
 			
-			Assert.fail("failed to throw ProviderNotFoundException");
-		} catch (ProviderNotFoundException e) {
-			// ok
+			Problem problem = ProblemFactory.getInstance().getProblem(name);
+			Assert.assertNotNull(problem);
+			
+			NondominatedPopulation referenceSet = ProblemFactory.getInstance().getReferenceSet(name);
+			Assert.assertNotNull(referenceSet);
+			Assert.assertTrue(referenceSet.size() > 0);
+
+			Assert.assertEquals(problem.getNumberOfObjectives(), referenceSet.get(0).getNumberOfObjectives());
+			
+			String swapCaseName = StringUtils.swapCase(name);
+			Assert.assertNotNull(ProblemFactory.getInstance().getProblem(swapCaseName));
+			Assert.assertNotNull(ProblemFactory.getInstance().getReferenceSet(swapCaseName));
 		}
-		
-		Assert.assertNull(factory.getReferenceSet("testProblemNonExistant"));
-		
-		ProblemFactory.setInstance(originalFactory);
 	}
 
 }

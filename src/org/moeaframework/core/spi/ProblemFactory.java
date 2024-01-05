@@ -18,6 +18,9 @@
 package org.moeaframework.core.spi;
 
 import java.util.ServiceConfigurationError;
+import java.util.Set;
+import java.util.TreeSet;
+
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 
@@ -132,6 +135,42 @@ public class ProblemFactory extends AbstractFactory<ProblemProvider> {
 		}
 
 		return null;
+	}
+	
+	/**
+	 * Returns the names of all problems that have been registered by the providers.
+	 * Note that this does not include a comprehensive list of all problems that can
+	 * be constructed, only those that have been registered explicitly with a name.
+	 * 
+	 * @return all registered problem names
+	 */
+	public synchronized Set<String> getAllRegisteredProblems() {
+		Set<String> result = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
+		
+		for (ProblemProvider provider : this) {
+			if (provider instanceof RegisteredProblemProvider) {
+				RegisteredProblemProvider registeredProvider = (RegisteredProblemProvider)provider;
+				result.addAll(registeredProvider.getRegisteredProblems());
+			}
+		}
+		
+		return result;
+	}
+	
+	/**
+	 * Returns the names of all problems that have been registered to display in the
+	 * diagnostic tool.
+	 * 
+	 * @return all diagnostic tool problem names
+	 */
+	public synchronized Set<String> getAllDiagnosticToolProblems() {
+		Set<String> result = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
+		
+		for (ProblemProvider provider : this) {
+			result.addAll(provider.getDiagnosticToolProblems());
+		}
+		
+		return result;
 	}
 
 }

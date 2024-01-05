@@ -17,6 +17,7 @@
  */
 package org.moeaframework.core.spi;
 
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.problem.MockRealProblem;
@@ -31,27 +32,34 @@ public class AlgorithmFactoryTest {
 	@Test
 	public void testCustomProvider() {
 		AlgorithmProvider provider = new TestAlgorithmProvider();
-		AlgorithmFactory originalFactory = AlgorithmFactory.getInstance();
 		
 		AlgorithmFactory factory = new AlgorithmFactory();
 		factory.addProvider(provider);
-		AlgorithmFactory.setInstance(factory);
 		
 		Assert.assertNotNull(factory.getAlgorithm("testAlgorithm",
 				new TypedProperties(),
 				new MockRealProblem()));
+	}
+	
+	@Test
+	public void testNoProvider() {
+		AlgorithmFactory factory = new AlgorithmFactory();
 		
-		try {
-			factory.getAlgorithm("testAlgorithmNonExistant",
-					new TypedProperties(),
-					new MockRealProblem());
+		Assert.assertThrows(ProviderNotFoundException.class, () -> factory.getAlgorithm(
+				"testAlgorithm",
+				new TypedProperties(),
+				new MockRealProblem()));
+	}
+	
+	@Test
+	public void testDiagnosticToolAlgorithms() {
+		for (String name : AlgorithmFactory.getInstance().getAllDiagnosticToolAlgorithms()) {
+			System.out.println("Testing " + name);
+			Assert.assertNotNull(AlgorithmFactory.getInstance().getAlgorithm(name, new MockRealProblem(2)));
 			
-			Assert.fail("failed to throw ProviderNotFoundException");
-		} catch (ProviderNotFoundException e) {
-			// ok
+			String swapCaseName = StringUtils.swapCase(name);
+			Assert.assertNotNull(AlgorithmFactory.getInstance().getAlgorithm(swapCaseName, new MockRealProblem(2)));
 		}
-		
-		AlgorithmFactory.setInstance(originalFactory);
 	}
 	
 }

@@ -76,6 +76,32 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 		
 		// special cases
 		register(this::newRSO, "RSO");
+		
+		// register all to appear in the diagnostic tool
+		registerDiagnosticToolAlgorithm("AMOSA");
+		registerDiagnosticToolAlgorithm("CMA-ES");
+		registerDiagnosticToolAlgorithm("DBEA");
+		registerDiagnosticToolAlgorithm("e-MOEA");
+		registerDiagnosticToolAlgorithm("e-NSGA-II");
+		registerDiagnosticToolAlgorithm("GDE3");
+		registerDiagnosticToolAlgorithm("IBEA");
+		registerDiagnosticToolAlgorithm("MOEA/D");
+		registerDiagnosticToolAlgorithm("NSGA-II");
+		registerDiagnosticToolAlgorithm("NSGA-III");
+		registerDiagnosticToolAlgorithm("OMOPSO");
+		registerDiagnosticToolAlgorithm("PAES");
+		registerDiagnosticToolAlgorithm("PESA2");
+		registerDiagnosticToolAlgorithm("Random");
+		registerDiagnosticToolAlgorithm("RVEA");
+		registerDiagnosticToolAlgorithm("SPEA2");
+		registerDiagnosticToolAlgorithm("SMPSO");
+		registerDiagnosticToolAlgorithm("SMS-EMOA");
+		registerDiagnosticToolAlgorithm("VEGA");
+		registerDiagnosticToolAlgorithm("DifferentialEvolution");
+		registerDiagnosticToolAlgorithm("GeneticAlgorithm");
+		registerDiagnosticToolAlgorithm("EvolutionStrategy");
+		registerDiagnosticToolAlgorithm("SimulatedAnnealing");
+		registerDiagnosticToolAlgorithm("RSO");
 	}
 	
 	/**

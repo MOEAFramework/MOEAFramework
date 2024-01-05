@@ -67,6 +67,12 @@ public class DTLZProblemProvider extends RegisteredProblemProvider {
 		register("DTLZ7_4", () -> new DTLZ7(4), "pf/DTLZ7.4D.pf");
 		register("DTLZ7_6", () -> new DTLZ7(6), "pf/DTLZ7.6D.pf");
 		register("DTLZ7_8", () -> new DTLZ7(8), "pf/DTLZ7.8D.pf");
+		
+		registerDiagnosticToolProblem("DTLZ1_2");
+		registerDiagnosticToolProblem("DTLZ2_2");
+		registerDiagnosticToolProblem("DTLZ3_2");
+		registerDiagnosticToolProblem("DTLZ4_2");
+		registerDiagnosticToolProblem("DTLZ7_2");
 	}
 	
 	@Override

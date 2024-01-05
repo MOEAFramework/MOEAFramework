@@ -17,8 +17,13 @@
  */
 package org.moeaframework.core.spi;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 import java.util.function.BiFunction;
+
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Problem;
@@ -35,11 +40,40 @@ public class RegisteredAlgorithmProvider extends AlgorithmProvider {
 	private final TreeMap<String, BiFunction<TypedProperties, Problem, Algorithm>> constructorMap;
 	
 	/**
+	 * Collection of algorithms to appear in the diagnostic tool.
+	 */
+	private final TreeSet<String> diagnosticToolAlgorithms;
+	
+	/**
 	 * Creates a new, empty problem provider.
 	 */
 	public RegisteredAlgorithmProvider() {
 		super();
 		constructorMap = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+		diagnosticToolAlgorithms = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
+	}
+	
+	@Override
+	public Set<String> getDiagnosticToolAlgorithms() {
+		return Collections.unmodifiableSet(diagnosticToolAlgorithms);
+	}
+	
+	/**
+	 * Registers the given algorithm to appear in the diagnostic tool.
+	 * 
+	 * @param name the algorithm name
+	 */
+	protected final void registerDiagnosticToolAlgorithm(String name) {
+		diagnosticToolAlgorithms.add(name);
+	}
+	
+	/**
+	 * Registers all of the given algorithms to appear in the diagnostic tool.
+	 * 
+	 * @param names the algorithm names
+	 */
+	protected final void registerDiagnosticToolAlgorithms(Collection<String> names) {
+		diagnosticToolAlgorithms.addAll(names);
 	}
 	
 	/**

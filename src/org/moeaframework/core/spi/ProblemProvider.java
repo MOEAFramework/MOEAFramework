@@ -17,11 +17,14 @@
  */
 package org.moeaframework.core.spi;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 
 /**
- * Defines an SPI for instantiation optimization problems. Problems are
+ * Defines an SPI for creating named optimization problems. Problems are
  * identified by a unique name. The methods of the provider must return {@code
  * null} if the problem is not supported by the provider.
  * <p>
@@ -51,6 +54,17 @@ public abstract class ProblemProvider {
 	 */
 	public ProblemProvider() {
 		super();
+	}
+	
+	/**
+	 * Returns the problem names to appear in the diagnostic tool.
+	 * For best results, only include problems with two objectives and
+	 * have a defined reference set.
+	 * 
+	 * @return the problem names to appear in the diagnostic tool
+	 */
+	public Set<String> getDiagnosticToolProblems() {
+		return new HashSet<String>();
 	}
 
 	/**

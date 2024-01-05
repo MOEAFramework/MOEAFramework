@@ -36,5 +36,7 @@ public class ZDTProblemProvider extends RegisteredProblemProvider {
 		register("ZDT4", () -> new ZDT4(), "pf/ZDT4.pf");
 		register("ZDT5", () -> new ZDT5(), "pf/ZDT5.pf");
 		register("ZDT6", () -> new ZDT6(), "pf/ZDT6.pf");
+		
+		registerDiagnosticToolProblems(getRegisteredProblems());
 	}
 }
