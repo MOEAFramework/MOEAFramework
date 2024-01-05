@@ -2,7 +2,7 @@
 
 This page documents notable changes introduced in each chronological release of the MOEA Framework.
 
-## Version 3.9 (TBD)
+## Version 3.9 (05 Jan 2024)
 
   * Support BinaryIntegerVariable in externally-defined problems.  Namely, this sends the integer value
     to the program which can be read using the new MOEA_Read_int function in our C/C++ library.
