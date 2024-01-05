@@ -33,7 +33,7 @@
   </tr>
   <tr>
   	<td>3.8</td>
-  	<td>1 Nov 2023</td>
+  	<td>11 Nov 2023</td>
   	<td>
       <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v3.8/MOEAFramework-3.8.tar.gz"
           onClick="_gaq.push(['_trackEvent', 'Downloads', 'Binary', '3.8']);">Binary</a> |
