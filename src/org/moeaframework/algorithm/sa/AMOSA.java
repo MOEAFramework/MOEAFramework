@@ -27,8 +27,8 @@ import org.moeaframework.core.comparator.DominanceComparator;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
 import org.moeaframework.core.configuration.Property;
 import org.moeaframework.core.configuration.Validate;
+import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.core.operator.Mutation;
-import org.moeaframework.core.operator.RandomInitialization;
 import org.moeaframework.core.spi.OperatorFactory;
 
 /**

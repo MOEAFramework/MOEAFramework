@@ -30,10 +30,10 @@ import org.moeaframework.core.comparator.CrowdingComparator;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
 import org.moeaframework.core.configuration.Configurable;
 import org.moeaframework.core.configuration.Property;
-import org.moeaframework.core.operator.RandomInitialization;
-import org.moeaframework.core.operator.TournamentSelection;
-import org.moeaframework.core.operator.UniformSelection;
+import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.core.operator.real.UM;
+import org.moeaframework.core.selection.TournamentSelection;
+import org.moeaframework.core.selection.UniformSelection;
 import org.moeaframework.core.spi.OperatorFactory;
 import org.moeaframework.util.TypedProperties;
 

@@ -38,7 +38,7 @@ import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variable;
-import org.moeaframework.core.operator.RandomInitialization;
+import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.problem.ExternalProblem;

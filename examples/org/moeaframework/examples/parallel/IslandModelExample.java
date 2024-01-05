@@ -27,7 +27,7 @@ import org.moeaframework.core.Selection;
 import org.moeaframework.core.comparator.ChainedComparator;
 import org.moeaframework.core.comparator.CrowdingComparator;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
-import org.moeaframework.core.operator.TournamentSelection;
+import org.moeaframework.core.selection.TournamentSelection;
 import org.moeaframework.parallel.island.Island;
 import org.moeaframework.parallel.island.IslandModel;
 import org.moeaframework.parallel.island.executor.ThreadedIslandExecutor;

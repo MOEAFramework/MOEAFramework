@@ -33,8 +33,8 @@ import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.operator.UniformSelection;
 import org.moeaframework.core.operator.real.UM;
+import org.moeaframework.core.selection.UniformSelection;
 
 /**
  * Tests the {@link EpsilonProgressContinuation} class.

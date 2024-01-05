@@ -27,6 +27,7 @@ import org.moeaframework.core.Population;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
+import org.moeaframework.core.selection.UniformSelection;
 
 /**
  * Tests the {@link AdaptiveMultimethodVariation} class.

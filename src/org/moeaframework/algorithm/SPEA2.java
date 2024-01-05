@@ -41,8 +41,8 @@ import org.moeaframework.core.configuration.Configurable;
 import org.moeaframework.core.configuration.Property;
 import org.moeaframework.core.configuration.Validate;
 import org.moeaframework.core.indicator.IndicatorUtils;
-import org.moeaframework.core.operator.RandomInitialization;
-import org.moeaframework.core.operator.TournamentSelection;
+import org.moeaframework.core.initialization.RandomInitialization;
+import org.moeaframework.core.selection.TournamentSelection;
 import org.moeaframework.core.spi.OperatorFactory;
 
 /**

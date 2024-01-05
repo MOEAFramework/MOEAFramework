@@ -21,7 +21,7 @@ import org.moeaframework.algorithm.AbstractEvolutionaryAlgorithm;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
-import org.moeaframework.core.operator.RandomInitialization;
+import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.util.TypedProperties;
 
 public class TestAlgorithmProvider extends AlgorithmProvider {

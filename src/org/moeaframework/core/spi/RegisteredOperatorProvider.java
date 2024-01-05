@@ -91,11 +91,11 @@ public class RegisteredOperatorProvider extends OperatorProvider {
 	}
 	
 	/**
-	 * For testing only.  Returns the set of all testable operators.
+	 * Returns the names of all operators registered with this provider.
 	 * 
-	 * @return all testable operators
+	 * @return the names of all registered operators
 	 */
-	public Set<String> getTestableOperators() {
+	public Set<String> getRegisteredOperators() {
 		Set<String> result = new HashSet<String>();
 		result.addAll(mutationHints.values());
 		result.addAll(variationHints.values());

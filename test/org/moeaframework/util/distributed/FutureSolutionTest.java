@@ -29,7 +29,7 @@ import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.operator.RandomInitialization;
+import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.problem.MockRealProblem;
 import org.moeaframework.problem.ProblemWrapper;
 

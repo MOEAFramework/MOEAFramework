@@ -36,7 +36,7 @@ import org.moeaframework.core.Variation;
 import org.moeaframework.core.comparator.ObjectiveComparator;
 import org.moeaframework.core.configuration.Property;
 import org.moeaframework.core.configuration.Validate;
-import org.moeaframework.core.operator.RandomInitialization;
+import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.core.spi.OperatorFactory;
 import org.moeaframework.util.TypedProperties;
 import org.moeaframework.util.weights.NormalBoundaryDivisions;

@@ -16,6 +16,8 @@ This page documents notable changes introduced in each chronological release of 
     solution.setConstraint(0, Constraint.lessThanOrEqual(c1, 0.0));
     ```
 
+  * Moves initialization and selection operators into separate packages.
+  
 
 ## Version 3.8 (11 Nov 2023)
 

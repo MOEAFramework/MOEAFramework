@@ -25,7 +25,7 @@ import org.moeaframework.core.Settings;
 import org.moeaframework.core.configuration.Configurable;
 import org.moeaframework.core.configuration.Property;
 import org.moeaframework.core.configuration.Validate;
-import org.moeaframework.core.operator.RandomInitialization;
+import org.moeaframework.core.initialization.RandomInitialization;
 
 /**
  * Random search implementation.  An {@link Initialization} instance is used

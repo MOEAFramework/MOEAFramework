@@ -27,8 +27,8 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.UnsupportedVariable;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.configuration.ConfigurationException;
+import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.core.operator.DefaultOperators;
-import org.moeaframework.core.operator.RandomInitialization;
 import org.moeaframework.core.variable.Grammar;
 import org.moeaframework.problem.MockBinaryProblem;
 import org.moeaframework.problem.MockMixedBinaryProblem;
@@ -56,7 +56,7 @@ public class OperatorFactoryTest {
 	
 	@Test
 	public void testOperators() {
-		for (String operator : new DefaultOperators().getTestableOperators()) {
+		for (String operator : new DefaultOperators().getRegisteredOperators()) {
 			System.out.println("Testing " + operator);
 			
 			try {

@@ -32,8 +32,8 @@ import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.operator.UniformSelection;
 import org.moeaframework.core.operator.real.UM;
+import org.moeaframework.core.selection.UniformSelection;
 
 /**
  * Test the {@link AdaptiveTimeContinuation} class.

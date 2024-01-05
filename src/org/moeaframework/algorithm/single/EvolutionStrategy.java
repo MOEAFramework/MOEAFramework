@@ -24,7 +24,7 @@ import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.configuration.Property;
 import org.moeaframework.core.configuration.Validate;
-import org.moeaframework.core.operator.RandomInitialization;
+import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.core.variable.RealVariable;
 
 /**
