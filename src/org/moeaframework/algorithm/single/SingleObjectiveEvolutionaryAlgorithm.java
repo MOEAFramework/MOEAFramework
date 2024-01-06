@@ -68,7 +68,7 @@ public abstract class SingleObjectiveEvolutionaryAlgorithm extends AbstractEvolu
 	 * 
 	 * @return the aggregate objective comparator
 	 */
-	protected AggregateObjectiveComparator getComparator() {
+	public AggregateObjectiveComparator getComparator() {
 		return comparator;
 	}
 
@@ -77,7 +77,7 @@ public abstract class SingleObjectiveEvolutionaryAlgorithm extends AbstractEvolu
 	 * 
 	 * @param comparator the aggregate objective comparator
 	 */
-	protected void setComparator(AggregateObjectiveComparator comparator) {
+	public void setComparator(AggregateObjectiveComparator comparator) {
 		Validate.notNull("comparator", comparator);
 		this.comparator = comparator;
 	}
