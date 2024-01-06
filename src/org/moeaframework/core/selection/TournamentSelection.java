@@ -23,6 +23,7 @@ import org.moeaframework.core.Selection;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.comparator.DominanceComparator;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
+import org.moeaframework.core.configuration.Validate;
 
 /**
  * Deterministic tournament selection operator. The tournament size specifies
@@ -43,7 +44,7 @@ public class TournamentSelection implements Selection {
 	/**
 	 * The comparator used to determine the tournament winner.
 	 */
-	private final DominanceComparator comparator;
+	private DominanceComparator comparator;
 
 	/**
 	 * The tournament size. This is the number of solutions sampled from which
@@ -87,8 +88,8 @@ public class TournamentSelection implements Selection {
 	 */
 	public TournamentSelection(int size, DominanceComparator comparator) {
 		super();
-		this.size = size;
-		this.comparator = comparator;
+		setSize(size);
+		setComparator(comparator);
 	}
 
 	/**
@@ -106,6 +107,7 @@ public class TournamentSelection implements Selection {
 	 * @param size the new tournament size
 	 */
 	public void setSize(int size) {
+		Validate.greaterThanZero("size", size);
 		this.size = size;
 	}
 
@@ -116,6 +118,16 @@ public class TournamentSelection implements Selection {
 	 */
 	public DominanceComparator getComparator() {
 		return comparator;
+	}
+	
+	/**
+	 * Sets the dominance comparator used to determine the tournament winner.
+	 * 
+	 * @param comparator the comparator used to determine the tournament winner
+	 */
+	void setComparator(DominanceComparator comparator) {
+		Validate.notNull("comparator", comparator);
+		this.comparator = comparator;
 	}
 
 	@Override

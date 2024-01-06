@@ -22,8 +22,10 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.TestThresholds;
+import org.moeaframework.algorithm.single.LinearDominanceComparator;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.comparator.ParetoDominanceComparator;
 
 public class TournamentSelectionTest {
 
@@ -56,6 +58,24 @@ public class TournamentSelectionTest {
 	private double getPressure(int populationSize, int tournamentSize, int i) {
 		return Math.pow(populationSize, -tournamentSize)
 				* (Math.pow(populationSize - i + 1, tournamentSize) - Math.pow(populationSize - i, tournamentSize));
+	}
+	
+	@Test
+	public void testSetters() {
+		TournamentSelection selection = new TournamentSelection(2);
+		Assert.assertEquals(2, selection.getSize());
+		Assert.assertNotNull(selection.getComparator());
+		Assert.assertTrue(selection.getComparator() instanceof ParetoDominanceComparator);
+		
+		selection.setSize(3);
+		Assert.assertEquals(3, selection.getSize());
+		Assert.assertNotNull(selection.getComparator());
+		Assert.assertTrue(selection.getComparator() instanceof ParetoDominanceComparator);
+		
+		selection.setComparator(new LinearDominanceComparator());
+		Assert.assertEquals(3, selection.getSize());
+		Assert.assertNotNull(selection.getComparator());
+		Assert.assertTrue(selection.getComparator() instanceof LinearDominanceComparator);
 	}
 
 	@Test

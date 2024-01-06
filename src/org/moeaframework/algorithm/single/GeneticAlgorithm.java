@@ -25,12 +25,10 @@ import org.moeaframework.core.Initialization;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
-import org.moeaframework.core.Selection;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.configuration.Property;
-import org.moeaframework.core.configuration.Validate;
 import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.core.selection.TournamentSelection;
 import org.moeaframework.core.spi.OperatorFactory;
@@ -50,7 +48,7 @@ public class GeneticAlgorithm extends SingleObjectiveEvolutionaryAlgorithm {
 	/**
 	 * The selection operator.
 	 */
-	private final Selection selection;
+	private TournamentSelection selection;
 
 	/**
 	 * The solution with the best fitness score.
@@ -70,13 +68,6 @@ public class GeneticAlgorithm extends SingleObjectiveEvolutionaryAlgorithm {
 				OperatorFactory.getInstance().getVariation(problem));
 	}
 	
-	// Internal constructor to ensure tournament selection uses provided comparator
-	private GeneticAlgorithm(Problem problem, int initialPopulationSize, AggregateObjectiveComparator comparator,
-			Initialization initialization, Variation variation) {
-		this(problem, initialPopulationSize, comparator, initialization, new TournamentSelection(2, comparator),
-				variation);
-	}
-
 	/**
 	 * Constructs a new instance of the genetic algorithm (GA).
 	 * 
@@ -84,16 +75,11 @@ public class GeneticAlgorithm extends SingleObjectiveEvolutionaryAlgorithm {
 	 * @param initialPopulationSize the initial population size
 	 * @param comparator the aggregate objective comparator
 	 * @param initialization the initialization method
-	 * @param selection the selection operator
 	 * @param variation the variation operator
 	 */
 	public GeneticAlgorithm(Problem problem, int initialPopulationSize, AggregateObjectiveComparator comparator,
-			Initialization initialization, Selection selection, Variation variation) {
+			Initialization initialization, Variation variation) {
 		super(problem, initialPopulationSize, new Population(), null, comparator, initialization, variation);
-		
-		Validate.notNull("selection", selection);
-		
-		this.selection = selection;
 	}
 
 	@Override
@@ -154,6 +140,26 @@ public class GeneticAlgorithm extends SingleObjectiveEvolutionaryAlgorithm {
 	@Property("operator")
 	public void setVariation(Variation variation) {
 		super.setVariation(variation);
+	}
+	
+	@Override
+	public void setComparator(AggregateObjectiveComparator comparator) {
+		super.setComparator(comparator);
+		
+		selection = new TournamentSelection(
+				selection != null ? selection.getSize() : 2,
+				comparator);
+	}
+	
+	/**
+	 * Returns the tournament selection operator.  This method is primarily for testing
+	 * and should remain private to prevent callers from modifying the selection operator
+	 * (to ensure the comparator is kept consistent).
+	 * 
+	 * @return the tournament selection operator
+	 */
+	TournamentSelection getSelection() {
+		return selection;
 	}
 
 	@Override
