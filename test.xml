@@ -71,6 +71,26 @@ Use of these build scripts requires Apache Ant to be installed.  See
 
 		<fail message="JUnit library missing"/>
 	</target>
+	
+	<!-- Downloads test libraries that are not distributed in releases -->
+	<target name="download-all" depends="download-junit,download-nashorn,download-jmetal-plugin" />
+	
+	<target name="download-junit">
+		<get src="https://repo1.maven.org/maven2/junit/junit/${junit.version}/junit-${junit.version}.jar" dest="lib/" />
+		<get src="https://repo1.maven.org/maven2/org/hamcrest/hamcrest-core/${hamcrest-core.version}/hamcrest-core-${hamcrest-core.version}.jar" dest="lib/" />
+	</target>
+	
+	<target name="download-nashorn">
+		<get src="https://repo1.maven.org/maven2/org/ow2/asm/asm/${asm.version}/asm-${asm.version}.jar" dest="lib/" />
+		<get src="https://repo1.maven.org/maven2/org/ow2/asm/asm-commons/${asm-commons.version}/asm-commons-${asm-commons.version}.jar" dest="lib/" />
+		<get src="https://repo1.maven.org/maven2/org/ow2/asm/asm-tree/${asm-tree.version}/asm-tree-${asm-tree.version}.jar" dest="lib/" />
+		<get src="https://repo1.maven.org/maven2/org/ow2/asm/asm-util/${asm-util.version}/asm-util-${asm-util.version}.jar" dest="lib/" />
+		<get src="https://repo1.maven.org/maven2/org/openjdk/nashorn/nashorn-core/${nashorn-core.version}/nashorn-core-${nashorn-core.version}.jar" dest="lib/" />
+	</target>
+	
+	<target name="download-jmetal-plugin">
+		<get src="https://github.com/MOEAFramework/JMetal-Plugin/releases/download/v${jmetal-plugin.version}/jmetal-plugin-${jmetal-plugin.version}-jar-with-dependencies.jar" dest="lib/" />
+	</target>
 
 	<!-- Builds the MOEA Framework Test JAR -->
 	<target name="build-tests" depends="check-dependencies,check-binary,check-junit">

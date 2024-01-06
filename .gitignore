@@ -14,5 +14,7 @@ lib/jmetal-plugin-*.jar
 lib/pisa-plugin-*.jar
 lib/nashorn-*.jar
 lib/asm-*.jar
+lib/junit-*.jar
+lib/hamcrest-core-*.jar
 auxiliary/checkstyle/checkstyle-*.jar
 *.state
