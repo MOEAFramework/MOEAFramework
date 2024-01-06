@@ -13,7 +13,6 @@
 	<xsl:param name="filename"></xsl:param>
 	<xsl:param name="version"></xsl:param>
 	<xsl:param name="today"></xsl:param>
-	<xsl:param name="tracker"></xsl:param>
 	
 	<xsl:template match="comment()">
     	<xsl:copy-of select="." />
@@ -135,7 +134,7 @@
 									</li>
 								</ul>
 								<p>
-									<a href="https://github.com/MOEAFramework/MOEAFramework">Visit us on Github</a>!<br />
+								<a href="https://github.com/MOEAFramework/MOEAFramework">Visit us on GitHub</a>!<br />
 									<iframe src="https://ghbtns.com/github-btn.html?user=MOEAFramework&amp;repo=MOEAFramework&amp;type=fork&amp;count=true" frameborder="0" scrolling="0" width="170px" height="20px"></iframe>
 									<iframe src="https://ghbtns.com/github-btn.html?user=MOEAFramework&amp;repo=MOEAFramework&amp;type=star&amp;count=true" frameborder="0" scrolling="0" width="170px" height="20px"></iframe>
 								</p>
@@ -158,7 +157,7 @@
     					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 						Website template by <a href="http://www.styleshout.com/">styleshout</a>
     					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						<xsl:comment> %TRACKER% </xsl:comment>
+						<a href="https://github.com/MOEAFramework/MOEAFramework">Visit us on GitHub!</a>
 					</div>
 
 					<div class="bottom-right">

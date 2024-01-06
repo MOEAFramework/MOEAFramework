@@ -69,9 +69,9 @@ Use of these build scripts requires Apache Ant to be installed.  See
 				notree="true"
 				overview="src/overview.html"
 				windowtitle="${name} ${version} API">
-			<header><![CDATA[${javadoc.title}]]></header>
-			<doctitle><![CDATA[${javadoc.title}]]></doctitle>
-			<bottom><![CDATA[${javadoc.bottom}]]></bottom>
+			<header><![CDATA[${name} ${version}<br />API Specification]]></header>
+			<doctitle><![CDATA[${name} ${version}<br />API Specification]]></doctitle>
+			<bottom><![CDATA[${copyright}<br />Licensed under the <a href=\"http://www.gnu.org/licenses/lgpl.html\">GNU Lesser General Public License</a>.<br />Return to the <a href=\"http://www.moeaframework.org\" target=\"_top\">MOEA Framework homepage</a>.]]></bottom>
 			<classpath>
 				<path refid="classpath" />
 			</classpath>
@@ -86,6 +86,23 @@ Use of these build scripts requires Apache Ant to be installed.  See
 
 		<delete dir="${build}" />
 		<mkdir dir="${build}" />
+		
+		<fail message="Missing or invalid version of JAR file">
+		    <condition>
+		    	<not>
+		    		<and>
+		    			<available file="lib/commons-cli-${commons-cli.version}.jar" />
+		    			<available file="lib/commons-io-${commons-io.version}.jar" />
+		    			<available file="lib/commons-text-${commons-text.version}.jar" />
+		    			<available file="lib/commons-lang3-${commons-lang3.version}.jar" />
+		    			<available file="lib/commons-math3-${commons-math3.version}.jar" />
+		    			<available file="lib/jcommon-${jcommon.version}.jar" />
+		    			<available file="lib/jfreechart-${jfreechart.version}.jar" />
+		    			<available file="lib/rsyntaxtextarea-${rsyntaxtextarea.version}.jar" />
+		    		</and>
+		    	</not>
+		    </condition>
+		</fail>
 
 		<javac destdir="${build}" srcdir="src" debug="${java.debug}" release="${java.major}"
 				excludes="**/package-info.java" includeantruntime="false" encoding="UTF-8">
@@ -228,20 +245,14 @@ Use of these build scripts requires Apache Ant to be installed.  See
 			<fileset dir="${javadoc}" />
 		</copy>
 
-		<loadfile property="website.tracker" srcFile="website/tracker.partial" />
-
 		<xslt basedir="website/xslt" destdir="${build}" style="website/xslt/stylesheet.xsl" 
 				includes="*.xml" filenameparameter="filename">
 			<param name="version" expression="${version}" />
 			<param name="today" expression="${today}" />
-			<param name="tracker" expression="${website.tracker}" />
 		</xslt>
 
 		<replace dir="${build}" includes="**/*.html">
 			<replacefilter token="%VERSION%" value="${version}" />
-			<replacefilter value="${website.tracker}">
-				<replacetoken><![CDATA[<!-- %TRACKER% -->]]></replacetoken>
-			</replacefilter>
 		</replace>
 
 		<replace file="${build}/sitemap.xml">
@@ -262,25 +273,25 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		<delete dir="${build}" />
 		<mkdir dir="${build}" />
 		
-		<unjar dest="${build}"><fileset dir="lib"><include name="commons-cli-*.jar" /></fileset></unjar>
-		<move file="${build}/META-INF/NOTICE.txt" tofile="${build}/META-INF/COMMONS-CLI-NOTICE.txt" />
+		<unjar dest="${build}" src="lib/commons-cli-${commons-cli.version}.jar" />
+		<move file="${build}/META-INF/NOTICE.txt" tofile="${build}/META-INF/${commons-cli.notice_file}.txt" />
 		
-		<unjar dest="${build}"><fileset dir="lib"><include name="commons-io-*.jar" /></fileset></unjar>
-		<move file="${build}/META-INF/NOTICE.txt" tofile="${build}/META-INF/COMMONS-IO-NOTICE.txt" />
+		<unjar dest="${build}" src="lib/commons-io-${commons-io.version}.jar" />
+		<move file="${build}/META-INF/NOTICE.txt" tofile="${build}/META-INF/${commons-io.notice_file}.txt" />
 		
-		<unjar dest="${build}"><fileset dir="lib"><include name="commons-text-*.jar" /></fileset></unjar>
-		<move file="${build}/META-INF/NOTICE.txt" tofile="${build}/META-INF/COMMONS-TEXT-NOTICE.txt" />
+		<unjar dest="${build}" src="lib/commons-text-${commons-text.version}.jar" />
+		<move file="${build}/META-INF/NOTICE.txt" tofile="${build}/META-INF/${commons-text.notice_file}.txt" />
 		
-		<unjar dest="${build}"><fileset dir="lib"><include name="commons-lang3-*.jar" /></fileset></unjar>
-		<move file="${build}/META-INF/NOTICE.txt" tofile="${build}/META-INF/COMMONS-LANG3-NOTICE.txt" />
+		<unjar dest="${build}" src="lib/commons-lang3-${commons-lang3.version}.jar" />
+		<move file="${build}/META-INF/NOTICE.txt" tofile="${build}/META-INF/${commons-lang3.notice_file}.txt" />
 		
-		<unjar dest="${build}"><fileset dir="lib"><include name="commons-math3-*.jar" /></fileset></unjar>
-		<move file="${build}/META-INF/NOTICE.txt" tofile="${build}/META-INF/COMMONS-MATH3-NOTICE.txt" />
+		<unjar dest="${build}" src="lib/commons-math3-${commons-math3.version}.jar" />
+		<move file="${build}/META-INF/NOTICE.txt" tofile="${build}/META-INF/${commons-math3.notice_file}.txt" />
 		
-		<unjar dest="${build}"><fileset dir="lib"><include name="jcommon-*.jar" /></fileset></unjar>
-		<unjar dest="${build}"><fileset dir="lib"><include name="jfreechart-*.jar" /></fileset></unjar>
-		<unjar dest="${build}"><fileset dir="lib"><include name="rsyntaxtextarea-*.jar" /></fileset></unjar>
-		
+		<unjar dest="${build}" src="lib/jcommon-${jcommon.version}.jar" />
+		<unjar dest="${build}" src="lib/jfreechart-${jfreechart.version}.jar" />
+		<unjar dest="${build}" src="lib/rsyntaxtextarea-${rsyntaxtextarea.version}.jar" />
+
 		<delete dir="${build}/META-INF/maven" />
 		<delete dir="${build}/META-INF/versions" />
 		<delete file="${build}/META-INF/LICENSE" />
@@ -323,10 +334,13 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		<mkdir dir="${maven}" />
 		<property name="artifact" value="moeaframework" />
 		
+		<!-- Surround property names with %...% for token replacement -->
+	    <tempfile property="temp.replace" prefix="replace" suffix=".properties" destDir="${maven}" deleteonexit="true" />
+	    <echoproperties destfile="${temp.replace}" />
+	    <replaceregexp file="${temp.replace}" match="([^=]*)=" replace="%\1%=" byline="true" />
+		
 		<copy file="auxiliary/maven/pom.xml" tofile="${maven}/${artifact}-${version}.pom" />
-		<replace file="${maven}/${artifact}-${version}.pom">
-			<replacefilter token="%VERSION%" value="${version}" />
-		</replace>
+		<replace summary="true" file="${maven}/${artifact}-${version}.pom" replacefilterfile="${temp.replace}" />
 		
 		<antcall target="build-binary" />
 		<copy todir="${build}/pf">
