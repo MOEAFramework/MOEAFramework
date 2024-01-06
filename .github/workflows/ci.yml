@@ -52,10 +52,10 @@ jobs:
         # Nashorn is GPL v2 with the Classpath Exception
         # ASM is BSD 3-clause
         cd lib
-        wget https://repo1.maven.org/maven2/org/ow2/asm/asm/9.5/asm-9.5.jar
-        wget https://repo1.maven.org/maven2/org/ow2/asm/asm-commons/9.5/asm-commons-9.5.jar
-        wget https://repo1.maven.org/maven2/org/ow2/asm/asm-tree/9.5/asm-tree-9.5.jar
-        wget https://repo1.maven.org/maven2/org/ow2/asm/asm-util/9.5/asm-util-9.5.jar
+        wget https://repo1.maven.org/maven2/org/ow2/asm/asm/9.6/asm-9.6.jar
+        wget https://repo1.maven.org/maven2/org/ow2/asm/asm-commons/9.6/asm-commons-9.6.jar
+        wget https://repo1.maven.org/maven2/org/ow2/asm/asm-tree/9.6/asm-tree-9.6.jar
+        wget https://repo1.maven.org/maven2/org/ow2/asm/asm-util/9.6/asm-util-9.6.jar
         wget https://repo1.maven.org/maven2/org/openjdk/nashorn/nashorn-core/15.4/nashorn-core-15.4.jar
     - name: Setup Coco Framework
       run: |
@@ -94,9 +94,9 @@ jobs:
         java-version: 16
         distribution: temurin
         cache: maven
-    - name: Prepare Maven project - Java 8
+    - name: Prepare Maven project
       run: ant -f test.xml build-maven-tests
-    - name: Run Maven tests - Java 8
+    - name: Run Maven tests
       run: |
         cd build
         mvn test
