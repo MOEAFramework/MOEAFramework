@@ -262,26 +262,28 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		<delete dir="${build}" />
 		<mkdir dir="${build}" />
 		
-		<unjar dest="${build}" src="lib/commons-cli-1.6.0.jar" />
+		<unjar dest="${build}"><fileset dir="lib"><include name="commons-cli-*.jar" /></fileset></unjar>
 		<move file="${build}/META-INF/NOTICE.txt" tofile="${build}/META-INF/COMMONS-CLI-NOTICE.txt" />
 		
-		<unjar dest="${build}" src="lib/commons-io-2.15.1.jar" />
+		<unjar dest="${build}"><fileset dir="lib"><include name="commons-io-*.jar" /></fileset></unjar>
 		<move file="${build}/META-INF/NOTICE.txt" tofile="${build}/META-INF/COMMONS-IO-NOTICE.txt" />
 		
-		<unjar dest="${build}" src="lib/commons-text-1.11.0.jar" />
+		<unjar dest="${build}"><fileset dir="lib"><include name="commons-text-*.jar" /></fileset></unjar>
 		<move file="${build}/META-INF/NOTICE.txt" tofile="${build}/META-INF/COMMONS-TEXT-NOTICE.txt" />
 		
-		<unjar dest="${build}" src="lib/commons-lang3-3.14.0.jar" />
+		<unjar dest="${build}"><fileset dir="lib"><include name="commons-lang3-*.jar" /></fileset></unjar>
 		<move file="${build}/META-INF/NOTICE.txt" tofile="${build}/META-INF/COMMONS-LANG3-NOTICE.txt" />
 		
-		<unjar dest="${build}" src="lib/commons-math3-3.6.1.jar" />
+		<unjar dest="${build}"><fileset dir="lib"><include name="commons-math3-*.jar" /></fileset></unjar>
 		<move file="${build}/META-INF/NOTICE.txt" tofile="${build}/META-INF/COMMONS-MATH3-NOTICE.txt" />
 		
-		<unjar dest="${build}" src="lib/rsyntaxtextarea-3.3.4.jar" />
-		<unjar dest="${build}" src="lib/jcommon-1.0.24.jar" />
-		<unjar dest="${build}" src="lib/jfreechart-1.5.4.jar" />
+		<unjar dest="${build}"><fileset dir="lib"><include name="jcommon-*.jar" /></fileset></unjar>
+		<unjar dest="${build}"><fileset dir="lib"><include name="jfreechart-*.jar" /></fileset></unjar>
+		<unjar dest="${build}"><fileset dir="lib"><include name="rsyntaxtextarea-*.jar" /></fileset></unjar>
 		
 		<delete dir="${build}/META-INF/maven" />
+		<delete dir="${build}/META-INF/versions" />
+		<delete file="${build}/META-INF/LICENSE" />
 		<delete file="${build}/META-INF/LICENSE.txt" />
 		<delete file="${build}/META-INF/MANIFEST.mf" />
 		<delete dir="${build}/templates" />
