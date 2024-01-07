@@ -145,6 +145,40 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		<jar basedir="${build}" manifest="${build}/META-INF/MANIFEST.MF"
 				jarfile="${dist}/${shortname}-${version}.jar" />
 	</target>
+	
+	<!-- Replace tokens in a given file with their property values -->
+	<target name="replace-properties">
+		<dirname property="replace.dir" file="${replace.file}" />
+	    <tempfile property="temp.file" prefix="filter" suffix=".properties" destDir="${replace.dir}" />
+	    <echoproperties destfile="${temp.file}" />
+	    <replaceregexp file="${temp.file}" match="([^=]*)=" replace="%\1%=" byline="true" />
+		<replace summary="true" file="${replace.file}" replacefilterfile="${temp.file}" />
+		<delete file="${temp.file}" />
+	</target>
+	
+	<!-- Update the lib/ folder and .classpath file with the latest versions from build.properties -->
+	<target name="update-libraries">
+		<delete dir="lib" />
+		<mkdir dir="lib" />
+		
+		<get dest="lib/">
+			<url url="${commons-cli.url}" />
+			<url url="${commons-io.url}" />
+			<url url="${commons-lang3.url}" />
+			<url url="${commons-math3.url}" />
+			<url url="${commons-text.url}" />
+			<url url="${jcommon.url}" />
+			<url url="${jfreechart.url}" />
+			<url url="${rsyntaxtextarea.url}" />
+		</get>
+		
+		<replaceregexp file=".classpath" match="lib/([a-zA-Z0-9]+(-[a-zA-Z0-9]+)?)-[0-9]+\.[0-9]+\.([0-9]+)?\.jar" replace="lib/\1-%\1.version%.jar" byline="true" />
+
+		<antcall target="replace-properties">
+			<param name="replace.file" value=".classpath" />
+		</antcall>
+	</target>
+	
 
 	<!-- Packages the MOEA Framework JAR file along with javadocs and required files -->
 	<target name="package-binary" depends="build-binary, build-javadoc"
@@ -339,6 +373,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 	<target name="package-maven" description="Creates an artifact bundle for upload to Sonatype OSS">
 		<delete dir="${maven}" />
 		<mkdir dir="${maven}" />
+		<property name="artifactId" value="moeaframework" />
 		
 		<copy file="auxiliary/maven/pom.xml" tofile="${maven}/${artifactId}-${version}.pom" />
 		
@@ -357,15 +392,6 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		
 		<antcall target="build-javadoc" />
 		<jar destfile="${maven}/${artifactId}-${version}-javadoc.jar" basedir="${javadoc}" />
-	</target>
-	
-	<target name="replace-properties">
-		<dirname property="replace.dir" file="${replace.file}" />
-	    <tempfile property="temp.file" prefix="filter" suffix=".properties" destDir="${replace.dir}" />
-	    <echoproperties destfile="${temp.file}" />
-	    <replaceregexp file="${temp.file}" match="([^=]*)=" replace="%\1%=" byline="true" />
-		<replace summary="true" file="${replace.file}" replacefilterfile="${temp.file}" />
-		<delete file="${temp.file}" />
 	</target>
 	
 </project>
