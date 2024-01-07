@@ -335,12 +335,11 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		<property name="artifact" value="moeaframework" />
 		
 		<copy file="auxiliary/maven/pom.xml" tofile="${maven}/${artifact}-${version}.pom" />
-
-	    <tempfile property="temp.replace" prefix="replace" suffix=".properties" destDir="${maven}" deleteonexit="true" />
-	    <echoproperties destfile="${temp.replace}" />
-	    <replaceregexp file="${temp.replace}" match="([^=]*)=" replace="%\1%=" byline="true" />
-		<replace summary="true" file="${maven}/${artifact}-${version}.pom" replacefilterfile="${temp.replace}" />
 		
+		<antcall target="replace-properties">
+			<param name="replace.file" value="${maven}/${artifact}-${version}.pom" />
+		</antcall>
+
 		<antcall target="build-binary" />
 		<copy todir="${build}/pf">
 			<fileset dir="pf" />
@@ -352,6 +351,14 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		
 		<antcall target="build-javadoc" />
 		<jar destfile="${maven}/${artifact}-${version}-javadoc.jar" basedir="${javadoc}" />
+	</target>
+	
+	<target name="replace-properties">
+	    <tempfile property="filter.file" prefix="filter" suffix=".properties" destDir="${maven}" />
+	    <echoproperties destfile="${filter.file}" />
+	    <replaceregexp file="${filter.file}" match="([^=]*)=" replace="%\1%=" byline="true" />
+		<replace summary="true" file="${replace.file}" replacefilterfile="${filter.file}" />
+		<delete file="${filter.file}" />
 	</target>
 	
 </project>

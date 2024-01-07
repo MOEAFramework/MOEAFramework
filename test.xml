@@ -81,7 +81,8 @@ Use of these build scripts requires Apache Ant to be installed.  See
 	</target>
 	
 	<!-- Downloads test libraries.  These should not be included in any release. -->
-	<target name="download-all" depends="download-junit,download-nashorn,download-jmetal-plugin" />
+	<target name="download-all" depends="download-junit,download-nashorn,download-jmetal-plugin"
+		description="Download all test dependencies to the lib folder" />
 	
 	<target name="download-junit" depends="check-dependencies" unless="junit-exists">
 		<get dest="lib/">
@@ -212,10 +213,9 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		
 		<copy file="auxiliary/maven/pom.xml" tofile="${build}/pom.xml" />
 		
-	    <tempfile property="temp.replace" prefix="replace" suffix=".properties" destDir="${build}" deleteonexit="true" />
-	    <echoproperties destfile="${temp.replace}" />
-	    <replaceregexp file="${temp.replace}" match="([^=]*)=" replace="%\1%=" byline="true" />
-		<replace summary="true" file="${build}/pom.xml" replacefilterfile="${temp.replace}" />
+		<ant target="replace-properties">
+			<property name="replace.file" value="${build}/pom.xml" />
+		</ant>
 		
 		<copy todir="${build}/src/main/resources/META-INF">
 			<fileset dir="META-INF" />
