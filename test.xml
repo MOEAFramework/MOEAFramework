@@ -51,7 +51,15 @@ Use of these build scripts requires Apache Ant to be installed.  See
 	<!-- Determines which dependencies are available -->
 	<target name="check-dependencies">
 		<available classname="org.junit.Assert" classpathref="classpath" property="junit-exists" />
-
+		
+		<condition property="nashorn-supported">
+			<javaversion atleast="11" />
+		</condition>
+		
+		<condition property="jmetal-plugin-supported">
+			<javaversion atleast="14" />
+		</condition>
+		
 		<!-- Commented to always force recompiling of the JAR -->
 		<!--<available file="${dist}/${shortname}-${version}.jar" property="binary-exists" />-->
 	</target>
@@ -75,12 +83,12 @@ Use of these build scripts requires Apache Ant to be installed.  See
 	<!-- Downloads test libraries.  These should not be included in any release. -->
 	<target name="download-all" depends="download-junit,download-nashorn,download-jmetal-plugin" />
 	
-	<target name="download-junit">
+	<target name="download-junit" depends="check-dependencies" unless="junit-exists">
 		<get src="https://repo1.maven.org/maven2/junit/junit/${junit.version}/junit-${junit.version}.jar" dest="lib/" />
 		<get src="https://repo1.maven.org/maven2/org/hamcrest/hamcrest-core/${hamcrest-core.version}/hamcrest-core-${hamcrest-core.version}.jar" dest="lib/" />
 	</target>
 	
-	<target name="download-nashorn">
+	<target name="download-nashorn" depends="check-dependencies" if="nashorn-supported">
 		<get src="https://repo1.maven.org/maven2/org/ow2/asm/asm/${asm.version}/asm-${asm.version}.jar" dest="lib/" />
 		<get src="https://repo1.maven.org/maven2/org/ow2/asm/asm-commons/${asm-commons.version}/asm-commons-${asm-commons.version}.jar" dest="lib/" />
 		<get src="https://repo1.maven.org/maven2/org/ow2/asm/asm-tree/${asm-tree.version}/asm-tree-${asm-tree.version}.jar" dest="lib/" />
@@ -88,7 +96,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		<get src="https://repo1.maven.org/maven2/org/openjdk/nashorn/nashorn-core/${nashorn-core.version}/nashorn-core-${nashorn-core.version}.jar" dest="lib/" />
 	</target>
 	
-	<target name="download-jmetal-plugin">
+	<target name="download-jmetal-plugin" depends="check-dependencies" if="jmetal-plugin-supported">
 		<get src="https://github.com/MOEAFramework/JMetal-Plugin/releases/download/v${jmetal-plugin.version}/jmetal-plugin-${jmetal-plugin.version}-jar-with-dependencies.jar" dest="lib/" />
 	</target>
 

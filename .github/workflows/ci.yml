@@ -30,12 +30,8 @@ jobs:
       with:
         java-version: ${{ matrix.java }}
         distribution: zulu
-    - name: Install required software
-      run: |
-        sudo apt install xmlstarlet
     - name: Download test dependencies
-      run: |
-        ant -f test.xml download-all
+      run: ant -f test.xml download-all
     - name: Setup Coco Framework
       run: |
         sudo rm /usr/bin/javah

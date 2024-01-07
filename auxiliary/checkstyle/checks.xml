@@ -21,8 +21,8 @@ along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <module name="Checker">
 	<module name="SuppressionFilter">
-	  <property name="file" value="${basedir}/auxiliary/checkstyle/suppressions.xml"/>
-	  <property name="optional" value="false"/>
+		<property name="file" value="${basedir}/auxiliary/checkstyle/suppressions.xml"/>
+		<property name="optional" value="false"/>
 	</module>
 
 	<!-- Source code files contain appropriate copyright and license notices -->
