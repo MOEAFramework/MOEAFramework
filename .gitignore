@@ -1,6 +1,5 @@
 bin/
 build/
-cov-int/
 dist/
 test-results/
 javadoc/
@@ -12,6 +11,7 @@ maven/
 jMetal.log*
 lib/jmetal-plugin-*.jar
 lib/pisa-plugin-*.jar
+lib/gd-*.jar
 lib/nashorn-*.jar
 lib/asm-*.jar
 lib/junit-*.jar

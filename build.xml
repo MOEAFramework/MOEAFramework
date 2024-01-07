@@ -56,7 +56,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 	
 	<!-- List of libraries included in every distribution -->
 	<path id="libraries">
-		<fileset dir="lib" excludes="junit-*.jar,hamcrest-core-*.jar,checkstyle-*.jar,nashorn-*.jar,asm-*.jar,jmetal-plugin-*.jar,pisa-plugin-*.jar" />
+		<fileset dir="lib" excludes="junit-*.jar,hamcrest-core-*.jar,checkstyle-*.jar,nashorn-*.jar,asm-*.jar,jmetal-plugin-*.jar,pisa-plugin-*.jar,gd-*.jar" />
 	</path>
 
 	<!-- Generates the Javadoc webpages -->
@@ -172,7 +172,8 @@ Use of these build scripts requires Apache Ant to be installed.  See
 			<url url="${rsyntaxtextarea.url}" />
 		</get>
 		
-		<replaceregexp file=".classpath" match="lib/([a-zA-Z0-9]+(-[a-zA-Z0-9]+)?)-[0-9]+\.[0-9]+\.([0-9]+)?\.jar" replace="lib/\1-%\1.version%.jar" byline="true" />
+		<replaceregexp file=".classpath" match="lib/([a-zA-Z0-9]+(-[a-zA-Z0-9]+)?)-[0-9]+\.[0-9]+\.([0-9]+)?\.jar"
+			replace="lib/\1-%\1.version%.jar" byline="true" />
 
 		<antcall target="replace-properties">
 			<param name="replace.file" value=".classpath" />
