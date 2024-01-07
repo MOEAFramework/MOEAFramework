@@ -51,7 +51,15 @@ Use of these build scripts requires Apache Ant to be installed.  See
 	<!-- Determines which dependencies are available -->
 	<target name="check-dependencies">
 		<available classname="org.junit.Assert" classpathref="classpath" property="junit-exists" />
-
+		
+		<condition property="nashorn-supported">
+			<javaversion atleast="11" />
+		</condition>
+		
+		<condition property="jmetal-plugin-supported">
+			<javaversion atleast="14" />
+		</condition>
+		
 		<!-- Commented to always force recompiling of the JAR -->
 		<!--<available file="${dist}/${shortname}-${version}.jar" property="binary-exists" />-->
 	</target>
@@ -70,6 +78,33 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		<echo>==================================================================</echo>
 
 		<fail message="JUnit library missing"/>
+	</target>
+	
+	<!-- Downloads test libraries.  These should not be included in any release. -->
+	<target name="download-all" depends="download-junit,download-nashorn,download-jmetal-plugin"
+		description="Download all test dependencies to the lib folder" />
+	
+	<target name="download-junit" depends="check-dependencies" unless="junit-exists">
+		<get dest="lib/">
+			<url url="${junit.url}" />
+			<url url="${hamcrest-core.url}" />
+		</get>
+	</target>
+	
+	<target name="download-nashorn" depends="check-dependencies" if="nashorn-supported">
+		<get dest="lib/">
+			<url url="${asm.url}" />
+			<url url="${asm-commons.url}" />
+			<url url="${asm-tree.url}" />
+			<url url="${asm-util.url}" />
+			<url url="${nashorn-core.url}" />
+		</get>
+	</target>
+	
+	<target name="download-jmetal-plugin" depends="check-dependencies" if="jmetal-plugin-supported">
+		<get dest="lib/">
+			<url url="${jmetal-plugin.url}" />
+		</get>
 	</target>
 
 	<!-- Builds the MOEA Framework Test JAR -->
@@ -176,9 +211,11 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		<mkdir dir="${build}/src/test/resources" />
 		<mkdir dir="${build}/examples" />
 		
-		<copy tofile="${build}/pom.xml">
-			<fileset file="auxiliary/maven/pom.xml" />
-		</copy>
+		<copy file="auxiliary/maven/pom.xml" tofile="${build}/pom.xml" />
+		
+		<ant target="replace-properties">
+			<property name="replace.file" value="${build}/pom.xml" />
+		</ant>
 		
 		<copy todir="${build}/src/main/resources/META-INF">
 			<fileset dir="META-INF" />

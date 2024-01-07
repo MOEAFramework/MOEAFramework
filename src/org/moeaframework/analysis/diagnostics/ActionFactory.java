@@ -764,16 +764,16 @@ public class ActionFactory implements ControllerListener {
 							null,
 							loadLicense());
 					
-					info.addLibrary(new Library("Apache Commons CLI", "1.5.0", "Apache License", null));
-					info.addLibrary(new Library("Apache Commons IO", "2.11.0", "Apache License", null));
-					info.addLibrary(new Library("Apache Commons Lang3", "3.12.0", "Apache License", null));
-					info.addLibrary(new Library("Apache Commons Math3", "3.6.1", "Apache License", null));
-					info.addLibrary(new Library("Apache Commons Text", "1.10.0", "Apache License", null));
-					info.addLibrary(new Library("JCommon", "1.0.24", "GNU LGPL", null));
-					info.addLibrary(new Library("JFreeChart", "1.5.3", "GNU LGPL", null));
-					info.addLibrary(new Library("MOEAFramework", properties.getProperty("version"), "GNU LGPL", null));
-					info.addLibrary(new Library("RSyntaxTextArea", "3.3.0", "Modified BSD License", null));
+					for (String dependency : properties.getProperty("runtime.dependencies", "").split(",")) {
+						dependency = dependency.trim();
 						
+						info.addLibrary(new Library(
+								dependency,
+								properties.getProperty(dependency + ".version", "???"),
+								properties.getProperty(dependency + ".license", "???"),
+								null));
+					}
+					
 					AboutDialog dialog = new AboutDialog(frame, localization.getString("title.about"), info);
 					dialog.setLocationRelativeTo(frame);
 					dialog.setVisible(true);

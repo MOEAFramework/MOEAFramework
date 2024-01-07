@@ -30,33 +30,8 @@ jobs:
       with:
         java-version: ${{ matrix.java }}
         distribution: zulu
-    - name: Install required software
-      run: |
-        sudo apt install xmlstarlet
-    - name: Setup up JUnit 4
-      run: |
-        cd lib
-        wget https://search.maven.org/remotecontent?filepath=junit/junit/4.13.2/junit-4.13.2.jar
-        wget https://search.maven.org/remotecontent?filepath=org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar
-    - name: Setup JMetal-Plugin
-      if: ${{ matrix.java >= 14 }}
-      run: |
-        version=$(xmlstarlet sel -N x="http://maven.apache.org/POM/4.0.0" -t -v "//x:project/x:dependencies/x:dependency[.//x:artifactId='jmetal-plugin']/x:version/text()" auxiliary/maven/pom.xml)
-        echo "Downloading jmetal-plugin $version"
-      
-        cd lib
-        wget https://github.com/MOEAFramework/JMetal-Plugin/releases/download/v${version}/jmetal-plugin-${version}-jar-with-dependencies.jar
-    - name: Setup scripting plugin
-      if: ${{ matrix.java >= 11 }}
-      run: |
-        # Nashorn is GPL v2 with the Classpath Exception
-        # ASM is BSD 3-clause
-        cd lib
-        wget https://repo1.maven.org/maven2/org/ow2/asm/asm/9.5/asm-9.5.jar
-        wget https://repo1.maven.org/maven2/org/ow2/asm/asm-commons/9.5/asm-commons-9.5.jar
-        wget https://repo1.maven.org/maven2/org/ow2/asm/asm-tree/9.5/asm-tree-9.5.jar
-        wget https://repo1.maven.org/maven2/org/ow2/asm/asm-util/9.5/asm-util-9.5.jar
-        wget https://repo1.maven.org/maven2/org/openjdk/nashorn/nashorn-core/15.4/nashorn-core-15.4.jar
+    - name: Download test dependencies
+      run: ant -f test.xml download-all
     - name: Setup Coco Framework
       run: |
         sudo rm /usr/bin/javah
@@ -94,9 +69,9 @@ jobs:
         java-version: 16
         distribution: temurin
         cache: maven
-    - name: Prepare Maven project - Java 8
+    - name: Prepare Maven project
       run: ant -f test.xml build-maven-tests
-    - name: Run Maven tests - Java 8
+    - name: Run Maven tests
       run: |
         cd build
         mvn test
