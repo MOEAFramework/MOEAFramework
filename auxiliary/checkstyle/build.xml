@@ -43,8 +43,9 @@ Use of these build scripts requires Apache Ant to be installed.  See
 	</target>
 
 	<target name="get-checkstyle" depends="has-checkstyle" unless="checkstyle-exists">
-		<get src="https://github.com/checkstyle/checkstyle/releases/download/checkstyle-${checkstyle.version}/checkstyle-${checkstyle.version}-all.jar"
-			dest="${checkstyle.path}/" />
+		<get dest="${checkstyle.path}/">
+			<url url="${checkstyle.url}" />
+		</get>
 	</target>
 
 	<target name="check-style" depends="get-checkstyle">

@@ -84,20 +84,26 @@ Use of these build scripts requires Apache Ant to be installed.  See
 	<target name="download-all" depends="download-junit,download-nashorn,download-jmetal-plugin" />
 	
 	<target name="download-junit" depends="check-dependencies" unless="junit-exists">
-		<get src="https://repo1.maven.org/maven2/junit/junit/${junit.version}/junit-${junit.version}.jar" dest="lib/" />
-		<get src="https://repo1.maven.org/maven2/org/hamcrest/hamcrest-core/${hamcrest-core.version}/hamcrest-core-${hamcrest-core.version}.jar" dest="lib/" />
+		<get dest="lib/">
+			<url url="${junit.url}" />
+			<url url="${hamcrest-core.url}" />
+		</get>
 	</target>
 	
 	<target name="download-nashorn" depends="check-dependencies" if="nashorn-supported">
-		<get src="https://repo1.maven.org/maven2/org/ow2/asm/asm/${asm.version}/asm-${asm.version}.jar" dest="lib/" />
-		<get src="https://repo1.maven.org/maven2/org/ow2/asm/asm-commons/${asm-commons.version}/asm-commons-${asm-commons.version}.jar" dest="lib/" />
-		<get src="https://repo1.maven.org/maven2/org/ow2/asm/asm-tree/${asm-tree.version}/asm-tree-${asm-tree.version}.jar" dest="lib/" />
-		<get src="https://repo1.maven.org/maven2/org/ow2/asm/asm-util/${asm-util.version}/asm-util-${asm-util.version}.jar" dest="lib/" />
-		<get src="https://repo1.maven.org/maven2/org/openjdk/nashorn/nashorn-core/${nashorn-core.version}/nashorn-core-${nashorn-core.version}.jar" dest="lib/" />
+		<get dest="lib/">
+			<url url="${asm.url}" />
+			<url url="${asm-commons.url}" />
+			<url url="${asm-tree.url}" />
+			<url url="${asm-util.url}" />
+			<url url="${nashorn-core.url}" />
+		</get>
 	</target>
 	
 	<target name="download-jmetal-plugin" depends="check-dependencies" if="jmetal-plugin-supported">
-		<get src="https://github.com/MOEAFramework/JMetal-Plugin/releases/download/v${jmetal-plugin.version}/jmetal-plugin-${jmetal-plugin.version}-jar-with-dependencies.jar" dest="lib/" />
+		<get dest="lib/">
+			<url url="${jmetal-plugin.url}" />
+		</get>
 	</target>
 
 	<!-- Builds the MOEA Framework Test JAR -->
