@@ -361,7 +361,8 @@ Use of these build scripts requires Apache Ant to be installed.  See
 	</target>
 	
 	<target name="replace-properties">
-	    <tempfile property="filter.file" prefix="filter" suffix=".properties" destDir="${maven}" />
+		<dirname property="replace.dir" file="${replace.file}" />
+	    <tempfile property="filter.file" prefix="filter" suffix=".properties" destDir="${replace.dir}" />
 	    <echoproperties destfile="${filter.file}" />
 	    <replaceregexp file="${filter.file}" match="([^=]*)=" replace="%\1%=" byline="true" />
 		<replace summary="true" file="${replace.file}" replacefilterfile="${filter.file}" />
