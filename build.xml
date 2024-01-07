@@ -53,6 +53,11 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		<fileset file="README.md" />
 		<fileset file="COPYING" />
 	</path>
+	
+	<!-- List of libraries included in every distribution -->
+	<path id="libraries">
+		<fileset dir="lib" excludes="junit-*.jar,hamcrest-core-*.jar,checkstyle-*.jar,nashorn-*.jar,asm-*.jar,jmetal-plugin-*.jar,pisa-plugin-*.jar" />
+	</path>
 
 	<!-- Generates the Javadoc webpages -->
 	<target name="build-javadoc">
@@ -168,7 +173,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 
 		<copy todir="${base}/lib">
 			<fileset file="${dist}/${shortname}-${version}.jar" />
-			<fileset dir="lib" excludes="junit-*.jar,hamcrest-core-*.jar,checkstyle-*.jar,nashorn-*.jar,asm-*.jar,jmetal-plugin-*.jar,pisa-plugin-*.jar" />
+			<path refid="libraries" />
 		</copy>
 
 		<copy todir="${base}/pf">
@@ -196,14 +201,12 @@ Use of these build scripts requires Apache Ant to be installed.  See
 				<include name=".project" />
 				<include name=".classpath" />
 				<include name="auxiliary/**" />
+				<exclude name="auxiliary/checkstyle/checkstyle-*.jar" />
 				<include name="docs/**" />
 				<include name="examples/**" />
 				<exclude name="examples/*.exe" />
 				<exclude name="examples/*.o" />
 				<exclude name="examples/*.a" />
-				<include name="lib/**" />
-				<exclude name="lib/junit-*.jar" />
-				<exclude name="lib/hamcrest-core-*.jar" />
 				<include name="META-INF/**" />
 				<include name="pf/**" />
 				<include name="src/**" />
@@ -217,6 +220,10 @@ Use of these build scripts requires Apache Ant to be installed.  See
 				<include name="test.xml" />
 			</fileset>
 			<path refid="requiredfiles" />
+		</copy>
+		
+		<copy todir="${base}/lib">
+			<path refid="libraries" />
 		</copy>
 		
 		<replace file="${base}/.project">
