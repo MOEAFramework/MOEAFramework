@@ -18,19 +18,24 @@
 package org.moeaframework.util;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintStream;
 import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.lang.reflect.Array;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.Map.Entry;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.text.StringSubstitutor;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.configuration.ConfigurationException;
@@ -130,6 +135,39 @@ public class TypedProperties implements Displayable {
 		TypedProperties properties = new TypedProperties();
 		properties.setString(key, value);
 		return properties;
+	}
+	
+	/**
+	 * Loads the contents of {@code META-INF/build.properties} and evaluates any
+	 * string substitutions in the form {@code ${token}}.
+	 * 
+	 * @return the build properties
+	 */
+	public static TypedProperties loadBuildProperties() throws IOException {
+		Properties rawProperties = new Properties();
+		
+		try (InputStream stream = Settings.class.getResourceAsStream("/META-INF/build.properties")) {
+			if (stream != null) {
+				rawProperties.load(stream);
+			}
+		}
+		
+		Map<String, Object> mappings = new HashMap<>();
+		
+		for (Entry<Object, Object> entry : rawProperties.entrySet()) {
+			mappings.put(entry.getKey().toString(), entry.getValue());
+		}
+		
+		StringSubstitutor substitutor = new StringSubstitutor(mappings);
+		substitutor.setEnableSubstitutionInVariables(true);
+		
+		TypedProperties result = new TypedProperties();
+		
+		for (Entry<Object, Object> entry : rawProperties.entrySet()) {
+			result.setString(entry.getKey().toString(), substitutor.replace(entry.getValue()));
+		}
+		
+		return result;
 	}
 	
 	/**

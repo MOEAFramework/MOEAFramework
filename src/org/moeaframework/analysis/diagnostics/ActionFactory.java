@@ -24,10 +24,8 @@ import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashSet;
-import java.util.Properties;
 import java.util.Set;
 
 import javax.swing.AbstractAction;
@@ -44,6 +42,7 @@ import org.jfree.ui.about.ProjectInfo;
 import org.moeaframework.Instrumenter;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.util.Localization;
+import org.moeaframework.util.TypedProperties;
 
 /**
  * Collection of actions used by the diagnostic tool.
@@ -749,28 +748,24 @@ public class ActionFactory implements ControllerListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					Properties properties = new Properties();
-					
-					try (InputStream stream = getClass().getResourceAsStream("/META-INF/build.properties")) {
-						properties.load(stream);
-					}
-					
+					TypedProperties properties = TypedProperties.loadBuildProperties();
+
 					ProjectInfo info = new ProjectInfo(
-							properties.getProperty("name"),
-							properties.getProperty("version"), 
-							properties.getProperty("description"),
+							properties.getString("name"),
+							properties.getString("version"), 
+							properties.getString("description"),
 							null,
-							properties.getProperty("copyright"),
+							properties.getString("copyright"),
 							null,
 							loadLicense());
 					
-					for (String dependency : properties.getProperty("runtime.dependencies", "").split(",")) {
+					for (String dependency : properties.getStringArray("runtime.dependencies", new String[0])) {
 						dependency = dependency.trim();
 						
 						info.addLibrary(new Library(
 								dependency,
-								properties.getProperty(dependency + ".version", "???"),
-								properties.getProperty(dependency + ".license", "???"),
+								properties.getString(dependency + ".version", "???"),
+								properties.getString(dependency + ".license", "???"),
 								null));
 					}
 					

@@ -17,6 +17,7 @@
  */
 package org.moeaframework.util;
 
+import java.io.IOException;
 import java.util.Properties;
 
 import org.junit.After;
@@ -335,6 +336,20 @@ public class TypedPropertiesTest {
 		Assert.assertEquals(Integer.MIN_VALUE, properties.getTruncatedInt("value"));
 	}
 	
+	@Test
+	public void testBuildProperties() throws IOException {
+		TypedProperties properties = TypedProperties.loadBuildProperties();
+		
+		Assert.assertTrue(properties.contains("name"));
+		Assert.assertTrue(properties.contains("version"));
+		
+		properties.clearAccessedProperties();
+		
+		for (String key : properties.getUnaccessedProperties()) {
+			Assert.assertFalse(properties.getString(key).contains("${"));
+		}
+	}
+
 	private enum TestEnum {
 		FOO,
 		BAR
