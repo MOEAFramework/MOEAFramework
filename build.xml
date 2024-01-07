@@ -76,7 +76,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 				windowtitle="${name} ${version} API">
 			<header><![CDATA[${name} ${version}<br />API Specification]]></header>
 			<doctitle><![CDATA[${name} ${version}<br />API Specification]]></doctitle>
-			<bottom><![CDATA[${copyright}<br />Licensed under the <a href=\"http://www.gnu.org/licenses/lgpl.html\">GNU Lesser General Public License</a>.<br />Return to the <a href=\"http://www.moeaframework.org\" target=\"_top\">MOEA Framework homepage</a>.]]></bottom>
+			<bottom><![CDATA[${copyright}<br />Licensed under the <a href=\"http://www.gnu.org/licenses/lgpl.html\">GNU Lesser General Public License</a>.<br />Return to the <a href=\"${website}\" target=\"_top\">MOEA Framework homepage</a>.]]></bottom>
 			<classpath>
 				<path refid="classpath" />
 			</classpath>
@@ -129,12 +129,12 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		
 		<manifest file="${build}/META-INF/MANIFEST.MF">
 			<section name="org/moeaframework/">
-				<attribute name="Specification-Title" value="MOEA Framework" />
+				<attribute name="Specification-Title" value="${name}" />
 				<attribute name="Specification-Version" value="${version}" />
-				<attribute name="Specification-Vendor" value="http://www.moeaframework.org" />
+				<attribute name="Specification-Vendor" value="${website}" />
 				<attribute name="Implementation-Title" value="org.moeaframework" />
 				<attribute name="Implementation-Version" value="${impl.version}" />
-				<attribute name="Implementation-Vendor" value="http://www.moeaframework.org" />
+				<attribute name="Implementation-Vendor" value="${website}" />
 			</section>
 		</manifest>
 
@@ -234,7 +234,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 				longfile="gnu" />
 	</target>
 
-	<!-- Builds the http://www.moeaframework.org website -->
+	<!-- Builds the website -->
 	<target name="package-website" depends="build-javadoc" description="Creates the website">
 		<delete dir="${build}" />
 		<mkdir dir="${build}" />
@@ -339,25 +339,24 @@ Use of these build scripts requires Apache Ant to be installed.  See
 	<target name="package-maven" description="Creates an artifact bundle for upload to Sonatype OSS">
 		<delete dir="${maven}" />
 		<mkdir dir="${maven}" />
-		<property name="artifact" value="moeaframework" />
 		
-		<copy file="auxiliary/maven/pom.xml" tofile="${maven}/${artifact}-${version}.pom" />
+		<copy file="auxiliary/maven/pom.xml" tofile="${maven}/${artifactId}-${version}.pom" />
 		
 		<antcall target="replace-properties">
-			<param name="replace.file" value="${maven}/${artifact}-${version}.pom" />
+			<param name="replace.file" value="${maven}/${artifactId}-${version}.pom" />
 		</antcall>
 
 		<antcall target="build-binary" />
 		<copy todir="${build}/pf">
 			<fileset dir="pf" />
 		</copy>
-		<jar destfile="${maven}/${artifact}-${version}.jar" basedir="${build}" />
+		<jar destfile="${maven}/${artifactId}-${version}.jar" basedir="${build}" />
 		
 		<antcall target="package-source" />
-		<jar destfile="${maven}/${artifact}-${version}-sources.jar" basedir="${build}" />
+		<jar destfile="${maven}/${artifactId}-${version}-sources.jar" basedir="${build}" />
 		
 		<antcall target="build-javadoc" />
-		<jar destfile="${maven}/${artifact}-${version}-javadoc.jar" basedir="${javadoc}" />
+		<jar destfile="${maven}/${artifactId}-${version}-javadoc.jar" basedir="${javadoc}" />
 	</target>
 	
 	<target name="replace-properties">

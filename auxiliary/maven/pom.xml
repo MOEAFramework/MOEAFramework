@@ -6,9 +6,9 @@
 	<version>%version%</version>
 	<packaging>jar</packaging>
 
-	<name>MOEA Framework</name>
-	<description>The MOEA Framework Maven Distribution</description>
-	<url>http://www.moeaframework.org</url>
+	<name>%name%</name>
+	<description>%description%</description>
+	<url>%website%</url>
 
 	<licenses>
 		<license>
