@@ -81,9 +81,11 @@ public class LSMOP4Test {
 	public void testProvider() {
 		Assert.assertNotNull(ProblemFactory.getInstance().getProblem("LSMOP4_2"));
 		Assert.assertNotNull(ProblemFactory.getInstance().getReferenceSet("LSMOP4_2"));
+		Assert.assertEquals(2, ProblemFactory.getInstance().getProblem("LSMOP4_2").getNumberOfObjectives());
 		
 		Assert.assertNotNull(ProblemFactory.getInstance().getProblem("LSMOP4_3"));
 		Assert.assertNull(ProblemFactory.getInstance().getReferenceSet("LSMOP4_3"));
+		Assert.assertEquals(3, ProblemFactory.getInstance().getProblem("LSMOP4_3").getNumberOfObjectives());
 	}
 
 }

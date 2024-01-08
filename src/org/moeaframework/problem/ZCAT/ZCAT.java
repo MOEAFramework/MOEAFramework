@@ -1,24 +1,30 @@
 package org.moeaframework.problem.ZCAT;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
+import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.configuration.Validate;
 import org.moeaframework.core.variable.EncodingUtils;
+import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.AbstractProblem;
+import org.moeaframework.problem.AnalyticalProblem;
 
-public abstract class ZCAT extends AbstractProblem {
+public abstract class ZCAT extends AbstractProblem implements AnalyticalProblem {
 	
 	public static final double EPSILON = Math.ulp(1.0);
 	
-	private final int level;
+	protected final int level;
 	
-	private final boolean bias;
+	protected final boolean bias;
 	
-	private final boolean imbalance;
+	protected final boolean imbalance;
 		
-	private final PFShapeFunction F;
+	protected final PFShapeFunction F;
 	
-	private final PSShapeFunction G;
+	protected final PSShapeFunction G;
 	
 	public ZCAT(int numberOfObjectives, int level, boolean bias, boolean imbalance,
 			PFShapeFunction F, PSShapeFunction G) {
@@ -33,15 +39,20 @@ public abstract class ZCAT extends AbstractProblem {
 		this.imbalance = imbalance;
 		this.F = F;
 		this.G = G;
+		
+		Validate.greaterThanOrEqual("numberOfObjectives", 2, numberOfObjectives);
+		Validate.inclusiveBetween("level", 1, 6, level);
+		Validate.notNull("F", F);
+		Validate.notNull("G", G);
 	}
 
 	@Override
 	public void evaluate(Solution solution) {	
 		double[] x = EncodingUtils.getReal(solution);
 		
-		double[] y = getY(x); // Normalization
-		double[] alpha = getAlpha(y, F); // Position
-		double[] beta = getBeta(y, G); // Distance
+		double[] y = getY(x);                // Normalization
+		double[] alpha = getAlpha(y, F);     // Position
+		double[] beta = getBeta(y, G);       // Distance
 		double[] f = evaluateF(alpha, beta); // Fitness values
 		
 		solution.setObjectives(f);
@@ -60,7 +71,7 @@ public abstract class ZCAT extends AbstractProblem {
 	
 	/**
 	 * The dimension of the Pareto front / Pareto set.  This is typically {@code numberOfObjectives-1} but can
-	 * differ for certain problems (ZCAT14 - ZCAT16, ZCAT19).
+	 * differ for certain degenerate (ZCAT14 - ZCAT16) or hybrid (ZCAT19 - ZCAT20) problems.
 	 * 
 	 * @return the dimension of the Pareto front / Pareto set
 	 */
@@ -68,7 +79,7 @@ public abstract class ZCAT extends AbstractProblem {
 		return numberOfObjectives - 1;
 	}
 	
-	public double[] getAlpha(double[] y, PFShapeFunction F) {
+	protected double[] getAlpha(double[] y, PFShapeFunction F) {
 		double[] a = F.apply(y, numberOfObjectives);
 		
 		for (int i = 0; i < numberOfObjectives; i++) {
@@ -78,7 +89,7 @@ public abstract class ZCAT extends AbstractProblem {
 		return a;
 	}
 	
-	public double[] getBeta(double[] y, PSShapeFunction G) {
+	protected double[] getBeta(double[] y, PSShapeFunction G) {
 		int m = getDimension(y);
 		double[] z = getZ(y, m, G);
 		double[] w = getW(z, m);
@@ -97,7 +108,7 @@ public abstract class ZCAT extends AbstractProblem {
 		return b;
 	}
 	
-	public double[]	getJ(int i, double[] w) {
+	protected double[]	getJ(int i, double[] w) {
 		double[] J = new double[0];
 		int size = 0;
 		
@@ -116,7 +127,7 @@ public abstract class ZCAT extends AbstractProblem {
 		return J;
 	}
 	
-	public double[] getW(double[] z, int m) {
+	protected double[] getW(double[] z, int m) {
 		double[] w = new double[numberOfVariables - m];
 		
 		for (int i = 0; i < numberOfVariables - m; i++) {
@@ -126,7 +137,7 @@ public abstract class ZCAT extends AbstractProblem {
 		return w;
 	}
 	
-	public double[] getY(double[] x) {
+	protected double[] getY(double[] x) {
 		double[] y = new double[numberOfVariables];
 		
 		for (int i = 0; i < numberOfVariables; i++) {
@@ -139,7 +150,7 @@ public abstract class ZCAT extends AbstractProblem {
 		return y;
 	}
 	
-	public double[] getZ(double[] y, int m, PSShapeFunction G) {
+	protected double[] getZ(double[] y, int m, PSShapeFunction G) {
 		double[] g = G.apply(y, m, numberOfVariables);
 		double[] z = new double[numberOfVariables - m];
 		
@@ -151,11 +162,11 @@ public abstract class ZCAT extends AbstractProblem {
 		return z;
 	}
 	
-	public double Zbias(double z) {
+	protected double Zbias(double z) {
 	    return Math.pow(Math.abs(z), 0.05);
 	}
 	
-	public double evaluateZ(double[] w, int i) {
+	protected double evaluateZ(double[] w, int i) {
 		if (imbalance) {
 			if (i % 2 == 0) {
 				return BasisFunction.Z4.apply(w);
@@ -182,7 +193,7 @@ public abstract class ZCAT extends AbstractProblem {
 		}
 	}
 	
-	public double[] evaluateF(double[] alpha, double[] beta) {
+	protected double[] evaluateF(double[] alpha, double[] beta) {
 		double[] f = new double[numberOfObjectives];
 		
 		for (int i = 0; i < numberOfObjectives; i++) {
@@ -190,6 +201,97 @@ public abstract class ZCAT extends AbstractProblem {
 		}
 		
 		return f;
+	}
+	
+	@Override
+	public Solution generate() {
+		Solution solution = newSolution();
+		
+		double y0 = PRNG.nextDouble();
+		int m = getDimension(new double[] { y0 });
+		int k = getNumberOfSegments(F);
+		
+		if (k > 0) {
+			List<double[]> segments = getSegments(k);
+			
+			double[] segment = PRNG.nextItem(segments); // pick random segment
+			y0 = PRNG.nextDouble(segment[0], segment[1]);
+		}
+		
+		double[] y = new double[m];
+		y[0] = y0;
+		
+	    for (int i = 1; i < m; i++) {
+	        y[i] = PRNG.nextDouble();
+	    }
+	    
+	    double[] g = G.apply(y, m, numberOfVariables);
+	    
+	    for (int i = 0; i < m; i++) {
+	    	setDecisionVariable(y[i], i, solution);
+	    }
+	    
+	    for (int i = m; i < numberOfVariables; i++) {
+	    	setDecisionVariable(g[i - m], i, solution);
+	    }
+		
+		return solution;
+	}
+	
+	/**
+	 * Returns the number of segments in the Pareto front for the given shape function.  This is controlled
+	 * by the {@code k} constant defined in each function.
+	 * 
+	 * @param F the PF shape function
+	 * @return the number of segments
+	 */
+	private int getNumberOfSegments(PFShapeFunction F) {
+		if (F == PFShapeFunction.F11) {
+			return 4;
+		} else if (F == PFShapeFunction.F12 || F == PFShapeFunction.F13 || F == PFShapeFunction.F15) {
+			return 3;
+		} else if (F == PFShapeFunction.F16) {
+			return 5;
+		} else {
+			return 0;
+		}
+	}
+	
+	/**
+	 * Defines the lower and upper bounds of {@code y[0]} for each segment.
+	 * 
+	 * @param k the number of segments in the Pareto front
+	 * @return the lower and upper bounds of each segment
+	 */
+	private List<double[]> getSegments(int k) {
+		// These segments can be found at https://github.com/evo-mx/ZCAT/tree/main/src/seg
+		List<double[]> segments = new ArrayList<double[]>();
+		
+		if (k == 3) {
+			segments.add(new double[] { 0.0,               0.243933581942011 });
+			segments.add(new double[] {	0.417357435020449, 0.643933581942011 });
+			segments.add(new double[] {	0.817357435020257, 1.0               });
+		} else if (k == 4) {
+			segments.add(new double[] { 0.0,               0.174238272815722 });
+			segments.add(new double[] { 0.298112453586178, 0.459952558530008 });
+			segments.add(new double[] { 0.583826743124699, 0.745666844244294 });
+			segments.add(new double[] { 0.869541025014755, 1.0               });
+		} else if (k == 5) {
+			segments.add(new double[] { 0.0,               0.135518656634451 });
+			segments.add(new double[] { 0.231865241678485, 0.357740878856673 });
+			segments.add(new double[] { 0.454087466874766, 0.579963101078895 });
+			segments.add(new double[] { 0.676309689096988, 0.802185323301117 });
+			segments.add(new double[] { 0.898531908344865, 1.0               });
+		} else {
+			throw new IllegalArgumentException("getSegments not defined for k=" + k);
+		}
+		
+		return segments;
+	}
+	
+	private void setDecisionVariable(double y, int i, Solution solution) {
+		RealVariable variable = (RealVariable)solution.getVariable(i);
+		variable.setValue(y * (variable.getUpperBound() - variable.getLowerBound()) + variable.getLowerBound());
 	}
 	
 }

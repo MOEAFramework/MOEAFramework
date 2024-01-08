@@ -1,6 +1,6 @@
 package org.moeaframework.problem.ZCAT;
 
-import static org.moeaframework.problem.ZCAT.PFShapeFunction.allValuesBetween;
+import static org.moeaframework.problem.ZCAT.PFShapeFunction.valueBetween;
 
 public class ZCAT19 extends ZCAT {
 	
@@ -15,7 +15,7 @@ public class ZCAT19 extends ZCAT {
 	
 	@Override
 	public int getDimension(double[] y) {
-		return allValuesBetween(y, 1, 0.0, 0.2) || allValuesBetween(y, 1, 0.4, 0.6) ? 1 : numberOfObjectives - 1;
+		return valueBetween(y[0], 0.0, 0.2) || valueBetween(y[0], 0.4, 0.6) ? 1 : numberOfObjectives - 1;
 	}
 
 }

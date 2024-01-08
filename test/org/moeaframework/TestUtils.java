@@ -42,12 +42,14 @@ import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.junit.Assert;
 import org.junit.Assume;
 import org.moeaframework.core.FrameworkException;
+import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
+import org.moeaframework.problem.AnalyticalProblem;
 import org.moeaframework.util.io.CommentedLineReader;
 import org.moeaframework.util.io.RedirectStream;
 
@@ -298,6 +300,24 @@ public class TestUtils {
 		
 		problem.evaluate(solution);
 		return solution;
+	}
+	
+	/**
+	 * Asserts that all solutions returned by the `generate()` method are feasible and non-dominated.
+	 * 
+	 * @param problem the analytical problem
+	 * @param count the number of solutions to generate
+	 */
+	public static void assertGeneratedSolutionsAreNondominated(AnalyticalProblem problem, int count) {
+		NondominatedPopulation population = new NondominatedPopulation();
+		
+		for (int i = 0; i < count; i++) {
+			Solution solution = problem.generate();
+			problem.evaluate(solution);
+			
+			Assert.assertFalse(solution.violatesConstraints());
+			Assert.assertTrue(population.add(solution));
+		}
 	}
 	
 	/**
