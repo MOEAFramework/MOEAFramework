@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -75,6 +76,8 @@ public class BBOB2016Problems extends ProblemProvider {
 
 	@Override
 	public Problem getProblem(String name) {
+		name = name.toLowerCase(Locale.ROOT);
+		
 		if (name.startsWith("bbob-biobj(") && name.endsWith(")")) {
 			name = name.substring(11, name.length()-1);
 		}

@@ -347,8 +347,7 @@ public class TestUtils {
 	 * @param regex the regular expression pattern
 	 * @throws IOException if an I/O error occurred
 	 */
-	public static void assertLinePattern(File file, String regex) 
-	throws IOException {
+	public static void assertLinePattern(File file, String regex) throws IOException {
 		Pattern pattern = Pattern.compile(regex);
 		
 		try (CommentedLineReader reader = new CommentedLineReader(new FileReader(file))) {

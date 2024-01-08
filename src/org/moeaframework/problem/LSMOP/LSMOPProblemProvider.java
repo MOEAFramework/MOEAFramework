@@ -61,10 +61,8 @@ public class LSMOPProblemProvider extends RegisteredProblemProvider {
 		
 		// allow creating any number of objectives, but these will not have
 		// reference sets
-		name = name.toUpperCase(Locale.ROOT);
-		
 		try {
-			Pattern pattern = Pattern.compile("LSMOP([0-9])_([0-9]+)");
+			Pattern pattern = Pattern.compile("^LSMOP([0-9])_([0-9]+)$", Pattern.CASE_INSENSITIVE);
 			Matcher matcher = pattern.matcher(name);
 			
 			if (matcher.matches()) {

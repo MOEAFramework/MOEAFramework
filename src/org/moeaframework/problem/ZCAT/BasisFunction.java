@@ -1,7 +1,16 @@
 package org.moeaframework.problem.ZCAT;
 
-public interface BasisFunction {
+/**
+ * The basis function {@code z} that controls the difficulty level.
+ */
+interface BasisFunction {
 	
+	/**
+	 * Applies the basis function.
+	 * 
+	 * @param J a subset of the decision variables
+	 * @return the result of applying the basis function
+	 */
 	public double apply(double[] J);
 	
 	public static final BasisFunction Z1 = (J) ->	{

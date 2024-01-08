@@ -2,8 +2,19 @@ package org.moeaframework.problem.ZCAT;
 
 import org.moeaframework.util.Vector;
 
-public interface PSShapeFunction {
+/**
+ * Shape function {@code g} for the Pareto set.
+ */
+interface PSShapeFunction {
 	
+	/**
+	 * Applies the shape function to the Pareto set.
+	 * 
+	 * @param y the normalized decision variables
+	 * @param m the dimension of the Pareto set
+	 * @param n the total number of decision variables
+	 * @return the result of applying the shape function
+	 */
 	public double[] apply(double[] y, int m, int n);
 	
 	public static final PSShapeFunction G0 = (y, m, n) -> {

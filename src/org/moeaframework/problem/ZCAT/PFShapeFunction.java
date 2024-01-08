@@ -1,7 +1,17 @@
 package org.moeaframework.problem.ZCAT;
 
-public interface PFShapeFunction {
+/**
+ * Shape function {@code f} for the Pareto front.
+ */
+interface PFShapeFunction {
 	
+	/**
+	 * Applies the shape function to produce the Pareto front.
+	 * 
+	 * @param y the normalized decision variables
+	 * @param M the number of objectives
+	 * @return the result of applying the shape function
+	 */
 	public double[] apply(double[] y, int M);
 	
 	public static final PFShapeFunction F1 = (y, M) -> {

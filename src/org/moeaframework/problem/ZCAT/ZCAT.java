@@ -12,18 +12,40 @@ import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.AbstractProblem;
 import org.moeaframework.problem.AnalyticalProblem;
 
+/**
+ * Abstract class for implementing ZCAT test problems.
+ */
 public abstract class ZCAT extends AbstractProblem implements AnalyticalProblem {
 	
+	/**
+	 * The precision when considering if two floating-point numbers are equal.  This differs
+	 * from {@link Settings#EPS} to match the original ZCAT source code. 
+	 */
 	public static final double EPSILON = Math.ulp(1.0);
 	
+	/**
+	 * The difficulty level between {@code 1} and {@code 6}.
+	 */
 	protected final int level;
 	
+	/**
+	 * {@code true} if bias is applied; {@code false} otherwise.
+	 */
 	protected final boolean bias;
 	
+	/**
+	 * {@code true} if imbalance is applied; {@code false} otherwise.
+	 */
 	protected final boolean imbalance;
-		
+	
+	/**
+	 * The shape function for the Pareto front.
+	 */
 	protected final PFShapeFunction F;
 	
+	/**
+	 * The shape function for the Pareto set.
+	 */
 	protected final PSShapeFunction G;
 	
 	public ZCAT(int numberOfObjectives, int level, boolean bias, boolean imbalance,
