@@ -311,6 +311,122 @@ public interface PFShapeFunction {
 		
 		return F;
 	};
+	
+	public static final PFShapeFunction F15 = (y, M) -> {
+		double[] F = new double[M];
+		final double k = 3.0;
+		
+		for (int i = 0; i < M - 1; i++) {
+			F[i] = Math.pow(y[0], 1.0 + i / (4.0 * M));
+		}
+
+		F[M - 1] = (Math.cos((2.0 * k - 1.0) *  y[0] * Math.PI) + 2.0 * y[0] + 4.0 * k * (1.0 - y[0]) - 1.0) / (4.0 * k);
+		
+		return F;
+	};
+	
+	public static final PFShapeFunction F16 = (y, M) -> {
+		double[] F = new double[M];
+		final double k = 5.0;
+		
+		F[0] = Math.sin(y[0] * Math.PI / 2.0);
+		
+		for (int i = 1; i < M - 2; i++) {
+			F[i] = Math.pow(Math.sin(y[0] * Math.PI / 2.0), 1.0 + i / (M - 2.0));
+		}
+		
+		if (M > 2) {
+			F[M - 2] = 0.5 * (1.0 + Math.sin(10.0 * y[0] * Math.PI / 2.0 - Math.PI / 2.0));
+		}
+		
+		F[M - 1] = (Math.cos((2.0 * k - 1.0) * y[0] * Math.PI) + 2.0 * y[0] + 4.0 * k * (1.0 - y[0]) - 1.0) / (4.0 * k);
+		
+		return F;
+	};
+	
+	public static final PFShapeFunction F17 = (y, M) -> {
+		double[] F = new double[M];
+		boolean wedge = allValuesBetween(y, M - 1, 0.0, 0.5);
+		double sum = 0.0;
+		
+		for (int i = 0; i < M - 1; i++) {
+			if (wedge) {
+				F[i] = y[0];
+			} else {
+				F[i] = y[i];
+				sum += 1.0 - y[i];
+			}
+		}
+		
+		if (wedge) {
+			F[M - 1] = (Math.pow(Math.exp(1.0 - y[0]), 8.0) - 1.0) / (Math.pow(Math.exp(1.0), 8.0) - 1.0);
+		} else {
+			F[M - 1] = (Math.pow(Math.exp(sum / (M - 1)), 8.0) - 1.0) / (Math.pow(Math.exp(1.0), 8.0) - 1.0);
+		}
+
+		return F;
+	};
+	
+	public static final PFShapeFunction F18 = (y, M) -> {
+		double[] F = new double[M];
+		boolean wedge = allValuesBetween(y, M - 1, 0.0, 0.4) || allValuesBetween(y, M - 1, 0.6, 1.0);
+		double sum = 0.0;
+		
+		for (int i = 0; i < M - 1; i++) {
+			if (wedge) {
+				F[i] = y[0];
+			} else {
+				F[i] = y[i];
+				sum += Math.pow(0.5 - y[i], 5.0);
+			}
+		}
+		
+		if (wedge) {
+			F[M - 1] = (Math.pow(0.5 - y[0], 5.0) + Math.pow(0.5, 5.0)) / (2.0 * Math.pow(0.5, 5.0));
+		} else {
+			F[M - 1] = sum / (2.0 * (M - 1.0)* Math.pow(0.5, 5.0)) + 0.5;
+		}
+
+		return F;
+	};
+	
+	public static final PFShapeFunction F19 = (y, M) -> {
+		double[] F = new double[M];
+		final double A = 5.0;
+		double mu = 0.0;
+		
+		boolean flag = allValuesBetween(y, 1, 0.0, 0.2) || allValuesBetween(y, 1, 0.4, 0.6);
+
+		for (int i = 0; i < M - 1; i++) {
+			mu += y[i];
+			F[i] = flag ? y[0] : y[i];
+		}
+		
+		mu = flag ? y[0] : mu / (M - 1);
+		F[M - 1] = (1.0 - mu - Math.cos(2.0 * A * Math.PI * mu + Math.PI / 2.0) / (2.0 * A * Math.PI));
+
+		return fixTo01(F);
+	};
+	
+	public static final PFShapeFunction F20 = (y, M) -> {
+		double[] F = new double[M];
+		double sum = 0.0;
+		
+		boolean flag = allValuesBetween(y, 1, 0.1, 0.4) || allValuesBetween(y, 1, 0.6, 0.9);
+
+		for (int i = 0; i < M - 1; i++) {
+			sum += Math.pow(0.5 - y[i], 5.0);
+			F[i] = flag ? y[0] : y[i];
+		}
+		
+		if (flag) {
+			F[M - 1] = (Math.pow(0.5 - y[0], 5.0) + Math.pow(0.5, 5.0)) / (2.0 * Math.pow(0.5, 5.0));
+		} else {
+			F[M - 1] = sum / (2.0 * (M - 1.0) * Math.pow(0.5, 5.0)) + 0.5;
+		}
+		
+		return F;
+	};
 
 	static double fixTo01(double value) {
 		if (value <= 0.0 && value >= 0.0 - ZCAT.EPSILON) {
@@ -330,6 +446,28 @@ public interface PFShapeFunction {
 		}
 		
 		return F;
+	}
+	
+	public static boolean allValuesBetween(double[] y, int m, double lb, double ub) {
+		for (int i = 0; i < m; i++) {
+			if (!(lessThan(lb, y[i]) && lessThan(y[i], ub))) {
+				return false;
+			}
+		}
+		
+		return true;
+	}
+	
+	static boolean lessThan(double x, double y) {
+		if (x < y) {
+			return true;
+		}
+		
+		if (Math.abs(y - x) < ZCAT.EPSILON) {
+			return true;
+		}
+		
+		return false;
 	}
 	
 }

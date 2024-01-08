@@ -130,6 +130,22 @@ public interface PSShapeFunction {
 		return g;
 	};
 	
+	public static final PSShapeFunction G8 = (y, m, n) -> {
+		double[] g = new double[n - m];
+		
+		for (int j = 0; j < n - m; j++) {
+			double sum = 0.0;
+			
+			for (int i = 0; i < m; i++) {
+				sum += Math.abs(Math.sin(2.5 * Math.PI * (y[i] - 0.5) + theta(j, m, n)));
+			}
+			
+			g[j] = sum / m;
+		}
+		
+		return g;
+	};
+	
 	public static final PSShapeFunction G9 = (y, m, n) -> {
 		double[] g = new double[n - m];
 		

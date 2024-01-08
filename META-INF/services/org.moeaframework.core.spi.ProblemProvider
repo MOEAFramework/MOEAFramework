@@ -6,6 +6,7 @@ org.moeaframework.problem.CEC2009.CEC2009ProblemProvider
 org.moeaframework.problem.CDTLZ.CDTLZProblemProvider
 org.moeaframework.problem.BBOB2016.BBOB2016Problems
 org.moeaframework.problem.LSMOP.LSMOPProblemProvider
+org.moeaframework.problem.ZCAT.ZCATProblemProvider
 org.moeaframework.problem.misc.MiscProblemProvider
 org.moeaframework.problem.PropertiesProblems
 org.moeaframework.problem.ClassLoaderProblems

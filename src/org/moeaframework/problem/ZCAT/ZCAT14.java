@@ -10,5 +10,10 @@ public class ZCAT14 extends ZCAT {
 		super(numberOfObjectives, 1, false, false, PFShapeFunction.F14,
 				complicatedPS ? PSShapeFunction.G6 : PSShapeFunction.G0);
 	}
+	
+	@Override
+	public int getDimension(double[] y) {
+		return 1;
+	}
 
 }
