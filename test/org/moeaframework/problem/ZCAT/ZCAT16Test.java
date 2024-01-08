@@ -4,6 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.TestUtils;
 import org.moeaframework.core.Problem;
+import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.util.Vector;
 
 public class ZCAT16Test {
@@ -27,6 +28,22 @@ public class ZCAT16Test {
 		Assert.assertArrayEquals(new double[] { 2.477041, 4.185910, 11.590992 }, 
 				TestUtils.evaluateAt(problem, 0.279341, 0.171896, 0.377137, 1.416472, 2.052186, 1.695658, -1.579087, -2.432268, -2.418886, -3.673868, -2.690783, 3.284320, -5.996409, -3.726970, -3.924829, -3.164205, -4.356797, 0.382675, 0.302581, 5.823157, 9.908309, 0.465543, -1.807873, 9.883464, 3.964032, -9.848410, -10.900923, -8.289450, -13.954855, -5.211829).getObjectives(),
 				0.0001);
+	}
+	
+	@Test
+	public void testGenerate() {
+		TestUtils.assertGeneratedSolutionsAreNondominated(new ZCAT16(3), 1000);
+	}
+	
+	@Test
+	public void testProvider() {
+		Assert.assertNotNull(ProblemFactory.getInstance().getProblem("ZCAT16_2"));
+		Assert.assertNotNull(ProblemFactory.getInstance().getReferenceSet("ZCAT16_2"));
+		Assert.assertEquals(2, ProblemFactory.getInstance().getProblem("ZCAT16_2").getNumberOfObjectives());
+		
+		Assert.assertNotNull(ProblemFactory.getInstance().getProblem("ZCAT16_3"));
+		Assert.assertNull(ProblemFactory.getInstance().getReferenceSet("ZCAT16_3"));
+		Assert.assertEquals(3, ProblemFactory.getInstance().getProblem("ZCAT16_3").getNumberOfObjectives());
 	}
 	
 }

@@ -395,7 +395,7 @@ public interface PFShapeFunction {
 		final double A = 5.0;
 		double mu = 0.0;
 		
-		boolean flag = allValuesBetween(y, 1, 0.0, 0.2) || allValuesBetween(y, 1, 0.4, 0.6);
+		boolean flag = valueBetween(y[0], 0.0, 0.2) || valueBetween(y[0], 0.4, 0.6);
 
 		for (int i = 0; i < M - 1; i++) {
 			mu += y[i];
@@ -412,7 +412,7 @@ public interface PFShapeFunction {
 		double[] F = new double[M];
 		double sum = 0.0;
 		
-		boolean flag = allValuesBetween(y, 1, 0.1, 0.4) || allValuesBetween(y, 1, 0.6, 0.9);
+		boolean flag = valueBetween(y[0], 0.1, 0.4) || valueBetween(y[0], 0.6, 0.9);
 
 		for (int i = 0; i < M - 1; i++) {
 			sum += Math.pow(0.5 - y[i], 5.0);
@@ -450,9 +450,17 @@ public interface PFShapeFunction {
 	
 	public static boolean allValuesBetween(double[] y, int m, double lb, double ub) {
 		for (int i = 0; i < m; i++) {
-			if (!(lessThan(lb, y[i]) && lessThan(y[i], ub))) {
+			if (!valueBetween(y[i], lb, ub)) {
 				return false;
 			}
+		}
+		
+		return true;
+	}
+	
+	public static boolean valueBetween(double y, double lb, double ub) {
+		if (!(lessThan(lb, y) && lessThan(y, ub))) {
+			return false;
 		}
 		
 		return true;

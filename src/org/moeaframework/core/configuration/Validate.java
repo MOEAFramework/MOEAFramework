@@ -137,6 +137,22 @@ public class Validate {
 	}
 	
 	/**
+	 * Validates that the value is contained within the lower and upper bounds, inclusively.
+	 * 
+	 * @param propertyName the property name being set
+	 * @param lowerBound the lower bound, inclusive
+	 * @param upperBound the upperBound, inclusive
+	 * @param value the value to check
+	 * @throws IllegalArgumentException if the check fails
+	 */
+	public static void inclusiveBetween(String propertyName, int lowerBound, int upperBound, int value) {
+		if (value < lowerBound || value > upperBound) {
+			throw new IllegalArgumentException(propertyName + " must be between " + lowerBound + " and " + upperBound +
+					", given " + value);
+		}
+	}
+	
+	/**
 	 * Validates that the value is a probability, namely between 0.0 and 1.0, inclusively.
 	 * 
 	 * @param propertyName the property name being set
