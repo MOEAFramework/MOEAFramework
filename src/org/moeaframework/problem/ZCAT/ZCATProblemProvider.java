@@ -18,6 +18,8 @@
 package org.moeaframework.problem.ZCAT;
 
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.spi.RegisteredProblemProvider;
@@ -70,46 +72,55 @@ public class ZCATProblemProvider extends RegisteredProblemProvider {
 		name = name.toUpperCase(Locale.ROOT);
 		
 		try {
-			if (name.startsWith("ZCAT1_")) {
-				return new ZCAT1(Integer.parseInt(name.substring(6)));
-			} else if (name.startsWith("ZCAT2_")) {
-				return new ZCAT2(Integer.parseInt(name.substring(6)));
-			} else if (name.startsWith("ZCAT3_")) {
-				return new ZCAT3(Integer.parseInt(name.substring(6)));
-			} else if (name.startsWith("ZCAT4_")) {
-				return new ZCAT4(Integer.parseInt(name.substring(6)));
-			} else if (name.startsWith("ZCAT5_")) {
-				return new ZCAT5(Integer.parseInt(name.substring(6)));
-			} else if (name.startsWith("ZCAT6_")) {
-				return new ZCAT6(Integer.parseInt(name.substring(6)));
-			} else if (name.startsWith("ZCAT7_")) {
-				return new ZCAT7(Integer.parseInt(name.substring(6)));
-			} else if (name.startsWith("ZCAT8_")) {
-				return new ZCAT8(Integer.parseInt(name.substring(6)));
-			} else if (name.startsWith("ZCAT9_")) {
-				return new ZCAT9(Integer.parseInt(name.substring(6)));
-			} else if (name.startsWith("ZCAT10_")) {
-				return new ZCAT10(Integer.parseInt(name.substring(7)));
-			} else if (name.startsWith("ZCAT11_")) {
-				return new ZCAT11(Integer.parseInt(name.substring(7)));
-			} else if (name.startsWith("ZCAT12_")) {
-				return new ZCAT12(Integer.parseInt(name.substring(7)));
-			} else if (name.startsWith("ZCAT13_")) {
-				return new ZCAT13(Integer.parseInt(name.substring(7)));
-			} else if (name.startsWith("ZCAT14_")) {
-				return new ZCAT14(Integer.parseInt(name.substring(7)));
-			} else if (name.startsWith("ZCAT15_")) {
-				return new ZCAT15(Integer.parseInt(name.substring(7)));
-			} else if (name.startsWith("ZCAT16_")) {
-				return new ZCAT16(Integer.parseInt(name.substring(7)));
-			} else if (name.startsWith("ZCAT17_")) {
-				return new ZCAT17(Integer.parseInt(name.substring(7)));
-			} else if (name.startsWith("ZCAT18_")) {
-				return new ZCAT18(Integer.parseInt(name.substring(7)));
-			} else if (name.startsWith("ZCAT19_")) {
-				return new ZCAT19(Integer.parseInt(name.substring(7)));
-			} else if (name.startsWith("ZCAT20_")) {
-				return new ZCAT20(Integer.parseInt(name.substring(7)));
+			Pattern pattern = Pattern.compile("ZCAT([0-9]+)_([0-9]+)");
+			Matcher matcher = pattern.matcher(name);
+			
+			if (matcher.matches()) {
+				int instance = Integer.parseInt(matcher.group(1));
+				int numberOfObjectives = Integer.parseInt(matcher.group(2));
+				
+				switch (instance) {
+				case 1:
+					return new ZCAT1(numberOfObjectives);
+				case 2:
+					return new ZCAT2(numberOfObjectives);
+				case 3:
+					return new ZCAT3(numberOfObjectives);
+				case 4:
+					return new ZCAT4(numberOfObjectives);
+				case 5:
+					return new ZCAT5(numberOfObjectives);
+				case 6:
+					return new ZCAT6(numberOfObjectives);
+				case 7:
+					return new ZCAT7(numberOfObjectives);
+				case 8:
+					return new ZCAT8(numberOfObjectives);
+				case 9:
+					return new ZCAT9(numberOfObjectives);
+				case 10:
+					return new ZCAT10(numberOfObjectives);
+				case 11:
+					return new ZCAT11(numberOfObjectives);
+				case 12:
+					return new ZCAT12(numberOfObjectives);
+				case 13:
+					return new ZCAT13(numberOfObjectives);
+				case 14:
+					return new ZCAT14(numberOfObjectives);
+				case 15:
+					return new ZCAT15(numberOfObjectives);
+				case 16:
+					return new ZCAT16(numberOfObjectives);
+				case 17:
+					return new ZCAT17(numberOfObjectives);
+				case 18:
+					return new ZCAT18(numberOfObjectives);
+				case 19:
+					return new ZCAT19(numberOfObjectives);
+				case 20:
+					return new ZCAT20(numberOfObjectives);
+				}
 			}
 		} catch (NumberFormatException e) {
 			return null;

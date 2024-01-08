@@ -18,6 +18,8 @@
 package org.moeaframework.problem.LSMOP;
 
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.spi.RegisteredProblemProvider;
@@ -62,24 +64,33 @@ public class LSMOPProblemProvider extends RegisteredProblemProvider {
 		name = name.toUpperCase(Locale.ROOT);
 		
 		try {
-			if (name.startsWith("LSMOP1_")) {
-				return new LSMOP1(Integer.parseInt(name.substring(7)));
-			} else if (name.startsWith("LSMOP2_")) {
-				return new LSMOP2(Integer.parseInt(name.substring(7)));
-			} else if (name.startsWith("LSMOP3_")) {
-				return new LSMOP3(Integer.parseInt(name.substring(7)));
-			} else if (name.startsWith("LSMOP4_")) {
-				return new LSMOP4(Integer.parseInt(name.substring(7)));
-			} else if (name.startsWith("LSMOP5_")) {
-				return new LSMOP5(Integer.parseInt(name.substring(7)));
-			} else if (name.startsWith("LSMOP6_")) {
-				return new LSMOP6(Integer.parseInt(name.substring(7)));
-			} else if (name.startsWith("LSMOP7_")) {
-				return new LSMOP7(Integer.parseInt(name.substring(7)));
-			} else if (name.startsWith("LSMOP8_")) {
-				return new LSMOP8(Integer.parseInt(name.substring(7)));
-			} else if (name.startsWith("LSMOP9_")) {
-				return new LSMOP9(Integer.parseInt(name.substring(7)));
+			Pattern pattern = Pattern.compile("LSMOP([0-9])_([0-9]+)");
+			Matcher matcher = pattern.matcher(name);
+			
+			if (matcher.matches()) {
+				int instance = Integer.parseInt(matcher.group(1));
+				int numberOfObjectives = Integer.parseInt(matcher.group(2));
+				
+				switch (instance) {
+				case 1:
+					return new LSMOP1(numberOfObjectives);
+				case 2:
+					return new LSMOP2(numberOfObjectives);
+				case 3:
+					return new LSMOP3(numberOfObjectives);
+				case 4:
+					return new LSMOP4(numberOfObjectives);
+				case 5:
+					return new LSMOP5(numberOfObjectives);
+				case 6:
+					return new LSMOP6(numberOfObjectives);
+				case 7:
+					return new LSMOP7(numberOfObjectives);
+				case 8:
+					return new LSMOP8(numberOfObjectives);
+				case 9:
+					return new LSMOP9(numberOfObjectives);
+				}
 			}
 		} catch (NumberFormatException e) {
 			return null;
