@@ -17,7 +17,6 @@
  */
 package org.moeaframework.problem.WFG;
 
-import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
