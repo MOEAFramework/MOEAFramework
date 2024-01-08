@@ -122,6 +122,34 @@ Problem | # of Vars | # of Objs | # of Constrs | Type
 `LSMOP8_N` | ??? | N | 0 | Real
 `LSMOP9_N` | ??? | N | 0 | Real
 
+### ZCAT
+
+Set of challenging test problems for multi- and many-objective optimization [^zapotecas23].  These problems are
+scalabe in the number of objectives.  Control this by replacing `N` in the name.
+
+Problem | # of Vars | # of Objs | # of Constrs | Type 
+:------ | :-------: | :-------: | :----------: | :---
+`ZCAT1_N` | 10*N | N | 0 | Real
+`ZCAT2_N` | 10*N | N | 0 | Real
+`ZCAT3_N` | 10*N | N | 0 | Real
+`ZCAT4_N` | 10*N | N | 0 | Real
+`ZCAT5_N` | 10*N | N | 0 | Real
+`ZCAT6_N` | 10*N | N | 0 | Real
+`ZCAT7_N` | 10*N | N | 0 | Real
+`ZCAT8_N` | 10*N | N | 0 | Real
+`ZCAT9_N` | 10*N | N | 0 | Real
+`ZCAT10_N` | 10*N | N | 0 | Real
+`ZCAT11_N` | 10*N | N | 0 | Real
+`ZCAT12_N` | 10*N | N | 0 | Real
+`ZCAT13_N` | 10*N | N | 0 | Real
+`ZCAT14_N` | 10*N | N | 0 | Real
+`ZCAT15_N` | 10*N | N | 0 | Real
+`ZCAT16_N` | 10*N | N | 0 | Real
+`ZCAT17_N` | 10*N | N | 0 | Real
+`ZCAT18_N` | 10*N | N | 0 | Real
+`ZCAT19_N` | 10*N | N | 0 | Real
+`ZCAT20_N` | 10*N | N | 0 | Real
+
 ### BBOB-2016
 
 Contains the 55 bi-objective problems as part of the "bbob-biobj" test suite from the BBOB workshop hosted at GECCO 2016 [^finck15].
@@ -233,5 +261,6 @@ programs.  Refer to `ScriptedProblem` and `ExternalProblem` for details.
 [^huband07]: Huband et al. "A Review of Multi-Objective Test Problems and a Scalable Test Problem Toolkit." IEEE Transactions on Evolutionary Computation. 10(5):477-506, 2007.
 [^huband05]: Huband et al. "A Scalable Multi-Objective Test Problem Toolkit." 3rd International Conference on Evolutionary Multi-Criterion Optimization. pp 280-294, 2005.
 [^li09]: Li and Zhang (2009). "Multiobjective Optimization Problems with Complicated Pareto Sets, MOEA/D and NSGA-II."  IEEE Transactions on Evolutionary Computation.  13(2):284-302.
+[^zapotecas23]: Zapotecas-Martínez et al.  "Challenging test problems for multi-and many-objective optimization." Swarm and Evolutionary Computation, Volume 81, 101350, ISSN 2210-6502, 2023.
 [^zhang09]: Zhang et al (2009).  "Multiobjective Optimization Test Instances for the CEC 2009 Special Session and Competition."  Technical Report CES-487, The School of Computer Science and Electronic Engineering, University of Essex.
 [^zitzler00]: Zitzler et al.  "Comparison of Multiobjective Evolutionary Algorithms: Empirical Results."  Evolutionary Computation Journal.  8(2):125-148, 2000.
