@@ -6,7 +6,7 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.problem.AbstractProblem;
 
-public class ZCAT extends AbstractProblem {
+public abstract class ZCAT extends AbstractProblem {
 	
 	public static final double EPSILON = Math.ulp(1.0);
 	
@@ -40,13 +40,9 @@ public class ZCAT extends AbstractProblem {
 		double[] x = EncodingUtils.getReal(solution);
 		
 		double[] y = getY(x); // Normalization
-		System.out.println("Y: " + Arrays.toString(y));
 		double[] alpha = getAlpha(y, F); // Position
-		System.out.println("alpha: " + Arrays.toString(alpha));
 		double[] beta = getBeta(y, G); // Distance
-		System.out.println("beta: " + Arrays.toString(beta));
 		double[] f = evaluateF(alpha, beta); // Fitness values
-		System.out.println("f: " + Arrays.toString(f));
 		
 		solution.setObjectives(f);
 	}
@@ -62,6 +58,16 @@ public class ZCAT extends AbstractProblem {
 		return solution;
 	}
 	
+	/**
+	 * The dimension of the Pareto front / Pareto set.  This is typically {@code numberOfObjectives-1} but can
+	 * differ for certain problems (ZCAT14 - ZCAT16, ZCAT19).
+	 * 
+	 * @return the dimension of the Pareto front / Pareto set
+	 */
+	public int getDimension(double[] y) {
+		return numberOfObjectives - 1;
+	}
+	
 	public double[] getAlpha(double[] y, PFShapeFunction F) {
 		double[] a = F.apply(y, numberOfObjectives);
 		
@@ -73,18 +79,16 @@ public class ZCAT extends AbstractProblem {
 	}
 	
 	public double[] getBeta(double[] y, PSShapeFunction G) {
-		double[] z = getZ(y, G);
-		System.out.println("z: " + Arrays.toString(z));
-		double[] w = getW(z);
-		System.out.println("w: " + Arrays.toString(w));
+		int m = getDimension(y);
+		double[] z = getZ(y, m, G);
+		double[] w = getW(z, m);
 		double[] b = new double[numberOfObjectives];
 		
-		if (numberOfVariables == numberOfObjectives - 1) {
+		if (numberOfVariables == m) {
 			Arrays.fill(b, 0.0);
 		} else {
 			for (int i = 0; i < numberOfObjectives; i++) {
 				double[] J = getJ(i + 1, w);
-				System.out.println("J: " + Arrays.toString(J));
 				double Zvalue = evaluateZ(J, i + 1);
 				b[i] = Math.pow(i + 1, 2.0) * Zvalue;
 			}
@@ -112,10 +116,10 @@ public class ZCAT extends AbstractProblem {
 		return J;
 	}
 	
-	public double[] getW(double[] z) {
-		double[] w = new double[numberOfVariables - numberOfObjectives + 1];
+	public double[] getW(double[] z, int m) {
+		double[] w = new double[numberOfVariables - m];
 		
-		for (int i = 0; i < numberOfVariables - numberOfObjectives + 1; i++) {
+		for (int i = 0; i < numberOfVariables - m; i++) {
 			w[i] = bias ? Zbias(z[i]) : z[i];
 		}
 		
@@ -135,14 +139,13 @@ public class ZCAT extends AbstractProblem {
 		return y;
 	}
 	
-	public double[] getZ(double[] y, PSShapeFunction G) {
-		double[] g = G.apply(y, numberOfObjectives - 1, numberOfVariables);
-		System.out.println("g: " + Arrays.toString(g));
-		double[] z = new double[numberOfVariables - numberOfObjectives + 1];
+	public double[] getZ(double[] y, int m, PSShapeFunction G) {
+		double[] g = G.apply(y, m, numberOfVariables);
+		double[] z = new double[numberOfVariables - m];
 		
-		for (int i = numberOfObjectives - 1; i < numberOfVariables; i++) {
-			double diff = y[i] - g[i - numberOfObjectives + 1];
-			z[i - numberOfObjectives + 1] = Math.abs(diff) < EPSILON ? 0.0 : diff;
+		for (int i = m; i < numberOfVariables; i++) {
+			double diff = y[i] - g[i - m];
+			z[i - m] = Math.abs(diff) < EPSILON ? 0.0 : diff;
 		}
 
 		return z;
