@@ -18,6 +18,8 @@
 package org.moeaframework.problem.DTLZ;
 
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.spi.RegisteredProblemProvider;
@@ -88,16 +90,25 @@ public class DTLZProblemProvider extends RegisteredProblemProvider {
 		name = name.toUpperCase(Locale.ROOT);
 		
 		try {
-			if (name.startsWith("DTLZ1_")) {
-				return new DTLZ1(Integer.parseInt(name.substring(6)));
-			} else if (name.startsWith("DTLZ2_")) {
-				return new DTLZ2(Integer.parseInt(name.substring(6)));
-			} else if (name.startsWith("DTLZ3_")) {
-				return new DTLZ3(Integer.parseInt(name.substring(6)));
-			} else if (name.startsWith("DTLZ4_")) {
-				return new DTLZ4(Integer.parseInt(name.substring(6)));
-			} else if (name.startsWith("DTLZ7_")) {
-				return new DTLZ7(Integer.parseInt(name.substring(6)));
+			Pattern pattern = Pattern.compile("DTLZ([0-9])_([0-9]+)");
+			Matcher matcher = pattern.matcher(name);
+			
+			if (matcher.matches()) {
+				int instance = Integer.parseInt(matcher.group(1));
+				int numberOfObjectives = Integer.parseInt(matcher.group(2));
+				
+				switch (instance) {
+				case 1:
+					return new DTLZ1(numberOfObjectives);
+				case 2:
+					return new DTLZ2(numberOfObjectives);
+				case 3:
+					return new DTLZ3(numberOfObjectives);
+				case 4:
+					return new DTLZ4(numberOfObjectives);
+				case 7:
+					return new DTLZ7(numberOfObjectives);
+				}
 			}
 		} catch (NumberFormatException e) {
 			return null;

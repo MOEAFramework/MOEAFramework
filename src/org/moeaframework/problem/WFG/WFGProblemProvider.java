@@ -18,6 +18,8 @@
 package org.moeaframework.problem.WFG;
 
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.spi.RegisteredProblemProvider;
@@ -93,33 +95,33 @@ public class WFGProblemProvider extends RegisteredProblemProvider {
 		name = name.toUpperCase(Locale.ROOT);
 		
 		try {
-			if (name.startsWith("WFG1_")) {
-				int numberOfObjectives = Integer.parseInt(name.substring(5));
-				return new WFG1(numberOfObjectives - 1, 10, numberOfObjectives);
-			} else if (name.startsWith("WFG2_")) {
-				int numberOfObjectives = Integer.parseInt(name.substring(5));
-				return new WFG2(numberOfObjectives - 1, 10, numberOfObjectives);
-			} else if (name.startsWith("WFG3_")) {
-				int numberOfObjectives = Integer.parseInt(name.substring(5));
-				return new WFG3(numberOfObjectives - 1, 10, numberOfObjectives);
-			} else if (name.startsWith("WFG4_")) {
-				int numberOfObjectives = Integer.parseInt(name.substring(5));
-				return new WFG4(numberOfObjectives - 1, 10, numberOfObjectives);
-			} else if (name.startsWith("WFG5_")) {
-				int numberOfObjectives = Integer.parseInt(name.substring(5));
-				return new WFG5(numberOfObjectives - 1, 10, numberOfObjectives);
-			} else if (name.startsWith("WFG6_")) {
-				int numberOfObjectives = Integer.parseInt(name.substring(5));
-				return new WFG6(numberOfObjectives - 1, 10, numberOfObjectives);
-			} else if (name.startsWith("WFG7_")) {
-				int numberOfObjectives = Integer.parseInt(name.substring(5));
-				return new WFG7(numberOfObjectives - 1, 10, numberOfObjectives);
-			} else if (name.startsWith("WFG8_")) {
-				int numberOfObjectives = Integer.parseInt(name.substring(5));
-				return new WFG8(numberOfObjectives - 1, 10, numberOfObjectives);
-			} else if (name.startsWith("WFG9_")) {
-				int numberOfObjectives = Integer.parseInt(name.substring(5));
-				return new WFG9(numberOfObjectives - 1, 10, numberOfObjectives);
+			Pattern pattern = Pattern.compile("WFG([0-9])_([0-9]+)");
+			Matcher matcher = pattern.matcher(name);
+			
+			if (matcher.matches()) {
+				int instance = Integer.parseInt(matcher.group(1));
+				int numberOfObjectives = Integer.parseInt(matcher.group(2));
+				
+				switch (instance) {
+				case 1:
+					return new WFG1(numberOfObjectives - 1, 10, numberOfObjectives);
+				case 2:
+					return new WFG2(numberOfObjectives - 1, 10, numberOfObjectives);
+				case 3:
+					return new WFG3(numberOfObjectives - 1, 10, numberOfObjectives);
+				case 4:
+					return new WFG4(numberOfObjectives - 1, 10, numberOfObjectives);
+				case 5:
+					return new WFG5(numberOfObjectives - 1, 10, numberOfObjectives);
+				case 6:
+					return new WFG6(numberOfObjectives - 1, 10, numberOfObjectives);
+				case 7:
+					return new WFG7(numberOfObjectives - 1, 10, numberOfObjectives);
+				case 8:
+					return new WFG8(numberOfObjectives - 1, 10, numberOfObjectives);
+				case 9:
+					return new WFG9(numberOfObjectives - 1, 10, numberOfObjectives);
+				}
 			}
 		} catch (NumberFormatException e) {
 			return null;
