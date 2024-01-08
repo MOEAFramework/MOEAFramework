@@ -6,6 +6,8 @@ This page documents notable changes introduced in each chronological release of 
 
   * Fixes bug #394 where changing the aggregate fitness comparator used by a GeneticAlgorithm would
     not update the comparator used by its selection operator.
+    
+  * Adds ZCAT test problem suite.
 
 
 ## Version 3.9 (05 Jan 2024)

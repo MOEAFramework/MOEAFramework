@@ -280,6 +280,10 @@ new problems written in Java or other languages can be easily incorporated.</p>
   	<td>9 large-scale, real-valued problems by Cheng et al. (2017)</td>
   </tr>
   <tr>
+  	<td style="font-weight: bold">ZCAT</td>
+  	<td>20 challenging test problems for multi- and many-objective optimization by Zapotecas-Martínez et al. (2023)</td>
+  </tr>
+  <tr>
     <td style="font-weight: bold">BBOB-2016</td>
     <td>55 bi-objective problems from the BBOB workshop hosted at GECCO 2016</td>
   </tr>
