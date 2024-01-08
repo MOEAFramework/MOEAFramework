@@ -28,7 +28,7 @@ public class SchafferTest extends ProblemTest {
 
 	@Test
 	public void testJMetal() {
-		test("Schaffer");
+		testAgainstJMetal("Schaffer");
 	}
 	
 	@Test

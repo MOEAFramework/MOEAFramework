@@ -4,10 +4,10 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.TestUtils;
 import org.moeaframework.core.Problem;
-import org.moeaframework.core.spi.ProblemFactory;
+import org.moeaframework.problem.ProblemTest;
 import org.moeaframework.util.Vector;
 
-public class ZCAT9Test {
+public class ZCAT9Test extends ProblemTest {
 
 	@Test
 	public void test() {
@@ -37,13 +37,8 @@ public class ZCAT9Test {
 	
 	@Test
 	public void testProvider() {
-		Assert.assertNotNull(ProblemFactory.getInstance().getProblem("ZCAT9_2"));
-		Assert.assertNotNull(ProblemFactory.getInstance().getReferenceSet("ZCAT9_2"));
-		Assert.assertEquals(2, ProblemFactory.getInstance().getProblem("ZCAT9_2").getNumberOfObjectives());
-		
-		Assert.assertNotNull(ProblemFactory.getInstance().getProblem("ZCAT9_3"));
-		Assert.assertNull(ProblemFactory.getInstance().getReferenceSet("ZCAT9_3"));
-		Assert.assertEquals(3, ProblemFactory.getInstance().getProblem("ZCAT9_3").getNumberOfObjectives());
+		assertProblemDefined("ZCAT9_2", 2, true);
+		assertProblemDefined("ZCAT9_3", 3, false);
 	}
 	
 }

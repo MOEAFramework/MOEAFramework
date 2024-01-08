@@ -113,7 +113,10 @@ public class WFGTest extends ProblemTest {
 	}
 
 	public void test(String problem, int M) {
-		test(problem + "_" + M);
+		String problemName = problem + "_" + M;
+		
+		assertProblemDefined(problemName, M);
+		testAgainstJMetal(problemName);
 	}
 
 }

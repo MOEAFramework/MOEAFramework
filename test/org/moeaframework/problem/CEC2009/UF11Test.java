@@ -23,24 +23,30 @@ import org.moeaframework.TestThresholds;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.core.variable.EncodingUtils;
+import org.moeaframework.problem.ProblemTest;
 
-public class UF11Test {
+public class UF11Test extends ProblemTest {
 	
 	@Test
 	public void test() {
-		UF11 uf11 = new UF11();
-		RandomInitialization initialization = new RandomInitialization(uf11);
+		UF11 problem = new UF11();
+		RandomInitialization initialization = new RandomInitialization(problem);
 		
 		for (Solution solution : initialization.initialize(TestThresholds.SAMPLES)) {
 			double[] x = EncodingUtils.getReal(solution);
-			double[] f = new double[uf11.getNumberOfObjectives()];
+			double[] f = new double[problem.getNumberOfObjectives()];
 			
-			R2_DTLZ2_M5(x, f, uf11.getNumberOfVariables(), uf11.getNumberOfObjectives());
+			R2_DTLZ2_M5(x, f, problem.getNumberOfVariables(), problem.getNumberOfObjectives());
 			
-			uf11.evaluate(solution);
+			problem.evaluate(solution);
 			
 			Assert.assertArrayEquals(f, solution.getObjectives(), TestThresholds.SOLUTION_EPS);
 		}
+	}
+	
+	@Test
+	public void testProvider() {
+		assertProblemDefined("UF11", 5);
 	}
 	
 	/* 

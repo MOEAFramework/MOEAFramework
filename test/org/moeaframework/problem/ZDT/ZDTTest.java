@@ -27,32 +27,38 @@ public class ZDTTest extends ProblemTest {
 
 	@Test
 	public void testZDT1() {
-		test("ZDT1");
+		assertProblemDefined("ZDT1", 2);
+		testAgainstJMetal("ZDT1");
 	}
 
 	@Test
 	public void testZDT2() {
-		test("ZDT2");
+		assertProblemDefined("ZDT2", 2);
+		testAgainstJMetal("ZDT2");
 	}
 
 	@Test
 	public void testZDT3() {
-		test("ZDT3");
+		assertProblemDefined("ZDT3", 2);
+		testAgainstJMetal("ZDT3");
 	}
 
 	@Test
 	public void testZDT4() {
-		test("ZDT4");
+		assertProblemDefined("ZDT4", 2);
+		testAgainstJMetal("ZDT4");
 	}
 
 	@Test
 	public void testZDT5() {
-		test("ZDT5");
+		assertProblemDefined("ZDT5", 2);
+		testAgainstJMetal("ZDT5");
 	}
 
 	@Test
 	public void testZDT6() {
-		test("ZDT6");
+		assertProblemDefined("ZDT6", 2);
+		testAgainstJMetal("ZDT6");
 	}
 
 }

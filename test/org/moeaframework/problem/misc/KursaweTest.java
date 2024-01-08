@@ -24,7 +24,7 @@ public class KursaweTest extends ProblemTest {
 
 	@Test
 	public void testJMetal() {
-		test("Kursawe");
+		testAgainstJMetal("Kursawe");
 	}
 
 }

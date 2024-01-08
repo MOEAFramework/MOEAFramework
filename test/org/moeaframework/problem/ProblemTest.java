@@ -21,6 +21,7 @@ import org.junit.Assert;
 import org.junit.Assume;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.TestUtils;
+import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.initialization.RandomInitialization;
@@ -40,27 +41,57 @@ public abstract class ProblemTest {
 	}
 	
 	/**
+	 * Asserts that the problem is defined and has the given properties.
+	 * 
+	 * @param problemName the problem name
+	 * @param expectedNumberOfObjectives the expected number of objectives
+	 */
+	public void assertProblemDefined(String problemName, int expectedNumberOfObjectives) {
+		assertProblemDefined(problemName, expectedNumberOfObjectives, true);
+	}
+	
+	/**
+	 * Asserts that the problem is defined and has the given properties.
+	 * 
+	 * @param problemName the problem name
+	 * @param expectedNumberOfObjectives the expected number of objectives
+	 * @param expectReferenceSet {@code true} if it should have a reference set
+	 */
+	public void assertProblemDefined(String problemName, int expectedNumberOfObjectives, boolean expectReferenceSet) {
+		Problem problem = ProblemFactory.getInstance().getProblem(problemName);
+		Assert.assertNotNull(problem);
+		Assert.assertEquals(expectedNumberOfObjectives, problem.getNumberOfObjectives());
+		
+		if (expectReferenceSet) {
+			NondominatedPopulation referenceSet = ProblemFactory.getInstance().getReferenceSet(problemName);
+			Assert.assertNotNull(referenceSet);
+			Assert.assertTrue(referenceSet.size() > 0);
+			Assert.assertEquals(expectedNumberOfObjectives, referenceSet.get(0).getNumberOfObjectives());
+		}
+	}
+	
+	/**
 	 * Tests the MOEA Framework implementation against the JMetal implementation.
 	 * 
-	 * @param problem the problem name
+	 * @param problemName the problem name
 	 */
-	public void test(String problem) {
-		test(problem, true);
+	public void testAgainstJMetal(String problemName) {
+		testAgainstJMetal(problemName, true);
 	}
 
 	/**
 	 * Tests the MOEA Framework implementation against the JMetal implementation.
 	 * 
-	 * @param problem the problem name
+	 * @param problemName the problem name
 	 * @param exactConstraints if {@code true}, require identical constraint values
 	 */
-	public void test(String problem, boolean exactConstraints) {
+	public void testAgainstJMetal(String problemName, boolean exactConstraints) {
 		assumeJMetalExists();
 		
-		Problem problemA = ProblemFactory.getInstance().getProblem(problem);
-		Problem problemB = ProblemFactory.getInstance().getProblem(problem + "-JMetal");
+		Problem problemA = ProblemFactory.getInstance().getProblem(problemName);
+		Problem problemB = ProblemFactory.getInstance().getProblem(problemName + "-JMetal");
 
-		test(problemA, problemB, exactConstraints);
+		testAgainstJMetal(problemA, problemB, exactConstraints);
 	}
 	
 	/**
@@ -70,7 +101,7 @@ public abstract class ProblemTest {
 	 * @param problemB the second problem
 	 * @param exactConstraints if {@code true}, require identical constraint values
 	 */
-	protected void test(Problem problemA, Problem problemB, boolean exactConstraints) {
+	protected void testAgainstJMetal(Problem problemA, Problem problemB, boolean exactConstraints) {
 		RandomInitialization initialization = new RandomInitialization(problemA);
 		
 		for (int i = 0; i < TestThresholds.SAMPLES; i++) {

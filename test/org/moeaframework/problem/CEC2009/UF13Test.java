@@ -23,28 +23,34 @@ import org.moeaframework.TestThresholds;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.core.variable.EncodingUtils;
+import org.moeaframework.problem.ProblemTest;
 
 /**
  * Tests if the {@link UF13} class (which is now an alias to {@code WFG1})
  * matches the test function defined in the CEC2009 code.
  */
-public class UF13Test {
+public class UF13Test extends ProblemTest {
 	
 	@Test
 	public void test() {
-		UF13 uf13 = new UF13();
-		RandomInitialization initialization = new RandomInitialization(uf13);
+		UF13 problem = new UF13();
+		RandomInitialization initialization = new RandomInitialization(problem);
 		
 		for (Solution solution : initialization.initialize(TestThresholds.SAMPLES)) {
 			double[] x = EncodingUtils.getReal(solution);
-			double[] f = new double[uf13.getNumberOfObjectives()];
+			double[] f = new double[problem.getNumberOfObjectives()];
 			
-			WFG1_M5(x, f, uf13.getNumberOfVariables(), uf13.getNumberOfObjectives());
+			WFG1_M5(x, f, problem.getNumberOfVariables(), problem.getNumberOfObjectives());
 			
-			uf13.evaluate(solution);
+			problem.evaluate(solution);
 			
 			Assert.assertArrayEquals(f, solution.getObjectives(), TestThresholds.SOLUTION_EPS);
 		}
+	}
+	
+	@Test
+	public void testProvider() {
+		assertProblemDefined("UF13", 5);
 	}
 	
 	/* 

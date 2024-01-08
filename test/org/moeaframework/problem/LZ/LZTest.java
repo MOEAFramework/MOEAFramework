@@ -17,56 +17,65 @@
  */
 package org.moeaframework.problem.LZ;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.moeaframework.problem.ProblemTest;
 
 public class LZTest extends ProblemTest {
 
 	@Test
-	@Ignore("JMetal uses 10 variables instead of 30")
 	public void testLZ1() {
-		test("LZ1");
+		assertProblemDefined("LZ1", 2);
+		
+		// JMetal uses 10 variables instead of 30 so this check isn't compatible
+		//testAgainstJMetal("LZ1");
 	}
 
 	@Test
 	public void testLZ2() {
-		test("LZ2");
+		assertProblemDefined("LZ2", 2);
+		testAgainstJMetal("LZ2");
 	}
 
 	@Test
 	public void testLZ3() {
-		test("LZ3");
+		assertProblemDefined("LZ3", 2);
+		testAgainstJMetal("LZ3");
 	}
 
 	@Test
 	public void testLZ4() {
-		test("LZ4");
+		assertProblemDefined("LZ4", 2);
+		testAgainstJMetal("LZ4");
 	}
 
 	@Test
 	public void testLZ5() {
-		test("LZ5");
+		assertProblemDefined("LZ5", 2);
+		testAgainstJMetal("LZ5");
 	}
 
 	@Test
 	public void testLZ6() {
-		test("LZ6");
+		assertProblemDefined("LZ6", 3);
+		testAgainstJMetal("LZ6");
 	}
 
 	@Test
 	public void testLZ7() {
-		test("LZ7");
+		assertProblemDefined("LZ7", 2);
+		testAgainstJMetal("LZ7");
 	}
 
 	@Test
 	public void testLZ8() {
-		test("LZ8");
+		assertProblemDefined("LZ8", 2);
+		testAgainstJMetal("LZ8");
 	}
 
 	@Test
 	public void testLZ9() {
-		test("LZ9");
+		assertProblemDefined("LZ9", 2);
+		testAgainstJMetal("LZ9");
 	}
 
 }

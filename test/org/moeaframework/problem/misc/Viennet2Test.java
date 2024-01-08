@@ -28,7 +28,7 @@ public class Viennet2Test extends ProblemTest {
 
 	@Test
 	public void testJMetal() {
-		test("Viennet2");
+		testAgainstJMetal("Viennet2");
 	}
 	
 	@Test

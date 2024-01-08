@@ -28,7 +28,7 @@ public class Osyczka2Test extends ProblemTest {
 
 	@Test
 	public void testJMetal() {
-		test("Osyczka2", false);
+		testAgainstJMetal("Osyczka2", false);
 	}
 	
 	@Test

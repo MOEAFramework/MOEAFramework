@@ -27,7 +27,7 @@ public class Fonseca2Test extends ProblemTest {
 
 	@Test
 	public void testJMetal() {
-		test("Fonseca2");
+		testAgainstJMetal("Fonseca2");
 	}
 	
 	@Test

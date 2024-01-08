@@ -28,7 +28,7 @@ public class SrinivasTest extends ProblemTest {
 
 	@Test
 	public void testJMetal() {
-		test("Srinivas", false);
+		testAgainstJMetal("Srinivas", false);
 	}
 	
 	@Test

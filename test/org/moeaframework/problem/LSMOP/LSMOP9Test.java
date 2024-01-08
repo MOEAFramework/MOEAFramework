@@ -21,10 +21,10 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.TestUtils;
 import org.moeaframework.core.Problem;
-import org.moeaframework.core.spi.ProblemFactory;
+import org.moeaframework.problem.ProblemTest;
 import org.moeaframework.util.Vector;
 
-public class LSMOP9Test {
+public class LSMOP9Test extends ProblemTest {
 	
 	@Test
 	public void test2() {
@@ -79,13 +79,8 @@ public class LSMOP9Test {
 	
 	@Test
 	public void testProvider() {
-		Assert.assertNotNull(ProblemFactory.getInstance().getProblem("LSMOP9_2"));
-		Assert.assertNotNull(ProblemFactory.getInstance().getReferenceSet("LSMOP9_2"));
-		Assert.assertEquals(2, ProblemFactory.getInstance().getProblem("LSMOP9_2").getNumberOfObjectives());
-		
-		Assert.assertNotNull(ProblemFactory.getInstance().getProblem("LSMOP9_3"));
-		Assert.assertNull(ProblemFactory.getInstance().getReferenceSet("LSMOP9_3"));
-		Assert.assertEquals(3, ProblemFactory.getInstance().getProblem("LSMOP9_3").getNumberOfObjectives());
+		assertProblemDefined("LSMOP9_2", 2, true);
+		assertProblemDefined("LSMOP9_3", 3, false);
 	}
 
 }

@@ -53,7 +53,10 @@ public class DTLZ4Test extends ProblemTest {
 	 * @param M the number of objectives
 	 */
 	protected void test(int M) {
-		test("DTLZ4_" + M);
+		String problemName = "DTLZ4_" + M;
+		
+		assertProblemDefined(problemName, M);
+		testAgainstJMetal(problemName);
 	}
 
 	/**

@@ -28,7 +28,7 @@ public class TanakaTest extends ProblemTest {
 
 	@Test
 	public void testJMetal() {
-		test("Tanaka", false);
+		testAgainstJMetal("Tanaka", false);
 	}
 	
 	@Test

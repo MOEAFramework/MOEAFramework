@@ -24,52 +24,62 @@ public class CEC2009Test extends ProblemTest {
 
 	@Test
 	public void testUF1() {
-		test("UF1");
+		assertProblemDefined("UF1", 2);
+		testAgainstJMetal("UF1");
 	}
 
 	@Test
 	public void testUF2() {
-		test("UF2");
+		assertProblemDefined("UF2", 2);
+		testAgainstJMetal("UF2");
 	}
 
 	@Test
 	public void testUF3() {
-		test("UF3");
+		assertProblemDefined("UF3", 2);
+		testAgainstJMetal("UF3");
 	}
 
 	@Test
 	public void testUF4() {
-		test("UF4");
+		assertProblemDefined("UF4", 2);
+		testAgainstJMetal("UF4");
 	}
 
 	@Test
 	public void testUF5() {
-		test("UF5");
+		assertProblemDefined("UF5", 2);
+		testAgainstJMetal("UF5");
 	}
 
 	@Test
 	public void testUF6() {
-		test("UF6");
+		assertProblemDefined("UF6", 2);
+		testAgainstJMetal("UF6");
 	}
 
 	@Test
 	public void testUF7() {
-		test("UF7");
+		assertProblemDefined("UF7", 2);
+		testAgainstJMetal("UF7");
 	}
 
 	@Test
 	public void testUF8() {
-		test("UF8");
+		assertProblemDefined("UF8", 3);
+		testAgainstJMetal("UF8");
 	}
 
 	@Test
 	public void testUF9() {
-		test("UF9");
+		assertProblemDefined("UF9", 3);
+		testAgainstJMetal("UF9");
 	}
 
 	@Test
 	public void testUF10() {
-		test("UF10");
+		assertProblemDefined("UF10", 3);
+		testAgainstJMetal("UF10");
 	}
 
 }
