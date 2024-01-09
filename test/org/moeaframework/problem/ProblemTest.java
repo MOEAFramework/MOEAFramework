@@ -42,6 +42,19 @@ public abstract class ProblemTest {
 	}
 	
 	/**
+	 * Assume that the given problem exists, and if not skip the test.
+	 * 
+	 * @param problemName the problem name
+	 */
+	public void assumeProblemDefined(String problemName) {
+		try {
+			ProblemFactory.getInstance().getProblem(problemName);
+		} catch (ProviderNotFoundException e) {
+			Assume.assumeNoException("problem " + problemName + " not found, skipping test", e);
+		}
+	}
+	
+	/**
 	 * Asserts that the problem is defined and has the given properties.
 	 * 
 	 * @param problemName the problem name
