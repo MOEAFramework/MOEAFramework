@@ -18,56 +18,55 @@
 package org.moeaframework.problem.CDTLZ;
 
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
-import org.moeaframework.Executor;
 import org.moeaframework.TestThresholds;
-import org.moeaframework.core.NondominatedPopulation;
+import org.moeaframework.TestUtils;
+import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
+import org.moeaframework.problem.ProblemTest;
 import org.moeaframework.problem.DTLZ.DTLZ2;
 
 /**
  * Tests the {@link C2_DTLZ2} class.
  */
-public class C2_DTLZ2Test {
+public class C2_DTLZ2Test extends ProblemTest {
 	
-	/**
-	 * Visual test of the Pareto front.  Copy the output and generate a plot,
-	 * such as with R, and compare against the figures in Jain and Deb (2014):
-	 * <pre>
-	 *     library(rgl)
-	 *     x = matrix(c(<paste text>), ncol=3, byrow=T)
-	 *     plot3d(x)
-	 * </pre>
-	 */
 	@Test
-	@Ignore("skip visual tests")
-	public void visualTest() {
-		NondominatedPopulation result = new Executor()
-				.withProblemClass(C2_DTLZ2.class, 3)
-				.withAlgorithm("NSGAIII")
-				.withMaxEvaluations(100000)
-				.run();
-
-		for (Solution solution : result) {
-			if (!solution.violatesConstraints()) {
-				System.out.format("%.4f, %.4f, %.4f,%n",
-						solution.getObjective(0),
-						solution.getObjective(1),
-						solution.getObjective(2));
-			}
-		}
+	public void testProvider() {
+		assertProblemDefined("C2_DTLZ2_2", 2, false);
+		assertProblemDefined("C2_DTLZ2_3", 3, false);
 	}
 	
 	@Test
 	public void test() {
-		test(2, 0.4);
-		test(3, 0.4);
-		test(5, 0.5);
-		test(8, 0.5);
-		test(10, 0.5);
-		test(15, 0.5);
+		Problem problem = new C2_DTLZ2(12, 3);
+		
+		Assert.assertArrayEquals(new double[] { 3.5, 0.0, 0.0 }, 
+				TestUtils.evaluateAtLowerBounds(problem).getObjectives(),
+				0.000001);
+		
+		Assert.assertArrayEquals(new double[] { 6.09 }, 
+				TestUtils.evaluateAtLowerBounds(problem).getConstraints(),
+				0.000001);
+		
+		Assert.assertArrayEquals(new double[] { 1.31228981e-32, 2.14313190e-16, 3.5 }, 
+				TestUtils.evaluateAtUpperBounds(problem).getObjectives(),
+				0.000001);
+		
+		Assert.assertArrayEquals(new double[] { 6.09 }, 
+				TestUtils.evaluateAtUpperBounds(problem).getConstraints(),
+				0.000001);
+	}
+	
+	@Test
+	public void testGenerate() {
+		testGenerate(2, 0.4);
+		testGenerate(3, 0.4);
+		testGenerate(5, 0.5);
+		testGenerate(8, 0.5);
+		testGenerate(10, 0.5);
+		testGenerate(15, 0.5);
 	}
 	
 	/**
@@ -76,7 +75,7 @@ public class C2_DTLZ2Test {
 	 * 
 	 * @param numberOfObjectives the number of objectives
 	 */
-	public void test(int numberOfObjectives, double r) {
+	public void testGenerate(int numberOfObjectives, double r) {
 		try (C2_DTLZ2 problem = new C2_DTLZ2(numberOfObjectives);
 				DTLZ2 originalProblem = new DTLZ2(numberOfObjectives)) {
 			for (int i = 0; i < TestThresholds.SAMPLES; i++) {

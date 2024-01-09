@@ -20,21 +20,51 @@ package org.moeaframework.problem.CDTLZ;
 import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.TestThresholds;
+import org.moeaframework.TestUtils;
+import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
+import org.moeaframework.problem.ProblemTest;
 
 /**
- * Tests the {@link C1_DTLZ3} class.
+ * Tests the {@link C1_DTLZ1} class.
  */
-public class C1_DTLZ1Test {
+public class C1_DTLZ1Test extends ProblemTest {
+	
+	@Test
+	public void testProvider() {
+		assertProblemDefined("C1_DTLZ1_2", 2, false);
+		assertProblemDefined("C1_DTLZ1_3", 3, false);
+	}
 	
 	@Test
 	public void test() {
-		test(2);
-		test(3);
-		test(5);
-		test(8);
-		test(10);
-		test(15);
+		Problem problem = new C1_DTLZ1(12, 3);
+		
+		Assert.assertArrayEquals(new double[] { 0.0, 0.0, 125.5 }, 
+				TestUtils.evaluateAtLowerBounds(problem).getObjectives(),
+				0.000001);
+		
+		Assert.assertArrayEquals(new double[] { -208.16666667 }, 
+				TestUtils.evaluateAtLowerBounds(problem).getConstraints(),
+				0.000001);
+		
+		Assert.assertArrayEquals(new double[] { 125.5, 0.0, 0.0 }, 
+				TestUtils.evaluateAtUpperBounds(problem).getObjectives(),
+				0.000001);
+		
+		Assert.assertArrayEquals(new double[] { -250.0 }, 
+				TestUtils.evaluateAtUpperBounds(problem).getConstraints(),
+				0.000001);
+	}
+	
+	@Test
+	public void testGenerate() {
+		testGenerate(2);
+		testGenerate(3);
+		testGenerate(5);
+		testGenerate(8);
+		testGenerate(10);
+		testGenerate(15);
 	}
 	
 	/**
@@ -42,7 +72,7 @@ public class C1_DTLZ1Test {
 	 * 
 	 * @param numberOfObjectives the number of objectives
 	 */
-	public void test(int numberOfObjectives) {
+	public void testGenerate(int numberOfObjectives) {
 		try (C1_DTLZ3 problem = new C1_DTLZ3(numberOfObjectives)) {
 			for (int i = 0; i < TestThresholds.SAMPLES; i++) {
 				Solution solution = problem.generate();

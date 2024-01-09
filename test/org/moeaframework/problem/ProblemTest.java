@@ -26,6 +26,7 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.core.spi.ProblemFactory;
+import org.moeaframework.core.spi.ProviderNotFoundException;
 
 /**
  * Utilities for testing problems against multiple implementations.

@@ -51,7 +51,7 @@ public class CDTLZProblemProvider extends ProblemProvider {
 			} else if (name.startsWith("C3_DTLZ4_")) {
 				return new C3_DTLZ4(Integer.parseInt(name.substring(9)));
 			} else if (name.startsWith("CONVEX_C2_DTLZ2_")) {
-				return new ConvexC2_DTLZ2(Integer.parseInt(name.substring(15)));
+				return new ConvexC2_DTLZ2(Integer.parseInt(name.substring(16)));
 			}
 		} catch (NumberFormatException e) {
 			return null;
