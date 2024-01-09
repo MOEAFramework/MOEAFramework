@@ -22,7 +22,6 @@
 
 * [API Specification (Javadoc)](http://moeaframework.org/javadoc/index.html)
 * [Developers Guide](developers.md)
-* [How to Contribute](contributing.md)
 
 ## Appendix
 
