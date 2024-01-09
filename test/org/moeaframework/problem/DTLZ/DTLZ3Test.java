@@ -20,6 +20,8 @@ package org.moeaframework.problem.DTLZ;
 import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.TestThresholds;
+import org.moeaframework.TestUtils;
+import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.problem.AnalyticalProblem;
 import org.moeaframework.problem.ProblemTest;
@@ -77,6 +79,19 @@ public class DTLZ3Test extends ProblemTest {
 				Assert.assertEquals(1.0, Math.sqrt(sum), TestThresholds.SOLUTION_EPS);
 			}
 		}
+	}
+	
+	@Test
+	public void testBounds() {
+		Problem problem = new DTLZ3(10, 3);
+		
+		Assert.assertArrayEquals(new double[] { 201.0, 0.0, 0.0 }, 
+				TestUtils.evaluateAtLowerBounds(problem).getObjectives(),
+				0.000001);
+		
+		Assert.assertArrayEquals(new double[] { 7.53629291e-31, 1.23077003e-14, 2.01000000e+02 }, 
+				TestUtils.evaluateAtUpperBounds(problem).getObjectives(),
+				0.000001);
 	}
 
 }

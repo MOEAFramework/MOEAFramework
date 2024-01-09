@@ -17,7 +17,10 @@
  */
 package org.moeaframework.problem.DTLZ;
 
+import org.junit.Assert;
 import org.junit.Test;
+import org.moeaframework.TestUtils;
+import org.moeaframework.core.Problem;
 import org.moeaframework.problem.ProblemTest;
 
 /**
@@ -51,6 +54,19 @@ public class DTLZ7Test extends ProblemTest {
 		
 		assertProblemDefined(problemName, M);
 		testAgainstJMetal(problemName);
+	}
+	
+	@Test
+	public void testBounds() {
+		Problem problem = new DTLZ7(3);
+		
+		Assert.assertArrayEquals(new double[] { 0.0, 0.0, 6.0 }, 
+				TestUtils.evaluateAtLowerBounds(problem).getObjectives(),
+				0.000001);
+		
+		Assert.assertArrayEquals(new double[] { 1.0, 1.0, 31.0 }, 
+				TestUtils.evaluateAtUpperBounds(problem).getObjectives(),
+				0.000001);
 	}
 
 }
