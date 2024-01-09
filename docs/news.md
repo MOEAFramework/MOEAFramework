@@ -8,6 +8,9 @@ This page documents notable changes introduced in each chronological release of 
     not update the comparator used by its selection operator.
     
   * Adds ZCAT test problem suite.
+  
+  * Adds feasibility ratio calculator that estimates the difficulty of constrained problems by measuring
+    the percentage of randomly-generated solutions that are feasible.
 
 
 ## Version 3.9 (05 Jan 2024)
