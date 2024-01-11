@@ -30,35 +30,40 @@ import org.moeaframework.problem.ProblemTest;
  * Tests the {@link DTLZ3} class.
  */
 public class DTLZ3Test extends ProblemTest {
-
-	/**
-	 * Tests the 2D case.
-	 */
+	
 	@Test
-	public void testDTLZ3_2D() {
-		test(2);
-		testReferenceSet(2);
-	}
-
-	/**
-	 * Tests the 3D case.
-	 */
-	@Test
-	public void testDTLZ3_3D() {
-		test(3);
-		testReferenceSet(3);
-	}
-
-	/**
-	 * Asserts that the {@link DTLZ3#evaluate} method works correctly.
-	 * 
-	 * @param M the number of objectives
-	 */
-	protected void test(int M) {
-		String problemName = "DTLZ3_" + M;
+	public void test() {
+		Problem problem = new DTLZ3(10, 3);
 		
-		assertProblemDefined(problemName, M);
-		testAgainstJMetal(problemName);
+		Assert.assertArrayEquals(new double[] { 201.0, 0.0, 0.0 }, 
+				TestUtils.evaluateAtLowerBounds(problem).getObjectives(),
+				0.000001);
+		
+		Assert.assertArrayEquals(new double[] { 7.53629291e-31, 1.23077003e-14, 2.01000000e+02 }, 
+				TestUtils.evaluateAtUpperBounds(problem).getObjectives(),
+				0.000001);
+	}
+
+	@Test
+	public void testJMetal2D() {
+		testAgainstJMetal("DTLZ3_2");
+	}
+
+	@Test
+	public void testJMetal3D() {
+		testAgainstJMetal("DTLZ3_3");
+	}
+	
+	@Test
+	public void testProvider() {
+		assertProblemDefined("DTLZ3_2", 2);
+		assertProblemDefined("DTLZ3_3", 3);
+	}
+	
+	@Test
+	public void testGenerate() {
+		testGenerate(2);
+		testGenerate(3);
 	}
 
 	/**
@@ -66,7 +71,7 @@ public class DTLZ3Test extends ProblemTest {
 	 * 
 	 * @param M the number of objectives
 	 */
-	protected void testReferenceSet(int M) {
+	protected void testGenerate(int M) {
 		try (AnalyticalProblem problem = new DTLZ3(M)) {
 			for (int i = 0; i < TestThresholds.SAMPLES; i++) {
 				Solution solution = problem.generate();
@@ -79,19 +84,6 @@ public class DTLZ3Test extends ProblemTest {
 				Assert.assertEquals(1.0, Math.sqrt(sum), TestThresholds.SOLUTION_EPS);
 			}
 		}
-	}
-	
-	@Test
-	public void testBounds() {
-		Problem problem = new DTLZ3(10, 3);
-		
-		Assert.assertArrayEquals(new double[] { 201.0, 0.0, 0.0 }, 
-				TestUtils.evaluateAtLowerBounds(problem).getObjectives(),
-				0.000001);
-		
-		Assert.assertArrayEquals(new double[] { 7.53629291e-31, 1.23077003e-14, 2.01000000e+02 }, 
-				TestUtils.evaluateAtUpperBounds(problem).getObjectives(),
-				0.000001);
 	}
 
 }

@@ -30,56 +30,6 @@ import org.moeaframework.problem.ProblemTest;
  * Tests the {@link DTLZ2} class.
  */
 public class DTLZ2Test extends ProblemTest {
-
-	/**
-	 * Tests the 2D case.
-	 */
-	@Test
-	public void testDTLZ2_2D() {
-		test(2);
-		testReferenceSet(2);
-	}
-
-	/**
-	 * Tests the 3D case.
-	 */
-	@Test
-	public void testDTLZ2_3D() {
-		test(3);
-		testReferenceSet(3);
-	}
-
-	/**
-	 * Asserts that the {@link DTLZ2#evaluate} method works correctly.
-	 * 
-	 * @param M the number of objectives
-	 */
-	protected void test(int M) {
-		String problemName = "DTLZ2_" + M;
-		
-		assertProblemDefined(problemName, M);
-		testAgainstJMetal(problemName);
-	}
-
-	/**
-	 * Tests if the {@link DTLZ2#generate} method works correctly.
-	 * 
-	 * @param M the number of objectives
-	 */
-	protected void testReferenceSet(int M) {
-		try (AnalyticalProblem problem = new DTLZ2(M)) {
-			for (int i = 0; i < TestThresholds.SAMPLES; i++) {
-				Solution solution = problem.generate();
-				double sum = 0.0;
-	
-				for (int j = 0; j < solution.getNumberOfObjectives(); j++) {
-					sum += Math.pow(solution.getObjective(j), 2.0);
-				}
-	
-				Assert.assertEquals(1.0, Math.sqrt(sum), TestThresholds.SOLUTION_EPS);
-			}
-		}
-	}
 	
 	@Test
 	public void testBounds() {
@@ -92,6 +42,48 @@ public class DTLZ2Test extends ProblemTest {
 		Assert.assertArrayEquals(new double[] { 1.12481984e-32, 1.83697020e-16, 3.0 }, 
 				TestUtils.evaluateAtUpperBounds(problem).getObjectives(),
 				0.000001);
+	}
+
+	@Test
+	public void testJMetal2D() {
+		testAgainstJMetal("DTLZ2_2");
+	}
+
+	@Test
+	public void testDTLZ2_3D() {
+		testAgainstJMetal("DTLZ2_3");
+	}
+
+	@Test
+	public void testProvider() {
+		assertProblemDefined("DTLZ2_2", 2);
+		assertProblemDefined("DTLZ2_3", 3);
+	}
+	
+	@Test
+	public void testGenerate() {
+		testGenerate(2);
+		testGenerate(3);
+	}
+
+	/**
+	 * Tests if the {@link DTLZ2#generate} method works correctly.
+	 * 
+	 * @param M the number of objectives
+	 */
+	protected void testGenerate(int M) {
+		try (AnalyticalProblem problem = new DTLZ2(M)) {
+			for (int i = 0; i < TestThresholds.SAMPLES; i++) {
+				Solution solution = problem.generate();
+				double sum = 0.0;
+	
+				for (int j = 0; j < solution.getNumberOfObjectives(); j++) {
+					sum += Math.pow(solution.getObjective(j), 2.0);
+				}
+	
+				Assert.assertEquals(1.0, Math.sqrt(sum), TestThresholds.SOLUTION_EPS);
+			}
+		}
 	}
 
 }

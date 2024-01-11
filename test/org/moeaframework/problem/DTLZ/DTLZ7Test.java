@@ -27,37 +27,9 @@ import org.moeaframework.problem.ProblemTest;
  * Tests the {@link DTLZ7} class.
  */
 public class DTLZ7Test extends ProblemTest {
-
-	/**
-	 * Tests the 2D case.
-	 */
-	@Test
-	public void testDTLZ7_2D() {
-		test(2);
-	}
-
-	/**
-	 * Tests the 3D case.
-	 */
-	@Test
-	public void testDTLZ7_3D() {
-		test(3);
-	}
-
-	/**
-	 * Asserts that the {@link DTLZ7#evaluate} method works correctly.
-	 * 
-	 * @param M the number of objectives
-	 */
-	protected void test(int M) {
-		String problemName = "DTLZ7_" + M;
-		
-		assertProblemDefined(problemName, M);
-		testAgainstJMetal(problemName);
-	}
 	
 	@Test
-	public void testBounds() {
+	public void test() {
 		Problem problem = new DTLZ7(3);
 		
 		Assert.assertArrayEquals(new double[] { 0.0, 0.0, 6.0 }, 
@@ -67,6 +39,22 @@ public class DTLZ7Test extends ProblemTest {
 		Assert.assertArrayEquals(new double[] { 1.0, 1.0, 31.0 }, 
 				TestUtils.evaluateAtUpperBounds(problem).getObjectives(),
 				0.000001);
+	}
+
+	@Test
+	public void testJMetal2D() {
+		testAgainstJMetal("DTLZ7_2");
+	}
+
+	@Test
+	public void testJMetal3D() {
+		testAgainstJMetal("DTLZ7_3");
+	}
+	
+	@Test
+	public void testProvider() {
+		assertProblemDefined("DTLZ7_2", 2);
+		assertProblemDefined("DTLZ7_3", 3);
 	}
 
 }

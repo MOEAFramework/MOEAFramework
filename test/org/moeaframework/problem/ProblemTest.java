@@ -29,7 +29,17 @@ import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.core.spi.ProviderNotFoundException;
 
 /**
- * Utilities for testing problems against multiple implementations.
+ * Utilities for testing problems.  While these are not strict requirements, these tests should cover:
+ * <ol>
+ *   <li>Testing that the problem and reference set (if applicable) can be constructed through the
+ *       {@link ProblemFactory} (use {@link #assertProblemDefined(String, int, boolean)})
+ *   <li>Test a handful of inputs to verify the {@link Problem#evaluate(Solution)} method is producing
+ *       correct values for the objectives and constraints (if applicable)
+ *   <li>If possible, test the problem against the JMetal implementation using {@link #testAgainstJMetal(String)}
+ *   <li>If an {@link AnalyticalProblem}, test that the generated optimal solutions are in fact optimal and
+ *       non-dominated
+ *   <li>Any other relevant tests to validate the problem
+ * </ol>
  */
 public abstract class ProblemTest {
 	
