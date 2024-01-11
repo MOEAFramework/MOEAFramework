@@ -22,7 +22,6 @@ import org.junit.Test;
 import org.moeaframework.TestUtils;
 import org.moeaframework.core.Problem;
 import org.moeaframework.problem.ProblemTest;
-import org.moeaframework.util.Vector;
 
 public class ZDT4Test extends ProblemTest {
 	
@@ -38,8 +37,8 @@ public class ZDT4Test extends ProblemTest {
 				TestUtils.evaluateAtUpperBounds(problem).getObjectives(),
 				0.000001);
 		
-		Assert.assertArrayEquals(new double[] { 0.5, 215.36985419 }, 
-				TestUtils.evaluateAt(problem, Vector.of(problem.getNumberOfVariables(), 0.5)).getObjectives(),
+		Assert.assertArrayEquals(new double[] { 0.5, 0.29289322 }, 
+				TestUtils.evaluateAt(problem, new double[] { 0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 }).getObjectives(),
 				0.000001);
 	}
 
