@@ -22,10 +22,21 @@ package org.moeaframework.problem.LSMOP;
  */
 public class LSMOP6 extends LSMOP {
 	
+	/**
+	 * Constructs the LSMOP6 problem.
+	 * 
+	 * @param M the number of objectives
+	 */
 	public LSMOP6(int M) {
 		this(M, DEFAULT_N_k);
 	}
 	
+	/**
+	 * Constructs the LSMOP6 problem.
+	 * 
+	 * @param M the number of objectives
+	 * @param N_k the number of subcomponents in each decision variable group
+	 */
 	public LSMOP6(int M, int N_k) {
 		super(M, N_k, ShapeFunction.Rosenbrock, ShapeFunction.Schwefel, LinkageFunction.NonLinear,
 				CorrelationMatrix.Overlapped, ParetoFrontGeometry.Convex);

@@ -21,7 +21,7 @@
  * <p>
  * References:
  * <ol>
- *   <li>S. Zapotecas-Martínez, C.A. Coello Coello, H.E. Aguirre & K. Tanaka (2023). "Challenging test problems for
+ *   <li>S. Zapotecas-Martínez, C.A. Coello Coello, H.E. Aguirre, and K. Tanaka (2023). "Challenging test problems for
  *       multi-and many-objective optimization." Swarm and Evolutionary Computation, Volume 81, 101350, ISSN 2210-6502.
  *       https://doi.org/10.1016/j.swevo.2023.101350
  *   <li>https://github.com/evo-mx/ZCAT

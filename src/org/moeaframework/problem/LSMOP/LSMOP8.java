@@ -22,10 +22,21 @@ package org.moeaframework.problem.LSMOP;
  */
 public class LSMOP8 extends LSMOP {
 	
+	/**
+	 * Constructs the LSMOP8 problem.
+	 * 
+	 * @param M the number of objectives
+	 */
 	public LSMOP8(int M) {
 		this(M, DEFAULT_N_k);
 	}
 	
+	/**
+	 * Constructs the LSMOP8 problem.
+	 * 
+	 * @param M the number of objectives
+	 * @param N_k the number of subcomponents in each decision variable group
+	 */
 	public LSMOP8(int M, int N_k) {
 		super(M, N_k, ShapeFunction.Griewank, ShapeFunction.Sphere, LinkageFunction.NonLinear,
 				CorrelationMatrix.Overlapped, ParetoFrontGeometry.Convex);

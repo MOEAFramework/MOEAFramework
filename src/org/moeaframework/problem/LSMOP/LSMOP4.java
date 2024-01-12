@@ -22,10 +22,21 @@ package org.moeaframework.problem.LSMOP;
  */
 public class LSMOP4 extends LSMOP {
 	
+	/**
+	 * Constructs the LSMOP4 problem.
+	 * 
+	 * @param M the number of objectives
+	 */
 	public LSMOP4(int M) {
 		this(M, DEFAULT_N_k);
 	}
 	
+	/**
+	 * Constructs the LSMOP4 problem.
+	 * 
+	 * @param M the number of objectives
+	 * @param N_k the number of subcomponents in each decision variable group
+	 */
 	public LSMOP4(int M, int N_k) {
 		super(M, N_k, ShapeFunction.Ackley, ShapeFunction.Griewank, LinkageFunction.Linear,
 				CorrelationMatrix.Separable, ParetoFrontGeometry.Linear);
