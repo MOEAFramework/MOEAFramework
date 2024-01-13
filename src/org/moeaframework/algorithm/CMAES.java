@@ -283,87 +283,200 @@ public class CMAES extends AbstractAlgorithm implements Configurable {
 		population = new Population();
 	}
 
+	/**
+	 * Returns the number of iterations in which only the covariance diagonal is used.
+	 * 
+	 * @return the number of iterations in which only the covariance diagonal is used
+	 */
 	public int getDiagonalIterations() {
 		return diagonalIterations;
 	}
 
+	/**
+	 * Sets the number of iterations in which only the covariance diagonal is used.  If set to {@code -1}, a default
+	 * value will be provided during initialization.  This property can only be configured before initialization.
+	 * 
+	 * @param diagonalIterations the number of iterations in which only the covariance diagonal is used
+	 */
 	@Property
 	public void setDiagonalIterations(int diagonalIterations) {
+		assertNotInitialized();
 		this.diagonalIterations = diagonalIterations;
 	}
 
-	
+	/**
+	 * Returns the number of offspring generated each iteration.
+	 * 
+	 * @return the number of offspring generated each iteration
+	 */
 	public int getLambda() {
 		return lambda;
 	}
 
+	/**
+	 * Sets the number of offspring generated each iteration.  If set to {@code -1}, a default value will be provided
+	 * during initialization.  This property can only be configured before initialization.
+	 * 
+	 * @param lambda the number of offspring generated each iteration
+	 */
 	@Property
 	public void setLambda(int lambda) {
+		assertNotInitialized();
 		this.lambda = lambda;
 	}
 
+	/**
+	 * Returns the overall standard deviation.
+	 * 
+	 * @return the overall standard deviation
+	 */
 	public double getSigma() {
 		return sigma;
 	}
 
+	/**
+	 * Sets the overall standard deviation.  If set to {@code -1}, a default value will be provided during
+	 * initialization.  This property can only be configured before initialization.
+	 * 
+	 * @param sigma the overall standard deviation
+	 */
 	@Property
 	public void setSigma(double sigma) {
+		assertNotInitialized();
 		this.sigma = sigma;
 	}
 
+	/**
+	 * Returns the learning rate.
+	 * 
+	 * @return the learning rate
+	 */
 	public double getCcov() {
 		return ccov;
 	}
 
+	/**
+	 * Sets the learning rate.  If set to {@code -1}, a default value will be provided during initialization.  This
+	 * property can only be configured before initialization.
+	 * 
+	 * @param ccov the learning rate
+	 */
 	@Property
 	public void setCcov(double ccov) {
+		assertNotInitialized();
 		this.ccov = ccov;
 	}
 
+	/**
+	 * Returns the learning rate when diagonal mode is active.
+	 * 
+	 * @return the learning rate when diagonal mode is active
+	 */
 	public double getCcovsep() {
 		return ccovsep;
 	}
 
+	/**
+	 * Sets the learning rate when diagonal mode is active.  If set to {@code -1}, a default value will be provided
+	 * during initialization.  This property can only be configured before initialization.
+	 * 
+	 * @param ccovsep the learning rate when diagonal mode is active
+	 */
 	@Property
 	public void setCcovsep(double ccovsep) {
+		assertNotInitialized();
 		this.ccovsep = ccovsep;
 	}
 
+	/**
+	 * Returns the step size of the cumulation parameter.
+	 * 
+	 * @return the step size of the cumulation parameter
+	 */
 	public double getCs() {
 		return cs;
 	}
 
+	/**
+	 * Sets the step size of the cumulation parameter.  If set to {@code -1}, a default value will be provided during
+	 * initialization.  This property can only be configured before initialization.
+	 * 
+	 * @param cs the step size of the cumulation parameter
+	 */
 	@Property
 	public void setCs(double cs) {
+		assertNotInitialized();
 		this.cs = cs;
 	}
 
+	/**
+	 * Returns the cumulation parameter.
+	 * 
+	 * @return the cumulation parameter
+	 */
 	public double getCc() {
 		return cc;
 	}
 
+	/**
+	 * Sets the cumulation parameter.  If set to {@code -1}, a default value will be provided during initialization.
+	 * This property can only be configured before initialization.
+	 * 
+	 * @param cc the cumulation parameter
+	 */
 	@Property
 	public void setCc(double cc) {
+		assertNotInitialized();
 		this.cc = cc;
 	}
 
+	/**
+	 * Returns the damping for step size.
+	 * 
+	 * @return the damping for step size
+	 */
 	public double getDamps() {
 		return damps;
 	}
 
+	/**
+	 * Sets the damping for step size.  If set to {@code -1}, a default value will be provided during initialization.
+	 * This property can only be configured before initialization.
+	 * 
+	 * @param damps the damping for step size
+	 */
 	@Property
 	public void setDamps(double damps) {
+		assertNotInitialized();
 		this.damps = damps;
 	}
 
+	/**
+	 * Returns the initial search point to start searching from, or {@code null} if no initial search point was
+	 * specified.
+	 * 
+	 * @return the initial search point to start searching from, or {@code null} if no initial search point was
+	 *         specified
+	 */
 	public double[] getInitialSearchPoint() {
 		return initialSearchPoint;
 	}
 	
+	/**
+	 * Returns the non-dominated archive of the best solutions found.
+	 * 
+	 * @return the non-dominated archive of the best solutions found
+	 */
 	public NondominatedPopulation getArchive() {
 		return archive;
 	}
 	
+	/**
+	 * Sets the non-dominated archive of the best solutions found.  This property can only be configured before
+	 * initialization.
+	 * 
+	 * @param archive the non-dominated archive of the best solutions found
+	 */
 	public void setArchive(NondominatedPopulation archive) {
 		assertNotInitialized();
 		this.archive = archive;

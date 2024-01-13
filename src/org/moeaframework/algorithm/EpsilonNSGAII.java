@@ -105,24 +105,45 @@ public class EpsilonNSGAII extends AdaptiveTimeContinuation implements Configura
 		return (NondominatedSortingPopulation)super.getPopulation();
 	}
 	
+	/**
+	 * Returns the variation operator currently in use by this algorithm.
+	 * 
+	 * @return the variation operator
+	 */
 	public Variation getVariation() {
 		return getAlgorithm().getVariation();
 	}
 	
+	/**
+	 * Replaces the variation operator to be used by this algorithm.
+	 * 
+	 * @param variation the variation operator
+	 */
 	@Property("operator")
 	public void setVariation(Variation variation) {
 		getAlgorithm().setVariation(variation);
 	}
 	
+	/**
+	 * Sets the initial population size.  This value can not be set after initialization.
+	 * 
+	 * @param initialPopulationSize the initial population size
+	 */
 	@Property("populationSize")
 	public void setInitialPopulationSize(int initialPopulationSize) {
 		getAlgorithm().setInitialPopulationSize(initialPopulationSize);
 	}
 	
+	@Override
 	public EpsilonBoxDominanceArchive getArchive() {
 		return (EpsilonBoxDominanceArchive)super.getAlgorithm().getArchive();
 	}
 	
+	/**
+	 * Sets the archive used by this algorithm.  This value can not be set after initialization.
+	 * 
+	 * @param archive the archive
+	 */
 	public void setArchive(EpsilonBoxDominanceArchive archive) {
 		getAlgorithm().setArchive(archive);
 	}

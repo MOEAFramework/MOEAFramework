@@ -179,7 +179,9 @@ public class NSGAII extends AbstractEvolutionaryAlgorithm implements EpsilonBoxE
 	}
 	
 	/**
-	 * {@inheritDoc}
+	 * Sets the archive used by this algorithm.  This value can not be set after initialization.
+	 * 
+	 * @param archive the archive
 	 */
 	public void setArchive(EpsilonBoxDominanceArchive archive) {
 		super.setArchive(archive);

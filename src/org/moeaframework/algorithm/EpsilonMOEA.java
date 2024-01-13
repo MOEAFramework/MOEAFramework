@@ -185,7 +185,9 @@ public class EpsilonMOEA extends AbstractEvolutionaryAlgorithm implements Epsilo
 	}
 	
 	/**
-	 * {@inheritDoc}
+	 * Sets the archive used by this algorithm.  This value can not be set after initialization.
+	 * 
+	 * @param archive the archive
 	 */
 	public void setArchive(EpsilonBoxDominanceArchive archive) {
 		Validate.notNull("archive", archive);

@@ -78,7 +78,9 @@ public class PAES extends AbstractEvolutionaryAlgorithm {
 	}
 	
 	/**
-	 * {@inheritDoc}
+	 * Replaces the mutation operator to be used by this algorithm.
+	 * 
+	 * @param mutation the mutation operator
 	 */
 	@Property("operator")
 	public void setVariation(Mutation mutation) {

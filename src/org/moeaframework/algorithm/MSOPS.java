@@ -115,7 +115,9 @@ public class MSOPS extends AbstractEvolutionaryAlgorithm {
 	}
 	
 	/**
-	 * {@inheritDoc}
+	 * Replaces the differential evolution variation operator to be used by this algorithm.
+	 * 
+	 * @param variation the differential evolution variation operator
 	 */
 	@Property("operator")
 	public void setVariation(DifferentialEvolutionVariation variation) {
