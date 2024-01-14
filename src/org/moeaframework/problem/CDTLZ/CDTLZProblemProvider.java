@@ -29,7 +29,7 @@ import org.moeaframework.core.spi.ProblemProvider;
 public class CDTLZProblemProvider extends ProblemProvider {
 
 	/**
-	 * Constructs and registers the DTLZ problems.
+	 * Constructs and registers the constrained DTLZ problems.
 	 */
 	public CDTLZProblemProvider() {
 		super();

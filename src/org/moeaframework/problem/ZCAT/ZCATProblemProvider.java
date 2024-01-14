@@ -66,8 +66,7 @@ public class ZCATProblemProvider extends RegisteredProblemProvider {
 			return problem;
 		}
 		
-		// allow creating any number of objectives, but these will not have
-		// reference sets
+		// allow creating any number of objectives, but these will not have reference sets
 		try {
 			Pattern pattern = Pattern.compile("^ZCAT([0-9]+)_([0-9]+)$", Pattern.CASE_INSENSITIVE);
 			Matcher matcher = pattern.matcher(name);
@@ -117,6 +116,8 @@ public class ZCATProblemProvider extends RegisteredProblemProvider {
 					return new ZCAT19(numberOfObjectives);
 				case 20:
 					return new ZCAT20(numberOfObjectives);
+				default:
+					return null;
 				}
 			}
 		} catch (NumberFormatException e) {

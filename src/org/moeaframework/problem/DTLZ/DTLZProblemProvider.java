@@ -84,8 +84,7 @@ public class DTLZProblemProvider extends RegisteredProblemProvider {
 			return problem;
 		}
 		
-		// allow creating any number of objectives, but these will not have
-		// reference sets
+		// allow creating any number of objectives, but these will not have reference sets
 		try {
 			Pattern pattern = Pattern.compile("^DTLZ([0-9])_([0-9]+)$", Pattern.CASE_INSENSITIVE);
 			Matcher matcher = pattern.matcher(name);
@@ -105,6 +104,8 @@ public class DTLZProblemProvider extends RegisteredProblemProvider {
 					return new DTLZ4(numberOfObjectives);
 				case 7:
 					return new DTLZ7(numberOfObjectives);
+				default:
+					return null;
 				}
 			}
 		} catch (NumberFormatException e) {

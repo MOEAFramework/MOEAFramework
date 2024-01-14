@@ -37,6 +37,7 @@ import java.util.BitSet;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.SystemUtils;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
@@ -72,15 +73,14 @@ public class TestUtils {
 	}
 	
 	/**
-	 * Asserts that two boolean arrays are equal.
+	 * Asserts the two strings are identical after normalization, which essentially ignores
+	 * multiple whitespace characters, different line separators, etc.
 	 * 
-	 * @param expected the expected array
-	 * @param actual the actual array
+	 * @param s1 the first string
+	 * @param s2 the second string
 	 */
-	public static void assertEquals(boolean[] expected, boolean[] actual) {
-		for (int i=0; i<expected.length; i++) {
-			Assert.assertEquals(expected[i], actual[i]);
-		}
+	public static void assertEqualsNormalized(String s1, String s2) {
+		Assert.assertEquals(StringUtils.normalizeSpace(s1), StringUtils.normalizeSpace(s2));
 	}
 	
 	/**

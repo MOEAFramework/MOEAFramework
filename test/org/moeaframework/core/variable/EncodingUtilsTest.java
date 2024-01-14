@@ -23,7 +23,6 @@ import java.util.function.Consumer;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.moeaframework.TestUtils;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variable;
@@ -254,7 +253,7 @@ public class EncodingUtilsTest {
 		EncodingUtils.setSubset(variable, values);
 		Assert.assertArrayEquals(new int[] { 2, 3, 5, 7, 8 }, EncodingUtils.getSubset(variable));
 		
-		TestUtils.assertEquals(values, EncodingUtils.getSubsetAsBinary(variable));
+		Assert.assertArrayEquals(values, EncodingUtils.getSubsetAsBinary(variable));
 	}
 	
 	@Test

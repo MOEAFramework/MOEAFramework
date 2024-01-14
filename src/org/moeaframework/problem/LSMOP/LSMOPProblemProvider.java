@@ -58,8 +58,7 @@ public class LSMOPProblemProvider extends RegisteredProblemProvider {
 			return problem;
 		}
 		
-		// allow creating any number of objectives, but these will not have
-		// reference sets
+		// allow creating any number of objectives, but these will not have reference sets
 		try {
 			Pattern pattern = Pattern.compile("^LSMOP([0-9])_([0-9]+)$", Pattern.CASE_INSENSITIVE);
 			Matcher matcher = pattern.matcher(name);
@@ -87,6 +86,8 @@ public class LSMOPProblemProvider extends RegisteredProblemProvider {
 					return new LSMOP8(numberOfObjectives);
 				case 9:
 					return new LSMOP9(numberOfObjectives);
+				default:
+					return null;
 				}
 			}
 		} catch (NumberFormatException e) {

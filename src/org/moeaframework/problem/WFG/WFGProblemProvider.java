@@ -89,8 +89,7 @@ public class WFGProblemProvider extends RegisteredProblemProvider {
 			return problem;
 		}
 		
-		// allow creating any number of objectives, but these will not have
-		// reference sets
+		// allow creating any number of objectives, but these will not have reference sets
 		try {
 			Pattern pattern = Pattern.compile("^WFG([0-9])_([0-9]+)$", Pattern.CASE_INSENSITIVE);
 			Matcher matcher = pattern.matcher(name);
@@ -118,6 +117,8 @@ public class WFGProblemProvider extends RegisteredProblemProvider {
 					return new WFG8(numberOfObjectives - 1, 10, numberOfObjectives);
 				case 9:
 					return new WFG9(numberOfObjectives - 1, 10, numberOfObjectives);
+				default:
+					return null;
 				}
 			}
 		} catch (NumberFormatException e) {
