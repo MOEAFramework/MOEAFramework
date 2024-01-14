@@ -1,6 +1,6 @@
 # Experiments
 
-This library also supports running experiments where we analayze the performance of one or more algorithms.  This capability
+This library also supports running experiments where we analyze the performance of one or more algorithms.  This capability
 is split into three classes: the `Executor`, `Analyzer`, and `Instrumenter`.
 
 ## Executor
