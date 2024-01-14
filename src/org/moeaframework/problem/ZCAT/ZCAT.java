@@ -36,7 +36,7 @@ public abstract class ZCAT extends AbstractProblem implements AnalyticalProblem 
 	
 	/**
 	 * The precision when considering if two floating-point numbers are equal.  This differs
-	 * from {@link Settings#EPS} to match the original ZCAT source code. 
+	 * from {@code Settings.EPS} to match the original ZCAT source code. 
 	 */
 	public static final double EPSILON = Math.ulp(1.0);
 	
@@ -133,6 +133,7 @@ public abstract class ZCAT extends AbstractProblem implements AnalyticalProblem 
 	 * The dimension of the Pareto front / Pareto set.  This is typically {@code numberOfObjectives-1} but can
 	 * differ for certain degenerate (ZCAT14 - ZCAT16) or hybrid (ZCAT19 - ZCAT20) problems.
 	 * 
+	 * @param y the normalized decision variables
 	 * @return the dimension of the Pareto front / Pareto set
 	 */
 	public int getDimension(double[] y) {
