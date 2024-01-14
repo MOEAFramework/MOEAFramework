@@ -17,6 +17,8 @@
  */
 package org.moeaframework.util.format;
 
+import java.util.Locale;
+
 /**
  * Formatter for numeric data.  This supports all primitive numeric types as well
  * as their boxed types.
@@ -32,6 +34,8 @@ public class NumberFormatter implements Formatter<Number> {
 	private boolean localeSpecificGroupings = false;
 	
 	private boolean scientificNotation = false;
+	
+	private Locale locale = Locale.getDefault();
 	
 	/**
 	 * Creates a new formatter for numeric types with default settings.
@@ -139,6 +143,24 @@ public class NumberFormatter implements Formatter<Number> {
 	public void setScientificNotation(boolean scientificNotation) {
 		this.scientificNotation = scientificNotation;
 	}
+	
+	/**
+	 * Returns the locale used when formatting the data.
+	 * 
+	 * @return the locale used when formatting the data
+	 */
+	public Locale getLocale() {
+		return locale;
+	}
+	
+	/**
+	 * Sets the locale used when formatting the data.  If unset, the default system locale is used.
+	 * 
+	 * @param locale the new locale
+	 */
+	public void setLocale(Locale locale) {
+		this.locale = locale;
+	}
 
 	/**
 	 * Creates the formatting string used by {@link String#format(String, Object...)} to display
@@ -166,9 +188,9 @@ public class NumberFormatter implements Formatter<Number> {
 	@Override
 	public String format(Object value) {
 		if (value instanceof Float || value instanceof Double) {
-			return String.format(createDecimalFormatString(), value);
+			return String.format(locale, createDecimalFormatString(), value);
 		} else {
-			return String.format(createIntegerFormatString(), value);
+			return String.format(locale, createIntegerFormatString(), value);
 		}
 	}
 
