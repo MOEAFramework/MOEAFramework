@@ -29,8 +29,14 @@ public class Observation implements Serializable, Comparable<Observation> {
 
 	private static final long serialVersionUID = 3267334718718774271L;
 	
+	/**
+	 * The number of function evaluations.
+	 */
 	private final int nfe;
 	
+	/**
+	 * The data stored in this observation.
+	 */
 	private final Map<String, Serializable> data;
 	
 	/**

@@ -55,8 +55,7 @@ public class Population implements Iterable<Solution>, Formattable<Solution>, St
 	/**
 	 * Constructs a population initialized with a collection of solutions.
 	 * 
-	 * @param iterable the collection of solutions for initializing this
-	 *        population
+	 * @param iterable the collection of solutions for initializing this population
 	 */
 	public Population(Iterable<? extends Solution> iterable) {
 		this();
@@ -67,8 +66,8 @@ public class Population implements Iterable<Solution>, Formattable<Solution>, St
 	/**
 	 * Constructs a population initialized with an array of solutions.
 	 * 
-	 * @param solutions the array of solutions for initializing this
-	 *        population
+	 * @param solutions the array of solutions for initializing this population
+	 * @param <T> the type of solutions in the array
 	 */
 	public <T extends Solution> Population(T[] solutions) {
 		this(Arrays.asList(solutions));
@@ -79,8 +78,7 @@ public class Population implements Iterable<Solution>, Formattable<Solution>, St
 	 * 
 	 * @param index the index of the solution to be returned
 	 * @return the solution at the specified index
-	 * @throws IndexOutOfBoundsException if the index is out of range
-	 *         {@code (index < 0) || (index >= size())}
+	 * @throws IndexOutOfBoundsException if the index is out of range {@code (index < 0) || (index >= size())}
 	 */
 	public Solution get(int index) {
 		return data.get(index);
@@ -90,8 +88,7 @@ public class Population implements Iterable<Solution>, Formattable<Solution>, St
 	 * Removes the solution at the specified index from this population.
 	 * 
 	 * @param index the index of the solution to be removed
-	 * @throws IndexOutOfBoundsException if the index is out of range
-	 *         {@code (index < 0) || (index >= size())}
+	 * @throws IndexOutOfBoundsException if the index is out of range {@code (index < 0) || (index >= size())}
 	 */
 	public void remove(int index) {
 		modCount++;
@@ -99,9 +96,8 @@ public class Population implements Iterable<Solution>, Formattable<Solution>, St
 	}
 
 	/**
-	 * Returns the index of the specified solution in this population.
-	 * Invocations of certain methods on this population may alter the ordering
-	 * of solutions, so the index returned should be used immediately by the
+	 * Returns the index of the specified solution in this population.  Invocations of certain methods on this
+	 * population may alter the ordering of solutions, so the index returned should be used immediately by the
 	 * {@code get} or {@code remove} methods.
 	 * 
 	 * @param solution the solution whose index is to be returned
@@ -115,8 +111,7 @@ public class Population implements Iterable<Solution>, Formattable<Solution>, St
 	 * Adds the specified solution to this population.
 	 * 
 	 * @param solution the solution to be added
-	 * @return {@code true} if the population was modified as a result of this
-	 *         method; {@code false} otherwise.
+	 * @return {@code true} if the population was modified as a result of this method; {@code false} otherwise.
 	 */
 	public boolean add(Solution solution) {
 		modCount++;
@@ -127,8 +122,7 @@ public class Population implements Iterable<Solution>, Formattable<Solution>, St
 	 * Adds a collection of solutions to this population.
 	 * 
 	 * @param iterable the collection of solutions to be added
-	 * @return {@code true} if the population was modified as a result of this
-	 *         method; {@code false} otherwise
+	 * @return {@code true} if the population was modified as a result of this method; {@code false} otherwise
 	 */
 	public boolean addAll(Iterable<? extends Solution> iterable) {
 		boolean changed = false;
@@ -144,8 +138,8 @@ public class Population implements Iterable<Solution>, Formattable<Solution>, St
 	 * Adds an array of solutions to this population.
 	 * 
 	 * @param solutions the solutions to be added
-	 * @return {@code true} if the population was modified as a result of this
-	 *         method; {@code false} otherwise
+	 * @param <T> the type of solutions in the array
+	 * @return {@code true} if the population was modified as a result of this method; {@code false} otherwise
 	 */
 	public <T extends Solution> boolean addAll(T[] solutions) {
 		return addAll(Arrays.asList(solutions));
@@ -170,24 +164,22 @@ public class Population implements Iterable<Solution>, Formattable<Solution>, St
 	}
 
 	/**
-	 * Returns {@code true} if this population contains the specified solution;
-	 * {@code false} otherwise.
+	 * Returns {@code true} if this population contains the specified solution; {@code false} otherwise.
 	 * 
 	 * @param solution the solution whose presence is tested
-	 * @return {@code true} if this population contains the specified
-	 *         solution; {@code false} otherwise
+	 * @return {@code true} if this population contains the specified solution; {@code false} otherwise
 	 */
 	public boolean contains(Solution solution) {
 		return data.contains(solution);
 	}
 
 	/**
-	 * Returns {@code true} if this population contains all the solutions in the
-	 * specified collection; {@code false} otherwise.
+	 * Returns {@code true} if this population contains all the solutions in the specified collection; {@code false}
+	 * otherwise.
 	 * 
 	 * @param iterable the collection whose presence is tested
-	 * @return {@code true} if this population contains all the solutions in the
-	 *         specified collection; {@code false} otherwise
+	 * @return {@code true} if this population contains all the solutions in the specified collection; {@code false}
+	 *         otherwise
 	 */
 	public boolean containsAll(Iterable<? extends Solution> iterable) {
 		boolean missing = false;
@@ -200,23 +192,22 @@ public class Population implements Iterable<Solution>, Formattable<Solution>, St
 	}
 
 	/**
-	 * Returns {@code true} if this population contains all the solutions in the
-	 * specified array; {@code false} otherwise.
+	 * Returns {@code true} if this population contains all the solutions in the specified array; {@code false}
+	 * otherwise.
 	 * 
 	 * @param solutions the array whose presence is tested
-	 * @return {@code true} if this population contains all the solutions in the
-	 *         specified array; {@code false} otherwise
+	 * @param <T> the type of solutions in the array
+	 * @return {@code true} if this population contains all the solutions in the specified array; {@code false}
+	 *         otherwise
 	 */
 	public <T extends Solution> boolean containsAll(T[] solutions) {
 		return containsAll(Arrays.asList(solutions));
 	}
 
 	/**
-	 * Returns {@code true} if this population contains no solutions;
-	 * {@code false} otherwise.
+	 * Returns {@code true} if this population contains no solutions; {@code false} otherwise.
 	 * 
-	 * @return {@code true} if this population contains no solutions;
-	 *         {@code false} otherwise.
+	 * @return {@code true} if this population contains no solutions; {@code false} otherwise.
 	 */
 	public boolean isEmpty() {
 		return data.isEmpty();
@@ -234,8 +225,7 @@ public class Population implements Iterable<Solution>, Formattable<Solution>, St
 	 * Removes the specified solution from this population, if present.
 	 * 
 	 * @param solution the solution to be removed
-	 * @return {@code true} if this population was modified as a result of this
-	 *         method; {@code false} otherwise
+	 * @return {@code true} if this population was modified as a result of this method; {@code false} otherwise
 	 */
 	public boolean remove(Solution solution) {
 		modCount++;
@@ -246,8 +236,7 @@ public class Population implements Iterable<Solution>, Formattable<Solution>, St
 	 * Removes all solutions in the specified collection from this population.
 	 * 
 	 * @param iterable the collection of solutions to be removed
-	 * @return {@code true} if this population was modified as a result of this
-	 *         method; {@code false} otherwise
+	 * @return {@code true} if this population was modified as a result of this method; {@code false} otherwise
 	 */
 	public boolean removeAll(Iterable<? extends Solution> iterable) {
 		boolean changed = false;
@@ -263,8 +252,8 @@ public class Population implements Iterable<Solution>, Formattable<Solution>, St
 	 * Removes all solutions in the specified array from this population.
 	 * 
 	 * @param solutions the array of solutions to be removed
-	 * @return {@code true} if this population was modified as a result of this
-	 *         method; {@code false} otherwise
+	 * @param <T> the type of solutions in the array
+	 * @return {@code true} if this population was modified as a result of this method; {@code false} otherwise
 	 */
 	public <T extends Solution> boolean removeAll(T[] solutions) {
 		return removeAll(Arrays.asList(solutions));
@@ -280,9 +269,8 @@ public class Population implements Iterable<Solution>, Formattable<Solution>, St
 	}
 
 	/**
-	 * Sorts the solutions in this population using the specified comparator.
-	 * Invocations of certain methods on this population may alter the ordering
-	 * of solutions, so the {@code get}, {@code remove} and iteration methods
+	 * Sorts the solutions in this population using the specified comparator.  Invocations of certain methods on this
+	 * population may alter the ordering of solutions, so the {@code get}, {@code remove} and iteration methods
 	 * should be called immediately after invoking this method.
 	 * 
 	 * @param comparator the comparator to be used for sorting
@@ -293,9 +281,8 @@ public class Population implements Iterable<Solution>, Formattable<Solution>, St
 	}
 
 	/**
-	 * Sorts this population using the specified comparator and removes the last
-	 * (maximum) solutions until this population's size is within the specified
-	 * size.
+	 * Sorts this population using the specified comparator and removes the last (maximum) solutions until this
+	 * population's size is within the specified size.
 	 * 
 	 * @param size the target population size after truncation
 	 * @param comparator the comparator to be used for truncation
@@ -309,8 +296,8 @@ public class Population implements Iterable<Solution>, Formattable<Solution>, St
 	}
 	
 	/**
-	 * Returns a list of all solutions in this population.  This is equivalent
-	 * to calling {@link #asList(boolean)} with a value of {@code true}.
+	 * Returns a list of all solutions in this population.  This is equivalent to calling {@link #asList(boolean)}
+	 * with a value of {@code true}.
 	 * 
 	 * @return a list of all solutions in this population
 	 */
@@ -334,6 +321,7 @@ public class Population implements Iterable<Solution>, Formattable<Solution>, St
 		return result;
 	}
 	
+	@Override
 	public TabularData<Solution> asTabularData() {
 		TabularData<Solution> data = new TabularData<Solution>(this);
 		
@@ -397,17 +385,14 @@ public class Population implements Iterable<Solution>, Formattable<Solution>, St
 		private int nextIndex;
 
 		/**
-		 * The index of the last node that was returned.  Set to {@code -1}
-		 * if the iterator is not positioned at a valid node (i.e., at
-		 * initialization or after an element is removed).
+		 * The index of the last node that was returned.  Set to {@code -1} if the iterator is not positioned at a
+		 * valid node (i.e., at initialization or after an element is removed).
 		 */
 		private int currentIndex;
 
 		/**
-         * The modification count that the list is expected to have. If the list
-         * doesn't have this count, then a
-         * {@link java.util.ConcurrentModificationException} may be thrown by
-         * the operations.
+         * The modification count that the list is expected to have. If the list doesn't have this count, then a
+         * {@link java.util.ConcurrentModificationException} may be thrown by the operations.
          */
 		private int expectedModCount;
 		
@@ -464,11 +449,9 @@ public class Population implements Iterable<Solution>, Formattable<Solution>, St
 		}
 
 		/**
-         * Checks the modification count of the list is the value that this
-         * object expects.
+         * Checks the modification count of the list is the value that this object expects.
          * 
-         * @throws ConcurrentModificationException if the list's modification
-         *         count is not the value that was expected
+         * @throws ConcurrentModificationException if the list's modification count is not the value that was expected
          */
 		private void checkModCount() {
 			if (modCount != expectedModCount) {

@@ -142,6 +142,7 @@ public class TypedProperties implements Displayable {
 	 * string substitutions in the form {@code ${token}}.
 	 * 
 	 * @return the build properties
+	 * @throws IOException if an error occurred loading the file
 	 */
 	public static TypedProperties loadBuildProperties() throws IOException {
 		Properties rawProperties = new Properties();

@@ -1,3 +1,20 @@
+/* Copyright 2009-2024 David Hadka
+ *
+ * This file is part of the MOEA Framework.
+ *
+ * The MOEA Framework is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
+ *
+ * The MOEA Framework is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
+ * License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package org.moeaframework.problem.ZCAT;
 
 import java.util.ArrayList;
@@ -48,11 +65,32 @@ public abstract class ZCAT extends AbstractProblem implements AnalyticalProblem 
 	 */
 	protected final PSShapeFunction G;
 	
+	/**
+	 * Constructs a new ZCAT problem.
+	 * 
+	 * @param numberOfObjectives the number of objectives
+	 * @param level the difficulty level between {@code 1} and {@code 6}
+	 * @param bias {@code true} if bias is applied to the decision variables; {@code false} otherwise
+	 * @param imbalance {@code true} if imbalance is applied; {@code false} otherwise.
+	 * @param F the Pareto front shape function
+	 * @param G the Pareto set shape function
+	 */
 	public ZCAT(int numberOfObjectives, int level, boolean bias, boolean imbalance,
 			PFShapeFunction F, PSShapeFunction G) {
 		this(10 * numberOfObjectives, numberOfObjectives, level, bias, imbalance, F, G);
 	}
 	
+	/**
+	 * Constructs a new ZCAT problem.
+	 * 
+	 * @param numberOfVariables the number of decision variables
+	 * @param numberOfObjectives the number of objectives
+	 * @param level the difficulty level between {@code 1} and {@code 6}
+	 * @param bias {@code true} if bias is applied to the decision variables; {@code false} otherwise
+	 * @param imbalance {@code true} if imbalance is applied; {@code false} otherwise.
+	 * @param F the Pareto front shape function
+	 * @param G the Pareto set shape function
+	 */
 	public ZCAT(int numberOfVariables, int numberOfObjectives, int level, boolean bias, boolean imbalance,
 			PFShapeFunction F, PSShapeFunction G) {
 		super(numberOfVariables, numberOfObjectives, 0);
@@ -101,6 +139,13 @@ public abstract class ZCAT extends AbstractProblem implements AnalyticalProblem 
 		return numberOfObjectives - 1;
 	}
 	
+	/**
+	 * Computes the position of the solution on the Pareto front.
+	 * 
+	 * @param y the normalized decision variable values
+	 * @param F the function defining the Pareto front shape
+	 * @return the position values
+	 */
 	protected double[] getAlpha(double[] y, PFShapeFunction F) {
 		double[] a = F.apply(y, numberOfObjectives);
 		
@@ -111,6 +156,13 @@ public abstract class ZCAT extends AbstractProblem implements AnalyticalProblem 
 		return a;
 	}
 	
+	/**
+	 * Computes the distance of the solution to the Pareto front.
+	 * 
+	 * @param y the normalized decision variable values
+	 * @param G the function defining the Pareto set shape
+	 * @return the distance values
+	 */
 	protected double[] getBeta(double[] y, PSShapeFunction G) {
 		int m = getDimension(y);
 		double[] z = getZ(y, m, G);
@@ -130,7 +182,7 @@ public abstract class ZCAT extends AbstractProblem implements AnalyticalProblem 
 		return b;
 	}
 	
-	protected double[]	getJ(int i, double[] w) {
+	protected double[] getJ(int i, double[] w) {
 		double[] J = new double[0];
 		int size = 0;
 		
@@ -149,6 +201,13 @@ public abstract class ZCAT extends AbstractProblem implements AnalyticalProblem 
 		return J;
 	}
 	
+	/**
+	 * Applies bias to the {@code z} vector when enabled.
+	 * 
+	 * @param z the {@code z} vector
+	 * @param m the dimension of the Pareto front / set
+	 * @return the result of biasing the {@code z} vector
+	 */
 	protected double[] getW(double[] z, int m) {
 		double[] w = new double[numberOfVariables - m];
 		
@@ -159,6 +218,12 @@ public abstract class ZCAT extends AbstractProblem implements AnalyticalProblem 
 		return w;
 	}
 	
+	/**
+	 * Normalizes the decision variables.
+	 * 
+	 * @param x the raw, unnormalized decision variable values
+	 * @return the normalized decision variables values scaled between {@code [0, 1]}
+	 */
 	protected double[] getY(double[] x) {
 		double[] y = new double[numberOfVariables];
 		
@@ -172,6 +237,14 @@ public abstract class ZCAT extends AbstractProblem implements AnalyticalProblem 
 		return y;
 	}
 	
+	/**
+	 * Applies the Pareto shape function to the decision variables.
+	 * 
+	 * @param y the normalized decision variables
+	 * @param m the dimension of the Pareto front / set
+	 * @param G the Pareto shape function
+	 * @return the resulting vector {@code z}
+	 */
 	protected double[] getZ(double[] y, int m, PSShapeFunction G) {
 		double[] g = G.apply(y, m, numberOfVariables);
 		double[] z = new double[numberOfVariables - m];
@@ -184,10 +257,23 @@ public abstract class ZCAT extends AbstractProblem implements AnalyticalProblem 
 		return z;
 	}
 	
+	/**
+	 * Calculates the bias for a single element of the {@code z} vector.
+	 * 
+	 * @param z the single element of the {@code z} vector
+	 * @return the value with bias applied
+	 */
 	protected double Zbias(double z) {
 	    return Math.pow(Math.abs(z), 0.05);
 	}
 	
+	/**
+	 * Applies imbalance / the difficulty level to the intermediate vector {@code w}.
+	 * 
+	 * @param w the intermediate vector {@code w}
+	 * @param i the index
+	 * @return the result of applying the imbalance / difficulty level function
+	 */
 	protected double evaluateZ(double[] w, int i) {
 		if (imbalance) {
 			if (i % 2 == 0) {
@@ -215,6 +301,13 @@ public abstract class ZCAT extends AbstractProblem implements AnalyticalProblem 
 		}
 	}
 	
+	/**
+	 * Evaluates the final objective values by combining the position and distance values.
+	 * 
+	 * @param alpha the position values
+	 * @param beta the distance values
+	 * @return the final objective values
+	 */
 	protected double[] evaluateF(double[] alpha, double[] beta) {
 		double[] f = new double[numberOfObjectives];
 		
@@ -311,6 +404,13 @@ public abstract class ZCAT extends AbstractProblem implements AnalyticalProblem 
 		return segments;
 	}
 	
+	/**
+	 * Sets the decision variable of the solution by scaling the value {@code y} within the bounds.
+	 * 
+	 * @param y the normalized value
+	 * @param i the index of the decision variable
+	 * @param solution the solution
+	 */
 	private void setDecisionVariable(double y, int i, Solution solution) {
 		RealVariable variable = (RealVariable)solution.getVariable(i);
 		variable.setValue(y * (variable.getUpperBound() - variable.getLowerBound()) + variable.getLowerBound());
