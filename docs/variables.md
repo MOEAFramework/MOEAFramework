@@ -1,4 +1,4 @@
-# List of Decision Variable
+# Decision Variables
 
 A `Solution` consists of one or more decision variables.  All decision variables derive from the `Variable` interface.  There are a number of built-in
 decision variable types along with [mutation and crossover operators](operators.md) for evolving those types.
@@ -139,4 +139,4 @@ would generate statements like `sin(x) + cos(x)`, `log(x / y)`, `y - x`, etc.  H
 not necessarily just executable programs.
 
 Regardless of what statements the grammar produces, one then needs a way to "evaluate" the program in terms of fitness.  For executable programs, the
-statement can be fed into a scripting language, including any of [Java's supported scripting languages](https://objectcomputing.com/resources/publications/sett/march-2001-scripting-languages-for-java).  Find code samples in [/examples/org/moeaframework/examples/ge](examples/org/moeaframework/examples/ge).
+statement can be fed into a scripting language, including any of [Java's supported scripting languages](https://objectcomputing.com/resources/publications/sett/march-2001-scripting-languages-for-java).  Find code samples in [/examples/org/moeaframework/examples/ge](../examples/org/moeaframework/examples/ge).
