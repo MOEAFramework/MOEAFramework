@@ -41,9 +41,8 @@ public class SimpleStatisticsTest {
 				input1.getPath(),
 				input2.getPath()});
 		
-		String[] actual = new String(TestUtils.loadFile(output)).split("\\s+");
-		String[] expected = new String[] { "0.0", "0.0", "0.0", "0.5", "0.75", 
-				"1.0" };
+		String[] actual = TestUtils.loadText(output).split("\\s+");
+		String[] expected = new String[] { "0.0", "0.0", "0.0", "0.5", "0.75", "1.0" };
 		
 		Assert.assertArrayEquals(expected, actual);
 	}
@@ -121,9 +120,8 @@ public class SimpleStatisticsTest {
 				input1.getPath(),
 				input2.getPath()});
 		
-		String[] actual = new String(TestUtils.loadFile(output)).split("\\s+");
-		String[] expected = new String[] { "0.0", "0.0", "NaN", "0.5", "NaN", 
-				"1.0" };
+		String[] actual = TestUtils.loadText(output).split("\\s+");
+		String[] expected = new String[] { "0.0", "0.0", "NaN", "0.5", "NaN", "1.0" };
 		
 		Assert.assertArrayEquals(expected, actual);
 	}
@@ -141,9 +139,8 @@ public class SimpleStatisticsTest {
 				input1.getPath(),
 				input2.getPath()});
 		
-		String[] actual = new String(TestUtils.loadFile(output)).split("\\s+");
-		String[] expected = new String[] { "0.0", "0.0", "0.0", "0.5", "0.5", 
-				"1.0" };
+		String[] actual = TestUtils.loadText(output).split("\\s+");
+		String[] expected = new String[] { "0.0", "0.0", "0.0", "0.5", "0.5", "1.0" };
 		
 		Assert.assertArrayEquals(expected, actual);
 	}
@@ -161,9 +158,8 @@ public class SimpleStatisticsTest {
 				input1.getPath(),
 				input2.getPath()});
 		
-		String[] actual = new String(TestUtils.loadFile(output)).split("\\s+");
-		String[] expected = new String[] { "0.0", "0.0", "0.0", "0.5", "0.75", 
-				"1.0" };
+		String[] actual = TestUtils.loadText(output).split("\\s+");
+		String[] expected = new String[] { "0.0", "0.0", "0.0", "0.5", "0.75", "1.0" };
 		
 		Assert.assertArrayEquals(expected, actual);
 	}

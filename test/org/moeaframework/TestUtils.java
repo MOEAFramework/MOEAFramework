@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.io.StringWriter;
 import java.io.Writer;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -449,13 +450,13 @@ public class TestUtils {
 	}
 	
 	/**
-	 * Loads the contents of the specified file.
+	 * Loads the contents of the specified file into a byte array.
 	 * 
 	 * @param file the file to load
 	 * @return the contents of the file
 	 * @throws IOException if an I/O error occurred
 	 */
-	public static byte[] loadFile(File file) throws IOException {
+	public static byte[] loadBytes(File file) throws IOException {
 		int length = 0;
 		byte[] buffer = new byte[Settings.BUFFER_SIZE];
 		
@@ -466,6 +467,27 @@ public class TestUtils {
 			}
 			
 			return bytes.toByteArray();
+		}
+	}
+	
+	/**
+	 * Loads the contents of the specified file as text.
+	 * 
+	 * @param file the file to load
+	 * @return the contents of the file
+	 * @throws IOException if an I/O error occurred
+	 */
+	public static String loadText(File file) throws IOException {
+		int length = 0;
+		char[] buffer = new char[Settings.BUFFER_SIZE];
+		
+		try (FileReader in = new FileReader(file);
+			 StringWriter out = new StringWriter()) {
+			while ((length = in.read(buffer)) != -1) {
+				out.write(buffer, 0, length);
+			}
+			
+			return out.toString();
 		}
 	}
 	

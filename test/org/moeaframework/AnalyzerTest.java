@@ -121,8 +121,7 @@ public class AnalyzerTest {
 		//1 from printAnalysis, 1 from saveAnalysis
 		Assert.assertEquals(26, problemFactory.getCloseCount());
 		
-		Assert.assertArrayEquals(expected.toByteArray(), 
-				TestUtils.loadFile(actualFile));
+		Assert.assertArrayEquals(expected.toByteArray(), TestUtils.loadBytes(actualFile));
 	}
 	
 	private Analyzer generate() {
@@ -146,8 +145,7 @@ public class AnalyzerTest {
 		//run each algorithm for 10 seeds
 		for (String algorithm : algorithms) {
 			for (int i=0; i<10; i++) {
-				analyzer.add(algorithm, 
-						executor.withAlgorithm(algorithm).run());
+				analyzer.add(algorithm, executor.withAlgorithm(algorithm).run());
 			}
 		}
 

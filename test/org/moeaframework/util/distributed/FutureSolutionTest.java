@@ -39,7 +39,7 @@ public class FutureSolutionTest {
 
 		private static final long serialVersionUID = 2833940082100144051L;
 		
-		public boolean isUpdated;
+		private boolean isUpdated;
 		
 		public TestableFutureSolution(Solution solution) {
 			super(solution);

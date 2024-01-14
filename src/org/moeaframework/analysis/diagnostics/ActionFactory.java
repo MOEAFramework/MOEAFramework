@@ -760,8 +760,6 @@ public class ActionFactory implements ControllerListener {
 							loadLicense());
 					
 					for (String dependency : properties.getStringArray("runtime.dependencies", new String[0])) {
-						dependency = dependency.trim();
-						
 						info.addLibrary(new Library(
 								dependency,
 								properties.getString(dependency + ".version", "???"),
