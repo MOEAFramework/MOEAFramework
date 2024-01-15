@@ -169,8 +169,10 @@ public class NumberFormatter implements Formatter<Number> {
 	 * @return the formatting string
 	 */
 	protected String createDecimalFormatString() {
-		return "%" + (localeSpecificGroupings ? "," : "") + (leadingSpaceForSign ? " " : "") + 
-				(width < 0 ? "" : ""+width) + (precision < 0 ? "" : "." + precision) + 
+		return "%" + (localeSpecificGroupings ? "," : "") +
+				(leadingSpaceForSign ? " " : "") + 
+				(width < 0 ? "" : ""+width) +
+				(precision < 0 ? "" : "." + precision) + 
 				(scientificNotation ? "e" : "f");
 	}
 	
@@ -181,7 +183,8 @@ public class NumberFormatter implements Formatter<Number> {
 	 * @return the formatting string
 	 */
 	protected String createIntegerFormatString() {
-		return "%" + (localeSpecificGroupings ? "," : "") + (leadingSpaceForSign ? " " : "") + 
+		return "%" + (localeSpecificGroupings ? "," : "") +
+				(leadingSpaceForSign ? " " : "") + 
 				(width < 0 ? "" : ""+width) + "d";
 	}
 
