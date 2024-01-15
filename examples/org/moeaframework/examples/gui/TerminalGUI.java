@@ -34,6 +34,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
 
 import org.moeaframework.core.Settings;
 
@@ -150,11 +151,9 @@ public class TerminalGUI extends JFrame {
 			status.setText("Status: Running...");
 			
 			Process process = Runtime.getRuntime().exec(command);
-			InputStream outputStream = process.getInputStream();
-			InputStream errorStream = process.getErrorStream();
 			
-			new ErrorRedirectThread(errorStream).start();
-			new OutputRedirectThread(outputStream).start();
+			new RedirectThread(process.getErrorStream()).start();
+			new RedirectThread(process.getInputStream()).start();
 		} catch (Exception e) {
 			output.append("Error: " + e.getMessage());
 			status.setText("Status: Error");
@@ -162,42 +161,14 @@ public class TerminalGUI extends JFrame {
 	}
 	
 	/**
-	 * Thread that pipes the error stream to the text area.
+	 * Thread that pipes the output stream to the text area and updates the status
+	 * when complete or on error.
 	 */
-	private class ErrorRedirectThread extends Thread {
-
-		private final InputStream errorStream;
-		
-		public ErrorRedirectThread(InputStream errorStream) {
-			super();
-			this.errorStream = errorStream;
-		}
-		
-		@Override
-		public void run() {
-			try {
-				byte[] buffer = new byte[Settings.BUFFER_SIZE];
-				int len;
-
-				while ((len = errorStream.read(buffer, 0, buffer.length)) != -1) {
-					output.append(new String(Arrays.copyOfRange(buffer, 0, len)));
-				}
-			} catch (IOException e) {
-				output.append("Error: " + e.getMessage());
-				status.setText("Status: Error");
-			}
-		}
-	}
-	
-	/**
-	 * Thread that pipes the output stream to the text area.  This thread also
-	 * updates the status when the process completes.
-	 */
-	private class OutputRedirectThread extends Thread {
+	private class RedirectThread extends Thread {
 		
 		private final InputStream outputStream;
 		
-		public OutputRedirectThread(InputStream outputStream) {
+		public RedirectThread(InputStream outputStream) {
 			super();
 			this.outputStream = outputStream;
 		}
@@ -209,13 +180,16 @@ public class TerminalGUI extends JFrame {
 				int len;
 
 				while ((len = outputStream.read(buffer, 0, buffer.length)) != -1) {
-					output.append(new String(Arrays.copyOfRange(buffer, 0, len)));
+					final String content = new String(Arrays.copyOfRange(buffer, 0, len));
+					SwingUtilities.invokeLater(() -> output.append(content));
 				}
 				
-				status.setText("Status: Finished");
+				SwingUtilities.invokeLater(() -> status.setText("Status: Finished"));
 			} catch (IOException e) {
-				output.append("Error: " + e.getMessage());
-				status.setText("Status: Error");
+				SwingUtilities.invokeLater(() -> {
+					output.append("Error: " + e.getMessage());
+					status.setText("Status: Error");
+				});
 			}
 		}
 		
