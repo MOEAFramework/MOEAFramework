@@ -116,8 +116,7 @@ public class ExamplesGUI extends JFrame {
 				if (input == null) {
 					throw new FileNotFoundException(resource);
 				} else {
-					return load(new BufferedReader(new InputStreamReader(
-							input)));
+					return load(new BufferedReader(new InputStreamReader(input)));
 				}
 			}
 		}
@@ -244,8 +243,7 @@ public class ExamplesGUI extends JFrame {
 
 				@Override
 				public void hyperlinkUpdate(HyperlinkEvent hle) {
-					if (HyperlinkEvent.EventType.ACTIVATED.equals(
-							hle.getEventType())) {
+					if (HyperlinkEvent.EventType.ACTIVATED.equals(hle.getEventType())) {
                         Desktop desktop = Desktop.getDesktop();
                         
                         try {
@@ -265,11 +263,9 @@ public class ExamplesGUI extends JFrame {
 					RSyntaxTextArea textArea = new RSyntaxTextArea(20, 60);
 					
 					if (resource.endsWith(".java")) {
-						textArea.setSyntaxEditingStyle(
-								SyntaxConstants.SYNTAX_STYLE_JAVA);
+						textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA);
 					} else {
-						textArea.setSyntaxEditingStyle(
-								SyntaxConstants.SYNTAX_STYLE_NONE);
+						textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_NONE);
 					}
 					
 					textArea.setCodeFoldingEnabled(true);
