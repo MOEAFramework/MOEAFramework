@@ -45,8 +45,8 @@ jobs:
         run: |
           shortname=$(cat META-INF/build.properties | awk '{split($0,a," = "); if (a[1]=="shortname") print tolower(a[2])}' |  tr -d '[:space:]')
           version=$(cat META-INF/build.properties | awk '{split($0,a," = "); if (a[1]=="version") print tolower(a[2])}' |  tr -d '[:space:]')
-          [ -z "${shortname}" ] || (>&2 echo "Unable to read shortname from build.properties"; exit -1)
-          [ -z "${version}" ] || (>&2 echo "Unable to read version from build.properties"; exit -1)
+          [ -n "${shortname}" ] || (>&2 echo "Unable to read shortname from build.properties"; exit -1)
+          [ -n "${version}" ] || (>&2 echo "Unable to read version from build.properties"; exit -1)
           echo "BUILD_NAME=${shortname}" >> $GITHUB_ENV
           echo "BUILD_VERSION=${version}" >> $GITHUB_ENV
       - name: Validate version number
