@@ -232,14 +232,7 @@ public class SymbolicRegressionGUI extends JFrame implements WindowListener {
 		if (EventQueue.isDispatchThread()) {
 			updateOnEventQueue();
 		} else {
-			EventQueue.invokeLater(new Runnable() {
-
-				@Override
-				public void run() {
-					updateOnEventQueue();
-				}
-				
-			});
+			EventQueue.invokeLater(() -> updateOnEventQueue());
 		}
 	}
 	

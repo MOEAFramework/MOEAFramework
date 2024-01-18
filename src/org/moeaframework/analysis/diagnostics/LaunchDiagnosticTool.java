@@ -38,21 +38,16 @@ public class LaunchDiagnosticTool extends CommandLineUtility {
 
 	@Override
 	public void run(CommandLine commandLine) throws Exception {
-		SwingUtilities.invokeLater(new Runnable() {
-
-			@Override
-			public void run() {
-				try {
-					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-				} catch (Exception e) {
-					//silently handle
-				}
-				
-				DiagnosticTool diagnosticTool = new DiagnosticTool();
-				diagnosticTool.setIconImages(Settings.getIconImages());
-				diagnosticTool.setVisible(true);
+		SwingUtilities.invokeLater(() -> {
+			try {
+				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			} catch (Exception e) {
+				//silently handle
 			}
 				
+			DiagnosticTool diagnosticTool = new DiagnosticTool();
+			diagnosticTool.setIconImages(Settings.getIconImages());
+			diagnosticTool.setVisible(true);	
 		});
 	}
 	

@@ -269,14 +269,7 @@ public class Controller {
 	 * @param event the controller event to fire
 	 */
 	protected synchronized void fireEvent(final ControllerEvent event) {
-		SwingUtilities.invokeLater(new Runnable() {
-
-			@Override
-			public void run() {
-				listeners.fire().controllerStateChanged(event);
-			}
-				
-		});
+		SwingUtilities.invokeLater(() -> listeners.fire().controllerStateChanged(event));
 	}
 	
 	/**
