@@ -36,6 +36,31 @@ import org.moeaframework.util.weights.NormalBoundaryDivisions;
  */
 public class DBEATest {
 	
+	@Test
+	public void testDefaults() {
+		Problem problem = new DTLZ2(2);
+		NormalBoundaryDivisions divisions = NormalBoundaryDivisions.forProblem(problem);
+		
+		DBEA dbea = new DBEA(problem);
+		
+		Assert.assertEquals(divisions.getInnerDivisions(), dbea.getDivisions().getInnerDivisions());
+		Assert.assertEquals(divisions.getOuterDivisions(), dbea.getDivisions().getOuterDivisions());
+		Assert.assertEquals(divisions.getNumberOfReferencePoints(problem), dbea.getInitialPopulationSize());
+	}
+	
+	@Test
+	public void testConfiguration() {
+		Problem problem = new DTLZ2(2);
+		NormalBoundaryDivisions divisions = new NormalBoundaryDivisions(100);
+		
+		DBEA dbea = new DBEA(problem);
+		dbea.applyConfiguration(divisions.toProperties());
+		
+		Assert.assertEquals(divisions.getInnerDivisions(), dbea.getDivisions().getInnerDivisions());
+		Assert.assertEquals(divisions.getOuterDivisions(), dbea.getDivisions().getOuterDivisions());
+		Assert.assertEquals(divisions.getNumberOfReferencePoints(problem), dbea.getInitialPopulationSize());
+	}
+	
 	/**
 	 * Compares the intermediate values between the Matlab/Octave version of
 	 * DBEA and the Java version.  The Matlab/Octave version can be downloaded

@@ -123,7 +123,6 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 	 */
 	public DBEA(Problem problem, NormalBoundaryDivisions divisions) {
 		this(problem,
-				divisions.getNumberOfReferencePoints(problem),
 				new RandomInitialization(problem),
 				OperatorFactory.getInstance().getVariation(problem),
 				divisions);
@@ -133,14 +132,12 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 	 * Constructs a new instance of the DBEA algorithm.
 	 * 
 	 * @param problem the problem being solved
-	 * @param initialPopulationSize the initial population size
 	 * @param initialization the initialization method
 	 * @param variation the variation operator
 	 * @param divisions the number of divisions
 	 */
-	public DBEA(Problem problem, int initialPopulationSize, Initialization initialization,
-			Variation variation, NormalBoundaryDivisions divisions) {
-		super(problem, initialPopulationSize, new Population(), null, initialization, variation);
+	private DBEA(Problem problem, Initialization initialization, Variation variation, NormalBoundaryDivisions divisions) {
+		super(problem, 100 /* overwritten by setDivisions */, new Population(), null, initialization, variation);
 		setDivisions(divisions);
 	}
 	
@@ -163,18 +160,14 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 		assertNotInitialized();
 		Validate.notNull("divisions", divisions);
 		this.divisions = divisions;
+		
+		setInitialPopulationSize(divisions.getNumberOfReferencePoints(problem));
 	}
 	
 	@Override
 	@Property("operator")
 	public void setVariation(Variation variation) {
 		super.setVariation(variation);
-	}
-	
-	@Override
-	@Property("populationSize")
-	public void setInitialPopulationSize(int initialPopulationSize) {
-		super.setInitialPopulationSize(initialPopulationSize);
 	}
 
 	@Override
@@ -796,7 +789,7 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 		NormalBoundaryDivisions divisions = NormalBoundaryDivisions.tryFromProperties(properties);
 		
 		if (divisions != null) {
-			setPopulation(new ReferencePointNondominatedSortingPopulation(problem.getNumberOfObjectives(), divisions));
+			setDivisions(divisions);
 		}
 		
 		super.applyConfiguration(properties);
