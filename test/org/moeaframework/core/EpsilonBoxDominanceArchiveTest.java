@@ -21,6 +21,7 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.moeaframework.TestUtils;
 
 /**
  * Tests the {@link EpsilonBoxDominanceArchive} class.
@@ -136,6 +137,38 @@ public class EpsilonBoxDominanceArchiveTest {
 		Assert.assertEquals(1, archive.size());
 		Assert.assertEquals(1, archive.getNumberOfDominatingImprovements());
 		Assert.assertEquals(2, archive.getNumberOfImprovements());
+	}
+	
+	/**
+	 * Compares improvement count against Project-Platypus/Platypus implementation.
+	 */
+	@Test
+	public void test6() {
+		Solution s1 = TestUtils.newSolution(0.25, 0.25);     // First solution (improvement)
+		Solution s2 = TestUtils.newSolution(0.10, 0.10);     // Dominating improvement
+		Solution s3 = TestUtils.newSolution(0.24, 0.24);     // Dominated
+		Solution s4 = TestUtils.newSolution(0.09, 0.50);     // Non-dominated (improvement)
+		Solution s5 = TestUtils.newSolution(0.50, 0.50);     // Dominated
+		Solution s6 = TestUtils.newSolution(0.05, 0.05);     // Dominating improvement
+		Solution s7 = TestUtils.newSolution(0.04, 0.04);     // Dominating improvement (within same box)
+		Solution s8 = TestUtils.newSolution(0.02, 0.02);     // Dominating improvement (within same box)
+		Solution s9 = TestUtils.newSolution(0.00, 0.00);     // Dominating improvement (within same box)
+		Solution s10 = TestUtils.newSolution(-0.01, -0.01);  // Dominating improvement (new box)
+		
+		Solution[] solutions = new Solution[] { s1, s2, s3, s4, s5, s6, s7, s8, s9, s10 };
+		int[] expectedImprovements = new int[] { 1, 2, 2, 3, 3, 4, 4, 4, 4, 5 };
+		int[] expectedDominatingImprovements = new int[] { 0, 1, 1, 1, 1, 2, 2, 2, 2, 3 };
+		boolean[] expectedResult = new boolean[] { true, true, false, true, false, true, true, true, true, true };
+		
+		archive = new EpsilonBoxDominanceArchive(0.1);
+		
+		for (int i = 0; i < solutions.length; i++) {
+			boolean result = archive.add(solutions[i]);
+			
+			Assert.assertEquals(expectedImprovements[i], archive.getNumberOfImprovements());
+			Assert.assertEquals(expectedDominatingImprovements[i], archive.getNumberOfDominatingImprovements());
+			Assert.assertEquals(expectedResult[i], result);
+		}
 	}
 
 }
