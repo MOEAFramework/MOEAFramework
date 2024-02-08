@@ -46,7 +46,8 @@ public class NormalBoundaryDivisionsTest {
 	
 	@Test
 	public void test() {
-		Assert.assertEquals(101, new NormalBoundaryDivisions(100).getNumberOfReferencePoints(2));
+		Assert.assertEquals(101, new NormalBoundaryDivisions(100).getNumberOfReferencePoints(2)); // 101 choose 100
+		Assert.assertEquals(152, new NormalBoundaryDivisions(100, 50).getNumberOfReferencePoints(2)); // 101 choose 100 + 51 choose 50
 	}
 	
 }
