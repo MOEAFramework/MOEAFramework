@@ -43,8 +43,7 @@ public class DBEATest {
 		
 		DBEA dbea = new DBEA(problem);
 		
-		Assert.assertEquals(divisions.getInnerDivisions(), dbea.getDivisions().getInnerDivisions());
-		Assert.assertEquals(divisions.getOuterDivisions(), dbea.getDivisions().getOuterDivisions());
+		Assert.assertEquals(divisions, dbea.getDivisions());
 		Assert.assertEquals(divisions.getNumberOfReferencePoints(problem), dbea.getInitialPopulationSize());
 	}
 	
@@ -56,8 +55,7 @@ public class DBEATest {
 		DBEA dbea = new DBEA(problem);
 		dbea.applyConfiguration(divisions.toProperties());
 		
-		Assert.assertEquals(divisions.getInnerDivisions(), dbea.getDivisions().getInnerDivisions());
-		Assert.assertEquals(divisions.getOuterDivisions(), dbea.getDivisions().getOuterDivisions());
+		Assert.assertEquals(divisions, dbea.getDivisions());
 		Assert.assertEquals(divisions.getNumberOfReferencePoints(problem), dbea.getInitialPopulationSize());
 	}
 	

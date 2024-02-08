@@ -17,6 +17,8 @@
  */
 package org.moeaframework.util.weights;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.math3.util.CombinatoricsUtils;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Problem;
@@ -120,6 +122,30 @@ public class NormalBoundaryDivisions {
 		}
 		
 		return properties;
+	}
+	
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder()
+				.append(innerDivisions)
+				.append(outerDivisions)
+				.toHashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == this) {
+			return true;
+		} else if ((obj == null) || (obj.getClass() != getClass())) {
+			return false;
+		} else {
+			NormalBoundaryDivisions rhs = (NormalBoundaryDivisions)obj;
+			
+			return new EqualsBuilder()
+					.append(innerDivisions, rhs.innerDivisions)
+					.append(outerDivisions, rhs.outerDivisions)
+					.isEquals();
+		}
 	}
 	
 	/**
