@@ -19,6 +19,7 @@ package org.moeaframework.util.weights;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.moeaframework.util.TypedProperties;
 
 public class NormalBoundaryDivisionsTest {
 
@@ -45,9 +46,46 @@ public class NormalBoundaryDivisionsTest {
 	}
 	
 	@Test
-	public void test() {
+	public void testIsTwoLayer() {
+		Assert.assertFalse(new NormalBoundaryDivisions(100).isTwoLayer());
+		Assert.assertTrue(new NormalBoundaryDivisions(100, 50).isTwoLayer());
+	}
+	
+	@Test
+	public void testReferencePoints() {
 		Assert.assertEquals(101, new NormalBoundaryDivisions(100).getNumberOfReferencePoints(2)); // 101 choose 100
 		Assert.assertEquals(152, new NormalBoundaryDivisions(100, 50).getNumberOfReferencePoints(2)); // 101 choose 100 + 51 choose 50
+	}
+	
+	@Test
+	public void testPropertiesSingleLevel() {
+		NormalBoundaryDivisions original = new NormalBoundaryDivisions(100);
+		TypedProperties properties = original.toProperties();
+		
+		Assert.assertEquals(100, properties.getInt("divisions"));
+		Assert.assertFalse(properties.contains("divisionsOuter"));
+		Assert.assertFalse(properties.contains("divisionsInner"));;
+		
+		NormalBoundaryDivisions actual = NormalBoundaryDivisions.tryFromProperties(properties);
+		Assert.assertEquals(original, actual);
+	}
+	
+	@Test
+	public void testPropertiesTwoLevel() {
+		NormalBoundaryDivisions original = new NormalBoundaryDivisions(100, 50);
+		TypedProperties properties = original.toProperties();
+		
+		Assert.assertEquals(100, properties.getInt("divisionsOuter"));
+		Assert.assertEquals(50, properties.getInt("divisionsInner"));
+		Assert.assertFalse(properties.contains("divisions"));
+		
+		NormalBoundaryDivisions actual = NormalBoundaryDivisions.tryFromProperties(properties);
+		Assert.assertEquals(original, actual);
+	}
+	
+	@Test
+	public void testNoPropertiesIsNull() {
+		Assert.assertNull(NormalBoundaryDivisions.tryFromProperties(new TypedProperties()));
 	}
 	
 }

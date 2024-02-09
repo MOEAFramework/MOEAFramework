@@ -21,7 +21,6 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 
 /**
@@ -101,20 +100,6 @@ public class EpsilonBoxObjectiveComparatorTest {
 		Assert.assertTrue(comparator.isSameBox());
 		Assert.assertTrue(comparator.compare(solution2, solution1) < 0);
 		Assert.assertTrue(comparator.isSameBox());
-	}
-
-	/**
-	 * Tests if an {@code EpsilonBoxObjectiveComparator} correctly extends the epsilon array.
-	 */
-	@Test
-	public void testEpsilonExtension() {
-		EpsilonBoxDominanceComparator comparator = new EpsilonBoxDominanceComparator(new double[] { 0.1, 0.2 });
-
-		Assert.assertEquals(0.1, comparator.getEpsilons().get(0), Settings.EPS);
-		Assert.assertEquals(0.2, comparator.getEpsilons().get(1), Settings.EPS);
-		Assert.assertEquals(0.2, comparator.getEpsilons().get(2), Settings.EPS);
-		Assert.assertEquals(0.2, comparator.getEpsilons().get(Integer.MAX_VALUE), Settings.EPS);
-		Assert.assertEquals(2, comparator.getEpsilons().size());
 	}
 
 }

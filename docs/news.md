@@ -2,6 +2,12 @@
 
 This page documents notable changes introduced in each chronological release of the MOEA Framework.
 
+## Version 3.11 (TBD)
+
+  * Removes the `setInitialPopulationSize` method and corresponding `populationSize` parameter
+    from DBEA.  Instead, the population size is dervied from the `divisions` parameter.
+  
+
 ## Version 3.10 (18 Jan 2024)
 
   * Fixes bug #394 where changing the aggregate fitness comparator used by a GeneticAlgorithm would
