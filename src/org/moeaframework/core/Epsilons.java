@@ -47,10 +47,21 @@ public class Epsilons {
 	 * Defines an array of &epsilon; values.
 	 * 
 	 * @param epsilons the array of epsilon values
+	 * @throws IllegalArgumentException if the array is empty or any value is {@code <= 0.0}
 	 */
 	public Epsilons(double[] epsilons) {
 		super();
 		this.epsilons = epsilons.clone();
+		
+		if (this.epsilons.length < 1) {
+			throw new IllegalArgumentException("at least one epsilon must be provided");
+		}
+		
+		for (double eps : epsilons) {
+			if (eps <= 0.0) {
+				throw new IllegalArgumentException("epsilons must be > 0.0");
+			}
+		}
 	}
 	
 	/**
@@ -106,6 +117,26 @@ public class Epsilons {
 	@Override
 	public String toString() {
 		return Arrays.toString(epsilons);
+	}
+	
+	/**
+	 * Creates an {@code Epsilons} instance with the given epsilon values.  This method provides
+	 * compile-time checking of the number of inputs.
+	 * 
+	 * @param e1 the first epsilon
+	 * @param es the remaining epsilons, if any
+	 * @return the epsilons object
+	 */
+	public static Epsilons of(double e1, double... es) {
+		double[] epsilons = new double[es.length + 1];
+		
+		epsilons[0] = e1;
+		
+		for (int i = 0; i < es.length; i++) {
+			epsilons[i+1] = es[i];
+		}
+		
+		return new Epsilons(epsilons);
 	}
 
 }

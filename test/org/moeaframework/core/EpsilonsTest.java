@@ -57,5 +57,24 @@ public class EpsilonsTest {
 		Assert.assertEquals(0.2, epsilons.get(2), Settings.EPS);
 		Assert.assertEquals(0.2, epsilons.get(Integer.MAX_VALUE), Settings.EPS);
 	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testEmptyArray() {
+		new Epsilons(new double[0]);
+	}
+	
+	@Test
+	public void testInvalidValue() {
+		Assert.assertThrows(IllegalArgumentException.class, () -> new Epsilons(0.0));
+		Assert.assertThrows(IllegalArgumentException.class, () -> Epsilons.of(0.0));
+		Assert.assertThrows(IllegalArgumentException.class, () -> Epsilons.of(-1.0));
+		Assert.assertThrows(IllegalArgumentException.class, () -> Epsilons.of(1.0, 2.0, 0.0, 4.0));
+	}
+	
+	@Test
+	public void testOf() {
+		Assert.assertEquals(new Epsilons(0.1), Epsilons.of(0.1));
+		Assert.assertEquals(new Epsilons(new double[] { 0.1, 0.2 }), Epsilons.of(0.1, 0.2));
+	}
 
 }

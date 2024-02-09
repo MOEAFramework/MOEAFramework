@@ -22,6 +22,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.math3.util.CombinatoricsUtils;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Problem;
+import org.moeaframework.core.configuration.Validate;
 import org.moeaframework.util.TypedProperties;
 
 /**
@@ -47,11 +48,15 @@ public class NormalBoundaryDivisions {
 	 * 
 	 * @param outerDivisions the number of outer divisions
 	 * @param innerDivisions the number of inner divisions
+	 * @throws IllegalArgumentException if {@code outerDivisions} or {@code innerDivisions} are {@code < 0}
 	 */
 	public NormalBoundaryDivisions(int outerDivisions, int innerDivisions) {
 		super();
 		this.outerDivisions = outerDivisions;
 		this.innerDivisions = innerDivisions;
+		
+		Validate.greaterThanOrEqual("outerDivisions", 0, outerDivisions);
+		Validate.greaterThanOrEqual("innerDivisions", 0, innerDivisions);
 	}
 	
 	/**

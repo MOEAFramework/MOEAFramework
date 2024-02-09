@@ -22,7 +22,7 @@ import org.junit.Test;
 import org.moeaframework.util.TypedProperties;
 
 public class NormalBoundaryDivisionsTest {
-
+	
 	@Test
 	public void testEquals() {
 		Assert.assertEquals(new NormalBoundaryDivisions(30), new NormalBoundaryDivisions(30));
@@ -53,6 +53,8 @@ public class NormalBoundaryDivisionsTest {
 	
 	@Test
 	public void testReferencePoints() {
+		Assert.assertEquals(1, new NormalBoundaryDivisions(100).getNumberOfReferencePoints(1)); // 100 choose 100
+		
 		Assert.assertEquals(101, new NormalBoundaryDivisions(100).getNumberOfReferencePoints(2)); // 101 choose 100
 		Assert.assertEquals(152, new NormalBoundaryDivisions(100, 50).getNumberOfReferencePoints(2)); // 101 choose 100 + 51 choose 50
 	}
@@ -86,6 +88,28 @@ public class NormalBoundaryDivisionsTest {
 	@Test
 	public void testNoPropertiesIsNull() {
 		Assert.assertNull(NormalBoundaryDivisions.tryFromProperties(new TypedProperties()));
+	}
+	
+	@Test
+	public void testFractionalProperties() {
+		NormalBoundaryDivisions expected = new NormalBoundaryDivisions(100);
+		NormalBoundaryDivisions actual = NormalBoundaryDivisions.tryFromProperties(TypedProperties.withProperty("divisions", "100.2"));
+		Assert.assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void testZeroDivisions() {
+		NormalBoundaryDivisions divisions = new NormalBoundaryDivisions(0);
+		
+		Assert.assertEquals(1, divisions.getNumberOfReferencePoints(1));
+		Assert.assertEquals(1, divisions.getNumberOfReferencePoints(2));
+		Assert.assertEquals(1, divisions.getNumberOfReferencePoints(3));
+	}
+	
+	@Test
+	public void testInvalidValues() {
+		Assert.assertThrows(IllegalArgumentException.class, () -> new NormalBoundaryDivisions(-1));
+		Assert.assertThrows(IllegalArgumentException.class, () -> new NormalBoundaryDivisions(100, -1));
 	}
 	
 }
