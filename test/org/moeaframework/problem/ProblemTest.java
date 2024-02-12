@@ -136,12 +136,14 @@ public abstract class ProblemTest {
 			problemB.evaluate(solutionB);
 			
 			// JMetal only recognizes negative values as violating constraints, therefore fix the sign
-			// before exact comparisons.
+			// before performing exact comparisons.
 			if (exactConstraints && problemA.getNumberOfConstraints() > 0) {
 				double[] constraints = solutionA.getConstraints();
 				
 				for (int j = 0; j < constraints.length; j++) {
-					constraints[j] *= -1;
+					if (constraints[j] > 0.0) {
+						constraints[j] = -constraints[j];
+					}
 				}
 				
 				solutionA.setConstraints(constraints);
