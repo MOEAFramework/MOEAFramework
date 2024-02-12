@@ -17,7 +17,6 @@
  */
 package org.moeaframework.problem.CDTLZ;
 
-import org.moeaframework.core.Constraint;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.RealVariable;
 
@@ -83,7 +82,7 @@ public class ConvexC2_DTLZ2 extends ConvexDTLZ2 {
 		
 		c -= Math.pow(getR(), 2.0);
 		
-		solution.setConstraint(0, Constraint.greaterThanOrEqual(c, 0.0));
+		solution.setConstraint(0, c >= 0 ? 0.0 : c);
 	}
 	
 	private double getR() {

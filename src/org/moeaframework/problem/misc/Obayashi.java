@@ -17,7 +17,6 @@
  */
 package org.moeaframework.problem.misc;
 
-import org.moeaframework.core.Constraint;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
@@ -63,7 +62,7 @@ public class Obayashi extends AbstractProblem implements AnalyticalProblem {
 		
 		solution.setObjective(0, -x);
 		solution.setObjective(1, -y);
-		solution.setConstraint(0, Constraint.lessThanOrEqual(c, 0.0));
+		solution.setConstraint(0, c <= 0.0 ? 0.0 : c);
 	}
 
 	@Override

@@ -17,7 +17,6 @@
  */
 package org.moeaframework.problem.misc;
 
-import org.moeaframework.core.Constraint;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.AbstractProblem;
@@ -73,12 +72,12 @@ public class Osyczka2 extends AbstractProblem {
 		
 		solution.setObjective(0, f1);
 		solution.setObjective(1, f2);
-		solution.setConstraint(0, Constraint.greaterThanOrEqual(c1, 0.0));
-		solution.setConstraint(1, Constraint.greaterThanOrEqual(c2, 0.0));
-		solution.setConstraint(2, Constraint.greaterThanOrEqual(c3, 0.0));
-		solution.setConstraint(3, Constraint.greaterThanOrEqual(c4, 0.0));
-		solution.setConstraint(4, Constraint.greaterThanOrEqual(c5, 0.0));
-		solution.setConstraint(5, Constraint.greaterThanOrEqual(c6, 0.0));
+		solution.setConstraint(0, c1 >= 0.0 ? 0.0 : c1);
+		solution.setConstraint(1, c2 >= 0.0 ? 0.0 : c2);
+		solution.setConstraint(2, c3 >= 0.0 ? 0.0 : c3);
+		solution.setConstraint(3, c4 >= 0.0 ? 0.0 : c4);
+		solution.setConstraint(4, c5 >= 0.0 ? 0.0 : c5);
+		solution.setConstraint(5, c6 >= 0.0 ? 0.0 : c6);
 	}
 
 	@Override

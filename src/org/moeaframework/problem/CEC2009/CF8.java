@@ -17,7 +17,6 @@
  */
 package org.moeaframework.problem.CEC2009;
 
-import org.moeaframework.core.Constraint;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
@@ -55,7 +54,7 @@ public class CF8 extends AbstractProblem {
 		CEC2009.CF8(x, f, c, numberOfVariables);
 
 		solution.setObjectives(f);
-		solution.setConstraint(0, Constraint.greaterThanOrEqual(c[0], 0.0));
+		solution.setConstraint(0, c[0] >= 0.0 ? 0.0 : c[0]);
 	}
 
 	@Override

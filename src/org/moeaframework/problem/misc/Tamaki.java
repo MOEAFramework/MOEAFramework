@@ -17,7 +17,6 @@
  */
 package org.moeaframework.problem.misc;
 
-import org.moeaframework.core.Constraint;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.AbstractProblem;
@@ -59,7 +58,7 @@ public class Tamaki extends AbstractProblem {
 		solution.setObjective(0, -x);
 		solution.setObjective(1, -y);
 		solution.setObjective(2, -z);
-		solution.setConstraint(0, Constraint.lessThanOrEqual(c, 0.0));
+		solution.setConstraint(0, c <= 0.0 ? 0.0 : c);
 	}
 
 	@Override

@@ -17,7 +17,6 @@
  */
 package org.moeaframework.problem.misc;
 
-import org.moeaframework.core.Constraint;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.AbstractProblem;
@@ -68,9 +67,9 @@ public class Viennet4 extends AbstractProblem {
 		solution.setObjective(0, f1);
 		solution.setObjective(1, f2);
 		solution.setObjective(2, f3);
-		solution.setConstraint(0, Constraint.greaterThanOrEqual(c1, 0.0));
-		solution.setConstraint(1, Constraint.greaterThanOrEqual(c2, 0.0));
-		solution.setConstraint(2, Constraint.greaterThanOrEqual(c3, 0.0));
+		solution.setConstraint(0, c1 >= 0.0 ? 0.0 : c1);
+		solution.setConstraint(1, c2 >= 0.0 ? 0.0 : c2);
+		solution.setConstraint(2, c3 >= 0.0 ? 0.0 : c3);
 	}
 
 	@Override
