@@ -135,6 +135,18 @@ public abstract class ProblemTest {
 			problemA.evaluate(solutionA);
 			problemB.evaluate(solutionB);
 			
+			// JMetal only recognizes negative values as violating constraints, therefore fix the sign
+			// before exact comparisons.
+			if (exactConstraints && problemA.getNumberOfConstraints() > 0) {
+				double[] constraints = solutionA.getConstraints();
+				
+				for (int j = 0; j < constraints.length; j++) {
+					constraints[j] *= -1;
+				}
+				
+				solutionA.setConstraints(constraints);
+			}
+			
 			compare(solutionA, solutionB, exactConstraints);
 		}
 	}
