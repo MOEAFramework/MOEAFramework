@@ -44,7 +44,7 @@ public class C1_DTLZ1Test extends ProblemTest {
 				TestUtils.evaluateAtLowerBounds(problem).getObjectives(),
 				0.000001);
 		
-		Assert.assertArrayEquals(new double[] { -208.16666667 }, 
+		Assert.assertArrayEquals(new double[] { 208.16666667 }, 
 				TestUtils.evaluateAtLowerBounds(problem).getConstraints(),
 				0.000001);
 		
@@ -52,7 +52,7 @@ public class C1_DTLZ1Test extends ProblemTest {
 				TestUtils.evaluateAtUpperBounds(problem).getObjectives(),
 				0.000001);
 		
-		Assert.assertArrayEquals(new double[] { -250.0 }, 
+		Assert.assertArrayEquals(new double[] { 250.0 }, 
 				TestUtils.evaluateAtUpperBounds(problem).getConstraints(),
 				0.000001);
 	}
