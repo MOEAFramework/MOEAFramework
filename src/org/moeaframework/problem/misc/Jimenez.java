@@ -17,6 +17,7 @@
  */
 package org.moeaframework.problem.misc;
 
+import org.moeaframework.core.Constraint;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
@@ -68,10 +69,10 @@ public class Jimenez extends AbstractProblem implements AnalyticalProblem {
 		
 		solution.setObjective(0, -f1);
 		solution.setObjective(1, -f2);
-		solution.setConstraint(0, c1 <= 0.0 ? 0.0 : c1);
-		solution.setConstraint(1, c2 <= 0.0 ? 0.0 : c2);
-		solution.setConstraint(2, c3 <= 0.0 ? 0.0 : c3);
-		solution.setConstraint(3, c4 <= 0.0 ? 0.0 : c4);
+		solution.setConstraint(0, Constraint.lessThanOrEqual(c1, 0.0));
+		solution.setConstraint(1, Constraint.lessThanOrEqual(c2, 0.0));
+		solution.setConstraint(2, Constraint.lessThanOrEqual(c3, 0.0));
+		solution.setConstraint(3, Constraint.lessThanOrEqual(c4, 0.0));
 	}
 
 	@Override

@@ -17,6 +17,7 @@
  */
 package org.moeaframework.problem.misc;
 
+import org.moeaframework.core.Constraint;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.AbstractProblem;
@@ -62,8 +63,8 @@ public class Belegundu extends AbstractProblem {
 		
 		solution.setObjective(0, f1);
 		solution.setObjective(1, f2);
-		solution.setConstraint(0, c1 <= 0.0 ? 0.0 : c1);
-		solution.setConstraint(1, c2 <= 0.0 ? 0.0 : c2);
+		solution.setConstraint(0, Constraint.lessThanOrEqual(c1, 0.0));
+		solution.setConstraint(1, Constraint.lessThanOrEqual(c2, 0.0));
 	}
 
 	@Override
