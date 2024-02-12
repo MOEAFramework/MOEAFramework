@@ -17,6 +17,7 @@
  */
 package org.moeaframework.problem.CDTLZ;
 
+import org.moeaframework.core.Constraint;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.DTLZ.DTLZ2;
@@ -76,7 +77,7 @@ public class C2_DTLZ2 extends DTLZ2 {
 		}
 		
 		double c = Math.min(v1, v2 - Math.pow(r, 2.0));
-		solution.setConstraint(0, c <= 0.0 ? 0.0 : c);
+		solution.setConstraint(0, Constraint.lessThanOrEqual(c, 0.0));
 	}
 
 	@Override

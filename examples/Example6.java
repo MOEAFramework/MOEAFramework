@@ -16,6 +16,7 @@
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
 import org.moeaframework.algorithm.NSGAII;
+import org.moeaframework.core.Constraint;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
@@ -52,9 +53,10 @@ public class Example6 {
 			solution.setObjective(0, f1);
 			solution.setObjective(1, f2);
 			
-			// set the constraint values - we treat any non-zero value as a constraint violation!
-			solution.setConstraint(0, c1 <= 0.0 ? 0.0 : c1);
-			solution.setConstraint(1, c2 <= 0.0 ? 0.0 : c2);
+			// set the constraint values - indicate violations with any non-zero value, or use
+			// the appropriate method from the Constraint class.
+			solution.setConstraint(0, Constraint.lessThanOrEqual(c1, 0.0));
+			solution.setConstraint(1, Constraint.lessThanOrEqual(c2, 0.0));
 		}
 
 		/**

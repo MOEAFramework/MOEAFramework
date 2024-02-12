@@ -17,6 +17,7 @@
  */
 package org.moeaframework.problem.CDTLZ;
 
+import org.moeaframework.core.Constraint;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.DTLZ.DTLZ4;
@@ -66,7 +67,7 @@ public class C3_DTLZ4 extends DTLZ4 {
 				}
 			}
 			
-			solution.setConstraint(j, c >= 0.0 ? 0.0 : c);
+			solution.setConstraint(j, Constraint.greaterThanOrEqual(c, 0.0));
 		}
 	}
 
