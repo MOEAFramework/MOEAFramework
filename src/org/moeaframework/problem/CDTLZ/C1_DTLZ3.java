@@ -17,6 +17,7 @@
  */
 package org.moeaframework.problem.CDTLZ;
 
+import org.moeaframework.core.Constraint;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.DTLZ.DTLZ3;
@@ -65,7 +66,7 @@ public class C1_DTLZ3 extends DTLZ3 {
 		
 		double c = (sumsq - 16) * (sumsq - Math.pow(getR(), 2.0));
 		
-		solution.setConstraint(0, c >= 0.0 ? 0.0 : c);
+		solution.setConstraint(0, Constraint.greaterThanOrEqual(c, 0.0));
 	}
 	
 	private double getR() {
