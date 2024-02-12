@@ -17,6 +17,8 @@
  */
 package org.moeaframework.core.variable;
 
+import java.util.BitSet;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.moeaframework.core.PRNG;
@@ -145,19 +147,43 @@ public class Permutation implements Variable {
 	 * Sets the permutation array.
 	 * 
 	 * @param permutation the permutation array
-	 * @throws IllegalArgumentException if the permutation array is not a valid
-	 *         permutation
+	 * @throws IllegalArgumentException if the permutation array is not a valid permutation
 	 */
 	public void fromArray(int[] permutation) {
-		if (!isPermutation(permutation)) {
-			throw new IllegalArgumentException("invalid permutation");
+		if (permutation.length != this.permutation.length) {
+			throw new IllegalArgumentException("invalid permutation, expected array of length " +
+					this.permutation.length + " but given array of length " + permutation.length);
 		}
 		
-		if (this.permutation.length != permutation.length) {
-			throw new IllegalArgumentException("invalid permutation length");
-		}
-
+		validatePermutation(permutation);
+		
 		this.permutation = permutation.clone();
+	}
+	
+	/**
+	 * Validate the given array is a permutation.
+	 * 
+	 * @param permutation the permutation array
+	 * @throws IllegalArgumentException if the permutation array is not a valid permutation
+	 */
+	protected static void validatePermutation(int[] permutation) {
+		BitSet bits = new BitSet(permutation.length);
+		
+		for (int i = 0; i < permutation.length; i++) {
+			if (permutation[i] < 0 || permutation[i] >= permutation.length) {
+				throw new IllegalArgumentException("invalid permutation, value at index " + i + " is out of bounds");
+			}
+			
+			if (bits.get(permutation[i])) {
+				throw new IllegalArgumentException("invalid permutation, value at index " + i + " is duplicated");
+			}
+			
+			bits.set(permutation[i]);
+		}
+		
+		if (bits.cardinality() != permutation.length) {
+			throw new IllegalArgumentException("invalid permutation, missing value " + bits.nextClearBit(0));
+		}
 	}
 
 	/**
@@ -169,22 +195,12 @@ public class Permutation implements Variable {
 	 *         otherwise
 	 */
 	public static boolean isPermutation(int[] permutation) {
-		for (int i = 0; i < permutation.length; i++) {
-			boolean contains = false;
-			
-			for (int j = 0; j < permutation.length; j++) {
-				if (permutation[j] == i) {
-					contains = true;
-					break;
-				}
-			}
-
-			if (!contains) {
-				return false;
-			}
+		try {
+			validatePermutation(permutation);
+			return true;
+		} catch (IllegalArgumentException e) {
+			return false;
 		}
-
-		return true;
 	}
 	
 	@Override
