@@ -69,13 +69,13 @@ public class ConstraintTest {
 	public void testGreaterThanOrEqual() {
 		Assert.assertEquals(0.0, Constraint.greaterThanOrEqual(5.0, 5.0), Settings.EPS);
 		Assert.assertEquals(0.0, Constraint.greaterThanOrEqual(5.1, 5.0), Settings.EPS);
-		Assert.assertEquals(0.1, Constraint.greaterThanOrEqual(4.9, 5.0), Settings.EPS);
+		Assert.assertEquals(-0.1, Constraint.greaterThanOrEqual(4.9, 5.0), Settings.EPS);
 		
 		Assert.assertEquals(0.0, Constraint.greaterThanOrEqual(5.0, 5.0, 0.1), Settings.EPS);
 		Assert.assertEquals(0.0, Constraint.greaterThanOrEqual(5.1, 5.0, 0.1), Settings.EPS);
 		Assert.assertEquals(0.0, Constraint.greaterThanOrEqual(4.9, 5.0, 0.1), Settings.EPS);
 		Assert.assertEquals(0.0, Constraint.greaterThanOrEqual(5.2, 5.0, 0.1), Settings.EPS);
-		Assert.assertEquals(0.2, Constraint.greaterThanOrEqual(4.8, 5.0, 0.1), Settings.EPS);
+		Assert.assertEquals(-0.2, Constraint.greaterThanOrEqual(4.8, 5.0, 0.1), Settings.EPS);
 	}
 	
 	@Test
@@ -93,41 +93,42 @@ public class ConstraintTest {
 	
 	@Test
 	public void testGreaterThan() {
-		Assert.assertEquals(Math.nextUp(0.0), Constraint.greaterThan(5.0, 5.0), Settings.EPS);
+		Assert.assertEquals(Math.nextDown(0.0), Constraint.greaterThan(5.0, 5.0), Settings.EPS);
 		Assert.assertEquals(0.0, Constraint.greaterThan(5.1, 5.0), Settings.EPS);
-		Assert.assertEquals(0.1, Constraint.greaterThan(4.9, 5.0), Settings.EPS);
+		Assert.assertEquals(-0.1, Constraint.greaterThan(4.9, 5.0), Settings.EPS);
 		
-		Assert.assertEquals(Math.nextUp(0.0), Constraint.greaterThan(5.0, 5.0, 0.1), Settings.EPS);
-		Assert.assertEquals(0.1, Constraint.greaterThan(5.1, 5.0, 0.1), Settings.EPS);
-		Assert.assertEquals(0.1, Constraint.greaterThan(4.9, 5.0, 0.1), Settings.EPS);
+		Assert.assertEquals(Math.nextDown(0.0), Constraint.greaterThan(5.0, 5.0, 0.1), Settings.EPS);
+		Assert.assertEquals(-0.1, Constraint.greaterThan(5.1, 5.0, 0.1), Settings.EPS);
+		Assert.assertEquals(-0.1, Constraint.greaterThan(4.9, 5.0, 0.1), Settings.EPS);
 		Assert.assertEquals(0.0, Constraint.greaterThan(5.2, 5.0, 0.1), Settings.EPS);
-		Assert.assertEquals(0.2, Constraint.greaterThan(4.8, 5.0, 0.1), Settings.EPS);
+		Assert.assertEquals(-0.2, Constraint.greaterThan(4.8, 5.0, 0.1), Settings.EPS);
 	}
 	
 	@Test
 	public void testBetween() {
 		Assert.assertEquals(0.0, Constraint.between(5.0, 5.0, 5.0), Settings.EPS);
 		Assert.assertEquals(0.0, Constraint.between(4.0, 5.0, 6.0), Settings.EPS);
-		Assert.assertEquals(0.1, Constraint.between(4.0, 3.9, 6.0), Settings.EPS);
+		Assert.assertEquals(-0.1, Constraint.between(4.0, 3.9, 6.0), Settings.EPS);
 		Assert.assertEquals(0.1, Constraint.between(4.0, 6.1, 6.0), Settings.EPS);
 		
 		Assert.assertEquals(0.0, Constraint.between(5.0, 5.0, 5.0, 0.1), Settings.EPS);
 		Assert.assertEquals(0.0, Constraint.between(4.0, 3.91, 6.0, 0.1), Settings.EPS);
 		Assert.assertEquals(0.0, Constraint.between(4.0, 6.09, 6.0, 0.1), Settings.EPS);
-		Assert.assertEquals(0.2, Constraint.between(4.0, 3.8, 6.0, 0.1), Settings.EPS);
+		Assert.assertEquals(-0.2, Constraint.between(4.0, 3.8, 6.0, 0.1), Settings.EPS);
 		Assert.assertEquals(0.2, Constraint.between(4.0, 6.2, 6.0, 0.1), Settings.EPS);
 	}
 	
 	@Test
 	public void testOutside() {
 		Assert.assertEquals(Math.nextUp(0.0), Constraint.outside(5.0, 5.0, 5.0), Settings.EPS);
-		Assert.assertEquals(1.0, Constraint.outside(4.0, 5.0, 6.0), Settings.EPS);
+		Assert.assertEquals(0.5, Constraint.outside(4.0, 4.5, 6.0), Settings.EPS);
+		Assert.assertEquals(-0.5, Constraint.outside(4.0, 5.5, 6.0), Settings.EPS);
 		Assert.assertEquals(0.0, Constraint.outside(4.0, 3.9, 6.0), Settings.EPS);
 		Assert.assertEquals(0.0, Constraint.outside(4.0, 6.1, 6.0), Settings.EPS);
 		
 		Assert.assertEquals(Math.nextUp(0.0), Constraint.outside(5.0, 5.0, 5.0, 0.1), Settings.EPS);
 		Assert.assertEquals(0.09, Constraint.outside(4.0, 3.91, 6.0, 0.1), Settings.EPS);
-		Assert.assertEquals(0.09, Constraint.outside(4.0, 6.09, 6.0, 0.1), Settings.EPS);
+		Assert.assertEquals(-0.09, Constraint.outside(4.0, 6.09, 6.0, 0.1), Settings.EPS);
 		Assert.assertEquals(0.0, Constraint.outside(4.0, 3.8, 6.0, 0.1), Settings.EPS);
 		Assert.assertEquals(0.0, Constraint.outside(4.0, 6.2, 6.0, 0.1), Settings.EPS);
 	}

@@ -32,9 +32,10 @@ package org.moeaframework.core;
  *       the feasible solution.  This helps optimization algorithms distinguish solutions with
  *       more or less severe violations.
  * </ol>
+ * <p>
  */
 public class Constraint {
-	
+
 	/**
 	 * Constant used to indicate a constraint is satisfied.
 	 */
@@ -137,7 +138,7 @@ public class Constraint {
 	 */
 	public static double greaterThanOrEqual(double x, double y, double epsilon) {
 		double diff = Math.abs(x - y);
-		return x >= y || diff <= epsilon ? 0.0 : diff;
+		return x >= y || diff <= epsilon ? 0.0 : -diff;
 	}
 	
 	/**
@@ -185,7 +186,7 @@ public class Constraint {
 	 */
 	public static double greaterThan(double x, double y, double epsilon) {
 		double diff = Math.abs(x - y);
-		return x > y && diff > epsilon ? 0.0 : Math.nextUp(diff);
+		return x > y && diff > epsilon ? 0.0 : Math.nextDown(-diff);
 	}
 	
 	/**
@@ -212,7 +213,7 @@ public class Constraint {
 	public static double between(double lower, double value, double upper, double epsilon) {
 		if (value < lower) {
 			double diff = Math.abs(lower - value);
-			return diff <= epsilon ? 0.0 : diff;
+			return diff <= epsilon ? 0.0 : -diff;
 		}
 		
 		if (value > upper) {
@@ -245,17 +246,22 @@ public class Constraint {
 	 * @return the constraint value
 	 */
 	public static double outside(double lower, double value, double upper, double epsilon) {
-		if (value < lower) {
-			double diff = Math.abs(lower - value);
-			return diff > epsilon ? 0.0 : Math.nextUp(diff);
+		double diffLower = Math.abs(lower - value);
+		double diffUpper = Math.abs(upper - value);
+		
+		if (value < lower) {	
+			return diffLower > epsilon ? 0.0 : Math.nextUp(diffLower);
 		}
 		
 		if (value > upper) {
-			double diff = Math.abs(upper - value);
-			return diff > epsilon ? 0.0 : Math.nextUp(diff);
+			return diffUpper > epsilon ? 0.0 : Math.nextDown(-diffUpper);
 		}
 		
-		return Math.max(Math.abs(lower - value), Math.abs(upper - value));
+		if (diffLower < diffUpper) {
+			return diffLower;
+		} else {
+			return -diffUpper;
+		}
 	}
 
 }
