@@ -10,8 +10,14 @@
 * Visualizations
   * [The Diagnostic Tool](diagnostic.md)
   * [J3 - Java 3D Visualization Tool](j3.md)
-* [Parallelization (Distributing Evaluations and Island Models)](parallelization.md)
-* [Other Features](misc.md)
+* [Parallelization](parallelization.md)
+  * [Distributing Function Evaluations](parallelization.md#distributing-function-evaluations)
+  * [Island-Model Parallelization](parallelization.md#island-model-parallelization)
+* [Other Topics](misc.md)
+  * [Checkpoints](misc.md#checkpoints)
+  * [Saving and Formatting Results](misc.md#saving-and-formatting-results)
+  * [Injecting Initial Solutions](misc.md#injecting-initial-solutions)
+  * [Mixed Types](misc.md#mixed-types)
 
 ## Advanced
 * [List of Decision Variables](variables.md)
