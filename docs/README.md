@@ -12,6 +12,7 @@
   * [J3 - Java 3D Visualization Tool](j3.md)
 * [Parallelization](parallelization.md)
   * [Distributing Function Evaluations](parallelization.md#distributing-function-evaluations)
+  * [Distributing on Remote Machines](parallelization.md#distributing-on-remote-machines)
   * [Island-Model Parallelization](parallelization.md#island-model-parallelization)
 * [Other Topics](misc.md)
   * [Checkpoints](misc.md#checkpoints)
