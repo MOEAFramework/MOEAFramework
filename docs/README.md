@@ -11,6 +11,7 @@
   * [The Diagnostic Tool](diagnostic.md)
   * [J3 - Java 3D Visualization Tool](j3.md)
 * [Parallelization (Distributing Evaluations and Island Models)](parallelization.md)
+* [Other Features](misc.md)
 
 ## Advanced
 * [List of Decision Variables](variables.md)
