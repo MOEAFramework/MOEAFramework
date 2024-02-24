@@ -6,6 +6,7 @@
 * [Setup](setup.md)
 * [An Example](example.md)
 * [Running Experiments](experiment.md)
+* [Defining New Problems and Algorithms](extending.md)
 * Visualizations
   * [The Diagnostic Tool](diagnostic.md)
   * [J3 - Java 3D Visualization Tool](j3.md)
