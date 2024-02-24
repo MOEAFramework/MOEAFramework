@@ -5,9 +5,10 @@ By default, the MOEA Framework is single-threaded.  Solving a problem in the man
 ```java
 
 Problem problem = new DTLZ2(2);
-NSGAII algorithm = new NSGAII(problem);
 
+NSGAII algorithm = new NSGAII(problem);
 algorithm.run(10000);
+algorithm.getResult().display();
 ```
 
 This is typically fine for test problems, but custom problems can quickly become computationally expensive.  Let's explore how we can
@@ -23,8 +24,7 @@ evaluations using the `DistributedProblem` class:
 
 try (Problem problem = DistributedProblem.from(new DTLZ2(2))) {
     NSGAII algorithm = new NSGAII(problem);
-    algorithm.run(10000);
-			
+    algorithm.run(10000);		
     algorithm.getResult().display();
 }
 ```
