@@ -21,7 +21,6 @@ multiple cores.  Most consumer CPUs today have multiple cores (and even multiple
 evaluations using the `DistributedProblem` class:
 
 ```java
-
 try (Problem problem = DistributedProblem.from(new DTLZ2(2))) {
     NSGAII algorithm = new NSGAII(problem);
     algorithm.run(10000);		
@@ -37,9 +36,39 @@ There are a few key points to call out:
 2. Be sure to close the the problem when finished to ensure all underlying resources are cleaned up.  The easiest way is using a
    try-with-resources block as demonstrated in this example.
    
-3. When distributed problems, we must balance the speedup provided by parallelization against communication and overhead costs.
+3. When distributing function evaluations, we must balance the speedup provided by parallelization against communication and overhead costs.
    If each function evaluation only takes milliseconds, parallelization is unlikely to provide any performance benefit (or could
    even make it slower!).
+
+## Distributing on Remote Machines
+
+The above example distributed the function evaluations on the local computer.  But we can also distribute across
+remote machines using a library like [Apache Ignite](https://ignite.apache.org/).  In fact, any library that
+provides an `ExecutorService` implementation is supported!
+
+First, the problem class must implement the `Serializable` interface.  This allows Java to transmit the problem
+definition to the remote machines.  Without this, you will likely see a `NotSerializableException`.
+
+```java
+public class MyDistributedProblem extends AbstractProblem implements Serializable {
+    // ... implement problem ...
+}
+```
+
+Then, use the `ExecutorService` provided by your library with the `DistributedProblem`.  For Apache Ignite,
+it would look something like:
+
+```java
+try (Ignite ignite = Ignition.start("config/ignite-config.xml")) {
+    ExecutorService executor = ignite.executorService();
+			
+    try (Problem problem = DistributedProblem.from(new MyDistributedProblem(), executor)) {
+        NSGAII algorithm = new NSGAII(problem);
+        algorithm.run(10000);		
+        algorithm.getResult().display();
+    }
+}
+```
 
 ## Island Model Parallelization
 
