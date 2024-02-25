@@ -10,7 +10,7 @@
 * [Visualizations](visualizations.md)
   * [Simple Plots](visualizations.md#simple-plots)
   * [The Diagnostic Tool](visualizations.md#diagnostic-tool)
-  * [J3 - Java 3D Visualization Tool](visualizations.md#j3)
+  * [J3 - Java 3D Visualization Tool](visualizations.md#j3---java-3d-visualization-tool)
 * [Parallelization](parallelization.md)
   * [Distributing Function Evaluations](parallelization.md#distributing-function-evaluations)
   * [Distributing on Remote Machines](parallelization.md#distributing-on-remote-machines)
