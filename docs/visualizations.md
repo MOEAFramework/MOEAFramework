@@ -54,7 +54,7 @@ to select and view different problems, algorithms, and quality indicators.
 
 ![image](https://user-images.githubusercontent.com/2496211/202853310-2e41b809-7997-4b30-865a-cd4fce2ed36f.png)
 
-## J3
+## J3 - Java 3D Visualization Tool
 
 For higher-dimensional visualizations of Pareto approximation sets, we also developed a desktop application called J3.
 This tool can be downloaded and installed from https://github.com/Project-Platypus/J3.
