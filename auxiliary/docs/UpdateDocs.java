@@ -9,16 +9,32 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.io.FileUtils;
+
 /**
  * Simple utility to update code samples found in Markdown files.
  */
 public class UpdateDocs {
 	
-	public static final File PATH = new File("docs/");
+	public static final File DEFAULT_PATH = new File("docs/");
 	
 	public static final Pattern REGEX = Pattern.compile("<!--\\s+([a-zA-Z]+)\\:([a-zA-Z0-9\\.\\\\\\/]+)(?:\\s+\\[([0-9]+)?\\-([0-9]+)?\\])?\\s+-->");
 	
-	public void scan(File file) throws IOException {
+	private final File path;
+	
+	private final boolean update;
+	
+	public UpdateDocs(File path, boolean update) {
+		super();
+		this.path = path;
+		this.update = update;
+	}
+	
+	public void run() throws IOException {
+		scan(path);
+	}
+	
+	private void scan(File file) throws IOException {
 		if (file.isDirectory()) {
 			System.out.println("Scanning directory " + file);
 			for (File nestedFile : file.listFiles()) {
@@ -32,7 +48,7 @@ public class UpdateDocs {
 		}
 	}
 	
-	public void process(File file) throws IOException {
+	private void process(File file) throws IOException {
 		File tempFile = File.createTempFile("markdown", "md");
 		
 		try (BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -72,11 +88,16 @@ public class UpdateDocs {
 			}
 		}
 		
-		file.delete();
-		tempFile.renameTo(file);
+		if (update) {
+			file.delete();
+			tempFile.renameTo(file);
+		} else if (!FileUtils.contentEquals(file, tempFile)) {
+			System.out.println("    > Detected difference in file!");
+			System.exit(-1);
+		}
 	}
 	
-	public String loadCodeSample(String filename, int startingLine, int endingLine) throws IOException {
+	private String loadCodeSample(String filename, int startingLine, int endingLine) throws IOException {
 		List<String> lines = new ArrayList<String>();
 		
 		// load the requested lines
@@ -131,7 +152,8 @@ public class UpdateDocs {
 	}
 	
 	public static void main(String[] args) throws IOException {
-		new UpdateDocs().scan(PATH);
+		boolean update = args.length > 0 && args[0].equals("update");
+		new UpdateDocs(DEFAULT_PATH, update).run();
 	}
 
 }
