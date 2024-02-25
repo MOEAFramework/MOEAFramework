@@ -180,6 +180,11 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		</antcall>
 	</target>
 	
+	<!-- Updates code samples used in online documentation -->
+	<target name="update-docs">
+		<javac destdir="auxiliary/docs" srcdir="auxiliary/docs" includeantruntime="false" encoding="UTF-8" />
+		<java classpath="auxiliary/docs" classname="UpdateDocs" fork="true" />
+	</target>
 
 	<!-- Packages the MOEA Framework JAR file along with javadocs and required files -->
 	<target name="package-binary" depends="build-binary, build-javadoc"

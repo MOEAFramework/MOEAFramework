@@ -2,14 +2,15 @@
 
 Let's create and solve the 2-dimension DTLZ2 test problem using NSGA-II:
 
-```java
+<!-- java:examples/Example1.java [29-34] -->
 
+```java
 Problem problem = new DTLZ2(2);
+
 NSGAII algorithm = new NSGAII(problem);
-		
 algorithm.run(10000);
 
-NondominatedPopulation result = algorithm.getResult();
+algorithm.getResult().display();
 ```
 
 The output is a `NondominatedPopulation`, which stores the Pareto non-dominated solutions to the problem.  Calling the `display()`
