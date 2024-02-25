@@ -2,7 +2,7 @@
 
 Let's create and solve the 2-dimension DTLZ2 test problem using NSGA-II:
 
-<!-- java:examples/Example1.java [29-34] -->
+<!-- code:java:examples/Example1.java [29-34] -->
 
 ```java
 Problem problem = new DTLZ2(2);
@@ -13,12 +13,13 @@ algorithm.run(10000);
 algorithm.getResult().display();
 ```
 
-The output is a `NondominatedPopulation`, which stores the Pareto non-dominated solutions to the problem.  Calling the `display()`
+The result is a `NondominatedPopulation`, which stores the Pareto non-dominated solutions to the problem.  Calling the `display()`
 method is an easy way to print the solutions to the console.
 
-```java
+<!-- java:examples/Example1.java [34-34] -->
 
-result.display();
+```java
+algorithm.getResult().display();
 ```
 
 ```

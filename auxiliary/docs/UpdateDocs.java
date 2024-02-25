@@ -12,7 +12,8 @@ import java.util.regex.Pattern;
 import org.apache.commons.io.FileUtils;
 
 /**
- * Simple utility to update code samples found in Markdown files.
+ * Utility to update code samples found in Markdown files.  The aim is to keep Markdown documentation
+ * up-to-date with example code by warning if there are changes and/or updating the Markdown.
  */
 public class UpdateDocs {
 	
@@ -119,6 +120,10 @@ public class UpdateDocs {
 		
 		while (stripFirstChar) {
 			char charToRemove = lines.get(0).charAt(0);
+			
+			if (!Character.isWhitespace(charToRemove)) {
+				break;
+			}
 			
 			for (int i = 1; i < lines.size(); i++) {
 				String line = lines.get(i);
