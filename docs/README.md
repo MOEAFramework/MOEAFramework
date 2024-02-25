@@ -7,9 +7,10 @@
 * [An Example](example.md)
 * [Running Experiments](experiment.md)
 * [Defining New Problems and Algorithms](extending.md)
-* Visualizations
-  * [The Diagnostic Tool](diagnostic.md)
-  * [J3 - Java 3D Visualization Tool](j3.md)
+* [Visualizations](visualizations.md)
+  * [Simple Plots](visualizations.md#simple-plots)
+  * [The Diagnostic Tool](visualizations.md#diagnostic-tool)
+  * [J3 - Java 3D Visualization Tool](visualizations.md#j3)
 * [Parallelization](parallelization.md)
   * [Distributing Function Evaluations](parallelization.md#distributing-function-evaluations)
   * [Distributing on Remote Machines](parallelization.md#distributing-on-remote-machines)
