@@ -266,14 +266,9 @@ public class UpdateDocs {
 		
 	}
 	
-	public static void main(String[] args) {
-		try {
-			boolean update = args.length > 0 && args[0].equals("update");
-			new UpdateDocs(update).scan(DOCS_PATH);
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-			System.exit(-1);
-		}
+	public static void main(String[] args) throws Exception {
+		boolean update = args.length > 0 && args[0].equals("update");
+		new UpdateDocs(update).scan(DOCS_PATH);
 	}
 
 }
