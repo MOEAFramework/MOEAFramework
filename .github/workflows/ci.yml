@@ -94,6 +94,8 @@ jobs:
       with:
         java-version: 8
         distribution: temurin
+    - name: Validate docs
+      run: ant -f build.xml validate-docs
     - name: Package binary
       run: ant -f build.xml package-binary
     - name: Test examples in binary package
