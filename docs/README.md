@@ -20,6 +20,7 @@
   * [Saving and Formatting Results](misc.md#saving-and-formatting-results)
   * [Injecting Initial Solutions](misc.md#injecting-initial-solutions)
   * [Mixed Types](misc.md#mixed-types)
+  * [Single-Objective Optimization](misc.md#single---objective-optimization)
 
 ## Advanced
 * [List of Decision Variables](variables.md)

@@ -127,3 +127,74 @@ algorithm.getResult().display();
 The order of the operators does matter.  The rule of thumb is to put the crossover operators first (SBX and HUX)
 followed by the mutation operators (PM and BF).
 
+## Single-Objective Optimization
+
+While the MOEA Framework, by it's name, is intended for multi-objective optimization, it does support single-objective
+optimization.  Simply define the problem to have one objective:
+
+<!-- java:examples/org/moeaframework/examples/misc/RosenbrockProblem.java [6-32] -->
+
+```java
+public class RosenbrockProblem extends AbstractProblem {
+	
+	public RosenbrockProblem() {
+		super(2, 1, 0);
+	}
+
+	@Override
+	public void evaluate(Solution solution) {
+		double result = 0.0;
+		double[] x = EncodingUtils.getReal(solution);
+
+		for (int i = 0; i < x.length-1; i++) {
+			result += 100 * (x[i]*x[i] - x[i+1])*(x[i]*x[i] - x[i+1]) + (x[i] - 1)*(x[i] - 1);
+		}
+
+		solution.setObjective(0, result);
+	}
+
+	@Override
+	public Solution newSolution() {
+		Solution solution = new Solution(2, 1, 0);
+		solution.setVariable(0, EncodingUtils.newReal(-10, 10));
+		solution.setVariable(1, EncodingUtils.newReal(-10, 10));
+		return solution;
+	}
+
+}
+```
+
+Then, use one of the single-objective algorithms to solve the problem:
+
+<!-- java:examples/org/moeaframework/examples/misc/SingleObjectiveExample.java [34-57] -->
+
+```java
+Problem problem = new RosenbrockProblem();
+
+System.out.println("Genetic Algorithm:");
+GeneticAlgorithm ga = new GeneticAlgorithm(problem);
+ga.run(100000);
+ga.getResult().display();
+
+System.out.println();
+System.out.println("Differential Evolution:");
+DifferentialEvolution de = new DifferentialEvolution(problem);
+de.run(100000);
+de.getResult().display();
+
+System.out.println();
+System.out.println("Evolution Strategy:");
+EvolutionStrategy es = new EvolutionStrategy(problem);
+es.run(100000);
+es.getResult().display();
+
+System.out.println();
+System.out.println("Simulated Annealing:");
+SimulatedAnnealing sa = new SimulatedAnnealing(problem);
+sa.run(100000);
+sa.getResult().display();
+```
+
+Also note that you can pass multi-objective problems to these single-objective algorithms.  The objectives
+will be aggregated into a single fitness value, by default using linear weights.  These weights can be
+changed by providing a different `AggregateObjectiveComparator`.
