@@ -85,44 +85,45 @@ Some problems may require combining different types of decision variables.  This
 MOEA Framework, but it does require some additional setup.  First, when defining the problem, configure
 the solution with the desired types.  Here we setup up a binary integer and a real decision variable.
 
-```java
-public class MixedTypeProblem extends AbstractProblem {
-        // ... other methods ...
+<!-- java:examples/org/moeaframework/examples/misc/MixedTypesExample.java [61-67] -->
 
-	public Solution newSolution() {
-		Solution solution = new Solution(2, 2, 0);
-		
-		solution.setVariable(0, EncodingUtils.newBinaryInt(0, 10));
-		solution.setVariable(1, EncodingUtils.newReal(0.0, 1.0));
-		
-		return solution;
-	}
-}
+```java
+public Solution newSolution() {
+	Solution solution = new Solution(2, 2, 2);
+	
+	solution.setVariable(0, EncodingUtils.newBinaryInt(-20, 20));
+	solution.setVariable(1, EncodingUtils.newReal(-20.0, 20.0));
+	
+	return solution;
 ```
 
-No default operators are provided for mixed types, but we can easily construct the operators using
-the `OperatorFactory` and the expression `"sbx+hux+pm+bf"`, combining the
+The `evaluate` method would also need to read the correct types:
+
+<!-- java:examples/org/moeaframework/examples/misc/MixedTypesExample.java [47-48] -->
+
+```java
+int x = EncodingUtils.getInt(solution.getVariable(0));
+double y = EncodingUtils.getReal(solution.getVariable(1));
+```
+
+No default operators are provided for mixed types, but we can easily construct the operators
+using `CompoundVariation` to combine the individual operators.  Here we combine
 Simulated Binary Crossover (SBX), Half-Uniform Crossover (HUX), Polynomial Mutation (PM), and
 Bit Flip Mutation (BF) operators.  SBX and PM operate on the real value whereas HUX and BF operate on
 the binary variable.
 
-```java
+<!-- java:examples/org/moeaframework/examples/misc/MixedTypesExample.java [73-79] -->
 
-MixedTypeProblem problem = new MixedTypeProblem();
+```java
+Problem problem = new MixedTypesSrinivasProblem();
 NSGAII algorithm = new NSGAII(problem);
 
-algorithm.setVariation(OperatorFactory.getInstance().getVariation("sbx+hux+pm+bf", problem));
+algorithm.setVariation(new CompoundVariation(new SBX(), new HUX(), new PM(), new BitFlip()));
 		
 algorithm.run(10000);
 algorithm.getResult().display();
 ```
 
-The order of the operators in `"sbx+hux+pm+bf"` does matter.  The rule of thumb is to put the
-crossover operators first (SBX and HUX) followed by the mutation operators (PM and BF).
+The order of the operators does matter.  The rule of thumb is to put the crossover operators first (SBX and HUX)
+followed by the mutation operators (PM and BF).
 
-Alternatively, we can use the constructors of each operator and `CompoundVariation` to combine
-them.  The following produces the same operator as above:
-
-```java
-algorithm.setVariation(new CompoundVariation(new SBX(), new HUX(), new PM(), new BitFlip()));
-```
