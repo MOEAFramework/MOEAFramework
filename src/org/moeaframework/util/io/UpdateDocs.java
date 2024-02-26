@@ -9,7 +9,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.StringReader;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -25,6 +24,8 @@ import org.moeaframework.core.Settings;
  * Markdown files that are kept in-sync with working examples.
  */
 public class UpdateDocs {
+	
+	private static final String CHARSET = "UTF8";
 	
 	private static final long SEED = 123456;
 	
@@ -85,7 +86,7 @@ public class UpdateDocs {
 						compile(filename);
 						content = execute(filename);
 					} else {
-						content = FileUtils.readFileToString(new File(filename), Charset.defaultCharset());
+						content = FileUtils.readFileToString(new File(filename), CHARSET);
 					}
 					
 					// write updated code block to output
@@ -102,7 +103,7 @@ public class UpdateDocs {
 			}
 		}
 		
-		if (!FileUtils.contentEquals(file, tempFile)) {
+		if (!FileUtils.contentEqualsIgnoreEOL(file, tempFile, CHARSET)) {
 			System.out.println("    > File changed!");
 			
 			if (!update) {
