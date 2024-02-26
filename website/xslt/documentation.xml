@@ -40,6 +40,28 @@
       <div class="fix"></div>
     </li>
     <li>
+      <a href="https://github.com/MOEAFramework/MOEAFramework/blob/master/docs/README.md">
+        <img src="images/beginners.jpg" class="float-left" width="107" height="140"
+        	alt="Online Documentation" 
+        	style="background: none; border: 1px; padding: 0px;" />
+        <strong style="font-size: 10pt">Tutorials and Examples</strong>
+      </a>
+      <br />
+      <span>
+        Browse our tutorials and examples.  These can be found online using the links below or 
+        under the docs/ and examples/ folders provided with each release.  These are replacing
+        the Beginner's Guide to the MOEA Framework manual.
+      </span>
+      <br /><br />
+      <span style="font-size: 10pt">
+        <a href="https://github.com/MOEAFramework/MOEAFramework/blob/master/docs/README.md" style="text-transform: none">Tutorials</a>
+        |
+        <a href="https://github.com/MOEAFramework/MOEAFramework/blob/master/examples/" style="text-transform: none">Examples</a>
+      </span>
+      <div class="fix"></div>
+    </li>
+    <!--
+    <li>
       <a href="http://www.lulu.com/shop/david-hadka/beginners-guide-to-the-moea-framework/ebook/product-22522401.html">
         <img src="images/beginners.jpg" class="float-left" width="107" height="140"
         	alt="Purchase the Beginner's Guide to the MOEA Framework" 
@@ -64,7 +86,7 @@
       </span>
       <div class="fix"></div>
     </li>
-    
+    -->
     <!--
     <li>
       <a href="http://www.lulu.com/shop/david-hadka/high-performance-computing-with-the-moea-framework-and-ignite/ebook/product-22531100.html">
