@@ -17,33 +17,25 @@
  */
 package org.moeaframework.examples.plots;
 
-import org.moeaframework.Executor;
+import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.analysis.plot.Plot;
-import org.moeaframework.core.NondominatedPopulation;
+import org.moeaframework.core.Problem;
+import org.moeaframework.problem.DTLZ.DTLZ2;
 
 /**
- * Displays a plot comparing the final Pareto approximation sets found by
- * NSGAII and eMOEA on the 2D DTLZ2 problem.
+ * Solves 2-objective DTLZ2 using NSGA-II and displays the approximation set.
  */
-public class PlotApproximationSets {
+public class PlotApproximationSet {
 
 	public static void main(String[] args) {
-		NondominatedPopulation result1 = new Executor()
-				.withProblem("DTLZ2_2")
-				.withAlgorithm("NSGAII")
-				.withMaxEvaluations(10000)
-				.run();
+		Problem problem = new DTLZ2(2);
 		
-		NondominatedPopulation result2 = new Executor()
-				.withProblem("DTLZ2_2")
-				.withAlgorithm("eMOEA")
-				.withMaxEvaluations(10000)
-				.run();
+		NSGAII algorithm = new NSGAII(problem);
+		algorithm.run(10000);
 		
-		Plot plot = new Plot();
-		plot.add("NSGAII", result1);
-		plot.add("eMOEA", result2);
-		plot.show();
+		new Plot()
+			.add("NSGA-II", algorithm.getResult())
+			.show();
 	}
 
 }

@@ -5,10 +5,12 @@
 Checkpoints are useful when performing expensive or long-running optimizations.  This will periodically save
 the state of the optimization to a file, which can be resumed at a later point if the run is interrupted.
 
+<!-- java:examples/org/moeaframework/examples/misc/CheckpointExample.java [36-48] -->
+
 ```java
 File checkpointFile = new File("checkpoint.dat");
 
-NSGAII algorithm = new NSGAII(new SrinivasProblem());
+NSGAII algorithm = new NSGAII(new Srinivas());
 Checkpoints checkpoints = new Checkpoints(algorithm, checkpointFile, 1000);
 
 if (checkpointFile.exists()) {
@@ -34,12 +36,16 @@ Checkpoint file exists, resuming previous run at 2000000 evaluations!
 In many of the examples, you likely noticed we displayed results using `algorithm.getResult().display()`.
 Alternatively, we can save the output to a file using:
 
+<!-- java:examples/org/moeaframework/examples/misc/SaveAndFormatResultsExample.java [41-41] -->
+
 ```java
-algorithm.getResult().asTabularData().saveCSV(new File("solutions.dat"));
+algorithm.getResult().asTabularData().saveCSV(new File("solutions.csv"));
 ```
 
 We can also customize how the output is formatted.  Say we want to use ten digits of precision
 for the output:
+
+<!-- java:examples/org/moeaframework/examples/misc/SaveAndFormatResultsExample.java [44-49] -->
 
 ```java
 NumberFormatter numberFormat = new NumberFormatter();
@@ -55,19 +61,21 @@ results.display();
 By default, algorithms initialize the population using randomly-generated solutions.  It's also possible to
 inject pre-defined solutions into the initial population:
 
+<!-- java:examples/org/moeaframework/examples/misc/InjectSolutionsExample.java [33-45] -->
+
 ```java
 Problem problem = new DTLZ2(2);
-		
+
 Solution solutionA = problem.newSolution();
 EncodingUtils.setReal(solutionA, new double[] { 0.0, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5 });
-		
+
 Solution solutionB = problem.newSolution();
 EncodingUtils.setReal(solutionB, new double[] { 1.0, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5 });
-		
+
 NSGAII algorithm = new NSGAII(problem);	
 algorithm.setInitialization(new InjectedInitialization(problem, solutionA, solutionB));
 algorithm.run(10000);
-		
+
 algorithm.getResult().display();
 ```
 

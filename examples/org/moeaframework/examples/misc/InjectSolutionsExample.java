@@ -28,7 +28,7 @@ import org.moeaframework.problem.DTLZ.DTLZ2;
  * Demonstrates how to inject known good solutions into the initial population of an algorithm.  Here, we inject
  * two solutions corresponding to the Pareto optimal points with objectives (1, 0) and (0, 1), respectively.
  */
-public class InjectSolutionsIntoPopulationExample {
+public class InjectSolutionsExample {
 
 	public static void main(String[] args) {
 		Problem problem = new DTLZ2(2);
