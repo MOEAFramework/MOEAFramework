@@ -48,6 +48,10 @@ public class PRNG {
 	 */
 	static {
 		random = new RandomAdaptor(new MersenneTwister());
+		
+		if (Settings.PROPERTIES.contains(Settings.KEY_PRNG_SEED)) {
+			setSeed(Settings.PROPERTIES.getLong(Settings.KEY_PRNG_SEED));
+		}
 	}
 
 	/**

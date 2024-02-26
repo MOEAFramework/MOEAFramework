@@ -17,10 +17,15 @@
  */
 package org.moeaframework.examples.plots;
 
-import org.moeaframework.Executor;
+import java.io.File;
+
 import org.moeaframework.Instrumenter;
+import org.moeaframework.algorithm.NSGAII;
+import org.moeaframework.analysis.collector.InstrumentedAlgorithm;
 import org.moeaframework.analysis.collector.Observations;
 import org.moeaframework.analysis.plot.Plot;
+import org.moeaframework.core.Problem;
+import org.moeaframework.problem.DTLZ.DTLZ2;
 
 /**
  * Displays a plot showing the hypervolume and generational distance runtime dynamics.
@@ -28,24 +33,25 @@ import org.moeaframework.analysis.plot.Plot;
 public class PlotRuntimeDynamics {
 
 	public static void main(String[] args) {
+		Problem problem = new DTLZ2(2);
+		
 		Instrumenter instrumenter = new Instrumenter()
-				.withProblem("UF1")
-				.withFrequency(100)
-				.attachHypervolumeCollector()
-				.attachGenerationalDistanceCollector();
-		
-		new Executor()
-				.withSameProblemAs(instrumenter)
-				.withAlgorithm("NSGAII")
-				.withMaxEvaluations(10000)
-				.withInstrumenter(instrumenter)
-				.run();
-		
-		Observations observations = instrumenter.getObservations();
-		
-		Plot plot = new Plot();
-		plot.add(observations);
-		plot.show();
+		    .withProblem(problem)
+		    .withReferenceSet(new File("./pf/DTLZ2.2D.pf"))
+		    .withFrequency(100)
+		    .attachHypervolumeCollector()
+		    .attachGenerationalDistanceCollector();
+				
+		NSGAII algorithm = new NSGAII(problem);
+				
+		InstrumentedAlgorithm instrumentedAlgorithm = instrumenter.instrument(algorithm);
+		instrumentedAlgorithm.run(10000);
+				
+		Observations observations = instrumentedAlgorithm.getObservations();
+				
+		new Plot()
+		    .add(observations)
+		    .show();
 	}
 
 }

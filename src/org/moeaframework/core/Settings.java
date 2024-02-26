@@ -93,6 +93,12 @@ public class Settings {
 	public static final String KEY_CONFIGURATION_FILE = createKey(KEY_PREFIX, "configuration");
 	
 	/**
+	 * The property key for setting a global PRNG seed, which can be used to make results
+	 * reproducible.  Note, however, that the seed is set once during initialization.
+	 */
+	public static final String KEY_PRNG_SEED = createKey(KEY_PREFIX, "core", "prng", "seed");
+	
+	/**
 	 * The property key for how to handle duplicate solutions in a nondominated population.
 	 */
 	public static final String KEY_DUPLICATE_MODE = createKey(KEY_PREFIX, "core", "duplicate_mode");
