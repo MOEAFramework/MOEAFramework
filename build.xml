@@ -180,14 +180,6 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		</antcall>
 	</target>
 	
-	<!-- Compiles the tool used to validate or update code samples in the docs -->
-	<target name="build-doc-util" depends="build-binary">
-		<javac destdir="auxiliary/docs" srcdir="auxiliary/docs" includeantruntime="false" encoding="UTF-8">
-			<classpath refid="classpath" />
-			<classpath path="${build}" />
-		</javac>
-	</target>
-	
 	<!-- Updates code samples used in the docs -->
 	<target name="update-docs" depends="build-binary">
 		<java classname="org.moeaframework.util.io.UpdateDocs" fork="true">
