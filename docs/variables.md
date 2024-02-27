@@ -120,7 +120,7 @@ graph TD;
     style START fill-opacity:0, stroke-opacity:0;
 ```
 
-Check out the code samples in [/examples/org/moeaframework/examples/gp](examples/org/moeaframework/examples/gp).
+Check out the code samples in [/examples/org/moeaframework/examples/gp](../examples/org/moeaframework/examples/gp).
 
 ## Grammar
 
