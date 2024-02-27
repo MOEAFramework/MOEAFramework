@@ -2,7 +2,7 @@
 
 Let's create and solve the 2-dimension DTLZ2 test problem using NSGA-II:
 
-<!-- java:examples/Example1.java [28-33] -->
+<!-- java:examples/Example1.java [29:34] -->
 
 ```java
 Problem problem = new DTLZ2(2);
@@ -15,7 +15,7 @@ algorithm.getResult().display();
 
 The last line gets the Pareto non-dominated solutions to the problem and displays them in the terminal.
 
-<!-- output:examples/Example1.java [-6] -->
+<!-- output:examples/Example1.java [:7] -->
 
 ```
 Var1     Var2     Var3     Var4     Var5     Var6     Var7     Var8     Var9     Var10    Var11    Obj1     Obj2     

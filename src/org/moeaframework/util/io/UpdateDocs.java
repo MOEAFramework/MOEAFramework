@@ -9,6 +9,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.StringReader;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -33,7 +35,7 @@ public class UpdateDocs {
 	
 	private static final File DOCS_PATH = new File("docs/");
 	
-	private static final Pattern REGEX = Pattern.compile("<!--\\s+([a-zA-Z]+)\\:([^\\s]+)(?:\\s+\\[([0-9]+)?\\-([0-9]+)?\\])?\\s+-->");
+	private static final Pattern REGEX = Pattern.compile("<!--\\s+([a-zA-Z]+)\\:([^\\s]+)(?:\\s+\\[([0-9]+)?:([0-9]+)?\\])?\\s+-->");
 	
 	private final boolean update;
 	
@@ -72,13 +74,13 @@ public class UpdateDocs {
 				if (matcher.matches()) {
 					String language = matcher.group(1);
 					String filename = matcher.group(2);
-					int startingLine = matcher.group(3) != null ? Integer.parseInt(matcher.group(3)) : 0;
-					int endingLine = matcher.group(4) != null ? Integer.parseInt(matcher.group(4)) : Integer.MAX_VALUE;
+					int startingLine = matcher.group(3) != null ? Integer.parseInt(matcher.group(3)) : FormattingOptions.FIRST_LINE;
+					int endingLine = matcher.group(4) != null ? Integer.parseInt(matcher.group(4)) : FormattingOptions.LAST_LINE;
 					
 					FormattingOptions options = new FormattingOptions(startingLine, endingLine);
 					String content = "";
 					
-					System.out.println("    > Updating " + language + " code block: " + filename + " [" + startingLine + "-" + endingLine + "]");
+					System.out.println("    > Updating " + language + " code block: " + filename + " " + options);
 					
 					if (language.equalsIgnoreCase("output")) {
 						language = "";
@@ -147,6 +149,16 @@ public class UpdateDocs {
 	private String getClassPath(String... entries) {
 		return String.join(SystemUtils.IS_OS_WINDOWS ? ";" : ":", entries);
 	}
+	
+	private String getClassName(String filename) {
+		Path path = Paths.get(FilenameUtils.removeExtension(filename));
+		
+		if (path.startsWith("examples") || path.startsWith("src") || path.startsWith("test")) {
+			path = path.subpath(1, path.getNameCount());
+		}
+		
+		return path.toString().replaceAll("[\\\\/]", ".");
+	}
 		
 	private void compile(String filename) throws Exception {
 		String extension = FilenameUtils.getExtension(filename);
@@ -174,7 +186,7 @@ public class UpdateDocs {
 			Process process = new ProcessBuilder("java",
 					"-classpath", getClassPath(CLASSPATH),
 					"-D" + Settings.KEY_PRNG_SEED + "=" + SEED,
-					FilenameUtils.getBaseName(filename)).start();
+					getClassName(filename)).start();
 			
 			try (OutputStream out = new ByteArrayOutputStream()) {
 				RedirectStream.redirect(process.getInputStream(), out);
@@ -206,7 +218,7 @@ public class UpdateDocs {
 	}
 	
 	private String format(List<String> lines, FormattingOptions options) {
-		lines = lines.subList(options.startingLine, Math.min(lines.size(), options.endingLine) + 1);
+		lines = lines.subList(options.startingLine - 1, Math.min(lines.size(), options.endingLine));
 		
 		if (options.stripIndentation) {
 			// TODO: can use String#stripIndent() after updating to Java 12+
@@ -246,22 +258,27 @@ public class UpdateDocs {
 	
 	private class FormattingOptions {
 		
-		public int startingLine = 0;
+		public static final int FIRST_LINE = 1;
 		
-		public int endingLine = Integer.MAX_VALUE;
+		public static final int LAST_LINE = Integer.MAX_VALUE;
+		
+		public int startingLine;
+		
+		public int endingLine;
 		
 		public boolean stripIndentation = true;
 		
 		public boolean stripComments = true;
-				
-		public FormattingOptions() {
-			super();
-		}
 		
 		public FormattingOptions(int startingLine, int endingLine) {
-			this();
+			super();
 			this.startingLine = startingLine;
 			this.endingLine = endingLine;
+		}
+		
+		public String toString() {
+			return "[" + (startingLine == FIRST_LINE ? "" : startingLine) + ":" +
+					(endingLine == LAST_LINE ? "" : endingLine) + "]";
 		}
 		
 	}

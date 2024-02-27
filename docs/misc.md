@@ -5,7 +5,7 @@
 Checkpoints are useful when performing expensive or long-running optimizations.  This will periodically save
 the state of the optimization to a file, which can be resumed at a later point if the run is interrupted.
 
-<!-- java:examples/org/moeaframework/examples/misc/CheckpointExample.java [36-48] -->
+<!-- java:examples/org/moeaframework/examples/misc/CheckpointExample.java [37:49] -->
 
 ```java
 File checkpointFile = new File("checkpoint.dat");
@@ -36,7 +36,7 @@ Checkpoint file exists, resuming previous run at 2000000 evaluations!
 In many of the examples, you likely noticed we displayed results using `algorithm.getResult().display()`.
 Alternatively, we can save the output to a file using:
 
-<!-- java:examples/org/moeaframework/examples/misc/SaveAndFormatResultsExample.java [41-41] -->
+<!-- java:examples/org/moeaframework/examples/misc/SaveAndFormatResultsExample.java [42:42] -->
 
 ```java
 algorithm.getResult().asTabularData().saveCSV(new File("solutions.csv"));
@@ -45,7 +45,7 @@ algorithm.getResult().asTabularData().saveCSV(new File("solutions.csv"));
 We can also customize how the output is formatted.  Say we want to use ten digits of precision
 for the output:
 
-<!-- java:examples/org/moeaframework/examples/misc/SaveAndFormatResultsExample.java [44-49] -->
+<!-- java:examples/org/moeaframework/examples/misc/SaveAndFormatResultsExample.java [45:50] -->
 
 ```java
 NumberFormatter numberFormat = new NumberFormatter();
@@ -61,7 +61,7 @@ results.display();
 By default, algorithms initialize the population using randomly-generated solutions.  It's also possible to
 inject pre-defined solutions into the initial population:
 
-<!-- java:examples/org/moeaframework/examples/misc/InjectSolutionsExample.java [33-45] -->
+<!-- java:examples/org/moeaframework/examples/misc/InjectSolutionsExample.java [34:46] -->
 
 ```java
 Problem problem = new DTLZ2(2);
@@ -85,7 +85,7 @@ Some problems may require combining different types of decision variables.  This
 MOEA Framework, but it does require some additional setup.  First, when defining the problem, configure
 the solution with the desired types.  Here we setup up a binary integer and a real decision variable.
 
-<!-- java:examples/org/moeaframework/examples/misc/MixedTypesExample.java [61-67] -->
+<!-- java:examples/org/moeaframework/examples/misc/MixedTypesExample.java [62:68] -->
 
 ```java
 public Solution newSolution() {
@@ -99,7 +99,7 @@ public Solution newSolution() {
 
 The `evaluate` method would also need to read the correct types:
 
-<!-- java:examples/org/moeaframework/examples/misc/MixedTypesExample.java [47-48] -->
+<!-- java:examples/org/moeaframework/examples/misc/MixedTypesExample.java [48:49] -->
 
 ```java
 int x = EncodingUtils.getInt(solution.getVariable(0));
@@ -112,7 +112,7 @@ Simulated Binary Crossover (SBX), Half-Uniform Crossover (HUX), Polynomial Mutat
 Bit Flip Mutation (BF) operators.  SBX and PM operate on the real value whereas HUX and BF operate on
 the binary variable.
 
-<!-- java:examples/org/moeaframework/examples/misc/MixedTypesExample.java [73-79] -->
+<!-- java:examples/org/moeaframework/examples/misc/MixedTypesExample.java [74:80] -->
 
 ```java
 Problem problem = new MixedTypesSrinivasProblem();
@@ -126,75 +126,3 @@ algorithm.getResult().display();
 
 The order of the operators does matter.  The rule of thumb is to put the crossover operators first (SBX and HUX)
 followed by the mutation operators (PM and BF).
-
-## Single-Objective Optimization
-
-While the MOEA Framework, by it's name, is intended for multi-objective optimization, it does support single-objective
-optimization.  Simply define the problem to have one objective:
-
-<!-- java:examples/org/moeaframework/examples/misc/RosenbrockProblem.java [6-32] -->
-
-```java
-public class RosenbrockProblem extends AbstractProblem {
-	
-	public RosenbrockProblem() {
-		super(2, 1, 0);
-	}
-
-	@Override
-	public void evaluate(Solution solution) {
-		double result = 0.0;
-		double[] x = EncodingUtils.getReal(solution);
-
-		for (int i = 0; i < x.length-1; i++) {
-			result += 100 * (x[i]*x[i] - x[i+1])*(x[i]*x[i] - x[i+1]) + (x[i] - 1)*(x[i] - 1);
-		}
-
-		solution.setObjective(0, result);
-	}
-
-	@Override
-	public Solution newSolution() {
-		Solution solution = new Solution(2, 1, 0);
-		solution.setVariable(0, EncodingUtils.newReal(-10, 10));
-		solution.setVariable(1, EncodingUtils.newReal(-10, 10));
-		return solution;
-	}
-
-}
-```
-
-Then, use one of the single-objective algorithms to solve the problem:
-
-<!-- java:examples/org/moeaframework/examples/misc/SingleObjectiveExample.java [34-57] -->
-
-```java
-Problem problem = new RosenbrockProblem();
-
-System.out.println("Genetic Algorithm:");
-GeneticAlgorithm ga = new GeneticAlgorithm(problem);
-ga.run(100000);
-ga.getResult().display();
-
-System.out.println();
-System.out.println("Differential Evolution:");
-DifferentialEvolution de = new DifferentialEvolution(problem);
-de.run(100000);
-de.getResult().display();
-
-System.out.println();
-System.out.println("Evolution Strategy:");
-EvolutionStrategy es = new EvolutionStrategy(problem);
-es.run(100000);
-es.getResult().display();
-
-System.out.println();
-System.out.println("Simulated Annealing:");
-SimulatedAnnealing sa = new SimulatedAnnealing(problem);
-sa.run(100000);
-sa.getResult().display();
-```
-
-Also note that you can pass multi-objective problems to these single-objective algorithms.  The objectives
-will be aggregated into a single fitness value, by default using linear weights.  These weights can be
-changed by providing a different `AggregateObjectiveComparator`.

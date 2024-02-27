@@ -5,7 +5,7 @@
 The `Plot` class can generate simple, 2D plots from results produced by the MOEA Framework.  For instance,
 plotting the Pareto approximation set produced by an algorithm:
 
-<!-- java:examples/org/moeaframework/examples/plots/PlotApproximationSet.java [30-37] -->
+<!-- java:examples/org/moeaframework/examples/plots/PlotApproximationSet.java [31:38] -->
 
 ```java
 Problem problem = new DTLZ2(2);
@@ -20,7 +20,7 @@ new Plot()
 
 or the runtime dynamics of an algorithm, such as Hypervolume and Generational Distance:
 
-<!-- java:examples/org/moeaframework/examples/plots/PlotRuntimeDynamics.java [35-53] -->
+<!-- java:examples/org/moeaframework/examples/plots/PlotRuntimeDynamics.java [36:54] -->
 
 ```java
 Problem problem = new DTLZ2(2);
@@ -51,7 +51,7 @@ However, it is limited in that it can only run with default settings.
 
 To start the Diagnostic Tool, run `launch-diagnostic-tool.bat` on Windows.  On other systems, run the following command from the terminal:
 
-<!-- bash:auxiliary/windows/launch-diagnostic-tool.bat [1-1] -->
+<!-- bash:auxiliary/windows/launch-diagnostic-tool.bat [2:2] -->
 
 ```bash
 java -classpath "lib/*" org.moeaframework.analysis.diagnostics.LaunchDiagnosticTool

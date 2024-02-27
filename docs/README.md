@@ -15,12 +15,12 @@
   * [Distributing Function Evaluations](parallelization.md#distributing-function-evaluations)
   * [Distributing on Remote Machines](parallelization.md#distributing-on-remote-machines)
   * [Island-Model Parallelization](parallelization.md#island-model-parallelization)
+* [Single-Objective Optimization](single.md)
 * [Other Topics](misc.md)
   * [Checkpoints](misc.md#checkpoints)
   * [Saving and Formatting Results](misc.md#saving-and-formatting-results)
   * [Injecting Initial Solutions](misc.md#injecting-initial-solutions)
   * [Mixed Types](misc.md#mixed-types)
-  * [Single-Objective Optimization](misc.md#single---objective-optimization)
 
 ## Advanced
 * [List of Decision Variables](variables.md)
