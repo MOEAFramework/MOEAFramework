@@ -758,13 +758,7 @@ This page documents notable changes introduced in each chronological release of 
 
 ## Version 1.12 (10 Apr 2012)
 
-  * Improved support for custom hypervolume calculators.  It is known to work
-    with the following implementations:
-      - http://ls11-www.cs.tu-dortmund.de/people/beume/publications/hoy.cpp
-      - http://iridia.ulb.ac.be/~manuel/hypervolume/
-      - http://www.wfg.csse.uwa.edu.au/hypervolume/
-    See the user manual for details on configuring a custom hypervolume
-    calculator.
+  * Improved support for custom hypervolume calculators.
 
   * Modified PopulationIO to accept Iterable<Solution> instead of Population
     in the write and writeObjectives methods.  This allows saving solutions
