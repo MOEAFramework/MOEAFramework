@@ -22,7 +22,7 @@ import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.problem.AbstractProblem;
 
 /**
- * Single-objective Rosenbrock problem.  The optimum is located at {@codex = (1, 1)} with an objective value of
+ * Single-objective Rosenbrock problem.  The optimum is located at {@code = (1, 1)} with an objective value of
  * {@code f(x) = 0.0}.
  */
 public class RosenbrockProblem extends AbstractProblem {
@@ -33,14 +33,10 @@ public class RosenbrockProblem extends AbstractProblem {
 
 	@Override
 	public void evaluate(Solution solution) {
-		double result = 0.0;
-		double[] x = EncodingUtils.getReal(solution);
-
-		for (int i = 0; i < x.length-1; i++) {
-			result += 100 * (x[i]*x[i] - x[i+1])*(x[i]*x[i] - x[i+1]) + (x[i] - 1)*(x[i] - 1);
-		}
-
-		solution.setObjective(0, result);
+		double x = EncodingUtils.getReal(solution.getVariable(0));
+		double y = EncodingUtils.getReal(solution.getVariable(1));
+		
+		solution.setObjective(0, 100*(y - x*x)*(y - x*x) + (1 - x)*(1 - x));
 	}
 
 	@Override
