@@ -24,7 +24,7 @@ code, but we also highlight these contributions below.
 
 * **Sobol sequence generator and data file containing direction numbers** - Copyright 2008 Frances Kuo and Stephen Joe. Licensed under the modified BSD license. http://web.maths.unsw.edu.au/~fkuo/sobol/
 * **Hypervolume metric, indicator-based fitness evaluation codes, SBX and PM operators** - Copyright 2002-2003 Swiss Federal Institute of Technology
-* **Walking Fish Group (WFG) test problem suite** - Copyright 2006 Walking Fish Group. http://www.wfg.csse.uwa.edu.au/
+* **Walking Fish Group (WFG) test problem suite** - Copyright 2006 Walking Fish Group.
 * **2009 Congress on Evolutionary Computation (CEC 2009) Test Problem Suite** - Permission to distribute these modified source codes under the GNU Lesser General Public License was obtained via e-mail correspondence with the authors. http://www.cec-2009.org/
 * **Hui Li and Qingfu Zhang's Complicated Pareto Set Test Problem Suite** - Permission to distribute these modified source codes under the GNU Lesser General Public License was obtained via e-mail correspondence with the authors.
 * **List iterator implementation based on the Apache Commons Collections 3.1** - Licensed under the Apache License, version 2.0
