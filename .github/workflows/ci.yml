@@ -19,7 +19,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        java: [ '8', '11', '16', '17', '18', '19', '20' ]
+        java: [ '8', '11', '16', '17', '18', '19', '20', '21' ]
     steps:
     - uses: actions/checkout@v4
     - name: Set up JDK ${{ matrix.java }}
