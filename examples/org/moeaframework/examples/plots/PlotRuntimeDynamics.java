@@ -47,7 +47,7 @@ public class PlotRuntimeDynamics {
 		InstrumentedAlgorithm instrumentedAlgorithm = instrumenter.instrument(algorithm);
 		instrumentedAlgorithm.run(10000);
 				
-		Observations observations = instrumentedAlgorithm.getObservations();
+		Observations observations = instrumenter.getObservations();
 				
 		new Plot()
 		    .add(observations)

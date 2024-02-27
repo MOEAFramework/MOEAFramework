@@ -81,8 +81,9 @@ NSGAII:
 
 The results from multiple algorithms can be provided and compared:
 
-```java
+<!-- java:examples/Example4.java [39:59] -->
 
+```java
 String problem = "UF1";
 String[] algorithms = { "NSGAII", "GDE3", "eMOEA" };
 
@@ -104,53 +105,55 @@ analyzer.display();
 
 ## Instrumenter
 
-The `Analyzer` shows end-of-run performance.  We can also look at the runtime dynamics using the `Instrumenter`.  It collects
-information about each algorithm while it is running:
+The `Analyzer` shows end-of-run performance.  We can also look at the runtime dynamics using the `Instrumenter`.
+It collects information about each algorithm while it is running at a fixed frequency:
+
+<!-- java:examples/Example5.java [40:56] -->
 
 ```java
-
 Instrumenter instrumenter = new Instrumenter()
         .withProblem("UF1")
         .withFrequency(100)
         .attachElapsedTimeCollector()
         .attachGenerationalDistanceCollector();
-		
+
 new Executor()
         .withProblem("UF1")
         .withAlgorithm("NSGAII")
         .withMaxEvaluations(10000)
         .withInstrumenter(instrumenter)
         .run();
-		
+
 instrumenter.getObservations().display();
 ```
+
+<!-- output:examples/Example5.java [:12] -->
 
 ```
 NFE   Elapsed Time GenerationalDistance 
 ----- ------------ -------------------- 
-100   0.048455     0.554547             
-200   0.068240     0.486866             
-300   0.076951     0.876918             
-400   0.082156     0.690796             
-500   0.087247     0.542534             
-...                 
-9500  0.351868     0.044477             
-9600  0.354273     0.037876             
-9700  0.356552     0.038029             
-9800  0.358757     0.038815             
-9900  0.361296     0.032959             
-10000 0.363735     0.020477             
+100   0.036525     0.799030             
+200   0.051570     0.513917             
+300   0.057827     0.420843             
+400   0.063056     0.424941             
+500   0.066366     0.379473             
+600   0.069626     0.389628             
+700   0.073638     0.340794             
+800   0.076115     0.277609             
+900   0.080974     0.242039             
+1000  0.084634     0.214610             
 ```
 
 We can also plot these results:
 
-```java
+<!-- java:examples/org/moeaframework/examples/plots/PlotRuntimeDynamics.java [50:54] -->
 
+```java
 Observations observations = instrumenter.getObservations();
-		
-Plot plot = new Plot();
-plot.add(observations);
-plot.show();
+        
+new Plot()
+    .add(observations)
+    .show();
 ```
 
 ![image](https://user-images.githubusercontent.com/2496211/226907939-8d8569e6-b7f1-4574-badd-3d6d5800f380.png)

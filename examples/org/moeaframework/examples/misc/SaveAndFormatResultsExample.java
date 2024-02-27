@@ -39,7 +39,7 @@ public class SaveAndFormatResultsExample {
 		algorithm.getResult().display();
 
 		// Save results to CSV file
-		algorithm.getResult().asTabularData().saveCSV(new File("solutions.csv"));
+		algorithm.getResult().saveCSV(new File("solutions.csv"));
 
 		// Change formatting of output
 		NumberFormatter numberFormat = new NumberFormatter();

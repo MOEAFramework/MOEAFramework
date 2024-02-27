@@ -17,6 +17,8 @@
  */
 package org.moeaframework.util.format;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.PrintStream;
 
 /**
@@ -39,6 +41,16 @@ public interface Formattable<T> extends Displayable {
 	public default void display(PrintStream out) {
 		TabularData<T> data = asTabularData();
 		data.display(out);
+	}
+	
+	/**
+	 * Saves the contents of this object to a CSV file.
+	 * 
+	 * @param file the resulting file
+	 * @throws IOException if an I/O error occurred while writing the file
+	 */
+	public default void saveCSV(File file) throws IOException {
+		asTabularData().saveCSV(file);
 	}
 
 }

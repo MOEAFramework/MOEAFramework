@@ -14,26 +14,26 @@ $$ \text{Minimize } f(x,y) = 100(y-x^2)^2 + (1-x)^2 $$
 
 ```java
 public class RosenbrockProblem extends AbstractProblem {
-	
-	public RosenbrockProblem() {
-		super(2, 1, 0);
-	}
+    
+    public RosenbrockProblem() {
+        super(2, 1, 0);
+    }
 
-	@Override
-	public void evaluate(Solution solution) {
-		double x = EncodingUtils.getReal(solution.getVariable(0));
-		double y = EncodingUtils.getReal(solution.getVariable(1));
-		
-		solution.setObjective(0, 100*(y - x*x)*(y - x*x) + (1 - x)*(1 - x));
-	}
+    @Override
+    public void evaluate(Solution solution) {
+        double x = EncodingUtils.getReal(solution.getVariable(0));
+        double y = EncodingUtils.getReal(solution.getVariable(1));
+        
+        solution.setObjective(0, 100*(y - x*x)*(y - x*x) + (1 - x)*(1 - x));
+    }
 
-	@Override
-	public Solution newSolution() {
-		Solution solution = new Solution(2, 1, 0);
-		solution.setVariable(0, EncodingUtils.newReal(-10, 10));
-		solution.setVariable(1, EncodingUtils.newReal(-10, 10));
-		return solution;
-	}
+    @Override
+    public Solution newSolution() {
+        Solution solution = new Solution(2, 1, 0);
+        solution.setVariable(0, EncodingUtils.newReal(-10, 10));
+        solution.setVariable(1, EncodingUtils.newReal(-10, 10));
+        return solution;
+    }
 
 }
 ```
@@ -53,7 +53,7 @@ algorithm.run(100000);
 algorithm.getResult().display();
 ```
 
-This should produce a solution near the optimum of (1, 1):
+This should produce a solution near the optimum of $(x, y) = (1, 1)$ with a fitness value of $f(x, y) = 0$:
 
 <!-- output:examples/org/moeaframework/examples/single/SingleObjectiveExample.java -->
 
@@ -89,6 +89,9 @@ algorithm2.run(100000);
 algorithm2.getResult().display();
 ```
 
+Note how linear weights tend to find solutions near the boundaries, whereas min-max weights are often
+better at finding intermediate solutions:
+
 <!-- output:examples/org/moeaframework/examples/single/MultiObjectiveWithWeightsExample.java -->
 
 ```
@@ -115,11 +118,11 @@ multiple weights.
 Problem problem = new DTLZ2(2);
 
 RepeatedSingleObjective algorithm = new RepeatedSingleObjective(problem, 50,
-		(p, w) -> {
-			GeneticAlgorithm weightedInstance = new GeneticAlgorithm(p);
-			weightedInstance.setComparator(new MinMaxDominanceComparator(w));
-			return weightedInstance;
-		});
+        (p, w) -> {
+            GeneticAlgorithm weightedInstance = new GeneticAlgorithm(p);
+            weightedInstance.setComparator(new MinMaxDominanceComparator(w));
+            return weightedInstance;
+        });
 
 algorithm.run(100000);
 algorithm.getResult().display();

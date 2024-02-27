@@ -35,7 +35,7 @@ public class UpdateDocs {
 	
 	private static final File DOCS_PATH = new File("docs/");
 	
-	private static final Pattern REGEX = Pattern.compile("<!--\\s+([a-zA-Z]+)\\:([^\\s]+)(?:\\s+\\[([0-9]+)?:([0-9]+)?\\])?\\s+-->");
+	private static final Pattern REGEX = Pattern.compile("<!--\\s+([a-zA-Z]+)\\:([^\\s]+)(?:\\s+\\[([0-9]+)?[:\\-]([0-9]+)?\\])?\\s+-->");
 	
 	private final boolean update;
 	
@@ -253,6 +253,14 @@ public class UpdateDocs {
 			lines.removeIf(s -> s.trim().startsWith("//"));
 		}
 		
+		if (options.replaceTabs) {
+			for (int i = 0; i < lines.size(); i++) {
+				String line = lines.get(i);
+				line = line.replaceAll("[\\t]", "    ");
+				lines.set(i, line);
+			}
+		}
+		
 		return String.join(System.lineSeparator(), lines);
 	}
 	
@@ -269,6 +277,8 @@ public class UpdateDocs {
 		public boolean stripIndentation = true;
 		
 		public boolean stripComments = true;
+		
+		public boolean replaceTabs = true;
 		
 		public FormattingOptions(int startingLine, int endingLine) {
 			super();

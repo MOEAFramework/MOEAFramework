@@ -39,7 +39,7 @@ Alternatively, we can save the output to a file using:
 <!-- java:examples/org/moeaframework/examples/misc/SaveAndFormatResultsExample.java [42:42] -->
 
 ```java
-algorithm.getResult().asTabularData().saveCSV(new File("solutions.csv"));
+algorithm.getResult().saveCSV(new File("solutions.csv"));
 ```
 
 We can also customize how the output is formatted.  Say we want to use ten digits of precision
@@ -50,7 +50,7 @@ for the output:
 ```java
 NumberFormatter numberFormat = new NumberFormatter();
 numberFormat.setPrecision(10);
-		
+        
 TabularData<Solution> results = algorithm.getResult().asTabularData();
 results.addFormatter(numberFormat);
 results.display();
@@ -72,7 +72,7 @@ EncodingUtils.setReal(solutionA, new double[] { 0.0, 0.5, 0.5, 0.5, 0.5, 0.5, 0.
 Solution solutionB = problem.newSolution();
 EncodingUtils.setReal(solutionB, new double[] { 1.0, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5 });
 
-NSGAII algorithm = new NSGAII(problem);	
+NSGAII algorithm = new NSGAII(problem);    
 algorithm.setInitialization(new InjectedInitialization(problem, solutionA, solutionB));
 algorithm.run(10000);
 
@@ -89,12 +89,12 @@ the solution with the desired types.  Here we setup up a binary integer and a re
 
 ```java
 public Solution newSolution() {
-	Solution solution = new Solution(2, 2, 2);
-	
-	solution.setVariable(0, EncodingUtils.newBinaryInt(-20, 20));
-	solution.setVariable(1, EncodingUtils.newReal(-20.0, 20.0));
-	
-	return solution;
+    Solution solution = new Solution(2, 2, 2);
+    
+    solution.setVariable(0, EncodingUtils.newBinaryInt(-20, 20));
+    solution.setVariable(1, EncodingUtils.newReal(-20.0, 20.0));
+    
+    return solution;
 ```
 
 The `evaluate` method would also need to read the correct types:
@@ -119,7 +119,7 @@ Problem problem = new MixedTypesSrinivasProblem();
 NSGAII algorithm = new NSGAII(problem);
 
 algorithm.setVariation(new CompoundVariation(new SBX(), new HUX(), new PM(), new BitFlip()));
-		
+        
 algorithm.run(10000);
 algorithm.getResult().display();
 ```

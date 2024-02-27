@@ -52,8 +52,7 @@ public class Example4 {
 
 		// run each algorithm for 50 seeds
 		for (String algorithm : algorithms) {
-			analyzer.addAll(algorithm, 
-					executor.withAlgorithm(algorithm).runSeeds(50));
+			analyzer.addAll(algorithm, executor.withAlgorithm(algorithm).runSeeds(50));
 		}
 
 		// display the results

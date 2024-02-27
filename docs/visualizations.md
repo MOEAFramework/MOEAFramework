@@ -14,8 +14,8 @@ NSGAII algorithm = new NSGAII(problem);
 algorithm.run(10000);
 
 new Plot()
-	.add("NSGA-II", algorithm.getResult())
-	.show();
+    .add("NSGA-II", algorithm.getResult())
+    .show();
 ```
 
 or the runtime dynamics of an algorithm, such as Hypervolume and Generational Distance:
@@ -31,14 +31,14 @@ Instrumenter instrumenter = new Instrumenter()
     .withFrequency(100)
     .attachHypervolumeCollector()
     .attachGenerationalDistanceCollector();
-		
+        
 NSGAII algorithm = new NSGAII(problem);
-		
+        
 InstrumentedAlgorithm instrumentedAlgorithm = instrumenter.instrument(algorithm);
 instrumentedAlgorithm.run(10000);
-		
-Observations observations = instrumentedAlgorithm.getObservations();
-		
+        
+Observations observations = instrumenter.getObservations();
+        
 new Plot()
     .add(observations)
     .show();
@@ -67,20 +67,15 @@ to select and view different problems, algorithms, and quality indicators.
 For higher-dimensional visualizations of Pareto approximation sets, we also developed a desktop application called J3.
 This tool can be downloaded and installed from https://github.com/Project-Platypus/J3.
 
-As an example, let's solve the 3-objective DLTZ2 problem using NSGA-II and save the approximation set to a CSV file:
+First, we need to export the results into a CSV file:
+
+<!-- java:examples/org/moeaframework/examples/misc/SaveAndFormatResultsExample.java [42:42] -->
 
 ```java
-
-Problem problem = new DTLZ2(3);
-		
-NSGAII algorithm = new NSGAII(problem);
-algorithm.setInitialPopulationSize(500);
-algorithm.run(100000);
-		
-algorithm.getResult().asTabularData().saveCSV(new File("output.csv"));
+algorithm.getResult().saveCSV(new File("solutions.csv"));
 ```
 
-Then, launch J3 and open `output.csv`.  The initial 3D plot will look random due to how the axes are configured.
+Then, launch J3 and open `solutions.csv`.  The initial 3D plot will look random due to how the axes are configured.
 Click the options button and set the X / Y / Z axes to display `Obj1`, `Obj2`, and `Obj3`:
 
 ![image](https://github.com/MOEAFramework/MOEAFramework/assets/2496211/b0872934-c7b7-4ca3-9925-e168e6d86383)
