@@ -96,6 +96,8 @@ jobs:
         distribution: temurin
     - name: Validate docs
       run: ant -f build.xml validate-docs
+    - name: Validate links
+      uses: gaurav-nelson/github-action-markdown-link-check@v1
     - name: Package binary
       run: ant -f build.xml package-binary
     - name: Test examples in binary package
