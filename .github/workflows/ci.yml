@@ -104,13 +104,12 @@ jobs:
       run: |
         cd build/MOEAFramework-*
         make -C examples
-        javac -cp "lib/*" examples/Example[1-6].java
-        java -cp "lib/*:examples" Example1
-        java -cp "lib/*:examples" Example2
-        java -cp "lib/*:examples" Example3
-        java -cp "lib/*:examples" Example4
-        java -cp "lib/*:examples" Example5
-        java -cp "lib/*:examples" Example6
+
+        # Compile all Java examples
+        find examples/ -type f -name '*.java' | xargs -rt -I "{}" javac -classpath "lib/*:examples" "{}"
+
+        # Run all examples, excluding files requiring a GUI
+        find examples/ -type f -name '*.java' | xargs -r grep -l 'public static void main(' | xargs -r grep -iL 'plot\|gui\|tsp' | sed 's~/~.~g; s/.java$//; s/examples.//' | xargs -rt -I "{}" java -classpath "lib/*:examples" "{}"
     - name: Package source
       run: ant -f build.xml package-source
     - name: Package demo
