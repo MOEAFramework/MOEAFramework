@@ -6,7 +6,9 @@ This page documents notable changes introduced in each chronological release of 
 
   * Removes the `setInitialPopulationSize` method and corresponding `populationSize` parameter
     from DBEA.  Instead, the population size is dervied from the `divisions` parameter.
-  
+
+  * Improved online documentation
+
 
 ## Version 3.10 (18 Jan 2024)
 
