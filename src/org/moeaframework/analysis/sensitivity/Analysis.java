@@ -215,8 +215,7 @@ public class Analysis extends CommandLineUtility {
 			for (int j = 0; j < parameters[i].length; j++) {
 				Parameter parameter = parameterFile.get(j);
 				
-				parameters[i][j] = 
-						(parameters[i][j] - parameter.getLowerBound()) / 
+				parameters[i][j] = (parameters[i][j] - parameter.getLowerBound()) / 
 						(parameter.getUpperBound() - parameter.getLowerBound());
 			}
 		}
@@ -247,7 +246,7 @@ public class Analysis extends CommandLineUtility {
 		
 		for (int i = 0; i < metrics.length; i++) {
 			if (metrics[i][metric] >= threshold) {
-				result[count] = parameters[i];
+				result[count] = parameters[i].clone();
 				count++;
 			}
 		}
@@ -337,22 +336,21 @@ public class Analysis extends CommandLineUtility {
 			int total = 0;
 			
 			for (int j=0; j<metrics.length; j++) {
-				if ((parameters[j][evalIndex] >= i) && 
-						(parameters[j][evalIndex] <= i+bandWidth-1)) {
+				if ((parameters[j][evalIndex] >= i) && (parameters[j][evalIndex] <= i+bandWidth-1)) {
 					total++;
 					
 					if (metrics[j][metric] > threshold) {
 						count++;
-						
-						if (count/(double)total >= 0.9) {
-							band = i;
-							break;
-						}
 					}
 				}
 			}
+
+			if (count/(double)total >= 0.9) {
+				band = i;
+				break;
+			}
 		}
-		
+
 		return (max - band) / (double)max;
 	}
 	
@@ -411,10 +409,8 @@ public class Analysis extends CommandLineUtility {
 	@Override
 	public void run(CommandLine commandLine) throws Exception {
 		//parse required parameters
-		parameterFile = new ParameterFile(new File(
-				commandLine.getOptionValue("parameterFile")));
-		parameters = loadParameters(new File(
-				commandLine.getOptionValue("parameters")));
+		parameterFile = new ParameterFile(new File(commandLine.getOptionValue("parameterFile")));
+		parameters = loadParameters(new File(commandLine.getOptionValue("parameters")));
 		metric = Integer.parseInt(commandLine.getOptionValue("metric"));
 		
 		//parse optional parameters
@@ -423,15 +419,13 @@ public class Analysis extends CommandLineUtility {
 		}
 		
 		if (commandLine.hasOption("threshold")) {
-			threshold = Double.parseDouble(commandLine.getOptionValue(
-					"threshold"));
+			threshold = Double.parseDouble(commandLine.getOptionValue("threshold"));
 		}
 		
 		//if analyzing hypervolume, require the hypervolume option
 		if (metric == 0) {
 			if (commandLine.hasOption("hypervolume")) {
-				threshold *= Double.parseDouble(commandLine.getOptionValue(
-						"hypervolume"));
+				threshold *= Double.parseDouble(commandLine.getOptionValue("hypervolume"));
 			} else {
 				throw new MissingOptionException("requires hypervolume option");
 			}

@@ -177,8 +177,7 @@ public class Evaluator extends CommandLineUtility {
 		File inputFile = new File(commandLine.getOptionValue("input"));
 		double[] epsilon = OptionUtils.getEpsilon(commandLine);
 
-		ParameterFile parameterFile = new ParameterFile(new File(
-				commandLine.getOptionValue("parameterFile")));
+		ParameterFile parameterFile = new ParameterFile(new File(commandLine.getOptionValue("parameterFile")));
 
 		// sanity check to ensure input hasn't been modified after the output
 		if (!commandLine.hasOption("force") &&
@@ -197,8 +196,7 @@ public class Evaluator extends CommandLineUtility {
 
 					output = new MetricFileWriter(indicator, outputFile);
 				} else {
-					output = new ResultFileWriter(problem, outputFile,
-							!commandLine.hasOption("novariables"));
+					output = new ResultFileWriter(problem, outputFile, !commandLine.hasOption("novariables"));
 				}
 
 				// resume at the last good output
@@ -262,8 +260,7 @@ public class Evaluator extends CommandLineUtility {
 		// instrument the problem to record timing information
 		TimingProblem timingProblem = new TimingProblem(problem);
 
-		Algorithm algorithm = AlgorithmFactory.getInstance().getAlgorithm(
-				algorithmName, properties, timingProblem);
+		Algorithm algorithm = AlgorithmFactory.getInstance().getAlgorithm(algorithmName, properties, timingProblem);
 
 		// find the maximum NFE to run
 		int maxEvaluations = properties.getTruncatedInt("maxEvaluations");
