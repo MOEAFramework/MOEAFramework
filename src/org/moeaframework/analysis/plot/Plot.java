@@ -38,28 +38,38 @@ import java.util.List;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 
+import org.apache.commons.math3.stat.StatUtils;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.ChartUtils;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.AxisLocation;
 import org.jfree.chart.axis.CategoryAxis;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.labels.BoxAndWhiskerToolTipGenerator;
 import org.jfree.chart.labels.StandardXYToolTipGenerator;
+import org.jfree.chart.labels.StandardXYZToolTipGenerator;
 import org.jfree.chart.labels.XYToolTipGenerator;
+import org.jfree.chart.labels.XYZToolTipGenerator;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.GrayPaintScale;
+import org.jfree.chart.renderer.PaintScale;
 import org.jfree.chart.renderer.category.BoxAndWhiskerRenderer;
 import org.jfree.chart.renderer.category.CategoryItemRenderer;
 import org.jfree.chart.renderer.xy.StackedXYAreaRenderer;
 import org.jfree.chart.renderer.xy.XYAreaRenderer;
+import org.jfree.chart.renderer.xy.XYBlockRenderer;
 import org.jfree.chart.renderer.xy.XYDotRenderer;
 import org.jfree.chart.renderer.xy.XYItemRenderer;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
+import org.jfree.chart.title.PaintScaleLegend;
+import org.jfree.chart.ui.RectangleEdge;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.statistics.DefaultBoxAndWhiskerCategoryDataset;
 import org.jfree.data.xy.DefaultTableXYDataset;
+import org.jfree.data.xy.DefaultXYZDataset;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
@@ -197,6 +207,42 @@ public class Plot {
 			chart = new JFreeChart("", JFreeChart.DEFAULT_TITLE_FONT, plot, true);
 			ChartFactory.getChartTheme().apply(chart);
 		} else if (!(chart.getPlot() instanceof CategoryPlot)) {
+			throw new FrameworkException("Can not combine XY plot and categorial plot");
+		}
+	}
+	
+	/**
+	 * If the chart has not yet been initialized, creates a chart for HeatMap data.
+	 * If the chart is already initialized, checks if the chart is for HeatMap data.
+	 * 
+	 * @throws FrameworkException if the chart does not support HeatMap data
+	 */
+	private void createHeatMapPlot() {
+		if (chart == null) {
+			NumberAxis xAxis = new NumberAxis("");
+			xAxis.setAutoRangeIncludesZero(false);
+			NumberAxis yAxis = new NumberAxis("");
+			yAxis.setAutoRangeIncludesZero(false);
+			NumberAxis zAxis = new NumberAxis("");
+			zAxis.setAutoRangeIncludesZero(false);
+			
+			xAxis.setLowerMargin(0.0);
+			xAxis.setUpperMargin(0.0);
+			yAxis.setLowerMargin(0.0);
+			yAxis.setUpperMargin(0.0);
+			zAxis.setLowerMargin(0.0);
+			zAxis.setUpperMargin(0.0);
+			zAxis.setVisible(false);
+
+			XYPlot plot = new XYPlot();
+			plot.setDomainAxis(xAxis);
+			plot.setRangeAxis(yAxis);
+			plot.setRangeAxis(1, zAxis);
+			plot.setOrientation(PlotOrientation.VERTICAL);
+			
+			chart = new JFreeChart("", JFreeChart.DEFAULT_TITLE_FONT, plot, true);
+			ChartFactory.getChartTheme().apply(chart);
+		} else if (!(chart.getPlot() instanceof XYPlot)) {
 			throw new FrameworkException("Can not combine XY plot and categorial plot");
 		}
 	}
@@ -373,8 +419,7 @@ public class Plot {
 	 * @param label the label for the series
 	 * @param x the x values
 	 * @param y the y values
-	 * @param dataset the dataset, or {@code null} if a new dataset should be
-	 *        created
+	 * @param dataset the dataset, or {@code null} if a new dataset should be created
 	 * @return a reference to this {@code Plot} instance
 	 */
 	private Plot scatter(String label, List<? extends Number> x, List<? extends Number> y, XYSeriesCollection dataset) {
@@ -422,6 +467,28 @@ public class Plot {
 		
 		for (int i = 0; i < x.length; i++) {
 			result.add(x[i]);
+		}
+		
+		return result;
+	}
+	
+	/**
+	 * Converts a 2D double array to a list of lists.
+	 * 
+	 * @param x the 2D double array
+	 * @return the list of lists of doubles
+	 */
+	private List<List<Double>> toList(double[][] x) {
+		List<List<Double>> result = new ArrayList<List<Double>>();
+		
+		for (int i = 0; i < x.length; i++) {
+			List<Double> row = new ArrayList<Double>();
+			
+			for (int j = 0; j < x[i].length; j++) {
+				row.add(x[i][j]);
+			}
+			
+			result.add(row);
 		}
 		
 		return result;
@@ -511,8 +578,7 @@ public class Plot {
 	 * @param label the label for the series
 	 * @param observations the {@code Observations} containing the data
 	 * @param metric the name of the performance metric to plot
-	 * @param dataset the dataset, or {@code null} if a new dataset should be
-	 *        created
+	 * @param dataset the dataset, or {@code null} if a new dataset should be created
 	 * @return a reference to this {@code Plot} instance
 	 */
 	private Plot add(String label, Observations observations, String metric, XYSeriesCollection dataset) {
@@ -565,8 +631,7 @@ public class Plot {
 	 * @param label the label for the series
 	 * @param x the x values
 	 * @param y the y values
-	 * @param dataset the dataset, or {@code null} if a new dataset should be
-	 *        created
+	 * @param dataset the dataset, or {@code null} if a new dataset should be created
 	 * @return a reference to this {@code Plot} instance
 	 */
 	private Plot line(String label, List<? extends Number> x, List<? extends Number> y, XYSeriesCollection dataset) {
@@ -634,8 +699,7 @@ public class Plot {
 	 * @param label the label for the series
 	 * @param x the x values
 	 * @param y the y values
-	 * @param dataset the dataset, or {@code null} if a new dataset should be
-	 *        created
+	 * @param dataset the dataset, or {@code null} if a new dataset should be created
 	 * @return a reference to this {@code Plot} instance
 	 */
 	private Plot area(String label, List<? extends Number> x, List<? extends Number> y, XYSeriesCollection dataset) {
@@ -706,8 +770,7 @@ public class Plot {
 	 * @param label the label for the series
 	 * @param x the x values
 	 * @param y the y values
-	 * @param dataset the dataset, or {@code null} if a new dataset should be
-	 *        created
+	 * @param dataset the dataset, or {@code null} if a new dataset should be created
 	 * @return a reference to this {@code Plot} instance
 	 */
 	private Plot stacked(String label, List<? extends Number> x, List<? extends Number> y, DefaultTableXYDataset dataset) {
@@ -747,6 +810,95 @@ public class Plot {
 		renderer.setDefaultFillPaint(paint);
 
 		plot.setRenderer(currentDataset, renderer);
+
+		return this;
+	}
+	
+	/**
+	 * Creates a new heat map series.  The series is added to the given
+	 * dataset, or if {@code null} a new dataset is created.
+	 * 
+	 * @param label the label for the series
+	 * @param x the x values
+	 * @param y the y values
+	 * @param z the z values
+	 * @return a reference to this {@code Plot} instance
+	 */
+	public Plot heatMap(String label, double[] x, double[] y, double[][] z) {
+		return heatMap(label, toList(x), toList(y), toList(z));
+	}
+	
+	/**
+	 * Creates a new heat map series.  The series is added to the given
+	 * dataset, or if {@code null} a new dataset is created.
+	 * 
+	 * @param label the label for the series
+	 * @param x the x values
+	 * @param y the y values
+	 * @param z the z values
+	 * @return a reference to this {@code Plot} instance
+	 */
+	public Plot heatMap(String label, List<? extends Number> x, List<? extends Number> y, List<? extends List<? extends Number>> z) {
+		return heatMap(label, x, y, z, null);
+	}
+	
+	/**
+	 * Creates a new heat map series.  The series is added to the given
+	 * dataset, or if {@code null} a new dataset is created.
+	 * 
+	 * @param label the label for the series
+	 * @param x the x values
+	 * @param y the y values
+	 * @param z the z values
+	 * @param dataset the dataset, or {@code null} if a new dataset should be created
+	 * @return a reference to this {@code Plot} instance
+	 */
+	private Plot heatMap(String label, List<? extends Number> x, List<? extends Number> y, List<? extends List<? extends Number>> z, DefaultXYZDataset dataset) {
+		if (dataset == null) {
+			createHeatMapPlot();
+			currentDataset++;
+			dataset = new DefaultXYZDataset();
+		}
+		
+		// generate the dataset
+		double[] xValues = new double[x.size() * y.size()];
+		double[] yValues = new double[x.size() * y.size()];
+		double[] zValues = new double[x.size() * y.size()];
+		
+		for (int i = 0; i < x.size(); i++) {
+			for (int j = 0; j < y.size(); j++) {
+				xValues[i * y.size() + j] = x.get(i).doubleValue();
+				yValues[i * y.size() + j] = y.get(j).doubleValue();
+				zValues[i * y.size() + j] = z.get(i).get(j).doubleValue();
+			}
+		}
+
+		dataset.addSeries(label, new double[][] { xValues, yValues, zValues });
+
+		// add the dataset to the plot		
+		XYZToolTipGenerator toolTipGenerator = new StandardXYZToolTipGenerator();
+		
+		XYBlockRenderer renderer = new XYBlockRenderer();
+		renderer.setBlockWidth((StatUtils.max(xValues) - StatUtils.min(xValues)) / (x.size() - 1));
+		renderer.setBlockHeight((StatUtils.max(yValues) - StatUtils.min(yValues)) / (y.size() - 1));
+		renderer.setDefaultToolTipGenerator(toolTipGenerator);
+		
+		PaintScale paintScale = new GrayPaintScale(StatUtils.min(zValues), StatUtils.max(zValues));
+
+        PaintScaleLegend psl = new PaintScaleLegend(paintScale, new NumberAxis(label));
+        psl.setPosition(RectangleEdge.RIGHT);
+        psl.setAxisLocation(AxisLocation.TOP_OR_RIGHT);
+        psl.setMargin(10.0, 10.0, 10.0, 10.0);
+        
+        renderer.setPaintScale(paintScale);
+        
+		XYPlot plot = chart.getXYPlot();
+		plot.setDataset(currentDataset, dataset);
+		plot.setOrientation(PlotOrientation.VERTICAL);
+		plot.setRenderer(currentDataset, renderer);
+		
+		chart.addSubtitle(psl);
+		chart.removeLegend();
 
 		return this;
 	}
