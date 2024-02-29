@@ -616,14 +616,12 @@ public class SobolAnalysis extends CommandLineUtility {
 	@Override
 	public void run(CommandLine commandLine) throws Exception {
 		//setup the parameters
-		parameterFile = new ParameterFile(new File(
-				commandLine.getOptionValue("parameterFile")));
-		index = Integer.parseInt(commandLine.getOptionValue("metric"));
+		parameterFile = new ParameterFile(new File(commandLine.getOptionValue("parameterFile")));
+		index = MetricFileWriter.getMetricIndex(commandLine.getOptionValue("metric"));
 		P = parameterFile.size();
 		
 		if (commandLine.hasOption("resamples")) {
-			resamples = Integer.parseInt(commandLine.getOptionValue(
-					"resamples"));
+			resamples = Integer.parseInt(commandLine.getOptionValue("resamples"));
 		}
 
 		//load and validate the model output file

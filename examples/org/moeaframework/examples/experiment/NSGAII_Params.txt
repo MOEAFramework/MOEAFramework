@@ -1,0 +1,6 @@
+maxEvaluations 1000 10000
+populationSize 10 500
+sbx.rate 0.0 1.0
+sbx.distributionIndex 1.0 50.0
+pm.rate 0.0 1.0
+pm.distributionIndex 1.0 50.0

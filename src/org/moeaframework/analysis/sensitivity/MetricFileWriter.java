@@ -157,6 +157,33 @@ public class MetricFileWriter implements OutputWriter {
 
 		numberOfEntries++;
 	}
+	
+	/**
+	 * Gets the index of the metric.  This should match the order that columns
+	 * are written in {@link #append(ResultEntry)}.
+	 * 
+	 * @param value the metric
+	 * @return the index of the metric
+	 */
+	public static int getMetricIndex(String value) {
+		if (value.matches("[0-9]+")) {
+			return Integer.parseInt(value);
+		} else if (value.equalsIgnoreCase("Hypervolume")) {
+			return 0;
+		} else if (value.equalsIgnoreCase("GenerationalDistance")) {
+			return 1;
+		} else if (value.equalsIgnoreCase("InvertedGenerationalDistance")) {
+			return 2;
+		} else if (value.equalsIgnoreCase("Spacing")) {
+			return 3;
+		} else if (value.equalsIgnoreCase("EpsilonIndicator")) {
+			return 4;
+		} else if (value.equalsIgnoreCase("MaximumParetoFrontError")) {
+			return 5;
+		} else {
+			throw new FrameworkException("Unsupported metric '" + value + "'");
+		}
+	}
 
 	@Override
 	public void close() {

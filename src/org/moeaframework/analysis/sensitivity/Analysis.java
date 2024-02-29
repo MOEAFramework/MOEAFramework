@@ -344,7 +344,7 @@ public class Analysis extends CommandLineUtility {
 					}
 				}
 			}
-
+			
 			if (count/(double)total >= 0.9) {
 				band = i;
 				break;
@@ -411,7 +411,7 @@ public class Analysis extends CommandLineUtility {
 		//parse required parameters
 		parameterFile = new ParameterFile(new File(commandLine.getOptionValue("parameterFile")));
 		parameters = loadParameters(new File(commandLine.getOptionValue("parameters")));
-		metric = Integer.parseInt(commandLine.getOptionValue("metric"));
+		metric = MetricFileWriter.getMetricIndex(commandLine.getOptionValue("metric"));
 		
 		//parse optional parameters
 		if (commandLine.hasOption("band")) {
