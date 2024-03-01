@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.examples.experiment;
+package org.moeaframework.examples.plots;
 
 import java.util.stream.IntStream;
 
@@ -30,7 +30,7 @@ import org.moeaframework.problem.DTLZ.DTLZ2;
  * Generates a control map plot showing the effects of Max Evaluations and Population Size parameters on the
  * performance of NSGA-II when solving the 2-objective DTLZ2 problem.
  */
-public class ControlMapsExample {
+public class PlotControlMap {
 	
 	public static void main(String[] args) throws Exception {
 		Problem problem = new DTLZ2(2);
