@@ -2,8 +2,11 @@
 
 ## Simple Plots
 
-The `Plot` class can generate simple, 2D plots from results produced by the MOEA Framework.  For instance,
-plotting the Pareto approximation set produced by an algorithm:
+The `Plot` class can generate simple, 2D plots from results produced by the MOEA Framework.
+
+### Pareto Set
+
+Here we plot the result, a Pareto approximation set, of NSGA-II solving the 2-objective DTLZ2 problem:
 
 <!-- java:examples/org/moeaframework/examples/plots/PlotApproximationSet.java [31:38] -->
 
@@ -18,7 +21,12 @@ new Plot()
     .show();
 ```
 
-Plotting the runtime dynamics of an algorithm, such as Hypervolume and Generational Distance:
+![image](https://github.com/MOEAFramework/MOEAFramework/assets/2496211/8c622569-07d6-4e0d-8b04-6663caf2c21a)
+
+### Runtime Dynamics
+
+Here we plot the runtime dynamics showing the hypervolume and generational distance metrics as NSGA-II solves the
+2-objective DTLZ2 problem:
 
 <!-- java:examples/org/moeaframework/examples/plots/PlotRuntimeDynamics.java [36:54] -->
 
@@ -44,7 +52,12 @@ new Plot()
     .show();
 ```
 
-Or plotting control maps showing how parameters affect performance:
+![image](https://github.com/MOEAFramework/MOEAFramework/assets/2496211/e7a5f079-b44d-434b-a359-5c8744e5cc6b)
+
+### Control Maps
+
+Finally, here is a control map plot showing how two parameters, `maxEvaluations` and `populationSize`, affect the
+performance of the algorithm (lighter-colored areas indicate better results).
 
 <!-- java:examples/org/moeaframework/examples/plots/PlotControlMap.java [36:59] -->
 
@@ -74,6 +87,8 @@ new Plot()
     .setYLabel("Population Size")
     .show();
 ```
+
+![image](https://github.com/MOEAFramework/MOEAFramework/assets/2496211/a60c9866-6d94-4b3e-ac20-d2318d0f6c75)
 
 ## Diagnostic Tool
 
