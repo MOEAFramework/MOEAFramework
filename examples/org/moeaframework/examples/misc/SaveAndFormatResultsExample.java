@@ -21,10 +21,8 @@ import java.io.File;
 import java.io.IOException;
 
 import org.moeaframework.algorithm.NSGAII;
-import org.moeaframework.core.Solution;
 import org.moeaframework.problem.misc.Srinivas;
 import org.moeaframework.util.format.NumberFormatter;
-import org.moeaframework.util.format.TabularData;
 
 /**
  * Demonstrates saving results to a CSV file and altering formatting.
@@ -42,12 +40,8 @@ public class SaveAndFormatResultsExample {
 		algorithm.getResult().saveCSV(new File("solutions.csv"));
 
 		// Change formatting of output
-		NumberFormatter numberFormat = new NumberFormatter();
-		numberFormat.setPrecision(10);
-				
-		TabularData<Solution> results = algorithm.getResult().asTabularData();
-		results.addFormatter(numberFormat);
-		results.display();
+		NumberFormatter.getDefault().setPrecision(10);
+		algorithm.getResult().display();
 	}
 
 }

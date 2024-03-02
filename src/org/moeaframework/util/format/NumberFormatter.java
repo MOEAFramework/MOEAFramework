@@ -20,8 +20,7 @@ package org.moeaframework.util.format;
 import java.util.Locale;
 
 /**
- * Formatter for numeric data.  This supports all primitive numeric types as well
- * as their boxed types.
+ * Formatter for displaying numeric data.  This supports all primitive numeric types as well as their boxed types.
  */
 public class NumberFormatter implements Formatter<Number> {
 	

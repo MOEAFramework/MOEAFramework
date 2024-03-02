@@ -36,7 +36,7 @@ Checkpoint file exists, resuming previous run at 2000000 evaluations!
 In many of the examples, you likely noticed we displayed results using `algorithm.getResult().display()`.
 Alternatively, we can save the output to a file using:
 
-<!-- java:examples/org/moeaframework/examples/misc/SaveAndFormatResultsExample.java [42:42] -->
+<!-- java:examples/org/moeaframework/examples/misc/SaveAndFormatResultsExample.java [40:40] -->
 
 ```java
 algorithm.getResult().saveCSV(new File("solutions.csv"));
@@ -45,15 +45,11 @@ algorithm.getResult().saveCSV(new File("solutions.csv"));
 We can also customize how the output is formatted.  Say we want to use ten digits of precision
 for the output:
 
-<!-- java:examples/org/moeaframework/examples/misc/SaveAndFormatResultsExample.java [45:50] -->
+<!-- java:examples/org/moeaframework/examples/misc/SaveAndFormatResultsExample.java [42:44] -->
 
 ```java
-NumberFormatter numberFormat = new NumberFormatter();
-numberFormat.setPrecision(10);
-        
-TabularData<Solution> results = algorithm.getResult().asTabularData();
-results.addFormatter(numberFormat);
-results.display();
+NumberFormatter.getDefault().setPrecision(10);
+algorithm.getResult().display();
 ```
 
 ## Injecting Initial Solutions

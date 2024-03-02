@@ -115,7 +115,7 @@ This tool can be downloaded and installed from https://github.com/Project-Platyp
 
 First, we need to export the results into a CSV file:
 
-<!-- java:examples/org/moeaframework/examples/misc/SaveAndFormatResultsExample.java [42:42] -->
+<!-- java:examples/org/moeaframework/examples/misc/SaveAndFormatResultsExample.java [40:40] -->
 
 ```java
 algorithm.getResult().saveCSV(new File("solutions.csv"));
