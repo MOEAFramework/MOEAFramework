@@ -30,8 +30,8 @@ import org.moeaframework.Instrumenter;
  * 3. Quality indicators (hypervolume, generational distance, etc.), and
  * 4. The Pareto front.
  * 
- * In this example, we will record the generational distance every
- * 100 function evaluations (the frequency) while solving the UF1 problem with NSGA-II.
+ * In this example, we will record the generational distance every 100 function
+ * evaluations (the frequency) while solving the UF1 problem with NSGA-II.
  * The results are then displayed to the console in a table.
  */
 public class Example5 {
