@@ -108,13 +108,12 @@ analyzer.display();
 The `Analyzer` shows end-of-run performance.  We can also look at the runtime dynamics using the `Instrumenter`.
 It collects information about each algorithm while it is running at a fixed frequency:
 
-<!-- java:examples/Example5.java [40:56] -->
+<!-- java:examples/Example5.java [40:55] -->
 
 ```java
 Instrumenter instrumenter = new Instrumenter()
         .withProblem("UF1")
         .withFrequency(100)
-        .attachElapsedTimeCollector()
         .attachGenerationalDistanceCollector();
 
 new Executor()
@@ -130,18 +129,18 @@ instrumenter.getObservations().display();
 <!-- output:examples/Example5.java [:12] -->
 
 ```
-NFE   Elapsed Time GenerationalDistance 
------ ------------ -------------------- 
-100   0.036525     0.799030             
-200   0.051570     0.513917             
-300   0.057827     0.420843             
-400   0.063056     0.424941             
-500   0.066366     0.379473             
-600   0.069626     0.389628             
-700   0.073638     0.340794             
-800   0.076115     0.277609             
-900   0.080974     0.242039             
-1000  0.084634     0.214610             
+NFE   GenerationalDistance 
+----- -------------------- 
+100   0.799030             
+200   0.513917             
+300   0.420843             
+400   0.424941             
+500   0.379473             
+600   0.389628             
+700   0.340794             
+800   0.277609             
+900   0.242039             
+1000  0.214610             
 ```
 
 We can also plot these results:

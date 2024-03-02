@@ -111,7 +111,8 @@
 </p>
 
 <div class="code">
-  <pre class="brush: java; toolbar: false;">
+<!-- java:examples/Example1.java [29:34] -->
+<pre class="brush: java; toolbar: false;">
 <![CDATA[
 Problem problem = new DTLZ2(2);
 
@@ -120,7 +121,7 @@ algorithm.run(10000);
 
 algorithm.getResult().display();
 ]]>
-  </pre>
+</pre>
 </div>
 
 <p>
@@ -129,15 +130,17 @@ algorithm.getResult().display();
 </p>
 
 <div class="code">
-  <pre class="brush: plain; toolbar: false;">
+<!-- output:examples/Example1.java [:6] -->
+<pre class="brush: plain; toolbar: false;">
+<![CDATA[
 Var1     Var2     Var3     Var4     Var5     Var6     Var7     Var8     Var9     Var10    Var11    Obj1     Obj2     
 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- 
-0.000001 0.499800 0.499459 0.493195 0.512840 0.501684 0.496219 0.510478 0.497724 0.490473 0.498708 1.000436 0.000002 
-1.000000 0.493931 0.496459 0.504963 0.492117 0.487517 0.495901 0.506916 0.498368 0.508016 0.504378 0.000000 1.000443 
-0.967343 0.500695 0.493870 0.493354 0.496931 0.489186 0.496910 0.489151 0.498778 0.499109 0.496012 0.051294 0.999038 
-0.570016 0.500760 0.493834 0.485232 0.492111 0.487856 0.498199 0.507383 0.498864 0.502869 0.504378 0.625569 0.780878 
-...
-  </pre>
+0.000000 0.507443 0.502672 0.512445 0.495386 0.506435 0.503101 0.502002 0.502372 0.504076 0.501044 1.000317 0.000000 
+0.999999 0.494182 0.504375 0.501972 0.499916 0.490770 0.495367 0.494110 0.499109 0.505300 0.503289 0.000002 1.000238 
+0.823936 0.495123 0.504453 0.502181 0.503019 0.489560 0.503451 0.494876 0.468302 0.509226 0.501564 0.273403 0.963248 
+0.845306 0.507390 0.502668 0.502006 0.502936 0.512325 0.495864 0.493941 0.499754 0.503011 0.500400 0.240678 0.970903 
+]]>
+</pre>
 </div>
 </div>
 
@@ -157,7 +160,8 @@ Var1     Var2     Var3     Var4     Var5     Var6     Var7     Var8     Var9    
 </p>
 
 <div class="code">
-  <pre class="brush: java; toolbar: false;">
+<!-- java:examples/Example2.java [38:52] -->
+<pre class="brush: java; toolbar: false;">
 <![CDATA[
 Problem problem = new DTLZ2(2);
 
@@ -173,7 +177,7 @@ GenerationalDistance gd = new GenerationalDistance(problem, referenceSet);
 System.out.println("Hypervolume: " + hypervolume.evaluate(result));
 System.out.println("GD: " + gd.evaluate(result));
 ]]>
-  </pre>
+</pre>
 </div>
 
 <p>
@@ -181,10 +185,13 @@ System.out.println("GD: " + gd.evaluate(result));
 </p>
 
 <div class="code">
-  <pre class="brush: plain; toolbar: false;">
-Hypervolume: 0.20834956047273037
-GD: 0.001119315294859704
-  </pre>
+<!-- output:examples/Example2.java -->
+<pre class="brush: plain; toolbar: false;">
+<![CDATA[
+Hypervolume: 0.20925923855657944
+GD: 9.871612907880038E-4
+]]>
+</pre>
 </div>
 </div>
 
@@ -205,7 +212,8 @@ GD: 0.001119315294859704
 </p>
 
 <div class="code">
-  <pre class="brush: java; toolbar: false;">
+<!-- java:examples/Example3.java [35:44] -->
+<pre class="brush: java; toolbar: false;">
 <![CDATA[
 Problem problem = new DTLZ2(2);
 NSGAII algorithm = new NSGAII(problem);
@@ -218,7 +226,7 @@ algorithm.run(10000);
 
 algorithm.getResult().display();
 ]]>
-  </pre>
+</pre>
 </div>
 </div>
 
@@ -244,31 +252,28 @@ algorithm.getResult().display();
 </p>
 
 <div class="code">
-  <pre class="brush: java; toolbar: false;">
+<!-- java:examples/Example4.java [39:59] -->
+<pre class="brush: java; toolbar: false;">
 <![CDATA[
 String problem = "UF1";
 String[] algorithms = { "NSGAII", "GDE3", "eMOEA" };
-		
-//setup the experiment
-Executor executor = new Executor()
-    .withProblem(problem)
-    .withMaxEvaluations(10000);
-		
-Analyzer analyzer = new Analyzer()
-    .withProblem(problem)
-    .includeHypervolume()
-    .showStatisticalSignificance();
 
-//run each algorithm for 50 seeds
+Executor executor = new Executor()
+        .withProblem(problem)
+        .withMaxEvaluations(10000);
+
+Analyzer analyzer = new Analyzer()
+        .withProblem(problem)
+        .includeHypervolume()
+        .showStatisticalSignificance();
+
 for (String algorithm : algorithms) {
-    analyzer.addAll(algorithm, 
-        executor.withAlgorithm(algorithm).runSeeds(50));
+    analyzer.addAll(algorithm, executor.withAlgorithm(algorithm).runSeeds(50));
 }
 
-//print the results
 analyzer.display();
 ]]>
-  </pre>
+</pre>
 </div>
 
 <p>
@@ -279,29 +284,32 @@ analyzer.display();
 </p>
 
 <div class="code">
-  <pre class="brush: plain; toolbar: false;">
-GDE3:
-    Hypervolume: 
-        Min: 0.4389785065649592
-        Median: 0.4974186560778636
-        Max: 0.535166930530847
-        Count: 50
-        Indifferent: [NSGAII]
+<!-- output:examples/Example4.java -->
+<pre class="brush: plain; toolbar: false;">
+<![CDATA[
 eMOEA:
     Hypervolume: 
-        Min: 0.35003766343295073
-        Median: 0.47633216464734596
-        Max: 0.53311360537305
+        Min: 0.33278520329925637
+        Median: 0.4654335845985169
+        Max: 0.534174539722678
         Count: 50
         Indifferent: []
 NSGAII:
     Hypervolume: 
-        Min: 0.38868701091987184
-        Median: 0.5040946740799506
-        Max: 0.5371138081508796
+        Min: 0.35795203453117247
+        Median: 0.5064557095681049
+        Max: 0.5381253153383202
         Count: 50
         Indifferent: [GDE3]
-  </pre>
+GDE3:
+    Hypervolume: 
+        Min: 0.44219141303188186
+        Median: 0.5047872946826948
+        Max: 0.537991916184206
+        Count: 50
+        Indifferent: [NSGAII]
+]]>
+</pre>
 </div>
 </div>
 
@@ -323,24 +331,24 @@ NSGAII:
 </p>
 
 <div class="code">
-  <pre class="brush: java; toolbar: false;">
+<!-- java:examples/Example5.java [40:55] -->
+<pre class="brush: java; toolbar: false;">
 <![CDATA[
 Instrumenter instrumenter = new Instrumenter()
-    .withProblem("UF1")
-    .withFrequency(100)
-    .attachElapsedTimeCollector()
-    .attachGenerationalDistanceCollector();
-		
+        .withProblem("UF1")
+        .withFrequency(100)
+        .attachGenerationalDistanceCollector();
+
 new Executor()
-    .withProblem("UF1")
-    .withAlgorithm("NSGAII")
-    .withMaxEvaluations(10000)
-    .withInstrumenter(instrumenter)
-    .run();
-		
+        .withProblem("UF1")
+        .withAlgorithm("NSGAII")
+        .withMaxEvaluations(10000)
+        .withInstrumenter(instrumenter)
+        .run();
+
 instrumenter.getObservations().display();
 ]]>
-  </pre>
+</pre>
 </div>
 
 <p>
@@ -351,22 +359,23 @@ instrumenter.getObservations().display();
 </p>
 
 <div class="code">
-  <pre class="brush: plain; toolbar: false">
-NFE   Elapsed Time GenerationalDistance 
------ ------------ -------------------- 
-100   0.048455     0.554547             
-200   0.068240     0.486866             
-300   0.076951     0.876918             
-400   0.082156     0.690796             
-500   0.087247     0.542534             
-...                 
-9500  0.351868     0.044477             
-9600  0.354273     0.037876             
-9700  0.356552     0.038029             
-9800  0.358757     0.038815             
-9900  0.361296     0.032959             
-10000 0.363735     0.020477   
-  </pre>
+<!-- output:examples/Example5.java [:12] -->
+<pre class="brush: plain; toolbar: false;">
+<![CDATA[
+NFE   GenerationalDistance 
+----- -------------------- 
+100   0.799030             
+200   0.513917             
+300   0.420843             
+400   0.424941             
+500   0.379473             
+600   0.389628             
+700   0.340794             
+800   0.277609             
+900   0.242039             
+1000  0.214610             
+]]>
+</pre>
 </div>
 </div>
 
@@ -390,44 +399,54 @@ NFE   Elapsed Time GenerationalDistance
 </p>
 
 <div class="code">
-  <pre class="brush: java; toolbar: false;">
+<!-- java:examples/Example6.java [32:77] -->
+<pre class="brush: java; toolbar: false;">
 <![CDATA[
-public class Srinivas extends AbstractProblem {
+public static class Srinivas extends AbstractProblem {
 
-	public Srinivas() {
-		super(2, 2, 2);
-	}
+    /**
+     * Creates the problem with two decision variables, two objectives, and two constraints.
+     */
+    public Srinivas() {
+        super(2, 2, 2);
+    }
 
-	@Override
-	public void evaluate(Solution solution) {
-		double[] x = EncodingUtils.getReal(solution);
-		double f1 = Math.pow(x[0] - 2.0, 2.0) + Math.pow(x[1] - 1.0, 2.0) + 2.0;
-		double f2 = 9.0*x[0] - Math.pow(x[1] - 1.0, 2.0);
-		double c1 = Math.pow(x[0], 2.0) + Math.pow(x[1], 2.0) - 225.0;
-		double c2 = x[0] - 3.0*x[1] + 10.0;
-		
-		// set the objective values - these are being minimized
-		solution.setObjective(0, f1);
-		solution.setObjective(1, f2);
-		
-		// set the constraint values - we treat any non-zero value as a constraint violation!
-		solution.setConstraint(0, c1 <= 0.0 ? 0.0 : c1);
-		solution.setConstraint(1, c2 <= 0.0 ? 0.0 : c2);
-	}
+    /**
+     * Function to evaluate each solution.
+     */
+    @Override
+    public void evaluate(Solution solution) {
+        double[] x = EncodingUtils.getReal(solution);
+        double f1 = Math.pow(x[0] - 2.0, 2.0) + Math.pow(x[1] - 1.0, 2.0) + 2.0;
+        double f2 = 9.0*x[0] - Math.pow(x[1] - 1.0, 2.0);
+        double c1 = Math.pow(x[0], 2.0) + Math.pow(x[1], 2.0) - 225.0;
+        double c2 = x[0] - 3.0*x[1] + 10.0;
+        
+        solution.setObjective(0, f1);
+        solution.setObjective(1, f2);
+        
+        solution.setConstraint(0, Constraint.lessThanOrEqual(c1, 0.0));
+        solution.setConstraint(1, Constraint.lessThanOrEqual(c2, 0.0));
+    }
 
-	@Override
-	public Solution newSolution() {
-		Solution solution = new Solution(2, 2, 2);
-		
-		solution.setVariable(0, new RealVariable(-20.0, 20.0));
-		solution.setVariable(1, new RealVariable(-20.0, 20.0));
-		
-		return solution;
-	}
-		
+    /**
+     * Function to create a new solution.  Here is where we define the types and
+     * bounds of each decision variables.  In this example, we have two real-valued
+     * variables ranging from -20 to 20.
+     */
+    @Override
+    public Solution newSolution() {
+        Solution solution = new Solution(2, 2, 2);
+        
+        solution.setVariable(0, new RealVariable(-20.0, 20.0));
+        solution.setVariable(1, new RealVariable(-20.0, 20.0));
+        
+        return solution;
+    }
+    
 }
 ]]>
-  </pre>
+</pre>
 </div>
 
 <p>
@@ -435,7 +454,8 @@ public class Srinivas extends AbstractProblem {
 </p>
 
 <div class="code">
-  <pre class="brush: java; toolbar: false;">
+<!-- java:examples/Example6.java [80:85] -->
+<pre class="brush: java; toolbar: false;">
 <![CDATA[
 Problem problem = new Srinivas();
 
@@ -444,7 +464,7 @@ algorithm.run(10000);
 
 algorithm.getResult().display();
 ]]>
-  </pre>
+</pre>
 </div>
 </div>
 

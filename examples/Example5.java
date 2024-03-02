@@ -30,7 +30,7 @@ import org.moeaframework.Instrumenter;
  * 3. Quality indicators (hypervolume, generational distance, etc.), and
  * 4. The Pareto front.
  * 
- * In this example, we will record the elapsed time and generational distance every
+ * In this example, we will record the generational distance every
  * 100 function evaluations (the frequency) while solving the UF1 problem with NSGA-II.
  * The results are then displayed to the console in a table.
  */
@@ -41,7 +41,6 @@ public class Example5 {
 		Instrumenter instrumenter = new Instrumenter()
 				.withProblem("UF1")
 				.withFrequency(100)
-				.attachElapsedTimeCollector()
 				.attachGenerationalDistanceCollector();
 		
 		// use the executor to run the algorithm with the instrumenter

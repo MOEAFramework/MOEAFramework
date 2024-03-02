@@ -13,6 +13,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -22,8 +23,8 @@ import org.apache.commons.lang3.SystemUtils;
 import org.moeaframework.core.Settings;
 
 /**
- * Utility to update code samples and output found in Markdown files.  This allows us to have complete
- * Markdown files that are kept in-sync with working examples.
+ * Utility to update code samples and output found in Markdown and Xslt files.  This allows us to keep code
+ * samples shown in the documentation and website in sync with their example.
  */
 public class UpdateDocs {
 	
@@ -33,7 +34,7 @@ public class UpdateDocs {
 	
 	private static final String[] CLASSPATH = new String[] { "lib/*", "build", "examples" };
 	
-	private static final File DOCS_PATH = new File("docs/");
+	private static final File[] PATHS = new File[] { new File("docs/"), new File("website/xslt") };
 	
 	private static final Pattern REGEX = Pattern.compile("<!--\\s+([a-zA-Z]+)\\:([^\\s]+)(?:\\s+\\[([0-9]+)?[:\\-]([0-9]+)?\\])?\\s+-->");
 	
@@ -50,11 +51,15 @@ public class UpdateDocs {
 			for (File nestedFile : file.listFiles()) {
 				scan(nestedFile);
 			}
-		} else if (FilenameUtils.getExtension(file.getName()).equalsIgnoreCase("md")) {
-			System.out.println("Processing " + file);
-			process(file);
 		} else {
-			System.out.println("Skipping " + file + ", not a Markdown file");
+			String extension = FilenameUtils.getExtension(file.getName());
+			
+			if (extension.equalsIgnoreCase("md") || extension.equalsIgnoreCase("xml")) {
+				System.out.println("Processing " + file);
+				process(file);
+			} else {
+				System.out.println("Skipping " + file + ", not a recognized extension");
+			}
 		}
 	}
 	
@@ -77,13 +82,14 @@ public class UpdateDocs {
 					int startingLine = matcher.group(3) != null ? Integer.parseInt(matcher.group(3)) : FormattingOptions.FIRST_LINE;
 					int endingLine = matcher.group(4) != null ? Integer.parseInt(matcher.group(4)) : FormattingOptions.LAST_LINE;
 					
-					FormattingOptions options = new FormattingOptions(startingLine, endingLine);
-					String content = "";
+					FormattingOptions options = new FormattingOptions(language, startingLine, endingLine);
+					options.fileType = FileType.fromExtension(FilenameUtils.getExtension(file.getName()));
 					
+					String content = "";
 					System.out.println("    > Updating " + language + " code block: " + filename + " " + options);
 					
 					if (language.equalsIgnoreCase("output")) {
-						language = "";
+						options.language = null;
 
 						compile(filename);
 						content = execute(filename);
@@ -92,19 +98,14 @@ public class UpdateDocs {
 					}
 					
 					// write updated code block to output
-					writer.newLine();
-					writer.write("```" + language);
-					writer.newLine();
 					writer.write(format(content, options));
 					writer.newLine();
-					writer.write("```");
-					writer.newLine();
 					
-					skipNextCodeBlock(reader);
+					skipNextCodeBlock(reader, options.fileType);
 				}
 			}
 		}
-		
+
 		if (!FileUtils.contentEqualsIgnoreEOL(file, tempFile, CHARSET)) {
 			System.out.println("    > File changed!");
 			
@@ -121,16 +122,29 @@ public class UpdateDocs {
 		}
 	}
 	
-	private void skipNextCodeBlock(BufferedReader reader) throws Exception {
+	private void skipNextCodeBlock(BufferedReader reader, FileType fileType) throws Exception {
 		String line = null;
 		boolean inCodeBlock = false;
 		
+		Predicate<String> isCodeBlock = str -> {
+			switch (fileType) {
+				case Markdown:
+					return str.startsWith("```");
+				case Html:
+					return str.startsWith("<pre") || str.startsWith("</pre>");
+				default:
+					return false;
+			}
+		};
+		
 		while ((line = reader.readLine()) != null) {
-			if (line.trim().isEmpty()) {
+			line = line.trim();
+			
+			if (line.isEmpty()) {
 				continue;
 			}
 			
-			if (line.startsWith("```")) {
+			if (isCodeBlock.test(line)) {
 				if (inCodeBlock) {
 					return;
 				}
@@ -261,6 +275,22 @@ public class UpdateDocs {
 			}
 		}
 		
+		switch (options.fileType) {
+			case Markdown:
+				lines.add(0, "");
+				lines.add(1, "```" + (options.language == null ? "" : options.language));
+				lines.add("```");
+				break;
+			case Html:
+				lines.add(0, "<pre class=\"brush: " + (options.language == null ? "plain" : options.language) + "; toolbar: false;\">");
+				lines.add(1, "<![CDATA[");
+				lines.add("]]>");
+				lines.add("</pre>");
+				break;
+			default:
+				break;
+		}
+		
 		return String.join(System.lineSeparator(), lines);
 	}
 	
@@ -269,6 +299,8 @@ public class UpdateDocs {
 		public static final int FIRST_LINE = 1;
 		
 		public static final int LAST_LINE = Integer.MAX_VALUE;
+		
+		public String language;
 		
 		public int startingLine;
 		
@@ -280,8 +312,11 @@ public class UpdateDocs {
 		
 		public boolean replaceTabs = true;
 		
-		public FormattingOptions(int startingLine, int endingLine) {
+		public FileType fileType;
+		
+		public FormattingOptions(String language, int startingLine, int endingLine) {
 			super();
+			this.language = language;
 			this.startingLine = startingLine;
 			this.endingLine = endingLine;
 		}
@@ -293,9 +328,36 @@ public class UpdateDocs {
 		
 	}
 	
+	private enum FileType {
+		
+		Markdown("md"),
+		Html("html", "xml");
+		
+		public final String[] extensions;
+		
+		private FileType(String... extensions) {
+			this.extensions = extensions;
+		}
+		
+		public static FileType fromExtension(String extension) {
+			for (FileType fileType : values()) {
+				for (String fileExtension : fileType.extensions) {
+					if (fileExtension.equalsIgnoreCase(extension)) {
+						return fileType;
+					}
+				}
+			}
+			
+			return null;
+		}
+	}
+	
 	public static void main(String[] args) throws Exception {
 		boolean update = args.length > 0 && args[0].equals("update");
-		new UpdateDocs(update).scan(DOCS_PATH);
+		
+		for (File path : PATHS) {
+			new UpdateDocs(update).scan(path);
+		}
 	}
 
 }
