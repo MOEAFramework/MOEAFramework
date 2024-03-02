@@ -26,6 +26,7 @@ import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PopulationIO;
 import org.moeaframework.core.indicator.Hypervolume;
 import org.moeaframework.util.CommandLineUtility;
+import org.moeaframework.util.format.NumberFormatter;
 
 /**
  * Command line utility for calculating the hypervolume of approximation sets.
@@ -73,8 +74,8 @@ public class SetHypervolume extends CommandLineUtility {
 			
 			System.out.print(filename);
 			System.out.print(' ');
-			System.out.println(new Hypervolume(new ProblemStub(
-					set.get(0).getNumberOfObjectives()), set).evaluate(set));
+			System.out.println(NumberFormatter.getDefault().format(new Hypervolume(
+					new ProblemStub(set.get(0).getNumberOfObjectives()), set).evaluate(set)));
 		}
 	}
 	

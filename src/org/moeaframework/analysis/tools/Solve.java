@@ -529,18 +529,15 @@ public class Solve extends CommandLineUtility {
 					System.out.println(solution.getConstraint(j));
 				}
 				
-				if ((solution.getNumberOfConstraints() > 0) &&
-						solution.violatesConstraints()) {
-					System.out.println("  Solution is infeasible (non-zero " +
-							"constraint value)!");
+				if ((solution.getNumberOfConstraints() > 0) && solution.violatesConstraints()) {
+					System.out.println("  Solution is infeasible (non-zero constraint value)!");
 				}
 			}
 			
 			System.out.println("Test succeeded!");
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("Test failed!  Please see the error message " + 
-					"above for details.");
+			System.out.println("Test failed!  Please see the error message above for details.");
 		}
 	}
 

@@ -26,6 +26,7 @@ import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PopulationIO;
 import org.moeaframework.core.indicator.Contribution;
 import org.moeaframework.util.CommandLineUtility;
+import org.moeaframework.util.format.NumberFormatter;
 
 /**
  * Command line utility for reporting the number of solutions in a set that are
@@ -94,13 +95,12 @@ public class SetContribution extends CommandLineUtility {
 		}
 
 		for (String filename : commandLine.getArgs()) {
-			NondominatedPopulation approximationSet = 
-					new NondominatedPopulation(PopulationIO.readObjectives(
-							new File(filename)));
+			NondominatedPopulation approximationSet = new NondominatedPopulation(
+					PopulationIO.readObjectives(new File(filename)));
 
 			System.out.print(filename);
 			System.out.print(' ');
-			System.out.println(contribution.evaluate(approximationSet));
+			System.out.println(NumberFormatter.getDefault().format(contribution.evaluate(approximationSet)));
 		}
 	}
 	

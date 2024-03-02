@@ -23,10 +23,29 @@ import org.apache.commons.lang3.SystemUtils;
 import org.moeaframework.core.Settings;
 
 /**
- * Utility to update code samples and output found in Markdown and Xslt files.  This allows us to keep code
- * samples shown in the documentation and website in sync with their example.
+ * Utility to update code samples and output found in various documents, including Markdown and HTML / XSLT files.
+ * The aim is to inject real Java examples into the documentation so that all code snippets can be tested and
+ * validated.  This works by embedding a special comment before the code block in one of the supported
+ * {@link FileType}.  When processing the document, the code block immediately following the comment is validated
+ * or updated from the referenced code.
+ * <pre>{@code
+ *   <!-- java:examples/Example1.java -->
+ * 
+ *   ```java
+ *   ... code block updated from referenced Java file ...
+ *   ```}</pre>
+ * <p>
+ * Supported comments include:
+ * <pre>{@code
+ *   <!-- java:examples/Example1.java -->              # Embed entire file in document
+ *   <!-- java:examples/Example1.java [25:35] -->      # Embed lines 25 to 35 in the document
+ *   <!-- output:examples/Example1.java -->            # Compile, run, and embed output in document
+ *   <!-- output.examples/Example1.java [:10] -->      # Compile, run, and embed first 10 lines from output in document}</pre>
+ * <p>
+ * Can be run in validate-only mode or update mode.  In validate mode, it simply checks of the code blocks changed
+ * and returns a non-zero exit code.  In update mode, it updates the code block in the file.
  */
-public class UpdateDocs {
+public class UpdateCodeSamples {
 	
 	private static final String CHARSET = "UTF8";
 	
@@ -40,7 +59,7 @@ public class UpdateDocs {
 	
 	private final boolean update;
 	
-	public UpdateDocs(boolean update) {
+	public UpdateCodeSamples(boolean update) {
 		super();
 		this.update = update;
 	}
@@ -52,18 +71,19 @@ public class UpdateDocs {
 				scan(nestedFile);
 			}
 		} else {
-			String extension = FilenameUtils.getExtension(file.getName());
-			
-			if (extension.equalsIgnoreCase("md") || extension.equalsIgnoreCase("xml")) {
-				System.out.println("Processing " + file);
-				process(file);
-			} else {
-				System.out.println("Skipping " + file + ", not a recognized extension");
-			}
+			process(file);
 		}
 	}
 	
 	public void process(File file) throws Exception {
+		FileType fileType = FileType.fromExtension(FilenameUtils.getExtension(file.getName()));
+		
+		if (fileType == null) {
+			System.out.println("Skipping " + file + ", not a recognized extension");
+			return;
+		}
+		
+		System.out.println("Processing " + file);
 		File tempFile = File.createTempFile("temp", null);
 		
 		try (BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -83,7 +103,7 @@ public class UpdateDocs {
 					int endingLine = matcher.group(4) != null ? Integer.parseInt(matcher.group(4)) : FormattingOptions.LAST_LINE;
 					
 					FormattingOptions options = new FormattingOptions(language, startingLine, endingLine);
-					options.fileType = FileType.fromExtension(FilenameUtils.getExtension(file.getName()));
+					options.fileType = fileType;
 					
 					String content = "";
 					System.out.println("    > Updating " + language + " code block: " + filename + " " + options);
@@ -355,7 +375,7 @@ public class UpdateDocs {
 		boolean update = args.length > 0 && args[0].equals("update");
 		
 		for (File path : PATHS) {
-			new UpdateDocs(update).scan(path);
+			new UpdateCodeSamples(update).scan(path);
 		}
 	}
 

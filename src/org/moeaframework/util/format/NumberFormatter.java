@@ -40,7 +40,8 @@ public class NumberFormatter implements Formatter<Number> {
 	private Locale locale = Locale.getDefault();
 	
 	/**
-	 * Returns the default number formatter.  Changes made to this formatter will be reflected everywhere.
+	 * Returns the default number formatter.  Changes made to this formatter will be reflected everywhere
+	 * the default formatter is used.
 	 * 
 	 * @return the default number formatter
 	 */

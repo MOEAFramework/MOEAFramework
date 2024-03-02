@@ -443,7 +443,6 @@ public class Population implements Iterable<Solution>, Formattable<Solution>, St
 				currentIndex = -1;
 				expectedModCount++;
 			} catch (IndexOutOfBoundsException e) {
-				System.out.println(e + " " + size() + " " + currentIndex + " " + nextIndex + " " + expectedModCount);
 				throw new ConcurrentModificationException();
 			}
 		}

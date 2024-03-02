@@ -182,7 +182,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 	
 	<!-- Updates code samples used in the docs -->
 	<target name="update-docs" depends="build-binary">
-		<java classname="org.moeaframework.util.io.UpdateDocs" fork="true" failonerror="true">
+		<java classname="org.moeaframework.util.io.UpdateCodeSamples" fork="true" failonerror="true">
 			<classpath refid="classpath" />
 			<classpath path="${build}" />
 			<arg value="update" />
@@ -191,7 +191,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 	
 	<!-- Validates code samples used in the docs -->
 	<target name="validate-docs" depends="build-binary">
-		<java classname="org.moeaframework.util.io.UpdateDocs" fork="true" failonerror="true">
+		<java classname="org.moeaframework.util.io.UpdateCodeSamples" fork="true" failonerror="true">
 			<classpath refid="classpath" />
 			<classpath path="${build}" />
 		</java>
