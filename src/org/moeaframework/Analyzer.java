@@ -52,6 +52,7 @@ import org.moeaframework.core.indicator.R3Indicator;
 import org.moeaframework.core.indicator.Spacing;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.util.format.Displayable;
+import org.moeaframework.util.format.NumberFormatter;
 import org.moeaframework.util.io.FileUtils;
 import org.moeaframework.util.statistics.KruskalWallisTest;
 import org.moeaframework.util.statistics.MannWhitneyUTest;
@@ -1214,6 +1215,7 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 		
 		@Override
 		public void display(PrintStream ps) {
+			NumberFormatter format = NumberFormatter.getDefault();
 			double[] values = getValues();
 			
 			ps.print("    ");
@@ -1229,27 +1231,27 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 				
 				if (showAggregate) {
 					ps.print("        Aggregate: ");
-					ps.println(getAggregateValue());
+					ps.println(format.format(getAggregateValue()));
 				}
 				
 				if (statistics.isEmpty()) {
 					ps.print("        Min: ");
-					ps.println(getMin());
+					ps.println(format.format(getMin()));
 					ps.print("        Median: ");
-					ps.println(getMedian());
+					ps.println(format.format(getMedian()));
 					ps.print("        Max: ");
-					ps.println(getMax());
+					ps.println(format.format(getMax()));
 				} else {
 					for (UnivariateStatistic statistic : statistics) {
 						ps.print("        ");
 						ps.print(statistic.getClass().getSimpleName());
 						ps.print(": ");
-						ps.println(getStatistic(statistic));
+						ps.println(format.format(getStatistic(statistic)));
 					}
 				}
 				
 				ps.print("        Count: ");
-				ps.print(getCount());
+				ps.print(format.format(getCount()));
 				
 				if (showStatisticalSignificance) {
 					ps.println();

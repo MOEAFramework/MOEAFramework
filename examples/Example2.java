@@ -48,8 +48,8 @@ public class Example2 {
 		Hypervolume hypervolume = new Hypervolume(problem, referenceSet);
 		GenerationalDistance gd = new GenerationalDistance(problem, referenceSet);
 		
-		System.out.println("Hypervolume: " + hypervolume.evaluate(result));
-		System.out.println("GD: " + gd.evaluate(result));
+		System.out.format("Hypervolume: %.6f%n", hypervolume.evaluate(result));
+		System.out.format("GD: %.6f%n", gd.evaluate(result));
 	}
 
 }

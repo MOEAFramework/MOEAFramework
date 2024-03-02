@@ -174,8 +174,8 @@ NondominatedPopulation referenceSet = PopulationIO.readReferenceSet("pf/DTLZ2.2D
 Hypervolume hypervolume = new Hypervolume(problem, referenceSet);
 GenerationalDistance gd = new GenerationalDistance(problem, referenceSet);
 
-System.out.println("Hypervolume: " + hypervolume.evaluate(result));
-System.out.println("GD: " + gd.evaluate(result));
+System.out.format("Hypervolume: %.6f%n", hypervolume.evaluate(result));
+System.out.format("GD: %.6f%n", gd.evaluate(result));
 ]]>
 </pre>
 </div>
@@ -188,8 +188,8 @@ System.out.println("GD: " + gd.evaluate(result));
 <!-- output:examples/Example2.java -->
 <pre class="brush: plain; toolbar: false;">
 <![CDATA[
-Hypervolume: 0.20925923855657944
-GD: 9.871612907880038E-4
+Hypervolume: 0.209259
+GD: 0.000987
 ]]>
 </pre>
 </div>
@@ -289,23 +289,23 @@ analyzer.display();
 <![CDATA[
 eMOEA:
     Hypervolume: 
-        Min: 0.33278520329925637
-        Median: 0.4654335845985169
-        Max: 0.534174539722678
+        Min: 0.332785
+        Median: 0.465434
+        Max: 0.534175
         Count: 50
         Indifferent: []
 NSGAII:
     Hypervolume: 
-        Min: 0.35795203453117247
-        Median: 0.5064557095681049
-        Max: 0.5381253153383202
+        Min: 0.357952
+        Median: 0.506456
+        Max: 0.538125
         Count: 50
         Indifferent: [GDE3]
 GDE3:
     Hypervolume: 
-        Min: 0.44219141303188186
-        Median: 0.5047872946826948
-        Max: 0.537991916184206
+        Min: 0.442191
+        Median: 0.504787
+        Max: 0.537992
         Count: 50
         Indifferent: [NSGAII]
 ]]>

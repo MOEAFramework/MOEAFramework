@@ -25,6 +25,8 @@ import java.util.Locale;
  */
 public class NumberFormatter implements Formatter<Number> {
 	
+	private static NumberFormatter DEFAULT = new NumberFormatter();
+	
 	private int width = -1;
 	
 	private int precision = 6;
@@ -36,6 +38,15 @@ public class NumberFormatter implements Formatter<Number> {
 	private boolean scientificNotation = false;
 	
 	private Locale locale = Locale.getDefault();
+	
+	/**
+	 * Returns the default number formatter.  Changes made to this formatter will be reflected everywhere.
+	 * 
+	 * @return the default number formatter
+	 */
+	public static NumberFormatter getDefault() {
+		return DEFAULT;
+	}
 	
 	/**
 	 * Creates a new formatter for numeric types with default settings.

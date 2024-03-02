@@ -55,7 +55,7 @@ public class TabularData<T> implements Displayable {
 		this.columns = new ArrayList<Column<T, ?>>();
 		this.formatters = new LinkedList<Formatter<?>>();
 		
-		addFormatter(new NumberFormatter());
+		addFormatter(NumberFormatter.getDefault());
 		addFormatter(new VariableFormatter(this));
 	}
 	
