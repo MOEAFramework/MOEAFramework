@@ -64,7 +64,7 @@ public class UpdateDocs {
 	}
 	
 	public void process(File file) throws Exception {
-		File tempFile = File.createTempFile("markdown", "md");
+		File tempFile = File.createTempFile("temp", null);
 		
 		try (BufferedReader reader = new BufferedReader(new FileReader(file));
 			 BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile))) {
@@ -115,10 +115,9 @@ public class UpdateDocs {
 		}
 		
 		if (update) {
-			file.delete();
-			tempFile.renameTo(file);
+			org.moeaframework.util.io.FileUtils.move(tempFile, file);
 		} else {
-			tempFile.delete();
+			org.moeaframework.util.io.FileUtils.delete(tempFile);
 		}
 	}
 	
