@@ -2,12 +2,10 @@ package org.moeaframework.util.io;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.StringReader;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -59,11 +57,23 @@ public class UpdateCodeSamples {
 	
 	private final boolean update;
 	
+	/**
+	 * Creates a new instance to update code blocks.
+	 * 
+	 * @param update if {@code true}, updates the code blocks; if {@code false} only validates that the code blocks
+	 *               are up-to-date
+	 */
 	public UpdateCodeSamples(boolean update) {
 		super();
 		this.update = update;
 	}
 	
+	/**
+	 * Scans the given file or directory, calling {@link #process(File)} on each file.
+	 * 
+	 * @param file the file or directory
+	 * @throws Exception if an error occurred processing the file or directory
+	 */
 	public void scan(File file) throws Exception {
 		if (file.isDirectory()) {
 			System.out.println("Scanning directory " + file);
@@ -75,6 +85,12 @@ public class UpdateCodeSamples {
 		}
 	}
 	
+	/**
+	 * Processes the file, updating any code blocks and detecting changes.
+	 * 
+	 * @param file the file to process
+	 * @throws Exception if an error occurred processing the file
+	 */
 	public void process(File file) throws Exception {
 		FileType fileType = FileType.fromExtension(FilenameUtils.getExtension(file.getName()));
 		
@@ -197,16 +213,11 @@ public class UpdateCodeSamples {
 		String extension = FilenameUtils.getExtension(filename);
 		
 		if (extension.equalsIgnoreCase("java")) {
-			Process process = new ProcessBuilder("javac",
+			ProcessBuilder processBuilder = new ProcessBuilder("javac",
 					"-classpath", getClassPath(CLASSPATH),
-					filename).start();
+					filename);
 			
-			RedirectStream.redirect(process.getInputStream(), System.out);
-			RedirectStream.redirect(process.getErrorStream(), System.err);
-			
-			if (process.waitFor() != 0) {
-				throw new IOException("Process exited with non-zero status (" + process.exitValue() + ")");
-			}
+			RedirectStream.invoke(processBuilder);
 		} else {
 			throw new IOException("Unsupported file extension " + extension);
 		}
@@ -216,21 +227,12 @@ public class UpdateCodeSamples {
 		String extension = FilenameUtils.getExtension(filename);
 		
 		if (extension.equalsIgnoreCase("java")) {
-			Process process = new ProcessBuilder("java",
+			ProcessBuilder processBuilder = new ProcessBuilder("java",
 					"-classpath", getClassPath(CLASSPATH),
 					"-D" + Settings.KEY_PRNG_SEED + "=" + SEED,
-					getClassName(filename)).start();
+					getClassName(filename));
 			
-			try (OutputStream out = new ByteArrayOutputStream()) {
-				RedirectStream.redirect(process.getInputStream(), out);
-				RedirectStream.redirect(process.getErrorStream(), System.err);
-				
-				if (process.waitFor() != 0) {
-					throw new IOException("Process exited with non-zero status (" + process.exitValue() + ")");
-				}
-				
-				return out.toString();
-			}
+			return RedirectStream.capture(processBuilder);
 		} else {
 			throw new IOException("Unsupported file extension " + extension);
 		}
@@ -350,6 +352,7 @@ public class UpdateCodeSamples {
 	private enum FileType {
 		
 		Markdown("md"),
+		
 		Html("html", "xml");
 		
 		public final String[] extensions;

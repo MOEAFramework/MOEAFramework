@@ -23,7 +23,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -1215,7 +1214,7 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 		
 		@Override
 		public void display(PrintStream ps) {
-			NumberFormatter format = NumberFormatter.getDefault();
+			NumberFormatter formatter = NumberFormatter.getDefault();
 			double[] values = getValues();
 			
 			ps.print("    ");
@@ -1231,27 +1230,27 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 				
 				if (showAggregate) {
 					ps.print("        Aggregate: ");
-					ps.println(format.format(getAggregateValue()));
+					ps.println(formatter.format(getAggregateValue()));
 				}
 				
 				if (statistics.isEmpty()) {
 					ps.print("        Min: ");
-					ps.println(format.format(getMin()));
+					ps.println(formatter.format(getMin()));
 					ps.print("        Median: ");
-					ps.println(format.format(getMedian()));
+					ps.println(formatter.format(getMedian()));
 					ps.print("        Max: ");
-					ps.println(format.format(getMax()));
+					ps.println(formatter.format(getMax()));
 				} else {
 					for (UnivariateStatistic statistic : statistics) {
 						ps.print("        ");
 						ps.print(statistic.getClass().getSimpleName());
 						ps.print(": ");
-						ps.println(format.format(getStatistic(statistic)));
+						ps.println(formatter.format(getStatistic(statistic)));
 					}
 				}
 				
 				ps.print("        Count: ");
-				ps.print(format.format(getCount()));
+				ps.print(formatter.format(getCount()));
 				
 				if (showStatisticalSignificance) {
 					ps.println();
@@ -1262,7 +1261,7 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 				if (showIndividualValues) {
 					ps.println();
 					ps.print("        Values: ");
-					ps.print(Arrays.toString(values));
+					ps.print(formatter.format(values));
 				}
 			}
 			

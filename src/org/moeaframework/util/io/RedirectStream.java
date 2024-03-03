@@ -17,6 +17,7 @@
  */
 package org.moeaframework.util.io;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -103,6 +104,67 @@ public class RedirectStream extends Thread {
 	 */
 	public static void redirect(InputStream inputStream, OutputStream outputStream) {
 		new RedirectStream(inputStream, outputStream).start();
+	}
+	
+	/**
+	 * Invokes the process and captures the output.  Any error messages are sent to {@link System#err}.
+	 * 
+	 * @param processBuilder the process builder
+	 * @return the captured output
+	 * @throws IOException if an I/O error occurred while running the process
+	 * @throws InterruptedException if this thread was interrupted while waiting for the process to terminate
+	 */
+	public static String capture(ProcessBuilder processBuilder) throws IOException, InterruptedException {
+		try (OutputStream out = new ByteArrayOutputStream()) {
+			pipe(processBuilder, out);
+			return out.toString();
+		}
+	}
+	
+	/**
+	 * Invokes the process and pipes output to the given stream.  Any error messages are sent to {@link System#err}.
+	 * 
+	 * @param processBuilder the process builder
+	 * @param out the stream where output is piped
+	 * @throws IOException if an I/O error occurred while running the process
+	 * @throws InterruptedException if this thread was interrupted while waiting for the process to terminate
+	 */
+	public static void pipe(ProcessBuilder processBuilder, OutputStream out) throws IOException,
+	InterruptedException {
+		pipe(processBuilder, out, System.err);
+	}
+	
+	/**
+	 * Invokes the process and pipes output and error messages to the given streams.
+	 * 
+	 * @param processBuilder the process builder
+	 * @param out the stream where output is piped
+	 * @param err the stream where error messages are piped
+	 * @throws IOException if an I/O error occurred while running the process
+	 * @throws InterruptedException if this thread was interrupted while waiting for the process to terminate
+	 */
+	public static void pipe(ProcessBuilder processBuilder, OutputStream out, OutputStream err) throws IOException,
+	InterruptedException {
+		Process process = processBuilder.start();
+		
+		RedirectStream.redirect(process.getInputStream(), out);
+		RedirectStream.redirect(process.getErrorStream(), err);
+		
+		if (process.waitFor() != 0) {
+			throw new IOException("Process exited with non-zero status (" + process.exitValue() + ")");
+		}
+	}
+	
+	/**
+	 * Invokes the process and pipes output and error messages to {@link System#out} and {@link System#err},
+	 * respectively.
+	 * 
+	 * @param processBuilder the process builder
+	 * @throws IOException if an I/O error occurred while running the process
+	 * @throws InterruptedException if this thread was interrupted while waiting for the process to terminate
+	 */
+	public static void invoke(ProcessBuilder processBuilder) throws IOException, InterruptedException {
+		pipe(processBuilder, System.out, System.err);
 	}
 
 }

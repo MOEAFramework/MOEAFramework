@@ -18,13 +18,15 @@
 package org.moeaframework.util.format;
 
 import java.util.Locale;
+import java.util.stream.DoubleStream;
+import java.util.stream.IntStream;
 
 /**
  * Formatter for displaying numeric data.  This supports all primitive numeric types as well as their boxed types.
  */
 public class NumberFormatter implements Formatter<Number> {
 	
-	private static NumberFormatter DEFAULT = new NumberFormatter();
+	private static NumberFormatter DEFAULT;
 	
 	private int width = -1;
 	
@@ -46,6 +48,22 @@ public class NumberFormatter implements Formatter<Number> {
 	 */
 	public static NumberFormatter getDefault() {
 		return DEFAULT;
+	}
+	
+	/**
+	 * Sets the default number formatter.
+	 * 
+	 * @param formatter the formatter to use as the default; if {@code null}, resets to the default settings.
+	 */
+	public static void setDefault(NumberFormatter formatter) {
+		DEFAULT = formatter != null ? formatter : new NumberFormatter();
+	}
+	
+	/**
+	 * Initializes the default number formatter.
+	 */
+	static {
+		setDefault(null);
 	}
 	
 	/**
@@ -207,5 +225,25 @@ public class NumberFormatter implements Formatter<Number> {
 			return String.format(locale, createIntegerFormatString(), value);
 		}
 	}
-
+	
+	/**
+	 * Formats an array of double values into a string representation.
+	 * 
+	 * @param values the values
+	 * @return the string representation
+	 */
+	public String format(double[] values) {
+		return format(DoubleStream.of(values).boxed());
+	}
+	
+	/**
+	 * Formats an array of integer values into a string representation.
+	 * 
+	 * @param values the values
+	 * @return the string representation
+	 */
+	public String format(int[] values) {
+		return format(IntStream.of(values).boxed());
+	}
+	
 }

@@ -20,6 +20,8 @@ package org.moeaframework.util.io;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+
+import org.apache.commons.lang3.SystemUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.core.PRNG;
@@ -99,6 +101,20 @@ public class RedirectStreamTest {
 				Assert.fail("thread still active");
 			}
 		}
+	}
+	
+	@Test
+	public void testCapture() throws IOException, InterruptedException {
+		ProcessBuilder processBuilder = SystemUtils.IS_OS_WINDOWS ?
+				new ProcessBuilder("cmd", "/C", "echo hello world") :
+				new ProcessBuilder("echo", "hello world");
+				
+		Assert.assertEquals("hello world", RedirectStream.capture(processBuilder).trim());
+	}
+	
+	@Test(expected = IOException.class)
+	public void testCaptureWithInvalidCommand() throws IOException, InterruptedException {
+		RedirectStream.capture(new ProcessBuilder("invalidCommand"));		
 	}
 
 }

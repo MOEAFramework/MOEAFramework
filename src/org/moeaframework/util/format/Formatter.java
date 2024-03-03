@@ -17,6 +17,10 @@
  */
 package org.moeaframework.util.format;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Stream;
+
 /**
  * Formats an object of some type into a string.
  * 
@@ -38,5 +42,27 @@ public interface Formatter<T> {
 	 * @return the string representation
 	 */
 	public String format(Object value);
+	
+	/**
+	 * Formats a list of values into a string representation.  The follows the same formatting
+	 * as {@link Arrays#toString(Object[]).
+	 * 
+	 * @param values the list of values
+	 * @return the string representation
+	 */
+	public default String format(List<? extends T> values) {
+		return format(values.stream());
+	}
+	
+	/**
+	 * Formats a stream of values into a string representation.  The follows the same formatting
+	 * as {@link Arrays#toString(Object[]).
+	 * 
+	 * @param values the stream of values
+	 * @return the string representation
+	 */
+	public default String format(Stream<? extends T> values) {
+		return Arrays.toString(values.map(value -> format(value)).toArray());
+	}
 
 }

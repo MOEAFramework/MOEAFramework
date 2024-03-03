@@ -644,13 +644,10 @@ public class TestUtils {
 		System.out.println("Running make to build test executables");
 		
 		try {
-			Process process = Runtime.getRuntime().exec(new String[] { "make" }, null, folder);
-			RedirectStream.redirect(process.getInputStream(), System.out);
-			RedirectStream.redirect(process.getErrorStream(), System.err);
+			ProcessBuilder processBuilder = new ProcessBuilder("make");
+			processBuilder.directory(folder);
 			
-			if (process.waitFor() != 0) {
-				Assume.assumeTrue("make exited with an error code (" + process.exitValue() + "), skipping test", false);
-			}
+			RedirectStream.invoke(processBuilder);
 		} catch (InterruptedException | IOException e) {
 			System.err.println(e);
 			Assume.assumeTrue("unable to run make, skipping test", false);

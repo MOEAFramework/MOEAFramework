@@ -24,10 +24,9 @@ import java.io.IOException;
 import java.io.PrintStream;
 
 /**
- * Internal class used by several tools in this package for writing either to
- * {@see System.out} or a file.  In particular, this will not allow callers
- * to close {@code System.out}, such as when it appears in a try-with-resources
- * block.
+ * Internal class used by several tools in this package for writing either to {@see System.out} or a file.
+ * In particular, this will not allow callers to close {@code System.out} or {@code System.err}, such as
+ * when it appears in a try-with-resources block.
  */
 class OutputLogger implements Closeable {
 	
@@ -128,7 +127,7 @@ class OutputLogger implements Closeable {
 
 	@Override
 	public void close() throws IOException {
-		if (writer != null && writer != System.out) {
+		if (writer != null && writer != System.out && writer != System.err) {
 			writer.close();
 		}
 	}
