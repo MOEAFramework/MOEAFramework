@@ -183,6 +183,13 @@ public abstract class ZCAT extends AbstractProblem implements AnalyticalProblem 
 		return b;
 	}
 	
+	/**
+	 * Computes the {@code J} vector.
+	 * 
+	 * @param i the objective index
+	 * @param w the {@code w} vector
+	 * @return the intermediate vector {@code J}
+	 */
 	protected double[] getJ(int i, double[] w) {
 		double[] J = new double[0];
 		int size = 0;

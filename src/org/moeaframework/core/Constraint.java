@@ -32,7 +32,6 @@ package org.moeaframework.core;
  *       the feasible solution.  This helps optimization algorithms distinguish solutions with
  *       more or less severe violations.
  * </ol>
- * <p>
  */
 public class Constraint {
 

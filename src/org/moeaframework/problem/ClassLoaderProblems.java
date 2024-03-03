@@ -37,6 +37,13 @@ import org.moeaframework.core.spi.ProviderNotFoundException;
  * {@code RegisteredProblemProvider} to register new problems with this framework.
  */
 public class ClassLoaderProblems extends ProblemProvider {
+	
+	/**
+	 * Constructs the problem provider that locates problems using their fully-qualified class name.
+	 */
+	public ClassLoaderProblems() {
+		super();
+	}
 
 	@Override
 	public Problem getProblem(String name) {
