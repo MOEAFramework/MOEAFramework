@@ -16,9 +16,13 @@ import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
+import org.moeaframework.core.PRNG;
+
 public class ScreenCapture {
 	
 	public static void main(String[] args) throws ClassNotFoundException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
+		PRNG.setSeed(12345);
+		
 		Class<?> mainType = Class.forName(args[0]);
 		Method mainMethod = mainType.getMethod("main", String[].class);
 		
