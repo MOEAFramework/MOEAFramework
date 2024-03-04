@@ -19,9 +19,11 @@ package org.moeaframework.examples.parallel;
 
 import java.util.stream.IntStream;
 
-import org.moeaframework.Executor;
+import org.moeaframework.algorithm.NSGAII;
+import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.problem.misc.Schaffer;
+import org.moeaframework.util.distributed.DistributedProblem;
 
 /**
  * Example of parallelizing function evaluations across multiple cores.
@@ -32,15 +34,16 @@ import org.moeaframework.problem.misc.Schaffer;
 public class ParallelizationExample {
 	
 	public static void main(String[] args) {
+		ExpensiveSchafferProblem problem = new ExpensiveSchafferProblem();
+		
 		//first run on a single core (serially).
 		System.out.println("First run - serial");
 		
 		long startSerial = System.currentTimeMillis();
-		new Executor()
-				.withAlgorithm("NSGAII")
-				.withProblemClass(ExpensiveSchafferProblem.class)
-				.withMaxEvaluations(100000)
-				.run();
+		
+		NSGAII serialAlgorithm = new NSGAII(problem);
+		serialAlgorithm.run(100000);
+		
 		long endSerial = System.currentTimeMillis();
 		
 		//now distribute evaluations on all available cores.
@@ -48,12 +51,12 @@ public class ParallelizationExample {
 				Runtime.getRuntime().availableProcessors() + " cores)");
 		
 		long startParallel = System.currentTimeMillis();
-		new Executor()
-				.withAlgorithm("NSGAII")
-				.withProblemClass(ExpensiveSchafferProblem.class)
-				.withMaxEvaluations(100000)
-				.distributeOnAllCores()
-				.run();
+		
+		try (Problem distributedProblem = DistributedProblem.from(problem)) {
+			NSGAII distributedAlgorithm = new NSGAII(distributedProblem);
+			distributedAlgorithm.run(100000);
+		}
+		
 		long endParallel = System.currentTimeMillis();
 		
 		//display results

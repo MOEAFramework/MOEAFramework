@@ -2,14 +2,11 @@
 
 By default, the MOEA Framework is single-threaded.  Solving a problem in the manner below will use a single core on your computer:
 
+<!-- java:examples/org/moeaframework/examples/parallel/ParallelizationExample.java [44:45] -->
+
 ```java
-
-Problem problem = new DTLZ2(2);
-
-NSGAII algorithm = new NSGAII(problem);
-algorithm.run(10000);
-
-algorithm.getResult().display();
+NSGAII serialAlgorithm = new NSGAII(problem);
+serialAlgorithm.run(100000);
 ```
 
 This is typically fine for test problems, but custom problems can quickly become computationally expensive.  Let's explore how we can
@@ -21,11 +18,12 @@ Perhaps the most straightforward approach to speeding up evaluations is to distr
 multiple cores.  Most consumer CPUs today have multiple cores (and even multiple threads per core!).  We can distributed function
 evaluations using the `DistributedProblem` class:
 
+<!-- java:examples/org/moeaframework/examples/parallel/ParallelizationExample.java [55:58] -->
+
 ```java
-try (Problem problem = DistributedProblem.from(new DTLZ2(2))) {
-    NSGAII algorithm = new NSGAII(problem);
-    algorithm.run(10000);		
-    algorithm.getResult().display();
+try (Problem distributedProblem = DistributedProblem.from(problem)) {
+    NSGAII distributedAlgorithm = new NSGAII(distributedProblem);
+    distributedAlgorithm.run(100000);
 }
 ```
 
@@ -78,26 +76,38 @@ parallelization runs multiple algorithm instances in parallel.  The example belo
 NSGA-II.  More advanced configurations can be used, altering the island topology and migration strategy, or even using different
 optimization algorithms on each island.
 
-```java
+<!-- java:examples/org/moeaframework/examples/parallel/IslandModelExample.java [50:80] -->
 
+```java
 Problem problem = new UF1();
-		
+
 PRNG.setRandom(ThreadLocalMersenneTwister.getInstance());
-		
-Selection migrationSelection = new TournamentSelection(2, new ChainedComparator(
-	new ParetoDominanceComparator(), new CrowdingComparator()));
-		
+
+Selection migrationSelection = new TournamentSelection(2, 
+        new ChainedComparator(
+                new ParetoDominanceComparator(),
+                new CrowdingComparator()));
+
 Migration migration = new SingleNeighborMigration(1, migrationSelection);
 Topology topology = new FullyConnectedTopology();
 IslandModel model = new IslandModel(1000, migration, topology);
-		
+
 for (int i = 0; i < 8; i++) {
-	NSGAII algorithm = new NSGAII(problem);
-	model.addIsland(new Island(algorithm, algorithm.getPopulation()));
+    NSGAII algorithm = new NSGAII(problem);
+    model.addIsland(new Island(algorithm, algorithm.getPopulation()));
 }
-		
+
+Plot plot = new Plot();
+
 try (ThreadedIslandExecutor executor = new ThreadedIslandExecutor(model)) {
-	NondominatedPopulation result = executor.run(100000);
-	result.display();
+    plot.add("Island Model", executor.run(100000));
 }
+
+plot.add("Serial", new Executor()
+        .withProblem("UF1")
+        .withAlgorithm("NSGAII")
+        .withMaxEvaluations(100000)
+        .run());
+
+plot.show();
 ```
