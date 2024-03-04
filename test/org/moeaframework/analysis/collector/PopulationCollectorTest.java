@@ -17,12 +17,22 @@
  */
 package org.moeaframework.analysis.collector;
 
+import org.junit.Assert;
 import org.junit.Test;
+import org.moeaframework.core.Population;
 
 /**
  * Tests the {@link PopulationCollector} class.
  */
 public class PopulationCollectorTest extends CollectorTest {
+	
+	@Override
+	public void validate(Observation observation) {
+		Population population = PopulationCollector.getPopulation(observation);
+		
+		Assert.assertNotNull(population);
+		Assert.assertTrue(population.size() > 0);
+	}
 	
 	@Test
 	public void testNSGAII() {

@@ -18,6 +18,8 @@
 package org.moeaframework.analysis.collector;
 
 import java.util.ArrayList;
+import java.util.List;
+
 import org.moeaframework.algorithm.pso.AbstractPSOAlgorithm;
 import org.moeaframework.core.Solution;
 
@@ -67,6 +69,39 @@ public class PSOCollector implements Collector {
 		observation.set("Particles", new ArrayList<Solution>(algorithm.getParticles()));
 		observation.set("LocalBestParticles", new ArrayList<Solution>(algorithm.getLocalBestParticles()));
 		observation.set("Leaders", new ArrayList<Solution>(algorithm.getLeaders()));
+	}
+	
+	/**
+	 * Reads the list of particles from the observation.
+	 * 
+	 * @param observation the observation
+	 * @return the list of particles
+	 */
+	@SuppressWarnings("unchecked")
+	public static List<Solution> getParticles(Observation observation) {
+		return (List<Solution>)observation.get("Population");
+	}
+	
+	/**
+	 * Reads the list of local-best particles from the observation.
+	 * 
+	 * @param observation the observation
+	 * @return the list of local-best particles
+	 */
+	@SuppressWarnings("unchecked")
+	public static List<Solution> getLocalBestParticles(Observation observation) {
+		return (List<Solution>)observation.get("LocalBestParticles");
+	}
+	
+	/**
+	 * Reads the list of leaders from the observation.
+	 * 
+	 * @param observation the observation
+	 * @return the list of leaders
+	 */
+	@SuppressWarnings("unchecked")
+	public static List<Solution> getLeaders(Observation observation) {
+		return (List<Solution>)observation.get("Leaders");
 	}
 
 }

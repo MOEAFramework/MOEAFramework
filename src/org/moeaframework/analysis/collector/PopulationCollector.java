@@ -20,6 +20,7 @@ package org.moeaframework.analysis.collector;
 import java.util.ArrayList;
 
 import org.moeaframework.core.EvolutionaryAlgorithm;
+import org.moeaframework.core.Population;
 import org.moeaframework.core.Solution;
 
 /**
@@ -66,6 +67,18 @@ public class PopulationCollector implements Collector {
 	@Override
 	public void collect(Observation observation) {
 		observation.set("Population", new ArrayList<Solution>(algorithm.getPopulation().asList(true)));
+	}
+	
+	/**
+	 * Reads the population from the observation.
+	 * 
+	 * @param observation the observation
+	 * @return the population
+	 */
+	@SuppressWarnings("unchecked")
+	public static Population getPopulation(Observation observation) {
+		Iterable<Solution> solutions = (Iterable<Solution>)observation.get("Population");
+		return new Population(solutions);
 	}
 
 }

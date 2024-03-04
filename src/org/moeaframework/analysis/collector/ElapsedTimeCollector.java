@@ -25,15 +25,13 @@ import org.moeaframework.core.Algorithm;
 public class ElapsedTimeCollector implements Collector {
 
 	/**
-	 * The time, in nanoseconds, this collector was created.  This roughly
-	 * corresponds to the time the algorithm starts, assuming that the algorithm
-	 * is run immediately following its setup.
+	 * The time, in nanoseconds, this collector was created.  This roughly corresponds to the time the algorithm
+	 * starts, assuming that the algorithm is run immediately following its setup.
 	 */
 	private long startTime;
 
 	/**
-	 * Constructs a collector for recording the elapsed execution time of an
-	 * algorithm.
+	 * Constructs a collector for recording the elapsed execution time of an algorithm.
 	 */
 	public ElapsedTimeCollector() {
 		super();
@@ -55,6 +53,16 @@ public class ElapsedTimeCollector implements Collector {
 	@Override
 	public Collector attach(Object object) {
 		return new ElapsedTimeCollector();
+	}
+	
+	/**
+	 * Reads the elapsed time value from the observation.
+	 * 
+	 * @param observation the observation
+	 * @return the elapsed time value.
+	 */
+	public static double getElapsedTime(Observation observation) {
+		return (Double)observation.get("Elapsed Time");
 	}
 
 }

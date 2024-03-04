@@ -68,5 +68,27 @@ public class AdaptiveMultimethodVariationCollector implements Collector {
 	public Collector attach(Object object) {
 		return new AdaptiveMultimethodVariationCollector((AdaptiveMultimethodVariation)object);
 	}
+	
+	/**
+	 * Reads the operator probability from the observation.
+	 * 
+	 * @param observation the observation
+	 * @param name the name of the operator
+	 * @return the operator probability
+	 */
+	public static double getOperatorProbability(Observation observation, String name) {
+		return (Double)observation.get(name);
+	}
+	
+	/**
+	 * Reads the operator probability from the observation.
+	 * 
+	 * @param observation the observation
+	 * @param operator the operator
+	 * @return the operator probability
+	 */
+	public static double getOperatorProbability(Observation observation, Variation operator) {
+		return (Double)observation.get(operator.getName());
+	}
 
 }

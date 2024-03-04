@@ -17,12 +17,22 @@
  */
 package org.moeaframework.analysis.collector;
 
+import org.junit.Assert;
 import org.junit.Test;
+import org.moeaframework.core.NondominatedPopulation;
 
 /**
  * Tests the {@link ApproximationSetCollector} class.
  */
 public class ApproximationSetCollectorTest extends CollectorTest {
+	
+	@Override
+	public void validate(Observation observation) {
+		NondominatedPopulation approximationSet = ApproximationSetCollector.getApproximationSet(observation);
+		
+		Assert.assertNotNull(approximationSet);
+		Assert.assertTrue(approximationSet.size() > 0);
+	}
 	
 	@Test
 	public void testNSGAII() {

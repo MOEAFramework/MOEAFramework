@@ -22,8 +22,12 @@ import org.junit.Test;
 /**
  * Tests the {@link EpsilonProgressCollector} class.
  */
-public class EpsilonProgressCollectorTest extends 
-CollectorTest {
+public class EpsilonProgressCollectorTest extends CollectorTest {
+	
+	@Override
+	public void validate(Observation observation) {
+		// skip validations
+	}
 	
 	@Test
 	public void testNSGAII() {

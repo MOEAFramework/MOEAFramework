@@ -106,5 +106,17 @@ public class ApproximationSetCollector implements Collector {
 		
 		observation.set("Approximation Set", new ArrayList<Solution>(result.asList(true)));
 	}
+	
+	/**
+	 * Reads the approximation set from the observation.
+	 * 
+	 * @param observation the observation
+	 * @return the approximation set
+	 */
+	@SuppressWarnings("unchecked")
+	public static NondominatedPopulation getApproximationSet(Observation observation) {
+		Iterable<Solution> solutions = (Iterable<Solution>)observation.get("Approximation Set");
+		return new NondominatedPopulation(solutions);
+	}
 
 }

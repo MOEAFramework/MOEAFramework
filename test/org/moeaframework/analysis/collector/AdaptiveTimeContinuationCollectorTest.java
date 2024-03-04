@@ -17,12 +17,18 @@
  */
 package org.moeaframework.analysis.collector;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
  * Tests the {@link AdaptiveTimeContinuationCollector} class.
  */
 public class AdaptiveTimeContinuationCollectorTest extends CollectorTest {
+	
+	@Override
+	public void validate(Observation observation) {
+		Assert.assertTrue(AdaptiveTimeContinuationCollector.getNumberOfRestarts(observation) >= 0);
+	}
 	
 	@Test
 	public void testNSGAII() {

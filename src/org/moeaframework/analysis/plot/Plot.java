@@ -75,6 +75,7 @@ import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.moeaframework.Analyzer;
 import org.moeaframework.Analyzer.AnalyzerResults;
+import org.moeaframework.analysis.collector.IndicatorCollector;
 import org.moeaframework.analysis.collector.Observation;
 import org.moeaframework.analysis.collector.Observations;
 import org.moeaframework.analysis.diagnostics.PaintHelper;
@@ -588,7 +589,7 @@ public class Plot {
 		try {
 			for (Observation observation : observations) {
 				xs.add(observation.getNFE());
-				ys.add((Number)observation.get(metric));
+				ys.add(IndicatorCollector.getIndicatorValue(observation, metric));
 			}
 		} catch (ClassCastException e) {
 			return this;

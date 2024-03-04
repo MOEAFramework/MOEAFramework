@@ -71,5 +71,15 @@ public class AdaptiveTimeContinuationCollector implements Collector, RestartList
 	public Collector attach(Object object) {
 		return new AdaptiveTimeContinuationCollector((AdaptiveTimeContinuation)object);
 	}
+	
+	/**
+	 * Reads the number of restarts value from the observation.
+	 * 
+	 * @param observation the observation
+	 * @return the number of restarts
+	 */
+	public static int getNumberOfRestarts(Observation observation) {
+		return (Integer)observation.get("Number of Restarts");
+	}
 
 }

@@ -17,20 +17,27 @@
  */
 package org.moeaframework.analysis.collector;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.core.Indicator;
 import org.moeaframework.core.NondominatedPopulation;
+import org.moeaframework.core.Settings;
 
 /**
  * Tests the {@link IndicatorCollector} class.
  */
 public class IndicatorCollectorTest extends CollectorTest {
 	
+	@Override
+	public void validate(Observation observation) {
+		Assert.assertEquals(1.0, IndicatorCollector.getIndicatorValue(observation, MockIndicator.class), Settings.EPS);
+	}
+	
 	private static class MockIndicator implements Indicator {
 
 		@Override
 		public double evaluate(NondominatedPopulation approximationSet) {
-			return 0;
+			return 1.0;
 		}
 		
 	}

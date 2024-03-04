@@ -69,5 +69,25 @@ public class PopulationSizeCollector implements Collector {
 			observation.set("Archive Size", algorithm.getArchive().size());
 		}
 	}
+	
+	/**
+	 * Reads the population size from the observation.
+	 * 
+	 * @param observation the observation
+	 * @return the population size
+	 */
+	public static int getPopulationSize(Observation observation) {
+		return (Integer)observation.get("Population Size");
+	}
+	
+	/**
+	 * Reads the archive size from the observation.
+	 * 
+	 * @param observation the observation
+	 * @return the archive size
+	 */
+	public static int getArchiveSize(Observation observation) {
+		return (Integer)observation.get("Archive Size");
+	}
 
 }

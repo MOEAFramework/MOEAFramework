@@ -51,6 +51,7 @@ import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.YIntervalSeries;
 import org.jfree.data.xy.YIntervalSeriesCollection;
+import org.moeaframework.analysis.collector.IndicatorCollector;
 import org.moeaframework.analysis.collector.Observation;
 import org.moeaframework.analysis.collector.Observations;
 import org.moeaframework.util.Localization;
@@ -166,7 +167,8 @@ public class LinePlot extends ResultPlot {
 			}
 			
 			for (Observation observation : observations) {
-				dataPoints.add(new DataPoint(observation.getNFE(), ((Number)observation.get(metric)).doubleValue()));
+				dataPoints.add(new DataPoint(observation.getNFE(),
+						IndicatorCollector.getIndicatorValue(observation, metric)));
 			}
 		}
 			

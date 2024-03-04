@@ -17,12 +17,18 @@
  */
 package org.moeaframework.analysis.collector;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
  * Tests the {@link ElapsedTimeCollector} class.
  */
 public class ElapsedTimeCollectorTest extends CollectorTest {
+	
+	@Override
+	public void validate(Observation observation) {
+		Assert.assertTrue(ElapsedTimeCollector.getElapsedTime(observation) >= 0.0);
+	}
 	
 	@Test
 	public void testNSGAII() {

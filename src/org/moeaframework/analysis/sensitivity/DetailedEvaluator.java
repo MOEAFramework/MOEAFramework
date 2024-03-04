@@ -26,13 +26,14 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.moeaframework.Executor;
 import org.moeaframework.Instrumenter;
+import org.moeaframework.analysis.collector.ApproximationSetCollector;
+import org.moeaframework.analysis.collector.ElapsedTimeCollector;
 import org.moeaframework.analysis.collector.Observation;
 import org.moeaframework.analysis.collector.Observations;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Problem;
-import org.moeaframework.core.Solution;
 import org.moeaframework.util.CommandLineUtility;
 import org.moeaframework.util.TypedProperties;
 
@@ -234,7 +235,6 @@ public class DetailedEvaluator extends CommandLineUtility {
 		System.out.println("Finished!");
 	}
 
-	@SuppressWarnings("unchecked")
 	protected void process(String algorithmName, TypedProperties properties, Problem problem, int frequency)
 			throws IOException {
 		int maxEvaluations = properties.getTruncatedInt("maxEvaluations");
@@ -262,10 +262,9 @@ public class DetailedEvaluator extends CommandLineUtility {
 		for (Observation observation : observations) {
 			TypedProperties metadata = new TypedProperties();
 			metadata.setInt("NFE", observation.getNFE());
-			metadata.setString("ElapsedTime", observation.get("Elapsed Time").toString());
+			metadata.setDouble("ElapsedTime", ElapsedTimeCollector.getElapsedTime(observation));
 			
-			Iterable<Solution> solutions = (Iterable<Solution>)observation.get("Approximation Set");
-			NondominatedPopulation result = new NondominatedPopulation(solutions);
+			NondominatedPopulation result = ApproximationSetCollector.getApproximationSet(observation);
 			
 			output.append(new ResultEntry(result, metadata));
 		}

@@ -106,5 +106,27 @@ public class IndicatorCollector implements Collector {
 	public Collector attach(Object object) {
 		return new IndicatorCollector(indicator, archive, (Algorithm)object);
 	}
+	
+	/**
+	 * Reads the indicator value from the observation.
+	 * 
+	 * @param observation the observation
+	 * @param metric the name of the indicator or metric
+	 * @return the indicator value
+	 */
+	public static double getIndicatorValue(Observation observation, String metric) {
+		return (Double)observation.get(metric);
+	}
+	
+	/**
+	 * Reads the indicator value from the observation.
+	 * 
+	 * @param observation the observation
+	 * @param type the class type of the indicator
+	 * @return the indicator value
+	 */
+	public static <T extends Indicator> double getIndicatorValue(Observation observation, Class<T> type) {
+		return getIndicatorValue(observation, type.getSimpleName());
+	}
 
 }

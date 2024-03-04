@@ -48,8 +48,7 @@ public class EpsilonProgressCollector implements Collector {
 	 * 
 	 * @param algorithm the algorithm this collector records data from
 	 */
-	public EpsilonProgressCollector(
-			EpsilonBoxEvolutionaryAlgorithm algorithm) {
+	public EpsilonProgressCollector(EpsilonBoxEvolutionaryAlgorithm algorithm) {
 		super();
 		this.algorithm = algorithm;
 	}
@@ -72,6 +71,26 @@ public class EpsilonProgressCollector implements Collector {
 	@Override
 	public Collector attach(Object object) {
 		return new EpsilonProgressCollector((EpsilonBoxEvolutionaryAlgorithm)object);
+	}
+	
+	/**
+	 * Reads the number of improvements from the observation.
+	 * 
+	 * @param observation the observation
+	 * @return the number of improvements
+	 */
+	public static int getNumberOfImprovements(Observation observation) {
+		return (Integer)observation.get("Number of Improvements");
+	}
+	
+	/**
+	 * Reads the number of dominating improvements from the observation.
+	 * 
+	 * @param observation the observation
+	 * @return the number of dominating improvements
+	 */
+	public static int getNumberOfDominatingImprovements(Observation observation) {
+		return (Integer)observation.get("Number of Dominating Improvements");
 	}
 
 }

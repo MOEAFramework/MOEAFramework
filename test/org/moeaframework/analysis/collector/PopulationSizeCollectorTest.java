@@ -17,12 +17,22 @@
  */
 package org.moeaframework.analysis.collector;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
  * Tests the {@link PopulationSizeCollector} class.
  */
 public class PopulationSizeCollectorTest extends CollectorTest {
+	
+	@Override
+	public void validate(Observation observation) {
+		Assert.assertTrue(PopulationSizeCollector.getPopulationSize(observation) > 0);
+		
+		if (observation.keys().contains("Archive Size")) {
+			Assert.assertTrue(PopulationSizeCollector.getArchiveSize(observation) > 0);
+		}
+	}
 	
 	@Test
 	public void testNSGAII() {

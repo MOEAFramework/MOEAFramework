@@ -30,7 +30,15 @@ import org.moeaframework.util.TypedProperties;
  * collectors attach to the correct algorithms, and that a single collector
  * does not attach to multiple objects.
  */
-public class CollectorTest {
+public abstract class CollectorTest {
+	
+	/**
+	 * Validates the observations produced in this test.  This should, at a minimum, attempt to read / parse
+	 * the observation being collected.
+	 * 
+	 * @param observation the observation to validate
+	 */
+	public abstract void validate(Observation observation);
 	
 	private static class TestCollector implements Collector {
 		
@@ -105,6 +113,10 @@ public class CollectorTest {
 		
 		if (willAttach) {
 			Assert.assertTrue(observations.size() > 0);
+			
+			for (Observation observation : observations) {
+				validate(observation);
+			}
 		}
 	}
 

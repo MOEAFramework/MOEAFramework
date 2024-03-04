@@ -24,6 +24,11 @@ import org.junit.Test;
  */
 public class AdaptiveMultimethodVariationCollectorTest extends CollectorTest {
 	
+	@Override
+	public void validate(Observation observation) {
+		// skip validations
+	}
+	
 	@Test
 	public void testNSGAII() {
 		test("NSGAII", new AdaptiveMultimethodVariationCollector(), false);
