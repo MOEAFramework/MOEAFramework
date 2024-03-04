@@ -26,6 +26,8 @@ import org.apache.commons.lang3.SystemUtils;
 import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.moeaframework.CIRunner;
 import org.moeaframework.IgnoreOnCI;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Settings;
@@ -33,6 +35,7 @@ import org.moeaframework.core.Settings;
 /**
  * Tests the {@link RedirectStream} class.
  */
+@RunWith(CIRunner.class)
 public class RedirectStreamTest {
 	
 	/**
