@@ -31,6 +31,7 @@ import java.util.Properties;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringTokenizer;
+import org.moeaframework.analysis.sensitivity.OutputWriter;
 import org.moeaframework.core.NondominatedPopulation.DuplicateMode;
 import org.moeaframework.core.indicator.Hypervolume;
 import org.moeaframework.core.spi.AlgorithmFactory;
@@ -268,8 +269,8 @@ public class Settings {
 	 * @return the strategy for handling duplicate solutions
 	 */
 	public static DuplicateMode getDuplicateMode() {
-		return DuplicateMode.valueOf(PROPERTIES.getString(KEY_DUPLICATE_MODE,
-				DuplicateMode.NO_DUPLICATE_OBJECTIVES.name()).toUpperCase());
+		return PROPERTIES.getEnum(KEY_DUPLICATE_MODE, DuplicateMode.class,
+				DuplicateMode.NO_DUPLICATE_OBJECTIVES);
 	}
 	
 	/**
@@ -485,14 +486,12 @@ public class Settings {
 	
 	/**
 	 * Returns the cleanup strategy when restarting from a previous run.
-	 * Possible values are {@code error}, {@code overwrite}, and
-	 * {@code restore}.  The default is {@code error}.  Any other values should
-	 * default to {@code error}.
 	 * 
 	 * @return the cleanup strategy when restarting from a previous run
 	 */
-	public static String getCleanupStrategy() {
-		return PROPERTIES.getString(KEY_CLEANUP_STRATEGY, "error");
+	public static OutputWriter.CleanupStrategy getCleanupStrategy() {
+		return PROPERTIES.getEnum(KEY_CLEANUP_STRATEGY, OutputWriter.CleanupStrategy.class,
+				OutputWriter.CleanupStrategy.ERROR);
 	}
 	
 	/**

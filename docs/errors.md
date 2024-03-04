@@ -298,15 +298,15 @@ can use the `--lowerBounds` and `--upperBounds` arguments; or (2) use the `--var
 Warnings are messages printed to the standard error stream (i.e., the console) that indicate an abnormal or unsafe condition.  While warnings do not indicate
 an error occurred, they do indicate caution is required by the user.
 
-**saving result file without variables, may become unstable**  
+**saving result file without variables, could cause unexpected behavior or data loss**  
 Occurs when writing a result file with the output of decision variables suppressed.  The suppression of decision variable output is a user-specified
-option.  The warning "may become unstable" indicates that further use of the result file may result in unexpected errors if the decision variables are
+option.  The warning "could cause unexpected behavior or data loss" indicates that further use of the result file may result in unexpected errors or data loss if the decision variables are
 required.
   
-**unsupported decision variable type, may become unstable**  
+**unsupported decision variable type, could cause unexpected behavior or data loss**  
 Occurs when reading or writing result files which use unsupported decision variable types.  When this occurs, the program is unable to read or write
-the decision variable, and its value is therefore lost.  The warning "may become unstable" indicates that further use of the result file may result
-in unexpected errors if the decision variables are required.
+the decision variable, and its value is therefore lost.  The warning "could cause unexpected behavior or data loss" indicates that further use of the result file may result
+in unexpected errors or data loss if the decision variables are required.
   
 **duplicate solution found**  
 Issued by `ReferenceSetMerger` if any of the algorithms contribute identical solutions.  If this warning is emitted, the contribution of each algorithm

@@ -26,10 +26,11 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+import org.apache.commons.cli.CommandLine;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Problem;
-import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variable;
 import org.moeaframework.util.TypedProperties;
@@ -37,54 +38,44 @@ import org.moeaframework.util.io.CommentedLineReader;
 import org.moeaframework.util.io.FileUtils;
 
 /**
- * Writes result files. A result file contains one or more entries consisting
- * of a non-dominated population and optional properties. Entries are separated
- * by one or more consecutive lines starting with the {@code #} character. Text
- * contained on these lines after the {@code #} character are ignored.
+ * Writes result files. A result file contains one or more entries consisting of a non-dominated population and
+ * optional properties. Entries are separated by one or more consecutive lines starting with the {@code #} character.
+ * Text contained on these lines after the {@code #} character are ignored.
  * <p>
- * An entry contains two pieces of data: 1) properties which are defined on
- * lines starting with {@code //} in the same format as {@link TypedProperties}; and
- * 2) lines containing a sequence of floating-point numbers listing, in order,
- * the real-valued decision variables and objectives. Each decision variable is
- * separated by one or more whitespace characters. Decision variables that can 
- * not be encoded appear as {@code -}. The writer will attempt to output the 
- * data in a human-readable format, but falls back on Base64 encoded serialized
- * objects to store serializable variables.
+ * An entry contains two pieces of data: 1) properties which are defined on lines starting with {@code //} in the
+ * same format as {@link TypedProperties}; and 2) lines containing a sequence of floating-point numbers listing,
+ * in order, the real-valued decision variables and objectives. Each decision variable is separated by one or more
+ * whitespace characters. Decision variables that can not be encoded appear as {@code -}. The writer will attempt to
+ * output the data in a human-readable format, but falls back on Base64 encoded serialized objects to store
+ * serializable variables.
  * <p>
- * Complete entries are always terminated by a line starting with the {@code #}
- * character. Incomplete entries, such as those with the incorrect number of
- * decision variables or objectives, are automatically removed.
+ * Complete entries are always terminated by a line starting with the {@code #} character. Incomplete entries, such
+ * as those with the incorrect number of decision variables or objectives, are automatically removed.
  * <p>
- * This writer will append the results to the file, if a previous file exists.
- * By reading the previous file with a {@link ResultFileReader}, this writer will
- * being appending after the last valid entry. Query the
- * {@link #getNumberOfEntries()} method to determine how many valid entries are
- * contained in the file.
+ * When appending is enabled, this will attempt to recover any valid records from the previous file. Query the
+ * {@link #getNumberOfEntries()} method to determine how many valid entries were recovered.
  * 
  * @see ResultFileReader
  */
 public class ResultFileWriter implements OutputWriter {
 	
     /**
-     * The message displayed when an unsupported decision variable type is
-     * encountered.
+     * The message displayed when an unsupported decision variable type is encountered.
      */
-	protected static final String ENCODING_WARNING = 
-			"unsupported decision variable type, may become unstable";
+	static final String ENCODING_WARNING = 
+			"unsupported decision variable type, could cause unexpected behavior or data loss";
 	
 	/**
-	 * The message displayed when excluding the decision variables when saving
-	 * a result file.
+	 * The message displayed when excluding the decision variables when saving a result file.
 	 */
-	protected static final String NO_VARIABLES_WARNING =
-			"saving result file without variables, may become unstable";
+	static final String NO_VARIABLES_WARNING =
+			"saving result file without variables, could cause unexpected behavior or data loss";
 	
 	/**
 	 * The message displayed when an unclean file exists from a previous run.
 	 */
-	protected static final String EXISTING_FILE =
-			"an unclean version of the file exists from a previous run, " +
-			"requires manual intervention";
+	static final String EXISTING_FILE =
+			"an unclean version of the file exists from a previous run, requires manual intervention";
 
 	/**
 	 * The stream for appending data to the file.
@@ -92,10 +83,9 @@ public class ResultFileWriter implements OutputWriter {
 	private final PrintWriter writer;
 	
 	/**
-	 * {@code true} if this writer should save the decision variables;
-	 * {@code false} otherwise.
+	 * Settings for this result file.
 	 */
-	private final boolean includeVariables;
+	private final Settings settings;
 
 	/**
 	 * The number of lines in the file.
@@ -103,67 +93,59 @@ public class ResultFileWriter implements OutputWriter {
 	private int numberOfEntries;
 	
 	/**
-	 * {@code true} if the warning for unsupported decision variables was
-	 * displayed; {@code false} otherwise.
+	 * {@code true} if the warning for unsupported decision variables was displayed; {@code false} otherwise.
 	 */
 	private boolean printedWarning;
 	
 	/**
-	 * Equivalent to {@code ResultWriter(problem, file, true)}.
+	 * Constructs a result file writer with default settings.
 	 * 
 	 * @param problem the problem
 	 * @param file the file to which the results are stored
 	 * @throws IOException if an I/O error occurred
 	 */
 	public ResultFileWriter(Problem problem, File file) throws IOException {
-		this(problem, file, true);
+		this(problem, file, Settings.getDefault());
 	}
-
+	
 	/**
-	 * Constructs an output writer for writing the decision variables and
-	 * objectives of a sequence of non-dominated populations to a file. If the 
-	 * file already exists, any valid entries are retained and {@code 
-	 * getNumberOfEntries()} returns the number of valid entries. This allows
-	 * resuming evaluation at the last valid result.
-	 * <p>
-	 * It is recommended to avoid setting {@code includeVariables} to {@code
-	 * false}.  Any computations requiring decision variables may result in
-	 * unexpected and hard to trace errors.
+	 * Constructs a result file writer for writing the decision variables and objectives of a sequence of
+	 * non-dominated populations to a file.
 	 * 
 	 * @param problem the problem
 	 * @param file the file to which the results are stored
-	 * @param includeVariables {@code true} if this writer should save the 
-	 *        decision variables; {@code false} otherwise.
+	 * @param settings the settings to use when writing the result file
 	 * @throws IOException if an I/O error occurred
 	 */
-	public ResultFileWriter(Problem problem, File file, 
-			boolean includeVariables) throws IOException {
+	public ResultFileWriter(Problem problem, File file, Settings settings) throws IOException {
 		super();
-		this.includeVariables = includeVariables;
+		this.settings = settings;
 		
-		if (!includeVariables) {
+		if (!settings.isIncludeVariables()) {
 			System.err.println(NO_VARIABLES_WARNING);
 		}
-
-		// if the file already exists, move it to a temporary location
-		File existingFile = new File(file.getParent(), "." + file.getName() + ".unclean");
 		
-		if (existingFile.exists()) {
-			if (Settings.getCleanupStrategy().equalsIgnoreCase("restore")) {
-				if (file.exists()) {
+		if (settings.isAppend()) {
+			// when appending, first move the file to a temporary location
+			File existingFile = settings.getUncleanFile(file);
+			
+			if (existingFile.exists()) {
+				if (settings.getCleanupStrategy().equals(CleanupStrategy.RESTORE)) {
+					if (file.exists()) {
+						FileUtils.delete(existingFile);
+					} else {
+						// do nothing, the unclean file is ready for recovery
+					}
+				} else if (settings.getCleanupStrategy().equals(CleanupStrategy.OVERWRITE)) {
 					FileUtils.delete(existingFile);
 				} else {
-					// do nothing, the unclean file is ready for recovery
+					throw new FrameworkException(EXISTING_FILE);
 				}
-			} else if (Settings.getCleanupStrategy().equalsIgnoreCase("overwrite")) {
-				FileUtils.delete(existingFile);
-			} else {
-				throw new FrameworkException(EXISTING_FILE);
 			}
-		}
-		
-		if (file.exists()) {
-			FileUtils.move(file, existingFile);
+			
+			if (file.exists()) {
+				FileUtils.move(file, existingFile);
+			}
 		}
 
 		// prepare this class for writing
@@ -174,7 +156,7 @@ public class ResultFileWriter implements OutputWriter {
 		writer.print("# Problem = ");
 		writer.println(problem.getName());
 		
-		if (includeVariables) {
+		if (settings.isIncludeVariables()) {
 			writer.print("# Variables = ");
 			writer.println(problem.getNumberOfVariables());
 		}
@@ -182,33 +164,36 @@ public class ResultFileWriter implements OutputWriter {
 		writer.print("# Objectives = ");
 		writer.println(problem.getNumberOfObjectives());
 
-		// if the file already existed, copy all complete entries
-		if (existingFile.exists()) {
-			try (ResultFileReader reader = new ResultFileReader(problem, existingFile)) {
-				while (reader.hasNext()) {
-					append(reader.next());
-				}
-			}
+		if (settings.isAppend()) {
+			// when appending, copy valid entries out of temporary file
+			File existingFile = settings.getUncleanFile(file);
 
-			FileUtils.delete(existingFile);
+			if (existingFile.exists()) {
+				try (ResultFileReader reader = new ResultFileReader(problem, existingFile)) {
+					while (reader.hasNext()) {
+						append(reader.next());
+					}
+				}
+	
+				FileUtils.delete(existingFile);
+			}
 		}
 	}
 
 	/**
-	 * Returns the number of entries written to the result file. Querying this
-	 * method immediately after the constructor in which the result file already
-	 * existed returns the number of valid entries contained in the result
-	 * file.
+	 * Returns the number of entries written to the result file. Querying this method immediately after the
+	 * constructor in which the result file already existed returns the number of valid entries that were
+	 * recovered.
 	 * 
-	 * @return the number of entries written to the result file
+	 * @return the number of entries written to the result file thus far
 	 */
 	public int getNumberOfEntries() {
 		return numberOfEntries;
 	}
 
 	/**
-	 * Appends the decision variables, objectives and optional properties to
-	 * the output file.  Constraint violating solutions are not recorded.
+	 * Appends the decision variables, objectives and optional properties to the output file.  Constraint violating
+	 * solutions are not recorded.
 	 * 
 	 * @param entry the entry to write
 	 * @throws IOException if an I/O error occurred
@@ -252,7 +237,7 @@ public class ResultFileWriter implements OutputWriter {
 	 * @param solution the solution
 	 */
 	private void printSolution(Solution solution) {
-		if (includeVariables) {
+		if (settings.isIncludeVariables()) {
 			// write decision variables
 			for (int i = 0; i < solution.getNumberOfVariables(); i++) {
 				if (i > 0) {
@@ -265,7 +250,7 @@ public class ResultFileWriter implements OutputWriter {
 
 		// write objectives
 		for (int i = 0; i < solution.getNumberOfObjectives(); i++) {
-			if ((i > 0) || (includeVariables && (solution.getNumberOfVariables() > 0))) {
+			if ((i > 0) || (settings.isIncludeVariables() && (solution.getNumberOfVariables() > 0))) {
 				writer.print(' ');
 			}
 
@@ -276,14 +261,13 @@ public class ResultFileWriter implements OutputWriter {
 	}
 	
 	/**
-	 * Prints the properties to the result file.  This uses a roundabout way to
-	 * store properties, but using Java's underlying encoding mechanism ensures
-	 * Unicode and special characters are escaped correctly.
+	 * Prints the properties to the result file.
 	 * 
 	 * @param properties the properties
 	 * @throws IOException if an I/O error occurred
 	 */
 	private void printProperties(TypedProperties properties) throws IOException {
+		// using Properties#store is a roundabout way, but this ensures special characters are stored safely
 		try (StringWriter stringBuffer = new StringWriter()) {
 			properties.store(stringBuffer);
 		
@@ -303,11 +287,9 @@ public class ResultFileWriter implements OutputWriter {
 	}
 	
 	/**
-	 * Encodes the decision variable into a string representation that can be
-	 * safely written to a result file.  The resulting strings must not contain
-	 * any whitespace characters.  For decision variables that do not support
-	 * a valid encoding, the string {@code "-"} will be returned and a warning
-	 * message printed.
+	 * Encodes the decision variable into a string representation that can be safely written to a result file.
+	 * The resulting strings must not contain any whitespace characters.  For decision variables that do not support
+	 * a valid encoding, the string {@code "-"} will be returned and a warning message printed.
 	 * 
 	 * @param variable the decision variable to encode
 	 * @return the string representation of the decision variable
@@ -323,6 +305,76 @@ public class ResultFileWriter implements OutputWriter {
 			
 			return "-";
 		}
+	}
+	
+	/**
+	 * The settings used when writing result files.
+	 */
+	public static class Settings extends OutputWriter.Settings {
+		
+		/**
+		 * {@code true} to enable writing all decision variables; {@code false} otherwise.
+		 */
+		protected final boolean includeVariables;
+		
+		/**
+		 * Constructs the default settings object.
+		 */
+		public Settings() {
+			this(Optional.empty(), Optional.empty(), Optional.empty());
+		}
+		
+		/**
+		 * Constructs a new result file settings object.
+		 * 
+		 * @param append {@code true} to enable append mode, {@code false} otherwise
+		 * @param includeVariables {@code true} to enable writing all decision variables; {@code false} otherwise
+		 * @param cleanupStrategy the cleanup strategy
+		 */
+		public Settings(Optional<Boolean> append, Optional<Boolean> includeVariables,
+				Optional<CleanupStrategy> cleanupStrategy) {
+			super(append, cleanupStrategy);
+			this.includeVariables = includeVariables != null && includeVariables.isPresent() ?
+					includeVariables.get() : true;
+		}
+		
+		/**
+		 * Returns {@code true} if writing all decision variables; {@code false} otherwise.
+		 * 
+		 * @return {@code true} if writing all decision variables; {@code false} otherwise
+		 */
+		public boolean isIncludeVariables() {
+			return includeVariables;
+		}
+		
+		/**
+		 * Returns the default settings for writing result files.
+		 * 
+		 * @return the default settings for writing result files
+		 */
+		public static Settings getDefault() {
+			return new Settings();
+		}
+		
+		/**
+		 * Returns the settings with append mode disabled.
+		 * 
+		 * @return the settings with append mode disabled
+		 */
+		public static Settings noAppend() {
+			return new Settings(Optional.of(false), Optional.empty(), Optional.empty());
+		}
+		
+		/**
+		 * Returns the settings produced from the given command line options.
+		 * 
+		 * @param commandLine the given command line options
+		 * @return the settings
+		 */
+		public static Settings from(CommandLine commandLine) {
+			return new Settings(Optional.empty(), Optional.of(!commandLine.hasOption("novariables")), Optional.empty());
+		}
+		
 	}
 	
 }

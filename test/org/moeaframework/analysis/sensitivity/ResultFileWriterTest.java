@@ -19,7 +19,13 @@ package org.moeaframework.analysis.sensitivity;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Optional;
 
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -226,7 +232,8 @@ public class ResultFileWriterTest {
 		TypedProperties properties = new TypedProperties();
 		properties.setString("foo", "bar");
 		
-		try (ResultFileWriter writer = new ResultFileWriter(problem, file, false)) {
+		try (ResultFileWriter writer = new ResultFileWriter(problem, file,
+				new ResultFileWriter.Settings(Optional.empty(), Optional.of(false), Optional.empty()))) {
 			writer.append(new ResultEntry(population, properties));
 		}
 		
@@ -384,6 +391,29 @@ public class ResultFileWriterTest {
 			//Assert.assertEquals("-", writer.encode(g));
 			Assert.assertFalse(writer.encode(g).matches(".*\\s.*"));
 		}
+	}
+	
+	@Test
+	public void testSettings() throws ParseException {
+		ResultFileWriter.Settings settings = ResultFileWriter.Settings.getDefault();
+		Assert.assertTrue(settings.isAppend());
+		Assert.assertTrue(settings.isIncludeVariables());
+		Assert.assertEquals(OutputWriter.CleanupStrategy.ERROR, settings.getCleanupStrategy());
+		
+		settings = ResultFileWriter.Settings.noAppend();
+		Assert.assertFalse(settings.isAppend());
+		Assert.assertTrue(settings.isIncludeVariables());
+		Assert.assertEquals(OutputWriter.CleanupStrategy.ERROR, settings.getCleanupStrategy());
+		
+		Options options = new Options();
+		options.addOption(Option.builder().longOpt("novariables").build());
+		
+		CommandLine commandLine = DefaultParser.builder().build().parse(options, new String[] { "--novariables" });
+		settings = ResultFileWriter.Settings.from(commandLine);
+		Assert.assertTrue(settings.isAppend());
+		Assert.assertFalse(settings.isIncludeVariables());
+		Assert.assertEquals(OutputWriter.CleanupStrategy.ERROR, settings.getCleanupStrategy());
+		
 	}
 	
 }

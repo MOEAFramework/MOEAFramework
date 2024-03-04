@@ -196,7 +196,7 @@ public class Evaluator extends CommandLineUtility {
 
 					output = new MetricFileWriter(indicator, outputFile);
 				} else {
-					output = new ResultFileWriter(problem, outputFile, !commandLine.hasOption("novariables"));
+					output = new ResultFileWriter(problem, outputFile, ResultFileWriter.Settings.from(commandLine));
 				}
 
 				// resume at the last good output

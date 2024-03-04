@@ -22,22 +22,19 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Optional;
 
 import org.moeaframework.core.FrameworkException;
-import org.moeaframework.core.Settings;
 import org.moeaframework.core.indicator.QualityIndicator;
 import org.moeaframework.util.io.FileUtils;
 
 /**
- * Writes metric files. A metric file is the output of {@code Evaluator} and
- * contains on each line one or more metrics separated by whitespace from one
- * parameterization.
+ * Writes metric files. A metric file is the output of {@code Evaluator} and contains on each line one or more
+ * metrics separated by whitespace from one parameterization.
  * <p>
- * This writer will append the results to the file, if a previous file exists.
- * By reading the previous file with a {@link MetricFileReader}, this writer
- * will being appending after the last valid entry. Query the
- * {@link #getNumberOfEntries()} method to determine how many valid entries are
- * contained in the file.
+ * This writer can append the results to the file, if a previous file exists.  By reading the previous file with a
+ * {@link MetricFileReader}, this writer will begin appending after the last valid entry. Query the
+ * {@link #getNumberOfEntries()} to determine how many valid entries are contained in the file.
  * 
  * @see MetricFileReader
  */
@@ -62,42 +59,57 @@ public class MetricFileWriter implements OutputWriter {
 	 * The number of lines in the file.
 	 */
 	private int numberOfEntries;
-
+	
 	/**
-	 * Constructs an output writer for writing metric files to the specified 
-	 * file. If the file already exists, a cleanup operation is first performed.
-	 * The cleanup operation removes the last line if incomplete and records the
-	 * number of correct lines in the file. The {@link #getNumberOfEntries()} 
-	 * can then be used to resume evaluation from the last recorded entry.
+	 * Constructs an output writer for writing metric files to the specified  file. If the file already exists,
+	 * a cleanup operation is first performed. The cleanup operation removes the last line if incomplete and
+	 * records the number of correct lines in the file. The {@link #getNumberOfEntries()} can then be used to
+	 * resume evaluation from the last recorded entry.
 	 * 
 	 * @param qualityIndicator the quality indicator for producing the metrics
 	 * @param file the file to which the metrics are written
 	 * @throws IOException if an I/O error occurred
 	 */
-	public MetricFileWriter(QualityIndicator qualityIndicator, File file)
-			throws IOException {
+	public MetricFileWriter(QualityIndicator qualityIndicator, File file) throws IOException {
+		this(qualityIndicator, file, Settings.getDefault());
+	}
+
+	/**
+	 * Constructs an output writer for writing metric files to the specified  file. If the file already exists,
+	 * a cleanup operation is first performed. The cleanup operation removes the last line if incomplete and
+	 * records the number of correct lines in the file. The {@link #getNumberOfEntries()} can then be used to
+	 * resume evaluation from the last recorded entry.
+	 * 
+	 * @param qualityIndicator the quality indicator for producing the metrics
+	 * @param file the file to which the metrics are written
+	 * @param settings the settings for writing metric files
+	 * @throws IOException if an I/O error occurred
+	 */
+	public MetricFileWriter(QualityIndicator qualityIndicator, File file, Settings settings) throws IOException {
 		super();
 		this.qualityIndicator = qualityIndicator;
 
-		// if the file already exists, move it to a temporary location
-		File existingFile = new File(file.getParent(), "." + file.getName() + ".unclean");
-		
-		if (existingFile.exists()) {
-			if (Settings.getCleanupStrategy().equalsIgnoreCase("restore")) {
-				if (file.exists()) {
+		if (settings.isAppend()) {
+			// when appending, first move the file to a temporary location
+			File existingFile = settings.getUncleanFile(file);
+			
+			if (existingFile.exists()) {
+				if (settings.getCleanupStrategy().equals(CleanupStrategy.RESTORE)) {
+					if (file.exists()) {
+						FileUtils.delete(existingFile);
+					} else {
+						// do nothing, the unclean file is ready for recovery
+					}
+				} else if (settings.getCleanupStrategy().equals(CleanupStrategy.OVERWRITE)) {
 					FileUtils.delete(existingFile);
 				} else {
-					// do nothing, the unclean file is ready for recovery
+					throw new FrameworkException(ResultFileWriter.EXISTING_FILE);
 				}
-			} else if (Settings.getCleanupStrategy().equalsIgnoreCase("overwrite")) {
-				FileUtils.delete(existingFile);
-			} else {
-				throw new FrameworkException(ResultFileWriter.EXISTING_FILE);
 			}
-		}
-		
-		if (file.exists()) {
-			FileUtils.move(file, existingFile);
+			
+			if (file.exists()) {
+				FileUtils.move(file, existingFile);
+			}
 		}
 		
 		// prepare this class for writing
@@ -106,26 +118,30 @@ public class MetricFileWriter implements OutputWriter {
 		
 		writer.println("#Hypervolume GenerationalDistance InvertedGenerationalDistance Spacing EpsilonIndicator MaximumParetoFrontError");
 
-		// if the file already existed, copy all complete entries
-		if (existingFile.exists()) {
-			try (MetricFileReader reader = new MetricFileReader(existingFile)) {
-				while (reader.hasNext()) {
-					double[] data = reader.next();
-
-					writer.print(data[0]);
-
-					for (int i = 1; i < data.length; i++) {
-						writer.print(' ');
-						writer.print(data[i]);
+		if (settings.isAppend()) {
+			// when appending, copy valid entries out of temporary file
+			File existingFile = settings.getUncleanFile(file);
+			
+			if (existingFile.exists()) {
+				try (MetricFileReader reader = new MetricFileReader(existingFile)) {
+					while (reader.hasNext()) {
+						double[] data = reader.next();
+	
+						writer.print(data[0]);
+	
+						for (int i = 1; i < data.length; i++) {
+							writer.print(' ');
+							writer.print(data[i]);
+						}
+	
+						writer.println();
+	
+						numberOfEntries++;
 					}
-
-					writer.println();
-
-					numberOfEntries++;
 				}
+	
+				FileUtils.delete(existingFile);
 			}
-
-			FileUtils.delete(existingFile);
 		}
 	}
 
@@ -188,6 +204,48 @@ public class MetricFileWriter implements OutputWriter {
 	@Override
 	public void close() {
 		writer.close();
+	}
+	
+	/**
+	 * The settings used when writing metric files.
+	 */
+	public static class Settings extends OutputWriter.Settings {
+		
+		/**
+		 * Constructs the default settings object.
+		 */
+		public Settings() {
+			super();
+		}
+		
+		/**
+		 * Constructs a new settings object.
+		 * 
+		 * @param append {@code true} to enable append mode, {@code false} otherwise
+		 * @param cleanupStrategy the cleanup strategy
+		 */
+		public Settings(Optional<Boolean> append, Optional<CleanupStrategy> cleanupStrategy) {
+			super(append, cleanupStrategy);
+		}
+
+		/**
+		 * Returns the default settings for writing metric files.
+		 * 
+		 * @return the default settings for writing metric files
+		 */
+		public static Settings getDefault() {
+			return new Settings();
+		}
+		
+		/**
+		 * Returns the settings with append mode disabled.
+		 * 
+		 * @return the settings with append mode disabled
+		 */
+		public static Settings noAppend() {
+			return new Settings(Optional.of(false), Optional.empty());
+		}
+		
 	}
 
 }

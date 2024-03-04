@@ -194,7 +194,7 @@ public class DetailedEvaluator extends CommandLineUtility {
 				}	
 						
 				try (ResultFileWriter output = new ResultFileWriter(problem, outputFile,
-						!commandLine.hasOption("novariables"))) {
+						ResultFileWriter.Settings.from(commandLine))) {
 					// setup any default parameters
 					TypedProperties defaultProperties = new TypedProperties();
 	

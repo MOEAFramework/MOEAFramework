@@ -42,8 +42,7 @@ public class QualityIndicator {
 	private final NondominatedPopulation normalizedReferenceSet;
 	
 	/**
-	 * The normalizer to normalize populations so that all objectives reside in
-	 * the range {@code [0, 1]}.
+	 * The normalizer to normalize populations so that all objectives reside in the range {@code [0, 1]}.
 	 */
 	private final Normalizer normalizer;
 	
@@ -53,50 +52,42 @@ public class QualityIndicator {
 	private final Normalizer hypervolumeNormalizer;
 	
 	/**
-	 * The approximation set used during the last invocation of
-	 * {@code calculate}.
+	 * The approximation set used during the last invocation of {@code calculate}.
 	 */
 	private NondominatedPopulation normalizedApproximationSet;
 
 	/**
-	 * The generational distance of the approximation set from the last
-	 * invocation of {@code calculate}.
+	 * The generational distance of the approximation set from the last invocation of {@code calculate}.
 	 */
 	private double generationalDistance;
 
 	/**
-	 * The inverted generational distance of the approximation set from the last
-	 * invocation of {@code calculate}.
+	 * The inverted generational distance of the approximation set from the last invocation of {@code calculate}.
 	 */
 	private double invertedGenerationalDistance;
 
 	/**
-	 * The additive &epsilon;-indicator of the approximation set from the last
-	 * invocation of {@code calculate}.
+	 * The additive &epsilon;-indicator of the approximation set from the last invocation of {@code calculate}.
 	 */
 	private double additiveEpsilonIndicator;
 
 	/**
-	 * The hypervolume of the approximation set from the last invocation of
-	 * {@code calculate}.
+	 * The hypervolume of the approximation set from the last invocation of {@code calculate}.
 	 */
 	private double hypervolume;
 
 	/**
-	 * The maximum Pareto front error of the approximation set from the last
-	 * invocation of {@code calculate}.
+	 * The maximum Pareto front error of the approximation set from the last invocation of {@code calculate}.
 	 */
 	private double maximumParetoFrontError;
 
 	/**
-	 * The spacing of the approximation set from the last invocation of
-	 * {@code calculate}.
+	 * The spacing of the approximation set from the last invocation of {@code calculate}.
 	 */
 	private double spacing;
 
 	/**
-	 * Constructs a quality indicator evaluator for the specified problem and 
-	 * corresponding reference set.
+	 * Constructs a quality indicator evaluator for the specified problem and corresponding reference set.
 	 * 
 	 * @param problem the problem
 	 * @param referenceSet the reference set for the problem
@@ -121,13 +112,10 @@ public class QualityIndicator {
 	}
 
 	/**
-	 * Returns the generational distance of the approximation set from the last
-	 * invocation of {@code calculate}.
+	 * Returns the generational distance of the approximation set from the last invocation of {@code calculate}.
 	 * 
-	 * @return the generational distance of the approximation set from the last
-	 *         invocation of {@code calculate}
-	 * @throws IllegalStateException if the {@code calculate} method has not
-	 *         been invoked
+	 * @return the generational distance of the approximation set from the last invocation of {@code calculate}
+	 * @throws IllegalStateException if the {@code calculate} method has not been invoked
 	 */
 	public double getGenerationalDistance() {
 		checkCalculateInvocation();
@@ -136,13 +124,12 @@ public class QualityIndicator {
 	}
 
 	/**
-	 * Returns the inverted generational distance of the approximation set from
-	 * the last invocation of {@code calculate}.
+	 * Returns the inverted generational distance of the approximation set from the last invocation of
+	 * {@code calculate}.
 	 * 
-	 * @return the inverted generational distance of the approximation set from
-	 *         the last invocation of {@code calculate}
-	 * @throws IllegalStateException if the {@code calculate} method has not
-	 *         been invoked
+	 * @return the inverted generational distance of the approximation set from the last invocation of
+	 *         {@code calculate}
+	 * @throws IllegalStateException if the {@code calculate} method has not been invoked
 	 */
 	public double getInvertedGenerationalDistance() {
 		checkCalculateInvocation();
@@ -151,13 +138,10 @@ public class QualityIndicator {
 	}
 
 	/**
-	 * Returns the additive &epsilon;-indicator of the approximation set from 
-	 * the last invocation of {@code calculate}.
+	 * Returns the additive &epsilon;-indicator of the approximation set from the last invocation of {@code calculate}.
 	 * 
-	 * @return the additive &epsilon;-indicator of the approximation set from 
-	 *         the last invocation of {@code calculate}
-	 * @throws IllegalStateException if the {@code calculate} method has not
-	 *         been invoked
+	 * @return the additive &epsilon;-indicator of the approximation set from the last invocation of {@code calculate}
+	 * @throws IllegalStateException if the {@code calculate} method has not been invoked
 	 */
 	public double getAdditiveEpsilonIndicator() {
 		checkCalculateInvocation();
@@ -166,13 +150,10 @@ public class QualityIndicator {
 	}
 
 	/**
-	 * Returns the hypervolume of the approximation set from the last invocation
-	 * of {@code calculate}.
+	 * Returns the hypervolume of the approximation set from the last invocation of {@code calculate}.
 	 * 
-	 * @return the hypervolume of the approximation set from the last invocation
-	 *         of {@code calculate}
-	 * @throws IllegalStateException if the {@code calculate} method has not
-	 *         been invoked
+	 * @return the hypervolume of the approximation set from the last invocation of {@code calculate}
+	 * @throws IllegalStateException if the {@code calculate} method has not been invoked
 	 */
 	public double getHypervolume() {
 		checkCalculateInvocation();
@@ -181,13 +162,10 @@ public class QualityIndicator {
 	}
 
 	/**
-	 * Returns the maximum Pareto front error of the approximation set from the
-	 * last invocation of {@code calculate}.
+	 * Returns the maximum Pareto front error of the approximation set from the last invocation of {@code calculate}.
 	 * 
-	 * @return the maximum Pareto front error of the approximation set from the
-	 *         last invocation of {@code calculate}
-	 * @throws IllegalStateException if the {@code calculate} method has not
-	 *         been invoked
+	 * @return the maximum Pareto front error of the approximation set from the last invocation of {@code calculate}
+	 * @throws IllegalStateException if the {@code calculate} method has not been invoked
 	 */
 	public double getMaximumParetoFrontError() {
 		checkCalculateInvocation();
@@ -196,13 +174,10 @@ public class QualityIndicator {
 	}
 
 	/**
-	 * Returns the spacing of the approximation set from the last invocation of
-	 * {@code calculate}.
+	 * Returns the spacing of the approximation set from the last invocation of {@code calculate}.
 	 * 
-	 * @return the spacing of the approximation set from the last invocation of
-	 *         {@code calculate}
-	 * @throws IllegalStateException if the {@code calculate} method has not
-	 *         been invoked
+	 * @return the spacing of the approximation set from the last invocation of {@code calculate}
+	 * @throws IllegalStateException if the {@code calculate} method has not been invoked
 	 */
 	public double getSpacing() {
 		checkCalculateInvocation();
@@ -214,19 +189,15 @@ public class QualityIndicator {
 	 * The reference set for the problem.
 	 * 
 	 * @return the reference set for the problem
-	 * @throws IllegalStateException if the {@code calculate} method has not
-	 *         been invoked
 	 */
 	public NondominatedPopulation getReferenceSet() {
 		return referenceSet;
 	}
 	
 	/**
-	 * Throws an exception if the {@code calculate} method has not been
-	 * invoked.
+	 * Throws an exception if the {@code calculate} method has not been invoked.
 	 * 
-	 * @throws IllegalStateException if the {@code calculate} method has not
-	 *         been invoked
+	 * @throws IllegalStateException if the {@code calculate} method has not been invoked
 	 */
 	private void checkCalculateInvocation() {
 		if (normalizedApproximationSet == null) {
