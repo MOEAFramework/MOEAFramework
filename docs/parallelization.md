@@ -103,11 +103,9 @@ try (ThreadedIslandExecutor executor = new ThreadedIslandExecutor(model)) {
     plot.add("Island Model", executor.run(100000));
 }
 
-plot.add("Serial", new Executor()
-        .withProblem("UF1")
-        .withAlgorithm("NSGAII")
-        .withMaxEvaluations(100000)
-        .run());
+NSGAII serialAlgorithm = new NSGAII(problem);
+serialAlgorithm.run(100000);
+plot.add("Serial", serialAlgorithm.getResult());
 
 plot.show();
 ```

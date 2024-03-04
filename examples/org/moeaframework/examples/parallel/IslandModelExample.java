@@ -18,7 +18,7 @@
 package org.moeaframework.examples.parallel;
 
 import java.io.IOException;
-import org.moeaframework.Executor;
+
 import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.analysis.plot.Plot;
 import org.moeaframework.core.PRNG;
@@ -67,15 +67,15 @@ public class IslandModelExample {
 		
 		Plot plot = new Plot();
 		
+		// run island-model version
 		try (ThreadedIslandExecutor executor = new ThreadedIslandExecutor(model)) {
 			plot.add("Island Model", executor.run(100000));
 		}
 		
-		plot.add("Serial", new Executor()
-				.withProblem("UF1")
-				.withAlgorithm("NSGAII")
-				.withMaxEvaluations(100000)
-				.run());
+		// run serial version
+		NSGAII serialAlgorithm = new NSGAII(problem);
+		serialAlgorithm.run(100000);
+		plot.add("Serial", serialAlgorithm.getResult());
 		
 		plot.show();
 	}
