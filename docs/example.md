@@ -43,8 +43,6 @@ NSGAII algorithm = new NSGAII(problem);
 algorithm.getConfiguration().display();
 ```
 
-<!-- output:examples/org/moeaframework/examples/configuration/GetConfigurationExample.java -->
-
 ```
 operator=sbx+pm
 pm.distributionIndex=20.0
