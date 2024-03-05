@@ -69,5 +69,37 @@ create a custom provider using one of these classes.  Then, add the new class to
 `META-INF/services`.
 
 All algorithms and operators are expected to be configurable.  This means adding the appropriate setter methods
-as well as using the configuration API.  The configuration API allows users to get or set the configuration
-dynamically.  Simply annotate the setter method with the `@Property` tag.  
+as well as using the configuration API.  The configuration API uses reflections to dynamically discover and
+get/set an algorithm's configuration.  The only requirement is adding the `@Property` annotation to each
+setter method.
+
+## Building, Testing, and Packaging
+
+This project uses Apache Ant to compile, test, and package the code.  If using Eclipse, drag-and-drop `build.xml`
+and `test.xml` into the Ant window, then double-click on any of the targets.  For example, the `package-binary`
+target will create the binary distributions.  Alternatively, from the terminal, we can run:
+
+```
+ant -f build.xml package-binary
+```
+
+Tests are powered by JUnit.  Individual tests or test classes can be evaluated from within Eclipse by right-clicking
+on the test or class and selecting `Run As > JUnit Test`.  To run all tests using Ant, run the `test` target
+from `test.xml`, or from the terminal run:
+
+```
+ant -f test.xml test
+```
+
+We also have a custom tool to validate code examples in our Markdown and HTML documentation.  Use the
+`validate-docs` and `update-docs` targets to keep the examples in sync.
+
+### Maven
+
+The MOEA Framework source code is not structured for Maven, but we can produce a Maven-compatible release using the
+`package-maven` target.  We can test the Maven configuration by running the `build-maven-tests` target followed
+by:
+
+```
+mvn test
+```
