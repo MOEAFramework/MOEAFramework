@@ -23,8 +23,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
-
+import java.io.InputStreamReader;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -166,21 +165,21 @@ public class TerminalGUI extends JFrame {
 	 */
 	private class RedirectThread extends Thread {
 		
-		private final InputStream outputStream;
+		private final InputStream inputStream;
 		
-		public RedirectThread(InputStream outputStream) {
+		public RedirectThread(InputStream inputStream) {
 			super();
-			this.outputStream = outputStream;
+			this.inputStream = inputStream;
 		}
 		
 		@Override
 		public void run() {
-			try {
-				byte[] buffer = new byte[Settings.BUFFER_SIZE];
+			try (InputStreamReader reader = new InputStreamReader(inputStream)) {
+				char[] buffer = new char[Settings.BUFFER_SIZE];
 				int len;
 
-				while ((len = outputStream.read(buffer, 0, buffer.length)) != -1) {
-					final String content = new String(Arrays.copyOfRange(buffer, 0, len));
+				while ((len = reader.read(buffer, 0, buffer.length)) != -1) {
+					final String content = String.valueOf(buffer, 0, len);
 					SwingUtilities.invokeLater(() -> output.append(content));
 				}
 				

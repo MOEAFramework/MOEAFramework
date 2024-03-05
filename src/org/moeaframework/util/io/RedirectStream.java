@@ -129,8 +129,7 @@ public class RedirectStream extends Thread {
 	 * @throws IOException if an I/O error occurred while running the process
 	 * @throws InterruptedException if this thread was interrupted while waiting for the process to terminate
 	 */
-	public static void pipe(ProcessBuilder processBuilder, OutputStream out) throws IOException,
-	InterruptedException {
+	public static void pipe(ProcessBuilder processBuilder, OutputStream out) throws IOException, InterruptedException {
 		pipe(processBuilder, out, System.err);
 	}
 	

@@ -5,8 +5,11 @@
 
 <suppressions>
 	<suppress checks="RegexpHeader" files="src[\\/]org[\\/]moeaframework[\\/]problem[\\/]BBOB2016[\\/]" />
+	<suppress checks="MultipleVariableDeclarationsCheck" files="src[\\/]org[\\/]moeaframework[\\/]problem[\\/]BBOB2016[\\/]" />
 	<suppress checks="RegexpHeader" files="test[\\/]org[\\/]moeaframework[\\/]problem[\\/]BBOB2016[\\/]" />
+	<suppress checks="NeedBraces" files="test[\\/]org[\\/]moeaframework[\\/]problem[\\/]BBOB2016[\\/]" />
 	<suppress checks="TypeName" files="src[\\/]org[\\/]moeaframework[\\/]problem[\\/]CDTLZ[\\/]" />
 	<suppress checks="TypeName" files="test[\\/]org[\\/]moeaframework[\\/]problem[\\/]CDTLZ[\\/]" />
 	<suppress checks="PackageDeclaration" files="examples[\\/]Example[a-z0-9]+.java" />
+	<suppress checks="MultipleVariableDeclarationsCheck" files="src[\\/]org[\\/]moeaframework[\\/]core[\\/]operator[\\/]real[\\/]SBX.java" />
 </suppressions>

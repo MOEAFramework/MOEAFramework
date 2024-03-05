@@ -66,7 +66,7 @@ public class NormalBoundaryDivisionsTest {
 		
 		Assert.assertEquals(100, properties.getInt("divisions"));
 		Assert.assertFalse(properties.contains("divisionsOuter"));
-		Assert.assertFalse(properties.contains("divisionsInner"));;
+		Assert.assertFalse(properties.contains("divisionsInner"));
 		
 		NormalBoundaryDivisions actual = NormalBoundaryDivisions.tryFromProperties(properties);
 		Assert.assertEquals(original, actual);
