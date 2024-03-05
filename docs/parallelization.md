@@ -77,7 +77,7 @@ island-model parallelization runs multiple algorithm instances in parallel.  The
 island-model using NSGA-II.  More advanced configurations can be used, altering the island topology and migration
 strategy, or even using different optimization algorithms on each island.
 
-<!-- java:examples/org/moeaframework/examples/parallel/IslandModelExample.java [50:80] -->
+<!-- java:examples/org/moeaframework/examples/parallel/IslandModelExample.java [46:66] -->
 
 ```java
 Problem problem = new UF1();
@@ -98,15 +98,7 @@ for (int i = 0; i < 8; i++) {
     model.addIsland(new Island(algorithm, algorithm.getPopulation()));
 }
 
-Plot plot = new Plot();
-
 try (ThreadedIslandExecutor executor = new ThreadedIslandExecutor(model)) {
-    plot.add("Island Model", executor.run(100000));
+    executor.run(100000).display();;
 }
-
-NSGAII serialAlgorithm = new NSGAII(problem);
-serialAlgorithm.run(100000);
-plot.add("Serial", serialAlgorithm.getResult());
-
-plot.show();
 ```

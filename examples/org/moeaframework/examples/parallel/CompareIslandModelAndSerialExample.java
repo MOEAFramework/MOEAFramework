@@ -20,6 +20,7 @@ package org.moeaframework.examples.parallel;
 import java.io.IOException;
 
 import org.moeaframework.algorithm.NSGAII;
+import org.moeaframework.analysis.plot.Plot;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Selection;
@@ -38,9 +39,12 @@ import org.moeaframework.parallel.util.ThreadLocalMersenneTwister;
 import org.moeaframework.problem.CEC2009.UF1;
 
 /**
- * Demonstrates creating an island-model instance with 8 NSGA-II instances.
+ * Compares the result from running an algorithm serially versus an island
+ * model with 8 islands.  While the serial and island models are given
+ * the same number of function evaluations, the island model tends to produce
+ * better Pareto sets.
  */
-public class IslandModelExample {
+public class CompareIslandModelAndSerialExample {
 	
 	public static void main(String[] args) throws IOException {
 		Problem problem = new UF1();
@@ -61,9 +65,19 @@ public class IslandModelExample {
 			model.addIsland(new Island(algorithm, algorithm.getPopulation()));
 		}
 		
+		Plot plot = new Plot();
+		
+		// run island-model version
 		try (ThreadedIslandExecutor executor = new ThreadedIslandExecutor(model)) {
-			executor.run(100000).display();;
+			plot.add("Island Model", executor.run(100000));
 		}
+		
+		// run serial version
+		NSGAII serialAlgorithm = new NSGAII(problem);
+		serialAlgorithm.run(100000);
+		plot.add("Serial", serialAlgorithm.getResult());
+		
+		plot.show();
 	}
 
 }

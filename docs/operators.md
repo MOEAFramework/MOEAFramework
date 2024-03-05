@@ -3,25 +3,36 @@
 ## Overview
 
 This page details mutation and crossover operators built into the MOEA Framework.  For problems with a single decision
-variable type, a default operator is automatically selected.  For problems with mixed types, you will need to
-explicitly set the operators.  Do this by setting the `operator` parameter:
+variable type, a default operator is automatically selected.  See [Mixed Types](misc.md#mixed-types) for instructions
+on configuring operators when combining two or more decision variable types.
+
+There are two ways to change the operator or the operator parameters.  First, we can create the variation operator
+directly, in which case we pass the parameters to the constructor:
+
+<!-- java:examples/org/moeaframework/examples/configuration/SetConfigurationExample.java [37:37] -->
 
 ```java
-
-NondominatedPopulation results = new Executor()
-    .withProblem("UF1")
-    .withAlgorithm("NSGA-II")
-    .withProperty("populationSize", 250)
-    .withProperty("operator", "sbx+pm")
-    .withProperty("sbx.rate", 0.9)
-    .withProperty("sbx.distributionIndex", 20.0)
-    .withMaxEvaluations(10000)
-    .run();
+algorithm.setVariation(new PCX(10, 2));
 ```
 
-Note that the operator above is in fact the combination of a crossover (`sbx`) and a mutation (`pm`) operator.
-Many operators can be combined in this way by joining them with the `+` symbol.  Generally, put all crossover
-operators first followed by all mutation operators.
+Alternatively, we can apply a configuration using the property names.
+
+<!-- java:examples/org/moeaframework/examples/configuration/ApplyConfigurationExample.java [37:43] -->
+
+```java
+TypedProperties properties = new TypedProperties();
+properties.setInt("populationSize", 250);
+properties.setString("operator", "pcx");
+properties.setInt("pcx.parents", 10);
+properties.setInt("pcx.offspring", 2);
+        
+algorithm.applyConfiguration(properties);
+```
+
+The two examples above produce the same configuration, using parent-centric crossover (PCX) with 10 parents and 2
+offspring.  Observe how we defined the `"operator"` property.  It's common to combine crossover and mutation
+operators using `+`.  For example, for simulated binary crossover (SBX) with polynomial mutation (PM), we would use
+the value `"sbx+pm"`.
 
 ## Real-Valued Operators
 

@@ -6,6 +6,7 @@
 /maven/
 /.settings/
 /*.txt
+/*.csv
 *.exe
 *.class
 *~

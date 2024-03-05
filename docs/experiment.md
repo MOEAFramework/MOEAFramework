@@ -8,8 +8,9 @@ is split into three classes: the `Executor`, `Analyzer`, and `Instrumenter`.
 The `Executor`'s sole responsibility is to configure and execute an optimization algorithm on a problem.  For example, here we run
 NSGA-II on the UF1 test problem for 10,000 function evaluations.
 
-```java
+<!-- java:test/org/moeaframework/snippet/ExperimentSnippet.java [44:48] -->
 
+```java
 NondominatedPopulation result = new Executor()
         .withProblem("UF1")
         .withAlgorithm("NSGAII")
@@ -19,8 +20,9 @@ NondominatedPopulation result = new Executor()
 
 If you want to test your own problem, simply pass in your problem's class:
 
-```java
+<!-- java:test/org/moeaframework/snippet/ExperimentSnippet.java [53:57] -->
 
+```java
 NondominatedPopulation result = new Executor()
         .withProblem(new MyProblem())
         .withAlgorithm("NSGAII")
@@ -31,8 +33,9 @@ NondominatedPopulation result = new Executor()
 Each algorithm can be customized by setting properties.  The available properties are detailed in the [List of Algorithms](algorithms.md)
 and [List of Operators](operators.md).
 
-```java
+<!-- java:test/org/moeaframework/snippet/ExperimentSnippet.java [62:68] -->
 
+```java
 NondominatedPopulation result = new Executor()
         .withProblem("UF1")
         .withAlgorithm("NSGAII")
@@ -47,8 +50,9 @@ NondominatedPopulation result = new Executor()
 The `Analyzer` takes the output from an `Executor`, namely the Pareto sets produced by an optimization algorithm, and perform some analysis.
 Typically this is evaluating the quality of a Pareto set, using hypervolume, generational distance, or another quality indicator.  For example:
 
-```java
+<!-- java:examples/org/moeaframework/examples/experiment/MultipleSeedsExample.java [30:41] -->
 
+```java
 Executor executor = new Executor()
         .withProblem("UF1")
         .withAlgorithm("NSGAII")
@@ -58,24 +62,26 @@ Analyzer analyzer = new Analyzer()
         .withSameProblemAs(executor)
         .includeHypervolume()
         .includeGenerationalDistance();
-		
+        
 analyzer.addAll("NSGAII", executor.runSeeds(50));
 analyzer.display();
 ```
 
 produces the output:
 
+<!-- output:examples/org/moeaframework/examples/experiment/MultipleSeedsExample.java -->
+
 ```
 NSGAII:
     Hypervolume: 
-        Min: 0.25346731086086105
-        Median: 0.4978698844074442
-        Max: 0.5428078102564696
+        Min: 0.357952
+        Median: 0.506456
+        Max: 0.538125
         Count: 50
     GenerationalDistance: 
-        Min: 0.0012862482952161272
-        Median: 0.009759301199366435
-        Max: 0.10977024941144814
+        Min: 0.000751
+        Median: 0.007539
+        Max: 0.050880
         Count: 50
 ```
 
@@ -159,7 +165,8 @@ new Plot()
 
 Or export the data into another format, such as comma-separated values (CSV), that can be loaded into Excel or other tools:
 
-```java
+<!-- java:test/org/moeaframework/snippet/ExperimentSnippet.java [105:105] -->
 
+```java
 instrumenter.getObservations().saveCSV(new File("NSGAII_UF1_Runtime.csv"));
 ```

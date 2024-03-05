@@ -54,15 +54,21 @@ import org.moeaframework.util.CommandLineUtility;
  *   ... code block updated from referenced Java file ...
  *   ```}</pre>
  * <p>
- * Supported comments include:
- * <pre>{@code
- *   <!-- java:examples/Example1.java -->              # Embed entire file in document
- *   <!-- java:examples/Example1.java [25:35] -->      # Embed lines 25 to 35 in the document
- *   <!-- output:examples/Example1.java -->            # Compile, run, and embed output in document
- *   <!-- output.examples/Example1.java [:10] -->      # Compile, run, and embed first 10 lines from output in document}</pre>
+ * The format of the comment is:
+ * <pre>{@code <!-- <language>:<filename> [<startingLine>:<endingLine>] {<flag>,...} -->}</pre>
  * <p>
- * Can be run in validate-only mode or update mode.  In validate mode, it simply checks of the code blocks changed
- * and returns a non-zero exit code.  In update mode, it updates the code block in the file.
+ * Language is the name of the programming language.  A special case is {@code output}, which compiles, executes, and
+ * captures the output of the program.
+ * <p>
+ * If no line numbers are provided, the entire content is copied.  The line numbers start at index 1.  The starting
+ * or ending line number can be excluded, which case it copies the content from the start or end, respectively.
+ * <p>
+ * Flags provide additional formatting options, such as {@code {keepComments}} to keep any Java comments in the
+ * example.
+ * <p>
+ * This utility can be run in validate-only mode or update mode.  In validate mode, any changes to the files will
+ * result in an error.  This is useful in CI to validate the docs are up-to-date.  In update mode, the files are
+ * updated with any changes.
  */
 public class UpdateCodeSamples extends CommandLineUtility {
 	
@@ -74,7 +80,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 	
 	private static final File[] DEFAULT_PATHS = new File[] { new File("docs/"), new File("website/xslt") };
 	
-	private static final Pattern REGEX = Pattern.compile("<!--\\s+([a-zA-Z]+)\\:([^\\s]+)(?:\\s+\\[([0-9]+)?[:\\-]([0-9]+)?\\])?\\s+-->");
+	private static final Pattern REGEX = Pattern.compile("<!--\\s+([a-zA-Z]+)\\:([^\\s]+)(?:\\s+\\[([0-9]+)?[:\\-]([0-9]+)?\\])?(?:\\s+\\{([a-zA-Z0-9;,]+)\\})?\\s+-->");
 	
 	private boolean update;
 	
@@ -161,8 +167,10 @@ public class UpdateCodeSamples extends CommandLineUtility {
 					String filename = matcher.group(2);
 					int startingLine = matcher.group(3) != null ? Integer.parseInt(matcher.group(3)) : FormattingOptions.FIRST_LINE;
 					int endingLine = matcher.group(4) != null ? Integer.parseInt(matcher.group(4)) : FormattingOptions.LAST_LINE;
+					String flags = matcher.group(5);
 					
 					FormattingOptions options = new FormattingOptions(language, startingLine, endingLine);
+					options.parseFlags(flags);
 					options.fileType = fileType;
 					
 					String content = "";
@@ -332,7 +340,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 			lines.removeIf(s -> s.trim().startsWith("//"));
 		}
 		
-		if (options.replaceTabs) {
+		if (options.replaceTabsWithSpaces) {
 			for (int i = 0; i < lines.size(); i++) {
 				String line = lines.get(i);
 				line = line.replaceAll("[\\t]", "    ");
@@ -367,15 +375,15 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		
 		public String language;
 		
-		public int startingLine;
+		public final int startingLine;
 		
-		public int endingLine;
+		public final int endingLine;
 		
 		public boolean stripIndentation = true;
 		
 		public boolean stripComments = true;
 		
-		public boolean replaceTabs = true;
+		public boolean replaceTabsWithSpaces = true;
 		
 		public FileType fileType;
 		
@@ -386,6 +394,24 @@ public class UpdateCodeSamples extends CommandLineUtility {
 			this.endingLine = endingLine;
 		}
 		
+		public void parseFlags(String flags) throws IOException {
+			if (flags == null || flags.trim().isEmpty()) {
+				return;
+			}
+			
+			for (String token : flags.split("[;,]")) {
+				if (token.equalsIgnoreCase("keepComments")) {
+					stripComments = false;
+				} else if (token.equalsIgnoreCase("keepIndentation")) {
+					stripIndentation = false;
+				} else if (token.equalsIgnoreCase("keepTabs")) {
+					replaceTabsWithSpaces = false;
+				} else {
+					throw new IOException("Unrecognized formatting flag '" + token + "'");
+				}
+			}
+		}
+
 		public String toString() {
 			return "[" + (startingLine == FIRST_LINE ? "" : startingLine) + ":" +
 					(endingLine == LAST_LINE ? "" : endingLine) + "]";

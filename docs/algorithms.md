@@ -21,8 +21,9 @@ Each algorithm has a collection of parameters (called properties) used to config
 population size, mutation and crossover rates, etc.  We can create and configure these algorithms by calling their
 setter methods:
 
-```java
+<!-- java:test/org/moeaframework/snippet/AlgorithmSnippet.java [38:44] -->
 
+```java
 Problem problem = new UF1();
 
 NSGAII algorithm = new NSGAII(problem);
@@ -35,14 +36,15 @@ NondominatedPopulation result = algorithm.getResult();
 Alternatively, we can use the `Executor` class and configure algorithms by setting the properties.  See
 [Running Experiments](experiment.md) for more details on using the `Executor`.
 
-```java
+<!-- java:test/org/moeaframework/snippet/AlgorithmSnippet.java [49:54] -->
 
+```java
 NondominatedPopulation results = new Executor()
-    .withProblem("UF1")
-    .withAlgorithm("NSGA-II")
-    .withProperty("populationSize", 250)
-    .withMaxEvaluations(10000)
-    .run();
+        .withProblem("UF1")
+        .withAlgorithm("NSGA-II")
+        .withProperty("populationSize", 250)
+        .withMaxEvaluations(10000)
+        .run();
 ```
 
 Many of these algorithms support any decision variable type, and thus the selected mutation and/or crossover operators
