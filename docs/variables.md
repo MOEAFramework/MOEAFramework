@@ -112,9 +112,9 @@ another number.  These types determine how connections can be formed between nod
 ```mermaid
 graph TD;
     START[ ] ---|Number| Add
-    Add ---|Number| A["Get(#quot;X#quot;)"];
+    Add ---|Number| A["Get(X)"];
     Add ---|Number| Multiply;
-    Multiply ---|Number| B["Get(#quot;Y#quot;)"];
+    Multiply ---|Number| B["Get(Y)"];
     Multiply ---|Number| C["Constant(2)"];
     
     style START fill-opacity:0, stroke-opacity:0;
