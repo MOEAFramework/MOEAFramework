@@ -15,10 +15,14 @@ import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.Options;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.SystemUtils;
 import org.moeaframework.core.Settings;
+import org.moeaframework.util.CommandLineUtility;
 
 /**
  * Utility to update code samples and output found in various documents, including Markdown and HTML / XSLT files.
@@ -43,38 +47,67 @@ import org.moeaframework.core.Settings;
  * Can be run in validate-only mode or update mode.  In validate mode, it simply checks of the code blocks changed
  * and returns a non-zero exit code.  In update mode, it updates the code block in the file.
  */
-public class UpdateCodeSamples {
+public class UpdateCodeSamples extends CommandLineUtility {
 	
 	private static final String CHARSET = "UTF8";
 	
 	private static final long SEED = 123456;
 	
-	private static final String[] CLASSPATH = new String[] { "lib/*", "build", "examples" };
+	private static final String[] DEFAULT_CLASSPATH = new String[] { "lib/*", "build", "examples" };
 	
-	private static final File[] PATHS = new File[] { new File("docs/"), new File("website/xslt") };
+	private static final File[] DEFAULT_PATHS = new File[] { new File("docs/"), new File("website/xslt") };
 	
 	private static final Pattern REGEX = Pattern.compile("<!--\\s+([a-zA-Z]+)\\:([^\\s]+)(?:\\s+\\[([0-9]+)?[:\\-]([0-9]+)?\\])?\\s+-->");
 	
-	private final boolean update;
+	private boolean update;
+	
+	private String[] classpath;
 	
 	/**
-	 * Creates a new instance to update code blocks.
-	 * 
-	 * @param update if {@code true}, updates the code blocks; if {@code false} only validates that the code blocks
-	 *               are up-to-date
+	 * Creates a new instance of the command line utility to update code examples.
 	 */
-	public UpdateCodeSamples(boolean update) {
+	public UpdateCodeSamples() {
 		super();
-		this.update = update;
 	}
 	
-	/**
-	 * Scans the given file or directory, calling {@link #process(File)} on each file.
-	 * 
-	 * @param file the file or directory
-	 * @throws Exception if an error occurred processing the file or directory
-	 */
-	public void scan(File file) throws Exception {
+	@Override
+	public Options getOptions() {
+		Options options = super.getOptions();
+		
+		options.addOption(Option.builder("u")
+				.longOpt("update")
+				.build());
+		options.addOption(Option.builder("c")
+				.longOpt("classpath")
+				.hasArgs()
+				.build());
+
+		return options;
+	}
+	
+	@Override
+	public void run(CommandLine commandLine) throws Exception {
+		update = commandLine.hasOption("update");
+		classpath = commandLine.hasOption("classpath") ? commandLine.getOptionValues("classpath") : DEFAULT_CLASSPATH;
+		
+		System.out.println("Using classpath \"" + getClassPath(classpath) + "\"");
+
+		if (commandLine.getArgs().length == 0) {
+			for (File path : DEFAULT_PATHS) {
+				scan(path);
+			}
+		} else {
+			for (String arg : commandLine.getArgs()) {
+				scan(new File(arg));
+			}
+		}
+	}
+	
+	private void scan(File file) throws Exception {
+		if (!file.exists()) {
+			System.out.println("Skipping " + file + ", does not exist");
+		}
+		
 		if (file.isDirectory()) {
 			System.out.println("Scanning directory " + file);
 			for (File nestedFile : file.listFiles()) {
@@ -85,13 +118,7 @@ public class UpdateCodeSamples {
 		}
 	}
 	
-	/**
-	 * Processes the file, updating any code blocks and detecting changes.
-	 * 
-	 * @param file the file to process
-	 * @throws Exception if an error occurred processing the file
-	 */
-	public void process(File file) throws Exception {
+	private void process(File file) throws Exception {
 		FileType fileType = FileType.fromExtension(FilenameUtils.getExtension(file.getName()));
 		
 		if (fileType == null) {
@@ -122,7 +149,7 @@ public class UpdateCodeSamples {
 					options.fileType = fileType;
 					
 					String content = "";
-					System.out.println("    > Updating " + language + " code block: " + filename + " " + options);
+					System.out.println("    > Updating " + language + " block: " + filename + " " + options);
 					
 					if (language.equalsIgnoreCase("output")) {
 						options.language = null;
@@ -214,7 +241,7 @@ public class UpdateCodeSamples {
 		
 		if (extension.equalsIgnoreCase("java")) {
 			ProcessBuilder processBuilder = new ProcessBuilder("javac",
-					"-classpath", getClassPath(CLASSPATH),
+					"-classpath", getClassPath(classpath),
 					filename);
 			
 			RedirectStream.invoke(processBuilder);
@@ -228,7 +255,7 @@ public class UpdateCodeSamples {
 		
 		if (extension.equalsIgnoreCase("java")) {
 			ProcessBuilder processBuilder = new ProcessBuilder("java",
-					"-classpath", getClassPath(CLASSPATH),
+					"-classpath", getClassPath(classpath),
 					"-D" + Settings.KEY_PRNG_SEED + "=" + SEED,
 					getClassName(filename));
 			
@@ -375,11 +402,7 @@ public class UpdateCodeSamples {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		boolean update = args.length > 0 && args[0].equals("update");
-		
-		for (File path : PATHS) {
-			new UpdateCodeSamples(update).scan(path);
-		}
+		new UpdateCodeSamples().start(args);
 	}
 
 }
