@@ -17,8 +17,9 @@ Problem | # of Vars | # of Objs | # of Constrs | Type
 
 ### DTLZ
 
-Contains five unconstrained real-valued problems [^deb01] [^deb02].  These problems are scalable in the number of objectives.  Control this by replacing
-`N` in the name.  For example, `DTLZ2_2` creates the 2-objective DTLZ2 instance.
+Contains five unconstrained real-valued problems [^deb01] [^deb02].  These problems are scalable in the number of
+objectives.  Control this by replacing `N` in the name.  For example, `DTLZ2_2` creates the 2-objective DTLZ2
+instance.
 
 Problem | # of Vars | # of Objs | # of Constrs | Type 
 :------ | :-------: | :-------: | :----------: | :---
@@ -94,8 +95,8 @@ Problem | # of Vars | # of Objs | # of Constrs | Type
 
 ### CDTLZ
 
-A constrained version of the DTLZ problem suite [^deb14] [^jain14].  These problems are scalable in the number of objectives.  Control this by replacing
-`N` in the name.
+A constrained version of the DTLZ problem suite [^deb14] [^jain14].  These problems are scalable in the number of
+objectives.  Control this by replacing `N` in the name.
 
 Problem | # of Vars | # of Objs | # of Constrs | Type 
 :------ | :-------: | :-------: | :----------: | :---
@@ -108,7 +109,8 @@ Problem | # of Vars | # of Objs | # of Constrs | Type
 
 ### LSMOP
 
-Large-scale multi- and many-objective problem test suite [^cheng17].  These problems are scalable in the number of objectives.  Control this by replacing `N` in the name.
+Large-scale multi- and many-objective problem test suite [^cheng17].  These problems are scalable in the number of
+objectives.  Control this by replacing `N` in the name.
 
 Problem | # of Vars | # of Objs | # of Constrs | Type 
 :------ | :-------: | :-------: | :----------: | :---
@@ -125,7 +127,7 @@ Problem | # of Vars | # of Objs | # of Constrs | Type
 ### ZCAT
 
 Set of challenging test problems for multi- and many-objective optimization [^zapotecas23].  These problems are
-scalabe in the number of objectives.  Control this by replacing `N` in the name.
+scalable in the number of objectives.  Control this by replacing `N` in the name.
 
 Problem | # of Vars | # of Objs | # of Constrs | Type 
 :------ | :-------: | :-------: | :----------: | :---
@@ -152,17 +154,19 @@ Problem | # of Vars | # of Objs | # of Constrs | Type
 
 ### BBOB-2016
 
-Contains the 55 bi-objective problems as part of the "bbob-biobj" test suite from the BBOB workshop hosted at GECCO 2016 [^finck15].
-These bi-objective problems are formed by combining two single-objective functions.  Additionally, each problem is further customizable
-by the dimension (number of decision variables) and instance number (which varies the location of the optimum point).
+Contains the 55 bi-objective problems as part of the "bbob-biobj" test suite from the BBOB workshop hosted at
+GECCO 2016 [^finck15].  These bi-objective problems are formed by combining two single-objective functions.
+Additionally, each problem is further customizable by the dimension (number of decision variables) and instance
+number (which varies the location of the optimum point).
 
-The MOEA Framework uses a special name format for these problems.  Each single-objective function has a unique name in the form
-`bbob_f<N>_i<N>_d<N>` where `f`, `i`, and `d` represent the test function number, instance, and dimension, respectively.  The `<N>` is
-replaced by a specific value for each.  For example, `bbob_f1_i2_d5` represents the first BBOB function (the Sphere function), instance `2`, with 
-five decision variables.
+The MOEA Framework uses a special name format for these problems.  Each single-objective function has a unique
+name in the form `bbob_f<N>_i<N>_d<N>` where `f`, `i`, and `d` represent the test function number, instance,
+and dimension, respectively.  The `<N>` is replaced by a specific value for each.  For example, `bbob_f1_i2_d5`
+represents the first BBOB function (the Sphere function), instance `2`, with five decision variables.
 
-Next, two of these single-objective functions are combined to get the bi-objective problem name, separating the names by a comma.
-For example, `bbob_f1_i2_d5,bbob_f21_i2_d5` would produce the $(f_1, f_{21})$ bi-objective problem with five decision variables.
+Next, two of these single-objective functions are combined to get the bi-objective problem name, separating the
+names by a comma.  For example, `bbob_f1_i2_d5,bbob_f21_i2_d5` would produce the $(f_1, f_{21})$ bi-objective
+problem with five decision variables.
 
 To recreate the bbob-biobj test suite from the BBOB workshop, we can enumerate the set of problems using:
 
@@ -222,15 +226,17 @@ Viennet2 | 2 | 3 | 0 | Real
 Viennet3 | 2 | 3 | 0 | Real
 Viennet4 | 2 | 3 | 3 | Real
 
-Problems marked with $\dagger$ have maximized objectives.  Since the MOEA Framework only works with minimized objectives, the objective values are negated.
+Problems marked with $\dagger$ have maximized objectives.  Since the MOEA Framework only works with minimized
+objectives, the objective values are negated.
 
 ## Special Problem Classes
 
 ### Rotated Problems
 
-In many test problems, there is a direct relationship between decision variables and objectives, often to the point where once can tweak each variable
-independently to find the optimum.  Any real-valued problem can be rotated in decision variable space to remove this independence and create a linear
-relationship between the variables.  This is accomplished by prepending one of the following to the problem name:
+In many test problems, there is a direct relationship between decision variables and objectives, often to the point
+where once can tweak each variable independently to find the optimum.  Any real-valued problem can be rotated in
+decision variable space to remove this independence and create a linear relationship between the variables.  This
+is accomplished by prepending one of the following to the problem name:
 
 * `ROT_` - Rotates all decision variables by 45 degrees
 * `ROT(X)_` - Rotates all decision variables by `X` degrees.  Replace `X` with `RAND` to randomly rotated each axis.
@@ -249,8 +255,8 @@ NondominatedPopulation results = new Executor()
 
 ### Scripted or External Problems
 
-The MOEA Framework also has the capability to execute problems written in a scripting language (using the appropriate Java plugin) or external, compiled
-programs.  Refer to `ScriptedProblem` and `ExternalProblem` for details.
+The MOEA Framework also has the capability to execute problems written in a scripting language (using the appropriate
+Java plugin) or external, compiled programs.  Refer to `ScriptedProblem` and `ExternalProblem` for details.
 
 [^cheng17]: Cheng et al. "Test problems for large-scale multiobjective and many-objective optimization." IEEE Transactions on Cybernetics, 7(12): 4108-4121, 2017.
 [^deb01]: Deb et al.  "Scalable Test Problems for Evolutionary Multi-Objective Optimization."  TIK-Technical Report No 112, 2001.

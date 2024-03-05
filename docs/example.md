@@ -34,13 +34,16 @@ inspects the problem to determine its type and supplies the recommended variatio
 since the problem is real-valued, it will use Simulated Binary Crossover (SBX) and Polynomial Mutation (PM).  We can confirm
 this by viewing the configuration:
 
-```java
+<!-- java:examples/org/moeaframework/examples/configuration/GetConfigurationExample.java [32:35] -->
 
+```java
 Problem problem = new DTLZ2(2);
 NSGAII algorithm = new NSGAII(problem);
 
 algorithm.getConfiguration().display();
 ```
+
+<!-- output:examples/org/moeaframework/examples/configuration/GetConfigurationExample.java -->
 
 ```
 operator=sbx+pm
@@ -56,37 +59,37 @@ sbx.symmetric=false
 What if we want to run this algorithm with a different configuration?  We can simply call the setter methods.
 Here we change the initial population size and set the variation operator to Parent Centrix Crossover (PCX):
 
-```java
+<!-- java:examples/org/moeaframework/examples/configuration/SetConfigurationExample.java [33:40] -->
 
+```java
 Problem problem = new DTLZ2(2);
 
 NSGAII algorithm = new NSGAII(problem);
 algorithm.setInitialPopulationSize(250);
 algorithm.setVariation(new PCX(10, 2));
-		
+        
 algorithm.run(10000);
-
-NondominatedPopulation result = algorithm.getResult();
+algorithm.getResult().display();
 ```
 
 Alternatively, similar to how we read the current configuration with `getConfiguration`, we can apply
 different settings with `applyConfiguration`.  For example, the following results in the same setup
 as the previous example:
 
-```java
+<!-- java:examples/org/moeaframework/examples/configuration/ApplyConfigurationExample.java [34:46] -->
 
+```java
 Problem problem = new DTLZ2(2);
 NSGAII algorithm = new NSGAII(problem);
-		
+
 TypedProperties properties = new TypedProperties();
 properties.setInt("populationSize", 250);
 properties.setString("operator", "pcx");
 properties.setInt("pcx.parents", 10);
 properties.setInt("pcx.offspring", 2);
-		
+        
 algorithm.applyConfiguration(properties);
-
+        
 algorithm.run(10000);
-
-NondominatedPopulation result = algorithm.getResult();
+algorithm.getResult().display();
 ```

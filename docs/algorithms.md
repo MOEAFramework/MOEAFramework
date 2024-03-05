@@ -17,8 +17,9 @@ In addition, the MOEA Framework provides [JMetal and PISA extensions](extensions
 
 ## Instantiating an Algorithm
 
-Each algorithm has a collection of parameters (called properties) used to configure specific details, such as their population size, mutation and
-crossover rates, etc.  We can create and configure these algorithms by calling their setter methods:
+Each algorithm has a collection of parameters (called properties) used to configure specific details, such as their
+population size, mutation and crossover rates, etc.  We can create and configure these algorithms by calling their
+setter methods:
 
 ```java
 
@@ -44,16 +45,16 @@ NondominatedPopulation results = new Executor()
     .run();
 ```
 
-Many of these algorithms support any decision variable type, and thus the selected mutation and/or crossover operators will depend on the problem
-type.  A default operators is used unless explicitly overridden by the `operator` parameter, where supported.  See the [List of Operators](operators.md)
-for specifics.
+Many of these algorithms support any decision variable type, and thus the selected mutation and/or crossover operators
+will depend on the problem type.  A default operators is used unless explicitly overridden by the `operator`
+parameter, where supported.  See the [List of Operators](operators.md) for specifics.
 
 ## Multiobjective Optimizers
 
 ### AMOSA
 
-The simulated annealing-based multiobjective optimization algorithm (AMOSA) incorporates an archive mechanism to track a set of
-Pareto solutions[^bandyopadhyay08].
+The simulated annealing-based multiobjective optimization algorithm (AMOSA) incorporates an archive mechanism to track
+a set of Pareto solutions[^bandyopadhyay08].
 
 **Algorithm Name:** `"AMOSA"`  
 **Supported Types:** Any  
@@ -74,9 +75,10 @@ Parameter            | Default Value | Description
 
 ### CMA-ES
 
-CMA-ES is a sophisticated covariance matrix adaptation evolution strategy algorithm for real-valued global optimization[^hansen04][^igel07].  CMA-ES produces 
-offspring by sampling a distribution formed by a covariance matrix, hence the name, and updating the covariance matrix based on the surviving offspring.
-Single and multi-objective variants exist in the literature and both are supported by the MOEA Framework.  
+CMA-ES is a sophisticated covariance matrix adaptation evolution strategy algorithm for real-valued global
+optimization [^hansen04][^igel07].  CMA-ES produces offspring by sampling a distribution formed by a covariance matrix,
+hence the name, and updating the covariance matrix based on the surviving offspring.  Single and multi-objective
+variants exist in the literature and both are supported by the MOEA Framework.  
 
 **Algorithm Name:** `"CMA-ES"`  
 **Supported Types:** Real  
@@ -95,13 +97,15 @@ Parameter            | Default Value | Description
 `indicator`          | `crowding`    | The fitness indicator - `hypervolume`, `epsilon`, or `crowding`
 `initialSearchPoint` | Unset         | Initial guess at the starting location (comma-separated values).  If unset, a random initial guess is used
 
-Derived means the default values are calculated from other settings, but can be overridden if explicitly set.  See Igel., C et al. for details.
+Derived means the default values are calculated from other settings, but can be overridden if explicitly set.  See
+Igel., C et al. for details.
 
 ### DBEA
 
-DBEA, or I-DBEA, is the Improved Decomposition-Based Evolutionary Algorithm.  DBEA uses the same systematic sampling of reference points as NSGA-III,
-but utilizes distance along each reference vector to measure convergence and the perpendicular distance to reference vectors to measure diversity
-[^asafuddoula15].  DBEA also proposes corner-sort as a means to identify exteme points for normalization.
+DBEA, or I-DBEA, is the Improved Decomposition-Based Evolutionary Algorithm.  DBEA uses the same systematic sampling of
+reference points as NSGA-III,but utilizes distance along each reference vector to measure convergence and the
+perpendicular distance to reference vectors to measure diversity[^asafuddoula15].  DBEA also proposes corner-sort as a
+means to identify exteme points for normalization.
 
 **Algorithm Name:** `"DBEA"`  
 **Supported Types:** Any  
@@ -117,12 +121,14 @@ Parameter            | Default Value     | Description
 See the [NSGA-III](#nsga-iii) documentation for details on generating reference vectors and the two-layer approach.
 
 ### e-MOEA
-$\epsilon$-MOEA is a steady-state MOEA that uses $\epsilon$-dominance archiving to record a diverse set of Pareto optimal solutions [^deb03].
-The term steady-state means that the algorithm evolves one solution at a time.  This is in contrast to generational algorithms, which evolve the
-entire population every iteration.  $\epsilon$-dominance archives are useful since they ensure convergence and diversity throughout search [^laumanns02].
-However, the algorithm requires an additional $\epsilon$ parameter which is problem dependent.  The $\epsilon$ parameter controls the granularity or
-resolution of the solutions in objective space.  Smaller values produce larger, more dense sets while larger values produce smaller sets.  In general,
-the $\epsilon$ values should be chosen to yield a moderately-sized Pareto approximate set.
+$\epsilon$-MOEA is a steady-state MOEA that uses $\epsilon$-dominance archiving to record a diverse set of Pareto
+optimal solutions [^deb03].  The term steady-state means that the algorithm evolves one solution at a time.  This is in
+contrast to generational algorithms, which evolve the entire population every iteration.  $\epsilon$-dominance archives
+are useful since they ensure convergence and diversity throughout search [^laumanns02].  However, the algorithm
+requires an additional $\epsilon$ parameter which is problem dependent.  The $\epsilon$ parameter controls the
+granularity or resolution of the solutions in objective space.  Smaller values produce larger, more dense sets while
+larger values produce smaller sets.  In general, the $\epsilon$ values should be chosen to yield a moderately-sized
+Pareto approximate set.
 
 **Algorithm Name:** `"eMOEA"`  
 **Supported Types:** Any  
@@ -136,7 +142,10 @@ Parameter            | Default Value     | Description
 
 ### e-NSGA-II
 
-$\epsilon$-NSGA-II combines the generational search of NSGA-II with the guaranteed convergence provided by an $\epsilon$-dominance archive [^kollat06].  It also features randomized restarts to enhance search and find a diverse set of Pareto optimal solutions.  During a random restart, the algorithm empties the current population and fills it with new, randomly-generated solutions.
+$\epsilon$-NSGA-II combines the generational search of NSGA-II with the guaranteed convergence provided by an
+$\epsilon$-dominance archive [^kollat06].  It also features randomized restarts to enhance search and find a diverse
+set of Pareto optimal solutions.  During a random restart, the algorithm empties the current population and fills it
+with new, randomly-generated solutions.
 
 **Algorithm Name:** `"e-NSGA-II"`  
 **Supported Types:** Any  
@@ -155,9 +164,10 @@ Parameter            | Default Value     | Description
 
 ### GDE3
 
-GDE3 is the third version of the generalized differential evolution algorithm [^kukkonen05].  The name differential evolution comes from how the algorithm
-evolves offspring.  It randomly selects three parents.  Next, it computes the difference (the differential) between two of the parents.  Finally, it offsets
-the remaining parent by this differential.
+GDE3 is the third version of the generalized differential evolution algorithm [^kukkonen05].  The name differential
+evolution comes from how the algorithm evolves offspring.  It randomly selects three parents.  Next, it computes the
+difference (the differential) between two of the parents.  Finally, it offsets the remaining parent by this
+differential.
 
 **Algorithm Name:** `"GDE3"`  
 **Supported Types:** Real  
@@ -171,10 +181,11 @@ Parameter            | Default Value     | Description
 
 ### IBEA
 
-IBEA is a indicator-based MOEA that uses the hypervolume performance indicator as a means to rank solutions [^zitzler04].  Indicator-based algorithms
-are based on the idea that a performance indicator, such as hypervolume or additive $\epsilon$-indicator, highlight solutions with desirable qualities.
-The primary disadvantage of indicator-based methods is that the calculation of the performance indicator can become computationally expensive, particularly
-as the number of objectives increases.
+IBEA is a indicator-based MOEA that uses the hypervolume performance indicator as a means to rank solutions
+[^zitzler04].  Indicator-based algorithms are based on the idea that a performance indicator, such as hypervolume or
+additive $\epsilon$-indicator, highlight solutions with desirable qualities.  The primary disadvantage of
+indicator-based methods is that the calculation of the performance indicator can become computationally expensive,
+particularly as the number of objectives increases.
 
 **Algorithm Name:** `"IBEA"`  
 **Supported Types:** Any  
@@ -188,11 +199,13 @@ Parameter            | Default Value     | Description
 
 ### MOEA/D
 
-MOEA/D is a relatively new optimization algorithm based on the concept of decomposing the problem into many single-objective formulations .  Several versions
-of MOEA/D exist in the literature.  The most common variant seen in the literature, MOEA/D-DE [^li09], is the default implementation in the MOEA Framework.
+MOEA/D is a relatively new optimization algorithm based on the concept of decomposing the problem into many
+single-objective formulations .  Several versions of MOEA/D exist in the literature.  The most common variant seen in
+the literature, MOEA/D-DE [^li09], is the default implementation in the MOEA Framework.
 
-An extension to MOEA/D-DE variant called MOEA/D-DRA introduced a utility function that aimed to reduce the amount of "wasted" effort by the algorithm
-[^zhang09].  This variant is enabled by setting the `updateUtility` parameter to a non-zero value.
+An extension to MOEA/D-DE variant called MOEA/D-DRA introduced a utility function that aimed to reduce the amount of
+"wasted" effort by the algorithm [^zhang09].  This variant is enabled by setting the `updateUtility` parameter to a
+non-zero value.
 
 **Algorithm Name:** `"MOEA/D"`  
 **Supported Types:** Any  
@@ -213,9 +226,10 @@ Parameter            | Default Value     | Description
 
 ### MSOPS
 
-MSOPS is the Multiple Single-Objective Pareto Search algorithm [^hughes03].  MSOPS works by enumerating $k$ reference vectors and applying a rank ordering
-based on two aggregate functions: weighted min-max and vector angle distance scaling (VADS).  Solutions with higher rankings with respect to both metrics are
-preferred.  MSOPS only supports real-valued solutions using differential evolution.
+MSOPS is the Multiple Single-Objective Pareto Search algorithm [^hughes03].  MSOPS works by enumerating $k$ reference
+vectors and applying a rank ordering based on two aggregate functions: weighted min-max and vector angle distance
+scaling (VADS).  Solutions with higher rankings with respect to both metrics are preferred.  MSOPS only supports
+real-valued solutions using differential evolution.
 
 **Algorithm Name:** `"MSOPS"`  
 **Supported Types:** Real  
@@ -230,8 +244,9 @@ Parameter            | Default Value     | Description
 
 ### NSGA-II
 
-NSGA-II is one of the first and most widely used MOEAs [^deb00].  It enhanced it predecessor, NSGA, by introducing fast non-dominated sorting and using
-the more computationally efficient crowding distance metric during survival selection.
+NSGA-II is one of the first and most widely used MOEAs [^deb00].  It enhanced it predecessor, NSGA, by introducing
+fast non-dominated sorting and using the more computationally efficient crowding distance metric during survival
+selection.
 
 **Algorithm Name:** `"NSGA-II"`  
 **Supported Types:** Any  
@@ -245,15 +260,17 @@ Parameter            | Default Value     | Description
 
 ### NSGA-III
 
-NSGA-III is the many-objective successor to NSGA-II, using reference points to direct solutions towards a diverse set [^deb14].  The number of reference
-points is controlled by the number of objectives and the `divisions` parameter.  For an $M$-objective problem, the number of reference points is:
+NSGA-III is the many-objective successor to NSGA-II, using reference points to direct solutions towards a diverse set
+[^deb14].  The number of reference points is controlled by the number of objectives and the `divisions` parameter.
+For an $M$-objective problem, the number of reference points is:
 
 $$ H = {M+divisions-1 \choose divisions} $$
 
-The authors also propose a two-layer approach for divisions for many-objective problems where an outer and inner division number is specified.  To use the
-two-layer approach, replace the `divisions` parameter with `divisionsOuter` and `divisionsInner`.  `divisionsOuter` controls the number of reference points
-on the boundary of the objective space; `divisionsInner` controls the number of reference points on the interior of the objective space.  Please refer
-to the cited paper for more details.
+The authors also propose a two-layer approach for divisions for many-objective problems where an outer and inner
+division number is specified.  To use the two-layer approach, replace the `divisions` parameter with
+`divisionsOuter` and `divisionsInner`.  `divisionsOuter` controls the number of reference points
+on the boundary of the objective space; `divisionsInner` controls the number of reference points on the interior
+of the objective space.  Please refer to the cited paper for more details.
 
 **Algorithm Name:** `"NSGA-III"`  
 **Supported Types:** Any  
@@ -269,7 +286,11 @@ Parameter            | Default Value     | Description
 
 ### OMOPSO
 
-OMOPSO is a multiobjective particle swarm optimization algorithm that includes an $\epsilon$-dominance archive to discover a diverse set of Pareto optimal solutions [^sierra05].  This implementation of OMOPSO differs slightly from the original author's implementation in JMetal due to a discrepancy between the author's code and the paper.  The paper returns the $\epsilon$-dominance archive while the code returns the leaders.  This discrepancy causes a small difference in performance. 
+OMOPSO is a multiobjective particle swarm optimization algorithm that includes an $\epsilon$-dominance archive to
+discover a diverse set of Pareto optimal solutions [^sierra05].  This implementation of OMOPSO differs slightly from
+the original author's implementation in JMetal due to a discrepancy between the author's code and the paper.  The paper
+returns the $\epsilon$-dominance archive while the code returns the leaders.  This discrepancy causes a small
+difference in performance. 
 
 **Algorithm Name:** `"OMOPSO"`  
 **Supported Types:** Any  
@@ -286,7 +307,9 @@ Parameter            | Default Value     | Description
 
 ### PAES
 
-PAES is a multiobjective version of evolution strategy [^knowles99].  PAES tends to underperform when compared to other MOEAs, but it is often used as a baseline algorithm for comparisons.  Like PESA-II, PAES uses the adaptive grid archive to maintain a fixed-size archive of solutions.
+PAES is a multiobjective version of evolution strategy [^knowles99].  PAES tends to underperform when compared to other
+MOEAs, but it is often used as a baseline algorithm for comparisons.  Like PESA-II, PAES uses the adaptive grid archive
+to maintain a fixed-size archive of solutions.
 
 **Algorithm Name:** `"PAES"`  
 **Supported Types:** Any  
@@ -299,7 +322,9 @@ Parameter            | Default Value     | Description
 
 ### PESA2
 
-PESA2 is another multiobjective evolutionary algorithm that tends to underperform other MOEAs but is often used as a baseline algorithm in comparative studies [^corne01].  It is the successor to PESA [^corne00].  Like PAES, PESA2 uses the adaptive grid archive to maintain a fixed-size archive of solutions.
+PESA2 is another multiobjective evolutionary algorithm that tends to underperform other MOEAs but is often used as a
+baseline algorithm in comparative studies [^corne01].  It is the successor to PESA [^corne00].  Like PAES, PESA2 uses
+the adaptive grid archive to maintain a fixed-size archive of solutions.
 
 **Algorithm Name:** `"PESA2"`  
 **Supported Types:** Any  
@@ -314,7 +339,10 @@ Parameter            | Default Value     | Description
 
 ### Random
 
-The random search algorithm simply randomly generates new solutions uniformly throughout the search space.  It is not intended as an "optimization algorithm" *per se*, but as a way to compare the performance of other MOEAs against random search.  If an optimization algorithm can not beat random search, then continued use of that optimization algorithm should be questioned.
+The random search algorithm simply randomly generates new solutions uniformly throughout the search space.  It is not
+intended as an "optimization algorithm" *per se*, but as a way to compare the performance of other MOEAs against
+random search.  If an optimization algorithm can not beat random search, then continued use of that optimization
+algorithm should be questioned.
 
 **Algorithm Name:** `"Random"`  
 **Supported Types:** Any  
@@ -328,7 +356,11 @@ Parameter            | Default Value     | Description
 
 ### RSO
 
-The repeated single objectives (RSO) algorithm solves multiobjective problems by running several single-objective optimizers independently with varying weights [^hughes05].  Any of the single-objective optimizers supported by the MOEA Framework can be utilized, and any properties supported by that optimizer can be defined.  RSO is a useful tool for comparing single and multiobjective optimizers.  The maximum number of evaluations is spread evenly across each single-objective instance.
+The repeated single objectives (RSO) algorithm solves multiobjective problems by running several single-objective
+optimizers independently with varying weights [^hughes05].  Any of the single-objective optimizers supported by the
+MOEA Framework can be utilized, and any properties supported by that optimizer can be defined.  RSO is a useful tool
+for comparing single and multiobjective optimizers.  The maximum number of evaluations is spread evenly across each
+single-objective instance.
 
 **Algorithm Name:** `"RSO"`  
 **Supported Types:** Any  
@@ -342,7 +374,9 @@ Parameter            | Default Value     | Description
 
 ### RVEA
 
-The reference vector guided evolutionary algorithm (RVEA) has many similarities with NSGA-III, but avoids use of Pareto dominance and uses an angle-penalized distance function for survival selection [^cheng16].  RVEA only works on problems with at least two objectives and can only use genetic operators requiring two parents.
+The reference vector guided evolutionary algorithm (RVEA) has many similarities with NSGA-III, but avoids use of Pareto
+dominance and uses an angle-penalized distance function for survival selection [^cheng16].  RVEA only works on problems
+with at least two objectives and can only use genetic operators requiring two parents.
 
 **Algorithm Name:** `"RVEA"`  
 **Supported Types:** Any  
@@ -391,7 +425,9 @@ Parameter            | Default Value     | Description
 
 ### SPEA2
 
-SPEA2 is an older but popular benchmark MOEA that uses the so-called ``strength-based'' method for ranking solutions [^zitzler02].  The general idea is that the strength or quality of a solution is related to the strength of solutions it dominates.
+SPEA2 is an older but popular benchmark MOEA that uses the so-called ``strength-based'' method for ranking solutions
+[^zitzler02].  The general idea is that the strength or quality of a solution is related to the strength of solutions
+it dominates.
 
 **Algorithm Name:** `"SPEA2"`  
 **Supported Types:** Any  
@@ -406,7 +442,8 @@ Parameter            | Default Value     | Description
 
 ### VEGA
 
-VEGA is considered the earliest documented MOEA.  While we provide support for VEGA, other MOEAs should be preferred as they exhibit better performance.  VEGA is provided for its historical significance [^schaffer85].
+VEGA is considered the earliest documented MOEA.  While we provide support for VEGA, other MOEAs should be preferred as
+they exhibit better performance.  VEGA is provided for its historical significance [^schaffer85].
 
 **Algorithm Name:** `"VEGA"`  
 **Supported Types:** Any  
@@ -419,11 +456,14 @@ Parameter            | Default Value     | Description
 
 ## Single-Objective Optimizers
 
-In addition to the multiobjective optimizers listed above, the MOEA Framework supports several single-objective optimizers.  These single-objective optimizers can be used to solve both single and multiobjective problems.  For multiobjective problems, additional properties are supported to scalarize the objectives into a single value.
+In addition to the multiobjective optimizers listed above, the MOEA Framework supports several single-objective
+optimizers.  These single-objective optimizers can be used to solve both single and multiobjective problems.  For
+multiobjective problems, additional properties are supported to scalarize the objectives into a single value.
 
 ### GA
 
-GA is the standard genetic algorithm with elitism[^holland75].  A single elite individual is guaranteed to survive between generations.
+GA is the standard genetic algorithm with elitism[^holland75].  A single elite individual is guaranteed to survive
+between generations.
 
 **Algorithm Name:** `"GA"`  
 **Supported Types:** Any  
@@ -438,7 +478,9 @@ Parameter            | Default Value     | Description
 
 ### ES
 
-ES is the standard $(1+1)$ evolution strategies algorithm[^rechenberg71].  ES only supports real-valued variables.  This means the population is size `1` and only `1` offspring is generated each iteration.  The fittest solution survives to the next iteration.  Additionally, ES uses a self-adaptive variation operator.
+ES is the standard $(1+1)$ evolution strategies algorithm[^rechenberg71].  ES only supports real-valued variables.
+This means the population is size `1` and only `1` offspring is generated each iteration.  The fittest solution
+survives to the next iteration.  Additionally, ES uses a self-adaptive variation operator.
 
 **Algorithm Name:** `"ES"`  
 **Supported Types:** Real  
@@ -452,7 +494,9 @@ Parameter            | Default Value     | Description
 
 ### DE
 
-DE is the standard differential evolution algorithm[^storn97], also known as `DE/rand/1/bin`.  DE only supports real-valued variables using the differential evolution operator.  DE works by calculating the difference between two randomly-selected points and applying that difference to a third point.
+DE is the standard differential evolution algorithm[^storn97], also known as `DE/rand/1/bin`.  DE only supports
+real-valued variables using the differential evolution operator.  DE works by calculating the difference between two
+randomly-selected points and applying that difference to a third point.
 
 **Algorithm Name:** `"DE"`  
 **Supported Types:** Real  

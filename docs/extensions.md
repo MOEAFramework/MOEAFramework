@@ -1,7 +1,8 @@
 # Extensions
 
-The MOEA Framework is extensible, allowing third-party plugins to define their own optimization algorithms, test problems,
-and mutation / crossover operators.  Refer to the individual repositories for installation and usage instructions.
+The MOEA Framework is extensible, allowing third-party plugins to define their own optimization algorithms, test
+problems, and mutation / crossover operators.  Refer to the individual repositories for installation and usage
+instructions.
 
 ## JMetal-Plugin
 

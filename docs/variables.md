@@ -127,12 +127,14 @@ Check out the code samples in [/examples/org/moeaframework/examples/gp](../examp
 The grammar type facilitates grammatical evolution.  This is similar in functionality to programs, except it used a context-free grammar given in
 [Backus-Naur form](https://en.wikipedia.org/wiki/Backus%E2%80%93Naur_form).  For example, the following grammar specification:
 
-```
+<!-- text:examples/org/moeaframework/examples/ge/regression/grammar.bnf -->
+
+```text
 <expr> ::= <func> | (<expr> <op> <expr>) | <value>
 <func> ::= <func-name> ( <expr> )
-<func-name> ::= sin | cos | exp | log
+<func-name> ::= Math.sin | Math.cos | Math.exp | Math.log
 <op> ::= + | * | - | /
-<value> ::= x | y
+<value> ::= x
 ```
 
 would generate statements like `sin(x) + cos(x)`, `log(x / y)`, `y - x`, etc.  However, unlike a program, a grammar can generate arbitrary statements,

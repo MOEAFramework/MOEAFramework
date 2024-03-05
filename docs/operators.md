@@ -2,8 +2,9 @@
 
 ## Overview
 
-This page details mutation and crossover operators built into the MOEA Framework.  For problems with a single decision variable type, a default operator is
-automatically selected.  For problems with mixed types, you will need to explicitly set the operators.  Do this by setting the `operator` parameter:
+This page details mutation and crossover operators built into the MOEA Framework.  For problems with a single decision
+variable type, a default operator is automatically selected.  For problems with mixed types, you will need to
+explicitly set the operators.  Do this by setting the `operator` parameter:
 
 ```java
 
@@ -18,8 +19,9 @@ NondominatedPopulation results = new Executor()
     .run();
 ```
 
-Note that the operator above is in fact the combination of a crossover (`sbx`) and a mutation (`pm`) operator.  Many operators can be combined in this way
-by joining them with the `+` symbol.  
+Note that the operator above is in fact the combination of a crossover (`sbx`) and a mutation (`pm`) operator.
+Many operators can be combined in this way by joining them with the `+` symbol.  Generally, put all crossover
+operators first followed by all mutation operators.
 
 ## Real-Valued Operators
 
@@ -27,11 +29,14 @@ Real-valued decision variable store floating-point numbers ranging from $\pm \in
 
 ### Simulated Binary Crossover (SBX)
 
-SBX attempts to simulate the offspring distribution of binary-encoded single-point crossover on real-valued decision variables [^deb94].  It accepts two parents and produces two offspring.  An example of this distribution, which favors offspring nearer to the two parents, is shown below. 
+SBX attempts to simulate the offspring distribution of binary-encoded single-point crossover on real-valued decision
+variables [^deb94].  It accepts two parents and produces two offspring.  An example of this distribution, which favors
+offspring nearer to the two parents, is shown below. 
 
 ![SBX](../src/org/moeaframework/core/operator/real/doc-files/SBX-1.png)
 
-The distribution index controls the shape of the offspring distribution. Larger values for the distribution index generates offspring closer to the parents. 
+The distribution index controls the shape of the offspring distribution. Larger values for the distribution index
+generates offspring closer to the parents. 
 
 Parameter               | Default Value     | Description
 :---------------------- | :---------------- | :----------
@@ -40,9 +45,13 @@ Parameter               | Default Value     | Description
 
 ### Polynomial Mutation (PM)
 
-PM attempts to simulate the offspring distribution of binary-encoded bit-flip mutation on real-valued decision variables [^deb96]. Similar to SBX, PM favors offspring nearer to the parent.  It is recommended each decision variable is mutated with a probability of $1 / N$, where $N$ is the number of decision variables. This results in one mutation per offspring on average. 
+PM attempts to simulate the offspring distribution of binary-encoded bit-flip mutation on real-valued decision
+variables [^deb96]. Similar to SBX, PM favors offspring nearer to the parent.  It is recommended each decision
+variable is mutated with a probability of $1 / N$, where $N$ is the number of decision variables. This results in
+one mutation per offspring on average. 
 
-The distribution index controls the shape of the offspring distribution. Larger values for the distribution index generates offspring closer to the parents.
+The distribution index controls the shape of the offspring distribution. Larger values for the distribution index
+generates offspring closer to the parents.
 
 Parameter              | Default Value     | Description
 :--------------------- | :---------------- | :----------
@@ -51,11 +60,15 @@ Parameter              | Default Value     | Description
 
 ### Differential Evolution (DE)
 
-Differential evolution works by randomly selecting three distinct individuals from a population. A difference vector is calculated between the first two individuals (shown as the left-most arrow in the figure below), which is subsequently applied to the third individual (shown as the right-most arrow in the figure below). 
+Differential evolution works by randomly selecting three distinct individuals from a population. A difference vector
+is calculated between the first two individuals (shown as the left-most arrow in the figure below), which is
+subsequently applied to the third individual (shown as the right-most arrow in the figure below). 
 
 ![DE](../src/org/moeaframework/core/operator/real/doc-files/DifferentialEvolution-1.png)
 
-The scaling factor parameter adjusts the magnitude of the difference vector, allowing the user to decrease or increase the magnitude in relation to the actual difference between the individuals \citep{storn97}. The crossover rate parameter controls the fraction of decision variables which are modified by the DE operator. 
+The scaling factor parameter adjusts the magnitude of the difference vector, allowing the user to decrease or increase
+the magnitude in relation to the actual difference between the individuals \citep{storn97}. The crossover rate
+parameter controls the fraction of decision variables which are modified by the DE operator. 
 
 Parameter            | Default Value     | Description
 :------------------- | :---------------- | :----------
@@ -64,7 +77,8 @@ Parameter            | Default Value     | Description
 
 ### Parent Centric Crossover (PCX)
 
-PCX is a multiparent operator, allowing a user-defined number of parents and offspring [^deb02d]. Offspring are clustered around the parents, as depicted in the figure below.
+PCX is a multiparent operator, allowing a user-defined number of parents and offspring [^deb02d]. Offspring are
+clustered around the parents, as depicted in the figure below.
 
 ![PCX](../src/org/moeaframework/core/operator/real/doc-files/PCX-1.png)
 
@@ -77,7 +91,9 @@ Parameter            | Default Value     | Description
 
 ### Unimodal Distribution Crossover (UNDX)
 
-UNDX is a multiparent operator, allowing a user-defined number of parents and offspring [^kita99] [^deb02]. Offspring are centered around the centroid, forming a normal distribution whose shape is controlled by the positions of the parents, as depicted in the figure below.
+UNDX is a multiparent operator, allowing a user-defined number of parents and offspring [^kita99] [^deb02]. Offspring
+are centered around the centroid, forming a normal distribution whose shape is controlled by the positions of the
+parents, as depicted in the figure below.
 
 ![UNDX](../src/org/moeaframework/core/operator/real/doc-files/UNDX-1.png)
 
@@ -90,7 +106,11 @@ Parameter            | Default Value     | Description
 
 ### Simplex Crossover (SPX)
 
-SPX is a multiparent operator, allowing a user-defined number of parents and offspring [^tsutsui99] [^higuchi00]. The parents form a convex hull, called a simplex. Offspring are generated uniformly at random from within the simplex. The expansion rate parameter can be used to expand the size of the simplex beyond the bounds of the parents. For example, the figure below shows three parent points and the offspring distribution, clearly filling an expanded triangular simplex. 
+SPX is a multiparent operator, allowing a user-defined number of parents and offspring [^tsutsui99] [^higuchi00]. The
+parents form a convex hull, called a simplex. Offspring are generated uniformly at random from within the simplex.
+The expansion rate parameter can be used to expand the size of the simplex beyond the bounds of the parents. For
+example, the figure below shows three parent points and the offspring distribution, clearly filling an expanded
+triangular simplex. 
 
 ![SPX](../src/org/moeaframework/core/operator/real/doc-files/SPX-1.png)
 
@@ -102,7 +122,9 @@ Parameter            | Default Value     | Description
 
 ### Uniform Mutation (UM)
 
-Each decision variable is mutated by selecting a new value within its bounds uniformly at random. The figure below depicts the offspring distribution. It is recommended each decision variable is mutated with a probability of $1/N$, where $N$ is the number of decision variables. This results in one mutation per offspring on average. 
+Each decision variable is mutated by selecting a new value within its bounds uniformly at random. The figure below
+depicts the offspring distribution. It is recommended each decision variable is mutated with a probability of $1/N$,
+where $N$ is the number of decision variables. This results in one mutation per offspring on average. 
 
 ![UM](../src/org/moeaframework/core/operator/real/doc-files/UM-1.png)
 
@@ -112,9 +134,14 @@ Parameter            | Default Value     | Description
 
 ### Adaptive Metropolis (AM)
 
-AM is a multiparent operator, allowing a user-defined number of parents and offspring [^vrugt07] [^vrugt09]. AM produces normally-distributed clusters around each parent, where the shape of the distribution is controlled by the covariance of the parents.
+AM is a multiparent operator, allowing a user-defined number of parents and offspring [^vrugt07] [^vrugt09]. AM
+produces normally-distributed clusters around each parent, where the shape of the distribution is controlled by the
+covariance of the parents.
 
-Internally, the Cholesky decomposition is used to update the resulting offspring distribution. Cholesky decomposition requires that its input be positive definite. In order to guarantee this condition is satisfied, all parents must be unique. In the event that the positive definite condition is not satisifed, no offspring are produced and an empty array is returned by 
+Internally, the Cholesky decomposition is used to update the resulting offspring distribution. Cholesky decomposition
+requires that its input be positive definite. In order to guarantee this condition is satisfied, all parents must be
+unique. In the event that the positive definite condition is not satisfied, no offspring are produced and an empty
+array is returned.
 
 Parameter            | Default Value     | Description
 :------------------- | :---------------- | :----------
@@ -196,7 +223,8 @@ Parameter            | Default Value     | Description
 
 ### Grammar Mutation (GM)
 
-Uniform mutation for grammars. Each integer codon in the grammar representation is uniformly mutated with a specified probability.
+Uniform mutation for grammars. Each integer codon in the grammar representation is uniformly mutated with a specified
+probability.
 
 Parameter            | Default Value     | Description
 :------------------- | :---------------- | :----------
@@ -214,7 +242,8 @@ Parameter            | Default Value     | Description
 
 ### Point Mutation (PTM)
 
-Mutates a program by randomly selecting nodes in the expression tree and replacing the node with a new, compatible, randomly-selected node.
+Mutates a program by randomly selecting nodes in the expression tree and replacing the node with a new, compatible,
+randomly-selected node.
 
 Parameter            | Default Value     | Description
 :------------------- | :---------------- | :----------
@@ -222,12 +251,13 @@ Parameter            | Default Value     | Description
 
 ## Crossover Operators
 
-These crossover operators can be applied to any decision variable type.  They work by swapping decision variables between solutions.  They do not change
-the actual value of the decision variable.
+These crossover operators can be applied to any decision variable type.  They work by swapping decision variables
+between solutions.  They do not change the actual value of the decision variable.
 
 ### One-Point Crossover (1X)
 
-A crossover point is selected and all decision variables to the left/right are swapped between the two parents. The two children resulting from this swapping are returned.
+A crossover point is selected and all decision variables to the left/right are swapped between the two parents. The
+two children resulting from this swapping are returned.
 
 Parameter            | Default Value     | Description
 :------------------- | :---------------- | :----------
@@ -235,7 +265,8 @@ Parameter            | Default Value     | Description
 
 ### Two-Point Crossover (2X)
 
-Two crossover points are selected and all decision variables between the two points are swapped between the two parents. The two children resulting from this swapping are returned.
+Two crossover points are selected and all decision variables between the two points are swapped between the two
+parents. The two children resulting from this swapping are returned.
 
 Parameter            | Default Value     | Description
 :------------------- | :---------------- | :----------
