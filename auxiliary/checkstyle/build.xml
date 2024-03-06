@@ -46,6 +46,9 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		<get dest="${checkstyle.path}/">
 			<url url="${checkstyle.url}" />
 		</get>
+		
+		<checksum file="${checkstyle.path}/checkstyle-${checkstyle.version}-all.jar" property="${checkstyle.sha1}" algorithm="SHA-1" verifyProperty="checkstyle-valid"/>
+		<fail message="Invalid checksum for checkstyle"><condition><isfalse value="${checkstyle-valid}"/></condition></fail>
 	</target>
 
 	<target name="check-style" depends="get-checkstyle">

@@ -145,7 +145,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		<jar basedir="${build}" manifest="${build}/META-INF/MANIFEST.MF"
 				jarfile="${dist}/${shortname}-${version}.jar" />
 	</target>
-	
+
 	<!-- Replace tokens in a given file with their property values -->
 	<target name="replace-properties">
 		<dirname property="replace.dir" file="${replace.file}" />
@@ -171,6 +171,30 @@ Use of these build scripts requires Apache Ant to be installed.  See
 			<url url="${jfreechart.url}" />
 			<url url="${rsyntaxtextarea.url}" />
 		</get>
+		
+		<checksum file="lib/commons-cli-${commons-cli.version}.jar" property="${commons-cli.sha1}" algorithm="SHA-1" verifyProperty="commons-cli-valid"/>
+		<fail message="Invalid checksum for commons-cli"><condition><isfalse value="${commons-cli-valid}"/></condition></fail>
+
+		<checksum file="lib/commons-io-${commons-io.version}.jar" property="${commons-io.sha1}" algorithm="SHA-1" verifyProperty="commons-io-valid"/>
+		<fail message="Invalid checksum for commons-io"><condition><isfalse value="${commons-io-valid}"/></condition></fail>
+		
+		<checksum file="lib/commons-text-${commons-text.version}.jar" property="${commons-text.sha1}" algorithm="SHA-1" verifyProperty="commons-text-valid"/>
+		<fail message="Invalid checksum for commons-text"><condition><isfalse value="${commons-text-valid}"/></condition></fail>
+		
+		<checksum file="lib/commons-lang3-${commons-lang3.version}.jar" property="${commons-lang3.sha1}" algorithm="SHA-1" verifyProperty="commons-lang3-valid"/>
+		<fail message="Invalid checksum for commons-lang3"><condition><isfalse value="${commons-lang3-valid}"/></condition></fail>
+		
+		<checksum file="lib/commons-math3-${commons-math3.version}.jar" property="${commons-math3.sha1}" algorithm="SHA-1" verifyProperty="commons-math3-valid"/>
+		<fail message="Invalid checksum for commons-math3"><condition><isfalse value="${commons-math3-valid}"/></condition></fail>
+		
+		<checksum file="lib/jcommon-${jcommon.version}.jar" property="${jcommon.sha1}" algorithm="SHA-1" verifyProperty="jcommon-valid"/>
+		<fail message="Invalid checksum for jcommon"><condition><isfalse value="${jcommon-valid}"/></condition></fail>
+		
+		<checksum file="lib/jfreechart-${jfreechart.version}.jar" property="${jfreechart.sha1}" algorithm="SHA-1" verifyProperty="jfreechart-valid"/>
+		<fail message="Invalid checksum for jfreechart"><condition><isfalse value="${jfreechart-valid}"/></condition></fail>
+		
+		<checksum file="lib/rsyntaxtextarea-${rsyntaxtextarea.version}.jar" property="${rsyntaxtextarea.sha1}" algorithm="SHA-1" verifyProperty="rsyntaxtextarea-valid"/>
+		<fail message="Invalid checksum for rsyntaxtextarea"><condition><isfalse value="${rsyntaxtextarea-valid}"/></condition></fail>
 		
 		<replaceregexp file=".classpath" match="lib/([a-zA-Z0-9]+(-[a-zA-Z0-9]+)?)-[0-9]+\.[0-9]+\.([0-9]+)?\.jar"
 			replace="lib/\1-%\1.version%.jar" byline="true" />

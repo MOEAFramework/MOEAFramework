@@ -89,6 +89,12 @@ Use of these build scripts requires Apache Ant to be installed.  See
 			<url url="${junit.url}" />
 			<url url="${hamcrest-core.url}" />
 		</get>
+		
+		<checksum file="lib/junit-${junit.version}.jar" property="${junit.sha1}" algorithm="SHA-1" verifyProperty="junit-valid"/>
+		<fail message="Invalid checksum for junit"><condition><isfalse value="${junit-valid}"/></condition></fail>
+		
+		<checksum file="lib/hamcrest-core-${hamcrest-core.version}.jar" property="${hamcrest-core.sha1}" algorithm="SHA-1" verifyProperty="hamcrest-core-valid"/>
+		<fail message="Invalid checksum for hamcrest-core"><condition><isfalse value="${hamcrest-core-valid}"/></condition></fail>
 	</target>
 	
 	<target name="download-nashorn" depends="check-dependencies" if="nashorn-supported">
@@ -99,12 +105,30 @@ Use of these build scripts requires Apache Ant to be installed.  See
 			<url url="${asm-util.url}" />
 			<url url="${nashorn-core.url}" />
 		</get>
+		
+		<checksum file="lib/asm-${asm.version}.jar" property="${asm.sha1}" algorithm="SHA-1" verifyProperty="asm-valid"/>
+		<fail message="Invalid checksum for asm"><condition><isfalse value="${asm-valid}"/></condition></fail>
+			
+		<checksum file="lib/asm-commons-${asm-commons.version}.jar" property="${asm-commons.sha1}" algorithm="SHA-1" verifyProperty="asm-commons-valid"/>
+		<fail message="Invalid checksum for asm-commons"><condition><isfalse value="${asm-commons-valid}"/></condition></fail>
+		
+		<checksum file="lib/asm-tree-${asm-tree.version}.jar" property="${asm-tree.sha1}" algorithm="SHA-1" verifyProperty="asm-tree-valid"/>
+		<fail message="Invalid checksum for asm-tree"><condition><isfalse value="${asm-tree-valid}"/></condition></fail>
+		
+		<checksum file="lib/asm-util-${asm-util.version}.jar" property="${asm-util.sha1}" algorithm="SHA-1" verifyProperty="asm-util-valid"/>
+		<fail message="Invalid checksum for asm-util"><condition><isfalse value="${asm-util-valid}"/></condition></fail>
+		
+		<checksum file="lib/nashorn-core-${nashorn-core.version}.jar" property="${nashorn-core.sha1}" algorithm="SHA-1" verifyProperty="nashorn-core-valid"/>
+		<fail message="Invalid checksum for nashorn-core"><condition><isfalse value="${nashorn-core-valid}"/></condition></fail>
 	</target>
 	
 	<target name="download-jmetal-plugin" depends="check-dependencies" if="jmetal-plugin-supported">
 		<get dest="lib/">
 			<url url="${jmetal-plugin.url}" />
 		</get>
+		
+		<checksum file="lib/jmetal-plugin-${jmetal-plugin.version}-jar-with-dependencies.jar" property="${jmetal-plugin.sha1}" algorithm="SHA-1" verifyProperty="jmetal-plugin-valid"/>
+		<fail message="Invalid checksum for jmetal-plugin"><condition><isfalse value="${jmetal-plugin-valid}"/></condition></fail>
 	</target>
 
 	<!-- Builds the MOEA Framework Test JAR -->
