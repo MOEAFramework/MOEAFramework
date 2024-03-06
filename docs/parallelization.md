@@ -99,6 +99,6 @@ for (int i = 0; i < 8; i++) {
 }
 
 try (ThreadedIslandExecutor executor = new ThreadedIslandExecutor(model)) {
-    executor.run(100000).display();;
+    executor.run(100000).display();
 }
 ```

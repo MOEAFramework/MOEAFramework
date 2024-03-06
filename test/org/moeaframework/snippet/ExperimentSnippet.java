@@ -19,8 +19,6 @@ package org.moeaframework.snippet;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.BitSet;
-
 import org.junit.Test;
 import org.moeaframework.Analyzer;
 import org.moeaframework.Executor;
@@ -30,11 +28,8 @@ import org.moeaframework.analysis.collector.InstrumentedAlgorithm;
 import org.moeaframework.analysis.collector.Observations;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
-import org.moeaframework.core.Solution;
-import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.problem.MockRealProblem;
 import org.moeaframework.problem.CEC2009.UF1;
-import org.moeaframework.problem.DTLZ.DTLZ2;
 
 @SuppressWarnings("unused")
 public class ExperimentSnippet {
