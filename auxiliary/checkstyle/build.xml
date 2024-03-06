@@ -22,7 +22,9 @@ along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
 Use of these build scripts requires Apache Ant to be installed.  See
 <http://ant.apache.org/> for instructions on installing Apache Ant.
 -->
-<project name="MOEA Framework Checkstyle" basedir="../../" default="check-style">
+<project name="MOEA Framework Checkstyle" basedir="../../" default="check-style" xmlns:if="ant:if" xmlns:unless="ant:unless">
+	
+	<import file="../ant/macros.xml" />
 
 	<!-- Loads properties from properties file and environment -->
 	<property file="META-INF/build.properties" />
@@ -38,17 +40,11 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		<fileset dir="${checkstyle.path}" includes="*.jar" />
 	</path>
 
-	<target name="has-checkstyle">
-		<available file="${checkstyle.path}/checkstyle-${checkstyle.version}-all.jar" property="checkstyle-exists" />
-	</target>
-
-	<target name="get-checkstyle" depends="has-checkstyle" unless="checkstyle-exists">
-		<get dest="${checkstyle.path}/">
-			<url url="${checkstyle.url}" />
-		</get>
+	<target name="get-checkstyle">
+		<available file="${checkstyle.path}/checkstyle-${checkstyle.version}-all.jar" property="checkstyle.exists" />
 		
-		<checksum file="${checkstyle.path}/checkstyle-${checkstyle.version}-all.jar" property="${checkstyle.sha1}" algorithm="SHA-1" verifyProperty="checkstyle-valid"/>
-		<fail message="Invalid checksum for checkstyle"><condition><isfalse value="${checkstyle-valid}"/></condition></fail>
+		<secure-get unless:true="${checkstyle.exists}" src="${checkstyle.url}"
+			dest="${checkstyle.path}/checkstyle-${checkstyle.version}-all.jar" sha1="${checkstyle.sha1}" />
 	</target>
 
 	<target name="check-style" depends="get-checkstyle">
@@ -56,7 +52,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		<mkdir dir="${build}" />
 
 		<taskdef resource="com/puppycrawl/tools/checkstyle/ant/checkstyle-ant-task.properties"
-		         classpathref="classpath" />
+			classpathref="classpath" />
 
 		<checkstyle config="checks.xml" failOnViolation="false" failureProperty="checkstyle.failed">
 			<classpath>

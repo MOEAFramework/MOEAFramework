@@ -22,7 +22,9 @@ along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
 Use of these build scripts requires Apache Ant to be installed.  See
 <http://ant.apache.org/> for instructions on installing Apache Ant.
 -->
-<project name="MOEA Framework Testing" basedir="." default="test">
+<project name="MOEA Framework Testing" basedir="." default="test" xmlns:if="ant:if" xmlns:unless="ant:unless">
+	
+	<import file="auxiliary/ant/macros.xml" />
 
 	<!-- Loads properties from properties file and environment -->
 	<property file="META-INF/build.properties" />
@@ -48,91 +50,66 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		<fileset file="COPYING" />
 	</path>
 
-	<!-- Determines which dependencies are available -->
-	<target name="check-dependencies">
-		<available classname="org.junit.Assert" classpathref="classpath" property="junit-exists" />
-		
-		<condition property="nashorn-supported">
-			<javaversion atleast="11" />
-		</condition>
-		
-		<condition property="jmetal-plugin-supported">
-			<javaversion atleast="14" />
-		</condition>
-		
-		<!-- Commented to always force recompiling of the JAR -->
-		<!--<available file="${dist}/${shortname}-${version}.jar" property="binary-exists" />-->
-	</target>
-
-	<!-- Conditionally builds the MOEA Framework JAR -->
-	<target name="check-binary" depends="check-dependencies" unless="binary-exists">
+	<!-- Calls the build-binary target in build.xml to compile the MOEA Framework -->
+	<target name="build-binary">
 		<ant target="build-binary" />
 	</target>
 
 	<!-- Displays message and fails build if JUnit is not available -->
-	<target name="check-junit" depends="check-dependencies" unless="junit-exists">
-		<echo>==================================================================</echo>
-		<echo> The JUnit library is missing from your classpath.  Please</echo>
-		<echo> download the latest JUnit 4 library from http://www.junit.org/,</echo>
-		<echo> and place the JAR in the lib/ folder.</echo>
-		<echo>==================================================================</echo>
-
-		<fail message="JUnit library missing"/>
+	<target name="check-junit">
+		<available classname="org.junit.Assert" classpathref="classpath" property="junit.exists" />
+		
+		<sequential unless:true="${junit.exists}">
+			<echo>==================================================================</echo>
+			<echo> The JUnit library is missing from your classpath.  Please</echo>
+			<echo> download the latest JUnit 4 library from http://www.junit.org/</echo>
+			<echo> or using the download-junit Ant target.</echo>
+			<echo>==================================================================</echo>
+	
+			<fail message="JUnit library missing"/>
+		</sequential>
 	</target>
 	
 	<!-- Downloads test libraries.  These should not be included in any release. -->
 	<target name="download-all" depends="download-junit,download-nashorn,download-jmetal-plugin"
 		description="Download all test dependencies to the lib folder" />
 	
-	<target name="download-junit" depends="check-dependencies" unless="junit-exists">
-		<get dest="lib/">
-			<url url="${junit.url}" />
-			<url url="${hamcrest-core.url}" />
-		</get>
-		
-		<checksum file="lib/junit-${junit.version}.jar" property="${junit.sha1}" algorithm="SHA-1" verifyProperty="junit-valid"/>
-		<fail message="Invalid checksum for junit"><condition><isfalse value="${junit-valid}"/></condition></fail>
-		
-		<checksum file="lib/hamcrest-core-${hamcrest-core.version}.jar" property="${hamcrest-core.sha1}" algorithm="SHA-1" verifyProperty="hamcrest-core-valid"/>
-		<fail message="Invalid checksum for hamcrest-core"><condition><isfalse value="${hamcrest-core-valid}"/></condition></fail>
+	<target name="download-junit">
+		<secure-get src="${junit.url}" dest="lib/junit-${junit.version}.jar" sha1="${junit.sha1}" />
+		<secure-get src="${hamcrest-core.url}" dest="lib/hamcrest-core-${hamcrest-core.version}.jar" sha1="${hamcrest-core.sha1}" />
 	</target>
 	
-	<target name="download-nashorn" depends="check-dependencies" if="nashorn-supported">
-		<get dest="lib/">
-			<url url="${asm.url}" />
-			<url url="${asm-commons.url}" />
-			<url url="${asm-tree.url}" />
-			<url url="${asm-util.url}" />
-			<url url="${nashorn-core.url}" />
-		</get>
+	<target name="download-nashorn">
+		<condition property="nashorn.supported">
+			<javaversion atleast="11" />
+		</condition>
 		
-		<checksum file="lib/asm-${asm.version}.jar" property="${asm.sha1}" algorithm="SHA-1" verifyProperty="asm-valid"/>
-		<fail message="Invalid checksum for asm"><condition><isfalse value="${asm-valid}"/></condition></fail>
-			
-		<checksum file="lib/asm-commons-${asm-commons.version}.jar" property="${asm-commons.sha1}" algorithm="SHA-1" verifyProperty="asm-commons-valid"/>
-		<fail message="Invalid checksum for asm-commons"><condition><isfalse value="${asm-commons-valid}"/></condition></fail>
+		<echo unless:true="${nashorn.supported}">Nashorn requires Java >= 11. Skipping download!</echo>
 		
-		<checksum file="lib/asm-tree-${asm-tree.version}.jar" property="${asm-tree.sha1}" algorithm="SHA-1" verifyProperty="asm-tree-valid"/>
-		<fail message="Invalid checksum for asm-tree"><condition><isfalse value="${asm-tree-valid}"/></condition></fail>
-		
-		<checksum file="lib/asm-util-${asm-util.version}.jar" property="${asm-util.sha1}" algorithm="SHA-1" verifyProperty="asm-util-valid"/>
-		<fail message="Invalid checksum for asm-util"><condition><isfalse value="${asm-util-valid}"/></condition></fail>
-		
-		<checksum file="lib/nashorn-core-${nashorn-core.version}.jar" property="${nashorn-core.sha1}" algorithm="SHA-1" verifyProperty="nashorn-core-valid"/>
-		<fail message="Invalid checksum for nashorn-core"><condition><isfalse value="${nashorn-core-valid}"/></condition></fail>
+		<sequential if:true="${nashorn.supported}">
+			<secure-get src="${asm.url}" dest="lib/asm-${asm.version}.jar" sha1="${asm.sha1}" />
+			<secure-get src="${asm-commons.url}" dest="lib/asm-commons-${asm-commons.version}.jar" sha1="${asm-commons.sha1}" />
+			<secure-get src="${asm-tree.url}" dest="lib/asm-tree-${asm-tree.version}.jar" sha1="${asm-tree.sha1}" />
+			<secure-get src="${asm-util.url}" dest="lib/asm-util-${asm-util.version}.jar" sha1="${asm-util.sha1}" />
+			<secure-get src="${nashorn-core.url}" dest="lib/nashorn-core-${nashorn-core.version}.jar" sha1="${nashorn-core.sha1}" />
+		</sequential>
 	</target>
 	
-	<target name="download-jmetal-plugin" depends="check-dependencies" if="jmetal-plugin-supported">
-		<get dest="lib/">
-			<url url="${jmetal-plugin.url}" />
-		</get>
+	<target name="download-jmetal-plugin">
+		<condition property="jmetal-plugin.supported">
+			<javaversion atleast="14" />
+		</condition>
+
+		<echo unless:true="${jmetal-plugin.supported}">jmetal-plugin requires Java >= 14. Skipping download!</echo>
 		
-		<checksum file="lib/jmetal-plugin-${jmetal-plugin.version}-jar-with-dependencies.jar" property="${jmetal-plugin.sha1}" algorithm="SHA-1" verifyProperty="jmetal-plugin-valid"/>
-		<fail message="Invalid checksum for jmetal-plugin"><condition><isfalse value="${jmetal-plugin-valid}"/></condition></fail>
+		<sequential if:true="${jmetal-plugin.supported}">
+			<secure-get src="${jmetal-plugin.url}" dest="lib/jmetal-plugin-${jmetal-plugin.version}-jar-with-dependencies.jar"
+				sha1="${jmetal-plugin.sha1}" />
+		</sequential>
 	</target>
 
 	<!-- Builds the MOEA Framework Test JAR -->
-	<target name="build-tests" depends="check-dependencies,check-binary,check-junit">
+	<target name="build-tests" depends="build-binary,check-junit">
 		<delete dir="${build}" />
 		<mkdir dir="${build}" />
 
@@ -157,8 +134,8 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		<jar basedir="${build}" jarfile="${dist}/${shortname}-${version}-Test.jar" />
 	</target>
 
-	<!-- Runs all JUnit tests -->
-	<target name="run-tests" depends="build-tests">
+	<!-- The main test target, running all JUnit tests and displaying the results -->
+	<target name="test" depends="build-tests" description="Run the unit tests">
 		<delete dir="${results}" />
 		<mkdir dir="${results}" />
 		<mkdir dir="${results}/raw" />
@@ -207,21 +184,20 @@ Use of these build scripts requires Apache Ant to be installed.  See
 			</fileset>
 			<report format="frames" todir="${results}"/>
 		</junitreport>
-	</target>
+		
+		<sequential if:true="${junit.failure}">
+			<echo>==================================================================</echo>
+			<echo> One or more unit tests failed!  Open test-results/index.html to</echo>
+			<echo> see which tests failed.</echo>
+			<echo>
+			</echo>
+			<echo> Note: due to the stochastic nature of the MOEA Framework, there</echo>
+			<echo> is a small chance that some correct tests will fail.  Please</echo>
+			<echo> repeat the tests prior to notifying the developers.</echo>
+			<echo>==================================================================</echo>
 
-	<!-- The main test target, running all JUnit tests and displaying the results -->
-	<target name="test" depends="run-tests" if="junit.failure" description="Run the unit tests">
-		<echo>==================================================================</echo>
-		<echo> One or more unit tests failed!  Open test-results/index.html to</echo>
-		<echo> see which tests failed.</echo>
-		<echo>
-		</echo>
-		<echo> Note: due to the stochastic nature of the MOEA Framework, there</echo>
-		<echo> is a small chance that some correct tests will fail.  Please</echo>
-		<echo> repeat the tests prior to notifying the developers.</echo>
-		<echo>==================================================================</echo>
-
-		<fail message="Unit test(s) failed.  See reports!"/>
+			<fail message="Unit test(s) failed.  See reports!"/>
+		</sequential>
 	</target>
 	
 	<!-- Setup a Maven project that can be tested by running 'mvn test' -->
@@ -236,10 +212,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		<mkdir dir="${build}/examples" />
 		
 		<copy file="auxiliary/maven/pom.xml" tofile="${build}/pom.xml" />
-		
-		<ant target="replace-properties">
-			<property name="replace.file" value="${build}/pom.xml" />
-		</ant>
+		<replace-properties file="${build}/pom.xml" />
 		
 		<copy todir="${build}/src/main/resources/META-INF">
 			<fileset dir="META-INF" />

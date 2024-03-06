@@ -22,7 +22,9 @@ along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
 Use of these build scripts requires Apache Ant to be installed.  See
 <http://ant.apache.org/> for instructions on installing Apache Ant.
 -->
-<project name="MOEA Framework" basedir=".">
+<project name="MOEA Framework" basedir="." xmlns:if="ant:if" xmlns:unless="ant:unless">
+	
+	<import file="auxiliary/ant/macros.xml" />
 
 	<!-- Loads properties from properties file and environment -->
 	<property file="META-INF/build.properties" />
@@ -145,63 +147,25 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		<jar basedir="${build}" manifest="${build}/META-INF/MANIFEST.MF"
 				jarfile="${dist}/${shortname}-${version}.jar" />
 	</target>
-
-	<!-- Replace tokens in a given file with their property values -->
-	<target name="replace-properties">
-		<dirname property="replace.dir" file="${replace.file}" />
-	    <tempfile property="temp.file" prefix="filter" suffix=".properties" destDir="${replace.dir}" />
-	    <echoproperties destfile="${temp.file}" />
-	    <replaceregexp file="${temp.file}" match="([^=]*)=" replace="%\1%=" byline="true" />
-		<replace summary="true" file="${replace.file}" replacefilterfile="${temp.file}" />
-		<delete file="${temp.file}" />
-	</target>
 	
 	<!-- Update the lib/ folder and .classpath file with the latest versions from build.properties -->
 	<target name="update-libraries">
 		<delete dir="lib" />
 		<mkdir dir="lib" />
 		
-		<get dest="lib/">
-			<url url="${commons-cli.url}" />
-			<url url="${commons-io.url}" />
-			<url url="${commons-lang3.url}" />
-			<url url="${commons-math3.url}" />
-			<url url="${commons-text.url}" />
-			<url url="${jcommon.url}" />
-			<url url="${jfreechart.url}" />
-			<url url="${rsyntaxtextarea.url}" />
-		</get>
-		
-		<checksum file="lib/commons-cli-${commons-cli.version}.jar" property="${commons-cli.sha1}" algorithm="SHA-1" verifyProperty="commons-cli-valid"/>
-		<fail message="Invalid checksum for commons-cli"><condition><isfalse value="${commons-cli-valid}"/></condition></fail>
-
-		<checksum file="lib/commons-io-${commons-io.version}.jar" property="${commons-io.sha1}" algorithm="SHA-1" verifyProperty="commons-io-valid"/>
-		<fail message="Invalid checksum for commons-io"><condition><isfalse value="${commons-io-valid}"/></condition></fail>
-		
-		<checksum file="lib/commons-text-${commons-text.version}.jar" property="${commons-text.sha1}" algorithm="SHA-1" verifyProperty="commons-text-valid"/>
-		<fail message="Invalid checksum for commons-text"><condition><isfalse value="${commons-text-valid}"/></condition></fail>
-		
-		<checksum file="lib/commons-lang3-${commons-lang3.version}.jar" property="${commons-lang3.sha1}" algorithm="SHA-1" verifyProperty="commons-lang3-valid"/>
-		<fail message="Invalid checksum for commons-lang3"><condition><isfalse value="${commons-lang3-valid}"/></condition></fail>
-		
-		<checksum file="lib/commons-math3-${commons-math3.version}.jar" property="${commons-math3.sha1}" algorithm="SHA-1" verifyProperty="commons-math3-valid"/>
-		<fail message="Invalid checksum for commons-math3"><condition><isfalse value="${commons-math3-valid}"/></condition></fail>
-		
-		<checksum file="lib/jcommon-${jcommon.version}.jar" property="${jcommon.sha1}" algorithm="SHA-1" verifyProperty="jcommon-valid"/>
-		<fail message="Invalid checksum for jcommon"><condition><isfalse value="${jcommon-valid}"/></condition></fail>
-		
-		<checksum file="lib/jfreechart-${jfreechart.version}.jar" property="${jfreechart.sha1}" algorithm="SHA-1" verifyProperty="jfreechart-valid"/>
-		<fail message="Invalid checksum for jfreechart"><condition><isfalse value="${jfreechart-valid}"/></condition></fail>
-		
-		<checksum file="lib/rsyntaxtextarea-${rsyntaxtextarea.version}.jar" property="${rsyntaxtextarea.sha1}" algorithm="SHA-1" verifyProperty="rsyntaxtextarea-valid"/>
-		<fail message="Invalid checksum for rsyntaxtextarea"><condition><isfalse value="${rsyntaxtextarea-valid}"/></condition></fail>
+		<secure-get src="${commons-cli.url}" dest="lib/commons-cli-${commons-cli.version}.jar" sha1="${commons-cli.sha1}" />
+		<secure-get src="${commons-io.url}" dest="lib/commons-io-${commons-io.version}.jar" sha1="${commons-io.sha1}" />
+		<secure-get src="${commons-lang3.url}" dest="lib/commons-lang3-${commons-lang3.version}.jar" sha1="${commons-lang3.sha1}" />
+		<secure-get src="${commons-math3.url}" dest="lib/commons-math3-${commons-math3.version}.jar" sha1="${commons-math3.sha1}" />
+		<secure-get src="${commons-text.url}" dest="lib/commons-text-${commons-text.version}.jar" sha1="${commons-text.sha1}" />
+		<secure-get src="${jcommon.url}" dest="lib/jcommon-${jcommon.version}.jar" sha1="${jcommon.sha1}" />
+		<secure-get src="${jfreechart.url}" dest="lib/jfreechart-${jfreechart.version}.jar" sha1="${jfreechart.sha1}" />
+		<secure-get src="${rsyntaxtextarea.url}" dest="lib/rsyntaxtextarea-${rsyntaxtextarea.version}.jar" sha1="${rsyntaxtextarea.sha1}" />
 		
 		<replaceregexp file=".classpath" match="lib/([a-zA-Z0-9]+(-[a-zA-Z0-9]+)?)-[0-9]+\.[0-9]+\.([0-9]+)?\.jar"
 			replace="lib/\1-%\1.version%.jar" byline="true" />
-
-		<antcall target="replace-properties">
-			<param name="replace.file" value=".classpath" />
-		</antcall>
+		
+		<replace-properties file=".classpath" />
 	</target>
 	
 	<!-- Updates code samples used in the docs -->
@@ -420,9 +384,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		
 		<copy file="auxiliary/maven/pom.xml" tofile="${maven}/${artifactId}-${version}.pom" />
 		
-		<antcall target="replace-properties">
-			<param name="replace.file" value="${maven}/${artifactId}-${version}.pom" />
-		</antcall>
+		<replace-properties file="${maven}/${artifactId}-${version}.pom" />
 
 		<antcall target="build-binary" />
 		<copy todir="${build}/pf">
