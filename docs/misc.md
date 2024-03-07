@@ -48,6 +48,7 @@ for the output:
 <!-- java:examples/org/moeaframework/examples/misc/SaveAndFormatResultsExample.java [42:44] -->
 
 ```java
+
 NumberFormatter.getDefault().setPrecision(10);
 algorithm.getResult().display();
 ```
@@ -86,10 +87,10 @@ the solution with the desired types.  Here we setup up a binary integer and a re
 ```java
 public Solution newSolution() {
     Solution solution = new Solution(2, 2, 2);
-    
+
     solution.setVariable(0, EncodingUtils.newBinaryInt(-20, 20));
     solution.setVariable(1, EncodingUtils.newReal(-20.0, 20.0));
-    
+
     return solution;
 ```
 
@@ -115,7 +116,7 @@ Problem problem = new MixedTypesSrinivasProblem();
 NSGAII algorithm = new NSGAII(problem);
 
 algorithm.setVariation(new CompoundVariation(new SBX(), new HUX(), new PM(), new BitFlip()));
-        
+
 algorithm.run(10000);
 algorithm.getResult().display();
 ```

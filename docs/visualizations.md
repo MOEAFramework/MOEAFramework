@@ -39,14 +39,14 @@ Instrumenter instrumenter = new Instrumenter()
     .withFrequency(100)
     .attachHypervolumeCollector()
     .attachGenerationalDistanceCollector();
-        
+
 NSGAII algorithm = new NSGAII(problem);
-        
+
 InstrumentedAlgorithm instrumentedAlgorithm = instrumenter.instrument(algorithm);
 instrumentedAlgorithm.run(10000);
-        
+
 Observations observations = instrumenter.getObservations();
-        
+
 new Plot()
     .add(observations)
     .show();
@@ -65,18 +65,18 @@ performance of the algorithm (lighter-colored areas indicate better results).
 Problem problem = new DTLZ2(2);
 Hypervolume hypervolume = new Hypervolume(problem, PopulationIO.readReferenceSet("./pf/DTLZ2.2D.pf"));
 
-double[] x = IntStream.range(0, 50).mapToDouble(i -> 100 * (i+1)).toArray(); // maxEvaluations from 100 to 5000
-double[] y = IntStream.range(0, 50).mapToDouble(i -> 4 * (i+1)).toArray();   // populationSize from 2 to 100
+double[] x = IntStream.range(0, 50).mapToDouble(i -> 100 * (i+1)).toArray(); 
+double[] y = IntStream.range(0, 50).mapToDouble(i -> 4 * (i+1)).toArray();   
 double[][] z = new double[x.length][y.length];
 
 for (int i = 0; i < x.length; i++) {
     for (int j = 0; j < y.length; j++) {
         System.out.println("Evaluating run " + (i * y.length + j + 1) + " of " + (x.length * y.length));
-        
+
         NSGAII algorithm = new NSGAII(problem);
         algorithm.setInitialPopulationSize((int)y[j]);
         algorithm.run((int)x[i]);
-        
+
         z[i][j] = hypervolume.evaluate(algorithm.getResult());
     }
 }

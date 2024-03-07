@@ -26,16 +26,10 @@ Programming this using the MOEA Framework would look something like:
 ```java
 public static class Srinivas extends AbstractProblem {
 
-    /**
-     * Creates the problem with two decision variables, two objectives, and two constraints.
-     */
     public Srinivas() {
         super(2, 2, 2);
     }
 
-    /**
-     * Function to evaluate each solution.
-     */
     @Override
     public void evaluate(Solution solution) {
         double[] x = EncodingUtils.getReal(solution);
@@ -43,29 +37,24 @@ public static class Srinivas extends AbstractProblem {
         double f2 = 9.0*x[0] - Math.pow(x[1] - 1.0, 2.0);
         double c1 = Math.pow(x[0], 2.0) + Math.pow(x[1], 2.0) - 225.0;
         double c2 = x[0] - 3.0*x[1] + 10.0;
-        
+
         solution.setObjective(0, f1);
         solution.setObjective(1, f2);
-        
+
         solution.setConstraint(0, Constraint.lessThanOrEqual(c1, 0.0));
         solution.setConstraint(1, Constraint.lessThanOrEqual(c2, 0.0));
     }
 
-    /**
-     * Function to create a new solution.  Here is where we define the types and
-     * bounds of each decision variables.  In this example, we have two real-valued
-     * variables ranging from -20 to 20.
-     */
     @Override
     public Solution newSolution() {
         Solution solution = new Solution(2, 2, 2);
-        
+
         solution.setVariable(0, new RealVariable(-20.0, 20.0));
         solution.setVariable(1, new RealVariable(-20.0, 20.0));
-        
+
         return solution;
     }
-    
+
 }
 ```
 
@@ -96,29 +85,30 @@ will maintain a population of solutions, we can build this from the `AbstractEvo
 
 ```java
 public static class RandomWalker extends AbstractEvolutionaryAlgorithm {
-    
+
     public RandomWalker(Problem problem) {
         super(problem,
                 Settings.DEFAULT_POPULATION_SIZE,
                 new NondominatedSortingPopulation(),
-                null, /* no archive */
+                null, 
                 new RandomInitialization(problem),
                 OperatorFactory.getInstance().getVariation("pm", problem));
     }
 
     @Override
     protected void iterate() {
+
         NondominatedSortingPopulation population = (NondominatedSortingPopulation)getPopulation();
-        
+
         int index = PRNG.nextInt(population.size());
         Solution parent = population.get(index);
-        
+
         Solution offspring = getVariation().evolve(new Solution[] { parent })[0];
-        
+
         evaluate(offspring);
-        
+
         population.add(offspring);
-        
+
         population.truncate(population.size()-1);
     }
 

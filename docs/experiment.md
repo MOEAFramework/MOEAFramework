@@ -62,7 +62,7 @@ Analyzer analyzer = new Analyzer()
         .withSameProblemAs(executor)
         .includeHypervolume()
         .includeGenerationalDistance();
-        
+
 analyzer.addAll("NSGAII", executor.runSeeds(50));
 analyzer.display();
 ```
@@ -117,6 +117,7 @@ It collects information about each algorithm while it is running at a fixed freq
 <!-- java:examples/Example5.java [40:55] -->
 
 ```java
+
 Instrumenter instrumenter = new Instrumenter()
         .withProblem("UF1")
         .withFrequency(100)
@@ -155,7 +156,7 @@ We can also plot these results:
 
 ```java
 Observations observations = instrumenter.getObservations();
-        
+
 new Plot()
     .add(observations)
     .show();

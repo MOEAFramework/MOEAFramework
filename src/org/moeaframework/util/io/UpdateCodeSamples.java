@@ -27,10 +27,14 @@ import java.io.StringReader;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.EnumSet;
+import java.util.HashSet;
 import java.util.List;
-import java.util.function.Predicate;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
@@ -55,16 +59,13 @@ import org.moeaframework.util.CommandLineUtility;
  * <p>
  * The format of the comment is:
  * <pre>{@code <!-- <language>:<filename> [<startingLine>:<endingLine>] {<flag>,...} -->}</pre>
- * <p>
- * Language is the name of the programming language.  A special case is {@code output}, which compiles, executes, and
- * captures the output of the program.
- * <p>
- * If no line numbers are provided, the entire content is copied.  The line numbers start at index 1.  The starting
- * or ending line number can be excluded, which case it copies the content from the start or end, respectively.
- * <p>
- * Flags provide additional formatting options, such as {@code {keepComments}} to keep any Java comments in the
- * example.
- * <p>
+ * <ul>
+ *   <li>{@code <language>} is the name of the programming language.  A special case is {@code output}, which
+ *       compiles, executes, and captures the output of the program.
+ *   <li>{@code [<startingLine>:<endingLine>]} specifies the line numbers, starting at index 1, to extract from the
+ *       file.  If no line numbers are provided, the entire content is copied.
+ *   <li>{@code {<flag>,...}} specifies additional formatting options, such as {@code {keepComments}}.
+ * <ul>
  * This utility can be run in validate-only mode or update mode.  In validate mode, any changes to the files will
  * result in an error.  This is useful in CI to validate the docs are up-to-date.  In update mode, the files are
  * updated with any changes.
@@ -175,30 +176,29 @@ public class UpdateCodeSamples extends CommandLineUtility {
 				Matcher matcher = REGEX.matcher(line);
 				
 				if (matcher.matches()) {
-					String language = matcher.group(1);
+					Language language = Language.fromString(matcher.group(1));
 					String filename = matcher.group(2);
-					int startingLine = matcher.group(3) != null ? Integer.parseInt(matcher.group(3)) : FormattingOptions.FIRST_LINE;
-					int endingLine = matcher.group(4) != null ? Integer.parseInt(matcher.group(4)) : FormattingOptions.LAST_LINE;
-					String flags = matcher.group(5);
-					
-					FormattingOptions options = new FormattingOptions(language, startingLine, endingLine);
-					options.parseFlags(flags);
-					options.fileType = fileType;
+
+					FormattingOptions options = new FormattingOptions(language,
+							matcher.group(3) != null ? Integer.parseInt(matcher.group(3)) : FormattingOptions.FIRST_LINE,
+							matcher.group(4) != null ? Integer.parseInt(matcher.group(4)) : FormattingOptions.LAST_LINE);
+					options.parseFlags(matcher.group(5));
 					
 					String content = "";
 					System.out.println("    > Updating " + language + " block: " + filename + " " + options);
 					
-					if (language.equalsIgnoreCase("output")) {
-						options.language = null;
-
+					switch (language) {
+					case Output:
 						compile(filename);
 						content = execute(filename);
-					} else {
+						break;
+					default:
 						content = FileUtils.readUTF8(new File(filename));
+						break;
 					}
 					
 					// compare old and new content
-					List<String> newContent = format(content, options);
+					List<String> newContent = format(content, options, fileType);
 					List<String> oldContent = getNextCodeBlock(reader, writer, fileType);
 					
 					boolean contentChanged = diffContent(oldContent, newContent);
@@ -244,28 +244,16 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		String line = null;
 		boolean inCodeBlock = false;
 		
-		Predicate<String> isCodeBlock = str -> {
-			switch (fileType) {
-				case Markdown:
-					return str.startsWith("```");
-				case Html:
-					return str.startsWith("<pre") || str.startsWith("</pre>");
-				default:
-					return false;
-			}
-		};
-		
 		while ((line = reader.readLine()) != null) {		
-			if (isCodeBlock.test(line)) {
+			if (!inCodeBlock && fileType.isStartOfCodeBlock(line)) {
 				content.add(line);
-				
-				if (inCodeBlock) {
-					return content;
-				}
-				
 				inCodeBlock = true;
 			} else if (inCodeBlock) {
 				content.add(line);
+				
+				if (fileType.isEndOfCodeBlock(line)) {
+					return content;
+				}
 			} else {
 				writer.write(line);
 				writer.newLine();
@@ -322,24 +310,14 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		}
 	}
 	
-	private List<String> format(String content, FormattingOptions options) throws Exception {
-		List<String> lines = new ArrayList<String>();
-		
-		try (BufferedReader reader = new BufferedReader(new StringReader(content))) {
-			String line = null;
-
-			while ((line = reader.readLine()) != null) {
-				lines.add(line);
-			}
-		}
-		
-		return format(lines, options);
+	private List<String> format(String content, FormattingOptions options, FileType fileType) throws IOException {
+		return format(splitIntoLines(content), options, fileType);
 	}
 	
-	private List<String> format(List<String> lines, FormattingOptions options) {
+	private List<String> format(List<String> lines, FormattingOptions options, FileType fileType) throws IOException {
 		lines = lines.subList(options.startingLine - 1, Math.min(lines.size(), options.endingLine));
 		
-		if (options.stripIndentation) {
+		if (options.stripIndentation()) {
 			// TODO: can use String#stripIndent() after updating to Java 12+
 			boolean stripFirstChar = true;
 			
@@ -368,11 +346,11 @@ public class UpdateCodeSamples extends CommandLineUtility {
 			}
 		}
 		
-		if (options.stripComments) {
-			lines.removeIf(s -> s.trim().startsWith("//"));
+		if (options.stripComments()) {
+			lines = options.language.stripComments(lines);
 		}
 		
-		if (options.replaceTabsWithSpaces) {
+		if (options.replaceTabsWithSpaces()) {
 			for (int i = 0; i < lines.size(); i++) {
 				String line = lines.get(i);
 				line = line.replaceAll("[\\t]", "    ");
@@ -380,19 +358,20 @@ public class UpdateCodeSamples extends CommandLineUtility {
 			}
 		}
 		
-		switch (options.fileType) {
-			case Markdown:
-				lines.add(0, "```" + (options.language == null ? "" : options.language));
-				lines.add("```");
-				break;
-			case Html:
-				lines.add(0, "<pre class=\"brush: " + (options.language == null ? "plain" : options.language) + "; toolbar: false;\">");
-				lines.add(1, "<![CDATA[");
-				lines.add("]]>");
-				lines.add("</pre>");
-				break;
-			default:
-				break;
+		fileType.wrapInCodeBlock(lines, options);
+		
+		return lines;
+	}
+	
+	private static List<String> splitIntoLines(String content) throws IOException {
+		List<String> lines = new ArrayList<String>();
+		
+		try (BufferedReader reader = new BufferedReader(new StringReader(content))) {
+			String line = null;
+
+			while ((line = reader.readLine()) != null) {
+				lines.add(line);
+			}
 		}
 		
 		return lines;
@@ -404,50 +383,141 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		
 		public static final int LAST_LINE = Integer.MAX_VALUE;
 		
-		public String language;
+		private Language language;
 		
-		public final int startingLine;
+		private final int startingLine;
 		
-		public final int endingLine;
+		private final int endingLine;
 		
-		public boolean stripIndentation = true;
-		
-		public boolean stripComments = true;
-		
-		public boolean replaceTabsWithSpaces = true;
-		
-		public FileType fileType;
-		
-		public FormattingOptions(String language, int startingLine, int endingLine) {
+		private final EnumSet<FormatFlag> formatFlags;
+				
+		public FormattingOptions(Language language, int startingLine, int endingLine) {
 			super();
 			this.language = language;
 			this.startingLine = startingLine;
 			this.endingLine = endingLine;
+			
+			formatFlags = EnumSet.noneOf(FormatFlag.class);
 		}
 		
-		public void parseFlags(String flags) throws IOException {
-			if (flags == null || flags.trim().isEmpty()) {
-				return;
-			}
-			
-			for (String token : flags.split("[;,]")) {
-				if (token.equalsIgnoreCase("keepComments")) {
-					stripComments = false;
-				} else if (token.equalsIgnoreCase("keepIndentation")) {
-					stripIndentation = false;
-				} else if (token.equalsIgnoreCase("keepTabs")) {
-					replaceTabsWithSpaces = false;
-				} else {
-					throw new IOException("Unrecognized formatting flag '" + token + "'");
-				}
-			}
+		public void parseFlags(String str) throws IOException {
+			formatFlags.addAll(FormatFlag.fromFormatString(str));
+		}
+		
+		public boolean stripComments() {
+			return !formatFlags.contains(FormatFlag.KeepComments);
+		}
+		
+		public boolean stripIndentation() {
+			return !formatFlags.contains(FormatFlag.KeepIndentation);
+		}
+		
+		public boolean replaceTabsWithSpaces() {
+			return !formatFlags.contains(FormatFlag.KeepTabs);
 		}
 
 		public String toString() {
-			return "[" + (startingLine == FIRST_LINE ? "" : startingLine) + ":" +
-					(endingLine == LAST_LINE ? "" : endingLine) + "]";
+			StringBuilder sb = new StringBuilder();
+			sb.append("[");
+			sb.append(startingLine == FIRST_LINE ? "" : startingLine);
+			sb.append(":");
+			sb.append(endingLine == LAST_LINE ? "" : endingLine);
+			sb.append("]");
+			
+			if (!formatFlags.isEmpty()) {
+				sb.append(" ");
+				sb.append(FormatFlag.toFormatString(formatFlags));
+			}
+			
+			return sb.toString();
 		}
 		
+	}
+	
+	private enum Language {
+		
+		Java,
+		
+		Text,
+		
+		Bash,
+		
+		Output;
+		
+		public static Language fromString(String str) {
+			for (Language language : values()) {
+				if (language.name().equalsIgnoreCase(str)) {
+					return language;
+				}
+			}
+			
+			throw new IllegalArgumentException("Unrecognized language '" + str + "'");
+		}
+		
+		public List<String> stripComments(List<String> lines) throws IOException {
+			String content = String.join(System.lineSeparator(), lines);
+			content = stripComments(content);
+			return splitIntoLines(content);
+		}
+		
+		public String stripComments(String content) {
+			switch (this) {
+			case Java:
+				// Remove C-style // comments
+				content = content.replaceAll("//[^\\n]*", "");                              
+				
+				// Remove C-style /* */ comments
+				content = content.replaceAll("/\\*[^*]*\\*+(?:[^/*][^*]*\\*+)*/", "");
+				
+				 // Replace multiple blank lines with just one
+				content = content.replaceAll("(?:\\s*\\r?\\n){2,}", System.lineSeparator() + System.lineSeparator());
+				return content;
+			default:
+				return content;
+			}
+		}
+		
+	}
+	
+	private enum FormatFlag {
+		
+		KeepComments,
+		
+		KeepIndentation,
+		
+		KeepTabs;
+		
+		public static FormatFlag fromString(String str) {
+			for (FormatFlag formatFlag : values()) {
+				if (formatFlag.name().equalsIgnoreCase(str)) {
+					return formatFlag;
+				}
+			}
+			
+			throw new IllegalArgumentException("Unrecognized formatting flag '" + str + "'");
+		}
+		
+		public static EnumSet<FormatFlag> fromFormatString(String str) {
+			EnumSet<FormatFlag> result = EnumSet.noneOf(FormatFlag.class);
+			
+			if (str == null) {
+				return result;
+			}
+			
+			if (str.startsWith("{") && str.endsWith("}")) {
+				str = str.substring(1, str.length()-1);
+			}
+			
+			for (String token : str.split("[;,]")) {
+				result.add(fromString(token.trim()));
+			}
+			
+			return result;
+		}
+		
+		public static String toFormatString(EnumSet<FormatFlag> flags) {
+			return "{" + flags.stream().map(f -> f.toString()).collect(Collectors.joining(";")) + "}";
+		}
 	}
 	
 	private enum FileType {
@@ -456,7 +526,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		
 		Html("html", "xml");
 		
-		public final String[] extensions;
+		private final String[] extensions;
 		
 		private FileType(String... extensions) {
 			this.extensions = extensions;
@@ -472,6 +542,61 @@ public class UpdateCodeSamples extends CommandLineUtility {
 			}
 			
 			return null;
+		}
+		
+		public boolean isStartOfCodeBlock(String line) {
+			switch (this) {
+			case Markdown:
+				return line.startsWith("```");
+			case Html:
+				return line.startsWith("<pre");
+			default:
+				return false;
+			}
+		}
+		
+		public boolean isEndOfCodeBlock(String line) {
+			switch (this) {
+			case Markdown:
+				return line.startsWith("```");
+			case Html:
+				return line.startsWith("</pre>");
+			default:
+				return false;
+			}
+		}
+		
+		public String getBrush(Language language) {
+			final Set<String> markdownBrush = new HashSet<String>(Arrays.asList("java", "bash", "text"));
+			final Set<String> htmlBrush = new HashSet<String>(Arrays.asList("java"));
+			
+			String brushName = language.name().toLowerCase();
+			
+			switch (this) {
+			case Markdown:
+				return markdownBrush.contains(brushName) ? brushName : "";
+			case Html:
+				return htmlBrush.contains(brushName) ? brushName : "plain";
+			default:
+				return "";
+			}
+		}
+		
+		public void wrapInCodeBlock(List<String> lines, FormattingOptions options) {
+			switch (this) {
+			case Markdown:
+				lines.add(0, "```" + getBrush(options.language));
+				lines.add("```");
+				break;
+			case Html:
+				lines.add(0, "<pre class=\"brush: " + getBrush(options.language) + "; toolbar: false;\">");
+				lines.add(1, "<![CDATA[");
+				lines.add("]]>");
+				lines.add("</pre>");
+				break;
+			default:
+				break;
+			}
 		}
 	}
 	

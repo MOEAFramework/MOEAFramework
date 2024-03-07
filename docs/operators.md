@@ -25,7 +25,7 @@ properties.setInt("populationSize", 250);
 properties.setString("operator", "pcx");
 properties.setInt("pcx.parents", 10);
 properties.setInt("pcx.offspring", 2);
-        
+
 algorithm.applyConfiguration(properties);
 ```
 

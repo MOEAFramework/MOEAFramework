@@ -14,7 +14,7 @@ $$ \text{Minimize } f(x,y) = 100(y-x^2)^2 + (1-x)^2 $$
 
 ```java
 public class RosenbrockProblem extends AbstractProblem {
-    
+
     public RosenbrockProblem() {
         super(2, 1, 0);
     }
@@ -23,7 +23,7 @@ public class RosenbrockProblem extends AbstractProblem {
     public void evaluate(Solution solution) {
         double x = EncodingUtils.getReal(solution.getVariable(0));
         double y = EncodingUtils.getReal(solution.getVariable(1));
-        
+
         solution.setObjective(0, 100*(y - x*x)*(y - x*x) + (1 - x)*(1 - x));
     }
 

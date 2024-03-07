@@ -65,7 +65,7 @@ Problem problem = new DTLZ2(2);
 NSGAII algorithm = new NSGAII(problem);
 algorithm.setInitialPopulationSize(250);
 algorithm.setVariation(new PCX(10, 2));
-        
+
 algorithm.run(10000);
 algorithm.getResult().display();
 ```
@@ -85,9 +85,9 @@ properties.setInt("populationSize", 250);
 properties.setString("operator", "pcx");
 properties.setInt("pcx.parents", 10);
 properties.setInt("pcx.offspring", 2);
-        
+
 algorithm.applyConfiguration(properties);
-        
+
 algorithm.run(10000);
 algorithm.getResult().display();
 ```
