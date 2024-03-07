@@ -78,7 +78,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 	
 	private static final File[] DEFAULT_PATHS = new File[] { new File("docs/"), new File("website/xslt") };
 	
-	private static final Pattern REGEX = Pattern.compile("<!--\\s+([a-zA-Z]+)\\:([^\\s]+)(?:\\s+\\[([0-9]+)?[:\\-]([0-9]+)?\\])?(?:\\s+\\{([a-zA-Z0-9;,]+)\\})?\\s+-->");
+	private static final Pattern REGEX = Pattern.compile("<!--\\s+([a-zA-Z]+)\\:([^\\s]+)(?:\\s+\\[([^\\]]+)\\])?(?:\\s+\\{([^\\}]+)\\})?\\s+-->");
 	
 	private boolean update;
 	
@@ -179,10 +179,9 @@ public class UpdateCodeSamples extends CommandLineUtility {
 					Language language = Language.fromString(matcher.group(1));
 					String filename = matcher.group(2);
 
-					FormattingOptions options = new FormattingOptions(language,
-							matcher.group(3) != null ? Integer.parseInt(matcher.group(3)) : FormattingOptions.FIRST_LINE,
-							matcher.group(4) != null ? Integer.parseInt(matcher.group(4)) : FormattingOptions.LAST_LINE);
-					options.parseFlags(matcher.group(5));
+					FormattingOptions options = new FormattingOptions(language);
+					options.parseLineNumbers(matcher.group(3));
+					options.parseFlags(matcher.group(4));
 					
 					String content = "";
 					System.out.println("    > Updating " + language + " block: " + filename + " " + options);
@@ -383,24 +382,47 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		
 		public static final int LAST_LINE = Integer.MAX_VALUE;
 		
-		private Language language;
+		private final Language language;
 		
-		private final int startingLine;
+		private int startingLine;
 		
-		private final int endingLine;
+		private int endingLine;
 		
 		private final EnumSet<FormatFlag> formatFlags;
 				
-		public FormattingOptions(Language language, int startingLine, int endingLine) {
+		public FormattingOptions(Language language) {
 			super();
 			this.language = language;
-			this.startingLine = startingLine;
-			this.endingLine = endingLine;
 			
+			startingLine = FIRST_LINE;
+			endingLine = LAST_LINE;
 			formatFlags = EnumSet.noneOf(FormatFlag.class);
 		}
 		
-		public void parseFlags(String str) throws IOException {
+		public void parseLineNumbers(String str) {
+			final Pattern lineNumbers = Pattern.compile("([0-9]+)?[:\\\\-]([0-9]+)?");
+			
+			if (str == null) {
+				startingLine = FIRST_LINE;
+				endingLine = LAST_LINE;
+				return;
+			}
+			
+			if (str.startsWith("[") && str.endsWith("]")) {
+				str = str.substring(1, str.length()-1);
+			}
+			
+			Matcher matcher = lineNumbers.matcher(str);
+			
+			if (matcher.matches()) {
+				startingLine = matcher.group(1) != null ? Integer.parseInt(matcher.group(1)) : FIRST_LINE;
+				endingLine = matcher.group(2) != null ? Integer.parseInt(matcher.group(2)) : LAST_LINE;
+			} else {
+				throw new IllegalArgumentException("Unrecognized line number range '" + str + "'");
+			}
+		}
+		
+		public void parseFlags(String str) {
 			formatFlags.addAll(FormatFlag.fromFormatString(str));
 		}
 		
