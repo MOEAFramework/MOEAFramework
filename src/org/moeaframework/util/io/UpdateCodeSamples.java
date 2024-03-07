@@ -35,7 +35,6 @@ import java.util.regex.Pattern;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.SystemUtils;
 import org.moeaframework.core.Settings;
@@ -71,9 +70,7 @@ import org.moeaframework.util.CommandLineUtility;
  * updated with any changes.
  */
 public class UpdateCodeSamples extends CommandLineUtility {
-	
-	private static final String CHARSET = "UTF8";
-	
+		
 	private static final long SEED = 123456;
 	
 	private static final String[] DEFAULT_CLASSPATH = new String[] { "lib/*", "build", "examples" };
@@ -114,19 +111,31 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		classpath = commandLine.hasOption("classpath") ? commandLine.getOptionValues("classpath") : DEFAULT_CLASSPATH;
 		
 		System.out.println("Using classpath \"" + getClassPath(classpath) + "\"");
+		
+		boolean fileChanged = false;
 
 		if (commandLine.getArgs().length == 0) {
 			for (File path : DEFAULT_PATHS) {
-				scan(path);
+				fileChanged |= scan(path);
 			}
 		} else {
 			for (String arg : commandLine.getArgs()) {
-				scan(new File(arg));
+				fileChanged |= scan(new File(arg));
+			}
+		}
+		
+		if (fileChanged) {
+			if (update) {
+				System.out.println("Updated code samples, please validate and commit the changes!");
+			} else {
+				throw new IOException("Detected changes to code samples!");
 			}
 		}
 	}
 	
-	private void scan(File file) throws Exception {
+	private boolean scan(File file) throws Exception {
+		boolean fileChanged = false;
+		
 		if (!file.exists()) {
 			System.out.println("Skipping " + file + ", does not exist");
 		}
@@ -134,19 +143,22 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		if (file.isDirectory()) {
 			System.out.println("Scanning directory " + file);
 			for (File nestedFile : file.listFiles()) {
-				scan(nestedFile);
+				fileChanged |= scan(nestedFile);
 			}
 		} else {
-			process(file);
+			fileChanged |= process(file);
 		}
+		
+		return fileChanged;
 	}
 	
-	private void process(File file) throws Exception {
+	private boolean process(File file) throws Exception {
+		boolean fileChanged = false;
 		FileType fileType = FileType.fromExtension(FilenameUtils.getExtension(file.getName()));
 		
 		if (fileType == null) {
 			System.out.println("Skipping " + file + ", not a recognized extension");
-			return;
+			return fileChanged;
 		}
 		
 		System.out.println("Processing " + file);
@@ -182,34 +194,53 @@ public class UpdateCodeSamples extends CommandLineUtility {
 						compile(filename);
 						content = execute(filename);
 					} else {
-						content = FileUtils.readFileToString(new File(filename), CHARSET);
+						content = FileUtils.readUTF8(new File(filename));
 					}
 					
-					// write updated code block to output
-					writer.write(format(content, options));
-					writer.newLine();
+					// compare old and new content
+					List<String> newContent = format(content, options);
+					List<String> oldContent = getNextCodeBlock(reader, writer, fileType);
 					
-					skipNextCodeBlock(reader, options.fileType);
+					boolean contentChanged = diffContent(oldContent, newContent);
+					fileChanged |= contentChanged;
+					
+					writer.write(String.join(System.lineSeparator(), newContent));
+					writer.newLine();
 				}
-			}
-		}
-
-		if (!FileUtils.contentEqualsIgnoreEOL(file, tempFile, CHARSET)) {
-			System.out.println("    > File changed!");
-			
-			if (!update) {
-				throw new IOException("Detected changes to files!");
 			}
 		}
 		
 		if (update) {
-			org.moeaframework.util.io.FileUtils.move(tempFile, file);
+			FileUtils.move(tempFile, file);
 		} else {
-			org.moeaframework.util.io.FileUtils.delete(tempFile);
+			FileUtils.delete(tempFile);
 		}
+		
+		return fileChanged;
 	}
 	
-	private void skipNextCodeBlock(BufferedReader reader, FileType fileType) throws Exception {
+	private boolean diffContent(List<String> first, List<String> second) {
+		boolean result = false;
+		
+		for (int i = 0; i < Math.max(first.size(), second.size()); i++) {
+			if (i >= first.size()) {
+				System.out.println("      ! >> " + second.get(i));
+				result = true;
+			} else if (i >= second.size()) {
+				System.out.println("      ! << " + first.get(i));
+				result = true;
+			} else if (!first.get(i).equals(second.get(i))) {
+				System.out.println("      ! << " + first.get(i));
+				System.out.println("      ! >> " + second.get(i));
+				result = true;
+			}
+		}
+		
+		return result;
+	}
+	
+	private List<String> getNextCodeBlock(BufferedReader reader, BufferedWriter writer, FileType fileType) throws Exception {
+		List<String> content = new ArrayList<String>();
 		String line = null;
 		boolean inCodeBlock = false;
 		
@@ -224,23 +255,24 @@ public class UpdateCodeSamples extends CommandLineUtility {
 			}
 		};
 		
-		while ((line = reader.readLine()) != null) {
-			line = line.trim();
-			
-			if (line.isEmpty()) {
-				continue;
-			}
-			
+		while ((line = reader.readLine()) != null) {		
 			if (isCodeBlock.test(line)) {
+				content.add(line);
+				
 				if (inCodeBlock) {
-					return;
+					return content;
 				}
 				
 				inCodeBlock = true;
-			}
-			
-			if (!inCodeBlock) {
-				throw new IOException("Expected code block but found '" + line + "'");
+			} else if (inCodeBlock) {
+				content.add(line);
+			} else {
+				writer.write(line);
+				writer.newLine();
+				
+				if (!line.trim().isEmpty()) {
+					throw new IOException("Expected code block but found '" + line + "'");
+				}
 			}
 		}
 		
@@ -290,7 +322,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		}
 	}
 	
-	private String format(String content, FormattingOptions options) throws Exception {
+	private List<String> format(String content, FormattingOptions options) throws Exception {
 		List<String> lines = new ArrayList<String>();
 		
 		try (BufferedReader reader = new BufferedReader(new StringReader(content))) {
@@ -304,7 +336,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		return format(lines, options);
 	}
 	
-	private String format(List<String> lines, FormattingOptions options) {
+	private List<String> format(List<String> lines, FormattingOptions options) {
 		lines = lines.subList(options.startingLine - 1, Math.min(lines.size(), options.endingLine));
 		
 		if (options.stripIndentation) {
@@ -350,8 +382,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		
 		switch (options.fileType) {
 			case Markdown:
-				lines.add(0, "");
-				lines.add(1, "```" + (options.language == null ? "" : options.language));
+				lines.add(0, "```" + (options.language == null ? "" : options.language));
 				lines.add("```");
 				break;
 			case Html:
@@ -364,7 +395,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 				break;
 		}
 		
-		return String.join(System.lineSeparator(), lines);
+		return lines;
 	}
 	
 	private class FormattingOptions {

@@ -102,5 +102,16 @@ public class FileUtils {
 			}
 		}
 	}
+	
+	/**
+	 * Reads the file using the UTF8 charset.
+	 * 
+	 * @param file the file to read
+	 * @return the content of the file
+	 * @throws IOException if the file does not exist or an I/O error occurred while reading the file
+	 */
+	public static String readUTF8(File file) throws IOException {
+		return org.apache.commons.io.FileUtils.readFileToString(file, "UTF8");
+	}
 
 }
