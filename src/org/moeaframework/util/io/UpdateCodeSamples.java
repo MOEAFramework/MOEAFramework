@@ -41,6 +41,7 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.SystemUtils;
+import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Settings;
 import org.moeaframework.util.CommandLineUtility;
 
@@ -71,8 +72,19 @@ import org.moeaframework.util.CommandLineUtility;
  * updated with any changes.
  */
 public class UpdateCodeSamples extends CommandLineUtility {
+	
+	// TODO: Ideas for improvements:
+	//
+	//   1. Support multiple line number ranges, such as [1:5,10:15], and optionally insert "..." between these slices.
+	//
+	//   2. Line numbers often need to be updated if the file changes.  Could specify a tag name and locate the code
+	//      by searching for that tag.  For example, [foo] would select the content of:
+	//
+	//           // start:foo
+	//           ... code that is copied ...
+	//           // end:foo
 		
-	private static final long SEED = 123456;
+	private static final long DEFAULT_SEED = 123456;
 	
 	private static final String[] DEFAULT_CLASSPATH = new String[] { "lib/*", "build", "examples" };
 	
@@ -80,9 +92,20 @@ public class UpdateCodeSamples extends CommandLineUtility {
 	
 	private static final Pattern REGEX = Pattern.compile("<!--\\s+([a-zA-Z]+)\\:([^\\s]+)(?:\\s+\\[([^\\]]+)\\])?(?:\\s+\\{([^\\}]+)\\})?\\s+-->");
 	
+	/**
+	 * {@code true} if running in update mode; {@code false} for validate mode.
+	 */
 	private boolean update;
 	
+	/**
+	 * The classpath used when compiling and running Java examples.
+	 */
 	private String[] classpath;
+	
+	/**
+	 * The seed for making results consistent between runs.
+	 */
+	private long seed;
 	
 	/**
 	 * Creates a new instance of the command line utility to update code examples.
@@ -102,6 +125,10 @@ public class UpdateCodeSamples extends CommandLineUtility {
 				.longOpt("classpath")
 				.hasArgs()
 				.build());
+		options.addOption(Option.builder("s")
+				.longOpt("seed")
+				.hasArg()
+				.build());
 
 		return options;
 	}
@@ -110,8 +137,11 @@ public class UpdateCodeSamples extends CommandLineUtility {
 	public void run(CommandLine commandLine) throws Exception {
 		update = commandLine.hasOption("update");
 		classpath = commandLine.hasOption("classpath") ? commandLine.getOptionValues("classpath") : DEFAULT_CLASSPATH;
-		
+		seed = commandLine.hasOption("seed") ? Long.parseLong(commandLine.getOptionValue("seed")) : DEFAULT_SEED;
+						
+		System.out.println("Running in " + (update ? "update" : "validate") + " mode");
 		System.out.println("Using classpath \"" + getClassPath(classpath) + "\"");
+		System.out.println("Using seed " + seed);
 		
 		boolean fileChanged = false;
 
@@ -129,12 +159,20 @@ public class UpdateCodeSamples extends CommandLineUtility {
 			if (update) {
 				System.out.println("Updated code samples, please validate and commit the changes!");
 			} else {
-				throw new IOException("Detected changes to code samples!");
+				throw new FrameworkException("Detected changes to code samples!");
 			}
 		}
 	}
 	
-	private boolean scan(File file) throws Exception {
+	/**
+	 * Recursively processes all files and directories.
+	 * 
+	 * @param file the file or directory to process
+	 * @return {@code true} if any files were modified
+	 * @throws InterruptedException if the process was interrupted
+	 * @throws IOException if an I/O error occurred while processing a file
+	 */
+	private boolean scan(File file) throws IOException, InterruptedException {
 		boolean fileChanged = false;
 		
 		if (!file.exists()) {
@@ -153,7 +191,16 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		return fileChanged;
 	}
 	
-	private boolean process(File file) throws Exception {
+	/**
+	 * Processes a single file, validating or updating code samples.  The file is skipped if the file type is
+	 * not recognized.
+	 * 
+	 * @param file the file to process
+	 * @return {@code true} if the file was modified
+	 * @throws InterruptedException if the process was interrupted
+	 * @throws IOException if an I/O error occurred while processing the file
+	 */
+	private boolean process(File file) throws IOException, InterruptedException {
 		boolean fileChanged = false;
 		FileType fileType = FileType.fromExtension(FilenameUtils.getExtension(file.getName()));
 		
@@ -200,7 +247,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 					List<String> newContent = format(content, options, fileType);
 					List<String> oldContent = getNextCodeBlock(reader, writer, fileType);
 					
-					boolean contentChanged = diffContent(oldContent, newContent);
+					boolean contentChanged = diff(oldContent, newContent);
 					fileChanged |= contentChanged;
 					
 					writer.write(String.join(System.lineSeparator(), newContent));
@@ -218,7 +265,15 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		return fileChanged;
 	}
 	
-	private boolean diffContent(List<String> first, List<String> second) {
+	/**
+	 * Determines if any differences exist between the two code blocks, displaying any differences in the terminal.
+	 * This will flag whitespace differences, but excludes the end of line characters.
+	 * 
+	 * @param first the first code block
+	 * @param second the second code block
+	 * @return {@code true} if any differences were detected
+	 */
+	private boolean diff(List<String> first, List<String> second) {
 		boolean result = false;
 		
 		for (int i = 0; i < Math.max(first.size(), second.size()); i++) {
@@ -238,7 +293,19 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		return result;
 	}
 	
-	private List<String> getNextCodeBlock(BufferedReader reader, BufferedWriter writer, FileType fileType) throws Exception {
+	/**
+	 * Locates and reads the next code block, including the lines marking the start and end of the code block.
+	 * Any empty lines between the comment and code block are skipped (but are copied to the writer), but any
+	 * non-empty line that is not a code block will result in an error.
+	 * 
+	 * @param reader the reader for the original file
+	 * @param writer the writer for the modified file
+	 * @param fileType the file type
+	 * @return the code block
+	 * @throws IOException if an I/O error occurred while reading the file
+	 */
+	private List<String> getNextCodeBlock(BufferedReader reader, BufferedWriter writer, FileType fileType)
+			throws IOException {
 		List<String> content = new ArrayList<String>();
 		String line = null;
 		boolean inCodeBlock = false;
@@ -266,10 +333,22 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		throw new IOException("Reached end of file before finding code block");
 	}
 	
+	/**
+	 * Returns the classpath used to start the JVM, using the appropriate separator for the host operating system.
+	 * 
+	 * @param entries the entries in the classpath
+	 * @return the formatted classpath
+	 */
 	private String getClassPath(String... entries) {
 		return String.join(SystemUtils.IS_OS_WINDOWS ? ";" : ":", entries);
 	}
 	
+	/**
+	 * Returns the fully-qualified Java class name derived from the file name.
+	 * 
+	 * @param filename the Java file name
+	 * @return the fully-qualified Java class name
+	 */
 	private String getClassName(String filename) {
 		Path path = Paths.get(FilenameUtils.removeExtension(filename));
 		
@@ -279,8 +358,15 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		
 		return path.toString().replaceAll("[\\\\/]", ".");
 	}
-		
-	private void compile(String filename) throws Exception {
+	
+	/**
+	 * Invokes the Java compiler in a separate process.
+	 * 
+	 * @param filename the Java file to compile
+	 * @throws IOException if a I/O error occurred while running the process
+	 * @throws InterruptedException if the process was interrupted
+	 */
+	private void compile(String filename) throws IOException, InterruptedException {
 		String extension = FilenameUtils.getExtension(filename);
 		
 		if (extension.equalsIgnoreCase("java")) {
@@ -290,31 +376,70 @@ public class UpdateCodeSamples extends CommandLineUtility {
 			
 			RedirectStream.invoke(processBuilder);
 		} else {
-			throw new IOException("Unsupported file extension " + extension);
+			throw new IllegalArgumentException("Unsupported file extension " + extension);
 		}
 	}
 	
-	private String execute(String filename) throws Exception {
+	/**
+	 * Runs the Java program in a separate process.
+	 * 
+	 * @param filename the Java file to run
+	 * @return the standard output produced by the program
+	 * @throws IOException if an I/O error occurred while running the process
+	 * @throws InterruptedException if the process was interrupted
+	 */
+	private String execute(String filename) throws IOException, InterruptedException {
 		String extension = FilenameUtils.getExtension(filename);
 		
-		if (extension.equalsIgnoreCase("java")) {
+		if (extension.equalsIgnoreCase("java") || extension.equalsIgnoreCase("class")) {
 			ProcessBuilder processBuilder = new ProcessBuilder("java",
 					"-classpath", getClassPath(classpath),
-					"-D" + Settings.KEY_PRNG_SEED + "=" + SEED,
+					"-D" + Settings.KEY_PRNG_SEED + "=" + seed,
 					getClassName(filename));
 			
 			return RedirectStream.capture(processBuilder);
 		} else {
-			throw new IOException("Unsupported file extension " + extension);
+			throw new IllegalArgumentException("Unsupported file extension " + extension);
 		}
 	}
 	
+	/**
+	 * Formats the given code block based on the options and target file type.
+	 * 
+	 * @param content the code block to format
+	 * @param options the formatting options
+	 * @param fileType the target file type where the code block is inserted
+	 * @return the formatted code block
+	 * @throws IOException if an I/O error occurred
+	 */
 	private List<String> format(String content, FormattingOptions options, FileType fileType) throws IOException {
 		return format(splitIntoLines(content), options, fileType);
 	}
 	
+	/**
+	 * Formats the given code block based on the options and target file type.
+	 * 
+	 * @param lines the code block to format
+	 * @param options the formatting options
+	 * @param fileType the target file type where the code block is inserted
+	 * @return the formatted code block
+	 * @throws IOException if an I/O error occurred
+	 */
 	private List<String> format(List<String> lines, FormattingOptions options, FileType fileType) throws IOException {
-		lines = lines.subList(options.startingLine - 1, Math.min(lines.size(), options.endingLine));
+		int startingLine = options.startingLine;
+		int endingLine = options.endingLine;
+		
+		if (startingLine < 0) {
+			startingLine += lines.size() + 1;
+		} else if (startingLine == 0) {
+			startingLine = 1;
+		}
+		
+		if (endingLine < 0) {
+			endingLine += lines.size();
+		}
+		
+		lines = lines.subList(Math.max(0, startingLine - 1), Math.min(lines.size(), endingLine));
 		
 		if (options.stripIndentation()) {
 			// TODO: can use String#stripIndent() after updating to Java 12+
@@ -362,6 +487,13 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		return lines;
 	}
 	
+	/**
+	 * Splits the given string into individual lines.
+	 * 
+	 * @param content the string to split
+	 * @return the lines
+	 * @throws IOException if an I/O error occurred
+	 */
 	private static List<String> splitIntoLines(String content) throws IOException {
 		List<String> lines = new ArrayList<String>();
 		
@@ -376,20 +508,47 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		return lines;
 	}
 	
+	/**
+	 * Formatting options for the code block.
+	 */
 	private class FormattingOptions {
 		
-		public static final int FIRST_LINE = 1;
+		/**
+		 * Constant representing the first line in the file.
+		 */
+		private static final int FIRST_LINE = 1;
 		
-		public static final int LAST_LINE = Integer.MAX_VALUE;
+		/**
+		 * Constant representing the last line in the file.
+		 */
+		private static final int LAST_LINE = Integer.MAX_VALUE;
 		
+		/**
+		 * The programming language for the code block.
+		 */
 		private final Language language;
 		
+		/**
+		 * The starting line number.  Line numbers start at index {@code 1}.
+		 */
 		private int startingLine;
 		
+		/**
+		 * The ending line number.  Line numbers start at index {@code 1}.  If the value exceeds the length of the
+		 * file, will include all lines up to the end of the file.
+		 */
 		private int endingLine;
 		
+		/**
+		 * Any additional formatting flags.
+		 */
 		private final EnumSet<FormatFlag> formatFlags;
 				
+		/**
+		 * Constructs default formatting options for the given language.
+		 * 
+		 * @param language the programming language
+		 */
 		public FormattingOptions(Language language) {
 			super();
 			this.language = language;
@@ -399,8 +558,22 @@ public class UpdateCodeSamples extends CommandLineUtility {
 			formatFlags = EnumSet.noneOf(FormatFlag.class);
 		}
 		
+		/**
+		 * Parses the line numbers in the format {@code [<startingLine>:<endingLine>]}.  The format is analogous
+		 * to Python string splices.
+		 * <pre>{@code
+		 *   [5:10]       // Copies lines 5-10
+		 *   [5:5]        // Copies only line 5
+		 *   [:10]        // Copies first 10 lines
+		 *   [-10:]       // Copies last 10 lines
+		 *   [:-1]        // Copies everything except the last line
+		 *   [:]          // Copies entire file
+		 * }</pre>
+		 * 
+		 * @param str the string representation of the line numbers
+		 */
 		public void parseLineNumbers(String str) {
-			final Pattern lineNumbers = Pattern.compile("([0-9]+)?[:\\\\-]([0-9]+)?");
+			final Pattern lineNumbers = Pattern.compile("(\\-?[0-9]+)?[:\\\\-](\\-?[0-9]+)?");
 			
 			if (str == null) {
 				startingLine = FIRST_LINE;
@@ -422,22 +595,43 @@ public class UpdateCodeSamples extends CommandLineUtility {
 			}
 		}
 		
+		/**
+		 * Parses additional format flags given as {@code {<flag1>;<flag2>;...}}.
+		 * 
+		 * @param str the string representation of the format flags
+		 */
 		public void parseFlags(String str) {
 			formatFlags.addAll(FormatFlag.fromFormatString(str));
 		}
 		
+		/**
+		 * Returns {@code true} if comments are stripped from code blocks.
+		 * 
+		 * @return {@code true} if comments are stripped from code blocks
+		 */
 		public boolean stripComments() {
 			return !formatFlags.contains(FormatFlag.KeepComments);
 		}
 		
+		/**
+		 * Returns {@code true} if indentation is removed from code blocks.
+		 * 
+		 * @return {@code true} if indentation is removed from code blocks
+		 */
 		public boolean stripIndentation() {
 			return !formatFlags.contains(FormatFlag.KeepIndentation);
 		}
 		
+		/**
+		 * Returns {@code true} if tabs are replaced by spaces in code blocks.
+		 * 
+		 * @return {@code true} if tabs are replaced by spaces in code blocks
+		 */
 		public boolean replaceTabsWithSpaces() {
 			return !formatFlags.contains(FormatFlag.KeepTabs);
 		}
 
+		@Override
 		public String toString() {
 			StringBuilder sb = new StringBuilder();
 			sb.append("[");
@@ -456,16 +650,38 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		
 	}
 	
+	/**
+	 * The language shown in the code block, used to ensure the appropriate syntax highlighting is configured.
+	 */
 	private enum Language {
 		
+		/**
+		 * Java source code.
+		 */
 		Java,
 		
+		/**
+		 * Plain text.
+		 */
 		Text,
 		
+		/**
+		 * Bash or terminal commands.
+		 */
 		Bash,
 		
+		/**
+		 * Special mode where the output of the program is captured and displayed in the code block.
+		 */
 		Output;
 		
+		/**
+		 * Determine the language from its string representation using case-insensitive matching.
+		 * 
+		 * @param str the string representation of the language
+		 * @return the language
+		 * @throws IllegalArgumentException if the language is not supported
+		 */
 		public static Language fromString(String str) {
 			for (Language language : values()) {
 				if (language.name().equalsIgnoreCase(str)) {
@@ -476,12 +692,26 @@ public class UpdateCodeSamples extends CommandLineUtility {
 			throw new IllegalArgumentException("Unrecognized language '" + str + "'");
 		}
 		
+		/**
+		 * Strips comments out of the code block.
+		 * 
+		 * @param lines the code block
+		 * @return the code block without comments
+		 * @throws IOException if an I/O error occurred
+		 */
 		public List<String> stripComments(List<String> lines) throws IOException {
 			String content = String.join(System.lineSeparator(), lines);
 			content = stripComments(content);
 			return splitIntoLines(content);
 		}
 		
+		/**
+		 * Strips comments out of the code block.  This also removes any duplicate blank lines that may result
+		 * when removing the comments.
+		 * 
+		 * @param content the code block
+		 * @return the code block without comments
+		 */
 		public String stripComments(String content) {
 			switch (this) {
 			case Java:
@@ -501,14 +731,34 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		
 	}
 	
+	/**
+	 * Additional formatting flags.
+	 */
 	private enum FormatFlag {
 		
+		/**
+		 * Retain all comments.  By default, the formatter removes comments.
+		 */
 		KeepComments,
 		
+		/**
+		 * Keep the original indentation.  By default, the formatter removes any indentation so code blocks are all
+		 * left-aligned.
+		 */
 		KeepIndentation,
 		
+		/**
+		 * Keeps tabs.  By default, the formatter replaces tabs with spaces.
+		 */
 		KeepTabs;
 		
+		/**
+		 * Determine the format flag from its string representation using case-insensitive matching.
+		 * 
+		 * @param str the string representation
+		 * @return the format flag
+		 * @throws IllegalArgumentException if the format flag is not supported
+		 */
 		public static FormatFlag fromString(String str) {
 			for (FormatFlag formatFlag : values()) {
 				if (formatFlag.name().equalsIgnoreCase(str)) {
@@ -519,6 +769,13 @@ public class UpdateCodeSamples extends CommandLineUtility {
 			throw new IllegalArgumentException("Unrecognized formatting flag '" + str + "'");
 		}
 		
+		/**
+		 * Parses all format flags from the input string, typically given as {@code {<flag1>;<flag2>;...}}.
+		 * 
+		 * @param str the string containing format flags
+		 * @return the parsed format flags
+		 * @throws IllegalArgumentException if any of the format flags are not supported
+		 */
 		public static EnumSet<FormatFlag> fromFormatString(String str) {
 			EnumSet<FormatFlag> result = EnumSet.noneOf(FormatFlag.class);
 			
@@ -537,23 +794,53 @@ public class UpdateCodeSamples extends CommandLineUtility {
 			return result;
 		}
 		
+		/**
+		 * Returns the string representation of the format flags.
+		 * 
+		 * @param flags the format flags
+		 * @return the string representation
+		 */
 		public static String toFormatString(EnumSet<FormatFlag> flags) {
 			return "{" + flags.stream().map(f -> f.toString()).collect(Collectors.joining(";")) + "}";
 		}
 	}
 	
+	/**
+	 * Supported file types that are processed by this utility.  This defines how code blocks are identified and
+	 * formatted for a particular file format.
+	 */
 	private enum FileType {
 		
+		/**
+		 * Markdown files.
+		 */
 		Markdown("md"),
 		
+		/**
+		 * HTML or XSLT files.
+		 */
 		Html("html", "xml");
 		
+		/**
+		 * The file extensions for the file type.
+		 */
 		private final String[] extensions;
 		
+		/**
+		 * Constructs a new file type with the given extensions.
+		 * 
+		 * @param extensions the extensions
+		 */
 		private FileType(String... extensions) {
 			this.extensions = extensions;
 		}
 		
+		/**
+		 * Determine the file type from the file extension.
+		 * 
+		 * @param extension the file extension, excluding the {@code "."}
+		 * @return the file type, or {@code null} if the file type is not recognized
+		 */
 		public static FileType fromExtension(String extension) {
 			for (FileType fileType : values()) {
 				for (String fileExtension : fileType.extensions) {
@@ -566,6 +853,12 @@ public class UpdateCodeSamples extends CommandLineUtility {
 			return null;
 		}
 		
+		/**
+		 * Returns {@code true} if the line indicates the start of a code block.
+		 * 
+		 * @param line the line read from the file
+		 * @return {@code true} if the line is the start of a code block; {@code false} otherwise
+		 */
 		public boolean isStartOfCodeBlock(String line) {
 			switch (this) {
 			case Markdown:
@@ -577,6 +870,12 @@ public class UpdateCodeSamples extends CommandLineUtility {
 			}
 		}
 		
+		/**
+		 * Returns {@code true} if the line indicates the end of a code block.
+		 * 
+		 * @param line the line read from the file
+		 * @return {@code true} if the line is the end of a code block; {@code false} otherwise
+		 */
 		public boolean isEndOfCodeBlock(String line) {
 			switch (this) {
 			case Markdown:
@@ -588,6 +887,13 @@ public class UpdateCodeSamples extends CommandLineUtility {
 			}
 		}
 		
+		/**
+		 * Returns the name of the "brush" that provides the appropriate syntax highlighting for the language.
+		 * Defaults to plain text if the language is not recognized.
+		 * 
+		 * @param language the language displayed in the code block
+		 * @return the name of the "brush"
+		 */
 		public String getBrush(Language language) {
 			final Set<String> markdownBrush = new HashSet<String>(Arrays.asList("java", "bash", "text"));
 			final Set<String> htmlBrush = new HashSet<String>(Arrays.asList("java"));
@@ -604,6 +910,12 @@ public class UpdateCodeSamples extends CommandLineUtility {
 			}
 		}
 		
+		/**
+		 * Wraps the code block in the starting / ending lines appropriate for the file type.
+		 * 
+		 * @param lines the code block
+		 * @param options the formatting options
+		 */
 		public void wrapInCodeBlock(List<String> lines, FormattingOptions options) {
 			switch (this) {
 			case Markdown:
@@ -622,6 +934,12 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		}
 	}
 	
+	/**
+	 * Invokes the command-line utility to update code samples.
+	 * 
+	 * @param args the command-line arguments
+	 * @throws Exception if an error occurred running the utility
+	 */
 	public static void main(String[] args) throws Exception {
 		new UpdateCodeSamples().start(args);
 	}
