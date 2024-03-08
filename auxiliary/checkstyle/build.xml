@@ -65,15 +65,34 @@ Use of these build scripts requires Apache Ant to be installed.  See
 			<fileset dir="examples" includes="**/*.java" />
 		</checkstyle>
 
-		<!-- Convert relative path of build to absolute path -->
-		<property name="output.dir" location="${build}" />
+		<sequential if:true="${env.CI}">
+			<xslt in="${build}/checkstyle-result.xml" out="${build}/checkstyle-result.txt"
+				style="${checkstyle.path}/checkstyle-text.xsl" />
 
-		<xslt in="${build}/checkstyle-result.xml" out="${build}/checkstyle-result.html"
-				style="${checkstyle.path}/checkstyle-frames-errors.xsl">
-			<param name="output.dir" expression="${output.dir}" />
-		</xslt>
+			<loadfile  property="content" srcfile="${build}/checkstyle-result.txt">
+				<filterchain>
+					<linecontainsregexp>
+						<regexp pattern="[^\s]+"/>
+					</linecontainsregexp>
+				</filterchain>
+			</loadfile>
 
-		<fail if="checkstyle.failed">Checkstyle identified one or more violations!  See build/index.html for details.</fail>
+			<echo message="${content}" />
+		</sequential>
+
+		<sequential unless:true="${env.CI}">
+			<!-- Convert relative path of build to absolute path -->
+			<property name="output.dir" location="${build}" />
+
+			<xslt in="${build}/checkstyle-result.xml" out="${build}/checkstyle-result.html"
+					style="${checkstyle.path}/checkstyle-frames-errors.xsl">
+				<param name="output.dir" expression="${output.dir}" />
+			</xslt>
+
+			<echo message="Checkstyle results written to ${output.dir}" />
+		</sequential>
+
+		<fail if="checkstyle.failed">Checkstyle identified one or more violations!</fail>
 	</target>
 
 </project>
