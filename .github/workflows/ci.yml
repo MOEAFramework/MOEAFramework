@@ -82,6 +82,31 @@ jobs:
         name: maven-test-results-${{ matrix.java }}
         path: build/target/surefire-reports
 
+  content-tests:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: 17
+        distribution: temurin
+    - name: Validate docs
+      run: ant -f build.xml validate-docs
+    - name: Validate links
+      uses: gaurav-nelson/github-action-markdown-link-check@v1
+      with:
+        folder-path: docs/
+        file-path: README.md
+    - name: Run Checkstyle
+      run: |
+        cd auxiliary/checkstyle
+        checkstyle_result=0
+        ant -f build.xml check-style || checkstyle_result=$?
+        if [ "$checkstyle_result" -ne "0" ]; then
+          echo "::warning title=Checkstyle failed::Checkstyle identified one ore more violations, see logs for details!"
+        fi
+
   package-tests:
     runs-on: ubuntu-latest
     steps:
@@ -91,13 +116,6 @@ jobs:
       with:
         java-version: 8
         distribution: temurin
-    - name: Validate docs
-      run: ant -f build.xml validate-docs
-    - name: Validate links
-      uses: gaurav-nelson/github-action-markdown-link-check@v1
-      with:
-        folder-path: docs/
-        file-path: README.md
     - name: Package binary
       run: ant -f build.xml package-binary
     - name: Test examples in binary package
