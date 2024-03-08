@@ -20,9 +20,11 @@ package org.moeaframework.analysis.sensitivity;
 import java.io.File;
 import java.io.IOException;
 
+import org.apache.commons.cli.ParseException;
 import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.TestUtils;
+import org.moeaframework.analysis.sensitivity.MetricFileWriter.MetricFileWriterSettings;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
@@ -78,6 +80,17 @@ public class MetricFileWriterTest {
 			reader.next();
 			Assert.assertFalse(reader.hasNext());
 		}
+	}
+	
+	@Test
+	public void testSettings() throws ParseException {
+		MetricFileWriterSettings settings = MetricFileWriterSettings.getDefault();
+		Assert.assertTrue(settings.isAppend());
+		Assert.assertEquals(OutputWriter.CleanupStrategy.ERROR, settings.getCleanupStrategy());
+		
+		settings = MetricFileWriterSettings.noAppend();
+		Assert.assertFalse(settings.isAppend());
+		Assert.assertEquals(OutputWriter.CleanupStrategy.ERROR, settings.getCleanupStrategy());
 	}
 
 }

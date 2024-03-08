@@ -30,6 +30,7 @@ import org.moeaframework.analysis.collector.ApproximationSetCollector;
 import org.moeaframework.analysis.collector.ElapsedTimeCollector;
 import org.moeaframework.analysis.collector.Observation;
 import org.moeaframework.analysis.collector.Observations;
+import org.moeaframework.analysis.sensitivity.ResultFileWriter.ResultFileWriterSettings;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PRNG;
@@ -195,7 +196,7 @@ public class DetailedEvaluator extends CommandLineUtility {
 				}	
 						
 				try (ResultFileWriter output = new ResultFileWriter(problem, outputFile,
-						ResultFileWriter.Settings.from(commandLine))) {
+						ResultFileWriterSettings.from(commandLine))) {
 					// setup any default parameters
 					TypedProperties defaultProperties = new TypedProperties();
 	

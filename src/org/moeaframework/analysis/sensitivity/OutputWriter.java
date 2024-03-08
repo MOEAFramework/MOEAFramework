@@ -48,7 +48,7 @@ public interface OutputWriter extends Closeable {
 	/**
 	 * Common settings when creating an output writer.
 	 */
-	public static class Settings {
+	public static class OutputWriterSettings {
 		
 		/**
 		 * {@code true} when in append mode (the default), {@code false} otherwise.
@@ -63,7 +63,7 @@ public interface OutputWriter extends Closeable {
 		/**
 		 * Constructs the default settings object.
 		 */
-		public Settings() {
+		public OutputWriterSettings() {
 			this(Optional.empty(), Optional.empty());
 		}
 		
@@ -73,7 +73,7 @@ public interface OutputWriter extends Closeable {
 		 * @param append {@code true} to enable append mode, {@code false} otherwise
 		 * @param cleanupStrategy the cleanup strategy
 		 */
-		public Settings(Optional<Boolean> append, Optional<CleanupStrategy> cleanupStrategy) {
+		public OutputWriterSettings(Optional<Boolean> append, Optional<CleanupStrategy> cleanupStrategy) {
 			super();
 			this.append = append != null && append.isPresent() ? append.get() : true;
 			this.cleanupStrategy = cleanupStrategy != null && cleanupStrategy.isPresent() ? cleanupStrategy.get() :

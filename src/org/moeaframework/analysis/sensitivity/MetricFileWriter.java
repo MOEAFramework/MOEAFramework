@@ -71,7 +71,7 @@ public class MetricFileWriter implements OutputWriter {
 	 * @throws IOException if an I/O error occurred
 	 */
 	public MetricFileWriter(QualityIndicator qualityIndicator, File file) throws IOException {
-		this(qualityIndicator, file, Settings.getDefault());
+		this(qualityIndicator, file, MetricFileWriterSettings.getDefault());
 	}
 
 	/**
@@ -85,7 +85,8 @@ public class MetricFileWriter implements OutputWriter {
 	 * @param settings the settings for writing metric files
 	 * @throws IOException if an I/O error occurred
 	 */
-	public MetricFileWriter(QualityIndicator qualityIndicator, File file, Settings settings) throws IOException {
+	public MetricFileWriter(QualityIndicator qualityIndicator, File file, MetricFileWriterSettings settings)
+			throws IOException {
 		super();
 		this.qualityIndicator = qualityIndicator;
 
@@ -209,12 +210,12 @@ public class MetricFileWriter implements OutputWriter {
 	/**
 	 * The settings used when writing metric files.
 	 */
-	public static class Settings extends OutputWriter.Settings {
+	public static class MetricFileWriterSettings extends OutputWriterSettings {
 		
 		/**
 		 * Constructs the default settings object.
 		 */
-		public Settings() {
+		public MetricFileWriterSettings() {
 			super();
 		}
 		
@@ -224,7 +225,7 @@ public class MetricFileWriter implements OutputWriter {
 		 * @param append {@code true} to enable append mode, {@code false} otherwise
 		 * @param cleanupStrategy the cleanup strategy
 		 */
-		public Settings(Optional<Boolean> append, Optional<CleanupStrategy> cleanupStrategy) {
+		public MetricFileWriterSettings(Optional<Boolean> append, Optional<CleanupStrategy> cleanupStrategy) {
 			super(append, cleanupStrategy);
 		}
 
@@ -233,8 +234,8 @@ public class MetricFileWriter implements OutputWriter {
 		 * 
 		 * @return the default settings for writing metric files
 		 */
-		public static Settings getDefault() {
-			return new Settings();
+		public static MetricFileWriterSettings getDefault() {
+			return new MetricFileWriterSettings();
 		}
 		
 		/**
@@ -242,8 +243,8 @@ public class MetricFileWriter implements OutputWriter {
 		 * 
 		 * @return the settings with append mode disabled
 		 */
-		public static Settings noAppend() {
-			return new Settings(Optional.of(false), Optional.empty());
+		public static MetricFileWriterSettings noAppend() {
+			return new MetricFileWriterSettings(Optional.of(false), Optional.empty());
 		}
 		
 	}

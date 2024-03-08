@@ -31,6 +31,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.TestUtils;
+import org.moeaframework.analysis.sensitivity.ResultFileWriter.ResultFileWriterSettings;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
@@ -233,7 +234,7 @@ public class ResultFileWriterTest {
 		properties.setString("foo", "bar");
 		
 		try (ResultFileWriter writer = new ResultFileWriter(problem, file,
-				new ResultFileWriter.Settings(Optional.empty(), Optional.of(false), Optional.empty()))) {
+				new ResultFileWriterSettings(Optional.empty(), Optional.of(false), Optional.empty()))) {
 			writer.append(new ResultEntry(population, properties));
 		}
 		
@@ -395,12 +396,12 @@ public class ResultFileWriterTest {
 	
 	@Test
 	public void testSettings() throws ParseException {
-		ResultFileWriter.Settings settings = ResultFileWriter.Settings.getDefault();
+		ResultFileWriterSettings settings = ResultFileWriterSettings.getDefault();
 		Assert.assertTrue(settings.isAppend());
 		Assert.assertTrue(settings.isIncludeVariables());
 		Assert.assertEquals(OutputWriter.CleanupStrategy.ERROR, settings.getCleanupStrategy());
 		
-		settings = ResultFileWriter.Settings.noAppend();
+		settings = ResultFileWriterSettings.noAppend();
 		Assert.assertFalse(settings.isAppend());
 		Assert.assertTrue(settings.isIncludeVariables());
 		Assert.assertEquals(OutputWriter.CleanupStrategy.ERROR, settings.getCleanupStrategy());
@@ -409,11 +410,10 @@ public class ResultFileWriterTest {
 		options.addOption(Option.builder().longOpt("novariables").build());
 		
 		CommandLine commandLine = DefaultParser.builder().build().parse(options, new String[] { "--novariables" });
-		settings = ResultFileWriter.Settings.from(commandLine);
+		settings = ResultFileWriterSettings.from(commandLine);
 		Assert.assertTrue(settings.isAppend());
 		Assert.assertFalse(settings.isIncludeVariables());
 		Assert.assertEquals(OutputWriter.CleanupStrategy.ERROR, settings.getCleanupStrategy());
-		
 	}
 	
 }

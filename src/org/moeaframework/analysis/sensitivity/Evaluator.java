@@ -24,6 +24,7 @@ import java.io.IOException;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
+import org.moeaframework.analysis.sensitivity.ResultFileWriter.ResultFileWriterSettings;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.NondominatedPopulation;
@@ -196,7 +197,7 @@ public class Evaluator extends CommandLineUtility {
 
 					output = new MetricFileWriter(indicator, outputFile);
 				} else {
-					output = new ResultFileWriter(problem, outputFile, ResultFileWriter.Settings.from(commandLine));
+					output = new ResultFileWriter(problem, outputFile, ResultFileWriterSettings.from(commandLine));
 				}
 
 				// resume at the last good output

@@ -85,7 +85,7 @@ public class ResultFileWriter implements OutputWriter {
 	/**
 	 * Settings for this result file.
 	 */
-	private final Settings settings;
+	private final ResultFileWriterSettings settings;
 
 	/**
 	 * The number of lines in the file.
@@ -105,7 +105,7 @@ public class ResultFileWriter implements OutputWriter {
 	 * @throws IOException if an I/O error occurred
 	 */
 	public ResultFileWriter(Problem problem, File file) throws IOException {
-		this(problem, file, Settings.getDefault());
+		this(problem, file, ResultFileWriterSettings.getDefault());
 	}
 	
 	/**
@@ -117,7 +117,7 @@ public class ResultFileWriter implements OutputWriter {
 	 * @param settings the settings to use when writing the result file
 	 * @throws IOException if an I/O error occurred
 	 */
-	public ResultFileWriter(Problem problem, File file, Settings settings) throws IOException {
+	public ResultFileWriter(Problem problem, File file, ResultFileWriterSettings settings) throws IOException {
 		super();
 		this.settings = settings;
 		
@@ -310,7 +310,7 @@ public class ResultFileWriter implements OutputWriter {
 	/**
 	 * The settings used when writing result files.
 	 */
-	public static class Settings extends OutputWriter.Settings {
+	public static class ResultFileWriterSettings extends OutputWriterSettings {
 		
 		/**
 		 * {@code true} to enable writing all decision variables; {@code false} otherwise.
@@ -320,7 +320,7 @@ public class ResultFileWriter implements OutputWriter {
 		/**
 		 * Constructs the default settings object.
 		 */
-		public Settings() {
+		public ResultFileWriterSettings() {
 			this(Optional.empty(), Optional.empty(), Optional.empty());
 		}
 		
@@ -331,7 +331,7 @@ public class ResultFileWriter implements OutputWriter {
 		 * @param includeVariables {@code true} to enable writing all decision variables; {@code false} otherwise
 		 * @param cleanupStrategy the cleanup strategy
 		 */
-		public Settings(Optional<Boolean> append, Optional<Boolean> includeVariables,
+		public ResultFileWriterSettings(Optional<Boolean> append, Optional<Boolean> includeVariables,
 				Optional<CleanupStrategy> cleanupStrategy) {
 			super(append, cleanupStrategy);
 			this.includeVariables = includeVariables != null && includeVariables.isPresent() ?
@@ -352,8 +352,8 @@ public class ResultFileWriter implements OutputWriter {
 		 * 
 		 * @return the default settings for writing result files
 		 */
-		public static Settings getDefault() {
-			return new Settings();
+		public static ResultFileWriterSettings getDefault() {
+			return new ResultFileWriterSettings();
 		}
 		
 		/**
@@ -361,8 +361,8 @@ public class ResultFileWriter implements OutputWriter {
 		 * 
 		 * @return the settings with append mode disabled
 		 */
-		public static Settings noAppend() {
-			return new Settings(Optional.of(false), Optional.empty(), Optional.empty());
+		public static ResultFileWriterSettings noAppend() {
+			return new ResultFileWriterSettings(Optional.of(false), Optional.empty(), Optional.empty());
 		}
 		
 		/**
@@ -371,8 +371,10 @@ public class ResultFileWriter implements OutputWriter {
 		 * @param commandLine the given command line options
 		 * @return the settings
 		 */
-		public static Settings from(CommandLine commandLine) {
-			return new Settings(Optional.empty(), Optional.of(!commandLine.hasOption("novariables")), Optional.empty());
+		public static ResultFileWriterSettings from(CommandLine commandLine) {
+			return new ResultFileWriterSettings(Optional.empty(),
+					Optional.of(!commandLine.hasOption("novariables")),
+					Optional.empty());
 		}
 		
 	}
