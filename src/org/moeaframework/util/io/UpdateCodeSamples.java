@@ -83,9 +83,9 @@ public class UpdateCodeSamples extends CommandLineUtility {
 	//           // start:foo
 	//           ... code that is copied ...
 	//           // end:foo
-		
-	private static final long DEFAULT_SEED = 123456;
 	
+	private static final long DEFAULT_SEED = 123456;
+
 	private static final String[] DEFAULT_CLASSPATH = new String[] { "lib/*", "build", "examples" };
 	
 	private static final File[] DEFAULT_PATHS = new File[] { new File("docs/"), new File("website/xslt") };

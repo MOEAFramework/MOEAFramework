@@ -37,14 +37,14 @@ import org.junit.runners.model.Statement;
  * <p>
  * The following properties control the behavior of this runner:
  * <ul>
- *   <li>{@value ON_CI} - Indicates tests are running in a CI environment and the custom
+ *   <li>{@value CI} - Indicates tests are running in a CI environment and the custom
  *       retry, flakiness, and ignore rules should apply.
  *   <li>{@value ALL_TESTS} - Overrides the {@link IgnoreOnCI} attribute and runs these tests.
  * </ul>
  */
 public class CIRunner extends BlockJUnit4ClassRunner {
 	
-	private static final String ON_CI = "ON_CI";
+	private static final String CI = "CI";
 	
 	private static final String ALL_TESTS = "ALL_TESTS";
 
@@ -58,7 +58,7 @@ public class CIRunner extends BlockJUnit4ClassRunner {
 	 * @return {@code true} when running in a CI environment; {@code false} otherwise
 	 */
 	public boolean isRunningOnCI() {
-		return getProperty(ON_CI, false);
+		return getProperty(CI, false);
 	}
 	
 	/**
