@@ -56,6 +56,8 @@ import org.moeaframework.core.indicator.R3Indicator;
 import org.moeaframework.core.indicator.Spacing;
 import org.moeaframework.core.spi.ProblemFactory;
 
+import org.moeaframework.problem.DTLZ.DTLZ2;
+
 /**
  * Instruments algorithms with {@link Collector}s which record information about
  * the runtime behavior of algorithms.  First, the instrumenter walks the object
