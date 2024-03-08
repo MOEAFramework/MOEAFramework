@@ -55,7 +55,7 @@ jobs:
         name: ant-test-results-${{ matrix.java }}
         path: test-results     
 
-  maven-test:
+  maven-tests:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
