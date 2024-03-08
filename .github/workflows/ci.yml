@@ -98,6 +98,20 @@ jobs:
       with:
         folder-path: docs/
         file-path: README.md
+    - name: Checkstyle
+      run: |
+        cd auxiliary/checkstyle
+        checkstyle_result=0
+        ant -f build.xml check-style || checkstyle_result=$?
+
+        if [ "$checkstyle_result" -ne "0" ]; then
+          echo "::warning title=Checkstyle failed::Checkstyle identified one ore more violations, download the artifact to view"
+        fi
+    - name: Upload Checkstyle results
+      uses: actions/upload-artifact@v4
+      with:
+        name: checkstyle
+        path: build/
     - name: Package binary
       run: ant -f build.xml package-binary
     - name: Test examples in binary package

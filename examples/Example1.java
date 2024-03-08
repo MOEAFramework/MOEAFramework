@@ -18,6 +18,7 @@
 import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.core.Problem;
 import org.moeaframework.problem.DTLZ.DTLZ2;
+import org.moeaframework.problem.DTLZ.DTLZ3;
 
 /**
  * Simplest way to solve a multi-objective optimization problem.  Here, we solve
