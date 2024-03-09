@@ -466,7 +466,9 @@ public class Settings {
 	 *  
 	 * @param command the command represented in a single string
 	 * @return the individual arguments comprising the command
+	 * @deprecated method being moved out of Settings class
 	 */
+	@Deprecated
 	public static String[] parseCommand(String command) {
 		return new StringTokenizer(command).setQuoteChar('\"').getTokenArray();
 	}

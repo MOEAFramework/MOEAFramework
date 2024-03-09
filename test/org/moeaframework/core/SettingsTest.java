@@ -87,15 +87,6 @@ public class SettingsTest {
 	}
 	
 	@Test
-	public void testParseCommand() throws IOException {
-		String command = "java -jar \"C:\\Program Files\\Test\\test.jar\" \"\"\"";
-		String[] expected = new String[] { "java", "-jar", "C:\\Program Files\\Test\\test.jar", "\"" };
-		String[] actual = Settings.parseCommand(command);
-		
-		Assert.assertArrayEquals(expected, actual);
-	}
-	
-	@Test
 	public void testDuplicateMode() {
 		Assert.assertEquals(DuplicateMode.NO_DUPLICATE_OBJECTIVES, Settings.getDuplicateMode());
 	}
