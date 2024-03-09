@@ -46,8 +46,8 @@ NondominatedPopulation approximationSet = algorithm.getResult();
 
 NondominatedPopulation referenceSet = PopulationIO.readReferenceSet("pf/DTLZ2.2D.pf");
 
-Indicators indicator = Indicators.all(problem, referenceSet);
-indicator.apply(approximationSet).display();
+Indicators indicators = Indicators.all(problem, referenceSet);
+indicators.apply(approximationSet).display();
 ```
 
 <!-- output:examples/Example2.java -->
