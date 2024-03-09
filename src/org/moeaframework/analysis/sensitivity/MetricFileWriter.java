@@ -103,7 +103,7 @@ public class MetricFileWriter implements OutputWriter {
 	 * records the number of correct lines in the file. The {@link #getNumberOfEntries()} can then be used to
 	 * resume evaluation from the last recorded entry.
 	 * 
-	 * @param qualityIndicator the indicators to evaluate
+	 * @param indicators the indicators to evaluate
 	 * @param file the file to which the metrics are written
 	 * @throws IOException if an I/O error occurred
 	 */

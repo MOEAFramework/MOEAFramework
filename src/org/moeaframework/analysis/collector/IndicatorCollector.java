@@ -123,6 +123,7 @@ public class IndicatorCollector implements Collector {
 	 * 
 	 * @param observation the observation
 	 * @param type the class type of the indicator
+	 * @param <T> the type of indicator
 	 * @return the indicator value
 	 */
 	public static <T extends Indicator> double getIndicatorValue(Observation observation, Class<T> type) {

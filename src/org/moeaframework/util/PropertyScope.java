@@ -142,6 +142,7 @@ public class PropertyScope implements AutoCloseable {
 	 * 
 	 * @param key the property key
 	 * @param value the property value
+	 * @param <T> the enumeration type
 	 * @return a reference to this scope for chaining multiple calls together
 	 */
 	public <T extends Enum<?>> PropertyScope with(String key, T value) {

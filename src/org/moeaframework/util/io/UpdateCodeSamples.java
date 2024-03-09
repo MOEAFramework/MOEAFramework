@@ -66,7 +66,7 @@ import org.moeaframework.util.CommandLineUtility;
  *   <li>{@code [<startingLine>:<endingLine>]} specifies the line numbers, starting at index 1, to extract from the
  *       file.  If no line numbers are provided, the entire content is copied.
  *   <li>{@code {<flag>,...}} specifies additional formatting options, such as {@code {keepComments}}.
- * <ul>
+ * </ul>
  * This utility can be run in validate-only mode or update mode.  In validate mode, any changes to the files will
  * result in an error.  This is useful in CI to validate the docs are up-to-date.  In update mode, the files are
  * updated with any changes.
