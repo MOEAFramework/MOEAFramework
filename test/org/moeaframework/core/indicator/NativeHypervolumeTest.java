@@ -54,9 +54,7 @@ public class NativeHypervolumeTest {
 	
 	@Test
 	public void testInvokeNativeProcess() throws IOException {
-		double value = NativeHypervolume.invokeNativeProcess(SystemUtils.IS_OS_WINDOWS ?
-				"cmd /C \"echo hypervolume is 0.75\"" : "echo \"hypervolume is 0.75\"");
-		
+		double value = NativeHypervolume.invokeNativeProcess(getCommand());
 		Assert.assertEquals(0.75, value, Settings.EPS);
 	}
 	
@@ -69,11 +67,17 @@ public class NativeHypervolumeTest {
 	
 	@Test
 	public void testEvaluate() {
-		try (PropertyScope scope = Settings.createScope().with(Settings.KEY_HYPERVOLUME,
-				SystemUtils.IS_OS_WINDOWS ? "cmd /C \"echo {0} {1} {2} {3} {4} 0.75\"" : "echo \"{0} {1} {2} {3} {4} 0.75\"")) {
+		try (PropertyScope scope = Settings.createScope().with(Settings.KEY_HYPERVOLUME, getCommand())) {
 			double value = NativeHypervolume.evaluate(new MockRealProblem(2), new NondominatedPopulation());
 			Assert.assertEquals(0.75, value, Settings.EPS);
 		}
+	}
+	
+	// Mimic native hypervolume executable.  The last item on the last line is read as the hypervolume value.
+	private String getCommand() {
+		return SystemUtils.IS_OS_WINDOWS ?
+				"cmd /C \"echo {0} {1} {2} {3} {4} 0.75\"" :
+				"echo \"{0} {1} {2} {3} {4} 0.75\"";
 	}
 
 }
