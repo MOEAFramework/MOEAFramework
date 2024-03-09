@@ -28,7 +28,7 @@ import org.moeaframework.analysis.sensitivity.MetricFileWriter.MetricFileWriterS
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.indicator.QualityIndicator;
+import org.moeaframework.core.indicator.Indicators;
 import org.moeaframework.core.spi.ProblemFactory;
 
 /**
@@ -45,16 +45,14 @@ public class MetricFileWriterTest {
 	public void test() throws IOException {
 		File file = TestUtils.createTempFile();
 		Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
-		NondominatedPopulation referenceSet = ProblemFactory.getInstance()
-				.getReferenceSet("DTLZ2_2");
-		QualityIndicator qualityIndicator = new QualityIndicator(problem,
-				referenceSet);
+		NondominatedPopulation referenceSet = ProblemFactory.getInstance().getReferenceSet("DTLZ2_2");
+		Indicators indicators = Indicators.standard(problem, referenceSet);
 
 		NondominatedPopulation approximationSet = new NondominatedPopulation();
 		approximationSet.add(new Solution(new double[] { 0.0, 1.0 }));
 		approximationSet.add(new Solution(new double[] { 1.0, 0.0 }));
 
-		try (MetricFileWriter writer = new MetricFileWriter(qualityIndicator, file)) {
+		try (MetricFileWriter writer = new MetricFileWriter(indicators, file)) {
 			Assert.assertEquals(0, writer.getNumberOfEntries());
 
 			writer.append(new ResultEntry(approximationSet));
@@ -63,7 +61,7 @@ public class MetricFileWriterTest {
 			Assert.assertEquals(2, writer.getNumberOfEntries());
 		}
 
-		try (MetricFileWriter writer = new MetricFileWriter(qualityIndicator, file)) {
+		try (MetricFileWriter writer = new MetricFileWriter(indicators, file)) {
 			Assert.assertEquals(2, writer.getNumberOfEntries());
 
 			writer.append(new ResultEntry(approximationSet));

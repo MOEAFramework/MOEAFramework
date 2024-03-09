@@ -26,6 +26,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.TestUtils;
 import org.moeaframework.core.NondominatedPopulation.DuplicateMode;
+import org.moeaframework.core.Settings.Scope;
 
 /**
  * Tests the {@link Settings} class.  These tests ensure that valid settings
@@ -66,24 +67,20 @@ public class SettingsTest {
 	
 	@Test
 	public void testDiagnosticToolAlgorithmsOverride() {
-		Settings.PROPERTIES.setStringArray(Settings.KEY_DIAGNOSTIC_TOOL_ALGORITHMS, new String[] { "foo" });
-		
-		List<String> result = Arrays.asList(Settings.getDiagnosticToolAlgorithms());
-		Assert.assertTrue(result.size() == 1);
-		Assert.assertTrue(result.contains("foo"));
-		
-		Settings.PROPERTIES.remove(Settings.KEY_DIAGNOSTIC_TOOL_ALGORITHMS);
+		try (Scope scope = Settings.createScope().with(Settings.KEY_DIAGNOSTIC_TOOL_ALGORITHMS, "foo")) {
+			List<String> result = Arrays.asList(Settings.getDiagnosticToolAlgorithms());
+			Assert.assertTrue(result.size() == 1);
+			Assert.assertTrue(result.contains("foo"));
+		}
 	}
 	
 	@Test
 	public void testDiagnosticToolProblemsOverride() {
-		Settings.PROPERTIES.setStringArray(Settings.KEY_DIAGNOSTIC_TOOL_PROBLEMS, new String[] { "bar" });
-		
-		List<String> result = Arrays.asList(Settings.getDiagnosticToolProblems());
-		Assert.assertTrue(result.size() == 1);
-		Assert.assertTrue(result.contains("bar"));
-		
-		Settings.PROPERTIES.remove(Settings.KEY_DIAGNOSTIC_TOOL_PROBLEMS);
+		try (Scope scope = Settings.createScope().with(Settings.KEY_DIAGNOSTIC_TOOL_PROBLEMS, "bar")) {
+			List<String> result = Arrays.asList(Settings.getDiagnosticToolProblems());
+			Assert.assertTrue(result.size() == 1);
+			Assert.assertTrue(result.contains("bar"));
+		}
 	}
 	
 	@Test
@@ -93,13 +90,11 @@ public class SettingsTest {
 	
 	@Test
 	public void testDuplicateModeCaseSensitivity() {
-		Settings.PROPERTIES.setString(Settings.KEY_DUPLICATE_MODE, DuplicateMode.ALLOW_DUPLICATES.name().toLowerCase());
-		
-		Assert.assertEquals(DuplicateMode.ALLOW_DUPLICATES, Settings.getDuplicateMode());
-		
-		Assert.assertEquals(DuplicateMode.ALLOW_DUPLICATES, new NondominatedPopulation().duplicateMode);
-		
-		Settings.PROPERTIES.remove(Settings.KEY_DUPLICATE_MODE);
+		try (Scope scope = Settings.createScope()
+				.with(Settings.KEY_DUPLICATE_MODE, DuplicateMode.ALLOW_DUPLICATES.name().toLowerCase())) {
+			Assert.assertEquals(DuplicateMode.ALLOW_DUPLICATES, Settings.getDuplicateMode());
+			Assert.assertEquals(DuplicateMode.ALLOW_DUPLICATES, new NondominatedPopulation().duplicateMode);
+		}
 	}
 	
 	@Test
@@ -146,6 +141,51 @@ public class SettingsTest {
 		Settings.reload();
 		
 		Assert.assertTrue(Settings.PROPERTIES.contains("org.moeaframework.test.test_property_in_file"));		
+	}
+	
+	@Test
+	public void testScopeOnUndefinedSetting() {
+		Assert.assertFalse(Settings.PROPERTIES.contains("foo"));
+		
+		try (Scope scope = Settings.createScope().with("foo", "bar")) {
+			Assert.assertTrue(Settings.PROPERTIES.contains("foo"));
+			Assert.assertEquals("bar", Settings.PROPERTIES.getString("foo"));
+		}
+		
+		Assert.assertFalse(Settings.PROPERTIES.contains("foo"));
+	}
+	
+	@Test
+	public void testScopeOnOverriddenSetting() {
+		Settings.PROPERTIES.setString("foo", "bar");
+		
+		Assert.assertTrue(Settings.PROPERTIES.contains("foo"));
+		Assert.assertEquals("bar", Settings.PROPERTIES.getString("foo"));
+		
+		try (Scope scope = Settings.createScope().with("foo", "baz")) {
+			Assert.assertTrue(Settings.PROPERTIES.contains("foo"));
+			Assert.assertEquals("baz", Settings.PROPERTIES.getString("foo"));
+		}
+		
+		Assert.assertTrue(Settings.PROPERTIES.contains("foo"));
+		Assert.assertEquals("bar", Settings.PROPERTIES.getString("foo"));
+	}
+	
+	@Test
+	public void testScopeWithSetSetting() {
+		Assert.assertFalse(Settings.PROPERTIES.contains("foo"));
+		Assert.assertFalse(Settings.PROPERTIES.contains("hello"));
+		
+		try (Scope scope = Settings.createScope().with("foo", "bar")) {
+			Settings.PROPERTIES.setString("foo", "baz");     // Removed when existing scope
+			Settings.PROPERTIES.setString("hello", "world"); // Kept because not captured by scope
+			
+			Assert.assertTrue(Settings.PROPERTIES.contains("foo"));
+			Assert.assertEquals("baz", Settings.PROPERTIES.getString("foo"));
+		}
+		
+		Assert.assertFalse(Settings.PROPERTIES.contains("foo"));
+		Assert.assertTrue(Settings.PROPERTIES.contains("hello"));
 	}
 
 }

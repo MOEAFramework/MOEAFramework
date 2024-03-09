@@ -25,6 +25,8 @@ import java.io.PrintWriter;
 import java.util.Optional;
 
 import org.moeaframework.core.FrameworkException;
+import org.moeaframework.core.indicator.Indicators;
+import org.moeaframework.core.indicator.Indicators.IndicatorValues;
 import org.moeaframework.core.indicator.QualityIndicator;
 import org.moeaframework.util.io.FileUtils;
 
@@ -51,9 +53,9 @@ public class MetricFileWriter implements OutputWriter {
 	private final PrintWriter writer;
 
 	/**
-	 * The quality indicator for producing the metrics.
+	 * The indicators to evaluate.
 	 */
-	private final QualityIndicator qualityIndicator;
+	private final Indicators indicators;
 
 	/**
 	 * The number of lines in the file.
@@ -69,11 +71,13 @@ public class MetricFileWriter implements OutputWriter {
 	 * @param qualityIndicator the quality indicator for producing the metrics
 	 * @param file the file to which the metrics are written
 	 * @throws IOException if an I/O error occurred
+	 * @deprecated use the {@link Indicators} constructor
 	 */
+	@Deprecated
 	public MetricFileWriter(QualityIndicator qualityIndicator, File file) throws IOException {
 		this(qualityIndicator, file, MetricFileWriterSettings.getDefault());
 	}
-
+	
 	/**
 	 * Constructs an output writer for writing metric files to the specified  file. If the file already exists,
 	 * a cleanup operation is first performed. The cleanup operation removes the last line if incomplete and
@@ -84,11 +88,43 @@ public class MetricFileWriter implements OutputWriter {
 	 * @param file the file to which the metrics are written
 	 * @param settings the settings for writing metric files
 	 * @throws IOException if an I/O error occurred
+	 * @deprecated use the {@link Indicators} constructor
 	 */
+	@Deprecated
 	public MetricFileWriter(QualityIndicator qualityIndicator, File file, MetricFileWriterSettings settings)
 			throws IOException {
+		this(Indicators.from(qualityIndicator), file, settings);
+	}
+	
+	/**
+	 * Constructs an output writer for writing metric files to the specified  file. If the file already exists,
+	 * a cleanup operation is first performed. The cleanup operation removes the last line if incomplete and
+	 * records the number of correct lines in the file. The {@link #getNumberOfEntries()} can then be used to
+	 * resume evaluation from the last recorded entry.
+	 * 
+	 * @param qualityIndicator the indicators to evaluate
+	 * @param file the file to which the metrics are written
+	 * @throws IOException if an I/O error occurred
+	 */
+	public MetricFileWriter(Indicators indicators, File file) throws IOException {
+		this(indicators, file, MetricFileWriterSettings.getDefault());
+	}
+
+	/**
+	 * Constructs an output writer for writing metric files to the specified  file. If the file already exists,
+	 * a cleanup operation is first performed. The cleanup operation removes the last line if incomplete and
+	 * records the number of correct lines in the file. The {@link #getNumberOfEntries()} can then be used to
+	 * resume evaluation from the last recorded entry.
+	 * 
+	 * @param indicators the indicators to evaluate
+	 * @param file the file to which the metrics are written
+	 * @param settings the settings for writing metric files
+	 * @throws IOException if an I/O error occurred
+	 */
+	public MetricFileWriter(Indicators indicators, File file, MetricFileWriterSettings settings)
+			throws IOException {
 		super();
-		this.qualityIndicator = qualityIndicator;
+		this.indicators = indicators;
 
 		if (settings.isAppend()) {
 			// when appending, first move the file to a temporary location
@@ -157,19 +193,19 @@ public class MetricFileWriter implements OutputWriter {
 	 */
 	@Override
 	public void append(ResultEntry entry) {
-		qualityIndicator.calculate(entry.getPopulation());
+		IndicatorValues result = indicators.apply(entry.getPopulation());
 
-		writer.print(qualityIndicator.getHypervolume());
+		writer.print(result.getHypervolume());
 		writer.print(' ');
-		writer.print(qualityIndicator.getGenerationalDistance());
+		writer.print(result.getGenerationalDistance());
 		writer.print(' ');
-		writer.print(qualityIndicator.getInvertedGenerationalDistance());
+		writer.print(result.getInvertedGenerationalDistance());
 		writer.print(' ');
-		writer.print(qualityIndicator.getSpacing());
+		writer.print(result.getSpacing());
 		writer.print(' ');
-		writer.print(qualityIndicator.getAdditiveEpsilonIndicator());
+		writer.print(result.getAdditiveEpsilonIndicator());
 		writer.print(' ');
-		writer.print(qualityIndicator.getMaximumParetoFrontError());
+		writer.print(result.getMaximumParetoFrontError());
 		writer.println();
 
 		numberOfEntries++;

@@ -27,6 +27,46 @@ Var1     Var2     Var3     Var4     Var5     Var6     Var7     Var8     Var9    
 0.808070 0.507494 0.505370 0.488540 0.495386 0.506386 0.503131 0.502002 0.502372 0.503923 0.501195 0.297031 0.955197 
 ```
 
+## Performance indicators
+
+We can also measure the quality of the resulting Pareto non-dominated solutions using one or more performance
+indicators, such as Hypervolume.  The `Indicators` class is a convenient way to calculate and display the
+performance indicator values.  We can select specific indicators or enable all.
+
+<!-- java:examples/Example2.java [37:49] -->
+
+```java
+
+Problem problem = new DTLZ2(2);
+
+NSGAII algorithm = new NSGAII(problem);
+algorithm.run(10000);
+
+NondominatedPopulation approximationSet = algorithm.getResult();
+
+NondominatedPopulation referenceSet = PopulationIO.readReferenceSet("pf/DTLZ2.2D.pf");
+
+Indicators indicator = Indicators.all(problem, referenceSet);
+indicator.apply(approximationSet).display();
+```
+
+<!-- output:examples/Example2.java -->
+
+```
+Indicator                    Value    
+---------------------------- -------- 
+Hypervolume                  0.209259 
+GenerationalDistance         0.000987 
+InvertedGenerationalDistance 0.004388 
+AdditiveEpsilonIndicator     0.008974 
+Spacing                      0.005820 
+MaximumParetoFrontError      0.039554 
+Contribution                 0.000000 
+R1                           0.471058 
+R2                           0.000258 
+R3                           0.000389 
+```
+
 ## Configuring Algorithms
 
 While this looks simple, there is a lot going on behind the scenes.  When we create a new instance of the NSGA-II algorithm, it 

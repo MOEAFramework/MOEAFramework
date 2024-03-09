@@ -18,6 +18,7 @@
 package org.moeaframework.analysis.sensitivity;
 
 import java.io.File;
+
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
@@ -25,7 +26,7 @@ import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.indicator.QualityIndicator;
+import org.moeaframework.core.indicator.Indicators;
 import org.moeaframework.util.CommandLineUtility;
 
 /**
@@ -136,7 +137,7 @@ public class ResultFileEvaluator extends CommandLineUtility {
 				}
 			}
 
-			QualityIndicator indicator = new QualityIndicator(problem, referenceSet);
+			Indicators indicator = Indicators.standard(problem, referenceSet);
 
 			try (ResultFileReader reader = new ResultFileReader(problem, inputFile);
 					MetricFileWriter writer = new MetricFileWriter(indicator, outputFile)) {

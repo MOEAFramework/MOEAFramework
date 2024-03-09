@@ -1301,6 +1301,7 @@ public class TypedProperties implements Displayable {
 	/**
 	 * Prints the properties to standard output.
 	 */
+	@Override
 	public void display(PrintStream out) {
 		try (StringWriter stringBuffer = new StringWriter()) {
 			store(stringBuffer);

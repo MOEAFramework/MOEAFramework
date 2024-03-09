@@ -20,66 +20,48 @@ package org.moeaframework.problem;
 import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.core.Settings;
+import org.moeaframework.core.Settings.Scope;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.core.spi.ProviderNotFoundException;
 
-/**
- * Tests the {@link PropertiesProblems} class.
- */
 public class PropertiesProblemsTest {
 	
 	@Test
 	public void testWithoutReferenceSet() {
-		Settings.PROPERTIES.setString(
-				"org.moeaframework.problem.TestWithoutReferenceSet.class", 
-				"org.moeaframework.problem.ZDT.ZDT1");
-		
-		Assert.assertNotNull(ProblemFactory.getInstance().getProblem(
-				"TestWithoutReferenceSet"));
-		Assert.assertNull(ProblemFactory.getInstance().getReferenceSet(
-				"TestWithoutReferenceSet"));
+		try (Scope scope = Settings.createScope()
+				.with("org.moeaframework.problem.TestWithoutReferenceSet.class", "org.moeaframework.problem.ZDT.ZDT1")) {
+			Assert.assertNotNull(ProblemFactory.getInstance().getProblem("TestWithoutReferenceSet"));
+			Assert.assertNull(ProblemFactory.getInstance().getReferenceSet("TestWithoutReferenceSet"));
+		}
 	}
 	
 	@Test
 	public void testWithReferenceSet() {
-		Settings.PROPERTIES.setString(
-				"org.moeaframework.problem.TestWithReferenceSet.class", 
-				"org.moeaframework.problem.ZDT.ZDT1");
-		Settings.PROPERTIES.setString(
-				"org.moeaframework.problem.TestWithReferenceSet.referenceSet", 
-				"./pf/ZDT1.pf");
-		
-		Assert.assertNotNull(ProblemFactory.getInstance().getProblem(
-				"TestWithReferenceSet"));
-		Assert.assertNotNull(ProblemFactory.getInstance().getReferenceSet(
-				"TestWithReferenceSet"));
+		try (Scope scope = Settings.createScope()
+				.with("org.moeaframework.problem.TestWithReferenceSet.class", "org.moeaframework.problem.ZDT.ZDT1")
+				.with("org.moeaframework.problem.TestWithReferenceSet.referenceSet", "./pf/ZDT1.pf")) {
+			Assert.assertNotNull(ProblemFactory.getInstance().getProblem("TestWithReferenceSet"));
+			Assert.assertNotNull(ProblemFactory.getInstance().getReferenceSet("TestWithReferenceSet"));
+		}
 	}
 	
 	@Test(expected = ProviderNotFoundException.class)
 	public void testNoEmptyConstructor() {
-		Settings.PROPERTIES.setString(
-				"org.moeaframework.problem.TestNoEmptyConstructor.class", 
-				"org.moeaframework.problem.DTLZ.DTLZ2");
-		
-		ProblemFactory.getInstance().getProblem("TestNoEmptyConstructor");
+		try (Scope scope = Settings.createScope()
+				.with("org.moeaframework.problem.TestNoEmptyConstructor.class", "org.moeaframework.problem.DTLZ.DTLZ2")) {
+			ProblemFactory.getInstance().getProblem("TestNoEmptyConstructor");
+		}
 	}
 	
 	@Test
 	public void testCaseSensitivity() {
-		Settings.PROPERTIES.setString(
-				"org.moeaframework.problem.problems", 
-				"TestCaseSensitivity");
-		Settings.PROPERTIES.setString(
-				"org.moeaframework.problem.TestCaseSensitivity.class", 
-				"org.moeaframework.problem.ZDT.ZDT1");
-		Settings.PROPERTIES.setString(
-				"org.moeaframework.problem.TestCaseSensitivity.referenceSet", 
-				"./pf/ZDT1.pf");
-		
-		Assert.assertNotNull(ProblemFactory.getInstance().getProblem(
-				"testcasesensitivity"));
-		Assert.assertNotNull(ProblemFactory.getInstance().getReferenceSet(
-				"TESTCASESENSITIVITY"));
+		try (Scope scope = Settings.createScope()
+				.with("org.moeaframework.problem.problems", "TestCaseSensitivity")
+				.with("org.moeaframework.problem.TestCaseSensitivity.class", "org.moeaframework.problem.ZDT.ZDT1")
+				.with("org.moeaframework.problem.TestCaseSensitivity.referenceSet", "./pf/ZDT1.pf")) {
+			Assert.assertNotNull(ProblemFactory.getInstance().getProblem("testcasesensitivity"));
+			Assert.assertNotNull(ProblemFactory.getInstance().getReferenceSet("TESTCASESENSITIVITY"));
+		}
 	}
 
 }

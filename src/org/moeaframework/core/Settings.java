@@ -26,8 +26,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringTokenizer;
@@ -545,6 +547,172 @@ public class Settings {
 		}
 		
 		return sb.toString();
+	}
+	
+	/**
+	 * Returns a scope that can temporary change settings.  Any settings modified by calling {@link Scope#with}
+	 * will be reverted to their original values when leaving the scope.
+	 * 
+	 * @return the scope
+	 */
+	public static Scope createScope() {
+		return new Scope();
+	}
+	
+	/**
+	 * Defines settings within a temporary scope, where any overridden settings are reset after existing the
+	 * scope.  Typically used within a try-with-resources block, allowing the settings to be reverted
+	 * automatically when exiting the body.
+	 */
+	public static class Scope implements AutoCloseable {
+		
+		/**
+		 * The keys that are modified in this scope.
+		 */
+		private final Set<String> modifiedKeys;
+		
+		/**
+		 * The original values that will be restored when exiting the scope.
+		 */
+		private final TypedProperties originalValues;
+		
+		/**
+		 * Constructs a new scope.
+		 */
+		public Scope() {
+			super();
+			this.modifiedKeys = new HashSet<String>();
+			this.originalValues = new TypedProperties();
+		}
+		
+		/**
+		 * Captures the current value of the setting.
+		 * 
+		 * @param key the key of the setting
+		 */
+		private void capture(String key) {
+			modifiedKeys.add(key);
+			
+			if (Settings.PROPERTIES.contains(key)) {
+				originalValues.setString(key, Settings.PROPERTIES.getString(key));
+			}
+		}
+		
+		/**
+		 * Temporarily overrides the given key within the scope.
+		 * 
+		 * @param key the key
+		 * @param value the value
+		 * @return a reference to this scope for chaining multiple calls together
+		 */
+		public Scope with(String key, double value) {
+			capture(key);
+			Settings.PROPERTIES.setDouble(key, value);
+			return this;
+		}
+		
+		/**
+		 * Temporarily overrides the given key within the scope.
+		 * 
+		 * @param key the key
+		 * @param value the value
+		 * @return a reference to this scope for chaining multiple calls together
+		 */
+		public Scope with(String key, float value) {
+			capture(key);
+			Settings.PROPERTIES.setFloat(key, value);
+			return this;
+		}
+		
+		/**
+		 * Temporarily overrides the given key within the scope.
+		 * 
+		 * @param key the key
+		 * @param value the value
+		 * @return a reference to this scope for chaining multiple calls together
+		 */
+		public Scope with(String key, long value) {
+			capture(key);
+			Settings.PROPERTIES.setLong(key, value);
+			return this;
+		}
+		
+		/**
+		 * Temporarily overrides the given key within the scope.
+		 * 
+		 * @param key the key
+		 * @param value the value
+		 * @return a reference to this scope for chaining multiple calls together
+		 */
+		public Scope with(String key, int value) {
+			capture(key);
+			Settings.PROPERTIES.setInt(key, value);
+			return this;
+		}
+		
+		/**
+		 * Temporarily overrides the given key within the scope.
+		 * 
+		 * @param key the key
+		 * @param value the value
+		 * @return a reference to this scope for chaining multiple calls together
+		 */
+		public Scope with(String key, short value) {
+			capture(key);
+			Settings.PROPERTIES.setShort(key, value);
+			return this;
+		}
+		
+		/**
+		 * Temporarily overrides the given key within the scope.
+		 * 
+		 * @param key the key
+		 * @param value the value
+		 * @return a reference to this scope for chaining multiple calls together
+		 */
+		public Scope with(String key, byte value) {
+			capture(key);
+			Settings.PROPERTIES.setByte(key, value);
+			return this;
+		}
+		
+		/**
+		 * Temporarily overrides the given key within the scope.
+		 * 
+		 * @param key the key
+		 * @param value the value
+		 * @return a reference to this scope for chaining multiple calls together
+		 */
+		public Scope with(String key, boolean value) {
+			capture(key);
+			Settings.PROPERTIES.setBoolean(key, value);
+			return this;
+		}
+		
+		/**
+		 * Temporarily overrides the given key within the scope.
+		 * 
+		 * @param key the key
+		 * @param value the value
+		 * @return a reference to this scope for chaining multiple calls together
+		 */
+		public Scope with(String key, String value) {
+			capture(key);
+			Settings.PROPERTIES.setString(key, value);
+			return this;
+		}
+
+		@Override
+		public void close() {
+			for (String key : modifiedKeys) {
+				Settings.PROPERTIES.remove(key);
+				
+				if (originalValues.contains(key)) {
+					Settings.PROPERTIES.setString(key, originalValues.getString(key));
+				}
+			}
+		}
+				
 	}
 	
 }
