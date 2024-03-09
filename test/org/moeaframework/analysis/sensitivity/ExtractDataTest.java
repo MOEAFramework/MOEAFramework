@@ -27,7 +27,8 @@ import org.moeaframework.TestUtils;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.indicator.Contribution;
-import org.moeaframework.core.indicator.QualityIndicator;
+import org.moeaframework.core.indicator.Indicators;
+import org.moeaframework.core.indicator.Indicators.IndicatorValues;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.core.spi.ProblemFactoryTestWrapper;
 
@@ -116,33 +117,31 @@ public class ExtractDataTest {
 			"--output", output.getPath(),
 			"+ge", "+hyp", "+inv", "+err", "+spa", "+eps" });
 		
-		QualityIndicator indicator = new QualityIndicator(problem, 
-				referenceSet);
+		Indicators indicators = Indicators.of(problem, referenceSet);
 		
 		try (BufferedReader reader = new BufferedReader(new FileReader(output));
 			 ResultFileReader resultReader = new ResultFileReader(problem, input)) {
 			Assert.assertEquals("#+ge +hyp +inv +err +spa +eps", 
 					reader.readLine());
 				
-			NondominatedPopulation population = 
-					resultReader.next().getPopulation();
-			indicator.calculate(population);
-			Assert.assertEquals(indicator.getGenerationalDistance() + " " + 
-					indicator.getHypervolume() + " " +
-					indicator.getInvertedGenerationalDistance() + " " +
-					indicator.getMaximumParetoFrontError() + " " + 
-					indicator.getSpacing() + " " + 
-					indicator.getAdditiveEpsilonIndicator(), 
+			NondominatedPopulation population = resultReader.next().getPopulation();
+			IndicatorValues values = indicators.apply(population);
+			Assert.assertEquals(values.getGenerationalDistance() + " " + 
+					values.getHypervolume() + " " +
+					values.getInvertedGenerationalDistance() + " " +
+					values.getMaximumParetoFrontError() + " " + 
+					values.getSpacing() + " " + 
+					values.getAdditiveEpsilonIndicator(), 
 					reader.readLine());
 				
 			population = resultReader.next().getPopulation();
-			indicator.calculate(population);
-			Assert.assertEquals(indicator.getGenerationalDistance() + " " + 
-					indicator.getHypervolume() + " " +
-					indicator.getInvertedGenerationalDistance() + " " +
-					indicator.getMaximumParetoFrontError() + " " + 
-					indicator.getSpacing() + " " + 
-					indicator.getAdditiveEpsilonIndicator(), 
+			values = indicators.apply(population);
+			Assert.assertEquals(values.getGenerationalDistance() + " " + 
+					values.getHypervolume() + " " +
+					values.getInvertedGenerationalDistance() + " " +
+					values.getMaximumParetoFrontError() + " " + 
+					values.getSpacing() + " " + 
+					values.getAdditiveEpsilonIndicator(), 
 					reader.readLine());
 				
 			Assert.assertNull(reader.readLine());

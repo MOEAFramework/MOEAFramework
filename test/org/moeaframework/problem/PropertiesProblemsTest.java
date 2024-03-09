@@ -20,15 +20,15 @@ package org.moeaframework.problem;
 import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.core.Settings;
-import org.moeaframework.core.Settings.Scope;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.core.spi.ProviderNotFoundException;
+import org.moeaframework.util.PropertyScope;
 
 public class PropertiesProblemsTest {
 	
 	@Test
 	public void testWithoutReferenceSet() {
-		try (Scope scope = Settings.createScope()
+		try (PropertyScope scope = Settings.createScope()
 				.with("org.moeaframework.problem.TestWithoutReferenceSet.class", "org.moeaframework.problem.ZDT.ZDT1")) {
 			Assert.assertNotNull(ProblemFactory.getInstance().getProblem("TestWithoutReferenceSet"));
 			Assert.assertNull(ProblemFactory.getInstance().getReferenceSet("TestWithoutReferenceSet"));
@@ -37,7 +37,7 @@ public class PropertiesProblemsTest {
 	
 	@Test
 	public void testWithReferenceSet() {
-		try (Scope scope = Settings.createScope()
+		try (PropertyScope scope = Settings.createScope()
 				.with("org.moeaframework.problem.TestWithReferenceSet.class", "org.moeaframework.problem.ZDT.ZDT1")
 				.with("org.moeaframework.problem.TestWithReferenceSet.referenceSet", "./pf/ZDT1.pf")) {
 			Assert.assertNotNull(ProblemFactory.getInstance().getProblem("TestWithReferenceSet"));
@@ -47,7 +47,7 @@ public class PropertiesProblemsTest {
 	
 	@Test(expected = ProviderNotFoundException.class)
 	public void testNoEmptyConstructor() {
-		try (Scope scope = Settings.createScope()
+		try (PropertyScope scope = Settings.createScope()
 				.with("org.moeaframework.problem.TestNoEmptyConstructor.class", "org.moeaframework.problem.DTLZ.DTLZ2")) {
 			ProblemFactory.getInstance().getProblem("TestNoEmptyConstructor");
 		}
@@ -55,7 +55,7 @@ public class PropertiesProblemsTest {
 	
 	@Test
 	public void testCaseSensitivity() {
-		try (Scope scope = Settings.createScope()
+		try (PropertyScope scope = Settings.createScope()
 				.with("org.moeaframework.problem.problems", "TestCaseSensitivity")
 				.with("org.moeaframework.problem.TestCaseSensitivity.class", "org.moeaframework.problem.ZDT.ZDT1")
 				.with("org.moeaframework.problem.TestCaseSensitivity.referenceSet", "./pf/ZDT1.pf")) {

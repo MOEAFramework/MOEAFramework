@@ -40,6 +40,7 @@ import org.moeaframework.util.io.FileUtils;
  * 
  * @see MetricFileReader
  */
+@SuppressWarnings("deprecation")
 public class MetricFileWriter implements OutputWriter {
 	
 	/**
@@ -93,7 +94,7 @@ public class MetricFileWriter implements OutputWriter {
 	@Deprecated
 	public MetricFileWriter(QualityIndicator qualityIndicator, File file, MetricFileWriterSettings settings)
 			throws IOException {
-		this(Indicators.from(qualityIndicator), file, settings);
+		this(Indicators.of(qualityIndicator), file, settings);
 	}
 	
 	/**

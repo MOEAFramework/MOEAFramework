@@ -26,7 +26,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.TestUtils;
 import org.moeaframework.core.NondominatedPopulation.DuplicateMode;
-import org.moeaframework.core.Settings.Scope;
+import org.moeaframework.util.PropertyScope;
 
 /**
  * Tests the {@link Settings} class.  These tests ensure that valid settings
@@ -67,7 +67,7 @@ public class SettingsTest {
 	
 	@Test
 	public void testDiagnosticToolAlgorithmsOverride() {
-		try (Scope scope = Settings.createScope().with(Settings.KEY_DIAGNOSTIC_TOOL_ALGORITHMS, "foo")) {
+		try (PropertyScope scope = Settings.createScope().with(Settings.KEY_DIAGNOSTIC_TOOL_ALGORITHMS, "foo")) {
 			List<String> result = Arrays.asList(Settings.getDiagnosticToolAlgorithms());
 			Assert.assertTrue(result.size() == 1);
 			Assert.assertTrue(result.contains("foo"));
@@ -76,7 +76,7 @@ public class SettingsTest {
 	
 	@Test
 	public void testDiagnosticToolProblemsOverride() {
-		try (Scope scope = Settings.createScope().with(Settings.KEY_DIAGNOSTIC_TOOL_PROBLEMS, "bar")) {
+		try (PropertyScope scope = Settings.createScope().with(Settings.KEY_DIAGNOSTIC_TOOL_PROBLEMS, "bar")) {
 			List<String> result = Arrays.asList(Settings.getDiagnosticToolProblems());
 			Assert.assertTrue(result.size() == 1);
 			Assert.assertTrue(result.contains("bar"));
@@ -90,7 +90,7 @@ public class SettingsTest {
 	
 	@Test
 	public void testDuplicateModeCaseSensitivity() {
-		try (Scope scope = Settings.createScope()
+		try (PropertyScope scope = Settings.createScope()
 				.with(Settings.KEY_DUPLICATE_MODE, DuplicateMode.ALLOW_DUPLICATES.name().toLowerCase())) {
 			Assert.assertEquals(DuplicateMode.ALLOW_DUPLICATES, Settings.getDuplicateMode());
 			Assert.assertEquals(DuplicateMode.ALLOW_DUPLICATES, new NondominatedPopulation().duplicateMode);
@@ -144,48 +144,18 @@ public class SettingsTest {
 	}
 	
 	@Test
-	public void testScopeOnUndefinedSetting() {
+	public void testScope() {
 		Assert.assertFalse(Settings.PROPERTIES.contains("foo"));
 		
-		try (Scope scope = Settings.createScope().with("foo", "bar")) {
+		try (PropertyScope scope = Settings.createScope().with("foo", "bar")) {
 			Assert.assertTrue(Settings.PROPERTIES.contains("foo"));
-			Assert.assertEquals("bar", Settings.PROPERTIES.getString("foo"));
-		}
-		
-		Assert.assertFalse(Settings.PROPERTIES.contains("foo"));
-	}
-	
-	@Test
-	public void testScopeOnOverriddenSetting() {
-		Settings.PROPERTIES.setString("foo", "bar");
-		
-		Assert.assertTrue(Settings.PROPERTIES.contains("foo"));
-		Assert.assertEquals("bar", Settings.PROPERTIES.getString("foo"));
-		
-		try (Scope scope = Settings.createScope().with("foo", "baz")) {
-			Assert.assertTrue(Settings.PROPERTIES.contains("foo"));
-			Assert.assertEquals("baz", Settings.PROPERTIES.getString("foo"));
-		}
-		
-		Assert.assertTrue(Settings.PROPERTIES.contains("foo"));
-		Assert.assertEquals("bar", Settings.PROPERTIES.getString("foo"));
-	}
-	
-	@Test
-	public void testScopeWithSetSetting() {
-		Assert.assertFalse(Settings.PROPERTIES.contains("foo"));
-		Assert.assertFalse(Settings.PROPERTIES.contains("hello"));
-		
-		try (Scope scope = Settings.createScope().with("foo", "bar")) {
-			Settings.PROPERTIES.setString("foo", "baz");     // Removed when existing scope
-			Settings.PROPERTIES.setString("hello", "world"); // Kept because not captured by scope
 			
-			Assert.assertTrue(Settings.PROPERTIES.contains("foo"));
-			Assert.assertEquals("baz", Settings.PROPERTIES.getString("foo"));
+			Settings.PROPERTIES.setInt("number", 5);
+			Assert.assertEquals(5, Settings.PROPERTIES.getInt("number"));
 		}
 		
 		Assert.assertFalse(Settings.PROPERTIES.contains("foo"));
-		Assert.assertTrue(Settings.PROPERTIES.contains("hello"));
+		Assert.assertFalse(Settings.PROPERTIES.contains("number"));
 	}
 
 }

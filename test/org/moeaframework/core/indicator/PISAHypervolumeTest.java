@@ -24,8 +24,8 @@ import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.Settings.Scope;
 import org.moeaframework.core.spi.ProblemFactory;
+import org.moeaframework.util.PropertyScope;
 
 /**
  * Tests the {@link PISAHypervolume} class. Due to performance, these tests only go up to 4 dimensions.
@@ -183,7 +183,7 @@ public class PISAHypervolumeTest extends IndicatorTest {
 	
 	@Test
 	public void testExplicitBounds2_Properties() {
-		try (Scope scope = Settings.createScope()
+		try (PropertyScope scope = Settings.createScope()
 				.with("org.moeaframework.core.indicator.hypervolume_idealpt.DTLZ2", 0.0)
 				.with("org.moeaframework.core.indicator.hypervolume_refpt.DTLZ2", 2.0)) {
 			Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");

@@ -19,13 +19,20 @@ package org.moeaframework.core.indicator;
 
 import java.io.IOException;
 
+import org.apache.commons.lang3.SystemUtils;
 import org.junit.Assert;
 import org.junit.Test;
+import org.moeaframework.TestUtils;
+import org.moeaframework.core.FrameworkException;
+import org.moeaframework.core.NondominatedPopulation;
+import org.moeaframework.core.Problem;
+import org.moeaframework.core.Settings;
+import org.moeaframework.core.Solution;
+import org.moeaframework.problem.MockRealProblem;
+import org.moeaframework.util.PropertyScope;
 
 public class NativeHypervolumeTest {
-	
-	// TODO: Add more test coverage
-	
+
 	@Test
 	public void testParseCommand() throws IOException {
 		String command = "java -jar \"C:\\Program Files\\Test\\test.jar\" \"\"\"";
@@ -33,6 +40,40 @@ public class NativeHypervolumeTest {
 		String[] actual = NativeHypervolume.parseCommand(command);
 		
 		Assert.assertArrayEquals(expected, actual);
+	}
+	
+	@Test
+	public void testInvert() {
+		Problem problem = new MockRealProblem(3);
+		Solution solution = TestUtils.newSolution(0.0, 1.0, 0.5);
+		
+		NativeHypervolume.invert(problem, solution);
+		
+		Assert.assertArrayEquals(new double[] { 1.0, 0.0, 0.5 }, solution.getObjectives(), Settings.EPS);
+	}
+	
+	@Test
+	public void testInvokeNativeProcess() throws IOException {
+		double value = NativeHypervolume.invokeNativeProcess(SystemUtils.IS_OS_WINDOWS ?
+				"cmd /C \"echo hypervolume is 0.75\"" : "echo \"hypervolume is 0.75\"");
+		
+		Assert.assertEquals(0.75, value, Settings.EPS);
+	}
+	
+	@Test(expected = FrameworkException.class)
+	public void testNoSetting() {
+		try (PropertyScope scope = Settings.createScope().without(Settings.KEY_HYPERVOLUME)) {
+			NativeHypervolume.evaluate(new MockRealProblem(2), new NondominatedPopulation());
+		}
+	}
+	
+	@Test
+	public void testEvaluate() {
+		try (PropertyScope scope = Settings.createScope().with(Settings.KEY_HYPERVOLUME,
+				SystemUtils.IS_OS_WINDOWS ? "cmd /C \"echo {0} {1} {2} {3} {4} 0.75\"" : "echo \"{0} {1} {2} {3} {4} 0.75\"")) {
+			double value = NativeHypervolume.evaluate(new MockRealProblem(2), new NondominatedPopulation());
+			Assert.assertEquals(0.75, value, Settings.EPS);
+		}
 	}
 
 }

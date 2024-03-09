@@ -23,7 +23,10 @@ import org.moeaframework.core.Settings;
 
 /**
  * Evaluates multiple indicators while avoiding repetitive computations.
+ * 
+ * @deprecated Use {@link Indicators} instead
  */
+@Deprecated
 public class QualityIndicator {
 
 	/**

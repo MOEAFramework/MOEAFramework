@@ -24,9 +24,9 @@ import org.junit.Test;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
-import org.moeaframework.core.Settings.Scope;
 import org.moeaframework.core.indicator.Indicators.IndicatorValues;
 import org.moeaframework.core.spi.ProblemFactory;
+import org.moeaframework.util.PropertyScope;
 
 public class IndicatorsTest {
 	
@@ -41,7 +41,7 @@ public class IndicatorsTest {
 		Problem problem = problemFactory.getProblem(problemName);
 		NondominatedPopulation referenceSet = problemFactory.getReferenceSet(problemName);
 		
-		indicators = Indicators.from(problem, referenceSet);
+		indicators = Indicators.of(problem, referenceSet);
 		testApproximationSet = referenceSet;
 	}
 	
@@ -122,7 +122,7 @@ public class IndicatorsTest {
 	
 	@Test
 	public void testDisabledHypervolume() {
-		try (Scope scope = Settings.createScope().with(Settings.KEY_HYPERVOLUME_ENABLED, false)) {
+		try (PropertyScope scope = Settings.createScope().with(Settings.KEY_HYPERVOLUME_ENABLED, false)) {
 			indicators.includeStandardMetrics();
 			IndicatorValues values = indicators.apply(testApproximationSet);
 			Assert.assertTrue(Double.isNaN(values.getHypervolume()));

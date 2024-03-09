@@ -46,7 +46,7 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 	 * @return the constructed instance
 	 */
 	public static Indicators all(Problem problem, NondominatedPopulation referenceSet) {
-		return from(problem, referenceSet).includeAllMetrics();
+		return of(problem, referenceSet).includeAllMetrics();
 	}
 	
 	/**
@@ -58,7 +58,7 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 	 * @return the constructed instance
 	 */
 	public static Indicators standard(Problem problem, NondominatedPopulation referenceSet) {
-		return from(problem, referenceSet).includeStandardMetrics();
+		return of(problem, referenceSet).includeStandardMetrics();
 	}
 
 	/**
@@ -68,18 +68,19 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 	 * @param referenceSet the reference set
 	 * @return the constructed instance
 	 */
-	public static Indicators from(Problem problem, NondominatedPopulation referenceSet) {
+	public static Indicators of(Problem problem, NondominatedPopulation referenceSet) {
 		return new Indicators(problem, referenceSet);
 	}
 	
 	/**
-	 * Creates an instance of this class mirroring the given quality indicator.  This method simplifies
-	 * transitioning away from the old, deprecated {@link QualityIndicator} class.
+	 * Convenience method for converting a {@link QualityIndicator} into an {@code Indicators} object.  Will be
+	 * removed once {@code QualityIndicator} is deprecated.
 	 * 
 	 * @param qualityIndicator the quality indicator
 	 * @return the constructed instance
 	 */
-	public static Indicators from(QualityIndicator qualityIndicator) {
+	@SuppressWarnings("deprecation")
+	public static Indicators of(QualityIndicator qualityIndicator) {
 		return new Indicators(qualityIndicator.getProblem(), qualityIndicator.getReferenceSet())
 				.includeStandardMetrics();
 	}
@@ -207,7 +208,7 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 		
 		subdivisions = Optional.empty();
 	}
-
+	
 	@Override
 	public IndicatorValues apply(NondominatedPopulation approximationSet) {
 		IndicatorValues result = new IndicatorValues(approximationSet);
@@ -285,12 +286,28 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 
 		return result;
 	}
+	
+	/**
+	 * Calculates the indicators for a list of approximation sets.
+	 * 
+	 * @param approximationSets the approximation sets
+	 * @return the indicator values
+	 */
+	public List<IndicatorValues> applyAll(List<NondominatedPopulation> approximationSets) {
+		List<IndicatorValues> result = new ArrayList<IndicatorValues>();
+		
+		for (NondominatedPopulation approximationSet : approximationSets) {
+			result.add(apply(approximationSet));
+		}
+		
+		return result;
+	}
 
 	/**
 	 * Sets the &epsilon; values used by the indicators.
 	 * 
 	 * @param epsilon the &epsilon; values
-	 * @return a reference to this object
+	 * @return a reference to this object so calls can be chained together
 	 */
 	public Indicators withEpsilon(double... epsilon) {
 		if ((epsilon == null) || (epsilon.length == 0)) {
@@ -306,7 +323,7 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 	 * Sets the number of subdivisions used by the R-indicators.
 	 * 
 	 * @param subdivisions the number of subdivisions
-	 * @return a reference to this object
+	 * @return a reference to this object so calls can be chained together
 	 */
 	public Indicators withSubdivisions(int subdivisions) {
 		Validate.greaterThan("subdivisions", 1, subdivisions);
@@ -318,21 +335,47 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 		this.subdivisions = Optional.of(subdivisions);
 		return this;
 	}
-
+	
 	/**
 	 * Enables the evaluation of the hypervolume metric.
 	 * 
-	 * @return a reference to this object
+	 * @return a reference to this object so calls can be chained together
 	 */
 	public Indicators includeHypervolume() {
 		includeHypervolume = true;
+		return this;
+	}
+	
+	/**
+	 * Configures the hypervolume metric using the given reference point.  The hypervolume is then measured
+	 * between the Pareto front and this reference point.
+	 * 
+	 * @param referencePoint the reference point
+	 * @return a reference to this object so calls can be chained together
+	 */
+	public Indicators withHypervolume(double[] referencePoint) {
+		includeHypervolume();
+		hypervolume = new Hypervolume(problem, referenceSet, referencePoint);
+		return this;
+	}
+	
+	/**
+	 * Configures the hypervolume metric using the given minimum and maximum bounds of the Pareto set.
+	 * 
+	 * @param minimum the minimum bounds
+	 * @param maximum the maximum bounds
+	 * @return a reference to this object so calls can be chained together
+	 */
+	public Indicators withHypervolume(double[] minimum, double[] maximum) {
+		includeHypervolume();
+		hypervolume = new Hypervolume(problem, minimum, maximum);
 		return this;
 	}
 
 	/**
 	 * Enables the evaluation of the generational distance metric.
 	 * 
-	 * @return a reference to this object
+	 * @return a reference to this object so calls can be chained together
 	 */
 	public Indicators includeGenerationalDistance() {
 		includeGenerationalDistance = true;
@@ -342,7 +385,7 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 	/**
 	 * Enables the evaluation of the inverted generational distance metric.
 	 * 
-	 * @return a reference to this object
+	 * @return a reference to this object so calls can be chained together
 	 */
 	public Indicators includeInvertedGenerationalDistance() {
 		includeInvertedGenerationalDistance = true;
@@ -352,7 +395,7 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 	/**
 	 * Enables the evaluation of the additive &epsilon;-indicator metric.
 	 * 
-	 * @return a reference to this object
+	 * @return a reference to this object so calls can be chained together
 	 */
 	public Indicators includeAdditiveEpsilonIndicator() {
 		includeAdditiveEpsilonIndicator = true;
@@ -362,7 +405,7 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 	/**
 	 * Enables the evaluation of the maximum Pareto front error metric.
 	 * 
-	 * @return a reference to this object
+	 * @return a reference to this object so calls can be chained together
 	 */
 	public Indicators includeMaximumParetoFrontError() {
 		includeMaximumParetoFrontError = true;
@@ -372,7 +415,7 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 	/**
 	 * Enables the evaluation of the spacing metric.
 	 * 
-	 * @return a reference to this object
+	 * @return a reference to this object so calls can be chained together
 	 */
 	public Indicators includeSpacing() {
 		includeSpacing = true;
@@ -382,7 +425,7 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 	/**
 	 * Enables the evaluation of the contribution metric.
 	 * 
-	 * @return a reference to this object
+	 * @return a reference to this object so calls can be chained together
 	 */
 	public Indicators includeContribution() {
 		includeContribution = true;
@@ -392,7 +435,7 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 	/**
 	 * Enables the evaluation of the R1 indicator.
 	 * 
-	 * @return a reference to this object
+	 * @return a reference to this object so calls can be chained together
 	 */
 	public Indicators includeR1() {
 		includeR1 = true;
@@ -402,7 +445,7 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 	/**
 	 * Enables the evaluation of the R2 indicator.
 	 * 
-	 * @return a reference to this object
+	 * @return a reference to this object so calls can be chained together
 	 */
 	public Indicators includeR2() {
 		includeR2 = true;
@@ -412,7 +455,7 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 	/**
 	 * Enables the evaluation of the R3 indicator.
 	 * 
-	 * @return a reference to this object
+	 * @return a reference to this object so calls can be chained together
 	 */
 	public Indicators includeR3() {
 		includeR3 = true;
@@ -422,7 +465,7 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 	/**
 	 * Enables the evaluation of all standard metrics.  This excludes the R-indicators.
 	 * 
-	 * @return a reference to this object
+	 * @return a reference to this object so calls can be chained together
 	 */
 	public Indicators includeStandardMetrics() {
 		if (Settings.isHypervolumeEnabled()) {
@@ -442,7 +485,7 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 	/**
 	 * Enables the evaluation of all metrics.
 	 * 
-	 * @return a reference to this object
+	 * @return a reference to this object so calls can be chained together
 	 */
 	public Indicators includeAllMetrics() {
 		includeStandardMetrics();
