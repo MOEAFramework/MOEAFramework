@@ -27,8 +27,8 @@ import java.util.Map;
  * 	OptionCompleter completer = new OptionCompleter();
  * 	completer.add("subset");
  * 	completer.add("superset");
- * 	completer.lookup("sub");   // returns &quot;subset&quot;
- * 	completer.lookup("sup");   // returns &quot;superset&quot;
+ * 	completer.lookup("sub");   // returns "subset"
+ * 	completer.lookup("sup");   // returns "superset"
  * 	completer.lookup("s");     // returns null, since both subset and superset match
  * 	completer.lookup("k");     // returns null, no matches
  * }</pre>
