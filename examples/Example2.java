@@ -26,10 +26,9 @@ import org.moeaframework.problem.DTLZ.DTLZ2;
 
 /**
  * Quality indicators are used to compare results between different algorithms.  Here,
- * we calculate the hypervolume and generational distance relative to a reference set.
- * 
- * These reference sets contain optimal solutions to the problem.  Reference sets for
- * most test problems can be found in the ./pf/ directory.
+ * we calculate the indicators in relation to a known reference set. These reference sets
+ * contain optimal solutions to the problem.  Reference sets for most test problems can
+ * be found in the ./pf/ directory.
  */
 public class Example2 {
 

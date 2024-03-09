@@ -33,7 +33,7 @@ We can also measure the quality of the resulting Pareto non-dominated solutions 
 indicators, such as Hypervolume.  The `Indicators` class is a convenient way to calculate and display the
 performance indicator values.  We can select specific indicators or enable all.
 
-<!-- java:examples/Example2.java [37:49] -->
+<!-- java:examples/Example2.java [36:48] -->
 
 ```java
 
