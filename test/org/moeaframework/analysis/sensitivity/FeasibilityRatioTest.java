@@ -19,7 +19,6 @@ package org.moeaframework.analysis.sensitivity;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
@@ -77,14 +76,14 @@ public class FeasibilityRatioTest {
 	}
 	
 	@Test
-	public void testRandomlyFeasibleSolutions() {
-		double percentFeasible = 0.25;
-		
+	public void testPercentFeasibleSolutions() {
 		Problem problem = new AbstractProblem(1, 1, 1) {
+			
+			private int count = 0;
 
 			@Override
 			public void evaluate(Solution solution) {
-				solution.setConstraint(0, PRNG.nextDouble() < percentFeasible ? 0.0 : -1.0);
+				solution.setConstraint(0, (count++) % 4 == 0 ? 0.0 : -1.0);
 			}
 
 			@Override
@@ -96,7 +95,7 @@ public class FeasibilityRatioTest {
 			
 		};
 		
-		Assert.assertEquals(percentFeasible, FeasibilityRatio.calculate(problem, 10000), 0.01);
+		Assert.assertEquals(0.25, FeasibilityRatio.calculate(problem, 100), 0.01);
 	}
 
 }

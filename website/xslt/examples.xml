@@ -224,8 +224,8 @@ R3                           0.000389
 <pre class="brush: java; toolbar: false;">
 <![CDATA[
 Problem problem = new DTLZ2(2);
-NSGAII algorithm = new NSGAII(problem);
 
+NSGAII algorithm = new NSGAII(problem);
 algorithm.setInitialPopulationSize(250);
 algorithm.setVariation(new PCX(5, 2));
 algorithm.setArchive(new EpsilonBoxDominanceArchive(0.01));

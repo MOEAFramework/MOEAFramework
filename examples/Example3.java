@@ -33,8 +33,8 @@ public class Example3 {
 
 	public static void main(String[] args) throws IOException {
 		Problem problem = new DTLZ2(2);
-		NSGAII algorithm = new NSGAII(problem);
 		
+		NSGAII algorithm = new NSGAII(problem);
 		algorithm.setInitialPopulationSize(250);
 		algorithm.setVariation(new PCX(5, 2));
 		algorithm.setArchive(new EpsilonBoxDominanceArchive(0.01));
