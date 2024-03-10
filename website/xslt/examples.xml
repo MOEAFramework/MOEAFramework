@@ -160,10 +160,9 @@ Var1     Var2     Var3     Var4     Var5     Var6     Var7     Var8     Var9    
 </p>
 
 <div class="code">
-<!-- java:examples/Example2.java [36:48] -->
+<!-- java:examples/Example2.java [37:48] -->
 <pre class="brush: java; toolbar: false;">
 <![CDATA[
-
 Problem problem = new DTLZ2(2);
 
 NSGAII algorithm = new NSGAII(problem);
