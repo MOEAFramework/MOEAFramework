@@ -160,23 +160,20 @@ Var1     Var2     Var3     Var4     Var5     Var6     Var7     Var8     Var9    
 </p>
 
 <div class="code">
-<!-- java:examples/Example2.java [38:52] -->
+<!-- java:examples/Example2.java [37:48] -->
 <pre class="brush: java; toolbar: false;">
 <![CDATA[
-
 Problem problem = new DTLZ2(2);
 
 NSGAII algorithm = new NSGAII(problem);
 algorithm.run(10000);
 
-NondominatedPopulation result = algorithm.getResult();
+NondominatedPopulation approximationSet = algorithm.getResult();
 
 NondominatedPopulation referenceSet = PopulationIO.readReferenceSet("pf/DTLZ2.2D.pf");
-Hypervolume hypervolume = new Hypervolume(problem, referenceSet);
-GenerationalDistance gd = new GenerationalDistance(problem, referenceSet);
 
-System.out.format("Hypervolume: %.6f%n", hypervolume.evaluate(result));
-System.out.format("GD: %.6f%n", gd.evaluate(result));
+Indicators indicators = Indicators.all(problem, referenceSet);
+indicators.apply(approximationSet).display();
 ]]>
 </pre>
 </div>
@@ -189,8 +186,18 @@ System.out.format("GD: %.6f%n", gd.evaluate(result));
 <!-- output:examples/Example2.java -->
 <pre class="brush: plain; toolbar: false;">
 <![CDATA[
-Hypervolume: 0.209259
-GD: 0.000987
+Indicator                    Value    
+---------------------------- -------- 
+Hypervolume                  0.209259 
+GenerationalDistance         0.000987 
+InvertedGenerationalDistance 0.004388 
+AdditiveEpsilonIndicator     0.008974 
+Spacing                      0.005820 
+MaximumParetoFrontError      0.039554 
+Contribution                 0.000000 
+R1                           0.471058 
+R2                           0.000258 
+R3                           0.000389 
 ]]>
 </pre>
 </div>
@@ -217,8 +224,8 @@ GD: 0.000987
 <pre class="brush: java; toolbar: false;">
 <![CDATA[
 Problem problem = new DTLZ2(2);
-NSGAII algorithm = new NSGAII(problem);
 
+NSGAII algorithm = new NSGAII(problem);
 algorithm.setInitialPopulationSize(250);
 algorithm.setVariation(new PCX(5, 2));
 algorithm.setArchive(new EpsilonBoxDominanceArchive(0.01));

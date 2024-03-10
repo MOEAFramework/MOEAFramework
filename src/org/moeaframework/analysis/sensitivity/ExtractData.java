@@ -18,18 +18,17 @@
 package org.moeaframework.analysis.sensitivity;
 
 import java.io.File;
-import java.io.IOException;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
-import org.moeaframework.core.FrameworkException;
-import org.moeaframework.core.Indicator;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.indicator.AdditiveEpsilonIndicator;
 import org.moeaframework.core.indicator.Contribution;
 import org.moeaframework.core.indicator.GenerationalDistance;
 import org.moeaframework.core.indicator.Hypervolume;
+import org.moeaframework.core.indicator.Indicators;
+import org.moeaframework.core.indicator.Indicators.IndicatorValues;
 import org.moeaframework.core.indicator.InvertedGenerationalDistance;
 import org.moeaframework.core.indicator.MaximumParetoFrontError;
 import org.moeaframework.core.indicator.R1Indicator;
@@ -152,6 +151,7 @@ public class ExtractData extends CommandLineUtility {
 	public void run(CommandLine commandLine) throws Exception {
 		String separator = commandLine.hasOption("separator") ? commandLine.getOptionValue("separator") : " ";
 
+		double[] epsilon = OptionUtils.getEpsilon(commandLine);
 		String[] fields = commandLine.getArgs();
 
 		// indicators are prepared, run the data extraction routine
@@ -159,6 +159,11 @@ public class ExtractData extends CommandLineUtility {
 				ResultFileReader input = new ResultFileReader(problem, new File(commandLine.getOptionValue("input")));
 				OutputLogger output = new OutputLogger(commandLine.getOptionValue("output"))) {
 			NondominatedPopulation referenceSet = OptionUtils.getReferenceSet(commandLine);
+			Indicators indicators = getIndicators(problem, referenceSet, fields);
+
+			if (epsilon != null) {
+				indicators.withEpsilon(epsilon);
+			}
 			
 			// optionally print header line
 			if (!commandLine.hasOption("noheader")) {
@@ -179,6 +184,7 @@ public class ExtractData extends CommandLineUtility {
 			while (input.hasNext()) {
 				ResultEntry entry = input.next();
 				TypedProperties properties = entry.getProperties();
+				IndicatorValues values = indicators.apply(entry.getPopulation());
 
 				for (int i = 0; i < fields.length; i++) {
 					if (i > 0) {
@@ -188,9 +194,9 @@ public class ExtractData extends CommandLineUtility {
 					if (properties.contains(fields[i])) {
 						output.print(properties.getString(fields[i]));
 					} else if (fields[i].startsWith("+")) {
-						output.print(evaluate(fields[i].substring(1), entry, problem, referenceSet, commandLine));
+						output.print(getValue(values, fields[i].substring(1)));
 					} else {
-						throw new FrameworkException("missing field");
+						throw new IllegalArgumentException("missing field '" + fields[i] + "'");
 					}
 				}
 
@@ -199,65 +205,74 @@ public class ExtractData extends CommandLineUtility {
 		}
 	}
 	
-	/**
-	 * Evaluates the special commands.  The {@code +} prefix should be removed
-	 * prior to calling this method.  An {@link OptionCompleter} is used to
-	 * auto-complete the commands, so only the unique prefix must be provided.
-	 * 
-	 * @param command the command identifier
-	 * @param entry the entry in the result file
-	 * @param problem the problem instance
-	 * @param referenceSet the reference set for the problem
-	 * @param commandLine the command line options
-	 * @return the value of the special command
-	 * @throws FrameworkException if the command is not supported
-	 * @throws IOException if an I/O error occurred
-	 */
-	protected String evaluate(String command, ResultEntry entry, Problem problem,
-			NondominatedPopulation referenceSet, CommandLine commandLine) throws IOException {
-		OptionCompleter completer = new OptionCompleter("hypervolume",
-				"generational", "inverted", "epsilon", "error", "spacing",
-				"contribution", "R1", "R2", "R3");
-		String option = completer.lookup(command);
+	private Indicators getIndicators(Problem problem, NondominatedPopulation referenceSet, String[] fields) {
+		Indicators indicators = Indicators.of(problem, referenceSet);
 		
-		if (option == null) {
-			throw new FrameworkException("unsupported command");
+		OptionCompleter completer = new OptionCompleter("hypervolume", "generational", "inverted", "epsilon",
+				"error", "spacing", "contribution", "R1", "R2", "R3");
+		
+		for (String field : fields) {
+			if (field.startsWith("+")) {
+				String option = completer.lookup(field.substring(1));
+				
+				if (option.equals("hypervolume")) {
+					indicators.includeHypervolume();
+				} else if (option.equals("generational")) {
+					indicators.includeGenerationalDistance();
+				} else if (option.equals("inverted")) {
+					indicators.includeInvertedGenerationalDistance();
+				} else if (option.equals("epsilon")) {
+					indicators.includeAdditiveEpsilonIndicator();
+				} else if (option.equals("error")) {
+					indicators.includeMaximumParetoFrontError();
+				} else if (option.equals("spacing")) {
+					indicators.includeSpacing();
+				} else if (option.equals("contribution")) {
+					indicators.includeContribution();
+				} else if (option.equals("R1")) {
+					indicators.includeR1();
+				} else if (option.equals("R2")) {
+					indicators.includeR2();
+				} else if (option.equals("R3")) {
+					indicators.includeR3();
+				} else {
+					throw new IllegalArgumentException("Unrecognized argument '" + field + "'");
+				}
+			}
 		}
 		
-		//create the indicator, these should perhaps be cached for speed
-		Indicator indicator = null;
+		return indicators;
+	}
+	
+	private double getValue(IndicatorValues values, String indicator) {
+		OptionCompleter completer = new OptionCompleter("hypervolume", "generational", "inverted", "epsilon",
+				"error", "spacing", "contribution", "R1", "R2", "R3");
+		
+		String option = completer.lookup(indicator);
 		
 		if (option.equals("hypervolume")) {
-			indicator = new Hypervolume(problem, referenceSet);
+			return values.getHypervolume();
 		} else if (option.equals("generational")) {
-			indicator = new GenerationalDistance(problem, referenceSet);
+			return values.getGenerationalDistance();
 		} else if (option.equals("inverted")) {
-			indicator = new InvertedGenerationalDistance(problem, referenceSet);
+			return values.getInvertedGenerationalDistance();
 		} else if (option.equals("epsilon")) {
-			indicator = new AdditiveEpsilonIndicator(problem, referenceSet);
+			return values.getAdditiveEpsilonIndicator();
 		} else if (option.equals("error")) {
-			indicator = new MaximumParetoFrontError(problem, referenceSet);
+			return values.getMaximumParetoFrontError();
 		} else if (option.equals("spacing")) {
-			indicator = new Spacing(problem);
+			return values.getSpacing();
 		} else if (option.equals("contribution")) {
-			double[] epsilon = OptionUtils.getEpsilon(commandLine);
-			
-			if (epsilon != null) {
-				indicator = new Contribution(referenceSet, epsilon);
-			} else {
-				indicator = new Contribution(referenceSet);
-			}
+			return values.getContribution();
 		} else if (option.equals("R1")) {
-			indicator = new R1Indicator(problem, R1Indicator.getDefaultSubdivisions(problem), referenceSet);
+			return values.getR1();
 		} else if (option.equals("R2")) {
-			indicator = new R2Indicator(problem, R2Indicator.getDefaultSubdivisions(problem), referenceSet);
+			return values.getR2();
 		} else if (option.equals("R3")) {
-			indicator = new R3Indicator(problem, R3Indicator.getDefaultSubdivisions(problem), referenceSet);
+			return values.getR3();
 		} else {
-			throw new IllegalStateException();
+			throw new IllegalArgumentException("Unrecognized argument '" + indicator + "'");
 		}
-		
-		return Double.toString(indicator.evaluate(entry.getPopulation()));
 	}
 	
 	/**

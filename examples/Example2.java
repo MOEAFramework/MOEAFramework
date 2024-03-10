@@ -21,16 +21,14 @@ import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PopulationIO;
 import org.moeaframework.core.Problem;
-import org.moeaframework.core.indicator.GenerationalDistance;
-import org.moeaframework.core.indicator.Hypervolume;
+import org.moeaframework.core.indicator.Indicators;
 import org.moeaframework.problem.DTLZ.DTLZ2;
 
 /**
  * Quality indicators are used to compare results between different algorithms.  Here,
- * we calculate the hypervolume and generational distance relative to a reference set.
- * 
- * These reference sets contain optimal solutions to the problem.  Reference sets for
- * most test problems can be found in the ./pf/ directory.
+ * we calculate the indicators in relation to a known reference set. These reference sets
+ * contain optimal solutions to the problem.  Reference sets for most test problems can
+ * be found in the ./pf/ directory.
  */
 public class Example2 {
 
@@ -41,15 +39,13 @@ public class Example2 {
 		NSGAII algorithm = new NSGAII(problem);
 		algorithm.run(10000);
 		
-		NondominatedPopulation result = algorithm.getResult();
+		NondominatedPopulation approximationSet = algorithm.getResult();
 		
 		// load the reference set and evaluate the quality indicators
 		NondominatedPopulation referenceSet = PopulationIO.readReferenceSet("pf/DTLZ2.2D.pf");
-		Hypervolume hypervolume = new Hypervolume(problem, referenceSet);
-		GenerationalDistance gd = new GenerationalDistance(problem, referenceSet);
 		
-		System.out.format("Hypervolume: %.6f%n", hypervolume.evaluate(result));
-		System.out.format("GD: %.6f%n", gd.evaluate(result));
+		Indicators indicators = Indicators.all(problem, referenceSet);
+		indicators.apply(approximationSet).display();
 	}
 
 }

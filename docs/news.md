@@ -2,6 +2,14 @@
 
 This page documents notable changes introduced in each chronological release of the MOEA Framework.
 
+## Version 3.12 (TBD)
+
+  * Adds the `Indicators` class to simplify calculating performance indicators, which will eventually
+    replace the older `QualityIndicator` class.  See `Example2.java` for a demo.
+    
+  * Adds ability to scope properties within a try-with-resources block.
+
+
 ## Version 3.11 (04 Mar 2024)
 
   * Removes the `setInitialPopulationSize` method and corresponding `populationSize` parameter

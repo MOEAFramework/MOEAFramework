@@ -30,7 +30,7 @@ import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Problem;
-import org.moeaframework.core.indicator.QualityIndicator;
+import org.moeaframework.core.indicator.Indicators;
 import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.problem.TimingProblem;
 import org.moeaframework.util.CommandLineUtility;
@@ -193,9 +193,9 @@ public class Evaluator extends CommandLineUtility {
 			try {
 				if (commandLine.hasOption("metrics")) {
 					NondominatedPopulation referenceSet = OptionUtils.getReferenceSet(commandLine);
-					QualityIndicator indicator = new QualityIndicator(problem, referenceSet);
+					Indicators indicators = Indicators.standard(problem, referenceSet);
 
-					output = new MetricFileWriter(indicator, outputFile);
+					output = new MetricFileWriter(indicators, outputFile);
 				} else {
 					output = new ResultFileWriter(problem, outputFile, ResultFileWriterSettings.from(commandLine));
 				}

@@ -27,6 +27,7 @@ import org.moeaframework.core.spi.ProblemFactory;
 /**
  * Tests the {@link QualityIndicator} class.
  */
+@Deprecated
 public class QualityIndicatorTest {
 	
 	private QualityIndicator qualityIndicator;

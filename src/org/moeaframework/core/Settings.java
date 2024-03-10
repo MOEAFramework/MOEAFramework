@@ -28,7 +28,6 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringTokenizer;
 import org.moeaframework.analysis.sensitivity.OutputWriter;
@@ -36,6 +35,7 @@ import org.moeaframework.core.NondominatedPopulation.DuplicateMode;
 import org.moeaframework.core.indicator.Hypervolume;
 import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.core.spi.ProblemFactory;
+import org.moeaframework.util.PropertyScope;
 import org.moeaframework.util.TypedProperties;
 
 /**
@@ -545,6 +545,16 @@ public class Settings {
 		}
 		
 		return sb.toString();
+	}
+	
+	/**
+	 * Creates a new scope wherein settings can be temporarily modified.  Upon closing the scope, the original
+	 * settings are restored.
+	 * 
+	 * @return the scope
+	 */
+	public static PropertyScope createScope() {
+		return new PropertyScope(PROPERTIES);
 	}
 	
 }

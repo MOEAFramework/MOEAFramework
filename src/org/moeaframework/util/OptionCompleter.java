@@ -22,24 +22,22 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Utility for auto-completion, finding the closest matching unique option
- * from a set of options. For instance,
- * 
- * <pre>
+ * Utility for auto-completion, finding the closest matching unique option from a set of options. For instance,
+ * <pre>{@code
  * 	OptionCompleter completer = new OptionCompleter();
- * 	completer.add(&quot;subset&quot;);
- * 	completer.add(&quot;superset&quot;);
- * 	completer.lookup(&quot;sub&quot;); // returns &quot;subset&quot;
- * 	completer.lookup(&quot;sup&quot;); // returns &quot;superset&quot;
- * 	completer.lookup(&quot;s&quot;); // returns null, since both subset and superset match
- * 	completer.lookup(&quot;k&quot;); // returns null, no matches
- * </pre>
+ * 	completer.add("subset");
+ * 	completer.add("superset");
+ * 	completer.lookup("sub");   // returns "subset"
+ * 	completer.lookup("sup");   // returns "superset"
+ * 	completer.lookup("s");     // returns null, since both subset and superset match
+ * 	completer.lookup("k");     // returns null, no matches
+ * }</pre>
  */
 public class OptionCompleter {
 
 	/**
-	 * Collection of options. The map serves to ensure each option is unique
-	 * and caches the value of the option in lowercase.
+	 * Collection of options. The map serves to ensure each option is unique and stores the value of the option
+	 * in lowercase.
 	 */
 	private final Map<String, String> options;
 
@@ -53,8 +51,7 @@ public class OptionCompleter {
 	}
 
 	/**
-	 * Constructs a new option auto-completer initialized to recognize the 
-	 * specified options.
+	 * Constructs a new option auto-completer initialized to recognize the specified options.
 	 * 
 	 * @param options the initial options
 	 */
@@ -67,8 +64,7 @@ public class OptionCompleter {
 	}
 
 	/**
-	 * Constructs a new option auto-completer initialized to recognize the 
-	 * specified options.
+	 * Constructs a new option auto-completer initialized to recognize the specified options.
 	 * 
 	 * @param options the initial options
 	 */
@@ -81,8 +77,7 @@ public class OptionCompleter {
 	}
 
 	/**
-	 * Adds an option to this {@code OptionCompleter}. Duplicate options are
-	 * ignored.
+	 * Adds an option to this {@code OptionCompleter}. Duplicate options are ignored.
 	 * 
 	 * @param option the option
 	 */
@@ -91,13 +86,11 @@ public class OptionCompleter {
 	}
 
 	/**
-	 * Returns the closest matching unique option from the set of options stored
-	 * in this {@code OptionCompleter}. Returns {@code null} if no options
-	 * matched or more than one option matched.
+	 * Returns the closest matching unique option from the set of options stored in this {@code OptionCompleter}.
+	 * Returns {@code null} if no options matched or more than one option matched.
 	 * 
 	 * @param partial the partial/complete option
-	 * @return the closest matching option, or {@code null} if no options
-	 *         matched or more than one option matched
+	 * @return the closest matching option, or {@code null} if no options matched or more than one option matched
 	 */
 	public String lookup(String partial) {
 		String result = null;

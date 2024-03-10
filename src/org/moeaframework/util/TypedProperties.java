@@ -1301,6 +1301,7 @@ public class TypedProperties implements Displayable {
 	/**
 	 * Prints the properties to standard output.
 	 */
+	@Override
 	public void display(PrintStream out) {
 		try (StringWriter stringBuffer = new StringWriter()) {
 			store(stringBuffer);
@@ -1378,6 +1379,17 @@ public class TypedProperties implements Displayable {
 		if (!orphanedProperties.isEmpty()) {
 			throw new ConfigurationException("properties not accessed: " + String.join(", ", orphanedProperties));
 		}
+	}
+	
+	/**
+	 * Creates a new scope that allows making temporary changes to the properties.  When the scope is closed,
+	 * the original properties are restored.  Typically, you should create scopes within try-with-resources
+	 * blocks so they are automatically closed.
+	 * 
+	 * @return the scope
+	 */
+	public PropertyScope createScope() {
+		return new PropertyScope(this);
 	}
 
 }

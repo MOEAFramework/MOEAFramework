@@ -24,20 +24,16 @@ import java.util.Map;
 import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
 
 /**
- * Tool to simplify manually collecting timing information. Timers with
- * different names can be interleaved or nested, but two timers with the same
- * name can not exist simultaneously - the first timer with the shared name must
+ * Tool to simplify manually collecting timing information. Timers with different names can be interleaved or nested,
+ * but two timers with the same name can not exist simultaneously - the first timer with the shared name must
  * be stopped before the second is started.
- * 
- * <pre>
- * {@code
+ * <pre>{@code
  * for (int i=0; i<N; i++) {
  *   Timing.startTimer("foo");
  *   ...code for which we are collecting timing information...
  *   Timing.stopTimer("foo");
  * }
- * }
- * </pre>
+ * }</pre>
  */
 public class Timing {
 
@@ -99,12 +95,12 @@ public class Timing {
 	}
 
 	/**
-	 * Returns the accumulated timing statistics for the timer with the
-	 * specified name; or {@code null} if no such timer exists.
+	 * Returns the accumulated timing statistics for the timer with the specified name; or {@code null} if no such
+	 * timer exists.
 	 * 
 	 * @param name the name of the timer
-	 * @return the accumulated timing statistics for the timer with the
-	 *         specified name; or {@code null} if no such timer exists
+	 * @return the accumulated timing statistics for the timer with the specified name; or {@code null} if no such
+	 *         timer exists
 	 */
 	public static SummaryStatistics getStatistics(String name) {
 		return data.get(name);
@@ -138,16 +134,14 @@ public class Timing {
 	}
 	
 	/**
-	 * Prints the relative magnitudes of the collected timer data to the
-	 * standard output stream.
+	 * Prints the relative magnitudes of the collected timer data to the standard output stream.
 	 */
 	public static void printMagnitudes() {
 		printMagnitudes(System.out);
 	}
 	
 	/**
-	 * Prints the relative magnitudes of the collected timer data to the
-	 * specified {@link PrintStream}.
+	 * Prints the relative magnitudes of the collected timer data to the specified {@link PrintStream}.
 	 * 
 	 * @param out the stream to which data is printed
 	 */

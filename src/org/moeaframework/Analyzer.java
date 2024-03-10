@@ -228,14 +228,13 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 	}
 	
 	@Override
-	public Analyzer withProblemClass(Class<?> problemClass, 
-			Object... problemArguments) {
+	public Analyzer withProblemClass(Class<?> problemClass, Object... problemArguments) {
 		return (Analyzer)super.withProblemClass(problemClass, problemArguments);
 	}
 
 	@Override
-	public Analyzer withProblemClass(String problemClassName, 
-			Object... problemArguments) throws ClassNotFoundException {
+	public Analyzer withProblemClass(String problemClassName, Object... problemArguments)
+			throws ClassNotFoundException {
 		return (Analyzer)super.withProblemClass(problemClassName, problemArguments);
 	}
 	
@@ -786,8 +785,7 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 			AnalyzerResults analyzerResults = new AnalyzerResults();
 			
 			for (String algorithm : data.keySet()) {
-				AlgorithmResult algorithmResult = new AlgorithmResult(
-						algorithm);
+				AlgorithmResult algorithmResult = new AlgorithmResult(algorithm);
 				
 				for (Indicator indicator : indicators) {
 					String indicatorName = indicator.getClass().getSimpleName();
@@ -914,8 +912,7 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 		private final List<AlgorithmResult> algorithmResults;
 		
 		/**
-		 * Constructs a new, empty object for storing the results from this
-		 * analyzer.
+		 * Constructs a new, empty object for storing the results from this analyzer.
 		 */
 		AnalyzerResults() {
 			super();
@@ -955,8 +952,7 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 		}
 		
 		/**
-		 * Adds the results for an algorithm.  Each result should have a unique
-		 * algorithm name.
+		 * Adds the results for an algorithm.  Each result should have a unique algorithm name.
 		 * 
 		 * @param result the results for the algorithm
 		 */
