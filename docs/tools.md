@@ -1,5 +1,8 @@
 # Command Line Tools
 
+This page documents the command line tools and their available options.  Use the `-h` or `--help` option to view
+the available options.
+
 ## General
 
 ### Solve
@@ -47,11 +50,11 @@ This section details the steps to perform a sensitivity analysis study in the fo
 > Evolutionary Optimization."  Evolutionary Computation, 20(3):423-452.
 
 ```mermaid
-graph LR;
+graph LR
     classDef file fill:#fff
-    A[(Parameter<br>File)]:::file --> B[GenerateSamples];
+    A[(Parameter<br>File)]:::file --> B[GenerateSamples]
     B --> C[(Sample<br>File)]:::file
-    C --> D[Evaluator];
+    C --> D[Evaluator]
     D --> E[(Result<br>File)]:::file
     E --> F[ResultFileEvaluator]
     F --> G[(Metric<br>File)]:::file

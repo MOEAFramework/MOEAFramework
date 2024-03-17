@@ -115,7 +115,7 @@ public class Hypervolume implements Indicator {
 	 * @param approximationSet the normalized approximation set
 	 * @return the hypervolume value
 	 */
-	public static double evaluate(Problem problem, NondominatedPopulation approximationSet) {
+	static double evaluate(Problem problem, NondominatedPopulation approximationSet) {
 		String selection = Settings.getHypervolume();
 		
 		if (selection != null) {
