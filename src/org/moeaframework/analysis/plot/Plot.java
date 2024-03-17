@@ -1070,7 +1070,7 @@ public class Plot {
 		Graphics2D g2 = createSVGGraphics2D(width, height);
 		
 		if (g2 == null) {
-			throw new IllegalStateException("JFreeSVG library is not present.");
+			throw new FrameworkException("JFreeSVG library is not present.");
 		}
 		
 		// we suppress shadow generation, because SVG is a vector format and the shadow effect is applied via bitmap
@@ -1105,19 +1105,8 @@ public class Plot {
 			Class<?> svgGraphics2d = Class.forName("org.jfree.graphics2d.svg.SVGGraphics2D");
 			Constructor<?> ctor = svgGraphics2d.getConstructor(int.class, int.class);
 			return (Graphics2D)ctor.newInstance(w, h);
-		} catch (ClassNotFoundException ex) {
-			return null;
-		} catch (NoSuchMethodException ex) {
-			return null;
-		} catch (SecurityException ex) {
-			return null;
-		} catch (InstantiationException ex) {
-			return null;
-		} catch (IllegalAccessException ex) {
-			return null;
-		} catch (IllegalArgumentException ex) {
-			return null;
-		} catch (InvocationTargetException ex) {
+		} catch (ClassNotFoundException | NoSuchMethodException | SecurityException | InstantiationException |
+				IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
 			return null;
 		}
 	}

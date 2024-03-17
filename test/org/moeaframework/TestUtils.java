@@ -626,5 +626,22 @@ public class TestUtils {
 			Assume.assumeTrue("unable to run make, skipping test", false);
 		}
 	}
+	
+	/**
+	 * Returns {@code true} if running in a JUnit environment.
+	 * 
+	 * @return {@code true} if running in a JUnit environment; {@code false} otherwise
+	 */
+	public static boolean isJUnitTest() {
+	    StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+	    
+	    for (StackTraceElement element : stackTrace) {
+	        if (element.getClassName().startsWith("org.junit.")) {
+	            return true;
+	        }           
+	    }
+	    
+	    return false;
+	}
 
 }

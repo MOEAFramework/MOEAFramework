@@ -18,15 +18,20 @@
 package org.moeaframework.analysis.plot;
 
 import java.awt.GraphicsEnvironment;
+import java.io.File;
+import java.io.IOException;
 
 import javax.swing.JFrame;
 
+import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.Test;
 import org.moeaframework.Analyzer;
 import org.moeaframework.Executor;
 import org.moeaframework.Instrumenter;
+import org.moeaframework.TestUtils;
 import org.moeaframework.analysis.collector.Observations;
+import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.NondominatedPopulation;
 
 /**
@@ -35,21 +40,18 @@ import org.moeaframework.core.NondominatedPopulation;
  */
 public class PlotTest {
 	
-	public static boolean isJUnitTest() {
-	    StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
-	    
-	    for (StackTraceElement element : stackTrace) {
-	        if (element.getClassName().startsWith("org.junit.")) {
-	            return true;
-	        }           
-	    }
-	    
-	    return false;
-	}
-	
 	public static boolean hasDisplay() {
 		return !GraphicsEnvironment.isHeadless() &&
 				GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices().length > 0;
+	}
+	
+	public static boolean hasJFreeSVG() {
+		try {
+			Class.forName("org.jfree.graphics2d.svg.SVGGraphics2D");
+			return true;
+		} catch (ClassNotFoundException e) {
+			return false;
+		}
 	}
 	
 	@Test
@@ -132,8 +134,38 @@ public class PlotTest {
 		runTest(new Plot().add(observations));
 	}
 	
+	@Test
+	public void testSavePNG() throws IOException {
+		File tempFile = File.createTempFile("test", ".png");
+		tempFile.deleteOnExit();
+		
+		new Plot()
+			.scatter("Points", new double[] { 0, 1, 2 }, new double[] { 0, 1, 2 })
+			.save(tempFile);
+		
+		Assert.assertTrue(tempFile.exists());
+		Assert.assertTrue(tempFile.length() > 0);
+	}
+	
+	@Test
+	public void testSaveSVG() throws IOException {
+		try {
+			File tempFile = File.createTempFile("test", ".svg");
+			tempFile.deleteOnExit();
+			
+			new Plot()
+				.scatter("Points", new double[] { 0, 1, 2 }, new double[] { 0, 1, 2 })
+				.save(tempFile);
+			
+			Assert.assertTrue(tempFile.exists());
+			Assert.assertTrue(tempFile.length() > 0);
+		} catch (FrameworkException ex) {
+			Assert.assertFalse(hasJFreeSVG());
+		}
+	}
+	
 	public void runTest(Plot plot) {
-		if (isJUnitTest()) {
+		if (TestUtils.isJUnitTest()) {
 			Assume.assumeTrue("Skipping test as the system has no display", hasDisplay());
 			
 			JFrame frame = plot.show();
