@@ -1100,7 +1100,7 @@ public class Plot {
 	/**
 	 * This is copied from JFreeChart's ChartPanel class (version 1.0.19).
 	 */
-	private Graphics2D createSVGGraphics2D(int w, int h) {
+	private static Graphics2D createSVGGraphics2D(int w, int h) {
 		try {
 			Class<?> svgGraphics2d = Class.forName("org.jfree.graphics2d.svg.SVGGraphics2D");
 			Constructor<?> ctor = svgGraphics2d.getConstructor(int.class, int.class);
@@ -1109,6 +1109,16 @@ public class Plot {
 				IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
 			return null;
 		}
+	}
+	
+	/**
+	 * Returns {@code true} if saving to the SVG format is supported.  This requires the JFreeSVG library to be
+	 * setup on the classpath.
+	 * 
+	 * @return {@code true} if saving to the SVG format is supported; {@code false} otherwise
+	 */
+	public static boolean supportsSVG() {
+		return createSVGGraphics2D(100, 100) != null;
 	}
 
 	/**

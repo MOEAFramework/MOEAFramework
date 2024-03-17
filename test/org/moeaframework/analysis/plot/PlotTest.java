@@ -31,7 +31,6 @@ import org.moeaframework.Executor;
 import org.moeaframework.Instrumenter;
 import org.moeaframework.TestUtils;
 import org.moeaframework.analysis.collector.Observations;
-import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.NondominatedPopulation;
 
 /**
@@ -43,15 +42,6 @@ public class PlotTest {
 	public static boolean hasDisplay() {
 		return !GraphicsEnvironment.isHeadless() &&
 				GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices().length > 0;
-	}
-	
-	public static boolean hasJFreeSVG() {
-		try {
-			Class.forName("org.jfree.graphics2d.svg.SVGGraphics2D");
-			return true;
-		} catch (ClassNotFoundException e) {
-			return false;
-		}
 	}
 	
 	@Test
@@ -149,7 +139,7 @@ public class PlotTest {
 	
 	@Test
 	public void testSaveSVG() throws IOException {
-		Assume.assumeTrue("Skipping test as JFreeSVG library is not found", hasJFreeSVG());
+		Assume.assumeTrue("Skipping test as JFreeSVG library is not found", Plot.supportsSVG());
 		
 		File tempFile = File.createTempFile("test", ".svg");
 		tempFile.deleteOnExit();
