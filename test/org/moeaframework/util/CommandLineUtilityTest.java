@@ -57,19 +57,13 @@ public class CommandLineUtilityTest {
 	
 	@Test
 	public void testHelp() throws Exception {
-		try {
-			new MockCommandLineUtility().start(new String[] { "--help" });
-		} catch (ParseException e) {
-			// this throws a parse exception due to the missing required option
-		}
-		
+		new MockCommandLineUtility().start(new String[] { "--help" });
 		Assert.assertFalse(invoked);
 	}
 	
 	@Test
 	public void testHelpWithValidOption() throws Exception {
-		new MockCommandLineUtility().start(new String[] { "--test",
-				"--help" });
+		new MockCommandLineUtility().start(new String[] { "--test", "--help" });
 		Assert.assertFalse(invoked);
 	}
 	

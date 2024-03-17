@@ -17,6 +17,8 @@
  */
 package org.moeaframework.util;
 
+import java.lang.Thread.UncaughtExceptionHandler;
+
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -49,6 +51,18 @@ import org.moeaframework.core.Settings;
  * exception handler.
  */
 public abstract class CommandLineUtility {
+	
+	/**
+	 * Exception handler for formatting and printing the error message to the command line.
+	 */
+	private class CommandLineUncaughtExceptionHandler implements UncaughtExceptionHandler {
+
+		@Override
+		public void uncaughtException(Thread t, Throwable e) {
+			e.printStackTrace();
+		}
+
+	}
 	
 	/**
 	 * The command string used to invoke this command line utility.  If {@code null}, this displays as
@@ -102,6 +116,8 @@ public abstract class CommandLineUtility {
 	 * @throws Exception if any exception occurred while running this command
 	 */
 	public void start(String[] args) throws Exception {
+		Thread.currentThread().setUncaughtExceptionHandler(new CommandLineUncaughtExceptionHandler());
+		
 		// trim last argument because of an error with Windows newline characters
 		if (args.length > 0) {
 			args[args.length - 1] = args[args.length - 1].trim();
@@ -119,12 +135,10 @@ public abstract class CommandLineUtility {
 				run(commandLine);
 			}
 		} catch (ParseException e) {
-			if (args[0].equalsIgnoreCase("-h") || args[0].equalsIgnoreCase("--help")) {
+			if (args.length > 0 && (args[0].equalsIgnoreCase("-h") || args[0].equalsIgnoreCase("--help"))) {
 				showHelp();
 			} else {
-				System.err.println(e.getMessage());
-				showHelp();
-				System.exit(-1);
+				throw e;
 			}
 		}
 	}
