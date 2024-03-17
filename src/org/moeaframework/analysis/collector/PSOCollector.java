@@ -29,22 +29,19 @@ import org.moeaframework.core.Solution;
 public class PSOCollector implements Collector {
 	
 	/**
-	 * The algorithm instance used by this collector; or {@code null} if this 
-	 * collector has not yet been attached.
+	 * The algorithm instance used by this collector; or {@code null} if this collector has not yet been attached.
 	 */
 	private final AbstractPSOAlgorithm algorithm;
 	
 	/**
-	 * Constructs an unattached collector for recording the population from an
-	 * {@code AbstractPSOAlgorithm}.
+	 * Constructs an unattached collector for recording the population from an {@code AbstractPSOAlgorithm}.
 	 */
 	public PSOCollector() {
 		this(null);
 	}
 	
 	/**
-	 * Constructs a collector for recording the population from the specified
-	 * {@code AbstractPSOAlgorithm}.
+	 * Constructs a collector for recording the population from the specified {@code AbstractPSOAlgorithm}.
 	 * 
 	 * @param algorithm the algorithm this collector records data from
 	 */

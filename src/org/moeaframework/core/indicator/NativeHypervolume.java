@@ -36,15 +36,12 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.util.io.RedirectStream;
 
 /**
- * Calculates hypervolume using a compiled executable.  This originally was
- * intended to allow use of faster, natively compiled codes.  However, today
- * the MOEA Framework's default hypervolume code is sufficient for most purposes.
+ * Calculates hypervolume using a compiled executable.  This originally was intended to allow use of faster, natively
+ * compiled codes.  However, today the MOEA Framework's default hypervolume code is sufficient for most purposes.
  * <p>
- * If this feature is still required, it can be configured by setting the
- * {@code org.moeaframework.core.indicator.native.hypervolume}
- * system property or in {@value Settings#DEFAULT_CONFIGURATION_FILE}.  This setting specifies
- * the command line for running the executable.  The command can be customized using
- * the following substitutions:
+ * If this feature is still required, it can be configured by setting the {@value Settings#KEY_HYPERVOLUME}
+ * system property or in {@value Settings#DEFAULT_CONFIGURATION_FILE}.  This setting specifies the command line for
+ * running the executable.  The command can be customized using the following substitutions:
  * <ul>
  *   <li>{0} number of objectives
  *   <li>{1} approximation set size
@@ -52,15 +49,13 @@ import org.moeaframework.util.io.RedirectStream;
  *   <li>{3} file containing the reference point
  *   <li>{4} the reference point, separated by spaces
  * </ul>
- * Note: To avoid unnecessarily writing files, the command is first checked
- * if the above arguments are specified.  Use the exact argument string as
- * shown above (e.g., {@code {3}}) in the command.
+ * Note: To avoid unnecessarily writing files, the command is first checked if the above arguments are specified.
+ * Use the exact argument string as shown above (e.g., {@code {3}}) in the command.
  */
 public class NativeHypervolume extends NormalizedIndicator {
 
 	/**
-	 * Constructs a hypervolume evaluator for the specified problem and 
-	 * reference set.
+	 * Constructs a hypervolume evaluator for the specified problem and reference set.
 	 * 
 	 * @param problem the problem
 	 * @param referenceSet the reference set
@@ -70,8 +65,7 @@ public class NativeHypervolume extends NormalizedIndicator {
 	}
 	
 	/**
-	 * Constructs a hypervolume evaluator for the specified problem using the
-	 * given reference set and reference point.
+	 * Constructs a hypervolume evaluator for the specified problem using the given reference set and reference point.
 	 * 
 	 * @param problem the problem
 	 * @param referenceSet the reference set
@@ -82,8 +76,7 @@ public class NativeHypervolume extends NormalizedIndicator {
 	}
 	
 	/**
-	 * Constructs a hypervolume evaluator for the specified problem using the
-	 * given minimum and maximum bounds.
+	 * Constructs a hypervolume evaluator for the specified problem using the given minimum and maximum bounds.
 	 * 
 	 * @param problem the problem
 	 * @param minimum the minimum bounds of the set
@@ -94,8 +87,7 @@ public class NativeHypervolume extends NormalizedIndicator {
 	}
 
 	/**
-	 * Inverts the objective values since this hypervolume algorithm operates
-	 * on maximization problems.
+	 * Inverts the objective values since this hypervolume algorithm operates on maximization problems.
 	 * 
 	 * @param problem the problem
 	 * @param solution the solution to be inverted
@@ -161,8 +153,7 @@ public class NativeHypervolume extends NormalizedIndicator {
 	 * 
 	 * @param problem the problem
 	 * @param solutions the normalized and possibly inverted solutions
-	 * @param isInverted {@code true} if the solutions are inverted;
-	 *        {@code false} otherwise
+	 * @param isInverted {@code true} if the solutions are inverted; {@code false} otherwise
 	 * @return the hypervolume value
 	 */
 	protected static double invokeNativeHypervolume(Problem problem, List<Solution> solutions, boolean isInverted) {
@@ -231,9 +222,8 @@ public class NativeHypervolume extends NormalizedIndicator {
 	}
 	
 	/**
-	 * Splits an executable command into its individual arguments.  This method
-	 * allows quoted text ({@code "..."}) in properties to be treated as an
-	 * individual argument as required by {@link ProcessBuilder}.
+	 * Splits an executable command into its individual arguments.  This method allows quoted text ({@code "..."})
+	 * in properties to be treated as an individual argument as required by {@link ProcessBuilder}.
 	 *  
 	 * @param command the command represented in a single string
 	 * @return the individual arguments comprising the command

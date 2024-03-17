@@ -23,8 +23,7 @@ import org.moeaframework.problem.AnalyticalProblem;
 import org.moeaframework.problem.ProblemWrapper;
 
 /**
- * Problem factory which instruments {@link Problem} instances with testing
- * code.
+ * Problem factory which instruments {@link Problem} instances with testing code.
  */
 public class ProblemFactoryTestWrapper extends ProblemFactory {
 	

@@ -18,8 +18,7 @@
 package org.moeaframework;
 
 /**
- * Thresholds to use when comparing floating-point values and when sampling
- * statistics.
+ * Thresholds to use when comparing floating-point values and when sampling statistics.
  */
 public class TestThresholds {
 

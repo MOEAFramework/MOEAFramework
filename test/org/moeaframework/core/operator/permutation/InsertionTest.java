@@ -39,8 +39,7 @@ public class InsertionTest {
 	}
 
 	/**
-	 * Tests various probabilities to ensure insertion mutation is applied the
-	 * correct number of times on average.
+	 * Tests various probabilities to ensure insertion mutation is applied the correct number of times on average.
 	 */
 	@Test
 	public void testProbabilities() {
@@ -69,8 +68,7 @@ public class InsertionTest {
 			}
 		}
 
-		Assert.assertEquals((double)count / TestThresholds.SAMPLES,
-				probability, TestThresholds.VARIATION_EPS);
+		Assert.assertEquals((double)count / TestThresholds.SAMPLES, probability, TestThresholds.VARIATION_EPS);
 	}
 
 	/**

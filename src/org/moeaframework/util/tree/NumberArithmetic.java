@@ -21,21 +21,17 @@ import org.apache.commons.math3.util.FastMath;
 import org.moeaframework.core.Settings;
 
 /**
- * Provides many arithmetic and trigonometric functions that operate on
- * {@link Number}s, performing any necessary implicit casting.  An integer
- * number remains an integer unless the specific function requires
- * floating-point values.  These methods favor {@link Long} and {@link Double}
- * representations for integer and floating-point values, respectively.
+ * Provides many arithmetic and trigonometric functions that operate on {@link Number}s, performing any necessary
+ * implicit casting.  An integer number remains an integer unless the specific function requires floating-point values.
+ * These methods favor {@link Long} and {@link Double} representations for integer and floating-point values,
+ * respectively.
  * <p>
- * The arithmetic functions provided herein support optional function
- * protection, which is enabled by default.  Function protection prevents
- * values like {@code Inf} and {@code NaN} from appearing due to invalid
- * inputs.  For example, this protects against division-by-zero.  To disable
- * function protection, set the property
+ * The arithmetic functions provided herein support optional function protection, which is enabled by default.
+ * Function protection prevents values like {@code Inf} and {@code NaN} from appearing due to invalid inputs.  For
+ * example, this protects against division-by-zero.  To disable function protection, set the property
  * {@code org.moeaframework.util.tree.protected_functions = false} in the file
- * {@value Settings#DEFAULT_CONFIGURATION_FILE}.  {@code Inf} and {@code NaN} values can still
- * occur with function protection enabled, so outputs should still be
- * validated.
+ * {@value Settings#DEFAULT_CONFIGURATION_FILE}.  {@code Inf} and {@code NaN} values can still occur with function
+ * protection enabled, so outputs should still be validated.
  */
 public class NumberArithmetic {
 	
@@ -47,13 +43,11 @@ public class NumberArithmetic {
 	}
 	
 	/**
-	 * Returns {@code true} if the two numbers are equal; {@code false}
-	 * otherwise.
+	 * Returns {@code true} if the two numbers are equal; {@code false} otherwise.
 	 * 
 	 * @param a the first number
 	 * @param b the second number
-	 * @return {@code true} if the two numbers are equal; {@code false}
-	 *         otherwise
+	 * @return {@code true} if the two numbers are equal; {@code false} otherwise
 	 */
 	public static boolean equals(Number a, Number b) {
 		if (isFloatingPoint(a) || isFloatingPoint(b)) {
@@ -64,13 +58,11 @@ public class NumberArithmetic {
 	}
 	
 	/**
-	 * Returns {@code true} if the first number is less than the second;
-	 * {@code false} otherwise.
+	 * Returns {@code true} if the first number is less than the second; {@code false} otherwise.
 	 * 
 	 * @param a the first number
 	 * @param b the second number
-	 * @return {@code true} if the first number is less than the second;
-	 *         {@code false} otherwise
+	 * @return {@code true} if the first number is less than the second; {@code false} otherwise
 	 */
 	public static boolean lessThan(Number a, Number b) {
 		if (isFloatingPoint(a) || isFloatingPoint(b)) {
@@ -81,26 +73,22 @@ public class NumberArithmetic {
 	}
 	
 	/**
-	 * Returns {@code true} if the first number is less than or equal to the
-	 * second; {@code false} otherwise.
+	 * Returns {@code true} if the first number is less than or equal to the second; {@code false} otherwise.
 	 * 
 	 * @param a the first number
 	 * @param b the second number
-	 * @return {@code true} if the first number is less than or equal to the
-	 *         second; {@code false} otherwise
+	 * @return {@code true} if the first number is less than or equal to the second; {@code false} otherwise
 	 */
 	public static boolean lessThanOrEqual(Number a, Number b) {
 		return lessThan(a, b) || equals(a, b);
 	}
 	
 	/**
-	 * Returns {@code true} if the first number is greater than the second;
-	 * {@code false} otherwise.
+	 * Returns {@code true} if the first number is greater than the second; {@code false} otherwise.
 	 * 
 	 * @param a the first number
 	 * @param b the second number
-	 * @return {@code true} if the first number is greater than the second;
-	 *         {@code false} otherwise
+	 * @return {@code true} if the first number is greater than the second; {@code false} otherwise
 	 */
 	public static boolean greaterThan(Number a, Number b) {
 		if (isFloatingPoint(a) || isFloatingPoint(b)) {
@@ -111,13 +99,11 @@ public class NumberArithmetic {
 	}
 	
 	/**
-	 * Returns {@code true} if the first number is greater than or equal to the
-	 * second; {@code false} otherwise.
+	 * Returns {@code true} if the first number is greater than or equal to the second; {@code false} otherwise.
 	 * 
 	 * @param a the first number
 	 * @param b the second number
-	 * @return {@code true} if the first number is greater than or equal to the
-	 *         second; {@code false} otherwise
+	 * @return {@code true} if the first number is greater than or equal to the second; {@code false} otherwise
 	 */
 	public static boolean greaterThanOrEqual(Number a, Number b) {
 		return greaterThan(a, b) || equals(a, b);
@@ -139,9 +125,8 @@ public class NumberArithmetic {
 	}
 	
 	/**
-	 * Returns the square root of the number.  If the number is less than zero
-	 * and function protection is enabled, this functions the square root of
-	 * the absolute value of the number.
+	 * Returns the square root of the number.  If the number is less than zero and function protection is enabled, this
+	 * functions the square root of the absolute value of the number.
 	 * 
 	 * @param a the number
 	 * @return the square root of the number
@@ -198,9 +183,8 @@ public class NumberArithmetic {
 	}
 	
 	/**
-	 * Returns the value of dividing the first number by the second.  If the
-	 * second argument is {@code 0} and function protection is enabled, this
-	 * function returns {@code 1} regardless of the first argument's value.
+	 * Returns the value of dividing the first number by the second.  If the second argument is {@code 0} and function
+	 * protection is enabled, this function returns {@code 1} regardless of the first argument's value.
 	 * 
 	 * @param a the first number
 	 * @param b the second number
@@ -208,8 +192,7 @@ public class NumberArithmetic {
 	 */
 	public static Number div(Number a, Number b) {
 		if (isFloatingPoint(a) || isFloatingPoint(b)) {
-			if ((Math.abs(b.doubleValue()) < Settings.EPS) &&
-					Settings.isProtectedFunctions()) {
+			if ((Math.abs(b.doubleValue()) < Settings.EPS) && Settings.isProtectedFunctions()) {
 				return 1.0;
 			} else {
 				return a.doubleValue() / b.doubleValue();
@@ -224,10 +207,8 @@ public class NumberArithmetic {
 	}
 	
 	/**
-	 * Returns the remainder from dividing the first number by the second.  If
-	 * the second argument is {@code 0} and function protection is enabled, 
-	 * this function returns {@code 0} regardless of the first argument's
-	 * value.
+	 * Returns the remainder from dividing the first number by the second.  If the second argument is {@code 0} and
+	 * function protection is enabled,  this function returns {@code 0} regardless of the first argument's value.
 	 * 
 	 * @param a the first number
 	 * @param b the second number
@@ -235,8 +216,7 @@ public class NumberArithmetic {
 	 */
 	public static Number mod(Number a, Number b) {
 		if (isFloatingPoint(a) || isFloatingPoint(b)) {
-			if ((Math.abs(b.doubleValue()) < Settings.EPS) &&
-					Settings.isProtectedFunctions()) {
+			if ((Math.abs(b.doubleValue()) < Settings.EPS) && Settings.isProtectedFunctions()) {
 				return 0.0;
 			} else {
 				return a.doubleValue() % b.doubleValue();
@@ -251,12 +231,10 @@ public class NumberArithmetic {
 	}
 	
 	/**
-	 * Returns the largest integer value less than or equal to the given
-	 * number.
+	 * Returns the largest integer value less than or equal to the given number.
 	 * 
 	 * @param a the number
-	 * @return the largest integer value less than or equal to the given
-	 *         number
+	 * @return the largest integer value less than or equal to the given number
 	 * @see Math#floor(double)
 	 */
 	public static Number floor(Number a) {
@@ -268,12 +246,10 @@ public class NumberArithmetic {
 	}
 	
 	/**
-	 * Returns the smallest integer value greater than or equal to the given
-	 * number.
+	 * Returns the smallest integer value greater than or equal to the given number.
 	 * 
 	 * @param a the number
-	 * @return the smallest integer value greater than or equal to the given
-	 *         number
+	 * @return the smallest integer value greater than or equal to the given number
 	 * @see Math#ceil(double)
 	 */
 	public static Number ceil(Number a) {
@@ -316,19 +292,16 @@ public class NumberArithmetic {
 	}
 	
 	/**
-	 * Returns the natural logarithm of the number.  If the numbers is
-	 * negative and function protection is enabled, then this function returns
-	 * the natural logarithm of the absolute value of the number.  If the
-	 * number is near zero and function protection is enabled, this function
-	 * returns {@code 0.0}.
+	 * Returns the natural logarithm of the number.  If the numbers is negative and function protection is enabled,
+	 * then this function returns the natural logarithm of the absolute value of the number.  If the number is near
+	 * zero and function protection is enabled, this function returns {@code 0.0}.
 	 * 
 	 * @param a the number
 	 * @return the natural logarithm of the number
 	 * @see Math#log(double)
 	 */
 	public static Number log(Number a) {
-		if ((a.doubleValue() < Settings.EPS) && 
-				Settings.isProtectedFunctions()) {
+		if ((a.doubleValue() < Settings.EPS) && Settings.isProtectedFunctions()) {
 			double value = Math.abs(a.doubleValue());
 			
 			if (value < Settings.EPS) {
@@ -342,19 +315,16 @@ public class NumberArithmetic {
 	}
 	
 	/**
-	 * Returns the base-10 logarithm of the number.  If the numbers is
-	 * negative and function protection is enabled, then this function returns
-	 * the base-10 logarithm of the absolute value of the number.  If the
-	 * number is near zero and function protection is enabled, this function
-	 * returns {@code 0.0}.
+	 * Returns the base-10 logarithm of the number.  If the numbers is negative and function protection is enabled,
+	 * then this function returns the base-10 logarithm of the absolute value of the number.  If the number is near
+	 * zero and function protection is enabled, this function returns {@code 0.0}.
 	 * 
 	 * @param a the number
 	 * @return the base-10 logarithm of the number
 	 * @see Math#log10(double)
 	 */
 	public static Number log10(Number a) {
-		if ((a.doubleValue() < Settings.EPS) && 
-				Settings.isProtectedFunctions()) {
+		if ((a.doubleValue() < Settings.EPS) && Settings.isProtectedFunctions()) {
 			double value = Math.abs(a.doubleValue());
 			
 			if (value < Settings.EPS) {
@@ -368,12 +338,10 @@ public class NumberArithmetic {
 	}
 	
 	/**
-	 * Returns the value from taking Euler's number <i>e</i> to the power of
-	 * the given number.
+	 * Returns the value from taking Euler's number <i>e</i> to the power of the given number.
 	 * 
 	 * @param a the number
-	 * @return  the value from taking Euler's number <i>e</i> to the power of
-	 *          the given number
+	 * @return the value from taking Euler's number <i>e</i> to the power of the given number
 	 * @see Math#exp(double)
 	 */
 	public static Number exp(Number a) {
@@ -563,12 +531,10 @@ public class NumberArithmetic {
 	}
 	
 	/**
-	 * Returns {@code true} if the number is a floating-point value;
-	 * {@code false} otherwise.
+	 * Returns {@code true} if the number is a floating-point value; {@code false} otherwise.
 	 * 
 	 * @param a the number
-	 * @return {@code true} if the number is a floating-point value;
-	 *         {@code false} otherwise
+	 * @return {@code true} if the number is a floating-point value; {@code false} otherwise
 	 */
 	public static boolean isFloatingPoint(Number a) {
 		return (a instanceof Float) || (a instanceof Double);

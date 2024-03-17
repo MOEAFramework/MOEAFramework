@@ -26,8 +26,7 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.util.TypedProperties;
 
 /**
- * Factory for creating algorithm instances. See {@link AlgorithmProvider} for
- * details on adding new providers.
+ * Factory for creating algorithm instances. See {@link AlgorithmProvider} for details on adding new providers.
  * <p>
  * This class is thread safe.
  */
@@ -71,35 +70,29 @@ public class AlgorithmFactory extends AbstractFactory<AlgorithmProvider> {
 	}
 	
 	/**
-	 * Searches through all discovered {@code AlgorithmProvider} instances,
-	 * returning an instance of the algorithm with the registered name. The
-	 * algorithm is initialized using implementation-specific properties.  This
-	 * method must throw an {@link ProviderNotFoundException} if no suitable
-	 * algorithm is found.
+	 * Searches through all discovered {@code AlgorithmProvider} instances, returning an instance of the algorithm
+	 * with the registered name.  The algorithm is initialized using implementation-specific properties.  This
+	 * method must throw an {@link ProviderNotFoundException} if no suitable algorithm is found.
 	 * 
 	 * @param name the name identifying the algorithm
 	 * @param problem the problem to be solved
 	 * @return an instance of the algorithm with the registered name
-	 * @throws ProviderNotFoundException if no provider for the algorithm is 
-	 *         available
+	 * @throws ProviderNotFoundException if no provider for the algorithm is available
 	 */
 	public Algorithm getAlgorithm(String name, Problem problem) {
 		return getAlgorithm(name, new TypedProperties(), problem);
 	}
 
 	/**
-	 * Searches through all discovered {@code AlgorithmProvider} instances,
-	 * returning an instance of the algorithm with the registered name. The
-	 * algorithm is initialized using implementation-specific properties.  This
-	 * method must throw an {@link ProviderNotFoundException} if no suitable
-	 * algorithm is found.
+	 * Searches through all discovered {@code AlgorithmProvider} instances, returning an instance of the algorithm
+	 * with the registered name. The algorithm is initialized using implementation-specific properties.  This
+	 * method must throw an {@link ProviderNotFoundException} if no suitable algorithm is found.
 	 * 
 	 * @param name the name identifying the algorithm
 	 * @param properties the implementation-specific properties
 	 * @param problem the problem to be solved
 	 * @return an instance of the algorithm with the registered name
-	 * @throws ProviderNotFoundException if no provider for the algorithm is 
-	 *         available
+	 * @throws ProviderNotFoundException if no provider for the algorithm is available
 	 */
 	public synchronized Algorithm getAlgorithm(String name, TypedProperties properties, Problem problem) {
 		for (AlgorithmProvider provider : this) {
@@ -120,11 +113,11 @@ public class AlgorithmFactory extends AbstractFactory<AlgorithmProvider> {
 	 * @param name the name identifying the algorithm
 	 * @param properties the implementation-specific properties
 	 * @param problem the problem to be solved
-	 * @return an instance of the algorithm with the registered name; or
-	 *         {@code null} if the provider does not implement the algorithm
+	 * @return an instance of the algorithm with the registered name; or {@code null} if the provider does not
+	 *         implement the algorithm
 	 */
-	private Algorithm instantiateAlgorithm(AlgorithmProvider provider,
-			String name, TypedProperties properties, Problem problem) {
+	private Algorithm instantiateAlgorithm(AlgorithmProvider provider, String name, TypedProperties properties,
+			Problem problem) {
 		try {
 			return provider.getAlgorithm(name, properties, problem);
 		} catch (ServiceConfigurationError e) {
@@ -135,8 +128,7 @@ public class AlgorithmFactory extends AbstractFactory<AlgorithmProvider> {
 	}
 	
 	/**
-	 * Returns the names of all algorithms that have been registered to appear in the
-	 * diagnostic tool.
+	 * Returns the names of all algorithms that have been registered to appear in the diagnostic tool.
 	 * 
 	 * @return all diagnostic tool algorithm names
 	 */

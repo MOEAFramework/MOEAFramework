@@ -35,13 +35,11 @@ import org.moeaframework.problem.AnalyticalProblem;
  * <p>
  * References:
  * <ol>
- *   <li>Binh, T. T., and Korn, U. (1997).  "Multiobjective Evolution Strategy
- *       with Linear and Nonlinear Constraints."  Proc. of the 15th IMACS
- *       World Congress on Scientific Computation, Modeling and Applied
- *       Mathematics, pp. 357-362.
- *   <li>Van Veldhuizen, D. A (1999).  "Multiobjective Evolutionary Algorithms: 
- *       Classifications, Analyses, and New Innovations."  Air Force Institute
- *       of Technology, Ph.D. Thesis, Appendix B.
+ *   <li>Binh, T. T., and Korn, U. (1997).  "Multiobjective Evolution Strategy with Linear and Nonlinear Constraints."
+ *       Proc. of the 15th IMACS World Congress on Scientific Computation, Modeling and Applied Mathematics,
+ *       pp. 357-362.
+ *   <li>Van Veldhuizen, D. A (1999).  "Multiobjective Evolutionary Algorithms: Classifications, Analyses, and New
+ *       Innovations."  Air Force Institute of Technology, Ph.D. Thesis, Appendix B.
  * </ol>
  */
 public class Binh4 extends AbstractProblem implements AnalyticalProblem {

@@ -23,7 +23,7 @@ import org.moeaframework.core.configuration.Validate;
 /**
  * Geometric reduction rule for simulated annealing.  The next temperature is calculated as
  * <pre>
- *     t = t * a
+ *   t = t * a
  * </pre>
  */
 public class GeometricCoolingSchedule implements CoolingSchedule {

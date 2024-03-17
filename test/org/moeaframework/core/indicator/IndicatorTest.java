@@ -31,8 +31,7 @@ import org.moeaframework.core.spi.ProblemFactory;
 public abstract class IndicatorTest {
 
 	/**
-	 * Converts a population into a 2D array that can be used by the JMetal
-	 * indicators.
+	 * Converts a population into a 2D array that can be used by the JMetal indicators.
 	 * 
 	 * @param population the population
 	 * @return the 2D array representation of the problem
@@ -53,15 +52,13 @@ public abstract class IndicatorTest {
 	}
 
 	/**
-	 * Returns a new, randomly-generated approximation set for the specified
-	 * problem. The resulting approximation set will contain at least {@code N}
-	 * solutions, but depending on the degree of dominance the actual size may
-	 * be significantly less than {@code N}.
+	 * Returns a new, randomly-generated approximation set for the specified problem. The resulting approximation set
+	 * will contain at least {@code N} solutions, but depending on the degree of dominance the actual size may be
+	 * significantly less than {@code N}.
 	 * 
 	 * @param problemName the problem
 	 * @param N the number of randomly-generated solutions
-	 * @return a new, randomly-generated approximation set for the specified
-	 *         problem
+	 * @return a new, randomly-generated approximation set for the specified problem
 	 */
 	protected NondominatedPopulation generateApproximationSet(String problemName, int N) {
 		Problem problem = ProblemFactory.getInstance().getProblem(problemName);

@@ -43,14 +43,14 @@ import org.moeaframework.util.format.Displayable;
 import org.moeaframework.util.io.CommentedLineReader;
 
 /**
- * Stores a collection of key-value pairs similar to {@link Properties} but has support for
- * reading and writing primitive types.  Internally, this handles converting specific types to
- * a string representation that can be saved and read from files.
+ * Stores a collection of key-value pairs similar to {@link Properties} but has support for reading and writing
+ * primitive types.  Internally, this handles converting specific types to a string representation that can be saved
+ * and read from files.
  * 
- * In addition to primitive types, arrays of those primitives are also supported using either the
- * default "," separator or a user-configurable string.  Leading and trailing whitespace is
- * automatically trimmed from each entry.  <strong>Be mindful that values saved in arrays should
- * not include the separator character(s) - no escaping is performed!</strong>
+ * In addition to primitive types, arrays of those primitives are also supported using either the default "," separator
+ * or a user-configurable string.  Leading and trailing whitespace is automatically trimmed from each entry.
+ * <strong>Be mindful that values saved in arrays should not include the separator character(s) - no escaping is
+ * performed!</strong>
  * 
  * From version 3.0+, keys are case-insensitive.
  */
@@ -97,8 +97,7 @@ public class TypedProperties implements Displayable {
 	}
 
 	/**
-	 * Decorates a {@code Properties} object to provide type-safe access using 
-	 * the default "," separator for arrays.
+	 * Decorates a {@code Properties} object to provide type-safe access using the default "," separator for arrays.
 	 * 
 	 * @param properties the existing {@code Properties} object
 	 */
@@ -108,8 +107,7 @@ public class TypedProperties implements Displayable {
 	}
 
 	/**
-	 * Decorates a {@code Properties} object using the specified separator for 
-	 * arrays.
+	 * Decorates a {@code Properties} object using the specified separator for arrays.
 	 * 
 	 * @param properties the existing {@code Properties} object
 	 * @param separator the separator for arrays
@@ -120,11 +118,10 @@ public class TypedProperties implements Displayable {
 	}
 	
 	/**
-	 * Convenience method to quickly construct a typed properties instance with
-	 * a single key-value pair.  This is particularly useful for parsing,
-	 * for instance, command line arguments:
+	 * Convenience method to quickly construct a typed properties instance with a single key-value pair.  This is
+	 * particularly useful for parsing, for instance, command line arguments:
 	 * <pre>
-	 * TypedProperties.withProperty("epsilon", commandLine.getOptionValue("epsilon")).getDoubleArray("epsilon");
+	 *   TypedProperties.withProperty("epsilon", commandLine.getOptionValue("epsilon")).getDoubleArray("epsilon");
 	 * </pre>
 	 *   
 	 * @param key the key
@@ -138,8 +135,8 @@ public class TypedProperties implements Displayable {
 	}
 	
 	/**
-	 * Loads the contents of {@code META-INF/build.properties} and evaluates any
-	 * string substitutions in the form {@code ${token}}.
+	 * Loads the contents of {@code META-INF/build.properties} and evaluates any string substitutions in the form
+	 * {@code ${token}}.
 	 * 
 	 * @return the build properties
 	 * @throws IOException if an error occurred loading the file
@@ -172,12 +169,10 @@ public class TypedProperties implements Displayable {
 	}
 	
 	/**
-	 * Returns {@code true} if the specified key is contained in this
-	 * properties object; {@code false} otherwise.
+	 * Returns {@code true} if the specified key is contained in this properties object; {@code false} otherwise.
 	 * 
 	 * @param key the property name
-	 * @return {@code true} if the specified key is contained in this
-	 *         properties object; {@code false} otherwise
+	 * @return {@code true} if the specified key is contained in this properties object; {@code false} otherwise
 	 */
 	public boolean contains(String key) {
 		accessedProperties.add(key);
@@ -185,14 +180,13 @@ public class TypedProperties implements Displayable {
 	}
 
 	/**
-	 * Returns the value of the property with the specified name as a string; or
-	 * {@code defaultValue} if no property with the specified name exists.
+	 * Returns the value of the property with the specified name as a string; or {@code defaultValue} if no property
+	 * with the specified name exists.
 	 * 
 	 * @param key the property name
 	 * @param defaultValue the default value
-	 * @return the value of the property with the specified name as a string; or
-	 *         {@code defaultValue} if no property with the specified name
-	 *         exists
+	 * @return the value of the property with the specified name as a string; or {@code defaultValue} if no property
+	 *         with the specified name exists
 	 */
 	public String getString(String key, String defaultValue) {
 		String value = properties.get(key);
@@ -206,9 +200,8 @@ public class TypedProperties implements Displayable {
 	}
 	
 	/**
-	 * Returns the value of the property as a string, or throws an exception.  One should either
-	 * use the variant that takes a default value or check {@link #contains(String)} to ensure the
-	 * property exists.
+	 * Returns the value of the property as a string, or throws an exception.  One should either use the variant that
+	 * takes a default value or check {@link #contains(String)} to ensure the property exists.
 	 * 
 	 * @param key the property name
 	 * @return the value of the property
@@ -225,17 +218,14 @@ public class TypedProperties implements Displayable {
 	}
 
 	/**
-	 * Returns the value of the property with the specified name as a
-	 * {@code double}; or {@code defaultValue} if no property with the specified
-	 * name exists.
+	 * Returns the value of the property with the specified name as a {@code double}; or {@code defaultValue} if no
+	 * property with the specified name exists.
 	 * 
 	 * @param key the property name
 	 * @param defaultValue the default value
-	 * @return the value of the property with the specified name as a
-	 *         {@code double}; or {@code defaultValue} if no property with the
-	 *         specified name exists
-	 * @throws NumberFormatException if the property value is not a parseable
-	 *         {@code double}
+	 * @return the value of the property with the specified name as a {@code double}; or {@code defaultValue} if no
+	 *         property with the specified name exists
+	 * @throws NumberFormatException if the property value is not a parseable {@code double}
 	 */
 	public double getDouble(String key, double defaultValue) {
 		String value = getString(key, null);
@@ -248,9 +238,8 @@ public class TypedProperties implements Displayable {
 	}
 	
 	/**
-	 * Returns the value of the property as a {@code double}, or throws an exception.  One should either
-	 * use the variant that takes a default value or check {@link #contains(String)} to ensure the
-	 * property exists.
+	 * Returns the value of the property as a {@code double}, or throws an exception.  One should either use the
+	 * variant that takes a default value or check {@link #contains(String)} to ensure the property exists.
 	 * 
 	 * @param key the property name
 	 * @return the value of the property
@@ -261,17 +250,14 @@ public class TypedProperties implements Displayable {
 	}
 
 	/**
-	 * Returns the value of the property with the specified name as a
-	 * {@code float}; or {@code defaultValue} if no property with the specified
-	 * name exists.
+	 * Returns the value of the property with the specified name as a {@code float}; or {@code defaultValue} if no
+	 * property with the specified name exists.
 	 * 
 	 * @param key the property name
 	 * @param defaultValue the default value
-	 * @return the value of the property with the specified name as a
-	 *         {@code float}; or {@code defaultValue} if no property with the
-	 *         specified name exists
-	 * @throws NumberFormatException if the property value is not a parseable
-	 *         {@code float}
+	 * @return the value of the property with the specified name as a {@code float}; or {@code defaultValue} if no
+	 *         property with the specified name exists
+	 * @throws NumberFormatException if the property value is not a parseable {@code float}
 	 */
 	public float getFloat(String key, float defaultValue) {
 		String value = getString(key, null);
@@ -284,9 +270,8 @@ public class TypedProperties implements Displayable {
 	}
 	
 	/**
-	 * Returns the value of the property as a {@code float}, or throws an exception.  One should either
-	 * use the variant that takes a default value or check {@link #contains(String)} to ensure the
-	 * property exists.
+	 * Returns the value of the property as a {@code float}, or throws an exception.  One should either use the variant
+	 * that takes a default value or check {@link #contains(String)} to ensure the property exists.
 	 * 
 	 * @param key the property name
 	 * @return the value of the property
@@ -297,17 +282,14 @@ public class TypedProperties implements Displayable {
 	}
 
 	/**
-	 * Returns the value of the property with the specified name as a
-	 * {@code long}; or {@code defaultValue} if no property with the specified
-	 * name exists.
+	 * Returns the value of the property with the specified name as a {@code long}; or {@code defaultValue} if no
+	 * property with the specified name exists.
 	 * 
 	 * @param key the property name
 	 * @param defaultValue the default value
-	 * @return the value of the property with the specified name as a
-	 *         {@code long}; or {@code defaultValue} if no property with the
-	 *         specified name exists
-	 * @throws NumberFormatException if the property value is not a parseable
-	 *         {@code long}
+	 * @return the value of the property with the specified name as a {@code long}; or {@code defaultValue} if no
+	 * property with the specified name exists
+	 * @throws NumberFormatException if the property value is not a parseable {@code long}
 	 */
 	public long getLong(String key, long defaultValue) {
 		String value = getString(key, null);
@@ -320,9 +302,8 @@ public class TypedProperties implements Displayable {
 	}
 	
 	/**
-	 * Returns the value of the property as a {@code long}, or throws an exception.  One should either
-	 * use the variant that takes a default value or check {@link #contains(String)} to ensure the
-	 * property exists.
+	 * Returns the value of the property as a {@code long}, or throws an exception.  One should either use the variant
+	 * that takes a default value or check {@link #contains(String)} to ensure the property exists.
 	 * 
 	 * @param key the property name
 	 * @return the value of the property
@@ -333,17 +314,14 @@ public class TypedProperties implements Displayable {
 	}
 
 	/**
-	 * Returns the value of the property with the specified name as an
-	 * {@code int}; or {@code defaultValue} if no property with the specified
-	 * name exists.
+	 * Returns the value of the property with the specified name as an {@code int}; or {@code defaultValue} if no
+	 * property with the specified name exists.
 	 * 
 	 * @param key the property name
 	 * @param defaultValue the default value
-	 * @return the value of the property with the specified name as an
-	 *         {@code int}; or {@code defaultValue} if no property with the
-	 *         specified name exists
-	 * @throws NumberFormatException if the property value is not a parseable
-	 *         integer
+	 * @return the value of the property with the specified name as an {@code int}; or {@code defaultValue} if no
+	 *         property with the specified name exists
+	 * @throws NumberFormatException if the property value is not a parseable integer
 	 */
 	public int getInt(String key, int defaultValue) {
 		String value = getString(key, null);
@@ -356,9 +334,8 @@ public class TypedProperties implements Displayable {
 	}
 	
 	/**
-	 * Returns the value of the property as a {@code int}, or throws an exception.  One should either
-	 * use the variant that takes a default value or check {@link #contains(String)} to ensure the
-	 * property exists.
+	 * Returns the value of the property as a {@code int}, or throws an exception.  One should either use the variant
+	 * that takes a default value or check {@link #contains(String)} to ensure the property exists.
 	 * 
 	 * @param key the property name
 	 * @return the value of the property
@@ -378,13 +355,13 @@ public class TypedProperties implements Displayable {
 	//      trying to parse a value that exceeds the maximum or minimum value that fits within a type.
 	
 	/**
-	 * Returns the value of the property with the specified name as an {@code int}; or {@code defaultValue}
-	 * if no property with the specified name exists.  Any decimal places will be truncated.
+	 * Returns the value of the property with the specified name as an {@code int}; or {@code defaultValue} if no
+	 * property with the specified name exists.  Any decimal places will be truncated.
 	 * 
 	 * @param key the property name
 	 * @param defaultValue the default value
-	 * @return the value of the property with the specified name as an {@code int}; or {@code defaultValue}
-	 *         if no property with the specified name exists
+	 * @return the value of the property with the specified name as an {@code int}; or {@code defaultValue} if no
+	 *         property with the specified name exists
 	 * @throws NumberFormatException if the property value is not a parseable integer
 	 */
 	public int getTruncatedInt(String key, int defaultValue) {
@@ -404,9 +381,9 @@ public class TypedProperties implements Displayable {
 	}
 	
 	/**
-	 * Returns the value of the property as a {@code int}, or throws an exception.  One should either
-	 * use the variant that takes a default value or check {@link #contains(String)} to ensure the
-	 * property exists.  Any decimal places will be truncated.
+	 * Returns the value of the property as a {@code int}, or throws an exception.  One should either use the variant
+	 * that takes a default value or check {@link #contains(String)} to ensure the property exists.  Any decimal places
+	 * will be truncated.
 	 * 
 	 * @param key the property name
 	 * @return the value of the property
@@ -425,13 +402,13 @@ public class TypedProperties implements Displayable {
 	}
 	
 	/**
-	 * Returns the value of the property with the specified name as a {@code long}; or {@code defaultValue}
-	 * if no property with the specified name exists.  Any decimal places will be truncated.
+	 * Returns the value of the property with the specified name as a {@code long}; or {@code defaultValue} if no
+	 * property with the specified name exists.  Any decimal places will be truncated.
 	 * 
 	 * @param key the property name
 	 * @param defaultValue the default value
-	 * @return the value of the property with the specified name as a {@code long}; or {@code defaultValue}
-	 *         if no property with the specified name exists
+	 * @return the value of the property with the specified name as a {@code long}; or {@code defaultValue} if no
+	 *         property with the specified name exists
 	 * @throws NumberFormatException if the property value is not a parseable long
 	 */
 	public long getTruncatedLong(String key, long defaultValue) {
@@ -447,9 +424,9 @@ public class TypedProperties implements Displayable {
 	}
 	
 	/**
-	 * Returns the value of the property as a {@code long}, or throws an exception.  One should either
-	 * use the variant that takes a default value or check {@link #contains(String)} to ensure the
-	 * property exists.  Any decimal places will be truncated.
+	 * Returns the value of the property as a {@code long}, or throws an exception.  One should either use the variant
+	 * that takes a default value or check {@link #contains(String)} to ensure the property exists.  Any decimal places
+	 * will be truncated.
 	 * 
 	 * @param key the property name
 	 * @return the value of the property
@@ -529,17 +506,14 @@ public class TypedProperties implements Displayable {
 	}
 
 	/**
-	 * Returns the value of the property with the specified name as a
-	 * {@code short}; or {@code defaultValue} if no property with the specified
-	 * name exists.
+	 * Returns the value of the property with the specified name as a {@code short}; or {@code defaultValue} if no
+	 * property with the specified name exists.
 	 * 
 	 * @param key the property name
 	 * @param defaultValue the default value
-	 * @return the value of the property with the specified name as a
-	 *         {@code short}; or {@code defaultValue} if no property with the
-	 *         specified name exists
-	 * @throws NumberFormatException if the property value is not a parseable
-	 *         {@code short}
+	 * @return the value of the property with the specified name as a {@code short}; or {@code defaultValue} if no
+	 *         property with the specified name exists
+	 * @throws NumberFormatException if the property value is not a parseable {@code short}
 	 */
 	public short getShort(String key, short defaultValue) {
 		String value = getString(key, null);
@@ -552,9 +526,8 @@ public class TypedProperties implements Displayable {
 	}
 	
 	/**
-	 * Returns the value of the property as a {@code short}, or throws an exception.  One should either
-	 * use the variant that takes a default value or check {@link #contains(String)} to ensure the
-	 * property exists.
+	 * Returns the value of the property as a {@code short}, or throws an exception.  One should either use the variant
+	 * that takes a default value or check {@link #contains(String)} to ensure the property exists.
 	 * 
 	 * @param key the property name
 	 * @return the value of the property
@@ -565,17 +538,14 @@ public class TypedProperties implements Displayable {
 	}
 
 	/**
-	 * Returns the value of the property with the specified name as a
-	 * {@code byte}; or {@code defaultValue} if no property with the specified
-	 * name exists.
+	 * Returns the value of the property with the specified name as a {@code byte}; or {@code defaultValue} if no
+	 * property with the specified name exists.
 	 * 
 	 * @param key the property name
 	 * @param defaultValue the default value
-	 * @return the value of the property with the specified name as a
-	 *         {@code byte}; or {@code defaultValue} if no property with the
-	 *         specified name exists
-	 * @throws NumberFormatException if the property value is not a parseable
-	 *         {@code byte}
+	 * @return the value of the property with the specified name as a {@code byte}; or {@code defaultValue} if no
+	 *         property with the specified name exists
+	 * @throws NumberFormatException if the property value is not a parseable {@code byte}
 	 */
 	public byte getByte(String key, byte defaultValue) {
 		String value = getString(key, null);
@@ -588,9 +558,8 @@ public class TypedProperties implements Displayable {
 	}
 	
 	/**
-	 * Returns the value of the property as a {@code byte}, or throws an exception.  One should either
-	 * use the variant that takes a default value or check {@link #contains(String)} to ensure the
-	 * property exists.
+	 * Returns the value of the property as a {@code byte}, or throws an exception.  One should either use the variant
+	 * that takes a default value or check {@link #contains(String)} to ensure the property exists.
 	 * 
 	 * @param key the property name
 	 * @return the value of the property
@@ -601,15 +570,13 @@ public class TypedProperties implements Displayable {
 	}
 
 	/**
-	 * Returns the value of the property with the specified name as a
-	 * {@code boolean}; or {@code defaultValue} if no property with the
-	 * specified name exists.
+	 * Returns the value of the property with the specified name as a {@code boolean}; or {@code defaultValue} if no
+	 * property with the specified name exists.
 	 * 
 	 * @param key the property name
 	 * @param defaultValue the default value
-	 * @return the value of the property with the specified name as a
-	 *         {@code boolean}; or {@code defaultValue} if no property with the
-	 *         specified name exists
+	 * @return the value of the property with the specified name as a {@code boolean}; or {@code defaultValue} if no
+	 *         property with the specified name exists
 	 */
 	public boolean getBoolean(String key, boolean defaultValue) {
 		String value = getString(key, null);
@@ -622,9 +589,8 @@ public class TypedProperties implements Displayable {
 	}
 	
 	/**
-	 * Returns the value of the property as a {@code boolean}, or throws an exception.  One should either
-	 * use the variant that takes a default value or check {@link #contains(String)} to ensure the
-	 * property exists.
+	 * Returns the value of the property as a {@code boolean}, or throws an exception.  One should either use the
+	 * variant that takes a default value or check {@link #contains(String)} to ensure the property exists.
 	 * 
 	 * @param key the property name
 	 * @return the value of the property
@@ -635,8 +601,8 @@ public class TypedProperties implements Displayable {
 	}
 	
 	/**
-	 * Returns the value of the property with the specified name as an Enum.  If
-	 * no such property is set, returns the default Enum value.
+	 * Returns the value of the property with the specified name as an Enum.  If no such property is set, returns the
+	 * default Enum value.
 	 * 
 	 * @param <T> the Enum type
 	 * @param key the property name
@@ -648,9 +614,9 @@ public class TypedProperties implements Displayable {
 	}
 	
 	/**
-	 * Returns the value of the property with the specified name as an Enum; or
-	 * {@code defaultValue} if no property with the specified name exists.  Unlike using
-	 * {@link Enum#valueOf(Class, String)}, this version is case-insensitive.
+	 * Returns the value of the property with the specified name as an Enum; or {@code defaultValue} if no property
+	 * with the specified name exists.  Unlike using {@link Enum#valueOf(Class, String)}, this version is
+	 * case-insensitive.
 	 * 
 	 * @param <T> the Enum type
 	 * @param key the property name
@@ -670,21 +636,19 @@ public class TypedProperties implements Displayable {
 				}
 			}
 
-			throw new IllegalArgumentException("enum " + enumType.getSimpleName() +
-					" has no constant of value " + value);
+			throw new IllegalArgumentException("enum " + enumType.getSimpleName() + " has no constant of value " +
+					value);
 		}
 	}
 	
 	/**
-	 * Returns the value of the property with the specified name as a
-	 * {@code String} array; or {@code defaultValues} if no property with the
-	 * specified name exists.
+	 * Returns the value of the property with the specified name as a {@code String} array; or {@code defaultValues} if
+	 * no property with the specified name exists.
 	 * 
 	 * @param key the property name
 	 * @param defaultValues the default values
-	 * @return the value of the property with the specified name as a
-	 *         {@code String} array; or {@code defaultValues} if no property
-	 *         with the specified name exists
+	 * @return the value of the property with the specified name as a {@code String} array; or {@code defaultValues} if
+	 *         no property with the specified name exists
 	 */
 	public String[] getStringArray(String key, String[] defaultValues) {
 		String value = getString(key, null);
@@ -705,9 +669,8 @@ public class TypedProperties implements Displayable {
 	}
 	
 	/**
-	 * Returns the value of the property as a {@code String} array, or throws an exception.
-	 * One should either use the variant that takes a default value or check {@link #contains(String)} 
-	 * to ensure the property exists.
+	 * Returns the value of the property as a {@code String} array, or throws an exception.  One should either use the
+	 * variant that takes a default value or check {@link #contains(String)} to ensure the property exists.
 	 * 
 	 * @param key the property name
 	 * @return the value of the property as an array
@@ -724,15 +687,13 @@ public class TypedProperties implements Displayable {
 	}
 
 	/**
-	 * Returns the value of the property with the specified name as a
-	 * {@code double} array; or {@code defaultValues} if no property with the
-	 * specified name exists.
+	 * Returns the value of the property with the specified name as a {@code double} array; or {@code defaultValues} if
+	 * no property with the specified name exists.
 	 * 
 	 * @param key the property name
 	 * @param defaultValues the default values
-	 * @return the value of the property with the specified name as a
-	 *         {@code double} array; or {@code defaultValues} if no property
-	 *         with the  specified name exists
+	 * @return the value of the property with the specified name as a {@code double} array; or {@code defaultValues} if
+	 *         no property with the  specified name exists
 	 */
 	public double[] getDoubleArray(String key, double[] defaultValues) {
 		String[] values = getStringArray(key, null);
@@ -751,9 +712,8 @@ public class TypedProperties implements Displayable {
 	}
 	
 	/**
-	 * Returns the value of the property as a {@code double} array, or throws an exception.
-	 * One should either use the variant that takes a default value or check {@link #contains(String)} 
-	 * to ensure the property exists.
+	 * Returns the value of the property as a {@code double} array, or throws an exception.  One should either use the
+	 * variant that takes a default value or check {@link #contains(String)} to ensure the property exists.
 	 * 
 	 * @param key the property name
 	 * @return the value of the property as an array
@@ -770,15 +730,13 @@ public class TypedProperties implements Displayable {
 	}
 
 	/**
-	 * Returns the value of the property with the specified name as a
-	 * {@code float} array; or {@code defaultValues} if no property with the
-	 * specified name exists.
+	 * Returns the value of the property with the specified name as a {@code float} array; or {@code defaultValues} if
+	 * no property with the specified name exists.
 	 * 
 	 * @param key the property name
 	 * @param defaultValues the default values
-	 * @return the value of the property with the specified name as a
-	 *         {@code float} array; or {@code defaultValues} if no property with
-	 *         the specified name exists
+	 * @return the value of the property with the specified name as a {@code float} array; or {@code defaultValues} if
+	 *         no property with the specified name exists
 	 */
 	public float[] getFloatArray(String key, float[] defaultValues) {
 		String[] values = getStringArray(key, null);
@@ -797,9 +755,8 @@ public class TypedProperties implements Displayable {
 	}
 	
 	/**
-	 * Returns the value of the property as a {@code float} array, or throws an exception.
-	 * One should either use the variant that takes a default value or check {@link #contains(String)} 
-	 * to ensure the property exists.
+	 * Returns the value of the property as a {@code float} array, or throws an exception.  One should either use the
+	 * variant that takes a default value or check {@link #contains(String)} to ensure the property exists.
 	 * 
 	 * @param key the property name
 	 * @return the value of the property as an array
@@ -816,15 +773,13 @@ public class TypedProperties implements Displayable {
 	}
 
 	/**
-	 * Returns the value of the property with the specified name as a
-	 * {@code long} array; or {@code defaultValues} if no property with the
-	 * specified name exists.
+	 * Returns the value of the property with the specified name as a {@code long} array; or {@code defaultValues} if
+	 * no property with the specified name exists.
 	 * 
 	 * @param key the property name
 	 * @param defaultValues the default values
-	 * @return the value of the property with the specified name as a
-	 *         {@code long} array; or {@code defaultValues} if no property with
-	 *         the specified name exists
+	 * @return the value of the property with the specified name as a {@code long} array; or {@code defaultValues} if
+	 *         no property with the specified name exists
 	 */
 	public long[] getLongArray(String key, long[] defaultValues) {
 		String[] values = getStringArray(key, null);
@@ -843,9 +798,8 @@ public class TypedProperties implements Displayable {
 	}
 	
 	/**
-	 * Returns the value of the property as a {@code long} array, or throws an exception.
-	 * One should either use the variant that takes a default value or check {@link #contains(String)} 
-	 * to ensure the property exists.
+	 * Returns the value of the property as a {@code long} array, or throws an exception.  One should either use the
+	 * variant that takes a default value or check {@link #contains(String)} to ensure the property exists.
 	 * 
 	 * @param key the property name
 	 * @return the value of the property as an array
@@ -862,15 +816,13 @@ public class TypedProperties implements Displayable {
 	}
 
 	/**
-	 * Returns the value of the property with the specified name as an
-	 * {@code int} array; or {@code defaultValues} if no property with the
-	 * specified name exists.
+	 * Returns the value of the property with the specified name as an {@code int} array; or {@code defaultValues} if
+	 * no property with the specified name exists.
 	 * 
 	 * @param key the property name
 	 * @param defaultValues the default values
-	 * @return the value of the property with the specified name as an
-	 *         {@code int} array; or {@code defaultValues} if no property with
-	 *         the specified name exists
+	 * @return the value of the property with the specified name as an {@code int} array; or {@code defaultValues} if
+	 *         no property with the specified name exists
 	 */
 	public int[] getIntArray(String key, int[] defaultValues) {
 		String[] values = getStringArray(key, null);
@@ -889,9 +841,8 @@ public class TypedProperties implements Displayable {
 	}
 	
 	/**
-	 * Returns the value of the property as a {@code int} array, or throws an exception.
-	 * One should either use the variant that takes a default value or check {@link #contains(String)} 
-	 * to ensure the property exists.
+	 * Returns the value of the property as a {@code int} array, or throws an exception.  One should either use the
+	 * variant that takes a default value or check {@link #contains(String)} to ensure the property exists.
 	 * 
 	 * @param key the property name
 	 * @return the value of the property as an array
@@ -908,15 +859,13 @@ public class TypedProperties implements Displayable {
 	}
 
 	/**
-	 * Returns the value of the property with the specified name as a
-	 * {@code short} array; or {@code defaultValues} if no property with the
-	 * specified name exists.
+	 * Returns the value of the property with the specified name as a {@code short} array; or {@code defaultValues} if
+	 * no property with the specified name exists.
 	 * 
 	 * @param key the property name
 	 * @param defaultValues the default values
-	 * @return the value of the property with the specified name as a
-	 *         {@code short} array; or {@code defaultValues} if no property with
-	 *         the specified name exists
+	 * @return the value of the property with the specified name as a {@code short} array; or {@code defaultValues} if
+	 *         no property with the specified name exists
 	 */
 	public short[] getShortArray(String key, short[] defaultValues) {
 		String[] values = getStringArray(key, null);
@@ -935,9 +884,8 @@ public class TypedProperties implements Displayable {
 	}
 	
 	/**
-	 * Returns the value of the property as a {@code short} array, or throws an exception.
-	 * One should either use the variant that takes a default value or check {@link #contains(String)} 
-	 * to ensure the property exists.
+	 * Returns the value of the property as a {@code short} array, or throws an exception.  One should either use the
+	 * variant that takes a default value or check {@link #contains(String)} to ensure the property exists.
 	 * 
 	 * @param key the property name
 	 * @return the value of the property as an array
@@ -954,15 +902,13 @@ public class TypedProperties implements Displayable {
 	}
 
 	/**
-	 * Returns the value of the property with the specified name as a
-	 * {@code byte} array; or {@code defaultValues} if no property with the
-	 * specified name exists.
+	 * Returns the value of the property with the specified name as a {@code byte} array; or {@code defaultValues} if
+	 * no property with the specified name exists.
 	 * 
 	 * @param key the property name
 	 * @param defaultValues the default values
-	 * @return the value of the property with the specified name as a
-	 *         {@code byte} array; or {@code defaultValues} if no property with
-	 *         the specified name exists
+	 * @return the value of the property with the specified name as a {@code byte} array; or {@code defaultValues} if
+	 *         no property with the specified name exists
 	 */
 	public byte[] getByteArray(String key, byte[] defaultValues) {
 		String[] values = getStringArray(key, null);
@@ -981,9 +927,8 @@ public class TypedProperties implements Displayable {
 	}
 	
 	/**
-	 * Returns the value of the property as a {@code byte} array, or throws an exception.
-	 * One should either use the variant that takes a default value or check {@link #contains(String)} 
-	 * to ensure the property exists.
+	 * Returns the value of the property as a {@code byte} array, or throws an exception.  One should either use the
+	 * variant that takes a default value or check {@link #contains(String)} to ensure the property exists.
 	 * 
 	 * @param key the property name
 	 * @return the value of the property as an array
@@ -1091,8 +1036,7 @@ public class TypedProperties implements Displayable {
 	}
 	
 	/**
-	 * Sets the value of the property with the specified name as a
-	 * {@code String} array.
+	 * Sets the value of the property with the specified name as a {@code String} array.
 	 * 
 	 * @param key the property name
 	 * @param values the property value
@@ -1102,8 +1046,7 @@ public class TypedProperties implements Displayable {
 	}
 	
 	/**
-	 * Sets the value of the property with the specified name as a
-	 * {@code float} array.
+	 * Sets the value of the property with the specified name as a {@code float} array.
 	 * 
 	 * @param key the property name
 	 * @param values the property value
@@ -1113,8 +1056,7 @@ public class TypedProperties implements Displayable {
 	}
 
 	/**
-	 * Sets the value of the property with the specified name as a
-	 * {@code double} array.
+	 * Sets the value of the property with the specified name as a {@code double} array.
 	 * 
 	 * @param key the property name
 	 * @param values the property value
@@ -1124,8 +1066,7 @@ public class TypedProperties implements Displayable {
 	}
 
 	/**
-	 * Sets the value of the property with the specified name as a
-	 * {@code byte} array.
+	 * Sets the value of the property with the specified name as a {@code byte} array.
 	 * 
 	 * @param key the property name
 	 * @param values the property value
@@ -1135,8 +1076,7 @@ public class TypedProperties implements Displayable {
 	}
 
 	/**
-	 * Sets the value of the property with the specified name as a
-	 * {@code short} array.
+	 * Sets the value of the property with the specified name as a {@code short} array.
 	 * 
 	 * @param key the property name
 	 * @param values the property value
@@ -1146,8 +1086,7 @@ public class TypedProperties implements Displayable {
 	}
 
 	/**
-	 * Sets the value of the property with the specified name as a
-	 * {@code int} array.
+	 * Sets the value of the property with the specified name as a {@code int} array.
 	 * 
 	 * @param key the property name
 	 * @param values the property value
@@ -1157,8 +1096,7 @@ public class TypedProperties implements Displayable {
 	}
 
 	/**
-	 * Sets the value of the property with the specified name as a
-	 * {@code long} array.
+	 * Sets the value of the property with the specified name as a {@code long} array.
 	 * 
 	 * @param key the property name
 	 * @param values the property value
@@ -1205,13 +1143,11 @@ public class TypedProperties implements Displayable {
 	}
 	
 	/**
-	 * Returns a string representation of the specified array that can be
-	 * parsed by {@link TypedProperties}.  Returns {@code null} if the array
-	 * is {@code null}.
+	 * Returns a string representation of the specified array that can be parsed by {@link TypedProperties}.  Returns
+	 * {@code null} if the array is {@code null}.
 	 * 
 	 * @param array the array
-	 * @return a string representation of the specified array that can be
-	 *         parsed by {@code TypedProperties}
+	 * @return a string representation of the specified array that can be parsed by {@code TypedProperties}
 	 */
 	private String arrayToString(Object array) {
 		StringBuilder sb = new StringBuilder();
@@ -1319,16 +1255,15 @@ public class TypedProperties implements Displayable {
 	}
 	
 	/**
-	 * Clears the tracking information for properties that have
-	 * been accessed.
+	 * Clears the tracking information for properties that have been accessed.
 	 */
 	public void clearAccessedProperties() {
 		accessedProperties.clear();
 	}
 	
 	/**
-	 * Returns the properties that were accessed since the last call to
-	 * {@link #clearAccessedProperties()} or {@link #clear()}.
+	 * Returns the properties that were accessed since the last call to {@link #clearAccessedProperties()} or
+	 * {@link #clear()}.
 	 * 
 	 * @return the accessed properties
 	 */
@@ -1339,8 +1274,8 @@ public class TypedProperties implements Displayable {
 	}
 	
 	/**
-	 * Returns the properties that were never accessed since the last call to
-	 * {@link #clearAccessedProperties()} or {@link #clear()}
+	 * Returns the properties that were never accessed since the last call to {@link #clearAccessedProperties()} or
+	 * {@link #clear()}
 	 * 
 	 * @return the unaccessed or orphaned properties
 	 */
@@ -1382,9 +1317,9 @@ public class TypedProperties implements Displayable {
 	}
 	
 	/**
-	 * Creates a new scope that allows making temporary changes to the properties.  When the scope is closed,
-	 * the original properties are restored.  Typically, you should create scopes within try-with-resources
-	 * blocks so they are automatically closed.
+	 * Creates a new scope that allows making temporary changes to the properties.  When the scope is closed, the
+	 * original properties are restored.  Typically, you should create scopes within try-with-resources blocks so they
+	 * are automatically closed.
 	 * 
 	 * @return the scope
 	 */

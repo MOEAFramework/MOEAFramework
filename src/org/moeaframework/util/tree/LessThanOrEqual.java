@@ -40,16 +40,14 @@ package org.moeaframework.util.tree;
  *   <tr>
  *     <td>Return Value</td>
  *     <td>Boolean</td>
- *     <td>{@code true} if the first number is less than or equal to the second;
- *         {@code false} otherwise</td>
+ *     <td>{@code true} if the first number is less than or equal to the second; {@code false} otherwise</td>
  *   </tr>
  * </table>
  */
 public class LessThanOrEqual extends Node {
 	
 	/**
-	 * Constructs a new node for comparing if a number is less than or equal
-	 * to another.
+	 * Constructs a new node for comparing if a number is less than or equal to another.
 	 */
 	public LessThanOrEqual() {
 		super(Boolean.class, Number.class, Number.class);

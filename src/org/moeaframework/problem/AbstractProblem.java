@@ -20,11 +20,9 @@ package org.moeaframework.problem;
 import org.moeaframework.core.Problem;
 
 /**
- * Abstract class for a {@link Problem}.  For simplicity, most problems should
- * extend {@code AbstractProblem} rather than implement the {@code Problem}
- * interface directly.  At a minimum, only the {@link #newSolution()} and
- * {@link #evaluate(org.moeaframework.core.Solution)} methods need to be
- * defined.
+ * Abstract class for a {@link Problem}.  For simplicity, most problems should extend {@code AbstractProblem} rather
+ * than implement the {@code Problem} interface directly.  At a minimum, only the {@link #newSolution()} and
+ * {@link #evaluate(org.moeaframework.core.Solution)} methods need to be defined.
  */
 public abstract class AbstractProblem implements Problem {
 
@@ -44,8 +42,7 @@ public abstract class AbstractProblem implements Problem {
 	protected final int numberOfConstraints;
 	
 	/**
-	 * Constructs an unconstrained abstract problem with the specified number
-	 * of decision variables and objectives.
+	 * Constructs an unconstrained abstract problem with the specified number of decision variables and objectives.
 	 * 
 	 * @param numberOfVariables the number of decision variables
 	 * @param numberOfObjectives the number of objectives
@@ -55,8 +52,7 @@ public abstract class AbstractProblem implements Problem {
 	}
 	
 	/**
-	 * Constructs an abstract problem with the specified number of decision 
-	 * variables, objectives and constraints.
+	 * Constructs an abstract problem with the specified number of decision variables, objectives and constraints.
 	 * 
 	 * @param numberOfVariables the number of decision variables
 	 * @param numberOfObjectives the number of objectives

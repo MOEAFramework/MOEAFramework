@@ -118,10 +118,9 @@ public class ReferenceVectorGuidedPopulationTest {
 	}
 	
 	/**
-	 * Tests that the truncate method works correctly with a small scaling
-	 * factor.  While s2 and s3 are closer to the weight vectors, s1 will be
-	 * retained since it is closer to the origin and a scaling factor of 0.0
-	 * favors convergence over diversity.
+	 * Tests that the truncate method works correctly with a small scaling factor.  While s2 and s3 are closer to the
+	 * weight vectors, s1 will be retained since it is closer to the origin and a scaling factor of 0.0 favors
+	 * convergence over diversity.
 	 */
 	@Test
 	public void testTruncate1() {
@@ -144,9 +143,8 @@ public class ReferenceVectorGuidedPopulationTest {
 	}
 	
 	/**
-	 * Tests that the truncate method works correctly with a large scaling
-	 * factor.  With a scaling factor of 1.0, the algorithm prefers diversity
-	 * and selects the two solutions closer to the weight vectors, s2 and s3.
+	 * Tests that the truncate method works correctly with a large scaling factor.  With a scaling factor of 1.0, the
+	 * algorithm prefers diversity and selects the two solutions closer to the weight vectors, s2 and s3.
 	 */
 	@Test
 	public void testTruncate2() {
@@ -170,9 +168,8 @@ public class ReferenceVectorGuidedPopulationTest {
 	}
 	
 	/**
-	 * Tests if the {@code adapt} method works correctly by ensuring that
-	 * (a) the boundary weights remain on the primary axis (e.g., (0, 1) or
-	 * (1, 0)) and (b) intermediate weights appear to be scaled correctly.
+	 * Tests if the {@code adapt} method works correctly by ensuring that (a) the boundary weights remain on the
+	 * primary axis (e.g., (0, 1) or (1, 0)) and (b) intermediate weights appear to be scaled correctly.
 	 */
 	@Test
 	public void testAdapt() {

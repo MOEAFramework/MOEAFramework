@@ -70,8 +70,7 @@ public class MinMaxObjectiveComparatorTest {
 	
 	@Test
 	public void testGivenWeights() {
-		MinMaxObjectiveComparator comparator = new MinMaxObjectiveComparator(
-				new double[] { 0.5, 0.25 });
+		MinMaxObjectiveComparator comparator = new MinMaxObjectiveComparator(new double[] { 0.5, 0.25 });
 		
 		Solution solution1 = TestUtils.newSolution(0.0, 1.0);
 		Solution solution2 = TestUtils.newSolution(1.0, 0.0);

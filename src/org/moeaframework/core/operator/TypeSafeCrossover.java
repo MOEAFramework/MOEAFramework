@@ -25,8 +25,8 @@ import org.moeaframework.core.configuration.Property;
 import org.moeaframework.core.configuration.Validate;
 
 /**
- * An abstract variation class that validates the types of each variable before
- * applying the crossover operation with a given probability.
+ * An abstract variation class that validates the types of each variable before applying the crossover operation with
+ * a given probability.
  * 
  * @param <T> the type of decision variable this operator supports
  */

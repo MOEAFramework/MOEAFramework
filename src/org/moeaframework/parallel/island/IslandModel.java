@@ -23,8 +23,8 @@ import org.moeaframework.parallel.island.migration.Migration;
 import org.moeaframework.parallel.island.topology.Topology;
 
 /**
- * Describes the design of an island model parallelization strategy conceptually,
- * including the islands, their topology, the migration schedule, etc.
+ * Describes the design of an island model parallelization strategy conceptually, including the islands, their
+ * topology, the migration schedule, etc.
  */
 public class IslandModel {
 	
@@ -53,8 +53,7 @@ public class IslandModel {
 	}
 
 	/**
-	 * Returns the migration frequency, in function evaluations, used by this island
-	 * model.
+	 * Returns the migration frequency, in function evaluations, used by this island model.
 	 * 
 	 * @return the migration frequency
 	 */
@@ -72,8 +71,7 @@ public class IslandModel {
 	}
 
 	/**
-	 * Returns the island topology, describing neighboring islands for the purpose
-	 * of migrations.
+	 * Returns the island topology, describing neighboring islands for the purpose of migrations.
 	 * 
 	 * @return the island topology
 	 */

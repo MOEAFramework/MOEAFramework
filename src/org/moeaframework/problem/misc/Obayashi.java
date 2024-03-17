@@ -37,13 +37,11 @@ import org.moeaframework.problem.AnalyticalProblem;
  * <p>
  * References:
  * <ol>
- *   <li>Obayashi, S. (1998).  "Pareto Genetic Algorithm for Aerodynamic
- *       Design using the Navier-Stokes Equations."  Genetic Algorithms and
- *       Evolution Strategies in Engineering and Computer Science: Recent
- *       Advances and Industrial Applications, pp. 245-266.
- *   <li>Van Veldhuizen, D. A (1999).  "Multiobjective Evolutionary Algorithms: 
- *       Classifications, Analyses, and New Innovations."  Air Force Institute
- *       of Technology, Ph.D. Thesis, Appendix B.
+ *   <li>Obayashi, S. (1998).  "Pareto Genetic Algorithm for Aerodynamic Design using the Navier-Stokes Equations."
+ *       Genetic Algorithms and Evolution Strategies in Engineering and Computer Science: Recent Advances and
+ *       Industrial Applications, pp. 245-266.
+ *   <li>Van Veldhuizen, D. A (1999).  "Multiobjective Evolutionary Algorithms: Classifications, Analyses, and New
+ *       Innovations."  Air Force Institute of Technology, Ph.D. Thesis, Appendix B.
  * </ol>
  */
 public class Obayashi extends AbstractProblem implements AnalyticalProblem {

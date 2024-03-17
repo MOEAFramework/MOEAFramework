@@ -20,7 +20,6 @@ package org.moeaframework.problem.DTLZ;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
-import org.moeaframework.core.variable.RealVariable;
 
 /**
  * The DTLZ4 test problem.
@@ -30,9 +29,8 @@ public class DTLZ4 extends DTLZ {
 	private static final double alpha = 100.0;
 
 	/**
-	 * Constructs a DTLZ4 test problem with the specified number of objectives.
-	 * This is equivalent to calling {@code new DTLZ4(numberOfObjectives+9, 
-	 * numberOfObjectives)}.
+	 * Constructs a DTLZ4 test problem with the specified number of objectives.  This is equivalent to calling
+	 * {@code new DTLZ4(numberOfObjectives+9, numberOfObjectives)}.
 	 * 
 	 * @param numberOfObjectives the number of objectives for this problem
 	 */
@@ -41,8 +39,7 @@ public class DTLZ4 extends DTLZ {
 	}
 
 	/**
-	 * Constructs a DTLZ4 test problem with the specified number of variables
-	 * and objectives.
+	 * Constructs a DTLZ4 test problem with the specified number of variables and objectives.
 	 * 
 	 * @param numberOfVariables the number of variables for this problem
 	 * @param numberOfObjectives the number of objectives for this problem
@@ -71,8 +68,7 @@ public class DTLZ4 extends DTLZ {
 			}
 
 			if (i != 0) {
-				f[i] *= Math.sin(0.5 * Math.PI
-						* Math.pow(x[numberOfObjectives - i - 1], alpha));
+				f[i] *= Math.sin(0.5 * Math.PI * Math.pow(x[numberOfObjectives - i - 1], alpha));
 			}
 		}
 
@@ -84,11 +80,11 @@ public class DTLZ4 extends DTLZ {
 		Solution solution = newSolution();
 
 		for (int i = 0; i < numberOfObjectives - 1; i++) {
-			((RealVariable)solution.getVariable(i)).setValue(PRNG.nextDouble());
+			EncodingUtils.setReal(solution.getVariable(i), PRNG.nextDouble());
 		}
 
 		for (int i = numberOfObjectives - 1; i < numberOfVariables; i++) {
-			((RealVariable)solution.getVariable(i)).setValue(0.5);
+			EncodingUtils.setReal(solution.getVariable(i), 0.5);
 		}
 
 		evaluate(solution);

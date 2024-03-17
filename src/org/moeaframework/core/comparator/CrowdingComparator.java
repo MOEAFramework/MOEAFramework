@@ -24,14 +24,12 @@ import java.util.Comparator;
 import org.moeaframework.core.Solution;
 
 /**
- * Compares solutions using their crowding distance. Solutions with larger
- * crowding distances are preferred.
+ * Compares solutions using their crowding distance. Solutions with larger crowding distances are preferred.
  */
 public class CrowdingComparator implements DominanceComparator, Comparator<Solution> {
 
 	/**
-	 * Constructs a dominance comparator for comparing solutions using their 
-	 * crowding distance.
+	 * Constructs a dominance comparator for comparing solutions using their crowding distance.
 	 */
 	public CrowdingComparator() {
 		super();

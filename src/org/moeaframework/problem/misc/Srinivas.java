@@ -34,12 +34,10 @@ import org.moeaframework.problem.AbstractProblem;
  * <p>
  * References:
  * <ol>
- *   <li>Srinivas, N. and Deb, K (1994).  "Multiobjective Optimization Using
- *       Nondominated Sorting in Genetic Algorithms."  Evolutionary Computation,
- *       2(3):221-248.
- *   <li>Van Veldhuizen, D. A (1999).  "Multiobjective Evolutionary Algorithms: 
- *       Classifications, Analyses, and New Innovations."  Air Force Institute
- *       of Technology, Ph.D. Thesis, Appendix B.
+ *   <li>Srinivas, N. and Deb, K (1994).  "Multiobjective Optimization Using Nondominated Sorting in Genetic
+ *       Algorithms."  Evolutionary Computation, 2(3):221-248.
+ *   <li>Van Veldhuizen, D. A (1999).  "Multiobjective Evolutionary Algorithms: Classifications, Analyses, and New
+ *       Innovations."  Air Force Institute of Technology, Ph.D. Thesis, Appendix B.
  * </ol>
  */
 public class Srinivas extends AbstractProblem {

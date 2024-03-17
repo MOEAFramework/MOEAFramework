@@ -27,8 +27,8 @@ import org.moeaframework.algorithm.PeriodicAction;
 import org.moeaframework.core.Algorithm;
 
 /**
- * Decorates an algorithm to periodically collect information about its runtime
- * behavior.  The {@code NFE} field is automatically recorded by this class.
+ * Decorates an algorithm to periodically collect information about its runtime behavior.  The {@code NFE} field is
+ * automatically recorded by this class.
  */
 public class InstrumentedAlgorithm extends PeriodicAction {
 	
@@ -43,8 +43,8 @@ public class InstrumentedAlgorithm extends PeriodicAction {
 	private List<Collector> collectors;
 
 	/**
-	 * Decorates the specified algorithm to periodically collect information
-	 * about its runtime behavior.  Frequency is given in number of evaluations.
+	 * Decorates the specified algorithm to periodically collect information about its runtime behavior.  Frequency is
+	 * given in number of evaluations.
 	 * 
 	 * @param algorithm the algorithm to decorate
 	 * @param frequency the frequency, in evaluations, that data is collected
@@ -54,8 +54,7 @@ public class InstrumentedAlgorithm extends PeriodicAction {
 	}
 	
 	/**
-	 * Decorates the specified algorithm to periodically collect information
-	 * about its runtime behavior.
+	 * Decorates the specified algorithm to periodically collect information about its runtime behavior.
 	 * 
 	 * @param algorithm the algorithm to decorate
 	 * @param frequency the frequency that data is collected
@@ -69,8 +68,8 @@ public class InstrumentedAlgorithm extends PeriodicAction {
 	}
 	
 	/**
-	 * Adds a collector to this instrumented algorithm.  The collector should
-	 * have already been attached to the algorithm.
+	 * Adds a collector to this instrumented algorithm.  The collector should have already been attached to the
+	 * algorithm.
 	 * 
 	 * @param collector the collector
 	 */

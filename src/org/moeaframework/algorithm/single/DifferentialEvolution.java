@@ -35,9 +35,8 @@ import org.moeaframework.core.variable.RealVariable;
  * <p>
  * References:
  * <ol>
- *   <li>Rainer Storn and Kenneth Price.  "Differential Evolution - A Simple and
- *       Efficient Heuristic for Global Optimization over Continuous Spaces."
- *       Journal of Global Optimization, 11(4):341-359, 1997.
+ *   <li>Rainer Storn and Kenneth Price.  "Differential Evolution - A Simple and Efficient Heuristic for Global
+ *       Optimization over Continuous Spaces."  Journal of Global Optimization, 11(4):341-359, 1997.
  * </ol>
  */
 public class DifferentialEvolution extends SingleObjectiveEvolutionaryAlgorithm {

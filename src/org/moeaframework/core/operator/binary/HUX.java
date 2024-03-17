@@ -24,8 +24,7 @@ import org.moeaframework.core.operator.TypeSafeCrossover;
 import org.moeaframework.core.variable.BinaryVariable;
 
 /**
- * Half-uniform crossover (HUX) operator. Half of the non-matching bits are
- * swapped between the two parents.
+ * Half-uniform crossover (HUX) operator. Half of the non-matching bits are swapped between the two parents.
  * <p>
  * This variation operator is type-safe.
  */
@@ -33,8 +32,7 @@ import org.moeaframework.core.variable.BinaryVariable;
 public class HUX extends TypeSafeCrossover<BinaryVariable> {
 
 	/**
-	 * Constructs a HUX operator with a 100% chance of applying this operator
-	 * to each solution.
+	 * Constructs a HUX operator with a 100% chance of applying this operator to each solution.
 	 */
 	public HUX() {
 		this(1.0);

@@ -40,8 +40,7 @@ package org.moeaframework.util.tree;
  *   <tr>
  *     <td>Return Value</td>
  *     <td>Boolean</td>
- *     <td>{@code true} if the first number is less than the second;
- *         {@code false} otherwise</td>
+ *     <td>{@code true} if the first number is less than the second; {@code false} otherwise</td>
  *   </tr>
  * </table>
  */

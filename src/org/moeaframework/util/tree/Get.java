@@ -18,13 +18,12 @@
 package org.moeaframework.util.tree;
 
 /**
- * The node for reading the value stored in a named variable within the current
- * scope.  See {@link Set} for details on scoping.
+ * The node for reading the value stored in a named variable within the current scope.  See {@link Set} for details on
+ * scoping.
  * <p>
- * If the named variable has not yet been set, a default value is returned
- * depending on the return type.  For numeric values, the default is
- * {@code 0}.  For boolean values, the default is {@code false}.  For objects,
- * the default is {@code null}.
+ * If the named variable has not yet been set, a default value is returned depending on the return type.  For numeric
+ * values, the default is {@code 0}.  For boolean values, the default is {@code false}.  For objects, the default is
+ * {@code null}.
  * 
  * <table style="margin-top: 1em; width: 100%">
  *   <caption style="text-align: left">Node signature:</caption>
@@ -50,8 +49,7 @@ public class Get extends Node {
 	private final String name;
 	
 	/**
-	 * Constructs a new node for reading the value stored in a named variable
-	 * within the current scope.
+	 * Constructs a new node for reading the value stored in a named variable within the current scope.
 	 * 
 	 * @param type the type of the variable
 	 * @param name the name of the variable
@@ -83,13 +81,10 @@ public class Get extends Node {
 	 * @return the default value for the return type of this node
 	 */
 	public Object getDefaultValue() {
-		if (getReturnType().equals(Byte.class) ||
-				getReturnType().equals(Short.class) ||
-				getReturnType().equals(Integer.class) || 
-				getReturnType().equals(Long.class)) {
+		if (getReturnType().equals(Byte.class) || getReturnType().equals(Short.class) ||
+				getReturnType().equals(Integer.class) || getReturnType().equals(Long.class)) {
 			return 0;
-		} else if (getReturnType().equals(Float.class) ||
-				getReturnType().equals(Double.class)) {
+		} else if (getReturnType().equals(Float.class) || getReturnType().equals(Double.class)) {
 			return 0.0;
 		} else if (getReturnType().equals(Number.class)) {
 			return 0;

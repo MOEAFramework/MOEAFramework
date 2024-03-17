@@ -33,24 +33,20 @@ import org.moeaframework.core.selection.TournamentSelection;
 import org.moeaframework.core.spi.OperatorFactory;
 
 /**
- * Implementation of the Vector Evaluated Genetic Algorithm (VEGA).  VEGA should
- * be avoided in practice, since many modern algorithms outperform it and
- * exhibit better convergence properties, but is included due to its historical
- * significance.  VEGA is considered the earliest MOEA.  It supports M
- * objectives during the selection phase by selecting M different subgroups,
- * each selected based on the i-th objective value, for i=1,...,M.
+ * Implementation of the Vector Evaluated Genetic Algorithm (VEGA).  VEGA should be avoided in practice, since many
+ * modern algorithms outperform it and exhibit better convergence properties, but is included due to its historical
+ * significance.  VEGA is considered the earliest MOEA.  It supports {@code M} objectives during the selection phase by
+ * selecting {@code M} different subgroups, each selected based on the i-th objective value, for {@code i=1,...,M}.
  * <p>
- * There is one small algorithmic difference between this implementation and
- * [1].  In [1], applying the genetic operators fills the entire population.
- * However, since custom variation operators can be specified, it is possible
- * that the population will not be filled completely.  As a result, this
- * implementation will continue selecting parents until the population is full.
+ * There is one small algorithmic difference between this implementation and [1].  In [1], applying the genetic
+ * operators fills the entire population.  However, since custom variation operators can be specified, it is possible
+ * that the population will not be filled completely.  As a result, this implementation will continue selecting parents
+ * until the population is full.
  * <p>
  * References:
  * <ol>
- *   <li>Schaffer, D. (1985).  Multiple Objective Optimization with Vector
- *       Evaluated Genetic Algorithms.  Proceedings of the 1st International
- *       Conference on Genetic Algorithms, pp. 93-100.
+ *   <li>Schaffer, D. (1985).  Multiple Objective Optimization with Vector Evaluated Genetic Algorithms.  Proceedings
+ *       of the 1st International Conference on Genetic Algorithms, pp. 93-100.
  * </ol>
  */
 public class VEGA extends AbstractEvolutionaryAlgorithm {
@@ -84,9 +80,8 @@ public class VEGA extends AbstractEvolutionaryAlgorithm {
 	 * @param initialization the initialization operator
 	 * @param variation the variation operator
 	 */
-	public VEGA(Problem problem, int initialPopulationSize, Population population,
-			NondominatedPopulation archive, Initialization initialization,
-			Variation variation) {
+	public VEGA(Problem problem, int initialPopulationSize, Population population, NondominatedPopulation archive,
+			Initialization initialization, Variation variation) {
 		super(problem, initialPopulationSize, population, archive, initialization, variation);		
 		selection = new VEGASelection();
 	}

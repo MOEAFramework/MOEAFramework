@@ -18,8 +18,7 @@
 package org.moeaframework.util.tree;
 
 /**
- * The node for executing one of two expressions depending on the result of a
- * boolean expression.
+ * The node for executing one of two expressions depending on the result of a boolean expression.
  * 
  * <table style="margin-top: 1em; width: 100%">
  *   <caption style="text-align: left">Node signature:</caption>
@@ -53,19 +52,16 @@ package org.moeaframework.util.tree;
 public class IfElse extends Node {
 	
 	/**
-	 * Constructs a new node for executing one of two expressions depending on
-	 * the result of a boolean expression.
+	 * Constructs a new node for executing one of two expressions depending on the result of a boolean expression.
 	 */
 	public IfElse() {
 		this(Object.class);
 	}
 	
 	/**
-	 * Constructs a new node for executing one of two expressions depending on
-	 * the result of a boolean expression.
+	 * Constructs a new node for executing one of two expressions depending on the result of a boolean expression.
 	 * 
-	 * @param type the return type of each expression, which is also the return
-	 *        type of this node
+	 * @param type the return type of each expression, which is also the return type of this node
 	 */
 	public IfElse(Class<?> type) {
 		super(type, Boolean.class, type, type);

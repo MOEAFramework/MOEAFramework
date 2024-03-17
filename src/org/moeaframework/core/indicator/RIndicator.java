@@ -29,16 +29,14 @@ import org.moeaframework.core.Solution;
  * <p>
  * References:
  * <ol>
- *   <li>Hansen, M. P. and A. Jaszkiewicz (1998).  Evaluating the Quality of
- *       Approximations to the Non-dominated Set.  IMM Technical Report
- *       IMM-REP-1998-7.
+ *   <li>Hansen, M. P. and A. Jaszkiewicz (1998).  Evaluating the Quality of Approximations to the Non-dominated Set.
+ *       IMM Technical Report IMM-REP-1998-7.
  * </ol>
  */
 public abstract class RIndicator extends NormalizedIndicator {
 	
 	/**
-	 * Interface for defining utility functions.  These utility functions
-	 * assume the solutions have been normalized.
+	 * Interface for defining utility functions.  These utility functions assume the solutions have been normalized.
 	 */
 	public interface UtilityFunction {
 		
@@ -226,8 +224,7 @@ public abstract class RIndicator extends NormalizedIndicator {
 	}
 	
 	/**
-	 * Returns the default number of subdivisions for a given problem. The
-	 * defaults, for an M objective problem, are:
+	 * Returns the default number of subdivisions for a given problem. The defaults, for an M objective problem, are:
 	 * <ul>
 	 *   <li>if M=2, then 500
 	 *   <li>if M=3, then 30

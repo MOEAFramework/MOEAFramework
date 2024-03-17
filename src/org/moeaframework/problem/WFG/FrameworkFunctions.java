@@ -21,12 +21,10 @@ package org.moeaframework.problem.WFG;
  * 
  * Copyright 2005 The Walking Fish Group (WFG).
  *
- * This material is provided "as is", with no warranty expressed or implied.
- * Any use is at your own risk. Permission to use or copy this software for
- * any purpose is hereby granted without fee, provided this notice is
- * retained on all copies. Permission to modify the code and to distribute
- * modified code is granted, provided a notice that the code was modified is
- * included with the above copyright notice.
+ * This material is provided "as is", with no warranty expressed or implied.  Any use is at your own risk. Permission
+ * to use or copy this software for any purpose is hereby granted without fee, provided this notice is retained on all
+ * copies. Permission to modify the code and to distribute modified code is granted, provided a notice that the code
+ * was modified is included with the above copyright notice.
  *
  * http://www.wfg.csse.uwa.edu.au/
  */
@@ -71,8 +69,7 @@ class FrameworkFunctions {
 		return result;
 	}
 
-	public static double[] calculate_f(double D, double[] x, double[] h,
-			double[] S) {
+	public static double[] calculate_f(double D, double[] x, double[] h, double[] S) {
 		assert D > 0.0;
 		assert Misc.vector_in_01(x);
 		assert Misc.vector_in_01(h);

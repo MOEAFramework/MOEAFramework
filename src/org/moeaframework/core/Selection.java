@@ -18,20 +18,17 @@
 package org.moeaframework.core;
 
 /**
- * Interface for selection operators. Selection operators pick one or more
- * solutions from a population using some selection criteria.
+ * Interface for selection operators. Selection operators pick one or more solutions from a population using some
+ * selection criteria.
  */
 public interface Selection {
 
 	/**
-	 * Returns an array of length {@code arity} of solutions selected from the
-	 * specified population.
+	 * Returns an array of length {@code arity} of solutions selected from the specified population.
 	 * 
-	 * @param arity the number of solutions selected from the specified
-	 *        population
+	 * @param arity the number of solutions selected from the specified population
 	 * @param population the population from which solutions are selected
-	 * @return an array of length {@code arity} of solutions selected from the
-	 *         specified population
+	 * @return an array of length {@code arity} of solutions selected from the specified population
 	 */
 	public Solution[] select(int arity, Population population);
 

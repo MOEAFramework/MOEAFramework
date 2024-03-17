@@ -32,8 +32,7 @@ public class ObjectiveComparator implements DominanceComparator, Comparator<Solu
 	private final int objective;
 
 	/**
-	 * Constructs a comparator for comparing solutions using the value of the
-	 * specified objective.
+	 * Constructs a comparator for comparing solutions using the value of the specified objective.
 	 * 
 	 * @param objective the objective to be compared
 	 */

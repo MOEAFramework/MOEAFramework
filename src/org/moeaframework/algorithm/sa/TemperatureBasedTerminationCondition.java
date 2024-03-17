@@ -25,8 +25,7 @@ import org.moeaframework.core.configuration.Property;
 import org.moeaframework.core.configuration.Validate;
 
 /**
- * Terminates a simulated annealing algorithm when the temperature drops below a stopping,
- * or minimum, temperature.
+ * Terminates a simulated annealing algorithm when the temperature drops below a stopping, or minimum, temperature.
  */
 public class TemperatureBasedTerminationCondition implements TerminationCondition, Configurable {
 	

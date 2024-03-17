@@ -117,8 +117,7 @@ public class AnalyzerTest {
 		File actualFile = TestUtils.createTempFile();
 		analyzer.saveAnalysis(actualFile);
 		
-		//20 closes from generate(), 2 from saveData, 2 from loadData,
-		//1 from printAnalysis, 1 from saveAnalysis
+		//20 closes from generate(), 2 from saveData, 2 from loadData, 1 from printAnalysis, 1 from saveAnalysis
 		Assert.assertEquals(26, problemFactory.getCloseCount());
 		
 		Assert.assertArrayEquals(expected.toByteArray(), TestUtils.loadBytes(actualFile));

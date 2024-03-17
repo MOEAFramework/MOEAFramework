@@ -21,20 +21,15 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.StreamTokenizer;
 
-
 /**
- * Parses simple context-free grammars in Backus-Naur form (BNF). The following
- * example demonstrates the accepted syntax. Newlines indicate the end of a
- * rule; single and double quotes can be used to escape the control characters
+ * Parses simple context-free grammars in Backus-Naur form (BNF). The following example demonstrates the accepted
+ * syntax. Newlines indicate the end of a rule; single and double quotes can be used to escape the control characters
  * (":", "=", "|", "//", etc.); C and C++ style comments are supported.
- * 
- * <pre>
- * {@code
- * <expr> ::= <expr> <op> <expr> | "func(" <expr> ")" | <val>
- * <op> ::= + | - | * | '/'
- * <val> ::= x | y | z
- * }
- * </pre>
+ * <pre>{@code
+ *   <expr> ::= <expr> <op> <expr> | "func(" <expr> ")" | <val>
+ *   <op> ::= + | - | * | '/'
+ *   <val> ::= x | y | z
+ * }</pre>
  */
 public class Parser {
 
@@ -51,8 +46,7 @@ public class Parser {
 	 * @param reader the {@link Reader} containing the BNF context-free grammar
 	 * @return the grammar
 	 * @throws IOException if an I/O error occurred
-	 * @throws GrammarException if an error occurred parsing the BNF
-	 *         context-free grammar
+	 * @throws GrammarException if an error occurred parsing the BNF context-free grammar
 	 */
 	public static ContextFreeGrammar load(Reader reader) throws IOException {
 		StreamTokenizer tokenizer = new StreamTokenizer(reader);

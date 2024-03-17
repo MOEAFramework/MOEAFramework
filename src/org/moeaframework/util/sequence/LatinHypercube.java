@@ -20,15 +20,13 @@ package org.moeaframework.util.sequence;
 import org.moeaframework.core.PRNG;
 
 /**
- * Generates sequences using Latin hypercube sampling (LHS). Each axis is
- * divided into {@code N} stripes and exactly one point may exist in each
- * stripe.
+ * Generates sequences using Latin hypercube sampling (LHS). Each axis is divided into {@code N} stripes and exactly
+ * one point may exist in each stripe.
  * <p>
  * References:
  * <ol>
- * <li>McKay M.D., Beckman, R.J., and Conover W.J. "A Comparison of Three
- * Methods for Selecting Values of Input Variables in the Analysis of Output
- * from a Computer Code." Technometrics, 21(2):239-245, 1979.
+ *   <li>McKay M.D., Beckman, R.J., and Conover W.J. "A Comparison of Three Methods for Selecting Values of Input
+ *       Variables in the Analysis of Output from a Computer Code." Technometrics, 21(2):239-245, 1979.
  * </ol>
  */
 public class LatinHypercube implements Sequence {

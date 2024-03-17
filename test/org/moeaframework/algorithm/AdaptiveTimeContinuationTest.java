@@ -241,8 +241,7 @@ public class AdaptiveTimeContinuationTest {
 	}
 	
 	/**
-	 * Ensures an empty archive results in an error rather than an infinite
-	 * loop.
+	 * Ensures an empty archive results in an error rather than an infinite loop.
 	 */
 	@Test(expected=Exception.class)
 	public void testEmptyArchive() {
@@ -252,9 +251,8 @@ public class AdaptiveTimeContinuationTest {
 	}
 	
 	/**
-	 * Ensures that if the population ratio would result in a population size
-	 * exceeding the maximum population size, a sequence of back-to-back
-	 * restarts would not occur due to the population ratio being violated.
+	 * Ensures that if the population ratio would result in a population size exceeding the maximum population size, a
+	 * sequence of back-to-back restarts would not occur due to the population ratio being violated.
 	 */
 	@Test
 	public void testPopulationRatioConflictWithMaxPopulationSize() {

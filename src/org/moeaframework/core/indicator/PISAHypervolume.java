@@ -53,14 +53,13 @@ import org.moeaframework.core.Solution;
  */
 
 /**
- * Hypervolume indicator as implemented by the PISA library.  This version is
- * computationally expensive and is being replaced by {@link WFGNormalizedHypervolume}.
+ * Hypervolume indicator as implemented by the PISA library.  This version is computationally expensive and is being
+ * replaced by {@link WFGNormalizedHypervolume}.
  */
 public class PISAHypervolume extends NormalizedIndicator {
 
 	/**
-	 * Constructs a hypervolume evaluator for the specified problem and 
-	 * reference set.
+	 * Constructs a hypervolume evaluator for the specified problem and reference set.
 	 * 
 	 * @param problem the problem
 	 * @param referenceSet the reference set
@@ -70,8 +69,7 @@ public class PISAHypervolume extends NormalizedIndicator {
 	}
 	
 	/**
-	 * Constructs a hypervolume evaluator for the specified problem using the
-	 * given reference set and reference point.
+	 * Constructs a hypervolume evaluator for the specified problem using the given reference set and reference point.
 	 * 
 	 * @param problem the problem
 	 * @param referenceSet the reference set
@@ -82,8 +80,7 @@ public class PISAHypervolume extends NormalizedIndicator {
 	}
 	
 	/**
-	 * Constructs a hypervolume evaluator for the specified problem using the
-	 * given minimum and maximum bounds.
+	 * Constructs a hypervolume evaluator for the specified problem using the given minimum and maximum bounds.
 	 * 
 	 * @param problem the problem
 	 * @param minimum the minimum bounds of the set
@@ -94,8 +91,7 @@ public class PISAHypervolume extends NormalizedIndicator {
 	}
 
 	/**
-	 * Inverts the objective values since this hypervolume algorithm operates
-	 * on maximization problems.
+	 * Inverts the objective values since this hypervolume algorithm operates on maximization problems.
 	 * 
 	 * @param problem the problem
 	 * @param solution the solution to be inverted
@@ -115,18 +111,14 @@ public class PISAHypervolume extends NormalizedIndicator {
 	}
 
 	/**
-	 * Returns {@code true} if {@code solution1} dominates {@code solution2}
-	 * with respect to the first {@code numberOfObjectives} objectives;
-	 * {@code false} otherwise.
+	 * Returns {@code true} if {@code solution1} dominates {@code solution2} with respect to the first
+	 * {@code numberOfObjectives} objectives; {@code false} otherwise.
 	 * 
 	 * @param solution1 the first solution
 	 * @param solution2 the second solution
-	 * @param numberOfObjectives the number of objectives used when determining
-	 *        domination
-	 * @return {@code true} if {@code solution1} dominates {@code solution2}
-	 *         with
-	 *         respect to the first {@code numberOfObjectives} objectives;
-	 *         {@code false} otherwise
+	 * @param numberOfObjectives the number of objectives used when determining domination
+	 * @return {@code true} if {@code solution1} dominates {@code solution2} with respect to the first
+	 *         {@code numberOfObjectives} objectives; {@code false} otherwise
 	 */
 	private static boolean dominates(Solution solution1, Solution solution2, int numberOfObjectives) {
 		boolean betterInAnyObjective = false;
@@ -148,7 +140,7 @@ public class PISAHypervolume extends NormalizedIndicator {
 	}
 
 	/**
-	 * Swaps the {@code i}th and {@code j}th indices in the population.
+	 * Swaps the {@code i}-th and {@code j}-th indices in the population.
 	 * 
 	 * @param population the population
 	 * @param i the first index to be swapped
@@ -160,11 +152,12 @@ public class PISAHypervolume extends NormalizedIndicator {
 		population.set(j, temp);
 	}
 
-	/*
-	 * all nondominated points regarding the first 'no_objectives' dimensions
-	 * are collected; the points 0..no_points-1 in 'front' are considered; the
-	 * points in 'front' are resorted, such that points [0..n-1] represent the
-	 * nondominated points; n is returned
+	/**
+	 * All nondominated points regarding the first {@code numberOfObjectives} dimensions are collected.  The points
+	 * {@code 0..numberOfSolutions-1} in 'front' are considered.  The points in 'front' are resorted, such that points
+	 * {@code [0..n-1]} represent the nondominated points.
+	 * 
+	 * @returns the value {@code n}
 	 */
 	private static int filterNondominatedSet(List<Solution> population, int numberOfSolutions, int numberOfObjectives) {
 		int i = 0;
@@ -197,9 +190,9 @@ public class PISAHypervolume extends NormalizedIndicator {
 		return n;
 	}
 
-	/*
-	 * calculate next value regarding dimension 'objective'; consider points
-	 * 0..no_points-1 in 'front'
+	/**
+	 * Calculate next value regarding dimension {@code objective}; consider points {@code 0..numberOfSolutions-1}
+	 * in 'front'.
 	 */
 	private static double surfaceUnchangedTo(List<Solution> population, int numberOfSolutions, int objective) {
 		double min = population.get(0).getObjective(objective);
@@ -211,11 +204,12 @@ public class PISAHypervolume extends NormalizedIndicator {
 		return min;
 	}
 
-	/*
-	 * remove all points which have a value <= 'threshold' regarding the
-	 * dimension 'objective'; the points [0..no_points-1] in 'front' are
-	 * considered; 'front' is resorted, such that points [0..n-1] represent the
-	 * remaining points; 'n' is returned
+	/**
+	 * Remove all points which have a value {@code <= threshold} regarding the dimension {@code objective}.  The points
+	 * {@code [0..numberOfSolutions-1]} in 'front' are considered.  'front' is resorted, such that points
+	 * {@code [0..n-1]} represent the remaining points.
+	 * 
+	 * @returns the value {@code n}
 	 */
 	private static int reduceNondominatedSet(List<Solution> population, int numberOfSolutions, int objective,
 			double threshold) {
@@ -232,11 +226,10 @@ public class PISAHypervolume extends NormalizedIndicator {
 	}
 
 	/**
-	 * The internal, un-normalized hypervolume calculation.  While this method
-	 * is public, we do not encourage its use since incorrect arguments can
-	 * cause unexpected behavior.  Instead, use the
-	 * {@link PISAHypervolume(Problem, NondominatedPopulation)} constructor
-	 * to create a normalizing version of the hypervolume calculation.
+	 * The internal, un-normalized hypervolume calculation.  While this method is public, we do not encourage its use
+	 * since incorrect arguments can cause unexpected behavior.  Instead, use the
+	 * {@link PISAHypervolume(Problem, NondominatedPopulation)} constructor to create a normalizing version of the
+	 * hypervolume calculation.
 	 * 
 	 * @param population the population
 	 * @param numberOfSolutions the number of solutions

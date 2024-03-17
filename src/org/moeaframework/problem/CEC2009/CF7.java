@@ -24,8 +24,7 @@ import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.AbstractProblem;
 
 /**
- * The constrained CF7 test problem from the CEC 2009 special session and
- * competition.
+ * The constrained CF7 test problem from the CEC 2009 special session and competition.
  */
 public class CF7 extends AbstractProblem {
 
@@ -37,8 +36,7 @@ public class CF7 extends AbstractProblem {
 	}
 
 	/**
-	 * Constructs a CF7 test problem with the specified number of decision
-	 * variables.
+	 * Constructs a CF7 test problem with the specified number of decision variables.
 	 * 
 	 * @param numberOfVariables the number of decision variables
 	 */

@@ -20,8 +20,7 @@ package org.moeaframework.util.tree;
 import org.moeaframework.core.FrameworkException;
 
 /**
- * Exception indicating a tree node had one or more unsatisfied arguments
- * so no valid tree could be constructed.
+ * Exception indicating a tree node had one or more unsatisfied arguments so no valid tree could be constructed.
  */
 public class UnsatisfiedArgumentException extends FrameworkException {
 

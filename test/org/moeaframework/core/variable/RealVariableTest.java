@@ -73,8 +73,7 @@ public class RealVariableTest {
 	@Test
 	public void testHashCode() {
 		Assert.assertEquals(value.hashCode(), value.hashCode());
-		Assert.assertEquals(value.hashCode(), new RealVariable(0.5, 0.0, 1.0)
-				.hashCode());
+		Assert.assertEquals(value.hashCode(), new RealVariable(0.5, 0.0, 1.0).hashCode());
 	}
 
 	@Test

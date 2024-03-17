@@ -31,8 +31,7 @@ public class CompoundTerminationCondition implements TerminationCondition {
 	private final TerminationCondition[] conditions;
 	
 	/**
-	 * Constructs a new termination condition based on at least one individual
-	 * termination condition being satsified.
+	 * Constructs a new termination condition based on at least one individual termination condition being satisfied.
 	 * 
 	 * @param conditions the termination conditions
 	 */

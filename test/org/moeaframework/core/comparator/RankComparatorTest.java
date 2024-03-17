@@ -82,8 +82,7 @@ public class RankComparatorTest {
 	}
 
 	/**
-	 * Tests if an exception is thrown when comparing solutions missing the rank
-	 * attribute.
+	 * Tests if an exception is thrown when comparing solutions missing the rank attribute.
 	 */
 	@Test(expected = NullPointerException.class)
 	public void testMissingCrowdingAttribute() {

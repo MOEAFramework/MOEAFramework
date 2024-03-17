@@ -24,14 +24,12 @@ import java.util.Map;
 import org.apache.commons.lang3.SerializationUtils;
 
 /**
- * A solution to an optimization problem, storing the decision variables,
- * objectives, constraints and attributes. Attributes are arbitrary {@code
- * (key, value)} pairs; they are instance-specific and are not carried over in
+ * A solution to an optimization problem, storing the decision variables, objectives, constraints and attributes.
+ * Attributes are arbitrary {@code (key, value)} pairs; they are instance-specific and are not carried over in
  * the copy constructor.
  * <p>
- * Solutions should only be constructed in {@link Problem#newSolution()} or 
- * cloned from an existing solution with {@link #copy()}.  This ensures the
- * solutions and configured correctly for the given optimization problem.
+ * Solutions should only be constructed in {@link Problem#newSolution()} or cloned from an existing solution with
+ * {@link #copy()}.  This ensures the solutions and configured correctly for the given optimization problem.
  */
 public class Solution implements Serializable {
 
@@ -58,29 +56,23 @@ public class Solution implements Serializable {
 	private final Map<String, Serializable> attributes;
 
 	/**
-	 * Constructs a solution with the specified number of variables and 
-	 * objectives with no constraints.
+	 * Constructs a solution with the specified number of variables and objectives with no constraints.
 	 * 
 	 * @param numberOfVariables the number of variables defined by this solution
-	 * @param numberOfObjectives the number of objectives defined by this
-	 *        solution
+	 * @param numberOfObjectives the number of objectives defined by this solution
 	 */
 	public Solution(int numberOfVariables, int numberOfObjectives) {
 		this(numberOfVariables, numberOfObjectives, 0);
 	}
 
 	/**
-	 * Constructs a solution with the specified number of variables, objectives
-	 * and constraints.
+	 * Constructs a solution with the specified number of variables, objectives and constraints.
 	 * 
 	 * @param numberOfVariables the number of variables defined by this solution
-	 * @param numberOfObjectives the number of objectives defined by this
-	 *        solution
-	 * @param numberOfConstraints the number of constraints defined by this
-	 *        solution
+	 * @param numberOfObjectives the number of objectives defined by this solution
+	 * @param numberOfConstraints the number of constraints defined by this solution
 	 */
-	public Solution(int numberOfVariables, int numberOfObjectives,
-			int numberOfConstraints) {
+	public Solution(int numberOfVariables, int numberOfObjectives, int numberOfConstraints) {
 		variables = new Variable[numberOfVariables];
 		objectives = new double[numberOfObjectives];
 		constraints = new double[numberOfConstraints];
@@ -88,8 +80,8 @@ public class Solution implements Serializable {
 	}
 
 	/**
-	 * Constructs a solution with no variables and the specified objectives.
-	 * This is intended for creating reference set solutions.
+	 * Constructs a solution with no variables and the specified objectives.  This is intended for creating reference
+	 * set solutions.
 	 * 
 	 * @param objectives the objectives to be stored in this solution
 	 */
@@ -107,8 +99,7 @@ public class Solution implements Serializable {
 	 * @param solution the solution being copied
 	 */
 	protected Solution(Solution solution) {
-		this(solution.getNumberOfVariables(), solution.getNumberOfObjectives(),
-				solution.getNumberOfConstraints());
+		this(solution.getNumberOfVariables(), solution.getNumberOfObjectives(), solution.getNumberOfConstraints());
 
 		for (int i = 0; i < solution.getNumberOfVariables(); i++) {
 			setVariable(i, solution.getVariable(i).copy());
@@ -124,15 +115,12 @@ public class Solution implements Serializable {
 	}
 
 	/**
-	 * Returns an independent copy of this solution. It is required that
-	 * {@code x.copy()} is completely independent from {@code x} . This means
-	 * any method invoked on {@code x.copy()} in no way alters the state of
-	 * {@code x} and vice versa. It is typically the case that
-	 * {@code x.copy().getClass() == x.getClass()} and
+	 * Returns an independent copy of this solution. It is required that {@code x.copy()} is completely independent
+	 * from {@code x} . This means any method invoked on {@code x.copy()} in no way alters the state of {@code x}
+	 * and vice versa. It is typically the case that {@code x.copy().getClass() == x.getClass()} and
 	 * {@code x.copy().equals(x)}
 	 * <p>
-	 * Note that a solution's attributes are not copied, as the attributes are
-	 * generally specific to each instance.
+	 * Note that a solution's attributes are not copied, as the attributes are generally specific to each instance.
 	 * 
 	 * @return an independent copy of this solution
 	 */
@@ -141,9 +129,8 @@ public class Solution implements Serializable {
 	}
 	
 	/**
-	 * Similar to {@link #copy()} except all attributes are also copied.  As a
-	 * result, this method tends to be significantly slower than {@code copy()}
-	 * if many large objects are stored as attributes.
+	 * Similar to {@link #copy()} except all attributes are also copied.  As a result, this method tends to be
+	 * significantly slower than {@code copy()} if many large objects are stored as attributes.
 	 * 
 	 * @return an independent copy of this solution
 	 */
@@ -151,9 +138,7 @@ public class Solution implements Serializable {
 		Solution copy = copy();
 		
 		for (Map.Entry<String, Serializable> entry : getAttributes().entrySet()) {
-			copy.setAttribute(
-					entry.getKey(),
-					SerializationUtils.clone(entry.getValue()));
+			copy.setAttribute(entry.getKey(), SerializationUtils.clone(entry.getValue()));
 		}
 		
 		return copy;
@@ -226,8 +211,7 @@ public class Solution implements Serializable {
 	 * Sets all objectives of this solution.
 	 * 
 	 * @param objectives the new objectives for this solution
-	 * @throws IllegalArgumentException if {@code objectives.length !=
-	 *         getNumberOfObjectives()}
+	 * @throws IllegalArgumentException if {@code objectives.length != getNumberOfObjectives()}
 	 */
 	public void setObjectives(double[] objectives) {
 		if (objectives.length != this.objectives.length) {
@@ -240,8 +224,8 @@ public class Solution implements Serializable {
 	}
 
 	/**
-	 * Returns an array containing the objectives of this solution. Modifying
-	 * the returned array will not modify the internal state of this solution.
+	 * Returns an array containing the objectives of this solution. Modifying the returned array will not modify
+	 * the internal state of this solution.
 	 * 
 	 * @return an array containing the objectives of this solution
 	 */
@@ -262,11 +246,9 @@ public class Solution implements Serializable {
 	}
 
 	/**
-	 * Returns {@code true} if any of the constraints are violated;
-	 * {@code false} otherwise.
+	 * Returns {@code true} if any of the constraints are violated; {@code false} otherwise.
 	 * 
-	 * @return {@code true} if any of the constraints are violated;
-	 *         {@code false} otherwise
+	 * @return {@code true} if any of the constraints are violated; {@code false} otherwise
 	 */
 	public boolean violatesConstraints() {
 		for (int i = 0; i < constraints.length; i++) {
@@ -294,8 +276,7 @@ public class Solution implements Serializable {
 	 * Sets all constraints of this solution.
 	 * 
 	 * @param constraints the new constraints for this solution
-	 * @throws IllegalArgumentException if {@code constraints.length !=
-	 *         getNumberOfConstraints()}
+	 * @throws IllegalArgumentException if {@code constraints.length != getNumberOfConstraints()}
 	 */
 	public void setConstraints(double[] constraints) {
 		if (constraints.length != this.constraints.length) {
@@ -308,8 +289,8 @@ public class Solution implements Serializable {
 	}
 
 	/**
-	 * Returns an array containing the constraints of this solution. Modifying
-	 * the returned array will not modify the internal state of this solution.
+	 * Returns an array containing the constraints of this solution. Modifying the returned array will not modify
+	 * the internal state of this solution.
 	 * 
 	 * @return an array containing the constraints of this solution
 	 */
@@ -330,51 +311,47 @@ public class Solution implements Serializable {
 	}
 
 	/**
-	 * Returns the value of the attribute that is associated with the specified
-	 * key, or {@code null} if no value has been associated with the key.
+	 * Returns the value of the attribute that is associated with the specified key, or {@code null} if no value has
+	 * been associated with the key.
 	 * 
 	 * @param key the key whose associated value is to be returned
-	 * @return the value associated with the specified key, or {@code null} if
-	 *         no value has been associated with the key
+	 * @return the value associated with the specified key, or {@code null} if no value has been associated with
+	 *         the key
 	 */
 	public Object getAttribute(String key) {
 		return attributes.get(key);
 	}
 
 	/**
-	 * Associates the specified value with the specified key. Returns the old
-	 * value associated with the key, or {@code null} if no prior value has been
-	 * associated with the key.
+	 * Associates the specified value with the specified key. Returns the old value associated with the key, or
+	 * {@code null} if no prior value has been associated with the key.
 	 * 
 	 * @param key the key with which the specified value is to be associated
 	 * @param value the value to be associated with the specified key
-	 * @return the old value associated with the key, or {@code null} if no
-	 *         prior value has been associated with the key
+	 * @return the old value associated with the key, or {@code null} if no prior value has been associated with
+	 *         the key
 	 */
 	public Object setAttribute(String key, Serializable value) {
 		return attributes.put(key, value);
 	}
 
 	/**
-	 * Removes the specified key and its associated value from this solution.
-	 * Returns the old value associated with the key, or {@code null} if no
-	 * prior value has been associated with the key.
+	 * Removes the specified key and its associated value from this solution.  Returns the old value associated with
+	 * the key, or {@code null} if no prior value has been associated with the key.
 	 * 
 	 * @param key the key to be removed
-	 * @return the old value associated with the key, or {@code null} if no
-	 *         prior value has been associated with the key
+	 * @return the old value associated with the key, or {@code null} if no prior value has been associated with
+	 *         the key
 	 */
 	public Object removeAttribute(String key) {
 		return attributes.remove(key);
 	}
 
 	/**
-	 * Returns {@code true} if the specified key exists in this solution's
-	 * attributes; {@code false} otherwise.
+	 * Returns {@code true} if the specified key exists in this solution's attributes; {@code false} otherwise.
 	 * 
 	 * @param key the key whose presence is being tested
-	 * @return {@code true} if the specified key exists in this solution's
-	 *         attributes; {@code false} otherwise
+	 * @return {@code true} if the specified key exists in this solution's attributes; {@code false} otherwise
 	 */
 	public boolean hasAttribute(String key) {
 		return attributes.containsKey(key);
@@ -392,8 +369,7 @@ public class Solution implements Serializable {
 	/**
 	 * Adds all attributes to this solution in the specified {@link Map}.
 	 * 
-	 * @param attributes the {@code Map} containing the attributes to be added
-	 *        to this solution
+	 * @param attributes the {@code Map} containing the attributes to be added to this solution
 	 */
 	public void addAttributes(Map<String, Object> attributes) {
 		attributes.putAll(attributes);
@@ -407,13 +383,12 @@ public class Solution implements Serializable {
 	}
 	
 	/**
-	 * Computes the Euclidean distance between two solutions in objective space.
-	 * The order here doesn't matter. {@code s1.distanceTo(s2) == s2.distanceTo(s1)}.
+	 * Computes the Euclidean distance between two solutions in objective space.  The order here doesn't matter.
+	 * {@code s1.distanceTo(s2) == s2.distanceTo(s1)}.
 	 * 
 	 * @param otherSolution the other solution
 	 * @return the Euclidean distance
-	 * @throws IllegalArgumentException if the solutions have differing numbers
-	 *         of objectives
+	 * @throws IllegalArgumentException if the solutions have differing numbers of objectives
 	 */
 	public double distanceTo(Solution otherSolution) {
 		if (getNumberOfObjectives() != otherSolution.getNumberOfObjectives()) {

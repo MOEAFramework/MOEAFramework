@@ -17,17 +17,14 @@
  */
 
 /**
- * Implementation of the Walking Fish Group (WFG) test suite of scalable
- * multiobjective problems.
+ * Implementation of the Walking Fish Group (WFG) test suite of scalable multiobjective problems.
  * <p>
  * References:
  * <ol>
- *   <li>Huband et al. "A Review of Multi-Objective Test Problems and a Scalable
- *       Test Problem Toolkit." IEEE Transactions on Evolutionary Computation.
- *       10(5):477-506, 2007.
- *   <li>Huband et al. "A Scalable Multi-Objective Test Problem Toolkit." 3rd
- *       International Conference on Evolutionary Multi-Criterion Optimization.
- *       pp 280-294, 2005.
+ *   <li>Huband et al. "A Review of Multi-Objective Test Problems and a Scalable Test Problem Toolkit." IEEE
+ *       Transactions on Evolutionary Computation.  10(5):477-506, 2007.
+ *   <li>Huband et al. "A Scalable Multi-Objective Test Problem Toolkit." 3rd International Conference on Evolutionary
+ *       Multi-Criterion Optimization.  pp 280-294, 2005.
  * </ol>
  */
 package org.moeaframework.problem.WFG;

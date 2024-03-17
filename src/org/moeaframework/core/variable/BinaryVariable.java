@@ -42,8 +42,7 @@ public class BinaryVariable implements Variable {
 	private final BitSet bitSet;
 
 	/**
-	 * Constructs a binary variable with the specified number of bits. All bits
-	 * are initially set to {@code false}.
+	 * Constructs a binary variable with the specified number of bits. All bits are initially set to {@code false}.
 	 * 
 	 * @param numberOfBits the number of bits stored in this variable
 	 */
@@ -80,11 +79,9 @@ public class BinaryVariable implements Variable {
 	}
 
 	/**
-	 * Returns {@code true} if all bits in this variable are set to
-	 * {@code false}; {@code false} otherwise.
+	 * Returns {@code true} if all bits in this variable are set to {@code false}; {@code false} otherwise.
 	 * 
-	 * @return {@code true} if all bits in this variable are set to
-	 *         {@code false}; {@code false} otherwise
+	 * @return {@code true} if all bits in this variable are set to {@code false}; {@code false} otherwise
 	 */
 	public boolean isEmpty() {
 		return bitSet.isEmpty();
@@ -132,15 +129,12 @@ public class BinaryVariable implements Variable {
 	}
 
 	/**
-	 * Returns the Hamming distance between this instance and the specified
-	 * {@code BinaryVariable}. The Hamming distance is the number of bit
-	 * positions in which the two binary strings differ.
+	 * Returns the Hamming distance between this instance and the specified {@code BinaryVariable}. The Hamming
+	 * distance is the number of bit positions in which the two binary strings differ.
 	 * 
 	 * @param variable the other {@code BinaryVariable}
-	 * @return the Hamming distance between this instance and the specified
-	 *         {@code BinaryVariable}
-	 * @throws IllegalArgumentException if the two binary strings differ in the
-	 *         number of bits
+	 * @return the Hamming distance between this instance and the specified {@code BinaryVariable}
+	 * @throws IllegalArgumentException if the two binary strings differ in the number of bits
 	 */
 	public int hammingDistance(BinaryVariable variable) {
 		if (numberOfBits != variable.numberOfBits) {

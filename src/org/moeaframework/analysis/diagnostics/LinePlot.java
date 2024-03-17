@@ -57,8 +57,7 @@ import org.moeaframework.analysis.collector.Observations;
 import org.moeaframework.util.Localization;
 
 /**
- * Displays a line plot of the runtime dynamics of a metric, displaying the
- * 25, 50, and 75 quantiles.
+ * Displays a line plot of the runtime dynamics of a metric, displaying the 25, 50, and 75-th quantiles.
  */
 public class LinePlot extends ResultPlot {
 
@@ -70,8 +69,7 @@ public class LinePlot extends ResultPlot {
 	private static Localization localization = Localization.getLocalization(LinePlot.class);
 	
 	/**
-	 * The resolution of the line plot, controlling the number of collected
-	 * samples are included in each plotted point.
+	 * The resolution of the line plot, controlling the number of collected samples are included in each plotted point.
 	 */
 	private final int RESOLUTION = 500;
 
@@ -91,8 +89,7 @@ public class LinePlot extends ResultPlot {
 		private final double value;
 	
 		/**
-		 * Constructs a data point with the specified number of evaluations and
-		 * metric value.
+		 * Constructs a data point with the specified number of evaluations and metric value.
 		 * 
 		 * @param NFE the number of evaluations of this data point
 		 * @param value the metric value of this data point

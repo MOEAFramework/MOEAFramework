@@ -21,10 +21,9 @@ import org.moeaframework.core.Epsilons;
 import org.moeaframework.core.Solution;
 
 /**
- * Compares two solutions using aggregate constraint violations and the
- * additive &epsilon;-box objective comparator.  This is similar to the
- * method used in {@link ParetoDominanceComparator}, differing only in the
- * use of &epsilon;-box dominance when comparing the objectives.
+ * Compares two solutions using aggregate constraint violations and the additive &epsilon;-box objective comparator.
+ * This is similar to the method used in {@link ParetoDominanceComparator}, differing only in the use of &epsilon;-box
+ * dominance when comparing the objectives.
  * 
  * @see AggregateConstraintComparator
  * @see EpsilonBoxObjectiveComparator

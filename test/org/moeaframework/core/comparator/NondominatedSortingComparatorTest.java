@@ -106,8 +106,7 @@ public class NondominatedSortingComparatorTest {
 	}
 
 	/**
-	 * Tests if an exception is thrown when comparing solutions missing the rank
-	 * attribute.
+	 * Tests if an exception is thrown when comparing solutions missing the rank attribute.
 	 */
 	@Test(expected = NullPointerException.class)
 	public void testMissingRankAttribute() {
@@ -118,8 +117,7 @@ public class NondominatedSortingComparatorTest {
 	}
 
 	/**
-	 * Tests if an exception is thrown when comparing solutions missing the
-	 * crowding attribute.
+	 * Tests if an exception is thrown when comparing solutions missing the crowding attribute.
 	 */
 	@Test(expected = NullPointerException.class)
 	public void testMissingCrowdingAttribute() {

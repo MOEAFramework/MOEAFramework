@@ -30,17 +30,16 @@ import org.moeaframework.core.Algorithm;
 import org.moeaframework.util.io.FileUtils;
 
 /**
- * Decorates an {@link Algorithm} to periodically save checkpoint files from
- * which the algorithm can resume itself if unexpectedly terminated.
+ * Decorates an {@link Algorithm} to periodically save checkpoint files from which the algorithm can resume itself if
+ * unexpectedly terminated.
  * <pre>
- * File stateFile = new File("last.state");
+ *   File stateFile = new File("last.state");
  * 
- * //if last.state exists, algorithm will be restored to last state
- * Algorithm algorithm = new Checkpoints(new NSGAII(...), stateFile, 100);
+ *   Algorithm algorithm = new Checkpoints(new NSGAII(...), stateFile, 100);
  * 
- * while (!algorithm.isTerminated()) {
- *   algorithm.step(); //periodically saves state to last.state
- * }
+ *   while (!algorithm.isTerminated()) {
+ *     algorithm.step();
+ *   }
  * </pre>
  */
 public class Checkpoints extends PeriodicAction {
@@ -51,13 +50,12 @@ public class Checkpoints extends PeriodicAction {
 	private final File stateFile;
 
 	/**
-	 * Decorates an algorithm to periodically save checkpoints from which the
-	 * algorithm can resume itself if unexpectedly terminated.
+	 * Decorates an algorithm to periodically save checkpoints from which the algorithm can resume itself if
+	 * unexpectedly terminated.
 	 * 
 	 * @param algorithm the algorithm
 	 * @param stateFile the file containing the checkpoint states
-	 * @param checkpointFrequency the number of objective function evaluations
-	 *        between checkpoints
+	 * @param checkpointFrequency the number of objective function evaluations between checkpoints
 	 */
 	public Checkpoints(Algorithm algorithm, File stateFile, int checkpointFrequency) {
 		super(algorithm, checkpointFrequency, FrequencyType.EVALUATIONS);

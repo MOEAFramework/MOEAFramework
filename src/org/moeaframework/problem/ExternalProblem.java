@@ -38,59 +38,47 @@ import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.util.io.RedirectStream;
 
 /**
- * Evaluate solutions using an externally-defined problem.  Two modes of
- * operation are supported: standard I/O and sockets.
+ * Evaluate solutions using an externally-defined problem.  Two modes of operation are supported: standard I/O and
+ * sockets.
  * 
  * <h2>Standard I/O Mode</h2>
- * Standard I/O is the easiest mode to setup and run.  First, an executable
- * program on the computer is launched by invoking the constructor with the
- * program name (and any optional arguments):
+ * Standard I/O is the easiest mode to setup and run.  First, an executable program on the computer is launched by
+ * invoking the constructor with the program name (and any optional arguments):
  * <pre>
  *   new ExternalProblem("./problem.exe", "arg1", "arg2") { ... }
  * </pre>
- * Then, solutions are sent to the process on its standard input (stdin) stream,
- * and the objectives and constraints are read from its standard output (stdout)
- * stream.  The program can not use the standard I/O for any other purpose.
- * Programs which read from or write to the standard I/O streams should instead
- * use sockets, as discussed below.
+ * Then, solutions are sent to the process on its standard input (stdin) stream, and the objectives and constraints
+ * are read from its standard output (stdout) stream.  The program can not use the standard I/O for any other purpose.
+ * Programs which read from or write to the standard I/O streams should instead use sockets, as discussed below.
  * 
  * <h2>Socket Mode</h2>
- * Socket mode is more complicated to setup, but is more flexible and robust.
- * It has the ability to not only evaluate the problem on the host computer,
- * but can be spread across a computer network.  To use sockets, use either the
- * {@link #ExternalProblem(String, int)} or
- * {@link #ExternalProblem(InetAddress, int)} constructor.
+ * Socket mode is more complicated to setup, but is more flexible and robust. It has the ability to not only evaluate
+ * the problem on the host computer, but can be spread across a computer network.  To use sockets, use either the
+ * {@link #ExternalProblem(String, int)} or {@link #ExternalProblem(InetAddress, int)} constructor.
  * 
  * <h2>C/C++ Interface</h2>
- * A C/C++ interface is provided for implementing problems.  This interface
- * supports both modes of communication, depending on which initialization
- * routine is invoked.  See the {@code moeaframework.c} and
- * {@code moeaframework.h} files in the {@code examples/} folder for details.
- * This interface conforms to the communication protocol described below.
+ * A C/C++ interface is provided for implementing problems.  This interface supports both modes of communication,
+ * depending on which initialization routine is invoked.  See the {@code moeaframework.c} and {@code moeaframework.h}
+ * files in the {@code examples/} folder for details.  This interface conforms to the communication protocol described
+ * below.
  * <p>
- * The communication protocol consists of sending decision variables to the
- * external process, and the process responding with the objectives and
- * constraints.  The decision variables line consists of one or more variables
- * separated by whitespace and terminated by a newline. The process evaluates
- * the problem for the given variables and outputs the objectives separated by
- * whitespace and terminated by a newline. If the problem also has constraints,
- * each constraint is returned after the objectives on the same line.  The
- * process must only terminate when the end of stream is reached. In addition,
- * the process should flush the output stream to ensure the output is processed
+ * The communication protocol consists of sending decision variables to the external process, and the process
+ * responding with the objectives and constraints.  The decision variables line consists of one or more variables
+ * separated by whitespace and terminated by a newline. The process evaluates the problem for the given variables and
+ * outputs the objectives separated by whitespace and terminated by a newline. If the problem also has constraints,
+ * each constraint is returned after the objectives on the same line.  The process must only terminate when the end
+ * of stream is reached. In addition, the process should flush the output stream to ensure the output is processed
  * immediately.
  * <p>
- * Whitespace is one or more spaces, tabs or any combination thereof. The
- * newline is either the line feed ('\n'), carriage return ('\r') or a carriage
- * return followed immediately by a line feed ("\r\n"). 
+ * Whitespace is one or more spaces, tabs or any combination thereof.  The newline is either the line feed ('\n'),
+ * carriage return ('\r') or a carriage return followed immediately by a line feed ("\r\n"). 
  * <p>
- * <b>It is critical that the {@link #close()} method be invoked to ensure the
- * external process is shutdown cleanly.</b>
+ * <b>It is critical that the {@link #close()} method be invoked to ensure the external process is shutdown cleanly.</b>
  */
 public abstract class ExternalProblem implements Problem {
 	
 	/**
-	 * The default port used by the MOEA Framework to connect to remote
-	 * evaluation processes via sockets.
+	 * The default port used by the MOEA Framework to connect to remote evaluation processes via sockets.
 	 */
 	public static final int DEFAULT_PORT = 16801;
 
@@ -115,9 +103,8 @@ public abstract class ExternalProblem implements Problem {
 	private Process process;
 
 	/**
-	 * Constructs an external problem using {@code new
-	 * ProcessBuilder(command).start()}.  If the command contains arguments,
-	 * the arguments should be passed in as separate strings, such as
+	 * Constructs an external problem using {@code new ProcessBuilder(command).start()}.  If the command contains
+	 * arguments, the arguments should be passed in as separate strings, such as
 	 * <pre>
 	 *   new ExternalProblem("command", "arg1", "arg2");
 	 * </pre>
@@ -130,16 +117,12 @@ public abstract class ExternalProblem implements Problem {
 	}
 	
 	/**
-	 * Constructs an external problem that connects to a remote process via
-	 * sockets.  The remote process should be instantiated and already
-	 * listening to the designated port number prior to invoking this 
-	 * constructor.
+	 * Constructs an external problem that connects to a remote process via sockets.  The remote process should be
+	 * instantiated and already listening to the designated port number prior to invoking this constructor.
 	 * 
-	 * @param host the host name of the remote system; or {@code null} to use
-	 *        the local host
+	 * @param host the host name of the remote system; or {@code null} to use the local host
 	 * @param port the port number
-	 * @throws UnknownHostException if the IP address of the specified host
-	 *         could not be determined
+	 * @throws UnknownHostException if the IP address of the specified host could not be determined
 	 * @throws IOException if an I/O error occurred
 	 */
 	public ExternalProblem(String host, int port) throws IOException, UnknownHostException {
@@ -147,10 +130,8 @@ public abstract class ExternalProblem implements Problem {
 	}
 	
 	/**
-	 * Constructs an external problem that connects to a remote process via
-	 * sockets.  The remote process should be instantiated and already
-	 * listening to the designated port number prior to invoking this
-	 * constructor.
+	 * Constructs an external problem that connects to a remote process via sockets.  The remote process should be
+	 * instantiated and already listening to the designated port number prior to invoking this constructor.
 	 * 
 	 * @param address the IP address of the remote system
 	 * @param port the port number
@@ -183,8 +164,7 @@ public abstract class ExternalProblem implements Problem {
 	}
 	
 	/**
-	 * Constructs an external problem using the specified input and output 
-	 * streams.
+	 * Constructs an external problem using the specified input and output streams.
 	 * 
 	 * @param input the input stream
 	 * @param output the output stream
@@ -200,9 +180,8 @@ public abstract class ExternalProblem implements Problem {
 	}
 	
 	/**
-	 * Sets the output stream used to write debugging information.  If
-	 * {@code null}, disables debugging.  The debug stream is not closed
-	 * by this class and must be managed by the caller.
+	 * Sets the output stream used to write debugging information.  If {@code null}, disables debugging.  The debug
+	 * stream is not closed by this class and must be managed by the caller.
 	 * 
 	 * @param stream the output stream
 	 */
@@ -215,8 +194,7 @@ public abstract class ExternalProblem implements Problem {
 	}
 
 	/**
-	 * Closes the connection to the process. No further invocations of
-	 * {@code evaluate} are permitted.
+	 * Closes the connection to the process.  No further invocations of {@code evaluate} are permitted.
 	 */
 	@Override
 	public synchronized void close() {
@@ -234,8 +212,7 @@ public abstract class ExternalProblem implements Problem {
 	}
 
 	/**
-	 * Evaluates the specified solution using the process defined by this class'
-	 * constructor.
+	 * Evaluates the specified solution using the process defined by this class' constructor.
 	 * 
 	 * @param solution the solution to evaluate
 	 */

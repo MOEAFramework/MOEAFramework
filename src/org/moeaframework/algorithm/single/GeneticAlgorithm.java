@@ -34,13 +34,12 @@ import org.moeaframework.core.selection.TournamentSelection;
 import org.moeaframework.core.spi.OperatorFactory;
 
 /**
- * Single-objective genetic algorithm (GA) implementation with elitism.  A
- * single elite individual is retained in each generation.
+ * Single-objective genetic algorithm (GA) implementation with elitism.  A single elite individual is retained in each
+ * generation.
  * <p>
  * References:
  * <ol>
- *   <li>John Holland.  "Adaptation in Natural and Artificial Systems."  
- *       MIT Press, ISBN: 9780262082136.
+ *   <li>John Holland.  "Adaptation in Natural and Artificial Systems."  MIT Press, ISBN: 9780262082136.
  * </ol>
  */
 public class GeneticAlgorithm extends SingleObjectiveEvolutionaryAlgorithm {
@@ -152,9 +151,8 @@ public class GeneticAlgorithm extends SingleObjectiveEvolutionaryAlgorithm {
 	}
 	
 	/**
-	 * Returns the tournament selection operator.  This method is primarily for testing
-	 * and should remain private to prevent callers from modifying the selection operator
-	 * (to ensure the comparator is kept consistent).
+	 * Returns the tournament selection operator.  This method is primarily for testing and should remain private to
+	 * prevent callers from modifying the selection operator (to ensure the comparator is kept consistent).
 	 * 
 	 * @return the tournament selection operator
 	 */

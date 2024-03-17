@@ -25,8 +25,8 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.problem.MockRealProblem;
 
 /**
- * Tests the {@link ProblemFactory} class.  Note that most of the
- * functionality is indirectly tested by other test functions.
+ * Tests the {@link ProblemFactory} class.  Note that most of the functionality is indirectly tested by other test
+ * functions.
  */
 public class ProblemFactoryTest {
 	

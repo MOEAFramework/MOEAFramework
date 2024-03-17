@@ -26,9 +26,8 @@ import org.moeaframework.core.variable.EncodingUtils;
 public class WFG3 extends WFG {
 
 	/**
-	 * Constructs a WFG3 problem instance with the specified number of 
-	 * position-related and distance-related variables and the specified number
-	 * of objectives.
+	 * Constructs a WFG3 problem instance with the specified number of position-related and distance-related variables
+	 * and the specified number of objectives.
 	 * 
 	 * @param k the number of position-related variables for this problem
 	 * @param l the number of distance-related variables for this problem
@@ -48,8 +47,7 @@ public class WFG3 extends WFG {
 	@Override
 	public Solution generate() {
 		Solution solution = newSolution();
-		EncodingUtils.setReal(solution,
-				Solutions.WFG_2_thru_7_random_soln(k, l));
+		EncodingUtils.setReal(solution, Solutions.WFG_2_thru_7_random_soln(k, l));
 		evaluate(solution);
 		return solution;
 	}

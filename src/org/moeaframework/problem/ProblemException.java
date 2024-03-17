@@ -33,8 +33,7 @@ public class ProblemException extends FrameworkException {
 	private final Problem problem;
 
 	/**
-	 * Constructs an problem exception originating from the specified
-	 * problem.
+	 * Constructs an problem exception originating from the specified problem.
 	 * 
 	 * @param problem the problem responsible for this exception
 	 */
@@ -44,8 +43,7 @@ public class ProblemException extends FrameworkException {
 	}
 
 	/**
-	 * Constructs an problem exception originating from the specified
-	 * problem with the given cause.
+	 * Constructs an problem exception originating from the specified problem with the given cause.
 	 * 
 	 * @param problem the problem responsible for this exception
 	 * @param message the message describing this exception
@@ -57,8 +55,7 @@ public class ProblemException extends FrameworkException {
 	}
 
 	/**
-	 * Constructs an problem exception originating from the specified
-	 * problem with the given message.
+	 * Constructs an problem exception originating from the specified problem with the given message.
 	 * 
 	 * @param problem the problem responsible for this exception
 	 * @param message the message describing this exception
@@ -69,8 +66,7 @@ public class ProblemException extends FrameworkException {
 	}
 
 	/**
-	 * Constructs an problem exception originating from the specified
-	 * problem with the given cause.
+	 * Constructs an problem exception originating from the specified problem with the given cause.
 	 * 
 	 * @param problem the problem responsible for this exception
 	 * @param cause the cause of this exception

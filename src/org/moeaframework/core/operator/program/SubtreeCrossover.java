@@ -26,8 +26,8 @@ import org.moeaframework.util.tree.Node;
 import org.moeaframework.util.tree.Rules;
 
 /**
- * Exchanges a randomly-selected subtree from one program with a compatible,
- * randomly-selected subtree from another program.
+ * Exchanges a randomly-selected subtree from one program with a compatible, randomly-selected subtree from another
+ * program.
  * <p>
  * This operator is type-safe.
  */
@@ -35,8 +35,7 @@ import org.moeaframework.util.tree.Rules;
 public class SubtreeCrossover extends TypeSafeCrossover<Program> {
 	
 	/**
-	 * Constructs a new subtree crossover instance with a 90% chance of being
-	 * applied to each solution.
+	 * Constructs a new subtree crossover instance with a 90% chance of being applied to each solution.
 	 */
 	public SubtreeCrossover() {
 		this(0.9);

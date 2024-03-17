@@ -18,14 +18,12 @@
 package org.moeaframework.problem.LSMOP;
 
 /**
- * Correlation matrices used by the LSMOP test problem suite.  The matrix describes
- * the correlation between each decision variable group and the corresponding objective
- * value.
+ * Correlation matrices used by the LSMOP test problem suite.  The matrix describes the correlation between each
+ * decision variable group and the corresponding objective value.
  * <p>
- * A value of {@code 0.0} indicates the decision variable group does not contribute to the
- * objective value; whereas a value of {@code 1.0} includes the decision variable group in the 
- * calculation.  While it's possible for the matrix to contain values between {@code [0, 1]},
- * the LSMOP suite does not use such intermediate values.
+ * A value of {@code 0.0} indicates the decision variable group does not contribute to the objective value; whereas a
+ * value of {@code 1.0} includes the decision variable group in the calculation.  While it's possible for the matrix to
+ * contain values between {@code [0, 1]}, the LSMOP suite does not use such intermediate values.
  */
 public interface CorrelationMatrix {
 	
@@ -38,8 +36,8 @@ public interface CorrelationMatrix {
 	public double[][] apply(int M);
 	
 	/**
-	 * Creates a correlation matrix with no correlation.  Each decision variable group is
-	 * associated with a single objective.
+	 * Creates a correlation matrix with no correlation.  Each decision variable group is associated with a single
+	 * objective.
 	 */
 	public static final CorrelationMatrix Separable = M -> {
 		double[][] A = new double[M][M];
@@ -52,8 +50,8 @@ public interface CorrelationMatrix {
 	};
 	
 	/**
-	 * Creates a correlation matrix where the i-th and (i+1)-th decision variable groups are
-	 * associated with the i-th objective.
+	 * Creates a correlation matrix where the i-th and (i+1)-th decision variable groups are associated with the
+	 * {@code i}-th objective.
 	 */
 	public static final CorrelationMatrix Overlapped = M -> {
 		double[][] A = new double[M][M];
@@ -70,8 +68,8 @@ public interface CorrelationMatrix {
 	};
 	
 	/**
-	 * Creates a full correlation matrix where every decision variable group is included in the
-	 * objective value calculation.
+	 * Creates a full correlation matrix where every decision variable group is included in the objective value
+	 * calculation.
 	 */
 	public static final CorrelationMatrix Full = M -> {
 		double[][] A = new double[M][M];

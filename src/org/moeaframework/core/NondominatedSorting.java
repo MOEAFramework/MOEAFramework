@@ -26,20 +26,18 @@ import org.moeaframework.core.comparator.ObjectiveComparator;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
 
 /**
- * Non-dominated sorting algorithm for dominance depth ranking. Assigns the
- * {@code rank} and {@code crowdingDistance} attributes to solutions. Solutions
- * of rank 0 belong to the Pareto non-dominated front.
+ * Non-dominated sorting algorithm for dominance depth ranking. Assigns the {@code rank} and {@code crowdingDistance}
+ * attributes to solutions. Solutions of rank 0 belong to the Pareto non-dominated front.
  * <p>
- * Despite its name, this naive non-dominated sort implementation tends to be
- * faster than the "fast non-dominated sort" implementation from [1].  This
- * is primarily due to the fact that for the average case, the "fast" version
- * always requires O(MN^2) comparisons while this naive implementations requires
- * only (K-1)/2 * M * (N-1)*N/2, assuming there are K equally sized fronts.
+ * Despite its name, this naive non-dominated sort implementation tends to be faster than the "fast non-dominated sort"
+ * implementation from [1].  This is primarily due to the fact that for the average case, the "fast" version always
+ * requires {@code O(MN^2)} comparisons while this naive implementations requires only
+ * {@code (K-1)/2 * M * (N-1)*N/2}, assuming there are {@code K} equally sized fronts.
  * <p>
  * References:
  * <ol>
- * <li>Deb et al (2002). "A Fast and Elitist Multiobjective Genetic Algorithm:
- * NSGA-II." IEEE Transactions on Evolutionary Computation. 6(2):182-197.
+ *   <li>Deb et al (2002). "A Fast and Elitist Multiobjective Genetic Algorithm: NSGA-II." IEEE Transactions on
+ *       Evolutionary Computation. 6(2):182-197.
  * </ol>
  */
 public class NondominatedSorting {
@@ -67,8 +65,7 @@ public class NondominatedSorting {
 	}
 
 	/**
-	 * Constructs a non-dominated sorting operator using the specified
-	 * dominance comparator.
+	 * Constructs a non-dominated sorting operator using the specified dominance comparator.
 	 * 
 	 * @param comparator the dominance comparator
 	 */
@@ -87,9 +84,8 @@ public class NondominatedSorting {
 	}
 
 	/**
-	 * Performs non-dominated sorting on the specified population,
-	 * assigning the {@code rank} and {@code crowdingDistance} attributes to
-	 * solutions.
+	 * Performs non-dominated sorting on the specified population, assigning the {@code rank} and
+	 * {@code crowdingDistance} attributes to solutions.
 	 * 
 	 * @param population the population whose solutions are to be evaluated
 	 */
@@ -103,8 +99,7 @@ public class NondominatedSorting {
 		int rank = 0;
 
 		while (!remaining.isEmpty()) {
-			NondominatedPopulation front = new NondominatedPopulation(
-					comparator, DuplicateMode.ALLOW_DUPLICATES);
+			NondominatedPopulation front = new NondominatedPopulation(comparator, DuplicateMode.ALLOW_DUPLICATES);
 
 			for (Solution solution : remaining) {
 				front.add(solution);
@@ -122,9 +117,8 @@ public class NondominatedSorting {
 	}
 
 	/**
-	 * Computes and assigns the {@code crowdingDistance} attribute to solutions.
-	 * The specified population should consist of solutions within the same
-	 * front/rank.
+	 * Computes and assigns the {@code crowdingDistance} attribute to solutions.  The specified population should
+	 * consist of solutions within the same front/rank.
 	 * 
 	 * @param front the population whose solutions are to be evaluated
 	 */
@@ -134,8 +128,7 @@ public class NondominatedSorting {
 			solution.setAttribute(CROWDING_ATTRIBUTE, 0.0);
 		}
 		
-		// remove any duplicate solutions, the duplicate solutions will retain
-		// the crowding distance of 0.0
+		// remove any duplicate solutions, the duplicate solutions will retain the crowding distance of 0.0
 		Population uniqueFront = new Population();
 		
 		for (Solution s1 : front) {
@@ -160,8 +153,7 @@ public class NondominatedSorting {
 		
 		if (n < 3) {
 			for (Solution solution : front) {
-				solution.setAttribute(CROWDING_ATTRIBUTE,
-						Double.POSITIVE_INFINITY);
+				solution.setAttribute(CROWDING_ATTRIBUTE, Double.POSITIVE_INFINITY);
 			}
 		} else {
 			int numberOfObjectives = front.get(0).getNumberOfObjectives();
@@ -173,16 +165,12 @@ public class NondominatedSorting {
 				double maxObjective = front.get(n - 1).getObjective(i);
 				
 				if (maxObjective - minObjective >= Settings.EPS) {
-					front.get(0).setAttribute(CROWDING_ATTRIBUTE,
-							Double.POSITIVE_INFINITY);
-					front.get(n - 1).setAttribute(CROWDING_ATTRIBUTE,
-							Double.POSITIVE_INFINITY);
+					front.get(0).setAttribute(CROWDING_ATTRIBUTE, Double.POSITIVE_INFINITY);
+					front.get(n - 1).setAttribute(CROWDING_ATTRIBUTE, Double.POSITIVE_INFINITY);
 
 					for (int j = 1; j < n - 1; j++) {
-						double distance = (Double)front.get(j).getAttribute(
-								CROWDING_ATTRIBUTE);
-						distance += (front.get(j + 1).getObjective(i) - 
-								front.get(j - 1).getObjective(i))
+						double distance = (Double)front.get(j).getAttribute(CROWDING_ATTRIBUTE);
+						distance += (front.get(j + 1).getObjective(i) - front.get(j - 1).getObjective(i))
 								/ (maxObjective - minObjective);
 						front.get(j).setAttribute(CROWDING_ATTRIBUTE, distance);
 					}

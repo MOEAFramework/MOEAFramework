@@ -30,8 +30,7 @@ import org.moeaframework.core.operator.ParentImmutabilityTest;
 public class UNDXTest extends MeanCentricVariationTest {
 
 	/**
-	 * Test if the offspring centroid is the same as the parent centroid when 3
-	 * completely different parents are used.
+	 * Test if the offspring centroid is the same as the parent centroid when 3 completely different parents are used.
 	 */
 	@Test
 	@Retryable
@@ -45,8 +44,7 @@ public class UNDXTest extends MeanCentricVariationTest {
 	}
 
 	/**
-	 * Test if the offspring centroid is the same as the parent centroid when
-	 * the parents are degenerate along one axis.
+	 * Test if the offspring centroid is the same as the parent centroid when the parents are degenerate along one axis.
 	 */
 	@Test
 	@Retryable

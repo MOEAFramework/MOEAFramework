@@ -22,8 +22,7 @@ import org.moeaframework.TestThresholds;
 import org.moeaframework.core.Solution;
 
 /**
- * Provides test methods for checking if the offspring are centered around the
- * centroid of the parents.
+ * Provides test methods for checking if the offspring are centered around the centroid of the parents.
  */
 public abstract class MeanCentricVariationTest extends DistributionVariationTest {
 

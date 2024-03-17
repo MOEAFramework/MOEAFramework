@@ -311,8 +311,7 @@ public class ResultFileReaderTest {
 	}
 	
 	/**
-	 * Tests if a valid result file with extra whitespace on lines is read
-	 * correctly.
+	 * Tests if a valid result file with extra whitespace on lines is read correctly.
 	 * 
 	 * @throws IOException should not occur
 	 */
@@ -324,8 +323,7 @@ public class ResultFileReaderTest {
 	}
 	
 	/**
-	 * Tests if a valid result file containing no decision variables is read 
-	 * correctly.
+	 * Tests if a valid result file containing no decision variables is read correctly.
 	 * 
 	 * @throws IOException should not occur
 	 */
@@ -337,8 +335,7 @@ public class ResultFileReaderTest {
 	}
 	
 	/**
-	 * Tests if a valid result file containing no header lines is read 
-	 * correctly.
+	 * Tests if a valid result file containing no header lines is read correctly.
 	 * 
 	 * @throws IOException should not occur
 	 */
@@ -350,8 +347,7 @@ public class ResultFileReaderTest {
 	}
 	
 	/**
-	 * Tests if a valid result file with multiple {@code #} characters
-	 * separating entries is read correctly.
+	 * Tests if a valid result file with multiple {@code #} characters separating entries is read correctly.
 	 * 
 	 * @throws IOException should not occur
 	 */
@@ -407,9 +403,8 @@ public class ResultFileReaderTest {
 	}
 	
 	/**
-	 * Tests if a valid result file with the old style comment is read
-	 * correctly.  The old comment is meaningless, but this is to test
-	 * backwards compatibility to ensure the remainder is still processed.
+	 * Tests if a valid result file with the old style comment is read correctly.  The old comment is meaningless, but
+	 * this is to test backwards compatibility to ensure the remainder is still processed.
 	 * 
 	 * @throws IOException should not occur
 	 */
@@ -448,8 +443,7 @@ public class ResultFileReaderTest {
 	}
 
 	/**
-	 * Tests if a valid result file containing only the header is read
-	 * correctly.
+	 * Tests if a valid result file containing only the header is read correctly.
 	 * 
 	 * @throws IOException should not occur
 	 */
@@ -461,8 +455,7 @@ public class ResultFileReaderTest {
 	}
 
 	/**
-	 * Tests if an incomplete result file missing the trailing {@code #}
-	 * character is handled correctly.
+	 * Tests if an incomplete result file missing the trailing {@code #} character is handled correctly.
 	 * 
 	 * @throws IOException should not occur
 	 */
@@ -474,8 +467,7 @@ public class ResultFileReaderTest {
 	}
 
 	/**
-	 * Tests if an invalid result file containing a blank line is handled
-	 * correctly.
+	 * Tests if an invalid result file containing a blank line is handled correctly.
 	 * 
 	 * @throws IOException should not occur
 	 */
@@ -499,8 +491,7 @@ public class ResultFileReaderTest {
 	}
 	
 	/**
-	 * Tests if an invalid result file containing unparseable data is handled
-	 * correctly.
+	 * Tests if an invalid result file containing unparseable data is handled correctly.
 	 * 
 	 * @throws IOException should not occur
 	 */
@@ -527,14 +518,12 @@ public class ResultFileReaderTest {
 	}
 	
 	/**
-	 * Validates a complete result file that does not contain decision 
-	 * variables.
+	 * Validates a complete result file that does not contain decision variables.
 	 * 
 	 * @param reader the result reader
 	 * @throws IOException should not occur
 	 */
-	private void validateCompleteNoVariables(ResultFileReader reader) 
-	throws IOException {
+	private void validateCompleteNoVariables(ResultFileReader reader) throws IOException {
 		population.clear();
 		population.add(new Solution(new double[] { 0.0, 1.0 }));
 		population.add(new Solution(new double[] { 1.0, 0.0 }));
@@ -564,8 +553,7 @@ public class ResultFileReaderTest {
 	 * @param reader the result reader
 	 * @throws IOException should not occur
 	 */
-	private void validateEmptyEntry(ResultFileReader reader) 
-	throws IOException {
+	private void validateEmptyEntry(ResultFileReader reader) throws IOException {
 		Assert.assertTrue(reader.hasNext());
 		TestUtils.assertEquals(population, reader.next().getPopulation());
 		Assert.assertTrue(reader.hasNext());
@@ -582,8 +570,7 @@ public class ResultFileReaderTest {
 	 * @param reader the result reader
 	 * @throws IOException should not occur
 	 */
-	private void validateIncomplete(ResultFileReader reader) 
-	throws IOException {
+	private void validateIncomplete(ResultFileReader reader) throws IOException {
 		Assert.assertTrue(reader.hasNext());
 		TestUtils.assertEquals(population, reader.next().getPopulation());
 		Assert.assertFalse(reader.hasNext());
@@ -596,8 +583,7 @@ public class ResultFileReaderTest {
 	 * @param reader the result reader
 	 * @throws IOException should not occur
 	 */
-	private void validateProperties(ResultFileReader reader, 
-			TypedProperties properties) throws IOException {
+	private void validateProperties(ResultFileReader reader, TypedProperties properties) throws IOException {
 		while (reader.hasNext()) {
 			Assert.assertEquals(properties, reader.next().getProperties());
 		}
@@ -621,8 +607,7 @@ public class ResultFileReaderTest {
 			reader.decode(p, "2,0,1,4,3");
 			Assert.assertArrayEquals(new int[] { 2, 0, 1, 4, 3 }, p.toArray());
 			
-			//grammars technically have valid encodings, but this tests the
-			//unsupported decision variable type entry
+			//grammars technically have valid encodings, but this tests the unsupported decision variable type entry
 			Grammar g = new Grammar(5);
 			reader.decode(g, "-");
 		}

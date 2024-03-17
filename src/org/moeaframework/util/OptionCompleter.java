@@ -24,13 +24,13 @@ import java.util.Map;
 /**
  * Utility for auto-completion, finding the closest matching unique option from a set of options. For instance,
  * <pre>{@code
- * 	OptionCompleter completer = new OptionCompleter();
- * 	completer.add("subset");
- * 	completer.add("superset");
- * 	completer.lookup("sub");   // returns "subset"
- * 	completer.lookup("sup");   // returns "superset"
- * 	completer.lookup("s");     // returns null, since both subset and superset match
- * 	completer.lookup("k");     // returns null, no matches
+ *   OptionCompleter completer = new OptionCompleter();
+ *   completer.add("subset");
+ *   completer.add("superset");
+ *   completer.lookup("sub");   // returns "subset"
+ *   completer.lookup("sup");   // returns "superset"
+ *   completer.lookup("s");     // returns null, since both subset and superset match
+ *   completer.lookup("k");     // returns null, no matches
  * }</pre>
  */
 public class OptionCompleter {

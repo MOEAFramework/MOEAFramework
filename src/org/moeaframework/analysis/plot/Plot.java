@@ -84,27 +84,21 @@ import org.moeaframework.core.Population;
 import org.moeaframework.core.Solution;
 
 /**
- * Provides simple 2D plotting capabilities.  This is intended to allow the
- * rapid creation of 2D plots, supporting:
+ * Provides simple 2D plotting capabilities.  This is intended to allow the rapid creation of 2D plots, supporting:
  * <ol>
  *   <li>scatter plots of bi-objective populations,</li>
  *   <li>line plots of runtime dynamics (via an {@link Observations},</li>
  *   <li>box-and-whisker plots of performance statistics (via an {@link Analyzer}), and</li>
- *   <li>other plots of basic data types (e.g., line, scatter, area, stacked).</li>
+ *   <li>other plots of basic data types (e.g., line, scatter, area, stacked, heat map).</li>
  * </ol>
- * It is possible to combine datasets by calling more than one {@code add}
- * method, but you can not mix different plot types (e.g., XY plots versus
- * categorical plots).  Thus, box-and-whisker plots can not be overlaid on a
- * line plot.
+ * It is possible to combine datasets by calling more than one {@code add} method, but you can not mix different plot
+ * types (e.g., XY plots versus categorical plots).  Thus, box-and-whisker plots can not be overlaid on a line plot.
  * <p>
- * In general, one should first generate the plot artifacts by calling
- * {@code line}, {@code scatter}, {@code area}, {@code stacked}, or any of the
- * {@code add} methods.  Artifacts can be customized by immediately calling
- * one of the {@code with*} methods after generating the artifact (the
- * customization is only applied to the last artifact).  Lastly, call the
- * {@code set*} methods to customize the overall appearance of the chart.
- * Call {@code show} to display the chart in a window or {@code save} to
- * create an image file.  For example:
+ * In general, one should first generate the plot artifacts by calling {@link #line}, {@link #scatter}, {@link #area},
+ * {@link #stacked}, {@link #heatMap} or any of the {@link #add} methods.  Artifacts can be customized by immediately
+ * calling one of the {@code with*} methods after generating the artifact (the customization is only applied to the
+ * last artifact).  Lastly, call the {@code set*} methods to customize the overall appearance of the chart.  Call
+ * {@link #show} to display the chart in a window or {@link #save} to create an image file.  For example:
  * <pre>
  *       new Plot()
  *      		.scatter("Point", new double[] { 0.0, 1.0, 2.0 }, new double[] { 3.0, 4.0, 5.0 })
@@ -117,13 +111,11 @@ import org.moeaframework.core.Solution;
  *      		.show();
  * </pre>
  * <p>
- * This class is not intended to be a fully featured plotting library.  To
- * generate more sophisticated plots or customize their appearance, one must
- * instead use JFreeChart, JZY3D, or another Java plotting library.
+ * This class is not intended to be a fully featured plotting library.  To generate more sophisticated plots or
+ * customize their appearance, one must instead use JFreeChart, JZY3D, or another plotting library.
  * <p>
- * Generated plots can be saved to PNG or JPEG files.  If JFreeSVG is available
- * on the classpath, SVG files can be generated.  JFreeSVG can be obtained from
- * http://www.jfree.org/jfreesvg/.
+ * Generated plots can be saved to PNG or JPEG files.  If JFreeSVG is available on the classpath, SVG files can be
+ * generated.  JFreeSVG can be obtained from http://www.jfree.org/jfreesvg/.
  */
 public class Plot {
 
@@ -152,8 +144,8 @@ public class Plot {
 	}
 
 	/**
-	 * If the chart has not yet been initialized, creates a chart for XY data.
-	 * If the chart is already initialized, checks if the chart is for XY data.
+	 * If the chart has not yet been initialized, creates a chart for XY data.  If the chart is already initialized,
+	 * checks if the chart is for XY data.
 	 * 
 	 * @throws FrameworkException if the chart does not support XY data
 	 */
@@ -183,9 +175,8 @@ public class Plot {
 	}
 
 	/**
-	 * If the chart has not yet been initialized, creates a chart for
-	 * categorical data.  If the chart is already initialized, checks if the
-	 * chart is for categorical data.
+	 * If the chart has not yet been initialized, creates a chart for categorical data.  If the chart is already
+	 * initialized, checks if the chart is for categorical data.
 	 * 
 	 * @throws FrameworkException if the chart does not support categorical data
 	 */
@@ -213,8 +204,8 @@ public class Plot {
 	}
 	
 	/**
-	 * If the chart has not yet been initialized, creates a chart for HeatMap data.
-	 * If the chart is already initialized, checks if the chart is for HeatMap data.
+	 * If the chart has not yet been initialized, creates a chart for HeatMap data.  If the chart is already
+	 * initialized, checks if the chart is for HeatMap data.
 	 * 
 	 * @throws FrameworkException if the chart does not support HeatMap data
 	 */
@@ -414,8 +405,8 @@ public class Plot {
 	}
 	
 	/**
-	 * Creates a new scatter plot series.  The series is added to the given
-	 * dataset, or if {@code null} a new dataset is created.
+	 * Creates a new scatter plot series.  The series is added to the given dataset, or if {@code null} a new dataset
+	 * is created.
 	 * 
 	 * @param label the label for the series
 	 * @param x the x values
@@ -496,8 +487,7 @@ public class Plot {
 	}
 
 	/**
-	 * Displays the solutions in the given population in a 2D scatter plot.
-	 * Only two objectives will be displayed.
+	 * Displays the solutions in the given population in a 2D scatter plot.  Only two objectives will be displayed.
 	 * 
 	 * @param label the label for the series
 	 * @param population the population
@@ -514,8 +504,7 @@ public class Plot {
 	}
 
 	/**
-	 * Displays the solutions in the given population in a 2D scatter plot.
-	 * The two given objectives will be displayed.
+	 * Displays the solutions in the given population in a 2D scatter plot.  The two given objectives will be displayed.
 	 * 
 	 * @param label the label for the series
 	 * @param population the population
@@ -541,8 +530,7 @@ public class Plot {
 	}
 	
 	/**
-	 * Displays the runtime data stored in an {@link Observations} as one or
-	 * more line plots.
+	 * Displays the runtime data stored in an {@link Observations} as one or more line plots.
 	 * 
 	 * @param observations the {@code Observations} instance
 	 * @return a reference to this {@code Plot} instance
@@ -572,9 +560,8 @@ public class Plot {
 	}
 	
 	/**
-	 * Displays the runtime data for the given metric as a line plot.  The
-	 * series is added to the given dataset, or if {@code null} a new dataset
-	 * is created.
+	 * Displays the runtime data for the given metric as a line plot.  The series is added to the given dataset, or if
+	 * {@code null} a new dataset is created.
 	 * 
 	 * @param label the label for the series
 	 * @param observations the {@code Observations} containing the data
@@ -626,8 +613,8 @@ public class Plot {
 	}
 	
 	/**
-	 * Creates a new line plot series.  The series is added to the given
-	 * dataset, or if {@code null} a new dataset is created.
+	 * Creates a new line plot series.  The series is added to the given dataset, or if {@code null} a new dataset is
+	 * created.
 	 * 
 	 * @param label the label for the series
 	 * @param x the x values
@@ -694,8 +681,8 @@ public class Plot {
 	}
 	
 	/**
-	 * Creates a new area plot series.  The series is added to the given
-	 * dataset, or if {@code null} a new dataset is created.
+	 * Creates a new area plot series.  The series is added to the given dataset, or if {@code null} a new dataset is
+	 * created.
 	 * 
 	 * @param label the label for the series
 	 * @param x the x values
@@ -738,8 +725,7 @@ public class Plot {
 	}
 	
 	/**
-	 * Creates a new stacked area plot series.  The data will be stacked with
-	 * any preceding calls to {@code stacked}.
+	 * Creates a new stacked area plot series.  The data will be stacked with any preceding calls to {@code stacked}.
 	 * 
 	 * @param label the label for the series
 	 * @param x the x values
@@ -751,8 +737,7 @@ public class Plot {
 	}
 	
 	/**
-	 * Creates a new stacked area plot series.  The data will be stacked with
-	 * any preceding calls to {@code stacked}.
+	 * Creates a new stacked area plot series.  The data will be stacked with any preceding calls to {@code stacked}.
 	 * 
 	 * @param label the label for the series
 	 * @param x the x values
@@ -764,9 +749,8 @@ public class Plot {
 	}
 	
 	/**
-	 * Creates a new area plot series.  The data will be stacked with
-	 * any preceding calls to {@code stacked}.  The series is added to the given
-	 * dataset, or if {@code null} a new dataset is created.
+	 * Creates a new area plot series.  The data will be stacked with any preceding calls to {@code stacked}.  The
+	 * series is added to the given dataset, or if {@code null} a new dataset is created.
 	 * 
 	 * @param label the label for the series
 	 * @param x the x values
@@ -816,8 +800,8 @@ public class Plot {
 	}
 	
 	/**
-	 * Creates a new heat map series.  The series is added to the given
-	 * dataset, or if {@code null} a new dataset is created.
+	 * Creates a new heat map series.  The series is added to the given dataset, or if {@code null} a new dataset is
+	 * created.
 	 * 
 	 * @param label the label for the series
 	 * @param x the x values
@@ -830,8 +814,8 @@ public class Plot {
 	}
 	
 	/**
-	 * Creates a new heat map series.  The series is added to the given
-	 * dataset, or if {@code null} a new dataset is created.
+	 * Creates a new heat map series.  The series is added to the given dataset, or if {@code null} a new dataset is
+	 * created.
 	 * 
 	 * @param label the label for the series
 	 * @param x the x values
@@ -844,8 +828,8 @@ public class Plot {
 	}
 	
 	/**
-	 * Creates a new heat map series.  The series is added to the given
-	 * dataset, or if {@code null} a new dataset is created.
+	 * Creates a new heat map series.  The series is added to the given dataset, or if {@code null} a new dataset is
+	 * created.
 	 * 
 	 * @param label the label for the series
 	 * @param x the x values
@@ -905,8 +889,7 @@ public class Plot {
 	}
 	
 	/**
-	 * Displays the statistical results from an {@link Analyzer} as a
-	 * box-and-whisker plot.
+	 * Displays the statistical results from an {@link Analyzer} as a box-and-whisker plot.
 	 * 
 	 * @param analyzer the {@code Analyzer} instance
 	 * @return a reference to this {@code Plot} instance
@@ -916,8 +899,7 @@ public class Plot {
 	}
 
 	/**
-	 * Displays the statistical results from an {@link AnalyzerResults} as a
-	 * box-and-whisker plot.
+	 * Displays the statistical results from an {@link AnalyzerResults} as a box-and-whisker plot.
 	 * 
 	 * @param result the {@code AnalyzerResults} instance
 	 * @return a reference to this {@code Plot} instance
@@ -946,8 +928,7 @@ public class Plot {
 	}
 
 	/**
-	 * Modifies the line thickness or point size in the last dataset.  The
-	 * size is applied to all series in the dataset.
+	 * Modifies the line thickness or point size in the last dataset.  The size is applied to all series in the dataset.
 	 * 
 	 * @param size the size
 	 * @return a reference to this {@code Plot} instance
@@ -981,9 +962,8 @@ public class Plot {
 	}
 
 	/**
-	 * Modifies the paint (e.g,. color) of each series in the last dataset.
-	 * If the dataset contains more series than the number of arguments, the
-	 * arguments are reused as needed.
+	 * Modifies the paint (e.g,. color) of each series in the last dataset.  If the dataset contains more series than
+	 * the number of arguments, the arguments are reused as needed.
 	 * 
 	 * @param paint one or more paint instances
 	 * @return a reference to this {@code Plot} instance
@@ -1021,9 +1001,8 @@ public class Plot {
 	}
 	
 	/**
-	 * Saves the plot to an image file.  The type of image is determined from
-	 * the filename extension.  See {@link #save(File, String, int, int)} for
-	 * a list of supported types.
+	 * Saves the plot to an image file.  The type of image is determined from the filename extension.  See
+	 * {@link #save(File, String, int, int)} for a list of supported types.
 	 * 
 	 * @param filename the filename
 	 * @return a reference to this {@code Plot} instance
@@ -1034,9 +1013,8 @@ public class Plot {
 	}
 
 	/**
-	 * Saves the plot to an image file.  The type of image is determined from
-	 * the filename extension.  See {@link #save(File, String, int, int)} for
-	 * a list of supported types.
+	 * Saves the plot to an image file.  The type of image is determined from the filename extension.  See
+	 * {@link #save(File, String, int, int)} for a list of supported types.
 	 * 
 	 * @param file the file
 	 * @return a reference to this {@code Plot} instance
@@ -1050,8 +1028,8 @@ public class Plot {
 	}
 
 	/**
-	 * Saves the plot to an image file.  The format must be one of {@code png},
-	 * {@code jpeg}, or {@code svg} (requires JFreeSVG).
+	 * Saves the plot to an image file.  The format must be one of {@code png}, {@code jpeg}, or {@code svg} (requires
+	 * JFreeSVG).
 	 * 
 	 * @param file the file
 	 * @param format the image format
@@ -1062,17 +1040,9 @@ public class Plot {
 	 */
 	public Plot save(File file, String format, int width, int height) throws IOException {
 		if (format.equalsIgnoreCase("PNG")) {
-			ChartUtils.saveChartAsPNG(
-					file,
-					chart,
-					width,
-					height);
+			ChartUtils.saveChartAsPNG(file, chart, width, height);
 		} else if (format.equalsIgnoreCase("JPG") || format.equalsIgnoreCase("JPEG")) {
-			ChartUtils.saveChartAsJPEG(
-					file,
-					chart,
-					width,
-					height);
+			ChartUtils.saveChartAsJPEG(file, chart, width, height);
 		} else if (format.equalsIgnoreCase("SVG")) {
 			String svg = generateSVG(width, height);
 
@@ -1088,15 +1058,13 @@ public class Plot {
 	}
 
 	/**
-	 * Generates a string containing a rendering of the chart in SVG format.
-	 * This feature is only supported if the JFreeSVG library is included on 
-	 * the classpath.
+	 * Generates a string containing a rendering of the chart in SVG format.  This feature is only supported if the
+	 * JFreeSVG library is included on the classpath.
 	 * 
 	 * This is copied from JFreeChart's ChartPanel class (version 1.0.19).
 	 * 
-	 * @return A string containing an SVG element for the current chart, or 
-	 *     <code>null</code> if there is a problem with the method invocation
-	 *     by reflection.
+	 * @return A string containing an SVG element for the current chart, or <code>null</code> if there is a problem
+	 *         with the method invocation by reflection.
 	 */
 	private String generateSVG(int width, int height) {
 		Graphics2D g2 = createSVGGraphics2D(width, height);
@@ -1105,8 +1073,8 @@ public class Plot {
 			throw new IllegalStateException("JFreeSVG library is not present.");
 		}
 		
-		// we suppress shadow generation, because SVG is a vector format and
-		// the shadow effect is applied via bitmap effects...
+		// we suppress shadow generation, because SVG is a vector format and the shadow effect is applied via bitmap
+		// effects...
 		g2.setRenderingHint(new RenderingHints.Key(0) {
 	        @Override
 	        public boolean isCompatibleValue(Object val) {
@@ -1121,15 +1089,8 @@ public class Plot {
 		try {
 			Method m = g2.getClass().getMethod("getSVGElement");
 			svg = (String) m.invoke(g2);
-		} catch (NoSuchMethodException e) {
-			// null will be returned
-		} catch (SecurityException e) {
-			// null will be returned
-		} catch (IllegalAccessException e) {
-			// null will be returned
-		} catch (IllegalArgumentException e) {
-			// null will be returned
-		} catch (InvocationTargetException e) {
+		} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException |
+				InvocationTargetException e) {
 			// null will be returned
 		}
 		
@@ -1162,8 +1123,7 @@ public class Plot {
 	}
 
 	/**
-	 * Returns the internal chart.  Allows further modification of the
-	 * appearance of the chart.
+	 * Returns the internal chart.  Allows further modification of the appearance of the chart.
 	 * 
 	 * @return the internal JFreeChart instance
 	 */

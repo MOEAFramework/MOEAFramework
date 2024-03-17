@@ -26,8 +26,8 @@ import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.problem.ProblemTest;
 
 /**
- * Tests if the {@link UF13} class (which is now an alias to {@code WFG1})
- * matches the test function defined in the CEC2009 code.
+ * Tests if the {@link UF13} class (which is now an alias to {@code WFG1}) matches the test function defined in the
+ * CEC2009 code.
  */
 public class UF13Test extends ProblemTest {
 	
@@ -66,8 +66,7 @@ public class UF13Test extends ProblemTest {
 	private static final double EPSILON = 1.0e-10;
 	
 	/**
-	 * Evaluates the UF13 problem.  This is the version of the code provided in
-	 * the CEC2009 test suite.
+	 * Evaluates the UF13 problem.  This is the version of the code provided in the CEC2009 test suite.
 	 * 
 	 * @param x the decision variables
 	 * @param f the objective function output

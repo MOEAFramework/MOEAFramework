@@ -23,8 +23,7 @@ import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.AbstractProblem;
 
 /**
- * The unconstrained UF3 test problem from the CEC 2009 special session and
- * competition.
+ * The unconstrained UF3 test problem from the CEC 2009 special session and competition.
  */
 public class UF3 extends AbstractProblem {
 
@@ -36,8 +35,7 @@ public class UF3 extends AbstractProblem {
 	}
 
 	/**
-	 * Constructs a UF3 test problem with the specified number of decision
-	 * variables.
+	 * Constructs a UF3 test problem with the specified number of decision variables.
 	 * 
 	 * @param numberOfVariables the number of decision variables
 	 */

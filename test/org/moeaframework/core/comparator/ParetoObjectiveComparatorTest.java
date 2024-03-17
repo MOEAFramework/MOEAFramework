@@ -77,9 +77,8 @@ public class ParetoObjectiveComparatorTest {
 	}
 	
 	/**
-	 * Tests if the comparator correctly detects non-domination of equal
-	 * solutions, since technically neither solution is superior in any
-	 * objective.
+	 * Tests if the comparator correctly detects non-domination of equal solutions, since technically neither solution
+	 * is superior in any objective.
 	 */
 	@Test
 	public void testEquals() {

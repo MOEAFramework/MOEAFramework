@@ -74,8 +74,7 @@ public class ContributionTest {
 	}
 	
 	/**
-	 * Runs through some simple cases to ensure the contribution indicator is
-	 * computed correctly.
+	 * Runs through some simple cases to ensure the contribution indicator is computed correctly.
 	 */
 	@Test
 	public void testSimple() {

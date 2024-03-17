@@ -21,18 +21,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Generates weights using the Normal Boundary Intersection (NBI) method.
- * For {@code d} divisions and {@code M} objectives, this class will generate
- * {@code M+d-1 choose d} weights.
+ * Generates weights using the Normal Boundary Intersection (NBI) method.  For {@code d} divisions and {@code M}
+ * objectives, this class will generate {@code M+d-1 choose d} weights.
  * <p>
  * References:
  * <ol>
- *   <li>Das, I. and J. Dennis (1998).  "Normal-boundary intersection: A new
- *       method for generating the Pareto surface in nonlinear multicriteria
- *       optimization problems."  SIAM J. Optimization, 8(3):631-657.
- *   <li>Deb, K. and H. Jain (2014).  "An Evolutionary Many-Objective
- *       Optimization Algorithm Using Reference-Point-Based Nondominated
- *       Sorting Approach, Part I: Solving Problems With Box Constraints."
+ *   <li>Das, I. and J. Dennis (1998).  "Normal-boundary intersection: A new method for generating the Pareto
+ *       surface in nonlinear multicriteria optimization problems."  SIAM J. Optimization, 8(3):631-657.
+ *   <li>Deb, K. and H. Jain (2014).  "An Evolutionary Many-Objective Optimization Algorithm Using
+ *       Reference-Point-Based Nondominated Sorting Approach, Part I: Solving Problems With Box Constraints."
  *       IEEE Transactions on Evolutionary Computation, 18(4):577-601.
  * </ol>
  */
@@ -101,8 +98,7 @@ public class NormalBoundaryIntersectionGenerator implements WeightGenerator {
 	}
 	
 	/**
-	 * Generates the reference points (weights) for the given number of
-	 * divisions.
+	 * Generates the reference points (weights) for the given number of divisions.
 	 * 
 	 * @param divisions the number of divisions
 	 * @return the list of reference points

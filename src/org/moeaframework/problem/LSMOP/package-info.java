@@ -19,8 +19,8 @@
 /**
  * Package for the scalable LSMOP test problem suite.
  * <p>
- * These codes are based on the Matlab source code provided by the authors.  Additionally, we use
- * the Matlab source to generate the test results:
+ * These codes are based on the Matlab source code provided by the authors.  Additionally, we use the Matlab source to
+ * generate the test results:
  * <pre>
  *   Population = LSMOP('init', 'LSMOP1', 2, 10)
  *   [ps,D] = size(Population)
@@ -33,9 +33,8 @@
  * </pre>
  * References:
  * <ol>
- *   <li>Ran Cheng, Yaochu Jin, Markus Olhofer and Bernhard Sendhoff. "Test problems for
- *       large-scale multiobjective and many-objective optimization." IEEE Transactions
- *       on Cybernetics, 7(12): 4108-4121, 2017.
+ *   <li>Ran Cheng, Yaochu Jin, Markus Olhofer and Bernhard Sendhoff. "Test problems for large-scale multiobjective
+ *       and many-objective optimization." IEEE Transactions on Cybernetics, 7(12): 4108-4121, 2017.
  *   <li>Supplementary Materials available at http://www.soft-computing.de/jin-pub_year.html
  * </ol>
  */

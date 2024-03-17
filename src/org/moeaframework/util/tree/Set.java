@@ -18,9 +18,8 @@
 package org.moeaframework.util.tree;
 
 /**
- * The node for assigning the value of a named variable within the current
- * scope.  Variables are locally-scoped within functions (i.e., {@link Define}
- * and {@link Lambda}) and globally-scoped elsewhere.
+ * The node for assigning the value of a named variable within the current scope.  Variables are locally-scoped within
+ * functions (i.e., {@link Define} and {@link Lambda}) and globally-scoped elsewhere.
  * 
  * <table style="margin-top: 1em; width: 100%">
  *   <caption style="text-align: left">Node signature:</caption>
@@ -51,8 +50,7 @@ public class Set extends Node {
 	private final String name;
 	
 	/**
-	 * Constructs a new node for assigning the value of a named variable within
-	 * the current scope.
+	 * Constructs a new node for assigning the value of a named variable within the current scope.
 	 * 
 	 * @param type the type of the variable
 	 * @param name the name of the variable

@@ -28,17 +28,14 @@ import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.core.variable.RealVariable;
 
 /**
- * Single-objective (mu + lambda) evolution strategy (ES) algorithm.  In this
- * implementation, mu and lambda are both equal to the initial population size.
- * For example, with an initial population of size 1, this mimics the classic
- * (1 + 1)-ES algorithm.  Can only be used with mutation operators with a single
- * parent. 
+ * Single-objective {@code (mu + lambda)} evolution strategy (ES) algorithm.  In this implementation, {@code mu} and
+ * {@code lambda} are both equal to the initial population size.  For example, with an initial population of size 1,
+ * this mimics the classic (1 + 1)-ES algorithm.  Can only be used with mutation operators with a single parent. 
  * <p>
  * References:
  * <ol>
- *   <li>Ingo Rechenberg.  "Evolutionsstrategie: Optimierung technischer
- *       Systeme nach Prinzipien der biologischen Evolution."  Ph.D. thesis,
- *       Fromman-Holzboog, 1971.
+ *   <li>Ingo Rechenberg.  "Evolutionsstrategie: Optimierung technischer Systeme nach Prinzipien der biologischen
+ *       Evolution."  Ph.D. thesis, Fromman-Holzboog, 1971.
  * </ol>
  */
 public class EvolutionStrategy extends SingleObjectiveEvolutionaryAlgorithm {

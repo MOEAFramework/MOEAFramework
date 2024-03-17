@@ -50,11 +50,7 @@ public class RedirectStreamTest {
 	}
 
 	/**
-	 * Tests stream redirection to ensure the contents are copied correctly
-	 * and the thread is terminated when completed.
-	 * 
-	 * @throws IOException should not occur
-	 * @throws InterruptedException should not occur
+	 * Tests stream redirection to ensure the contents are copied correctly and the thread is terminated when completed.
 	 */
 	@Test
 	public void testRedirection() throws IOException, InterruptedException {
@@ -81,11 +77,8 @@ public class RedirectStreamTest {
 	}
 
 	/**
-	 * Tests stream redirection to ensure the contents are cleared correctly
-	 * and the thread is terminated when completed.
-	 * 
-	 * @throws IOException should not occur
-	 * @throws InterruptedException should not occur
+	 * Tests stream redirection to ensure the contents are cleared correctly and the thread is terminated when
+	 * completed.
 	 */
 	@Test
 	public void testNullRedirection() throws IOException, InterruptedException {

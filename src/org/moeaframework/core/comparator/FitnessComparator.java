@@ -32,17 +32,15 @@ import org.moeaframework.core.Solution;
 public class FitnessComparator implements DominanceComparator, Comparator<Solution> {
 	
 	/**
-	 * {@code true} if larger fitness values are preferred; otherwise smaller
-	 * fitness values are preferred.
+	 * {@code true} if larger fitness values are preferred; otherwise smaller fitness values are preferred.
 	 */
 	private final boolean largerValuesPreferred;
 	
 	/**
-	 * Constructs a dominance comparator for comparing solutions based on their
-	 * {@code FITNESS_ATTRIBUTE} value.
+	 * Constructs a dominance comparator for comparing solutions based on their {@code FITNESS_ATTRIBUTE} value.
 	 * 
-	 * @param largerValuesPreferred {@code true} if larger fitness values are
-	 *        preferred; otherwise smaller fitness values are preferred
+	 * @param largerValuesPreferred {@code true} if larger fitness values are preferred; otherwise smaller fitness
+	 *        values are preferred
 	 */
 	public FitnessComparator(boolean largerValuesPreferred) {
 		super();

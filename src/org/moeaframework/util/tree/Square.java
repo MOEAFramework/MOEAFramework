@@ -55,9 +55,7 @@ public class Square extends Node {
 	
 	@Override
 	public Number evaluate(Environment environment) {
-		return NumberArithmetic.pow(
-				(Number)getArgument(0).evaluate(environment),
-				2.0);
+		return NumberArithmetic.pow((Number)getArgument(0).evaluate(environment), 2.0);
 	}
 
 }

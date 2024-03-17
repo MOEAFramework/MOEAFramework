@@ -88,14 +88,14 @@ public class Settings {
 	static final String KEY_PREFIX = createKey("org", "moeaframework");
 	
 	/**
-	 * The property key for setting the configuration file.  This defaults to
-	 * {@value DEFAULT_CONFIGURATION_FILE} if unset.
+	 * The property key for setting the configuration file.  This defaults to {@value DEFAULT_CONFIGURATION_FILE}
+	 * if unset.
 	 */
 	public static final String KEY_CONFIGURATION_FILE = createKey(KEY_PREFIX, "configuration");
 	
 	/**
-	 * The property key for setting a global PRNG seed, which can be used to make results
-	 * reproducible.  Note, however, that the seed is set once during initialization.
+	 * The property key for setting a global PRNG seed, which can be used to make results reproducible.  Note,
+	 * however, that the seed is set once during initialization.
 	 */
 	public static final String KEY_PRNG_SEED = createKey(KEY_PREFIX, "core", "prng", "seed");
 	
@@ -248,34 +248,28 @@ public class Settings {
 	}
 	
 	/**
-	 * Returns {@code true} if continuity correction is enabled; {@code false}
-	 * otherwise.  Rank-based statistical inference methods, such as the 
-	 * Mann-Whitney U test and the Wilcoxon Signed-Ranks test, approximate the 
-	 * test's discrete distribution with a continuous distribution for 
-	 * computing the p-value. It has been recommended but not often employed in
-	 * practice to apply a continuity correction.
+	 * Returns {@code true} if continuity correction is enabled; {@code false} otherwise.  Rank-based statistical
+	 * inference methods, such as the Mann-Whitney U test and the Wilcoxon Signed-Ranks test, approximate the 
+	 * test's discrete distribution with a continuous distribution for computing the p-value.  It has been recommended
+	 * but not often employed in practice to apply a continuity correction.
 	 * 
-	 * @return {@code true} if continuity correction is enabled; {@code false}
-	 *         otherwise
+	 * @return {@code true} if continuity correction is enabled; {@code false} otherwise
 	 */
 	public static boolean isContinuityCorrection() {
 		return PROPERTIES.getBoolean(KEY_CONTINUITY_CORRECTION, false);
 	}
 	
 	/**
-	 * Returns the strategy used for handling duplicate solutions in a
-	 * nondominated population.
+	 * Returns the strategy used for handling duplicate solutions in a nondominated population.
 	 * 
 	 * @return the strategy for handling duplicate solutions
 	 */
 	public static DuplicateMode getDuplicateMode() {
-		return PROPERTIES.getEnum(KEY_DUPLICATE_MODE, DuplicateMode.class,
-				DuplicateMode.NO_DUPLICATE_OBJECTIVES);
+		return PROPERTIES.getEnum(KEY_DUPLICATE_MODE, DuplicateMode.class, DuplicateMode.NO_DUPLICATE_OBJECTIVES);
 	}
 	
 	/**
-	 * Returns the power used in the generational distance calculation.
-	 * The default value is 2.0.
+	 * Returns the power used in the generational distance calculation.  The default value is 2.0.
 	 * 
 	 * @return the power used in the generational distance calculation
 	 */
@@ -284,8 +278,7 @@ public class Settings {
 	}
 	
 	/**
-	 * Returns the power used in the inverted generational distance calculation.
-	 * The default value is 1.0.
+	 * Returns the power used in the inverted generational distance calculation.  The default value is 1.0.
 	 * 
 	 * @return the power used in the inverted generational distance calculation
 	 */
@@ -294,8 +287,7 @@ public class Settings {
 	}
 	
 	/**
-	 * Returns the ideal point for the given problem, or {@code null} if
-	 * one is not specified.
+	 * Returns the ideal point for the given problem, or {@code null} if one is not specified.
 	 * 
 	 * @param problem the problem name
 	 * @return the ideal point
@@ -305,8 +297,7 @@ public class Settings {
 	}
 	
 	/**
-	 * Returns the reference point for the given problem, or {@code null} if
-	 * one is not specified.
+	 * Returns the reference point for the given problem, or {@code null} if one is not specified.
 	 * 
 	 * @param problem the problem name
 	 * @return the reference point
@@ -316,24 +307,20 @@ public class Settings {
 	}
 	
 	/**
-	 * Returns {@code true} if fast non-dominated sorting should be used;
-	 * or {@code false} if the naive non-dominated sorting implementation is
-	 * preferred.  The default is {@code false} since while the fast version
-	 * has better worst-case time complexity, the naive version tends to run
-	 * faster except for a small number of edge cases.
+	 * Returns {@code true} if fast non-dominated sorting should be used; or {@code false} if the naive non-dominated
+	 * sorting implementation is preferred.  The default is {@code false} since while the fast version has better
+	 * worst-case time complexity, the naive version tends to run faster except for a small number of edge cases.
 	 * 
-	 * @return {@code true} if fast non-dominated sorting should be used;
-	 *         or {@code false} if the naive non-dominated sorting
-	 *         implementation is preferred
+	 * @return {@code true} if fast non-dominated sorting should be used; or {@code false} if the naive non-dominated
+	 *         sorting implementation is preferred
 	 */
 	public static boolean useFastNondominatedSorting() {
 		return PROPERTIES.getBoolean(KEY_FAST_NONDOMINATED_SORTING, false);
 	}
 	
 	/**
-	 * Returns {@code true} if truncation warnings, when implicitly converting a
-	 * real-valued property to an integer and truncating the decimal value, should be
-	 * suppressed.
+	 * Returns {@code true} if truncation warnings, when implicitly converting a real-valued property to an integer
+	 * and truncating the decimal value, should be suppressed.
 	 * 
 	 * @return {@code true} if truncation warnings are suppressed; {@code false} otherwise
 	 */
@@ -342,66 +329,51 @@ public class Settings {
 	}
 	
 	/**
-	 * Returns the delta applied to the nadir point of the reference set when 
-	 * calculating the hypervolume.  Having a non-zero delta is necessary to 
-	 * ensure extremal solutions contribute to the hypervolume.
+	 * Returns the delta applied to the nadir point of the reference set when calculating the hypervolume.  Having a
+	 * non-zero delta is necessary to  ensure extremal solutions contribute to the hypervolume.
 	 * 
-	 * @return the delta applied to the nadir point of the reference set when 
-	 *         calculating the hypervolume
+	 * @return the delta applied to the nadir point of the reference set when calculating the hypervolume
 	 */
 	public static double getHypervolumeDelta() {
 		return PROPERTIES.getDouble(KEY_HYPERVOLUME_DELTA, 0.0);
 	}
 	
 	/**
-	 * Returns the native hypervolume command; or {@code null} if the default
-	 * hypervolume implementation is used.  The default hypervolume 
-	 * implementation may become computationally prohibitive on large 
-	 * approximation sets or at high dimensions.  The following variable 
-	 * substitutions are provided:
-	 * <ul>
-	 *   <li>{0} number of objectives
-	 *   <li>{1} approximation set size
-	 *   <li>{2} file containing the approximation set
-	 *   <li>{3} file containing the reference point
-	 * </ul>
+	 * Returns the native hypervolume command; or {@code null} if the default hypervolume implementation is used.
+	 * The default hypervolume implementation may become computationally prohibitive on large approximation sets or
+	 * at high dimensions.  See {@link NativeHypervolume} for more details on formatting the command.
 	 *   
-	 * @return the native hypervolume command; or {@code null} if the default
-	 *         hypervolume implementation is used
+	 * @return the native hypervolume command; or {@code null} if the default hypervolume implementation is used
 	 */
 	public static String getHypervolume() {
 		return PROPERTIES.getString(KEY_HYPERVOLUME, null);
 	}
 	
 	/**
-	 * Returns {@code true} if the approximation set is inverted prior to being
-	 * passed to the custom hypervolume implementation; otherwise {@code false}.
+	 * Returns {@code true} if the approximation set is inverted prior to being passed to the custom hypervolume
+	 * implementation; otherwise {@code false}.
 	 * 
-	 * @return {@code true} if the approximation set is inverted prior to being
-	 *         passed to the custom hypervolume implementation; otherwise
-	 *         {@code false}
+	 * @return {@code true} if the approximation set is inverted prior to being passed to the custom hypervolume
+	 *         implementation; otherwise {@code false}
 	 */
 	public static boolean isHypervolumeInverted() {
 		return PROPERTIES.getBoolean(KEY_HYPERVOLUME_INVERTED, false);
 	}
 	
 	/**
-	 * Returns {@code true} if hypervolume calculation is enabled; {@code false}
-	 * otherwise.  When disabled, the hypervolume should be reported as
-	 * {@code Double.NaN}.  Direct use of the {@link Hypervolume} class remains
+	 * Returns {@code true} if hypervolume calculation is enabled; {@code false} otherwise.  When disabled, the
+	 * hypervolume should be reported as {@code Double.NaN}.  Direct use of the {@link Hypervolume} class remains
 	 * unaffected by this option.
 	 * 
-	 * @return {@code true} if hypervolume calculation is enabled; {@code false}
-	 *         otherwise
+	 * @return {@code true} if hypervolume calculation is enabled; {@code false} otherwise
 	 */
 	public static boolean isHypervolumeEnabled() {
 		return PROPERTIES.getBoolean(KEY_HYPERVOLUME_ENABLED, true);
 	}
 	
 	/**
-	 * Returns the list of available problems.  This allows enumerating
-	 * additional problems without the need for defining and registering a 
-	 * service provider on the classpath.
+	 * Returns the list of available problems.  This allows enumerating additional problems without the need for
+	 * defining and registering a service provider on the classpath.
 	 * 
 	 * @return the list of available problems
 	 */
@@ -460,9 +432,8 @@ public class Settings {
 	}
 	
 	/**
-	 * Splits an executable command into its individual arguments.  This method
-	 * allows quoted text ({@code "..."}) in properties to be treated as an
-	 * individual argument as required by {@link ProcessBuilder}.
+	 * Splits an executable command into its individual arguments.  This method allows quoted text ({@code "..."})
+	 * in properties to be treated as an individual argument as required by {@link ProcessBuilder}.
 	 *  
 	 * @param command the command represented in a single string
 	 * @return the individual arguments comprising the command
@@ -474,13 +445,11 @@ public class Settings {
 	}
 	
 	/**
-	 * Returns {@code true} if genetic programming functions should use
-	 * protection against invalid arguments that would otherwise result in
-	 * {@code NaN} or other invalid values; {@code false} otherwise.
+	 * Returns {@code true} if genetic programming functions should use protection against invalid arguments that
+	 * would otherwise result in {@code NaN} or other invalid values; {@code false} otherwise.
 	 * 
-	 * @return {@code true} if genetic programming functions should use
-	 *         protection against invalid arguments that would otherwise result
-	 *         in {@code NaN} or other invalid values; {@code false} otherwise
+	 * @return {@code true} if genetic programming functions should use protection against invalid arguments that
+	 *         would otherwise result in {@code NaN} or other invalid values; {@code false} otherwise
 	 */
 	public static boolean isProtectedFunctions() {
 		return PROPERTIES.getBoolean(KEY_GP_PROTECTED_FUNCTIONS, true);
@@ -497,11 +466,9 @@ public class Settings {
 	}
 	
 	/**
-	 * Returns {@code true} if debugging is enabled when running external
-	 * problems.
+	 * Returns {@code true} if debugging is enabled when running external problems.
 	 * 
-	 * @return {@code true} if debugging for external problems is enabled;
-	 *         {@code false} otherwise
+	 * @return {@code true} if debugging for external problems is enabled; {@code false} otherwise
 	 */
 	public static boolean getExternalProblemDebuggingEnabled() {
 		return PROPERTIES.getBoolean(KEY_EXTERNAL_PROBLEM_DEBUGGING, false);

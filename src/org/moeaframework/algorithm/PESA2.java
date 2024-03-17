@@ -45,13 +45,11 @@ import org.moeaframework.util.TypedProperties;
  * <p>
  * References:
  * <ol>
- *   <li>Corne, D. W., N. R. Jerram, J. D. Knowles, and M. J. Oates (2001).
- *       PESA-II: Region-based Selection in Evolutionary Multiobjective
- *       Optimization.  Proceedings of the Genetic and Evolutionary
- *       Computation Conference (GECCO 2001), pp. 283-290.
- *   <li>Corne, D. W., J. D. Knowles, and M. J. Oates (2000).  The Pareto
- *       Envelope-based Selection Algorithm for Multiobjective Optimization.
- *       Parallel Problem Solving from Nature PPSN VI, pp. 839-848.
+ *   <li>Corne, D. W., N. R. Jerram, J. D. Knowles, and M. J. Oates (2001).  PESA-II: Region-based Selection in
+ *       Evolutionary Multiobjective Optimization.  Proceedings of the Genetic and Evolutionary Computation Conference
+ *       (GECCO 2001), pp. 283-290.
+ *   <li>Corne, D. W., J. D. Knowles, and M. J. Oates (2000).  The Pareto Envelope-based Selection Algorithm for
+ *       Multiobjective Optimization.  Parallel Problem Solving from Nature PPSN VI, pp. 839-848.
  * </ol>
  */
 public class PESA2 extends AbstractEvolutionaryAlgorithm {
@@ -62,8 +60,8 @@ public class PESA2 extends AbstractEvolutionaryAlgorithm {
 	final Selection selection;
 	
 	/**
-	 * A mapping from grid index to the solutions occupying that grid index.
-	 * This enables PESA2's region-based selection.
+	 * A mapping from grid index to the solutions occupying that grid index.  This enables PESA2's region-based
+	 * selection.
 	 */
 	Map<Integer, List<Solution>> gridMap;
 	
@@ -91,8 +89,8 @@ public class PESA2 extends AbstractEvolutionaryAlgorithm {
 	 * @param bisections the number of bisections in the adaptive grid archive
 	 * @param archiveSize the capacity of the adaptive grid archive
 	 */
-	public PESA2(Problem problem, int initialPopulationSize, Variation variation,
-			Initialization initialization, int bisections, int archiveSize) {
+	public PESA2(Problem problem, int initialPopulationSize, Variation variation, Initialization initialization,
+			int bisections, int archiveSize) {
 		super(problem,
 				initialPopulationSize,
 				new Population(),
@@ -145,12 +143,10 @@ public class PESA2 extends AbstractEvolutionaryAlgorithm {
 	}
 	
 	/**
-	 * Returns a mapping from grid index to the solutions occupying that grid
-	 * index.  The key is the grid index, and the value is the list of solutions
-	 * occupying that index.
+	 * Returns a mapping from grid index to the solutions occupying that grid index.  The key is the grid index, and
+	 * the value is the list of solutions occupying that index.
 	 * 
-	 * @return a mapping from grid index to the solutions occupying that grid
-	 *         index
+	 * @return a mapping from grid index to the solutions occupying that grid index
 	 */
 	protected Map<Integer, List<Solution>> createGridMap() {
 		AdaptiveGridArchive archive = getArchive();
@@ -193,10 +189,9 @@ public class PESA2 extends AbstractEvolutionaryAlgorithm {
 	}
 	
 	/**
-	 * Region-based selection.  Instead of selecting individual solutions,
-	 * PESA2 first selects hyperboxes using binary tournament selection to
-	 * favor hyperboxes with lower density.  Then, one solution from the
-	 * selected hyperbox is returned.
+	 * Region-based selection.  Instead of selecting individual solutions, PESA2 first selects hyperboxes using binary
+	 * tournament selection to favor hyperboxes with lower density.  Then, one solution from the selected hyperbox is
+	 * returned.
 	 */
 	public class RegionBasedSelection implements Selection {
 		

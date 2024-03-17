@@ -17,7 +17,6 @@
  */
 
 /**
- * Routines for generating weights for decomposition and reference point
- * methods.
+ * Routines for generating weights for decomposition and reference point methods.
  */
 package org.moeaframework.util.weights;

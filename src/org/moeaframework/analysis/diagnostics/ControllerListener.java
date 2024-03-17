@@ -20,14 +20,14 @@ package org.moeaframework.analysis.diagnostics;
 import java.util.EventListener;
 
 /**
- * Listens for events fired by the controller.  See {@link ControllerEvent} for
- * details on the type of events which can be fired.
+ * Listens for events fired by the controller.  See {@link ControllerEvent} for details on the type of events which can
+ * be fired.
  */
 public interface ControllerListener extends EventListener {
 	
 	/**
-	 * Invoked by the controller to indicate its state changed.  The
-	 * {@code ControllerEvent} indicates the type of event which has occurred.
+	 * Invoked by the controller to indicate its state changed.  The {@code ControllerEvent} indicates the type of
+	 * event which has occurred.
 	 * 
 	 * @param event details of the controller event
 	 */

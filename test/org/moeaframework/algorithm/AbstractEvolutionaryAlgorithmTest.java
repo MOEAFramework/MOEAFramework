@@ -38,11 +38,9 @@ import org.moeaframework.core.spi.ProblemFactory;
 public class AbstractEvolutionaryAlgorithmTest {
 
 	/**
-	 * Returns a new instance of a dummy abstract evolutionary algorithm for
-	 * testing.
+	 * Returns a new instance of a dummy abstract evolutionary algorithm for testing.
 	 * 
-	 * @return a new instance of a dummy abstract evolutionary algorithm for
-	 *         testing
+	 * @return a new instance of a dummy abstract evolutionary algorithm for testing
 	 */
 	private AbstractEvolutionaryAlgorithm newInstance() {
 		Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");

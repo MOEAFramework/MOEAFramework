@@ -50,8 +50,7 @@ public class MannWhitneyUTestTest {
 
 	/**
 	 * This is the Tortoise vs. Hare example from
-	 * <a href="http://en.wikipedia.org/wiki/Mann%E2%80%93Whitney_U">
-	 * Wikipedia</a>
+	 * <a href="http://en.wikipedia.org/wiki/Mann%E2%80%93Whitney_U"> Wikipedia</a>
 	 */
 	@Test
 	public void testExample2() {
@@ -78,9 +77,8 @@ public class MannWhitneyUTestTest {
 	}
 	
 	/**
-	 * Commons Math 3.0 introduced their own MannWhitneyUTest class.  The
-	 * Commons Math implementation only supports the normal approximation for
-	 * the U statistic, and will be inaccurate with small sample sizes.
+	 * Commons Math 3.0 introduced their own MannWhitneyUTest class.  The Commons Math implementation only supports the
+	 * normal approximation for the U statistic, and will be inaccurate with small sample sizes.
 	 */
 	@Test
 	public void testCommonsMath() {

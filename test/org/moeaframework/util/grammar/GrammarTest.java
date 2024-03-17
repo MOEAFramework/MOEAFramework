@@ -88,8 +88,6 @@ public class GrammarTest {
 
 	/**
 	 * Tests if the {@link Grammar#isValid} method correctly identifies valid and invalid grammars.
-	 * 
-	 * @throws IOException if an I/O error occurred
 	 */
 	@Test
 	public void testIsValid() throws IOException {

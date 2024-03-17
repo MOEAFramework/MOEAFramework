@@ -28,8 +28,8 @@ import org.moeaframework.core.Variation;
 public class TypeSafetyTest {
 
 	/**
-	 * Variable for testing type safety. Since this variable is unknown to the
-	 * operators, only the copy() method is valid.
+	 * Variable for testing type safety. Since this variable is unknown to the operators, only the copy() method is
+	 * valid.
 	 */
 	private static class NewVariable extends UnsupportedVariable {
 
@@ -43,9 +43,8 @@ public class TypeSafetyTest {
 	}
 
 	/**
-	 * Tests if the specified variation operator is type safe. The variation
-	 * operator should be constructed so that it is guaranteed to be applied to
-	 * the parents (i.e., a probability of 1).
+	 * Tests if the specified variation operator is type safe. The variation operator should be constructed so that it
+	 * is guaranteed to be applied to the parents (i.e., a probability of 1).
 	 * 
 	 * @param variation the variation operator to test
 	 */

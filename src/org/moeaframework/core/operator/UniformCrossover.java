@@ -26,8 +26,7 @@ import org.moeaframework.core.configuration.Property;
 import org.moeaframework.core.configuration.Validate;
 
 /**
- * Crossover operator where each index is randomly swapped between the
- * parents with a 50% chance.
+ * Crossover operator where each index is randomly swapped between the parents with a 50% chance.
  */
 @Prefix("ux")
 public class UniformCrossover implements Variation {
@@ -38,16 +37,14 @@ public class UniformCrossover implements Variation {
 	private double probability;
 	
 	/**
-	 * Constructs a uniform crossover operator with a 100% probability of
-	 * mutating the parents.
+	 * Constructs a uniform crossover operator with a 100% probability of mutating the parents.
 	 */
 	public UniformCrossover() {
 		this(1.0);
 	}
 
 	/**
-	 * Constructs a uniform crossover operator with the specified probability of
-	 * applying this operator to solutions.
+	 * Constructs a uniform crossover operator with the specified probability of applying this operator to solutions.
 	 * 
 	 * @param probability the probability of applying this operator to solutions
 	 */

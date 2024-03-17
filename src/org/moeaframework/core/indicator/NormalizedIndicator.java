@@ -23,8 +23,7 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 
 /**
- * Abstract class for indicators that require normalized approximation and
- * reference sets.
+ * Abstract class for indicators that require normalized approximation and reference sets.
  */
 public abstract class NormalizedIndicator implements Indicator {
 
@@ -34,8 +33,7 @@ public abstract class NormalizedIndicator implements Indicator {
 	protected final Problem problem;
 
 	/**
-	 * The normalizer to normalize populations so that all objectives reside in
-	 * the range {@code [0, 1]}.
+	 * The normalizer to normalize populations so that all objectives reside in the range {@code [0, 1]}.
 	 */
 	private final Normalizer normalizer;
 	
@@ -45,30 +43,25 @@ public abstract class NormalizedIndicator implements Indicator {
 	private final NondominatedPopulation normalizedReferenceSet;
 
 	/**
-	 * Constructs a normalized indicator for the specified problem and 
-	 * corresponding reference set.
+	 * Constructs a normalized indicator for the specified problem and corresponding reference set.
 	 * 
 	 * @param problem the problem
 	 * @param referenceSet the reference set for the problem
-	 * @throws IllegalArgumentException if the reference set contains fewer
-	 *         than two solutions
+	 * @throws IllegalArgumentException if the reference set contains fewer than two solutions
 	 */
 	public NormalizedIndicator(Problem problem, NondominatedPopulation referenceSet) {
 		this(problem, referenceSet, false);
 	}
 	
 	/**
-	 * Constructs a normalized indicator for the specified problem and 
-	 * corresponding reference set.  If {@code useReferencePoint} is
-	 * {@code true}, this constructor will attempt to lookup the appropriate
+	 * Constructs a normalized indicator for the specified problem and corresponding reference set.  If
+	 * {@code useReferencePoint} is {@code true}, this constructor will attempt to lookup the appropriate
 	 * reference point for the given problem.
 	 * 
 	 * @param problem the problem
 	 * @param referenceSet the reference set for the problem
-	 * @param useReferencePoint if {@code true}, a reference point is used
-	 *        (e.g., for the hypervolume indicator)
-	 * @throws IllegalArgumentException if the reference set contains fewer
-	 *         than two solutions
+	 * @param useReferencePoint if {@code true}, a reference point is used (e.g., for the hypervolume indicator)
+	 * @throws IllegalArgumentException if the reference set contains fewer than two solutions
 	 */
 	public NormalizedIndicator(Problem problem, NondominatedPopulation referenceSet, boolean useReferencePoint) {
 		super();
@@ -93,16 +86,13 @@ public abstract class NormalizedIndicator implements Indicator {
 	}
 	
 	/**
-	 * Constructs a normalized indicator for the specified problem and 
-	 * corresponding reference set.  This version allows the use of a custom
-	 * reference point.
+	 * Constructs a normalized indicator for the specified problem and corresponding reference set.  This version
+	 * allows the use of a custom reference point.
 	 * 
 	 * @param problem the problem
 	 * @param referenceSet the reference set for the problem
-	 * @param referencePoint the reference point (used for hypervolume
-	 *        calculations)
-	 * @throws IllegalArgumentException if the reference set contains fewer
-	 *         than two solutions
+	 * @param referencePoint the reference point (used for hypervolume calculations)
+	 * @throws IllegalArgumentException if the reference set contains fewer than two solutions
 	 */
 	public NormalizedIndicator(Problem problem, NondominatedPopulation referenceSet, double[] referencePoint) {
 		super();
@@ -113,9 +103,8 @@ public abstract class NormalizedIndicator implements Indicator {
 	}
 	
 	/**
-	 * Constructs a normalized indicator for the specified problem and 
-	 * corresponding reference set.  This version allows the use of a custom
-	 * minimum and maximum bounds.
+	 * Constructs a normalized indicator for the specified problem and corresponding reference set.  This version
+	 * allows the use of a custom minimum and maximum bounds.
 	 * 
 	 * @param problem the problem
 	 * @param referenceSet the reference set for the problem

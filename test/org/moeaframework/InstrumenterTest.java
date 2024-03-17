@@ -69,9 +69,7 @@ public class InstrumenterTest {
 				public boolean matches(Stack<Object> parents, Object object) {
 					Class<?> type = object.getClass();
 					
-					return (type.getPackage() != null) && 
-							type.getPackage().getName().startsWith(
-									"org.moeaframework");
+					return (type.getPackage() != null) && type.getPackage().getName().startsWith("org.moeaframework");
 				}
 				
 			};

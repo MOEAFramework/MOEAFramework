@@ -25,9 +25,8 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 
 /**
- * Initialization method that injects pre-defined solutions into the initial
- * population.  This is typically used to initialize an algorithm with a set
- * of known "good" solutions.
+ * Initialization method that injects pre-defined solutions into the initial population.  This is typically used to
+ * initialize an algorithm with a set of known "good" solutions.
  */
 public class InjectedInitialization extends RandomInitialization {
 	

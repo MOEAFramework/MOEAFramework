@@ -27,8 +27,7 @@ import org.moeaframework.core.variable.RealVariable;
 public class ConvexC2_DTLZ2 extends ConvexDTLZ2 {
 
 	/**
-	 * Constructs a convex C2-DTLZ2 test problem with the specified number of
-	 * variables and objectives.
+	 * Constructs a convex C2-DTLZ2 test problem with the specified number of variables and objectives.
 	 * 
 	 * @param numberOfVariables the number of variables for this problem
 	 * @param numberOfObjectives the number of objectives for this problem
@@ -38,9 +37,8 @@ public class ConvexC2_DTLZ2 extends ConvexDTLZ2 {
 	}
 
 	/**
-	 * Constructs a convex C2-DTLZ2 test problem with the specified number of
-	 * objectives.  This is equivalent to calling
-	 * {@code new DTLZ2(numberOfObjectives+9, numberOfObjectives)}.
+	 * Constructs a convex C2-DTLZ2 test problem with the specified number of objectives.  This is equivalent to
+	 * calling {@code new DTLZ2(numberOfObjectives+9, numberOfObjectives)}.
 	 * 
 	 * @param numberOfObjectives the number of objectives for this problem
 	 */

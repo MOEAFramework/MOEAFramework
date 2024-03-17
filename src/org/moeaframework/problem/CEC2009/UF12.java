@@ -24,14 +24,12 @@ import org.moeaframework.problem.AbstractProblem;
 import org.moeaframework.problem.DTLZ.DTLZ3;
 
 /**
- * The unconstrained UF12 test problem from the CEC 2009 special session and
- * competition.
+ * The unconstrained UF12 test problem from the CEC 2009 special session and competition.
  */
 public class UF12 extends AbstractProblem {
 
 	/**
-	 * The decision variable lower and upper bounds for the instance with 10 
-	 * decision variables.
+	 * The decision variable lower and upper bounds for the instance with 10 decision variables.
 	 */
 	private static final double[][] bound_10D = {
 			{ -1.118, -0.951, -2.055, -0.472, -1.070, 0, 0, 0, 0, 0 },
@@ -55,12 +53,10 @@ public class UF12 extends AbstractProblem {
 	/**
 	 * The scaling factors for the instance with 10 decision variables.
 	 */
-	private static final double[] lamda_l_10D = { 
-			0.313, 0.312, 0.321, 0.316, 0.456, 1, 1, 1, 1, 1 };
+	private static final double[] lamda_l_10D = { 0.313, 0.312, 0.321, 0.316, 0.456, 1, 1, 1, 1, 1 };
 	
 	/**
-	 * The decision variable lower and upper bounds for the instance with 30 
-	 * decision variables.
+	 * The decision variable lower and upper bounds for the instance with 30 decision variables.
 	 */
 	private static final double[][] bound_30D = {
 			{ -1.773, -1.846, -1.053, -2.370, -1.603, -1.878, -1.677, -0.935,
@@ -182,16 +178,14 @@ public class UF12 extends AbstractProblem {
 	private final DTLZ3 problem;
 
 	/**
-	 * Constructs a UF12 test problem with 30 decision variables and 5
-	 * objectives.
+	 * Constructs a UF12 test problem with 30 decision variables and 5 objectives.
 	 */
 	public UF12() {
 		this(30, 5);
 	}
 
 	/**
-	 * Constructs a UF12 test problem with the specified number of decision
-	 * variables and objectives.
+	 * Constructs a UF12 test problem with the specified number of decision variables and objectives.
 	 * 
 	 * @param numberOfVariables the number of decision variables
 	 * @param numberOfObjectives the number of objectives
@@ -200,8 +194,7 @@ public class UF12 extends AbstractProblem {
 		super(numberOfVariables, numberOfObjectives);
 		
 		if ((numberOfVariables != 10) && (numberOfVariables != 30)) {
-			throw new IllegalArgumentException(
-					"number of variables must be 10 or 30");
+			throw new IllegalArgumentException("number of variables must be 10 or 30");
 		}
 		
 		problem = new DTLZ3(numberOfVariables, numberOfObjectives);
@@ -226,8 +219,7 @@ public class UF12 extends AbstractProblem {
 		
 		//convert the DTLZ3 results back to UF12
 		for (int i=0; i<numberOfObjectives; i++) {
-			solution.setObjective(i, 2.0 / (1.0 + Math.exp(-psum[i])) * 
-					(transformedSolution.getObjective(i) + 1));
+			solution.setObjective(i, 2.0 / (1.0 + Math.exp(-psum[i])) * (transformedSolution.getObjective(i) + 1));
 		}
 	}
 

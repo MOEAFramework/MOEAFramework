@@ -24,8 +24,7 @@ import org.moeaframework.problem.AbstractProblem;
 import org.moeaframework.problem.AnalyticalProblem;
 
 /**
- * The Laumanns problem.  The optimum points like on the line {@code (x, 0)}
- * with {@code -2 <= x <= 0}.
+ * The Laumanns problem.  The optimum points like on the line {@code (x, 0)} with {@code -2 <= x <= 0}.
  * <p>
  * Properties:
  * <ul>
@@ -36,13 +35,11 @@ import org.moeaframework.problem.AnalyticalProblem;
  * <p>
  * References:
  * <ol>
- *   <li>Laumanns, M., Rudolph, G., and Schwefel, H. (1998).  "A Spatial
- *       Predator-Prey Approach to Multi-Objective Optimization: A Preliminary
- *       Study."  Proceedings of the Parallel Problem Solving from Nature,
- *       Springer, pp. 241-249.
- *   <li>Van Veldhuizen, D. A (1999).  "Multiobjective Evolutionary Algorithms: 
- *       Classifications, Analyses, and New Innovations."  Air Force Institute
- *       of Technology, Ph.D. Thesis, Appendix B.
+ *   <li>Laumanns, M., Rudolph, G., and Schwefel, H. (1998).  "A Spatial Predator-Prey Approach to Multi-Objective
+ *       Optimization: A Preliminary Study."  Proceedings of the Parallel Problem Solving from Nature, Springer,
+ *       pp. 241-249.
+ *   <li>Van Veldhuizen, D. A (1999).  "Multiobjective Evolutionary Algorithms: Classifications, Analyses, and New
+ *       Innovations."  Air Force Institute of Technology, Ph.D. Thesis, Appendix B.
  * </ol>
  */
 public class Laumanns extends AbstractProblem implements AnalyticalProblem {

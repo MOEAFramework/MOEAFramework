@@ -43,8 +43,7 @@ public class RemoveTest {
 	}
 
 	/**
-	 * Tests various probabilities to ensure remove mutation is applied the
-	 * correct number of times on average.
+	 * Tests various probabilities to ensure remove mutation is applied the correct number of times on average.
 	 */
 	@Test
 	public void testProbabilities() {
@@ -89,13 +88,11 @@ public class RemoveTest {
 	}
 
 	/**
-	 * Returns {@code true} if the result is a valid add; {@code false}
-	 * otherwise.
+	 * Returns {@code true} if the result is a valid add; {@code false} otherwise.
 	 * 
 	 * @param v1 the first subset
 	 * @param v2 the second subset
-	 * @return {@code true} if the result is a valid add; {@code false}
-	 *         otherwise
+	 * @return {@code true} if the result is a valid add; {@code false} otherwise
 	 */
 	protected boolean testSubset(Subset v1, Subset v2) {
 		Set<Integer> set = v1.getSet();

@@ -21,12 +21,10 @@ package org.moeaframework.problem.WFG;
  * 
  * Copyright 2005 The Walking Fish Group (WFG).
  *
- * This material is provided "as is", with no warranty expressed or implied.
- * Any use is at your own risk. Permission to use or copy this software for
- * any purpose is hereby granted without fee, provided this notice is
- * retained on all copies. Permission to modify the code and to distribute
- * modified code is granted, provided a notice that the code was modified is
- * included with the above copyright notice.
+ * This material is provided "as is", with no warranty expressed or implied.  Any use is at your own risk. Permission
+ * to use or copy this software for any purpose is hereby granted without fee, provided this notice is retained on all
+ * copies. Permission to modify the code and to distribute modified code is granted, provided a notice that the code
+ * was modified is included with the above copyright notice.
  *
  * http://www.wfg.csse.uwa.edu.au/
  */
@@ -58,14 +56,12 @@ class TransFunctions {
 		assert (C != 1.0) || (B != 0.0);
 
 		double tmp1 = Math.min(0.0, Math.floor(y - B)) * A * (B - y) / B;
-		double tmp2 = Math.min(0.0, Math.floor(C - y)) * (1.0 - A) * (y - C)
-				/ (1.0 - C);
+		double tmp2 = Math.min(0.0, Math.floor(C - y)) * (1.0 - A) * (y - C) / (1.0 - C);
 
 		return Misc.correct_to_01(A + tmp1 - tmp2);
 	}
 
-	public static double b_param(double y, double u, double A, double B,
-			double C) {
+	public static double b_param(double y, double u, double A, double B, double C) {
 		assert (y >= 0.0) && (y <= 1.0);
 		assert (u >= 0.0) && (u <= 1.0);
 		assert (A > 0.0) && (A < 1.0);
@@ -81,8 +77,7 @@ class TransFunctions {
 		assert (y >= 0.0) && (y <= 1.0);
 		assert (A > 0.0) && (A < 1.0);
 
-		return Misc.correct_to_01(Math.abs(y - A)
-				/ Math.abs(Math.floor(A - y) + A));
+		return Misc.correct_to_01(Math.abs(y - A) / Math.abs(Math.floor(A - y) + A));
 	}
 
 	public static double s_decept(double y, double A, double B, double C) {
@@ -93,11 +88,9 @@ class TransFunctions {
 		assert (A - B > 0.0) && (A + B < 1.0);
 
 		double tmp1 = Math.floor(y - A + B) * (1.0 - C + (A - B) / B) / (A - B);
-		double tmp2 = Math.floor(A + B - y) * (1.0 - C + (1.0 - A - B) / B)
-				/ (1.0 - A - B);
+		double tmp2 = Math.floor(A + B - y) * (1.0 - C + (1.0 - A - B) / B) / (1.0 - A - B);
 
-		return Misc.correct_to_01(1.0 + (Math.abs(y - A) - B)
-				* (tmp1 + tmp2 + 1.0 / B));
+		return Misc.correct_to_01(1.0 + (Math.abs(y - A) - B) * (tmp1 + tmp2 + 1.0 / B));
 	}
 
 	public static double s_multi(double y, int A, double B, double C) {
@@ -110,9 +103,7 @@ class TransFunctions {
 		double tmp1 = Math.abs(y - C) / (2.0 * (Math.floor(C - y) + C));
 		double tmp2 = (4.0 * A + 2.0) * Math.PI * (0.5 - tmp1);
 
-		return Misc.correct_to_01((1.0 + Math.cos(tmp2) + 4.0 * B
-				* Math.pow(tmp1, 2.0))
-				/ (B + 2.0));
+		return Misc.correct_to_01((1.0 + Math.cos(tmp2) + 4.0 * B * Math.pow(tmp1, 2.0)) / (B + 2.0));
 	}
 
 	public static double r_sum(double[] y, double[] w) {

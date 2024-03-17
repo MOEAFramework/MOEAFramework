@@ -108,20 +108,17 @@ public class ActionFactory implements ControllerListener {
 	private Action disableAllIndicatorsAction;
 	
 	/**
-	 * The action to toggle the inclusion of the hypervolume indicator
-	 * collector.
+	 * The action to toggle the inclusion of the hypervolume indicator collector.
 	 */
 	private Action includeHypervolumeAction;
 	
 	/**
-	 * The action to toggle the inclusion of the generational distance
-	 * indicator collector.
+	 * The action to toggle the inclusion of the generational distance indicator collector.
 	 */
 	private Action includeGenerationalDistanceAction;
 	
 	/**
-	 * The action to toggle the inclusion of the inverted generational distance
-	 * indicator collector.
+	 * The action to toggle the inclusion of the inverted generational distance indicator collector.
 	 */
 	private Action includeInvertedGenerationalDistanceAction;
 	
@@ -131,14 +128,12 @@ public class ActionFactory implements ControllerListener {
 	private Action includeSpacingAction;
 	
 	/**
-	 * The action to toggle the inclusion of the additive &epsilon;-indicator
-	 * collector.
+	 * The action to toggle the inclusion of the additive &epsilon;-indicator collector.
 	 */
 	private Action includeAdditiveEpsilonIndicatorAction;
 	
 	/**
-	 * The action to toggle the inclusion of the contribution indicator
-	 * collector.
+	 * The action to toggle the inclusion of the contribution indicator collector.
 	 */
 	private Action includeContributionAction;
 	
@@ -158,20 +153,17 @@ public class ActionFactory implements ControllerListener {
 	private Action includeR3Action;
 	
 	/**
-	 * The action to toggle the inclusion of &epsilon;-progress restart
-	 * collector.
+	 * The action to toggle the inclusion of &epsilon;-progress restart collector.
 	 */
 	private Action includeEpsilonProgressAction;
 	
 	/**
-	 * The action to toggle the inclusion of the adaptive multimethod variation
-	 * collector.
+	 * The action to toggle the inclusion of the adaptive multimethod variation collector.
 	 */
 	private Action includeAdaptiveMultimethodVariationAction;
 	
 	/**
-	 * The action to toggle the inclusion of the adaptive time continuation
-	 * collector.
+	 * The action to toggle the inclusion of the adaptive time continuation collector.
 	 */
 	private Action includeAdaptiveTimeContinuationAction;
 	
@@ -233,10 +225,8 @@ public class ActionFactory implements ControllerListener {
 	/**
 	 * Constructs a new action factory.
 	 * 
-	 * @param frame the {@code DiagnosticTool} instance on which these actions
-	 *        operate
-	 * @param controller the {@code Controller} instance on which these actions
-	 *        operate
+	 * @param frame the {@code DiagnosticTool} instance on which these actions operate
+	 * @param controller the {@code Controller} instance on which these actions operate
 	 */
 	public ActionFactory(DiagnosticTool frame, Controller controller) {
 		super();
@@ -947,132 +937,108 @@ public class ActionFactory implements ControllerListener {
 	}
 
 	/**
-	 * Returns the action to toggle the inclusion of the hypervolume indicator
-	 * collector.
+	 * Returns the action to toggle the inclusion of the hypervolume indicator collector.
 	 * 
-	 * @return the action to toggle the inclusion of the hypervolume indicator
-	 *         collector
+	 * @return the action to toggle the inclusion of the hypervolume indicator collector
 	 */
 	public Action getIncludeHypervolumeAction() {
 		return includeHypervolumeAction;
 	}
 
 	/**
-	 * Returns the action to toggle the inclusion of the generational distance
-	 * indicator collector.
+	 * Returns the action to toggle the inclusion of the generational distance indicator collector.
 	 * 
-	 * @return the action to toggle the inclusion of the generational distance
-	 *         indicator collector
+	 * @return the action to toggle the inclusion of the generational distance indicator collector
 	 */
 	public Action getIncludeGenerationalDistanceAction() {
 		return includeGenerationalDistanceAction;
 	}
 
 	/**
-	 * Returns the action to toggle the inclusion of the inverted generational
-	 * distance indicator collector.
+	 * Returns the action to toggle the inclusion of the inverted generational distance indicator collector.
 	 * 
-	 * @return the action to toggle the inclusion of the inverted generational
-	 *         distance indicator collector
+	 * @return the action to toggle the inclusion of the inverted generational distance indicator collector
 	 */
 	public Action getIncludeInvertedGenerationalDistanceAction() {
 		return includeInvertedGenerationalDistanceAction;
 	}
 
 	/**
-	 * Returns the action to toggle the inclusion the spacing indicator 
-	 * collector.
+	 * Returns the action to toggle the inclusion the spacing indicator collector.
 	 * 
-	 * @return the action to toggle the inclusion the spacing indicator 
-	 *         collector
+	 * @return the action to toggle the inclusion the spacing indicator collector
 	 */
 	public Action getIncludeSpacingAction() {
 		return includeSpacingAction;
 	}
 
 	/**
-	 * Returns the action to toggle the inclusion of the additive 
-	 * &epsilon;-indicator collector.
+	 * Returns the action to toggle the inclusion of the additive &epsilon;-indicator collector.
 	 * 
-	 * @return the action to toggle the inclusion of the additive 
-	 *         &epsilon;-indicator collector
+	 * @return the action to toggle the inclusion of the additive &epsilon;-indicator collector
 	 */
 	public Action getIncludeAdditiveEpsilonIndicatorAction() {
 		return includeAdditiveEpsilonIndicatorAction;
 	}
 
 	/**
-	 * Returns the action to toggle the inclusion of the contribution indicator
-	 * collector.
+	 * Returns the action to toggle the inclusion of the contribution indicator collector.
 	 * 
-	 * @return the action to toggle the inclusion of the contribution indicator
-	 *         collector
+	 * @return the action to toggle the inclusion of the contribution indicator collector
 	 */
 	public Action getIncludeContributionAction() {
 		return includeContributionAction;
 	}
 	
 	/**
-	 * Returns the action to toggle the inclusion of the R1 indicator
-	 * collector.
+	 * Returns the action to toggle the inclusion of the R1 indicator collector.
 	 * 
-	 * @return the action to toggle the inclusion of the R1 indicator
-	 *         collector
+	 * @return the action to toggle the inclusion of the R1 indicator collector
 	 */
 	public Action getIncludeR1Action() {
 		return includeR1Action;
 	}
 	
 	/**
-	 * Returns the action to toggle the inclusion of the R2 indicator
-	 * collector.
+	 * Returns the action to toggle the inclusion of the R2 indicator collector.
 	 * 
-	 * @return the action to toggle the inclusion of the R2 indicator
-	 *         collector
+	 * @return the action to toggle the inclusion of the R2 indicator collector
 	 */
 	public Action getIncludeR2Action() {
 		return includeR2Action;
 	}
 	
 	/**
-	 * Returns the action to toggle the inclusion of the R3 indicator
-	 * collector.
+	 * Returns the action to toggle the inclusion of the R3 indicator collector.
 	 * 
-	 * @return the action to toggle the inclusion of the R3 indicator
-	 *         collector
+	 * @return the action to toggle the inclusion of the R3 indicator collector
 	 */
 	public Action getIncludeR3Action() {
 		return includeR3Action;
 	}
 
 	/**
-	 * Returns the action to toggle the inclusion of &epsilon;-progress restart
-	 * collector.
+	 * Returns the action to toggle the inclusion of &epsilon;-progress restart collector.
 	 * 
-	 * @return the action to toggle the inclusion of &epsilon;-progress restart
-	 *         collector
+	 * @return the action to toggle the inclusion of &epsilon;-progress restart collector
 	 */
 	public Action getIncludeEpsilonProgressAction() {
 		return includeEpsilonProgressAction;
 	}
 
 	/**
-	 * Returns the action to toggle the inclusion of the adaptive multimethod
-	 * variation collector.
+	 * Returns the action to toggle the inclusion of the adaptive multimethod variation collector.
 	 * 
-	 * @return the action to toggle the inclusion of the adaptive multimethod
-	 *         variation collector
+	 * @return the action to toggle the inclusion of the adaptive multimethod variation collector
 	 */
 	public Action getIncludeAdaptiveMultimethodVariationAction() {
 		return includeAdaptiveMultimethodVariationAction;
 	}
 
 	/**
-	 * Returns the action to toggle the inclusion of the adaptive time
-	 * continuation collector.
+	 * Returns the action to toggle the inclusion of the adaptive time continuation collector.
 	 * 
-	 * @return the action to toggle the inclusion of the adaptive time
-	 *         continuation collector
+	 * @return the action to toggle the inclusion of the adaptive time continuation collector
 	 */
 	public Action getIncludeAdaptiveTimeContinuationAction() {
 		return includeAdaptiveTimeContinuationAction;
@@ -1088,22 +1054,18 @@ public class ActionFactory implements ControllerListener {
 	}
 
 	/**
-	 * Returns the action to toggle the inclusion of the population size 
-	 * collector.
+	 * Returns the action to toggle the inclusion of the population size collector.
 	 * 
-	 * @return the action to toggle the inclusion of the population size 
-	 *         collector
+	 * @return the action to toggle the inclusion of the population size collector
 	 */
 	public Action getIncludePopulationSizeAction() {
 		return includePopulationSizeAction;
 	}
 
 	/**
-	 * Returns the action to toggle the inclusion of the approximation set
-	 * collector.
+	 * Returns the action to toggle the inclusion of the approximation set collector.
 	 * 
-	 * @return the action to toggle the inclusion of the approximation set
-	 *         collector
+	 * @return the action to toggle the inclusion of the approximation set collector
 	 */
 	public Action getIncludeApproximationSetAction() {
 		return includeApproximationSetAction;

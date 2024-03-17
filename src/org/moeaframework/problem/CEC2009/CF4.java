@@ -23,8 +23,7 @@ import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.AbstractProblem;
 
 /**
- * The constrained CF4 test problem from the CEC 2009 special session and
- * competition.
+ * The constrained CF4 test problem from the CEC 2009 special session and competition.
  */
 public class CF4 extends AbstractProblem {
 
@@ -36,8 +35,7 @@ public class CF4 extends AbstractProblem {
 	}
 
 	/**
-	 * Constructs a CF4 test problem with the specified number of decision
-	 * variables.
+	 * Constructs a CF4 test problem with the specified number of decision variables.
 	 * 
 	 * @param numberOfVariables the number of decision variables
 	 */

@@ -28,8 +28,7 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.indicator.PISAHypervolume;
 
 /**
- * Assigns the fitness of solutions based on their contribution to the overall
- * hypervolume.
+ * Assigns the fitness of solutions based on their contribution to the overall hypervolume.
  */
 public class HypervolumeContributionFitnessEvaluator implements FitnessEvaluator {
 	
@@ -39,14 +38,12 @@ public class HypervolumeContributionFitnessEvaluator implements FitnessEvaluator
 	private final Problem problem;
 	
 	/**
-	 * The offset used when determining the reference point for the hypervolume
-	 * calculation.
+	 * The offset used when determining the reference point for the hypervolume calculation.
 	 */
 	private final double offset;
 	
 	/**
-	 * Constructs a new hypervolume contribution fitness evaluator with an
-	 * offset of 100.
+	 * Constructs a new hypervolume contribution fitness evaluator with an offset of 100.
 	 * 
 	 * @param problem the problem
 	 */
@@ -58,8 +55,7 @@ public class HypervolumeContributionFitnessEvaluator implements FitnessEvaluator
 	 * Constructs a new hypervolume contribution fitness evaluator.
 	 * 
 	 * @param problem the problem
-	 * @param offset the offset used when determining the reference point for\
-	 *               the hypervolume calculation.
+	 * @param offset the offset used when determining the reference point for the hypervolume calculation.
 	 */
 	public HypervolumeContributionFitnessEvaluator(Problem problem, double offset) {
 		super();
@@ -77,21 +73,25 @@ public class HypervolumeContributionFitnessEvaluator implements FitnessEvaluator
 			int numberOfObjectives = problem.getNumberOfObjectives();
 			List<Solution> solutions = normalize(population);
 			List<Solution> solutionsCopy = new ArrayList<Solution>(solutions);
-			double totalVolume = PISAHypervolume.calculateHypervolume(solutionsCopy, solutionsCopy.size(), numberOfObjectives);
+			
+			double totalVolume = PISAHypervolume.calculateHypervolume(solutionsCopy, solutionsCopy.size(), 
+					numberOfObjectives);
 			
 			for (int i = 0; i < population.size(); i++) {
 				solutionsCopy = new ArrayList<Solution>(solutions);
 				solutionsCopy.remove(i);
 				
-				double volume = PISAHypervolume.calculateHypervolume(solutionsCopy, solutionsCopy.size(), numberOfObjectives);
+				double volume = PISAHypervolume.calculateHypervolume(solutionsCopy, solutionsCopy.size(),
+						numberOfObjectives);
+				
 				population.get(i).setAttribute(FITNESS_ATTRIBUTE, totalVolume - volume);
 			}
 		}
 	}
 	
 	/**
-	 * Normalizes the population using a reference point calculated by the
-	 * maximum extent of the population plus an offset.
+	 * Normalizes the population using a reference point calculated by the maximum extent of the population plus an
+	 * offset.
 	 * 
 	 * @param population the population to normalize
 	 * @return the normalized solutions
@@ -116,7 +116,8 @@ public class HypervolumeContributionFitnessEvaluator implements FitnessEvaluator
 			Solution newSolution = solution.copy();
 			
 			for (int i = 0; i < problem.getNumberOfObjectives(); i++) {
-				newSolution.setObjective(i, (max[i] - (newSolution.getObjective(i) - min[i]) + offset) / (max[i] - min[i]));
+				newSolution.setObjective(i, (max[i] - (newSolution.getObjective(i) - min[i]) + offset) /
+						(max[i] - min[i]));
 			}
 
 			result.add(newSolution);

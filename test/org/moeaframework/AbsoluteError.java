@@ -20,23 +20,19 @@ package org.moeaframework;
 import org.junit.Assert;
 
 /**
- * Compares floating-point numbers allowing a small absolute error when
- * determining equality.
+ * Compares floating-point numbers allowing a small absolute error when determining equality.
  */
 public class AbsoluteError implements FloatingPointError {
 	
 	/**
-	 * The maximum absolute error permitted when considering if two floating-
-	 * point numbers are equal.
+	 * The maximum absolute error permitted when considering if two floating-point numbers are equal.
 	 */
 	private final double epsilon;
 	
 	/**
-	 * Creates a comparator of floating point values allowing a small absolute
-	 * error when determining equality.
+	 * Creates a comparator of floating point values allowing a small absolute error when determining equality.
 	 * 
-	 * @param epsilon the maximum absolute error permitted when considering if
-	 *        two floating-point numbers are equal
+	 * @param epsilon the maximum absolute error permitted when considering if two floating-point numbers are equal
 	 */
 	public AbsoluteError(double epsilon) {
 		super();

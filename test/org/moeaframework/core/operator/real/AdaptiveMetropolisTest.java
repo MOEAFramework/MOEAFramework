@@ -49,8 +49,7 @@ import org.moeaframework.core.variable.EncodingUtils;
 public class AdaptiveMetropolisTest extends ParentCentricVariationTest {
 	
 	/**
-	 * This is sample output from running Jasper Vrugt's AMALGAM codes in
-	 * MATLAB that is positive definite.
+	 * This is sample output from running Jasper Vrugt's AMALGAM codes in MATLAB that is positive definite.
 	 */
 	@Test
 	public void testVrugtSample() {
@@ -72,8 +71,7 @@ public class AdaptiveMetropolisTest extends ParentCentricVariationTest {
 		double jumpRate = Math.pow(2.4 / Math.sqrt(10), 2.0);
 
 		RealMatrix actual = new CholeskyDecomposition(
-					new Covariance(matrix.scalarMultiply(jumpRate))
-					.getCovarianceMatrix()).getLT();
+					new Covariance(matrix.scalarMultiply(jumpRate)).getCovarianceMatrix()).getLT();
 		
 		RealMatrix expected = MatrixUtils.createRealMatrix(new double[][] {
 				{ 0.0335, -0.0001, -0.0003, -0.0006,  0.0005,  0.0003,  0.0006,  0.0000,  0.0001,  0.0005 },
@@ -162,8 +160,7 @@ public class AdaptiveMetropolisTest extends ParentCentricVariationTest {
 	}
 	
 	/**
-	 * Tests if each cluster formed around the parents exhibits the same
-	 * covariance as the parent solutions.
+	 * Tests if each cluster formed around the parents exhibits the same covariance as the parent solutions.
 	 */
 	@Test
 	@Retryable

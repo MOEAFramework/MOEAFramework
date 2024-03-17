@@ -25,8 +25,7 @@ import org.moeaframework.problem.AnalyticalProblem;
 /**
  * Implements methods shared by all problems in the WFG test suite.
  */
-public abstract class WFG extends AbstractProblem 
-implements AnalyticalProblem {
+public abstract class WFG extends AbstractProblem implements AnalyticalProblem {
 
 	/**
 	 * The number of position-related variables defined by this problem.
@@ -44,9 +43,8 @@ implements AnalyticalProblem {
 	protected final int M;
 
 	/**
-	 * Constructs a WFG problem instance with the specified number of 
-	 * position-related and distance-related variables and the specified number
-	 * of objectives.
+	 * Constructs a WFG problem instance with the specified number of position-related and distance-related variables
+	 * and the specified number of objectives.
 	 * 
 	 * @param k the number of position-related variables defined by this problem
 	 * @param l the number of distance-related variables defined by this problem

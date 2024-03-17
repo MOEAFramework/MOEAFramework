@@ -27,51 +27,40 @@ import org.moeaframework.core.Selection;
 import org.moeaframework.core.Variation;
 
 /**
- * Extends {@link AdaptiveTimeContinuation} to trigger restarts using
- * &epsilon;-progress.  &epsilon;-progress measures search progress by counting
- * the number of significant improvements, as measured by the number of
- * unoccupied &epsilon;-boxes filled during a fixed time window.  
+ * Extends {@link AdaptiveTimeContinuation} to trigger restarts using &epsilon;-progress.  &epsilon;-progress measures
+ * search progress by counting the number of significant improvements, as measured by the number of unoccupied
+ * &epsilon;-boxes filled during a fixed time window.  
  * <p>
  * References:
  * <ol>
- *   <li>Hadka, D. and Reed, P.  "Borg: An Auto-Adaptive Many-Objective
- *       Evolutionary Computing Framework."  Evolutionary Computation,
- *       21(2):231-259, 2013.
+ *   <li>Hadka, D. and Reed, P.  "Borg: An Auto-Adaptive Many-Objective Evolutionary Computing Framework."
+ *       Evolutionary Computation, 21(2):231-259, 2013.
  * </ol>
  */
 public class EpsilonProgressContinuation extends AdaptiveTimeContinuation {
 
 	/**
-	 * The number of &epsilon;-progress improvements since the last invocation 
-	 * of {@code check}.
+	 * The number of &epsilon;-progress improvements since the last invocation of {@code check}.
 	 */
 	private int improvementsAtLastCheck;
 
 	/**
-	 * Decorates the specified algorithm with &epsilon;-progress triggered time
-	 * continuation.
+	 * Decorates the specified algorithm with &epsilon;-progress triggered time continuation.
 	 * 
 	 * @param algorithm the algorithm being decorated
-	 * @param windowSize the number of iterations between invocations of
-	 *        {@code check}
-	 * @param maxWindowSize the maximum number of iterations allowed since the
-	 *        last restart before forcing a restart
+	 * @param windowSize the number of iterations between invocations of {@code check}
+	 * @param maxWindowSize the maximum number of iterations allowed since the last restart before forcing a restart
 	 * @param injectionRate the injection rate
 	 * @param minimumPopulationSize the minimum size of the population
 	 * @param maximumPopulationSize the maximum size of the population
-	 * @param selection the selection operator for selecting solutions from the
-	 *        archive during a restart
-	 * @param variation the variation operator for mutating solutions selected
-	 *        from the archive during a restart
+	 * @param selection the selection operator for selecting solutions from the archive during a restart
+	 * @param variation the variation operator for mutating solutions selected from the archive during a restart
 	 */
-	public EpsilonProgressContinuation(
-			EpsilonBoxEvolutionaryAlgorithm algorithm, int windowSize,
-			int maxWindowSize, double injectionRate,
-			int minimumPopulationSize, int maximumPopulationSize,
-			Selection selection, Variation variation) {
-		super(algorithm, windowSize, maxWindowSize, injectionRate,
-				minimumPopulationSize, maximumPopulationSize, selection,
-				variation);
+	public EpsilonProgressContinuation(EpsilonBoxEvolutionaryAlgorithm algorithm, int windowSize, int maxWindowSize,
+			double injectionRate, int minimumPopulationSize, int maximumPopulationSize, Selection selection,
+			Variation variation) {
+		super(algorithm, windowSize, maxWindowSize, injectionRate, minimumPopulationSize, maximumPopulationSize,
+				selection, variation);
 	}
 
 	@Override

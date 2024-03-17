@@ -124,10 +124,7 @@ public class ResultFileWriterTest {
 	}
 	
 	/**
-	 * Tests if special characters are escaped correctly when writing property
-	 * files.
-	 * 
-	 * @throws IOException should not occur
+	 * Tests if special characters are escaped correctly when writing property files.
 	 */
 	@Test
 	public void testSpecialCharactersInProperties() throws IOException {
@@ -149,8 +146,6 @@ public class ResultFileWriterTest {
 	
 	/**
 	 * Tests if {@code null} properties are written correctly.
-	 * 
-	 * @throws IOException should not occur
 	 */
 	@Test
 	public void testNullProperties() throws IOException {
@@ -170,8 +165,6 @@ public class ResultFileWriterTest {
 	
 	/**
 	 * Tests if empty properties are written correctly.
-	 * 
-	 * @throws IOException should not occur
 	 */
 	@Test
 	public void testEmptyProperties() throws IOException {
@@ -191,8 +184,6 @@ public class ResultFileWriterTest {
 	
 	/**
 	 * Tests if the population and properties are written correctly.
-	 * 
-	 * @throws IOException should not occur
 	 */
 	@Test
 	public void testNormal() throws IOException {
@@ -217,10 +208,7 @@ public class ResultFileWriterTest {
 	}
 	
 	/**
-	 * Tests if the population and properties are written correctly when
-	 * writing decision variables is disabled.
-	 * 
-	 * @throws IOException should not occur
+	 * Tests if the population and properties are written correctly when writing decision variables is disabled.
 	 */
 	@Test
 	public void testNoVariables() throws IOException {
@@ -250,10 +238,7 @@ public class ResultFileWriterTest {
 	}
 	
 	/**
-	 * Tests if constraint violating solutions are not written, and that
-	 * empty populations are written correctly.
-	 * 
-	 * @throws IOException should not occur
+	 * Tests if constraint violating solutions are not written, and that empty populations are written correctly.
 	 */
 	@Test
 	public void testConstrainedSolution() throws IOException {
@@ -277,10 +262,7 @@ public class ResultFileWriterTest {
 	}
 
 	/**
-	 * Tests if result files with multiple entries are written correctly, and
-	 * that writing can be resumed correctly.
-	 * 
-	 * @throws IOException should not occur
+	 * Tests if result files with multiple entries are written correctly, and that writing can be resumed correctly.
 	 */
 	@Test
 	public void testResume() throws IOException {
@@ -363,10 +345,9 @@ public class ResultFileWriterTest {
 		try (ResultFileReader reader = new ResultFileReader(problem, file)) {
 			ResultEntry entry = reader.next();
 			Assert.assertEquals(1, entry.getPopulation().size());
-			Assert.assertArrayEquals(solution.getObjectives(), 
-					entry.getPopulation().get(0).getObjectives(), Settings.EPS);
-			Assert.assertEquals(solution.getVariable(0), 
-					entry.getPopulation().get(0).getVariable(0));
+			Assert.assertArrayEquals(solution.getObjectives(), entry.getPopulation().get(0).getObjectives(),
+					Settings.EPS);
+			Assert.assertEquals(solution.getVariable(0), entry.getPopulation().get(0).getVariable(0));
 		}
 	}
 	

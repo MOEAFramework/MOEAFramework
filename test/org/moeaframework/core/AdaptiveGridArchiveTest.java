@@ -51,8 +51,8 @@ public class AdaptiveGridArchiveTest {
 	}
 
 	/**
-	 * Tests if the {@link AdaptiveGridArchive#findIndex(Solution)} method
-	 * returns the correct value if the archive is empty.
+	 * Tests if the {@link AdaptiveGridArchive#findIndex(Solution)} method returns the correct value if the archive is
+	 * empty.
 	 */
 	@Test
 	public void testFindIndexEmpty() {
@@ -63,8 +63,8 @@ public class AdaptiveGridArchiveTest {
 	}
 
 	/**
-	 * Tests if the {@link AdaptiveGridArchive#findIndex(Solution)} method
-	 * returns the correct value if the archive consists of a single entry.
+	 * Tests if the {@link AdaptiveGridArchive#findIndex(Solution)} method returns the correct value if the archive
+	 * consists of a single entry.
 	 */
 	@Test
 	public void testFindIndexSingleEntry() {
@@ -77,8 +77,8 @@ public class AdaptiveGridArchiveTest {
 	}
 
 	/**
-	 * Tests if the {@link AdaptiveGridArchive#findIndex(Solution)} method
-	 * returns the correct value if the archive consists of multiple entries.
+	 * Tests if the {@link AdaptiveGridArchive#findIndex(Solution)} method returns the correct value if the archive
+	 * consists of multiple entries.
 	 */
 	@Test
 	public void testFindIndexMultipleEntries() {
@@ -94,8 +94,7 @@ public class AdaptiveGridArchiveTest {
 	}
 
 	/**
-	 * Tests if the {@link AdaptiveGridArchive#findDensestIndex()} returns the
-	 * correct value.
+	 * Tests if the {@link AdaptiveGridArchive#findDensestIndex()} returns the correct value.
 	 */
 	@Test
 	public void testFindDensestIndex() {
@@ -111,8 +110,7 @@ public class AdaptiveGridArchiveTest {
 	}
 
 	/**
-	 * Tests if the archive correctly adapts its internal settings as its
-	 * contents change.
+	 * Tests if the archive correctly adapts its internal settings as its contents change.
 	 */
 	@Test
 	public void testAdaptGrid() {
@@ -129,8 +127,7 @@ public class AdaptiveGridArchiveTest {
 	}
 
 	/**
-	 * Tests if the {@link AdaptiveGridArchive#add(Solution)} method correctly
-	 * adds dominating solutions.
+	 * Tests if the {@link AdaptiveGridArchive#add(Solution)} method correctly adds dominating solutions.
 	 */
 	@Test
 	public void testAddDominating() {
@@ -151,8 +148,8 @@ public class AdaptiveGridArchiveTest {
 	}
 
 	/**
-	 * Tests if the {@link AdaptiveGridArchive#remove(int)} method correctly
-	 * removes the solution and updates the archive settings.
+	 * Tests if the {@link AdaptiveGridArchive#remove(int)} method correctly removes the solution and updates the
+	 * archive settings.
 	 */
 	@Test
 	public void testRemoveIndex() {
@@ -174,8 +171,8 @@ public class AdaptiveGridArchiveTest {
 	}
 
 	/**
-	 * Tests if the {@link AdaptiveGridArchive#remove(Solution)} method
-	 * correctly removes the solution and updates the archive settings.
+	 * Tests if the {@link AdaptiveGridArchive#remove(Solution)} method correctly removes the solution and updates the
+	 * archive settings.
 	 */
 	@Test
 	public void testRemoveSolution() {
@@ -197,8 +194,8 @@ public class AdaptiveGridArchiveTest {
 	}
 	
 	/**
-	 * Since the adaptive grid archive uses an array internally, we must prevent
-	 * the number of divisions exceeding the maximum length of arrays.
+	 * Since the adaptive grid archive uses an array internally, we must prevent the number of divisions exceeding the
+	 * maximum length of arrays.
 	 */
 	@Test(expected=FrameworkException.class)
 	public void testOverflow() {

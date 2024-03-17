@@ -32,20 +32,18 @@ public class IndicatorCollector implements Collector {
 	private final Indicator indicator;
 
 	/**
-	 * The algorithm instance used by this collector; or {@code null} if this 
-	 * collector has not yet been attached.
+	 * The algorithm instance used by this collector; or {@code null} if this collector has not yet been attached.
 	 */
 	private final Algorithm algorithm;
 	
 	/**
-	 * The &epsilon;-box dominance archive used to prune the approximation set
-	 * to a desired resolution; or {@code null} if no such pruning is used.
+	 * The &epsilon;-box dominance archive used to prune the approximation set to a desired resolution; or {@code null}
+	 * if no such pruning is used.
 	 */
 	private final EpsilonBoxDominanceArchive archive;
 	
 	/**
-	 * Constructs an unattached collector for recording performance indicator
-	 * values from an algorithm.
+	 * Constructs an unattached collector for recording performance indicator values from an algorithm.
 	 * 
 	 * @param indicator the performance indicator used by this collector
 	 */
@@ -54,27 +52,23 @@ public class IndicatorCollector implements Collector {
 	}
 	
 	/**
-	 * Constructs an unattached collector for recording performance indicator
-	 * values from an algorithm, with an &epsilon;-box dominance archive to
-	 * prune the approximation set to a desired resolution.
+	 * Constructs an unattached collector for recording performance indicator values from an algorithm, with an
+	 * &epsilon;-box dominance archive to prune the approximation set to a desired resolution.
 	 * 
 	 * @param indicator the performance indicator used by this collector
-	 * @param archive the &epsilon;-box dominance archive used to prune the 
-	 *        approximation set to a desired resolution; or {@code null} if 
-	 *        no such pruning is used
+	 * @param archive the &epsilon;-box dominance archive used to prune the approximation set to a desired resolution;
+	 *        or {@code null} if no such pruning is used
 	 */
 	public IndicatorCollector(Indicator indicator, EpsilonBoxDominanceArchive archive) {
 		this(indicator, archive, null);
 	}
 
 	/**
-	 * Constructs a collector for recording performance indicator values from
-	 * the specified algorithm.
+	 * Constructs a collector for recording performance indicator values from the specified algorithm.
 	 * 
 	 * @param indicator the performance indicator used by this collector
-	 * @param archive the &epsilon;-box dominance archive used to prune the 
-	 *        approximation set to a desired resolution; or {@code null} if 
-	 *        no such pruning is used
+	 * @param archive the &epsilon;-box dominance archive used to prune the approximation set to a desired resolution;
+	 *        or {@code null} if no such pruning is used
 	 * @param algorithm the algorithm this collector records data from
 	 */
 	public IndicatorCollector(Indicator indicator, EpsilonBoxDominanceArchive archive, Algorithm algorithm) {

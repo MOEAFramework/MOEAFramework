@@ -43,8 +43,7 @@ public class ReplaceTest {
 	}
 
 	/**
-	 * Tests various probabilities to ensure replace mutation is applied the
-	 * correct number of times on average.
+	 * Tests various probabilities to ensure replace mutation is applied the correct number of times on average.
 	 */
 	@Test
 	public void testProbabilities() {

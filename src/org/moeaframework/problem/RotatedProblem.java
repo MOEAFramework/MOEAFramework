@@ -26,17 +26,14 @@ import org.moeaframework.util.RotationMatrixBuilder;
 import org.moeaframework.util.Vector;
 
 /**
- * Decorator to create rotated instances of test problems.  The rotation is
- * defined by a rotation matrix, which should be orthogonal and have a
- * determinant of 1.  See {@link RotationMatrixBuilder} for a utility to quickly
- * construct rotation matrices.
+ * Decorator to create rotated instances of test problems.  The rotation is defined by a rotation matrix, which should
+ * be orthogonal and have a determinant of 1.  See {@link RotationMatrixBuilder} for a utility to quickly construct
+ * rotation matrices.
  * <p>
- * Regardless of the rotation, all rotated instances use expanded lower and
- * upper bounds for the decision variables.  An additional constraint is added
- * to account for solutions existing in this expanded region, which are not in
- * the original unrotated problem.  This expansion is consistent across all
- * rotations, which ensures the volume of the constraint-violating expanded
- * region is constant across all instances of a problem.
+ * Regardless of the rotation, all rotated instances use expanded lower and upper bounds for the decision variables.
+ * An additional constraint is added to account for solutions existing in this expanded region, which are not in
+ * the original unrotated problem.  This expansion is consistent across all rotations, which ensures the volume of
+ * the constraint-violating expanded region is constant across all instances of a problem.
  */
 public class RotatedProblem extends ProblemWrapper {
 	
@@ -61,8 +58,7 @@ public class RotatedProblem extends ProblemWrapper {
 	private final double[] center;
 	
 	/**
-	 * Decorates the specified problem, creating a rotated instance using the
-	 * specified rotation matrix.
+	 * Decorates the specified problem, creating a rotated instance using the specified rotation matrix.
 	 * 
 	 * @param problem the original unrotated problem
 	 * @param rotation the rotation matrix

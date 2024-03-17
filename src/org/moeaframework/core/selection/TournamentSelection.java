@@ -26,17 +26,14 @@ import org.moeaframework.core.comparator.ParetoDominanceComparator;
 import org.moeaframework.core.configuration.Validate;
 
 /**
- * Deterministic tournament selection operator. The tournament size specifies
- * the number of candidate solutions selected randomly from a population. The
- * winner of a tournament is the best solution in the pool. Unlike probabilistic
- * tournament selection, the best solution is always returned in deterministic
- * tournament selection. If two or more solutions are the best in the pool, one
- * solution is randomly selected with equal probability as the tournament
- * winner.
+ * Deterministic tournament selection operator. The tournament size specifies the number of candidate solutions
+ * selected randomly from a population. The winner of a tournament is the best solution in the pool. Unlike
+ * probabilistic tournament selection, the best solution is always returned in deterministic tournament selection.
+ * If two or more solutions are the best in the pool, one solution is randomly selected with equal probability as the
+ * tournament winner.
  * <p>
- * Binary tournament selection exhibits the same selection pressure as linear
- * ranking but without the computational overhead required for ranking. Larger
- * tournament sizes result in greedier selection. Solutions are selected with
+ * Binary tournament selection exhibits the same selection pressure as linear ranking but without the computational
+ * overhead required for ranking. Larger tournament sizes result in greedier selection. Solutions are selected with
  * replacement.
  */
 public class TournamentSelection implements Selection {
@@ -47,8 +44,7 @@ public class TournamentSelection implements Selection {
 	private DominanceComparator comparator;
 
 	/**
-	 * The tournament size. This is the number of solutions sampled from which
-	 * the tournament winner is selected.
+	 * The tournament size. This is the number of solutions sampled from which the tournament winner is selected.
 	 */
 	private int size;
 
@@ -60,8 +56,7 @@ public class TournamentSelection implements Selection {
 	}
 
 	/**
-	 * Constructs a binary tournament selection operator using the specified
-	 * dominance comparator.
+	 * Constructs a binary tournament selection operator using the specified dominance comparator.
 	 * 
 	 * @param comparator the comparator used to determine the tournament winner
 	 */
@@ -70,8 +65,7 @@ public class TournamentSelection implements Selection {
 	}
 
 	/**
-	 * Constructs a tournament selection operator of the specified size using
-	 * Pareto dominance.
+	 * Constructs a tournament selection operator of the specified size using Pareto dominance.
 	 * 
 	 * @param size the tournament size
 	 */
@@ -80,8 +74,7 @@ public class TournamentSelection implements Selection {
 	}
 
 	/**
-	 * Constructs a tournament selection operator of the specified size and
-	 * using the specified dominance comparator.
+	 * Constructs a tournament selection operator of the specified size and using the specified dominance comparator.
 	 * 
 	 * @param size the tournament size
 	 * @param comparator the comparator used to determine the tournament winner
@@ -142,12 +135,10 @@ public class TournamentSelection implements Selection {
 	}
 
 	/**
-	 * Performs deterministic tournament selection with the specified
-	 * population, returning the tournament winner. If more than one solution is
-	 * a winner, one of the winners is returned with equal probability.
+	 * Performs deterministic tournament selection with the specified population, returning the tournament winner.
+	 * If more than one solution is a winner, one of the winners is returned with equal probability.
 	 * 
-	 * @param population the population from which candidate solutions are
-	 *        selected
+	 * @param population the population from which candidate solutions are selected
 	 * @return the winner of tournament selection
 	 */
 	private Solution select(Population population) {
@@ -174,8 +165,7 @@ public class TournamentSelection implements Selection {
 	 * @param comparator the comparison operator
 	 * @return the solution that wins the tournament
 	 */
-	public static Solution binaryTournament(Solution solution1, Solution solution2,
-			DominanceComparator comparator) {
+	public static Solution binaryTournament(Solution solution1, Solution solution2, DominanceComparator comparator) {
 		int flag = comparator.compare(solution1, solution2);
 
 		if (flag > 0) {

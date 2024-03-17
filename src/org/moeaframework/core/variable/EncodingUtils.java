@@ -24,9 +24,8 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variable;
 
 /**
- * Helper methods for working with various decision variable types and
- * encodings.  First, these methods perform any necessary type checking and
- * type conversion.  Instead of writing:
+ * Helper methods for working with various decision variable types and encodings.  First, these methods perform any
+ * necessary type checking and type conversion.  Instead of writing:
  * <pre>
  *   double value = ((RealVariable)solution.getVariable(i)).getValue()
  * </pre>
@@ -35,14 +34,13 @@ import org.moeaframework.core.Variable;
  *   double value = getReal(solution.getVariable(i));
  * </pre>
  * <p>
- * Support for integer encodings is now supported using the
- * {@link #newInt(int, int)} or {@link #newBinaryInt(int, int)}.  The former
- * represents integers as floating-point values while the latter uses binary
- * strings.  Both representations are accessed using {@link #getInt(Variable)}
- * and {@link #setInt(Variable, int)} methods.
+ * Support for integer encodings is now supported using the {@link #newInt(int, int)} or
+ * {@link #newBinaryInt(int, int)}.  The former represents integers as floating-point values while the latter uses
+ * binary strings.  Both representations are accessed using {@link #getInt(Variable)} and
+ * {@link #setInt(Variable, int)} methods.
  * <p>
- * This class also provides methods for converting between {@link RealVariable}
- * and {@link BinaryVariable} in both binary and gray code formats.
+ * This class also provides methods for converting between {@link RealVariable} and {@link BinaryVariable} in both
+ * binary and gray code formats.
  */
 public class EncodingUtils {
 	
@@ -94,8 +92,8 @@ public class EncodingUtils {
 	}
 
 	/**
-	 * Encodes the specified real variable into a binary variable. The number of
-	 * bits used in the encoding is {@code binary.getNumberOfBits()}.
+	 * Encodes the specified real variable into a binary variable.  The number of bits used in the encoding is
+	 * {@code binary.getNumberOfBits()}.
 	 * 
 	 * @param real the real variable
 	 * @param binary the binary variable to which the real value is encoded
@@ -131,8 +129,8 @@ public class EncodingUtils {
 	}
 
 	/**
-	 * Encodes the integer into the specified binary variable. The number of
-	 * bits used in the encoding is {@code binary.getNumberOfBits()}.
+	 * Encodes the integer into the specified binary variable. The number of bits used in the encoding is
+	 * {@code binary.getNumberOfBits()}.
 	 * 
 	 * @param value an integer
 	 * @param binary the binary variable to which the value is encoded
@@ -209,9 +207,8 @@ public class EncodingUtils {
 	}
 
 	/**
-	 * Converts a binary string from binary code to gray code.  The gray code
-	 * ensures two adjacent values have binary representations differing in only
-	 * one big (i.e., a Hamming distance of {@code 1}).
+	 * Converts a binary string from binary code to gray code.  The gray code ensures two adjacent values have binary
+	 * representations differing in only one big (i.e., a Hamming distance of {@code 1}).
 	 * 
 	 * @param binary the binary code string
 	 * @return the gray code string
@@ -251,41 +248,35 @@ public class EncodingUtils {
 	}
 	
 	/**
-	 * Returns a new floating-point decision variable bounded within the
-	 * specified range.
+	 * Returns a new floating-point decision variable bounded within the specified range.
 	 * 
 	 * @param lowerBound the lower bound of the floating-point value
 	 * @param upperBound the upper bound of the floating-point value
-	 * @return a new floating-point decision variable bounded within the
-	 *         specified range
+	 * @return a new floating-point decision variable bounded within the specified range
 	 */
 	public static RealVariable newReal(double lowerBound, double upperBound) {
 		return new RealVariable(lowerBound, upperBound);
 	}
 	
 	/**
-	 * Returns a new integer-valued decision variable bounded within the
-	 * specified range.  The integer value is encoded using a
-	 * {@link RealVariable}.
+	 * Returns a new integer-valued decision variable bounded within the specified range.  The integer value is encoded
+	 * using a {@link RealVariable}.
 	 * 
 	 * @param lowerBound the lower bound of the integer value
 	 * @param upperBound the upper bound of the integer value
-	 * @return a new integer-valued decision variable bounded within the
-	 *         specified range
+	 * @return a new integer-valued decision variable bounded within the specified range
 	 */
 	public static RealVariable newInt(int lowerBound, int upperBound) {
 		return new RealVariable(lowerBound, Math.nextAfter((double)(upperBound+1), Double.NEGATIVE_INFINITY));
 	}
 	
 	/**
-	 * Returns a new integer-valued decision variable bounded within the
-	 * specified range.  The integer value is encoded using a
-	 * {@link BinaryVariable}.
+	 * Returns a new integer-valued decision variable bounded within the specified range.  The integer value is encoded
+	 * using a {@link BinaryVariable}.
 	 * 
 	 * @param lowerBound the lower bound of the integer value
 	 * @param upperBound the upper bound of the integer value
-	 * @return a new integer-valued decision variable bounded within the
-	 *         specified range
+	 * @return a new integer-valued decision variable bounded within the specified range
 	 */
 	public static BinaryIntegerVariable newBinaryInt(int lowerBound, int upperBound) {
 		return new BinaryIntegerVariable(lowerBound, upperBound);
@@ -348,8 +339,7 @@ public class EncodingUtils {
 	 * 
 	 * @param variable the decision variable
 	 * @return the value stored in a floating-point decision variable
-	 * @throws IllegalArgumentException if the decision variable is not of type
-	 *         {@link RealVariable}
+	 * @throws IllegalArgumentException if the decision variable is not of type {@link RealVariable}
 	 */
 	public static double getReal(Variable variable) {
 		if (variable instanceof RealVariable) {
@@ -364,8 +354,7 @@ public class EncodingUtils {
 	 * 
 	 * @param variable the decision variable
 	 * @return the value stored in an integer-valued decision variable
-	 * @throws IllegalArgumentException if the decision variable is not of type
-	 *         {@link RealVariable}
+	 * @throws IllegalArgumentException if the decision variable is not of type {@link RealVariable}
 	 */
 	public static int getInt(Variable variable) {
 		if (variable instanceof RealVariable) {
@@ -378,14 +367,11 @@ public class EncodingUtils {
 	}
 	
 	/**
-	 * Returns the value stored in a binary decision variable as a
-	 * {@link BitSet}.
+	 * Returns the value stored in a binary decision variable as a {@link BitSet}.
 	 * 
 	 * @param variable the decision variable
-	 * @return the value stored in a binary decision variable as a
-	 *         {@code BitSet}
-	 * @throws IllegalArgumentException if the decision variable is not of type
-	 *         {@link BinaryVariable}
+	 * @return the value stored in a binary decision variable as a {@code BitSet}
+	 * @throws IllegalArgumentException if the decision variable is not of type {@link BinaryVariable}
 	 */
 	public static BitSet getBitSet(Variable variable) {
 		if (variable instanceof BinaryVariable) {
@@ -396,14 +382,11 @@ public class EncodingUtils {
 	}
 	
 	/**
-	 * Returns the value stored in a binary decision variable as a boolean
-	 * array.
+	 * Returns the value stored in a binary decision variable as a boolean array.
 	 * 
 	 * @param variable the decision variable
-	 * @return the value stored in a binary decision variable as a boolean
-	 *         array
-	 * @throws IllegalArgumentException if the decision variable is not of type
-	 *         {@link BinaryVariable}
+	 * @return the value stored in a binary decision variable as a boolean array
+	 * @throws IllegalArgumentException if the decision variable is not of type {@link BinaryVariable}
 	 */
 	public static boolean[] getBinary(Variable variable) {
 		if (variable instanceof BinaryVariable) {
@@ -425,8 +408,7 @@ public class EncodingUtils {
 	 * 
 	 * @param variable the decision variable
 	 * @return the value stored in a boolean decision variable
-	 * @throws IllegalArgumentException if the decision variable is not of type
-	 *         {@link BinaryVariable}
+	 * @throws IllegalArgumentException if the decision variable is not of type {@link BinaryVariable}
 	 */
 	public static boolean getBoolean(Variable variable) {
 		boolean[] values = getBinary(variable);
@@ -443,8 +425,7 @@ public class EncodingUtils {
 	 * 
 	 * @param variable the decision variable
 	 * @return the value stored in a permutation decision variable
-	 * @throws IllegalArgumentException if the decision variable is not of type
-	 *         {@link Permutation}
+	 * @throws IllegalArgumentException if the decision variable is not of type {@link Permutation}
 	 */
 	public static int[] getPermutation(Variable variable) {
 		if (variable instanceof Permutation) {
@@ -459,8 +440,7 @@ public class EncodingUtils {
 	 * 
 	 * @param variable the decision variable
 	 * @return the value stored in a subset decision variable
-	 * @throws IllegalArgumentException if the decision variable is not of type
-	 *         {@link Subset}
+	 * @throws IllegalArgumentException if the decision variable is not of type {@link Subset}
 	 */
 	public static int[] getSubset(Variable variable) {
 		if (variable instanceof Subset) {
@@ -475,8 +455,7 @@ public class EncodingUtils {
 	 * 
 	 * @param variable the decision variable
 	 * @return the value stored in a subset decision variable with the items sorted
-	 * @throws IllegalArgumentException if the decision variable is not of type
-	 *         {@link Subset}
+	 * @throws IllegalArgumentException if the decision variable is not of type {@link Subset}
 	 */
 	public static int[] getOrderedSubset(Variable variable) {
 		int[] subset = getSubset(variable);
@@ -485,13 +464,11 @@ public class EncodingUtils {
 	}
 	
 	/**
-	 * Returns the subset as a binary string, where 1 indicates the index is included
-	 * in the set.
+	 * Returns the subset as a binary string, where 1 indicates the index is included in the set.
 	 * 
 	 * @param variable the decision variable
 	 * @return a binary string representation of the subset
-	 * @throws IllegalArgumentException if the decision variable is not of type
-	 *         {@link Subset}
+	 * @throws IllegalArgumentException if the decision variable is not of type {@link Subset}
 	 */
 	public static boolean[] getSubsetAsBinary(Variable variable) {
 		if (variable instanceof Subset) {
@@ -509,13 +486,11 @@ public class EncodingUtils {
 	}
 	
 	/**
-	 * Returns the subset as a BitSet, where a set bit indicates the index is included
-	 * in the set.
+	 * Returns the subset as a BitSet, where a set bit indicates the index is included in the set.
 	 * 
 	 * @param variable the decision variable
 	 * @return a BitSet representation of the subset
-	 * @throws IllegalArgumentException if the decision variable is not of type
-	 *         {@link Subset}
+	 * @throws IllegalArgumentException if the decision variable is not of type {@link Subset}
 	 */
 	public static BitSet getSubsetAsBitSet(Variable variable) {
 		if (variable instanceof Subset) {
@@ -533,34 +508,28 @@ public class EncodingUtils {
 	}
 	
 	/**
-	 * Returns the array of floating-point decision variables stored in a
-	 * solution.  The solution must contain only floating-point decision
-	 * variables.
+	 * Returns the array of floating-point decision variables stored in a solution.  The solution must contain only
+	 * floating-point decision variables.
 	 * 
 	 * @param solution the solution
-	 * @return the array of floating-point decision variables stored in a
-	 *          solution
-	 * @throws IllegalArgumentException if any decision variable contained in
-	 *         the solution is not of type {@link RealVariable}
+	 * @return the array of floating-point decision variables stored in a solution
+	 * @throws IllegalArgumentException if any decision variable contained in the solution is not of type
+	 *         {@link RealVariable}
 	 */
 	public static double[] getReal(Solution solution) {
 		return getReal(solution, 0, solution.getNumberOfVariables());
 	}
 	
 	/**
-	 * Returns the array of floating-point decision variables stored in a
-	 * solution between the specified indices.  The decision variables located
-	 * between the start and end index must all be floating-point decision
-	 * variables.
+	 * Returns the array of floating-point decision variables stored in a solution between the specified indices.
+	 * The decision variables located between the start and end index must all be floating-point decision variables.
 	 * 
 	 * @param solution the solution
 	 * @param startIndex the start index (inclusive)
 	 * @param endIndex the end index (exclusive)
-	 * @return the array of floating-point decision variables stored in a
-	 *         solution between the specified indices
-	 * @throws IllegalArgumentException if any decision variable contained in
-	 *         the solution between the start and end index is not of type
-	 *         {@link RealVariable}
+	 * @return the array of floating-point decision variables stored in a solution between the specified indices
+	 * @throws IllegalArgumentException if any decision variable contained in the solution between the start and end
+	 *         index is not of type {@link RealVariable}
 	 */
 	public static double[] getReal(Solution solution, int startIndex, int endIndex) {
 		double[] result = new double[endIndex - startIndex];
@@ -573,34 +542,28 @@ public class EncodingUtils {
 	}
 	
 	/**
-	 * Returns the array of integer-valued decision variables stored in a
-	 * solution.  The solution must contain only integer-valued decision
-	 * variables.
+	 * Returns the array of integer-valued decision variables stored in a solution.  The solution must contain only
+	 * integer-valued decision variables.
 	 * 
 	 * @param solution the solution
-	 * @return the array of integer-valued decision variables stored in a
-	 *          solution
-	 * @throws IllegalArgumentException if any decision variable contained in
-	 *         the solution is not of type {@link RealVariable}
+	 * @return the array of integer-valued decision variables stored in a solution
+	 * @throws IllegalArgumentException if any decision variable contained in the solution is not of type
+	 *         {@link RealVariable}
 	 */
 	public static int[] getInt(Solution solution) {
 		return getInt(solution, 0, solution.getNumberOfVariables());
 	}
 	
 	/**
-	 * Returns the array of integer-valued decision variables stored in a
-	 * solution between the specified indices.  The decision variables located
-	 * between the start and end index must all be integer-valued decision
-	 * variables.
+	 * Returns the array of integer-valued decision variables stored in a solution between the specified indices.
+	 * The decision variables located between the start and end index must all be integer-valued decision variables.
 	 * 
 	 * @param solution the solution
 	 * @param startIndex the start index (inclusive)
 	 * @param endIndex the end index (exclusive)
-	 * @return the array of integer-valued decision variables stored in a
-	 *         solution between the specified indices
-	 * @throws IllegalArgumentException if any decision variable contained in
-	 *         the solution between the start and end index is not of type
-	 *         {@link RealVariable}
+	 * @return the array of integer-valued decision variables stored in a solution between the specified indices
+	 * @throws IllegalArgumentException if any decision variable contained in the solution between the start and end
+	 *         index is not of type {@link RealVariable}
 	 */
 	public static int[] getInt(Solution solution, int startIndex, int endIndex) {
 		int[] result = new int[endIndex - startIndex];
@@ -617,8 +580,7 @@ public class EncodingUtils {
 	 * 
 	 * @param variable the decision variable
 	 * @param value the value to assign the floating-point decision variable
-	 * @throws IllegalArgumentException if the decision variable is not of type
-	 *         {@link RealVariable}
+	 * @throws IllegalArgumentException if the decision variable is not of type {@link RealVariable}
 	 * @throws IllegalArgumentException if the value is out of bounds
 	 *         ({@code value < getLowerBound()) || (value > getUpperBound()})
 	 */
@@ -631,14 +593,13 @@ public class EncodingUtils {
 	}
 	
 	/**
-	 * Sets the values of all floating-point decision variables stored in the
-	 * solution.  The solution must contain only floating-point decision
-	 * variables.
+	 * Sets the values of all floating-point decision variables stored in the solution.  The solution must contain
+	 * only floating-point decision variables.
 	 * 
 	 * @param solution the solution
 	 * @param values the array of floating-point values to assign the solution
-	 * @throws IllegalArgumentException if any decision variable contained in
-	 *         the solution is not of type {@link RealVariable}
+	 * @throws IllegalArgumentException if any decision variable contained in the solution is not of type
+	 *         {@link RealVariable}
 	 * @throws IllegalArgumentException if any of the values are out of bounds
 	 *         ({@code value < getLowerBound()) || (value > getUpperBound()})
 	 */
@@ -647,21 +608,16 @@ public class EncodingUtils {
 	}
 	
 	/**
-	 * Sets the values of the floating-point decision variables stored in a
-	 * solution between the specified indices.  The decision variables located
-	 * between the start and end index must all be floating-point decision
-	 * variables.
+	 * Sets the values of the floating-point decision variables stored in a solution between the specified indices.
+	 * The decision variables located between the start and end index must all be floating-point decision variables.
 	 * 
 	 * @param solution the solution
 	 * @param startIndex the start index (inclusive)
 	 * @param endIndex the end index (exclusive)
-	 * @param values the array of floating-point values to assign the
-	 *        decision variables
-	 * @throws IllegalArgumentException if any decision variable contained in
-	 *         the solution between the start and end index is not of type
-	 *         {@link RealVariable}
-	 * @throws IllegalArgumentException if an invalid number of values are
-	 *         provided
+	 * @param values the array of floating-point values to assign the decision variables
+	 * @throws IllegalArgumentException if any decision variable contained in the solution between the start and end
+	 *         index is not of type {@link RealVariable}
+	 * @throws IllegalArgumentException if an invalid number of values are provided
 	 * @throws IllegalArgumentException if any of the values are out of bounds
 	 *         ({@code value < getLowerBound()) || (value > getUpperBound()})
 	 */
@@ -680,8 +636,7 @@ public class EncodingUtils {
 	 * 
 	 * @param variable the decision variable
 	 * @param value the value to assign the integer-valued decision variable
-	 * @throws IllegalArgumentException if the decision variable is not of type
-	 *         {@link RealVariable}
+	 * @throws IllegalArgumentException if the decision variable is not of type {@link RealVariable}
 	 * @throws IllegalArgumentException if the value is out of bounds
 	 *         ({@code value < getLowerBound()) || (value > getUpperBound()})
 	 */
@@ -696,14 +651,13 @@ public class EncodingUtils {
 	}
 	
 	/**
-	 * Sets the values of all integer-valued decision variables stored in the
-	 * solution.  The solution must contain only integer-valued decision
-	 * variables.
+	 * Sets the values of all integer-valued decision variables stored in the solution.  The solution must contain
+	 * only integer-valued decision variables.
 	 * 
 	 * @param solution the solution
 	 * @param values the array of integer values to assign the solution
-	 * @throws IllegalArgumentException if any decision variable contained in
-	 *         the solution is not of type {@link RealVariable}
+	 * @throws IllegalArgumentException if any decision variable contained in the solution is not of type
+	 *         {@link RealVariable}
 	 * @throws IllegalArgumentException if any of the values are out of bounds
 	 *         ({@code value < getLowerBound()) || (value > getUpperBound()})
 	 */
@@ -712,21 +666,16 @@ public class EncodingUtils {
 	}
 	
 	/**
-	 * Sets the values of the integer-valued decision variables stored in a
-	 * solution between the specified indices.  The decision variables located
-	 * between the start and end index must all be integer-valued decision
-	 * variables.
+	 * Sets the values of the integer-valued decision variables stored in a solution between the specified indices.
+	 * The decision variables located between the start and end index must all be integer-valued decision variables.
 	 * 
 	 * @param solution the solution
 	 * @param startIndex the start index (inclusive)
 	 * @param endIndex the end index (exclusive)
-	 * @param values the array of floating-point values to assign the
-	 *        decision variables
-	 * @throws IllegalArgumentException if any decision variable contained in
-	 *         the solution between the start and end index is not of type
-	 *         {@link RealVariable}
-	 * @throws IllegalArgumentException if an invalid number of values are
-	 *         provided
+	 * @param values the array of floating-point values to assign the decision variables
+	 * @throws IllegalArgumentException if any decision variable contained in the solution between the start and end
+	 *         index is not of type {@link RealVariable}
+	 * @throws IllegalArgumentException if an invalid number of values are provided
 	 * @throws IllegalArgumentException if any of the values are out of bounds
 	 *         ({@code value < getLowerBound()) || (value > getUpperBound()})
 	 */
@@ -741,13 +690,11 @@ public class EncodingUtils {
 	}
 	
 	/**
-	 * Sets the bits in a binary decision variable using the given
-	 * {@link BitSet}.
+	 * Sets the bits in a binary decision variable using the given {@link BitSet}.
 	 * 
 	 * @param variable the decision variable
 	 * @param bitSet the bits to set in the binary decision variable
-	 * @throws IllegalArgumentException if the decision variable is not of type
-	 *         {@link BinaryVariable}
+	 * @throws IllegalArgumentException if the decision variable is not of type {@link BinaryVariable}
 	 */
 	public static void setBitSet(Variable variable, BitSet bitSet) {
 		if (variable instanceof BinaryVariable) {
@@ -762,15 +709,12 @@ public class EncodingUtils {
 	}
 	
 	/**
-	 * Sets the bits in a binary decision variable using the given boolean
-	 * array.
+	 * Sets the bits in a binary decision variable using the given boolean array.
 	 * 
 	 * @param variable the decision variable
 	 * @param values the bits to set in the binary decision variable
-	 * @throws IllegalArgumentException if the decision variable is not of type
-	 *         {@link BinaryVariable}
-	 * @throws IllegalArgumentException if an invalid number of values are
-	 *         provided
+	 * @throws IllegalArgumentException if the decision variable is not of type {@link BinaryVariable}
+	 * @throws IllegalArgumentException if an invalid number of values are provided
 	 */
 	public static void setBinary(Variable variable, boolean[] values) {
 		if (variable instanceof BinaryVariable) {
@@ -793,10 +737,8 @@ public class EncodingUtils {
 	 * 
 	 * @param variable the decision variable
 	 * @param value the value to assign the boolean decision variable
-	 * @throws IllegalArgumentException if the decision variable is not of type
-	 *         {@link BinaryVariable}
-	 * @throws IllegalArgumentException if the number of bits in the binary
-	 *         variable is not {@code 1}
+	 * @throws IllegalArgumentException if the decision variable is not of type {@link BinaryVariable}
+	 * @throws IllegalArgumentException if the number of bits in the binary variable is not {@code 1}
 	 */
 	public static void setBoolean(Variable variable, boolean value) {
 		setBinary(variable, new boolean[] { value });
@@ -807,10 +749,8 @@ public class EncodingUtils {
 	 * 
 	 * @param variable the decision variable
 	 * @param values the permutation to assign the permutation decision variable
-	 * @throws IllegalArgumentException if the decision variable is not of type
-	 *         {@link Permutation}
-	 * @throws IllegalArgumentException if {@code values} is not a valid
-	 *         permutation
+	 * @throws IllegalArgumentException if the decision variable is not of type {@link Permutation}
+	 * @throws IllegalArgumentException if {@code values} is not a valid permutation
 	 */
 	public static void setPermutation(Variable variable, int[] values) {
 		if (variable instanceof Permutation) {
@@ -825,10 +765,8 @@ public class EncodingUtils {
 	 * 
 	 * @param variable the decision variable
 	 * @param values the subset to assign the subset decision variable
-	 * @throws IllegalArgumentException if the decision variable is not of type
-	 *         {@link Subset}
-	 * @throws IllegalArgumentException if {@code values} is not a valid
-	 *         subset
+	 * @throws IllegalArgumentException if the decision variable is not of type {@link Subset}
+	 * @throws IllegalArgumentException if {@code values} is not a valid subset
 	 */
 	public static void setSubset(Variable variable, int[] values) {
 		if (variable instanceof Subset) {
@@ -843,8 +781,7 @@ public class EncodingUtils {
 	 * 
 	 * @param variable the decision variable
 	 * @param values the binary string representation of a subset
-	 * @throws IllegalArgumentException if the binary string representation is not a
-	 *         valid subset
+	 * @throws IllegalArgumentException if the binary string representation is not a valid subset
 	 */
 	public static void setSubset(Variable variable, boolean[] values) {
 		BitSet bitSet = new BitSet(values.length);
@@ -861,8 +798,7 @@ public class EncodingUtils {
 	 * 
 	 * @param variable the decision variable
 	 * @param bitSet the BitSet representation of a subset
-	 * @throws IllegalArgumentException if the BitSet representation is not a
-	 *         valid subset
+	 * @throws IllegalArgumentException if the BitSet representation is not a valid subset
 	 */
 	public static void setSubset(Variable variable, BitSet bitSet) {
 		if (variable instanceof Subset) {

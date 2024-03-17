@@ -24,8 +24,7 @@ import org.moeaframework.problem.AbstractProblem;
 import org.moeaframework.problem.AnalyticalProblem;
 
 /**
- * The Murata problem.  The optimum is defined by {@code (x, 2)} where
- * {@code 1 <= x < = 4}.
+ * The Murata problem.  The optimum is defined by {@code (x, 2)} where {@code 1 <= x < = 4}.
  * <p>
  * Properties:
  * <ul>
@@ -35,12 +34,10 @@ import org.moeaframework.problem.AnalyticalProblem;
  * <p>
  * References:
  * <ol>
- *   <li>Murata, T. and Ishibuchi, H. (1995).  "MOGA: Multi-Objective Genetic
- *       Algorithms."  IEEE International Conference on Evolutionary
- *       Computation, pp. 289-294.
- *   <li>Van Veldhuizen, D. A (1999).  "Multiobjective Evolutionary Algorithms: 
- *       Classifications, Analyses, and New Innovations."  Air Force Institute
- *       of Technology, Ph.D. Thesis, Appendix B.
+ *   <li>Murata, T. and Ishibuchi, H. (1995).  "MOGA: Multi-Objective Genetic Algorithms."  IEEE International
+ *       Conference on Evolutionary Computation, pp. 289-294.
+ *   <li>Van Veldhuizen, D. A (1999).  "Multiobjective Evolutionary Algorithms: Classifications, Analyses, and New
+ *       Innovations."  Air Force Institute of Technology, Ph.D. Thesis, Appendix B.
  * </ol>
  */
 public class Murata extends AbstractProblem implements AnalyticalProblem {
@@ -77,8 +74,7 @@ public class Murata extends AbstractProblem implements AnalyticalProblem {
 	public Solution generate() {
 		Solution solution = newSolution();
 		
-		EncodingUtils.setReal(solution.getVariable(0),
-				PRNG.nextDouble(1.0, 4.0));
+		EncodingUtils.setReal(solution.getVariable(0), PRNG.nextDouble(1.0, 4.0));
 		EncodingUtils.setReal(solution.getVariable(1), 2.0);
 		
 		evaluate(solution);

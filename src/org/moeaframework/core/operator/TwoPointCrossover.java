@@ -26,9 +26,8 @@ import org.moeaframework.core.configuration.Property;
 import org.moeaframework.core.configuration.Validate;
 
 /**
- * Two-point crossover. Two crossover points are selected and all decision
- * variables between the two points are swapped between the two parents. The two
- * children resulting from this swapping are returned.
+ * Two-point crossover. Two crossover points are selected and all decision variables between the two points are
+ * swapped between the two parents. The two children resulting from this swapping are returned.
  */
 @Prefix("2x")
 public class TwoPointCrossover implements Variation {
@@ -46,8 +45,7 @@ public class TwoPointCrossover implements Variation {
 	}
 
 	/**
-	 * Constructs a two-point crossover operator with the specified probability
-	 * of applying this operator to solutions.
+	 * Constructs a two-point crossover operator with the specified probability of applying this operator to solutions.
 	 * 
 	 * @param probability the probability of applying this operator to solutions
 	 */

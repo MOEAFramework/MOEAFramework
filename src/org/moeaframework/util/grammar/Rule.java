@@ -40,8 +40,8 @@ public class Rule {
 	private final List<Production> productions;
 
 	/**
-	 * Constructs a rule with the specified symbol. At least one production must
-	 * be provided through the {@link #add(Production)} method.
+	 * Constructs a rule with the specified symbol. At least one production must be provided through the
+	 * {@link #add(Production)} method.
 	 * 
 	 * @param symbol the non-terminal symbol of this rule
 	 */
@@ -93,8 +93,7 @@ public class Rule {
 	 * 
 	 * @param index the index of the production to be returned
 	 * @return the production at the specified index
-	 * @throws IndexOutOfBoundsException if index is out of range {@code ((index
-	 *         < 0) || (index >= size())}
+	 * @throws IndexOutOfBoundsException if index is out of range {@code ((index < 0) || (index >= size())}
 	 */
 	public Production get(int index) {
 		return productions.get(index);

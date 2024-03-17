@@ -17,8 +17,7 @@
  */
 
 /**
- * Implementations of various single-objective optimization algorithms.  This
- * includes the Repeated Single Objective (RSO) algorithm, which runs many
- * different single-objective algorithms with different weight vectors.
+ * Implementations of various single-objective optimization algorithms.  This includes the Repeated Single Objective
+ * (RSO) algorithm, which runs many different single-objective algorithms with different weight vectors.
  */
 package org.moeaframework.algorithm.single;

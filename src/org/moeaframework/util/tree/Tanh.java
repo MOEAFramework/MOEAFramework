@@ -57,8 +57,7 @@ public class Tanh extends Node {
 	
 	@Override
 	public Number evaluate(Environment environment) {
-		return NumberArithmetic.tanh(
-				(Number)getArgument(0).evaluate(environment));
+		return NumberArithmetic.tanh((Number)getArgument(0).evaluate(environment));
 	}
 
 }

@@ -33,14 +33,13 @@ import org.moeaframework.util.weights.NormalBoundaryDivisions;
 import org.moeaframework.util.weights.NormalBoundaryIntersectionGenerator;
 
 /**
- * A reference vector guided population, for use with RVEA, that truncates
- * the population using the method outlined in [1].
+ * A reference vector guided population, for use with RVEA, that truncates the population using the method outlined in
+ * [1].
  * <p>
  * References:
  * <ol>
- *   <li>R. Cheng, Y. Jin, M. Olhofer, and B. Sendhoff.  "A Reference Vector
- *       Guided Evolutionary Algorithm for Many-objective Optimization."
- *       IEEE Transactions on Evolutionary Computation, Issue 99, 2016.
+ *   <li>R. Cheng, Y. Jin, M. Olhofer, and B. Sendhoff.  "A Reference Vector Guided Evolutionary Algorithm for
+ *       Many-objective Optimization."  IEEE Transactions on Evolutionary Computation, Issue 99, 2016.
  * </ol>
  */
 public class ReferenceVectorGuidedPopulation extends Population {
@@ -81,8 +80,8 @@ public class ReferenceVectorGuidedPopulation extends Population {
 	private double[] minAngles;
 	
 	/**
-	 * Scaling factor used in the angle-penalized distance function.  This
-	 * should be set to {@code currentGeneration / maxGenerations}.
+	 * Scaling factor used in the angle-penalized distance function.  This should be set to
+	 * {@code currentGeneration / maxGenerations}.
 	 */
 	private double scalingFactor = 0.0;
 	
@@ -108,8 +107,7 @@ public class ReferenceVectorGuidedPopulation extends Population {
 	 * @param divisions the number of divisions
 	 * @param alpha controls the rate of change in the angle-penalized distance function
 	 */
-	public ReferenceVectorGuidedPopulation(int numberOfObjectives, NormalBoundaryDivisions divisions,
-			double alpha) {
+	public ReferenceVectorGuidedPopulation(int numberOfObjectives, NormalBoundaryDivisions divisions, double alpha) {
 		super();
 		this.numberOfObjectives = numberOfObjectives;
 		this.divisions = divisions;
@@ -126,8 +124,8 @@ public class ReferenceVectorGuidedPopulation extends Population {
 	 * @param alpha controls the rate of change in the angle-penalized distance function
 	 * @param iterable the solutions used to initialize this population
 	 */
-	public ReferenceVectorGuidedPopulation(int numberOfObjectives, NormalBoundaryDivisions divisions,
-			double alpha, Iterable<? extends Solution> iterable) {
+	public ReferenceVectorGuidedPopulation(int numberOfObjectives, NormalBoundaryDivisions divisions, double alpha,
+			Iterable<? extends Solution> iterable) {
 		super(iterable);
 		this.numberOfObjectives = numberOfObjectives;
 		this.divisions = divisions;
@@ -146,8 +144,7 @@ public class ReferenceVectorGuidedPopulation extends Population {
 	}
 	
 	/**
-	 * Returns the {@code alpha} parameter, which controls the rate of change in the angle-penalized
-	 * distance function.
+	 * Returns the {@code alpha} parameter, which controls the rate of change in the angle-penalized distance function.
 	 * 
 	 * @return the {@code alpha} parameter value
 	 */
@@ -156,9 +153,9 @@ public class ReferenceVectorGuidedPopulation extends Population {
 	}
 	
 	/**
-	 * Scaling factor used in the angle-penalized distance function.  This
-	 * should be set to {@code currentGeneration / maxGenerations}.  Smaller
-	 * values favor convergence while larger values favor diversity.
+	 * Scaling factor used in the angle-penalized distance function.  This should be set to
+	 * {@code currentGeneration / maxGenerations}.  Smaller values favor convergence while larger values favor
+	 * diversity.
 	 * 
 	 * @param scalingFactor the scaling factor, between 0 and 1
 	 */
@@ -212,8 +209,7 @@ public class ReferenceVectorGuidedPopulation extends Population {
 	}
 
 	/**
-	 * Initializes the reference vectors and compute the minimum angles between
-	 * the vectors
+	 * Initializes the reference vectors and compute the minimum angles between the vectors
 	 */
 	private void initialize() {
 		// validate arguments
@@ -264,9 +260,8 @@ public class ReferenceVectorGuidedPopulation extends Population {
 	}
 	
 	/**
-	 * Offsets the solutions in this population by the ideal point.  This
-	 * method does not modify the objective values, it creates a new attribute
-	 * with the name {@value NORMALIZED_OBJECTIVES}.
+	 * Offsets the solutions in this population by the ideal point.  This method does not modify the objective values,
+	 * it creates a new attribute with the name {@value NORMALIZED_OBJECTIVES}.
 	 */
 	protected void translateByIdealPoint() {
 		for (Solution solution : this) {
@@ -281,9 +276,8 @@ public class ReferenceVectorGuidedPopulation extends Population {
 	}
 	
 	/**
-	 * Returns the cosine between the objective vector and a reference vector.
-	 * This method assumes the line is a normalized weight vector; the point
-	 * does not need to be normalized.
+	 * Returns the cosine between the objective vector and a reference vector.  This method assumes the line is a
+	 * normalized weight vector; the point does not need to be normalized.
 	 * 
 	 * @param line the line originating from the origin
 	 * @param point the point
@@ -294,9 +288,8 @@ public class ReferenceVectorGuidedPopulation extends Population {
 	}
 	
 	/**
-	 * Returns the angle between the objective vector and a reference vector.
-	 * This method assumes the line is a normalized weight vector; the point
-	 * does not need to be normalized.
+	 * Returns the angle between the objective vector and a reference vector.  This method assumes the line is a
+	 * normalized weight vector; the point does not need to be normalized.
 	 * 
 	 * @param line the line originating from the origin
 	 * @param point the point
@@ -307,9 +300,8 @@ public class ReferenceVectorGuidedPopulation extends Population {
 	}
 	
 	/**
-	 * Associates each solution to the nearest reference vector, returning a
-	 * list-of-lists.  The outer list maps to each reference vector using their
-	 * index.  The inner list is an unordered collection of the solutions
+	 * Associates each solution to the nearest reference vector, returning a list-of-lists.  The outer list maps to
+	 * each reference vector using their index.  The inner list is an unordered collection of the solutions
 	 * associated with the reference point.
 	 * 
 	 * @param population the population of solutions
@@ -336,10 +328,8 @@ public class ReferenceVectorGuidedPopulation extends Population {
 				}
 			}
 			
-			// if there is only a single solution, then the normalized
-			// objectives will be 0 (since the ideal point == the solution);
-			// in this case, the solution could be associated with any
-			// reference vector
+			// if there is only a single solution, then the normalized objectives will be 0 (since the ideal
+			// point == the solution); in this case, the solution could be associated with any reference vector
 			if (maxIndex < 0) {
 				maxIndex = 0;
 			}
@@ -351,12 +341,10 @@ public class ReferenceVectorGuidedPopulation extends Population {
 	}
 	
 	/**
-	 * Computes the smallest angle between the given reference vector and all
-	 * remaining vectors.
+	 * Computes the smallest angle between the given reference vector and all remaining vectors.
 	 * 
 	 * @param index the index of the reference vector
-	 * @return the smallest angle between the given reference vector and all
-	 *         remaining vectors
+	 * @return the smallest angle between the given reference vector and all remaining vectors
 	 */
 	protected double smallestAngleBetweenWeights(int index) {
 		double smallestAngle = Double.POSITIVE_INFINITY;
@@ -386,8 +374,7 @@ public class ReferenceVectorGuidedPopulation extends Population {
 			if (!solution.violatesConstraints()) {
 				double[] objectives = (double[])solution.getAttribute(NORMALIZED_OBJECTIVES);
 				
-				double penalty = numberOfObjectives *
-						Math.pow(scalingFactor, alpha) *
+				double penalty = numberOfObjectives * Math.pow(scalingFactor, alpha) *
 						acosine(weight, objectives) / minAngles[index];
 				
 				double tempDistance = Vector.magnitude(objectives) * (1.0 + penalty);
@@ -400,8 +387,7 @@ public class ReferenceVectorGuidedPopulation extends Population {
 		}
 		
 		if (minSolution == null) {
-			// all solutions were infeasible, find one with smallest constraint
-			// violation
+			// all solutions were infeasible, find one with smallest constraint violation
 			for (Solution solution : solutions) {
 				double tempDistance = 0.0;
 				
@@ -425,8 +411,7 @@ public class ReferenceVectorGuidedPopulation extends Population {
 	}
 	
 	/**
-	 * Truncates the population so that only one solution is associated with
-	 * each reference vector.
+	 * Truncates the population so that only one solution is associated with each reference vector.
 	 */
 	public void truncate() {
 		// update the ideal point

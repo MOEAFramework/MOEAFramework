@@ -33,8 +33,7 @@ public class AlgorithmException extends FrameworkException {
 	private final Algorithm algorithm;
 	
 	/**
-	 * Constructs an algorithm exception originating from the specified
-	 * algorithm.
+	 * Constructs an algorithm exception originating from the specified algorithm.
 	 * 
 	 * @param algorithm the algorithm responsible for this exception
 	 */
@@ -43,8 +42,7 @@ public class AlgorithmException extends FrameworkException {
 	}
 	
 	/**
-	 * Constructs an algorithm exception originating from the specified
-	 * algorithm with the given cause.
+	 * Constructs an algorithm exception originating from the specified algorithm with the given cause.
 	 * 
 	 * @param algorithm the algorithm responsible for this exception
 	 * @param cause the cause of this exception
@@ -54,8 +52,7 @@ public class AlgorithmException extends FrameworkException {
 	}
 	
 	/**
-	 * Constructs an algorithm exception originating from the specified
-	 * algorithm with the given message.
+	 * Constructs an algorithm exception originating from the specified algorithm with the given message.
 	 * 
 	 * @param algorithm the algorithm responsible for this exception
 	 * @param message the message describing this exception
@@ -65,15 +62,13 @@ public class AlgorithmException extends FrameworkException {
 	}
 	
 	/**
-	 * Constructs an algorithm exception originating from the specified
-	 * algorithm with the given message and cause.
+	 * Constructs an algorithm exception originating from the specified algorithm with the given message and cause.
 	 * 
 	 * @param algorithm the algorithm responsible for this exception
 	 * @param message the message describing this exception
 	 * @param cause the cause of this exception
 	 */
-	public AlgorithmException(Algorithm algorithm, String message, 
-			Throwable cause) {
+	public AlgorithmException(Algorithm algorithm, String message, Throwable cause) {
 		super(message, cause);
 		this.algorithm = algorithm;
 	}

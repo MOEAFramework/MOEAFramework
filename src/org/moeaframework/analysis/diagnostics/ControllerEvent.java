@@ -32,28 +32,26 @@ public class ControllerEvent extends EventObject {
 	public static enum Type {
 		
 		/**
-		 * Indicates the state of the controller changed.  The state changes
-		 * when an evaluation job starts and stops.  The state can be
-		 * determined by invoking {@link Controller#isRunning()}.
+		 * Indicates the state of the controller changed.  The state changes when an evaluation job starts and stops.
+		 * The state can be determined by invoking {@link Controller#isRunning()}.
 		 */
 		STATE_CHANGED,
 		
 		/**
-		 * Indicates the underlying data model has changed.  The model changes
-		 * when new results are added or the results are cleared.
+		 * Indicates the underlying data model has changed.  The model changes when new results are added or the
+		 * results are cleared.
 		 */
 		MODEL_CHANGED,
 		
 		/**
-		 * Indicates the progress of the evaluation has changed.  The progress
-		 * can be queried through {@link Controller#getRunProgress()} and
-		 * {@link Controller#getOverallProgress()}.
+		 * Indicates the progress of the evaluation has changed.  The progress can be queried through
+		 * {@link Controller#getRunProgress()} and {@link Controller#getOverallProgress()}.
 		 */
 		PROGRESS_CHANGED,
 		
 		/**
-		 * Indicates the viewing options changed.  These events are primarily
-		 * caused by changing how the data is plotted in {@link DiagnosticTool}.
+		 * Indicates the viewing options changed.  These events are primarily caused by changing how the data is
+		 * plotted in {@link DiagnosticTool}.
 		 */
 		VIEW_CHANGED
 		

@@ -35,8 +35,8 @@ import org.moeaframework.problem.AnalyticalProblem;
 public abstract class ZCAT extends AbstractProblem implements AnalyticalProblem {
 	
 	/**
-	 * The precision when considering if two floating-point numbers are equal.  This differs
-	 * from {@code Settings.EPS} to match the original ZCAT source code. 
+	 * The precision when considering if two floating-point numbers are equal.  This differs from {@code Settings.EPS}
+	 * to match the original ZCAT source code. 
 	 */
 	public static final double EPSILON = Math.ulp(1.0);
 	

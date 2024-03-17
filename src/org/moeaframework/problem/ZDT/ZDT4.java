@@ -34,8 +34,7 @@ public class ZDT4 extends ZDT {
 	}
 
 	/**
-	 * Constructs a ZDT4 test problem with the specified number of decision
-	 * variables.
+	 * Constructs a ZDT4 test problem with the specified number of decision variables.
 	 * 
 	 * @param numberOfVariables the number of decision variables
 	 */

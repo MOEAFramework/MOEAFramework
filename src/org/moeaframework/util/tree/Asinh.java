@@ -44,8 +44,7 @@ package org.moeaframework.util.tree;
 public class Asinh extends Node {
 	
 	/**
-	 * Constructs a new node for calculating the hyperbolic arc sine of a
-	 * number.
+	 * Constructs a new node for calculating the hyperbolic arc sine of a number.
 	 */
 	public Asinh() {
 		super(Number.class, Number.class);
@@ -58,8 +57,7 @@ public class Asinh extends Node {
 	
 	@Override
 	public Number evaluate(Environment environment) {
-		return NumberArithmetic.asinh(
-				(Number)getArgument(0).evaluate(environment));
+		return NumberArithmetic.asinh((Number)getArgument(0).evaluate(environment));
 	}
 
 }

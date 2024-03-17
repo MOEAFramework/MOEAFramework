@@ -50,8 +50,7 @@ package org.moeaframework.util.tree;
 public class Min extends Node {
 	
 	/**
-	 * Constructs a new node for calculating the minimum value of the two
-	 * arguments.
+	 * Constructs a new node for calculating the minimum value of the two arguments.
 	 */
 	public Min() {
 		super(Number.class, Number.class, Number.class);

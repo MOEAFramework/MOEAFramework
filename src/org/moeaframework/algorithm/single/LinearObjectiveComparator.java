@@ -20,8 +20,7 @@ package org.moeaframework.algorithm.single;
 import org.moeaframework.core.Solution;
 
 /**
- * The weighted linear aggregate function.  By default, this method assumes
- * equal weights for all objectives.
+ * The weighted linear aggregate function.  By default, this method assumes equal weights for all objectives.
  */
 public class LinearObjectiveComparator implements AggregateObjectiveComparator {
 		
@@ -31,17 +30,16 @@ public class LinearObjectiveComparator implements AggregateObjectiveComparator {
 	private double[] weights;
 	
 	/**
-	 * Constructs a new comparator using a weighted linear aggregate function.
-	 * Equal weights are used for each objective.
+	 * Constructs a new comparator using a weighted linear aggregate function.  Equal weights are used for each
+	 * objective.
 	 */
 	public LinearObjectiveComparator() {
 		this(1.0);
 	}
 	
 	/**
-	 * Constructs a new comparator using a weighted linear aggregate function.
-	 * One weight should be given for each objective; if fewer weights are
-	 * provided, the last weight is repeated for the remaining objectives.
+	 * Constructs a new comparator using a weighted linear aggregate function.  One weight should be given for each
+	 * objective; if fewer weights are provided, the last weight is repeated for the remaining objectives.
 	 * 
 	 * @param weights the weight vector
 	 */
@@ -73,9 +71,8 @@ public class LinearObjectiveComparator implements AggregateObjectiveComparator {
 	}
 	
 	/**
-	 * Computes the weighted linear aggregate fitness of the solution.  One
-	 * weight should be given for each objective; if fewer weights are
-	 * provided, the last weight is repeated for the remaining objectives.
+	 * Computes the weighted linear aggregate fitness of the solution.  One weight should be given for each objective;
+	 * if fewer weights are provided, the last weight is repeated for the remaining objectives.
 	 * 
 	 * @param solution the solution
 	 * @param weights the weight vector

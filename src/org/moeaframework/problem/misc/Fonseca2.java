@@ -34,13 +34,11 @@ import org.moeaframework.problem.AnalyticalProblem;
  * <p>
  * References:
  * <ol>
- *   <li>Fonseca C. M. and Fleming, P. J. (1995).  "Multiobjective Genetic
- *       Algorithms Made Easy: Selection, Sharing and Mating Restriction."
- *       Genetic Algorithms and Engineering Systems: Innovations and
- *       Applications, 12-14 Sept. 1995, pp. 45-52.
- *   <li>Van Veldhuizen, D. A. (1999).  "Multiobjective Evolutionary Algorithms: 
- *       Classifications, Analyses, and New Innovations."  Air Force Institute
- *       of Technology, Ph.D. Thesis, Appendix B.
+ *   <li>Fonseca C. M. and Fleming, P. J. (1995).  "Multiobjective Genetic Algorithms Made Easy: Selection, Sharing and
+ *       Mating Restriction."  Genetic Algorithms and Engineering Systems: Innovations and Applications, 12-14 Sept.
+ *       1995, pp. 45-52.
+ *   <li>Van Veldhuizen, D. A. (1999).  "Multiobjective Evolutionary Algorithms:  Classifications, Analyses, and New
+ *       Innovations."  Air Force Institute of Technology, Ph.D. Thesis, Appendix B.
  * </ol>
  */
 public class Fonseca2 extends AbstractProblem implements AnalyticalProblem {
@@ -53,8 +51,7 @@ public class Fonseca2 extends AbstractProblem implements AnalyticalProblem {
 	}
 
 	/**
-	 * Constructs the Fonseca (2) problem with the specified number of decision
-	 * variables.
+	 * Constructs the Fonseca (2) problem with the specified number of decision variables.
 	 * 
 	 * @param numberOfVariables the number of decision variables
 	 */
@@ -94,8 +91,7 @@ public class Fonseca2 extends AbstractProblem implements AnalyticalProblem {
 	@Override
 	public Solution generate() {
 		Solution solution = newSolution();
-		double x = PRNG.nextDouble(-1.0 / Math.sqrt(numberOfVariables),
-				1.0 / Math.sqrt(numberOfVariables));
+		double x = PRNG.nextDouble(-1.0 / Math.sqrt(numberOfVariables), 1.0 / Math.sqrt(numberOfVariables));
 		
 		for (int i = 0; i < numberOfVariables; i++) {
 			EncodingUtils.setReal(solution.getVariable(i), x);

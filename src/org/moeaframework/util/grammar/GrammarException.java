@@ -29,8 +29,7 @@ public class GrammarException extends FrameworkException {
 	private static final long serialVersionUID = 4573222148419061915L;
 	
 	/**
-	 * Constructs an exception indicating an error while parsing or processing 
-	 * grammars.
+	 * Constructs an exception indicating an error while parsing or processing grammars.
 	 * 
 	 * @param message the error message
 	 */
@@ -39,8 +38,7 @@ public class GrammarException extends FrameworkException {
 	}
 
 	/**
-	 * Constructs an exception indicating an error while parsing or processing 
-	 * grammars.
+	 * Constructs an exception indicating an error while parsing or processing grammars.
 	 * 
 	 * @param message the error message
 	 * @param line the line number on which the error occurred

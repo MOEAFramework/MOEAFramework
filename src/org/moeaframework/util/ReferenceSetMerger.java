@@ -35,15 +35,13 @@ import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 
 /**
- * Utility for merging two or more populations identified by unique sources and
- * determining the contribution of each source to the combined non-dominated
- * population. A command line interface is also provided.
+ * Utility for merging two or more populations identified by unique sources and determining the contribution of each
+ * source to the combined non-dominated population. A command line interface is also provided.
  */
 public class ReferenceSetMerger extends CommandLineUtility {
 
 	/**
-	 * The attribute key used to store the file from which each solution
-	 * originated.
+	 * The attribute key used to store the file from which each solution originated.
 	 */
 	public static final String SOURCE_ATTRIBUTE = "source";
 
@@ -58,19 +56,18 @@ public class ReferenceSetMerger extends CommandLineUtility {
 	private Map<String, Population> populations;
 
 	/**
-	 * Class constructor for merging populations and determining which
-	 * contributed to the resulting non-dominated population.
+	 * Class constructor for merging populations and determining which contributed to the resulting non-dominated
+	 * population.
 	 */
 	public ReferenceSetMerger() {
 		this(new NondominatedPopulation());
 	}
 
 	/**
-	 * Class constructor for merging population and determining which
-	 * contributed to the resulting non-dominated population.
+	 * Class constructor for merging population and determining which contributed to the resulting non-dominated
+	 * population.
 	 * 
-	 * @param combinedPopulation an (empty) population for maintaining
-	 *        non-dominated solutions
+	 * @param combinedPopulation an (empty) population for maintaining non-dominated solutions
 	 */
 	public ReferenceSetMerger(NondominatedPopulation combinedPopulation) {
 		super();
@@ -84,8 +81,7 @@ public class ReferenceSetMerger extends CommandLineUtility {
 	 * 
 	 * @param source the source of the population
 	 * @param population the population
-	 * @throws IllegalArgumentException if a population has been added
-	 *         previously with the specified source
+	 * @throws IllegalArgumentException if a population has been added previously with the specified source
 	 */
 	public void add(String source, Population population) {
 		if (populations.containsKey(source)) {
@@ -118,11 +114,9 @@ public class ReferenceSetMerger extends CommandLineUtility {
 	}
 
 	/**
-	 * Returns the sources that have been added to the combined non-dominated
-	 * population.
+	 * Returns the sources that have been added to the combined non-dominated population.
 	 * 
-	 * @return the sources that have been added to the combined non-dominated
-	 *         population
+	 * @return the sources that have been added to the combined non-dominated population
 	 */
 	public Set<String> getSources() {
 		return populations.keySet();
@@ -139,13 +133,10 @@ public class ReferenceSetMerger extends CommandLineUtility {
 	}
 
 	/**
-	 * Returns the solutions in the combined non-dominated population
-	 * originating from the specified source.
+	 * Returns the solutions in the combined non-dominated population originating from the specified source.
 	 * 
-	 * @param source the source whose solutions in the combined non-dominated
-	 *        population are returned
-	 * @return the solutions in the combined non-dominated population
-	 *         originating from the specified source
+	 * @param source the source whose solutions in the combined non-dominated population are returned
+	 * @return the solutions in the combined non-dominated population originating from the specified source
 	 */
 	public NondominatedPopulation getContributionFrom(String source) {
 		NondominatedPopulation result = new NondominatedPopulation();

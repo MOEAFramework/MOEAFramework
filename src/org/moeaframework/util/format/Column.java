@@ -55,8 +55,7 @@ public class Column<T, V> {
 	}
 
 	/**
-	 * Sets a custom formatter used to display strings.  If none is set, the default
-	 * formatting is used.
+	 * Sets a custom formatter used to display strings.  If none is set, the default formatting is used.
 	 * 
 	 * @param customFormatter the custom formatter
 	 */
@@ -65,8 +64,7 @@ public class Column<T, V> {
 	}
 
 	/**
-	 * The name of this column.  This may be displayed as the column header depending
-	 * on the output format.
+	 * The name of this column.  This may be displayed as the column header depending on the output format.
 	 * 
 	 * @return the name of this column
 	 */

@@ -24,19 +24,16 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.operator.real.DifferentialEvolutionVariation;
 
 /**
- * Selection operator to be used in conjunction with the
- * {@link DifferentialEvolutionVariation} operator. The {@code select} method returns the
- * solutions {@code [currentIndex, r1, r2, ...]}, where {@code currentIndex} is
- * set using the {@link #setCurrentIndex(int)} method and {@code r1, r2, ...}
- * are randomly selected solutions. The returned solutions are guaranteed to
- * have unique indices in the population, but the solutions themselves may not
+ * Selection operator to be used in conjunction with the {@link DifferentialEvolutionVariation} operator.  The
+ * {@code select} method returns the solutions {@code [currentIndex, r1, r2, ...]}, where {@code currentIndex} is
+ * set using the {@link #setCurrentIndex(int)} method and {@code r1, r2, ...} are randomly selected solutions.  The
+ * returned solutions are guaranteed to have unique indices in the population, but the solutions themselves may not
  * be unique if the population contains duplicate solutions.
  */
 public class DifferentialEvolutionSelection implements Selection {
 
 	/**
-	 * The current index.  If set to {@code -1}, then the current index is
-	 * randomly selected.
+	 * The current index.  If set to {@code -1}, then the current index is randomly selected.
 	 */
 	private int currentIndex;
 
@@ -49,9 +46,8 @@ public class DifferentialEvolutionSelection implements Selection {
 	}
 
 	/**
-	 * Sets the current index, which is the index of the first solution returned
-	 * by the {@code select} method.  If set to {@code -1}, then the current
-	 * index is randomly assigned each time {@link #select(int, Population)} is
+	 * Sets the current index, which is the index of the first solution returned by the {@code select} method.  If set
+	 * to {@code -1}, then the current index is randomly assigned each time {@link #select(int, Population)} is
 	 * invoked.
 	 * 
 	 * @param currentIndex the current index

@@ -47,8 +47,7 @@ package org.moeaframework.util.tree;
 public class Modulus extends Node {
 	
 	/**
-	 * Constructs a new node for calculating the modulus, or remainder, of two
-	 * numbers.
+	 * Constructs a new node for calculating the modulus, or remainder, of two numbers.
 	 */
 	public Modulus() {
 		super(Number.class, Number.class, Number.class);

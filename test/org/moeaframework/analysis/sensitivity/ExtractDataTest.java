@@ -108,8 +108,7 @@ public class ExtractDataTest {
 		File input = TestUtils.createTempFile(COMPLETE);
 		File output = TestUtils.createTempFile();
 		Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
-		NondominatedPopulation referenceSet = ProblemFactory.getInstance()
-				.getReferenceSet("DTLZ2_2");
+		NondominatedPopulation referenceSet = ProblemFactory.getInstance().getReferenceSet("DTLZ2_2");
 		
 		ExtractData.main(new String[] {
 			"--problem", "DTLZ2_2",
@@ -121,8 +120,7 @@ public class ExtractDataTest {
 		
 		try (BufferedReader reader = new BufferedReader(new FileReader(output));
 			 ResultFileReader resultReader = new ResultFileReader(problem, input)) {
-			Assert.assertEquals("#+ge +hyp +inv +err +spa +eps", 
-					reader.readLine());
+			Assert.assertEquals("#+ge +hyp +inv +err +spa +eps", reader.readLine());
 				
 			NondominatedPopulation population = resultReader.next().getPopulation();
 			IndicatorValues values = indicators.apply(population);
@@ -154,8 +152,7 @@ public class ExtractDataTest {
 		File input = TestUtils.createTempFile(COMPLETE);
 		File output = TestUtils.createTempFile();
 		Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
-		NondominatedPopulation referenceSet = ProblemFactory.getInstance()
-				.getReferenceSet("DTLZ2_2");
+		NondominatedPopulation referenceSet = ProblemFactory.getInstance().getReferenceSet("DTLZ2_2");
 		
 		ExtractData.main(new String[] {
 			"--dimension", "2",
@@ -171,14 +168,11 @@ public class ExtractDataTest {
 				ResultFileReader resultReader = new ResultFileReader(problem, input)) {
 			Assert.assertEquals("#+contribution", reader.readLine());
 				
-			NondominatedPopulation population = 
-					resultReader.next().getPopulation();
-			Assert.assertEquals("" + contribution.evaluate(population), 
-					reader.readLine());
+			NondominatedPopulation population = resultReader.next().getPopulation();
+			Assert.assertEquals("" + contribution.evaluate(population), reader.readLine());
 				
 			population = resultReader.next().getPopulation();
-			Assert.assertEquals("" + contribution.evaluate(population), 
-					reader.readLine());
+			Assert.assertEquals("" + contribution.evaluate(population), reader.readLine());
 				
 			Assert.assertNull(reader.readLine());
 		}
@@ -189,8 +183,7 @@ public class ExtractDataTest {
 		File input = TestUtils.createTempFile(COMPLETE);
 		File output = TestUtils.createTempFile();
 		Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
-		NondominatedPopulation referenceSet = ProblemFactory.getInstance()
-				.getReferenceSet("DTLZ2_2");
+		NondominatedPopulation referenceSet = ProblemFactory.getInstance().getReferenceSet("DTLZ2_2");
 		
 		ExtractData.main(new String[] {
 			"--dimension", "2",
@@ -205,14 +198,11 @@ public class ExtractDataTest {
 			 ResultFileReader resultReader = new ResultFileReader(problem, input)) {
 			Assert.assertEquals("#+contribution", reader.readLine());
 				
-			NondominatedPopulation population = 
-					resultReader.next().getPopulation();
-			Assert.assertEquals("" + contribution.evaluate(population), 
-					reader.readLine());
+			NondominatedPopulation population = resultReader.next().getPopulation();
+			Assert.assertEquals("" + contribution.evaluate(population), reader.readLine());
 				
 			population = resultReader.next().getPopulation();
-			Assert.assertEquals("" + contribution.evaluate(population), 
-					reader.readLine());
+			Assert.assertEquals("" + contribution.evaluate(population), reader.readLine());
 				
 			Assert.assertNull(reader.readLine());
 		}

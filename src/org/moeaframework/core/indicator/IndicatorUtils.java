@@ -34,28 +34,24 @@ public class IndicatorUtils {
 	}
 
 	/**
-	 * Returns the Manhattan distance in objective space between the two
-	 * solutions.
+	 * Returns the Manhattan distance in objective space between the two solutions.
 	 * 
 	 * @param problem the problem
 	 * @param a the first solution
 	 * @param b the second solution
-	 * @return the Manhattan distance in objective space between the two
-	 *         solutions
+	 * @return the Manhattan distance in objective space between the two solutions
 	 */
 	public static double manhattanDistance(Problem problem, Solution a, Solution b) {
 		return distance(problem, a, b, 1.0);
 	}
 
 	/**
-	 * Returns the Euclidean distance in objective space between the two
-	 * solutions.
+	 * Returns the Euclidean distance in objective space between the two solutions.
 	 * 
 	 * @param problem the problem
 	 * @param a the first solution
 	 * @param b the second solution
-	 * @return the Euclidean distance in objective space between the two
-	 *         solutions
+	 * @return the Euclidean distance in objective space between the two solutions
 	 */
 	public static double euclideanDistance(Problem problem, Solution a, Solution b) {
 		return distance(problem, a, b, 2.0);
@@ -67,8 +63,7 @@ public class IndicatorUtils {
 	 * @param problem the problem
 	 * @param a the first solution
 	 * @param b the second solution
-	 * @param power the power ({@code 1.0} for Manhattan distance, {@code 2.0}
-	 *        for Euclidean distance)
+	 * @param power the power ({@code 1.0} for Manhattan distance, {@code 2.0} for Euclidean distance)
 	 * @return the distance in objective space between the two solutions
 	 */
 	private static double distance(Problem problem, Solution a, Solution b, double power) {
@@ -82,14 +77,14 @@ public class IndicatorUtils {
 	}
 
 	/**
-	 * Returns the Euclidean distance in objective space between the specified
-	 * solution and the nearest solution in the population.
+	 * Returns the Euclidean distance in objective space between the specified solution and the nearest solution in
+	 * the population.
 	 * 
 	 * @param problem the problem
 	 * @param solution the solution
 	 * @param population the population
-	 * @return the Euclidean distance in objective space between the specified
-	 *         solution and the nearest solution in the population
+	 * @return the Euclidean distance in objective space between the specified solution and the nearest solution in
+	 *         the population
 	 */
 	public static double distanceToNearestSolution(Problem problem, Solution solution,
 			NondominatedPopulation population) {

@@ -79,8 +79,8 @@ public class NormalBoundaryDivisions {
 	}
 	
 	/**
-	 * Determines the number of reference points that would be produced using the given
-	 * number of objectives and divisions.
+	 * Determines the number of reference points that would be produced using the given number of objectives
+	 * and divisions.
 	 * 
 	 * @param problem the problem
 	 * @return the number of reference points
@@ -90,8 +90,8 @@ public class NormalBoundaryDivisions {
 	}
 	
 	/**
-	 * Determines the number of reference points that would be produced using the given
-	 * number of objectives and divisions.
+	 * Determines the number of reference points that would be produced using the given number of objectives
+	 * and divisions.
 	 * 
 	 * @param numberOfObjectives the number of objectives
 	 * @return the number of reference points
@@ -102,8 +102,7 @@ public class NormalBoundaryDivisions {
 	}
 	
 	/**
-	 * Returns {@code true} if this represents the two-layer approach where inner and outer
-	 * divisions are specified.
+	 * Returns {@code true} if this represents the two-layer approach where inner and outer divisions are specified.
 	 * 
 	 * @return {@code true} if the two-layer approach is used; {@code false} otherwise
 	 */

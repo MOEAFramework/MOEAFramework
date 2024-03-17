@@ -25,27 +25,21 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.util.TypedProperties;
 
 /**
- * Defines an SPI for algorithms. Algorithms are identified by a unique name and
- * may be given optional {@link TypedProperties}. The methods of the provider must
- * return {@code null} if the algorithm is not supported by the provider.
+ * Defines an SPI for algorithms. Algorithms are identified by a unique name and may be given optional
+ * {@link TypedProperties}.  The methods of the provider must return {@code null} if the algorithm is not supported by
+ * the provider.
  * <p>
- * If the provider can supply the algorithm but an error occurred during
- * instantiation, the provider may throw a {@link ProviderNotFoundException}
- * along with the details causing the exception.
+ * If the provider can supply the algorithm but an error occurred during instantiation, the provider may throw a
+ * {@link ProviderNotFoundException} along with the details causing the exception.
  * <p>
- * To provide a custom {@code AlgorithmProvider}, first extend this class and
- * implement the abstract method. Next, build a JAR file containing the custom
- * provider. Within the JAR file, create the file
- * {@code META-INF/services/org.moeaframework.core.spi.AlgorithmProvider}
- * containing on a single line the class name of the custom provider. Lastly,
- * add this JAR file to the classpath. Once these steps are completed, the
- * algorithms(s) are now accessible via the
- * {@link AlgorithmFactory#getAlgorithm} methods.
+ * To provide a custom {@code AlgorithmProvider}, first extend this class and implement the abstract method. Next,
+ * build a JAR file containing the custom provider. Within the JAR file, create the file
+ * {@code META-INF/services/org.moeaframework.core.spi.AlgorithmProvider} containing on a single line the class name
+ * of the custom provider. Lastly, add this JAR file to the classpath. Once these steps are completed, the
+ * algorithms(s) are now accessible via the {@link AlgorithmFactory#getAlgorithm} methods.
  * <p>
- * As algorithm names are often used in file names, it is best to avoid
- * characters which are not compatible with the file system.  It is suggested
- * that names match the following regular expression:  
- * {@code ^[a-zA-Z0-9()\-,]+$}.
+ * As algorithm names are often used in file names, it is best to avoid characters which are not compatible with the
+ * file system.  It is suggested that names match the following regular expression: {@code ^[a-zA-Z0-9()\-,]+$}.
  */
 public abstract class AlgorithmProvider {
 
@@ -57,8 +51,8 @@ public abstract class AlgorithmProvider {
 	}
 	
 	/**
-	 * Returns the algorithms names to appear in the diagnostic tool.  If there are
-	 * multiple aliases for the same algorithm, provide only the canonical name.
+	 * Returns the algorithms names to appear in the diagnostic tool.  If there are multiple aliases for the same
+	 * algorithm, provide only the canonical name.
 	 * 
 	 * @return the algorithm names
 	 */
@@ -67,18 +61,15 @@ public abstract class AlgorithmProvider {
 	}
 
 	/**
-	 * Returns the algorithm with the specified name, or {@code null} if this
-	 * provider does not support the algorithm. An optional set of properties
-	 * may be provided to further define the algorithm; however, the provider is
+	 * Returns the algorithm with the specified name, or {@code null} if this provider does not support the algorithm.
+	 * An optional set of properties may be provided to further define the algorithm; however, the provider is
 	 * expected to supply default properties if none are provided.
 	 * 
 	 * @param name the algorithm name
 	 * @param properties optional properties for the algorithm
 	 * @param problem the problem
-	 * @return the algorithm with the specified name, or {@code null} if this
-	 *         provider does not support the algorithm
+	 * @return the algorithm with the specified name, or {@code null} if this provider does not support the algorithm
 	 */
-	public abstract Algorithm getAlgorithm(String name, TypedProperties properties,
-			Problem problem);
+	public abstract Algorithm getAlgorithm(String name, TypedProperties properties, Problem problem);
 
 }

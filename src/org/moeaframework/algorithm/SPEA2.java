@@ -46,25 +46,21 @@ import org.moeaframework.core.selection.TournamentSelection;
 import org.moeaframework.core.spi.OperatorFactory;
 
 /**
- * Implementation of the strength-based evolutionary algorithm (SPEA2).  SPEA2
- * uses a novel strength-based measure of fitness for handling multiple
- * objectives.
+ * Implementation of the strength-based evolutionary algorithm (SPEA2).  SPEA2 uses a novel strength-based measure of
+ * fitness for handling multiple objectives.
  * <p>
- * Note: First, there is a naming difference between this implementation and
- * the original SPEA2 paper.  The original SPEA2 paper defines a "population"
- * and an "archive", but the population is really the offspring and the archive
- * is the population.  Secondly, the SPEA2 paper defines a parameter
- * {@code k = sqrt(population.size())} for computing a crowding-based niching
- * factor.  The SPEA2 C implementation in PISA (written by the same authors
- * as the paper) recommends using {@code k=1} for performance reasons.  This
- * implementation makes {@code k} a user-specified parameter to support either
- * option.  {@code k} should be at least {@code 1} and no larger than
+ * Note: First, there is a naming difference between this implementation and the original SPEA2 paper.  The original
+ * SPEA2 paper defines a "population" and an "archive", but the population is really the offspring and the archive
+ * is the population.  Secondly, the SPEA2 paper defines a parameter {@code k = sqrt(population.size())} for computing
+ * a crowding-based niching factor.  The SPEA2 C implementation in PISA (written by the same authors as the paper)
+ * recommends using {@code k=1} for performance reasons.  This implementation makes {@code k} a user-specified
+ * parameter to support either option.  {@code k} should be at least {@code 1} and no larger than
  * {@code population.size()}.
  * <p>
  * References:
  * <ol>
- *   <li>Zitzler, E., M. Laumanns, and L. Thiele (2001).  SPEA2: Improving the
- *       Strength Pareto Evolutionary Algorithm.  TIK-Report 103.
+ *   <li>Zitzler, E., M. Laumanns, and L. Thiele (2001).  SPEA2: Improving the Strength Pareto Evolutionary Algorithm.
+ *       TIK-Report 103.
  * </ol>
  */
 public class SPEA2 extends AbstractEvolutionaryAlgorithm {
@@ -111,8 +107,8 @@ public class SPEA2 extends AbstractEvolutionaryAlgorithm {
 	 * @param initialization the initialization procedure
 	 * @param variation the variation operator
 	 * @param numberOfOffspring the number of offspring generated each iteration
-	 * @param k niching parameter specifying that crowding is computed using
-	 *        the {@code k}-th nearest neighbor, recommend {@code k=1}
+	 * @param k niching parameter specifying that crowding is computed using the {@code k}-th nearest neighbor,
+	 *        recommend {@code k=1}
 	 */
 	public SPEA2(Problem problem, int initialPopulationSize, Initialization initialization,
 			Variation variation, int numberOfOffspring, int k) {
@@ -146,8 +142,8 @@ public class SPEA2 extends AbstractEvolutionaryAlgorithm {
 	}
 	
 	/**
-	 * Sets the number of offspring produced each iteration.  This is typically set to the
-	 * same value as the population size.
+	 * Sets the number of offspring produced each iteration.  This is typically set to the same value as the
+	 * population size.
 	 * 
 	 * @param numberOfOffspring the number of offspring
 	 */
@@ -247,8 +243,8 @@ public class SPEA2 extends AbstractEvolutionaryAlgorithm {
 	}
 	
 	/**
-	 * Computes the distance matrix containing the pair-wise distances between
-	 * solutions in objective space.  The diagonal will contain all 0's.
+	 * Computes the distance matrix containing the pair-wise distances between solutions in objective space.  The
+	 * diagonal will contain all 0's.
 	 * 
 	 * @param population the population of solutions
 	 * @return the distance matrix
@@ -269,8 +265,7 @@ public class SPEA2 extends AbstractEvolutionaryAlgorithm {
 	}
 	
 	/**
-	 * Mapping of pair-wise distances between points.  This mapping is mutable,
-	 * allowing points to be removed.
+	 * Mapping of pair-wise distances between points.  This mapping is mutable, allowing points to be removed.
 	 */
 	public static class MutableDistanceMap {
 		
@@ -320,10 +315,9 @@ public class SPEA2 extends AbstractEvolutionaryAlgorithm {
 		}
 		
 		/**
-		 * Returns the most crowded point according to SPEA2's truncation
-		 * strategy.  The most crowded point is the point with the smallest
-		 * distance to its nearest neighbor.  Ties are broken by looking at
-		 * the next nearest neighbor repeatedly until a difference is found.
+		 * Returns the most crowded point according to SPEA2's truncation strategy.  The most crowded point is the
+		 * point with the smallest distance to its nearest neighbor.  Ties are broken by looking at the next nearest
+		 * neighbor repeatedly until a difference is found.
 		 * 
 		 * @return the index of the most crowded point
 		 */
@@ -398,8 +392,7 @@ public class SPEA2 extends AbstractEvolutionaryAlgorithm {
 		private final DominanceComparator comparator;
 		
 		/**
-		 * Constructs a new fitness evaluator for computing the strength
-		 * measure with crowding-based niching.
+		 * Constructs a new fitness evaluator for computing the strength measure with crowding-based niching.
 		 * 
 		 * @param k crowding is based on the distance to the {@code k}-th nearest neighbor
 		 */
@@ -411,8 +404,7 @@ public class SPEA2 extends AbstractEvolutionaryAlgorithm {
 		}
 		
 		/**
-		 * Returns the value {@code k} that controls which nearest neighbor is used to compute
-		 * the crowding distance.
+		 * Returns the value {@code k} that controls which nearest neighbor is used to compute the crowding distance.
 		 * 
 		 * @return the value {@code k}
 		 */
@@ -421,8 +413,8 @@ public class SPEA2 extends AbstractEvolutionaryAlgorithm {
 		}
 		
 		/**
-		 * Sets the value {@code k} that controls which nearest neighbor is used to compute the
-		 * crowding distance.  This is set to {@code 1} by default.
+		 * Sets the value {@code k} that controls which nearest neighbor is used to compute the crowding distance.
+		 * This is set to {@code 1} by default.
 		 * 
 		 * @param k the value {@code k}
 		 */

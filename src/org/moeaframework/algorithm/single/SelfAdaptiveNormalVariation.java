@@ -23,15 +23,14 @@ import org.moeaframework.core.operator.Mutation;
 import org.moeaframework.core.variable.RealVariable;
 
 /**
- * Self adaptive variation based on the normal distribution.  The self adaptive
- * parameter {@code sigma} is stored as the {@value SIGMA} attribute.  Each
- * call to {@link #evolve(Solution[])} performs the following changes:
+ * Self adaptive variation based on the normal distribution.  The self adaptive parameter {@code sigma} is stored as
+ * the {@value SIGMA} attribute.  Each call to {@link #evolve(Solution[])} performs the following changes:
  * <pre>
  *   sigma = sigma * e^(tau * N(0,1))
  *   vars = vars + sigma * N(0,I)
  * </pre>
- * where {@code N(0,1)} and {@code N(0,I)} are normally-distributed random
- * numbers with mean {@code 0} and standard deviation {@code 1}.
+ * where {@code N(0,1)} and {@code N(0,I)} are normally-distributed random numbers with mean {@code 0} and standard
+ * deviation {@code 1}.
  */
 public class SelfAdaptiveNormalVariation implements Mutation {
 	
@@ -41,8 +40,7 @@ public class SelfAdaptiveNormalVariation implements Mutation {
 	public static final String SIGMA = "sigma";
 	
 	/**
-	 * Constructs a new instance of the self-adaptive variation based on the
-	 * normal distribution.
+	 * Constructs a new instance of the self-adaptive variation based on the normal distribution.
 	 */
 	public SelfAdaptiveNormalVariation() {
 		super();

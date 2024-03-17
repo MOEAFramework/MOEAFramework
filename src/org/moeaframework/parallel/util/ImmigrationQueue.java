@@ -26,9 +26,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import org.moeaframework.core.Solution;
 
 /**
- * A queue for tracking migrating solutions that is (1) thread-safe, and (2)
- * automatically creates copies of the solutions to avoid issues in shared-memory
- * environments.
+ * A queue for tracking migrating solutions that is (1) thread-safe, and (2) automatically creates copies of the
+ * solutions to avoid issues in shared-memory environments.
  */
 public class ImmigrationQueue {
 	

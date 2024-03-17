@@ -29,70 +29,61 @@ import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.util.Vector;
 
 /**
- * Parent-centric crossover (PCX) operator.  PCX is a multiparent operator,
- * allowing a user-defined number of parents and offspring.  Offspring are
- * clustered around the parents, as depicted in the figure below.
+ * Parent-centric crossover (PCX) operator.  PCX is a multiparent operator, allowing a user-defined number of parents
+ * and offspring.  Offspring are clustered around the parents, as depicted in the figure below.
  * <p>
  * <img src="doc-files/PCX-1.png" alt="Example PCX operator distribution" />
  * <p>
  * References:
  * <ol>
- *   <li>Deb, K., Anand, A., and Joshi, D., "A Computationally Efficient
- *       Evolutionary Algorithm for Real-Parameter Optimization," Evolutionary
- *       Computation, 10(4):371-395, 2002.
+ *   <li>Deb, K., Anand, A., and Joshi, D., "A Computationally Efficient Evolutionary Algorithm for Real-Parameter
+ *       Optimization," Evolutionary Computation, 10(4):371-395, 2002.
  * </ol>
  */
 @Prefix("pcx")
 public class PCX extends MultiParentVariation {
 	
 	/**
-	 * The standard deviation of the normal distribution controlling the spread
-	 * of solutions in the direction of the selected parent.
+	 * The standard deviation of the normal distribution controlling the spread of solutions in the direction of the
+	 * selected parent.
 	 */
 	private double eta;
 
 	/**
-	 * The standard deviation of the normal distribution controlling the spread
-	 * of solutions in the directions defined by the remaining parents.
+	 * The standard deviation of the normal distribution controlling the spread of solutions in the directions defined
+	 * by the remaining parents.
 	 */
 	private double zeta;
 	
 	/**
-	 * Constructs a PCX operator with default settings, taking {@code 10}
-	 * parents and producing {@code 2} offspring.  The {@code eta} and
-	 * {@code zeta} parameters are set to {@code 0.1}, as suggested by
-	 * Deb et al. (2002).
+	 * Constructs a PCX operator with default settings, taking {@code 10} parents and producing {@code 2} offspring.
+	 * The {@code eta} and {@code zeta} parameters are set to {@code 0.1}, as suggested by Deb et al. (2002).
 	 */
 	public PCX() {
 		this(10, 2);
 	}
 
 	/**
-	 * Constructs a PCX operator with the specified number of parents and 
-	 * offspring. The {@code eta} and {@code zeta} parameters are set to 
-	 * {@code 0.1}, as suggested by Deb et al. (2002).
+	 * Constructs a PCX operator with the specified number of parents and offspring. The {@code eta} and {@code zeta}
+	 * parameters are set to {@code 0.1}, as suggested by Deb et al. (2002).
 	 * 
 	 * @param numberOfParents the number of parents required by this operator
-	 * @param numberOfOffspring the number of offspring produced by this
-	 *        operator
+	 * @param numberOfOffspring the number of offspring produced by this operator
 	 */
 	public PCX(int numberOfParents, int numberOfOffspring) {
 		this(numberOfParents, numberOfOffspring, 0.1, 0.1);
 	}
 
 	/**
-	 * Constructs a PCX operator with the specified number of parents and 
-	 * offspring, and the specified values for {@code sigma_eta} and
-	 * {@code sigma_zeta}.
+	 * Constructs a PCX operator with the specified number of parents and offspring, and the specified values for
+	 * {@code sigma_eta} and {@code sigma_zeta}.
 	 * 
 	 * @param numberOfParents the number of parents required by this operator
-	 * @param numberOfOffspring the number of offspring produced by this
-	 *        operator
-	 * @param eta the standard deviation of the normal distribution controlling
-	 *        the spread of solutions in the direction of the selected parent
-	 * @param zeta the standard deviation of the normal distribution controlling
-	 *        the spread of solutions in the directions defined by the remaining
-	 *        parents
+	 * @param numberOfOffspring the number of offspring produced by this operator
+	 * @param eta the standard deviation of the normal distribution controlling the spread of solutions in the
+	 *        direction of the selected parent
+	 * @param zeta the standard deviation of the normal distribution controlling the spread of solutions in the
+	 *        directions defined by the remaining parents
 	 */
 	public PCX(int numberOfParents, int numberOfOffspring, double eta, double zeta) {
 		super(numberOfParents, numberOfOffspring);
@@ -106,8 +97,8 @@ public class PCX extends MultiParentVariation {
 	}
 
 	/**
-	 * Returns the standard deviation of the normal distribution controlling the
-	 * spread of solutions in the direction of the selected parent.
+	 * Returns the standard deviation of the normal distribution controlling the spread of solutions in the direction
+	 * of the selected parent.
 	 * 
 	 * @return the standard deviation value
 	 */
@@ -116,9 +107,8 @@ public class PCX extends MultiParentVariation {
 	}
 	
 	/**
-	 * Sets the standard deviation of the normal distribution controlling the
-	 * spread of solutions in the direction of the selected parent.  The default
-	 * value is {@code 0.1}.
+	 * Sets the standard deviation of the normal distribution controlling the spread of solutions in the direction
+	 * of the selected parent.  The default value is {@code 0.1}.
 	 * 
 	 * @param eta the standard deviation value
 	 */
@@ -129,8 +119,8 @@ public class PCX extends MultiParentVariation {
 	}
 
 	/**
-	 * Returns the standard deviation of the normal distribution controlling the
-	 * spread of solutions in the directions defined by the remaining parents.
+	 * Returns the standard deviation of the normal distribution controlling the spread of solutions in the directions
+	 * defined by the remaining parents.
 	 * 
 	 * @return the standard deviation value
 	 */
@@ -139,9 +129,8 @@ public class PCX extends MultiParentVariation {
 	}
 	
 	/**
-	 * Sets the standard deviation of the normal distribution controlling the
-	 * spread of solutions in the directions defined by the remaining parents.
-	 * The default value is {@code 0.1}.
+	 * Sets the standard deviation of the normal distribution controlling the spread of solutions in the directions
+	 * defined by the remaining parents.  The default value is {@code 0.1}.
 	 * 
 	 * @param zeta the standard deviation value
 	 */
@@ -170,14 +159,13 @@ public class PCX extends MultiParentVariation {
 	}
 
 	/**
-	 * Returns one randomly-generated offspring produced by this operator using
-	 * {@code parents[parents.length-1]} as the selected parent. Multiple
-	 * invocations of this method with the same argument will produce offspring
+	 * Returns one randomly-generated offspring produced by this operator using {@code parents[parents.length-1]} as
+	 * the selected parent.  Multiple invocations of this method with the same argument will produce offspring
 	 * distributed about the selected parent.
 	 * 
 	 * @param parents the parent solutions
-	 * @return one randomly-generated offspring produced by this operator using
-	 *         {@code parents[parents.length-1]} as the selected parent
+	 * @return one randomly-generated offspring produced by this operator using {@code parents[parents.length-1]} as
+	 *         the selected parent
 	 */
 	protected Solution pcx(Solution[] parents) {
 		if (parents.length < 2) {

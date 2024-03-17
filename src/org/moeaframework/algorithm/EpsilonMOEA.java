@@ -42,15 +42,14 @@ import org.moeaframework.core.spi.OperatorFactory;
 import org.moeaframework.util.TypedProperties;
 
 /**
- * Implementation of the &epsilon;-MOEA algorithm.  The &epsilon;-MOEA is a
- * steady-state algorithm, meaning only one individual in the population is
- * evolved per step, and uses an &epsilon;-dominance archive to maintain a
- * well-spread set of Pareto-optimal solutions.
+ * Implementation of the &epsilon;-MOEA algorithm.  The &epsilon;-MOEA is a steady-state algorithm, meaning only one
+ * individual in the population is evolved per step, and uses an &epsilon;-dominance archive to maintain a well-spread
+ * set of Pareto-optimal solutions.
  * <p>
  * References:
  * <ol>
- *   <li>Deb et al. "A Fast Multi-Objective Evolutionary Algorithm for Finding
- *   Well-Spread Pareto-Optimal Solutions." KanGAL Report No 2003002. Feb 2003.
+ *   <li>Deb et al. "A Fast Multi-Objective Evolutionary Algorithm for Finding Well-Spread Pareto-Optimal Solutions."
+ *       KanGAL Report No 2003002. Feb 2003.
  * </ol>
  */
 public class EpsilonMOEA extends AbstractEvolutionaryAlgorithm implements EpsilonBoxEvolutionaryAlgorithm {
@@ -149,9 +148,8 @@ public class EpsilonMOEA extends AbstractEvolutionaryAlgorithm implements Epsilo
 	}
 
 	/**
-	 * Adds the new solution to the population if is non-dominated with the
-	 * current population, removing either a randomly-selected dominated
-	 * solution or a non-dominated solution.
+	 * Adds the new solution to the population if is non-dominated with the current population, removing either a
+	 * randomly-selected dominated solution or a non-dominated solution.
 	 * 
 	 * @param newSolution the new solution being added to the population
 	 */

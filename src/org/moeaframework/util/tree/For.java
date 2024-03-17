@@ -18,8 +18,8 @@
 package org.moeaframework.util.tree;
 
 /**
- * The node for executing an expression for a given number of iterations.  A
- * named variable is created that contains the loop counter.
+ * The node for executing an expression for a given number of iterations.  A named variable is created that contains
+ * the loop counter.
  * 
  * <table style="margin-top: 1em; width: 100%">
  *   <caption style="text-align: left">Node signature:</caption>
@@ -51,8 +51,7 @@ package org.moeaframework.util.tree;
  *   <tr>
  *     <td>Return Value</td>
  *     <td>User-Defined</td>
- *     <td>The return value of the last executed expression; or {@code null}
- *         if the loop was never executed</td>
+ *     <td>The return value of the last executed expression; or {@code null} if the loop was never executed</td>
  *   </tr>
  * </table>
  */
@@ -64,15 +63,12 @@ public class For extends Node {
 	private final String variableName;
 	
 	/**
-	 * Constructs a new node for executing an expression for a given number
-	 * of iterations.
+	 * Constructs a new node for executing an expression for a given number of iterations.
 	 * 
-	 * @param variableName the name of the variable where the loop counter is
-	 *        stored
+	 * @param variableName the name of the variable where the loop counter is stored
 	 */
 	public For(String variableName) {
-		super(Object.class, Number.class, Number.class, Number.class,
-				Object.class);
+		super(Object.class, Number.class, Number.class, Number.class, Object.class);
 		this.variableName = variableName;
 	}
 
@@ -88,8 +84,7 @@ public class For extends Node {
 		Number step = (Number)getArgument(2).evaluate(environment);
 		Object value = null;
 		
-		for (Number i = start; NumberArithmetic.lessThan(i, end);
-				i = NumberArithmetic.add(i, step)) {
+		for (Number i = start; NumberArithmetic.lessThan(i, end); i = NumberArithmetic.add(i, step)) {
 			environment.set(variableName, i);
 			value = getArgument(3).evaluate(environment);
 		}

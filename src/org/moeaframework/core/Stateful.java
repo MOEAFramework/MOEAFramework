@@ -30,8 +30,7 @@ public interface Stateful {
 	
 	/**
 	 * Writes the state of this object to the stream.  The order that objects are written to the stream
-	 * is important.  We recommend first calling {@code super.saveState(stream)} followed by writing each
-	 * field.
+	 * is important.  We recommend first calling {@code super.saveState(stream)} followed by writing each field.
 	 * 
 	 * @param stream the stream
 	 * @throws IOException if an I/O error occurred
@@ -53,8 +52,7 @@ public interface Stateful {
 	}
 	
 	/**
-	 * Returns a {@code Serializable} object representing the internal state of
-	 * this algorithm.
+	 * Returns a {@code Serializable} object representing the internal state of this algorithm.
 	 * 
 	 * @return a {@code Serializable} object representing the internal state of this algorithm
 	 * @throws NotSerializableException if this algorithm does not support serialization

@@ -41,13 +41,11 @@ import org.moeaframework.util.weights.NormalBoundaryDivisions;
  * 
  * References:
  * <ol>
- *   <li>Deb, K. and Jain, H.  "An Evolutionary Many-Objective Optimization
- *       Algorithm Using Reference-Point-Based Nondominated Sorting Approach,
- *       Part I: Solving Problems With Box Constraints."  IEEE Transactions on
+ *   <li>Deb, K. and Jain, H.  "An Evolutionary Many-Objective Optimization Algorithm Using Reference-Point-Based
+ *       Nondominated Sorting Approach, Part I: Solving Problems With Box Constraints."  IEEE Transactions on
  *       Evolutionary Computation, 18(4):577-601, 2014.
- *   <li>Deb, K. and Jain, H.  "Handling Many-Objective Problems Using an
- *       Improved NSGA-II Procedure.  WCCI 2012 IEEE World Contress on
- *       Computational Intelligence, Brisbane, Australia, June 10-15, 2012.
+ *   <li>Deb, K. and Jain, H.  "Handling Many-Objective Problems Using an Improved NSGA-II Procedure.  WCCI 2012 IEEE
+ *       World Contress on Computational Intelligence, Brisbane, Australia, June 10-15, 2012.
  * </ol>
  */
 public class NSGAIII extends NSGAII {
@@ -122,8 +120,8 @@ public class NSGAIII extends NSGAII {
 	}
 	
 	/**
-	 * Fixes the parameters used by SBX and PM, if used, to match the original NSGA-III paper
-	 * (thanks to Haitham Seada for identifying this discrepancy).
+	 * Fixes the parameters used by SBX and PM, if used, to match the original NSGA-III paper (thanks to Haitham Seada
+	 * for identifying this discrepancy).
 	 * 
 	 * @param variation the variation operator
 	 */
@@ -141,9 +139,9 @@ public class NSGAIII extends NSGAII {
 	}
 	
 	/**
-	 * Gets the default selection operator.  If the problem is unconstrained, then the parents
-	 * are selected randomly from the population.  If the problem has constraints, then solutions
-	 * are selected first using the aggregate constraint violation followed by random selection.
+	 * Gets the default selection operator.  If the problem is unconstrained, then the parents are selected randomly
+	 * from the population.  If the problem has constraints, then solutions are selected first using the aggregate
+	 * constraint violation followed by random selection.
 	 * 
 	 * @param problem the problem
 	 * @return the selection operator

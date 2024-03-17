@@ -35,8 +35,7 @@ public class Production {
 	private final List<Symbol> symbols;
 
 	/**
-	 * Constructs an empty production. At least one symbol must be
-	 * provided through the {@link #add(Symbol)} method.
+	 * Constructs an empty production. At least one symbol must be provided through the {@link #add(Symbol)} method.
 	 */
 	public Production() {
 		super();

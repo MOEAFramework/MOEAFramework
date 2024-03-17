@@ -32,12 +32,10 @@ import org.moeaframework.problem.AbstractProblem;
  * <p>
  * References:
  * <ol>
- *   <li>Van Veldhuizen, D. A (1999).  "Multiobjective Evolutionary Algorithms: 
- *       Classifications, Analyses, and New Innovations."  Air Force Institute
- *       of Technology, Ph.D. Thesis, Appendix B.
- *   <li>Valenzuela-Rendon, M., et al. (1997).  "A Non-Generational Genetic
- *       Algorithm for Multiobjective Optimization."  Proceedings of the
- *       Seventh International Conference on Genetic Algorithms, pp. 658-665.
+ *   <li>Van Veldhuizen, D. A (1999).  "Multiobjective Evolutionary Algorithms: Classifications, Analyses, and New
+ *       Innovations."  Air Force Institute of Technology, Ph.D. Thesis, Appendix B.
+ *   <li>Valenzuela-Rendon, M., et al. (1997).  "A Non-Generational Genetic Algorithm for Multiobjective Optimization."
+ *       Proceedings of the Seventh International Conference on Genetic Algorithms, pp. 658-665.
  * </ol>
  */
 public class Rendon extends AbstractProblem {

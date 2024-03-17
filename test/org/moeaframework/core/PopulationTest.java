@@ -57,8 +57,7 @@ public class PopulationTest {
 	}
 
 	/**
-	 * Tests the copy constructor to ensure the new population is an identical
-	 * copy of the original.
+	 * Tests the copy constructor to ensure the new population is an identical copy of the original.
 	 */
 	@Test
 	public void testCopyConstructor() {
@@ -70,8 +69,7 @@ public class PopulationTest {
 	}
 
 	/**
-	 * Tests if the {@code get} method throws an exception if accessing an
-	 * invalid index.
+	 * Tests if the {@code get} method throws an exception if accessing an invalid index.
 	 */
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testGetBoundaryCheck1() {
@@ -79,8 +77,7 @@ public class PopulationTest {
 	}
 
 	/**
-	 * Tests if the {@code get} method throws an exception if accessing an
-	 * invalid index.
+	 * Tests if the {@code get} method throws an exception if accessing an invalid index.
 	 */
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testGetBoundaryCheck2() {
@@ -88,8 +85,7 @@ public class PopulationTest {
 	}
 
 	/**
-	 * Tests if the {@code remove} method throws an exception if accessing an
-	 * invalid index.
+	 * Tests if the {@code remove} method throws an exception if accessing an invalid index.
 	 */
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testRemoveBoundaryCheck1() {
@@ -97,8 +93,7 @@ public class PopulationTest {
 	}
 
 	/**
-	 * Tests if the {@code remove} method throws an exception if accessing an
-	 * invalid index.
+	 * Tests if the {@code remove} method throws an exception if accessing an invalid index.
 	 */
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testRemoveBoundaryCheck2() {
@@ -138,11 +133,9 @@ public class PopulationTest {
 	}
 
 	/**
-	 * Tests several of the trivial operations that should be provided by the
-	 * underlying collection used in the implementation, including {@code get},
-	 * {@code contains}, {@code containsAll}, {@code remove}, {@code removeAll},
-	 * {@code size}, {@code isEmpty}, {@code add}, {@code addAll} and
-	 * {@code clear}.
+	 * Tests several of the trivial operations that should be provided by the underlying collection used in the
+	 * implementation, including {@code get}, {@code contains}, {@code containsAll}, {@code remove}, {@code removeAll},
+	 * {@code size}, {@code isEmpty}, {@code add}, {@code addAll} and {@code clear}.
 	 */
 	@Test
 	public void test() {

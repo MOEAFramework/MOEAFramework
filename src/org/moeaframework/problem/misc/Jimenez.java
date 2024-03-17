@@ -25,8 +25,7 @@ import org.moeaframework.problem.AbstractProblem;
 import org.moeaframework.problem.AnalyticalProblem;
 
 /**
- * The Jimenez problem.  The Pareto set is defined by the line from
- * {@code (40, 15)} to {@code (50, 0)}.
+ * The Jimenez problem.  The Pareto set is defined by the line from {@code (40, 15)} to {@code (50, 0)}.
  * <p>
  * Properties:
  * <ul>
@@ -38,13 +37,10 @@ import org.moeaframework.problem.AnalyticalProblem;
  * <p>
  * References:
  * <ol>
- *   <li>Jimenez, F. and Verdegay, J. L. (1998).  "Constrained Multiobjective
- *       Optimization by Evolutionary Algorithms."  Proceedings of the
- *       International ICSC Symposium on Engineering of Intelligent Systems, 
- *       pp. 266-271.
- *   <li>Van Veldhuizen, D. A (1999).  "Multiobjective Evolutionary Algorithms: 
- *       Classifications, Analyses, and New Innovations."  Air Force Institute
- *       of Technology, Ph.D. Thesis, Appendix B.
+ *   <li>Jimenez, F. and Verdegay, J. L. (1998).  "Constrained Multiobjective Optimization by Evolutionary Algorithms."
+ *       Proceedings of the International ICSC Symposium on Engineering of Intelligent Systems, pp. 266-271.
+ *   <li>Van Veldhuizen, D. A (1999).  "Multiobjective Evolutionary Algorithms: Classifications, Analyses, and New
+ *       Innovations."  Air Force Institute of Technology, Ph.D. Thesis, Appendix B.
  * </ol>
  */
 public class Jimenez extends AbstractProblem implements AnalyticalProblem {

@@ -103,15 +103,12 @@ public abstract class AbstractPSOAlgorithm extends AbstractAlgorithm implements 
 	 * @param leaderComparator comparator for selecting leaders
 	 * @param dominanceComparator comparator for updating the local best particles
 	 * @param leaders non-dominated population for storing the leaders
-	 * @param archive non-dominated population for storing the external archive;
-	 *        or {@code null} if no external archive is defined
+	 * @param archive non-dominated population for storing the external archive; or {@code null} if no external archive
+	 *        is defined
 	 * @param mutation mutation operator, or {@code null} if no mutation is defined
 	 */
-	public AbstractPSOAlgorithm(Problem problem, int swarmSize, int leaderSize,
-			DominanceComparator leaderComparator,
-			DominanceComparator dominanceComparator,
-			FitnessBasedArchive leaders,
-			NondominatedPopulation archive,
+	public AbstractPSOAlgorithm(Problem problem, int swarmSize, int leaderSize, DominanceComparator leaderComparator,
+			DominanceComparator dominanceComparator, FitnessBasedArchive leaders, NondominatedPopulation archive,
 			Mutation mutation) {
 		super(problem);
 		setSwarmSize(swarmSize);

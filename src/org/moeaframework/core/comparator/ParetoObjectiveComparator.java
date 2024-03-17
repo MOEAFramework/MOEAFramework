@@ -22,8 +22,8 @@ import org.moeaframework.core.Solution;
 /**
  * Compares two solutions using the Pareto dominance relation on the objectives.
  * <p>
- * In general, the {@link ParetoDominanceComparator} should be used instead as
- * it also incorporates constraint violation checks.
+ * In general, the {@link ParetoDominanceComparator} should be used instead as it also incorporates constraint
+ * violation checks.
  */
 public class ParetoObjectiveComparator implements DominanceComparator {
 

@@ -41,8 +41,7 @@ public abstract class PointCrossoverTest {
 	}
 
 	/**
-	 * Tests if the offspring resulted from a crossover between the parents.
-	 * Requires two parents and two offspring.
+	 * Tests if the offspring resulted from a crossover between the parents.  Requires two parents and two offspring.
 	 * 
 	 * @param parents the two parents
 	 * @param offspring the two offspring

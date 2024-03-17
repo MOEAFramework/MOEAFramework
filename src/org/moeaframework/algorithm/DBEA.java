@@ -60,24 +60,20 @@ import org.moeaframework.util.weights.NormalBoundaryIntersectionGenerator;
  */
 
 /**
- * Implementation of the Improved Decomposition-Based Evolutionary Algorithm
- * (I-DBEA).  This implementation is based on the Matlab version published
- * by the original authors.
+ * Implementation of the Improved Decomposition-Based Evolutionary Algorithm (I-DBEA).  This implementation is based
+ * on the Matlab version published by the original authors.
  * <p>
  * References:
  * <ol>
- *   <li>Asafuddoula, M., T. Ray, and R. Sarker (2015).  "A Decomposition-
- *       Based Evolutionary Algorithm for Many-Objective Optimization."
- *       IEEE Transaction on Evolutionary Computation, 19(3):445-460.
- *   <li><a href="http://www.mdolab.net/Ray/Research-Data/Matlab-DBEA.rar">
- *       Matlab-DBEA.rar</a>
+ *   <li>Asafuddoula, M., T. Ray, and R. Sarker (2015).  "A Decomposition-Based Evolutionary Algorithm for
+ *       Many-Objective Optimization."  IEEE Transaction on Evolutionary Computation, 19(3):445-460.
+ *   <li><a href="http://www.mdolab.net/Ray/Research-Data/Matlab-DBEA.rar">Matlab-DBEA.rar</a>
  * </ol>
  */
 public class DBEA extends AbstractEvolutionaryAlgorithm {
 	
 	/**
-	 * Set to {@code true} to remove random permutations to make unit testing
-	 * easier.
+	 * Set to {@code true} to remove random permutations to make unit testing easier.
 	 */
 	static boolean TESTING_MODE = false;
 
@@ -151,8 +147,8 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 	}
 	
 	/**
-	 * Sets the number of divisions used to generate reference points.  This method can only be called
-	 * before initializing the algorithm.
+	 * Sets the number of divisions used to generate reference points.  This method can only be called before
+	 * initializing the algorithm.
 	 * 
 	 * @param divisions the number of divisions
 	 */
@@ -180,8 +176,7 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 	}
 	
 	/**
-	 * Generates the reference directions (weights) based on the number of
-	 * outer and inner divisions.
+	 * Generates the reference directions (weights) based on the number of outer and inner divisions.
 	 */
 	void generateWeights() {
 		NormalBoundaryIntersectionGenerator generator = new NormalBoundaryIntersectionGenerator(
@@ -250,8 +245,7 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 	/**
 	 * Returns the feasible solutions.
 	 * 
-	 * @param population the entire population containing feasible and
-	 *        infeasible solutions
+	 * @param population the entire population containing feasible and infeasible solutions
 	 * @return the feasible solutions in the population
 	 */
 	private Population getFeasibleSolutions(Population population) {
@@ -279,8 +273,7 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 	}
 
 	/**
-	 * Initializes the ideal point and intercepts based on the bounds of the
-	 * initial population.
+	 * Initializes the ideal point and intercepts based on the bounds of the initial population.
 	 */
 	void initializeIdealPointAndIntercepts() {
 		idealPoint = new double[problem.getNumberOfObjectives()];
@@ -372,9 +365,8 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 	}
 	
 	/**
-	 * Counts the number of unique solutions in the population.  This method
-	 * checks both the identify of the solutions (if they are the same Java
-	 * object) and the value of the individual objectives.
+	 * Counts the number of unique solutions in the population.  This method checks both the identify of the solutions
+	 * (if they are the same Java object) and the value of the individual objectives.
 	 * 
 	 * @param population the population
 	 * @return the number of unique solutions in the population
@@ -435,7 +427,8 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 				} else {
 					try {
 						RealMatrix b = new Array2DRowRealMatrix(problem.getNumberOfObjectives(), 1);
-						RealMatrix A = new Array2DRowRealMatrix(problem.getNumberOfObjectives(), problem.getNumberOfObjectives());
+						RealMatrix A = new Array2DRowRealMatrix(problem.getNumberOfObjectives(),
+								problem.getNumberOfObjectives());
 						
 						for (int i = 0; i < problem.getNumberOfObjectives(); i++) {
 							b.setEntry(i, 0, 1.0);
@@ -561,8 +554,8 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 	}
 	
 	/**
-	 * Performs corner sort to identify 2*M solutions, where M is the number of
-	 * objectives, that comprise the corners of the population.
+	 * Performs corner sort to identify 2*M solutions, where M is the number of objectives, that comprise the corners
+	 * of the population.
 	 * 
 	 * @param population the population
 	 * @return the 2*M corner solutions
@@ -636,8 +629,7 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 	}
 	
 	/**
-	 * Returns {@code true} if this solution is dominated by any member of the
-	 * population.
+	 * Returns {@code true} if this solution is dominated by any member of the population.
 	 * 
 	 * @param solution the solution
 	 * @return {@code true} if the solution is dominated; {@code false} otherwise
@@ -675,8 +667,7 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 	}
 
 	/**
-	 * Computes the distance away from the ideal point along the reference
-	 * direction.
+	 * Computes the distance away from the ideal point along the reference direction.
 	 * 
 	 * @param f the normalized objective values for the point
 	 * @param w the reference direction
@@ -737,19 +728,16 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 	}
 
 	/**
-	 * Returns {@code true} if the child should replace the parent;
-	 * {@code false} otherwise.
+	 * Returns {@code true} if the child should replace the parent; {@code false} otherwise.
 	 * 
 	 * @param d1_child the D1 length of the child
 	 * @param d2_child the D2 length of the child
 	 * @param d1_parent the D1 length of the parent
 	 * @param d2_parent the D2 length of the parent
 	 * @param eps the objective alignment option, set to 0 in I-DBEA
-	 * @return {@code true} if the child should replace the parent;
-	 *         {@code false} otherwise
+	 * @return {@code true} if the child should replace the parent; {@code false} otherwise
 	 */
-	private boolean compareSolution(double d1_child, double d2_child,
-			double d1_parent, double d2_parent, double eps) {
+	private boolean compareSolution(double d1_child, double d2_child, double d1_parent, double d2_parent, double eps) {
 		if ((d2_child == d2_parent) || ((d2_child < eps) && (d2_parent < eps))) {
 			if (d1_child < d1_parent) {
 				return true;

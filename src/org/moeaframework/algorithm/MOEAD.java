@@ -48,19 +48,15 @@ import org.moeaframework.util.weights.RandomGenerator;
 import org.moeaframework.util.weights.WeightGenerator;
 
 /**
- * Implementation of MOEA/D, the multiobjective evolutionary algorithm with
- * decomposition.  This implementation supports both the original MOEA/D
- * specification from [1] as well as the utility-based search extension from
- * [2].
+ * Implementation of MOEA/D, the multiobjective evolutionary algorithm with decomposition.  This implementation
+ * supports both the original MOEA/D specification from [1] as well as the utility-based search extension from [2].
  * <p>
  * References:
  * <ol>
- *   <li>Li, H. and Zhang, Q. "Multiobjective Optimization problems with
- *       Complicated Pareto Sets, MOEA/D and NSGA-II." IEEE Transactions on
- *       Evolutionary Computation, 13(2):284-302, 2009.
- *   <li>Zhang, Q., et al.  "The Performance of a New Version of MOEA/D on
- *       CEC09 Unconstrained MOP Test Instances."  IEEE Congress on Evolutionary
- *       Computation, 2009.
+ *   <li>Li, H. and Zhang, Q. "Multiobjective Optimization problems with Complicated Pareto Sets, MOEA/D and NSGA-II."
+ *       IEEE Transactions on Evolutionary Computation, 13(2):284-302, 2009.
+ *   <li>Zhang, Q., et al.  "The Performance of a New Version of MOEA/D on CEC09 Unconstrained MOP Test Instances."
+ *       IEEE Congress on Evolutionary Computation, 2009.
  * </ol>
  */
 public class MOEAD extends AbstractAlgorithm implements Configurable {
@@ -144,8 +140,8 @@ public class MOEAD extends AbstractAlgorithm implements Configurable {
 	}
 	
 	/**
-	 * Constructs the MOEA/D algorithm with the specified components.  This
-	 * version of MOEA/D uses utility-based search as described in [2].
+	 * Constructs the MOEA/D algorithm with the specified components.  This version of MOEA/D uses utility-based search
+	 * as described in [2].
 	 * 
 	 * @param problem the problem being solved
 	 * @param initialPopulationSize the initial population size
@@ -437,8 +433,7 @@ public class MOEAD extends AbstractAlgorithm implements Configurable {
 	}
 
 	/**
-	 * Initializes the population using a procedure attempting to create a
-	 * uniform distribution of weights.
+	 * Initializes the population using a procedure attempting to create a uniform distribution of weights.
 	 * 
 	 * @param populationSize the population size
 	 */
@@ -465,12 +460,10 @@ public class MOEAD extends AbstractAlgorithm implements Configurable {
 	}
 
 	/**
-	 * Constructs the neighborhoods for all individuals in the population based
-	 * on the distances between weights.
+	 * Constructs the neighborhoods for all individuals in the population based on the distances between weights.
 	 */
 	private void initializeNeighborhoods() {
-		List<Individual> sortedPopulation = new ArrayList<Individual>(
-				population);
+		List<Individual> sortedPopulation = new ArrayList<Individual>(population);
 
 		for (Individual individual : population) {
 			Collections.sort(sortedPopulation, new WeightSorter(individual));
@@ -514,10 +507,9 @@ public class MOEAD extends AbstractAlgorithm implements Configurable {
 	}
 
 	/**
-	 * Returns the population indices to be operated on in the current
-	 * generation.  If the utility update frequency has been set, then this
-	 * method follows the utility-based MOEA/D search described in [2].
-	 * Otherwise, this follows the original MOEA/D specification from [1].
+	 * Returns the population indices to be operated on in the current generation.  If the utility update frequency has
+	 * been set, then this method follows the utility-based MOEA/D search described in [2].  Otherwise, this follows
+	 * the original MOEA/D specification from [1].
 	 * 
 	 * @return the population indices to be operated on in the current generation
 	 */
@@ -556,9 +548,8 @@ public class MOEAD extends AbstractAlgorithm implements Configurable {
 	}
 
 	/**
-	 * Returns the population indices to be considered during mating. With
-	 * probability {@code delta} the neighborhood is returned; otherwise, the
-	 * entire population is returned.
+	 * Returns the population indices to be considered during mating. With probability {@code delta} the neighborhood
+	 * is returned; otherwise, the entire population is returned.
 	 * 
 	 * @param index the index of the first parent
 	 * @return the population indices to be considered during mating
@@ -611,15 +602,13 @@ public class MOEAD extends AbstractAlgorithm implements Configurable {
 	}
 
 	/**
-	 * Updates the population with the specified solution. Only the specified
-	 * population indices are considered for updating. A maximum of {@code eta}
-	 * indices will be modified.
+	 * Updates the population with the specified solution. Only the specified population indices are considered for
+	 * updating. A maximum of {@code eta} indices will be modified.
 	 * 
 	 * @param solution the solution
 	 * @param matingIndices the population indices that are available for updating
 	 */
-	private void updateSolution(Solution solution,
-			List<Integer> matingIndices) {
+	private void updateSolution(Solution solution, List<Integer> matingIndices) {
 		int c = 0;
 		PRNG.shuffle(matingIndices);
 		
@@ -744,8 +733,7 @@ public class MOEAD extends AbstractAlgorithm implements Configurable {
 		private double utility;
 
 		/**
-		 * The cached fitness of the solution currently occupying this
-		 * individual when the utility was last updated.
+		 * The cached fitness of the solution currently occupying this individual when the utility was last updated.
 		 */
 		private double fitness;
 
@@ -825,22 +813,21 @@ public class MOEAD extends AbstractAlgorithm implements Configurable {
 		}
 
 		/**
-		 * Returns the cached fitness of the solution currently occupying this
-		 * individual when the utility was last updated.
+		 * Returns the cached fitness of the solution currently occupying this individual when the utility was last
+		 * updated.
 		 * 
-		 * @return the cached fitness of the solution currently occupying this
-		 *         individual when the utility was last updated
+		 * @return the cached fitness of the solution currently occupying this individual when the utility was last
+		 *         updated
 		 */
 		public double getFitness() {
 			return fitness;
 		}
 
 		/**
-		 * Sets the cached fitness of the solution currently occupying this
-		 * individual when the utility is updated
+		 * Sets the cached fitness of the solution currently occupying this individual when the utility is updated.
 		 * 
-		 * @param fitness the new fitness of the solution currently occupying
-		 *        this individual when the utility is updated
+		 * @param fitness the new fitness of the solution currently occupying this individual when the utility is
+		 *        updated
 		 */
 		public void setFitness(double fitness) {
 			this.fitness = fitness;
@@ -859,8 +846,7 @@ public class MOEAD extends AbstractAlgorithm implements Configurable {
 		private final Individual individual;
 
 		/**
-		 * Constructs a comparator for comparing individuals based on their 
-		 * distance from the specified individual.
+		 * Constructs a comparator for comparing individuals based on their distance from the specified individual.
 		 * 
 		 * @param individual the individual from which weight distances are computed
 		 */

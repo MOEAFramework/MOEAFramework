@@ -68,8 +68,7 @@ public class SortedListModel<T extends Comparable<T>> extends AbstractListModel<
 	}
 	
 	/**
-	 * Adds the specified item to this list model.  If the item already exists,
-	 * the list model is unchanged.
+	 * Adds the specified item to this list model.  If the item already exists, the list model is unchanged.
 	 * 
 	 * @param item the item to add to this list model
 	 */
@@ -80,8 +79,8 @@ public class SortedListModel<T extends Comparable<T>> extends AbstractListModel<
 	}
 	
 	/**
-	 * Adds all items contained in this collection to this list model.  This
-	 * method is implemented by invoking {@link #add(Comparable)}.
+	 * Adds all items contained in this collection to this list model.  This method is implemented by invoking
+	 * {@link #add(Comparable)}.
 	 * 
 	 * @param collection the collection of items to add to this list model
 	 */

@@ -36,8 +36,7 @@ public abstract class IntervalRatioStatisticalTest implements StatisticalTest {
 	protected final List<Observation> data;
 
 	/**
-	 * Constructs an interval ratio statistical test with the specified number
-	 * of groups.
+	 * Constructs an interval ratio statistical test with the specified number of groups.
 	 * 
 	 * @param numberOfGroups the number of groups being tested
 	 */

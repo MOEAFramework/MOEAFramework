@@ -29,20 +29,15 @@ import org.moeaframework.core.Stateful;
 import org.moeaframework.core.configuration.Validate;
 
 /**
- * Abstract class providing default implementations for several
- * {@link Algorithm} methods.
+ * Abstract class providing default implementations for several {@link Algorithm} methods.
  * <p>
  * When creating a new subclass, one should:
  * <ol>
- *   <li>Use the {@link #evaluate} or {@link #evaluateAll} methods
- *       provided by this class. Do not call {@link Problem#evaluate}
- *       directly as that will not count the number of function evaluations
- *       correctly.
- *   <li>When possible, prefer evaluating all solutions at once by calling
- *       {@link #evaluateAll}. Doing so allows function evaluations to run
- *       in parallel when enabled (see {@code Executor#distributeOnAllCores()}).
- *   <li>Implement the algorithm by overriding the {@link #initialize()} and
- *       {@link #iterate()} methods.
+ *   <li>Use the {@link #evaluate} or {@link #evaluateAll} methods provided by this class. Do not call
+ *       {@link Problem#evaluate} directly as that will not count the number of function evaluations correctly.
+ *   <li>When possible, prefer evaluating all solutions at once by calling {@link #evaluateAll}. Doing so allows
+ *       function evaluations to run in parallel when enabled (see {@code Executor#distributeOnAllCores()}).
+ *   <li>Implement the algorithm by overriding the {@link #initialize()} and {@link #iterate()} methods.
  * </ol>
  */
 public abstract class AbstractAlgorithm implements Algorithm {
@@ -58,14 +53,12 @@ public abstract class AbstractAlgorithm implements Algorithm {
 	protected int numberOfEvaluations;
 
 	/**
-	 * {@code true} if the {@link #initialize()} method has been invoked;
-	 * {@code false} otherwise.
+	 * {@code true} if the {@link #initialize()} method has been invoked; {@code false} otherwise.
 	 */
 	protected boolean initialized;
 
 	/**
-	 * {@code true} if the {@link #terminate()} method has been invoked;
-	 * {@code false} otherwise.
+	 * {@code true} if the {@link #terminate()} method has been invoked; {@code false} otherwise.
 	 */
 	protected boolean terminated;
 
@@ -82,10 +75,9 @@ public abstract class AbstractAlgorithm implements Algorithm {
 	}
 
 	/**
-	 * Evaluates the specified solutions. This method calls
-	 * {@link #evaluate(Solution)} on each of the solutions. Subclasses should
-	 * prefer calling this method over {@code evaluate} whenever possible,
-	 * as this ensures the solutions can be evaluated in parallel.
+	 * Evaluates the specified solutions. This method calls {@link #evaluate(Solution)} on each of the solutions.
+	 * Subclasses should prefer calling this method over {@code evaluate} whenever possible, as this ensures the
+	 * solutions can be evaluated in parallel.
 	 * 
 	 * @param solutions the solutions to evaluate
 	 */
@@ -96,8 +88,7 @@ public abstract class AbstractAlgorithm implements Algorithm {
 	}
 	
 	/**
-	 * Evaluates the specified solutions.  This method is equivalent to
-	 * {@code evaluateAll(Arrays.asList(solutions))}.
+	 * Evaluates the specified solutions.  This method is equivalent to {@code evaluateAll(Arrays.asList(solutions))}.
 	 * 
 	 * @param solutions the solutions to evaluate
 	 */
@@ -122,14 +113,11 @@ public abstract class AbstractAlgorithm implements Algorithm {
 	}
 
 	/**
-	 * Performs any initialization that is required by this algorithm. This
-	 * method is called automatically on the first invocation of
-	 * {@link #step()}.  Implementations should always invoke
-	 * {@code super.initialize()} to ensure the algorithm is initialized
-	 * correctly.
+	 * Performs any initialization that is required by this algorithm.  This method is called automatically on the
+	 * first invocation of {@link #step()}.  Implementations should always invoke {@code super.initialize()} to ensure
+	 * the algorithm is initialized correctly.
 	 * 
-	 * @throws AlgorithmInitializationException if the algorithm has already
-	 *         been initialized
+	 * @throws AlgorithmInitializationException if the algorithm has already been initialized
 	 */
 	protected void initialize() {
 		assertNotInitialized();
@@ -137,19 +125,17 @@ public abstract class AbstractAlgorithm implements Algorithm {
 	}
 
 	/**
-	 * Returns {@code true} if the {@link #initialize()} method has been
-	 * invoked; {@code false} otherwise.
+	 * Returns {@code true} if the {@link #initialize()} method has been invoked; {@code false} otherwise.
 	 * 
-	 * @return {@code true} if the {@link #initialize()} method has been
-	 *         invoked; {@code false} otherwise
+	 * @return {@code true} if the {@link #initialize()} method has been invoked; {@code false} otherwise
 	 */
 	public boolean isInitialized() {
 		return initialized;
 	}
 	
 	/**
-	 * Throws an exception if the algorithm is initialized.  Use this anywhere
-	 * to check and fail if the algorithm is already initialized.
+	 * Throws an exception if the algorithm is initialized.  Use this anywhere to check and fail if the algorithm is
+	 * already initialized.
 	 * 
 	 * @throws AlgorithmInitializationException if the algorithm is initialized
 	 */
@@ -160,11 +146,9 @@ public abstract class AbstractAlgorithm implements Algorithm {
 	}
 
 	/**
-	 * This method first checks if the algorithm is initialized. If not, the
-	 * {@link #initialize()} method is invoked. Once initialized, all 
-	 * subsequent calls to {@code step} invoke {@link #iterate()}.
-	 * Implementations should override the {@code initialize} and
-	 * {@code iterate} methods in preference to modifying this method.
+	 * This method first checks if the algorithm is initialized.  If not, the {@link #initialize()} method is invoked.
+	 * Once initialized, all subsequent calls to {@code step} invoke {@link #iterate()}.  Implementations should
+	 * override the {@code initialize} and {@code iterate} methods in preference to modifying this method.
 	 * 
 	 * @throws AlgorithmTerminationException if the algorithm has already terminated
 	 */
@@ -180,9 +164,8 @@ public abstract class AbstractAlgorithm implements Algorithm {
 	}
 
 	/**
-	 * Performs one iteration of the algorithm. This method should be
-	 * overridden by implementations to perform each logical iteration of the
-	 * algorithm.
+	 * Performs one iteration of the algorithm.  This method should be overridden by implementations to perform each
+	 * logical iteration of the algorithm.
 	 */
 	protected abstract void iterate();
 
@@ -192,8 +175,7 @@ public abstract class AbstractAlgorithm implements Algorithm {
 	}
 
 	/**
-	 * Implementations should always invoke {@code super.terminate()} to ensure
-	 * the hierarchy is terminated correctly.
+	 * Implementations should always invoke {@code super.terminate()} to ensure the hierarchy is terminated correctly.
 	 * 
 	 * @throws AlgorithmTerminationException if the algorithm has already terminated
 	 */

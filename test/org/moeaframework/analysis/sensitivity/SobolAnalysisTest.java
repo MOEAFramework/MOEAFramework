@@ -121,8 +121,7 @@ public class SobolAnalysisTest {
 		});
 		
 		assertEntryNotEquals(outputFile, "Variable1", 0, 0.0);
-		assertEntryEquals(outputFile, "Variable1", 0, 
-				getEntryValue(outputFile, "Variable2", 0));
+		assertEntryEquals(outputFile, "Variable1", 0, getEntryValue(outputFile, "Variable2", 0));
 		assertEntryNotEquals(outputFile, "Variable3", 0, 0.0);
 		
 		assertEntryEquals(outputFile, "Variable1", 1, 
@@ -151,10 +150,8 @@ public class SobolAnalysisTest {
 		});
 		
 		assertEntryNotEquals(outputFile, "Variable1", 0, 0.0);
-		assertEntryEquals(outputFile, "Variable1", 0, 
-				getEntryValue(outputFile, "Variable2", 0));
-		assertEntryEquals(outputFile, "Variable1", 0, 
-				getEntryValue(outputFile, "Variable3", 0));
+		assertEntryEquals(outputFile, "Variable1", 0, getEntryValue(outputFile, "Variable2", 0));
+		assertEntryEquals(outputFile, "Variable1", 0, getEntryValue(outputFile, "Variable3", 0));
 		
 		assertEntryEquals(outputFile, "Variable1", 1, 
 				getEntryValue(outputFile, "Variable1", 0) + 
@@ -181,8 +178,7 @@ public class SobolAnalysisTest {
 	 * 
 	 * @param function the function to evaluate
 	 * @return the file containing the output from Sobol analysis
-	 * @throws FunctionEvaluationException if an error occurred when evaluating
-	 *         the function
+	 * @throws FunctionEvaluationException if an error occurred when evaluating the function
 	 * @throws IOException if an I/O error occurred
 	 */
 	protected File test(MultivariateFunction function) throws Exception {
@@ -210,51 +206,38 @@ public class SobolAnalysisTest {
 	 * Asserts that an entry in the Sobol results is equals an expected value.
 	 * 
 	 * @param file the file containing the output from Sobol analysis
-	 * @param key the regular expression for identifying the desired entry in
-	 *        the output file
-	 * @param skip set to {@code 0} for first-order or second-order effects,
-	 *        {@code 1} for total-order effects
+	 * @param key the regular expression for identifying the desired entry in the output file
+	 * @param skip set to {@code 0} for first-order or second-order effects, {@code 1} for total-order effects
 	 * @param expected the expected sensitivity value
 	 * @throws IOException if an I/O error occurred
 	 */
-	protected void assertEntryEquals(File file, String key, int skip,
-			double expected) throws IOException {
-		Assert.assertEquals(expected, getEntryValue(file, key, skip), 
-				TestThresholds.STATISTICS_EPS);
+	protected void assertEntryEquals(File file, String key, int skip, double expected) throws IOException {
+		Assert.assertEquals(expected, getEntryValue(file, key, skip), TestThresholds.STATISTICS_EPS);
 	}
 	
 	/**
-	 * Asserts that an entry in the Sobol results is not equal to an expected
-	 * value.
+	 * Asserts that an entry in the Sobol results is not equal to an expected value.
 	 * 
 	 * @param file the file containing the output from Sobol analysis
-	 * @param key the regular expression for identifying the desired entry in
-	 *        the output file
-	 * @param skip set to {@code 0} for first-order or second-order effects,
-	 *        {@code 1} for total-order effects
+	 * @param key the regular expression for identifying the desired entry in the output file
+	 * @param skip set to {@code 0} for first-order or second-order effects, {@code 1} for total-order effects
 	 * @param expected the expected sensitivity value
 	 * @throws IOException if an I/O error occurred
 	 */
-	protected void assertEntryNotEquals(File file, String key, int skip,
-			double expected) throws IOException {
-		Assert.assertTrue(Math.abs(expected - getEntryValue(file, key, skip)) > 
-				TestThresholds.STATISTICS_EPS);
+	protected void assertEntryNotEquals(File file, String key, int skip, double expected) throws IOException {
+		Assert.assertTrue(Math.abs(expected - getEntryValue(file, key, skip)) > TestThresholds.STATISTICS_EPS);
 	}
 	
 	/**
-	 * Parses the specified Sobol output file, returning the sensitivity for
-	 * the given key.
+	 * Parses the specified Sobol output file, returning the sensitivity for the given key.
 	 * 
 	 * @param file the file containing the output from Sobol analysis
-	 * @param key the regular expression for identifying the desired entry in 
-	 *        the output file
-	 * @param skip set to {@code 0} for first-order or second-order effects,
-	 *        {@code 1} for total-order effects
+	 * @param key the regular expression for identifying the desired entry in the output file
+	 * @param skip set to {@code 0} for first-order or second-order effects, {@code 1} for total-order effects
 	 * @return the sensitivity for the given key
 	 * @throws IOException if an I/O error occurred
 	 */
-	protected double getEntryValue(File file, String key, int skip) throws 
-	IOException {
+	protected double getEntryValue(File file, String key, int skip) throws IOException {
 		String line = null;
 		Pattern pattern = Pattern.compile("^\\s*" + key + "\\s+" + 
 				TestUtils.getSpaceSeparatedNumericPattern(1) + "\\s+\\[" + 
@@ -276,18 +259,14 @@ public class SobolAnalysisTest {
 	}
 	
 	/**
-	 * Evaluates the given function on each input entry, returning the array of
-	 * outputs.
+	 * Evaluates the given function on each input entry, returning the array of outputs.
 	 * 
 	 * @param function the function
-	 * @param input the array of inputs, where the outer index references each
-	 *        set of input to the function
+	 * @param input the array of inputs, where the outer index references each set of input to the function
 	 * @return the array of outputs
-	 * @throws FunctionEvaluationException if an error occurred when evaluating
-	 *         the function
+	 * @throws FunctionEvaluationException if an error occurred when evaluating the function
 	 */
-	protected double[] evaluate(MultivariateFunction function, 
-			double[][] input) { 
+	protected double[] evaluate(MultivariateFunction function, double[][] input) { 
 		double[] output = new double[input.length];
 		
 		for (int i=0; i<input.length; i++) {
@@ -298,8 +277,7 @@ public class SobolAnalysisTest {
 	}
 	
 	/**
-	 * Saves the test data to the input file compatible with the input to the
-	 * Sobol analysis utility.
+	 * Saves the test data to the input file compatible with the input to the Sobol analysis utility.
 	 * 
 	 * @param file the file to create
 	 * @param data the array of model outputs
@@ -323,8 +301,7 @@ public class SobolAnalysisTest {
 	 * @param dimension the number of variables
 	 * @throws IOException if an I/O error occurred
 	 */
-	protected void createParameterFile(File file, int dimension) throws 
-	IOException {
+	protected void createParameterFile(File file, int dimension) throws IOException {
 		try (PrintWriter writer = new PrintWriter(file)) {
 			for (int i=0; i<dimension; i++) {
 				writer.print("Variable");

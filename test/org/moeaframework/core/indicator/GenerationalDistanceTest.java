@@ -27,8 +27,7 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.spi.ProblemFactory;
 
 /**
- * Tests the {@link GenerationalDistance} class against the JMetal
- * implementation.
+ * Tests the {@link GenerationalDistance} class against the JMetal implementation.
  */
 public class GenerationalDistanceTest extends IndicatorTest {
 	
@@ -77,8 +76,7 @@ public class GenerationalDistanceTest extends IndicatorTest {
 	}
 	
 	/**
-	 * Runs through some simple cases to ensure the generational distance is
-	 * computed correctly.
+	 * Runs through some simple cases to ensure the generational distance is computed correctly.
 	 */
 	@Test
 	public void testSimple() {

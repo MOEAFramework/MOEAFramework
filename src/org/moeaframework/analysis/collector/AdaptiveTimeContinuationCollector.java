@@ -22,8 +22,7 @@ import org.moeaframework.algorithm.RestartEvent;
 import org.moeaframework.algorithm.RestartListener;
 
 /**
- * Collects the number of restart events resulting from
- * {@link AdaptiveTimeContinuation}.
+ * Collects the number of restart events resulting from {@link AdaptiveTimeContinuation}.
  */
 public class AdaptiveTimeContinuationCollector implements Collector, RestartListener {
 
@@ -33,16 +32,16 @@ public class AdaptiveTimeContinuationCollector implements Collector, RestartList
 	private int numberOfRestarts;
 	
 	/**
-	 * Constructs an unattached collector for recording the number of restart
-	 * events resulting from {@code AdaptiveTimeContinuation}.
+	 * Constructs an unattached collector for recording the number of restart events resulting from
+	 * {@code AdaptiveTimeContinuation}.
 	 */
 	public AdaptiveTimeContinuationCollector() {
 		super();
 	}
 	
 	/**
-	 * Constructs a collector for recording the number of restart events 
-	 * resulting from the specified {@code AdaptiveTimeContinuation} instance.
+	 * Constructs a collector for recording the number of restart events resulting from the specified
+	 * {@code AdaptiveTimeContinuation} instance.
 	 * 
 	 * @param algorithm the algorithm this collector records data from
 	 */

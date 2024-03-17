@@ -30,8 +30,6 @@ public class ProgressHelperTest {
 	
 	/**
 	 * Tests progress reporting for a single seed.
-	 * 
-	 * @throws InterruptedException if the simulation failed to execute properly due to an interruption
 	 */
 	@Test
 	public void testTimingSingleSeed() throws InterruptedException {
@@ -40,8 +38,6 @@ public class ProgressHelperTest {
 	
 	/**
 	 * Tests progress reporting for many seeds.
-	 * 
-	 * @throws InterruptedException if the simulation failed to execute properly due to an interruption
 	 */
 	@Test
 	public void testTimingManySeeds() throws InterruptedException {
@@ -50,8 +46,6 @@ public class ProgressHelperTest {
 	
 	/**
 	 * Tests progress reporting for a single seed with fine-grain step sizes.
-	 * 
-	 * @throws InterruptedException if the simulation failed to execute properly due to an interruption
 	 */
 	@Test
 	public void testTimingFineGrained() throws InterruptedException {
@@ -133,8 +127,6 @@ public class ProgressHelperTest {
 
 	/**
 	 * Tests if progress reporting handles situations where no change in NFE occurs.
-	 * 
-	 * @throws InterruptedException if the simulation failed to execute properly due to an interruption
 	 */
 	@Test
 	public void testNoProgress() throws InterruptedException {
@@ -165,8 +157,6 @@ public class ProgressHelperTest {
 	
 	/**
 	 * Tests if progress reporting handles the situation where no change in time occurs.
-	 * 
-	 * @throws InterruptedException if the simulation failed to execute properly due to an interruption
 	 */
 	@Test
 	public void testNoTime() throws InterruptedException {

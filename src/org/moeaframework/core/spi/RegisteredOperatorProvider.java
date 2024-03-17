@@ -104,14 +104,13 @@ public class RegisteredOperatorProvider extends OperatorProvider {
 	}
 	
 	/**
-	 * Determines the decision variable type for the problem.  This only supports
-	 * a single type, but will work with compatible types.  For example, the
-	 * {@link BinaryIntegerVariable} type is compatible with {@code BinaryVariable},
+	 * Determines the decision variable type for the problem.  This only supports a single type, but will work with
+	 * compatible types.  For example, the {@link BinaryIntegerVariable} type is compatible with {@code BinaryVariable},
 	 * but not vice-versa.
 	 * 
 	 * @param problem the problem
-	 * @return the single type contained in this problem, or {@code null} if the type
-	 *         could not be determined or there were multiple types
+	 * @return the single type contained in this problem, or {@code null} if the type could not be determined or there
+	 *         were multiple types
 	 */
 	private Class<? extends Variable> getProblemType(Problem problem) {
 		Class<? extends Variable> type = null;

@@ -17,13 +17,11 @@
  */
 
 /**
- * Provides island model and other parallelization strategies for optimization
- * algorithms.  "Parallel" in this context means running multiple optimization
- * algorithms together in some fashion.
+ * Provides island model and other parallelization strategies for optimization algorithms.
  * 
- * That does not necessarily mean these are "parallel" in the computing sense,
- * where work is distributed across multiple cores or machines.  They can and
- * do support such parallelization, but that typically requires integrating
+ * "Parallel" in this context can also mean running multiple optimization algorithms together in some fashion.
+ * That does not necessarily mean these are "parallel" in the computing sense, where work is distributed across
+ * multiple cores or machines.  They can and do support such parallelization, but that typically requires integrating
  * with a third-party compute fabric library like Apache Spark or Apache Ignite.
  */
 package org.moeaframework.parallel;

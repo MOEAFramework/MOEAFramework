@@ -23,9 +23,8 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 
 /**
- * Wraps a problem to collect objective function evaluation timing data.
- * Precision and accuracy of the timing data is dependent on {@link 
- * System#nanoTime()}.
+ * Wraps a problem to collect objective function evaluation timing data.  Precision and accuracy of the timing data
+ * is dependent on {@link System#nanoTime()}.
  */
 public class TimingProblem extends ProblemWrapper {
 	
@@ -35,8 +34,7 @@ public class TimingProblem extends ProblemWrapper {
 	private AtomicLong time;
 	
 	/**
-	 * Decorates the specified problem to collecting objective function
-	 * evaluation timing data.
+	 * Decorates the specified problem to collecting objective function evaluation timing data.
 	 * 
 	 * @param problem the problem to decorate
 	 */

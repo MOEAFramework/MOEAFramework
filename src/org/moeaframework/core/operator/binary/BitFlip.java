@@ -27,8 +27,8 @@ import org.moeaframework.core.operator.Mutation;
 import org.moeaframework.core.variable.BinaryVariable;
 
 /**
- * Bit flip mutation operator.  Each bit is flipped (switched from a {@code 0}
- * to a {@code 1}, or vice versa) using the specified probability.
+ * Bit flip mutation operator.  Each bit is flipped (switched from a {@code 0} to a {@code 1}, or vice versa) using
+ * the specified probability.
  * <p>
  * This operator is type-safe.
  */

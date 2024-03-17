@@ -26,9 +26,8 @@ import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.util.TypedProperties;
 
 /**
- * Helper functions for testing collectors.  This primarily ensures that the
- * collectors attach to the correct algorithms, and that a single collector
- * does not attach to multiple objects.
+ * Helper functions for testing collectors.  This primarily ensures that the collectors attach to the correct
+ * algorithms, and that a single collector does not attach to multiple objects.
  */
 public abstract class CollectorTest {
 	

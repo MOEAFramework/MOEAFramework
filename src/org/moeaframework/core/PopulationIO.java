@@ -38,8 +38,7 @@ import java.util.List;
 import org.moeaframework.util.io.CommentedLineReader;
 
 /**
- * Collection of static methods for reading and writing populations to files.  Included
- * are the following methods:
+ * Collection of static methods for reading and writing populations to files.  Included are the following methods:
  * <ul>
  *   <li>{@link #read} / {@link #write} - Stores the entire solution, including decision variables,
  *       objectives, and constraints, in an encoded format.
@@ -59,8 +58,8 @@ public class PopulationIO {
 	}
 	
 	/**
-	 * Parses the objective vectors contained in the specified reader, returning
-	 * the resulting population.  This method does not close the reader.
+	 * Parses the objective vectors contained in the specified reader, returning the resulting population.  This
+	 * method does not close the reader.
 	 * 
 	 * @param reader the reader containing the objective vectors
 	 * @return a population containing all objective vectors read
@@ -85,9 +84,8 @@ public class PopulationIO {
 	}
 
 	/**
-	 * Reads a set of objective vectors from the specified file. Files read
-	 * using this method should only have been created using the
-	 * {@code writeObjectives} method.
+	 * Reads a set of objective vectors from the specified file. Files read using this method should only have been
+	 * created using the {@code writeObjectives} method.
 	 * 
 	 * @param file the file containing the objective vectors
 	 * @return a population containing all objective vectors in the specified file
@@ -100,9 +98,8 @@ public class PopulationIO {
 	}
 	
 	/**
-	 * Writes the objective vectors of all solutions to the specified file. 
-	 * Files created using this method should only be loaded using the 
-	 * {@code loadObjectives} method.
+	 * Writes the objective vectors of all solutions to the specified file.  Files created using this method should
+	 * only be loaded using the {@code loadObjectives} method.
 	 * 
 	 * @param file the file to which the objective vectors are written
 	 * @param solutions the solutions whose objective vectors are written to the specified file
@@ -124,17 +121,15 @@ public class PopulationIO {
 	}
 
 	/**
-	 * Writes a collection of solutions to the specified file. Files written 
-	 * using this method should only be read using the {@link #read} method. 
-	 * This method relies on serialization.
+	 * Writes a collection of solutions to the specified file. Files written using this method should only be read
+	 * using the {@link #read} method.  This method relies on serialization.
 	 * 
 	 * @param file the file to which the solutions are written
 	 * @param solutions the solutions to be written in the specified file
 	 * @throws IOException if an I/O exception occurred
 	 */
 	public static void write(File file, Iterable<Solution> solutions) throws IOException {
-		try (ObjectOutputStream oos = new ObjectOutputStream(new BufferedOutputStream(
-					new FileOutputStream(file)))) {
+		try (ObjectOutputStream oos = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(file)))) {
 			List<Solution> list = new ArrayList<Solution>();
 
 			for (Solution solution : solutions) {
@@ -146,17 +141,15 @@ public class PopulationIO {
 	}
 
 	/**
-	 * Reads a population from the specified file. Files read using this method
-	 * should only have been created using the {@link #write} method. This
-	 * method relies on serialization.
+	 * Reads a population from the specified file. Files read using this method should only have been created using
+	 * the {@link #write} method. This method relies on serialization.
 	 * 
 	 * @param file the file containing the population
 	 * @return a population containing all solutions in the specified file
 	 * @throws IOException if an I/O exception occurred
 	 */
 	public static Population read(File file) throws IOException {
-		try (ObjectInputStream ois = new ObjectInputStream(new BufferedInputStream(
-					new FileInputStream(file)))) {
+		try (ObjectInputStream ois = new ObjectInputStream(new BufferedInputStream(new FileInputStream(file)))) {
 			Population population = new Population();
 
 			for (Object solution : (List<?>)ois.readObject()) {
@@ -170,9 +163,9 @@ public class PopulationIO {
 	}
 	
 	/**
-	 * Reads a reference set file, which contains the objective values for a set of
-	 * non-dominated solutions.  Any dominated solutions are discarded.  The given resource
-	 * can either reference a file on disk or a resource within a JAR.
+	 * Reads a reference set file, which contains the objective values for a set of non-dominated solutions.  Any
+	 * dominated solutions are discarded.  The given resource can either reference a file on disk or a resource
+	 * within a JAR.
 	 * 
 	 * @param resource the path of the file or resource
 	 * @return the reference set, or {@code null} if the file or resource was not found

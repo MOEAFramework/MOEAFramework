@@ -18,8 +18,7 @@
 package org.moeaframework.problem.LZ;
 
 /**
- * The F9 problem from the complicated Pareto sets test suite by Hui Li and
- * Qingfu Zhang.
+ * The F9 problem from the complicated Pareto sets test suite by Hui Li and Qingfu Zhang.
  */
 public class LZ9 extends LZ {
 

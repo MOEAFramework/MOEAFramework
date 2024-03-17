@@ -28,19 +28,16 @@ import org.moeaframework.core.Variation;
 import org.moeaframework.util.TypedProperties;
 
 /**
- * Construct a variation operator applying one or more variations sequentially.
- * This construct is used to support mixed-type decision variables; however,
- * this requires that the variation operators are type safe. Type safe variation
- * operates only on supported types and ignores unsupported types.
+ * Construct a variation operator applying one or more variations sequentially.  This construct is used to support
+ * mixed-type decision variables; however, this requires that the variation operators are type safe. Type safe
+ * variation operates only on supported types and ignores unsupported types.
  * <p>
  * {@code CompoundVariation} provides the following behavior:
  * <ol>
- *   <li>If the previous operator produced {@code K} offspring and the current
- *       operator requires {@code K} parents, the current operator is applied
- *       normally. The current operator may produce any number of offspring.
- *   <li>If the previous operator produced {@code K} offspring and the current
- *       operator requires {@code 1} parent, the current operator is applied to each
- *       offspring individually. The current operator may produce any number of
+ *   <li>If the previous operator produced {@code K} offspring and the current operator requires {@code K} parents,
+ *       the current operator is applied normally. The current operator may produce any number of offspring.
+ *   <li>If the previous operator produced {@code K} offspring and the current operator requires {@code 1} parent,
+ *       the current operator is applied to each offspring individually. The current operator may produce any number of
  *       offspring, but only the first offspring will be retained.
  *   <li>Otherwise, an exception is thrown.
  * </ol>
@@ -83,9 +80,8 @@ public class AbstractCompoundVariation<T extends Variation> implements Variation
 	}
 	
 	/**
-	 * Returns the name of this variation operator.  If no name has been
-	 * assigned through {@link #setName(String)}, a name is generated which
-	 * identifies the underlying operators.
+	 * Returns the name of this variation operator.  If no name has been assigned through {@link #setName(String)},
+	 * a name is generated which identifies the underlying operators.
 	 * 
 	 * @return the name of this variation operator
 	 */

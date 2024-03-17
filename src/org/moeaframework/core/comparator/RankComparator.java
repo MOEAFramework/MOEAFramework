@@ -29,8 +29,7 @@ import org.moeaframework.core.Solution;
 public class RankComparator implements DominanceComparator, Comparator<Solution> {
 
 	/**
-	 * Constructs a dominance comparator for comparing solutions using their
-	 * {@code RANK_ATTRIBUTE} value.
+	 * Constructs a dominance comparator for comparing solutions using their {@code RANK_ATTRIBUTE} value.
 	 */
 	public RankComparator() {
 		super();

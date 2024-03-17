@@ -25,12 +25,10 @@ import org.moeaframework.core.PRNG;
  * 
  * Copyright 2005 The Walking Fish Group (WFG).
  *
- * This material is provided "as is", with no warranty expressed or implied.
- * Any use is at your own risk. Permission to use or copy this software for
- * any purpose is hereby granted without fee, provided this notice is
- * retained on all copies. Permission to modify the code and to distribute
- * modified code is granted, provided a notice that the code was modified is
- * included with the above copyright notice.
+ * This material is provided "as is", with no warranty expressed or implied.  Any use is at your own risk. Permission
+ * to use or copy this software for any purpose is hereby granted without fee, provided this notice is retained on all
+ * copies. Permission to modify the code and to distribute modified code is granted, provided a notice that the code
+ * was modified is included with the above copyright notice.
  *
  * http://www.wfg.csse.uwa.edu.au/
  */
@@ -44,22 +42,19 @@ class Solutions {
 	}
 
 	/**
-	 * Returns the decision variables of a randomly-generated Pareto optimal
-	 * solution to the WFG1 problem with {@code k} position-related variables
-	 * and {@code l} distance-related variables.
+	 * Returns the decision variables of a randomly-generated Pareto optimal solution to the WFG1 problem with
+	 * {@code k} position-related variables and {@code l} distance-related variables.
 	 * 
 	 * @param k the number of position-related parameters
 	 * @param l the number of distance-related parameters
-	 * @return the decision variables of a randomly-generated Pareto optimal
-	 *         solution to the WFG1 problem
+	 * @return the decision variables of a randomly-generated Pareto optimal solution to the WFG1 problem
 	 */
 	public static double[] WFG_1_random_soln(int k, int l) {
 		double[] result = new double[k + l];
 
 		// set position parameters
 		for (int i = 0; i < k; i++) {
-			result[i] = Math.pow(PRNG.nextDouble(), 50.0); // account for
-			// polynomial bias
+			result[i] = Math.pow(PRNG.nextDouble(), 50.0); // account for polynomial bias
 		}
 
 		// set distance parameters
@@ -76,14 +71,12 @@ class Solutions {
 	}
 
 	/**
-	 * Returns the decision variables of a randomly-generated Pareto optimal
-	 * solution to the WFG2-WFG7 problems with {@code k} position-related
-	 * variables and {@code l} distance-related variables.
+	 * Returns the decision variables of a randomly-generated Pareto optimal solution to the WFG2-WFG7 problems with
+	 * {@code k} position-related variables and {@code l} distance-related variables.
 	 * 
 	 * @param k the number of position-related parameters
 	 * @param l the number of distance-related parameters
-	 * @return the decision variables of a randomly-generated Pareto optimal
-	 *         solution to the WFG2-WFG7 problems
+	 * @return the decision variables of a randomly-generated Pareto optimal solution to the WFG2-WFG7 problems
 	 */
 	public static double[] WFG_2_thru_7_random_soln(int k, int l) {
 		double[] result = new double[k + l];
@@ -107,14 +100,12 @@ class Solutions {
 	}
 
 	/**
-	 * Returns the decision variables of a randomly-generated Pareto optimal
-	 * solution to the WFG8 problem with {@code k} position-related variables
-	 * and {@code l} distance-related variables.
+	 * Returns the decision variables of a randomly-generated Pareto optimal solution to the WFG8 problem with
+	 * {@code k} position-related variables and {@code l} distance-related variables.
 	 * 
 	 * @param k the number of position-related parameters
 	 * @param l the number of distance-related parameters
-	 * @return the decision variables of a randomly-generated Pareto optimal
-	 *         solution to the WFG8 problem
+	 * @return the decision variables of a randomly-generated Pareto optimal solution to the WFG8 problem
 	 */
 	public static double[] WFG_8_random_soln(int k, int l) {
 		double[] result = new double[k];
@@ -147,14 +138,12 @@ class Solutions {
 	}
 
 	/**
-	 * Returns the decision variables of a randomly-generated Pareto optimal
-	 * solution to the WFG9 problem with {@code k} position-related variables
-	 * and {@code l} distance-related variables.
+	 * Returns the decision variables of a randomly-generated Pareto optimal solution to the WFG9 problem with
+	 * {@code k} position-related variables and {@code l} distance-related variables.
 	 * 
 	 * @param k the number of position-related parameters
 	 * @param l the number of distance-related parameters
-	 * @return the decision variables of a randomly-generated Pareto optimal
-	 *         solution to the WFG9 problem
+	 * @return the decision variables of a randomly-generated Pareto optimal solution to the WFG9 problem
 	 */
 	public static double[] WFG_9_random_soln(int k, int l) {
 		double[] result = new double[k + l];
@@ -190,14 +179,12 @@ class Solutions {
 	}
 
 	/**
-	 * Returns the decision variables of a randomly-generated Pareto optimal
-	 * solution to the I1 problem with {@code k} position-related variables and
-	 * {@code l} distance-related variables.
+	 * Returns the decision variables of a randomly-generated Pareto optimal solution to the I1 problem with {@code k}
+	 * position-related variables and {@code l} distance-related variables.
 	 * 
 	 * @param k the number of position-related parameters
 	 * @param l the number of distance-related parameters
-	 * @return the decision variables of a randomly-generated Pareto optimal
-	 *         solution to the I1 problem
+	 * @return the decision variables of a randomly-generated Pareto optimal solution to the I1 problem
 	 */
 	public static double[] I1_random_soln(int k, int l) {
 		double[] result = new double[k + l];
@@ -216,14 +203,12 @@ class Solutions {
 	}
 
 	/**
-	 * Returns the decision variables of a randomly-generated Pareto optimal
-	 * solution to the I2 problem with {@code k} position-related variables and
-	 * {@code l} distance-related variables.
+	 * Returns the decision variables of a randomly-generated Pareto optimal solution to the I2 problem with {@code k}
+	 *  position-related variables and {@code l} distance-related variables.
 	 * 
 	 * @param k the number of position-related parameters
 	 * @param l the number of distance-related parameters
-	 * @return the decision variables of a randomly-generated Pareto optimal
-	 *         solution to the I2 problem
+	 * @return the decision variables of a randomly-generated Pareto optimal solution to the I2 problem
 	 */
 	public static double[] I2_random_soln(int k, int l) {
 		double[] result = new double[k + l];
@@ -254,14 +239,12 @@ class Solutions {
 	}
 
 	/**
-	 * Returns the decision variables of a randomly-generated Pareto optimal
-	 * solution to the I3 problem with {@code k} position-related variables and
-	 * {@code l} distance-related variables.
+	 * Returns the decision variables of a randomly-generated Pareto optimal solution to the I3 problem with {@code k}
+	 * position-related variables and {@code l} distance-related variables.
 	 * 
 	 * @param k the number of position-related parameters
 	 * @param l the number of distance-related parameters
-	 * @return the decision variables of a randomly-generated Pareto optimal
-	 *         solution to the I3 problem
+	 * @return the decision variables of a randomly-generated Pareto optimal solution to the I3 problem
 	 */
 	public static double[] I3_random_soln(int k, int l) {
 		double[] result = new double[k];
@@ -289,28 +272,24 @@ class Solutions {
 	}
 
 	/**
-	 * Returns the decision variables of a randomly-generated Pareto optimal
-	 * solution to the I4 problem with {@code k} position-related variables and
-	 * {@code l} distance-related variables.
+	 * Returns the decision variables of a randomly-generated Pareto optimal solution to the I4 problem with {@code k}
+	 * position-related variables and {@code l} distance-related variables.
 	 * 
 	 * @param k the number of position-related parameters
 	 * @param l the number of distance-related parameters
-	 * @return the decision variables of a randomly-generated Pareto optimal
-	 *         solution to the I4 problem
+	 * @return the decision variables of a randomly-generated Pareto optimal solution to the I4 problem
 	 */
 	public static double[] I4_random_soln(int k, int l) {
 		return I1_random_soln(k, l);
 	}
 
 	/**
-	 * Returns the decision variables of a randomly-generated Pareto optimal
-	 * solution to the I5 problem with {@code k} position-related variables and
-	 * {@code l} distance-related variables.
+	 * Returns the decision variables of a randomly-generated Pareto optimal solution to the I5 problem with {@code k}
+	 * position-related variables and {@code l} distance-related variables.
 	 * 
 	 * @param k the number of position-related parameters
 	 * @param l the number of distance-related parameters
-	 * @return the decision variables of a randomly-generated Pareto optimal
-	 *         solution to the I5 problem
+	 * @return the decision variables of a randomly-generated Pareto optimal solution to the I5 problem
 	 */
 	public static double[] I5_random_soln(int k, int l) {
 		return I3_random_soln(k, l);

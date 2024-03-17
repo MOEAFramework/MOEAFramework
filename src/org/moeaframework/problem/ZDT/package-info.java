@@ -21,9 +21,8 @@
  * <p>
  * References:
  * <ol>
- *   <li>Zitzler et al.  "Comparison of Multiobjective Evolutionary Algorithms:
- *       Empirical Results."  Evolutionary Computation Journal.  8(2):125-148, 
- *       2000.
+ *   <li>Zitzler et al.  "Comparison of Multiobjective Evolutionary Algorithms: Empirical Results."  Evolutionary
+ *       Computation Journal.  8(2):125-148, 2000.
  * </ol>
  */
 package org.moeaframework.problem.ZDT;

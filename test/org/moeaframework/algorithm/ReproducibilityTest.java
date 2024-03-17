@@ -30,9 +30,8 @@ import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.util.TypedProperties;
 
 /**
- * Tests each of the built in algorithms to ensure reusing random seeds results
- * in reproducible results. This also serves to test the accessibility of
- * the built in algorithms via {@link AlgorithmFactory} and their basic use.
+ * Tests each of the built in algorithms to ensure reusing random seeds results in reproducible results.  This also
+ * serves to test the accessibility of the built in algorithms via {@link AlgorithmFactory} and their basic use.
  */
 @RunWith(CIRunner.class)
 public class ReproducibilityTest {
@@ -153,8 +152,7 @@ public class ReproducibilityTest {
 	}
 
 	/**
-	 * Tests the algorithm for reproducibility. The algorithm must be available
-	 * via the {@link AlgorithmFactory}.
+	 * Tests the algorithm for reproducibility. The algorithm must be available via the {@link AlgorithmFactory}.
 	 * 
 	 * @param algorithmName the algorithm name
 	 */

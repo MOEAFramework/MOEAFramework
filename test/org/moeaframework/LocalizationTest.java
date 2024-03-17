@@ -24,8 +24,8 @@ import org.junit.Test;
 import org.moeaframework.util.Localization;
 
 /**
- * Tests the {@link Localization} class.  If errors occur when running tests
- * within Eclipse, please ensure the text file encoding is UTF-8.
+ * Tests the {@link Localization} class.  If errors occur when running tests within Eclipse, please ensure the text
+ * file encoding is UTF-8.
  */
 public class LocalizationTest {
 

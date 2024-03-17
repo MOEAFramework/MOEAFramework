@@ -25,11 +25,9 @@ import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 
 /**
- * Factory for creating optimization problem instances and their corresponding
- * reference sets, if known.  Problems are referenced by name.  For example,
- * {@code getProblem("DTLZ2_2")} will create an instance of the 2-objective
- * DTLZ2 problem.  See {@link ProblemProvider} for details on adding
- * new providers.
+ * Factory for creating optimization problem instances and their corresponding reference sets, if known.  Problems
+ * are referenced by name.  For example, {@code getProblem("DTLZ2_2")} will create an instance of the 2-objective
+ * DTLZ2 problem.  See {@link ProblemProvider} for details on adding new providers.
  * <p>
  * <a href="https://i.imgur.com/y41pi4n.jpg">Obligatory Link</a>
  * <p>
@@ -75,15 +73,13 @@ public class ProblemFactory extends AbstractFactory<ProblemProvider> {
 	}
 	
 	/**
-	 * Searches through all discovered {@code ProblemProvider} instances,
-	 * returning an instance of the problem with the registered name.  This
-	 * method must throw an {@link ProviderNotFoundException} if no matching
-	 * problem is found.
+	 * Searches through all discovered {@code ProblemProvider} instances, returning an instance of the problem with
+	 * the registered name.  This method must throw an {@link ProviderNotFoundException} if no matching problem is
+	 * found.
 	 * 
 	 * @param name the name identifying the problem
 	 * @return an instance of the problem with the registered name
-	 * @throws ProviderNotFoundException if no provider for the problem is 
-	 *         available
+	 * @throws ProviderNotFoundException if no provider for the problem is available
 	 */
 	public synchronized Problem getProblem(String name) {
 		for (ProblemProvider provider : this) {
@@ -102,8 +98,8 @@ public class ProblemFactory extends AbstractFactory<ProblemProvider> {
 	 * 
 	 * @param provider the problem provider
 	 * @param name the name identifying the problem
-	 * @return an instance of the problem with the registered name; or
-	 *         {@code null} if the provider does not implement the problem
+	 * @return an instance of the problem with the registered name; or {@code null} if the provider does not implement
+	 *         the problem
 	 */
 	private Problem instantiateProblem(ProblemProvider provider, String name) {
 		try {
@@ -116,14 +112,12 @@ public class ProblemFactory extends AbstractFactory<ProblemProvider> {
 	}
 
 	/**
-	 * Searches through all discovered {@code ProblemProvider} instances,
-	 * returning the reference set of the problem with the registered name.
-	 * Returns {@code null} if no reference set is available for the specified 
-	 * problem.
+	 * Searches through all discovered {@code ProblemProvider} instances, returning the reference set of the problem
+	 * with the registered name.  Returns {@code null} if no reference set is available for the specified problem.
 	 * 
 	 * @param name the name identifying the problem
-	 * @return the reference set of the problem with the registered name; or
-	 *         {@code null} if no reference set is available
+	 * @return the reference set of the problem with the registered name; or {@code null} if no reference set is
+	 *         available
 	 */
 	public synchronized NondominatedPopulation getReferenceSet(String name) {
 		for (ProblemProvider provider : this) {
@@ -138,9 +132,9 @@ public class ProblemFactory extends AbstractFactory<ProblemProvider> {
 	}
 	
 	/**
-	 * Returns the names of all problems that have been registered by the providers.
-	 * Note that this does not include a comprehensive list of all problems that can
-	 * be constructed, only those that have been registered explicitly with a name.
+	 * Returns the names of all problems that have been registered by the providers.  Note that this does not include
+	 * a comprehensive list of all problems that can be constructed, only those that have been registered explicitly
+	 * with a name.
 	 * 
 	 * @return all registered problem names
 	 */
@@ -158,8 +152,7 @@ public class ProblemFactory extends AbstractFactory<ProblemProvider> {
 	}
 	
 	/**
-	 * Returns the names of all problems that have been registered to display in the
-	 * diagnostic tool.
+	 * Returns the names of all problems that have been registered to display in the diagnostic tool.
 	 * 
 	 * @return all diagnostic tool problem names
 	 */

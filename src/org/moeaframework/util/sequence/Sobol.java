@@ -27,9 +27,8 @@ import java.util.StringTokenizer;
 import org.moeaframework.core.FrameworkException;
 
 /**
- * Generates sequences using the Sobol' low-discrepancy sequence generator. When
- * replacing uniformly random numbers in Monte-Carlo integration, the error
- * growth rate is reduced from {@code 1.0/sqrt(n)} to {@code 1.0/n}, where
+ * Generates sequences using the Sobol' low-discrepancy sequence generator. When replacing uniformly random numbers
+ * in Monte-Carlo integration, the error growth rate is reduced from {@code 1.0/sqrt(n)} to {@code 1.0/n}, where
  * {@code n} is the size of the sequence.
  */
 public class Sobol implements Sequence {
@@ -40,9 +39,8 @@ public class Sobol implements Sequence {
 	private static final int scale = 31;
 
 	/**
-	 * The directions used by Kuo and Joe's Sobol' sequence generator. The
-	 * array is structured so that {@code directions[i] = [a, m1, m2, ..., mk]}
-	 * for dimension {@code i-1}.
+	 * The directions used by Kuo and Joe's Sobol' sequence generator. The array is structured so that
+	 * {@code directions[i] = [a, m1, m2, ..., mk]} for dimension {@code i-1}.
 	 */
 	private static int[][] DIRECTIONS;
 
@@ -70,8 +68,7 @@ public class Sobol implements Sequence {
 	}
 
 	/**
-	 * Loads the direction numbers. This is designed to read the file format
-	 * from Kuo and Joe's site.
+	 * Loads the direction numbers. This is designed to read the file format from Kuo and Joe's site.
 	 */
 	private static void loadDirectionNumbers() throws IOException {
 		try (BufferedReader reader = new BufferedReader(new InputStreamReader(
@@ -100,12 +97,10 @@ public class Sobol implements Sequence {
 	}
 
 	/**
-	 * Returns the index of the least significant zero bit in the specified
-	 * value.
+	 * Returns the index of the least significant zero bit in the specified value.
 	 * 
 	 * @param value the value
-	 * @return the index of the least significant zero bit in the specified
-	 *         value
+	 * @return the index of the least significant zero bit in the specified value
 	 */
 	private static int indexOfLeastSignificantZeroBit(int value) {
 		int index = 1;

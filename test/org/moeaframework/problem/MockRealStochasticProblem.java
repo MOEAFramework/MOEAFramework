@@ -24,8 +24,7 @@ import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.util.distributed.FutureSolution;
 
 /**
- * A mock stochastic problem with one real variable. 
- * In this case, the f(x) = x + random.nextDouble();   
+ * A mock stochastic problem with one real variable.  In this case, the f(x) = x + random.nextDouble();   
  */
 public class MockRealStochasticProblem extends MockProblem {
 	
@@ -45,6 +44,7 @@ public class MockRealStochasticProblem extends MockProblem {
 			// otherwise it's single-threaded), and we just use our own 0-based counter
 			randSeed = evaluationID++;
 		}
+		
 		MersenneTwister rng = new MersenneTwister(randSeed);
 		
 		double x = EncodingUtils.getReal(solution.getVariable(0));

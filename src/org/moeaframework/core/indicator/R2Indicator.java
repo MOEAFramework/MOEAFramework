@@ -21,17 +21,14 @@ import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 
 /**
- * Computes the R2 indicator.  The R2 indicator is the expected utility
- * evaluated across a set of uniformly-weighted utility functions.  R2 is
- * weakly compatible with the outperformance relation for any set of utility
- * functions.  Values are normalized between {@code [-1, 1]} with {@code -1}
- * preferred.
+ * Computes the R2 indicator.  The R2 indicator is the expected utility evaluated across a set of uniformly-weighted
+ * utility functions.  R2 is weakly compatible with the outperformance relation for any set of utility functions.
+ * Values are normalized between {@code [-1, 1]} with {@code -1} preferred.
  * <p>
  * References:
  * <ol>
- *   <li>Hansen, M. P. and A. Jaszkiewicz (1998).  Evaluating the Quality of
- *       Approximations to the Non-dominated Set.  IMM Technical Report
- *       IMM-REP-1998-7.
+ *   <li>Hansen, M. P. and A. Jaszkiewicz (1998).  Evaluating the Quality of Approximations to the Non-dominated Set.
+ *       IMM Technical Report IMM-REP-1998-7.
  * </ol>
  */
 public class R2Indicator extends RIndicator {

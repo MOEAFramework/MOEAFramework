@@ -33,8 +33,7 @@ public class ZDT6 extends ZDT {
 	}
 
 	/**
-	 * Constructs a ZDT6 test problem with the specified number of decision
-	 * variables.
+	 * Constructs a ZDT6 test problem with the specified number of decision variables.
 	 * 
 	 * @param numberOfVariables the number of decision variables
 	 */
@@ -46,8 +45,7 @@ public class ZDT6 extends ZDT {
 	public void evaluate(Solution solution) {
 		double[] x = EncodingUtils.getReal(solution);
 
-		double f = 1.0 - Math.exp(-4.0 * x[0])
-				* Math.pow(Math.sin(6.0 * Math.PI * x[0]), 6.0);
+		double f = 1.0 - Math.exp(-4.0 * x[0]) * Math.pow(Math.sin(6.0 * Math.PI * x[0]), 6.0);
 
 		double g = 0.0;
 		for (int i = 1; i < numberOfVariables; i++) {

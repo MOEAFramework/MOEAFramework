@@ -34,13 +34,10 @@ import org.moeaframework.problem.AbstractProblem;
  * <p>
  * References:
  * <ol>
- *   <li>Binh, T. T. and Korn, U (1997).  "MOBES: A Multiobjective Evolution
- *       Strategy for Constrained Optimization Problems."  Proceedings of the
- *       Third International Conference on Genetic Algorithms (Mendel 97),
- *       pp. 176-182.
- *   <li>Van Veldhuizen, D. A (1999).  "Multiobjective Evolutionary Algorithms: 
- *       Classifications, Analyses, and New Innovations."  Air Force Institute
- *       of Technology, Ph.D. Thesis, Appendix B.
+ *   <li>Binh, T. T. and Korn, U (1997).  "MOBES: A Multiobjective Evolution Strategy for Constrained Optimization
+ *       Problems."  Proceedings of the Third International Conference on Genetic Algorithms (Mendel 97), pp. 176-182.
+ *   <li>Van Veldhuizen, D. A (1999).  "Multiobjective Evolutionary Algorithms: Classifications, Analyses, and New
+ *       Innovations."  Air Force Institute of Technology, Ph.D. Thesis, Appendix B.
  * </ol>
  */
 public class Binh2 extends AbstractProblem {

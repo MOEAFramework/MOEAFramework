@@ -20,9 +20,8 @@ package org.moeaframework.util.statistics;
 import org.apache.commons.math3.distribution.ChiSquaredDistribution;
 
 /**
- * The Kruskal-Wallis One-Way Analysis of Variance by Ranks is a non-parametric
- * statistical test determining if (at least) two out of K >= 2 populations have
- * differing medians.
+ * The Kruskal-Wallis One-Way Analysis of Variance by Ranks is a non-parametric statistical test determining if
+ * (at least) two out of K >= 2 populations have differing medians.
  * <ul>
  *   <li>Null Hypothesis: All populations have equal medians.
  *   <li>Alternative Hypothesis: Not all populations have equal medians.
@@ -38,11 +37,10 @@ import org.apache.commons.math3.distribution.ChiSquaredDistribution;
  * <p>
  * References:
  * <ol>
- *   <li>Kruskal, W.H. and Wallis W.A. "Use of Ranks in One-Criterion Variance
- *       Analysis." Journal of the American Statistical Association, 47(260):583-621,
- *       1952.
- *   <li>Sheskin, D.J. "Handbook of Parametric and Nonparametric Statistical
- *       Procedures, Third Edition." Chapman &amp; Hall/CRC. 2004.
+ *   <li>Kruskal, W.H. and Wallis W.A. "Use of Ranks in One-Criterion Variance Analysis." Journal of the American
+ *       Statistical Association, 47(260):583-621, 1952.
+ *   <li>Sheskin, D.J. "Handbook of Parametric and Nonparametric Statistical Procedures, Third Edition." Chapman &amp;
+ *       Hall/CRC. 2004.
  * </ol>
  */
 public class KruskalWallisTest extends OrdinalStatisticalTest {
@@ -73,11 +71,10 @@ public class KruskalWallisTest extends OrdinalStatisticalTest {
 	}
 
 	/**
-	 * Computes the chi-squared approximation of the Kruskal-Wallis test
-	 * statistic. See equation (22-1) in the reference book for details.
+	 * Computes the chi-squared approximation of the Kruskal-Wallis test statistic. See equation (22-1) in the
+	 * reference book for details.
 	 * 
-	 * @return the chi-squared approximation of the Kruskal-Wallis test
-	 *         statistic
+	 * @return the chi-squared approximation of the Kruskal-Wallis test statistic
 	 */
 	double H() {
 		int[] n = new int[numberOfGroups];
@@ -98,8 +95,7 @@ public class KruskalWallisTest extends OrdinalStatisticalTest {
 	}
 
 	/**
-	 * Computes the correction factor for ties. See equation (22-3) in the
-	 * reference book for details.
+	 * Computes the correction factor for ties. See equation (22-3) in the reference book for details.
 	 * 
 	 * @return the correction factor for ties
 	 */

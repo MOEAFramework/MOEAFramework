@@ -38,21 +38,17 @@ import org.moeaframework.util.TypedProperties;
 import org.moeaframework.util.weights.NormalBoundaryDivisions;
 
 /**
- * Implementation of the Reference Vector Guided Evolutionary Algorithm (RVEA).
- * This version does not include the reference vector regeneration method
- * proposed by the authors.
+ * Implementation of the Reference Vector Guided Evolutionary Algorithm (RVEA).  This version does not include the
+ * reference vector regeneration method proposed by the authors.
  * <p>
- * RVEA is similar in concept to NSGA-III, but replaces NSGA-III's
- * dominance-based selection with an angle-penalized distance function.
- * Additionally, whereas NSGA-III renormalizes the objectives every iteration,
- * RVEA periodically scales the reference vectors, potentially reducing
- * algorithm overhead.
+ * RVEA is similar in concept to NSGA-III, but replaces NSGA-III's dominance-based selection with an angle-penalized
+ * distance function.  Additionally, whereas NSGA-III renormalizes the objectives every iteration, RVEA periodically
+ * scales the reference vectors, potentially reducing algorithm overhead.
  * <p>
  * References:
  * <ol>
- *   <li>R. Cheng, Y. Jin, M. Olhofer, and B. Sendhoff.  "A Reference Vector
- *       Guided Evolutionary Algorithm for Many-objective Optimization."
- *       IEEE Transactions on Evolutionary Computation, Issue 99, 2016.
+ *   <li>R. Cheng, Y. Jin, M. Olhofer, and B. Sendhoff.  "A Reference Vector Guided Evolutionary Algorithm for
+ *       Many-objective Optimization."  IEEE Transactions on Evolutionary Computation, Issue 99, 2016.
  * </ol>
  */
 public class RVEA extends AbstractEvolutionaryAlgorithm {
@@ -63,8 +59,8 @@ public class RVEA extends AbstractEvolutionaryAlgorithm {
 	private int generation;
 	
 	/**
-	 * The maximum number of generations for the angle-penalized distance to
-	 * transition between convergence and diversity.
+	 * The maximum number of generations for the angle-penalized distance to transition between convergence and
+	 * diversity.
 	 */
 	private final int maxGeneration;
 	

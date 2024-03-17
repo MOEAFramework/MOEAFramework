@@ -27,8 +27,7 @@ public class ProviderLookupException extends FrameworkException {
 	private static final long serialVersionUID = 273130604019491242L;
 
 	/**
-	 * Constructs an exception indicating an error occurred while locating a
-	 * provider.
+	 * Constructs an exception indicating an error occurred while locating a provider.
 	 * 
 	 * @param message a message describing the error
 	 */
@@ -37,8 +36,7 @@ public class ProviderLookupException extends FrameworkException {
 	}
 	
 	/**
-	 * Constructs an exception indicating an error occurred while locating a
-	 * provider.
+	 * Constructs an exception indicating an error occurred while locating a provider.
 	 * 
 	 * @param message a message describing the error
 	 * @param cause the cause of this exception

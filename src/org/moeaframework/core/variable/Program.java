@@ -32,12 +32,10 @@ import org.moeaframework.util.tree.Node;
 import org.moeaframework.util.tree.Rules;
 
 /**
- * A decision variable for programs.  The program is represented as a
- * strongly-typed expression tree.
+ * A decision variable for programs.  The program is represented as a strongly-typed expression tree.
  * <p>
- * <b>Note: Although {@code Program} extends {@link Node}, the {@code Program}
- * object must never be altered by the optimization algorithm.</b>  Only
- * its arguments can undergo variation.
+ * <b>Note: Although {@code Program} extends {@link Node}, the {@code Program} object must never be altered by the
+ * optimization algorithm.</b>  Only its arguments can undergo variation.
  */
 public class Program extends Node implements Variable {
 

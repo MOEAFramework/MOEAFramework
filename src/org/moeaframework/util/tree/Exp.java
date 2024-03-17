@@ -18,8 +18,7 @@
 package org.moeaframework.util.tree;
 
 /**
- * The node for calculating the result of Euler's number <i>e</i> raised to the
- * power of a number.
+ * The node for calculating the result of Euler's number <i>e</i> raised to the power of a number.
  * 
  * <table style="margin-top: 1em; width: 100%">
  *   <caption style="text-align: left">Node signature:</caption>
@@ -45,8 +44,7 @@ package org.moeaframework.util.tree;
 public class Exp extends Node {
 	
 	/**
-	 * Constructs a new node for calculating the result of Euler's number
-	 * <i>e</i> raised to the power of a number.
+	 * Constructs a new node for calculating the result of Euler's number <i>e</i> raised to the power of a number.
 	 */
 	public Exp() {
 		super(Number.class, Number.class);
@@ -59,8 +57,7 @@ public class Exp extends Node {
 	
 	@Override
 	public Number evaluate(Environment environment) {
-		return NumberArithmetic.exp(
-				(Number)getArgument(0).evaluate(environment));
+		return NumberArithmetic.exp((Number)getArgument(0).evaluate(environment));
 	}
 
 }

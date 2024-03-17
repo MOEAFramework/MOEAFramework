@@ -18,9 +18,8 @@
 package org.moeaframework.util.tree;
 
 /**
- * The node for calculating the sign of a number.  The sign of a number is
- * {@code 1} if the number is greater than zero, {@code -1} if the number is
- * less than zero, and {@code 0} if the number is equal to zero.
+ * The node for calculating the sign of a number.  The sign of a number is {@code 1} if the number is greater than
+ * zero, {@code -1} if the number is less than zero, and {@code 0} if the number is equal to zero.
  * 
  * <table style="margin-top: 1em; width: 100%">
  *   <caption style="text-align: left">Node signature:</caption>
@@ -60,8 +59,7 @@ public class Sign extends Node {
 	
 	@Override
 	public Number evaluate(Environment environment) {
-		return NumberArithmetic.sign(
-				(Number)getArgument(0).evaluate(environment));
+		return NumberArithmetic.sign((Number)getArgument(0).evaluate(environment));
 	}
 
 }

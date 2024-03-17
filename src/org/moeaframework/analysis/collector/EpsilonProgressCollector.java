@@ -21,20 +21,17 @@ import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.EpsilonBoxEvolutionaryAlgorithm;
 
 /**
- * Collects the number of &epsilon;-progress improvements detected in an
- * {@link EpsilonBoxEvolutionaryAlgorithm}.
+ * Collects the number of &epsilon;-progress improvements detected in an {@link EpsilonBoxEvolutionaryAlgorithm}.
  */
 public class EpsilonProgressCollector implements Collector {
 
 	/**
-	 * The algorithm instance used by this collector; or {@code null} if this 
-	 * collector has not yet been attached.
+	 * The algorithm instance used by this collector; or {@code null} if this collector has not yet been attached.
 	 */
 	private final EpsilonBoxEvolutionaryAlgorithm algorithm;
 
 	/**
-	 * Constructs an unattached collector for recording the number of 
-	 * &epsilon;-progress improvements detected in an 
+	 * Constructs an unattached collector for recording the number of &epsilon;-progress improvements detected in an 
 	 * {@code EpsilonBoxEvolutionaryAlgorithm}.
 	 */
 	public EpsilonProgressCollector() {
@@ -42,8 +39,7 @@ public class EpsilonProgressCollector implements Collector {
 	}
 	
 	/**
-	 * Constructs a collector for recording the number of &epsilon;-progress
-	 * improvements detected in the specified 
+	 * Constructs a collector for recording the number of &epsilon;-progress improvements detected in the specified 
 	 * {@code EpsilonBoxEvolutionaryAlgorithm}.
 	 * 
 	 * @param algorithm the algorithm this collector records data from

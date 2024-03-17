@@ -27,21 +27,19 @@ public class AlgorithmTerminationException extends AlgorithmException {
 	private static final long serialVersionUID = 8036286567381083329L;
 
 	/**
-	 * Constructs an algorithm termination exception originating from the 
-	 * specified algorithm with the given message and cause.
+	 * Constructs an algorithm termination exception originating from the specified algorithm with the given message
+	 * and cause.
 	 * 
 	 * @param algorithm the algorithm responsible for this exception
 	 * @param message the message describing this exception
 	 * @param cause the cause of this exception
 	 */
-	public AlgorithmTerminationException(Algorithm algorithm, String message,
-			Throwable cause) {
+	public AlgorithmTerminationException(Algorithm algorithm, String message, Throwable cause) {
 		super(algorithm, message, cause);
 	}
 
 	/**
-	 * Constructs an algorithm termination exception originating from the 
-	 * specified algorithm with the given message.
+	 * Constructs an algorithm termination exception originating from the specified algorithm with the given message.
 	 * 
 	 * @param algorithm the algorithm responsible for this exception
 	 * @param message the message describing this exception
@@ -51,8 +49,7 @@ public class AlgorithmTerminationException extends AlgorithmException {
 	}
 
 	/**
-	 * Constructs an algorithm termination exception originating from the 
-	 * specified algorithm with the given cause.
+	 * Constructs an algorithm termination exception originating from the specified algorithm with the given cause.
 	 * 
 	 * @param algorithm the algorithm responsible for this exception
 	 * @param cause the cause of this exception
@@ -62,8 +59,7 @@ public class AlgorithmTerminationException extends AlgorithmException {
 	}
 
 	/**
-	 * Constructs an algorithm termination exception originating from the 
-	 * specified algorithm.
+	 * Constructs an algorithm termination exception originating from the specified algorithm.
 	 * 
 	 * @param algorithm the algorithm responsible for this exception
 	 */

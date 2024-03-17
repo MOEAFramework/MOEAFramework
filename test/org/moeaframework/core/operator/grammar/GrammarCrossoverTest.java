@@ -39,8 +39,7 @@ public class GrammarCrossoverTest {
 	}
 
 	/**
-	 * Tests various probabilities to ensure the {@code GrammarCrossover}
-	 * operates with the expected probability.
+	 * Tests various probabilities to ensure the {@code GrammarCrossover} operates with the expected probability.
 	 */
 	@Test
 	public void testProbabilities() {
@@ -50,8 +49,7 @@ public class GrammarCrossoverTest {
 	}
 
 	/**
-	 * Tests if the {@code GrammarCrossover} operates with the specified
-	 * probability.
+	 * Tests if the {@code GrammarCrossover} operates with the specified probability.
 	 * 
 	 * @param probability the expected probability of crossover
 	 */
@@ -79,16 +77,15 @@ public class GrammarCrossoverTest {
 	}
 
 	/**
-	 * Checks if the two offspring grammars, {@code o1} and {@code o2}, are the
-	 * result of single-point crossover between the two parent grammars,
-	 * {@code p1} and {@code p2}.
+	 * Checks if the two offspring grammars, {@code o1} and {@code o2}, are the result of single-point crossover
+	 * between the two parent grammars, {@code p1} and {@code p2}.
 	 * 
 	 * @param p1 the first parent grammar
 	 * @param p2 the second parent grammar
 	 * @param o1 the first offspring grammar
 	 * @param o2 the second offspring grammar
-	 * @return {@code true} if the two offspring are the result of single-point
-	 *         crossover between the two parents; {@code false} otherwise
+	 * @return {@code true} if the two offspring are the result of single-point crossover between the two parents;
+	 *         {@code false} otherwise
 	 */
 	private boolean check(Grammar p1, Grammar p2, Grammar o1, Grammar o2) {
 		Assert.assertEquals(p1.size() + p2.size(), o1.size() + o2.size());

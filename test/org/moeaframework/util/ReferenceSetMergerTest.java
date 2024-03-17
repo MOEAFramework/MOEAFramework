@@ -72,8 +72,7 @@ public class ReferenceSetMergerTest {
 	}
 	
 	/**
-	 * Tests if an exception is thrown if the same source key is used for
-	 * more than one population.
+	 * Tests if an exception is thrown if the same source key is used for more than one population.
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testDuplicateSource() {

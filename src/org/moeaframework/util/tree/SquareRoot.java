@@ -57,8 +57,7 @@ public class SquareRoot extends Node {
 	
 	@Override
 	public Number evaluate(Environment environment) {
-		return NumberArithmetic.sqrt(
-				(Number)getArgument(0).evaluate(environment));
+		return NumberArithmetic.sqrt((Number)getArgument(0).evaluate(environment));
 	}
 
 }

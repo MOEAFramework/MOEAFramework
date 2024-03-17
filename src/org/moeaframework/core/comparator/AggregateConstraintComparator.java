@@ -22,9 +22,8 @@ import java.util.Comparator;
 import org.moeaframework.core.Solution;
 
 /**
- * Compares solutions based on their magnitude of constraint violations. 
- * Absolute values of constraints are used, so only the magnitude of the
- * constraint violation is important.
+ * Compares solutions based on their magnitude of constraint violations.  Absolute values of constraints are used,
+ * so only the magnitude of the constraint violation is important.
  */
 public class AggregateConstraintComparator implements DominanceComparator, Comparator<Solution> {
 
@@ -36,14 +35,12 @@ public class AggregateConstraintComparator implements DominanceComparator, Compa
 	}
 
 	/**
-	 * Returns the sum of the absolute value of the constraints for the
-	 * specified solution. This allows supporting constraints expressed as both
-	 * positive and negative magnitudes. Larger magnitudes correspond to larger
+	 * Returns the sum of the absolute value of the constraints for the specified solution. This allows supporting
+	 * constraints expressed as both positive and negative magnitudes. Larger magnitudes correspond to larger
 	 * constraint violations.
 	 * 
 	 * @param solution the solution
-	 * @return the sum of the absolute value of the constraints for the
-	 *         specified solution
+	 * @return the sum of the absolute value of the constraints for the specified solution
 	 */
 	public static double getConstraints(Solution solution) {
 		double constraints = 0.0;

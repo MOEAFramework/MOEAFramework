@@ -24,8 +24,8 @@ import org.junit.Test;
 import org.moeaframework.core.variable.RealVariable;
 
 /**
- * Tests the {@link Solution} class. Due to the central role of this class, many
- * obvious properties are tested to ensure complete correctness.
+ * Tests the {@link Solution} class. Due to the central role of this class, many obvious properties are tested to
+ * ensure complete correctness.
  */
 public class SolutionTest {
 
@@ -220,8 +220,7 @@ public class SolutionTest {
 	}
 
 	/**
-	 * Tests if the {@code setVariable} method correctly detects invalid
-	 * indices.
+	 * Tests if the {@code setVariable} method correctly detects invalid indices.
 	 */
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testSetVariableBoundsChecking1() {
@@ -229,8 +228,7 @@ public class SolutionTest {
 	}
 
 	/**
-	 * Tests if the {@code setVariable} method correctly detects invalid
-	 * indices.
+	 * Tests if the {@code setVariable} method correctly detects invalid indices.
 	 */
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testSetVariableBoundsChecking2() {
@@ -238,8 +236,7 @@ public class SolutionTest {
 	}
 
 	/**
-	 * Tests if the {@code getVariable} method correctly detects invalid
-	 * indices.
+	 * Tests if the {@code getVariable} method correctly detects invalid indices.
 	 */
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testGetVariableBoundsChecking1() {
@@ -247,8 +244,7 @@ public class SolutionTest {
 	}
 
 	/**
-	 * Tests if the {@code getVariable} method correctly detects invalid
-	 * indices.
+	 * Tests if the {@code getVariable} method correctly detects invalid indices.
 	 */
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testGetVariableBoundsChecking2() {
@@ -256,8 +252,7 @@ public class SolutionTest {
 	}
 
 	/**
-	 * Tests if the {@code setObjective} method correctly detects invalid
-	 * indices.
+	 * Tests if the {@code setObjective} method correctly detects invalid indices.
 	 */
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testSetObjectiveBoundsChecking1() {
@@ -265,8 +260,7 @@ public class SolutionTest {
 	}
 
 	/**
-	 * Tests if the {@code setObjective} method correctly detects invalid
-	 * indices.
+	 * Tests if the {@code setObjective} method correctly detects invalid indices.
 	 */
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testSetObjectiveBoundsChecking2() {
@@ -274,8 +268,7 @@ public class SolutionTest {
 	}
 
 	/**
-	 * Tests if the {@code getObjective} method correctly detects invalid
-	 * indices.
+	 * Tests if the {@code getObjective} method correctly detects invalid indices.
 	 */
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testGetObjectiveBoundsChecking1() {
@@ -283,8 +276,7 @@ public class SolutionTest {
 	}
 
 	/**
-	 * Tests if the {@code getObjective} method correctly detects invalid
-	 * indices.
+	 * Tests if the {@code getObjective} method correctly detects invalid indices.
 	 */
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testGetObjectiveBoundsChecking2() {
@@ -292,8 +284,7 @@ public class SolutionTest {
 	}
 
 	/**
-	 * Tests if the {@code setObjectives} method correctly detects invalid
-	 * indices.
+	 * Tests if the {@code setObjectives} method correctly detects invalid indices.
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testSetObjectivesBoundsChecking() {
@@ -301,8 +292,7 @@ public class SolutionTest {
 	}
 
 	/**
-	 * Tests if the {@code setConstraint} method correctly detects invalid
-	 * indices.
+	 * Tests if the {@code setConstraint} method correctly detects invalid indices.
 	 */
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testSetConstraintBoundsChecking1() {
@@ -310,8 +300,7 @@ public class SolutionTest {
 	}
 
 	/**
-	 * Tests if the {@code setConstraint} method correctly detects invalid
-	 * indices.
+	 * Tests if the {@code setConstraint} method correctly detects invalid indices.
 	 */
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testSetConstraintBoundsChecking2() {
@@ -319,8 +308,7 @@ public class SolutionTest {
 	}
 
 	/**
-	 * Tests if the {@code getConstraint} method correctly detects invalid
-	 * indices.
+	 * Tests if the {@code getConstraint} method correctly detects invalid indices.
 	 */
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testGetConstraintBoundsChecking1() {
@@ -328,8 +316,7 @@ public class SolutionTest {
 	}
 
 	/**
-	 * Tests if the {@code getConstraint} method correctly detects invalid
-	 * indices.
+	 * Tests if the {@code getConstraint} method correctly detects invalid indices.
 	 */
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testGetConstraintBoundsChecking2() {
@@ -337,8 +324,7 @@ public class SolutionTest {
 	}
 
 	/**
-	 * Tests if the {@code setConstraints} method correctly detects invalid
-	 * indices.
+	 * Tests if the {@code setConstraints} method correctly detects invalid indices.
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testSetConstraintsBoundsChecking() {
@@ -346,8 +332,7 @@ public class SolutionTest {
 	}
 
 	/**
-	 * Tests if the constructor, when given an array of objectives, correctly
-	 * initializes the solution.
+	 * Tests if the constructor, when given an array of objectives, correctly initializes the solution.
 	 */
 	@Test
 	public void testObjectiveConstructor() {
@@ -368,8 +353,7 @@ public class SolutionTest {
 	}
 	
 	/**
-	 * Tests if the deep copy method works correctly, property cloning all
-	 * attributes.
+	 * Tests if the deep copy method works correctly, property cloning all attributes.
 	 */
 	@Test
 	public void testDeepCopy() {
@@ -420,8 +404,8 @@ public class SolutionTest {
 	}
 
 	/**
-	 * Tests if the {@code violatesConstraints} method returns {@code 0} if
-	 * all constraints are satisfied and a non-zero value otherwise.
+	 * Tests if the {@code violatesConstraints} method returns {@code 0} if all constraints are satisfied and a
+	 * non-zero value otherwise.
 	 */
 	@Test
 	public void testViolatesConstraints() {
@@ -435,8 +419,7 @@ public class SolutionTest {
 	}
 	
 	/**
-	 * Tests the {@code distanceTo} method to ensure it computes the Euclidean
-	 * distance between solutions correctly.
+	 * Tests the {@code distanceTo} method to ensure it computes the Euclidean distance between solutions correctly.
 	 */
 	@Test
 	public void testDistanceTo() {

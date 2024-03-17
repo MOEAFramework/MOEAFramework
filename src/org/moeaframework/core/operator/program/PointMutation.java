@@ -31,8 +31,8 @@ import org.moeaframework.util.tree.Node;
 import org.moeaframework.util.tree.Rules;
 
 /**
- * Mutates a program by randomly selecting nodes in the expression tree and
- * replacing the node with a new, compatible, randomly-selected node.
+ * Mutates a program by randomly selecting nodes in the expression tree and replacing the node with a new, compatible,
+ * randomly-selected node.
  * <p>
  * This operator is type-safe.
  */

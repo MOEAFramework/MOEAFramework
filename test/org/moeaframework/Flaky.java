@@ -23,11 +23,10 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.ElementType;
 
 /**
- * Annotation for identifying flaky unit tests on CI builds.  The test still runs
- * but failures only appear as warnings and do not cause the test to fail.  As a
- * result, use of this attribute should be audited periodically and problems
+ * Annotation for identifying flaky unit tests on CI builds.  The test still runs but failures only appear as warnings
+ * and do not cause the test to fail.  As a result, use of this attribute should be audited periodically and problems
  * addressed.
- * 
+ * <p>
  * Test classes using this annotation must also specify \code{@RunWith(CIRunner.class)}.
  */
 @Target({ElementType.METHOD})

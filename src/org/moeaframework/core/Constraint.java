@@ -18,19 +18,17 @@
 package org.moeaframework.core;
 
 /**
- * Useful methods for calculating constraints.  The returned value represents the
- * degree of constraint violation, where {@code 0.0} indicates the constraint is
- * satisfied and any non-zero value indicates a constraint violation, and can be
- * passed directly into {@link Solution#setConstraint(int, double)}.
+ * Useful methods for calculating constraints.  The returned value represents the degree of constraint violation,
+ * where {@code 0.0} indicates the constraint is satisfied and any non-zero value indicates a constraint violation,
+ * and can be passed directly into {@link Solution#setConstraint(int, double)}.
  * <p>
  * These methods are useful as they:
  * <ol>
- *   <li>Take an {@code epsilon} value, defaulting to {@value Settings#EPS}, used to determine
- *       if two numbers are sufficiently close to be considered equal.  This helps account for
- *       rounding or computational errors introduced by floating-point numbers.
- *   <li>Calculates the magnitude of constraint violation, effectively providing a "gradient" towards
- *       the feasible solution.  This helps optimization algorithms distinguish solutions with
- *       more or less severe violations.
+ *   <li>Take an {@code epsilon} value, defaulting to {@value Settings#EPS}, used to determine if two numbers are
+ *       sufficiently close to be considered equal.  This helps account for rounding or computational errors
+ *       introduced by floating-point numbers.
+ *   <li>Calculates the magnitude of constraint violation, effectively providing a "gradient" towards the feasible
+ *       solution.  This helps optimization algorithms distinguish solutions with more or less severe violations.
  * </ol>
  */
 public class Constraint {

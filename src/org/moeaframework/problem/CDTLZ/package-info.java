@@ -21,13 +21,11 @@
  * <p>
  * References:
  * <ol>
- *   <li>Deb, K. and H. Jain.  "An Evolutionary Many-Objective Optimization
- *       Algorithm Using Reference-Point-Based Nondominated Sorting Approach,
- *       Part I: Solving Problems With Box Constraints."  IEEE Transactions on
+ *   <li>Deb, K. and H. Jain.  "An Evolutionary Many-Objective Optimization Algorithm Using Reference-Point-Based
+ *       Nondominated Sorting Approach, Part I: Solving Problems With Box Constraints."  IEEE Transactions on
  *       Evolutionary Computation, 18(4):577-601, 2014.
- *   <li>Jain, H. and K. Deb.  "An Evolutionary Many-Objective Optimization
- *       Algorithm Using Reference-Point-Based Nondominated Sorting Approach,
- *       Part II: Handling Constraints and Extending to an Adaptive Approach."
+ *   <li>Jain, H. and K. Deb.  "An Evolutionary Many-Objective Optimization Algorithm Using Reference-Point-Based
+ *       Nondominated Sorting Approach, Part II: Handling Constraints and Extending to an Adaptive Approach."
  *       IEEE Transactions on Evolutionary Computation, 18(4):602-622, 2014.
  *   <li>https://github.com/msu-coinlab/pymop
  * </ol>

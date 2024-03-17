@@ -107,8 +107,7 @@ public class PISAHypervolumeTest extends IndicatorTest {
 	}
 
 	/**
-	 * Runs through some simple cases to ensure the hypervolume is computed
-	 * correctly.
+	 * Runs through some simple cases to ensure the hypervolume is computed correctly.
 	 */
 	@Test
 	public void testSimple() {
@@ -164,8 +163,7 @@ public class PISAHypervolumeTest extends IndicatorTest {
 		referenceSet.add(TestUtils.newSolution(0.0, 1.0));
 		referenceSet.add(TestUtils.newSolution(1.0, 0.0));
 		
-		PISAHypervolume hypervolume = new PISAHypervolume(problem, referenceSet,
-				new double[] { 2.0, 2.0 });
+		PISAHypervolume hypervolume = new PISAHypervolume(problem, referenceSet, new double[] { 2.0, 2.0 });
 		
 		test2(hypervolume);
 	}

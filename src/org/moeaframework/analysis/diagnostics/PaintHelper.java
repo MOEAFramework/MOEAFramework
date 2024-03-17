@@ -23,9 +23,8 @@ import org.jfree.chart.ChartColor;
 import org.jfree.chart.PaintMap;
 
 /**
- * Helper class for maintaining a mapping from series in a plot to their
- * assigned paint.  If the series has not yet been assigned a paint, one will
- * be automatically assigned when invoking {@link #get(Comparable)}.
+ * Helper class for maintaining a mapping from series in a plot to their assigned paint.  If the series has not yet
+ * been assigned a paint, one will be automatically assigned when invoking {@link #get(Comparable)}.
  */
 public class PaintHelper {
 	
@@ -35,8 +34,7 @@ public class PaintHelper {
 	private PaintMap paintMap;
 	
 	/**
-	 * The index of the next {@link Paint} to be returned by 
-	 * {@link #getPaint(Comparable)}.
+	 * The index of the next {@link Paint} to be returned by {@link #getPaint(Comparable)}.
 	 */
 	private int nextPaintIndex;
 	
@@ -56,8 +54,8 @@ public class PaintHelper {
 	}
 	
 	/**
-	 * Returns the paint used by the specified series key.  If the series key 
-	 * has not yet been assigned a paint, one is automatically assigned.
+	 * Returns the paint used by the specified series key.  If the series key has not yet been assigned a paint, one is
+	 * automatically assigned.
 	 * 
 	 * @param key the series key
 	 * @return the paint used by the specified series key
@@ -73,9 +71,8 @@ public class PaintHelper {
 	}
 	
 	/**
-	 * Assigns a paint for the specified series key.  All subsequent invocations
-	 * of {@link #get(Comparable)} with this series key will return the
-	 * specified paint.
+	 * Assigns a paint for the specified series key.  All subsequent invocations of {@link #get(Comparable)} with this
+	 * series key will return the specified paint.
 	 * 
 	 * @param key the series key
 	 * @param paint the paint to be used for the specified series key

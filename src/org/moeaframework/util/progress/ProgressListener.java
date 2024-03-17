@@ -20,8 +20,7 @@ package org.moeaframework.util.progress;
 import java.util.EventListener;
 
 /**
- * Interface used to listen for progress reports provided by
- * {@link ProgressHelper}.
+ * Interface used to listen for progress reports provided by {@link ProgressHelper}.
  */
 public interface ProgressListener extends EventListener {
 	

@@ -77,8 +77,7 @@ public class ReferencePointNondominatedSortingPopulationTest {
 		solutions.add(TestUtils.newSolution(0.25, 0.75));
 		solutions.add(TestUtils.newSolution(0.75, 0.25));
 		
-		ReferencePointNondominatedSortingPopulation population =
-				new ReferencePointNondominatedSortingPopulation(2,
+		ReferencePointNondominatedSortingPopulation population = new ReferencePointNondominatedSortingPopulation(2,
 						new NormalBoundaryDivisions(4));
 		
 		population.addAll(solutions);
@@ -86,20 +85,14 @@ public class ReferencePointNondominatedSortingPopulationTest {
 		population.translateByIdealPoint();
 		population.normalizeByIntercepts(new double[] { 1.0, 1.0 });
 		
-		Assert.assertSame(solutions.get(0),
-				population.findSolutionWithMinimumDistance(solutions, weight1));
-		
-		Assert.assertSame(solutions.get(1),
-				population.findSolutionWithMinimumDistance(solutions, weight2));
-		
-		Assert.assertSame(solutions.get(2),
-				population.findSolutionWithMinimumDistance(solutions, weight3));
+		Assert.assertSame(solutions.get(0), population.findSolutionWithMinimumDistance(solutions, weight1));
+		Assert.assertSame(solutions.get(1), population.findSolutionWithMinimumDistance(solutions, weight2));
+		Assert.assertSame(solutions.get(2), population.findSolutionWithMinimumDistance(solutions, weight3));
 	}
 	
 	@Test
 	public void testUpdateIdealPoint() {
-		ReferencePointNondominatedSortingPopulation population =
-				new ReferencePointNondominatedSortingPopulation(2,
+		ReferencePointNondominatedSortingPopulation population = new ReferencePointNondominatedSortingPopulation(2,
 						new NormalBoundaryDivisions(4));
 		
 		population.add(TestUtils.newSolution(0.5, 0.5));
@@ -113,8 +106,7 @@ public class ReferencePointNondominatedSortingPopulationTest {
 	
 	@Test
 	public void testTranslateByIdealPoint() {
-		ReferencePointNondominatedSortingPopulation population =
-				new ReferencePointNondominatedSortingPopulation(2,
+		ReferencePointNondominatedSortingPopulation population = new ReferencePointNondominatedSortingPopulation(2,
 						new NormalBoundaryDivisions(4));
 		
 		population.add(TestUtils.newSolution(0.5, 0.5));
@@ -134,8 +126,7 @@ public class ReferencePointNondominatedSortingPopulationTest {
 	public void testNormalizeWithIntercepts() {
 		double[] intercepts = { 0.5, 2.0 };
 		
-		ReferencePointNondominatedSortingPopulation population =
-				new ReferencePointNondominatedSortingPopulation(2,
+		ReferencePointNondominatedSortingPopulation population = new ReferencePointNondominatedSortingPopulation(2,
 						new NormalBoundaryDivisions(4));
 		
 		population.add(TestUtils.newSolution(0.5, 0.5));
@@ -156,8 +147,7 @@ public class ReferencePointNondominatedSortingPopulationTest {
 	public void testFindExtremePoint() {
 		double[] intercepts = { 1.0, 1.0 };
 		
-		ReferencePointNondominatedSortingPopulation population =
-				new ReferencePointNondominatedSortingPopulation(2,
+		ReferencePointNondominatedSortingPopulation population = new ReferencePointNondominatedSortingPopulation(2,
 						new NormalBoundaryDivisions(4));
 		
 		population.add(TestUtils.newSolution(0.5, 0.5));
@@ -173,8 +163,7 @@ public class ReferencePointNondominatedSortingPopulationTest {
 	
 	@Test
 	public void testCalculateIntercepts() {
-		ReferencePointNondominatedSortingPopulation population =
-				new ReferencePointNondominatedSortingPopulation(2,
+		ReferencePointNondominatedSortingPopulation population = new ReferencePointNondominatedSortingPopulation(2,
 						new NormalBoundaryDivisions(4));
 		
 		population.add(TestUtils.newSolution(0.5, 0.5));
@@ -191,13 +180,11 @@ public class ReferencePointNondominatedSortingPopulationTest {
 	}
 	
 	/**
-	 * Tests if the truncate method works correctly when it needs to eliminate
-	 * a dominated point.
+	 * Tests if the truncate method works correctly when it needs to eliminate a dominated point.
 	 */
 	@Test
 	public void testTruncate1() {
-		ReferencePointNondominatedSortingPopulation population =
-				new ReferencePointNondominatedSortingPopulation(2,
+		ReferencePointNondominatedSortingPopulation population = new ReferencePointNondominatedSortingPopulation(2,
 						new NormalBoundaryDivisions(4));
 		
 		Solution s1 = TestUtils.newSolution(0.5, 0.5);
@@ -216,14 +203,12 @@ public class ReferencePointNondominatedSortingPopulationTest {
 	}
 	
 	/**
-	 * Tests if the truncate method works correctly when it needs to eliminate
-	 * non-dominated solutions by favoring those associated with reference
-	 * points.
+	 * Tests if the truncate method works correctly when it needs to eliminate non-dominated solutions by favoring
+	 * those associated with reference points.
 	 */
 	@Test
 	public void testTruncate2() {
-		ReferencePointNondominatedSortingPopulation population =
-				new ReferencePointNondominatedSortingPopulation(2,
+		ReferencePointNondominatedSortingPopulation population = new ReferencePointNondominatedSortingPopulation(2,
 						new NormalBoundaryDivisions(1));
 		
 		Solution s1 = TestUtils.newSolution(0.5, 0.5);

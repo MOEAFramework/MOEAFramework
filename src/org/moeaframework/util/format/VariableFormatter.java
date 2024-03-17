@@ -22,8 +22,7 @@ import org.moeaframework.core.variable.BinaryIntegerVariable;
 import org.moeaframework.core.variable.RealVariable;
 
 /**
- * Formatter for {@link Variable}s.  Primarily, this uses the registered formatter,
- * if any, for numeric types.
+ * Formatter for {@link Variable}s.  Primarily, this uses the registered formatter, if any, for numeric types.
  */
 public class VariableFormatter implements Formatter<Variable> {
 	
@@ -32,8 +31,8 @@ public class VariableFormatter implements Formatter<Variable> {
 	/**
 	 * Constructs a new variable formatter.
 	 * 
-	 * @param data reference back to the tabular data object this formatter is associated, so it
-	 *             can call the {@link TabularData#formatValue(Object)} method on primitive types
+	 * @param data reference back to the tabular data object this formatter is associated, so it can call the
+	 *             {@link TabularData#formatValue(Object)} method on primitive types
 	 */
 	public VariableFormatter(TabularData<?> data) {
 		super();

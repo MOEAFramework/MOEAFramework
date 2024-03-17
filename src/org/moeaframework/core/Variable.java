@@ -20,19 +20,16 @@ package org.moeaframework.core;
 import java.io.Serializable;
 
 /**
- * Interface for decision variables. This interface ensures independent copies
- * of decision variables can be constructed.  Implementations are strongly
- * encouraged to also override {@link Object#equals(Object)} and
+ * Interface for decision variables. This interface ensures independent copies of decision variables can be
+ * constructed.  Implementations are strongly encouraged to also override {@link Object#equals(Object)} and
  * {@link Object#hashCode()}.
  */
 public interface Variable extends Serializable {
 
 	/**
-	 * Returns an independent copy of this decision variable. It is required
-	 * that {@code x.copy()} is completely independent from {@code x}. This
-	 * means any method invoked on {@code x.copy()} in no way alters the state
-	 * of {@code x} and vice versa. It is typically the case that
-	 * {@code x.copy().getClass() == x.getClass()} and
+	 * Returns an independent copy of this decision variable. It is required that {@code x.copy()} is completely
+	 * independent from {@code x}. This means any method invoked on {@code x.copy()} in no way alters the state
+	 * of {@code x} and vice versa. It is typically the case that {@code x.copy().getClass() == x.getClass()} and
 	 * {@code x.copy().equals(x)}.
 	 * 
 	 * @return an independent copy of this decision variable
@@ -40,8 +37,7 @@ public interface Variable extends Serializable {
 	public Variable copy();
 	
 	/**
-	 * Randomly assign the value of this variable.  In general, the
-	 * randomization should follow a uniform distribution.
+	 * Randomly assign the value of this variable.  In general, the randomization should follow a uniform distribution.
 	 */
 	public void randomize();
 	
@@ -54,16 +50,15 @@ public interface Variable extends Serializable {
 	public String toString();
 	
 	/**
-	 * Encodes the value of this variable as a string.  This should reflect the internal
-	 * representation of the value and not necessarily the actual value.  For example, a
-	 * binary-encoded integer should display the bits and not the integer value.
+	 * Encodes the value of this variable as a string.  This should reflect the internal representation of the value
+	 * and not necessarily the actual value.  For example, a binary-encoded integer should display the bits and not the
+	 * integer value.
 	 * 
-	 * Implementations should make an effort to display the value in a meaningful format,
-	 * but that is not required.  Instead, use {@link #toString()} if a human-readable
-	 * format is required.
+	 * Implementations should make an effort to display the value in a meaningful format, but that is not required.
+	 * Instead, use {@link #toString()} if a human-readable format is required.
 	 * 
-	 * This method along with {@link #decode(String)} are used primarily for storing values
-	 * in text files.  To make parsing easier, the resulting string must:
+	 * This method along with {@link #decode(String)} are used primarily for storing values in text files.  To make
+	 * parsing easier, the resulting string must:
 	 * 
 	 * 1. Only contain ASCII characters
 	 * 2. Contain no whitespace (no spaces, tabs, newlines, etc.)
@@ -73,8 +68,8 @@ public interface Variable extends Serializable {
 	public String encode();
 	
 	/**
-	 * Parses and loads the value of this variable from a string.  This must be able to
-	 * process any string produced by {@link #encode()}.
+	 * Parses and loads the value of this variable from a string.  This must be able to process any string produced
+	 * by {@link #encode()}.
 	 * 
 	 * @param value the value as a string
 	 */

@@ -22,17 +22,14 @@ import java.util.Random;
 import org.apache.commons.math3.random.MersenneTwister;
 
 /**
- * A thread-safe version of the {@link MersenneTwister} random number
- * generator (RNG).  Each thread is assigned a unique instance of the 
- * RNG with its own seed.  To use:
+ * A thread-safe version of the {@link MersenneTwister} random number generator (RNG).  Each thread is assigned a
+ * unique instance of the RNG with its own seed.  To use:
  * <pre>
- *     PRNG.setRandom(ThreadLocalMersenneTwister.getInstance());
+ *   PRNG.setRandom(ThreadLocalMersenneTwister.getInstance());
  * </pre>
- * <p>
- * Note: Java also has the {@see java.util.concurrent.ThreadLocalRandom}
- * that can provide similar access to random numbers across threads.
- * The Mersenne Twister, however, has better characteristics
- * (extremely long period, high equidistribution, etc.).
+ * Note: Java also has the {@see java.util.concurrent.ThreadLocalRandom} that can provide similar access to random
+ * numbers across threads.  The Mersenne Twister, however, has better characteristics (extremely long period, high
+ * equidistribution, etc.).
  */
 public class ThreadLocalMersenneTwister extends Random {
 
@@ -78,8 +75,7 @@ public class ThreadLocalMersenneTwister extends Random {
 	}
 	
 	/**
-	 * Returns the singleton instance of this synchronized
-	 * Mersenne Twister RNG.
+	 * Returns the singleton instance of this synchronized Mersenne Twister RNG.
 	 * 
 	 * @return the singleton instance
 	 */
@@ -88,8 +84,7 @@ public class ThreadLocalMersenneTwister extends Random {
 	}
 	
 	/**
-	 * Returns the RNG assigned to the current thread.  This RNG is
-	 * not synchronized and is not thread-safe!
+	 * Returns the RNG assigned to the current thread.  This RNG is not synchronized and is not thread-safe!
 	 * 
 	 * @return the local RNG for the current thread
 	 */

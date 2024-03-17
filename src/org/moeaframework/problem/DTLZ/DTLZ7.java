@@ -20,7 +20,6 @@ package org.moeaframework.problem.DTLZ;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
-import org.moeaframework.core.variable.RealVariable;
 
 /**
  * The DTLZ7 test problem.
@@ -28,9 +27,8 @@ import org.moeaframework.core.variable.RealVariable;
 public class DTLZ7 extends DTLZ {
 
 	/**
-	 * Constructs a DTLZ7 test problem with the specified number of objectives.
-	 * This is equivalent to calling {@code new DTLZ7(numberOfObjectives+19, 
-	 * numberOfObjectives)}
+	 * Constructs a DTLZ7 test problem with the specified number of objectives.  This is equivalent to calling
+	 * {@code new DTLZ7(numberOfObjectives+19, numberOfObjectives)}
 	 * 
 	 * @param numberOfObjectives the number of objectives for this problem
 	 */
@@ -39,8 +37,7 @@ public class DTLZ7 extends DTLZ {
 	}
 
 	/**
-	 * Constructs a DTLZ7 test problem with the specified number of variables
-	 * and objectives.
+	 * Constructs a DTLZ7 test problem with the specified number of variables and objectives.
 	 * 
 	 * @param numberOfVariables the number of variables for this problem
 	 * @param numberOfObjectives the number of objectives for this problem
@@ -80,11 +77,11 @@ public class DTLZ7 extends DTLZ {
 		Solution solution = newSolution();
 
 		for (int i = 0; i < numberOfObjectives - 1; i++) {
-			((RealVariable)solution.getVariable(i)).setValue(PRNG.nextDouble());
+			EncodingUtils.setReal(solution.getVariable(i), PRNG.nextDouble());
 		}
 
 		for (int i = numberOfObjectives - 1; i < numberOfVariables; i++) {
-			((RealVariable)solution.getVariable(i)).setValue(0.0);
+			EncodingUtils.setReal(solution.getVariable(i), 0.0);
 		}
 
 		evaluate(solution);

@@ -22,9 +22,8 @@ import java.util.List;
 import org.apache.commons.math3.stat.inference.TestUtils;
 
 /**
- * The Two-Sample t test determines if the mean of two populations are
- * different. The independent flag in the constructor is used to choose between
- * the unpaired (independent) and paired (dependent) test.
+ * The Two-Sample t test determines if the mean of two populations are different. The independent flag in the
+ * constructor is used to choose between the unpaired (independent) and paired (dependent) test.
  * <ul>
  *   <li>Null Hypothesis: The two population means are equal.
  *   <li>Alternative Hypothesis: The two population means are not equal.
@@ -38,23 +37,21 @@ import org.apache.commons.math3.stat.inference.TestUtils;
  * <p>
  * References:
  * <ol>
- *   <li>Sheskin, D.J. "Handbook of Parametric and Nonparametric Statistical
- *       Procedures, Third Edition." Chapman &amp; Hall/CRC. 2004.
+ *   <li>Sheskin, D.J. "Handbook of Parametric and Nonparametric Statistical Procedures, Third Edition." Chapman &amp;
+ *       Hall/CRC. 2004.
  * </ol>
  */
 public class TwoSampleTTest extends IntervalRatioStatisticalTest {
 
 	/**
-	 * {@code true} if using the unpaired T test; {@code false} if using the
-	 * paired T test.
+	 * {@code true} if using the unpaired T test; {@code false} if using the paired T test.
 	 */
 	private final boolean independent;
 
 	/**
 	 * Constructs a two sample T test.
 	 * 
-	 * @param independent uses the unpaired T test if {@code true}; the paired T
-	 *        test if {@code false}
+	 * @param independent uses the unpaired T test if {@code true}; the paired T test if {@code false}
 	 */
 	public TwoSampleTTest(boolean independent) {
 		super(2);

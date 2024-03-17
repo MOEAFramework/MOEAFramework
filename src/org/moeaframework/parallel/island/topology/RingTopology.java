@@ -22,8 +22,7 @@ import java.util.List;
 import org.moeaframework.parallel.island.Island;
 
 /**
- * A ring topology where each island is only connected to two adjacent
- * islands, thus forming the shape of a ring.
+ * A ring topology where each island is only connected to two adjacent islands, thus forming the shape of a ring.
  */
 public class RingTopology implements Topology {
 

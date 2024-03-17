@@ -31,8 +31,8 @@ import org.moeaframework.problem.MockRealProblem;
 public class IndicatorFitnessEvaluatorTest {
 	
 	/**
-	 * Tests if the updated fitness from {@code removeAndUpdate()} equals those
-	 * produced by {@code evaluate} on the resulting population.
+	 * Tests if the updated fitness from {@code removeAndUpdate()} equals those produced by {@code evaluate} on the
+	 * resulting population.
 	 */
 	@Test
 	public void testRemoveAndUpdate() {
@@ -49,7 +49,6 @@ public class IndicatorFitnessEvaluatorTest {
 		evaluator.evaluate(population);
 		evaluator.removeAndUpdate(population, 2);
 		
-		
 		Population expectedPopulation = new Population();
 		expectedPopulation.add(TestUtils.newSolution(0.0, 1.0));
 		expectedPopulation.add(TestUtils.newSolution(0.25, 0.25));
@@ -57,7 +56,6 @@ public class IndicatorFitnessEvaluatorTest {
 		expectedPopulation.add(TestUtils.newSolution(1.0, 0.0));
 		
 		evaluator.evaluate(expectedPopulation);
-		
 		
 		Assert.assertEquals(expectedPopulation.size(), population.size());
 		

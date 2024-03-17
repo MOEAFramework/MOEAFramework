@@ -42,9 +42,8 @@ import org.moeaframework.util.progress.ProgressHelper;
 import org.moeaframework.util.progress.ProgressListener;
 
 /**
- * Configures and executes algorithms while hiding the underlying boilerplate 
- * code needed to setup and safely execute an algorithm.  For example, the 
- * following demonstrates its typical use:
+ * Configures and executes algorithms while hiding the underlying boilerplate code needed to setup and safely execute
+ * an algorithm.  For example, the following demonstrates its typical use:
  * <pre>
  *   NondominatedPopulation result = new Executor()
  *       .withAlgorithm("NSGAII")
@@ -53,9 +52,8 @@ import org.moeaframework.util.progress.ProgressListener;
  *       .run();
  * </pre>
  * <p>
- * The problem and algorithm must be specified prior to calling {@link #run()}.
- * Additional parameters for each algorithm can be assigned using the
- * {@code withProperty} methods:
+ * The problem and algorithm must be specified prior to calling {@link #run()}.  Additional parameters for each
+ * algorithm can be assigned using the {@code withProperty} methods:
  * <pre>
  *   NondominatedPopulation result = new Executor()
  *       .withAlgorithm("NSGAII")
@@ -69,12 +67,10 @@ import org.moeaframework.util.progress.ProgressListener;
  *       .run();
  * </pre>
  * <p>
- * The evaluation of function evaluations can be distributed across multiple
- * cores or computers by using {@link #distributeOnAllCores()},
- * {@link #distributeOn(int)}, or {@link #distributeWith(ExecutorService)}.
- * Checkpoint files can be saved in order to resume interrupted runs using the
- * {@link #withCheckpointFrequency(int)} and {@link #withCheckpointFile(File)}
- * methods.  For example:
+ * The evaluation of function evaluations can be distributed across multiple cores or computers by using
+ * {@link #distributeOnAllCores()}, {@link #distributeOn(int)}, or {@link #distributeWith(ExecutorService)}.
+ * Checkpoint files can be saved in order to resume interrupted runs using the {@link #withCheckpointFrequency(int)}
+ * and {@link #withCheckpointFile(File)} methods.  For example:
  * <pre>
  *   NondominatedPopulation result = new Executor()
  *       .withAlgorithm("NSGAII")
@@ -104,45 +100,39 @@ public class Executor extends ProblemBuilder {
 	private int numberOfThreads;
 	
 	/**
-	 * The executor service for distributing jobs; or {@code null} if
-	 * distribution is local.
+	 * The executor service for distributing jobs; or {@code null} if distribution is local.
 	 */
 	private ExecutorService executorService;
 	
 	/**
-	 * The checkpoint file for storing the algorithm state; or {@code null} if
-	 * checkpoints are not used.
+	 * The checkpoint file for storing the algorithm state; or {@code null} if checkpoints are not used.
 	 */
 	private File checkpointFile;
 	
 	/**
-	 * The checkpoint frequency, specifying the number of evaluations between
-	 * checkpoints.
+	 * The checkpoint frequency, specifying the number of evaluations between checkpoints.
 	 */
 	private int checkpointFrequency;
 	
 	/**
-	 * The algorithm provider for creating algorithm instances; or {@code null}
-	 * if the default algorithm factory should be used.
+	 * The algorithm provider for creating algorithm instances; or {@code null} if the default algorithm factory
+	 * should be used.
 	 */
 	private AlgorithmFactory algorithmFactory;
 	
 	/**
-	 * The instrumenter used to record information about the runtime behavior
-	 * of algorithms executed by this executor; or {@code null} if no 
-	 * instrumentation is used.
+	 * The instrumenter used to record information about the runtime behavior of algorithms executed by this executor;
+	 * or {@code null} if no instrumentation is used.
 	 */
 	private Instrumenter instrumenter;
 	
 	/**
-	 * Manages reporting progress, elapsed time, and time remaining to
-	 * {@link ProgressListener}s.
+	 * Manages reporting progress, elapsed time, and time remaining to {@link ProgressListener}s.
 	 */
 	private ProgressHelper progress;
 	
 	/**
-	 * Indicates that this executor should stop processing and return any
-	 * results collected thus far.
+	 * Indicates that this executor should stop processing and return any results collected thus far.
 	 */
 	private AtomicBoolean isCanceled;
 	
@@ -165,28 +155,26 @@ public class Executor extends ProblemBuilder {
 	}
 	
 	/**
-	 * Informs this executor to stop processing and returns any results
-	 * collected thus far.  This method is thread-safe.
+	 * Informs this executor to stop processing and returns any results collected thus far.  This method is
+	 * thread-safe.
 	 */
 	public void cancel() {
 		isCanceled.set(true);
 	}
 	
 	/**
-	 * Returns {@code true} if the canceled flag is set; {@code false}
-	 * otherwise.  After canceling a run, the flag will remain set to
-	 * {@code true} until another run is started.  This method is thread-safe.
+	 * Returns {@code true} if the canceled flag is set; {@code false} otherwise.  After canceling a run, the flag
+	 * will remain set to {@code true} until another run is started.  This method is thread-safe.
 	 * 
-	 * @return {@code true} if the canceled flag is set; {@code false}
-	 *         otherwise
+	 * @return {@code true} if the canceled flag is set; {@code false} otherwise
 	 */
 	public boolean isCanceled() {
 		return isCanceled.get();
 	}
 	
 	/**
-	 * Sets the instrumenter used to record information about the runtime
-	 * behavior of algorithms executed by this executor.
+	 * Sets the instrumenter used to record information about the runtime behavior of algorithms executed by this
+	 * executor.
 	 * 
 	 * @param instrumenter the instrumeter
 	 * @return a reference to this executor
@@ -198,11 +186,9 @@ public class Executor extends ProblemBuilder {
 	}
 	
 	/**
-	 * Returns the instrumenter used by this executor; or {@code null} if no
-	 * instrumenter has been assigned.
+	 * Returns the instrumenter used by this executor; or {@code null} if no instrumenter has been assigned.
 	 * 
-	 * @return the instrumenter used by this executor; or {@code null} if no
-	 *         instrumenter has been assigned
+	 * @return the instrumenter used by this executor; or {@code null} if no instrumenter has been assigned
 	 */
 	public Instrumenter getInstrumenter() {
 		return instrumenter;
@@ -254,9 +240,8 @@ public class Executor extends ProblemBuilder {
 	}
 	
 	/**
-	 * Adds a custom termination condition for use with this executor. Use
-	 * {@link #withMaxEvaluations(int)} and {@link #withMaxTime(long)} to set
-	 * NFE or time limits.
+	 * Adds a custom termination condition for use with this executor.  Use {@link #withMaxEvaluations(int)} and
+	 * {@link #withMaxTime(long)} to set NFE or time limits.
 	 * 
 	 * @param condition the termination condition to add
 	 * @return a reference to this executor
@@ -280,9 +265,8 @@ public class Executor extends ProblemBuilder {
 	}
 	
 	/**
-	 * Sets the {@link ExecutorService} used by this executor to distribute
-	 * solution evaluations.  The caller is responsible for ensuring the 
-	 * executor service is shutdown after use.
+	 * Sets the {@link ExecutorService} used by this executor to distribute solution evaluations.  The caller is
+	 * responsible for ensuring the executor service is shutdown after use.
 	 * 
 	 * @param executorService the executor service
 	 * @return a reference to this executor
@@ -294,8 +278,7 @@ public class Executor extends ProblemBuilder {
 	}
 	
 	/**
-	 * Enables this executor to distribute solution evaluations across the
-	 * specified number of threads.
+	 * Enables this executor to distribute solution evaluations across the specified number of threads.
 	 * 
 	 * @param numberOfThreads the number of threads
 	 * @return a reference to this executor
@@ -312,8 +295,7 @@ public class Executor extends ProblemBuilder {
 	}
 	
 	/**
-	 * Enables this executor to distribute solution evaluations across all
-	 * processors on the local host.
+	 * Enables this executor to distribute solution evaluations across all processors on the local host.
 	 * 
 	 * @return a reference to this executor
 	 */
@@ -322,8 +304,8 @@ public class Executor extends ProblemBuilder {
 	}
 	
 	/**
-	 * Sets the checkpoint file where the algorithm state is stored.  This
-	 * method must be invoked in order to enable checkpoints.
+	 * Sets the checkpoint file where the algorithm state is stored.  This method must be invoked in order to enable
+	 * checkpoints.
 	 * 
 	 * @param checkpointFile the checkpoint file
 	 * @return a reference to this executor
@@ -337,8 +319,7 @@ public class Executor extends ProblemBuilder {
 	/**
 	 * Sets the frequency at which this executor saves checkpoints.
 	 * 
-	 * @param checkpointFrequency the checkpoint frequency, specifying the
-	 *        number of evaluations between checkpoints
+	 * @param checkpointFrequency the checkpoint frequency, specifying the number of evaluations between checkpoints
 	 * @return a reference to this executor
 	 */
 	public Executor withCheckpointFrequency(int checkpointFrequency) {
@@ -348,8 +329,7 @@ public class Executor extends ProblemBuilder {
 	}
 	
 	/**
-	 * Enables this executor to save checkpoints after every iteration of the
-	 * algorithm.
+	 * Enables this executor to save checkpoints after every iteration of the algorithm.
 	 * 
 	 * @return a reference to this executor
 	 */
@@ -372,8 +352,7 @@ public class Executor extends ProblemBuilder {
 	}
 	
 	/**
-	 * Sets the &epsilon; values; equivalent to setting the property
-	 * {@code epsilon}.
+	 * Sets the &epsilon; values; equivalent to setting the property {@code epsilon}.
 	 * 
 	 * @param epsilon the &epsilon; values
 	 * @return a reference to this executor
@@ -392,8 +371,7 @@ public class Executor extends ProblemBuilder {
 	}
 	
 	/**
-	 * Sets the maximum number of evaluations; equivalent to setting the
-	 * property {@code maxEvaluations}.
+	 * Sets the maximum number of evaluations; equivalent to setting the property {@code maxEvaluations}.
 	 * 
 	 * @param maxEvaluations the maximum number of evaluations
 	 * @return a reference to this executor
@@ -405,8 +383,7 @@ public class Executor extends ProblemBuilder {
 	}
 	
 	/**
-	 * Sets the maximum elapsed time in milliseconds; equivalent to setting the
-	 * property {@code maxTime}.
+	 * Sets the maximum elapsed time in milliseconds; equivalent to setting the property {@code maxTime}.
 	 * 
 	 * @param maxTime the maximum elapsed time in milliseconds
 	 * @return a reference to this executor
@@ -430,7 +407,7 @@ public class Executor extends ProblemBuilder {
 	}
 	
 	/**
-	 * Sets a property.
+	 * Sets a {@code String} property.
 	 * 
 	 * @param key the property key
 	 * @param value the property value
@@ -636,8 +613,8 @@ public class Executor extends ProblemBuilder {
 	}
 	
 	/**
-	 * Sets all properties.  This will clear any existing properties, including
-	 * the {@code maxEvaluations} or {@code maxTime}.
+	 * Sets all properties.  This will clear any existing properties, including the {@code maxEvaluations} or
+	 * {@code maxTime}.
 	 * 
 	 * @param properties the properties
 	 * @return a reference to this executor
@@ -695,9 +672,8 @@ public class Executor extends ProblemBuilder {
 	}
 	
 	/**
-	 * Runs this executor with its configured settings multiple times,
-	 * returning the individual end-of-run approximation sets.  If the run
-	 * is canceled, the list contains any complete seeds that finished prior
+	 * Runs this executor with its configured settings multiple times, returning the individual end-of-run
+	 * approximation sets.  If the run is canceled, the list contains any complete seeds that finished prior
 	 * to cancellation.
 	 * 
 	 * @param numberOfSeeds the number of seeds to run
@@ -750,20 +726,16 @@ public class Executor extends ProblemBuilder {
 	}
 	
 	/**
-	 * When configured to run on multiple threads or with an {@see ExecutorService},
-	 * will wrap the problem instance in a distributed problem.
+	 * When configured to run on multiple threads or with an {@see ExecutorService}, will wrap the problem instance
+	 * in a distributed problem.
 	 * 
 	 * @return the wrapped problem instance
 	 */
 	protected Problem getDistributedProblemInstance() {
 		if (executorService != null) {
-			return new DistributedProblem(getProblemInstance(),
-					executorService,
-					false);
+			return new DistributedProblem(getProblemInstance(), executorService, false);
 		} else if (numberOfThreads > 1) {
-			return new DistributedProblem(getProblemInstance(),
-					Executors.newFixedThreadPool(numberOfThreads),
-					true);
+			return new DistributedProblem(getProblemInstance(), Executors.newFixedThreadPool(numberOfThreads), true);
 		}
 		
 		return getProblemInstance();
@@ -772,10 +744,8 @@ public class Executor extends ProblemBuilder {
 	/**
 	 * Runs this executor with its configured settings.
 	 * 
-	 * @param seed the current seed being run, such that
-	 *        {@code 1 <= seed <= numberOfSeeds}
+	 * @param seed the current seed being run, such that {@code 1 <= seed <= numberOfSeeds}
 	 * @param numberOfSeeds to total number of seeds being run
-	 * 
 	 * @return the end-of-run approximation set; or {@code null} if canceled
 	 */
 	protected NondominatedPopulation runSingleSeed(int seed, int numberOfSeeds) {
@@ -796,22 +766,13 @@ public class Executor extends ProblemBuilder {
 				
 			try {					
 				if (algorithmFactory == null) {
-					algorithm = AlgorithmFactory.getInstance().getAlgorithm(
-							algorithmName, 
-							properties, 
-							problem);
+					algorithm = AlgorithmFactory.getInstance().getAlgorithm(algorithmName, properties, problem);
 				} else {
-					algorithm = algorithmFactory.getAlgorithm(
-							algorithmName, 
-							properties, 
-							problem);
+					algorithm = algorithmFactory.getAlgorithm(algorithmName, properties, problem);
 				}
 
 				if (checkpointFile != null) {
-					algorithm = new Checkpoints(
-							algorithm, 
-							checkpointFile,
-							checkpointFrequency);
+					algorithm = new Checkpoints(algorithm, checkpointFile, checkpointFrequency);
 				}
 					
 				if (instrumenter != null) {

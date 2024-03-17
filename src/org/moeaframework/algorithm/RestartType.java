@@ -28,14 +28,12 @@ public enum RestartType {
 	NONE,
 
 	/**
-	 * Indicates a restart in which the population was cleared prior to
-	 * injecting new solutions.
+	 * Indicates a restart in which the population was cleared prior to injecting new solutions.
 	 */
 	HARD,
 
 	/**
-	 * Indicates a restart in which the new solutions were injected into an
-	 * existing population.
+	 * Indicates a restart in which the new solutions were injected into an existing population.
 	 */
 	SOFT
 

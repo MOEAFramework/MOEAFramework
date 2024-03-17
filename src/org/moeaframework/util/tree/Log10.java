@@ -57,8 +57,7 @@ public class Log10 extends Node {
 	
 	@Override
 	public Number evaluate(Environment environment) {
-		return NumberArithmetic.log10(
-				(Number)getArgument(0).evaluate(environment));
+		return NumberArithmetic.log10((Number)getArgument(0).evaluate(environment));
 	}
 
 }

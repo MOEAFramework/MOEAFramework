@@ -23,8 +23,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.ElementType;
 
 /**
- * Annotation for retrying tests.  Test classes using this annotation must also
- * specify \code{@RunWith(CIRunner.clsas)}.
+ * Annotation for retrying tests.  Test classes using this annotation must also specify \code{@RunWith(CIRunner.clsas)}.
  */
 @Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)

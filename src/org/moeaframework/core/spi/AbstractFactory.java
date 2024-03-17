@@ -25,9 +25,8 @@ import java.util.ServiceLoader;
 import org.moeaframework.util.Concaterator;
 
 /**
- * Abstract factory for service providers.  This contains convenience methods
- * for enumerating the providers using a {@link ServiceLoader} along with
- * explicit providers registered with {@link #addProvider}.
+ * Abstract factory for service providers.  This contains convenience methods for enumerating the providers using a
+ * {@link ServiceLoader} along with explicit providers registered with {@link #addProvider}.
  *
  * @param <T> the generic type of the provider
  */
@@ -55,8 +54,7 @@ public class AbstractFactory<T> implements Iterable<T> {
 	}
 	
 	/**
-	 * Adds a provider to this factory.  Subsequent calls to enumerate the providers
-	 * will include this provider.
+	 * Adds a provider to this factory.  Subsequent calls to enumerate the providers will include this provider.
 	 * 
 	 * @param provider the new provider
 	 */
@@ -74,8 +72,8 @@ public class AbstractFactory<T> implements Iterable<T> {
 	}
 	
 	/**
-	 * Returns {@code true} if this factory contains a provider with the given name.
-	 * This will match either the class' fully-qualified name or simple name.
+	 * Returns {@code true} if this factory contains a provider with the given name.  This will match either the class'
+	 * fully-qualified name or simple name.
 	 * 
 	 * @param name the class name, either simple or including the package
 	 * @return {@code true} if this factory contains the provider; {@code false} otherwise
@@ -84,8 +82,7 @@ public class AbstractFactory<T> implements Iterable<T> {
 		for (T provider : this) {
 			Class<?> providerType = provider.getClass();
 			
-			if (name.equalsIgnoreCase(providerType.getSimpleName()) ||
-					name.equalsIgnoreCase(providerType.getName())) {
+			if (name.equalsIgnoreCase(providerType.getSimpleName()) || name.equalsIgnoreCase(providerType.getName())) {
 				return true;
 			}
 		}

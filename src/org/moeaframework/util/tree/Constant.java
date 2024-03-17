@@ -69,9 +69,8 @@ public class Constant extends Node {
 	}
 	
 	/**
-	 * Constructs a new node for defining a constant {@link Object}.  It is
-	 * necessary to pass the type explicitly to ensure values such as 
-	 * {@code null} are handled correctly.
+	 * Constructs a new node for defining a constant {@link Object}.  It is necessary to pass the type explicitly to
+	 * ensure values such as {@code null} are handled correctly.
 	 * 
 	 * @param type the type of the object
 	 * @param value the object

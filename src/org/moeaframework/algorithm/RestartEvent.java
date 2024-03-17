@@ -20,8 +20,7 @@ package org.moeaframework.algorithm;
 import java.util.EventObject;
 
 /**
- * An event emitted by {@link AdaptiveTimeContinuation} indicating a time
- * continuation (restart) event has occurred.
+ * An event emitted by {@link AdaptiveTimeContinuation} indicating a time continuation (restart) event has occurred.
  */
 public class RestartEvent extends EventObject {
 

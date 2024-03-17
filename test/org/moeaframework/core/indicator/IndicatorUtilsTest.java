@@ -71,8 +71,7 @@ public class IndicatorUtilsTest {
 	}
 	
 	/**
-	 * Tests the the distance to the nearest neighboring solution is calculated
-	 * correctly.
+	 * Tests the the distance to the nearest neighboring solution is calculated correctly.
 	 */
 	@Test
 	public void testDistanceToNearestSolution() {

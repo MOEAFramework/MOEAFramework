@@ -38,11 +38,9 @@ public class MaximumParetoFrontErrorTest {
 	public void testEmptyReferenceSet() {
 		Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
 		NondominatedPopulation referenceSet = new NondominatedPopulation();
-		NondominatedPopulation approximationSet = ProblemFactory.getInstance()
-				.getReferenceSet("DTLZ2_2");
+		NondominatedPopulation approximationSet = ProblemFactory.getInstance().getReferenceSet("DTLZ2_2");
 
-		MaximumParetoFrontError mpfe = new MaximumParetoFrontError(problem, 
-				referenceSet);
+		MaximumParetoFrontError mpfe = new MaximumParetoFrontError(problem, referenceSet);
 		mpfe.evaluate(approximationSet);
 	}
 	
@@ -52,14 +50,11 @@ public class MaximumParetoFrontErrorTest {
 	@Test
 	public void testEmptyApproximationSet() {
 		Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
-		NondominatedPopulation referenceSet = ProblemFactory.getInstance()
-				.getReferenceSet("DTLZ2_2");
+		NondominatedPopulation referenceSet = ProblemFactory.getInstance().getReferenceSet("DTLZ2_2");
 		NondominatedPopulation approximationSet = new NondominatedPopulation();
 
-		MaximumParetoFrontError mpfe = new MaximumParetoFrontError(problem, 
-				referenceSet);
-		Assert.assertEquals(Double.POSITIVE_INFINITY, 
-				mpfe.evaluate(approximationSet), Settings.EPS);
+		MaximumParetoFrontError mpfe = new MaximumParetoFrontError(problem, referenceSet);
+		Assert.assertEquals(Double.POSITIVE_INFINITY, mpfe.evaluate(approximationSet), Settings.EPS);
 	}
 	
 	/**
@@ -68,8 +63,7 @@ public class MaximumParetoFrontErrorTest {
 	@Test
 	public void testInfeasibleApproximationSet() {
 		Problem problem = ProblemFactory.getInstance().getProblem("CF1");
-		NondominatedPopulation referenceSet = ProblemFactory.getInstance()
-				.getReferenceSet("CF1");
+		NondominatedPopulation referenceSet = ProblemFactory.getInstance().getReferenceSet("CF1");
 		NondominatedPopulation approximationSet = new NondominatedPopulation();
 		
 		Solution solution = problem.newSolution();
@@ -77,15 +71,12 @@ public class MaximumParetoFrontErrorTest {
 		solution.setConstraints(new double[] { 10.0 });
 		approximationSet.add(solution);
 
-		MaximumParetoFrontError mpfe = new MaximumParetoFrontError(problem, 
-				referenceSet);
-		Assert.assertEquals(Double.POSITIVE_INFINITY, 
-				mpfe.evaluate(approximationSet), Settings.EPS);
+		MaximumParetoFrontError mpfe = new MaximumParetoFrontError(problem, referenceSet);
+		Assert.assertEquals(Double.POSITIVE_INFINITY, mpfe.evaluate(approximationSet), Settings.EPS);
 	}
 	
 	/**
-	 * Runs through some simple cases to ensure the maximum Pareto front error
-	 * is computed correctly.
+	 * Runs through some simple cases to ensure the maximum Pareto front error is computed correctly.
 	 */
 	@Test
 	public void testSimple() {

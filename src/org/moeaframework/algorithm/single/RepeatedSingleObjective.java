@@ -33,24 +33,19 @@ import org.moeaframework.util.weights.RandomGenerator;
 import org.moeaframework.util.weights.WeightGenerator;
 
 /**
- * Instantiates and runs several instances of a single objective algorithm.
- * This is intended to be used with single-objective optimizers that use
- * weighted aggregation of the objectives.  This is based on the Repeated Single
- * Objective (RSO) algorithm by E. J. Hughes [1], where they investigate running
- * many single-objective optimizers (one many) compared to running a single
- * many-objective optimizer (many once).
+ * Instantiates and runs several instances of a single objective algorithm.  This is intended to be used with
+ * single-objective optimizers that use weighted aggregation of the objectives.  This is based on the Repeated Single
+ * Objective (RSO) algorithm by E. J. Hughes [1], where they investigate running many single-objective optimizers
+ * (one many) compared to running a single many-objective optimizer (many once).
  * <p>
- * Be mindful of how running multiple instances affects the {@link #step()}.
- * Each step performs one iteration of each instance.  Thus, given 50 instances
- * of an algorithm with a population size of 100, then 5000 evaluations will
- * occur each step.  In [1], they decrease the population size for the single
- * objective optimizers.
+ * Be mindful of how running multiple instances affects the {@link #step()}.  Each step performs one iteration of each
+ * instance.  Thus, given 50 instances of an algorithm with a population size of 100, then 5000 evaluations will occur
+ * each step.  In [1], they decrease the population size for the single objective optimizers.
  * <p>
  * References:
  * <ol>
- *   <li>E. J. Hughes.  "Evolutionary many-objective optimization: many once or
- *       one many."  2005 IEEE Congress on Evolutionary Computation,
- *       pp. 222-227.
+ *   <li>E. J. Hughes.  "Evolutionary many-objective optimization: many once or one many."  2005 IEEE Congress on
+ *       Evolutionary Computation, pp. 222-227.
  * </ol>
  */
 public class RepeatedSingleObjective extends AbstractAlgorithm {
