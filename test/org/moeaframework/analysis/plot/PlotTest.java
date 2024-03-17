@@ -149,19 +149,17 @@ public class PlotTest {
 	
 	@Test
 	public void testSaveSVG() throws IOException {
-		try {
-			File tempFile = File.createTempFile("test", ".svg");
-			tempFile.deleteOnExit();
+		Assume.assumeTrue("Skipping test as JFreeSVG library is not found", hasJFreeSVG());
+		
+		File tempFile = File.createTempFile("test", ".svg");
+		tempFile.deleteOnExit();
 			
-			new Plot()
-				.scatter("Points", new double[] { 0, 1, 2 }, new double[] { 0, 1, 2 })
-				.save(tempFile);
+		new Plot()
+			.scatter("Points", new double[] { 0, 1, 2 }, new double[] { 0, 1, 2 })
+			.save(tempFile);
 			
-			Assert.assertTrue(tempFile.exists());
-			Assert.assertTrue(tempFile.length() > 0);
-		} catch (FrameworkException ex) {
-			Assert.assertFalse(hasJFreeSVG());
-		}
+		Assert.assertTrue(tempFile.exists());
+		Assert.assertTrue(tempFile.length() > 0);
 	}
 	
 	public void runTest(Plot plot) {
