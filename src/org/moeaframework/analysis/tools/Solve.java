@@ -45,7 +45,6 @@ import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.problem.ExternalProblem;
 import org.moeaframework.util.CommandLineUtility;
 import org.moeaframework.util.TypedProperties;
-import org.moeaframework.util.io.FileUtils;
 
 /**
  * Command line utility for solving an optimization problem using any of the supported optimization algorithms.  This

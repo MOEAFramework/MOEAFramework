@@ -27,7 +27,6 @@ import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PopulationIO;
 import org.moeaframework.core.Problem;
 import org.moeaframework.util.CommandLineUtility;
-import org.moeaframework.util.io.FileUtils;
 
 /**
  * Command line utility for merging the approximation sets stored in one or more result files.  The output is a single
