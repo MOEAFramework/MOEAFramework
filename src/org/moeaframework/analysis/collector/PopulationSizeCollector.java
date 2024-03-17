@@ -20,28 +20,26 @@ package org.moeaframework.analysis.collector;
 import org.moeaframework.core.EvolutionaryAlgorithm;
 
 /**
- * Collects the population size and archive size, if available, from an
- * {@link EvolutionaryAlgorithm}.
+ * Collects the population size and archive size, if available, from an {@link EvolutionaryAlgorithm}.
  */
 public class PopulationSizeCollector implements Collector {
 	
 	/**
-	 * The algorithm instance used by this collector; or {@code null} if this 
-	 * collector has not yet been attached.
+	 * The algorithm instance used by this collector; or {@code null} if this collector has not yet been attached.
 	 */
 	private final EvolutionaryAlgorithm algorithm;
 	
 	/**
-	 * Constructs an unattached collector for recording the population size and
-	 * archive size, if available, from an {@code EvolutionaryAlgorithm}.
+	 * Constructs an unattached collector for recording the population size and archive size, if available, from an
+	 * {@code EvolutionaryAlgorithm}.
 	 */
 	public PopulationSizeCollector() {
 		this(null);
 	}
 	
 	/**
-	 * Constructs a collector for recording the population size and archive
-	 * size, if available, from the specified {@code EvolutionaryAlgorithm}.
+	 * Constructs a collector for recording the population size and archive size, if available, from the specified
+	 * {@code EvolutionaryAlgorithm}.
 	 * 
 	 * @param algorithm the algorithm this collector records data from
 	 */

@@ -38,14 +38,13 @@ import org.moeaframework.core.spi.OperatorFactory;
 import org.moeaframework.util.TypedProperties;
 
 /**
- * Implements the &epsilon;-NSGA-II algorithm.  This algorithm extends NSGA-II with
- * an &epsilon;-dominance archive and adaptive time continuation.
+ * Implements the &epsilon;-NSGA-II algorithm.  This algorithm extends NSGA-II with an &epsilon;-dominance archive and
+ * adaptive time continuation.
  * <p>
  * References:
  * <ol>
- *   <li>Kollat, J. B., and Reed, P. M.  "Comparison of Multi-Objective 
- *       Evolutionary Algorithms for Long-Term Monitoring Design."  Advances in
- *       Water Resources, 29(6):792-807, 2006.
+ *   <li>Kollat, J. B., and Reed, P. M.  "Comparison of Multi-Objective Evolutionary Algorithms for Long-Term
+ *       Monitoring Design."  Advances in Water Resources, 29(6):792-807, 2006.
  * </ol>
  */
 public class EpsilonNSGAII extends AdaptiveTimeContinuation implements Configurable {

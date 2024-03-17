@@ -59,8 +59,7 @@ public class OptionCompleterTest {
 	}
 
 	/**
-	 * Tests the edge case where the empty string correctly matches any option,
-	 * as long as that is the only option.
+	 * Tests the edge case where the empty string correctly matches any option, as long as that is the only option.
 	 */
 	@Test
 	public void testEmptyString() {

@@ -38,8 +38,7 @@ public class TypedPropertiesTest {
 	private TypedProperties properties;
 
 	/**
-	 * Sets up the typed properties instance for testing, filled with various
-	 * default values.
+	 * Sets up the typed properties instance for testing, filled with various default values.
 	 */
 	@Before
 	public void setUp() {
@@ -60,11 +59,9 @@ public class TypedPropertiesTest {
 	
 	@Test
 	public void testStaticConstructor() {
-		double[] values = TypedProperties.withProperty("epsilon", "0.01,0.01")
-				.getDoubleArray("epsilon", null);
+		double[] values = TypedProperties.withProperty("epsilon", "0.01,0.01").getDoubleArray("epsilon", null);
 		
-		Assert.assertArrayEquals(new double[] { 0.01, 0.01 }, values, 
-				Settings.EPS);
+		Assert.assertArrayEquals(new double[] { 0.01, 0.01 }, values, Settings.EPS);
 	}
 
 	@Test

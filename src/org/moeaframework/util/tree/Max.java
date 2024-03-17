@@ -50,8 +50,7 @@ package org.moeaframework.util.tree;
 public class Max extends Node {
 	
 	/**
-	 * Constructs a new node for calculating the maximum value of the two
-	 * arguments.
+	 * Constructs a new node for calculating the maximum value of the two arguments.
 	 */
 	public Max() {
 		super(Number.class, Number.class, Number.class);

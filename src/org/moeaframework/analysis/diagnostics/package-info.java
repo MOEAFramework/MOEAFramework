@@ -17,8 +17,8 @@
  */
 
 /**
- * Diagnostic tool for analyzing the runtime behavior of algorithms.  This tool
- * requires the <a href="http://www.jfree.org/jfreechart/">JFreeChart</a> 
- * library and its dependencies to be installed.
+ * Diagnostic tool for analyzing the runtime behavior of algorithms.  This tool requires the
+ * <a href="http://www.jfree.org/jfreechart/">JFreeChart</a>  library and its dependencies to be installed (which are
+ * included with all releases by default).
  */
 package org.moeaframework.analysis.diagnostics;

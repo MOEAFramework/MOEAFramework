@@ -26,26 +26,21 @@ import org.moeaframework.core.configuration.Validate;
 import org.moeaframework.core.variable.RealVariable;
 
 /**
- * Differential evolution (DE) variation operator.  Differential evolution
- * works by randomly selecting three distinct individuals from a population.  A
- * difference vector is calculated between the first two individuals (shown as
- * the left-most arrow in the figure below), which is subsequently applied to
- * the third individual (shown as the right-most arrow in the figure below).
+ * Differential evolution (DE) variation operator.  Differential evolution works by randomly selecting three distinct
+ * individuals from a population.  A difference vector is calculated between the first two individuals (shown as
+ * the left-most arrow in the figure below), which is subsequently applied to the third individual (shown as the
+ * right-most arrow in the figure below).
  * <p>
- * <img src="doc-files/DifferentialEvolution-1.png" 
- *      alt="Example DifferentialEvolution operator distribution" />
+ * <img src="doc-files/DifferentialEvolution-1.png" alt="Example DifferentialEvolution operator distribution" />
  * <p>
- * The scaling factor parameter adjusts the magnitude of the difference vector,
- * allowing the user to decrease or increase the magnitude in relation to the
- * actual difference between the individuals.  The crossover rate parameter 
- * controls the fraction of decision variables which are modified by the DE 
- * operator.  
+ * The scaling factor parameter adjusts the magnitude of the difference vector, allowing the user to decrease or
+ * increase the magnitude in relation to the actual difference between the individuals.  The crossover rate parameter 
+ * controls the fraction of decision variables which are modified by the DE operator.  
  * <p>
  * References:
  * <ol>
- * <li>Storn and Price. "Differential Evolution - A Simple and Efficient
- * Heuristic for Global Optimization over Continuous Spaces." Journal of Global
- * Optimization, 11:341-359, 1997.
+ *   <li>Storn and Price. "Differential Evolution - A Simple and Efficient Heuristic for Global Optimization over
+ *       Continuous Spaces." Journal of Global Optimization, 11:341-359, 1997.
  * </ol>
  */
 @Prefix("de")
@@ -62,16 +57,15 @@ public class DifferentialEvolutionVariation implements Variation {
 	private double scalingFactor;
 	
 	/**
-	 * Constructs a differential evolution operator with default settings,
-	 * including a crossover rate of {@code 0.1} and scaling factor of {@code 0.5}.
+	 * Constructs a differential evolution operator with default settings, including a crossover rate of {@code 0.1}
+	 * and scaling factor of {@code 0.5}.
 	 */
 	public DifferentialEvolutionVariation() {
 		this(0.1, 0.5);
 	}
 
 	/**
-	 * Constructs a differential evolution operator with the specified crossover
-	 * rate and scaling factor.
+	 * Constructs a differential evolution operator with the specified crossover rate and scaling factor.
 	 * 
 	 * @param crossoverRate the crossover rate
 	 * @param scalingFactor the scaling factor
@@ -97,8 +91,7 @@ public class DifferentialEvolutionVariation implements Variation {
 	}
 	
 	/**
-	 * Sets the crossover rate of this differential evolution operator.  The default
-	 * value is {@code 0.1}.
+	 * Sets the crossover rate of this differential evolution operator.  The default value is {@code 0.1}.
 	 * 
 	 * @param crossoverRate the crossover rate
 	 */
@@ -118,8 +111,7 @@ public class DifferentialEvolutionVariation implements Variation {
 	}
 	
 	/**
-	 * Sets the scaling factor of this differential evolution operator.  The default
-	 * value is {@code 0.5}.
+	 * Sets the scaling factor of this differential evolution operator.  The default value is {@code 0.5}.
 	 * 
 	 * @param scalingFactor the scaling factor
 	 */

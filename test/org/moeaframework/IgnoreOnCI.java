@@ -23,11 +23,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.ElementType;
 
 /**
- * Annotation for ignoring unit tests on CI builds.  This can be used to ignore
- * tests that frequently fail due to their stochastic nature, are not configured
- * to run correctly in a CI build environment, or exceed the 10 minute
- * timeout.
- * 
+ * Annotation for ignoring unit tests on CI builds.  This can be used to ignore tests that frequently fail due to their
+ * stochastic nature, are not configured to run correctly in a CI build environment, or exceed the 10 minute timeout.
+ * <p>
  * Test classes using this annotation must also specify \code{@RunWith(CIRunner.clsas)}.
  */
 @Target({ElementType.METHOD, ElementType.TYPE})

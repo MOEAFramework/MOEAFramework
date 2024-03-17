@@ -23,16 +23,14 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 
 /**
- * Hypervolume indicator. Represents the volume of objective space dominated by
- * solutions in the approximation set.
+ * Hypervolume indicator. Represents the volume of objective space dominated by solutions in the approximation set.
  */
 public class Hypervolume implements Indicator {
 	
 	private final Indicator instance;
 	
 	/**
-	 * Constructs a hypervolume evaluator for the specified problem and 
-	 * reference set.
+	 * Constructs a hypervolume evaluator for the specified problem and reference set.
 	 * 
 	 * @param problem the problem
 	 * @param referenceSet the reference set
@@ -56,8 +54,7 @@ public class Hypervolume implements Indicator {
 	}
 	
 	/**
-	 * Constructs a hypervolume evaluator for the specified problem using the
-	 * given reference set and reference point.
+	 * Constructs a hypervolume evaluator for the specified problem using the given reference set and reference point.
 	 * 
 	 * @param problem the problem
 	 * @param referenceSet the reference set
@@ -82,8 +79,7 @@ public class Hypervolume implements Indicator {
 	}
 
 	/**
-	 * Constructs a hypervolume evaluator for the specified problem using the
-	 * given minimum and maximum bounds.
+	 * Constructs a hypervolume evaluator for the specified problem using the given minimum and maximum bounds.
 	 * 
 	 * @param problem the problem
 	 * @param minimum the minimum bounds of the set

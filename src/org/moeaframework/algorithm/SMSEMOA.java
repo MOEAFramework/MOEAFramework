@@ -43,14 +43,12 @@ import org.moeaframework.core.spi.OperatorFactory;
 import org.moeaframework.util.TypedProperties;
 
 /**
- * Implementation of the S-metric Selection MOEA (SMS-MOEA).  The S metric is
- * also known as the hypervolume indicator.
+ * Implementation of the S-metric Selection MOEA (SMS-MOEA).  The S metric is also known as the hypervolume indicator.
  * <p>
  * References:
  * <ol>
- *   <li>Emmerich, M., N. Beume, and B. Naujoks (2007).  An EMO Algorithm Using
- *       the Hypervolume Measure as Selection Criterion.  European Journal of
- *       Operational Research, 3:1653-1669.
+ *   <li>Emmerich, M., N. Beume, and B. Naujoks (2007).  An EMO Algorithm Using the Hypervolume Measure as Selection
+ *       Criterion.  European Journal of Operational Research, 3:1653-1669.
  * </ol>
  */
 public class SMSEMOA extends AbstractEvolutionaryAlgorithm {

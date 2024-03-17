@@ -57,10 +57,8 @@ public class Call extends Node {
 	 * @param variableName the name of the argument
 	 * @param variableType the type of the argument
 	 */
-	public Call(String functionName, Class<?> returnType, String variableName,
-			Class<?> variableType) {
-		this(functionName, returnType, new String[] { variableName },
-				new Class<?>[] { variableType });
+	public Call(String functionName, Class<?> returnType, String variableName, Class<?> variableType) {
+		this(functionName, returnType, new String[] { variableName }, new Class<?>[] { variableType });
 	}
 	
 	/**
@@ -73,10 +71,8 @@ public class Call extends Node {
 	 * @param name2 the name of the second argument
 	 * @param type2 the type of the second argument
 	 */
-	public Call(String functionName, Class<?> returnType, String name1,
-			Class<?> type1, String name2, Class<?> type2) {
-		this(functionName, returnType, new String[] { name1, name2 },
-				new Class<?>[] { type1, type2 });
+	public Call(String functionName, Class<?> returnType, String name1, Class<?> type1, String name2, Class<?> type2) {
+		this(functionName, returnType, new String[] { name1, name2 }, new Class<?>[] { type1, type2 });
 	}
 	
 	/**
@@ -85,21 +81,19 @@ public class Call extends Node {
 	 * @param function the function
 	 */
 	public Call(Define function) {
-		this(function.getFunctionName(), function.getArgumentType(0),
-				function.getVariableNames(), function.getVariableTypes());
+		this(function.getFunctionName(), function.getArgumentType(0), function.getVariableNames(),
+				function.getVariableTypes());
 	}
 	
 	/**
-	 * Constructs a new node for calling a function that takes a
-	 * user-defined number of arguments.
+	 * Constructs a new node for calling a function that takes a user-defined number of arguments.
 	 * 
 	 * @param functionName the name of the function
 	 * @param returnType the return type of the function
 	 * @param variableNames the names of the arguments to the function
 	 * @param variableTypes the types of the arguments to the function
 	 */
-	public Call(String functionName, Class<?> returnType,
-			String[] variableNames, Class<?>[] variableTypes) {
+	public Call(String functionName, Class<?> returnType, String[] variableNames, Class<?>[] variableTypes) {
 		super(returnType, variableTypes);
 		this.functionName = functionName;
 		this.variableNames = variableNames;
@@ -135,8 +129,7 @@ public class Call extends Node {
 
 	@Override
 	public Node copyNode() {
-		return new Call(functionName, getReturnType(), variableNames,
-				variableTypes);
+		return new Call(functionName, getReturnType(), variableNames, variableTypes);
 	}
 
 	@Override

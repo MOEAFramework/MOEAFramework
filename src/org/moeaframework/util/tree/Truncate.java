@@ -18,9 +18,8 @@
 package org.moeaframework.util.tree;
 
 /**
- * The node for truncating, or bounding, a number within a range.  If the
- * number is outside the defined range, the number is set to the nearest number
- * within the range.
+ * The node for truncating, or bounding, a number within a range.  If the number is outside the defined range, the
+ * number is set to the nearest number within the range.
  * 
  * <table style="margin-top: 1em; width: 100%">
  *   <caption style="text-align: left">Node signature:</caption>

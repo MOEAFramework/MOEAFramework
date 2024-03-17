@@ -28,9 +28,8 @@ import org.moeaframework.core.configuration.Validate;
 import org.moeaframework.core.initialization.RandomInitialization;
 
 /**
- * Random search implementation.  An {@link Initialization} instance is used
- * to generate random solutions, which are evaluated and all non-dominated
- * solutions retained.  The result is the set of all non-dominated solutions.
+ * Random search implementation.  An {@link Initialization} instance is used to generate random solutions, which are
+ * evaluated and all non-dominated solutions retained.  The result is the set of all non-dominated solutions.
  */
 public class RandomSearch extends AbstractAlgorithm implements Configurable {
 	

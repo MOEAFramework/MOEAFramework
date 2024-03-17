@@ -28,8 +28,7 @@ import org.moeaframework.core.PopulationIO;
 import org.moeaframework.problem.MockRealProblem;
 
 /**
- * Tests the {@link R2Indicator} class.  The raw values used here were produced
- * using the PISA r-ind.exe program.
+ * Tests the {@link R2Indicator} class.  The raw values used here were produced using the PISA r-ind.exe program.
  */
 public class R2IndicatorTest {
 	

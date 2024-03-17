@@ -49,8 +49,7 @@ public class GrammarTest {
 	}
 
 	/**
-	 * Tests the size constructor to ensure the grammar is initialized
-	 * correctly.
+	 * Tests the size constructor to ensure the grammar is initialized correctly.
 	 */
 	@Test
 	public void testSizeConstructor() {
@@ -59,8 +58,7 @@ public class GrammarTest {
 	}
 
 	/**
-	 * Tests the array constructor to ensure the grammar contains an independent
-	 * copy of the array.
+	 * Tests the array constructor to ensure the grammar contains an independent copy of the array.
 	 */
 	@Test
 	public void testArrayConstructor() {
@@ -131,8 +129,7 @@ public class GrammarTest {
 	}
 
 	/**
-	 * Tests if the {@link Grammar#set} method correctly throws an exception if
-	 * {@code value >= getMaximumValue()}.
+	 * Tests if the {@link Grammar#set} method correctly throws an exception if {@code value >= getMaximumValue()}.
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testSetInvalidValue1() {
@@ -140,8 +137,7 @@ public class GrammarTest {
 	}
 
 	/**
-	 * Tests if the {@link Grammar#set} method correctly throws an exception if
-	 * {@code value < 0}.
+	 * Tests if the {@link Grammar#set} method correctly throws an exception if {@code value < 0}.
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testSetInvalidValue2() {
@@ -149,8 +145,7 @@ public class GrammarTest {
 	}
 
 	/**
-	 * Tests if the {@link Grammar#copy} method produces a copy equal to but
-	 * independent from the original.
+	 * Tests if the {@link Grammar#copy} method produces a copy equal to but independent from the original.
 	 */
 	@Test
 	public void testCopy() {
@@ -163,8 +158,8 @@ public class GrammarTest {
 	}
 
 	/**
-	 * Ensures the {@link Grammar#toArray} method returns a correct and and
-	 * independent copy of the integer codon representation.
+	 * Ensures the {@link Grammar#toArray} method returns a correct and and independent copy of the integer codon
+	 * representation.
 	 */
 	@Test
 	public void testToArray() {
@@ -180,8 +175,8 @@ public class GrammarTest {
 	}
 
 	/**
-	 * Ensures the {@link Grammar#fromArray} method correctly sets the internal
-	 * integer codon representation and the copy is independent from the array.
+	 * Ensures the {@link Grammar#fromArray} method correctly sets the internal integer codon representation and the
+	 * copy is independent from the array.
 	 */
 	@Test
 	public void testFromArray() {
@@ -198,8 +193,8 @@ public class GrammarTest {
 	}
 
 	/**
-	 * Tests if the {@link Grammar#fromArray} method correctly throws an
-	 * exception when a value in the array is {@code >= getMaximumValue()}.
+	 * Tests if the {@link Grammar#fromArray} method correctly throws an exception when a value in the array is
+	 * {@code >= getMaximumValue()}.
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testFromArrayInvalidValue1() {
@@ -207,8 +202,8 @@ public class GrammarTest {
 	}
 
 	/**
-	 * Tests if the {@link Grammar#fromArray} method correctly throws an
-	 * exception when a value in the array is {@code < 0}.
+	 * Tests if the {@link Grammar#fromArray} method correctly throws an exception when a value in the array is
+	 * {@code < 0}.
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testFromArrayInvalidValue2() {
@@ -216,9 +211,8 @@ public class GrammarTest {
 	}
 
 	/**
-	 * Tests the {@link Grammar#cut} method for the case when the entire array
-	 * is cut. This should never occur in practice, but helps ensure the code
-	 * works as expected.
+	 * Tests the {@link Grammar#cut} method for the case when the entire array is cut. This should never occur in
+	 * practice, but helps ensure the code works as expected.
 	 */
 	@Test
 	public void testCut1() {
@@ -251,8 +245,7 @@ public class GrammarTest {
 	}
 
 	/**
-	 * Tests the {@link Grammar#insert} method for the case when the array is
-	 * inserted at the head.
+	 * Tests the {@link Grammar#insert} method for the case when the array is inserted at the head.
 	 */
 	@Test
 	public void testInsert1() {
@@ -262,8 +255,7 @@ public class GrammarTest {
 	}
 
 	/**
-	 * Tests the {@link Grammar#insert} method for the case when the array is
-	 * inserted at the tail.
+	 * Tests the {@link Grammar#insert} method for the case when the array is inserted at the tail.
 	 */
 	@Test
 	public void testInsert2() {
@@ -273,8 +265,7 @@ public class GrammarTest {
 	}
 
 	/**
-	 * Tests the {@link Grammar#insert} method for the case when the array is
-	 * inserted in the middle.
+	 * Tests the {@link Grammar#insert} method for the case when the array is inserted in the middle.
 	 */
 	@Test
 	public void testInsert3() {
@@ -284,8 +275,7 @@ public class GrammarTest {
 	}
 
 	/**
-	 * Tests the {@link Grammar#cut} method to ensure an exception is thrown
-	 * when the end exceeds the array bounds.
+	 * Tests the {@link Grammar#cut} method to ensure an exception is thrown when the end exceeds the array bounds.
 	 */
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testCutException1() {
@@ -293,8 +283,7 @@ public class GrammarTest {
 	}
 
 	/**
-	 * Tests the {@link Grammar#cut} method to ensure an exception is thrown
-	 * when the start exceeds the array bounds.
+	 * Tests the {@link Grammar#cut} method to ensure an exception is thrown when the start exceeds the array bounds.
 	 */
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testCutException2() {
@@ -302,8 +291,7 @@ public class GrammarTest {
 	}
 
 	/**
-	 * Tests the {@link Grammar#cut} method to ensure an exception is thrown
-	 * when the cut is invalid.
+	 * Tests the {@link Grammar#cut} method to ensure an exception is thrown when the cut is invalid.
 	 */
 	@Test(expected = NegativeArraySizeException.class)
 	public void testCutExceptione() {
@@ -311,8 +299,7 @@ public class GrammarTest {
 	}
 
 	/**
-	 * Tests the {@link Grammar#cut} method to ensure an exception is thrown
-	 * when {@code end <= start}.
+	 * Tests the {@link Grammar#cut} method to ensure an exception is thrown when {@code end <= start}.
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testCutException3() {
@@ -320,8 +307,8 @@ public class GrammarTest {
 	}
 
 	/**
-	 * Tests the {@link Grammar#insert} method to ensure an exception is thrown
-	 * when the insert index is {@code > size()}.
+	 * Tests the {@link Grammar#insert} method to ensure an exception is thrown when the insert index is
+	 * {@code > size()}.
 	 */
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testInsertException1() {
@@ -329,8 +316,7 @@ public class GrammarTest {
 	}
 
 	/**
-	 * Tests the {@link Grammar#insert} method to ensure an exception is thrown
-	 * when the insert index is {@code < 0}.
+	 * Tests the {@link Grammar#insert} method to ensure an exception is thrown when the insert index is {@code < 0}.
 	 */
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testInsertException2() {

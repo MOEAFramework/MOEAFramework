@@ -24,8 +24,7 @@ import org.moeaframework.problem.AbstractProblem;
 import org.moeaframework.problem.AnalyticalProblem;
 
 /**
- * The Rendon (2) problem.  The optimum is defined by {@code (x, -3)} where
- * {@code -3 <= x <= 0}.
+ * The Rendon (2) problem.  The optimum is defined by {@code (x, -3)} where {@code -3 <= x <= 0}.
  * <p>
  * Properties:
  * <ul>
@@ -35,13 +34,10 @@ import org.moeaframework.problem.AnalyticalProblem;
  * <p>
  * References:
  * <ol>
- *   <li>Valenzuela-Rendon, M. and Uresti-Charre, E. (1997).  "A
- *       Non-Generational Genetic Algorithm for Multiobjective Optimization."
- *       Proceedings of the Seventh International Conference on Genetic
- *       Algorithms, pp. 658-665.
- *   <li>Van Veldhuizen, D. A (1999).  "Multiobjective Evolutionary Algorithms: 
- *       Classifications, Analyses, and New Innovations."  Air Force Institute
- *       of Technology, Ph.D. Thesis, Appendix B.
+ *   <li>Valenzuela-Rendon, M. and Uresti-Charre, E. (1997).  "A Non-Generational Genetic Algorithm for Multiobjective
+ *       Optimization."  Proceedings of the Seventh International Conference on Genetic Algorithms, pp. 658-665.
+ *   <li>Van Veldhuizen, D. A (1999).  "Multiobjective Evolutionary Algorithms: Classifications, Analyses, and New
+ *       Innovations."  Air Force Institute of Technology, Ph.D. Thesis, Appendix B.
  * </ol>
  */
 public class Rendon2 extends AbstractProblem implements AnalyticalProblem {

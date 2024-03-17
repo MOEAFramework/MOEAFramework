@@ -17,12 +17,10 @@
  */
 
 /**
- * Collectors record information periodically during the execution of an
- * algorithm.  The classes contained in this package implement the various
- * collectors and support utilities, but the preferred method of using
- * collectors is through the {@link org.moeaframework.Instrumenter}.  The table
- * below contains the potential data collected by the instrumenter.  The key
- * column shows the string used to retrieve the data from the
+ * Collectors record information periodically during the execution of an algorithm.  The classes contained in this
+ * package implement the various collectors and support utilities, but the preferred method of using collectors is
+ * through the {@link org.moeaframework.Instrumenter}.  The table below contains the potential data collected by the
+ * instrumenter.  The key column shows the string used to retrieve the data from the
  * {@link org.moeaframework.analysis.collector.Observation}.
  * 
  * <table style="margin-top: 1em; width: 100%">
@@ -44,8 +42,8 @@
  *   <tr>
  *     <td>{@code Approximation Set}</td>
  *     <td>
- *       The approximation set of non-dominated solutions discovered by the
- *       algorithm.  This collector consumes large quantities of memory.
+ *       The approximation set of non-dominated solutions discovered by the algorithm.  This collector consumes large
+ *       quantities of memory.
  *     </td>
  *     <td>
  *       {@link org.moeaframework.analysis.collector.ApproximationSetCollector}
@@ -81,8 +79,7 @@
  *   <tr>
  *     <td>{@code Number of Dominating Improvements}</td>
  *     <td>
- *       The number of strictly dominating &epsilon;-dominance improvements
- *       detected.
+ *       The number of strictly dominating &epsilon;-dominance improvements detected.
  *     </td>
  *     <td>
  *       {@link org.moeaframework.analysis.collector.EpsilonProgressCollector}
@@ -158,10 +155,8 @@
  *   <tr>
  *     <td>Operator Name</td>
  *     <td>
- *       The probability of an operator being selected by adaptive multimethod
- *       variation.  Use the string name for the operator used by
- *       {@link org.moeaframework.core.spi.OperatorFactory}, such as
- *       {@code "PCX"} or {@code "SBX+PM"}.
+ *       The probability of an operator being selected by adaptive multimethod variation.  Use the string name for the
+ *       operator used by {@link org.moeaframework.core.spi.OperatorFactory}, such as {@code "PCX"} or {@code "SBX+PM"}.
  *     </td>
  *     <td>
  *       {@link org.moeaframework.analysis.collector.AdaptiveMultimethodVariationCollector}

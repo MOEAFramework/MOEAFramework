@@ -26,8 +26,8 @@ import org.moeaframework.core.operator.Mutation;
 import org.moeaframework.core.variable.Grammar;
 
 /**
- * Uniform mutation for grammars. Each integer codon in the grammar
- * representation is uniformly mutated with a specified probability.
+ * Uniform mutation for grammars. Each integer codon in the grammar representation is uniformly mutated with a
+ * specified probability.
  * <p>
  * This variation operator is type-safe.
  */
@@ -47,11 +47,10 @@ public class GrammarMutation implements Mutation {
 	}
 
 	/**
-	 * Constructs a uniform mutation operator for grammars with the specified
-	 * probability of mutating each integer codon in the grammar representation.
+	 * Constructs a uniform mutation operator for grammars with the specified probability of mutating each integer
+	 * codon in the grammar representation.
 	 * 
-	 * @param probability the probability of mutating each integer codon in the
-	 *        grammar representation
+	 * @param probability the probability of mutating each integer codon in the grammar representation
 	 */
 	public GrammarMutation(double probability) {
 		super();
@@ -98,13 +97,11 @@ public class GrammarMutation implements Mutation {
 	}
 
 	/**
-	 * Performs uniform mutation on the specified grammar. Each integer codon in
-	 * the grammar representation is uniformly mutated with the specified
-	 * probability in the range {@code [0, getMaximumValue()-1]}.
+	 * Performs uniform mutation on the specified grammar. Each integer codon in the grammar representation is
+	 * uniformly mutated with the specified probability in the range {@code [0, getMaximumValue()-1]}.
 	 * 
 	 * @param grammar the grammar to mutate
-	 * @param probability the probability of mutating each integer codon in the
-	 *        grammar representation
+	 * @param probability the probability of mutating each integer codon in the grammar representation
 	 */
 	public static void mutate(Grammar grammar, double probability) {
 		for (int i = 0; i < grammar.size(); i++) {

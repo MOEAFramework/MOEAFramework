@@ -18,14 +18,14 @@
 package org.moeaframework;
 
 /**
- * Interface for comparing floating-point numbers while accounting for the 
- * inaccuracies of the floating-point representation.
+ * Interface for comparing floating-point numbers while accounting for the inaccuracies of the floating-point
+ * representation.
  */
 public interface FloatingPointError {
 	
 	/**
-	 * Asserts that the two floating-point values are equal, throwing an
-	 * {@code AssertionError} if they are not considered equal.
+	 * Asserts that the two floating-point values are equal, throwing an {@code AssertionError} if they are not
+	 * considered equal.
 	 * 
 	 * @param d1 the first floating-point value
 	 * @param d2 the second floating-point value

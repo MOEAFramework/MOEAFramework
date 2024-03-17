@@ -50,8 +50,7 @@ public class GrammarMutationTest {
 	}
 
 	/**
-	 * Tests if the {@code GrammarMutation} mutates codons with the specified
-	 * probability.
+	 * Tests if the {@code GrammarMutation} mutates codons with the specified probability.
 	 * 
 	 * @param probability the expected probability of mutation
 	 */
@@ -68,13 +67,11 @@ public class GrammarMutationTest {
 			count += check((Grammar)original.getVariable(0), (Grammar)mutated.getVariable(0));
 		}
 
-		Assert.assertEquals((double)count / (5 * TestThresholds.SAMPLES),
-				probability, TestThresholds.VARIATION_EPS);
+		Assert.assertEquals((double)count / (5 * TestThresholds.SAMPLES), probability, TestThresholds.VARIATION_EPS);
 	}
 
 	/**
-	 * Checks if the two grammars are mutations of one another, returning the
-	 * number of mutated codons.
+	 * Checks if the two grammars are mutations of one another, returning the number of mutated codons.
 	 * 
 	 * @param g1 the first grammar
 	 * @param g2 the second grammar

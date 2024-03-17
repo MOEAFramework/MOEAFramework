@@ -27,9 +27,7 @@ import org.moeaframework.core.comparator.ParetoDominanceComparator;
 public class HypervolumeFitnessEvaluator extends IndicatorFitnessEvaluator {
 
 	/**
-	 * Determines the reference point for the hypervolume metric.
-	 * 
-	 * ** larger fitness values are worse **
+	 * Determines the reference point for the hypervolume metric.  <em>Larger fitness values are worse!</em>
 	 */
 	public static final double rho = 2.0;
 
@@ -92,14 +90,14 @@ public class HypervolumeFitnessEvaluator extends IndicatorFitnessEvaluator {
 	 * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 	 */
 	/**
-	 * Calculates the hypervolume of the portion of the objective space that is
-	 * dominated by {@code solution1} but not by {@code solution2}.
+	 * Calculates the hypervolume of the portion of the objective space that is dominated by {@code solution1} but
+	 * not by {@code solution2}.
 	 * 
 	 * @param solution1 the first solution
 	 * @param solution2 the second solution
 	 * @param d the current objective
-	 * @return the hypervolume of the portion of the objective space that is
-	 *         dominated by {@code solution1} but not by {@code solution2}.
+	 * @return the hypervolume of the portion of the objective space that is dominated by {@code solution1} but not
+	 *         by {@code solution2}.
 	 */
 	public double calculateHypervolume(Solution solution1, Solution solution2, int d) {
 		double max = rho;

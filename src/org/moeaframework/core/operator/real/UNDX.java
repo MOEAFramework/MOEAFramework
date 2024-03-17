@@ -29,78 +29,66 @@ import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.util.Vector;
 
 /**
- * Unimodal Normal Distribution Crossover (UNDX) operator.  UNDX is a 
- * multiparent operator, allowing a user-defined number of parents and
- * offspring.  Offspring are centered around the centroid, forming a normal 
- * distribution whose shape is controlled by the positions of the parents, as 
- * depicted in the figure below.
+ * Unimodal Normal Distribution Crossover (UNDX) operator.  UNDX is a multiparent operator, allowing a user-defined
+ * number of parents and offspring.  Offspring are centered around the centroid, forming a normal distribution whose
+ * shape is controlled by the positions of the parents, as depicted in the figure below.
  * <p>
  * <img src="doc-files/UNDX-1.png" alt="Example UNDX operator distribution" />
  * <p>
  * References:
  * <ol>
- * <li>Kita, H., Ono, I., and Kobayashi, S., "Multi-parental Extension of the
- * Unimodal Normal Distribution Crossover for Real-coded Genetic Algorithms,"
- * Proceedings of the 1999 Congress on Evolutionary Computation, pp. 1581-1588,
- * 1999.
- * <li>Deb, K., Anand, A., and Joshi, D., "A Computationally Efficient
- * Evolutionary Algorithm for Real-Parameter Optimization," Evolutionary
- * Computation, vol. 10, no. 4, pp. 371-395, 2002.
+ *   <li>Kita, H., Ono, I., and Kobayashi, S., "Multi-parental Extension of the Unimodal Normal Distribution Crossover
+ *       for Real-coded Genetic Algorithms," Proceedings of the 1999 Congress on Evolutionary Computation,
+ *       pp. 1581-1588, 1999.
+ *   <li>Deb, K., Anand, A., and Joshi, D., "A Computationally Efficient Evolutionary Algorithm for Real-Parameter
+ *       Optimization," Evolutionary Computation, vol. 10, no. 4, pp. 371-395, 2002.
  * </ol>
  */
 @Prefix("undx")
 public class UNDX extends MultiParentVariation {
 
 	/**
-	 * The standard deviation of the normal distribution controlling the spread
-	 * of solutions in the orthogonal directions defined by the parents.
+	 * The standard deviation of the normal distribution controlling the spread of solutions in the orthogonal
+	 * directions defined by the parents.
 	 */
 	private double zeta;
 
 	/**
-	 * The standard deviation of the normal distribution controlling the spread
-	 * of solutions in the remaining orthogonal directions not defined by the
-	 * parents. This value is divided by {@code Math.sqrt(n)} prior to use,
+	 * The standard deviation of the normal distribution controlling the spread of solutions in the remaining
+	 * orthogonal directions not defined by the parents. This value is divided by {@code Math.sqrt(n)} prior to use,
 	 * where {@code n} is the number of decision variables.
 	 */
 	private double eta;
 	
 	/**
-	 * Constructs a UNDX operator with default settings, taking 10 parents and producing
-	 * 2 offspring. The parameters {@code zeta=0.5} and {@code eta=0.35} are used
-	 * as suggested by Kita et al. (1999).
+	 * Constructs a UNDX operator with default settings, taking 10 parents and producing 2 offspring. The parameters
+	 * {@code zeta=0.5} and {@code eta=0.35} are used as suggested by Kita et al. (1999).
 	 */
 	public UNDX() {
 		this(10, 2);
 	}
 
 	/**
-	 * Constructs a UNDX operator with the specified number of parents and 
-	 * offspring. The parameters {@code zeta=0.5} and {@code eta=0.35} are used
-	 * as suggested by Kita et al. (1999).
+	 * Constructs a UNDX operator with the specified number of parents and offspring. The parameters {@code zeta=0.5}
+	 * and {@code eta=0.35} are used as suggested by Kita et al. (1999).
 	 * 
 	 * @param numberOfParents the number of parents required by this operator
-	 * @param numberOfOffspring the number of offspring produced by this
-	 *        operator
+	 * @param numberOfOffspring the number of offspring produced by this operator
 	 */
 	public UNDX(int numberOfParents, int numberOfOffspring) {
 		this(numberOfParents, numberOfOffspring, 0.5, 0.35);
 	}
 
 	/**
-	 * Constructs a UNDX operator with the specified number of parents and 
-	 * offspring. The parameters {@code sigma_zeta=0.5} and
-	 * {@code sigma_eta=0.35} are used as suggested by Kita et al. (1999).
+	 * Constructs a UNDX operator with the specified number of parents and offspring. The parameters
+	 * {@code sigma_zeta=0.5} and {@code sigma_eta=0.35} are used as suggested by Kita et al. (1999).
 	 * 
 	 * @param numberOfParents the number of parents required by this operator
-	 * @param numberOfOffspring the number of offspring produced by this
-	 *        operator
-	 * @param zeta the standard deviation of the normal distribution controlling
-	 *        the spread of solutions in the orthogonal directions defined by
-	 *        the parents
-	 * @param eta the standard deviation of the normal distribution controlling
-	 *        the spread of solutions in the remaining orthogonal directions not
-	 *        defined by the parents
+	 * @param numberOfOffspring the number of offspring produced by this operator
+	 * @param zeta the standard deviation of the normal distribution controlling the spread of solutions in the
+	 *        orthogonal directions defined by the parents
+	 * @param eta the standard deviation of the normal distribution controlling the spread of solutions in the
+	 *        remaining orthogonal directions not defined by the parents
 	 */
 	public UNDX(int numberOfParents, int numberOfOffspring, double zeta, double eta) {
 		super(numberOfParents, numberOfOffspring);
@@ -114,8 +102,8 @@ public class UNDX extends MultiParentVariation {
 	}
 
 	/**
-	 * Returns the standard deviation of the normal distribution controlling the
-	 * spread of solutions in the orthogonal directions defined by the parents.
+	 * Returns the standard deviation of the normal distribution controlling the spread of solutions in the orthogonal
+	 * directions defined by the parents.
 	 * 
 	 * @return the standard deviation value
 	 */
@@ -124,9 +112,8 @@ public class UNDX extends MultiParentVariation {
 	}
 	
 	/**
-	 * Sets the standard deviation of the normal distribution controlling the
-	 * spread of solutions in the orthogonal directions defined by the parents.
-	 * The default value is {@code 0.5}.
+	 * Sets the standard deviation of the normal distribution controlling the spread of solutions in the orthogonal
+	 * directions defined by the parents.  The default value is {@code 0.5}.
 	 * 
 	 * @param zeta the standard deviation value
 	 */
@@ -137,22 +124,19 @@ public class UNDX extends MultiParentVariation {
 	}
 
 	/**
-	 * Returns the standard deviation of the normal distribution controlling the
-	 * spread of solutions in the remaining orthogonal directions not defined by
-	 * the parents.
+	 * Returns the standard deviation of the normal distribution controlling the spread of solutions in the remaining
+	 * orthogonal directions not defined by the parents.
 	 * 
-	 * @return the standard deviation of the normal distribution controlling the
-	 *         spread of solutions in the remaining orthogonal directions not
-	 *         defined by the parents
+	 * @return the standard deviation of the normal distribution controlling the spread of solutions in the remaining
+	 *         orthogonal directions not defined by the parents
 	 */
 	public double getEta() {
 		return eta;
 	}
 	
 	/**
-	 * Sets the standard deviation of the normal distribution controlling the
-	 * spread of solutions in the remaining orthogonal directions not defined by
-	 * the parents.  The default value is {@code 0.35}.
+	 * Sets the standard deviation of the normal distribution controlling the spread of solutions in the remaining
+	 * orthogonal directions not defined by the parents.  The default value is {@code 0.35}.
 	 * 
 	 * @param eta the standard deviation value
 	 */
@@ -242,13 +226,11 @@ public class UNDX extends MultiParentVariation {
 		double[] variables = g;
 
 		for (int i = 0; i < e_zeta.size(); i++) {
-			variables = Vector.add(variables, Vector.multiply(PRNG
-					.nextGaussian(0.0, zeta), e_zeta.get(i)));
+			variables = Vector.add(variables, Vector.multiply(PRNG.nextGaussian(0.0, zeta), e_zeta.get(i)));
 		}
 
 		for (int i = 0; i < e_eta.size(); i++) {
-			variables = Vector.add(variables, Vector.multiply(PRNG
-					.nextGaussian(0.0, eta / Math.sqrt(n)), e_eta.get(i)));
+			variables = Vector.add(variables, Vector.multiply(PRNG.nextGaussian(0.0, eta / Math.sqrt(n)), e_eta.get(i)));
 		}
 
 		Solution result = parents[k - 1].copy();

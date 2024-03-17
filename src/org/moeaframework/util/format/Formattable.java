@@ -22,16 +22,16 @@ import java.io.IOException;
 import java.io.PrintStream;
 
 /**
- * Interface used by classes containing tabular data (think like a spreadsheet) that
- * can be formatted and rendered in various ways.
+ * Interface used by classes containing tabular data (think like a spreadsheet) that can be formatted and rendered in
+ * various ways.
  *
  * @param <T> the type of records
  */
 public interface Formattable<T> extends Displayable {
 	
 	/**
-	 * Returns the contents of this object as a {@link TabularData} instance, which can
-	 * be used to save, print, or format the data in various ways.
+	 * Returns the contents of this object as a {@link TabularData} instance, which can be used to save, print, or
+	 * format the data in various ways.
 	 * 
 	 * @return the {@link TabularData} instance
 	 */

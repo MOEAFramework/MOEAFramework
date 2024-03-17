@@ -22,8 +22,7 @@ import java.util.List;
 import org.moeaframework.parallel.island.Island;
 
 /**
- * A fully-connected or "star" topology where each island is connected
- * to every other island.
+ * A fully-connected or "star" topology where each island is connected to every other island.
  */
 public class FullyConnectedTopology implements Topology {
 	

@@ -23,35 +23,27 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 /**
- * Facilitates internalization (i18n) and localization (l10n) of strings.
- * Locale-specific strings are stored in a single file in each package
- * named {@code LocalStrings.properties}, 
- * {@code LocalStrings_{locale}.properties} or any other format supported by
- * {@link ResourceBundle}.  This class supports two modes of localization:
+ * Facilitates internalization (i18n) and localization (l10n) of strings.  Locale-specific strings are stored in a
+ * single file in each package named {@code LocalStrings.properties}, {@code LocalStrings_{locale}.properties} or any
+ * other format supported by {@link ResourceBundle}.  This class supports two modes of localization:
  * 
  * <h2>Package-specific</h2>
- * This is useful when classes in a package share common resources.  All
- * classes have access to all stored resources.  Use the
- * {@link #getLocalization(String)} method to create instances of the
- * {@code Localization} class for a specific package.  Here, you use the
- * {@link #getString(String)} and {@link #getString(String, Object...)}
- * methods on the {@code Localization} instance you previously created.
+ * This is useful when classes in a package share common resources.  All classes have access to all stored resources.
+ * Use the {@link #getLocalization(String)} method to create instances of the {@code Localization} class for a specific
+ * package.  Here, you use the {@link #getString(String)} and {@link #getString(String, Object...)} methods on the
+ * {@code Localization} instance you previously created.
  * 
  * <h2>Class-specific</h2>
- * The {@link #getString(Class, String)} and
- * {@link #getString(Class, String, Object...)} static methods do not require
- * you to explicitly create a new {@code Localization} instance.  In addition,
- * the keys are automatically prefixed with the class name.  For example, if
- * your property file contains the following lines:
+ * The {@link #getString(Class, String)} and {@link #getString(Class, String, Object...)} static methods do not require
+ * you to explicitly create a new {@code Localization} instance.  In addition, the keys are automatically prefixed with
+ * the class name.  For example, if your property file contains the following lines:
  * <pre>
- * WindowA.title = First Title
- * WindowB.title = Second Title
+ *   WindowA.title = First Title
+ *   WindowB.title = Second Title
  * </pre>
- * You can read each entry with
- * {@code Localization.getString(WindowA.class, "title")} and 
- * {@code Localization.getString(WindowB.class, "title")}.  This is convenient
- * for providing localization in subclasses by using the {@code getClass()}
- * method.
+ * You can read each entry with {@code Localization.getString(WindowA.class, "title")} and 
+ * {@code Localization.getString(WindowB.class, "title")}.  This is convenient for providing localization in subclasses
+ * by using the {@code getClass()} method.
  */
 public class Localization {
 
@@ -61,12 +53,10 @@ public class Localization {
 	private final ResourceBundle bundle;
 
 	/**
-	 * Constructs a new localization instance based on the specified resource
-	 * bundle.  If this resource bundle is {@code null}, then the
-	 * {@code getString} methods return the {@code key}.
+	 * Constructs a new localization instance based on the specified resource bundle.  If this resource bundle is
+	 * {@code null}, then the {@code getString} methods return the {@code key}.
 	 * 
-	 * @param bundle the resource bundle storing the key-value resource mappings
-	 *        used by this localization object
+	 * @param bundle the resource bundle storing the key-value resource mappings used by this localization object
 	 */
 	private Localization(ResourceBundle bundle) {
 		super();
@@ -92,8 +82,8 @@ public class Localization {
 	}
 
 	/**
-	 * Returns the localized string for the given key.  If the key is not
-	 * found, then this methods returns the key itself.
+	 * Returns the localized string for the given key.  If the key is not found, then this methods returns the key
+	 * itself.
 	 * 
 	 * @param key the key for the desired string
 	 * @return the localized string for the given key
@@ -111,12 +101,10 @@ public class Localization {
 	}
 	
 	/**
-	 * Returns {@code true} if a localized string exists for the given key;
-	 * {@code false} otherwise.
+	 * Returns {@code true} if a localized string exists for the given key; {@code false} otherwise.
 	 * 
 	 * @param key the key for the desired string
-	 * @return {@code true} if a localized string exists for the given key;
-	 *         {@code false} otherwise
+	 * @return {@code true} if a localized string exists for the given key; {@code false} otherwise
 	 */
 	public boolean containsKey(String key) {
 		if (bundle == null) {
@@ -127,9 +115,8 @@ public class Localization {
 	}
 
 	/**
-	 * Returns the localized string for the given key and formatting arguments.
-	 * This method uses {@link MessageFormat} for formatting the arguments.  If
-	 * the key is not found, then this methods returns the key itself.
+	 * Returns the localized string for the given key and formatting arguments.  This method uses {@link MessageFormat}
+	 * for formatting the arguments.  If the key is not found, then this methods returns the key itself.
 	 * 
 	 * @param key the key for the desired string
 	 * @param arguments the formatting arguments
@@ -164,8 +151,7 @@ public class Localization {
 		try {
 			bundle = ResourceBundle.getBundle(packageName + ".LocalStrings", locale);
 		} catch (MissingResourceException e) {
-			//bundle remains null, so the localization returns the key to
-			//provide a visual clue for debugging
+			//bundle remains null, so the localization returns the key to provide a visual clue for debugging
 		}
 
 		return new Localization(bundle);
@@ -193,25 +179,22 @@ public class Localization {
 	}
 	
 	/**
-	 * Returns {@code true} if a localized string exists for the given key;
-	 * {@code false} otherwise.  This method automatically finds the correct
-	 * resource bundle and key prefix appropriate for the class.
+	 * Returns {@code true} if a localized string exists for the given key; {@code false} otherwise.  This method
+	 * automatically finds the correct resource bundle and key prefix appropriate for the class.
 	 * 
 	 * @param type the class requesting the localized string
 	 * @param key the key (minus the class prefix)
-	 * @return {@code true} if a localized string exists for the given key;
-	 *         {@code false} otherwise
+	 * @return {@code true} if a localized string exists for the given key; {@code false} otherwise
 	 */
 	public static boolean containsKey(Class<?> type, String key) {
 		return getLocalization(type).containsKey(type.getSimpleName() + "." + key);
 	}
 
 	/**
-	 * Returns the localized string for the given key.  This method
-	 * automatically finds the correct resource bundle and key prefix
-	 * appropriate for the class.  For example, calling
-	 * {@code Localization.getString(MainGUI.class, "title")} returns the
-	 * localized string for the key {@code "MainGUI.title"}.
+	 * Returns the localized string for the given key.  This method automatically finds the correct resource bundle and
+	 * key prefix appropriate for the class.  For example, calling
+	 * {@code Localization.getString(MainGUI.class, "title")} returns the localized string for the key
+	 * {@code "MainGUI.title"}.
 	 * 
 	 * @param type the class requesting the localized string
 	 * @param key the key (minus the class prefix)
@@ -222,11 +205,10 @@ public class Localization {
 	}
 
 	/**
-	 * Returns the localized string for the given key and formatting arguments.
-	 * This method automatically finds the correct resource bundle and key
-	 * prefix appropriate for the class.  For example, calling
-	 * {@code Localization.getString(MainGUI.class, "title")} returns the
-	 * localized string for the key {@code "MainGUI.title"}.
+	 * Returns the localized string for the given key and formatting arguments.  This method automatically finds the
+	 * correct resource bundle and key prefix appropriate for the class.  For example, calling
+	 * {@code Localization.getString(MainGUI.class, "title")} returns the localized string for the key
+	 * {@code "MainGUI.title"}.
 	 * 
 	 * @param type the class requesting the localized string
 	 * @param key the key (minus the class prefix)

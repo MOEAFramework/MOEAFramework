@@ -32,13 +32,12 @@ import javax.script.ScriptException;
 import org.moeaframework.core.Problem;
 
 /**
- * Permits interfacing with problems implemented by one of the many scripting
- * languages supported by the Java Scripting APIs.
+ * Permits interfacing with problems implemented by one of the many scripting languages supported by the Java Scripting
+ * APIs.
  * <p>
- * Currently, only scripting engines which support the {@link Invocable}
- * interface are supported.  The script itself should contain methods
- * equivalent to the methods in {@link Problem}, with the same names, arguments
- * and return values.
+ * Currently, only scripting engines which support the {@link Invocable} interface are supported.  The script itself
+ * should contain methods equivalent to the methods in {@link Problem}, with the same names, arguments and return
+ * values.
  */
 public class ScriptedProblem extends ProblemWrapper {
 
@@ -67,8 +66,7 @@ public class ScriptedProblem extends ProblemWrapper {
 	/**
 	 * Constructs a new problem implemented in a scripting language.
 	 * 
-	 * @param file the file containing the script contents, and whose file
-	 *        extension identifies the scripting language
+	 * @param file the file containing the script contents, and whose file extension identifies the scripting language
 	 * @throws ScriptException if an error occurred in the Scripting APIs
 	 * @throws IOException if an I/O error occurred
 	 */
@@ -129,14 +127,12 @@ public class ScriptedProblem extends ProblemWrapper {
 	}
 	
 	/**
-	 * Returns a {@code Problem} instance whose methods invoke the underlying
-	 * scripting engine; or {@code null} if the scripting engine does not
-	 * support invocable methods/functions.
+	 * Returns a {@code Problem} instance whose methods invoke the underlying scripting engine; or {@code null} if the
+	 * scripting engine does not support invocable methods/functions.
 	 * 
 	 * @param reader the reader containing the script
-	 * @return a {@link Problem} instance whose methods invoke the underlying
-	 *         scripting engine; or {@code null} if the scripting engine does 
-	 *         not support invocable methods/functions
+	 * @return a {@link Problem} instance whose methods invoke the underlying scripting engine; or {@code null} if the
+	 *         scripting engine does not support invocable methods/functions
 	 * @throws ScriptException if an error occurred in the Scripting APIs
 	 */
 	private static final Problem createInvocableInstance(ScriptEngine engine, Reader reader) throws ScriptException {

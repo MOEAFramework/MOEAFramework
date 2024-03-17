@@ -23,23 +23,20 @@ import java.util.List;
 import org.moeaframework.core.comparator.DominanceComparator;
 
 /**
- * Fast non-dominated sorting algorithm for dominance depth ranking. Assigns the
- * {@code rank} and {@code crowdingDistance} attributes to solutions. Solutions
- * of rank 0 belong to the Pareto non-dominated front.  Requires at worst
- * O(MN^2) operations instead of O(MN^3) required by a naive implementation of
- * {@link NondominatedSorting}, but tends to run slower than the naive
- * implementation except on edge cases (e.g., for N solutions there are N
- * fronts).
+ * Fast non-dominated sorting algorithm for dominance depth ranking. Assigns the {@code rank} and
+ * {@code crowdingDistance} attributes to solutions. Solutions of rank 0 belong to the Pareto non-dominated front.
+ * Requires at worst {@code O(MN^2)} operations instead of {@code O(MN^3)} required by a naive implementation of
+ * {@link NondominatedSorting}, but tends to run slower than the naive implementation except on edge cases (e.g.,
+ * for N solutions there are N fronts).
  * <p>
- * [1] does not discuss how to handle duplicate solutions.  A straightforward
- * interpretation is that duplicate solutions should have the worst crowding
- * distance (and hence are truncated/pruned from the population first).
+ * [1] does not discuss how to handle duplicate solutions.  A straightforward interpretation is that duplicate
+ * solutions should have the worst crowding distance (and hence are truncated/pruned from the population first).
  * Therefore, duplicate solutions are assigned a crowding distance of 0.
  * <p>
  * References:
  * <ol>
- * <li>Deb et al (2002). "A Fast and Elitist Multiobjective Genetic Algorithm:
- * NSGA-II." IEEE Transactions on Evolutionary Computation. 6(2):182-197.
+ *   <li>Deb et al (2002). "A Fast and Elitist Multiobjective Genetic Algorithm: NSGA-II." IEEE Transactions on
+ *       Evolutionary Computation. 6(2):182-197.
  * </ol>
  */
 public class FastNondominatedSorting extends NondominatedSorting {
@@ -52,8 +49,7 @@ public class FastNondominatedSorting extends NondominatedSorting {
 	}
 
 	/**
-	 * Constructs a fast non-dominated sorting operator using the specified
-	 * dominance comparator.
+	 * Constructs a fast non-dominated sorting operator using the specified dominance comparator.
 	 * 
 	 * @param comparator the dominance comparator
 	 */
@@ -81,8 +77,7 @@ public class FastNondominatedSorting extends NondominatedSorting {
 			}
 		}
 		
-		// compute for each solution s_i the solutions s_j that it dominates
-		// and the number of times it is dominated
+		// compute for each solution s_i the solutions s_j that it dominates and the number of times it is dominated
 		int[] dominatedCounts = new int[N];
 		List<List<Integer>> dominatesList = new ArrayList<List<Integer>>();
 		List<Integer> currentFront = new ArrayList<Integer>();

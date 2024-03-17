@@ -23,8 +23,8 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variable;
 
 /**
- * Initializes all built-in decision variables randomly. This invokes
- * {@link Variable#randomize()} on each decision variable.
+ * Initializes all built-in decision variables randomly. This invokes {@link Variable#randomize()} on each decision
+ * variable.
  */
 public class RandomInitialization implements Initialization {
 

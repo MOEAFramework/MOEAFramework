@@ -60,8 +60,7 @@ public class UF12Test extends ProblemTest {
 	private static final double PI = 3.1415926535897932384626433832795;
 	
 	/**
-	 * Evaluates the UF12 problem.  This is the version of the code provided by
-	 * the CEC 2009 test suite.
+	 * Evaluates the UF12 problem.  This is the version of the code provided by the CEC 2009 test suite.
 	 * 
 	 * @param x the decision variables
 	 * @param f the objective function output

@@ -34,9 +34,8 @@ import org.moeaframework.core.spi.RegisteredAlgorithmProvider;
 import org.moeaframework.util.TypedProperties;
 
 /**
- * A provider of default algorithms.  Refer to {@code docs/algorithms.md}, Appendix A in the
- * Beginner's Guide to the MOEA Framework, or the Javadoc for the specific algorithm
- * for the specifics of parameterizing the algorithms.
+ * A provider of default algorithms.  Refer to {@code docs/algorithms.md} or the Javadoc for the specifics of
+ * parameterizing the algorithms.
  */
 public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 

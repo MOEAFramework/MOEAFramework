@@ -17,20 +17,15 @@
  */
 
 /**
- * Classes to enable distributed computing.  Algorithms that are naturally
- * parallel can be parallelized using this package without altering the 
- * algorithm.  This is feasible using the {@code Future} concept of blocking
- * only when attempting to read the result and the evaluation has not yet
- * completed.  As long as the algorithm submits multiple jobs to the 
- * {@code evaluate} method prior to reading the results, the objectives 
- * and constraints, the algorithm is naturally parallel.
+ * Classes to enable distributed computing.  Algorithms that are naturally parallel can be parallelized using this
+ * package without altering the algorithm.  This is feasible using the {@code Future} concept of blocking only when
+ * attempting to read the result and the evaluation has not yet completed.  As long as the algorithm submits multiple
+ * jobs to the {@code evaluate} method prior to reading the results, the objectives and constraints, the algorithm is
+ * naturally parallel.
  * <p>
- * To use, an {@code ExecutorService} is required that will distributed the
- * jobs to asynchronous threads, cores or compute nodes.  Java frameworks such
- * as <a href="http://www.jppf.org">JPPF</a> and 
- * <a href="http://www.gridgain.com">GridGain</a> provide 
- * {@code ExecutorService} interfaces out-of-the-box.  Then, the desired
- * {@code Problem} is decorated with the {@code DistributedProblem} to enable
- * parallel execution.
+ * To use, an {@code ExecutorService} is required that will distributed the jobs to asynchronous threads, cores or
+ * compute nodes.  Java frameworks such as <a href="http://www.jppf.org">JPPF</a> and 
+ * <a href="http://www.gridgain.com">GridGain</a> provide {@code ExecutorService} interfaces out-of-the-box.  Then, the
+ * desired {@code Problem} is decorated with the {@code DistributedProblem} to enable parallel execution.
  */
 package org.moeaframework.util.distributed;

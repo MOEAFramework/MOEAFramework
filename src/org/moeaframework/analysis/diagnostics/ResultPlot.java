@@ -23,9 +23,8 @@ import java.awt.event.HierarchyListener;
 import javax.swing.JPanel;
 
 /**
- * Abstract Swing component for displaying results.  The specific implementation
- * determines the type of plot.  The results displayed in the plot are
- * specified by {@link DiagnosticTool#getSelectedResults()}.
+ * Abstract Swing component for displaying results.  The specific implementation determines the type of plot.  The
+ * results displayed in the plot are specified by {@link DiagnosticTool#getSelectedResults()}.
  */
 public abstract class ResultPlot extends JPanel implements ControllerListener, HierarchyListener {
 
@@ -62,9 +61,8 @@ public abstract class ResultPlot extends JPanel implements ControllerListener, H
 	}
 	
 	/**
-	 * Updates the contents of this plot.  This method is automatically invoked
-	 * when the data model is changed, and will always be executed on the
-	 * event dispatch thread.
+	 * Updates the contents of this plot.  This method is automatically invoked when the data model is changed, and
+	 * will always be executed on the event dispatch thread.
 	 */
 	protected abstract void update();
 

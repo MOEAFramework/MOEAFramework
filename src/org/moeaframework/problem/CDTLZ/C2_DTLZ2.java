@@ -28,8 +28,7 @@ import org.moeaframework.problem.DTLZ.DTLZ2;
 public class C2_DTLZ2 extends DTLZ2 {
 
 	/**
-	 * Constructs a C2-DTLZ2 test problem with the specified number of variables
-	 * and objectives.
+	 * Constructs a C2-DTLZ2 test problem with the specified number of variables and objectives.
 	 * 
 	 * @param numberOfVariables the number of variables for this problem
 	 * @param numberOfObjectives the number of objectives for this problem
@@ -39,8 +38,7 @@ public class C2_DTLZ2 extends DTLZ2 {
 	}
 
 	/**
-	 * Constructs a X2-DTLZ2 test problem with the specified number of
-	 * objectives.  This is equivalent to calling
+	 * Constructs a X2-DTLZ2 test problem with the specified number of objectives.  This is equivalent to calling
 	 * {@code new DTLZ2(numberOfObjectives+9, numberOfObjectives)}.
 	 * 
 	 * @param numberOfObjectives the number of objectives for this problem
@@ -72,8 +70,7 @@ public class C2_DTLZ2 extends DTLZ2 {
 			}
 			
 			v1 = Math.min(v1, sum - Math.pow(r, 2.0));
-			v2 += Math.pow(solution.getObjective(i) -
-					1.0 / Math.sqrt(numberOfObjectives), 2.0);
+			v2 += Math.pow(solution.getObjective(i) - 1.0 / Math.sqrt(numberOfObjectives), 2.0);
 		}
 		
 		double c = Math.min(v1, v2 - Math.pow(r, 2.0));

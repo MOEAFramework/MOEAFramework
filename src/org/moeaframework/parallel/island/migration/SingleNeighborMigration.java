@@ -27,8 +27,7 @@ import org.moeaframework.core.comparator.ParetoDominanceComparator;
 import org.moeaframework.parallel.island.Island;
 
 /**
- * Migration strategy that sends migrants to exactly one neighboring
- * island each iteration.
+ * Migration strategy that sends migrants to exactly one neighboring island each iteration.
  */
 public class SingleNeighborMigration implements Migration {
 	
@@ -86,8 +85,7 @@ public class SingleNeighborMigration implements Migration {
 	}
 	
 	/**
-	 * Returns all solutions in the population that are dominated by one or more
-	 * emigrants.
+	 * Returns all solutions in the population that are dominated by one or more emigrants.
 	 * 
 	 * @param population the current population
 	 * @param emigrants the emigrating solutions

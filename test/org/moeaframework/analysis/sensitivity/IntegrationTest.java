@@ -32,11 +32,9 @@ import org.moeaframework.core.spi.ProblemFactoryTestWrapper;
 import org.moeaframework.util.ReferenceSetMerger;
 
 /**
- * Integration tests for the sensitivity command line utilities.  These tests
- * only automate checks to ensure the command line utilities interoperate and
- * that their command line interfaces function appropriately; not that their
- * internal behavior is valid.  Unit tests of the internal components ensure
- * validity.
+ * Integration tests for the sensitivity command line utilities.  These tests only automate checks to ensure the
+ * command line utilities interoperate and that their command line interfaces function appropriately; not that their
+ * internal behavior is valid.  Unit tests of the internal components ensure validity.
  */
 public class IntegrationTest {
 	
@@ -72,19 +70,16 @@ public class IntegrationTest {
 				"-o", referenceSet.getPath()});
 		
 		Assert.assertEquals(10, TestUtils.lineCount(referenceSet));
-		TestUtils.assertLinePattern(referenceSet,
-				TestUtils.getSpaceSeparatedNumericPattern(2));
+		TestUtils.assertLinePattern(referenceSet, TestUtils.getSpaceSeparatedNumericPattern(2));
 	}
 	
 	/**
-	 * Tests the interoperability between the main sensitivity command line
-	 * utilities.
+	 * Tests the interoperability between the main sensitivity command line utilities.
 	 */
 	@Test
 	public void test() throws Exception {
 		//create the sample file
-		File parameterDescriptionFile = TestUtils.createTempFile(
-				"populationSize 10 100\r\nmaxEvaluations 1000 10000");
+		File parameterDescriptionFile = TestUtils.createTempFile("populationSize 10 100\r\nmaxEvaluations 1000 10000");
 		File parameterFile = TestUtils.createTempFile();
 		
 		SampleGenerator.main(new String[] { 
@@ -94,8 +89,7 @@ public class IntegrationTest {
 				"-o", parameterFile.getPath()});
 		
 		Assert.assertEquals(10, TestUtils.lineCount(parameterFile));
-		TestUtils.assertLinePattern(parameterFile,
-				TestUtils.getSpaceSeparatedNumericPattern(2));
+		TestUtils.assertLinePattern(parameterFile, TestUtils.getSpaceSeparatedNumericPattern(2));
 		
 		//evaluate two MOEAs
 		File resultFile1 = TestUtils.createTempFile();
@@ -145,12 +139,10 @@ public class IntegrationTest {
 		//evaluate the combined set hypervolume
 		File setHypervolumeOutput = TestUtils.createTempFile();
 		
-		TestUtils.pipeCommandLine(setHypervolumeOutput, 
-				SetHypervolume.class, combinedFile.getPath());
+		TestUtils.pipeCommandLine(setHypervolumeOutput, SetHypervolume.class, combinedFile.getPath());
 		
 		Assert.assertEquals(1, TestUtils.lineCount(setHypervolumeOutput));
-		TestUtils.assertLinePattern(setHypervolumeOutput, 
-				"^.+ [0-9]*(?:.[0-9]+)?$");
+		TestUtils.assertLinePattern(setHypervolumeOutput, "^.+ [0-9]*(?:.[0-9]+)?$");
 		
 		//test the seed merger
 		File seedMerger = TestUtils.createTempFile();
@@ -223,16 +215,14 @@ public class IntegrationTest {
 	}
 	
 	/**
-	 * Tests the Sobol sensitivity analysis command line utility
-	 * interoperability.
+	 * Tests the Sobol sensitivity analysis command line utility interoperability.
 	 * 
 	 * @throws IOException if an I/O error occurred
 	 */
 	@Test
 	public void testSensitivity() throws Exception {
 		//create the sample file
-		File parameterDescriptionFile = TestUtils.createTempFile(
-				"populationSize 10 100\r\nmaxEvaluations 1000 10000");
+		File parameterDescriptionFile = TestUtils.createTempFile("populationSize 10 100\r\nmaxEvaluations 1000 10000");
 		File parameterFile = TestUtils.createTempFile();
 		
 		SampleGenerator.main(new String[] { 
@@ -242,8 +232,7 @@ public class IntegrationTest {
 				"-o", parameterFile.getPath()});
 		
 		Assert.assertEquals(60, TestUtils.lineCount(parameterFile));
-		TestUtils.assertLinePattern(parameterFile,
-				TestUtils.getSpaceSeparatedNumericPattern(2));
+		TestUtils.assertLinePattern(parameterFile, TestUtils.getSpaceSeparatedNumericPattern(2));
 		
 		//evaluate MOEA
 		File metricFile = TestUtils.createTempFile();
@@ -306,16 +295,15 @@ public class IntegrationTest {
 	}
 	
 	/**
-	 * Test to ensure the {@code close} method is called on problems, and the
-	 * {@code terminate} method is called on algorithms.
+	 * Test to ensure the {@code close} method is called on problems, and the {@code terminate} method is called on
+	 * algorithms.
 	 * 
 	 * @throws IOException if an I/O error occurred
 	 */
 	@Test
 	public void testClosedAndTerminated() throws Exception {
 		//create the sample file
-		File parameterDescriptionFile = TestUtils.createTempFile(
-				"populationSize 10 100\r\nmaxEvaluations 1000 10000");
+		File parameterDescriptionFile = TestUtils.createTempFile("populationSize 10 100\r\nmaxEvaluations 1000 10000");
 		File parameterFile = TestUtils.createTempFile();
 		
 		SampleGenerator.main(new String[] { 

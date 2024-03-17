@@ -57,8 +57,7 @@ public class IntervalRatioStatisticalTestTest {
 	}
 
 	/**
-	 * Tests if the {@link IntervalRatioStatisticalTest#categorize} procedure
-	 * correctly organized categories/groups.
+	 * Tests if the {@link IntervalRatioStatisticalTest#categorize} procedure correctly organized categories/groups.
 	 */
 	@Test
 	public void testCategorize() {
@@ -78,8 +77,7 @@ public class IntervalRatioStatisticalTestTest {
 	}
 
 	/**
-	 * Asserts that the two arrays contain the same elements, but not
-	 * necessarily in the same order.
+	 * Asserts that the two arrays contain the same elements, but not necessarily in the same order.
 	 * 
 	 * @param a1 the first array
 	 * @param a2 the second array
@@ -100,8 +98,7 @@ public class IntervalRatioStatisticalTestTest {
 	}
 
 	/**
-	 * Tests if the {@link IntervalRatioStatisticalTest#add} method correctly
-	 * throws an exception for invalid groups.
+	 * Tests if the {@link IntervalRatioStatisticalTest#add} method correctly throws an exception for invalid groups.
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testGroupException1() {
@@ -109,8 +106,7 @@ public class IntervalRatioStatisticalTestTest {
 	}
 
 	/**
-	 * Tests if the {@link IntervalRatioStatisticalTest#add} method correctly
-	 * throws an exception for invalid groups.
+	 * Tests if the {@link IntervalRatioStatisticalTest#add} method correctly throws an exception for invalid groups.
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testGroupException2() {

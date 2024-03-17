@@ -30,8 +30,6 @@ public class CommentedLineReaderTest {
 
 	/**
 	 * Tests if the {@code CommentedLineReader} correctly handles a normal input.
-	 * 
-	 * @throws IOException should not occur
 	 */
 	@Test
 	public void testExample() throws IOException {
@@ -44,8 +42,6 @@ public class CommentedLineReaderTest {
 	
 	/**
 	 * Tests if the {@code CommentedLineReader} correctly handles empty files.
-	 * 
-	 * @throws IOException should not occur
 	 */
 	@Test
 	public void testEmpty1() throws IOException {
@@ -56,13 +52,10 @@ public class CommentedLineReaderTest {
 	
 	/**
 	 * Tests if the {@code CommentedLineReader} correctly handles an input file containing all commented lines.
-	 * 
-	 * @throws IOException should not occur
 	 */
 	@Test
 	public void testEmpty2() throws IOException {
-		try (CommentedLineReader reader = new CommentedLineReader(
-				new StringReader("#comment line\n# comment line"))) {
+		try (CommentedLineReader reader = new CommentedLineReader(new StringReader("#comment line\n# comment line"))) {
 			Assert.assertNull(reader.readLine());
 		}
 	}

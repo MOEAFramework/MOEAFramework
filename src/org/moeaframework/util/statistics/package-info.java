@@ -17,7 +17,7 @@
  */
 
 /**
- * Collection of statistical methods for determining certain properties of
- * collected samples.  Includes parametric and non-parametric techniques.
+ * Collection of statistical methods for determining certain properties of collected samples.  Includes parametric
+ * and non-parametric techniques.
  */
 package org.moeaframework.util.statistics;

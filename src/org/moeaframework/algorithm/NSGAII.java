@@ -47,20 +47,17 @@ import org.moeaframework.util.TypedProperties;
  * <p>
  * References:
  * <ol>
- *   <li>Deb, K. et al.  "A Fast Elitist Multi-Objective Genetic Algorithm:
- *       NSGA-II."  IEEE Transactions on Evolutionary Computation, 6:182-197, 
- *       2000.
- *   <li>Kollat, J. B., and Reed, P. M.  "Comparison of Multi-Objective 
- *       Evolutionary Algorithms for Long-Term Monitoring Design."  Advances in
- *       Water Resources, 29(6):792-807, 2006.
+ *   <li>Deb, K. et al.  "A Fast Elitist Multi-Objective Genetic Algorithm: NSGA-II."  IEEE Transactions on
+ *       Evolutionary Computation, 6:182-197, 2000.
+ *   <li>Kollat, J. B., and Reed, P. M.  "Comparison of Multi-Objective Evolutionary Algorithms for Long-Term
+ *       Monitoring Design."  Advances in Water Resources, 29(6):792-807, 2006.
  * </ol>
  */
 public class NSGAII extends AbstractEvolutionaryAlgorithm implements EpsilonBoxEvolutionaryAlgorithm {
 
 	/**
-	 * The selection operator.  If {@code null}, this algorithm uses binary
-	 * tournament selection without replacement, replicating the behavior of the
-	 * original NSGA-II implementation.
+	 * The selection operator.  If {@code null}, this algorithm uses binary tournament selection without replacement,
+	 * replicating the behavior of the original NSGA-II implementation.
 	 */
 	private Selection selection;
 	
@@ -106,9 +103,8 @@ public class NSGAII extends AbstractEvolutionaryAlgorithm implements EpsilonBoxE
 		int populationSize = population.size();
 
 		if (selection == null) {
-			// recreate the original NSGA-II implementation using binary
-			// tournament selection without replacement; this version works by
-			// maintaining a pool of candidate parents.
+			// recreate the original NSGA-II implementation using binary tournament selection without replacement;
+			// this version works by maintaining a pool of candidate parents.
 			LinkedList<Solution> pool = new LinkedList<Solution>();
 			
 			DominanceComparator comparator = new ChainedComparator(

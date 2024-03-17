@@ -44,8 +44,7 @@ package org.moeaframework.util.tree;
 public class Acosh extends Node {
 	
 	/**
-	 * Constructs a new node for calculating the hyperbolic arc cosine of a
-	 * number.
+	 * Constructs a new node for calculating the hyperbolic arc cosine of a number.
 	 */
 	public Acosh() {
 		super(Number.class, Number.class);
@@ -58,8 +57,7 @@ public class Acosh extends Node {
 	
 	@Override
 	public Number evaluate(Environment environment) {
-		return NumberArithmetic.acosh(
-				(Number)getArgument(0).evaluate(environment));
+		return NumberArithmetic.acosh((Number)getArgument(0).evaluate(environment));
 	}
 
 }

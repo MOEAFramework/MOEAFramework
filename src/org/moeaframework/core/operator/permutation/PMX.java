@@ -26,25 +26,22 @@ import org.moeaframework.core.operator.TypeSafeCrossover;
 import org.moeaframework.core.variable.Permutation;
 
 /**
- * Partially mapped crossover (PMX) operator.  PMX is similar to two-point
- * crossover, but includes a repair operator to ensure the offspring are valid
- * permutations.
+ * Partially mapped crossover (PMX) operator.  PMX is similar to two-point crossover, but includes a repair operator
+ * to ensure the offspring are valid permutations.
  * <p>
  * This variation operator is type-safe.
  * <p>
  * References:
  * <ol>
- * <li>Goldberg, D. and Lingle, R. Jr.
- * "Alleles, Loci, and the Traveling Salesman Problem." Proceedings of the 1st
- * International Conference on Genetic Algorithms and Their Applications. 1985.
+ *   <li>Goldberg, D. and Lingle, R. Jr. "Alleles, Loci, and the Traveling Salesman Problem." Proceedings of the 1st
+ *       International Conference on Genetic Algorithms and Their Applications. 1985.
  * </ol>
  */
 @Prefix("pmx")
 public class PMX extends TypeSafeCrossover<Permutation> {
 
 	/**
-	 * Constructs a PMX operator that is applied with 100% probability to
-	 * every solution.
+	 * Constructs a PMX operator that is applied with 100% probability to every solution.
 	 */
 	public PMX() {
 		this(1.0);

@@ -24,8 +24,7 @@ import org.moeaframework.problem.AbstractProblem;
 import org.moeaframework.problem.AnalyticalProblem;
 
 /**
- * The Binh problem.  The optimum solutions like on the line between
- * {@code (0, 0)} and {@code (5, 5)}.
+ * The Binh problem.  The optimum solutions like on the line between {@code (0, 0)} and {@code (5, 5)}.
  * <p>
  * Properties:
  * <ul>
@@ -35,12 +34,10 @@ import org.moeaframework.problem.AnalyticalProblem;
  * <p>
  * References:
  * <ol>
- *   <li>Binh, T. and Korn, U. (1996).  "An Evolution Strategy for the 
- *       Multiobjective Optimization."  Proceedings of the Second International
- *       Conference on Genetic Algorithms, pp. 23-28.
- *   <li>Van Veldhuizen, D. A (1999).  "Multiobjective Evolutionary Algorithms: 
- *       Classifications, Analyses, and New Innovations."  Air Force Institute
- *       of Technology, Ph.D. Thesis, Appendix B.
+ *   <li>Binh, T. and Korn, U. (1996).  "An Evolution Strategy for the Multiobjective Optimization."  Proceedings of
+ *       the Second International Conference on Genetic Algorithms, pp. 23-28.
+ *   <li>Van Veldhuizen, D. A (1999).  "Multiobjective Evolutionary Algorithms: Classifications, Analyses, and New
+ *       Innovations."  Air Force Institute of Technology, Ph.D. Thesis, Appendix B.
  * </ol>
  */
 public class Binh extends AbstractProblem implements AnalyticalProblem {

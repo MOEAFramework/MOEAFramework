@@ -124,8 +124,7 @@ public class ApproximationSetPlot extends ResultPlot {
 		plot.setRenderer(renderer);
 		
 		//add overlay
-		if (controller.getShowLastTrace() &&
-				(controller.getLastObservation() != null) && 
+		if (controller.getShowLastTrace() && (controller.getLastObservation() != null) && 
 				controller.getLastObservation().keys().contains(metric)) {
 			Observations observations = controller.getLastObservation();
 			XYSeriesCollection dataset2 = new XYSeriesCollection();

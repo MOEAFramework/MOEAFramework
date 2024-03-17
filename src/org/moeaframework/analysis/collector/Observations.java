@@ -75,8 +75,8 @@ public class Observations implements Serializable, Iterable<Observation>, Format
 	}
 	
 	/**
-	 * Returns the keys - the name of individual observations - that have been recorded.
-	 * This assumes that each recorded observation contains identical keys.
+	 * Returns the keys - the name of individual observations - that have been recorded.  This assumes that each
+	 * recorded observation contains identical keys.
 	 * 
 	 * @return the keys
 	 */
@@ -107,8 +107,8 @@ public class Observations implements Serializable, Iterable<Observation>, Format
 	}
 	
 	/**
-	 * Returns the observation at the specified NFE.  If there is no exact match,
-	 * it returns the next largest NFE.  If at the end of the list, returns {@code null}.
+	 * Returns the observation at the specified NFE.  If there is no exact match, it returns the next largest NFE.
+	 * If at the end of the list, returns {@code null}.
 	 * 
 	 * @param NFE the NFE to locate
 	 * @return the matching observation

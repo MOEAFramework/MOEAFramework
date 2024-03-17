@@ -30,8 +30,8 @@ import org.moeaframework.analysis.collector.Observations;
 import org.moeaframework.core.NondominatedPopulation;
 
 /**
- * Tests the {@link Plot} class.  These tests do not check for the correctness
- * of the plots, only that the code runs without error.
+ * Tests the {@link Plot} class.  These tests do not check for the correctness of the plots, only that the code runs
+ * without error.
  */
 public class PlotTest {
 	

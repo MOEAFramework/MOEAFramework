@@ -38,23 +38,20 @@ import org.moeaframework.core.spi.OperatorFactory;
 import org.moeaframework.util.TypedProperties;
 
 /**
- * Implementation of the Indicator-Based Evolutionary Algorithm (IBEA).  Instead
- * of using Pareto dominance to evaluate the quality of solutions, IBEA uses
- * an indicator function (typically hypervolume but other indicator functions
+ * Implementation of the Indicator-Based Evolutionary Algorithm (IBEA).  Instead of using Pareto dominance to evaluate
+ * the quality of solutions, IBEA uses an indicator function (typically hypervolume but other indicator functions
  * can be specified). 
  * <p>
  * References:
  * <ol>
- *   <li>Zitzler, E. and S. Kunzli (2004).  Indicator-Based Selection in
- *       Multiobjective Search.  Parallel Problem Solving from Nature
- *       (PPSN VIII), pp. 832-842.
+ *   <li>Zitzler, E. and S. Kunzli (2004).  Indicator-Based Selection in Multiobjective Search.  Parallel Problem
+ *       Solving from Nature (PPSN VIII), pp. 832-842.
  * </ol>
  */
 public class IBEA extends AbstractEvolutionaryAlgorithm {
 	
 	/**
-	 * The indicator fitness evaluator to use (e.g., hypervolume or
-	 * additive-epsilon indicator).
+	 * The indicator fitness evaluator to use (e.g., hypervolume or additive-epsilon indicator).
 	 */
 	private IndicatorFitnessEvaluator fitnessEvaluator;
 	

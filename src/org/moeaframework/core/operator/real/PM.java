@@ -25,25 +25,21 @@ import org.moeaframework.core.operator.TypeSafeMutation;
 import org.moeaframework.core.variable.RealVariable;
 
 /**
- * Polynomial mutation (PM) operator.  PM attempts to simulate the offspring 
- * distribution of binary-encoded bit-flip mutation on real-valued decision 
- * variables.  Similar to SBX, PM favors offspring nearer to the parent.
+ * Polynomial mutation (PM) operator.  PM attempts to simulate the offspring distribution of binary-encoded bit-flip
+ * mutation on real-valued decision variables.  Similar to SBX, PM favors offspring nearer to the parent.
  * <p>
- * The distribution index controls the shape of the offspring distribution. 
- * Larger values for the distribution index generates offspring closer to the 
- * parents.
+ * The distribution index controls the shape of the offspring distribution.  Larger values for the distribution index
+ * generates offspring closer to the parents.
  * <p>
- * It is recommended each decision variable is mutated with a probability of
- * {@code 1 / L}, where {@code L} is the number of decision variables.  This
- * results in one mutation per offspring on average.
+ * It is recommended each decision variable is mutated with a probability of {@code 1 / L}, where {@code L} is the
+ * number of decision variables.  This results in one mutation per offspring on average.
  * <p>
  * This operator is type-safe.
  * <p>
  * References:
  * <ol>
- *   <li>Deb, K. and Goyal, M.  "A combined genetic adaptive search (GeneAS) 
- *       for engineering design."  Computer Science and Informatics, 
- *       26(4):30-45, 1996.
+ *   <li>Deb, K. and Goyal, M.  "A combined genetic adaptive search (GeneAS) for engineering design."  Computer Science
+ *       and Informatics, 26(4):30-45, 1996.
  * </ol>
  */
 @Prefix("pm")
@@ -55,8 +51,8 @@ public class PM extends TypeSafeMutation<RealVariable> {
 	private double distributionIndex;
 	
 	/**
-	 * Constructs a polynomial mutation operator with the default settings.  This includes
-	 * a mutation probability of {@code 0.1} and a distribution index of {@code 20.0}.
+	 * Constructs a polynomial mutation operator with the default settings.  This includes a mutation probability of
+	 * {@code 0.1} and a distribution index of {@code 20.0}.
 	 */
 	public PM() {
 		this(0.1, 20.0);

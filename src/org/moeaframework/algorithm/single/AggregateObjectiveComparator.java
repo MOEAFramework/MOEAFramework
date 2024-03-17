@@ -25,23 +25,17 @@ import org.moeaframework.core.configuration.ConfigurationException;
 import org.moeaframework.util.TypedProperties;
 
 /**
- * Compares solutions based on a computed aggregate fitness from the objective
- * values.  Examples could include weighted linear, weighted min-max, or
- * vector angle distance scaling (VADS).
+ * Compares solutions based on a computed aggregate fitness from the objective values.  Examples could include weighted
+ * linear, weighted min-max, or vector angle distance scaling (VADS).
  * <p>
- * Implementation Note: This interface extends both the
- * {@link DominanceComparator} and {@code Comparator<Solution>} interfaces.
- * Since both of these interfaces provide identical
- * {@code int compare(Solution, Solution)} methods, you may encounter a
- * compilation error indicating the use of the {@code compare} method is
- * ambiguous.  This is the result of an important distinction between
- * {@code DominanceComparator} and {@code Comparator<Solution>}.
- * {@link DominanceComparator} induces a <i>partial</i> ordering while
- * {@code Comparator<Solution>} provides a <i>total</i> ordering.  In
- * general, the two can not be interchanged except in cases where the
- * {@code DominanceComparator} produces a total ordering, which is the case
- * here.  However, you will need to cast to one of these two interfaces in order
- * to invoke the {@code compare} method and avoid the compilation error.
+ * Implementation Note: This interface extends both the {@link DominanceComparator} and {@code Comparator<Solution>}
+ * interfaces.  Since both of these interfaces provide identical {@code int compare(Solution, Solution)} methods, you
+ * may encounter a compilation error indicating the use of the {@code compare} method is ambiguous.  This is the result
+ * of an important distinction between {@code DominanceComparator} and {@code Comparator<Solution>}.
+ * {@link DominanceComparator} induces a <i>partial</i> ordering while {@code Comparator<Solution>} provides a
+ * <i>total</i> ordering.  In general, the two can not be interchanged except in cases where the
+ * {@code DominanceComparator} produces a total ordering, which is the case here.  However, you will need to cast to
+ * one of these two interfaces in order to invoke the {@code compare} method and avoid the compilation error.
  */
 public interface AggregateObjectiveComparator extends DominanceComparator, Comparator<Solution> {
 	

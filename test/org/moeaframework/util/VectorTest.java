@@ -140,8 +140,7 @@ public class VectorTest {
 	}
 
 	/**
-	 * Tests if the {@code mean} method correctly computes the mean of a 2D
-	 * array, where each row is a vector.
+	 * Tests if the {@code mean} method correctly computes the mean of a 2D array, where each row is a vector.
 	 */
 	@Test
 	public void testMean() {

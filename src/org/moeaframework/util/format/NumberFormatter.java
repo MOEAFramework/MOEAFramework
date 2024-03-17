@@ -164,8 +164,8 @@ public class NumberFormatter implements Formatter<Number> {
 	}
 
 	/**
-	 * Set to {@code true} to use scientific notation.  When enabled, the number will include the exponent
-	 * and is useful when expressing very small or large numbers.
+	 * Set to {@code true} to use scientific notation.  When enabled, the number will include the exponent and is
+	 * useful when expressing very small or large numbers.
 	 * 
 	 * @param scientificNotation {@code true} if this formatting uses scientific notation; {@code false} otherwise
 	 */
@@ -192,8 +192,7 @@ public class NumberFormatter implements Formatter<Number> {
 	}
 
 	/**
-	 * Creates the formatting string used by {@link String#format(String, Object...)} to display
-	 * decimal values.
+	 * Creates the formatting string used by {@link String#format(String, Object...)} to display decimal values.
 	 * 
 	 * @return the formatting string
 	 */
@@ -206,8 +205,7 @@ public class NumberFormatter implements Formatter<Number> {
 	}
 	
 	/**
-	 * Creates the formatting string used by {@link String#format(String, Object...)} to display
-	 * integer values.
+	 * Creates the formatting string used by {@link String#format(String, Object...)} to display integer values.
 	 * 
 	 * @return the formatting string
 	 */

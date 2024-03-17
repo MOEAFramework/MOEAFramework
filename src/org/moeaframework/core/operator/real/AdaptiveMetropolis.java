@@ -32,46 +32,39 @@ import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
 
 /**
- * The adaptive metropolis (AM) operator.  AM is a multiparent operator,
- * allowing a user-defined number of parents and offspring.  AM produces
- * normally-distributed clusters around each parent, where the shape of the
- * distribution is controlled by the covariance of the parents.
+ * The adaptive metropolis (AM) operator.  AM is a multiparent operator, allowing a user-defined number of parents
+ * and offspring.  AM produces normally-distributed clusters around each parent, where the shape of the distribution
+ * is controlled by the covariance of the parents.
  * <p>
- * Internally, the Cholesky decomposition is used to update the resulting
- * offspring distribution.  Cholesky decomposition requires that its input be
- * positive definite.  In order to guarantee this condition is satisfied, all
- * parents must be unique.  In the event that the positive definite condition
- * is not satisifed, no offspring are produced and an empty array is returned
- * by {@link #evolve(Solution[])}.
+ * Internally, the Cholesky decomposition is used to update the resulting offspring distribution.  Cholesky
+ * decomposition requires that its input be positive definite.  In order to guarantee this condition is satisfied,
+ * all parents must be unique.  In the event that the positive definite condition is not satisfied, no offspring are
+ * produced and an empty array is returned by {@link #evolve(Solution[])}.
  * <p>
  * References:
  * <ol>
- *   <li>Vrugt, J.A., Robinson, B.A. and Hyman, J.M.  "Self-Adaptive 
- *       MultiMethod Search For Global Optimization in Real-Parameter Spaces."
- *       IEEE Transactions on Evolutionary Computation, pp. 1-17, 2009.
- *   <li>Vrugt, J.A. and Robinson, B.A.  "Improved Evolutionary Optimization 
- *       from Genetically Adaptive Multimethod Search."  Proceedings of the 
- *       National Academy of Sciences of the United States  of America, vol. 
- *       104, pp. 708 - 711, 2007.
- *   <li>Gelman, A., Roberts, G.O. and Gilks, W.R.  "Efficient Metropolis
- *       Jumping Rules."  Bayesian Statistics, vol. 5, pp. 599-607, 1996.
+ *   <li>Vrugt, J.A., Robinson, B.A. and Hyman, J.M.  "Self-Adaptive MultiMethod Search For Global Optimization in
+ *       Real-Parameter Spaces." IEEE Transactions on Evolutionary Computation, pp. 1-17, 2009.
+ *   <li>Vrugt, J.A. and Robinson, B.A.  "Improved Evolutionary Optimization from Genetically Adaptive Multimethod
+ *       Search."  Proceedings of the National Academy of Sciences of the United States  of America, vol. 104,
+ *       pp. 708 - 711, 2007.
+ *   <li>Gelman, A., Roberts, G.O. and Gilks, W.R.  "Efficient Metropolis Jumping Rules."  Bayesian Statistics,
+ *       vol. 5, pp. 599-607, 1996.
  * </ol>
  */
 @Prefix("am")
 public class AdaptiveMetropolis extends MultiParentVariation {
 	
 	/**
-	 * The jump rate coefficient, controlling the standard deviation of the 
-	 * covariance matrix.  The actual jump rate is calculated as {@code 
-	 * Math.pow(jumpRateCoefficient / Math.sqrt(n), 2.0)}, where  {@code n} is
-	 * the number of decision variables.  The recommended value is {@code 2.4}.
+	 * The jump rate coefficient, controlling the standard deviation of the covariance matrix.  The actual jump rate
+	 * is calculated as {@code Math.pow(jumpRateCoefficient / Math.sqrt(n), 2.0)}, where  {@code n} is the number of
+	 * decision variables.  The recommended value is {@code 2.4}.
 	 */
 	private double jumpRateCoefficient;
 	
 	/**
-	 * Constructs an adaptive metropolis operator with default settings, taking 10
-	 * parents and producing 2 offspring.  The recommended value of {2code 2.4} is
-	 * used for the jump rate coefficient.
+	 * Constructs an adaptive metropolis operator with default settings, taking 10 parents and producing 2 offspring.
+	 * The recommended value of {@code 2.4} is used for the jump rate coefficient.
 	 */
 	public AdaptiveMetropolis() {
 		this(10, 2, 2.4);
@@ -82,8 +75,8 @@ public class AdaptiveMetropolis extends MultiParentVariation {
 	 * 
 	 * @param numberOfParents the number of parents required by this operator
 	 * @param numberOfOffspring the number of parents produced by this operator
-	 * @param jumpRateCoefficient the jump raote coefficient, controlling the
-	 *        standard deviation of the covariance matrix
+	 * @param jumpRateCoefficient the jump raote coefficient, controlling the standard deviation of the covariance
+	 *        matrix
 	 */
 	public AdaptiveMetropolis(int numberOfParents, int numberOfOffspring, double jumpRateCoefficient) {
 		super(numberOfParents, numberOfOffspring);
@@ -105,10 +98,9 @@ public class AdaptiveMetropolis extends MultiParentVariation {
 	}
 	
 	/**
-	 * Sets the jump rate coefficient, controlling the standard deviation of the 
-	 * covariance matrix.  The actual jump rate is calculated as {@code 
-	 * Math.pow(jumpRateCoefficient / Math.sqrt(n), 2.0)}, where  {@code n} is
-	 * the number of decision variables.  The recommended value is {@code 2.4}.
+	 * Sets the jump rate coefficient, controlling the standard deviation of the covariance matrix.  The actual jump
+	 * rate is calculated as {@code Math.pow(jumpRateCoefficient / Math.sqrt(n), 2.0)}, where  {@code n} is the number
+	 * of decision variables.  The recommended value is {@code 2.4}.
 	 * 
 	 * @param jumpRateCoefficient the jump rate coefficient value
 	 */

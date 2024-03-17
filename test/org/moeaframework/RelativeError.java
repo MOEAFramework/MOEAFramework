@@ -21,24 +21,20 @@ import org.junit.Assert;
 import org.moeaframework.core.Settings;
 
 /**
- * Compares floating-point numbers allowing a small relative error when
- * determining equality.  Using a relative error allows better scaling across
- * floating-point values of varying magnitudes.
+ * Compares floating-point numbers allowing a small relative error when determining equality.  Using a relative error
+ * allows better scaling across floating-point values of varying magnitudes.
  */
 public class RelativeError implements FloatingPointError {
 	
 	/**
-	 * The maximum relative error permitted when considering if two floating-
-	 * point numbers are equal.
+	 * The maximum relative error permitted when considering if two floating-point numbers are equal.
 	 */
 	private final double relativeError;
 	
 	/**
-	 * Creates a comparator of floating-point values allowing a small relative
-	 * error when determining equality.
+	 * Creates a comparator of floating-point values allowing a small relative error when determining equality.
 	 * 
-	 * @param epsilon the maximum relative error permitted when considering if
-	 *        two floating-point numbers are equal
+	 * @param epsilon the maximum relative error permitted when considering if two floating-point numbers are equal
 	 */
 	public RelativeError(double relativeError) {
 		super();

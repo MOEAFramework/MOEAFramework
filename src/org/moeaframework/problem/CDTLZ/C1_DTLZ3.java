@@ -28,8 +28,7 @@ import org.moeaframework.problem.DTLZ.DTLZ3;
 public class C1_DTLZ3 extends DTLZ3 {
 
 	/**
-	 * Constructs a C1-DTLZ3 test problem with the specified number of variables
-	 * and objectives.
+	 * Constructs a C1-DTLZ3 test problem with the specified number of variables and objectives.
 	 * 
 	 * @param numberOfVariables the number of variables for this problem
 	 * @param numberOfObjectives the number of objectives for this problem
@@ -39,8 +38,7 @@ public class C1_DTLZ3 extends DTLZ3 {
 	}
 
 	/**
-	 * Constructs a C1-DTLZ3 test problem with the specified number of
-	 * objectives.  This is equivalent to calling
+	 * Constructs a C1-DTLZ3 test problem with the specified number of objectives.  This is equivalent to calling
 	 * {@code new DTLZ3(numberOfObjectives+9, numberOfObjectives)}.
 	 * 
 	 * @param numberOfObjectives the number of objectives for this problem

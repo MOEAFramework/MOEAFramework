@@ -64,8 +64,7 @@ public class HUXTest {
 	}
 
 	/**
-	 * Tests if the correct number of bits are swapped. On average, half of the
-	 * differing bits should be swapped.
+	 * Tests if the correct number of bits are swapped. On average, half of the differing bits should be swapped.
 	 */
 	@Test
 	public void testSwapProbability() {

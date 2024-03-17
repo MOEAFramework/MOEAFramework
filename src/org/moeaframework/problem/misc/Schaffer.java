@@ -24,8 +24,7 @@ import org.moeaframework.problem.AbstractProblem;
 import org.moeaframework.problem.AnalyticalProblem;
 
 /**
- * The Schaffer problem.  The Schaffer problem is univariate, with the optimum
- * defined by {@code 0 <= x <= 2}.
+ * The Schaffer problem.  The Schaffer problem is univariate, with the optimum defined by {@code 0 <= x <= 2}.
  * <p>
  * Properties:
  * <ul>
@@ -35,16 +34,13 @@ import org.moeaframework.problem.AnalyticalProblem;
  * <p>
  * References:
  * <ol>
- *   <li>Schaffer, J. D. (1984).  "Some Experiments in Machine Learning using
- *       Vector Evaluated Genetic Algorithms."  Ph.D. Thesis, Vanderbilt
- *       University, Nashville, USA.
- *   <li>Schaffer, J. D. (1985).  "Multiple Objective Optimization with Vector
- *       Evaluated Genetic Algorithms."  Genetic Algorithms and Their
- *       Applications: Proceedings of the First International Conference on
- *       Genetic Algorithms, pp. 93-100.
- *   <li>Van Veldhuizen, D. A (1999).  "Multiobjective Evolutionary Algorithms: 
- *       Classifications, Analyses, and New Innovations."  Air Force Institute
- *       of Technology, Ph.D. Thesis, Appendix B.
+ *   <li>Schaffer, J. D. (1984).  "Some Experiments in Machine Learning using Vector Evaluated Genetic Algorithms."
+ *       Ph.D. Thesis, Vanderbilt University, Nashville, USA.
+ *   <li>Schaffer, J. D. (1985).  "Multiple Objective Optimization with Vector Evaluated Genetic Algorithms."  Genetic
+ *       Algorithms and Their Applications: Proceedings of the First International Conference on Genetic Algorithms,
+ *       pp. 93-100.
+ *   <li>Van Veldhuizen, D. A (1999).  "Multiobjective Evolutionary Algorithms: Classifications, Analyses, and New
+ *       Innovations."  Air Force Institute of Technology, Ph.D. Thesis, Appendix B.
  * </ol>
  */
 public class Schaffer extends AbstractProblem implements AnalyticalProblem {

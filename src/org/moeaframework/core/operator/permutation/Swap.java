@@ -23,8 +23,7 @@ import org.moeaframework.core.operator.TypeSafeMutation;
 import org.moeaframework.core.variable.Permutation;
 
 /**
- * Swap mutation operator. Randomly selects two entries in the permutation and
- * swaps their position.
+ * Swap mutation operator. Randomly selects two entries in the permutation and swaps their position.
  * <p>
  * This operator is type-safe.
  */

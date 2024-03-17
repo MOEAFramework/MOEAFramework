@@ -86,8 +86,7 @@ public class EpsilonBoxDominanceArchiveTest {
 	}
 
 	/**
-	 * Tests if the improvement counts correctly records non-dominated
-	 * improvements.
+	 * Tests if the improvement counts correctly records non-dominated improvements.
 	 */
 	@Test
 	public void test3() {
@@ -104,8 +103,7 @@ public class EpsilonBoxDominanceArchiveTest {
 	}
 
 	/**
-	 * Tests if the improvement counts correctly discounts dominated, but
-	 * same box cases.
+	 * Tests if the improvement counts correctly discounts dominated, but same box cases.
 	 */
 	@Test
 	public void test4() {
@@ -122,8 +120,7 @@ public class EpsilonBoxDominanceArchiveTest {
 	}
 
 	/**
-	 * Tests if the improvement counts correctly records non-dominated, same
-	 * box cases.
+	 * Tests if the improvement counts correctly records non-dominated, same box cases.
 	 */
 	@Test
 	public void test5() {

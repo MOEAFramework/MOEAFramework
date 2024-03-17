@@ -23,9 +23,8 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * Abstract class for implementing ordinal (rank-based) statistical tests.
- * Methods are provided for storing {@link RankedObservation} objects and
- * updating their ranks.
+ * Abstract class for implementing ordinal (rank-based) statistical tests.  Methods are provided for storing
+ * {@link RankedObservation} objects and updating their ranks.
  */
 public abstract class OrdinalStatisticalTest implements StatisticalTest {
 
@@ -63,8 +62,7 @@ public abstract class OrdinalStatisticalTest implements StatisticalTest {
 	protected final List<RankedObservation> data;
 
 	/**
-	 * Constructs a new ordinal (rank-based) statistical test for the specified
-	 * number of groups.
+	 * Constructs a new ordinal (rank-based) statistical test for the specified number of groups.
 	 * 
 	 * @param numberOfGroups the number of groups being tested
 	 */
@@ -73,8 +71,8 @@ public abstract class OrdinalStatisticalTest implements StatisticalTest {
 	}
 
 	/**
-	 * Constructs a new ordinal (rank-based) statistical test for the specified
-	 * number of groups and the comparator for ordering observations.
+	 * Constructs a new ordinal (rank-based) statistical test for the specified number of groups and the comparator
+	 * for ordering observations.
 	 * 
 	 * @param numberOfGroups the number of groups being tested
 	 * @param comparator the comparator for ordering observations

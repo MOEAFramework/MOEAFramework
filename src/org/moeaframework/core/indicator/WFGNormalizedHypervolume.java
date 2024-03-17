@@ -40,8 +40,7 @@ public class WFGNormalizedHypervolume extends NormalizedIndicator {
 	private WFGHypervolume hypervolume;
 
 	/**
-	 * Constructs a hypervolume evaluator for the specified problem and 
-	 * reference set.
+	 * Constructs a hypervolume evaluator for the specified problem and reference set.
 	 * 
 	 * @param problem the problem
 	 * @param referenceSet the reference set
@@ -52,8 +51,7 @@ public class WFGNormalizedHypervolume extends NormalizedIndicator {
 	}
 	
 	/**
-	 * Constructs a hypervolume evaluator for the specified problem using the
-	 * given reference set and reference point.
+	 * Constructs a hypervolume evaluator for the specified problem using the given reference set and reference point.
 	 * 
 	 * @param problem the problem
 	 * @param referenceSet the reference set
@@ -65,8 +63,7 @@ public class WFGNormalizedHypervolume extends NormalizedIndicator {
 	}
 	
 	/**
-	 * Constructs a hypervolume evaluator for the specified problem using the
-	 * given minimum and maximum bounds.
+	 * Constructs a hypervolume evaluator for the specified problem using the given minimum and maximum bounds.
 	 * 
 	 * @param problem the problem
 	 * @param minimum the minimum bounds of the set

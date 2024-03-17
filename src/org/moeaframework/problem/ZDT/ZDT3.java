@@ -33,8 +33,7 @@ public class ZDT3 extends ZDT {
 	}
 
 	/**
-	 * Constructs a ZDT3 test problem with the specified number of decision
-	 * variables.
+	 * Constructs a ZDT3 test problem with the specified number of decision variables.
 	 * 
 	 * @param numberOfVariables the number of decision variables
 	 */
@@ -52,8 +51,7 @@ public class ZDT3 extends ZDT {
 		}
 		g = (9.0 / (numberOfVariables - 1)) * g + 1.0;
 
-		double h = 1.0 - Math.sqrt(x[0] / g) - (x[0] / g)
-				* Math.sin(10.0 * Math.PI * x[0]);
+		double h = 1.0 - Math.sqrt(x[0] / g) - (x[0] / g) * Math.sin(10.0 * Math.PI * x[0]);
 
 		solution.setObjective(0, x[0]);
 		solution.setObjective(1, g * h);

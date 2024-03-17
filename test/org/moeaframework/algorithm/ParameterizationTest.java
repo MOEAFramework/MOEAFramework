@@ -30,9 +30,8 @@ import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.util.TypedProperties;
 
 /**
- * Tests the parameterization of algorithms, ensuring the parameters defined in
- * parameter description files in the directory {@value directory} are actually
- * accessed by the algorithm.
+ * Tests the parameterization of algorithms, ensuring the parameters defined in parameter description files in the
+ * directory {@value directory} are actually accessed by the algorithm.
  */
 public class ParameterizationTest {
 	
@@ -44,13 +43,11 @@ public class ParameterizationTest {
 	/**
 	 * The algorithms being tested.
 	 */
-	private final String[] algorithms = { "eMOEA", "eNSGAII", "GDE3",
-			"IBEA", "MOEAD", "NSGAII", "OMOPSO", "SPEA2" };
+	private final String[] algorithms = { "eMOEA", "eNSGAII", "GDE3", "IBEA", "MOEAD", "NSGAII", "OMOPSO", "SPEA2" };
 	
 	/**
-	 * Tests all listed algorithms to ensure all parameters in their associated
-	 * parameter description file are accessed by the algorithm.  This test
-	 * excludes the parameter {@code maxEvaluations}.
+	 * Tests all listed algorithms to ensure all parameters in their associated parameter description file are accessed
+	 * by the algorithm.  This test excludes the parameter {@code maxEvaluations}.
 	 * 
 	 * @throws IOException if an I/O error occurred
 	 */
@@ -69,8 +66,7 @@ public class ParameterizationTest {
 			ParameterFile pf = new ParameterFile(file);
 			TypedProperties properties = new TypedProperties();
 
-			AlgorithmFactory.getInstance().getAlgorithm(algorithm, properties, 
-					problem);
+			AlgorithmFactory.getInstance().getAlgorithm(algorithm, properties, problem);
 			
 			for (int i=0; i<pf.size(); i++) {
 				Parameter parameter = pf.get(i);

@@ -18,14 +18,13 @@
 package org.moeaframework.core.comparator;
 
 /**
- * Compares two solutions using aggregate constraint violation and the Pareto
- * dominance relation as originally proposed by Kalyanmoy Deb.
+ * Compares two solutions using aggregate constraint violation and the Pareto dominance relation as originally proposed
+ * by Kalyanmoy Deb.
  * <p>
  * References:
  * <ol>
- * <li>Deb, K., "An Efficient Constraint Handling Method for Genetic
- * Algorithms." Computer Methods in Applied Mechanics and Engineering, pp.
- * 311--338, 1998.
+ *   <li>Deb, K., "An Efficient Constraint Handling Method for Genetic Algorithms." Computer Methods in Applied
+ *       Mechanics and Engineering, pp. 311--338, 1998.
  * </ol>
  * 
  * @see AggregateConstraintComparator

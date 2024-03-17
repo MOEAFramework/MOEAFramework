@@ -26,9 +26,8 @@ import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Settings;
 
 /**
- * Redirects all content received by an {@link InputStream} to an
- * {@link OutputStream}. This thread terminates when the input stream is closed
- * or the end of file is reached. The output stream is never closed.
+ * Redirects all content received by an {@link InputStream} to an {@link OutputStream}. This thread terminates when the
+ * input stream is closed or the end of file is reached. The output stream is never closed.
  */
 public class RedirectStream extends Thread {
 
@@ -43,8 +42,8 @@ public class RedirectStream extends Thread {
 	private final OutputStream outputStream;
 
 	/**
-	 * Constructs a thread for reading the contents out of the specified input
-	 * stream. The contents are deleted and are not redirected anywhere.
+	 * Constructs a thread for reading the contents out of the specified input stream. The contents are deleted and are
+	 * not redirected anywhere.
 	 * 
 	 * @param inputStream the input stream from which content is read
 	 */
@@ -53,8 +52,7 @@ public class RedirectStream extends Thread {
 	}
 
 	/**
-	 * Constructs a thread for redirecting the contents of the specified input
-	 * stream to the specified output stream.
+	 * Constructs a thread for redirecting the contents of the specified input stream to the specified output stream.
 	 * 
 	 * @param inputStream the input stream from which content is read
 	 * @param outputStream the output stream to which the content is redirected
@@ -86,8 +84,8 @@ public class RedirectStream extends Thread {
 	}
 
 	/**
-	 * Reads all the contents of the specified input stream. The contents are
-	 * immediately deleted and are not redirected anywhere.
+	 * Reads all the contents of the specified input stream. The contents are immediately deleted and are not
+	 * redirected anywhere.
 	 * 
 	 * @param inputStream the input stream from which content is read
 	 */
@@ -96,8 +94,7 @@ public class RedirectStream extends Thread {
 	}
 
 	/**
-	 * Redirects all the contents from the specified input stream to the
-	 * specified output stream.
+	 * Redirects all the contents from the specified input stream to the specified output stream.
 	 * 
 	 * @param inputStream the input stream from which content is read
 	 * @param outputStream the output stream to which the content is redirected

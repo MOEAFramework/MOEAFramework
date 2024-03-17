@@ -76,8 +76,7 @@ public class AbstractAlgorithmTest {
 	}
 
 	/**
-	 * Test {@code AbstractAlgorithm} that counts the number of times the
-	 * {@code iterate} method is invoked.
+	 * Test {@code AbstractAlgorithm} that counts the number of times the {@code iterate} method is invoked.
 	 */
 	private static class TestAbstractAlgorithm extends AbstractAlgorithm {
 
@@ -115,8 +114,7 @@ public class AbstractAlgorithmTest {
 	}
 
 	/**
-	 * Tests if the {@code AbstractAlgorithm} works correcly under normal
-	 * operating conditions.
+	 * Tests if the {@code AbstractAlgorithm} works correctly under normal operating conditions.
 	 */
 	@Test
 	public void testLifecycle1() {
@@ -144,8 +142,7 @@ public class AbstractAlgorithmTest {
 	}
 
 	/**
-	 * Tests if the {@code AbstractAlgorithm} works correcly under normal
-	 * operating conditions.
+	 * Tests if the {@code AbstractAlgorithm} works correctly under normal operating conditions.
 	 */
 	@Test
 	public void testLifecycle2() {
@@ -168,9 +165,8 @@ public class AbstractAlgorithmTest {
 	}
 
 	/**
-	 * While this state may seem to be an error, since the {@link Algorithm}
-	 * interface does not provide an {@code initialize()} method, calling
-	 * {@code terminate} immediately after the constructor is valid.
+	 * While this state may seem to be an error, since the {@link Algorithm} interface does not provide an
+	 * {@code initialize()} method, calling {@code terminate} immediately after the constructor is valid.
 	 */
 	@Test
 	public void testLifecycle3() {
@@ -183,8 +179,8 @@ public class AbstractAlgorithmTest {
 	}
 
 	/**
-	 * Tests if an abnormal lifecycle is correctly handled; in this case,
-	 * if the {@code AbstractAlgorithm} is initialized twice.
+	 * Tests if an abnormal lifecycle is correctly handled; in this case, if the {@code AbstractAlgorithm} is
+	 * initialized twice.
 	 */
 	@Test(expected = AlgorithmException.class)
 	public void testLifecycleError1() {
@@ -195,8 +191,8 @@ public class AbstractAlgorithmTest {
 	}
 
 	/**
-	 * Tests if an abnormal lifecycle is correctly handled; in this case,
-	 * if the {@code AbstractAlgorithm} is initialized twice.
+	 * Tests if an abnormal lifecycle is correctly handled; in this case, if the {@code AbstractAlgorithm} is
+	 * initialized twice.
 	 */
 	@Test(expected = AlgorithmException.class)
 	public void testLifecycleError2() {
@@ -207,8 +203,8 @@ public class AbstractAlgorithmTest {
 	}
 
 	/**
-	 * Tests if an abnormal lifecycle is correctly handled; in this case,
-	 * if the {@code AbstractAlgorithm} is terminated twice.
+	 * Tests if an abnormal lifecycle is correctly handled; in this case, if the {@code AbstractAlgorithm} is
+	 * terminated twice.
 	 */
 	@Test(expected = AlgorithmException.class)
 	public void testLifecycleError3() {
@@ -220,8 +216,8 @@ public class AbstractAlgorithmTest {
 	}
 
 	/**
-	 * Tests if an abnormal lifecycle is correctly handled; in this case,
-	 * if the {@code AbstractAlgorithm} is iterated after termination.
+	 * Tests if an abnormal lifecycle is correctly handled; in this case, if the {@code AbstractAlgorithm} is iterated
+	 * after termination.
 	 */
 	@Test(expected = AlgorithmException.class)
 	public void testLifecycleError4() {
@@ -233,8 +229,8 @@ public class AbstractAlgorithmTest {
 	}
 
 	/**
-	 * Tests if an abnormal lifecycle is correctly handled; in this case,
-	 * if the {@code AbstractAlgorithm} is initialized after termination.
+	 * Tests if an abnormal lifecycle is correctly handled; in this case, if the {@code AbstractAlgorithm} is
+	 * initialized after termination.
 	 */
 	@Test(expected = AlgorithmException.class)
 	public void testLifecycleError5() {
@@ -246,8 +242,7 @@ public class AbstractAlgorithmTest {
 	}
 
 	/**
-	 * Tests if the {@code evaluate} and {@code evaluateAll} methods correctly
-	 * track the number of evaluations.
+	 * Tests if the {@code evaluate} and {@code evaluateAll} methods correctly track the number of evaluations.
 	 */
 	@Test
 	public void testNumberOfEvaluations() {
@@ -266,9 +261,8 @@ public class AbstractAlgorithmTest {
 	}
 
 	/**
-	 * While this is technically an error as the {@code AbstractAlgorithm} is
-	 * not serializable, the current contract of {@link Checkpoints} requires
-	 * it to continue normally if the state file is not available.
+	 * While this is technically an error as the {@code AbstractAlgorithm} is not serializable, the current contract of
+	 * {@link Checkpoints} requires it to continue normally if the state file is not available.
 	 * 
 	 * @throws IOException should not occur
 	 */

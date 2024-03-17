@@ -87,9 +87,8 @@ public class EpsilonBoxObjectiveComparatorTest {
 	}
 
 	/**
-	 * Test if an {@code EpsilonBoxObjectiveComparator} correctly detects
-	 * dominance within the same &epsilon;-box (i.e., selects the solution 
-	 * nearer to the optimal corner).
+	 * Test if an {@code EpsilonBoxObjectiveComparator} correctly detects dominance within the same &epsilon;-box
+	 * (i.e., selects the solution nearer to the optimal corner).
 	 */
 	@Test
 	public void testDominanceInBox() {

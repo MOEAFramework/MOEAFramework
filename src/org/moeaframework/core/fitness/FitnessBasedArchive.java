@@ -25,11 +25,9 @@ import org.moeaframework.core.comparator.FitnessComparator;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
 
 /**
- * Maintains a non-dominated archive of solutions with a maximum capacity.
- * If the size exceeds the capacity, one or more solutions are pruned based on
- * the fitness calculation.  The fitness calculation only occurs when the
- * addition of a solution exceeds the capacity.  The fitness can be manually
- * calculated by calling {@link #update()}.
+ * Maintains a non-dominated archive of solutions with a maximum capacity.  If the size exceeds the capacity, one or
+ * more solutions are pruned based on the fitness calculation.  The fitness calculation only occurs when the
+ * addition of a solution exceeds the capacity.  The fitness can be manually calculated by calling {@link #update()}.
  */
 public class FitnessBasedArchive extends NondominatedPopulation {
 	
@@ -81,8 +79,8 @@ public class FitnessBasedArchive extends NondominatedPopulation {
 	 * @param comparator the dominance comparator
 	 * @param iterable the solutions used to initialize this population
 	 */
-	public FitnessBasedArchive(FitnessEvaluator evaluator, int capacity,
-			DominanceComparator comparator, Iterable<? extends Solution> iterable) {
+	public FitnessBasedArchive(FitnessEvaluator evaluator, int capacity, DominanceComparator comparator,
+			Iterable<? extends Solution> iterable) {
 		this(evaluator, capacity, comparator);
 		addAll(iterable);
 	}

@@ -43,8 +43,8 @@ public abstract class SequenceTest {
 	}
 
 	/**
-	 * Generates samples using the specified sequence and checks if the samples
-	 * are uniformly distributed in the range {@code [0, 1]}.
+	 * Generates samples using the specified sequence and checks if the samples are uniformly distributed in the range
+	 * {@code [0, 1]}.
 	 * 
 	 * @param sequence the sequence to test
 	 * @param D the dimension of the samples

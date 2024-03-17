@@ -34,9 +34,8 @@ import org.moeaframework.core.configuration.Configurable;
 public interface Variation extends Configurable {
 	
 	/**
-	 * Returns the name of this variation operator.  This name should also be used as the prefix for any
-	 * parameters.  As such, the name should only contain alphanumeric characters, avoid using whitespace and other
-	 * symbols.
+	 * Returns the name of this variation operator.  This name should also be used as the prefix for any parameters.
+	 * As such, the name should only contain alphanumeric characters, avoid using whitespace and other symbols.
 	 * 
 	 * @return the name of this variation operator
 	 */

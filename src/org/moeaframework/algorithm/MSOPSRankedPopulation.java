@@ -37,43 +37,36 @@ import org.moeaframework.core.comparator.AggregateConstraintComparator;
 import org.moeaframework.core.comparator.RankComparator;
 
 /**
- * Population implementing the ranking scheme used by the Multiple Single
- * Objective Pareto Sampling (MSOPS) algorithm.  Solutions are ranked with 
- * respect to T weight vectors based on two metrics --- the weighted min-max
- * aggregate and the vector angle distance scaling (VADS) metric --- producing
- * 2*T scores/rankings.  The overall ranking of a solution is computed using a
- * lexicographical ordering, where the best rank is given to the solution with
- * the best individual ranking among the T weight vectors.
+ * Population implementing the ranking scheme used by the Multiple Single Objective Pareto Sampling (MSOPS) algorithm.
+ * Solutions are ranked with respect to {@code T} weight vectors based on two metrics --- the weighted min-max
+ * aggregate and the vector angle distance scaling (VADS) metric --- producing {@code 2*T} scores/rankings.  The
+ * overall ranking of a solution is computed using a lexicographical ordering, where the best rank is given to the
+ * solution with the best individual ranking among the {@code T} weight vectors.
  * <p>
- * Three methods of constraint handling are described in the literature.  In the
- * original paper, [1], E. Hughes recommends ranking feasible and infeasible
- * solutions separately and ensuring the ranking if worse for the infeasible
- * solutions.  In the published Matlab code, [2], E. Hughes penalizes the
- * objective values based on the magnitude of the constraint violation.  Lastly,
- * in [3], E. Hughes states that the infeasible solutions are ranked in order
- * by their aggregate constraint violation.  Regardless of these differences,
- * all three methods ensure the ranking is always worse for infeasible
- * solutions.  This implementation follows this practice by penalizing the
- * scores based on the magnitude of the constraint violation (similar to [2]).
+ * Three methods of constraint handling are described in the literature.  In the original paper, [1], E. Hughes
+ * recommends ranking feasible and infeasible solutions separately and ensuring the ranking if worse for the infeasible
+ * solutions.  In the published Matlab code, [2], E. Hughes penalizes the objective values based on the magnitude of
+ * the constraint violation.  Lastly, in [3], E. Hughes states that the infeasible solutions are ranked in order
+ * by their aggregate constraint violation.  Regardless of these differences, all three methods ensure the ranking is
+ * always worse for infeasible solutions.  This implementation follows this practice by penalizing the scores based on
+ * the magnitude of the constraint violation (similar to [2]).
  * <p>
  * References:
  * <ol>
- *   <li>E. J. Hughes.  "Multiple Single Objective Pareto Sampling."  2003
- *       Congress on Evolutionary Computation, pp. 2678-2684.
- *   <li>Matlab source code available from
- *       <a href="http://code.evanhughes.org/">http://code.evanhughes.org/</a>.
- *   <li>E. J. Hughes.  "MSOPS-II: A general-purpose many-objective optimizer."
- *       2007 IEEE Congress on Evolutionary Computation, pp. 3944-3951.
- *   <li>E. J. Hughes.  "Evolutionary many-objective optimization: many once or
- *       one many."  2005 IEEE Congress on Evolutionary Computation,
- *       pp. 222-227.
+ *   <li>E. J. Hughes.  "Multiple Single Objective Pareto Sampling."  2003 Congress on Evolutionary Computation,
+ *       pp. 2678-2684.
+ *   <li>Matlab source code available from <a href="http://code.evanhughes.org/">http://code.evanhughes.org/</a>.
+ *   <li>E. J. Hughes.  "MSOPS-II: A general-purpose many-objective optimizer."  2007 IEEE Congress on Evolutionary
+ *       Computation, pp. 3944-3951.
+ *   <li>E. J. Hughes.  "Evolutionary many-objective optimization: many once or one many."  2005 IEEE Congress on
+ *       Evolutionary Computation, pp. 222-227.
  * </ol>
  */
 public class MSOPSRankedPopulation extends Population {
 	
 	/**
-	 * {@code true} if the population has been modified but the ranking method
-	 * has not yet been invoked; {@code false} otherwise.
+	 * {@code true} if the population has been modified but the ranking method has not yet been invoked; {@code false}
+	 * otherwise.
 	 */
 	private boolean modified;
 	
@@ -93,14 +86,13 @@ public class MSOPSRankedPopulation extends Population {
 	int[][] ranks;
 	
 	/**
-	 * Matrix of rankings sorted on each row, updated by calling
-	 * {@link #update()}.
+	 * Matrix of rankings sorted on each row, updated by calling {@link #update()}.
 	 */
 	int[][] sortedRanks;
 
 	/**
-	 * Constructs an empty population that maintains the {@code rank} and
-	 * attribute for its solutions using the MSOPS ranking method.
+	 * Constructs an empty population that maintains the {@code rank} and attribute for its solutions using the MSOPS
+	 * ranking method.
 	 * 
 	 * @param weights the weight vectors
 	 */
@@ -110,9 +102,8 @@ public class MSOPSRankedPopulation extends Population {
 	}
 
 	/**
-	 * Constructs a population initialized with the specified solutions that 
-	 * maintains the {@code rank} attribute for its solutions using the MSOPS
-	 * ranking method.
+	 * Constructs a population initialized with the specified solutions that maintains the {@code rank} attribute for
+	 * its solutions using the MSOPS ranking method.
 	 * 
 	 * @param weights the weight vectors
 	 * @param iterable the solutions used to initialize this population
@@ -207,8 +198,7 @@ public class MSOPSRankedPopulation extends Population {
 	}
 	
 	/**
-	 * Returns the neighborhood of solutions nearest to and including the
-	 * given solution.
+	 * Returns the neighborhood of solutions nearest to and including the given solution.
 	 * 
 	 * @param index the index of the solution at the center of the neighborhood
 	 * @param size the size of the neighborhood
@@ -268,12 +258,10 @@ public class MSOPSRankedPopulation extends Population {
 	}
 
 	/**
-	 * Updates the rank attribute of all solutions in this population using the
-	 * MSOPS ranking method.  This method will in general be called
-	 * automatically when the population is modified.  However, only changes
-	 * made to this population can be tracked; changes made directly to the
-	 * contained solutions will not be detected.  Therefore, it may be necessary
-	 * to invoke {@link #update()} manually.
+	 * Updates the rank attribute of all solutions in this population using the MSOPS ranking method.  This method will
+	 * in general be called automatically when the population is modified.  However, only changes made to this
+	 * population can be tracked; changes made directly to the contained solutions will not be detected.  Therefore,
+	 * it may be necessary to invoke {@link #update()} manually.
 	 */
 	public void update() {
 		modified = false;

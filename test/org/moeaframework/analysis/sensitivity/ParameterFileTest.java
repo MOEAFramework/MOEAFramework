@@ -33,32 +33,35 @@ public class ParameterFileTest {
 	/**
 	 * A valid parameter file input.
 	 */
-	public static final String COMPLETE = "entry1 0.0 1.0\n"
-			+ "#comment 0.0 1.0\n" + "entry2 100 10000\n" + "entry3 0.0 1.0";
+	public static final String COMPLETE = "entry1 0.0 1.0\n" +
+			"#comment 0.0 1.0\n" +
+			"entry2 100 10000\n" +
+			"entry3 0.0 1.0";
 
 	/**
 	 * An invalid parameter file input, where an entry is missing an element.
 	 */
-	public static final String INVALID1 = "entry1 0.0 1.0\n" + "entry2 100\n" + 
+	public static final String INVALID1 = "entry1 0.0 1.0\n" +
+			"entry2 100\n" + 
 			"entry3 0.0 1.0";
 
 	/**
 	 * An invalid parameter file input, where an entry is missing an entire
 	 * line.
 	 */
-	public static final String INVALID2 = "entry1 0.0 1.0\n" + "\n" + 
+	public static final String INVALID2 = "entry1 0.0 1.0\n" +
+			"\n" + 
 			"entry3 0.0 1.0";
 
 	/**
 	 * An invalid parameter file input, containing unparseable data.
 	 */
-	public static final String INVALID3 = "entry1 0.0 1.0\n"
-			+ "entry2 100foo 10000\n" + // unparseable data
+	public static final String INVALID3 = "entry1 0.0 1.0\n" +
+			"entry2 100foo 10000\n" + // unparseable data
 			"entry3 0.0 1.0";
 
 	/**
-	 * Performs the necessary assertions to validate a successful load of the
-	 * COMPLETE input.
+	 * Performs the necessary assertions to validate a successful load of the COMPLETE input.
 	 * 
 	 * @param pf the parameter file
 	 */

@@ -57,8 +57,7 @@ public class Cosh extends Node {
 	
 	@Override
 	public Number evaluate(Environment environment) {
-		return NumberArithmetic.cosh(
-				(Number)getArgument(0).evaluate(environment));
+		return NumberArithmetic.cosh((Number)getArgument(0).evaluate(environment));
 	}
 
 }

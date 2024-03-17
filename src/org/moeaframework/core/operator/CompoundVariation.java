@@ -20,8 +20,8 @@ package org.moeaframework.core.operator;
 import org.moeaframework.core.Variation;
 
 /**
- * Construct a variation operator applying one or more variations sequentially.
- * See {@link AbstractCompoundVariation} for usage.
+ * Construct a variation operator applying one or more variations sequentially.  See {@link AbstractCompoundVariation}
+ * for usage.
  */
 public class CompoundVariation extends AbstractCompoundVariation<Variation> implements Variation {
 

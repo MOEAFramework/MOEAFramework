@@ -37,8 +37,7 @@ public class Permutation implements Variable {
 	private int[] permutation;
 
 	/**
-	 * Constructs a permutation variable with the specified number of
-	 * elements.
+	 * Constructs a permutation variable with the specified number of elements.
 	 * 
 	 * @param size the number of elements in the permutation
 	 */
@@ -53,12 +52,10 @@ public class Permutation implements Variable {
 	}
 
 	/**
-	 * Constructs a permutation variable using the specified permutation
-	 * array.
+	 * Constructs a permutation variable using the specified permutation array.
 	 * 
 	 * @param permutation the permutation array
-	 * @throws IllegalArgumentException if the permutation array is not a valid
-	 *         permutation
+	 * @throws IllegalArgumentException if the permutation array is not a valid permutation
 	 */
 	public Permutation(int[] permutation) {
 		super();
@@ -87,20 +84,18 @@ public class Permutation implements Variable {
 	 * 
 	 * @param index the index of the permutation value to be returned
 	 * @return the permutation element at the specified index
-	 * @throws ArrayIndexOutOfBoundsException if the index is out of range {@code [0,
-	 *         size()-1]}
+	 * @throws ArrayIndexOutOfBoundsException if the index is out of range {@code [0, size()-1]}
 	 */
 	public int get(int index) {
 		return permutation[index];
 	}
 
 	/**
-	 * Swaps the {@code i}th and {@code j}th elements in this permutation.
+	 * Swaps the {@code i}-th and {@code j}-th elements in this permutation.
 	 * 
 	 * @param i the first index
 	 * @param j the second index
-	 * @throws ArrayIndexOutOfBoundsException if {@code i} or {@code j} is out
-	 *         or range @{code [0, size()-1]}
+	 * @throws ArrayIndexOutOfBoundsException if {@code i} or {@code j} is out or range @{code [0, size()-1]}
 	 */
 	public void swap(int i, int j) {
 		int temp = permutation[i];
@@ -109,13 +104,11 @@ public class Permutation implements Variable {
 	}
 
 	/**
-	 * Removes the {@code i}th element and inserts it at the {@code j}th
-	 * position.
+	 * Removes the {@code i}-th element and inserts it at the {@code j}-th position.
 	 * 
 	 * @param i the first index
 	 * @param j the second index
-	 * @throws ArrayIndexOutOfBoundsException if {@code i} or {@code j} is out
-	 *         or range @{code [0, size()-1]}
+	 * @throws ArrayIndexOutOfBoundsException if {@code i} or {@code j} is out or range @{code [0, size()-1]}
 	 */
 	public void insert(int i, int j) {
 		int temp = permutation[i];
@@ -187,12 +180,10 @@ public class Permutation implements Variable {
 	}
 
 	/**
-	 * Returns {@code true} if the specified permutation is valid; {@code false}
-	 * otherwise.
+	 * Returns {@code true} if the specified permutation is valid; {@code false} otherwise.
 	 * 
 	 * @param permutation the permutation array
-	 * @return {@code true} if the specified permutation is valid; {@code false}
-	 *         otherwise
+	 * @return {@code true} if the specified permutation is valid; {@code false} otherwise
 	 */
 	public static boolean isPermutation(int[] permutation) {
 		try {

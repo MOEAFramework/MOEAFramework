@@ -17,14 +17,12 @@
  */
 
 /**
- * Package for the complicated Pareto sets test suite by Hui Li and Qingfu 
- * Zhang.
+ * Package for the complicated Pareto sets test suite by Hui Li and Qingfu Zhang.
  * <p>
  * References:
  * <ol>
- *   <li>Li and Zhang (2009). "Multiobjective Optimization Problems with
- *       Complicated Pareto Sets, MOEA/D and NSGA-II."  IEEE Transactions on
- *       Evolutionary Computation.  13(2):284-302.
+ *   <li>Li and Zhang (2009). "Multiobjective Optimization Problems with Complicated Pareto Sets, MOEA/D and NSGA-II."
+ *       IEEE Transactions on Evolutionary Computation.  13(2):284-302.
  * </ol>
  */
 package org.moeaframework.problem.LZ;

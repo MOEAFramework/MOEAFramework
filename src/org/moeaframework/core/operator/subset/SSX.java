@@ -26,8 +26,8 @@ import org.moeaframework.core.operator.TypeSafeCrossover;
 import org.moeaframework.core.variable.Subset;
 
 /**
- * Subset crossover.  Similar to {@code HUX} for binary strings, SSX swaps
- * half of the non-shared members of the two subsets.
+ * Subset crossover.  Similar to {@code HUX} for binary strings, SSX swaps half of the non-shared members of the two\
+ * subsets.
  * <p>
  * This variation operator is type-safe.
  */
@@ -35,8 +35,7 @@ import org.moeaframework.core.variable.Subset;
 public class SSX extends TypeSafeCrossover<Subset> {
 
 	/**
-	 * Constructs a SSX operator with a 30% chance of being applied to each
-	 * subset variable.
+	 * Constructs a SSX operator with a 30% chance of being applied to each subset variable.
 	 */
 	public SSX() {
 		this(0.3);

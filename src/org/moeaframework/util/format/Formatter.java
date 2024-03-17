@@ -44,8 +44,8 @@ public interface Formatter<T> {
 	public String format(Object value);
 	
 	/**
-	 * Formats a list of values into a string representation.  The follows the same formatting
-	 * as {@link Arrays#toString(Object[])}.
+	 * Formats a list of values into a string representation.  The follows the same formatting as
+	 * {@link Arrays#toString(Object[])}.
 	 * 
 	 * @param values the list of values
 	 * @return the string representation
@@ -55,8 +55,8 @@ public interface Formatter<T> {
 	}
 	
 	/**
-	 * Formats a stream of values into a string representation.  The follows the same formatting
-	 * as {@link Arrays#toString(Object[])}.
+	 * Formats a stream of values into a string representation.  The follows the same formatting as
+	 * {@link Arrays#toString(Object[])}.
 	 * 
 	 * @param values the stream of values
 	 * @return the string representation

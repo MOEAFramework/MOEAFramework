@@ -18,38 +18,32 @@
 package org.moeaframework.analysis.collector;
 
 /**
- * Collects information from an object.  In general, the object will be an
- * algorithm or an object stored within an algorithm.  Collectors have two
- * states: attached and unattached.  Collectors are initially unattached,
- * and are attached to an appropriate object, called the attach point, by
- * invoking {@link #attach(Object)}.  Once attached, the 
+ * Collects information from an object.  In general, the object will be an algorithm or an object stored within an
+ * algorithm.  Collectors have two states: attached and unattached.  Collectors are initially unattached, and are
+ * attached to an appropriate object, called the attach point, by invoking {@link #attach(Object)}.  Once attached, the 
  * {@link #collect(Observation)} may be invoked.
  */
 public interface Collector {
 	
 	/**
-	 * Returns the attach point describing where this collector is attached.
-	 * The matched object should be unique.
+	 * Returns the attach point describing where this collector is attached.  The matched object should be unique.
 	 * 
 	 * @return the attach point describing where this collector is attached
 	 */
 	public AttachPoint getAttachPoint();
 	
 	/**
-	 * Returns a new instance of this collector which has been attached to the
-	 * specified object as identified by the attach point returned through
-	 * {@link #getAttachPoint()}.
+	 * Returns a new instance of this collector which has been attached to the specified object as identified by the
+	 * attach point returned through {@link #getAttachPoint()}.
 	 * 
 	 * @param object the matching object
-	 * @return a new instance of this collector which has been attached to the
-	 *         specified object
+	 * @return a new instance of this collector which has been attached to the specified object
 	 */
 	public Collector attach(Object object);
 
 	/**
-	 * Collects the requested information from the object, storing the data
-	 * to the specified observation.  This method must only be invoked after
-	 * this collector has been attached to an appropriate object.
+	 * Collects the requested information from the object, storing the data to the specified observation.  This method
+	 * must only be invoked after this collector has been attached to an appropriate object.
 	 * 
 	 * @param observation the observation to which the collected data is stored
 	 */

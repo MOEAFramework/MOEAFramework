@@ -31,7 +31,7 @@ import org.moeaframework.core.spi.ProviderNotFoundException;
  * For example, we could add the following to the properties file:
  * <pre>
  *   org.moeaframework.problem.TestLZ1.class = org.moeaframework.problem.LZ.LZ1
- * ,,org.moeaframework.problem.TestLZ1.referenceSet = ./pf/LZ09_F1.pf
+ *   org.moeaframework.problem.TestLZ1.referenceSet = ./pf/LZ09_F1.pf
  * </pre>
  * And then instantiate the problem with:
  * <pre> 

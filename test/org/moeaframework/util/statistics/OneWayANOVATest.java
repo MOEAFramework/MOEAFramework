@@ -53,8 +53,7 @@ public class OneWayANOVATest {
 		test.add(5, 2);
 		test.add(7, 2);
 
-		Assert.assertEquals(6.98, TestUtils
-				.oneWayAnovaFValue(test.categorize()), 0.01);
+		Assert.assertEquals(6.98, TestUtils.oneWayAnovaFValue(test.categorize()), 0.01);
 		Assert.assertTrue(test.test(0.05));
 		Assert.assertTrue(test.test(0.01));
 	}

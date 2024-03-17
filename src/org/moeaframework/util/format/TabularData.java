@@ -60,8 +60,8 @@ public class TabularData<T> implements Displayable {
 	}
 	
 	/**
-	 * Adds a formatter.  This will be used to format any values matching the
-	 * formatter's type (see {@link Formatter#getType()}.
+	 * Adds a formatter.  This will be used to format any values matching the formatter's type (see
+	 * {@link Formatter#getType()}.
 	 * 
 	 * @param formatter the default formatter
 	 */
@@ -77,8 +77,7 @@ public class TabularData<T> implements Displayable {
 	}
 	
 	/**
-	 * Adds a column to this data.  The columns will be displayed in the order they
-	 * are added.
+	 * Adds a column to this data.  The columns will be displayed in the order they are added.
 	 * 
 	 * @param column the column
 	 */

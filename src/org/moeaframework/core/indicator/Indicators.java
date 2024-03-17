@@ -50,8 +50,8 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 	}
 	
 	/**
-	 * Creates an instance of this class that evaluates all standard performance indicators.  This
-	 * excludes the R-indicators.
+	 * Creates an instance of this class that evaluates all standard performance indicators.  This excludes the
+	 * R-indicators.
 	 * 
 	 * @param problem the problem
 	 * @param referenceSet the reference set

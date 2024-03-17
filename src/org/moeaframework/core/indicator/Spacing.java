@@ -48,13 +48,11 @@ public class Spacing implements Indicator {
 	}
 
 	/**
-	 * Computes the spread metric for the specified problem given an
-	 * approximation set.
+	 * Computes the spread metric for the specified problem given an approximation set.
 	 * 
 	 * @param problem the problem
 	 * @param approximationSet an approximation set for the problem
-	 * @return the spread metric for the specified problem given an
-	 *         approximation set
+	 * @return the spread metric for the specified problem given an approximation set
 	 */
 	static double evaluate(Problem problem, NondominatedPopulation approximationSet) {
 		if (approximationSet.size() < 2) {

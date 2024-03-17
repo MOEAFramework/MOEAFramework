@@ -20,8 +20,8 @@ package org.moeaframework.util.statistics;
 import org.apache.commons.math3.stat.inference.TestUtils;
 
 /**
- * The Single-Factor Between-Subjects Analysis of Variance determines if (at
- * least) two out of K >= 2 populations have differing means.
+ * The Single-Factor Between-Subjects Analysis of Variance determines if (at least) two out of K >= 2 populations
+ * have differing means.
  * <ul>
  *   <li>Null Hypothesis: All populations have equal means.
  *   <li>Alternative Hypothesis: Not all populations have equal means.
@@ -36,15 +36,14 @@ import org.apache.commons.math3.stat.inference.TestUtils;
  * <p>
  * References:
  * <ol>
- *   <li>Sheskin, D.J. "Handbook of Parametric and Nonparametric Statistical
- *       Procedures, Third Edition." Chapman &amp; Hall/CRC. 2004.
+ *   <li>Sheskin, D.J. "Handbook of Parametric and Nonparametric Statistical Procedures, Third Edition." Chapman &amp;
+ *       Hall/CRC. 2004.
  * </ol>
  */
 public class OneWayANOVA extends IntervalRatioStatisticalTest {
 
 	/**
-	 * Constructs a one-way ANOVA statistical test with the specified number of
-	 * groups.
+	 * Constructs a one-way ANOVA statistical test with the specified number of groups.
 	 * 
 	 * @param numberOfGroups the number of groups being tested
 	 */

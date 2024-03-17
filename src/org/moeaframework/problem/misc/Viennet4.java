@@ -34,12 +34,10 @@ import org.moeaframework.problem.AbstractProblem;
  * <p>
  * References:
  * <ol>
- *   <li>Viennet, R., et al (1996).  "Multicriteria Optimization Using a
- *       Genetic Algorithm for Determining a Pareto Set."  International
- *       Journal of Systems Science, 27(2):255-260.
- *   <li>Van Veldhuizen, D. A (1999).  "Multiobjective Evolutionary Algorithms: 
- *       Classifications, Analyses, and New Innovations."  Air Force Institute
- *       of Technology, Ph.D. Thesis, Appendix B.
+ *   <li>Viennet, R., et al (1996).  "Multicriteria Optimization Using a Genetic Algorithm for Determining a Pareto
+ *       Set."  International Journal of Systems Science, 27(2):255-260.
+ *   <li>Van Veldhuizen, D. A (1999).  "Multiobjective Evolutionary Algorithms: Classifications, Analyses, and New
+ *       Innovations."  Air Force Institute of Technology, Ph.D. Thesis, Appendix B.
  * </ol>
  */
 public class Viennet4 extends AbstractProblem {
@@ -59,8 +57,7 @@ public class Viennet4 extends AbstractProblem {
 		double f2 = Math.pow(x + y - 3.0, 2.0) / 175.0 + Math.pow(2.0*y - x, 2.0) / 17.0 - 13.0;
 		double f3 = Math.pow(3.0*x - 2.0*y + 4.0, 2.0) / 8.0 + Math.pow(x - y + 1.0, 2.0) / 27.0 + 15.0;
 		
-		//subtract Double.MIN_VALUE so that the constraint is satisfied only if
-		//its values is strictly greater than 0
+		//subtract Double.MIN_VALUE so that the constraint is satisfied only if its values is strictly greater than 0
 		double c1 = -4.0*x + 4.0 - y - Double.MIN_VALUE;
 		double c2 = x + 1.0 - Double.MIN_VALUE;
 		double c3 = y - x + 2.0 - Double.MIN_VALUE;

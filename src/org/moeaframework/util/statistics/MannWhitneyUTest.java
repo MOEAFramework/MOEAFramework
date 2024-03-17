@@ -37,15 +37,15 @@ import org.moeaframework.core.Settings;
  * <p>
  * References:
  * <ol>
- *   <li>Sheskin, D.J. "Handbook of Parametric and Nonparametric Statistical
- *       Procedures, Third Edition." Chapman &amp; Hall/CRC. 2004.
+ *   <li>Sheskin, D.J. "Handbook of Parametric and Nonparametric Statistical Procedures, Third Edition." Chapman &amp;
+ *       Hall/CRC. 2004.
  * </ol>
  */
 public class MannWhitneyUTest extends OrdinalStatisticalTest {
 
 	/**
-	 * The value of {@code U} from the last invocation of {@link #test}. This
-	 * is package private and intended only for testing.
+	 * The value of {@code U} from the last invocation of {@link #test}. This is package private and intended only
+	 * for testing.
 	 */
 	double lastU;
 
@@ -71,13 +71,12 @@ public class MannWhitneyUTest extends OrdinalStatisticalTest {
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * When the samples from both populations are less than 20, only alpha
-	 * values of 0.05 and 0.01 are valid. This is because a table is used to
-	 * accurately determine the critical values. When more than 20 samples are
+	 * When the samples from both populations are less than 20, only alpha values of 0.05 and 0.01 are valid. This
+	 * is because a table is used to accurately determine the critical values. When more than 20 samples are
 	 * available, the normal approximation is used allowing any value for alpha.
 	 * 
-	 * @throws IllegalArgumentException if an insufficient sampling size is
-	 *         provided, or if an invalid alpha value is provided
+	 * @throws IllegalArgumentException if an insufficient sampling size is provided, or if an invalid alpha value
+	 *         is provided
 	 */
 	@Override
 	public boolean test(double alpha) {
@@ -105,15 +104,12 @@ public class MannWhitneyUTest extends OrdinalStatisticalTest {
 			NormalDistribution dist = new NormalDistribution();
 
 			if (Settings.isContinuityCorrection()) {
-				z = (Math.abs(U - n[0] * n[1] / 2.0) - 0.5)
-						/ Math.sqrt(n[0] * n[1] * (n[0] + n[1] + 1.0) / 12.0);
+				z = (Math.abs(U - n[0] * n[1] / 2.0) - 0.5) / Math.sqrt(n[0] * n[1] * (n[0] + n[1] + 1.0) / 12.0);
 			} else {
-				z = (U - n[0] * n[1] / 2.0)
-						/ Math.sqrt(n[0] * n[1] * (n[0] + n[1] + 1.0) / 12.0);
+				z = (U - n[0] * n[1] / 2.0) / Math.sqrt(n[0] * n[1] * (n[0] + n[1] + 1.0) / 12.0);
 			}
 
-			return Math.abs(z) >= Math.abs(
-					dist.inverseCumulativeProbability(alpha));
+			return Math.abs(z) >= Math.abs(dist.inverseCumulativeProbability(alpha));
 		}
 	}
 
@@ -122,22 +118,19 @@ public class MannWhitneyUTest extends OrdinalStatisticalTest {
 	 * 
 	 * @param n1 the number of samples from the first group
 	 * @param n2 the number of samples from the second group
-	 * @param alpha the prespecified level of confidence; only values of 0.05
-	 *        and 0.01 are permitted
+	 * @param alpha the prespecified level of confidence; only values of 0.05 and 0.01 are permitted
 	 * @return the critical U value from the lookup tables
-	 * @throws IllegalArgumentException if an insufficient sampling size is
-	 *         provided, or if an invalid alpha value is provided
+	 * @throws IllegalArgumentException if an insufficient sampling size is provided, or if an invalid alpha value
+	 *         is provided
 	 */
 	private static int getCriticalUValueFromTable(int n1, int n2, double alpha) {
 		if ((n1 < 1) || (n1 > 20) || (n2 < 1) || (n2 > 20)) {
-			throw new IllegalArgumentException(
-					"only valid for 1 <= n1 <= 20, 1 <= n2 <= 20");
+			throw new IllegalArgumentException("only valid for 1 <= n1 <= 20, 1 <= n2 <= 20");
 		}
 
 		int value = -1;
 
-		// 1 <= n1, n2 <= 20, so this subtracts 1 from each to get the 0-based
-		// index
+		// 1 <= n1, n2 <= 20, so this subtracts 1 from each to get the 0-based index
 		if (alpha == 0.05) {
 			value = TABLE_5[20 * n1 + n2 - 21];
 		} else if (alpha == 0.01) {
@@ -154,8 +147,7 @@ public class MannWhitneyUTest extends OrdinalStatisticalTest {
 	}
 
 	/**
-	 * Table of critical U values for alpha=0.05.  Entries of -1 indicate an
-	 * insufficient sampling size.
+	 * Table of critical U values for alpha=0.05.  Entries of -1 indicate an insufficient sampling size.
 	 */
 	private static final int[] TABLE_5 = new int[] { -1, -1, -1, -1, -1, -1,
 			-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
@@ -183,8 +175,7 @@ public class MannWhitneyUTest extends OrdinalStatisticalTest {
 			112, 119, 127 };
 
 	/**
-	 * Table of critical U values for alpha=0.01.  Entries of -1 indicate an
-	 * insufficient sampling size.
+	 * Table of critical U values for alpha=0.01.  Entries of -1 indicate an insufficient sampling size.
 	 */
 	private static final int[] TABLE_1 = new int[] { -1, -1, -1, -1, -1, -1,
 			-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,

@@ -34,12 +34,10 @@ import org.moeaframework.problem.AbstractProblem;
  * <p>
  * References:
  * <ol>
- *   <li>Osyczka, A. and Kundu, S. (1995).  "A New Method to Solve Generalized
- *       Multicriteria Optimization Problems using the Simple Genetic
- *       Algorithm."  Structural Optimization, vol. 10, pp. 94-99.
- *   <li>Van Veldhuizen, D. A (1999).  "Multiobjective Evolutionary Algorithms: 
- *       Classifications, Analyses, and New Innovations."  Air Force Institute
- *       of Technology, Ph.D. Thesis, Appendix B.
+ *   <li>Osyczka, A. and Kundu, S. (1995).  "A New Method to Solve Generalized Multicriteria Optimization Problems
+ *       using the Simple Genetic Algorithm."  Structural Optimization, vol. 10, pp. 94-99.
+ *   <li>Van Veldhuizen, D. A (1999).  "Multiobjective Evolutionary Algorithms: Classifications, Analyses, and New
+ *       Innovations."  Air Force Institute of Technology, Ph.D. Thesis, Appendix B.
  * </ol>
  */
 public class Osyczka2 extends AbstractProblem {

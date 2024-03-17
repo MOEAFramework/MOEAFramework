@@ -26,8 +26,8 @@ import org.moeaframework.core.Solution;
 
 /**
  * Fast hypervolume calculation published by the Walking Fish Group (WFG).  This implementation includes all
- * optimizations discussed in the paper, including: (1) sorting the solutions by an objective,
- * (2) slicing, and (3) an exact method to compute the 2D hypervolume case.
+ * optimizations discussed in the paper, including: (1) sorting the solutions by an objective, (2) slicing, and
+ * (3) an exact method to compute the 2D hypervolume case.
  * <p>
  * This version is not normalized!  See {@link WFGNormalizedHypervolume} for the normalized version.
  * <p>
@@ -170,12 +170,10 @@ public class WFGHypervolume implements Indicator {
 	}
 	
 	/**
-	 * Returns a modified list of the points {k+1 .. |pointList|} updated with the larger value
-	 * taken from the point and the contributing point k.  Additionally, any dominated points
-	 * in this modified list are removed.
-	 * 
-	 * Note: This method is equivalent to <c>nds(limitset(...))</c> in Figure 5 from the referenced
-	 * paper.
+	 * Returns a modified list of the points {k+1 .. |pointList|} updated with the larger value taken from the point
+	 * and the contributing point k.  Additionally, any dominated points in this modified list are removed.
+	 * <p>
+	 * Note: This method is equivalent to {@code nds(limitset(...))} in Figure 5 from the referenced paper.
 	 * 
 	 * @param pointList the list of points being considered in the hypervolume calculation
 	 * @param k the index of the current (contributing) point
@@ -199,8 +197,8 @@ public class WFGHypervolume implements Indicator {
 	}
 	
 	/**
-	 * Returns the worse objective value between the two points.  Since all objectives are minimized,
-	 * this returns the larger value.
+	 * Returns the worse objective value between the two points.  Since all objectives are minimized, this returns
+	 * the larger value.
 	 * 
 	 * @param point1 the first point
 	 * @param point2 the second point

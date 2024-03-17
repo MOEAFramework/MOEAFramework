@@ -24,8 +24,8 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.TerminationCondition;
 
 /**
- * Terminates a run when at least one solution in the result is equal to or within some
- * allowed difference (epsilon) from a target solution.
+ * Terminates a run when at least one solution in the result is equal to or within some allowed difference (epsilon)
+ * from a target solution.
  */
 public class TargetObjectiveTermination implements TerminationCondition {
 	

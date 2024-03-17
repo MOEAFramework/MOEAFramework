@@ -23,9 +23,9 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
- * Stores the &epsilon; values for an &epsilon;-dominance archive.  In particular, if the
- * given &epsilon; value or array of values does not match the number of objectives, the
- * last &epsilon; value is repeated for each remaining objective.
+ * Stores the &epsilon; values for an &epsilon;-dominance archive.  In particular, if the given &epsilon; value or
+ * array of values does not match the number of objectives, the last &epsilon; value is repeated for each remaining
+ * objective.
  */
 public class Epsilons {
 	
@@ -120,8 +120,8 @@ public class Epsilons {
 	}
 	
 	/**
-	 * Creates an {@code Epsilons} instance with the given epsilon values.  This method provides
-	 * compile-time checking of the number of inputs.
+	 * Creates an {@code Epsilons} instance with the given epsilon values.  This method provides compile-time checking
+	 * of the number of inputs.
 	 * 
 	 * @param e1 the first epsilon
 	 * @param es the remaining epsilons, if any

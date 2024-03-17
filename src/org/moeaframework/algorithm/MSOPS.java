@@ -36,15 +36,14 @@ import org.moeaframework.util.Vector;
 import org.moeaframework.util.weights.RandomGenerator;
 
 /**
- * Implementation of the Multiple Single Objective Pareto Sampling (MSOPS)
- * algorithm.  This implementation only supports differential evolution.
+ * Implementation of the Multiple Single Objective Pareto Sampling (MSOPS) algorithm.  This implementation only
+ * supports differential evolution.
  * <p>
  * References:
  * <ol>
- *   <li>E. J. Hughes.  "Multiple Single Objective Pareto Sampling."  2003
- *       Congress on Evolutionary Computation, pp. 2678-2684.
- *   <li>Matlab source code available from
- *       <a href="http://code.evanhughes.org/">http://code.evanhughes.org/</a>.
+ *   <li>E. J. Hughes.  "Multiple Single Objective Pareto Sampling."  2003 Congress on Evolutionary Computation,
+ *       pp. 2678-2684.
+ *   <li>Matlab source code available from <a href="http://code.evanhughes.org/">http://code.evanhughes.org/</a>.
  * </ol>
  * 
  * @see MSOPSRankedPopulation

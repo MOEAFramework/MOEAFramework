@@ -17,11 +17,9 @@
  */
 
 /**
- * Collection of unary quality indicators for comparing the quality of
- * non-dominated approximation sets. The table below shows the supported
- * indicators and key properties. <em>Pareto compliant</em> implies that
- * better indicator values correspond to approximation sets that are 
- * preferred by weak Pareto dominance. 
+ * Collection of unary quality indicators for comparing the quality of non-dominated approximation sets. The table
+ * below shows the supported indicators and key properties. <em>Pareto compliant</em> implies that better indicator
+ * values correspond to approximation sets that are preferred by weak Pareto dominance. 
  * 
  * <table style="margin-top: 1em; width: 100%">
  *   <caption>List of quality indicators</caption>

@@ -21,29 +21,26 @@ import org.moeaframework.core.Epsilons;
 import org.moeaframework.core.Solution;
 
 /**
- * Compares two solutions using the additive &epsilon;-box objective comparator.
- * This dominance relation divides objective space into boxes with side-length
- * &epsilon; and specifies that only one solution may exist within the same box.
- * If two solutions were to reside in the same box, the solution closer to the
- * box's minimum corner.
+ * Compares two solutions using the additive &epsilon;-box objective comparator.  This dominance relation divides
+ * objective space into boxes with side-length &epsilon; and specifies that only one solution may exist within the
+ * same box.  If two solutions were to reside in the same box, the solution closer to the box's minimum corner.
  * <p>
- * In general, the {@link EpsilonBoxDominanceComparator} should be used instead
- * as it also incorporates constraint violation checks.
+ * In general, the {@link EpsilonBoxDominanceComparator} should be used instead as it also incorporates constraint
+ * violation checks.
  * <p>
  * References:
  * <ol>
- * <li>Laumanns et al. "Combining Convergence and Diversity in Evolutionary
- * Multi-Objective Optimization." Evolutionary Computation. 10(3). 2002
- * <li>Deb et al. "A Fast Multi-Objective Evolutionary Algorithm for Finding
- * Well-Spread Pareto-Optimal Solutions." KanGAL Report No 2003002. Feb 2003.
+ *   <li>Laumanns et al. "Combining Convergence and Diversity in Evolutionary Multi-Objective Optimization."
+ *       Evolutionary Computation. 10(3). 2002
+ *   <li>Deb et al. "A Fast Multi-Objective Evolutionary Algorithm for Finding Well-Spread Pareto-Optimal Solutions."
+ *       KanGAL Report No 2003002. Feb 2003.
  * </ol>
  */
 public class EpsilonBoxObjectiveComparator implements DominanceComparator {
 
 	/**
-	 * {@code true} if the the two solutions passed to the previous invocation
-	 * of {@code compare} existed within the same &epsilon;-box; {@code false}
-	 * otherwise.
+	 * {@code true} if the the two solutions passed to the previous invocation of {@code compare} existed within the
+	 * same &epsilon;-box; {@code false} otherwise.
 	 */
 	protected boolean isSameBox;
 
@@ -53,8 +50,7 @@ public class EpsilonBoxObjectiveComparator implements DominanceComparator {
 	protected final Epsilons epsilons;
 
 	/**
-	 * Constructs an additive &epsilon;-box dominance comparator with the 
-	 * specified &epsilon; value.
+	 * Constructs an additive &epsilon;-box dominance comparator with the specified &epsilon; value.
 	 * 
 	 * @param epsilon the &epsilon; value used by this comparator
 	 */
@@ -63,8 +59,7 @@ public class EpsilonBoxObjectiveComparator implements DominanceComparator {
 	}
 
 	/**
-	 * Constructs an additive &epsilon;-box dominance comparator with the 
-	 * specified &epsilon; values.
+	 * Constructs an additive &epsilon;-box dominance comparator with the specified &epsilon; values.
 	 * 
 	 * @param epsilons the &epsilon; values used by this comparator
 	 */
@@ -73,8 +68,7 @@ public class EpsilonBoxObjectiveComparator implements DominanceComparator {
 	}
 	
 	/**
-	 * Constructs an additive &epsilon;-box dominance comparator with the 
-	 * specified &epsilon; values.
+	 * Constructs an additive &epsilon;-box dominance comparator with the specified &epsilon; values.
 	 * 
 	 * @param epsilons the &epsilon; values used by this comparator
 	 */
@@ -84,26 +78,22 @@ public class EpsilonBoxObjectiveComparator implements DominanceComparator {
 	}
 
 	/**
-	 * Returns {@code true} if the the two solutions passed to the previous
-	 * invocation of {@code compare} existed within the same &epsilon;-box;
-	 * {@code false} otherwise.
+	 * Returns {@code true} if the the two solutions passed to the previous invocation of {@code compare} existed
+	 * within the same &epsilon;-box; {@code false} otherwise.
 	 * 
-	 * @return {@code true} if the the two solutions passed to the previous
-	 *         invocation of {@code compare} existed within the same 
-	 *         &epsilon;-box; {@code false} otherwise.
+	 * @return {@code true} if the the two solutions passed to the previous invocation of {@code compare} existed
+	 *         within the same &epsilon;-box; {@code false} otherwise.
 	 */
 	public boolean isSameBox() {
 		return isSameBox;
 	}
 
 	/**
-	 * Set to {@code true} if the the two solutions passed to the previous
-	 * invocation of {@code compare} existed within the same &epsilon;-box;
-	 * {@code false} otherwise.
+	 * Set to {@code true} if the the two solutions passed to the previous invocation of {@code compare} existed
+	 * within the same &epsilon;-box; {@code false} otherwise.
 	 * 
-	 * @param isSameBox {@code true} if the the two solutions passed to the
-	 *        previous invocation of {@code compare} existed within the same
-	 *        &epsilon;-box; {@code false} otherwise.
+	 * @param isSameBox {@code true} if the the two solutions passed to the previous invocation of {@code compare}
+	 *        existed within the same &epsilon;-box; {@code false} otherwise.
 	 */
 	protected void setSameBox(boolean isSameBox) {
 		this.isSameBox = isSameBox;
@@ -119,8 +109,7 @@ public class EpsilonBoxObjectiveComparator implements DominanceComparator {
 	}
 
 	/**
-	 * Compares the two solutions using the additive &epsilon;-box dominance
-	 * relation.
+	 * Compares the two solutions using the additive &epsilon;-box dominance relation.
 	 */
 	@Override
 	public int compare(Solution solution1, Solution solution2) {

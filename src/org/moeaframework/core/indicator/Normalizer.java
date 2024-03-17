@@ -26,9 +26,8 @@ import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 
 /**
- * Normalizes populations so that all objectives reside in the range {@code
- * [0, 1]}.  This normalization ignores infeasible solutions, so the resulting
- * normalized population contains no infeasible solutions.  A reference set
+ * Normalizes populations so that all objectives reside in the range {@code [0, 1]}.  This normalization ignores
+ * infeasible solutions, so the resulting normalized population contains no infeasible solutions.  A reference set
  * should be used to ensure the normalization is uniformly applied.
  */
 public class Normalizer {
@@ -39,8 +38,7 @@ public class Normalizer {
 	private final Problem problem;
 	
 	/**
-	 * A delta added to the maximum value (used when computing the reference
-	 * point for hypervolume calculations).
+	 * A delta added to the maximum value (used when computing the reference point for hypervolume calculations).
 	 */
 	private final double delta;
 	
@@ -60,15 +58,13 @@ public class Normalizer {
 	private final double[] maximum;
 	
 	/**
-	 * Constructs a normalizer for normalizing populations so that all 
-	 * objectives reside in the range {@code [0, 1]}.  This constructor derives
-	 * the minimum and maximum bounds from the given population.
+	 * Constructs a normalizer for normalizing populations so that all objectives reside in the range {@code [0, 1]}.
+	 * This constructor derives the minimum and maximum bounds from the given population.
 	 * 
 	 * @param problem the problem
 	 * @param population the population defining the minimum and maximum bounds
-	 * @throws IllegalArgumentException if the population set contains fewer
-	 *         than two solutions, or if there exists an objective with an
-	 *         empty range
+	 * @throws IllegalArgumentException if the population set contains fewer than two solutions, or if there exists
+	 *         an objective with an empty range
 	 */
 	public Normalizer(Problem problem, Population population) {
 		super();
@@ -83,18 +79,15 @@ public class Normalizer {
 	}
 	
 	/**
-	 * Constructs a normalizer for normalizing populations so that all 
-	 * objectives reside in the range {@code [0, 1]}.  This constructor derives
-	 * the minimum and maximum bounds from the given population and a given
-	 * delta.
+	 * Constructs a normalizer for normalizing populations so that all objectives reside in the range {@code [0, 1]}.
+	 * This constructor derives the minimum and maximum bounds from the given population and a given delta.
 	 * 
 	 * @param problem the problem
 	 * @param population the population defining the minimum and maximum bounds
-	 * @param delta a delta added to the maximum value (used when computing the
-	 *        reference point for hypervolume calculations)
-	 * @throws IllegalArgumentException if the population set contains fewer
-	 *         than two solutions, or if there exists an objective with an
-	 *         empty range
+	 * @param delta a delta added to the maximum value (used when computing the reference point for hypervolume
+	 *        calculations)
+	 * @throws IllegalArgumentException if the population set contains fewer than two solutions, or if there exists
+	 *         an objective with an empty range
 	 */
 	public Normalizer(Problem problem, Population population, double delta) {
 		super();
@@ -109,21 +102,16 @@ public class Normalizer {
 	}
 	
 	/**
-	 * Constructs a normalizer for normalizing populations so that all 
-	 * objectives reside in the range {@code [0, 1]}.  This constructor derives
-	 * the minimum and maximum bounds from the given population and a given
-	 * delta.
+	 * Constructs a normalizer for normalizing populations so that all objectives reside in the range {@code [0, 1]}.
+	 * This constructor derives the minimum and maximum bounds from the given population and a given delta.
 	 * 
 	 * @param problem the problem
 	 * @param population the population defining the minimum and maximum bounds
-	 * @param referencePoint the reference point if defined (used for
-	 *        hypervolume calculations)
-	 * @throws IllegalArgumentException if the population set contains fewer
-	 *         than two solutions, or if there exists an objective with an
-	 *         empty range
+	 * @param referencePoint the reference point if defined (used for hypervolume calculations)
+	 * @throws IllegalArgumentException if the population set contains fewer than two solutions, or if there exists
+	 *         an objective with an empty range
 	 */
-	public Normalizer(Problem problem, Population population,
-			double[] referencePoint) {
+	public Normalizer(Problem problem, Population population, double[] referencePoint) {
 		super();
 		this.problem = problem;
 		this.delta = 0.0;
@@ -136,9 +124,8 @@ public class Normalizer {
 	}
 	
 	/**
-	 * Constructs a normalizer for normalizing population so that all
-	 * objectives reside in the range {@code [0, 1]}.  This constructor allows
-	 * defining the minimum and maximum bounds explicitly.
+	 * Constructs a normalizer for normalizing population so that all objectives reside in the range {@code [0, 1]}.
+	 * This constructor allows defining the minimum and maximum bounds explicitly.
 	 * 
 	 * @param problem the problem
 	 * @param minimum the minimum bounds of each objective
@@ -161,12 +148,11 @@ public class Normalizer {
 	}
 	
 	/**
-	 * Calculates the range of each objective given the population.  The range
-	 * is defined by the minimum and maximum value of each objective.
+	 * Calculates the range of each objective given the population.  The range is defined by the minimum and maximum
+	 * value of each objective.
 	 * 
 	 * @param population the population defining the minimum and maximum bounds
-	 * @throws IllegalArgumentException if the population contains fewer than
-	 *         two solutions
+	 * @throws IllegalArgumentException if the population contains fewer than two solutions
 	 */
 	private void calculateRanges(Population population) {
 		if (population.size() < 2) {
@@ -207,11 +193,9 @@ public class Normalizer {
 	}
 	
 	/**
-	 * Checks if any objective has a range that is smaller than machine
-	 * precision.
+	 * Checks if any objective has a range that is smaller than machine precision.
 	 * 
-	 * @throws IllegalArgumentException if any objective has a range that is
-	 *         smaller than machine precision
+	 * @throws IllegalArgumentException if any objective has a range that is smaller than machine precision
 	 */
 	private void checkRanges() {
 		for (int i = 0; i < problem.getNumberOfObjectives(); i++) {
@@ -222,19 +206,17 @@ public class Normalizer {
 	}
 	
 	/**
-	 * Returns a new non-dominated population containing the normalized 
-	 * solutions from the specified population.
+	 * Returns a new non-dominated population containing the normalized solutions from the specified population.
 	 * 
 	 * @param population the population
-	 * @return a new non-dominated population containing the normalized 
-	 *         solutions from the specified population
+	 * @return a new non-dominated population containing the normalized solutions from the specified population
 	 */
 	public NondominatedPopulation normalize(NondominatedPopulation population) {
 		NondominatedPopulation result = new NondominatedPopulation() {
 
 			/**
-			 * Enables a performance hack to avoid performing non-dominance
-			 * checks on solutions already known to be non-dominated.
+			 * Enables a performance hack to avoid performing non-dominance checks on solutions already known to be
+			 * non-dominated.
 			 */
 			public boolean add(Solution newSolution) {
 				return super.forceAddWithoutCheck(newSolution);
@@ -247,12 +229,10 @@ public class Normalizer {
 	}
 	
 	/**
-	 * Returns a new population containing the normalized solutions from the 
-	 * specified population.
+	 * Returns a new population containing the normalized solutions from the specified population.
 	 * 
 	 * @param population the population
-	 * @return a new population containing the normalized solutions from the 
-	 *         specified population
+	 * @return a new population containing the normalized solutions from the specified population
 	 */
 	public Population normalize(Population population) {
 		Population result = new Population();
@@ -261,8 +241,8 @@ public class Normalizer {
 	}
 	
 	/**
-	 * Performs the actual normalization.  Each solution in {@code originalSet}
-	 * is copied, normalized and added to {@code normalizedSet}.
+	 * Performs the actual normalization.  Each solution in {@code originalSet} is copied, normalized and added to
+	 * {@code normalizedSet}.
 	 * 
 	 * @param originalSet the unnormalized population
 	 * @param normalizedSet the normalized population

@@ -86,9 +86,8 @@ public class Observation implements Serializable, Comparable<Observation> {
 	}
 	
 	/**
-	 * Sets the value of the given key.  At a minimum, these values must be serializable to support
-	 * saving these observations, but we recommend using primitive types (int, double, etc.) whenever
-	 * possible for formatted output.
+	 * Sets the value of the given key.  At a minimum, these values must be serializable to support saving these
+	 * observations, but we recommend using primitive types (int, double, etc.) whenever possible for formatted output.
 	 * 
 	 * @param key the key
 	 * @param value the value

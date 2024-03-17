@@ -31,8 +31,7 @@ import org.moeaframework.core.variable.EncodingUtils;
 public class IntegerProblemTest {
 
 	/**
-	 * The Rosenbrock problem defined using integers instead of floating-point
-	 * values.
+	 * The Rosenbrock problem defined using integers instead of floating-point values.
 	 */
 	public static class StepRosenbrockProblem extends AbstractProblem {
 

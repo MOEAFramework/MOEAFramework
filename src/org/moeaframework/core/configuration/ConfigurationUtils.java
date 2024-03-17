@@ -33,8 +33,6 @@ import org.moeaframework.util.TypedProperties;
 
 /**
  * Utility methods for scanning classes to identify properties, reading the configured values, or setting new values.
- * @author dahadka
- *
  */
 public class ConfigurationUtils {
 	
@@ -274,8 +272,8 @@ public class ConfigurationUtils {
 	}
 	
 	/**
-	 * Locates and returns the property name.  This checks if the properties contain the primary name or an
-	 * alias, in the order given, and returns the matching name.
+	 * Locates and returns the property name.  This checks if the properties contain the primary name or an alias,
+	 * in the order given, and returns the matching name.
 	 * 
 	 * @param properties the collection of all configured properties
 	 * @param prefix the prefix or {@code null} if none is set
@@ -340,8 +338,8 @@ public class ConfigurationUtils {
 	}
 	
 	/**
-	 * Safely invoke the getter method and cast the returned object to the given type.  Any exceptions
-	 * thrown while calling the method are wrapped in a {@link ConfigurationException}.
+	 * Safely invoke the getter method and cast the returned object to the given type.  Any exceptions thrown while
+	 * calling the method are wrapped in a {@link ConfigurationException}.
 	 * 
 	 * @param <T> the type of the return object
 	 * @param method the getter method

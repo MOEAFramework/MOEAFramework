@@ -30,8 +30,8 @@ import org.moeaframework.core.Settings;
 public class NormalizerTest {
 	
 	/**
-	 * Tests if the returned set is independent from the original, ensuring
-	 * normalization does not affect the original population.
+	 * Tests if the returned set is independent from the original, ensuring normalization does not affect the original
+	 * population.
 	 */
 	@Test
 	public void testNewObject() {

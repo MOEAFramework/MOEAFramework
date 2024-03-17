@@ -96,9 +96,8 @@ public class RegisteredProblemProvider extends ProblemProvider {
 	}
 	
 	/**
-	 * Returns all problems that have been registered with this provider.  Note that
-	 * this does not necessarily include all problems that can be instantiated by the
-	 * provider, only those that have been explicitly registered.
+	 * Returns all problems that have been registered with this provider.  Note that this does not necessarily include
+	 * all problems that can be instantiated by the provider, only those that have been explicitly registered.
 	 * 
 	 * @return the problem names
 	 */

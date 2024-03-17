@@ -23,18 +23,16 @@ import org.moeaframework.core.comparator.DominanceComparator;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
 
 /**
- * A population that maintains the property of pair-wise non-dominance between
- * all solutions. When the {@code add} method is invoked with a new solution,
- * all solutions currently in the population that are dominated by the new
- * solution are removed. If the new solution is dominated by any member of the
- * population, the new solution is not added.
+ * A population that maintains the property of pair-wise non-dominance between all solutions. When the {@code add}
+ * method is invoked with a new solution, all solutions currently in the population that are dominated by the new
+ * solution are removed. If the new solution is dominated by any member of the population, the new solution is not
+ * added.
  */
 public class NondominatedPopulation extends Population {
 	
 	/**
-	 * Specifies how duplicate solutions are handled.  Duplicate solutions are
-	 * those whose Euclidean distance in objective space are less than
-	 * {@value Settings#EPS}.
+	 * Specifies how duplicate solutions are handled.  Duplicate solutions are those whose Euclidean distance in
+	 * objective space are less than {@value Settings#EPS}.
 	 */
 	public static enum DuplicateMode {
 		
@@ -44,14 +42,12 @@ public class NondominatedPopulation extends Population {
 		NO_DUPLICATE_OBJECTIVES,
 		
 		/**
-		 * Allow duplicate solutions only if they have different decision
-		 * variables.
+		 * Allow duplicate solutions only if they have different decision variables.
 		 */
 		ALLOW_DUPLICATE_OBJECTIVES,
 		
 		/**
-		 * Allow all duplicate solutions, even if they have identical decision
-		 * variables and objectives.
+		 * Allow all duplicate solutions, even if they have identical decision variables and objectives.
 		 */
 		ALLOW_DUPLICATES
 		
@@ -68,16 +64,14 @@ public class NondominatedPopulation extends Population {
 	protected final DuplicateMode duplicateMode;
 
 	/**
-	 * Constructs an empty non-dominated population using the Pareto dominance
-	 * relation.
+	 * Constructs an empty non-dominated population using the Pareto dominance relation.
 	 */
 	public NondominatedPopulation() {
 		this(new ParetoDominanceComparator());
 	}
 	
 	/**
-	 * Constructs an empty non-dominated population using the Pareto dominance
-	 * relation.
+	 * Constructs an empty non-dominated population using the Pareto dominance relation.
 	 * 
 	 * @param duplicateMode specifies how duplicate solutions are handled
 	 */
@@ -86,37 +80,31 @@ public class NondominatedPopulation extends Population {
 	}
 
 	/**
-	 * Constructs an empty non-dominated population using the specified 
-	 * dominance relation.
+	 * Constructs an empty non-dominated population using the specified dominance relation.
 	 * 
-	 * @param comparator the dominance relation used by this non-dominated
-	 *        population
+	 * @param comparator the dominance relation used by this non-dominated population
 	 */
 	public NondominatedPopulation(DominanceComparator comparator) {
 		this(comparator, Settings.getDuplicateMode());
 	}
 	
 	/**
-	 * Constructs an empty non-dominated population using the specified 
-	 * dominance relation.
+	 * Constructs an empty non-dominated population using the specified dominance relation.
 	 * 
-	 * @param comparator the dominance relation used by this non-dominated
-	 *        population
+	 * @param comparator the dominance relation used by this non-dominated population
 	 * @param duplicateMode specifies how duplicate solutions are handled
 	 */
-	public NondominatedPopulation(DominanceComparator comparator,
-			DuplicateMode duplicateMode) {
+	public NondominatedPopulation(DominanceComparator comparator, DuplicateMode duplicateMode) {
 		super();
 		this.comparator = comparator;
 		this.duplicateMode = duplicateMode;
 	}
 
 	/**
-	 * Constructs a non-dominated population using the Pareto dominance relation
-	 * and initialized with the specified solutions.
+	 * Constructs a non-dominated population using the Pareto dominance relation and initialized with the specified
+	 * solutions.
 	 * 
-	 * @param iterable the solutions used to initialize this non-dominated
-	 *        population
+	 * @param iterable the solutions used to initialize this non-dominated population
 	 */
 	public NondominatedPopulation(Iterable<? extends Solution> iterable) {
 		this();
@@ -124,24 +112,20 @@ public class NondominatedPopulation extends Population {
 	}
 
 	/**
-	 * Constructs a non-dominated population using the specified dominance
-	 * comparator and initialized with the specified solutions.
+	 * Constructs a non-dominated population using the specified dominance comparator and initialized with the
+	 * specified solutions.
 	 * 
-	 * @param comparator the dominance relation used by this non-dominated
-	 *        population
-	 * @param iterable the solutions used to initialize this non-dominated
-	 *        population
+	 * @param comparator the dominance relation used by this non-dominated population
+	 * @param iterable the solutions used to initialize this non-dominated population
 	 */
-	public NondominatedPopulation(DominanceComparator comparator,
-			Iterable<? extends Solution> iterable) {
+	public NondominatedPopulation(DominanceComparator comparator, Iterable<? extends Solution> iterable) {
 		this(comparator);
 		addAll(iterable);
 	}
 
 	/**
-	 * If {@code newSolution} is dominates any solution or is non-dominated with
-	 * all solutions in this population, the dominated solutions are removed and
-	 * {@code newSolution} is added to this population. Otherwise,
+	 * If {@code newSolution} is dominates any solution or is non-dominated with all solutions in this population,
+	 * the dominated solutions are removed and {@code newSolution} is added to this population. Otherwise,
 	 * {@code newSolution} is dominated and is not added to this population.
 	 */
 	@Override
@@ -165,9 +149,8 @@ public class NondominatedPopulation extends Population {
 	}
 
 	/**
-	 * Replace the solution at the given index with the new solution, but only
-	 * if the new solution is non-dominated.  To maintain non-dominance within
-	 * this population, any solutions dominated by the new solution will also
+	 * Replace the solution at the given index with the new solution, but only if the new solution is non-dominated.
+	 * To maintain non-dominance within this population, any solutions dominated by the new solution will also
 	 * be replaced.
 	 */
 	@Override
@@ -191,12 +174,10 @@ public class NondominatedPopulation extends Population {
 	}
 
 	/**
-	 * Adds the specified solution to the population, bypassing the
-	 * non-domination check. This method should only be used when a
-	 * non-domination check has been performed elsewhere, such as in a subclass.
+	 * Adds the specified solution to the population, bypassing the non-domination check. This method should only be
+	 * used when a non-domination check has been performed elsewhere, such as in a subclass.
 	 * <p>
-	 * <b>This method should only be used internally, and should never be made
-	 * public by any subclasses.</b>
+	 * <b>This method should only be used internally, and should never be made public by any subclasses.</b>
 	 * 
 	 * @param newSolution the solution to be added
 	 * @return true if the population was modified as a result of this operation
@@ -206,15 +187,13 @@ public class NondominatedPopulation extends Population {
 	}
 	
 	/**
-	 * Returns {@code true} if the two solutions are duplicates and one should
-	 * be ignored based on the duplicate mode.  This default implementation
-	 * depends on the {@link #equals(Object)} method of the {@link Variable}
+	 * Returns {@code true} if the two solutions are duplicates and one should be ignored based on the duplicate mode.
+	 * This default implementation depends on the {@link #equals(Object)} method of the {@link Variable}
 	 * class to check for equality of the decision variables.
 	 * 
 	 * @param s1 the first solution
 	 * @param s2 the second solution
-	 * @return {@code true} if the solutions are duplicates; {@code false}
-	 *         otherwise
+	 * @return {@code true} if the solutions are duplicates; {@code false} otherwise
 	 */
 	protected boolean isDuplicate(Solution s1, Solution s2) {
 		switch (duplicateMode) {

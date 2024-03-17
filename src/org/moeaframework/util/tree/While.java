@@ -18,8 +18,7 @@
 package org.moeaframework.util.tree;
 
 /**
- * The node for repeatedly executing an expression while a condition, a
- * boolean expression, remains {@code true}.
+ * The node for repeatedly executing an expression while a condition, a boolean expression, remains {@code true}.
  * 
  * <table style="margin-top: 1em; width: 100%">
  *   <caption style="text-align: left">Node signature:</caption>
@@ -41,16 +40,14 @@ package org.moeaframework.util.tree;
  *   <tr>
  *     <td>Return Value</td>
  *     <td>User-Defined</td>
- *     <td>The return value of the last executed expression; or {@code null}
- *         if the loop was never executed</td>
+ *     <td>The return value of the last executed expression; or {@code null} if the loop was never executed</td>
  *   </tr>
  * </table>
  */
 public class While extends Node {
 
 	/**
-	 * Constructs a new node for repeatedly executing an expression while a
-	 * condition remains {@code true}.
+	 * Constructs a new node for repeatedly executing an expression while a condition remains {@code true}.
 	 */
 	public While() {
 		super(Object.class, Boolean.class, Object.class);

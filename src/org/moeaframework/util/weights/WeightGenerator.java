@@ -20,9 +20,8 @@ package org.moeaframework.util.weights;
 import java.util.List;
 
 /**
- * Interface for generating a sequence of weights.  The nature of the weights
- * depends on the specific implementation.  The only requirement is that the
- * sum of each component in a weight vector be 1.
+ * Interface for generating a sequence of weights.  The nature of the weights depends on the specific implementation.
+ * The only requirement is that the sum of each component in a weight vector be {@code 1}.
  */
 public interface WeightGenerator {
 	

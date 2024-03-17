@@ -23,15 +23,13 @@ import org.moeaframework.core.operator.TypeSafeMutation;
 import org.moeaframework.core.variable.RealVariable;
 
 /**
- * Uniform mutation (UM) operator.  Each decision variable is mutated by
- * selecting a new value within its bounds uniformly at random.  The figure
- * below depicts the offspring distribution.
+ * Uniform mutation (UM) operator.  Each decision variable is mutated by selecting a new value within its bounds
+ * uniformly at random.  The figure below depicts the offspring distribution.
  * <p>
  * <img src="doc-files/UM-1.png" alt="Example UM operator distribution" />
  * <p>
- * It is recommended each decision variable is mutated with a probability of
- * {@code 1 / L}, where {@code L} is the number of decision variables.  This
- * results in one mutation per offspring on average.
+ * It is recommended each decision variable is mutated with a probability of {@code 1 / L}, where {@code L} is the
+ * number of decision variables.  This results in one mutation per offspring on average.
  * <p>
  * This operator is type-safe.
  */

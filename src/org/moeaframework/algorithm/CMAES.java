@@ -50,48 +50,40 @@ import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.util.TypedProperties;
 
 /**
- * The Covariance Matrix Adaption Evolution Strategy (CMA-ES) algorithm for
- * single and multi-objective problems.  For multi-objective problems,
- * individuals are compared using Pareto ranking and crowding distance to break
- * ties.  An optional {@code fitnessEvaluator} parameter can be specified to
- * replace the crowding distance calculation with, for example, the
- * hypervolume indicator.
+ * The Covariance Matrix Adaption Evolution Strategy (CMA-ES) algorithm for single and multi-objective problems.
+ * For multi-objective problems, individuals are compared using Pareto ranking and crowding distance to break
+ * ties.  An optional {@code fitnessEvaluator} parameter can be specified to replace the crowding distance calculation
+ * with, for example, the hypervolume indicator.
  * <p>
- * This file is based on the Java implementation of CMA-ES by Nikolaus Hansen
- * available at https://www.lri.fr/~hansen/cmaes_inmatlab.html#java,
- * originally licensed under the GNU LGPLv3.
+ * This file is based on the Java implementation of CMA-ES by Nikolaus Hansen available at
+ * {@literal https://www.lri.fr/~hansen/cmaes_inmatlab.html#java}, originally licensed under the GNU LGPLv3.
  * <p>
  * References:
  * <ol>
- *   <li>Hansen and Kern (2004). Evaluating the CMA Evolution Strategy on
- *       Multimodal Test Functions. In Proceedings of the Eighth International
- *       Conference on Parallel Problem Solving from Nature PPSN VIII,
- *       pp. 282-291, Berlin: Springer.
- *   <li>Hansen, N. (2011).  The CMA Evolution Strategy: A Tutorial.
- *       Available at https://www.lri.fr/~hansen/cmatutorial.pdf.
- *   <li>Igel, C., N. Hansen, and S. Roth (2007).  Covariance Matrix Adaptation
- *       for Multi-objective Optimization.  Evolutionary Computation,
- *       15(1):1-28.
+ *   <li>Hansen and Kern (2004). Evaluating the CMA Evolution Strategy on Multimodal Test Functions. In Proceedings of
+ *       the Eighth International Conference on Parallel Problem Solving from Nature PPSN VIII, pp. 282-291,
+ *       Berlin: Springer.
+ *   <li>Hansen, N. (2011).  The CMA Evolution Strategy: A Tutorial.  Available at
+ *       https://www.lri.fr/~hansen/cmatutorial.pdf.
+ *   <li>Igel, C., N. Hansen, and S. Roth (2007).  Covariance Matrix Adaptation for Multi-objective Optimization.
+ *       Evolutionary Computation, 15(1):1-28.
  * </ol>
  */
 public class CMAES extends AbstractAlgorithm implements Configurable {
 	
 	/**
-	 * An initial search point to start searching from, or {@code null} if no
-	 * initial search point is specified.
+	 * An initial search point to start searching from, or {@code null} if no initial search point is specified.
 	 */
 	private final double[] initialSearchPoint;
 	
 	/**
-	 * If {@code true}, perform consistency checks to ensure CMA-ES remains
-	 * numerically stable.
+	 * If {@code true}, perform consistency checks to ensure CMA-ES remains numerically stable.
 	 */
 	private final boolean checkConsistency;
 	
 	/**
-	 * Secondary comparison criteria for comparing population individuals
-	 * with the same rank.  If {@code null}, the default crowding distance
-	 * metric is used.
+	 * Secondary comparison criteria for comparing population individuals with the same rank.  If {@code null}, the
+	 * default crowding distance metric is used.
 	 */
 	private FitnessEvaluator fitnessEvaluator;
 	
@@ -106,10 +98,8 @@ public class CMAES extends AbstractAlgorithm implements Configurable {
 	private int iteration;
 
 	/**
-	 * The number of iterations in which only the covariance diagonal is used.
-	 * This enhancement helps speed up the algorithm when there are many
-	 * decision variables.  Set to {@code 0} to always use the full covariance
-	 * matrix.
+	 * The number of iterations in which only the covariance diagonal is used.  This enhancement helps speed up the
+	 * algorithm when there are many decision variables.  Set to {@code 0} to always use the full covariance matrix.
 	 */
 	private int diagonalIterations;
 
@@ -222,46 +212,37 @@ public class CMAES extends AbstractAlgorithm implements Configurable {
 	 *
 	 * @param problem the problem to optimize
 	 * @param lambda the offspring population size
-	 * @param fitnessEvaluator secondary comparison criteria for comparing
-	 *        population individuals with the same rank, or {@code null} to use
-	 *        the default crowding distance metric
+	 * @param fitnessEvaluator secondary comparison criteria for comparing population individuals with the same rank,
+	 *        or {@code null} to use the default crowding distance metric
 	 * @param archive the nondominated archive for storing the elite individuals
 	 */
-	public CMAES(Problem problem, int lambda, FitnessEvaluator fitnessEvaluator,
-			NondominatedPopulation archive) {
-		this(problem, lambda, fitnessEvaluator, archive, null, false,
-				-1, -1, -1, -1, -1, -1, -1);
+	public CMAES(Problem problem, int lambda, FitnessEvaluator fitnessEvaluator, NondominatedPopulation archive) {
+		this(problem, lambda, fitnessEvaluator, archive, null, false, -1, -1, -1, -1, -1, -1, -1);
 	}
 
 	/**
 	 * Constructs a new CMA-ES instance with the given parameters.
 	 * <p>
-	 * If the parameters {@code cc}, {@code cs}, {@code damps}, {@code ccov},
-	 * {@code ccovsep}, {@code sigma}, and {@code diagonalIterations} are set
-	 * to any negative number, then the default parameter will be used.
+	 * If the parameters {@code cc}, {@code cs}, {@code damps}, {@code ccov}, {@code ccovsep}, {@code sigma}, and
+	 * {@code diagonalIterations} are set to any negative number, then the default parameter will be used.
 	 * 
 	 * @param problem the problem to optimize
 	 * @param lambda the offspring population size
-	 * @param fitnessEvaluator secondary comparison criteria for comparing
-	 *        population individuals with the same rank, or {@code null} to use
-	 *        the default crowding distance metric
+	 * @param fitnessEvaluator secondary comparison criteria for comparing population individuals with the same rank,
+	 *        or {@code null} to use the default crowding distance metric
 	 * @param archive the nondominated archive for storing the elite individuals
-	 * @param initialSearchPoint an initial search point, or {@code null} if
-	 *        no initial search point is specified
-	 * @param checkConsistency if {@code true}, performs checks to ensure
-	 *        CMA-ES remains numerically stable
+	 * @param initialSearchPoint an initial search point, or {@code null} if no initial search point is specified
+	 * @param checkConsistency if {@code true}, performs checks to ensure CMA-ES remains numerically stable
 	 * @param cc the cumulation parameter
 	 * @param cs the step size of the cumulation parameter
 	 * @param damps the damping factor for the step size
 	 * @param ccov the learning rate
 	 * @param ccovsep the learning rate when in diagonal-only mode
 	 * @param sigma the initial standard deviation
-	 * @param diagonalIterations the number of iterations in which only the
-	 *        covariance diagonal is used
+	 * @param diagonalIterations the number of iterations in which only the covariance diagonal is used
 	 */
-	public CMAES(Problem problem, int lambda, FitnessEvaluator fitnessEvaluator,
-			NondominatedPopulation archive, double[] initialSearchPoint,
-			boolean checkConsistency, double cc, double cs, double damps,
+	public CMAES(Problem problem, int lambda, FitnessEvaluator fitnessEvaluator, NondominatedPopulation archive,
+			double[] initialSearchPoint, boolean checkConsistency, double cc, double cs, double damps,
 			double ccov, double ccovsep, double sigma, int diagonalIterations) {
 		super(problem);
 		setLambda(lambda);
@@ -517,12 +498,10 @@ public class CMAES extends AbstractAlgorithm implements Configurable {
 	}
 
 	/**
-	 * Validates parameters prior to calling the {@link #initialize()} method.
-	 * Checks include ensuring the initial search point is valid and ensures
-	 * each devision variable is real-valued.
+	 * Validates parameters prior to calling the {@link #initialize()} method.  Checks include ensuring the initial
+	 * search point is valid and ensures each devision variable is real-valued.
 	 * 
-	 * @param prototypeSolution an example solution for retrieving variable
-	 *        types and bounds
+	 * @param prototypeSolution an example solution for retrieving variable types and bounds
 	 * @throws IllegalArgumentException if any of the checks fail
 	 */
 	private void preInitChecks(Solution prototypeSolution) {
@@ -873,7 +852,8 @@ public class CMAES extends AbstractAlgorithm implements Configurable {
 	}
 	
 	/**
-	 * Comparator for single-objective problems using aggregate constraint violations to handle constrained optimization problems.
+	 * Comparator for single-objective problems using aggregate constraint violations to handle constrained
+	 * optimization problems.
 	 */
 	private class SingleObjectiveComparator extends ChainedComparator implements Comparator<Solution> {
 
@@ -995,12 +975,10 @@ public class CMAES extends AbstractAlgorithm implements Configurable {
 	
 	@Override
 	public void step() {
-		// Since unlike other algorithms, the initialize() method does not
-		// produce an initial population.  To remain consistent, we override
-		// the step() method so that iterate() is called after initialize().
+		// Since unlike other algorithms, the initialize() method does not produce an initial population.  To remain
+		// consistent, we override the step() method so that iterate() is called after initialize().
 		if (isTerminated()) {
-			throw new AlgorithmTerminationException(this, 
-					"algorithm already terminated");
+			throw new AlgorithmTerminationException(this, "algorithm already terminated");
 		} else if (!isInitialized()) {
 			initialize();
 			iterate();
@@ -1014,16 +992,13 @@ public class CMAES extends AbstractAlgorithm implements Configurable {
 		return archive;
 	}
 	
-	// The remaining functions in this file are copied almost verbatim from
-	// Nikolaus Hansen's Java implementation.
+	// The remaining functions in this file are copied almost verbatim from Nikolaus Hansen's Java implementation.
 	
 	/**
-	 * Symmetric Householder reduction to tridiagonal form, taken from JAMA
-	 * package.
+	 * Symmetric Householder reduction to tridiagonal form, taken from JAMA package.
 	 * 
-	 * This is derived from the Algol procedures tred2 by Bowdler, Martin,
-	 * Reinsch, and Wilkinson, Handbook for Auto. Comp., Vol.ii-Linear Algebra,
-	 * and the corresponding Fortran subroutine in EISPACK.
+	 * This is derived from the Algol procedures tred2 by Bowdler, Martin, Reinsch, and Wilkinson, Handbook for Auto.
+	 * Comp., Vol.ii-Linear Algebra, and the corresponding Fortran subroutine in EISPACK.
 	 */
 	private static void tred2(int n, double[][] V, double[] d, double[] e) {
 		for (int j = 0; j < n; j++) {
@@ -1131,9 +1106,8 @@ public class CMAES extends AbstractAlgorithm implements Configurable {
 	/**
 	 * Symmetric tridiagonal QL algorithm, taken from JAMA package.
 	 * 
-	 * This is derived from the Algol procedures tql2, by Bowdler, Martin,
-	 * Reinsch, and Wilkinson, Handbook for Auto. Comp., Vol.ii-Linear Algebra,
-	 * and the corresponding Fortran subroutine in EISPACK.
+	 * This is derived from the Algol procedures tql2, by Bowdler, Martin, Reinsch, and Wilkinson, Handbook for Auto.
+	 * Comp., Vol.ii-Linear Algebra, and the corresponding Fortran subroutine in EISPACK.
 	 */
 	private static void tql2(int n, double[] d, double[] e, double[][] V) {
 		for (int i = 1; i < n; i++) {
@@ -1155,8 +1129,7 @@ public class CMAES extends AbstractAlgorithm implements Configurable {
 				m++;
 			}
 
-			// If m == l, d[l] is an eigenvalue,
-			// otherwise, iterate.
+			// If m == l, d[l] is an eigenvalue, otherwise, iterate.
 			if (m > l) {
 				int iter = 0;
 				do {
@@ -1240,8 +1213,7 @@ public class CMAES extends AbstractAlgorithm implements Configurable {
 	}
 
 	/**
-	 * Exhaustive test of the output of the eigendecomposition.  Needs O(n^3)
-	 * operations.
+	 * Exhaustive test of the output of the eigendecomposition.  Needs O(n^3) operations.
 	 * 
 	 * @return the number of detected inaccuracies
 	 */

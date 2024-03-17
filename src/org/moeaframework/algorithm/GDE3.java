@@ -36,15 +36,14 @@ import org.moeaframework.core.variable.RealVariable;
  * <p>
  * References:
  * <ol>
- * <li>Kukkonen and Lampinen (2005). "GDE3: The Third Evolution Step of
- * Generalized Differential Evolution." KanGAL Report Number 2005013.
+ *   <li>Kukkonen and Lampinen (2005). "GDE3: The Third Evolution Step of Generalized Differential Evolution."
+ *       KanGAL Report Number 2005013.
  * </ol>
  */
 public class GDE3 extends AbstractEvolutionaryAlgorithm {
 
 	/**
-	 * The dominance comparator used to determine if offspring survive until
-	 * the non-dominated sorting step.
+	 * The dominance comparator used to determine if offspring survive until the non-dominated sorting step.
 	 */
 	private final DominanceComparator comparator;
 
@@ -80,7 +79,8 @@ public class GDE3 extends AbstractEvolutionaryAlgorithm {
 	public GDE3(Problem problem, int initialPopulationSize, NondominatedSortingPopulation population,
 			DifferentialEvolutionSelection selection, DifferentialEvolutionVariation variation,
 			Initialization initialization) {
-		this(problem, initialPopulationSize, population, population.getComparator(), selection, variation, initialization);
+		this(problem, initialPopulationSize, population, population.getComparator(), selection, variation,
+				initialization);
 	}
 
 	/**
@@ -89,8 +89,8 @@ public class GDE3 extends AbstractEvolutionaryAlgorithm {
 	 * @param problem the problem being solved
 	 * @param initialPopulationSize the initial population size
 	 * @param population the population used to store solutions
-	 * @param comparator the dominance comparator used to determine if offspring
-	 *        survive until the non-dominated sorting step
+	 * @param comparator the dominance comparator used to determine if offspring survive until the non-dominated
+	 *        sorting step
 	 * @param selection the selection operator
 	 * @param variation the variation operator
 	 * @param initialization the initialization method

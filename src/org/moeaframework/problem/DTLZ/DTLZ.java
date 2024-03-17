@@ -28,8 +28,7 @@ import org.moeaframework.problem.AnalyticalProblem;
 public abstract class DTLZ extends AbstractProblem  implements AnalyticalProblem {
 
 	/**
-	 * Constructs a new DTLZ problem instance with the specified number of
-	 * variables and objectives.
+	 * Constructs a new DTLZ problem instance with the specified number of variables and objectives.
 	 * 
 	 * @param numberOfVariables the number of variables for this problem
 	 * @param numberOfObjectives the number of objectives for this problem

@@ -63,32 +63,27 @@ public class MetricFileReaderTest {
 			"0 10 100 1000 -10 -100\n";
 
 	/**
-	 * Performs the necessary assertions to ensure a complete metric file
-	 * is read correctly.
+	 * Performs the necessary assertions to ensure a complete metric file is read correctly.
 	 * 
 	 * @param reader the metric file reader
 	 */
 	public void validateComplete(MetricFileReader reader) {
 		Assert.assertTrue(reader.hasNext());
-		Assert.assertArrayEquals(new double[] { 0.0, 0.1, -0.1, 1.0, -1.0,
-				1E-5 }, reader.next(), Settings.EPS);
+		Assert.assertArrayEquals(new double[] { 0.0, 0.1, -0.1, 1.0, -1.0, 1E-5 }, reader.next(), Settings.EPS);
 		Assert.assertTrue(reader.hasNext());
-		Assert.assertArrayEquals(new double[] { 0, 10, 100, 1000, -10, -100 }, 
-				reader.next(), Settings.EPS);
+		Assert.assertArrayEquals(new double[] { 0, 10, 100, 1000, -10, -100 }, reader.next(), Settings.EPS);
 		Assert.assertFalse(reader.hasNext());
 		Assert.assertFalse(reader.hasNext());
 	}
 
 	/**
-	 * Performs the necessary assertions to ensure an incomplete metric file
-	 * is read correctly.
+	 * Performs the necessary assertions to ensure an incomplete metric file is read correctly.
 	 * 
 	 * @param reader the metric file reader
 	 */
 	public void validateIncomplete(MetricFileReader reader) {
 		Assert.assertTrue(reader.hasNext());
-		Assert.assertArrayEquals(new double[] { 0.0, 0.1, -0.1, 1.0, -1.0,
-				1E-5 }, reader.next(), Settings.EPS);
+		Assert.assertArrayEquals(new double[] { 0.0, 0.1, -0.1, 1.0, -1.0, 1E-5 }, reader.next(), Settings.EPS);
 		Assert.assertFalse(reader.hasNext());
 		Assert.assertFalse(reader.hasNext());
 	}

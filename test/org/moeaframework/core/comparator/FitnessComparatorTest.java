@@ -82,8 +82,7 @@ public class FitnessComparatorTest {
 	}
 
 	/**
-	 * Tests if an exception is thrown when comparing solutions missing the
-	 * fitness attribute.
+	 * Tests if an exception is thrown when comparing solutions missing the fitness attribute.
 	 */
 	@Test(expected = NullPointerException.class)
 	public void testMissingCrowdingAttribute() {

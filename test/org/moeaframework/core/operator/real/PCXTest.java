@@ -47,8 +47,8 @@ public class PCXTest extends ParentCentricVariationTest {
 	}
 
 	/**
-	 * Tests if the offspring form clusters distributed around each parent, with
-	 * the parents being degenerate along one axis.
+	 * Tests if the offspring form clusters distributed around each parent, with the parents being degenerate along one
+	 * axis.
 	 */
 	@Test
 	@Retryable

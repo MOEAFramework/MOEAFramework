@@ -24,9 +24,8 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.moeaframework.core.PRNG;
 
 /**
- * Decision variable for integers encoded as a binary string.  Note that if
- * {@code upperBound-lowerBound} is not a power of 2, then some values will
- * occur more frequently after a variation operator.
+ * Decision variable for integers encoded as a binary string.  Note that if {@code upperBound-lowerBound} is not a
+ * power of 2, then some values will occur more frequently after a variation operator.
  */
 public class BinaryIntegerVariable extends BinaryVariable {
 
@@ -43,15 +42,14 @@ public class BinaryIntegerVariable extends BinaryVariable {
 	private final int upperBound;
 	
 	/**
-	 * If {@code true}, the binary representation uses gray coding.  Gray
-	 * coding ensures that two successive values differ in only one bit.
+	 * If {@code true}, the binary representation uses gray coding.  Gray coding ensures that two successive values
+	 * differ in only one bit.
 	 */
 	private final boolean gray;
 	
 	/**
-	 * Constructs an integer-valued variable in the range
-	 * {@code lowerBound <= x <= upperBound} with an uninitialized value.
-	 * Uses gray coding by default.
+	 * Constructs an integer-valued variable in the range {@code lowerBound <= x <= upperBound} with an uninitialized
+	 * value.  Uses gray coding by default.
 	 * 
 	 * @param lowerBound the lower bound of this decision variable, inclusive
 	 * @param upperBound the upper bound of this decision variable, inclusive
@@ -61,9 +59,8 @@ public class BinaryIntegerVariable extends BinaryVariable {
 	}
 	
 	/**
-	 * Constructs an integer-valued variable in the range
-	 * {@code lowerBound <= x <= upperBound} with the specified initial value.
-	 * Uses gray coding by default.
+	 * Constructs an integer-valued variable in the range {@code lowerBound <= x <= upperBound} with the specified
+	 * initial value.  Uses gray coding by default.
 	 * 
 	 * @param value the initial value of this decision variable
 	 * @param lowerBound the lower bound of this decision variable, inclusive
@@ -76,8 +73,8 @@ public class BinaryIntegerVariable extends BinaryVariable {
 	}
 	
 	/**
-	 * Constructs an integer-valued variable in the range
-	 * {@code lowerBound <= x <= upperBound} with an uninitialized value.
+	 * Constructs an integer-valued variable in the range {@code lowerBound <= x <= upperBound} with an uninitialized
+	 * value.
 	 * 
 	 * @param lowerBound the lower bound of this decision variable, inclusive
 	 * @param upperBound the upper bound of this decision variable, inclusive
@@ -91,9 +88,8 @@ public class BinaryIntegerVariable extends BinaryVariable {
 	}
 	
 	/**
-	 * Constructs an integer-valued variable in the range
-	 * {@code lowerBound <= x <= upperBound} with the specified initial value.
-	 * Uses gray coding by default.
+	 * Constructs an integer-valued variable in the range {@code lowerBound <= x <= upperBound} with the specified
+	 * initial value.  Uses gray coding by default.
 	 * 
 	 * @param value the initial value of this decision variable
 	 * @param lowerBound the lower bound of this decision variable, inclusive
@@ -108,13 +104,11 @@ public class BinaryIntegerVariable extends BinaryVariable {
 	}
 	
 	/**
-	 * Returns the minimum number of bits required to represent an integer
-	 * within the given bounds.
+	 * Returns the minimum number of bits required to represent an integer within the given bounds.
 	 * 
 	 * @param lowerBound the lower bound
 	 * @param upperBound the upper bound
-	 * @return the minimum number of bits required to represent an integer
-	 *         within the given bounds
+	 * @return the minimum number of bits required to represent an integer within the given bounds
 	 */
 	public static final int getNumberOfBits(int lowerBound, int upperBound) {
 		return Integer.SIZE-Integer.numberOfLeadingZeros(upperBound-lowerBound);
@@ -134,8 +128,7 @@ public class BinaryIntegerVariable extends BinaryVariable {
 		
 		int value = (int)EncodingUtils.decode(bits);
 		
-		// if difference is not a power of 2, then the decoded value may be
-		// larger than the difference
+		// if difference is not a power of 2, then the decoded value may be larger than the difference
 		if (value > upperBound - lowerBound) {
 			value -= upperBound - lowerBound;
 		}
@@ -168,11 +161,10 @@ public class BinaryIntegerVariable extends BinaryVariable {
 	}
 	
 	/**
-	 * Returns {@code true} if the binary representation using gray coding.
-	 * Gray coding ensures that two successive values differ by only one bit.
+	 * Returns {@code true} if the binary representation using gray coding.  Gray coding ensures that two successive
+	 * values differ by only one bit.
 	 * 
-	 * @return {@code true} if the binary representation using gray coding;
-	 *         {@code false} otherwise
+	 * @return {@code true} if the binary representation using gray coding; {@code false} otherwise
 	 */
 	protected boolean isGray() {
 		return gray;
@@ -200,8 +192,7 @@ public class BinaryIntegerVariable extends BinaryVariable {
 	public BinaryIntegerVariable copy() {
 		BinaryIntegerVariable result = new BinaryIntegerVariable(lowerBound, upperBound);
 	
-		// copy the bits instead of the value to ensure the clone has the same
-		// internal representation
+		// copy the bits instead of the value to ensure the clone has the same internal representation
 		for (int i = 0; i < result.getNumberOfBits(); i++) {
 			result.set(i, get(i));
 		}

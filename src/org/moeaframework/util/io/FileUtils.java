@@ -37,8 +37,8 @@ public class FileUtils {
 	}
 
 	/**
-	 * Moves the file from one path to another. This method can rename a file or
-	 * move it to a different directory, like the Unix {@code mv} command.
+	 * Moves the file from one path to another. This method can rename a file or move it to a different directory, like
+	 * the Unix {@code mv} command.
 	 *
 	 * @param source the source file
 	 * @param destination the destination file

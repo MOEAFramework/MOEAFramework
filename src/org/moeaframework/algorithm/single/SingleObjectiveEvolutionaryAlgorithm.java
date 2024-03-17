@@ -28,8 +28,8 @@ import org.moeaframework.core.configuration.Validate;
 import org.moeaframework.util.TypedProperties;
 
 /**
- * Abstract class for building single-objective evolutionary algorithms.  These use an aggregating
- * or scalarizing function that converts multiple objective values into a single fitness value.
+ * Abstract class for building single-objective evolutionary algorithms.  These use an aggregating or scalarizing
+ * function that converts multiple objective values into a single fitness value.
  */
 public abstract class SingleObjectiveEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 	

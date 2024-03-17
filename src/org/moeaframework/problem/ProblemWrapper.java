@@ -23,8 +23,8 @@ import org.moeaframework.core.Solution;
 /**
  * Wraps a problem instance to modify or extend its functionality.
  * <p>
- * All methods invoke the corresponding method on the inner problem.  Subclasses need only override
- * the methods they need to change.
+ * All methods invoke the corresponding method on the inner problem.  Subclasses need only override the methods they
+ * need to change.
  */
 public abstract class ProblemWrapper implements Problem {
 

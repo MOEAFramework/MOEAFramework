@@ -18,8 +18,7 @@
 package org.moeaframework.problem.LZ;
 
 /**
- * The F2 problem from the complicated Pareto sets test suite by Hui Li and
- * Qingfu Zhang.
+ * The F2 problem from the complicated Pareto sets test suite by Hui Li and Qingfu Zhang.
  */
 public class LZ2 extends LZ {
 

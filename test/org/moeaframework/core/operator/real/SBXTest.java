@@ -116,9 +116,8 @@ public class SBXTest extends ParentCentricVariationTest {
 	}
 	
 	/**
-	 * Test to ensure the SBX operator works correctly if the PRNG draws a
-	 * value of 1.0.  The SBX code results in out-of-bounds values if this
-	 * happens and must be guarded against.
+	 * Test to ensure the SBX operator works correctly if the PRNG draws a value of 1.0.  The SBX code results in
+	 * out-of-bounds values if this happens and must be guarded against.
 	 */
 	@Test
 	public void testRNGError() {

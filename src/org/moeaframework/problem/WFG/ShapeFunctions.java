@@ -21,12 +21,10 @@ package org.moeaframework.problem.WFG;
  * 
  * Copyright 2005 The Walking Fish Group (WFG).
  *
- * This material is provided "as is", with no warranty expressed or implied.
- * Any use is at your own risk. Permission to use or copy this software for
- * any purpose is hereby granted without fee, provided this notice is
- * retained on all copies. Permission to modify the code and to distribute
- * modified code is granted, provided a notice that the code was modified is
- * included with the above copyright notice.
+ * This material is provided "as is", with no warranty expressed or implied.  Any use is at your own risk. Permission
+ * to use or copy this software for any purpose is hereby granted without fee, provided this notice is retained on all
+ * copies. Permission to modify the code and to distribute modified code is granted, provided a notice that the code
+ * was modified is included with the above copyright notice.
  *
  * http://www.wfg.csse.uwa.edu.au/
  */
@@ -102,8 +100,7 @@ class ShapeFunctions {
 		assert alpha > 0.0;
 
 		double tmp = 2.0 * A * Math.PI;
-		return Misc.correct_to_01(Math.pow(1.0 - x[0]
-				- Math.cos(tmp * x[0] + Math.PI / 2.0) / tmp, alpha));
+		return Misc.correct_to_01(Math.pow(1.0 - x[0] - Math.cos(tmp * x[0] + Math.PI / 2.0) / tmp, alpha));
 	}
 
 	public static double disc(double[] x, int A, double alpha, double beta) {
@@ -114,9 +111,7 @@ class ShapeFunctions {
 		assert beta > 0.0;
 
 		double tmp = A * Math.pow(x[0], beta) * Math.PI;
-		return Misc.correct_to_01(1.0 - Math.pow(x[0], alpha)
-				* Math.pow(Math.cos(tmp), 2.0));
-
+		return Misc.correct_to_01(1.0 - Math.pow(x[0], alpha) * Math.pow(Math.cos(tmp), 2.0));
 	}
 
 }

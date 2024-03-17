@@ -33,16 +33,14 @@ import org.moeaframework.core.configuration.Configurable;
 import org.moeaframework.core.configuration.Validate;
 
 /**
- * Abstract class providing default implementations for several
- * {@link EvolutionaryAlgorithm} methods. Primarily, the {@link #initialize()}
- * method generates and evaluates the initial population, adding the solutions
- * to the archive if available. The {@link #getResult()} method returns the
- * non-dominated solutions from the population and, if available, the archive.
- * The majority of evolutionary algorithms should only need to override the
- * {@link #iterate()} method.
+ * Abstract class providing default implementations for several {@link EvolutionaryAlgorithm} methods. Primarily,
+ * the {@link #initialize()} method generates and evaluates the initial population, adding the solutions to the archive
+ * if available. The {@link #getResult()} method returns the non-dominated solutions from the population and, if
+ * available, the archive.  The majority of evolutionary algorithms should only need to override the {@link #iterate()}
+ * method.
  */
-public abstract class AbstractEvolutionaryAlgorithm extends AbstractAlgorithm
-		implements EvolutionaryAlgorithm, Configurable {
+public abstract class AbstractEvolutionaryAlgorithm extends AbstractAlgorithm implements EvolutionaryAlgorithm,
+Configurable {
 	
 	/**
 	 * The initial population size.

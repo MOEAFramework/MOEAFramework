@@ -45,8 +45,7 @@ public class AdaptiveMultimethodVariationTest {
 	private AdaptiveMultimethodVariation variation;
 	
 	/**
-	 * A dummy variation operator that counts the number of invocations of
-	 * {@code evolve}.
+	 * A dummy variation operator that counts the number of invocations of {@code evolve}.
 	 */
 	private static class DummyVariation implements Variation {
 
@@ -121,8 +120,7 @@ public class AdaptiveMultimethodVariationTest {
 	}
 	
 	/**
-	 * Tests if an exception is thrown when calling the {@code getArity()}
-	 * method with no operators.
+	 * Tests if an exception is thrown when calling the {@code getArity()} method with no operators.
 	 */
 	@Test(expected = Exception.class)
 	public void testGetArityNoOperators() {
@@ -130,8 +128,7 @@ public class AdaptiveMultimethodVariationTest {
 	}
 
 	/**
-	 * Tests if an exception is thrown when calling the {@code evolve()} method
-	 * with no operators.
+	 * Tests if an exception is thrown when calling the {@code evolve()} method with no operators.
 	 */
 	@Test(expected = Exception.class)
 	public void testEvolveNoOperators() {
@@ -175,8 +172,7 @@ public class AdaptiveMultimethodVariationTest {
 	}
 	
 	/**
-	 * Tests if the actual selection probabilities are equal to the expected
-	 * selection probabilities.
+	 * Tests if the actual selection probabilities are equal to the expected selection probabilities.
 	 * 
 	 * @param variation the variation operator
 	 * @param probabilities the expected selection probabilities
@@ -193,15 +189,14 @@ public class AdaptiveMultimethodVariationTest {
 		for (int i=0; i<variation.getNumberOfOperators(); i++) {
 			int count = ((DummyVariation)variation.getOperator(i)).count;
 			
-			Assert.assertEquals(probabilities[i], 
-					count / (double)TestThresholds.SAMPLES,
+			Assert.assertEquals(probabilities[i], count / (double)TestThresholds.SAMPLES,
 					TestThresholds.STATISTICS_EPS);
 		}
 	}
 	
 	/**
-	 * Extends {@link AdaptiveMultimethodVariation} to count the number of
-	 * invocations to {@link #getOperatorProbabilities()}.
+	 * Extends {@link AdaptiveMultimethodVariation} to count the number of invocations to
+	 * {@link #getOperatorProbabilities()}.
 	 */
 	private class AdaptiveMultimethodVariationCounter extends AdaptiveMultimethodVariation {
 		
@@ -224,8 +219,7 @@ public class AdaptiveMultimethodVariationTest {
 	}
 	
 	/**
-	 * Tests if the number of invocations between probability updates matches
-	 * the UPDATE_WINDOW.
+	 * Tests if the number of invocations between probability updates matches the UPDATE_WINDOW.
 	 */
 	@Test
 	public void testProbabilityUpdateInvocationCount() {

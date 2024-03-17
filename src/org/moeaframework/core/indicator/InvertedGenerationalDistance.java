@@ -22,21 +22,18 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 
 /**
- * Inverted generational distance indicator. Represents average distance from
- * solutions in the reference set to the nearest solution in an approximation
- * set.
+ * Inverted generational distance indicator. Represents average distance from solutions in the reference set to the
+ * nearest solution in an approximation set.
  */
 public class InvertedGenerationalDistance extends NormalizedIndicator {
 	
 	/**
-	 * Set to {@code 1.0} to replicate inverted generational distance as seen
-	 * in the literature; or any power.
+	 * Set to {@code 1.0} to replicate inverted generational distance as seen in the literature; or any power.
 	 */
 	private final double d;
 
 	/**
-	 * Constructs an inverted generational distance evaluator for the specified
-	 * problem and corresponding reference set.
+	 * Constructs an inverted generational distance evaluator for the specified problem and corresponding reference set.
 	 * 
 	 * @param problem the problem
 	 * @param referenceSet the reference set for the problem
@@ -46,8 +43,7 @@ public class InvertedGenerationalDistance extends NormalizedIndicator {
 	}
 	
 	/**
-	 * Constructs an inverted generational distance evaluator for the specified
-	 * problem and corresponding reference set.
+	 * Constructs an inverted generational distance evaluator for the specified problem and corresponding reference set.
 	 * 
 	 * @param problem the problem
 	 * @param referenceSet the reference set for the problem
@@ -64,17 +60,15 @@ public class InvertedGenerationalDistance extends NormalizedIndicator {
 	}
 
 	/**
-	 * Computes the inverted generational distance for the specified problem
-	 * given an approximation set and reference set. While not necessary, the
-	 * approximation and reference sets should be normalized. Returns
+	 * Computes the inverted generational distance for the specified problem given an approximation set and reference
+	 * set. While not necessary, the approximation and reference sets should be normalized. Returns
 	 * {@code Double.POSITIVE_INFINITY} if the approximation set is empty.
 	 * 
 	 * @param problem the problem
 	 * @param approximationSet an approximation set for the problem
 	 * @param referenceSet the reference set for the problem
 	 * @param d the power, typically {@code 1.0}
-	 * @return the inverted generational distance for the specified problem 
-	 *         given an approximation set and reference set
+	 * @return the inverted generational distance for the specified problem given an approximation set and reference set
 	 */
 	static double evaluate(Problem problem, NondominatedPopulation approximationSet,
 			NondominatedPopulation referenceSet, double d) {

@@ -65,8 +65,8 @@ public class Vector {
 	}
 
 	/**
-	 * Returns the difference between the two specified vectors, {@code u - v}.
-	 * The two vectors must be of the same length.
+	 * Returns the difference between the two specified vectors, {@code u - v}.  The two vectors must be of the same
+	 * length.
 	 * 
 	 * @param u the first vector
 	 * @param v the second vector
@@ -85,8 +85,7 @@ public class Vector {
 	}
 
 	/**
-	 * Returns the sum of the two specified vectors, {@code u + v}. The two
-	 * vectors must be of the same length.
+	 * Returns the sum of the two specified vectors, {@code u + v}.  The two vectors must be of the same length.
 	 * 
 	 * @param u the first vector
 	 * @param v the second vector
@@ -123,8 +122,7 @@ public class Vector {
 	}
 
 	/**
-	 * Returns the negation of the specified vector, {@code -u}. This is
-	 * equivalent to calling {@code multiply(-1, u)}.
+	 * Returns the negation of the specified vector, {@code -u}. This is equivalent to calling {@code multiply(-1, u)}.
 	 * 
 	 * @param u the vector
 	 * @return the negation of the specified vector, {@code -u}
@@ -145,8 +143,7 @@ public class Vector {
 	}
 
 	/**
-	 * Returns the dot (inner) product of the two specified vectors. The two
-	 * vectors must be the same length.
+	 * Returns the dot (inner) product of the two specified vectors. The two vectors must be the same length.
 	 * 
 	 * @param u the first vector
 	 * @param v the second vector
@@ -175,9 +172,8 @@ public class Vector {
 	}
 
 	/**
-	 * Returns the specified vector normalized to have a magnitude of 1. The
-	 * specified vector must contain at least one non-zero component; otherwise
-	 * an exception is thrown.
+	 * Returns the specified vector normalized to have a magnitude of 1.  The specified vector must contain at least
+	 * one non-zero component; otherwise an exception is thrown.
 	 * 
 	 * @param u the vector
 	 * @return the specified vector normalized to have a magnitude of 1
@@ -192,22 +188,19 @@ public class Vector {
 	}
 
 	/**
-	 * Returns the projection of {@code u} onto {@code v}. The two vectors must
-	 * be the same length.
+	 * Returns the projection of {@code u} onto {@code v}. The two vectors must be the same length.
 	 * 
 	 * @param u the vector being projected
 	 * @param v the vector onto which {@code u} is being projected
 	 * @return the projection of {@code u} onto {@code v}
-	 * @throws IllegalArgumentException if the two vectors are not the same 
-	 *         length
+	 * @throws IllegalArgumentException if the two vectors are not the same length
 	 */
 	public static double[] project(double[] u, double[] v) {
 		return multiply(dot(u, v) / dot(v, v), v);
 	}
 
 	/**
-	 * Returns the orthogonal basis for the specified vectors using the
-	 * Gram-Schmidt process.
+	 * Returns the orthogonal basis for the specified vectors using the Gram-Schmidt process.
 	 * 
 	 * @param vs the vectors to be orthogonalized
 	 * @return the orthogonal basis
@@ -225,22 +218,19 @@ public class Vector {
 	}
 
 	/**
-	 * Returns the vector {@code u} orthogonal to the already orthogonalized
-	 * vectors {@code vs}. This method is provided to allow incremental
-	 * construction of the orthogonal basis:
-	 * 
+	 * Returns the vector {@code u} orthogonal to the already orthogonalized vectors {@code vs}. This method is
+	 * provided to allow incremental construction of the orthogonal basis:
 	 * <pre>
-	 * List&lt;double[]&gt; basis = new ArrayList&lt;double[]&gt;();
-	 * for (double[] v : vectors) {
-	 * 	double[] e = orthogonalize(v, basis);
-	 * 	basis.add(e);
-	 * }
+	 *   List&lt;double[]&gt; basis = new ArrayList&lt;double[]&gt;();
+	 *   for (double[] v : vectors) {
+	 * 	  double[] e = orthogonalize(v, basis);
+	 * 	  basis.add(e);
+	 *   }
 	 * </pre>
 	 * 
 	 * @param u the vector
 	 * @param vs the already orthogonalized vectors
-	 * @return the vector {@code u} orthogonal to the already orthogonalized
-	 *         vectors {@code vs}
+	 * @return the vector {@code u} orthogonal to the already orthogonalized vectors {@code vs}
 	 */
 	public static double[] orthogonalize(double[] u, Iterable<double[]> vs) {
 		for (double[] v : vs) {
@@ -279,12 +269,10 @@ public class Vector {
 	}
 
 	/**
-	 * Returns {@code true} if the specified vector contains all zeros;
-	 * {@code false} otherwise.
+	 * Returns {@code true} if the specified vector contains all zeros; {@code false} otherwise.
 	 * 
 	 * @param u the vector
-	 * @return {@code true} if the specified vector contains all zeros;
-	 *         {@code false} otherwise
+	 * @return {@code true} if the specified vector contains all zeros; {@code false} otherwise
 	 */
 	public static boolean isZero(double[] u) {
 		for (int i = 0; i < u.length; i++) {

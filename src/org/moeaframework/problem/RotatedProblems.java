@@ -27,10 +27,9 @@ import org.moeaframework.core.spi.ProblemProvider;
 import org.moeaframework.util.RotationMatrixBuilder;
 
 /**
- * Problem provider for rotated problems.  Supports any problem available
- * through {@code ProblemFactory#getProblem(String)}.  See {@link RotatedProblem}
- * for details on how rotation is supported.  Rotated problems are instantiated by
- * providing the problem name prefixed with one of the following prefix patterns.
+ * Problem provider for rotated problems.  Supports any problem available through
+ * {@code ProblemFactory#getProblem(String)}.  See {@link RotatedProblem} for details on how rotation is supported.
+ * Rotated problems are instantiated by providing the problem name prefixed with one of the following prefix patterns.
  * 
  * <table style="margin-top: 1em; width: 100%">
  *   <caption>List of rotated problem prefixes</caption>
@@ -58,18 +57,15 @@ import org.moeaframework.util.RotationMatrixBuilder;
  *   </tr>
  * </table>
  * <p>
- * As an example, rotated 2D DTLZ2 instances can be created with 
- * {@code "UNROT_DTLZ2_2"}, {@code "ROT_DTLZ2_2"}, {@code "ROT(30)_DTLZ2_2"}
- * and {@code "ROT(10,RAND)_DTLZ2_2"}.  Note that multiple calls to
+ * As an example, rotated 2D DTLZ2 instances can be created with  {@code "UNROT_DTLZ2_2"}, {@code "ROT_DTLZ2_2"},
+ * {@code "ROT(30)_DTLZ2_2"} and {@code "ROT(10,RAND)_DTLZ2_2"}.  Note that multiple calls to
  * {@link #getProblem(String)} may return instances with different rotations.
  * <p>
- * When comparing rotated problems against their unrotated versions, it is
- * important to use the {@code UNROT_} prefix for the unrotated problem.  The
- * act of rotating a problem expands the decision variable ranges slightly
- * (imagine a 1 x 1 square that is rotated 45 degrees; the bounding box of the
- * rotated square is approximately 1.4 x 1.4).  The {@code UNROT_} prefix
- * ensures the unrotated version uses the same expanded decision variable ranges
- * as the rotated variant.
+ * When comparing rotated problems against their unrotated versions, it is important to use the {@code UNROT_} prefix
+ * for the unrotated problem.  The act of rotating a problem expands the decision variable ranges slightly (imagine a
+ * 1 x 1 square that is rotated 45 degrees; the bounding box of the rotated square is approximately 1.4 x 1.4).  The
+ * {@code UNROT_} prefix ensures the unrotated version uses the same expanded decision variable ranges as the rotated
+ * variant.
  */
 public class RotatedProblems extends ProblemProvider {
 

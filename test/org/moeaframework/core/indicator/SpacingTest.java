@@ -61,8 +61,7 @@ public class SpacingTest {
 	}
 	
 	/**
-	 * Runs through some simple cases to ensure the spacing metric is
-	 * computed correctly.
+	 * Runs through some simple cases to ensure the spacing metric is computed correctly.
 	 */
 	@Test
 	public void testSimple() {

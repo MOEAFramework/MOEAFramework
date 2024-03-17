@@ -68,9 +68,8 @@ public class NSGAIITest extends AlgorithmTest {
 	}
 	
 	/**
-	 * Selection with and without replacement should produce statistically
-	 * similar results.  Differences may appear throughout search due to better
-	 * diversity when using without replacement, but end-of-run indicators
+	 * Selection with and without replacement should produce statistically similar results.  Differences may appear
+	 * throughout search due to better diversity when using without replacement, but end-of-run indicators
 	 * should be identical on simple problems.
 	 */
 	@Test
@@ -85,9 +84,8 @@ public class NSGAIITest extends AlgorithmTest {
 	}
 	
 	/**
-	 * When using selection without replacement, the same parent should never
-	 * be selected twice.  This only hold true if the population size is
-	 * a multiple of {@code 2*variation.getArity()}.
+	 * When using selection without replacement, the same parent should never be selected twice.  This only hold true
+	 * if the population size is a multiple of {@code 2*variation.getArity()}.
 	 */
 	@Test
 	public void testSelectionIsUnique() {
@@ -103,8 +101,8 @@ public class NSGAIITest extends AlgorithmTest {
 			
 		};
 
-		NSGAII nsgaii = new NSGAII(problem, 100, new NondominatedSortingPopulation(),
-				null, null, variation, new RandomInitialization(problem));
+		NSGAII nsgaii = new NSGAII(problem, 100, new NondominatedSortingPopulation(), null, null, variation,
+				new RandomInitialization(problem));
 		
 		while (nsgaii.getNumberOfEvaluations() < 100000) {
 			nsgaii.step();

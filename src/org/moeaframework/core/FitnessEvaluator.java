@@ -18,8 +18,8 @@
 package org.moeaframework.core;
 
 /**
- * Evaluates a population and assigns fitness values to its solutions. This
- * class is intended to be used by indicator-based algorithms.
+ * Evaluates a population and assigns fitness values to its solutions. This class is intended to be used by
+ * indicator-based algorithms.
  */
 public interface FitnessEvaluator {
 
@@ -29,19 +29,16 @@ public interface FitnessEvaluator {
 	public static final String FITNESS_ATTRIBUTE = "fitness";
 
 	/**
-	 * Evaluates the solutions in the specified population assigning the
-	 * {@code FITNESS_ATTRIBUTE} attribute.
+	 * Evaluates the solutions in the specified population assigning the {@code FITNESS_ATTRIBUTE} attribute.
 	 * 
 	 * @param population the population to be evaluated
 	 */
 	public void evaluate(Population population);
 	
 	/**
-	 * Returns {@code true} if larger fitness values are preferred; otherwise
-	 * smaller fitness values are preferred.
+	 * Returns {@code true} if larger fitness values are preferred; otherwise smaller fitness values are preferred.
 	 * 
-	 * @return {@code true} if larger fitness values are preferred; otherwise
-	 *         smaller fitness values are preferred
+	 * @return {@code true} if larger fitness values are preferred; otherwise smaller fitness values are preferred
 	 */
 	public boolean areLargerValuesPreferred();
 

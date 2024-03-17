@@ -33,8 +33,7 @@ public class ZDT2 extends ZDT {
 	}
 
 	/**
-	 * Constructs a ZDT2 test problem with the specified number of decision 
-	 * variables.
+	 * Constructs a ZDT2 test problem with the specified number of decision variables.
 	 * 
 	 * @param numberOfVariables the number of decision variables
 	 */

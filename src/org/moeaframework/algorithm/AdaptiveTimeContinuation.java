@@ -32,37 +32,29 @@ import org.moeaframework.core.configuration.Property;
 import org.moeaframework.core.configuration.Validate;
 
 /**
- * Decorator for {@link EvolutionaryAlgorithm}s to add time continuation
- * (restarts). Restarts occur if either
+ * Decorator for {@link EvolutionaryAlgorithm}s to add time continuation (restarts). Restarts occur if either
  * <ol>
- *   <li>the number of fitness function evaluations since the last restart exceeds
- *       {@code maxWindowSize}; or
- *   <li>the population-to-archive ratio exceeds {@code populationRatio} by more
- *       than {@code 25%}.
+ *   <li>the number of fitness function evaluations since the last restart exceeds {@code maxWindowSize}; or
+ *   <li>the population-to-archive ratio exceeds {@code populationRatio} by more than {@code 25%}.
  * </ol>
- * If a restart occurs, the population is emptied, the population size is
- * adapted to maintain the {@code populationRatio}, the the new population is
- * filled with solutions selected from {@code algorithm.getArchive()} and
- * mutated using the specified {@link Selection} and {@link Variation}
- * operators.
+ * If a restart occurs, the population is emptied, the population size is adapted to maintain the
+ * {@code populationRatio}, the the new population is filled with solutions selected from
+ * {@code algorithm.getArchive()} and mutated using the specified {@link Selection} and {@link Variation} operators.
  * <p>
  * References:
  * <ol>
- *   <li>Goldberg, D. E.  "Sizing Populations for Serial and Parallel Genetic 
- *       Algorithms."  In 3rd International Conference on Genetic Algorithms, 
- *       pp. 70-79, 1989.
- *   <li>Srivastava, R. P.  "Time Continuation in Genetic Algorithms."
- *       Technical report, Illinois Genetic Algorithm Laboratory, 2002.
- *   <li>Kollat, J. B., and Reed, P. M.  "Comparison of Multi-Objective 
- *       Evolutionary Algorithms for Long-Term Monitoring Design."  Advances in
- *       Water Resources, 29(6):792-807, 2006.
+ *   <li>Goldberg, D. E.  "Sizing Populations for Serial and Parallel Genetic Algorithms."  In 3rd International
+ *       Conference on Genetic Algorithms, pp. 70-79, 1989.
+ *   <li>Srivastava, R. P.  "Time Continuation in Genetic Algorithms." Technical report, Illinois Genetic Algorithm
+ *       Laboratory, 2002.
+ *   <li>Kollat, J. B., and Reed, P. M.  "Comparison of Multi-Objective Evolutionary Algorithms for Long-Term
+ *       Monitoring Design."  Advances in Water Resources, 29(6):792-807, 2006.
  * </ol>
  */
 public class AdaptiveTimeContinuation extends PeriodicAction implements EvolutionaryAlgorithm, Configurable {
 
 	/**
-	 * The maximum number of iterations allowed since the last restart before 
-	 * forcing a restart.
+	 * The maximum number of iterations allowed since the last restart before forcing a restart.
 	 */
 	private int maxWindowSize;
 
@@ -82,14 +74,12 @@ public class AdaptiveTimeContinuation extends PeriodicAction implements Evolutio
 	private int maximumPopulationSize;
 
 	/**
-	 * The selection operator for selecting solutions from the archive during a
-	 * restart.
+	 * The selection operator for selecting solutions from the archive during a restart.
 	 */
 	private final Selection restartSelection;
 
 	/**
-	 * The variation operator for mutating solutions selected from the archive
-	 * during a restart.
+	 * The variation operator for mutating solutions selected from the archive during a restart.
 	 */
 	private final Variation restartVariation;
 
@@ -108,20 +98,16 @@ public class AdaptiveTimeContinuation extends PeriodicAction implements Evolutio
 	 * 
 	 * @param algorithm the algorithm being decorated
 	 * @param windowSize the number of iterations between invocations of {@code check}
-	 * @param maxWindowSize the maximum number of iterations allowed since the
-	 *        last restart before forcing a restart
+	 * @param maxWindowSize the maximum number of iterations allowed since the last restart before forcing a restart
 	 * @param injectionRate the injection rate percentage
 	 * @param minimumPopulationSize the minimum size of the population
 	 * @param maximumPopulationSize the maximum size of the population
-	 * @param restartSelection the selection operator for selecting solutions from the
-	 *        archive during a restart
-	 * @param restartVariation the variation operator for mutating solutions selected
-	 *        from the archive during a restart
+	 * @param restartSelection the selection operator for selecting solutions from the archive during a restart
+	 * @param restartVariation the variation operator for mutating solutions selected from the archive during a restart
 	 */
-	public AdaptiveTimeContinuation(EvolutionaryAlgorithm algorithm,
-			int windowSize, int maxWindowSize, double injectionRate,
-			int minimumPopulationSize, int maximumPopulationSize,
-			Selection restartSelection, Variation restartVariation) {
+	public AdaptiveTimeContinuation(EvolutionaryAlgorithm algorithm, int windowSize, int maxWindowSize,
+			double injectionRate, int minimumPopulationSize, int maximumPopulationSize, Selection restartSelection,
+			Variation restartVariation) {
 		super(algorithm, windowSize, FrequencyType.STEPS);
 		setMaxWindowSize(maxWindowSize);
 		setInjectionRate(injectionRate);
@@ -134,7 +120,6 @@ public class AdaptiveTimeContinuation extends PeriodicAction implements Evolutio
 		this.restartSelection = restartSelection;
 		this.restartVariation = restartVariation;
 		
-
 		listeners = EventListenerSupport.create(RestartListener.class);
 	}
 	
@@ -259,17 +244,13 @@ public class AdaptiveTimeContinuation extends PeriodicAction implements Evolutio
 	}
 
 	/**
-	 * Performs a check to determine if a restart should occur. Returns
-	 * {@code RestartType.NONE} if no restart should occur; or
-	 * {@code RestartType.HARD} if the population-to-archive ratio exceeds 
-	 * {@code populationRatio} by more than {@code 25%} or the number of fitness
-	 * evaluations since the last restart exceeds {@code maxWindowSize}.
+	 * Performs a check to determine if a restart should occur. Returns {@code RestartType.NONE} if no restart should
+	 * occur; or {@code RestartType.HARD} if the population-to-archive ratio exceeds {@code populationRatio} by more
+	 * than {@code 25%} or the number of fitness evaluations since the last restart exceeds {@code maxWindowSize}.
 	 * 
-	 * @return {@code RestartType.NONE} if no restart should occur; or
-	 *         {@code RestartType.HARD} if the population-to-archive ratio
-	 *         exceeds {@code populationRatio} by more than {@code 25%} or
-	 *         if the number of fitness evaluations since the last restart 
-	 *         exceeds {@code maxWindowSize}
+	 * @return {@code RestartType.NONE} if no restart should occur; or {@code RestartType.HARD} if the
+	 *         population-to-archive ratio exceeds {@code populationRatio} by more than {@code 25%} or
+	 *         if the number of fitness evaluations since the last restart exceeds {@code maxWindowSize}
 	 */
 	protected RestartType check() {
 		int populationSize = getPopulation().size();
@@ -277,8 +258,7 @@ public class AdaptiveTimeContinuation extends PeriodicAction implements Evolutio
 
 		if (iteration - iterationAtLastRestart >= maxWindowSize) {
 			return RestartType.HARD;
-		} else if ((targetSize >= minimumPopulationSize) &&
-				(targetSize <= maximumPopulationSize) && 
+		} else if ((targetSize >= minimumPopulationSize) && (targetSize <= maximumPopulationSize) && 
 				(Math.abs(populationSize - targetSize) > (0.25 * targetSize))) {
 			return RestartType.HARD;
 		} else {
@@ -287,11 +267,9 @@ public class AdaptiveTimeContinuation extends PeriodicAction implements Evolutio
 	}
 
 	/**
-	 * Performs a restart. If the type is {@code RestartType.HARD}, the
-	 * population is emptied, resized and filled with solutions selected and
-	 * mutated from the archive. If the type is {@code RestartType.SOFT}, the
-	 * population is not emptied; new solutions are only added to fill any empty
-	 * slots.
+	 * Performs a restart. If the type is {@code RestartType.HARD}, the population is emptied, resized and filled with
+	 * solutions selected and mutated from the archive. If the type is {@code RestartType.SOFT}, the population is not
+	 * emptied; new solutions are only added to fill any empty slots.
 	 * 
 	 * @param type the type of restart
 	 */

@@ -39,8 +39,7 @@ public class BitFlipTest {
 	}
 
 	/**
-	 * Tests if the correct number of bits are flipped for several probability
-	 * values.
+	 * Tests if the correct number of bits are flipped for several probability values.
 	 */
 	@Test
 	public void testProbabilities() {

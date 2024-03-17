@@ -22,8 +22,7 @@ import org.moeaframework.core.configuration.Property;
 import org.moeaframework.core.configuration.Validate;
 
 /**
- * Abstract class for operators that can take a variable number of parents
- * and produce a variable number of offspring.
+ * Abstract class for operators that can take a variable number of parents and produce a variable number of offspring.
  */
 public abstract class MultiParentVariation implements Variation {
 

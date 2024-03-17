@@ -23,8 +23,7 @@ import org.moeaframework.core.Selection;
 import org.moeaframework.core.Solution;
 
 /**
- * Uniform selection operator. Solutions are selected from the population with
- * equal probability.
+ * Uniform selection operator. Solutions are selected from the population with equal probability.
  */
 public class UniformSelection implements Selection {
 

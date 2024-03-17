@@ -44,8 +44,7 @@ package org.moeaframework.util.tree;
 public class Atanh extends Node {
 	
 	/**
-	 * Constructs a new node for calculating the hyperbolic arc tangent of a
-	 * number.
+	 * Constructs a new node for calculating the hyperbolic arc tangent of a number.
 	 */
 	public Atanh() {
 		super(Number.class, Number.class);
@@ -58,8 +57,7 @@ public class Atanh extends Node {
 	
 	@Override
 	public Number evaluate(Environment environment) {
-		return NumberArithmetic.atanh(
-				(Number)getArgument(0).evaluate(environment));
+		return NumberArithmetic.atanh((Number)getArgument(0).evaluate(environment));
 	}
 
 }

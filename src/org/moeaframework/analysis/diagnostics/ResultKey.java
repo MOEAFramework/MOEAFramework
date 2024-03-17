@@ -24,8 +24,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
- * The key for a result entry, allowing distinct algorithm and problem pairings
- * in sets and maps.
+ * The key for a result entry, allowing distinct algorithm and problem pairings in sets and maps.
  */
 public class ResultKey implements Comparable<ResultKey>, Serializable {
 

@@ -23,9 +23,8 @@ import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.AbstractProblem;
 
 /**
- * The Kursawe test problem. According to a personal correspondence between Van
- * Veldhuizen and Marco Laumanns, a misprint exists in Kursawe's paper. This
- * implementation uses the corrected version.
+ * The Kursawe test problem. According to a personal correspondence between Van Veldhuizen and Marco Laumanns, a
+ * misprint exists in Kursawe's paper. This implementation uses the corrected version.
  * <p>
  * Properties:
  * <ul>
@@ -36,11 +35,10 @@ import org.moeaframework.problem.AbstractProblem;
  * <p>
  * References:
  * <ol>
- * <li>Kursawe, F. "A Variant of Evolution Strategies for Vector Optimization."
- * Parallel Problem Solving from Nature, pp. 193-197, 1991.
- * <li>Van Veldhuizen, D. "Multiobjective Evolutionary Algorithms:
- * Classifications, Analyses, and New Innovations." Ph.D. Dissertation. The Air
- * Force Institute of Technology, Air University, 1999.
+ *   <li>Kursawe, F. "A Variant of Evolution Strategies for Vector Optimization."  Parallel Problem Solving from
+ *       Nature, pp. 193-197, 1991.
+ *   <li>Van Veldhuizen, D. "Multiobjective Evolutionary Algorithms: Classifications, Analyses, and New Innovations."
+ *       Ph.D. Dissertation. The Air Force Institute of Technology, Air University, 1999.
  * </ol>
  */
 public class Kursawe extends AbstractProblem {
@@ -63,8 +61,7 @@ public class Kursawe extends AbstractProblem {
 	}
 
 	/**
-	 * Constructs the Kursawe problem with the specified number of decision
-	 * variables.
+	 * Constructs the Kursawe problem with the specified number of decision variables.
 	 * 
 	 * @param numberOfVariables the number of decision variables
 	 */
@@ -73,15 +70,13 @@ public class Kursawe extends AbstractProblem {
 	}
 
 	/**
-	 * Constructs the Kursawe problem with the specified number of decision
-	 * variables.
+	 * Constructs the Kursawe problem with the specified number of decision variables.
 	 * 
 	 * @param numberOfVariables the number of decision variables
 	 * @param lowerBound the lower bound for decision variables
 	 * @param upperBound the upper bound for decision variables
 	 */
-	public Kursawe(int numberOfVariables, double lowerBound, 
-			double upperBound) {
+	public Kursawe(int numberOfVariables, double lowerBound, double upperBound) {
 		super(numberOfVariables, 2);
 		this.lowerBound = lowerBound;
 		this.upperBound = upperBound;

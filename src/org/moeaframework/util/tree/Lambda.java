@@ -18,9 +18,8 @@
 package org.moeaframework.util.tree;
 
 /**
- * The node for defining an immutable, anonymous function.  Unlike
- * {@link Define}, the behavior (body) of a {@code Lambda} can not be modified.
- * Therefore, {@code Lambda}s are useful for providing pre-defined functions
+ * The node for defining an immutable, anonymous function.  Unlike {@link Define}, the behavior (body) of a
+ * {@code Lambda} can not be modified.  Therefore, {@code Lambda}s are useful for providing pre-defined functions
  * built using existing {@code Node}s.
  * 
  * @see Define
@@ -38,63 +37,52 @@ public class Lambda extends Node {
 	private final String[] variableNames;
 	
 	/**
-	 * Constructs a new node for defining an immutable, anonymous function with
-	 * no arguments.
+	 * Constructs a new node for defining an immutable, anonymous function with no arguments.
 	 * 
 	 * @param node the body of this function
-	 * @throws IllegalArgumentException if {@code node} is incomplete or not
-	 *         strongly typed (i.e., {@code node.isValid()} returns
-	 *         {@code false})
+	 * @throws IllegalArgumentException if {@code node} is incomplete or not strongly typed (i.e.,
+	 *         {@code node.isValid()} returns {@code false})
 	 */
 	public Lambda(Node node) {
 		this(node, new String[0], new Class<?>[0]);
 	}
 	
 	/**
-	 * Constructs a new node for defining an immutable, anonymous function with
-	 * one argument.
+	 * Constructs a new node for defining an immutable, anonymous function with one argument.
 	 * 
 	 * @param node the body of this function
 	 * @param variableName the name of the argument
 	 * @param variableType the type of the argument
-	 * @throws IllegalArgumentException if {@code node} is incomplete or not
-	 *         strongly typed (i.e., {@code node.isValid()} returns
-	 *         {@code false})
+	 * @throws IllegalArgumentException if {@code node} is incomplete or not strongly typed (i.e.,
+	 *         {@code node.isValid()} returns {@code false})
 	 */
 	public Lambda(Node node, String variableName, Class<?> variableType) {
-		this(node, new String[] { variableName },
-				new Class<?>[] { variableType });
+		this(node, new String[] { variableName }, new Class<?>[] { variableType });
 	}
 	
 	/**
-	 * Constructs a new node for defining an immutable, anonymous function with
-	 * two arguments.
+	 * Constructs a new node for defining an immutable, anonymous function with two arguments.
 	 * 
 	 * @param node the body of this function
 	 * @param name1 the name of the first argument
 	 * @param type1 the type of the first argument
 	 * @param name2 the name of the second argument
 	 * @param type2 the type of the second argument
-	 * @throws IllegalArgumentException if {@code node} is incomplete or not
-	 *         strongly typed (i.e., {@code node.isValid()} returns
-	 *         {@code false})
+	 * @throws IllegalArgumentException if {@code node} is incomplete or not strongly typed (i.e.,
+	 *         {@code node.isValid()} returns {@code false})
 	 */
-	public Lambda(Node node, String name1, Class<?> type1, 
-			String name2, Class<?> type2) {
-		this(node, new String[] { name1, name2 },
-				new Class<?>[] { type1, type2 });
+	public Lambda(Node node, String name1, Class<?> type1, String name2, Class<?> type2) {
+		this(node, new String[] { name1, name2 }, new Class<?>[] { type1, type2 });
 	}
 	
 	/**
-	 * Constructs a new node for defining an immutable, anonymous function with
-	 * a user-defined number of arguments.
+	 * Constructs a new node for defining an immutable, anonymous function with a user-defined number of arguments.
 	 * 
 	 * @param node the body of this function
 	 * @param variableNames the names of the arguments to this function
 	 * @param variableTypes the types of the arguments to this function
-	 * @throws IllegalArgumentException if {@code node} is incomplete or not
-	 *         strongly typed (i.e., {@code node.isValid()} returns
-	 *         {@code false})
+	 * @throws IllegalArgumentException if {@code node} is incomplete or not strongly typed (i.e.,
+	 *         {@code node.isValid()} returns {@code false})
 	 */
 	public Lambda(Node node, String[] variableNames, Class<?>[] variableTypes) {
 		super(node.getReturnType(), variableTypes);

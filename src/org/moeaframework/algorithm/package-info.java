@@ -17,7 +17,6 @@
  */
 
 /**
- * Implementations of various algorithms and support tools for working with
- * algorithms.
+ * Implementations of various algorithms and support tools for working with algorithms.
  */
 package org.moeaframework.algorithm;

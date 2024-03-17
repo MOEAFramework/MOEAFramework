@@ -22,14 +22,13 @@ import java.io.IOException;
 import java.io.Reader;
 
 /**
- * Read text from a character-input stream, ignoring lines starting with the #
- * character. Lines are only ignored when using the {@link #readLine} method.
+ * Read text from a character-input stream, ignoring lines starting with the {@code #} character.  Lines are only
+ * ignored when using the {@link #readLine} method.
  */
 public class CommentedLineReader extends BufferedReader {
 
 	/**
-	 * Constructs a buffered reader that ignores lines starting with the # 
-	 * character with the specified input buffer size.
+	 * Constructs a buffered reader that ignores commented lines.
 	 * 
 	 * @param in a reader
 	 * @param sz the input buffer size
@@ -39,8 +38,7 @@ public class CommentedLineReader extends BufferedReader {
 	}
 
 	/**
-	 * Constructs a buffered reader that ignores lines starting with the # 
-	 * character.
+	 * Constructs a buffered reader that ignores commented lines.
 	 * 
 	 * @param in a reader
 	 */

@@ -23,16 +23,15 @@ import org.moeaframework.core.FastNondominatedSorting;
 import org.moeaframework.core.Solution;
 
 /**
- * Compares two solutions using their rank and crowding distance. Rank is the
- * primary comparison criteria and the crowding distance is used to break ties.
+ * Compares two solutions using their rank and crowding distance. Rank is the primary comparison criteria and the
+ * crowding distance is used to break ties.
  * 
  * @see FastNondominatedSorting
  */
 public class NondominatedSortingComparator extends ChainedComparator implements Comparator<Solution> {
 
 	/**
-	 * Constructs a dominance comparator for comparing solutions using their 
-	 * rank and crowding distance.
+	 * Constructs a dominance comparator for comparing solutions using their rank and crowding distance.
 	 */
 	public NondominatedSortingComparator() {
 		super(new RankComparator(), new CrowdingComparator());

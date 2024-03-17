@@ -26,9 +26,8 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 
 /**
- * Decorates an algorithm to perform some action periodically throughout the
- * execution of the algorithm.  Note that due to the underlying implementation
- * of the algorithm, the action may be invoked less frequently than requested
+ * Decorates an algorithm to perform some action periodically throughout the execution of the algorithm.  Note that
+ * due to the underlying implementation of the algorithm, the action may be invoked less frequently than requested
  * or not at all.
  */
 public abstract class PeriodicAction implements Algorithm {
@@ -66,15 +65,14 @@ public abstract class PeriodicAction implements Algorithm {
 	protected final FrequencyType frequencyType;
 	
 	/**
-	 * The number of invocations of the {@link Algorithm#step()} method.  Only
-	 * used if the frequency type is {@code STEPS}.
+	 * The number of invocations of the {@link Algorithm#step()} method.  Only used if the frequency type is
+	 * {@code STEPS}.
 	 */
 	protected int iteration;
 
 	/**
-	 * The last invocation {@link #doAction()} was invoked, either as iterations or
-	 * evaluations depending on the frequency type.  A value of {@code -1} indicates
-	 * the run hasn't started yet.
+	 * The last invocation {@link #doAction()} was invoked, either as iterations or evaluations depending on the
+	 * frequency type.  A value of {@code -1} indicates the run hasn't started yet.
 	 */
 	protected int lastInvocation;
 	
@@ -165,10 +163,9 @@ public abstract class PeriodicAction implements Algorithm {
 	}
 	
 	/**
-	 * Invoked periodically by this class to perform some function.  This
-	 * function should not depend on the frequency that it is invoked, since
-	 * it is not guaranteed that this method is invoked at any specific
-	 * frequency and, in some cases, may not be invoked at all.
+	 * Invoked periodically by this class to perform some function.  This function should not depend on the frequency
+	 * that it is invoked, since it is not guaranteed that this method is invoked at any specific frequency and, in
+	 * some cases, may not be invoked at all.
 	 */
 	public abstract void doAction();
 	

@@ -34,8 +34,7 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.problem.MockRealProblem;
 
 /**
- * Tests the {@link PESA2} class.  The MOEA Framework's implementation tends
- * to outperform the JMetal implementation.
+ * Tests the {@link PESA2} class.  The MOEA Framework's implementation tends to outperform the JMetal implementation.
  */
 @RunWith(CIRunner.class)
 @Retryable

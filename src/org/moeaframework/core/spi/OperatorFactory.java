@@ -27,12 +27,10 @@ import org.moeaframework.core.operator.Mutation;
 import org.moeaframework.util.TypedProperties;
 
 /**
- * Factory for creating and variation (e.g., crossover and mutation) operator
- * instances.
+ * Factory for creating and variation (e.g., crossover and mutation) operator instances.
  * <p>
- * Operators can be combined by joining the two operator names with the plus
- * sign, such as {@code "sbx+pm"}.  Not all operators can be joined this way.
- * See {@link CompoundVariation} for the restrictions.
+ * Operators can be combined by joining the two operator names with the plus sign, such as {@code "sbx+pm"}.  Not all
+ * operators can be joined this way.  See {@link CompoundVariation} for the restrictions.
  * <p>
  * This class is thread safe.
  */
@@ -86,9 +84,8 @@ public class OperatorFactory extends AbstractFactory<OperatorProvider> {
 	}
 	
 	/**
-	 * Returns the suggested mutation operator for the given problem.  If {@code name} is
-	 * {@code null}, this will attempt to return a mutation operator appropriate for the
-	 * problem.
+	 * Returns the suggested mutation operator for the given problem.  If {@code name} is {@code null}, this will
+	 * attempt to return a mutation operator appropriate for the problem.
 	 * 
 	 * @param name the name of the mutation operator
 	 * @param properties the implementation-specific properties
@@ -135,17 +132,15 @@ public class OperatorFactory extends AbstractFactory<OperatorProvider> {
 	}
 
 	/**
-	 * Returns an instance of the variation operator with the specified name.
-	 * This method must throw an {@link ProviderNotFoundException} if no 
-	 * suitable operator is found.  If {@code name} is null, the factory should
+	 * Returns an instance of the variation operator with the specified name.  This method must throw a
+	 * {@link ProviderNotFoundException} if no suitable operator is found.  If {@code name} is null, the factory should
 	 * return a default variation operator appropriate for the problem.
 	 * 
 	 * @param name the name of the variation operator
 	 * @param properties the implementation-specific properties
 	 * @param problem the problem to be solved
 	 * @return an instance of the variation operator
-	 * @throws ProviderNotFoundException if no provider for the algorithm is 
-	 *         available
+	 * @throws ProviderNotFoundException if no provider for the algorithm is available
 	 */
 	public Variation getVariation(String name, TypedProperties properties, Problem problem) {
 		if (name == null) {
@@ -197,8 +192,8 @@ public class OperatorFactory extends AbstractFactory<OperatorProvider> {
 		}
 	}
 	
-	private Variation instantiateVariation(OperatorProvider provider, String name,
-			TypedProperties properties, Problem problem) {
+	private Variation instantiateVariation(OperatorProvider provider, String name, TypedProperties properties,
+			Problem problem) {
 		try {
 			return provider.getVariation(name, properties, problem);
 		} catch (ServiceConfigurationError e) {

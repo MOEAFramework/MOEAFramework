@@ -26,9 +26,8 @@ import org.moeaframework.core.configuration.Property;
 import org.moeaframework.core.configuration.Validate;
 
 /**
- * One-point or single-point crossover. A crossover point is selected and all
- * decision variables to the left/right are swapped between the two parents. The
- * two children resulting from this swapping are returned.
+ * One-point or single-point crossover. A crossover point is selected and all decision variables to the left/right
+ * are swapped between the two parents. The two children resulting from this swapping are returned.
  */
 @Prefix("1x")
 public class OnePointCrossover implements Variation {
@@ -46,8 +45,7 @@ public class OnePointCrossover implements Variation {
 	}
 
 	/**
-	 * Constructs a one-point crossover operator with the specified probability
-	 * of applying this operator to solutions.
+	 * Constructs a one-point crossover operator with the specified probability of applying this operator to solutions.
 	 * 
 	 * @param probability the probability of applying this operator to solutions
 	 */

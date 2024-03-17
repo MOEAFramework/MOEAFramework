@@ -57,8 +57,7 @@ public class Sinh extends Node {
 	
 	@Override
 	public Number evaluate(Environment environment) {
-		return NumberArithmetic.sinh(
-				(Number)getArgument(0).evaluate(environment));
+		return NumberArithmetic.sinh((Number)getArgument(0).evaluate(environment));
 	}
 
 }

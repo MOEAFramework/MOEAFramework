@@ -107,8 +107,7 @@ public class WFGNormalizedHypervolumeTest extends IndicatorTest {
 	}
 
 	/**
-	 * Runs through some simple cases to ensure the hypervolume is computed
-	 * correctly.
+	 * Runs through some simple cases to ensure the hypervolume is computed correctly.
 	 */
 	@Test
 	public void testSimple() {

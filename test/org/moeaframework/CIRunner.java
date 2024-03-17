@@ -30,15 +30,14 @@ import org.junit.runners.model.InitializationError;
 import org.junit.runners.model.Statement;
 
 /**
- * Custom JUnit runner that enables some custom annotations on tests, including
- * {@link Retryable}, {@link Flaky}, and {@link IgnoreOnCI}, when running in an
- * automated continuous integration (CI) environment, including GitHub Actions and
- * Travis CI.
+ * Custom JUnit runner that enables some custom annotations on tests, including {@link Retryable}, {@link Flaky}, and
+ * {@link IgnoreOnCI}, when running in an automated continuous integration (CI) environment, including GitHub Actions
+ * and Travis CI.
  * <p>
  * The following properties control the behavior of this runner:
  * <ul>
- *   <li>{@value CI} - Indicates tests are running in a CI environment and the custom
- *       retry, flakiness, and ignore rules should apply.
+ *   <li>{@value CI} - Indicates tests are running in a CI environment and the custom retry, flakiness, and ignore
+ *       rules should apply.
  *   <li>{@value ALL_TESTS} - Overrides the {@link IgnoreOnCI} attribute and runs these tests.
  * </ul>
  */
@@ -135,8 +134,8 @@ public class CIRunner extends BlockJUnit4ClassRunner {
 		runTestUnit(methodBlock(method), description, notifier, retries, flaky);
 	}
 
-	protected final void runTestUnit(Statement statement, Description description,
-			RunNotifier notifier, int retries, boolean flaky) {
+	protected final void runTestUnit(Statement statement, Description description, RunNotifier notifier, int retries,
+			boolean flaky) {
 		EachTestNotifier eachTestNotifier = new EachTestNotifier(notifier, description);
 		eachTestNotifier.fireTestStarted();
 

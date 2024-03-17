@@ -30,18 +30,15 @@ import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
 
 /**
- * Implementation of SMPSO, the speed-constrained multi-objective particle
- * swarm optimizer.
+ * Implementation of SMPSO, the speed-constrained multi-objective particle swarm optimizer.
  * <p>
  * References:
  * <ol>
- *   <li>Nebro, A. J., J. J. Durillo, J. Garcia-Nieto, and C. A. Coello Coello
- *       (2009).  SMPSO: A New PSO-based Metaheuristic for Multi-objective
- *       Optimization.  2009 IEEE Symposium on Computational Intelligence in
+ *   <li>Nebro, A. J., J. J. Durillo, J. Garcia-Nieto, and C. A. Coello Coello (2009).  SMPSO: A New PSO-based
+ *       Metaheuristic for Multi-objective Optimization.  2009 IEEE Symposium on Computational Intelligence in
  *       Multi-Criteria Decision-Making, pp. 66-73.
- *   <li>Durillo, J. J., J. Garc�a-Nieto, A. J. Nebro, C. A. Coello Coello,
- *       F. Luna, and E. Alba (2009).  Multi-Objective Particle Swarm
- *       Optimizers: An Experimental Comparison.  Evolutionary Multi-Criterion
+ *   <li>Durillo, J. J., J. Garc�a-Nieto, A. J. Nebro, C. A. Coello Coello, F. Luna, and E. Alba (2009).
+ *       Multi-Objective Particle Swarm Optimizers: An Experimental Comparison.  Evolutionary Multi-Criterion
  *       Optimization, pp. 495-509.
  * </ol>
  */
@@ -79,8 +76,7 @@ public class SMPSO extends AbstractPSOAlgorithm {
 	 * @param mutationProbability the mutation probability for {@link PM}
 	 * @param distributionIndex the distribution index for {@link PM}
 	 */
-	public SMPSO(Problem problem, int swarmSize, int leaderSize,
-			double mutationProbability, double distributionIndex) {
+	public SMPSO(Problem problem, int swarmSize, int leaderSize, double mutationProbability, double distributionIndex) {
 		super(problem, swarmSize, leaderSize,
 				new CrowdingComparator(),
 				new ParetoDominanceComparator(),

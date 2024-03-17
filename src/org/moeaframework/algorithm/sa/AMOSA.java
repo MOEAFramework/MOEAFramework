@@ -32,15 +32,14 @@ import org.moeaframework.core.operator.Mutation;
 import org.moeaframework.core.spi.OperatorFactory;
 
 /**
- * Implementation of the simulated annealing-based multiobjective optimization algorithm (AMOSA).
- * Algorithm incorporates the archive mechanism in order to provide non-dominated set of solutions
- * so called Pareto front.
+ * Implementation of the simulated annealing-based multiobjective optimization algorithm (AMOSA).  AMOSA incorporates
+ * the archive mechanism in order to provide non-dominated set of solutions so called Pareto front.
  * <p>
  * References:
  * <ol>
- *   <li>Sanghamitra Bandyopadhyay, Sriparna Saha, Ujjwal Maulik, Kalyanmoy Deb (2008).
- *       A Simulated Annealing-Based Multiobjective Optimization Algorithm: AMOSA.
- *       IEEE Transactions on Evolutionary Computation, vol. 12, no. 3, pp. 269-283.
+ *   <li>Sanghamitra Bandyopadhyay, Sriparna Saha, Ujjwal Maulik, Kalyanmoy Deb (2008).  A Simulated Annealing-Based
+ *       Multiobjective Optimization Algorithm: AMOSA.  IEEE Transactions on Evolutionary Computation, vol. 12, no. 3,
+ *       pp. 269-283.
  * </ol>
  */
 public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {

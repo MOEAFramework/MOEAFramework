@@ -84,8 +84,7 @@ public class ParetoConstraintComparatorTest {
 	}
 	
 	/**
-	 * Tests if the comparator correctly detects non-dominance of equal
-	 * constraints.
+	 * Tests if the comparator correctly detects non-dominance of equal constraints.
 	 */
 	@Test
 	public void testEquals() {

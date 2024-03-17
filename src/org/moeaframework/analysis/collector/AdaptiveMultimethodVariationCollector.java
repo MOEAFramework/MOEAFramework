@@ -26,25 +26,24 @@ import org.moeaframework.core.operator.AdaptiveMultimethodVariation;
 public class AdaptiveMultimethodVariationCollector implements Collector {
 
 	/**
-	 * The adaptive multimethod variation instance used by this collector; or
-	 * {@code null} if this collector has not yet been attached.
+	 * The adaptive multimethod variation instance used by this collector; or {@code null} if this collector has not
+	 * yet been attached.
 	 */
 	private final AdaptiveMultimethodVariation variation;
 
 	/**
-	 * Constructs an unattached collector for recording the individual operator
-	 * probabilities from {@code AdaptiveMultimethodVariation}.
+	 * Constructs an unattached collector for recording the individual operator probabilities from
+	 * {@code AdaptiveMultimethodVariation}.
 	 */
 	public AdaptiveMultimethodVariationCollector() {
 		this(null);
 	}
 	
 	/**
-	 * Constructs a collector for recording the individual operator
-	 * probabilities from the specified {@code AdaptiveMultimethodVariation}.
+	 * Constructs a collector for recording the individual operator probabilities from the specified
+	 * {@code AdaptiveMultimethodVariation}.
 	 * 
-	 * @param variation the {@code AdaptiveMultimethodVariation} instance this
-	 *        collector records data from
+	 * @param variation the {@code AdaptiveMultimethodVariation} instance this collector records data from
 	 */
 	public AdaptiveMultimethodVariationCollector(AdaptiveMultimethodVariation variation) {
 		super();

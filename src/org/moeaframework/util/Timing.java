@@ -28,11 +28,11 @@ import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
  * but two timers with the same name can not exist simultaneously - the first timer with the shared name must
  * be stopped before the second is started.
  * <pre>{@code
- * for (int i=0; i<N; i++) {
- *   Timing.startTimer("foo");
- *   ...code for which we are collecting timing information...
- *   Timing.stopTimer("foo");
- * }
+ *   for (int i=0; i<N; i++) {
+ *     Timing.startTimer("foo");
+ *     ...code for which we are collecting timing information...
+ *     Timing.stopTimer("foo");
+ *   }
  * }</pre>
  */
 public class Timing {

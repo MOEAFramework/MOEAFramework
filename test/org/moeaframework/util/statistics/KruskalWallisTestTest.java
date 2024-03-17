@@ -61,8 +61,8 @@ public class KruskalWallisTestTest {
 	}
 
 	/**
-	 * Daily bottle-cap production of three machines from Kruskal and Wallis
-	 * (1952). This example demonstrates the test without ties.
+	 * Daily bottle-cap production of three machines from Kruskal and Wallis (1952). This example demonstrates the test
+	 * without ties.
 	 */
 	@Test
 	public void testExample2() {
@@ -85,8 +85,8 @@ public class KruskalWallisTestTest {
 	}
 
 	/**
-	 * Birth weights of eight litters of pigs example from Kruskal and Wallis
-	 * (1952). This example demonstrates the test with ties.
+	 * Birth weights of eight litters of pigs example from Kruskal and Wallis (1952). This example demonstrates the
+	 * test with ties.
 	 */
 	@Test
 	public void testExample3() {

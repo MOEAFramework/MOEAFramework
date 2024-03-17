@@ -30,28 +30,25 @@ import org.moeaframework.core.Solution;
 public class ApproximationSetCollector implements Collector {
 	
 	/**
-	 * The algorithm instance used by this collector; or {@code null} if this 
-	 * collector has not yet been attached.
+	 * The algorithm instance used by this collector; or {@code null} if this collector has not yet been attached.
 	 */
 	private final Algorithm algorithm;
 	
 	/**
-	 * The &epsilon;-values used when collecting only the &epsilon;-dominant
-	 * solutions; or {@code null} if regular Pareto dominance is used.
+	 * The &epsilon;-values used when collecting only the &epsilon;-dominant solutions; or {@code null} if regular
+	 * Pareto dominance is used.
 	 */
 	private final double[] epsilon;
 	
 	/**
-	 * Constructs an unattached collector for recording Pareto dominance
-	 * approximation sets from an algorithm.
+	 * Constructs an unattached collector for recording Pareto dominance approximation sets from an algorithm.
 	 */
 	public ApproximationSetCollector() {
 		this(null, null);
 	}
 	
 	/**
-	 * Constructs an unattached collector for recording &epsilon;-box dominance
-	 * approximation sets from an algorithm.
+	 * Constructs an unattached collector for recording &epsilon;-box dominance approximation sets from an algorithm.
 	 * 
 	 * @param epsilon the &epsilon; value
 	 */
@@ -60,8 +57,7 @@ public class ApproximationSetCollector implements Collector {
 	}
 	
 	/**
-	 * Constructs an unattached collector for recording &epsilon;-box dominance
-	 * approximation sets from an algorithm.
+	 * Constructs an unattached collector for recording &epsilon;-box dominance approximation sets from an algorithm.
 	 * 
 	 * @param epsilon the &epsilon; values
 	 */
@@ -70,13 +66,11 @@ public class ApproximationSetCollector implements Collector {
 	}
 	
 	/**
-	 * Constructs a collector for recording approximation sets from the
-	 * specified algorithm.
+	 * Constructs a collector for recording approximation sets from the specified algorithm.
 	 * 
 	 * @param algorithm the algorithm this collector records data from
-	 * @param epsilon the &epsilon;-values used when collecting only the 
-	 *        &epsilon;-dominant solutions; or {@code null} if regular Pareto
-	 *        dominance is used
+	 * @param epsilon the &epsilon;-values used when collecting only the &epsilon;-dominant solutions; or {@code null}
+	 *        if regular Pareto dominance is used
 	 */
 	public ApproximationSetCollector(Algorithm algorithm, double[] epsilon) {
 		super();

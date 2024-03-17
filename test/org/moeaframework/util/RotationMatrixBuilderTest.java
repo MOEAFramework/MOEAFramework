@@ -37,8 +37,7 @@ public class RotationMatrixBuilderTest {
 	private static final int N = 10;
 	
 	/**
-	 * Asserts that the matrix is a rotation matrix; that is, the matrix is
-	 * orthogonal and has a determinant of {@code 1}.
+	 * Asserts that the matrix is a rotation matrix; that is, the matrix is orthogonal and has a determinant of {@code 1}.
 	 * 
 	 * @param rm the matrix to test
 	 */
@@ -67,8 +66,8 @@ public class RotationMatrixBuilderTest {
 	}
 	
 	/**
-	 * Tests if sequential calls to {@code rotatePlane} and {@code withTheta}
-	 * are applied sequentially and eventually result in a full rotation.
+	 * Tests if sequential calls to {@code rotatePlane} and {@code withTheta} are applied sequentially and eventually
+	 * result in a full rotation.
 	 */
 	@Test
 	public void testRotatePlane() {
@@ -122,8 +121,7 @@ public class RotationMatrixBuilderTest {
 	}
 	
 	/**
-	 * Tests if an exception is thrown if the same axes are given for the plane
-	 * of rotation.
+	 * Tests if an exception is thrown if the same axes are given for the plane of rotation.
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testRotatePlaneException() {
@@ -131,8 +129,7 @@ public class RotationMatrixBuilderTest {
 	}
 	
 	/**
-	 * Tests if an exception is thrown if the number of rotation planes exceeds
-	 * the valid number of rotation planes.
+	 * Tests if an exception is thrown if the number of rotation planes exceeds the valid number of rotation planes.
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testRotateKException() {

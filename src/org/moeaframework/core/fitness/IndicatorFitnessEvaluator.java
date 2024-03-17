@@ -25,9 +25,8 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.indicator.Normalizer;
 
 /**
- * Abstract class for assigning fitness based on a binary indicator.  This
- * class combines the pair-wise fitness of each solution into an aggregate
- * fitness within the entire population.
+ * Abstract class for assigning fitness based on a binary indicator.  This class combines the pair-wise fitness of
+ * each solution into an aggregate fitness within the entire population.
  */
 public abstract class IndicatorFitnessEvaluator implements FitnessEvaluator {
 
@@ -42,14 +41,12 @@ public abstract class IndicatorFitnessEvaluator implements FitnessEvaluator {
 	private static final double kappa = 0.05;
 	
 	/**
-	 * Record of the maximum indicator value from the last call to
-	 * {@link #evaluate(Population)}.
+	 * Record of the maximum indicator value from the last call to {@link #evaluate(Population)}.
 	 */
 	private double maxAbsIndicatorValue;
 	
 	/**
-	 * Record of the fitness components from the last call to
-	 * {@link #evaluate(Population)}.
+	 * Record of the fitness components from the last call to {@link #evaluate(Population)}.
 	 */
 	private double[][] fitcomp;
 
@@ -117,8 +114,7 @@ public abstract class IndicatorFitnessEvaluator implements FitnessEvaluator {
 
 		for (int i = 0; i < population.size(); i++) {
 			for (int j = 0; j < population.size(); j++) {
-				fitcomp[i][j] = calculateIndicator(normalizedPopulation.get(i),
-						normalizedPopulation.get(j));
+				fitcomp[i][j] = calculateIndicator(normalizedPopulation.get(i), normalizedPopulation.get(j));
 
 				if (Math.abs(fitcomp[i][j]) > maxAbsIndicatorValue) {
 					maxAbsIndicatorValue = Math.abs(fitcomp[i][j]);
@@ -141,11 +137,10 @@ public abstract class IndicatorFitnessEvaluator implements FitnessEvaluator {
 	}
 	
 	/**
-	 * After calling {@link #evaluate(Population)}, this method is used to
-	 * iteratively remove solutions from the population while updating the
-	 * fitness value. There must be no other modifications to the population
-	 * between invocations of {@link #evaluate(Population)} and this method
-	 * other than removing solutions using this method.
+	 * After calling {@link #evaluate(Population)}, this method is used to iteratively remove solutions from the
+	 * population while updating the fitness value. There must be no other modifications to the population
+	 * between invocations of {@link #evaluate(Population)} and this method other than removing solutions using
+	 * this method.
 	 * 
 	 * @param population the population
 	 * @param removeIndex the index to remove

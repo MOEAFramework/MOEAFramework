@@ -28,24 +28,21 @@ import org.moeaframework.core.configuration.Validate;
 import org.moeaframework.core.variable.RealVariable;
 
 /**
- * Simulated binary crossover (SBX) operator.  SBX attempts to simulate the 
- * offspring distribution of binary-encoded single-point crossover on 
- * real-valued decision variables.  An example of this distribution,
- * which favors offspring nearer to the two parents, is shown below.
+ * Simulated binary crossover (SBX) operator.  SBX attempts to simulate the offspring distribution of binary-encoded
+ * single-point crossover on real-valued decision variables.  An example of this distribution, which favors offspring
+ * nearer to the two parents, is shown below.
  * <p>
  * <img src="doc-files/SBX-1.png" alt="Example SBX operator distribution" />
  * <p>
- * The distribution index controls the shape of the offspring distribution. 
- * Larger values for the distribution index generates offspring closer to the 
- * parents.
+ * The distribution index controls the shape of the offspring distribution.  Larger values for the distribution index
+ * generates offspring closer to the parents.
  * <p>
  * This operator is type-safe.
  * <p>
  * References:
  * <ol>
- *   <li>Deb, K. and Agrawal, R. B.  "Simulated Binary Crossover for Continuous
- *       Search Space."  Indian Institute of Technology, Kanpur, India.  
- *       Technical Report No. IITK/ME/SMD-94027, 1994.
+ *   <li>Deb, K. and Agrawal, R. B.  "Simulated Binary Crossover for Continuous Search Space."  Indian Institute of
+ *       Technology, Kanpur, India.  Technical Report No. IITK/ME/SMD-94027, 1994.
  * </ol>
  */
 @Prefix("sbx")
@@ -67,22 +64,20 @@ public class SBX implements Variation {
 	private boolean swap;
 
 	/**
-	 * If {@code true}, use symmetric distributions; otherwise asymmetric
-	 * distributions are used.
+	 * If {@code true}, use symmetric distributions; otherwise asymmetric distributions are used.
 	 */
 	private boolean symmetric;
 	
 	/**
-	 * Constructs a SBX operator with default settings.  This includes a 
-	 * probability of {@code 1.0} and a distribution index of {@code 15.0}.
+	 * Constructs a SBX operator with default settings.  This includes a probability of {@code 1.0} and a distribution
+	 * index of {@code 15.0}.
 	 */
 	public SBX() {
 		this(1.0, 15.0);
 	}
 	
 	/**
-	 * Constructs a SBX operator with the specified probability and
-	 * distribution index.
+	 * Constructs a SBX operator with the specified probability and distribution index.
 	 * 
 	 * @param probability the probability of applying this SBX operator to each variable
 	 * @param distributionIndex the distribution index of this SBX operator
@@ -92,9 +87,8 @@ public class SBX implements Variation {
 	}
 
 	/**
-	 * Constructs a SBX operator with the specified probability and
-	 * distribution index.  Set {@code swap} to {@code true} to recreate the
-	 * traditional SBX operation; and to {@code false} to use the SBX variant
+	 * Constructs a SBX operator with the specified probability and distribution index.  Set {@code swap} to
+	 * {@code true} to recreate the traditional SBX operation; and to {@code false} to use the SBX variant
 	 * used by NSGA-III.
 	 * 
 	 * @param probability the probability of applying this SBX operator to each variable
@@ -156,9 +150,8 @@ public class SBX implements Variation {
 	}
 
 	/**
-	 * Returns {@code true} if this SBX operator swaps variables between the
-	 * two parents.  Disabling this swapping produces offspring closer to the
-	 * two parents, which is beneficial for NSGA-III.
+	 * Returns {@code true} if this SBX operator swaps variables between the two parents.  Disabling this swapping
+	 * produces offspring closer to the two parents, which is beneficial for NSGA-III.
 	 * 
 	 * @return {@code true} if this SBX operator swaps variables between the two parents
 	 */
@@ -177,11 +170,11 @@ public class SBX implements Variation {
 	}
 
 	/**
-	 * Returns {@code true} if the offspring are distributed symmetrically; or
-	 * {@code false} if asymmetric distributions are used.
+	 * Returns {@code true} if the offspring are distributed symmetrically; or {@code false} if asymmetric
+	 * distributions are used.
 	 * 
-	 * @return {@code true} if the offspring are distributed symmetrically; or
-	 *         {@code false} if asymmetric distributions are used
+	 * @return {@code true} if the offspring are distributed symmetrically; or {@code false} if asymmetric
+	 *         distributions are used
 	 */
 	public boolean isSymmetric() {
 		return symmetric;
@@ -190,8 +183,8 @@ public class SBX implements Variation {
 	/**
 	 * Sets if offspring are distributed symmetrically or asymmetrically.
 	 * 
-	 * @param symmetric {@code true} if the offspring are distributed symmetrically; or
-	 *         {@code false} if asymmetric distributions are used
+	 * @param symmetric {@code true} if the offspring are distributed symmetrically; or {@code false} if asymmetric
+	 *        distributions are used
 	 */
 	@Property
 	public void setSymmetric(boolean symmetric) {
@@ -215,13 +208,9 @@ public class SBX implements Variation {
 
 				if (PRNG.nextBoolean() && (variable1 instanceof RealVariable) && (variable2 instanceof RealVariable)) {
 					if (symmetric) {
-						evolve_symmetric((RealVariable)variable1,
-								(RealVariable)variable2, distributionIndex,
-								swap);
+						evolve_symmetric((RealVariable)variable1, (RealVariable)variable2, distributionIndex, swap);
 					} else {
-						evolve_asymmetric((RealVariable)variable1,
-								(RealVariable)variable2, distributionIndex,
-								swap);
+						evolve_asymmetric((RealVariable)variable1, (RealVariable)variable2, distributionIndex, swap);
 					}
 				}
 			}
@@ -243,22 +232,19 @@ public class SBX implements Variation {
 	}
 
 	/*
-	 * The following code was provided by Haitham Seada on Dec 14, 2015.  This
-	 * replaces the old implementation based on PISA, which appears to have
-	 * some numerical issues, particularly on problems like DTLZ3.
+	 * The following code was provided by Haitham Seada on Dec 14, 2015.  This replaces the old implementation based
+	 * on PISA, which appears to have some numerical issues, particularly on problems like DTLZ3.
 	 */
 
 	/**
-	 * Evolves the specified variables using the SBX operator using symmetric
-	 * distributions.
+	 * Evolves the specified variables using the SBX operator using symmetric distributions.
 	 * 
 	 * @param v1 the first variable
 	 * @param v2 the second variable
 	 * @param distributionIndex the distribution index of this SBX operator
 	 * @param swap randomly swap the variable between the two parents
 	 */
-	public static void evolve_symmetric(RealVariable v1, RealVariable v2,
-			double distributionIndex, boolean swap) {
+	public static void evolve_symmetric(RealVariable v1, RealVariable v2, double distributionIndex, boolean swap) {
 		double y1, y2, betaq, beta, alpha, rand;
 		double x1 = v1.getValue();
 		double x2 = v2.getValue();
@@ -327,16 +313,14 @@ public class SBX implements Variation {
 	}
 	
 	/**
-	 * Evolves the specified variables using the SBX operator using asymmetric
-	 * distributions.
+	 * Evolves the specified variables using the SBX operator using asymmetric distributions.
 	 * 
 	 * @param v1 the first variable
 	 * @param v2 the second variable
 	 * @param distributionIndex the distribution index of this SBX operator
 	 * @param swap randomly swap the variable between the two parents
 	 */
-	public static void evolve_asymmetric(RealVariable v1, RealVariable v2,
-			double distributionIndex, boolean swap) {
+	public static void evolve_asymmetric(RealVariable v1, RealVariable v2, double distributionIndex, boolean swap) {
 		double y1, y2, betaq, beta, alpha, rand;
 		double x1 = v1.getValue();
 		double x2 = v2.getValue();

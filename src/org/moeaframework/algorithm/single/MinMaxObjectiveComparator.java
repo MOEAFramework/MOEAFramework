@@ -20,8 +20,7 @@ package org.moeaframework.algorithm.single;
 import org.moeaframework.core.Solution;
 
 /**
- * Weighted min-max aggregate function.  By default, all weights are assumed
- * to be equal.
+ * Weighted min-max aggregate function.  By default, all weights are assumed to be equal.
  * 
  * @see MinMaxDominanceComparator
  */
@@ -33,17 +32,16 @@ public class MinMaxObjectiveComparator implements AggregateObjectiveComparator {
 	private double[] weights;
 	
 	/**
-	 * Constructs a new comparator using a weighted min-max aggregate function.
-	 * Equal weights are used for each objective.
+	 * Constructs a new comparator using a weighted min-max aggregate function.  Equal weights are used for each
+	 * objective.
 	 */
 	public MinMaxObjectiveComparator() {
 		this(1.0);
 	}
 	
 	/**
-	 * Constructs a new comparator using a weighted min-max aggregate function.
-	 * One weight should be given for each objective; if fewer weights are
-	 * provided, the last weight is repeated for the remaining objectives.
+	 * Constructs a new comparator using a weighted min-max aggregate function.  One weight should be given for each
+	 * objective; if fewer weights are provided, the last weight is repeated for the remaining objectives.
 	 * 
 	 * @param weights the weight vector
 	 */
@@ -75,9 +73,8 @@ public class MinMaxObjectiveComparator implements AggregateObjectiveComparator {
 	}
 	
 	/**
-	 * Computes the weighted min-max aggregate fitness of the solution.  One
-	 * weight should be given for each objective; if fewer weights are
-	 * provided, the last weight is repeated for the remaining objectives.
+	 * Computes the weighted min-max aggregate fitness of the solution.  One weight should be given for each objective;
+	 * if fewer weights are provided, the last weight is repeated for the remaining objectives.
 	 * 
 	 * @param solution the solution
 	 * @param weights the weight vector

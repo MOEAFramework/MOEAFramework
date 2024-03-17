@@ -47,8 +47,7 @@ package org.moeaframework.util.tree;
 public class Or extends Node {
 	
 	/**
-	 * Constructs a new node for calculating the logical OR of two boolean
-	 * values.
+	 * Constructs a new node for calculating the logical OR of two boolean values.
 	 */
 	public Or() {
 		super(Boolean.class, Boolean.class, Boolean.class);
@@ -61,8 +60,7 @@ public class Or extends Node {
 
 	@Override
 	public Boolean evaluate(Environment environment) {
-		return (Boolean)getArgument(0).evaluate(environment) ||
-				(Boolean)getArgument(1).evaluate(environment);
+		return (Boolean)getArgument(0).evaluate(environment) || (Boolean)getArgument(1).evaluate(environment);
 	}
 
 }

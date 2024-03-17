@@ -32,23 +32,20 @@ import org.moeaframework.core.comparator.ParetoDominanceComparator;
 import org.moeaframework.core.comparator.RankComparator;
 
 /**
- * Population that maintains the {@code rank} and {@code crowdingDistance}
- * attributes for its solutions by invoking
- * {@link NondominatedSorting#evaluate(Population)}. This population tracks
- * modifications and performs fast non-dominated sorting only when required.
- * Only changes made to this population can be tracked; changes made directly
- * to the contained solutions will not be detected.  Therefore, it may be
- * necessary to invoke {@link #update()} manually.
+ * Population that maintains the {@code rank} and {@code crowdingDistance} attributes for its solutions by invoking
+ * {@link NondominatedSorting#evaluate(Population)}.  This population tracks modifications and performs fast
+ * non-dominated sorting only when required.  Only changes made to this population can be tracked; changes made
+ * directly to the contained solutions will not be detected.  Therefore, it may be necessary to invoke
+ * {@link #update()} manually.
  * <p>
- * The iterator() method returned by {@link Population} must use the
- * {@code size()}, {@code get(int)} and {@code remove(int)} methods to ensure
- * proper functionality.
+ * The iterator() method returned by {@link Population} must use the {@code size()}, {@code get(int)} and
+ * {@code remove(int)} methods to ensure proper functionality.
  */
 public class NondominatedSortingPopulation extends Population {
 
 	/**
-	 * {@code true} if the population has been modified but fast non-dominated
-	 * sorting has not yet been invoked; {@code false} otherwise.
+	 * {@code true} if the population has been modified but fast non-dominated sorting has not yet been invoked;
+	 * {@code false} otherwise.
 	 */
 	private boolean modified;
 
@@ -58,16 +55,16 @@ public class NondominatedSortingPopulation extends Population {
 	private final NondominatedSorting nondominatedSorting;
 
 	/**
-	 * Constructs an empty population that maintains the {@code rank} and
-	 * {@code crowdingDistance} attributes for its solutions.
+	 * Constructs an empty population that maintains the {@code rank} and {@code crowdingDistance} attributes for
+	 * its solutions.
 	 */
 	public NondominatedSortingPopulation() {
 		this(new ParetoDominanceComparator());
 	}
 
 	/**
-	 * Constructs an empty population that maintains the {@code rank} and
-	 * {@code crowdingDistance} attributes for its solutions.
+	 * Constructs an empty population that maintains the {@code rank} and {@code crowdingDistance} attributes for
+	 * its solutions.
 	 * 
 	 * @param comparator the dominance comparator
 	 */
@@ -83,9 +80,8 @@ public class NondominatedSortingPopulation extends Population {
 	}
 
 	/**
-	 * Constructs a population initialized with the specified solutions that 
-	 * maintains the {@code rank} and {@code crowdingDistance} attributes for 
-	 * its solutions.
+	 * Constructs a population initialized with the specified solutions that maintains the {@code rank} and
+	 * {@code crowdingDistance} attributes for its solutions.
 	 * 
 	 * @param comparator the dominance comparator
 	 * @param iterable the solutions used to initialize this population
@@ -96,9 +92,8 @@ public class NondominatedSortingPopulation extends Population {
 	}
 
 	/**
-	 * Constructs a population initialized with the specified solutions that 
-	 * maintains the {@code rank} and {@code crowdingDistance} attributes for 
-	 * its solutions.
+	 * Constructs a population initialized with the specified solutions that maintains the {@code rank} and
+	 * {@code crowdingDistance} attributes for its solutions.
 	 * 
 	 * @param iterable the solutions used to initialize this population
 	 */
@@ -182,8 +177,7 @@ public class NondominatedSortingPopulation extends Population {
 	}
 
 	/**
-	 * Equivalent to calling {@code truncate(size, 
-	 * new NondominatedSortingComparator())}.
+	 * Equivalent to calling {@code truncate(size, new NondominatedSortingComparator())}.
 	 * 
 	 * @param size the target population size after truncation
 	 */
@@ -192,9 +186,8 @@ public class NondominatedSortingPopulation extends Population {
 	}
 	
 	/**
-	 * Prunes the population to the specified size.  This is similar to
-	 * {@link #truncate(int)}, except the crowding distance is recalculated
-	 * each time a solution is removed.
+	 * Prunes the population to the specified size.  This is similar to {@link #truncate(int)}, except the crowding
+	 * distance is recalculated each time a solution is removed.
 	 * 
 	 * @param size the target population size after pruning
 	 */
@@ -233,12 +226,10 @@ public class NondominatedSortingPopulation extends Population {
 	}
 
 	/**
-	 * Updates the rank and crowding distance of all solutions in this
-	 * population.  This method will in general be called automatically when
-	 * the population is modified.  However, only changes made to this
-	 * population can be tracked; changes made directly to the contained
-	 * solutions will not be detected.  Therefore, it may be necessary to
-	 * invoke {@link #update()} manually.
+	 * Updates the rank and crowding distance of all solutions in this population.  This method will in general be
+	 * called automatically when the population is modified.  However, only changes made to this population can be
+	 * tracked; changes made directly to the contained solutions will not be detected.  Therefore, it may be necessary
+	 * to invoke {@link #update()} manually.
 	 */
 	public void update() {
 		modified = false;

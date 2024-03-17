@@ -25,20 +25,17 @@ import java.util.Iterator;
 import org.moeaframework.core.comparator.EpsilonBoxDominanceComparator;
 
 /**
- * A non-dominated population using an &epsilon;-box dominance comparator.  
- * &epsilon;-Dominance archives provide several important theoretical 
- * properties, such as guaranteed convergence and diversity if certain other 
- * conditions hold [1].  In addition, this archive also tracks 
- * &epsilon;-progress [2] by counting the number of &epsilon;-box improvements.
+ * A non-dominated population using an &epsilon;-box dominance comparator.   &epsilon;-Dominance archives provide
+ * several important theoretical properties, such as guaranteed convergence and diversity if certain other 
+ * conditions hold [1].  In addition, this archive also tracks &epsilon;-progress [2] by counting the number of
+ * &epsilon;-box improvements.
  * <p>
  * References:
  * <ol>
- *   <li>Laumanns, M. et al.  "Combining Convergence and Diversity in
- *       Evolutionary Multi-Objective Optimization."  Evolutionary Computation,
- *       10(3):263-282, 2002.
- *   <li>Hadka, D. and Reed, P.  "Borg: An Auto-Adaptive Many-Objective
- *       Evolutionary Computing Framework."  Evolutionary Computation,
- *       21(2):231-259, 2013.
+ *   <li>Laumanns, M. et al.  "Combining Convergence and Diversity in Evolutionary Multi-Objective Optimization."
+ *       Evolutionary Computation, 10(3):263-282, 2002.
+ *   <li>Hadka, D. and Reed, P.  "Borg: An Auto-Adaptive Many-Objective Evolutionary Computing Framework."
+ *       Evolutionary Computation, 21(2):231-259, 2013.
  * </ol>
  */
 public class EpsilonBoxDominanceArchive extends NondominatedPopulation {
@@ -49,8 +46,7 @@ public class EpsilonBoxDominanceArchive extends NondominatedPopulation {
 	private int numberOfImprovements;
 
 	/**
-	 * The number of &epsilon;-box improvements dominating an existing solution
-	 * that have occurred.
+	 * The number of &epsilon;-box improvements dominating an existing solution that have occurred.
 	 */
 	private int numberOfDominatingImprovements;
 

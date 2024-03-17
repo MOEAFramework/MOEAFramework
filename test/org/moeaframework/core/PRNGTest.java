@@ -31,8 +31,8 @@ import org.moeaframework.Retryable;
 import org.moeaframework.CIRunner;
 
 /**
- * Tests a {@link PRNG} to ensure the {@code nextX} methods produce a sequence
- * of values satisfying theoretical properties of the desired distribution.
+ * Tests a {@link PRNG} to ensure the {@code nextX} methods produce a sequence of values satisfying theoretical
+ * properties of the desired distribution.
  */
 @RunWith(CIRunner.class)
 @Retryable
@@ -44,8 +44,7 @@ public class PRNGTest {
 	private static int N = 1000000;
 
 	/**
-	 * Tests if the {@code nextFloat} method produces uniformly-distributed
-	 * values in the range {@code [0, 1]}.
+	 * Tests if the {@code nextFloat} method produces uniformly-distributed values in the range {@code [0, 1]}.
 	 */
 	@Test
 	public void testNextFloat() {
@@ -59,8 +58,7 @@ public class PRNGTest {
 	}
 
 	/**
-	 * Tests if the {@code nextFloat} method produces uniformly-distributed
-	 * values in a specified range.
+	 * Tests if the {@code nextFloat} method produces uniformly-distributed values in a specified range.
 	 */
 	@Test
 	public void testNextFloatRange() {
@@ -74,8 +72,7 @@ public class PRNGTest {
 	}
 
 	/**
-	 * Tests if the {@code nextDouble} method produces uniformly-distributed
-	 * values in the range {@code [0, 1]}.
+	 * Tests if the {@code nextDouble} method produces uniformly-distributed values in the range {@code [0, 1]}.
 	 */
 	@Test
 	public void testNextDouble() {
@@ -89,8 +86,7 @@ public class PRNGTest {
 	}
 
 	/**
-	 * Tests if the {@code nextDouble} method produces uniformly-distributed
-	 * values in a specified range.
+	 * Tests if the {@code nextDouble} method produces uniformly-distributed values in a specified range.
 	 */
 	@Test
 	public void testNextDoubleRange() {
@@ -104,8 +100,7 @@ public class PRNGTest {
 	}
 
 	/**
-	 * Tests if the {@code nextInt} method produces uniformly-distributed
-	 * values using a histogram.
+	 * Tests if the {@code nextInt} method produces uniformly-distributed values using a histogram.
 	 */
 	@Test
 	public void testNextInt() {
@@ -139,8 +134,7 @@ public class PRNGTest {
 	}
 
 	/**
-	 * Tests if the {@code nextInt} method produces uniformly-distributed
-	 * values in a specified range.
+	 * Tests if the {@code nextInt} method produces uniformly-distributed values in a specified range.
 	 */
 	@Test
 	public void testNextIntRange1() {
@@ -154,8 +148,7 @@ public class PRNGTest {
 	}
 
 	/**
-	 * Tests if the {@code nextInt} method produces uniformly-distributed
-	 * values in a specified range.
+	 * Tests if the {@code nextInt} method produces uniformly-distributed values in a specified range.
 	 */
 	@Test
 	public void testNextIntRange2() {
@@ -169,8 +162,7 @@ public class PRNGTest {
 	}
 
 	/**
-	 * Tests if the {@code nextBoolean} method produces {@code true} and
-	 * {@code false} with equal probability.
+	 * Tests if the {@code nextBoolean} method produces {@code true} and {@code false} with equal probability.
 	 */
 	@Test
 	public void testNextBoolean() {
@@ -184,8 +176,8 @@ public class PRNGTest {
 	}
 
 	/**
-	 * Tests if the {@code nextGaussian} method produces a Gaussian distribution
-	 * with mean {@code 0} and standard deviation {@code 1}.
+	 * Tests if the {@code nextGaussian} method produces a Gaussian distribution with mean {@code 0} and standard
+	 * deviation {@code 1}.
 	 */
 	@Test
 	public void testNextGaussian() {
@@ -199,8 +191,8 @@ public class PRNGTest {
 	}
 
 	/**
-	 * Tests if the {@code nextGaussian} method produces a Gaussian distribution
-	 * with a specified mean and standard deviation.
+	 * Tests if the {@code nextGaussian} method produces a Gaussian distribution with a specified mean and standard
+	 * deviation.
 	 */
 	@Test
 	public void testNextGaussianParameterized() {
@@ -214,9 +206,8 @@ public class PRNGTest {
 	}
 
 	/**
-	 * Tests if the {@code shuffle} method produces valid permutations of a
-	 * list, and that the distribution of the values for each index are
-	 * approximately uniform.
+	 * Tests if the {@code shuffle} method produces valid permutations of a list, and that the distribution of the
+	 * values for each index are approximately uniform.
 	 */
 	@Test
 	public void testShuffleList() {
@@ -245,9 +236,8 @@ public class PRNGTest {
 	}
 
 	/**
-	 * Tests if the {@code shuffle} method produces valid permutations of an
-	 * array, and that the distribution of the values for each index are
-	 * approximately uniform.
+	 * Tests if the {@code shuffle} method produces valid permutations of an array, and that the distribution of the
+	 * values for each index are approximately uniform.
 	 */
 	@Test
 	public void testShuffleObjectArray() throws Exception {
@@ -263,11 +253,8 @@ public class PRNGTest {
 	}
 
 	/**
-	 * Tests if the {@code shuffle} method produces valid permutations of an
-	 * integer array, and that the distribution of the values for each index are
-	 * approximately uniform.
-	 * 
-	 * @throws Exception if a reflection error occurred
+	 * Tests if the {@code shuffle} method produces valid permutations of an integer array, and that the distribution
+	 * of the values for each index are approximately uniform.
 	 */
 	@Test
 	public void testShuffleIntArray() throws Exception {
@@ -275,8 +262,7 @@ public class PRNGTest {
 	}
 
 	/**
-	 * Tests if the {@code shuffle} method correctly handles an empty
-	 * integer array.
+	 * Tests if the {@code shuffle} method correctly handles an empty integer array.
 	 */
 	@Test
 	public void testShuffleEmptyIntArray() throws Exception {
@@ -284,11 +270,8 @@ public class PRNGTest {
 	}
 
 	/**
-	 * Tests if the {@code shuffle} method produces valid permutations of a
-	 * double array, and that the distribution of the values for each index are
-	 * approximately uniform.
-	 * 
-	 * @throws Exception if a reflection error occurred
+	 * Tests if the {@code shuffle} method produces valid permutations of a double array, and that the distribution of
+	 * the values for each index are approximately uniform.
 	 */
 	@Test
 	public void testShuffleDoubleArray() throws Exception {
@@ -296,8 +279,7 @@ public class PRNGTest {
 	}
 
 	/**
-	 * Tests if the {@code shuffle} method correctly handles an empty
-	 * double array.
+	 * Tests if the {@code shuffle} method correctly handles an empty double array.
 	 */
 	@Test
 	public void testShuffleEmptyDoubleArray() throws Exception {
@@ -305,11 +287,8 @@ public class PRNGTest {
 	}
 
 	/**
-	 * Tests if the {@code shuffle} method produces valid permutations of a
-	 * float array, and that the distribution of the values for each index are
-	 * approximately uniform.
-	 * 
-	 * @throws Exception if a reflection error occurred
+	 * Tests if the {@code shuffle} method produces valid permutations of a float array, and that the distribution of
+	 * the values for each index are approximately uniform.
 	 */
 	@Test
 	public void testShuffleFloatArray() throws Exception {
@@ -317,8 +296,7 @@ public class PRNGTest {
 	}
 
 	/**
-	 * Tests if the {@code shuffle} method correctly handles an empty
-	 * float array.
+	 * Tests if the {@code shuffle} method correctly handles an empty float array.
 	 */
 	@Test
 	public void testShuffleEmptyFloatArray() throws Exception {
@@ -326,11 +304,8 @@ public class PRNGTest {
 	}
 
 	/**
-	 * Tests if the {@code shuffle} method produces valid permutations of a
-	 * long array, and that the distribution of the values for each index are
-	 * approximately uniform.
-	 * 
-	 * @throws Exception if a reflection error occurred
+	 * Tests if the {@code shuffle} method produces valid permutations of a long array, and that the distribution of
+	 * the values for each index are approximately uniform.
 	 */
 	@Test
 	public void testShuffleLongArray() throws Exception {
@@ -338,8 +313,7 @@ public class PRNGTest {
 	}
 
 	/**
-	 * Tests if the {@code shuffle} method correctly handles an empty
-	 * long array.
+	 * Tests if the {@code shuffle} method correctly handles an empty long array.
 	 */
 	@Test
 	public void testShuffleEmptyLongArray() throws Exception {
@@ -347,11 +321,8 @@ public class PRNGTest {
 	}
 
 	/**
-	 * Tests if the {@code shuffle} method produces valid permutations of a
-	 * short array, and that the distribution of the values for each index are
-	 * approximately uniform.
-	 * 
-	 * @throws Exception if a reflection error occurred
+	 * Tests if the {@code shuffle} method produces valid permutations of a short array, and that the distribution of
+	 * the values for each index are approximately uniform.
 	 */
 	@Test
 	public void testShuffleShortArray() throws Exception {
@@ -359,8 +330,7 @@ public class PRNGTest {
 	}
 
 	/**
-	 * Tests if the {@code shuffle} method correctly handles an empty
-	 * short array.
+	 * Tests if the {@code shuffle} method correctly handles an empty short array.
 	 */
 	@Test
 	public void testShuffleEmptyShortArray() throws Exception {
@@ -368,11 +338,8 @@ public class PRNGTest {
 	}
 
 	/**
-	 * Tests if the {@code shuffle} method produces valid permutations of a
-	 * byte array, and that the distribution of the values for each index are
-	 * approximately uniform.
-	 * 
-	 * @throws Exception if a reflection error occurred
+	 * Tests if the {@code shuffle} method produces valid permutations of a byte array, and that the distribution of
+	 * the values for each index are approximately uniform.
 	 */
 	@Test
 	public void testShuffleByteArray() throws Exception {
@@ -380,8 +347,7 @@ public class PRNGTest {
 	}
 
 	/**
-	 * Tests if the {@code shuffle} method correctly handles an empty
-	 * byte array.
+	 * Tests if the {@code shuffle} method correctly handles an empty byte array.
 	 */
 	@Test
 	public void testShuffleEmptyByteArray() throws Exception {
@@ -389,9 +355,8 @@ public class PRNGTest {
 	}
 
 	/**
-	 * Tests if the {@code shuffle} method produces valid permutations of a
-	 * boolean array, and that the distribution of the values for each index are
-	 * approximately uniform.
+	 * Tests if the {@code shuffle} method produces valid permutations of a boolean array, and that the distribution of
+	 * the values for each index are approximately uniform.
 	 */
 	@Test
 	public void testShuffleBooleanArray() {
@@ -424,9 +389,8 @@ public class PRNGTest {
 	}
 
 	/**
-	 * Tests if the {@code shuffle} method produces valid permutations of a
-	 * typed array, and that the distribution of the values for each index are
-	 * approximately uniform.
+	 * Tests if the {@code shuffle} method produces valid permutations of a typed array, and that the distribution of
+	 * the values for each index are approximately uniform.
 	 * 
 	 * @param type the class of the array
 	 * @param size the size of the array
@@ -469,8 +433,8 @@ public class PRNGTest {
 	}
 
 	/**
-	 * Asserts that the statistical distribution satisfies the properties of a
-	 * real-valued uniform distribution between {@code min} and {@code max}.
+	 * Asserts that the statistical distribution satisfies the properties of a real-valued uniform distribution between
+	 * {@code min} and {@code max}.
 	 * 
 	 * @param min the minimum bounds of the uniform distribution
 	 * @param max the maximum bounds of the uniform distribution
@@ -486,8 +450,8 @@ public class PRNGTest {
 	}
 
 	/**
-	 * Asserts that the statistical distribution satisfies the properties of an
-	 * integer-valued uniform distribution between {@code min} and {@code max}.
+	 * Asserts that the statistical distribution satisfies the properties of an integer-valued uniform distribution
+	 * between {@code min} and {@code max}.
 	 * 
 	 * @param min the minimum bounds of the uniform distribution
 	 * @param max the maximum bounds of the uniform distribution
@@ -506,8 +470,8 @@ public class PRNGTest {
 	}
 
 	/**
-	 * Asserts that the statistical distribution satisfies the properties of a
-	 * Gaussian distribution with the specified mean and standard deviation.
+	 * Asserts that the statistical distribution satisfies the properties of a Gaussian distribution with the specified
+	 * mean and standard deviation.
 	 * 
 	 * @param mu the mean value of the distribution
 	 * @param sigma the standard deviation of the distribution
@@ -544,8 +508,7 @@ public class PRNGTest {
 	}
 
 	/**
-	 * Asserts that the array is a valid permutation of {@code n} boolean
-	 * values.
+	 * Asserts that the array is a valid permutation of {@code n} boolean values.
 	 * 
 	 * @param n the number of {@code true} values
 	 * @param array the permutation

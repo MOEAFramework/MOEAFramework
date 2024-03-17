@@ -32,39 +32,36 @@ import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.problem.ProblemWrapper;
 
 /**
- * Provides builder methods for instantiating problems and their reference sets.
- * This is an internal class with all package-private methods, allowing 
- * subclasses to selectively expose the methods.
+ * Provides builder methods for instantiating problems and their reference sets.  This is an internal class with all
+ * package-private methods, allowing subclasses to selectively expose the methods.
  */
 class ProblemBuilder {
 
 	/**
-	 * The problem name.  If {@code null}, the problem is specified by
-	 * {@code problemClass} or {@code problemInstance}.
+	 * The problem name.  If {@code null}, the problem is specified by {@code problemClass} or {@code problemInstance}.
 	 */
 	String problemName;
 	
 	/**
-	 * The problem class.  If {@code null}, the problem is specified by
-	 * {@code problemName} or {@code problemInstance}.
+	 * The problem class.  If {@code null}, the problem is specified by {@code problemName} or {@code problemInstance}.
 	 */
 	Class<?> problemClass;
 	
 	/**
-	 * The specific instance of the problem.  If {@code null}, the problem is
-	 * specified by {@code problemName} or {@code problemClass}.
+	 * The specific instance of the problem.  If {@code null}, the problem is specified by {@code problemName} or
+	 * {@code problemClass}.
 	 */
 	UserProvidedProblemInstance problemInstance;
 	
 	/**
-	 * The arguments used when constructing an instance of the problem class.
-	 * If {@code null}, then the nullary (empty) constructor is used.
+	 * The arguments used when constructing an instance of the problem class.  If {@code null}, then the empty
+	 * constructor is used.
 	 */
 	Object[] problemArguments;
 	
 	/**
-	 * The problem provider for creating problem instances; or {@code null}
-	 * if the default problem factory should be used.
+	 * The problem provider for creating problem instances; or {@code null} if the default problem factory should be
+	 * used.
 	 */
 	ProblemFactory problemFactory;
 	
@@ -74,8 +71,7 @@ class ProblemBuilder {
 	double[] epsilon;
 	
 	/**
-	 * The reference set used by this builder; or {@code null} if no reference set
-	 * was configured.  
+	 * The reference set used by this builder; or {@code null} if no reference set was configured.  
 	 */
 	NondominatedPopulation referenceSet;
 	
@@ -87,11 +83,11 @@ class ProblemBuilder {
 	}
 	
 	/**
-	 * Configures this builder to use the same problem, reference set, &epsilon;
-	 * values and {@link ProblemFactory} as the specified instance.
+	 * Configures this builder to use the same problem, reference set, &epsilon; values and {@link ProblemFactory} as
+	 * the specified instance.
 	 * 
-	 * @param builder the instance whose problem, reference set, &epsilon;
-	 *        values and {@code ProblemFactory} are to be copied
+	 * @param builder the instance whose problem, reference set, &epsilon; values and {@code ProblemFactory} are to
+	 *        be copied
 	 * @return a reference to this builder
 	 */
 	ProblemBuilder withSameProblemAs(ProblemBuilder builder) {
@@ -133,10 +129,9 @@ class ProblemBuilder {
 	}
 	
 	/**
-	 * Sets the problem instance used by this builder.  Unlike the other
-	 * {@code withProblem} methods, using a problem instance will not close the
-	 * problem.  It is the responsibility of the user to ensure any problems
-	 * holding resources are properly closed.
+	 * Sets the problem instance used by this builder.  Unlike the other {@code withProblem} methods, using a problem
+	 * instance will not close the problem.  It is the responsibility of the user to ensure any problems holding
+	 * resources are properly closed.
 	 * 
 	 * @param problemInstance the problem instance
 	 * @return a reference to this builder
@@ -152,10 +147,9 @@ class ProblemBuilder {
 	}
 	
 	/**
-	 * Sets the problem used by this builder.  Instances of the problem are
-	 * created using the {@link Class#newInstance()} method.  Ensure the problem
-	 * class satisfies all the conditions of {@code newInstance()}, otherwise
-	 * exceptions may be thrown when attempting to create an instance of the
+	 * Sets the problem used by this builder.  Instances of the problem are created using the
+	 * {@link Class#newInstance()} method.  Ensure the problem class satisfies all the conditions of
+	 * {@code newInstance()}, otherwise exceptions may be thrown when attempting to create an instance of the
 	 * problem.
 	 * 
 	 * @param problemClass the problem class
@@ -172,28 +166,25 @@ class ProblemBuilder {
 	}
 	
 	/**
-	 * Sets the problem used by this builder.  Instances of the problem are
-	 * created using the {@link Class#newInstance()} method.  Ensure the problem
-	 * class satisfies all the conditions of {@code newInstance()}, otherwise
-	 * exceptions may be thrown when attempting to create an instance of the
+	 * Sets the problem used by this builder.  Instances of the problem are created using the
+	 * {@link Class#newInstance()} method.  Ensure the problem class satisfies all the conditions of
+	 * {@code newInstance()}, otherwise exceptions may be thrown when attempting to create an instance of the
 	 * problem.
 	 * 
 	 * @param problemClassName the problem class name
 	 * @param problemArguments the arguments passed to the problem constructor
 	 * @return a reference to this builder
-	 * @throws ClassNotFoundException if the specified problem class name could
-	 *         not be found
+	 * @throws ClassNotFoundException if the specified problem class name could not be found
 	 */
 	ProblemBuilder withProblemClass(String problemClassName, Object... problemArguments) 
-	throws ClassNotFoundException {
+			throws ClassNotFoundException {
 		withProblemClass(Class.forName(problemClassName), problemArguments);
 		
 		return this;
 	}
 	
 	/**
-	 * Sets the &epsilon; values used by this builder, specifying the archive
-	 * returned by {@link #newArchive()}.
+	 * Sets the &epsilon; values used by this builder, specifying the archive returned by {@link #newArchive()}.
 	 * 
 	 * @param epsilon the &epsilon; values
 	 * @return a reference to this builder
@@ -223,8 +214,8 @@ class ProblemBuilder {
 	}
 	
 	/**
-	 * Configures a reference set to use for this problem.  If {@code null},
-	 * then the default reference set, if available, is used.
+	 * Configures a reference set to use for this problem.  If {@code null}, then the default reference set, if
+	 * available, is used.
 	 * 
 	 * @param referenceSet the reference set
 	 * @return a reference to this builder
@@ -236,12 +227,11 @@ class ProblemBuilder {
 	}
 	
 	/**
-	 * Returns an empty non-dominated population or &epsilon;-box dominance
-	 * archive, depending on whether the {@code epsilon} field is set.  This is
-	 * the archive used to store the reference set.
+	 * Returns an empty non-dominated population or &epsilon;-box dominance archive, depending on whether the
+	 * {@code epsilon} field is set.  This is the archive used to store the reference set.
 	 * 
-	 * @return an empty non-dominated population or &epsilon;-box dominance
-	 *         archive, depending on whether the {@code epsilon} field is set.
+	 * @return an empty non-dominated population or &epsilon;-box dominance archive, depending on whether the
+	 *         {@code epsilon} field is set.
 	 */
 	NondominatedPopulation newArchive() {
 		if (epsilon == null) {
@@ -252,19 +242,16 @@ class ProblemBuilder {
 	}
 	
 	/**
-	 * Returns the reference set used by this builder.  The reference set is
-	 * generated as follows:
+	 * Returns the reference set used by this builder.  The reference set is generated as follows:
 	 * <ol>
 	 *   <li>The custom reference set configured by {@link #withReferenceSet(NondominatedPopulation)} or
 	 *       {@link #withReferenceSet(File)};
-	 *   <li>The default reference set specified by the
-	 *       {@link ProblemFactory#getReferenceSet(String)} method;
+	 *   <li>The default reference set specified by the {@link ProblemFactory#getReferenceSet(String)} method;
 	 *   <li>Otherwise, an exception is thrown.
 	 * </ol>
 	 * 
 	 * @return the reference set used by this builder
-	 * @throws IllegalArgumentException if no reference set is available or
-	 *         could not be loaded
+	 * @throws IllegalArgumentException if no reference set is available or could not be loaded
 	 */
 	NondominatedPopulation getReferenceSet() {
 		NondominatedPopulation result = newArchive();
@@ -294,15 +281,14 @@ class ProblemBuilder {
 	}
 	
 	/**
-	 * Returns a new instance of the problem used by this builder, or throws
-	 * an exception if no problem has been defined.  The code requesting the
-	 * problem instance is expected to close the problem when finished.
+	 * Returns a new instance of the problem used by this builder, or throws an exception if no problem has been
+	 * defined.  The code requesting the problem instance is expected to close the problem when finished.
 	 * 
-	 * @return a new instance of the problem used by this builder, or throws
-	 *         an exception if no problem has been defined
+	 * @return a new instance of the problem used by this builder, or throws an exception if no problem has been
+	 *         defined
 	 * @throws IllegalArgumentException if no problem has been defined
-	 * @throws FrameworkException if an error occurred invoking the constructor
-	 *         caused by an {@link InstantiationException}, 
+	 * @throws FrameworkException if an error occurred invoking the constructor caused by an
+	 *         {@link InstantiationException}, 
 	 *         {@link IllegalAccessException}, 
 	 *         {@link InvocationTargetException} or
 	 *         {@link NoSuchMethodException}.
@@ -334,9 +320,8 @@ class ProblemBuilder {
 	}
 	
 	/**
-	 * Internal problem wrapper used on user-defined problems (see 
-	 * {@link ProblemBuilder#withProblem(Problem)}) that does not automatically
-	 * close the problem.
+	 * Internal problem wrapper used on user-defined problems (see {@link ProblemBuilder#withProblem(Problem)}) that
+	 * does not automatically close the problem.
 	 */
 	private class UserProvidedProblemInstance extends ProblemWrapper {
 		

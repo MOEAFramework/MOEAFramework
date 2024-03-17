@@ -180,8 +180,7 @@ public class DefaultAlgorithmsResumeTest {
 	}
 	
 	/**
-	 * Tests if a resumed algorithm produces the same outcome as one that never
-	 * resumed.
+	 * Tests if a resumed algorithm produces the same outcome as one that never resumed.
 	 * 
 	 * @param algorithmName the name of the algorithm to test
 	 * @throws IOException if an I/O error occurred
@@ -206,9 +205,8 @@ public class DefaultAlgorithmsResumeTest {
 		PRNG.setSeed(seed);
 
 		for (int i = 0; i < N && (checkpoints == null || !checkpoints.isTerminated()); i++) {
-			checkpoints = new Checkpoints(
-					AlgorithmFactory.getInstance().getAlgorithm(algorithmName, new TypedProperties(), problem),
-							file, 0);
+			checkpoints = new Checkpoints(AlgorithmFactory.getInstance().getAlgorithm(algorithmName,
+					new TypedProperties(), problem), file, 0);
 
 			checkpoints.step();
 		}

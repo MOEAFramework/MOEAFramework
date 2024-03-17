@@ -33,18 +33,15 @@ import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.util.TypedProperties;
 
 /**
- * Implementation of OMOPSO, a multi-objective particle swarm optimizer (MOPSO).
- * According to [2], OMOPSO is one of the top-performing PSO algorithms.
+ * Implementation of OMOPSO, a multi-objective particle swarm optimizer (MOPSO).  According to [2], OMOPSO is one of
+ * the top-performing PSO algorithms.
  * <p>
  * References:
  * <ol>
- *   <li>Sierra, M. R. and C. A. Coello Coello (2005).  Improving PSO-based
- *       Multi-Objective Optimization using Crowding, Mutation and
- *       &epsilon;-Dominance.  Evolutionary Multi-Criterion Optimization,
- *       pp. 505-519.
- *   <li>Durillo, J. J., J. Garc�a-Nieto, A. J. Nebro, C. A. Coello Coello,
- *       F. Luna, and E. Alba (2009).  Multi-Objective Particle Swarm
- *       Optimizers: An Experimental Comparison.  Evolutionary Multi-Criterion
+ *   <li>Sierra, M. R. and C. A. Coello Coello (2005).  Improving PSO-based Multi-Objective Optimization using
+ *       Crowding, Mutation and &epsilon;-Dominance.  Evolutionary Multi-Criterion Optimization, pp. 505-519.
+ *   <li>Durillo, J. J., J. Garc�a-Nieto, A. J. Nebro, C. A. Coello Coello, F. Luna, and E. Alba (2009).
+ *       Multi-Objective Particle Swarm Optimizers: An Experimental Comparison.  Evolutionary Multi-Criterion
  *       Optimization, pp. 495-509.
  * </ol>
  */
@@ -64,8 +61,8 @@ public class OMOPSO extends AbstractPSOAlgorithm {
 	 * Constructs a new OMOPSO instance with default settings.
 	 * 
 	 * @param problem the problem
-	 * @param maxIterations the maximum number of iterations for scaling non-uniform mutation;
-	 *        typically this should be {@code maxEvaluations / swarmSize}
+	 * @param maxIterations the maximum number of iterations for scaling non-uniform mutation; typically this should be
+	 *        {@code maxEvaluations / swarmSize}
 	 */
 	public OMOPSO(Problem problem, int maxIterations) {
 		this(problem,
@@ -135,8 +132,7 @@ public class OMOPSO extends AbstractPSOAlgorithm {
 	}
 	
 	/**
-	 * Sets the perturbation index used by uniform and non-uniform mutation.  The default value
-	 * is {@code 0.5}.
+	 * Sets the perturbation index used by uniform and non-uniform mutation.  The default value is {@code 0.5}.
 	 * 
 	 * @param perturbationIndex the perturbation index
 	 */
@@ -161,8 +157,8 @@ public class OMOPSO extends AbstractPSOAlgorithm {
 	}
 	
 	/**
-	 * Sets the maximum number of iterations for scaling the non-uniform mutation.  Typically
-	 * this should be set to {@code maxEvaluations / swarmSize}.
+	 * Sets the maximum number of iterations for scaling the non-uniform mutation.  Typically this should be set to
+	 * {@code maxEvaluations / swarmSize}.
 	 * 
 	 * @param maxIterations the maximum number of iterations
 	 */

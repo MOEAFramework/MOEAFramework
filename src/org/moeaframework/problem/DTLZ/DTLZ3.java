@@ -20,7 +20,6 @@ package org.moeaframework.problem.DTLZ;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
-import org.moeaframework.core.variable.RealVariable;
 
 /**
  * The DTLZ3 test problem.
@@ -28,9 +27,8 @@ import org.moeaframework.core.variable.RealVariable;
 public class DTLZ3 extends DTLZ {
 
 	/**
-	 * Constructs a DTLZ3 test problem with the specified number of objectives.
-	 * This is equivalent to calling {@code new DTLZ3(numberOfObjectives+9, 
-	 * numberOfObjectives)}.
+	 * Constructs a DTLZ3 test problem with the specified number of objectives.  This is equivalent to calling
+	 * {@code new DTLZ3(numberOfObjectives+9, numberOfObjectives)}.
 	 * 
 	 * @param numberOfObjectives the number of objectives for this problem
 	 */
@@ -39,8 +37,7 @@ public class DTLZ3 extends DTLZ {
 	}
 
 	/**
-	 * Constructs a DTLZ3 test problem with the specified number of variables
-	 * and objectives.
+	 * Constructs a DTLZ3 test problem with the specified number of variables and objectives.
 	 * 
 	 * @param numberOfVariables the number of variables for this problem
 	 * @param numberOfObjectives the number of objectives for this problem
@@ -58,8 +55,7 @@ public class DTLZ3 extends DTLZ {
 
 		double g = 0.0;
 		for (int i = numberOfVariables - k; i < numberOfVariables; i++) {
-			g += Math.pow(x[i] - 0.5, 2.0)
-					- Math.cos(20.0 * Math.PI * (x[i] - 0.5));
+			g += Math.pow(x[i] - 0.5, 2.0) - Math.cos(20.0 * Math.PI * (x[i] - 0.5));
 		}
 		g = 100.0 * (k + g);
 
@@ -83,11 +79,11 @@ public class DTLZ3 extends DTLZ {
 		Solution solution = newSolution();
 
 		for (int i = 0; i < numberOfObjectives - 1; i++) {
-			((RealVariable)solution.getVariable(i)).setValue(PRNG.nextDouble());
+			EncodingUtils.setReal(solution.getVariable(i), PRNG.nextDouble());
 		}
 
 		for (int i = numberOfObjectives - 1; i < numberOfVariables; i++) {
-			((RealVariable)solution.getVariable(i)).setValue(0.5);
+			EncodingUtils.setReal(solution.getVariable(i), 0.5);
 		}
 
 		evaluate(solution);

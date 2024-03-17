@@ -17,7 +17,6 @@
  */
 
 /**
- * Utilities for building parallel algorithms, including thead-safe versions of
- * some classes.
+ * Utilities for building parallel algorithms, including thread-safe versions of some classes.
  */
 package org.moeaframework.parallel.util;

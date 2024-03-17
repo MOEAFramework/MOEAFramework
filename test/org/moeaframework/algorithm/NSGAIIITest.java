@@ -45,8 +45,7 @@ import org.moeaframework.util.TypedProperties;
 public class NSGAIIITest {
 	
 	/**
-	 * Replicates the unscaled and scaled DTLZ experiments performed in the
-	 * original NSGA-III paper.
+	 * Replicates the unscaled and scaled DTLZ experiments performed in the original NSGA-III paper.
 	 */
 	@SuppressWarnings("resource")
 	@Test
@@ -104,8 +103,7 @@ public class NSGAIIITest {
 		int trials = 20;
 		double[] igdValues = new double[trials];
 		
-		InvertedGenerationalDistance igd = new InvertedGenerationalDistance(
-				problem, referenceSet, 2.0);
+		InvertedGenerationalDistance igd = new InvertedGenerationalDistance(problem, referenceSet, 2.0);
 		
 		for (int i = 0; i < trials; i++) {
 			int populationSize;
@@ -146,8 +144,7 @@ public class NSGAIIITest {
 				properties.setInt("divisionsInner", 1);
 			}
 			
-			Algorithm algorithm = AlgorithmFactory.getInstance().getAlgorithm(
-					"NSGAIII", properties, problem);
+			Algorithm algorithm = AlgorithmFactory.getInstance().getAlgorithm("NSGAIII", properties, problem);
 			
 			while (algorithm.getNumberOfEvaluations() < maxGen*populationSize) {
 				algorithm.step();

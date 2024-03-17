@@ -35,8 +35,10 @@ public class SampleReaderTest {
 	/**
 	 * The parameter file contents.
 	 */
-	public static final String PARAMETER_FILE = "entry1 0.0 1.0\n"
-			+ "entry2 100 10000\n" + "entry3 0.0 1.0";
+	public static final String PARAMETER_FILE =
+			"entry1 0.0 1.0\n" +
+			"entry2 100 10000\n" +
+			"entry3 0.0 1.0";
 
 	/**
 	 * A valid parameter sample file.
@@ -64,7 +66,8 @@ public class SampleReaderTest {
 	/**
 	 * An invalid parameter sample file, containing unparseable data.
 	 */
-	public static final String INVALID3 = "0.0 100 0.0\n" + 
+	public static final String INVALID3 = 
+			"0.0 100 0.0\n" + 
 			"1.0 10000foo 1.0\n" + // unparseable entry
 			"1.0 10000 1.0";
 
@@ -94,8 +97,7 @@ public class SampleReaderTest {
 	 */
 	@Before
 	public void setUp() throws IOException {
-		parameterFile = new ParameterFile(TestUtils
-				.createTempFile(PARAMETER_FILE));
+		parameterFile = new ParameterFile(TestUtils.createTempFile(PARAMETER_FILE));
 	}
 
 	/**
@@ -107,8 +109,7 @@ public class SampleReaderTest {
 	}
 
 	/**
-	 * Performs the necessary assertions to ensure a complete parameter
-	 * sample file is read correctly.
+	 * Performs the necessary assertions to ensure a complete parameter sample file is read correctly.
 	 * 
 	 * @param reader the parameter sample file reader
 	 */
@@ -136,8 +137,7 @@ public class SampleReaderTest {
 	}
 
 	/**
-	 * Performs the necessary assertions to ensure invalid parameter sample
-	 * files are handled correctly.
+	 * Performs the necessary assertions to ensure invalid parameter sample files are handled correctly.
 	 * 
 	 * @param reader the parameter sample file reader
 	 */
@@ -150,8 +150,6 @@ public class SampleReaderTest {
 
 	/**
 	 * Tests reading COMPLETE through the {@code File} constructor.
-	 * 
-	 * @throws IOException if an I/O error occurred
 	 */
 	@Test
 	public void testFileComplete() throws IOException {
@@ -162,8 +160,6 @@ public class SampleReaderTest {
 
 	/**
 	 * Tests reading INVALID1 through the {@code File} constructor.
-	 * 
-	 * @throws IOException if an I/O error occurred
 	 */
 	@Test(expected = Exception.class)
 	public void testFileInvalid1() throws IOException {
@@ -174,8 +170,6 @@ public class SampleReaderTest {
 
 	/**
 	 * Tests reading INVALID2 through the {@code File} constructor.
-	 * 
-	 * @throws IOException if an I/O error occurred
 	 */
 	@Test(expected = Exception.class)
 	public void testFileInvalid2() throws IOException {
@@ -186,8 +180,6 @@ public class SampleReaderTest {
 
 	/**
 	 * Tests reading INVALID3 through the {@code File} constructor.
-	 * 
-	 * @throws IOException if an I/O error occurred
 	 */
 	@Test(expected = Exception.class)
 	public void testFileInvalid3() throws IOException {
@@ -198,8 +190,6 @@ public class SampleReaderTest {
 
 	/**
 	 * Tests reading INVALID4 through the {@code File} constructor.
-	 * 
-	 * @throws IOException if an I/O error occurred
 	 */
 	@Test(expected = Exception.class)
 	public void testFileInvalid4() throws IOException {
@@ -210,8 +200,6 @@ public class SampleReaderTest {
 
 	/**
 	 * Tests reading INVALID5 through the {@code File} constructor.
-	 * 
-	 * @throws IOException if an I/O error occurred
 	 */
 	@Test(expected = Exception.class)
 	public void testFileInvalid5() throws IOException {
@@ -222,8 +210,6 @@ public class SampleReaderTest {
 
 	/**
 	 * Tests reading COMPLETE through the {@code Reader} constructor.
-	 * 
-	 * @throws IOException if an I/O error occurred
 	 */
 	@Test
 	public void testReaderComplete() throws IOException {
@@ -234,8 +220,6 @@ public class SampleReaderTest {
 
 	/**
 	 * Tests reading INVALID1 through the {@code Reader} constructor.
-	 * 
-	 * @throws IOException if an I/O error occurred
 	 */
 	@Test(expected = Exception.class)
 	public void testReaderInvalid1() throws IOException {
@@ -246,8 +230,6 @@ public class SampleReaderTest {
 
 	/**
 	 * Tests reading INVALID2 through the {@code Reader} constructor.
-	 * 
-	 * @throws IOException if an I/O error occurred
 	 */
 	@Test(expected = Exception.class)
 	public void testReaderInvalid2() throws IOException {
@@ -258,8 +240,6 @@ public class SampleReaderTest {
 
 	/**
 	 * Tests reading INVALID3 through the {@code Reader} constructor.
-	 * 
-	 * @throws IOException if an I/O error occurred
 	 */
 	@Test(expected = Exception.class)
 	public void testReaderInvalid3() throws IOException {
@@ -270,8 +250,6 @@ public class SampleReaderTest {
 
 	/**
 	 * Tests reading INVALID4 through the {@code Reader} constructor.
-	 * 
-	 * @throws IOException if an I/O error occurred
 	 */
 	@Test(expected = Exception.class)
 	public void testReaderInvalid4() throws IOException {
@@ -282,8 +260,6 @@ public class SampleReaderTest {
 
 	/**
 	 * Tests reading INVALID5 through the {@code Reader} constructor.
-	 * 
-	 * @throws IOException if an I/O error occurred
 	 */
 	@Test(expected = Exception.class)
 	public void testReaderInvalid5() throws IOException {

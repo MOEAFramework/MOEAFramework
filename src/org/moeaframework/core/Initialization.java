@@ -18,8 +18,8 @@
 package org.moeaframework.core;
 
 /**
- * Interface for an initialization routine. Initialization routines generate the
- * initial population used by an algorithm.
+ * Interface for an initialization routine. Initialization routines generate the initial population used by an
+ * algorithm.
  */
 public interface Initialization {
 

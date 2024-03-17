@@ -42,8 +42,7 @@ package org.moeaframework.util.tree;
 public class Not extends Node {
 
 	/**
-	 * Constructs a new node for calculating the logical NOT of a boolean
-	 * value.
+	 * Constructs a new node for calculating the logical NOT of a boolean value.
 	 */
 	public Not() {
 		super(Boolean.class, Boolean.class);

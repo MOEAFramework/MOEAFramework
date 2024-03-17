@@ -31,15 +31,14 @@ import org.moeaframework.core.spi.OperatorFactory;
 import org.moeaframework.util.TypedProperties;
 
 /**
- * Implementation of the (1+1) Pareto Archived Evolution Strategy (PAES).  PAES
- * uses an adaptive grid archive to maintain a diverse set of solutions.
+ * Implementation of the (1+1) Pareto Archived Evolution Strategy (PAES).  PAES uses an adaptive grid archive to
+ * maintain a diverse set of solutions.
  * <p>
  * References:
  * <ol>
- *   <li>Knowles, J.D. and D. W. Corne (1999). The Pareto Archived Evolution
- *       Strategy: A New Baseline Algorithm for Pareto Multiobjective
- *       Optimisation. In Proceedings of the 1999 Congress on Evolutionary
- *       Computation (CEC'99), pp. 98-105.
+ *   <li>Knowles, J.D. and D. W. Corne (1999). The Pareto Archived Evolution Strategy: A New Baseline Algorithm for
+ *       Pareto Multiobjective Optimisation. In Proceedings of the 1999 Congress on Evolutionary Computation (CEC'99),
+ *       pp. 98-105.
  * </ol>
  */
 public class PAES extends AbstractEvolutionaryAlgorithm {
@@ -98,9 +97,8 @@ public class PAES extends AbstractEvolutionaryAlgorithm {
 	}
 	
 	/**
-	 * The test procedure to determine which solution, the parent or offspring,
-	 * moves on to the next generation.  The solution in a lower density region
-	 * in the archive is returned.
+	 * The test procedure to determine which solution, the parent or offspring, moves on to the next generation.  The
+	 * solution in a lower density region in the archive is returned.
 	 * 
 	 * @param parent the parent solution
 	 * @param offspring the offspring solution

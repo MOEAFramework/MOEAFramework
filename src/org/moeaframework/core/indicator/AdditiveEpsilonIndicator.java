@@ -22,15 +22,13 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 
 /**
- * Additive &epsilon;-indicator for minimization problems. Finds the minimum
- * &epsilon; value for the approximation set to &epsilon;-dominate the reference
- * set.
+ * Additive &epsilon;-indicator for minimization problems. Finds the minimum &epsilon; value for the approximation
+ * set to &epsilon;-dominate the reference set.
  */
 public class AdditiveEpsilonIndicator extends NormalizedIndicator {
 
 	/**
-	 * Constructs an additive &epsilon;-indicator evaluator for the specified 
-	 * problem and corresponding reference set.
+	 * Constructs an additive &epsilon;-indicator evaluator for the specified problem and corresponding reference set.
 	 * 
 	 * @param problem the problem
 	 * @param referenceSet the reference set for the problem
@@ -45,16 +43,15 @@ public class AdditiveEpsilonIndicator extends NormalizedIndicator {
 	}
 
 	/**
-	 * Computes the additive &epsilon;-indicator for the specified problem given
-	 * an approximation set and reference set.  While not necessary, the
-	 * approximation and reference sets should be normalized.  Returns
+	 * Computes the additive &epsilon;-indicator for the specified problem given an approximation set and reference
+	 * set.  While not necessary, the approximation and reference sets should be normalized.  Returns
 	 * {@code Double.POSITIVE_INFINITY} if the approximation set is empty.
 	 * 
 	 * @param problem the problem
 	 * @param approximationSet an approximation set for the problem
 	 * @param referenceSet the reference set for the problem
-	 * @return the additive &epsilon;-indicator value for the specified problem
-	 *         given an approximation set and reference set
+	 * @return the additive &epsilon;-indicator value for the specified problem given an approximation set and
+	 *         reference set
 	 */
 	static double evaluate(Problem problem, NondominatedPopulation approximationSet,
 			NondominatedPopulation referenceSet) {

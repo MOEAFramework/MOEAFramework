@@ -56,8 +56,7 @@ public class OrdinalStatisticalTestTest {
 	}
 
 	/**
-	 * Tests if the {@link OrdinalStatisticalTest#update} procedure correctly
-	 * ranks observations.
+	 * Tests if the {@link OrdinalStatisticalTest#update} procedure correctly ranks observations.
 	 */
 	@Test
 	public void testUpdate() {
@@ -83,8 +82,7 @@ public class OrdinalStatisticalTestTest {
 	}
 
 	/**
-	 * Asserts that any observations in the shared test with the specified value
-	 * also have the specified rank.
+	 * Asserts that any observations in the shared test with the specified value also have the specified rank.
 	 * 
 	 * @param value the value of the observation
 	 * @param rank the asserted rank of the observation
@@ -98,8 +96,7 @@ public class OrdinalStatisticalTestTest {
 	}
 
 	/**
-	 * Tests if the {@link OrdinalStatisticalTest#add} method correctly throws
-	 * an exception for invalid groups.
+	 * Tests if the {@link OrdinalStatisticalTest#add} method correctly throws an exception for invalid groups.
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testGroupException1() {
@@ -107,8 +104,7 @@ public class OrdinalStatisticalTestTest {
 	}
 
 	/**
-	 * Tests if the {@link OrdinalStatisticalTest#add} method correctly throws
-	 * an exception for invalid groups.
+	 * Tests if the {@link OrdinalStatisticalTest#add} method correctly throws an exception for invalid groups.
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testGroupException2() {

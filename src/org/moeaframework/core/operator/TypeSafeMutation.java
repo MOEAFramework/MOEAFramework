@@ -24,8 +24,8 @@ import org.moeaframework.core.configuration.Property;
 import org.moeaframework.core.configuration.Validate;
 
 /**
- * An abstract mutation class that validates the types of each variable before
- * applying the mutation operation with a given probability.
+ * An abstract mutation class that validates the types of each variable before applying the mutation operation with
+ * a given probability.
  * 
  * @param <T> the type of decision variable this operator supports
  */

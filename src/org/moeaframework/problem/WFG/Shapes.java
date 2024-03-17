@@ -23,12 +23,10 @@ import java.util.Arrays;
  * 
  * Copyright 2005 The Walking Fish Group (WFG).
  *
- * This material is provided "as is", with no warranty expressed or implied.
- * Any use is at your own risk. Permission to use or copy this software for
- * any purpose is hereby granted without fee, provided this notice is
- * retained on all copies. Permission to modify the code and to distribute
- * modified code is granted, provided a notice that the code was modified is
- * included with the above copyright notice.
+ * This material is provided "as is", with no warranty expressed or implied.  Any use is at your own risk. Permission
+ * to use or copy this software for any purpose is hereby granted without fee, provided this notice is retained on all
+ * copies. Permission to modify the code and to distribute modified code is granted, provided a notice that the code
+ * was modified is included with the above copyright notice.
  *
  * http://www.wfg.csse.uwa.edu.au/
  */
@@ -42,8 +40,8 @@ class Shapes {
 	}
 
 	/**
-	 * Construct a vector of length M-1, with values "1,0,0,..." if "degenerate"
-	 * is true, otherwise with values "1,1,1,..." if "degenerate" is false.
+	 * Construct a vector of length M-1, with values "1,0,0,..." if "degenerate" is true, otherwise with values
+	 * "1,1,1,..." if "degenerate" is false.
 	 */
 	private static int[] WFG_create_A(int M, boolean degenerate) {
 		assert M >= 2;
@@ -60,9 +58,8 @@ class Shapes {
 	}
 
 	/**
-	 * Given the vector "x" (the last value of which is the sole distance
-	 * parameter), and the shape function results in "h", calculate the scaled
-	 * fitness values for a WFG problem.
+	 * Given the vector "x" (the last value of which is the sole distance parameter), and the shape function results in
+	 * "h", calculate the scaled fitness values for a WFG problem.
 	 */
 	private static double[] WFG_calculate_f(double[] x, double[] h) {
 		assert Misc.vector_in_01(x);

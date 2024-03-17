@@ -29,11 +29,9 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
 
 /**
- * Provides test methods for checking if the offspring form clusters around each
- * parent.
+ * Provides test methods for checking if the offspring form clusters around each parent.
  */
-public abstract class ParentCentricVariationTest extends
-		DistributionVariationTest {
+public abstract class ParentCentricVariationTest extends DistributionVariationTest {
 
 	@Override
 	protected void check(Solution[] parents, Solution[] offspring) {

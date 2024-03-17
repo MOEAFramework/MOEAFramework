@@ -77,8 +77,7 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 	private static Localization localization = Localization.getLocalization(DiagnosticTool.class);
 
 	/**
-	 * The controller which stores the underlying data model and notifies this
-	 * diagnostic tool of any changes.
+	 * The controller which stores the underlying data model and notifies this diagnostic tool of any changes.
 	 */
 	private Controller controller;
 
@@ -108,8 +107,7 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 	private JTable resultTable;
 	
 	/**
-	 * The table model that allows {@code resultListModel} to be displayed in a
-	 * table.
+	 * The table model that allows {@code resultListModel} to be displayed in a table.
 	 */
 	private AbstractTableModel resultTableModel;
 	
@@ -139,8 +137,7 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 	private JSpinner numberOfSeeds;
 	
 	/**
-	 * The control for setting the number of evaluations used by evaluation
-	 * jobs.
+	 * The control for setting the number of evaluations used by evaluation jobs.
 	 */
 	private JSpinner numberOfEvaluations;
 	
@@ -196,8 +193,7 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 	}
 	
 	/**
-	 * Initializes this window.  This method is invoked by the constructor, and
-	 * should not be invoked again.
+	 * Initializes this window.  This method is invoked by the constructor, and should not be invoked again.
 	 */
 	protected void initialize() {
 		controller = new Controller(this);
@@ -290,8 +286,8 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 					
 					JPopupMenu popupMenu = new JPopupMenu();
 					
-					popupMenu.add(new JMenuItem(
-							actionFactory.getShowApproximationSetAction(resultListModel.getElementAt(index))));
+					popupMenu.add(new JMenuItem(actionFactory.getShowApproximationSetAction(
+							resultListModel.getElementAt(index))));
 					
 					popupMenu.show(resultTable, e.getX(), e.getY());
 				}
@@ -345,8 +341,7 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 	}
 	
 	/**
-	 * Lays out the menu on this window.  This method is invoked by the
-	 * constructor, and should not be invoked again.
+	 * Lays out the menu on this window.  This method is invoked by the constructor, and should not be invoked again.
 	 */
 	protected void layoutMenu() {
 		JMenu file = new JMenu(localization.getString("menu.file"));
@@ -404,8 +399,8 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 	}
 	
 	/**
-	 * Lays out the components on this window.  This method is invoked by the
-	 * constructor, and should not be invoked again.
+	 * Lays out the components on this window.  This method is invoked by the constructor, and should not be invoked
+	 * again.
 	 */
 	protected void layoutComponents() {
 		GridBagConstraints label = new GridBagConstraints();
@@ -483,8 +478,8 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 	}
 	
 	/**
-	 * Updates the models underlying the GUI components as a result of model
-	 * changes.  This method must only be invoked on the event dispatch thread.
+	 * Updates the models underlying the GUI components as a result of model changes.  This method must only be invoked
+	 * on the event dispatch thread.
 	 */
 	protected void updateModel() {
 		//determine selection mode
@@ -542,9 +537,8 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 	}
 	
 	/**
-	 * Returns the controller used by this diagnostic tool instance.  This
-	 * controller provides access to the underlying data model displayed in
-	 * this window.
+	 * Returns the controller used by this diagnostic tool instance.  This controller provides access to the underlying
+	 * data model displayed in this window.
 	 * 
 	 * @return the controller used by this diagnostic tool instance
 	 */
@@ -553,9 +547,8 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 	}
 	
 	/**
-	 * Returns the paint helper used by this diagnostic tool instance.  This
-	 * paint helper contains the mapping from series to paints displayed in this
-	 * window.
+	 * Returns the paint helper used by this diagnostic tool instance.  This paint helper contains the mapping from
+	 * series to paints displayed in this window.
 	 * 
 	 * @return the paint helper used by this diagnostic tool instance
 	 */
@@ -573,9 +566,8 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 	}
 	
 	/**
-	 * Invoked when the underlying data model is cleared, resulting in the GUI
-	 * removing and resetting all components.  This method must only be invoked
-	 * on the event dispatch thread.
+	 * Invoked when the underlying data model is cleared, resulting in the GUI removing and resetting all components.
+	 * This method must only be invoked on the event dispatch thread.
 	 */
 	protected void clear() {
 		resultListModel.clear();
@@ -591,8 +583,8 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 	}
 	
 	/**
-	 * Updates the chart layout when the user changes which metrics to plot.
-	 * This method must only be invoked on the event dispatch thread.
+	 * Updates the chart layout when the user changes which metrics to plot.  This method must only be invoked on the
+	 * event dispatch thread.
 	 */
 	protected void updateChartLayout() {
 		chartContainer.removeAll();

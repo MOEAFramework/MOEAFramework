@@ -22,10 +22,8 @@ import org.moeaframework.core.Population;
 import org.moeaframework.parallel.util.ImmigrationQueue;
 
 /**
- * Represents an island in an island model for parallelization.
- * Each island is essentially a separate instance of an
- * optimization algorithm.  Migration events can periodically
- * copy or move solutions between islands.
+ * Represents an island in an island model for parallelization.  Each island is essentially a separate instance of an
+ * optimization algorithm.  Migration events can periodically copy or move solutions between islands.
  */
 public class Island {
 	
@@ -77,9 +75,8 @@ public class Island {
 	}
 	
 	/**
-	 * Returns the immigration queue for this island.  Neighboring islands should
-	 * add solutions into the immigration queue, which will then get injected into the
-	 * population at an opportune time.
+	 * Returns the immigration queue for this island.  Neighboring islands should add solutions into the immigration
+	 * queue, which will then get injected into the population at an opportune time.
 	 * 
 	 * @return the immigration queue
 	 */

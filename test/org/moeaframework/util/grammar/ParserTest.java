@@ -30,8 +30,6 @@ public class ParserTest {
 
 	/**
 	 * Tests if the parser correctly handles an empty file, or a file filled with whitespace.
-	 * 
-	 * @throws IOException should not occur
 	 */
 	@Test
 	public void testEmptyRule() throws IOException {
@@ -47,8 +45,6 @@ public class ParserTest {
 
 	/**
 	 * Tests if the parser correctly ignores C and C++ style comments.
-	 * 
-	 * @throws IOException should not occur
 	 */
 	@Test
 	public void testComments() throws IOException {
@@ -77,8 +73,6 @@ public class ParserTest {
 
 	/**
 	 * Tests if the parser correctly identifies the rule separator in its various forms.
-	 * 
-	 * @throws IOException should not occur
 	 */
 	@Test
 	public void testRuleSeparator() throws IOException {
@@ -101,8 +95,6 @@ public class ParserTest {
 
 	/**
 	 * Tests the parser on a simple example.
-	 * 
-	 * @throws IOException should not occur
 	 */
 	@Test
 	public void testSimpleExample() throws IOException {
@@ -141,8 +133,6 @@ public class ParserTest {
 
 	/**
 	 * Tests if the parser throws an exception if the rule symbol is missing.
-	 * 
-	 * @throws GrammarException the expected outcome
 	 */
 	@Test(expected = GrammarException.class)
 	public void testMissingRuleSymbolException() throws IOException {
@@ -151,8 +141,6 @@ public class ParserTest {
 
 	/**
 	 * Tests if the parser throws an exception if the rule symbol is not surrounded by angle brackets.
-	 * 
-	 * @throws GrammarException the expected outcome
 	 */
 	@Test(expected = GrammarException.class)
 	public void testInvalidRuleSymbolException1() throws IOException {
@@ -161,8 +149,6 @@ public class ParserTest {
 
 	/**
 	 * Tests if the parser throws an exception if the rule symbol is not surrounded by angle brackets.
-	 * 
-	 * @throws GrammarException the expected outcome
 	 */
 	@Test(expected = GrammarException.class)
 	public void testInvalidRuleSymbolException2() throws IOException {
@@ -171,8 +157,6 @@ public class ParserTest {
 
 	/**
 	 * Tests if the parser throws an exception if the production is empty.
-	 * 
-	 * @throws GrammarException the expected outcome
 	 */
 	@Test(expected = GrammarException.class)
 	public void testEmptyProductionException1() throws IOException {
@@ -181,8 +165,6 @@ public class ParserTest {
 
 	/**
 	 * Tests if the parser throws an exception if the production is incomplete.
-	 * 
-	 * @throws GrammarException the expected outcome
 	 */
 	@Test(expected = GrammarException.class)
 	public void testEmptyProductionException2() throws IOException {
@@ -191,8 +173,6 @@ public class ParserTest {
 
 	/**
 	 * Tests if the parser throws an exception if the production is missing a rule.
-	 * 
-	 * @throws GrammarException the expected outcome
 	 */
 	@Test(expected = GrammarException.class)
 	public void testEmptyProductionException3() throws IOException {
@@ -201,8 +181,6 @@ public class ParserTest {
 
 	/**
 	 * Tests if the parser throws an exception if the rule symbol is the empty string.
-	 * 
-	 * @throws GrammarException the expected outcome
 	 */
 	@Test(expected = GrammarException.class)
 	public void testEmptySymbolException1() throws IOException {
@@ -211,8 +189,6 @@ public class ParserTest {
 
 	/**
 	 * Tests if the parser throws an exception if a production symbol is the empty string.
-	 * 
-	 * @throws GrammarException the expected outcome
 	 */
 	@Test(expected = GrammarException.class)
 	public void testEmptySymbolException2() throws IOException {
@@ -221,8 +197,6 @@ public class ParserTest {
 
 	/**
 	 * Tests if the parser correctly handles escaped characters.
-	 * 
-	 * @throws IOException should not occur
 	 */
 	@Test
 	public void testEscapedCharacters() throws IOException {
@@ -245,8 +219,6 @@ public class ParserTest {
 
 	/**
 	 * Tests if the parser correctly handles single and double quotes.
-	 * 
-	 * @throws IOException should not occur
 	 */
 	@Test
 	public void testQuotes() throws IOException {
@@ -267,8 +239,6 @@ public class ParserTest {
 
 	/**
 	 * Tests if the parser correctly handles integer terminals.
-	 * 
-	 * @throws IOException should not occur
 	 */
 	@Test
 	public void testIntegers() throws IOException {
@@ -287,8 +257,6 @@ public class ParserTest {
 
 	/**
 	 * Tests if the parser correctly handles decimal terminals.
-	 * 
-	 * @throws IOException should not occur
 	 */
 	@Test
 	public void testDecimals() throws IOException {

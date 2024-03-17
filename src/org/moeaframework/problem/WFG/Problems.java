@@ -21,12 +21,10 @@ package org.moeaframework.problem.WFG;
  * 
  * Copyright 2005 The Walking Fish Group (WFG).
  *
- * This material is provided "as is", with no warranty expressed or implied.
- * Any use is at your own risk. Permission to use or copy this software for
- * any purpose is hereby granted without fee, provided this notice is
- * retained on all copies. Permission to modify the code and to distribute
- * modified code is granted, provided a notice that the code was modified is
- * included with the above copyright notice.
+ * This material is provided "as is", with no warranty expressed or implied.  Any use is at your own risk. Permission
+ * to use or copy this software for any purpose is hereby granted without fee, provided this notice is retained on all
+ * copies. Permission to modify the code and to distribute modified code is granted, provided a notice that the code
+ * was modified is included with the above copyright notice.
  *
  * http://www.wfg.csse.uwa.edu.au/
  */
@@ -40,16 +38,13 @@ class Problems {
 	}
 
 	/**
-	 * Returns {@code true} if the supplied arguments are valid; {@code false}
-	 * otherwise. Specifically, returns {@code true} if {@code (k >= 1) && (k <
-	 * z.length)}, {@code M >= 2} and {@code k % (M-1) == 0}.
+	 * Returns {@code true} if the supplied arguments are valid; {@code false} otherwise. Specifically, returns
+	 * {@code true} if {@code (k >= 1) && (k < z.length)}, {@code M >= 2} and {@code k % (M-1) == 0}.
 	 * 
 	 * @param z the decision variables
-	 * @param k the number of position-related parameters (implies the number of
-	 *        distance-related parameters)
+	 * @param k the number of position-related parameters (implies the number of distance-related parameters)
 	 * @param M the number of objectives
-	 * @return {@code true} if the supplied arguments are valid; {@code false}
-	 *         otherwise
+	 * @return {@code true} if the supplied arguments are valid; {@code false} otherwise
 	 */
 	private static boolean ArgsOk(double[] z, int k, int M) {
 		int n = z.length;
@@ -79,16 +74,13 @@ class Problems {
 	}
 
 	/**
-	 * Implementation of the WFG1 test problem, evaluating the decision
-	 * variables for an instance with {@code k} position-related variables,
-	 * {@code z.length-k} distance-related parameters, and {@code M} objectives.
+	 * Implementation of the WFG1 test problem, evaluating the decision variables for an instance with {@code k}
+	 * position-related variables, {@code z.length-k} distance-related parameters, and {@code M} objectives.
 	 * 
 	 * @param z the decision variables being evaluated
-	 * @param k the number of position-related variables (implies the number of
-	 *        distance-related variables)
+	 * @param k the number of position-related variables (implies the number of distance-related variables)
 	 * @param M the number of objectives
-	 * @return the objectives for the WFG1 instance with the specified decision
-	 *         variables and parameters
+	 * @return the objectives for the WFG1 instance with the specified decision variables and parameters
 	 */
 	public static double[] WFG1(double[] z, int k, int M) {
 		assert ArgsOk(z, k, M);
@@ -104,16 +96,13 @@ class Problems {
 	}
 
 	/**
-	 * Implementation of the WFG2 test problem, evaluating the decision
-	 * variables for an instance with {@code k} position-related variables,
-	 * {@code z.length-k} distance-related parameters, and {@code M} objectives.
+	 * Implementation of the WFG2 test problem, evaluating the decision variables for an instance with {@code k}
+	 * position-related variables, {@code z.length-k} distance-related parameters, and {@code M} objectives.
 	 * 
 	 * @param z the decision variables being evaluated
-	 * @param k the number of position-related variables (implies the number of
-	 *        distance-related variables)
+	 * @param k the number of position-related variables (implies the number of distance-related variables)
 	 * @param M the number of objectives
-	 * @return the objectives for the WFG2 instance with the specified decision
-	 *         variables and parameters
+	 * @return the objectives for the WFG2 instance with the specified decision variables and parameters
 	 */
 	public static double[] WFG2(double[] z, int k, int M) {
 		assert ArgsOk(z, k, M);
@@ -129,16 +118,13 @@ class Problems {
 	}
 
 	/**
-	 * Implementation of the WFG3 test problem, evaluating the decision
-	 * variables for an instance with {@code k} position-related variables,
-	 * {@code z.length-k} distance-related parameters, and {@code M} objectives.
+	 * Implementation of the WFG3 test problem, evaluating the decision variables for an instance with {@code k}
+	 * position-related variables, {@code z.length-k} distance-related parameters, and {@code M} objectives.
 	 * 
 	 * @param z the decision variables being evaluated
-	 * @param k the number of position-related variables (implies the number of
-	 *        distance-related variables)
+	 * @param k the number of position-related variables (implies the number of distance-related variables)
 	 * @param M the number of objectives
-	 * @return the objectives for the WFG3 instance with the specified decision
-	 *         variables and parameters
+	 * @return the objectives for the WFG3 instance with the specified decision variables and parameters
 	 */
 	public static double[] WFG3(double[] z, int k, int M) {
 		assert ArgsOk(z, k, M);
@@ -154,16 +140,13 @@ class Problems {
 	}
 
 	/**
-	 * Implementation of the WFG4 test problem, evaluating the decision
-	 * variables for an instance with {@code k} position-related variables,
-	 * {@code z.length-k} distance-related parameters, and {@code M} objectives.
+	 * Implementation of the WFG4 test problem, evaluating the decision variables for an instance with {@code k}
+	 * position-related variables, {@code z.length-k} distance-related parameters, and {@code M} objectives.
 	 * 
 	 * @param z the decision variables being evaluated
-	 * @param k the number of position-related variables (implies the number of
-	 *        distance-related variables)
+	 * @param k the number of position-related variables (implies the number of distance-related variables)
 	 * @param M the number of objectives
-	 * @return the objectives for the WFG4 instance with the specified decision
-	 *         variables and parameters
+	 * @return the objectives for the WFG4 instance with the specified decision variables and parameters
 	 */
 	public static double[] WFG4(double[] z, int k, int M) {
 		assert ArgsOk(z, k, M);
@@ -177,16 +160,13 @@ class Problems {
 	}
 
 	/**
-	 * Implementation of the WFG5 test problem, evaluating the decision
-	 * variables for an instance with {@code k} position-related variables,
-	 * {@code z.length-k} distance-related parameters, and {@code M} objectives.
+	 * Implementation of the WFG5 test problem, evaluating the decisio variables for an instance with {@code k}
+	 * position-related variables, {@code z.length-k} distance-related parameters, and {@code M} objectives.
 	 * 
 	 * @param z the decision variables being evaluated
-	 * @param k the number of position-related variables (implies the number of
-	 *        distance-related variables)
+	 * @param k the number of position-related variables (implies the number of distance-related variables)
 	 * @param M the number of objectives
-	 * @return the objectives for the WFG5 instance with the specified decision
-	 *         variables and parameters
+	 * @return the objectives for the WFG5 instance with the specified decision variables and parameters
 	 */
 	public static double[] WFG5(double[] z, int k, int M) {
 		assert ArgsOk(z, k, M);
@@ -200,16 +180,13 @@ class Problems {
 	}
 
 	/**
-	 * Implementation of the WFG6 test problem, evaluating the decision
-	 * variables for an instance with {@code k} position-related variables,
-	 * {@code z.length-k} distance-related parameters, and {@code M} objectives.
+	 * Implementation of the WFG6 test problem, evaluating the decision variables for an instance with {@code k}
+	 * position-related variables, {@code z.length-k} distance-related parameters, and {@code M} objectives.
 	 * 
 	 * @param z the decision variables being evaluated
-	 * @param k the number of position-related variables (implies the number of
-	 *        distance-related variables)
+	 * @param k the number of position-related variables (implies the number of distance-related variables)
 	 * @param M the number of objectives
-	 * @return the objectives for the WFG6 instance with the specified decision
-	 *         variables and parameters
+	 * @return the objectives for the WFG6 instance with the specified decision variables and parameters
 	 */
 	public static double[] WFG6(double[] z, int k, int M) {
 		assert ArgsOk(z, k, M);
@@ -223,16 +200,13 @@ class Problems {
 	}
 
 	/**
-	 * Implementation of the WFG7 test problem, evaluating the decision
-	 * variables for an instance with {@code k} position-related variables,
-	 * {@code z.length-k} distance-related parameters, and {@code M} objectives.
+	 * Implementation of the WFG7 test problem, evaluating the decision variables for an instance with {@code k}
+	 * position-related variables, {@code z.length-k} distance-related parameters, and {@code M} objectives.
 	 * 
 	 * @param z the decision variables being evaluated
-	 * @param k the number of position-related variables (implies the number of
-	 *        distance-related variables)
+	 * @param k the number of position-related variables (implies the number of distance-related variables)
 	 * @param M the number of objectives
-	 * @return the objectives for the WFG7 instance with the specified decision
-	 *         variables and parameters
+	 * @return the objectives for the WFG7 instance with the specified decision variables and parameters
 	 */
 	public static double[] WFG7(double[] z, int k, int M) {
 		assert ArgsOk(z, k, M);
@@ -247,16 +221,13 @@ class Problems {
 	}
 
 	/**
-	 * Implementation of the WFG8 test problem, evaluating the decision
-	 * variables for an instance with {@code k} position-related variables,
-	 * {@code z.length-k} distance-related parameters, and {@code M} objectives.
+	 * Implementation of the WFG8 test problem, evaluating the decision variables for an instance with {@code k}
+	 * position-related variables, {@code z.length-k} distance-related parameters, and {@code M} objectives.
 	 * 
 	 * @param z the decision variables being evaluated
-	 * @param k the number of position-related variables (implies the number of
-	 *        distance-related variables)
+	 * @param k the number of position-related variables (implies the number of distance-related variables)
 	 * @param M the number of objectives
-	 * @return the objectives for the WFG8 instance with the specified decision
-	 *         variables and parameters
+	 * @return the objectives for the WFG8 instance with the specified decision variables and parameters
 	 */
 	public static double[] WFG8(double[] z, int k, int M) {
 		assert ArgsOk(z, k, M);
@@ -271,16 +242,13 @@ class Problems {
 	}
 
 	/**
-	 * Implementation of the WFG9 test problem, evaluating the decision
-	 * variables for an instance with {@code k} position-related variables,
-	 * {@code z.length-k} distance-related parameters, and {@code M} objectives.
+	 * Implementation of the WFG9 test problem, evaluating the decision variables for an instance with {@code k}
+	 * position-related variables, {@code z.length-k} distance-related parameters, and {@code M} objectives.
 	 * 
 	 * @param z the decision variables being evaluated
-	 * @param k the number of position-related variables (implies the number of
-	 *        distance-related variables)
+	 * @param k the number of position-related variables (implies the number of distance-related variables)
 	 * @param M the number of objectives
-	 * @return the objectives for the WFG9 instance with the specified decision
-	 *         variables and parameters
+	 * @return the objectives for the WFG9 instance with the specified decision variables and parameters
 	 */
 	public static double[] WFG9(double[] z, int k, int M) {
 		assert ArgsOk(z, k, M);
@@ -295,16 +263,13 @@ class Problems {
 	}
 
 	/**
-	 * Implementation of the I1 test problem, evaluating the decision variables
-	 * for an instance with {@code k} position-related variables,
-	 * {@code z.length-k} distance-related parameters, and {@code M} objectives.
+	 * Implementation of the I1 test problem, evaluating the decision variables for an instance with {@code k}
+	 * position-related variables, {@code z.length-k} distance-related parameters, and {@code M} objectives.
 	 * 
 	 * @param z the decision variables being evaluated
-	 * @param k the number of position-related variables (implies the number of
-	 *        distance-related variables)
+	 * @param k the number of position-related variables (implies the number of distance-related variables)
 	 * @param M the number of objectives
-	 * @return the objectives for the I1 instance with the specified decision
-	 *         variables and parameters
+	 * @return the objectives for the I1 instance with the specified decision variables and parameters
 	 */
 	public static double[] I1(double[] z, int k, int M) {
 		assert ArgsOk(z, k, M);
@@ -318,16 +283,13 @@ class Problems {
 	}
 
 	/**
-	 * Implementation of the I2 test problem, evaluating the decision variables
-	 * for an instance with {@code k} position-related variables,
-	 * {@code z.length-k} distance-related parameters, and {@code M} objectives.
+	 * Implementation of the I2 test problem, evaluating the decision variables for an instance with {@code k}
+	 * position-related variables, {@code z.length-k} distance-related parameters, and {@code M} objectives.
 	 * 
 	 * @param z the decision variables being evaluated
-	 * @param k the number of position-related variables (implies the number of
-	 *        distance-related variables)
+	 * @param k the number of position-related variables (implies the number of distance-related variables)
 	 * @param M the number of objectives
-	 * @return the objectives for the I2 instance with the specified decision
-	 *         variables and parameters
+	 * @return the objectives for the I2 instance with the specified decision variables and parameters
 	 */
 	public static double[] I2(double[] z, int k, int M) {
 		assert ArgsOk(z, k, M);
@@ -342,16 +304,13 @@ class Problems {
 	}
 
 	/**
-	 * Implementation of the I3 test problem, evaluating the decision variables
-	 * for an instance with {@code k} position-related variables,
-	 * {@code z.length-k} distance-related parameters, and {@code M} objectives.
+	 * Implementation of the I3 test problem, evaluating the decision variables for an instance with {@code k}
+	 * position-related variables, {@code z.length-k} distance-related parameters, and {@code M} objectives.
 	 * 
 	 * @param z the decision variables being evaluated
-	 * @param k the number of position-related variables (implies the number of
-	 *        distance-related variables)
+	 * @param k the number of position-related variables (implies the number of distance-related variables)
 	 * @param M the number of objectives
-	 * @return the objectives for the I3 instance with the specified decision
-	 *         variables and parameters
+	 * @return the objectives for the I3 instance with the specified decision variables and parameters
 	 */
 	public static double[] I3(double[] z, int k, int M) {
 		assert ArgsOk(z, k, M);
@@ -366,16 +325,13 @@ class Problems {
 	}
 
 	/**
-	 * Implementation of the I4 test problem, evaluating the decision variables
-	 * for an instance with {@code k} position-related variables,
-	 * {@code z.length-k} distance-related parameters, and {@code M} objectives.
+	 * Implementation of the I4 test problem, evaluating the decision variables for an instance with {@code k}
+	 * position-related variables, {@code z.length-k} distance-related parameters, and {@code M} objectives.
 	 * 
 	 * @param z the decision variables being evaluated
-	 * @param k the number of position-related variables (implies the number of
-	 *        distance-related variables)
+	 * @param k the number of position-related variables (implies the number of distance-related variables)
 	 * @param M the number of objectives
-	 * @return the objectives for the I4 instance with the specified decision
-	 *         variables and parameters
+	 * @return the objectives for the I4 instance with the specified decision variables and parameters
 	 */
 	public static double[] I4(double[] z, int k, int M) {
 		assert ArgsOk(z, k, M);
@@ -389,16 +345,13 @@ class Problems {
 	}
 
 	/**
-	 * Implementation of the I5 test problem, evaluating the decision variables
-	 * for an instance with {@code k} position-related variables,
-	 * {@code z.length-k} distance-related parameters, and {@code M} objectives.
+	 * Implementation of the I5 test problem, evaluating the decision variables for an instance with {@code k}
+	 * position-related variables, {@code z.length-k} distance-related parameters, and {@code M} objectives.
 	 * 
 	 * @param z the decision variables being evaluated
-	 * @param k the number of position-related variables (implies the number of
-	 *        distance-related variables)
+	 * @param k the number of position-related variables (implies the number of distance-related variables)
 	 * @param M the number of objectives
-	 * @return the objectives for the I5 instance with the specified decision
-	 *         variables and parameters
+	 * @return the objectives for the I5 instance with the specified decision variables and parameters
 	 */
 	public static double[] I5(double[] z, int k, int M) {
 		assert ArgsOk(z, k, M);

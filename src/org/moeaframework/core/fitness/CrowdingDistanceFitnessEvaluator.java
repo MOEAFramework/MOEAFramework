@@ -23,8 +23,7 @@ import org.moeaframework.core.Population;
 import org.moeaframework.core.Solution;
 
 /**
- * Assigns fitness values based on the crowding distance from fast
- * non-dominated sorting.
+ * Assigns fitness values based on the crowding distance from fast non-dominated sorting.
  */
 public class CrowdingDistanceFitnessEvaluator implements FitnessEvaluator {
 	
@@ -46,9 +45,8 @@ public class CrowdingDistanceFitnessEvaluator implements FitnessEvaluator {
 	}
 	
 	/**
-	 * Returns a copy of the population.  The fast non-dominated sorting
-	 * routine reorders solutions in the population, so creating a copy allows
-	 * the original population to remain unchanged.  
+	 * Returns a copy of the population.  The fast non-dominated sorting routine reorders solutions in the population,
+	 * so creating a copy allows the original population to remain unchanged.  
 	 * 
 	 * @param population the original population
 	 * @return a copy of the population

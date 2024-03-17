@@ -36,15 +36,13 @@ public class Contribution implements Indicator {
 	private final NondominatedPopulation referenceSet;
 
 	/**
-	 * The &epsilon;-box dominance comparator used to determine if solutions in
-	 * the reference set are covered by solutions in the approximation set; or 
-	 * {@code null} if exact matching is used.
+	 * The &epsilon;-box dominance comparator used to determine if solutions in the reference set are covered by
+	 * solutions in the approximation set; or {@code null} if exact matching is used.
 	 */
 	private final EpsilonBoxDominanceComparator comparator;
 	
 	/**
-	 * Constructs the contribution indicator using the specified reference set.
-	 * Exact matching is used.
+	 * Constructs the contribution indicator using the specified reference set.  Exact matching is used.
 	 * 
 	 * @param referenceSet the reference set
 	 * @throws IllegalArgumentException if the reference set is empty
@@ -54,9 +52,8 @@ public class Contribution implements Indicator {
 	}
 	
 	/**
-	 * Constructs the contribution indicator using the specified reference set
-	 * and &epsilon; value.  Solutions residing in the same &epsilon;-box are
-	 * considered to be equivalent.
+	 * Constructs the contribution indicator using the specified reference set and &epsilon; value.  Solutions
+	 * residing in the same &epsilon;-box are considered to be equivalent.
 	 * 
 	 * @param referenceSet the reference set
 	 * @param epsilon the &epsilon; value
@@ -67,9 +64,8 @@ public class Contribution implements Indicator {
 	}
 	
 	/**
-	 * Constructs the contribution indicator using the specified reference set
-	 * and &epsilon; values.  Solutions residing in the same &epsilon;-box are
-	 * considered to be equivalent.
+	 * Constructs the contribution indicator using the specified reference set and &epsilon; values.  Solutions
+	 * residing in the same &epsilon;-box are considered to be equivalent.
 	 * 
 	 * @param referenceSet the reference set
 	 * @param epsilon the &epsilon; values
@@ -80,16 +76,13 @@ public class Contribution implements Indicator {
 	}
 	
 	/**
-	 * Constructs the contribution indicator using the specified reference set
-	 * and &epsilon;-box dominance comparator.  Solutions residing in the same 
-	 * &epsilon;-box are considered to be equivalent.If the comparator is 
-	 * {@code null}, exact matching is used.
+	 * Constructs the contribution indicator using the specified reference set and &epsilon;-box dominance comparator.
+	 * Solutions residing in the same &epsilon;-box are considered to be equivalent.If the comparator is {@code null},
+	 * exact matching is used.
 	 * 
 	 * @param referenceSet the reference set
-	 * @param comparator the &epsilon;-box dominance comparator used to 
-	 *        determine if solutions in the reference set are covered by 
-	 *        solutions in the approximation set; or {@code null} if exact
-	 *        matching is used
+	 * @param comparator the &epsilon;-box dominance comparator used to determine if solutions in the reference set
+	 *        are covered by solutions in the approximation set; or {@code null} if exact matching is used
 	 * @throws IllegalArgumentException if the reference set is empty
 	 */
 	public Contribution(NondominatedPopulation referenceSet, EpsilonBoxDominanceComparator comparator) {

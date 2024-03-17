@@ -49,8 +49,7 @@ package org.moeaframework.util.tree;
 public class Power extends Node {
 	
 	/**
-	 * Constructs a new node for calculating the power of a base number and
-	 * exponent.
+	 * Constructs a new node for calculating the power of a base number and exponent.
 	 */
 	public Power() {
 		super(Number.class, Number.class, Number.class);

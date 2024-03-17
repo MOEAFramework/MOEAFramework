@@ -57,8 +57,8 @@ import org.moeaframework.util.statistics.KruskalWallisTest;
 import org.moeaframework.util.statistics.MannWhitneyUTest;
 
 /**
- * Performs basic end-of-run analysis.  For example, the following demonstrates
- * its typical use.  First construct and configure the analyzer:
+ * Performs basic end-of-run analysis.  For example, the following demonstrates its typical use.  First construct and
+ * configure the analyzer:
  * <pre>
  *   Analyzer analyzer = new Analyzer()
  *       .withProblem("DTLZ2_2")
@@ -79,115 +79,99 @@ import org.moeaframework.util.statistics.MannWhitneyUTest;
  * <pre>
  *   analyzer.printAnalysis();
  * </pre>
- * The output produced is compatible with the 
- * <a href="http://yaml.org/">YAML</a> format, and thus can be postprocessed
- * easily with any YAML parser.  The results can also be accessed
- * programatically by calling {@link #getAnalysis()}.
+ * The output produced is compatible with the <a href="http://yaml.org/">YAML</a> format, and thus can be postprocessed
+ * easily with any YAML parser.  The results can also be accessed programatically by calling {@link #getAnalysis()}.
  */
 public class Analyzer extends ProblemBuilder implements Displayable {
 	
 	/**
-	 * {@code true} if the hypervolume metric is to be computed; {@code false}
-	 * otherwise.
+	 * {@code true} if the hypervolume metric is to be computed; {@code false} otherwise.
 	 */
 	private boolean includeHypervolume;
 	
 	/**
-	 * {@code true} if the generational distance metric is to be computed; 
-	 * {@code false} otherwise.
+	 * {@code true} if the generational distance metric is to be computed; {@code false} otherwise.
 	 */
 	private boolean includeGenerationalDistance;
 	
 	/**
-	 * {@code true} if the inverted generational distance metric is to be 
-	 * computed; {@code false} otherwise.
+	 * {@code true} if the inverted generational distance metric is to be computed; {@code false} otherwise.
 	 */
 	private boolean includeInvertedGenerationalDistance;
 	
 	/**
-	 * {@code true} if the additive &epsilon;-indicator metric is to be 
-	 * computed; {@code false} otherwise.
+	 * {@code true} if the additive &epsilon;-indicator metric is to be computed; {@code false} otherwise.
 	 */
 	private boolean includeAdditiveEpsilonIndicator;
 	
 	/**
-	 * {@code true} if the spacing metric is to be computed; {@code false}
-	 * otherwise.
+	 * {@code true} if the spacing metric is to be computed; {@code false} otherwise.
 	 */
 	private boolean includeSpacing;
 	
 	/**
-	 * {@code true} if the maximum Pareto front error metric is to be 
-	 * computed; {@code false} otherwise.
+	 * {@code true} if the maximum Pareto front error metric is to be computed; {@code false} otherwise.
 	 */
 	private boolean includeMaximumParetoFrontError;
 	
 	/**
-	 * {@code true} if the contribution of each approximation set to the
-	 * reference set is to be computed; {@code false} otherwise.
+	 * {@code true} if the contribution of each approximation set to the reference set is to be computed;
+	 * {@code false} otherwise.
 	 */
 	private boolean includeContribution;
 	
 	/**
-	 * {@code true} if the R1 indicator is to be computed; {@code false}
-	 * otherwise.
+	 * {@code true} if the R1 indicator is to be computed; {@code false} otherwise.
 	 */
 	private boolean includeR1;
 	
 	/**
-	 * {@code true} if the R2 indicator is to be computed; {@code false}
-	 * otherwise.
+	 * {@code true} if the R2 indicator is to be computed; {@code false} otherwise.
 	 */
 	private boolean includeR2;
 	
 	/**
-	 * {@code true} if the R3 indicator is to be computed; {@code false}
-	 * otherwise.
+	 * {@code true} if the R3 indicator is to be computed; {@code false} otherwise.
 	 */
 	private boolean includeR3;
 	
 	/**
-	 * {@code true} if the individual values for each seed are shown;
-	 * {@code false} otherwise.
+	 * {@code true} if the individual values for each seed are shown; {@code false} otherwise.
 	 */
 	private boolean showIndividualValues;
 	
 	/**
-	 * {@code true} if the metric values for the aggregate approximation set 
-	 * (across all seeds) is to be calculated; {@code false} otherwise.
+	 * {@code true} if the metric values for the aggregate approximation set (across all seeds) is to be calculated;
+	 * {@code false} otherwise.
 	 */
 	private boolean showAggregate;
 	
 	/**
-	 * {@code true} if the statistical significance of all metrics is to be
-	 * calculated; {@code false} otherwise.  If {@code true}, it is necessary
-	 * to record multiple seeds for each entry.
+	 * {@code true} if the statistical significance of all metrics is to be calculated; {@code false} otherwise.
+	 * If {@code true}, it is necessary to record multiple seeds for each entry.
 	 */
 	private boolean showStatisticalSignificance;
 	
 	/**
-	 * The level of significance used when testing the statistical significance
-	 * of observed differences in the medians.
+	 * The level of significance used when testing the statistical significance of observed differences in the medians.
 	 */
 	private double significanceLevel;
 	
 	/**
-	 * The {@link UnivariateStatistic}s used during the analysis.  If none are
-	 * specified by the user, then {@link Min}, {@link Median} and {@link Max}
-	 * are used.
+	 * The {@link UnivariateStatistic}s used during the analysis.  If none are specified by the user, then {@link Min},
+	 * {@link Median} and {@link Max} are used.
 	 */
 	private List<UnivariateStatistic> statistics;
 	
 	/**
-	 * The ideal point to use when normalizing the data; or {@code null} if the
-	 * ideal point should be derived from the reference set.
+	 * The ideal point to use when normalizing the data; or {@code null} if the ideal point should be derived from the
+	 * reference set.
 	 */
 	private double[] idealPoint;
 	
 	/**
-	 * The reference point to use when computing the hypervolume metric; or
-	 * {@code null} if the reference point should be derived from the reference
-	 * set.
+	 * The reference point to use when computing the hypervolume metric; or {@code null} if the reference point should
+	 * be derived from the reference set.
 	 */
 	private double[] referencePoint;
 	
@@ -403,8 +387,8 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 	}
 	
 	/**
-	 * Enables the output of the metric value of the aggregate approximation
-	 * set, produced by merging all individual seeds.
+	 * Enables the output of the metric value of the aggregate approximation set, produced by merging all individual
+	 * seeds.
 	 * 
 	 * @return a reference to this analyzer
 	 */
@@ -415,8 +399,8 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 	}
 	
 	/**
-	 * Enables the output of statistical significance tests.  If enabled, it is
-	 * necessary to record multiple seeds for each entry.
+	 * Enables the output of statistical significance tests.  If enabled, it is necessary to record multiple seeds
+	 * for each entry.
 	 * 
 	 * @return a reference to this analyzer
 	 */
@@ -427,9 +411,8 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 	}
 	
 	/**
-	 * Specifies the {@link UnivariateStatistic}s calculated during the 
-	 * analysis.  If none are specified by the user, then {@link Min}, 
-	 * {@link Median} and {@link Max} are used.
+	 * Specifies the {@link UnivariateStatistic}s calculated during the analysis.  If none are specified by the user,
+	 * then {@link Min}, {@link Median} and {@link Max} are used.
 	 * 
 	 * @param statistic the statistic to calculate
 	 * @return a reference to this analyzer
@@ -441,9 +424,8 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 	}
 	
 	/**
-	 * Sets the level of significance used when testing the statistical 
-	 * significance of observed differences in the medians.  Commonly used
-	 * levels of significance are {@code 0.05} and {@code 0.01}.
+	 * Sets the level of significance used when testing the statistical significance of observed differences in the
+	 * medians.  Commonly used levels of significance are {@code 0.05} and {@code 0.01}.
 	 * 
 	 * @param significanceLevel the level of significance
 	 * @return a reference to this analyzer
@@ -494,10 +476,9 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 	}
 	
 	/**
-	 * Adds a new sample with the specified name.  If multiple samples are
-	 * added using the same name, each sample is treated as an individual
-	 * seed.  Analyses can be performed on both the individual seeds and
-	 * aggregates of the seeds.
+	 * Adds a new sample with the specified name.  If multiple samples are added using the same name, each sample is
+	 * treated as an individual seed.  Analyses can be performed on both the individual seeds and aggregates of the
+	 * seeds.
 	 * 
 	 * @param name the name of this sample
 	 * @param result the approximation set
@@ -517,8 +498,8 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 	}
 	
 	/**
-	 * Saves all data stored in this analyzer, which can subsequently be read
-	 * using {@link #loadData(File, String, String)} with matching arguments.
+	 * Saves all data stored in this analyzer, which can subsequently be read using
+	 * {@link #loadData(File, String, String)} with matching arguments.
 	 * 
 	 * @param directory the directory in which the data is stored
 	 * @param prefix the prefix for filenames
@@ -537,8 +518,8 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 	}
 	
 	/**
-	 * Loads data into this analyzer, which was previously saved using
-	 * {@link #saveData(File, String, String)} with matching arguments.
+	 * Loads data into this analyzer, which was previously saved using {@link #saveData(File, String, String)} with
+	 * matching arguments.
 	 * 
 	 * @param directory the directory in which the data is stored
 	 * @param prefix the prefix for filenames
@@ -580,9 +561,8 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 	}
 	
 	/**
-	 * Saves the samples to a result file using {@link ResultFileWriter}.  If
-	 * {@code name} is {@code null}, the reference set is saved.  Otherwise,
-	 * the approximation sets for the named entries are saved.
+	 * Saves the samples to a result file using {@link ResultFileWriter}.  If {@code name} is {@code null}, the
+	 * reference set is saved.  Otherwise, the approximation sets for the named entries are saved.
 	 * 
 	 * @param name the name of the samples
 	 * @param resultFile the result file to which the data is saved
@@ -609,8 +589,7 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 	}
 	
 	/**
-	 * Saves the analysis of all data recorded in this analyzer to the
-	 * specified file.
+	 * Saves the analysis of all data recorded in this analyzer to the specified file.
 	 * 
 	 * @param file the file to which the analysis is saved
 	 * @return a reference to this analyzer
@@ -625,8 +604,7 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 	}
 	
 	/**
-	 * Prints the analysis of all data recorded in this analyzer to standard
-	 * output.
+	 * Prints the analysis of all data recorded in this analyzer to standard output.
 	 * 
 	 * @return a reference to this analyzer
 	 */
@@ -651,16 +629,12 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 	}
 	
 	/**
-	 * Returns the reference set used by this analyzer.  The reference set is
-	 * generated as follows:
+	 * Returns the reference set used by this analyzer.  The reference set is generated as follows:
 	 * <ol>
-	 *   <li>If {@link #withReferenceSet(File)} has been set, the contents of 
-	 *       the reference set file are returned;
-	 *   <li>If the problem factory provides a reference set via the
-	 *       {@link ProblemFactory#getReferenceSet(String)} method, this
-	 *       reference set is returned;
-	 *   <li>Otherwise, the reference set is aggregated from all individual 
-	 *       approximation sets.
+	 *   <li>If {@link #withReferenceSet(File)} has been set, the contents of the reference set file are returned;
+	 *   <li>If the problem factory provides a reference set via the {@link ProblemFactory#getReferenceSet(String)}
+	 *       method, this reference set is returned;
+	 *   <li>Otherwise, the reference set is aggregated from all individual approximation sets.
 	 * </ol>
 	 * 
 	 * @return the reference set used by this analyzer
@@ -985,8 +959,7 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 		private final List<IndicatorResult> indicatorResults;
 		
 		/**
-		 * Constructs a new, empty object for storing the results of a single
-		 * algorithm.
+		 * Constructs a new, empty object for storing the results of a single algorithm.
 		 * 
 		 * @param algorithm the algorithm name
 		 */
@@ -1038,8 +1011,7 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 		}
 		
 		/**
-		 * Adds the results for a single indicator.  The name of the indicator
-		 * should be unique.
+		 * Adds the results for a single indicator.  The name of the indicator should be unique.
 		 * 
 		 * @param result the indicator result
 		 */
@@ -1075,20 +1047,18 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 		private final double[] values;
 		
 		/**
-		 * A list of algorithms whose performance with respect to this
-		 * indicator are statistically similar to the current algorithm.
+		 * A list of algorithms whose performance with respect to this indicator are statistically similar to the
+		 * current algorithm.
 		 */
 		private List<String> indifferentAlgorithms;
 		
 		/**
-		 * The indicator value of the aggregate Pareto set, or {@code null}
-		 * if the aggregate value was not computed.
+		 * The indicator value of the aggregate Pareto set, or {@code null} if the aggregate value was not computed.
 		 */
 		private Double aggregateValue;
 		
 		/**
-		 * Constructs a new object for storing the results for a single
-		 * indicator.
+		 * Constructs a new object for storing the results for a single indicator.
 		 * 
 		 * @param indicator the name of the indicator
 		 * @param values the computed indicator values
@@ -1157,10 +1127,9 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 		}
 
 		/**
-		 * Returns a list of algorithms whose performance with respect to this
-		 * indicator are statistically similar to the current algorithm.  This
-		 * list will only be populated if
-		 * {@link Analyzer#showStatisticalSignificance()} is invoked.
+		 * Returns a list of algorithms whose performance with respect to this indicator are statistically similar to
+		 * the current algorithm.  This list will only be populated if {@link Analyzer#showStatisticalSignificance()}
+		 * is invoked.
 		 * 
 		 * @return a list of algorithms with statistically similar performance
 		 */
@@ -1169,8 +1138,7 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 		}
 		
 		/**
-		 * Adds an algorithm with statistically similar performance to the
-		 * current algorithm.
+		 * Adds an algorithm with statistically similar performance to the current algorithm.
 		 * 
 		 * @param algorithm the algorithm with statistically similar performance
 		 */
@@ -1179,12 +1147,10 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 		}
 
 		/**
-		 * Returns the indicator value of the aggregate Pareto set, or
-		 * {@code null} if the aggregate value was not computed.  This value
-		 * is only computed if {@link Analyzer#showAggregate()} is invoked.
+		 * Returns the indicator value of the aggregate Pareto set, or {@code null} if the aggregate value was not
+		 * computed.  This value is only computed if {@link Analyzer#showAggregate()} is invoked.
 		 * 
-		 * @return the aggregate indicator value; or {@code null} if not
-		 *         computed
+		 * @return the aggregate indicator value; or {@code null} if not computed
 		 */
 		public Double getAggregateValue() {
 			return aggregateValue;

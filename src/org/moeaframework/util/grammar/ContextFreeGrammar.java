@@ -24,8 +24,7 @@ import java.util.Set;
 import java.util.Stack;
 
 /**
- * A context-free grammar. The rule at index {@code 0} is the starting rule when
- * building derivation trees.
+ * A context-free grammar. The rule at index {@code 0} is the starting rule when building derivation trees.
  * 
  * @see Rule
  */
@@ -37,8 +36,8 @@ public class ContextFreeGrammar {
 	private final List<Rule> rules;
 
 	/**
-	 * The maximum number of times the builder will wrap around the codon array
-	 * before failing to produce a valid derivation.
+	 * The maximum number of times the builder will wrap around the codon array before failing to produce a valid
+	 * derivation.
 	 */
 	private int wrapLimit;
 
@@ -53,22 +52,22 @@ public class ContextFreeGrammar {
 	}
 
 	/**
-	 * Returns the maximum number of times the builder will wrap around the
-	 * codon array before failing to produce a valid derivation.
+	 * Returns the maximum number of times the builder will wrap around the codon array before failing to produce a
+	 * valid derivation.
 	 * 
-	 * @return the maximum number of times the builder will wrap around the
-	 *         codon array before failing to produce a valid derivation
+	 * @return the maximum number of times the builder will wrap around the codon array before failing to produce a
+	 *         valid derivation
 	 */
 	public int getWrapLimit() {
 		return wrapLimit;
 	}
 
 	/**
-	 * Sets the maximum number of times the builder will wrap around the codon
-	 * array before failing to produce a valid derivation.
+	 * Sets the maximum number of times the builder will wrap around the codon array before failing to produce a valid
+	 * derivation.
 	 * 
-	 * @param wrapLimit the maximum number of times the builder will wrap around
-	 *        the codon array before failing to produce a valid derivation
+	 * @param wrapLimit the maximum number of times the builder will wrap around the codon array before failing to
+	 *        produce a valid derivation
 	 */
 	public void setWrapLimit(int wrapLimit) {
 		this.wrapLimit = wrapLimit;
@@ -106,20 +105,17 @@ public class ContextFreeGrammar {
 	 * 
 	 * @param index the index of the rule to be returned
 	 * @return the rule at the specified index
-	 * @throws IndexOutOfBoundsException if index is out of range {@code ((index
-	 *         < 0) || (index >= size())}
+	 * @throws IndexOutOfBoundsException if index is out of range {@code ((index < 0) || (index >= size())}
 	 */
 	public Rule get(int index) {
 		return rules.get(index);
 	}
 
 	/**
-	 * Returns the rule for the specified symbol; or {@code null} if no rule
-	 * with the specified symbol exists.
+	 * Returns the rule for the specified symbol; or {@code null} if no rule with the specified symbol exists.
 	 * 
 	 * @param symbol the symbol of the rule to be returned
-	 * @return the rule for the specified symbol; or {@code null} if no rule
-	 *         with the specified symbol exists
+	 * @return the rule for the specified symbol; or {@code null} if no rule with the specified symbol exists
 	 */
 	public Rule get(Symbol symbol) {
 		for (Rule rule : rules) {
@@ -132,17 +128,14 @@ public class ContextFreeGrammar {
 	}
 
 	/**
-	 * Returns the grammar derivation using the construction rules of
-	 * Grammatical Evolution on the specified codon array; or {@code null} if
-	 * the codon array failed to produce a valid derivation Whenever the
-	 * derivation encounters a rule with multiple productions, the production
-	 * used to expand the rule is chosen using this codon array.
+	 * Returns the grammar derivation using the construction rules of Grammatical Evolution on the specified codon
+	 * array; or {@code null} if the codon array failed to produce a valid derivation Whenever the derivation
+	 * encounters a rule with multiple productions, the production used to expand the rule is chosen using this codon
+	 * array.
 	 * 
 	 * @param array the codon array
-	 * @return the grammar derivation using the construction rules of
-	 *         Grammatical Evolution on the specified codon array; or
-	 *         {@code null} if the codon array failed to produce a valid
-	 *         derivation
+	 * @return the grammar derivation using the construction rules of Grammatical Evolution on the specified codon
+	 *         array; or {@code null} if the codon array failed to produce a valid derivation
 	 * @throws GrammarException if the codon array is empty
 	 */
 	public String build(int[] array) {
@@ -193,9 +186,8 @@ public class ContextFreeGrammar {
 	}
 
 	/**
-	 * Returns {@code true} if this grammar is valid; {@code false} otherwise. A
-	 * grammar is valid if it is non-empty and all non-terminal symbols are
-	 * defined by a rule in the grammar.
+	 * Returns {@code true} if this grammar is valid; {@code false} otherwise.  A grammar is valid if it is non-empty
+	 * and all non-terminal symbols are defined by a rule in the grammar.
 	 * 
 	 * @return {@code true} if this grammar is valid; {@code false} otherwise
 	 */

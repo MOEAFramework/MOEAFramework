@@ -46,9 +46,7 @@ public class WilcoxonSignedRanksTestTest {
 	}
 
 	/**
-	 * Example from
-	 * <a href="http://en.wikipedia.org/wiki/Wilcoxon_signed-rank_test">
-	 * Wikipedia</a>.
+	 * Example from <a href="http://en.wikipedia.org/wiki/Wilcoxon_signed-rank_test">Wikipedia</a>.
 	 */
 	@Test
 	public void testExample2() {
@@ -69,8 +67,7 @@ public class WilcoxonSignedRanksTestTest {
 	}
 
 	/**
-	 * Example from <a href="http://faculty.vassar.edu/lowry/ch12a.html">
-	 * http://faculty.vassar.edu/lowry/ch12a.html</a>
+	 * Example from <a href="http://faculty.vassar.edu/lowry/ch12a.html">http://faculty.vassar.edu/lowry/ch12a.html</a>
 	 */
 	@Test
 	public void testExample3() {

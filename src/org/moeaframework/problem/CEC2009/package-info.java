@@ -21,9 +21,8 @@
  * <p>
  * References:
  * <ol>
- *   <li>Zhang et al (2009).  "Multiobjective Optimization Test Instances for
- *       the CEC 2009 Special Session and Competition."  Technical Report
- *       CES-487, The School of Computer Science and Electronic Engineering,
+ *   <li>Zhang et al (2009).  "Multiobjective Optimization Test Instances for the CEC 2009 Special Session and
+ *       Competition."  Technical Report CES-487, The School of Computer Science and Electronic Engineering,
  *       University of Essex.
  * </ol>
  */

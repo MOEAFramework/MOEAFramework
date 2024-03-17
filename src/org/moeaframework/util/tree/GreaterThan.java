@@ -40,16 +40,14 @@ package org.moeaframework.util.tree;
  *   <tr>
  *     <td>Return Value</td>
  *     <td>Boolean</td>
- *     <td>{@code true} if the first number is greater than the second;
- *         {@code false} otherwise</td>
+ *     <td>{@code true} if the first number is greater than the second; {@code false} otherwise</td>
  *   </tr>
  * </table>
  */
 public class GreaterThan extends Node {
 	
 	/**
-	 * Constructs a new node for comparing if one number is greater than
-	 * another.
+	 * Constructs a new node for comparing if one number is greater than another.
 	 */
 	public GreaterThan() {
 		super(Boolean.class, Number.class, Number.class);

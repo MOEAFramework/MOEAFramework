@@ -25,17 +25,14 @@ import org.apache.commons.math3.util.MathArrays;
 import org.moeaframework.core.PRNG;
 
 /**
- * Generates weights randomly.  This is the method proposed in [1] to replace
- * the normal boundary intersection method in the original MOEA/D.  If {@code N}
- * weights are requested, this method first generates {@code 50*N} random
- * weights.  From these weights, {@code N} are selected that are maximally
- * distant from all other weights.
+ * Generates weights randomly.  This is the method proposed in [1] to replace the normal boundary intersection
+ * method in the original MOEA/D.  If {@code N} weights are requested, this method first generates {@code 50*N}
+ * random weights.  From these weights, {@code N} are selected that are maximally distant from all other weights.
  * <p>
  * References:
  * <ol>
- *   <li>Zhang, Q., et al.  "The Performance of a New Version of MOEA/D on
- *       CEC09 Unconstrained MOP Test Instances."  IEEE Congress on Evolutionary
- *       Computation, 2009.
+ *   <li>Zhang, Q., et al.  "The Performance of a New Version of MOEA/D on CEC09 Unconstrained MOP Test Instances."
+ *       IEEE Congress on Evolutionary Computation, 2009.
  * </ol>
  */
 public class RandomGenerator implements WeightGenerator {
@@ -51,8 +48,7 @@ public class RandomGenerator implements WeightGenerator {
 	private final int numberOfPoints;
 	
 	/**
-	 * Constructs a new weight generator that generates randomly-sampled
-	 * weights.
+	 * Constructs a new weight generator that generates randomly-sampled weights.
 	 * 
 	 * @param numberOfObjectives the number of objectives
 	 * @param numberOfPoints the number of weights to generate

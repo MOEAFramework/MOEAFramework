@@ -38,8 +38,8 @@ public abstract class AlgorithmTest {
 	}
 	
 	/**
-	 * Tests if two algorithms are statistically indifferent.  The default
-	 * {@link AlgorithmFactory} is used to create instances.
+	 * Tests if two algorithms are statistically indifferent.  The default {@link AlgorithmFactory} is used to create
+	 * instances.
 	 * 
 	 * @param problem the name of the problem to test
 	 * @param algorithm1 the name of the first algorithm to test
@@ -50,14 +50,13 @@ public abstract class AlgorithmTest {
 	}
 	
 	/**
-	 * Tests if two algorithms are statistically indifferent.  The default
-	 * {@link AlgorithmFactory} is used to create instances.
+	 * Tests if two algorithms are statistically indifferent.  The default {@link AlgorithmFactory} is used to create
+	 * instances.
 	 * 
 	 * @param problem the name of the problem to test
 	 * @param algorithm1 the name of the first algorithm to test
 	 * @param algorithm2 the name of the second algorithm to test
-	 * @param allowBetterPerformance do not fail if the MOEA Framework
-	 *        algorithm exceeds the performance
+	 * @param allowBetterPerformance do not fail if the MOEA Framework algorithm exceeds the performance
 	 */
 	public void test(String problem, String algorithm1, String algorithm2, boolean allowBetterPerformance) {
 		test(problem, algorithm1, algorithm2, allowBetterPerformance, AlgorithmFactory.getInstance());
@@ -81,14 +80,13 @@ public abstract class AlgorithmTest {
 	 * @param problem the name of the problem to test
 	 * @param algorithm1 the name of the first algorithm to test
 	 * @param algorithm2 the name of the second algorithm to test
-	 * @param allowBetterPerformance do not fail if the MOEA Framework
-	 *        algorithm exceeds the performance
+	 * @param allowBetterPerformance do not fail if the MOEA Framework algorithm exceeds the performance
 	 * @param factory the factory used to construct the algorithms
 	 */
 	public void test(String problem, String algorithm1, String algorithm2, boolean allowBetterPerformance,
 			AlgorithmFactory factory) {
-		test(problem, algorithm1, new TypedProperties(), algorithm2,
-				new TypedProperties(), allowBetterPerformance, factory);
+		test(problem, algorithm1, new TypedProperties(), algorithm2, new TypedProperties(), allowBetterPerformance,
+				factory);
 	}
 	
 	/**
@@ -99,13 +97,11 @@ public abstract class AlgorithmTest {
 	 * @param properties1 the properties used by the first algorithm to test
 	 * @param algorithm2 the name of the second algorithm to test
 	 * @param properties2 the properties used by the second algorithm to test
-	 * @param allowBetterPerformance do not fail if the MOEA Framework
-	 *        algorithm exceeds the performance
+	 * @param allowBetterPerformance do not fail if the MOEA Framework algorithm exceeds the performance
 	 * @param factory the factory used to construct the algorithms
 	 */
-	public void test(String problem, String algorithm1, TypedProperties properties1,
-			String algorithm2, TypedProperties properties2,
-			boolean allowBetterPerformance, AlgorithmFactory factory) {
+	public void test(String problem, String algorithm1, TypedProperties properties1, String algorithm2,
+			TypedProperties properties2, boolean allowBetterPerformance, AlgorithmFactory factory) {
 		Analyzer analyzer = new Analyzer()
 				.withProblem(problem)
 				.includeAllMetrics()

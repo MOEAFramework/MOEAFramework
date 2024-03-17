@@ -73,8 +73,8 @@ public class TestUtils {
 	}
 	
 	/**
-	 * Asserts the two strings are identical after normalization, which essentially ignores
-	 * multiple whitespace characters, different line separators, etc.
+	 * Asserts the two strings are identical after normalization, which essentially ignores multiple whitespace
+	 * characters, different line separators, etc.
 	 * 
 	 * @param s1 the first string
 	 * @param s2 the second string
@@ -102,8 +102,7 @@ public class TestUtils {
 	}
 
 	/**
-	 * Asserts that two populations are equal using the
-	 * {@link #equals(Population, Population)} method.
+	 * Asserts that two populations are equal using the {@link #equals(Population, Population)} method.
 	 * 
 	 * @param p1 the first population
 	 * @param p2 the second population
@@ -113,14 +112,12 @@ public class TestUtils {
 	}
 
 	/**
-	 * Returns {@code true} if the two populations are equal; otherwise
-	 * {@code false}. Two populations are equal if all solutions contained
-	 * in one population are contained in the other population.
+	 * Returns {@code true} if the two populations are equal; otherwise {@code false}. Two populations are equal if all
+	 * solutions contained in one population are contained in the other population.
 	 * 
 	 * @param p1 the first population
 	 * @param p2 the second population
-	 * @return {@code true} if the two populations are equal; otherwise
-	 *         {@code false}
+	 * @return {@code true} if the two populations are equal; otherwise {@code false}
 	 */
 	public static boolean equals(Population p1, Population p2) {
 		if (p1.size() != p2.size()) {
@@ -143,8 +140,7 @@ public class TestUtils {
 	}
 
 	/**
-	 * Asserts that the two solutions are equal using the
-	 * {@link #equals(Solution, Solution)} method.
+	 * Asserts that the two solutions are equal using the {@link #equals(Solution, Solution)} method.
 	 * 
 	 * @param s1 the first solution
 	 * @param s2 the second solution
@@ -154,14 +150,12 @@ public class TestUtils {
 	}
 
 	/**
-	 * Returns {@code true} if the two solutions are equal; {@code false}
-	 * otherwise. This method is not supported in the core library as the
-	 * process of comparing solutions is often domain-specific.
+	 * Returns {@code true} if the two solutions are equal; {@code false} otherwise. This method is not supported in
+	 * the core library as the process of comparing solutions is often domain-specific.
 	 * 
 	 * @param s1 the first solution
 	 * @param s2 the second solution
-	 * @return {@code true} if the two solutions are equal; {@code false}
-	 *         otherwise
+	 * @return {@code true} if the two solutions are equal; {@code false} otherwise
 	 */
 	public static boolean equals(Solution s1, Solution s2) {
 		if (s1.getNumberOfVariables() != s2.getNumberOfVariables()) {
@@ -183,28 +177,24 @@ public class TestUtils {
 		}
 
 		for (int i = 0; i < s1.getNumberOfObjectives(); i++) {
-			if (Math.abs(s1.getObjective(i) - s2.getObjective(i)) >= 
-					TestThresholds.SOLUTION_EPS) {
+			if (Math.abs(s1.getObjective(i) - s2.getObjective(i)) >= TestThresholds.SOLUTION_EPS) {
 				return false;
 			}
 		}
 
 		for (int i = 0; i < s1.getNumberOfConstraints(); i++) {
-			if (Math.abs(s1.getConstraint(i) - s2.getConstraint(i)) >= 
-					TestThresholds.SOLUTION_EPS) {
+			if (Math.abs(s1.getConstraint(i) - s2.getConstraint(i)) >= TestThresholds.SOLUTION_EPS) {
 				return false;
 			}
 		}
 		
-		//TODO: the attributes check does not work correctly if it contains
-		//arrays since it's using an identity check and not a value check
-		//return s1.getAttributes().equals(s2.getAttributes());
+		//TODO: the attributes check does not work correctly if it contains arrays since it's using an identity check
+		//and not a value check return s1.getAttributes().equals(s2.getAttributes());
 		return true;
 	}
 
 	/**
-	 * Creates a temporary file for testing purposes. The temporary file will
-	 * be deleted on exit.
+	 * Creates a temporary file for testing purposes. The temporary file will be deleted on exit.
 	 * 
 	 * @return the temporary file
 	 * @throws IOException if an I/O error occurred
@@ -216,8 +206,7 @@ public class TestUtils {
 	}
 
 	/**
-	 * Creates a temporary file containing the specified data. The temporary
-	 * file will be deleted on exit.
+	 * Creates a temporary file containing the specified data.  The temporary file will be deleted on exit.
 	 * 
 	 * @param data the contents of the temporary file
 	 * @return the temporary file
@@ -244,13 +233,11 @@ public class TestUtils {
 	}
 	
 	/**
-	 * Returns the solution resulting from evaluating the problem with the
-	 * specified decision variables.
+	 * Returns the solution resulting from evaluating the problem with the specified decision variables.
 	 * 
 	 * @param problem the problem
 	 * @param variables the decision variable values
-	 * @return the solution resulting from evaluating the problem with the
-	 *         specified decision variables
+	 * @return the solution resulting from evaluating the problem with the specified decision variables
 	 */
 	public static Solution evaluateAt(Problem problem, double... variables) {
 		Solution solution = problem.newSolution();
@@ -341,8 +328,8 @@ public class TestUtils {
 	}
 	
 	/**
-	 * Asserts that every line on the file matches the specified regular
-	 * expression pattern.  This method automatically ignores commented lines.
+	 * Asserts that every line on the file matches the specified regular expression pattern.  This method automatically
+	 * ignores commented lines.
 	 * 
 	 * @param file the file
 	 * @param regex the regular expression pattern
@@ -363,16 +350,13 @@ public class TestUtils {
 	}
 	
 	/**
-	 * Invokes the main method of the specified command line utility, 
-	 * redirecting the output to the specified file.  As this method redirects
-	 * the {@code System.out} stream, this must be the only process writing to 
-	 * {@code System.out}.
+	 * Invokes the main method of the specified command line utility, redirecting the output to the specified file.  As
+	 * this method redirects the {@code System.out} stream, this must be the only process writing to {@code System.out}.
 	 * 
 	 * @param output the file for output redirection
 	 * @param tool the command line utility class
 	 * @param args the command line arguments
-	 * @throws Exception if any of the many exceptions for reflection or
-	 *         file writing occurred
+	 * @throws Exception if any of the many exceptions for reflection or file writing occurred
 	 */
 	public static void pipeCommandLine(File output, Class<?> tool, String... args) throws Exception {
 		PrintStream oldOut = System.out;
@@ -388,18 +372,15 @@ public class TestUtils {
 	}
 	
 	/**
-	 * Invokes the main method of the specified command line utility, 
-	 * redirecting the output and error streams to the specified files.  As 
-	 * this method redirects the {@code System.out} and {@code System.err} 
-	 * streams, this must be the only process writing to {@code System.out}
-	 * and {@code System.err}.
+	 * Invokes the main method of the specified command line utility, redirecting the output and error streams to the
+	 * specified files.  As this method redirects the {@code System.out} and {@code System.err} streams, this must be
+	 * the only process writing to {@code System.out} and {@code System.err}.
 	 * 
 	 * @param output the file for output redirection
 	 * @param error the file for error redirection
 	 * @param tool the command line utility class
 	 * @param args the command line arguments
-	 * @throws Exception if any of the many exceptions for reflection or
-	 *         file writing occurred
+	 * @throws Exception if any of the many exceptions for reflection or file writing occurred
 	 */
 	public static void pipeCommandLine(File output, File error, Class<?> tool, String... args) throws Exception {
 		PrintStream oldErr = System.err;
@@ -422,8 +403,8 @@ public class TestUtils {
 		try {
 			DEFAULT_ERROR.assertEquals(d1, d2);
 		} catch (AssertionError e) {
-			//relative equality breaks down when the values approach 0; this
-			//is an attempt to correct using absolute difference
+			//relative equality breaks down when the values approach 0; this is an attempt to correct using absolute
+			//difference
 			if (((d1 != 0.0) && (d2 != 0.0)) || (Math.abs(d1 - d2) > 0.05)) {
 				throw e;
 			}
@@ -435,8 +416,7 @@ public class TestUtils {
 	 * 
 	 * @param rm1 the first matrix
 	 * @param rm2 the second matrix
-	 * @param error the equality comparison used to assert pairwise values 
-	 *        are equal
+	 * @param error the equality comparison used to assert pairwise values are equal
 	 */
 	public static void assertEquals(RealMatrix rm1, RealMatrix rm2, FloatingPointError error) {
 		Assert.assertEquals(rm1.getRowDimension(), rm2.getRowDimension());
@@ -492,8 +472,7 @@ public class TestUtils {
 	}
 	
 	/**
-	 * Loads the contents of the specified file, returning the matrix of values
-	 * stored in the file.
+	 * Loads the contents of the specified file, returning the matrix of values stored in the file.
 	 * 
 	 * @param file the file to load
 	 * @return the matrix of values stored in the file
@@ -521,8 +500,8 @@ public class TestUtils {
     }
 	
 	/**
-	 * Asserts that the statistical distribution satisfies the properties of an
-	 * integer-valued uniform distribution between {@code min} and {@code max}.
+	 * Asserts that the statistical distribution satisfies the properties of an integer-valued uniform distribution
+	 * between {@code min} and {@code max}.
 	 * 
 	 * @param min the minimum bounds of the uniform distribution
 	 * @param max the maximum bounds of the uniform distribution
@@ -541,24 +520,20 @@ public class TestUtils {
 	}
 	
 	/**
-	 * Returns the regular expression pattern for detecting any number of 
-	 * numeric values separated by whitespace.
+	 * Returns the regular expression pattern for detecting any number of numeric values separated by whitespace.
 	 * 
 	 * @param n the number of numeric values to detect
-	 * @return  the regular expression pattern for detecting any number of 
-	 *          numeric values separated by whitespace
+	 * @return the regular expression pattern for detecting any number of numeric values separated by whitespace
 	 */
 	public static String getSpaceSeparatedNumericPattern(int n) {
 		return "(-?[0-9]+(\\.[0-9]+(E-?[0-9]+)?)?\\b\\s*){" + n + "}";
 	}
 	
 	/**
-	 * Returns the regular expression pattern for detecting any number of 
-	 * numeric values separated by a comma.
+	 * Returns the regular expression pattern for detecting any number of numeric values separated by a comma.
 	 * 
 	 * @param n the number of numeric values to detect
-	 * @return  the regular expression pattern for detecting any number of 
-	 *          numeric values separated by a comma
+	 * @return the regular expression pattern for detecting any number of numeric values separated by a comma
 	 */
 	public static String getCommaSeparatedNumericPattern(int n) {
 		String pattern = "";
@@ -575,9 +550,8 @@ public class TestUtils {
 	}
 	
 	/**
-	 * Extracts the data stored in a resource, saving its contents to a
-	 * temporary file.  If the resource name contains an extension, the file
-	 * will be created with the extension.
+	 * Extracts the data stored in a resource, saving its contents to a temporary file.  If the resource name contains
+	 * an extension, the file will be created with the extension.
 	 * 
 	 * @param resource the name of the resource to extract
 	 * @return the temporary file containing the resource data
@@ -635,8 +609,7 @@ public class TestUtils {
 	}
 	
 	/**
-	 * Attempts to run make in the given folder.  If make is not successful,
-	 * the test is skipped.
+	 * Attempts to run make in the given folder.  If make is not successful, the test is skipped.
 	 * 
 	 * @param folder the folder in which make is executed
 	 */

@@ -36,11 +36,9 @@ public class Subset implements Variable {
 	private static final long serialVersionUID = -4491760813656852414L;
 
 	/**
-	 * Optimization factor.  As long as {@code k} is marginally smaller than
-	 * {@code n}, it is more computationally efficient to randomly generate
-	 * candidate members in the subset.  An {@code OPT_FACTOR} of {@code 1.1}
-	 * enables random generation as long as {@code k} is at least {@code 10%}
-	 * smaller than {@code n}.
+	 * Optimization factor.  As long as {@code k} is marginally smaller than {@code n}, it is more computationally
+	 * efficient to randomly generate candidate members in the subset.  An {@code OPT_FACTOR} of {@code 1.1} enables
+	 * random generation as long as {@code k} is at least {@code 10%} smaller than {@code n}.
 	 */
 	private static final double OPT_FACTOR = 1.1;
 	
@@ -65,8 +63,7 @@ public class Subset implements Variable {
 	private Set<Integer> members;
 
 	/**
-	 * Constructs a new decision variable for representing subsets of size
-	 * {@code k} from a set of size {@code n}.
+	 * Constructs a new decision variable for representing subsets of size {@code k} from a set of size {@code n}.
 	 * 
 	 * @param k the fixed size of the subset
 	 * @param n the size of the original set (i.e., the number of candidate members)
@@ -76,9 +73,8 @@ public class Subset implements Variable {
 	}
 
 	/**
-	 * Constructs a new decision variable for representing subsets whose size
-	 * ranges between {@code l} (minimum size) and {@code u} (maximum size)
-	 * from a set of size {@code n}
+	 * Constructs a new decision variable for representing subsets whose size ranges between {@code l} (minimum size)
+	 * and {@code u} (maximum size) from a set of size {@code n}
 	 * 
 	 * @param l the minimum size of the subset
 	 * @param u the maximum size of the subset

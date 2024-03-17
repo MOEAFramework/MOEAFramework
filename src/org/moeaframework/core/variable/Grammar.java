@@ -24,9 +24,8 @@ import org.moeaframework.core.Variable;
 import org.moeaframework.util.grammar.ContextFreeGrammar;
 
 /**
- * Decision variable for grammars. This class represents the grammar as a
- * variable-length integer codon which is subsequently converted into a grammar
- * using {@link ContextFreeGrammar#build}.
+ * Decision variable for grammars. This class represents the grammar as a variable-length integer codon which is
+ * subsequently converted into a grammar using {@link ContextFreeGrammar#build}.
  * 
  * @see ContextFreeGrammar
  */
@@ -40,9 +39,8 @@ public class Grammar implements Variable {
 	private int[] codon;
 
 	/**
-	 * The number of values that each codon can represent. Each index in the
-	 * codon array can be assigned a value in the range {@code [0,
-	 * maximumValue-1]}.
+	 * The number of values that each codon can represent. Each index in the codon array can be assigned a value in
+	 * the range {@code [0, maximumValue-1]}.
 	 */
 	private int maximumValue = 256;
 
@@ -56,8 +54,7 @@ public class Grammar implements Variable {
 	}
 
 	/**
-	 * Constructs a grammar variable with the specified integer codon
-	 * representation.
+	 * Constructs a grammar variable with the specified integer codon representation.
 	 * 
 	 * @param codon the integer codon representation for this grammar
 	 */
@@ -68,9 +65,8 @@ public class Grammar implements Variable {
 	}
 
 	/**
-	 * Returns the number of values that each codon can represent. Each index in
-	 * the codon array can be assigned a value in the range {@code [0,
-	 * maximumValue-1]}
+	 * Returns the number of values that each codon can represent.  Each index in the codon array can be assigned a
+	 * value in the range {@code [0, maximumValue-1]}
 	 * 
 	 * @return the number of values that each codon can represent
 	 */
@@ -79,9 +75,8 @@ public class Grammar implements Variable {
 	}
 
 	/**
-	 * Sets the number of values that each codon can represent. Each index in
-	 * the codon array can be assigned a value in the range {@code [0,
-	 * maximumValue-1]}.
+	 * Sets the number of values that each codon can represent.  Each index in the codon array can be assigned a value
+	 * in the range {@code [0, maximumValue-1]}.
 	 * 
 	 * @param maximumValue the number of values that each codon can represent
 	 */
@@ -90,9 +85,8 @@ public class Grammar implements Variable {
 	}
 
 	/**
-	 * Returns the integer codon representation of this grammar. The returned
-	 * object is a clone of the internal storage, and thus can be modified
-	 * independently of this instance.
+	 * Returns the integer codon representation of this grammar.  The returned object is a clone of the internal
+	 * storage, and thus can be modified independently of this instance.
 	 * 
 	 * @return the integer codon representation of this grammar
 	 */
@@ -101,13 +95,12 @@ public class Grammar implements Variable {
 	}
 
 	/**
-	 * Sets the integer codon representation of this grammar. The stored object
-	 * is a clone of the argument, and thus can be modified independently of
-	 * this instance.
+	 * Sets the integer codon representation of this grammar. The stored object is a clone of the argument, and thus
+	 * can be modified independently of this instance.
 	 * 
 	 * @param codon the new integer codon representation for this grammar
-	 * @throws IllegalArgumentException if any codon value is out of range (
-	 *         {@code (value < 0) || (value >= getMaximumValue())})
+	 * @throws IllegalArgumentException if any codon value is out of range
+	 *         ({@code (value < 0) || (value >= getMaximumValue())})
 	 */
 	public void fromArray(int[] codon) {
 		for (int i = 0; i < codon.length; i++) {
@@ -129,15 +122,13 @@ public class Grammar implements Variable {
 	}
 
 	/**
-	 * Sets the specified index in the integer codon representation of this
-	 * grammar to the specified value.
+	 * Sets the specified index in the integer codon representation of this grammar to the specified value.
 	 * 
 	 * @param index the index of the codon to be assigned
 	 * @param value the new value for the specified index
-	 * @throws ArrayIndexOutOfBoundsException if the index is out of range (
-	 *         {@code (index < 0) || (index >= size())})
-	 * @throws IllegalArgumentException if the value is out of range (
-	 *         {@code (value < 0) || (value >= getMaximumValue())})
+	 * @throws ArrayIndexOutOfBoundsException if the index is out of range ({@code (index < 0) || (index >= size())})
+	 * @throws IllegalArgumentException if the value is out of range
+	 *         ({@code (value < 0) || (value >= getMaximumValue())})
 	 */
 	public void set(int index, int value) {
 		if ((value < 0) || (value >= maximumValue)) {
@@ -148,14 +139,12 @@ public class Grammar implements Variable {
 	}
 
 	/**
-	 * Returns the value at the specified index in the integer codon
-	 * representation of this grammar.
+	 * Returns the value at the specified index in the integer codon representation of this grammar.
 	 * 
 	 * @param index the index of the codon value to be returned
-	 * @return the value at the specified index in the integer codon
-	 *         representation of this grammar
-	 * @throws ArrayIndexOutOfBoundsException if the index is out of range (
-	 *         {@code (index < 0) || (index >= size())})
+	 * @return the value at the specified index in the integer codon representation of this grammar
+	 * @throws ArrayIndexOutOfBoundsException if the index is out of range
+	 *         ({@code (index < 0) || (index >= size())})
 	 */
 	public int get(int index) {
 		return codon[index];
@@ -167,17 +156,13 @@ public class Grammar implements Variable {
 	}
 
 	/**
-	 * Removes the indices in the range {@code [start, end]} from the integer
-	 * codon representation, returning array of the values removed by this cut
-	 * operation. For example,
-	 * 
+	 * Removes the indices in the range {@code [start, end]} from the integer codon representation, returning array of
+	 * the values removed by this cut operation. For example,
 	 * <pre>
-	 * Grammar grammar = new Grammar(new int[] { 0, 1, 2, 3, 4, 5 });
-	 * int[] removed = grammar.cut(2, 4);
+	 *   Grammar grammar = new Grammar(new int[] { 0, 1, 2, 3, 4, 5 });
+	 *   int[] removed = grammar.cut(2, 4);
 	 * </pre>
-	 * 
-	 * results in grammar representing the array {@code [2, 3, 4]} and removed
-	 * containing {@code [0, 1, 5]}.
+	 * results in grammar representing the array {@code [2, 3, 4]} and removed containing {@code [0, 1, 5]}.
 	 * 
 	 * @param start the start index of the cut operation
 	 * @param end the end index of the cut operation
@@ -209,16 +194,13 @@ public class Grammar implements Variable {
 	}
 
 	/**
-	 * Inserts the specified array into this grammar's integer codon
-	 * representation at the specified insert index. For example,
-	 * 
+	 * Inserts the specified array into this grammar's integer codon representation at the specified insert index.
+	 * For example,
 	 * <pre>
-	 * Grammar grammar = new Grammar(new int[] { 0, 1, 2, 3, 4, 5 });
-	 * grammar.insert(2, new int[] { 6, 7 });
+	 *   Grammar grammar = new Grammar(new int[] { 0, 1, 2, 3, 4, 5 });
+	 *   grammar.insert(2, new int[] { 6, 7 });
 	 * </pre>
-	 * 
-	 * results in grammar representing the array {@code [0, 1, 6, 7, 2, 3, 4,
-	 * 5]}.
+	 * results in grammar representing the array {@code [0, 1, 6, 7, 2, 3, 4, 5]}.
 	 * 
 	 * @param insertIndex the index where the specified array is to be inserted
 	 * @param array the array of integer codons to be inserted

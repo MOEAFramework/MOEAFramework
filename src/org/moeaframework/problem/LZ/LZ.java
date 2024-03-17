@@ -26,16 +26,13 @@ import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.AbstractProblem;
 
 /*
- * The following source code is modified from the complicated Pareto set test
- * problem suite by Hui Li and Qingfu Zhang available at 
- * {@link http://dces.essex.ac.uk/staff/qzhang/}.  Permission to distributed 
- * these modified source codes under the GNU Lesser General Public License was 
- * obtained via e-mail correspondence with the authors.
+ * The following source code is modified from the complicated Pareto set test problem suite by Hui Li and Qingfu Zhang
+ * available at {@link http://dces.essex.ac.uk/staff/qzhang/}.  Permission to distributed these modified source codes
+ * under the GNU Lesser General Public License was obtained via e-mail correspondence with the authors.
  */
 
 /**
- * Abstract class for implementing problems from the complicated Pareto sets
- * test suite by Hui Li and Qingfu Zhang.
+ * Abstract class for implementing problems from the complicated Pareto sets test suite by Hui Li and Qingfu Zhang.
  */
 public abstract class LZ extends AbstractProblem {
 
@@ -55,19 +52,16 @@ public abstract class LZ extends AbstractProblem {
 	private final int dType;
 
 	/**
-	 * Construcs an LZ problem instance with the specified number of variables,
-	 * number of objectives, {@code ptype} code, {@code ltype} code, and
-	 * {@code dtype} code.
+	 * Construcs an LZ problem instance with the specified number of variables, number of objectives, {@code ptype}
+	 * code, {@code ltype} code, and {@code dtype} code.
 	 * 
 	 * @param numberOfVariables the number of variables
 	 * @param numberOfObjectives the number of objectives
 	 * @param pType the {@code ptype} code specifying the type of Pareto front
 	 * @param lType the {@code ltype} code specifying the type of Pareto set
-	 * @param dType the {@code dtype} code specifying the type of non-negative
-	 *        function
+	 * @param dType the {@code dtype} code specifying the type of non-negative function
 	 */
-	public LZ(int numberOfVariables, int numberOfObjectives, int pType,
-			int lType, int dType) {
+	public LZ(int numberOfVariables, int numberOfObjectives, int pType, int lType, int dType) {
 		super(numberOfVariables, numberOfObjectives);
 		this.pType = pType;
 		this.lType = lType;
@@ -95,11 +89,9 @@ public abstract class LZ extends AbstractProblem {
 	}
 
 	/**
-	 * Returns the {@code dtype} code specifying the type of non-negative
-	 * function.
+	 * Returns the {@code dtype} code specifying the type of non-negative function.
 	 * 
-	 * @return the {@code dtype} code specifying the type of non-negative
-	 *         function
+	 * @return the {@code dtype} code specifying the type of non-negative function
 	 */
 	public int getDType() {
 		return dType;
@@ -122,8 +114,7 @@ public abstract class LZ extends AbstractProblem {
 	}
 
 	/**
-	 * Validates the inputs, throwing an {@link IllegalArgumentException} if any
-	 * inputs are invalid.
+	 * Validates the inputs, throwing an {@link IllegalArgumentException} if any inputs are invalid.
 	 */
 	private void validate() {
 		if ((numberOfObjectives < 2) || (numberOfObjectives > 3)) {
@@ -165,41 +156,31 @@ public abstract class LZ extends AbstractProblem {
 			} else if (pType == 22) {
 				return new double[] { x[0], 1 - x[0] * x[0] };
 			} else if (pType == 23) {
-				return new double[] {
-						x[0],
-						1 - Math.sqrt(x[0]) - x[0]
-								* Math.sin(10 * x[0] * x[0] * Math.PI) };
-			} else if (pType == 24) {
 				return new double[] { x[0],
-						1 - x[0] - 0.05 * Math.sin(4 * Math.PI * x[0]) };
+						1 - Math.sqrt(x[0]) - x[0] * Math.sin(10 * x[0] * x[0] * Math.PI) };
+			} else if (pType == 24) {
+				return new double[] { x[0], 1 - x[0] - 0.05 * Math.sin(4 * Math.PI * x[0]) };
 			} else {
 				throw new IllegalStateException();
 			}
 		} else if (numberOfObjectives == 3) {
 			if (pType == 31) {
 				return new double[] {
-						Math.cos(x[0] * Math.PI / 2)
-								* Math.cos(x[1] * Math.PI / 2),
-						Math.cos(x[0] * Math.PI / 2)
-								* Math.sin(x[1] * Math.PI / 2),
+						Math.cos(x[0] * Math.PI / 2) * Math.cos(x[1] * Math.PI / 2),
+						Math.cos(x[0] * Math.PI / 2) * Math.sin(x[1] * Math.PI / 2),
 						Math.sin(x[0] * Math.PI / 2) };
 			} else if (pType == 32) {
 				return new double[] {
-						1 - Math.cos(x[0] * Math.PI / 2)
-								* Math.cos(x[1] * Math.PI / 2),
-						1 - Math.cos(x[0] * Math.PI / 2)
-								* Math.sin(x[1] * Math.PI / 2),
+						1 - Math.cos(x[0] * Math.PI / 2) * Math.cos(x[1] * Math.PI / 2),
+						1 - Math.cos(x[0] * Math.PI / 2) * Math.sin(x[1] * Math.PI / 2),
 						1 - Math.sin(x[0] * Math.PI / 2) };
 			} else if (pType == 33) {
 				return new double[] {
 						x[0],
 						x[1],
-						3
-								- (Math.sin(3 * Math.PI * x[0]) + Math.sin(3
-										* Math.PI * x[1])) - 2 * (x[0] + x[1]) };
+						3 - (Math.sin(3 * Math.PI * x[0]) + Math.sin(3 * Math.PI * x[1])) - 2 * (x[0] + x[1]) };
 			} else if (pType == 34) {
-				return new double[] { x[0] * x[1], x[0] * (1 - x[1]),
-						(1 - x[0]) };
+				return new double[] { x[0] * x[1], x[0] * (1 - x[1]), (1 - x[0]) };
 			} else {
 				throw new IllegalStateException();
 			}
@@ -266,9 +247,7 @@ public abstract class LZ extends AbstractProblem {
 		double xy = 2 * (x - 0.5);
 
 		if (lType == 21) {
-			return xy
-					- Math.pow(t1, 0.5 * (numberOfVariables + 3 * dim - 8)
-							/ (numberOfVariables - 2));
+			return xy - Math.pow(t1, 0.5 * (numberOfVariables + 3 * dim - 8) / (numberOfVariables - 2));
 		} else if (lType == 22) {
 			double theta = 6 * Math.PI * t1 + dim * Math.PI / numberOfVariables;
 			return xy - Math.sin(theta);
@@ -354,8 +333,7 @@ public abstract class LZ extends AbstractProblem {
 		double[] y_obj = new double[numberOfObjectives];
 
 		if (numberOfObjectives == 2) {
-			if ((lType == 21) || (lType == 22) || (lType == 23)
-					|| (lType == 24) || (lType == 26)) {
+			if ((lType == 21) || (lType == 22) || (lType == 23) || (lType == 24) || (lType == 26)) {
 				List<Double> aa = new ArrayList<Double>();
 				List<Double> bb = new ArrayList<Double>();
 

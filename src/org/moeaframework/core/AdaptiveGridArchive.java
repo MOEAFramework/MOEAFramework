@@ -31,24 +31,20 @@ import org.moeaframework.core.comparator.ParetoDominanceComparator;
 // using a sparse array would be much more memory efficient.
 
 /**
- * Adaptive grid archive. Divides objective space into a number of grid cells,
- * maintaining a count of the number of solutions within each grid cell. When
- * the size of the archive exceeds a specified capacity, a solution from the
+ * Adaptive grid archive. Divides objective space into a number of grid cells, maintaining a count of the number of
+ * solutions within each grid cell. When the size of the archive exceeds a specified capacity, a solution from the
  * most crowded grid cell is selected and removed from the archive.
  * <p>
- * This implementation currently stores the density of each grid cell in an
- * array.  As such, {@code pow(numberOfDivisions, numberOfObjectives)} can not
- * exceed the storage capacity of an array, or {@code pow(2, 32)}.  We may
- * consider at some point using sparse arrays to remove this limitation.
+ * This implementation currently stores the density of each grid cell in an array.  As such,
+ * {@code pow(numberOfDivisions, numberOfObjectives)} can not exceed the storage capacity of an array, or
+ * {@code pow(2, 32)}.  We may consider at some point using sparse arrays to remove this limitation.
  * <p>
  * References:
  * <ol>
- * <li>Knowles, J.D. and Corne, D.W., "Approximating the Nondominated Front
- * using the Pareto Archived Evolution Strategy," Evolutionary Computation, vol.
- * 8, no. 2, pp. 149-172, 2000.
- * <li>Knowles, J.D. and Corne, D.W., "Properties of an Adaptive Archiving for
- * Storing Nondominated Vectors," IEEE Transactions on Evolutionary Computation,
- * vol. 7, no. 2, pp. 100-116, 2003.
+ *   <li>Knowles, J.D. and Corne, D.W., "Approximating the Nondominated Front using the Pareto Archived Evolution
+ *       Strategy," Evolutionary Computation, vol. 8, no. 2, pp. 149-172, 2000.
+ *   <li>Knowles, J.D. and Corne, D.W., "Properties of an Adaptive Archiving for Storing Nondominated Vectors,"
+ *       IEEE Transactions on Evolutionary Computation, vol. 7, no. 2, pp. 100-116, 2003.
  * </ol>
  */
 public class AdaptiveGridArchive extends NondominatedPopulation {
@@ -84,16 +80,14 @@ public class AdaptiveGridArchive extends NondominatedPopulation {
 	protected int[] density;
 
 	/**
-	 * Constructs an adaptive grid archive with the specified capacity with the
-	 * specified number of divisions along each objective.
+	 * Constructs an adaptive grid archive with the specified capacity with the specified number of divisions along
+	 * each objective.
 	 * 
 	 * @param capacity the capacity of this archive
 	 * @param problem the problem for which this archive is used
-	 * @param numberOfDivisions the number of divisions this archive uses to
-	 *        split each objective
-	 * @throws FrameworkException if
-	 *         {@code pow(numberOfDivisions, numberOfObjectives)} exceeds the
-	 *         storage capacity of an array
+	 * @param numberOfDivisions the number of divisions this archive uses to split each objective
+	 * @throws FrameworkException if {@code pow(numberOfDivisions, numberOfObjectives)} exceeds the storage capacity
+	 *         of an array
 	 */
 	public AdaptiveGridArchive(int capacity, Problem problem, int numberOfDivisions) {
 		super(new ParetoDominanceComparator(), DuplicateMode.ALLOW_DUPLICATES);
@@ -115,8 +109,8 @@ public class AdaptiveGridArchive extends NondominatedPopulation {
 	}
 	
 	/**
-	 * Calculates the largest possible value for the {@code bisections} parameter.  This is limited by
-	 * the available Java heap size and the maximum integer value (2^31-1), whichever is smaller.
+	 * Calculates the largest possible value for the {@code bisections} parameter.  This is limited by the available
+	 * Java heap size and the maximum integer value (2^31-1), whichever is smaller.
 	 * 
 	 * @param numberOfObjectives the number of objectives
 	 * @return the maximum number of bisections
@@ -273,9 +267,8 @@ public class AdaptiveGridArchive extends NondominatedPopulation {
 	}
 
 	/**
-	 * Returns a solution residing in the densest grid cell. If there are more
-	 * than one such solution or multiple cells with the same density, the first
-	 * solution encountered is returned.
+	 * Returns a solution residing in the densest grid cell. If there are more than one such solution or multiple
+	 * cells with the same density, the first solution encountered is returned.
 	 * 
 	 * @return a solution residing in the densest grid cell
 	 */
@@ -296,8 +289,7 @@ public class AdaptiveGridArchive extends NondominatedPopulation {
 	}
 
 	/**
-	 * Computes new lower and upper bounds and recalculates the densities of
-	 * each grid cell.
+	 * Computes new lower and upper bounds and recalculates the densities of each grid cell.
 	 */
 	protected void adaptGrid() {
 		Arrays.fill(minimum, Double.POSITIVE_INFINITY);
@@ -317,14 +309,12 @@ public class AdaptiveGridArchive extends NondominatedPopulation {
 	}
 
 	/**
-	 * Returns the index of the specified solution in this adaptive grid
-	 * archive, or {@code -1} if the solution is not within the current lower
-	 * and upper bounds.
+	 * Returns the index of the specified solution in this adaptive grid archive, or {@code -1} if the solution is
+	 * not within the current lower and upper bounds.
 	 * 
 	 * @param solution the specified solution
-	 * @return the index of the specified solution in this adaptive grid
-	 *         archive, or {@code -1} if the solution is not within the current
-	 *         lower and upper bounds
+	 * @return the index of the specified solution in this adaptive grid archive, or {@code -1} if the solution is
+	 *         not within the current lower and upper bounds
 	 */
 	public int findIndex(Solution solution) {
 		int index = 0;

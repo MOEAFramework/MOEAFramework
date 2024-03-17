@@ -42,32 +42,24 @@ import org.moeaframework.util.weights.NormalBoundaryIntersectionGenerator;
 import org.moeaframework.util.weights.NormalBoundaryDivisions;
 
 /**
- * Implementation of the reference-point-based nondominated sorting method
- * for NSGA-III.  NSGA-III includes an additional parameter, the number of
- * divisions, that controls the spacing of reference points.  For large
- * objective counts, an alternate two-layered approach was also proposed
- * allowing the user to specify the divisions on the outer and inner layer.
- * When using the two-layered approach, the number of outer divisions should
- * less than the number of objectives, otherwise it will generate reference
- * points overlapping with the inner layer.  If there are M objectives and
- * p divisions, then {@code binomialCoefficient(M+p-1, p)} reference points are
- * generated.
+ * Implementation of the reference-point-based nondominated sorting method for NSGA-III.  NSGA-III includes an
+ * additional parameter, the number of divisions, that controls the spacing of reference points.  For large objective
+ * counts, an alternate two-layered approach was also proposed allowing the user to specify the divisions on the outer
+ * and inner layer.  When using the two-layered approach, the number of outer divisions should less than the number of
+ * objectives, otherwise it will generate reference points overlapping with the inner layer.  If there are {@code M}
+ * objectives and {@code p} divisions, then {@code binomialCoefficient(M+p-1, p)} reference points are generated.
  * <p>
- * Unfortunately, since no official implementation has been released by the
- * original authors, we have made our best effort to implement the algorithm as
- * described in the journal article.  We would like to thank Tsung-Che Chiang
- * for developing the first publicly available implementation of NSGA-III in
- * C++.
+ * Unfortunately, since no official implementation has been released by the original authors, we have made our best
+ * effort to implement the algorithm as described in the journal article.  We would like to thank Tsung-Che Chiang
+ * for developing the first publicly available implementation of NSGA-III in C++.
  * <p>
  * References:
  * <ol>
- *   <li>Deb, K. and Jain, H.  "An Evolutionary Many-Objective Optimization
- *       Algorithm Using Reference-Point-Based Nondominated Sorting Approach,
- *       Part I: Solving Problems With Box Constraints."  IEEE Transactions on
+ *   <li>Deb, K. and Jain, H.  "An Evolutionary Many-Objective Optimization Algorithm Using Reference-Point-Based
+ *       Nondominated Sorting Approach, Part I: Solving Problems With Box Constraints."  IEEE Transactions on
  *       Evolutionary Computation, 18(4):577-601, 2014.
- *   <li>Deb, K. and Jain, H.  "Handling Many-Objective Problems Using an
- *       Improved NSGA-II Procedure.  WCCI 2012 IEEE World Contress on
- *       Computational Intelligence, Brisbane, Australia, June 10-15, 2012.
+ *   <li>Deb, K. and Jain, H.  "Handling Many-Objective Problems Using an Improved NSGA-II Procedure.  WCCI 2012 IEEE
+ *       World Contress on Computational Intelligence, Brisbane, Australia, June 10-15, 2012.
  *   <li><a href="http://web.ntnu.edu.tw/~tcchiang/publications/nsga3cpp/nsga3cpp.htm">C++ Implementation by Tsung-Che Chiang</a>
  * </ol>
  */
@@ -99,8 +91,7 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 	private List<double[]> weights;
 
 	/**
-	 * Constructs an empty population that maintains the {@code rank}
-	 * attribute for its solutions.
+	 * Constructs an empty population that maintains the {@code rank} attribute for its solutions.
 	 * 
 	 * @param numberOfObjectives the number of objectives
 	 * @param divisions the number of divisions
@@ -114,18 +105,15 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 	}
 
 	/**
-	 * Constructs a new population with the specified solutions that maintains
-	 * the {@code rank} attribute for its solutions.
+	 * Constructs a new population with the specified solutions that maintains the {@code rank} attribute for its solutions.
 	 * 
 	 * @param numberOfObjectives the number of objectives
 	 * @param divisions the number of divisions
 	 * @param comparator the dominance comparator
 	 * @param iterable the solutions used to initialize this population
 	 */
-	public ReferencePointNondominatedSortingPopulation(
-			int numberOfObjectives, NormalBoundaryDivisions divisions,
-			DominanceComparator comparator,
-			Iterable<? extends Solution> iterable) {
+	public ReferencePointNondominatedSortingPopulation(int numberOfObjectives, NormalBoundaryDivisions divisions,
+			DominanceComparator comparator, Iterable<? extends Solution> iterable) {
 		super(comparator, iterable);
 		this.numberOfObjectives = numberOfObjectives;
 		this.divisions = divisions;
@@ -134,15 +122,13 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 	}
 
 	/**
-	 * Constructs an empty population that maintains the {@code rank} attribute
-	 * for its solutions.
+	 * Constructs an empty population that maintains the {@code rank} attribute for its solutions.
 	 * 
 	 * @param numberOfObjectives the number of objectives
 	 * @param divisions the number of divisions
 	 * @param comparator the dominance comparator
 	 */
-	public ReferencePointNondominatedSortingPopulation(
-			int numberOfObjectives, NormalBoundaryDivisions divisions,
+	public ReferencePointNondominatedSortingPopulation(int numberOfObjectives, NormalBoundaryDivisions divisions,
 			DominanceComparator comparator) {
 		super(comparator);
 		this.numberOfObjectives = numberOfObjectives;
@@ -152,15 +138,14 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 	}
 
 	/**
-	 * Constructs a new population with the specified solutions that maintains
-	 * the {@code rank} attribute for its solutions.
+	 * Constructs a new population with the specified solutions that maintains the {@code rank} attribute for its
+	 * solutions.
 	 * 
 	 * @param numberOfObjectives the number of objectives
 	 * @param divisions the number of divisions
 	 * @param iterable the solutions used to initialize this population
 	 */
-	public ReferencePointNondominatedSortingPopulation(
-			int numberOfObjectives, NormalBoundaryDivisions divisions,
+	public ReferencePointNondominatedSortingPopulation(int numberOfObjectives, NormalBoundaryDivisions divisions,
 			Iterable<? extends Solution> iterable) {
 		super(iterable);
 		this.numberOfObjectives = numberOfObjectives;
@@ -204,9 +189,8 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 	}
 
 	/**
-	 * Offsets the solutions in this population by the ideal point.  This
-	 * method does not modify the objective values, it creates a new attribute
-	 * with the name {@value NORMALIZED_OBJECTIVES}.
+	 * Offsets the solutions in this population by the ideal point.  This method does not modify the objective values,
+	 * it creates a new attribute with the name {@value NORMALIZED_OBJECTIVES}.
 	 */
 	protected void translateByIdealPoint() {
 		for (Solution solution : this) {
@@ -221,9 +205,8 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 	}
 
 	/**
-	 * Normalizes the solutions in this population by the given intercepts
-	 * (or scaling factors).  This method does not modify the objective values,
-	 * it modifies the {@value NORMALIZED_OBJECTIVES} attribute.
+	 * Normalizes the solutions in this population by the given intercepts (or scaling factors).  This method does not
+	 * modify the objective values, it modifies the {@value NORMALIZED_OBJECTIVES} attribute.
 	 * 
 	 * @param intercepts the intercepts used for scaling
 	 */
@@ -256,14 +239,11 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 	}
 
 	/**
-	 * Returns the extreme point in the given objective.  The extreme point is
-	 * the point that minimizes the achievement scalarizing function using a
-	 * reference point near the given objective.
+	 * Returns the extreme point in the given objective.  The extreme point is the point that minimizes the achievement
+	 * scalarizing function using a reference point near the given objective.
 	 * 
-	 * The NSGA-III paper (1) does not provide any details on the scalarizing
-	 * function, but an earlier paper by the authors (2) where some precursor
-	 * experiments are performed does define a possible function, replicated
-	 * below.
+	 * The NSGA-III paper (1) does not provide any details on the scalarizing function, but an earlier paper by the
+	 * authors (2) where some precursor experiments are performed does define a possible function, replicated below.
 	 * 
 	 * @param objective the objective index
 	 * @return the extreme point in the given objective
@@ -299,8 +279,7 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 	/**
 	 * Returns the extreme points for all objectives.
 	 * 
-	 * @return an array of extreme points, each index corresponds to each
-	 *         objective
+	 * @return an array of extreme points, each index corresponds to each objective
 	 */
 	private Solution[] extremePoints() {
 		Solution[] result = new Solution[numberOfObjectives];
@@ -313,9 +292,8 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 	}
 
 	/**
-	 * Calculates the intercepts between the hyperplane formed by the extreme
-	 * points and each axis.  The original paper (1) is unclear how to handle
-	 * degenerate cases, which occurs more frequently at larger dimensions.  In
+	 * Calculates the intercepts between the hyperplane formed by the extreme points and each axis.  The original
+	 * paper (1) is unclear how to handle degenerate cases, which occurs more frequently at larger dimensions.  In
 	 * this implementation, we simply use the nadir point for scaling.
 	 * 
 	 * @return an array of the intercept points for each objective
@@ -449,10 +427,9 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 	}
 
 	/**
-	 * Associates each solution to the nearest reference point, returning a
-	 * list-of-lists.  The outer list maps to each reference point using their
-	 * index.  The inner list is an unordered collection of the solutions
-	 * associated with the reference point.
+	 * Associates each solution to the nearest reference point, returning a list-of-lists.  The outer list maps to
+	 * each reference point using their index.  The inner list is an unordered collection of the solutions associated
+	 * with the reference point.
 	 * 
 	 * @param population the population of solutions
 	 * @return the association of solutions to reference points
@@ -485,8 +462,7 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 	}
 
 	/**
-	 * Returns the solution with the minimum perpendicular distance to the
-	 * given reference point.
+	 * Returns the solution with the minimum perpendicular distance to the given reference point.
 	 * 
 	 * @param solutions the list of solutions being considered
 	 * @param weight the reference point
@@ -510,8 +486,7 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 	}
 
 	/**
-	 * Truncates the population to the specified size using the reference-point
-	 * based nondominated sorting method.
+	 * Truncates the population to the specified size using the reference-point based nondominated sorting method.
 	 */
 	@Override
 	public void truncate(int size, Comparator<? super Solution> comparator) {
@@ -604,8 +579,7 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 	}
 
 	/**
-	 * Truncates the population to the specified size using the reference-point
-	 * based nondominated sorting method.
+	 * Truncates the population to the specified size using the reference-point based nondominated sorting method.
 	 */
 	@Override
 	public void truncate(int size) {

@@ -57,14 +57,12 @@ import org.moeaframework.core.indicator.Spacing;
 import org.moeaframework.core.spi.ProblemFactory;
 
 /**
- * Instruments algorithms with {@link Collector}s which record information about
- * the runtime behavior of algorithms.  First, the instrumenter walks the object
- * graph of an algorithm to determine its composition.  Upon finding objects
- * which can be instrumented, it attaches the corresponding collector.  Next,
- * the instrumenter returns an {@link InstrumentedAlgorithm}, which orchestrates
- * the collection of runtime information as the algorithm is executed.  Lastly,
- * the {@code InstrumentedAlgorithm} stores the runtime information, which can
- * subsequently be accessed and analyzed.
+ * Instruments algorithms with {@link Collector}s which record information about the runtime behavior of algorithms.
+ * First, the instrumenter walks the object graph of an algorithm to determine its composition.  Upon finding objects
+ * which can be instrumented, it attaches the corresponding collector.  Next, the instrumenter returns an
+ * {@link InstrumentedAlgorithm}, which orchestrates the collection of runtime information as the algorithm is
+ * executed.  Lastly, the {@code InstrumentedAlgorithm} stores the runtime information, which can subsequently be
+ * accessed and analyzed.
  * <pre>
  *   Instrumenter instrumenter = new Instrumenter()
  *     .withProblem(problemName)
@@ -79,9 +77,8 @@ import org.moeaframework.core.spi.ProblemFactory;
  * 
  *   Observations observations = instrumenter.getObservations();
  * </pre>
- * Note that the Instrumenter will not scan the contents of {@link Solution} or
- * {@link Problem}.  Instead, use the Instrumenter to enumerate these objects
- * and access their properties programmatically.
+ * Note that the Instrumenter will not scan the contents of {@link Solution} or {@link Problem}.  Instead, use the
+ * Instrumenter to enumerate these objects and access their properties programmatically.
  */
 public class Instrumenter extends ProblemBuilder {
 
@@ -171,21 +168,18 @@ public class Instrumenter extends ProblemBuilder {
 	private int frequency;
 	
 	/**
-	 * The units for the frequency, either in terms of the number of evaluations
-	 * or number of steps (iterations).
+	 * The units for the frequency, either in terms of the number of evaluations or number of steps (iterations).
 	 */
 	private FrequencyType frequencyType;
 	
 	/**
-	 * The collection of custom collectors added through the 
-	 * {@link #attach(Collector)} method.  This does not include built-in
-	 * collectors.
+	 * The collection of custom collectors added through the {@link #attach(Collector)} method.  This does not include
+	 * built-in collectors.
 	 */
 	private final List<Collector> customCollectors;
 	
 	/**
-	 * The excluded packages.  Any objects from these packages will not be
-	 * walked.
+	 * The excluded packages.  Any objects from these packages will not be walked.
 	 */
 	private final List<String> excludedPackages;
 	
@@ -209,9 +203,8 @@ public class Instrumenter extends ProblemBuilder {
 	}
 	
 	/**
-	 * Returns the observations from the last instrumented algorithm.  The
-	 * observations will be filled with the runtime information as the algorithm
-	 * is executed.
+	 * Returns the observations from the last instrumented algorithm.  The observations will be filled with the runtime
+	 * information as the algorithm is executed.
 	 * 
 	 * @return the observations from the last instrumented algorithm
 	 */
@@ -256,8 +249,7 @@ public class Instrumenter extends ProblemBuilder {
 	}
 	
 	/**
-	 * Indicates if the frequency is defined in terms of the number of
-	 * evaluations or number of steps (iterations).
+	 * Indicates if the frequency is defined in terms of the number of evaluations or number of steps (iterations).
 	 * 
 	 * @param frequencyType the frequency type, either EVALUATIONS or STEPS
 	 * @return a reference to this instrumenter
@@ -292,8 +284,7 @@ public class Instrumenter extends ProblemBuilder {
 	}
 	
 	/**
-	 * Includes the generational distance collector when instrumenting 
-	 * algorithms.
+	 * Includes the generational distance collector when instrumenting algorithms.
 	 * 
 	 * @return a reference to this instrumenter
 	 */
@@ -304,8 +295,7 @@ public class Instrumenter extends ProblemBuilder {
 	}
 	
 	/**
-	 * Includes the inverted generational distance collector when instrumenting
-	 * algorithms.
+	 * Includes the inverted generational distance collector when instrumenting algorithms.
 	 * 
 	 * @return a reference to this instrumenter
 	 */
@@ -327,8 +317,7 @@ public class Instrumenter extends ProblemBuilder {
 	}
 	
 	/**
-	 * Includes the additive &epsilon;-indicator collector when instrumenting
-	 * algorithms.
+	 * Includes the additive &epsilon;-indicator collector when instrumenting algorithms.
 	 * 
 	 * @return a reference to this instrumenter
 	 */
@@ -383,9 +372,8 @@ public class Instrumenter extends ProblemBuilder {
 	}
 	
 	/**
-	 * Includes all indicator collectors when instrumenting algorithms.  This
-	 * includes hypervolume, generational distance, inverted generational
-	 * distance, spacing, additive &epsilon;-indicator, contribution, and the
+	 * Includes all indicator collectors when instrumenting algorithms.  This includes hypervolume, generational
+	 * distance, inverted generational distance, spacing, additive &epsilon;-indicator, contribution, and the
 	 * R1, R2, and R3 indicators.
 	 * 
 	 * @return a reference to this instrumenter
@@ -416,8 +404,7 @@ public class Instrumenter extends ProblemBuilder {
 	}
 	
 	/**
-	 * Includes the adaptive multimethod variation collector when instrumenting
-	 * algorithms.
+	 * Includes the adaptive multimethod variation collector when instrumenting algorithms.
 	 * 
 	 * @return a reference to this instrumenter
 	 */
@@ -428,8 +415,7 @@ public class Instrumenter extends ProblemBuilder {
 	}
 	
 	/**
-	 * Includes the adaptive time continuation collector when instrumenting
-	 * algorithms.
+	 * Includes the adaptive time continuation collector when instrumenting algorithms.
 	 * 
 	 * @return a reference to this instrumenter
 	 */
@@ -522,14 +508,13 @@ public class Instrumenter extends ProblemBuilder {
 	}
 
 	@Override
-	public Instrumenter withProblemClass(Class<?> problemClass, 
-			Object... problemArguments) {
+	public Instrumenter withProblemClass(Class<?> problemClass, Object... problemArguments) {
 		return (Instrumenter)super.withProblemClass(problemClass, problemArguments);
 	}
 
 	@Override
-	public Instrumenter withProblemClass(String problemClassName, 
-			Object... problemArguments) throws ClassNotFoundException {
+	public Instrumenter withProblemClass(String problemClassName, Object... problemArguments)
+			throws ClassNotFoundException {
 		return (Instrumenter)super.withProblemClass(problemClassName, problemArguments);
 	}
 
@@ -549,35 +534,28 @@ public class Instrumenter extends ProblemBuilder {
 	}
 
 	/**
-	 * Recursively walks the object graph to 1) determine the nesting of objects
-	 * to help determine which objects are to be instrumented; and 2) attach the
-	 * {@code collector}s to any matching objects.
+	 * Recursively walks the object graph to 1) determine the nesting of objects to help determine which objects are
+	 * to be instrumented; and 2) attach the {@code Collector}s to any matching objects.
 	 * <p>
-	 * In order to avoid cycles in the object graph, objects are only traversed
-	 * the first time they are encountered.  If an object appears multiple
-	 * times in the object graph, the {@code instrument} method will only be
-	 * invoked once.
+	 * In order to avoid cycles in the object graph, objects are only traversed the first time they are encountered.
+	 * If an object appears multiple times in the object graph, the {@code instrument} method will only be invoked
+	 * once.
 	 * <p>
-	 * When generating the nesting of objects, anonymous classes are given the
-	 * placeholder type {@code "(Anonymous)"}, without quotes.  While the
-	 * contents of arrays and {@link Collection}s are listed in the nesting,
-	 * the array/collection object itself is not listed.  For example,
-	 * the nesting will show {@code CompoundVariation >> PM} instead of
-	 * {@code CompoundVariation >> ArrayList >> Object[] >> PM}.
+	 * When generating the nesting of objects, anonymous classes are given the placeholder type {@code "(Anonymous)"},
+	 * without quotes.  While the contents of arrays and {@link Collection}s are listed in the nesting, the
+	 * array/collection object itself is not listed.  For example, the nesting will show
+	 * {@code CompoundVariation >> PM} instead of {@code CompoundVariation >> ArrayList >> Object[] >> PM}.
 	 * <p>
 	 * This method is reentrant.
 	 * 
 	 * @param algorithm the instrumented algorithm
 	 * @param collectors the collectors to be attached
-	 * @param visited the set of visited objects, which may include the current
-	 *        object when traversing its superclasses
+	 * @param visited the set of visited objects, which may include the current object when traversing its superclasses
 	 * @param parents the objects in which the current object is contained
 	 * @param object the current object undergoing reflection
-	 * @param type the superclass whose members are being reflected; or
-	 *        {@code null} if the base type is to be used
+	 * @param type the superclass whose members are being reflected; or {@code null} if the base type is to be used
 	 */
-	protected void instrument(InstrumentedAlgorithm algorithm, 
-			List<Collector> collectors, Set<Object> visited, 
+	protected void instrument(InstrumentedAlgorithm algorithm, List<Collector> collectors, Set<Object> visited, 
 			Stack<Object> parents, Object object, Class<?> type) {
 		if (object == null) {
 			return;
@@ -646,9 +624,8 @@ public class Instrumenter extends ProblemBuilder {
 			visited.add(object);
 		}
 		
-		//ignore some types we should not recursively scan as these have caused
-		//issues with user libraries...it's the user's responsibility to access
-		//the internals of these objects.
+		//ignore some types we should not recursively scan as these have caused issues with user libraries...it's the
+		//user's responsibility to access the internals of these objects.
 		if ((object instanceof Solution) || (object instanceof Problem)) {
 			return;
 		}
@@ -686,21 +663,18 @@ public class Instrumenter extends ProblemBuilder {
 	}
 	
 	/**
-	 * Instruments the specified algorithm, returning an 
-	 * {@link InstrumentedAlgorithm} to be used to execute the algorithm and
-	 * store the data produced by any attached instruments.
+	 * Instruments the specified algorithm, returning an {@link InstrumentedAlgorithm} to be used to execute the
+	 * algorithm and store the data produced by any attached instruments.
 	 * 
 	 * @param algorithm the algorithm to instrument
 	 * @return the instrumented algorithm
-	 * @throws IllegalArgumentException if no reference set is available or
-	 *         could not be loaded
+	 * @throws IllegalArgumentException if no reference set is available or could not be loaded
 	 */
 	public InstrumentedAlgorithm instrument(Algorithm algorithm) {
 		List<Collector> collectors = new ArrayList<Collector>();
 		
-		if (includeHypervolume || includeGenerationalDistance || 
-				includeInvertedGenerationalDistance || includeSpacing ||
-				includeAdditiveEpsilonIndicator || includeContribution ||
+		if (includeHypervolume || includeGenerationalDistance || includeInvertedGenerationalDistance ||
+				includeSpacing || includeAdditiveEpsilonIndicator || includeContribution ||
 				includeR1 || includeR2 || includeR3) {
 			Problem problem = algorithm.getProblem();
 			NondominatedPopulation referenceSet = getReferenceSet();
@@ -736,27 +710,18 @@ public class Instrumenter extends ProblemBuilder {
 			}
 			
 			if (includeR1) {
-				collectors.add(new IndicatorCollector(new R1Indicator(
-						problem,
-						R1Indicator.getDefaultSubdivisions(problem),
-						referenceSet),
-						archive));
+				collectors.add(new IndicatorCollector(new R1Indicator(problem,
+						R1Indicator.getDefaultSubdivisions(problem), referenceSet), archive));
 			}
 			
 			if (includeR2) {
-				collectors.add(new IndicatorCollector(new R2Indicator(
-						problem,
-						R2Indicator.getDefaultSubdivisions(problem),
-						referenceSet),
-						archive));
+				collectors.add(new IndicatorCollector(new R2Indicator(problem,
+						R2Indicator.getDefaultSubdivisions(problem), referenceSet), archive));
 			}
 			
 			if (includeR3) {
-				collectors.add(new IndicatorCollector(new R3Indicator(
-						problem,
-						R3Indicator.getDefaultSubdivisions(problem),
-						referenceSet),
-						archive));
+				collectors.add(new IndicatorCollector(new R3Indicator(problem,
+						R3Indicator.getDefaultSubdivisions(problem), referenceSet), archive));
 			}
 		}
 		

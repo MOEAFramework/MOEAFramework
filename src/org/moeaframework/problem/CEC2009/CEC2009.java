@@ -18,8 +18,7 @@
 package org.moeaframework.problem.CEC2009;
 
 /**
- * Implementations for the actual function evaluations used by the CEC 2009
- * test problem suite.
+ * Implementations for the actual function evaluations used by the CEC 2009 test problem suite.
  */
 class CEC2009 {
 	
@@ -31,22 +30,18 @@ class CEC2009 {
 	}
     
     /* 
-     * The following source code is modified from the CEC 2009 test problem
-     * suite available at {@link http://dces.essex.ac.uk/staff/qzhang/}.
-     * Permission to distribute these modified source codes under the GNU
-     * Lesser General Public License was obtained via e-mail correspondence
-     * with the original authors.
+     * The following source code is modified from the CEC 2009 test problem suite available at
+     * {@link http://dces.essex.ac.uk/staff/qzhang/}.  Permission to distribute these modified source codes under the
+     * GNU Lesser General Public License was obtained via e-mail correspondence with the original authors.
      */
 
 	private static final double PI = 3.1415926535897932384626433832795;
 
 	/**
-	 * Returns {@code 1.0} if the specified value is strictly positive;
-	 * otherwise returns {@code -1.0}.
+	 * Returns {@code 1.0} if the specified value is strictly positive; otherwise returns {@code -1.0}.
 	 * 
 	 * @param x the value
-	 * @return {@code 1.0} if the specified value is strictly positive;
-	 *         otherwise returns {@code -1.0}
+	 * @return {@code 1.0} if the specified value is strictly positive; otherwise returns {@code -1.0}
 	 */
 	private static double MYSIGN(double x) {
 		return (x > 0.0 ? 1.0 : -1.0);
@@ -135,8 +130,7 @@ class CEC2009 {
 		double pj;
 
 		for (int j = 2; j <= nx; j++) {
-			yj = x[j - 1] - Math.pow(x[0], 0.5 * (1.0 + 3.0 * (j - 2.0) / 
-					(nx - 2.0)));
+			yj = x[j - 1] - Math.pow(x[0], 0.5 * (1.0 + 3.0 * (j - 2.0) / (nx - 2.0)));
 			pj = Math.cos(20.0 * yj * PI / Math.sqrt(j + 0.0));
 			
 			if (j % 2 == 0) {
@@ -151,8 +145,7 @@ class CEC2009 {
 		}
 		
 		f[0] = x[0] + 2.0 * (4.0 * sum1 - 2.0 * prod1 + 2.0) / (double)count1;
-		f[1] = 1.0 - Math.sqrt(x[0]) + 2.0 * (4.0 * sum2 - 2.0 * prod2 + 2.0)
-				/ (double)count2;
+		f[1] = 1.0 - Math.sqrt(x[0]) + 2.0 * (4.0 * sum2 - 2.0 * prod2 + 2.0) / (double)count2;
 	}
 
 	/**
@@ -263,10 +256,8 @@ class CEC2009 {
 			hj = 0.0;
 		}
 		
-		f[0] = x[0] + hj + 2.0 * (4.0 * sum1 - 2.0 * prod1 + 2.0)
-				/ (double)count1;
-		f[1] = 1.0 - x[0] + hj + 2.0 * (4.0 * sum2 - 2.0 * prod2 + 2.0)
-				/ (double)count2;
+		f[0] = x[0] + hj + 2.0 * (4.0 * sum1 - 2.0 * prod1 + 2.0) / (double)count1;
+		f[1] = 1.0 - x[0] + hj + 2.0 * (4.0 * sum2 - 2.0 * prod2 + 2.0) / (double)count2;
 	}
 
 	/**
@@ -317,8 +308,7 @@ class CEC2009 {
 		double yj;
 
 		for (int j = 3; j <= nx; j++) {
-			yj = x[j - 1] - 2.0 * x[1]
-					* Math.sin(2.0 * PI * x[0] + j * PI / nx);
+			yj = x[j - 1] - 2.0 * x[1] * Math.sin(2.0 * PI * x[0] + j * PI / nx);
 			
 			if (j % 3 == 1) {
 				sum1 += yj * yj;
@@ -332,10 +322,8 @@ class CEC2009 {
 			}
 		}
 		
-		f[0] = Math.cos(0.5 * PI * x[0]) * Math.cos(0.5 * PI * x[1]) + 2.0
-				* sum1 / (double)count1;
-		f[1] = Math.cos(0.5 * PI * x[0]) * Math.sin(0.5 * PI * x[1]) + 2.0
-				* sum2 / (double)count2;
+		f[0] = Math.cos(0.5 * PI * x[0]) * Math.cos(0.5 * PI * x[1]) + 2.0 * sum1 / (double)count1;
+		f[1] = Math.cos(0.5 * PI * x[0]) * Math.sin(0.5 * PI * x[1]) + 2.0 * sum2 / (double)count2;
 		f[2] = Math.sin(0.5 * PI * x[0]) + 2.0 * sum3 / (double)count3;
 	}
 
@@ -357,8 +345,7 @@ class CEC2009 {
 		double E = 0.1;
 
 		for (int j = 3; j <= nx; j++) {
-			yj = x[j - 1] - 2.0 * x[1]
-					* Math.sin(2.0 * PI * x[0] + j * PI / nx);
+			yj = x[j - 1] - 2.0 * x[1] * Math.sin(2.0 * PI * x[0] + j * PI / nx);
 			
 			if (j % 3 == 1) {
 				sum1 += yj * yj;
@@ -401,8 +388,7 @@ class CEC2009 {
 		double hj;
 
 		for (int j = 3; j <= nx; j++) {
-			yj = x[j - 1] - 2.0 * x[1]
-					* Math.sin(2.0 * PI * x[0] + j * PI / nx);
+			yj = x[j - 1] - 2.0 * x[1] * Math.sin(2.0 * PI * x[0] + j * PI / nx);
 			hj = 4.0 * yj * yj - Math.cos(8.0 * PI * yj) + 1.0;
 			
 			if (j % 3 == 1) {
@@ -417,10 +403,8 @@ class CEC2009 {
 			}
 		}
 		
-		f[0] = Math.cos(0.5 * PI * x[0]) * Math.cos(0.5 * PI * x[1]) + 2.0
-				* sum1 / (double)count1;
-		f[1] = Math.cos(0.5 * PI * x[0]) * Math.sin(0.5 * PI * x[1]) + 2.0
-				* sum2 / (double)count2;
+		f[0] = Math.cos(0.5 * PI * x[0]) * Math.cos(0.5 * PI * x[1]) + 2.0 * sum1 / (double)count1;
+		f[1] = Math.cos(0.5 * PI * x[0]) * Math.sin(0.5 * PI * x[1]) + 2.0 * sum2 / (double)count2;
 		f[2] = Math.sin(0.5 * PI * x[0]) + 2.0 * sum3 / (double)count3;
 	}
 
@@ -442,8 +426,7 @@ class CEC2009 {
 		double a = 1.0;
 
 		for (int j = 2; j <= nx; j++) {
-			yj = x[j - 1] - Math.pow(x[0], 0.5 * (1.0 + 3.0 * (j - 2.0) / 
-					(nx - 2.0)));
+			yj = x[j - 1] - Math.pow(x[0], 0.5 * (1.0 + 3.0 * (j - 2.0) / (nx - 2.0)));
 			
 			if (j % 2 == 1) {
 				sum1 += yj * yj;
@@ -456,8 +439,7 @@ class CEC2009 {
 		
 		f[0] = x[0] + 2.0 * sum1 / (double)count1;
 		f[1] = 1.0 - x[0] + 2.0 * sum2 / (double)count2;
-		c[0] = f[1] + f[0] - a
-				* Math.abs(Math.sin(N * PI * (f[0] - f[1] + 1.0))) - 1.0;
+		c[0] = f[1] + f[0] - a * Math.abs(Math.sin(N * PI * (f[0] - f[1] + 1.0))) - 1.0;
 	}
 
 	/**
@@ -494,8 +476,7 @@ class CEC2009 {
 		
 		f[0] = x[0] + 2.0 * sum1 / (double)count1;
 		f[1] = 1.0 - Math.sqrt(x[0]) + 2.0 * sum2 / (double)count2;
-		t = f[1] + Math.sqrt(f[0]) - a
-				* Math.sin(N * PI * (Math.sqrt(f[0]) - f[1] + 1.0)) - 1.0;
+		t = f[1] + Math.sqrt(f[0]) - a * Math.sin(N * PI * (Math.sqrt(f[0]) - f[1] + 1.0)) - 1.0;
 		c[0] = MYSIGN(t) * Math.abs(t) / (1 + Math.exp(4.0 * Math.abs(t)));
 	}
 
@@ -535,10 +516,8 @@ class CEC2009 {
 		}
 		
 		f[0] = x[0] + 2.0 * (4.0 * sum1 - 2.0 * prod1 + 2.0) / (double)count1;
-		f[1] = 1.0 - x[0] * x[0] + 2.0 * (4.0 * sum2 - 2.0 * prod2 + 2.0)
-				/ (double)count2;
-		c[0] = f[1] + f[0] * f[0] - a
-				* Math.sin(N * PI * (f[0] * f[0] - f[1] + 1.0)) - 1.0;
+		f[1] = 1.0 - x[0] * x[0] + 2.0 * (4.0 * sum2 - 2.0 * prod2 + 2.0) / (double)count2;
+		c[0] = f[1] + f[0] * f[0] - a * Math.sin(N * PI * (f[0] * f[0] - f[1] + 1.0)) - 1.0;
 	}
 
 	/**
@@ -562,8 +541,7 @@ class CEC2009 {
 				sum1 += yj * yj;
 			} else {
 				if (j == 2) {
-					sum2 += yj < 1.5 - 0.75 * Math.sqrt(2.0) ? Math.abs(yj)
-							: (0.125 + (yj - 1) * (yj - 1));
+					sum2 += yj < 1.5 - 0.75 * Math.sqrt(2.0) ? Math.abs(yj) : (0.125 + (yj - 1) * (yj - 1));
 				} else {
 					sum2 += yj * yj;
 				}
@@ -572,8 +550,7 @@ class CEC2009 {
 		
 		f[0] = x[0] + sum1;
 		f[1] = 1.0 - x[0] + sum2;
-		t = x[1] - Math.sin(6.0 * x[0] * PI + 2.0 * PI / nx) - 0.5 * x[0]
-				+ 0.25;
+		t = x[1] - Math.sin(6.0 * x[0] * PI + 2.0 * PI / nx) - 0.5 * x[0] + 0.25;
 		c[0] = MYSIGN(t) * Math.abs(t) / (1 + Math.exp(4.0 * Math.abs(t)));
 	}
 
@@ -592,16 +569,13 @@ class CEC2009 {
 
 		for (int j = 2; j <= nx; j++) {
 			if (j % 2 == 1) {
-				yj = x[j - 1] - 0.8 * x[0]
-						* Math.cos(6.0 * PI * x[0] + j * PI / nx);
+				yj = x[j - 1] - 0.8 * x[0] * Math.cos(6.0 * PI * x[0] + j * PI / nx);
 				sum1 += 2.0 * yj * yj - Math.cos(4.0 * PI * yj) + 1.0;
 			} else {
-				yj = x[j - 1] - 0.8 * x[0]
-						* Math.sin(6.0 * PI * x[0] + j * PI / nx);
+				yj = x[j - 1] - 0.8 * x[0] * Math.sin(6.0 * PI * x[0] + j * PI / nx);
 				
 				if (j == 2) {
-					sum2 += yj < 1.5 - 0.75 * Math.sqrt(2.0) ? Math.abs(yj)
-							: (0.125 + (yj - 1) * (yj - 1));
+					sum2 += yj < 1.5 - 0.75 * Math.sqrt(2.0) ? Math.abs(yj) : (0.125 + (yj - 1) * (yj - 1));
 				} else {
 					sum2 += 2.0 * yj * yj - Math.cos(4.0 * PI * yj) + 1.0;
 				}
@@ -610,8 +584,7 @@ class CEC2009 {
 		
 		f[0] = x[0] + sum1;
 		f[1] = 1.0 - x[0] + sum2;
-		c[0] = x[1] - 0.8 * x[0] * Math.sin(6.0 * x[0] * PI + 2.0 * PI / nx)
-				- 0.5 * x[0] + 0.25;
+		c[0] = x[1] - 0.8 * x[0] * Math.sin(6.0 * x[0] * PI + 2.0 * PI / nx) - 0.5 * x[0] + 0.25;
 	}
 
 	/**
@@ -629,12 +602,10 @@ class CEC2009 {
 
 		for (int j = 2; j <= nx; j++) {
 			if (j % 2 == 1) {
-				yj = x[j - 1] - 0.8 * x[0]
-						* Math.cos(6.0 * PI * x[0] + j * PI / nx);
+				yj = x[j - 1] - 0.8 * x[0] * Math.cos(6.0 * PI * x[0] + j * PI / nx);
 				sum1 += yj * yj;
 			} else {
-				yj = x[j - 1] - 0.8 * x[0]
-						* Math.sin(6.0 * PI * x[0] + j * PI / nx);
+				yj = x[j - 1] - 0.8 * x[0] * Math.sin(6.0 * PI * x[0] + j * PI / nx);
 				sum2 += yj * yj;
 			}
 		}
@@ -709,8 +680,7 @@ class CEC2009 {
 		double a = 4.0;
 
 		for (int j = 3; j <= nx; j++) {
-			yj = x[j - 1] - 2.0 * x[1]
-					* Math.sin(2.0 * PI * x[0] + j * PI / nx);
+			yj = x[j - 1] - 2.0 * x[1] * Math.sin(2.0 * PI * x[0] + j * PI / nx);
 			
 			if (j % 3 == 1) {
 				sum1 += yj * yj;
@@ -724,10 +694,8 @@ class CEC2009 {
 			}
 		}
 		
-		f[0] = Math.cos(0.5 * PI * x[0]) * Math.cos(0.5 * PI * x[1]) + 2.0
-				* sum1 / (double)count1;
-		f[1] = Math.cos(0.5 * PI * x[0]) * Math.sin(0.5 * PI * x[1]) + 2.0
-				* sum2 / (double)count2;
+		f[0] = Math.cos(0.5 * PI * x[0]) * Math.cos(0.5 * PI * x[1]) + 2.0 * sum1 / (double)count1;
+		f[1] = Math.cos(0.5 * PI * x[0]) * Math.sin(0.5 * PI * x[1]) + 2.0 * sum2 / (double)count2;
 		f[2] = Math.sin(0.5 * PI * x[0]) + 2.0 * sum3 / (double)count3;
 		c[0] = (f[0] * f[0] + f[1] * f[1]) / (1 - f[2] * f[2])
 				- a * Math.abs(Math.sin(N * PI * ((f[0] * f[0] - f[1] * f[1])
@@ -754,8 +722,7 @@ class CEC2009 {
 		double a = 3.0;
 
 		for (int j = 3; j <= nx; j++) {
-			yj = x[j - 1] - 2.0 * x[1]
-					* Math.sin(2.0 * PI * x[0] + j * PI / nx);
+			yj = x[j - 1] - 2.0 * x[1] * Math.sin(2.0 * PI * x[0] + j * PI / nx);
 			
 			if (j % 3 == 1) {
 				sum1 += yj * yj;
@@ -769,10 +736,8 @@ class CEC2009 {
 			}
 		}
 		
-		f[0] = Math.cos(0.5 * PI * x[0]) * Math.cos(0.5 * PI * x[1]) + 2.0
-				* sum1 / (double)count1;
-		f[1] = Math.cos(0.5 * PI * x[0]) * Math.sin(0.5 * PI * x[1]) + 2.0
-				* sum2 / (double)count2;
+		f[0] = Math.cos(0.5 * PI * x[0]) * Math.cos(0.5 * PI * x[1]) + 2.0 * sum1 / (double)count1;
+		f[1] = Math.cos(0.5 * PI * x[0]) * Math.sin(0.5 * PI * x[1]) + 2.0 * sum2 / (double)count2;
 		f[2] = Math.sin(0.5 * PI * x[0]) + 2.0 * sum3 / (double)count3;
 		c[0] = (f[0] * f[0] + f[1] * f[1]) / (1 - f[2] * f[2])
 				- a * Math.sin(N * PI * ((f[0] * f[0] - f[1] * f[1]) / 
@@ -800,8 +765,7 @@ class CEC2009 {
 		double a = 1.0;
 
 		for (int j = 3; j <= nx; j++) {
-			yj = x[j - 1] - 2.0 * x[1]
-					* Math.sin(2.0 * PI * x[0] + j * PI / nx);
+			yj = x[j - 1] - 2.0 * x[1] * Math.sin(2.0 * PI * x[0] + j * PI / nx);
 			hj = 4.0 * yj * yj - Math.cos(8.0 * PI * yj) + 1.0;
 			
 			if (j % 3 == 1) {
@@ -816,10 +780,8 @@ class CEC2009 {
 			}
 		}
 		
-		f[0] = Math.cos(0.5 * PI * x[0]) * Math.cos(0.5 * PI * x[1]) + 2.0
-				* sum1 / (double)count1;
-		f[1] = Math.cos(0.5 * PI * x[0]) * Math.sin(0.5 * PI * x[1]) + 2.0
-				* sum2 / (double)count2;
+		f[0] = Math.cos(0.5 * PI * x[0]) * Math.cos(0.5 * PI * x[1]) + 2.0 * sum1 / (double)count1;
+		f[1] = Math.cos(0.5 * PI * x[0]) * Math.sin(0.5 * PI * x[1]) + 2.0 * sum2 / (double)count2;
 		f[2] = Math.sin(0.5 * PI * x[0]) + 2.0 * sum3 / (double)count3;
 		c[0] = (f[0] * f[0] + f[1] * f[1]) / (1 - f[2] * f[2])
 				- a * Math.sin(N * PI * ((f[0] * f[0] - f[1] * f[1]) / 
@@ -827,8 +789,8 @@ class CEC2009 {
 	}
 	
 	/**
-	 * Transforms the decision variables according to the given rotation matrix
-	 * and scaling values.  This is used in the UF11 and UF12 problems.
+	 * Transforms the decision variables according to the given rotation matrix and scaling values.  This is used in
+	 * the UF11 and UF12 problems.
 	 * 
 	 * @param x the original decision variables
 	 * @param zz the transformed decision variables output
@@ -838,8 +800,8 @@ class CEC2009 {
 	 * @param nx the number of decision variables
 	 * @param n_obj the number of objectives
 	 */
-	public static void transform(double[] x, double[] zz, double[] psum, 
-			double[][] M, double[] lamda_l, int nx, int n_obj) {
+	public static void transform(double[] x, double[] zz, double[] psum, double[][] M, double[] lamda_l, int nx,
+			int n_obj) {
 		int k = nx - n_obj + 1;
 		double[] p = new double[nx];
 		
@@ -868,20 +830,17 @@ class CEC2009 {
 		
 		for (int i = nx - k + 1; i <= nx; i++) {
 			for (int j = 0; j < n_obj; j++) {
-				psum[j] = Math.sqrt(Math.pow(psum[j], 2)
-						+ Math.pow(p[i - 1], 2));
+				psum[j] = Math.sqrt(Math.pow(psum[j], 2) + Math.pow(p[i - 1], 2));
 			}
 		}
 		
 		for (int i = 1; i <= n_obj; i++) {
 			for (int j = n_obj - i; j >= 1; j--) {
-				psum[i - 1] = Math.sqrt(Math.pow(psum[i - 1], 2)
-						+ Math.pow(p[j - 1], 2));
+				psum[i - 1] = Math.sqrt(Math.pow(psum[i - 1], 2) + Math.pow(p[j - 1], 2));
 			}
 			
 			if (i > 1) {
-				psum[i - 1] = Math.sqrt(Math.pow(psum[i - 1], 2)
-						+ Math.pow(p[(n_obj - i + 1) - 1], 2));
+				psum[i - 1] = Math.sqrt(Math.pow(psum[i - 1], 2) + Math.pow(p[(n_obj - i + 1) - 1], 2));
 			}
 		}
 	}

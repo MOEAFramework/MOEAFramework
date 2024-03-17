@@ -32,12 +32,10 @@ import org.moeaframework.problem.AbstractProblem;
  * <p>
  * References:
  * <ol>
- *   <li>Viennet, R., et al (1996).  "Multicriteria Optimization Using a
- *       Genetic Algorithm for Determining a Pareto Set."  International
- *       Journal of Systems Science, 27(2):255-260.
- *   <li>Van Veldhuizen, D. A (1999).  "Multiobjective Evolutionary Algorithms: 
- *       Classifications, Analyses, and New Innovations."  Air Force Institute
- *       of Technology, Ph.D. Thesis, Appendix B.
+ *   <li>Viennet, R., et al (1996).  "Multicriteria Optimization Using a Genetic Algorithm for Determining a Pareto
+ *       Set."  International Journal of Systems Science, 27(2):255-260.
+ *   <li>Van Veldhuizen, D. A (1999).  "Multiobjective Evolutionary Algorithms: Classifications, Analyses, and New
+ *       Innovations."  Air Force Institute of Technology, Ph.D. Thesis, Appendix B.
  * </ol>
  */
 public class Viennet2 extends AbstractProblem {

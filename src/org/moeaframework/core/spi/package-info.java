@@ -17,7 +17,6 @@
  */
 
 /**
- * Defines the service provider interfaces (SPIs) and factories for
- * constructing problems, algorithms and operators.
+ * Defines the service provider interfaces (SPIs) and factories for constructing problems, algorithms and operators.
  */
 package org.moeaframework.core.spi;

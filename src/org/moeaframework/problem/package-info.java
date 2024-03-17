@@ -17,7 +17,6 @@
  */
 
 /**
- * Package containing standardized problems and utility classes for working
- * with problems.
+ * Package containing standardized problems and utility classes for working with problems.
  */
 package org.moeaframework.problem;

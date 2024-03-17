@@ -21,14 +21,13 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.util.Vector;
 
 /**
- * The vector angle distance scaling aggregate function.  The distance between
- * the origin and the objective vector is scaled by the cosine angle between the
- * objective vector and a target vector.
+ * The vector angle distance scaling aggregate function.  The distance between the origin and the objective vector is
+ * scaled by the cosine angle between the objective vector and a target vector.
  * <p>
  * References:
  * <ol>
- *   <li>E. J. Hughes.  "Multiple Single Objective Pareto Sampling."  2003
- *       Congress on Evolutionary Computation, pp. 2678-2684.
+ *   <li>E. J. Hughes.  "Multiple Single Objective Pareto Sampling."  2003 Congress on Evolutionary Computation,
+ *       pp. 2678-2684.
  * </ol>
  */
 public class VectorAngleDistanceScalingComparator implements AggregateObjectiveComparator {
@@ -44,8 +43,7 @@ public class VectorAngleDistanceScalingComparator implements AggregateObjectiveC
 	private final double[] weights;
 	
 	/**
-	 * Constructs a new instance of the vector angle distance scaling aggregate
-	 * function with the given weights.
+	 * Constructs a new instance of the vector angle distance scaling aggregate function with the given weights.
 	 * 
 	 * @param weights the weight vector; must have a magnitude of 1.0
 	 */
@@ -54,8 +52,7 @@ public class VectorAngleDistanceScalingComparator implements AggregateObjectiveC
 	}
 	
 	/**
-	 * Constructs a new instance of the vector angle distance scaling aggregate
-	 * function with the given weights.
+	 * Constructs a new instance of the vector angle distance scaling aggregate function with the given weights.
 	 * 
 	 * @param weights the weight vector; must have a magnitude of 1.0
 	 * @param q factor for scaling the effects of the angle
@@ -94,8 +91,8 @@ public class VectorAngleDistanceScalingComparator implements AggregateObjectiveC
 	}
 
 	/**
-	 * Computes the vector angle distance scaling aggregate fitness of the
-	 * solution.  One weight should be given for each objective.
+	 * Computes the vector angle distance scaling aggregate fitness of the solution.  One weight should be given for
+	 * each objective.
 	 * 
 	 * @param solution the solution
 	 * @param weights the weight vector

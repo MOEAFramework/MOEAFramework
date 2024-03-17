@@ -50,8 +50,8 @@ public class PermutationTest {
 	}
 
 	/**
-	 * Tests the array constructor to ensure the array forms a valid permutation
-	 * and is an independent copy of the array.
+	 * Tests the array constructor to ensure the array forms a valid permutation and is an independent copy of the
+	 * array.
 	 */
 	@Test
 	public void testArrayConstructor() {
@@ -71,8 +71,8 @@ public class PermutationTest {
 	}
 	
 	/**
-	 * Tests the array constructor, and consequently the {@code fromArray}
-	 * method, for detecting when the permutation is missing an element.
+	 * Tests the array constructor, and consequently the {@code fromArray} method, for detecting when the permutation
+	 * is missing an element.
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testArrayConstructorInvalidPermutation1() {
@@ -80,8 +80,8 @@ public class PermutationTest {
 	}
 	
 	/**
-	 * Tests if the array constructor, and consequently the {@code fromArray}
-	 * method, for detecting when the permutation contains duplicate elements.
+	 * Tests if the array constructor, and consequently the {@code fromArray} method, for detecting when the
+	 * permutation contains duplicate elements.
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testArrayConstructorInvalidPermutation2() {
@@ -110,8 +110,7 @@ public class PermutationTest {
 	}
 	
 	/**
-	 * Tests to ensure the {@link Permutation#hashCode()} general contract is
-	 * upheld.
+	 * Tests to ensure the {@link Permutation#hashCode()} general contract is upheld.
 	 */
 	@Test
 	public void testHashCode() {
@@ -130,8 +129,7 @@ public class PermutationTest {
 	}
 
 	/**
-	 * Tests if the {@link Permutation#copy} method produces a copy equal to but
-	 * independent from the original.
+	 * Tests if the {@link Permutation#copy} method produces a copy equal to but independent from the original.
 	 */
 	@Test
 	public void testCopy() {
@@ -144,8 +142,7 @@ public class PermutationTest {
 	}
 
 	/**
-	 * Tests if the {@link Permutation#swap} method correctly swaps the two
-	 * indices.
+	 * Tests if the {@link Permutation#swap} method correctly swaps the two indices.
 	 */
 	@Test
 	public void testSwap() {
@@ -159,8 +156,7 @@ public class PermutationTest {
 	}
 
 	/**
-	 * Tests if the {@link Permutation#insert} method correctly inserts the
-	 * value into the permutation.
+	 * Tests if the {@link Permutation#insert} method correctly inserts the value into the permutation.
 	 */
 	@Test
 	public void testInsert() {
@@ -178,8 +174,7 @@ public class PermutationTest {
 	}
 
 	/**
-	 * Tests if the {@link Permutation#isPermutation} method correctly detects
-	 * valid and invalid permutations.
+	 * Tests if the {@link Permutation#isPermutation} method correctly detects valid and invalid permutations.
 	 */
 	@Test
 	public void testIsPermutation() {
@@ -191,8 +186,7 @@ public class PermutationTest {
 	}
 
 	/**
-	 * Tests if the {@link Permutation#swap(int, int)} method correctly throws
-	 * an {@code IndexOutOfBoundsException}.
+	 * Tests if the {@link Permutation#swap(int, int)} method correctly throws an {@code IndexOutOfBoundsException}.
 	 */
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testSwapException() {
@@ -200,8 +194,7 @@ public class PermutationTest {
 	}
 
 	/**
-	 * Tests if the {@link Permutation#insert(int, int)} method correctly throws
-	 * an {@code IndexOutOfBoundsException}.
+	 * Tests if the {@link Permutation#insert(int, int)} method correctly throws an {@code IndexOutOfBoundsException}.
 	 */
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testInsertException() {
@@ -209,8 +202,7 @@ public class PermutationTest {
 	}
 
 	/**
-	 * Tests if the {@link Permutation#get(int)} method correctly throws an
-	 * {@code IndexOutOfBoundsException}.
+	 * Tests if the {@link Permutation#get(int)} method correctly throws an {@code IndexOutOfBoundsException}.
 	 */
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testGetException() {

@@ -39,8 +39,7 @@ public class SwapTest {
 	}
 
 	/**
-	 * Tests various probabilities to ensure swap mutation is applied the
-	 * correct number of times on average.
+	 * Tests various probabilities to ensure swap mutation is applied the correct number of times on average.
 	 */
 	@Test
 	public void testProbabilities() {
@@ -73,13 +72,12 @@ public class SwapTest {
 	}
 
 	/**
-	 * Returns {@code true} if {@code v2} is the result of a swap from
-	 * {@code v1}; {@code false} otherwise. Also checks if the swap is valid.
+	 * Returns {@code true} if {@code v2} is the result of a swap from {@code v1}; {@code false} otherwise. Also checks
+	 * if the swap is valid.
 	 * 
 	 * @param v1 the first permutation
 	 * @param v2 the second permutation
-	 * @return {@code true} if {@code v2} is the result of a swap from
-	 *         {@code v1}; {@code false} otherwise
+	 * @return {@code true} if {@code v2} is the result of a swap from {@code v1}; {@code false} otherwise
 	 */
 	protected boolean testSwap(Permutation v1, Permutation v2) {
 		int index1 = -1;

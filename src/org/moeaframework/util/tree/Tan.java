@@ -18,8 +18,7 @@
 package org.moeaframework.util.tree;
 
 /**
- * The node for calculating the trigonometric tangent of an angle specified in
- * radians.
+ * The node for calculating the trigonometric tangent of an angle specified in radians.
  * 
  * <table style="margin-top: 1em; width: 100%">
  *   <caption style="text-align: left">Node signature:</caption>
@@ -45,8 +44,7 @@ package org.moeaframework.util.tree;
 public class Tan extends Node {
 	
 	/**
-	 * Constructs a new node for calculating the trigonometric tangent of an
-	 * angle specified in radians.
+	 * Constructs a new node for calculating the trigonometric tangent of an angle specified in radians.
 	 */
 	public Tan() {
 		super(Number.class, Number.class);
@@ -59,8 +57,7 @@ public class Tan extends Node {
 	
 	@Override
 	public Number evaluate(Environment environment) {
-		return NumberArithmetic.tan(
-				(Number)getArgument(0).evaluate(environment));
+		return NumberArithmetic.tan((Number)getArgument(0).evaluate(environment));
 	}
 
 }

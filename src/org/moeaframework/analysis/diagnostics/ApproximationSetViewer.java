@@ -67,8 +67,8 @@ import org.moeaframework.util.Localization;
 /**
  * Window for displaying approximation set dynamics.
  */
-public class ApproximationSetViewer extends JFrame implements ChangeListener,
-ActionListener, ChartChangeListener, ListSelectionListener {
+public class ApproximationSetViewer extends JFrame implements ChangeListener, ActionListener, ChartChangeListener,
+ListSelectionListener {
 
 	private static final long serialVersionUID = -7556845366893802202L;
 	
@@ -103,14 +103,12 @@ ActionListener, ChartChangeListener, ListSelectionListener {
 	private Range initialDomainBounds;
 	
 	/**
-	 * The x-axis bounds for zooming; or {@code null} if the user has not yet
-	 * set zoom bounds.
+	 * The x-axis bounds for zooming; or {@code null} if the user has not yet set zoom bounds.
 	 */
 	private Range zoomRangeBounds;
 	
 	/**
-	 * The y-axis bounds for zooming; or {@code null} if the user has not yet
-	 * set zoom bounds.
+	 * The y-axis bounds for zooming; or {@code null} if the user has not yet set zoom bounds.
 	 */
 	private Range zoomDomainBounds;
 	
@@ -125,14 +123,12 @@ ActionListener, ChartChangeListener, ListSelectionListener {
 	private Range referenceDomainBounds;
 	
 	/**
-	 * The control for choosing to scale the plot using the initial
-	 * approximation set bounds.
+	 * The control for choosing to scale the plot using the initial approximation set bounds.
 	 */
 	private JRadioButton useInitialBounds;
 	
 	/**
-	 * The control for choosing to scale the plot using the reference set
-	 * bounds.
+	 * The control for choosing to scale the plot using the reference set bounds.
 	 */
 	private JRadioButton useReferenceSetBounds;
 	
@@ -162,14 +158,12 @@ ActionListener, ChartChangeListener, ListSelectionListener {
 	private JButton selectAll;
 	
 	/**
-	 * The control for selecting which objective, constraint or decision
-	 * variable will be displayed on the x-axis.
+	 * The control for selecting which objective, constraint or decision variable will be displayed on the x-axis.
 	 */
 	private JComboBox<String> xAxisSelection;
 	
 	/**
-	 * The control for selecting which objective, constraint or decision
-	 * variable will be displayed on the y-axis.
+	 * The control for selecting which objective, constraint or decision variable will be displayed on the y-axis.
 	 */
 	private JComboBox<String> yAxisSelection;
 	
@@ -179,15 +173,14 @@ ActionListener, ChartChangeListener, ListSelectionListener {
 	private PaintHelper paintHelper;
 	
 	/**
-	 * Constructs a new window for displaying approximation set dynamics.  This
-	 * constructor must only be invoked on the event dispatch thread.
+	 * Constructs a new window for displaying approximation set dynamics.  This constructor must only be invoked on the
+	 * event dispatch thread.
 	 * 
 	 * @param name the name or title for the data
 	 * @param results the observations containing approximation set data
 	 * @param referenceSet the reference set for the problem
 	 */
-	public ApproximationSetViewer(String name, List<Observations> results, 
-			NondominatedPopulation referenceSet) {
+	public ApproximationSetViewer(String name, List<Observations> results, NondominatedPopulation referenceSet) {
 		super(localization.getString("title.approximationSetViewer", name));
 		this.results = results;
 		this.referenceSet = referenceSet;
@@ -231,8 +224,7 @@ ActionListener, ChartChangeListener, ListSelectionListener {
 	}
 	
 	/**
-	 * Initializes this window.  This method is invoked in the constructor, and
-	 * should not be invoked again.
+	 * Initializes this window.  This method is invoked in the constructor, and should not be invoked again.
 	 */
 	protected void initialize() {
 		//initialize the NFE slider
@@ -338,8 +330,8 @@ ActionListener, ChartChangeListener, ListSelectionListener {
 	}
 	
 	/**
-	 * Lays out the components on this window.  This method is invoked by the
-	 * constructor, and should not be invoked again.
+	 * Lays out the components on this window.  This method is invoked by the constructor, and should not be invoked
+	 * again.
 	 */
 	protected void layoutComponents() {
 		setLayout(new BorderLayout());
@@ -377,9 +369,8 @@ ActionListener, ChartChangeListener, ListSelectionListener {
 	}
 	
 	/**
-	 * Returns the x- or y-axis value for the specified solution.  The returned
-	 * value changes based on the user's preferences, and may return the value
-	 * stored in an objective, constraint or variable.  Returns {@code 0.0} if
+	 * Returns the x- or y-axis value for the specified solution.  The returned value changes based on the user's
+	 * preferences, and may return the value stored in an objective, constraint or variable.  Returns {@code 0.0} if
 	 * the value could not be parsed.
 	 * 
 	 * @param solution the solution whose x- or y-axis value is returned
@@ -413,8 +404,7 @@ ActionListener, ChartChangeListener, ListSelectionListener {
 	}
 	
 	/**
-	 * Updates the display.  This method must only be invoked on the event
-	 * dispatch thread.
+	 * Updates the display.  This method must only be invoked on the event dispatch thread.
 	 */
 	protected void update() {
 		XYSeriesCollection dataset = new XYSeriesCollection();

@@ -37,8 +37,7 @@ import org.moeaframework.core.variable.RealVariable;
 public class PopulationIOTest {
 
 	/**
-	 * The shared population used for testing, initialized to contain two
-	 * solutions.
+	 * The shared population used for testing, initialized to contain two solutions.
 	 */
 	private Population population;
 
@@ -73,11 +72,8 @@ public class PopulationIOTest {
 	}
 
 	/**
-	 * Tests the {@link PopulationIO#writeObjectives} and
-	 * {@link PopulationIO#readObjectives} methods to ensure the objectives are
-	 * stored and retrieved correctly.
-	 * 
-	 * @throws IOException should not occur
+	 * Tests the {@link PopulationIO#writeObjectives} and {@link PopulationIO#readObjectives} methods to ensure the
+	 * objectives are stored and retrieved correctly.
 	 */
 	@Test
 	public void testWriteReadObjectives() throws IOException {
@@ -96,10 +92,8 @@ public class PopulationIOTest {
 	}
 
 	/**
-	 * Tests the {@link PopulationIO#write} and {@link PopulationIO#read}
-	 * methods to ensure the objectives are stored and retrieved correctly.
-	 * 
-	 * @throws IOException should not occur
+	 * Tests the {@link PopulationIO#write} and {@link PopulationIO#read} methods to ensure the objectives are stored
+	 * and retrieved correctly.
 	 */
 	@Test
 	public void testWriteRead() throws IOException {
@@ -113,10 +107,8 @@ public class PopulationIOTest {
 	}
 	
 	/**
-	 * Tests {@link PopulationIO#readObjectives} to ensure it correctly
-	 * parses files that contain extra whitespace characters.
-	 * 
-	 * @throws IOException should not occur
+	 * Tests {@link PopulationIO#readObjectives} to ensure it correctly parses files that contain extra whitespace
+	 * characters.
 	 */
 	@Test
 	public void testReadWhitespace() throws IOException {

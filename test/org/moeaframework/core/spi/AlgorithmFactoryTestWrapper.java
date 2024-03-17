@@ -28,8 +28,7 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.util.TypedProperties;
 
 /**
- * Algorithm factory that instruments {@link Algorithm} instances with testing
- * code.
+ * Algorithm factory that instruments {@link Algorithm} instances with testing code.
  */
 public class AlgorithmFactoryTestWrapper extends AlgorithmFactory {
 	

@@ -26,9 +26,8 @@ import org.moeaframework.core.variable.EncodingUtils;
 public class WFG9 extends WFG {
 
 	/**
-	 * Constructs a WFG9 problem instance with the specified number of 
-	 * position-related and distance-related variables and the specified number
-	 * of objectives.
+	 * Constructs a WFG9 problem instance with the specified number of position-related and distance-related variables
+	 * and the specified number of objectives.
 	 * 
 	 * @param k the number of position-related variables for this problem
 	 * @param l the number of distance-related variables for this problem

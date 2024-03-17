@@ -22,15 +22,13 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 
 /**
- * Computes the R3 indicator.  The R3 indicator is a utility ratio, or the
- * value of the R2 indicator divided by the reference set utility.  Values
- * range from {@code [-inf, inf]} with values nearer to {@code -inf} preferred.
+ * Computes the R3 indicator.  The R3 indicator is a utility ratio, or the value of the R2 indicator divided by the
+ * reference set utility.  Values range from {@code [-inf, inf]} with values nearer to {@code -inf} preferred.
  * <p>
  * References:
  * <ol>
- *   <li>Hansen, M. P. and A. Jaszkiewicz (1998).  Evaluating the Quality of
- *       Approximations to the Non-dominated Set.  IMM Technical Report
- *       IMM-REP-1998-7.
+ *   <li>Hansen, M. P. and A. Jaszkiewicz (1998).  Evaluating the Quality of Approximations to the Non-dominated Set.
+ *       IMM Technical Report IMM-REP-1998-7.
  * </ol>
  */
 public class R3Indicator extends RIndicator {

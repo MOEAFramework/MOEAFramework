@@ -51,8 +51,7 @@ public class AdaptiveMultimethodVariation extends AbstractCompoundVariation<Vari
 	private final Population archive;
 
 	/**
-	 * The number of invocations of the {@code evolve} method between updating
-	 * the operator selection probabilities.
+	 * The number of invocations of the {@code evolve} method between updating the operator selection probabilities.
 	 */
 	private static final int UPDATE_WINDOW = 100;
 
@@ -164,11 +163,9 @@ public class AdaptiveMultimethodVariation extends AbstractCompoundVariation<Vari
 	}
 
 	/**
-	 * Returns the index of one of the available operators randomly selected
-	 * using the probabilities.
+	 * Returns the index of one of the available operators randomly selected using the probabilities.
 	 * 
-	 * @return the index of one of the available operators randomly selected
-	 *         using the probabilities
+	 * @return the index of one of the available operators randomly selected using the probabilities
 	 */
 	protected int selectOperator() {
 		lastUpdate++;

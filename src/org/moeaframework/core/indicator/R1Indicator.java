@@ -22,30 +22,27 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 
 /**
- * Computes the R1 indicator.  The R1 indicator measures the fraction of
- * utility functions where the population is better than the reference set.
- * Values range from {@code [0, 1]} with {@code 1} preferred.  Note that to
- * achieve a value of {@code 1}, the population must be better than the
- * reference set with respect to all utility functions.
+ * Computes the R1 indicator.  The R1 indicator measures the fraction of utility functions where the population is
+ * better than the reference set.  Values range from {@code [0, 1]} with {@code 1} preferred.  Note that to
+ * achieve a value of {@code 1}, the population must be better than the reference set with respect to all utility
+ * functions.
  * <p>
  * References:
  * <ol>
- *   <li>Hansen, M. P. and A. Jaszkiewicz (1998).  Evaluating the Quality of
- *       Approximations to the Non-dominated Set.  IMM Technical Report
- *       IMM-REP-1998-7.
+ *   <li>Hansen, M. P. and A. Jaszkiewicz (1998).  Evaluating the Quality of Approximations to the Non-dominated Set.
+ *       IMM Technical Report IMM-REP-1998-7.
  * </ol>
  */
 public class R1Indicator extends RIndicator {
 	
 	/**
-	 * The default value for {@code espilon}.
+	 * The default value for {@code epsilon}.
 	 */
 	public static final double DEFAULT_EPSILON = 0.00001;
 	
 	/**
-	 * Resolution when comparing two utility function values for equality.
-	 * If the difference between the two utility values is less than
-	 * {@code epsilon}, they are considered equal.
+	 * Resolution when comparing two utility function values for equality.  If the difference between the two utility
+	 * values is less than {@code epsilon}, they are considered equal.
 	 */
 	private double epsilon;
 
@@ -80,8 +77,7 @@ public class R1Indicator extends RIndicator {
 	 * @param subdivisions the number of subdivisions along each objective
 	 * @param referenceSet the reference set
 	 * @param utilityFunction the utility function
-	 * @param epsilon resolution when comparing two utility function values
-	 *                for equality
+	 * @param epsilon resolution when comparing two utility function values for equality
 	 */
 	public R1Indicator(Problem problem, int subdivisions, NondominatedPopulation referenceSet,
 			UtilityFunction utilityFunction, double epsilon) {

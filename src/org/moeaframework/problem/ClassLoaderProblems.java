@@ -23,8 +23,7 @@ import org.moeaframework.core.spi.ProblemProvider;
 import org.moeaframework.core.spi.ProviderNotFoundException;
 
 /**
- * Legacy problem provider that locates problems using their fully-qualified class name.
- * For example:
+ * Legacy problem provider that locates problems using their fully-qualified class name.  For example:
  * <pre>
  *   ProblemFactory.getInstance().getProblem("org.moeaframework.problem.LZ.LZ1");
  * </pre>
