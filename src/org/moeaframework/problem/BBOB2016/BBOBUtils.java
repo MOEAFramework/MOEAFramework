@@ -20,10 +20,9 @@ package org.moeaframework.problem.BBOB2016;
 import org.moeaframework.core.variable.RealVariable;
 
 /* 
- * The following source code is derived from the Coco Framework available at
- * <https://github.com/numbbo/coco> under the 3-clause BSD license. The
- * original code is copyright 2013 by the NumBBO/CoCO team.  See the AUTHORS
- * file located in the Coco Framework repository for more details.
+ * The following source code is derived from the Coco Framework available at <https://github.com/numbbo/coco> under the
+ * 3-clause BSD license. The original code is copyright 2013 by the NumBBO/CoCO team.  See the AUTHORS file located in
+ * the Coco Framework repository for more details.
  */
 
 public class BBOBUtils {
@@ -39,9 +38,8 @@ public class BBOBUtils {
 	private static double UPPER_BOUND = 100000.0;
 	
 	/**
-	 * Overrides the lower and upper bounds returned by
-	 * {@link #createTransformedVariable()}.  The bounds must be sufficiently
-	 * large, otherwise an exception may be thrown.
+	 * Overrides the lower and upper bounds returned by {@link #createTransformedVariable()}.  The bounds must be
+	 * sufficiently large, otherwise an exception may be thrown.
 	 * 
 	 * @param lower the new lower bounds
 	 * @param upper the new upper bounds
@@ -52,11 +50,9 @@ public class BBOBUtils {
 	}
 	
 	/**
-	 * All BBOB problems are defined with the domain [-5, 5], but the inner,
-	 * transformed functions are defined over the entire real domain.  This
-	 * method returns a real decision variable bounded from
-	 * [@value LOWER_BOUNDS, @value UPPER_BOUNDS], which practically covers the
-	 * entire real domain.
+	 * All BBOB problems are defined with the domain [-5, 5], but the inner, transformed functions are defined over the
+	 * entire real domain.  This method returns a real decision variable bounded from
+	 * [{@value LOWER_BOUNDS}, {@value UPPER_BOUNDS}], which practically covers the entire real domain.
 	 * 
 	 * @return a real decision variable used by the BBOB inner functions
 	 */

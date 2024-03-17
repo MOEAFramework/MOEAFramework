@@ -21,10 +21,9 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
 
 /* 
- * The following source code is derived from the Coco Framework available at
- * <https://github.com/numbbo/coco> under the 3-clause BSD license. The
- * original code is copyright 2013 by the NumBBO/CoCO team.  See the AUTHORS
- * file located in the Coco Framework repository for more details.
+ * The following source code is derived from the Coco Framework available at <https://github.com/numbbo/coco> under the
+ * 3-clause BSD license. The original code is copyright 2013 by the NumBBO/CoCO team.  See the AUTHORS file located in
+ * the Coco Framework repository for more details.
  */
 
 /**
@@ -41,8 +40,7 @@ public class TransformVariablesXHat extends BBOBTransformation {
 	 * Constructs a new instance of the x-hat transformation.
 	 * 
 	 * @param function the inner function
-	 * @param seed the random number seed controlling which decision variables
-	 *        are negated
+	 * @param seed the random number seed controlling which decision variables are negated
 	 */
 	public TransformVariablesXHat(BBOBFunction function, long seed) {
 		super(function);

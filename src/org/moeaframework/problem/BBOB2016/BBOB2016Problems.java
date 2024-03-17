@@ -31,30 +31,25 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.spi.ProblemProvider;
 
 /* 
- * The following source code is derived from the Coco Framework available at
- * <https://github.com/numbbo/coco> under the 3-clause BSD license. The
- * original code is copyright 2013 by the NumBBO/CoCO team.  See the AUTHORS
- * file located in the Coco Framework repository for more details.
+ * The following source code is derived from the Coco Framework available at <https://github.com/numbbo/coco> under the
+ * 3-clause BSD license. The original code is copyright 2013 by the NumBBO/CoCO team.  See the AUTHORS file located in
+ * the Coco Framework repository for more details.
  */
 
 /**
- * Problem provider for all problems in the BBOB 2016 test suite.  This test
- * suite consists of bi-objective problems constructed from two single-objective
- * functions.  Each single-objective function name follows the pattern:
+ * Problem provider for all problems in the BBOB 2016 test suite.  This test suite consists of bi-objective problems
+ * constructed from two single-objective functions.  Each single-objective function name follows the pattern:
  * <pre>
  *     bbob_f001_i02_d05
  * </pre>
- * In this case, we are requesting the second instance of the first BBOB
- * function with five decision variables.  The location of the optimum differs in
- * each instance.  To create the name of a BBOB 2016 problem supported by this
- * problem provider, separate two function names a comma, such
- * as:
+ * In this case, we are requesting the second instance of the first BBOB function with five decision variables.  The
+ * location of the optimum differs in each instance.  To create the name of a BBOB 2016 problem supported by this
+ * problem provider, separate two function names a comma, such as:
  * <pre>
  *     bbob_f001_i02_d05,bbob_f021_i02_d07
  * </pre>
- * The dimension or number of decision variables must be identical in both
- * functions.  This also recognizes the problem name format used by the Coco
- * Framework:
+ * The dimension or number of decision variables must be identical in both functions.  This also recognizes the problem
+ * name format used by the Coco Framework:
  * <pre>
  *     bbob-biobj(bbob_f001_i02_d05__bbob_f021_i02_d07)
  * </pre>

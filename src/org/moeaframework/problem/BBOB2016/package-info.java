@@ -17,26 +17,21 @@
  */
 
 /**
- * Package containing the BBOB 2016 bi-objective test problems.  These problems
- * will be tested in the Workshop on Real-Parameter Black-Box Optimization
- * Benchmarking at GECCO 2016.  The authors combine various single-objective
- * functions to form the bi-objective test suite.  Each of the
- * single-objective functions has well-known problem properties, including
- * looking at the conditioning number.  Conditioning looks at the effect of
- * small changes to the function's inputs on its output.  For example, small
- * changes to a low conditioned function causes only small changes in the
- * output.
+ * Package containing the BBOB 2016 bi-objective test problems.  These problems will be tested in the Workshop on
+ * Real-Parameter Black-Box Optimization Benchmarking at GECCO 2016.  The authors combine various single-objective
+ * functions to form the bi-objective test suite.  Each of the single-objective functions has well-known problem
+ * properties, including looking at the conditioning number.  Conditioning looks at the effect of small changes to the
+ * function's inputs on its output.  For example, small changes to a low conditioned function causes only small changes
+ * in the output.
  * <p>
- * Note: this implementation does not provide all BBOB test functions.  It
- * currently only implements the 55 test functions studied in the bbob-biobj
- * suite.
+ * Note: this implementation does not provide all BBOB test functions.  It currently only implements the 55 test
+ * functions studied in the bbob-biobj suite.
  * <p>
  * References:
  * <ol>
  *   <li><a href="https://github.com/numbbo/coco">Coco Github page</a>
- *   <li>Finck, S., N. Hansen, R. Ros, and A. Auger.  "Real-Parameter Black-Box
- *       Optimization Benchmarking 2010: Presentation of the Noiseless
- *       Functions."  Working Paper 2009/20, compiled November 17, 2015.
+ *   <li>Finck, S., N. Hansen, R. Ros, and A. Auger.  "Real-Parameter Black-Box Optimization Benchmarking 2010:
+ *       Presentation of the Noiseless Functions."  Working Paper 2009/20, compiled November 17, 2015.
  *       <a href="http://coco.lri.fr/downloads/download15.03/bbobdocfunctions.pdf">(PDF)</a>
  *   <li>http://numbbo.github.io/coco-doc/bbob-biobj/functions/
  *   <li>https://arxiv.org/abs/1604.00359

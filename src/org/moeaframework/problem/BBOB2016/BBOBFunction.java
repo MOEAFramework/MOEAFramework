@@ -21,8 +21,7 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.problem.AbstractProblem;
 
 /**
- * Abstract class for the functions provided by the BBOB test suite.  These
- * functions are exclusively single-objective.
+ * Abstract class for the functions provided by the BBOB test suite.  These functions are exclusively single-objective.
  */
 public abstract class BBOBFunction extends AbstractProblem {
 

@@ -22,9 +22,8 @@ import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.problem.AbstractProblem;
 
 /**
- * Combines two or more single-objective {@link BBOBFunction}s into a
- * multiobjective problem.  The single-objective functions should all have the
- * same number of decision variables.
+ * Combines two or more single-objective {@link BBOBFunction}s into a multiobjective problem.  The single-objective
+ * functions should all have the same number of decision variables.
  */
 public class StackedProblem extends AbstractProblem {
 
@@ -34,8 +33,7 @@ public class StackedProblem extends AbstractProblem {
 	private final BBOBFunction[] functions;
 	
 	/**
-	 * Constructs a new multiobjective problem from two or more single-objective
-	 * functions.
+	 * Constructs a new multiobjective problem from two or more single-objective functions.
 	 * 
 	 * @param functions the single-objective functions
 	 */

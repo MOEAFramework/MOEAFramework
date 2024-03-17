@@ -21,16 +21,14 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
 
 /* 
- * The following source code is derived from the Coco Framework available at
- * <https://github.com/numbbo/coco> under the 3-clause BSD license. The
- * original code is copyright 2013 by the NumBBO/CoCO team.  See the AUTHORS
- * file located in the Coco Framework repository for more details.
+ * The following source code is derived from the Coco Framework available at <https://github.com/numbbo/coco> under the
+ * 3-clause BSD license. The original code is copyright 2013 by the NumBBO/CoCO team.  See the AUTHORS file located in
+ * the Coco Framework repository for more details.
  */
 
 /**
- * The Rosenbrock function.  It is not intended for this function to be used
- * directly since the BBOB test suite applies additional transformations to the
- * test functions.
+ * The Rosenbrock function.  It is not intended for this function to be used directly since the BBOB test suite applies
+ * additional transformations to the test functions.
  * <p>
  * Properties:
  * <ul>
