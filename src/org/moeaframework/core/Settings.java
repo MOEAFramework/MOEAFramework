@@ -28,8 +28,8 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.text.StringTokenizer;
 import org.moeaframework.analysis.sensitivity.OutputWriter;
 import org.moeaframework.core.NondominatedPopulation.DuplicateMode;
 import org.moeaframework.core.indicator.Hypervolume;
@@ -63,15 +63,7 @@ public class Settings {
 	 * The default population size.
 	 */
 	public static final int DEFAULT_POPULATION_SIZE = 100;
-	
-	/**
-	 * Store the new line character to prevent repetitive calls to {@code System.getProperty("line.separator")}.
-	 * 
-	 * @deprecated Use {@code System.lineSeparator()} instead
-	 */
-	@Deprecated
-	public static final String NEW_LINE = System.lineSeparator();
-	
+
 	/**
 	 * The default configuration file.
 	 */
@@ -435,19 +427,6 @@ public class Settings {
 		}
 		
 		return result;
-	}
-	
-	/**
-	 * Splits an executable command into its individual arguments.  This method allows quoted text ({@code "..."})
-	 * in properties to be treated as an individual argument as required by {@link ProcessBuilder}.
-	 *  
-	 * @param command the command represented in a single string
-	 * @return the individual arguments comprising the command
-	 * @deprecated method being moved out of Settings class
-	 */
-	@Deprecated
-	public static String[] parseCommand(String command) {
-		return new StringTokenizer(command).setQuoteChar('\"').getTokenArray();
 	}
 	
 	/**

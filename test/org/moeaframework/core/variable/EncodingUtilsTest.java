@@ -58,22 +58,6 @@ public class EncodingUtilsTest {
 		test.accept(Long.MIN_VALUE);
 	}
 
-	@SuppressWarnings("deprecation")
-	@Test(expected = IllegalArgumentException.class)
-	public void testBinaryEncodingRangeCheck() {
-		BinaryVariable variable = new BinaryVariable(3);
-
-		EncodingUtils.encode(8, variable);
-	}
-
-	@SuppressWarnings("deprecation")
-	@Test(expected = IllegalArgumentException.class)
-	public void testBinaryEncodingValueCheck() {
-		BinaryVariable variable = new BinaryVariable(3);
-
-		EncodingUtils.encode(-1, variable);
-	}
-
 	@Test
 	public void testBinaryDecoding() {
 		Consumer<Number> test = (value) -> {

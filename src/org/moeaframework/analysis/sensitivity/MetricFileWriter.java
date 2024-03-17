@@ -27,7 +27,6 @@ import java.util.Optional;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.indicator.Indicators;
 import org.moeaframework.core.indicator.Indicators.IndicatorValues;
-import org.moeaframework.core.indicator.QualityIndicator;
 import org.moeaframework.util.io.FileUtils;
 
 /**
@@ -40,7 +39,6 @@ import org.moeaframework.util.io.FileUtils;
  * 
  * @see MetricFileReader
  */
-@SuppressWarnings("deprecation")
 public class MetricFileWriter implements OutputWriter {
 	
 	/**
@@ -62,40 +60,6 @@ public class MetricFileWriter implements OutputWriter {
 	 * The number of lines in the file.
 	 */
 	private int numberOfEntries;
-	
-	/**
-	 * Constructs an output writer for writing metric files to the specified  file. If the file already exists,
-	 * a cleanup operation is first performed. The cleanup operation removes the last line if incomplete and
-	 * records the number of correct lines in the file. The {@link #getNumberOfEntries()} can then be used to
-	 * resume evaluation from the last recorded entry.
-	 * 
-	 * @param qualityIndicator the quality indicator for producing the metrics
-	 * @param file the file to which the metrics are written
-	 * @throws IOException if an I/O error occurred
-	 * @deprecated use the {@link Indicators} constructor
-	 */
-	@Deprecated
-	public MetricFileWriter(QualityIndicator qualityIndicator, File file) throws IOException {
-		this(qualityIndicator, file, MetricFileWriterSettings.getDefault());
-	}
-	
-	/**
-	 * Constructs an output writer for writing metric files to the specified  file. If the file already exists,
-	 * a cleanup operation is first performed. The cleanup operation removes the last line if incomplete and
-	 * records the number of correct lines in the file. The {@link #getNumberOfEntries()} can then be used to
-	 * resume evaluation from the last recorded entry.
-	 * 
-	 * @param qualityIndicator the quality indicator for producing the metrics
-	 * @param file the file to which the metrics are written
-	 * @param settings the settings for writing metric files
-	 * @throws IOException if an I/O error occurred
-	 * @deprecated use the {@link Indicators} constructor
-	 */
-	@Deprecated
-	public MetricFileWriter(QualityIndicator qualityIndicator, File file, MetricFileWriterSettings settings)
-			throws IOException {
-		this(Indicators.of(qualityIndicator), file, settings);
-	}
 	
 	/**
 	 * Constructs an output writer for writing metric files to the specified  file. If the file already exists,

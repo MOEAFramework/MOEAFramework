@@ -52,7 +52,7 @@ public class BBOBUtils {
 	/**
 	 * All BBOB problems are defined with the domain [-5, 5], but the inner, transformed functions are defined over the
 	 * entire real domain.  This method returns a real decision variable bounded from
-	 * [{@value LOWER_BOUNDS}, {@value UPPER_BOUNDS}], which practically covers the entire real domain.
+	 * {@code [LOWER_BOUNDS, UPPER_BOUNDS], which practically covers the entire real domain.
 	 * 
 	 * @return a real decision variable used by the BBOB inner functions
 	 */

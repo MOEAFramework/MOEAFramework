@@ -107,7 +107,17 @@ public class EncodingUtils {
 		double scale = (value - lowerBound) / (upperBound - lowerBound);
 		long index = Math.round(scale * ((1L << numberOfBits) - 1));
 
-		encode(index, binary);
+		BitSet bits = encode(index);
+		
+		System.out.println(bits.length() + " " + numberOfBits);
+
+		if (bits.length() > numberOfBits) {
+			throw new IllegalArgumentException("number of bits not sufficient to represent value");
+		}
+
+		for (int i = 0; i < numberOfBits; i++) {
+			binary.set(i, (index & (1L << i)) != 0);
+		}
 	}
 
 	/**
@@ -121,49 +131,11 @@ public class EncodingUtils {
 		double lowerBound = real.getLowerBound();
 		double upperBound = real.getUpperBound();
 
-		long index = decode(binary);
+		long index = decode(binary.getBitSet());
 		double scale = index / (double)((1L << numberOfBits) - 1);
 		double value = lowerBound + (upperBound - lowerBound) * scale;
 
 		real.setValue(value);
-	}
-
-	/**
-	 * Encodes the integer into the specified binary variable. The number of bits used in the encoding is
-	 * {@code binary.getNumberOfBits()}.
-	 * 
-	 * @param value an integer
-	 * @param binary the binary variable to which the value is encoded
-	 * @deprecated Use {@see BinaryIntegerVariable}
-	 */
-	@Deprecated
-	public static void encode(long value, BinaryVariable binary) {
-		if (value < 0) {
-			throw new IllegalArgumentException("negative value");
-		}
-		
-		int numberOfBits = binary.getNumberOfBits();
-		BitSet bits = encode(value);
-
-		if (bits.length() > numberOfBits) {
-			throw new IllegalArgumentException("number of bits not sufficient to represent value");
-		}
-
-		for (int i = 0; i < numberOfBits; i++) {
-			binary.set(i, (value & (1L << i)) != 0);
-		}
-	}
-
-	/**
-	 * Decodes the specified binary variable into its integer value.
-	 * 
-	 * @param binary the binary variable
-	 * @return the integer value of the specified binary variable
-	 * @deprecated Use {@see BinaryIntegerVariable}
-	 */
-	@Deprecated
-	public static long decode(BinaryVariable binary) {
-		return decode(binary.getBitSet());
 	}
 	
 	/**

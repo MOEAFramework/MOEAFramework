@@ -77,16 +77,5 @@ public class TimingProblem extends ProblemWrapper {
 	public double getSeconds() {
 		return time.get() / 1e9;
 	}
-	
-	/**
-	 * Returns the time, in seconds, expended on objective function evaluation.
-	 * 
-	 * @return the time, in seconds, expended on objective function evaluation
-	 * @deprecated Use {@link #getSeconds()} insetad
-	 */
-	@Deprecated
-	public double getTime() {
-		return getSeconds();
-	}
 
 }

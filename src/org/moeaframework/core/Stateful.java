@@ -21,7 +21,6 @@ import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.Serializable;
 
 /**
  * Interface for objects that can save and load their state.
@@ -36,7 +35,7 @@ public interface Stateful {
 	 * @throws IOException if an I/O error occurred
 	 */
 	public default void saveState(ObjectOutputStream stream) throws IOException {
-		stream.writeObject(getState());
+		throw new NotSerializableException(getClass().getSimpleName());
 	}
 
 	/**
@@ -48,30 +47,6 @@ public interface Stateful {
 	 * @throws ClassNotFoundException if the stream referenced a class that is not defined
 	 */
 	public default void loadState(ObjectInputStream stream) throws IOException, ClassNotFoundException {
-		setState(stream.readObject());
-	}
-	
-	/**
-	 * Returns a {@code Serializable} object representing the internal state of this algorithm.
-	 * 
-	 * @return a {@code Serializable} object representing the internal state of this algorithm
-	 * @throws NotSerializableException if this algorithm does not support serialization
-	 * @deprecated use {@link #loadState(ObjectInputStream)} instead
-	 */
-	@Deprecated
-	public default Serializable getState() throws NotSerializableException {
-		throw new NotSerializableException(getClass().getSimpleName());
-	}
-
-	/**
-	 * Sets the internal state of of this algorithm.
-	 * 
-	 * @param state the internal state of this algorithm
-	 * @throws NotSerializableException if this algorithm does not support serialization
-	 * @deprecated use {@link #saveState(ObjectOutputStream)} instead
-	 */
-	@Deprecated
-	public default void setState(Object state) throws NotSerializableException {
 		throw new NotSerializableException(getClass().getSimpleName());
 	}
 	

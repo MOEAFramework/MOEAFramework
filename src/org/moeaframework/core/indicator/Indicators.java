@@ -71,19 +71,6 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 	public static Indicators of(Problem problem, NondominatedPopulation referenceSet) {
 		return new Indicators(problem, referenceSet);
 	}
-	
-	/**
-	 * Convenience method for converting a {@link QualityIndicator} into an {@code Indicators} object.  Will be
-	 * removed once {@code QualityIndicator} is deprecated.
-	 * 
-	 * @param qualityIndicator the quality indicator
-	 * @return the constructed instance
-	 */
-	@SuppressWarnings("deprecation")
-	public static Indicators of(QualityIndicator qualityIndicator) {
-		return new Indicators(qualityIndicator.getProblem(), qualityIndicator.getReferenceSet())
-				.includeStandardMetrics();
-	}
 
 	/**
 	 * The problem.
