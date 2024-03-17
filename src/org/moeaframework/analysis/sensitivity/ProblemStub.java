@@ -21,9 +21,8 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.problem.AbstractProblem;
 
 /**
- * A problem stub with a defined number of objectives, but no decision
- * variables or constraints.  In addition, the {@link #evaluate(Solution)}
- * method throws {@link UnsupportedOperationException}.
+ * A problem stub with a defined number of objectives, but no decision variables or constraints.  In addition, the
+ * {@link #evaluate(Solution)} method throws {@link UnsupportedOperationException}.
  */
 public class ProblemStub extends AbstractProblem {
 	
@@ -48,8 +47,7 @@ public class ProblemStub extends AbstractProblem {
 
 	@Override
 	public Solution newSolution() {
-		return new Solution(numberOfVariables, numberOfObjectives, 
-				numberOfConstraints);
+		return new Solution(numberOfVariables, numberOfObjectives, numberOfConstraints);
 	}
 
 }

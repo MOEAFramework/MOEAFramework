@@ -17,7 +17,6 @@
  */
 
 /**
- * Command line tools for solving optimization problems and analyzing the
- * results.
+ * Command line tools for solving optimization problems and analyzing the results.
  */
 package org.moeaframework.analysis.tools;

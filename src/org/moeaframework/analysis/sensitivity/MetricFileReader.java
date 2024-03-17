@@ -24,12 +24,11 @@ import java.io.Reader;
 import static org.moeaframework.analysis.sensitivity.MetricFileWriter.NUMBER_OF_METRICS;
 
 /**
- * Reader for metric files produced by {@link MetricFileWriter}. The file can
- * contain commented lines starting with '#' characters.
+ * Reader for metric files produced by {@link MetricFileWriter}.  The file can contain commented lines starting with
+ * '#' characters.
  * <p>
- * This reader is expected to gracefully recover from incomplete or improperly
- * formatted files. Unless a serious I/O error occurred, this reader will
- * attempt to load the file to the last valid entry. This requirement enables a
+ * This reader is expected to gracefully recover from incomplete or improperly formatted files. Unless a serious I/O
+ * error occurred, this reader will attempt to load the file to the last valid entry. This requirement enables a
  * {@code MetricFileWriter} to resume processing at a valid state.
  * 
  * @see MetricFileWriter
@@ -37,8 +36,7 @@ import static org.moeaframework.analysis.sensitivity.MetricFileWriter.NUMBER_OF_
 public class MetricFileReader extends MatrixReader {
 
 	/**
-	 * Constructs a metric file reader for reading metric files from the
-	 * specified file.
+	 * Constructs a metric file reader for reading metric files from the specified file.
 	 * 
 	 * @param file the metric file
 	 * @throws FileNotFoundException if the file was not found
@@ -49,8 +47,7 @@ public class MetricFileReader extends MatrixReader {
 	}
 
 	/**
-	 * Constructs a metric file reader for reading metric files from the 
-	 * underlying reader.
+	 * Constructs a metric file reader for reading metric files from the underlying reader.
 	 * 
 	 * @param reader the underlying reader
 	 */

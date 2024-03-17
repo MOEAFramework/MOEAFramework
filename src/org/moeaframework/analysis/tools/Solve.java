@@ -47,12 +47,11 @@ import org.moeaframework.util.TypedProperties;
 import org.moeaframework.util.io.FileUtils;
 
 /**
- * Command line utility for solving an optimization problem using any of the
- * supported optimization algorithms.  This utility supports solving problems
- * defined within the MOEA Framework as well as compatible external problems.
+ * Command line utility for solving an optimization problem using any of the supported optimization algorithms.  This
+ * utility supports solving problems defined within the MOEA Framework as well as compatible external problems.
  * See {@link ExternalProblem} for details on developing an external problem.
  * <p>
- * Usage: {@code java -cp "..." org.moeaframework.analysis.tools.Solve <options>}
+ * Usage: {@code java -classpath "lib/*" org.moeaframework.analysis.tools.Solve <options>}
  * 
  * <table>
  *   <caption style="text-align: left">Arguments:</caption>
@@ -62,19 +61,18 @@ import org.moeaframework.util.io.FileUtils;
  *   </tr>
  *   <tr>
  *     <td>{@code -b, --problem}</td>
- *     <td>The name of the problem.  This name should reference one of the
- *         problems recognized by the MOEA Framework.</td>
+ *     <td>The name of the problem.  This name should reference one of the problems recognized by the MOEA
+ *         Framework.</td>
  *   </tr>
  *   <tr>
  *     <td>{@code -a, --algorithm}</td>
- *     <td>The name of the algorithm.  This name should reference one of the
- *         algorithms recognized by the MOEA Framework.</td>
+ *     <td>The name of the algorithm.  This name should reference one of the algorithms recognized by the MOEA
+ *         Framework.</td>
  *   </tr>
  *   <tr>
  *     <td>{@code -x, --properties}</td>
- *     <td>Semicolon-separated list of additional parameters for the
- *         algorithm (e.g., {@code -x maxEvaluations=10000;populationSize=100}.
- *     </td>
+ *     <td>Semicolon-separated list of additional parameters for the algorithm (e.g.,
+ *         {@code -x maxEvaluations=10000;populationSize=100}.</td>
  *   </tr>
  *   <tr>
  *     <td>{@code -s, --seed}</td>
@@ -82,9 +80,8 @@ import org.moeaframework.util.io.FileUtils;
  *   </tr>
  *   <tr>
  *     <td>{@code -e, --epsilon}</td>
- *     <td>The epsilon values for limiting the size of the results.  This
- *         epsilon value is also used for any algorithms that include an
- *         epsilon parameter.</td>
+ *     <td>The epsilon values for limiting the size of the results.  This epsilon value is also used for any algorithms
+ *         that include an epsilon parameter.</td>
  *   </tr>
  *   <tr>
  *     <td>{@code -n, --numberOfEvaluations}</td>
@@ -97,9 +94,8 @@ import org.moeaframework.util.io.FileUtils;
  *   </tr>
  *   <tr>
  *     <td>{@code -v, --variables}</td>
- *     <td>Comma-separated list of decision variable specifications.  Use
- *         {@code "R(<lb>;<ub>)"} for real-valued, {@code "B(<length>)"}
- *         for binary, and {@code "P(<length>)"} for permutations.
+ *     <td>Comma-separated list of decision variable specifications.  Use {@code "R(<lb>;<ub>)"} for real-valued,
+ *         {@code "B(<length>)"} for binary, and {@code "P(<length>)"} for permutations.
  *   </tr>
  *   <tr>
  *     <td>{@code -o, --objectives}</td>
@@ -111,13 +107,11 @@ import org.moeaframework.util.io.FileUtils;
  *   </tr>
  *   <tr>
  *     <td>{@code -l, --lowerBounds}</td>
- *     <td>Lower bounds of real-valued decision variables, separated by commas.
- *     </td>
+ *     <td>Lower bounds of real-valued decision variables, separated by commas.</td>
  *   </tr>
  *   <tr>
  *     <td>{@code -u, --upperBounds}</td>
- *     <td>Upper bounds of real-valued decision variables, separated by commas.
- *     </td>
+ *     <td>Upper bounds of real-valued decision variables, separated by commas.</td>
  *   </tr>
  *   <tr>
  *     <td>{@code -S, --useSocket}</td>
@@ -133,13 +127,11 @@ import org.moeaframework.util.io.FileUtils;
  *   </tr>
  *   <tr>
  *     <td>{@code -D, --startupDelay}</td>
- *     <td>Delay in seconds between running the executable and starting
- *         optimization (default 1).</td>
+ *     <td>Delay in seconds between running the executable and starting optimization (default 1).</td>
  *   </tr>
  *   <tr>
  *     <td>{@code -t, --test}</td>
- *     <td>Runs a few trials to test the connection with the external problem.
- *     </td>
+ *     <td>Runs a few trials to test the connection with the external problem.</td>
  *   </tr>
  * </table>
  */
@@ -248,19 +240,15 @@ public class Solve extends CommandLineUtility {
 	}
 	
 	/**
-	 * Parses a single variable specification from the command line.  This
-	 * method is case sensitive.
+	 * Parses a single variable specification from the command line.  This method is case sensitive.
 	 * 
 	 * @param token the variable specification from the command line
 	 * @return the generated variable object
-	 * @throws ParseException if an error occurred while parsing the variable
-	 *         specification
+	 * @throws ParseException if an error occurred while parsing the variable specification
 	 */
-	private Variable parseVariableSpecification(String token)
-			throws ParseException {
+	private Variable parseVariableSpecification(String token) throws ParseException {
 		if (!token.endsWith(")")) {
-			throw new ParseException("invalid variable specification '" +
-					token + "', not properly formatted");
+			throw new ParseException("invalid variable specification '" + token + "', not properly formatted");
 		}
 		
 		if (token.startsWith("R(")) {
@@ -269,14 +257,11 @@ public class Solve extends CommandLineUtility {
 			int index = content.indexOf(';');
 			
 			if (index >= 0) {
-				double lowerBound = Double.parseDouble(
-						content.substring(0, index));
-				double upperBound = Double.parseDouble(
-						content.substring(index+1, content.length()));
+				double lowerBound = Double.parseDouble(content.substring(0, index));
+				double upperBound = Double.parseDouble(content.substring(index+1, content.length()));
 				return EncodingUtils.newReal(lowerBound, upperBound);
 			} else {
-				throw new ParseException("invalid real specification '" +
-						token + "', expected R(<lb>,<ub>)");
+				throw new ParseException("invalid real specification '" + token + "', expected R(<lb>,<ub>)");
 			}
 		} else if (token.startsWith("B(")) {
 			String content = token.substring(2, token.length()-1);
@@ -285,8 +270,7 @@ public class Solve extends CommandLineUtility {
 				int length = Integer.parseInt(content.trim());
 				return EncodingUtils.newBinary(length);
 			} catch (NumberFormatException e) {
-				throw new ParseException("invalid binary specification '" +
-						token + "', expected B(<length>)");
+				throw new ParseException("invalid binary specification '" + token + "', expected B(<length>)");
 			}
 		} else if (token.startsWith("P(")) {
 			String content = token.substring(2, token.length()-1);
@@ -295,39 +279,30 @@ public class Solve extends CommandLineUtility {
 				int length = Integer.parseInt(content.trim());
 				return EncodingUtils.newPermutation(length);
 			} catch (NumberFormatException e) {
-				throw new ParseException("invalid permutation specification '"
-						+ token + "', expected P(<length>)");
+				throw new ParseException("invalid permutation specification '" + token + "', expected P(<length>)");
 			}
 		} else {
-			throw new ParseException("invalid variable specification '"
-					+ token + "', unknown type");
+			throw new ParseException("invalid variable specification '" + token + "', unknown type");
 		}
 	}
 	
 	/**
-	 * Parses the decision variable specification either from the
-	 * {@code --lowerBounds} and {@code --upperBounds} options or the
-	 * {@code --variables} option.
+	 * Parses the decision variable specification either from the {@code --lowerBounds} and {@code --upperBounds}
+	 * options or the {@code --variables} option.
 	 * 
 	 * @param commandLine the command line arguments
 	 * @return the parsed variable specifications
-	 * @throws ParseException if an error occurred while parsing the variable
-	 *         specifications
+	 * @throws ParseException if an error occurred while parsing the variable specifications
 	 */
-	private List<Variable> parseVariables(CommandLine commandLine)
-			throws ParseException {
+	private List<Variable> parseVariables(CommandLine commandLine) throws ParseException {
 		List<Variable> variables = new ArrayList<Variable>();
 		
-		if (commandLine.hasOption("lowerBounds") &&
-				commandLine.hasOption("upperBounds")) {
-			String[] lowerBoundTokens =
-					commandLine.getOptionValue("lowerBounds").split(",");
-			String[] upperBoundTokens =
-					commandLine.getOptionValue("upperBounds").split(",");
+		if (commandLine.hasOption("lowerBounds") && commandLine.hasOption("upperBounds")) {
+			String[] lowerBoundTokens = commandLine.getOptionValue("lowerBounds").split(",");
+			String[] upperBoundTokens = commandLine.getOptionValue("upperBounds").split(",");
 			
 			if (lowerBoundTokens.length != upperBoundTokens.length) {
-				throw new ParseException("lower bound and upper bounds not " +
-						"the same length");
+				throw new ParseException("lower bound and upper bounds not the same length");
 			}
 			
 			for (int i = 0; i < lowerBoundTokens.length; i++) {
@@ -336,35 +311,28 @@ public class Solve extends CommandLineUtility {
 				variables.add(EncodingUtils.newReal(lowerBound, upperBound));
 			}
 		} else if (commandLine.hasOption("variables")) {
-			String[] tokens =
-					commandLine.getOptionValue("variables").split(",");
+			String[] tokens = commandLine.getOptionValue("variables").split(",");
 			
 			for (String token : tokens) {
-				variables.add(parseVariableSpecification(
-						token.trim().toUpperCase()));
+				variables.add(parseVariableSpecification(token.trim().toUpperCase()));
 			}
 		} else {
-			throw new ParseException("must specify either the problem, the " +
-					"variables, or the lower and upper bounds arguments");
+			throw new ParseException("must specify either the problem, the variables, or the lower and upper bounds arguments");
 		}
 		
 		return variables;
 	}
 	
 	/**
-	 * Creates an external problem using the information provided on the
-	 * command line.
+	 * Creates an external problem using the information provided on the command line.
 	 * 
 	 * @param commandLine the command line arguments
 	 * @return the external problem
-	 * @throws ParseException if an error occurred parsing any of the command
-	 *         line options
+	 * @throws ParseException if an error occurred parsing any of the command line options
 	 * @throws IOException if an error occurred starting the external program
 	 */
-	private Problem createExternalProblem(final CommandLine commandLine)
-			throws ParseException, IOException {
-		final int numberOfObjectives = Integer.parseInt(
-				commandLine.getOptionValue("objectives"));
+	private Problem createExternalProblem(final CommandLine commandLine) throws ParseException, IOException {
+		final int numberOfObjectives = Integer.parseInt(commandLine.getOptionValue("objectives"));
 		
 		final int numberOfConstraints = commandLine.hasOption("constraints") ?
 				Integer.parseInt(commandLine.getOptionValue("constraints")) :
@@ -386,8 +354,7 @@ public class Solve extends CommandLineUtility {
 			}
 			
 			if (commandLine.hasOption("startupDelay")) {
-				delay = Integer.parseInt(
-						commandLine.getOptionValue("startupDelay"));
+				delay = Integer.parseInt(commandLine.getOptionValue("startupDelay"));
 			}
 			
 			if (commandLine.getArgs().length > 0) {
@@ -431,8 +398,7 @@ public class Solve extends CommandLineUtility {
 	
 				@Override
 				public Solution newSolution() {
-					Solution solution = new Solution(variables.size(),
-							numberOfObjectives, numberOfConstraints);
+					Solution solution = new Solution(variables.size(), numberOfObjectives, numberOfConstraints);
 					
 					for (int i = 0; i < variables.size(); i++) {
 						solution.setVariable(i, variables.get(i).copy());
@@ -467,8 +433,7 @@ public class Solve extends CommandLineUtility {
 	
 				@Override
 				public Solution newSolution() {
-					Solution solution = new Solution(variables.size(),
-							numberOfObjectives, numberOfConstraints);
+					Solution solution = new Solution(variables.size(), numberOfObjectives, numberOfConstraints);
 					
 					for (int i = 0; i < variables.size(); i++) {
 						solution.setVariable(i, variables.get(i).copy());
@@ -482,8 +447,8 @@ public class Solve extends CommandLineUtility {
 	}
 	
 	/**
-	 * Runs a number of trials as a way to quickly test if the connection
-	 * between this solver and the problem is functional.
+	 * Runs a number of trials as a way to quickly test if the connection between this solver and the problem is
+	 * functional.
 	 * 
 	 * @param problem the problem
 	 * @param commandLine the command line arguments
@@ -607,8 +572,7 @@ public class Solve extends CommandLineUtility {
 				try (ResultFileWriter writer = new ResultFileWriter(problem, file)) {
 					algorithm = new RuntimeCollector(algorithm, runtimeFrequency, writer);
 					
-					while (!algorithm.isTerminated() &&
-							(algorithm.getNumberOfEvaluations() < maxEvaluations)) {
+					while (!algorithm.isTerminated() && (algorithm.getNumberOfEvaluations() < maxEvaluations)) {
 						algorithm.step();
 					}
 				}
@@ -637,9 +601,8 @@ public class Solve extends CommandLineUtility {
 		private final ResultFileWriter writer;
 
 		/**
-		 * The time, in nanoseconds, this collector was created.  This roughly
-		 * corresponds to the time the algorithm starts, assuming that the
-		 * algorithm is run immediately following its setup.
+		 * The time, in nanoseconds, this collector was created.  This roughly corresponds to the time the algorithm
+		 * starts, assuming that the algorithm is run immediately following its setup.
 		 */
 		private final long startTime;
 
@@ -647,13 +610,10 @@ public class Solve extends CommandLineUtility {
 		 * Constructs a new wrapper to collect runtime dynamics.
 		 * 
 		 * @param algorithm the wrapped algorithm
-		 * @param frequency the frequency at which the runtime snapshots are
-		 *        recorded
-		 * @param writer the result file writer where the runtime information
-		 *        is stored
+		 * @param frequency the frequency at which the runtime snapshots are recorded
+		 * @param writer the result file writer where the runtime information is stored
 		 */
-		public RuntimeCollector(Algorithm algorithm, int frequency,
-				ResultFileWriter writer) {
+		public RuntimeCollector(Algorithm algorithm, int frequency, ResultFileWriter writer) {
 			super(algorithm, frequency, FrequencyType.EVALUATIONS);
 			this.writer = writer;
 			

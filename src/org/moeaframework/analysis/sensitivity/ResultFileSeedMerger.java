@@ -31,21 +31,19 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.util.CommandLineUtility;
 
 /**
- * Command line utility for merging the approximation sets in one or more result
- * files across the seeds.  For example, if {@link Evaluator} was run with 25
- * different seeds and 100 different parameterizations, then each of the 25
- * output files (from each seed) will contain 100 records.  This command
- * produces a single file with 100 records, where each record is produced by
- * combining the approximation sets for that record across all seeds.
+ * Command line utility for merging the approximation sets in one or more result files across the seeds.  For example,
+ * if {@link Evaluator} was run with 25 different seeds and 100 different parameterizations, then each of the 25
+ * output files (from each seed) will contain 100 records.  This command produces a single file with 100 records, where
+ * each record is produced by combining the approximation sets for that record across all seeds.
  * <p>
- * Usage: {@code java -cp "..." org.moeaframework.analysis.sensitivity.ResultFileSeedMerger <options> <files>}
+ * Usage: {@code java -classpath "lib/*" org.moeaframework.analysis.sensitivity.ResultFileSeedMerger <options> <files>}
  * 
  * <table>
  *   <caption style="text-align: left">Arguments:</caption>
  *   <tr>
  *     <td>{@code -b, --problem}</td>
- *     <td>The name of the problem.  This name should reference one of the
- *         problems recognized by the MOEA Framework.</td>
+ *     <td>The name of the problem.  This name should reference one of the problems recognized by the MOEA
+ *         Framework.</td>
  *   </tr>
  *   <tr>
  *     <td>{@code -d, --dimension}</td>
@@ -57,17 +55,16 @@ import org.moeaframework.util.CommandLineUtility;
  *   </tr>
  *   <tr>
  *     <td>{@code -e, --epsilon}</td>
- *     <td>The epsilon values for limiting the size of the results.  This
- *         epsilon value is also used for any algorithms that include an
- *         epsilon parameter.</td>
+ *     <td>The epsilon values for limiting the size of the results.  This epsilon value is also used for any algorithms
+ *         that include an epsilon parameter.</td>
  *   </tr>
  * </table>
  */
 public class ResultFileSeedMerger extends CommandLineUtility {
 
 	/**
-	 * Constructs the command line utility for merging the approximation sets
-	 * in one or more result files across the seeds.
+	 * Constructs the command line utility for merging the approximation sets in one or more result files across the
+	 * seeds.
 	 */
 	public ResultFileSeedMerger() {
 		super();
@@ -91,13 +88,11 @@ public class ResultFileSeedMerger extends CommandLineUtility {
 	}
 
 	/**
-	 * Returns all non-dominated approximation sets in the specified result 
-	 * file.
+	 * Returns all non-dominated approximation sets in the specified result file.
 	 * 
 	 * @param file the result file
 	 * @param problem the problem
-	 * @return all non-dominated approximation sets in the specified result 
-	 *         file
+	 * @return all non-dominated approximation sets in the specified result file
 	 * @throws IOException if an I/O error occurred
 	 */
 	private List<NondominatedPopulation> load(File file, Problem problem) throws IOException {
@@ -165,8 +160,7 @@ public class ResultFileSeedMerger extends CommandLineUtility {
 	}
 
 	/**
-	 * Starts the command line utility for merging the approximation sets in one
-	 * or more result files across the seeds.
+	 * Starts the command line utility for merging the approximation sets in one or more result files across the seeds.
 	 * 
 	 * @param args the command line arguments
 	 * @throws Exception if an error occurred

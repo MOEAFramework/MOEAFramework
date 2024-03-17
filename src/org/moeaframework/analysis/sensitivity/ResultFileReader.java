@@ -37,12 +37,11 @@ import org.moeaframework.core.Variable;
 import org.moeaframework.util.TypedProperties;
 
 /**
- * Reads result files created by {@link ResultFileWriter}.  See the documentation
- * for {@code ResultWriter} for a description of the file format.
+ * Reads result files created by {@link ResultFileWriter}.  See the documentation for {@code ResultWriter} for a
+ * description of the file format.
  * <p>
- * This reader is expected to gracefully recover from incomplete or improperly
- * formatted files. Unless a serious I/O error occurred, this reader will
- * attempt to load the file to the last valid entry. This requirement enables a
+ * This reader is expected to gracefully recover from incomplete or improperly formatted files. Unless a serious I/O
+ * error occurred, this reader will attempt to load the file to the last valid entry. This requirement enables a
  * {@code ResultWriter} to resume processing at a valid state.
  * 
  * @see ResultFileWriter
@@ -65,26 +64,22 @@ public class ResultFileReader implements Closeable, Iterator<ResultEntry>, Itera
 	private final Problem problem;
 
 	/**
-	 * The next entry to be returned; or {@code null} if the next entry has not
-	 * yet been read.
+	 * The next entry to be returned; or {@code null} if the next entry has not yet been read.
 	 */
 	private ResultEntry nextEntry;
 
 	/**
-	 * {@code true} if an error occurred parsing the result file; {@code false}
-	 * otherwise.
+	 * {@code true} if an error occurred parsing the result file; {@code false} otherwise.
 	 */
 	private boolean error;
 	
 	/**
-	 * {@code true} if the warning for unsupported decision variables was
-	 * displayed; {@code false} otherwise.
+	 * {@code true} if the warning for unsupported decision variables was displayed; {@code false} otherwise.
 	 */
 	private boolean printedWarning;
 
 	/**
-	 * Constructs a result file reader for reading the approximation sets from
-	 * the specified result file.
+	 * Constructs a result file reader for reading the approximation sets from the specified result file.
 	 * 
 	 * @param problem the problem
 	 * @param file the file containing the results
@@ -233,10 +228,9 @@ public class ResultFileReader implements Closeable, Iterator<ResultEntry>, Itera
 	}
 	
 	/**
-	 * Decodes string representations of decision variables, returning the
-	 * variable with the decoded value.  Depending on the implementation and
-	 * variable type, the same variable as provided in the arguments or a new
-	 * variable will be returned.
+	 * Decodes string representations of decision variables, returning the variable with the decoded value.  Depending
+	 * on the implementation and variable type, the same variable as provided in the arguments or a new variable will
+	 * be returned.
 	 * 
 	 * @param variable the decision variable
 	 * @param string the string representation of the decision variable

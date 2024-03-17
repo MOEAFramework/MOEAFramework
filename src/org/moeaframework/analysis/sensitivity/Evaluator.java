@@ -37,10 +37,9 @@ import org.moeaframework.util.CommandLineUtility;
 import org.moeaframework.util.TypedProperties;
 
 /**
- * Command line utility for evaluating an algorithm using many 
- * parameterizations.
+ * Command line utility for evaluating an algorithm using many parameterizations.
  * <p>
- * Usage: {@code java -cp "..." org.moeaframework.analysis.sensitivity.Evaluator <options>}
+ * Usage: {@code java -classpath "lib/*" org.moeaframework.analysis.sensitivity.Evaluator <options>}
  * 
  * <table>
  *   <caption style="text-align: left">Arguments:</caption>
@@ -54,25 +53,23 @@ import org.moeaframework.util.TypedProperties;
  *   </tr>
  *   <tr>
  *     <td>{@code -o, --output}</td>
- *     <td>The location of the output file.  Each record in the output file
- *         will correspond to the end-of-run approximation set from each
- *         parameterization read from the parameter sample file.</td>
+ *     <td>The location of the output file.  Each record in the output file will correspond to the end-of-run
+ *         approximation set from each parameterization read from the parameter sample file.</td>
  *   </tr>
  *   <tr>
  *     <td>{@code -b, --problem}</td>
- *     <td>The name of the problem.  This name should reference one of the
- *         problems recognized by the MOEA Framework.</td>
+ *     <td>The name of the problem.  This name should reference one of the problems recognized by the MOEA
+ *         Framework.</td>
  *   </tr>
  *   <tr>
  *     <td>{@code -a, --algorithm}</td>
- *     <td>The name of the algorithm.  This name should reference one of the
- *         algorithms recognized by the MOEA Framework.</td>
+ *     <td>The name of the algorithm.  This name should reference one of the algorithms recognized by the MOEA
+ *         Framework.</td>
  *   </tr>
  *   <tr>
  *     <td>{@code -x, --properties}</td>
- *     <td>Semicolon-separated list of additional parameters for the
- *         algorithm (e.g., {@code -x maxEvaluations=10000;populationSize=100}.
- *     </td>
+ *     <td>Semicolon-separated list of additional parameters for the algorithm (e.g.,
+ *         {@code -x maxEvaluations=10000;populationSize=100}.</td>
  *   </tr>
  *   <tr>
  *     <td>{@code -s, --seed}</td>
@@ -80,20 +77,17 @@ import org.moeaframework.util.TypedProperties;
  *   </tr>
  *   <tr>
  *     <td>{@code -e, --epsilon}</td>
- *     <td>The epsilon values for limiting the size of the results.  This
- *         epsilon value is also used for any algorithms that include an
- *         epsilon parameter.</td>
+ *     <td>The epsilon values for limiting the size of the results.  This epsilon value is also used for any algorithms
+ *         that include an epsilon parameter.</td>
  *   </tr>
  *   <tr>
  *     <td>{@code -m, --metrics}</td>
- *     <td>Compute the performance metrics and output a metric file.  This is
- *         equivalent to running {@link ResultFileEvaluator} on the result file
- *         produced by this command.</td>
+ *     <td>Compute the performance metrics and output a metric file.  This is equivalent to running
+ *         {@link ResultFileEvaluator} on the result file produced by this command.</td>
  *   </tr>
  *   <tr>
  *     <td>{@code -r, --reference}</td>
- *     <td>Location of the reference file used when computing the performance
- *         metrics (required if -m is set).</td>
+ *     <td>Location of the reference file used when computing the performance metrics (required if -m is set).</td>
  *   </tr>
  *   <tr>
  *     <td>{@code -n, --novariables}</td>
@@ -109,8 +103,7 @@ public class Evaluator extends CommandLineUtility {
 	protected OutputWriter output;
 
 	/**
-	 * Constructs the command line utility for evaluating an algorithm using
-	 * many parameterizations.
+	 * Constructs the command line utility for evaluating an algorithm using many parameterizations.
 	 */
 	public Evaluator() {
 		super();
@@ -181,8 +174,7 @@ public class Evaluator extends CommandLineUtility {
 		ParameterFile parameterFile = new ParameterFile(new File(commandLine.getOptionValue("parameterFile")));
 
 		// sanity check to ensure input hasn't been modified after the output
-		if (!commandLine.hasOption("force") &&
-				(outputFile.lastModified() > 0L) && 
+		if (!commandLine.hasOption("force") && (outputFile.lastModified() > 0L) && 
 				(inputFile.lastModified() > outputFile.lastModified())) {
 			throw new FrameworkException("input appears to be newer than output");
 		}
@@ -256,11 +248,9 @@ public class Evaluator extends CommandLineUtility {
 	 * @param problem the problem being evaluated
 	 * @throws IOException if an I/O error occurred
 	 */
-	protected void process(String algorithmName, TypedProperties properties, Problem problem)
-			throws IOException {
+	protected void process(String algorithmName, TypedProperties properties, Problem problem) throws IOException {
 		// instrument the problem to record timing information
 		TimingProblem timingProblem = new TimingProblem(problem);
-
 		Algorithm algorithm = AlgorithmFactory.getInstance().getAlgorithm(algorithmName, properties, timingProblem);
 
 		// find the maximum NFE to run
@@ -297,8 +287,7 @@ public class Evaluator extends CommandLineUtility {
 	}
 
 	/**
-	 * Starts the command line utility for evaluating an algorithm using many
-	 * parameterizations.
+	 * Starts the command line utility for evaluating an algorithm using many parameterizations.
 	 * 
 	 * @param args the command line arguments
 	 * @throws Exception if an error occurred

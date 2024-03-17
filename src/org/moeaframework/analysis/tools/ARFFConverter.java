@@ -39,22 +39,19 @@ import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.util.CommandLineUtility;
 
 /**
- * Converts a result file into an ARFF file that can be loaded into various
- * data mining software (e.g.,
- * <a href="http://www.cs.waikato.ac.nz/ml/weka/">Weka</a>). This tool has two
- * limitations that the user must be aware.  First, it only converts the last
- * entry in the result file.  Second, it can only convert real-valued decision
- * variables.  Any other decision variable types will appear as missing values
- * in the ARFF file.
+ * Converts a result file into an ARFF file that can be loaded into various data mining software (e.g.,
+ * <a href="http://www.cs.waikato.ac.nz/ml/weka/">Weka</a>). This tool has two limitations that the user must be aware.
+ * First, it only converts the last entry in the result file.  Second, it can only convert real-valued decision
+ * variables.  Any other decision variable types will appear as missing values in the ARFF file.
  * <p>
- * Usage: {@code java -cp "..." org.moeaframework.analysis.tools.ARFFConverter <options>}
+ * Usage: {@code java -classpath "lib/*" org.moeaframework.analysis.tools.ARFFConverter <options>}
  * 
  * <table>
  *   <caption style="text-align: left">Arguments:</caption>
  *   <tr>
  *     <td>{@code -b, --problem}</td>
- *     <td>The name of the problem.  This name should reference one of the
- *         problems recognized by the MOEA Framework.</td>
+ *     <td>The name of the problem.  This name should reference one of the problems recognized by the MOEA
+ *         Framework.</td>
  *   </tr>
  *   <tr>
  *     <td>{@code -d, --dimension}</td>
@@ -62,8 +59,7 @@ import org.moeaframework.util.CommandLineUtility;
  *   </tr>
  *   <tr>
  *     <td>{@code -i, --input}</td>
- *     <td>The result file containing the input data.
- *     </td>
+ *     <td>The result file containing the input data.</td>
  *   </tr>
  *   <tr>
  *     <td>{@code -o, --output}</td>
@@ -75,16 +71,14 @@ import org.moeaframework.util.CommandLineUtility;
  *   </tr>
  *   <tr>
  *     <td>{@code -n, --names}</td>
- *     <td>The names for the decision variables and objectives, separated by
- *         commas.</td>
+ *     <td>The names for the decision variables and objectives, separated by commas.</td>
  *   </tr>
  * </table>
  */
 public class ARFFConverter extends CommandLineUtility {
 	
 	/**
-	 * Constructs the command line utility for converting result files into ARFF
-	 * files.
+	 * Constructs the command line utility for converting result files into ARFF files.
 	 */
 	public ARFFConverter() {
 		super();
@@ -123,15 +117,13 @@ public class ARFFConverter extends CommandLineUtility {
 	 * Prints the header lines to the ARFF file.
 	 * 
 	 * @param problem the problem
-	 * @param reduced {@code true} if the decision variables are suppressed;
-	 *        {@code false} if they are written to the output file
-	 * @param attributes the names of the decision variables and/or objectives;
-	 *        the length must match the number of variables, objectives, or
-	 *        both, otherwise default names are used
+	 * @param reduced {@code true} if the decision variables are suppressed; {@code false} if they are written to the
+	 *        output file
+	 * @param attributes the names of the decision variables and/or objectives; the length must match the number of
+	 *        variables, objectives, or both, otherwise default names are used
 	 * @param writer the writer where the output is written
 	 */
-	private void printHeader(Problem problem, boolean reduced,
-			List<String> attributes, PrintWriter writer) {
+	private void printHeader(Problem problem, boolean reduced, List<String> attributes, PrintWriter writer) {
 		int numberOfVariables = problem.getNumberOfVariables();
 		int numberOfObjectives = problem.getNumberOfObjectives();
 		
@@ -188,13 +180,12 @@ public class ARFFConverter extends CommandLineUtility {
 	 * Prints the given population as the ARFF data section.
 	 * 
 	 * @param problem the problem
-	 * @param reduced {@code true} if the decision variables are suppressed;
-	 *        {@code false} if they are written to the output file
+	 * @param reduced {@code true} if the decision variables are suppressed; {@code false} if they are written to the
+	 *        output file
 	 * @param population the population to write
 	 * @param writer the writer where the output is written
 	 */
-	private void printData(Problem problem, boolean reduced,
-			Population population, PrintWriter writer) {
+	private void printData(Problem problem, boolean reduced, Population population, PrintWriter writer) {
 		int numberOfVariables = problem.getNumberOfVariables();
 		int numberOfObjectives = problem.getNumberOfObjectives();
 		
@@ -257,13 +248,11 @@ public class ARFFConverter extends CommandLineUtility {
 			
 			// check if the population is empty
 			if (population.isEmpty()) {
-				throw new FrameworkException(
-						"population is empty, can not generate ARFF file");
+				throw new FrameworkException("population is empty, can not generate ARFF file");
 			}
 			
 			// write the ARFF file
-			try (PrintWriter writer = new PrintWriter(new FileWriter(
-						commandLine.getOptionValue("output")))) {
+			try (PrintWriter writer = new PrintWriter(new FileWriter(commandLine.getOptionValue("output")))) {
 				printHeader(problem, reduced, attributes, writer);
 				printData(problem, reduced, population, writer);
 			}
@@ -271,8 +260,7 @@ public class ARFFConverter extends CommandLineUtility {
 	}
 	
 	/**
-	 * Starts the command line utility for converting result files into ARFF
-	 * files.
+	 * Starts the command line utility for converting result files into ARFF files.
 	 * 
 	 * @param args the command line arguments
 	 * @throws Exception if an error occurred

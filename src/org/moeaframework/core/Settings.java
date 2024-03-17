@@ -341,7 +341,8 @@ public class Settings {
 	/**
 	 * Returns the native hypervolume command; or {@code null} if the default hypervolume implementation is used.
 	 * The default hypervolume implementation may become computationally prohibitive on large approximation sets or
-	 * at high dimensions.  See {@link NativeHypervolume} for more details on formatting the command.
+	 * at high dimensions.  See {@link org.moeaframework.core.indicator.NativeHypervolume} for more details on
+	 * formatting the command.
 	 *   
 	 * @return the native hypervolume command; or {@code null} if the default hypervolume implementation is used
 	 */

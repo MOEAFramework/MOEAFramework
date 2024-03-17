@@ -31,23 +31,21 @@ import org.moeaframework.util.format.NumberFormatter;
 /**
  * Command line utility for calculating the hypervolume of approximation sets.
  * <p>
- * Usage: {@code java -cp "..." org.moeaframework.analysis.sensitivity.SetHypervolume <options> <files>}
+ * Usage: {@code java -classpath "lib/*" org.moeaframework.analysis.sensitivity.SetHypervolume <options> <files>}
  * 
  * <table>
  *   <caption style="text-align: left">Arguments:</caption>
  *   <tr>
  *     <td>{@code -e, --epsilon}</td>
- *     <td>The epsilon values for limiting the size of the results.  This
- *         epsilon value is also used for any algorithms that include an
- *         epsilon parameter.</td>
+ *     <td>The epsilon values for limiting the size of the results.  This epsilon value is also used for any algorithms
+ *         that include an epsilon parameter.</td>
  *   </tr>
  * </table>
  */
 public class SetHypervolume extends CommandLineUtility {
 	
 	/**
-	 * Constructs the command line utility for calculating the hypervolume of 
-	 * approximation sets.
+	 * Constructs the command line utility for calculating the hypervolume of approximation sets.
 	 */
 	public SetHypervolume() {
 		super();
@@ -65,8 +63,7 @@ public class SetHypervolume extends CommandLineUtility {
 		double[] epsilon = OptionUtils.getEpsilon(commandLine);
 		
 		for (String filename : commandLine.getArgs()) {
-			NondominatedPopulation set = new NondominatedPopulation(
-					PopulationIO.readObjectives(new File(filename)));
+			NondominatedPopulation set = new NondominatedPopulation(PopulationIO.readObjectives(new File(filename)));
 			
 			if (epsilon != null) {
 				set = new EpsilonBoxDominanceArchive(epsilon, set);
@@ -80,8 +77,7 @@ public class SetHypervolume extends CommandLineUtility {
 	}
 	
 	/**
-	 * Starts the command line utility for calculating the hypervolume of 
-	 * approximation sets.
+	 * Starts the command line utility for calculating the hypervolume of approximation sets.
 	 * 
 	 * @param args the command line arguments
 	 * @throws Exception if an error occurred

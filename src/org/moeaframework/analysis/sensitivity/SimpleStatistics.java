@@ -30,23 +30,21 @@ import org.moeaframework.util.CommandLineUtility;
 import org.moeaframework.util.OptionCompleter;
 
  /**
- * Command line utility for computing statistics across multiple data files.
- * The data files should only contain numeric values, and each file must
- * contain the same number of rows and columns.
+ * Command line utility for computing statistics across multiple data files.  The data files should only contain
+ * numeric values, and each file must contain the same number of rows and columns.
  * <p>
- * Usage: {@code java -cp "..." org.moeaframework.analysis.sensitivity.SimpleStatistics <options> <files>}
+ * Usage: {@code java -classpath "lib/*" org.moeaframework.analysis.sensitivity.SimpleStatistics <options> <files>}
  * 
  * <table>
  *   <caption style="text-align: left">Arguments:</caption>
  *   <tr>
  *     <td>{@code -m, --mode}</td>
- *     <td>The mode of operation, such as {@code minimum}, {@code maximum}, 
-		   {@code average}, {@code stdev}, or {@code count} (required).</td>
+ *     <td>The mode of operation, such as {@code minimum}, {@code maximum}, {@code average}, {@code stdev}, or
+ *         {@code count} (required).</td>
  *   </tr>
  *   <tr>
  *     <td>{@code -o, --output}</td>
- *     <td>Location where the output is saved.  If not given, the output is
- *         printed to the console.</td>
+ *     <td>Location where the output is saved.  If not given, the output is printed to the console.</td>
  *   </tr>
  *   <tr>
  *     <td>{@code -i, --ignore}</td>
@@ -54,9 +52,8 @@ import org.moeaframework.util.OptionCompleter;
  *   </tr>
  *   <tr>
  *     <td>{@code -x, --maximum}</td>
- *     <td>The value used to replace any infinity values.  If infinity values
- *         are not replaced, some calculations, such as the average, can be
- *         skewed.</td>
+ *     <td>The value used to replace any infinity values.  If infinity values are not replaced, some calculations,
+ *         such as the average, can be skewed.</td>
  *   </tr>
  *   <tr>
  *     <td>{@code <files>}</td>
@@ -67,8 +64,7 @@ import org.moeaframework.util.OptionCompleter;
 public class SimpleStatistics extends CommandLineUtility {
 	
 	/**
-	 * Constructs the command line utility for computing statistics across
-	 * multiple data files.
+	 * Constructs the command line utility for computing statistics across multiple data files.
 	 */
 	public SimpleStatistics() {
 		super();
@@ -123,8 +119,7 @@ public class SimpleStatistics extends CommandLineUtility {
 		String mode = null;
 		List<double[][]> entries = new ArrayList<double[][]>();
 		SummaryStatistics statistics = new SummaryStatistics();
-		OptionCompleter completer = new OptionCompleter("minimum", "maximum", 
-				"average", "stdev", "count");
+		OptionCompleter completer = new OptionCompleter("minimum", "maximum", "average", "stdev", "count");
 		
 		//load data from all input files
 		for (String filename : commandLine.getArgs()) {
@@ -144,19 +139,16 @@ public class SimpleStatistics extends CommandLineUtility {
 				numberOfRows = entries.get(i).length;
 				
 				if (numberOfRows == 0) {
-					throw new IllegalArgumentException("empty file: " + 
-							commandLine.getArgs()[i]);
+					throw new IllegalArgumentException("empty file: " + commandLine.getArgs()[i]);
 				}
 			} else if (numberOfRows != entries.get(i).length) {
-				throw new IllegalArgumentException("unbalanced rows: " +
-						commandLine.getArgs()[i]);
+				throw new IllegalArgumentException("unbalanced rows: " + commandLine.getArgs()[i]);
 			}
 			
 			if (numberOfColumns == -1) {
 				numberOfColumns = entries.get(i)[0].length;
 			} else if (numberOfColumns != entries.get(i)[0].length) {
-				throw new IllegalArgumentException("unbalanced columns: " + 
-						commandLine.getArgs()[i]);
+				throw new IllegalArgumentException("unbalanced columns: " + commandLine.getArgs()[i]);
 			}
 		}
 
@@ -180,14 +172,11 @@ public class SimpleStatistics extends CommandLineUtility {
 					for (int k=0; k<entries.size(); k++) {
 						double value = entries.get(k)[i][j];
 						
-						if (Double.isInfinite(value) &&
-								commandLine.hasOption("maximum")) {
-							value = Double.parseDouble(
-									commandLine.getOptionValue("maximum"));
+						if (Double.isInfinite(value) && commandLine.hasOption("maximum")) {
+							value = Double.parseDouble(commandLine.getOptionValue("maximum"));
 						}
 						
-						if ((Double.isInfinite(value) || Double.isNaN(value)) &&
-								commandLine.hasOption("ignore")) {
+						if ((Double.isInfinite(value) || Double.isNaN(value)) && commandLine.hasOption("ignore")) {
 							// ignore infinity or NaN values
 						} else {
 							statistics.addValue(value);
@@ -209,8 +198,7 @@ public class SimpleStatistics extends CommandLineUtility {
 					} else if (mode.equals("count")) {
 						output.print(statistics.getN());
 					} else {
-						throw new IllegalArgumentException("unknown mode: " +
-								mode);
+						throw new IllegalArgumentException("unknown mode: " + mode);
 					}
 				}
 				
@@ -220,8 +208,7 @@ public class SimpleStatistics extends CommandLineUtility {
 	}
 	
 	/**
-	 * Starts the command line utility for computing statistics across multiple
-	 * data files.
+	 * Starts the command line utility for computing statistics across multiple data files.
 	 * 
 	 * @param args the command line arguments
 	 * @throws Exception if an error occurred

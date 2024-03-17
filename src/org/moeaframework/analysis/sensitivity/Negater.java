@@ -31,24 +31,21 @@ import org.moeaframework.util.CommandLineUtility;
 import org.moeaframework.util.TypedProperties;
 
 /**
- * Command line utility for negating objective values in result files.  As the
- * MOEA Framework only operates on minimization objectives, maximization
- * objectives must be negated prior to their use.  This utility can be used to
+ * Command line utility for negating objective values in result files.  As the MOEA Framework only operates on
+ * minimization objectives, maximization objectives must be negated prior to their use.  This utility can be used to
  * either apply or revert any negation.
  * <p>
- * This utility modifies the file in place.  Avoid killing the process as doing
- * so may leave the file(s) in a corrupted state.
+ * This utility modifies the file in place.  Avoid killing the process as doing so may leave the file(s) in a corrupted
+ * state.
  * <p>
- * Usage: {@code java -cp "..." org.moeaframework.analysis.sensitivity.Negater <options> <files>}
+ * Usage: {@code java -classpath "lib/*" org.moeaframework.analysis.sensitivity.Negater <options> <files>}
  * 
  * <table>
  *   <caption style="text-align: left">Arguments:</caption>
  *   <tr>
  *     <td>{@code -d, --direction}</td>
- *     <td>The optimization direction (required).  A comma-separated list with
- *         1 if the objective should be negated (maximized) and 0 otherwise
- *         (e.g., {@code -d 1,0,1} to negate the first and third objective).
- *         </td>
+ *     <td>The optimization direction (required).  A comma-separated list with 1 if the objective should be negated
+ *         (maximized) and 0 otherwise (e.g., {@code -d 1,0,1} to negate the first and third objective).</td>
  *   </tr>
  *   <tr>
  *     <td>{@code <files>}</td>
@@ -59,8 +56,7 @@ import org.moeaframework.util.TypedProperties;
 public class Negater extends CommandLineUtility {
     
     /**
-     * Constructs the command line utility for negating the objectives in
-     * result files.
+     * Constructs the command line utility for negating the objectives in result files.
      */
     public Negater() {
         super();
@@ -82,8 +78,7 @@ public class Negater extends CommandLineUtility {
 
     @Override
     public void run(CommandLine commandLine) throws Exception {
-        TypedProperties properties = TypedProperties.withProperty("direction",
-                commandLine.getOptionValue("direction"));
+        TypedProperties properties = TypedProperties.withProperty("direction", commandLine.getOptionValue("direction"));
         int[] directions = properties.getIntArray("direction");
 
         outer: for (String filename : commandLine.getArgs()) {
@@ -149,8 +144,7 @@ public class Negater extends CommandLineUtility {
     }
     
     /**
-     * Starts the command line utility for negating the objectives in
-     * result files.
+     * Starts the command line utility for negating the objectives in result files.
      * 
      * @param args the command line arguments
 	 * @throws Exception if an error occurred

@@ -21,10 +21,8 @@ import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.util.TypedProperties;
 
 /**
- * An entry in a result file. This captures the non-dominated population
- * along with properties associated with the entry. The properties could
- * include, for example, the number of function evaluations or performance
- * metrics.
+ * An entry in a result file. This captures the non-dominated population along with properties associated with the
+ * entry. The properties could include, for example, the number of function evaluations or performance metrics.
  * 
  * @see ResultFileWriter
  * @see ResultFileReader
@@ -42,8 +40,7 @@ public class ResultEntry {
 	private final TypedProperties properties;
 	
 	/**
-	 * Constructs a result file entry with the specified non-dominated
-	 * population.
+	 * Constructs a result file entry with the specified non-dominated population.
 	 * 
 	 * @param population the non-dominated population stored in this entry
 	 */
@@ -52,14 +49,12 @@ public class ResultEntry {
 	}
 
 	/**
-	 * Constructs a result file entry with the specified non-dominated
-	 * population and auxiliary properties.
+	 * Constructs a result file entry with the specified non-dominated population and auxiliary properties.
 	 * 
 	 * @param population the non-dominated population stored in this entry
 	 * @param properties the auxiliary properties stored in this entry
 	 */
-	public ResultEntry(NondominatedPopulation population, 
-			TypedProperties properties) {
+	public ResultEntry(NondominatedPopulation population, TypedProperties properties) {
 		super();
 		this.population = population;
 		this.properties = properties;

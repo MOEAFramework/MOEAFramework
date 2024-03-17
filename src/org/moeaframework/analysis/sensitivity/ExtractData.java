@@ -40,10 +40,9 @@ import org.moeaframework.util.OptionCompleter;
 import org.moeaframework.util.TypedProperties;
 
 /**
- * Command line utility for extracting data from a result file.  The data that
- * can be extracted includes any properties by providing its full name, or any
- * of the following metrics if given the designated {@code +option}.  The
- * available options include:
+ * Command line utility for extracting data from a result file.  The data that can be extracted includes any properties
+ * by providing its full name, or any of the following metrics if given the designated {@code +option}.  The available
+ * options include:
  * <ul>
  *   <li>{@code +hypervolume} for {@link Hypervolume}
  *   <li>{@code +generational} for {@link GenerationalDistance}
@@ -57,14 +56,14 @@ import org.moeaframework.util.TypedProperties;
  *   <li>{@code +R3} for {@link R3Indicator}
  * </ul>
  * <p>
- * Usage: {@code java -cp "..." org.moeaframework.analysis.sensitivity.ExtractData <options> <fields>}
+ * Usage: {@code java -classpath "lib/*" org.moeaframework.analysis.sensitivity.ExtractData <options> <fields>}
  * 
  * <table>
  *   <caption style="text-align: left">Arguments:</caption>
  *   <tr>
  *     <td>{@code -b, --problem}</td>
- *     <td>The name of the problem.  This name should reference one of the
- *         problems recognized by the MOEA Framework.</td>
+ *     <td>The name of the problem.  This name should reference one of the problems recognized by the MOEA
+ *         Framework.</td>
  *   </tr>
  *   <tr>
  *     <td>{@code -d, --dimension}</td>
@@ -72,8 +71,7 @@ import org.moeaframework.util.TypedProperties;
  *   </tr>
  *   <tr>
  *     <td>{@code -i, --input}</td>
- *     <td>The result file containing the input data.
- *     </td>
+ *     <td>The result file containing the input data.</td>
  *   </tr>
  *   <tr>
  *     <td>{@code -o, --output}</td>
@@ -85,32 +83,27 @@ import org.moeaframework.util.TypedProperties;
  *   </tr>
  *   <tr>
  *     <td>{@code -e, --epsilon}</td>
- *     <td>The epsilon values for limiting the size of the results.  This
- *         epsilon value is also used for any algorithms that include an
- *         epsilon parameter.</td>
+ *     <td>The epsilon values for limiting the size of the results.  This epsilon value is also used for any algorithms
+ *         that include an epsilon parameter.</td>
  *   </tr>
  *   <tr>
  *     <td>{@code -r, --reference}</td>
- *     <td>Location of the reference file used when computing the performance
- *         metrics (required if -m is set).</td>
+ *     <td>Location of the reference file used when computing the performance metrics (required if -m is set).</td>
  *   </tr>
  *   <tr>
  *     <td>{@code -n, --noheader}</td>
- *     <td>Do not include a header line indicating the data stored in each
- *         column.</td>
+ *     <td>Do not include a header line indicating the data stored in each column.</td>
  *   </tr>
  *   <tr>
  *     <td>{@code <fields>}</td>
- *     <td>The names of the fields to extract from the data, or one of the
- *         {@code +options} listed above.</td>
+ *     <td>The names of the fields to extract from the data, or one of the {@code +options} listed above.</td>
  *   </tr>
  * </table>
  */
 public class ExtractData extends CommandLineUtility {
 
 	/**
-	 * Constructs the command line utility for extracting data from a result
-	 * file.
+	 * Constructs the command line utility for extracting data from a result file.
 	 */
 	public ExtractData() {
 		super();

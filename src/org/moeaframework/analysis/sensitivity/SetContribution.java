@@ -29,25 +29,22 @@ import org.moeaframework.util.CommandLineUtility;
 import org.moeaframework.util.format.NumberFormatter;
 
 /**
- * Command line utility for reporting the number of solutions in a set that are
- * contained within a reference set.  The common use-case of this utility is to
- * determine the percent makeup of the individual approximation sets used 
- * during the reference set construction.
+ * Command line utility for reporting the number of solutions in a set that are contained within a reference set.  The
+ * common use-case of this utility is to determine the percent makeup of the individual approximation sets used during
+ * the reference set construction.
  * <p>
- * Usage: {@code java -cp "..." org.moeaframework.analysis.sensitivity.SetContribution <options> <files>}
+ * Usage: {@code java -classpath "lib/*" org.moeaframework.analysis.sensitivity.SetContribution <options> <files>}
  * 
  * <table>
  *   <caption style="text-align: left">Arguments:</caption>
  *   <tr>
  *     <td>{@code -e, --epsilon}</td>
- *     <td>The epsilon values for limiting the size of the results.  This
- *         epsilon value is also used for any algorithms that include an
- *         epsilon parameter.</td>
+ *     <td>The epsilon values for limiting the size of the results.  This epsilon value is also used for any algorithms
+ *         that include an epsilon parameter.</td>
  *   </tr>
  *   <tr>
  *     <td>{@code -r, --reference}</td>
- *     <td>Location of the reference file used when computing the performance
- *         metrics (required if -m is set).</td>
+ *     <td>Location of the reference file used when computing the performance metrics (required if -m is set).</td>
  *   </tr>
  *   <tr>
  *     <td>{@code <files>}</td>
@@ -58,8 +55,8 @@ import org.moeaframework.util.format.NumberFormatter;
 public class SetContribution extends CommandLineUtility {
 	
 	/**
-	 * Constructs the command line utility for reporting the number of
-	 * solutions in a set that are contained within a reference set.
+	 * Constructs the command line utility for reporting the number of solutions in a set that are contained within a
+	 * reference set.
 	 */
 	public SetContribution() {
 		super();
@@ -105,8 +102,8 @@ public class SetContribution extends CommandLineUtility {
 	}
 	
 	/**
-	 * Starts the command line utility for reporting the number of solutions in
-	 * a set that are contained within a reference set.
+	 * Starts the command line utility for reporting the number of solutions in a set that are contained within a
+	 * reference set.
 	 * 
 	 * @param args the command line arguments
 	 * @throws Exception if an error occurred

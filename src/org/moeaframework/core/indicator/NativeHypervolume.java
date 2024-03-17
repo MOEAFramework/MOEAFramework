@@ -39,7 +39,7 @@ import org.moeaframework.util.io.RedirectStream;
  * Calculates hypervolume using a compiled executable.  This originally was intended to allow use of faster, natively
  * compiled codes.  However, today the MOEA Framework's default hypervolume code is sufficient for most purposes.
  * <p>
- * If this feature is still required, it can be configured by setting the {@value Settings#KEY_HYPERVOLUME}
+ * If this feature is still required, it can be configured by setting the {@link Settings#KEY_HYPERVOLUME}
  * system property or in {@value Settings#DEFAULT_CONFIGURATION_FILE}.  This setting specifies the command line for
  * running the executable.  The command can be customized using the following substitutions:
  * <ul>

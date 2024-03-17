@@ -32,19 +32,17 @@ import org.moeaframework.util.sequence.Sobol;
 import org.moeaframework.util.sequence.Uniform;
 
 /**
- * Command line utility for producing randomly-generated parameters for use by
- * the {@link Evaluator} or {@link DetailedEvaluator}.  The output is called a
- * parameter sample file.
+ * Command line utility for producing randomly-generated parameters for use by the {@link Evaluator} or
+ * {@link DetailedEvaluator}.  The output is called a parameter sample file.
  * <p>
- * Usage: {@code java -cp "..." org.moeaframework.analysis.sensitivity.SampleGenerator}
+ * Usage: {@code java -classpath "lib/*" org.moeaframework.analysis.sensitivity.SampleGenerator}
  * 
  * <table>
  *   <caption style="text-align: left">Arguments:</caption>
  *   <tr>
  *     <td>{@code -n, --numberOfSamples}</td>
- *     <td>The number of samples to generate.  Depending on the selected method,
- *         more samples may be generated then given by this option (required).
- *         </td>
+ *     <td>The number of samples to generate.  Depending on the selected method, more samples may be generated then
+ *         given by this option (required).</td>
  *   </tr>
  *   <tr>
  *     <td>{@code -p, --parameterFile}</td>
@@ -52,11 +50,8 @@ import org.moeaframework.util.sequence.Uniform;
  *   </tr>
  *   <tr>
  *     <td>{@code -m, --method}</td>
- *     <td>The sampling method, such as {@code latin}, {@code sobol}, or
- *         {@code saltelli} (required).  If you eventually want to use the
- *         results with {@link SobolAnalysis}, then use the {@code saltelli}
- *         method.
- *     </td>
+ *     <td>The sampling method, such as {@code latin}, {@code sobol}, or {@code saltelli} (required).  If you
+ *         eventually want to use the results with {@link SobolAnalysis}, then use the {@code saltelli} method.</td>
  *   <tr>
  *     <td>{@code -s, --seed}</td>
  *     <td>The seed used to generate the parameter samples.</td>
@@ -70,8 +65,7 @@ import org.moeaframework.util.sequence.Uniform;
 public class SampleGenerator extends CommandLineUtility {
 
 	/**
-	 * Constructs the command line utility for producing randomly-generated
-	 * parameters for use by the {@link Evaluator}.
+	 * Constructs the command line utility for producing randomly-generated parameters for use by the {@link Evaluator}.
 	 */
 	public SampleGenerator() {
 		super();
@@ -115,33 +109,27 @@ public class SampleGenerator extends CommandLineUtility {
 
 	@Override
 	public void run(CommandLine commandLine) throws IOException {
-		ParameterFile parameterFile = new ParameterFile(new File(
-				commandLine.getOptionValue("parameterFile")));
+		ParameterFile parameterFile = new ParameterFile(new File(commandLine.getOptionValue("parameterFile")));
 
 		int N = Integer.parseInt(commandLine.getOptionValue("numberOfSamples"));
 		int D = parameterFile.size();
 		
 		if (N <= 0) {
-			throw new IllegalArgumentException(
-					"numberOfSamples must be positive");
+			throw new IllegalArgumentException("numberOfSamples must be positive");
 		}
 		
 		if (D <= 0) {
-			throw new IllegalArgumentException(
-					"parameter file contains no parameters");
+			throw new IllegalArgumentException("parameter file contains no parameters");
 		}
 
 		Sequence sequence = null;
 
 		if (commandLine.hasOption("method")) {
-			OptionCompleter completer = new OptionCompleter("uniform", "latin",
-					"sobol", "saltelli");
-			String method = completer.lookup(
-					commandLine.getOptionValue("method"));
+			OptionCompleter completer = new OptionCompleter("uniform", "latin", "sobol", "saltelli");
+			String method = completer.lookup(commandLine.getOptionValue("method"));
 
 			if (method == null) {
-				throw new IllegalArgumentException("invalid method: "
-						+ commandLine.getOptionValue("method"));
+				throw new IllegalArgumentException("invalid method: " + commandLine.getOptionValue("method"));
 			} else if (method.equals("latin")) {
 				sequence = new LatinHypercube();
 			} else if (method.equals("sobol")) {
@@ -152,8 +140,7 @@ public class SampleGenerator extends CommandLineUtility {
 			} else if (method.equals("uniform")) {
 				sequence = new Uniform();
 			} else {
-				throw new IllegalArgumentException("invalid method: "
-						+ commandLine.getOptionValue("method"));
+				throw new IllegalArgumentException("invalid method: " + commandLine.getOptionValue("method"));
 			}
 		} else {
 			sequence = new Sobol();
@@ -169,15 +156,13 @@ public class SampleGenerator extends CommandLineUtility {
 			for (int i = 0; i < N; i++) {
 				output.print(parameterFile.get(0).getLowerBound()
 						+ samples[i][0]
-						* (parameterFile.get(0).getUpperBound() -
-								parameterFile.get(0).getLowerBound()));
+						* (parameterFile.get(0).getUpperBound() - parameterFile.get(0).getLowerBound()));
 
 				for (int j = 1; j < D; j++) {
 					output.print(' ');
 					output.print(parameterFile.get(j).getLowerBound()
 							+ samples[i][j]
-							* (parameterFile.get(j).getUpperBound() -
-									parameterFile.get(j).getLowerBound()));
+							* (parameterFile.get(j).getUpperBound() - parameterFile.get(j).getLowerBound()));
 				}
 
 				output.println();
@@ -186,8 +171,7 @@ public class SampleGenerator extends CommandLineUtility {
 	}
 
 	/**
-	 * Command line utility for producing randomly-generated parameters for use
-	 * by the {@link Evaluator}.
+	 * Command line utility for producing randomly-generated parameters for use by the {@link Evaluator}.
 	 * 
 	 * @param args the command line arguments
 	 * @throws Exception if an error occurred

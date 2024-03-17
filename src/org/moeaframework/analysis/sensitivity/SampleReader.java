@@ -27,10 +27,9 @@ import org.moeaframework.core.FrameworkException;
 import org.moeaframework.util.TypedProperties;
 
 /**
- * Reads the parameter samples from the output of {@link SampleGenerator}. The
- * column ordering in the sample file matches the ordering of parameters in a
- * {@link ParameterFile}. The read {@link TypedProperties} map the parameter name
- * to the parameter value.
+ * Reads the parameter samples from the output of {@link SampleGenerator}. The column ordering in the sample file
+ * matches the ordering of parameters in a {@link ParameterFile}. The read {@link TypedProperties} map the parameter
+ * name to the parameter value.
  * 
  * @see SampleGenerator
  * @see ParameterFile
@@ -54,8 +53,7 @@ public class SampleReader implements Iterable<TypedProperties>, Iterator<TypedPr
 	 * @param parameterFile the parameter definition file
 	 * @throws IOException if an I/O error occurred
 	 */
-	public SampleReader(File file, ParameterFile parameterFile)
-			throws IOException {
+	public SampleReader(File file, ParameterFile parameterFile) throws IOException {
 		this(new MatrixReader(file, parameterFile.size()), parameterFile);
 	}
 

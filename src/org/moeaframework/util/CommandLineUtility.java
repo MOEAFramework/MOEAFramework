@@ -181,7 +181,7 @@ public abstract class CommandLineUtility {
 	 */
 	public String getCommandString() {
 		if (commandString == null) {
-			return "java " + getClass().getName();
+			return "java -classpath \"lib/*\" " + getClass().getName();
 		} else {
 			return commandString;
 		}

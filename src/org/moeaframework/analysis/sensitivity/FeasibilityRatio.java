@@ -22,8 +22,8 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.initialization.RandomInitialization;
 
 /**
- * Computes the feasibility ratio of a given problem, which takes a random sampling
- * of solutions and computes the percentage that are feasible.
+ * Computes the feasibility ratio of a given problem, which takes a random sampling of solutions and computes the
+ * percentage that are feasible.
  * <p>
  * References:
  * <ol>

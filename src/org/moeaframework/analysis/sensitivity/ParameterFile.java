@@ -27,8 +27,8 @@ import java.util.List;
 import org.moeaframework.util.io.CommentedLineReader;
 
 /**
- * Loads the parameters in a parameter file. A parameter file contains on each line the name, lower bound,
- * and upper bound of a parameter separated by whitespace.
+ * Loads the parameters in a parameter file. A parameter file contains on each line the name, lower bound, and upper
+ * bound of a parameter separated by whitespace.
  */
 public class ParameterFile {
 
@@ -48,8 +48,8 @@ public class ParameterFile {
 	}
 
 	/**
-	 * Constructs a parameter file with the parameters read from the underlying reader.  The reader is closed
-	 * when the parameters are finished loading.
+	 * Constructs a parameter file with the parameters read from the underlying reader.  The reader is closed when
+	 * the parameters are finished loading.
 	 * 
 	 * @param reader the reader of the parameters
 	 * @throws IOException if an I/O error occurred

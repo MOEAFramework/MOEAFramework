@@ -78,11 +78,9 @@ class FractalDimension {
 	}
 	
 	/**
-	 * Identifies the "plateau region" --- the region where the slope is a
-	 * constant.  For different values of i, this method removes the first and
-	 * last i points from consideration.  Computes the correlation coefficient
-	 * of the remaining points to determine how well those points approximate
-	 * a line.
+	 * Identifies the "plateau region" --- the region where the slope is a constant.  For different values of i, this
+	 * method removes the first and last i points from consideration.  Computes the correlation coefficient of the
+	 * remaining points to determine how well those points approximate a line.
 	 */
 	private static int getCorrelationDimensionBounds(List<Double> X, 
 			List<Double> Y) {

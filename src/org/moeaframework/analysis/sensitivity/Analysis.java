@@ -31,11 +31,10 @@ import org.moeaframework.util.CommandLineUtility;
 import org.moeaframework.util.TypedProperties;
 
 /**
- * Command line utility for calculating the best, probability of attainment,
- * efficiency and controllability metrics.  These search control metrics are
- * discussed in detail in [1].
+ * Command line utility for calculating the best, probability of attainment, efficiency and controllability metrics.
+ * These search control metrics are discussed in detail in [1].
  * <p>
- * Usage: {@code java -cp "..." org.moeaframework.analysis.sensitivity.Analysis <options> <files>}
+ * Usage: {@code java -classpath "lib/*" org.moeaframework.analysis.sensitivity.Analysis <options> <files>}
  * 
  * <table>
  *   <caption style="text-align: left">Arguments:</caption>
@@ -49,19 +48,17 @@ import org.moeaframework.util.TypedProperties;
  *   </tr>
  *   <tr>
  *     <td>{@code -m, --metric}</td>
- *     <td>The metric index (or column) to use for the analysis (required).
- *         Indices are 0-based, so 0 indicates the first column in the input.
- *     </td>
+ *     <td>The metric index (or column) to use for the analysis (required).  Indices are 0-based, so 0 indicates the
+ *         first column in the input.</td>
  *   </tr>
  *   <tr>
  *     <td>{@code -v, --hypervolume}</td>
- *     <td>The target or ideal hypervolume value, used to normalize the
- *         hypervolume in the analysis.</td>
+ *     <td>The target or ideal hypervolume value, used to normalize the hypervolume in the analysis.</td>
  *   </tr>
  *   <tr>
  *     <td>{@code -o, --output}</td>
- *     <td>Location where the output file containing the analysis results is
- *         saved.  Of not given, the output is printed to the console.</td>
+ *     <td>Location where the output file containing the analysis results is saved.  Of not given, the output is
+ *         printed to the console.</td>
  *   </tr>
  *   <tr>
  *     <td>{@code -e, --efficiency}</td>
@@ -69,8 +66,8 @@ import org.moeaframework.util.TypedProperties;
  *   </tr>
  *   <tr>
  *     <td>{@code -b, --band}</td>
- *     <td>The width of the NFE band.  The efficiency metric groups samples
- *         with similar NFE together (i.e., those in the same band).</td>
+ *     <td>The width of the NFE band.  The efficiency metric groups samples with similar NFE together (i.e., those in
+ *         the same band).</td>
  *   </tr>
  *   <tr>
  *     <td>{@code -c, --controllability}</td>
@@ -78,20 +75,18 @@ import org.moeaframework.util.TypedProperties;
  *   </tr>
  *   <tr>
  *     <td>{@code -t, --threshold}</td>
- *     <td>The performance threshold as a percentage when computing the
- *         attainment, efficiency, and controllability metrics.</td>
+ *     <td>The performance threshold as a percentage when computing the attainment, efficiency, and controllability
+ *         metrics.</td>
  *   </tr>
  *   <tr>
  *     <td>{@code <files>}</td>
- *     <td>One or more files containing the metric results (i.e., the output
- *         from {@link ResultFileEvaluator}).
+ *     <td>One or more files containing the metric results (i.e., the output from {@link ResultFileEvaluator}).
  * </table>
  * <p>
  * References:
  * <ol>
- *   <li>Hadka, D. and Reed, P.  "Diagnostic Assessment of Search Controls and
- *       Failure Modes in Many-Objective Evolutionary Optimization."
- *       Evolutionary Computation.
+ *   <li>Hadka, D. and Reed, P.  "Diagnostic Assessment of Search Controls and Failure Modes in Many-Objective
+ *       Evolutionary Optimization."  Evolutionary Computation.
  * </ol>
  */
 public class Analysis extends CommandLineUtility {
@@ -127,20 +122,18 @@ public class Analysis extends CommandLineUtility {
 	private int bandWidth = 10000;
 	
 	/**
-	 * Constructs the command line utility for calculating the best, probability
-	 * of attainment, efficiency and controllability metrics.
+	 * Constructs the command line utility for calculating the best, probability of attainment, efficiency and
+	 * controllability metrics.
 	 */
 	public Analysis() {
 		super();
 	}
 	
 	/**
-	 * Returns an array of the parameters in the same order as they appear in
-	 * {@code parameterFile}.
+	 * Returns an array of the parameters in the same order as they appear in {@code parameterFile}.
 	 * 
 	 * @param properties the parameters
-	 * @return an array of the parameters in the same order as they appear in
-	 *         {@code parameterFile}
+	 * @return an array of the parameters in the same order as they appear in {@code parameterFile}
 	 */
 	private double[] toArray(TypedProperties properties) {
 		double[] result = new double[parameterFile.size()];
@@ -154,9 +147,8 @@ public class Analysis extends CommandLineUtility {
 	}
 	
 	/**
-	 * Returns the normalized contents of the specified metric file.
-	 * Normalization converts all metrics to reside in the range {@code [0, 1]},
-	 * with {@code 1} representing the optimal metric value.
+	 * Returns the normalized contents of the specified metric file.  Normalization converts all metrics to reside in
+	 * the range {@code [0, 1]}, with {@code 1} representing the optimal metric value.
 	 * 
 	 * @param file the metric file
 	 * @return the normalized contents of the specified metric file
@@ -203,9 +195,8 @@ public class Analysis extends CommandLineUtility {
 	}
 	
 	/**
-	 * Normalizes the parameters, bounding all entries inside the unit 
-	 * hypervolume.  The parameters are normalized in place, modifying the
-	 * array passed as an argument.
+	 * Normalizes the parameters, bounding all entries inside the unit hypervolume.  The parameters are normalized in
+	 * place, modifying the array passed as an argument.
 	 * 
 	 * @param parameters the parameters to normalize
 	 * @return the normalized parameters
@@ -224,13 +215,11 @@ public class Analysis extends CommandLineUtility {
 	}
 	
 	/**
-	 * Returns only those parameters with a corresponding metric value meeting
-	 * or exceeding a threshold value.
+	 * Returns only those parameters with a corresponding metric value meeting or exceeding a threshold value.
 	 * 
 	 * @param metric the metric
 	 * @param threshold the threshold value
-	 * @return only those parameters with a corresponding metric value meeting
-	 *         or exceeding a threshold value
+	 * @return only those parameters with a corresponding metric value meeting or exceeding a threshold value
 	 */
 	private double[][] threshold(int metric, double threshold) {
 		int count = 0;
@@ -270,11 +259,9 @@ public class Analysis extends CommandLineUtility {
 	}
 
 	/**
-	 * Returns the probability of attaining metric values meeting or exceeding
-	 * the threshold value.
+	 * Returns the probability of attaining metric values meeting or exceeding the threshold value.
 	 * 
-	 * @return the probability of attaining metric values meeting or exceeding
-	 *         the threshold value
+	 * @return the probability of attaining metric values meeting or exceeding the threshold value
 	 */
 	private double calculateAttainment() {
 		int count = 0;
@@ -289,9 +276,8 @@ public class Analysis extends CommandLineUtility {
 	}
 	
 	/**
-	 * Returns the measure of controllability, which is the correlation 
-	 * dimension of the parameters whose corresponding metric value meets or 
-	 * exceeds the threshold value.
+	 * Returns the measure of controllability, which is the correlation dimension of the parameters whose corresponding
+	 * metric value meets or exceeds the threshold value.
 	 * 
 	 * @return the measure of controllability
 	 */
@@ -303,11 +289,11 @@ public class Analysis extends CommandLineUtility {
 	}
 	
 	/**
-	 * Returns the measure of efficiency, which is the lowest NFE band where
-	 * over 90% of its parameters met or exceeded the threshold value.  This
-	 * method returns {@code -1} if {@code maxEvaluations} is not a parameter.
+	 * Returns the measure of efficiency, which is the lowest NFE band where over 90% of its parameters met or exceeded
+	 * the threshold value.
 	 * 
 	 * @return the measure of efficiency
+	 * @throws FrameworkException if {@code maxEvaluations} is not a parameter
 	 */
 	private double calculateEfficiency() {
 		//find the max evaluations parameter index
@@ -463,8 +449,8 @@ public class Analysis extends CommandLineUtility {
 	}
 	
 	/**
-	 * Starts the command line utility for calculating the best, probability 
-	 * of attainment, efficiency and controllability metrics.
+	 * Starts the command line utility for calculating the best, probability of attainment, efficiency and
+	 * controllability metrics.
 	 * 
 	 * @param args the command line arguments
 	 * @throws Exception if an error occurred

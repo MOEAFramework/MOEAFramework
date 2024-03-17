@@ -35,8 +35,8 @@ public class EpsilonHelper {
 	}
 
 	/**
-	 * Returns the &epsilon; value used for the standard problems in sensitivity analysis.  If the problem
-	 * is not recognized, the default &epsilon; value of {@code 0.01} is returned.
+	 * Returns the &epsilon; value used for the standard problems in sensitivity analysis.  If the problem is not
+	 * recognized, the default &epsilon; value of {@code 0.01} is returned.
 	 * 
 	 * @param problem the problem
 	 * @return the &epsilon; value used for the standard problems in sensitivity analysis

@@ -39,11 +39,10 @@ import org.moeaframework.util.CommandLineUtility;
 import org.moeaframework.util.TypedProperties;
 
 /**
- * Command line utility for evaluating an algorithm using many 
- * parameterizations.  Unlike {@link Evaluator}, this class outputs runtime
- * data.  Each run is stored in a separate file.
+ * Command line utility for evaluating an algorithm using many parameterizations.  Unlike {@link Evaluator}, this class
+ * outputs runtime data.  Each run is stored in a separate file.
  * <p>
- * Usage: {@code java -cp "..." org.moeaframework.analysis.sensitivity.DetailedEvaluator <options>}
+ * Usage: {@code java -classpath "lib/*" org.moeaframework.analysis.sensitivity.DetailedEvaluator <options>}
  * 
  * <table>
  *   <caption style="text-align: left">Arguments:</caption>
@@ -57,30 +56,27 @@ import org.moeaframework.util.TypedProperties;
  *   </tr>
  *   <tr>
  *     <td>{@code -o, --output}</td>
- *     <td>Expression defining where the output files are saved.  The
- *         path should include {@code %d}, which is replaced by the index of
- *         the run.</td>
+ *     <td>Expression defining where the output files are saved.  The path should include {@code %d}, which is replaced
+ *         by the index of the run.</td>
  *   </tr>
  *   <tr>
  *     <td>{@code -b, --problem}</td>
- *     <td>The name of the problem.  This name should reference one of the
- *         problems recognized by the MOEA Framework.</td>
+ *     <td>The name of the problem.  This name should reference one of the problems recognized by the MOEA
+ *         Framework.</td>
  *   </tr>
  *   <tr>
  *     <td>{@code -a, --algorithm}</td>
- *     <td>The name of the algorithm.  This name should reference one of the
- *         algorithms recognized by the MOEA Framework.</td>
+ *     <td>The name of the algorithm.  This name should reference one of the algorithms recognized by the MOEA
+ *         Framework.</td>
  *   </tr>
  *   <tr>
  *     <td>{@code -f, --frequency}</td>
- *     <td>The frequency, in NFE, that records are saved to the result file.
- *     </td>
+ *     <td>The frequency, in NFE, that records are saved to the result file.</td>
  *   </tr>
  *   <tr>
  *     <td>{@code -x, --properties}</td>
- *     <td>Semicolon-separated list of additional parameters for the
- *         algorithm (e.g., {@code -x maxEvaluations=10000;populationSize=100}.
- *     </td>
+ *     <td>Semicolon-separated list of additional parameters for the algorithm (e.g.,
+ *         {@code -x maxEvaluations=10000;populationSize=100}.</td>
  *   </tr>
  *   <tr>
  *     <td>{@code -s, --seed}</td>
@@ -88,9 +84,8 @@ import org.moeaframework.util.TypedProperties;
  *   </tr>
  *   <tr>
  *     <td>{@code -e, --epsilon}</td>
- *     <td>The epsilon values for limiting the size of the results.  This
- *         epsilon value is also used for any algorithms that include an
- *         epsilon parameter.</td>
+ *     <td>The epsilon values for limiting the size of the results.  This epsilon value is also used for any algorithms
+ *         that include an epsilon parameter.</td>
  *   </tr>
  *   <tr>
  *     <td>{@code -n, --novariables}</td>
@@ -106,8 +101,7 @@ public class DetailedEvaluator extends CommandLineUtility {
 	protected OutputWriter output;
 
 	/**
-	 * Constructs the command line utility for evaluating an algorithm using
-	 * many parameterizations.
+	 * Constructs the command line utility for evaluating an algorithm using many parameterizations.
 	 */
 	public DetailedEvaluator() {
 		super();
@@ -119,7 +113,6 @@ public class DetailedEvaluator extends CommandLineUtility {
 		
 		OptionUtils.addProblemOption(options, false);
 		OptionUtils.addEpsilonOption(options);
-
 
 		options.addOption(Option.builder("p")
 				.longOpt("parameterFile")
@@ -272,8 +265,7 @@ public class DetailedEvaluator extends CommandLineUtility {
 	}
 
 	/**
-	 * Starts the command line utility for evaluating an algorithm using many
-	 * parameterizations.
+	 * Starts the command line utility for evaluating an algorithm using many parameterizations.
 	 * 
 	 * @param args the command line arguments
 	 * @throws Exception if an error occurred

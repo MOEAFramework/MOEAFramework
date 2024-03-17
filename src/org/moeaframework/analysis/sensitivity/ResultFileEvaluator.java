@@ -30,17 +30,16 @@ import org.moeaframework.core.indicator.Indicators;
 import org.moeaframework.util.CommandLineUtility;
 
 /**
- * Command line utility for evaluating the approximation sets stored in a
- * result file and computing its metric file.
+ * Command line utility for evaluating the approximation sets stored in a result file and computing its metric file.
  * <p>
- * Usage: {@code java -cp "..." org.moeaframework.analysis.sensitivity.ResultFileEvaluator <options>}
+ * Usage: {@code java -classpath "lib/*" org.moeaframework.analysis.sensitivity.ResultFileEvaluator <options>}
  * 
  * <table>
  *   <caption style="text-align: left">Arguments:</caption>
  *   <tr>
  *     <td>{@code -b, --problem}</td>
- *     <td>The name of the problem.  This name should reference one of the
- *         problems recognized by the MOEA Framework.</td>
+ *     <td>The name of the problem.  This name should reference one of the problems recognized by the MOEA
+ *         Framework.</td>
  *   </tr>
  *   <tr>
  *     <td>{@code -d, --dimension}</td>
@@ -48,8 +47,7 @@ import org.moeaframework.util.CommandLineUtility;
  *   </tr>
  *   <tr>
  *     <td>{@code -i, --input}</td>
- *     <td>The result file containing the input data.
- *     </td>
+ *     <td>The result file containing the input data.</td>
  *   </tr>
  *   <tr>
  *     <td>{@code -o, --output}</td>
@@ -57,29 +55,26 @@ import org.moeaframework.util.CommandLineUtility;
  *   </tr>
  *   <tr>
  *     <td>{@code -e, --epsilon}</td>
- *     <td>The epsilon values for limiting the size of the results.  This
- *         epsilon value is also used for any algorithms that include an
- *         epsilon parameter.</td>
+ *     <td>The epsilon values for limiting the size of the results.  This epsilon value is also used for any algorithms
+ *         that include an epsilon parameter.</td>
  *   </tr>
  *   <tr>
  *     <td>{@code -r, --reference}</td>
- *     <td>Location of the reference file used when computing the performance
- *         metrics (required if -m is set).</td>
+ *     <td>Location of the reference file used when computing the performance metrics (required if -m is set).</td>
  *   </tr>
  *   <tr>
  *     <td>{@code -f, --force}</td>
- *     <td>This command performs some sanity checks to ensure the data is
- *         consistent, such as checking the file modification dates.  If a
- *         consistency error is reported, use this option to continue processing
- *         even though the data may be inconsistent.</td>
+ *     <td>This command performs some sanity checks to ensure the data is consistent, such as checking the file
+ *         modification dates.  If a consistency error is reported, use this option to continue processing even
+ *         though the data may be inconsistent.</td>
  *   </tr>
  * </table>
  */
 public class ResultFileEvaluator extends CommandLineUtility {
 	
 	/**
-	 * Constructs the command line utility for evaluating the approximation sets
-	 * stored in a result file and computing its metric file.
+	 * Constructs the command line utility for evaluating the approximation sets stored in a result file and computing
+	 * its metric file.
 	 */
 	public ResultFileEvaluator() {
 		super();
@@ -119,8 +114,7 @@ public class ResultFileEvaluator extends CommandLineUtility {
 		double[] epsilon = OptionUtils.getEpsilon(commandLine);
 
 		// sanity check to ensure input hasn't been modified after the output
-		if (!commandLine.hasOption("force") &&
-				(outputFile.lastModified() > 0L) && 
+		if (!commandLine.hasOption("force") && (outputFile.lastModified() > 0L) && 
 				(inputFile.lastModified() > outputFile.lastModified())) {
 			throw new FrameworkException("input appears to be newer than output");
 		}
@@ -166,8 +160,8 @@ public class ResultFileEvaluator extends CommandLineUtility {
 	}
 	
 	/**
-	 * Starts the command line utility for evaluating the approximation sets 
-	 * stored in a result file and computing its metric file.
+	 * Starts the command line utility for evaluating the approximation sets stored in a result file and computing its
+	 * metric file.
 	 * 
 	 * @param args the command line arguments
 	 * @throws Exception if an error occurred

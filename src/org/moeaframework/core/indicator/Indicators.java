@@ -233,13 +233,13 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 		}
 
 		if (includeAdditiveEpsilonIndicator) {
-			result.additiveEpsilonIndicator = AdditiveEpsilonIndicator.evaluate(problem,
-					normalizedApproximationSet, normalizedReferenceSet);
+			result.additiveEpsilonIndicator = AdditiveEpsilonIndicator.evaluate(problem, normalizedApproximationSet,
+					normalizedReferenceSet);
 		}
 
 		if (includeMaximumParetoFrontError) {
-			result.maximumParetoFrontError = MaximumParetoFrontError.evaluate(problem,
-					normalizedApproximationSet, normalizedReferenceSet);
+			result.maximumParetoFrontError = MaximumParetoFrontError.evaluate(problem, normalizedApproximationSet,
+					normalizedReferenceSet);
 		}
 
 		if (includeSpacing) {
@@ -248,7 +248,8 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 
 		if (includeContribution) {
 			if (contribution == null) {
-				contribution = epsilon == null ? new Contribution(referenceSet) : new Contribution(referenceSet, epsilon);
+				contribution = epsilon == null ? new Contribution(referenceSet) :
+					new Contribution(referenceSet, epsilon);
 			}
 
 			result.contribution = contribution.evaluate(approximationSet);
@@ -514,6 +515,12 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 		private double r2;
 		private double r3;
 
+		/**
+		 * Constructs a new indicator result object for the given approximation set.  All indicator values are
+		 * defaulted to {@value Double#NaN}.
+		 * 
+		 * @param approximationSet the approximation set used to compute these indicator values
+		 */
 		public IndicatorValues(NondominatedPopulation approximationSet) {
 			super();
 			this.approximationSet = approximationSet;
@@ -530,50 +537,114 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 			r3 = Double.NaN;
 		}
 
+		/**
+		 * Returns the approximation set used when computing these indicators values.
+		 * 
+		 * @return the approximation set
+		 */
 		public NondominatedPopulation getApproximationSet() {
 			return approximationSet;
 		}
 
+		/**
+		 * Returns the hypervolume value, or {@value Double#NaN} if not configured to compute this metric.
+		 * 
+		 * @return the hypervolume value
+		 */
 		public double getHypervolume() {
 			return hypervolume;
 		}
 
+		/**
+		 * Returns the generational distance value, or {@value Double#NaN} if not configured to compute this metric.
+		 * 
+		 * @return the generational distance value
+		 */
 		public double getGenerationalDistance() {
 			return generationalDistance;
 		}
 
+		/**
+		 * Returns the inverted generational distance value, or {@value Double#NaN} if not configured to compute this
+		 * metric
+		 * 
+		 * @return the inverted generational distance value
+		 */
 		public double getInvertedGenerationalDistance() {
 			return invertedGenerationalDistance;
 		}
 
+		/**
+		 * Returns the additive epsilon indicator value, or {@value Double#NaN} if not configured to compute this
+		 * metric
+		 * 
+		 * @return the additive epsilon indicator value
+		 */
 		public double getAdditiveEpsilonIndicator() {
 			return additiveEpsilonIndicator;
 		}
 
+		/**
+		 * Returns the spacing value, or {@value Double#NaN} if not configured to compute this metric.
+		 * 
+		 * @return the spacing value
+		 */
 		public double getSpacing() {
 			return spacing;
 		}
 
+		/**
+		 * Returns the maximum Pareto front error value, or {@value Double#NaN} if not configured to compute this
+		 * metric
+		 * 
+		 * @return the maximum Pareto front error value
+		 */
 		public double getMaximumParetoFrontError() {
 			return maximumParetoFrontError;
 		}
 
+		/**
+		 * Returns the contribution value, or {@value Double#NaN} if not configured to compute this metric.
+		 * 
+		 * @return the contribution value
+		 */
 		public double getContribution() {
 			return contribution;
 		}
 
+		/**
+		 * Returns the R1 indicator value, or {@value Double#NaN} if not configured to compute this metric.
+		 * 
+		 * @return the R1 indicator value
+		 */
 		public double getR1() {
 			return r1;
 		}
 
+		/**
+		 * Returns the R2 indicator value, or {@value Double#NaN} if not configured to compute this metric.
+		 * 
+		 * @return the R2 indicator value
+		 */
 		public double getR2() {
 			return r2;
 		}
 
+		/**
+		 * Returns the R3 indicator value, or {@value Double#NaN} if not configured to compute this metric.
+		 * 
+		 * @return the R3 indicator value
+		 */
 		public double getR3() {
 			return r3;
 		}
 		
+		/**
+		 * Returns the indicator values as a typed properties object.  This is useful for storing the data, such as
+		 * with {@link org.moeaframework.analysis.sensitivity.ResultFileWriter}.
+		 * 
+		 * @return the indicator values as typed properties
+		 */
 		public TypedProperties asProperties() {
 			TypedProperties properties = new TypedProperties();
 			

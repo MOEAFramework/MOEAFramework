@@ -29,18 +29,17 @@ import org.moeaframework.util.CommandLineUtility;
 import org.moeaframework.util.io.FileUtils;
 
 /**
- * Command line utility for merging the approximation sets stored in one or more
- * result files.  The output is a single approximation set containing the
- * non-dominated solutions from all input files.
+ * Command line utility for merging the approximation sets stored in one or more result files.  The output is a single
+ * approximation set containing the non-dominated solutions from all input files.
  * <p>
- * Usage: {@code java -cp "..." org.moeaframework.analysis.sensitivity.ResultFileMerger <options> <files>}
+ * Usage: {@code java -classpath "lib/*" org.moeaframework.analysis.sensitivity.ResultFileMerger <options> <files>}
  * 
  * <table>
  *   <caption style="text-align: left">Arguments:</caption>
  *   <tr>
  *     <td>{@code -b, --problem}</td>
- *     <td>The name of the problem.  This name should reference one of the
- *         problems recognized by the MOEA Framework.</td>
+ *     <td>The name of the problem.  This name should reference one of the problems recognized by the MOEA
+ *         Framework.</td>
  *   </tr>
  *   <tr>
  *     <td>{@code -d, --dimension}</td>
@@ -52,22 +51,19 @@ import org.moeaframework.util.io.FileUtils;
  *   </tr>
  *   <tr>
  *     <td>{@code -e, --epsilon}</td>
- *     <td>The epsilon values for limiting the size of the results.  This
- *         epsilon value is also used for any algorithms that include an
- *         epsilon parameter.</td>
+ *     <td>The epsilon values for limiting the size of the results.  This epsilon value is also used for any algorithms
+ *         that include an epsilon parameter.</td>
  *   </tr>
  *   <tr>
  *     <td>{@code -r, --resultFile}</td>
- *     <td>Output a result file, which includes all of the decision variables
- *         when combined with the -b option.</td>
+ *     <td>Output a result file, which includes all of the decision variables when combined with the -b option.</td>
  *   </tr>
  * </table>
  */
 public class ResultFileMerger extends CommandLineUtility {
 
 	/**
-	 * Constructs the command line utility for merging the approximation sets 
-	 * stored in one or more result files.
+	 * Constructs the command line utility for merging the approximation sets stored in one or more result files.
 	 */
 	public ResultFileMerger() {
 		super();
@@ -125,8 +121,7 @@ public class ResultFileMerger extends CommandLineUtility {
 	}
 	
 	/**
-	 * Starts the command line utility for merging the approximation sets 
-	 * stored in one or more result files.
+	 * Starts the command line utility for merging the approximation sets stored in one or more result files.
 	 * 
 	 * @param args the command line arguments
 	 * @throws Exception if an error occurred

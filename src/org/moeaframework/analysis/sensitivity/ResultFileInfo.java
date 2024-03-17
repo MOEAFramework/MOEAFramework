@@ -35,8 +35,8 @@ import org.moeaframework.util.CommandLineUtility;
  *   <caption style="text-align: left">Arguments:</caption>
  *   <tr>
  *     <td>{@code -b, --problem}</td>
- *     <td>The name of the problem.  This name should reference one of the
- *         problems recognized by the MOEA Framework.</td>
+ *     <td>The name of the problem.  This name should reference one of the problems recognized by the MOEA
+ *         Framework.</td>
  *   </tr>
  *   <tr>
  *     <td>{@code -d, --dimension}</td>
@@ -51,8 +51,7 @@ import org.moeaframework.util.CommandLineUtility;
 public class ResultFileInfo extends CommandLineUtility {
 	
 	/**
-	 * Constructs the command line utility for counting the number of entries
-	 * in a result file.
+	 * Constructs the command line utility for counting the number of entries in a result file.
 	 */
 	public ResultFileInfo() {
 		super();
@@ -94,8 +93,7 @@ public class ResultFileInfo extends CommandLineUtility {
 	}
 	
 	/**
-	 * Starts the command line utility for counting the number of entries in a 
-	 * result file.
+	 * Starts the command line utility for counting the number of entries in a result file.
 	 * 
 	 * @param args the command line arguments
 	 * @throws Exception if an error occurred

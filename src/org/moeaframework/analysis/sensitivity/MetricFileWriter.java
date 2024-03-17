@@ -122,8 +122,7 @@ public class MetricFileWriter implements OutputWriter {
 	 * @param settings the settings for writing metric files
 	 * @throws IOException if an I/O error occurred
 	 */
-	public MetricFileWriter(Indicators indicators, File file, MetricFileWriterSettings settings)
-			throws IOException {
+	public MetricFileWriter(Indicators indicators, File file, MetricFileWriterSettings settings) throws IOException {
 		super();
 		this.indicators = indicators;
 
@@ -189,8 +188,7 @@ public class MetricFileWriter implements OutputWriter {
 	}
 	
 	/**
-	 * Evaluates the specified non-dominated population and outputs the
-	 * resulting metrics to the file.
+	 * Evaluates the specified non-dominated population and outputs the resulting metrics to the file.
 	 */
 	@Override
 	public void append(ResultEntry entry) {
@@ -213,8 +211,8 @@ public class MetricFileWriter implements OutputWriter {
 	}
 	
 	/**
-	 * Gets the index of the metric.  This should match the order that columns
-	 * are written in {@link #append(ResultEntry)}.
+	 * Gets the index of the metric.  This should match the order that columns are written in
+	 * {@link #append(ResultEntry)}.
 	 * 
 	 * @param value the metric
 	 * @return the index of the metric

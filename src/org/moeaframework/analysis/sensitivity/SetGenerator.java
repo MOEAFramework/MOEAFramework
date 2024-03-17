@@ -32,19 +32,18 @@ import org.moeaframework.problem.AnalyticalProblem;
 import org.moeaframework.util.CommandLineUtility;
 
 /**
- * Command line utility for generating reference sets for a given problem.  The
- * reference set is created by randomly sampling points and building a
- * non-dominated set.  Only problems that implement the
- * {@code AnalyticalProblem} interface can be used.
+ * Command line utility for generating reference sets for a given problem.  The reference set is created by randomly
+ * sampling points and building a non-dominated set.  Only problems that implement the {@code AnalyticalProblem}
+ * interface can be used.
  * <p>
- * Usage: {@code java -cp "..." org.moeaframework.analysis.sensitivity.SetGenerator <options>}
+ * Usage: {@code java -classpath "lib/*" org.moeaframework.analysis.sensitivity.SetGenerator <options>}
  * 
  * <table>
  *   <caption style="text-align: left">Arguments:</caption>
  *   <tr>
  *     <td>{@code -b, --problem}</td>
- *     <td>The name of the problem (required).  This name should reference one
- *         of the problems recognized by the MOEA Framework.</td>
+ *     <td>The name of the problem (required).  This name should reference one of the problems recognized by the MOEA
+ *         Framework.</td>
  *   </tr>
  *   <tr>
  *     <td>{@code -n, --numberOfPoints}</td>
@@ -60,17 +59,15 @@ import org.moeaframework.util.CommandLineUtility;
  *   </tr>
  *   <tr>
  *     <td>{@code -e, --epsilon}</td>
- *     <td>The epsilon values for limiting the size of the results.  This
- *         epsilon value is also used for any algorithms that include an
- *         epsilon parameter.</td>
+ *     <td>The epsilon values for limiting the size of the results.  This epsilon value is also used for any algorithms
+ *         that include an epsilon parameter.</td>
  *   </tr>
  * </table>
  */
 public class SetGenerator extends CommandLineUtility {
 
 	/**
-	 * Constructs the command line utility for generating reference sets for a
-	 * given problem.
+	 * Constructs the command line utility for generating reference sets for a given problem.
 	 */
 	public SetGenerator() {
 		super();
@@ -108,8 +105,7 @@ public class SetGenerator extends CommandLineUtility {
 	public void run(CommandLine commandLine) throws IOException {
 		NondominatedPopulation set = OptionUtils.getArchive(commandLine);
 		
-		int numberOfPoints = Integer.parseInt(commandLine.getOptionValue(
-				"numberOfPoints"));
+		int numberOfPoints = Integer.parseInt(commandLine.getOptionValue("numberOfPoints"));
 		
 		// seed the pseudo-random number generator
 		if (commandLine.hasOption("seed")) {
@@ -132,8 +128,7 @@ public class SetGenerator extends CommandLineUtility {
 	}
 	
 	/**
-	 * Starts the command line utility for generating reference sets for a
-	 * given problem.
+	 * Starts the command line utility for generating reference sets for a given problem.
 	 * 
 	 * @param args the command line arguments
 	 * @throws Exception if an error occurred
