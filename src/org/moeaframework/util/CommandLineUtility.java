@@ -17,8 +17,6 @@
  */
 package org.moeaframework.util;
 
-import java.lang.Thread.UncaughtExceptionHandler;
-
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -26,6 +24,7 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
+import org.moeaframework.core.Settings;
 
 /**
  * Abstract class for providing command line utilities. This class is provided to ensure a standard interface for
@@ -50,24 +49,6 @@ import org.apache.commons.cli.ParseException;
  * exception handler.
  */
 public abstract class CommandLineUtility {
-	
-	/**
-	 * Exception handler for formatting and printing the error message to the command line.
-	 */
-	private class CommandLineUncaughtExceptionHandler implements UncaughtExceptionHandler {
-
-		@Override
-		public void uncaughtException(Thread t, Throwable e) {
-			if (e instanceof ParseException) {
-				// error when parsing command line options
-				System.err.println(e.getMessage());
-				showHelp();
-			} else {
-				e.printStackTrace();
-			}
-		}
-
-	}
 	
 	/**
 	 * The command string used to invoke this command line utility.  If {@code null}, this displays as
@@ -121,8 +102,6 @@ public abstract class CommandLineUtility {
 	 * @throws Exception if any exception occurred while running this command
 	 */
 	public void start(String[] args) throws Exception {
-		Thread.currentThread().setUncaughtExceptionHandler(new CommandLineUncaughtExceptionHandler());
-		
 		// trim last argument because of an error with Windows newline characters
 		if (args.length > 0) {
 			args[args.length - 1] = args[args.length - 1].trim();
@@ -130,12 +109,23 @@ public abstract class CommandLineUtility {
 
 		Options options = getOptions();
 		CommandLineParser commandLineParser = new DefaultParser();
-		CommandLine commandLine = commandLineParser.parse(options, args);
+		
+		try {
+			CommandLine commandLine = commandLineParser.parse(options, args);
 			
-		if (commandLine.hasOption("help")) {
-			showHelp();
-		} else {
-			run(commandLine);
+			if (commandLine.hasOption("help")) {
+				showHelp();
+			} else {
+				run(commandLine);
+			}
+		} catch (ParseException e) {
+			if (args[0].equalsIgnoreCase("-h") || args[0].equalsIgnoreCase("--help")) {
+				showHelp();
+			} else {
+				System.err.println(e.getMessage());
+				showHelp();
+				System.exit(-1);
+			}
 		}
 	}
 	
@@ -166,9 +156,11 @@ public abstract class CommandLineUtility {
 		
 		//format and display the help message
 		HelpFormatter helpFormatter = new HelpFormatter();
+		helpFormatter.setWidth(Settings.PROPERTIES.getInt(Settings.KEY_HELP_WIDTH, HelpFormatter.DEFAULT_WIDTH));
 		helpFormatter.printHelp(
 				getCommandString(),
-				Localization.getString(getClass(), "description"),
+				System.lineSeparator() + Localization.getString(getClass(), "description") +
+					System.lineSeparator() + System.lineSeparator(),
 				options, 
 				Localization.getString(CommandLineUtility.class, "footer"),
 				true);

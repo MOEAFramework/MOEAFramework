@@ -100,6 +100,11 @@ public class Settings {
 	public static final String KEY_PRNG_SEED = createKey(KEY_PREFIX, "core", "prng", "seed");
 	
 	/**
+	 * The property key for setting the display width of help messages from command line tools.
+	 */
+	public static final String KEY_HELP_WIDTH = createKey(KEY_PREFIX, "core", "help", "width");
+	
+	/**
 	 * The property key for how to handle duplicate solutions in a nondominated population.
 	 */
 	public static final String KEY_DUPLICATE_MODE = createKey(KEY_PREFIX, "core", "duplicate_mode");

@@ -236,7 +236,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 					switch (language) {
 					case Output:
 						compile(filename);
-						content = execute(filename);
+						content = execute(filename, options);
 						break;
 					default:
 						content = FileUtils.readUTF8(new File(filename));
@@ -388,16 +388,27 @@ public class UpdateCodeSamples extends CommandLineUtility {
 	 * @throws IOException if an I/O error occurred while running the process
 	 * @throws InterruptedException if the process was interrupted
 	 */
-	private String execute(String filename) throws IOException, InterruptedException {
+	private String execute(String filename, FormattingOptions options) throws IOException, InterruptedException {
 		String extension = FilenameUtils.getExtension(filename);
 		
 		if (extension.equalsIgnoreCase("java") || extension.equalsIgnoreCase("class")) {
-			ProcessBuilder processBuilder = new ProcessBuilder("java",
-					"-classpath", getClassPath(classpath),
-					"-D" + Settings.KEY_PRNG_SEED + "=" + seed,
-					getClassName(filename));
+			List<String> command = new ArrayList<String>();
+			command.add("java");
+			command.add("-classpath");
+			command.add(getClassPath(classpath));
+			command.add("-D" + Settings.KEY_PRNG_SEED + "=" + seed);
 			
-			return RedirectStream.capture(processBuilder);
+			if (options.displayHelp()) {
+				command.add("-D" + Settings.KEY_HELP_WIDTH + "=120");
+			}
+			
+			command.add(getClassName(filename));
+			
+			if (options.displayHelp()) {
+				command.add("--help");
+			}
+			
+			return RedirectStream.capture(new ProcessBuilder(command));
 		} else {
 			throw new IllegalArgumentException("Unsupported file extension " + extension);
 		}
@@ -630,6 +641,15 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		public boolean replaceTabsWithSpaces() {
 			return !formatFlags.contains(FormatFlag.KeepTabs);
 		}
+		
+		/**
+		 * Returns {@code true} if displaying help output.
+		 * 
+		 * @return {@code true} if displaying help output
+		 */
+		public boolean displayHelp() {
+			return formatFlags.contains(FormatFlag.Help);
+		}
 
 		@Override
 		public String toString() {
@@ -750,7 +770,12 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		/**
 		 * Keeps tabs.  By default, the formatter replaces tabs with spaces.
 		 */
-		KeepTabs;
+		KeepTabs,
+		
+		/**
+		 * Displays help message.  Only available for {@link Language#Output}.
+		 */
+		Help;
 		
 		/**
 		 * Determine the format flag from its string representation using case-insensitive matching.
