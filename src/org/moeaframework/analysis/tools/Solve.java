@@ -31,6 +31,7 @@ import org.moeaframework.algorithm.PeriodicAction;
 import org.moeaframework.analysis.sensitivity.OptionUtils;
 import org.moeaframework.analysis.sensitivity.ResultEntry;
 import org.moeaframework.analysis.sensitivity.ResultFileWriter;
+import org.moeaframework.analysis.sensitivity.ResultFileWriter.ResultFileWriterSettings;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.NondominatedPopulation;
@@ -566,10 +567,8 @@ public class Solve extends CommandLineUtility {
 						properties,
 						problem);
 
-				// if the output file exists, delete first to avoid appending
-				FileUtils.delete(file);
-				
-				try (ResultFileWriter writer = new ResultFileWriter(problem, file)) {
+				try (ResultFileWriter writer = new ResultFileWriter(problem, file,
+						ResultFileWriterSettings.noAppend())) {
 					algorithm = new RuntimeCollector(algorithm, runtimeFrequency, writer);
 					
 					while (!algorithm.isTerminated() && (algorithm.getNumberOfEvaluations() < maxEvaluations)) {

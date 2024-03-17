@@ -22,6 +22,7 @@ import java.io.File;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
+import org.moeaframework.analysis.sensitivity.ResultFileWriter.ResultFileWriterSettings;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PopulationIO;
 import org.moeaframework.core.Problem;
@@ -107,10 +108,8 @@ public class ResultFileMerger extends CommandLineUtility {
 
 			// output merged set
 			if (commandLine.hasOption("resultFile")) {			
-				//delete the file to avoid appending
-				FileUtils.delete(output);
-				
-				try (ResultFileWriter writer = new ResultFileWriter(problem, output)) {
+				try (ResultFileWriter writer = new ResultFileWriter(problem, output,
+						ResultFileWriterSettings.noAppend())) {
 					writer.append(new ResultEntry(mergedSet));
 				}
 			} else {
