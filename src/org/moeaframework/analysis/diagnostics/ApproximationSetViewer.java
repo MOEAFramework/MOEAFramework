@@ -393,8 +393,8 @@ ListSelectionListener {
 		}
 		
 		if (selection < solution.getNumberOfVariables()) {
-			if (solution.getVariable(selection) instanceof RealVariable) {
-				return ((RealVariable)solution.getVariable(selection)).getValue();
+			if (solution.getVariable(selection) instanceof RealVariable rv) {
+				return rv.getValue();
 			} else {
 				return 0.0;
 			}

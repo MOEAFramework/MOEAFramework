@@ -142,8 +142,7 @@ public class ProblemFactory extends AbstractFactory<ProblemProvider> {
 		Set<String> result = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
 		
 		for (ProblemProvider provider : this) {
-			if (provider instanceof RegisteredProblemProvider) {
-				RegisteredProblemProvider registeredProvider = (RegisteredProblemProvider)provider;
+			if (provider instanceof RegisteredProblemProvider registeredProvider) {
 				result.addAll(registeredProvider.getRegisteredProblems());
 			}
 		}

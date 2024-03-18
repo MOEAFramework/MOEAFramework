@@ -163,10 +163,9 @@ public class EpsilonHelper {
 	 * @return the population converted to an {@code EpsilonBoxDominanceArchive} with the given &epsilon; values
 	 */
 	public static EpsilonBoxDominanceArchive convert(Population population, Epsilons epsilons) {
-		if (population instanceof EpsilonBoxDominanceArchive) {
-			if (epsilons.equals(((EpsilonBoxDominanceArchive)population).getComparator().getEpsilons())) {
-				return (EpsilonBoxDominanceArchive)population;
-			}
+		if (population instanceof EpsilonBoxDominanceArchive epsilonArchive &&
+				epsilons.equals(epsilonArchive.getComparator().getEpsilons())) {
+			return epsilonArchive;
 		}
 
 		return new EpsilonBoxDominanceArchive(epsilons, population);

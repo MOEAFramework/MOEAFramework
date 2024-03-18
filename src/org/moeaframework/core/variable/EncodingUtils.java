@@ -314,8 +314,8 @@ public class EncodingUtils {
 	 * @throws IllegalArgumentException if the decision variable is not of type {@link RealVariable}
 	 */
 	public static double getReal(Variable variable) {
-		if (variable instanceof RealVariable) {
-			return ((RealVariable)variable).getValue();
+		if (variable instanceof RealVariable realVariable) {
+			return realVariable.getValue();
 		} else {
 			throw new IllegalArgumentException(NOT_REAL);
 		}
@@ -329,10 +329,10 @@ public class EncodingUtils {
 	 * @throws IllegalArgumentException if the decision variable is not of type {@link RealVariable}
 	 */
 	public static int getInt(Variable variable) {
-		if (variable instanceof RealVariable) {
-			return (int)Math.floor(((RealVariable)variable).getValue());
-		} else if (variable instanceof BinaryIntegerVariable) {
-			return (int)Math.floor(((BinaryIntegerVariable)variable).getValue());
+		if (variable instanceof RealVariable realVariable) {
+			return (int)Math.floor(realVariable.getValue());
+		} else if (variable instanceof BinaryIntegerVariable binaryIntegerVariable) {
+			return (int)Math.floor(binaryIntegerVariable.getValue());
 		} else {
 			throw new IllegalArgumentException(NOT_INT);
 		}
@@ -346,8 +346,8 @@ public class EncodingUtils {
 	 * @throws IllegalArgumentException if the decision variable is not of type {@link BinaryVariable}
 	 */
 	public static BitSet getBitSet(Variable variable) {
-		if (variable instanceof BinaryVariable) {
-			return ((BinaryVariable)variable).getBitSet();
+		if (variable instanceof BinaryVariable binaryVariable) {
+			return binaryVariable.getBitSet();
 		} else {
 			throw new IllegalArgumentException(NOT_BINARY);
 		}
@@ -361,8 +361,7 @@ public class EncodingUtils {
 	 * @throws IllegalArgumentException if the decision variable is not of type {@link BinaryVariable}
 	 */
 	public static boolean[] getBinary(Variable variable) {
-		if (variable instanceof BinaryVariable) {
-			BinaryVariable binaryVariable = (BinaryVariable)variable;
+		if (variable instanceof BinaryVariable binaryVariable) {
 			boolean[] result = new boolean[binaryVariable.getNumberOfBits()];
 			
 			for (int i=0; i<binaryVariable.getNumberOfBits(); i++) {
@@ -400,8 +399,8 @@ public class EncodingUtils {
 	 * @throws IllegalArgumentException if the decision variable is not of type {@link Permutation}
 	 */
 	public static int[] getPermutation(Variable variable) {
-		if (variable instanceof Permutation) {
-			return ((Permutation)variable).toArray();
+		if (variable instanceof Permutation permutation) {
+			return permutation.toArray();
 		} else {
 			throw new IllegalArgumentException(NOT_PERMUTATION);
 		}
@@ -415,8 +414,8 @@ public class EncodingUtils {
 	 * @throws IllegalArgumentException if the decision variable is not of type {@link Subset}
 	 */
 	public static int[] getSubset(Variable variable) {
-		if (variable instanceof Subset) {
-			return ((Subset)variable).toArray();
+		if (variable instanceof Subset subset) {
+			return subset.toArray();
 		} else {
 			throw new IllegalArgumentException(NOT_SUBSET);
 		}
@@ -443,8 +442,7 @@ public class EncodingUtils {
 	 * @throws IllegalArgumentException if the decision variable is not of type {@link Subset}
 	 */
 	public static boolean[] getSubsetAsBinary(Variable variable) {
-		if (variable instanceof Subset) {
-			Subset subset = (Subset)variable;
+		if (variable instanceof Subset subset) {
 			boolean[] result = new boolean[subset.getN()];
 			
 			for (int i = 0; i < subset.getN(); i++) {
@@ -465,8 +463,7 @@ public class EncodingUtils {
 	 * @throws IllegalArgumentException if the decision variable is not of type {@link Subset}
 	 */
 	public static BitSet getSubsetAsBitSet(Variable variable) {
-		if (variable instanceof Subset) {
-			Subset subset = (Subset)variable;
+		if (variable instanceof Subset subset) {
 			BitSet bitSet = new BitSet(subset.getN());
 			
 			for (int i = 0; i < subset.getN(); i++) {
@@ -557,8 +554,8 @@ public class EncodingUtils {
 	 *         ({@code value < getLowerBound()) || (value > getUpperBound()})
 	 */
 	public static void setReal(Variable variable, double value) {
-		if (variable instanceof RealVariable) {
-			((RealVariable)variable).setValue(value);
+		if (variable instanceof RealVariable realVariable) {
+			realVariable.setValue(value);
 		} else {
 			throw new IllegalArgumentException(NOT_REAL);
 		}
@@ -613,10 +610,10 @@ public class EncodingUtils {
 	 *         ({@code value < getLowerBound()) || (value > getUpperBound()})
 	 */
 	public static void setInt(Variable variable, int value) {
-		if (variable instanceof RealVariable) {
-			((RealVariable)variable).setValue(value);
-		} else if (variable instanceof BinaryIntegerVariable) {
-			((BinaryIntegerVariable)variable).setValue(value);
+		if (variable instanceof RealVariable realVariable) {
+			realVariable.setValue(value);
+		} else if (variable instanceof BinaryIntegerVariable binaryIntegerVariable) {
+			binaryIntegerVariable.setValue(value);
 		} else {
 			throw new IllegalArgumentException(NOT_INT);
 		}
@@ -669,9 +666,7 @@ public class EncodingUtils {
 	 * @throws IllegalArgumentException if the decision variable is not of type {@link BinaryVariable}
 	 */
 	public static void setBitSet(Variable variable, BitSet bitSet) {
-		if (variable instanceof BinaryVariable) {
-			BinaryVariable binaryVariable = (BinaryVariable)variable;
-			
+		if (variable instanceof BinaryVariable binaryVariable) {
 			for (int i=0; i<binaryVariable.getNumberOfBits(); i++) {
 				binaryVariable.set(i, bitSet.get(i));
 			}
@@ -689,9 +684,7 @@ public class EncodingUtils {
 	 * @throws IllegalArgumentException if an invalid number of values are provided
 	 */
 	public static void setBinary(Variable variable, boolean[] values) {
-		if (variable instanceof BinaryVariable) {
-			BinaryVariable binaryVariable = (BinaryVariable)variable;
-			
+		if (variable instanceof BinaryVariable binaryVariable) {
 			if (values.length != binaryVariable.getNumberOfBits()) {
 				throw new IllegalArgumentException(INVALID_LENGTH);
 			}
@@ -725,8 +718,8 @@ public class EncodingUtils {
 	 * @throws IllegalArgumentException if {@code values} is not a valid permutation
 	 */
 	public static void setPermutation(Variable variable, int[] values) {
-		if (variable instanceof Permutation) {
-			((Permutation)variable).fromArray(values);
+		if (variable instanceof Permutation permutation) {
+			permutation.fromArray(values);
 		} else {
 			throw new IllegalArgumentException(NOT_PERMUTATION);
 		}
@@ -741,8 +734,8 @@ public class EncodingUtils {
 	 * @throws IllegalArgumentException if {@code values} is not a valid subset
 	 */
 	public static void setSubset(Variable variable, int[] values) {
-		if (variable instanceof Subset) {
-			((Subset)variable).fromArray(values);
+		if (variable instanceof Subset subset) {
+			subset.fromArray(values);
 		} else {
 			throw new IllegalArgumentException(NOT_SUBSET);
 		}
@@ -773,7 +766,7 @@ public class EncodingUtils {
 	 * @throws IllegalArgumentException if the BitSet representation is not a valid subset
 	 */
 	public static void setSubset(Variable variable, BitSet bitSet) {
-		if (variable instanceof Subset) {
+		if (variable instanceof Subset subset) {
 			int[] values = new int[bitSet.cardinality()];
 			int count = 0;
 			
@@ -781,7 +774,7 @@ public class EncodingUtils {
 				values[count++] = i;
 			}
 			
-			setSubset(variable, values);
+			setSubset(subset, values);
 		} else {
 			throw new IllegalArgumentException(NOT_SUBSET);
 		}

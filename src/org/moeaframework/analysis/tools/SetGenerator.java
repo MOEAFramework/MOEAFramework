@@ -86,9 +86,9 @@ public class SetGenerator extends CommandLineUtility {
 		
 		//generate the points
 		try (Problem problem = OptionUtils.getProblemInstance(commandLine, false)) {
-			if (problem instanceof AnalyticalProblem) {
+			if (problem instanceof AnalyticalProblem analyticalProblem) {
 				for (int i=0; i<numberOfPoints; i++) {
-					set.add(((AnalyticalProblem)problem).generate());
+					set.add(analyticalProblem.generate());
 				}
 			} else {
 				throw new FrameworkException("problem does not have an analytical solution");

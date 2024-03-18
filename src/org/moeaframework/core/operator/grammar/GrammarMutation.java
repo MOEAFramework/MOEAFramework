@@ -88,8 +88,8 @@ public class GrammarMutation implements Mutation {
 		for (int i = 0; i < result.getNumberOfVariables(); i++) {
 			Variable variable = result.getVariable(i);
 
-			if (variable instanceof Grammar) {
-				mutate((Grammar)variable, probability);
+			if (variable instanceof Grammar grammar) {
+				mutate(grammar, probability);
 			}
 		}
 

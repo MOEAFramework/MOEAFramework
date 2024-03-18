@@ -93,10 +93,9 @@ public interface AggregateObjectiveComparator extends DominanceComparator, Compa
 			properties.setString("method", "linear");
 		} else if (comparator instanceof MinMaxDominanceComparator) {
 			properties.setString("method", "min-max");
-		} else if (comparator instanceof VectorAngleDistanceScalingComparator) {
+		} else if (comparator instanceof VectorAngleDistanceScalingComparator vadsc) {
 			properties.setString("method", "angle");
-			properties.setDouble("angleScalingFactor",
-					((VectorAngleDistanceScalingComparator)comparator).getAngleScalingFactor());
+			properties.setDouble("angleScalingFactor", vadsc.getAngleScalingFactor());
 		}
 		
 		properties.setDoubleArray("weights", comparator.getWeights());

@@ -137,9 +137,8 @@ class ProblemBuilder {
 	 * @return a reference to this builder
 	 */
 	ProblemBuilder withProblem(Problem problemInstance) {
-		this.problemInstance = problemInstance instanceof UserProvidedProblemInstance ?
-				(UserProvidedProblemInstance)problemInstance :
-				new UserProvidedProblemInstance(problemInstance);
+		this.problemInstance = problemInstance instanceof UserProvidedProblemInstance userProvidedProblemInstance ?
+				userProvidedProblemInstance : new UserProvidedProblemInstance(problemInstance);
 		this.problemName = null;
 		this.problemClass = null;
 		

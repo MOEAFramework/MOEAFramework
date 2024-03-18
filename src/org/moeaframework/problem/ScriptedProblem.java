@@ -138,9 +138,9 @@ public class ScriptedProblem extends ProblemWrapper {
 	private static final Problem createInvocableInstance(ScriptEngine engine, Reader reader) throws ScriptException {
 		Problem problem = null;
 		
-		if (engine instanceof Invocable) {
+		if (engine instanceof Invocable invocable) {
 			engine.eval(reader);
-			problem = ((Invocable)engine).getInterface(Problem.class);
+			problem = invocable.getInterface(Problem.class);
 		}
 		
 		if (problem == null) {

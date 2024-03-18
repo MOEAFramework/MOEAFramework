@@ -66,7 +66,7 @@ public class ConfigurationTest {
 		Assert.assertTrue(variation instanceof CompoundVariation);
 		
 		List<Variation> operators = ((CompoundVariation)variation).getOperators();
-		Assert.assertTrue(operators.get(0) instanceof HUX);
+		Assert.assertTrue(operators.get(0) instanceof HUX hux);
 		Assert.assertEquals(expectedProperties.getDouble("hux.rate"), ((HUX)operators.get(0)).getProbability(), Settings.EPS);
 		Assert.assertTrue(operators.get(1) instanceof BitFlip);
 		Assert.assertEquals(expectedProperties.getDouble("bf.rate"), ((BitFlip)operators.get(1)).getProbability(), Settings.EPS);

@@ -32,7 +32,6 @@ import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 
 import org.moeaframework.algorithm.single.GeneticAlgorithm;
-import org.moeaframework.core.EvolutionaryAlgorithm;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
@@ -195,12 +194,8 @@ public class TSPExample {
 			panel.clearTours();
 
 			// display population with light gray lines
-			if (algorithm instanceof EvolutionaryAlgorithm) {
-				EvolutionaryAlgorithm ea = (EvolutionaryAlgorithm)algorithm;
-				
-				for (Solution solution : ea.getPopulation()) {
-					panel.displayTour(toTour(solution), lightGray);
-				}
+			for (Solution solution : algorithm.getPopulation()) {
+				panel.displayTour(toTour(solution), lightGray);
 			}
 			
 			// display current optimal solutions with red line

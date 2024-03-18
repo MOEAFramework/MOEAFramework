@@ -46,10 +46,10 @@ public class VariableFormatter implements Formatter<Variable> {
 
 	@Override
 	public String format(Object variable) {
-		if (variable instanceof RealVariable) {
-			return data.formatValue(((RealVariable)variable).getValue());
-		} else if (variable instanceof BinaryIntegerVariable) {
-			return data.formatValue(((BinaryIntegerVariable)variable).getValue());
+		if (variable instanceof RealVariable realVariable) {
+			return data.formatValue(realVariable.getValue());
+		} else if (variable instanceof BinaryIntegerVariable binaryIntegerVariable) {
+			return data.formatValue(binaryIntegerVariable.getValue());
 		} else {
 			return variable.toString();
 		}

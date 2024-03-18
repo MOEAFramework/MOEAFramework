@@ -37,9 +37,9 @@ public class MockRealStochasticProblem extends MockProblem {
 	@Override
 	public void evaluate(Solution solution) {
 		long randSeed;
-		if (solution instanceof FutureSolution) {
+		if (solution instanceof FutureSolution futureSolution) {
 			// if it's doing distributed evaluation, we'll get the unique ID that was assigned
-			randSeed = ((FutureSolution)solution).getDistributedEvaluationID(); 
+			randSeed = futureSolution.getDistributedEvaluationID(); 
 		} else {
 			// otherwise it's single-threaded), and we just use our own 0-based counter
 			randSeed = evaluationID++;

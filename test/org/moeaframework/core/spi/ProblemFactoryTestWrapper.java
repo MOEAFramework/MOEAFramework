@@ -36,8 +36,8 @@ public class ProblemFactoryTestWrapper extends ProblemFactory {
 	public synchronized Problem getProblem(String name) {
 		final Problem problem = super.getProblem(name);
 		
-		if (problem instanceof AnalyticalProblem) {
-			return new AnalyticalProblemWrapper((AnalyticalProblem)problem) {
+		if (problem instanceof AnalyticalProblem analyticalProblem) {
+			return new AnalyticalProblemWrapper(analyticalProblem) {
 	
 				@Override
 				public void close() {

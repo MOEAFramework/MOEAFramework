@@ -206,11 +206,12 @@ public class SBX implements Variation {
 				Variable variable1 = result1.getVariable(i);
 				Variable variable2 = result2.getVariable(i);
 
-				if (PRNG.nextBoolean() && (variable1 instanceof RealVariable) && (variable2 instanceof RealVariable)) {
+				if (PRNG.nextBoolean() && (variable1 instanceof RealVariable realVariable1) &&
+						(variable2 instanceof RealVariable realVariable2)) {
 					if (symmetric) {
-						evolve_symmetric((RealVariable)variable1, (RealVariable)variable2, distributionIndex, swap);
+						evolve_symmetric(realVariable1, realVariable2, distributionIndex, swap);
 					} else {
-						evolve_asymmetric((RealVariable)variable1, (RealVariable)variable2, distributionIndex, swap);
+						evolve_asymmetric(realVariable1, realVariable2, distributionIndex, swap);
 					}
 				}
 			}
@@ -226,8 +227,7 @@ public class SBX implements Variation {
 	 * @param v2 the second variable
 	 * @param distributionIndex the distribution index of this SBX operator
 	 */
-	public static void evolve(RealVariable v1, RealVariable v2,
-			double distributionIndex) {
+	public static void evolve(RealVariable v1, RealVariable v2, double distributionIndex) {
 		evolve_asymmetric(v1, v2, distributionIndex, true);
 	}
 

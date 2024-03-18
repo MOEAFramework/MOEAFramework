@@ -49,8 +49,8 @@ public class ConfigurationUtils {
 	public static void applyConfiguration(TypedProperties properties, Configurable object) {
 		Problem problem = null;
 		
-		if (object instanceof Algorithm) {
-			problem = ((Algorithm)object).getProblem();
+		if (object instanceof Algorithm algorithm) {
+			problem = algorithm.getProblem();
 		}
 		
 		applyConfiguration(properties, object, problem);
@@ -262,8 +262,8 @@ public class ConfigurationUtils {
 				throw new ConfigurationException("unsupported type " + parameterType + " for property " + propertyName);
 			}
 			
-			if (value instanceof Configurable) {
-				TypedProperties valueProperties = ((Configurable)value).getConfiguration();
+			if (value instanceof Configurable configurable) {
+				TypedProperties valueProperties = configurable.getConfiguration();
 				properties.addAll(valueProperties);
 			}
 		} catch (IllegalAccessException | InvocationTargetException e) {

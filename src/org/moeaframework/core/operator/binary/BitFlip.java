@@ -89,8 +89,8 @@ public class BitFlip implements Mutation {
 		for (int i = 0; i < result.getNumberOfVariables(); i++) {
 			Variable variable = result.getVariable(i);
 
-			if (variable instanceof BinaryVariable) {
-				mutate((BinaryVariable)variable, probability);
+			if (variable instanceof BinaryVariable binaryVariable) {
+				mutate(binaryVariable, probability);
 			}
 		}
 

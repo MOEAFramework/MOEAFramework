@@ -148,8 +148,7 @@ public class DistributedProblem extends ProblemWrapper {
 
 	@Override
 	public void evaluate(Solution solution) {
-		if (solution instanceof FutureSolution) {
-			FutureSolution futureSolution = (FutureSolution)solution;
+		if (solution instanceof FutureSolution futureSolution) {
 			futureSolution.setDistributedEvaluationID(nextDistributedEvaluationID.getAndIncrement());
 			
 			Future<Solution> future = executor.submit(new ProblemEvaluator(problem, futureSolution));

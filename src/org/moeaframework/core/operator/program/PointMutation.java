@@ -93,8 +93,7 @@ public class PointMutation implements Mutation {
 		for (int i = 0; i < result.getNumberOfVariables(); i++) {
 			Variable variable = result.getVariable(i);
 			
-			if (variable instanceof Program) {
-				Program program = (Program)variable;
+			if (variable instanceof Program program) {
 				mutate(program.getArgument(0), program.getRules());
 			}
 		}

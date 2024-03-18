@@ -765,8 +765,8 @@ public class Plot {
 			
 			XYPlot plot = chart.getXYPlot();
 			
-			if (plot.getDataset(currentDataset) instanceof DefaultTableXYDataset) {
-				dataset = (DefaultTableXYDataset)plot.getDataset(currentDataset);
+			if (plot.getDataset(currentDataset) instanceof DefaultTableXYDataset xyDataset) {
+				dataset = xyDataset;
 			} else {
 				currentDataset++;
 				dataset = new DefaultTableXYDataset();
@@ -939,12 +939,10 @@ public class Plot {
 			XYPlot plot = chart.getXYPlot();
 			XYItemRenderer renderer = plot.getRenderer(currentDataset);
 
-			if (renderer instanceof XYDotRenderer) {
-				((XYDotRenderer)renderer).setDotWidth((int)(size*2));
-				((XYDotRenderer)renderer).setDotHeight((int)(size*2));
-			} else if (renderer.getDefaultStroke() instanceof BasicStroke) {
-				BasicStroke oldStroke = (BasicStroke)renderer.getDefaultStroke();
-
+			if (renderer instanceof XYDotRenderer xyDotRenderer) {
+				xyDotRenderer.setDotWidth((int)(size*2));
+				xyDotRenderer.setDotHeight((int)(size*2));
+			} else if (renderer.getDefaultStroke() instanceof BasicStroke oldStroke) {
 				BasicStroke newStroke = new BasicStroke(
 						size,
 						oldStroke.getEndCap(),
@@ -981,8 +979,8 @@ public class Plot {
 				paintHelper.set(dataset.getSeriesKey(i), p);
 				renderer.setSeriesPaint(i, p);
 
-				if (renderer instanceof XYLineAndShapeRenderer) {
-					((XYLineAndShapeRenderer)renderer).setSeriesFillPaint(i, p);
+				if (renderer instanceof XYLineAndShapeRenderer xyRenderer) {
+					xyRenderer.setSeriesFillPaint(i, p);
 				}
 			}
 		} else if (chart.getPlot() instanceof CategoryPlot) {

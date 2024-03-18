@@ -53,8 +53,8 @@ public class CommentedLineReader extends BufferedReader {
 	 * @return the reader wrapped in a commented line reader
 	 */
 	public static CommentedLineReader wrap(Reader reader) {
-		if (reader instanceof CommentedLineReader) {
-			return (CommentedLineReader)reader;
+		if (reader instanceof CommentedLineReader commentedLineReader) {
+			return commentedLineReader;
 		} else {
 			return new CommentedLineReader(reader);
 		}

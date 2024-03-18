@@ -126,15 +126,15 @@ public class NSGAIII extends NSGAII {
 	 * @param variation the variation operator
 	 */
 	private static final void fixDefaultParameters(Variation variation) {
-		if (variation instanceof AbstractCompoundVariation<?>) {
-			for (Variation innerVariation : ((AbstractCompoundVariation<?>)variation).getOperators()) {
+		if (variation instanceof AbstractCompoundVariation<?> compoundVariation) {
+			for (Variation innerVariation : compoundVariation.getOperators()) {
 				fixDefaultParameters(innerVariation);
 			}
-		} else if (variation instanceof SBX) {
-			((SBX)variation).setSwap(false);
-			((SBX)variation).setDistributionIndex(30.0);
-		} else if (variation instanceof PM) {
-			((PM)variation).setDistributionIndex(20.0);
+		} else if (variation instanceof SBX sbx) {
+			sbx.setSwap(false);
+			sbx.setDistributionIndex(30.0);
+		} else if (variation instanceof PM pm) {
+			pm.setDistributionIndex(20.0);
 		}
 	}
 	

@@ -583,9 +583,9 @@ public class Instrumenter extends ProblemBuilder {
 			for (int i=0; i<Array.getLength(object); i++) {
 				instrument(algorithm, collectors, visited, parents, Array.get(object, i), null);
 			}
-		} else if (object instanceof Collection) {
+		} else if (object instanceof Collection<?> collection) {
 			//recursively walk the elements in the array
-			for (Object element : (Collection<?>)object) {
+			for (Object element : collection) {
 				instrument(algorithm, collectors, visited, parents, element, null);
 			}
 		}

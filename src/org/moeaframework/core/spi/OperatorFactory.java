@@ -103,11 +103,13 @@ public class OperatorFactory extends AbstractFactory<OperatorProvider> {
 		
 		Variation variation = getVariation(name, properties, problem);
 		
-		if (variation != null && !(variation instanceof Mutation)) {
+		if (variation == null) {
+			return null;
+		} else if (variation instanceof Mutation mutation) {
+			return mutation;
+		} else {
 			throw new ProviderLookupException("the operator '" + name + "' is not a mutation operator");
 		}
-		
-		return (Mutation)variation;
 	}
 	
 	/**

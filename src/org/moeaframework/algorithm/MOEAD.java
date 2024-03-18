@@ -353,8 +353,8 @@ public class MOEAD extends AbstractAlgorithm implements Configurable {
 		
 		if (variation instanceof DifferentialEvolutionVariation) {
 			useDE = true;
-		} else if (variation instanceof AbstractCompoundVariation<?>) {
-			useDE = ((AbstractCompoundVariation<?>)variation).contains(DifferentialEvolutionVariation.class);
+		} else if (variation instanceof AbstractCompoundVariation<?> compoundVariation) {
+			useDE = compoundVariation.contains(DifferentialEvolutionVariation.class);
 		} else {
 			useDE = false;
 		}

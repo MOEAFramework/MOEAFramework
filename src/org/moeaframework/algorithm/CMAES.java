@@ -507,14 +507,13 @@ public class CMAES extends AbstractAlgorithm implements Configurable {
 	private void preInitChecks(Solution prototypeSolution) {
 		if (initialSearchPoint != null) {
 			if (initialSearchPoint.length != prototypeSolution.getNumberOfVariables()) {
-				throw new IllegalArgumentException("initial search point is not the correct length (expected=" + prototypeSolution.getNumberOfVariables() + ", actual=" + initialSearchPoint.length + ")");
+				throw new IllegalArgumentException("initial search point is not the correct length (expected=" +
+						prototypeSolution.getNumberOfVariables() + ", actual=" + initialSearchPoint.length + ")");
 			}
 		}
 		
 		for (int i = 0; i < problem.getNumberOfVariables(); i++) {
-			if (prototypeSolution.getVariable(i) instanceof RealVariable) {
-				RealVariable variable = (RealVariable)prototypeSolution.getVariable(i);
-				
+			if (prototypeSolution.getVariable(i) instanceof RealVariable variable) {			
 				if (initialSearchPoint != null) {
 					if (initialSearchPoint[i] > variable.getUpperBound()) {
 						throw new IllegalArgumentException("initial search point is out of bounds (index=" + i + ", value=" + initialSearchPoint[i] + ", ub=" + variable.getUpperBound() + ")");
