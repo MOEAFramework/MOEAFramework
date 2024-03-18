@@ -23,7 +23,9 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.moeaframework.core.FrameworkException;
@@ -194,6 +196,21 @@ public class MatrixReader implements Iterable<double[]>, Iterator<double[]>, Clo
 	@Override
 	public void close() throws IOException {
 		reader.close();
+	}
+	
+	/**
+	 * Reads the entire contents of the file.
+	 * 
+	 * @return the entire contents of the file
+	 */
+	public double[][] readAll() {
+		List<double[]> data = new ArrayList<double[]>();
+			
+		while (hasNext()) {
+			data.add(next());
+		}
+			
+		return data.toArray(double[][]::new);
 	}
 	
 	/**

@@ -18,20 +18,18 @@
 package org.moeaframework;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.StringWriter;
-import java.io.Writer;
 import java.lang.reflect.Method;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
@@ -214,11 +212,7 @@ public class TestUtils {
 	 */
 	public static File createTempFile(String data) throws IOException {
 		File file = createTempFile();
-
-		try (Writer writer = new BufferedWriter(new FileWriter(file))) {
-			writer.write(data);
-		}
-
+		Files.writeString(file.toPath(), data);
 		return file;
 	}
 	
@@ -496,7 +490,7 @@ public class TestUtils {
             }
         }
         
-        return data.toArray(new double[data.size()][]);
+        return data.toArray(double[][]::new);
     }
 	
 	/**

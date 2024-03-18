@@ -77,13 +77,7 @@ public class SimpleStatistics extends CommandLineUtility {
 	 */
 	private double[][] load(File file) throws IOException {
 		try (MatrixReader reader = new MatrixReader(file)) {
-			List<double[]> data = new ArrayList<double[]>();
-			
-			while (reader.hasNext()) {
-				data.add(reader.next());
-			}
-			
-			return data.toArray(new double[0][]);
+			return reader.readAll();
 		}
 	}
 

@@ -76,5 +76,22 @@ public class EpsilonsTest {
 		Assert.assertEquals(new Epsilons(0.1), Epsilons.of(0.1));
 		Assert.assertEquals(new Epsilons(new double[] { 0.1, 0.2 }), Epsilons.of(0.1, 0.2));
 	}
+	
+	@Test
+	public void testMutability() {
+		double[] original = new double[] { 0.1, 0.2 };
+		
+		Epsilons epsilons = new Epsilons(original);
+		double[] array = epsilons.toArray();
+		
+		Assert.assertEquals(2, array.length);
+		Assert.assertArrayEquals(original, array, Settings.EPS);
+		
+		array[0] = 0.5;
+		Assert.assertEquals(0.1, epsilons.get(0), Settings.EPS);
+		
+		original[0] = 0.5;
+		Assert.assertEquals(0.1, epsilons.get(0), Settings.EPS);
+	}
 
 }

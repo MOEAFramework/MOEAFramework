@@ -407,7 +407,7 @@ public class Settings {
 		String[] result = PROPERTIES.getStringArray(KEY_DIAGNOSTIC_TOOL_ALGORITHMS, null);
 		
 		if (result == null) {
-			result = AlgorithmFactory.getInstance().getAllDiagnosticToolAlgorithms().toArray(new String[0]);
+			result = AlgorithmFactory.getInstance().getAllDiagnosticToolAlgorithms().toArray(String[]::new);
 		}
 		
 		return result;
@@ -422,7 +422,7 @@ public class Settings {
 		String[] result = PROPERTIES.getStringArray(KEY_DIAGNOSTIC_TOOL_PROBLEMS, null);
 		
 		if (result == null) {
-			result = ProblemFactory.getInstance().getAllDiagnosticToolProblems().toArray(new String[0]);
+			result = ProblemFactory.getInstance().getAllDiagnosticToolProblems().toArray(String[]::new);
 		}
 		
 		return result;

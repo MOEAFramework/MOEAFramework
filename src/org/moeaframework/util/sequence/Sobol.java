@@ -92,7 +92,7 @@ public class Sobol implements Sequence {
 				directions.add(d);
 			}
 
-			Sobol.DIRECTIONS = directions.toArray(new int[0][0]);
+			Sobol.DIRECTIONS = directions.toArray(int[][]::new);
 		}
 	}
 

@@ -227,7 +227,7 @@ public class PRNGTest {
 				statistics.get(j).addValue(list.get(j));
 			}
 
-			testPermutation(P, list.toArray(new Integer[list.size()]));
+			testPermutation(P, list.toArray(Integer[]::new));
 		}
 
 		for (int i = 0; i < P; i++) {

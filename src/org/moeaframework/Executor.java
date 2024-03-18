@@ -667,7 +667,7 @@ public class Executor extends ProblemBuilder {
 		} else if (conditions.size() == 1) {
 			return conditions.get(0);
 		} else {
-			return new CompoundTerminationCondition(conditions.toArray(new TerminationCondition[conditions.size()]));
+			return new CompoundTerminationCondition(conditions.toArray(TerminationCondition[]::new));
 		}
 	}
 	

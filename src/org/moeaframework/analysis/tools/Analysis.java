@@ -127,7 +127,7 @@ public class Analysis extends CommandLineUtility {
 			}
 		}
 		
-		return metricList.toArray(new double[0][]);
+		return metricList.toArray(double[][]::new);
 	}
 	
 	/**
@@ -146,7 +146,7 @@ public class Analysis extends CommandLineUtility {
 			}
 		}
 		
-		return parameterList.toArray(new double[0][]);
+		return parameterList.toArray(double[][]::new);
 	}
 	
 	/**

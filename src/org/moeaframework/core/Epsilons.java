@@ -70,7 +70,7 @@ public class Epsilons {
 	 * @return the array of &epsilon; values
 	 */
 	public double[] toArray() {
-		return epsilons;
+		return epsilons.clone();
 	}
 	
 	/**
