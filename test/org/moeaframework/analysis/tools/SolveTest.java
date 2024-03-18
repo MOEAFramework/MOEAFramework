@@ -24,7 +24,7 @@ import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.Test;
 import org.moeaframework.TestUtils;
-import org.moeaframework.analysis.sensitivity.ResultFileReader;
+import org.moeaframework.analysis.io.ResultFileReader;
 import org.moeaframework.core.spi.ProblemFactory;
 
 /**

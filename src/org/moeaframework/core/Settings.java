@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Properties;
 
 import org.apache.commons.lang3.StringUtils;
-import org.moeaframework.analysis.sensitivity.OutputWriter;
+import org.moeaframework.analysis.io.OutputWriter;
 import org.moeaframework.core.NondominatedPopulation.DuplicateMode;
 import org.moeaframework.core.indicator.Hypervolume;
 import org.moeaframework.core.spi.AlgorithmFactory;
@@ -184,7 +184,7 @@ public class Settings {
 	/**
 	 * The property key for the cleanup strategy when restarting from previous runs.
 	 */
-	public static final String KEY_CLEANUP_STRATEGY = createKey(KEY_PREFIX, "analysis", "sensitivity", "cleanup");
+	public static final String KEY_CLEANUP_STRATEGY = createKey(KEY_PREFIX, "analysis", "io", "cleanup");
 	
 	/**
 	 * The property key for enabling debugging info when running external problems.
@@ -322,7 +322,7 @@ public class Settings {
 	 * @return {@code true} if truncation warnings are suppressed; {@code false} otherwise
 	 */
 	public static boolean isSuppressTruncationWarning() {
-		return PROPERTIES.getBoolean(KEY_SUPPRESS_TRUNCATION_WARNING, false);
+		return PROPERTIES.getBoolean(KEY_SUPPRESS_TRUNCATION_WARNING, true);
 	}
 	
 	/**

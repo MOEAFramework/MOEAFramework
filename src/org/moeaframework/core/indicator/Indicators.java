@@ -628,7 +628,7 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 		
 		/**
 		 * Returns the indicator values as a typed properties object.  This is useful for storing the data, such as
-		 * with {@link org.moeaframework.analysis.sensitivity.ResultFileWriter}.
+		 * with {@link org.moeaframework.analysis.io.ResultFileWriter}.
 		 * 
 		 * @return the indicator values as typed properties
 		 */

@@ -19,10 +19,10 @@ package org.moeaframework.examples.experiment;
 
 import java.io.File;
 
-import org.moeaframework.analysis.sensitivity.Evaluator;
-import org.moeaframework.analysis.sensitivity.ResultFileEvaluator;
-import org.moeaframework.analysis.sensitivity.SampleGenerator;
-import org.moeaframework.analysis.sensitivity.SobolAnalysis;
+import org.moeaframework.analysis.tools.Evaluator;
+import org.moeaframework.analysis.tools.ResultFileEvaluator;
+import org.moeaframework.analysis.tools.SampleGenerator;
+import org.moeaframework.analysis.tools.SobolAnalysis;
 import org.moeaframework.core.Settings;
 
 /**

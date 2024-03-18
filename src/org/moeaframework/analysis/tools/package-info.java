@@ -17,6 +17,13 @@
  */
 
 /**
- * Command line tools for solving optimization problems and analyzing the results.
+ * Command line tools for evaluating MOEAs and analyzing results.  Most of these tools are designed for producing
+ * control maps and performing sensitivity analysis on parameters.  These are largely based on the paper cited below.
+ * <p>
+ * References:
+ * <ol>
+ *   <li>Hadka, D. and Reed, P.  "Diagnostic Assessment of Search Controls and Failure Modes in Many-Objective
+ *       Evolutionary Optimization."  Evolutionary Computation, 20(3):423-452.
+ * </ol>
  */
 package org.moeaframework.analysis.tools;

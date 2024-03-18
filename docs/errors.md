@@ -289,7 +289,7 @@ accumulator.
 Thrown when `ResultFileWriter` or `MetricFileWriter` attempt to recover data from an interrupted run, but it
 appears there already exists an "unclean" file from a previous recovery attempt.  If the user believes the unclean
 file contains valid data, she can copy the unclean file to its original location.  Or, she can delete the unclean file
-to start fresh.  The `org.moeaframework.analysis.sensitivity.cleanup` property in
+to start fresh.  The `org.moeaframework.analysis.io.cleanup` property in
 `moeaframework.properties` controls the default behavior in this scenario.
   
 **requires at least two solutions**  

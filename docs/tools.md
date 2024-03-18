@@ -85,11 +85,11 @@ file contains the parameters for a single execution.  Also note that the choice 
 the type of analyses that can be performed.  For example, to compute the first, second, and total-order effects of the
 parameters using Sobol sensitivity analysis, use the `saltelli` method. 
 
-<!-- output:src/org/moeaframework/analysis/sensitivity/SampleGenerator.java [:-2] {help} -->
+<!-- output:src/org/moeaframework/analysis/tools/SampleGenerator.java [:-2] {help} -->
 
 ```
-usage: java -classpath "lib/*" org.moeaframework.analysis.sensitivity.SampleGenerator [-h] -m <name> -n <value> [-o
-       <file>] -p <file> [-s <value>]
+usage: java -classpath "lib/*" org.moeaframework.analysis.tools.SampleGenerator [-h] -m <name> -n <value> [-o <file>] -p
+       <file> [-s <value>]
 
 Generates parameter samples for running the Evaluator.  The following options are available:
 
@@ -106,11 +106,11 @@ Generates parameter samples for running the Evaluator.  The following options ar
 Next, we evaluate the algorithm against each of the parameter samples.  This produces a "result file" that contains
 the Pareto approximation sets produced by each parameterization.
 
-<!-- output:src/org/moeaframework/analysis/sensitivity/Evaluator.java [:-2] {help} -->
+<!-- output:src/org/moeaframework/analysis/tools/Evaluator.java [:-2] {help} -->
 
 ```
-usage: java -classpath "lib/*" org.moeaframework.analysis.sensitivity.Evaluator -a <name> [-b <name>] [-e <e1,e2,...>]
-       [-f] [-h] -i <file> [-m] [-n] -o <file> -p <file> [-r <file>] [-s <value>] [-x <p1=v1;p2=v2;...>]
+usage: java -classpath "lib/*" org.moeaframework.analysis.tools.Evaluator -a <name> [-b <name>] [-e <e1,e2,...>] [-f]
+       [-h] -i <file> [-m] [-n] -o <file> -p <file> [-r <file>] [-s <value>] [-x <p1=v1;p2=v2;...>]
 
 Evaluates an optimization algorithm on the specified problem.  The following options are available:
 
@@ -134,10 +134,10 @@ Evaluates an optimization algorithm on the specified problem.  The following opt
 We typically evaluate the performance of an algorithm using one of the performance indicators (e.g., hypervolume).
 Here, we take the result file produced in the previous step and compute the metrics.
 
-<!-- output:src/org/moeaframework/analysis/sensitivity/ResultFileEvaluator.java [:-2] {help} -->
+<!-- output:src/org/moeaframework/analysis/tools/ResultFileEvaluator.java [:-2] {help} -->
 
 ```
-usage: java -classpath "lib/*" org.moeaframework.analysis.sensitivity.ResultFileEvaluator -b <name> | -d <number>  [-e
+usage: java -classpath "lib/*" org.moeaframework.analysis.tools.ResultFileEvaluator -b <name> | -d <number>  [-e
        <e1,e2,...>] [-f] [-h] -i <file> -o <file> [-r <file>]
 
 Evaluates the approximation sets stored in a result file, outputting a metric file containing the hypervolume,
@@ -159,10 +159,10 @@ error performance indicators.  The following options are available:
 In our original sensitivity analysis study, we compared algorithms based on their attainment, efficiency, and
 controllability.  These values are computed using the `Analysis` tool.
 
-<!-- output:src/org/moeaframework/analysis/sensitivity/Analysis.java [:-2] {help} -->
+<!-- output:src/org/moeaframework/analysis/tools/Analysis.java [:-2] {help} -->
 
 ```
-usage: java -classpath "lib/*" org.moeaframework.analysis.sensitivity.Analysis [-b <width>] [-c] [-e] [-h] -i <file> -m
+usage: java -classpath "lib/*" org.moeaframework.analysis.tools.Analysis [-b <width>] [-c] [-e] [-h] -i <file> -m
        <value> [-o <file>] -p <file> [-t <percent>]
 
 Calculates the best, attainment, efficiency and controllability metrics.  The following options are available:
@@ -184,11 +184,11 @@ If using the `saltelli` sampling method, we can also compute the first-, second-
 parameters.  This measures how much influence each parameter, or pair, contributes to the performance of the
 algorithm.
 
-<!-- output:src/org/moeaframework/analysis/sensitivity/SobolAnalysis.java [:-2] {help} -->
+<!-- output:src/org/moeaframework/analysis/tools/SobolAnalysis.java [:-2] {help} -->
 
 ```
-usage: java -classpath "lib/*" org.moeaframework.analysis.sensitivity.SobolAnalysis [-h] -i <file> -m <value> [-o
-       <file>] -p <file> [-r <number>] [-s]
+usage: java -classpath "lib/*" org.moeaframework.analysis.tools.SobolAnalysis [-h] -i <file> -m <value> [-o <file>] -p
+       <file> [-r <number>] [-s]
 
 Performs Sobol' global variance analysis.  The following options are available:
 

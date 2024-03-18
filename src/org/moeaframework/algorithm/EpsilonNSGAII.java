@@ -17,7 +17,7 @@
  */
 package org.moeaframework.algorithm;
 
-import org.moeaframework.analysis.sensitivity.EpsilonHelper;
+import org.moeaframework.analysis.EpsilonHelper;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.Initialization;
 import org.moeaframework.core.NondominatedSortingPopulation;

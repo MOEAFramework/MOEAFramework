@@ -19,7 +19,6 @@ package org.moeaframework.core.initialization;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.moeaframework.analysis.sensitivity.ProblemStub;
 import org.moeaframework.core.Initialization;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
@@ -29,6 +28,7 @@ import org.moeaframework.core.variable.Grammar;
 import org.moeaframework.core.variable.Permutation;
 import org.moeaframework.core.variable.Program;
 import org.moeaframework.core.variable.RealVariable;
+import org.moeaframework.problem.ProblemStub;
 import org.moeaframework.util.tree.Rules;
 
 public class RandomInitializationTest {

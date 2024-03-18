@@ -42,22 +42,24 @@
  *     </td>
  *   </tr>
  *   <tr>
+ *     <td>{@link org.moeaframework.analysis.io}</td>
+ *     <td>
+ *       Classes for reading and writing various file formats.  This includes parameter configuration files, sample
+ *       files, result files, and metric files.
+ *     </td>
+ *   </tr>
+ *   <tr>
  *     <td>{@link org.moeaframework.analysis.plot}</td>
  *     <td>
  *       Generate simple 2D plots.
  *     </td>
  *   </tr>
  *   <tr>
- *     <td>{@link org.moeaframework.analysis.sensitivity}</td>
- *     <td>
- *       A collection of command line tools for running large-scale experiments and performing comparative and
- *       sensitivity analysis on algorithms.  These tools are designed to run on compute clusters and supercomputers.
- *     </td>
- *   </tr>
- *   <tr>
  *     <td>{@link org.moeaframework.analysis.tools}</td>
  *     <td>
- *       Command line tools for solving optimization problems and analyzing the results.
+ *       Command line tools for solving optimization problems and analyzing the results.  This includes tools for
+ *       running large-scale experiments on high performance computers (HPC), comparing results, and performing
+ *       sensitivity analysis on parameters.
  *     </td>
  *   </tr>
  * </table>

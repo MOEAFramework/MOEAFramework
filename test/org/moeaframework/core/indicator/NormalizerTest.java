@@ -20,9 +20,9 @@ package org.moeaframework.core.indicator;
 import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.TestUtils;
-import org.moeaframework.analysis.sensitivity.ProblemStub;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Settings;
+import org.moeaframework.problem.ProblemStub;
 
 /**
  * Tests the {@link Normalizer} class.

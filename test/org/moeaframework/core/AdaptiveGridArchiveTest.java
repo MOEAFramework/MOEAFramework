@@ -22,7 +22,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.TestUtils;
-import org.moeaframework.analysis.sensitivity.ProblemStub;
+import org.moeaframework.problem.ProblemStub;
 
 /**
  * Tests the {@link AdaptiveGridArchive} class.

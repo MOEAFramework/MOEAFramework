@@ -21,7 +21,6 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.moeaframework.analysis.sensitivity.ProblemStub;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.UnsupportedVariable;
@@ -35,6 +34,7 @@ import org.moeaframework.problem.MockMixedBinaryProblem;
 import org.moeaframework.problem.MockMultiTypeProblem;
 import org.moeaframework.problem.MockPermutationProblem;
 import org.moeaframework.problem.MockRealProblem;
+import org.moeaframework.problem.ProblemStub;
 import org.moeaframework.util.TypedProperties;
 
 /**

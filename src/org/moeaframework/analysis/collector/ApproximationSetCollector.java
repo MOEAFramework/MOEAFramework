@@ -19,7 +19,7 @@ package org.moeaframework.analysis.collector;
 
 import java.util.ArrayList;
 
-import org.moeaframework.analysis.sensitivity.EpsilonHelper;
+import org.moeaframework.analysis.EpsilonHelper;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Solution;

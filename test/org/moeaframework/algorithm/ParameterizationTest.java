@@ -22,8 +22,8 @@ import java.io.IOException;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.moeaframework.analysis.sensitivity.Parameter;
-import org.moeaframework.analysis.sensitivity.ParameterFile;
+import org.moeaframework.analysis.io.Parameter;
+import org.moeaframework.analysis.io.ParameterFile;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.core.spi.ProblemFactory;

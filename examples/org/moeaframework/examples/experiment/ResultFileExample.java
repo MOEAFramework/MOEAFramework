@@ -20,9 +20,9 @@ package org.moeaframework.examples.experiment;
 import java.io.File;
 
 import org.moeaframework.algorithm.NSGAII;
-import org.moeaframework.analysis.sensitivity.ResultEntry;
-import org.moeaframework.analysis.sensitivity.ResultFileReader;
-import org.moeaframework.analysis.sensitivity.ResultFileWriter;
+import org.moeaframework.analysis.io.ResultEntry;
+import org.moeaframework.analysis.io.ResultFileReader;
+import org.moeaframework.analysis.io.ResultFileWriter;
 import org.moeaframework.core.PopulationIO;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.indicator.Hypervolume;
@@ -45,7 +45,7 @@ public class ResultFileExample {
 
 		// First, solve UF1 using NSGA-II using various population sizes.  We store the result and configuration
 		// to the result file.
-		try (ResultFileWriter writer = new ResultFileWriter(problem, resultFile)) {
+		try (ResultFileWriter writer = ResultFileWriter.append(problem, resultFile)) {
 			int startingPopulationSize = 100;
 			int endingPopulationSize = 1000;
 			
@@ -66,7 +66,7 @@ public class ResultFileExample {
 		}
 		
 		// Then, we can process the file to compute the Hypervolume metric.
-		try (ResultFileReader reader = new ResultFileReader(problem, resultFile)) {
+		try (ResultFileReader reader = ResultFileReader.open(problem, resultFile)) {
 			Hypervolume hypervolume = new Hypervolume(problem, PopulationIO.readReferenceSet("./pf/UF1.dat"));
 			
 			while (reader.hasNext()) {

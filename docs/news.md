@@ -2,18 +2,29 @@
 
 This page documents notable changes introduced in each chronological release of the MOEA Framework.
 
-## Version 3.12 (TBD)
+## vNext
 
   * Adds the `Indicators` class to simplify calculating performance indicators, which will eventually
     replace the older `QualityIndicator` class.  See `Example2.java` for a demo.
     
   * Adds ability to scope properties within a try-with-resources block.
+  
+  * `org.moeaframework.core.suppress_truncation_warning` now defaults to `true`
+  
+  * Breaking changes:
+  
+    - Removes deprecated classes and methods.
+  
+    - Moves initialization and selection classes into their own packages.
+      
+    - Moves all command line tools into the `org.moeaframework.analysis.tools` package.  Removes
+      the `sensitivity` package.
 
 
 ## Version 3.11 (04 Mar 2024)
 
   * Removes the `setInitialPopulationSize` method and corresponding `populationSize` parameter
-    from DBEA.  Instead, the population size is dervied from the `divisions` parameter.
+    from DBEA.  Instead, the population size is derived from the `divisions` parameter.
 
   * Improved online documentation
 

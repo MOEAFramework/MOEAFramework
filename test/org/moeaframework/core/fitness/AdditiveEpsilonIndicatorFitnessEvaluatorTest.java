@@ -22,9 +22,9 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.TestUtils;
-import org.moeaframework.analysis.sensitivity.ProblemStub;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
+import org.moeaframework.problem.ProblemStub;
 
 /**
  * Tests the {@link AdditiveEpsilonIndicatorFitnessEvaluator} class.

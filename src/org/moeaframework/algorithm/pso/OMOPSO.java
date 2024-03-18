@@ -17,7 +17,7 @@
  */
 package org.moeaframework.algorithm.pso;
 
-import org.moeaframework.analysis.sensitivity.EpsilonHelper;
+import org.moeaframework.analysis.EpsilonHelper;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Problem;

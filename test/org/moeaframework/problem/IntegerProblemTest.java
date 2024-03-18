@@ -34,27 +34,24 @@ public class IntegerProblemTest {
 	 * The Rosenbrock problem defined using integers instead of floating-point values.
 	 */
 	public static class StepRosenbrockProblem extends AbstractProblem {
-
+		
 		public StepRosenbrockProblem() {
 			super(2, 1);
 		}
 
 		@Override
 		public void evaluate(Solution solution) {
-			int[] x = EncodingUtils.getInt(solution);
-			double f = Math.pow(1 - x[0], 2) + 100*Math.pow(x[1]-x[0]*x[0], 2);
+			int x = EncodingUtils.getInt(solution.getVariable(0));
+			int y = EncodingUtils.getInt(solution.getVariable(1));
 			
-			solution.setObjective(0, f);
+			solution.setObjective(0, 100*(y - x*x)*(y - x*x) + (1 - x)*(1 - x));
 		}
 
 		@Override
 		public Solution newSolution() {
-			Solution solution = new Solution(numberOfVariables, 1);
-
-			for (int i = 0; i < numberOfVariables; i++) {
-				solution.setVariable(i, EncodingUtils.newInt(-100, 100));
-			}
-
+			Solution solution = new Solution(2, 1);
+			solution.setVariable(0, EncodingUtils.newInt(-10, 10));
+			solution.setVariable(1, EncodingUtils.newInt(-10, 10));
 			return solution;
 		}
 		

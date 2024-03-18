@@ -22,6 +22,7 @@ import java.util.Arrays;
 import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.TestUtils;
+import org.moeaframework.analysis.tools.ReferenceSetMerger;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Solution;
 

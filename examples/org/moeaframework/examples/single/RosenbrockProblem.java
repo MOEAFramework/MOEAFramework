@@ -28,7 +28,7 @@ import org.moeaframework.problem.AbstractProblem;
 public class RosenbrockProblem extends AbstractProblem {
 	
 	public RosenbrockProblem() {
-		super(2, 1, 0);
+		super(2, 1);
 	}
 
 	@Override
@@ -41,7 +41,7 @@ public class RosenbrockProblem extends AbstractProblem {
 
 	@Override
 	public Solution newSolution() {
-		Solution solution = new Solution(2, 1, 0);
+		Solution solution = new Solution(2, 1);
 		solution.setVariable(0, EncodingUtils.newReal(-10, 10));
 		solution.setVariable(1, EncodingUtils.newReal(-10, 10));
 		return solution;

@@ -28,10 +28,8 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.lang3.StringUtils;
 import org.moeaframework.algorithm.PeriodicAction;
-import org.moeaframework.analysis.sensitivity.OptionUtils;
-import org.moeaframework.analysis.sensitivity.ResultEntry;
-import org.moeaframework.analysis.sensitivity.ResultFileWriter;
-import org.moeaframework.analysis.sensitivity.ResultFileWriter.ResultFileWriterSettings;
+import org.moeaframework.analysis.io.ResultEntry;
+import org.moeaframework.analysis.io.ResultFileWriter;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.NondominatedPopulation;
@@ -566,8 +564,7 @@ public class Solve extends CommandLineUtility {
 						properties,
 						problem);
 
-				try (ResultFileWriter writer = new ResultFileWriter(problem, file,
-						ResultFileWriterSettings.noAppend())) {
+				try (ResultFileWriter writer = ResultFileWriter.overwrite(problem, file)) {
 					algorithm = new RuntimeCollector(algorithm, runtimeFrequency, writer);
 					
 					while (!algorithm.isTerminated() && (algorithm.getNumberOfEvaluations() < maxEvaluations)) {
