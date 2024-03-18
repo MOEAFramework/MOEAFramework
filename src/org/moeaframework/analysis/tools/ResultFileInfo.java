@@ -26,28 +26,8 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.util.CommandLineUtility;
 
 /**
- * Command line utility for counting the number of entries in a result file.
- * This is primarily used to ensure a call to {@link Evaluator} completed
- * successfully and generated the correct number of entries in the result file.
- * <p>
- * Usage: {@code java -cp "..." org.moeaframework.analysis.tools.ResultFileInfo <options> <files>}
- * 
- * <table>
- *   <caption style="text-align: left">Arguments:</caption>
- *   <tr>
- *     <td>{@code -b, --problem}</td>
- *     <td>The name of the problem.  This name should reference one of the problems recognized by the MOEA
- *         Framework.</td>
- *   </tr>
- *   <tr>
- *     <td>{@code -d, --dimension}</td>
- *     <td>The number of objectives (use instead of -b).</td>
- *   </tr>
- *   <tr>
- *     <td>{@code -o, --output}</td>
- *     <td>The output file where the extract data will be saved.</td>
- *   </tr>
- * </table>
+ * Command line utility for counting the number of entries in a result file.  This is primarily used to ensure a call
+ * to {@link Evaluator} completed successfully and generated the correct number of entries in the result file.
  */
 public class ResultFileInfo extends CommandLineUtility {
 	

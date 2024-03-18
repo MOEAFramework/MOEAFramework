@@ -278,18 +278,8 @@ approximation sets.  The following options are available:
 ### Extract Data
 
 Extracts any metadata or evaluates performance metrics for the entries in the result file.  The names of the properties
-to extract are given as additional arguments.  To evaluate performance metrics, include one or more of the following:
-
-* `+hypervolume` for Hypervolume
-* `+generational` for Generational Distance
-* `+inverted` for Inverted Generational Distance
-* `+epsilon` for Additive Epsilon Indicator
-* `+error` for Maximum Pareto Front Error
-* `+spacing` for Spacing
-* `+contribution` for Contribution
-* `+R1` for R1-Indicator
-* `+R2` for R2-Indicator
-* `+R3` for R3-Indicator
+to extract are given as additional arguments.  To evaluate performance metrics, simply specify the name of the
+indicator, such as `Hypervolume` or `GenerationalDistance`.
 
 <!-- output:src/org/moeaframework/analysis/tools/ExtractData.java [:-2] {help} -->
 

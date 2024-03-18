@@ -35,44 +35,6 @@ import org.moeaframework.util.CommandLineUtility;
 
 /**
  * Command line utility for evaluating the approximation sets stored in a result file and computing its metric file.
- * <p>
- * Usage: {@code java -classpath "lib/*" org.moeaframework.analysis.tools.ResultFileEvaluator <options>}
- * 
- * <table>
- *   <caption style="text-align: left">Arguments:</caption>
- *   <tr>
- *     <td>{@code -b, --problem}</td>
- *     <td>The name of the problem.  This name should reference one of the problems recognized by the MOEA
- *         Framework.</td>
- *   </tr>
- *   <tr>
- *     <td>{@code -d, --dimension}</td>
- *     <td>The number of objectives (use instead of -b).</td>
- *   </tr>
- *   <tr>
- *     <td>{@code -i, --input}</td>
- *     <td>The result file containing the input data.</td>
- *   </tr>
- *   <tr>
- *     <td>{@code -o, --output}</td>
- *     <td>The output file where the extract data will be saved.</td>
- *   </tr>
- *   <tr>
- *     <td>{@code -e, --epsilon}</td>
- *     <td>The epsilon values for limiting the size of the results.  This epsilon value is also used for any algorithms
- *         that include an epsilon parameter.</td>
- *   </tr>
- *   <tr>
- *     <td>{@code -r, --reference}</td>
- *     <td>Location of the reference file used when computing the performance metrics (required if -m is set).</td>
- *   </tr>
- *   <tr>
- *     <td>{@code -f, --force}</td>
- *     <td>This command performs some sanity checks to ensure the data is consistent, such as checking the file
- *         modification dates.  If a consistency error is reported, use this option to continue processing even
- *         though the data may be inconsistent.</td>
- *   </tr>
- * </table>
  */
 public class ResultFileEvaluator extends CommandLineUtility {
 	

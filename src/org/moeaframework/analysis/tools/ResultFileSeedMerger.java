@@ -38,30 +38,6 @@ import org.moeaframework.util.CommandLineUtility;
  * if {@link Evaluator} was run with 25 different seeds and 100 different parameterizations, then each of the 25
  * output files (from each seed) will contain 100 records.  This command produces a single file with 100 records, where
  * each record is produced by combining the approximation sets for that record across all seeds.
- * <p>
- * Usage: {@code java -classpath "lib/*" org.moeaframework.analysis.tools.ResultFileSeedMerger <options> <files>}
- * 
- * <table>
- *   <caption style="text-align: left">Arguments:</caption>
- *   <tr>
- *     <td>{@code -b, --problem}</td>
- *     <td>The name of the problem.  This name should reference one of the problems recognized by the MOEA
- *         Framework.</td>
- *   </tr>
- *   <tr>
- *     <td>{@code -d, --dimension}</td>
- *     <td>The number of objectives (use instead of -b).</td>
- *   </tr>
- *   <tr>
- *     <td>{@code -o, --output}</td>
- *     <td>The output file where the extract data will be saved.</td>
- *   </tr>
- *   <tr>
- *     <td>{@code -e, --epsilon}</td>
- *     <td>The epsilon values for limiting the size of the results.  This epsilon value is also used for any algorithms
- *         that include an epsilon parameter.</td>
- *   </tr>
- * </table>
  */
 public class ResultFileSeedMerger extends CommandLineUtility {
 

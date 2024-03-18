@@ -115,32 +115,26 @@ public class ExtractDataTest {
 			"--problem", "DTLZ2_2",
 			"--input", input.getPath(),
 			"--output", output.getPath(),
-			"+ge", "+hyp", "+inv", "+err", "+spa", "+eps" });
+			"GenerationalDistance", "Hypervolume", "Spacing" });
 		
 		Indicators indicators = Indicators.standard(problem, referenceSet);
 		
 		try (BufferedReader reader = new BufferedReader(new FileReader(output));
 				ResultFileReader resultReader = new ResultFileReader(problem, input)) {
-			Assert.assertEquals("#+ge +hyp +inv +err +spa +eps", reader.readLine());
+			Assert.assertEquals("#GenerationalDistance Hypervolume Spacing", reader.readLine());
 				
 			NondominatedPopulation population = resultReader.next().getPopulation();
 			IndicatorValues values = indicators.apply(population);
 			Assert.assertEquals(values.getGenerationalDistance() + " " + 
 					values.getHypervolume() + " " +
-					values.getInvertedGenerationalDistance() + " " +
-					values.getMaximumParetoFrontError() + " " + 
-					values.getSpacing() + " " + 
-					values.getAdditiveEpsilonIndicator(), 
+					values.getSpacing(), 
 					reader.readLine());
 				
 			population = resultReader.next().getPopulation();
 			values = indicators.apply(population);
 			Assert.assertEquals(values.getGenerationalDistance() + " " + 
 					values.getHypervolume() + " " +
-					values.getInvertedGenerationalDistance() + " " +
-					values.getMaximumParetoFrontError() + " " + 
-					values.getSpacing() + " " + 
-					values.getAdditiveEpsilonIndicator(), 
+					values.getSpacing(), 
 					reader.readLine());
 				
 			Assert.assertNull(reader.readLine());
@@ -161,13 +155,13 @@ public class ExtractDataTest {
 			"--input", input.getPath(),
 			"--output", output.getPath(),
 			"--epsilon", Double.toString(epsilon),
-			"+contribution" });
+			"Contribution" });
 
 		Contribution contribution = new Contribution(referenceSet, epsilon);
 		
 		try (BufferedReader reader = new BufferedReader(new FileReader(output));
 				ResultFileReader resultReader = new ResultFileReader(problem, input)) {
-			Assert.assertEquals("#+contribution", reader.readLine());
+			Assert.assertEquals("#Contribution", reader.readLine());
 				
 			NondominatedPopulation population = resultReader.next().getPopulation();
 			Assert.assertEquals("" + contribution.evaluate(population), reader.readLine());
@@ -191,13 +185,13 @@ public class ExtractDataTest {
 			"--reference", new File("./pf/DTLZ2.2D.pf").getAbsolutePath(),
 			"--input", input.getPath(),
 			"--output", output.getPath(),
-			"+contribution" });
+			"Contribution" });
 		
 		Contribution contribution = new Contribution(referenceSet);
 		
 		try (BufferedReader reader = new BufferedReader(new FileReader(output));
 				ResultFileReader resultReader = new ResultFileReader(problem, input)) {
-			Assert.assertEquals("#+contribution", reader.readLine());
+			Assert.assertEquals("#Contribution", reader.readLine());
 				
 			NondominatedPopulation population = resultReader.next().getPopulation();
 			Assert.assertEquals("" + contribution.evaluate(population), reader.readLine());

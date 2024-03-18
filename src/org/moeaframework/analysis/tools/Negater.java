@@ -34,24 +34,6 @@ import org.moeaframework.util.TypedProperties;
  * Command line utility for negating objective values in result files.  As the MOEA Framework only operates on
  * minimization objectives, maximization objectives must be negated prior to their use.  This utility can be used to
  * either apply or revert any negation.
- * <p>
- * This utility modifies the file in place.  Avoid killing the process as doing so may leave the file(s) in a corrupted
- * state.
- * <p>
- * Usage: {@code java -classpath "lib/*" org.moeaframework.analysis.tools.Negater <options> <files>}
- * 
- * <table>
- *   <caption style="text-align: left">Arguments:</caption>
- *   <tr>
- *     <td>{@code -d, --direction}</td>
- *     <td>The optimization direction (required).  A comma-separated list with 1 if the objective should be negated
- *         (maximized) and 0 otherwise (e.g., {@code -d 1,0,1} to negate the first and third objective).</td>
- *   </tr>
- *   <tr>
- *     <td>{@code <files>}</td>
- *     <td>The files to be negated.</td>
- *   </tr>
- * </table>
  */
 public class Negater extends CommandLineUtility {
     

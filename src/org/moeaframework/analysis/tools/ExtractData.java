@@ -25,82 +25,16 @@ import org.moeaframework.analysis.io.ResultEntry;
 import org.moeaframework.analysis.io.ResultFileReader;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
-import org.moeaframework.core.indicator.AdditiveEpsilonIndicator;
-import org.moeaframework.core.indicator.Contribution;
-import org.moeaframework.core.indicator.GenerationalDistance;
-import org.moeaframework.core.indicator.Hypervolume;
 import org.moeaframework.core.indicator.Indicators;
 import org.moeaframework.core.indicator.Indicators.IndicatorValues;
-import org.moeaframework.core.indicator.InvertedGenerationalDistance;
-import org.moeaframework.core.indicator.MaximumParetoFrontError;
-import org.moeaframework.core.indicator.R1Indicator;
-import org.moeaframework.core.indicator.R2Indicator;
-import org.moeaframework.core.indicator.R3Indicator;
-import org.moeaframework.core.indicator.Spacing;
 import org.moeaframework.util.CommandLineUtility;
 import org.moeaframework.util.OptionCompleter;
 import org.moeaframework.util.TypedProperties;
 
 /**
  * Command line utility for extracting data from a result file.  The data that can be extracted includes any properties
- * by providing its full name, or any of the following metrics if given the designated {@code +option}.  The available
- * options include:
- * <ul>
- *   <li>{@code +hypervolume} for {@link Hypervolume}
- *   <li>{@code +generational} for {@link GenerationalDistance}
- *   <li>{@code +inverted} for {@link InvertedGenerationalDistance}
- *   <li>{@code +epsilon} for {@link AdditiveEpsilonIndicator}
- *   <li>{@code +error} for {@link MaximumParetoFrontError}
- *   <li>{@code +spacing} for {@link Spacing}
- *   <li>{@code +contribution} for {@link Contribution}
- *   <li>{@code +R1} for {@link R1Indicator}
- *   <li>{@code +R2} for {@link R2Indicator}
- *   <li>{@code +R3} for {@link R3Indicator}
- * </ul>
- * <p>
- * Usage: {@code java -classpath "lib/*" org.moeaframework.analysis.tools.ExtractData <options> <fields>}
- * 
- * <table>
- *   <caption style="text-align: left">Arguments:</caption>
- *   <tr>
- *     <td>{@code -b, --problem}</td>
- *     <td>The name of the problem.  This name should reference one of the problems recognized by the MOEA
- *         Framework.</td>
- *   </tr>
- *   <tr>
- *     <td>{@code -d, --dimension}</td>
- *     <td>The number of objectives (use instead of -b).</td>
- *   </tr>
- *   <tr>
- *     <td>{@code -i, --input}</td>
- *     <td>The result file containing the input data.</td>
- *   </tr>
- *   <tr>
- *     <td>{@code -o, --output}</td>
- *     <td>The output file where the extract data will be saved.</td>
- *   </tr>
- *   <tr>
- *     <td>{@code -s, --separator}</td>
- *     <td>The character used to separate entries in the output file.</td>
- *   </tr>
- *   <tr>
- *     <td>{@code -e, --epsilon}</td>
- *     <td>The epsilon values for limiting the size of the results.  This epsilon value is also used for any algorithms
- *         that include an epsilon parameter.</td>
- *   </tr>
- *   <tr>
- *     <td>{@code -r, --reference}</td>
- *     <td>Location of the reference file used when computing the performance metrics (required if -m is set).</td>
- *   </tr>
- *   <tr>
- *     <td>{@code -n, --noheader}</td>
- *     <td>Do not include a header line indicating the data stored in each column.</td>
- *   </tr>
- *   <tr>
- *     <td>{@code <fields>}</td>
- *     <td>The names of the fields to extract from the data, or one of the {@code +options} listed above.</td>
- *   </tr>
- * </table>
+ * by providing its full name, or any of the following metrics if given the name of the indicator, such as
+ * {@code Hypervolume} or {@code GenerationalDistance}.
  */
 public class ExtractData extends CommandLineUtility {
 
@@ -188,11 +122,17 @@ public class ExtractData extends CommandLineUtility {
 
 					if (properties.contains(fields[i])) {
 						output.print(properties.getString(fields[i]));
-					} else if (fields[i].startsWith("+")) {
-						output.print(getValue(values, fields[i].substring(1)));
-					} else {
-						throw new IllegalArgumentException("missing field '" + fields[i] + "'");
+						continue;
 					}
+					
+					double value = getValue(values, fields[i]);
+					
+					if (!Double.isNaN(value)) {
+						output.print(value);
+						continue;
+					}
+					
+					throw new IllegalArgumentException("missing field '" + fields[i] + "'");
 				}
 
 				output.println();
@@ -203,70 +143,76 @@ public class ExtractData extends CommandLineUtility {
 	private Indicators getIndicators(Problem problem, NondominatedPopulation referenceSet, String[] fields) {
 		Indicators indicators = Indicators.of(problem, referenceSet);
 		
-		OptionCompleter completer = new OptionCompleter("hypervolume", "generational", "inverted", "epsilon",
-				"error", "spacing", "contribution", "R1", "R2", "R3");
+		OptionCompleter completer = new OptionCompleter("Hypervolume", "GenerationalDistance",
+				"InvertedGenerationalDistance", "AdditiveEpsilonIndicator", "MaximumParetoFrontError", "Spacing",
+				"Contribution", "R1Indicator", "R2Indicator", "R3Indicator");
 		
 		for (String field : fields) {
-			if (field.startsWith("+")) {
-				String option = completer.lookup(field.substring(1));
-				
-				if (option.equals("hypervolume")) {
-					indicators.includeHypervolume();
-				} else if (option.equals("generational")) {
-					indicators.includeGenerationalDistance();
-				} else if (option.equals("inverted")) {
-					indicators.includeInvertedGenerationalDistance();
-				} else if (option.equals("epsilon")) {
-					indicators.includeAdditiveEpsilonIndicator();
-				} else if (option.equals("error")) {
-					indicators.includeMaximumParetoFrontError();
-				} else if (option.equals("spacing")) {
-					indicators.includeSpacing();
-				} else if (option.equals("contribution")) {
-					indicators.includeContribution();
-				} else if (option.equals("R1")) {
-					indicators.includeR1();
-				} else if (option.equals("R2")) {
-					indicators.includeR2();
-				} else if (option.equals("R3")) {
-					indicators.includeR3();
-				} else {
-					throw new IllegalArgumentException("Unrecognized argument '" + field + "'");
-				}
+			String option = completer.lookup(field);
+			
+			if (option == null) {
+				continue;
+			}
+
+			if (option.equals("Hypervolume")) {
+				indicators.includeHypervolume();
+			} else if (option.equals("GenerationalDistance")) {
+				indicators.includeGenerationalDistance();
+			} else if (option.equals("InvertedGenerationalDistance")) {
+				indicators.includeInvertedGenerationalDistance();
+			} else if (option.equals("AdditiveEpsilonIndicator")) {
+				indicators.includeAdditiveEpsilonIndicator();
+			} else if (option.equals("MaximumParetoFrontError")) {
+				indicators.includeMaximumParetoFrontError();
+			} else if (option.equals("Spacing")) {
+				indicators.includeSpacing();
+			} else if (option.equals("Contribution")) {
+				indicators.includeContribution();
+			} else if (option.equals("R1Indicator")) {
+				indicators.includeR1();
+			} else if (option.equals("R2Indicator")) {
+				indicators.includeR2();
+			} else if (option.equals("R3Indicator")) {
+				indicators.includeR3();
 			}
 		}
-		
+
 		return indicators;
 	}
 	
 	private double getValue(IndicatorValues values, String indicator) {
-		OptionCompleter completer = new OptionCompleter("hypervolume", "generational", "inverted", "epsilon",
-				"error", "spacing", "contribution", "R1", "R2", "R3");
+		OptionCompleter completer = new OptionCompleter("Hypervolume", "GenerationalDistance",
+				"InvertedGenerationalDistance", "AdditiveEpsilonIndicator", "MaximumParetoFrontError", "Spacing",
+				"Contribution", "R1Indicator", "R2Indicator", "R3Indicator");
 		
 		String option = completer.lookup(indicator);
 		
-		if (option.equals("hypervolume")) {
+		if (option == null) {
+			return Double.NaN;
+		}
+		
+		if (option.equals("Hypervolume")) {
 			return values.getHypervolume();
-		} else if (option.equals("generational")) {
+		} else if (option.equals("GenerationalDistance")) {
 			return values.getGenerationalDistance();
-		} else if (option.equals("inverted")) {
+		} else if (option.equals("InvertedGenerationalDistance")) {
 			return values.getInvertedGenerationalDistance();
-		} else if (option.equals("epsilon")) {
+		} else if (option.equals("AdditiveEpsilonIndicator")) {
 			return values.getAdditiveEpsilonIndicator();
-		} else if (option.equals("error")) {
+		} else if (option.equals("MaximumParetoFrontError")) {
 			return values.getMaximumParetoFrontError();
-		} else if (option.equals("spacing")) {
+		} else if (option.equals("Spacing")) {
 			return values.getSpacing();
-		} else if (option.equals("contribution")) {
+		} else if (option.equals("Contribution")) {
 			return values.getContribution();
-		} else if (option.equals("R1")) {
+		} else if (option.equals("R1Indicator")) {
 			return values.getR1();
-		} else if (option.equals("R2")) {
+		} else if (option.equals("R2Indicator")) {
 			return values.getR2();
-		} else if (option.equals("R3")) {
+		} else if (option.equals("R3Indicator")) {
 			return values.getR3();
 		} else {
-			throw new IllegalArgumentException("Unrecognized argument '" + indicator + "'");
+			return Double.NaN;
 		}
 	}
 	

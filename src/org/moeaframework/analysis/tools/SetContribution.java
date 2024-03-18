@@ -32,25 +32,6 @@ import org.moeaframework.util.format.NumberFormatter;
  * Command line utility for reporting the number of solutions in a set that are contained within a reference set.  The
  * common use-case of this utility is to determine the percent makeup of the individual approximation sets used during
  * the reference set construction.
- * <p>
- * Usage: {@code java -classpath "lib/*" org.moeaframework.analysis.tools.SetContribution <options> <files>}
- * 
- * <table>
- *   <caption style="text-align: left">Arguments:</caption>
- *   <tr>
- *     <td>{@code -e, --epsilon}</td>
- *     <td>The epsilon values for limiting the size of the results.  This epsilon value is also used for any algorithms
- *         that include an epsilon parameter.</td>
- *   </tr>
- *   <tr>
- *     <td>{@code -r, --reference}</td>
- *     <td>Location of the reference file used when computing the performance metrics (required if -m is set).</td>
- *   </tr>
- *   <tr>
- *     <td>{@code <files>}</td>
- *     <td>The files to analyze.</td>
- *   </tr>
- * </table>
  */
 public class SetContribution extends CommandLineUtility {
 	
@@ -72,6 +53,11 @@ public class SetContribution extends CommandLineUtility {
 				.argName("file")
 				.required()
 				.build());
+		options.addOption(Option.builder("o")
+				.longOpt("output")
+				.hasArg()
+				.argName("file")
+				.build());
 
 		OptionUtils.addEpsilonOption(options);
 		
@@ -80,6 +66,7 @@ public class SetContribution extends CommandLineUtility {
 
 	@Override
 	public void run(CommandLine commandLine) throws Exception {
+		NumberFormatter formatter = NumberFormatter.getDefault();
 		NondominatedPopulation referenceSet = new NondominatedPopulation(
 				PopulationIO.readObjectives(new File(commandLine.getOptionValue("reference"))));
 		double[] epsilon = OptionUtils.getEpsilon(commandLine);
@@ -91,13 +78,15 @@ public class SetContribution extends CommandLineUtility {
 			contribution = new Contribution(referenceSet);
 		}
 
-		for (String filename : commandLine.getArgs()) {
-			NondominatedPopulation approximationSet = new NondominatedPopulation(
-					PopulationIO.readObjectives(new File(filename)));
-
-			System.out.print(filename);
-			System.out.print(' ');
-			System.out.println(NumberFormatter.getDefault().format(contribution.evaluate(approximationSet)));
+		try (OutputLogger output = new OutputLogger(commandLine.getOptionValue("output"))) {
+			for (String filename : commandLine.getArgs()) {
+				NondominatedPopulation approximationSet = new NondominatedPopulation(
+						PopulationIO.readObjectives(new File(filename)));
+	
+				System.out.print(filename);
+				System.out.print(' ');
+				System.out.println(formatter.format(contribution.evaluate(approximationSet)));
+			}
 		}
 	}
 	

@@ -20,6 +20,7 @@ package org.moeaframework.analysis.tools;
 import java.io.File;
 
 import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.NondominatedPopulation;
@@ -30,18 +31,8 @@ import org.moeaframework.util.CommandLineUtility;
 import org.moeaframework.util.format.NumberFormatter;
 
 /**
- * Command line utility for calculating the hypervolume of approximation sets.
- * <p>
- * Usage: {@code java -classpath "lib/*" org.moeaframework.analysis.tools.SetHypervolume <options> <files>}
- * 
- * <table>
- *   <caption style="text-align: left">Arguments:</caption>
- *   <tr>
- *     <td>{@code -e, --epsilon}</td>
- *     <td>The epsilon values for limiting the size of the results.  This epsilon value is also used for any algorithms
- *         that include an epsilon parameter.</td>
- *   </tr>
- * </table>
+ * Command line utility for calculating the hypervolume of approximation sets.  A reference set can be given if all
+ * approximation sets belong to the same problem.
  */
 public class SetHypervolume extends CommandLineUtility {
 	
@@ -55,25 +46,55 @@ public class SetHypervolume extends CommandLineUtility {
 	@Override
 	public Options getOptions() {
 		Options options = super.getOptions();
+		
+		options.addOption(Option.builder("r")
+				.longOpt("reference")
+				.hasArg()
+				.argName("file")
+				.build());
+		options.addOption(Option.builder("o")
+				.longOpt("output")
+				.hasArg()
+				.argName("file")
+				.build());
+		
 		OptionUtils.addEpsilonOption(options);
+		
 		return options;
 	}
 
 	@Override
 	public void run(CommandLine commandLine) throws Exception {
+		NumberFormatter formatter = NumberFormatter.getDefault();
 		double[] epsilon = OptionUtils.getEpsilon(commandLine);
 		
-		for (String filename : commandLine.getArgs()) {
-			NondominatedPopulation set = new NondominatedPopulation(PopulationIO.readObjectives(new File(filename)));
+		Hypervolume hypervolume = null;
+		
+		if (commandLine.hasOption("reference")) {
+			NondominatedPopulation referenceSet = new NondominatedPopulation(
+					PopulationIO.readObjectives(new File(commandLine.getOptionValue("reference"))));
 			
-			if (epsilon != null) {
-				set = new EpsilonBoxDominanceArchive(epsilon, set);
+			hypervolume = new Hypervolume(new ProblemStub(referenceSet.get(0).getNumberOfObjectives()), referenceSet);
+		}
+		
+		try (OutputLogger output = new OutputLogger(commandLine.getOptionValue("output"))) {
+			for (String filename : commandLine.getArgs()) {
+				NondominatedPopulation set = new NondominatedPopulation(PopulationIO.readObjectives(new File(filename)));
+				
+				if (epsilon != null) {
+					set = new EpsilonBoxDominanceArchive(epsilon, set);
+				}
+				
+				output.print(filename);
+				output.print(' ');
+				
+				if (hypervolume == null) {
+					output.println(formatter.format(
+							new Hypervolume(new ProblemStub(set.get(0).getNumberOfObjectives()), set).evaluate(set)));
+				} else {
+					output.println(formatter.format(hypervolume.evaluate(set)));
+				}
 			}
-			
-			System.out.print(filename);
-			System.out.print(' ');
-			System.out.println(NumberFormatter.getDefault().format(new Hypervolume(
-					new ProblemStub(set.get(0).getNumberOfObjectives()), set).evaluate(set)));
 		}
 	}
 	

@@ -46,57 +46,6 @@ import org.moeaframework.util.TypedProperties;
 /**
  * Command line utility for evaluating an algorithm using many parameterizations.  Unlike {@link Evaluator}, this class
  * outputs runtime data.  Each run is stored in a separate file.
- * <p>
- * Usage: {@code java -classpath "lib/*" org.moeaframework.analysis.tools.DetailedEvaluator <options>}
- * 
- * <table>
- *   <caption style="text-align: left">Arguments:</caption>
- *   <tr>
- *     <td>{@code -p, --parameterFile}</td>
- *     <td>Location of the parameter configuration file (required)</td>
- *   </tr>
- *   <tr>
- *     <td>{@code -i, --input}</td>
- *     <td>Location of the parameter sample file (required)</td>
- *   </tr>
- *   <tr>
- *     <td>{@code -o, --output}</td>
- *     <td>Expression defining where the output files are saved.  The path should include {@code %d}, which is replaced
- *         by the index of the run.</td>
- *   </tr>
- *   <tr>
- *     <td>{@code -b, --problem}</td>
- *     <td>The name of the problem.  This name should reference one of the problems recognized by the MOEA
- *         Framework.</td>
- *   </tr>
- *   <tr>
- *     <td>{@code -a, --algorithm}</td>
- *     <td>The name of the algorithm.  This name should reference one of the algorithms recognized by the MOEA
- *         Framework.</td>
- *   </tr>
- *   <tr>
- *     <td>{@code -f, --frequency}</td>
- *     <td>The frequency, in NFE, that records are saved to the result file.</td>
- *   </tr>
- *   <tr>
- *     <td>{@code -x, --properties}</td>
- *     <td>Semicolon-separated list of additional parameters for the algorithm (e.g.,
- *         {@code -x maxEvaluations=10000;populationSize=100}.</td>
- *   </tr>
- *   <tr>
- *     <td>{@code -s, --seed}</td>
- *     <td>The random number seed used for each run.</td>
- *   </tr>
- *   <tr>
- *     <td>{@code -e, --epsilon}</td>
- *     <td>The epsilon values for limiting the size of the results.  This epsilon value is also used for any algorithms
- *         that include an epsilon parameter.</td>
- *   </tr>
- *   <tr>
- *     <td>{@code -n, --novariables}</td>
- *     <td>To save on space, do not save decision variables in the results.</td>
- *   </tr>
- * </table>
  */
 public class RuntimeEvaluator extends CommandLineUtility {
 

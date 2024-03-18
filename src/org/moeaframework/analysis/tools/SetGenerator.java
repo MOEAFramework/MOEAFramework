@@ -33,36 +33,8 @@ import org.moeaframework.util.CommandLineUtility;
 
 /**
  * Command line utility for generating reference sets for a given problem.  The reference set is created by randomly
- * sampling points and building a non-dominated set.  Only problems that implement the {@code AnalyticalProblem}
+ * sampling points and building a non-dominated set.  Only problems that implement the {@link AnalyticalProblem}
  * interface can be used.
- * <p>
- * Usage: {@code java -classpath "lib/*" org.moeaframework.analysis.tools.SetGenerator <options>}
- * 
- * <table>
- *   <caption style="text-align: left">Arguments:</caption>
- *   <tr>
- *     <td>{@code -b, --problem}</td>
- *     <td>The name of the problem (required).  This name should reference one of the problems recognized by the MOEA
- *         Framework.</td>
- *   </tr>
- *   <tr>
- *     <td>{@code -n, --numberOfPoints}</td>
- *     <td>The number of solutions to randomly sample (required).</td>
- *   </tr>
- *   <tr>
- *     <td>{@code -s, --seed}</td>
- *     <td>The random number generator seed.</td>
- *   </tr>
- *   <tr>
- *     <td>{@code -o, --output}</td>
- *     <td>The output file where the reference set is saved.</td>
- *   </tr>
- *   <tr>
- *     <td>{@code -e, --epsilon}</td>
- *     <td>The epsilon values for limiting the size of the results.  This epsilon value is also used for any algorithms
- *         that include an epsilon parameter.</td>
- *   </tr>
- * </table>
  */
 public class SetGenerator extends CommandLineUtility {
 

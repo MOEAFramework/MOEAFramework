@@ -33,34 +33,6 @@ import org.moeaframework.util.OptionCompleter;
  /**
  * Command line utility for computing statistics across multiple data files.  The data files should only contain
  * numeric values, and each file must contain the same number of rows and columns.
- * <p>
- * Usage: {@code java -classpath "lib/*" org.moeaframework.analysis.tools.SimpleStatistics <options> <files>}
- * 
- * <table>
- *   <caption style="text-align: left">Arguments:</caption>
- *   <tr>
- *     <td>{@code -m, --mode}</td>
- *     <td>The mode of operation, such as {@code minimum}, {@code maximum}, {@code average}, {@code stdev}, or
- *         {@code count} (required).</td>
- *   </tr>
- *   <tr>
- *     <td>{@code -o, --output}</td>
- *     <td>Location where the output is saved.  If not given, the output is printed to the console.</td>
- *   </tr>
- *   <tr>
- *     <td>{@code -i, --ignore}</td>
- *     <td>Ignore infinite or NaN values.</td>
- *   </tr>
- *   <tr>
- *     <td>{@code -x, --maximum}</td>
- *     <td>The value used to replace any infinity values.  If infinity values are not replaced, some calculations,
- *         such as the average, can be skewed.</td>
- *   </tr>
- *   <tr>
- *     <td>{@code <files>}</td>
- *     <td>The files to analyze.</td>
- *   </tr>
- * </table>
  */
 public class SimpleStatistics extends CommandLineUtility {
 	
