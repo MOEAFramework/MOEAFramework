@@ -21,14 +21,13 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.moeaframework.util.CommandLineUtility;
 import org.moeaframework.util.TypedProperties;
+import org.moeaframework.util.io.FileUtils;
 
 /**
  * Command line utility for negating objective values in result files.  As the MOEA Framework only operates on
@@ -63,47 +62,23 @@ public class Negater extends CommandLineUtility {
         TypedProperties properties = TypedProperties.withProperty("direction", commandLine.getOptionValue("direction"));
         int[] directions = properties.getIntArray("direction");
 
-        outer: for (String filename : commandLine.getArgs()) {
-            List<String> lines = new ArrayList<String>();
-            String entry = null;
-
-            // read the entire file
-            try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
-                while ((entry = reader.readLine()) != null) {
-                    lines.add(entry);
-                }
-            }
-            
-            // validate the file to detect any errors prior to overwriting
-            for (String line : lines) {
-                try {
-                    if (!line.startsWith("#") && !line.startsWith("//")) {
-                        String[] tokens = line.split("\\s+");
-                        
-                        if (tokens.length != directions.length) {
-                            System.err.println("unable to negate values in " + filename + ", incorrect number of values in a row");
-                            continue outer;
-                        }
-                        
-                        for (int j = 0; j < tokens.length; j++) {
-                            if (directions[j] != 0) {
-                                Double.parseDouble(tokens[j]);
-                            }
-                        }
-                    }
-                } catch (NumberFormatException e) {
-                    System.err.println("unable to negate values in " + filename + ", unable to parse number");
-                    continue outer;
-                }
-            }
-
-            // overwrite the file
-            try (PrintStream writer = new PrintStream(new File(filename))) {
-                for (String line : lines) {
+        outer: for (String arg : commandLine.getArgs()) {
+        	File tempFile = File.createTempFile("temp", null);
+        	
+        	try (BufferedReader reader = new BufferedReader(new FileReader(arg));
+        			PrintStream writer = new PrintStream(tempFile)) {
+        		String line = null;
+        		
+        		while ((line = reader.readLine()) != null) {
                     if (line.startsWith("#") || line.startsWith("//")) {
                         writer.println(line);
                     } else {
                         String[] tokens = line.split("\\s+");
+                        
+                        if (tokens.length != directions.length) {
+                            System.err.println("unable to negate values in " + arg + ", incorrect number of values in a row");
+                            continue outer;
+                        }
 
                         for (int j = 0; j < tokens.length; j++) {
                             if (j > 0) {
@@ -121,7 +96,12 @@ public class Negater extends CommandLineUtility {
                         writer.println();
                     }
                 }
+        	} catch (NumberFormatException e) {
+                System.err.println("unable to negate values in " + arg + ", unable to parse number");
+                continue outer;
             }
+        	
+        	FileUtils.move(tempFile, new File(arg));
         }
     }
     
