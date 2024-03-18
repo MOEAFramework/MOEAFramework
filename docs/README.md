@@ -16,7 +16,6 @@
   * [Distributing on Remote Machines](parallelization.md#distributing-on-remote-machines)
   * [Island-Model Parallelization](parallelization.md#island-model-parallelization)
 * [Single-Objective Optimization](single.md)
-* [Command Line Tools](tools.md)
 * [Other Topics](misc.md)
   * [Checkpoints](misc.md#checkpoints)
   * [Saving and Formatting Results](misc.md#saving-and-formatting-results)
@@ -28,6 +27,7 @@
 * [List of Algorithms](algorithms.md)
 * [List of Variation Operators](operators.md)
 * [List of Test Problems](problems.md)
+* [Command Line Tools](tools.md)
 * [Extensions (JMetal-Plugin, Generalized Decomposition, Hypervolume)](extensions.md)
 
 ## For Developers
