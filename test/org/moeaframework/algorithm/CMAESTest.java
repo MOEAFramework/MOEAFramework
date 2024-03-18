@@ -33,28 +33,33 @@ public class CMAESTest {
 	
 	// TODO: extend with better tests
 	
+	public static class RosenbrockProblem extends AbstractProblem {
+		
+		public RosenbrockProblem() {
+			super(2, 1);
+		}
+
+		@Override
+		public void evaluate(Solution solution) {
+			double x = EncodingUtils.getReal(solution.getVariable(0));
+			double y = EncodingUtils.getReal(solution.getVariable(1));
+			
+			solution.setObjective(0, 100*(y - x*x)*(y - x*x) + (1 - x)*(1 - x));
+		}
+
+		@Override
+		public Solution newSolution() {
+			Solution solution = new Solution(2, 1);
+			solution.setVariable(0, EncodingUtils.newReal(-10, 10));
+			solution.setVariable(1, EncodingUtils.newReal(-10, 10));
+			return solution;
+		}
+
+	}
+	
 	@Test
 	public void testSingleObjective() {
-		// Rosenbrock problem
-		Problem problem = new AbstractProblem(2, 1) {
-
-			@Override
-			public void evaluate(Solution solution) {
-				double x = EncodingUtils.getReal(solution.getVariable(0));
-				double y = EncodingUtils.getReal(solution.getVariable(1));
-				
-				solution.setObjective(0, 100*(y - x*x)*(y - x*x) + (1 - x)*(1 - x));
-			}
-
-			@Override
-			public Solution newSolution() {
-				Solution solution = new Solution(2, 1);
-				solution.setVariable(0, EncodingUtils.newReal(-10, 10));
-				solution.setVariable(1, EncodingUtils.newReal(-10, 10));
-				return solution;
-			}
-
-		};
+		Problem problem = new RosenbrockProblem();
 		
 		CMAES algorithm = new CMAES(problem);
 
