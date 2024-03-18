@@ -113,7 +113,7 @@ public class SymbolicRegressionGUI extends JFrame implements WindowListener {
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		addWindowListener(this);
-		setIconImages(Settings.getIconImages());
+		setIconImages(Settings.getIcon().getResolutionVariants());
 	}
 	
 	/**

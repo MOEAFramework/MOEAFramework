@@ -111,7 +111,7 @@ public class TerminalGUI extends JFrame {
 		setSize(600, 400);
 		setLocationRelativeTo(null);
 		
-		setIconImages(Settings.getIconImages());
+		setIconImages(Settings.getIcon().getResolutionVariants());
 	}
 	
 	/**

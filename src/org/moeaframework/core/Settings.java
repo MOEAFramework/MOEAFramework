@@ -17,16 +17,15 @@
  */
 package org.moeaframework.core;
 
-import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.image.BaseMultiResolutionImage;
+import java.awt.image.MultiResolutionImage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
 
 import org.apache.commons.lang3.StringUtils;
@@ -42,7 +41,7 @@ import org.moeaframework.util.TypedProperties;
  * Global settings used by this framework.
  * <p>
  * The settings are loaded from the system properties, set when starting Java using
- * {@code java -Dorg.moeaframework.core.foo=bar ...}, or the properties file.
+ * {@code java -Dorg.moeaframework.core.foo=bar ...} or the properties file.
  * <p>
  * The default properties file is {@value DEFAULT_CONFIGURATION_FILE} and should be located in the working directory
  * where Java is started.  This can be overridden by setting {@code org.moeaframework.configuration=<file>}.
@@ -460,23 +459,21 @@ public class Settings {
 	}
 	
 	/**
-	 * Returns the MOEA Framework icons of various sizes.
+	 * Returns the MOEA Framework icon, supporting a varient of sizes.
 	 * 
-	 * @return the MOEA Framework icons
+	 * @return the MOEA Framework icon
 	 */
-	public static List<Image> getIconImages() {
+	public static MultiResolutionImage getIcon() {
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
-		List<Image> icons = new ArrayList<Image>();
 		
-		icons.add(toolkit.getImage(Settings.class.getResource("logo16.png")));
-		icons.add(toolkit.getImage(Settings.class.getResource("logo24.png")));
-		icons.add(toolkit.getImage(Settings.class.getResource("logo32.png")));
-		icons.add(toolkit.getImage(Settings.class.getResource("logo48.png")));
-		icons.add(toolkit.getImage(Settings.class.getResource("logo64.png")));
-		icons.add(toolkit.getImage(Settings.class.getResource("logo128.png")));
-		icons.add(toolkit.getImage(Settings.class.getResource("logo256.png")));
-
-		return icons;
+		return new BaseMultiResolutionImage(
+				toolkit.getImage(Settings.class.getResource("logo16.png")),
+				toolkit.getImage(Settings.class.getResource("logo24.png")),
+				toolkit.getImage(Settings.class.getResource("logo32.png")),
+				toolkit.getImage(Settings.class.getResource("logo48.png")),
+				toolkit.getImage(Settings.class.getResource("logo64.png")),
+				toolkit.getImage(Settings.class.getResource("logo128.png")),
+				toolkit.getImage(Settings.class.getResource("logo256.png")));
 	}
 	
 	/**

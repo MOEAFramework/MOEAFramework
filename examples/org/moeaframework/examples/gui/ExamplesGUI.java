@@ -183,7 +183,7 @@ public class ExamplesGUI extends JFrame {
 		getContentPane().setLayout(new BorderLayout());
 		getContentPane().add(contentPane, BorderLayout.CENTER);
 		setSize(840, 600);
-		setIconImages(Settings.getIconImages());
+		setIconImages(Settings.getIcon().getResolutionVariants());
 	}
 	
 	/**

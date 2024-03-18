@@ -81,6 +81,7 @@ import org.moeaframework.analysis.collector.Observations;
 import org.moeaframework.analysis.diagnostics.PaintHelper;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Population;
+import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 
 /**
@@ -1167,6 +1168,7 @@ public class Plot {
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.setTitle("MOEA Framework Plot");
+		frame.setIconImages(Settings.getIcon().getResolutionVariants());
 		frame.setVisible(true);
 		
 		return frame;
@@ -1201,6 +1203,7 @@ public class Plot {
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.setTitle("MOEA Framework Plot");
 		frame.setModalityType(ModalityType.APPLICATION_MODAL);
+		frame.setIconImages(Settings.getIcon().getResolutionVariants());
 		frame.setVisible(true);
 		
 		return frame;

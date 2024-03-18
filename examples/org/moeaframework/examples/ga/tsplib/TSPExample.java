@@ -170,7 +170,7 @@ public class TSPExample {
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.setSize(500, 400);
 		frame.setLocationRelativeTo(null);
-		frame.setIconImages(Settings.getIconImages());
+		frame.setIconImages(Settings.getIcon().getResolutionVariants());
 		frame.setVisible(true);
 		
 		// create the optimization problem and evolutionary algorithm

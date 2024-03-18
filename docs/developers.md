@@ -10,8 +10,8 @@ and merged in a timely manner!
 We recommend using [Eclipse](http://eclipse.org/) when working with the MOEA Framework as all dependencies are included
 in Eclipse.  If you choose to use a different IDE, you might need to install the following dependencies separately:
 
-> **Java 8**, or any newer version, is required to use the MOEA Framework. Today, due to licensing concerns with Oracle,
-> a number of third-party Java distributions are available.  We recommend using either
+> **Java 17**, or any newer version, is required to use the MOEA Framework. Today, due to licensing concerns with
+> Oracle, a number of third-party Java distributions are available.  We recommend using either
 > [Eclipse Temurin](https://adoptium.net/) or [Azul Zulu](https://www.azul.com/downloads/?package=jdk).
 > 
 > **Apache Ant** is used to compile, test, and package distributions of the MOEA Framework.  Apache Ant can be
@@ -53,6 +53,7 @@ These packages and classes should include the `@preview` tag to indicate they ar
 
 Each release of the MOEA Framework targets a specific version of Java:
 
+* `4.x` - Java 17+
 * `3.x` - Java 8+
 * `2.x` - Java 6+ (some features are deprecated in Java 16+ and no longer work)
 

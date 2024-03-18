@@ -52,7 +52,7 @@ public class PlotApproximationSetConvergence {
 		ApproximationSetViewer viewer = new ApproximationSetViewer(
 				algorithm, Arrays.asList(instrumenter.getObservations()), referenceSet);
 		
-		viewer.setIconImages(Settings.getIconImages());
+		viewer.setIconImages(Settings.getIcon().getResolutionVariants());
 		viewer.setVisible(true);	
 	}
 

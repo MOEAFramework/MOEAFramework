@@ -46,7 +46,7 @@ public class LaunchDiagnosticTool extends CommandLineUtility {
 			}
 				
 			DiagnosticTool diagnosticTool = new DiagnosticTool();
-			diagnosticTool.setIconImages(Settings.getIconImages());
+			diagnosticTool.setIconImages(Settings.getIcon().getResolutionVariants());
 			diagnosticTool.setVisible(true);	
 		});
 	}

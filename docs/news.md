@@ -4,6 +4,9 @@ This page documents notable changes introduced in each chronological release of 
 
 ## vNext
 
+  * Bumps minimum supported Java version to 17.  This is a long-term support (LTS) release with an end-of-life of
+    Sept 2029.
+
   * Adds the `Indicators` class to simplify calculating performance indicators, which will eventually
     replace the older `QualityIndicator` class.  See `Example2.java` for a demo.
     
