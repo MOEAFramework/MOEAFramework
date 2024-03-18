@@ -22,7 +22,6 @@ import java.io.File;
 import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.TestUtils;
-import org.moeaframework.analysis.tools.Negater;
 import org.moeaframework.util.io.FileUtils;
 
 /**

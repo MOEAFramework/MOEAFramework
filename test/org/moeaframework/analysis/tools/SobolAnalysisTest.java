@@ -30,7 +30,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.TestUtils;
-import org.moeaframework.analysis.tools.SobolAnalysis;
 import org.moeaframework.util.sequence.Saltelli;
 
 /**

@@ -25,7 +25,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.TestUtils;
 import org.moeaframework.analysis.io.ResultFileReader;
-import org.moeaframework.analysis.tools.ExtractData;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.indicator.Contribution;
