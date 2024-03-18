@@ -133,12 +133,12 @@ algorithm.getResult().display();
 <!-- output:examples/Example1.java [:6] -->
 <pre class="brush: plain; toolbar: false;">
 <![CDATA[
-Var1     Var2     Var3     Var4     Var5     Var6     Var7     Var8     Var9     Var10    Var11    Obj1     Obj2     
--------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- 
-0.000000 0.507443 0.502672 0.512445 0.495386 0.506435 0.503101 0.502002 0.502372 0.504076 0.501044 1.000317 0.000000 
-0.999999 0.494182 0.504375 0.501972 0.499916 0.490770 0.495367 0.494110 0.499109 0.505300 0.503289 0.000002 1.000238 
-0.823936 0.495123 0.504453 0.502181 0.503019 0.489560 0.503451 0.494876 0.468302 0.509226 0.501564 0.273403 0.963248 
-0.845306 0.507390 0.502668 0.502006 0.502936 0.512325 0.495864 0.493941 0.499754 0.503011 0.500400 0.240678 0.970903 
+Var1     Var2     Var3     Var4     Var5     Var6     Var7     Var8     Var9     Var10    Var11    Obj1     Obj2
+-------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- --------
+0.000000 0.507443 0.502672 0.512445 0.495386 0.506435 0.503101 0.502002 0.502372 0.504076 0.501044 1.000317 0.000000
+0.999999 0.494182 0.504375 0.501972 0.499916 0.490770 0.495367 0.494110 0.499109 0.505300 0.503289 0.000002 1.000238
+0.823936 0.495123 0.504453 0.502181 0.503019 0.489560 0.503451 0.494876 0.468302 0.509226 0.501564 0.273403 0.963248
+0.845306 0.507390 0.502668 0.502006 0.502936 0.512325 0.495864 0.493941 0.499754 0.503011 0.500400 0.240678 0.970903
 ]]>
 </pre>
 </div>
@@ -186,18 +186,18 @@ indicators.apply(approximationSet).display();
 <!-- output:examples/Example2.java -->
 <pre class="brush: plain; toolbar: false;">
 <![CDATA[
-Indicator                    Value    
----------------------------- -------- 
-Hypervolume                  0.209259 
-GenerationalDistance         0.000987 
-InvertedGenerationalDistance 0.004388 
-AdditiveEpsilonIndicator     0.008974 
-Spacing                      0.005820 
-MaximumParetoFrontError      0.039554 
-Contribution                 0.000000 
-R1                           0.471058 
-R2                           0.000258 
-R3                           0.000389 
+Indicator                    Value
+---------------------------- --------
+Hypervolume                  0.209259
+GenerationalDistance         0.000987
+InvertedGenerationalDistance 0.004388
+AdditiveEpsilonIndicator     0.008974
+Spacing                      0.005820
+MaximumParetoFrontError      0.039554
+Contribution                 0.000000
+R1                           0.471058
+R2                           0.000258
+R3                           0.000389
 ]]>
 </pre>
 </div>
@@ -296,21 +296,21 @@ analyzer.display();
 <pre class="brush: plain; toolbar: false;">
 <![CDATA[
 eMOEA:
-    Hypervolume: 
+    Hypervolume:
         Min: 0.332785
         Median: 0.465434
         Max: 0.534175
         Count: 50
         Indifferent: []
 NSGAII:
-    Hypervolume: 
+    Hypervolume:
         Min: 0.357952
         Median: 0.506456
         Max: 0.538125
         Count: 50
         Indifferent: [GDE3]
 GDE3:
-    Hypervolume: 
+    Hypervolume:
         Min: 0.442191
         Median: 0.504787
         Max: 0.537992
@@ -371,18 +371,18 @@ instrumenter.getObservations().display();
 <!-- output:examples/Example5.java [:12] -->
 <pre class="brush: plain; toolbar: false;">
 <![CDATA[
-NFE   GenerationalDistance 
------ -------------------- 
-100   0.799030             
-200   0.513917             
-300   0.420843             
-400   0.424941             
-500   0.379473             
-600   0.389628             
-700   0.340794             
-800   0.277609             
-900   0.242039             
-1000  0.214610             
+NFE   GenerationalDistance
+----- --------------------
+100   0.799030
+200   0.513917
+300   0.420843
+400   0.424941
+500   0.379473
+600   0.389628
+700   0.340794
+800   0.277609
+900   0.242039
+1000  0.214610
 ]]>
 </pre>
 </div>

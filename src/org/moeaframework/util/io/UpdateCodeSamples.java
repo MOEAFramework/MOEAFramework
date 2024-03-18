@@ -23,7 +23,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.StringReader;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -424,7 +423,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 	 * @throws IOException if an I/O error occurred
 	 */
 	private List<String> format(String content, FormattingOptions options, FileType fileType) throws IOException {
-		return format(splitIntoLines(content), options, fileType);
+		return format(new ArrayList<String>(content.lines().toList()), options, fileType);
 	}
 	
 	/**
@@ -452,37 +451,12 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		
 		lines = lines.subList(Math.max(0, startingLine - 1), Math.min(lines.size(), endingLine));
 		
-		if (options.stripIndentation()) {
-			// TODO: can use String#stripIndent() after updating to Java 12+
-			boolean stripFirstChar = true;
-			
-			while (stripFirstChar) {
-				char charToRemove = lines.get(0).charAt(0);
-				
-				if (!Character.isWhitespace(charToRemove)) {
-					break;
-				}
-				
-				for (int i = 1; i < lines.size(); i++) {
-					String line = lines.get(i);
-					
-					if (line.length() > 0 && line.charAt(0) != charToRemove) {
-						stripFirstChar = false;
-						break;
-					}
-				}
-				
-				if (stripFirstChar) {
-					for (int i = 0; i < lines.size(); i++) {
-						String line = lines.get(i);
-						lines.set(i, line.length() > 0 ? line.substring(1) : "");
-					}
-				}
-			}
-		}
-		
 		if (options.stripComments()) {
 			lines = options.language.stripComments(lines);
+		}
+		
+		if (options.stripIndentation()) {
+			lines = options.language.stripIndentation(lines);
 		}
 		
 		if (options.replaceTabsWithSpaces()) {
@@ -494,27 +468,6 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		}
 		
 		fileType.wrapInCodeBlock(lines, options);
-		
-		return lines;
-	}
-	
-	/**
-	 * Splits the given string into individual lines.
-	 * 
-	 * @param content the string to split
-	 * @return the lines
-	 * @throws IOException if an I/O error occurred
-	 */
-	private static List<String> splitIntoLines(String content) throws IOException {
-		List<String> lines = new ArrayList<String>();
-		
-		try (BufferedReader reader = new BufferedReader(new StringReader(content))) {
-			String line = null;
-
-			while ((line = reader.readLine()) != null) {
-				lines.add(line);
-			}
-		}
 		
 		return lines;
 	}
@@ -717,12 +670,23 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		 * 
 		 * @param lines the code block
 		 * @return the code block without comments
-		 * @throws IOException if an I/O error occurred
 		 */
-		public List<String> stripComments(List<String> lines) throws IOException {
+		public List<String> stripComments(List<String> lines) {
 			String content = String.join(System.lineSeparator(), lines);
 			content = stripComments(content);
-			return splitIntoLines(content);
+			return new ArrayList<String>(content.lines().toList());
+		}
+		
+		/**
+		 * Removes any leading indentation from the code block.
+		 * 
+		 * @param lines the code block
+		 * @return the code block without indentation
+		 */
+		public List<String> stripIndentation(List<String> lines) {
+			String content = String.join(System.lineSeparator(), lines);
+			content = content.stripIndent();
+			return new ArrayList<String>(content.lines().toList());
 		}
 		
 		/**

@@ -69,7 +69,7 @@ EncodingUtils.setReal(solutionA, new double[] { 0.0, 0.5, 0.5, 0.5, 0.5, 0.5, 0.
 Solution solutionB = problem.newSolution();
 EncodingUtils.setReal(solutionB, new double[] { 1.0, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5 });
 
-NSGAII algorithm = new NSGAII(problem);    
+NSGAII algorithm = new NSGAII(problem);
 algorithm.setInitialization(new InjectedInitialization(problem, solutionA, solutionB));
 algorithm.run(10000);
 

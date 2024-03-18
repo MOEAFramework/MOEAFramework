@@ -90,7 +90,7 @@ public static class RandomWalker extends AbstractEvolutionaryAlgorithm {
         super(problem,
                 Settings.DEFAULT_POPULATION_SIZE,
                 new NondominatedSortingPopulation(),
-                null, 
+                null,
                 new RandomInitialization(problem),
                 OperatorFactory.getInstance().getVariation("pm", problem));
     }

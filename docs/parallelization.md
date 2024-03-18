@@ -84,7 +84,7 @@ Problem problem = new UF1();
 
 PRNG.setRandom(ThreadLocalMersenneTwister.getInstance());
 
-Selection migrationSelection = new TournamentSelection(2, 
+Selection migrationSelection = new TournamentSelection(2,
         new ChainedComparator(
                 new ParetoDominanceComparator(),
                 new CrowdingComparator()));

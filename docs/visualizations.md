@@ -65,8 +65,8 @@ performance of the algorithm (lighter-colored areas indicate better results).
 Problem problem = new DTLZ2(2);
 Hypervolume hypervolume = new Hypervolume(problem, PopulationIO.readReferenceSet("./pf/DTLZ2.2D.pf"));
 
-double[] x = IntStream.range(0, 50).mapToDouble(i -> 100 * (i+1)).toArray(); 
-double[] y = IntStream.range(0, 50).mapToDouble(i -> 4 * (i+1)).toArray();   
+double[] x = IntStream.range(0, 50).mapToDouble(i -> 100 * (i+1)).toArray();
+double[] y = IntStream.range(0, 50).mapToDouble(i -> 4 * (i+1)).toArray();
 double[][] z = new double[x.length][y.length];
 
 for (int i = 0; i < x.length; i++) {

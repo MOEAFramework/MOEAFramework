@@ -73,12 +73,12 @@ produces the output:
 
 ```
 NSGAII:
-    Hypervolume: 
+    Hypervolume:
         Min: 0.357952
         Median: 0.506456
         Max: 0.538125
         Count: 50
-    GenerationalDistance: 
+    GenerationalDistance:
         Min: 0.000751
         Median: 0.007539
         Max: 0.050880
@@ -136,18 +136,18 @@ instrumenter.getObservations().display();
 <!-- output:examples/Example5.java [:12] -->
 
 ```
-NFE   GenerationalDistance 
------ -------------------- 
-100   0.799030             
-200   0.513917             
-300   0.420843             
-400   0.424941             
-500   0.379473             
-600   0.389628             
-700   0.340794             
-800   0.277609             
-900   0.242039             
-1000  0.214610             
+NFE   GenerationalDistance
+----- --------------------
+100   0.799030
+200   0.513917
+300   0.420843
+400   0.424941
+500   0.379473
+600   0.389628
+700   0.340794
+800   0.277609
+900   0.242039
+1000  0.214610
 ```
 
 We can also plot these results:
