@@ -17,6 +17,8 @@
  */
 package org.moeaframework.core.termination;
 
+import java.time.Duration;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -26,9 +28,26 @@ import org.junit.Test;
 public class MaxElapsedTimeTest {
 
 	@Test
-	public void test() throws InterruptedException {
+	public void testMilliseconds() throws InterruptedException {
 		MockAlgorithm algorithm = new MockAlgorithm();
 		MaxElapsedTime termination = new MaxElapsedTime(1000);
+		
+		termination.initialize(algorithm);
+		Assert.assertFalse(termination.shouldTerminate(algorithm));
+		
+		Thread.sleep(550);
+		algorithm.setNumberOfEvaluations(1000);
+		Assert.assertFalse(termination.shouldTerminate(algorithm));
+		
+		Thread.sleep(550);
+		algorithm.setNumberOfEvaluations(2000);
+		Assert.assertTrue(termination.shouldTerminate(algorithm));
+	}
+	
+	@Test
+	public void testDuration() throws InterruptedException {
+		MockAlgorithm algorithm = new MockAlgorithm();
+		MaxElapsedTime termination = new MaxElapsedTime(Duration.ofSeconds(1));
 		
 		termination.initialize(algorithm);
 		Assert.assertFalse(termination.shouldTerminate(algorithm));

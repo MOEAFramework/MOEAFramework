@@ -17,6 +17,8 @@
  */
 package org.moeaframework.core.termination;
 
+import java.time.Duration;
+
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.TerminationCondition;
 
@@ -43,6 +45,15 @@ public class MaxElapsedTime implements TerminationCondition {
 	public MaxElapsedTime(long maxTime) {
 		super();
 		this.maxTime = maxTime;
+	}
+	
+	/**
+	 * Constructs a new termination condition based on the maximum elapsed time.
+	 * 
+	 * @param maxTime the maximum elapsed time
+	 */
+	public MaxElapsedTime(Duration maxTime) {
+		this(maxTime.getSeconds() * 1000 + maxTime.getNano() / 1000);
 	}
 
 	@Override
