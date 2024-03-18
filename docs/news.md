@@ -11,6 +11,9 @@ This page documents notable changes introduced in each chronological release of 
   
   * `org.moeaframework.core.suppress_truncation_warning` now defaults to `true`
   
+  * Adds `DTLZ5` and `DTLZ6` test problems.  These were excluded previously as they are known to produce additional
+    Pareto optimal solutions outside the expected Pareto front for M > 3.  Will display a warning for these cases.
+  
   * Breaking changes:
   
     - Removes deprecated classes and methods.

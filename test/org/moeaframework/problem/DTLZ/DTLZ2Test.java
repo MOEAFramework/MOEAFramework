@@ -23,7 +23,6 @@ import org.moeaframework.TestThresholds;
 import org.moeaframework.TestUtils;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
-import org.moeaframework.problem.AnalyticalProblem;
 import org.moeaframework.problem.ProblemTest;
 
 /**
@@ -39,7 +38,7 @@ public class DTLZ2Test extends ProblemTest {
 				TestUtils.evaluateAtLowerBounds(problem).getObjectives(),
 				0.000001);
 		
-		Assert.assertArrayEquals(new double[] { 1.12481984e-32, 1.83697020e-16, 3.0 }, 
+		Assert.assertArrayEquals(new double[] { 0.0, 0.0, 3.0 }, 
 				TestUtils.evaluateAtUpperBounds(problem).getObjectives(),
 				0.000001);
 	}
@@ -50,7 +49,7 @@ public class DTLZ2Test extends ProblemTest {
 	}
 
 	@Test
-	public void testDTLZ2_3D() {
+	public void testJMetal3D() {
 		testAgainstJMetal("DTLZ2_3");
 	}
 
@@ -62,28 +61,24 @@ public class DTLZ2Test extends ProblemTest {
 	
 	@Test
 	public void testGenerate() {
-		testGenerate(2);
-		testGenerate(3);
+		testGenerate("DTLZ2_2", DTLZ2Test::assertParetoFrontSolution);
+		testGenerate("DTLZ2_3", DTLZ2Test::assertParetoFrontSolution);
 	}
-
-	/**
-	 * Tests if the {@link DTLZ2#generate} method works correctly.
-	 * 
-	 * @param M the number of objectives
-	 */
-	protected void testGenerate(int M) {
-		try (AnalyticalProblem problem = new DTLZ2(M)) {
-			for (int i = 0; i < TestThresholds.SAMPLES; i++) {
-				Solution solution = problem.generate();
-				double sum = 0.0;
 	
-				for (int j = 0; j < solution.getNumberOfObjectives(); j++) {
-					sum += Math.pow(solution.getObjective(j), 2.0);
-				}
+	@Test
+	public void testReferenceSet() {
+		testReferenceSet("DTLZ2_2", DTLZ2Test::assertParetoFrontSolution);
+		testReferenceSet("DTLZ2_3", DTLZ2Test::assertParetoFrontSolution);
+	}
 	
-				Assert.assertEquals(1.0, Math.sqrt(sum), TestThresholds.SOLUTION_EPS);
-			}
+	protected static void assertParetoFrontSolution(Solution solution) {
+		double sum = 0.0;
+		
+		for (int j = 0; j < solution.getNumberOfObjectives(); j++) {
+			sum += Math.pow(solution.getObjective(j), 2.0);
 		}
+
+		Assert.assertEquals(1.0, Math.sqrt(sum), TestThresholds.SOLUTION_EPS);
 	}
 
 }

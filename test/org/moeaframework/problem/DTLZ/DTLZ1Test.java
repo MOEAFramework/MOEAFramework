@@ -24,7 +24,6 @@ import org.moeaframework.TestThresholds;
 import org.moeaframework.TestUtils;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
-import org.moeaframework.problem.AnalyticalProblem;
 import org.moeaframework.problem.ProblemTest;
 
 /**
@@ -63,24 +62,19 @@ public class DTLZ1Test extends ProblemTest {
 
 	@Test
 	public void testGenerate() {
-		testGenerate(2);
-		testGenerate(3);
+		testGenerate("DTLZ1_2", DTLZ1Test::assertParetoFrontSolution);
+		testGenerate("DTLZ1_3", DTLZ1Test::assertParetoFrontSolution);
 	}
-
-	/**
-	 * Tests if the {@link DTLZ1#generate} method works correctly.
-	 * 
-	 * @param M the number of objectives
-	 */
-	protected void testGenerate(int M) {
-		try (AnalyticalProblem problem = new DTLZ1(M)) {
-			for (int i = 0; i < TestThresholds.SAMPLES; i++) {
-				Solution solution = problem.generate();
-				double sum = StatUtils.sum(solution.getObjectives());
 	
-				Assert.assertEquals(0.5, sum, TestThresholds.SOLUTION_EPS);
-			}
-		}
+	@Test
+	public void testReferenceSet() {
+		testReferenceSet("DTLZ1_2", DTLZ1Test::assertParetoFrontSolution);
+		testReferenceSet("DTLZ1_3", DTLZ1Test::assertParetoFrontSolution);
+	}
+	
+	protected static void assertParetoFrontSolution(Solution solution) {
+		double sum = StatUtils.sum(solution.getObjectives());
+		Assert.assertEquals(0.5, sum, TestThresholds.SOLUTION_EPS);
 	}
 
 }

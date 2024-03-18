@@ -62,6 +62,14 @@ public class DTLZProblemProvider extends RegisteredProblemProvider {
 		register("DTLZ4_6", () -> new DTLZ4(6), "pf/DTLZ4.6D.pf");
 		register("DTLZ4_8", () -> new DTLZ4(8), "pf/DTLZ4.8D.pf");
 		
+		register("DTLZ5",   () -> new DTLZ5(2), "pf/DTLZ5.2D.pf");
+		register("DTLZ5_2", () -> new DTLZ5(2), "pf/DTLZ5.2D.pf");
+		register("DTLZ5_3", () -> new DTLZ5(3), "pf/DTLZ5.3D.pf");
+		
+		register("DTLZ6",   () -> new DTLZ6(2), "pf/DTLZ6.2D.pf");
+		register("DTLZ6_2", () -> new DTLZ6(2), "pf/DTLZ6.2D.pf");
+		register("DTLZ6_3", () -> new DTLZ6(3), "pf/DTLZ6.3D.pf");
+	
 		register("DTLZ7",   () -> new DTLZ7(2), "pf/DTLZ7.2D.pf");
 		register("DTLZ7_2", () -> new DTLZ7(2), "pf/DTLZ7.2D.pf");
 		register("DTLZ7_3", () -> new DTLZ7(3), "pf/DTLZ7.3D.pf");
@@ -73,6 +81,8 @@ public class DTLZProblemProvider extends RegisteredProblemProvider {
 		registerDiagnosticToolProblem("DTLZ2_2");
 		registerDiagnosticToolProblem("DTLZ3_2");
 		registerDiagnosticToolProblem("DTLZ4_2");
+		registerDiagnosticToolProblem("DTLZ5_2");
+		registerDiagnosticToolProblem("DTLZ6_2");
 		registerDiagnosticToolProblem("DTLZ7_2");
 	}
 	
@@ -102,6 +112,10 @@ public class DTLZProblemProvider extends RegisteredProblemProvider {
 					return new DTLZ3(numberOfObjectives);
 				case 4:
 					return new DTLZ4(numberOfObjectives);
+				case 5:
+					return new DTLZ5(numberOfObjectives);
+				case 6:
+					return new DTLZ6(numberOfObjectives);
 				case 7:
 					return new DTLZ7(numberOfObjectives);
 				default:

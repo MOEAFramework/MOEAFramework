@@ -17,6 +17,8 @@
  */
 package org.moeaframework.problem;
 
+import java.util.function.Consumer;
+
 import org.junit.Assert;
 import org.junit.Assume;
 import org.moeaframework.TestThresholds;
@@ -91,6 +93,37 @@ public abstract class ProblemTest {
 			Assert.assertNotNull(referenceSet);
 			Assert.assertTrue(referenceSet.size() > 0);
 			Assert.assertEquals(expectedNumberOfObjectives, referenceSet.get(0).getNumberOfObjectives());
+		}
+	}
+	
+	/**
+	 * Tests the reference set to verify it is non-empty and all solutions match the given predicate.
+	 * 
+	 * @param problemName the problem name
+	 * @param assertion the assertion to check if a solution lies on the Pareto front
+	 */
+	public void testReferenceSet(String problemName, Consumer<Solution> assertion) {
+		NondominatedPopulation referenceSet = ProblemFactory.getInstance().getReferenceSet(problemName);
+		
+		Assert.assertNotNull(referenceSet);
+		Assert.assertTrue(referenceSet.size() > 0);
+		
+		for (Solution solution : referenceSet) {
+			assertion.accept(solution);
+		}
+	}
+	
+	/**
+	 * Tests analytical problems to verify generated solutions lie on the Pareto front.
+	 * 
+	 * @param problemName the problem name
+	 * @param assertion the assertion to check if a solution lies on the Pareto front
+	 */
+	public void testGenerate(String problemName, Consumer<Solution> assertion) {
+		try (AnalyticalProblem problem = (AnalyticalProblem)ProblemFactory.getInstance().getProblem(problemName)) {
+			for (int i = 0; i < TestThresholds.SAMPLES; i++) {
+				assertion.accept(problem.generate());
+			}
 		}
 	}
 	
