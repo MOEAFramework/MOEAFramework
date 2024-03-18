@@ -44,7 +44,6 @@ public class MaxElapsedTime implements TerminationCondition {
 	 */
 	public MaxElapsedTime(long maxTime) {
 		super();
-		System.out.println(maxTime);
 		this.maxTime = maxTime;
 	}
 	
