@@ -28,7 +28,7 @@ import org.junit.Test;
 public class MaxElapsedTimeTest {
 
 	@Test
-	public void testMilliseconds() throws InterruptedException {
+	public void test() throws InterruptedException {
 		MockAlgorithm algorithm = new MockAlgorithm();
 		MaxElapsedTime termination = new MaxElapsedTime(1000);
 		
@@ -45,20 +45,10 @@ public class MaxElapsedTimeTest {
 	}
 	
 	@Test
-	public void testDuration() throws InterruptedException {
-		MockAlgorithm algorithm = new MockAlgorithm();
-		MaxElapsedTime termination = new MaxElapsedTime(Duration.ofSeconds(1));
-		
-		termination.initialize(algorithm);
-		Assert.assertFalse(termination.shouldTerminate(algorithm));
-		
-		Thread.sleep(550);
-		algorithm.setNumberOfEvaluations(1000);
-		Assert.assertFalse(termination.shouldTerminate(algorithm));
-		
-		Thread.sleep(550);
-		algorithm.setNumberOfEvaluations(2000);
-		Assert.assertTrue(termination.shouldTerminate(algorithm));
+	public void testToMilliseconds() throws InterruptedException {
+		Assert.assertEquals(5 * 1000, MaxElapsedTime.toMilliseconds(Duration.ofSeconds(5)));
+		Assert.assertEquals(500, MaxElapsedTime.toMilliseconds(Duration.ofMillis(500)));
+		Assert.assertEquals(5 * 60 * 1000, MaxElapsedTime.toMilliseconds(Duration.ofMinutes(5)));
 	}
 	
 }

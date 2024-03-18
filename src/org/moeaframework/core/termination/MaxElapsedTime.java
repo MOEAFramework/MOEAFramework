@@ -44,6 +44,7 @@ public class MaxElapsedTime implements TerminationCondition {
 	 */
 	public MaxElapsedTime(long maxTime) {
 		super();
+		System.out.println(maxTime);
 		this.maxTime = maxTime;
 	}
 	
@@ -53,7 +54,7 @@ public class MaxElapsedTime implements TerminationCondition {
 	 * @param maxTime the maximum elapsed time
 	 */
 	public MaxElapsedTime(Duration maxTime) {
-		this(maxTime.getSeconds() * 1000 + maxTime.getNano() / 1000);
+		this(toMilliseconds(maxTime));
 	}
 
 	@Override
@@ -64,6 +65,10 @@ public class MaxElapsedTime implements TerminationCondition {
 	@Override
 	public boolean shouldTerminate(Algorithm algorithm) {
 		return (System.currentTimeMillis() - startTime) >= maxTime;
+	}
+	
+	final static long toMilliseconds(Duration duration) {
+		return duration.getSeconds() * 1000 + duration.getNano() / 1000000;
 	}
 
 }
