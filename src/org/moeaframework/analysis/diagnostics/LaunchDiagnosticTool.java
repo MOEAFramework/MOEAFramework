@@ -21,7 +21,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import org.apache.commons.cli.CommandLine;
-import org.moeaframework.core.Settings;
 import org.moeaframework.util.CommandLineUtility;
 
 /**
@@ -46,7 +45,6 @@ public class LaunchDiagnosticTool extends CommandLineUtility {
 			}
 				
 			DiagnosticTool diagnosticTool = new DiagnosticTool();
-			diagnosticTool.setIconImages(Settings.getIcon().getResolutionVariants());
 			diagnosticTool.setVisible(true);	
 		});
 	}

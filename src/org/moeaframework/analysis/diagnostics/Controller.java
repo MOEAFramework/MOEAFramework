@@ -470,7 +470,6 @@ public class Controller {
 			
 			StatisticalResultsViewer viewer = new StatisticalResultsViewer(this, stream.toString());
 			viewer.setLocationRelativeTo(frame);
-			viewer.setIconImages(frame.getIconImages());
 			viewer.setVisible(true);
 		}
 	}

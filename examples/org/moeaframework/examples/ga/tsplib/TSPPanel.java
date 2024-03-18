@@ -18,7 +18,6 @@
 package org.moeaframework.examples.ga.tsplib;
 
 import java.awt.BasicStroke;
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -28,13 +27,10 @@ import java.awt.RenderingHints;
 import java.awt.Stroke;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
-import java.io.File;
-import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 /**
@@ -328,27 +324,6 @@ public class TSPPanel extends JPanel {
 			g2.fill(point);
 			g2.draw(point);
 		}
-	}
-	
-	public static void main(String[] args) throws IOException {
-		TSPInstance problem = new TSPInstance(new File("./data/tsp/gr120.tsp"));
-		problem.addTour(new File("./data/tsp/gr120.opt.tour"));
-		
-		TSPPanel panel = new TSPPanel(problem);
-		
-		for (int i=0; i<20; i++) {
-			panel.displayTour(Tour.createRandomTour(problem.getDimension()), new Color(128, 128, 128, 64));
-		}
-		
-		panel.displayTour(problem.getTours().get(0), Color.RED, new BasicStroke(2.0f));
-		
-		JFrame frame = new JFrame(problem.getName());
-		frame.getContentPane().setLayout(new BorderLayout());
-		frame.getContentPane().add(panel, BorderLayout.CENTER);
-		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		frame.setSize(500, 400);
-		frame.setLocationRelativeTo(null);
-		frame.setVisible(true);
 	}
 	
 	/**

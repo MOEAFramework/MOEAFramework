@@ -110,7 +110,6 @@ public class TerminalGUI extends JFrame {
 		getContentPane().add(contentPane, BorderLayout.CENTER);
 		setSize(600, 400);
 		setLocationRelativeTo(null);
-		
 		setIconImages(Settings.getIcon().getResolutionVariants());
 	}
 	

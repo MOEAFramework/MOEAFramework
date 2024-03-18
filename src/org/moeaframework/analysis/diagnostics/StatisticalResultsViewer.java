@@ -36,6 +36,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import org.moeaframework.core.Settings;
 import org.moeaframework.util.Localization;
 
 /**
@@ -87,6 +88,7 @@ public class StatisticalResultsViewer extends JFrame {
 		setSize(800, 600);
 		setMinimumSize(new Dimension(800, 600));
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setIconImages(Settings.getIcon().getResolutionVariants());
 	}
 	
 	/**

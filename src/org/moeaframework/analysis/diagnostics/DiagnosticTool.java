@@ -186,6 +186,7 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 		setMinimumSize(new Dimension(800, 600));
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setIconImages(Settings.getIcon().getResolutionVariants());
 		
 		initialize();
 		layoutMenu();

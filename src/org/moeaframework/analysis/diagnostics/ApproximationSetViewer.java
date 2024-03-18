@@ -60,6 +60,7 @@ import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.moeaframework.analysis.collector.Observations;
 import org.moeaframework.core.NondominatedPopulation;
+import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.util.Localization;
@@ -188,6 +189,7 @@ ListSelectionListener {
 		setSize(800, 600);
 		setMinimumSize(new Dimension(800, 600));
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setIconImages(Settings.getIcon().getResolutionVariants());
 		
 		initialize();
 		layoutComponents();

@@ -93,8 +93,7 @@ public class ScriptedProblem extends ProblemWrapper {
 	}
 	
 	/**
-	 * Returns a new scripting engine for the scripting language identified by
-	 * the file name extension.
+	 * Returns a new scripting engine for the scripting language identified by the file name extension.
 	 * 
 	 * @param file the file containing the script
 	 * @return a new scripting engine for the scripting language
