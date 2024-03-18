@@ -29,25 +29,29 @@ import org.moeaframework.core.Settings;
  */
 public class MatrixReaderTest {
 
-	public static final String FIXED =
-			"0.0 0.1 -0.1\n" +
-			"# commented line\n" +
-			"0 10 100\n";
-	
-	public static final String FIXED_WHITESPACE =
-			"  0.0 0.1    -0.1  \n" +
-			"# commented line\n" +
-			"\t\t0 \t 10 100\t\t\n";
+	public static final String FIXED = """
+			0.0 0.1 -0.1
+			# commented line
+			0 10 100
+			""";
 
-	public static final String VARIABLE =
-			"0.0 0.1 -0.1\n" +
-			"-0.1 -0.2\n" +
-			"0 10 100\n";
+	public static final String FIXED_WHITESPACE = """
+			  0.0 0.1    -0.1  
+			# commented line
+			\t\t0 \t 10 100\t\t
+			""";
 
-	public static final String UNPARSEABLE =
-			"0.0 0.1 -0.1\n" +
-			"0.0 0.1 -0.1foo\n" + // unparseable data
-			"0 10 100\n";
+	public static final String VARIABLE = """
+			0.0 0.1 -0.1
+			-0.1 -0.2
+			0 10 100
+			""";
+
+	public static final String UNPARSEABLE = """
+			0.0 0.1 -0.1
+			0.0 0.1 -0.1foo
+			0 10 100
+			""";
 	
 	@Test
 	public void testFixed1() throws IOException {

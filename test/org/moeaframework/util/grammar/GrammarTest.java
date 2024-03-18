@@ -33,10 +33,11 @@ public class GrammarTest {
 	/**
 	 * The string representation of the grammar used for testing.
 	 */
-	public static final String GRAMMAR = 
-		"<expr> ::= <expr> <op> <expr> | 'func(' <expr> ')' | <val>\n" + 
-		"<val> ::= x | y | z\n" + 
-		"<op> ::= + | - | * | /";
+	public static final String GRAMMAR = """
+		<expr> ::= <expr> <op> <expr> | 'func(' <expr> ')' | <val>
+		<val> ::= x | y | z
+		<op> ::= + | - | * | /
+		""";
 
 	/**
 	 * The shared grammar used for testing.

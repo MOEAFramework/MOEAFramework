@@ -38,34 +38,36 @@ import org.moeaframework.core.spi.ProblemFactoryTestWrapper;
  */
 public class ExtractDataTest {
 	
-	public static final String COMPLETE = 
-		"# Problem = DTLZ2\n" +
-		"# Variables = 11\n" +
-		"# Objectives = 2\n" + 
-		"//ElapsedTime=0.0125\n" +
-		"//TotalTime=0.214\n" +
-		"0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.25 0.75\n" + 
-		"0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.75 0.25\n" + 
-		"#\n" +
-		"//ElapsedTime=0.01549\n" +
-		"//TotalTime=0.209186\n" +
-		"0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.25 0.75\n" + 
-		"0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.75 0.25\n" + 
-		"#\n";
+	public static final String COMPLETE = """
+		# Problem = DTLZ2
+		# Variables = 11
+		# Objectives = 2
+		//ElapsedTime=0.0125
+		//TotalTime=0.214
+		0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.25 0.75
+		0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.75 0.25
+		#
+		//ElapsedTime=0.01549
+		//TotalTime=0.209186
+		0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.25 0.75
+		0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.75 0.25
+		#
+		""";
 	
-	public static final String MISSING_PROPERTY = 
-		"# Problem = DTLZ2\n" +
-		"# Variables = 11\n" +
-		"# Objectives = 2\n" + 
-		"//ElapsedTime=0.0125\n" +
-		"//TotalTime=0.214\n" +
-		"0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.25 0.75\n" + 
-		"0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.75 0.25\n" + 
-		"#\n" +
-		"//ElapsedTime=0.01549\n" +
-		"0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.25 0.75\n" + 
-		"0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.75 0.25\n" + 
-		"#\n";
+	public static final String MISSING_PROPERTY = """
+		# Problem = DTLZ2
+		# Variables = 11
+		# Objectives = 2
+		//ElapsedTime=0.0125
+		//TotalTime=0.214
+		0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.25 0.75
+		0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.75 0.25
+		#
+		//ElapsedTime=0.01549
+		0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.25 0.75
+		0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.75 0.25
+		#
+		""";
 	
 	@Test
 	public void testComplete() throws Exception {

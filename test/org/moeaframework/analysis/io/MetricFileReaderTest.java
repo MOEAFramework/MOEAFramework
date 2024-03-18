@@ -33,34 +33,38 @@ public class MetricFileReaderTest {
 	/**
 	 * A valid metric file.
 	 */
-	public static final String COMPLETE =
-			"0.0 0.1 -0.1 1.0 -1.0 1E-5\n" +
-			"# commented line\n" +
-			"0 10 100 1000 -10 -100\n";
+	public static final String COMPLETE = """
+			0.0 0.1 -0.1 1.0 -1.0 1E-5
+			# commented line
+			0 10 100 1000 -10 -100
+			""";
 
 	/**
 	 * An incomplete metric file, missing one or more entries from a line.
 	 */
-	public static final String INCOMPLETE1 =
-			"0.0 0.1 -0.1 1.0 -1.0 1E-5\n" +
-			"-0.1 -0.2 -0.3 -0.4 -0.5\n" + // missing last entry
-			"0 10 100 1000 -10 -100\n";
+	public static final String INCOMPLETE1 = """
+			0.0 0.1 -0.1 1.0 -1.0 1E-5
+			-0.1 -0.2 -0.3 -0.4 -0.5
+			0 10 100 1000 -10 -100
+			""";
 
 	/**
 	 * An incomplete metric file, containing an empty line.
 	 */
-	public static final String INCOMPLETE2 =
-			"0.0 0.1 -0.1 1.0 -1.0 1E-5\n" +
-			"\n" + // empty line
-			"0 10 100 1000 -10 -100\n";
+	public static final String INCOMPLETE2 = """
+			0.0 0.1 -0.1 1.0 -1.0 1E-5
+			
+			0 10 100 1000 -10 -100
+			""";
 
 	/**
 	 * An incomplete metric file, containing unparseable data.
 	 */
-	public static final String INCOMPLETE3 =
-			"0.0 0.1 -0.1 1.0 -1.0 1E-5\n" +
-			"0.0 0.1 -0.1foo 1.0 -1.0 1E-5\n" + // unparseable data
-			"0 10 100 1000 -10 -100\n";
+	public static final String INCOMPLETE3 = """
+			0.0 0.1 -0.1 1.0 -1.0 1E-5
+			0.0 0.1 -0.1foo 1.0 -1.0 1E-5
+			0 10 100 1000 -10 -100
+			""";
 
 	/**
 	 * Performs the necessary assertions to ensure a complete metric file is read correctly.

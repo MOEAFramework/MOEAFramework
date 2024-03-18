@@ -44,116 +44,127 @@ public class ResultFileReaderTest {
 	/**
 	 * A valid result file.
 	 */
-	public static final String COMPLETE = 
-			"# Problem = Test\n" +
-			"# Variables = 3\n" +
-			"# Objectives = 2\n" + 
-			"0.0 00100 2,1,0 0.0 1.0\n" + 
-			"1.0 01000 1,0,2 1.0 0.0\n" + 
-			"#\n" + 
-			"0.0 00100 2,1,0 0.0 1.0\n" + 
-			"1.0 01000 1,0,2 1.0 0.0\n" +
-			"#\n";
+	public static final String COMPLETE = """
+			# Problem = Test
+			# Variables = 3
+			# Objectives = 2
+			0.0 00100 2,1,0 0.0 1.0
+			1.0 01000 1,0,2 1.0 0.0
+			#
+			0.0 00100 2,1,0 0.0 1.0
+			1.0 01000 1,0,2 1.0 0.0
+			#
+			""";
 	
 	/**
 	 * A valid result file with extra whitespace on lines.
 	 */
-	public static final String COMPLETE_WHITESPACE = 
-			"# Problem = Test\n" +
-			"# Variables = 3\n" +
-			"# Objectives = 2\n" + 
-			"  0.0 00100 2,1,0 0.0 1.0\n" + 
-			"\t\t1.0 01000 1,0,2 1.0 0.0\n" + 
-			"#\n" + 
-			"0.0 00100    2,1,0 \t 0.0 1.0\n" + 
-			"\t 1.0 01000 1,0,2 1.0 0.0 \t\n" +
-			"#\n";
+	public static final String COMPLETE_WHITESPACE = """
+			# Problem = Test
+			# Variables = 3
+			# Objectives = 2
+			  0.0 00100 2,1,0 0.0 1.0
+			\t\t1.0 01000 1,0,2 1.0 0.0
+			#
+			0.0 00100    2,1,0 \t 0.0 1.0
+			\t 1.0 01000 1,0,2 1.0 0.0 \t
+			#
+			""";
 	
 	/**
 	 * A valid result file but without decision variables.
 	 */
-	public static final String COMPLETE_NOVARIABLES = 
-			"# Problem = Test\n" +
-			"# Objectives = 2\n" + 
-			"0.0 1.0\n" + 
-			"1.0 0.0\n" + 
-			"#\n" + 
-			"0.0 1.0\n" + 
-			"1.0 0.0\n" +
-			"#\n";
+	public static final String COMPLETE_NOVARIABLES = """
+			# Problem = Test
+			# Objectives = 2
+			0.0 1.0
+			1.0 0.0
+			#
+			0.0 1.0 
+			1.0 0.0
+			#
+			""";
 	
 	/**
 	 * A valid result file but without the header.
 	 */
-	public static final String COMPLETE_NOHEADER = 
-			"0.0 00100 2,1,0 0.0 1.0\n" + 
-			"1.0 01000 1,0,2 1.0 0.0\n" +
-			"#\n" + 
-			"0.0 00100 2,1,0 0.0 1.0\n" + 
-			"1.0 01000 1,0,2 1.0 0.0\n" +
-			"#\n";
+	public static final String COMPLETE_NOHEADER = """
+			0.0 00100 2,1,0 0.0 1.0
+			1.0 01000 1,0,2 1.0 0.0
+			#
+			0.0 00100 2,1,0 0.0 1.0
+			1.0 01000 1,0,2 1.0 0.0
+			#
+			""";
 	
 	/**
 	 * A valid result file with multiple pound characters separating entries
 	 */
-	public static final String MULTIPOUND = 
-			"# Problem = Test\n" +
-			"# Variables = 3\n" +
-			"# Objectives = 2\n" + 
-			"0.0 00100 2,1,0 0.0 1.0\n" + 
-			"1.0 01000 1,0,2 1.0 0.0\n" + 
-			"#\n#\n" + 
-			"0.0 00100 2,1,0 0.0 1.0\n" + 
-			"1.0 01000 1,0,2 1.0 0.0\n" +
-			"#\n#\n";
+	public static final String MULTIPOUND = """
+			# Problem = Test
+			# Variables = 3
+			# Objectives = 2
+			0.0 00100 2,1,0 0.0 1.0
+			1.0 01000 1,0,2 1.0 0.0
+			#
+			#
+			0.0 00100 2,1,0 0.0 1.0
+			1.0 01000 1,0,2 1.0 0.0
+			#
+			#
+			""";
 	
 	/**
 	 * A valid result file with properties.
 	 */
-	public static final String COMPLETE_PROPERTIES = 
-			"# Problem = Test\n" +
-			"# Variables = 3\n" +
-			"# Objectives = 2\n" + 
-			"//foo=bar\n" +
-			"//answer=42\n" +
-			"0.0 00100 2,1,0 0.0 1.0\n" + 
-			"1.0 01000 1,0,2 1.0 0.0\n" +
-			"#\n";
+	public static final String COMPLETE_PROPERTIES = """
+			# Problem = Test
+			# Variables = 3
+			# Objectives = 2
+			//foo=bar
+			//answer=42
+			0.0 00100 2,1,0 0.0 1.0
+			1.0 01000 1,0,2 1.0 0.0
+			#
+			""";
 	
 	/**
 	 * A valid result file with no properties.
 	 */
-	public static final String NO_PROPERTIES = 
-			"# Problem = Test\n" +
-			"# Variables = 3\n" +
-			"# Objectives = 2\n" + 
-			"0.0 00100 2,1,0 0.0 1.0\n" + 
-			"1.0 01000 1,0,2 1.0 0.0\n" +
-			"#\n";
+	public static final String NO_PROPERTIES = """
+			# Problem = Test
+			# Variables = 3
+			# Objectives = 2
+			0.0 00100 2,1,0 0.0 1.0
+			1.0 01000 1,0,2 1.0 0.0
+			#
+			""";
 	
 	/**
 	 * A valid result file with empty properties.
 	 */
-	public static final String EMPTY_PROPERTIES = 
-			"# Problem = Test\n" +
-			"# Variables = 3\n" +
-			"# Objectives = 2\n" +
-			"//\n" +
-			"0.0 00100 2,1,0 0.0 1.0\n" + 
-			"1.0 01000 1,0,2 1.0 0.0\n" +
-			"#\n";
+	public static final String EMPTY_PROPERTIES = """
+			# Problem = Test
+			# Variables = 3
+			# Objectives = 2
+			//
+			0.0 00100 2,1,0 0.0 1.0
+			1.0 01000 1,0,2 1.0 0.0
+			#
+			""";
 	
 	/**
 	 * A valid result file with the old style properties.
 	 */
-	public static final String OLDSTYLE_PROPERTIES = 
-			"# Problem = Test\n" +
-			"# Variables = 3\n" +
-			"# Objectives = 2\n" + 
-			"// foo\n" +
-			"0.0 00100 2,1,0 0.0 1.0\n" + 
-			"1.0 01000 1,0,2 1.0 0.0\n" +
-			"#\n";
+	public static final String OLDSTYLE_PROPERTIES = """
+			# Problem = Test
+			# Variables = 3
+			# Objectives = 2
+			// foo
+			0.0 00100 2,1,0 0.0 1.0
+			1.0 01000 1,0,2 1.0 0.0
+			#
+			""";
 
 	/**
 	 * An empty, but valid, result file.
@@ -163,81 +174,87 @@ public class ResultFileReaderTest {
 	/**
 	 * A valid result file with empty entries.
 	 */
-	public static final String EMPTY_ENTRY = 
-			"# Problem = Test\n" +
-			"# Variables = 3\n" +
-			"# Objectives = 2\n" + 
-			"0.0 00100 2,1,0 0.0 1.0\n" + 
-			"1.0 01000 1,0,2 1.0 0.0\n" +
-			"#\n" + 
-			"//\n" + 
-			"#\n" + 
-			"0.0 00100 2,1,0 0.0 1.0\n" + 
-			"1.0 01000 1,0,2 1.0 0.0\n" +
-			"#";
+	public static final String EMPTY_ENTRY = """
+			# Problem = Test
+			# Variables = 3
+			# Objectives = 2
+			0.0 00100 2,1,0 0.0 1.0
+			1.0 01000 1,0,2 1.0 0.0
+			#
+			//
+			#
+			0.0 00100 2,1,0 0.0 1.0
+			1.0 01000 1,0,2 1.0 0.0
+			#
+			""";
 
 	/**
 	 * A valid result file containing just the header and no entries.
 	 */
-	public static final String ONLY_HEADER = 
-			"# Problem = Test\n" +
-			"# Variables = 3\n" +
-			"# Objectives = 2\n";
+	public static final String ONLY_HEADER = """
+			# Problem = Test
+			# Variables = 3
+			# Objectives = 2
+			""";
 
 	/**
 	 * An incomplete result file, missing the trailing # character.
 	 */
-	public static final String INCOMPLETE1 = 
-			"# Problem = Test\n" +
-			"# Variables = 3\n" +
-			"# Objectives = 2\n" + 
-			"0.0 00100 2,1,0 0.0 1.0\n" + 
-			"1.0 01000 1,0,2 1.0 0.0\n" +
-			"#\n" + 
-			"0.0 00100 2,1,0 0.0 1.0\n";
+	public static final String INCOMPLETE1 = """
+			# Problem = Test
+			# Variables = 3
+			# Objectives = 2
+			0.0 00100 2,1,0 0.0 1.0
+			1.0 01000 1,0,2 1.0 0.0
+			#
+			0.0 00100 2,1,0 0.0 1.0
+			""";
 
 	/**
 	 * An incomplete result file, containing an empty line.
 	 */
-	public static final String INCOMPLETE2 = 
-			"# Problem = Test\n" +
-			"# Variables = 3\n" +
-			"# Objectives = 2\n" + 
-			"0.0 00100 2,1,0 0.0 1.0\n" + 
-			"1.0 01000 1,0,2 1.0 0.0\n" +
-			"#\n" + 
-			"0.0 00100 2,1,0 0.0 1.0\n" + 
-			"\n" +
-			"1.0 01000 1,0,2 1.0 0.0\n" +
-			"#";
+	public static final String INCOMPLETE2 = """
+			# Problem = Test
+			# Variables = 3
+			# Objectives = 2
+			0.0 00100 2,1,0 0.0 1.0
+			1.0 01000 1,0,2 1.0 0.0
+			#
+			0.0 00100 2,1,0 0.0 1.0
+			
+			1.0 01000 1,0,2 1.0 0.0
+			#
+			""";
 
 	/**
 	 * An incomplete result file, containing an incomplete entry.
 	 */
-	public static final String INCOMPLETE3 = 
-			"# Problem = Test\n" +
-			"# Variables = 3\n" +
-			"# Objectives = 2\n" + 
-			"0.0 00100 2,1,0 0.0 1.0\n" + 
-			"1.0 01000 1,0,2 1.0 0.0\n" +
-			"#\n" + 
-			"0.0 00100 2,1,0\n" + 
-			"1.0 01000 1,0,2 1.0 0.0\n" +
-			"#";
+	public static final String INCOMPLETE3 = """
+			# Problem = Test
+			# Variables = 3
+			# Objectives = 2
+			0.0 00100 2,1,0 0.0 1.0
+			1.0 01000 1,0,2 1.0 0.0
+			#
+			0.0 00100 2,1,0
+			1.0 01000 1,0,2 1.0 0.0
+			#
+			""";
 
 	/**
 	 * An incomplete result file, containing unparseable data.
 	 */
-	public static final String INCOMPLETE4 = 
-		"# Problem = Test\n" +
-		"# Variables = 3\n" +
-		"# Objectives = 2\n" + 
-		"0.0 00100 2,1,0 0.0 1.0\n" + 
-		"1.0 01000 1,0,2 1.0 0.0\n" +
-		"#\n" + 
-		"0.0 00100 2,1,0 0.0foo 1.0\n" + 
-		"1.0 01000 1,0,2 1.0 0.0\n" +
-		"#";
+	public static final String INCOMPLETE4 = """
+		# Problem = Test
+		# Variables = 3
+		# Objectives = 2
+		0.0 00100 2,1,0 0.0 1.0
+		1.0 01000 1,0,2 1.0 0.0
+		#
+		0.0 00100 2,1,0 0.0foo 1.0
+		1.0 01000 1,0,2 1.0 0.0
+		#
+		""";
 	
 	/**
 	 * The problem used for testing.

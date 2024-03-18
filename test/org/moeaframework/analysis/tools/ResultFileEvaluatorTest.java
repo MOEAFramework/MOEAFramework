@@ -30,21 +30,23 @@ import org.moeaframework.core.FrameworkException;
  */
 public class ResultFileEvaluatorTest {
 	
-	public static final String COMPLETE = 
-			"# Problem = DTLZ2_2\n" +
-			"# Variables = 0\n" +
-			"# Objectives = 2\n" + 
-			"0.0 1.0\n" + 
-			"1.0 0.0\n" + 
-			"#\n" + 
-			"0.0 1.0\n" + 
-			"1.0 0.0\n" +
-			"#\n";
+	public static final String COMPLETE = """
+			# Problem = DTLZ2_2
+			# Variables = 0
+			# Objectives = 2
+			0.0 1.0
+			1.0 0.0
+			#
+			0.0 1.0
+			1.0 0.0
+			#
+			""";
 	
-	public static final String EMPTY = 
-			"# Problem = DTLZ2_2\n" +
-			"# Variables = 0\n" +
-			"# Objectives = 2\n";
+	public static final String EMPTY = """
+			# Problem = DTLZ2_2
+			# Variables = 0
+			# Objectives = 2
+			""";
 	
 	@Test
 	public void testComplete() throws Exception {

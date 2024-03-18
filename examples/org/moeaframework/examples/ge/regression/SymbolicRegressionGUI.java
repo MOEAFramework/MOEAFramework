@@ -209,10 +209,8 @@ public class SymbolicRegressionGUI extends JFrame implements WindowListener {
 			plot.setRenderer(new XYLineAndShapeRenderer());
 			
 			// update the details
-			details.setText("Generation " + generation + " / " +
-					maxGenerations + "\nObjective value: " +
-					solution.getObjective(0) + "\n\n" +
-					program);
+			details.setText("Generation " + generation + " / " + maxGenerations + "\nObjective value: " +
+					solution.getObjective(0) + "\n\n" + program);
 			
 			container.removeAll();
 			container.add(new ChartPanel(chart), BorderLayout.CENTER);

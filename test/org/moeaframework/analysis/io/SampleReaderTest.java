@@ -35,57 +35,64 @@ public class SampleReaderTest {
 	/**
 	 * The parameter file contents.
 	 */
-	public static final String PARAMETER_FILE =
-			"entry1 0.0 1.0\n" +
-			"entry2 100 10000\n" +
-			"entry3 0.0 1.0";
+	public static final String PARAMETER_FILE = """
+			entry1 0.0 1.0
+			entry2 100 10000
+			entry3 0.0 1.0
+			""";
 
 	/**
 	 * A valid parameter sample file.
 	 */
-	public static final String COMPLETE = 
-			"0.0 100 0.0\n" + 
-			"1.0 10000 1.0";
+	public static final String COMPLETE = """
+			0.0 100 0.0
+			1.0 10000 1.0
+			""";
 
 	/**
 	 * An invalid parameter sample file, missing entries in one line.
 	 */
-	public static final String INVALID1 = 
-			"0.0 100 0.0\n" + 
-			"1.0\n" + //missing entry														
-			"1.0 10000 1.0";
+	public static final String INVALID1 = """
+			0.0 100 0.0
+			1.0													
+			1.0 10000 1.0
+			""";
 
 	/**
 	 * An invalid parameter sample file, containing an empty line.
 	 */
-	public static final String INVALID2 = 
-			"0.0 100 0.0\n" + 
-			"\n" + // empty line
-			"1.0 10000 1.0";
+	public static final String INVALID2 = """
+			0.0 100 0.0
+			
+			1.0 10000 1.0
+			""";
 
 	/**
 	 * An invalid parameter sample file, containing unparseable data.
 	 */
-	public static final String INVALID3 = 
-			"0.0 100 0.0\n" + 
-			"1.0 10000foo 1.0\n" + // unparseable entry
-			"1.0 10000 1.0";
+	public static final String INVALID3 = """
+			0.0 100 0.0
+			1.0 10000foo 1.0
+			1.0 10000 1.0
+			""";
 
 	/**
 	 * An invalid parameter sample file, containing out of bounds data.
 	 */
-	public static final String INVALID4 = 
-			"0.0 100 0.0\n" + 
-			"1.0 99 1.0\n" + // out of bounds entry
-			"1.0 10000 1.0";
+	public static final String INVALID4 = """
+			0.0 100 0.0
+			1.0 99 1.0
+			1.0 10000 1.0
+			""";
 
 	/**
 	 * An invalid parameter sample file, containing out of bounds data.
 	 */
-	public static final String INVALID5 = 
-			"0.0 100 0.0\n" + 
-			"1.0 10001 1.0\n" + // out of bounds entry
-			"1.0 10000 1.0";
+	public static final String INVALID5 = """
+			0.0 100 0.0
+			1.0 10001 1.0
+			1.0 10000 1.0
+			""";
 
 	/**
 	 * The shared parameter file.
