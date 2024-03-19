@@ -40,13 +40,14 @@ public class WFGNormalizedHypervolume extends NormalizedIndicator {
 	private WFGHypervolume hypervolume;
 
 	/**
-	 * Constructs a hypervolume evaluator for the specified problem and reference set.
+	 * Constructs a hypervolume evaluator for the specified problem and reference set.  See
+	 * {@link Hypervolume#getNormalizer(Problem, NondominatedPopulation)} for details on configuring normalization.
 	 * 
 	 * @param problem the problem
 	 * @param referenceSet the reference set
 	 */
 	public WFGNormalizedHypervolume(Problem problem, NondominatedPopulation referenceSet) {
-		super(problem, referenceSet, true);
+		super(problem, referenceSet, Hypervolume.getNormalizer(problem, referenceSet));
 		this.hypervolume = new WFGHypervolume(problem, getNormalizedReferencePoint(problem));
 	}
 	

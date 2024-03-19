@@ -59,13 +59,14 @@ import org.moeaframework.core.Solution;
 public class PISAHypervolume extends NormalizedIndicator {
 
 	/**
-	 * Constructs a hypervolume evaluator for the specified problem and reference set.
+	 * Constructs a hypervolume evaluator for the specified problem and reference set.  See
+	 * {@link Hypervolume#getNormalizer(Problem, NondominatedPopulation)} for details on configuring normalization.
 	 * 
 	 * @param problem the problem
 	 * @param referenceSet the reference set
 	 */
 	public PISAHypervolume(Problem problem, NondominatedPopulation referenceSet) {
-		super(problem, referenceSet, true);
+		super(problem, referenceSet, Hypervolume.getNormalizer(problem, referenceSet));
 	}
 	
 	/**

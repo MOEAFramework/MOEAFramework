@@ -23,14 +23,16 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 
 /**
- * Hypervolume indicator. Represents the volume of objective space dominated by solutions in the approximation set.
+ * Hypervolume indicator.  Represents the volume of objective space dominated by solutions in the approximation set.
+ * The hypervolume implementation can be configured using the {@link Settings#getHypervolume()}.
  */
 public class Hypervolume implements Indicator {
 	
 	private final Indicator instance;
 	
 	/**
-	 * Constructs a hypervolume evaluator for the specified problem and reference set.
+	 * Constructs a hypervolume evaluator for the specified problem and reference set.  See
+	 * {@link #getNormalizer(Problem, NondominatedPopulation)} for details on configuring normalization.
 	 * 
 	 * @param problem the problem
 	 * @param referenceSet the reference set
@@ -117,6 +119,34 @@ public class Hypervolume implements Indicator {
 			};
 		} else {
 			return WFGNormalizedHypervolume.evaluate(problem, approximationSet);
+		}
+	}
+	
+	/**
+	 * Returns the normalizer for calculating hypervolume using the following rules:
+	 * <ol>
+	 *   <li>Normalize using the {@code idealpt} and {@code refpt} settings
+	 *   <li>Normalize using the {@code refpt} setting, with the ideal point based on the reference set
+	 *   <li>Normalize using the bounds of the reference set plus the configured hypervolume delta
+	 * </ol>
+	 * 
+	 * @param problem the problem
+	 * @param referenceSet the reference set
+	 * @return the normalize for calculating hypervolume
+	 * @see Settings#getIdealPoint(String)
+	 * @see Settings#getReferencePoint(String)
+	 * @see Settings#getHypervolumeDelta()
+	 */
+	static Normalizer getNormalizer(Problem problem, NondominatedPopulation referenceSet) {
+		double[] idealPoint = Settings.getIdealPoint(problem.getName());
+		double[] referencePoint = Settings.getReferencePoint(problem.getName());
+		
+		if ((idealPoint != null) && (referencePoint != null)) {
+			return new Normalizer(problem, idealPoint, referencePoint);
+		} else if (referencePoint != null) {
+			return new Normalizer(problem, referenceSet, referencePoint);
+		} else {
+			return new Normalizer(problem, referenceSet, Settings.getHypervolumeDelta());
 		}
 	}
 	
