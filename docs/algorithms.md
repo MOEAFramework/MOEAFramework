@@ -62,17 +62,17 @@ a set of Pareto solutions[^bandyopadhyay08].
 **Supported Types:** Any  
 **Supported Operators:** Mutation-only
 
-Parameter            | Default Value | Description
-:------------------- | :------------ | :----------
+Parameter            | Default Value     | Description
+:------------------- | :---------------- | :----------
 `operator`           | Problem dependent | The mutation operator
-`gamma`             | `2.0`         | The number of random solutions generated to fill the initial population
-`softLimit`        | `100`       | The maximum population size before clustering is used to truncate to the hard limit
-`hardLimit`        | `10`       | The maximum size of the archive at termination
-`alpha`              | `0.8`       | The cooling rate
-`iter`               | `500`       | The number of iterations per temperature
-`hillClimbIter`    | `20`       | The number of hill climbing iterations used when generating the initial population
-`tMin`              | `0.0000001`         | The minimum, or stopping, temperature
-`tMax` | `200.0`           | The maximum, or starting, temperature
+`gamma`              | `2.0`             | The number of random solutions generated to fill the initial population
+`softLimit`          | `100`             | The maximum population size before clustering is used to truncate to the hard limit
+`hardLimit`          | `10`              | The maximum size of the archive at termination
+`alpha`              | `0.8`             | The cooling rate
+`iter`               | `500`             | The number of iterations per temperature
+`hillClimbIter`      | `20`              | The number of hill climbing iterations used when generating the initial population
+`tMin`               | `0.0000001`       | The minimum, or stopping, temperature
+`tMax`               | `200.0`           | The maximum, or starting, temperature
 
 
 ### CMA-ES
@@ -153,16 +153,16 @@ with new, randomly-generated solutions.
 **Supported Types:** Any  
 **Supported Operators:** Any
 
-Parameter            | Default Value     | Description
-:------------------- | :---------------- | :----------
-`populationSize`     | `100`             | The size of the population
-`operator`           | Problem dependent | The variation (crossover and/or mutation) operator
-`epsilon`            | Problem dependent | The $\epsilon$ values used by the $\epsilon$-dominance archive, which can either be a single value or a comma-separated array
-`injectionRate`      | `0.25`            | Controls the percentage of the population after a restart this is "injected", or copied, from the $\epsilon$-dominance archive
-`windowSize`         | `100`             | Frequency of checking if a randomized restart should be triggered (number of iterations)
-`maxWindowSize`      | `100`             | The maximum number of iterations between successive randomized restarts
-`minimumPopulationSize` | `100`          | The smallest possible population size when injecting new solutions after a randomized restart
-`maximumPopulationSize` | `10000`        | The largest possible population size when injecting new solutions after a randomized restart
+Parameter               | Default Value     | Description
+:---------------------- | :---------------- | :----------
+`populationSize`        | `100`             | The size of the population
+`operator`              | Problem dependent | The variation (crossover and/or mutation) operator
+`epsilon`               | Problem dependent | The $\epsilon$ values used by the $\epsilon$-dominance archive, which can either be a single value or a comma-separated array
+`injectionRate`         | `0.25`            | Controls the percentage of the population after a restart this is "injected", or copied, from the $\epsilon$-dominance archive
+`windowSize`            | `100`             | Frequency of checking if a randomized restart should be triggered (number of iterations)
+`maxWindowSize`         | `100`             | The maximum number of iterations between successive randomized restarts
+`minimumPopulationSize` | `100`             | The smallest possible population size when injecting new solutions after a randomized restart
+`maximumPopulationSize` | `10000`           | The largest possible population size when injecting new solutions after a randomized restart
 
 ### GDE3
 
@@ -213,18 +213,18 @@ non-zero value.
 **Supported Types:** Any  
 **Supported Operators:** Any
 
-Parameter            | Default Value     | Description
-:------------------- | :---------------- | :----------
-`populationSize`     | `100`             | The size of the population
-`operator`           | Problem dependent | The variation (crossover and/or mutation) operator
-`de.crossoverRate`   | `0.1`             | The crossover rate for differential evolution
-`de.stepSize`        | `0.5`             | Control the size of each step taken by differential evolution
-`pm.rate`            | `1/N`             | The mutation rate for polynomial mutation
-`pm.distributionIndex` | `20.0`          | The distribution index for polynomial mutation
-`neighborhoodSize`   | `0.1`             | The size of the neighborhood used for mating, given as a percentage of the population size
-`delta`              | `0.9`             | The probability of mating with an individual from the neighborhood versus the entire population
-`eta`                | `0.01`            | The maximum number of spots in the population that an offspring can replace, given as a percentage of the population size
-`updateUtility`      | Unset             | The frequency, in generations, at which utility values are updated.  If set, this uses the MOEA/D-DRA variant; if unset, then then MOEA/D-DE variant is used
+Parameter              | Default Value     | Description
+:--------------------- | :---------------- | :----------
+`populationSize`       | `100`             | The size of the population
+`operator`             | Problem dependent | The variation (crossover and/or mutation) operator
+`de.crossoverRate`     | `0.1`             | The crossover rate for differential evolution
+`de.stepSize`          | `0.5`             | Control the size of each step taken by differential evolution
+`pm.rate`              | `1/N`             | The mutation rate for polynomial mutation
+`pm.distributionIndex` | `20.0`            | The distribution index for polynomial mutation
+`neighborhoodSize`     | `0.1`             | The size of the neighborhood used for mating, given as a percentage of the population size
+`delta`                | `0.9`             | The probability of mating with an individual from the neighborhood versus the entire population
+`eta`                  | `0.01`            | The maximum number of spots in the population that an offspring can replace, given as a percentage of the population size
+`updateUtility`        | Unset             | The frequency, in generations, at which utility values are updated.  If set, this uses the MOEA/D-DRA variant; if unset, then then MOEA/D-DE variant is used
 
 ### MSOPS
 
@@ -298,14 +298,14 @@ difference in performance.
 **Supported Types:** Any  
 **Supported Operators:** None (provides its own variation and mutation)
 
-Parameter            | Default Value     | Description
-:------------------- | :---------------- | :----------
-`populationSize`     | `100`             | The size of the population
-`archiveSize`        | `100`             | The size of the archive
-`maxEvaluations`     | `25000`           | The maximum number of evaluations for adapting non-uniform mutation
-`mutationProbability` | `1/N`            | The mutation probability for uniform and non-uniform mutation
-`perturbationIndex`  | `0.5`             | Controls the shape of the distribution for uniform and non-uniform mutation
-`epsilon`            | Problem dependent | The $\epsilon$ values used by the $\epsilon$-dominance archive
+Parameter             | Default Value     | Description
+:-------------------- | :---------------- | :----------
+`populationSize`      | `100`             | The size of the population
+`archiveSize`         | `100`             | The size of the archive
+`maxEvaluations`      | `25000`           | The maximum number of evaluations for adapting non-uniform mutation
+`mutationProbability` | `1/N`             | The mutation probability for uniform and non-uniform mutation
+`perturbationIndex`   | `0.5`             | Controls the shape of the distribution for uniform and non-uniform mutation
+`epsilon`             | Problem dependent | The $\epsilon$ values used by the $\epsilon$-dominance archive
 
 ### PAES
 
@@ -404,12 +404,12 @@ SMPSO is a multiobjective particle swarm optimization algorithm [^nebro09].
 **Supported Types:** Real  
 **Supported Operators:** PM
 
-Parameter            | Default Value     | Description
-:------------------- | :---------------- | :----------
-`populationSize`     | `100`             | The size of the population
-`archiveSize`        | `100`             | The size of the archive
-`pm.rate`            | `1/N`             | The mutation rate for polynomial mutation
-`pm.distributionIndex` | `20.0`          | The distribution index for polynomial mutation
+Parameter              | Default Value     | Description
+:--------------------- | :---------------- | :----------
+`populationSize`       | `100`             | The size of the population
+`archiveSize`          | `100`             | The size of the archive
+`pm.rate`              | `1/N`             | The mutation rate for polynomial mutation
+`pm.distributionIndex` | `20.0`            | The distribution index for polynomial mutation
 
 ### SMS-EMOA
 
@@ -419,12 +419,12 @@ SMS-EMOA is an indicator-based MOEA that uses the volume of the dominated hyperv
 **Supported Types:** Any  
 **Supported Operators:** Any
 
-Parameter            | Default Value     | Description
-:------------------- | :---------------- | :----------
-`populationSize`     | `100`             | The size of the population
-`offset`             | `100`             | The reference point offset for computing hypervolume
-`operator`           | Problem dependent | The variation (crossover and/or mutation) operator
-`indicator`         | `hypervolumeContribution` | The fitness evaluator - `hypervolumeContribution`, `hypervolume`, `epsilon`, `crowding`
+Parameter            | Default Value             | Description
+:------------------- | :------------------------ | :----------
+`populationSize`     | `100`                     | The size of the population
+`offset`             | `100`                     | The reference point offset for computing hypervolume
+`operator`           | Problem dependent         | The variation (crossover and/or mutation) operator
+`indicator`          | `hypervolumeContribution` | The fitness evaluator - `hypervolumeContribution`, `hypervolume`, `epsilon`, `crowding`
 
 ### SPEA2
 
@@ -523,14 +523,14 @@ cooling rate.
 **Supported Types:** Any  
 **Supported Operators:** Any Mutation
 
-Parameter            | Default Value     | Description
-:------------------- | :---------------- | :----------
-`operator`           | Problem dependent | The mutation operator
-`method`             | `linear`          | The scalarization method - `linear`, `min-max`
-`weights`            | `1.0,1.0,...`     | The scalarization weights
-`initialTemperature` | `1.0`          | The initial temperature
-`alpha`              | `0.8`       | The cooling rate
-`numberOfIterationsPerTemperature` | `500` | The number of offspring produced per temperature
+Parameter                          | Default Value     | Description
+:--------------------------------- | :---------------- | :----------
+`operator`                         | Problem dependent | The mutation operator
+`method`                           | `linear`          | The scalarization method - `linear`, `min-max`
+`weights`                          | `1.0,1.0,...`     | The scalarization weights
+`initialTemperature`               | `1.0`             | The initial temperature
+`alpha`                            | `0.8`             | The cooling rate
+`numberOfIterationsPerTemperature` | `500`             | The number of offspring produced per temperature
 
 
 ## References
