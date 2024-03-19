@@ -40,9 +40,7 @@
       <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v3.11/MOEAFramework-3.11-Source.tar.gz"
           onClick="_gaq.push(['_trackEvent', 'Downloads', 'Source', '3.11']);">Source</a> |
       <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v3.11/MOEAFramework-3.11-Demo.jar"
-          onClick="_gaq.push(['_trackEvent', 'Downloads', 'Demo', '3.11']);">Demo</a> |
-      <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v3.11/MOEAFramework-3.11-QuickStart.pdf"
-          onClick="_gaq.push(['_trackEvent', 'Downloads', 'Manual', '3.11']);">Quick Start Guide</a>
+          onClick="_gaq.push(['_trackEvent', 'Downloads', 'Demo', '3.11']);">Demo</a>
   	</td>
   </tr>
   <tr>
@@ -54,9 +52,7 @@
       <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v3.10/MOEAFramework-3.10-Source.tar.gz"
           onClick="_gaq.push(['_trackEvent', 'Downloads', 'Source', '3.10']);">Source</a> |
       <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v3.10/MOEAFramework-3.10-Demo.jar"
-          onClick="_gaq.push(['_trackEvent', 'Downloads', 'Demo', '3.10']);">Demo</a> |
-      <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v3.10/MOEAFramework-3.10-QuickStart.pdf"
-          onClick="_gaq.push(['_trackEvent', 'Downloads', 'Manual', '3.10']);">Quick Start Guide</a>
+          onClick="_gaq.push(['_trackEvent', 'Downloads', 'Demo', '3.10']);">Demo</a>
   	</td>
   </tr>
   <tr>
@@ -68,9 +64,7 @@
       <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v3.9/MOEAFramework-3.9-Source.tar.gz"
           onClick="_gaq.push(['_trackEvent', 'Downloads', 'Source', '3.9']);">Source</a> |
       <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v3.9/MOEAFramework-3.9-Demo.jar"
-          onClick="_gaq.push(['_trackEvent', 'Downloads', 'Demo', '3.9']);">Demo</a> |
-      <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v3.9/MOEAFramework-3.9-QuickStart.pdf"
-          onClick="_gaq.push(['_trackEvent', 'Downloads', 'Manual', '3.9']);">Quick Start Guide</a>
+          onClick="_gaq.push(['_trackEvent', 'Downloads', 'Demo', '3.9']);">Demo</a>
   	</td>
   </tr>
   <tr>
@@ -82,9 +76,7 @@
       <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v3.8/MOEAFramework-3.8-Source.tar.gz"
           onClick="_gaq.push(['_trackEvent', 'Downloads', 'Source', '3.8']);">Source</a> |
       <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v3.8/MOEAFramework-3.8-Demo.jar"
-          onClick="_gaq.push(['_trackEvent', 'Downloads', 'Demo', '3.8']);">Demo</a> |
-      <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v3.8/MOEAFramework-3.8-QuickStart.pdf"
-          onClick="_gaq.push(['_trackEvent', 'Downloads', 'Manual', '3.8']);">Quick Start Guide</a>
+          onClick="_gaq.push(['_trackEvent', 'Downloads', 'Demo', '3.8']);">Demo</a>
   	</td>
   </tr>
   <tr>
@@ -96,9 +88,7 @@
       <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v3.7/MOEAFramework-3.7-Source.tar.gz"
           onClick="_gaq.push(['_trackEvent', 'Downloads', 'Source', '3.7']);">Source</a> |
       <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v3.7/MOEAFramework-3.7-Demo.jar"
-          onClick="_gaq.push(['_trackEvent', 'Downloads', 'Demo', '3.7']);">Demo</a> |
-      <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v3.7/MOEAFramework-3.7-QuickStart.pdf"
-          onClick="_gaq.push(['_trackEvent', 'Downloads', 'Manual', '3.7']);">Quick Start Guide</a>
+          onClick="_gaq.push(['_trackEvent', 'Downloads', 'Demo', '3.7']);">Demo</a>
   	</td>
   </tr>
   <tr>
@@ -110,9 +100,7 @@
       <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v3.6/MOEAFramework-3.6-Source.tar.gz"
           onClick="_gaq.push(['_trackEvent', 'Downloads', 'Source', '3.6']);">Source</a> |
       <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v3.6/MOEAFramework-3.6-Demo.jar"
-          onClick="_gaq.push(['_trackEvent', 'Downloads', 'Demo', '3.6']);">Demo</a> |
-      <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v3.6/MOEAFramework-3.6-QuickStart.pdf"
-          onClick="_gaq.push(['_trackEvent', 'Downloads', 'Manual', '3.6']);">Quick Start Guide</a>
+          onClick="_gaq.push(['_trackEvent', 'Downloads', 'Demo', '3.6']);">Demo</a>
   	</td>
   </tr>
   <tr>
@@ -124,9 +112,7 @@
       <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v3.5/MOEAFramework-3.5-Source.tar.gz"
           onClick="_gaq.push(['_trackEvent', 'Downloads', 'Source', '3.5']);">Source</a> |
       <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v3.5/MOEAFramework-3.5-Demo.jar"
-          onClick="_gaq.push(['_trackEvent', 'Downloads', 'Demo', '3.5']);">Demo</a> |
-      <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v3.5/MOEAFramework-3.5-QuickStart.pdf"
-          onClick="_gaq.push(['_trackEvent', 'Downloads', 'Manual', '3.5']);">Quick Start Guide</a>
+          onClick="_gaq.push(['_trackEvent', 'Downloads', 'Demo', '3.5']);">Demo</a>
   	</td>
   </tr>
   <tr>
@@ -138,9 +124,7 @@
       <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v3.4/MOEAFramework-3.4-Source.tar.gz"
           onClick="_gaq.push(['_trackEvent', 'Downloads', 'Source', '3.4']);">Source</a> |
       <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v3.4/MOEAFramework-3.4-Demo.jar"
-          onClick="_gaq.push(['_trackEvent', 'Downloads', 'Demo', '3.4']);">Demo</a> |
-      <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v3.4/MOEAFramework-3.4-QuickStart.pdf"
-          onClick="_gaq.push(['_trackEvent', 'Downloads', 'Manual', '3.4']);">Quick Start Guide</a>
+          onClick="_gaq.push(['_trackEvent', 'Downloads', 'Demo', '3.4']);">Demo</a>
   	</td>
   </tr>
   <tr>
@@ -152,9 +136,7 @@
       <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v3.3/MOEAFramework-3.3-Source.tar.gz"
           onClick="_gaq.push(['_trackEvent', 'Downloads', 'Source', '3.3']);">Source</a> |
       <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v3.3/MOEAFramework-3.3-Demo.jar"
-          onClick="_gaq.push(['_trackEvent', 'Downloads', 'Demo', '3.3']);">Demo</a> |
-      <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v3.3/MOEAFramework-3.3-QuickStart.pdf"
-          onClick="_gaq.push(['_trackEvent', 'Downloads', 'Manual', '3.3']);">Quick Start Guide</a>
+          onClick="_gaq.push(['_trackEvent', 'Downloads', 'Demo', '3.3']);">Demo</a>
   	</td>
   </tr>
   <tr>
@@ -166,9 +148,7 @@
       <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v3.2/MOEAFramework-3.2-Source.tar.gz"
           onClick="_gaq.push(['_trackEvent', 'Downloads', 'Source', '3.2']);">Source</a> |
       <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v3.2/MOEAFramework-3.2-Demo.jar"
-          onClick="_gaq.push(['_trackEvent', 'Downloads', 'Demo', '3.2']);">Demo</a> |
-      <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v3.2/MOEAFramework-3.2-QuickStart.pdf"
-          onClick="_gaq.push(['_trackEvent', 'Downloads', 'Manual', '3.2']);">Quick Start Guide</a>
+          onClick="_gaq.push(['_trackEvent', 'Downloads', 'Demo', '3.2']);">Demo</a>
   	</td>
   </tr>
   <tr>
@@ -180,9 +160,7 @@
       <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v3.1/MOEAFramework-3.1-Source.tar.gz"
           onClick="_gaq.push(['_trackEvent', 'Downloads', 'Source', '3.1']);">Source</a> |
       <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v3.1/MOEAFramework-3.1-Demo.jar"
-          onClick="_gaq.push(['_trackEvent', 'Downloads', 'Demo', '3.1']);">Demo</a> |
-      <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v3.1/MOEAFramework-3.1-QuickStart.pdf"
-          onClick="_gaq.push(['_trackEvent', 'Downloads', 'Manual', '3.1']);">Quick Start Guide</a>
+          onClick="_gaq.push(['_trackEvent', 'Downloads', 'Demo', '3.1']);">Demo</a>
   	</td>
   </tr>
   <tr>
@@ -194,9 +172,7 @@
       <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v3.0/MOEAFramework-3.0-Source.tar.gz"
           onClick="_gaq.push(['_trackEvent', 'Downloads', 'Source', '3.0']);">Source</a> |
       <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v3.0/MOEAFramework-3.0-Demo.jar"
-          onClick="_gaq.push(['_trackEvent', 'Downloads', 'Demo', '3.0']);">Demo</a> |
-      <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v3.0/MOEAFramework-3.0-QuickStart.pdf"
-          onClick="_gaq.push(['_trackEvent', 'Downloads', 'Manual', '3.0']);">Quick Start Guide</a>
+          onClick="_gaq.push(['_trackEvent', 'Downloads', 'Demo', '3.0']);">Demo</a>
   	</td>
   </tr>
   <tr>
