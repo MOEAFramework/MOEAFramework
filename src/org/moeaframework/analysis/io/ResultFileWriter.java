@@ -149,7 +149,7 @@ public class ResultFileWriter implements OutputWriter {
 	}
 
 	/**
-	 * Returns the number of entries written to the result file. Querying this method immediately after the
+	 * Returns the number of entries written to the result file.  Querying this method immediately after the
 	 * constructor in which the result file already existed returns the number of valid entries that were
 	 * recovered.
 	 * 

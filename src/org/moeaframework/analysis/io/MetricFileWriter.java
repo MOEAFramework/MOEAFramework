@@ -73,10 +73,9 @@ public class MetricFileWriter implements OutputWriter {
 	private int numberOfEntries;
 
 	/**
-	 * Constructs an output writer for writing metric files to the specified  file. If the file already exists,
-	 * a cleanup operation is first performed. The cleanup operation removes the last line if incomplete and
-	 * records the number of correct lines in the file. The {@link #getNumberOfEntries()} can then be used to
-	 * resume evaluation from the last recorded entry.
+	 * Constructs an output writer for writing metric files to the specified  file.  If the file already exists,
+	 * a cleanup operation is first performed.  The cleanup operation removes any invalid entries from the file.
+	 * The {@link #getNumberOfEntries()} can then be used to resume evaluation from the last recorded entry.
 	 * 
 	 * @param indicators the indicators to evaluate
 	 * @param file the file to which the metrics are written
