@@ -19,10 +19,8 @@ package org.moeaframework.problem.CDTLZ;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.moeaframework.TestThresholds;
 import org.moeaframework.TestUtils;
 import org.moeaframework.core.Problem;
-import org.moeaframework.core.Solution;
 import org.moeaframework.problem.ProblemTest;
 
 /**
@@ -59,27 +57,12 @@ public class C1_DTLZ3Test extends ProblemTest {
 	
 	@Test
 	public void testGenerate() {
-		testGenerate(2);
-		testGenerate(3);
-		testGenerate(5);
-		testGenerate(8);
-		testGenerate(10);
-		testGenerate(15);
+		testGenerate("C1_DTLZ3_2", ProblemTest::assertFeasible);
+		testGenerate("C1_DTLZ3_3", ProblemTest::assertFeasible);
+		testGenerate("C1_DTLZ3_5", ProblemTest::assertFeasible);
+		testGenerate("C1_DTLZ3_8", ProblemTest::assertFeasible);
+		testGenerate("C1_DTLZ3_10", ProblemTest::assertFeasible);
+		testGenerate("C1_DTLZ3_15", ProblemTest::assertFeasible);
 	}
 	
-	/**
-	 * All optimal solutions from the DTLZ3 problem should be feasible.
-	 * 
-	 * @param numberOfObjectives the number of objectives
-	 */
-	public void testGenerate(int numberOfObjectives) {
-		try (C1_DTLZ3 problem = new C1_DTLZ3(numberOfObjectives)) {	
-			for (int i = 0; i < TestThresholds.SAMPLES; i++) {
-				Solution solution = problem.generate();
-				problem.evaluate(solution);
-				Assert.assertFalse(solution.violatesConstraints());
-			}
-		}
-	}
-
 }

@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -59,7 +58,7 @@ public class BBOB2016Problems extends ProblemProvider {
 	private static final Pattern singleProblemPattern = Pattern.compile(
 			"^bbob_f([0-9]+)_i([0-9]+)_d([0-9]+)$");
 	
-	private static final Pattern pattern = Pattern.compile(
+	private static final Pattern multiProblemPattern = Pattern.compile(
 			"^bbob_f([0-9]+)_i([0-9]+)_d([0-9]+)((\\,|__)bbob_f([0-9]+)_i([0-9]+)_d([0-9]+))*$");
 	
 	/**
@@ -77,7 +76,7 @@ public class BBOB2016Problems extends ProblemProvider {
 			name = name.substring(11, name.length()-1);
 		}
 		
-		Matcher matcher = pattern.matcher(name);
+		Matcher matcher = multiProblemPattern.matcher(name);
 
 		if (matcher.matches()) {
 			String[] parts = name.split("(,|__)");

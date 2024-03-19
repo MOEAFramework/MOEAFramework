@@ -70,8 +70,7 @@ public class C2_DTLZ2Test extends ProblemTest {
 	}
 	
 	/**
-	 * Only a subset of optimal solutions from the DTLZ2 problem should be
-	 * feasible.
+	 * Only a subset of optimal solutions from the DTLZ2 problem should be feasible.
 	 * 
 	 * @param numberOfObjectives the number of objectives
 	 */
@@ -79,10 +78,10 @@ public class C2_DTLZ2Test extends ProblemTest {
 		try (C2_DTLZ2 problem = new C2_DTLZ2(numberOfObjectives);
 				DTLZ2 originalProblem = new DTLZ2(numberOfObjectives)) {
 			for (int i = 0; i < TestThresholds.SAMPLES; i++) {
-				Solution originalSlution = originalProblem.generate();
+				Solution originalSolution = originalProblem.generate();
 				Solution solution = problem.newSolution();
 				
-				EncodingUtils.setReal(solution, EncodingUtils.getReal(originalSlution));
+				EncodingUtils.setReal(solution, EncodingUtils.getReal(originalSolution));
 				
 				problem.evaluate(solution);
 				

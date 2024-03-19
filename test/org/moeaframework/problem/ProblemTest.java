@@ -128,6 +128,15 @@ public abstract class ProblemTest {
 	}
 	
 	/**
+	 * Asserts that the solution is feasible and has no constraint violations.
+	 * 
+	 * @param solution the solution to test
+	 */
+	public static void assertFeasible(Solution solution) {
+		Assert.assertFalse(solution.violatesConstraints());
+	}
+	
+	/**
 	 * Tests the MOEA Framework implementation against the JMetal implementation.
 	 * 
 	 * @param problemName the problem name

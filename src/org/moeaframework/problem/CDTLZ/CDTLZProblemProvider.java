@@ -17,7 +17,8 @@
  */
 package org.moeaframework.problem.CDTLZ;
 
-import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
@@ -36,22 +37,24 @@ public class CDTLZProblemProvider extends ProblemProvider {
 	}
 	
 	@Override
-	public Problem getProblem(String name) {
-		name = name.toUpperCase();
-		
+	public Problem getProblem(String name) {		
 		try {
-			if (name.startsWith("C1_DTLZ1_")) {
-				return new C1_DTLZ1(Integer.parseInt(name.substring(9)));
-			} else if (name.startsWith("C1_DTLZ3_")) {
-				return new C1_DTLZ3(Integer.parseInt(name.substring(9)));
-			} else if (name.startsWith("C2_DTLZ2_")) {
-				return new C2_DTLZ2(Integer.parseInt(name.substring(9)));
-			} else if (name.startsWith("C3_DTLZ1_")) {
-				return new C3_DTLZ1(Integer.parseInt(name.substring(9)));
-			} else if (name.startsWith("C3_DTLZ4_")) {
-				return new C3_DTLZ4(Integer.parseInt(name.substring(9)));
-			} else if (name.startsWith("CONVEX_C2_DTLZ2_")) {
-				return new ConvexC2_DTLZ2(Integer.parseInt(name.substring(16)));
+			Pattern pattern = Pattern.compile("^((?:CONVEX_)?C[0-9]_DTLZ[0-9])_([0-9]+)$", Pattern.CASE_INSENSITIVE);
+			Matcher matcher = pattern.matcher(name);
+			
+			if (matcher.matches()) {
+				String instance = matcher.group(1);
+				int numberOfObjectives = Integer.parseInt(matcher.group(2));
+				
+				return switch (instance.toUpperCase()) {
+					case "C1_DTLZ1" -> new C1_DTLZ1(numberOfObjectives);
+					case "C1_DTLZ3" -> new C1_DTLZ3(numberOfObjectives);
+					case "C2_DTLZ2" -> new C2_DTLZ2(numberOfObjectives);
+					case "C3_DTLZ1" -> new C3_DTLZ1(numberOfObjectives);
+					case "C3_DTLZ4" -> new C3_DTLZ4(numberOfObjectives);
+					case "CONVEX_C2_DTLZ2" -> new ConvexC2_DTLZ2(numberOfObjectives);
+					default -> null;
+				};
 			}
 		} catch (NumberFormatException e) {
 			return null;

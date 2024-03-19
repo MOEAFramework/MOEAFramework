@@ -47,8 +47,7 @@ public class Fonseca2Test extends ProblemTest {
 				0.00001);
 		
 		Assert.assertArrayEquals(new double[] { 0.0, 0.98168 }, 
-				TestUtils.evaluateAt(problem,
-						1.0 / Math.sqrt(2.0), 1.0 / Math.sqrt(2.0)).getObjectives(),
+				TestUtils.evaluateAt(problem, 1.0 / Math.sqrt(2.0), 1.0 / Math.sqrt(2.0)).getObjectives(),
 				0.00001);
 	}
 	
@@ -69,8 +68,7 @@ public class Fonseca2Test extends ProblemTest {
 				0.00001);
 		
 		Assert.assertArrayEquals(new double[] { 0.0, 0.98168 }, 
-				TestUtils.evaluateAt(problem,
-						1.0 / Math.sqrt(3.0), 1.0 / Math.sqrt(3.0), 1.0 / Math.sqrt(3.0)).getObjectives(),
+				TestUtils.evaluateAt(problem, 1.0 / Math.sqrt(3.0), 1.0 / Math.sqrt(3.0), 1.0 / Math.sqrt(3.0)).getObjectives(),
 				0.00001);
 	}
 

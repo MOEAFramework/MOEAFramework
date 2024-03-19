@@ -350,6 +350,8 @@ public abstract class ZCAT extends AbstractProblem implements AnalyticalProblem 
 	    for (int i = m; i < numberOfVariables; i++) {
 	    	setDecisionVariable(g[i - m], i, solution);
 	    }
+	    
+	    evaluate(solution);
 		
 		return solution;
 	}
