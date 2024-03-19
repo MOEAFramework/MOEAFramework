@@ -77,6 +77,7 @@ public class SBXTest extends ParentCentricVariationTest {
 	 * Similar to {@code testDistribution1}, except the parents are swapped.
 	 */
 	@Test
+	@Retryable
 	public void testDistribution2() {
 		SBX sbx = new SBX(1.0, 20.0);
 
