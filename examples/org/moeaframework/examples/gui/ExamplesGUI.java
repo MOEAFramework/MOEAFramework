@@ -93,8 +93,10 @@ public class ExamplesGUI extends JFrame {
 		layoutComponents();
 		setupActions();
 		
-		setVisible(true);
 		list.setSelectedIndex(0);
+		
+		setSize(1000, 650);
+		setIconImages(Settings.getIcon().getResolutionVariants());
 	}
 	
 	/**
@@ -182,8 +184,6 @@ public class ExamplesGUI extends JFrame {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		getContentPane().setLayout(new BorderLayout());
 		getContentPane().add(contentPane, BorderLayout.CENTER);
-		setSize(840, 600);
-		setIconImages(Settings.getIcon().getResolutionVariants());
 	}
 	
 	/**

@@ -37,7 +37,7 @@ public class CDTLZProblemProvider extends ProblemProvider {
 	
 	@Override
 	public Problem getProblem(String name) {
-		name = name.toUpperCase(Locale.ROOT);
+		name = name.toUpperCase();
 		
 		try {
 			if (name.startsWith("C1_DTLZ1_")) {

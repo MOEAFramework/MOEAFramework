@@ -52,8 +52,7 @@ public class Examples {
 	
 	static {
 		try {
-			resourceBundle = ResourceBundle.getBundle(
-					"org.moeaframework.examples.gui.LocalStrings", 
+			resourceBundle = ResourceBundle.getBundle("org.moeaframework.examples.gui.LocalStrings",
 					Locale.getDefault());
 		} catch (MissingResourceException e) {
 			e.printStackTrace();
@@ -74,8 +73,7 @@ public class Examples {
 	 */
 	public static void main(String[] args) {
 		try {
-			UIManager.setLookAndFeel(
-			        UIManager.getSystemLookAndFeelClassName());
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e) {
 			// couldn't set system look and feel, continue with default
 		}
@@ -223,7 +221,8 @@ public class Examples {
 				resourceBundle.getString("conclusion.description"),
 				null));
 		
-		new ExamplesGUI(examples);
+		ExamplesGUI gui = new ExamplesGUI(examples);
+		gui.setVisible(true);
 	}
 
 }

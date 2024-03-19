@@ -57,8 +57,7 @@ public class ActionFactory implements ControllerListener {
 	/**
 	 * The file extension.
 	 */
-	private static String EXTENSION = 
-			"." + localization.getString("file.extension").toLowerCase();
+	private static String EXTENSION = "." + localization.getString("file.extension").toLowerCase();
 
 	/**
 	 * The file filter used when selecting the file to save/load.

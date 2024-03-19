@@ -71,7 +71,7 @@ public class BBOB2016Problems extends ProblemProvider {
 
 	@Override
 	public Problem getProblem(String name) {
-		name = name.toLowerCase(Locale.ROOT);
+		name = name.toLowerCase();
 		
 		if (name.startsWith("bbob-biobj(") && name.endsWith(")")) {
 			name = name.substring(11, name.length()-1);
