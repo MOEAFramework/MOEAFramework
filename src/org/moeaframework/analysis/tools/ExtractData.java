@@ -166,7 +166,7 @@ public class ExtractData extends CommandLineUtility {
 				case "R2Indicator" -> indicators.includeR2();
 				case "R3Indicator" -> indicators.includeR3();
 				default -> throw new IllegalStateException();
-			};
+			}
 		}
 
 		return indicators;

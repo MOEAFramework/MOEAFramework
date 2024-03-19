@@ -115,7 +115,7 @@ public class SampleGenerator extends CommandLineUtility {
 					sequence = new Saltelli();
 				}
 				default -> throw new IllegalStateException();
-			};
+			}
 		} else {
 			sequence = new Sobol();
 		}

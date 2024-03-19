@@ -127,7 +127,7 @@ public class EdgeData extends DistanceTable {
 				}
 			}
 			default -> throw new IllegalArgumentException("edge format not supported");
-		};
+		}
 	}
 	
 	/**

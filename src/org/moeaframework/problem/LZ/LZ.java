@@ -383,7 +383,7 @@ public abstract class LZ extends AbstractProblem {
 						y_obj[1] = alpha[1] + g;
 					}
 					default -> throw new IllegalStateException();
-				};
+				}
 			}
 			case 3 -> {
 				switch (lType) {
@@ -414,10 +414,10 @@ public abstract class LZ extends AbstractProblem {
 						y_obj[2] = alpha[2] + e;
 					}
 					default -> throw new IllegalStateException();
-				};
+				}
 			}
 			default -> throw new IllegalStateException();
-		};
+		}
 
 		return y_obj;
 	}

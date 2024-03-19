@@ -201,7 +201,7 @@ public class EdgeWeightMatrix extends DistanceTable {
 				}
 			}
 			default -> throw new IllegalArgumentException("unsupported matrix type");
-		};
+		}
 		
 		// sanity check
 		if (!entries.isEmpty()) {

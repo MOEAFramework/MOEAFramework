@@ -66,7 +66,7 @@ public class MaxElapsedTime implements TerminationCondition {
 		return (System.currentTimeMillis() - startTime) >= maxTime;
 	}
 	
-	final static long toMilliseconds(Duration duration) {
+	static final long toMilliseconds(Duration duration) {
 		return duration.getSeconds() * 1000 + duration.getNano() / 1000000;
 	}
 

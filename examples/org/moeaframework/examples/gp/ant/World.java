@@ -171,7 +171,7 @@ public class World {
 							totalFood++;
 						}
 						default -> throw new IllegalStateException();
-					};
+					}
 					
 					i++;
 				}
@@ -288,7 +288,7 @@ public class World {
 			case EAST -> direction = Direction.SOUTH;
 			case WEST -> direction = Direction.NORTH;
 			default -> throw new IllegalStateException();
-		};
+		}
 		
 		remainingMoves--;
 	}
@@ -303,7 +303,7 @@ public class World {
 			case EAST -> direction = Direction.NORTH;
 			case WEST -> direction = Direction.SOUTH;
 			default -> throw new IllegalStateException();
-		};
+		}
 		
 		remainingMoves--;
 	}
@@ -324,7 +324,7 @@ public class World {
 			case EAST -> x = (x + 1) % width;
 			case WEST -> x = (x - 1 + width) % width;
 			default -> throw new IllegalStateException();
-		};
+		}
 		
 		if (map[x][y].equals(State.FOOD)) {
 			map[x][y] = State.EATEN;
@@ -348,7 +348,6 @@ public class World {
 			case SOUTH -> map[x][(y + 1) % height].equals(State.FOOD);
 			case EAST -> map[(x + 1) % width][y].equals(State.FOOD);
 			case WEST -> map[(x - 1 + width) % width][y].equals(State.FOOD);
-			default -> throw new IllegalStateException();
 		};
 	}
 	
@@ -364,7 +363,7 @@ public class World {
 					case TRAIL -> System.out.print('.');
 					case EATEN -> System.out.print('@');
 					default -> System.out.print('?');
-				};
+				}
 			}
 			
 			System.out.println();

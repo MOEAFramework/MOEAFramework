@@ -161,7 +161,7 @@ public class SimpleStatistics extends CommandLineUtility {
 						case "stdev" -> output.print(statistics.getStandardDeviation());
 						case "count" -> output.print(statistics.getN());
 						default -> throw new IllegalStateException();
-					};
+					}
 				}
 				
 				output.println();

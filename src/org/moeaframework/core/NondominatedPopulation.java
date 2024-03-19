@@ -211,7 +211,7 @@ public class NondominatedPopulation extends Population {
 				
 				yield true;
 			}
-			default -> false;
+			case ALLOW_DUPLICATES -> false;
 		};
 	}
 

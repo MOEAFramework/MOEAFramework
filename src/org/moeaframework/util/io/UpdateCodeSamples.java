@@ -240,7 +240,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 						default -> {
 							content = FileUtils.readUTF8(new File(filename));
 						}
-					};
+					}
 					
 					// compare old and new content
 					List<String> newContent = format(content, options, fileType);
@@ -709,7 +709,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 					content = content.replaceAll("(?:\\s*\\r?\\n){2,}", System.lineSeparator() + System.lineSeparator());
 					yield content;
 				}
-				default -> content;
+				case Text, Bash, Output -> content;
 			};
 		}
 		
@@ -852,7 +852,6 @@ public class UpdateCodeSamples extends CommandLineUtility {
 			return switch (this) {
 				case Markdown -> line.startsWith("```");
 				case Html -> line.startsWith("<pre");
-				default -> false;
 			};
 		}
 		
@@ -866,7 +865,6 @@ public class UpdateCodeSamples extends CommandLineUtility {
 			return switch (this) {
 				case Markdown -> line.startsWith("```");
 				case Html -> line.startsWith("</pre>");
-				default -> false;
 			};
 		}
 		
@@ -886,7 +884,6 @@ public class UpdateCodeSamples extends CommandLineUtility {
 			return switch (this) {
 				case Markdown -> markdownBrush.contains(brushName) ? brushName : "";
 				case Html -> htmlBrush.contains(brushName) ? brushName : "plain";
-				default -> "";
 			};
 		}
 		
@@ -908,7 +905,8 @@ public class UpdateCodeSamples extends CommandLineUtility {
 					lines.add("]]>");
 					lines.add("</pre>");
 				}
-			};
+				default -> {}
+			}
 		}
 	}
 	

@@ -88,8 +88,9 @@ public class MetricFileWriter implements OutputWriter {
 						}
 					}
 					case OVERWRITE -> FileUtils.delete(existingFile);
-					default -> throw new FrameworkException(ResultFileWriter.EXISTING_FILE);
-				};
+					case ERROR -> throw new FrameworkException(ResultFileWriter.EXISTING_FILE);
+					default -> throw new IllegalStateException();
+				}
 			}
 			
 			if (file.exists()) {

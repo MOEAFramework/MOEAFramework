@@ -117,8 +117,8 @@ public abstract class PeriodicAction implements Algorithm {
 			switch (frequencyType) {
 				case EVALUATIONS -> lastInvocation = algorithm.getNumberOfEvaluations();
 				case STEPS -> lastInvocation = 0;
-				default -> throw new IllegalStateException("unsupported frequencyType: " + frequencyType);
-			};
+				default -> throw new IllegalStateException();
+			}
 		}
 		
 		algorithm.step();
@@ -138,8 +138,8 @@ public abstract class PeriodicAction implements Algorithm {
 					lastInvocation = iteration;
 				}
 			}
-			default -> throw new IllegalStateException("unsupported frequencyType: " + frequencyType);
-		};
+			default -> throw new IllegalStateException();
+		}
 	}
 
 	@Override
