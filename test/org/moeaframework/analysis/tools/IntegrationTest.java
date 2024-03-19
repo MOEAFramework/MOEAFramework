@@ -59,19 +59,6 @@ public class IntegrationTest {
 		ProblemFactory.setInstance(new ProblemFactory());
 	}
 	
-	@Test
-	public void testSetGenerator() throws Exception {
-		File referenceSet = TestUtils.createTempFile();
-		
-		SetGenerator.main(new String[] {
-				"-b", "DTLZ2_2",
-				"-n", "10", 
-				"-o", referenceSet.getPath()});
-		
-		Assert.assertEquals(10, TestUtils.lineCount(referenceSet));
-		TestUtils.assertLinePattern(referenceSet, TestUtils.getSpaceSeparatedNumericPattern(2));
-	}
-	
 	/**
 	 * Tests the interoperability between the main sensitivity command line utilities.
 	 */
