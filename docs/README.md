@@ -21,6 +21,8 @@
   * [Saving and Formatting Results](misc.md#saving-and-formatting-results)
   * [Injecting Initial Solutions](misc.md#injecting-initial-solutions)
   * [Mixed Types](misc.md#mixed-types)
+  * [Termination Conditions](misc.md#termination-conditions)
+  * [Generating Reference Sets](misc.md#generating-reference-sets)
 
 ## Advanced
 * [List of Decision Variables](variables.md)
