@@ -22,7 +22,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import org.moeaframework.core.EvolutionaryAlgorithm;
-import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Initialization;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Population;
@@ -110,7 +109,8 @@ Configurable {
 		super.initialize();
 		
 		if (variation == null) {
-			throw new FrameworkException("no variation operator set, must set one by calling setVariation(...)");
+			throw new AlgorithmInitializationException(this,
+					"no variation operator set, must set one by calling setVariation(...)");
 		}
 
 		Population population = getPopulation();

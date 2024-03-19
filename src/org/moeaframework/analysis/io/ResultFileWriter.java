@@ -29,7 +29,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.apache.commons.cli.CommandLine;
-import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variable;
@@ -72,20 +71,14 @@ public class ResultFileWriter implements OutputWriter {
 			"saving result file without variables, could cause unexpected behavior or data loss";
 	
 	/**
-	 * The message displayed when an unclean file exists from a previous run.
-	 */
-	static final String EXISTING_FILE =
-			"an unclean version of the file exists from a previous run, requires manual intervention";
-
-	/**
-	 * The stream for appending data to the file.
-	 */
-	private final PrintWriter writer;
-	
-	/**
 	 * Settings for this result file.
 	 */
 	private final ResultFileWriterSettings settings;
+	
+	/**
+	 * The stream for appending data to the file.
+	 */
+	private PrintWriter writer;
 
 	/**
 	 * The number of lines in the file.
@@ -113,58 +106,45 @@ public class ResultFileWriter implements OutputWriter {
 		if (!settings.isIncludeVariables()) {
 			System.err.println(NO_VARIABLES_WARNING);
 		}
-		
-		if (settings.isAppend()) {
-			// when appending, first move the file to a temporary location
-			File existingFile = settings.getUncleanFile(file);
-			
-			if (existingFile.exists()) {
-				switch (settings.getCleanupStrategy()) {
-					case RESTORE -> {
-						if (file.exists()) {
-							FileUtils.delete(existingFile);
-						}
-					}
-					case OVERWRITE -> FileUtils.delete(existingFile);
-					case ERROR -> throw new FrameworkException(EXISTING_FILE);
-					default -> throw new IllegalStateException();
-				}
-			}
-			
-			if (file.exists()) {
-				FileUtils.move(file, existingFile);
-			}
-		}
 
-		// prepare this class for writing
-		numberOfEntries = 0;
-		writer = new PrintWriter(new BufferedWriter(new FileWriter(file)), true);
-		
-		// print header information
-		writer.print("# Problem = ");
-		writer.println(problem.getName());
-		
-		if (settings.isIncludeVariables()) {
-			writer.print("# Variables = ");
-			writer.println(problem.getNumberOfVariables());
+		if (file.exists() && settings.isAppend()) {
+			// when appending to an existing file, first copy out all valid entries
+			File tempFile = File.createTempFile("temp", null);
+
+			try (ResultFileReader reader = ResultFileReader.open(problem, file);
+					ResultFileWriter writer = ResultFileWriter.overwrite(problem, tempFile)) {
+				while (reader.hasNext()) {
+					writer.append(reader.next());
+				}
+
+				numberOfEntries = writer.getNumberOfEntries();
+			}
+
+			// next, replace the original only if any changes were made
+			if (!FileUtils.areIdentical(tempFile, file)) {
+				FileUtils.move(tempFile, file);
+			}
+
+			// lastly, open the file in append mode
+			writer = new PrintWriter(new BufferedWriter(new FileWriter(file, true)), true);
 		}
 		
-		writer.print("# Objectives = ");
-		writer.println(problem.getNumberOfObjectives());
-
-		if (settings.isAppend()) {
-			// when appending, copy valid entries out of temporary file
-			File existingFile = settings.getUncleanFile(file);
-
-			if (existingFile.exists()) {
-				try (ResultFileReader reader = new ResultFileReader(problem, existingFile)) {
-					while (reader.hasNext()) {
-						append(reader.next());
-					}
-				}
-	
-				FileUtils.delete(existingFile);
+		if (writer == null) {
+			// if the file doesn't exist or we are not appending, create a new file and print the header
+			numberOfEntries = 0;
+			writer = new PrintWriter(new BufferedWriter(new FileWriter(file)), true);
+			
+			// print header information
+			writer.print("# Problem = ");
+			writer.println(problem.getName());
+			
+			if (settings.isIncludeVariables()) {
+				writer.print("# Variables = ");
+				writer.println(problem.getNumberOfVariables());
 			}
+			
+			writer.print("# Objectives = ");
+			writer.println(problem.getNumberOfObjectives());
 		}
 	}
 
@@ -317,7 +297,7 @@ public class ResultFileWriter implements OutputWriter {
 	 * @throws IOException if an I/O error occurred
 	 */
 	public static ResultFileWriter overwrite(Problem problem, File file) throws IOException {
-		return new ResultFileWriter(problem, file, ResultFileWriterSettings.noAppend());
+		return new ResultFileWriter(problem, file, ResultFileWriterSettings.overwrite());
 	}
 	
 	/**
@@ -334,7 +314,7 @@ public class ResultFileWriter implements OutputWriter {
 		 * Constructs the default settings object.
 		 */
 		public ResultFileWriterSettings() {
-			this(Optional.empty(), Optional.empty(), Optional.empty());
+			this(Optional.empty(), Optional.empty());
 		}
 		
 		/**
@@ -342,11 +322,9 @@ public class ResultFileWriter implements OutputWriter {
 		 * 
 		 * @param append {@code true} to enable append mode, {@code false} otherwise
 		 * @param includeVariables {@code true} to enable writing all decision variables; {@code false} otherwise
-		 * @param cleanupStrategy the cleanup strategy
 		 */
-		public ResultFileWriterSettings(Optional<Boolean> append, Optional<Boolean> includeVariables,
-				Optional<CleanupStrategy> cleanupStrategy) {
-			super(append, cleanupStrategy);
+		public ResultFileWriterSettings(Optional<Boolean> append, Optional<Boolean> includeVariables) {
+			super(append);
 			this.includeVariables = includeVariables != null && includeVariables.isPresent() ?
 					includeVariables.get() : true;
 		}
@@ -374,8 +352,8 @@ public class ResultFileWriter implements OutputWriter {
 		 * 
 		 * @return the settings with append mode disabled
 		 */
-		public static ResultFileWriterSettings noAppend() {
-			return new ResultFileWriterSettings(Optional.of(false), Optional.empty(), Optional.empty());
+		public static ResultFileWriterSettings overwrite() {
+			return new ResultFileWriterSettings(Optional.of(false), Optional.empty());
 		}
 		
 		/**
@@ -385,9 +363,7 @@ public class ResultFileWriter implements OutputWriter {
 		 * @return the settings
 		 */
 		public static ResultFileWriterSettings from(CommandLine commandLine) {
-			return new ResultFileWriterSettings(Optional.empty(),
-					Optional.of(!commandLine.hasOption("novariables")),
-					Optional.empty());
+			return new ResultFileWriterSettings(Optional.empty(), Optional.of(!commandLine.hasOption("novariables")));
 		}
 		
 	}

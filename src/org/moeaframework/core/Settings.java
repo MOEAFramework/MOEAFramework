@@ -29,7 +29,6 @@ import java.io.InputStreamReader;
 import java.util.Properties;
 
 import org.apache.commons.lang3.StringUtils;
-import org.moeaframework.analysis.io.OutputWriter;
 import org.moeaframework.core.NondominatedPopulation.DuplicateMode;
 import org.moeaframework.core.indicator.Hypervolume;
 import org.moeaframework.core.spi.AlgorithmFactory;
@@ -179,11 +178,6 @@ public class Settings {
 	 * The property key for the genetic programming protected functions flag.
 	 */
 	public static final String KEY_GP_PROTECTED_FUNCTIONS = createKey(KEY_PREFIX, "util", "tree", "protected_functions");
-	
-	/**
-	 * The property key for the cleanup strategy when restarting from previous runs.
-	 */
-	public static final String KEY_CLEANUP_STRATEGY = createKey(KEY_PREFIX, "analysis", "io", "cleanup");
 	
 	/**
 	 * The property key for enabling debugging info when running external problems.
@@ -437,16 +431,6 @@ public class Settings {
 	 */
 	public static boolean isProtectedFunctions() {
 		return PROPERTIES.getBoolean(KEY_GP_PROTECTED_FUNCTIONS, true);
-	}
-	
-	/**
-	 * Returns the cleanup strategy when restarting from a previous run.
-	 * 
-	 * @return the cleanup strategy when restarting from a previous run
-	 */
-	public static OutputWriter.CleanupStrategy getCleanupStrategy() {
-		return PROPERTIES.getEnum(KEY_CLEANUP_STRATEGY, OutputWriter.CleanupStrategy.class,
-				OutputWriter.CleanupStrategy.ERROR);
 	}
 	
 	/**

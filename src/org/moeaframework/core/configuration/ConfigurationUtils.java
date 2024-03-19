@@ -24,7 +24,6 @@ import org.apache.commons.lang3.reflect.MethodUtils;
 import org.apache.commons.lang3.reflect.TypeUtils;
 import org.apache.commons.text.WordUtils;
 import org.moeaframework.core.Algorithm;
-import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.operator.Mutation;
@@ -214,7 +213,7 @@ public class ConfigurationUtils {
 		try {
 			method.invoke(object, value);
 		} catch (IllegalAccessException | InvocationTargetException e) {
-			throw new FrameworkException("failed to apply property " + propertyName, e);
+			throw new ConfigurationException("failed to apply property " + propertyName, e);
 		}
 	}
 	

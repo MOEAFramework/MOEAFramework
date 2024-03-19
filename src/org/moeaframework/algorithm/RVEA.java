@@ -23,7 +23,6 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Initialization;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Population;
@@ -118,11 +117,11 @@ public class RVEA extends AbstractEvolutionaryAlgorithm {
 		
 		// catch potential errors
 		if (variation.getArity() != 2) {
-			throw new FrameworkException("RVEA only supports operators requiring 2 parents");
+			throw new IllegalArgumentException("RVEA only supports operators requiring 2 parents");
 		}
 		
 		if (problem.getNumberOfObjectives() < 2) {
-			throw new FrameworkException("RVEA requires at least two objectives");
+			throw new IllegalArgumentException("RVEA requires at least two objectives");
 		}
 	}
 

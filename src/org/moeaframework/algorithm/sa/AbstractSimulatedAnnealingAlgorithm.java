@@ -22,8 +22,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import org.moeaframework.algorithm.AbstractAlgorithm;
+import org.moeaframework.algorithm.AlgorithmInitializationException;
 import org.moeaframework.algorithm.AlgorithmTerminationException;
-import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Initialization;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
@@ -242,7 +242,8 @@ public abstract class AbstractSimulatedAnnealingAlgorithm extends AbstractAlgori
 		super.initialize();
 		
 		if (mutation == null) {
-			throw new FrameworkException("no mutation operator set, must set one by calling setMutation(...)");
+			throw new AlgorithmInitializationException(this,
+					"no mutation operator set, must set one by calling setMutation(...)");
 		}
 		
 		temperature = initialTemperature;

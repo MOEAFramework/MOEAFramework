@@ -30,8 +30,7 @@ java -classpath "lib/*:dist/*:bin" org.moeaframework.analysis.tools.ResultFileEv
     --input NSGAII_DTLZ2_Results.txt \
     --output NSGAII_DTLZ2_Metrics.txt \
     --problem DTLZ2 \
-    --epsilon 0.01 \
-    --force
+    --epsilon 0.01
     
 java -classpath "lib/*:dist/*:bin" org.moeaframework.analysis.tools.ResultFileInfo \
     --problem DTLZ2 \

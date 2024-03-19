@@ -100,6 +100,29 @@ public class FileUtilsTest {
 		FileUtils.mkdir(file);
 	}
 	
+	@Test
+	public void testAreIdenticalWithSameFile() throws IOException {
+		File file = TestUtils.createTempFile("foobar");
+		
+		Assert.assertTrue(FileUtils.areIdentical(file.getAbsoluteFile(), file.getCanonicalFile()));
+	}
+	
+	@Test
+	public void testAreIdenticalWithSameContent() throws IOException {
+		File first = TestUtils.createTempFile("foobar");
+		File second = TestUtils.createTempFile("foobar");
+		
+		Assert.assertTrue(FileUtils.areIdentical(first, second));
+	}
+	
+	@Test
+	public void testAreIdenticalWithDifferentContent() throws IOException {
+		File first = TestUtils.createTempFile("foobar");
+		File second = TestUtils.createTempFile("foobaz");
+		
+		Assert.assertFalse(FileUtils.areIdentical(first, second));
+	}
+	
 	private File getTempFolder() throws IOException {
 		File file = File.createTempFile("test", null);
 		file.delete();

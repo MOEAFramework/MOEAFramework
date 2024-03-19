@@ -17,8 +17,8 @@
  */
 package org.moeaframework.algorithm.sa;
 
+import org.moeaframework.algorithm.AlgorithmInitializationException;
 import org.moeaframework.core.Algorithm;
-import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.TerminationCondition;
 import org.moeaframework.core.configuration.Configurable;
 import org.moeaframework.core.configuration.Property;
@@ -74,8 +74,8 @@ public class TemperatureBasedTerminationCondition implements TerminationConditio
 	@Override
 	public void initialize(Algorithm algorithm) {
 		if (!(algorithm instanceof AbstractSimulatedAnnealingAlgorithm)) {
-			throw new FrameworkException(getClass().getSimpleName() + " can only be used with "
-					+ AbstractSimulatedAnnealingAlgorithm.class.getSimpleName());
+			throw new AlgorithmInitializationException(algorithm, getClass().getSimpleName() +
+					" can only be used with " + AbstractSimulatedAnnealingAlgorithm.class.getSimpleName());
 		}
 	}
 

@@ -222,7 +222,7 @@ public class ResultFileWriterTest {
 		properties.setString("foo", "bar");
 		
 		try (ResultFileWriter writer = new ResultFileWriter(problem, file,
-				new ResultFileWriterSettings(Optional.empty(), Optional.of(false), Optional.empty()))) {
+				new ResultFileWriterSettings(Optional.empty(), Optional.of(false)))) {
 			writer.append(new ResultEntry(population, properties));
 		}
 		
@@ -414,12 +414,10 @@ public class ResultFileWriterTest {
 		ResultFileWriterSettings settings = ResultFileWriterSettings.getDefault();
 		Assert.assertTrue(settings.isAppend());
 		Assert.assertTrue(settings.isIncludeVariables());
-		Assert.assertEquals(OutputWriter.CleanupStrategy.ERROR, settings.getCleanupStrategy());
 		
-		settings = ResultFileWriterSettings.noAppend();
+		settings = ResultFileWriterSettings.overwrite();
 		Assert.assertFalse(settings.isAppend());
 		Assert.assertTrue(settings.isIncludeVariables());
-		Assert.assertEquals(OutputWriter.CleanupStrategy.ERROR, settings.getCleanupStrategy());
 		
 		Options options = new Options();
 		options.addOption(Option.builder().longOpt("novariables").build());
@@ -428,7 +426,42 @@ public class ResultFileWriterTest {
 		settings = ResultFileWriterSettings.from(commandLine);
 		Assert.assertTrue(settings.isAppend());
 		Assert.assertFalse(settings.isIncludeVariables());
-		Assert.assertEquals(OutputWriter.CleanupStrategy.ERROR, settings.getCleanupStrategy());
+	}
+	
+	@Test
+	public void testFileTimestamp() throws IOException, InterruptedException {
+		File file = TestUtils.createTempFile();
+
+		NondominatedPopulation population = new NondominatedPopulation();
+		population.add(solution1);
+		population.add(solution2);
+		
+		TypedProperties properties = new TypedProperties();
+		properties.setString("foo", "bar");
+
+		try (ResultFileWriter writer = ResultFileWriter.append(problem, file)) {
+			writer.append(new ResultEntry(population, properties));
+			writer.append(new ResultEntry(population, properties));
+		}
+		
+		long originalTimestamp = file.lastModified();
+		
+		Thread.sleep(100);
+		
+		try (ResultFileWriter writer = ResultFileWriter.append(problem, file)) {
+			Assert.assertEquals(2, writer.getNumberOfEntries());
+		}
+		
+		Assert.assertEquals(originalTimestamp, file.lastModified());
+		
+		Thread.sleep(100);
+
+		try (ResultFileWriter writer = ResultFileWriter.append(problem, file)) {
+			Assert.assertEquals(2, writer.getNumberOfEntries());
+			writer.append(new ResultEntry(population, properties));
+		}
+
+		Assert.assertNotEquals(originalTimestamp, file.lastModified());
 	}
 	
 }

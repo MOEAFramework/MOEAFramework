@@ -56,7 +56,7 @@ public class Sobol implements Sequence {
 		try {
 			loadDirectionNumbers();
 		} catch (IOException e) {
-			throw new FrameworkException(e);
+			throw new FrameworkException("failed to load " + DIRECTIONS_RESOURCE, e);
 		}
 	}
 

@@ -302,13 +302,8 @@ class ProblemBuilder {
 		} else if (problemClass != null) {
 			try {
 				return (Problem)ConstructorUtils.invokeConstructor(problemClass, problemArguments);
-			} catch (InstantiationException e) {
-				throw new FrameworkException(e);
-			} catch (IllegalAccessException e) {
-				throw new FrameworkException(e);
-			} catch (InvocationTargetException e) {
-				throw new FrameworkException(e);
-			} catch (NoSuchMethodException e) {
+			} catch (InstantiationException | IllegalAccessException | InvocationTargetException |
+					NoSuchMethodException e) {
 				throw new FrameworkException(e);
 			}
 		} else if (problemFactory == null) {

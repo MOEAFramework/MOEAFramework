@@ -18,7 +18,6 @@
 package org.moeaframework.analysis.io;
 
 import java.io.Closeable;
-import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -58,28 +57,20 @@ public interface OutputWriter extends Closeable {
 		protected final boolean append;
 		
 		/**
-		 * The strategy used when recovering from unclean files.
-		 */
-		protected final CleanupStrategy cleanupStrategy;
-		
-		/**
 		 * Constructs the default settings object.
 		 */
 		public OutputWriterSettings() {
-			this(Optional.empty(), Optional.empty());
+			this(Optional.empty());
 		}
 		
 		/**
 		 * Constructs a new settings object.
 		 * 
 		 * @param append {@code true} to enable append mode, {@code false} otherwise
-		 * @param cleanupStrategy the cleanup strategy
 		 */
-		public OutputWriterSettings(Optional<Boolean> append, Optional<CleanupStrategy> cleanupStrategy) {
+		public OutputWriterSettings(Optional<Boolean> append) {
 			super();
 			this.append = append != null && append.isPresent() ? append.get() : true;
-			this.cleanupStrategy = cleanupStrategy != null && cleanupStrategy.isPresent() ? cleanupStrategy.get() :
-				org.moeaframework.core.Settings.getCleanupStrategy();
 		}
 		
 		/**
@@ -90,52 +81,7 @@ public interface OutputWriter extends Closeable {
 		public boolean isAppend() {
 			return append;
 		}
-
-		/**
-		 * Returns the strategy used when recovering from unclean files.
-		 * 
-		 * @return the strategy used when recovering from unclean files
-		 */
-		public CleanupStrategy getCleanupStrategy() {
-			return cleanupStrategy;
-		}
 		
-		/**
-		 * Returns the unclean file to use when attempting to recover previously recorded data.
-		 * 
-		 * @param originalFile the original file
-		 * @return the unclean file
-		 */
-		public File getUncleanFile(File originalFile) {
-			return new File(originalFile.getParent(), "." + originalFile.getName() + ".unclean");
-		}
-		
-	}
-	
-	/**
-	 * Defines how to recover "unclean" output files.
-	 * <p>
-	 * By default, output writers append to any existing files.  However, before doing so, it processes any existing
-	 * output file to determine the last valid record and remove any incomplete entries.  If this recovery process
-	 * is interrupted, we leak these "unclean" files and need a way to handle them.
-	 */
-	public static enum CleanupStrategy {
-		
-		/**
-		 * Fail with an error, user will be required to delete the temporary file before continuing.
-		 */
-		ERROR,
-		
-		/**
-		 * Attempt to restore from the temporary file.
-		 */
-		RESTORE,
-		
-		/**
-		 * Do not restore from the temporary file.
-		 */
-		OVERWRITE
-
 	}
 
 }

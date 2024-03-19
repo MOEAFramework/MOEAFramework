@@ -114,11 +114,47 @@ public class MetricFileWriterTest {
 	public void testSettings() throws ParseException {
 		MetricFileWriterSettings settings = MetricFileWriterSettings.getDefault();
 		Assert.assertTrue(settings.isAppend());
-		Assert.assertEquals(OutputWriter.CleanupStrategy.ERROR, settings.getCleanupStrategy());
 		
-		settings = MetricFileWriterSettings.noAppend();
+		settings = MetricFileWriterSettings.overwrite();
 		Assert.assertFalse(settings.isAppend());
-		Assert.assertEquals(OutputWriter.CleanupStrategy.ERROR, settings.getCleanupStrategy());
+	}
+	
+	@Test
+	public void testFileTimestamp() throws IOException, InterruptedException {
+		File file = TestUtils.createTempFile();
+		Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
+		NondominatedPopulation referenceSet = ProblemFactory.getInstance().getReferenceSet("DTLZ2_2");
+		Indicators indicators = Indicators.standard(problem, referenceSet);
+
+		NondominatedPopulation approximationSet = new NondominatedPopulation();
+		approximationSet.add(new Solution(new double[] { 0.0, 1.0 }));
+		approximationSet.add(new Solution(new double[] { 1.0, 0.0 }));
+
+		try (MetricFileWriter writer = MetricFileWriter.append(indicators, file)) {
+			Assert.assertEquals(0, writer.getNumberOfEntries());
+
+			writer.append(new ResultEntry(approximationSet));
+			writer.append(new ResultEntry(approximationSet));
+		}
+		
+		long originalTimestamp = file.lastModified();
+		
+		Thread.sleep(100);
+		
+		try (MetricFileWriter writer = MetricFileWriter.append(indicators, file)) {
+			Assert.assertEquals(2, writer.getNumberOfEntries());
+		}
+		
+		Assert.assertEquals(originalTimestamp, file.lastModified());
+		
+		Thread.sleep(100);
+		
+		try (MetricFileWriter writer = MetricFileWriter.append(indicators, file)) {
+			Assert.assertEquals(2, writer.getNumberOfEntries());
+			writer.append(new ResultEntry(approximationSet));
+		}
+		
+		Assert.assertNotEquals(originalTimestamp, file.lastModified());
 	}
 
 }

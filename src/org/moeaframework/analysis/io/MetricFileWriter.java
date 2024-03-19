@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Optional;
 
-import org.moeaframework.core.FrameworkException;
+import org.moeaframework.core.configuration.Validate;
 import org.moeaframework.core.indicator.Indicators;
 import org.moeaframework.core.indicator.Indicators.IndicatorValues;
 import org.moeaframework.util.io.FileUtils;
@@ -45,11 +45,22 @@ public class MetricFileWriter implements OutputWriter {
 	 * The number of metrics supported by {@code MetricFileWriter}.
 	 */
 	public static final int NUMBER_OF_METRICS = 6;
+	
+	/**
+	 * The header line.
+	 */
+	static final String HEADER = "#Hypervolume GenerationalDistance InvertedGenerationalDistance Spacing EpsilonIndicator MaximumParetoFrontError";
+	
+	/**
+	 * Settings for this metric file.
+	 */
+	@SuppressWarnings("unused")
+	private final MetricFileWriterSettings settings;
 
 	/**
 	 * The stream for appending data to the file.
 	 */
-	private final PrintWriter writer;
+	private PrintWriter writer;
 
 	/**
 	 * The indicators to evaluate.
@@ -75,59 +86,46 @@ public class MetricFileWriter implements OutputWriter {
 	public MetricFileWriter(Indicators indicators, File file, MetricFileWriterSettings settings) throws IOException {
 		super();
 		this.indicators = indicators;
-
-		if (settings.isAppend()) {
-			// when appending, first move the file to a temporary location
-			File existingFile = settings.getUncleanFile(file);
+		this.settings = settings;
+		
+		if (file.exists() && settings.isAppend()) {
+			// when appending to an existing file, first copy out all valid entries
+			File tempFile = File.createTempFile("temp", null);
 			
-			if (existingFile.exists()) {
-				switch (settings.getCleanupStrategy()) {
-					case RESTORE -> {
-						if (file.exists()) {
-							FileUtils.delete(existingFile);
-						}
+			try (MetricFileReader reader = new MetricFileReader(file);
+					PrintWriter writer = new PrintWriter(new FileWriter(tempFile))) {
+				writer.println(HEADER);
+				
+				while (reader.hasNext()) {
+					double[] data = reader.next();
+
+					writer.print(data[0]);
+
+					for (int i = 1; i < data.length; i++) {
+						writer.print(' ');
+						writer.print(data[i]);
 					}
-					case OVERWRITE -> FileUtils.delete(existingFile);
-					case ERROR -> throw new FrameworkException(ResultFileWriter.EXISTING_FILE);
-					default -> throw new IllegalStateException();
+
+					writer.println();
+
+					numberOfEntries++;
 				}
 			}
-			
-			if (file.exists()) {
-				FileUtils.move(file, existingFile);
+
+			// next, replace the original only if any changes were made
+			if (!FileUtils.areIdentical(tempFile, file)) {
+				FileUtils.move(tempFile, file);
 			}
+
+			// lastly, open the file in append mode
+			writer = new PrintWriter(new BufferedWriter(new FileWriter(file, true)), true);
 		}
 		
-		// prepare this class for writing
-		numberOfEntries = 0;
-		writer = new PrintWriter(new BufferedWriter(new FileWriter(file)), true);
-		
-		writer.println("#Hypervolume GenerationalDistance InvertedGenerationalDistance Spacing EpsilonIndicator MaximumParetoFrontError");
-
-		if (settings.isAppend()) {
-			// when appending, copy valid entries out of temporary file
-			File existingFile = settings.getUncleanFile(file);
-			
-			if (existingFile.exists()) {
-				try (MetricFileReader reader = new MetricFileReader(existingFile)) {
-					while (reader.hasNext()) {
-						double[] data = reader.next();
-	
-						writer.print(data[0]);
-	
-						for (int i = 1; i < data.length; i++) {
-							writer.print(' ');
-							writer.print(data[i]);
-						}
-	
-						writer.println();
-	
-						numberOfEntries++;
-					}
-				}
-	
-				FileUtils.delete(existingFile);
-			}
+		if (writer == null) {
+			// if the file doesn't exist or we are not appending, create a new file and print the header
+			numberOfEntries = 0;
+			writer = new PrintWriter(new BufferedWriter(new FileWriter(file)), true);
+			writer.println(HEADER);
 		}
 	}
 
@@ -168,7 +166,9 @@ public class MetricFileWriter implements OutputWriter {
 	 */
 	public static int getMetricIndex(String value) {
 		if (value.matches("[0-9]+")) {
-			return Integer.parseInt(value);
+			int index = Integer.parseInt(value);
+			Validate.inclusiveBetween("index", 0, NUMBER_OF_METRICS-1, index);			
+			return index;
 		}
 		
 		return switch (value.toLowerCase()) {
@@ -178,7 +178,7 @@ public class MetricFileWriter implements OutputWriter {
 			case "spacing" -> 3;
 			case "epsilonindicator" -> 4;
 			case "maximumparetofronterror" -> 5;
-			default -> throw new FrameworkException("Unsupported metric '" + value + "'");
+			default -> throw new IllegalArgumentException("Unsupported metric '" + value + "'");
 		};
 	}
 
@@ -209,7 +209,7 @@ public class MetricFileWriter implements OutputWriter {
 	 * @throws IOException if an I/O error occurred
 	 */
 	public static MetricFileWriter overwrite(Indicators indicators, File file) throws IOException {
-		return new MetricFileWriter(indicators, file, MetricFileWriterSettings.noAppend());
+		return new MetricFileWriter(indicators, file, MetricFileWriterSettings.overwrite());
 	}
 	
 	/**
@@ -228,10 +228,9 @@ public class MetricFileWriter implements OutputWriter {
 		 * Constructs a new settings object.
 		 * 
 		 * @param append {@code true} to enable append mode, {@code false} otherwise
-		 * @param cleanupStrategy the cleanup strategy
 		 */
-		public MetricFileWriterSettings(Optional<Boolean> append, Optional<CleanupStrategy> cleanupStrategy) {
-			super(append, cleanupStrategy);
+		public MetricFileWriterSettings(Optional<Boolean> append) {
+			super(append);
 		}
 
 		/**
@@ -248,8 +247,8 @@ public class MetricFileWriter implements OutputWriter {
 		 * 
 		 * @return the settings with append mode disabled
 		 */
-		public static MetricFileWriterSettings noAppend() {
-			return new MetricFileWriterSettings(Optional.of(false), Optional.empty());
+		public static MetricFileWriterSettings overwrite() {
+			return new MetricFileWriterSettings(Optional.of(false));
 		}
 		
 	}

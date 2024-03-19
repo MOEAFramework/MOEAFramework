@@ -114,5 +114,18 @@ public class FileUtils {
 	public static String readUTF8(File file) throws IOException {
 		return Files.readString(file.toPath(), StandardCharsets.UTF_8);
 	}
+	
+	/**
+	 * Returns {@code true} if the two files are identical, either referencing the same file on disk or containing the
+	 * same content.
+	 * 
+	 * @param first the first file
+	 * @param second the second file
+	 * @return {@code true} if the two files are identical
+	 * @throws IOException if an I/O error occurred
+	 */
+	public static boolean areIdentical(File first, File second) throws IOException {
+		return Files.mismatch(first.toPath(), second.toPath()) < 0;
+	}
 
 }

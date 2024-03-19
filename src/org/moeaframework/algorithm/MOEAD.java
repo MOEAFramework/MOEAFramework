@@ -28,7 +28,6 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.apache.commons.math3.util.MathArrays;
-import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Initialization;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PRNG;
@@ -407,13 +406,14 @@ public class MOEAD extends AbstractAlgorithm implements Configurable {
 		super.initialize();
 		
 		if (variation == null) {
-			throw new FrameworkException("no variation operator set, must set one by calling setVariation(...)");
+			throw new AlgorithmInitializationException(this,
+					"no variation operator set, must set one by calling setVariation(...)");
 		}
 
 		Solution[] initialSolutions = initialization.initialize(initialPopulationSize);
 		
 		if (initialSolutions.length < problem.getNumberOfObjectives()) {
-			throw new FrameworkException("popultion size must be >= the number of objectives");
+			throw new AlgorithmInitializationException(this, "popultion size must be >= the number of objectives");
 		}
 
 		initializePopulation(initialSolutions.length);
@@ -450,7 +450,8 @@ public class MOEAD extends AbstractAlgorithm implements Configurable {
 			List<double[]> weights = weightGenerator.generate();
 			
 			if (weights.size() != populationSize) {
-				throw new FrameworkException("weight generator must return " + populationSize + " weights");
+				throw new AlgorithmInitializationException(this, "weight generator must return " + populationSize +
+						" weights");
 			}
 			
 			for (double[] weight : weights) {
