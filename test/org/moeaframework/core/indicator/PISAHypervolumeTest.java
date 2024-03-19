@@ -182,8 +182,8 @@ public class PISAHypervolumeTest extends IndicatorTest {
 	@Test
 	public void testExplicitBounds2_Properties() {
 		try (PropertyScope scope = Settings.createScope()
-				.with("org.moeaframework.core.indicator.hypervolume_idealpt.DTLZ2", 0.0)
-				.with("org.moeaframework.core.indicator.hypervolume_refpt.DTLZ2", 2.0)) {
+				.with(Settings.createKey(Settings.KEY_IDEALPT_PREFIX, "DTLZ2"), 0.0)
+				.with(Settings.createKey(Settings.KEY_REFPT_PREFIX, "DTLZ2"), 2.0)) {
 			Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
 			PISAHypervolume hypervolume = new PISAHypervolume(problem, new NondominatedPopulation());
 			test2(hypervolume);
