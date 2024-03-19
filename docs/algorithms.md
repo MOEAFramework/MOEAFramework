@@ -197,7 +197,7 @@ Parameter            | Default Value     | Description
 :------------------- | :---------------- | :----------
 `populationSize`     | `100`             | The size of the population
 `operator`           | Problem dependent | The variation (crossover and/or mutation) operator
-`indicator`          | `hypervolume`     | The indicator function - `hypervolume`, `epsilon
+`indicator`          | `hypervolume`     | The indicator function - `hypervolume`, `epsilon`
 
 ### MOEA/D
 
@@ -424,6 +424,7 @@ Parameter            | Default Value     | Description
 `populationSize`     | `100`             | The size of the population
 `offset`             | `100`             | The reference point offset for computing hypervolume
 `operator`           | Problem dependent | The variation (crossover and/or mutation) operator
+`indicator`         | `hypervolumeContribution` | The fitness evaluator - `hypervolumeContribution`, `hypervolume`, `epsilon`, `crowding`
 
 ### SPEA2
 
