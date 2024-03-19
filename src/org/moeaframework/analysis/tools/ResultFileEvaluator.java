@@ -92,8 +92,7 @@ public class ResultFileEvaluator extends CommandLineUtility {
 			// validate the reference set
 			for (Solution solution : referenceSet) {
 				if (solution.getNumberOfObjectives() != problem.getNumberOfObjectives()) {
-					throw new FrameworkException(
-							"reference set contains invalid number of objectives");
+					throw new FrameworkException("reference set contains invalid number of objectives");
 				}
 			}
 

@@ -40,6 +40,7 @@ import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Problem;
+import org.moeaframework.core.configuration.Validate;
 import org.moeaframework.util.CommandLineUtility;
 import org.moeaframework.util.TypedProperties;
 
@@ -183,13 +184,11 @@ public class RuntimeEvaluator extends CommandLineUtility {
 		System.out.println("Finished!");
 	}
 
-	protected void process(String algorithmName, TypedProperties properties, Problem problem, int frequency)
+	private void process(String algorithmName, TypedProperties properties, Problem problem, int frequency)
 			throws IOException {
 		int maxEvaluations = properties.getTruncatedInt("maxEvaluations");
 		
-		if (maxEvaluations < 0) {
-			throw new FrameworkException("maxEvaluations must be a non-negative number");
-		}
+		Validate.greaterThanOrEqualToZero("maxEvaluations", maxEvaluations);
 		
 		Instrumenter instrumenter = new Instrumenter()
 				.withProblem(problem)

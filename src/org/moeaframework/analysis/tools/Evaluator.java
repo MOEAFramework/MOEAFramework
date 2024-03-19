@@ -37,6 +37,7 @@ import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Problem;
+import org.moeaframework.core.configuration.Validate;
 import org.moeaframework.core.indicator.Indicators;
 import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.problem.TimingProblem;
@@ -207,9 +208,7 @@ public class Evaluator extends CommandLineUtility {
 		// find the maximum NFE to run
 		int maxEvaluations = properties.getTruncatedInt("maxEvaluations");
 		
-		if (maxEvaluations < 0) {
-			throw new FrameworkException("maxEvaluations must be a non-negative number");
-		}
+		Validate.greaterThanOrEqualToZero("maxEvaluations", maxEvaluations);
 
 		// run the algorithm
 		long startTime = System.nanoTime();

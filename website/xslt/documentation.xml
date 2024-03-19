@@ -60,58 +60,6 @@
       </span>
       <div class="fix"></div>
     </li>
-    <!--
-    <li>
-      <a href="http://www.lulu.com/shop/david-hadka/beginners-guide-to-the-moea-framework/ebook/product-22522401.html">
-        <img src="images/beginners.jpg" class="float-left" width="107" height="140"
-        	alt="Purchase the Beginner's Guide to the MOEA Framework" 
-        	style="background: none; border: 1px; padding: 0px;" />
-        <strong style="font-size: 10pt">Beginner's Guide to the MOEA Framework</strong>
-      </a>
-      <br />
-      <span>
-        The official beginner's guide to the MOEA Framework, filled
-        with complete code samples to get you started using the MOEA Framework
-        quickly. It covers topics ranging from solving unconstrained and
-        constrained optimization problems, comparing the performance of
-        algorithms, plotting results, developing custom algorithms, integrating
-        your own optimization problems, and more.  214 pages.
-      </span>
-      <br /><br />
-      <span style="font-size: 10pt">
-        <a href="http://www.lulu.com/shop/david-hadka/beginners-guide-to-the-moea-framework/ebook/product-22522401.html" style="text-transform: none"><span class="price">$15</span> - Digital Copy (PDF)</a>
-        |
-        <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v%VERSION%/MOEAFramework-%VERSION%-BeginnersGuidePreview.pdf" style="text-transform: none"
-          onClick="_gaq.push(['_trackEvent', 'Downloads', 'Manual', '%VERSION%']);">Preview</a>
-      </span>
-      <div class="fix"></div>
-    </li>
-    -->
-    <!--
-    <li>
-      <a href="http://www.lulu.com/shop/david-hadka/high-performance-computing-with-the-moea-framework-and-ignite/ebook/product-22531100.html">
-        <img src="images/hpcmoea_small.png" class="float-left" width="107" height="140"
-        	alt="Purchase the book High Performance Computing with the MOEA Framework and Ignite" 
-        	style="background: none; border: 1px; padding: 0px;" />
-        <strong style="font-size: 10pt">High Performance Computing with the MOEA Framework and Ignite</strong>
-      </a>
-      <br />
-      <span>
-         	This book demonstrates how to create high performance evolutionary
-         	algorithms with the MOEA Framework, scaling from small personal computers up
-         	to large-scale supercomputers. For distributed memory computing on
-         	larger systems, we demonstrate how to use Apache Ignite to construct
-         	master-slave, island model, and hybrid parallelization architectures.
-         	The purchase of this book includes complete code samples available for
-         	download.  49 pages.
-      </span>
-      <br /><br />
-      <span style="font-size: 10pt">
-        <a href="http://www.lulu.com/shop/david-hadka/high-performance-computing-with-the-moea-framework-and-ignite/ebook/product-22531100.html" style="text-transform: none"><span class="price">$6</span> - Digital Copy (PDF)</a>
-      </span>
-      <div class="fix"></div>
-    </li>
-    -->
   </ul>
 </div>
 

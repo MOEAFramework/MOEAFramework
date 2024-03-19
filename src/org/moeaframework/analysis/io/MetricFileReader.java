@@ -60,6 +60,7 @@ public class MetricFileReader extends MatrixReader {
 	 * Opens a metric file for reading.
 	 * 
 	 * @param file the metric file
+	 * @return the reader
 	 * @throws FileNotFoundException if the file was not found
 	 */
 	public static MetricFileReader open(File file) throws FileNotFoundException {

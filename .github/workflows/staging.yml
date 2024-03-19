@@ -62,9 +62,6 @@ jobs:
           ant package-binary
           ant package-demo
           ant package-source
-      - name: Download beginners guide
-        run: |
-          wget -O dist/MOEAFramework-${{ inputs.version }}-BeginnersGuidePreview.pdf https://github.com/MOEAFramework/MOEAFramework/releases/download/v3.0/MOEAFramework-3.0-BeginnersGuidePreview.pdf
       - name: Generate release notes
         run: |
           cat docs/news.md | awk '/## Version ${{ inputs.version }}/{flag=1; next} /##/{flag=0} flag' > dist/release_notes.md
@@ -121,8 +118,7 @@ jobs:
           gh release create "v${{ inputs.version }}" --draft --title "Version ${{ inputs.version }}" --notes-file dist/release_notes.md \
               dist/MOEAFramework-${{ inputs.version }}.tar.gz \
               dist/MOEAFramework-${{ inputs.version }}-Demo.jar \
-              dist/MOEAFramework-${{ inputs.version }}-Source.tar.gz \
-              dist/MOEAFramework-${{ inputs.version }}-BeginnersGuidePreview.pdf
+              dist/MOEAFramework-${{ inputs.version }}-Source.tar.gz
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
       - name: Upload release artifacts

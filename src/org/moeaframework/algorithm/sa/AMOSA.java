@@ -442,7 +442,7 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 		}
 	}
 
-	protected void cluster() {
+	private void cluster() {
 		this.archive = new SingleLinkageClustering(archive).cluster(hardLimit);
 	}
 

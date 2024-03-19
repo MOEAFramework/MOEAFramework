@@ -25,7 +25,7 @@ import org.moeaframework.core.variable.RealVariable;
  * the Coco Framework repository for more details.
  */
 
-public class BBOBUtils {
+class BBOBUtils {
 	
 	/**
 	 * The lower bound returned by {@link #createTransformedVariable()}.
@@ -36,6 +36,10 @@ public class BBOBUtils {
 	 * The upper bound returned by {@link #createTransformedVariable()}.
 	 */
 	private static double UPPER_BOUND = 100000.0;
+	
+	private BBOBUtils() {
+		super();
+	}
 	
 	/**
 	 * Overrides the lower and upper bounds returned by {@link #createTransformedVariable()}.  The bounds must be
@@ -61,7 +65,6 @@ public class BBOBUtils {
 	}
 
 	public static double[] uniform(int N, long inseed) {
-		/* generates N uniform numbers with starting seed */
 		long aktseed;
 		int tmp;
 		long[] rgrand = new long[32];

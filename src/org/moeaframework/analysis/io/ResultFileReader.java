@@ -254,6 +254,7 @@ public class ResultFileReader implements Closeable, Iterator<ResultEntry>, Itera
 	 * 
 	 * @param problem the problem
 	 * @param file the file containing the results
+	 * @return the reader
 	 * @throws IOException if an I/O error occurred
 	 */
 	public static ResultFileReader open(Problem problem, File file) throws IOException {
