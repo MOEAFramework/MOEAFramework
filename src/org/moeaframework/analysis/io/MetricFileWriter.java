@@ -81,17 +81,15 @@ public class MetricFileWriter implements OutputWriter {
 			File existingFile = settings.getUncleanFile(file);
 			
 			if (existingFile.exists()) {
-				if (settings.getCleanupStrategy().equals(CleanupStrategy.RESTORE)) {
-					if (file.exists()) {
-						FileUtils.delete(existingFile);
-					} else {
-						// do nothing, the unclean file is ready for recovery
+				switch (settings.getCleanupStrategy()) {
+					case RESTORE -> {
+						if (file.exists()) {
+							FileUtils.delete(existingFile);
+						}
 					}
-				} else if (settings.getCleanupStrategy().equals(CleanupStrategy.OVERWRITE)) {
-					FileUtils.delete(existingFile);
-				} else {
-					throw new FrameworkException(ResultFileWriter.EXISTING_FILE);
-				}
+					case OVERWRITE -> FileUtils.delete(existingFile);
+					default -> throw new FrameworkException(ResultFileWriter.EXISTING_FILE);
+				};
 			}
 			
 			if (file.exists()) {
@@ -170,21 +168,17 @@ public class MetricFileWriter implements OutputWriter {
 	public static int getMetricIndex(String value) {
 		if (value.matches("[0-9]+")) {
 			return Integer.parseInt(value);
-		} else if (value.equalsIgnoreCase("Hypervolume")) {
-			return 0;
-		} else if (value.equalsIgnoreCase("GenerationalDistance")) {
-			return 1;
-		} else if (value.equalsIgnoreCase("InvertedGenerationalDistance")) {
-			return 2;
-		} else if (value.equalsIgnoreCase("Spacing")) {
-			return 3;
-		} else if (value.equalsIgnoreCase("EpsilonIndicator")) {
-			return 4;
-		} else if (value.equalsIgnoreCase("MaximumParetoFrontError")) {
-			return 5;
-		} else {
-			throw new FrameworkException("Unsupported metric '" + value + "'");
 		}
+		
+		return switch (value.toLowerCase()) {
+			case "hypervolume" -> 0;
+			case "generationaldistance" -> 1;
+			case "invertedgenerationaldistance" -> 2;
+			case "spacing" -> 3;
+			case "epsilonindicator" -> 4;
+			case "maximumparetofronterror" -> 5;
+			default -> throw new FrameworkException("Unsupported metric '" + value + "'");
+		};
 	}
 
 	@Override

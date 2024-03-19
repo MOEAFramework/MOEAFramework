@@ -1038,18 +1038,19 @@ public class Plot {
 	 * @throws IOException if an I/O error occurred
 	 */
 	public Plot save(File file, String format, int width, int height) throws IOException {
-		if (format.equalsIgnoreCase("PNG")) {
-			ChartUtils.saveChartAsPNG(file, chart, width, height);
-		} else if (format.equalsIgnoreCase("JPG") || format.equalsIgnoreCase("JPEG")) {
-			ChartUtils.saveChartAsJPEG(file, chart, width, height);
-		} else if (format.equalsIgnoreCase("SVG")) {
-			String svg = generateSVG(width, height);
-
-			try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-				writer.write("<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\n");
-				writer.write(svg);
-				writer.write("\n");
+		switch (format.toUpperCase()) {
+			case "PNG" -> ChartUtils.saveChartAsPNG(file, chart, width, height);
+			case "JPG", "JPEG" -> ChartUtils.saveChartAsJPEG(file, chart, width, height);
+			case "SVG" -> {
+				String svg = generateSVG(width, height);
+	
+				try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+					writer.write("<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\n");
+					writer.write(svg);
+					writer.write("\n");
+				}
 			}
+			default -> throw new IllegalArgumentException("Unsupported image format '" + format + "'");
 		}
 		
 		return this;

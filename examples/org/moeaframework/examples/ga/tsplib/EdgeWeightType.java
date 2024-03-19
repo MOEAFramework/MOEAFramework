@@ -18,8 +18,7 @@
 package org.moeaframework.examples.ga.tsplib;
 
 /**
- * Enumeration of the ways that explicit edge weights (distances) can be
- * specified.
+ * Enumeration of the ways that explicit edge weights (distances) can be specified.
  */
 public enum EdgeWeightType {
 	
@@ -89,45 +88,23 @@ public enum EdgeWeightType {
 	SPECIAL;
 	
 	public DistanceFunction getDistanceFunction() {
-		switch (this) {
-		case EUC_2D:
-		case EUC_3D:
-			return new EuclideanDistance();
-		case MAX_2D:
-		case MAX_3D:
-			return new MaximumDistance();
-		case MAN_2D:
-		case MAN_3D:
-			return new ManhattanDistance();
-		case CEIL_2D:
-			return new CeilingDistance();
-		case GEO:
-			return new GeographicalDistance();
-		case ATT:
-			return new PseudoEuclideanDistance();
-		default:
-			throw new IllegalArgumentException(
-					"no distance function defined for " + this);
-		}
+		return switch (this) {
+			case EUC_2D, EUC_3D -> new EuclideanDistance();
+			case MAX_2D, MAX_3D -> new MaximumDistance();
+			case MAN_2D, MAN_3D -> new ManhattanDistance();
+			case CEIL_2D -> new CeilingDistance();
+			case GEO -> new GeographicalDistance();
+			case ATT -> new PseudoEuclideanDistance();
+			default -> throw new IllegalArgumentException("no distance function defined for " + this);
+		};
 	}
 	
 	public NodeCoordType getNodeCoordType() {
-		switch (this) {
-		case EUC_2D:
-		case MAX_2D:
-		case MAN_2D:
-		case CEIL_2D:
-		case GEO:
-		case ATT:
-			return NodeCoordType.TWOD_COORDS;
-		case EUC_3D:
-		case MAX_3D:
-		case MAN_3D:
-			return NodeCoordType.THREED_COORDS;
-		default:
-			throw new IllegalArgumentException(
-					"no node coordinate type defined for " + this);
-		}
+		return switch (this) {
+			case EUC_2D, MAX_2D, MAN_2D, CEIL_2D, GEO, ATT -> NodeCoordType.TWOD_COORDS;
+			case EUC_3D, MAX_3D, MAN_3D -> NodeCoordType.THREED_COORDS;
+			default -> throw new IllegalArgumentException("no node coordinate type defined for " + this);
+		};
 	}
 
 }

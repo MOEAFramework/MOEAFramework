@@ -101,21 +101,21 @@ public class SampleGenerator extends CommandLineUtility {
 		if (commandLine.hasOption("method")) {
 			OptionCompleter completer = new OptionCompleter("uniform", "latin", "sobol", "saltelli");
 			String method = completer.lookup(commandLine.getOptionValue("method"));
-
+			
 			if (method == null) {
 				throw new IllegalArgumentException("invalid method: " + commandLine.getOptionValue("method"));
-			} else if (method.equals("latin")) {
-				sequence = new LatinHypercube();
-			} else if (method.equals("sobol")) {
-				sequence = new Sobol();
-			} else if (method.equals("saltelli")) {
-				N *= (2 * D + 2);
-				sequence = new Saltelli();
-			} else if (method.equals("uniform")) {
-				sequence = new Uniform();
-			} else {
-				throw new IllegalArgumentException("invalid method: " + commandLine.getOptionValue("method"));
 			}
+			
+			switch (method) {
+				case "uniform" -> sequence = new Uniform();
+				case "latin" -> sequence = new LatinHypercube();
+				case "sobol" -> sequence = new Sobol();
+				case "saltelli" -> {
+					N *= (2 * D + 2);
+					sequence = new Saltelli();
+				}
+				default -> throw new IllegalStateException();
+			};
 		} else {
 			sequence = new Sobol();
 		}

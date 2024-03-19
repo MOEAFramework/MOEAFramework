@@ -291,22 +291,15 @@ public abstract class ZCAT extends AbstractProblem implements AnalyticalProblem 
 			}
 		}
 
-		switch (level) {
-		case 1:
-			return BasisFunction.Z1.apply(w);
-		case 2:
-			return BasisFunction.Z2.apply(w);
-		case 3:
-			return BasisFunction.Z3.apply(w);
-		case 4:
-			return BasisFunction.Z4.apply(w);
-		case 5:
-			return BasisFunction.Z5.apply(w);
-		case 6:
-			return BasisFunction.Z6.apply(w);
-		default:
-			return BasisFunction.Z1.apply(w);
-		}
+		return switch (level) {
+			case 1 -> BasisFunction.Z1.apply(w);
+			case 2 -> BasisFunction.Z2.apply(w);
+			case 3 -> BasisFunction.Z3.apply(w);
+			case 4 -> BasisFunction.Z4.apply(w);
+			case 5 -> BasisFunction.Z5.apply(w);
+			case 6 -> BasisFunction.Z6.apply(w);
+			default -> BasisFunction.Z1.apply(w);
+		};
 	}
 	
 	/**

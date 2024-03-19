@@ -153,28 +153,20 @@ public class ExtractData extends CommandLineUtility {
 			if (option == null) {
 				continue;
 			}
-
-			if (option.equals("Hypervolume")) {
-				indicators.includeHypervolume();
-			} else if (option.equals("GenerationalDistance")) {
-				indicators.includeGenerationalDistance();
-			} else if (option.equals("InvertedGenerationalDistance")) {
-				indicators.includeInvertedGenerationalDistance();
-			} else if (option.equals("AdditiveEpsilonIndicator")) {
-				indicators.includeAdditiveEpsilonIndicator();
-			} else if (option.equals("MaximumParetoFrontError")) {
-				indicators.includeMaximumParetoFrontError();
-			} else if (option.equals("Spacing")) {
-				indicators.includeSpacing();
-			} else if (option.equals("Contribution")) {
-				indicators.includeContribution();
-			} else if (option.equals("R1Indicator")) {
-				indicators.includeR1();
-			} else if (option.equals("R2Indicator")) {
-				indicators.includeR2();
-			} else if (option.equals("R3Indicator")) {
-				indicators.includeR3();
-			}
+			
+			switch (option) {
+				case "Hypervolume" -> indicators.includeHypervolume();
+				case "GenerationalDistance" -> indicators.includeGenerationalDistance();
+				case "InvertedGenerationalDistance" -> indicators.includeInvertedGenerationalDistance();
+				case "AdditiveEpsilonIndicator" -> indicators.includeAdditiveEpsilonIndicator();
+				case "MaximumParetoFrontError" -> indicators.includeMaximumParetoFrontError();
+				case "Spacing" -> indicators.includeSpacing();
+				case "Contribution" -> indicators.includeContribution();
+				case "R1Indicator" -> indicators.includeR1();
+				case "R2Indicator" -> indicators.includeR2();
+				case "R3Indicator" -> indicators.includeR3();
+				default -> throw new IllegalStateException();
+			};
 		}
 
 		return indicators;
@@ -191,29 +183,19 @@ public class ExtractData extends CommandLineUtility {
 			return Double.NaN;
 		}
 		
-		if (option.equals("Hypervolume")) {
-			return values.getHypervolume();
-		} else if (option.equals("GenerationalDistance")) {
-			return values.getGenerationalDistance();
-		} else if (option.equals("InvertedGenerationalDistance")) {
-			return values.getInvertedGenerationalDistance();
-		} else if (option.equals("AdditiveEpsilonIndicator")) {
-			return values.getAdditiveEpsilonIndicator();
-		} else if (option.equals("MaximumParetoFrontError")) {
-			return values.getMaximumParetoFrontError();
-		} else if (option.equals("Spacing")) {
-			return values.getSpacing();
-		} else if (option.equals("Contribution")) {
-			return values.getContribution();
-		} else if (option.equals("R1Indicator")) {
-			return values.getR1();
-		} else if (option.equals("R2Indicator")) {
-			return values.getR2();
-		} else if (option.equals("R3Indicator")) {
-			return values.getR3();
-		} else {
-			return Double.NaN;
-		}
+		return switch (option) {
+			case "Hypervolume" -> values.getHypervolume();
+			case "GenerationalDistance" -> values.getGenerationalDistance();
+			case "InvertedGenerationalDistance" -> values.getInvertedGenerationalDistance();
+			case "AdditiveEpsilonIndicator" -> values.getAdditiveEpsilonIndicator();
+			case "MaximumParetoFrontError" -> values.getMaximumParetoFrontError();
+			case "Spacing" -> values.getSpacing();
+			case "Contribution" -> values.getContribution();
+			case "R1Indicator" -> values.getR1();
+			case "R2Indicator" -> values.getR2();
+			case "R3Indicator" -> values.getR3();
+			default -> throw new IllegalStateException();
+		};
 	}
 	
 	/**

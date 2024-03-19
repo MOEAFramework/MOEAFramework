@@ -28,6 +28,11 @@ import org.moeaframework.core.Problem;
 public class EpsilonHelper {
 	
 	/**
+	 * The default &epsilon; value that is returned for any problem without an explicitly configured value.
+	 */
+	public static final double DEFAULT = 0.01;
+	
+	/**
 	 * Private constructor to prevent instantiation.
 	 */
 	private EpsilonHelper() {
@@ -45,99 +50,55 @@ public class EpsilonHelper {
 		String name = problem.getName();
 		int numberOfObjectives = problem.getNumberOfObjectives();
 		
-		if (name.startsWith("DTLZ")) {
-			return numberOfObjectives == 2 ? 0.01 : numberOfObjectives == 3 ? 0.05 : 0.1 + 0.05*(numberOfObjectives-3);
-		} else if (name.startsWith("UF")) {
-			if (name.equals("UF1")) {
-				return 0.001;
-			} else if (name.equals("UF3")) {
-				return 0.0008;
-			} else if (name.equals("UF5")) {
-				return 0.000001;
-			} else if (name.equals("UF6")) {
-				return 0.000001;
-			} else if (name.equals("UF8")) {
-				return 0.0045;
-			} else if (name.equals("UF9")) {
-				return 0.008;
-			} else if (name.equals("UF10")) {
-				return 0.001;
-			} else {
-				if (numberOfObjectives == 2) {
-					return 0.005;
-				} else if (numberOfObjectives == 3) {
-					return 0.07;
-				} else if (numberOfObjectives == 5) {
-					return 0.2;
+		return switch (name) {
+			case "Belegundu" -> 0.1;
+			case "Binh" -> 0.25;
+			case "Binh2" -> 0.35;
+			case "Binh3" -> 0.01;
+			case "Binh4" -> 0.01;
+			case "Fonseca" -> 0.0025;
+			case "Fonseca2" -> 0.007;
+			case "Jimenez" -> 0.05;
+			case "Kita" -> 0.01;
+			case "Kursawe" -> 0.035;
+			case "Laumanns" -> 0.02;
+			case "Lis" -> 0.004;
+			case "Murata" -> 0.02;
+			case "Obayashi" -> 0.006;
+			case "OKA1" -> 0.0145;
+			case "OKA2" -> 0.000001;
+			case "Osyczka" -> 0.0012;
+			case "Osyczka2" -> 0.5;
+			case "Poloni" -> 0.04;
+			case "Quagliarella" -> 0.03;
+			case "Rendon" ->  0.01;
+			case "Rendon2" -> 0.027;
+			case "Schaffer" -> 0.02;
+			case "Schaffer2" -> 0.017;
+			case "Srinivas" -> 1.5;
+			case "Tamaki" -> 0.06;
+			case "Tanaka" -> 0.0045;
+			case "Viennet" -> 0.1;
+			case "Viennet2" -> 0.0062;
+			case "Viennet3" -> 0.011;
+			case "Viennet4" -> 0.085;
+			case "UF1" -> 0.001;
+			case "UF3" -> 0.0008;
+			case "UF5" -> 0.000001;
+			case "UF6" -> 0.000001;
+			case "UF8" -> 0.0045;
+			case "UF9" -> 0.008;
+			case "UF10" -> 0.001;
+			default -> {
+				if (name.startsWith("DTLZ")) {
+					yield numberOfObjectives == 2 ? 0.01 : numberOfObjectives == 3 ? 0.05 : 0.1 + 0.05*(numberOfObjectives-3);
+				} else if (name.startsWith("UF")) {
+					yield numberOfObjectives == 2 ? 0.005 : numberOfObjectives == 3 ? 0.07 : 0.2;
 				} else {
-					throw new IllegalArgumentException("number of objectives not supported");
+					yield DEFAULT;
 				}
 			}
-		} else if (name.equalsIgnoreCase("Belegundu")) {
-			return 0.1;
-		} else if (name.equalsIgnoreCase("Binh")) {
-			return 0.25;
-		} else if (name.equalsIgnoreCase("Binh2")) {
-			return 0.35;
-		} else if (name.equalsIgnoreCase("Binh3")) {
-			return 0.01;
-		} else if (name.equalsIgnoreCase("Binh4")) {
-			return 0.01;
-		} else if (name.equalsIgnoreCase("Fonseca")) {
-			return 0.0025;
-		} else if (name.equalsIgnoreCase("Fonseca2")) {
-			return 0.007;
-		} else if (name.equalsIgnoreCase("Jimenez")) {
-			return 0.05;
-		} else if (name.equalsIgnoreCase("Kita")) {
-			return 0.01;
-		} else if (name.equalsIgnoreCase("Kursawe")) {
-			return 0.035;
-		} else if (name.equalsIgnoreCase("Laumanns")) {
-			return 0.02;
-		} else if (name.equalsIgnoreCase("Lis")) {
-			return 0.004;
-		} else if (name.equalsIgnoreCase("Murata")) {
-			return 0.02;
-		} else if (name.equalsIgnoreCase("Obayashi")) {
-			return 0.006;
-		} else if (name.equalsIgnoreCase("OKA1")) {
-			return 0.0145;
-		} else if (name.equalsIgnoreCase("OKA2")) {
-			return 0.000001;
-		} else if (name.equalsIgnoreCase("Osyczka")) {
-			return 0.0012;
-		} else if (name.equalsIgnoreCase("Osyczka2")) {
-			return 0.5;
-		} else if (name.equalsIgnoreCase("Poloni")) {
-			return 0.04;
-		} else if (name.equalsIgnoreCase("Quagliarella")) {
-			return 0.03;
-		} else if (name.equalsIgnoreCase("Rendon")) {
-			return 0.01;
-		} else if (name.equalsIgnoreCase("Rendon2")) {
-			return 0.027;
-		} else if (name.equalsIgnoreCase("Schaffer")) {
-			return 0.02;
-		} else if (name.equalsIgnoreCase("Schaffer2")) {
-			return 0.017;
-		} else if (name.equalsIgnoreCase("Srinivas")) {
-			return 1.5;
-		} else if (name.equalsIgnoreCase("Tamaki")) {
-			return 0.06;
-		} else if (name.equalsIgnoreCase("Tanaka")) {
-			return 0.0045;
-		} else if (name.equalsIgnoreCase("Viennet")) {
-			return 0.1;
-		} else if (name.equalsIgnoreCase("Viennet2")) {
-			return 0.0062;
-		} else if (name.equalsIgnoreCase("Viennet3")) {
-			return 0.011;
-		} else if (name.equalsIgnoreCase("Viennet4")) {
-			return 0.085;
-		} else {
-			return 0.01;
-		}
+		};
 	}
 	
 	/**

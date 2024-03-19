@@ -15,20 +15,32 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.analysis.tools;
+package org.moeaframework.analysis;
 
 import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.TestUtils;
-import org.moeaframework.analysis.EpsilonHelper;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.NondominatedPopulation;
+import org.moeaframework.core.Settings;
 import org.moeaframework.core.spi.ProblemFactory;
+import org.moeaframework.problem.MockRealProblem;
+import org.moeaframework.problem.DTLZ.DTLZ2;
 
 /**
  * Tests the {@link EpsilonHelper} class.
  */
 public class EpsilonHelperTest {
+	
+	@Test
+	public void test() {
+		Assert.assertTrue(EpsilonHelper.getEpsilon(new DTLZ2(3)) > EpsilonHelper.DEFAULT);
+	}
+	
+	@Test
+	public void testUndefinedProblem() {
+		Assert.assertEquals(EpsilonHelper.getEpsilon(new MockRealProblem()), EpsilonHelper.DEFAULT, Settings.EPS);
+	}
 	
 	@Test
 	public void testConvertNoEpsilons() {

@@ -93,125 +93,115 @@ public class EdgeWeightMatrix extends DistanceTable {
 		Queue<Double> entries = new LinkedList<Double>();
 		
 		switch (format) {
-		case FULL_MATRIX:
-			for (int i = 0; i < size; i++) {
+			case FULL_MATRIX -> {
+				for (int i = 0; i < size; i++) {
+					for (int j = 0; j < size; j++) {
+						if (entries.isEmpty()) {
+							readNextLine(reader, entries);
+						}
+						
+						matrix[i][j] = entries.poll();
+					}
+				}
+			}
+			case UPPER_ROW -> {
+				for (int i = 0; i < size-1; i++) {
+					for (int j = i+1; j < size; j++) {
+						if (entries.isEmpty()) {
+							readNextLine(reader, entries);
+						}
+	
+						matrix[i][j] = entries.poll();
+						matrix[j][i] = matrix[i][j];
+					}
+				}
+			}
+			case UPPER_DIAG_ROW -> {
+				for (int i = 0; i < size; i++) {
+					for (int j = i; j < size; j++) {
+						if (entries.isEmpty()) {
+							readNextLine(reader, entries);
+						}
+	
+						matrix[i][j] = entries.poll();
+						matrix[j][i] = matrix[i][j];
+					}
+				}
+			}
+			case LOWER_ROW -> {
+				for (int i = 1; i<size; i++) {
+					for (int j = 0; j < i; j++) {
+						if (entries.isEmpty()) {
+							readNextLine(reader, entries);
+						}
+	
+						matrix[i][j] = entries.poll();
+						matrix[j][i] = matrix[i][j];
+					}
+				}
+			}
+			case LOWER_DIAG_ROW -> {
+				for (int i = 0; i < size; i++) {
+					for (int j = 0; j < i+1; j++) {
+						if (entries.isEmpty()) {
+							readNextLine(reader, entries);
+						}
+	
+						matrix[i][j] = entries.poll();
+						matrix[j][i] = matrix[i][j];
+					}
+				}
+			}
+			case UPPER_COL -> {
+				for (int j = 1; j < size; j++) {
+					for (int i = 0; i < j; i++) {
+						if (entries.isEmpty()) {
+							readNextLine(reader, entries);
+						}
+	
+						matrix[i][j] = entries.poll();
+						matrix[j][i] = matrix[i][j];
+					}
+				}
+			}
+			case UPPER_DIAG_COL -> {
 				for (int j = 0; j < size; j++) {
-					if (entries.isEmpty()) {
-						readNextLine(reader, entries);
+					for (int i = 0; i < j+1; i++) {
+						if (entries.isEmpty()) {
+							readNextLine(reader, entries);
+						}
+	
+						matrix[i][j] = entries.poll();
+						matrix[j][i] = matrix[i][j];
 					}
-					
-					matrix[i][j] = entries.poll();
 				}
 			}
-			
-			break;
-		case UPPER_ROW:
-			for (int i = 0; i < size-1; i++) {
-				for (int j = i+1; j < size; j++) {
-					if (entries.isEmpty()) {
-						readNextLine(reader, entries);
+			case LOWER_COL -> {
+				for (int j = 0; j < size-1; j++) {
+					for (int i = j+1; i < size; i++) {
+						if (entries.isEmpty()) {
+							readNextLine(reader, entries);
+						}
+	
+						matrix[i][j] = entries.poll();
+						matrix[j][i] = matrix[i][j];
 					}
-
-					matrix[i][j] = entries.poll();
-					matrix[j][i] = matrix[i][j];
 				}
 			}
-			
-			break;
-		case UPPER_DIAG_ROW:
-			for (int i = 0; i < size; i++) {
-				for (int j = i; j < size; j++) {
-					if (entries.isEmpty()) {
-						readNextLine(reader, entries);
+			case LOWER_DIAG_COL -> {
+				for (int j = 0; j < size; j++) {
+					for (int i = j; i < size; i++) {
+						if (entries.isEmpty()) {
+							readNextLine(reader, entries);
+						}
+	
+						matrix[i][j] = entries.poll();
+						matrix[j][i] = matrix[i][j];
 					}
-
-					matrix[i][j] = entries.poll();
-					matrix[j][i] = matrix[i][j];
 				}
 			}
-			
-			break;
-		case LOWER_ROW:
-			for (int i = 1; i<size; i++) {
-				for (int j = 0; j < i; j++) {
-					if (entries.isEmpty()) {
-						readNextLine(reader, entries);
-					}
-
-					matrix[i][j] = entries.poll();
-					matrix[j][i] = matrix[i][j];
-				}
-			}
-			
-			break;
-		case LOWER_DIAG_ROW:
-			for (int i = 0; i < size; i++) {
-				for (int j = 0; j < i+1; j++) {
-					if (entries.isEmpty()) {
-						readNextLine(reader, entries);
-					}
-
-					matrix[i][j] = entries.poll();
-					matrix[j][i] = matrix[i][j];
-				}
-			}
-			
-			break;
-		case UPPER_COL:
-			for (int j = 1; j < size; j++) {
-				for (int i = 0; i < j; i++) {
-					if (entries.isEmpty()) {
-						readNextLine(reader, entries);
-					}
-
-					matrix[i][j] = entries.poll();
-					matrix[j][i] = matrix[i][j];
-				}
-			}
-			
-			break;
-		case UPPER_DIAG_COL:
-			for (int j = 0; j < size; j++) {
-				for (int i = 0; i < j+1; i++) {
-					if (entries.isEmpty()) {
-						readNextLine(reader, entries);
-					}
-
-					matrix[i][j] = entries.poll();
-					matrix[j][i] = matrix[i][j];
-				}
-			}
-			
-			break;
-		case LOWER_COL:
-			for (int j = 0; j < size-1; j++) {
-				for (int i = j+1; i < size; i++) {
-					if (entries.isEmpty()) {
-						readNextLine(reader, entries);
-					}
-
-					matrix[i][j] = entries.poll();
-					matrix[j][i] = matrix[i][j];
-				}
-			}
-			
-			break;
-		case LOWER_DIAG_COL:
-			for (int j = 0; j < size; j++) {
-				for (int i = j; i < size; i++) {
-					if (entries.isEmpty()) {
-						readNextLine(reader, entries);
-					}
-
-					matrix[i][j] = entries.poll();
-					matrix[j][i] = matrix[i][j];
-				}
-			}
-			
-			break;
-		default:
-			throw new IllegalArgumentException("unsupported matrix type");
-		}
+			default -> throw new IllegalArgumentException("unsupported matrix type");
+		};
 		
 		// sanity check
 		if (!entries.isEmpty()) {

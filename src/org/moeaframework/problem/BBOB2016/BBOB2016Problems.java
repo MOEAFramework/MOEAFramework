@@ -118,280 +118,290 @@ public class BBOB2016Problems extends ProblemProvider {
 	public static BBOBFunction createInstance(int function, int dimension, int instance) {
 		int rseed = function + 10000 * instance;
 
-		if (function == 1) {
-			double[] xopt = BBOBUtils.computeXOpt(rseed, dimension);
-			double fopt = BBOBUtils.computeFOpt(function, instance);
-
-			BBOBFunction problem = new Sphere(dimension);
-			problem = new TransformVariablesShift(problem, xopt);
-			problem = new TransformObjectiveShift(problem, fopt);
-			return problem;
-		} else if (function == 2) {
-			double[] xopt = BBOBUtils.computeXOpt(rseed, dimension);
-			double fopt = BBOBUtils.computeFOpt(function, instance);
-
-			BBOBFunction problem = new Ellipsoid(dimension);
-			problem = new TransformVariablesOscillate(problem);
-			problem = new TransformVariablesShift(problem, xopt);
-			problem = new TransformObjectiveShift(problem, fopt);
-			return problem;
-		} else if (function == 6) {
-			double[] xopt = BBOBUtils.computeXOpt(rseed, dimension);
-			double fopt = BBOBUtils.computeFOpt(function, instance);
-			double[] b = new double[dimension];
-			double[][] M = new double[dimension][dimension];
-
-			double[][] rot1 = BBOBUtils.computeRotation(rseed + 1000000, dimension);
-			double[][] rot2 = BBOBUtils.computeRotation(rseed, dimension);
-
-			for (int i = 0; i < dimension; i++) {
-				b[i] = 0.0;
-
-				for (int j = 0; j < dimension; j++) {
-					M[i][j] = 0.0;
-
-					for (int k = 0; k < dimension; k++) {
-						double exponent = 1.0 * k / (dimension - 1.0);
-						M[i][j] += rot1[i][k] * Math.pow(Math.sqrt(10.0), exponent) * rot2[k][j];
+		return switch (function) {
+			case 1 -> {
+				double[] xopt = BBOBUtils.computeXOpt(rseed, dimension);
+				double fopt = BBOBUtils.computeFOpt(function, instance);
+	
+				BBOBFunction problem = new Sphere(dimension);
+				problem = new TransformVariablesShift(problem, xopt);
+				problem = new TransformObjectiveShift(problem, fopt);
+				yield problem;
+			}
+			case 2 -> {
+				double[] xopt = BBOBUtils.computeXOpt(rseed, dimension);
+				double fopt = BBOBUtils.computeFOpt(function, instance);
+	
+				BBOBFunction problem = new Ellipsoid(dimension);
+				problem = new TransformVariablesOscillate(problem);
+				problem = new TransformVariablesShift(problem, xopt);
+				problem = new TransformObjectiveShift(problem, fopt);
+				yield problem;
+			}
+			case 6 -> {
+				double[] xopt = BBOBUtils.computeXOpt(rseed, dimension);
+				double fopt = BBOBUtils.computeFOpt(function, instance);
+				double[] b = new double[dimension];
+				double[][] M = new double[dimension][dimension];
+	
+				double[][] rot1 = BBOBUtils.computeRotation(rseed + 1000000, dimension);
+				double[][] rot2 = BBOBUtils.computeRotation(rseed, dimension);
+	
+				for (int i = 0; i < dimension; i++) {
+					b[i] = 0.0;
+	
+					for (int j = 0; j < dimension; j++) {
+						M[i][j] = 0.0;
+	
+						for (int k = 0; k < dimension; k++) {
+							double exponent = 1.0 * k / (dimension - 1.0);
+							M[i][j] += rot1[i][k] * Math.pow(Math.sqrt(10.0), exponent) * rot2[k][j];
+						}
 					}
 				}
+	
+				BBOBFunction problem = new AttractiveSector(dimension, xopt);
+				problem = new TransformObjectiveOscillate(problem);
+				problem = new TransformObjectivePower(problem, 0.9);
+				problem = new TransformObjectiveShift(problem, fopt);
+				problem = new TransformVariablesAffine(problem, M, b);
+				problem = new TransformVariablesShift(problem, xopt);
+				yield problem;
 			}
-
-			BBOBFunction problem = new AttractiveSector(dimension, xopt);
-			problem = new TransformObjectiveOscillate(problem);
-			problem = new TransformObjectivePower(problem, 0.9);
-			problem = new TransformObjectiveShift(problem, fopt);
-			problem = new TransformVariablesAffine(problem, M, b);
-			problem = new TransformVariablesShift(problem, xopt);
-			return problem;
-		} else if (function == 8) {
-			double[] xopt = BBOBUtils.computeXOpt(rseed, dimension);
-			double fopt = BBOBUtils.computeFOpt(function, instance);
-			double[] minusOne = new double[dimension];
-
-			for (int i = 0; i < dimension; i++) {
-				minusOne[i] = -1.0;
-				xopt[i] *= 0.75;
+			case 8 -> {
+				double[] xopt = BBOBUtils.computeXOpt(rseed, dimension);
+				double fopt = BBOBUtils.computeFOpt(function, instance);
+				double[] minusOne = new double[dimension];
+	
+				for (int i = 0; i < dimension; i++) {
+					minusOne[i] = -1.0;
+					xopt[i] *= 0.75;
+				}
+	
+				BBOBFunction problem = new Rosenbrock(dimension);
+				problem = new TransformVariablesShift(problem, minusOne);
+				problem = new TransformVariablesScale(problem, Math.max(1.0, Math.sqrt(dimension / 8.0)));
+				problem = new TransformVariablesShift(problem, xopt);
+				problem = new TransformObjectiveShift(problem, fopt);
+				yield problem;
 			}
-
-			BBOBFunction problem = new Rosenbrock(dimension);
-			problem = new TransformVariablesShift(problem, minusOne);
-			problem = new TransformVariablesScale(problem, Math.max(1.0, Math.sqrt(dimension / 8.0)));
-			problem = new TransformVariablesShift(problem, xopt);
-			problem = new TransformObjectiveShift(problem, fopt);
-			return problem;
-		} else if (function == 13) {
-			double[] xopt = BBOBUtils.computeXOpt(rseed, dimension);
-			double fopt = BBOBUtils.computeFOpt(function, instance);
-			double[] b = new double[dimension];
-			double[][] M = new double[dimension][dimension];
-
-			double[][] rot1 = BBOBUtils.computeRotation(rseed + 1000000, dimension);
-			double[][] rot2 = BBOBUtils.computeRotation(rseed, dimension);
-
-			for (int i = 0; i < dimension; i++) {
-				b[i] = 0.0;
-
-				for (int j = 0; j < dimension; j++) {
-					M[i][j] = 0.0;
-
-					for (int k = 0; k < dimension; k++) {
-						double exponent = 1.0 * k / (dimension - 1.0);
-						M[i][j] += rot1[i][k] * Math.pow(Math.sqrt(10.0), exponent) * rot2[k][j];
+			case 13 -> {
+				double[] xopt = BBOBUtils.computeXOpt(rseed, dimension);
+				double fopt = BBOBUtils.computeFOpt(function, instance);
+				double[] b = new double[dimension];
+				double[][] M = new double[dimension][dimension];
+	
+				double[][] rot1 = BBOBUtils.computeRotation(rseed + 1000000, dimension);
+				double[][] rot2 = BBOBUtils.computeRotation(rseed, dimension);
+	
+				for (int i = 0; i < dimension; i++) {
+					b[i] = 0.0;
+	
+					for (int j = 0; j < dimension; j++) {
+						M[i][j] = 0.0;
+	
+						for (int k = 0; k < dimension; k++) {
+							double exponent = 1.0 * k / (dimension - 1.0);
+							M[i][j] += rot1[i][k] * Math.pow(Math.sqrt(10.0), exponent) * rot2[k][j];
+						}
 					}
 				}
+	
+				BBOBFunction problem = new SharpRidge(dimension);
+				problem = new TransformObjectiveShift(problem, fopt);
+				problem = new TransformVariablesAffine(problem, M, b);
+				problem = new TransformVariablesShift(problem, xopt);
+				yield problem;
 			}
-
-			BBOBFunction problem = new SharpRidge(dimension);
-			problem = new TransformObjectiveShift(problem, fopt);
-			problem = new TransformVariablesAffine(problem, M, b);
-			problem = new TransformVariablesShift(problem, xopt);
-			return problem;
-		} else if (function == 14) {
-			double[] xopt = BBOBUtils.computeXOpt(rseed, dimension);
-			double fopt = BBOBUtils.computeFOpt(function, instance);
-			double[] b = new double[dimension];
-			double[][] M = BBOBUtils.computeRotation(rseed + 1000000, dimension);
-
-			BBOBFunction problem = new DifferentPowers(dimension);
-			problem = new TransformObjectiveShift(problem, fopt);
-			problem = new TransformVariablesAffine(problem, M, b);
-			problem = new TransformVariablesShift(problem, xopt);
-			return problem;
-		} else if (function == 15) {
-			double[] xopt = BBOBUtils.computeXOpt(rseed, dimension);
-			double fopt = BBOBUtils.computeFOpt(function, instance);
-			double[] zeros = new double[dimension];
-			double[] b = new double[dimension];
-			double[][] M = new double[dimension][dimension];
-
-			double[][] rot1 = BBOBUtils.computeRotation(rseed + 1000000, dimension);
-			double[][] rot2 = BBOBUtils.computeRotation(rseed, dimension);
-
-			for (int i = 0; i < dimension; i++) {
-				b[i] = 0.0;
-
-				for (int j = 0; j < dimension; j++) {
-					M[i][j] = 0.0;
-
-					for (int k = 0; k < dimension; k++) {
-						double exponent = 1.0 * k / (dimension - 1.0);
-						M[i][j] += rot1[i][k] * Math.pow(Math.sqrt(10.0), exponent) * rot2[k][j];
+			case 14 -> {
+				double[] xopt = BBOBUtils.computeXOpt(rseed, dimension);
+				double fopt = BBOBUtils.computeFOpt(function, instance);
+				double[] b = new double[dimension];
+				double[][] M = BBOBUtils.computeRotation(rseed + 1000000, dimension);
+	
+				BBOBFunction problem = new DifferentPowers(dimension);
+				problem = new TransformObjectiveShift(problem, fopt);
+				problem = new TransformVariablesAffine(problem, M, b);
+				problem = new TransformVariablesShift(problem, xopt);
+				yield problem;
+			}
+			case 15 -> {
+				double[] xopt = BBOBUtils.computeXOpt(rseed, dimension);
+				double fopt = BBOBUtils.computeFOpt(function, instance);
+				double[] zeros = new double[dimension];
+				double[] b = new double[dimension];
+				double[][] M = new double[dimension][dimension];
+	
+				double[][] rot1 = BBOBUtils.computeRotation(rseed + 1000000, dimension);
+				double[][] rot2 = BBOBUtils.computeRotation(rseed, dimension);
+	
+				for (int i = 0; i < dimension; i++) {
+					b[i] = 0.0;
+	
+					for (int j = 0; j < dimension; j++) {
+						M[i][j] = 0.0;
+	
+						for (int k = 0; k < dimension; k++) {
+							double exponent = 1.0 * k / (dimension - 1.0);
+							M[i][j] += rot1[i][k] * Math.pow(Math.sqrt(10.0), exponent) * rot2[k][j];
+						}
 					}
 				}
+	
+				BBOBFunction problem = new Rastrigin(dimension);
+				problem = new TransformObjectiveShift(problem, fopt);
+				problem = new TransformVariablesAffine(problem, M, b);
+				problem = new TransformVariablesAsymmetric(problem, 0.2);
+				problem = new TransformVariablesOscillate(problem);
+				problem = new TransformVariablesAffine(problem, rot1, zeros);
+				problem = new TransformVariablesShift(problem, xopt);
+				yield problem;
 			}
-
-			BBOBFunction problem = new Rastrigin(dimension);
-			problem = new TransformObjectiveShift(problem, fopt);
-			problem = new TransformVariablesAffine(problem, M, b);
-			problem = new TransformVariablesAsymmetric(problem, 0.2);
-			problem = new TransformVariablesOscillate(problem);
-			problem = new TransformVariablesAffine(problem, rot1, zeros);
-			problem = new TransformVariablesShift(problem, xopt);
-			return problem;
-		} else if (function == 17) {
-			double[] xopt = BBOBUtils.computeXOpt(rseed, dimension);
-			double fopt = BBOBUtils.computeFOpt(function, instance);
-			double[] zeros = new double[dimension];
-			double[] b = new double[dimension];
-			double[][] M = new double[dimension][dimension];
-
-			double[][] rot1 = BBOBUtils.computeRotation(rseed + 1000000, dimension);
-			double[][] rot2 = BBOBUtils.computeRotation(rseed, dimension);
-
-			for (int i = 0; i < dimension; i++) {
-				b[i] = 0.0;
-
-				for (int j = 0; j < dimension; j++) {
-					double exponent = 1.0 * i / (dimension - 1.0);
-					M[i][j] += rot2[i][j] * Math.pow(Math.sqrt(10.0), exponent);
-				}
-			}
-
-			BBOBFunction problem = new Schaffers(dimension);
-			problem = new TransformObjectiveShift(problem, fopt);
-			problem = new TransformVariablesAffine(problem, M, b);
-			problem = new TransformVariablesAsymmetric(problem, 0.5);
-			problem = new TransformVariablesAffine(problem, rot1, zeros);
-			problem = new TransformVariablesShift(problem, xopt);
-			problem = new TransformObjectivePenalize(problem, 10.0);
-			return problem;
-		} else if (function == 20) {
-			double[] tmp1 = BBOBUtils.computeXOpt(rseed, dimension);
-			double fopt = BBOBUtils.computeFOpt(function, instance);
-			double[] xopt = new double[dimension];
-			double[] tmp2 = new double[dimension];
-			double[] b = new double[dimension];
-			double[][] M = new double[dimension][dimension];
-
-			for (int i = 0; i < dimension; i++) {
-				xopt[i] = 0.5 * 4.2096874633;
-
-				if (tmp1[i] - 0.5 < 0.0) {
-					xopt[i] *= -1;
-				}
-			}
-
-			for (int i = 0; i < dimension; i++) {
-				b[i] = 0.0;
-
-				for (int j = 0; j < dimension; j++) {
-					if (i == j) {
+			case 17 -> {
+				double[] xopt = BBOBUtils.computeXOpt(rseed, dimension);
+				double fopt = BBOBUtils.computeFOpt(function, instance);
+				double[] zeros = new double[dimension];
+				double[] b = new double[dimension];
+				double[][] M = new double[dimension][dimension];
+	
+				double[][] rot1 = BBOBUtils.computeRotation(rseed + 1000000, dimension);
+				double[][] rot2 = BBOBUtils.computeRotation(rseed, dimension);
+	
+				for (int i = 0; i < dimension; i++) {
+					b[i] = 0.0;
+	
+					for (int j = 0; j < dimension; j++) {
 						double exponent = 1.0 * i / (dimension - 1.0);
-						M[i][j] += Math.pow(Math.sqrt(10.0), exponent);
+						M[i][j] += rot2[i][j] * Math.pow(Math.sqrt(10.0), exponent);
 					}
 				}
+	
+				BBOBFunction problem = new Schaffers(dimension);
+				problem = new TransformObjectiveShift(problem, fopt);
+				problem = new TransformVariablesAffine(problem, M, b);
+				problem = new TransformVariablesAsymmetric(problem, 0.5);
+				problem = new TransformVariablesAffine(problem, rot1, zeros);
+				problem = new TransformVariablesShift(problem, xopt);
+				problem = new TransformObjectivePenalize(problem, 10.0);
+				yield problem;
 			}
-
-			for (int i = 0; i < dimension; i++) {
-				tmp1[i] = -2 * Math.abs(xopt[i]);
-				tmp2[i] = 2 * Math.abs(xopt[i]);
-			}
-
-			BBOBFunction problem = new Schwefel(dimension);
-			problem = new TransformObjectiveShift(problem, fopt);
-			problem = new TransformVariablesScale(problem, 100);
-			problem = new TransformVariablesShift(problem, tmp1);
-			problem = new TransformVariablesAffine(problem, M, b);
-			problem = new TransformVariablesShift(problem, tmp2);
-			problem = new TransformVariablesZHat(problem, xopt);
-			problem = new TransformVariablesScale(problem, 2);
-			problem = new TransformVariablesXHat(problem, rseed);
-			return problem;
-		} else if (function == 21) {
-			int numberOfPeaks = 101;
-			double maxcondition = 1000.0;
-			double maxcondition1 = Math.sqrt(1000.0);
-			double b = 10.0;
-			double c = 5.0;
-			double[] fitvalues = { 1.1, 9.1 };
-			double[] xopt = new double[dimension];
-			double fopt = BBOBUtils.computeFOpt(function, instance);
-			double[][] xLocal = new double[dimension][numberOfPeaks];
-			double[][] arrScales = new double[numberOfPeaks][dimension];
-			double[][] rotation = BBOBUtils.computeRotation(rseed, dimension);
-
-			/* Initialize all the data of the inner problem */
-			double[] gallagher_peaks = BBOBUtils.uniform(numberOfPeaks-1, rseed);
-			List<Integer> rperm = new ArrayList<Integer>();
-
-			for (int i = 0; i < numberOfPeaks-1; i++) {
-				rperm.add(i);
-			}
-
-			Collections.sort(rperm, new GallagherPeakComprator(gallagher_peaks));
-
-			/* Random permutation */
-			double[] arrCondition = new double[numberOfPeaks];
-			arrCondition[0] = maxcondition1;
-
-			double[] peaks = new double[numberOfPeaks];
-			peaks[0] = 10;
-
-			for (int i = 1; i < numberOfPeaks; i++) {
-				arrCondition[i] = Math.pow(maxcondition, rperm.get(i-1) / (numberOfPeaks - 2.0));
-				peaks[i] = (i - 1.0) / (numberOfPeaks - 2.0) * (fitvalues[1] - fitvalues[0]) + fitvalues[0];
-			}
-
-			for (int i = 0; i < numberOfPeaks; i++) {
-				rperm.clear();
-				gallagher_peaks = BBOBUtils.uniform(dimension, rseed + (1000*i));
-
-				for (int j = 0; j < dimension; j++) {
-					rperm.add(j);
+			case 20 -> {
+				double[] tmp1 = BBOBUtils.computeXOpt(rseed, dimension);
+				double fopt = BBOBUtils.computeFOpt(function, instance);
+				double[] xopt = new double[dimension];
+				double[] tmp2 = new double[dimension];
+				double[] b = new double[dimension];
+				double[][] M = new double[dimension][dimension];
+	
+				for (int i = 0; i < dimension; i++) {
+					xopt[i] = 0.5 * 4.2096874633;
+	
+					if (tmp1[i] - 0.5 < 0.0) {
+						xopt[i] *= -1;
+					}
 				}
-
+	
+				for (int i = 0; i < dimension; i++) {
+					b[i] = 0.0;
+	
+					for (int j = 0; j < dimension; j++) {
+						if (i == j) {
+							double exponent = 1.0 * i / (dimension - 1.0);
+							M[i][j] += Math.pow(Math.sqrt(10.0), exponent);
+						}
+					}
+				}
+	
+				for (int i = 0; i < dimension; i++) {
+					tmp1[i] = -2 * Math.abs(xopt[i]);
+					tmp2[i] = 2 * Math.abs(xopt[i]);
+				}
+	
+				BBOBFunction problem = new Schwefel(dimension);
+				problem = new TransformObjectiveShift(problem, fopt);
+				problem = new TransformVariablesScale(problem, 100);
+				problem = new TransformVariablesShift(problem, tmp1);
+				problem = new TransformVariablesAffine(problem, M, b);
+				problem = new TransformVariablesShift(problem, tmp2);
+				problem = new TransformVariablesZHat(problem, xopt);
+				problem = new TransformVariablesScale(problem, 2);
+				problem = new TransformVariablesXHat(problem, rseed);
+				yield problem;
+			}
+			case 21 -> {
+				int numberOfPeaks = 101;
+				double maxcondition = 1000.0;
+				double maxcondition1 = Math.sqrt(1000.0);
+				double b = 10.0;
+				double c = 5.0;
+				double[] fitvalues = { 1.1, 9.1 };
+				double[] xopt = new double[dimension];
+				double fopt = BBOBUtils.computeFOpt(function, instance);
+				double[][] xLocal = new double[dimension][numberOfPeaks];
+				double[][] arrScales = new double[numberOfPeaks][dimension];
+				double[][] rotation = BBOBUtils.computeRotation(rseed, dimension);
+	
+				/* Initialize all the data of the inner problem */
+				double[] gallagher_peaks = BBOBUtils.uniform(numberOfPeaks-1, rseed);
+				List<Integer> rperm = new ArrayList<Integer>();
+	
+				for (int i = 0; i < numberOfPeaks-1; i++) {
+					rperm.add(i);
+				}
+	
 				Collections.sort(rperm, new GallagherPeakComprator(gallagher_peaks));
-				
-				for (int j = 0; j < dimension; j++) {
-					arrScales[i][j] = Math.pow(arrCondition[i], rperm.get(j) / (dimension - 1.0) - 0.5);
+	
+				/* Random permutation */
+				double[] arrCondition = new double[numberOfPeaks];
+				arrCondition[0] = maxcondition1;
+	
+				double[] peaks = new double[numberOfPeaks];
+				peaks[0] = 10;
+	
+				for (int i = 1; i < numberOfPeaks; i++) {
+					arrCondition[i] = Math.pow(maxcondition, rperm.get(i-1) / (numberOfPeaks - 2.0));
+					peaks[i] = (i - 1.0) / (numberOfPeaks - 2.0) * (fitvalues[1] - fitvalues[0]) + fitvalues[0];
 				}
-			}
-
-			gallagher_peaks = BBOBUtils.uniform(dimension*numberOfPeaks, rseed);
-
-			for (int i = 0; i < dimension; i++) {
-				xopt[i] = 0.8 * (b * gallagher_peaks[i] - c);
-
-				for (int j = 0; j < numberOfPeaks; j++) {
-					xLocal[i][j] = 0.0;
-
-					for (int k = 0; k < dimension; k++) {
-						xLocal[i][j] += rotation[i][k] * (b * gallagher_peaks[j * dimension + k] - c);
+	
+				for (int i = 0; i < numberOfPeaks; i++) {
+					rperm.clear();
+					gallagher_peaks = BBOBUtils.uniform(dimension, rseed + (1000*i));
+	
+					for (int j = 0; j < dimension; j++) {
+						rperm.add(j);
 					}
-
-					if (j == 0) {
-						xLocal[i][j] *= 0.8;
+	
+					Collections.sort(rperm, new GallagherPeakComprator(gallagher_peaks));
+					
+					for (int j = 0; j < dimension; j++) {
+						arrScales[i][j] = Math.pow(arrCondition[i], rperm.get(j) / (dimension - 1.0) - 0.5);
 					}
 				}
+	
+				gallagher_peaks = BBOBUtils.uniform(dimension*numberOfPeaks, rseed);
+	
+				for (int i = 0; i < dimension; i++) {
+					xopt[i] = 0.8 * (b * gallagher_peaks[i] - c);
+	
+					for (int j = 0; j < numberOfPeaks; j++) {
+						xLocal[i][j] = 0.0;
+	
+						for (int k = 0; k < dimension; k++) {
+							xLocal[i][j] += rotation[i][k] * (b * gallagher_peaks[j * dimension + k] - c);
+						}
+	
+						if (j == 0) {
+							xLocal[i][j] *= 0.8;
+						}
+					}
+				}
+	
+				BBOBFunction problem = new Gallagher(dimension, rotation, xLocal, arrScales, peaks);
+				problem = new TransformObjectiveShift(problem, fopt);
+				yield problem;
 			}
-
-			BBOBFunction problem = new Gallagher(dimension, rotation, xLocal, arrScales, peaks);
-			problem = new TransformObjectiveShift(problem, fopt);
-			return problem;
-		} else {
-			throw new FrameworkException("unknown BBOB function " + function);
-		}
+			default -> throw new FrameworkException("unknown BBOB function " + function);
+		};
 	}
 
 	/**

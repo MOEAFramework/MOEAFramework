@@ -216,16 +216,12 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 
 			@Override
 			public String getColumnName(int column) {
-				switch (column) {
-				case 0: 
-					return localization.getString("text.algorithm");
-				case 1: 
-					return localization.getString("text.problem");
-				case 2: 
-					return localization.getString("text.numberOfSeeds");
-				default: 
-					throw new IllegalStateException();
-				}
+				return switch (column) {
+					case 0 -> localization.getString("text.algorithm");
+					case 1 -> localization.getString("text.problem");
+					case 2 -> localization.getString("text.numberOfSeeds");
+					default -> throw new IllegalStateException();
+				};
 			}
 
 			@Override
@@ -242,16 +238,12 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 			public Object getValueAt(int row, int column) {
 				ResultKey key = resultListModel.getElementAt(row);
 				
-				switch (column) {
-				case 0: 
-					return key.getAlgorithm();
-				case 1: 
-					return key.getProblem();
-				case 2: 
-					return controller.get(key).size();
-				default: 
-					throw new IllegalStateException();
-				}
+				return switch (column) {
+					case 0 -> key.getAlgorithm();
+					case 1 -> key.getProblem();
+					case 2 -> controller.get(key).size();
+					default -> throw new IllegalStateException();
+				};
 			}
 			
 		};

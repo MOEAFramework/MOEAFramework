@@ -131,31 +131,19 @@ public class BBOBUtils {
 	public static double computeFOpt(int function, int instance) {
 		int rseed, rrseed;
 
-		if (function == 4) {
-			rseed = 3;
-		} else if (function == 18) {
-			rseed = 17;
-		} else if (function == 101 || function == 102 || function == 103 || function == 107
-				|| function == 108 || function == 109) {
-			rseed = 1;
-		} else if (function == 104 || function == 105 || function == 106 || function == 110
-				|| function == 111 || function == 112) {
-			rseed = 8;
-		} else if (function == 113 || function == 114 || function == 115) {
-			rseed = 7;
-		} else if (function == 116 || function == 117 || function == 118) {
-			rseed = 10;
-		} else if (function == 119 || function == 120 || function == 121) {
-			rseed = 14;
-		} else if (function == 122 || function == 123 || function == 124) {
-			rseed = 17;
-		} else if (function == 125 || function == 126 || function == 127) {
-			rseed = 19;
-		} else if (function == 128 || function == 129 || function == 130) {
-			rseed = 21;
-		} else {
-			rseed = function;
-		}
+		rseed = switch (function) {
+			case 4 -> 3;
+			case 18 -> 17;
+			case 101, 102, 103, 107, 108, 109 -> 1;
+			case 104, 105, 106, 110, 111, 112 -> 8;
+			case 113, 114, 115 -> 7;
+			case 116, 117, 118 -> 10;
+			case 119, 120, 121 -> 14;
+			case 122, 123, 124 -> 17;
+			case 125, 126, 127 -> 19;
+			case 128, 129, 130 -> 21;
+			default -> function;
+		};
 
 		rrseed = rseed + (10000 * instance);
 		double gval = gauss(1, rrseed)[0];

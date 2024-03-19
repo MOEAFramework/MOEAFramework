@@ -20,6 +20,7 @@ package org.moeaframework.util.io;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.StandardCopyOption;
@@ -111,7 +112,7 @@ public class FileUtils {
 	 * @throws IOException if the file does not exist or an I/O error occurred while reading the file
 	 */
 	public static String readUTF8(File file) throws IOException {
-		return org.apache.commons.io.FileUtils.readFileToString(file, "UTF8");
+		return Files.readString(file.toPath(), StandardCharsets.UTF_8);
 	}
 
 }

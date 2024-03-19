@@ -163,18 +163,15 @@ public class World {
 				i = 0;
 				
 				while (i < line.length()) {
-					char c = line.charAt(i);
-						
-					if (c == ' ') {
-						map[i][j] = State.EMPTY;
-					} else if (c == '#') {
-						map[i][j] = State.FOOD;
-						totalFood++;
-					} else if (c == '.') {
-						map[i][j] = State.TRAIL;
-					} else {
-						throw new IllegalStateException();
-					}
+					switch (line.charAt(i)) {
+						case ' ' -> map[i][j] = State.EMPTY;
+						case '.' -> map[i][j] = State.TRAIL;
+						case '#' -> {
+							map[i][j] = State.FOOD;
+							totalFood++;
+						}
+						default -> throw new IllegalStateException();
+					};
 					
 					i++;
 				}
@@ -286,21 +283,12 @@ public class World {
 	 */
 	public void turnRight() {
 		switch (direction) {
-		case NORTH:
-			direction = Direction.EAST;
-			break;
-		case SOUTH:
-			direction = Direction.WEST;
-			break;
-		case EAST:
-			direction = Direction.SOUTH;
-			break;
-		case WEST:
-			direction = Direction.NORTH;
-			break;
-		default:
-			throw new IllegalStateException();
-		}
+			case NORTH -> direction = Direction.EAST;
+			case SOUTH -> direction = Direction.WEST;
+			case EAST -> direction = Direction.SOUTH;
+			case WEST -> direction = Direction.NORTH;
+			default -> throw new IllegalStateException();
+		};
 		
 		remainingMoves--;
 	}
@@ -310,21 +298,12 @@ public class World {
 	 */
 	public void turnLeft() {
 		switch (direction) {
-		case NORTH:
-			direction = Direction.WEST;
-			break;
-		case SOUTH:
-			direction = Direction.EAST;
-			break;
-		case EAST:
-			direction = Direction.NORTH;
-			break;
-		case WEST:
-			direction = Direction.SOUTH;
-			break;
-		default:
-			throw new IllegalStateException();
-		}
+			case NORTH -> direction = Direction.WEST;
+			case SOUTH -> direction = Direction.EAST;
+			case EAST -> direction = Direction.NORTH;
+			case WEST -> direction = Direction.SOUTH;
+			default -> throw new IllegalStateException();
+		};
 		
 		remainingMoves--;
 	}
@@ -340,21 +319,12 @@ public class World {
 		}
 		
 		switch (direction) {
-		case NORTH:
-			y = (y - 1 + height) % height;
-			break;
-		case SOUTH:
-			y = (y + 1) % height;
-			break;
-		case EAST:
-			x = (x + 1) % width;
-			break;
-		case WEST:
-			x = (x - 1 + width) % width;
-			break;
-		default:
-			throw new IllegalStateException();
-		}
+			case NORTH -> y = (y - 1 + height) % height;
+			case SOUTH -> y = (y + 1) % height;
+			case EAST -> x = (x + 1) % width;
+			case WEST -> x = (x - 1 + width) % width;
+			default -> throw new IllegalStateException();
+		};
 		
 		if (map[x][y].equals(State.FOOD)) {
 			map[x][y] = State.EATEN;
@@ -373,18 +343,13 @@ public class World {
 	 *         of the ant; {@code false} otherwise
 	 */
 	public boolean isFoodAhead() {
-		switch (direction) {
-		case NORTH:
-			return map[x][(y - 1 + height) % height].equals(State.FOOD);
-		case SOUTH:
-			return map[x][(y + 1) % height].equals(State.FOOD);
-		case EAST:
-			return map[(x + 1) % width][y].equals(State.FOOD);
-		case WEST:
-			return map[(x - 1 + width) % width][y].equals(State.FOOD);
-		default:
-			throw new IllegalStateException();
-		}
+		return switch (direction) {
+			case NORTH -> map[x][(y - 1 + height) % height].equals(State.FOOD);
+			case SOUTH -> map[x][(y + 1) % height].equals(State.FOOD);
+			case EAST -> map[(x + 1) % width][y].equals(State.FOOD);
+			case WEST -> map[(x - 1 + width) % width][y].equals(State.FOOD);
+			default -> throw new IllegalStateException();
+		};
 	}
 	
 	/**
@@ -394,22 +359,12 @@ public class World {
 		for (int j = 0; j < height; j++) {
 			for (int i = 0; i < width; i++) {
 				switch (map[i][j]) {
-				case FOOD:
-					System.out.print('#');
-					break;
-				case EMPTY:
-					System.out.print(' ');
-					break;
-				case TRAIL:
-					System.out.print('.');
-					break;
-				case EATEN:
-					System.out.print('@');
-					break;
-				default:
-					System.out.print('?');
-					break;
-				}
+					case FOOD -> System.out.print('#');
+					case EMPTY -> System.out.print(' ');
+					case TRAIL -> System.out.print('.');
+					case EATEN -> System.out.print('@');
+					default -> System.out.print('?');
+				};
 			}
 			
 			System.out.println();

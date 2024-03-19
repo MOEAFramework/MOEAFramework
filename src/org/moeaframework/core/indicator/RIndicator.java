@@ -237,18 +237,13 @@ public abstract class RIndicator extends NormalizedIndicator {
 	 * @return the default number of subdivisions for a given problem
 	 */
 	public static int getDefaultSubdivisions(Problem problem) {
-		switch (problem.getNumberOfObjectives()) {
-		case 2:
-			return 500;
-		case 3:
-			return 30;
-		case 4:
-			return 12;
-		case 5:
-			return 8;
-		default:
-			return 3;
-		}
+		return switch (problem.getNumberOfObjectives()) {
+			case 2 -> 500;
+			case 3 -> 30;
+			case 4 -> 12;
+			case 5 -> 8;
+			default -> 3;
+		};
 	}
 
 

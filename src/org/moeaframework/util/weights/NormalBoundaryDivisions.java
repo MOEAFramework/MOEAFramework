@@ -200,45 +200,16 @@ public class NormalBoundaryDivisions {
 	 * @return the reference point divisions
 	 */
 	public static NormalBoundaryDivisions forProblem(Problem problem) {
-		int divisionsOuter;
-		int divisionsInner;
-		
-		if (problem.getNumberOfObjectives() == 1) {
-			divisionsOuter = 100;
-			divisionsInner = 0;
-		} else if (problem.getNumberOfObjectives() == 2) {
-			divisionsOuter = 99;
-			divisionsInner = 0;
-		} else if (problem.getNumberOfObjectives() == 3) {
-			divisionsOuter = 12;
-			divisionsInner = 0;
-		} else if (problem.getNumberOfObjectives() == 4) {
-			divisionsOuter = 8;
-			divisionsInner = 0;
-		} else if (problem.getNumberOfObjectives() == 5) {
-			divisionsOuter = 6;
-			divisionsInner = 0;
-		} else if (problem.getNumberOfObjectives() == 6) {
-			divisionsOuter = 4;
-			divisionsInner = 1;
-		} else if (problem.getNumberOfObjectives() == 7) {
-			divisionsOuter = 3;
-			divisionsInner = 2;
-		} else if (problem.getNumberOfObjectives() == 8) {
-			divisionsOuter = 3;
-			divisionsInner = 2;
-		} else if (problem.getNumberOfObjectives() == 9) {
-			divisionsOuter = 3;
-			divisionsInner = 2;
-		} else if (problem.getNumberOfObjectives() == 10) {
-			divisionsOuter = 3;
-			divisionsInner = 2;
-		} else {
-			divisionsOuter = 2;
-			divisionsInner = 1;
-		}
-		
-		return new NormalBoundaryDivisions(divisionsOuter, divisionsInner);
+		return switch (problem.getNumberOfObjectives()) {
+			case 1 -> new NormalBoundaryDivisions(100, 0);
+			case 2 -> new NormalBoundaryDivisions(99, 0);
+			case 3 -> new NormalBoundaryDivisions(12, 0);
+			case 4 -> new NormalBoundaryDivisions(8, 0);
+			case 5 -> new NormalBoundaryDivisions(6, 0);
+			case 6 -> new NormalBoundaryDivisions(4, 1);
+			case 7, 8, 9, 10 -> new NormalBoundaryDivisions(3, 2);
+			default -> new NormalBoundaryDivisions(2, 1);
+		};
 	}
 
 }

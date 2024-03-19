@@ -75,50 +75,29 @@ public class ZCATProblemProvider extends RegisteredProblemProvider {
 				int instance = Integer.parseInt(matcher.group(1));
 				int numberOfObjectives = Integer.parseInt(matcher.group(2));
 				
-				switch (instance) {
-				case 1:
-					return new ZCAT1(numberOfObjectives);
-				case 2:
-					return new ZCAT2(numberOfObjectives);
-				case 3:
-					return new ZCAT3(numberOfObjectives);
-				case 4:
-					return new ZCAT4(numberOfObjectives);
-				case 5:
-					return new ZCAT5(numberOfObjectives);
-				case 6:
-					return new ZCAT6(numberOfObjectives);
-				case 7:
-					return new ZCAT7(numberOfObjectives);
-				case 8:
-					return new ZCAT8(numberOfObjectives);
-				case 9:
-					return new ZCAT9(numberOfObjectives);
-				case 10:
-					return new ZCAT10(numberOfObjectives);
-				case 11:
-					return new ZCAT11(numberOfObjectives);
-				case 12:
-					return new ZCAT12(numberOfObjectives);
-				case 13:
-					return new ZCAT13(numberOfObjectives);
-				case 14:
-					return new ZCAT14(numberOfObjectives);
-				case 15:
-					return new ZCAT15(numberOfObjectives);
-				case 16:
-					return new ZCAT16(numberOfObjectives);
-				case 17:
-					return new ZCAT17(numberOfObjectives);
-				case 18:
-					return new ZCAT18(numberOfObjectives);
-				case 19:
-					return new ZCAT19(numberOfObjectives);
-				case 20:
-					return new ZCAT20(numberOfObjectives);
-				default:
-					return null;
-				}
+				return switch (instance) {
+					case 1 -> new ZCAT1(numberOfObjectives);
+					case 2 -> new ZCAT2(numberOfObjectives);
+					case 3 -> new ZCAT3(numberOfObjectives);
+					case 4 -> new ZCAT4(numberOfObjectives);
+					case 5 -> new ZCAT5(numberOfObjectives);
+					case 6 -> new ZCAT6(numberOfObjectives);
+					case 7 -> new ZCAT7(numberOfObjectives);
+					case 8 -> new ZCAT8(numberOfObjectives);
+					case 9 -> new ZCAT9(numberOfObjectives);
+					case 10 -> new ZCAT10(numberOfObjectives);
+					case 11 -> new ZCAT11(numberOfObjectives);
+					case 12 -> new ZCAT12(numberOfObjectives);
+					case 13 -> new ZCAT13(numberOfObjectives);
+					case 14 -> new ZCAT14(numberOfObjectives);
+					case 15 -> new ZCAT15(numberOfObjectives);
+					case 16 -> new ZCAT16(numberOfObjectives);
+					case 17 -> new ZCAT17(numberOfObjectives);
+					case 18 -> new ZCAT18(numberOfObjectives);
+					case 19 -> new ZCAT19(numberOfObjectives);
+					case 20 -> new ZCAT20(numberOfObjectives);
+					default -> null;
+				};
 			}
 		} catch (NumberFormatException e) {
 			return null;

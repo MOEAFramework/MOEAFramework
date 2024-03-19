@@ -124,7 +124,7 @@ public class SimpleStatistics extends CommandLineUtility {
 			mode = completer.lookup(commandLine.getOptionValue("mode"));
 			
 			if (mode == null) {
-				throw new IllegalArgumentException("invalid mode");
+				throw new IllegalArgumentException("invalid mode '" + commandLine.getOptionValue("mode") + "'");
 			}
 		} else {
 			mode = "average";
@@ -154,19 +154,14 @@ public class SimpleStatistics extends CommandLineUtility {
 						output.print(' ');
 					}
 					
-					if (mode.equals("minimum")) {
-						output.print(statistics.getMin());
-					} else if (mode.equals("maximum")) {
-						output.print(statistics.getMax());
-					} else if (mode.equals("average")) {
-						output.print(statistics.getMean());
-					} else if (mode.equals("stdev")) {
-						output.print(statistics.getStandardDeviation());
-					} else if (mode.equals("count")) {
-						output.print(statistics.getN());
-					} else {
-						throw new IllegalArgumentException("unknown mode: " + mode);
-					}
+					switch (mode) {
+						case "minimum" -> output.print(statistics.getMin());
+						case "maximum" -> output.print(statistics.getMax());
+						case "average" -> output.print(statistics.getMean());
+						case "stdev" -> output.print(statistics.getStandardDeviation());
+						case "count" -> output.print(statistics.getN());
+						default -> throw new IllegalStateException();
+					};
 				}
 				
 				output.println();

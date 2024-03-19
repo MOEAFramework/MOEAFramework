@@ -119,17 +119,15 @@ public class ResultFileWriter implements OutputWriter {
 			File existingFile = settings.getUncleanFile(file);
 			
 			if (existingFile.exists()) {
-				if (settings.getCleanupStrategy().equals(CleanupStrategy.RESTORE)) {
-					if (file.exists()) {
-						FileUtils.delete(existingFile);
-					} else {
-						// do nothing, the unclean file is ready for recovery
+				switch (settings.getCleanupStrategy()) {
+					case RESTORE -> {
+						if (file.exists()) {
+							FileUtils.delete(existingFile);
+						}
 					}
-				} else if (settings.getCleanupStrategy().equals(CleanupStrategy.OVERWRITE)) {
-					FileUtils.delete(existingFile);
-				} else {
-					throw new FrameworkException(EXISTING_FILE);
-				}
+					case OVERWRITE -> FileUtils.delete(existingFile);
+					default -> throw new FrameworkException(EXISTING_FILE);
+				};
 			}
 			
 			if (file.exists()) {

@@ -196,24 +196,23 @@ public class NondominatedPopulation extends Population {
 	 * @return {@code true} if the solutions are duplicates; {@code false} otherwise
 	 */
 	protected boolean isDuplicate(Solution s1, Solution s2) {
-		switch (duplicateMode) {
-		case NO_DUPLICATE_OBJECTIVES:
-			return s1.distanceTo(s2) < Settings.EPS;
-		case ALLOW_DUPLICATE_OBJECTIVES:
-			if (s1.getNumberOfVariables() != s2.getNumberOfVariables()) {
-				return false;
-			}
-			
-			for (int i = 0; i < s1.getNumberOfVariables(); i++) {
-				if (!s1.getVariable(i).equals(s2.getVariable(i))) {
-					return false;
+		return switch (duplicateMode) {
+			case NO_DUPLICATE_OBJECTIVES -> s1.distanceTo(s2) < Settings.EPS;
+			case ALLOW_DUPLICATE_OBJECTIVES -> {
+				if (s1.getNumberOfVariables() != s2.getNumberOfVariables()) {
+					yield false;
 				}
+				
+				for (int i = 0; i < s1.getNumberOfVariables(); i++) {
+					if (!s1.getVariable(i).equals(s2.getVariable(i))) {
+						yield false;
+					}
+				}
+				
+				yield true;
 			}
-			
-			return true;
-		default:
-			return false;
-		}
+			default -> false;
+		};
 	}
 
 	/**

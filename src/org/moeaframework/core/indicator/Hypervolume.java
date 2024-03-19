@@ -39,15 +39,12 @@ public class Hypervolume implements Indicator {
 		String selection = Settings.getHypervolume();
 		
 		if (selection != null) {
-			if (selection.equalsIgnoreCase(PISAHypervolume.class.getSimpleName())) {
-				instance = new PISAHypervolume(problem, referenceSet);
-			} else if (selection.equalsIgnoreCase(WFGHypervolume.class.getSimpleName())) {
-				instance = new WFGHypervolume(problem, referenceSet);
-			} else if (selection.equalsIgnoreCase(WFGNormalizedHypervolume.class.getSimpleName())) {
-				instance = new WFGNormalizedHypervolume(problem, referenceSet);
-			} else {
-				instance = new NativeHypervolume(problem, referenceSet);
-			}
+			instance = switch (selection.toLowerCase()) {
+				case "pisa" -> new PISAHypervolume(problem, referenceSet);
+				case "wfg" -> new WFGHypervolume(problem, referenceSet);
+				case "wfgnormalized" -> new WFGNormalizedHypervolume(problem, referenceSet);
+				default -> new NativeHypervolume(problem, referenceSet);
+			};
 		} else {
 			instance = new WFGNormalizedHypervolume(problem, referenceSet);
 		}
@@ -64,15 +61,12 @@ public class Hypervolume implements Indicator {
 		String selection = Settings.getHypervolume();
 		
 		if (selection != null) {
-			if (selection.equalsIgnoreCase(PISAHypervolume.class.getSimpleName())) {
-				instance = new PISAHypervolume(problem, referenceSet, referencePoint);
-			} else if (selection.equalsIgnoreCase(WFGHypervolume.class.getSimpleName())) {
-				instance = new WFGHypervolume(problem, referencePoint);
-			} else if (selection.equalsIgnoreCase(WFGNormalizedHypervolume.class.getSimpleName())) {
-				instance = new WFGNormalizedHypervolume(problem, referenceSet, referencePoint);
-			} else {
-				instance = new NativeHypervolume(problem, referenceSet, referencePoint);
-			}
+			instance = switch (selection.toLowerCase()) {
+				case "pisa" -> new PISAHypervolume(problem, referenceSet, referencePoint);
+				case "wfg" -> new WFGHypervolume(problem, referencePoint);
+				case "wfgnormalized" -> new WFGNormalizedHypervolume(problem, referenceSet, referencePoint);
+				default -> new NativeHypervolume(problem, referenceSet, referencePoint);
+			};
 		} else {
 			instance = new WFGNormalizedHypervolume(problem, referenceSet, referencePoint);
 		}
@@ -89,15 +83,12 @@ public class Hypervolume implements Indicator {
 		String selection = Settings.getHypervolume();
 		
 		if (selection != null) {
-			if (selection.equalsIgnoreCase(PISAHypervolume.class.getSimpleName())) {
-				instance = new PISAHypervolume(problem, minimum, maximum);
-			} else if (selection.equalsIgnoreCase(WFGHypervolume.class.getSimpleName())) {
-				instance = new WFGHypervolume(problem, maximum);
-			} else if (selection.equalsIgnoreCase(WFGNormalizedHypervolume.class.getSimpleName())) {
-				instance = new WFGNormalizedHypervolume(problem, minimum, maximum);
-			} else {
-				instance = new NativeHypervolume(problem, minimum, maximum);
-			}
+			instance = switch (selection.toLowerCase()) {
+				case "pisa" -> new PISAHypervolume(problem, minimum, maximum);
+				case "wfg" -> new WFGHypervolume(problem, maximum);
+				case "wfgnormalized" -> new WFGNormalizedHypervolume(problem, minimum, maximum);
+				default -> new NativeHypervolume(problem, minimum, maximum);
+			};
 		} else {
 			instance = new WFGNormalizedHypervolume(problem, minimum, maximum);
 		}
@@ -119,14 +110,11 @@ public class Hypervolume implements Indicator {
 		String selection = Settings.getHypervolume();
 		
 		if (selection != null) {
-			if (selection.equalsIgnoreCase(PISAHypervolume.class.getSimpleName())) {
-				return PISAHypervolume.evaluate(problem, approximationSet);
-			} else if (selection.equalsIgnoreCase(WFGHypervolume.class.getSimpleName()) ||
-					selection.equalsIgnoreCase(WFGNormalizedHypervolume.class.getSimpleName())) {
-				return WFGNormalizedHypervolume.evaluate(problem, approximationSet);
-			} else {
-				return NativeHypervolume.evaluate(problem, approximationSet);
-			}
+			return switch (selection.toLowerCase()) {
+				case "pisa" -> PISAHypervolume.evaluate(problem, approximationSet);
+				case "wfg", "wfgnormalized" -> WFGNormalizedHypervolume.evaluate(problem, approximationSet);
+				default -> NativeHypervolume.evaluate(problem, approximationSet);
+			};
 		} else {
 			return WFGNormalizedHypervolume.evaluate(problem, approximationSet);
 		}

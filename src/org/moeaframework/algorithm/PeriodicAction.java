@@ -114,32 +114,32 @@ public abstract class PeriodicAction implements Algorithm {
 	@Override
 	public void step() {
 		if (lastInvocation < 0) {
-			if (frequencyType.equals(FrequencyType.EVALUATIONS)) {
-				lastInvocation = algorithm.getNumberOfEvaluations();
-			} else if (frequencyType.equals(FrequencyType.STEPS)) {
-				lastInvocation = 0;
-			} else {
-				throw new IllegalStateException("unsupported frequencyType: " + frequencyType);
-			}
+			switch (frequencyType) {
+				case EVALUATIONS -> lastInvocation = algorithm.getNumberOfEvaluations();
+				case STEPS -> lastInvocation = 0;
+				default -> throw new IllegalStateException("unsupported frequencyType: " + frequencyType);
+			};
 		}
 		
 		algorithm.step();
 
-		if (frequencyType.equals(FrequencyType.EVALUATIONS)) {
-			if ((getNumberOfEvaluations() - lastInvocation) >= frequency) {
-				doAction();
-				lastInvocation = getNumberOfEvaluations();
+		switch (frequencyType) {
+			case EVALUATIONS -> {
+				if ((getNumberOfEvaluations() - lastInvocation) >= frequency) {
+					doAction();
+					lastInvocation = getNumberOfEvaluations();
+				}
 			}
-		} else if (frequencyType.equals(FrequencyType.STEPS)) {
-			iteration++;
-			
-			if ((iteration - lastInvocation) >= frequency) {
-				doAction();
-				lastInvocation = iteration;
+			case STEPS -> {
+				iteration++;
+				
+				if ((iteration - lastInvocation) >= frequency) {
+					doAction();
+					lastInvocation = iteration;
+				}
 			}
-		} else {
-			throw new IllegalStateException("unsupported frequencyType: " + frequencyType);
-		}
+			default -> throw new IllegalStateException("unsupported frequencyType: " + frequencyType);
+		};
 	}
 
 	@Override

@@ -98,28 +98,18 @@ public class WFGProblemProvider extends RegisteredProblemProvider {
 				int instance = Integer.parseInt(matcher.group(1));
 				int numberOfObjectives = Integer.parseInt(matcher.group(2));
 				
-				switch (instance) {
-				case 1:
-					return new WFG1(numberOfObjectives - 1, 10, numberOfObjectives);
-				case 2:
-					return new WFG2(numberOfObjectives - 1, 10, numberOfObjectives);
-				case 3:
-					return new WFG3(numberOfObjectives - 1, 10, numberOfObjectives);
-				case 4:
-					return new WFG4(numberOfObjectives - 1, 10, numberOfObjectives);
-				case 5:
-					return new WFG5(numberOfObjectives - 1, 10, numberOfObjectives);
-				case 6:
-					return new WFG6(numberOfObjectives - 1, 10, numberOfObjectives);
-				case 7:
-					return new WFG7(numberOfObjectives - 1, 10, numberOfObjectives);
-				case 8:
-					return new WFG8(numberOfObjectives - 1, 10, numberOfObjectives);
-				case 9:
-					return new WFG9(numberOfObjectives - 1, 10, numberOfObjectives);
-				default:
-					return null;
-				}
+				return switch (instance) {
+					case 1 -> new WFG1(numberOfObjectives - 1, 10, numberOfObjectives);
+					case 2 -> new WFG2(numberOfObjectives - 1, 10, numberOfObjectives);
+					case 3 -> new WFG3(numberOfObjectives - 1, 10, numberOfObjectives);
+					case 4 -> new WFG4(numberOfObjectives - 1, 10, numberOfObjectives);
+					case 5 -> new WFG5(numberOfObjectives - 1, 10, numberOfObjectives);
+					case 6 -> new WFG6(numberOfObjectives - 1, 10, numberOfObjectives);
+					case 7 -> new WFG7(numberOfObjectives - 1, 10, numberOfObjectives);
+					case 8 -> new WFG8(numberOfObjectives - 1, 10, numberOfObjectives);
+					case 9 -> new WFG9(numberOfObjectives - 1, 10, numberOfObjectives);
+					default -> null;
+				};
 			}
 		} catch (NumberFormatException e) {
 			return null;

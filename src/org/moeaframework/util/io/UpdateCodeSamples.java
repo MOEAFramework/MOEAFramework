@@ -233,14 +233,14 @@ public class UpdateCodeSamples extends CommandLineUtility {
 					System.out.println("    > Updating " + language + " block: " + filename + " " + options);
 					
 					switch (language) {
-					case Output:
-						compile(filename);
-						content = execute(filename, options);
-						break;
-					default:
-						content = FileUtils.readUTF8(new File(filename));
-						break;
-					}
+						case Output -> {
+							compile(filename);
+							content = execute(filename, options);
+						}
+						default -> {
+							content = FileUtils.readUTF8(new File(filename));
+						}
+					};
 					
 					// compare old and new content
 					List<String> newContent = format(content, options, fileType);
@@ -697,20 +697,20 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		 * @return the code block without comments
 		 */
 		public String stripComments(String content) {
-			switch (this) {
-			case Java:
-				// Remove C-style // comments
-				content = content.replaceAll("//[^\\n]*", "");                              
-				
-				// Remove C-style /* */ comments
-				content = content.replaceAll("/\\*[^*]*\\*+(?:[^/*][^*]*\\*+)*/", "");
-				
-				 // Replace multiple blank lines with just one
-				content = content.replaceAll("(?:\\s*\\r?\\n){2,}", System.lineSeparator() + System.lineSeparator());
-				return content;
-			default:
-				return content;
-			}
+			return switch (this) {
+				case Java -> {
+					// Remove C-style // comments
+					content = content.replaceAll("//[^\\n]*", "");                              
+					
+					// Remove C-style /* */ comments
+					content = content.replaceAll("/\\*[^*]*\\*+(?:[^/*][^*]*\\*+)*/", "");
+					
+					 // Replace multiple blank lines with just one
+					content = content.replaceAll("(?:\\s*\\r?\\n){2,}", System.lineSeparator() + System.lineSeparator());
+					yield content;
+				}
+				default -> content;
+			};
 		}
 		
 	}
@@ -849,14 +849,11 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		 * @return {@code true} if the line is the start of a code block; {@code false} otherwise
 		 */
 		public boolean isStartOfCodeBlock(String line) {
-			switch (this) {
-			case Markdown:
-				return line.startsWith("```");
-			case Html:
-				return line.startsWith("<pre");
-			default:
-				return false;
-			}
+			return switch (this) {
+				case Markdown -> line.startsWith("```");
+				case Html -> line.startsWith("<pre");
+				default -> false;
+			};
 		}
 		
 		/**
@@ -866,14 +863,11 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		 * @return {@code true} if the line is the end of a code block; {@code false} otherwise
 		 */
 		public boolean isEndOfCodeBlock(String line) {
-			switch (this) {
-			case Markdown:
-				return line.startsWith("```");
-			case Html:
-				return line.startsWith("</pre>");
-			default:
-				return false;
-			}
+			return switch (this) {
+				case Markdown -> line.startsWith("```");
+				case Html -> line.startsWith("</pre>");
+				default -> false;
+			};
 		}
 		
 		/**
@@ -889,14 +883,11 @@ public class UpdateCodeSamples extends CommandLineUtility {
 			
 			String brushName = language.name().toLowerCase();
 			
-			switch (this) {
-			case Markdown:
-				return markdownBrush.contains(brushName) ? brushName : "";
-			case Html:
-				return htmlBrush.contains(brushName) ? brushName : "plain";
-			default:
-				return "";
-			}
+			return switch (this) {
+				case Markdown -> markdownBrush.contains(brushName) ? brushName : "";
+				case Html -> htmlBrush.contains(brushName) ? brushName : "plain";
+				default -> "";
+			};
 		}
 		
 		/**
@@ -907,19 +898,17 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		 */
 		public void wrapInCodeBlock(List<String> lines, FormattingOptions options) {
 			switch (this) {
-			case Markdown:
-				lines.add(0, "```" + getBrush(options.language));
-				lines.add("```");
-				break;
-			case Html:
-				lines.add(0, "<pre class=\"brush: " + getBrush(options.language) + "; toolbar: false;\">");
-				lines.add(1, "<![CDATA[");
-				lines.add("]]>");
-				lines.add("</pre>");
-				break;
-			default:
-				break;
-			}
+				case Markdown -> {
+					lines.add(0, "```" + getBrush(options.language));
+					lines.add("```");
+				}
+				case Html -> {
+					lines.add(0, "<pre class=\"brush: " + getBrush(options.language) + "; toolbar: false;\">");
+					lines.add(1, "<![CDATA[");
+					lines.add("]]>");
+					lines.add("</pre>");
+				}
+			};
 		}
 	}
 	

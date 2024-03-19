@@ -88,49 +88,46 @@ public class EdgeData extends DistanceTable {
 		String line = null;
 		
 		switch (format) {
-		case EDGE_LIST:
-			while ((line = reader.readLine()) != null) {
-				line = line.trim();
-				
-				if (line.equals("-1")) {
-					break;
-				} else {
-					String[] tokens = line.split("\\s+");
-					int id1 = Integer.parseInt(tokens[0]);
-					int id2 = Integer.parseInt(tokens[1]);
-					addEdge(id1, id2);
-				}
-			}
-			
-			break;
-		case ADJ_LIST:
-			int currentId = -1;
-			Queue<Integer> values = new LinkedList<Integer>();
-			
-			readNextLine(reader, values);
-				
-			while ((currentId != -1) && (values.peek() != -1)) {
-				if (currentId == -1) {
-					currentId = values.poll();
-				} else {
-					int id = values.poll();
+			case EDGE_LIST -> {
+				while ((line = reader.readLine()) != null) {
+					line = line.trim();
 					
-					if (id == -1) {
-						currentId = -1;
+					if (line.equals("-1")) {
+						break;
 					} else {
-						addEdge(currentId, id);
+						String[] tokens = line.split("\\s+");
+						int id1 = Integer.parseInt(tokens[0]);
+						int id2 = Integer.parseInt(tokens[1]);
+						addEdge(id1, id2);
 					}
 				}
+			}
+			case ADJ_LIST -> {
+				int currentId = -1;
+				Queue<Integer> values = new LinkedList<Integer>();
 				
-				if (values.isEmpty()) {
-					readNextLine(reader, values);
+				readNextLine(reader, values);
+					
+				while ((currentId != -1) && (values.peek() != -1)) {
+					if (currentId == -1) {
+						currentId = values.poll();
+					} else {
+						int id = values.poll();
+						
+						if (id == -1) {
+							currentId = -1;
+						} else {
+							addEdge(currentId, id);
+						}
+					}
+					
+					if (values.isEmpty()) {
+						readNextLine(reader, values);
+					}
 				}
 			}
-			
-			break;
-		default:
-			throw new IllegalArgumentException("edge format not supported");
-		}
+			default -> throw new IllegalArgumentException("edge format not supported");
+		};
 	}
 	
 	/**
@@ -138,26 +135,22 @@ public class EdgeData extends DistanceTable {
 	 * 
 	 * @param id1 the identifier of the first node
 	 * @param id2 the identifier of the second node
-	 * @throws IllegalArgumentException if a node with the specified identifier
-	 *         does not exist
+	 * @throws IllegalArgumentException if a node with the specified identifier does not exist
 	 */
 	private void addEdge(int id1, int id2) {
 		if ((id1 < 1) || (id1 > size)) {
-			throw new IllegalArgumentException("no node with identifier " +
-					id1);
+			throw new IllegalArgumentException("no node with identifier " + id1);
 		}
 		
 		if ((id2 < 1) || (id2 > size)) {
-			throw new IllegalArgumentException("no node with identifier " +
-					id2);
+			throw new IllegalArgumentException("no node with identifier " + id2);
 		}
 		
 		edges.add(new Edge(id1, id2));
 	}
 	
 	/**
-	 * Returns the edges contained in this graph.  Changes to the returned
-	 * list will be reflected in this graph.
+	 * Returns the edges contained in this graph.  Changes to the returned list will be reflected in this graph.
 	 * 
 	 * @return the edges contained in this graph
 	 */

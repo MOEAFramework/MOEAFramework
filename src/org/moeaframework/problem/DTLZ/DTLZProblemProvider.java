@@ -103,24 +103,16 @@ public class DTLZProblemProvider extends RegisteredProblemProvider {
 				int instance = Integer.parseInt(matcher.group(1));
 				int numberOfObjectives = Integer.parseInt(matcher.group(2));
 				
-				switch (instance) {
-				case 1:
-					return new DTLZ1(numberOfObjectives);
-				case 2:
-					return new DTLZ2(numberOfObjectives);
-				case 3:
-					return new DTLZ3(numberOfObjectives);
-				case 4:
-					return new DTLZ4(numberOfObjectives);
-				case 5:
-					return new DTLZ5(numberOfObjectives);
-				case 6:
-					return new DTLZ6(numberOfObjectives);
-				case 7:
-					return new DTLZ7(numberOfObjectives);
-				default:
-					return null;
-				}
+				return switch (instance) {
+					case 1 -> new DTLZ1(numberOfObjectives);
+					case 2 -> new DTLZ2(numberOfObjectives);
+					case 3 -> new DTLZ3(numberOfObjectives);
+					case 4 -> new DTLZ4(numberOfObjectives);
+					case 5 -> new DTLZ5(numberOfObjectives);
+					case 6 -> new DTLZ6(numberOfObjectives);
+					case 7 -> new DTLZ7(numberOfObjectives);
+					default -> null;
+				};
 			}
 		} catch (NumberFormatException e) {
 			return null;
