@@ -28,7 +28,7 @@ import org.moeaframework.core.Settings;
  */
 public class Hypervolume implements Indicator {
 	
-	private final Indicator instance;
+	final Indicator instance;
 	
 	/**
 	 * Constructs a hypervolume evaluator for the specified problem and reference set.  See
@@ -43,8 +43,7 @@ public class Hypervolume implements Indicator {
 		if (selection != null) {
 			instance = switch (selection.toLowerCase()) {
 				case "pisa" -> new PISAHypervolume(problem, referenceSet);
-				case "wfg" -> new WFGHypervolume(problem, referenceSet);
-				case "wfgnormalized" -> new WFGNormalizedHypervolume(problem, referenceSet);
+				case "wfg" -> new WFGNormalizedHypervolume(problem, referenceSet);
 				default -> new NativeHypervolume(problem, referenceSet);
 			};
 		} else {
@@ -65,8 +64,7 @@ public class Hypervolume implements Indicator {
 		if (selection != null) {
 			instance = switch (selection.toLowerCase()) {
 				case "pisa" -> new PISAHypervolume(problem, referenceSet, referencePoint);
-				case "wfg" -> new WFGHypervolume(problem, referencePoint);
-				case "wfgnormalized" -> new WFGNormalizedHypervolume(problem, referenceSet, referencePoint);
+				case "wfg" -> new WFGNormalizedHypervolume(problem, referenceSet, referencePoint);
 				default -> new NativeHypervolume(problem, referenceSet, referencePoint);
 			};
 		} else {
@@ -87,8 +85,7 @@ public class Hypervolume implements Indicator {
 		if (selection != null) {
 			instance = switch (selection.toLowerCase()) {
 				case "pisa" -> new PISAHypervolume(problem, minimum, maximum);
-				case "wfg" -> new WFGHypervolume(problem, maximum);
-				case "wfgnormalized" -> new WFGNormalizedHypervolume(problem, minimum, maximum);
+				case "wfg" -> new WFGNormalizedHypervolume(problem, minimum, maximum);
 				default -> new NativeHypervolume(problem, minimum, maximum);
 			};
 		} else {
@@ -114,7 +111,7 @@ public class Hypervolume implements Indicator {
 		if (selection != null) {
 			return switch (selection.toLowerCase()) {
 				case "pisa" -> PISAHypervolume.evaluate(problem, approximationSet);
-				case "wfg", "wfgnormalized" -> WFGNormalizedHypervolume.evaluate(problem, approximationSet);
+				case "wfg" -> WFGNormalizedHypervolume.evaluate(problem, approximationSet);
 				default -> NativeHypervolume.evaluate(problem, approximationSet);
 			};
 		} else {
