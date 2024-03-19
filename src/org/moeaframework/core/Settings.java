@@ -102,12 +102,12 @@ public class Settings {
 	/**
 	 * The property key for the power used in the generational distance calculation.
 	 */
-	public static final String KEY_GD_POWER = createKey(KEY_PREFIX, "core", "indicator", "gd_power");
+	public static final String KEY_GD_POWER = createKey(KEY_PREFIX, "core", "indicator", "gd", "power");
 	
 	/**
 	 * The property key for the power used in the inverted generational distance calculation.
 	 */
-	public static final String KEY_IGD_POWER = createKey(KEY_PREFIX, "core", "indicator", "igd_power");
+	public static final String KEY_IGD_POWER = createKey(KEY_PREFIX, "core", "indicator", "igd", "power");
 	
 	/**
 	 * The property key to indicate that fast non-dominated sorting should be used.
@@ -127,17 +127,17 @@ public class Settings {
 	/**
 	 * The property key for the hypervolume delta when determining the reference point.
 	 */
-	public static final String KEY_HYPERVOLUME_DELTA = createKey(KEY_PREFIX, "core", "indicator", "hypervolume_delta");
+	public static final String KEY_HYPERVOLUME_DELTA = createKey(KEY_PREFIX, "core", "indicator", "hypervolume", "delta");
 	
 	/**
 	 * The prefix for specifying custom ideal points for different problems.
 	 */
-	public static final String KEY_IDEALPT_PREFIX = createKey(KEY_PREFIX, "core", "indicator", "hypervolume_idealpt");
+	public static final String KEY_IDEALPT_PREFIX = createKey(KEY_PREFIX, "core", "indicator", "hypervolume", "idealpt");
 	
 	/**
 	 * The prefix for specifying custom reference points for different problems.
 	 */
-	public static final String KEY_REFPT_PREFIX = createKey(KEY_PREFIX, "core", "indicator", "hypervolume_refpt");
+	public static final String KEY_REFPT_PREFIX = createKey(KEY_PREFIX, "core", "indicator", "hypervolume", "refpt");
 	
 	/**
 	 * The property key for the hypervolume command.
@@ -147,12 +147,12 @@ public class Settings {
 	/**
 	 * The property key for the hypervolume inversion flag.
 	 */
-	public static final String KEY_HYPERVOLUME_INVERTED = createKey(KEY_PREFIX, "core", "indicator", "hypervolume_inverted");
+	public static final String KEY_HYPERVOLUME_INVERTED = createKey(KEY_PREFIX, "core", "indicator", "hypervolume", "inverted");
 	
 	/**
 	 * The property key for the hypervolume flag.
 	 */
-	public static final String KEY_HYPERVOLUME_ENABLED = createKey(KEY_PREFIX, "core", "indicator", "hypervolume_enabled");
+	public static final String KEY_HYPERVOLUME_ENABLED = createKey(KEY_PREFIX, "core", "indicator", "hypervolume", "enabled");
 	
 	/**
 	 * The prefix for all problem property keys.
