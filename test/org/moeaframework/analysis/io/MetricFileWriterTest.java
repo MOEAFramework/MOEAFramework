@@ -122,6 +122,8 @@ public class MetricFileWriterTest {
 	@Test
 	public void testFileTimestamp() throws IOException, InterruptedException {
 		File file = TestUtils.createTempFile();
+		file.delete();
+		
 		Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
 		NondominatedPopulation referenceSet = ProblemFactory.getInstance().getReferenceSet("DTLZ2_2");
 		Indicators indicators = Indicators.standard(problem, referenceSet);

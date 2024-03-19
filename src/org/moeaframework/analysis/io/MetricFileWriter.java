@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Optional;
 
+import org.moeaframework.TestUtils;
 import org.moeaframework.core.configuration.Validate;
 import org.moeaframework.core.indicator.Indicators;
 import org.moeaframework.core.indicator.Indicators.IndicatorValues;
@@ -112,7 +113,9 @@ public class MetricFileWriter implements OutputWriter {
 			}
 
 			// next, replace the original only if any changes were made
-			if (!FileUtils.areIdentical(tempFile, file)) {
+			if (FileUtils.areIdentical(tempFile, file)) {
+				FileUtils.delete(tempFile);
+			} else {
 				FileUtils.move(tempFile, file);
 			}
 

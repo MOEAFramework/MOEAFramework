@@ -431,6 +431,7 @@ public class ResultFileWriterTest {
 	@Test
 	public void testFileTimestamp() throws IOException, InterruptedException {
 		File file = TestUtils.createTempFile();
+		file.delete();
 
 		NondominatedPopulation population = new NondominatedPopulation();
 		population.add(solution1);

@@ -121,7 +121,9 @@ public class ResultFileWriter implements OutputWriter {
 			}
 
 			// next, replace the original only if any changes were made
-			if (!FileUtils.areIdentical(tempFile, file)) {
+			if (FileUtils.areIdentical(tempFile, file)) {
+				FileUtils.delete(tempFile);
+			} else {
 				FileUtils.move(tempFile, file);
 			}
 
