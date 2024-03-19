@@ -32,6 +32,20 @@
     <th>Downloads</th>
   </tr>
   <tr>
+  	<td>3.11</td>
+  	<td>04 Mar 2024</td>
+  	<td>
+      <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v3.11/MOEAFramework-3.11.tar.gz"
+          onClick="_gaq.push(['_trackEvent', 'Downloads', 'Binary', '3.11']);">Binary</a> |
+      <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v3.11/MOEAFramework-3.11-Source.tar.gz"
+          onClick="_gaq.push(['_trackEvent', 'Downloads', 'Source', '3.11']);">Source</a> |
+      <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v3.11/MOEAFramework-3.11-Demo.jar"
+          onClick="_gaq.push(['_trackEvent', 'Downloads', 'Demo', '3.11']);">Demo</a> |
+      <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v3.11/MOEAFramework-3.11-QuickStart.pdf"
+          onClick="_gaq.push(['_trackEvent', 'Downloads', 'Manual', '3.11']);">Quick Start Guide</a>
+  	</td>
+  </tr>
+  <tr>
   	<td>3.10</td>
   	<td>18 Jan 2024</td>
   	<td>
