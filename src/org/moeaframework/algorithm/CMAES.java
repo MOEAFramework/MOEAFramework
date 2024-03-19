@@ -25,7 +25,6 @@ import java.util.Comparator;
 
 import org.apache.commons.math3.stat.StatUtils;
 import org.moeaframework.core.FastNondominatedSorting;
-import org.moeaframework.core.FitnessEvaluator;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Population;
@@ -45,6 +44,7 @@ import org.moeaframework.core.configuration.Property;
 import org.moeaframework.core.configuration.Validate;
 import org.moeaframework.core.fitness.AdditiveEpsilonIndicatorFitnessEvaluator;
 import org.moeaframework.core.fitness.HypervolumeFitnessEvaluator;
+import org.moeaframework.core.fitness.IndicatorFitnessEvaluator;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.util.TypedProperties;
@@ -85,7 +85,7 @@ public class CMAES extends AbstractAlgorithm implements Configurable {
 	 * Secondary comparison criteria for comparing population individuals with the same rank.  If {@code null}, the
 	 * default crowding distance metric is used.
 	 */
-	private FitnessEvaluator fitnessEvaluator;
+	private IndicatorFitnessEvaluator fitnessEvaluator;
 	
 	/**
 	 * Nondominated archive of the best solutions found.
@@ -216,7 +216,8 @@ public class CMAES extends AbstractAlgorithm implements Configurable {
 	 *        or {@code null} to use the default crowding distance metric
 	 * @param archive the nondominated archive for storing the elite individuals
 	 */
-	public CMAES(Problem problem, int lambda, FitnessEvaluator fitnessEvaluator, NondominatedPopulation archive) {
+	public CMAES(Problem problem, int lambda, IndicatorFitnessEvaluator fitnessEvaluator,
+			NondominatedPopulation archive) {
 		this(problem, lambda, fitnessEvaluator, archive, null, false, -1, -1, -1, -1, -1, -1, -1);
 	}
 
@@ -241,9 +242,9 @@ public class CMAES extends AbstractAlgorithm implements Configurable {
 	 * @param sigma the initial standard deviation
 	 * @param diagonalIterations the number of iterations in which only the covariance diagonal is used
 	 */
-	public CMAES(Problem problem, int lambda, FitnessEvaluator fitnessEvaluator, NondominatedPopulation archive,
-			double[] initialSearchPoint, boolean checkConsistency, double cc, double cs, double damps,
-			double ccov, double ccovsep, double sigma, int diagonalIterations) {
+	public CMAES(Problem problem, int lambda, IndicatorFitnessEvaluator fitnessEvaluator,
+			NondominatedPopulation archive, double[] initialSearchPoint, boolean checkConsistency, double cc,
+			double cs, double damps, double ccov, double ccovsep, double sigma, int diagonalIterations) {
 		super(problem);
 		setLambda(lambda);
 		setArchive(archive);
@@ -254,12 +255,12 @@ public class CMAES extends AbstractAlgorithm implements Configurable {
 		setCcovsep(ccovsep);
 		setSigma(sigma);
 		setDiagonalIterations(diagonalIterations);
+		setFitnessEvaluator(fitnessEvaluator);
 		
 		Validate.problemType(problem, RealVariable.class);
 		
 		this.initialSearchPoint = initialSearchPoint;
 		this.checkConsistency = checkConsistency;
-		this.fitnessEvaluator = fitnessEvaluator;
 		
 		population = new Population();
 	}
@@ -462,6 +463,25 @@ public class CMAES extends AbstractAlgorithm implements Configurable {
 		assertNotInitialized();
 		this.archive = archive;
 	}
+	
+	/**
+	 * Returns the indicator-based fitness evaluator.
+	 * 
+	 * @return the indicator-based fitness evaluator
+	 */
+	public IndicatorFitnessEvaluator getFitnessEvaluator() {
+		return fitnessEvaluator;
+	}
+	
+	/**
+	 * Sets the indicator-based fitness evaluator used as a secondary comparison criteria for comparing population
+	 * individuals with the same rank, or {@code null} to use the default crowding distance metric
+	 * 
+	 * @param fitnessEvaluator the indicator-based fitness evaluator
+	 */
+	public void setFitnessEvaluator(IndicatorFitnessEvaluator fitnessEvaluator) {
+		this.fitnessEvaluator = fitnessEvaluator;
+	}
 
 	@Override
 	public void applyConfiguration(TypedProperties properties) {
@@ -469,11 +489,11 @@ public class CMAES extends AbstractAlgorithm implements Configurable {
 			String indicator = properties.getString("indicator");
 			
 			if ("hypervolume".equalsIgnoreCase(indicator)) {
-				fitnessEvaluator = new HypervolumeFitnessEvaluator(problem);
+				setFitnessEvaluator(new HypervolumeFitnessEvaluator(problem));
 			} else if ("epsilon".equalsIgnoreCase(indicator)) {
-				fitnessEvaluator = new AdditiveEpsilonIndicatorFitnessEvaluator(problem);
+				setFitnessEvaluator(fitnessEvaluator = new AdditiveEpsilonIndicatorFitnessEvaluator(problem));
 			} else if ("crowding".equalsIgnoreCase(indicator)) {
-				fitnessEvaluator = null;
+				setFitnessEvaluator(null);
 			} else {
 				throw new ConfigurationException("invalid indicator: " + indicator);
 			}
@@ -486,12 +506,12 @@ public class CMAES extends AbstractAlgorithm implements Configurable {
 	public TypedProperties getConfiguration() {
 		TypedProperties properties = Configurable.super.getConfiguration();
 		
-		if (fitnessEvaluator instanceof HypervolumeFitnessEvaluator) {
+		if (fitnessEvaluator == null) {
+			properties.setString("indicator", "crowding");
+		} else if (fitnessEvaluator instanceof HypervolumeFitnessEvaluator) {
 			properties.setString("indicator", "hypervolume");
 		} else if (fitnessEvaluator instanceof AdditiveEpsilonIndicatorFitnessEvaluator) {
 			properties.setString("indicator", "epsilon");
-		} else {
-			properties.setString("indicator", "crowding");
 		}
 		
 		return properties;

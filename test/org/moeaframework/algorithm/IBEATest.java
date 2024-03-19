@@ -19,11 +19,17 @@ package org.moeaframework.algorithm;
 
 import java.io.IOException;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.moeaframework.CIRunner;
 import org.moeaframework.Flaky;
 import org.moeaframework.Retryable;
+import org.moeaframework.core.Problem;
+import org.moeaframework.core.configuration.ConfigurationException;
+import org.moeaframework.core.fitness.AdditiveEpsilonIndicatorFitnessEvaluator;
+import org.moeaframework.problem.MockRealProblem;
+import org.moeaframework.util.TypedProperties;
 
 /**
  * Tests the {@link IBEA} class.
@@ -55,6 +61,27 @@ public class IBEATest extends AlgorithmTest {
 	public void testUF1() throws IOException {
 		assumeJMetalExists();
 		test("UF1", "IBEA", "IBEA-JMetal");
+	}
+	
+	@Test
+	public void testConfigureIndicator() {
+		Problem problem = new MockRealProblem();	
+		IBEA algorithm = new IBEA(problem);
+		
+		Assert.assertEquals("hypervolume", algorithm.getConfiguration().getString("indicator"));
+		
+		algorithm.applyConfiguration(TypedProperties.withProperty("indicator", "epsilon"));
+		
+		Assert.assertTrue(algorithm.getFitnessEvaluator() instanceof AdditiveEpsilonIndicatorFitnessEvaluator);
+		Assert.assertEquals("epsilon", algorithm.getConfiguration().getString("indicator"));
+	}
+	
+	@Test(expected = ConfigurationException.class)
+	public void testConfigureInvalidIndicator() {
+		Problem problem = new MockRealProblem();	
+		IBEA algorithm = new IBEA(problem);
+		
+		algorithm.applyConfiguration(TypedProperties.withProperty("indicator", "foo"));
 	}
 
 }

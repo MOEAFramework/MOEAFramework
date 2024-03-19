@@ -20,8 +20,8 @@ package org.moeaframework.util.weights;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.math3.util.CombinatoricsUtils;
-import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Problem;
+import org.moeaframework.core.configuration.ConfigurationException;
 import org.moeaframework.core.configuration.Validate;
 import org.moeaframework.util.TypedProperties;
 
@@ -183,7 +183,7 @@ public class NormalBoundaryDivisions {
 		} 
 		
 		if (properties.contains("divisionsOuter") || properties.contains("divisionsInner")) {
-			throw new FrameworkException("must include both divisionsOuter and divisionsInner");
+			throw new ConfigurationException("must include both divisionsOuter and divisionsInner");
 		}
 		
 		if (properties.contains("divisions")) {

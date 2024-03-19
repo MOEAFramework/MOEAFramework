@@ -61,7 +61,7 @@ public class SMSEMOA extends AbstractEvolutionaryAlgorithm {
 	/**
 	 * The selection operator.
 	 */
-	private final Selection selection;
+	private Selection selection;
 	
 	/**
 	 * Constructs a new SMS-EMOA instance with default settings.
@@ -88,13 +88,7 @@ public class SMSEMOA extends AbstractEvolutionaryAlgorithm {
 	public SMSEMOA(Problem problem, int initialPopulationSize, Initialization initialization,
 			Variation variation, FitnessEvaluator fitnessEvaluator) {
 		super(problem, initialPopulationSize, new Population(), null, initialization, variation);
-		this.fitnessEvaluator = fitnessEvaluator;
-		
-		if (fitnessEvaluator == null) {
-			selection = new TournamentSelection(new NondominatedSortingComparator());
-		} else {
-			selection = new TournamentSelection(new NondominatedFitnessComparator());
-		}
+		setFitnessEvaluator(fitnessEvaluator);
 	}
 	
 	@Override
@@ -107,6 +101,30 @@ public class SMSEMOA extends AbstractEvolutionaryAlgorithm {
 	@Property("populationSize")
 	public void setInitialPopulationSize(int initialPopulationSize) {
 		super.setInitialPopulationSize(initialPopulationSize);
+	}
+	
+	/**
+	 * Returns the fitness evaluator.
+	 * 
+	 * @return the fitness evaluator
+	 */
+	public FitnessEvaluator getFitnessEvaluator() {
+		return fitnessEvaluator;
+	}
+	
+	/**
+	 * Sets the fitness evaluator.  If {@code null}, will default to non-dominated sorting for selection.
+	 * 
+	 * @param fitnessEvaluator the fitness evaluator
+	 */
+	public void setFitnessEvaluator(FitnessEvaluator fitnessEvaluator) {
+		this.fitnessEvaluator = fitnessEvaluator;
+		
+		if (fitnessEvaluator == null) {
+			selection = new TournamentSelection(new NondominatedSortingComparator());
+		} else {
+			selection = new TournamentSelection(new NondominatedFitnessComparator());
+		}
 	}
 
 	@Override
@@ -175,9 +193,13 @@ public class SMSEMOA extends AbstractEvolutionaryAlgorithm {
 			String indicator = properties.getString("indicator");
 			
 			if ("hypervolume".equalsIgnoreCase(indicator)) {
-				fitnessEvaluator = new HypervolumeFitnessEvaluator(problem);
+				setFitnessEvaluator(new HypervolumeFitnessEvaluator(problem));
 			} else if ("epsilon".equalsIgnoreCase(indicator)) {
-				fitnessEvaluator = new AdditiveEpsilonIndicatorFitnessEvaluator(problem);
+				setFitnessEvaluator(new AdditiveEpsilonIndicatorFitnessEvaluator(problem));
+			} else if ("hypervolumeContribution".equalsIgnoreCase(indicator)) {
+				setFitnessEvaluator(new HypervolumeContributionFitnessEvaluator(problem));
+			} else if ("crowding".equalsIgnoreCase(indicator)) {
+				setFitnessEvaluator(null);
 			} else {
 				throw new ConfigurationException("invalid indicator: " + indicator);
 			}
@@ -191,10 +213,14 @@ public class SMSEMOA extends AbstractEvolutionaryAlgorithm {
 	public TypedProperties getConfiguration() {
 		TypedProperties properties = super.getConfiguration();
 		
-		if (fitnessEvaluator instanceof HypervolumeFitnessEvaluator) {
+		if (fitnessEvaluator == null) {
+			properties.setString("indicator", "crowding");
+		} else if (fitnessEvaluator instanceof HypervolumeFitnessEvaluator) {
 			properties.setString("indicator", "hypervolume");
 		} else if (fitnessEvaluator instanceof AdditiveEpsilonIndicatorFitnessEvaluator) {
 			properties.setString("indicator", "epsilon");
+		} else if (fitnessEvaluator instanceof HypervolumeContributionFitnessEvaluator) {
+			properties.setString("indicator", "hypervolumeContribution");
 		}
 		
 		return properties;

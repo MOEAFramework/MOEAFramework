@@ -28,6 +28,7 @@ import org.junit.Test;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
+import org.moeaframework.problem.MockRealProblem;
 import org.moeaframework.problem.DTLZ.DTLZ2;
 import org.moeaframework.util.weights.NormalBoundaryDivisions;
 
@@ -38,7 +39,7 @@ public class DBEATest {
 	
 	@Test
 	public void testDefaults() {
-		Problem problem = new DTLZ2(2);
+		Problem problem = new MockRealProblem();
 		NormalBoundaryDivisions divisions = NormalBoundaryDivisions.forProblem(problem);
 		
 		DBEA dbea = new DBEA(problem);
@@ -49,7 +50,7 @@ public class DBEATest {
 	
 	@Test
 	public void testConfiguration() {
-		Problem problem = new DTLZ2(2);
+		Problem problem = new MockRealProblem();
 		NormalBoundaryDivisions divisions = new NormalBoundaryDivisions(100);
 		
 		DBEA dbea = new DBEA(problem);

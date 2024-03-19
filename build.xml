@@ -70,7 +70,6 @@ Use of these build scripts requires Apache Ant to be installed.  See
 				source="${java.major}"
 				destdir="${javadoc}"
 				packagenames="org.moeaframework.*"
-				maxmemory="256m"
 				noindex="true"
 				nohelp="true"
 				notree="true"

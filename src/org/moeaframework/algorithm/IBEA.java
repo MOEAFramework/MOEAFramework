@@ -186,9 +186,9 @@ public class IBEA extends AbstractEvolutionaryAlgorithm {
 			String indicator = properties.getString("indicator");
 			
 			if ("hypervolume".equalsIgnoreCase(indicator)) {
-				fitnessEvaluator = new HypervolumeFitnessEvaluator(problem);
+				setFitnessEvaluator(new HypervolumeFitnessEvaluator(problem));
 			} else if ("epsilon".equalsIgnoreCase(indicator)) {
-				fitnessEvaluator = new AdditiveEpsilonIndicatorFitnessEvaluator(problem);
+				setFitnessEvaluator(new AdditiveEpsilonIndicatorFitnessEvaluator(problem));
 			} else {
 				throw new ConfigurationException("invalid indicator: " + indicator);
 			}

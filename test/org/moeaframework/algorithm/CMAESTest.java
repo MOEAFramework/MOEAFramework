@@ -22,16 +22,19 @@ import org.junit.Test;
 import org.moeaframework.TestUtils;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.configuration.ConfigurationException;
+import org.moeaframework.core.fitness.AdditiveEpsilonIndicatorFitnessEvaluator;
+import org.moeaframework.core.fitness.HypervolumeFitnessEvaluator;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.problem.AbstractProblem;
+import org.moeaframework.problem.MockRealProblem;
+import org.moeaframework.util.TypedProperties;
 
 /**
  * Tests the {@link CMAES} class.
  */
 public class CMAESTest {
-	
-	// TODO: extend with better tests
 	
 	public static class RosenbrockProblem extends AbstractProblem {
 		
@@ -84,6 +87,33 @@ public class CMAESTest {
 		for (int i = 0; i < 100; i++) {
 			algorithm.step();
 		}
+	}
+	
+	@Test
+	public void testConfigureIndicator() {
+		Problem problem = new MockRealProblem();	
+		CMAES algorithm = new CMAES(problem);
+		
+		Assert.assertEquals("crowding", algorithm.getConfiguration().getString("indicator"));
+		
+		algorithm.applyConfiguration(TypedProperties.withProperty("indicator", "epsilon"));
+		Assert.assertTrue(algorithm.getFitnessEvaluator() instanceof AdditiveEpsilonIndicatorFitnessEvaluator);
+		Assert.assertEquals("epsilon", algorithm.getConfiguration().getString("indicator"));
+		
+		algorithm.applyConfiguration(TypedProperties.withProperty("indicator", "hypervolume"));
+		Assert.assertTrue(algorithm.getFitnessEvaluator() instanceof HypervolumeFitnessEvaluator);
+		Assert.assertEquals("hypervolume", algorithm.getConfiguration().getString("indicator"));
+		
+		algorithm.applyConfiguration(TypedProperties.withProperty("indicator", "crowding"));
+		Assert.assertNull(algorithm.getFitnessEvaluator());
+	}
+	
+	@Test(expected = ConfigurationException.class)
+	public void testConfigureInvalidIndicator() {
+		Problem problem = new MockRealProblem();	
+		CMAES algorithm = new CMAES(problem);
+		
+		algorithm.applyConfiguration(TypedProperties.withProperty("indicator", "foo"));
 	}
 	
 }
