@@ -18,6 +18,7 @@
 package org.moeaframework.util.weights;
 
 import org.junit.Assert;
+import org.junit.Test;
 
 import java.util.List;
 
@@ -27,7 +28,45 @@ import org.moeaframework.TestUtils;
 /**
  * Abstract class for testing implementations of {@link WeightGenerator}.
  */
-public abstract class AbstractWeightGeneratorTest {
+public abstract class AbstractWeightGeneratorTest<T extends WeightGenerator> {
+	
+	protected final int SAMPLES = 100;
+	
+	/**
+	 * Returns a new instance of the weight generator being tested.
+	 * 
+	 * @param numberOfObjectives the number of objectives / dimension of each sample
+	 * @return the weight generator
+	 */
+	public abstract T createInstance(int numberOfObjectives);
+	
+	/**
+	 * Returns the expected number of samples that will be generated.
+	 * 
+	 * @param numberOfObjectives the number of objectives / dimension of each sample
+	 * @return the expected number of samples
+	 */
+	public abstract int getExpectedNumberOfSamples(int numberOfObjectives);
+
+	@Test
+	public void test2D() {
+		test(createInstance(2), 2);
+	}
+	
+	@Test
+	public void test3D() {
+		test(createInstance(3), 3);
+	}
+	
+	@Test
+	public void test5D() {
+		test(createInstance(5), 5);
+	}
+	
+	@Test
+	public void test10D() {
+		test(createInstance(10), 10);
+	}
 
 	/**
 	 * Generates weights using the specified sequence and checks if the weights are valid.
@@ -36,12 +75,13 @@ public abstract class AbstractWeightGeneratorTest {
 	 * @param D the dimension of the generator
 	 */
 	protected void test(WeightGenerator generator, int D) {
-		int size = generator.size();
+		int expectedSize = getExpectedNumberOfSamples(D);
 		List<double[]> weights = generator.generate();
 
-		Assert.assertEquals(size, weights.size());
+		Assert.assertEquals(expectedSize, generator.size());
+		Assert.assertEquals(expectedSize, weights.size());
 
-		checkWeights(weights, D);
+		checkBounds(weights, D);
 	}
 
 	/**
@@ -50,7 +90,7 @@ public abstract class AbstractWeightGeneratorTest {
 	 * @param points the samples
 	 * @param D the dimension of the samples
 	 */
-	protected void checkWeights(List<double[]> weights, int D) {
+	protected void checkBounds(List<double[]> weights, int D) {
 		for (double[] weight : weights) {
 			Assert.assertEquals(D, weight.length);
 

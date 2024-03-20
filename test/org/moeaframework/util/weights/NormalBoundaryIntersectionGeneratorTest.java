@@ -17,22 +17,21 @@
  */
 package org.moeaframework.util.weights;
 
-import org.junit.Test;
+import org.moeaframework.problem.MockRealProblem;
 
-public class NormalBoundaryIntersectionGeneratorTest extends AbstractWeightGeneratorTest {
-
-	@Test
-	public void testSingleLayer() {
-		test(new NormalBoundaryIntersectionGenerator(2, new NormalBoundaryDivisions(30)), 2);
-		test(new NormalBoundaryIntersectionGenerator(3, new NormalBoundaryDivisions(12)), 3);
-		test(new NormalBoundaryIntersectionGenerator(5, new NormalBoundaryDivisions(4)), 5);
+public class NormalBoundaryIntersectionGeneratorTest extends AbstractWeightGeneratorTest<NormalBoundaryIntersectionGenerator> {
+	
+	// numberOfObjectives >= 6 will produce two layers
+	@Override
+	public NormalBoundaryIntersectionGenerator createInstance(int numberOfObjectives) {
+		return new NormalBoundaryIntersectionGenerator(numberOfObjectives,
+				NormalBoundaryDivisions.forProblem(new MockRealProblem(numberOfObjectives)));
 	}
 	
-	@Test
-	public void testTwoLayer() {
-		test(new NormalBoundaryIntersectionGenerator(8, new NormalBoundaryDivisions(4, 3)), 8);
-		test(new NormalBoundaryIntersectionGenerator(10, new NormalBoundaryDivisions(3, 2)), 10);
-		test(new NormalBoundaryIntersectionGenerator(15, new NormalBoundaryDivisions(3, 2)), 15);
+	@Override
+	public int getExpectedNumberOfSamples(int numberOfObjectives) {
+		return NormalBoundaryDivisions.forProblem(new MockRealProblem(numberOfObjectives))
+				.getNumberOfReferencePoints(numberOfObjectives);
 	}
 	
 }

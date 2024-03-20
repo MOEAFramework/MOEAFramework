@@ -21,11 +21,27 @@ import org.apache.commons.math3.primes.Primes;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class UniformDesignGeneratorTest extends AbstractWeightGeneratorTest {
+public class UniformDesignGeneratorTest extends AbstractWeightGeneratorTest<UniformDesignGenerator> {
+	
+	@Override
+	public UniformDesignGenerator createInstance(int numberOfObjectives) {
+		return new UniformDesignGenerator(numberOfObjectives, SAMPLES);
+	}
+	
+	@Override
+	public int getExpectedNumberOfSamples(int numberOfObjectives) {
+		return SAMPLES;
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	@Override
+	public void test2D() {
+		createInstance(2);
+	}
 	
 	@Test
 	public void testPrimes() {
-		int[] primes = new UniformDesignGenerator(3, 100).generateFirstKPrimes(10);
+		int[] primes = createInstance(3).generateFirstKPrimes(10);
 		
 		for (int prime : primes) {
 			Assert.assertTrue(Primes.isPrime(prime));
@@ -36,13 +52,6 @@ public class UniformDesignGeneratorTest extends AbstractWeightGeneratorTest {
 		};
 		
 		Assert.assertArrayEquals(expected, primes);
-	}
-	
-	@Test
-	public void test() {
-		test(new UniformDesignGenerator(3, 100), 3);
-		test(new UniformDesignGenerator(5, 100), 5);
-		test(new UniformDesignGenerator(10, 100), 10);
 	}
 
 }

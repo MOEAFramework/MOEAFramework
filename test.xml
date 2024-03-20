@@ -156,8 +156,14 @@ Use of these build scripts requires Apache Ant to be installed.  See
 				<zipfileset src="${dist}/${shortname}-${version}-Test.jar">
 					<include name="**/*Test.class" />
 					
-					<!-- exclude abstract classes -->
+					<!-- exclude abstract classes without tests -->
 					<exclude name="org/moeaframework/algorithm/AlgorithmTest.class" />
+					<exclude name="org/moeaframework/problem/ProblemTest.class" />
+					<exclude name="org/moeaframework/util/LocalizationTest.class" />
+					<exclude name="org/moeaframework/util/sequence/AbstractSequenceTest.class" />
+					<exclude name="org/moeaframework/util/weights/AbstractWeightGeneratorTest.class" />
+					
+					<!--
 					<exclude name="org/moeaframework/core/indicator/AbstractHypervolumeTest.class" />
 					<exclude name="org/moeaframework/core/indicator/AbstractIndicatorTest.class" />
 					<exclude name="org/moeaframework/analysis/collector/AbstractCollectorTest.class" />
@@ -171,20 +177,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 					<exclude name="org/moeaframework/core/operator/DistributionVariationTest.class" />
 					<exclude name="org/moeaframework/core/operator/MeanCentricVariationTest.class" />
 					<exclude name="org/moeaframework/core/operator/ParentCentricVariationTest.class" />
-					<exclude name="org/moeaframework/problem/ProblemTest.class" />
-					<exclude name="org/moeaframework/util/LocalizationTest.class" />
-					<exclude name="org/moeaframework/util/sequence/AbstractSequenceTest.class" />
-					<exclude name="org/moeaframework/util/weights/AbstractWeightGeneratorTest.class" />
-					
-					<!-- exclude statistical test classes -->
-					<exclude name="org/moeaframework/util/statistics/IntervalRatioStatisticalTest.class" />
-					<exclude name="org/moeaframework/util/statistics/KruskalWallisTest.class" />
-					<exclude name="org/moeaframework/util/statistics/MannWhitneyUTest.class" />
-					<exclude name="org/moeaframework/util/statistics/OrdinalStatisticalTest.class" />
-					<exclude name="org/moeaframework/util/statistics/SingleSampleTTest.class" />
-					<exclude name="org/moeaframework/util/statistics/StatisticalTest.class" />
-					<exclude name="org/moeaframework/util/statistics/TwoSampleTTest.class" />
-					<exclude name="org/moeaframework/util/statistics/WilcoxonSignedRanksTest.class" />
+					-->
 				</zipfileset>
 			</batchtest>
 			<formatter type="plain" usefile="false" />

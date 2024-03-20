@@ -17,15 +17,16 @@
  */
 package org.moeaframework.util.weights;
 
-import org.junit.Test;
-
-public class RandomGeneratorTest extends AbstractWeightGeneratorTest {
+public class RandomGeneratorTest extends AbstractWeightGeneratorTest<RandomGenerator> {
 	
-	@Test
-	public void test() {
-		test(new RandomGenerator(3, 100), 3);
-		test(new RandomGenerator(5, 100), 5);
-		test(new RandomGenerator(10, 100), 10);
+	@Override
+	public RandomGenerator createInstance(int numberOfObjectives) {
+		return new RandomGenerator(numberOfObjectives, SAMPLES);
+	}
+	
+	@Override
+	public int getExpectedNumberOfSamples(int numberOfObjectives) {
+		return SAMPLES;
 	}
 
 }

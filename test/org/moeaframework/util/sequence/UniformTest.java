@@ -17,24 +17,17 @@
  */
 package org.moeaframework.util.sequence;
 
-import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.moeaframework.Retryable;
 import org.moeaframework.CIRunner;
+import org.moeaframework.Retryable;
 
-/**
- * Tests the {@link Uniform} class.
- */
 @RunWith(CIRunner.class)
 @Retryable
-public class UniformTest extends AbstractSequenceTest {
-
-	/**
-	 * Tests to ensure the sequence exhibits a uniform distribution in the range {@code [0, 1]}.
-	 */
-	@Test
-	public void test() {
-		test(new Uniform());
+public class UniformTest extends AbstractSequenceTest<Uniform> {
+	
+	@Override
+	public Uniform createInstance() {
+		return new Uniform();
 	}
 
 }

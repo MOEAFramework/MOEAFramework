@@ -18,6 +18,7 @@
 package org.moeaframework.util.sequence;
 
 import org.junit.Assert;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.moeaframework.Retryable;
@@ -29,17 +30,28 @@ import org.moeaframework.CIRunner;
  */
 @RunWith(CIRunner.class)
 @Retryable
-public abstract class AbstractSequenceTest {
-
+public abstract class AbstractSequenceTest<T extends Sequence> {
+	
 	/**
-	 * Tests the specified sequence for 1, 2 and 10 dimensions.
+	 * Returns a new instance of the sequence being tested.
 	 * 
-	 * @param sequence the sequence to test
+	 * @return the sequence to test
 	 */
-	protected void test(Sequence sequence) {
-		test(sequence, 1);
-		test(sequence, 2);
-		test(sequence, 10);
+	public abstract T createInstance();
+	
+	@Test
+	public void test1D() {
+		test(createInstance(), 1);
+	}
+	
+	@Test
+	public void test2D() {
+		test(createInstance(), 2);
+	}
+	
+	@Test
+	public void test10D() {
+		test(createInstance(), 10);
 	}
 
 	/**

@@ -23,6 +23,7 @@ import java.util.List;
 import org.apache.commons.math3.stat.StatUtils;
 import org.apache.commons.math3.util.MathArrays;
 import org.moeaframework.core.PRNG;
+import org.moeaframework.core.configuration.Validate;
 
 /**
  * Generates weights randomly.  This is the method proposed in [1] to replace the normal boundary intersection
@@ -57,6 +58,9 @@ public class RandomGenerator implements WeightGenerator {
 		super();
 		this.numberOfObjectives = numberOfObjectives;
 		this.numberOfPoints = numberOfPoints;
+		
+		Validate.greaterThanOrEqual("numberOfObjectives", 1, numberOfObjectives);
+		Validate.greaterThanOrEqual("numberOfPoints", 0, numberOfPoints);
 	}
 	
 	/**

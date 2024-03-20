@@ -17,24 +17,17 @@
  */
 package org.moeaframework.util.sequence;
 
-import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.moeaframework.Retryable;
 import org.moeaframework.CIRunner;
+import org.moeaframework.Retryable;
 
-/**
- * Tests the {@link Sobol} class.
- */
 @RunWith(CIRunner.class)
 @Retryable
-public class SobolTest extends AbstractSequenceTest {
-
-	/**
-	 * Tests to ensure the sequence exhibits a uniform distribution in the range {@code [0, 1]}.
-	 */
-	@Test
-	public void test() {
-		test(new Sobol());
+public class SobolTest extends AbstractSequenceTest<Sobol> {
+	
+	@Override
+	public Sobol createInstance() {
+		return new Sobol();
 	}
 
 }

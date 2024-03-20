@@ -24,19 +24,13 @@ import org.moeaframework.Retryable;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.CIRunner;
 
-/**
- * Tests the {@link Saltelli} class.
- */
 @RunWith(CIRunner.class)
 @Retryable
-public class SaltelliTest extends AbstractSequenceTest {
-
-	/**
-	 * Tests to ensure the sequence exhibits a uniform distribution in the range {@code [0, 1]}.
-	 */
-	@Test
-	public void test() {
-		test(new Saltelli());
+public class SaltelliTest extends AbstractSequenceTest<Saltelli> {
+	
+	@Override
+	public Saltelli createInstance() {
+		return new Saltelli();
 	}
 
 	@Override

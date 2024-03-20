@@ -20,6 +20,7 @@ package org.moeaframework.util.weights;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.math3.primes.Primes;
+import org.moeaframework.core.configuration.Validate;
 
 /**
  * Generates weights according to a uniform design of mixtures using the Hammersley low-discrepancy sequence generator.
@@ -61,6 +62,9 @@ public class UniformDesignGenerator implements WeightGenerator {
 		super();
 		this.numberOfObjectives = numberOfObjectives;
 		this.numberOfPoints = numberOfPoints;
+		
+		Validate.greaterThanOrEqual("numberOfObjectives", 3, numberOfObjectives);
+		Validate.greaterThanOrEqual("numberOfPoints", 0, numberOfPoints);
 	}
 
 	@Override
