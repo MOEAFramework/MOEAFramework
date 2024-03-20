@@ -22,9 +22,6 @@ import org.junit.Test;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.core.spi.ProviderNotFoundException;
 
-/**
- * Tests the {@link ClassLoaderProblems} class.
- */
 public class ClassLoaderProblemsTest {
 	
 	@Test

@@ -27,9 +27,6 @@ import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.problem.ProblemTest;
 import org.moeaframework.problem.DTLZ.DTLZ2;
 
-/**
- * Tests the {@link C2_DTLZ2} class.
- */
 public class C2_DTLZ2Test extends ProblemTest {
 	
 	@Test

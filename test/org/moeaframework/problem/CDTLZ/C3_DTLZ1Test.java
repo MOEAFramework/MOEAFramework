@@ -20,9 +20,6 @@ package org.moeaframework.problem.CDTLZ;
 import org.junit.Test;
 import org.moeaframework.problem.ProblemTest;
 
-/**
- * Tests the {@link C3_DTLZ1} class.
- */
 public class C3_DTLZ1Test extends ProblemTest {
 	
 	@Test

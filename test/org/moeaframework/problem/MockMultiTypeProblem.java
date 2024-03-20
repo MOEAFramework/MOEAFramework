@@ -22,9 +22,6 @@ import org.moeaframework.core.variable.BinaryVariable;
 import org.moeaframework.core.variable.Permutation;
 import org.moeaframework.core.variable.RealVariable;
 
-/**
- * A mock problem with different types of variables.
- */
 public class MockMultiTypeProblem extends MockProblem {
 	
 	public MockMultiTypeProblem() {

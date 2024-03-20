@@ -21,9 +21,6 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.BinaryIntegerVariable;
 import org.moeaframework.core.variable.BinaryVariable;
 
-/**
- * A mock problem with a binary variable and a binary-encoded integer variable.
- */
 public class MockMixedBinaryProblem extends MockProblem {
 
 	public MockMixedBinaryProblem() {

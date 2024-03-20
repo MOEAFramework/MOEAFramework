@@ -20,9 +20,6 @@ package org.moeaframework.problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.RealVariable;
 
-/**
- * A mock problem with real variables.
- */
 public class MockRealProblem extends MockProblem {
 	
 	public MockRealProblem() {

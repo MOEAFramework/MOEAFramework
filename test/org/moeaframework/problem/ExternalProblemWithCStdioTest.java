@@ -39,9 +39,6 @@ import org.moeaframework.core.variable.BinaryVariable;
 import org.moeaframework.core.variable.Permutation;
 import org.moeaframework.core.variable.RealVariable;
 
-/**
- * Tests the {@link ExternalProblem} class using the C/C++ executable.
- */
 public class ExternalProblemWithCStdioTest {
 	
 	protected File file;

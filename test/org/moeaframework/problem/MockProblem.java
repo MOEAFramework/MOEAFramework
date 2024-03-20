@@ -19,9 +19,6 @@ package org.moeaframework.problem;
 
 import org.moeaframework.core.Solution;
 
-/**
- * Base class for defining mock problems.
- */
 public abstract class MockProblem extends AbstractProblem {
 	
 	public MockProblem(int numberOfVariables, int numberOfObjectives) {

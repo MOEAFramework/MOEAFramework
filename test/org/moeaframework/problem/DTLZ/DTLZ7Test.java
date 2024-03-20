@@ -23,9 +23,6 @@ import org.moeaframework.TestUtils;
 import org.moeaframework.core.Problem;
 import org.moeaframework.problem.ProblemTest;
 
-/**
- * Tests the {@link DTLZ7} class.
- */
 public class DTLZ7Test extends ProblemTest {
 	
 	@Test

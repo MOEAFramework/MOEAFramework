@@ -38,9 +38,6 @@ import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.RealVariable;
 
-/**
- * Tests the {@link ScriptedProblem} class.
- */
 @RunWith(CIRunner.class)
 public class ScriptedProblemTest {
 	

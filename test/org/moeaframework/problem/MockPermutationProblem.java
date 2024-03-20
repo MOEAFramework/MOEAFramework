@@ -20,9 +20,6 @@ package org.moeaframework.problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.Permutation;
 
-/**
- * A mock problem with a permutation variable.
- */
 public class MockPermutationProblem extends MockProblem {
 	
 	public MockPermutationProblem() {

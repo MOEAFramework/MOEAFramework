@@ -20,9 +20,6 @@ package org.moeaframework.problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.RealVariable;
 
-/**
- * Mock class for a problem with constraint violations.
- */
 public class MockConstraintProblem extends MockProblem {
 
 	public MockConstraintProblem() {

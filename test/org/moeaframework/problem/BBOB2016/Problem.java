@@ -7,8 +7,8 @@
 package org.moeaframework.problem.BBOB2016;
 
 /**
- * The problem contains some basic properties of the coco_problem_t structure that can be accessed
- * through its getter functions.
+ * The problem contains some basic properties of the coco_problem_t structure that can be accessed through its getter
+ * functions.
  */
 public class Problem {
 
@@ -29,8 +29,6 @@ public class Problem {
 
 	/**
 	 * Constructs the problem from the pointer.
-	 * @param pointer pointer to the coco_problem_t object
-	 * @throws Exception
 	 */
 	public Problem(long pointer) throws Exception {
 
@@ -57,8 +55,6 @@ public class Problem {
 	
 	/**
 	 * Evaluates the function in point x and returns the result as an array of doubles. 
-	 * @param x
-	 * @return the result of the function evaluation in point x
 	 */
 	public double[] evaluateFunction(double[] x) {
 		return CocoJNI.cocoEvaluateFunction(this.pointer, x);
@@ -66,14 +62,11 @@ public class Problem {
 
 	/**
 	 * Evaluates the constraint in point x and returns the result as an array of doubles. 
-	 * @param x
-	 * @return the result of the constraint evaluation in point x
 	 */
 	public double[] evaluateConstraint(double[] x) {
 		return CocoJNI.cocoEvaluateConstraint(this.pointer, x);
 	}
 
-	// Getters
 	public long getPointer() {
 		return this.pointer;
 	}
@@ -138,7 +131,6 @@ public class Problem {
 		return (CocoJNI.cocoProblemIsFinalTargetHit(pointer) == 1);
 	}
 	
-	/* toString method */
 	@Override
 	public String toString() {		
 		return this.getId();

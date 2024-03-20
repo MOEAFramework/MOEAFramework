@@ -13,11 +13,7 @@ public class Observer {
 
 	/** 
 	 * Constructs the observer from observerName and observerOptions.
-	 * See http://numbbo.github.io/coco-doc/C/#observer-parameters for more information on 
-	 * valid observer parameters.
-	 * @param observerName
-	 * @param observerOptions
-	 * @throws Exception
+	 * See http://numbbo.github.io/coco-doc/C/#observer-parameters for more information on valid observer parameters.
 	 */
 	public Observer(String observerName, String observerOptions) throws Exception {
 
@@ -30,10 +26,6 @@ public class Observer {
 		}
 	}
 
-	/**
-	 * Finalizes the observer.
-	 * @throws Exception 
-	 */
 	public void finalizeObserver() throws Exception {
 		try {
 			CocoJNI.cocoFinalizeObserver(this.pointer);
@@ -50,7 +42,6 @@ public class Observer {
 		return this.name;
 	}
 
-	/* toString method */
 	@Override
 	public String toString() {
 		return getName();

@@ -30,9 +30,6 @@ import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.core.spi.ProviderNotFoundException;
 
-/**
- * Tests the {@link RotatedProblem} and {@link RotatedProblems} classes.
- */
 public class RotatedProblemsTest {
 	
 	@Test

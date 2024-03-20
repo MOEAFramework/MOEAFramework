@@ -20,9 +20,6 @@ package org.moeaframework.problem.CDTLZ;
 import org.junit.Test;
 import org.moeaframework.problem.ProblemTest;
 
-/**
- * Tests the {@link ConvexC2_DTLZ2} class.
- */
 public class ConvexC2_DTLZ2Test extends ProblemTest {
 	
 	@Test

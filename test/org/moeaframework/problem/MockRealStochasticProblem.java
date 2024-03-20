@@ -23,9 +23,6 @@ import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.util.distributed.FutureSolution;
 
-/**
- * A mock stochastic problem with one real variable.  In this case, the f(x) = x + random.nextDouble();   
- */
 public class MockRealStochasticProblem extends MockProblem {
 	
 	long evaluationID = 0;

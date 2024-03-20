@@ -19,8 +19,7 @@ package org.moeaframework.problem;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.moeaframework.Executor;
-import org.moeaframework.core.NondominatedPopulation;
+import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
@@ -59,13 +58,10 @@ public class IntegerProblemTest {
 	
 	@Test
 	public void test() {
-		NondominatedPopulation result = new Executor()
-				.withAlgorithm("NSGAII")
-				.withProblemClass(StepRosenbrockProblem.class)
-				.withMaxEvaluations(100000)
-				.run();
+		NSGAII algorithm = new NSGAII(new StepRosenbrockProblem());
+		algorithm.run(100000);
 		
-		Solution solution = result.get(0);
+		Solution solution = algorithm.getResult().get(0);
 		Assert.assertArrayEquals(new int[] { 1, 1 }, EncodingUtils.getInt(solution));
 		Assert.assertEquals(0, solution.getObjective(0), Settings.EPS);
 	}

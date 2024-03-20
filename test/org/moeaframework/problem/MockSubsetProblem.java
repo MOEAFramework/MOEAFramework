@@ -20,9 +20,6 @@ package org.moeaframework.problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.Subset;
 
-/**
- * A mock problem with a subset variable.
- */
 public class MockSubsetProblem extends MockProblem {
 	
 	public MockSubsetProblem() {

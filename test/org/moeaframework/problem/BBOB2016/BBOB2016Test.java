@@ -25,9 +25,6 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.spi.ProblemFactory;
 
-/**
- * Tests the {@link BBOB2016PRoblems} class.
- */
 public class BBOB2016Test {
 
 	@Test

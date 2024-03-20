@@ -20,9 +20,6 @@ package org.moeaframework.problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.BinaryVariable;
 
-/**
- * A mock problem with binary variables.
- */
 public class MockBinaryProblem extends MockProblem {
 
 	public MockBinaryProblem() {

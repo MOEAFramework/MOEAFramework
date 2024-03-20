@@ -25,10 +25,6 @@ import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.problem.ProblemTest;
 
-/**
- * Tests if the {@link UF13} class (which is now an alias to {@code WFG1}) matches the test function defined in the
- * CEC2009 code.
- */
 public class UF13Test extends ProblemTest {
 	
 	@Test
