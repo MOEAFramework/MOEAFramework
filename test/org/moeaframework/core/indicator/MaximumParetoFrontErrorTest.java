@@ -26,10 +26,10 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.problem.MockRealProblem;
 
-public class MaximumParetoFrontErrorTest extends AbstractIndicatorTest {
+public class MaximumParetoFrontErrorTest extends AbstractIndicatorTest<MaximumParetoFrontError> {
 	
 	@Override
-	public Indicator createInstance(Problem problem, NondominatedPopulation referenceSet) {
+	public MaximumParetoFrontError createInstance(Problem problem, NondominatedPopulation referenceSet) {
 		return new MaximumParetoFrontError(problem, referenceSet);
 	}
 	

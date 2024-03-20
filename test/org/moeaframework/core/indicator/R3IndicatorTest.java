@@ -32,10 +32,10 @@ import org.moeaframework.problem.MockRealProblem;
 /**
  * The raw values used here were produced using the PISA r-ind.exe program.
  */
-public class R3IndicatorTest extends AbstractIndicatorTest {
+public class R3IndicatorTest extends AbstractIndicatorTest<R3Indicator> {
 	
 	@Override
-	public Indicator createInstance(Problem problem, NondominatedPopulation referenceSet) {
+	public R3Indicator createInstance(Problem problem, NondominatedPopulation referenceSet) {
 		return new R3Indicator(problem, 500, referenceSet);
 	}
 	

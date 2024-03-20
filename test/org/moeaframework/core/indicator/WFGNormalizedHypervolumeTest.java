@@ -17,24 +17,23 @@
  */
 package org.moeaframework.core.indicator;
 
-import org.moeaframework.core.Indicator;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 
-public class WFGNormalizedHypervolumeTest extends AbstractHypervolumeTest {
+public class WFGNormalizedHypervolumeTest extends AbstractHypervolumeTest<WFGNormalizedHypervolume> {
 	
 	@Override
-	public Indicator createInstance(Problem problem, NondominatedPopulation referenceSet) {
+	public WFGNormalizedHypervolume createInstance(Problem problem, NondominatedPopulation referenceSet) {
 		return new WFGNormalizedHypervolume(problem, referenceSet);
 	}
 	
 	@Override
-	public Indicator createInstance(Problem problem, double[] minimum, double[] maximum) {
+	public WFGNormalizedHypervolume createInstance(Problem problem, double[] minimum, double[] maximum) {
 		return new WFGNormalizedHypervolume(problem, minimum, maximum);
 	}
 	
 	@Override
-	public Indicator createInstance(Problem problem, NondominatedPopulation referenceSet, double[] referencePoint) {
+	public WFGNormalizedHypervolume createInstance(Problem problem, NondominatedPopulation referenceSet, double[] referencePoint) {
 		return new WFGNormalizedHypervolume(problem, referenceSet, referencePoint);
 	}
 	

@@ -32,7 +32,7 @@ import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.problem.MockConstraintProblem;
 import org.moeaframework.problem.MockRealProblem;
 
-public abstract class AbstractIndicatorTest {
+public abstract class AbstractIndicatorTest<T extends Indicator> {
 	
 	/**
 	 * Constructs a new instance of this indicator.
@@ -41,7 +41,7 @@ public abstract class AbstractIndicatorTest {
 	 * @param referenceSet the reference set
 	 * @return the indicator
 	 */
-	public abstract Indicator createInstance(Problem problem, NondominatedPopulation referenceSet);
+	public abstract T createInstance(Problem problem, NondominatedPopulation referenceSet);
 	
 	/**
 	 * Returns the worst value this indicator produces.

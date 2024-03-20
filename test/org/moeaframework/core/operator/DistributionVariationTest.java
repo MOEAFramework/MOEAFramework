@@ -18,13 +18,21 @@
 package org.moeaframework.core.operator;
 
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.Variation;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.util.Vector;
 
-public abstract class DistributionVariationTest {
+public abstract class DistributionVariationTest<T extends Variation> extends AbstractOperatorTest<T, RealVariable> {
 
-	protected abstract void check(Solution[] parents, Solution[] offspring);
+	protected abstract void checkDistribution(Solution[] parents, Solution[] offspring);
+	
+	@Override
+	public RealVariable createTestVariable() {
+		RealVariable variable = new RealVariable(-10.0, 10.0);
+		variable.randomize();
+		return variable;
+	}
 
 	protected Solution newSolution(double... variables) {
 		Solution solution = new Solution(variables.length, 0);

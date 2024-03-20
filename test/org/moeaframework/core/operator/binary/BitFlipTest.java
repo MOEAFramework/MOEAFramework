@@ -20,27 +20,16 @@ package org.moeaframework.core.operator.binary;
 import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.TestThresholds;
-import org.moeaframework.core.Solution;
-import org.moeaframework.core.operator.ParentImmutabilityTest;
-import org.moeaframework.core.operator.TypeSafetyTest;
+import org.moeaframework.core.operator.AbstractBinaryOperatorTest;
 import org.moeaframework.core.variable.BinaryVariable;
 
-/**
- * Tests the {@link BitFlip} class.
- */
-public class BitFlipTest {
+public class BitFlipTest extends AbstractBinaryOperatorTest<BitFlip> {
 
-	/**
-	 * Tests if the grammar crossover operator is type-safe.
-	 */
-	@Test
-	public void testTypeSafety() {
-		TypeSafetyTest.testTypeSafety(new BitFlip(1.0));
+	@Override
+	public BitFlip createInstance() {
+		return new BitFlip(1.0);
 	}
 
-	/**
-	 * Tests if the correct number of bits are flipped for several probability values.
-	 */
 	@Test
 	public void testProbabilities() {
 		testProbability(0.0);
@@ -66,21 +55,6 @@ public class BitFlipTest {
 		}
 
 		Assert.assertEquals((sum / TestThresholds.SAMPLES) / 100, probability, TestThresholds.VARIATION_EPS);
-	}
-
-	/**
-	 * Tests if the parents remain unchanged during variation.
-	 */
-	@Test
-	public void testParentImmutability() {
-		BitFlip bf = new BitFlip(1.0);
-
-		Solution solution = new Solution(1, 0);
-		solution.setVariable(0, new BinaryVariable(100));
-
-		Solution[] parents = new Solution[] { solution };
-
-		ParentImmutabilityTest.test(parents, bf);
 	}
 
 }

@@ -21,26 +21,18 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.operator.ParentImmutabilityTest;
-import org.moeaframework.core.operator.TypeSafetyTest;
+import org.moeaframework.core.operator.AbstractGrammarOperatorTest;
 import org.moeaframework.core.variable.Grammar;
 
-/**
- * Tests the {@link GrammarMutation} class.
- */
-public class GrammarMutationTest {
+public class GrammarMutationTest extends AbstractGrammarOperatorTest<GrammarMutation> {
 
-	/**
-	 * Tests if the grammar mutation operator is type-safe.
-	 */
-	@Test
-	public void testTypeSafety() {
-		TypeSafetyTest.testTypeSafety(new GrammarMutation(1.0));
+	@Override
+	public GrammarMutation createInstance() {
+		return new GrammarMutation(1.0);
 	}
 
 	/**
-	 * Tests various probabilities to ensure the {@code GrammarMutation} mutates
-	 * the expected number of codons.
+	 * Tests various probabilities to ensure the {@code GrammarMutation} mutates the expected number of codons.
 	 */
 	@Test
 	public void testProbabilities() {
@@ -88,21 +80,6 @@ public class GrammarMutationTest {
 		}
 
 		return count;
-	}
-
-	/**
-	 * Tests if the parents remain unchanged during variation.
-	 */
-	@Test
-	public void testParentImmutability() {
-		GrammarMutation gm = new GrammarMutation(1.0);
-
-		Solution solution = new Solution(1, 0);
-		solution.setVariable(0, new Grammar(new int[] { 0, 1, 2, 3, 4 }));
-
-		Solution[] parents = new Solution[] { solution };
-
-		ParentImmutabilityTest.test(parents, gm);
 	}
 
 }

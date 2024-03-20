@@ -27,10 +27,10 @@ import org.moeaframework.core.Settings;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.problem.MockRealProblem;
 
-public class GenerationalDistanceTest extends AbstractIndicatorTest {
+public class GenerationalDistanceTest extends AbstractIndicatorTest<GenerationalDistance> {
 	
 	@Override
-	public Indicator createInstance(Problem problem, NondominatedPopulation referenceSet) {
+	public GenerationalDistance createInstance(Problem problem, NondominatedPopulation referenceSet) {
 		return new GenerationalDistance(problem, referenceSet);
 	}
 	

@@ -24,19 +24,25 @@ import org.moeaframework.CIRunner;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.operator.MeanCentricVariationTest;
-import org.moeaframework.core.operator.ParentImmutabilityTest;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
 
-/**
- * Tests the {@link DifferentialEvolutionVariation} class.
- */
 @RunWith(CIRunner.class)
-public class DifferentialEvolutionVariationTest extends MeanCentricVariationTest {
+public class DifferentialEvolutionVariationTest extends MeanCentricVariationTest<DifferentialEvolutionVariation> {
+	
+	@Override
+	public DifferentialEvolutionVariation createInstance() {
+		return new DifferentialEvolutionVariation(1.0, 1.0);
+	}
+	
+	@Override
+	public boolean isTypeSafe() {
+		return false;
+	}
 	
 	@Test
 	public void testOffspring() {
-		DifferentialEvolutionVariation de = new DifferentialEvolutionVariation(1.0, 1.0);
+		DifferentialEvolutionVariation de = createInstance();
 
 		Solution s1 = new Solution(2, 0);
 		s1.setVariable(0, new RealVariable(0.0, -10.0, 10.0));
@@ -61,34 +67,6 @@ public class DifferentialEvolutionVariationTest extends MeanCentricVariationTest
 		// the offspring will be centered at s4 and offset in the direction (s2 - s3), resulting in the point (6, 5)
 		Assert.assertEquals(6.0, EncodingUtils.getReal(offspring.getVariable(0)), TestThresholds.VARIATION_EPS);
 		Assert.assertEquals(5.0, EncodingUtils.getReal(offspring.getVariable(1)), TestThresholds.VARIATION_EPS);
-	}
-
-	/**
-	 * Tests if the parents remain unchanged during variation.
-	 */
-	@Test
-	public void testParentImmutability() {
-		DifferentialEvolutionVariation de = new DifferentialEvolutionVariation(1.0, 1.0);
-
-		Solution s1 = new Solution(2, 0);
-		s1.setVariable(0, new RealVariable(2.0, -10.0, 10.0));
-		s1.setVariable(1, new RealVariable(2.0, -10.0, 10.0));
-
-		Solution s2 = new Solution(2, 0);
-		s2.setVariable(0, new RealVariable(-2.0, -10.0, 10.0));
-		s2.setVariable(1, new RealVariable(-2.0, -10.0, 10.0));
-
-		Solution s3 = new Solution(2, 0);
-		s3.setVariable(0, new RealVariable(-2.0, -10.0, 10.0));
-		s3.setVariable(1, new RealVariable(2.0, -10.0, 10.0));
-
-		Solution s4 = new Solution(2, 0);
-		s4.setVariable(0, new RealVariable(2.0, -10.0, 10.0));
-		s4.setVariable(1, new RealVariable(-2.0, -10.0, 10.0));
-
-		Solution[] parents = new Solution[] { s1, s2, s3, s4 };
-
-		ParentImmutabilityTest.test(parents, de);
 	}
 
 }

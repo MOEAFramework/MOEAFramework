@@ -27,7 +27,7 @@ import org.moeaframework.problem.MockRealProblem;
 public class InjectedInitializationTest {
 	
 	@Test
-	public void testInjection() {
+	public void test() {
 		Problem problem = new MockRealProblem();
 		Solution solution = problem.newSolution();
 		

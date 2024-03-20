@@ -20,7 +20,7 @@ package org.moeaframework.analysis.collector;
 import org.junit.Assert;
 import org.moeaframework.core.Algorithm;
 
-public class ElapsedTimeCollectorTest extends AbstractCollectorTest {
+public class ElapsedTimeCollectorTest extends AbstractCollectorTest<ElapsedTimeCollector> {
 	
 	@Override
 	public void validate(Observation observation) {
@@ -28,7 +28,7 @@ public class ElapsedTimeCollectorTest extends AbstractCollectorTest {
 	}
 	
 	@Override
-	public Collector createInstance() {
+	public ElapsedTimeCollector createInstance() {
 		return new ElapsedTimeCollector();
 	}
 	

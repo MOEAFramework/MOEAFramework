@@ -27,7 +27,7 @@ import org.moeaframework.TestUtils;
 /**
  * Abstract class for testing implementations of {@link WeightGenerator}.
  */
-public abstract class WeightGeneratorTest {
+public abstract class AbstractWeightGeneratorTest {
 
 	/**
 	 * Generates weights using the specified sequence and checks if the weights are valid.

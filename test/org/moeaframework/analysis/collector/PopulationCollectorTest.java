@@ -22,7 +22,7 @@ import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.EvolutionaryAlgorithm;
 import org.moeaframework.core.Population;
 
-public class PopulationCollectorTest extends AbstractCollectorTest {
+public class PopulationCollectorTest extends AbstractCollectorTest<PopulationCollector> {
 	
 	@Override
 	public void validate(Observation observation) {
@@ -33,7 +33,7 @@ public class PopulationCollectorTest extends AbstractCollectorTest {
 	}
 	
 	@Override
-	public Collector createInstance() {
+	public PopulationCollector createInstance() {
 		return new PopulationCollector();
 	}
 	

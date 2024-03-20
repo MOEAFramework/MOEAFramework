@@ -21,21 +21,14 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.operator.ParentImmutabilityTest;
-import org.moeaframework.core.operator.TypeSafetyTest;
+import org.moeaframework.core.operator.AbstractPermutationOperatorTest;
 import org.moeaframework.core.variable.Permutation;
 
-/**
- * Tests for {@link Insertion} mutation.
- */
-public class InsertionTest {
-
-	/**
-	 * Tests if the insertion mutation operator is type-safe.
-	 */
-	@Test
-	public void testTypeSafety() {
-		TypeSafetyTest.testTypeSafety(new Insertion(1.0));
+public class InsertionTest extends AbstractPermutationOperatorTest<Insertion> {
+	
+	@Override
+	public Insertion createInstance() {
+		return new Insertion(1.0);
 	}
 
 	/**
@@ -124,21 +117,6 @@ public class InsertionTest {
 		}
 
 		return true;
-	}
-
-	/**
-	 * Tests if the parents remain unchanged during variation.
-	 */
-	@Test
-	public void testParentImmutability() {
-		Insertion ins = new Insertion(1.0);
-
-		Solution solution = new Solution(1, 0);
-		solution.setVariable(0, new Permutation(100));
-
-		Solution[] parents = new Solution[] { solution };
-
-		ParentImmutabilityTest.test(parents, ins);
 	}
 
 }

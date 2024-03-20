@@ -19,10 +19,7 @@ package org.moeaframework.util.weights;
 
 import org.junit.Test;
 
-/**
- * Tests the {@link RandomGenerator} class.
- */
-public class RandomGeneratorTest extends WeightGeneratorTest {
+public class RandomGeneratorTest extends AbstractWeightGeneratorTest {
 	
 	@Test
 	public void test() {

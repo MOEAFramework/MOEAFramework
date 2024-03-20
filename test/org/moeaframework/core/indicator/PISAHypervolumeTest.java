@@ -17,24 +17,23 @@
  */
 package org.moeaframework.core.indicator;
 
-import org.moeaframework.core.Indicator;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 
-public class PISAHypervolumeTest extends AbstractHypervolumeTest {
+public class PISAHypervolumeTest extends AbstractHypervolumeTest<PISAHypervolume> {
 
 	@Override
-	public Indicator createInstance(Problem problem, NondominatedPopulation referenceSet) {
+	public PISAHypervolume createInstance(Problem problem, NondominatedPopulation referenceSet) {
 		return new PISAHypervolume(problem, referenceSet);
 	}
 	
 	@Override
-	public Indicator createInstance(Problem problem, double[] minimum, double[] maximum) {
+	public PISAHypervolume createInstance(Problem problem, double[] minimum, double[] maximum) {
 		return new PISAHypervolume(problem, minimum, maximum);
 	}
 	
 	@Override
-	public Indicator createInstance(Problem problem, NondominatedPopulation referenceSet, double[] referencePoint) {
+	public PISAHypervolume createInstance(Problem problem, NondominatedPopulation referenceSet, double[] referencePoint) {
 		return new PISAHypervolume(problem, referenceSet, referencePoint);
 	}
 

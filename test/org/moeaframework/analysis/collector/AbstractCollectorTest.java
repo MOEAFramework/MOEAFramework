@@ -32,14 +32,14 @@ import org.moeaframework.util.TypedProperties;
  * Helper functions for testing collectors.  This primarily ensures that the collectors attach to the correct
  * algorithms, and that a single collector does not attach to multiple objects.
  */
-public abstract class AbstractCollectorTest {
+public abstract class AbstractCollectorTest<T extends Collector> {
 	
 	/**
 	 * Creates a new instance of the collector being tested.
 	 * 
 	 * @return the collector
 	 */
-	public abstract Collector createInstance();
+	public abstract T createInstance();
 	
 	/**
 	 * Validates the observations produced in this test.  This should, at a minimum, attempt to read / parse

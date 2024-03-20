@@ -17,36 +17,11 @@
  */
 package org.moeaframework.core.operator;
 
-import org.junit.Test;
-
-public class UniformCrossoverTest extends PointCrossoverTest {
-
-	/**
-	 * Tests if the grammar crossover operator is type-safe.
-	 */
-	@Test
-	public void testTypeSafety() {
-		TypeSafetyTest.testTypeSafety(new UniformCrossover(1.0));
-	}
+public class UniformCrossoverTest extends AbstractPointCrossoverTest<UniformCrossover> {
 	
-	@Test
-	public void test() {
-		test(new UniformCrossover(1.0), 10);
-	}
-	
-	@Test
-	public void testOneVariable() {
-		test(new UniformCrossover(1.0), 1);
-	}
-	
-	@Test
-	public void testNoVariables() {
-		test(new UniformCrossover(1.0), 0);
-	}
-
-	@Test
-	public void testParentImmutability() {
-		testParentImmutability(new UniformCrossover(1.0));
+	@Override
+	public UniformCrossover createInstance() {
+		return new UniformCrossover(1.0);
 	}
 
 }

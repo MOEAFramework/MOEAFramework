@@ -19,7 +19,7 @@ package org.moeaframework.analysis.collector;
 
 import org.moeaframework.core.Algorithm;
 
-public class AdaptiveMultimethodVariationCollectorTest extends AbstractCollectorTest {
+public class AdaptiveMultimethodVariationCollectorTest extends AbstractCollectorTest<AdaptiveMultimethodVariationCollector> {
 	
 	@Override
 	public void validate(Observation observation) {
@@ -27,7 +27,7 @@ public class AdaptiveMultimethodVariationCollectorTest extends AbstractCollector
 	}
 	
 	@Override
-	public Collector createInstance() {
+	public AdaptiveMultimethodVariationCollector createInstance() {
 		return new AdaptiveMultimethodVariationCollector();
 	}
 	

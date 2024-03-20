@@ -15,29 +15,33 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.analysis.collector;
+package org.moeaframework.core.operator;
 
-import org.junit.Assert;
-import org.moeaframework.algorithm.pso.AbstractPSOAlgorithm;
-import org.moeaframework.core.Algorithm;
+import org.junit.Ignore;
+import org.junit.Test;
+import org.moeaframework.core.Variation;
+import org.moeaframework.core.variable.Program;
+import org.moeaframework.util.tree.Rules;
 
-public class PSOCollectorTest extends AbstractCollectorTest<PSOCollector> {
+public abstract class AbstractProgramOperatorTest<T extends Variation> extends AbstractOperatorTest<T, Program> {
 	
 	@Override
-	public void validate(Observation observation) {
-		Assert.assertNotNull(PSOCollector.getLeaders(observation));
-		Assert.assertNotNull(PSOCollector.getLocalBestParticles(observation));
-		Assert.assertNotNull(PSOCollector.getParticles(observation));
+	public Program createTestVariable() {
+		Rules rules = new Rules();
+		rules.populateWithDefaults();
+		rules.setReturnType(Number.class);
+		rules.setMaxVariationDepth(5);
+
+		Program program = new Program(rules);
+		program.randomize();
+		return program;
 	}
 	
+	@Test
+	@Ignore("Programs do not implement equals, so this check does not work")
 	@Override
-	public PSOCollector createInstance() {
-		return new PSOCollector();
-	}
-	
-	@Override
-	public boolean shouldAttach(Algorithm algorithm) {
-		return algorithm instanceof AbstractPSOAlgorithm;
+	public void testParentImmutability() {
+		super.testParentImmutability();
 	}
 
 }

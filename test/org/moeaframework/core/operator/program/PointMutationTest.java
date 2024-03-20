@@ -21,25 +21,23 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.operator.AbstractProgramOperatorTest;
 import org.moeaframework.core.variable.Program;
-import org.moeaframework.util.tree.Rules;
 
-/**
- * Tests the {@link PointMutation} class.
- */
-public class PointMutationTest {
+public class PointMutationTest extends AbstractProgramOperatorTest<PointMutation> {
+	
+	@Override
+	public PointMutation createInstance() {
+		return new PointMutation(1.0);
+	}
 	
 	@Test
 	public void test() {
-		Rules rules = new Rules();
-		rules.populateWithDefaults();
-		rules.setReturnType(Number.class);
-		
-		PointMutation mutation = new PointMutation(1.0);
+		PointMutation mutation = createInstance();
 		
 		for (int i = 0; i < 100; i++) {
-			Program program = new Program(rules);
-			program.setArgument(0, rules.buildTreeFull(Number.class, 4));
+			Program program = createTestVariable();
+			program.setArgument(0, program.getRules().buildTreeFull(Number.class, 4));
 			
 			int fixedNodeIndex = PRNG.nextInt(program.getNumberOfNodes());
 			program.getNodeAt(fixedNodeIndex).setFixed(true);

@@ -21,7 +21,7 @@ import org.junit.Assert;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.NondominatedPopulation;
 
-public class ApproximationSetCollectorTest extends AbstractCollectorTest {
+public class ApproximationSetCollectorTest extends AbstractCollectorTest<ApproximationSetCollector> {
 	
 	@Override
 	public void validate(Observation observation) {
@@ -32,7 +32,7 @@ public class ApproximationSetCollectorTest extends AbstractCollectorTest {
 	}
 	
 	@Override
-	public Collector createInstance() {
+	public ApproximationSetCollector createInstance() {
 		return new ApproximationSetCollector();
 	}
 	

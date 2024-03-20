@@ -21,7 +21,7 @@ import org.junit.Assert;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.EvolutionaryAlgorithm;
 
-public class PopulationSizeCollectorTest extends AbstractCollectorTest {
+public class PopulationSizeCollectorTest extends AbstractCollectorTest<PopulationSizeCollector> {
 	
 	@Override
 	public void validate(Observation observation) {
@@ -33,7 +33,7 @@ public class PopulationSizeCollectorTest extends AbstractCollectorTest {
 	}
 	
 	@Override
-	public Collector createInstance() {
+	public PopulationSizeCollector createInstance() {
 		return new PopulationSizeCollector();
 	}
 	

@@ -19,10 +19,7 @@ package org.moeaframework.util.weights;
 
 import org.junit.Test;
 
-/**
- * Tests the {@link NormalBoundaryIntersectionGenerator} class.
- */
-public class NormalBoundaryIntersectionGeneratorTest extends WeightGeneratorTest {
+public class NormalBoundaryIntersectionGeneratorTest extends AbstractWeightGeneratorTest {
 
 	@Test
 	public void testSingleLayer() {

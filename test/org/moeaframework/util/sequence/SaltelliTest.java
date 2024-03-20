@@ -29,7 +29,7 @@ import org.moeaframework.CIRunner;
  */
 @RunWith(CIRunner.class)
 @Retryable
-public class SaltelliTest extends SequenceTest {
+public class SaltelliTest extends AbstractSequenceTest {
 
 	/**
 	 * Tests to ensure the sequence exhibits a uniform distribution in the range {@code [0, 1]}.

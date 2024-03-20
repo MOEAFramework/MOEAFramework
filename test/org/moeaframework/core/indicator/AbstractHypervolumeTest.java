@@ -28,11 +28,11 @@ import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.problem.MockRealProblem;
 import org.moeaframework.util.PropertyScope;
 
-public abstract class AbstractHypervolumeTest extends AbstractIndicatorTest {
+public abstract class AbstractHypervolumeTest<T extends Indicator> extends AbstractIndicatorTest<T> {
 	
-	public abstract Indicator createInstance(Problem problem, double[] minimum, double[] maximum);
+	public abstract T createInstance(Problem problem, double[] minimum, double[] maximum);
 	
-	public abstract Indicator createInstance(Problem problem, NondominatedPopulation referenceSet, double[] referencePoint);
+	public abstract T createInstance(Problem problem, NondominatedPopulation referenceSet, double[] referencePoint);
 	
 	/**
 	 * Returns {@code true} if the measured hypervolume includes points that exceed / are better than the ideal point.

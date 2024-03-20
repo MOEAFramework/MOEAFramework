@@ -26,15 +26,16 @@ import org.apache.commons.math3.ml.clustering.KMeansPlusPlusClusterer;
 import org.junit.Assert;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.Variation;
 import org.moeaframework.core.variable.EncodingUtils;
 
 /**
  * Provides test methods for checking if the offspring form clusters around each parent.
  */
-public abstract class ParentCentricVariationTest extends DistributionVariationTest {
+public abstract class ParentCentricVariationTest<T extends Variation> extends DistributionVariationTest<T> {
 
 	@Override
-	protected void check(Solution[] parents, Solution[] offspring) {
+	protected void checkDistribution(Solution[] parents, Solution[] offspring) {
 		List<DoublePoint> points = new ArrayList<DoublePoint>();
 
 		for (Solution solution : offspring) {

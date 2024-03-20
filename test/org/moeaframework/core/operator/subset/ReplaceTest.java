@@ -24,22 +24,14 @@ import org.junit.Test;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.operator.ParentImmutabilityTest;
-import org.moeaframework.core.operator.TypeSafetyTest;
-import org.moeaframework.core.variable.Permutation;
+import org.moeaframework.core.operator.AbstractSubsetOperatorTest;
 import org.moeaframework.core.variable.Subset;
 
-/**
- * Tests for {@link Replace} mutation.
- */
-public class ReplaceTest {
-
-	/**
-	 * Tests if the replace mutation operator is type-safe.
-	 */
-	@Test
-	public void testTypeSafety() {
-		TypeSafetyTest.testTypeSafety(new Replace(1.0));
+public class ReplaceTest extends AbstractSubsetOperatorTest<Replace> {
+	
+	@Override
+	public Replace createInstance() {
+		return new Replace(1.0);
 	}
 
 	/**
@@ -75,7 +67,7 @@ public class ReplaceTest {
 
 			Solution mutated = replace.evolve(new Solution[] { original })[0];
 
-			if (testSubset((Subset)original.getVariable(0), (Subset)mutated.getVariable(0))) {
+			if (testReplace((Subset)original.getVariable(0), (Subset)mutated.getVariable(0))) {
 				count++;
 			}
 		}
@@ -90,28 +82,13 @@ public class ReplaceTest {
 	 * @param v2 the second subset
 	 * @return {@code true} if the result is a valid replacement; {@code false} otherwise
 	 */
-	protected boolean testSubset(Subset v1, Subset v2) {
+	protected boolean testReplace(Subset v1, Subset v2) {
 		// Size should remain unchanged
 		Assert.assertEquals(v1.size(), v2.size());
 		
 		Set<Integer> set = v1.getSet();
 		set.removeAll(v2.getSet());
 		return set.size() == 1;
-	}
-
-	/**
-	 * Tests if the parents remain unchanged during variation.
-	 */
-	@Test
-	public void testParentImmutability() {
-		Replace ins = new Replace(1.0);
-
-		Solution solution = new Solution(1, 0);
-		solution.setVariable(0, new Permutation(100));
-
-		Solution[] parents = new Solution[] { solution };
-
-		ParentImmutabilityTest.test(parents, ins);
 	}
 
 }

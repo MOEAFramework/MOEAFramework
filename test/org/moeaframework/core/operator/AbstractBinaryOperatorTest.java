@@ -15,29 +15,18 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.analysis.collector;
+package org.moeaframework.core.operator;
 
-import org.junit.Assert;
-import org.moeaframework.algorithm.pso.AbstractPSOAlgorithm;
-import org.moeaframework.core.Algorithm;
+import org.moeaframework.core.Variation;
+import org.moeaframework.core.variable.BinaryVariable;
 
-public class PSOCollectorTest extends AbstractCollectorTest<PSOCollector> {
+public abstract class AbstractBinaryOperatorTest<T extends Variation> extends AbstractOperatorTest<T, BinaryVariable> {
 	
 	@Override
-	public void validate(Observation observation) {
-		Assert.assertNotNull(PSOCollector.getLeaders(observation));
-		Assert.assertNotNull(PSOCollector.getLocalBestParticles(observation));
-		Assert.assertNotNull(PSOCollector.getParticles(observation));
-	}
-	
-	@Override
-	public PSOCollector createInstance() {
-		return new PSOCollector();
-	}
-	
-	@Override
-	public boolean shouldAttach(Algorithm algorithm) {
-		return algorithm instanceof AbstractPSOAlgorithm;
+	public BinaryVariable createTestVariable() {
+		BinaryVariable variable = new BinaryVariable(100);
+		variable.randomize();
+		return variable;
 	}
 
 }

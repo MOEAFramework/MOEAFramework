@@ -27,19 +27,14 @@ import org.moeaframework.CIRunner;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.operator.ParentCentricVariationTest;
-import org.moeaframework.core.operator.ParentImmutabilityTest;
-import org.moeaframework.core.operator.TypeSafetyTest;
 import org.moeaframework.core.variable.RealVariable;
 
 @RunWith(CIRunner.class)
-public class SBXTest extends ParentCentricVariationTest {
-
-	/**
-	 * Tests if the grammar crossover operator is type-safe.
-	 */
-	@Test
-	public void testTypeSafety() {
-		TypeSafetyTest.testTypeSafety(new SBX(1.0, 20.0));
+public class SBXTest extends ParentCentricVariationTest<SBX> {
+	
+	@Override
+	public SBX createInstance() {
+		return new SBX(1.0, 20.0);
 	}
 
 	/**
@@ -48,7 +43,7 @@ public class SBXTest extends ParentCentricVariationTest {
 	@Test
 	@Retryable
 	public void testDistribution1() {
-		SBX sbx = new SBX(1.0, 20.0);
+		SBX sbx = createInstance();
 
 		Solution s1 = new Solution(2, 0);
 		s1.setVariable(0, new RealVariable(2.0, -10.0, 10.0));
@@ -70,7 +65,7 @@ public class SBXTest extends ParentCentricVariationTest {
 
 		Solution[] centroids = new Solution[] { s1, s2, newSolution(2.0, -2.0), newSolution(-2.0, 2.0) };
 
-		check(centroids, offspring);
+		checkDistribution(centroids, offspring);
 	}
 	
 	/**
@@ -79,7 +74,7 @@ public class SBXTest extends ParentCentricVariationTest {
 	@Test
 	@Retryable
 	public void testDistribution2() {
-		SBX sbx = new SBX(1.0, 20.0);
+		SBX sbx = createInstance();
 
 		Solution s1 = new Solution(2, 0);
 		s1.setVariable(0, new RealVariable(-2.0, -10.0, 10.0));
@@ -101,19 +96,7 @@ public class SBXTest extends ParentCentricVariationTest {
 
 		Solution[] centroids = new Solution[] { s1, s2, newSolution(2.0, -2.0), newSolution(-2.0, 2.0) };
 
-		check(centroids, offspring);
-	}
-
-	/**
-	 * Tests if the parents remain unchanged during variation.
-	 */
-	@Test
-	public void testParentImmutability() {
-		SBX sbx = new SBX(1.0, 20.0);
-
-		Solution[] parents = new Solution[] { newSolution(0.0, 0.0), newSolution(0.0, 1.0) };
-
-		ParentImmutabilityTest.test(parents, sbx);
+		checkDistribution(centroids, offspring);
 	}
 	
 	/**
@@ -135,7 +118,7 @@ public class SBXTest extends ParentCentricVariationTest {
 			
 		});
 		
-		SBX sbx = new SBX(1.0, 20.0);
+		SBX sbx = createInstance();
 
 		Solution s1 = new Solution(2, 0);
 		s1.setVariable(0, new RealVariable(-2.0, -10.0, 10.0));

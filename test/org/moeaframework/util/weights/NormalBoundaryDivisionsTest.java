@@ -53,10 +53,14 @@ public class NormalBoundaryDivisionsTest {
 	
 	@Test
 	public void testReferencePoints() {
-		Assert.assertEquals(1, new NormalBoundaryDivisions(100).getNumberOfReferencePoints(1)); // 100 choose 100
+		// 100 choose 100
+		Assert.assertEquals(1, new NormalBoundaryDivisions(100).getNumberOfReferencePoints(1));
 		
-		Assert.assertEquals(101, new NormalBoundaryDivisions(100).getNumberOfReferencePoints(2)); // 101 choose 100
-		Assert.assertEquals(152, new NormalBoundaryDivisions(100, 50).getNumberOfReferencePoints(2)); // 101 choose 100 + 51 choose 50
+		// 101 choose 100
+		Assert.assertEquals(101, new NormalBoundaryDivisions(100).getNumberOfReferencePoints(2));
+		
+		// 101 choose 100 + 51 choose 50
+		Assert.assertEquals(152, new NormalBoundaryDivisions(100, 50).getNumberOfReferencePoints(2));
 	}
 	
 	@Test
@@ -93,7 +97,8 @@ public class NormalBoundaryDivisionsTest {
 	@Test
 	public void testFractionalProperties() {
 		NormalBoundaryDivisions expected = new NormalBoundaryDivisions(100);
-		NormalBoundaryDivisions actual = NormalBoundaryDivisions.tryFromProperties(TypedProperties.withProperty("divisions", "100.2"));
+		NormalBoundaryDivisions actual = NormalBoundaryDivisions.tryFromProperties(
+				TypedProperties.withProperty("divisions", "100.2"));
 		Assert.assertEquals(expected, actual);
 	}
 	

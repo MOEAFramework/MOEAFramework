@@ -21,7 +21,7 @@ import org.junit.Assert;
 import org.moeaframework.algorithm.AdaptiveTimeContinuation;
 import org.moeaframework.core.Algorithm;
 
-public class AdaptiveTimeContinuationCollectorTest extends AbstractCollectorTest {
+public class AdaptiveTimeContinuationCollectorTest extends AbstractCollectorTest<AdaptiveTimeContinuationCollector> {
 	
 	@Override
 	public void validate(Observation observation) {
@@ -29,7 +29,7 @@ public class AdaptiveTimeContinuationCollectorTest extends AbstractCollectorTest
 	}
 	
 	@Override
-	public Collector createInstance() {
+	public AdaptiveTimeContinuationCollector createInstance() {
 		return new AdaptiveTimeContinuationCollector();
 	}
 	

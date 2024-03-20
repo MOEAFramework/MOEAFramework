@@ -21,29 +21,26 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.operator.AbstractProgramOperatorTest;
 import org.moeaframework.core.variable.Program;
-import org.moeaframework.util.tree.Rules;
 
-/**
- * Tests the {@link SubtreeCrossover} class.
- */
-public class SubtreeCrossoverTest {
+public class SubtreeCrossoverTest extends AbstractProgramOperatorTest<SubtreeCrossover> {
+	
+	@Override
+	public SubtreeCrossover createInstance() {
+		return new SubtreeCrossover(1.0);
+	}
 	
 	@Test
 	public void test() {
-		Rules rules = new Rules();
-		rules.populateWithDefaults();
-		rules.setReturnType(Number.class);
-		rules.setMaxVariationDepth(5);
-		
-		SubtreeCrossover crossover = new SubtreeCrossover(1.0);
+		SubtreeCrossover crossover = createInstance();
 		
 		for (int i = 0; i < 100; i++) {
-			Program program1 = new Program(rules);
-			program1.setArgument(0, rules.buildTreeFull(Number.class, 4));
+			Program program1 = createTestVariable();
+			program1.setArgument(0, program1.getRules().buildTreeFull(Number.class, 4));
 			
-			Program program2 = new Program(rules);
-			program2.setArgument(0, rules.buildTreeFull(Number.class, 4));
+			Program program2 = createTestVariable();
+			program2.setArgument(0, program2.getRules().buildTreeFull(Number.class, 4));
 			
 			int fixedArgument = PRNG.nextInt(program1.getNumberOfArguments());
 			program1.setFixed(true);

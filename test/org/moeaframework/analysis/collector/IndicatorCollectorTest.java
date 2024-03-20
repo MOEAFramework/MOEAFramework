@@ -23,7 +23,7 @@ import org.moeaframework.core.Indicator;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Settings;
 
-public class IndicatorCollectorTest extends AbstractCollectorTest {
+public class IndicatorCollectorTest extends AbstractCollectorTest<IndicatorCollector> {
 	
 	@Override
 	public void validate(Observation observation) {
@@ -31,7 +31,7 @@ public class IndicatorCollectorTest extends AbstractCollectorTest {
 	}
 	
 	@Override
-	public Collector createInstance() {
+	public IndicatorCollector createInstance() {
 		return new IndicatorCollector(new MockIndicator());
 	}
 	

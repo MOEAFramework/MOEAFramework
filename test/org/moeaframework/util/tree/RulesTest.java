@@ -23,9 +23,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.core.PRNG;
 
-/**
- * Tests the {@link Rules} class.
- */
 public class RulesTest {
 	
 	private int SAMPLES = 100;

@@ -21,23 +21,16 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.operator.ParentImmutabilityTest;
-import org.moeaframework.core.operator.TypeSafetyTest;
+import org.moeaframework.core.operator.AbstractGrammarOperatorTest;
 import org.moeaframework.core.variable.Grammar;
 
-/**
- * Tests the {@link GrammarCrossover} class.
- */
-public class GrammarCrossoverTest {
+public class GrammarCrossoverTest extends AbstractGrammarOperatorTest<GrammarCrossover> {
 
-	/**
-	 * Tests if the grammar crossover operator is type-safe.
-	 */
-	@Test
-	public void testTypeSafety() {
-		TypeSafetyTest.testTypeSafety(new GrammarCrossover(1.0));
+	@Override
+	public GrammarCrossover createInstance() {
+		return new GrammarCrossover(1.0);
 	}
-
+	
 	/**
 	 * Tests various probabilities to ensure the {@code GrammarCrossover} operates with the expected probability.
 	 */
@@ -121,24 +114,6 @@ public class GrammarCrossoverTest {
 		}
 
 		return crossed;
-	}
-
-	/**
-	 * Tests if the parents remain unchanged during variation.
-	 */
-	@Test
-	public void testParentImmutability() {
-		GrammarCrossover gc = new GrammarCrossover(1.0);
-
-		Solution s1 = new Solution(1, 0);
-		s1.setVariable(0, new Grammar(new int[] { 0, 1, 2, 3, 4 }));
-
-		Solution s2 = new Solution(1, 0);
-		s2.setVariable(0, new Grammar(new int[] { 5, 6, 7 }));
-
-		Solution[] parents = new Solution[] { s1, s2 };
-
-		ParentImmutabilityTest.test(parents, gc);
 	}
 
 }

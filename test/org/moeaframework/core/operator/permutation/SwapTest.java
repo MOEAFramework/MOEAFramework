@@ -21,21 +21,14 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.operator.ParentImmutabilityTest;
-import org.moeaframework.core.operator.TypeSafetyTest;
+import org.moeaframework.core.operator.AbstractPermutationOperatorTest;
 import org.moeaframework.core.variable.Permutation;
 
-/**
- * Tests for {@link Swap} mutation.
- */
-public class SwapTest {
-
-	/**
-	 * Tests if the swap mutation operator is type-safe.
-	 */
-	@Test
-	public void testTypeSafety() {
-		TypeSafetyTest.testTypeSafety(new Swap(1.0));
+public class SwapTest extends AbstractPermutationOperatorTest<Swap> {
+	
+	@Override
+	public Swap createInstance() {
+		return new Swap(1.0);
 	}
 
 	/**
@@ -105,21 +98,6 @@ public class SwapTest {
 			Assert.fail();
 			return false;
 		}
-	}
-
-	/**
-	 * Tests if the parents remain unchanged during variation.
-	 */
-	@Test
-	public void testParentImmutability() {
-		Swap swap = new Swap(1.0);
-
-		Solution solution = new Solution(1, 0);
-		solution.setVariable(0, new Permutation(100));
-
-		Solution[] parents = new Solution[] { solution };
-
-		ParentImmutabilityTest.test(parents, swap);
 	}
 
 }

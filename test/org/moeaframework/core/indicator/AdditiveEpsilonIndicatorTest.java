@@ -27,10 +27,10 @@ import org.moeaframework.core.Settings;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.problem.MockRealProblem;
 
-public class AdditiveEpsilonIndicatorTest extends AbstractIndicatorTest {
+public class AdditiveEpsilonIndicatorTest extends AbstractIndicatorTest<AdditiveEpsilonIndicator> {
 	
 	@Override
-	public Indicator createInstance(Problem problem, NondominatedPopulation referenceSet) {
+	public AdditiveEpsilonIndicator createInstance(Problem problem, NondominatedPopulation referenceSet) {
 		return new AdditiveEpsilonIndicator(problem, referenceSet);
 	}
 	

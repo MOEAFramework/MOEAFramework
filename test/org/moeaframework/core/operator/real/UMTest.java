@@ -25,25 +25,20 @@ import org.moeaframework.TestThresholds;
 import org.moeaframework.CIRunner;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.operator.DistributionVariationTest;
-import org.moeaframework.core.operator.ParentImmutabilityTest;
-import org.moeaframework.core.operator.TypeSafetyTest;
 import org.moeaframework.core.variable.RealVariable;
 
 @RunWith(CIRunner.class)
-public class UMTest extends DistributionVariationTest {
+public class UMTest extends DistributionVariationTest<UM> {
 
-	/**
-	 * Tests if the grammar crossover operator is type-safe.
-	 */
-	@Test
-	public void testTypeSafety() {
-		TypeSafetyTest.testTypeSafety(new UM(1.0));
+	@Override
+	public UM createInstance() {
+		return new UM(1.0);
 	}
 
 	@Test
 	@Retryable
 	public void testDistribution() {
-		UM um = new UM(1.0);
+		UM um = createInstance();
 
 		Solution parent = new Solution(2, 0);
 		parent.setVariable(0, new RealVariable(2.0, 0.0, 10.0));
@@ -57,11 +52,11 @@ public class UMTest extends DistributionVariationTest {
 			offspring[i] = um.evolve(parents)[0];
 		}
 
-		check(parents, offspring);
+		checkDistribution(parents, offspring);
 	}
 
 	@Override
-	protected void check(Solution[] parents, Solution[] offspring) {
+	protected void checkDistribution(Solution[] parents, Solution[] offspring) {
 		Solution parent = parents[0];
 
 		double[] average = average(offspring);
@@ -72,18 +67,6 @@ public class UMTest extends DistributionVariationTest {
 			Assert.assertEquals((v.getLowerBound() + v.getUpperBound()) / 2.0, average[i],
 					TestThresholds.VARIATION_EPS);
 		}
-	}
-
-	/**
-	 * Tests if the parents remain unchanged during variation.
-	 */
-	@Test
-	public void testParentImmutability() {
-		UM um = new UM(1.0);
-
-		Solution[] parents = new Solution[] { newSolution(0.0, 0.0) };
-
-		ParentImmutabilityTest.test(parents, um);
 	}
 
 }

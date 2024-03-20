@@ -39,14 +39,20 @@ import org.moeaframework.TestUtils;
 import org.moeaframework.CIRunner;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.operator.ParentCentricVariationTest;
-import org.moeaframework.core.operator.ParentImmutabilityTest;
 import org.moeaframework.core.variable.EncodingUtils;
 
-/**
- * Tests the {@link AdaptiveMetropolis} class.
- */
 @RunWith(CIRunner.class)
-public class AdaptiveMetropolisTest extends ParentCentricVariationTest {
+public class AdaptiveMetropolisTest extends ParentCentricVariationTest<AdaptiveMetropolis> {
+	
+	@Override
+	public AdaptiveMetropolis createInstance() {
+		return new AdaptiveMetropolis(3, TestThresholds.SAMPLES, 1.0);
+	}
+	
+	@Override
+	public boolean isTypeSafe() {
+		return false;
+	}
 	
 	/**
 	 * This is sample output from running Jasper Vrugt's AMALGAM codes in MATLAB that is positive definite.
@@ -93,34 +99,21 @@ public class AdaptiveMetropolisTest extends ParentCentricVariationTest {
 	 */
 	@Test
 	public void testFullDistribution() {
-		AdaptiveMetropolis am = new AdaptiveMetropolis(3, TestThresholds.SAMPLES, 1.0);
+		AdaptiveMetropolis am = createInstance();
 
 		Solution[] parents = new Solution[] { newSolution(0.0, 0.0), newSolution(0.0, 1.0), newSolution(1.0, 0.0) };
-
 		Solution[] offspring = am.evolve(parents);
 
-		check(parents, offspring);
+		checkDistribution(parents, offspring);
 	}
 
 	@Test
 	public void testPartialDistribution() {
-		AdaptiveMetropolis am = new AdaptiveMetropolis(3, TestThresholds.SAMPLES, 1.0);
+		AdaptiveMetropolis am = createInstance();
 
 		Solution[] parents = new Solution[] { newSolution(0.0, 0.0), newSolution(0.0, 1.0), newSolution(0.0, 2.0) };
 
 		Assert.assertEquals(0, am.evolve(parents).length);
-	}
-
-	/**
-	 * Tests if the parents remain unchanged during variation.
-	 */
-	@Test
-	public void testParentImmutability() {
-		AdaptiveMetropolis am = new AdaptiveMetropolis(3, 3, 1.0);
-
-		Solution[] parents = new Solution[] { newSolution(0.0, 0.0), newSolution(0.0, 1.0), newSolution(1.0, 0.0) };
-
-		ParentImmutabilityTest.test(parents, am);
 	}
 	
 	/**
@@ -180,14 +173,12 @@ public class AdaptiveMetropolisTest extends ParentCentricVariationTest {
 			points.add(new DoublePoint(EncodingUtils.getReal(solution)));
 		}
 
-		KMeansPlusPlusClusterer<DoublePoint> clusterer = 
-				new KMeansPlusPlusClusterer<DoublePoint>(parents.length, 100);
+		KMeansPlusPlusClusterer<DoublePoint> clusterer = new KMeansPlusPlusClusterer<DoublePoint>(parents.length, 100);
 
 		List<CentroidCluster<DoublePoint>> clusters = clusterer.cluster(points);
 
 		for (CentroidCluster<DoublePoint> cluster : clusters) {
-			TestUtils.assertEquals(getCovariance(cluster), 
-					getCovariance(parents, jumpRateCoefficient), 
+			TestUtils.assertEquals(getCovariance(cluster), getCovariance(parents, jumpRateCoefficient), 
 					new RelativeError(0.1));
 		}
 	}

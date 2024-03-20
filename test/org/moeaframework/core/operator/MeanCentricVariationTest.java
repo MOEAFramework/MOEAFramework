@@ -20,14 +20,15 @@ package org.moeaframework.core.operator;
 import org.junit.Assert;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.Variation;
 
 /**
  * Provides test methods for checking if the offspring are centered around the centroid of the parents.
  */
-public abstract class MeanCentricVariationTest extends DistributionVariationTest {
+public abstract class MeanCentricVariationTest<T extends Variation> extends DistributionVariationTest<T> {
 
 	@Override
-	protected void check(Solution[] parents, Solution[] offspring) {
+	protected void checkDistribution(Solution[] parents, Solution[] offspring) {
 		Assert.assertArrayEquals(average(parents), average(offspring), TestThresholds.VARIATION_EPS);
 	}
 

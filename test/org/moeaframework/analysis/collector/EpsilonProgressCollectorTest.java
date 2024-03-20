@@ -21,7 +21,7 @@ import org.moeaframework.algorithm.EpsilonNSGAII;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.EpsilonBoxEvolutionaryAlgorithm;
 
-public class EpsilonProgressCollectorTest extends AbstractCollectorTest {
+public class EpsilonProgressCollectorTest extends AbstractCollectorTest<EpsilonProgressCollector> {
 	
 	@Override
 	public void validate(Observation observation) {
@@ -29,7 +29,7 @@ public class EpsilonProgressCollectorTest extends AbstractCollectorTest {
 	}
 	
 	@Override
-	public Collector createInstance() {
+	public EpsilonProgressCollector createInstance() {
 		return new EpsilonProgressCollector();
 	}
 	

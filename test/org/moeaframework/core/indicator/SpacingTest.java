@@ -27,10 +27,10 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.problem.MockRealProblem;
 
-public class SpacingTest extends AbstractIndicatorTest {
+public class SpacingTest extends AbstractIndicatorTest<Spacing> {
 	
 	@Override
-	public Indicator createInstance(Problem problem, NondominatedPopulation referenceSet) {
+	public Spacing createInstance(Problem problem, NondominatedPopulation referenceSet) {
 		return new Spacing(problem);
 	}
 	

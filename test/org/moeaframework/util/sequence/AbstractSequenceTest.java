@@ -29,7 +29,7 @@ import org.moeaframework.CIRunner;
  */
 @RunWith(CIRunner.class)
 @Retryable
-public abstract class SequenceTest {
+public abstract class AbstractSequenceTest {
 
 	/**
 	 * Tests the specified sequence for 1, 2 and 10 dimensions.

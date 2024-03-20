@@ -21,10 +21,7 @@ import org.apache.commons.math3.primes.Primes;
 import org.junit.Assert;
 import org.junit.Test;
 
-/**
- * Tests the {@link UniformDesignGenerator} class.
- */
-public class UniformDesignGeneratorTest extends WeightGeneratorTest {
+public class UniformDesignGeneratorTest extends AbstractWeightGeneratorTest {
 	
 	@Test
 	public void testPrimes() {

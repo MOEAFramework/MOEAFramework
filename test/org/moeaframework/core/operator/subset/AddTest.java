@@ -24,22 +24,14 @@ import org.junit.Test;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.operator.ParentImmutabilityTest;
-import org.moeaframework.core.operator.TypeSafetyTest;
-import org.moeaframework.core.variable.Permutation;
+import org.moeaframework.core.operator.AbstractSubsetOperatorTest;
 import org.moeaframework.core.variable.Subset;
 
-/**
- * Tests for {@link Add} mutation.
- */
-public class AddTest {
-
-	/**
-	 * Tests if the add mutation operator is type-safe.
-	 */
-	@Test
-	public void testTypeSafety() {
-		TypeSafetyTest.testTypeSafety(new Add(1.0));
+public class AddTest extends AbstractSubsetOperatorTest<Add> {
+	
+	@Override
+	public Add createInstance() {
+		return new Add(1.0);
 	}
 
 	/**
@@ -78,7 +70,7 @@ public class AddTest {
 			
 			if ((subset.size() == newSubset.size()) && (subset.size() == subset.getU())) {
 				skipped++;
-			} else if (testSubset(subset, newSubset)) {
+			} else if (testAdd(subset, newSubset)) {
 				count++;
 			}
 		}
@@ -94,25 +86,10 @@ public class AddTest {
 	 * @param v2 the second subset
 	 * @return {@code true} if the result is a valid add; {@code false} otherwise
 	 */
-	protected boolean testSubset(Subset v1, Subset v2) {
+	protected boolean testAdd(Subset v1, Subset v2) {
 		Set<Integer> set = v2.getSet();
 		set.removeAll(v1.getSet());
 		return set.size() == 1;
-	}
-
-	/**
-	 * Tests if the parents remain unchanged during variation.
-	 */
-	@Test
-	public void testParentImmutability() {
-		Replace ins = new Replace(1.0);
-
-		Solution solution = new Solution(1, 0);
-		solution.setVariable(0, new Permutation(100));
-
-		Solution[] parents = new Solution[] { solution };
-
-		ParentImmutabilityTest.test(parents, ins);
 	}
 
 }

@@ -24,13 +24,19 @@ import org.moeaframework.TestThresholds;
 import org.moeaframework.CIRunner;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.operator.ParentCentricVariationTest;
-import org.moeaframework.core.operator.ParentImmutabilityTest;
 
-/**
- * Tests parent-centric crossover (PCX) to ensure clusters are formed centered around each parent.
- */
 @RunWith(CIRunner.class)
-public class PCXTest extends ParentCentricVariationTest {
+public class PCXTest extends ParentCentricVariationTest<PCX> {
+	
+	@Override
+	public PCX createInstance() {
+		return new PCX(3, TestThresholds.SAMPLES);
+	}
+	
+	@Override
+	public boolean isTypeSafe() {
+		return false;
+	}
 
 	/**
 	 * Tests if the offspring form clusters distributed around each parent.
@@ -38,12 +44,12 @@ public class PCXTest extends ParentCentricVariationTest {
 	@Test
 	@Retryable
 	public void testFullDistribution() {
-		PCX pcx = new PCX(3, TestThresholds.SAMPLES);
+		PCX pcx = createInstance();
 
 		Solution[] parents = new Solution[] { newSolution(0.0, 0.0), newSolution(0.0, 1.0), newSolution(1.0, 0.0) };
 		Solution[] offspring = pcx.evolve(parents);
 
-		check(parents, offspring);
+		checkDistribution(parents, offspring);
 	}
 
 	/**
@@ -53,24 +59,12 @@ public class PCXTest extends ParentCentricVariationTest {
 	@Test
 	@Retryable
 	public void testPartialDistribution() {
-		PCX pcx = new PCX(3, TestThresholds.SAMPLES);
+		PCX pcx = createInstance();
 
 		Solution[] parents = new Solution[] { newSolution(0.0, 0.0), newSolution(0.0, 1.0), newSolution(0.0, 2.0) };
 		Solution[] offspring = pcx.evolve(parents);
 
-		check(parents, offspring);
-	}
-
-	/**
-	 * Tests if the parents remain unchanged during variation.
-	 */
-	@Test
-	public void testParentImmutability() {
-		PCX pcx = new PCX(3, 3);
-
-		Solution[] parents = new Solution[] { newSolution(0.0, 0.0), newSolution(0.0, 1.0), newSolution(1.0, 0.0) };
-
-		ParentImmutabilityTest.test(parents, pcx);
+		checkDistribution(parents, offspring);
 	}
 
 }

@@ -27,7 +27,7 @@ import org.moeaframework.CIRunner;
  */
 @RunWith(CIRunner.class)
 @Retryable
-public class UniformTest extends SequenceTest {
+public class UniformTest extends AbstractSequenceTest {
 
 	/**
 	 * Tests to ensure the sequence exhibits a uniform distribution in the range {@code [0, 1]}.

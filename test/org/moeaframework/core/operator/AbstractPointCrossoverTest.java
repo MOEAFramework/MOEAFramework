@@ -18,13 +18,36 @@
 package org.moeaframework.core.operator;
 
 import org.junit.Assert;
+import org.junit.Test;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variable;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.variable.RealVariable;
 
-public abstract class PointCrossoverTest {
+public abstract class AbstractPointCrossoverTest<T extends Variation> extends AbstractOperatorTest<T, RealVariable> {
+	
+	@Override
+	public RealVariable createTestVariable() {
+		RealVariable variable = new RealVariable(0.0, 1.0);
+		variable.randomize();
+		return variable;
+	}
+	
+	@Test
+	public void test() {
+		test(createInstance(), 10);
+	}
+	
+	@Test
+	public void testOneVariable() {
+		test(createInstance(), 1);
+	}
+	
+	@Test
+	public void testNoVariables() {
+		test(createInstance(), 0);
+	}
 
 	/**
 	 * Tests the specified crossover operator.
@@ -70,18 +93,11 @@ public abstract class PointCrossoverTest {
 		Solution parent2 = new Solution(numberOfVariables, 0);
 
 		for (int i = 0; i < numberOfVariables; i++) {
-			parent1.setVariable(i, new RealVariable(0.0, 0.0, 1.0));
-			parent2.setVariable(i, new RealVariable(1.0, 0.0, 1.0));
+			parent1.setVariable(i, createTestVariable());
+			parent2.setVariable(i, createTestVariable());
 		}
 
 		return new Solution[] { parent1, parent2 };
-	}
-
-	/**
-	 * Tests if the parents remain unchanged during variation.
-	 */
-	protected void testParentImmutability(Variation variation) {
-		ParentImmutabilityTest.test(createParents(10), variation);
 	}
 
 }

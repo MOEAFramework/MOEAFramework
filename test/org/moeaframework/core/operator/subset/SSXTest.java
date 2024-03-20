@@ -25,24 +25,16 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.core.PRNG;
-import org.moeaframework.core.Solution;
-import org.moeaframework.core.operator.ParentImmutabilityTest;
-import org.moeaframework.core.operator.TypeSafetyTest;
+import org.moeaframework.core.operator.AbstractSubsetOperatorTest;
 import org.moeaframework.core.variable.Subset;
 
-/**
- * Tests the {@link SSX} class.
- */
-public class SSXTest {
-
-	/**
-	 * Tests if the SSX crossover operator is type-safe.
-	 */
-	@Test
-	public void testTypeSafety() {
-		TypeSafetyTest.testTypeSafety(new SSX(1.0));
+public class SSXTest extends AbstractSubsetOperatorTest<SSX> {
+	
+	@Override
+	public SSX createInstance() {
+		return new SSX(1.0);
 	}
-
+	
 	/**
 	 * Tests if the {@link SSX#evolve} method produces valid subset for fixed-size sets.
 	 */
@@ -112,30 +104,6 @@ public class SSXTest {
 		
 		Assert.assertEquals(0.5, stats1.getMean(), TestThresholds.STATISTICS_EPS);
 		Assert.assertEquals(0.5, stats1.getMean(), TestThresholds.STATISTICS_EPS);
-	}
-
-	/**
-	 * Tests if the parents remain unchanged during variation.
-	 */
-	@Test
-	public void testParentImmutability() {
-		SSX ssx = new SSX(1.0);
-
-		Subset p1 = new Subset(5, 10);
-		Subset p2 = new Subset(5, 10);
-		
-		p1.randomize();
-		p2.randomize();
-
-		Solution s1 = new Solution(1, 0);
-		s1.setVariable(0, p1);
-
-		Solution s2 = new Solution(1, 0);
-		s2.setVariable(0, p2);
-
-		Solution[] parents = new Solution[] { s1, s2 };
-
-		ParentImmutabilityTest.test(parents, ssx);
 	}
 	
 	/**
