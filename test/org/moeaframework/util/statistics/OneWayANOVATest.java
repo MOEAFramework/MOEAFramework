@@ -21,9 +21,6 @@ import org.junit.Assert;
 import org.apache.commons.math3.stat.inference.TestUtils;
 import org.junit.Test;
 
-/**
- * Tests the {@link OneWayANOVA} class.
- */
 public class OneWayANOVATest {
 	
 	@Test(expected = IllegalArgumentException.class)

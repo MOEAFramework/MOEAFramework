@@ -23,9 +23,6 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
-/**
- * Tests the {@link ProgressHelper} class.
- */
 public class ProgressHelperTest {
 	
 	/**

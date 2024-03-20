@@ -24,9 +24,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-/**
- * Tests the {@link IntervalRatioStatisticalTest} class.
- */
 public class IntervalRatioStatisticalTestTest {
 
 	/**

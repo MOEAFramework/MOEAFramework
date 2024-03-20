@@ -24,9 +24,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.core.Settings;
 
-/**
- * Tests the {@link Vector} class.
- */
 public class VectorTest {
 
 	/**

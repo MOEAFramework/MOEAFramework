@@ -24,9 +24,6 @@ import java.util.NoSuchElementException;
 import org.junit.Assert;
 import org.junit.Test;
 
-/**
- * Tests the {@link Concaterator} class.
- */
 public class ConcateratorTest {
 	
 	@Test

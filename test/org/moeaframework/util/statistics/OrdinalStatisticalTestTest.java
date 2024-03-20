@@ -23,9 +23,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.core.Settings;
 
-/**
- * Tests the {@link OrdinalStatisticalTest} class.
- */
 public class OrdinalStatisticalTestTest {
 
 	/**

@@ -23,14 +23,8 @@ import java.io.StringReader;
 import org.junit.Assert;
 import org.junit.Test;
 
-/**
- * Tests the {@link Parser} class.
- */
 public class ParserTest {
 
-	/**
-	 * Tests if the parser correctly handles an empty file, or a file filled with whitespace.
-	 */
 	@Test
 	public void testEmptyRule() throws IOException {
 		ContextFreeGrammar g1 = Parser.load(new StringReader(""));
@@ -43,9 +37,6 @@ public class ParserTest {
 		Assert.assertEquals(0, g3.size());
 	}
 
-	/**
-	 * Tests if the parser correctly ignores C and C++ style comments.
-	 */
 	@Test
 	public void testComments() throws IOException {
 		ContextFreeGrammar g1 = Parser.load(new StringReader("//<test> ::= <foo> <bar>"));
@@ -71,9 +62,6 @@ public class ParserTest {
 		Assert.assertEquals(1, g6.get(0).size());
 	}
 
-	/**
-	 * Tests if the parser correctly identifies the rule separator in its various forms.
-	 */
 	@Test
 	public void testRuleSeparator() throws IOException {
 		ContextFreeGrammar g1 = Parser.load(new StringReader("<foo> ::= <bar>"));
@@ -93,9 +81,6 @@ public class ParserTest {
 		Assert.assertEquals(1, g4.get(0).size());
 	}
 
-	/**
-	 * Tests the parser on a simple example.
-	 */
 	@Test
 	public void testSimpleExample() throws IOException {
 		ContextFreeGrammar g = Parser.load(new StringReader("<foo> ::= <bar>\n<bar> ::= a | (b) | ( c )"));
@@ -131,73 +116,46 @@ public class ParserTest {
 		Assert.assertEquals(")", g.get(1).get(2).get(2).getValue());
 	}
 
-	/**
-	 * Tests if the parser throws an exception if the rule symbol is missing.
-	 */
 	@Test(expected = GrammarException.class)
 	public void testMissingRuleSymbolException() throws IOException {
 		Parser.load(new StringReader(" ::= <bar>"));
 	}
 
-	/**
-	 * Tests if the parser throws an exception if the rule symbol is not surrounded by angle brackets.
-	 */
 	@Test(expected = GrammarException.class)
 	public void testInvalidRuleSymbolException1() throws IOException {
 		Parser.load(new StringReader("foo ::= <bar>"));
 	}
 
-	/**
-	 * Tests if the parser throws an exception if the rule symbol is not surrounded by angle brackets.
-	 */
 	@Test(expected = GrammarException.class)
 	public void testInvalidRuleSymbolException2() throws IOException {
 		Parser.load(new StringReader("<foo ::= <bar>"));
 	}
 
-	/**
-	 * Tests if the parser throws an exception if the production is empty.
-	 */
 	@Test(expected = GrammarException.class)
 	public void testEmptyProductionException1() throws IOException {
 		Parser.load(new StringReader("<foo> ::= "));
 	}
 
-	/**
-	 * Tests if the parser throws an exception if the production is incomplete.
-	 */
 	@Test(expected = GrammarException.class)
 	public void testEmptyProductionException2() throws IOException {
 		Parser.load(new StringReader("<foo> ::= <bar> | "));
 	}
 
-	/**
-	 * Tests if the parser throws an exception if the production is missing a rule.
-	 */
 	@Test(expected = GrammarException.class)
 	public void testEmptyProductionException3() throws IOException {
 		Parser.load(new StringReader("<foo> ::= | <bar>"));
 	}
 
-	/**
-	 * Tests if the parser throws an exception if the rule symbol is the empty string.
-	 */
 	@Test(expected = GrammarException.class)
 	public void testEmptySymbolException1() throws IOException {
 		Parser.load(new StringReader("<> ::= <bar>"));
 	}
 
-	/**
-	 * Tests if the parser throws an exception if a production symbol is the empty string.
-	 */
 	@Test(expected = GrammarException.class)
 	public void testEmptySymbolException2() throws IOException {
 		Parser.load(new StringReader("<foo> ::= <>"));
 	}
 
-	/**
-	 * Tests if the parser correctly handles escaped characters.
-	 */
 	@Test
 	public void testEscapedCharacters() throws IOException {
 		ContextFreeGrammar g = Parser.load(new StringReader("<foo> ::= \":\" | '|' | \"<\" | '>'"));
@@ -217,9 +175,6 @@ public class ParserTest {
 		Assert.assertEquals(">", g.get(0).get(3).get(0).getValue());
 	}
 
-	/**
-	 * Tests if the parser correctly handles single and double quotes.
-	 */
 	@Test
 	public void testQuotes() throws IOException {
 		ContextFreeGrammar g1 = Parser.load(new StringReader("<foo> ::= \"bar()\""));
@@ -237,9 +192,6 @@ public class ParserTest {
 		Assert.assertEquals("bar()", g2.get(0).get(0).get(0).getValue());
 	}
 
-	/**
-	 * Tests if the parser correctly handles integer terminals.
-	 */
 	@Test
 	public void testIntegers() throws IOException {
 		ContextFreeGrammar g = Parser.load(new StringReader("<numbers> ::= 8 | -64 256"));
@@ -255,9 +207,6 @@ public class ParserTest {
 		Assert.assertEquals("256", g.get(0).get(1).get(1).getValue());
 	}
 
-	/**
-	 * Tests if the parser correctly handles decimal terminals.
-	 */
 	@Test
 	public void testDecimals() throws IOException {
 		ContextFreeGrammar g = Parser.load(new StringReader("<numbers> ::= 0.0 | -1.2 42.24"));

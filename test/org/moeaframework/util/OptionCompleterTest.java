@@ -23,19 +23,11 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
-/**
- * Tests the {@link OptionCompleter} class.
- */
 public class OptionCompleterTest {
 
-	/**
-	 * Tests normal usage, checking for both existing and non-existing entries.
-	 */
 	@Test
 	public void testNormalUsage() {
-		OptionCompleter completer = new OptionCompleter();
-		completer.add("subset");
-		completer.add("superset");
+		OptionCompleter completer = new OptionCompleter("subset", "superset");
 
 		Assert.assertEquals("subset", completer.lookup("subset"));
 		Assert.assertEquals("superset", completer.lookup("superset"));
@@ -46,32 +38,24 @@ public class OptionCompleterTest {
 		Assert.assertNull(completer.lookup(""));
 	}
 
-	/**
-	 * Tests if duplicate entries are correctly ignored.
-	 */
 	@Test
 	public void testDuplicateOption() {
-		OptionCompleter completer = new OptionCompleter();
-		completer.add("subset");
-		completer.add("subset");
-
+		OptionCompleter completer = new OptionCompleter("subset", "subset");
 		Assert.assertEquals("subset", completer.lookup("sub"));
 	}
 
-	/**
-	 * Tests the edge case where the empty string correctly matches any option, as long as that is the only option.
-	 */
 	@Test
-	public void testEmptyString() {
-		OptionCompleter completer = new OptionCompleter();
-		completer.add("subset");
-
+	public void testEmptyStringWithSingleOption() {
+		OptionCompleter completer = new OptionCompleter("subset");
 		Assert.assertEquals("subset", completer.lookup(""));
 	}
+	
+	@Test
+	public void testEmptyStringWithMultipleOptions() {
+		OptionCompleter completer = new OptionCompleter("subset", "superset");
+		Assert.assertEquals(null, completer.lookup(""));
+	}
 
-	/**
-	 * Tests if the {@code add} method works correctly.
-	 */
 	@Test
 	public void testAdd() {
 		OptionCompleter completer = new OptionCompleter();
@@ -81,9 +65,6 @@ public class OptionCompleterTest {
 		Assert.assertEquals("subset", completer.lookup("sub"));
 	}
 
-	/**
-	 * Tests the constructors.
-	 */
 	@Test
 	public void testConstructors() {
 		OptionCompleter completer1 = new OptionCompleter("subset");

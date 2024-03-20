@@ -60,11 +60,8 @@ public class FutureSolutionTest {
 	}
 	
 	private Problem testProblem;
-	
 	private Solution unevaluatedSolution;
-	
 	private Solution evaluatedSolution;
-	
 	private Future<Solution> futureSolution;
 	
 	@Before

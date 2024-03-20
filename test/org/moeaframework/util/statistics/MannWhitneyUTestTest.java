@@ -23,9 +23,6 @@ import org.moeaframework.TestThresholds;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Settings;
 
-/**
- * Tests the {@link MannWhitneyUTest} class.
- */
 public class MannWhitneyUTestTest {
 
 	/**

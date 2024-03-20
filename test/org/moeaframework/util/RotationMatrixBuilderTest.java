@@ -26,9 +26,6 @@ import org.moeaframework.AbsoluteError;
 import org.moeaframework.TestUtils;
 import org.moeaframework.core.Settings;
 
-/**
- * Tests the {@link RotationMatrixBuilder} class.
- */
 public class RotationMatrixBuilderTest {
 	
 	/**

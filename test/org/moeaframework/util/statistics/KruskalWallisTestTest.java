@@ -21,9 +21,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.TestThresholds;
 
-/**
- * Tests the {@link KruskalWallisTest} class.
- */
 public class KruskalWallisTestTest {
 	
 	@Test(expected = IllegalArgumentException.class)

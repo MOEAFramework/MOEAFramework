@@ -26,14 +26,8 @@ import org.moeaframework.analysis.tools.ReferenceSetMerger;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Solution;
 
-/**
- * Tests the {@link ReferenceSetMerger} class.
- */
 public class ReferenceSetMergerTest {
 
-	/**
-	 * Tests the normal use of the reference set merger.
-	 */
 	@Test
 	public void test() {
 		Solution solution1 = new Solution(new double[] { 1.0, 2.0, 3.0 });
@@ -72,11 +66,8 @@ public class ReferenceSetMergerTest {
 		TestUtils.assertEquals(merger.getPopulation("population2"), population2);
 	}
 	
-	/**
-	 * Tests if an exception is thrown if the same source key is used for more than one population.
-	 */
 	@Test(expected = IllegalArgumentException.class)
-	public void testDuplicateSource() {
+	public void testDuplicateSourceKey() {
 		NondominatedPopulation population1 = new NondominatedPopulation();
 		NondominatedPopulation population2 = new NondominatedPopulation();
 		

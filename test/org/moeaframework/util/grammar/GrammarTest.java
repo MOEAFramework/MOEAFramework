@@ -25,44 +25,26 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-/**
- * Tests the {@link Grammar} class.
- */
 public class GrammarTest {
 	
-	/**
-	 * The string representation of the grammar used for testing.
-	 */
 	public static final String GRAMMAR = """
 		<expr> ::= <expr> <op> <expr> | 'func(' <expr> ')' | <val>
 		<val> ::= x | y | z
 		<op> ::= + | - | * | /
 		""";
 
-	/**
-	 * The shared grammar used for testing.
-	 */
 	private ContextFreeGrammar grammar;
 
-	/**
-	 * Constructs the shared grammar used for testing.
-	 */
 	@Before
 	public void setUp() throws IOException {
 		grammar = Parser.load(new StringReader(GRAMMAR));
 	}
 
-	/**
-	 * Removes references to the shared grammar for garbage collection.
-	 */
 	@After
 	public void tearDown() {
 		grammar = null;
 	}
 
-	/**
-	 * Tests if the grammar produces valid derivations.
-	 */
 	@Test
 	public void testDerivations() {
 		Assert.assertEquals("func(x)-x", grammar.build(new int[] { 0, 1, 2 }));
@@ -71,25 +53,16 @@ public class GrammarTest {
 		Assert.assertEquals("func(x*func(y))", grammar.build(new int[] { 1, 0, 2, 0, 2, 1, 2 }));
 	}
 
-	/**
-	 * Tests if the grammar returns {@code null} on non-terminating derivations.
-	 */
 	@Test
-	public void testNonterminating() {
+	public void testNonterminatingProducesNull() {
 		Assert.assertEquals(null, grammar.build(new int[] { 0 }));
 	}
 
-	/**
-	 * Tests if an exception is thrown when passed an empty codon array.
-	 */
 	@Test(expected = GrammarException.class)
 	public void testEmptyCodon() {
 		grammar.build(new int[] {});
 	}
 
-	/**
-	 * Tests if the {@link Grammar#isValid} method correctly identifies valid and invalid grammars.
-	 */
 	@Test
 	public void testIsValid() throws IOException {
 		Assert.assertTrue(grammar.isValid());

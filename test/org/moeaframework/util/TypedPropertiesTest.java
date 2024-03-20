@@ -27,19 +27,10 @@ import org.junit.Test;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Settings;
 
-/**
- * Tests the {@link TypedProperties} class.
- */
 public class TypedPropertiesTest {
 
-	/**
-	 * The typed properties instance used for testing.
-	 */
 	private TypedProperties properties;
 
-	/**
-	 * Sets up the typed properties instance for testing, filled with various default values.
-	 */
 	@Before
 	public void setUp() {
 		Properties p = new Properties();
@@ -49,9 +40,6 @@ public class TypedPropertiesTest {
 		properties = new TypedProperties(p);
 	}
 
-	/**
-	 * Removes references to any shared objects for garbage collection.
-	 */
 	@After
 	public void tearDown() {
 		properties = null;

@@ -22,8 +22,7 @@ import java.util.concurrent.Executors;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.moeaframework.Executor;
-import org.moeaframework.core.NondominatedPopulation;
+import org.moeaframework.algorithm.single.GeneticAlgorithm;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
@@ -32,16 +31,10 @@ import org.moeaframework.problem.AbstractProblem;
 import org.moeaframework.problem.MockRealProblem;
 import org.moeaframework.problem.MockRealStochasticProblem;
 
-/**
- * Tests the {@link DistributedProblem} and {@link FutureSolution} classes.
- */
 public class DistributedProblemTest {
 	
-	/**
-	 * Tests if the synchronized keyword is sufficient to force a problem to be evaluated serially.
-	 */
 	@Test
-	public void testSerialProblem() {
+	public void testSerialExecution() {
 		ExecutorService executor = Executors.newFixedThreadPool(10);
 		Problem problem = new DistributedProblem(new MockRealProblem() {
 			
@@ -83,41 +76,26 @@ public class DistributedProblemTest {
 		executor.shutdown();
 	}
 
-	/**
-	 * Tests running a small single-thread test.
-	 */
 	@Test
 	public void testSmallSingleThread() {
 		testRun(4, 1);
 	}
 
-	/**
-	 * Tests running a small dual-thread test.
-	 */
 	@Test
 	public void testSmallDualThread() {
 		testRun(4, 2);
 	}
 
-	/**
-	 * Tests running a small quad-thread test.
-	 */
 	@Test
 	public void testSmallQuadThread() {
 		testRun(4, 4);
 	}
 
-	/**
-	 * Tests running a large test with half as many threads as there are solutions to evaluate.
-	 */
 	@Test
 	public void testLargeHalfThread() {
 		testRun(100, 50);
 	}
 
-	/**
-	 * Tests running a large test with the same number of threads as there are solutions to evaluate.
-	 */
 	@Test
 	public void testLargeFullThread() {
 		testRun(100, 100);
@@ -186,14 +164,13 @@ public class DistributedProblemTest {
 	
 	private double getResultFromStochasticRun(int numThreads) {
 		PRNG.setSeed(1234); // arbitrary seed
-		NondominatedPopulation result = new Executor()
-				.withAlgorithm("GA")
-				.withProblem(new MockRealStochasticProblem())
-				.withProperty("populationSize", 10)
-				.withMaxEvaluations(1000)
-				.distributeOn(numThreads)
-				.run();
-		return result.get(0).getObjective(0); // one one optimum for a single objective problem
+		
+		Problem problem = DistributedProblem.from(new MockRealStochasticProblem(), numThreads);	
+		
+		GeneticAlgorithm algorithm = new GeneticAlgorithm(problem);
+		algorithm.run(1000);
+		
+		return algorithm.getResult().get(0).getObjective(0); // one optimum for a single objective problem
 	}
 
 }

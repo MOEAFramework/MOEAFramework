@@ -20,9 +20,6 @@ package org.moeaframework.util.statistics;
 import org.junit.Assert;
 import org.junit.Test;
 
-/**
- * Tests the {@link WilcoxonSignedRanksTest} class.
- */
 public class WilcoxonSignedRanksTestTest {
 
 	/**

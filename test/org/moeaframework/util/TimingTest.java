@@ -26,9 +26,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.TestUtils;
 
-/**
- * Tests the {@link Timing} class.
- */
 public class TimingTest {
 	
 	@Test(expected = Exception.class)
