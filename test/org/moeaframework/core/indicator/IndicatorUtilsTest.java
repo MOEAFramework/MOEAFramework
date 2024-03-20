@@ -25,14 +25,8 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.spi.ProblemFactory;
 
-/**
- * Tests the {@link IndicatorUtils} class.
- */
 public class IndicatorUtilsTest {
 
-	/**
-	 * Tests if Manhattan distances are calculated correctly.
-	 */
 	@Test
 	public void testManhattanDistance() {
 		Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
@@ -50,9 +44,6 @@ public class IndicatorUtilsTest {
 				TestUtils.newSolution(0.0, 0.0)), Settings.EPS);
 	}
 	
-	/**
-	 * Tests if Euclidean distances are calculated correctly.
-	 */
 	@Test
 	public void testEuclideanDistance() {
 		Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
@@ -70,9 +61,6 @@ public class IndicatorUtilsTest {
 				TestUtils.newSolution(0.0, 0.0)), Settings.EPS);
 	}
 	
-	/**
-	 * Tests the the distance to the nearest neighboring solution is calculated correctly.
-	 */
 	@Test
 	public void testDistanceToNearestSolution() {
 		Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");

@@ -168,14 +168,12 @@ public class PISAHypervolume extends NormalizedIndicator {
 			int j = i + 1;
 			while (j < n) {
 				if (dominates(population.get(i), population.get(j), numberOfObjectives)) {
-					/* remove point j */
+					// remove point j
 					n--;
 					swap(population, j, n);
 				} else if (dominates(population.get(j), population.get(i), numberOfObjectives)) {
-					/*
-					 * remove point i; ensure that the point copied to index i
-					 * is considered in the next outer loop (thus, decrement i)
-					 */
+					// remove point i; ensure that the point copied to index i is considered in the next outer loop
+					// (thus, decrement i)
 					n--;
 					swap(population, i, n);
 					i--;

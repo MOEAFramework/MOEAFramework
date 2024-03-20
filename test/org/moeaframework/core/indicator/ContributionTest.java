@@ -20,90 +20,48 @@ package org.moeaframework.core.indicator;
 import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.TestUtils;
+import org.moeaframework.core.Indicator;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
-import org.moeaframework.core.Solution;
-import org.moeaframework.core.spi.ProblemFactory;
+import org.moeaframework.problem.MockRealProblem;
 
-/**
- * Tests the {@link Contribution} class.
- */
-public class ContributionTest {
+public class ContributionTest extends AbstractIndicatorTest {
 	
-	/**
-	 * Tests if an exception is thrown when using an empty reference set.
-	 */
-	@Test(expected = IllegalArgumentException.class)
-	public void testEmptyReferenceSet() {
-		NondominatedPopulation referenceSet = new NondominatedPopulation();
-		NondominatedPopulation approximationSet = ProblemFactory.getInstance().getReferenceSet("DTLZ2_2");
-
-		Contribution c = new Contribution(referenceSet, 0.25);
-		c.evaluate(approximationSet);
+	public Indicator createInstance(Problem problem, NondominatedPopulation referenceSet) {
+		return new Contribution(referenceSet, 0.25);
 	}
 	
-	/**
-	 * Tests if an empty approximation set returns a value of zero.
-	 */
-	@Test
-	public void testEmptyApproximationSet() {
-		NondominatedPopulation referenceSet = ProblemFactory.getInstance().getReferenceSet("DTLZ2_2");
-		NondominatedPopulation approximationSet = new NondominatedPopulation();
-
-		Contribution c = new Contribution(referenceSet, 0.25);
-		Assert.assertEquals(0.0, c.evaluate(approximationSet), Settings.EPS);
+	public double getWorstValue() {
+		return 0.0;
 	}
 	
-	/**
-	 * Tests if infeasible solutions are properly ignored.
-	 */
-	@Test
-	public void testInfeasibleApproximationSet() {
-		Problem problem = ProblemFactory.getInstance().getProblem("CF1");
-		NondominatedPopulation referenceSet = ProblemFactory.getInstance().getReferenceSet("CF1");
-		NondominatedPopulation approximationSet = new NondominatedPopulation();
-		
-		Solution solution = problem.newSolution();
-		solution.setObjectives(new double[] { 0.5, 0.5 });
-		solution.setConstraints(new double[] { 10.0 });
-		approximationSet.add(solution);
-
-		Contribution c = new Contribution(referenceSet, 0.25);
-		Assert.assertEquals(0.0, c.evaluate(approximationSet), Settings.EPS);
-	}
-	
-	/**
-	 * Runs through some simple cases to ensure the contribution indicator is computed correctly.
-	 */
 	@Test
 	public void testSimple() {
-		NondominatedPopulation referenceSet = new NondominatedPopulation();
-		referenceSet.add(TestUtils.newSolution(0.0, 1.0));
-		referenceSet.add(TestUtils.newSolution(1.0, 0.0));
-		
-		Contribution c = new Contribution(referenceSet, 0.25);
+		Problem problem = new MockRealProblem(2);
+		NondominatedPopulation referenceSet = getDefaultReferenceSet();
+		Indicator indicator = createInstance(problem, referenceSet);
 		
 		NondominatedPopulation approximationSet = new NondominatedPopulation();
 		
-		Assert.assertEquals(0.0, c.evaluate(approximationSet), Settings.EPS);
+		Assert.assertEquals(0.0, indicator.evaluate(approximationSet), Settings.EPS);
 		
 		approximationSet.add(TestUtils.newSolution(0.0, 1.0));
-		Assert.assertEquals(0.5, c.evaluate(approximationSet), Settings.EPS);
+		Assert.assertEquals(0.5, indicator.evaluate(approximationSet), Settings.EPS);
 		
 		approximationSet.clear();
 		approximationSet.add(TestUtils.newSolution(1.0, 1.0));
-		Assert.assertEquals(0.0, c.evaluate(approximationSet), Settings.EPS);
+		Assert.assertEquals(0.0, indicator.evaluate(approximationSet), Settings.EPS);
 		
 		approximationSet.clear();
 		approximationSet.add(TestUtils.newSolution(0.1, 0.9));
 		approximationSet.add(TestUtils.newSolution(0.0, 1.1));
-		Assert.assertEquals(0.5, c.evaluate(approximationSet), Settings.EPS);
+		Assert.assertEquals(0.5, indicator.evaluate(approximationSet), Settings.EPS);
 
 		approximationSet.clear();
 		approximationSet.add(TestUtils.newSolution(1.1, 0.0));
 		approximationSet.add(TestUtils.newSolution(0.0, 1.1));
-		Assert.assertEquals(1.0, c.evaluate(approximationSet), Settings.EPS);
+		Assert.assertEquals(1.0, indicator.evaluate(approximationSet), Settings.EPS);
 	}
 
 }

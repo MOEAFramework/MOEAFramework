@@ -23,31 +23,36 @@ import java.io.IOException;
 import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.TestUtils;
+import org.moeaframework.core.Indicator;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PopulationIO;
+import org.moeaframework.core.Problem;
 import org.moeaframework.problem.MockRealProblem;
 
 /**
- * Tests the {@link R3Indicator} class.  The raw values used here were produced using the PISA r-ind.exe program.
+ * The raw values used here were produced using the PISA r-ind.exe program.
  */
-public class R3IndicatorTest {
+public class R3IndicatorTest extends AbstractIndicatorTest {
+	
+	public Indicator createInstance(Problem problem, NondominatedPopulation referenceSet) {
+		return new R3Indicator(problem, 500, referenceSet);
+	}
+	
+	public double getWorstValue() {
+		return Double.POSITIVE_INFINITY;
+	}
 	
 	@Test
-	public void testZero() throws IOException {
-		NondominatedPopulation referenceSet = new NondominatedPopulation(
-				PopulationIO.readObjectives(new File("./pf/DTLZ2.2D.pf")));
-		
-		R3Indicator indicator = new R3Indicator(new MockRealProblem(2), 500, referenceSet);
+	public void testSame() throws IOException {
+		NondominatedPopulation referenceSet = getDefaultReferenceSet();
+		Indicator indicator = createInstance(new MockRealProblem(2), referenceSet);
 		Assert.assertEquals(0.0, indicator.evaluate(referenceSet), 0.000001);
 	}
 	
 	@Test
 	public void testDominance() {
-		NondominatedPopulation referenceSet = new NondominatedPopulation();
-		referenceSet.add(TestUtils.newSolution(0.0, 1.0));
-		referenceSet.add(TestUtils.newSolution(1.0, 0.0));
-		
-		R3Indicator indicator = new R3Indicator(new MockRealProblem(2), 2, referenceSet);
+		NondominatedPopulation referenceSet = getDefaultReferenceSet();
+		Indicator indicator = createInstance(new MockRealProblem(2), referenceSet);
 		
 		NondominatedPopulation population1 = new NondominatedPopulation();
 		population1.add(TestUtils.newSolution(0.75, 0.25));
@@ -64,7 +69,7 @@ public class R3IndicatorTest {
 		NondominatedPopulation referenceSet = new NondominatedPopulation(
 				PopulationIO.readObjectives(new File("./pf/DTLZ2.2D.pf")));
 		
-		R3Indicator indicator = new R3Indicator(new MockRealProblem(2), 500, referenceSet);
+		Indicator indicator = createInstance(new MockRealProblem(2), referenceSet);
 		
 		NondominatedPopulation population = new NondominatedPopulation();
 		population.add(TestUtils.newSolution(0.75, 0.25));

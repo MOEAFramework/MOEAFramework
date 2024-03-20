@@ -18,79 +18,61 @@
 package org.moeaframework.core.indicator;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.moeaframework.TestUtils;
+import org.moeaframework.core.Indicator;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
-import org.moeaframework.core.Solution;
-import org.moeaframework.core.spi.ProblemFactory;
+import org.moeaframework.problem.MockRealProblem;
 
-/**
- * Tests the {@link Spacing} class.
- */
-public class SpacingTest {
+public class SpacingTest extends AbstractIndicatorTest {
 	
-	/**
-	 * Tests if an empty approximation set returns a value of zero.
-	 */
-	@Test
-	public void testEmptyApproximationSet() {
-		Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
-		NondominatedPopulation approximationSet = new NondominatedPopulation();
-
-		Spacing sp = new Spacing(problem);
-		Assert.assertEquals(0.0, sp.evaluate(approximationSet), Settings.EPS);
+	public Indicator createInstance(Problem problem, NondominatedPopulation referenceSet) {
+		return new Spacing(problem);
 	}
 	
-	/**
-	 * Tests if infeasible solutions are properly ignored.
-	 */
-	@Test
-	public void testInfeasibleApproximationSet() {
-		Problem problem = ProblemFactory.getInstance().getProblem("CF1");
-		NondominatedPopulation approximationSet = new NondominatedPopulation();
-		
-		Solution solution = problem.newSolution();
-		solution.setObjectives(new double[] { 0.5, 0.5 });
-		solution.setConstraints(new double[] { 10.0 });
-		approximationSet.add(solution);
-
-		Spacing sp = new Spacing(problem);
-		Assert.assertEquals(0.0, sp.evaluate(approximationSet), Settings.EPS);
+	public double getWorstValue() {
+		return 0.0;
 	}
 	
-	/**
-	 * Runs through some simple cases to ensure the spacing metric is computed correctly.
-	 */
+	@Test
+	@Ignore("ignore this inherited test, Spacing does not use a reference set")
+	@Override
+	public void testEmptyReferenceSet() {
+		super.testEmptyReferenceSet();
+	}
+	
 	@Test
 	public void testSimple() {
-		Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
-		Spacing sp = new Spacing(problem);
+		Problem problem = new MockRealProblem(2);
+		NondominatedPopulation referenceSet = getDefaultReferenceSet();
+		Indicator indicator = createInstance(problem, referenceSet);
 		
 		NondominatedPopulation approximationSet = new NondominatedPopulation();
 		
-		Assert.assertEquals(0.0, sp.evaluate(approximationSet), Settings.EPS);
+		Assert.assertEquals(0.0, indicator.evaluate(approximationSet), Settings.EPS);
 		
 		approximationSet.add(TestUtils.newSolution(0.5, 0.5));
-		Assert.assertEquals(0.0, sp.evaluate(approximationSet), Settings.EPS);
+		Assert.assertEquals(0.0, indicator.evaluate(approximationSet), Settings.EPS);
 		
 		approximationSet.clear();
 		approximationSet.add(TestUtils.newSolution(0.0, 1.0));
 		approximationSet.add(TestUtils.newSolution(1.0, 0.0));
-		Assert.assertEquals(0.0, sp.evaluate(approximationSet), Settings.EPS);
+		Assert.assertEquals(0.0, indicator.evaluate(approximationSet), Settings.EPS);
 
 		approximationSet.clear();
 		approximationSet.add(TestUtils.newSolution(0.0, 1.0));
 		approximationSet.add(TestUtils.newSolution(0.5, 0.5));
 		approximationSet.add(TestUtils.newSolution(1.0, 0.0));
-		Assert.assertEquals(0.0, sp.evaluate(approximationSet), Settings.EPS);
+		Assert.assertEquals(0.0, indicator.evaluate(approximationSet), Settings.EPS);
 		
 		approximationSet.clear();
 		approximationSet.add(TestUtils.newSolution(0.0, 1.0));
 		approximationSet.add(TestUtils.newSolution(0.25, 0.75));
 		approximationSet.add(TestUtils.newSolution(1.0, 0.0));
-		Assert.assertTrue(sp.evaluate(approximationSet) > 0.0);
+		Assert.assertTrue(indicator.evaluate(approximationSet) > 0.0);
 	}
 
 }

@@ -20,98 +20,53 @@ package org.moeaframework.core.indicator;
 import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.TestUtils;
+import org.moeaframework.core.Indicator;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
-import org.moeaframework.core.Solution;
 import org.moeaframework.core.spi.ProblemFactory;
+import org.moeaframework.problem.MockRealProblem;
 
-/**
- * Tests the {@link GenerationalDistance} class against the JMetal implementation.
- */
-public class GenerationalDistanceTest extends IndicatorTest {
+public class GenerationalDistanceTest extends AbstractIndicatorTest {
 	
-	/**
-	 * Tests if an exception is thrown when using an empty reference set.
-	 */
-	@Test(expected = IllegalArgumentException.class)
-	public void testEmptyReferenceSet() {
-		Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
-		NondominatedPopulation referenceSet = new NondominatedPopulation();
-		NondominatedPopulation approximationSet = ProblemFactory.getInstance().getReferenceSet("DTLZ2_2");
-
-		GenerationalDistance gd = new GenerationalDistance(problem, referenceSet);
-		gd.evaluate(approximationSet);
+	public Indicator createInstance(Problem problem, NondominatedPopulation referenceSet) {
+		return new GenerationalDistance(problem, referenceSet);
 	}
 	
-	/**
-	 * Tests if an empty approximation set returns a distance of infinity.
-	 */
-	@Test
-	public void testEmptyApproximationSet() {
-		Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
-		NondominatedPopulation referenceSet = ProblemFactory.getInstance().getReferenceSet("DTLZ2_2");
-		NondominatedPopulation approximationSet = new NondominatedPopulation();
-
-		GenerationalDistance gd = new GenerationalDistance(problem, referenceSet);
-		Assert.assertEquals(Double.POSITIVE_INFINITY, gd.evaluate(approximationSet), Settings.EPS);
+	public double getWorstValue() {
+		return Double.POSITIVE_INFINITY;
 	}
 	
-	/**
-	 * Tests if infeasible solutions are properly ignored.
-	 */
-	@Test
-	public void testInfeasibleApproximationSet() {
-		Problem problem = ProblemFactory.getInstance().getProblem("CF1");
-		NondominatedPopulation referenceSet = ProblemFactory.getInstance().getReferenceSet("CF1");
-		NondominatedPopulation approximationSet = new NondominatedPopulation();
-		
-		Solution solution = problem.newSolution();
-		solution.setObjectives(new double[] { 0.5, 0.5 });
-		solution.setConstraints(new double[] { 10.0 });
-		approximationSet.add(solution);
-
-		GenerationalDistance gd = new GenerationalDistance(problem, referenceSet);
-		Assert.assertEquals(Double.POSITIVE_INFINITY, gd.evaluate(approximationSet), Settings.EPS);
-	}
-	
-	/**
-	 * Runs through some simple cases to ensure the generational distance is computed correctly.
-	 */
 	@Test
 	public void testSimple() {
-		Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
-		
-		NondominatedPopulation referenceSet = new NondominatedPopulation();
-		referenceSet.add(TestUtils.newSolution(0.0, 1.0));
-		referenceSet.add(TestUtils.newSolution(1.0, 0.0));
-		
-		GenerationalDistance gd = new GenerationalDistance(problem, referenceSet);
+		Problem problem = new MockRealProblem(2);
+		NondominatedPopulation referenceSet = getDefaultReferenceSet();
+		Indicator indicator = createInstance(problem, referenceSet);
 		
 		NondominatedPopulation approximationSet = new NondominatedPopulation();
 		
-		Assert.assertEquals(Double.POSITIVE_INFINITY, gd.evaluate(approximationSet), Settings.EPS);
+		Assert.assertEquals(Double.POSITIVE_INFINITY, indicator.evaluate(approximationSet), Settings.EPS);
 		
 		approximationSet.add(TestUtils.newSolution(0.0, 1.0));
-		Assert.assertEquals(0.0, gd.evaluate(approximationSet), Settings.EPS);
+		Assert.assertEquals(0.0, indicator.evaluate(approximationSet), Settings.EPS);
 		
 		approximationSet.clear();
 		approximationSet.add(TestUtils.newSolution(0.0, 1.0));
 		approximationSet.add(TestUtils.newSolution(1.0, 0.0));
-		Assert.assertEquals(0.0, gd.evaluate(approximationSet), Settings.EPS);
+		Assert.assertEquals(0.0, indicator.evaluate(approximationSet), Settings.EPS);
 		
 		approximationSet.clear();
 		approximationSet.add(TestUtils.newSolution(1.0, 1.0));
-		Assert.assertEquals(1.0, gd.evaluate(approximationSet), Settings.EPS);
+		Assert.assertEquals(1.0, indicator.evaluate(approximationSet), Settings.EPS);
 		
 		approximationSet.clear();
 		approximationSet.add(TestUtils.newSolution(2.0, 2.0));
-		Assert.assertEquals(Math.sqrt(5.0), gd.evaluate(approximationSet), Settings.EPS);
+		Assert.assertEquals(Math.sqrt(5.0), indicator.evaluate(approximationSet), Settings.EPS);
 
 		approximationSet.clear();
 		approximationSet.add(TestUtils.newSolution(0.5, 0.0));
 		approximationSet.add(TestUtils.newSolution(0.0, 0.5));
-		Assert.assertEquals(Math.sqrt(0.5)/2.0, gd.evaluate(approximationSet), Settings.EPS);
+		Assert.assertEquals(Math.sqrt(0.5)/2.0, indicator.evaluate(approximationSet), Settings.EPS);
 	}
 	
 	@Test
@@ -120,8 +75,8 @@ public class GenerationalDistanceTest extends IndicatorTest {
 		NondominatedPopulation referenceSet = ProblemFactory.getInstance().getReferenceSet("DTLZ2_2");
 		NondominatedPopulation approximationSet = ProblemFactory.getInstance().getReferenceSet("DTLZ2_2");
 		
-		GenerationalDistance gd = new GenerationalDistance(problem, referenceSet);
-		Assert.assertEquals(0.0, gd.evaluate(approximationSet), Settings.EPS);
+		Indicator indicator = createInstance(problem, referenceSet);
+		Assert.assertEquals(0.0, indicator.evaluate(approximationSet), Settings.EPS);
 	}
 
 }

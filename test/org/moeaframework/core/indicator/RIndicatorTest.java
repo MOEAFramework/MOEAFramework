@@ -27,7 +27,7 @@ import org.moeaframework.core.PopulationIO;
 import org.moeaframework.problem.MockRealProblem;
 
 /**
- * Tests the {@link RIndicator} class.  The raw values used here were produced using the PISA r-ind.exe program.
+ * The raw values used here were produced using the PISA r-ind.exe program.
  */
 public class RIndicatorTest {
 	

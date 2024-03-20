@@ -17,18 +17,75 @@
  */
 package org.moeaframework.core.indicator;
 
+import org.junit.Assert;
+import org.junit.Test;
+import org.moeaframework.TestUtils;
+import org.moeaframework.core.Indicator;
 import org.moeaframework.core.Initialization;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
+import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.core.spi.ProblemFactory;
+import org.moeaframework.problem.MockConstraintProblem;
+import org.moeaframework.problem.MockRealProblem;
 
-/**
- * Abstract class for testing indicators.
- */
-public abstract class IndicatorTest {
+public abstract class AbstractIndicatorTest {
+	
+	/**
+	 * Constructs a new instance of this indicator.
+	 * 
+	 * @param problem the problem
+	 * @param referenceSet the reference set
+	 * @return the indicator
+	 */
+	public abstract Indicator createInstance(Problem problem, NondominatedPopulation referenceSet);
+	
+	/**
+	 * Returns the worst value this indicator produces.
+	 * 
+	 * @return the worst value this indicator produces
+	 */
+	public abstract double getWorstValue();
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testEmptyReferenceSet() {
+		createInstance(new MockRealProblem(2), new NondominatedPopulation());
+	}
+	
+	@Test
+	public void testEmptyApproximationSet() {
+		Indicator indicator = createInstance(new MockRealProblem(2), getDefaultReferenceSet());
+		Assert.assertEquals(getWorstValue(), indicator.evaluate(new NondominatedPopulation()), Settings.EPS);
+	}
+	
+	@Test
+	public void testInfeasibleApproximationSet() {
+		Problem problem = new MockConstraintProblem(2);
+		NondominatedPopulation approximationSet = new NondominatedPopulation();
+		
+		Solution solution = problem.newSolution();
+		solution.setObjectives(new double[] { 0.5, 0.5 });
+		solution.setConstraints(new double[] { 0.0, 1.0, 0.0 });
+		approximationSet.add(solution);
+
+		Indicator indicator = createInstance(problem, getDefaultReferenceSet());
+		Assert.assertEquals(getWorstValue(), indicator.evaluate(approximationSet), Settings.EPS);
+	}
+	
+	/**
+	 * Returns a reference set resulting in default bounds between (0, 0, ..., 0) and (1, 1, ..., 1).
+	 * 
+	 * @return the reference set
+	 */
+	protected NondominatedPopulation getDefaultReferenceSet() {
+		NondominatedPopulation referenceSet = new NondominatedPopulation();
+		referenceSet.add(TestUtils.newSolution(0.0, 1.0));
+		referenceSet.add(TestUtils.newSolution(1.0, 0.0));
+		return referenceSet;
+	}
 
 	/**
 	 * Converts a population into a 2D array that can be used by the JMetal indicators.

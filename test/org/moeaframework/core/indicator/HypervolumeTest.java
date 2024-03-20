@@ -20,50 +20,64 @@ package org.moeaframework.core.indicator;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.moeaframework.core.Indicator;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.util.PropertyScope;
 
-public class HypervolumeTest extends IndicatorTest {
+public class HypervolumeTest {
 	
 	private Problem problem;
 	private NondominatedPopulation referenceSet;
+	private double[] idealPt;
+	private double[] refPt;
 	
 	@Before
 	public void setUp() {
 		problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
 		referenceSet = ProblemFactory.getInstance().getReferenceSet("DTLZ2_2");
+		idealPt = new double[] { 0.0, 0.0 };
+		refPt = new double[] { 2.0, 2.0 };
 	}
 	
 	@Test
 	public void testDefault() {
-		Hypervolume hypervolume = new Hypervolume(problem, referenceSet);
-		Assert.assertTrue(hypervolume.instance instanceof WFGNormalizedHypervolume);
+		assertInstance(null, WFGNormalizedHypervolume.class);
 	}
 	
 	@Test
 	public void testWFG() {
-		try (PropertyScope scope = Settings.createScope().with(Settings.KEY_HYPERVOLUME, "WFG")) {
-			Hypervolume hypervolume = new Hypervolume(problem, referenceSet);
-			Assert.assertTrue(hypervolume.instance instanceof WFGNormalizedHypervolume);
-		}
+		assertInstance("WFG", WFGNormalizedHypervolume.class);
 	}
 	
 	@Test
 	public void testPISA() {
-		try (PropertyScope scope = Settings.createScope().with(Settings.KEY_HYPERVOLUME, "PISA")) {
-			Hypervolume hypervolume = new Hypervolume(problem, referenceSet);
-			Assert.assertTrue(hypervolume.instance instanceof PISAHypervolume);
-		}
+		assertInstance("PISA", PISAHypervolume.class);
 	}
 	
 	@Test
 	public void testNative() {
-		try (PropertyScope scope = Settings.createScope().with(Settings.KEY_HYPERVOLUME, "./wfg.exe {0}")) {
+		assertInstance("./wfg.exe {0}", NativeHypervolume.class);
+	}
+	
+	private <T extends Indicator> void assertInstance(String propertyValue, Class<T> expectedType) {
+		try (PropertyScope scope = Settings.createScope()) {
+			if (propertyValue == null) {
+				scope.without(Settings.KEY_HYPERVOLUME);
+			} else {
+				scope.with(Settings.KEY_HYPERVOLUME, propertyValue);
+			}
+			
 			Hypervolume hypervolume = new Hypervolume(problem, referenceSet);
-			Assert.assertTrue(hypervolume.instance instanceof NativeHypervolume);
+			Assert.assertTrue(expectedType.isInstance(hypervolume.instance));
+			
+			hypervolume = new Hypervolume(problem, referenceSet, refPt);
+			Assert.assertTrue(expectedType.isInstance(hypervolume.instance));
+			
+			hypervolume = new Hypervolume(problem, idealPt, refPt);
+			Assert.assertTrue(expectedType.isInstance(hypervolume.instance));
 		}
 	}
 

@@ -20,98 +20,52 @@ package org.moeaframework.core.indicator;
 import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.TestUtils;
+import org.moeaframework.core.Indicator;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
-import org.moeaframework.core.Solution;
-import org.moeaframework.core.spi.ProblemFactory;
+import org.moeaframework.problem.MockRealProblem;
 
-/**
- * Tests the {@link MaximumParetoFrontError} class.
- */
-public class MaximumParetoFrontErrorTest {
-
-	/**
-	 * Tests if an exception is thrown when using an empty reference set.
-	 */
-	@Test(expected = IllegalArgumentException.class)
-	public void testEmptyReferenceSet() {
-		Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
-		NondominatedPopulation referenceSet = new NondominatedPopulation();
-		NondominatedPopulation approximationSet = ProblemFactory.getInstance().getReferenceSet("DTLZ2_2");
-
-		MaximumParetoFrontError mpfe = new MaximumParetoFrontError(problem, referenceSet);
-		mpfe.evaluate(approximationSet);
+public class MaximumParetoFrontErrorTest extends AbstractIndicatorTest {
+	
+	public Indicator createInstance(Problem problem, NondominatedPopulation referenceSet) {
+		return new MaximumParetoFrontError(problem, referenceSet);
 	}
 	
-	/**
-	 * Tests if an empty approximation set returns a distance of infinity.
-	 */
-	@Test
-	public void testEmptyApproximationSet() {
-		Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
-		NondominatedPopulation referenceSet = ProblemFactory.getInstance().getReferenceSet("DTLZ2_2");
-		NondominatedPopulation approximationSet = new NondominatedPopulation();
-
-		MaximumParetoFrontError mpfe = new MaximumParetoFrontError(problem, referenceSet);
-		Assert.assertEquals(Double.POSITIVE_INFINITY, mpfe.evaluate(approximationSet), Settings.EPS);
+	public double getWorstValue() {
+		return Double.POSITIVE_INFINITY;
 	}
 	
-	/**
-	 * Tests if infeasible solutions are properly ignored.
-	 */
-	@Test
-	public void testInfeasibleApproximationSet() {
-		Problem problem = ProblemFactory.getInstance().getProblem("CF1");
-		NondominatedPopulation referenceSet = ProblemFactory.getInstance().getReferenceSet("CF1");
-		NondominatedPopulation approximationSet = new NondominatedPopulation();
-		
-		Solution solution = problem.newSolution();
-		solution.setObjectives(new double[] { 0.5, 0.5 });
-		solution.setConstraints(new double[] { 10.0 });
-		approximationSet.add(solution);
-
-		MaximumParetoFrontError mpfe = new MaximumParetoFrontError(problem, referenceSet);
-		Assert.assertEquals(Double.POSITIVE_INFINITY, mpfe.evaluate(approximationSet), Settings.EPS);
-	}
-	
-	/**
-	 * Runs through some simple cases to ensure the maximum Pareto front error is computed correctly.
-	 */
 	@Test
 	public void testSimple() {
-		Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
-		
-		NondominatedPopulation referenceSet = new NondominatedPopulation();
-		referenceSet.add(TestUtils.newSolution(0.0, 1.0));
-		referenceSet.add(TestUtils.newSolution(1.0, 0.0));
-		
-		MaximumParetoFrontError mpfe = new MaximumParetoFrontError(problem, referenceSet);
+		Problem problem = new MockRealProblem(2);
+		NondominatedPopulation referenceSet = getDefaultReferenceSet();
+		Indicator indicator = createInstance(problem, referenceSet);
 		
 		NondominatedPopulation approximationSet = new NondominatedPopulation();
 		
-		Assert.assertEquals(Double.POSITIVE_INFINITY, mpfe.evaluate(approximationSet), Settings.EPS);
+		Assert.assertEquals(Double.POSITIVE_INFINITY, indicator.evaluate(approximationSet), Settings.EPS);
 		
 		approximationSet.add(TestUtils.newSolution(0.0, 1.0));
-		Assert.assertEquals(0.0, mpfe.evaluate(approximationSet), Settings.EPS);
+		Assert.assertEquals(0.0, indicator.evaluate(approximationSet), Settings.EPS);
 		
 		approximationSet.clear();
 		approximationSet.add(TestUtils.newSolution(0.0, 1.0));
 		approximationSet.add(TestUtils.newSolution(1.0, 0.0));
-		Assert.assertEquals(0.0, mpfe.evaluate(approximationSet), Settings.EPS);
+		Assert.assertEquals(0.0, indicator.evaluate(approximationSet), Settings.EPS);
 		
 		approximationSet.clear();
 		approximationSet.add(TestUtils.newSolution(1.0, 1.0));
-		Assert.assertEquals(1.0, mpfe.evaluate(approximationSet), Settings.EPS);
+		Assert.assertEquals(1.0, indicator.evaluate(approximationSet), Settings.EPS);
 		
 		approximationSet.clear();
 		approximationSet.add(TestUtils.newSolution(2.0, 2.0));
-		Assert.assertEquals(Math.sqrt(5), mpfe.evaluate(approximationSet), Settings.EPS);
+		Assert.assertEquals(Math.sqrt(5), indicator.evaluate(approximationSet), Settings.EPS);
 
 		approximationSet.clear();
 		approximationSet.add(TestUtils.newSolution(0.5, 0.0));
 		approximationSet.add(TestUtils.newSolution(0.0, 0.5));
-		Assert.assertEquals(0.5, mpfe.evaluate(approximationSet), Settings.EPS);
+		Assert.assertEquals(0.5, indicator.evaluate(approximationSet), Settings.EPS);
 	}
 	
 }
