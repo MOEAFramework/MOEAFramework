@@ -29,10 +29,12 @@ import org.moeaframework.problem.MockRealProblem;
 
 public class SpacingTest extends AbstractIndicatorTest {
 	
+	@Override
 	public Indicator createInstance(Problem problem, NondominatedPopulation referenceSet) {
 		return new Spacing(problem);
 	}
 	
+	@Override
 	public double getWorstValue() {
 		return 0.0;
 	}
@@ -45,15 +47,13 @@ public class SpacingTest extends AbstractIndicatorTest {
 	}
 	
 	@Test
-	public void testSimple() {
+	public void test() {
 		Problem problem = new MockRealProblem(2);
 		NondominatedPopulation referenceSet = getDefaultReferenceSet();
 		Indicator indicator = createInstance(problem, referenceSet);
 		
 		NondominatedPopulation approximationSet = new NondominatedPopulation();
-		
-		Assert.assertEquals(0.0, indicator.evaluate(approximationSet), Settings.EPS);
-		
+
 		approximationSet.add(TestUtils.newSolution(0.5, 0.5));
 		Assert.assertEquals(0.0, indicator.evaluate(approximationSet), Settings.EPS);
 		

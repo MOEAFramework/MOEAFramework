@@ -18,19 +18,26 @@
 package org.moeaframework.analysis.collector;
 
 import org.junit.Assert;
-import org.junit.Test;
+import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.Indicator;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Settings;
 
-/**
- * Tests the {@link IndicatorCollector} class.
- */
-public class IndicatorCollectorTest extends CollectorTest {
+public class IndicatorCollectorTest extends AbstractCollectorTest {
 	
 	@Override
 	public void validate(Observation observation) {
 		Assert.assertEquals(1.0, IndicatorCollector.getIndicatorValue(observation, MockIndicator.class), Settings.EPS);
+	}
+	
+	@Override
+	public Collector createInstance() {
+		return new IndicatorCollector(new MockIndicator());
+	}
+	
+	@Override
+	public boolean shouldAttach(Algorithm algorithm) {
+		return true;
 	}
 	
 	private static class MockIndicator implements Indicator {
@@ -40,36 +47,6 @@ public class IndicatorCollectorTest extends CollectorTest {
 			return 1.0;
 		}
 		
-	}
-	
-	@Test
-	public void testNSGAII() {
-		test("NSGAII", new IndicatorCollector(new MockIndicator()), true);
-	}
-	
-	@Test
-	public void testeNSGAII() {
-		test("eNSGAII", new IndicatorCollector(new MockIndicator()), true);
-	}
-	
-	@Test
-	public void testeMOEA() {
-		test("eMOEA", new IndicatorCollector(new MockIndicator()), true);
-	}
-	
-	@Test
-	public void testGDE3() {
-		test("GDE3", new IndicatorCollector(new MockIndicator()), true);
-	}
-	
-	@Test
-	public void testMOEAD() {
-		test("MOEAD", new IndicatorCollector(new MockIndicator()), true);
-	}
-	
-	@Test
-	public void testRandom() {
-		test("Random", new IndicatorCollector(new MockIndicator()), true);
 	}
 
 }

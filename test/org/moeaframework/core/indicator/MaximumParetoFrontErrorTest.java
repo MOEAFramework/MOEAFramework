@@ -28,24 +28,24 @@ import org.moeaframework.problem.MockRealProblem;
 
 public class MaximumParetoFrontErrorTest extends AbstractIndicatorTest {
 	
+	@Override
 	public Indicator createInstance(Problem problem, NondominatedPopulation referenceSet) {
 		return new MaximumParetoFrontError(problem, referenceSet);
 	}
 	
+	@Override
 	public double getWorstValue() {
 		return Double.POSITIVE_INFINITY;
 	}
 	
 	@Test
-	public void testSimple() {
+	public void test() {
 		Problem problem = new MockRealProblem(2);
 		NondominatedPopulation referenceSet = getDefaultReferenceSet();
 		Indicator indicator = createInstance(problem, referenceSet);
 		
 		NondominatedPopulation approximationSet = new NondominatedPopulation();
-		
-		Assert.assertEquals(Double.POSITIVE_INFINITY, indicator.evaluate(approximationSet), Settings.EPS);
-		
+
 		approximationSet.add(TestUtils.newSolution(0.0, 1.0));
 		Assert.assertEquals(0.0, indicator.evaluate(approximationSet), Settings.EPS);
 		

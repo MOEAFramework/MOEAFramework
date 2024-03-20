@@ -76,7 +76,7 @@ public class PSOCollector implements Collector {
 	 */
 	@SuppressWarnings("unchecked")
 	public static List<Solution> getParticles(Observation observation) {
-		return (List<Solution>)observation.get("Population");
+		return (List<Solution>)observation.get("Particles");
 	}
 	
 	/**

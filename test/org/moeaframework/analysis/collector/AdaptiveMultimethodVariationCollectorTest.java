@@ -17,46 +17,23 @@
  */
 package org.moeaframework.analysis.collector;
 
-import org.junit.Test;
+import org.moeaframework.core.Algorithm;
 
-/**
- * Tests the {@link AdaptiveMultimethodVariationCollector} class.
- */
-public class AdaptiveMultimethodVariationCollectorTest extends CollectorTest {
+public class AdaptiveMultimethodVariationCollectorTest extends AbstractCollectorTest {
 	
 	@Override
 	public void validate(Observation observation) {
 		// skip validations
 	}
 	
-	@Test
-	public void testNSGAII() {
-		test("NSGAII", new AdaptiveMultimethodVariationCollector(), false);
+	@Override
+	public Collector createInstance() {
+		return new AdaptiveMultimethodVariationCollector();
 	}
 	
-	@Test
-	public void testeNSGAII() {
-		test("eNSGAII", new AdaptiveMultimethodVariationCollector(), false);
-	}
-	
-	@Test
-	public void testeMOEA() {
-		test("eMOEA", new AdaptiveMultimethodVariationCollector(), false);
-	}
-	
-	@Test
-	public void testGDE3() {
-		test("GDE3", new AdaptiveMultimethodVariationCollector(), false);
-	}
-	
-	@Test
-	public void testMOEAD() {
-		test("MOEAD", new AdaptiveMultimethodVariationCollector(), false);
-	}
-	
-	@Test
-	public void testRandom() {
-		test("Random", new AdaptiveMultimethodVariationCollector(), false);
+	@Override
+	public boolean shouldAttach(Algorithm algorithm) {
+		return false;
 	}
 
 }

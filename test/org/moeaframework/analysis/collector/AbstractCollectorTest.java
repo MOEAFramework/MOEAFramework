@@ -18,18 +18,28 @@
 package org.moeaframework.analysis.collector;
 
 import org.junit.Assert;
+import org.junit.Test;
 import org.moeaframework.Instrumenter;
+import org.moeaframework.algorithm.DefaultAlgorithms;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.core.spi.ProblemFactory;
+import org.moeaframework.core.spi.RegisteredAlgorithmProvider;
 import org.moeaframework.util.TypedProperties;
 
 /**
  * Helper functions for testing collectors.  This primarily ensures that the collectors attach to the correct
  * algorithms, and that a single collector does not attach to multiple objects.
  */
-public abstract class CollectorTest {
+public abstract class AbstractCollectorTest {
+	
+	/**
+	 * Creates a new instance of the collector being tested.
+	 * 
+	 * @return the collector
+	 */
+	public abstract Collector createInstance();
 	
 	/**
 	 * Validates the observations produced in this test.  This should, at a minimum, attempt to read / parse
@@ -38,6 +48,34 @@ public abstract class CollectorTest {
 	 * @param observation the observation to validate
 	 */
 	public abstract void validate(Observation observation);
+	
+	/**
+	 * Returns {@code true} if the collector should be attached to the given algorithm.
+	 * 
+	 * @param algorithm the algorithm instance
+	 * @return {@code true} if the collector should be attached to the given algorithm
+	 */
+	public abstract boolean shouldAttach(Algorithm algorithm);
+	
+	@Test
+	public void testAll() {
+		testAll(new DefaultAlgorithms());
+	}
+	
+	@Test
+	public void testDefinedAttachPoint() {
+		Assert.assertNotNull(createInstance().getAttachPoint());
+	}
+	
+	protected void testAll(RegisteredAlgorithmProvider provider) {
+		for (String algorithmName : provider.getDiagnosticToolAlgorithms()) {
+			if (algorithmName.equalsIgnoreCase("RSO")) {
+				continue;
+			}
+			
+			test(algorithmName, createInstance());
+		}
+	}
 	
 	private static class TestCollector implements Collector {
 		
@@ -72,14 +110,13 @@ public abstract class CollectorTest {
 		
 	}
 	
-	protected void test(String algorithmName, Collector collector, boolean willAttach) {
+	protected void test(String algorithmName, Collector collector) {
 		Observations observations = null;
+		boolean shouldAttach = false;
 		int numberOfEvaluations = 1000;
 		String problemName = "DTLZ2_2";
 		TestCollector testCollector = new TestCollector(collector);
 		
-		Assert.assertNotNull(collector.getAttachPoint());
-
 		try (Problem problem = ProblemFactory.getInstance().getProblem(problemName)) {
 			Instrumenter instrumenter = new Instrumenter()
 					.withFrequency(100)
@@ -92,6 +129,7 @@ public abstract class CollectorTest {
 
 			try {
 				algorithm = AlgorithmFactory.getInstance().getAlgorithm(algorithmName, properties, problem);
+				shouldAttach = shouldAttach(algorithm);
 
 				InstrumentedAlgorithm instrumentedAlgorithm = instrumenter.instrument(algorithm);
 
@@ -107,10 +145,12 @@ public abstract class CollectorTest {
 			}
 		}
 		
-		Assert.assertEquals(willAttach ? 1 : 0, testCollector.getNumberOfAttachments());
+		Assert.assertEquals("Incorrect number of attachments to " + algorithmName,
+				shouldAttach ? 1 : 0, testCollector.getNumberOfAttachments());
+		
 		Assert.assertNotNull(observations);
 		
-		if (willAttach) {
+		if (shouldAttach) {
 			Assert.assertTrue(observations.size() > 0);
 			
 			for (Observation observation : observations) {

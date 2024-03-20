@@ -18,46 +18,24 @@
 package org.moeaframework.analysis.collector;
 
 import org.junit.Assert;
-import org.junit.Test;
+import org.moeaframework.algorithm.AdaptiveTimeContinuation;
+import org.moeaframework.core.Algorithm;
 
-/**
- * Tests the {@link AdaptiveTimeContinuationCollector} class.
- */
-public class AdaptiveTimeContinuationCollectorTest extends CollectorTest {
+public class AdaptiveTimeContinuationCollectorTest extends AbstractCollectorTest {
 	
 	@Override
 	public void validate(Observation observation) {
 		Assert.assertTrue(AdaptiveTimeContinuationCollector.getNumberOfRestarts(observation) >= 0);
 	}
 	
-	@Test
-	public void testNSGAII() {
-		test("NSGAII", new AdaptiveTimeContinuationCollector(), false);
+	@Override
+	public Collector createInstance() {
+		return new AdaptiveTimeContinuationCollector();
 	}
 	
-	@Test
-	public void testeNSGAII() {
-		test("eNSGAII", new AdaptiveTimeContinuationCollector(), true);
-	}
-	
-	@Test
-	public void testeMOEA() {
-		test("eMOEA", new AdaptiveTimeContinuationCollector(), false);
-	}
-	
-	@Test
-	public void testGDE3() {
-		test("GDE3", new AdaptiveTimeContinuationCollector(), false);
-	}
-	
-	@Test
-	public void testMOEAD() {
-		test("MOEAD", new AdaptiveTimeContinuationCollector(), false);
-	}
-	
-	@Test
-	public void testRandom() {
-		test("Random", new AdaptiveTimeContinuationCollector(), false);
+	@Override
+	public boolean shouldAttach(Algorithm algorithm) {
+		return algorithm instanceof AdaptiveTimeContinuation;
 	}
 
 }

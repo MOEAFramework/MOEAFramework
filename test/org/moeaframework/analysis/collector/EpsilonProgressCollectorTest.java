@@ -17,46 +17,25 @@
  */
 package org.moeaframework.analysis.collector;
 
-import org.junit.Test;
+import org.moeaframework.algorithm.EpsilonNSGAII;
+import org.moeaframework.core.Algorithm;
+import org.moeaframework.core.EpsilonBoxEvolutionaryAlgorithm;
 
-/**
- * Tests the {@link EpsilonProgressCollector} class.
- */
-public class EpsilonProgressCollectorTest extends CollectorTest {
+public class EpsilonProgressCollectorTest extends AbstractCollectorTest {
 	
 	@Override
 	public void validate(Observation observation) {
 		// skip validations
 	}
 	
-	@Test
-	public void testNSGAII() {
-		test("NSGAII", new EpsilonProgressCollector(), true);
+	@Override
+	public Collector createInstance() {
+		return new EpsilonProgressCollector();
 	}
 	
-	@Test
-	public void testeNSGAII() {
-		test("eNSGAII", new EpsilonProgressCollector(), true);
-	}
-	
-	@Test
-	public void testeMOEA() {
-		test("eMOEA", new EpsilonProgressCollector(), true);
-	}
-	
-	@Test
-	public void testGDE3() {
-		test("GDE3", new EpsilonProgressCollector(), false);
-	}
-	
-	@Test
-	public void testMOEAD() {
-		test("MOEAD", new EpsilonProgressCollector(), false);
-	}
-	
-	@Test
-	public void testRandom() {
-		test("Random", new EpsilonProgressCollector(), false);
+	@Override
+	public boolean shouldAttach(Algorithm algorithm) {
+		return algorithm instanceof EpsilonBoxEvolutionaryAlgorithm || algorithm instanceof EpsilonNSGAII;
 	}
 
 }

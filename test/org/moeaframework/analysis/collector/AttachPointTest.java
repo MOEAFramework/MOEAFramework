@@ -23,9 +23,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-/**
- * Tests the {@link AttachPoint} class.
- */
 public class AttachPointTest {
 	
 	public static class TypeA {

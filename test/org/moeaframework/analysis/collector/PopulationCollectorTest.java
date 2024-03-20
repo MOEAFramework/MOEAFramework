@@ -18,13 +18,11 @@
 package org.moeaframework.analysis.collector;
 
 import org.junit.Assert;
-import org.junit.Test;
+import org.moeaframework.core.Algorithm;
+import org.moeaframework.core.EvolutionaryAlgorithm;
 import org.moeaframework.core.Population;
 
-/**
- * Tests the {@link PopulationCollector} class.
- */
-public class PopulationCollectorTest extends CollectorTest {
+public class PopulationCollectorTest extends AbstractCollectorTest {
 	
 	@Override
 	public void validate(Observation observation) {
@@ -34,34 +32,14 @@ public class PopulationCollectorTest extends CollectorTest {
 		Assert.assertTrue(population.size() > 0);
 	}
 	
-	@Test
-	public void testNSGAII() {
-		test("NSGAII", new PopulationCollector(), true);
+	@Override
+	public Collector createInstance() {
+		return new PopulationCollector();
 	}
 	
-	@Test
-	public void testeNSGAII() {
-		test("eNSGAII", new PopulationCollector(), true);
-	}
-	
-	@Test
-	public void testeMOEA() {
-		test("eMOEA", new PopulationCollector(), true);
-	}
-	
-	@Test
-	public void testGDE3() {
-		test("GDE3", new PopulationCollector(), true);
-	}
-	
-	@Test
-	public void testMOEAD() {
-		test("MOEAD", new PopulationCollector(), false);
-	}
-	
-	@Test
-	public void testRandom() {
-		test("Random", new PopulationCollector(), false);
+	@Override
+	public boolean shouldAttach(Algorithm algorithm) {
+		return algorithm instanceof EvolutionaryAlgorithm;
 	}
 
 }

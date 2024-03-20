@@ -18,13 +18,10 @@
 package org.moeaframework.analysis.collector;
 
 import org.junit.Assert;
-import org.junit.Test;
+import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.NondominatedPopulation;
 
-/**
- * Tests the {@link ApproximationSetCollector} class.
- */
-public class ApproximationSetCollectorTest extends CollectorTest {
+public class ApproximationSetCollectorTest extends AbstractCollectorTest {
 	
 	@Override
 	public void validate(Observation observation) {
@@ -34,34 +31,14 @@ public class ApproximationSetCollectorTest extends CollectorTest {
 		Assert.assertTrue(approximationSet.size() > 0);
 	}
 	
-	@Test
-	public void testNSGAII() {
-		test("NSGAII", new ApproximationSetCollector(), true);
+	@Override
+	public Collector createInstance() {
+		return new ApproximationSetCollector();
 	}
 	
-	@Test
-	public void testeNSGAII() {
-		test("eNSGAII", new ApproximationSetCollector(), true);
-	}
-	
-	@Test
-	public void testeMOEA() {
-		test("eMOEA", new ApproximationSetCollector(), true);
-	}
-	
-	@Test
-	public void testGDE3() {
-		test("GDE3", new ApproximationSetCollector(), true);
-	}
-	
-	@Test
-	public void testMOEAD() {
-		test("MOEAD", new ApproximationSetCollector(), true);
-	}
-	
-	@Test
-	public void testRandom() {
-		test("Random", new ApproximationSetCollector(), true);
+	@Override
+	public boolean shouldAttach(Algorithm algorithm) {
+		return true;
 	}
 
 }

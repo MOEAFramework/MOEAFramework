@@ -18,46 +18,23 @@
 package org.moeaframework.analysis.collector;
 
 import org.junit.Assert;
-import org.junit.Test;
+import org.moeaframework.core.Algorithm;
 
-/**
- * Tests the {@link ElapsedTimeCollector} class.
- */
-public class ElapsedTimeCollectorTest extends CollectorTest {
+public class ElapsedTimeCollectorTest extends AbstractCollectorTest {
 	
 	@Override
 	public void validate(Observation observation) {
 		Assert.assertTrue(ElapsedTimeCollector.getElapsedTime(observation) >= 0.0);
 	}
 	
-	@Test
-	public void testNSGAII() {
-		test("NSGAII", new ElapsedTimeCollector(), true);
+	@Override
+	public Collector createInstance() {
+		return new ElapsedTimeCollector();
 	}
 	
-	@Test
-	public void testeNSGAII() {
-		test("eNSGAII", new ElapsedTimeCollector(), true);
-	}
-	
-	@Test
-	public void testeMOEA() {
-		test("eMOEA", new ElapsedTimeCollector(), true);
-	}
-	
-	@Test
-	public void testGDE3() {
-		test("GDE3", new ElapsedTimeCollector(), true);
-	}
-	
-	@Test
-	public void testMOEAD() {
-		test("MOEAD", new ElapsedTimeCollector(), true);
-	}
-	
-	@Test
-	public void testRandom() {
-		test("Random", new ElapsedTimeCollector(), true);
+	@Override
+	public boolean shouldAttach(Algorithm algorithm) {
+		return true;
 	}
 
 }

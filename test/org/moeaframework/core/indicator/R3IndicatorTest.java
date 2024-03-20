@@ -34,10 +34,12 @@ import org.moeaframework.problem.MockRealProblem;
  */
 public class R3IndicatorTest extends AbstractIndicatorTest {
 	
+	@Override
 	public Indicator createInstance(Problem problem, NondominatedPopulation referenceSet) {
 		return new R3Indicator(problem, 500, referenceSet);
 	}
 	
+	@Override
 	public double getWorstValue() {
 		return Double.POSITIVE_INFINITY;
 	}

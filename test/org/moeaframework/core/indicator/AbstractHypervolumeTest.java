@@ -41,6 +41,7 @@ public abstract class AbstractHypervolumeTest extends AbstractIndicatorTest {
 		return false;
 	}
 	
+	@Override
 	public double getWorstValue() {
 		return 0.0;
 	}
