@@ -17,8 +17,6 @@
  */
 package org.moeaframework.core.operator;
 
-import org.junit.Ignore;
-import org.junit.Test;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.variable.Program;
 import org.moeaframework.util.tree.Rules;
@@ -36,12 +34,10 @@ public abstract class AbstractProgramOperatorTest<T extends Variation> extends A
 		program.randomize();
 		return program;
 	}
-	
-	@Test
-	@Ignore("Programs do not implement equals, so this check does not work")
+
 	@Override
 	public void testParentImmutability() {
-		super.testParentImmutability();
+		// bypass this test, programs do not implement equals so this check does not work
 	}
 
 }

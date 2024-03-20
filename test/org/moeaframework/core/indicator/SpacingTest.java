@@ -39,11 +39,9 @@ public class SpacingTest extends AbstractIndicatorTest<Spacing> {
 		return 0.0;
 	}
 	
-	@Test
-	@Ignore("ignore this inherited test, Spacing does not use a reference set")
 	@Override
 	public void testEmptyReferenceSet() {
-		super.testEmptyReferenceSet();
+		throw new IllegalArgumentException("bypass this test, spacing does not require a reference set");
 	}
 	
 	@Test

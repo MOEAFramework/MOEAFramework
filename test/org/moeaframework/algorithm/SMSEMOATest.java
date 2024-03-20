@@ -20,9 +20,9 @@ package org.moeaframework.algorithm;
 import java.io.IOException;
 
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.moeaframework.CIRunner;
 import org.moeaframework.IgnoreOnCI;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.configuration.ConfigurationException;
@@ -31,35 +31,30 @@ import org.moeaframework.core.fitness.HypervolumeContributionFitnessEvaluator;
 import org.moeaframework.core.fitness.HypervolumeFitnessEvaluator;
 import org.moeaframework.problem.MockRealProblem;
 import org.moeaframework.util.TypedProperties;
-import org.moeaframework.CIRunner;
 
 @RunWith(CIRunner.class)
 public class SMSEMOATest extends AlgorithmTest {
 	
 	@Test
 	@IgnoreOnCI("exceeds 10 minute timeout")
-	@Ignore
 	public void testDTLZ1() throws IOException {
 		test("DTLZ1_2", "SMSEMOA", "SMSEMOA-JMetal");
 	}
 	
 	@Test
 	@IgnoreOnCI("exceeds 10 minute timeout")
-	@Ignore
 	public void testDTLZ2() throws IOException {
 		test("DTLZ2_2", "SMSEMOA", "SMSEMOA-JMetal");
 	}
 	
 	@Test
 	@IgnoreOnCI("exceeds 10 minute timeout")
-	@Ignore
 	public void testDTLZ7() throws IOException {
 		test("DTLZ7_2", "SMSEMOA", "SMSEMOA-JMetal");
 	}
 	
 	@Test
 	@IgnoreOnCI("exceeds 10 minute timeout")
-	@Ignore
 	public void testUF1() throws IOException {
 		test("UF1", "SMSEMOA", "SMSEMOA-JMetal");
 	}
