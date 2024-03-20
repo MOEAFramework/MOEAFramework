@@ -240,7 +240,7 @@ public class AdaptiveTimeContinuationTest {
 	/**
 	 * Ensures an empty archive results in an error rather than an infinite loop.
 	 */
-	@Test(expected=Exception.class)
+	@Test(expected=IllegalArgumentException.class)
 	public void testEmptyArchive() {
 		for (int i=0; i<100; i++) {
 			adaptiveTimeContinuation.step();

@@ -22,6 +22,7 @@ import java.io.StringReader;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Settings;
 
 public class MatrixReaderTest {
@@ -83,7 +84,7 @@ public class MatrixReaderTest {
 		}
 	}
 	
-	@Test(expected = Exception.class)
+	@Test(expected = FrameworkException.class)
 	public void testFixed4() throws IOException {
 		try (MatrixReader reader = new MatrixReader(new StringReader(FIXED), 2)) {
 			Assert.assertFalse(reader.hasNext());
@@ -114,7 +115,7 @@ public class MatrixReaderTest {
 		}
 	}
 	
-	@Test(expected = Exception.class)
+	@Test(expected = FrameworkException.class)
 	public void testVariable2() throws IOException {
 		try (MatrixReader reader = new MatrixReader(new StringReader(VARIABLE), 3)) {
 			Assert.assertTrue(reader.hasNext());
@@ -123,14 +124,14 @@ public class MatrixReaderTest {
 		}
 	}
 	
-	@Test(expected = Exception.class)
+	@Test(expected = FrameworkException.class)
 	public void testVariable3() throws IOException {
 		try (MatrixReader reader = new MatrixReader(new StringReader(VARIABLE), 2)) {
 			Assert.assertFalse(reader.hasNext());
 		}
 	}
 
-	@Test(expected = Exception.class)
+	@Test(expected = FrameworkException.class)
 	public void testUnparseable1() throws IOException {
 		try (MatrixReader reader = new MatrixReader(new StringReader(UNPARSEABLE))) {
 			Assert.assertTrue(reader.hasNext());
@@ -139,7 +140,7 @@ public class MatrixReaderTest {
 		}
 	}
 	
-	@Test(expected = Exception.class)
+	@Test(expected = FrameworkException.class)
 	public void testUnparseable2() throws IOException {
 		try (MatrixReader reader = new MatrixReader(new StringReader(UNPARSEABLE), 3)) {
 			Assert.assertTrue(reader.hasNext());

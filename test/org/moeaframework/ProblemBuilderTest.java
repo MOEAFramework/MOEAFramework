@@ -99,8 +99,8 @@ public class ProblemBuilderTest {
 		Assert.assertNotNull(builder.withProblemClass(DTLZ2.class, (short)4).getProblemInstance());
 	}
 	
-	@Test(expected = Exception.class)
-	public void testCosntructorArgumentsException() {
+	@Test(expected = NoSuchMethodException.class)
+	public void testConstructorArgumentsException() {
 		new ProblemBuilder().withProblemClass(DTLZ2.class, (long)4).getProblemInstance();
 	}
 	

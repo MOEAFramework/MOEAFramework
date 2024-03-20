@@ -28,14 +28,14 @@ import org.moeaframework.TestUtils;
 
 public class TimingTest {
 	
-	@Test(expected = Exception.class)
+	@Test(expected = IllegalArgumentException.class)
 	public void testNonexistentTimer() {
 		Timing.clear();
 		
 		Timing.stopTimer("testNonExistentTimer");
 	}
 
-	@Test(expected = Exception.class)
+	@Test(expected = IllegalArgumentException.class)
 	public void testDuplicateTimer() {
 		Timing.clear();
 		

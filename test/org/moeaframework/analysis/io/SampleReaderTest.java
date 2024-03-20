@@ -25,6 +25,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.TestUtils;
+import org.moeaframework.core.FrameworkException;
 import org.moeaframework.util.TypedProperties;
 
 public class SampleReaderTest {
@@ -119,44 +120,41 @@ public class SampleReaderTest {
 		}
 	}
 
-	@Test(expected = Exception.class)
+	@Test(expected = FrameworkException.class)
 	public void testFileMissingEntry() throws IOException {
 		try (SampleReader reader = new SampleReader(TestUtils.createTempFile(INVALID_MISSING_ENTRY), parameterFile)) {
 			validateInvalid(reader);
 		}
 	}
 
-	@Test(expected = Exception.class)
+	@Test(expected = FrameworkException.class)
 	public void testFileEmptyLine() throws IOException {
 		try (SampleReader reader = new SampleReader(TestUtils.createTempFile(INVALID_EMPTY_LINE), parameterFile)) {
 			validateInvalid(reader);
 		}
 	}
 
-	@Test(expected = Exception.class)
+	@Test(expected = FrameworkException.class)
 	public void testFileUnparseable() throws IOException {
 		try (SampleReader reader = new SampleReader(TestUtils.createTempFile(INVALID_UNPARSEABLE), parameterFile)) {
 			validateInvalid(reader);
 		}
 	}
 
-	@Test(expected = Exception.class)
+	@Test(expected = FrameworkException.class)
 	public void testFileOutOfBounds1() throws IOException {
 		try (SampleReader reader = new SampleReader(TestUtils.createTempFile(INVALID_OUT_OF_BOUNDS_1), parameterFile)) {
 			validateInvalid(reader);
 		}
 	}
 
-	@Test(expected = Exception.class)
+	@Test(expected = FrameworkException.class)
 	public void testFileOutOfBounds2() throws IOException {
 		try (SampleReader reader = new SampleReader(TestUtils.createTempFile(INVALID_OUT_OF_BOUNDS_2), parameterFile)) {
 			validateInvalid(reader);
 		}
 	}
 
-	/**
-	 * Tests reading COMPLETE through the {@code Reader} constructor.
-	 */
 	@Test
 	public void testReaderComplete() throws IOException {
 		try (SampleReader reader = new SampleReader(new StringReader(COMPLETE), parameterFile)) {
@@ -164,35 +162,35 @@ public class SampleReaderTest {
 		}
 	}
 
-	@Test(expected = Exception.class)
+	@Test(expected = FrameworkException.class)
 	public void testReaderMissingEntry() throws IOException {
 		try (SampleReader reader = new SampleReader(new StringReader(INVALID_MISSING_ENTRY), parameterFile)) {
 			validateInvalid(reader);
 		}
 	}
 
-	@Test(expected = Exception.class)
+	@Test(expected = FrameworkException.class)
 	public void testReaderEmptyLine() throws IOException {
 		try (SampleReader reader = new SampleReader(new StringReader(INVALID_EMPTY_LINE), parameterFile)) {
 			validateInvalid(reader);
 		}
 	}
 
-	@Test(expected = Exception.class)
+	@Test(expected = FrameworkException.class)
 	public void testReaderUnparseable() throws IOException {
 		try (SampleReader reader = new SampleReader(new StringReader(INVALID_UNPARSEABLE), parameterFile)) {
 			validateInvalid(reader);
 		}
 	}
 
-	@Test(expected = Exception.class)
+	@Test(expected = FrameworkException.class)
 	public void testReaderOutOfBounds1() throws IOException {
 		try (SampleReader reader = new SampleReader(new StringReader(INVALID_OUT_OF_BOUNDS_1), parameterFile)) {
 			validateInvalid(reader);
 		}
 	}
 
-	@Test(expected = Exception.class)
+	@Test(expected = FrameworkException.class)
 	public void testReaderOutOfBounds2() throws IOException {
 		try (SampleReader reader = new SampleReader(new StringReader(INVALID_OUT_OF_BOUNDS_2), parameterFile)) {
 			validateInvalid(reader);
