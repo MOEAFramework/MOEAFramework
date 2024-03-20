@@ -22,9 +22,6 @@ import org.junit.Test;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Solution;
 
-/**
- * Tests the {@link TargetObjectiveTermination} class.
- */
 public class TargetObjectiveTerminationTest {
 
 	@Test

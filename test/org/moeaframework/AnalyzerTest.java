@@ -33,9 +33,6 @@ import org.moeaframework.core.PopulationIO;
 import org.moeaframework.core.spi.AlgorithmFactoryTestWrapper;
 import org.moeaframework.core.spi.ProblemFactoryTestWrapper;
 
-/**
- * Tests the {@link Analyzer} class.
- */
 @RunWith(CIRunner.class)
 public class AnalyzerTest {
 	
@@ -77,8 +74,8 @@ public class AnalyzerTest {
 				.printAnalysis();
 	}
 	
-	//TODO: this should result in a warning and not an exception, to avoid data
-	//loss in case printAnalysis() is followed by saveData()
+	// TODO: this should result in a warning and not an exception, to avoid data loss in case printAnalysis() is
+	// followed by saveData()
 	@Test(expected = IllegalArgumentException.class)
 	public void testNoProblem() throws IOException {
 		new Analyzer()

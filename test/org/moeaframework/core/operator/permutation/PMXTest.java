@@ -29,9 +29,6 @@ public class PMXTest extends AbstractPermutationOperatorTest<PMX> {
 		return new PMX(1.0);
 	}
 
-	/**
-	 * Tests if the {@link PMX#evolve} method produces valid permutations.
-	 */
 	@Test
 	public void testEvolve() {
 		for (int i = 0; i < 1000; i++) {

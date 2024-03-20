@@ -34,9 +34,6 @@ public class AddTest extends AbstractSubsetOperatorTest<Add> {
 		return new Add(1.0);
 	}
 
-	/**
-	 * Tests various probabilities to ensure add mutation is applied the correct number of times on average.
-	 */
 	@Test
 	public void testProbabilities() {
 		testProbability(0.0);

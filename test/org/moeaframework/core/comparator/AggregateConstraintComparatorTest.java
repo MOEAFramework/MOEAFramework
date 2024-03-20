@@ -23,35 +23,20 @@ import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.core.Solution;
 
-/**
- * Tests the {@link AggregateConstraintComparator} class.
- */
 public class AggregateConstraintComparatorTest {
 
-	/**
-	 * The aggregate constraint comparator used for testing.
-	 */
 	private AggregateConstraintComparator comparator;
 
-	/**
-	 * Setup the comparator for use by all test methods.
-	 */
 	@Before
 	public void setUp() {
 		comparator = new AggregateConstraintComparator();
 	}
 
-	/**
-	 * Removes references to shared objects so they can be garbage collected.
-	 */
 	@After
 	public void tearDown() {
 		comparator = null;
 	}
 
-	/**
-	 * Tests if the comparator correctly detects dominance.
-	 */
 	@Test
 	public void testDominance() {
 		Solution solution1 = new Solution(0, 0, 1);
@@ -68,9 +53,6 @@ public class AggregateConstraintComparatorTest {
 		Assert.assertTrue(comparator.compare(solution3, solution1) > 0);
 	}
 
-	/**
-	 * Tests if the comparator correctly detects non-dominance.
-	 */
 	@Test
 	public void testNondominance() {
 		Solution solution1 = new Solution(0, 0, 1);

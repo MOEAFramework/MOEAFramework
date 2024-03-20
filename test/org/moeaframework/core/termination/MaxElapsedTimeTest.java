@@ -22,9 +22,6 @@ import java.time.Duration;
 import org.junit.Assert;
 import org.junit.Test;
 
-/**
- * Tests the {@link MaxElapsedTime} class.
- */
 public class MaxElapsedTimeTest {
 
 	@Test

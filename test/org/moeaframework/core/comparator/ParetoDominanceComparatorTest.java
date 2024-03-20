@@ -23,35 +23,20 @@ import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.core.Solution;
 
-/**
- * Tests the {@link ParetoDominanceComparator} class.
- */
 public class ParetoDominanceComparatorTest {
 
-	/**
-	 * The Pareto dominance comparator used for testing.
-	 */
 	private ParetoDominanceComparator comparator;
 
-	/**
-	 * Setup the comparator for use by all test methods.
-	 */
 	@Before
 	public void setUp() {
 		comparator = new ParetoDominanceComparator();
 	}
 
-	/**
-	 * Removes references to shared objects so they can be garbage collected.
-	 */
 	@After
 	public void tearDown() {
 		comparator = null;
 	}
 
-	/**
-	 * Tests if the comparator correctly detects dominance.
-	 */
 	@Test
 	public void testDominance() {
 		Solution solution1 = new Solution(0, 2, 1);
@@ -73,9 +58,6 @@ public class ParetoDominanceComparatorTest {
 		Assert.assertTrue(comparator.compare(solution3, solution2) < 0);
 	}
 
-	/**
-	 * Tests if the comparator correctly detects non-dominance.
-	 */
 	@Test
 	public void testNondominance() {
 		Solution solution1 = new Solution(0, 2, 1);

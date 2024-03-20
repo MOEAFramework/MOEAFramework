@@ -29,9 +29,6 @@ import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 
-/**
- * Tests the {@link PeriodicAction} class.
- */
 public class PeriodicActionTest {
 	
 	public static class MockAlgorithm implements Algorithm {

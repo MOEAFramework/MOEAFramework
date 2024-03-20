@@ -25,33 +25,17 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-/**
- * Tests the {@link NondominatedSorting} class.
- */
 public class NondominatedSortingTest {
 
-	/**
-	 * The population undergoing fast non-dominated sorting.
-	 */
 	protected Population population;
-
-	/**
-	 * The non-dominated sorting instance.
-	 */
 	protected NondominatedSorting sorting;
 
-	/**
-	 * Prepare an empty population and a sorting object using a dummy problem.
-	 */
 	@Before
 	public void setUp() {
 		population = new Population();
 		sorting = new NondominatedSorting();
 	}
 
-	/**
-	 * Removes references to shared objects so they can be garbage collected.
-	 */
 	@After
 	public void tearDown() {
 		population = null;
@@ -78,9 +62,6 @@ public class NondominatedSortingTest {
 		return (Double)solution.getAttribute(CROWDING_ATTRIBUTE);
 	}
 
-	/**
-	 * Tests if the rank attribute is correctly computed.
-	 */
 	@Test
 	public void testRankAssignment() {
 		Solution solution1 = new Solution(new double[] { 0.0, 0.0 });
@@ -100,9 +81,6 @@ public class NondominatedSortingTest {
 		Assert.assertEquals(2, getRank(solution3));
 	}
 
-	/**
-	 * Tests if the crowding distance is correctly computed.
-	 */
 	@Test
 	public void testCrowdingAssignment() {
 		Solution solution1 = new Solution(new double[] { 0.0, 1.0 });
@@ -124,10 +102,7 @@ public class NondominatedSortingTest {
 		Assert.assertEquals(2.0, getCrowding(solution2), Settings.EPS);
 		Assert.assertEquals(Double.POSITIVE_INFINITY, getCrowding(solution3), Settings.EPS);
 	}
-	
-	/**
-	 * Tests if two identical solutions are ranked correctly.
-	 */
+
 	@Test
 	public void testIdenticalSolutions() {
 		Solution solution1 = new Solution(new double[] { 0.0, 1.0 });

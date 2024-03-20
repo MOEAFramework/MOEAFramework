@@ -24,16 +24,10 @@ import org.moeaframework.core.spi.ProviderNotFoundException;
 import org.moeaframework.problem.MockBinaryProblem;
 import org.moeaframework.util.TypedProperties;
 
-/**
- * Tests the {@link RVEA} class.
- */
 public class RVEATest {
 	
-	/**
-	 * Ensure RVEA can not be applied to problems with fewer than two objectives.
-	 */
 	@Test(expected=ProviderNotFoundException.class)
-	public void testInitialConditions() {
+	public void testRequiresAtLeastTwoObjectives() {
 		Problem problem = new MockBinaryProblem();
 		AlgorithmFactory.getInstance().getAlgorithm("RVEA", new TypedProperties(), problem);
 	}

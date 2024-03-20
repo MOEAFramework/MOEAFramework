@@ -25,9 +25,6 @@ import org.moeaframework.TestThresholds;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.PRNG;
 
-/**
- * Tests the {@link Subset} class.
- */
 public class SubsetTest {
 	
 	@Test

@@ -31,9 +31,6 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.indicator.Indicators;
 import org.moeaframework.core.spi.ProblemFactory;
 
-/**
- * Tests the {@link MetricFileWriter} class.
- */
 public class MetricFileWriterTest {
 
 	@Test

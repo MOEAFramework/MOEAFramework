@@ -36,14 +36,8 @@ import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.AbstractProblem;
 import org.moeaframework.util.TypedProperties;
 
-/**
- * Tests the {@link ResultFileReader} class.
- */
 public class ResultFileReaderTest {
 	
-	/**
-	 * A valid result file.
-	 */
 	public static final String COMPLETE = """
 			# Problem = Test
 			# Variables = 3
@@ -55,10 +49,7 @@ public class ResultFileReaderTest {
 			1.0 01000 1,0,2 1.0 0.0
 			#
 			""";
-	
-	/**
-	 * A valid result file with extra whitespace on lines.
-	 */
+
 	public static final String COMPLETE_WHITESPACE = """
 			# Problem = Test
 			# Variables = 3
@@ -71,9 +62,6 @@ public class ResultFileReaderTest {
 			#
 			""";
 	
-	/**
-	 * A valid result file but without decision variables.
-	 */
 	public static final String COMPLETE_NOVARIABLES = """
 			# Problem = Test
 			# Objectives = 2
@@ -85,9 +73,6 @@ public class ResultFileReaderTest {
 			#
 			""";
 	
-	/**
-	 * A valid result file but without the header.
-	 */
 	public static final String COMPLETE_NOHEADER = """
 			0.0 00100 2,1,0 0.0 1.0
 			1.0 01000 1,0,2 1.0 0.0
@@ -96,10 +81,7 @@ public class ResultFileReaderTest {
 			1.0 01000 1,0,2 1.0 0.0
 			#
 			""";
-	
-	/**
-	 * A valid result file with multiple pound characters separating entries
-	 */
+
 	public static final String MULTIPOUND = """
 			# Problem = Test
 			# Variables = 3
@@ -114,9 +96,6 @@ public class ResultFileReaderTest {
 			#
 			""";
 	
-	/**
-	 * A valid result file with properties.
-	 */
 	public static final String COMPLETE_PROPERTIES = """
 			# Problem = Test
 			# Variables = 3
@@ -128,9 +107,6 @@ public class ResultFileReaderTest {
 			#
 			""";
 	
-	/**
-	 * A valid result file with no properties.
-	 */
 	public static final String NO_PROPERTIES = """
 			# Problem = Test
 			# Variables = 3
@@ -140,9 +116,6 @@ public class ResultFileReaderTest {
 			#
 			""";
 	
-	/**
-	 * A valid result file with empty properties.
-	 */
 	public static final String EMPTY_PROPERTIES = """
 			# Problem = Test
 			# Variables = 3
@@ -152,10 +125,7 @@ public class ResultFileReaderTest {
 			1.0 01000 1,0,2 1.0 0.0
 			#
 			""";
-	
-	/**
-	 * A valid result file with the old style properties.
-	 */
+
 	public static final String OLDSTYLE_PROPERTIES = """
 			# Problem = Test
 			# Variables = 3
@@ -166,14 +136,8 @@ public class ResultFileReaderTest {
 			#
 			""";
 
-	/**
-	 * An empty, but valid, result file.
-	 */
 	public static final String EMPTY = "";
 
-	/**
-	 * A valid result file with empty entries.
-	 */
 	public static final String EMPTY_ENTRY = """
 			# Problem = Test
 			# Variables = 3
@@ -188,19 +152,13 @@ public class ResultFileReaderTest {
 			#
 			""";
 
-	/**
-	 * A valid result file containing just the header and no entries.
-	 */
 	public static final String ONLY_HEADER = """
 			# Problem = Test
 			# Variables = 3
 			# Objectives = 2
 			""";
 
-	/**
-	 * An incomplete result file, missing the trailing # character.
-	 */
-	public static final String INCOMPLETE1 = """
+	public static final String INCOMPLETE_MISSING_POUND = """
 			# Problem = Test
 			# Variables = 3
 			# Objectives = 2
@@ -210,10 +168,7 @@ public class ResultFileReaderTest {
 			0.0 00100 2,1,0 0.0 1.0
 			""";
 
-	/**
-	 * An incomplete result file, containing an empty line.
-	 */
-	public static final String INCOMPLETE2 = """
+	public static final String INCOMPLETE_EMPTY_LINE = """
 			# Problem = Test
 			# Variables = 3
 			# Objectives = 2
@@ -226,10 +181,7 @@ public class ResultFileReaderTest {
 			#
 			""";
 
-	/**
-	 * An incomplete result file, containing an incomplete entry.
-	 */
-	public static final String INCOMPLETE3 = """
+	public static final String INCOMPLETE_MISSING_DATA = """
 			# Problem = Test
 			# Variables = 3
 			# Objectives = 2
@@ -241,10 +193,7 @@ public class ResultFileReaderTest {
 			#
 			""";
 
-	/**
-	 * An incomplete result file, containing unparseable data.
-	 */
-	public static final String INCOMPLETE4 = """
+	public static final String INCOMPLETE_UNPARSEABLE = """
 		# Problem = Test
 		# Variables = 3
 		# Objectives = 2
@@ -256,19 +205,9 @@ public class ResultFileReaderTest {
 		#
 		""";
 	
-	/**
-	 * The problem used for testing.
-	 */
 	private Problem problem;
-	
-	/**
-	 * The expected result from reading a complete input.
-	 */
 	private Population population;
 
-	/**
-	 * Creates the problem used for testing.
-	 */
 	@Before
 	public void setUp() {
 		problem = new AbstractProblem(3, 2, 1) {
@@ -306,20 +245,12 @@ public class ResultFileReaderTest {
 		population.add(solution2);
 	}
 
-	/**
-	 * Removes references to shared objects so they can be garbage collected.
-	 */
 	@After
 	public void tearDown() {
 		problem = null;
 		population = null;
 	}
 
-	/**
-	 * Tests if a valid result file is read correctly.
-	 * 
-	 * @throws IOException should not occur
-	 */
 	@Test
 	public void testReaderComplete() throws IOException {
 		try (ResultFileReader reader = new ResultFileReader(problem, TestUtils.createTempFile(COMPLETE))) {
@@ -327,11 +258,6 @@ public class ResultFileReaderTest {
 		}
 	}
 	
-	/**
-	 * Tests if a valid result file with extra whitespace on lines is read correctly.
-	 * 
-	 * @throws IOException should not occur
-	 */
 	@Test
 	public void testReaderCompleteWhitespace() throws IOException {
 		try (ResultFileReader reader = new ResultFileReader(problem, TestUtils.createTempFile(COMPLETE_WHITESPACE))) {
@@ -339,23 +265,13 @@ public class ResultFileReaderTest {
 		}
 	}
 	
-	/**
-	 * Tests if a valid result file containing no decision variables is read correctly.
-	 * 
-	 * @throws IOException should not occur
-	 */
 	@Test
 	public void testReaderCompleteNoVariables() throws IOException {
 		try (ResultFileReader reader = new ResultFileReader(problem, TestUtils.createTempFile(COMPLETE_NOVARIABLES))) {
 			validateCompleteNoVariables(reader);
 		}
 	}
-	
-	/**
-	 * Tests if a valid result file containing no header lines is read correctly.
-	 * 
-	 * @throws IOException should not occur
-	 */
+
 	@Test
 	public void testReaderCompleteNoHeader() throws IOException {
 		try (ResultFileReader reader = new ResultFileReader(problem, TestUtils.createTempFile(COMPLETE_NOHEADER))) {
@@ -363,11 +279,6 @@ public class ResultFileReaderTest {
 		}
 	}
 	
-	/**
-	 * Tests if a valid result file with multiple {@code #} characters separating entries is read correctly.
-	 * 
-	 * @throws IOException should not occur
-	 */
 	@Test
 	public void testReaderMultipound() throws IOException {
 		try (ResultFileReader reader = new ResultFileReader(problem, TestUtils.createTempFile(MULTIPOUND))) {
@@ -375,11 +286,6 @@ public class ResultFileReaderTest {
 		}
 	}
 	
-	/**
-	 * Tests if a valid result file with properties is read correctly.
-	 * 
-	 * @throws IOException should not occur
-	 */
 	@Test
 	public void testReaderCompleteProperties() throws IOException {
 		TypedProperties properties = new TypedProperties();
@@ -391,11 +297,6 @@ public class ResultFileReaderTest {
 		}
 	}
 	
-	/**
-	 * Tests if a valid result file with no properties is read correctly.
-	 * 
-	 * @throws IOException should not occur
-	 */
 	@Test
 	public void testReaderNoProperties() throws IOException {
 		TypedProperties properties = new TypedProperties();
@@ -404,12 +305,7 @@ public class ResultFileReaderTest {
 			validateProperties(reader, properties);
 		}
 	}
-	
-	/**
-	 * Tests if a valid result file with empty properties is read correctly.
-	 * 
-	 * @throws IOException should not occur
-	 */
+
 	@Test
 	public void testReaderEmptyProperties() throws IOException {
 		TypedProperties properties = new TypedProperties();
@@ -419,12 +315,6 @@ public class ResultFileReaderTest {
 		}
 	}
 	
-	/**
-	 * Tests if a valid result file with the old style comment is read correctly.  The old comment is meaningless, but
-	 * this is to test backwards compatibility to ensure the remainder is still processed.
-	 * 
-	 * @throws IOException should not occur
-	 */
 	@Test
 	public void testReaderOldStyleProperties() throws IOException {
 		TypedProperties properties = new TypedProperties();
@@ -435,23 +325,13 @@ public class ResultFileReaderTest {
 		}
 	}
 
-	/**
-	 * Tests if a valid result file containing no content is read correctly.
-	 * 
-	 * @throws IOException should not occur
-	 */
 	@Test
-	public void testReaderEmpty() throws IOException {
+	public void testReaderEmptyFile() throws IOException {
 		try (ResultFileReader reader = new ResultFileReader(problem, TestUtils.createTempFile(EMPTY))) {
 			validateEmpty(reader);
 		}
 	}
 
-	/**
-	 * Tests if a valid result file with an empty entry is handled correctly.
-	 * 
-	 * @throws IOException should not occur
-	 */
 	@Test
 	public void testReaderEmptyEntry() throws IOException {
 		try (ResultFileReader reader = new ResultFileReader(problem, TestUtils.createTempFile(EMPTY_ENTRY))) {
@@ -459,11 +339,6 @@ public class ResultFileReaderTest {
 		}
 	}
 
-	/**
-	 * Tests if a valid result file containing only the header is read correctly.
-	 * 
-	 * @throws IOException should not occur
-	 */
 	@Test
 	public void testReaderOnlyHeader() throws IOException {
 		try (ResultFileReader reader = new ResultFileReader(problem, TestUtils.createTempFile(ONLY_HEADER))) {
@@ -471,60 +346,34 @@ public class ResultFileReaderTest {
 		}
 	}
 
-	/**
-	 * Tests if an incomplete result file missing the trailing {@code #} character is handled correctly.
-	 * 
-	 * @throws IOException should not occur
-	 */
 	@Test
-	public void testReaderIncomplete1() throws IOException {
-		try (ResultFileReader reader = new ResultFileReader(problem, TestUtils.createTempFile(INCOMPLETE1))) {
+	public void testReaderMissingPound() throws IOException {
+		try (ResultFileReader reader = new ResultFileReader(problem, TestUtils.createTempFile(INCOMPLETE_MISSING_POUND))) {
 			validateIncomplete(reader);
 		}
 	}
 
-	/**
-	 * Tests if an invalid result file containing a blank line is handled correctly.
-	 * 
-	 * @throws IOException should not occur
-	 */
 	@Test
-	public void testReaderIncomplete2() throws IOException {
-		try (ResultFileReader reader = new ResultFileReader(problem, TestUtils.createTempFile(INCOMPLETE2))) {
+	public void testReaderEmptyLine() throws IOException {
+		try (ResultFileReader reader = new ResultFileReader(problem, TestUtils.createTempFile(INCOMPLETE_EMPTY_LINE))) {
 			validateIncomplete(reader);
 		}
 	}
 
-	/**
-	 * Tests if an invalid result file with a partial line is handled correctly.
-	 * 
-	 * @throws IOException should not occur
-	 */
 	@Test
-	public void testReaderIncomplete3() throws IOException {
-		try (ResultFileReader reader = new ResultFileReader(problem, TestUtils.createTempFile(INCOMPLETE3))) {
+	public void testReaderMissingData() throws IOException {
+		try (ResultFileReader reader = new ResultFileReader(problem, TestUtils.createTempFile(INCOMPLETE_MISSING_DATA))) {
 			validateIncomplete(reader);
 		}
 	}
 	
-	/**
-	 * Tests if an invalid result file containing unparseable data is handled correctly.
-	 * 
-	 * @throws IOException should not occur
-	 */
 	@Test
-	public void testReaderIncomplete4() throws IOException {
-		try (ResultFileReader reader = new ResultFileReader(problem, TestUtils.createTempFile(INCOMPLETE4))) {
+	public void testReaderUnparseable() throws IOException {
+		try (ResultFileReader reader = new ResultFileReader(problem, TestUtils.createTempFile(INCOMPLETE_UNPARSEABLE))) {
 			validateIncomplete(reader);
 		}
 	}
 
-	/**
-	 * Validates a complete result file.
-	 * 
-	 * @param reader the result reader
-	 * @throws IOException should not occur
-	 */
 	private void validateComplete(ResultFileReader reader) throws IOException {
 		Assert.assertTrue(reader.hasNext());
 		TestUtils.assertEquals(population, reader.next().getPopulation());
@@ -534,12 +383,6 @@ public class ResultFileReaderTest {
 		Assert.assertFalse(reader.hasNext());
 	}
 	
-	/**
-	 * Validates a complete result file that does not contain decision variables.
-	 * 
-	 * @param reader the result reader
-	 * @throws IOException should not occur
-	 */
 	private void validateCompleteNoVariables(ResultFileReader reader) throws IOException {
 		population.clear();
 		population.add(new Solution(new double[] { 0.0, 1.0 }));
@@ -553,23 +396,11 @@ public class ResultFileReaderTest {
 		Assert.assertFalse(reader.hasNext());
 	}
 
-	/**
-	 * Validates an empty result file.
-	 * 
-	 * @param reader the result reader
-	 * @throws IOException should not occur
-	 */
 	private void validateEmpty(ResultFileReader reader) throws IOException {
 		Assert.assertFalse(reader.hasNext());
 		Assert.assertFalse(reader.hasNext());
 	}
 
-	/**
-	 * Validates a result file missing an entry.
-	 * 
-	 * @param reader the result reader
-	 * @throws IOException should not occur
-	 */
 	private void validateEmptyEntry(ResultFileReader reader) throws IOException {
 		Assert.assertTrue(reader.hasNext());
 		TestUtils.assertEquals(population, reader.next().getPopulation());
@@ -581,25 +412,13 @@ public class ResultFileReaderTest {
 		Assert.assertFalse(reader.hasNext());
 	}
 
-	/**
-	 * Validates an incomplete result file.
-	 * 
-	 * @param reader the result reader
-	 * @throws IOException should not occur
-	 */
 	private void validateIncomplete(ResultFileReader reader) throws IOException {
 		Assert.assertTrue(reader.hasNext());
 		TestUtils.assertEquals(population, reader.next().getPopulation());
 		Assert.assertFalse(reader.hasNext());
 		Assert.assertFalse(reader.hasNext());
 	}
-	
-	/**
-	 * Validates properties.
-	 * 
-	 * @param reader the result reader
-	 * @throws IOException should not occur
-	 */
+
 	private void validateProperties(ResultFileReader reader, TypedProperties properties) throws IOException {
 		while (reader.hasNext()) {
 			Assert.assertEquals(properties, reader.next().getProperties());

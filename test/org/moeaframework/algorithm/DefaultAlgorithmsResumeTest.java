@@ -49,9 +49,6 @@ import org.moeaframework.core.spi.OperatorFactory;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.util.TypedProperties;
 
-/**
- * Tests if algorithm state can be saved and restored for various algorithms.
- */
 public class DefaultAlgorithmsResumeTest {
 	
 	/**

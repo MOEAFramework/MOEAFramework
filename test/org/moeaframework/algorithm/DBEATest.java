@@ -32,9 +32,6 @@ import org.moeaframework.problem.MockRealProblem;
 import org.moeaframework.problem.DTLZ.DTLZ2;
 import org.moeaframework.util.weights.NormalBoundaryDivisions;
 
-/**
- * Tests the {@link DBEA} class.
- */
 public class DBEATest {
 	
 	@Test

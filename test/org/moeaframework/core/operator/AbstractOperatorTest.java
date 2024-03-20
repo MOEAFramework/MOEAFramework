@@ -30,11 +30,12 @@ public abstract class AbstractOperatorTest<T extends Variation, S extends Variab
 	
 	/**
 	 * Creates a new instance of this operator.  For testing purposes, the instance should have a 100% probability.
-	 * 
-	 * @return the operator
 	 */
 	public abstract T createInstance();
 	
+	/**
+	 * Creates a new instance of the decision variable for testing purposes.
+	 */
 	public abstract S createTestVariable();
 	
 	public boolean isTypeSafe() {

@@ -31,9 +31,6 @@ public class InsertionTest extends AbstractPermutationOperatorTest<Insertion> {
 		return new Insertion(1.0);
 	}
 
-	/**
-	 * Tests various probabilities to ensure insertion mutation is applied the correct number of times on average.
-	 */
 	@Test
 	public void testProbabilities() {
 		testProbability(0.0);

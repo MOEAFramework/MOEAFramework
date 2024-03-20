@@ -35,9 +35,6 @@ public class SSXTest extends AbstractSubsetOperatorTest<SSX> {
 		return new SSX(1.0);
 	}
 	
-	/**
-	 * Tests if the {@link SSX#evolve} method produces valid subset for fixed-size sets.
-	 */
 	@Test
 	public void testEvolveFixedSize() {
 		DescriptiveStatistics stats1 = new DescriptiveStatistics();
@@ -67,9 +64,6 @@ public class SSXTest extends AbstractSubsetOperatorTest<SSX> {
 		Assert.assertEquals(0.5, stats1.getMean(), TestThresholds.STATISTICS_EPS);
 	}
 	
-	/**
-	 * Tests if the {@link SSX#evolve} method produces valid subset for variable-size sets.
-	 */
 	@Test
 	public void testEvolveVariableSize() {
 		DescriptiveStatistics stats1 = new DescriptiveStatistics();

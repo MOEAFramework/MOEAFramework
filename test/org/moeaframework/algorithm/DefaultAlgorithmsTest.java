@@ -35,41 +35,14 @@ import org.moeaframework.problem.MockSubsetProblem;
 import org.moeaframework.problem.DTLZ.DTLZ2;
 import org.moeaframework.util.TypedProperties;
 
-/**
- * Tests the {@link DefaultAlgorithms} class.
- */
 public class DefaultAlgorithmsTest {
 	
-	/**
-	 * The real encoded test problem.
-	 */
 	protected Problem realProblem;
-	
-	/**
-	 * The binary encoded test problem.
-	 */
 	protected Problem binaryProblem;
-	
-	/**
-	 * The permutation test problem.
-	 */
 	protected Problem permutationProblem;
-	
-	/**
-	 * The subset test problem.
-	 */
 	protected Problem subsetProblem;
-	
-	/**
-	 * The properties for controlling the test problems.
-	 */
 	protected TypedProperties properties;
 
-	/**
-	 * Creates the shared problem.
-	 * 
-	 * @throws IOException if an I/O error occurred
-	 */
 	@Before
 	public void setUp() throws IOException {
 		realProblem = new MockRealProblem(2);
@@ -82,9 +55,6 @@ public class DefaultAlgorithmsTest {
 		properties.setInt("instances", 10); // for RSO: maxEvaluations (1000) / instances (10) == GA population size (100)
 	}
 
-	/**
-	 * Removes references to shared objects so they can be garbage collected.
-	 */
 	@After
 	public void tearDown() {
 		realProblem = null;
@@ -570,12 +540,7 @@ public class DefaultAlgorithmsTest {
 	public void testAMOSA_Subset() {
 		test("AMOSA", subsetProblem);
 	}
-	
-	/**
-	 * Tests if the given algorithm operates correctly.
-	 * 
-	 * @param algorithm the algorithm
-	 */
+
 	protected void test(String name, Problem problem) {
 		int NFE = 1000;
 		Algorithm algorithm = AlgorithmFactory.getInstance().getAlgorithm(name, properties, problem);

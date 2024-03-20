@@ -32,16 +32,8 @@ import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.core.spi.OperatorFactory;
 import org.moeaframework.core.spi.ProblemFactory;
 
-/**
- * Tests the {@link AbstractEvolutionaryAlgorithm} class.
- */
 public class AbstractEvolutionaryAlgorithmTest {
 
-	/**
-	 * Returns a new instance of a dummy abstract evolutionary algorithm for testing.
-	 * 
-	 * @return a new instance of a dummy abstract evolutionary algorithm for testing
-	 */
 	private AbstractEvolutionaryAlgorithm newInstance() {
 		Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
 		Population population = new Population();
@@ -63,11 +55,6 @@ public class AbstractEvolutionaryAlgorithmTest {
 		};
 	}
 
-	/**
-	 * Tests if abstract evolutionary algorithms are resumable.
-	 * 
-	 * @throws IOException if an I/O error occurred
-	 */
 	@Test
 	public void testResumable() throws IOException {
 		File file = TestUtils.createTempFile();

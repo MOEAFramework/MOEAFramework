@@ -35,9 +35,6 @@ public class BinaryVariableTest {
 		value.set(1, true);
 	}
 
-	/**
-	 * Removes references to shared objects so they can be garbage collected.
-	 */
 	@After
 	public void tearDown() {
 		value = null;

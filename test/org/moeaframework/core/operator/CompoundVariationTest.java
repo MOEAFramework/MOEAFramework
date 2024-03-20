@@ -27,9 +27,6 @@ import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
 
-/**
- * Tests the {@link CompoundVariation} class.
- */
 public class CompoundVariationTest {
 	
 	private static class VariationStub implements Variation {

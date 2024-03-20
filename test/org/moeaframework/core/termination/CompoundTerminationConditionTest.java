@@ -20,9 +20,6 @@ package org.moeaframework.core.termination;
 import org.junit.Assert;
 import org.junit.Test;
 
-/**
- * Tests the {@link CompoundTerminationCondition} class.
- */
 public class CompoundTerminationConditionTest {
 	
 	@Test

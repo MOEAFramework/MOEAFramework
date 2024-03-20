@@ -24,8 +24,7 @@ import org.moeaframework.problem.MockRealProblem;
 import org.moeaframework.util.TypedProperties;
 
 /**
- * Tests the {@link AlgorithmFactory} class.  Note that most of the functionality is indirectly tested by other test
- * functions.
+ * Note that most of the functionality is indirectly tested by other test functions.
  */
 public class AlgorithmFactoryTest {
 

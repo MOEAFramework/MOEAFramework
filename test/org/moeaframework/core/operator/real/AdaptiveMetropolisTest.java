@@ -94,9 +94,6 @@ public class AdaptiveMetropolisTest extends ParentCentricVariationTest<AdaptiveM
 		TestUtils.assertEquals(expected, actual, new AbsoluteError(0.0001));
 	}
 
-	/**
-	 * Tests if the offspring form clusters distributed around each parent.
-	 */
 	@Test
 	public void testFullDistribution() {
 		AdaptiveMetropolis am = createInstance();

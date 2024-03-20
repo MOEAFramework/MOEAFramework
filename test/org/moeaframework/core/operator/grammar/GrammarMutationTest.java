@@ -31,9 +31,6 @@ public class GrammarMutationTest extends AbstractGrammarOperatorTest<GrammarMuta
 		return new GrammarMutation(1.0);
 	}
 
-	/**
-	 * Tests various probabilities to ensure the {@code GrammarMutation} mutates the expected number of codons.
-	 */
 	@Test
 	public void testProbabilities() {
 		testProbability(0.0);

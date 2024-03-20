@@ -35,7 +35,7 @@ import org.moeaframework.core.variable.Permutation;
 import org.moeaframework.core.variable.RealVariable;
 
 /**
- * Tests the {@link ExternalProblem} class without the need for an external executable.  No error conditions are tested.
+ * Tests basic functionality without requiring an executable.  No error conditions are tested.
  */
 public class ExternalProblemTest {
 	

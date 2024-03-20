@@ -23,35 +23,20 @@ import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.core.Solution;
 
-/**
- * Tests the {@link EpsilonBoxDominanceComparator} class.
- */
 public class EpsilonBoxDominanceComparatorTest {
 
-	/**
-	 * The &epsilon;-box dominance comparator used for testing.
-	 */
 	private EpsilonBoxDominanceComparator comparator;
 
-	/**
-	 * Setup the comparator for use by all test methods.
-	 */
 	@Before
 	public void setUp() {
 		comparator = new EpsilonBoxDominanceComparator(0.5);
 	}
 
-	/**
-	 * Removes references to shared objects so they can be garbage collected.
-	 */
 	@After
 	public void tearDown() {
 		comparator = null;
 	}
 
-	/**
-	 * Tests if the comparator correctly detects dominance.
-	 */
 	@Test
 	public void testDominance() {
 		Solution solution1 = new Solution(0, 2, 1);
@@ -79,9 +64,6 @@ public class EpsilonBoxDominanceComparatorTest {
 		Assert.assertFalse(comparator.isSameBox());
 	}
 
-	/**
-	 * Tests if the comparator correctly detects non-dominance.
-	 */
 	@Test
 	public void testNondominance() {
 		Solution solution1 = new Solution(0, 2, 1);

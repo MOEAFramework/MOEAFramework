@@ -24,9 +24,6 @@ import org.junit.Test;
 import org.moeaframework.TestUtils;
 import org.moeaframework.util.io.FileUtils;
 
-/**
- * Tests the {@link Negater} class.
- */
 public class NegaterTest {
     
     @Test

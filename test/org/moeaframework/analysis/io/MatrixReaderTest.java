@@ -24,9 +24,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.core.Settings;
 
-/**
- * Tests the {@link MatrixReader} class.
- */
 public class MatrixReaderTest {
 
 	public static final String FIXED = """

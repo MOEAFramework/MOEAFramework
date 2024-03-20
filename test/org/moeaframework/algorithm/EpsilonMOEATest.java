@@ -33,9 +33,6 @@ import org.moeaframework.core.operator.CompoundVariation;
 import org.moeaframework.core.selection.TournamentSelection;
 import org.moeaframework.core.spi.ProblemFactory;
 
-/**
- * Tests the {@link EpsilonMOEA} class.
- */
 public class EpsilonMOEATest {
 	
 	private Problem problem;

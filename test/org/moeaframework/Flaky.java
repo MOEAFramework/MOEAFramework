@@ -27,7 +27,7 @@ import java.lang.annotation.ElementType;
  * and do not cause the test to fail.  As a result, use of this attribute should be audited periodically and problems
  * addressed.
  * <p>
- * Test classes using this annotation must also specify \code{@RunWith(CIRunner.class)}.
+ * Test classes using this annotation must also specify {@code @RunWith(CIRunner.class)}.
  */
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)

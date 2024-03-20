@@ -35,9 +35,6 @@ import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.problem.MockRealProblem;
 import org.moeaframework.util.TypedProperties;
 
-/**
- * Tests the {@link SPEA2} class.
- */
 @RunWith(CIRunner.class)
 @Retryable
 public class SPEA2Test extends AlgorithmTest {

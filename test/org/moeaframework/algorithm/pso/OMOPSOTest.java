@@ -26,9 +26,6 @@ import org.moeaframework.CIRunner;
 import org.moeaframework.Flaky;
 import org.moeaframework.algorithm.AlgorithmTest;
 
-/**
- * Tests the {@link OMOPSO} class.
- */
 @RunWith(CIRunner.class)
 @Retryable
 public class OMOPSOTest extends AlgorithmTest {

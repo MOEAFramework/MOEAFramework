@@ -19,14 +19,8 @@ package org.moeaframework.core;
 
 import org.junit.Before;
 
-/**
- * Tests the {@link FastNondominatedSorting} class.
- */
 public class FastNondominatedSortingTest extends NondominatedSortingTest {
 	
-	/**
-	 * Prepare an empty population and a sorting object using a dummy problem.
-	 */
 	@Before
 	public void setUp() {
 		population = new Population();

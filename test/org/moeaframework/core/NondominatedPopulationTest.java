@@ -25,14 +25,8 @@ import org.moeaframework.core.NondominatedPopulation.DuplicateMode;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.problem.MockBinaryProblem;
 
-/**
- * Tests the {@link NondominatedPopulation} class.
- */
 public class NondominatedPopulationTest {
 
-	/**
-	 * Tests that a {@code NonDominatedPopulation} rejects adding nearly identical solutions.
-	 */
 	@Test
 	public void testAddSimilar() {
 		NondominatedPopulation population = new NondominatedPopulation();
@@ -46,9 +40,6 @@ public class NondominatedPopulationTest {
 		Assert.assertTrue(population.contains(solution1));
 	}
 
-	/**
-	 * Tests that a {@code NonDominatedPopulation} maintains a non-dominated population.
-	 */
 	@Test
 	public void testAdd() {
 		NondominatedPopulation population = new NondominatedPopulation();
@@ -74,10 +65,7 @@ public class NondominatedPopulationTest {
 		Assert.assertTrue(population.contains(solution2));
 		Assert.assertTrue(population.contains(solution4));
 	}
-	
-	/**
-	 * This is similar to {@link #testAddSimilar()} but tests if a solution with different variables is also rejected.
-	 */
+
 	@Test
 	public void testNoDuplicates() {
 		NondominatedPopulation population = new NondominatedPopulation(DuplicateMode.NO_DUPLICATE_OBJECTIVES);

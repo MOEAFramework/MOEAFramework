@@ -151,11 +151,6 @@ public class ReproducibilityTest {
 		test("AMOSA");
 	}
 
-	/**
-	 * Tests the algorithm for reproducibility. The algorithm must be available via the {@link AlgorithmFactory}.
-	 * 
-	 * @param algorithmName the algorithm name
-	 */
 	public void test(String algorithmName) {
 		NondominatedPopulation resultSet = null;
 		long seed = PRNG.getRandom().nextLong();

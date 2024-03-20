@@ -23,35 +23,20 @@ import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.core.Solution;
 
-/**
- * Tests the {@link ParetoConstraintComparator} class.
- */
 public class ParetoConstraintComparatorTest {
 
-	/**
-	 * The Pareto constraint comparator used for testing.
-	 */
 	private ParetoConstraintComparator comparator;
 
-	/**
-	 * Setup the comparator for use by all test methods.
-	 */
 	@Before
 	public void setUp() {
 		comparator = new ParetoConstraintComparator();
 	}
 
-	/**
-	 * Removes references to shared objects so they can be garbage collected.
-	 */
 	@After
 	public void tearDown() {
 		comparator = null;
 	}
 
-	/**
-	 * Tests if the comparator correctly detects dominance.
-	 */
 	@Test
 	public void testDominance() {
 		Solution solution1 = new Solution(0, 0, 3);
@@ -68,9 +53,6 @@ public class ParetoConstraintComparatorTest {
 		Assert.assertTrue(comparator.compare(solution3, solution1) < 0);
 	}
 
-	/**
-	 * Tests if the comparator correctly detects non-dominance.
-	 */
 	@Test
 	public void testNondominance() {
 		Solution solution1 = new Solution(0, 0, 3);
@@ -83,11 +65,8 @@ public class ParetoConstraintComparatorTest {
 		Assert.assertEquals(0, comparator.compare(solution2, solution1));
 	}
 	
-	/**
-	 * Tests if the comparator correctly detects non-dominance of equal constraints.
-	 */
 	@Test
-	public void testEquals() {
+	public void testNondominanceOfIdenticalSolutions() {
 		Solution solution1 = new Solution(0, 0, 3);
 		Solution solution2 = new Solution(0, 0, 3);
 

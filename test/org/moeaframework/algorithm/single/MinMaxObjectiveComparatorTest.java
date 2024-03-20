@@ -25,29 +25,33 @@ import org.moeaframework.core.Solution;
 
 public class MinMaxObjectiveComparatorTest {
 	
+	private double calculate(Solution solution, double[] weights) {
+		return MinMaxObjectiveComparator.calculateFitness(solution, weights);
+	}
+	
 	@Test
 	public void testCalculateFitness() {
 		Solution solution = TestUtils.newSolution(0.0, 1.0);
 		double[] weights = new double[] { 1.0, 1.0 };
-		Assert.assertEquals(MinMaxObjectiveComparator.calculateFitness(solution, weights), 1.0, TestThresholds.SOLUTION_EPS);
+		Assert.assertEquals(calculate(solution, weights), 1.0, TestThresholds.SOLUTION_EPS);
 		
 		solution = TestUtils.newSolution(1.0, 0.0);
-		Assert.assertEquals(MinMaxObjectiveComparator.calculateFitness(solution, weights), 1.0, TestThresholds.SOLUTION_EPS);
+		Assert.assertEquals(calculate(solution, weights), 1.0, TestThresholds.SOLUTION_EPS);
 		
 		solution = TestUtils.newSolution(-1.0, 0.0);
-		Assert.assertEquals(MinMaxObjectiveComparator.calculateFitness(solution, weights), 0.0, TestThresholds.SOLUTION_EPS);
+		Assert.assertEquals(calculate(solution, weights), 0.0, TestThresholds.SOLUTION_EPS);
 		
 		solution = TestUtils.newSolution(0.0, -1.0);
-		Assert.assertEquals(MinMaxObjectiveComparator.calculateFitness(solution, weights), 0.0, TestThresholds.SOLUTION_EPS);
+		Assert.assertEquals(calculate(solution, weights), 0.0, TestThresholds.SOLUTION_EPS);
 		
 		solution = TestUtils.newSolution(1.0, 1.0);
-		Assert.assertEquals(MinMaxObjectiveComparator.calculateFitness(solution, weights), 1.0, TestThresholds.SOLUTION_EPS);
+		Assert.assertEquals(calculate(solution, weights), 1.0, TestThresholds.SOLUTION_EPS);
 		
 		solution = TestUtils.newSolution(1.0, -1.0);
-		Assert.assertEquals(MinMaxObjectiveComparator.calculateFitness(solution, weights), 1.0, TestThresholds.SOLUTION_EPS);
+		Assert.assertEquals(calculate(solution, weights), 1.0, TestThresholds.SOLUTION_EPS);
 		
 		solution = TestUtils.newSolution(0.0, 0.0);
-		Assert.assertEquals(MinMaxObjectiveComparator.calculateFitness(solution, weights), 0.0, TestThresholds.SOLUTION_EPS);
+		Assert.assertEquals(calculate(solution, weights), 0.0, TestThresholds.SOLUTION_EPS);
 	}
 	
 	@Test

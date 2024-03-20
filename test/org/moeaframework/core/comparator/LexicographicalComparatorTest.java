@@ -23,35 +23,20 @@ import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.core.Solution;
 
-/**
- * Tests the {@code LexicographicalComparator} class.
- */
 public class LexicographicalComparatorTest {
 
-	/**
-	 * The lexicographical comparator used for testing.
-	 */
 	private LexicographicalComparator comparator;
 
-	/**
-	 * Setup the comparator for use by all test methods.
-	 */
 	@Before
 	public void setUp() {
 		comparator = new LexicographicalComparator();
 	}
 
-	/**
-	 * Removes references to shared objects so they can be garbage collected.
-	 */
 	@After
 	public void tearDown() {
 		comparator = null;
 	}
 
-	/**
-	 * Tests if the comparator correctly detects dominance.
-	 */
 	@Test
 	public void testDominance() {
 		Solution solution1 = new Solution(new double[] { 0, 0 });
@@ -66,9 +51,6 @@ public class LexicographicalComparatorTest {
 		Assert.assertTrue(comparator.compare(solution3, solution2) > 0);
 	}
 
-	/**
-	 * Tests if the comparator correctly detects non-dominance.
-	 */
 	@Test
 	public void testNondominance() {
 		Solution solution1 = new Solution(new double[] { 0, 0 });

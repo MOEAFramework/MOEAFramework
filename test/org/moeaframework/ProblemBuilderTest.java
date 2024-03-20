@@ -32,9 +32,6 @@ import org.moeaframework.core.spi.ProblemFactoryTestWrapper;
 import org.moeaframework.problem.DTLZ.DTLZ2;
 import org.moeaframework.problem.ZDT.ZDT5;
 
-/**
- * Tests the {@link ProblemBuilder} class.
- */
 public class ProblemBuilderTest {
 	
 	@Test(expected = IllegalArgumentException.class)

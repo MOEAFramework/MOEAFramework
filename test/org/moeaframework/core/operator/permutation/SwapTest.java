@@ -31,9 +31,6 @@ public class SwapTest extends AbstractPermutationOperatorTest<Swap> {
 		return new Swap(1.0);
 	}
 
-	/**
-	 * Tests various probabilities to ensure swap mutation is applied the correct number of times on average.
-	 */
 	@Test
 	public void testProbabilities() {
 		testProbability(0.0);

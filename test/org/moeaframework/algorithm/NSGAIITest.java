@@ -35,9 +35,6 @@ import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.util.TypedProperties;
 
-/**
- * Tests the {@link NSGAII} class.
- */
 @RunWith(CIRunner.class)
 @Retryable
 public class NSGAIITest extends AlgorithmTest {

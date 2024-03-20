@@ -33,9 +33,6 @@ import org.moeaframework.core.indicator.Indicators.IndicatorValues;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.core.spi.ProblemFactoryTestWrapper;
 
-/**
- * Tests the {@link ExtractData} class.
- */
 public class ExtractDataTest {
 	
 	public static final String COMPLETE = """

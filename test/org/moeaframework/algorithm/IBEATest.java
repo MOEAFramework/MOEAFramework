@@ -31,9 +31,6 @@ import org.moeaframework.core.fitness.AdditiveEpsilonIndicatorFitnessEvaluator;
 import org.moeaframework.problem.MockRealProblem;
 import org.moeaframework.util.TypedProperties;
 
-/**
- * Tests the {@link IBEA} class.
- */
 @RunWith(CIRunner.class)
 @Retryable
 public class IBEATest extends AlgorithmTest {

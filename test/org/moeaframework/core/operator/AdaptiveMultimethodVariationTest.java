@@ -29,19 +29,9 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.selection.UniformSelection;
 
-/**
- * Tests the {@link AdaptiveMultimethodVariation} class.
- */
 public class AdaptiveMultimethodVariationTest {
 	
-	/**
-	 * The shared population used for testing.
-	 */
 	private Population population;
-	
-	/**
-	 * The shared adaptive multhmethod variation operator used for testing.
-	 */
 	private AdaptiveMultimethodVariation variation;
 	
 	/**
@@ -49,21 +39,9 @@ public class AdaptiveMultimethodVariationTest {
 	 */
 	private static class DummyVariation implements Variation {
 
-		/**
-		 * The arity of this operator.
-		 */
 		private final int arity;
-		
-		/**
-		 * The number of invocations of the {@code evolve} method.
-		 */
 		private int count = 0;
 		
-		/**
-		 * Constructs a dummy variation operator with the specified arity.
-		 * 
-		 * @param arity the arity of this operator
-		 */
 		public DummyVariation(int arity) {
 			super();
 			this.arity = arity;
@@ -88,9 +66,6 @@ public class AdaptiveMultimethodVariationTest {
 		
 	}
 	
-	/**
-	 * Creates the shared objects used by these tests.
-	 */
 	@Before
 	public void setUp() {
 		population = new Population();
@@ -110,34 +85,22 @@ public class AdaptiveMultimethodVariationTest {
 		variation = new AdaptiveMultimethodVariation(population);
 	}
 	
-	/**
-	 * Removes references to shared objects so they can be garbage collected.
-	 */
 	@After
 	public void tearDown() {
 		population = null;
 		variation = null;
 	}
 	
-	/**
-	 * Tests if an exception is thrown when calling the {@code getArity()} method with no operators.
-	 */
-	@Test(expected = Exception.class)
+	@Test(expected = IllegalStateException.class)
 	public void testGetArityNoOperators() {
 		variation.getArity();
 	}
 
-	/**
-	 * Tests if an exception is thrown when calling the {@code evolve()} method with no operators.
-	 */
-	@Test(expected = Exception.class)
+	@Test(expected = IllegalStateException.class)
 	public void testEvolveNoOperators() {
 		variation.evolve(null);
 	}
 	
-	/**
-	 * Tests if the probabilities used are correct.
-	 */
 	@Test
 	public void testProbabilities() {
 		variation.addOperator(new DummyVariation(1));
@@ -151,9 +114,6 @@ public class AdaptiveMultimethodVariationTest {
 		assertActualSelectionProbabilities(variation, 3.0/5.0, 2.0/5.0);
 	}
 	
-	/**
-	 * Tests if the probabilities used are correct for an initial population.
-	 */
 	@Test
 	public void testProbabilitiesInitialPopulation() {
 		variation.addOperator(new DummyVariation(2));

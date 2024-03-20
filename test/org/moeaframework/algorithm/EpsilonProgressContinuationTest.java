@@ -36,9 +36,6 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.operator.real.UM;
 import org.moeaframework.core.selection.UniformSelection;
 
-/**
- * Tests the {@link EpsilonProgressContinuation} class.
- */
 public class EpsilonProgressContinuationTest {
 	
 	protected Population population;

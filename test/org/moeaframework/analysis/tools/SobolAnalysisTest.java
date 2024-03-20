@@ -32,9 +32,6 @@ import org.moeaframework.TestThresholds;
 import org.moeaframework.TestUtils;
 import org.moeaframework.util.sequence.Saltelli;
 
-/**
- * Tests the {@link SobolAnalysis} class.
- */
 public class SobolAnalysisTest {
 	
 	@Test

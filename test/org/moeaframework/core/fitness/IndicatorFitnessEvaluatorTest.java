@@ -25,15 +25,8 @@ import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
 import org.moeaframework.problem.MockRealProblem;
 
-/**
- * Tests the {@link IndicatorFitnessEvaluatorTest} class.
- */
 public class IndicatorFitnessEvaluatorTest {
 	
-	/**
-	 * Tests if the updated fitness from {@code removeAndUpdate()} equals those produced by {@code evaluate} on the
-	 * resulting population.
-	 */
 	@Test
 	public void testRemoveAndUpdate() {
 		Problem problem = new MockRealProblem(2);

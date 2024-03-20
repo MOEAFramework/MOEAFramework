@@ -24,9 +24,6 @@ import org.junit.Test;
 import org.moeaframework.TestUtils;
 import org.moeaframework.core.FrameworkException;
 
-/**
- * Tests the {@link SimpleStatistics} class.
- */
 public class SimpleStatisticsTest {
 	
 	@Test

@@ -31,9 +31,6 @@ public class BinaryIntegerVariableTest {
 		value = new BinaryIntegerVariable(7, 5, 10);
 	}
 
-	/**
-	 * Removes references to shared objects so they can be garbage collected.
-	 */
 	@After
 	public void tearDown() {
 		value = null;

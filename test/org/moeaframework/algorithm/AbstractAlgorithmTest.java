@@ -19,61 +19,15 @@ package org.moeaframework.algorithm;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 
 import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.TestUtils;
 import org.moeaframework.core.NondominatedPopulation;
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
+import org.moeaframework.problem.MockRealProblem;
 
-/**
- * Tests the {@link AbstractAlgorithm} class.
- */
 public class AbstractAlgorithmTest {
-
-	/**
-	 * Test problem.
-	 */
-	private static class TestProblem implements Problem {
-
-		@Override
-		public void evaluate(Solution solution) {
-			// do nothing
-		}
-
-		@Override
-		public String getName() {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public int getNumberOfConstraints() {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public int getNumberOfObjectives() {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public int getNumberOfVariables() {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public Solution newSolution() {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void close() {
-			//do nothing
-		}
-
-	}
 
 	/**
 	 * Test {@code AbstractAlgorithm} that counts the number of times the {@code iterate} method is invoked.
@@ -89,7 +43,7 @@ public class AbstractAlgorithmTest {
 		 * Constructs a test {@code AbstractAlgorithm}.
 		 */
 		public TestAbstractAlgorithm() {
-			super(new TestProblem());
+			super(new MockRealProblem(2));
 		}
 
 		@Override
@@ -113,11 +67,8 @@ public class AbstractAlgorithmTest {
 
 	}
 
-	/**
-	 * Tests if the {@code AbstractAlgorithm} works correctly under normal operating conditions.
-	 */
 	@Test
-	public void testLifecycle1() {
+	public void testExplicitCallToInitialize() {
 		TestAbstractAlgorithm algorithm = new TestAbstractAlgorithm();
 
 		Assert.assertFalse(algorithm.isInitialized());
@@ -141,11 +92,8 @@ public class AbstractAlgorithmTest {
 		Assert.assertTrue(algorithm.isTerminated());
 	}
 
-	/**
-	 * Tests if the {@code AbstractAlgorithm} works correctly under normal operating conditions.
-	 */
 	@Test
-	public void testLifecycle2() {
+	public void testImplicitInitialization() {
 		TestAbstractAlgorithm algorithm = new TestAbstractAlgorithm();
 
 		Assert.assertFalse(algorithm.isInitialized());
@@ -164,12 +112,8 @@ public class AbstractAlgorithmTest {
 		Assert.assertTrue(algorithm.isTerminated());
 	}
 
-	/**
-	 * While this state may seem to be an error, since the {@link Algorithm} interface does not provide an
-	 * {@code initialize()} method, calling {@code terminate} immediately after the constructor is valid.
-	 */
 	@Test
-	public void testLifecycle3() {
+	public void testTerminateBeforeInitialization() {
 		AbstractAlgorithm algorithm = new TestAbstractAlgorithm();
 
 		algorithm.terminate();
@@ -178,36 +122,24 @@ public class AbstractAlgorithmTest {
 		Assert.assertTrue(algorithm.isTerminated());
 	}
 
-	/**
-	 * Tests if an abnormal lifecycle is correctly handled; in this case, if the {@code AbstractAlgorithm} is
-	 * initialized twice.
-	 */
 	@Test(expected = AlgorithmException.class)
-	public void testLifecycleError1() {
+	public void testGuardMultipleInitializations1() {
 		AbstractAlgorithm algorithm = new TestAbstractAlgorithm();
 
 		algorithm.initialize();
 		algorithm.initialize();
 	}
 
-	/**
-	 * Tests if an abnormal lifecycle is correctly handled; in this case, if the {@code AbstractAlgorithm} is
-	 * initialized twice.
-	 */
 	@Test(expected = AlgorithmException.class)
-	public void testLifecycleError2() {
+	public void testGuardMultipleInitializations2() {
 		AbstractAlgorithm algorithm = new TestAbstractAlgorithm();
 
 		algorithm.step();
 		algorithm.initialize();
 	}
 
-	/**
-	 * Tests if an abnormal lifecycle is correctly handled; in this case, if the {@code AbstractAlgorithm} is
-	 * terminated twice.
-	 */
 	@Test(expected = AlgorithmException.class)
-	public void testLifecycleError3() {
+	public void testGuardMultipleTerminations() {
 		AbstractAlgorithm algorithm = new TestAbstractAlgorithm();
 
 		algorithm.step();
@@ -215,12 +147,8 @@ public class AbstractAlgorithmTest {
 		algorithm.terminate();
 	}
 
-	/**
-	 * Tests if an abnormal lifecycle is correctly handled; in this case, if the {@code AbstractAlgorithm} is iterated
-	 * after termination.
-	 */
 	@Test(expected = AlgorithmException.class)
-	public void testLifecycleError4() {
+	public void testGuardStepAfterTerminate() {
 		AbstractAlgorithm algorithm = new TestAbstractAlgorithm();
 
 		algorithm.step();
@@ -228,12 +156,8 @@ public class AbstractAlgorithmTest {
 		algorithm.step();
 	}
 
-	/**
-	 * Tests if an abnormal lifecycle is correctly handled; in this case, if the {@code AbstractAlgorithm} is
-	 * initialized after termination.
-	 */
 	@Test(expected = AlgorithmException.class)
-	public void testLifecycleError5() {
+	public void testGuardInitializeAfterTerminate() {
 		AbstractAlgorithm algorithm = new TestAbstractAlgorithm();
 
 		algorithm.step();
@@ -241,33 +165,29 @@ public class AbstractAlgorithmTest {
 		algorithm.initialize();
 	}
 
-	/**
-	 * Tests if the {@code evaluate} and {@code evaluateAll} methods correctly track the number of evaluations.
-	 */
 	@Test
 	public void testNumberOfEvaluations() {
 		AbstractAlgorithm algorithm = new TestAbstractAlgorithm();
 		Solution[] solutions = new Solution[100];
+		
+		for (int i = 0; i < 100; i++) {
+			solutions[i] = algorithm.getProblem().newSolution();
+		}
 
 		Assert.assertEquals(0, algorithm.getNumberOfEvaluations());
 
-		// since TestProblem does nothing, null solutions are ok
-		algorithm.evaluateAll(Arrays.asList(solutions));
-		algorithm.evaluate(null);
-		algorithm.evaluate(null);
-		algorithm.evaluateAll(Arrays.asList(solutions));
+		algorithm.evaluateAll(solutions);
+		algorithm.evaluate(algorithm.getProblem().newSolution());
+		algorithm.evaluate(algorithm.getProblem().newSolution());
+		algorithm.evaluateAll(solutions);
 
 		Assert.assertEquals(202, algorithm.getNumberOfEvaluations());
 	}
 
-	/**
-	 * While this is technically an error as the {@code AbstractAlgorithm} is not serializable, the current contract of
-	 * {@link Checkpoints} requires it to continue normally if the state file is not available.
-	 * 
-	 * @throws IOException should not occur
-	 */
 	@Test
 	public void testResumable() throws IOException {
+		// while this is technically an error since the algorithm is not serializable, this is just testing the
+		// constructor if no state file exists
 		File file = TestUtils.createTempFile();
 		Checkpoints checkpoints = new Checkpoints(new TestAbstractAlgorithm(), file, 0);
 		checkpoints.step();

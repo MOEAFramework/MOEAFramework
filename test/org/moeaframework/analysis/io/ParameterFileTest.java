@@ -25,14 +25,8 @@ import org.junit.Test;
 import org.moeaframework.TestUtils;
 import org.moeaframework.core.Settings;
 
-/**
- * Tests the {@link ParameterFile} class.
- */
 public class ParameterFileTest {
 
-	/**
-	 * A valid parameter file input.
-	 */
 	public static final String COMPLETE = """
 			entry1 0.0 1.0
 			#comment 0.0 1.0
@@ -40,38 +34,24 @@ public class ParameterFileTest {
 			entry3 0.0 1.0
 			""";
 
-	/**
-	 * An invalid parameter file input, where an entry is missing an element.
-	 */
-	public static final String INVALID1 = """
+	public static final String MISSING_ENTRY = """
 			entry1 0.0 1.0
 			entry2 100
 			entry3 0.0 1.0
 			""";
 
-	/**
-	 * An invalid parameter file input, where an entry is missing an entire line.
-	 */
-	public static final String INVALID2 = """
+	public static final String MISSING_LINE = """
 			entry1 0.0 1.0
 			
 			entry3 0.0 1.0
 			""";
 
-	/**
-	 * An invalid parameter file input, containing unparseable data.
-	 */
-	public static final String INVALID3 = """
+	public static final String INVALID_ENTRY = """
 			entry1 0.0 1.0
 			entry2 100foo 10000
 			entry3 0.0 1.0
 			""";
 
-	/**
-	 * Performs the necessary assertions to validate a successful load of the COMPLETE input.
-	 * 
-	 * @param pf the parameter file
-	 */
 	private void validateComplete(ParameterFile pf) {
 		Assert.assertEquals(3, pf.size());
 
@@ -88,68 +68,44 @@ public class ParameterFileTest {
 		Assert.assertEquals(1.0, pf.get(2).getUpperBound(), Settings.EPS);
 	}
 
-	/**
-	 * Tests reading COMPLETE through the {@code Reader} constructor.
-	 */
 	@Test
 	public void testReaderComplete() throws IOException {
 		validateComplete(new ParameterFile(new StringReader(COMPLETE)));
 	}
 
-	/**
-	 * Tests reading INVALID1 through the {@code Reader} constructor.
-	 */
 	@Test(expected = IOException.class)
-	public void testReaderInvalid1() throws IOException {
-		new ParameterFile(new StringReader(INVALID1));
+	public void testReaderMissingEntry() throws IOException {
+		new ParameterFile(new StringReader(MISSING_ENTRY));
 	}
 
-	/**
-	 * Tests reading INVALID2 through the {@code Reader} constructor.
-	 */
 	@Test(expected = IOException.class)
-	public void testReaderInvalid2() throws IOException {
-		new ParameterFile(new StringReader(INVALID2));
+	public void testReaderMissingLine() throws IOException {
+		new ParameterFile(new StringReader(MISSING_LINE));
 	}
 
-	/**
-	 * Tests reading INVALID3 through the {@code Reader} constructor.
-	 */
 	@Test(expected = NumberFormatException.class)
-	public void testReaderInvalid3() throws IOException {
-		new ParameterFile(new StringReader(INVALID3));
+	public void testReaderInvalidEntry() throws IOException {
+		new ParameterFile(new StringReader(INVALID_ENTRY));
 	}
 
-	/**
-	 * Tests reading COMPLETE through the {@code File} constructor.
-	 */
 	@Test
 	public void testFileComplete() throws IOException {
 		validateComplete(new ParameterFile(TestUtils.createTempFile(COMPLETE)));
 	}
 
-	/**
-	 * Tests reading INVALID1 through the {@code File} constructor.
-	 */
 	@Test(expected = IOException.class)
-	public void testFileInvalid1() throws IOException {
-		new ParameterFile(TestUtils.createTempFile(INVALID1));
+	public void testFileMissingEntry() throws IOException {
+		new ParameterFile(TestUtils.createTempFile(MISSING_ENTRY));
 	}
 
-	/**
-	 * Tests reading INVALID2 through the {@code File} constructor.
-	 */
 	@Test(expected = IOException.class)
-	public void testFileInvalid2() throws IOException {
-		new ParameterFile(TestUtils.createTempFile(INVALID2));
+	public void testFileMissingLine() throws IOException {
+		new ParameterFile(TestUtils.createTempFile(MISSING_LINE));
 	}
 
-	/**
-	 * Tests reading INVALID3 through the {@code File} constructor.
-	 */
 	@Test(expected = NumberFormatException.class)
-	public void testFileInvalid3() throws IOException {
-		new ParameterFile(TestUtils.createTempFile(INVALID3));
+	public void testFileInvalidEntry() throws IOException {
+		new ParameterFile(TestUtils.createTempFile(INVALID_ENTRY));
 	}
 
 }

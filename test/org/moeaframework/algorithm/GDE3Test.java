@@ -25,9 +25,6 @@ import org.moeaframework.CIRunner;
 import org.moeaframework.Flaky;
 import org.moeaframework.Retryable;
 
-/**
- * Tests the {@link GDE3} class.
- */
 @RunWith(CIRunner.class)
 @Retryable
 public class GDE3Test extends AlgorithmTest {

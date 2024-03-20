@@ -34,9 +34,6 @@ public class RealVariableTest {
 		value = new RealVariable(0.5, 0.0, 1.0);
 	}
 
-	/**
-	 * Removes references to shared objects so they can be garbage collected.
-	 */
 	@After
 	public void tearDown() {
 		value = null;

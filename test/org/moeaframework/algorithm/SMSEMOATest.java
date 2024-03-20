@@ -33,9 +33,6 @@ import org.moeaframework.problem.MockRealProblem;
 import org.moeaframework.util.TypedProperties;
 import org.moeaframework.CIRunner;
 
-/**
- * Tests the {@link SMSEMOA} class.
- */
 @RunWith(CIRunner.class)
 public class SMSEMOATest extends AlgorithmTest {
 	

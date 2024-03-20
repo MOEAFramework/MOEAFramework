@@ -26,9 +26,6 @@ import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.problem.ProblemStub;
 
-/**
- * Tests the {@link AdditiveEpsilonIndicatorFitnessEvaluator} class.
- */
 public class AdditiveEpsilonIndicatorFitnessEvaluatorTest {
 	
 	private AdditiveEpsilonIndicatorFitnessEvaluator fitness;

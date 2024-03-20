@@ -26,35 +26,20 @@ import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.core.Solution;
 
-/**
- * Tests the {@link NondominatedSortingComparator} class.
- */
 public class NondominatedSortingComparatorTest {
 
-	/**
-	 * The non-dominated sorting comparator used for testing.
-	 */
 	private NondominatedSortingComparator comparator;
 
-	/**
-	 * Setup the comparator for use by all test methods.
-	 */
 	@Before
 	public void setUp() {
 		comparator = new NondominatedSortingComparator();
 	}
 
-	/**
-	 * Removes references to shared objects so they can be garbage collected.
-	 */
 	@After
 	public void tearDown() {
 		comparator = null;
 	}
 
-	/**
-	 * Tests if the comparator correctly detects dominance.
-	 */
 	@Test
 	public void testDominance() {
 		Solution solution1 = new Solution(0, 0);
@@ -79,9 +64,6 @@ public class NondominatedSortingComparatorTest {
 		Assert.assertTrue(comparator.compare(solution3, solution2) > 0);
 	}
 
-	/**
-	 * Tests if the comparator correctly detects non-dominance.
-	 */
 	@Test
 	public void testNondominance() {
 		Solution solution1 = new Solution(0, 0);
@@ -105,9 +87,6 @@ public class NondominatedSortingComparatorTest {
 		Assert.assertTrue(comparator.compare(solution2, solution1) == 0);
 	}
 
-	/**
-	 * Tests if an exception is thrown when comparing solutions missing the rank attribute.
-	 */
 	@Test(expected = NullPointerException.class)
 	public void testMissingRankAttribute() {
 		Solution solution1 = new Solution(0, 0);
@@ -116,9 +95,6 @@ public class NondominatedSortingComparatorTest {
 		comparator.compare(solution1, solution2);
 	}
 
-	/**
-	 * Tests if an exception is thrown when comparing solutions missing the crowding attribute.
-	 */
 	@Test(expected = NullPointerException.class)
 	public void testMissingCrowdingAttribute() {
 		Solution solution1 = new Solution(0, 0);

@@ -24,9 +24,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.core.comparator.NondominatedSortingComparator;
 
-/**
- * Tests the {@link NondominatedSortingPopulation} class.
- */
 public class NondominatedSortingPopulationTest {
 	
 	private static class TestNondominatedSortingPopulation extends NondominatedSortingPopulation {
@@ -53,9 +50,6 @@ public class NondominatedSortingPopulationTest {
 		
 	}
 
-	/**
-	 * Tests if the {@code truncate} method works correctly with solutions of differing ranks.
-	 */
 	@Test
 	public void testRankTruncation() {
 		NondominatedSortingPopulation population = new NondominatedSortingPopulation();
@@ -75,9 +69,6 @@ public class NondominatedSortingPopulationTest {
 		Assert.assertFalse(population.contains(solution3));
 	}
 
-	/**
-	 * Tests if {@code truncate} method works correctly with equally-ranked solutions.
-	 */
 	@Test
 	public void testCrowdingTruncation() {
 		NondominatedSortingPopulation population = new NondominatedSortingPopulation();

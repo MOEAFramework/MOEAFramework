@@ -44,34 +44,13 @@ import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.AbstractProblem;
 import org.moeaframework.util.TypedProperties;
 
-/**
- * Tests the {@link ResultFileWriter} class.
- */
 public class ResultFileWriterTest {
 	
-	/**
-	 * The problem used for testing.
-	 */
 	private Problem problem;
-	
-	/**
-	 * A feasible solution.
-	 */
-	private Solution solution1;
-	
-	/**
-	 * Another feasible solution.
-	 */
-	private Solution solution2;
-	
-	/**
-	 * A solution violating its constraints.
-	 */
-	private Solution solution3;
+	private Solution solution1; // feasible
+	private Solution solution2; // feasible
+	private Solution solution3; // violates constraints
 
-	/**
-	 * Creates the problem used for testing.
-	 */
 	@Before
 	public void setUp() {
 		problem = new AbstractProblem(3, 2, 1) {
@@ -112,9 +91,6 @@ public class ResultFileWriterTest {
 		solution3.setConstraints(new double[] { -1.0 });
 	}
 
-	/**
-	 * Removes references to shared objects so they can be garbage collected.
-	 */
 	@After
 	public void tearDown() {
 		problem = null;
@@ -123,9 +99,6 @@ public class ResultFileWriterTest {
 		solution3 = null;
 	}
 	
-	/**
-	 * Tests if special characters are escaped correctly when writing property files.
-	 */
 	@Test
 	public void testSpecialCharactersInProperties() throws IOException {
 		File file = TestUtils.createTempFile();
@@ -143,10 +116,7 @@ public class ResultFileWriterTest {
 			Assert.assertEquals(properties, reader.next().getProperties());
 		}
 	}
-	
-	/**
-	 * Tests if {@code null} properties are written correctly.
-	 */
+
 	@Test
 	public void testNullProperties() throws IOException {
 		File file = TestUtils.createTempFile();
@@ -162,10 +132,7 @@ public class ResultFileWriterTest {
 			Assert.assertEquals(properties, reader.next().getProperties());
 		}
 	}
-	
-	/**
-	 * Tests if empty properties are written correctly.
-	 */
+
 	@Test
 	public void testEmptyProperties() throws IOException {
 		File file = TestUtils.createTempFile();
@@ -182,9 +149,6 @@ public class ResultFileWriterTest {
 		}
 	}
 	
-	/**
-	 * Tests if the population and properties are written correctly.
-	 */
 	@Test
 	public void testNormal() throws IOException {
 		File file = TestUtils.createTempFile();
@@ -207,9 +171,6 @@ public class ResultFileWriterTest {
 		}
 	}
 	
-	/**
-	 * Tests if the population and properties are written correctly when writing decision variables is disabled.
-	 */
 	@Test
 	public void testNoVariables() throws IOException {
 		File file = TestUtils.createTempFile();
@@ -237,9 +198,6 @@ public class ResultFileWriterTest {
 		}
 	}
 	
-	/**
-	 * Tests if constraint violating solutions are not written, and that empty populations are written correctly.
-	 */
 	@Test
 	public void testConstrainedSolution() throws IOException {
 		File file = TestUtils.createTempFile();
@@ -261,9 +219,6 @@ public class ResultFileWriterTest {
 		}
 	}
 
-	/**
-	 * Tests if result files with multiple entries are written correctly, and that writing can be resumed correctly.
-	 */
 	@Test
 	public void testAppend() throws IOException {
 		File file = TestUtils.createTempFile();
@@ -404,7 +359,7 @@ public class ResultFileWriterTest {
 			Assert.assertFalse(writer.encode(p).matches(".*\\s.*"));
 			
 			Grammar g = new Grammar(5);
-			//Assert.assertEquals("-", writer.encode(g));
+			Assert.assertEquals("Grammar(0,0,0,0,0)", writer.encode(g));
 			Assert.assertFalse(writer.encode(g).matches(".*\\s.*"));
 		}
 	}

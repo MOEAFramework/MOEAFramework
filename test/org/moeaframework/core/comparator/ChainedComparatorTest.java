@@ -21,9 +21,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.core.Solution;
 
-/**
- * Tests the {@link ChainedComparator} class.
- */
 public class ChainedComparatorTest {
 
 	/**
@@ -31,16 +28,8 @@ public class ChainedComparatorTest {
 	 */
 	private static class FixedComparator implements DominanceComparator {
 
-		/**
-		 * The value returned by the {@link compare} method.
-		 */
 		private final int value;
 
-		/**
-		 * Constructs a comparator whose {@link compare} method always returns the specified value.
-		 * 
-		 * @param value the value to be returned by the {@link compare} method
-		 */
 		public FixedComparator(int value) {
 			this.value = value;
 		}
@@ -52,9 +41,6 @@ public class ChainedComparatorTest {
 
 	}
 
-	/**
-	 * Tests if the chained comparator uses the first comparator if the first has a non-zero value.
-	 */
 	@Test
 	public void testFirstComparator() {
 		ChainedComparator cc = new ChainedComparator(new FixedComparator(1), new FixedComparator(-1));
@@ -62,9 +48,6 @@ public class ChainedComparatorTest {
 		Assert.assertEquals(1, cc.compare(null, null));
 	}
 
-	/**
-	 * Tests if the chained comparator uses the second comparator if the first has value zero.
-	 */
 	@Test
 	public void testSecondComparator() {
 		ChainedComparator cc = new ChainedComparator(new FixedComparator(0), new FixedComparator(-1));
@@ -72,9 +55,6 @@ public class ChainedComparatorTest {
 		Assert.assertEquals(-1, cc.compare(null, null));
 	}
 
-	/**
-	 * Tests if the chained comparator returns zero if all comparators have value zero.
-	 */
 	@Test
 	public void testNoComparators() {
 		ChainedComparator cc = new ChainedComparator(new FixedComparator(0), new FixedComparator(0));

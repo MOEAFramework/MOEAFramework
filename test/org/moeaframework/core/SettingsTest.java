@@ -29,8 +29,7 @@ import org.moeaframework.core.NondominatedPopulation.DuplicateMode;
 import org.moeaframework.util.PropertyScope;
 
 /**
- * Tests the {@link Settings} class.  These tests ensure that valid settings are provided, and that there should be no
- * errors when accessing these settings.
+ * These tests ensure that valid default settings are provided and there are no errors parsing settings.
  */
 public class SettingsTest {
 

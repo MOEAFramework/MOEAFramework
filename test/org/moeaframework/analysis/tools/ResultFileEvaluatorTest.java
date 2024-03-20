@@ -25,9 +25,6 @@ import org.moeaframework.TestUtils;
 import org.moeaframework.analysis.io.MetricFileReader;
 import org.moeaframework.core.FrameworkException;
 
-/**
- * Tests the {@link ResultFileEvaluator} class.
- */
 public class ResultFileEvaluatorTest {
 	
 	public static final String COMPLETE = """

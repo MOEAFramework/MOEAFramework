@@ -27,9 +27,6 @@ import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.problem.MockRealProblem;
 import org.moeaframework.problem.DTLZ.DTLZ2;
 
-/**
- * Tests the {@link EpsilonHelper} class.
- */
 public class EpsilonHelperTest {
 	
 	@Test

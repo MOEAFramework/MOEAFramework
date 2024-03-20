@@ -28,9 +28,6 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.util.Vector;
 import org.moeaframework.util.weights.NormalBoundaryDivisions;
 
-/**
- * Tests the {@link ReferenceVectorGuidedPopulation} class.
- */
 public class ReferenceVectorGuidedPopulationTest {
 	
 	@Test

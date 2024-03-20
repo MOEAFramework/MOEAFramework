@@ -24,17 +24,10 @@ import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Settings;
 import org.moeaframework.problem.ProblemStub;
 
-/**
- * Tests the {@link Normalizer} class.
- */
 public class NormalizerTest {
 	
-	/**
-	 * Tests if the returned set is independent from the original, ensuring normalization does not affect the original
-	 * population.
-	 */
 	@Test
-	public void testNewObject() {
+	public void testNormalizeDoesNotAffectOriginal() {
 		NondominatedPopulation population = new NondominatedPopulation();
 		population.add(TestUtils.newSolution(0.0, 1.0));
 		population.add(TestUtils.newSolution(1.0, 0.0));
@@ -47,11 +40,8 @@ public class NormalizerTest {
 		Assert.assertFalse(population.contains(result.get(1)));
 	}
 	
-	/**
-	 * Tests if a normalized population remains unchanged.
-	 */
 	@Test
-	public void testNoRescale() {
+	public void testNoChangeIfAlreadyNormalized() {
 		NondominatedPopulation population = new NondominatedPopulation();
 		population.add(TestUtils.newSolution(0.0, 1.0));
 		population.add(TestUtils.newSolution(1.0, 0.0));
@@ -61,11 +51,8 @@ public class NormalizerTest {
 		TestUtils.assertEquals(population, normalizer.normalize(population));
 	}
 	
-	/**
-	 * Tests normalization when the bounds are derived from the population.
-	 */
 	@Test
-	public void testRescale() {
+	public void testBoundsFromPopulation() {
 		NondominatedPopulation population = new NondominatedPopulation();
 		population.add(TestUtils.newSolution(0.0, 0.1));
 		population.add(TestUtils.newSolution(10.0, -0.1));
@@ -81,11 +68,8 @@ public class NormalizerTest {
 		TestUtils.assertEquals(expected, normalizer.normalize(population));
 	}
 	
-	/**
-	 * Tests normalization when a reference point is provided.
-	 */
 	@Test
-	public void testRescaleReferencePoint() {
+	public void testBoundsFromReferencePoint() {
 		NondominatedPopulation population = new NondominatedPopulation();
 		population.add(TestUtils.newSolution(0.0, 0.1));
 		population.add(TestUtils.newSolution(10.0, -0.1));
@@ -101,11 +85,8 @@ public class NormalizerTest {
 		TestUtils.assertEquals(expected, normalizer.normalize(population));
 	}
 	
-	/**
-	 * Tests normalization when the bounds are defined explicitly.
-	 */
 	@Test
-	public void testRescaleExplicit() {
+	public void testBoundsFromIdealAndReferencePoint() {
 		NondominatedPopulation population = new NondominatedPopulation();
 		population.add(TestUtils.newSolution(0.0, 0.1));
 		population.add(TestUtils.newSolution(10.0, -0.1));
@@ -121,30 +102,21 @@ public class NormalizerTest {
 		TestUtils.assertEquals(expected, normalizer.normalize(population));
 	}
 	
-	/**
-	 * Tests if an exception is thrown when an empty set is provided.
-	 */
 	@Test(expected=IllegalArgumentException.class)
-	public void testConstructorException1() {
+	public void testConstructorEmptyReferenceSet() {
 		new Normalizer(new ProblemStub(2), new NondominatedPopulation());
 	}
 	
-	/**
-	 * Tests if an exception is thrown on a degenerate set.
-	 */
 	@Test(expected=IllegalArgumentException.class)
-	public void testConstructorException2() {
+	public void testConstructorSingleSolutionInReferenceSet() {
 		NondominatedPopulation population = new NondominatedPopulation();
 		population.add(TestUtils.newSolution(0.0, 1.0));
 		
 		new Normalizer(new ProblemStub(2), population);
 	}
 	
-	/**
-	 * Tests if an exception is thrown on a degenerate set.
-	 */
 	@Test(expected=IllegalArgumentException.class)
-	public void testConstructorException3() {
+	public void testConstructorDegenerateReferenceSet() {
 		NondominatedPopulation population = new NondominatedPopulation();
 		population.add(TestUtils.newSolution(1.0, 1.0));
 		population.add(TestUtils.newSolution(0.0, 1.0 + Settings.EPS/2.0));

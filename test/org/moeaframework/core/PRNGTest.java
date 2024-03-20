@@ -30,22 +30,12 @@ import org.moeaframework.TestThresholds;
 import org.moeaframework.Retryable;
 import org.moeaframework.CIRunner;
 
-/**
- * Tests a {@link PRNG} to ensure the {@code nextX} methods produce a sequence of values satisfying theoretical
- * properties of the desired distribution.
- */
 @RunWith(CIRunner.class)
 @Retryable
 public class PRNGTest {
 
-	/**
-	 * The number of samples used for statistics.
-	 */
 	private static int N = 1000000;
 
-	/**
-	 * Tests if the {@code nextFloat} method produces uniformly-distributed values in the range {@code [0, 1]}.
-	 */
 	@Test
 	public void testNextFloat() {
 		DescriptiveStatistics statistics = new DescriptiveStatistics();
@@ -57,9 +47,6 @@ public class PRNGTest {
 		testUniformDistribution(0.0, 1.0, statistics);
 	}
 
-	/**
-	 * Tests if the {@code nextFloat} method produces uniformly-distributed values in a specified range.
-	 */
 	@Test
 	public void testNextFloatRange() {
 		DescriptiveStatistics statistics = new DescriptiveStatistics();
@@ -71,9 +58,6 @@ public class PRNGTest {
 		testUniformDistribution(15.0, 20.0, statistics);
 	}
 
-	/**
-	 * Tests if the {@code nextDouble} method produces uniformly-distributed values in the range {@code [0, 1]}.
-	 */
 	@Test
 	public void testNextDouble() {
 		DescriptiveStatistics statistics = new DescriptiveStatistics();
@@ -85,9 +69,6 @@ public class PRNGTest {
 		testUniformDistribution(0.0, 1.0, statistics);
 	}
 
-	/**
-	 * Tests if the {@code nextDouble} method produces uniformly-distributed values in a specified range.
-	 */
 	@Test
 	public void testNextDoubleRange() {
 		DescriptiveStatistics statistics = new DescriptiveStatistics();
@@ -99,9 +80,6 @@ public class PRNGTest {
 		testUniformDistribution(15.0, 20.0, statistics);
 	}
 
-	/**
-	 * Tests if the {@code nextInt} method produces uniformly-distributed values using a histogram.
-	 */
 	@Test
 	public void testNextInt() {
 		int lessThanEqualZero = 0;
@@ -133,9 +111,6 @@ public class PRNGTest {
 		Assert.assertEquals(N / 4.0, greaterThanHalfPositive, TestThresholds.STATISTICS_EPS * N / 4.0);
 	}
 
-	/**
-	 * Tests if the {@code nextInt} method produces uniformly-distributed values in a specified range.
-	 */
 	@Test
 	public void testNextIntRange1() {
 		DescriptiveStatistics statistics = new DescriptiveStatistics();
@@ -147,9 +122,6 @@ public class PRNGTest {
 		testUniformDistribution(0, 14, statistics);
 	}
 
-	/**
-	 * Tests if the {@code nextInt} method produces uniformly-distributed values in a specified range.
-	 */
 	@Test
 	public void testNextIntRange2() {
 		DescriptiveStatistics statistics = new DescriptiveStatistics();
@@ -161,9 +133,6 @@ public class PRNGTest {
 		testUniformDistribution(15, 20, statistics);
 	}
 
-	/**
-	 * Tests if the {@code nextBoolean} method produces {@code true} and {@code false} with equal probability.
-	 */
 	@Test
 	public void testNextBoolean() {
 		DescriptiveStatistics statistics = new DescriptiveStatistics();
@@ -175,10 +144,6 @@ public class PRNGTest {
 		testUniformDistribution(0, 1, statistics);
 	}
 
-	/**
-	 * Tests if the {@code nextGaussian} method produces a Gaussian distribution with mean {@code 0} and standard
-	 * deviation {@code 1}.
-	 */
 	@Test
 	public void testNextGaussian() {
 		DescriptiveStatistics statistics = new DescriptiveStatistics();
@@ -190,10 +155,6 @@ public class PRNGTest {
 		testGaussianDistribution(0.0, 1.0, statistics);
 	}
 
-	/**
-	 * Tests if the {@code nextGaussian} method produces a Gaussian distribution with a specified mean and standard
-	 * deviation.
-	 */
 	@Test
 	public void testNextGaussianParameterized() {
 		DescriptiveStatistics statistics = new DescriptiveStatistics();
@@ -205,10 +166,6 @@ public class PRNGTest {
 		testGaussianDistribution(5.0, 2.0, statistics);
 	}
 
-	/**
-	 * Tests if the {@code shuffle} method produces valid permutations of a list, and that the distribution of the
-	 * values for each index are approximately uniform.
-	 */
 	@Test
 	public void testShuffleList() {
 		int P = 7;
@@ -235,129 +192,76 @@ public class PRNGTest {
 		}
 	}
 
-	/**
-	 * Tests if the {@code shuffle} method produces valid permutations of an array, and that the distribution of the
-	 * values for each index are approximately uniform.
-	 */
 	@Test
 	public void testShuffleObjectArray() throws Exception {
 		testShuffleArray(Object[].class, 5);
 	}
 
-	/**
-	 * Tests if the {@code shuffle} method correctly handles an empty array.
-	 */
 	@Test
 	public void testShuffleEmptyObjectArray() throws Exception {
 		testShuffleArray(Object[].class, 0);
 	}
 
-	/**
-	 * Tests if the {@code shuffle} method produces valid permutations of an integer array, and that the distribution
-	 * of the values for each index are approximately uniform.
-	 */
 	@Test
 	public void testShuffleIntArray() throws Exception {
 		testShuffleArray(int[].class, 5);
 	}
 
-	/**
-	 * Tests if the {@code shuffle} method correctly handles an empty integer array.
-	 */
 	@Test
 	public void testShuffleEmptyIntArray() throws Exception {
 		testShuffleArray(int[].class, 0);
 	}
 
-	/**
-	 * Tests if the {@code shuffle} method produces valid permutations of a double array, and that the distribution of
-	 * the values for each index are approximately uniform.
-	 */
 	@Test
 	public void testShuffleDoubleArray() throws Exception {
 		testShuffleArray(double[].class, 5);
 	}
 
-	/**
-	 * Tests if the {@code shuffle} method correctly handles an empty double array.
-	 */
 	@Test
 	public void testShuffleEmptyDoubleArray() throws Exception {
 		testShuffleArray(double[].class, 0);
 	}
 
-	/**
-	 * Tests if the {@code shuffle} method produces valid permutations of a float array, and that the distribution of
-	 * the values for each index are approximately uniform.
-	 */
 	@Test
 	public void testShuffleFloatArray() throws Exception {
 		testShuffleArray(float[].class, 5);
 	}
 
-	/**
-	 * Tests if the {@code shuffle} method correctly handles an empty float array.
-	 */
 	@Test
 	public void testShuffleEmptyFloatArray() throws Exception {
 		testShuffleArray(float[].class, 0);
 	}
 
-	/**
-	 * Tests if the {@code shuffle} method produces valid permutations of a long array, and that the distribution of
-	 * the values for each index are approximately uniform.
-	 */
 	@Test
 	public void testShuffleLongArray() throws Exception {
 		testShuffleArray(long[].class, 5);
 	}
 
-	/**
-	 * Tests if the {@code shuffle} method correctly handles an empty long array.
-	 */
 	@Test
 	public void testShuffleEmptyLongArray() throws Exception {
 		testShuffleArray(long[].class, 0);
 	}
 
-	/**
-	 * Tests if the {@code shuffle} method produces valid permutations of a short array, and that the distribution of
-	 * the values for each index are approximately uniform.
-	 */
 	@Test
 	public void testShuffleShortArray() throws Exception {
 		testShuffleArray(short[].class, 5);
 	}
 
-	/**
-	 * Tests if the {@code shuffle} method correctly handles an empty short array.
-	 */
 	@Test
 	public void testShuffleEmptyShortArray() throws Exception {
 		testShuffleArray(short[].class, 0);
 	}
 
-	/**
-	 * Tests if the {@code shuffle} method produces valid permutations of a byte array, and that the distribution of
-	 * the values for each index are approximately uniform.
-	 */
 	@Test
 	public void testShuffleByteArray() throws Exception {
 		testShuffleArray(byte[].class, 5);
 	}
 
-	/**
-	 * Tests if the {@code shuffle} method correctly handles an empty byte array.
-	 */
 	@Test
 	public void testShuffleEmptyByteArray() throws Exception {
 		testShuffleArray(byte[].class, 0);
 	}
 
-	/**
-	 * Tests if the {@code shuffle} method produces valid permutations of a boolean array, and that the distribution of
-	 * the values for each index are approximately uniform.
-	 */
 	@Test
 	public void testShuffleBooleanArray() {
 		int K = 4;
@@ -395,7 +299,7 @@ public class PRNGTest {
 	 * @param type the class of the array
 	 * @param size the size of the array
 	 */
-	public void testShuffleArray(Class<?> type, int size) throws Exception {
+	private void testShuffleArray(Class<?> type, int size) throws Exception {
 		Object array = Array.newInstance(type.getComponentType(), size);
 		DescriptiveStatistics[] statistics = new DescriptiveStatistics[size];
 

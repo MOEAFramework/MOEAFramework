@@ -27,9 +27,6 @@ import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.problem.MockRealProblem;
 
-/**
- * Tests the {@link HypervolumeFitnessEvaluator} class.
- */
 public class HypervolumeFitnessEvaluatorTest {
 	
 	private HypervolumeFitnessEvaluator fitness;

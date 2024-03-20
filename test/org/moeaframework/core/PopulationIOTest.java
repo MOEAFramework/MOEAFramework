@@ -31,19 +31,10 @@ import org.moeaframework.core.variable.Grammar;
 import org.moeaframework.core.variable.Permutation;
 import org.moeaframework.core.variable.RealVariable;
 
-/**
- * Tests the {@link PopulationIO} class.
- */
 public class PopulationIOTest {
 
-	/**
-	 * The shared population used for testing, initialized to contain two solutions.
-	 */
 	private Population population;
 
-	/**
-	 * Constructs any shared objects used by this class.
-	 */
 	@Before
 	public void setUp() {
 		population = new Population();
@@ -63,18 +54,11 @@ public class PopulationIOTest {
 		population.add(s2);
 	}
 
-	/**
-	 * Removes references to any shared objects for garbage collection.
-	 */
 	@After
 	public void tearDown() {
 		population = null;
 	}
 
-	/**
-	 * Tests the {@link PopulationIO#writeObjectives} and {@link PopulationIO#readObjectives} methods to ensure the
-	 * objectives are stored and retrieved correctly.
-	 */
 	@Test
 	public void testWriteReadObjectives() throws IOException {
 		File file = TestUtils.createTempFile();
@@ -85,16 +69,11 @@ public class PopulationIOTest {
 		Assert.assertEquals(population.size(), population2.size());
 
 		for (int i = 0; i < population.size(); i++) {
-			Assert.assertArrayEquals(population.get(i).getObjectives(),
-					population2.get(i).getObjectives(),
+			Assert.assertArrayEquals(population.get(i).getObjectives(), population2.get(i).getObjectives(),
 					TestThresholds.SOLUTION_EPS);
 		}
 	}
 
-	/**
-	 * Tests the {@link PopulationIO#write} and {@link PopulationIO#read} methods to ensure the objectives are stored
-	 * and retrieved correctly.
-	 */
 	@Test
 	public void testWriteRead() throws IOException {
 		File file = TestUtils.createTempFile();
@@ -106,10 +85,6 @@ public class PopulationIOTest {
 		Assert.assertEquals(population.size(), population2.size());
 	}
 	
-	/**
-	 * Tests {@link PopulationIO#readObjectives} to ensure it correctly parses files that contain extra whitespace
-	 * characters.
-	 */
 	@Test
 	public void testReadWhitespace() throws IOException {
 		File file = TestUtils.createTempFile("0   1 \t 2\n\t   3 4 5 \t\n");

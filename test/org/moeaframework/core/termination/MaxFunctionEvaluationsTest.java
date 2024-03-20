@@ -20,9 +20,6 @@ package org.moeaframework.core.termination;
 import org.junit.Assert;
 import org.junit.Test;
 
-/**
- * Tests the {@link MaxFunctionEvaluations} class.
- */
 public class MaxFunctionEvaluationsTest {
 
 	@Test

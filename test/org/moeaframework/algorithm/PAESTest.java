@@ -25,7 +25,7 @@ import org.moeaframework.Retryable;
 import org.moeaframework.CIRunner;
 
 /**
- * Tests the {@link PAES} class.  The MOEA Framework's implementation tends to outperform the JMetal implementation.
+ * The MOEA Framework's implementation tends to outperform the JMetal implementation.
  */
 @RunWith(CIRunner.class)
 @Retryable

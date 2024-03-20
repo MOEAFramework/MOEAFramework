@@ -27,9 +27,6 @@ import org.moeaframework.core.spi.AlgorithmFactoryTestWrapper;
 import org.moeaframework.core.spi.ProblemFactoryTestWrapper;
 import org.moeaframework.problem.MockMultiTypeProblem;
 
-/**
- * Tests the {@link Executor} class.
- */
 public class ExecutorTest {
 
 	private AlgorithmFactoryTestWrapper algorithmFactory;

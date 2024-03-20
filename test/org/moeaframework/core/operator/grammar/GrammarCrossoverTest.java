@@ -31,9 +31,6 @@ public class GrammarCrossoverTest extends AbstractGrammarOperatorTest<GrammarCro
 		return new GrammarCrossover(1.0);
 	}
 	
-	/**
-	 * Tests various probabilities to ensure the {@code GrammarCrossover} operates with the expected probability.
-	 */
 	@Test
 	public void testProbabilities() {
 		testProbability(0.0);

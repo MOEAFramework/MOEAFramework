@@ -43,9 +43,6 @@ import org.moeaframework.core.operator.real.UM;
 import org.moeaframework.core.selection.TournamentSelection;
 import org.moeaframework.problem.MockRealProblem;
 
-/**
- * Tests the {@link Instrumenter} class.
- */
 public class InstrumenterTest {
 	
 	public static class TestCollector implements Collector {

@@ -35,22 +35,10 @@ import org.moeaframework.util.TypedProperties;
  */
 public class ParameterizationTest {
 	
-	/**
-	 * The directory storing the parameter description files.
-	 */
 	private static final String directory = "./params/";
-	
-	/**
-	 * The algorithms being tested.
-	 */
+
 	private final String[] algorithms = { "eMOEA", "eNSGAII", "GDE3", "IBEA", "MOEAD", "NSGAII", "OMOPSO", "SPEA2" };
 	
-	/**
-	 * Tests all listed algorithms to ensure all parameters in their associated parameter description file are accessed
-	 * by the algorithm.  This test excludes the parameter {@code maxEvaluations}.
-	 * 
-	 * @throws IOException if an I/O error occurred
-	 */
 	@Test
 	public void test() throws IOException {
 		Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");

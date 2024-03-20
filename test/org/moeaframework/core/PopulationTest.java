@@ -25,19 +25,10 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-/**
- * Tests the {@link Population} class.
- */
 public class PopulationTest {
 
-	/**
-	 * The population being tested.
-	 */
 	private Population population;
 
-	/**
-	 * Constructs any shared objects used by this class.
-	 */
 	@Before
 	public void setUp() {
 		population = new Population();
@@ -48,17 +39,11 @@ public class PopulationTest {
 		population.add(new Solution(new double[] { 4.0, 3.0, 2.0 }));
 	}
 
-	/**
-	 * Removes references to shared objects so they can be garbage collected.
-	 */
 	@After
 	public void tearDown() {
 		population = null;
 	}
 
-	/**
-	 * Tests the copy constructor to ensure the new population is an identical copy of the original.
-	 */
 	@Test
 	public void testCopyConstructor() {
 		Population copy = new Population(population);
@@ -68,75 +53,49 @@ public class PopulationTest {
 		Assert.assertTrue(population.containsAll(copy));
 	}
 
-	/**
-	 * Tests if the {@code get} method throws an exception if accessing an invalid index.
-	 */
 	@Test(expected = IndexOutOfBoundsException.class)
-	public void testGetBoundaryCheck1() {
+	public void testGetOutOfBounds1() {
 		population.get(4);
 	}
 
-	/**
-	 * Tests if the {@code get} method throws an exception if accessing an invalid index.
-	 */
 	@Test(expected = IndexOutOfBoundsException.class)
-	public void testGetBoundaryCheck2() {
+	public void testGetOutOfBounds2() {
 		population.get(-1);
 	}
 
-	/**
-	 * Tests if the {@code remove} method throws an exception if accessing an invalid index.
-	 */
 	@Test(expected = IndexOutOfBoundsException.class)
-	public void testRemoveBoundaryCheck1() {
+	public void testRemoveOutOfBounds1() {
 		population.remove(4);
 	}
 
-	/**
-	 * Tests if the {@code remove} method throws an exception if accessing an invalid index.
-	 */
 	@Test(expected = IndexOutOfBoundsException.class)
-	public void testRemoveBoundaryCheck2() {
+	public void testRemoveOutOfBounds2() {
 		population.remove(-1);
 	}
 
-	/**
-	 * Tests if concurrent modifications are detected.
-	 */
 	@Test(expected = ConcurrentModificationException.class)
-	public void testConcurrentModification1() {
+	public void testConcurrentModificationWithObject() {
 		for (Solution solution : population) {
 			population.remove(solution);
 		}
 	}
 
-	/**
-	 * Tests if concurrent modifications are detected.
-	 */
 	@Test(expected = ConcurrentModificationException.class)
 	@SuppressWarnings("unused")
-	public void testConcurrentModification2() {
+	public void testConcurrentModificationWithIndex() {
 		for (Solution solution : population) {
 			population.remove(0);
 		}
 	}
 
-	/**
-	 * Tests if concurrent modifications are detected.
-	 */
 	@Test(expected = ConcurrentModificationException.class)
 	@SuppressWarnings("unused")
-	public void testConcurrentModification3() {
+	public void testConcurrentModificationOnClear() {
 		for (Solution solution : population) {
 			population.clear();
 		}
 	}
 
-	/**
-	 * Tests several of the trivial operations that should be provided by the underlying collection used in the
-	 * implementation, including {@code get}, {@code contains}, {@code containsAll}, {@code remove}, {@code removeAll},
-	 * {@code size}, {@code isEmpty}, {@code add}, {@code addAll} and {@code clear}.
-	 */
 	@Test
 	public void test() {
 		Population subset = new Population();
@@ -181,9 +140,6 @@ public class PopulationTest {
 		Assert.assertTrue(population.isEmpty());
 	}
 
-	/**
-	 * Tests if the {@code sort} and {@code truncate} methods work correctly.
-	 */
 	@Test
 	public void testSortAndTruncate() {
 		population.truncate(1, new Comparator<Solution>() {

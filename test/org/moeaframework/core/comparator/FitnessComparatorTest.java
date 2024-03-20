@@ -25,35 +25,20 @@ import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.core.Solution;
 
-/**
- * Tests the {@link FitnessComparator} class.
- */
 public class FitnessComparatorTest {
 
-	/**
-	 * The fitness comparator used for testing.
-	 */
 	private FitnessComparator comparator;
 
-	/**
-	 * Setup the comparator for use by all test methods.
-	 */
 	@Before
 	public void setUp() {
 		comparator = new FitnessComparator(false);
 	}
 
-	/**
-	 * Removes references to shared objects so they can be garbage collected.
-	 */
 	@After
 	public void tearDown() {
 		comparator = null;
 	}
 
-	/**
-	 * Tests if the comparator correctly detects dominance.
-	 */
 	@Test
 	public void testDominance() {
 		Solution solution1 = new Solution(0, 0);
@@ -66,9 +51,6 @@ public class FitnessComparatorTest {
 		Assert.assertTrue(comparator.compare(solution2, solution1) > 0);
 	}
 
-	/**
-	 * Tests if the comparator correctly detects non-dominance.
-	 */
 	@Test
 	public void testNondominance() {
 		Solution solution1 = new Solution(0, 0);
@@ -81,9 +63,6 @@ public class FitnessComparatorTest {
 		Assert.assertTrue(comparator.compare(solution2, solution1) == 0);
 	}
 
-	/**
-	 * Tests if an exception is thrown when comparing solutions missing the fitness attribute.
-	 */
 	@Test(expected = NullPointerException.class)
 	public void testMissingCrowdingAttribute() {
 		Solution solution1 = new Solution(0, 0);

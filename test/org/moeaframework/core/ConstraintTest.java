@@ -22,9 +22,9 @@ import org.junit.Test;
 
 public class ConstraintTest {
 	
-	// Note: A number of these test cases provide a relatively large epsilon value (0.1), such that
-	// two numbers are considered equal if their difference is smaller.  In practice, epsilon should
-	// be a very small number near machine precision.
+	// Note: A number of these test cases provide a relatively large epsilon value (0.1), such that two numbers are
+	// considered equal if their difference is smaller.  In practice, epsilon should be a very small number near
+	// machine precision.
 	
 	@Test
 	public void testEqual() {

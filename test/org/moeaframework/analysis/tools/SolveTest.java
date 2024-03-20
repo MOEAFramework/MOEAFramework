@@ -27,9 +27,6 @@ import org.moeaframework.TestUtils;
 import org.moeaframework.analysis.io.ResultFileReader;
 import org.moeaframework.core.spi.ProblemFactory;
 
-/**
- * Tests the {@link Solve} class.
- */
 public class SolveTest {
 	
 	@Test

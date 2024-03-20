@@ -37,12 +37,9 @@ public class SBXTest extends ParentCentricVariationTest<SBX> {
 		return new SBX(1.0, 20.0);
 	}
 
-	/**
-	 * Tests if the offspring form clusters distributed around each parent.
-	 */
 	@Test
 	@Retryable
-	public void testDistribution1() {
+	public void testDistribution() {
 		SBX sbx = createInstance();
 
 		Solution s1 = new Solution(2, 0);
@@ -68,12 +65,9 @@ public class SBXTest extends ParentCentricVariationTest<SBX> {
 		checkDistribution(centroids, offspring);
 	}
 	
-	/**
-	 * Similar to {@code testDistribution1}, except the parents are swapped.
-	 */
 	@Test
 	@Retryable
-	public void testDistribution2() {
+	public void testDistributionSwappedParents() {
 		SBX sbx = createInstance();
 
 		Solution s1 = new Solution(2, 0);

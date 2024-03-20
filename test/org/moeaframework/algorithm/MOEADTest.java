@@ -30,9 +30,6 @@ import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.problem.MockRealProblem;
 import org.moeaframework.util.TypedProperties;
 
-/**
- * Tests the {@link MOEAD} class.
- */
 @RunWith(CIRunner.class)
 @Retryable
 public class MOEADTest extends AlgorithmTest {

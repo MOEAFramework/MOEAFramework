@@ -38,9 +38,6 @@ public class PCXTest extends ParentCentricVariationTest<PCX> {
 		return false;
 	}
 
-	/**
-	 * Tests if the offspring form clusters distributed around each parent.
-	 */
 	@Test
 	@Retryable
 	public void testFullDistribution() {
@@ -52,10 +49,6 @@ public class PCXTest extends ParentCentricVariationTest<PCX> {
 		checkDistribution(parents, offspring);
 	}
 
-	/**
-	 * Tests if the offspring form clusters distributed around each parent, with the parents being degenerate along one
-	 * axis.
-	 */
 	@Test
 	@Retryable
 	public void testPartialDistribution() {

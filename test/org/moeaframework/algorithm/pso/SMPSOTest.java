@@ -25,9 +25,6 @@ import org.moeaframework.Retryable;
 import org.moeaframework.CIRunner;
 import org.moeaframework.algorithm.AlgorithmTest;
 
-/**
- * Tests the {@link SMPSO} class.
- */
 @RunWith(CIRunner.class)
 @Retryable
 public class SMPSOTest extends AlgorithmTest {

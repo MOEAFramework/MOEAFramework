@@ -24,9 +24,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-/**
- * Tests the {@link Permutation} class.
- */
 public class PermutationTest {
 
 	private Permutation permutation;
@@ -41,18 +38,11 @@ public class PermutationTest {
 		permutation = null;
 	}
 
-	/**
-	 * Tests the constructor to ensure a valid permutation is created.
-	 */
 	@Test
 	public void testConstructor() {
 		Assert.assertTrue(Permutation.isPermutation(permutation.toArray()));
 	}
 
-	/**
-	 * Tests the array constructor to ensure the array forms a valid permutation and is an independent copy of the
-	 * array.
-	 */
 	@Test
 	public void testArrayConstructor() {
 		int[] array = new int[] { 3, 1, 2, 0 };
@@ -70,35 +60,21 @@ public class PermutationTest {
 		Assert.assertEquals(3, permutation.get(0));
 	}
 	
-	/**
-	 * Tests the array constructor, and consequently the {@code fromArray} method, for detecting when the permutation
-	 * is missing an element.
-	 */
 	@Test(expected = IllegalArgumentException.class)
-	public void testArrayConstructorInvalidPermutation1() {
+	public void testArrayConstructorMissingElement() {
 		new Permutation(new int[] { 0, 3, 2 });
 	}
 	
-	/**
-	 * Tests if the array constructor, and consequently the {@code fromArray} method, for detecting when the
-	 * permutation contains duplicate elements.
-	 */
 	@Test(expected = IllegalArgumentException.class)
-	public void testArrayConstructorInvalidPermutation2() {
+	public void testArrayConstructorDuplicateElement() {
 		new Permutation(new int[] { 0, 1, 2, 1 });
 	}
 
-	/**
-	 * Tests if the correct size is returned.
-	 */
 	@Test
 	public void testSize() {
 		Assert.assertEquals(5, permutation.size());
 	}
 
-	/**
-	 * Tests if the {@link Permutation#equals} method works correctly.
-	 */
 	@Test
 	public void testEquals() {
 		Assert.assertFalse(permutation.equals(null));
@@ -109,18 +85,12 @@ public class PermutationTest {
 		Assert.assertFalse(permutation.equals(new Permutation(new int[] { 0, 2, 1, 3, 4 })));
 	}
 	
-	/**
-	 * Tests to ensure the {@link Permutation#hashCode()} general contract is upheld.
-	 */
 	@Test
 	public void testHashCode() {
 		Assert.assertEquals(permutation.hashCode(), permutation.hashCode());
 		Assert.assertEquals(permutation.hashCode(), new Permutation(5).hashCode());
 	}
 
-	/**
-	 * Tests if the {@link Permutation#get} method returns the correct value.
-	 */
 	@Test
 	public void testGet() {
 		for (int i = 0; i < permutation.size(); i++) {
@@ -128,9 +98,6 @@ public class PermutationTest {
 		}
 	}
 
-	/**
-	 * Tests if the {@link Permutation#copy} method produces a copy equal to but independent from the original.
-	 */
 	@Test
 	public void testCopy() {
 		Permutation copy = permutation.copy();
@@ -141,9 +108,6 @@ public class PermutationTest {
 		Assert.assertFalse(permutation.equals(copy));
 	}
 
-	/**
-	 * Tests if the {@link Permutation#swap} method correctly swaps the two indices.
-	 */
 	@Test
 	public void testSwap() {
 		permutation.swap(2, 3);
@@ -155,9 +119,6 @@ public class PermutationTest {
 		Assert.assertTrue(Permutation.isPermutation(permutation.toArray()));
 	}
 
-	/**
-	 * Tests if the {@link Permutation#insert} method correctly inserts the value into the permutation.
-	 */
 	@Test
 	public void testInsert() {
 		permutation.insert(4, 0);
@@ -173,9 +134,6 @@ public class PermutationTest {
 		Assert.assertTrue(permutation.equals(new Permutation(new int[] { 0, 1, 3, 2, 4 })));
 	}
 
-	/**
-	 * Tests if the {@link Permutation#isPermutation} method correctly detects valid and invalid permutations.
-	 */
 	@Test
 	public void testIsPermutation() {
 		Assert.assertTrue(Permutation.isPermutation(new int[0]));
@@ -185,27 +143,18 @@ public class PermutationTest {
 		Assert.assertTrue(Permutation.isPermutation(new int[] { 2, 1, 0 }));
 	}
 
-	/**
-	 * Tests if the {@link Permutation#swap(int, int)} method correctly throws an {@code IndexOutOfBoundsException}.
-	 */
 	@Test(expected = IndexOutOfBoundsException.class)
-	public void testSwapException() {
+	public void testSwapOutOfBounds() {
 		permutation.swap(7, 2);
 	}
 
-	/**
-	 * Tests if the {@link Permutation#insert(int, int)} method correctly throws an {@code IndexOutOfBoundsException}.
-	 */
 	@Test(expected = IndexOutOfBoundsException.class)
-	public void testInsertException() {
+	public void testInsertOutOfBounds() {
 		permutation.insert(2, 7);
 	}
 
-	/**
-	 * Tests if the {@link Permutation#get(int)} method correctly throws an {@code IndexOutOfBoundsException}.
-	 */
 	@Test(expected = IndexOutOfBoundsException.class)
-	public void testGetException() {
+	public void testGetOutOfBounds() {
 		permutation.get(7);
 	}
 

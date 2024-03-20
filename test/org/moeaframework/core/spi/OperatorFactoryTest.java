@@ -37,9 +37,6 @@ import org.moeaframework.problem.MockRealProblem;
 import org.moeaframework.problem.ProblemStub;
 import org.moeaframework.util.TypedProperties;
 
-/**
- * Tests the {@link OperatorFactory} class.
- */
 public class OperatorFactoryTest {
 
 	private Problem problem;

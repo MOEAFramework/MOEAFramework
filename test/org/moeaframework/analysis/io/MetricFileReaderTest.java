@@ -25,53 +25,33 @@ import org.junit.Test;
 import org.moeaframework.TestUtils;
 import org.moeaframework.core.Settings;
 
-/**
- * Tests the {@link MetricFileReader} class.
- */
 public class MetricFileReaderTest {
 
-	/**
-	 * A valid metric file.
-	 */
 	public static final String COMPLETE = """
 			0.0 0.1 -0.1 1.0 -1.0 1E-5
 			# commented line
 			0 10 100 1000 -10 -100
 			""";
 
-	/**
-	 * An incomplete metric file, missing one or more entries from a line.
-	 */
-	public static final String INCOMPLETE1 = """
+	public static final String MISSING_ENTRY = """
 			0.0 0.1 -0.1 1.0 -1.0 1E-5
 			-0.1 -0.2 -0.3 -0.4 -0.5
 			0 10 100 1000 -10 -100
 			""";
 
-	/**
-	 * An incomplete metric file, containing an empty line.
-	 */
-	public static final String INCOMPLETE2 = """
+	public static final String MISSING_LINE = """
 			0.0 0.1 -0.1 1.0 -1.0 1E-5
 			
 			0 10 100 1000 -10 -100
 			""";
 
-	/**
-	 * An incomplete metric file, containing unparseable data.
-	 */
-	public static final String INCOMPLETE3 = """
+	public static final String INVALID_ENTRY = """
 			0.0 0.1 -0.1 1.0 -1.0 1E-5
 			0.0 0.1 -0.1foo 1.0 -1.0 1E-5
 			0 10 100 1000 -10 -100
 			""";
 
-	/**
-	 * Performs the necessary assertions to ensure a complete metric file is read correctly.
-	 * 
-	 * @param reader the metric file reader
-	 */
-	public void validateComplete(MetricFileReader reader) {
+	private void validateComplete(MetricFileReader reader) {
 		Assert.assertTrue(reader.hasNext());
 		Assert.assertArrayEquals(new double[] { 0.0, 0.1, -0.1, 1.0, -1.0, 1E-5 }, reader.next(), Settings.EPS);
 		Assert.assertTrue(reader.hasNext());
@@ -80,23 +60,13 @@ public class MetricFileReaderTest {
 		Assert.assertFalse(reader.hasNext());
 	}
 
-	/**
-	 * Performs the necessary assertions to ensure an incomplete metric file is read correctly.
-	 * 
-	 * @param reader the metric file reader
-	 */
-	public void validateIncomplete(MetricFileReader reader) {
+	private void validateIncomplete(MetricFileReader reader) {
 		Assert.assertTrue(reader.hasNext());
 		Assert.assertArrayEquals(new double[] { 0.0, 0.1, -0.1, 1.0, -1.0, 1E-5 }, reader.next(), Settings.EPS);
 		Assert.assertFalse(reader.hasNext());
 		Assert.assertFalse(reader.hasNext());
 	}
 
-	/**
-	 * Tests reading COMPLETE through the {@code File} constructor.
-	 * 
-	 * @throws IOException if an I/O error occurred
-	 */
 	@Test
 	public void testFileComplete() throws IOException {
 		try (MetricFileReader reader = new MetricFileReader(TestUtils.createTempFile(COMPLETE))) {
@@ -104,47 +74,27 @@ public class MetricFileReaderTest {
 		}
 	}
 
-	/**
-	 * Tests reading INCOMPLETE1 through the {@code File} constructor.
-	 * 
-	 * @throws IOException if an I/O error occurred
-	 */
 	@Test
-	public void testFileIncomplete1() throws IOException {
-		try (MetricFileReader reader = new MetricFileReader(TestUtils.createTempFile(INCOMPLETE1))) {
+	public void testFileMissingEntry() throws IOException {
+		try (MetricFileReader reader = new MetricFileReader(TestUtils.createTempFile(MISSING_ENTRY))) {
 			validateIncomplete(reader);
 		}
 	}
 
-	/**
-	 * Tests reading INCOMPLETE2 through the {@code File} constructor.
-	 * 
-	 * @throws IOException if an I/O error occurred
-	 */
 	@Test
-	public void testFileIncomplete2() throws IOException {
-		try (MetricFileReader reader = new MetricFileReader(TestUtils.createTempFile(INCOMPLETE2))) {
+	public void testFileMissingLine() throws IOException {
+		try (MetricFileReader reader = new MetricFileReader(TestUtils.createTempFile(MISSING_LINE))) {
 			validateIncomplete(reader);
 		}
 	}
 
-	/**
-	 * Tests reading INCOMPLETE3 through the {@code File} constructor.
-	 * 
-	 * @throws IOException if an I/O error occurred
-	 */
 	@Test
-	public void testFileIncomplete3() throws IOException {
-		try (MetricFileReader reader = new MetricFileReader(TestUtils.createTempFile(INCOMPLETE3))) {
+	public void testFileInvalidEntry() throws IOException {
+		try (MetricFileReader reader = new MetricFileReader(TestUtils.createTempFile(INVALID_ENTRY))) {
 			validateIncomplete(reader);
 		}
 	}
 
-	/**
-	 * Tests reading COMPLETE through the {@code Reader} constructor.
-	 * 
-	 * @throws IOException if an I/O error occurred
-	 */
 	@Test
 	public void testReaderComplete() throws IOException {
 		try (MetricFileReader reader = new MetricFileReader(new StringReader(COMPLETE))) {
@@ -152,38 +102,23 @@ public class MetricFileReaderTest {
 		}
 	}
 
-	/**
-	 * Tests reading INCOMPLETE1 through the {@code Reader} constructor.
-	 * 
-	 * @throws IOException if an I/O error occurred
-	 */
 	@Test
-	public void testReaderIncomplete1() throws IOException {
-		try (MetricFileReader reader = new MetricFileReader(new StringReader(INCOMPLETE1))) {
+	public void testReaderMissingEntry() throws IOException {
+		try (MetricFileReader reader = new MetricFileReader(new StringReader(MISSING_ENTRY))) {
 			validateIncomplete(reader);
 		}
 	}
 
-	/**
-	 * Tests reading INCOMPLETE2 through the {@code Reader} constructor.
-	 * 
-	 * @throws IOException if an I/O error occurred
-	 */
 	@Test
-	public void testReaderIncomplete2() throws IOException {
-		try (MetricFileReader reader = new MetricFileReader(new StringReader(INCOMPLETE2))) {
+	public void testReaderMissingLine() throws IOException {
+		try (MetricFileReader reader = new MetricFileReader(new StringReader(MISSING_LINE))) {
 			validateIncomplete(reader);
 		}
 	}
 
-	/**
-	 * Tests reading INCOMPLETE3 through the {@code Reader} constructor.
-	 * 
-	 * @throws IOException if an I/O error occurred
-	 */
 	@Test
-	public void testReaderIncomplete3() throws IOException {
-		try (MetricFileReader reader = new MetricFileReader(new StringReader(INCOMPLETE3))) {
+	public void testReaderInvalidEntry() throws IOException {
+		try (MetricFileReader reader = new MetricFileReader(new StringReader(INVALID_ENTRY))) {
 			validateIncomplete(reader);
 		}
 	}

@@ -24,36 +24,20 @@ import org.junit.Test;
 import org.moeaframework.TestUtils;
 import org.moeaframework.problem.ProblemStub;
 
-/**
- * Tests the {@link AdaptiveGridArchive} class.
- */
 public class AdaptiveGridArchiveTest {
 
-	/**
-	 * The shared problem used by these tests.
-	 */
 	private Problem problem;
 
-	/**
-	 * Sets up the shared problem used by these tests.
-	 */
 	@Before
 	public void setUp() {
 		problem = new ProblemStub(2);
 	}
 
-	/**
-	 * Removes references to shared objects so they can be garbage collected.
-	 */
 	@After
 	public void tearDown() {
 		problem = null;
 	}
 
-	/**
-	 * Tests if the {@link AdaptiveGridArchive#findIndex(Solution)} method returns the correct value if the archive is
-	 * empty.
-	 */
 	@Test
 	public void testFindIndexEmpty() {
 		AdaptiveGridArchive archive = new AdaptiveGridArchive(2, problem, 2);
@@ -62,10 +46,6 @@ public class AdaptiveGridArchiveTest {
 		Assert.assertEquals(-1, archive.findIndex(TestUtils.newSolution(1.0, 1.0)));
 	}
 
-	/**
-	 * Tests if the {@link AdaptiveGridArchive#findIndex(Solution)} method returns the correct value if the archive
-	 * consists of a single entry.
-	 */
 	@Test
 	public void testFindIndexSingleEntry() {
 		AdaptiveGridArchive archive = new AdaptiveGridArchive(2, problem, 2);
@@ -76,10 +56,6 @@ public class AdaptiveGridArchiveTest {
 		Assert.assertEquals(-1, archive.findIndex(TestUtils.newSolution(1.0, 1.0)));
 	}
 
-	/**
-	 * Tests if the {@link AdaptiveGridArchive#findIndex(Solution)} method returns the correct value if the archive
-	 * consists of multiple entries.
-	 */
 	@Test
 	public void testFindIndexMultipleEntries() {
 		AdaptiveGridArchive archive = new AdaptiveGridArchive(2, problem, 2);
@@ -93,9 +69,6 @@ public class AdaptiveGridArchiveTest {
 		Assert.assertEquals(3, archive.findIndex(TestUtils.newSolution(0.75, 0.75)));
 	}
 
-	/**
-	 * Tests if the {@link AdaptiveGridArchive#findDensestIndex()} returns the correct value.
-	 */
 	@Test
 	public void testFindDensestIndex() {
 		AdaptiveGridArchive archive = new AdaptiveGridArchive(3, problem, 2);
@@ -109,9 +82,6 @@ public class AdaptiveGridArchiveTest {
 		Assert.assertTrue(archive.get(1) == densestSolution || archive.get(2) == densestSolution);
 	}
 
-	/**
-	 * Tests if the archive correctly adapts its internal settings as its contents change.
-	 */
 	@Test
 	public void testAdaptGrid() {
 		AdaptiveGridArchive archive = new AdaptiveGridArchive(4, problem, 2);
@@ -126,9 +96,6 @@ public class AdaptiveGridArchiveTest {
 		Assert.assertArrayEquals(new double[] { 0.8, 1.0 }, archive.maximum, Settings.EPS);
 	}
 
-	/**
-	 * Tests if the {@link AdaptiveGridArchive#add(Solution)} method correctly adds dominating solutions.
-	 */
 	@Test
 	public void testAddDominating() {
 		AdaptiveGridArchive archive = new AdaptiveGridArchive(4, problem, 2);
@@ -147,10 +114,6 @@ public class AdaptiveGridArchiveTest {
 		Assert.assertArrayEquals(expectedDensity, archive.density);
 	}
 
-	/**
-	 * Tests if the {@link AdaptiveGridArchive#remove(int)} method correctly removes the solution and updates the
-	 * archive settings.
-	 */
 	@Test
 	public void testRemoveIndex() {
 		AdaptiveGridArchive archive = new AdaptiveGridArchive(4, problem, 2);
@@ -170,10 +133,6 @@ public class AdaptiveGridArchiveTest {
 		Assert.assertArrayEquals(expectedDensity, archive.density);
 	}
 
-	/**
-	 * Tests if the {@link AdaptiveGridArchive#remove(Solution)} method correctly removes the solution and updates the
-	 * archive settings.
-	 */
 	@Test
 	public void testRemoveSolution() {
 		AdaptiveGridArchive archive = new AdaptiveGridArchive(4, problem, 2);
@@ -193,10 +152,6 @@ public class AdaptiveGridArchiveTest {
 		Assert.assertArrayEquals(expectedDensity, archive.density);
 	}
 	
-	/**
-	 * Since the adaptive grid archive uses an array internally, we must prevent the number of divisions exceeding the
-	 * maximum length of arrays.
-	 */
 	@Test(expected=FrameworkException.class)
 	public void testOverflow() {
 		new AdaptiveGridArchive(100, new ProblemStub(4), 256);

@@ -38,9 +38,6 @@ public class SPXTest extends MeanCentricVariationTest<SPX> {
 		return false;
 	}
 
-	/**
-	 * Test if the offspring centroid is the same as the parent centroid when 3 completely different parents are used.
-	 */
 	@Test
 	@Retryable
 	public void testFullDistribution() {
@@ -52,9 +49,6 @@ public class SPXTest extends MeanCentricVariationTest<SPX> {
 		checkDistribution(parents, offspring);
 	}
 
-	/**
-	 * Test if the offspring centroid is the same as the parent centroid when the parents are degenerate along one axis.
-	 */
 	@Test
 	@Retryable
 	public void testPartialDistribution() {

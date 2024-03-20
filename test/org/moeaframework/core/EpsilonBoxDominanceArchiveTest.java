@@ -23,37 +23,22 @@ import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.TestUtils;
 
-/**
- * Tests the {@link EpsilonBoxDominanceArchive} class.
- */
 public class EpsilonBoxDominanceArchiveTest {
 
-	/**
-	 * The &epsilon;-box dominance archive used for testing.
-	 */
 	private EpsilonBoxDominanceArchive archive;
 
-	/**
-	 * Setup the archive for use by all test methods.
-	 */
 	@Before
 	public void setUp() {
 		archive = new EpsilonBoxDominanceArchive(0.5);
 	}
 
-	/**
-	 * Removes references to shared objects so they can be garbage collected.
-	 */
 	@After
 	public void tearDown() {
 		archive = null;
 	}
 
-	/**
-	 * Tests if the improvement counts correct discount discarded solutions.
-	 */
 	@Test
-	public void test1() {
+	public void testDiscardedSolutions() {
 		Solution solution1 = new Solution(new double[] { 0.0, 0.0 });
 		Solution solution2 = new Solution(new double[] { 1.0, 1.0 });
 		Solution solution3 = new Solution(new double[] { 1.0, 0.0 });
@@ -67,11 +52,8 @@ public class EpsilonBoxDominanceArchiveTest {
 		Assert.assertTrue(archive.get(0) == solution1);
 	}
 
-	/**
-	 * Tests if the improvement counts correctly records dominating solutions.
-	 */
 	@Test
-	public void test2() {
+	public void testDominatingSolutions() {
 		Solution solution1 = new Solution(new double[] { 1.0, 1.0 });
 		Solution solution2 = new Solution(new double[] { 1.0, 0.0 });
 		Solution solution3 = new Solution(new double[] { 0.0, 0.0 });
@@ -85,11 +67,8 @@ public class EpsilonBoxDominanceArchiveTest {
 		Assert.assertTrue(archive.get(0) == solution3);
 	}
 
-	/**
-	 * Tests if the improvement counts correctly records non-dominated improvements.
-	 */
 	@Test
-	public void test3() {
+	public void testNondominatedSolutions() {
 		Solution solution1 = new Solution(new double[] { 1.0, 1.0 });
 		Solution solution2 = new Solution(new double[] { 0.25, 0.75 });
 		Solution solution3 = new Solution(new double[] { 0.75, 0.25 });
@@ -102,11 +81,8 @@ public class EpsilonBoxDominanceArchiveTest {
 		Assert.assertEquals(3, archive.getNumberOfImprovements());
 	}
 
-	/**
-	 * Tests if the improvement counts correctly discounts dominated, but same box cases.
-	 */
 	@Test
-	public void test4() {
+	public void testSameBoxDominatedSolutions() {
 		Solution solution1 = new Solution(new double[] { 1.0, 1.0 });
 		Solution solution2 = new Solution(new double[] { 0.4, 0.4 });
 		Solution solution3 = new Solution(new double[] { 0.3, 0.3 });
@@ -119,11 +95,8 @@ public class EpsilonBoxDominanceArchiveTest {
 		Assert.assertEquals(2, archive.getNumberOfImprovements());
 	}
 
-	/**
-	 * Tests if the improvement counts correctly records non-dominated, same box cases.
-	 */
 	@Test
-	public void test5() {
+	public void testSameBoxNonDominatedSolutions() {
 		Solution solution1 = new Solution(new double[] { 1.0, 1.0 });
 		Solution solution2 = new Solution(new double[] { 0.24, 0.26 });
 		Solution solution3 = new Solution(new double[] { 0.26, 0.24 });
@@ -136,11 +109,9 @@ public class EpsilonBoxDominanceArchiveTest {
 		Assert.assertEquals(2, archive.getNumberOfImprovements());
 	}
 	
-	/**
-	 * Compares improvement count against Project-Platypus/Platypus implementation.
-	 */
 	@Test
-	public void test6() {
+	public void testAgainstPlatypus() {
+		// Mirrors test cases used by Project-Platypus/Platypus
 		Solution s1 = TestUtils.newSolution(0.25, 0.25);     // First solution (improvement)
 		Solution s2 = TestUtils.newSolution(0.10, 0.10);     // Dominating improvement
 		Solution s3 = TestUtils.newSolution(0.24, 0.24);     // Dominated

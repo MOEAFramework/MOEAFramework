@@ -24,19 +24,12 @@ import org.junit.Test;
 import org.moeaframework.core.variable.RealVariable;
 
 /**
- * Tests the {@link Solution} class. Due to the central role of this class, many obvious properties are tested to
- * ensure complete correctness.
+ * Due to the central role of this class, many obvious properties are tested to ensure complete correctness.
  */
 public class SolutionTest {
 
-	/**
-	 * The shared solution used by these tests.
-	 */
 	private Solution solution;
 
-	/**
-	 * Constructs the shared solution used by these tests.
-	 */
 	@Before
 	public void setUp() {
 		solution = new Solution(1, 2, 2);
@@ -50,26 +43,17 @@ public class SolutionTest {
 		solution.setAttribute("foo", "bar");
 	}
 
-	/**
-	 * Removes references to shared objects so they can be garbage collected.
-	 */
 	@After
 	public void tearDown() {
 		solution = null;
 	}
 
-	/**
-	 * Tests if the {@code getVariable} method returns the correct value.
-	 */
 	@Test
 	public void testGetVariable() {
 		Assert.assertEquals(1, solution.getNumberOfVariables());
 		Assert.assertEquals(0.5, ((RealVariable)solution.getVariable(0)).getValue(), Settings.EPS);
 	}
 
-	/**
-	 * Tests if the {@code getObjective} method returns the correct value.
-	 */
 	@Test
 	public void testGetObjective() {
 		Assert.assertEquals(2, solution.getNumberOfObjectives());
@@ -77,9 +61,6 @@ public class SolutionTest {
 		Assert.assertEquals(2.0, solution.getObjective(1), Settings.EPS);
 	}
 
-	/**
-	 * Tests if the {@code getConstraint} method returns the correct value.
-	 */
 	@Test
 	public void testGetConstraint() {
 		Assert.assertEquals(2, solution.getNumberOfConstraints());
@@ -87,36 +68,24 @@ public class SolutionTest {
 		Assert.assertEquals(1.0, solution.getConstraint(1), Settings.EPS);
 	}
 
-	/**
-	 * Tests if the {@code setVariable} method sets the value correctly.
-	 */
 	@Test
 	public void testSetVariable() {
 		solution.setVariable(0, new RealVariable(0.75, 0.0, 1.0));
 		Assert.assertEquals(0.75, ((RealVariable)solution.getVariable(0)).getValue(), Settings.EPS);
 	}
 
-	/**
-	 * Tests if the {@code setObjective} method sets the value correctly.
-	 */
 	@Test
 	public void testSetObjective() {
 		solution.setObjective(1, 1.5);
 		Assert.assertEquals(1.5, solution.getObjective(1), Settings.EPS);
 	}
 
-	/**
-	 * Tests if the {@code setConstraint} method sets the value correctly.
-	 */
 	@Test
 	public void testSetConstraint() {
 		solution.setConstraint(1, 2.0);
 		Assert.assertEquals(2.0, solution.getConstraint(1), Settings.EPS);
 	}
 
-	/**
-	 * Tests if the {@code getObjectives} method returns the values correctly.
-	 */
 	@Test
 	public void testGetObjectives() {
 		double[] objectives = solution.getObjectives();
@@ -130,10 +99,7 @@ public class SolutionTest {
 		objectives[0] = 0.0;
 		Assert.assertEquals(1.0, solution.getObjective(0), Settings.EPS);
 	}
-
-	/**
-	 * Tests if the {@code getConstraints} method returns the values correctly.
-	 */
+	
 	@Test
 	public void testGetConstraints() {
 		double[] constraints = solution.getConstraints();
@@ -148,9 +114,6 @@ public class SolutionTest {
 		Assert.assertEquals(0.0, solution.getConstraint(0), Settings.EPS);
 	}
 
-	/**
-	 * Tests if the {@code setObjectives} method sets the values correctly.
-	 */
 	@Test
 	public void testSetObjectives() {
 		double[] objectives = new double[] { 3.0, 4.0 };
@@ -166,9 +129,6 @@ public class SolutionTest {
 		Assert.assertEquals(3.0, solution.getObjective(0), Settings.EPS);
 	}
 
-	/**
-	 * Tests if the {@code setConstraints} method sets the values correctly.
-	 */
 	@Test
 	public void testSetConstraints() {
 		double[] constraints = new double[] { 3.0, 4.0 };
@@ -184,9 +144,6 @@ public class SolutionTest {
 		Assert.assertEquals(3.0, solution.getConstraint(0), Settings.EPS);
 	}
 
-	/**
-	 * Tests if the {@code getAttribute} method works correctly.
-	 */
 	@Test
 	public void testGetAttribute() {
 		// get valid attribute
@@ -198,9 +155,6 @@ public class SolutionTest {
 		Assert.assertNull(solution.getAttribute("bar"));
 	}
 
-	/**
-	 * Tests if the {@code setAttribute} method works correctly.
-	 */
 	@Test
 	public void testSetAttribute() {
 		// overwriting an attribute
@@ -219,121 +173,76 @@ public class SolutionTest {
 		Assert.assertNull(solution.getAttribute("foo"));
 	}
 
-	/**
-	 * Tests if the {@code setVariable} method correctly detects invalid indices.
-	 */
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testSetVariableBoundsChecking1() {
 		solution.setVariable(2, new RealVariable(0.5, 0.0, 1.0));
 	}
 
-	/**
-	 * Tests if the {@code setVariable} method correctly detects invalid indices.
-	 */
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testSetVariableBoundsChecking2() {
 		solution.setVariable(-1, new RealVariable(0.5, 0.0, 1.0));
 	}
 
-	/**
-	 * Tests if the {@code getVariable} method correctly detects invalid indices.
-	 */
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testGetVariableBoundsChecking1() {
 		solution.getVariable(2);
 	}
 
-	/**
-	 * Tests if the {@code getVariable} method correctly detects invalid indices.
-	 */
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testGetVariableBoundsChecking2() {
 		solution.getVariable(-1);
 	}
 
-	/**
-	 * Tests if the {@code setObjective} method correctly detects invalid indices.
-	 */
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testSetObjectiveBoundsChecking1() {
 		solution.setObjective(2, 1.0);
 	}
 
-	/**
-	 * Tests if the {@code setObjective} method correctly detects invalid indices.
-	 */
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testSetObjectiveBoundsChecking2() {
 		solution.setObjective(-1, 1.0);
 	}
 
-	/**
-	 * Tests if the {@code getObjective} method correctly detects invalid indices.
-	 */
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testGetObjectiveBoundsChecking1() {
 		solution.getObjective(2);
 	}
 
-	/**
-	 * Tests if the {@code getObjective} method correctly detects invalid indices.
-	 */
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testGetObjectiveBoundsChecking2() {
 		solution.getObjective(-1);
 	}
 
-	/**
-	 * Tests if the {@code setObjectives} method correctly detects invalid indices.
-	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testSetObjectivesBoundsChecking() {
 		solution.setObjectives(new double[] { 0.0, 1.0, 2.0 });
 	}
 
-	/**
-	 * Tests if the {@code setConstraint} method correctly detects invalid indices.
-	 */
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testSetConstraintBoundsChecking1() {
 		solution.setConstraint(2, 1.0);
 	}
 
-	/**
-	 * Tests if the {@code setConstraint} method correctly detects invalid indices.
-	 */
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testSetConstraintBoundsChecking2() {
 		solution.setConstraint(-1, 1.0);
 	}
 
-	/**
-	 * Tests if the {@code getConstraint} method correctly detects invalid indices.
-	 */
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testGetConstraintBoundsChecking1() {
 		solution.getConstraint(2);
 	}
 
-	/**
-	 * Tests if the {@code getConstraint} method correctly detects invalid indices.
-	 */
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testGetConstraintBoundsChecking2() {
 		solution.getConstraint(-1);
 	}
 
-	/**
-	 * Tests if the {@code setConstraints} method correctly detects invalid indices.
-	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testSetConstraintsBoundsChecking() {
 		solution.setConstraints(new double[] { 0.0, 1.0, 2.0 });
 	}
 
-	/**
-	 * Tests if the constructor, when given an array of objectives, correctly initializes the solution.
-	 */
 	@Test
 	public void testObjectiveConstructor() {
 		double[] objectives = new double[] { 1.0, 2.0 };
@@ -352,9 +261,6 @@ public class SolutionTest {
 		Assert.assertEquals(1.0, solution.getObjective(0), Settings.EPS);
 	}
 	
-	/**
-	 * Tests if the deep copy method works correctly, property cloning all attributes.
-	 */
 	@Test
 	public void testDeepCopy() {
 		double[] array = new double[] { 1.0, 2.0 };
@@ -365,9 +271,6 @@ public class SolutionTest {
 		Assert.assertTrue(array != copy.getAttribute("key"));
 	}
 
-	/**
-	 * Tests if the copy constructor works correctly.
-	 */
 	@Test
 	public void testCopyConstructor() {
 		Solution copy = new Solution(solution);
@@ -403,10 +306,6 @@ public class SolutionTest {
 		Assert.assertFalse(copy.equals(solution));
 	}
 
-	/**
-	 * Tests if the {@code violatesConstraints} method returns {@code 0} if all constraints are satisfied and a
-	 * non-zero value otherwise.
-	 */
 	@Test
 	public void testViolatesConstraints() {
 		Assert.assertTrue(solution.violatesConstraints());
@@ -418,9 +317,6 @@ public class SolutionTest {
 		Assert.assertFalse(new Solution(0, 0, 0).violatesConstraints());
 	}
 	
-	/**
-	 * Tests the {@code distanceTo} method to ensure it computes the Euclidean distance between solutions correctly.
-	 */
 	@Test
 	public void testDistanceTo() {
 		Solution s1 = new Solution(new double[] { 0.0, 1.0, 0.0 });

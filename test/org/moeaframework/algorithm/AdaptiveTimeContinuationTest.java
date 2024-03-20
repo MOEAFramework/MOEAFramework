@@ -35,9 +35,6 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.operator.real.UM;
 import org.moeaframework.core.selection.UniformSelection;
 
-/**
- * Test the {@link AdaptiveTimeContinuation} class.
- */
 public class AdaptiveTimeContinuationTest {
 
 	protected Population population;

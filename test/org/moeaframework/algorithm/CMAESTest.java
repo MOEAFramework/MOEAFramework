@@ -31,9 +31,6 @@ import org.moeaframework.problem.AbstractProblem;
 import org.moeaframework.problem.MockRealProblem;
 import org.moeaframework.util.TypedProperties;
 
-/**
- * Tests the {@link CMAES} class.
- */
 public class CMAESTest {
 	
 	public static class RosenbrockProblem extends AbstractProblem {

@@ -28,9 +28,6 @@ import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.util.weights.NormalBoundaryDivisions;
 
-/**
- * Tests the {@link ReferencePointNondominatedSortingPopulation} class.
- */
 public class ReferencePointNondominatedSortingPopulationTest {
 	
 	@Test
@@ -179,11 +176,8 @@ public class ReferencePointNondominatedSortingPopulationTest {
 		Assert.assertEquals(0.5, intercepts[1], Settings.EPS);
 	}
 	
-	/**
-	 * Tests if the truncate method works correctly when it needs to eliminate a dominated point.
-	 */
 	@Test
-	public void testTruncate1() {
+	public void testTruncateDominatedPoint() {
 		ReferencePointNondominatedSortingPopulation population = new ReferencePointNondominatedSortingPopulation(2,
 						new NormalBoundaryDivisions(4));
 		
@@ -202,12 +196,8 @@ public class ReferencePointNondominatedSortingPopulationTest {
 		Assert.assertTrue(population.contains(s2));
 	}
 	
-	/**
-	 * Tests if the truncate method works correctly when it needs to eliminate non-dominated solutions by favoring
-	 * those associated with reference points.
-	 */
 	@Test
-	public void testTruncate2() {
+	public void testTruncateNondominatedPoint() {
 		ReferencePointNondominatedSortingPopulation population = new ReferencePointNondominatedSortingPopulation(2,
 						new NormalBoundaryDivisions(1));
 		

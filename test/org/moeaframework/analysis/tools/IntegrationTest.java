@@ -32,7 +32,7 @@ import org.moeaframework.core.spi.ProblemFactoryTestWrapper;
 
 /**
  * Integration tests for the command line utilities.  These tests only automate checks to ensure the command line
- * utilities interoperate and that their command line interfaces function appropriately; not that their internal
+ * utilities work together and that their command line interfaces function correctly; not that their internal
  * behavior is valid.  Unit tests of the internal components ensure validity.
  */
 public class IntegrationTest {
