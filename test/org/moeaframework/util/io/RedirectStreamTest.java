@@ -74,6 +74,15 @@ public class RedirectStreamTest {
 	}
 	
 	@Test(expected = IOException.class)
+	public void testNonZeroExitCode() throws IOException, InterruptedException {
+		ProcessBuilder processBuilder = SystemUtils.IS_OS_WINDOWS ?
+				new ProcessBuilder("cmd", "/C", "exit -1") :
+				new ProcessBuilder("exit", "-1");
+		
+		RedirectStream.invoke(processBuilder);
+	}
+	
+	@Test(expected = IOException.class)
 	public void testCaptureWithInvalidCommand() throws IOException, InterruptedException {
 		RedirectStream.capture(new ProcessBuilder("invalidCommand"));		
 	}
