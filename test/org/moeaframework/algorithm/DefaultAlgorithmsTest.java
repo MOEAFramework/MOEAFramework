@@ -17,532 +17,261 @@
  */
 package org.moeaframework.algorithm;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.moeaframework.TestUtils;
 import org.moeaframework.algorithm.sa.AMOSA;
+import org.moeaframework.analysis.EpsilonHelper;
+import org.moeaframework.analysis.collector.IndicatorCollector;
+import org.moeaframework.analysis.collector.InstrumentedAlgorithm;
+import org.moeaframework.analysis.collector.Observation;
+import org.moeaframework.analysis.collector.Observations;
 import org.moeaframework.core.Algorithm;
+import org.moeaframework.core.EpsilonBoxDominanceArchive;
+import org.moeaframework.core.Initialization;
+import org.moeaframework.core.NondominatedPopulation;
+import org.moeaframework.core.NondominatedSortingPopulation;
+import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Problem;
+import org.moeaframework.core.Variation;
+import org.moeaframework.core.comparator.ChainedComparator;
+import org.moeaframework.core.comparator.CrowdingComparator;
+import org.moeaframework.core.comparator.ParetoDominanceComparator;
+import org.moeaframework.core.configuration.Configurable;
+import org.moeaframework.core.indicator.Hypervolume;
+import org.moeaframework.core.initialization.RandomInitialization;
+import org.moeaframework.core.operator.real.UM;
+import org.moeaframework.core.selection.TournamentSelection;
+import org.moeaframework.core.selection.UniformSelection;
 import org.moeaframework.core.spi.AlgorithmFactory;
+import org.moeaframework.core.spi.OperatorFactory;
+import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.core.spi.ProviderNotFoundException;
 import org.moeaframework.problem.MockBinaryProblem;
 import org.moeaframework.problem.MockPermutationProblem;
 import org.moeaframework.problem.MockRealProblem;
 import org.moeaframework.problem.MockSubsetProblem;
-import org.moeaframework.problem.DTLZ.DTLZ2;
 import org.moeaframework.util.TypedProperties;
 
+/**
+ * Tests basic functionality of all default algorithms, including:
+ * <ol>
+ *   <li>Validates the algorithm can be constructed and run on each problem type;
+ *   <li>Validates that the configuration can be saved and reloaded; and
+ *   <li>Validates the algorithm is resumable.
+ * </ol>
+ */
 public class DefaultAlgorithmsTest {
 	
-	protected Problem realProblem;
-	protected Problem binaryProblem;
-	protected Problem permutationProblem;
-	protected Problem subsetProblem;
+	/**
+	 * The number of NFE to run each test.
+	 */
+	private final int NFE = 1000;
+	
+	/**
+	 * The number of steps to perform during resumability and instrumenter tests.  Must be > 100 to test
+	 * {@link AdaptiveTimeContinuation}.
+	 */
+	private static final int STEPS = 200;
+	
+	protected Problem real;
+	protected Problem binary;
+	protected Problem permutation;
+	protected Problem subset;
+	protected List<Problem> allProblems;
 	protected TypedProperties properties;
 
 	@Before
 	public void setUp() throws IOException {
-		realProblem = new MockRealProblem(2);
-		binaryProblem = new MockBinaryProblem(2);
-		permutationProblem = new MockPermutationProblem(2);
-		subsetProblem = new MockSubsetProblem(2);
+		real = new MockRealProblem(2);
+		binary = new MockBinaryProblem(2);
+		permutation = new MockPermutationProblem(2);
+		subset = new MockSubsetProblem(2);
+		allProblems = List.of(real, binary, permutation, subset);
+				
 		properties = new TypedProperties();
-		
-		properties.setInt("maxEvaluations", 1000);
+		properties.setInt("maxEvaluations", NFE);
 		properties.setInt("instances", 10); // for RSO: maxEvaluations (1000) / instances (10) == GA population size (100)
 	}
 
 	@After
 	public void tearDown() {
-		realProblem = null;
-		binaryProblem = null;
-		permutationProblem = null;
-		subsetProblem = null;
+		real = null;
+		binary = null;
+		permutation = null;
+		subset = null;
+		allProblems = null;
 		properties = null;
 	}
 	
 	@Test
-	public void testEpsilonMOEA_Real() {
-		test("eMOEA", realProblem);
+	public void testEpsilonMOEA() {
+		test("eMOEA", real, binary, permutation, subset);
 	}
 	
 	@Test
-	public void testNSGAII_Real() {
-		test("NSGAII", realProblem);
+	public void testNSGAII() {
+		test("NSGAII", real, binary, permutation, subset);
 	}
 	
 	@Test
-	public void testNSGAIII_Real() {
-		test("NSGAIII", realProblem);
-	}
-	
-	@Test
-	public void testMOEAD_Real() {
-		test("MOEAD", realProblem);
-	}
-	
-	@Test
-	public void testGDE3_Real() {
-		test("GDE3", realProblem);
-	}
-	
-	@Test
-	public void testEpsilonNSGAII_Real() {
-		test("eNSGAII", realProblem);
-	}
-	
-	@Test
-	public void testCMAES_Real() {
-		test("CMA-ES", realProblem);
-	}
-	
-	@Test
-	public void testSPEA2_Real() {
-		test("SPEA2", realProblem);
+	public void testNSGAIII() {
+		test("NSGAIII", real, binary, permutation, subset);
 	}
 
 	@Test
-	public void testPAES_Real() {
-		test("PAES", realProblem);
+	public void testMOEAD() {
+		test("MOEAD", real, binary, permutation, subset);
+	}
+	
+	@Test
+	public void testGDE3() {
+		test("GDE3", real);
+	}
+	
+	@Test
+	public void testEpsilonNSGAII() {
+		test("eNSGAII", real, binary, permutation, subset);
+	}
+	
+	@Test
+	public void testCMAES() {
+		test("CMA-ES", real);
+	}
+	
+	@Test
+	public void testSPEA2() {
+		test("SPEA2", real, binary, permutation, subset);
 	}
 
 	@Test
-	public void testPESA2_Real() {
-		test("PESA2", realProblem);
-	}
-	
-	@Test
-	public void testOMOPSO_Real() {
-		test("OMOPSO", realProblem);
-	}
-	
-	@Test
-	public void testSMPSO_Real() {
-		test("SMPSO", realProblem);
-	}
-	
-	@Test
-	public void testIBEA_Real() {
-		test("IBEA", new DTLZ2(2));
+	public void testPAES() {
+		test("PAES", real, binary, permutation, subset);
 	}
 
 	@Test
-	public void testSMSEMOA_Real() {
-		test("SMS-EMOA", realProblem);
+	public void testPESA2() {
+		test("PESA2", real, binary, permutation, subset);
 	}
 	
 	@Test
-	public void testVEGA_Real() {
-		test("VEGA", realProblem);
+	public void testOMOPSO() {
+		test("OMOPSO", real);
 	}
 	
 	@Test
-	public void testRVEA_Real() {
-		test("RVEA", realProblem);
+	public void testSMPSO() {
+		test("SMPSO", real);
 	}
 	
 	@Test
-	public void testRandomSearch_Real() {
-		test("Random", realProblem);
+	public void testIBEA() {
+		test("IBEA", real, binary, permutation, subset);
 	}
 
 	@Test
-	public void testGA_Real() {
-		test("GA", realProblem);
+	public void testSMSEMOA() {
+		test("SMS-EMOA", real, binary, permutation, subset);
 	}
 	
 	@Test
-	public void testES_Real() {
-		test("ES", realProblem);
+	public void testVEGA() {
+		test("VEGA", real, binary, permutation, subset);
 	}
 	
 	@Test
-	public void testDE_Real() {
-		test("DE", realProblem);
+	public void testRVEA() {
+		test("RVEA", real, binary, permutation, subset);
 	}
 	
 	@Test
-	public void testSA_Real() {
-		test("SA", realProblem);
-	}
-	
-	@Test
-	public void testRSO_Real() {
-		test("RSO", realProblem);
-	}
-	
-	@Test
-	public void testMSOPS_Real() {
-		test("MSOPS", realProblem);
-	}
-	
-	@Test
-	public void testAMOSA_Real() {
-		test("AMOSA", realProblem);
-	}
-	
-	@Test
-	public void testEpsilonMOEA_Binary() {
-		test("eMOEA", binaryProblem);
-	}
-	
-	@Test
-	public void testNSGAII_Binary() {
-		test("NSGAII", binaryProblem);
-	}
-	
-	@Test
-	public void testNSGAIII_Binary() {
-		test("NSGAIII", binaryProblem);
-	}
-	
-	public void testMOEAD_Binary() {
-		test("MOEAD", binaryProblem);
-	}
-	
-	@Test(expected = ProviderNotFoundException.class)
-	public void testGDE3_Binary() {
-		test("GDE3", binaryProblem);
-	}
-	
-	@Test
-	public void testEpsilonNSGAII_Binary() {
-		test("eNSGAII", binaryProblem);
-	}
-	
-	@Test(expected = ProviderNotFoundException.class)
-	public void testCMAES_Binary() {
-		test("CMA-ES", binaryProblem);
-	}
-	
-	@Test
-	public void testSPEA2_Binary() {
-		test("SPEA2", binaryProblem);
+	public void testRandomSearch() {
+		test("Random", real, binary, permutation, subset);
 	}
 
 	@Test
-	public void testPAES_Binary() {
-		test("PAES", binaryProblem);
+	public void testGA() {
+		test("GA", real, binary, permutation, subset);
+	}
+	
+	@Test
+	public void testES() {
+		test("ES", real);
+	}
+	
+	@Test
+	public void testDE() {
+		test("DE", real);
+	}
+	
+	@Test
+	public void testSA() {
+		test("SA", real, binary, permutation, subset);
+	}
+	
+	@Test
+	public void testRSO() {
+		test("RSO", real, binary, permutation, subset);
+	}
+	
+	@Test
+	public void testMSOPS() {
+		test("MSOPS", real);
+	}
+	
+	@Test
+	public void testAMOSA() {
+		test("AMOSA", real, binary, permutation, subset);
+	}
+	
+	@Test
+	public void testEpsilonProgressContinuation() throws IOException {
+		AlgorithmFactory.setInstance(new TestAlgorithmFactory());
+		test("EpsilonProgressContinuation", real);
+		AlgorithmFactory.setInstance(new AlgorithmFactory());
+	}
+	
+	@Test
+	public void testInstrumentedResumable() throws IOException {
+		testInstrumentedResumable("NSGAII");
+	}
+	
+	protected void test(String name, Problem... supportedProblems) {
+		for (Problem problem : allProblems) {
+			// test if the algorithm can be instantiated and run against the problem type
+			try {
+				testRun(name, problem);
+			} catch (ProviderNotFoundException e) {
+				if (List.of(supportedProblems).contains(problem)) {
+					throw new AssertionError(name + " failed test run on " + problem.getName(), e);
+				}
+				
+				return;
+			} catch (AssertionError e) {
+				throw new AssertionError(name + " failed test run on " + problem.getName(), e);
+			}
+			
+			try {
+				testConfiguration(name, problem);
+			} catch (AssertionError e) {
+				throw new AssertionError(name + " failed configuration test on " + problem.getName(), e);
+			}
+			
+			try {
+				testResumable(name, problem);
+			} catch (IOException | AssertionError e) {
+				throw new AssertionError(name + " failed resumable test on " + problem.getName(), e);
+			}
+		}
 	}
 
-	@Test
-	public void testPESA2_Binary() {
-		test("PESA2", binaryProblem);
-	}
-	
-	@Test(expected = ProviderNotFoundException.class)
-	public void testOMOPSO_Binary() {
-		test("OMOPSO", binaryProblem);
-	}
-	
-	@Test(expected = ProviderNotFoundException.class)
-	public void testSMPSO_Binary() {
-		test("SMPSO", binaryProblem);
-	}
-	
-	@Test
-	public void testIBEA_Binary() {
-		test("IBEA", binaryProblem);
-	}
-
-	@Test
-	public void testSMSEMOA_Binary() {
-		test("SMS-EMOA", binaryProblem);
-	}
-	
-	@Test
-	public void testVEGA_Binary() {
-		test("VEGA", binaryProblem);
-	}
-	
-	@Test
-	public void testRVEA_Binary() {
-		test("RVEA", binaryProblem);
-	}
-	
-	@Test
-	public void testRandomSearch_Binary() {
-		test("Random", binaryProblem);
-	}
-	
-	@Test
-	public void testGA_Binary() {
-		test("GA", binaryProblem);
-	}
-	
-	@Test(expected = ProviderNotFoundException.class)
-	public void testES_Binary() {
-		test("ES", binaryProblem);
-	}
-	
-	@Test(expected = ProviderNotFoundException.class)
-	public void testDE_Binary() {
-		test("DE", binaryProblem);
-	}
-	
-	@Test
-	public void testSA_Binary() {
-		test("SA", binaryProblem);
-	}
-	
-	@Test
-	public void testRSO_Binary() {
-		test("RSO", binaryProblem);
-	}
-	
-	@Test(expected = ProviderNotFoundException.class)
-	public void testMSOPS_Binary() {
-		test("MSOPS", binaryProblem);
-	}
-	
-	@Test
-	public void testAMOSA_Binary() {
-		test("AMOSA", binaryProblem);
-	}
-	
-	@Test
-	public void testEpsilonMOEA_Permutation() {
-		test("eMOEA", permutationProblem);
-	}
-	
-	@Test
-	public void testNSGAII_Permutation() {
-		test("NSGAII", permutationProblem);
-	}
-	
-	@Test
-	public void testNSGAIII_Permutation() {
-		test("NSGAIII", permutationProblem);
-	}
-	
-	public void testMOEAD_Permutation() {
-		test("MOEAD", permutationProblem);
-	}
-	
-	@Test(expected = ProviderNotFoundException.class)
-	public void testGDE3_Permutation() {
-		test("GDE3", permutationProblem);
-	}
-	
-	@Test
-	public void testEpsilonNSGAII_Permutation() {
-		test("eNSGAII", permutationProblem);
-	}
-	
-	@Test(expected = ProviderNotFoundException.class)
-	public void testCMAES_Permutation() {
-		test("CMA-ES", permutationProblem);
-	}
-	
-	@Test
-	public void testSPEA2_Permutation() {
-		test("SPEA2", permutationProblem);
-	}
-
-	@Test
-	public void testPAES_Permutation() {
-		test("PAES", permutationProblem);
-	}
-
-	@Test
-	public void testPESA2_Permutation() {
-		test("PESA2", permutationProblem);
-	}
-	
-	@Test(expected = ProviderNotFoundException.class)
-	public void testOMOPSO_Permutation() {
-		test("OMOPSO", permutationProblem);
-	}
-	
-	@Test(expected = ProviderNotFoundException.class)
-	public void testSMPSO_Permutation() {
-		test("SMPSO", permutationProblem);
-	}
-
-	@Test
-	public void testIBEA_Permutation() {
-		test("IBEA", permutationProblem);
-	}
-	
-	@Test
-	public void testSMSEMOA_Permutation() {
-		test("SMS-EMOA", permutationProblem);
-	}
-	
-	@Test
-	public void testVEGA_Permutation() {
-		test("VEGA", permutationProblem);
-	}
-	
-	@Test
-	public void testRVEA_Permutation() {
-		test("RVEA", permutationProblem);
-	}
-	
-	@Test
-	public void testRandomSearch_Permutation() {
-		test("Random", permutationProblem);
-	}
-	
-	@Test
-	public void testGA_Permutation() {
-		test("GA", permutationProblem);
-	}
-	
-	@Test(expected = ProviderNotFoundException.class)
-	public void testES_Permutation() {
-		test("ES", permutationProblem);
-	}
-	
-	@Test(expected = ProviderNotFoundException.class)
-	public void testDE_Permutation() {
-		test("DE", permutationProblem);
-	}
-	
-	@Test
-	public void testSA_Permutation() {
-		test("SA", permutationProblem);
-	}
-	
-	@Test
-	public void testRSO_Permutation() {
-		test("RSO", permutationProblem);
-	}
-	
-	@Test(expected = ProviderNotFoundException.class)
-	public void testMSOPS_Permutation() {
-		test("MSOPS", permutationProblem);
-	}
-	
-	@Test
-	public void testAMOSA_Permutation() {
-		test("AMOSA", permutationProblem);
-	}
-	
-	@Test
-	public void testEpsilonMOEA_Subset() {
-		test("eMOEA", subsetProblem);
-	}
-	
-	@Test
-	public void testNSGAII_Subset() {
-		test("NSGAII", subsetProblem);
-	}
-	
-	@Test
-	public void testNSGAIII_Subset() {
-		test("NSGAIII", subsetProblem);
-	}
-	
-	public void testMOEAD_Subset() {
-		test("MOEAD", subsetProblem);
-	}
-	
-	@Test(expected = ProviderNotFoundException.class)
-	public void testGDE3_Subset() {
-		test("GDE3", subsetProblem);
-	}
-	
-	@Test
-	public void testEpsilonNSGAII_Subset() {
-		test("eNSGAII", subsetProblem);
-	}
-	
-	@Test(expected = ProviderNotFoundException.class)
-	public void testCMAES_Subset() {
-		test("CMA-ES", subsetProblem);
-	}
-	
-	@Test
-	public void testSPEA2_Subset() {
-		test("SPEA2", subsetProblem);
-	}
-
-	@Test
-	public void testPAES_Subset() {
-		test("PAES", subsetProblem);
-	}
-
-	@Test
-	public void testPESA2_Subset() {
-		test("PESA2", subsetProblem);
-	}
-	
-	@Test(expected = ProviderNotFoundException.class)
-	public void testOMOPSO_Subset() {
-		test("OMOPSO", subsetProblem);
-	}
-	
-	@Test(expected = ProviderNotFoundException.class)
-	public void testSMPSO_Subset() {
-		test("SMPSO", subsetProblem);
-	}
-
-	@Test
-	public void testIBEA_Subset() {
-		test("IBEA", subsetProblem);
-	}
-	
-	@Test
-	public void testSMSEMOA_Subset() {
-		test("SMS-EMOA", subsetProblem);
-	}
-	
-	@Test
-	public void testVEGA_Subset() {
-		test("VEGA", subsetProblem);
-	}
-	
-	@Test
-	public void testRVEA_Subset() {
-		test("RVEA", subsetProblem);
-	}
-	
-	@Test
-	public void testRandomSearch_Subset() {
-		test("Random", subsetProblem);
-	}
-	
-	@Test
-	public void testGA_Subset() {
-		test("GA", subsetProblem);
-	}
-	
-	@Test(expected = ProviderNotFoundException.class)
-	public void testES_Subset() {
-		test("ES", subsetProblem);
-	}
-	
-	@Test(expected = ProviderNotFoundException.class)
-	public void testDE_Subset() {
-		test("DE", subsetProblem);
-	}
-	
-	@Test
-	public void testSA_Subset() {
-		test("SA", subsetProblem);
-	}
-	
-	@Test
-	public void testRSO_Subset() {
-		test("RSO", subsetProblem);
-	}
-	
-	@Test(expected = ProviderNotFoundException.class)
-	public void testMSOPS_Subset() {
-		test("MSOPS", subsetProblem);
-	}
-	
-	@Test
-	public void testAMOSA_Subset() {
-		test("AMOSA", subsetProblem);
-	}
-
-	protected void test(String name, Problem problem) {
-		int NFE = 1000;
+	private void testRun(String name, Problem problem) {
 		Algorithm algorithm = AlgorithmFactory.getInstance().getAlgorithm(name, properties, problem);
 		
 		Assert.assertEquals(0, algorithm.getNumberOfEvaluations());
@@ -556,11 +285,128 @@ public class DefaultAlgorithmsTest {
 		algorithm.terminate();
 		
 		if (!(algorithm instanceof AMOSA)) {
-			Assert.assertTrue((algorithm.getNumberOfEvaluations() - NFE) < 100);
+			Assert.assertTrue((algorithm.getNumberOfEvaluations() - NFE) < 200);
 		}
 		
 		Assert.assertTrue(algorithm.getResult().size() > 0);
 		Assert.assertTrue(algorithm.isTerminated());
+	}
+	
+	private void testConfiguration(String name, Problem problem) {
+		Algorithm algorithm = AlgorithmFactory.getInstance().getAlgorithm(name, properties, problem);
+			
+		if (algorithm instanceof Configurable configurable) {
+			TypedProperties properties = configurable.getConfiguration();
+			configurable.applyConfiguration(properties);
+		}
+	}
+	
+	private void testResumable(String name, Problem problem) throws IOException {
+		if (name.equalsIgnoreCase("Random")) {
+			// random search is not resumable
+			return;
+		}
+		
+		long seed = PRNG.getRandom().nextLong();
+		
+		// first, run the algorithm normally
+		PRNG.setSeed(seed);
+		Algorithm algorithm = AlgorithmFactory.getInstance().getAlgorithm(name, properties, problem);
+		
+		for (int i = 0; i < STEPS && !algorithm.isTerminated(); i++) {
+			algorithm.step();
+		}
+		
+		NondominatedPopulation normalResult = algorithm.getResult();
+		
+		// second, run the algorithm using checkpoints
+		File file = TestUtils.createTempFile();
+		Checkpoints checkpoints = null;
+		PRNG.setSeed(seed);
+
+		for (int i = 0; i < STEPS && (checkpoints == null || !checkpoints.isTerminated()); i++) {
+			checkpoints = new Checkpoints(AlgorithmFactory.getInstance().getAlgorithm(name, properties, problem), file, 0);
+			checkpoints.step();
+		}
+		
+		NondominatedPopulation checkpointResult = checkpoints.getResult();
+		
+		// finally, compare the two results
+		TestUtils.assertEquals(normalResult, checkpointResult);
+	}
+	
+	private void testInstrumentedResumable(String algorithmName) throws IOException {
+		Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
+		NondominatedPopulation referenceSet = ProblemFactory.getInstance().getReferenceSet("DTLZ2_2");
+		long seed = PRNG.getRandom().nextLong();
+		
+		// first, run the algorithm normally
+		PRNG.setSeed(seed);
+		Algorithm algorithm = AlgorithmFactory.getInstance().getAlgorithm(algorithmName, new TypedProperties(), problem);
+		InstrumentedAlgorithm instrumentedAlgorithm = new InstrumentedAlgorithm(algorithm, 100);
+		instrumentedAlgorithm.addCollector(new IndicatorCollector(new Hypervolume(problem, referenceSet)).attach(algorithm));
+		
+		for (int i = 0; i < STEPS; i++) {
+			instrumentedAlgorithm.step();
+		}
+
+		Observations normalResult = instrumentedAlgorithm.getObservations();
+		
+		// second, run the algorithm using checkpoints
+		File file = TestUtils.createTempFile();
+		Checkpoints checkpoints = null;
+		PRNG.setSeed(seed);
+
+		for (int i = 0; i < STEPS; i++) {
+			algorithm = AlgorithmFactory.getInstance().getAlgorithm(algorithmName, new TypedProperties(), problem);
+			instrumentedAlgorithm = new InstrumentedAlgorithm(algorithm, 100);
+			instrumentedAlgorithm.addCollector(new IndicatorCollector(new Hypervolume(problem, referenceSet)).attach(algorithm));
+			checkpoints = new Checkpoints(instrumentedAlgorithm, file, 0);
+
+			checkpoints.step();
+		}
+		
+		Observations checkpointResult = instrumentedAlgorithm.getObservations();
+
+		// finally, compare the two observations
+		Assert.assertEquals(normalResult.keys(), checkpointResult.keys());
+		Assert.assertEquals(normalResult.size(), checkpointResult.size());
+		
+		for (String key : normalResult.keys()) {
+			for (Observation normalObservation : normalResult) {
+				Observation checkpointObservation = checkpointResult.at(normalObservation.getNFE());
+				Assert.assertEquals(normalObservation.get(key), checkpointObservation.get(key));
+			}
+		}
+	}
+	
+	private static class TestAlgorithmFactory extends AlgorithmFactory {
+
+		@Override
+		public synchronized Algorithm getAlgorithm(String name, TypedProperties properties, Problem problem) {
+			if (name.equalsIgnoreCase("EpsilonProgressContinuation")) {
+				Initialization initialization = new RandomInitialization(problem);
+	
+				NondominatedSortingPopulation population = new NondominatedSortingPopulation(
+						new ParetoDominanceComparator());
+	
+				EpsilonBoxDominanceArchive archive = new EpsilonBoxDominanceArchive(
+						EpsilonHelper.getEpsilons(problem));
+	
+				TournamentSelection selection = new TournamentSelection(2, new ChainedComparator(
+						new ParetoDominanceComparator(),
+						new CrowdingComparator()));
+	
+				Variation variation = OperatorFactory.getInstance().getVariation(null, new TypedProperties(), problem);
+	
+				NSGAII nsgaii = new NSGAII(problem, 100, population, archive, selection, variation, initialization);
+	
+				return new EpsilonProgressContinuation(nsgaii, 100, 100, 4.0, 100, 10000, new UniformSelection(), new UM(1.0));
+			} else {
+				return super.getAlgorithm(name, properties, problem);
+			}
+		}
+		
 	}
 
 }

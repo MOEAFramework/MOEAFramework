@@ -57,12 +57,5 @@ public class GDE3Test extends AlgorithmTest {
 		assumeJMetalExists();
 		test("UF1", "GDE3", "GDE3-JMetal");
 	}
-	
-	@Test
-	public void testConfiguration() {
-		GDE3 algorithm = new GDE3(new MockRealProblem(2));
-		TypedProperties properties = algorithm.getConfiguration();
-		algorithm.applyConfiguration(properties);
-	}
 
 }
