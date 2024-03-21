@@ -17,6 +17,8 @@
  */
 package org.moeaframework.core;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Comparator;
 import java.util.ConcurrentModificationException;
 
@@ -24,6 +26,8 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.moeaframework.TestUtils;
+import org.moeaframework.util.format.TabularData;
 
 public class PopulationTest {
 
@@ -153,6 +157,15 @@ public class PopulationTest {
 
 		Assert.assertEquals(1, population.size());
 		Assert.assertEquals(1.0, population.get(0).getObjective(0), Settings.EPS);
+	}
+	
+	@Test
+	public void testAsTabularData() throws IOException {
+		File tempFile = TestUtils.createTempFile();
+		TabularData<Solution> data = population.asTabularData();
+		
+		data.saveCSV(tempFile);
+		Assert.assertEquals(population.size() + 1, TestUtils.lineCount(tempFile));
 	}
 
 }

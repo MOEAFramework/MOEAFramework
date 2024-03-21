@@ -23,6 +23,7 @@ import java.lang.reflect.InvocationTargetException;
 
 import org.apache.commons.lang3.reflect.ConstructorUtils;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
+import org.moeaframework.core.Epsilons;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PopulationIO;
@@ -68,7 +69,7 @@ class ProblemBuilder {
 	/**
 	 * The &epsilon; values used by this builder.
 	 */
-	double[] epsilon;
+	Epsilons epsilons;
 	
 	/**
 	 * The reference set used by this builder; or {@code null} if no reference set was configured.  
@@ -96,7 +97,7 @@ class ProblemBuilder {
 		this.problemInstance = builder.problemInstance;
 		this.problemArguments = builder.problemArguments;
 		this.problemFactory = builder.problemFactory;
-		this.epsilon = builder.epsilon;
+		this.epsilons = builder.epsilons;
 		this.referenceSet = builder.referenceSet;
 		
 		return this;
@@ -110,7 +111,6 @@ class ProblemBuilder {
 	 */
 	ProblemBuilder usingProblemFactory(ProblemFactory problemFactory) {
 		this.problemFactory = problemFactory;
-		
 		return this;
 	}
 	
@@ -175,10 +175,8 @@ class ProblemBuilder {
 	 * @return a reference to this builder
 	 * @throws ClassNotFoundException if the specified problem class name could not be found
 	 */
-	ProblemBuilder withProblemClass(String problemClassName, Object... problemArguments) 
-			throws ClassNotFoundException {
+	ProblemBuilder withProblemClass(String problemClassName, Object... problemArguments) throws ClassNotFoundException {
 		withProblemClass(Class.forName(problemClassName), problemArguments);
-		
 		return this;
 	}
 	
@@ -189,12 +187,17 @@ class ProblemBuilder {
 	 * @return a reference to this builder
 	 */
 	ProblemBuilder withEpsilon(double... epsilon) {
-		if ((epsilon == null) || (epsilon.length == 0)) {
-			this.epsilon = null;
-		} else {
-			this.epsilon = epsilon;
-		}
-		
+		return withEpsilons(new Epsilons(epsilon));
+	}
+	
+	/**
+	 * Sets the &epsilon; values used by this builder, specifying the archive returned by {@link #newArchive()}.
+	 * 
+	 * @param epsilons the &epsilon; values
+	 * @return a reference to this builder
+	 */
+	ProblemBuilder withEpsilons(Epsilons epsilons) {
+		this.epsilons = epsilons;
 		return this;
 	}
 	
@@ -221,7 +224,6 @@ class ProblemBuilder {
 	 */
 	ProblemBuilder withReferenceSet(NondominatedPopulation referenceSet) {
 		this.referenceSet = referenceSet;
-		
 		return this;
 	}
 	
@@ -233,10 +235,10 @@ class ProblemBuilder {
 	 *         {@code epsilon} field is set.
 	 */
 	NondominatedPopulation newArchive() {
-		if (epsilon == null) {
+		if (epsilons == null) {
 			return new NondominatedPopulation(new ParetoDominanceComparator());
 		} else {
-			return new EpsilonBoxDominanceArchive(epsilon);
+			return new EpsilonBoxDominanceArchive(epsilons);
 		}
 	}
 	

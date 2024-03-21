@@ -25,7 +25,9 @@ public class EpsilonProgressCollectorTest extends AbstractCollectorTest<EpsilonP
 	
 	@Override
 	public void validate(Observation observation) {
-		// skip validations
+		//these observations are only collected if the archive is non-null
+		//Assert.assertTrue(EpsilonProgressCollector.getNumberOfImprovements(observation) >= 0);
+		//Assert.assertTrue(EpsilonProgressCollector.getNumberOfDominatingImprovements(observation) >= 0);
 	}
 	
 	@Override

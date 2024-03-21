@@ -33,6 +33,7 @@ import org.moeaframework.analysis.io.ResultFileWriter;
 import org.moeaframework.analysis.io.SampleReader;
 import org.moeaframework.analysis.io.ResultFileWriter.ResultFileWriterSettings;
 import org.moeaframework.core.Algorithm;
+import org.moeaframework.core.Epsilons;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PRNG;
@@ -121,7 +122,7 @@ public class Evaluator extends CommandLineUtility {
 	public void run(CommandLine commandLine) throws IOException {
 		File outputFile = new File(commandLine.getOptionValue("output"));
 		File inputFile = new File(commandLine.getOptionValue("input"));
-		double[] epsilon = OptionUtils.getEpsilon(commandLine);
+		Epsilons epsilons = OptionUtils.getEpsilons(commandLine);
 
 		ParameterFile parameterFile = new ParameterFile(new File(commandLine.getOptionValue("parameterFile")));
 
@@ -168,8 +169,8 @@ public class Evaluator extends CommandLineUtility {
 					}
 				}
 
-				if (epsilon != null) {
-					defaultProperties.setDoubleArray("epsilon", epsilon);
+				if (epsilons != null) {
+					defaultProperties.setDoubleArray("epsilon", epsilons.toArray());
 				}
 
 				// seed the pseudo-random number generator
@@ -223,8 +224,8 @@ public class Evaluator extends CommandLineUtility {
 
 		// apply epsilon-dominance if required
 		if (properties.contains("epsilon")) {
-			double[] epsilon = properties.getDoubleArray("epsilon");
-			result = EpsilonHelper.convert(result, epsilon);
+			Epsilons epsilons = new Epsilons(properties.getDoubleArray("epsilon"));
+			result = EpsilonHelper.convert(result, epsilons);
 		}
 
 		// record instrumented data

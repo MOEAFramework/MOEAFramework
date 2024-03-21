@@ -277,7 +277,7 @@ public class DefaultAlgorithmsResumeTest {
 						new ParetoDominanceComparator());
 	
 				EpsilonBoxDominanceArchive archive = new EpsilonBoxDominanceArchive(
-						EpsilonHelper.getEpsilon(problem));
+						EpsilonHelper.getEpsilons(problem));
 	
 				TournamentSelection selection = new TournamentSelection(2, new ChainedComparator(
 						new ParetoDominanceComparator(),

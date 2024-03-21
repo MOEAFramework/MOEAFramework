@@ -19,6 +19,7 @@ package org.moeaframework.core.indicator;
 
 import org.apache.commons.math3.util.MathArrays;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
+import org.moeaframework.core.Epsilons;
 import org.moeaframework.core.Indicator;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Settings;
@@ -68,11 +69,11 @@ public class Contribution implements Indicator {
 	 * residing in the same &epsilon;-box are considered to be equivalent.
 	 * 
 	 * @param referenceSet the reference set
-	 * @param epsilon the &epsilon; values
+	 * @param epsilons the &epsilon; values
 	 * @throws IllegalArgumentException if the reference set is empty
 	 */
-	public Contribution(NondominatedPopulation referenceSet, double[] epsilon) {
-		this(referenceSet, new EpsilonBoxDominanceComparator(epsilon));
+	public Contribution(NondominatedPopulation referenceSet, Epsilons epsilons) {
+		this(referenceSet, new EpsilonBoxDominanceComparator(epsilons));
 	}
 	
 	/**

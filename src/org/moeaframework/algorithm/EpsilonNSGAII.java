@@ -58,7 +58,7 @@ public class EpsilonNSGAII extends AdaptiveTimeContinuation implements Configura
 		this(problem,
 				Settings.DEFAULT_POPULATION_SIZE,
 				new NondominatedSortingPopulation(),
-				new EpsilonBoxDominanceArchive(EpsilonHelper.getEpsilon(problem)),
+				new EpsilonBoxDominanceArchive(EpsilonHelper.getEpsilons(problem)),
 				new TournamentSelection(2, new ChainedComparator(new ParetoDominanceComparator(), new CrowdingComparator())),
 				OperatorFactory.getInstance().getVariation(problem),
 				new RandomInitialization(problem),

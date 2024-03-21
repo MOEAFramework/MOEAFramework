@@ -26,6 +26,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Settings;
+import org.moeaframework.core.configuration.ConfigurationException;
 
 public class TypedPropertiesTest {
 
@@ -289,6 +290,7 @@ public class TypedPropertiesTest {
 		
 		Assert.assertThrows(NumberFormatException.class, () -> properties.getInt("double"));
 		Assert.assertEquals(2, properties.getTruncatedInt("double"));
+		Assert.assertEquals(2, properties.getTruncatedInt("double", intValue));
 		
 		Assert.assertEquals(longValue, properties.getLong("long"));
 		Assert.assertEquals(longValue, properties.getTruncatedLong("long"));
@@ -298,6 +300,7 @@ public class TypedPropertiesTest {
 		
 		Assert.assertThrows(NumberFormatException.class, () -> properties.getLong("double"));
 		Assert.assertEquals(2, properties.getTruncatedLong("double"));
+		Assert.assertEquals(2, properties.getTruncatedLong("double", longValue));
 		
 		// if the truncation would change the value by more than 1, throw instead of warn
 		Assert.assertThrows(NumberFormatException.class, () -> properties.getInt("long"));
@@ -333,6 +336,41 @@ public class TypedPropertiesTest {
 		for (String key : properties.getUnaccessedProperties()) {
 			Assert.assertFalse(properties.getString(key).contains("${"));
 		}
+	}
+	
+	@Test
+	public void testThrowsIfMissing() {
+		Assert.assertThrows(PropertyNotFoundException.class, () -> properties.getString("missing"));
+		Assert.assertThrows(PropertyNotFoundException.class, () -> properties.getBoolean("missing"));
+		Assert.assertThrows(PropertyNotFoundException.class, () -> properties.getByte("missing"));
+		Assert.assertThrows(PropertyNotFoundException.class, () -> properties.getShort("missing"));
+		Assert.assertThrows(PropertyNotFoundException.class, () -> properties.getInt("missing"));
+		Assert.assertThrows(PropertyNotFoundException.class, () -> properties.getLong("missing"));
+		Assert.assertThrows(PropertyNotFoundException.class, () -> properties.getFloat("missing"));
+		Assert.assertThrows(PropertyNotFoundException.class, () -> properties.getDouble("missing"));
+		
+		Assert.assertThrows(PropertyNotFoundException.class, () -> properties.getStringArray("missing"));
+		Assert.assertThrows(PropertyNotFoundException.class, () -> properties.getByteArray("missing"));
+		Assert.assertThrows(PropertyNotFoundException.class, () -> properties.getShortArray("missing"));
+		Assert.assertThrows(PropertyNotFoundException.class, () -> properties.getIntArray("missing"));
+		Assert.assertThrows(PropertyNotFoundException.class, () -> properties.getLongArray("missing"));
+		Assert.assertThrows(PropertyNotFoundException.class, () -> properties.getFloatArray("missing"));
+		Assert.assertThrows(PropertyNotFoundException.class, () -> properties.getDoubleArray("missing"));
+	}
+	
+	@Test(expected = ConfigurationException.class)
+	public void testThrowsIfUnaccessed() {
+		properties.clearAccessedProperties();
+		properties.throwIfUnaccessedProperties();
+	}
+	
+	@Test
+	public void testEquals() {
+		TypedProperties clone = new TypedProperties();
+		clone.addAll(properties);
+		
+		Assert.assertEquals(clone, properties);
+		Assert.assertEquals(clone.hashCode(), properties.hashCode());
 	}
 
 	private enum TestEnum {

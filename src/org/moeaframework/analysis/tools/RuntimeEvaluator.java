@@ -36,6 +36,7 @@ import org.moeaframework.analysis.io.ResultEntry;
 import org.moeaframework.analysis.io.ResultFileWriter;
 import org.moeaframework.analysis.io.SampleReader;
 import org.moeaframework.analysis.io.ResultFileWriter.ResultFileWriterSettings;
+import org.moeaframework.core.Epsilons;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PRNG;
@@ -121,7 +122,7 @@ public class RuntimeEvaluator extends CommandLineUtility {
 		String outputFilePattern = commandLine.getOptionValue("output");
 		ParameterFile parameterFile = new ParameterFile(new File(commandLine.getOptionValue("parameterFile")));
 		File inputFile = new File(commandLine.getOptionValue("input"));
-		double[] epsilon = OptionUtils.getEpsilon(commandLine);
+		Epsilons epsilons = OptionUtils.getEpsilons(commandLine);
 		
 		int frequency = 1000;
 		
@@ -160,8 +161,8 @@ public class RuntimeEvaluator extends CommandLineUtility {
 						}
 					}
 	
-					if (epsilon != null) {
-						defaultProperties.setDoubleArray("epsilon", epsilon);
+					if (epsilons != null) {
+						defaultProperties.setDoubleArray("epsilon", epsilons.toArray());
 					}
 	
 					// seed the pseudo-random number generator

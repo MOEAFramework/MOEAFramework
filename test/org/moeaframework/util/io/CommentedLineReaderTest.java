@@ -47,5 +47,13 @@ public class CommentedLineReaderTest {
 			Assert.assertNull(reader.readLine());
 		}
 	}
+	
+	@Test
+	public void testWrap() throws IOException {
+		try (CommentedLineReader reader = new CommentedLineReader(new StringReader(""));
+				CommentedLineReader wrappedReader = CommentedLineReader.wrap(reader)) {
+			Assert.assertSame(reader, wrappedReader);
+		}
+	}
 
 }

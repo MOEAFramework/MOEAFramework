@@ -23,6 +23,7 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
+import org.moeaframework.core.Epsilons;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PopulationIO;
 import org.moeaframework.core.indicator.Hypervolume;
@@ -66,7 +67,7 @@ public class SetHypervolume extends CommandLineUtility {
 	@Override
 	public void run(CommandLine commandLine) throws Exception {
 		NumberFormatter formatter = NumberFormatter.getDefault();
-		double[] epsilon = OptionUtils.getEpsilon(commandLine);
+		Epsilons epsilons = OptionUtils.getEpsilons(commandLine);
 		
 		Hypervolume hypervolume = null;
 		
@@ -81,8 +82,8 @@ public class SetHypervolume extends CommandLineUtility {
 			for (String filename : commandLine.getArgs()) {
 				NondominatedPopulation set = new NondominatedPopulation(PopulationIO.readObjectives(new File(filename)));
 				
-				if (epsilon != null) {
-					set = new EpsilonBoxDominanceArchive(epsilon, set);
+				if (epsilons != null) {
+					set = new EpsilonBoxDominanceArchive(epsilons, set);
 				}
 				
 				output.print(filename);

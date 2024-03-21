@@ -27,6 +27,7 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.math3.util.MathArrays;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
+import org.moeaframework.core.Epsilons;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.PopulationIO;
@@ -171,10 +172,10 @@ public class ReferenceSetMerger extends CommandLineUtility {
 	@Override
 	public void run(CommandLine commandLine) throws Exception {
 		//use an epsilon-dominance archive if necessary
-		double[] epsilon = OptionUtils.getEpsilon(commandLine);
+		Epsilons epsilons = OptionUtils.getEpsilons(commandLine);
 		
-		if (epsilon != null) {
-			combinedPopulation = new EpsilonBoxDominanceArchive(epsilon);
+		if (epsilons != null) {
+			combinedPopulation = new EpsilonBoxDominanceArchive(epsilons);
 		}
 
 		//read the population files

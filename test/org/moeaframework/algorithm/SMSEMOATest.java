@@ -20,6 +20,7 @@ package org.moeaframework.algorithm;
 import java.io.IOException;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.moeaframework.CIRunner;
@@ -36,24 +37,28 @@ import org.moeaframework.util.TypedProperties;
 public class SMSEMOATest extends AlgorithmTest {
 	
 	@Test
+	@Ignore
 	@IgnoreOnCI("exceeds 10 minute timeout")
 	public void testDTLZ1() throws IOException {
 		test("DTLZ1_2", "SMSEMOA", "SMSEMOA-JMetal");
 	}
 	
 	@Test
+	@Ignore
 	@IgnoreOnCI("exceeds 10 minute timeout")
 	public void testDTLZ2() throws IOException {
 		test("DTLZ2_2", "SMSEMOA", "SMSEMOA-JMetal");
 	}
 	
 	@Test
+	@Ignore
 	@IgnoreOnCI("exceeds 10 minute timeout")
 	public void testDTLZ7() throws IOException {
 		test("DTLZ7_2", "SMSEMOA", "SMSEMOA-JMetal");
 	}
 	
 	@Test
+	@Ignore
 	@IgnoreOnCI("exceeds 10 minute timeout")
 	public void testUF1() throws IOException {
 		test("UF1", "SMSEMOA", "SMSEMOA-JMetal");

@@ -46,11 +46,11 @@ public class EpsilonHelper {
 	 * @param problem the problem
 	 * @return the &epsilon; value used for the standard problems in sensitivity analysis
 	 */
-	public static double getEpsilon(Problem problem) {
+	public static Epsilons getEpsilons(Problem problem) {
 		String name = problem.getName();
 		int numberOfObjectives = problem.getNumberOfObjectives();
 		
-		return switch (name) {
+		double epsilon = switch (name) {
 			case "Belegundu" -> 0.1;
 			case "Binh" -> 0.25;
 			case "Binh2" -> 0.35;
@@ -99,19 +99,8 @@ public class EpsilonHelper {
 				}
 			}
 		};
-	}
-	
-	/**
-	 * Converts the population to an {@link EpsilonBoxDominanceArchive} with the given &epsilon; values.
-	 * To prevent unnecessary computations, this conversion only occurs if the original population is not an
-	 * {@code EpsilonBoxDominanceArchive} and does not have matching &epsilon; values.
-	 * 
-	 * @param population the population to convert
-	 * @param epsilons the &epsilon; values
-	 * @return the population converted to an {@code EpsilonBoxDominanceArchive} with the given &epsilon; values
-	 */
-	public static EpsilonBoxDominanceArchive convert(Population population, double[] epsilons) {
-		return convert(population, new Epsilons(epsilons));
+		
+		return Epsilons.of(epsilon);
 	}
 	
 	/**

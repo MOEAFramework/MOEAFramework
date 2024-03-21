@@ -19,6 +19,7 @@ package org.moeaframework.analysis.io;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.NoSuchElementException;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -371,6 +372,14 @@ public class ResultFileReaderTest {
 	public void testReaderUnparseable() throws IOException {
 		try (ResultFileReader reader = new ResultFileReader(problem, TestUtils.createTempFile(INCOMPLETE_UNPARSEABLE))) {
 			validateIncomplete(reader);
+		}
+	}
+	
+	@Test(expected = NoSuchElementException.class)
+	public void testNextAfterEndOfFile() throws IOException {
+		try (ResultFileReader reader = new ResultFileReader(problem, TestUtils.createTempFile(COMPLETE))) {
+			validateComplete(reader);
+			reader.next();
 		}
 	}
 

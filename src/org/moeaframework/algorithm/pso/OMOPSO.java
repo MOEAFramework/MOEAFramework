@@ -19,6 +19,7 @@ package org.moeaframework.algorithm.pso;
 
 import org.moeaframework.analysis.EpsilonHelper;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
+import org.moeaframework.core.Epsilons;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
@@ -68,7 +69,7 @@ public class OMOPSO extends AbstractPSOAlgorithm {
 		this(problem,
 				Settings.DEFAULT_POPULATION_SIZE,
 				Settings.DEFAULT_POPULATION_SIZE,
-				new double[] { EpsilonHelper.getEpsilon(problem) },
+				EpsilonHelper.getEpsilons(problem),
 				1.0 / problem.getNumberOfVariables(),
 				0.5,
 				maxIterations);
@@ -85,8 +86,7 @@ public class OMOPSO extends AbstractPSOAlgorithm {
 	 * @param mutationPerturbation the perturbation index for uniform and non-uniform mutation
 	 * @param maxIterations the maximum iterations for scaling the non-uniform mutation
 	 */
-	public OMOPSO(Problem problem, int swarmSize, int leaderSize,
-			double[] epsilons, double mutationProbability,
+	public OMOPSO(Problem problem, int swarmSize, int leaderSize, Epsilons epsilons, double mutationProbability,
 			double mutationPerturbation, int maxIterations) {
 		super(problem, swarmSize, leaderSize,
 				new CrowdingComparator(),

@@ -62,6 +62,42 @@ public class FileUtilsTest {
 	}
 	
 	@Test
+	public void testCopy() throws IOException {
+		File from = TestUtils.createTempFile("foobar");
+		File to = TestUtils.createTempFile();
+		
+		to.delete();
+		FileUtils.copy(from, to);
+		
+		Assert.assertTrue(from.exists());
+		Assert.assertTrue(to.exists());
+		Assert.assertEquals(1, TestUtils.lineCount(to));
+		TestUtils.assertLinePattern(to, "foobar");
+	}
+	
+	@Test
+	public void testCopySame() throws IOException {
+		File file = TestUtils.createTempFile("foobar");
+		
+		FileUtils.copy(file, file);
+		
+		Assert.assertTrue(file.exists());
+		Assert.assertEquals(1, TestUtils.lineCount(file));
+		TestUtils.assertLinePattern(file, "foobar");
+	}
+	
+	@Test(expected = FileNotFoundException.class)
+	public void testCopyNonexistentFile() throws IOException {
+		File from = TestUtils.createTempFile("foobar");
+		File to = TestUtils.createTempFile();
+		
+		from.delete();
+		to.delete();
+		
+		FileUtils.copy(from, to);	
+	}
+	
+	@Test
 	public void testDelete() throws IOException {
 		File file = TestUtils.createTempFile();
 		
@@ -121,6 +157,12 @@ public class FileUtilsTest {
 		File second = TestUtils.createTempFile("foobaz");
 		
 		Assert.assertFalse(FileUtils.areIdentical(first, second));
+	}
+	
+	@Test
+	public void testReadUTF8() throws IOException {
+		File file = TestUtils.createTempFile("foobar");
+		Assert.assertEquals("foobar", FileUtils.readUTF8(file));
 	}
 	
 	private File getTempFolder() throws IOException {

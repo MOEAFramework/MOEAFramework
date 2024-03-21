@@ -29,6 +29,7 @@ import org.moeaframework.analysis.io.ResultEntry;
 import org.moeaframework.analysis.io.ResultFileReader;
 import org.moeaframework.analysis.io.ResultFileWriter;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
+import org.moeaframework.core.Epsilons;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 import org.moeaframework.util.CommandLineUtility;
@@ -89,7 +90,7 @@ public class ResultFileSeedMerger extends CommandLineUtility {
 	@Override
 	public void run(CommandLine commandLine) throws Exception {
 		List<List<NondominatedPopulation>> entries = new ArrayList<List<NondominatedPopulation>>();
-		double[] epsilon = OptionUtils.getEpsilon(commandLine);
+		Epsilons epsilons = OptionUtils.getEpsilons(commandLine);
 
 
 		try (Problem problem = OptionUtils.getProblemInstance(commandLine, true)) {
@@ -120,8 +121,8 @@ public class ResultFileSeedMerger extends CommandLineUtility {
 					NondominatedPopulation mergedSet = null;
 
 					// configure epsilon-dominance					
-					if (epsilon != null) {
-						mergedSet = new EpsilonBoxDominanceArchive(epsilon);
+					if (epsilons != null) {
+						mergedSet = new EpsilonBoxDominanceArchive(epsilons);
 					} else {
 						mergedSet = new NondominatedPopulation();
 					}

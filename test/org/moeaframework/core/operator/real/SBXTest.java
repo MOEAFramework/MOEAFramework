@@ -93,6 +93,34 @@ public class SBXTest extends ParentCentricVariationTest<SBX> {
 		checkDistribution(centroids, offspring);
 	}
 	
+	@Test
+	@Retryable
+	public void testDistributionSymmetric() {
+		SBX sbx = new SBX(1.0, 20.0, true, true);
+
+		Solution s1 = new Solution(2, 0);
+		s1.setVariable(0, new RealVariable(2.0, -10.0, 10.0));
+		s1.setVariable(1, new RealVariable(2.0, -10.0, 10.0));
+
+		Solution s2 = new Solution(2, 0);
+		s2.setVariable(0, new RealVariable(-2.0, -10.0, 10.0));
+		s2.setVariable(1, new RealVariable(-2.0, -10.0, 10.0));
+
+		Solution[] parents = new Solution[] { s1, s2 };
+
+		Solution[] offspring = new Solution[TestThresholds.SAMPLES];
+
+		for (int i = 0; i < TestThresholds.SAMPLES; i += 2) {
+			Solution[] children = sbx.evolve(parents);
+			offspring[i] = children[0];
+			offspring[i + 1] = children[1];
+		}
+
+		Solution[] centroids = new Solution[] { s1, s2, newSolution(2.0, -2.0), newSolution(-2.0, 2.0) };
+
+		checkDistribution(centroids, offspring);
+	}
+	
 	/**
 	 * Test to ensure the SBX operator works correctly if the PRNG draws a value of 1.0.  The SBX code results in
 	 * out-of-bounds values if this happens and must be guarded against.

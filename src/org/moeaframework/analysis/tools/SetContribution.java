@@ -22,6 +22,7 @@ import java.io.File;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
+import org.moeaframework.core.Epsilons;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PopulationIO;
 import org.moeaframework.core.indicator.Contribution;
@@ -69,11 +70,11 @@ public class SetContribution extends CommandLineUtility {
 		NumberFormatter formatter = NumberFormatter.getDefault();
 		NondominatedPopulation referenceSet = new NondominatedPopulation(
 				PopulationIO.readObjectives(new File(commandLine.getOptionValue("reference"))));
-		double[] epsilon = OptionUtils.getEpsilon(commandLine);
+		Epsilons epsilons = OptionUtils.getEpsilons(commandLine);
 		Contribution contribution = null;
 
-		if (epsilon != null) {
-			contribution = new Contribution(referenceSet, epsilon);
+		if (epsilons != null) {
+			contribution = new Contribution(referenceSet, epsilons);
 		} else {
 			contribution = new Contribution(referenceSet);
 		}

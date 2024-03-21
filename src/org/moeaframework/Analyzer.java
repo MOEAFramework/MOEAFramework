@@ -35,6 +35,7 @@ import org.apache.commons.math3.stat.descriptive.rank.Min;
 import org.moeaframework.analysis.io.ResultEntry;
 import org.moeaframework.analysis.io.ResultFileReader;
 import org.moeaframework.analysis.io.ResultFileWriter;
+import org.moeaframework.core.Epsilons;
 import org.moeaframework.core.Indicator;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PopulationIO;
@@ -225,6 +226,11 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 	@Override
 	public Analyzer withEpsilon(double... epsilon) {
 		return (Analyzer)super.withEpsilon(epsilon);
+	}
+	
+	@Override
+	public Analyzer withEpsilons(Epsilons epsilons) {
+		return (Analyzer)super.withEpsilons(epsilons);
 	}
 	
 	@Override
@@ -706,10 +712,10 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 			}
 			
 			if (includeContribution) {
-				if (epsilon == null) {
+				if (epsilons == null) {
 					indicators.add(new Contribution(referenceSet));
 				} else {
-					indicators.add(new Contribution(referenceSet, epsilon));
+					indicators.add(new Contribution(referenceSet, epsilons));
 				}
 			}
 			

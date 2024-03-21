@@ -19,6 +19,7 @@ package org.moeaframework.analysis.io;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.NoSuchElementException;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -194,6 +195,14 @@ public class SampleReaderTest {
 	public void testReaderOutOfBounds2() throws IOException {
 		try (SampleReader reader = new SampleReader(new StringReader(INVALID_OUT_OF_BOUNDS_2), parameterFile)) {
 			validateInvalid(reader);
+		}
+	}
+	
+	@Test(expected = NoSuchElementException.class)
+	public void testNextAfterEndOfFile() throws IOException {
+		try (SampleReader reader = new SampleReader(TestUtils.createTempFile(COMPLETE), parameterFile)) {
+			validateComplete(reader);
+			reader.next();
 		}
 	}
 

@@ -27,7 +27,6 @@ import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PopulationIO;
 import org.moeaframework.core.Problem;
-import org.moeaframework.core.Settings;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.core.spi.ProblemFactoryTestWrapper;
 import org.moeaframework.problem.DTLZ.DTLZ2;
@@ -158,7 +157,7 @@ public class ProblemBuilderTest {
 		Assert.assertArrayEquals(builder1.problemArguments, builder2.problemArguments);
 		Assert.assertEquals(builder1.problemClass, builder2.problemClass);
 		Assert.assertEquals(builder1.problemFactory, builder2.problemFactory);
-		Assert.assertArrayEquals(builder1.epsilon, builder2.epsilon, Settings.EPS);
+		Assert.assertEquals(builder1.epsilons, builder2.epsilons);
 		
 		builder2.withProblemClass(DTLZ2.class, 4).usingProblemFactory(ProblemFactory.getInstance());
 		builder1.withSameProblemAs(builder2);
@@ -167,7 +166,7 @@ public class ProblemBuilderTest {
 		Assert.assertArrayEquals(builder1.problemArguments, builder2.problemArguments);
 		Assert.assertEquals(builder1.problemClass, builder2.problemClass);
 		Assert.assertEquals(builder1.problemFactory, builder2.problemFactory);
-		Assert.assertArrayEquals(builder1.epsilon, builder2.epsilon, Settings.EPS);
+		Assert.assertEquals(builder1.epsilons, builder2.epsilons);
 	}
 
 }

@@ -63,6 +63,17 @@ public class Validate {
 	}
 	
 	/**
+	 * Validates that the value is greater than or equal to {@code 0.0}.
+	 * 
+	 * @param propertyName the property name being set
+	 * @param value the value to check
+	 * @throws IllegalArgumentException if the check fails
+	 */
+	public static void greaterThanOrEqualToZero(String propertyName, double value) {
+		greaterThanOrEqual(propertyName, 0.0, value);
+	}
+	
+	/**
 	 * Validates that the value is greater than some minimum value, exclusively.
 	 * 
 	 * @param propertyName the property name being set

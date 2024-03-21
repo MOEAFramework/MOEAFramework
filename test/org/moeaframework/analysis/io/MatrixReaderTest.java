@@ -19,6 +19,7 @@ package org.moeaframework.analysis.io;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.NoSuchElementException;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -146,6 +147,27 @@ public class MatrixReaderTest {
 			Assert.assertTrue(reader.hasNext());
 			Assert.assertArrayEquals(new double[] { 0.0, 0.1, -0.1 }, reader.next(), Settings.EPS);
 			Assert.assertFalse(reader.hasNext());
+		}
+	}
+	
+	@Test
+	public void testSuppressExceptions() throws IOException {
+		try (MatrixReader reader = new MatrixReader(new StringReader(UNPARSEABLE))) {
+			reader.setSuppressExceptions(true);
+			
+			Assert.assertTrue(reader.hasNext());
+			Assert.assertFalse(reader.hasNext());
+			Assert.assertTrue(reader.isError());
+		}
+	}
+	
+	@Test(expected = NoSuchElementException.class)
+	public void testNextAfterEndOfFile() throws IOException {
+		try (MatrixReader reader = new MatrixReader(new StringReader(FIXED))) {
+			reader.next();
+			reader.next();
+			Assert.assertFalse(reader.hasNext());
+			reader.next();
 		}
 	}
 

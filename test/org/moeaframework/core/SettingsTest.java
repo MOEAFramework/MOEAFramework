@@ -37,6 +37,11 @@ public class SettingsTest {
 	public void testContinuityCorrection() {
 		Assert.assertFalse(Settings.isContinuityCorrection());
 	}
+	
+	@Test
+	public void testProtectedFunctions() {
+		Assert.assertTrue(Settings.isProtectedFunctions());
+	}
 
 	@Test
 	public void testHypervolumeDelta() {

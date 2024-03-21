@@ -65,6 +65,17 @@ public class NondominatedPopulationTest {
 		Assert.assertTrue(population.contains(solution2));
 		Assert.assertTrue(population.contains(solution4));
 	}
+	
+	@Test(expected = UnsupportedOperationException.class)
+	public void testReplace() {
+		NondominatedPopulation population = new NondominatedPopulation();
+
+		Solution solution1 = new Solution(new double[] { 1.0, 2.0, 3.0 });
+		Solution solution2 = new Solution(new double[] { 1.0, 3.0, 2.0 });
+
+		population.add(solution1);
+		population.replace(0, solution2);
+	}
 
 	@Test
 	public void testNoDuplicates() {

@@ -21,6 +21,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.TestUtils;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
+import org.moeaframework.core.Epsilons;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.spi.ProblemFactory;
@@ -31,19 +32,20 @@ public class EpsilonHelperTest {
 	
 	@Test
 	public void test() {
-		Assert.assertTrue(EpsilonHelper.getEpsilon(new DTLZ2(3)) > EpsilonHelper.DEFAULT);
+		Assert.assertTrue(EpsilonHelper.getEpsilons(new DTLZ2(3)).get(0) > EpsilonHelper.DEFAULT);
 	}
 	
 	@Test
 	public void testUndefinedProblem() {
-		Assert.assertEquals(EpsilonHelper.getEpsilon(new MockRealProblem()), EpsilonHelper.DEFAULT, Settings.EPS);
+		Assert.assertEquals(EpsilonHelper.getEpsilons(new MockRealProblem()).get(0), EpsilonHelper.DEFAULT,
+				Settings.EPS);
 	}
 	
 	@Test
 	public void testConvertNoEpsilons() {
 		NondominatedPopulation referenceSet = ProblemFactory.getInstance().getReferenceSet("DTLZ2_2");
 		EpsilonBoxDominanceArchive expected = new EpsilonBoxDominanceArchive(0.1, referenceSet);
-		EpsilonBoxDominanceArchive actual = EpsilonHelper.convert(referenceSet, new double[] { 0.1 });
+		EpsilonBoxDominanceArchive actual = EpsilonHelper.convert(referenceSet, Epsilons.of(0.1));
 		
 		TestUtils.assertEquals(expected, actual);
 		TestUtils.assertEquals(0.1, actual.getComparator().getEpsilons().get(0));
@@ -53,7 +55,7 @@ public class EpsilonHelperTest {
 	public void testConvertDifferentEpsilons() {
 		NondominatedPopulation referenceSet = ProblemFactory.getInstance().getReferenceSet("DTLZ2_2");
 		NondominatedPopulation population = new EpsilonBoxDominanceArchive(0.1, referenceSet);
-		EpsilonBoxDominanceArchive actual = EpsilonHelper.convert(population, new double[] { 0.25 });
+		EpsilonBoxDominanceArchive actual = EpsilonHelper.convert(population, Epsilons.of(0.25));
 		
 		Assert.assertNotSame(actual, population);
 		TestUtils.assertEquals(0.25, actual.getComparator().getEpsilons().get(0));
@@ -63,7 +65,7 @@ public class EpsilonHelperTest {
 	public void testConvertSameEpsilons() {
 		NondominatedPopulation referenceSet = ProblemFactory.getInstance().getReferenceSet("DTLZ2_2");
 		NondominatedPopulation population = new EpsilonBoxDominanceArchive(0.1, referenceSet);
-		EpsilonBoxDominanceArchive actual = EpsilonHelper.convert(population, new double[] { 0.1 });
+		EpsilonBoxDominanceArchive actual = EpsilonHelper.convert(population, Epsilons.of(0.1));
 		
 		Assert.assertSame(actual, population);
 		TestUtils.assertEquals(0.1, actual.getComparator().getEpsilons().get(0));

@@ -25,6 +25,7 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.OptionGroup;
 import org.apache.commons.cli.Options;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
+import org.moeaframework.core.Epsilons;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PopulationIO;
@@ -144,15 +145,15 @@ class OptionUtils {
 	}
 	
 	/**
-	 * Returns the array of epsilon values specified on the command line, if any.
+	 * Returns the epsilon values specified on the command line, if any.
 	 * 
 	 * @param commandLine the command line input
 	 * @return the epsilon values or {@code null} if unspecified
 	 */
-	public static double[] getEpsilon(CommandLine commandLine) {
+	public static Epsilons getEpsilons(CommandLine commandLine) {
 		if (commandLine.hasOption("epsilon")) {
 			TypedProperties properties = TypedProperties.withProperty("epsilon", commandLine.getOptionValue("epsilon"));
-			return properties.getDoubleArray("epsilon");
+			return new Epsilons(properties.getDoubleArray("epsilon"));
 		}
 		
 		return null;
@@ -165,10 +166,10 @@ class OptionUtils {
 	 * @return the empty archive
 	 */
 	public static NondominatedPopulation getArchive(CommandLine commandLine) {
-		double[] epsilon = getEpsilon(commandLine);
+		Epsilons epsilons = getEpsilons(commandLine);
 		
-		if (epsilon != null) {
-			return new EpsilonBoxDominanceArchive(epsilon);
+		if (epsilons != null) {
+			return new EpsilonBoxDominanceArchive(epsilons);
 		} else {
 			return new NondominatedPopulation();
 		}

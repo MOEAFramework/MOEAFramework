@@ -30,6 +30,9 @@ public class EpsilonsTest {
 		Assert.assertNotEquals(new Epsilons(0.1), new Epsilons(0.2));
 		Assert.assertNotEquals(new Epsilons(new double[] { 0.1, 0.2 }), new Epsilons(new double[] { 0.1, 0.1 }));
 		Assert.assertNotEquals(new Epsilons(new double[] { 0.1, 0.2 }), new Epsilons(new double[] { 0.1, 0.2, 0.2 }));
+		
+		Epsilons epsilons = new Epsilons(0.1);
+		Assert.assertEquals(epsilons, epsilons);
 	}
 	
 	@Test

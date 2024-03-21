@@ -112,17 +112,6 @@ public abstract class RIndicator extends NormalizedIndicator {
 	protected double[][] weights;
 	
 	/**
-	 * Constructs a new R indicator using the Chebychev utility function.
-	 * 
-	 * @param problem the problem
-	 * @param subdivisions the number of subdivisions along each objective
-	 * @param referenceSet the reference set
-	 */
-	public RIndicator(Problem problem, int subdivisions, NondominatedPopulation referenceSet) {
-		this(problem, subdivisions, referenceSet, new ChebychevUtility());
-	}
-	
-	/**
 	 * Constructs a new R indicator using the specified utility function.
 	 * 
 	 * @param problem the problem

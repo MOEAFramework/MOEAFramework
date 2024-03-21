@@ -78,6 +78,11 @@ public class RedirectStreamTest {
 		RedirectStream.capture(new ProcessBuilder("invalidCommand"));		
 	}
 	
+	@Test(expected = IOException.class)
+	public void testInvokeWithInvalidCommand() throws IOException, InterruptedException {
+		RedirectStream.invoke(new ProcessBuilder("invalidCommand"));
+	}
+	
 	private byte[] generateRandomData() {
 		byte[] data = new byte[10*Settings.BUFFER_SIZE+271];
 		PRNG.getRandom().nextBytes(data);

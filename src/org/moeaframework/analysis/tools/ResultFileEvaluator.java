@@ -26,6 +26,7 @@ import org.moeaframework.analysis.EpsilonHelper;
 import org.moeaframework.analysis.io.MetricFileWriter;
 import org.moeaframework.analysis.io.ResultEntry;
 import org.moeaframework.analysis.io.ResultFileReader;
+import org.moeaframework.core.Epsilons;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
@@ -77,7 +78,7 @@ public class ResultFileEvaluator extends CommandLineUtility {
 	public void run(CommandLine commandLine) throws Exception {
 		File inputFile = new File(commandLine.getOptionValue("input"));
 		File outputFile = new File(commandLine.getOptionValue("output"));
-		double[] epsilon = OptionUtils.getEpsilon(commandLine);
+		Epsilons epsilons = OptionUtils.getEpsilons(commandLine);
 
 		// sanity check to ensure input hasn't been modified after the output
 		if (!commandLine.hasOption("force") && (outputFile.lastModified() > 0L) && 
@@ -113,8 +114,8 @@ public class ResultFileEvaluator extends CommandLineUtility {
 				while (reader.hasNext()) {
 					ResultEntry entry = reader.next();
 
-					if (epsilon != null) {
-						entry = new ResultEntry(EpsilonHelper.convert(entry.getPopulation(), epsilon),
+					if (epsilons != null) {
+						entry = new ResultEntry(EpsilonHelper.convert(entry.getPopulation(), epsilons),
 								entry.getProperties());
 					}
 						

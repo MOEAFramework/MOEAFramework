@@ -149,28 +149,13 @@ public class NondominatedPopulation extends Population {
 	}
 
 	/**
-	 * Replace the solution at the given index with the new solution, but only if the new solution is non-dominated.
-	 * To maintain non-dominance within this population, any solutions dominated by the new solution will also
-	 * be replaced.
+	 * Replace is not supported with non-dominated populations.  Calling this method will throw an exception.
+	 * 
+	 * @throws UnsupportedOperationException if this method is called
 	 */
 	@Override
 	public void replace(int index, Solution newSolution) {
-		Iterator<Solution> iterator = iterator();
-
-		while (iterator.hasNext()) {
-			Solution oldSolution = iterator.next();
-			int flag = comparator.compare(newSolution, oldSolution);
-
-			if (flag < 0) {
-				iterator.remove();
-			} else if (flag > 0) {
-				return;
-			} else if (isDuplicate(newSolution, oldSolution)) {
-				return;
-			}
-		}
-
-		super.replace(index, newSolution);
+		throw new UnsupportedOperationException("replace not supported with NondominatedPopulation");
 	}
 
 	/**

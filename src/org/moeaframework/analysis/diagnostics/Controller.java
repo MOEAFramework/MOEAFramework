@@ -43,6 +43,7 @@ import org.moeaframework.Instrumenter;
 import org.moeaframework.analysis.EpsilonHelper;
 import org.moeaframework.analysis.collector.Observations;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
+import org.moeaframework.core.Epsilons;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
@@ -404,11 +405,11 @@ public class Controller {
 		String problemName = selectedResults.get(0).getProblem();
 		
 		try (Problem problem = ProblemFactory.getInstance().getProblem(problemName)) {
-			double epsilon = EpsilonHelper.getEpsilon(problem);
+			Epsilons epsilons = EpsilonHelper.getEpsilons(problem);
 			
 			Analyzer analyzer = new Analyzer()
 					.withProblem(problemName)
-					.withEpsilon(epsilon)
+					.withEpsilons(epsilons)
 					.showAggregate()
 					.showStatisticalSignificance();
 			
@@ -454,7 +455,7 @@ public class Controller {
 						continue;
 					}
 					
-					NondominatedPopulation population = new EpsilonBoxDominanceArchive(epsilon);
+					NondominatedPopulation population = new EpsilonBoxDominanceArchive(epsilons);
 					List<?> list = (List<?>)observations.last().get("Approximation Set");
 					
 					for (Object object : list) {
@@ -561,7 +562,7 @@ public class Controller {
 					
 					// lookup predefined epsilons for this problem
 					try (Problem problem = ProblemFactory.getInstance().getProblem(problemName)) {
-						instrumenter.withEpsilon(EpsilonHelper.getEpsilon(problem));
+						instrumenter.withEpsilons(EpsilonHelper.getEpsilons(problem));
 					}
 					
 					// setup the progress listener to receive updates

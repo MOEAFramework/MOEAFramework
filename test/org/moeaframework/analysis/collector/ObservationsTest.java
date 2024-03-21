@@ -17,6 +17,8 @@
  */
 package org.moeaframework.analysis.collector;
 
+import java.util.NoSuchElementException;
+
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -67,12 +69,39 @@ public class ObservationsTest {
 	}
 	
 	@Test
+	public void testEmptyObservations() {
+		Observations observations = new Observations();
+		
+		Assert.assertEquals(0, observations.keys().size());
+		Assert.assertEquals(0, observations.size());
+		Assert.assertTrue(observations.isEmpty());
+		
+		Assert.assertFalse(observations.iterator().hasNext());
+		
+		Assert.assertThrows(NoSuchElementException.class, () -> observations.first());
+		Assert.assertThrows(NoSuchElementException.class, () -> observations.last());
+		
+		Assert.assertNull(observations.at(0));
+	}
+	
+	@Test
 	public void testAt() {
 		Assert.assertEquals(5, observations.at(50).get("test"));
 		Assert.assertEquals(5, observations.at(100).get("test"));
 		Assert.assertEquals(2, observations.at(150).get("test"));
 		Assert.assertEquals(2, observations.at(200).get("test"));
 		Assert.assertNull(observations.at(250));
+	}
+	
+	@Test
+	public void testCompareTo() {
+		Observation observation1 = new Observation(100);
+		Observation observation2 = new Observation(200);
+		Observation observation3 = new Observation(100);
+		
+		Assert.assertEquals(-1, observation1.compareTo(observation2));
+		Assert.assertEquals(1, observation2.compareTo(observation3));
+		Assert.assertEquals(0, observation1.compareTo(observation3));
 	}
 	
 	@Test(expected = IllegalArgumentException.class)

@@ -42,6 +42,7 @@ import org.moeaframework.analysis.collector.PopulationCollector;
 import org.moeaframework.analysis.collector.PopulationSizeCollector;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
+import org.moeaframework.core.Epsilons;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
@@ -220,7 +221,6 @@ public class Instrumenter extends ProblemBuilder {
 	 */
 	public Instrumenter addExcludedPackage(String packageName) {
 		excludedPackages.add(packageName);
-		
 		return this;
 	}
 	
@@ -232,7 +232,6 @@ public class Instrumenter extends ProblemBuilder {
 	 */
 	public Instrumenter removeExcludedPackage(String packageName) {
 		excludedPackages.add(packageName);
-		
 		return this;
 	}
 
@@ -244,7 +243,6 @@ public class Instrumenter extends ProblemBuilder {
 	 */
 	public Instrumenter withFrequency(int frequency) {
 		this.frequency = frequency;
-		
 		return this;
 	}
 	
@@ -256,7 +254,6 @@ public class Instrumenter extends ProblemBuilder {
 	 */
 	public Instrumenter withFrequencyType(FrequencyType frequencyType) {
 		this.frequencyType = frequencyType;
-		
 		return this;
 	}
 	
@@ -268,7 +265,6 @@ public class Instrumenter extends ProblemBuilder {
 	 */
 	public Instrumenter attach(Collector collector) {
 		customCollectors.add(collector);
-		
 		return this;
 	}
 	
@@ -279,7 +275,6 @@ public class Instrumenter extends ProblemBuilder {
 	 */
 	public Instrumenter attachHypervolumeCollector() {
 		includeHypervolume = true;
-		
 		return this;
 	}
 	
@@ -290,7 +285,6 @@ public class Instrumenter extends ProblemBuilder {
 	 */
 	public Instrumenter attachGenerationalDistanceCollector() {
 		includeGenerationalDistance = true;
-		
 		return this;
 	}
 	
@@ -301,7 +295,6 @@ public class Instrumenter extends ProblemBuilder {
 	 */
 	public Instrumenter attachInvertedGenerationalDistanceCollector() {
 		includeInvertedGenerationalDistance = true;
-		
 		return this;
 	}
 	
@@ -312,7 +305,6 @@ public class Instrumenter extends ProblemBuilder {
 	 */
 	public Instrumenter attachSpacingCollector() {
 		includeSpacing = true;
-		
 		return this;
 	}
 	
@@ -323,7 +315,6 @@ public class Instrumenter extends ProblemBuilder {
 	 */
 	public Instrumenter attachAdditiveEpsilonIndicatorCollector() {
 		includeAdditiveEpsilonIndicator = true;
-		
 		return this;
 	}
 	
@@ -334,7 +325,6 @@ public class Instrumenter extends ProblemBuilder {
 	 */
 	public Instrumenter attachContributionCollector() {
 		includeContribution = true;
-		
 		return this;
 	}
 	
@@ -345,7 +335,6 @@ public class Instrumenter extends ProblemBuilder {
 	 */
 	public Instrumenter attachR1Collector() {
 		includeR1 = true;
-		
 		return this;
 	}
 	
@@ -356,7 +345,6 @@ public class Instrumenter extends ProblemBuilder {
 	 */
 	public Instrumenter attachR2Collector() {
 		includeR2 = true;
-		
 		return this;
 	}
 	
@@ -367,7 +355,6 @@ public class Instrumenter extends ProblemBuilder {
 	 */
 	public Instrumenter attachR3Collector() {
 		includeR3 = true;
-		
 		return this;
 	}
 	
@@ -399,7 +386,6 @@ public class Instrumenter extends ProblemBuilder {
 	 */
 	public Instrumenter attachEpsilonProgressCollector() {
 		includeEpsilonProgress = true;
-		
 		return this;
 	}
 	
@@ -410,7 +396,6 @@ public class Instrumenter extends ProblemBuilder {
 	 */
 	public Instrumenter attachAdaptiveMultimethodVariationCollector() {
 		includeAdaptiveMultimethodVariation = true;
-		
 		return this;
 	}
 	
@@ -421,7 +406,6 @@ public class Instrumenter extends ProblemBuilder {
 	 */
 	public Instrumenter attachAdaptiveTimeContinuationCollector() {
 		includeAdaptiveTimeContinuation = true;
-		
 		return this;
 	}
 	
@@ -432,7 +416,6 @@ public class Instrumenter extends ProblemBuilder {
 	 */
 	public Instrumenter attachElapsedTimeCollector() {
 		includeElapsedTime = true;
-		
 		return this;
 	}
 	
@@ -443,7 +426,6 @@ public class Instrumenter extends ProblemBuilder {
 	 */
 	public Instrumenter attachApproximationSetCollector() {
 		includeApproximationSet = true;
-		
 		return this;
 	}
 	
@@ -454,7 +436,6 @@ public class Instrumenter extends ProblemBuilder {
 	 */
 	public Instrumenter attachPopulationCollector() {
 		includePopulation = true;
-		
 		return this;
 	}
 	
@@ -465,7 +446,6 @@ public class Instrumenter extends ProblemBuilder {
 	 */
 	public Instrumenter attachPopulationSizeCollector() {
 		includePopulationSize = true;
-		
 		return this;
 	}
 	
@@ -526,6 +506,11 @@ public class Instrumenter extends ProblemBuilder {
 	@Override
 	public Instrumenter withEpsilon(double... epsilon) {
 		return (Instrumenter)super.withEpsilon(epsilon);
+	}
+	
+	@Override
+	public Instrumenter withEpsilons(Epsilons epsilons) {
+		return (Instrumenter)super.withEpsilons(epsilons);
 	}
 	
 	@Override
@@ -680,7 +665,7 @@ public class Instrumenter extends ProblemBuilder {
 			NondominatedPopulation referenceSet = getReferenceSet();
 			EpsilonBoxDominanceArchive archive = null;
 			
-			if (epsilon != null) {
+			if (epsilons != null) {
 				archive = (EpsilonBoxDominanceArchive)newArchive();
 			}
 			
@@ -742,10 +727,10 @@ public class Instrumenter extends ProblemBuilder {
 		}
 		
 		if (includeApproximationSet) {
-			if (epsilon == null) {
+			if (epsilons == null) {
 				collectors.add(new ApproximationSetCollector());
 			} else {
-				collectors.add(new ApproximationSetCollector(epsilon));
+				collectors.add(new ApproximationSetCollector(epsilons));
 			}
 		}
 		

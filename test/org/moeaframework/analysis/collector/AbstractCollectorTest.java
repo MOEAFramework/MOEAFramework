@@ -154,7 +154,11 @@ public abstract class AbstractCollectorTest<T extends Collector> {
 			Assert.assertTrue(observations.size() > 0);
 			
 			for (Observation observation : observations) {
-				validate(observation);
+				try {
+					validate(observation);
+				} catch (Exception e) {
+					Assert.fail("Failed to validate observation on " + algorithmName + ": " + e.getMessage());
+				}
 			}
 		}
 	}

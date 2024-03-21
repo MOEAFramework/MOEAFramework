@@ -73,7 +73,7 @@ public class EpsilonMOEA extends AbstractEvolutionaryAlgorithm implements Epsilo
 		this(problem,
 				Settings.DEFAULT_POPULATION_SIZE,
 				new Population(),
-				new EpsilonBoxDominanceArchive(EpsilonHelper.getEpsilon(problem)),
+				new EpsilonBoxDominanceArchive(EpsilonHelper.getEpsilons(problem)),
 				new TournamentSelection(2),
 				OperatorFactory.getInstance().getVariation(problem),
 				new RandomInitialization(problem));

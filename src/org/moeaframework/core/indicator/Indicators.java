@@ -23,6 +23,7 @@ import java.util.Optional;
 import java.util.function.Function;
 
 import org.apache.commons.lang3.tuple.Pair;
+import org.moeaframework.core.Epsilons;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
@@ -146,7 +147,7 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 	/**
 	 * The &epsilon; values used by the indicators.
 	 */
-	private double[] epsilon;
+	private Epsilons epsilons;
 	
 	/**
 	 * The number of subdivisions used by the R indicators.  If unset, will use the default from
@@ -235,8 +236,8 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 
 		if (includeContribution) {
 			if (contribution == null) {
-				contribution = epsilon == null ? new Contribution(referenceSet) :
-					new Contribution(referenceSet, epsilon);
+				contribution = epsilons == null ? new Contribution(referenceSet) :
+					new Contribution(referenceSet, epsilons);
 			}
 
 			result.contribution = contribution.evaluate(approximationSet);
@@ -294,16 +295,11 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 	/**
 	 * Sets the &epsilon; values used by the indicators.
 	 * 
-	 * @param epsilon the &epsilon; values
+	 * @param epsilons the &epsilon; values
 	 * @return a reference to this object so calls can be chained together
 	 */
-	public Indicators withEpsilon(double... epsilon) {
-		if ((epsilon == null) || (epsilon.length == 0)) {
-			this.epsilon = null;
-		} else {
-			this.epsilon = epsilon;
-		}
-
+	public Indicators withEpsilons(Epsilons epsilons) {
+		this.epsilons = epsilons;
 		return this;
 	}
 	

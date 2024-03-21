@@ -23,6 +23,7 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.moeaframework.analysis.io.ResultEntry;
 import org.moeaframework.analysis.io.ResultFileReader;
+import org.moeaframework.core.Epsilons;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.indicator.Indicators;
@@ -80,7 +81,7 @@ public class ExtractData extends CommandLineUtility {
 	public void run(CommandLine commandLine) throws Exception {
 		String separator = commandLine.hasOption("separator") ? commandLine.getOptionValue("separator") : " ";
 
-		double[] epsilon = OptionUtils.getEpsilon(commandLine);
+		Epsilons epsilons = OptionUtils.getEpsilons(commandLine);
 		String[] fields = commandLine.getArgs();
 
 		// indicators are prepared, run the data extraction routine
@@ -90,8 +91,8 @@ public class ExtractData extends CommandLineUtility {
 			NondominatedPopulation referenceSet = OptionUtils.getReferenceSet(commandLine);
 			Indicators indicators = getIndicators(problem, referenceSet, fields);
 
-			if (epsilon != null) {
-				indicators.withEpsilon(epsilon);
+			if (epsilons != null) {
+				indicators.withEpsilons(epsilons);
 			}
 			
 			// optionally print header line

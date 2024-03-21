@@ -105,6 +105,7 @@ public class Hypervolume implements Indicator {
 	 * @param approximationSet the normalized approximation set
 	 * @return the hypervolume value
 	 */
+	// TODO: Can I remove this?  Not called anywhere
 	static double evaluate(Problem problem, NondominatedPopulation approximationSet) {
 		String selection = Settings.getHypervolume();
 		

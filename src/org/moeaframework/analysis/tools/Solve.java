@@ -31,6 +31,7 @@ import org.moeaframework.algorithm.PeriodicAction;
 import org.moeaframework.analysis.io.ResultEntry;
 import org.moeaframework.analysis.io.ResultFileWriter;
 import org.moeaframework.core.Algorithm;
+import org.moeaframework.core.Epsilons;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PRNG;
@@ -437,10 +438,10 @@ public class Solve extends CommandLineUtility {
 			}
 		}
 		
-		double[] epsilon = OptionUtils.getEpsilon(commandLine);
+		Epsilons epsilons = OptionUtils.getEpsilons(commandLine);
 
-		if (epsilon != null) {
-			properties.setDoubleArray("epsilon", epsilon);
+		if (epsilons != null) {
+			properties.setDoubleArray("epsilon", epsilons.toArray());
 		}
 
 		int maxEvaluations = Integer.parseInt(commandLine.getOptionValue("numberOfEvaluations"));
