@@ -87,7 +87,9 @@ public class ExternalProblemTest {
 	
 	@Test(expected = ProblemException.class)
 	public void testNoResponse() throws Exception {
-		run(s -> { throw new FrameworkException("test close with no response"); });
+		run(s -> {
+			throw new FrameworkException("test close with no response");
+		});
 	}
 	
 	private void run(Function<String, String> callback) throws Exception {

@@ -20,17 +20,56 @@ package org.moeaframework.core.spi;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Assert;
 import org.junit.Test;
+import org.moeaframework.algorithm.AbstractEvolutionaryAlgorithm;
+import org.moeaframework.core.Algorithm;
+import org.moeaframework.core.Population;
+import org.moeaframework.core.Problem;
+import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.problem.MockRealProblem;
 import org.moeaframework.util.TypedProperties;
 
 /**
  * Note that most of the functionality is indirectly tested by other test functions.
  */
-public class AlgorithmFactoryTest {
+public class AlgorithmFactoryTest extends AbstractFactoryTest<AlgorithmProvider, AlgorithmFactory> {
+	
+	@Override
+	public Class<AlgorithmProvider> getProviderType() {
+		return AlgorithmProvider.class;
+	}
+	
+	@Override
+	public AlgorithmFactory createFactory() {
+		return AlgorithmFactory.getInstance();
+	}
 
 	@Test
 	public void testCustomProvider() {
-		AlgorithmProvider provider = new TestAlgorithmProvider();
+		AlgorithmProvider provider = new AlgorithmProvider() {
+
+			@Override
+			public Algorithm getAlgorithm(String name, TypedProperties properties, Problem problem) {
+				if (name.equalsIgnoreCase("testAlgorithm")) {
+					return new AbstractEvolutionaryAlgorithm(
+							problem,
+							100,
+							new Population(),
+							null,
+							new RandomInitialization(problem),
+							OperatorFactory.getInstance().getVariation(problem)) {
+
+						@Override
+						protected void iterate() {
+							// do nothing
+						}
+						
+					};
+				} else {
+					return null;
+				}
+			}
+			
+		};
 		
 		AlgorithmFactory factory = new AlgorithmFactory();
 		factory.addProvider(provider);
@@ -52,7 +91,7 @@ public class AlgorithmFactoryTest {
 	
 	@Test
 	public void testDiagnosticToolAlgorithms() {
-		for (String name : AlgorithmFactory.getInstance().getAllDiagnosticToolAlgorithms()) {
+		for (String name : createFactory().getAllDiagnosticToolAlgorithms()) {
 			System.out.println("Testing " + name);
 			Assert.assertNotNull(AlgorithmFactory.getInstance().getAlgorithm(name, new MockRealProblem(2)));
 			

@@ -17,9 +17,7 @@
  */
 package org.moeaframework.core.spi;
 
-import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
@@ -37,28 +35,28 @@ import org.moeaframework.problem.MockRealProblem;
 import org.moeaframework.problem.ProblemStub;
 import org.moeaframework.util.TypedProperties;
 
-public class OperatorFactoryTest {
+public class OperatorFactoryTest extends AbstractFactoryTest<OperatorProvider, OperatorFactory> {
 
-	private Problem problem;
-	
-	@Before
-	public void setUp() {
-		problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
+	@Override
+	public Class<OperatorProvider> getProviderType() {
+		return OperatorProvider.class;
 	}
 	
-	@After
-	public void tearDown() {
-		problem = null;
+	@Override
+	public OperatorFactory createFactory() {
+		return OperatorFactory.getInstance();
 	}
 	
 	@Test
 	public void testOperators() {
+		Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
+		
 		for (String operator : new DefaultOperators().getRegisteredOperators()) {
 			System.out.println("Testing " + operator);
 			
 			try {
-				Variation variation = OperatorFactory.getInstance().getVariation(operator, new TypedProperties(), problem);
-				test(variation);
+				Variation variation = createFactory().getVariation(operator, new TypedProperties(), problem);
+				test(problem, variation);
 			} catch (ConfigurationException e) {
 				// this operator is renamed and displays an error
 				if (!operator.equalsIgnoreCase("bx")) {
@@ -68,8 +66,10 @@ public class OperatorFactoryTest {
 		}
 	}
 	
-	private void test(Variation variation) {
-		RandomInitialization initialization = new RandomInitialization(problem);
+	private void test(Problem problem, Variation variation) {
+		RandomInitialization initialization = new RandomInitialization(
+				ProblemFactory.getInstance().getProblem("DTLZ2_2"));
+		
 		Solution[] parents = initialization.initialize(variation.getArity());
 		Solution[] offspring = variation.evolve(parents);
 		
@@ -79,25 +79,25 @@ public class OperatorFactoryTest {
 	@Test
 	public void testDefaultReal() {
 		Problem problem = new MockRealProblem();		
-		Assert.assertNotNull(OperatorFactory.getInstance().getVariation(null, new TypedProperties(), problem));
+		Assert.assertNotNull(createFactory().getVariation(null, new TypedProperties(), problem));
 	}
 	
 	@Test
 	public void testDefaultBinary() {
 		Problem problem = new MockBinaryProblem();
-		Assert.assertNotNull(OperatorFactory.getInstance().getVariation(null, new TypedProperties(), problem));
+		Assert.assertNotNull(createFactory().getVariation(null, new TypedProperties(), problem));
 	}
 	
 	@Test
 	public void testCombiningBinary() {
 		Problem problem = new MockMixedBinaryProblem();
-		Assert.assertNotNull(OperatorFactory.getInstance().getVariation(null, new TypedProperties(), problem));
+		Assert.assertNotNull(createFactory().getVariation(null, new TypedProperties(), problem));
 	}
 	
 	@Test
 	public void testDefaultPermutation() {
 		Problem problem = new MockPermutationProblem();
-		Assert.assertNotNull(OperatorFactory.getInstance().getVariation(null, new TypedProperties(), problem));
+		Assert.assertNotNull(createFactory().getVariation(null, new TypedProperties(), problem));
 	}
 	
 	@Test
@@ -113,13 +113,13 @@ public class OperatorFactoryTest {
 
 		};
 		
-		Assert.assertNotNull(OperatorFactory.getInstance().getVariation(null, new TypedProperties(), problem));
+		Assert.assertNotNull(createFactory().getVariation(null, new TypedProperties(), problem));
 	}
 	
 	@Test
 	public void testMixedType() {
 		Problem problem = new MockMultiTypeProblem();
-		Assert.assertNull(OperatorFactory.getInstance().getVariation(null, new TypedProperties(), problem));
+		Assert.assertNull(createFactory().getVariation(null, new TypedProperties(), problem));
 	}
 	
 	@Test
@@ -135,19 +135,19 @@ public class OperatorFactoryTest {
 
 		};
 		
-		Assert.assertNull(OperatorFactory.getInstance().getVariation(null, new TypedProperties(), problem));
+		Assert.assertNull(createFactory().getVariation(null, new TypedProperties(), problem));
 	}
 	
 	@Test
 	public void testEmptyType() {
 		Problem problem = new ProblemStub(0);
-		Assert.assertNull(OperatorFactory.getInstance().getVariation(null, new TypedProperties(), problem));
+		Assert.assertNull(createFactory().getVariation(null, new TypedProperties(), problem));
 	}
 	
 	@Test(expected = ProviderNotFoundException.class)
 	public void testNonexistentOperator() {
 		Problem problem = new ProblemStub(0);
-		OperatorFactory.getInstance().getVariation("sbx+test_fake_operator", new TypedProperties(), problem);
+		createFactory().getVariation("sbx+test_fake_operator", new TypedProperties(), problem);
 	}
 
 }

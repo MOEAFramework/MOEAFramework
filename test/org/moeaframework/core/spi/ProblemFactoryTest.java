@@ -27,7 +27,17 @@ import org.moeaframework.problem.MockRealProblem;
 /**
  * Note that most of the functionality is indirectly tested by other test functions.
  */
-public class ProblemFactoryTest {
+public class ProblemFactoryTest extends AbstractFactoryTest<ProblemProvider, ProblemFactory> {
+	
+	@Override
+	public Class<ProblemProvider> getProviderType() {
+		return ProblemProvider.class;
+	}
+	
+	@Override
+	public ProblemFactory createFactory() {
+		return ProblemFactory.getInstance();
+	}
 	
 	@Test
 	public void testCustomProvider() {
