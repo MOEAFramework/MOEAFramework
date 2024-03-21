@@ -24,8 +24,6 @@ import org.junit.runner.RunWith;
 import org.moeaframework.CIRunner;
 import org.moeaframework.Flaky;
 import org.moeaframework.Retryable;
-import org.moeaframework.problem.MockRealProblem;
-import org.moeaframework.util.TypedProperties;
 
 @RunWith(CIRunner.class)
 @Retryable

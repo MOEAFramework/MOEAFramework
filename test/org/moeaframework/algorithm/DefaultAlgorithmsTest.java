@@ -66,6 +66,7 @@ import org.moeaframework.util.TypedProperties;
  *   <li>Validates that the configuration can be saved and reloaded; and
  *   <li>Validates the algorithm is resumable.
  * </ol>
+ * Additional tests should be added to test specific implementation details of each algorithm.
  */
 public class DefaultAlgorithmsTest {
 	
