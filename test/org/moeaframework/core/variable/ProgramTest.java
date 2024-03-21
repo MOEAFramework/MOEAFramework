@@ -22,6 +22,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.core.FrameworkException;
+import org.moeaframework.util.tree.Environment;
+import org.moeaframework.util.tree.Get;
 import org.moeaframework.util.tree.Rules;
 
 public class ProgramTest {
@@ -32,8 +34,12 @@ public class ProgramTest {
 	public void setUp() {
 		Rules rules = new Rules();
 		rules.populateWithDefaults();
+		rules.add(new Get(Number.class, "x"));
+		rules.setReturnType(Number.class);
+		rules.setMaxVariationDepth(10);
 		
 		program = new Program(rules);
+		program.randomize();
 	}
 
 	@After
@@ -41,23 +47,24 @@ public class ProgramTest {
 		program = null;
 	}
 	
-	// TODO: Make this test better.  Is there a better way to validate?
 	@Test
-	public void randomize() {
+	public void testVoidReturnType() {
+		program.getRules().setReturnType(Void.class);
 		program.randomize();
+		Assert.assertNull(testEvaluate(program, true));
 	}
-
+	
+	@Test
+	public void testEvaluate() {
+		testEvaluate(program, false);
+	}
+	
 	@Test
 	public void testCopy() {
 		Program copy = program.copy();
 		Assert.assertNotSame(copy, program);
-	}
-	
-	// TODO: Encode works but stores a null value, which fails to decode
-	@Test(expected = NullPointerException.class)
-	public void testEncodeDecodeNullProgram() {
-		String encoding = program.encode();
-		program.decode(encoding);
+		Assert.assertNotSame(copy.getArgument(0), program.getArgument(0));
+		Assert.assertEquals(copy.getArgument(0).toString(), program.getArgument(0).toString());
 	}
 	
 	// TODO: Programs are currently not Serializable, so encoding does does not work!
@@ -66,6 +73,19 @@ public class ProgramTest {
 		program.randomize();
 		String encoding = program.encode();
 		program.decode(encoding);
+	}
+	
+	private Object testEvaluate(Program program, boolean allowNull) {
+		Environment environment = new Environment();
+		environment.set("x", 5);
+		
+		Object result = program.evaluate(environment);
+		
+		if (!allowNull) {
+			Assert.assertNotNull(result);
+		}
+		
+		return result;
 	}
 
 }
