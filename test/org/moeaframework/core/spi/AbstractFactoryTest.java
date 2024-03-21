@@ -54,7 +54,7 @@ public abstract class AbstractFactoryTest<T, S extends AbstractFactory<T>> {
 				String line = null;
 				
 				while ((line = reader.readLine()) != null) {
-					System.out.println("Checking provider " + line);
+					System.out.println("Testing existence of provider " + line);
 					Assert.assertTrue(createFactory().hasProvider(line));
 				}
 			}
