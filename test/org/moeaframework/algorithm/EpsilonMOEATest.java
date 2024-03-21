@@ -19,6 +19,7 @@ package org.moeaframework.algorithm;
 
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.TestThresholds;
@@ -27,11 +28,14 @@ import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
+import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.core.operator.CompoundVariation;
 import org.moeaframework.core.selection.TournamentSelection;
 import org.moeaframework.core.spi.ProblemFactory;
+import org.moeaframework.problem.MockRealProblem;
+import org.moeaframework.util.TypedProperties;
 
 public class EpsilonMOEATest {
 	
@@ -132,6 +136,34 @@ public class EpsilonMOEATest {
 		}
 		
 		TestUtils.assertUniformDistribution(0, population.size()-1, statistics);
+	}
+	
+	@Test
+	public void testConfiguration() {
+		Problem problem = new MockRealProblem(2);	
+		EpsilonMOEA algorithm = new EpsilonMOEA(problem);
+		
+		Assert.assertArrayEquals(algorithm.getArchive().getComparator().getEpsilons().toArray(),
+				algorithm.getConfiguration().getDoubleArray("epsilon"),
+				Settings.EPS);
+		
+		algorithm.applyConfiguration(TypedProperties.withProperty("epsilon", "0.1"));
+		Assert.assertArrayEquals(new double[] { 0.1 },
+				algorithm.getArchive().getComparator().getEpsilons().toArray(),
+				Settings.EPS);
+		
+		Assert.assertArrayEquals(new double[] { 0.1 },
+				algorithm.getConfiguration().getDoubleArray("epsilon"),
+				Settings.EPS);
+
+		algorithm.applyConfiguration(TypedProperties.withProperty("epsilon", "0.1, 0.2"));
+		Assert.assertArrayEquals(new double[] { 0.1, 0.2 },
+				algorithm.getArchive().getComparator().getEpsilons().toArray(),
+				Settings.EPS);
+		
+		Assert.assertArrayEquals(new double[] { 0.1, 0.2 },
+				algorithm.getConfiguration().getDoubleArray("epsilon"),
+				Settings.EPS);
 	}
 
 }

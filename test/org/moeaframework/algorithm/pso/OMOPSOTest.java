@@ -19,12 +19,17 @@ package org.moeaframework.algorithm.pso;
 
 import java.io.IOException;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.moeaframework.Retryable;
 import org.moeaframework.CIRunner;
 import org.moeaframework.Flaky;
 import org.moeaframework.algorithm.AlgorithmTest;
+import org.moeaframework.core.Problem;
+import org.moeaframework.core.Settings;
+import org.moeaframework.problem.MockRealProblem;
+import org.moeaframework.util.TypedProperties;
 
 @RunWith(CIRunner.class)
 @Retryable
@@ -54,6 +59,34 @@ public class OMOPSOTest extends AlgorithmTest {
 	public void testUF1() throws IOException {
 		assumeJMetalExists();
 		test("UF1", "OMOPSO", "OMOPSO-JMetal");
+	}
+	
+	@Test
+	public void testConfiguration() {
+		Problem problem = new MockRealProblem(2);	
+		OMOPSO algorithm = new OMOPSO(problem, 100);
+		
+		Assert.assertArrayEquals(algorithm.getArchive().getComparator().getEpsilons().toArray(),
+				algorithm.getConfiguration().getDoubleArray("epsilon"),
+				Settings.EPS);
+		
+		algorithm.applyConfiguration(TypedProperties.withProperty("epsilon", "0.1"));
+		Assert.assertArrayEquals(new double[] { 0.1 },
+				algorithm.getArchive().getComparator().getEpsilons().toArray(),
+				Settings.EPS);
+		
+		Assert.assertArrayEquals(new double[] { 0.1 },
+				algorithm.getConfiguration().getDoubleArray("epsilon"),
+				Settings.EPS);
+
+		algorithm.applyConfiguration(TypedProperties.withProperty("epsilon", "0.1, 0.2"));
+		Assert.assertArrayEquals(new double[] { 0.1, 0.2 },
+				algorithm.getArchive().getComparator().getEpsilons().toArray(),
+				Settings.EPS);
+		
+		Assert.assertArrayEquals(new double[] { 0.1, 0.2 },
+				algorithm.getConfiguration().getDoubleArray("epsilon"),
+				Settings.EPS);
 	}
 
 }

@@ -24,6 +24,8 @@ import org.junit.runner.RunWith;
 import org.moeaframework.CIRunner;
 import org.moeaframework.Flaky;
 import org.moeaframework.Retryable;
+import org.moeaframework.problem.MockRealProblem;
+import org.moeaframework.util.TypedProperties;
 
 @RunWith(CIRunner.class)
 @Retryable
@@ -54,6 +56,13 @@ public class GDE3Test extends AlgorithmTest {
 	public void testUF1() throws IOException {
 		assumeJMetalExists();
 		test("UF1", "GDE3", "GDE3-JMetal");
+	}
+	
+	@Test
+	public void testConfiguration() {
+		GDE3 algorithm = new GDE3(new MockRealProblem(2));
+		TypedProperties properties = algorithm.getConfiguration();
+		algorithm.applyConfiguration(properties);
 	}
 
 }

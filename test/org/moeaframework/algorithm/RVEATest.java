@@ -17,19 +17,61 @@
  */
 package org.moeaframework.algorithm;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.core.Problem;
+import org.moeaframework.core.Settings;
 import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.core.spi.ProviderNotFoundException;
-import org.moeaframework.problem.MockBinaryProblem;
+import org.moeaframework.problem.MockRealProblem;
 import org.moeaframework.util.TypedProperties;
+import org.moeaframework.util.weights.NormalBoundaryDivisions;
 
 public class RVEATest {
 	
+	@Test(expected=IllegalArgumentException.class)
+	public void testConstructorRequiresAtLeastTwoObjectives() {
+		new RVEA(new MockRealProblem(), 100);
+	}
+	
 	@Test(expected=ProviderNotFoundException.class)
-	public void testRequiresAtLeastTwoObjectives() {
-		Problem problem = new MockBinaryProblem();
-		AlgorithmFactory.getInstance().getAlgorithm("RVEA", new TypedProperties(), problem);
+	public void testProviderRequiresAtLeastTwoObjectives() {
+		AlgorithmFactory.getInstance().getAlgorithm("RVEA", new TypedProperties(), new MockRealProblem());
+	}
+	
+	@Test
+	public void testDefaults() {
+		Problem problem = new MockRealProblem(2);
+		NormalBoundaryDivisions divisions = NormalBoundaryDivisions.forProblem(problem);
+		
+		RVEA algorithm = new RVEA(problem, 100);
+		
+		Assert.assertEquals(divisions, algorithm.getPopulation().getDivisions());
+	}
+	
+	@Test
+	public void testConfiguration() {
+		Problem problem = new MockRealProblem(2);
+		NormalBoundaryDivisions divisions = new NormalBoundaryDivisions(10);
+		
+		RVEA algorithm = new RVEA(problem, 100);
+		algorithm.applyConfiguration(divisions.toProperties());
+		
+		Assert.assertEquals(divisions, algorithm.getPopulation().getDivisions());
+	}
+	
+	@Test
+	public void testAlpha() {
+		Problem problem = new MockRealProblem(2);		
+		RVEA algorithm = new RVEA(problem, 100);
+		
+		TypedProperties properties = algorithm.getConfiguration();
+		Assert.assertEquals(algorithm.getPopulation().getAlpha(), properties.getDouble("alpha"), Settings.EPS);
+		
+		properties.setDouble("alpha", 0.5);
+		algorithm.applyConfiguration(properties);
+		
+		Assert.assertEquals(0.5, algorithm.getPopulation().getAlpha(), Settings.EPS);
 	}
 
 }

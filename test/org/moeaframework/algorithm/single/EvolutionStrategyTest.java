@@ -23,32 +23,11 @@ import org.moeaframework.core.configuration.ConfigurationException;
 import org.moeaframework.problem.MockRealProblem;
 import org.moeaframework.util.TypedProperties;
 
-public class GeneticAlgorithmTest {
-	
-	@Test
-	public void testDefaultComparator() {
-		GeneticAlgorithm algorithm = new GeneticAlgorithm(new MockRealProblem());
-		
-		Assert.assertNotNull(algorithm.getComparator());
-		Assert.assertEquals(algorithm.getComparator(), algorithm.getSelection().getComparator());
-	}
-	
-	@Test
-	public void testComparator() {
-		GeneticAlgorithm algorithm = new GeneticAlgorithm(new MockRealProblem());
-		AggregateObjectiveComparator oldComparator = algorithm.getComparator();
-		
-		AggregateObjectiveComparator newComparator = new MinMaxDominanceComparator();
-		algorithm.setComparator(newComparator);
-		
-		Assert.assertNotEquals(oldComparator, algorithm.getComparator());
-		Assert.assertEquals(newComparator, algorithm.getComparator());
-		Assert.assertEquals(newComparator, algorithm.getSelection().getComparator());
-	}
-	
+public class EvolutionStrategyTest {
+
 	@Test
 	public void testConfiguration() {
-		GeneticAlgorithm algorithm = new GeneticAlgorithm(new MockRealProblem());
+		EvolutionStrategy algorithm = new EvolutionStrategy(new MockRealProblem());
 		
 		TypedProperties properties = algorithm.getConfiguration();
 		
@@ -58,14 +37,11 @@ public class GeneticAlgorithmTest {
 		properties.setString("method", "min-max");
 		algorithm.applyConfiguration(properties);
 		Assert.assertTrue(algorithm.getComparator() instanceof MinMaxDominanceComparator);
-		
-		// ensure the selection operator is also updated with the comparator
-		Assert.assertEquals(algorithm.getComparator(), algorithm.getSelection().getComparator());
 	}
 	
 	@Test(expected = ConfigurationException.class)
 	public void testConfigurationInvalidIndicator() {
-		GeneticAlgorithm algorithm = new GeneticAlgorithm(new MockRealProblem());
+		EvolutionStrategy algorithm = new EvolutionStrategy(new MockRealProblem());
 		
 		algorithm.applyConfiguration(TypedProperties.withProperty("method", "foo"));
 	}

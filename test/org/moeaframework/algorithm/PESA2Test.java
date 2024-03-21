@@ -32,6 +32,7 @@ import org.moeaframework.CIRunner;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.problem.MockRealProblem;
+import org.moeaframework.util.TypedProperties;
 
 /**
  * The MOEA Framework's implementation tends to outperform the JMetal implementation.
@@ -123,6 +124,23 @@ public class PESA2Test extends AlgorithmTest {
 	public void testUF1() throws IOException {
 		assumeJMetalExists();
 		test("UF1", "PESA2", "PESA2-JMetal", true);
+	}
+	
+	@Test
+	public void testConfiguration() {
+		Problem problem = new MockRealProblem(2);	
+		PESA2 algorithm = new PESA2(problem);
+		
+		Assert.assertEquals(algorithm.getArchive().getCapacity(), algorithm.getConfiguration().getInt("archiveSize"));
+		Assert.assertEquals(algorithm.getArchive().getBisections(), algorithm.getConfiguration().getInt("bisections"));
+		
+		TypedProperties properties = new TypedProperties();
+		properties.setInt("archiveSize", 200);
+		properties.setInt("bisections", 3);
+		
+		algorithm.applyConfiguration(properties);
+		Assert.assertEquals(200, algorithm.getArchive().getCapacity());
+		Assert.assertEquals(3, algorithm.getArchive().getBisections());
 	}
 
 }

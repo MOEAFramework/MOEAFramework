@@ -65,7 +65,7 @@ public class SMSEMOATest extends AlgorithmTest {
 	}
 	
 	@Test
-	public void testConfigureIndicator() {
+	public void testConfiguration() {
 		Problem problem = new MockRealProblem();	
 		SMSEMOA algorithm = new SMSEMOA(problem);
 		
@@ -88,7 +88,7 @@ public class SMSEMOATest extends AlgorithmTest {
 	}
 	
 	@Test(expected = ConfigurationException.class)
-	public void testConfigureInvalidIndicator() {
+	public void testConfigurationInvalidIndicator() {
 		Problem problem = new MockRealProblem();	
 		SMSEMOA algorithm = new SMSEMOA(problem);
 		

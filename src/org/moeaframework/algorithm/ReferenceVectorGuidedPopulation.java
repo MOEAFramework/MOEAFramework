@@ -214,12 +214,11 @@ public class ReferenceVectorGuidedPopulation extends Population {
 	private void initialize() {
 		// validate arguments
 		if (numberOfObjectives < 2) {
-			throw new FrameworkException("requires at least two objectives");
+			throw new IllegalArgumentException("requires at least two objectives");
 		}
 		
 		// create the reference vectors
-		originalWeights = new NormalBoundaryIntersectionGenerator(
-				numberOfObjectives, divisions).generate();
+		originalWeights = new NormalBoundaryIntersectionGenerator(numberOfObjectives, divisions).generate();
 		
 		for (int i = 0; i < originalWeights.size(); i++) {
 			originalWeights.set(i, Vector.normalize(originalWeights.get(i)));

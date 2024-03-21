@@ -19,9 +19,13 @@ package org.moeaframework.algorithm;
 
 import java.io.IOException;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.moeaframework.Retryable;
+import org.moeaframework.core.Problem;
+import org.moeaframework.problem.MockRealProblem;
+import org.moeaframework.util.TypedProperties;
 import org.moeaframework.CIRunner;
 
 /**
@@ -53,6 +57,23 @@ public class PAESTest extends AlgorithmTest {
 	public void testUF1() throws IOException {
 		assumeJMetalExists();
 		test("UF1", "PAES", "PAES-JMetal", true);
+	}
+	
+	@Test
+	public void testConfiguration() {
+		Problem problem = new MockRealProblem(2);	
+		PAES algorithm = new PAES(problem);
+		
+		Assert.assertEquals(algorithm.getArchive().getCapacity(), algorithm.getConfiguration().getInt("archiveSize"));
+		Assert.assertEquals(algorithm.getArchive().getBisections(), algorithm.getConfiguration().getInt("bisections"));
+		
+		TypedProperties properties = new TypedProperties();
+		properties.setInt("archiveSize", 200);
+		properties.setInt("bisections", 3);
+		
+		algorithm.applyConfiguration(properties);
+		Assert.assertEquals(200, algorithm.getArchive().getCapacity());
+		Assert.assertEquals(3, algorithm.getArchive().getBisections());
 	}
 
 }

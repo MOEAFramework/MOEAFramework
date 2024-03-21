@@ -22,6 +22,7 @@ import java.io.IOException;
 import org.apache.commons.math3.stat.descriptive.rank.Max;
 import org.apache.commons.math3.stat.descriptive.rank.Median;
 import org.apache.commons.math3.stat.descriptive.rank.Min;
+import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.moeaframework.core.Algorithm;
@@ -32,14 +33,37 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.indicator.InvertedGenerationalDistance;
 import org.moeaframework.core.spi.AlgorithmFactory;
+import org.moeaframework.problem.MockRealProblem;
 import org.moeaframework.problem.ProblemWrapper;
 import org.moeaframework.problem.DTLZ.DTLZ1;
 import org.moeaframework.problem.DTLZ.DTLZ2;
 import org.moeaframework.problem.DTLZ.DTLZ3;
 import org.moeaframework.problem.DTLZ.DTLZ4;
 import org.moeaframework.util.TypedProperties;
+import org.moeaframework.util.weights.NormalBoundaryDivisions;
 
 public class NSGAIIITest {
+	
+	@Test
+	public void testDefaults() {
+		Problem problem = new MockRealProblem(2);
+		NormalBoundaryDivisions divisions = NormalBoundaryDivisions.forProblem(problem);
+		
+		NSGAIII algorithm = new NSGAIII(problem);
+		
+		Assert.assertEquals(divisions, algorithm.getPopulation().getDivisions());
+	}
+	
+	@Test
+	public void testConfiguration() {
+		Problem problem = new MockRealProblem(2);
+		NormalBoundaryDivisions divisions = new NormalBoundaryDivisions(10);
+		
+		NSGAIII algorithm = new NSGAIII(problem);
+		algorithm.applyConfiguration(divisions.toProperties());
+		
+		Assert.assertEquals(divisions, algorithm.getPopulation().getDivisions());
+	}
 	
 	/**
 	 * Replicates the unscaled and scaled DTLZ experiments performed in the original NSGA-III paper.

@@ -20,6 +20,7 @@ package org.moeaframework.core.operator;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
+import org.moeaframework.algorithm.single.SelfAdaptiveNormalVariation;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.configuration.Configurable;
@@ -86,6 +87,7 @@ public class DefaultOperators extends RegisteredOperatorProvider {
 		registerConfigurable("spx", SPX::new);
 		registerConfigurable("undx", UNDX::new);
 		registerConfigurable("am", AdaptiveMetropolis::new);
+		registerConfigurable("selfadaptive", SelfAdaptiveNormalVariation::new);
 
 		// these are two special cases where we have historically set the default rate to 1/N
 		register("pm", (properties, problem) -> new PM(

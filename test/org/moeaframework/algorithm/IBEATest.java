@@ -61,7 +61,7 @@ public class IBEATest extends AlgorithmTest {
 	}
 	
 	@Test
-	public void testConfigureIndicator() {
+	public void testConfiguration() {
 		Problem problem = new MockRealProblem();	
 		IBEA algorithm = new IBEA(problem);
 		
@@ -74,7 +74,7 @@ public class IBEATest extends AlgorithmTest {
 	}
 	
 	@Test(expected = ConfigurationException.class)
-	public void testConfigureInvalidIndicator() {
+	public void testConfigurationInvalidIndicator() {
 		Problem problem = new MockRealProblem();	
 		IBEA algorithm = new IBEA(problem);
 		

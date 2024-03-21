@@ -33,6 +33,7 @@ import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.core.operator.real.SBX;
 import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.core.spi.ProblemFactory;
+import org.moeaframework.problem.MockRealProblem;
 import org.moeaframework.util.TypedProperties;
 
 @RunWith(CIRunner.class)
@@ -104,6 +105,20 @@ public class NSGAIITest extends AlgorithmTest {
 		while (nsgaii.getNumberOfEvaluations() < 100000) {
 			nsgaii.step();
 		}
+	}
+	
+	@Test
+	public void testConfiguration() {
+		NSGAII algorithm = new NSGAII(new MockRealProblem(2));
+		
+		TypedProperties properties = algorithm.getConfiguration();
+		Assert.assertTrue(properties.getBoolean("withReplacement"));
+		
+		properties.setBoolean("withReplacement", false);
+		algorithm.applyConfiguration(properties);
+		
+		properties = algorithm.getConfiguration();
+		Assert.assertFalse(properties.getBoolean("withReplacement"));
 	}
 
 }

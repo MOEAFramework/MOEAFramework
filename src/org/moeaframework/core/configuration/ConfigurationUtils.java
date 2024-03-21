@@ -23,10 +23,12 @@ import java.lang.reflect.Method;
 import org.apache.commons.lang3.reflect.MethodUtils;
 import org.apache.commons.lang3.reflect.TypeUtils;
 import org.apache.commons.text.WordUtils;
+import org.moeaframework.algorithm.single.SelfAdaptiveNormalVariation;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.operator.Mutation;
+import org.moeaframework.core.operator.real.DifferentialEvolutionVariation;
 import org.moeaframework.core.spi.OperatorFactory;
 import org.moeaframework.util.TypedProperties;
 
@@ -192,7 +194,9 @@ public class ConfigurationUtils {
 			value = properties.getEnum(propertyName, (Class<? extends Enum<?>>)parameterType);
 		} else if (TypeUtils.isAssignable(String.class, parameterType)) {
 			value = properties.getString(propertyName);
-		} else if (TypeUtils.isAssignable(Variation.class, parameterType)) {
+		} else if (TypeUtils.isAssignable(Variation.class, parameterType) ||
+				TypeUtils.isAssignable(DifferentialEvolutionVariation.class, parameterType) ||
+				TypeUtils.isAssignable(SelfAdaptiveNormalVariation.class, parameterType)) {
 			if (problem == null) {
 				throw new ConfigurationException("must provide problem if setting variation operator");
 			}

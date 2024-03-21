@@ -87,7 +87,7 @@ public class CMAESTest {
 	}
 	
 	@Test
-	public void testConfigureIndicator() {
+	public void testConfiguration() {
 		Problem problem = new MockRealProblem();	
 		CMAES algorithm = new CMAES(problem);
 		
@@ -106,7 +106,7 @@ public class CMAESTest {
 	}
 	
 	@Test(expected = ConfigurationException.class)
-	public void testConfigureInvalidIndicator() {
+	public void testConfigurationInvalidIndicator() {
 		Problem problem = new MockRealProblem();	
 		CMAES algorithm = new CMAES(problem);
 		
