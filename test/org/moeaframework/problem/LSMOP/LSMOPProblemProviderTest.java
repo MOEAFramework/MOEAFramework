@@ -25,7 +25,7 @@ public class LSMOPProblemProviderTest extends ProblemTest {
 	
 	@Test
 	public void testCaseSensitivity() {
-		Assert.assertNotNull(new LSMOPProblemProvider().getProblem("lsmop1"));
+		Assert.assertNotNull(new LSMOPProblemProvider().getProblem("lsmop1_2"));
 	}
 
 	@Test
