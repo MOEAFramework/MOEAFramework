@@ -25,7 +25,6 @@ public class Benchmark {
 	 * @return the next problem in the suite or null when there is no next problem  
 	 */
 	public Problem getNextProblem() throws Exception {
-		
 		try {		
 			long problemPointer = CocoJNI.cocoSuiteGetNextProblem(suite.getPointer(), observer.getPointer());
 			
@@ -42,7 +41,6 @@ public class Benchmark {
 	 * Finalizes the observer and suite. This method needs to be explicitly called in order to log the last results.
 	 */
 	public void finalizeBenchmark() throws Exception {
-		
 		try {		
 			observer.finalizeObserver();
 			suite.finalizeSuite();

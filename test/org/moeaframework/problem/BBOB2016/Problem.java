@@ -31,7 +31,6 @@ public class Problem {
 	 * Constructs the problem from the pointer.
 	 */
 	public Problem(long pointer) throws Exception {
-
 		super();
 		try {		
 			this.dimension = CocoJNI.cocoProblemGetDimension(pointer);

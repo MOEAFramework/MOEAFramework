@@ -16,7 +16,6 @@ public class Suite {
 	 * See http://numbbo.github.io/coco-doc/C/#suite-parameters for more information on valid suite parameters.
 	 */
 	public Suite(String suiteName, String suiteInstance, String suiteOptions) throws Exception {
-
 		super();
 		try {
 			this.pointer = CocoJNI.cocoGetSuite(suiteName, suiteInstance, suiteOptions);

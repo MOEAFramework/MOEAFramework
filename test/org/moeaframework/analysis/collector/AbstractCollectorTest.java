@@ -145,10 +145,10 @@ public abstract class AbstractCollectorTest<T extends Collector> {
 			}
 		}
 		
-		Assert.assertEquals("Incorrect number of attachments to " + algorithmName,
+		Assert.assertEquals(algorithmName + ": incorrect number of attachments",
 				shouldAttach ? 1 : 0, testCollector.getNumberOfAttachments());
 		
-		Assert.assertNotNull(observations);
+		Assert.assertNotNull(algorithmName + ": operations is null", observations);
 		
 		if (shouldAttach) {
 			Assert.assertTrue(observations.size() > 0);
@@ -157,7 +157,7 @@ public abstract class AbstractCollectorTest<T extends Collector> {
 				try {
 					validate(observation);
 				} catch (Exception e) {
-					Assert.fail("Failed to validate observation on " + algorithmName + ": " + e.getMessage());
+					Assert.fail(algorithmName + ": validation failed - " + e.getMessage());
 				}
 			}
 		}

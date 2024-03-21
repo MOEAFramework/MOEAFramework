@@ -17,6 +17,7 @@
  */
 package org.moeaframework.core.operator.real;
 
+import org.apache.commons.math3.exception.MathIllegalArgumentException;
 import org.apache.commons.math3.linear.Array2DRowRealMatrix;
 import org.apache.commons.math3.linear.ArrayRealVector;
 import org.apache.commons.math3.linear.CholeskyDecomposition;
@@ -161,7 +162,7 @@ public class AdaptiveMetropolis extends MultiParentVariation {
 			}
 			
 			return offspring;
-		} catch (Exception e) {
+		} catch (MathIllegalArgumentException e) {
 			return new Solution[0];
 		}
 	}

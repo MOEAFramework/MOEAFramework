@@ -108,6 +108,16 @@ public class RotatedProblemsTest {
 		ProblemFactory.getInstance().getProblem("ROT(foo,45)_DTLZ2_2");
 	}
 	
+	@Test
+	public void testCaseSensitivity() {
+		Assert.assertNotNull(new RotatedProblems().getProblem("rot_dtlz2_2"));
+	}
+	
+	@Test
+	public void testUnrecognizedProblem() {
+		Assert.assertNull(new RotatedProblems().getProblem("foo"));
+	}
+	
 	private void assertBoundsEquals(Problem problemA, Problem problemB) {
 		TestUtils.assertEquals(problemA.newSolution(), problemB.newSolution());
 	}

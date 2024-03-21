@@ -64,9 +64,9 @@ public class Checkpoints extends PeriodicAction {
 		if (stateFile.exists() && (stateFile.length() != 0L)) {
 			try {
 				loadFromStateFile();
-			} catch (Exception e) {
-				e.printStackTrace();
+			} catch (IOException | ClassNotFoundException e) {
 				System.err.println("an error occurred while reading the state file");
+				e.printStackTrace();
 			}
 		}
 	}
@@ -81,7 +81,7 @@ public class Checkpoints extends PeriodicAction {
 		File tempFile = File.createTempFile("checkpoint", "state");
 		
 		try (ObjectOutputStream oos = new ObjectOutputStream(new BufferedOutputStream(
-					new FileOutputStream(tempFile)))) {
+				new FileOutputStream(tempFile)))) {
 			algorithm.saveState(oos);
 		}
 		
@@ -96,8 +96,7 @@ public class Checkpoints extends PeriodicAction {
 	 * @throws ClassNotFoundException if the class of a serialized object could not be found.
 	 */
 	private void loadFromStateFile() throws IOException, ClassNotFoundException {
-		try (ObjectInputStream ois = new ObjectInputStream(new BufferedInputStream(
-					new FileInputStream(stateFile)))) {
+		try (ObjectInputStream ois = new ObjectInputStream(new BufferedInputStream(new FileInputStream(stateFile)))) {
 			algorithm.loadState(ois);
 		}
 	}

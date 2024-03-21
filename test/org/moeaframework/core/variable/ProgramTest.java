@@ -28,11 +28,12 @@ import org.moeaframework.util.tree.Rules;
 
 public class ProgramTest {
 
+	private Rules rules;
 	private Program program;
 
 	@Before
 	public void setUp() {
-		Rules rules = new Rules();
+		rules = new Rules();
 		rules.populateWithDefaults();
 		rules.add(new Get(Number.class, "x"));
 		rules.setReturnType(Number.class);
@@ -49,7 +50,7 @@ public class ProgramTest {
 	
 	@Test
 	public void testVoidReturnType() {
-		program.getRules().setReturnType(Void.class);
+		rules.setReturnType(Void.class);
 		program.randomize();
 		Assert.assertNull(testEvaluate(program, true));
 	}
@@ -64,13 +65,13 @@ public class ProgramTest {
 		Program copy = program.copy();
 		Assert.assertNotSame(copy, program);
 		Assert.assertNotSame(copy.getArgument(0), program.getArgument(0));
+		Assert.assertEquals(copy.getNumberOfArguments(), program.getNumberOfArguments());
 		Assert.assertEquals(copy.getArgument(0).toString(), program.getArgument(0).toString());
 	}
 	
 	// TODO: Programs are currently not Serializable, so encoding does does not work!
 	@Test(expected = FrameworkException.class)
 	public void testEncodeDecode() {
-		program.randomize();
 		String encoding = program.encode();
 		program.decode(encoding);
 	}

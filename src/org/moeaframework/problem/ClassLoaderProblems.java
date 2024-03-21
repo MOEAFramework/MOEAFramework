@@ -17,6 +17,8 @@
  */
 package org.moeaframework.problem;
 
+import java.lang.reflect.InvocationTargetException;
+
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.spi.ProblemProvider;
@@ -50,7 +52,8 @@ public class ClassLoaderProblems extends ProblemProvider {
 			return (Problem)Class.forName(name).getConstructor().newInstance();
 		} catch (ClassNotFoundException e) {
 			return null;
-		} catch (Exception e) {
+		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+					| InvocationTargetException | NoSuchMethodException | SecurityException e) {
 			throw new ProviderNotFoundException(name, e);
 		}
 	}

@@ -16,7 +16,6 @@ public class Observer {
 	 * See http://numbbo.github.io/coco-doc/C/#observer-parameters for more information on valid observer parameters.
 	 */
 	public Observer(String observerName, String observerOptions) throws Exception {
-
 		super();
 		try {
 			this.pointer = CocoJNI.cocoGetObserver(observerName, observerOptions);
