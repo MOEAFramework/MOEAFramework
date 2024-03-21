@@ -155,7 +155,7 @@ public class MatrixReaderTest {
 		try (MatrixReader reader = new MatrixReader(new StringReader(UNPARSEABLE))) {
 			reader.setSuppressExceptions(true);
 			
-			Assert.assertTrue(reader.hasNext());
+			reader.next();
 			Assert.assertFalse(reader.hasNext());
 			Assert.assertTrue(reader.isError());
 		}

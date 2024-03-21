@@ -17,7 +17,6 @@
  */
 package org.moeaframework.util.format;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -31,8 +30,10 @@ public class NumberFormatterTest {
 		NumberFormatter formatter = new NumberFormatter();
 		
 		Assert.assertEquals("3", formatter.format(3));
+		Assert.assertEquals("3.140000", formatter.format(3.14f));
 		Assert.assertEquals("3.140000", formatter.format(3.14));
 		Assert.assertEquals("-3", formatter.format(-3));
+		Assert.assertEquals("-3.140000", formatter.format(-3.14f));
 		Assert.assertEquals("-3.140000", formatter.format(-3.14));
 		Assert.assertEquals("1000", formatter.format(1000));
 	}
@@ -42,9 +43,12 @@ public class NumberFormatterTest {
 		NumberFormatter formatter = new NumberFormatter();
 		formatter.setWidth(10);
 		
+		Assert.assertEquals(10, formatter.getWidth());
 		Assert.assertEquals("         3", formatter.format(3));
+		Assert.assertEquals("  3.140000", formatter.format(3.14f));
 		Assert.assertEquals("  3.140000", formatter.format(3.14));
 		Assert.assertEquals("        -3", formatter.format(-3));
+		Assert.assertEquals(" -3.140000", formatter.format(-3.14f));
 		Assert.assertEquals(" -3.140000", formatter.format(-3.14));
 	}
 	
@@ -53,9 +57,12 @@ public class NumberFormatterTest {
 		NumberFormatter formatter = new NumberFormatter();
 		formatter.setPrecision(1);
 		
+		Assert.assertEquals(1, formatter.getPrecision());
 		Assert.assertEquals("3", formatter.format(3));
+		Assert.assertEquals("3.1", formatter.format(3.14f));
 		Assert.assertEquals("3.1", formatter.format(3.14));
 		Assert.assertEquals("-3", formatter.format(-3));
+		Assert.assertEquals("-3.1", formatter.format(-3.14f));
 		Assert.assertEquals("-3.1", formatter.format(-3.14));
 	}
 	
@@ -65,9 +72,12 @@ public class NumberFormatterTest {
 		formatter.setPrecision(2);
 		formatter.setScientificNotation(true);
 		
+		Assert.assertTrue(formatter.isScientificNotation());
 		Assert.assertEquals("3", formatter.format(3));
+		Assert.assertEquals("3.14e+00", formatter.format(3.14f));
 		Assert.assertEquals("3.14e+00", formatter.format(3.14));
 		Assert.assertEquals("-3", formatter.format(-3));
+		Assert.assertEquals("-3.14e+00", formatter.format(-3.14f));
 		Assert.assertEquals("-3.14e+00", formatter.format(-3.14));
 	}
 	
@@ -76,9 +86,12 @@ public class NumberFormatterTest {
 		NumberFormatter formatter = new NumberFormatter();
 		formatter.setLeadingSpaceForSign(true);
 		
+		Assert.assertTrue(formatter.isLeadingSpaceForSign());
 		Assert.assertEquals(" 3", formatter.format(3));
+		Assert.assertEquals(" 3.140000", formatter.format(3.14f));
 		Assert.assertEquals(" 3.140000", formatter.format(3.14));
 		Assert.assertEquals("-3", formatter.format(-3));
+		Assert.assertEquals("-3.140000", formatter.format(-3.14f));
 		Assert.assertEquals("-3.140000", formatter.format(-3.14));
 	}
 	
@@ -87,7 +100,10 @@ public class NumberFormatterTest {
 		NumberFormatter formatter = new NumberFormatter();
 		formatter.setLocaleSpecificGroupings(true);
 		
+		Assert.assertTrue(formatter.isLocaleSpecificGroupings());
 		Assert.assertEquals("1,000", formatter.format(1000));
+		Assert.assertEquals("1,000.500000", formatter.format(1000.5f));
+		Assert.assertEquals("1,000.500000", formatter.format(1000.5));
 	}
 	
 	@Test
@@ -96,7 +112,10 @@ public class NumberFormatterTest {
 		formatter.setLocale(Locale.GERMANY);
 		formatter.setLocaleSpecificGroupings(true);
 		
+		Assert.assertEquals(Locale.GERMANY, formatter.getLocale());
 		Assert.assertEquals("1.000", formatter.format(1000));
+		Assert.assertEquals("1.000,500000", formatter.format(1000.5f));
+		Assert.assertEquals("1.000,500000", formatter.format(1000.5));
 	}
 	
 	@Test
@@ -130,13 +149,9 @@ public class NumberFormatterTest {
 	@Test
 	public void testList() {
 		NumberFormatter formatter = new NumberFormatter();
-		List<Number> values = new ArrayList<Number>();
 		
-		Assert.assertEquals("[]", formatter.format(values));
-		
-		values.add(3.14);
-		values.add(1000);
-		Assert.assertEquals("[3.140000, 1000]", formatter.format(values));
+		Assert.assertEquals("[]", formatter.format(List.of()));
+		Assert.assertEquals("[3.140000, 3.140000, 1000]", formatter.format(List.of(3.14f, 3.14, 1000)));
 	}
 
 }
