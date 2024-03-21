@@ -66,7 +66,8 @@ import org.moeaframework.util.TypedProperties;
  *   <li>Validates that the configuration can be saved and reloaded; and
  *   <li>Validates the algorithm is resumable.
  * </ol>
- * Additional tests should be added to test specific implementation details of each algorithm.
+ * Note that this does not test for correctness of results.  Additional tests should be added to test specific
+ * features.
  */
 public class DefaultAlgorithmsTest {
 	
@@ -258,12 +259,14 @@ public class DefaultAlgorithmsTest {
 				throw new AssertionError(name + " failed test run on " + problem.getName(), e);
 			}
 			
+			// test if the configuration can be saved and reloaded without error
 			try {
 				testConfiguration(name, problem);
 			} catch (AssertionError e) {
 				throw new AssertionError(name + " failed configuration test on " + problem.getName(), e);
 			}
 			
+			// test if the algorithm is resumable
 			try {
 				testResumable(name, problem);
 			} catch (IOException | AssertionError e) {

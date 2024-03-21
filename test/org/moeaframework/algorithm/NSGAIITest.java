@@ -112,7 +112,7 @@ public class NSGAIITest extends AlgorithmTest {
 		NSGAII algorithm = new NSGAII(new MockRealProblem(2));
 		
 		TypedProperties properties = algorithm.getConfiguration();
-		Assert.assertTrue(properties.getBoolean("withReplacement"));
+		Assert.assertTrue( properties.getBoolean("withReplacement", true));
 		
 		properties.setBoolean("withReplacement", false);
 		algorithm.applyConfiguration(properties);
