@@ -99,7 +99,7 @@ public class Hypervolume implements Indicator {
 	}
 	
 	/**
-	 * Returns the normalizer for calculating hypervolume using the following rules:
+	 * Returns the normalizer for calculating hypervolume using the following priority for determining the bounds:
 	 * <ol>
 	 *   <li>Normalize using the {@code idealpt} and {@code refpt} settings
 	 *   <li>Normalize using the {@code refpt} setting, with the ideal point based on the reference set
