@@ -17,18 +17,15 @@
  */
 package org.moeaframework.parallel.island.migration;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.TestUtils;
-import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.selection.TournamentSelection;
 import org.moeaframework.parallel.island.AbstractIslandModelTest;
 import org.moeaframework.parallel.island.Island;
-import org.moeaframework.problem.mock.MockRealProblem;
 
 public class SingleNeighborMigrationTest extends AbstractIslandModelTest {
 	
@@ -70,22 +67,6 @@ public class SingleNeighborMigrationTest extends AbstractIslandModelTest {
 		Assert.assertTrue(TestUtils.equals(solution1, neighbor.getPopulation().get(0)) ||
 				TestUtils.equals(solution3, neighbor.getPopulation().get(0)));
 		Assert.assertTrue(neighbor.getImmigrationQueue().isEmpty());
-	}
-	
-	// todo move these into a base class
-	protected List<Island> createIslands(int count) {
-		List<Island> result = new ArrayList<Island>();
-		
-		for (int i = 0; i < count; i++) {
-			result.add(createIsland());
-		}
-		
-		return result;
-	}
-	
-	protected Island createIsland() {
-		NSGAII algorithm = new NSGAII(new MockRealProblem());
-		return new Island(algorithm, algorithm.getPopulation());
 	}
 
 }
