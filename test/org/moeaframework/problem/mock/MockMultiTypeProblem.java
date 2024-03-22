@@ -15,43 +15,29 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.problem;
+package org.moeaframework.problem.mock;
 
-import org.apache.commons.math3.random.MersenneTwister;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.variable.EncodingUtils;
+import org.moeaframework.core.variable.BinaryVariable;
+import org.moeaframework.core.variable.Permutation;
 import org.moeaframework.core.variable.RealVariable;
-import org.moeaframework.util.distributed.FutureSolution;
 
-public class MockRealStochasticProblem extends MockProblem {
+public class MockMultiTypeProblem extends MockProblem {
 	
-	long evaluationID = 0;
-	
-	public MockRealStochasticProblem() {
-		super(1, 1);
+	public MockMultiTypeProblem() {
+		this(1);
 	}
-
-	@Override
-	public void evaluate(Solution solution) {
-		long randSeed;
-		if (solution instanceof FutureSolution futureSolution) {
-			// if it's doing distributed evaluation, we'll get the unique ID that was assigned
-			randSeed = futureSolution.getDistributedEvaluationID(); 
-		} else {
-			// otherwise it's single-threaded), and we just use our own 0-based counter
-			randSeed = evaluationID++;
-		}
-		
-		MersenneTwister rng = new MersenneTwister(randSeed);
-		
-		double x = EncodingUtils.getReal(solution.getVariable(0));
-		solution.setObjective(0, x + rng.nextDouble());
+	
+	public MockMultiTypeProblem(int numberOfObjectives) {
+		super(3, numberOfObjectives);
 	}
 
 	@Override
 	public Solution newSolution() {
 		Solution solution = super.newSolution();
-		solution.setVariable(0, new RealVariable(0, 10));
+		solution.setVariable(0, new RealVariable(0.0, 1.0));
+		solution.setVariable(1, new BinaryVariable(10));
+		solution.setVariable(2, new Permutation(5));
 		return solution;
 	}
 

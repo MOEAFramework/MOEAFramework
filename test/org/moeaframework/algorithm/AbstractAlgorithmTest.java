@@ -25,7 +25,7 @@ import org.junit.Test;
 import org.moeaframework.TestUtils;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Solution;
-import org.moeaframework.problem.MockRealProblem;
+import org.moeaframework.problem.mock.MockRealProblem;
 
 public class AbstractAlgorithmTest {
 

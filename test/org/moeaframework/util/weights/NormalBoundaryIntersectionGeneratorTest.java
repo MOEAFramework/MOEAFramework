@@ -17,7 +17,7 @@
  */
 package org.moeaframework.util.weights;
 
-import org.moeaframework.problem.MockRealProblem;
+import org.moeaframework.problem.mock.MockRealProblem;
 
 public class NormalBoundaryIntersectionGeneratorTest extends AbstractWeightGeneratorTest<NormalBoundaryIntersectionGenerator> {
 	

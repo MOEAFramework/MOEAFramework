@@ -124,6 +124,15 @@ public class EpsilonNSGAII extends AdaptiveTimeContinuation implements Configura
 	}
 	
 	/**
+	 * Returns the initial population size.
+	 * 
+	 * @return the initial population size
+	 */
+	public int getInitialPopulationSize() {
+		return getAlgorithm().getInitialPopulationSize();
+	}
+	
+	/**
 	 * Sets the initial population size.  This value can not be set after initialization.
 	 * 
 	 * @param initialPopulationSize the initial population size
@@ -162,5 +171,5 @@ public class EpsilonNSGAII extends AdaptiveTimeContinuation implements Configura
 		properties.setDoubleArray("epsilon", getArchive().getComparator().getEpsilons().toArray());
 		return properties;
 	}
-
+	
 }

@@ -25,7 +25,7 @@ import org.junit.Test;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.spi.AlgorithmFactoryTestWrapper;
 import org.moeaframework.core.spi.ProblemFactoryTestWrapper;
-import org.moeaframework.problem.MockMultiTypeProblem;
+import org.moeaframework.problem.mock.MockMultiTypeProblem;
 
 public class ExecutorTest {
 

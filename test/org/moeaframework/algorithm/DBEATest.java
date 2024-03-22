@@ -28,8 +28,8 @@ import org.junit.Test;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
-import org.moeaframework.problem.MockRealProblem;
 import org.moeaframework.problem.DTLZ.DTLZ2;
+import org.moeaframework.problem.mock.MockRealProblem;
 import org.moeaframework.util.weights.NormalBoundaryDivisions;
 
 public class DBEATest {

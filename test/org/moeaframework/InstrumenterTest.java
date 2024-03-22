@@ -41,7 +41,7 @@ import org.moeaframework.core.Variation;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
 import org.moeaframework.core.operator.real.UM;
 import org.moeaframework.core.selection.TournamentSelection;
-import org.moeaframework.problem.MockRealProblem;
+import org.moeaframework.problem.mock.MockRealProblem;
 
 public class InstrumenterTest {
 	

@@ -87,7 +87,7 @@ public abstract class AbstractOperatorTest<T extends Variation, S extends Variab
 		// the parents and offspring are separate entities
 		for (int i = 0; i < offspring.length; i++) {
 			for (int j = 0; j < parents.length; j++) {
-				Assert.assertFalse(offspring[i] == parents[j]);
+				Assert.assertNotSame(offspring[i], parents[j]);
 			}
 		}
 

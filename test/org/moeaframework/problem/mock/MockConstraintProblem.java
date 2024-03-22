@@ -15,26 +15,35 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.problem;
+package org.moeaframework.problem.mock;
 
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.variable.Permutation;
+import org.moeaframework.core.variable.RealVariable;
 
-public class MockPermutationProblem extends MockProblem {
-	
-	public MockPermutationProblem() {
+public class MockConstraintProblem extends MockProblem {
+
+	public MockConstraintProblem() {
 		this(1);
 	}
 	
-	public MockPermutationProblem(int numberOfObjectives) {
-		super(1, numberOfObjectives);
+	public MockConstraintProblem(int numberOfObjectives) {
+		super(1, numberOfObjectives, 3);
+	}
+
+	@Override
+	public void evaluate(Solution solution) {
+		super.evaluate(solution);
+		
+		solution.setConstraint(0, -15.0);
+		solution.setConstraint(1, 0.0);
+		solution.setConstraint(2, 20.0);
 	}
 
 	@Override
 	public Solution newSolution() {
 		Solution solution = super.newSolution();
-		solution.setVariable(0, new Permutation(10));
+		solution.setVariable(0, new RealVariable(0.0, 1.0));
 		return solution;
 	}
-
+	
 }

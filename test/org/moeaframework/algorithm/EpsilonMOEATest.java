@@ -34,7 +34,7 @@ import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.core.operator.CompoundVariation;
 import org.moeaframework.core.selection.TournamentSelection;
 import org.moeaframework.core.spi.ProblemFactory;
-import org.moeaframework.problem.MockRealProblem;
+import org.moeaframework.problem.mock.MockRealProblem;
 import org.moeaframework.util.TypedProperties;
 
 public class EpsilonMOEATest {

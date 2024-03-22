@@ -24,7 +24,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.moeaframework.Retryable;
 import org.moeaframework.core.Problem;
-import org.moeaframework.problem.MockRealProblem;
+import org.moeaframework.problem.mock.MockRealProblem;
 import org.moeaframework.util.TypedProperties;
 import org.moeaframework.CIRunner;
 

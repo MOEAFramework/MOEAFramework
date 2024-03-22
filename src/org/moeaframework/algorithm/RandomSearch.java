@@ -17,6 +17,10 @@
  */
 package org.moeaframework.algorithm;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
 import org.moeaframework.core.Initialization;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Population;
@@ -117,6 +121,18 @@ public class RandomSearch extends AbstractAlgorithm implements Configurable {
 		Population solutions = new Population(generator.initialize(sampleSize));
 		evaluateAll(solutions);
 		archive.addAll(solutions);
+	}
+	
+	@Override
+	public void saveState(ObjectOutputStream stream) throws IOException {
+		super.saveState(stream);
+		archive.saveState(stream);
+	}
+
+	@Override
+	public void loadState(ObjectInputStream stream) throws IOException, ClassNotFoundException {
+		super.loadState(stream);
+		archive.loadState(stream);
 	}
 
 }

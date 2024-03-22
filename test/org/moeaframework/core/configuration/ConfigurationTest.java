@@ -32,9 +32,9 @@ import org.moeaframework.core.operator.Mutation;
 import org.moeaframework.core.operator.TwoPointCrossover;
 import org.moeaframework.core.operator.binary.BitFlip;
 import org.moeaframework.core.operator.binary.HUX;
-import org.moeaframework.problem.MockMultiTypeProblem;
-import org.moeaframework.problem.MockRealProblem;
 import org.moeaframework.problem.ZDT.ZDT5;
+import org.moeaframework.problem.mock.MockMultiTypeProblem;
+import org.moeaframework.problem.mock.MockRealProblem;
 import org.moeaframework.util.TypedProperties;
 
 public class ConfigurationTest {

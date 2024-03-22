@@ -29,8 +29,8 @@ import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.core.spi.ProblemFactory;
-import org.moeaframework.problem.MockConstraintProblem;
-import org.moeaframework.problem.MockRealProblem;
+import org.moeaframework.problem.mock.MockConstraintProblem;
+import org.moeaframework.problem.mock.MockRealProblem;
 
 public abstract class AbstractIndicatorTest<T extends Indicator> {
 	

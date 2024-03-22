@@ -22,7 +22,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
-import org.moeaframework.problem.MockRealProblem;
+import org.moeaframework.problem.mock.MockRealProblem;
 
 /**
  * Note that most of the functionality is indirectly tested by other test functions.

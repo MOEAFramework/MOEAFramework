@@ -21,7 +21,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
-import org.moeaframework.problem.MockRealProblem;
+import org.moeaframework.problem.mock.MockRealProblem;
 import org.moeaframework.util.TypedProperties;
 
 public class EpsilonNSGAIITest {

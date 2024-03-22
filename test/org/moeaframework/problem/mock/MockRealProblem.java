@@ -15,25 +15,25 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.problem;
+package org.moeaframework.problem.mock;
 
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.variable.BinaryVariable;
+import org.moeaframework.core.variable.RealVariable;
 
-public class MockBinaryProblem extends MockProblem {
-
-	public MockBinaryProblem() {
+public class MockRealProblem extends MockProblem {
+	
+	public MockRealProblem() {
 		this(1);
 	}
 	
-	public MockBinaryProblem(int numberOfObjectives) {
+	public MockRealProblem(int numberOfObjectives) {
 		super(1, numberOfObjectives);
 	}
 
 	@Override
 	public Solution newSolution() {
 		Solution solution = super.newSolution();
-		solution.setVariable(0, new BinaryVariable(10));
+		solution.setVariable(0, new RealVariable(0.0, 1.0));
 		return solution;
 	}
 

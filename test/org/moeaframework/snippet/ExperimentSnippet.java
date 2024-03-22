@@ -28,8 +28,8 @@ import org.moeaframework.analysis.collector.InstrumentedAlgorithm;
 import org.moeaframework.analysis.collector.Observations;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
-import org.moeaframework.problem.MockRealProblem;
 import org.moeaframework.problem.CEC2009.UF1;
+import org.moeaframework.problem.mock.MockRealProblem;
 
 @SuppressWarnings("unused")
 public class ExperimentSnippet {

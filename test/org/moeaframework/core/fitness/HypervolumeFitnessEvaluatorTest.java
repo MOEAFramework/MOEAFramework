@@ -25,7 +25,7 @@ import org.moeaframework.TestUtils;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
-import org.moeaframework.problem.MockRealProblem;
+import org.moeaframework.problem.mock.MockRealProblem;
 
 public class HypervolumeFitnessEvaluatorTest {
 	

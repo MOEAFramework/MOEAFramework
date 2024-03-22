@@ -23,7 +23,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.core.NondominatedPopulation.DuplicateMode;
 import org.moeaframework.core.variable.EncodingUtils;
-import org.moeaframework.problem.MockBinaryProblem;
+import org.moeaframework.problem.mock.MockBinaryProblem;
 
 public class NondominatedPopulationTest {
 

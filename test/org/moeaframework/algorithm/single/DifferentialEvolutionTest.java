@@ -20,7 +20,7 @@ package org.moeaframework.algorithm.single;
 import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.core.configuration.ConfigurationException;
-import org.moeaframework.problem.MockRealProblem;
+import org.moeaframework.problem.mock.MockRealProblem;
 import org.moeaframework.util.TypedProperties;
 
 public class DifferentialEvolutionTest {

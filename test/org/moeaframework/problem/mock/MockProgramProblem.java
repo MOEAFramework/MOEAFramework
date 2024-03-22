@@ -15,26 +15,33 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.algorithm;
+package org.moeaframework.problem.mock;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.moeaframework.problem.mock.MockRealProblem;
-import org.moeaframework.util.TypedProperties;
+import org.moeaframework.core.Solution;
+import org.moeaframework.core.variable.Program;
+import org.moeaframework.util.tree.Rules;
 
-public class MSOPSTest extends AlgorithmTest {
+public class MockProgramProblem extends MockProblem {
 	
-	@Test
-	public void testConfiguration() {
-		MSOPS algorithm = new MSOPS(new MockRealProblem(2));
+	private final Rules rules;
+	
+	public MockProgramProblem() {
+		this(1);
+	}
+	
+	public MockProgramProblem(int numberOfObjectives) {
+		super(1, numberOfObjectives);
 		
-		TypedProperties properties = algorithm.getConfiguration();
-		Assert.assertEquals(algorithm.getPopulation().getNumberOfWeights(), properties.getInt("numberOfWeights"));
-		
-		properties.setInt("numberOfWeights", 200);
-		algorithm.applyConfiguration(properties);
-		
-		Assert.assertEquals(200, algorithm.getPopulation().getNumberOfWeights());
+		rules = new Rules();
+		rules.populateWithDefaults();
+		rules.setReturnType(Number.class);
+	}
+
+	@Override
+	public Solution newSolution() {
+		Solution solution = super.newSolution();
+		solution.setVariable(0, new Program(rules));
+		return solution;
 	}
 
 }

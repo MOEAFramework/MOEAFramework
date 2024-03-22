@@ -53,10 +53,13 @@ import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.core.spi.OperatorFactory;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.core.spi.ProviderNotFoundException;
-import org.moeaframework.problem.MockBinaryProblem;
-import org.moeaframework.problem.MockPermutationProblem;
-import org.moeaframework.problem.MockRealProblem;
-import org.moeaframework.problem.MockSubsetProblem;
+import org.moeaframework.core.variable.Program;
+import org.moeaframework.problem.mock.MockBinaryProblem;
+import org.moeaframework.problem.mock.MockGrammarProblem;
+import org.moeaframework.problem.mock.MockPermutationProblem;
+import org.moeaframework.problem.mock.MockProgramProblem;
+import org.moeaframework.problem.mock.MockRealProblem;
+import org.moeaframework.problem.mock.MockSubsetProblem;
 import org.moeaframework.util.TypedProperties;
 
 /**
@@ -86,6 +89,8 @@ public class DefaultAlgorithmsTest {
 	protected Problem binary;
 	protected Problem permutation;
 	protected Problem subset;
+	protected Problem grammar;
+	protected Problem program;
 	protected List<Problem> allProblems;
 	protected TypedProperties properties;
 
@@ -95,7 +100,10 @@ public class DefaultAlgorithmsTest {
 		binary = new MockBinaryProblem(2);
 		permutation = new MockPermutationProblem(2);
 		subset = new MockSubsetProblem(2);
-		allProblems = List.of(real, binary, permutation, subset);
+		grammar = new MockGrammarProblem(2);
+		program = new MockProgramProblem(2);
+		
+		allProblems = List.of(real, binary, permutation, subset, grammar, program);
 				
 		properties = new TypedProperties();
 		properties.setInt("maxEvaluations", NFE);
@@ -108,28 +116,30 @@ public class DefaultAlgorithmsTest {
 		binary = null;
 		permutation = null;
 		subset = null;
+		grammar = null;
+		program = null;
 		allProblems = null;
 		properties = null;
 	}
 	
 	@Test
 	public void testEpsilonMOEA() {
-		test("eMOEA", real, binary, permutation, subset);
+		test("eMOEA", real, binary, permutation, subset, grammar, program);
 	}
 	
 	@Test
 	public void testNSGAII() {
-		test("NSGAII", real, binary, permutation, subset);
+		test("NSGAII", real, binary, permutation, subset, grammar, program);
 	}
 	
 	@Test
 	public void testNSGAIII() {
-		test("NSGAIII", real, binary, permutation, subset);
+		test("NSGAIII", real, binary, permutation, subset, grammar, program);
 	}
 
 	@Test
 	public void testMOEAD() {
-		test("MOEAD", real, binary, permutation, subset);
+		test("MOEAD", real, binary, permutation, subset, grammar, program);
 	}
 	
 	@Test
@@ -139,7 +149,7 @@ public class DefaultAlgorithmsTest {
 	
 	@Test
 	public void testEpsilonNSGAII() {
-		test("eNSGAII", real, binary, permutation, subset);
+		test("eNSGAII", real, binary, permutation, subset, grammar, program);
 	}
 	
 	@Test
@@ -149,17 +159,17 @@ public class DefaultAlgorithmsTest {
 	
 	@Test
 	public void testSPEA2() {
-		test("SPEA2", real, binary, permutation, subset);
+		test("SPEA2", real, binary, permutation, subset, grammar, program);
 	}
 
 	@Test
 	public void testPAES() {
-		test("PAES", real, binary, permutation, subset);
+		test("PAES", real, binary, permutation, subset, grammar, program);
 	}
 
 	@Test
 	public void testPESA2() {
-		test("PESA2", real, binary, permutation, subset);
+		test("PESA2", real, binary, permutation, subset, grammar, program);
 	}
 	
 	@Test
@@ -174,32 +184,32 @@ public class DefaultAlgorithmsTest {
 	
 	@Test
 	public void testIBEA() {
-		test("IBEA", real, binary, permutation, subset);
+		test("IBEA", real, binary, permutation, subset, grammar, program);
 	}
 
 	@Test
 	public void testSMSEMOA() {
-		test("SMS-EMOA", real, binary, permutation, subset);
+		test("SMS-EMOA", real, binary, permutation, subset, grammar, program);
 	}
 	
 	@Test
 	public void testVEGA() {
-		test("VEGA", real, binary, permutation, subset);
+		test("VEGA", real, binary, permutation, subset, grammar, program);
 	}
 	
 	@Test
 	public void testRVEA() {
-		test("RVEA", real, binary, permutation, subset);
+		test("RVEA", real, binary, permutation, subset, grammar, program);
 	}
 	
 	@Test
 	public void testRandomSearch() {
-		test("Random", real, binary, permutation, subset);
+		test("Random", real, binary, permutation, subset, grammar, program);
 	}
 
 	@Test
 	public void testGA() {
-		test("GA", real, binary, permutation, subset);
+		test("GA", real, binary, permutation, subset, grammar, program);
 	}
 	
 	@Test
@@ -214,12 +224,12 @@ public class DefaultAlgorithmsTest {
 	
 	@Test
 	public void testSA() {
-		test("SA", real, binary, permutation, subset);
+		test("SA", real, binary, permutation, subset, grammar, program);
 	}
 	
 	@Test
 	public void testRSO() {
-		test("RSO", real, binary, permutation, subset);
+		test("RSO", real, binary, permutation, subset, grammar, program);
 	}
 	
 	@Test
@@ -229,7 +239,7 @@ public class DefaultAlgorithmsTest {
 	
 	@Test
 	public void testAMOSA() {
-		test("AMOSA", real, binary, permutation, subset);
+		test("AMOSA", real, binary, permutation, subset, grammar, program);
 	}
 	
 	@Test
@@ -306,8 +316,8 @@ public class DefaultAlgorithmsTest {
 	}
 	
 	private void testResumable(String name, Problem problem) throws IOException {
-		if (name.equalsIgnoreCase("Random")) {
-			// random search is not resumable
+		if (problem.isType(Program.class)) {
+			// Programs are not serializable!
 			return;
 		}
 		

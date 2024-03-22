@@ -21,10 +21,10 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.core.variable.BinaryVariable;
 import org.moeaframework.core.variable.RealVariable;
-import org.moeaframework.problem.MockConstraintProblem;
-import org.moeaframework.problem.MockMixedBinaryProblem;
-import org.moeaframework.problem.MockMultiTypeProblem;
-import org.moeaframework.problem.MockRealProblem;
+import org.moeaframework.problem.mock.MockConstraintProblem;
+import org.moeaframework.problem.mock.MockMixedBinaryProblem;
+import org.moeaframework.problem.mock.MockMultiTypeProblem;
+import org.moeaframework.problem.mock.MockRealProblem;
 
 public class ValidateTest {
 	
