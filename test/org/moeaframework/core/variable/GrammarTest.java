@@ -17,10 +17,13 @@
  */
 package org.moeaframework.core.variable;
 
+import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.moeaframework.TestThresholds;
+import org.moeaframework.TestUtils;
 
 public class GrammarTest {
 
@@ -232,6 +235,28 @@ public class GrammarTest {
 		Grammar newVariable = new Grammar(5);
 		newVariable.decode(grammar.encode());
 		Assert.assertArrayEquals(grammar.toArray(), newVariable.toArray());
+	}
+	
+	@Test
+	public void testRandomize() {
+		grammar.setMaximumValue(5);
+		DescriptiveStatistics[] valueStats = new DescriptiveStatistics[grammar.size()];
+		
+		for (int j = 0; j < grammar.size(); j++) {
+			valueStats[j] = new DescriptiveStatistics();
+		}
+		
+		for (int i = 0; i < TestThresholds.SAMPLES; i++) {
+			grammar.randomize();
+			
+			for (int j = 0; j < grammar.size(); j++) {
+				valueStats[j].addValue(grammar.get(j));
+			}
+		}
+		
+		for (int j = 0; j < grammar.size(); j++) {
+			TestUtils.assertUniformDistribution(0, grammar.getMaximumValue()-1, valueStats[j]);
+		}
 	}
 
 }

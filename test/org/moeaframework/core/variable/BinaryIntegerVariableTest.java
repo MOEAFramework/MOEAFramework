@@ -17,65 +17,68 @@
  */
 package org.moeaframework.core.variable;
 
+import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.moeaframework.TestThresholds;
+import org.moeaframework.TestUtils;
 
 public class BinaryIntegerVariableTest {
 
-	private BinaryIntegerVariable value;
+	private BinaryIntegerVariable variable;
 
 	@Before
 	public void setUp() {
-		value = new BinaryIntegerVariable(7, 5, 10);
+		variable = new BinaryIntegerVariable(7, 5, 10);
 	}
 
 	@After
 	public void tearDown() {
-		value = null;
+		variable = null;
 	}
 
 	@Test
 	public void testGetValue() {
-		Assert.assertEquals(7, value.getValue());
-		Assert.assertEquals(5, value.getLowerBound());
-		Assert.assertEquals(10, value.getUpperBound());
+		Assert.assertEquals(7, variable.getValue());
+		Assert.assertEquals(5, variable.getLowerBound());
+		Assert.assertEquals(10, variable.getUpperBound());
 	}
 
 	@Test
 	public void testSetValue() {
-		for (int i = value.getLowerBound(); i <= value.getUpperBound(); i++) {
-			value.setValue(i);
-			Assert.assertEquals(i, value.getValue());
+		for (int i = variable.getLowerBound(); i <= variable.getUpperBound(); i++) {
+			variable.setValue(i);
+			Assert.assertEquals(i, variable.getValue());
 		}
 	}
 
 	@Test
 	public void testEquals() {
-		Assert.assertFalse(value.equals(null));
-		Assert.assertTrue(value.equals(value));
-		Assert.assertTrue(value.equals(new BinaryIntegerVariable(7, 5, 10)));
-		Assert.assertFalse(value.equals(new BinaryIntegerVariable(9, 5, 10)));
-		Assert.assertFalse(value.equals(new BinaryIntegerVariable(7, 2, 10)));
-		Assert.assertFalse(value.equals(new BinaryIntegerVariable(7, 5, 9)));
+		Assert.assertFalse(variable.equals(null));
+		Assert.assertTrue(variable.equals(variable));
+		Assert.assertTrue(variable.equals(new BinaryIntegerVariable(7, 5, 10)));
+		Assert.assertFalse(variable.equals(new BinaryIntegerVariable(9, 5, 10)));
+		Assert.assertFalse(variable.equals(new BinaryIntegerVariable(7, 2, 10)));
+		Assert.assertFalse(variable.equals(new BinaryIntegerVariable(7, 5, 9)));
 	}
 
 	@Test
 	public void testHashCode() {
-		Assert.assertEquals(value.hashCode(), value.hashCode());
-		Assert.assertEquals(value.hashCode(), new BinaryIntegerVariable(7, 5, 10).hashCode());
+		Assert.assertEquals(variable.hashCode(), variable.hashCode());
+		Assert.assertEquals(variable.hashCode(), new BinaryIntegerVariable(7, 5, 10).hashCode());
 	}
 
 	@Test
 	public void testCopy() {
-		BinaryIntegerVariable copy = value.copy();
-		Assert.assertTrue(copy.equals(value));
-		Assert.assertEquals(value.getBitSet(), copy.getBitSet());
+		BinaryIntegerVariable copy = variable.copy();
+		Assert.assertTrue(copy.equals(variable));
+		Assert.assertEquals(variable.getBitSet(), copy.getBitSet());
 
 		copy.setValue(9);
-		Assert.assertEquals(7, value.getValue());
-		Assert.assertFalse(copy.equals(value));
+		Assert.assertEquals(7, variable.getValue());
+		Assert.assertFalse(copy.equals(variable));
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -90,19 +93,31 @@ public class BinaryIntegerVariableTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testSetValueBoundsCheckLower() {
-		value.setValue(4);
+		variable.setValue(4);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testSetValueBoundsCheckUpper() {
-		value.setValue(11);
+		variable.setValue(11);
 	}
 	
 	@Test
 	public void testEncodeDecode() {
 		BinaryIntegerVariable newVariable = new BinaryIntegerVariable(5, 10);		
-		newVariable.decode(value.encode());
-		Assert.assertEquals(value.getValue(), newVariable.getValue());
+		newVariable.decode(variable.encode());
+		Assert.assertEquals(variable.getValue(), newVariable.getValue());
+	}
+	
+	@Test
+	public void testRandomize() {
+		DescriptiveStatistics stats = new DescriptiveStatistics();
+		
+		for (int i = 0; i < TestThresholds.SAMPLES; i++) {
+			variable.randomize();
+			stats.addValue(variable.getValue());
+		}
+		
+		TestUtils.assertUniformDistribution(variable.getLowerBound(), variable.getUpperBound(), stats);
 	}
 
 }

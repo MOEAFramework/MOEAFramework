@@ -22,15 +22,31 @@ import java.util.List;
 import org.moeaframework.parallel.island.Island;
 
 /**
- * A ring topology where each island is only connected to two adjacent islands, thus forming the shape of a ring.
+ * A ring topology where each island is only connected to one (unidirectional) or two adjacent islands (bidirectional),
+ * thus forming the shape of a ring.
  */
 public class RingTopology implements Topology {
+	
+	/**
+	 * {@code true} if the ring connects to both neighbors; {@code false} if only one.
+	 */
+	private final boolean bidirectional;
+	
+	/**
+	 * Constructs a bidirectional ring topology instance.
+	 */
+	public RingTopology() {
+		this(true);
+	}
 
 	/**
 	 * Constructs a ring topology instance.
+	 * 
+	 * @param bidirectional {@code true} if the ring connects to both neighbors; {@code false} if only one
 	 */
-	public RingTopology() {
+	public RingTopology(boolean bidirectional) {
 		super();
+		this.bidirectional = bidirectional;
 	}
 	
 	@Override
@@ -38,10 +54,11 @@ public class RingTopology implements Topology {
 		List<Island> result = new ArrayList<Island>();
 		int index = allIslands.indexOf(current);
 		
-		if (allIslands.size() > 2) {
-			result.add(allIslands.get(Math.floorMod(index-1, allIslands.size())));
+		if (allIslands.size() > 1) {
 			result.add(allIslands.get(Math.floorMod(index+1, allIslands.size())));
-		} else if (allIslands.size() > 1) {
+		}
+		
+		if (bidirectional && allIslands.size() > 2) {
 			result.add(allIslands.get(Math.floorMod(index-1, allIslands.size())));
 		}
 		

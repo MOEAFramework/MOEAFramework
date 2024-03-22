@@ -492,7 +492,24 @@ public class TestUtils {
         
         return data.toArray(double[][]::new);
     }
-	
+    
+	/**
+	 * Asserts that the statistical distribution satisfies the properties of a real-valued uniform distribution between
+	 * {@code min} and {@code max}.
+	 * 
+	 * @param min the minimum bounds of the uniform distribution
+	 * @param max the maximum bounds of the uniform distribution
+	 * @param statistics the captures statistics of a sampled distribution
+	 */
+	public static void assertUniformDistribution(double min, double max, DescriptiveStatistics statistics) {
+		Assert.assertEquals((min + max) / 2.0, statistics.getMean(), TestThresholds.STATISTICS_EPS);
+		Assert.assertEquals(Math.pow(max - min, 2.0) / 12.0, statistics.getVariance(), TestThresholds.STATISTICS_EPS);
+		Assert.assertEquals(0.0, statistics.getSkewness(), TestThresholds.STATISTICS_EPS);
+		Assert.assertEquals(-6.0 / 5.0, statistics.getKurtosis(), TestThresholds.STATISTICS_EPS);
+		Assert.assertEquals(min, statistics.getMin(), TestThresholds.STATISTICS_EPS);
+		Assert.assertEquals(max, statistics.getMax(), TestThresholds.STATISTICS_EPS);
+	}
+
 	/**
 	 * Asserts that the statistical distribution satisfies the properties of an integer-valued uniform distribution
 	 * between {@code min} and {@code max}.
@@ -505,12 +522,12 @@ public class TestUtils {
 		int n = max - min + 1;
 		int nn = n * n;
 
-		assertEquals((min + max) / 2.0, statistics.getMean());
-		assertEquals((nn - 1) / 12.0, statistics.getVariance());
-		assertEquals(0.0, statistics.getSkewness());
-		assertEquals(-(6.0 * (nn + 1)) / (5.0 * (nn - 1)), statistics.getKurtosis());
-		assertEquals(min, statistics.getMin());
-		assertEquals(max, statistics.getMax());
+		Assert.assertEquals((min + max) / 2.0, statistics.getMean(), TestThresholds.STATISTICS_EPS);
+		Assert.assertEquals((nn - 1) / 12.0, statistics.getVariance(), TestThresholds.STATISTICS_EPS);
+		Assert.assertEquals(0.0, statistics.getSkewness(), TestThresholds.STATISTICS_EPS);
+		Assert.assertEquals(-(6.0 * (nn + 1)) / (5.0 * (nn - 1)), statistics.getKurtosis(), TestThresholds.STATISTICS_EPS);
+		Assert.assertEquals(min, statistics.getMin(), TestThresholds.STATISTICS_EPS);
+		Assert.assertEquals(max, statistics.getMax(), TestThresholds.STATISTICS_EPS);
 	}
 	
 	/**

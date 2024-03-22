@@ -100,6 +100,15 @@ public class ImmigrationQueue {
 	}
 	
 	/**
+	 * Returns the number of solutions in the immigration queue
+	 * 
+	 * @return the number of solutions
+	 */
+	public int size() {
+		return queue.size();
+	}
+	
+	/**
 	 * Returns {@code true} if this immigration queue is empty.
 	 * 
 	 * @return {@code true} if empty; {@code false} otherwise

@@ -55,5 +55,41 @@ public class RingTopologyTest extends AbstractTopologyTest<RingTopology> {
 		Assert.assertTrue(neighbors.contains(islands.get(0)));
 		Assert.assertTrue(neighbors.contains(islands.get(2)));
 	}
+	
+	@Test
+	public void testTwoIslandsUnidirectional() {
+		Topology topology = new RingTopology(false);
+		List<Island> islands = createIslands(2);
+		
+		List<Island> neighbors = topology.getNeighbors(islands.get(0), islands);
+		Assert.assertEquals(1, neighbors.size());
+		Assert.assertSame(islands.get(1), neighbors.get(0));
+		
+		neighbors = topology.getNeighbors(islands.get(1), islands);
+		Assert.assertEquals(1, neighbors.size());
+		Assert.assertSame(islands.get(0), neighbors.get(0));
+	}
+	
+	@Test
+	public void testFourIslandsUnidirectional() {
+		Topology topology = new RingTopology(false);
+		List<Island> islands = createIslands(4);
+		
+		List<Island> neighbors = topology.getNeighbors(islands.get(0), islands);
+		Assert.assertEquals(1, neighbors.size());
+		Assert.assertTrue(neighbors.contains(islands.get(1)));
+		
+		neighbors = topology.getNeighbors(islands.get(1), islands);
+		Assert.assertEquals(1, neighbors.size());
+		Assert.assertTrue(neighbors.contains(islands.get(2)));
+		
+		neighbors = topology.getNeighbors(islands.get(2), islands);
+		Assert.assertEquals(1, neighbors.size());
+		Assert.assertTrue(neighbors.contains(islands.get(3)));
+		
+		neighbors = topology.getNeighbors(islands.get(3), islands);
+		Assert.assertEquals(1, neighbors.size());
+		Assert.assertTrue(neighbors.contains(islands.get(0)));
+	}
 
 }

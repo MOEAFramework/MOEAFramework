@@ -19,6 +19,7 @@ package org.moeaframework.core.variable;
 
 import java.util.Arrays;
 
+import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.TestThresholds;
@@ -178,16 +179,6 @@ public class SubsetTest {
 	}
 	
 	@Test
-	public void testRandomize() {
-		Subset subset = new Subset(5, 10);
-		
-		for (int i = 0; i < TestThresholds.SAMPLES; i++) {
-			subset.randomize();
-			subset.validate();
-		}
-	}
-	
-	@Test
 	public void testRandomNonmember() {
 		Subset subset = new Subset(5, 10);
 		
@@ -230,6 +221,29 @@ public class SubsetTest {
 		Subset newSubset = new Subset(0, 10, 10);
 		newSubset.decode(subset.encode());
 		Assert.assertArrayEquals(subset.toArray(), newSubset.toArray());
+	}
+	
+	@Test
+	public void testRandomize() {
+		Subset subset = new Subset(2, 10);
+		DescriptiveStatistics[] valueStats = new DescriptiveStatistics[subset.getN()];
+		
+		for (int j = 0; j < subset.getN(); j++) {
+			valueStats[j] = new DescriptiveStatistics();
+		}
+		
+		for (int i = 0; i < TestThresholds.SAMPLES; i++) {
+			subset.randomize();
+			subset.validate();
+						
+			for (int j = 0; j < subset.getN(); j++) {
+				valueStats[j].addValue(subset.contains(j) ? 1 : 0);
+			}
+		}
+		
+		for (int j = 0; j < subset.getL(); j++) {
+			Assert.assertEquals(0.2, valueStats[j].getMean(), TestThresholds.STATISTICS_EPS);
+		}
 	}
 	
 }

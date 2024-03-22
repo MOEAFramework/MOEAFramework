@@ -46,12 +46,12 @@ public class SingleNeighborMigrationTest extends AbstractIslandModelTest {
 		// first migrate a dominating solution, which replaces the solution in the neighboring population
 		migration.migrate(current, List.of(neighbor));
 		Assert.assertEquals(1, neighbor.getPopulation().size());
-		Assert.assertFalse(neighbor.getImmigrationQueue().isEmpty());
+		Assert.assertEquals(1, neighbor.getImmigrationQueue().size());
 		
 		migration.migrate(neighbor, List.of(current));
 		Assert.assertEquals(1, neighbor.getPopulation().size());
+		Assert.assertEquals(0, neighbor.getImmigrationQueue().size());
 		Assert.assertTrue(TestUtils.equals(solution1, neighbor.getPopulation().get(0)));
-		Assert.assertTrue(neighbor.getImmigrationQueue().isEmpty());
 		
 		// then migrate a non-dominated solution, which randomly enters the neighboring population
 		current.getImmigrationQueue().popAll();
@@ -60,13 +60,13 @@ public class SingleNeighborMigrationTest extends AbstractIslandModelTest {
 		
 		migration.migrate(current, List.of(neighbor));
 		Assert.assertEquals(1, neighbor.getPopulation().size());
-		Assert.assertFalse(neighbor.getImmigrationQueue().isEmpty());
+		Assert.assertEquals(1, neighbor.getImmigrationQueue().size());
 		
 		migration.migrate(neighbor, List.of(current));
 		Assert.assertEquals(1, neighbor.getPopulation().size());
+		Assert.assertEquals(0, neighbor.getImmigrationQueue().size());
 		Assert.assertTrue(TestUtils.equals(solution1, neighbor.getPopulation().get(0)) ||
 				TestUtils.equals(solution3, neighbor.getPopulation().get(0)));
-		Assert.assertTrue(neighbor.getImmigrationQueue().isEmpty());
 	}
 
 }

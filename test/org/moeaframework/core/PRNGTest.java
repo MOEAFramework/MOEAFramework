@@ -27,6 +27,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.moeaframework.TestThresholds;
+import org.moeaframework.TestUtils;
 import org.moeaframework.Retryable;
 import org.moeaframework.CIRunner;
 
@@ -44,7 +45,7 @@ public class PRNGTest {
 			statistics.addValue(PRNG.nextFloat());
 		}
 
-		testUniformDistribution(0.0, 1.0, statistics);
+		TestUtils.assertUniformDistribution(0.0, 1.0, statistics);
 	}
 
 	@Test
@@ -55,7 +56,7 @@ public class PRNGTest {
 			statistics.addValue(PRNG.nextFloat(15.0f, 20.0f));
 		}
 
-		testUniformDistribution(15.0, 20.0, statistics);
+		TestUtils.assertUniformDistribution(15.0, 20.0, statistics);
 	}
 
 	@Test
@@ -66,7 +67,7 @@ public class PRNGTest {
 			statistics.addValue(PRNG.nextDouble());
 		}
 
-		testUniformDistribution(0.0, 1.0, statistics);
+		TestUtils.assertUniformDistribution(0.0, 1.0, statistics);
 	}
 
 	@Test
@@ -77,7 +78,7 @@ public class PRNGTest {
 			statistics.addValue(PRNG.nextDouble(15.0, 20.0));
 		}
 
-		testUniformDistribution(15.0, 20.0, statistics);
+		TestUtils.assertUniformDistribution(15.0, 20.0, statistics);
 	}
 
 	@Test
@@ -119,7 +120,7 @@ public class PRNGTest {
 			statistics.addValue(PRNG.nextInt(15));
 		}
 
-		testUniformDistribution(0, 14, statistics);
+		TestUtils.assertUniformDistribution(0, 14, statistics);
 	}
 
 	@Test
@@ -130,7 +131,7 @@ public class PRNGTest {
 			statistics.addValue(PRNG.nextInt(15, 20));
 		}
 
-		testUniformDistribution(15, 20, statistics);
+		TestUtils.assertUniformDistribution(15, 20, statistics);
 	}
 
 	@Test
@@ -141,7 +142,7 @@ public class PRNGTest {
 			statistics.addValue(PRNG.nextBoolean() ? 1 : 0);
 		}
 
-		testUniformDistribution(0, 1, statistics);
+		TestUtils.assertUniformDistribution(0, 1, statistics);
 	}
 
 	@Test
@@ -188,7 +189,7 @@ public class PRNGTest {
 		}
 
 		for (int i = 0; i < P; i++) {
-			testUniformDistribution(0, P - 1, statistics.get(i));
+			TestUtils.assertUniformDistribution(0, P - 1, statistics.get(i));
 		}
 	}
 
@@ -288,7 +289,7 @@ public class PRNGTest {
 		}
 
 		for (int i = 0; i < P; i++) {
-			testUniformDistribution(0, 1, statistics[i]);
+			TestUtils.assertUniformDistribution(0, 1, statistics[i]);
 		}
 	}
 
@@ -332,45 +333,8 @@ public class PRNGTest {
 		}
 
 		for (int i = 0; i < size; i++) {
-			testUniformDistribution(0, size - 1, statistics[i]);
+			TestUtils.assertUniformDistribution(0, size - 1, statistics[i]);
 		}
-	}
-
-	/**
-	 * Asserts that the statistical distribution satisfies the properties of a real-valued uniform distribution between
-	 * {@code min} and {@code max}.
-	 * 
-	 * @param min the minimum bounds of the uniform distribution
-	 * @param max the maximum bounds of the uniform distribution
-	 * @param statistics the captures statistics of a sampled distribution
-	 */
-	private void testUniformDistribution(double min, double max, DescriptiveStatistics statistics) {
-		Assert.assertEquals((min + max) / 2.0, statistics.getMean(), TestThresholds.STATISTICS_EPS);
-		Assert.assertEquals(Math.pow(max - min, 2.0) / 12.0, statistics.getVariance(), TestThresholds.STATISTICS_EPS);
-		Assert.assertEquals(0.0, statistics.getSkewness(), TestThresholds.STATISTICS_EPS);
-		Assert.assertEquals(-6.0 / 5.0, statistics.getKurtosis(), TestThresholds.STATISTICS_EPS);
-		Assert.assertEquals(min, statistics.getMin(), TestThresholds.STATISTICS_EPS);
-		Assert.assertEquals(max, statistics.getMax(), TestThresholds.STATISTICS_EPS);
-	}
-
-	/**
-	 * Asserts that the statistical distribution satisfies the properties of an integer-valued uniform distribution
-	 * between {@code min} and {@code max}.
-	 * 
-	 * @param min the minimum bounds of the uniform distribution
-	 * @param max the maximum bounds of the uniform distribution
-	 * @param statistics the captures statistics of a sampled distribution
-	 */
-	private void testUniformDistribution(int min, int max, DescriptiveStatistics statistics) {
-		int n = max - min + 1;
-		int nn = n * n;
-
-		Assert.assertEquals((min + max) / 2.0, statistics.getMean(), TestThresholds.STATISTICS_EPS);
-		Assert.assertEquals((nn - 1) / 12.0, statistics.getVariance(), TestThresholds.STATISTICS_EPS);
-		Assert.assertEquals(0.0, statistics.getSkewness(), TestThresholds.STATISTICS_EPS);
-		Assert.assertEquals(-(6.0 * (nn + 1)) / (5.0 * (nn - 1)), statistics.getKurtosis(), TestThresholds.STATISTICS_EPS);
-		Assert.assertEquals(min, statistics.getMin(), TestThresholds.STATISTICS_EPS);
-		Assert.assertEquals(max, statistics.getMax(), TestThresholds.STATISTICS_EPS);
 	}
 
 	/**

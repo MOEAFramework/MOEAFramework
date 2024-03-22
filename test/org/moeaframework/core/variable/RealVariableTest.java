@@ -19,24 +19,27 @@ package org.moeaframework.core.variable;
 
 import java.io.IOException;
 
+import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.moeaframework.TestThresholds;
+import org.moeaframework.TestUtils;
 import org.moeaframework.core.Settings;
 
 public class RealVariableTest {
 
-	private RealVariable value;
+	private RealVariable variable;
 
 	@Before
 	public void setUp() {
-		value = new RealVariable(0.5, 0.0, 1.0);
+		variable = new RealVariable(0.5, 0.0, 1.0);
 	}
 
 	@After
 	public void tearDown() {
-		value = null;
+		variable = null;
 	}
 	
 	@Test
@@ -46,41 +49,41 @@ public class RealVariableTest {
 
 	@Test
 	public void testGetValue() {
-		Assert.assertEquals(0.5, value.getValue(), Settings.EPS);
-		Assert.assertEquals(0.0, value.getLowerBound(), Settings.EPS);
-		Assert.assertEquals(1.0, value.getUpperBound(), Settings.EPS);
+		Assert.assertEquals(0.5, variable.getValue(), Settings.EPS);
+		Assert.assertEquals(0.0, variable.getLowerBound(), Settings.EPS);
+		Assert.assertEquals(1.0, variable.getUpperBound(), Settings.EPS);
 	}
 
 	@Test
 	public void testSetValue() {
-		value.setValue(0.75);
-		Assert.assertEquals(0.75, value.getValue(), Settings.EPS);
+		variable.setValue(0.75);
+		Assert.assertEquals(0.75, variable.getValue(), Settings.EPS);
 	}
 
 	@Test
 	public void testEquals() {
-		Assert.assertFalse(value.equals(null));
-		Assert.assertTrue(value.equals(value));
-		Assert.assertTrue(value.equals(new RealVariable(0.5, 0.0, 1.0)));
-		Assert.assertFalse(value.equals(new RealVariable(0.75, 0.0, 1.0)));
-		Assert.assertFalse(value.equals(new RealVariable(0.5, 0.25, 1.0)));
-		Assert.assertFalse(value.equals(new RealVariable(0.5, 0.0, 0.75)));
+		Assert.assertFalse(variable.equals(null));
+		Assert.assertTrue(variable.equals(variable));
+		Assert.assertTrue(variable.equals(new RealVariable(0.5, 0.0, 1.0)));
+		Assert.assertFalse(variable.equals(new RealVariable(0.75, 0.0, 1.0)));
+		Assert.assertFalse(variable.equals(new RealVariable(0.5, 0.25, 1.0)));
+		Assert.assertFalse(variable.equals(new RealVariable(0.5, 0.0, 0.75)));
 	}
 
 	@Test
 	public void testHashCode() {
-		Assert.assertEquals(value.hashCode(), value.hashCode());
-		Assert.assertEquals(value.hashCode(), new RealVariable(0.5, 0.0, 1.0).hashCode());
+		Assert.assertEquals(variable.hashCode(), variable.hashCode());
+		Assert.assertEquals(variable.hashCode(), new RealVariable(0.5, 0.0, 1.0).hashCode());
 	}
 
 	@Test
 	public void testCopy() {
-		RealVariable copy = value.copy();
-		Assert.assertTrue(copy.equals(value));
+		RealVariable copy = variable.copy();
+		Assert.assertTrue(copy.equals(variable));
 
 		copy.setValue(0.75);
-		Assert.assertEquals(0.5, value.getValue(), Settings.EPS);
-		Assert.assertFalse(copy.equals(value));
+		Assert.assertEquals(0.5, variable.getValue(), Settings.EPS);
+		Assert.assertFalse(copy.equals(variable));
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -95,25 +98,37 @@ public class RealVariableTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testSetValueBoundsCheckLower() {
-		value.setValue(value.getLowerBound() - Settings.EPS);
+		variable.setValue(variable.getLowerBound() - Settings.EPS);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testSetValueBoundsCheckUpper() {
-		value.setValue(value.getUpperBound() + Settings.EPS);
+		variable.setValue(variable.getUpperBound() + Settings.EPS);
 	}
 	
 	@Test
 	public void testEncodeDecode() {
 		RealVariable newVariable = new RealVariable(0.0, 1.0);
-		newVariable.decode(value.encode());
-		Assert.assertEquals(value.getValue(), newVariable.getValue(), Settings.EPS);
+		newVariable.decode(variable.encode());
+		Assert.assertEquals(variable.getValue(), newVariable.getValue(), Settings.EPS);
 	}
 	
 	@Test(expected = NumberFormatException.class)
 	public void testDecodeInvalidReal() throws IOException {
 		RealVariable rv = new RealVariable(0.0, 1.0);
 		rv.decode("0.5foo");
+	}
+	
+	@Test
+	public void testRandomize() {
+		DescriptiveStatistics stats = new DescriptiveStatistics();
+		
+		for (int i = 0; i < TestThresholds.SAMPLES; i++) {
+			variable.randomize();
+			stats.addValue(variable.getValue());
+		}
+		
+		TestUtils.assertUniformDistribution(variable.getLowerBound(), variable.getUpperBound(), stats);
 	}
 
 }

@@ -21,7 +21,6 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.moeaframework.core.FrameworkException;
 import org.moeaframework.util.tree.Environment;
 import org.moeaframework.util.tree.Get;
 import org.moeaframework.util.tree.Rules;
@@ -69,9 +68,8 @@ public class ProgramTest {
 		Assert.assertEquals(copy.getArgument(0).toString(), program.getArgument(0).toString());
 	}
 	
-	// TODO: Programs are currently not Serializable, so encoding does does not work!
-	@Test(expected = FrameworkException.class)
-	public void testEncodeDecode() {
+	@Test(expected = UnsupportedOperationException.class)
+	public void testEncode() {
 		String encoding = program.encode();
 		program.decode(encoding);
 	}

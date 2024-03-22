@@ -19,10 +19,13 @@ package org.moeaframework.core.variable;
 
 import java.io.IOException;
 
+import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.moeaframework.TestThresholds;
+import org.moeaframework.TestUtils;
 
 public class PermutationTest {
 
@@ -175,6 +178,29 @@ public class PermutationTest {
 	public void testDecodeInvalidPermutation2() throws IOException {
 		Permutation p = new Permutation(5);
 		p.decode("2,0,1,5,3");
+	}
+	
+	@Test
+	public void testRandomize() {
+		DescriptiveStatistics[] positionStats = new DescriptiveStatistics[permutation.size()];
+		
+		for (int j = 0; j < permutation.size(); j++) {
+			positionStats[j] = new DescriptiveStatistics();
+		}
+		
+		for (int i = 0; i < TestThresholds.SAMPLES; i++) {
+			permutation.randomize();
+			
+			Assert.assertTrue(Permutation.isPermutation(permutation.toArray()));
+			
+			for (int j = 0; j < permutation.size(); j++) {
+				positionStats[j].addValue(permutation.get(j));
+			}
+		}
+		
+		for (int j = 0; j < permutation.size(); j++) {
+			TestUtils.assertUniformDistribution(0, permutation.size()-1, positionStats[j]);
+		}
 	}
 
 }
