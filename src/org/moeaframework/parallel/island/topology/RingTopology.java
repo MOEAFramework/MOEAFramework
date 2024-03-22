@@ -36,11 +36,13 @@ public class RingTopology implements Topology {
 	@Override
 	public List<Island> getNeighbors(Island current, List<Island> allIslands) {
 		List<Island> result = new ArrayList<Island>();
+		int index = allIslands.indexOf(current);
 		
-		for (int i = 0; i < allIslands.size(); i++) {
-			if (allIslands.get(i) == current) {
-				result.add(allIslands.get((i+1) % allIslands.size()));
-			}
+		if (allIslands.size() > 2) {
+			result.add(allIslands.get(Math.floorMod(index-1, allIslands.size())));
+			result.add(allIslands.get(Math.floorMod(index+1, allIslands.size())));
+		} else if (allIslands.size() > 1) {
+			result.add(allIslands.get(Math.floorMod(index-1, allIslands.size())));
 		}
 		
 		return result;
