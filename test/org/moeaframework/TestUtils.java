@@ -148,7 +148,7 @@ public class TestUtils {
 	}
 
 	/**
-	 * Returns {@code true} if the two solutions are equal; {@code false} otherwise. This method is not supported in
+	 * Returns {@code true} if the two solutions are equal; {@code false} otherwise.  This method is not supported in
 	 * the core library as the process of comparing solutions is often domain-specific.
 	 * 
 	 * @param s1 the first solution

@@ -48,11 +48,12 @@ import org.moeaframework.util.io.RedirectStream;
  *   new ExternalProblem("./problem.exe", "arg1", "arg2") { ... }
  * </pre>
  * Then, solutions are sent to the process on its standard input (stdin) stream, and the objectives and constraints
- * are read from its standard output (stdout) stream.  The program can not use the standard I/O for any other purpose.
- * Programs which read from or write to the standard I/O streams should instead use sockets, as discussed below.
+ * are read from its standard output (stdout) stream.  Writing or reading any other content from these streams will
+ * interfere with the communication.  Consider using sockets, as discussed below, if the program already uses standard
+ * input / output for other purposes.
  * 
  * <h2>Socket Mode</h2>
- * Socket mode is more complicated to setup, but is more flexible and robust. It has the ability to not only evaluate
+ * Socket mode is more complicated to setup, but is more flexible and robust.  It has the ability to not only evaluate
  * the problem on the host computer, but can be spread across a computer network.  To use sockets, use either the
  * {@link #ExternalProblem(String, int)} or {@link #ExternalProblem(InetAddress, int)} constructor.
  * 
@@ -63,17 +64,20 @@ import org.moeaframework.util.io.RedirectStream;
  * below.
  * <p>
  * The communication protocol consists of sending decision variables to the external process, and the process
- * responding with the objectives and constraints.  The decision variables line consists of one or more variables
- * separated by whitespace and terminated by a newline. The process evaluates the problem for the given variables and
- * outputs the objectives separated by whitespace and terminated by a newline. If the problem also has constraints,
- * each constraint is returned after the objectives on the same line.  The process must only terminate when the end
- * of stream is reached. In addition, the process should flush the output stream to ensure the output is processed
- * immediately.
+ * responding with the objectives and constraints.  First, the MOEA Framework writes a line containing the decision
+ * variables separated by whitespace and terminated by the newline character.  The program should read this line
+ * from stdin, then write the objectives and constraints, if any, to stdout.  The objectives and constraints must also
+ * appear on a single line separated by whitespace.
+ * <p>
+ * The program must continue processing lines until the input stream is closed.  In addition, it should always flush
+ * the output stream after writing each line.  Otherwise, some systems may buffer the data causing the program to
+ * stall.
  * <p>
  * Whitespace is one or more spaces, tabs or any combination thereof.  The newline is either the line feed ('\n'),
  * carriage return ('\r') or a carriage return followed immediately by a line feed ("\r\n"). 
  * <p>
  * <b>It is critical that the {@link #close()} method be invoked to ensure the external process is shutdown cleanly.</b>
+ * Failure to do so could leave the process running in the background.
  */
 public abstract class ExternalProblem implements Problem {
 	

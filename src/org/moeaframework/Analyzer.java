@@ -613,7 +613,6 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 	 */
 	public Analyzer printAnalysis() {
 		printAnalysis(System.out);
-		
 		return this;
 	}
 	
@@ -627,7 +626,6 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 	 */
 	public Analyzer saveReferenceSet(File file) throws IOException {
 		PopulationIO.writeObjectives(file, getReferenceSet());
-		
 		return this;
 	}
 	
@@ -671,6 +669,11 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 	 */
 	public AnalyzerResults getAnalysis() {
 		if (data.isEmpty()) {
+			return new AnalyzerResults();
+		}
+		
+		if (!isProblemConfigured()) {
+			System.err.println("no problem configured");
 			return new AnalyzerResults();
 		}
 		
@@ -858,7 +861,6 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 	 */
 	public Analyzer printAnalysis(PrintStream ps) {
 		display(ps);
-		
 		return this;
 	}
 	
@@ -874,7 +876,6 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 	 */
 	public Analyzer clear() {
 		data.clear();
-		
 		return this;
 	}
 	

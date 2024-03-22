@@ -20,8 +20,9 @@ package org.moeaframework.problem;
 import org.moeaframework.core.Solution;
 
 /**
- * A problem stub with a defined number of objectives, but no decision variables or constraints.  In addition, the
- * {@link #evaluate(Solution)} method throws {@link UnsupportedOperationException}.
+ * A problem stub with a defined number of objectives, but no decision variables or constraints.  This is often used
+ * by the command-line tools when we only need to know the number of objectives.  Calls to {@link #evaluate(Solution)}
+ * will throw {@link UnsupportedOperationException}.
  */
 public class ProblemStub extends AbstractProblem {
 	

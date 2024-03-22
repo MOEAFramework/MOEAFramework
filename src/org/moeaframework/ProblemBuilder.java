@@ -282,6 +282,15 @@ class ProblemBuilder {
 	}
 	
 	/**
+	 * Returns {@code true} if a problem has been configured.
+	 * 
+	 * @return {@code true} if a problem has been configured
+	 */
+	boolean isProblemConfigured() {
+		return problemName != null || problemClass != null || problemInstance != null;
+	}
+	
+	/**
 	 * Returns a new instance of the problem used by this builder, or throws an exception if no problem has been
 	 * defined.  The code requesting the problem instance is expected to close the problem when finished.
 	 * 
@@ -295,7 +304,7 @@ class ProblemBuilder {
 	 *         {@link NoSuchMethodException}.
 	 */
 	Problem getProblemInstance() {
-		if ((problemName == null) && (problemClass == null) && (problemInstance == null)) {
+		if (!isProblemConfigured()) {
 			throw new IllegalArgumentException("no problem specified");
 		}
 		

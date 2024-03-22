@@ -91,16 +91,5 @@ public class WFGNormalizedHypervolume extends NormalizedIndicator {
 	public double evaluate(NondominatedPopulation approximationSet) {
 		return hypervolume.evaluate(normalize(approximationSet));
 	}
-	
-	/**
-	 * Computes the hypervolume of the normalized approximation set.
-	 * 
-	 * @param problem the problem
-	 * @param approximationSet the normalized approximation set
-	 * @return the hypervolume of the normalized approximation set
-	 */
-	static double evaluate(Problem problem, NondominatedPopulation approximationSet) {
-		return new WFGHypervolume(problem, getNormalizedReferencePoint(problem)).evaluate(approximationSet);
-	}
 
 }

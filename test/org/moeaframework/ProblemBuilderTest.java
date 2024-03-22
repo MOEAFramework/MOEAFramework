@@ -34,13 +34,21 @@ import org.moeaframework.problem.ZDT.ZDT5;
 
 public class ProblemBuilderTest {
 	
+	@Test
+	public void testIsProblemConfigured() {
+		Assert.assertFalse(new ProblemBuilder().isProblemConfigured());
+		Assert.assertTrue(new ProblemBuilder().withProblem("DTLZ2_2").isProblemConfigured());
+		Assert.assertTrue(new ProblemBuilder().withProblem(new DTLZ2(2)).isProblemConfigured());
+		Assert.assertTrue(new ProblemBuilder().withProblemClass(DTLZ2.class, 2).isProblemConfigured());
+	}
+	
 	@Test(expected = IllegalArgumentException.class)
-	public void testNoProblem1() throws IOException {
+	public void testNoProblemGetInstance() throws IOException {
 		new ProblemBuilder().getProblemInstance();
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
-	public void testNoProblem2() throws IOException {
+	public void testNoProblemGetReferenceSet() throws IOException {
 		new ProblemBuilder().getReferenceSet();
 	}
 	
@@ -68,11 +76,8 @@ public class ProblemBuilderTest {
 		ProblemBuilder builder = new ProblemBuilder();
 		
 		Assert.assertNotNull(builder.withProblem("ZDT5").getProblemInstance());
-		
 		Assert.assertNotNull(builder.withProblemClass(ZDT5.class).getProblemInstance());
-		
 		Assert.assertNotNull(builder.withProblem(new ZDT5()).getProblemInstance());
-		
 		Assert.assertNotNull(builder.withProblemClass("org.moeaframework.problem.ZDT.ZDT5").getProblemInstance());
 	}
 	
@@ -81,7 +86,6 @@ public class ProblemBuilderTest {
 		ProblemBuilder builder = new ProblemBuilder();
 		
 		Problem problem1 = builder.withProblemClass(DTLZ2.class, 4).getProblemInstance();
-		
 		Problem problem2 = builder.withProblemClass("org.moeaframework.problem.DTLZ.DTLZ2", 6).getProblemInstance();
 		
 		Assert.assertNotNull(problem1);

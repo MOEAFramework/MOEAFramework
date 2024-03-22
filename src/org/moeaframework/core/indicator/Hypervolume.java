@@ -97,28 +97,6 @@ public class Hypervolume implements Indicator {
 	public double evaluate(NondominatedPopulation approximationSet) {
 		return instance.evaluate(approximationSet);
 	}
-
-	/**
-	 * Computes the hypervolume of a normalized approximation set.
-	 * 
-	 * @param problem the problem
-	 * @param approximationSet the normalized approximation set
-	 * @return the hypervolume value
-	 */
-	// TODO: Can I remove this?  Not called anywhere
-	static double evaluate(Problem problem, NondominatedPopulation approximationSet) {
-		String selection = Settings.getHypervolume();
-		
-		if (selection != null) {
-			return switch (selection.toLowerCase()) {
-				case "pisa" -> PISAHypervolume.evaluate(problem, approximationSet);
-				case "wfg" -> WFGNormalizedHypervolume.evaluate(problem, approximationSet);
-				default -> NativeHypervolume.evaluate(problem, approximationSet);
-			};
-		} else {
-			return WFGNormalizedHypervolume.evaluate(problem, approximationSet);
-		}
-	}
 	
 	/**
 	 * Returns the normalizer for calculating hypervolume using the following rules:

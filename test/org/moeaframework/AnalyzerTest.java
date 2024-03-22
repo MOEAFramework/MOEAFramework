@@ -74,10 +74,9 @@ public class AnalyzerTest {
 				.printAnalysis();
 	}
 	
-	// TODO: this should result in a warning and not an exception, to avoid data loss in case printAnalysis() is
-	// followed by saveData()
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testNoProblem() throws IOException {
+		// in this case, we print a warning instead of failing to avoid data loss
 		new Analyzer()
 				.add("NSGAII", new Executor()
 						.withProblem("DTLZ2_2")
