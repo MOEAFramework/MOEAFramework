@@ -502,12 +502,12 @@ public class TestUtils {
 	 * @param statistics the captures statistics of a sampled distribution
 	 */
 	public static void assertUniformDistribution(double min, double max, DescriptiveStatistics statistics) {
-		Assert.assertEquals((min + max) / 2.0, statistics.getMean(), TestThresholds.STATISTICS_EPS);
-		Assert.assertEquals(Math.pow(max - min, 2.0) / 12.0, statistics.getVariance(), TestThresholds.STATISTICS_EPS);
-		Assert.assertEquals(0.0, statistics.getSkewness(), TestThresholds.STATISTICS_EPS);
-		Assert.assertEquals(-6.0 / 5.0, statistics.getKurtosis(), TestThresholds.STATISTICS_EPS);
-		Assert.assertEquals(min, statistics.getMin(), TestThresholds.STATISTICS_EPS);
-		Assert.assertEquals(max, statistics.getMax(), TestThresholds.STATISTICS_EPS);
+		assertEquals((min + max) / 2.0, statistics.getMean());
+		assertEquals(Math.pow(max - min, 2.0) / 12.0, statistics.getVariance());
+		assertEquals(0.0, statistics.getSkewness());
+		assertEquals(-6.0 / 5.0, statistics.getKurtosis());
+		assertEquals(min, statistics.getMin());
+		assertEquals(max, statistics.getMax());
 	}
 
 	/**
@@ -522,12 +522,12 @@ public class TestUtils {
 		int n = max - min + 1;
 		int nn = n * n;
 
-		Assert.assertEquals((min + max) / 2.0, statistics.getMean(), TestThresholds.STATISTICS_EPS);
-		Assert.assertEquals((nn - 1) / 12.0, statistics.getVariance(), TestThresholds.STATISTICS_EPS);
-		Assert.assertEquals(0.0, statistics.getSkewness(), TestThresholds.STATISTICS_EPS);
-		Assert.assertEquals(-(6.0 * (nn + 1)) / (5.0 * (nn - 1)), statistics.getKurtosis(), TestThresholds.STATISTICS_EPS);
-		Assert.assertEquals(min, statistics.getMin(), TestThresholds.STATISTICS_EPS);
-		Assert.assertEquals(max, statistics.getMax(), TestThresholds.STATISTICS_EPS);
+		assertEquals((min + max) / 2.0, statistics.getMean());
+		assertEquals((nn - 1) / 12.0, statistics.getVariance());
+		assertEquals(0.0, statistics.getSkewness());
+		assertEquals(-(6.0 * (nn + 1)) / (5.0 * (nn - 1)), statistics.getKurtosis());
+		assertEquals(min, statistics.getMin());
+		assertEquals(max, statistics.getMax());
 	}
 	
 	/**
