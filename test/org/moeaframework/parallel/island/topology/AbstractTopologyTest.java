@@ -17,16 +17,14 @@
  */
 package org.moeaframework.parallel.island.topology;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.moeaframework.algorithm.NSGAII;
+import org.moeaframework.parallel.island.AbstractIslandModelTest;
 import org.moeaframework.parallel.island.Island;
-import org.moeaframework.problem.mock.MockRealProblem;
 
-public abstract class AbstractTopologyTest<T extends Topology> {
+public abstract class AbstractTopologyTest<T extends Topology> extends AbstractIslandModelTest {
 	
 	public abstract T createInstance();
 	
@@ -51,21 +49,6 @@ public abstract class AbstractTopologyTest<T extends Topology> {
 		neighbors = topology.getNeighbors(islands.get(1), islands);
 		Assert.assertEquals(1, neighbors.size());
 		Assert.assertSame(islands.get(0), neighbors.get(0));
-	}
-	
-	protected List<Island> createIslands(int count) {
-		List<Island> result = new ArrayList<Island>();
-		
-		for (int i = 0; i < count; i++) {
-			result.add(createIsland());
-		}
-		
-		return result;
-	}
-	
-	protected Island createIsland() {
-		NSGAII algorithm = new NSGAII(new MockRealProblem());
-		return new Island(algorithm, algorithm.getPopulation());
 	}
 
 }

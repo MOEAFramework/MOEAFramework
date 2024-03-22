@@ -64,8 +64,7 @@ public class SingleNeighborMigration implements Migration {
 		Solution[] emigrants = selection.select(size, current);
 		targetIsland.getImmigrationQueue().addAll(emigrants);
 		
-		//receive any migrants in the immigration queue, possibly replacing
-		//current population members
+		//receive any migrants in the immigration queue, possibly replacing current population members
 		int originalSize = current.size();
 		List<Solution> immigrants = currentIsland.getImmigrationQueue().popAll();
 		
