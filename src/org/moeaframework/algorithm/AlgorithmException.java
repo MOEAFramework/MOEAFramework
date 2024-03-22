@@ -31,16 +31,7 @@ public class AlgorithmException extends FrameworkException {
 	 * The algorithm responsible for this exception.
 	 */
 	private final Algorithm algorithm;
-	
-	/**
-	 * Constructs an algorithm exception originating from the specified algorithm.
-	 * 
-	 * @param algorithm the algorithm responsible for this exception
-	 */
-	public AlgorithmException(Algorithm algorithm) {
-		this(algorithm, null, null);
-	}
-	
+
 	/**
 	 * Constructs an algorithm exception originating from the specified algorithm with the given cause.
 	 * 

@@ -27,18 +27,6 @@ public class AlgorithmInitializationException extends AlgorithmException {
 	private static final long serialVersionUID = -4341813616427565989L;
 
 	/**
-	 * Constructs an algorithm initialization exception originating from the specified algorithm with the given message
-	 * and cause.
-	 * 
-	 * @param algorithm the algorithm responsible for this exception
-	 * @param message the message describing this exception
-	 * @param cause the cause of this exception
-	 */
-	public AlgorithmInitializationException(Algorithm algorithm, String message, Throwable cause) {
-		super(algorithm, message, cause);
-	}
-
-	/**
 	 * Constructs an algorithm initialization exception originating from the specified algorithm with the given
 	 * message.
 	 * 
@@ -47,25 +35,6 @@ public class AlgorithmInitializationException extends AlgorithmException {
 	 */
 	public AlgorithmInitializationException(Algorithm algorithm, String message) {
 		super(algorithm, message);
-	}
-
-	/**
-	 * Constructs an algorithm initialization exception originating from the specified algorithm with the given cause.
-	 * 
-	 * @param algorithm the algorithm responsible for this exception
-	 * @param cause the cause of this exception
-	 */
-	public AlgorithmInitializationException(Algorithm algorithm, Throwable cause) {
-		super(algorithm, cause);
-	}
-
-	/**
-	 * Constructs an algorithm initialization exception originating from the specified algorithm.
-	 * 
-	 * @param algorithm the algorithm responsible for this exception
-	 */
-	public AlgorithmInitializationException(Algorithm algorithm) {
-		super(algorithm);
 	}
 
 }

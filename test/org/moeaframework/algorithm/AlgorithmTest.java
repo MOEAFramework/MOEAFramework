@@ -126,6 +126,8 @@ public abstract class AlgorithmTest {
 		
 		Analyzer.AnalyzerResults analyzerResults = analyzer.getAnalysis();
 		Analyzer.AlgorithmResult algorithmResult = analyzerResults.get("A");
+		
+		analyzerResults.display();
 
 		int indifferences = 0;
 		

@@ -22,10 +22,15 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.moeaframework.TestUtils;
+import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
+import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.problem.DTLZ.DTLZ2;
@@ -34,27 +39,130 @@ import org.moeaframework.util.weights.NormalBoundaryDivisions;
 
 public class DBEATest {
 	
+	private Problem problem;
+	private DBEA algorithm;
+	
+	@Before
+	public void setUp() {
+		problem = new MockRealProblem(2);
+		algorithm = new DBEA(problem);
+	}
+	
+	@After
+	public void tearDown() {
+		problem = null;
+		algorithm = null;
+	}
+	
 	@Test
 	public void testDefaults() {
-		Problem problem = new MockRealProblem();
 		NormalBoundaryDivisions divisions = NormalBoundaryDivisions.forProblem(problem);
-		
-		DBEA dbea = new DBEA(problem);
-		
-		Assert.assertEquals(divisions, dbea.getDivisions());
-		Assert.assertEquals(divisions.getNumberOfReferencePoints(problem), dbea.getInitialPopulationSize());
+		Assert.assertEquals(divisions, algorithm.getDivisions());
+		Assert.assertEquals(divisions.getNumberOfReferencePoints(problem), algorithm.getInitialPopulationSize());
 	}
 	
 	@Test
 	public void testConfiguration() {
-		Problem problem = new MockRealProblem();
 		NormalBoundaryDivisions divisions = new NormalBoundaryDivisions(100);
 		
-		DBEA dbea = new DBEA(problem);
-		dbea.applyConfiguration(divisions.toProperties());
+		algorithm.applyConfiguration(divisions.toProperties());
 		
-		Assert.assertEquals(divisions, dbea.getDivisions());
-		Assert.assertEquals(divisions.getNumberOfReferencePoints(problem), dbea.getInitialPopulationSize());
+		Assert.assertEquals(divisions, algorithm.getDivisions());
+		Assert.assertEquals(divisions.getNumberOfReferencePoints(problem), algorithm.getInitialPopulationSize());
+	}
+	
+	@Test
+	public void testNumberOfUniqueSolutions() {
+		Population population = new Population();
+		
+		Assert.assertEquals(0, algorithm.numberOfUniqueSolutions(population));
+		
+		population.add(TestUtils.newSolution(0.0, 1.0));
+		population.add(TestUtils.newSolution(1.0, 0.0));
+		
+		Assert.assertEquals(2, algorithm.numberOfUniqueSolutions(population));
+		
+		population.add(TestUtils.newSolution(0.0, 1.0));
+		
+		Assert.assertEquals(2, algorithm.numberOfUniqueSolutions(population));
+	}
+	
+	@Test
+	public void testOrderBySmallestObjective() {
+		Solution solution1 = TestUtils.newSolution(0.5, 0.5);
+		Solution solution2 = TestUtils.newSolution(0.0, 1.0);
+		Solution solution3 = TestUtils.newSolution(1.0, 0.0);
+		
+		Population population = new Population();
+		population.add(solution1);
+		population.add(solution2);
+		population.add(solution3);
+		
+		Population result = algorithm.orderBySmallestObjective(0, population);
+		
+		Assert.assertSame(solution2, result.get(0));
+		Assert.assertSame(solution1, result.get(1));
+		Assert.assertSame(solution3, result.get(2));
+	}
+	
+	@Test
+	public void testOrderBySmallestSquaredValue() {
+		Solution solution1 = TestUtils.newSolution(0.5, 0.0);
+		Solution solution2 = TestUtils.newSolution(0.0, 0.0);
+		Solution solution3 = TestUtils.newSolution(1.0, 0.0);
+		
+		Population population = new Population();
+		population.add(solution1);
+		population.add(solution2);
+		population.add(solution3);
+		
+		Population result = algorithm.orderBySmallestSquaredValue(1, population);
+		
+		Assert.assertSame(solution2, result.get(0));
+		Assert.assertSame(solution1, result.get(1));
+		Assert.assertSame(solution3, result.get(2));
+	}
+	
+	@Test
+	public void testLargestObjectiveValue() {
+		Solution solution1 = TestUtils.newSolution(0.5, 0.0);
+		Solution solution2 = TestUtils.newSolution(0.0, 0.0);
+		Solution solution3 = TestUtils.newSolution(1.0, 0.0);
+		
+		Population population = new Population();
+		population.add(solution1);
+		population.add(solution2);
+		population.add(solution3);
+		
+		Solution result = algorithm.largestObjectiveValue(0, population);
+		
+		Assert.assertSame(solution3, result);
+	}
+	
+	@Test
+	public void testSumOfConstraintValues() {
+		Solution solution = new Solution(0, 0, 3);
+		solution.setConstraints(new double[] { -1.0, 1.0, 0.0 });
+		
+		Assert.assertEquals(2.0, algorithm.sumOfConstraintViolations(solution), Settings.EPS);
+	}
+	
+	@Test
+	public void testGetFeasibleSolutions() {
+		Solution solution1 = new Solution(0, 0, 3);
+		solution1.setConstraints(new double[] { -1.0, 1.0, 0.0 });
+		
+		Solution solution2 = new Solution(0, 0, 3);
+		solution2.setConstraints(new double[] { 0.0, 0.0, 0.0 });
+		
+		Population population = new Population();
+		population.add(solution1);
+		population.add(solution2);
+		
+		Population result = algorithm.getFeasibleSolutions(population);
+		
+		Assert.assertEquals(1, result.size());
+		Assert.assertSame(solution2, result.get(0));
 	}
 	
 	/**

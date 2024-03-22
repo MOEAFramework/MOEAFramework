@@ -441,22 +441,18 @@ public class MOEAD extends AbstractAlgorithm implements Configurable {
 		population = new ArrayList<Individual>(populationSize);
 		
 		if (weightGenerator == null) {
-			List<double[]> weights = new RandomGenerator(problem.getNumberOfObjectives(), populationSize).generate();
-			
-			for (double[] weight : weights) {
-				population.add(new Individual(weight));
-			}
-		} else {
-			List<double[]> weights = weightGenerator.generate();
-			
-			if (weights.size() != populationSize) {
-				throw new AlgorithmInitializationException(this, "weight generator must return " + populationSize +
-						" weights");
-			}
-			
-			for (double[] weight : weights) {
-				population.add(new Individual(weight));
-			}
+			weightGenerator = new RandomGenerator(problem.getNumberOfObjectives(), populationSize);
+		}
+
+		List<double[]> weights = weightGenerator.generate();
+
+		if (weights.size() != populationSize) {
+			throw new AlgorithmInitializationException(this, "weight generator must return " + populationSize +
+					" weights");
+		}
+
+		for (double[] weight : weights) {
+			population.add(new Individual(weight));
 		}
 	}
 

@@ -65,6 +65,7 @@ public class IndicatorsTest {
 		Assert.assertTrue(Double.isNaN(values.getR2()));
 		Assert.assertTrue(Double.isNaN(values.getR3()));
 		
+		Assert.assertSame(testApproximationSet, values.getApproximationSet());
 		Assert.assertEquals(0, values.asProperties().size());
 	}
 	
@@ -85,6 +86,7 @@ public class IndicatorsTest {
 		Assert.assertTrue(Double.isNaN(values.getR2()));
 		Assert.assertTrue(Double.isNaN(values.getR3()));
 		
+		Assert.assertSame(testApproximationSet, values.getApproximationSet());
 		Assert.assertEquals(7, values.asProperties().size());
 	}
 	
@@ -105,6 +107,7 @@ public class IndicatorsTest {
 		Assert.assertFalse(Double.isNaN(values.getR2()));
 		Assert.assertFalse(Double.isNaN(values.getR3()));
 		
+		Assert.assertSame(testApproximationSet, values.getApproximationSet());
 		Assert.assertEquals(10, values.asProperties().size());
 	}
 	

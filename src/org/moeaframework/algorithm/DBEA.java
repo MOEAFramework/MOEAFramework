@@ -31,6 +31,7 @@ import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
+import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.comparator.ObjectiveComparator;
@@ -42,21 +43,17 @@ import org.moeaframework.util.TypedProperties;
 import org.moeaframework.util.weights.NormalBoundaryDivisions;
 import org.moeaframework.util.weights.NormalBoundaryIntersectionGenerator;
 
-/* The original Matlab version of I-DBEA was written by Md. Asafuddoula,
- * Tapabrata Ray and Ruhul Sarker.  This class has been tested against their
- * Matlab version to ensure it produces identical results.  See the
- * DBEATest.java class for more information about the testing procedure.
+/* The original Matlab version of I-DBEA was written by Md. Asafuddoula, Tapabrata Ray and Ruhul Sarker.  This class
+ * has been tested against their Matlab version to ensure it produces identical results.  See the DBEATest.java class
+ * for more information about the testing procedure.
  * 
- * A Java version of I-DBEA written by Md Asafuddoula was also cross-referenced
- * when developing this class.  The Java version was released under the GNU
- * LGPL, version 3 or later, and is copyright 2015 Md Asafuddoula.
+ * A Java version of I-DBEA written by Md Asafuddoula was also cross-referenced when developing this class.  The Java
+ * version was released under the GNU LGPL, version 3 or later, and is copyright 2015 Md Asafuddoula.
  * 
- * Note: There are some differences between Md Asafuddoula's newer Java version
- * and their older Matlab version, including the removal of corner sort.
- * Experimental tests on their Java version indicate performance between the
- * two versions differ, becoming more substantial with more objectives, with
- * the Matlab version appearing superior.  For this reason, we have replicated
- * the Matlab version within the MOEA Framework.
+ * Note: There are some differences between Md Asafuddoula's newer Java version and their older Matlab version,
+ * including the removal of corner sort.  Experimental tests on their Java version indicate performance between the
+ * two versions differ, becoming more substantial with more objectives, with the Matlab version appearing superior.
+ * For this reason, we have replicated the Matlab version within the MOEA Framework.
  */
 
 /**
@@ -248,7 +245,7 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 	 * @param population the entire population containing feasible and infeasible solutions
 	 * @return the feasible solutions in the population
 	 */
-	private Population getFeasibleSolutions(Population population) {
+	Population getFeasibleSolutions(Population population) {
 		Population feasibleSolutions = new Population();
 		
 		for (Solution solution : population) {
@@ -303,7 +300,7 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 	 * @param population the population of solutions
 	 * @return the solution with the largest objective value
 	 */
-	private Solution largestObjectiveValue(int objective, Population population) {
+	Solution largestObjectiveValue(int objective, Population population) {
 		Solution largest = null;
 		double value = Double.NEGATIVE_INFINITY;
 		
@@ -324,7 +321,7 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 	 * @param population the population
 	 * @return a copy of the population ordered by the objective value
 	 */
-	private Population orderBySmallestObjective(int objective, Population population) {
+	Population orderBySmallestObjective(final int objective, Population population) {
 		Population result = new Population();
 		result.addAll(population);
 		result.sort(new ObjectiveComparator(objective));
@@ -338,7 +335,7 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 	 * @param population the population
 	 * @return a copy of the population ordered by the sum-of-squares of all but one objective
 	 */
-	private Population orderBySmallestSquaredValue(final int objective, Population population) {
+	Population orderBySmallestSquaredValue(final int objective, Population population) {
 		Population result = new Population();
 		result.addAll(population);
 		
@@ -371,23 +368,21 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 	 * @param population the population
 	 * @return the number of unique solutions in the population
 	 */
-	private int numberOfUniqueSolutions(Population population) {
+	int numberOfUniqueSolutions(Population population) {
 		int count = 0;
 		
-		for (int i = 0; i < population.size(); i++) {
-			boolean isDuplicate = false;
+		outer: for (int i = 0; i < population.size(); i++) {
+			Solution solution1 = population.get(i);
 			
 			for (int j = 0; j < i; j++) {
-				if ((population.get(j) == population.get(i)) ||
-						Arrays.equals(population.get(j).getObjectives(), population.get(i).getObjectives())) {
-					isDuplicate = true;
-					break;
-				}
+				Solution solution2 = population.get(j);
 				
-				if (!isDuplicate) {
-					count++;
+				if (solution1 == solution2 || solution1.distanceTo(solution2) < Settings.EPS) {
+					continue outer;
 				}
 			}
+			
+			count++;
 		}
 		
 		return count;
@@ -420,7 +415,7 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 					extremePoints.add(largestObjectiveValue(i, nondominatedSolutions));
 				}
 				
-				if (numberOfUniqueSolutions(extremePoints) != problem.getNumberOfObjectives()) {
+				if (numberOfUniqueSolutions(extremePoints) < problem.getNumberOfObjectives()) {
 					for (int i = 0; i < problem.getNumberOfObjectives(); i++) {
 						intercepts[i] = extremePoints.get(i).getObjective(i);
 					}
@@ -465,7 +460,7 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 	 * @param solution the solution
 	 * @return the constraint violation
 	 */
-	private double sumOfConstraintViolations(Solution solution) {
+	double sumOfConstraintViolations(Solution solution) {
 		double result = 0.0;
 		
 		for (int i = 0; i < solution.getNumberOfConstraints(); i++) {
