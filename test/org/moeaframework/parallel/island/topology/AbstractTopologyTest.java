@@ -17,43 +17,55 @@
  */
 package org.moeaframework.parallel.island.topology;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.parallel.island.Island;
+import org.moeaframework.problem.mock.MockRealProblem;
 
-public class RingTopologyTest extends AbstractTopologyTest<RingTopology> {
+public abstract class AbstractTopologyTest<T extends Topology> {
 	
-	@Override
-	public RingTopology createInstance() {
-		return new RingTopology();
+	public abstract T createInstance();
+	
+	@Test
+	public void testSingleIsland() {
+		Topology topology = createInstance();
+		List<Island> islands = createIslands(1);
+		
+		List<Island> neighbors = topology.getNeighbors(islands.get(0), islands);		
+		Assert.assertEquals(0, neighbors.size());
 	}
 	
 	@Test
-	public void testFourIslands() {
+	public void testTwoIslands() {
 		Topology topology = createInstance();
-		List<Island> islands = createIslands(4);
+		List<Island> islands = createIslands(2);
 		
 		List<Island> neighbors = topology.getNeighbors(islands.get(0), islands);
-		Assert.assertEquals(2, neighbors.size());
-		Assert.assertTrue(neighbors.contains(islands.get(3)));
-		Assert.assertTrue(neighbors.contains(islands.get(1)));
+		Assert.assertEquals(1, neighbors.size());
+		Assert.assertSame(islands.get(1), neighbors.get(0));
 		
 		neighbors = topology.getNeighbors(islands.get(1), islands);
-		Assert.assertEquals(2, neighbors.size());
-		Assert.assertTrue(neighbors.contains(islands.get(0)));
-		Assert.assertTrue(neighbors.contains(islands.get(2)));
+		Assert.assertEquals(1, neighbors.size());
+		Assert.assertSame(islands.get(0), neighbors.get(0));
+	}
+	
+	protected List<Island> createIslands(int count) {
+		List<Island> result = new ArrayList<Island>();
 		
-		neighbors = topology.getNeighbors(islands.get(2), islands);
-		Assert.assertEquals(2, neighbors.size());
-		Assert.assertTrue(neighbors.contains(islands.get(1)));
-		Assert.assertTrue(neighbors.contains(islands.get(3)));
+		for (int i = 0; i < count; i++) {
+			result.add(createIsland());
+		}
 		
-		neighbors = topology.getNeighbors(islands.get(3), islands);
-		Assert.assertEquals(2, neighbors.size());
-		Assert.assertTrue(neighbors.contains(islands.get(0)));
-		Assert.assertTrue(neighbors.contains(islands.get(2)));
+		return result;
+	}
+	
+	protected Island createIsland() {
+		NSGAII algorithm = new NSGAII(new MockRealProblem());
+		return new Island(algorithm, algorithm.getPopulation());
 	}
 
 }

@@ -23,11 +23,11 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.parallel.island.Island;
 
-public class RingTopologyTest extends AbstractTopologyTest<RingTopology> {
+public class FullyConnectedTopologyTest extends AbstractTopologyTest<FullyConnectedTopology> {
 	
 	@Override
-	public RingTopology createInstance() {
-		return new RingTopology();
+	public FullyConnectedTopology createInstance() {
+		return new FullyConnectedTopology();
 	}
 	
 	@Test
@@ -36,23 +36,27 @@ public class RingTopologyTest extends AbstractTopologyTest<RingTopology> {
 		List<Island> islands = createIslands(4);
 		
 		List<Island> neighbors = topology.getNeighbors(islands.get(0), islands);
-		Assert.assertEquals(2, neighbors.size());
-		Assert.assertTrue(neighbors.contains(islands.get(3)));
+		Assert.assertEquals(3, neighbors.size());
 		Assert.assertTrue(neighbors.contains(islands.get(1)));
+		Assert.assertTrue(neighbors.contains(islands.get(2)));
+		Assert.assertTrue(neighbors.contains(islands.get(3)));
 		
 		neighbors = topology.getNeighbors(islands.get(1), islands);
-		Assert.assertEquals(2, neighbors.size());
+		Assert.assertEquals(3, neighbors.size());
 		Assert.assertTrue(neighbors.contains(islands.get(0)));
 		Assert.assertTrue(neighbors.contains(islands.get(2)));
+		Assert.assertTrue(neighbors.contains(islands.get(3)));
 		
 		neighbors = topology.getNeighbors(islands.get(2), islands);
-		Assert.assertEquals(2, neighbors.size());
+		Assert.assertEquals(3, neighbors.size());
+		Assert.assertTrue(neighbors.contains(islands.get(0)));
 		Assert.assertTrue(neighbors.contains(islands.get(1)));
 		Assert.assertTrue(neighbors.contains(islands.get(3)));
 		
 		neighbors = topology.getNeighbors(islands.get(3), islands);
-		Assert.assertEquals(2, neighbors.size());
+		Assert.assertEquals(3, neighbors.size());
 		Assert.assertTrue(neighbors.contains(islands.get(0)));
+		Assert.assertTrue(neighbors.contains(islands.get(1)));
 		Assert.assertTrue(neighbors.contains(islands.get(2)));
 	}
 
