@@ -17,7 +17,13 @@
  */
 package org.moeaframework.problem.WFG;
 
+import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.Test;
+import org.moeaframework.TestThresholds;
+import org.moeaframework.core.NondominatedPopulation;
+import org.moeaframework.core.NondominatedPopulation.DuplicateMode;
+import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.problem.ProblemTest;
 
 public class WFGTest extends ProblemTest {
@@ -112,11 +118,25 @@ public class WFGTest extends ProblemTest {
 		test("WFG9", 3);
 	}
 
-	public void test(String problem, int M) {
+	private void test(String problem, int M) {
 		String problemName = problem + "_" + M;
 		
 		assertProblemDefined(problemName, M);
 		testAgainstJMetal(problemName);
+		
+		testGenerate(problemName);
+	}
+	
+	private void testGenerate(String problemName) {
+		WFG problem = (WFG)ProblemFactory.getInstance().getProblem(problemName);
+		NondominatedPopulation result = new NondominatedPopulation(DuplicateMode.ALLOW_DUPLICATES);
+		
+		for (int i = 0; i < TestThresholds.SAMPLES; i++) {
+			result.add(problem.generate());
+		}
+		
+		Assume.assumeFalse("WFG2 is disjoint and can generate dominated solutions", problem instanceof WFG2);
+		Assert.assertEquals(TestThresholds.SAMPLES, result.size());
 	}
 
 }
