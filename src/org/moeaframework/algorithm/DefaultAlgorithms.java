@@ -29,6 +29,7 @@ import org.moeaframework.algorithm.single.RepeatedSingleObjective;
 import org.moeaframework.algorithm.single.SimulatedAnnealing;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.Problem;
+import org.moeaframework.core.Settings;
 import org.moeaframework.core.configuration.Configurable;
 import org.moeaframework.core.spi.RegisteredAlgorithmProvider;
 import org.moeaframework.util.TypedProperties;
@@ -150,13 +151,14 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 	 * @param properties the user-defined properties
 	 * @return the max iterations
 	 */
-	private int getMaxIterations(TypedProperties properties) {
+	public static int getMaxIterations(TypedProperties properties) {
 		if (properties.contains("maxIterations")) {
-			return properties.getInt("maxIterations");
+			return properties.getTruncatedInt("maxIterations");
 		} else {
-			int maxEvaluations = properties.getInt("maxEvaluations", 25000);
-			int populationSize = properties.getInt("populationSize", properties.getInt("swarmSize", 100));
-			
+			int maxEvaluations = properties.getTruncatedInt("maxEvaluations", 25000);
+			int populationSize = properties.getTruncatedInt("populationSize",
+					properties.getTruncatedInt("swarmSize", Settings.DEFAULT_POPULATION_SIZE));
+						
 			return maxEvaluations / populationSize;
 		}
 	}

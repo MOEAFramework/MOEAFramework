@@ -22,7 +22,6 @@ import java.io.IOException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.moeaframework.CIRunner;
-import org.moeaframework.Flaky;
 import org.moeaframework.Retryable;
 
 @RunWith(CIRunner.class)
@@ -30,30 +29,27 @@ import org.moeaframework.Retryable;
 public class GDE3Test extends AlgorithmTest {
 	
 	@Test
-	@Flaky
 	public void testDTLZ1() throws IOException {
 		assumeJMetalExists();
-		test("DTLZ1_2", "GDE3", "GDE3-JMetal");
+		test("DTLZ1_2", "GDE3", "GDE3-JMetal", true);
 	}
 	
 	@Test
-	@Flaky
 	public void testDTLZ2() throws IOException {
 		assumeJMetalExists();
-		test("DTLZ2_2", "GDE3", "GDE3-JMetal");
+		test("DTLZ2_2", "GDE3", "GDE3-JMetal", true);
 	}
 	
 	@Test
-	@Flaky
 	public void testDTLZ7() throws IOException {
 		assumeJMetalExists();
-		test("DTLZ7_2", "GDE3", "GDE3-JMetal");
+		test("DTLZ7_2", "GDE3", "GDE3-JMetal", true);
 	}
 	
 	@Test
 	public void testUF1() throws IOException {
 		assumeJMetalExists();
-		test("UF1", "GDE3", "GDE3-JMetal");
+		test("UF1", "GDE3", "GDE3-JMetal", true);
 	}
 
 }

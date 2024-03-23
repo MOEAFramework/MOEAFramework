@@ -23,7 +23,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.moeaframework.CIRunner;
-import org.moeaframework.Flaky;
 import org.moeaframework.Retryable;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.configuration.ConfigurationException;
@@ -48,7 +47,6 @@ public class IBEATest extends AlgorithmTest {
 	}
 	
 	@Test
-	@Flaky
 	public void testDTLZ7() throws IOException {
 		assumeJMetalExists();
 		test("DTLZ7_2", "IBEA", "IBEA-JMetal");

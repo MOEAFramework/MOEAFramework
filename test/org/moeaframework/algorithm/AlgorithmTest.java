@@ -46,7 +46,7 @@ public abstract class AlgorithmTest {
 	 * @param algorithm2 the name of the second algorithm to test
 	 */
 	public void test(String problem, String algorithm1, String algorithm2) {
-		test(problem, algorithm1, algorithm2, false, AlgorithmFactory.getInstance());
+		test(problem, algorithm1, algorithm2, false);
 	}
 	
 	/**
@@ -59,34 +59,8 @@ public abstract class AlgorithmTest {
 	 * @param allowBetterPerformance do not fail if the MOEA Framework algorithm exceeds the performance
 	 */
 	public void test(String problem, String algorithm1, String algorithm2, boolean allowBetterPerformance) {
-		test(problem, algorithm1, algorithm2, allowBetterPerformance, AlgorithmFactory.getInstance());
-	}
-
-	/**
-	 * Tests if two algorithms are statistically indifferent.
-	 * 
-	 * @param problem the name of the problem to test
-	 * @param algorithm1 the name of the first algorithm to test
-	 * @param algorithm2 the name of the second algorithm to test
-	 * @param factory the factory used to construct the algorithms
-	 */
-	public void test(String problem, String algorithm1, String algorithm2, AlgorithmFactory factory) {
-		test(problem, algorithm1, algorithm2, false, factory);
-	}
-	
-	/**
-	 * Tests if two algorithms are statistically indifferent.
-	 * 
-	 * @param problem the name of the problem to test
-	 * @param algorithm1 the name of the first algorithm to test
-	 * @param algorithm2 the name of the second algorithm to test
-	 * @param allowBetterPerformance do not fail if the MOEA Framework algorithm exceeds the performance
-	 * @param factory the factory used to construct the algorithms
-	 */
-	public void test(String problem, String algorithm1, String algorithm2, boolean allowBetterPerformance,
-			AlgorithmFactory factory) {
 		test(problem, algorithm1, new TypedProperties(), algorithm2, new TypedProperties(), allowBetterPerformance,
-				factory);
+				AlgorithmFactory.getInstance());
 	}
 	
 	/**
@@ -127,8 +101,6 @@ public abstract class AlgorithmTest {
 		Analyzer.AnalyzerResults analyzerResults = analyzer.getAnalysis();
 		Analyzer.AlgorithmResult algorithmResult = analyzerResults.get("A");
 		
-		analyzerResults.display();
-
 		int indifferences = 0;
 		
 		for (String indicator : algorithmResult.getIndicators()) {

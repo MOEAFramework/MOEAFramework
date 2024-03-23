@@ -98,37 +98,28 @@ public class CIRunner extends BlockJUnit4ClassRunner {
 	}
 
 	@Override
-	public void run(RunNotifier arg0) {
-		isRunningOnCI();
-		super.run(arg0);
-	}
-
-	@Override
 	protected void runChild(final FrameworkMethod method, RunNotifier notifier) {
 		Description description = describeChild(method);
+		boolean isRunningOnCI = isRunningOnCI();
 
 		if (hasAnnotation(method, Ignore.class)) {
 			notifier.fireTestIgnored(description);
 			return;
 		}
 		
-		if (hasAnnotation(method, IgnoreOnCI.class) && isRunningOnCI() && !isIncludingAllTests()) {
+		if (hasAnnotation(method, IgnoreOnCI.class) && isRunningOnCI && !isIncludingAllTests()) {
 			System.out.println("Ignoring " + description.getDisplayName() + " on CI build");
 			notifier.fireTestIgnored(description);
 			return;
 		}
 			
 		int retries = 0;
-		boolean flaky = false;
-			
-		if (isRunningOnCI()) {
-			Retryable retryable = getAnnotation(method, Retryable.class);
-			
-			if (retryable != null) {
-				retries = retryable.value();
-			}
-			
-			flaky = hasAnnotation(method, Flaky.class);
+		boolean flaky = isRunningOnCI && hasAnnotation(method, Flaky.class);
+		
+		Retryable retryable = getAnnotation(method, Retryable.class);
+		
+		if (retryable != null) {
+			retries = retryable.value();
 		}
 			
 		runTestUnit(methodBlock(method), description, notifier, retries, flaky);

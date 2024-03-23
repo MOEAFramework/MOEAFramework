@@ -22,12 +22,12 @@ import java.io.IOException;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.moeaframework.Retryable;
 import org.moeaframework.CIRunner;
-import org.moeaframework.Flaky;
+import org.moeaframework.Retryable;
 import org.moeaframework.algorithm.AlgorithmTest;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
+import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.mock.MockRealProblem;
 import org.moeaframework.util.TypedProperties;
 
@@ -42,14 +42,12 @@ public class OMOPSOTest extends AlgorithmTest {
 	}
 	
 	@Test
-	@Flaky("need to investigate - differences showing up after upgrading to JMetal 5.9")
 	public void testDTLZ2() throws IOException {
 		assumeJMetalExists();
 		test("DTLZ2_2", "OMOPSO", "OMOPSO-JMetal");
 	}
 	
 	@Test
-	@Flaky
 	public void testDTLZ7() throws IOException {
 		assumeJMetalExists();
 		test("DTLZ7_2", "OMOPSO", "OMOPSO-JMetal");
@@ -59,6 +57,13 @@ public class OMOPSOTest extends AlgorithmTest {
 	public void testUF1() throws IOException {
 		assumeJMetalExists();
 		test("UF1", "OMOPSO", "OMOPSO-JMetal");
+	}
+	
+	// TODO: Temporary fix to supply default epsilon matching JMetal.  Remove once we update jmetal-plugin.
+	@Override
+	public void test(String problem, String algorithm1, String algorithm2) {
+		test(problem, algorithm1, TypedProperties.withProperty("epsilon", "0.0075"), algorithm2, new TypedProperties(),
+				false, AlgorithmFactory.getInstance());
 	}
 	
 	@Test
