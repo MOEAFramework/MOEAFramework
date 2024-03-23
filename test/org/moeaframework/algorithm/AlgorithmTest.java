@@ -101,6 +101,8 @@ public abstract class AlgorithmTest {
 		Analyzer.AnalyzerResults analyzerResults = analyzer.getAnalysis();
 		Analyzer.AlgorithmResult algorithmResult = analyzerResults.get("A");
 		
+		algorithmResult.display();
+		
 		int indifferences = 0;
 		
 		for (String indicator : algorithmResult.getIndicators()) {

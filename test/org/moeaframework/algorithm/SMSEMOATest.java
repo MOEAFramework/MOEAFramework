@@ -24,7 +24,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.moeaframework.CIRunner;
-import org.moeaframework.IgnoreOnCI;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.configuration.ConfigurationException;
 import org.moeaframework.core.fitness.AdditiveEpsilonIndicatorFitnessEvaluator;
@@ -37,29 +36,25 @@ import org.moeaframework.util.TypedProperties;
 public class SMSEMOATest extends AlgorithmTest {
 	
 	@Test
-	@Ignore
-	@IgnoreOnCI("exceeds 10 minute timeout")
+	@Ignore("slow test - run manually")
 	public void testDTLZ1() throws IOException {
 		test("DTLZ1_2", "SMSEMOA", "SMSEMOA-JMetal");
 	}
 	
 	@Test
-	@Ignore
-	@IgnoreOnCI("exceeds 10 minute timeout")
+	@Ignore("slow test - run manually")
 	public void testDTLZ2() throws IOException {
 		test("DTLZ2_2", "SMSEMOA", "SMSEMOA-JMetal");
 	}
 	
 	@Test
-	@Ignore
-	@IgnoreOnCI("exceeds 10 minute timeout")
+	@Ignore("slow test - run manually")
 	public void testDTLZ7() throws IOException {
 		test("DTLZ7_2", "SMSEMOA", "SMSEMOA-JMetal");
 	}
 	
 	@Test
-	@Ignore
-	@IgnoreOnCI("exceeds 10 minute timeout")
+	@Ignore("slow test - run manually")
 	public void testUF1() throws IOException {
 		test("UF1", "SMSEMOA", "SMSEMOA-JMetal");
 	}

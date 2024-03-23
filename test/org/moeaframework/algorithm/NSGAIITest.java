@@ -23,7 +23,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.moeaframework.CIRunner;
-import org.moeaframework.Flaky;
 import org.moeaframework.Retryable;
 import org.moeaframework.core.NondominatedSortingPopulation;
 import org.moeaframework.core.Problem;

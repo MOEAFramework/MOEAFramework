@@ -23,10 +23,10 @@ import java.io.IOException;
 
 import org.apache.commons.lang3.SystemUtils;
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.moeaframework.CIRunner;
-import org.moeaframework.IgnoreOnCI;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Settings;
 
@@ -64,8 +64,10 @@ public class RedirectStreamTest {
 	}
 	
 	@Test
-	@IgnoreOnCI("fails on CI but works locally...")
 	public void testCapture() throws IOException, InterruptedException {
+		// Skip on Java 19 as this fails in CI...
+		Assume.assumeFalse(SystemUtils.IS_JAVA_19);
+		
 		ProcessBuilder processBuilder = SystemUtils.IS_OS_WINDOWS ?
 				new ProcessBuilder("cmd", "/C", "echo hello world") :
 				new ProcessBuilder("echo", "hello world");
