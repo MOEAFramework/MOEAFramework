@@ -35,30 +35,32 @@ public class MOEADTest extends JMetalAlgorithmTest {
 		super("MOEAD", true);
 	}
 	
+	// Override JMetal's default neighborhoodSelectionProbability.  MOEADBuilder defaults to 0.1, which differs from
+	// Li and Zhang's original MOEA/D paper specifying a delta of 0.9 (see section IV.A.6).
+	@Override
+	public void test(String problem, String algorithm1, String algorithm2, boolean allowBetterPerformance) {
+		test(problem, algorithm1, new TypedProperties(), algorithm2,
+				TypedProperties.withProperty("neighborhoodSelectionProbability", "0.9"),
+				allowBetterPerformance, AlgorithmFactory.getInstance());
+	}
+	
 	@Test
 	public void testSelection() {
-		MOEAD moead = null;
-		
 		Problem problem = new MockRealProblem();
 		TypedProperties properties = new TypedProperties();
 		
 		//the default is de+pm
-		moead = (MOEAD)AlgorithmFactory.getInstance().getAlgorithm("MOEA/D", properties, problem);
-		
+		MOEAD moead = (MOEAD)AlgorithmFactory.getInstance().getAlgorithm("MOEA/D", properties, problem);
 		Assert.assertTrue(moead.useDE);
 		
 		//test with just de
 		properties.setString("operator", "de");
-		
 		moead = (MOEAD)AlgorithmFactory.getInstance().getAlgorithm("MOEA/D", properties, problem);
-		
 		Assert.assertTrue(moead.useDE);
 		
 		//test with a different operator
 		properties.setString("operator", "sbx+pm");
-		
 		moead = (MOEAD)AlgorithmFactory.getInstance().getAlgorithm("MOEA/D", properties, problem);
-		
 		Assert.assertFalse(moead.useDE);
 	}
 

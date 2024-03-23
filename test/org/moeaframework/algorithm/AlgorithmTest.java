@@ -32,12 +32,17 @@ public abstract class AlgorithmTest {
 	/**
 	 * The number of seeds to run each algorithm.
 	 */
-	private final int SEEDS = 10;
+	public static final int SEEDS = 10;
 	
 	/**
 	 * The number of quality indicators that must have similar or better performance in order to pass the test.
 	 */
-	private final int THRESHOLD = 5;
+	public static final int THRESHOLD = 5;
+	
+	/**
+	 * Set to {@code true} to display verbose results.
+	 */
+	public boolean VERBOSE = true;
 	
 	/**
 	 * Call from any test to skip if JMetal does not exist.
@@ -120,7 +125,9 @@ public abstract class AlgorithmTest {
 		Analyzer.AnalyzerResults analyzerResults = analyzer.getAnalysis();
 		Analyzer.AlgorithmResult algorithmResult = analyzerResults.get(algorithm1Name);
 		
-		algorithmResult.display();
+		if (VERBOSE) {
+			analyzerResults.display();
+		}
 		
 		int indifferences = 0;
 		
