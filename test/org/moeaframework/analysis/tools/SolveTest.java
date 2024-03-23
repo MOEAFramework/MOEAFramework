@@ -32,6 +32,7 @@ import org.junit.Assume;
 import org.junit.Test;
 import org.moeaframework.TestUtils;
 import org.moeaframework.analysis.io.ResultFileReader;
+import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Variable;
 import org.moeaframework.core.spi.ProblemFactory;
@@ -169,9 +170,9 @@ public class SolveTest {
 	
 	private void checkOutput(File outputFile) throws IOException {
 		int count = 0;
+		Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
 		
-		try (ResultFileReader reader =
-				new ResultFileReader(ProblemFactory.getInstance().getProblem("DTLZ2_2"), outputFile)) {
+		try (ResultFileReader reader = new ResultFileReader(problem, outputFile)) {
 			while (reader.hasNext()) {
 				Assert.assertTrue(reader.next().getPopulation().size() > 0);
 				count++;
