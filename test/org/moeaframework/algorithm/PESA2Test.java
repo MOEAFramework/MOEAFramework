@@ -17,7 +17,6 @@
  */
 package org.moeaframework.algorithm;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,21 +24,22 @@ import java.util.Map;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.moeaframework.CIRunner;
 import org.moeaframework.Retryable;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.TestUtils;
-import org.moeaframework.CIRunner;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.mock.MockRealProblem;
 import org.moeaframework.util.TypedProperties;
 
-/**
- * The MOEA Framework's implementation tends to outperform the JMetal implementation.
- */
 @RunWith(CIRunner.class)
 @Retryable
-public class PESA2Test extends AlgorithmTest {
+public class PESA2Test extends JMetalAlgorithmTest {
+	
+	public PESA2Test() {
+		super("PESA2", true);
+	}
 	
 	@Test
 	public void testGridMap() {
@@ -100,30 +100,6 @@ public class PESA2Test extends AlgorithmTest {
 		Assert.assertEquals(0.75, count.get(solution2) / (2.0*TestThresholds.SAMPLES), TestThresholds.STATISTICS_EPS);
 		Assert.assertEquals(0.125, count.get(solution1) / (2.0*TestThresholds.SAMPLES), TestThresholds.STATISTICS_EPS);
 		Assert.assertEquals(0.125, count.get(solution3) / (2.0*TestThresholds.SAMPLES), TestThresholds.STATISTICS_EPS);
-	}
-	
-	@Test
-	public void testDTLZ1() throws IOException {
-		assumeJMetalExists();
-		test("DTLZ1_2", "PESA2", "PESA2-JMetal", true);
-	}
-	
-	@Test
-	public void testDTLZ2() throws IOException {
-		assumeJMetalExists();
-		test("DTLZ2_2", "PESA2", "PESA2-JMetal", true);
-	}
-	
-	@Test
-	public void testDTLZ7() throws IOException {
-		assumeJMetalExists();
-		test("DTLZ7_2", "PESA2", "PESA2-JMetal", true);
-	}
-	
-	@Test
-	public void testUF1() throws IOException {
-		assumeJMetalExists();
-		test("UF1", "PESA2", "PESA2-JMetal", true);
 	}
 	
 	@Test

@@ -17,8 +17,6 @@
  */
 package org.moeaframework.algorithm;
 
-import java.io.IOException;
-
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,30 +30,10 @@ import org.moeaframework.util.TypedProperties;
 
 @RunWith(CIRunner.class)
 @Retryable
-public class IBEATest extends AlgorithmTest {
+public class IBEATest extends JMetalAlgorithmTest {
 	
-	@Test
-	public void testDTLZ1() throws IOException {
-		assumeJMetalExists();
-		test("DTLZ1_2", "IBEA", "IBEA-JMetal");
-	}
-	
-	@Test
-	public void testDTLZ2() throws IOException {
-		assumeJMetalExists();
-		test("DTLZ2_2", "IBEA", "IBEA-JMetal");
-	}
-	
-	@Test
-	public void testDTLZ7() throws IOException {
-		assumeJMetalExists();
-		test("DTLZ7_2", "IBEA", "IBEA-JMetal");
-	}
-	
-	@Test
-	public void testUF1() throws IOException {
-		assumeJMetalExists();
-		test("UF1", "IBEA", "IBEA-JMetal");
+	public IBEATest() {
+		super("IBEA");
 	}
 	
 	@Test

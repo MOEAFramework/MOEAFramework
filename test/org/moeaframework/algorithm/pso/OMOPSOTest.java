@@ -17,14 +17,12 @@
  */
 package org.moeaframework.algorithm.pso;
 
-import java.io.IOException;
-
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.moeaframework.CIRunner;
 import org.moeaframework.Retryable;
-import org.moeaframework.algorithm.AlgorithmTest;
+import org.moeaframework.algorithm.JMetalAlgorithmTest;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.spi.AlgorithmFactory;
@@ -33,37 +31,17 @@ import org.moeaframework.util.TypedProperties;
 
 @RunWith(CIRunner.class)
 @Retryable
-public class OMOPSOTest extends AlgorithmTest {
+public class OMOPSOTest extends JMetalAlgorithmTest {
 	
-	@Test
-	public void testDTLZ1() throws IOException {
-		assumeJMetalExists();
-		test("DTLZ1_2", "OMOPSO", "OMOPSO-JMetal");
+	public OMOPSOTest() {
+		super("OMOPSO");
 	}
-	
-	@Test
-	public void testDTLZ2() throws IOException {
-		assumeJMetalExists();
-		test("DTLZ2_2", "OMOPSO", "OMOPSO-JMetal");
-	}
-	
-	@Test
-	public void testDTLZ7() throws IOException {
-		assumeJMetalExists();
-		test("DTLZ7_2", "OMOPSO", "OMOPSO-JMetal");
-	}
-	
-	@Test
-	public void testUF1() throws IOException {
-		assumeJMetalExists();
-		test("UF1", "OMOPSO", "OMOPSO-JMetal");
-	}
-	
+
 	// TODO: Temporary fix to supply default epsilon matching JMetal.  Remove once we update jmetal-plugin.
 	@Override
-	public void test(String problem, String algorithm1, String algorithm2) {
+	public void test(String problem, String algorithm1, String algorithm2, boolean allowBetterPerformance) {
 		test(problem, algorithm1, TypedProperties.withProperty("epsilon", "0.0075"), algorithm2, new TypedProperties(),
-				false, AlgorithmFactory.getInstance());
+				allowBetterPerformance, AlgorithmFactory.getInstance());
 	}
 	
 	@Test

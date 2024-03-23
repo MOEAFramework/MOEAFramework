@@ -17,14 +17,12 @@
  */
 package org.moeaframework.algorithm;
 
-import java.io.IOException;
-
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.moeaframework.CIRunner;
 import org.moeaframework.Retryable;
 import org.moeaframework.TestUtils;
-import org.moeaframework.CIRunner;
 import org.moeaframework.core.FitnessEvaluator;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
@@ -37,30 +35,10 @@ import org.moeaframework.util.TypedProperties;
 
 @RunWith(CIRunner.class)
 @Retryable
-public class SPEA2Test extends AlgorithmTest {
+public class SPEA2Test extends JMetalAlgorithmTest {
 	
-	@Test
-	public void testDTLZ1() throws IOException {
-		assumeJMetalExists();
-		test("DTLZ1_2", "SPEA2", "SPEA2-JMetal", true);
-	}
-	
-	@Test
-	public void testDTLZ2() throws IOException {
-		assumeJMetalExists();
-		test("DTLZ2_2", "SPEA2", "SPEA2-JMetal", true);
-	}
-	
-	@Test
-	public void testDTLZ7() throws IOException {
-		assumeJMetalExists();
-		test("DTLZ7_2", "SPEA2", "SPEA2-JMetal", true);
-	}
-	
-	@Test
-	public void testUF1() throws IOException {
-		assumeJMetalExists();
-		test("UF1", "SPEA2", "SPEA2-JMetal", true);
+	public SPEA2Test() {
+		super("SPEA2", true);
 	}
 	
 	@Test

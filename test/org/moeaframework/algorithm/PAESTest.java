@@ -17,46 +17,21 @@
  */
 package org.moeaframework.algorithm;
 
-import java.io.IOException;
-
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.moeaframework.CIRunner;
 import org.moeaframework.Retryable;
 import org.moeaframework.core.Problem;
 import org.moeaframework.mock.MockRealProblem;
 import org.moeaframework.util.TypedProperties;
-import org.moeaframework.CIRunner;
 
-/**
- * The MOEA Framework's implementation tends to outperform the JMetal implementation.
- */
 @RunWith(CIRunner.class)
 @Retryable
-public class PAESTest extends AlgorithmTest {
+public class PAESTest extends JMetalAlgorithmTest {
 	
-	@Test
-	public void testDTLZ1() throws IOException {
-		assumeJMetalExists();
-		test("DTLZ1_2", "PAES", "PAES-JMetal", true);
-	}
-	
-	@Test
-	public void testDTLZ2() throws IOException {
-		assumeJMetalExists();
-		test("DTLZ2_2", "PAES", "PAES-JMetal", true);
-	}
-	
-	@Test
-	public void testDTLZ7() throws IOException {
-		assumeJMetalExists();
-		test("DTLZ7_2", "PAES", "PAES-JMetal", true);
-	}
-	
-	@Test
-	public void testUF1() throws IOException {
-		assumeJMetalExists();
-		test("UF1", "PAES", "PAES-JMetal", true);
+	public PAESTest() {
+		super("PAES", true);
 	}
 	
 	@Test

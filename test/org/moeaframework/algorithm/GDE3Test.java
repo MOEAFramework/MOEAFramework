@@ -17,39 +17,16 @@
  */
 package org.moeaframework.algorithm;
 
-import java.io.IOException;
-
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.moeaframework.CIRunner;
 import org.moeaframework.Retryable;
 
 @RunWith(CIRunner.class)
 @Retryable
-public class GDE3Test extends AlgorithmTest {
+public class GDE3Test extends JMetalAlgorithmTest {
 	
-	@Test
-	public void testDTLZ1() throws IOException {
-		assumeJMetalExists();
-		test("DTLZ1_2", "GDE3", "GDE3-JMetal", true);
-	}
-	
-	@Test
-	public void testDTLZ2() throws IOException {
-		assumeJMetalExists();
-		test("DTLZ2_2", "GDE3", "GDE3-JMetal", true);
-	}
-	
-	@Test
-	public void testDTLZ7() throws IOException {
-		assumeJMetalExists();
-		test("DTLZ7_2", "GDE3", "GDE3-JMetal", true);
-	}
-	
-	@Test
-	public void testUF1() throws IOException {
-		assumeJMetalExists();
-		test("UF1", "GDE3", "GDE3-JMetal", true);
+	public GDE3Test() {
+		super("GDE3", true);
 	}
 
 }
