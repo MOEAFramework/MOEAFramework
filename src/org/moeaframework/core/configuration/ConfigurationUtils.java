@@ -195,19 +195,19 @@ public class ConfigurationUtils {
 		} else if (TypeUtils.isAssignable(String.class, parameterType)) {
 			value = properties.getString(propertyName);
 		} else if (TypeUtils.isAssignable(Variation.class, parameterType) ||
-				TypeUtils.isAssignable(DifferentialEvolutionVariation.class, parameterType) ||
-				TypeUtils.isAssignable(SelfAdaptiveNormalVariation.class, parameterType)) {
+				TypeUtils.isAssignable(DifferentialEvolutionVariation.class, parameterType)) {
 			if (problem == null) {
 				throw new ConfigurationException("must provide problem if setting variation operator");
 			}
-			
+						
 			String operator = properties.getString(propertyName);
 			value = OperatorFactory.getInstance().getVariation(operator, properties, problem);
-		} else if (TypeUtils.isAssignable(Mutation.class, parameterType)) {
+		} else if (TypeUtils.isAssignable(Mutation.class, parameterType) ||
+				TypeUtils.isAssignable(SelfAdaptiveNormalVariation.class, parameterType)) {
 			if (problem == null) {
 				throw new ConfigurationException("must provide problem if setting mutation operator");
 			}
-			
+						
 			String operator = properties.getString(propertyName);
 			value = OperatorFactory.getInstance().getMutation(operator, properties, problem);
 		} else {
