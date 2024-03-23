@@ -19,16 +19,91 @@ package org.moeaframework.analysis.tools;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.ParseException;
 import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.Test;
 import org.moeaframework.TestUtils;
 import org.moeaframework.analysis.io.ResultFileReader;
+import org.moeaframework.core.Settings;
+import org.moeaframework.core.Variable;
 import org.moeaframework.core.spi.ProblemFactory;
+import org.moeaframework.core.variable.BinaryIntegerVariable;
+import org.moeaframework.core.variable.BinaryVariable;
+import org.moeaframework.core.variable.Permutation;
+import org.moeaframework.core.variable.RealVariable;
 
 public class SolveTest {
+
+	@Test
+	public void testParseVariablesLowerAndUpperBounds() throws ParseException {
+		Solve solve = new Solve();
+		double[] lowerBounds = new double[] { 0, -10.5, 10 };
+		double[] upperBounds = new double[] { 10, 10.5, 20 };
+		
+		CommandLine commandLine = createCommandLine(solve, "-l", toOption(lowerBounds), "-u", toOption(upperBounds));
+		
+		List<Variable> variables = solve.parseVariables(commandLine);
+		Assert.assertEquals(3, variables.size());
+		
+		for (int i = 0; i < 3; i++) {
+			RealVariable realVariable = (RealVariable)variables.get(i);
+			
+			Assert.assertEquals(lowerBounds[i], realVariable.getLowerBound(), Settings.EPS);
+			Assert.assertEquals(upperBounds[i], realVariable.getUpperBound(), Settings.EPS);
+		}
+	}
 	
+	@Test(expected = ParseException.class)
+	public void testParseVariablesIncorrectLength() throws ParseException {
+		Solve solve = new Solve();
+		double[] lowerBounds = new double[] { 0, -10, 10, 0 };
+		double[] upperBounds = new double[] { 10, 10, 20 };
+		
+		CommandLine commandLine = createCommandLine(solve, "-l", toOption(lowerBounds), "-u", toOption(upperBounds));
+		
+		solve.parseVariables(commandLine);
+	}
+	
+	@Test
+	public void testParseVariables() throws ParseException {
+		Solve solve = new Solve();
+		
+		CommandLine commandLine = createCommandLine(solve, "-v", "R(-10.1:20.9),B(10),I(-5:5),P(5)");
+		
+		List<Variable> variables = solve.parseVariables(commandLine);
+		Assert.assertEquals(4, variables.size());
+		
+		RealVariable realVariable = (RealVariable)variables.get(0);
+		Assert.assertEquals(-10.1, realVariable.getLowerBound(), Settings.EPS);
+		Assert.assertEquals(20.9, realVariable.getUpperBound(), Settings.EPS);
+		
+		BinaryVariable binaryVariable = (BinaryVariable)variables.get(1);
+		TestUtils.assertEquals(10, binaryVariable.getNumberOfBits());
+		
+		BinaryIntegerVariable binaryIntegerVariable = (BinaryIntegerVariable)variables.get(2);
+		Assert.assertEquals(-5, binaryIntegerVariable.getLowerBound());
+		Assert.assertEquals(5, binaryIntegerVariable.getUpperBound());
+		
+		Permutation permutation = (Permutation)variables.get(3);
+		Assert.assertEquals(5, permutation.size());
+	}
+	
+	@Test(expected = ParseException.class)
+	public void testNoVariableSpecification() throws ParseException {
+		Solve solve = new Solve();
+		CommandLine commandLine = createCommandLine(solve);
+		
+		solve.parseVariables(commandLine);
+	}
+
 	@Test
 	public void testInternalProblem() throws Exception {
 		File outputFile = TestUtils.createTempFile();
@@ -66,13 +141,30 @@ public class SolveTest {
 		
 		Solve.main(new String[] {
 				"-a", "NSGAII",
-				"-v", "R(0;1),R(0;1),R(0;1),R(0;1),R(0;1),R(0;1),R(0;1),R(0;1),R(0;1),R(0;1),R(0;1)",
+				"-v", "R(0:1),R(0:1),R(0:1),R(0:1),R(0:1),R(0:1),R(0:1),R(0:1),R(0:1),R(0:1),R(0:1)",
 				"-o", "2",
 				"-n", "1000",
 				"-f", outputFile.getPath(),
 				"./examples/dtlz2_stdio.exe"});
 		
 		checkOutput(outputFile);
+	}
+	
+	private CommandLine createCommandLine(Solve solve, String... args) throws ParseException {
+		List<String> completeArgs = new ArrayList<String>();
+		completeArgs.add("-f");
+		completeArgs.add("output.dat");
+		completeArgs.add("-a");
+		completeArgs.add("NSGAII");
+		completeArgs.add("-n");
+		completeArgs.add("10000");
+		completeArgs.addAll(Arrays.asList(args));
+		
+		return new DefaultParser().parse(solve.getOptions(), completeArgs.toArray(String[]::new));
+	}
+	
+	private String toOption(double[] values) {
+		return Arrays.stream(values).mapToObj(Double::toString).collect(Collectors.joining(","));
 	}
 	
 	private void checkOutput(File outputFile) throws IOException {

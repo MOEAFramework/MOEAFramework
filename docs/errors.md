@@ -296,7 +296,7 @@ When specifying the `--lowerBounds` and `--upperBounds` arguments to the `Solve`
 in the comma-separated list must match.
 
 **invalid variable specification \<value\>, not properly formatted**  
-**invalid real specification \<value\>, expected R(\<lb\>,\<ub\>)**  
+**invalid real specification \<value\>, expected R(\<lb\>:\<ub\>)**  
 **invalid binary specification \<value\>, expected B(\<length\>)**  
 **invalid permutation specification \<value\>, expected P(\<length\>)**  
 **invalid variable specification \<value\>, unknown type**  
@@ -304,7 +304,7 @@ The `--variables` argument to the `Solve` utility allows specifying the types an
 These error messages indicate that one or more of the variable specifications is invalid.  The message will identify
 the problem.  An example variable specification is provided below:
 ```
---variables "R(0;1),B(5),P(10),R(-1;1)"
+--variables "R(0.0:1.0),B(5),P(10),I(-1:1)"
 ```
 Also, always surround the argument with quotes as shown in this example.
 

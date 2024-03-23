@@ -169,16 +169,17 @@ public class Solve extends CommandLineUtility {
 		if (token.startsWith("R(")) {
 			// real-valued decision variable
 			String content = token.substring(2, token.length()-1);
-			int index = content.indexOf(';');
+			int index = content.indexOf(':');
 			
 			if (index >= 0) {
 				double lowerBound = Double.parseDouble(content.substring(0, index));
 				double upperBound = Double.parseDouble(content.substring(index+1, content.length()));
 				return EncodingUtils.newReal(lowerBound, upperBound);
 			} else {
-				throw new ParseException("invalid real specification '" + token + "', expected R(<lb>,<ub>)");
+				throw new ParseException("invalid real specification '" + token + "', expected R(<lb>:<ub>)");
 			}
 		} else if (token.startsWith("B(")) {
+			// binary decision variable
 			String content = token.substring(2, token.length()-1);
 			
 			try {
@@ -187,7 +188,20 @@ public class Solve extends CommandLineUtility {
 			} catch (NumberFormatException e) {
 				throw new ParseException("invalid binary specification '" + token + "', expected B(<length>)");
 			}
+		} else if (token.startsWith("I(")) {
+			// binary integer decision variable
+			String content = token.substring(2, token.length()-1);
+			int index = content.indexOf(':');
+			
+			if (index >= 0) {
+				int lowerBound = Integer.parseInt(content.substring(0, index));
+				int upperBound = Integer.parseInt(content.substring(index+1, content.length()));
+				return EncodingUtils.newBinaryInt(lowerBound, upperBound);
+			} else {
+				throw new ParseException("invalid integer specification '" + token + "', expected I(<lb>:<ub>)");
+			}
 		} else if (token.startsWith("P(")) {
+			// permutation
 			String content = token.substring(2, token.length()-1);
 			
 			try {
@@ -209,7 +223,7 @@ public class Solve extends CommandLineUtility {
 	 * @return the parsed variable specifications
 	 * @throws ParseException if an error occurred while parsing the variable specifications
 	 */
-	private List<Variable> parseVariables(CommandLine commandLine) throws ParseException {
+	List<Variable> parseVariables(CommandLine commandLine) throws ParseException {
 		List<Variable> variables = new ArrayList<Variable>();
 		
 		if (commandLine.hasOption("lowerBounds") && commandLine.hasOption("upperBounds")) {
@@ -246,7 +260,7 @@ public class Solve extends CommandLineUtility {
 	 * @throws ParseException if an error occurred parsing any of the command line options
 	 * @throws IOException if an error occurred starting the external program
 	 */
-	private Problem createExternalProblem(final CommandLine commandLine) throws ParseException, IOException {
+	Problem createExternalProblem(final CommandLine commandLine) throws ParseException, IOException {
 		final int numberOfObjectives = Integer.parseInt(commandLine.getOptionValue("objectives"));
 		
 		final int numberOfConstraints = commandLine.hasOption("constraints") ?
