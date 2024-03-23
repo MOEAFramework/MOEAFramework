@@ -292,11 +292,7 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 		showStatistics = new JButton(actionFactory.getShowStatisticsAction());
 		
 		//initialize the sorted list of algorithms
-		Set<String> algorithmNames = new HashSet<String>();
-		
-		for (String algorithm : Settings.getDiagnosticToolAlgorithms()) {
-			algorithmNames.add(algorithm);
-		}
+		Set<String> algorithmNames = Settings.getDiagnosticToolAlgorithms();
 		
 		Vector<String> sortedAlgorithmNames = new Vector<String>(algorithmNames);
 		Collections.sort(sortedAlgorithmNames, String.CASE_INSENSITIVE_ORDER);
@@ -305,15 +301,9 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 		
 		//initialize the sorted list of problems
 		Set<String> problemNames = new HashSet<String>();
-		
-		for (String problem : Settings.getDiagnosticToolProblems()) {
-			problemNames.add(problem);
-		}
-		
-		for (String problem : Settings.getProblems()) {
-			problemNames.add(problem);
-		}
-		
+		problemNames.addAll(Settings.getDiagnosticToolProblems());
+		problemNames.addAll(Settings.getProblems());
+
 		Vector<String> sortedProblemNames = new Vector<String>(problemNames);
 		Collections.sort(sortedProblemNames, String.CASE_INSENSITIVE_ORDER);
 		

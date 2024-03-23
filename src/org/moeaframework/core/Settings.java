@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Properties;
+import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 import org.moeaframework.core.NondominatedPopulation.DuplicateMode;
@@ -368,8 +369,8 @@ public class Settings {
 	 * 
 	 * @return the list of available problems
 	 */
-	public static String[] getProblems() {
-		return PROPERTIES.getStringArray(KEY_PROBLEM_LIST, new String[0]);
+	public static Set<String> getProblems() {
+		return Set.of(PROPERTIES.getStringArray(KEY_PROBLEM_LIST, new String[0]));
 	}
 	
 	/**
@@ -397,14 +398,14 @@ public class Settings {
 	 * 
 	 * @return the list of algorithms displayed in the diagnostic tool GUI
 	 */
-	public static String[] getDiagnosticToolAlgorithms() {
+	public static Set<String> getDiagnosticToolAlgorithms() {
 		String[] result = PROPERTIES.getStringArray(KEY_DIAGNOSTIC_TOOL_ALGORITHMS, null);
 		
 		if (result == null) {
-			result = AlgorithmFactory.getInstance().getAllDiagnosticToolAlgorithms().toArray(String[]::new);
+			return AlgorithmFactory.getInstance().getAllDiagnosticToolAlgorithms();
 		}
 		
-		return result;
+		return Set.of(result);
 	}
 	
 	/**
@@ -412,14 +413,14 @@ public class Settings {
 	 * 
 	 * @return the list of problems displayed in the diagnostic tool GUI
 	 */
-	public static String[] getDiagnosticToolProblems() {
+	public static Set<String> getDiagnosticToolProblems() {
 		String[] result = PROPERTIES.getStringArray(KEY_DIAGNOSTIC_TOOL_PROBLEMS, null);
 		
 		if (result == null) {
-			result = ProblemFactory.getInstance().getAllDiagnosticToolProblems().toArray(String[]::new);
+			return ProblemFactory.getInstance().getAllDiagnosticToolProblems();
 		}
 		
-		return result;
+		return Set.of(result);
 	}
 	
 	/**

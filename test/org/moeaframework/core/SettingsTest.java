@@ -19,8 +19,7 @@ package org.moeaframework.core;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
+import java.util.Set;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -60,18 +59,18 @@ public class SettingsTest {
 	
 	@Test
 	public void testDiagnosticToolAlgorithmsDefault() {
-		Assert.assertTrue(Settings.getDiagnosticToolAlgorithms().length > 0);
+		Assert.assertTrue(Settings.getDiagnosticToolAlgorithms().size() > 0);
 	}
 	
 	@Test
 	public void testDiagnosticToolProblemsDefault() {
-		Assert.assertTrue(Settings.getDiagnosticToolProblems().length > 0);
+		Assert.assertTrue(Settings.getDiagnosticToolProblems().size() > 0);
 	}
 	
 	@Test
 	public void testDiagnosticToolAlgorithmsOverride() {
 		try (PropertyScope scope = Settings.createScope().with(Settings.KEY_DIAGNOSTIC_TOOL_ALGORITHMS, "foo")) {
-			List<String> result = Arrays.asList(Settings.getDiagnosticToolAlgorithms());
+			Set<String> result = Settings.getDiagnosticToolAlgorithms();
 			Assert.assertTrue(result.size() == 1);
 			Assert.assertTrue(result.contains("foo"));
 		}
@@ -80,7 +79,7 @@ public class SettingsTest {
 	@Test
 	public void testDiagnosticToolProblemsOverride() {
 		try (PropertyScope scope = Settings.createScope().with(Settings.KEY_DIAGNOSTIC_TOOL_PROBLEMS, "bar")) {
-			List<String> result = Arrays.asList(Settings.getDiagnosticToolProblems());
+			Set<String> result = Settings.getDiagnosticToolProblems();
 			Assert.assertTrue(result.size() == 1);
 			Assert.assertTrue(result.contains("bar"));
 		}

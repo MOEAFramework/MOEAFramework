@@ -302,7 +302,7 @@ public class Population implements Iterable<Solution>, Formattable<Solution>, St
 	 * @return a list of all solutions in this population
 	 */
 	public List<Solution> asList() {
-		return asList(false);
+		return asList(true);
 	}
 	
 	/**
