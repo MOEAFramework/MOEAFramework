@@ -167,7 +167,7 @@ public class DBEATest {
 	
 	/**
 	 * Compares the intermediate values between the Matlab/Octave version of DBEA and the Java version.  The
-	 * Matlab/Octave version can be downloaded from the experimental repository.
+	 * Matlab/Octave version can be downloaded from https://github.com/MOEAFramework/Archive.
 	 */
 	@Test
 	@Ignore("Must download DBEA Matlab/Octave code to use this test")

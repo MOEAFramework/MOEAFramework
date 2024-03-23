@@ -30,6 +30,16 @@ import org.moeaframework.util.TypedProperties;
 public abstract class AlgorithmTest {
 	
 	/**
+	 * The number of seeds to run each algorithm.
+	 */
+	private final int SEEDS = 10;
+	
+	/**
+	 * The number of quality indicators that must have similar or better performance in order to pass the test.
+	 */
+	private final int THRESHOLD = 5;
+	
+	/**
 	 * Call from any test to skip if JMetal does not exist.
 	 */
 	public void assumeJMetalExists() {
@@ -87,19 +97,19 @@ public abstract class AlgorithmTest {
 				.usingAlgorithmFactory(factory)
 				.distributeOnAllCores();
 		
-		analyzer.addAll("A", 
+		analyzer.addAll(algorithm1, 
 				executor.withAlgorithm(algorithm1)
 						.withProperties(properties1)
 						.withMaxEvaluations(10000)
-						.runSeeds(10));
-		analyzer.addAll("B", 
+						.runSeeds(SEEDS));
+		analyzer.addAll(algorithm2, 
 				executor.withAlgorithm(algorithm2)
 						.withProperties(properties2)
 						.withMaxEvaluations(10000)
-						.runSeeds(10));
+						.runSeeds(SEEDS));
 		
 		Analyzer.AnalyzerResults analyzerResults = analyzer.getAnalysis();
-		Analyzer.AlgorithmResult algorithmResult = analyzerResults.get("A");
+		Analyzer.AlgorithmResult algorithmResult = analyzerResults.get(algorithm1);
 		
 		algorithmResult.display();
 		
@@ -109,13 +119,13 @@ public abstract class AlgorithmTest {
 			indifferences += algorithmResult.get(indicator).getIndifferentAlgorithms().size();
 		}
 		
-		if (indifferences < 5) {
+		if (indifferences < THRESHOLD) {
 			if (allowBetterPerformance) {
 				int outperformance = 0;
 				
 				for (String indicator : algorithmResult.getIndicators()) {
-					double value1 = analyzerResults.get("A").get(indicator).getMedian();
-					double value2 = analyzerResults.get("B").get(indicator).getMedian();
+					double value1 = analyzerResults.get(algorithm1).get(indicator).getMedian();
+					double value2 = analyzerResults.get(algorithm2).get(indicator).getMedian();
 					
 					if (indicator.equals("Spacing") ||
 							indicator.equals("Hypervolume") ||
@@ -131,7 +141,7 @@ public abstract class AlgorithmTest {
 					}
 				}
 
-				if (outperformance < 5) {
+				if (outperformance < THRESHOLD) {
 					Assert.fail("algorithms show different performance");
 				}
 			} else {

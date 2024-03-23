@@ -33,7 +33,7 @@ import org.moeaframework.util.TypedProperties;
 public class IBEATest extends JMetalAlgorithmTest {
 	
 	public IBEATest() {
-		super("IBEA");
+		super("IBEA", true);
 	}
 	
 	@Test
