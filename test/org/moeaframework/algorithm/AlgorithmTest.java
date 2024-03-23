@@ -86,6 +86,15 @@ public abstract class AlgorithmTest {
 	 */
 	public void test(String problem, String algorithm1, TypedProperties properties1, String algorithm2,
 			TypedProperties properties2, boolean allowBetterPerformance, AlgorithmFactory factory) {
+		String algorithm1Name = algorithm1;
+		String algorithm2Name = algorithm2;
+		
+		// if running the same algorithm with different settings, differentiate the names
+		if (algorithm1Name.equalsIgnoreCase(algorithm2Name)) {
+			algorithm1Name += "-" + properties1.hashCode();
+			algorithm2Name += "-" + properties2.hashCode();
+		}
+		
 		Analyzer analyzer = new Analyzer()
 				.withProblem(problem)
 				.includeAllMetrics()
@@ -97,19 +106,19 @@ public abstract class AlgorithmTest {
 				.usingAlgorithmFactory(factory)
 				.distributeOnAllCores();
 		
-		analyzer.addAll(algorithm1, 
+		analyzer.addAll(algorithm1Name, 
 				executor.withAlgorithm(algorithm1)
 						.withProperties(properties1)
 						.withMaxEvaluations(10000)
 						.runSeeds(SEEDS));
-		analyzer.addAll(algorithm2, 
+		analyzer.addAll(algorithm2Name, 
 				executor.withAlgorithm(algorithm2)
 						.withProperties(properties2)
 						.withMaxEvaluations(10000)
 						.runSeeds(SEEDS));
 		
 		Analyzer.AnalyzerResults analyzerResults = analyzer.getAnalysis();
-		Analyzer.AlgorithmResult algorithmResult = analyzerResults.get(algorithm1);
+		Analyzer.AlgorithmResult algorithmResult = analyzerResults.get(algorithm1Name);
 		
 		algorithmResult.display();
 		
@@ -124,8 +133,8 @@ public abstract class AlgorithmTest {
 				int outperformance = 0;
 				
 				for (String indicator : algorithmResult.getIndicators()) {
-					double value1 = analyzerResults.get(algorithm1).get(indicator).getMedian();
-					double value2 = analyzerResults.get(algorithm2).get(indicator).getMedian();
+					double value1 = analyzerResults.get(algorithm1Name).get(indicator).getMedian();
+					double value2 = analyzerResults.get(algorithm2Name).get(indicator).getMedian();
 					
 					if (indicator.equals("Spacing") ||
 							indicator.equals("Hypervolume") ||
