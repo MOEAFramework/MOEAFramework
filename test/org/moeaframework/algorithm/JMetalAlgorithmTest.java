@@ -24,7 +24,9 @@ import org.junit.Test;
 import org.moeaframework.core.spi.AlgorithmFactory;
 
 /**
- * Methods for comparing against the JMetal implementation.
+ * Methods for comparing against the JMetal implementation.  This performs a statistical comparison of the algorithms
+ * using end-of-run performance indicators.  We typically want to see the algorithms produce statistically similar
+ * results, but in specific cases we allow better performance.
  */
 public abstract class JMetalAlgorithmTest extends AlgorithmTest {
 	
