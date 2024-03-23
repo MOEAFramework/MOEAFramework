@@ -42,8 +42,9 @@ are available:
  -S,--useSocket                      Communicate with external problem using sockets
  -t,--test <trials>                  Runs a few trials to test the connection with the external problem
  -u,--upperBounds <v1,v2,...>        Upper bounds of real-valued decision variables
- -v,--variables <v1,v2,...>          Comma-separated list of decision variable specifications.  Use "R(<lb>;<ub>)" for
-                                     real-valued, "B(<length>)" for binary, and "P(<length>)" for permutations
+ -v,--variables <v1,v2,...>          Comma-separated list of decision variable specifications.  Use "R(<lb>:<ub>)" for
+                                     real-valued, "B(<length>)" for binary, "I(<lb>:<ub>)" for integer-valued, and
+                                     "P(<length>)" for permutations
  -x,--properties <p1=v1;p2=v2;...>   Algorithm properties
 ```
 
