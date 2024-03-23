@@ -54,12 +54,12 @@ import org.moeaframework.core.spi.OperatorFactory;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.core.spi.ProviderNotFoundException;
 import org.moeaframework.core.variable.Program;
-import org.moeaframework.problem.mock.MockBinaryProblem;
-import org.moeaframework.problem.mock.MockGrammarProblem;
-import org.moeaframework.problem.mock.MockPermutationProblem;
-import org.moeaframework.problem.mock.MockProgramProblem;
-import org.moeaframework.problem.mock.MockRealProblem;
-import org.moeaframework.problem.mock.MockSubsetProblem;
+import org.moeaframework.mock.MockBinaryProblem;
+import org.moeaframework.mock.MockGrammarProblem;
+import org.moeaframework.mock.MockPermutationProblem;
+import org.moeaframework.mock.MockProgramProblem;
+import org.moeaframework.mock.MockRealProblem;
+import org.moeaframework.mock.MockSubsetProblem;
 import org.moeaframework.util.TypedProperties;
 
 /**

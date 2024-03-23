@@ -23,7 +23,7 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.core.spi.ProviderNotFoundException;
-import org.moeaframework.problem.mock.MockRealProblem;
+import org.moeaframework.mock.MockRealProblem;
 import org.moeaframework.util.TypedProperties;
 import org.moeaframework.util.weights.NormalBoundaryDivisions;
 

@@ -15,34 +15,26 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.problem.mock;
+package org.moeaframework.mock;
 
 import org.moeaframework.core.Solution;
-import org.moeaframework.problem.AbstractProblem;
+import org.moeaframework.core.variable.Grammar;
 
-public abstract class MockProblem extends AbstractProblem {
+public class MockGrammarProblem extends MockProblem {
 	
-	public MockProblem(int numberOfVariables, int numberOfObjectives) {
-		this(numberOfVariables, numberOfObjectives, 0);
-	}
-
-	public MockProblem(int numberOfVariables, int numberOfObjectives, int numberOfConstraints) {
-		super(numberOfVariables, numberOfObjectives, numberOfConstraints);
+	public MockGrammarProblem() {
+		this(1);
 	}
 	
-	@Override
-	public void evaluate(Solution solution) {
-		// Simple way to make the objective values variable but deterministic
-		double f = solution.getVariable(0).hashCode();
-				
-		for (int i = 0; i < getNumberOfObjectives(); i++) {
-			solution.setObjective(i, f);
-		}
+	public MockGrammarProblem(int numberOfObjectives) {
+		super(1, numberOfObjectives);
 	}
 
 	@Override
 	public Solution newSolution() {
-		return new Solution(getNumberOfVariables(), getNumberOfObjectives(), getNumberOfConstraints());
+		Solution solution = super.newSolution();
+		solution.setVariable(0, new Grammar(10));
+		return solution;
 	}
 
 }

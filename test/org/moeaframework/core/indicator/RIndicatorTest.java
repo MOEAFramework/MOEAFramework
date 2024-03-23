@@ -24,7 +24,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PopulationIO;
-import org.moeaframework.problem.mock.MockRealProblem;
+import org.moeaframework.mock.MockRealProblem;
 
 /**
  * The raw values used here were produced using the PISA r-ind.exe program.

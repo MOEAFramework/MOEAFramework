@@ -28,7 +28,7 @@ import org.moeaframework.Retryable;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.configuration.ConfigurationException;
 import org.moeaframework.core.fitness.AdditiveEpsilonIndicatorFitnessEvaluator;
-import org.moeaframework.problem.mock.MockRealProblem;
+import org.moeaframework.mock.MockRealProblem;
 import org.moeaframework.util.TypedProperties;
 
 @RunWith(CIRunner.class)

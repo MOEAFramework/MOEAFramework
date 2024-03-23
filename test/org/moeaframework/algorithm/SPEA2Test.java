@@ -32,7 +32,7 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.core.spi.OperatorFactory;
 import org.moeaframework.core.spi.ProblemFactory;
-import org.moeaframework.problem.mock.MockRealProblem;
+import org.moeaframework.mock.MockRealProblem;
 import org.moeaframework.util.TypedProperties;
 
 @RunWith(CIRunner.class)

@@ -27,12 +27,12 @@ import org.moeaframework.core.configuration.ConfigurationException;
 import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.core.operator.DefaultOperators;
 import org.moeaframework.core.variable.Grammar;
+import org.moeaframework.mock.MockBinaryProblem;
+import org.moeaframework.mock.MockMixedBinaryProblem;
+import org.moeaframework.mock.MockMultiTypeProblem;
+import org.moeaframework.mock.MockPermutationProblem;
+import org.moeaframework.mock.MockRealProblem;
 import org.moeaframework.problem.ProblemStub;
-import org.moeaframework.problem.mock.MockBinaryProblem;
-import org.moeaframework.problem.mock.MockMixedBinaryProblem;
-import org.moeaframework.problem.mock.MockMultiTypeProblem;
-import org.moeaframework.problem.mock.MockPermutationProblem;
-import org.moeaframework.problem.mock.MockRealProblem;
 import org.moeaframework.util.TypedProperties;
 
 public class OperatorFactoryTest extends AbstractFactoryTest<OperatorProvider, OperatorFactory> {

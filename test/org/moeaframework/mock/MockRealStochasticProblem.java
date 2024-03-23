@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.problem.mock;
+package org.moeaframework.mock;
 
 import org.apache.commons.math3.random.MersenneTwister;
 import org.moeaframework.core.Solution;

@@ -25,7 +25,7 @@ import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.spi.ProblemFactory;
-import org.moeaframework.problem.mock.MockRealProblem;
+import org.moeaframework.mock.MockRealProblem;
 
 public class AdditiveEpsilonIndicatorTest extends AbstractIndicatorTest<AdditiveEpsilonIndicator> {
 	

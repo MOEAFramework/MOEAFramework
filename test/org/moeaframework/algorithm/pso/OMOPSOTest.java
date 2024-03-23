@@ -28,7 +28,7 @@ import org.moeaframework.Flaky;
 import org.moeaframework.algorithm.AlgorithmTest;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
-import org.moeaframework.problem.mock.MockRealProblem;
+import org.moeaframework.mock.MockRealProblem;
 import org.moeaframework.util.TypedProperties;
 
 @RunWith(CIRunner.class)

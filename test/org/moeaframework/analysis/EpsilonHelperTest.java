@@ -25,8 +25,8 @@ import org.moeaframework.core.Epsilons;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.spi.ProblemFactory;
+import org.moeaframework.mock.MockRealProblem;
 import org.moeaframework.problem.DTLZ.DTLZ2;
-import org.moeaframework.problem.mock.MockRealProblem;
 
 public class EpsilonHelperTest {
 	

@@ -30,8 +30,8 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.initialization.RandomInitialization;
+import org.moeaframework.mock.MockRealProblem;
 import org.moeaframework.problem.ProblemWrapper;
-import org.moeaframework.problem.mock.MockRealProblem;
 
 public class FutureSolutionTest {
 	

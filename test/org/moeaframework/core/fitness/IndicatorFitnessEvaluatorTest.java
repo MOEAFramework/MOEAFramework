@@ -23,7 +23,7 @@ import org.moeaframework.TestUtils;
 import org.moeaframework.core.FitnessEvaluator;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
-import org.moeaframework.problem.mock.MockRealProblem;
+import org.moeaframework.mock.MockRealProblem;
 
 public class IndicatorFitnessEvaluatorTest {
 	

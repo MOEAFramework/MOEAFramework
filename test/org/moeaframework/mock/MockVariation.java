@@ -15,28 +15,46 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.problem.mock;
+package org.moeaframework.mock;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
+import org.junit.Assert;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.variable.BinaryIntegerVariable;
-import org.moeaframework.core.variable.BinaryVariable;
+import org.moeaframework.core.Variation;
 
-public class MockMixedBinaryProblem extends MockProblem {
+public class MockVariation implements Variation {
 
-	public MockMixedBinaryProblem() {
-		super(2, 2);
+	private final int arity;
+	
+	private final AtomicInteger count;
+	
+	public MockVariation(int arity) {
+		super();
+		this.arity = arity;
+		
+		count = new AtomicInteger();
 	}
 	
-	public MockMixedBinaryProblem(int numberOfObjectives) {
-		super(2, numberOfObjectives);
+	@Override
+	public String getName() {
+		return "mock";
+	}
+	
+	@Override
+	public int getArity() {
+		return arity;
 	}
 
 	@Override
-	public Solution newSolution() {
-		Solution solution = super.newSolution();
-		solution.setVariable(0, new BinaryVariable(10));
-		solution.setVariable(1, new BinaryIntegerVariable(5, 10));
-		return solution;
+	public Solution[] evolve(Solution[] parents) {
+		count.incrementAndGet();
+		Assert.assertEquals(arity, parents.length);
+		return new Solution[] { parents[0].copy() };
 	}
-
+	
+	public int getCallCount() {
+		return count.get();
+	}
+	
 }

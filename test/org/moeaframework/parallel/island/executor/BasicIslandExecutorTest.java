@@ -32,6 +32,7 @@ import org.moeaframework.core.comparator.ChainedComparator;
 import org.moeaframework.core.comparator.CrowdingComparator;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
 import org.moeaframework.core.selection.TournamentSelection;
+import org.moeaframework.mock.MockRealProblem;
 import org.moeaframework.parallel.island.AbstractIslandModelTest;
 import org.moeaframework.parallel.island.Island;
 import org.moeaframework.parallel.island.IslandModel;
@@ -39,7 +40,6 @@ import org.moeaframework.parallel.island.migration.Migration;
 import org.moeaframework.parallel.island.migration.SingleNeighborMigration;
 import org.moeaframework.parallel.island.topology.FullyConnectedTopology;
 import org.moeaframework.parallel.island.topology.Topology;
-import org.moeaframework.problem.mock.MockRealProblem;
 
 public class BasicIslandExecutorTest extends AbstractIslandModelTest {
 	

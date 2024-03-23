@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.moeaframework.algorithm.NSGAII;
-import org.moeaframework.problem.mock.MockRealProblem;
+import org.moeaframework.mock.MockRealProblem;
 
 public abstract class AbstractIslandModelTest {
 

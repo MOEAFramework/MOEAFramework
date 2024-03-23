@@ -31,7 +31,7 @@ import org.moeaframework.TestUtils;
 import org.moeaframework.CIRunner;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
-import org.moeaframework.problem.mock.MockRealProblem;
+import org.moeaframework.mock.MockRealProblem;
 import org.moeaframework.util.TypedProperties;
 
 /**

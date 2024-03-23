@@ -15,29 +15,25 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.problem.mock;
+package org.moeaframework.mock;
 
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.variable.BinaryVariable;
-import org.moeaframework.core.variable.Permutation;
-import org.moeaframework.core.variable.RealVariable;
+import org.moeaframework.core.variable.Subset;
 
-public class MockMultiTypeProblem extends MockProblem {
+public class MockSubsetProblem extends MockProblem {
 	
-	public MockMultiTypeProblem() {
+	public MockSubsetProblem() {
 		this(1);
 	}
 	
-	public MockMultiTypeProblem(int numberOfObjectives) {
-		super(3, numberOfObjectives);
+	public MockSubsetProblem(int numberOfObjectives) {
+		super(1, numberOfObjectives);
 	}
 
 	@Override
 	public Solution newSolution() {
 		Solution solution = super.newSolution();
-		solution.setVariable(0, new RealVariable(0.0, 1.0));
-		solution.setVariable(1, new BinaryVariable(10));
-		solution.setVariable(2, new Permutation(5));
+		solution.setVariable(0, new Subset(5, 10));
 		return solution;
 	}
 

@@ -26,45 +26,13 @@ import org.moeaframework.TestThresholds;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.Variation;
 import org.moeaframework.core.selection.UniformSelection;
+import org.moeaframework.mock.MockVariation;
 
 public class AdaptiveMultimethodVariationTest {
 	
 	private Population population;
 	private AdaptiveMultimethodVariation variation;
-	
-	/**
-	 * A dummy variation operator that counts the number of invocations of {@code evolve}.
-	 */
-	private static class DummyVariation implements Variation {
-
-		private final int arity;
-		private int count = 0;
-		
-		public DummyVariation(int arity) {
-			super();
-			this.arity = arity;
-		}
-		
-		@Override
-		public String getName() {
-			return "dummy";
-		}
-		
-		@Override
-		public int getArity() {
-			return arity;
-		}
-
-		@Override
-		public Solution[] evolve(Solution[] parents) {
-			count++;
-			Assert.assertEquals(arity, parents.length);
-			return new Solution[0];
-		}
-		
-	}
 	
 	@Before
 	public void setUp() {
@@ -103,8 +71,8 @@ public class AdaptiveMultimethodVariationTest {
 	
 	@Test
 	public void testProbabilities() {
-		variation.addOperator(new DummyVariation(1));
-		variation.addOperator(new DummyVariation(3));
+		variation.addOperator(new MockVariation(1));
+		variation.addOperator(new MockVariation(3));
 		
 		Assert.assertEquals(3, variation.getArity());
 		
@@ -116,8 +84,8 @@ public class AdaptiveMultimethodVariationTest {
 	
 	@Test
 	public void testProbabilitiesInitialPopulation() {
-		variation.addOperator(new DummyVariation(2));
-		variation.addOperator(new DummyVariation(2));
+		variation.addOperator(new MockVariation(2));
+		variation.addOperator(new MockVariation(2));
 		
 		Assert.assertEquals(2, variation.getArity());
 		
@@ -147,7 +115,7 @@ public class AdaptiveMultimethodVariationTest {
 		Assert.assertEquals(variation.getNumberOfOperators(), probabilities.length);
 		
 		for (int i=0; i<variation.getNumberOfOperators(); i++) {
-			int count = ((DummyVariation)variation.getOperator(i)).count;
+			int count = ((MockVariation)variation.getOperator(i)).getCallCount();
 			
 			Assert.assertEquals(probabilities[i], count / (double)TestThresholds.SAMPLES,
 					TestThresholds.STATISTICS_EPS);
@@ -184,8 +152,8 @@ public class AdaptiveMultimethodVariationTest {
 	@Test
 	public void testProbabilityUpdateInvocationCount() {
 		AdaptiveMultimethodVariationCounter variation = new AdaptiveMultimethodVariationCounter(population);
-		variation.addOperator(new DummyVariation(2));
-		variation.addOperator(new DummyVariation(2));
+		variation.addOperator(new MockVariation(2));
+		variation.addOperator(new MockVariation(2));
 		
 		UniformSelection selection = new UniformSelection();
 		
