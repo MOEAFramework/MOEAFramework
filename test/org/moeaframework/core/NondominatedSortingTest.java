@@ -17,9 +17,6 @@
  */
 package org.moeaframework.core;
 
-import static org.moeaframework.core.FastNondominatedSorting.CROWDING_ATTRIBUTE;
-import static org.moeaframework.core.FastNondominatedSorting.RANK_ATTRIBUTE;
-
 import java.util.List;
 
 import org.junit.After;
@@ -121,8 +118,8 @@ public class NondominatedSortingTest {
 	
 	private void assertHasAttributes(Population population) {
 		for (Solution solution : population) {
-			Assert.assertTrue(solution.hasAttribute(RANK_ATTRIBUTE));
-			Assert.assertTrue(solution.hasAttribute(CROWDING_ATTRIBUTE));
+			Assert.assertTrue(solution.hasAttribute(FastNondominatedSorting.RANK_ATTRIBUTE));
+			Assert.assertTrue(solution.hasAttribute(FastNondominatedSorting.CROWDING_ATTRIBUTE));
 		}
 	}
 
