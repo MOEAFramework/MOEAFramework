@@ -217,16 +217,6 @@ public class TestUtils {
 	}
 	
 	/**
-	 * Returns a new solution with the specified objective values.
-	 * 
-	 * @param objectives the objective values
-	 * @return a new solution with the specified objective values
-	 */
-	public static Solution newSolution(double... objectives) {
-		return MockSolution.of().withObjectives(objectives);
-	}
-	
-	/**
 	 * Returns the solution resulting from evaluating the problem with the specified decision variables.
 	 * 
 	 * @param problem the problem

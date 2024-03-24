@@ -31,12 +31,11 @@ import org.moeaframework.core.Variable;
 import org.moeaframework.core.variable.EncodingUtils;
 
 /**
- * Utility for mocking or building solutions for tests.  This is a solution-like class that can be used
- * 
- *  This class can be used directly in place of a solution,
- * or use {@link #build()} to construct an actual {@link Solution} instance.
+ * Utility for mocking or building solutions for tests.  This can be used as a drop-in replacement for {@link Solution}
+ * or use {@link #build()} to construct an actual {@code Solution} instance.
  * <p>
- * This allows
+ * Use the {@code with*} methods to dynamically construct the solution.  If based on an existing problem or solution,
+ * checks are performed to ensure the mock is valid.
  */
 public class MockSolution extends Solution {
 
@@ -300,7 +299,6 @@ public class MockSolution extends Solution {
 		}
 
 		return false;
-		
 	}
 
 	@Override
