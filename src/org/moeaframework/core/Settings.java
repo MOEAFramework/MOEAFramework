@@ -85,6 +85,11 @@ public class Settings {
 	public static final String KEY_CONFIGURATION_FILE = createKey(KEY_PREFIX, "configuration");
 	
 	/**
+	 * The property key for enabling verbose logging.
+	 */
+	public static final String KEY_VERBOSE = createKey(KEY_PREFIX, "core", "verbose");
+	
+	/**
 	 * The property key for setting a global PRNG seed, which can be used to make results reproducible.  Note,
 	 * however, that the seed is set once during initialization.
 	 */
@@ -236,6 +241,15 @@ public class Settings {
 	 */
 	private Settings() {
 		super();
+	}
+	
+	/**
+	 * Returns {@code true} if verbose logging is enabled; {@code false} otherwise.
+	 * 
+	 * @return {@code true} if verbose logging is enabled; {@code false} otherwise
+	 */
+	public static boolean isVerbose() {
+		return PROPERTIES.getBoolean(KEY_VERBOSE, false);
 	}
 	
 	/**

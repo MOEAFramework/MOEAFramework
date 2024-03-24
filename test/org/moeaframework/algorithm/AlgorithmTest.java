@@ -21,6 +21,7 @@ import org.junit.Assert;
 import org.junit.Assume;
 import org.moeaframework.Analyzer;
 import org.moeaframework.Executor;
+import org.moeaframework.core.Settings;
 import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.util.TypedProperties;
 
@@ -38,11 +39,6 @@ public abstract class AlgorithmTest {
 	 * The number of quality indicators that must have similar or better performance in order to pass the test.
 	 */
 	public static final int THRESHOLD = 5;
-	
-	/**
-	 * Set to {@code true} to display verbose results.
-	 */
-	public boolean VERBOSE = true;
 	
 	/**
 	 * Call from any test to skip if JMetal does not exist.
@@ -125,7 +121,7 @@ public abstract class AlgorithmTest {
 		Analyzer.AnalyzerResults analyzerResults = analyzer.getAnalysis();
 		Analyzer.AlgorithmResult algorithmResult = analyzerResults.get(algorithm1Name);
 		
-		if (VERBOSE) {
+		if (Settings.isVerbose()) {
 			analyzerResults.display();
 		}
 		
