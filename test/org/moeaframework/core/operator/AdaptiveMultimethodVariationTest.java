@@ -17,6 +17,8 @@
  */
 package org.moeaframework.core.operator;
 
+import java.util.List;
+
 import org.apache.commons.math3.util.ArithmeticUtils;
 import org.junit.After;
 import org.junit.Assert;
@@ -27,6 +29,7 @@ import org.moeaframework.core.Population;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.selection.UniformSelection;
+import org.moeaframework.mock.MockSolution;
 import org.moeaframework.mock.MockVariation;
 
 public class AdaptiveMultimethodVariationTest {
@@ -35,21 +38,16 @@ public class AdaptiveMultimethodVariationTest {
 	private AdaptiveMultimethodVariation variation;
 	
 	@Before
-	public void setUp() {
-		population = new Population();
-		
-		Solution s1 = new Solution(0, 0);
-		Solution s2 = new Solution(0, 0);
-		Solution s3 = new Solution(0, 0);
+	public void setUp() {	
+		Solution s1 = MockSolution.of();
+		Solution s2 = MockSolution.of();
+		Solution s3 = MockSolution.of();
 		
 		s1.setAttribute(AdaptiveMultimethodVariation.OPERATOR_ATTRIBUTE, 0);
 		s2.setAttribute(AdaptiveMultimethodVariation.OPERATOR_ATTRIBUTE, 1);
 		s3.setAttribute(AdaptiveMultimethodVariation.OPERATOR_ATTRIBUTE, 0);
 		
-		population.add(s1);
-		population.add(s2);
-		population.add(s3);
-		
+		population = new Population(List.of(s1, s2, s3));
 		variation = new AdaptiveMultimethodVariation(population);
 	}
 	

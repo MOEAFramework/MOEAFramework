@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Comparator;
 import java.util.ConcurrentModificationException;
+import java.util.List;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -36,12 +37,11 @@ public class PopulationTest {
 
 	@Before
 	public void setUp() {
-		population = new Population();
-
-		population.add(MockSolution.of().withObjectives(3.0, 2.0, 3.0));
-		population.add(MockSolution.of().withObjectives(1.0, 2.0, 2.0));
-		population.add(MockSolution.of().withObjectives(2.0, 2.0, 3.0));
-		population.add(MockSolution.of().withObjectives(4.0, 3.0, 2.0));
+		population = new Population(List.of(
+				MockSolution.of().withObjectives(3.0, 2.0, 3.0),
+				MockSolution.of().withObjectives(1.0, 2.0, 2.0),
+				MockSolution.of().withObjectives(2.0, 2.0, 3.0),
+				MockSolution.of().withObjectives(4.0, 3.0, 2.0)));
 	}
 
 	@After

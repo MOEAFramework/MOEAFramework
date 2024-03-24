@@ -31,16 +31,8 @@ public class MannWhitneyUTestTest {
 	@Test
 	public void testExample1() {
 		MannWhitneyUTest test = new MannWhitneyUTest();
-		test.add(11, 0);
-		test.add(1, 0);
-		test.add(0, 0);
-		test.add(2, 0);
-		test.add(0, 0);
-		test.add(11, 1);
-		test.add(11, 1);
-		test.add(5, 1);
-		test.add(8, 1);
-		test.add(4, 1);
+		test.addAll(new double[] { 11, 1, 0, 2, 0 }, 0);
+		test.addAll(new double[] { 11, 11, 5, 8, 4 }, 1);
 
 		Assert.assertFalse(test.test(0.05));
 	}
@@ -103,16 +95,8 @@ public class MannWhitneyUTestTest {
 	@Test
 	public void testAllEqual() {
 		MannWhitneyUTest test = new MannWhitneyUTest();
-		test.add(10, 0);
-		test.add(10, 0);
-		test.add(10, 0);
-		test.add(10, 0);
-		test.add(10, 0);
-		test.add(10, 1);
-		test.add(10, 1);
-		test.add(10, 1);
-		test.add(10, 1);
-		test.add(10, 1);
+		test.addAll(new double[] { 10, 10, 10, 10, 10 }, 0);
+		test.addAll(new double[] { 10, 10, 10, 10, 10 }, 1);
 
 		Assert.assertFalse(test.test(0.05));
 		Assert.assertFalse(test.test(0.01));

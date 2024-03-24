@@ -34,21 +34,9 @@ public class OneWayANOVATest {
 	@Test
 	public void testExample() {
 		OneWayANOVA test = new OneWayANOVA(3);
-		test.add(8, 0);
-		test.add(10, 0);
-		test.add(9, 0);
-		test.add(10, 0);
-		test.add(9, 0);
-		test.add(7, 1);
-		test.add(8, 1);
-		test.add(5, 1);
-		test.add(8, 1);
-		test.add(5, 1);
-		test.add(4, 2);
-		test.add(8, 2);
-		test.add(7, 2);
-		test.add(5, 2);
-		test.add(7, 2);
+		test.addAll(new double[] { 8, 10, 9, 10, 9 }, 0);
+		test.addAll(new double[] { 7, 8, 5, 8, 5 }, 1);
+		test.addAll(new double[] { 4, 8, 7, 5, 7 }, 2);
 
 		Assert.assertEquals(6.98, TestUtils.oneWayAnovaFValue(test.categorize()), 0.01);
 		Assert.assertTrue(test.test(0.05));
@@ -58,21 +46,9 @@ public class OneWayANOVATest {
 	@Test
 	public void testAllEquals() {
 		OneWayANOVA test = new OneWayANOVA(3);
-		test.add(10, 0);
-		test.add(10, 0);
-		test.add(10, 0);
-		test.add(10, 0);
-		test.add(10, 0);
-		test.add(10, 1);
-		test.add(10, 1);
-		test.add(10, 1);
-		test.add(10, 1);
-		test.add(10, 1);
-		test.add(10, 2);
-		test.add(10, 2);
-		test.add(10, 2);
-		test.add(10, 2);
-		test.add(10, 2);
+		test.addAll(new double[] { 10, 10, 10, 10, 10 }, 0);
+		test.addAll(new double[] { 10, 10, 10, 10, 10 }, 1);
+		test.addAll(new double[] { 10, 10, 10, 10, 10 }, 2);
 		
 		Assert.assertFalse(test.test(0.05));
 		Assert.assertFalse(test.test(0.01));

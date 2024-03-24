@@ -110,7 +110,7 @@ public class WilcoxonSignedRanksTest extends OrdinalStatisticalTest {
 	 * 
 	 * @param values the values of the new observations
 	 */
-	public void add(double[] values) {
+	public void addAll(double[] values) {
 		for (double value : values) {
 			add(value);
 		}
