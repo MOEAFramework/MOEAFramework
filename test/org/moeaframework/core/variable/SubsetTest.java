@@ -24,7 +24,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.core.FrameworkException;
-import org.moeaframework.core.PRNG;
 
 public class SubsetTest {
 	
@@ -142,15 +141,16 @@ public class SubsetTest {
 		Assert.assertFalse(subset.equals(new Subset(5, 15)));
 		Assert.assertFalse(subset.equals(new Subset(7, 10)));
 		
-		Subset randomSet = subset.copy();
-		randomSet.randomize();
-		Assert.assertFalse(subset.equals(randomSet));
+		Subset otherSubset = subset.copy();
+		subset.fromArray(new int[] { 0, 1, 2, 3, 4 });
+		otherSubset.fromArray(new int[] { 0, 1, 2, 3, 4 });
+		Assert.assertTrue(subset.equals(otherSubset));
 		
-		Subset reorderedSet = subset.copy();
-		int[] values = reorderedSet.toArray();
-		PRNG.shuffle(values);
-		reorderedSet.fromArray(values);
-		Assert.assertTrue(subset.equals(reorderedSet));
+		otherSubset.fromArray(new int[] { 4, 0, 1, 2, 3 });
+		Assert.assertTrue(subset.equals(otherSubset));
+		
+		otherSubset.fromArray(new int[] { 0, 1, 2, 3, 5 });
+		Assert.assertFalse(subset.equals(otherSubset));
 	}
 	
 	@Test
@@ -159,11 +159,16 @@ public class SubsetTest {
 		Assert.assertEquals(subset.hashCode(), subset.hashCode());
 		Assert.assertEquals(subset.hashCode(), new Subset(5, 10).hashCode());
 		
-		Subset reorderedSet = subset.copy();
-		int[] values = reorderedSet.toArray();
-		PRNG.shuffle(values);
-		reorderedSet.fromArray(values);
-		Assert.assertEquals(subset.hashCode(), reorderedSet.hashCode());
+		Subset otherSubset = subset.copy();
+		subset.fromArray(new int[] { 0, 1, 2, 3, 4 });
+		otherSubset.fromArray(new int[] { 0, 1, 2, 3, 4 });
+		Assert.assertEquals(subset.hashCode(), otherSubset.hashCode());
+		
+		otherSubset.fromArray(new int[] { 4, 0, 1, 2, 3 });
+		Assert.assertEquals(subset.hashCode(), otherSubset.hashCode());
+		
+		otherSubset.fromArray(new int[] { 0, 1, 2, 3, 5 });
+		Assert.assertNotEquals(subset.hashCode(), otherSubset.hashCode());
 	}
 	
 	@Test
