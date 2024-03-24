@@ -25,14 +25,8 @@ import org.moeaframework.core.Settings;
 
 public class OrdinalStatisticalTestTest {
 
-	/**
-	 * The shared ordinal statistical test.
-	 */
 	private OrdinalStatisticalTest test = null;
 
-	/**
-	 * Constructs the shared ordinal statistical test.
-	 */
 	@Before
 	public void setUp() {
 		test = new OrdinalStatisticalTest(2) {
@@ -44,9 +38,6 @@ public class OrdinalStatisticalTestTest {
 		};
 	}
 
-	/**
-	 * Removes references to shared objects so they can be garbage collected.
-	 */
 	@After
 	public void tearDown() {
 		test = null;

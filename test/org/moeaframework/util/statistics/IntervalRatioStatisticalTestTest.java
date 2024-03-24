@@ -26,14 +26,8 @@ import org.junit.Test;
 
 public class IntervalRatioStatisticalTestTest {
 
-	/**
-	 * The shared interval ratio statistical test.
-	 */
 	private IntervalRatioStatisticalTest test = null;
 
-	/**
-	 * Constructs the shared interval ratio statistical test.
-	 */
 	@Before
 	public void setUp() {
 		test = new IntervalRatioStatisticalTest(2) {
@@ -45,9 +39,6 @@ public class IntervalRatioStatisticalTestTest {
 		};
 	}
 
-	/**
-	 * Removes references to shared objects so they can be garbage collected.
-	 */
 	@After
 	public void tearDown() {
 		test = null;
