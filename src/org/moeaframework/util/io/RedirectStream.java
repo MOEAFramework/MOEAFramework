@@ -156,12 +156,14 @@ public class RedirectStream extends Thread {
 		RedirectStream inputThread = RedirectStream.redirect(process.getInputStream(), out);
 		RedirectStream outputThread = RedirectStream.redirect(process.getErrorStream(), err);
 		
-		if (process.waitFor() != 0) {
-			throw new IOException("Process exited with non-zero status (" + process.exitValue() + ")");
+		try {
+			if (process.waitFor() != 0) {
+				throw new IOException("Process exited with non-zero status (" + process.exitValue() + ")");
+			}
+		} finally {
+			inputThread.join();
+			outputThread.join();
 		}
-		
-		inputThread.join();
-		outputThread.join();
 	}
 	
 	/**
