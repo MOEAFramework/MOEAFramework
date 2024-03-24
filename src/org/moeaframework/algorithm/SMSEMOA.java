@@ -22,6 +22,7 @@ import java.util.Comparator;
 import org.moeaframework.core.FastNondominatedSorting;
 import org.moeaframework.core.FitnessEvaluator;
 import org.moeaframework.core.Initialization;
+import org.moeaframework.core.NondominatedSorting;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Selection;
@@ -170,7 +171,7 @@ public class SMSEMOA extends AbstractEvolutionaryAlgorithm {
 		int rank = 0;
 		
 		for (Solution solution : getPopulation()) {
-			int solutionRank = (Integer)solution.getAttribute(FastNondominatedSorting.RANK_ATTRIBUTE);
+			int solutionRank = NondominatedSorting.getRank(solution);
 			
 			if (solutionRank > rank) {
 				front.clear();
@@ -181,7 +182,7 @@ public class SMSEMOA extends AbstractEvolutionaryAlgorithm {
 				front.add(solution);
 			}
 			
-			solution.setAttribute(FitnessEvaluator.FITNESS_ATTRIBUTE, 0.0);
+			FitnessEvaluator.setFitness(solution, 0.0);
 		}
 		
 		fitnessEvaluator.evaluate(front);

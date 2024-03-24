@@ -107,7 +107,7 @@ public class NondominatedSorting {
 
 			for (Solution solution : front) {
 				remaining.remove(solution);
-				solution.setAttribute(RANK_ATTRIBUTE, rank);
+				setRank(solution, rank);
 			}
 
 			updateCrowdingDistance(front);
@@ -125,7 +125,7 @@ public class NondominatedSorting {
 	public void updateCrowdingDistance(Population front) {
 		// initially assign all crowding distances of 0.0
 		for (Solution solution : front) {
-			solution.setAttribute(CROWDING_ATTRIBUTE, 0.0);
+			setCrowding(solution, 0.0);
 		}
 		
 		// remove any duplicate solutions, the duplicate solutions will retain the crowding distance of 0.0
@@ -153,7 +153,7 @@ public class NondominatedSorting {
 		
 		if (n < 3) {
 			for (Solution solution : front) {
-				solution.setAttribute(CROWDING_ATTRIBUTE, Double.POSITIVE_INFINITY);
+				setCrowding(solution, Double.POSITIVE_INFINITY);
 			}
 		} else {
 			int numberOfObjectives = front.get(0).getNumberOfObjectives();
@@ -165,18 +165,58 @@ public class NondominatedSorting {
 				double maxObjective = front.get(n - 1).getObjective(i);
 				
 				if (maxObjective - minObjective >= Settings.EPS) {
-					front.get(0).setAttribute(CROWDING_ATTRIBUTE, Double.POSITIVE_INFINITY);
-					front.get(n - 1).setAttribute(CROWDING_ATTRIBUTE, Double.POSITIVE_INFINITY);
+					setCrowding(front.get(0), Double.POSITIVE_INFINITY);
+					setCrowding(front.get(n - 1), Double.POSITIVE_INFINITY);
 
 					for (int j = 1; j < n - 1; j++) {
-						double distance = (Double)front.get(j).getAttribute(CROWDING_ATTRIBUTE);
+						double distance = getCrowding(front.get(j));
 						distance += (front.get(j + 1).getObjective(i) - front.get(j - 1).getObjective(i))
 								/ (maxObjective - minObjective);
-						front.get(j).setAttribute(CROWDING_ATTRIBUTE, distance);
+						setCrowding(front.get(j), distance);
 					}
 				}
 			}
 		}
+	}
+	
+	/**
+	 * Returns the rank of the specified solution.
+	 * 
+	 * @param solution the solution
+	 * @return the rank of the specified solution
+	 */
+	public static final int getRank(Solution solution) {
+		return (Integer)solution.getAttribute(RANK_ATTRIBUTE);
+	}
+	
+	/**
+	 * SEts the rank of the specified solution.
+	 * 
+	 * @param solution the solution
+	 * @param rank the rank of the specified solution
+	 */
+	public static final void setRank(Solution solution, int rank) {
+		solution.setAttribute(RANK_ATTRIBUTE, rank);
+	}
+	
+	/**
+	 * Returns the crowding distance of the specified solution.
+	 * 
+	 * @param solution the solution
+	 * @return the crowding distance of the specified solution
+	 */
+	public static final double getCrowding(Solution solution) {
+		return (Double)solution.getAttribute(CROWDING_ATTRIBUTE);
+	}
+	
+	/**
+	 * Sets the crowding distance of the specified solution.
+	 * 
+	 * @param solution the solution
+	 * @param crowding the crowding distance of the specified solution
+	 */
+	public static final void setCrowding(Solution solution, double crowding) {
+		solution.setAttribute(CROWDING_ATTRIBUTE, crowding);
 	}
 
 }

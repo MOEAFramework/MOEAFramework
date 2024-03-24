@@ -19,10 +19,12 @@ package org.moeaframework.core;
 
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.core.comparator.NondominatedSortingComparator;
+import org.moeaframework.mock.MockSolution;
 
 public class NondominatedSortingPopulationTest {
 	
@@ -52,15 +54,12 @@ public class NondominatedSortingPopulationTest {
 
 	@Test
 	public void testRankTruncation() {
+		Solution solution1 = MockSolution.of().withObjectives(0.5, 0.5);
+		Solution solution2 = MockSolution.of().withObjectives(0.0, 0.0);
+		Solution solution3 = MockSolution.of().withObjectives(1.0, 1.0);
+		
 		NondominatedSortingPopulation population = new NondominatedSortingPopulation();
-
-		Solution solution1 = new Solution(new double[] { 0.5, 0.5 });
-		Solution solution2 = new Solution(new double[] { 0.0, 0.0 });
-		Solution solution3 = new Solution(new double[] { 1.0, 1.0 });
-
-		population.add(solution1);
-		population.add(solution2);
-		population.add(solution3);
+		population.addAll(List.of(solution1, solution2, solution3));
 
 		population.truncate(1);
 
@@ -71,15 +70,12 @@ public class NondominatedSortingPopulationTest {
 
 	@Test
 	public void testCrowdingTruncation() {
+		Solution solution1 = MockSolution.of().withObjectives(0.0, 1.0);
+		Solution solution2 = MockSolution.of().withObjectives(0.5, 0.5);
+		Solution solution3 = MockSolution.of().withObjectives(1.0, 0.0);
+		
 		NondominatedSortingPopulation population = new NondominatedSortingPopulation();
-
-		Solution solution1 = new Solution(new double[] { 0.0, 1.0 });
-		Solution solution2 = new Solution(new double[] { 0.5, 0.5 });
-		Solution solution3 = new Solution(new double[] { 1.0, 0.0 });
-
-		population.add(solution1);
-		population.add(solution2);
-		population.add(solution3);
+		population.addAll(List.of(solution1, solution2, solution3));
 
 		population.truncate(2);
 
@@ -90,15 +86,12 @@ public class NondominatedSortingPopulationTest {
 	
 	@Test
 	public void testSingularObjective() {
+		Solution solution1 = MockSolution.of().withObjectives(0.0, 0.0, 1.0);
+		Solution solution2 = MockSolution.of().withObjectives(0.5, 0.0, 0.5);
+		Solution solution3 = MockSolution.of().withObjectives(1.0, 0.0, 0.0);
+		
 		NondominatedSortingPopulation population = new NondominatedSortingPopulation();
-
-		Solution solution1 = new Solution(new double[] { 0.0, 0.0, 1.0 });
-		Solution solution2 = new Solution(new double[] { 0.5, 0.0, 0.5 });
-		Solution solution3 = new Solution(new double[] { 1.0, 0.0, 0.0 });
-
-		population.add(solution1);
-		population.add(solution2);
-		population.add(solution3);
+		population.addAll(List.of(solution1, solution2, solution3));
 
 		population.truncate(2);
 
@@ -109,25 +102,17 @@ public class NondominatedSortingPopulationTest {
 	
 	@Test
 	public void testTruncate() {
+		Solution solution1 = MockSolution.of().withObjectives(0.0, 0.0);
+		Solution solution2 = MockSolution.of().withObjectives(0.0, 1.0);
+		Solution solution3 = MockSolution.of().withObjectives(0.45, 0.55);
+		Solution solution4 = MockSolution.of().withObjectives(0.5, 0.5);
+		Solution solution5 = MockSolution.of().withObjectives(0.73, 0.27);
+		Solution solution6 = MockSolution.of().withObjectives(0.74, 0.26);
+		Solution solution7 = MockSolution.of().withObjectives(0.75, 0.25);
+		Solution solution8 = MockSolution.of().withObjectives(1.0, 0.0);
+		
 		TestNondominatedSortingPopulation population = new TestNondominatedSortingPopulation();
-
-		Solution solution1 = new Solution(new double[] { 0.0, 0.0 });
-		Solution solution2 = new Solution(new double[] { 0.0, 1.0 });
-		Solution solution3 = new Solution(new double[] { 0.45, 0.55 });
-		Solution solution4 = new Solution(new double[] { 0.5, 0.5 });
-		Solution solution5 = new Solution(new double[] { 0.73, 0.27 });
-		Solution solution6 = new Solution(new double[] { 0.74, 0.26 });
-		Solution solution7 = new Solution(new double[] { 0.75, 0.25 });
-		Solution solution8 = new Solution(new double[] { 1.0, 0.0 });
-
-		population.add(solution1);
-		population.add(solution2);
-		population.add(solution3);
-		population.add(solution4);
-		population.add(solution5);
-		population.add(solution6);
-		population.add(solution7);
-		population.add(solution8);
+		population.addAll(List.of(solution1, solution2, solution3, solution4, solution5, solution6, solution7, solution8));
 
 		population.truncate(5);
 
@@ -145,25 +130,17 @@ public class NondominatedSortingPopulationTest {
 	
 	@Test
 	public void testPruning() {
+		Solution solution1 = MockSolution.of().withObjectives(0.0, 0.0);
+		Solution solution2 = MockSolution.of().withObjectives(0.0, 1.0);
+		Solution solution3 = MockSolution.of().withObjectives(0.45, 0.55);
+		Solution solution4 = MockSolution.of().withObjectives(0.5, 0.5);
+		Solution solution5 = MockSolution.of().withObjectives(0.73, 0.27);
+		Solution solution6 = MockSolution.of().withObjectives(0.74, 0.26);
+		Solution solution7 = MockSolution.of().withObjectives(0.75, 0.25);
+		Solution solution8 = MockSolution.of().withObjectives(1.0, 0.0);
+		
 		TestNondominatedSortingPopulation population = new TestNondominatedSortingPopulation();
-
-		Solution solution1 = new Solution(new double[] { 0.0, 0.0 });
-		Solution solution2 = new Solution(new double[] { 0.0, 1.0 });
-		Solution solution3 = new Solution(new double[] { 0.45, 0.55 });
-		Solution solution4 = new Solution(new double[] { 0.5, 0.5 });
-		Solution solution5 = new Solution(new double[] { 0.73, 0.27 });
-		Solution solution6 = new Solution(new double[] { 0.74, 0.26 });
-		Solution solution7 = new Solution(new double[] { 0.75, 0.25 });
-		Solution solution8 = new Solution(new double[] { 1.0, 0.0 });
-
-		population.add(solution1);
-		population.add(solution2);
-		population.add(solution3);
-		population.add(solution4);
-		population.add(solution5);
-		population.add(solution6);
-		population.add(solution7);
-		population.add(solution8);
+		population.addAll(List.of(solution1, solution2, solution3, solution4, solution5, solution6, solution7, solution8));
 
 		population.prune(5);
 
@@ -181,17 +158,17 @@ public class NondominatedSortingPopulationTest {
 	
 	@Test
 	public void testUpdate() {
-		Solution solution1 = new Solution(new double[] { 0.0, 0.0 });
-		Solution solution2 = new Solution(new double[] { 0.0, 1.0 });
-		Solution solution3 = new Solution(new double[] { 0.45, 0.55 });
-		Solution solution4 = new Solution(new double[] { 0.5, 0.5 });
-		Solution solution5 = new Solution(new double[] { 0.73, 0.27 });
-		Solution solution6 = new Solution(new double[] { 0.74, 0.26 });
-		Solution solution7 = new Solution(new double[] { 0.75, 0.25 });
-		Solution solution8 = new Solution(new double[] { 1.0, 0.0 });
+		Solution solution1 = MockSolution.of().withObjectives(0.0, 0.0);
+		Solution solution2 = MockSolution.of().withObjectives(0.0, 1.0);
+		Solution solution3 = MockSolution.of().withObjectives(0.45, 0.55);
+		Solution solution4 = MockSolution.of().withObjectives(0.5, 0.5);
+		Solution solution5 = MockSolution.of().withObjectives(0.73, 0.27);
+		Solution solution6 = MockSolution.of().withObjectives(0.74, 0.26);
+		Solution solution7 = MockSolution.of().withObjectives(0.75, 0.25);
+		Solution solution8 = MockSolution.of().withObjectives(1.0, 0.0);
 		
 		TestNondominatedSortingPopulation population = new TestNondominatedSortingPopulation(
-				Arrays.asList(solution1, solution2));
+				List.of(solution1, solution2));
 
 		population.get(0); //update
 		population.add(solution3);

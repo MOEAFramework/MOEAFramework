@@ -32,12 +32,12 @@ import org.moeaframework.TestUtils;
 import org.moeaframework.core.Initialization;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.UnsupportedVariable;
 import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.core.variable.BinaryIntegerVariable;
 import org.moeaframework.core.variable.BinaryVariable;
 import org.moeaframework.core.variable.Permutation;
 import org.moeaframework.core.variable.RealVariable;
+import org.moeaframework.mock.MockUnsupportedVariable;
 
 public class ExternalProblemWithCStdioTest {
 	
@@ -273,7 +273,7 @@ public class ExternalProblemWithCStdioTest {
 	public void testUnsupportedVariableType() {
 		Solution solution = new Solution(5, 2, 1);
 		copy(solution, problem.newSolution(), 4);
-		solution.setVariable(4, new UnsupportedVariable());
+		solution.setVariable(4, new MockUnsupportedVariable());
 		problem.evaluate(solution);
 	}
 	

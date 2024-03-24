@@ -22,12 +22,12 @@ import org.junit.Test;
 import org.moeaframework.core.Initialization;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.UnsupportedVariable;
 import org.moeaframework.core.variable.BinaryVariable;
 import org.moeaframework.core.variable.Grammar;
 import org.moeaframework.core.variable.Permutation;
 import org.moeaframework.core.variable.Program;
 import org.moeaframework.core.variable.RealVariable;
+import org.moeaframework.mock.MockUnsupportedVariable;
 import org.moeaframework.problem.ProblemStub;
 import org.moeaframework.util.tree.Rules;
 
@@ -50,7 +50,7 @@ public class RandomInitializationTest {
 				solution.setVariable(2, new Permutation(4));
 				solution.setVariable(3, new Grammar(4));
 				solution.setVariable(4, new Program(rules));
-				solution.setVariable(5, new UnsupportedVariable() {
+				solution.setVariable(5, new MockUnsupportedVariable() {
 
 					@Override
 					public void randomize() {

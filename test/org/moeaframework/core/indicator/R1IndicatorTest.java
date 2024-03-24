@@ -22,12 +22,12 @@ import java.io.IOException;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.moeaframework.TestUtils;
 import org.moeaframework.core.Indicator;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PopulationIO;
 import org.moeaframework.core.Problem;
 import org.moeaframework.mock.MockRealProblem;
+import org.moeaframework.mock.MockSolution;
 
 /**
  * The raw values used here were produced using the PISA r-ind.exe program.
@@ -57,8 +57,8 @@ public class R1IndicatorTest extends AbstractIndicatorTest<R1Indicator> {
 				PopulationIO.readObjectives(new File("./pf/DTLZ2.2D.pf")));
 		
 		NondominatedPopulation population = new NondominatedPopulation();
-		population.add(TestUtils.newSolution(0.75, 0.25));
-		population.add(TestUtils.newSolution(0.25, 0.75));
+		population.add(MockSolution.of().withObjectives(0.75, 0.25));
+		population.add(MockSolution.of().withObjectives(0.25, 0.75));
 		
 		Indicator indicator = createInstance(new MockRealProblem(2), referenceSet);
 		Assert.assertEquals(5.269461078e-001, indicator.evaluate(population), 0.000001);

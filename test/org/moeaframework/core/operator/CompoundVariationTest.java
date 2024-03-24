@@ -22,10 +22,10 @@ import java.util.Arrays;
 import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.TestThresholds;
-import org.moeaframework.TestUtils;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
+import org.moeaframework.mock.MockSolution;
 
 public class CompoundVariationTest {
 	
@@ -71,7 +71,7 @@ public class CompoundVariationTest {
 		Assert.assertEquals(1, variation.getArity());
 		
 		for (int i=0; i<TestThresholds.SAMPLES; i++) {
-			Solution[] parents = new Solution[] { TestUtils.newSolution() };
+			Solution[] parents = new Solution[] { MockSolution.of() };
 			Assert.assertEquals(1, variation.evolve(parents).length);
 		}
 		
@@ -88,7 +88,7 @@ public class CompoundVariationTest {
 		Assert.assertEquals(2, variation.getArity());
 		
 		for (int i=0; i<TestThresholds.SAMPLES; i++) {
-			Solution[] parents = new Solution[] { TestUtils.newSolution(), TestUtils.newSolution() };
+			Solution[] parents = new Solution[] { MockSolution.of(), MockSolution.of() };
 			Assert.assertEquals(2, variation.evolve(parents).length);
 		}
 		
@@ -108,7 +108,7 @@ public class CompoundVariationTest {
 		Assert.assertEquals(3, variation.getArity());
 		
 		for (int i=0; i<TestThresholds.SAMPLES; i++) {
-			Solution[] parents = new Solution[] { TestUtils.newSolution(), TestUtils.newSolution(), TestUtils.newSolution() };
+			Solution[] parents = new Solution[] { MockSolution.of(), MockSolution.of(), MockSolution.of() };
 			Assert.assertEquals(2, variation.evolve(parents).length);
 		}
 		
@@ -126,7 +126,7 @@ public class CompoundVariationTest {
 		
 		Assert.assertEquals(3, variation.getArity());
 		
-		Solution[] parents = new Solution[] { TestUtils.newSolution(), TestUtils.newSolution(), TestUtils.newSolution() };
+		Solution[] parents = new Solution[] { MockSolution.of(), MockSolution.of(), MockSolution.of() };
 		variation.evolve(parents);
 	}
 

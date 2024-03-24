@@ -21,9 +21,9 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.moeaframework.TestUtils;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
+import org.moeaframework.mock.MockSolution;
 import org.moeaframework.problem.ProblemStub;
 
 public class AdditiveEpsilonIndicatorFitnessEvaluatorTest {
@@ -42,24 +42,24 @@ public class AdditiveEpsilonIndicatorFitnessEvaluatorTest {
 
 	@Test
 	public void testEqual() {
-		Solution solution1 = TestUtils.newSolution(0.0, 0.5, 1.0);
-		Solution solution2 = TestUtils.newSolution(0.0, 0.5, 1.0);
+		Solution solution1 = MockSolution.of().withObjectives(0.0, 0.5, 1.0);
+		Solution solution2 = MockSolution.of().withObjectives(0.0, 0.5, 1.0);
 		
 		Assert.assertEquals(0.0, fitness.calculateIndicator(solution1, solution2), Settings.EPS);
 	}
 	
 	@Test
 	public void testBetter() {
-		Solution solution1 = TestUtils.newSolution(0.0, 0.5, 1.0);
-		Solution solution2 = TestUtils.newSolution(0.0, 0.75, 1.0);
+		Solution solution1 = MockSolution.of().withObjectives(0.0, 0.5, 1.0);
+		Solution solution2 = MockSolution.of().withObjectives(0.0, 0.75, 1.0);
 		
 		Assert.assertEquals(0.0, fitness.calculateIndicator(solution1, solution2), Settings.EPS);
 	}
 	
 	@Test
 	public void testWorse() {
-		Solution solution1 = TestUtils.newSolution(0.5, 0.75, 0.75);
-		Solution solution2 = TestUtils.newSolution(0.0, 0.5, 1.0);
+		Solution solution1 = MockSolution.of().withObjectives(0.5, 0.75, 0.75);
+		Solution solution2 = MockSolution.of().withObjectives(0.0, 0.5, 1.0);
 		
 		Assert.assertEquals(0.5, fitness.calculateIndicator(solution1, solution2), Settings.EPS);
 	}

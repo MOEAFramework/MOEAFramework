@@ -17,15 +17,13 @@
  */
 package org.moeaframework.algorithm;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.moeaframework.TestUtils;
-import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
+import org.moeaframework.mock.MockSolution;
 import org.moeaframework.util.weights.NormalBoundaryDivisions;
 
 public class ReferencePointNondominatedSortingPopulationTest {
@@ -69,10 +67,10 @@ public class ReferencePointNondominatedSortingPopulationTest {
 		double[] weight2 = { 0.0, 1.0 };
 		double[] weight3 = { 1.0, 0.0 };
 		
-		List<Solution> solutions = new ArrayList<Solution>();
-		solutions.add(TestUtils.newSolution(0.5, 0.5));
-		solutions.add(TestUtils.newSolution(0.25, 0.75));
-		solutions.add(TestUtils.newSolution(0.75, 0.25));
+		List<Solution> solutions = List.of(
+				MockSolution.of().withObjectives(0.5, 0.5),
+				MockSolution.of().withObjectives(0.25, 0.75),
+				MockSolution.of().withObjectives(0.75, 0.25));
 		
 		ReferencePointNondominatedSortingPopulation population = new ReferencePointNondominatedSortingPopulation(2,
 						new NormalBoundaryDivisions(4));
@@ -92,8 +90,8 @@ public class ReferencePointNondominatedSortingPopulationTest {
 		ReferencePointNondominatedSortingPopulation population = new ReferencePointNondominatedSortingPopulation(2,
 						new NormalBoundaryDivisions(4));
 		
-		population.add(TestUtils.newSolution(0.5, 0.5));
-		population.add(TestUtils.newSolution(0.0, 1.0));
+		population.add(MockSolution.of().withObjectives(0.5, 0.5));
+		population.add(MockSolution.of().withObjectives(0.0, 1.0));
 		
 		population.updateIdealPoint();
 		
@@ -106,8 +104,8 @@ public class ReferencePointNondominatedSortingPopulationTest {
 		ReferencePointNondominatedSortingPopulation population = new ReferencePointNondominatedSortingPopulation(2,
 						new NormalBoundaryDivisions(4));
 		
-		population.add(TestUtils.newSolution(0.5, 0.5));
-		population.add(TestUtils.newSolution(0.0, 1.0));
+		population.add(MockSolution.of().withObjectives(0.5, 0.5));
+		population.add(MockSolution.of().withObjectives(0.0, 1.0));
 		
 		population.updateIdealPoint();
 		population.translateByIdealPoint();
@@ -126,8 +124,8 @@ public class ReferencePointNondominatedSortingPopulationTest {
 		ReferencePointNondominatedSortingPopulation population = new ReferencePointNondominatedSortingPopulation(2,
 						new NormalBoundaryDivisions(4));
 		
-		population.add(TestUtils.newSolution(0.5, 0.5));
-		population.add(TestUtils.newSolution(0.0, 1.0));
+		population.add(MockSolution.of().withObjectives(0.5, 0.5));
+		population.add(MockSolution.of().withObjectives(0.0, 1.0));
 		
 		population.updateIdealPoint();
 		population.translateByIdealPoint();
@@ -147,8 +145,8 @@ public class ReferencePointNondominatedSortingPopulationTest {
 		ReferencePointNondominatedSortingPopulation population = new ReferencePointNondominatedSortingPopulation(2,
 						new NormalBoundaryDivisions(4));
 		
-		population.add(TestUtils.newSolution(0.5, 0.5));
-		population.add(TestUtils.newSolution(0.0, 1.0));
+		population.add(MockSolution.of().withObjectives(0.5, 0.5));
+		population.add(MockSolution.of().withObjectives(0.0, 1.0));
 		
 		population.updateIdealPoint();
 		population.translateByIdealPoint();
@@ -163,8 +161,8 @@ public class ReferencePointNondominatedSortingPopulationTest {
 		ReferencePointNondominatedSortingPopulation population = new ReferencePointNondominatedSortingPopulation(2,
 						new NormalBoundaryDivisions(4));
 		
-		population.add(TestUtils.newSolution(0.5, 0.5));
-		population.add(TestUtils.newSolution(0.0, 1.0));
+		population.add(MockSolution.of().withObjectives(0.5, 0.5));
+		population.add(MockSolution.of().withObjectives(0.0, 1.0));
 		
 		population.updateIdealPoint();
 		population.translateByIdealPoint();
@@ -181,19 +179,17 @@ public class ReferencePointNondominatedSortingPopulationTest {
 		ReferencePointNondominatedSortingPopulation population = new ReferencePointNondominatedSortingPopulation(2,
 						new NormalBoundaryDivisions(4));
 		
-		Solution s1 = TestUtils.newSolution(0.5, 0.5);
-		Solution s2 = TestUtils.newSolution(0.4, 1.5);
-		Solution s3 = TestUtils.newSolution(1.0, 1.0);
-		Solution[] solutions = new Solution[] { s1, s2, s3 };
-		
-		PRNG.shuffle(solutions);
+		Solution[] solutions = new Solution[] {
+				MockSolution.of().withObjectives(0.5, 0.5),
+				MockSolution.of().withObjectives(0.4, 1.5),
+				MockSolution.of().withObjectives(1.0, 1.0) };
 		
 		population.addAll(solutions);
-		
 		population.truncate(2);
 		
-		Assert.assertTrue(population.contains(s1));
-		Assert.assertTrue(population.contains(s2));
+		Assert.assertEquals(2, population.size());
+		Assert.assertTrue(population.contains(solutions[0]));
+		Assert.assertTrue(population.contains(solutions[1]));
 	}
 	
 	@Test
@@ -201,19 +197,18 @@ public class ReferencePointNondominatedSortingPopulationTest {
 		ReferencePointNondominatedSortingPopulation population = new ReferencePointNondominatedSortingPopulation(2,
 						new NormalBoundaryDivisions(1));
 		
-		Solution s1 = TestUtils.newSolution(0.5, 0.5);
-		Solution s2 = TestUtils.newSolution(0.25, 0.75);
-		Solution s3 = TestUtils.newSolution(0.75, 0.25);
-		Solution[] solutions = new Solution[] { s1, s2, s3 };
-		
-		PRNG.shuffle(solutions);
+		Solution[] solutions = new Solution[] {
+				MockSolution.of().withObjectives(0.5, 0.5),
+				MockSolution.of().withObjectives(0.25, 0.75),
+				MockSolution.of().withObjectives(0.75, 0.25) };
 		
 		population.addAll(solutions);
 		
 		population.truncate(2);
 		
-		Assert.assertTrue(population.contains(s2));
-		Assert.assertTrue(population.contains(s3));
+		Assert.assertEquals(2, population.size());
+		Assert.assertTrue(population.contains(solutions[1]));
+		Assert.assertTrue(population.contains(solutions[2]));
 	}
 
 }

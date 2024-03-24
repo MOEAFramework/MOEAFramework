@@ -25,10 +25,10 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.mock.MockRealProblem;
+import org.moeaframework.mock.MockSolution;
 
 public class FitnessBasedArchiveTest {
 	
-	@SuppressWarnings("resource")
 	@Test
 	public void test() {
 		Problem mockProblem = new MockRealProblem(2);
@@ -38,7 +38,7 @@ public class FitnessBasedArchiveTest {
 			@Override
 			public void evaluate(Population population) {
 				for (Solution solution : population) {
-					solution.setAttribute(FITNESS_ATTRIBUTE, EncodingUtils.getReal(solution.getVariable(0)));
+					FitnessEvaluator.setFitness(solution, EncodingUtils.getReal(solution.getVariable(0)));
 				}
 			}
 
@@ -51,21 +51,11 @@ public class FitnessBasedArchiveTest {
 		
 		FitnessBasedArchive archive = new FitnessBasedArchive(mockEvaluator, 1);
 		
-		Solution solution1 = mockProblem.newSolution();
-		Solution solution2 = mockProblem.newSolution();
-		Solution solution3 = mockProblem.newSolution();
-		Solution solution4 = mockProblem.newSolution();
+		Solution solution1 = MockSolution.of(mockProblem).withReals(0.25).withObjectives(0.5, 0.5);
+		Solution solution2 = MockSolution.of(mockProblem).withReals(0.75).withObjectives(0.0, 1.0);
+		Solution solution3 = MockSolution.of(mockProblem).withReals(0.5).withObjectives(1.0, 0.0);
+		Solution solution4 = MockSolution.of(mockProblem).withReals(1.0).withObjectives(2.0, 2.0);
 		
-		EncodingUtils.setReal(solution1, new double[] { 0.25 });
-		EncodingUtils.setReal(solution2, new double[] { 0.75 });
-		EncodingUtils.setReal(solution3, new double[] { 0.5 });
-		EncodingUtils.setReal(solution4, new double[] { 1.0 });
-		
-		solution1.setObjectives(new double[] { 0.5, 0.5 });
-		solution2.setObjectives(new double[] { 0.0, 1.0 });
-		solution3.setObjectives(new double[] { 1.0, 0.0 });
-		solution4.setObjectives(new double[] { 2.0, 2.0 });
-
 		Assert.assertTrue(archive.add(solution1));
 		Assert.assertTrue(archive.add(solution2)); // non-dominated and better fitness
 		Assert.assertTrue(archive.add(solution3)); // non-dominated but has worse fitness

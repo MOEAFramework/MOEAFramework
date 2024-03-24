@@ -27,9 +27,9 @@ import org.moeaframework.TestUtils;
 import org.moeaframework.analysis.io.MetricFileWriter.MetricFileWriterSettings;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
-import org.moeaframework.core.Solution;
 import org.moeaframework.core.indicator.Indicators;
 import org.moeaframework.core.spi.ProblemFactory;
+import org.moeaframework.mock.MockSolution;
 
 public class MetricFileWriterTest {
 
@@ -41,8 +41,8 @@ public class MetricFileWriterTest {
 		Indicators indicators = Indicators.standard(problem, referenceSet);
 
 		NondominatedPopulation approximationSet = new NondominatedPopulation();
-		approximationSet.add(new Solution(new double[] { 0.0, 1.0 }));
-		approximationSet.add(new Solution(new double[] { 1.0, 0.0 }));
+		approximationSet.add(MockSolution.of().withObjectives(0.0, 1.0));
+		approximationSet.add(MockSolution.of().withObjectives(1.0, 0.0));
 
 		try (MetricFileWriter writer = MetricFileWriter.append(indicators, file)) {
 			Assert.assertEquals(0, writer.getNumberOfEntries());
@@ -80,8 +80,8 @@ public class MetricFileWriterTest {
 		Indicators indicators = Indicators.standard(problem, referenceSet);
 
 		NondominatedPopulation approximationSet = new NondominatedPopulation();
-		approximationSet.add(new Solution(new double[] { 0.0, 1.0 }));
-		approximationSet.add(new Solution(new double[] { 1.0, 0.0 }));
+		approximationSet.add(MockSolution.of().withObjectives(0.0, 1.0));
+		approximationSet.add(MockSolution.of().withObjectives(1.0, 0.0));
 
 		try (MetricFileWriter writer = MetricFileWriter.overwrite(indicators, file)) {
 			Assert.assertEquals(0, writer.getNumberOfEntries());
@@ -126,8 +126,8 @@ public class MetricFileWriterTest {
 		Indicators indicators = Indicators.standard(problem, referenceSet);
 
 		NondominatedPopulation approximationSet = new NondominatedPopulation();
-		approximationSet.add(new Solution(new double[] { 0.0, 1.0 }));
-		approximationSet.add(new Solution(new double[] { 1.0, 0.0 }));
+		approximationSet.add(MockSolution.of().withObjectives(0.0, 1.0));
+		approximationSet.add(MockSolution.of().withObjectives(1.0, 0.0));
 
 		try (MetricFileWriter writer = MetricFileWriter.append(indicators, file)) {
 			Assert.assertEquals(0, writer.getNumberOfEntries());

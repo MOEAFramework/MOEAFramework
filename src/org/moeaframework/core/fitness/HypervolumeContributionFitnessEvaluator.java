@@ -67,7 +67,7 @@ public class HypervolumeContributionFitnessEvaluator implements FitnessEvaluator
 	public void evaluate(Population population) {
 		if (population.size() <= 2) {
 			for (Solution solution : population) {
-				solution.setAttribute(FITNESS_ATTRIBUTE, 0.0);
+				FitnessEvaluator.setFitness(solution, 0.0);
 			}
 		} else {
 			int numberOfObjectives = problem.getNumberOfObjectives();
@@ -84,7 +84,7 @@ public class HypervolumeContributionFitnessEvaluator implements FitnessEvaluator
 				double volume = PISAHypervolume.calculateHypervolume(solutionsCopy, solutionsCopy.size(),
 						numberOfObjectives);
 				
-				population.get(i).setAttribute(FITNESS_ATTRIBUTE, totalVolume - volume);
+				FitnessEvaluator.setFitness(population.get(i), totalVolume - volume);
 			}
 		}
 	}

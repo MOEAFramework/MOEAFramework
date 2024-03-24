@@ -151,7 +151,7 @@ public abstract class ExternalProblem implements Problem {
 	 * @param socket the socket used to send solutions to be evaluated
 	 * @throws IOException if an I/O error occurred
 	 */
-	ExternalProblem(Socket socket) throws IOException {
+	protected ExternalProblem(Socket socket) throws IOException {
 		this(socket.getInputStream(), socket.getOutputStream());
 	}
 
@@ -160,7 +160,7 @@ public abstract class ExternalProblem implements Problem {
 	 * 
 	 * @param process the process used to evaluate solutions
 	 */
-	ExternalProblem(Process process) {
+	protected ExternalProblem(Process process) {
 		this(process.getInputStream(), process.getOutputStream());
 		RedirectStream.redirect(process.getErrorStream(), System.err);
 		
@@ -173,12 +173,12 @@ public abstract class ExternalProblem implements Problem {
 	 * @param input the input stream
 	 * @param output the output stream
 	 */
-	ExternalProblem(InputStream input, OutputStream output) {
+	protected ExternalProblem(InputStream input, OutputStream output) {
 		super();
 		reader = new BufferedReader(new InputStreamReader(input));
 		writer = new BufferedWriter(new OutputStreamWriter(output));
 		
-		if (Settings.getExternalProblemDebuggingEnabled()) {
+		if (Settings.isExternalProblemDebuggingEnabled()) {
 			setDebugStream(System.out);
 		}
 	}

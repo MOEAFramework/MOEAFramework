@@ -20,7 +20,7 @@ package org.moeaframework.core.termination;
 import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.core.NondominatedPopulation;
-import org.moeaframework.core.Solution;
+import org.moeaframework.mock.MockSolution;
 
 public class TargetObjectiveTerminationTest {
 
@@ -42,16 +42,16 @@ public class TargetObjectiveTerminationTest {
 		termination.initialize(algorithm);
 		Assert.assertFalse(termination.shouldTerminate(algorithm));
 		
-		result.add(new Solution(new double[] { 0, 0 }));
+		result.add(MockSolution.of().withObjectives(0, 0));
 		Assert.assertTrue(termination.shouldTerminate(algorithm));
 		
 		result.clear();
-		result.add(new Solution(new double[] { 0.1, 0.1 }));
+		result.add(MockSolution.of().withObjectives(0.1, 0.1));
 		Assert.assertFalse(termination.shouldTerminate(algorithm));
 		
 		result.clear();
-		result.add(new Solution(new double[] { 0.1, 0.1 }));
-		result.add(new Solution(new double[] { 0, 0 }));
+		result.add(MockSolution.of().withObjectives(0.1, 0.1));
+		result.add(MockSolution.of().withObjectives(0, 0));
 		Assert.assertTrue(termination.shouldTerminate(algorithm));
 	}
 	
@@ -73,20 +73,20 @@ public class TargetObjectiveTerminationTest {
 		termination.initialize(algorithm);
 		Assert.assertFalse(termination.shouldTerminate(algorithm));
 		
-		result.add(new Solution(new double[] { 0, 0 }));
+		result.add(MockSolution.of().withObjectives(0, 0));
 		Assert.assertTrue(termination.shouldTerminate(algorithm));
 		
 		result.clear();
-		result.add(new Solution(new double[] { 0.1, 0.1 }));
+		result.add(MockSolution.of().withObjectives(0.1, 0.1));
 		Assert.assertTrue(termination.shouldTerminate(algorithm));
 		
 		result.clear();
-		result.add(new Solution(new double[] { 0.6, 0.6 }));
+		result.add(MockSolution.of().withObjectives(0.6, 0.6));
 		Assert.assertFalse(termination.shouldTerminate(algorithm));
 		
 		result.clear();
-		result.add(new Solution(new double[] { 0.6, 0.6 }));
-		result.add(new Solution(new double[] { 0.1, 0.1 }));
+		result.add(MockSolution.of().withObjectives(0.6, 0.6));
+		result.add(MockSolution.of().withObjectives(0.1, 0.1));
 		Assert.assertTrue(termination.shouldTerminate(algorithm));
 	}
 	

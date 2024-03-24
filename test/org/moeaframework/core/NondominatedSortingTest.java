@@ -20,10 +20,13 @@ package org.moeaframework.core;
 import static org.moeaframework.core.FastNondominatedSorting.CROWDING_ATTRIBUTE;
 import static org.moeaframework.core.FastNondominatedSorting.RANK_ATTRIBUTE;
 
+import java.util.List;
+
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.moeaframework.mock.MockSolution;
 
 public class NondominatedSortingTest {
 
@@ -42,110 +45,78 @@ public class NondominatedSortingTest {
 		sorting = null;
 	}
 
-	/**
-	 * Returns the rank of the specified solution.
-	 * 
-	 * @param solution the solution
-	 * @return the rank of the specified solution
-	 */
-	private int getRank(Solution solution) {
-		return (Integer)solution.getAttribute(RANK_ATTRIBUTE);
-	}
-	
-	/**
-	 * Returns the crowding distance of the specified solution.
-	 * 
-	 * @param solution the solution
-	 * @return the crowding distance of the specified solution
-	 */
-	private double getCrowding(Solution solution) {
-		return (Double)solution.getAttribute(CROWDING_ATTRIBUTE);
-	}
-
 	@Test
 	public void testRankAssignment() {
-		Solution solution1 = new Solution(new double[] { 0.0, 0.0 });
-		Solution solution2 = new Solution(new double[] { 0.5, 0.5 });
-		Solution solution3 = new Solution(new double[] { 1.0, 1.0 });
+		Solution solution1 = MockSolution.of().withObjectives(0.0, 0.0);
+		Solution solution2 = MockSolution.of().withObjectives(0.5, 0.5);
+		Solution solution3 = MockSolution.of().withObjectives(1.0, 1.0);
 
-		population.add(solution1);
-		population.add(solution2);
-		population.add(solution3);
-
+		population.addAll(List.of(solution1, solution2, solution3));
 		sorting.evaluate(population);
 		
 		assertHasAttributes(population);
 
-		Assert.assertEquals(0, getRank(solution1));
-		Assert.assertEquals(1, getRank(solution2));
-		Assert.assertEquals(2, getRank(solution3));
+		Assert.assertEquals(0, NondominatedSorting.getRank(solution1));
+		Assert.assertEquals(1, NondominatedSorting.getRank(solution2));
+		Assert.assertEquals(2, NondominatedSorting.getRank(solution3));
 	}
 
 	@Test
 	public void testCrowdingAssignment() {
-		Solution solution1 = new Solution(new double[] { 0.0, 1.0 });
-		Solution solution2 = new Solution(new double[] { 0.5, 0.5 });
-		Solution solution3 = new Solution(new double[] { 1.0, 0.0 });
-
-		population.add(solution1);
-		population.add(solution2);
-		population.add(solution3);
-
+		Solution solution1 = MockSolution.of().withObjectives(0.0, 1.0);
+		Solution solution2 = MockSolution.of().withObjectives(0.5, 0.5);
+		Solution solution3 = MockSolution.of().withObjectives(1.0, 0.0);
+		
+		population.addAll(List.of(solution1, solution2, solution3));
 		sorting.evaluate(population);
 		
 		assertHasAttributes(population);
 
-		Assert.assertEquals(0, getRank(solution1));
-		Assert.assertEquals(0, getRank(solution2));
-		Assert.assertEquals(0, getRank(solution3));
-		Assert.assertEquals(Double.POSITIVE_INFINITY, getCrowding(solution1), Settings.EPS);
-		Assert.assertEquals(2.0, getCrowding(solution2), Settings.EPS);
-		Assert.assertEquals(Double.POSITIVE_INFINITY, getCrowding(solution3), Settings.EPS);
+		Assert.assertEquals(0, NondominatedSorting.getRank(solution1));
+		Assert.assertEquals(0, NondominatedSorting.getRank(solution2));
+		Assert.assertEquals(0, NondominatedSorting.getRank(solution3));
+		Assert.assertEquals(Double.POSITIVE_INFINITY, NondominatedSorting.getCrowding(solution1), Settings.EPS);
+		Assert.assertEquals(2.0, NondominatedSorting.getCrowding(solution2), Settings.EPS);
+		Assert.assertEquals(Double.POSITIVE_INFINITY, NondominatedSorting.getCrowding(solution3), Settings.EPS);
 	}
 
 	@Test
 	public void testIdenticalSolutions() {
-		Solution solution1 = new Solution(new double[] { 0.0, 1.0 });
-		Solution solution2 = new Solution(new double[] { 0.5, 0.5 });
-		Solution solution3 = new Solution(new double[] { 0.0, 1.0 });
+		Solution solution1 = MockSolution.of().withObjectives(0.0, 1.0);
+		Solution solution2 = MockSolution.of().withObjectives(0.5, 0.5);
+		Solution solution3 = MockSolution.of().withObjectives(0.0, 1.0);
 
-		population.add(solution1);
-		population.add(solution2);
-		population.add(solution3);
-
+		population.addAll(List.of(solution1, solution2, solution3));
 		sorting.evaluate(population);
 		
 		assertHasAttributes(population);
 
-		Assert.assertEquals(0, getRank(solution1));
-		Assert.assertEquals(0, getRank(solution2));
-		Assert.assertEquals(0, getRank(solution3));
+		Assert.assertEquals(0, NondominatedSorting.getRank(solution1));
+		Assert.assertEquals(0, NondominatedSorting.getRank(solution2));
+		Assert.assertEquals(0, NondominatedSorting.getRank(solution3));
 		
-		Assert.assertTrue(Double.isInfinite(getCrowding(solution1)));
-		Assert.assertEquals(0.0, getCrowding(solution3), Settings.EPS);
+		Assert.assertTrue(Double.isInfinite(NondominatedSorting.getCrowding(solution1)));
+		Assert.assertEquals(0.0, NondominatedSorting.getCrowding(solution3), Settings.EPS);
 	}
 	
 	@Test
 	public void testSingularDimension() {
-		Solution solution1 = new Solution(new double[] { 0.0, 0.0, 1.0 });
-		Solution solution2 = new Solution(new double[] { 0.5, 0.0, 0.5 });
-		Solution solution3 = new Solution(new double[] { 1.0, 0.0, 0.0 });
+		Solution solution1 = MockSolution.of().withObjectives(0.0, 0.0, 1.0);
+		Solution solution2 = MockSolution.of().withObjectives(0.5, 0.0, 0.5);
+		Solution solution3 = MockSolution.of().withObjectives(1.0, 0.0, 0.0);
 
-		population.add(solution1);
-		population.add(solution2);
-		population.add(solution3);
-
+		population.addAll(List.of(solution1, solution2, solution3));
 		sorting.evaluate(population);
 		
 		assertHasAttributes(population);
 
-		Assert.assertEquals(0, getRank(solution1));
-		Assert.assertEquals(0, getRank(solution2));
-		Assert.assertEquals(0, getRank(solution3));
+		Assert.assertEquals(0, NondominatedSorting.getRank(solution1));
+		Assert.assertEquals(0, NondominatedSorting.getRank(solution2));
+		Assert.assertEquals(0, NondominatedSorting.getRank(solution3));
 		
-		Assert.assertTrue(Double.isInfinite(getCrowding(solution1)));
-		Assert.assertFalse(Double.isNaN(getCrowding(solution2)));
-		Assert.assertTrue(Double.isInfinite(getCrowding(solution3)));
+		Assert.assertTrue(Double.isInfinite(NondominatedSorting.getCrowding(solution1)));
+		Assert.assertFalse(Double.isNaN(NondominatedSorting.getCrowding(solution2)));
+		Assert.assertTrue(Double.isInfinite(NondominatedSorting.getCrowding(solution3)));
 	}
 	
 	private void assertHasAttributes(Population population) {

@@ -34,6 +34,7 @@ import org.moeaframework.core.variable.BinaryVariable;
 import org.moeaframework.core.variable.Grammar;
 import org.moeaframework.core.variable.Permutation;
 import org.moeaframework.core.variable.RealVariable;
+import org.moeaframework.mock.MockSolution;
 import org.moeaframework.problem.AbstractProblem;
 import org.moeaframework.util.TypedProperties;
 
@@ -394,8 +395,8 @@ public class ResultFileReaderTest {
 	
 	private void validateCompleteNoVariables(ResultFileReader reader) throws IOException {
 		population.clear();
-		population.add(new Solution(new double[] { 0.0, 1.0 }));
-		population.add(new Solution(new double[] { 1.0, 0.0 }));
+		population.add(MockSolution.of().withObjectives(0.0, 1.0));
+		population.add(MockSolution.of().withObjectives(1.0, 0.0));
 		
 		Assert.assertTrue(reader.hasNext());
 		TestUtils.assertEquals(population, reader.next().getPopulation());

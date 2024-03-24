@@ -21,7 +21,7 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.moeaframework.TestUtils;
+import org.moeaframework.mock.MockSolution;
 
 public class EpsilonBoxDominanceArchiveTest {
 
@@ -39,9 +39,9 @@ public class EpsilonBoxDominanceArchiveTest {
 
 	@Test
 	public void testDiscardedSolutions() {
-		Solution solution1 = new Solution(new double[] { 0.0, 0.0 });
-		Solution solution2 = new Solution(new double[] { 1.0, 1.0 });
-		Solution solution3 = new Solution(new double[] { 1.0, 0.0 });
+		Solution solution1 = MockSolution.of().withObjectives(0.0, 0.0);
+		Solution solution2 = MockSolution.of().withObjectives(1.0, 1.0);
+		Solution solution3 = MockSolution.of().withObjectives(1.0, 0.0);
 
 		Assert.assertTrue(archive.add(solution1));
 		Assert.assertFalse(archive.add(solution2));
@@ -54,9 +54,9 @@ public class EpsilonBoxDominanceArchiveTest {
 
 	@Test
 	public void testDominatingSolutions() {
-		Solution solution1 = new Solution(new double[] { 1.0, 1.0 });
-		Solution solution2 = new Solution(new double[] { 1.0, 0.0 });
-		Solution solution3 = new Solution(new double[] { 0.0, 0.0 });
+		Solution solution1 = MockSolution.of().withObjectives(1.0, 1.0);
+		Solution solution2 = MockSolution.of().withObjectives(1.0, 0.0);
+		Solution solution3 = MockSolution.of().withObjectives(0.0, 0.0);
 
 		Assert.assertTrue(archive.add(solution1));
 		Assert.assertTrue(archive.add(solution2));
@@ -69,9 +69,9 @@ public class EpsilonBoxDominanceArchiveTest {
 
 	@Test
 	public void testNondominatedSolutions() {
-		Solution solution1 = new Solution(new double[] { 1.0, 1.0 });
-		Solution solution2 = new Solution(new double[] { 0.25, 0.75 });
-		Solution solution3 = new Solution(new double[] { 0.75, 0.25 });
+		Solution solution1 = MockSolution.of().withObjectives(1.0, 1.0);
+		Solution solution2 = MockSolution.of().withObjectives(0.25, 0.75);
+		Solution solution3 = MockSolution.of().withObjectives(0.75, 0.25);
 
 		Assert.assertTrue(archive.add(solution1));
 		Assert.assertTrue(archive.add(solution2));
@@ -83,9 +83,9 @@ public class EpsilonBoxDominanceArchiveTest {
 
 	@Test
 	public void testSameBoxDominatedSolutions() {
-		Solution solution1 = new Solution(new double[] { 1.0, 1.0 });
-		Solution solution2 = new Solution(new double[] { 0.4, 0.4 });
-		Solution solution3 = new Solution(new double[] { 0.3, 0.3 });
+		Solution solution1 = MockSolution.of().withObjectives(1.0, 1.0);
+		Solution solution2 = MockSolution.of().withObjectives(0.4, 0.4);
+		Solution solution3 = MockSolution.of().withObjectives(0.3, 0.3);
 
 		Assert.assertTrue(archive.add(solution1));
 		Assert.assertTrue(archive.add(solution2));
@@ -97,9 +97,9 @@ public class EpsilonBoxDominanceArchiveTest {
 
 	@Test
 	public void testSameBoxNonDominatedSolutions() {
-		Solution solution1 = new Solution(new double[] { 1.0, 1.0 });
-		Solution solution2 = new Solution(new double[] { 0.24, 0.26 });
-		Solution solution3 = new Solution(new double[] { 0.26, 0.24 });
+		Solution solution1 = MockSolution.of().withObjectives(1.0, 1.0);
+		Solution solution2 = MockSolution.of().withObjectives(0.24, 0.26);
+		Solution solution3 = MockSolution.of().withObjectives(0.26, 0.24);
 
 		Assert.assertTrue(archive.add(solution1));
 		Assert.assertTrue(archive.add(solution2));
@@ -112,16 +112,16 @@ public class EpsilonBoxDominanceArchiveTest {
 	@Test
 	public void testAgainstPlatypus() {
 		// Mirrors test cases used by Project-Platypus/Platypus
-		Solution s1 = TestUtils.newSolution(0.25, 0.25);     // First solution (improvement)
-		Solution s2 = TestUtils.newSolution(0.10, 0.10);     // Dominating improvement
-		Solution s3 = TestUtils.newSolution(0.24, 0.24);     // Dominated
-		Solution s4 = TestUtils.newSolution(0.09, 0.50);     // Non-dominated (improvement)
-		Solution s5 = TestUtils.newSolution(0.50, 0.50);     // Dominated
-		Solution s6 = TestUtils.newSolution(0.05, 0.05);     // Dominating improvement
-		Solution s7 = TestUtils.newSolution(0.04, 0.04);     // Dominating improvement (within same box)
-		Solution s8 = TestUtils.newSolution(0.02, 0.02);     // Dominating improvement (within same box)
-		Solution s9 = TestUtils.newSolution(0.00, 0.00);     // Dominating improvement (within same box)
-		Solution s10 = TestUtils.newSolution(-0.01, -0.01);  // Dominating improvement (new box)
+		Solution s1 = MockSolution.of().withObjectives(0.25, 0.25);     // First solution (improvement)
+		Solution s2 = MockSolution.of().withObjectives(0.10, 0.10);     // Dominating improvement
+		Solution s3 = MockSolution.of().withObjectives(0.24, 0.24);     // Dominated
+		Solution s4 = MockSolution.of().withObjectives(0.09, 0.50);     // Non-dominated (improvement)
+		Solution s5 = MockSolution.of().withObjectives(0.50, 0.50);     // Dominated
+		Solution s6 = MockSolution.of().withObjectives(0.05, 0.05);     // Dominating improvement
+		Solution s7 = MockSolution.of().withObjectives(0.04, 0.04);     // Dominating improvement (within same box)
+		Solution s8 = MockSolution.of().withObjectives(0.02, 0.02);     // Dominating improvement (within same box)
+		Solution s9 = MockSolution.of().withObjectives(0.00, 0.00);     // Dominating improvement (within same box)
+		Solution s10 = MockSolution.of().withObjectives(-0.01, -0.01);  // Dominating improvement (new box)
 		
 		Solution[] solutions = new Solution[] { s1, s2, s3, s4, s5, s6, s7, s8, s9, s10 };
 		int[] expectedImprovements = new int[] { 1, 2, 2, 3, 3, 4, 4, 4, 4, 5 };

@@ -22,12 +22,12 @@ import java.io.IOException;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.moeaframework.TestUtils;
 import org.moeaframework.core.Indicator;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PopulationIO;
 import org.moeaframework.core.Problem;
 import org.moeaframework.mock.MockRealProblem;
+import org.moeaframework.mock.MockSolution;
 
 /**
  * The raw values used here were produced using the PISA r-ind.exe program.
@@ -57,11 +57,11 @@ public class R2IndicatorTest extends AbstractIndicatorTest<R2Indicator> {
 		Indicator indicator = createInstance(new MockRealProblem(2), referenceSet);
 		
 		NondominatedPopulation population1 = new NondominatedPopulation();
-		population1.add(TestUtils.newSolution(0.75, 0.25));
-		population1.add(TestUtils.newSolution(0.25, 0.75));
+		population1.add(MockSolution.of().withObjectives(0.75, 0.25));
+		population1.add(MockSolution.of().withObjectives(0.25, 0.75));
 		
 		NondominatedPopulation population2 = new NondominatedPopulation();
-		population2.add(TestUtils.newSolution(0.5, 0.5));
+		population2.add(MockSolution.of().withObjectives(0.5, 0.5));
 		
 		Assert.assertTrue(indicator.evaluate(population1) < indicator.evaluate(population2));
 	}
@@ -74,8 +74,8 @@ public class R2IndicatorTest extends AbstractIndicatorTest<R2Indicator> {
 		Indicator indicator = createInstance(new MockRealProblem(2), referenceSet);
 		
 		NondominatedPopulation population = new NondominatedPopulation();
-		population.add(TestUtils.newSolution(0.75, 0.25));
-		population.add(TestUtils.newSolution(0.25, 0.75));
+		population.add(MockSolution.of().withObjectives(0.75, 0.25));
+		population.add(MockSolution.of().withObjectives(0.25, 0.75));
 		
 		Assert.assertEquals(3.245073179e-002, indicator.evaluate(population), 0.000001);
 	}

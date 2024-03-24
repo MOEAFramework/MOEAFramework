@@ -24,6 +24,7 @@ import org.junit.Test;
 import org.moeaframework.core.NondominatedPopulation.DuplicateMode;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.mock.MockBinaryProblem;
+import org.moeaframework.mock.MockSolution;
 
 public class NondominatedPopulationTest {
 
@@ -31,8 +32,8 @@ public class NondominatedPopulationTest {
 	public void testAddSimilar() {
 		NondominatedPopulation population = new NondominatedPopulation();
 
-		Solution solution1 = new Solution(new double[] { 0.0, 0.0, Settings.EPS / 2.0 });
-		Solution solution2 = new Solution(new double[] { 0.0, Settings.EPS / 2.0, 0.0 });
+		Solution solution1 = MockSolution.of().withObjectives(0.0, 0.0, Settings.EPS / 2.0);
+		Solution solution2 = MockSolution.of().withObjectives(0.0, Settings.EPS / 2.0, 0.0);
 
 		Assert.assertTrue(population.add(solution1));
 		Assert.assertFalse(population.add(solution2));
@@ -44,12 +45,12 @@ public class NondominatedPopulationTest {
 	public void testAdd() {
 		NondominatedPopulation population = new NondominatedPopulation();
 
-		Solution solution1 = new Solution(new double[] { 1.0, 2.0, 3.0 });
-		Solution solution2 = new Solution(new double[] { 1.0, 3.0, 2.0 });
-		Solution solution3 = new Solution(new double[] { 2.0, 1.0, 3.0 });
-		Solution solution4 = new Solution(new double[] { 1.0, 1.0, 3.0 });
-		Solution solution5 = new Solution(new double[] { 1.0, 2.0, 3.0 });
-		Solution solution6 = new Solution(new double[] { 1.0, 1.0, 3.0 });
+		Solution solution1 = MockSolution.of().withObjectives(1.0, 2.0, 3.0);
+		Solution solution2 = MockSolution.of().withObjectives(1.0, 3.0, 2.0);
+		Solution solution3 = MockSolution.of().withObjectives(2.0, 1.0, 3.0);
+		Solution solution4 = MockSolution.of().withObjectives(1.0, 1.0, 3.0);
+		Solution solution5 = MockSolution.of().withObjectives(1.0, 2.0, 3.0);
+		Solution solution6 = MockSolution.of().withObjectives(1.0, 1.0, 3.0);
 
 		Assert.assertTrue(population.add(solution1));
 		Assert.assertTrue(population.add(solution2));
@@ -70,8 +71,8 @@ public class NondominatedPopulationTest {
 	public void testReplace() {
 		NondominatedPopulation population = new NondominatedPopulation();
 
-		Solution solution1 = new Solution(new double[] { 1.0, 2.0, 3.0 });
-		Solution solution2 = new Solution(new double[] { 1.0, 3.0, 2.0 });
+		Solution solution1 = MockSolution.of().withObjectives(1.0, 2.0, 3.0);
+		Solution solution2 = MockSolution.of().withObjectives(1.0, 3.0, 2.0);
 
 		population.add(solution1);
 		population.replace(0, solution2);
@@ -82,9 +83,8 @@ public class NondominatedPopulationTest {
 		NondominatedPopulation population = new NondominatedPopulation(DuplicateMode.NO_DUPLICATE_OBJECTIVES);
 		
 		try (MockBinaryProblem problem = new MockBinaryProblem()) {
-			Solution solution1 = problem.newSolution();
+			Solution solution1 = MockSolution.of(problem).withObjectives(0.5);
 			EncodingUtils.setBitSet(solution1.getVariable(0), new BitSet(10));
-			solution1.setObjectives(new double[] { 0.5 });
 			
 			Solution solution2 = solution1.copy();
 			
@@ -104,9 +104,8 @@ public class NondominatedPopulationTest {
 		NondominatedPopulation population = new NondominatedPopulation(DuplicateMode.ALLOW_DUPLICATES);
 		
 		try (MockBinaryProblem problem = new MockBinaryProblem()) {
-			Solution solution1 = problem.newSolution();
+			Solution solution1 = MockSolution.of(problem).withObjectives(0.5);
 			EncodingUtils.setBitSet(solution1.getVariable(0), new BitSet(10));
-			solution1.setObjectives(new double[] { 0.5 });
 			
 			Solution solution2 = solution1.copy();
 			
@@ -126,9 +125,8 @@ public class NondominatedPopulationTest {
 		NondominatedPopulation population = new NondominatedPopulation(DuplicateMode.ALLOW_DUPLICATE_OBJECTIVES);
 		
 		try (MockBinaryProblem problem = new MockBinaryProblem()) {
-			Solution solution1 = problem.newSolution();
+			Solution solution1 = MockSolution.of(problem).withObjectives(0.5);
 			EncodingUtils.setBitSet(solution1.getVariable(0), new BitSet(10));
-			solution1.setObjectives(new double[] { 0.5 });
 			
 			Solution solution2 = solution1.copy();
 			

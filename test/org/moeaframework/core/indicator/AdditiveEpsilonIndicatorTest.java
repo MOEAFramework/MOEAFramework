@@ -19,13 +19,13 @@ package org.moeaframework.core.indicator;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.moeaframework.TestUtils;
 import org.moeaframework.core.Indicator;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.mock.MockRealProblem;
+import org.moeaframework.mock.MockSolution;
 
 public class AdditiveEpsilonIndicatorTest extends AbstractIndicatorTest<AdditiveEpsilonIndicator> {
 	
@@ -47,29 +47,29 @@ public class AdditiveEpsilonIndicatorTest extends AbstractIndicatorTest<Additive
 		
 		NondominatedPopulation approximationSet = new NondominatedPopulation();
 		
-		approximationSet.add(TestUtils.newSolution(0.0, 1.0));
+		approximationSet.add(MockSolution.of(problem).withObjectives(0.0, 1.0));
 		Assert.assertEquals(1.0, indicator.evaluate(approximationSet), Settings.EPS);
 		
 		approximationSet.clear();
-		approximationSet.add(TestUtils.newSolution(1.0, 1.0));
+		approximationSet.add(MockSolution.of(problem).withObjectives(1.0, 1.0));
 		Assert.assertEquals(1.0, indicator.evaluate(approximationSet), Settings.EPS);
 		
 		approximationSet.clear();
-		approximationSet.add(TestUtils.newSolution(2.0, 2.0));
+		approximationSet.add(MockSolution.of(problem).withObjectives(2.0, 2.0));
 		Assert.assertEquals(2.0, indicator.evaluate(approximationSet), Settings.EPS);
 		
 		approximationSet.clear();
-		approximationSet.add(TestUtils.newSolution(0.0, 0.0));
+		approximationSet.add(MockSolution.of(problem).withObjectives(0.0, 0.0));
 		Assert.assertEquals(0.0, indicator.evaluate(approximationSet), Settings.EPS);
 		
 		approximationSet.clear();
-		approximationSet.add(TestUtils.newSolution(0.0, 1.0));
-		approximationSet.add(TestUtils.newSolution(1.0, 0.0));
+		approximationSet.add(MockSolution.of(problem).withObjectives(0.0, 1.0));
+		approximationSet.add(MockSolution.of(problem).withObjectives(1.0, 0.0));
 		Assert.assertEquals(0.0, indicator.evaluate(approximationSet), Settings.EPS);
 
 		approximationSet.clear();
-		approximationSet.add(TestUtils.newSolution(2.0, 0.0));
-		approximationSet.add(TestUtils.newSolution(0.0, 2.0));
+		approximationSet.add(MockSolution.of(problem).withObjectives(2.0, 0.0));
+		approximationSet.add(MockSolution.of(problem).withObjectives(0.0, 2.0));
 		Assert.assertEquals(1.0, indicator.evaluate(approximationSet), Settings.EPS);
 	}
 	

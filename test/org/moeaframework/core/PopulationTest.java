@@ -27,6 +27,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.TestUtils;
+import org.moeaframework.mock.MockSolution;
 import org.moeaframework.util.format.TabularData;
 
 public class PopulationTest {
@@ -37,10 +38,10 @@ public class PopulationTest {
 	public void setUp() {
 		population = new Population();
 
-		population.add(new Solution(new double[] { 3.0, 2.0, 3.0 }));
-		population.add(new Solution(new double[] { 1.0, 2.0, 2.0 }));
-		population.add(new Solution(new double[] { 2.0, 2.0, 3.0 }));
-		population.add(new Solution(new double[] { 4.0, 3.0, 2.0 }));
+		population.add(MockSolution.of().withObjectives(3.0, 2.0, 3.0));
+		population.add(MockSolution.of().withObjectives(1.0, 2.0, 2.0));
+		population.add(MockSolution.of().withObjectives(2.0, 2.0, 3.0));
+		population.add(MockSolution.of().withObjectives(4.0, 3.0, 2.0));
 	}
 
 	@After

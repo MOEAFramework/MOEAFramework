@@ -22,6 +22,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.core.Solution;
+import org.moeaframework.mock.MockSolution;
 
 public class LexicographicalComparatorTest {
 
@@ -39,9 +40,9 @@ public class LexicographicalComparatorTest {
 
 	@Test
 	public void testDominance() {
-		Solution solution1 = new Solution(new double[] { 0, 0 });
-		Solution solution2 = new Solution(new double[] { 0, 1 });
-		Solution solution3 = new Solution(new double[] { 1, 0 });
+		Solution solution1 = MockSolution.of().withObjectives(0, 0);
+		Solution solution2 = MockSolution.of().withObjectives(0, 1);
+		Solution solution3 = MockSolution.of().withObjectives(1, 0);
 
 		Assert.assertTrue(comparator.compare(solution1, solution2) < 0);
 		Assert.assertTrue(comparator.compare(solution2, solution1) > 0);
@@ -53,8 +54,8 @@ public class LexicographicalComparatorTest {
 
 	@Test
 	public void testNondominance() {
-		Solution solution1 = new Solution(new double[] { 0, 0 });
-		Solution solution2 = new Solution(new double[] { 0, 0 });
+		Solution solution1 = MockSolution.of().withObjectives(0, 0);
+		Solution solution2 = MockSolution.of().withObjectives(0, 0);
 
 		Assert.assertTrue(comparator.compare(solution1, solution2) == 0);
 		Assert.assertTrue(comparator.compare(solution2, solution1) == 0);

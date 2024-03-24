@@ -18,6 +18,7 @@
 package org.moeaframework.util;
 
 import java.util.Arrays;
+import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -25,25 +26,20 @@ import org.moeaframework.TestUtils;
 import org.moeaframework.analysis.tools.ReferenceSetMerger;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Solution;
+import org.moeaframework.mock.MockSolution;
 
 public class ReferenceSetMergerTest {
 
 	@Test
 	public void test() {
-		Solution solution1 = new Solution(new double[] { 1.0, 2.0, 3.0 });
-		Solution solution2 = new Solution(new double[] { 1.0, 3.0, 2.0 });
-		Solution solution3 = new Solution(new double[] { 2.0, 1.0, 3.0 });
-		Solution solution4 = new Solution(new double[] { 1.0, 1.0, 3.0 });
-		Solution solution5 = new Solution(new double[] { 3.0, 1.0, 1.0 });
+		Solution solution1 = MockSolution.of().withObjectives(1.0, 2.0, 3.0);
+		Solution solution2 = MockSolution.of().withObjectives(1.0, 3.0, 2.0);
+		Solution solution3 = MockSolution.of().withObjectives(2.0, 1.0, 3.0);
+		Solution solution4 = MockSolution.of().withObjectives(1.0, 1.0, 3.0);
+		Solution solution5 = MockSolution.of().withObjectives(3.0, 1.0, 1.0);
 		
-		NondominatedPopulation population1 = new NondominatedPopulation();
-		NondominatedPopulation population2 = new NondominatedPopulation();
-		
-		population1.add(solution1);
-		population1.add(solution2);
-		population1.add(solution3);
-		population2.add(solution4);
-		population2.add(solution5);
+		NondominatedPopulation population1 = new NondominatedPopulation(List.of(solution1, solution2, solution3));
+		NondominatedPopulation population2 = new NondominatedPopulation(List.of(solution4, solution5));
 		
 		ReferenceSetMerger merger = new ReferenceSetMerger();
 		merger.add("population1", population1);

@@ -19,13 +19,13 @@ package org.moeaframework.core.indicator;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.moeaframework.TestUtils;
 import org.moeaframework.core.Indicator;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.mock.MockRealProblem;
+import org.moeaframework.mock.MockSolution;
 import org.moeaframework.util.PropertyScope;
 
 public abstract class AbstractHypervolumeTest<T extends Indicator> extends AbstractIndicatorTest<T> {
@@ -91,29 +91,29 @@ public abstract class AbstractHypervolumeTest<T extends Indicator> extends Abstr
 		
 		Assert.assertEquals(0.0, hypervolume.evaluate(approximationSet), Settings.EPS);
 		
-		approximationSet.add(TestUtils.newSolution(0.5, 0.5));
+		approximationSet.add(MockSolution.of().withObjectives(0.5, 0.5));
 		Assert.assertEquals(0.25, hypervolume.evaluate(approximationSet), Settings.EPS);
 		
 		approximationSet.clear();
-		approximationSet.add(TestUtils.newSolution(0.0, 0.0));
+		approximationSet.add(MockSolution.of().withObjectives(0.0, 0.0));
 		Assert.assertEquals(1.0, hypervolume.evaluate(approximationSet), Settings.EPS);
 		
 		approximationSet.clear();
-		approximationSet.add(TestUtils.newSolution(1.0, 1.0));
+		approximationSet.add(MockSolution.of().withObjectives(1.0, 1.0));
 		Assert.assertEquals(0.0, hypervolume.evaluate(approximationSet), Settings.EPS);
 		
 		approximationSet.clear();
-		approximationSet.add(TestUtils.newSolution(2.0, 2.0));
+		approximationSet.add(MockSolution.of().withObjectives(2.0, 2.0));
 		Assert.assertEquals(0.0, hypervolume.evaluate(approximationSet), Settings.EPS);
 		
 		approximationSet.clear();
-		approximationSet.add(TestUtils.newSolution(-0.5, -0.5));
+		approximationSet.add(MockSolution.of().withObjectives(-0.5, -0.5));
 		Assert.assertEquals(includesBetterSolutions() ? 2.25 : 1.0, hypervolume.evaluate(approximationSet),
 				Settings.EPS);
 		
 		approximationSet.clear();
-		approximationSet.add(TestUtils.newSolution(0.5, 0.0));
-		approximationSet.add(TestUtils.newSolution(0.0, 0.5));
+		approximationSet.add(MockSolution.of().withObjectives(0.5, 0.0));
+		approximationSet.add(MockSolution.of().withObjectives(0.0, 0.5));
 		Assert.assertEquals(0.75, hypervolume.evaluate(approximationSet), Settings.EPS);
 	}
 	
@@ -126,19 +126,19 @@ public abstract class AbstractHypervolumeTest<T extends Indicator> extends Abstr
 		Assert.assertEquals(0.0, hypervolume.evaluate(approximationSet), Settings.EPS);
 		
 		// target value is 1.5^2 / 2^2
-		approximationSet.add(TestUtils.newSolution(0.5, 0.5));
+		approximationSet.add(MockSolution.of().withObjectives(0.5, 0.5));
 		Assert.assertEquals(0.5625, hypervolume.evaluate(approximationSet),Settings.EPS);
 		
 		approximationSet.clear();
-		approximationSet.add(TestUtils.newSolution(0.0, 0.0));
+		approximationSet.add(MockSolution.of().withObjectives(0.0, 0.0));
 		Assert.assertEquals(1.0, hypervolume.evaluate(approximationSet), Settings.EPS);
 		
 		approximationSet.clear();
-		approximationSet.add(TestUtils.newSolution(1.0, 1.0));
+		approximationSet.add(MockSolution.of().withObjectives(1.0, 1.0));
 		Assert.assertEquals(0.25, hypervolume.evaluate(approximationSet), Settings.EPS);
 		
 		approximationSet.clear();
-		approximationSet.add(TestUtils.newSolution(2.0, 2.0));
+		approximationSet.add(MockSolution.of().withObjectives(2.0, 2.0));
 		Assert.assertEquals(0.0, hypervolume.evaluate(approximationSet), Settings.EPS);
 	}
 	

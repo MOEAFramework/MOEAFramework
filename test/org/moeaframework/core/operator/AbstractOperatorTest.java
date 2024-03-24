@@ -22,9 +22,9 @@ import org.junit.Assume;
 import org.junit.Test;
 import org.moeaframework.TestUtils;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.UnsupportedVariable;
 import org.moeaframework.core.Variable;
 import org.moeaframework.core.Variation;
+import org.moeaframework.mock.MockUnsupportedVariable;
 
 public abstract class AbstractOperatorTest<T extends Variation, S extends Variable> {
 	
@@ -101,7 +101,7 @@ public abstract class AbstractOperatorTest<T extends Variation, S extends Variab
 	 * Variable for testing type safety. Since this variable is unknown to the operators, only the copy() method is
 	 * valid.
 	 */
-	private static class NewVariable extends UnsupportedVariable {
+	private static class NewVariable extends MockUnsupportedVariable {
 
 		private static final long serialVersionUID = 4720298250812900192L;
 

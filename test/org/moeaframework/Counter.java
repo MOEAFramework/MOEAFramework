@@ -15,30 +15,42 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.core;
+package org.moeaframework;
 
-public class UnsupportedVariable implements Variable {
+import java.util.HashMap;
+import java.util.Map;
 
-	private static final long serialVersionUID = 7614517658356868257L;
-
-	@Override
-	public Variable copy() {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public void randomize() {
-		throw new UnsupportedOperationException();
+public class Counter<T> {
+	
+	private final Map<T, Integer> counters;
+	
+	public Counter() {
+		super();
+		this.counters = new HashMap<T, Integer>();
 	}
 	
-	@Override
-	public String encode() {
-		throw new UnsupportedOperationException();
+	public <S extends T> void incrementAll(S[] values) {
+		for (S value : values) {
+			incrementAndGet(value);
+		}
 	}
 	
-	@Override
-	public void decode(String value) {
-		throw new UnsupportedOperationException();
+	public <S extends T> void incrementAll(Iterable<S> iterable) {
+		for (S value : iterable) {
+			incrementAndGet(value);
+		}
 	}
 	
+	public int incrementAndGet(T value) {
+		Integer count = counters.get(value);
+		count = count == null ? 1 : count + 1;
+		counters.put(value, count);
+		return count;
+	}
+	
+	public int get(T value) {
+		Integer count = counters.get(value);
+		return count == null ? 0 : count;
+	}
+
 }

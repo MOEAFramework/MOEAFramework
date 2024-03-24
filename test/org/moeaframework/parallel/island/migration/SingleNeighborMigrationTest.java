@@ -24,6 +24,7 @@ import org.junit.Test;
 import org.moeaframework.TestUtils;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.selection.TournamentSelection;
+import org.moeaframework.mock.MockSolution;
 import org.moeaframework.parallel.island.AbstractIslandModelTest;
 import org.moeaframework.parallel.island.Island;
 
@@ -36,9 +37,9 @@ public class SingleNeighborMigrationTest extends AbstractIslandModelTest {
 		
 		Migration migration = new SingleNeighborMigration(1, new TournamentSelection());
 		
-		Solution solution1 = TestUtils.newSolution(0.0, 0.5);
-		Solution solution2 = TestUtils.newSolution(1.0, 1.0);
-		Solution solution3 = TestUtils.newSolution(0.5, 0.0);
+		Solution solution1 = MockSolution.of().withObjectives(0.0, 0.5);
+		Solution solution2 = MockSolution.of().withObjectives(1.0, 1.0);
+		Solution solution3 = MockSolution.of().withObjectives(0.5, 0.0);
 		
 		current.getPopulation().add(solution1);
 		neighbor.getPopulation().add(solution2);

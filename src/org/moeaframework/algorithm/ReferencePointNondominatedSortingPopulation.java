@@ -17,8 +17,6 @@
  */
 package org.moeaframework.algorithm;
 
-import static org.moeaframework.core.FastNondominatedSorting.RANK_ATTRIBUTE;
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -30,6 +28,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.moeaframework.core.FrameworkException;
+import org.moeaframework.core.NondominatedSorting;
 import org.moeaframework.core.NondominatedSortingPopulation;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Population;
@@ -493,12 +492,12 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 		if (size() > size) {
 			// remove all solutions past the last front
 			sort(new RankComparator());
-
-			int maxRank = (Integer)super.get(size-1).getAttribute(RANK_ATTRIBUTE);
+			
+			int maxRank = NondominatedSorting.getRank(super.get(size-1));
 			Population front = new Population();
 
 			for (int i = 0; i < size(); i++) {
-				int rank = (Integer)get(i).getAttribute(RANK_ATTRIBUTE);
+				int rank = NondominatedSorting.getRank(get(i));
 				
 				if (rank > maxRank) {
 					front.add(get(i));
@@ -512,7 +511,7 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 
 			// translate objectives so the ideal point is at the origin
 			translateByIdealPoint();
-
+			
 			// calculate the extreme points, calculate the hyperplane defined
 			// by the extreme points, and compute the intercepts
 			normalizeByIntercepts(calculateIntercepts());
@@ -521,7 +520,7 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 			front = new Population();
 
 			for (int i = 0; i < size(); i++) {
-				int rank = (Integer)get(i).getAttribute(RANK_ATTRIBUTE);
+				int rank = NondominatedSorting.getRank(get(i));
 
 				if (rank == maxRank) {
 					front.add(get(i));
@@ -534,7 +533,7 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 			List<List<Solution>> members = associateToReferencePoint(this);
 			List<List<Solution>> potentialMembers = associateToReferencePoint(front);
 			Set<Integer> excluded = new HashSet<Integer>();
-
+			
 			// loop over niche-preservation operation until population is full
 			while (size() < size) {
 				// identify reference point with the fewest associated members

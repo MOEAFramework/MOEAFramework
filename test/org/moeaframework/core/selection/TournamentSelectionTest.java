@@ -17,6 +17,8 @@
  */
 package org.moeaframework.core.selection;
 
+import java.util.List;
+
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -26,6 +28,7 @@ import org.moeaframework.algorithm.single.LinearDominanceComparator;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
+import org.moeaframework.mock.MockSolution;
 
 public class TournamentSelectionTest {
 
@@ -37,14 +40,11 @@ public class TournamentSelectionTest {
 
 	@Before
 	public void setUp() {
-		solution1 = new Solution(new double[] { 0 });
-		solution2 = new Solution(new double[] { 1 });
-		solution3 = new Solution(new double[] { 2 });
+		solution1 = MockSolution.of().withObjectives(0);
+		solution2 = MockSolution.of().withObjectives(1);
+		solution3 = MockSolution.of().withObjectives(2);
 
-		population = new Population();
-		population.add(solution1);
-		population.add(solution2);
-		population.add(solution3);
+		population = new Population(List.of(solution1, solution2, solution3));
 	}
 
 	@After
@@ -140,7 +140,7 @@ public class TournamentSelectionTest {
 		Population population = new Population();
 
 		for (int i = 0; i < populationSize; i++) {
-			population.add(new Solution(new double[] { i }));
+			population.add(MockSolution.of().withObjectives(i));
 		}
 
 		int[] counts = new int[populationSize];
@@ -154,8 +154,7 @@ public class TournamentSelectionTest {
 
 		for (int i = 0; i < populationSize; i++) {
 			Assert.assertEquals(getPressure(populationSize, tournamentSize, i + 1),
-					counts[i] / (double)TestThresholds.SAMPLES,
-					TestThresholds.SELECTION_EPS);
+					counts[i] / (double)TestThresholds.SAMPLES, TestThresholds.SELECTION_EPS);
 		}
 	}
 

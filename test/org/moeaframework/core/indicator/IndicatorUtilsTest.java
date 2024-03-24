@@ -19,11 +19,11 @@ package org.moeaframework.core.indicator;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.moeaframework.TestUtils;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.spi.ProblemFactory;
+import org.moeaframework.mock.MockSolution;
 
 public class IndicatorUtilsTest {
 
@@ -32,16 +32,16 @@ public class IndicatorUtilsTest {
 		Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
 		
 		Assert.assertEquals(2.0, IndicatorUtils.manhattanDistance(problem, 
-				TestUtils.newSolution(0.0, 1.0), 
-				TestUtils.newSolution(1.0, 0.0)), Settings.EPS);
+				MockSolution.of().withObjectives(0.0, 1.0), 
+				MockSolution.of().withObjectives(1.0, 0.0)), Settings.EPS);
 		
 		Assert.assertEquals(1.0, IndicatorUtils.manhattanDistance(problem, 
-				TestUtils.newSolution(0.0, 0.0), 
-				TestUtils.newSolution(1.0, 0.0)), Settings.EPS);
+				MockSolution.of().withObjectives(0.0, 0.0), 
+				MockSolution.of().withObjectives(1.0, 0.0)), Settings.EPS);
 		
 		Assert.assertEquals(0.0, IndicatorUtils.manhattanDistance(problem, 
-				TestUtils.newSolution(0.0, 0.0), 
-				TestUtils.newSolution(0.0, 0.0)), Settings.EPS);
+				MockSolution.of().withObjectives(0.0, 0.0), 
+				MockSolution.of().withObjectives(0.0, 0.0)), Settings.EPS);
 	}
 	
 	@Test
@@ -49,16 +49,16 @@ public class IndicatorUtilsTest {
 		Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
 		
 		Assert.assertEquals(Math.sqrt(2.0), IndicatorUtils.euclideanDistance(problem,
-				TestUtils.newSolution(0.0, 1.0), 
-				TestUtils.newSolution(1.0, 0.0)), Settings.EPS);
+				MockSolution.of().withObjectives(0.0, 1.0), 
+				MockSolution.of().withObjectives(1.0, 0.0)), Settings.EPS);
 		
 		Assert.assertEquals(1.0, IndicatorUtils.euclideanDistance(problem, 
-				TestUtils.newSolution(0.0, 0.0), 
-				TestUtils.newSolution(1.0, 0.0)), Settings.EPS);
+				MockSolution.of().withObjectives(0.0, 0.0), 
+				MockSolution.of().withObjectives(1.0, 0.0)), Settings.EPS);
 		
 		Assert.assertEquals(0.0, IndicatorUtils.euclideanDistance(problem, 
-				TestUtils.newSolution(0.0, 0.0), 
-				TestUtils.newSolution(0.0, 0.0)), Settings.EPS);
+				MockSolution.of().withObjectives(0.0, 0.0), 
+				MockSolution.of().withObjectives(0.0, 0.0)), Settings.EPS);
 	}
 	
 	@Test
@@ -66,23 +66,23 @@ public class IndicatorUtilsTest {
 		Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
 		
 		NondominatedPopulation population = new NondominatedPopulation();
-		population.add(TestUtils.newSolution(0.0, 1.0));
-		population.add(TestUtils.newSolution(1.0, 0.0));
+		population.add(MockSolution.of().withObjectives(0.0, 1.0));
+		population.add(MockSolution.of().withObjectives(1.0, 0.0));
 		
 		Assert.assertEquals(0.0,
-				IndicatorUtils.distanceToNearestSolution(problem, TestUtils.newSolution(0.0, 1.0), population),
+				IndicatorUtils.distanceToNearestSolution(problem, MockSolution.of().withObjectives(0.0, 1.0), population),
 				Settings.EPS);
 		
 		Assert.assertEquals(0.0,
-				IndicatorUtils.distanceToNearestSolution(problem, TestUtils.newSolution(1.0, 0.0), population),
+				IndicatorUtils.distanceToNearestSolution(problem, MockSolution.of().withObjectives(1.0, 0.0), population),
 				Settings.EPS);
 		
 		Assert.assertEquals(Math.sqrt(0.5), 
-				IndicatorUtils.distanceToNearestSolution(problem, TestUtils.newSolution(0.5, 0.5), population),
+				IndicatorUtils.distanceToNearestSolution(problem, MockSolution.of().withObjectives(0.5, 0.5), population),
 				Settings.EPS);
 		
 		Assert.assertEquals(Math.sqrt(0.125), 
-				IndicatorUtils.distanceToNearestSolution(problem, TestUtils.newSolution(0.25, 0.75), population),
+				IndicatorUtils.distanceToNearestSolution(problem, MockSolution.of().withObjectives(0.25, 0.75), population),
 				Settings.EPS);
 	}
 	

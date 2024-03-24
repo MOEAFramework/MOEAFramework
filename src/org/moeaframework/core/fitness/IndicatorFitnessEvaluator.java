@@ -132,7 +132,7 @@ public abstract class IndicatorFitnessEvaluator implements FitnessEvaluator {
 				}
 			}
 			
-			population.get(i).setAttribute(FitnessEvaluator.FITNESS_ATTRIBUTE, sum);
+			FitnessEvaluator.setFitness(population.get(i), sum);
 		}
 	}
 	
@@ -153,11 +153,11 @@ public abstract class IndicatorFitnessEvaluator implements FitnessEvaluator {
 		for (int i = 0; i < population.size(); i++) {
 			if (i != removeIndex) {
 				Solution solution = population.get(i);
-				double fitness = (Double)solution.getAttribute(FitnessEvaluator.FITNESS_ATTRIBUTE);
+				double fitness = FitnessEvaluator.getFitness(solution);
 				
 				fitness -= Math.exp((-fitcomp[removeIndex][i] / maxAbsIndicatorValue) / kappa);
 				
-				solution.setAttribute(FITNESS_ATTRIBUTE, fitness);
+				FitnessEvaluator.setFitness(solution, fitness);
 			}
 		}
 		

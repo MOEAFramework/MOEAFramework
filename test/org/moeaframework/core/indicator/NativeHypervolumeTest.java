@@ -22,13 +22,13 @@ import java.io.IOException;
 import org.apache.commons.lang3.SystemUtils;
 import org.junit.Assert;
 import org.junit.Test;
-import org.moeaframework.TestUtils;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.mock.MockRealProblem;
+import org.moeaframework.mock.MockSolution;
 import org.moeaframework.util.PropertyScope;
 
 public class NativeHypervolumeTest {
@@ -45,7 +45,7 @@ public class NativeHypervolumeTest {
 	@Test
 	public void testInvert() {
 		Problem problem = new MockRealProblem(3);
-		Solution solution = TestUtils.newSolution(0.0, 1.0, 0.5);
+		Solution solution = MockSolution.of().withObjectives(0.0, 1.0, 0.5);
 		
 		NativeHypervolume.invert(problem, solution);
 		

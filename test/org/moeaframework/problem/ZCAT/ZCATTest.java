@@ -68,7 +68,6 @@ public class ZCATTest {
 	public void testLevel3() {
 		Problem problem = createTestInstance(3, 3, false, false, true);
 		
-		
 		Assert.assertArrayEquals(new double[] { 2.787357, 11.639522, 26.351971 }, 
 				TestUtils.evaluateAt(problem, Vector.of(problem.getNumberOfVariables(), 0.0)).getObjectives(),
 				0.000001);

@@ -19,6 +19,7 @@ package org.moeaframework.core.fitness;
 
 import org.moeaframework.core.FastNondominatedSorting;
 import org.moeaframework.core.FitnessEvaluator;
+import org.moeaframework.core.NondominatedSorting;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Solution;
 
@@ -39,8 +40,7 @@ public class CrowdingDistanceFitnessEvaluator implements FitnessEvaluator {
 		new FastNondominatedSorting().updateCrowdingDistance(copy(population));
 		
 		for (Solution solution : population) {
-			solution.setAttribute(FITNESS_ATTRIBUTE,
-					(Double)solution.getAttribute(FastNondominatedSorting.CROWDING_ATTRIBUTE));
+			FitnessEvaluator.setFitness(solution, NondominatedSorting.getCrowding(solution));
 		}
 	}
 	

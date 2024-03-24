@@ -24,13 +24,14 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.TestUtils;
 import org.moeaframework.core.Solution;
+import org.moeaframework.mock.MockSolution;
 
 public class ImmigrationQueueTest {
 	
 	@Test
 	public void test() throws InterruptedException {
 		ImmigrationQueue queue = new ImmigrationQueue();
-		Solution original = TestUtils.newSolution(0.0, 1.0);
+		Solution original = MockSolution.of().withObjectives(0.0, 1.0);
 		
 		Assert.assertEquals(0, queue.size());
 		Assert.assertTrue(queue.isEmpty());

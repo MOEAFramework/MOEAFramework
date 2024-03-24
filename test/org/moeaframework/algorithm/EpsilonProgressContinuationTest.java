@@ -25,7 +25,6 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.moeaframework.TestUtils;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.EpsilonBoxEvolutionaryAlgorithm;
 import org.moeaframework.core.NondominatedPopulation;
@@ -35,6 +34,7 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.operator.real.UM;
 import org.moeaframework.core.selection.UniformSelection;
+import org.moeaframework.mock.MockSolution;
 
 public class EpsilonProgressContinuationTest {
 	
@@ -144,20 +144,20 @@ public class EpsilonProgressContinuationTest {
 
 	@Test
 	public void testNoProgress() {
-		population.add(TestUtils.newSolution(0.0, 1.0));
-		population.add(TestUtils.newSolution(0.5, 0.5));
-		population.add(TestUtils.newSolution(1.0, 0.0));
-		population.add(TestUtils.newSolution(0.0, 1.0));
-		population.add(TestUtils.newSolution(0.5, 0.5));
-		population.add(TestUtils.newSolution(1.0, 0.0));
-		archive.add(TestUtils.newSolution(0.75, 0.25));
-		archive.add(TestUtils.newSolution(0.25, 0.75));
+		population.add(MockSolution.of().withObjectives(0.0, 1.0));
+		population.add(MockSolution.of().withObjectives(0.5, 0.5));
+		population.add(MockSolution.of().withObjectives(1.0, 0.0));
+		population.add(MockSolution.of().withObjectives(0.0, 1.0));
+		population.add(MockSolution.of().withObjectives(0.5, 0.5));
+		population.add(MockSolution.of().withObjectives(1.0, 0.0));
+		archive.add(MockSolution.of().withObjectives(0.75, 0.25));
+		archive.add(MockSolution.of().withObjectives(0.25, 0.75));
 		
 		for (int i=0; i<100; i++) {
 			if (i % 2 == 0) {
-				archive.add(TestUtils.newSolution(PRNG.nextDouble(0.51, 0.99), PRNG.nextDouble(0.01, 0.49)));
+				archive.add(MockSolution.of().withObjectives(PRNG.nextDouble(0.51, 0.99), PRNG.nextDouble(0.01, 0.49)));
 			} else {
-				archive.add(TestUtils.newSolution(PRNG.nextDouble(0.01, 0.49), PRNG.nextDouble(0.51, 0.99)));
+				archive.add(MockSolution.of().withObjectives(PRNG.nextDouble(0.01, 0.49), PRNG.nextDouble(0.51, 0.99)));
 			}
 			
 			adaptiveTimeContinuation.step();
@@ -169,27 +169,27 @@ public class EpsilonProgressContinuationTest {
 	
 	@Test
 	public void testProgress() {
-		population.add(TestUtils.newSolution(0.0, 1.0));
-		population.add(TestUtils.newSolution(0.5, 0.5));
-		population.add(TestUtils.newSolution(1.0, 0.0));
-		population.add(TestUtils.newSolution(0.0, 1.0));
-		population.add(TestUtils.newSolution(0.5, 0.5));
-		population.add(TestUtils.newSolution(1.0, 0.0));
-		archive.add(TestUtils.newSolution(0.75, 0.25));
-		archive.add(TestUtils.newSolution(0.25, 0.75));
+		population.add(MockSolution.of().withObjectives(0.0, 1.0));
+		population.add(MockSolution.of().withObjectives(0.5, 0.5));
+		population.add(MockSolution.of().withObjectives(1.0, 0.0));
+		population.add(MockSolution.of().withObjectives(0.0, 1.0));
+		population.add(MockSolution.of().withObjectives(0.5, 0.5));
+		population.add(MockSolution.of().withObjectives(1.0, 0.0));
+		archive.add(MockSolution.of().withObjectives(0.75, 0.25));
+		archive.add(MockSolution.of().withObjectives(0.25, 0.75));
 		
 		for (int i=0; i<100; i++) {
 			if (i == 55) {
-				archive.add(TestUtils.newSolution(0.1, 0.1));
+				archive.add(MockSolution.of().withObjectives(0.1, 0.1));
 				
 				//shrink population to avoid population ratio restart
 				while (population.size() > 5) {
 					population.remove(0);
 				}
 			} else if (i % 2 == 0) {
-				archive.add(TestUtils.newSolution(PRNG.nextDouble(0.51, 0.99), PRNG.nextDouble(0.01, 0.49)));
+				archive.add(MockSolution.of().withObjectives(PRNG.nextDouble(0.51, 0.99), PRNG.nextDouble(0.01, 0.49)));
 			} else {
-				archive.add(TestUtils.newSolution(PRNG.nextDouble(0.01, 0.49), PRNG.nextDouble(0.51, 0.99)));
+				archive.add(MockSolution.of().withObjectives(PRNG.nextDouble(0.01, 0.49), PRNG.nextDouble(0.51, 0.99)));
 			}
 			
 			adaptiveTimeContinuation.step();

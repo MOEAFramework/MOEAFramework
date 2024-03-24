@@ -41,5 +41,25 @@ public interface FitnessEvaluator {
 	 * @return {@code true} if larger fitness values are preferred; otherwise smaller fitness values are preferred
 	 */
 	public boolean areLargerValuesPreferred();
+	
+	/**
+	 * Returns the fitness value for the given solution.
+	 * 
+	 * @param solution the solution
+	 * @return the fitness value
+	 */
+	public static double getFitness(Solution solution) {
+		return (Double)solution.getAttribute(FITNESS_ATTRIBUTE);
+	}
+	
+	/**
+	 * Sets the fitness value on the given solution.
+	 * 
+	 * @param solution the solution
+	 * @param value the fitness value
+	 */
+	public static void setFitness(Solution solution, double value) {
+		solution.setAttribute(FITNESS_ATTRIBUTE, value);
+	}
 
 }

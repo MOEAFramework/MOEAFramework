@@ -22,6 +22,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.core.Solution;
+import org.moeaframework.mock.MockSolution;
 
 public class ParetoObjectiveComparatorTest {
 
@@ -39,9 +40,9 @@ public class ParetoObjectiveComparatorTest {
 
 	@Test
 	public void testDominance() {
-		Solution solution1 = new Solution(new double[] { 0.5, 0.5, 0.5 });
-		Solution solution2 = new Solution(new double[] { 0.0, 0.0, 0.0 });
-		Solution solution3 = new Solution(new double[] { 0.5, 0.0, 0.5 });
+		Solution solution1 = MockSolution.of().withObjectives(0.5, 0.5, 0.5);
+		Solution solution2 = MockSolution.of().withObjectives(0.0, 0.0, 0.0);
+		Solution solution3 = MockSolution.of().withObjectives(0.5, 0.0, 0.5);
 		
 		Assert.assertTrue(comparator.compare(solution1, solution2) > 0);
 		Assert.assertTrue(comparator.compare(solution1, solution3) > 0);
@@ -51,8 +52,8 @@ public class ParetoObjectiveComparatorTest {
 
 	@Test
 	public void testNondominance() {
-		Solution solution1 = new Solution(new double[] { 0.5, 0.5, 0.5 });
-		Solution solution2 = new Solution(new double[] { 0.5, 0.0, 1.0 });
+		Solution solution1 = MockSolution.of().withObjectives(0.5, 0.5, 0.5);
+		Solution solution2 = MockSolution.of().withObjectives(0.5, 0.0, 1.0);
 
 		Assert.assertEquals(0, comparator.compare(solution1, solution2));
 		Assert.assertEquals(0, comparator.compare(solution2, solution1));
@@ -60,8 +61,8 @@ public class ParetoObjectiveComparatorTest {
 	
 	@Test
 	public void testNondominanceOfIdenticalSolutions() {
-		Solution solution1 = new Solution(new double[] { 0.5, 0.5, 0.5 });
-		Solution solution2 = new Solution(new double[] { 0.5, 0.5, 0.5 });
+		Solution solution1 = MockSolution.of().withObjectives(0.5, 0.5, 0.5);
+		Solution solution2 = MockSolution.of().withObjectives(0.5, 0.5, 0.5);
 
 		Assert.assertEquals(0, comparator.compare(solution1, solution2));
 		Assert.assertEquals(0, comparator.compare(solution2, solution1));

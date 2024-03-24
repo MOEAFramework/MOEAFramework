@@ -30,6 +30,7 @@ import org.moeaframework.core.variable.BinaryVariable;
 import org.moeaframework.core.variable.Grammar;
 import org.moeaframework.core.variable.Permutation;
 import org.moeaframework.core.variable.RealVariable;
+import org.moeaframework.mock.MockSolution;
 
 public class PopulationIOTest {
 
@@ -38,17 +39,14 @@ public class PopulationIOTest {
 	@Before
 	public void setUp() {
 		population = new Population();
+		
+		Solution s1 = MockSolution.of()
+				.withVariables(new BinaryVariable(10), new Grammar(5), new Permutation(5), new RealVariable(0.0, 1.0))
+				.withObjectives(1.0, 0.0)
+				.withConstraints(1.0)
+				.build();
 
-		Solution s1 = new Solution(4, 1, 2);
-		s1.setVariable(0, new BinaryVariable(10));
-		s1.setVariable(1, new Grammar(5));
-		s1.setVariable(2, new Permutation(5));
-		s1.setVariable(3, new RealVariable(0.0, 1.0));
-		s1.setObjective(0, 1.0);
-		s1.setConstraint(0, 0.0);
-		s1.setConstraint(1, 1.0);
-
-		Solution s2 = new Solution(new double[] { 1.0, -1.0 });
+		Solution s2 = MockSolution.of().withObjectives(1.0, -1.0).build();
 
 		population.add(s1);
 		population.add(s2);

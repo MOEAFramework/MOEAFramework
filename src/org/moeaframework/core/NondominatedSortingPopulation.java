@@ -17,8 +17,6 @@
  */
 package org.moeaframework.core;
 
-import static org.moeaframework.core.NondominatedSorting.RANK_ATTRIBUTE;
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -200,12 +198,12 @@ public class NondominatedSortingPopulation extends Population {
 
 		//collect all solutions in the front which must be pruned
 		//note the use of super to prevent repeatedly triggering update()
-		int maxRank = (Integer)super.get(size-1).getAttribute(RANK_ATTRIBUTE);
+		int maxRank = NondominatedSorting.getRank(super.get(size-1));
 		Population front = new Population();
 
 		for (int i=size()-1; i>=0; i--) {
 			Solution solution = super.get(i);
-			int rank = (Integer)solution.getAttribute(RANK_ATTRIBUTE);
+			int rank = NondominatedSorting.getRank(solution);
 			
 			if (rank >= maxRank) {
 				super.remove(i);

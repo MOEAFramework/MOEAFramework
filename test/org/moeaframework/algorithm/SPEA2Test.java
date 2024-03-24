@@ -17,6 +17,8 @@
  */
 package org.moeaframework.algorithm;
 
+import java.util.List;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,6 +33,7 @@ import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.core.spi.OperatorFactory;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.mock.MockRealProblem;
+import org.moeaframework.mock.MockSolution;
 import org.moeaframework.util.TypedProperties;
 
 @RunWith(CIRunner.class)
@@ -45,14 +48,10 @@ public class SPEA2Test extends JMetalAlgorithmTest {
 	public void testComputeDistances() {
 		SPEA2 spea2 = new SPEA2(new MockRealProblem(2));
 		
-		Solution solution1 = TestUtils.newSolution(0.0, 1.0);
-		Solution solution2 = TestUtils.newSolution(1.0, 0.0);
-		Solution solution3 = TestUtils.newSolution(0.5, 0.5);
-		
 		Population population = new Population();
-		population.add(solution1);
-		population.add(solution2);
-		population.add(solution3);
+		population.add(MockSolution.of().withObjectives(0.0, 1.0));
+		population.add(MockSolution.of().withObjectives(1.0, 0.0));
+		population.add(MockSolution.of().withObjectives(0.5, 0.5));
 		
 		double[][] distances = spea2.computeDistanceMatrix(population);
 		
@@ -71,14 +70,12 @@ public class SPEA2Test extends JMetalAlgorithmTest {
 	public void testTruncate1() {
 		SPEA2 spea2 = new SPEA2(new MockRealProblem(2));
 		
-		Solution solution1 = TestUtils.newSolution(0.0, 1.0);
-		Solution solution2 = TestUtils.newSolution(1.0, 0.0);
-		Solution solution3 = TestUtils.newSolution(0.5, 0.5);
+		Solution solution1 = MockSolution.of().withObjectives(0.0, 1.0);
+		Solution solution2 = MockSolution.of().withObjectives(1.0, 0.0);
+		Solution solution3 = MockSolution.of().withObjectives(0.5, 0.5);
 		
 		Population population = new Population();
-		population.add(solution1);
-		population.add(solution2);
-		population.add(solution3);
+		population.addAll(List.of(solution1, solution2, solution3));
 		
 		spea2.getFitnessEvaluator().evaluate(population);
 		Population result = spea2.truncate(population, 2);
@@ -93,14 +90,12 @@ public class SPEA2Test extends JMetalAlgorithmTest {
 	public void testTruncate2() {
 		SPEA2 spea2 = new SPEA2(new MockRealProblem(2));
 		
-		Solution solution1 = TestUtils.newSolution(0.0, 1.0);
-		Solution solution2 = TestUtils.newSolution(1.0, 0.0);
-		Solution solution3 = TestUtils.newSolution(0.5, 0.5);
+		Solution solution1 = MockSolution.of().withObjectives(0.0, 1.0);
+		Solution solution2 = MockSolution.of().withObjectives(1.0, 0.0);
+		Solution solution3 = MockSolution.of().withObjectives(0.5, 0.5);
 		
 		Population population = new Population();
-		population.add(solution1);
-		population.add(solution2);
-		population.add(solution3);
+		population.addAll(List.of(solution1, solution2, solution3));
 		
 		spea2.getFitnessEvaluator().evaluate(population);
 		Population result = spea2.truncate(population, 1);
@@ -114,14 +109,12 @@ public class SPEA2Test extends JMetalAlgorithmTest {
 	public void testFitnessNondominated() {
 		SPEA2 spea2 = new SPEA2(new MockRealProblem(2));
 		
-		Solution solution1 = TestUtils.newSolution(0.0, 1.0);
-		Solution solution2 = TestUtils.newSolution(1.0, 0.0);
-		Solution solution3 = TestUtils.newSolution(0.5, 0.5);
+		Solution solution1 = MockSolution.of().withObjectives(0.0, 1.0);
+		Solution solution2 = MockSolution.of().withObjectives(1.0, 0.0);
+		Solution solution3 = MockSolution.of().withObjectives(0.5, 0.5);
 		
 		Population population = new Population();
-		population.add(solution1);
-		population.add(solution2);
-		population.add(solution3);
+		population.addAll(List.of(solution1, solution2, solution3));
 		
 		spea2.getFitnessEvaluator().evaluate(population);
 		
@@ -134,14 +127,12 @@ public class SPEA2Test extends JMetalAlgorithmTest {
 	public void testFitnessDominated() {
 		SPEA2 spea2 = new SPEA2(new MockRealProblem(2));
 		
-		Solution solution1 = TestUtils.newSolution(0.0, 0.0);
-		Solution solution2 = TestUtils.newSolution(1.0, 1.0);
-		Solution solution3 = TestUtils.newSolution(2.0, 2.0);
+		Solution solution1 = MockSolution.of().withObjectives(0.0, 0.0);
+		Solution solution2 = MockSolution.of().withObjectives(1.0, 1.0);
+		Solution solution3 = MockSolution.of().withObjectives(2.0, 2.0);
 		
 		Population population = new Population();
-		population.add(solution1);
-		population.add(solution2);
-		population.add(solution3);
+		population.addAll(List.of(solution1, solution2, solution3));
 		
 		spea2.getFitnessEvaluator().evaluate(population);
 		
@@ -151,7 +142,7 @@ public class SPEA2Test extends JMetalAlgorithmTest {
 	}
 	
 	private void assertFitnessInRange(Solution solution, double min, double max) {
-		double fitness = (Double)solution.getAttribute(FitnessEvaluator.FITNESS_ATTRIBUTE);
+		double fitness = FitnessEvaluator.getFitness(solution);
 		
 		if ((fitness < min) || (fitness > max)) {
 			Assert.fail("fitness " + fitness + " not within bounds [" + min + ", " + max + "]");

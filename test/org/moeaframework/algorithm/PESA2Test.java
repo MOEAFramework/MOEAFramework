@@ -17,7 +17,6 @@
  */
 package org.moeaframework.algorithm;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,12 +24,13 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.moeaframework.CIRunner;
+import org.moeaframework.Counter;
 import org.moeaframework.Retryable;
 import org.moeaframework.TestThresholds;
-import org.moeaframework.TestUtils;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.mock.MockRealProblem;
+import org.moeaframework.mock.MockSolution;
 import org.moeaframework.util.TypedProperties;
 
 @RunWith(CIRunner.class)
@@ -43,15 +43,13 @@ public class PESA2Test extends JMetalAlgorithmTest {
 	
 	@Test
 	public void testGridMap() {
-		Solution solution1 = TestUtils.newSolution(0.0, 1.0);
-		Solution solution2 = TestUtils.newSolution(1.0, 0.0);
-		Solution solution3 = TestUtils.newSolution(0.001, 0.999);
+		Solution solution1 = MockSolution.of().withObjectives(0.0, 1.0);
+		Solution solution2 = MockSolution.of().withObjectives(1.0, 0.0);
+		Solution solution3 = MockSolution.of().withObjectives(0.001, 0.999);
 		
 		Problem problem = new MockRealProblem(2);
 		PESA2 pesa2 = new PESA2(problem);
-		pesa2.getArchive().add(solution1);
-		pesa2.getArchive().add(solution2);
-		pesa2.getArchive().add(solution3);
+		pesa2.getArchive().addAll(List.of(solution1, solution2, solution3));
 		
 		Map<Integer, List<Solution>> map = pesa2.createGridMap();
 		Assert.assertEquals(2, map.size());
@@ -67,39 +65,31 @@ public class PESA2Test extends JMetalAlgorithmTest {
 	
 	@Test
 	public void testSelect() {
-		Solution solution1 = TestUtils.newSolution(0.0, 1.0);
-		Solution solution2 = TestUtils.newSolution(1.0, 0.0);
-		Solution solution3 = TestUtils.newSolution(0.001, 0.999);
+		Solution solution1 = MockSolution.of().withObjectives(0.0, 1.0);
+		Solution solution2 = MockSolution.of().withObjectives(1.0, 0.0);
+		Solution solution3 = MockSolution.of().withObjectives(0.001, 0.999);
 		
 		Problem problem = new MockRealProblem(2);
 		PESA2 pesa2 = new PESA2(problem);
-		pesa2.getArchive().add(solution1);
-		pesa2.getArchive().add(solution2);
-		pesa2.getArchive().add(solution3);
+		pesa2.getArchive().addAll(List.of(solution1, solution2, solution3));
 		
 		// since we're not calling iterate(), force the creation of gridMap
 		pesa2.gridMap = pesa2.createGridMap();
 		
-		Map<Solution, Integer> count = new HashMap<Solution, Integer>();
-		count.put(solution1, 0);
-		count.put(solution2, 0);
-		count.put(solution3, 0);
+		Counter<Solution> counter = new Counter<Solution>();
 		
 		for (int i = 0; i < TestThresholds.SAMPLES; i++) {
 			Solution[] solutions = pesa2.selection.select(2, null);
-			
-			for (Solution solution : solutions) {
-				count.put(solution, count.get(solution)+1);
-			}
+			counter.incrementAll(solutions);
 		}
 		
 		// 25% of time, pick from grid 2 (containing solution 2)
 		// 25% of time, pick from grid 1 (containing solutions 1 and 2)
 		// 50% of time, pick both grids, favor grid 2 due to better density
 		// when grid 1 is selected, each solution as 50% chance of selection
-		Assert.assertEquals(0.75, count.get(solution2) / (2.0*TestThresholds.SAMPLES), TestThresholds.STATISTICS_EPS);
-		Assert.assertEquals(0.125, count.get(solution1) / (2.0*TestThresholds.SAMPLES), TestThresholds.STATISTICS_EPS);
-		Assert.assertEquals(0.125, count.get(solution3) / (2.0*TestThresholds.SAMPLES), TestThresholds.STATISTICS_EPS);
+		Assert.assertEquals(0.75, counter.get(solution2) / (2.0*TestThresholds.SAMPLES), TestThresholds.STATISTICS_EPS);
+		Assert.assertEquals(0.125, counter.get(solution1) / (2.0*TestThresholds.SAMPLES), TestThresholds.STATISTICS_EPS);
+		Assert.assertEquals(0.125, counter.get(solution3) / (2.0*TestThresholds.SAMPLES), TestThresholds.STATISTICS_EPS);
 	}
 	
 	@Test

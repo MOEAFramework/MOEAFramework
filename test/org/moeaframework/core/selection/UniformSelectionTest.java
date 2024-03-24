@@ -17,6 +17,8 @@
  */
 package org.moeaframework.core.selection;
 
+import java.util.List;
+
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -24,6 +26,7 @@ import org.junit.Test;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Solution;
+import org.moeaframework.mock.MockSolution;
 
 public class UniformSelectionTest {
 
@@ -35,14 +38,11 @@ public class UniformSelectionTest {
 
 	@Before
 	public void setUp() {
-		solution1 = new Solution(new double[] { 0 });
-		solution2 = new Solution(new double[] { 1 });
-		solution3 = new Solution(new double[] { 2 });
+		solution1 = MockSolution.of().withObjectives(0);
+		solution2 = MockSolution.of().withObjectives(1);
+		solution3 = MockSolution.of().withObjectives(2);
 
-		population = new Population();
-		population.add(solution1);
-		population.add(solution2);
-		population.add(solution3);
+		population = new Population(List.of(solution1, solution2, solution3));
 	}
 
 	@After
@@ -65,8 +65,7 @@ public class UniformSelectionTest {
 		}
 
 		for (int i = 0; i < 3; i++) {
-			Assert.assertEquals(0.333, counts[i] / (double)TestThresholds.SAMPLES,
-					TestThresholds.SELECTION_EPS);
+			Assert.assertEquals(0.333, counts[i] / (double)TestThresholds.SAMPLES, TestThresholds.SELECTION_EPS);
 		}
 	}
 

@@ -32,6 +32,12 @@ import org.moeaframework.core.Settings;
 public class RedirectStream extends Thread {
 
 	/**
+	 * Timeout, in milliseconds, waiting for this thread to terminate after the underlying process exits.  An error
+	 * message is displayed if the thread fails to terminate.
+	 */
+	private static final long TIMEOUT = 5000;
+	
+	/**
 	 * The input stream whose content is redirected to the output stream.
 	 */
 	private final InputStream inputStream;
@@ -155,14 +161,18 @@ public class RedirectStream extends Thread {
 		
 		RedirectStream inputThread = RedirectStream.redirect(process.getInputStream(), out);
 		RedirectStream outputThread = RedirectStream.redirect(process.getErrorStream(), err);
-		
+			
 		try {
 			if (process.waitFor() != 0) {
 				throw new IOException("Process exited with non-zero status (" + process.exitValue() + ")");
 			}
 		} finally {
-			inputThread.join();
-			outputThread.join();
+			inputThread.join(TIMEOUT);
+			outputThread.join(TIMEOUT);
+			
+			if (inputThread.isAlive() || outputThread.isAlive()) {
+				System.err.println("RedirectStream thread failed to terminate within timeout");
+			}
 		}
 	}
 	

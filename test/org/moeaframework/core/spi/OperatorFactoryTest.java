@@ -21,7 +21,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.UnsupportedVariable;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.configuration.ConfigurationException;
 import org.moeaframework.core.initialization.RandomInitialization;
@@ -32,6 +31,7 @@ import org.moeaframework.mock.MockMixedBinaryProblem;
 import org.moeaframework.mock.MockMultiTypeProblem;
 import org.moeaframework.mock.MockPermutationProblem;
 import org.moeaframework.mock.MockRealProblem;
+import org.moeaframework.mock.MockUnsupportedVariable;
 import org.moeaframework.problem.ProblemStub;
 import org.moeaframework.util.TypedProperties;
 
@@ -129,7 +129,7 @@ public class OperatorFactoryTest extends AbstractFactoryTest<OperatorProvider, O
 			@Override
 			public Solution newSolution() {
 				Solution solution = new Solution(1, 0);
-				solution.setVariable(0, new UnsupportedVariable());
+				solution.setVariable(0, new MockUnsupportedVariable());
 				return solution;
 			}
 

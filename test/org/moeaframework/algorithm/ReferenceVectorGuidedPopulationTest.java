@@ -21,10 +21,10 @@ import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.moeaframework.TestUtils;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
+import org.moeaframework.mock.MockSolution;
 import org.moeaframework.util.Vector;
 import org.moeaframework.util.weights.NormalBoundaryDivisions;
 
@@ -65,8 +65,8 @@ public class ReferenceVectorGuidedPopulationTest {
 		ReferenceVectorGuidedPopulation population = new ReferenceVectorGuidedPopulation(
 				2, new NormalBoundaryDivisions(4), 2.0);
 		
-		population.add(TestUtils.newSolution(0.5, 0.5));
-		population.add(TestUtils.newSolution(0.0, 1.0));
+		population.add(MockSolution.of().withObjectives(0.5, 0.5));
+		population.add(MockSolution.of().withObjectives(0.0, 1.0));
 		
 		population.calculateIdealPoint();
 		
@@ -79,8 +79,8 @@ public class ReferenceVectorGuidedPopulationTest {
 		ReferenceVectorGuidedPopulation population = new ReferenceVectorGuidedPopulation(
 				2, new NormalBoundaryDivisions(4), 2.0);
 		
-		population.add(TestUtils.newSolution(0.5, 0.5));
-		population.add(TestUtils.newSolution(0.0, 1.0));
+		population.add(MockSolution.of().withObjectives(0.5, 0.5));
+		population.add(MockSolution.of().withObjectives(0.0, 1.0));
 		
 		population.calculateIdealPoint();
 		population.translateByIdealPoint();
@@ -97,9 +97,9 @@ public class ReferenceVectorGuidedPopulationTest {
 		ReferenceVectorGuidedPopulation population = new ReferenceVectorGuidedPopulation(
 				2, new NormalBoundaryDivisions(1), 2.0);
 		
-		Solution s1 = TestUtils.newSolution(0.5, 0.5);
-		Solution s2 = TestUtils.newSolution(0.25, 0.75);
-		Solution s3 = TestUtils.newSolution(0.75, 0.25);
+		Solution s1 = MockSolution.of().withObjectives(0.5, 0.5);
+		Solution s2 = MockSolution.of().withObjectives(0.25, 0.75);
+		Solution s3 = MockSolution.of().withObjectives(0.75, 0.25);
 		Solution[] solutions = new Solution[] { s1, s2, s3 };
 		
 		PRNG.shuffle(solutions);
@@ -124,9 +124,9 @@ public class ReferenceVectorGuidedPopulationTest {
 		ReferenceVectorGuidedPopulation population = new ReferenceVectorGuidedPopulation(
 				2, new NormalBoundaryDivisions(1), 2.0);
 		
-		Solution s1 = TestUtils.newSolution(0.5, 0.5);
-		Solution s2 = TestUtils.newSolution(0.25, 0.75);
-		Solution s3 = TestUtils.newSolution(0.75, 0.25);
+		Solution s1 = MockSolution.of().withObjectives(0.5, 0.5);
+		Solution s2 = MockSolution.of().withObjectives(0.25, 0.75);
+		Solution s3 = MockSolution.of().withObjectives(0.75, 0.25);
 		Solution[] solutions = new Solution[] { s1, s2, s3 };
 		
 		PRNG.shuffle(solutions);
@@ -148,9 +148,9 @@ public class ReferenceVectorGuidedPopulationTest {
 		ReferenceVectorGuidedPopulation population = new ReferenceVectorGuidedPopulation(
 				2, new NormalBoundaryDivisions(1), 2.0);
 		
-		Solution s1 = TestUtils.newSolution(0.5, 0.5);
-		Solution s2 = TestUtils.newSolution(0.25, 0.75);
-		Solution s3 = TestUtils.newSolution(0.75, 0.25);
+		Solution s1 = MockSolution.of().withObjectives(0.5, 0.5);
+		Solution s2 = MockSolution.of().withObjectives(0.25, 0.75);
+		Solution s3 = MockSolution.of().withObjectives(0.75, 0.25);
 		Solution[] solutions = new Solution[] { s1, s2, s3 };
 		
 		PRNG.shuffle(solutions);
@@ -173,8 +173,8 @@ public class ReferenceVectorGuidedPopulationTest {
 		ReferenceVectorGuidedPopulation population = new ReferenceVectorGuidedPopulation(
 				2, new NormalBoundaryDivisions(2), 2.0);
 		
-		population.add(TestUtils.newSolution(0.4, 0.5));
-		population.add(TestUtils.newSolution(0.25, 2.75));
+		population.add(MockSolution.of().withObjectives(0.4, 0.5));
+		population.add(MockSolution.of().withObjectives(0.25, 2.75));
 
 		population.adapt();
 		

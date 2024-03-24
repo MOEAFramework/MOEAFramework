@@ -439,7 +439,7 @@ public class Settings {
 	 * 
 	 * @return {@code true} if debugging for external problems is enabled; {@code false} otherwise
 	 */
-	public static boolean getExternalProblemDebuggingEnabled() {
+	public static boolean isExternalProblemDebuggingEnabled() {
 		return PROPERTIES.getBoolean(KEY_EXTERNAL_PROBLEM_DEBUGGING, false);
 	}
 	

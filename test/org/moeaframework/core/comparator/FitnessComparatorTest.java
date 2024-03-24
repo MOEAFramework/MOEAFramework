@@ -17,12 +17,11 @@
  */
 package org.moeaframework.core.comparator;
 
-import static org.moeaframework.core.FitnessEvaluator.FITNESS_ATTRIBUTE;
-
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.moeaframework.core.FitnessEvaluator;
 import org.moeaframework.core.Solution;
 
 public class FitnessComparatorTest {
@@ -44,8 +43,8 @@ public class FitnessComparatorTest {
 		Solution solution1 = new Solution(0, 0);
 		Solution solution2 = new Solution(0, 0);
 
-		solution1.setAttribute(FITNESS_ATTRIBUTE, 0.0);
-		solution2.setAttribute(FITNESS_ATTRIBUTE, 1.0);
+		FitnessEvaluator.setFitness(solution1, 0.0);
+		FitnessEvaluator.setFitness(solution2, 1.0);
 
 		Assert.assertTrue(comparator.compare(solution1, solution2) < 0);
 		Assert.assertTrue(comparator.compare(solution2, solution1) > 0);
@@ -56,8 +55,8 @@ public class FitnessComparatorTest {
 		Solution solution1 = new Solution(0, 0);
 		Solution solution2 = new Solution(0, 0);
 
-		solution1.setAttribute(FITNESS_ATTRIBUTE, 1.0);
-		solution2.setAttribute(FITNESS_ATTRIBUTE, 1.0);
+		FitnessEvaluator.setFitness(solution1, 1.0);
+		FitnessEvaluator.setFitness(solution2, 1.0);
 
 		Assert.assertTrue(comparator.compare(solution1, solution2) == 0);
 		Assert.assertTrue(comparator.compare(solution2, solution1) == 0);

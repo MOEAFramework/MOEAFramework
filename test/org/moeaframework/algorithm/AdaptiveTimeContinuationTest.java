@@ -25,7 +25,6 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.moeaframework.TestUtils;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.EpsilonBoxEvolutionaryAlgorithm;
 import org.moeaframework.core.NondominatedPopulation;
@@ -34,6 +33,7 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.operator.real.UM;
 import org.moeaframework.core.selection.UniformSelection;
+import org.moeaframework.mock.MockSolution;
 
 public class AdaptiveTimeContinuationTest {
 
@@ -149,14 +149,14 @@ public class AdaptiveTimeContinuationTest {
 	
 	@Test
 	public void testMaxWindow() {
-		population.add(TestUtils.newSolution(0.0, 1.0));
-		population.add(TestUtils.newSolution(0.5, 0.5));
-		population.add(TestUtils.newSolution(1.0, 0.0));
-		population.add(TestUtils.newSolution(0.0, 1.0));
-		population.add(TestUtils.newSolution(0.5, 0.5));
-		population.add(TestUtils.newSolution(1.0, 0.0));
-		archive.add(TestUtils.newSolution(1.0, 0.0));
-		archive.add(TestUtils.newSolution(0.0, 1.0));
+		population.add(MockSolution.of().withObjectives(0.0, 1.0));
+		population.add(MockSolution.of().withObjectives(0.5, 0.5));
+		population.add(MockSolution.of().withObjectives(1.0, 0.0));
+		population.add(MockSolution.of().withObjectives(0.0, 1.0));
+		population.add(MockSolution.of().withObjectives(0.5, 0.5));
+		population.add(MockSolution.of().withObjectives(1.0, 0.0));
+		archive.add(MockSolution.of().withObjectives(1.0, 0.0));
+		archive.add(MockSolution.of().withObjectives(0.0, 1.0));
 		
 		for (int i=0; i<1000; i++) {
 			adaptiveTimeContinuation.step();
@@ -169,14 +169,14 @@ public class AdaptiveTimeContinuationTest {
 	@Test
 	public void testPopulationRatio() {
 		//population=6, archive=2, ratio within 25%
-		population.add(TestUtils.newSolution(0.0, 1.0));
-		population.add(TestUtils.newSolution(0.5, 0.5));
-		population.add(TestUtils.newSolution(1.0, 0.0));
-		population.add(TestUtils.newSolution(0.0, 1.0));
-		population.add(TestUtils.newSolution(0.5, 0.5));
-		population.add(TestUtils.newSolution(1.0, 0.0));
-		archive.add(TestUtils.newSolution(0.0, 1.0));
-		archive.add(TestUtils.newSolution(1.0, 0.0));
+		population.add(MockSolution.of().withObjectives(0.0, 1.0));
+		population.add(MockSolution.of().withObjectives(0.5, 0.5));
+		population.add(MockSolution.of().withObjectives(1.0, 0.0));
+		population.add(MockSolution.of().withObjectives(0.0, 1.0));
+		population.add(MockSolution.of().withObjectives(0.5, 0.5));
+		population.add(MockSolution.of().withObjectives(1.0, 0.0));
+		archive.add(MockSolution.of().withObjectives(0.0, 1.0));
+		archive.add(MockSolution.of().withObjectives(1.0, 0.0));
 		
 		for (int i=0; i<10; i++) {
 			adaptiveTimeContinuation.step();
@@ -208,11 +208,11 @@ public class AdaptiveTimeContinuationTest {
 	
 	@Test
 	public void testMaxPopulationSize() {
-		archive.add(TestUtils.newSolution(1.0, 0.0));
-		archive.add(TestUtils.newSolution(0.75, 0.25));
-		archive.add(TestUtils.newSolution(0.5, 0.5));
-		archive.add(TestUtils.newSolution(0.25, 0.75));
-		archive.add(TestUtils.newSolution(0.0, 1.0));
+		archive.add(MockSolution.of().withObjectives(1.0, 0.0));
+		archive.add(MockSolution.of().withObjectives(0.75, 0.25));
+		archive.add(MockSolution.of().withObjectives(0.5, 0.5));
+		archive.add(MockSolution.of().withObjectives(0.25, 0.75));
+		archive.add(MockSolution.of().withObjectives(0.0, 1.0));
 		
 		for (int i=0; i<100; i++) {
 			adaptiveTimeContinuation.step();
@@ -224,10 +224,10 @@ public class AdaptiveTimeContinuationTest {
 	
 	@Test
 	public void testMinPopulationSize() {
-		population.add(TestUtils.newSolution(0.0, 1.0));
-		population.add(TestUtils.newSolution(0.5, 0.5));
-		population.add(TestUtils.newSolution(1.0, 0.0));
-		archive.add(TestUtils.newSolution(0.0, 1.0));
+		population.add(MockSolution.of().withObjectives(0.0, 1.0));
+		population.add(MockSolution.of().withObjectives(0.5, 0.5));
+		population.add(MockSolution.of().withObjectives(1.0, 0.0));
+		archive.add(MockSolution.of().withObjectives(0.0, 1.0));
 		
 		for (int i=0; i<100; i++) {
 			adaptiveTimeContinuation.step();
@@ -253,13 +253,13 @@ public class AdaptiveTimeContinuationTest {
 	 */
 	@Test
 	public void testPopulationRatioConflictWithMaxPopulationSize() {
-		archive.add(TestUtils.newSolution(1.0, 0.0));
-		archive.add(TestUtils.newSolution(0.9, 0.1));
-		archive.add(TestUtils.newSolution(0.75, 0.25));
-		archive.add(TestUtils.newSolution(0.5, 0.5));
-		archive.add(TestUtils.newSolution(0.25, 0.75));
-		archive.add(TestUtils.newSolution(0.1, 0.9));
-		archive.add(TestUtils.newSolution(0.0, 1.0));
+		archive.add(MockSolution.of().withObjectives(1.0, 0.0));
+		archive.add(MockSolution.of().withObjectives(0.9, 0.1));
+		archive.add(MockSolution.of().withObjectives(0.75, 0.25));
+		archive.add(MockSolution.of().withObjectives(0.5, 0.5));
+		archive.add(MockSolution.of().withObjectives(0.25, 0.75));
+		archive.add(MockSolution.of().withObjectives(0.1, 0.9));
+		archive.add(MockSolution.of().withObjectives(0.0, 1.0));
 		
 		for (int i=0; i<1000; i++) {
 			adaptiveTimeContinuation.step();

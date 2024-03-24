@@ -17,10 +17,9 @@
  */
 package org.moeaframework.core.comparator;
 
-import static org.moeaframework.core.NondominatedSorting.CROWDING_ATTRIBUTE;
-
 import java.util.Comparator;
 
+import org.moeaframework.core.NondominatedSorting;
 import org.moeaframework.core.Solution;
 
 /**
@@ -37,10 +36,7 @@ public class CrowdingComparator implements DominanceComparator, Comparator<Solut
 
 	@Override
 	public int compare(Solution solution1, Solution solution2) {
-		double crowding1 = (Double)solution1.getAttribute(CROWDING_ATTRIBUTE);
-		double crowding2 = (Double)solution2.getAttribute(CROWDING_ATTRIBUTE);
-		
-		return -Double.compare(crowding1, crowding2);
+		return -Double.compare(NondominatedSorting.getCrowding(solution1), NondominatedSorting.getCrowding(solution2));
 	}
 
 }

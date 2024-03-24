@@ -19,7 +19,6 @@ package org.moeaframework.core.indicator;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.moeaframework.TestUtils;
 import org.moeaframework.core.Indicator;
 import org.moeaframework.core.Initialization;
 import org.moeaframework.core.NondominatedPopulation;
@@ -31,6 +30,7 @@ import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.mock.MockConstraintProblem;
 import org.moeaframework.mock.MockRealProblem;
+import org.moeaframework.mock.MockSolution;
 
 public abstract class AbstractIndicatorTest<T extends Indicator> {
 	
@@ -66,9 +66,7 @@ public abstract class AbstractIndicatorTest<T extends Indicator> {
 		Problem problem = new MockConstraintProblem(2);
 		NondominatedPopulation approximationSet = new NondominatedPopulation();
 		
-		Solution solution = problem.newSolution();
-		solution.setObjectives(new double[] { 0.5, 0.5 });
-		solution.setConstraints(new double[] { 0.0, 1.0, 0.0 });
+		Solution solution = MockSolution.of(problem).withObjectives(0.5, 0.5).withConstraints(0.0, 1.0, 0.0);
 		approximationSet.add(solution);
 
 		Indicator indicator = createInstance(problem, getDefaultReferenceSet());
@@ -82,8 +80,8 @@ public abstract class AbstractIndicatorTest<T extends Indicator> {
 	 */
 	protected NondominatedPopulation getDefaultReferenceSet() {
 		NondominatedPopulation referenceSet = new NondominatedPopulation();
-		referenceSet.add(TestUtils.newSolution(0.0, 1.0));
-		referenceSet.add(TestUtils.newSolution(1.0, 0.0));
+		referenceSet.add(MockSolution.of().withObjectives(0.0, 1.0));
+		referenceSet.add(MockSolution.of().withObjectives(1.0, 0.0));
 		return referenceSet;
 	}
 

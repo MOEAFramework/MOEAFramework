@@ -35,6 +35,7 @@ import org.moeaframework.core.operator.CompoundVariation;
 import org.moeaframework.core.selection.TournamentSelection;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.mock.MockRealProblem;
+import org.moeaframework.mock.MockSolution;
 import org.moeaframework.util.TypedProperties;
 
 public class EpsilonMOEATest {
@@ -87,14 +88,9 @@ public class EpsilonMOEATest {
 	
 	@Test
 	public void testAddToPopulationDominated() {
-		Solution solutionA = problem.newSolution();
-		solutionA.setObjectives(new double[] { 0.0, 0.0 });
-		
-		Solution solutionB = problem.newSolution();
-		solutionB.setObjectives(new double[] { 1.0, 1.0 });
-		
-		Solution solutionC = problem.newSolution();
-		solutionC.setObjectives(new double[] { 0.5, 0.5 });
+		Solution solutionA = MockSolution.of(problem).withObjectives(0.0, 0.0);
+		Solution solutionB = MockSolution.of(problem).withObjectives(1.0, 1.0);	
+		Solution solutionC = MockSolution.of(problem).withObjectives(0.5, 0.5);
 		
 		for (int i=0; i<10; i++) {
 			population.add(solutionA);
@@ -117,21 +113,15 @@ public class EpsilonMOEATest {
 	@Test
 	public void testAddToPopulationNondominated() {
 		for (int i=0; i<10; i++) {
-			Solution solution = problem.newSolution();
 			double value = PRNG.nextDouble();
-			
-			solution.setObjectives(new double[] { value, 1.0-value });
-			population.add(solution);
+			population.add(MockSolution.of(problem).withObjectives(value, 1.0-value));
 		}
 		
 		DescriptiveStatistics statistics = new DescriptiveStatistics();
 
 		for (int i=0; i<TestThresholds.SAMPLES; i++) {
-			Solution solution = problem.newSolution();
 			double value = PRNG.nextDouble();
-			
-			solution.setObjectives(new double[] { value, 1.0-value });
-			algorithm.addToPopulation(solution);
+			algorithm.addToPopulation(MockSolution.of(problem).withObjectives(value, 1.0-value));
 			statistics.addValue(population.lastRemovedIndex);
 		}
 		

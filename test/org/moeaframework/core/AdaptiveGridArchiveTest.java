@@ -21,7 +21,7 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.moeaframework.TestUtils;
+import org.moeaframework.mock.MockSolution;
 import org.moeaframework.problem.ProblemStub;
 
 public class AdaptiveGridArchiveTest {
@@ -42,40 +42,40 @@ public class AdaptiveGridArchiveTest {
 	public void testFindIndexEmpty() {
 		AdaptiveGridArchive archive = new AdaptiveGridArchive(2, problem, 2);
 
-		Assert.assertEquals(-1, archive.findIndex(TestUtils.newSolution(0.0, 0.0)));
-		Assert.assertEquals(-1, archive.findIndex(TestUtils.newSolution(1.0, 1.0)));
+		Assert.assertEquals(-1, archive.findIndex(MockSolution.of().withObjectives(0.0, 0.0)));
+		Assert.assertEquals(-1, archive.findIndex(MockSolution.of().withObjectives(1.0, 1.0)));
 	}
 
 	@Test
 	public void testFindIndexSingleEntry() {
 		AdaptiveGridArchive archive = new AdaptiveGridArchive(2, problem, 2);
 
-		archive.add(TestUtils.newSolution(0.0, 0.0));
+		archive.add(MockSolution.of(problem).withObjectives(0.0, 0.0));
 
-		Assert.assertEquals(0, archive.findIndex(TestUtils.newSolution(0.0, 0.0)));
-		Assert.assertEquals(-1, archive.findIndex(TestUtils.newSolution(1.0, 1.0)));
+		Assert.assertEquals(0, archive.findIndex(MockSolution.of().withObjectives(0.0, 0.0)));
+		Assert.assertEquals(-1, archive.findIndex(MockSolution.of().withObjectives(1.0, 1.0)));
 	}
 
 	@Test
 	public void testFindIndexMultipleEntries() {
 		AdaptiveGridArchive archive = new AdaptiveGridArchive(2, problem, 2);
 
-		archive.add(TestUtils.newSolution(0.0, 1.0));
-		archive.add(TestUtils.newSolution(1.0, 0.0));
+		archive.add(MockSolution.of(problem).withObjectives(0.0, 1.0));
+		archive.add(MockSolution.of(problem).withObjectives(1.0, 0.0));
 
-		Assert.assertEquals(0, archive.findIndex(TestUtils.newSolution(0.25, 0.25)));
-		Assert.assertEquals(1, archive.findIndex(TestUtils.newSolution(0.75, 0.25)));
-		Assert.assertEquals(2, archive.findIndex(TestUtils.newSolution(0.25, 0.75)));
-		Assert.assertEquals(3, archive.findIndex(TestUtils.newSolution(0.75, 0.75)));
+		Assert.assertEquals(0, archive.findIndex(MockSolution.of().withObjectives(0.25, 0.25)));
+		Assert.assertEquals(1, archive.findIndex(MockSolution.of().withObjectives(0.75, 0.25)));
+		Assert.assertEquals(2, archive.findIndex(MockSolution.of().withObjectives(0.25, 0.75)));
+		Assert.assertEquals(3, archive.findIndex(MockSolution.of().withObjectives(0.75, 0.75)));
 	}
 
 	@Test
 	public void testFindDensestIndex() {
 		AdaptiveGridArchive archive = new AdaptiveGridArchive(3, problem, 2);
 
-		archive.add(TestUtils.newSolution(0.0, 1.0));
-		archive.add(TestUtils.newSolution(1.0, 0.0));
-		archive.add(TestUtils.newSolution(0.7, 0.2));
+		archive.add(MockSolution.of(problem).withObjectives(0.0, 1.0));
+		archive.add(MockSolution.of(problem).withObjectives(1.0, 0.0));
+		archive.add(MockSolution.of(problem).withObjectives(0.7, 0.2));
 		
 		Solution densestSolution = archive.pickSolutionFromDensestCell();
 
@@ -86,10 +86,10 @@ public class AdaptiveGridArchiveTest {
 	public void testAdaptGrid() {
 		AdaptiveGridArchive archive = new AdaptiveGridArchive(4, problem, 2);
 
-		archive.add(TestUtils.newSolution(0.0, 1.0));
-		archive.add(TestUtils.newSolution(0.7, 0.2));
-		archive.add(TestUtils.newSolution(0.6, 0.3));
-		archive.add(TestUtils.newSolution(0.8, 0.1));
+		archive.add(MockSolution.of(problem).withObjectives(0.0, 1.0));
+		archive.add(MockSolution.of(problem).withObjectives(0.7, 0.2));
+		archive.add(MockSolution.of(problem).withObjectives(0.6, 0.3));
+		archive.add(MockSolution.of(problem).withObjectives(0.8, 0.1));
 
 		Assert.assertArrayEquals(new int[] { 0, 3, 1, 0 }, archive.density);
 		Assert.assertArrayEquals(new double[] { 0.0, 0.1 }, archive.minimum, Settings.EPS);
@@ -100,9 +100,9 @@ public class AdaptiveGridArchiveTest {
 	public void testAddDominating() {
 		AdaptiveGridArchive archive = new AdaptiveGridArchive(4, problem, 2);
 
-		archive.add(TestUtils.newSolution(0.0, 1.0));
-		archive.add(TestUtils.newSolution(1.0, 0.0));
-		archive.add(TestUtils.newSolution(0.0, 0.0));
+		archive.add(MockSolution.of(problem).withObjectives(0.0, 1.0));
+		archive.add(MockSolution.of(problem).withObjectives(1.0, 0.0));
+		archive.add(MockSolution.of(problem).withObjectives(0.0, 0.0));
 
 		Assert.assertEquals(1, archive.size());
 		
@@ -118,8 +118,8 @@ public class AdaptiveGridArchiveTest {
 	public void testRemoveIndex() {
 		AdaptiveGridArchive archive = new AdaptiveGridArchive(4, problem, 2);
 
-		archive.add(TestUtils.newSolution(0.0, 1.0));
-		archive.add(TestUtils.newSolution(1.0, 0.0));
+		archive.add(MockSolution.of(problem).withObjectives(0.0, 1.0));
+		archive.add(MockSolution.of(problem).withObjectives(1.0, 0.0));
 
 		archive.remove(1);
 
@@ -137,8 +137,8 @@ public class AdaptiveGridArchiveTest {
 	public void testRemoveSolution() {
 		AdaptiveGridArchive archive = new AdaptiveGridArchive(4, problem, 2);
 
-		archive.add(TestUtils.newSolution(0.0, 1.0));
-		archive.add(TestUtils.newSolution(1.0, 0.0));
+		archive.add(MockSolution.of(problem).withObjectives(0.0, 1.0));
+		archive.add(MockSolution.of(problem).withObjectives(1.0, 0.0));
 
 		archive.remove(archive.get(1));
 

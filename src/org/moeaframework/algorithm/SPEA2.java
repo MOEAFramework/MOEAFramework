@@ -211,7 +211,7 @@ public class SPEA2 extends AbstractEvolutionaryAlgorithm {
 		
 		while (iterator.hasNext()) {
 			Solution solution = iterator.next();
-			double fitness = (Double)solution.getAttribute(FitnessEvaluator.FITNESS_ATTRIBUTE);
+			double fitness = FitnessEvaluator.getFitness(solution);
 			
 			if (fitness < 1.0) {
 				survivors.add(solution);
@@ -466,7 +466,7 @@ public class SPEA2 extends AbstractEvolutionaryAlgorithm {
 			
 			// assign fitness attribute to solutions
 			for (int i = 0; i < population.size(); i++) {
-				population.get(i).setAttribute(FITNESS_ATTRIBUTE, fitness[i]);
+				FitnessEvaluator.setFitness(population.get(i), fitness[i]);
 			}
 		}
 

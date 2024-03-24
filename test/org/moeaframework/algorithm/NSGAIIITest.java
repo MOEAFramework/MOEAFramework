@@ -120,7 +120,7 @@ public class NSGAIIITest {
 		evaluate(new ScaledProblem(new DTLZ2(15), 2), 1000, new NondominatedPopulation(PopulationIO.readObjectives(new File("DTLZ2(15)-PFscaled.txt"))));
 	}
 	
-	public void evaluate(Problem problem, int maxGen, NondominatedPopulation referenceSet) {
+	private void evaluate(Problem problem, int maxGen, NondominatedPopulation referenceSet) {
 		int trials = 20;
 		double[] igdValues = new double[trials];
 		
@@ -181,7 +181,7 @@ public class NSGAIIITest {
 		System.out.println("  Max: " + new Max().evaluate(igdValues));
 	}
 
-	public class ScaledProblem extends ProblemWrapper {
+	private class ScaledProblem extends ProblemWrapper {
 		
 		private final double[] factors;
 		

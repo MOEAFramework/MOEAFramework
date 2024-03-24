@@ -36,11 +36,12 @@ import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.UnsupportedVariable;
 import org.moeaframework.core.variable.BinaryVariable;
 import org.moeaframework.core.variable.Grammar;
 import org.moeaframework.core.variable.Permutation;
 import org.moeaframework.core.variable.RealVariable;
+import org.moeaframework.mock.MockSolution;
+import org.moeaframework.mock.MockUnsupportedVariable;
 import org.moeaframework.problem.AbstractProblem;
 import org.moeaframework.util.TypedProperties;
 
@@ -188,8 +189,8 @@ public class ResultFileWriterTest {
 		}
 		
 		population.clear();
-		population.add(new Solution(solution1.getObjectives()));
-		population.add(new Solution(solution2.getObjectives()));
+		population.add(MockSolution.of().withObjectives(solution1.getObjectives()));
+		population.add(MockSolution.of().withObjectives(solution2.getObjectives()));
 		
 		try (ResultFileReader reader = new ResultFileReader(problem, file)) {
 			ResultEntry entry = reader.next();
@@ -314,7 +315,7 @@ public class ResultFileWriterTest {
 			public Solution newSolution() {
 				Solution solution = new Solution(2, 2, 1);
 				solution.setVariable(0, new RealVariable(0.0, 1.0));
-				solution.setVariable(1, new UnsupportedVariable());
+				solution.setVariable(1, new MockUnsupportedVariable());
 				return solution;
 			}
 			

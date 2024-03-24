@@ -21,19 +21,20 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.List;
 
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.moeaframework.TestUtils;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.mock.MockRealProblem;
+import org.moeaframework.mock.MockSolution;
 import org.moeaframework.problem.DTLZ.DTLZ2;
 import org.moeaframework.util.weights.NormalBoundaryDivisions;
 
@@ -77,26 +78,23 @@ public class DBEATest {
 		
 		Assert.assertEquals(0, algorithm.numberOfUniqueSolutions(population));
 		
-		population.add(TestUtils.newSolution(0.0, 1.0));
-		population.add(TestUtils.newSolution(1.0, 0.0));
+		population.add(MockSolution.of(problem).withObjectives(0.0, 1.0));
+		population.add(MockSolution.of(problem).withObjectives(1.0, 0.0));
 		
 		Assert.assertEquals(2, algorithm.numberOfUniqueSolutions(population));
 		
-		population.add(TestUtils.newSolution(0.0, 1.0));
+		population.add(MockSolution.of(problem).withObjectives(0.0, 1.0));
 		
 		Assert.assertEquals(2, algorithm.numberOfUniqueSolutions(population));
 	}
 	
 	@Test
 	public void testOrderBySmallestObjective() {
-		Solution solution1 = TestUtils.newSolution(0.5, 0.5);
-		Solution solution2 = TestUtils.newSolution(0.0, 1.0);
-		Solution solution3 = TestUtils.newSolution(1.0, 0.0);
+		Solution solution1 = MockSolution.of(problem).withObjectives(0.5, 0.5);
+		Solution solution2 = MockSolution.of(problem).withObjectives(0.0, 1.0);
+		Solution solution3 = MockSolution.of(problem).withObjectives(1.0, 0.0);
 		
-		Population population = new Population();
-		population.add(solution1);
-		population.add(solution2);
-		population.add(solution3);
+		Population population = new Population(List.of(solution1, solution2, solution3));
 		
 		Population result = algorithm.orderBySmallestObjective(0, population);
 		
@@ -107,14 +105,11 @@ public class DBEATest {
 	
 	@Test
 	public void testOrderBySmallestSquaredValue() {
-		Solution solution1 = TestUtils.newSolution(0.5, 0.0);
-		Solution solution2 = TestUtils.newSolution(0.0, 0.0);
-		Solution solution3 = TestUtils.newSolution(1.0, 0.0);
+		Solution solution1 = MockSolution.of(problem).withObjectives(0.5, 0.0);
+		Solution solution2 = MockSolution.of(problem).withObjectives(0.0, 0.0);
+		Solution solution3 = MockSolution.of(problem).withObjectives(1.0, 0.0);
 		
-		Population population = new Population();
-		population.add(solution1);
-		population.add(solution2);
-		population.add(solution3);
+		Population population = new Population(List.of(solution1, solution2, solution3));
 		
 		Population result = algorithm.orderBySmallestSquaredValue(1, population);
 		
@@ -125,15 +120,11 @@ public class DBEATest {
 	
 	@Test
 	public void testLargestObjectiveValue() {
-		Solution solution1 = TestUtils.newSolution(0.5, 0.0);
-		Solution solution2 = TestUtils.newSolution(0.0, 0.0);
-		Solution solution3 = TestUtils.newSolution(1.0, 0.0);
+		Solution solution1 = MockSolution.of(problem).withObjectives(0.5, 0.0);
+		Solution solution2 = MockSolution.of(problem).withObjectives(0.0, 0.0);
+		Solution solution3 = MockSolution.of(problem).withObjectives(1.0, 0.0);
 		
-		Population population = new Population();
-		population.add(solution1);
-		population.add(solution2);
-		population.add(solution3);
-		
+		Population population = new Population(List.of(solution1, solution2, solution3));
 		Solution result = algorithm.largestObjectiveValue(0, population);
 		
 		Assert.assertSame(solution3, result);
@@ -141,28 +132,71 @@ public class DBEATest {
 	
 	@Test
 	public void testSumOfConstraintValues() {
-		Solution solution = new Solution(0, 0, 3);
-		solution.setConstraints(new double[] { -1.0, 1.0, 0.0 });
-		
+		Solution solution = MockSolution.of().withConstraints(-1.0, 1.0, 0.0);	
 		Assert.assertEquals(2.0, algorithm.sumOfConstraintViolations(solution), Settings.EPS);
 	}
 	
 	@Test
 	public void testGetFeasibleSolutions() {
-		Solution solution1 = new Solution(0, 0, 3);
-		solution1.setConstraints(new double[] { -1.0, 1.0, 0.0 });
+		Solution solution1 = MockSolution.of().withConstraints(-1.0, 1.0, 0.0);
+		Solution solution2 = MockSolution.of().withConstraints(0.0, 0.0, 0.0);
 		
-		Solution solution2 = new Solution(0, 0, 3);
-		solution2.setConstraints(new double[] { 0.0, 0.0, 0.0 });
-		
-		Population population = new Population();
-		population.add(solution1);
-		population.add(solution2);
-		
+		Population population = new Population(List.of(solution1, solution2));
 		Population result = algorithm.getFeasibleSolutions(population);
 		
 		Assert.assertEquals(1, result.size());
 		Assert.assertSame(solution2, result.get(0));
+	}
+	
+	@Test
+	public void testCornerSort() {
+		Solution solution1 = MockSolution.of(problem).withObjectives(0.0, 1.0);
+		Solution solution2 = MockSolution.of(problem).withObjectives(0.25, 0.75);
+		Solution solution3 = MockSolution.of(problem).withObjectives(0.5, 0.5);
+		Solution solution4 = MockSolution.of(problem).withObjectives(0.75, 0.25);
+		Solution solution5 = MockSolution.of(problem).withObjectives(1.0, 0.0);
+		Solution solution6 = MockSolution.of(problem).withObjectives(0.1, 1.1);
+		Solution solution7 = MockSolution.of(problem).withObjectives(1.1, 0.1);
+		
+		Population population = new Population(List.of(solution1, solution2, solution3, solution4, solution5,
+				solution6, solution7));
+		
+		Population result = algorithm.corner_sort(population);
+		
+		Assert.assertEquals(4, result.size());
+		Assert.assertTrue(result.containsAll(List.of(solution1, solution5, solution6, solution7)));
+	}
+	
+	@Test
+	public void testCornerSortWithDuplicates() {
+		Solution solution1 = MockSolution.of(problem).withObjectives(0.0, 1.0);
+		Solution solution2 = MockSolution.of(problem).withObjectives(0.25, 0.75);
+		Solution solution3 = MockSolution.of(problem).withObjectives(0.5, 0.5);
+		Solution solution4 = MockSolution.of(problem).withObjectives(0.75, 0.25);
+		Solution solution5 = MockSolution.of(problem).withObjectives(1.0, 0.0);
+		Solution solution6 = MockSolution.of(problem).withObjectives(0.0, 1.0);
+		Solution solution7 = MockSolution.of(problem).withObjectives(1.0, 0.0);
+		
+		Population population = new Population(List.of(solution1, solution2, solution3, solution4, solution5,
+				solution6, solution7));
+		
+		Population result = algorithm.corner_sort(population);
+		
+		Assert.assertEquals(4, result.size());
+		Assert.assertTrue(result.containsAll(List.of(solution1, solution2, solution4, solution5)));
+	}
+	
+	@Test
+	public void testCheckDomination() {
+		algorithm.getPopulation().addAll(List.of(
+				MockSolution.of(problem).withObjectives(0.5, 0.5),
+				MockSolution.of(problem).withObjectives(0.0, 1.0)));
+		
+		Assert.assertTrue(algorithm.checkDomination(MockSolution.of().withObjectives(0.75, 0.75)));
+		Assert.assertFalse(algorithm.checkDomination(MockSolution.of().withObjectives(0.25, 0.25)));
+		Assert.assertFalse(algorithm.checkDomination(MockSolution.of().withObjectives(0.5, 0.5)));
+		Assert.assertFalse(algorithm.checkDomination(MockSolution.of().withObjectives(1.0, 0.0)));
+		Assert.assertFalse(algorithm.checkDomination(MockSolution.of().withObjectives(0.25, 0.25).withConstraintViolation()));
 	}
 	
 	/**

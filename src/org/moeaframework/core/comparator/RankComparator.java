@@ -17,19 +17,18 @@
  */
 package org.moeaframework.core.comparator;
 
-import static org.moeaframework.core.NondominatedSorting.RANK_ATTRIBUTE;
-
 import java.util.Comparator;
 
+import org.moeaframework.core.NondominatedSorting;
 import org.moeaframework.core.Solution;
 
 /**
- * Compares solutions using their {@code RANK_ATTRIBUTE} value.
+ * Compares solutions using their rank.
  */
 public class RankComparator implements DominanceComparator, Comparator<Solution> {
 
 	/**
-	 * Constructs a dominance comparator for comparing solutions using their {@code RANK_ATTRIBUTE} value.
+	 * Constructs a dominance comparator for comparing solutions using their rank.
 	 */
 	public RankComparator() {
 		super();
@@ -37,10 +36,7 @@ public class RankComparator implements DominanceComparator, Comparator<Solution>
 
 	@Override
 	public int compare(Solution solution1, Solution solution2) {
-		int rank1 = (Integer)solution1.getAttribute(RANK_ATTRIBUTE);
-		int rank2 = (Integer)solution2.getAttribute(RANK_ATTRIBUTE);
-		
-		return Integer.compare(rank1, rank2);
+		return Integer.compare(NondominatedSorting.getRank(solution1), NondominatedSorting.getRank(solution2));
 	}
 
 }

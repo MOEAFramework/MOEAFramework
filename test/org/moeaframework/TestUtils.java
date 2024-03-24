@@ -47,8 +47,8 @@ import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
+import org.moeaframework.mock.MockSolution;
 import org.moeaframework.problem.AnalyticalProblem;
 import org.moeaframework.util.io.CommentedLineReader;
 import org.moeaframework.util.io.RedirectStream;
@@ -223,7 +223,7 @@ public class TestUtils {
 	 * @return a new solution with the specified objective values
 	 */
 	public static Solution newSolution(double... objectives) {
-		return new Solution(objectives);
+		return MockSolution.of().withObjectives(objectives);
 	}
 	
 	/**
@@ -234,10 +234,7 @@ public class TestUtils {
 	 * @return the solution resulting from evaluating the problem with the specified decision variables
 	 */
 	public static Solution evaluateAt(Problem problem, double... variables) {
-		Solution solution = problem.newSolution();
-		EncodingUtils.setReal(solution, variables);
-		problem.evaluate(solution);
-		return solution;
+		return MockSolution.of(problem).withReals(variables).evaluate();
 	}
 	
 	/**
