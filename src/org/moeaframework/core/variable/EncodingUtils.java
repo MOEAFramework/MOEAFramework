@@ -109,8 +109,6 @@ public class EncodingUtils {
 
 		BitSet bits = encode(index);
 		
-		System.out.println(bits.length() + " " + numberOfBits);
-
 		if (bits.length() > numberOfBits) {
 			throw new IllegalArgumentException("number of bits not sufficient to represent value");
 		}
