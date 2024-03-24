@@ -23,7 +23,6 @@ import java.io.IOException;
 
 import org.apache.commons.lang3.SystemUtils;
 import org.junit.Assert;
-import org.junit.Assume;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.moeaframework.CIRunner;
@@ -39,9 +38,7 @@ public class RedirectStreamTest {
 		ByteArrayInputStream is = new ByteArrayInputStream(bytes);
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
 
-		RedirectStream.redirect(is, os);
-
-		Thread.sleep(1000); // give the redirection time to work
+		RedirectStream.redirect(is, os).join();
 
 		Assert.assertArrayEquals(bytes, os.toByteArray());
 		Assert.assertEquals(-1, is.read()); // ensure all data is read
@@ -54,9 +51,7 @@ public class RedirectStreamTest {
 		byte[] bytes = generateRandomData();
 		ByteArrayInputStream is = new ByteArrayInputStream(bytes);
 
-		RedirectStream.redirect(is);
-
-		Thread.sleep(1000); // give the redirection time to work
+		RedirectStream.redirect(is).join();
 
 		Assert.assertEquals(-1, is.read()); // ensure all data is read
 
@@ -65,9 +60,6 @@ public class RedirectStreamTest {
 	
 	@Test
 	public void testCapture() throws IOException, InterruptedException {
-		// Skip on Java 19 as this fails in CI...
-		Assume.assumeFalse(SystemUtils.IS_JAVA_19);
-		
 		ProcessBuilder processBuilder = SystemUtils.IS_OS_WINDOWS ?
 				new ProcessBuilder("cmd", "/C", "echo hello world") :
 				new ProcessBuilder("echo", "hello world");

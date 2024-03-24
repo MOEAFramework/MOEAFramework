@@ -75,6 +75,10 @@ public class RedirectStream extends Thread {
 						outputStream.write(buffer, 0, len);
 					}
 				}
+				
+				if (outputStream != null) {
+					outputStream.flush();
+				}
 			} finally {
 				inputStream.close();
 			}
@@ -88,9 +92,12 @@ public class RedirectStream extends Thread {
 	 * redirected anywhere.
 	 * 
 	 * @param inputStream the input stream from which content is read
+	 * @return the thread, which can be joined to await termination
 	 */
-	public static void redirect(InputStream inputStream) {
-		new RedirectStream(inputStream).start();
+	public static RedirectStream redirect(InputStream inputStream) {
+		RedirectStream thread = new RedirectStream(inputStream);
+		thread.start();
+		return thread;
 	}
 
 	/**
@@ -98,9 +105,12 @@ public class RedirectStream extends Thread {
 	 * 
 	 * @param inputStream the input stream from which content is read
 	 * @param outputStream the output stream to which the content is redirected
+	 * @return the thread, which can be joined to await termination
 	 */
-	public static void redirect(InputStream inputStream, OutputStream outputStream) {
-		new RedirectStream(inputStream, outputStream).start();
+	public static RedirectStream redirect(InputStream inputStream, OutputStream outputStream) {
+		RedirectStream thread = new RedirectStream(inputStream, outputStream);
+		thread.start();
+		return thread;
 	}
 	
 	/**
@@ -143,12 +153,15 @@ public class RedirectStream extends Thread {
 	InterruptedException {
 		Process process = processBuilder.start();
 		
-		RedirectStream.redirect(process.getInputStream(), out);
-		RedirectStream.redirect(process.getErrorStream(), err);
+		RedirectStream inputThread = RedirectStream.redirect(process.getInputStream(), out);
+		RedirectStream outputThread = RedirectStream.redirect(process.getErrorStream(), err);
 		
 		if (process.waitFor() != 0) {
 			throw new IOException("Process exited with non-zero status (" + process.exitValue() + ")");
 		}
+		
+		inputThread.join();
+		outputThread.join();
 	}
 	
 	/**
