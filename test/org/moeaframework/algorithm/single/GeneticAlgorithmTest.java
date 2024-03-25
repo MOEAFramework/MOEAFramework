@@ -19,14 +19,15 @@ package org.moeaframework.algorithm.single;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.moeaframework.core.Solution;
-import org.moeaframework.core.configuration.ConfigurationException;
-import org.moeaframework.core.variable.EncodingUtils;
+import org.moeaframework.core.Problem;
 import org.moeaframework.mock.MockRealProblem;
-import org.moeaframework.problem.RosenbrockTestProblem;
 import org.moeaframework.util.TypedProperties;
 
-public class GeneticAlgorithmTest {
+public class GeneticAlgorithmTest extends AbstractSingleObjectiveAlgorithmTest<GeneticAlgorithm> {
+	
+	public GeneticAlgorithm createInstance(Problem problem) {
+		return new GeneticAlgorithm(problem);
+	}
 	
 	@Test
 	public void testDefaultComparator() {
@@ -37,7 +38,7 @@ public class GeneticAlgorithmTest {
 	}
 	
 	@Test
-	public void testComparator() {
+	public void testSetComparatorUpdatesSelection() {
 		GeneticAlgorithm algorithm = new GeneticAlgorithm(new MockRealProblem());
 		AggregateObjectiveComparator oldComparator = algorithm.getComparator();
 		
@@ -50,41 +51,14 @@ public class GeneticAlgorithmTest {
 	}
 	
 	@Test
-	public void testConfiguration() {
-		GeneticAlgorithm algorithm = new GeneticAlgorithm(new MockRealProblem());
-		
+	public void testApplyConfigurationUpdatesSelection() {
+		GeneticAlgorithm algorithm = createInstance(new MockRealProblem());
 		TypedProperties properties = algorithm.getConfiguration();
-		
-		Assert.assertEquals("linear", properties.getString("method"));
-		Assert.assertTrue(algorithm.getComparator() instanceof LinearDominanceComparator);
 		
 		properties.setString("method", "min-max");
 		algorithm.applyConfiguration(properties);
-		Assert.assertTrue(algorithm.getComparator() instanceof MinMaxDominanceComparator);
 		
-		// ensure the selection operator is also updated with the comparator
 		Assert.assertEquals(algorithm.getComparator(), algorithm.getSelection().getComparator());
-	}
-	
-	@Test(expected = ConfigurationException.class)
-	public void testConfigurationInvalidIndicator() {
-		GeneticAlgorithm algorithm = new GeneticAlgorithm(new MockRealProblem());
-		
-		algorithm.applyConfiguration(TypedProperties.withProperty("method", "foo"));
-	}
-	
-	@Test
-	public void testRosenbrock() {
-		RosenbrockTestProblem problem = new RosenbrockTestProblem();
-		GeneticAlgorithm algorithm = new GeneticAlgorithm(problem);
-		algorithm.run(100000);
-		
-		Assert.assertEquals(1, algorithm.getResult().size());
-		
-		Solution solution = algorithm.getResult().get(0);
-		
-		Assert.assertArrayEquals(problem.getIdealVariables(), EncodingUtils.getReal(solution), 0.01);
-		Assert.assertEquals(problem.getIdealObjectiveValue(), solution.getObjective(0), 0.01);
 	}
 
 }

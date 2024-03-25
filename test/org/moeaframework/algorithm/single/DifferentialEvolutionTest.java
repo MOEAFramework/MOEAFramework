@@ -17,50 +17,12 @@
  */
 package org.moeaframework.algorithm.single;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.moeaframework.core.Solution;
-import org.moeaframework.core.configuration.ConfigurationException;
-import org.moeaframework.core.variable.EncodingUtils;
-import org.moeaframework.mock.MockRealProblem;
-import org.moeaframework.problem.RosenbrockTestProblem;
-import org.moeaframework.util.TypedProperties;
+import org.moeaframework.core.Problem;
 
-public class DifferentialEvolutionTest {
-
-	@Test
-	public void testConfiguration() {
-		DifferentialEvolution algorithm = new DifferentialEvolution(new MockRealProblem());
-		
-		TypedProperties properties = algorithm.getConfiguration();
-		
-		Assert.assertEquals("linear", properties.getString("method"));
-		Assert.assertTrue(algorithm.getComparator() instanceof LinearDominanceComparator);
-		
-		properties.setString("method", "min-max");
-		algorithm.applyConfiguration(properties);
-		Assert.assertTrue(algorithm.getComparator() instanceof MinMaxDominanceComparator);
-	}
+public class DifferentialEvolutionTest extends AbstractSingleObjectiveAlgorithmTest<DifferentialEvolution> {
 	
-	@Test(expected = ConfigurationException.class)
-	public void testConfigurationInvalidIndicator() {
-		DifferentialEvolution algorithm = new DifferentialEvolution(new MockRealProblem());
-		
-		algorithm.applyConfiguration(TypedProperties.withProperty("method", "foo"));
-	}
-	
-	@Test
-	public void testRosenbrock() {
-		RosenbrockTestProblem problem = new RosenbrockTestProblem();
-		DifferentialEvolution algorithm = new DifferentialEvolution(problem);
-		algorithm.run(100000);
-		
-		Assert.assertEquals(1, algorithm.getResult().size());
-		
-		Solution solution = algorithm.getResult().get(0);
-		
-		Assert.assertArrayEquals(problem.getIdealVariables(), EncodingUtils.getReal(solution), 0.01);
-		Assert.assertEquals(problem.getIdealObjectiveValue(), solution.getObjective(0), 0.01);
+	public DifferentialEvolution createInstance(Problem problem) {
+		return new DifferentialEvolution(problem);
 	}
 
 }
