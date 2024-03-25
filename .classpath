@@ -2,7 +2,7 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry including="META-INF/" kind="src" path=""/>
-	<classpathentry kind="src" path="test"/>
+	<classpathentry excluding="checkstyle/" kind="src" path="test"/>
 	<classpathentry kind="src" path="examples"/>
 	<classpathentry kind="lib" path="lib/commons-math3-3.6.1.jar"/>
 	<classpathentry kind="lib" path="lib/commons-cli-1.6.0.jar"/>

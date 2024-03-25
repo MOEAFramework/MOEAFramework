@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+<!--
+Copyright 2009-2024 David Hadka
+
+This file is part of the MOEA Framework.
+
+The MOEA Framework is free software: you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License as published by 
+the Free Software Foundation, either version 3 of the License, or (at your 
+option) any later version.
+
+The MOEA Framework is distributed in the hope that it will be useful, but 
+WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY 
+or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public 
+License for more details.
+
+You should have received a copy of the GNU Lesser General Public License 
+along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
+
+
+
+Use of these build scripts requires Apache Ant to be installed.  See
+<http://ant.apache.org/> for instructions on installing Apache Ant.
+-->
+<project name="MOEA Framework Checkstyle" basedir="../../" default="check-style" xmlns:if="ant:if" xmlns:unless="ant:unless">
+	
+	<import file="../../auxiliary/ant/macros.xml" />
+
+	<!-- Loads properties from properties file and environment -->
+	<property file="META-INF/build.properties" />
+	<property environment="env" />
+
+	<!-- The working folder for these Ant build targets -->
+	<property name="build" value="build" />
+
+	<!-- The location of the checkstyle library and configuration files -->
+	<property name="checkstyle.path" value="test/checkstyle" />
+
+	<path id="classpath">
+		<fileset dir="${checkstyle.path}" includes="*.jar" />
+	</path>
+
+	<target name="get-checkstyle">
+		<available file="${checkstyle.path}/checkstyle-${checkstyle.version}-all.jar" property="checkstyle.exists" />
+		
+		<secure-get unless:true="${checkstyle.exists}" src="${checkstyle.url}"
+			dest="${checkstyle.path}/checkstyle-${checkstyle.version}-all.jar" sha1="${checkstyle.sha1}" />
+	</target>
+
+	<target name="check-style" depends="get-checkstyle">
+		<delete dir="${build}" />
+		<mkdir dir="${build}" />
+
+		<taskdef resource="com/puppycrawl/tools/checkstyle/ant/checkstyle-ant-task.properties"
+			classpathref="classpath" />
+
+		<checkstyle config="checks.xml" failOnViolation="false" failureProperty="checkstyle.failed">
+			<classpath>
+				<pathelement path="${classpath}"/>
+			</classpath>
+			<formatter type="xml" tofile="${build}/checkstyle-result.xml" />
+			<fileset dir="auxiliary" includes="**/*.c,**/*.h" />
+			<fileset dir="src" includes="**/*.java" />
+			<fileset dir="test" includes="**/*.java" />
+			<fileset dir="examples" includes="**/*.java" />
+		</checkstyle>
+
+		<sequential if:true="${env.CI}">
+			<xslt in="${build}/checkstyle-result.xml" out="${build}/checkstyle-result.txt"
+				style="${checkstyle.path}/checkstyle-text.xsl" />
+
+			<loadfile  property="content" srcfile="${build}/checkstyle-result.txt">
+				<filterchain>
+					<linecontainsregexp>
+						<regexp pattern="[^\s]+"/>
+					</linecontainsregexp>
+				</filterchain>
+			</loadfile>
+
+			<echo message="${content}" />
+		</sequential>
+
+		<sequential unless:true="${env.CI}">
+			<!-- Convert relative path of build to absolute path -->
+			<property name="output.dir" location="${build}" />
+
+			<xslt in="${build}/checkstyle-result.xml" out="${build}/checkstyle-result.html"
+					style="${checkstyle.path}/checkstyle-frames-errors.xsl">
+				<param name="output.dir" expression="${output.dir}" />
+			</xslt>
+
+			<echo message="Checkstyle results written to ${output.dir}" />
+		</sequential>
+
+		<fail if="checkstyle.failed">Checkstyle identified one or more violations!</fail>
+	</target>
+
+</project>

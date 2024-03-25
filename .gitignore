@@ -19,5 +19,5 @@ lib/nashorn-*.jar
 lib/asm-*.jar
 lib/junit-*.jar
 lib/hamcrest-core-*.jar
-auxiliary/checkstyle/checkstyle-*.jar
+test/checkstyle/checkstyle-*.jar
 *.state
