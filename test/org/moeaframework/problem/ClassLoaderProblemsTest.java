@@ -21,6 +21,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.core.spi.ProviderNotFoundException;
+import org.moeaframework.mock.MockRealProblem;
 
 public class ClassLoaderProblemsTest {
 	
@@ -38,17 +39,36 @@ public class ClassLoaderProblemsTest {
 		Assert.assertNull(new ClassLoaderProblems().getReferenceSet(problem));
 	}
 	
-	@Test(expected=ProviderNotFoundException.class)
+	@Test
+	public void testInnerClass() {
+		String problem = "org.moeaframework.problem.ClassLoaderProblemsTest$MockInnerProblem";
+		Assert.assertNotNull(new ClassLoaderProblems().getProblem(problem));
+		Assert.assertNull(new ClassLoaderProblems().getReferenceSet(problem));
+	}
+	
+	@Test(expected = ProviderNotFoundException.class)
+	public void testNoConstructor() {
+		String problem = "org.moeaframework.problem.ClassLoaderProblemsTest$MockProblemWithoutConstructor";
+		Assert.assertNotNull(new ClassLoaderProblems().getProblem(problem));
+		Assert.assertNull(new ClassLoaderProblems().getReferenceSet(problem));
+	}
+	
+	@Test(expected = ProviderNotFoundException.class)
 	public void testProblemFactoryClassNotFound() {
 		String className = "org.moeaframework.problem.NonExistantProblem";
 		ProblemFactory.getInstance().getProblem(className);
 	}
 	
-	@Test
-	public void testProblemFactoryClassFound() {
-		String problem = "org.moeaframework.problem.misc.Kita";
-		Assert.assertNotNull(ProblemFactory.getInstance().getProblem(problem));
-		Assert.assertNull(ProblemFactory.getInstance().getReferenceSet(problem));
+	public static class MockInnerProblem extends MockRealProblem {
+		
+	}
+	
+	public static class MockProblemWithoutConstructor extends MockRealProblem {
+		
+		private MockProblemWithoutConstructor() {
+			super();
+		}
+		
 	}
 
 }
