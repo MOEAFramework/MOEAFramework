@@ -231,6 +231,12 @@ public class GrammarTest {
 	}
 	
 	@Test
+	public void testToString() {
+		grammar.fromArray(new int[] { 50, 10, 5, 0, 100 });
+		Assert.assertEquals("Grammar(50,10,5,0,100)", grammar.toString());
+	}
+	
+	@Test
 	public void testEncodeDecode() {
 		Grammar newVariable = new Grammar(5);
 		newVariable.decode(grammar.encode());

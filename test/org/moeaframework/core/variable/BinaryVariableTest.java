@@ -192,13 +192,13 @@ public class BinaryVariableTest {
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public void testDecodeInvalidBinary1() throws IOException {
+	public void testDecodeIncorrectLength() throws IOException {
 		BinaryVariable bv = new BinaryVariable(5);
 		bv.decode("001");
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
-	public void testDecodeInvalidBinary2() throws IOException {
+	public void testDecodeInvalidBitString() throws IOException {
 		BinaryVariable bv = new BinaryVariable(5);
 		bv.decode("00200");
 	}

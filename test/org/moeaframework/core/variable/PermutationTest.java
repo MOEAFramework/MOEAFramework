@@ -160,6 +160,12 @@ public class PermutationTest {
 	public void testGetOutOfBounds() {
 		permutation.get(7);
 	}
+	
+	@Test
+	public void testToString() {
+		permutation.fromArray(new int[] { 2, 0, 1, 3, 4 });
+		Assert.assertEquals("2,0,1,3,4", permutation.toString());
+	}
 
 	@Test
 	public void testEncodeDecode() {
@@ -169,13 +175,13 @@ public class PermutationTest {
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
-	public void testDecodeInvalidPermutation1() throws IOException {
+	public void testDecodeInvalidLength() throws IOException {
 		Permutation p = new Permutation(5);
 		p.decode("2,0,1");
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
-	public void testDecodeInvalidPermutation2() throws IOException {
+	public void testDecodeInvalidValue() throws IOException {
 		Permutation p = new Permutation(5);
 		p.decode("2,0,1,5,3");
 	}

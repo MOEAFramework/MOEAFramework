@@ -107,6 +107,11 @@ public class RealVariableTest {
 	}
 	
 	@Test
+	public void testToString() {
+		Assert.assertEquals("0.5", variable.toString());
+	}
+	
+	@Test
 	public void testEncodeDecode() {
 		RealVariable newVariable = new RealVariable(0.0, 1.0);
 		newVariable.decode(variable.encode());

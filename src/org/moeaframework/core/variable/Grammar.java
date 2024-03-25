@@ -250,6 +250,11 @@ public class Grammar implements Variable {
 	}
 	
 	@Override
+	public String toString() {
+		return encode();
+	}
+	
+	@Override
 	public String encode() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("Grammar(");

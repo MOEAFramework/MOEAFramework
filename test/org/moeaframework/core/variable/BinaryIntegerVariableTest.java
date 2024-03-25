@@ -102,6 +102,11 @@ public class BinaryIntegerVariableTest {
 	}
 	
 	@Test
+	public void testToString() {
+		Assert.assertEquals("7", variable.toString());
+	}
+	
+	@Test
 	public void testEncodeDecode() {
 		BinaryIntegerVariable newVariable = new BinaryIntegerVariable(5, 10);		
 		newVariable.decode(variable.encode());

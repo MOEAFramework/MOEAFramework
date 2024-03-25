@@ -217,6 +217,13 @@ public class SubsetTest {
 	}
 	
 	@Test
+	public void testToString() {
+		Subset subset = new Subset(5, 10);
+		subset.fromArray(new int[] { 9, 3, 5, 7, 1 });
+		Assert.assertEquals("1,3,5,7,9", subset.toString());
+	}
+	
+	@Test
 	public void testEncodeDecode() {
 		int[] content = new int[] {3, 5, 9};
 		
