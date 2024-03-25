@@ -60,6 +60,7 @@ import org.moeaframework.mock.MockPermutationProblem;
 import org.moeaframework.mock.MockProgramProblem;
 import org.moeaframework.mock.MockRealProblem;
 import org.moeaframework.mock.MockSubsetProblem;
+import org.moeaframework.problem.DTLZ.DTLZ2;
 import org.moeaframework.util.TypedProperties;
 
 /**
@@ -255,33 +256,57 @@ public class DefaultAlgorithmsTest {
 	}
 	
 	protected void test(String name, Problem... supportedProblems) {
+		System.out.println("Testing " + name + "...");
+		
 		for (Problem problem : allProblems) {
+			boolean isSupported = List.of(supportedProblems).contains(problem);
+			
 			// test if the algorithm can be instantiated and run against the problem type
 			try {
+				System.out.print("  Test run on " + problem.getName() + "...");
 				testRun(name, problem);
+				System.out.println("passed!");
 			} catch (ProviderNotFoundException e) {
-				if (List.of(supportedProblems).contains(problem)) {
+				if (isSupported) {
+					System.out.println("failed!");
 					throw new AssertionError(name + " failed test run on " + problem.getName(), e);
 				}
-				
-				return;
+
+				System.out.println("not supported!");
+				continue;
 			} catch (AssertionError e) {
 				throw new AssertionError(name + " failed test run on " + problem.getName(), e);
 			}
 			
 			// test if the configuration can be saved and reloaded without error
 			try {
+				System.out.print("  Test configuration on " + problem.getName() + "...");
 				testConfiguration(name, problem);
+				System.out.println("passed!");
 			} catch (AssertionError e) {
+				System.out.println("failed!");
 				throw new AssertionError(name + " failed configuration test on " + problem.getName(), e);
 			}
 			
 			// test if the algorithm is resumable
 			try {
+				System.out.print("  Test resumable on " + problem.getName() + "...");
 				testResumable(name, problem);
+				System.out.println("passed!");
 			} catch (IOException | AssertionError e) {
+				System.out.println("failed!");
 				throw new AssertionError(name + " failed resumable test on " + problem.getName(), e);
 			}
+		}
+		
+		// test if the algorithm has reproducible results given the same seed
+		try {
+			System.out.print("  Test reproducibility on DTLZ2...");
+			testReproducibility(name, new DTLZ2(2));
+			System.out.println("passed!");
+		} catch (AssertionError e) {
+			System.out.println("failed!");
+			throw new AssertionError(name + " failed reproducibility test on DTLZ2");
 		}
 	}
 
@@ -292,10 +317,7 @@ public class DefaultAlgorithmsTest {
 		Assert.assertEquals(0, algorithm.getResult().size());
 		Assert.assertFalse(algorithm.isTerminated());
 		
-		while (algorithm.getNumberOfEvaluations() < NFE) {
-			algorithm.step();
-		}
-		
+		algorithm.run(NFE);
 		algorithm.terminate();
 		
 		if (!(algorithm instanceof AMOSA)) {
@@ -313,6 +335,25 @@ public class DefaultAlgorithmsTest {
 			TypedProperties properties = configurable.getConfiguration();
 			configurable.applyConfiguration(properties);
 		}
+	}
+	
+	private void testReproducibility(String name, Problem problem) {
+		long seed = PRNG.getRandom().nextLong();
+		
+		// first trial
+		PRNG.setSeed(seed);
+		Algorithm algorithm = AlgorithmFactory.getInstance().getAlgorithm(name, properties, problem);
+		algorithm.run(10000);
+		NondominatedPopulation firstResult = algorithm.getResult();
+		
+		// second trial
+		PRNG.setSeed(seed);
+		algorithm = AlgorithmFactory.getInstance().getAlgorithm(name, properties, problem);
+		algorithm.run(10000);
+		NondominatedPopulation secondResult = algorithm.getResult();
+		
+		// comparison
+		TestUtils.assertEquals(firstResult, secondResult);
 	}
 	
 	private void testResumable(String name, Problem problem) throws IOException {

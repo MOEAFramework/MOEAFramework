@@ -497,10 +497,7 @@ public class Solve extends CommandLineUtility {
 
 				try (ResultFileWriter writer = ResultFileWriter.overwrite(problem, file)) {
 					algorithm = new RuntimeCollector(algorithm, runtimeFrequency, writer);
-					
-					while (!algorithm.isTerminated() && (algorithm.getNumberOfEvaluations() < maxEvaluations)) {
-						algorithm.step();
-					}
+					algorithm.run(maxEvaluations);
 				}
 			} finally {
 				if (algorithm != null) {

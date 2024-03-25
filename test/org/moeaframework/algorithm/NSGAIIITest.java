@@ -166,10 +166,7 @@ public class NSGAIIITest {
 			}
 			
 			Algorithm algorithm = AlgorithmFactory.getInstance().getAlgorithm("NSGAIII", properties, problem);
-			
-			while (algorithm.getNumberOfEvaluations() < maxGen*populationSize) {
-				algorithm.step();
-			}
+			algorithm.run(maxGen*populationSize);
 			
 			NondominatedPopulation result = algorithm.getResult();
 			igdValues[i] = igd.evaluate(result);

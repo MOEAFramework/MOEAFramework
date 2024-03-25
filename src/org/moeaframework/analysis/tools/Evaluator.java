@@ -208,14 +208,11 @@ public class Evaluator extends CommandLineUtility {
 
 		// find the maximum NFE to run
 		int maxEvaluations = properties.getTruncatedInt("maxEvaluations");
-		
 		Validate.greaterThanOrEqualToZero("maxEvaluations", maxEvaluations);
 
 		// run the algorithm
 		long startTime = System.nanoTime();
-		while (!algorithm.isTerminated() && (algorithm.getNumberOfEvaluations() < maxEvaluations)) {
-			algorithm.step();
-		}
+		algorithm.run(maxEvaluations);
 		long endTime = System.nanoTime();
 
 		// extract the result and free any resources
