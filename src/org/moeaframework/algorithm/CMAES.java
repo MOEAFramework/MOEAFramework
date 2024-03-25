@@ -77,11 +77,6 @@ public class CMAES extends AbstractAlgorithm implements Configurable {
 	private final double[] initialSearchPoint;
 	
 	/**
-	 * If {@code true}, perform consistency checks to ensure CMA-ES remains numerically stable.
-	 */
-	private final boolean checkConsistency;
-	
-	/**
 	 * Secondary comparison criteria for comparing population individuals with the same rank.  If {@code null}, the
 	 * default crowding distance metric is used.
 	 */
@@ -199,6 +194,11 @@ public class CMAES extends AbstractAlgorithm implements Configurable {
 	private int lastEigenupdate;
 	
 	/**
+	 * If {@code true}, perform consistency checks to ensure CMA-ES remains numerically stable.
+	 */
+	private boolean checkConsistency;
+	
+	/**
 	 * Constructs a new CMA-ES intance using default parameters.
 	 * 
 	 * @param problem the problem to optimize
@@ -218,7 +218,8 @@ public class CMAES extends AbstractAlgorithm implements Configurable {
 	 */
 	public CMAES(Problem problem, int lambda, IndicatorFitnessEvaluator fitnessEvaluator,
 			NondominatedPopulation archive) {
-		this(problem, lambda, fitnessEvaluator, archive, null, false, -1, -1, -1, -1, -1, -1, -1);
+		this(problem, lambda, fitnessEvaluator, archive, null, Settings.isCMAESConsistencyCheckingEnabled(),
+				-1, -1, -1, -1, -1, -1, -1);
 	}
 
 	/**
@@ -256,11 +257,11 @@ public class CMAES extends AbstractAlgorithm implements Configurable {
 		setSigma(sigma);
 		setDiagonalIterations(diagonalIterations);
 		setFitnessEvaluator(fitnessEvaluator);
+		setCheckConsistency(checkConsistency);
 		
 		Validate.problemType(problem, RealVariable.class);
 		
 		this.initialSearchPoint = initialSearchPoint;
-		this.checkConsistency = checkConsistency;
 		
 		population = new Population();
 	}
@@ -481,6 +482,27 @@ public class CMAES extends AbstractAlgorithm implements Configurable {
 	 */
 	public void setFitnessEvaluator(IndicatorFitnessEvaluator fitnessEvaluator) {
 		this.fitnessEvaluator = fitnessEvaluator;
+	}
+	
+	/**
+	 * Returns {@code true} if consistency checks are enabled; {@code false} otherwise.
+	 * 
+	 * @return {@code true} if consistency checks are enabled; {@code false} otherwise
+	 */
+	public boolean isCheckConsistency() {
+		return checkConsistency;
+	}
+	
+	/**
+	 * Enables or disables consistency checks to ensure CMA-ES remains numerically stable.  This property can only be
+	 * configured before initialization.
+	 * 
+	 * @param checkConsistency {@code true} if consistency checks are enabled; {@code false} otherwise
+	 */
+	@Property
+	public void setCheckConsistency(boolean checkConsistency) {
+		assertNotInitialized();
+		this.checkConsistency = checkConsistency;
 	}
 
 	@Override

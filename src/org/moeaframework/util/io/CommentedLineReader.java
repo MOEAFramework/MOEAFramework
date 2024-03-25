@@ -31,16 +31,6 @@ public class CommentedLineReader extends BufferedReader {
 	 * Constructs a buffered reader that ignores commented lines.
 	 * 
 	 * @param in a reader
-	 * @param sz the input buffer size
-	 */
-	public CommentedLineReader(Reader in, int sz) {
-		super(in, sz);
-	}
-
-	/**
-	 * Constructs a buffered reader that ignores commented lines.
-	 * 
-	 * @param in a reader
 	 */
 	public CommentedLineReader(Reader in) {
 		super(in);

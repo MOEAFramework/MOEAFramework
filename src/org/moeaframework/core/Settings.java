@@ -181,6 +181,11 @@ public class Settings {
 	public static final String KEY_DIAGNOSTIC_TOOL_PROBLEMS = createKey(KEY_PREFIX, "analysis", "diagnostics", "problems");
 	
 	/**
+	 * The property key for enabling consistency checks in the CMA-ES algorithm.
+	 */
+	public static final String KEY_CMAES_CHECK_CONSISTENCY = createKey(KEY_PREFIX, "algorithm", "cmaes", "check_consistency");
+	
+	/**
 	 * The property key for the genetic programming protected functions flag.
 	 */
 	public static final String KEY_GP_PROTECTED_FUNCTIONS = createKey(KEY_PREFIX, "util", "tree", "protected_functions");
@@ -455,6 +460,15 @@ public class Settings {
 	 */
 	public static boolean isExternalProblemDebuggingEnabled() {
 		return PROPERTIES.getBoolean(KEY_EXTERNAL_PROBLEM_DEBUGGING, false);
+	}
+	
+	/**
+	 * Returns {@code true} if the CMA-ES algorithm has consistency checks enabled.
+	 * 
+	 * @return {@code true} if the CMA-ES algorithm has consistency checks enabled; {@code false} otherwise
+	 */
+	public static boolean isCMAESConsistencyCheckingEnabled() {
+		return PROPERTIES.getBoolean(KEY_CMAES_CHECK_CONSISTENCY, false);
 	}
 	
 	/**

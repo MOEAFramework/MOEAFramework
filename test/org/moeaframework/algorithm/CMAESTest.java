@@ -19,19 +19,23 @@ package org.moeaframework.algorithm;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.moeaframework.TestUtils;
+import org.junit.runner.RunWith;
+import org.moeaframework.CIRunner;
+import org.moeaframework.IgnoreOnCI;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.configuration.ConfigurationException;
 import org.moeaframework.core.fitness.AdditiveEpsilonIndicatorFitnessEvaluator;
 import org.moeaframework.core.fitness.HypervolumeFitnessEvaluator;
+import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.mock.MockRealProblem;
 import org.moeaframework.problem.AbstractProblem;
 import org.moeaframework.util.TypedProperties;
 
-public class CMAESTest {
+@RunWith(CIRunner.class)
+public class CMAESTest extends AlgorithmTest {
 	
 	public static class RosenbrockProblem extends AbstractProblem {
 		
@@ -54,12 +58,20 @@ public class CMAESTest {
 			solution.setVariable(1, EncodingUtils.newReal(-10, 10));
 			return solution;
 		}
+		
+		public double getIdealObjectiveValue() {
+			return 0.0;
+		}
+		
+		public double[] getIdealVariables() {
+			return new double[] { 1.0, 1.0 };
+		}
 
 	}
 	
 	@Test
 	public void testSingleObjective() {
-		Problem problem = new RosenbrockProblem();
+		RosenbrockProblem problem = new RosenbrockProblem();
 		
 		CMAES algorithm = new CMAES(problem);
 
@@ -71,9 +83,8 @@ public class CMAESTest {
 		
 		Solution solution = algorithm.getResult().get(0);
 		
-		TestUtils.assertEquals(1.0, EncodingUtils.getReal(solution.getVariable(0)));
-		TestUtils.assertEquals(1.0, EncodingUtils.getReal(solution.getVariable(1)));
-		TestUtils.assertEquals(0.0, solution.getObjective(0));
+		Assert.assertArrayEquals(problem.getIdealVariables(), EncodingUtils.getReal(solution), 0.001);
+		Assert.assertEquals(problem.getIdealObjectiveValue(), solution.getObjective(0), 0.001);
 	}
 
 	@Test
@@ -84,6 +95,15 @@ public class CMAESTest {
 		for (int i = 0; i < 100; i++) {
 			algorithm.step();
 		}
+	}
+	
+	@Test
+	@IgnoreOnCI("5 minute runtime")
+	public void testCheckConsistency() {
+		test("DTLZ2_2",
+				"CMA-ES", new TypedProperties(),
+				"CMA-ES", TypedProperties.withProperty("checkConsistency", "true"),
+				false, AlgorithmFactory.getInstance());
 	}
 	
 	@Test
