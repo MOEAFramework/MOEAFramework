@@ -199,7 +199,7 @@ public class Normalizer {
 	 */
 	private void checkRanges() {
 		for (int i = 0; i < problem.getNumberOfObjectives(); i++) {
-			if (Math.abs(minimum[i] - maximum[i]) < Settings.EPS) {
+			if (Math.abs(maximum[i] - minimum[i]) < Settings.EPS) {
 				throw new IllegalArgumentException("objective with empty range");
 			}
 		}

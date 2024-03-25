@@ -94,7 +94,7 @@ public class SBX implements Variation {
 	 * @param probability the probability of applying this SBX operator to each variable
 	 * @param distributionIndex the distribution index of this SBX operator
 	 * @param swap if {@code true}, randomly swap the variables between the two parents
-	 * @param symmetric if {@code true}, symmetric distrubutions are used
+	 * @param symmetric if {@code true}, symmetric distributions are used
 	 */
 	public SBX(double probability, double distributionIndex, boolean swap, boolean symmetric) {
 		super();
@@ -206,29 +206,26 @@ public class SBX implements Variation {
 				Variable variable1 = result1.getVariable(i);
 				Variable variable2 = result2.getVariable(i);
 
-				if (PRNG.nextBoolean() && (variable1 instanceof RealVariable realVariable1) &&
+				if ((variable1 instanceof RealVariable realVariable1) &&
 						(variable2 instanceof RealVariable realVariable2)) {
-					if (symmetric) {
-						evolve_symmetric(realVariable1, realVariable2, distributionIndex, swap);
-					} else {
-						evolve_asymmetric(realVariable1, realVariable2, distributionIndex, swap);
+					if (PRNG.nextBoolean()) {
+						if (symmetric) {
+							evolve_symmetric(realVariable1, realVariable2, distributionIndex);
+						} else {
+							evolve_asymmetric(realVariable1, realVariable2, distributionIndex);
+						}
+					}
+					
+					// randomly swap the variables
+					if (swap && PRNG.nextBoolean()) {
+						result1.setVariable(i, variable2);
+						result2.setVariable(i, variable1);
 					}
 				}
 			}
 		}
 
 		return new Solution[] { result1, result2 };
-	}
-
-	/**
-	 * Evolves the specified variables using the SBX operator.
-	 * 
-	 * @param v1 the first variable
-	 * @param v2 the second variable
-	 * @param distributionIndex the distribution index of this SBX operator
-	 */
-	public static void evolve(RealVariable v1, RealVariable v2, double distributionIndex) {
-		evolve_asymmetric(v1, v2, distributionIndex, true);
 	}
 
 	/*
@@ -242,9 +239,8 @@ public class SBX implements Variation {
 	 * @param v1 the first variable
 	 * @param v2 the second variable
 	 * @param distributionIndex the distribution index of this SBX operator
-	 * @param swap randomly swap the variable between the two parents
 	 */
-	public static void evolve_symmetric(RealVariable v1, RealVariable v2, double distributionIndex, boolean swap) {
+	public static void evolve_symmetric(RealVariable v1, RealVariable v2, double distributionIndex) {
 		double y1, y2, betaq, beta, alpha, rand;
 		double x1 = v1.getValue();
 		double x2 = v2.getValue();
@@ -300,13 +296,6 @@ public class SBX implements Variation {
 				x2 = ub;
 			}
 			
-			// randomly swap the variables
-			if (swap && PRNG.nextBoolean()) {
-				double temp = x1;
-				x1 = x2;
-				x2 = temp;
-			}
-			
 			v1.setValue(x1);
 			v2.setValue(x2);
 		}
@@ -318,9 +307,8 @@ public class SBX implements Variation {
 	 * @param v1 the first variable
 	 * @param v2 the second variable
 	 * @param distributionIndex the distribution index of this SBX operator
-	 * @param swap randomly swap the variable between the two parents
 	 */
-	public static void evolve_asymmetric(RealVariable v1, RealVariable v2, double distributionIndex, boolean swap) {
+	public static void evolve_asymmetric(RealVariable v1, RealVariable v2, double distributionIndex) {
 		double y1, y2, betaq, beta, alpha, rand;
 		double x1 = v1.getValue();
 		double x2 = v2.getValue();
@@ -379,13 +367,6 @@ public class SBX implements Variation {
 				x2 = lb;
 			} else if (x2 > ub) {
 				x2 = ub;
-			}
-			
-			// randomly swap the variables
-			if (swap && PRNG.nextBoolean()) {
-				double temp = x1;
-				x1 = x2;
-				x2 = temp;
 			}
 			
 			v1.setValue(x1);
