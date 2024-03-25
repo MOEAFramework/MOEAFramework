@@ -19,8 +19,11 @@ package org.moeaframework.algorithm.single;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.moeaframework.core.Solution;
 import org.moeaframework.core.configuration.ConfigurationException;
+import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.mock.MockRealProblem;
+import org.moeaframework.problem.RosenbrockTestProblem;
 import org.moeaframework.util.TypedProperties;
 
 public class GeneticAlgorithmTest {
@@ -68,6 +71,20 @@ public class GeneticAlgorithmTest {
 		GeneticAlgorithm algorithm = new GeneticAlgorithm(new MockRealProblem());
 		
 		algorithm.applyConfiguration(TypedProperties.withProperty("method", "foo"));
+	}
+	
+	@Test
+	public void testRosenbrock() {
+		RosenbrockTestProblem problem = new RosenbrockTestProblem();
+		GeneticAlgorithm algorithm = new GeneticAlgorithm(problem);
+		algorithm.run(100000);
+		
+		Assert.assertEquals(1, algorithm.getResult().size());
+		
+		Solution solution = algorithm.getResult().get(0);
+		
+		Assert.assertArrayEquals(problem.getIdealVariables(), EncodingUtils.getReal(solution), 0.01);
+		Assert.assertEquals(problem.getIdealObjectiveValue(), solution.getObjective(0), 0.01);
 	}
 
 }

@@ -31,47 +31,15 @@ import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.mock.MockRealProblem;
-import org.moeaframework.problem.AbstractProblem;
+import org.moeaframework.problem.RosenbrockTestProblem;
 import org.moeaframework.util.TypedProperties;
 
 @RunWith(CIRunner.class)
 public class CMAESTest extends AlgorithmTest {
 	
-	public static class RosenbrockProblem extends AbstractProblem {
-		
-		public RosenbrockProblem() {
-			super(2, 1);
-		}
-
-		@Override
-		public void evaluate(Solution solution) {
-			double x = EncodingUtils.getReal(solution.getVariable(0));
-			double y = EncodingUtils.getReal(solution.getVariable(1));
-			
-			solution.setObjective(0, 100*(y - x*x)*(y - x*x) + (1 - x)*(1 - x));
-		}
-
-		@Override
-		public Solution newSolution() {
-			Solution solution = new Solution(2, 1);
-			solution.setVariable(0, EncodingUtils.newReal(-10, 10));
-			solution.setVariable(1, EncodingUtils.newReal(-10, 10));
-			return solution;
-		}
-		
-		public double getIdealObjectiveValue() {
-			return 0.0;
-		}
-		
-		public double[] getIdealVariables() {
-			return new double[] { 1.0, 1.0 };
-		}
-
-	}
-	
 	@Test
 	public void testSingleObjective() {
-		RosenbrockProblem problem = new RosenbrockProblem();
+		RosenbrockTestProblem problem = new RosenbrockTestProblem();
 		
 		CMAES algorithm = new CMAES(problem);
 
