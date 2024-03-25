@@ -26,9 +26,6 @@ import org.moeaframework.core.Settings;
 
 public class VectorTest {
 
-	/**
-	 * Tests if the {@code subtract} method correctly subtracts to vectors.
-	 */
 	@Test
 	public void testSubtract() {
 		Assert.assertArrayEquals(new double[0], Vector.subtract(new double[0], new double[0]), Settings.EPS);
@@ -38,9 +35,6 @@ public class VectorTest {
 				Settings.EPS);
 	}
 
-	/**
-	 * Tests if the {@code add} method correctly adds to vectors.
-	 */
 	@Test
 	public void testAdd() {
 		Assert.assertArrayEquals(new double[0], Vector.add(new double[0], new double[0]), Settings.EPS);
@@ -50,9 +44,6 @@ public class VectorTest {
 				Settings.EPS);
 	}
 
-	/**
-	 * Tests if the {@code multiply} method correctly computes the scalar multiple of a vector.
-	 */
 	@Test
 	public void testMultiply() {
 		Assert.assertArrayEquals(new double[0], Vector.multiply(2.0, new double[0]), Settings.EPS);
@@ -62,9 +53,6 @@ public class VectorTest {
 				Settings.EPS);
 	}
 
-	/**
-	 * Tests if the {@code negate} method correctly negates a vector.
-	 */
 	@Test
 	public void testNegate() {
 		Assert.assertArrayEquals(new double[0], Vector.negate(new double[0]), Settings.EPS);
@@ -74,9 +62,6 @@ public class VectorTest {
 				Settings.EPS);
 	}
 
-	/**
-	 * Tests if the {@code divide} method correctly computes the scalar division of a vector.
-	 */
 	@Test
 	public void testDivide() {
 		Assert.assertArrayEquals(new double[0], Vector.divide(new double[0], 2.0), Settings.EPS);
@@ -85,9 +70,6 @@ public class VectorTest {
 				Settings.EPS);
 	}
 
-	/**
-	 * Tests if the {@code dot} method correctly computes the dot product of two vectors.
-	 */
 	@Test
 	public void testDot() {
 		Assert.assertEquals(0.0, Vector.dot(new double[0], new double[0]), Settings.EPS);
@@ -96,9 +78,6 @@ public class VectorTest {
 				Settings.EPS);
 	}
 
-	/**
-	 * Tests if the {@code magnitude} method correctly returns the magnitude (2-norm) of a vector.
-	 */
 	@Test
 	public void testMagnitude() {
 		Assert.assertEquals(0.0, Vector.magnitude(new double[0]), Settings.EPS);
@@ -106,9 +85,6 @@ public class VectorTest {
 		Assert.assertEquals(Math.sqrt(2.0), Vector.magnitude(new double[] { 1.0, 0.0, -1.0 }), Settings.EPS);
 	}
 
-	/**
-	 * Tests if the {@code normalize} method correctly normalizes vectors.
-	 */
 	@Test
 	public void testNormalize() {
 		Assert.assertArrayEquals(
@@ -117,18 +93,11 @@ public class VectorTest {
 				Settings.EPS);
 	}
 
-	/**
-	 * Tests if the {@code normalize} method throws an exception if normalizing an all-zero vector.
-	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testNormalizeException() {
 		Vector.normalize(new double[] { 0.0, 0.0, 0.0 });
 	}
 
-	/**
-	 * Tests if the {@code isZero} method returns {@code true} if the vector contains all zeros or is approximately
-	 * zero; {@code false} otherwise.
-	 */
 	@Test
 	public void testIsZero() {
 		Assert.assertTrue(Vector.isZero(new double[0]));
@@ -136,9 +105,6 @@ public class VectorTest {
 		Assert.assertFalse(Vector.isZero(new double[] { 2.0 * Settings.EPS }));
 	}
 
-	/**
-	 * Tests if the {@code mean} method correctly computes the mean of a 2D array, where each row is a vector.
-	 */
 	@Test
 	public void testMean() {
 		Assert.assertArrayEquals(new double[] { 2.0 / 3.0, 0.0, -2.0 / 3.0 },
@@ -146,20 +112,13 @@ public class VectorTest {
 				Settings.EPS);
 	}
 
-	/**
-	 * Tests if the {@code mean} method throws an exception if the 2D array is empty.
-	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testMeanEmpty() {
 		Vector.mean(new double[0][0]);
 	}
 
-	/**
-	 * Tests if the {@code orthogonalize} method correctly computes the orthogonal basis for a set of vectors, in this
-	 * case provided by a 2D array.
-	 */
 	@Test
-	public void testOrthogonalize1() {
+	public void testOrthogonalizeWith2DArray() {
 		double[][] input = new double[][] { { 3.0, 1.0 }, { 2.0, 2.0 } };
 		double[][] expected = new double[][] { { 3.0, 1.0 }, { -2.0 / 5.0, 6.0 / 5.0 } };
 		double[][] output = Vector.orthogonalize(input);
@@ -169,12 +128,8 @@ public class VectorTest {
 		}
 	}
 
-	/**
-	 * Tests if the {@code orthogonalize} method correctly computes the orthogonal basis for a set of vectors, in this
-	 * case constructed piecewise by adding vectors one at a time.
-	 */
 	@Test
-	public void testOrthogonalize2() {
+	public void testOrthogonalizeConstructedPiecewise() {
 		double[][] input = new double[][] { { 3.0, 1.0 }, { 2.0, 2.0 } };
 		double[][] expected = new double[][] { { 3.0, 1.0 }, { -2.0 / 5.0, 6.0 / 5.0 } };
 
@@ -186,5 +141,23 @@ public class VectorTest {
 
 		Assert.assertArrayEquals(expected[1], Vector.orthogonalize(input[1], basis), Settings.EPS);
 	}
+	
+	@Test
+	public void testLength() {
+		Assert.assertEquals(0, Vector.length(new double[0], new double[0]));
+		Assert.assertEquals(5, Vector.length(new double[5], new double[5]));
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testLengthDifferent() {
+		Vector.length(new double[5], new double[6]);
+	}
+	
+	@Test
+	public void testOf() {
+		Assert.assertArrayEquals(new double[0], Vector.of(0, 5.0), Settings.EPS);
+		Assert.assertArrayEquals(new double[] { 5.0, 5.0 }, Vector.of(2, 5.0), Settings.EPS);
+	}
+	
 
 }

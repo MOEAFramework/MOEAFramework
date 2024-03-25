@@ -56,7 +56,7 @@ public class Vector {
 	 * @return the length of the two specified vectors
 	 * @throws IllegalArgumentException if the two vectors are not the same length
 	 */
-	private static int length(double[] u, double[] v) {
+	static int length(double[] u, double[] v) {
 		if (u.length != v.length) {
 			throw new IllegalArgumentException("vectors must have same length");
 		}

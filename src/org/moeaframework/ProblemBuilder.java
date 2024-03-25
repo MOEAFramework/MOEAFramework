@@ -122,6 +122,7 @@ class ProblemBuilder {
 	 */
 	ProblemBuilder withProblem(String problemName) {
 		this.problemName = problemName;
+		this.problemArguments = null;
 		this.problemClass = null;
 		this.problemInstance = null;
 		
@@ -139,6 +140,7 @@ class ProblemBuilder {
 	ProblemBuilder withProblem(Problem problemInstance) {
 		this.problemInstance = problemInstance instanceof UserProvidedProblemInstance userProvidedProblemInstance ?
 				userProvidedProblemInstance : new UserProvidedProblemInstance(problemInstance);
+		this.problemArguments = null;
 		this.problemName = null;
 		this.problemClass = null;
 		

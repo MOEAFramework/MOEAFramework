@@ -77,27 +77,14 @@ public class TypedProperties implements Displayable {
 	private final TreeSet<String> accessedProperties;
 	
 	/**
-	 * Creates a new, empty instance of this class using the default "," separator for arrays.
+	 * Creates a new, empty instance of this class.
 	 */
 	public TypedProperties() {
 		this(DEFAULT_SEPARATOR);
 	}
 	
 	/**
-	 * Creates a new, empty instance of this class using the given separator string for arrays.
-	 * 
-	 * @param separator the separator string
-	 */
-	public TypedProperties(String separator) {
-		super();
-		this.separator = separator;
-
-		this.properties = new TreeMap<String, String>(String.CASE_INSENSITIVE_ORDER);
-		this.accessedProperties = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
-	}
-
-	/**
-	 * Decorates a {@code Properties} object to provide type-safe access using the default "," separator for arrays.
+	 * Creates a new typed properties instance initialized with the content of the properties.
 	 * 
 	 * @param properties the existing {@code Properties} object
 	 */
@@ -105,16 +92,18 @@ public class TypedProperties implements Displayable {
 		this(DEFAULT_SEPARATOR);
 		addAll(properties);
 	}
-
+	
 	/**
-	 * Decorates a {@code Properties} object using the specified separator for arrays.
+	 * Creates a new, empty instance of this class using the given separator string for arrays.
 	 * 
-	 * @param properties the existing {@code Properties} object
-	 * @param separator the separator for arrays
+	 * @param separator the separator string
 	 */
-	public TypedProperties(Properties properties, String separator) {
-		this(separator);
-		addAll(properties);
+	TypedProperties(String separator) {
+		super();
+		this.separator = separator;
+
+		this.properties = new TreeMap<String, String>(String.CASE_INSENSITIVE_ORDER);
+		this.accessedProperties = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
 	}
 	
 	/**
