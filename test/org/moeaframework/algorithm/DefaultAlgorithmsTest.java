@@ -67,8 +67,9 @@ import org.moeaframework.util.TypedProperties;
  * Tests basic functionality of all default algorithms, including:
  * <ol>
  *   <li>Validates the algorithm can be constructed and run on each problem type;
- *   <li>Validates that the configuration can be saved and reloaded; and
- *   <li>Validates the algorithm is resumable.
+ *   <li>Validates that the configuration can be saved and reloaded;
+ *   <li>Validates the algorithm is resumable; and
+ *   <li>Validates that the algorithm produces identical results if given the same seed;
  * </ol>
  * Note that this does not test for correctness of results.  Additional tests should be added to test specific
  * features.
