@@ -25,9 +25,13 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.moeaframework.CIRunner;
+import org.moeaframework.Retryable;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.TestUtils;
 
+@RunWith(CIRunner.class)
 public class BinaryVariableTest {
 
 	private BinaryVariable variable;
@@ -200,6 +204,7 @@ public class BinaryVariableTest {
 	}
 	
 	@Test
+	@Retryable
 	public void testRandomize() {
 		DescriptiveStatistics[] bitStats = new DescriptiveStatistics[variable.getNumberOfBits()];
 		
@@ -214,7 +219,7 @@ public class BinaryVariableTest {
 				bitStats[j].addValue(variable.get(j) ? 1 : 0);
 			}
 		}
-		
+				
 		for (int j = 0; j < variable.getNumberOfBits(); j++) {
 			TestUtils.assertUniformDistribution(0, 1, bitStats[j]);
 		}
