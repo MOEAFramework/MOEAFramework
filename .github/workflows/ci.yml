@@ -98,7 +98,7 @@ jobs:
         file-path: README.md
     - name: Run Checkstyle
       run: |
-        cd auxiliary/checkstyle
+        cd test/checkstyle
         checkstyle_result=0
         ant -f build.xml check-style || checkstyle_result=$?
         if [ "$checkstyle_result" -ne "0" ]; then
