@@ -20,6 +20,7 @@ package org.moeaframework.analysis.plot;
 import java.awt.GraphicsEnvironment;
 import java.io.File;
 import java.io.IOException;
+import java.util.stream.IntStream;
 
 import javax.swing.JFrame;
 
@@ -79,6 +80,21 @@ public class PlotTest {
 				.run();
 		
 		runTest(new Plot().add("NSGAII", result));
+	}
+	
+	@Test
+	public void testHeatMap() {
+		double[] x = IntStream.range(0, 10).mapToDouble(i -> (double)i).toArray();
+		double[] y = IntStream.range(0, 20).mapToDouble(i -> (double)i).toArray();
+		double[][] z = new double[x.length][y.length];
+		
+		for (int i = 0; i < x.length; i++) {
+			for (int j = 0; j < y.length; j++) {
+				z[i][j] = i*j;
+			}
+		}
+		
+		runTest(new Plot().heatMap("Test", x, y, z).setXLabel("X").setYLabel("Y"));
 	}
 	
 	@Test
@@ -167,6 +183,7 @@ public class PlotTest {
 		new PlotTest().testBasicShapes();
 		new PlotTest().testOutOfOrder();
 		new PlotTest().testParetoFront();
+		new PlotTest().testHeatMap();
 		new PlotTest().testAnalyzer();
 		new PlotTest().testObservations();
 	}
