@@ -24,7 +24,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 -->
 <project name="MOEA Framework Checkstyle" basedir="../../" default="check-style" xmlns:if="ant:if" xmlns:unless="ant:unless">
 	
-	<import file="../../auxiliary/ant/macros.xml" />
+	<import file="../../src/macros.xml" />
 
 	<!-- Loads properties from properties file and environment -->
 	<property file="META-INF/build.properties" />
@@ -59,10 +59,9 @@ Use of these build scripts requires Apache Ant to be installed.  See
 				<pathelement path="${classpath}"/>
 			</classpath>
 			<formatter type="xml" tofile="${build}/checkstyle-result.xml" />
-			<fileset dir="auxiliary" includes="**/*.c,**/*.h" />
 			<fileset dir="src" includes="**/*.java" />
 			<fileset dir="test" includes="**/*.java" />
-			<fileset dir="examples" includes="**/*.java" />
+			<fileset dir="examples" includes="**/*.java,**/*.c,**/*.h" />
 		</checkstyle>
 
 		<sequential if:true="${env.CI}">

@@ -97,7 +97,7 @@ However, it is limited in that it can only run with default settings.
 
 To start the Diagnostic Tool, run `launch-diagnostic-tool.bat` on Windows.  On other systems, run the following command from the terminal:
 
-<!-- bash:auxiliary/windows/launch-diagnostic-tool.bat [2:2] -->
+<!-- bash:src/launch-diagnostic-tool.bat [2:2] -->
 
 ```bash
 java -classpath "lib/*" org.moeaframework.analysis.diagnostics.LaunchDiagnosticTool

@@ -51,7 +51,7 @@ public class ApproximationSetCollector implements Collector {
 	/**
 	 * Constructs an unattached collector for recording &epsilon;-box dominance approximation sets from an algorithm.
 	 * 
-	 * @param epsilon the &epsilon;-values used when collecting only the &epsilon;-dominant solutions; or {@code null}
+	 * @param epsilons the &epsilon;-values used when collecting only the &epsilon;-dominant solutions; or {@code null}
 	 *        if regular Pareto dominance is used
 	 */
 	public ApproximationSetCollector(Epsilons epsilons) {
@@ -62,7 +62,7 @@ public class ApproximationSetCollector implements Collector {
 	 * Constructs a collector for recording approximation sets from the specified algorithm.
 	 * 
 	 * @param algorithm the algorithm this collector records data from
-	 * @param epsilon the &epsilon;-values used when collecting only the &epsilon;-dominant solutions; or {@code null}
+	 * @param epsilons the &epsilon;-values used when collecting only the &epsilon;-dominant solutions; or {@code null}
 	 *        if regular Pareto dominance is used
 	 */
 	public ApproximationSetCollector(Algorithm algorithm, Epsilons epsilons) {

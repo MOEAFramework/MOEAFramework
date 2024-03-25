@@ -24,7 +24,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 -->
 <project name="MOEA Framework" basedir="." xmlns:if="ant:if" xmlns:unless="ant:unless">
 	
-	<import file="auxiliary/ant/macros.xml" />
+	<import file="src/macros.xml" />
 
 	<!-- Loads properties from properties file and environment -->
 	<property file="META-INF/build.properties" />
@@ -140,7 +140,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		</manifest>
 
 		<copy todir="${build}">
-			<fileset excludes="**/*.java,overview.html" dir="src" />
+			<fileset excludes="**/*.java,overview.html,launch-diagnostic-tool.bat,macros.xml,pom.xml" dir="src" />
 		</copy>
 
 		<jar basedir="${build}" manifest="${build}/META-INF/MANIFEST.MF"
@@ -200,7 +200,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		<copy todir="${base}">
 			<path refid="requiredfiles" />
 			<fileset file="moeaframework.properties" />
-			<fileset file="auxiliary/windows/launch-diagnostic-tool.bat" />
+			<fileset file="src/launch-diagnostic-tool.bat" />
 		</copy>
 
 		<copy todir="${base}/licenses">
@@ -240,8 +240,6 @@ Use of these build scripts requires Apache Ant to be installed.  See
 			<fileset dir=".">
 				<include name=".project" />
 				<include name=".classpath" />
-				<include name="auxiliary/**" />
-				<exclude name="auxiliary/checkstyle/checkstyle-*.jar" />
 				<include name="docs/**" />
 				<include name="examples/**" />
 				<exclude name="examples/*.exe" />
@@ -251,6 +249,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 				<include name="pf/**" />
 				<include name="src/**" />
 				<include name="test/**" />
+				<exclude name="test/checkstyle/checkstyle-*.jar" />
 				<exclude name="test/org/moeaframework/problem/*.exe" />
 				<exclude name="test/org/moeaframework/problem/*.o" />
 				<exclude name="test/org/moeaframework/problem/*.a" />
@@ -381,7 +380,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		<mkdir dir="${maven}" />
 		<property name="artifactId" value="moeaframework" />
 		
-		<copy file="auxiliary/maven/pom.xml" tofile="${maven}/${artifactId}-${version}.pom" />
+		<copy file="src/pom.xml" tofile="${maven}/${artifactId}-${version}.pom" />
 		
 		<replace-properties file="${maven}/${artifactId}-${version}.pom" />
 
