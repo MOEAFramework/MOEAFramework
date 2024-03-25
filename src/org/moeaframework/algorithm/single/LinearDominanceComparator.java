@@ -30,17 +30,9 @@ import org.moeaframework.core.comparator.ChainedComparator;
 public class LinearDominanceComparator extends ChainedComparator implements AggregateObjectiveComparator {
 
 	/**
-	 * Constructs a new dominance comparator using a weighted linear aggregate function and constraints.  Equal weights
-	 * are used for each objective.
-	 */
-	public LinearDominanceComparator() {
-		super(new AggregateConstraintComparator(), new LinearObjectiveComparator());
-	}
-
-	/**
 	 * Constructs a new dominance comparator using a weighted linear aggregate function and constraints.  One weight
 	 * should be given for each objective; if fewer weights are provided, the last weight is repeated for the 
-	 * remaining objectives.
+	 * remaining objectives.  Defaults to weights of {@code 1.0} if none are provided.
 	 * 
 	 * @param weights the weight vector
 	 */

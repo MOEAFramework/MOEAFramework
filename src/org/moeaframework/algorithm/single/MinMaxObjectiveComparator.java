@@ -32,16 +32,9 @@ public class MinMaxObjectiveComparator implements AggregateObjectiveComparator {
 	private double[] weights;
 	
 	/**
-	 * Constructs a new comparator using a weighted min-max aggregate function.  Equal weights are used for each
-	 * objective.
-	 */
-	public MinMaxObjectiveComparator() {
-		this(1.0);
-	}
-	
-	/**
 	 * Constructs a new comparator using a weighted min-max aggregate function.  One weight should be given for each
-	 * objective; if fewer weights are provided, the last weight is repeated for the remaining objectives.
+	 * objective; if fewer weights are provided, the last weight is repeated for the remaining objectives.  Defaults
+	 * to weights of {@code 1.0} if none are provided.
 	 * 
 	 * @param weights the weight vector
 	 */

@@ -47,6 +47,10 @@ public abstract class AbstractSingleObjectiveAlgorithmTest<T extends Algorithm &
 			properties.setString("method", "min-max");
 			algorithm.applyConfiguration(properties);
 			Assert.assertTrue(soAlgorithm.getComparator() instanceof MinMaxDominanceComparator);
+			
+			properties.setString("method", "angle");
+			algorithm.applyConfiguration(properties);
+			Assert.assertTrue(soAlgorithm.getComparator() instanceof VectorAngleDistanceScalingComparator);
 		} else {
 			Assume.assumeTrue("algorithm is not SingleObjectiveEvolutionaryAlgorithm, skipping test", false);
 		}
