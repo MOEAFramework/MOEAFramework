@@ -45,10 +45,17 @@ public class AbstractAlgorithmTest {
 		public TestAbstractAlgorithm() {
 			super(new MockRealProblem(2));
 		}
+		
+		@Override
+		protected void initialize() {
+			super.initialize();
+			numberOfEvaluations += 100;
+		}
 
 		@Override
 		public void iterate() {
 			iterated++;
+			numberOfEvaluations += 100;
 		}
 
 		@Override
@@ -186,11 +193,18 @@ public class AbstractAlgorithmTest {
 
 	@Test
 	public void testResumable() throws IOException {
-		// while this is technically an error since the algorithm is not serializable, this is just testing the
-		// constructor if no state file exists
 		File file = TestUtils.createTempFile();
+		file.delete();
+		
 		Checkpoints checkpoints = new Checkpoints(new TestAbstractAlgorithm(), file, 0);
+		Assert.assertEquals(0, checkpoints.getNumberOfEvaluations());
+		
 		checkpoints.step();
+		checkpoints.step();
+		Assert.assertTrue(file.exists() && file.length() > 0);
+		
+		checkpoints = new Checkpoints(new TestAbstractAlgorithm(), file, 0);
+		Assert.assertEquals(200, checkpoints.getNumberOfEvaluations());
 	}
 
 }
