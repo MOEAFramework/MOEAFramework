@@ -39,10 +39,10 @@ public abstract class MockProblem extends AbstractProblem {
 	@Override
 	public void evaluate(Solution solution) {
 		// Simple way to make the objective values variable but deterministic
-		double f = solution.getVariable(0).hashCode();
+		int value = solution.getVariable(0).hashCode();
 				
 		for (int i = 0; i < getNumberOfObjectives(); i++) {
-			solution.setObjective(i, f);
+			solution.setObjective(i, i % 2 == 0 ? value : Integer.MAX_VALUE - value);
 		}
 		
 		count.incrementAndGet();
