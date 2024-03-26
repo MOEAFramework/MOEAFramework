@@ -7,6 +7,7 @@
 * [An Example](example.md)
 * [Running Experiments](experiment.md)
 * [Defining New Problems and Algorithms](extending.md)
+* [Connecting to External Problems (C/C++)](external.md)
 * [Visualizations](visualizations.md)
   * [Simple Plots](visualizations.md#simple-plots)
   * [The Diagnostic Tool](visualizations.md#diagnostic-tool)
@@ -29,7 +30,6 @@
 * [List of Algorithms](algorithms.md)
 * [List of Variation Operators](operators.md)
 * [List of Test Problems](problems.md)
-* [External Problems](external.md)
 * [Command Line Tools](tools.md)
 * [Extensions (JMetal-Plugin, Generalized Decomposition, Hypervolume)](extensions.md)
 
