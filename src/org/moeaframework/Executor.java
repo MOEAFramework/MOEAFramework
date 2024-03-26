@@ -712,8 +712,8 @@ public class Executor extends ProblemBuilder {
 	public NondominatedPopulation run() {
 		isCanceled.set(false);
 		
-		int maxEvaluations = properties.getInt("maxEvaluations", -1);
-		long maxTime = properties.getLong("maxTime", -1);
+		int maxEvaluations = properties.getTruncatedInt("maxEvaluations", -1);
+		long maxTime = properties.getTruncatedLong("maxTime", -1);
 		
 		progress.start(1, maxEvaluations, maxTime);
 		

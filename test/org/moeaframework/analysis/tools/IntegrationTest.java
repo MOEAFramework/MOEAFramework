@@ -18,6 +18,9 @@
 package org.moeaframework.analysis.tools;
 
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -29,6 +32,7 @@ import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.core.spi.AlgorithmFactoryTestWrapper;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.core.spi.ProblemFactoryTestWrapper;
+import org.moeaframework.util.io.FileUtils;
 
 /**
  * Integration tests for the command line utilities.  These tests only automate checks to ensure the command line
@@ -36,6 +40,11 @@ import org.moeaframework.core.spi.ProblemFactoryTestWrapper;
  * behavior is valid.  Unit tests of the internal components ensure validity.
  */
 public class IntegrationTest {
+	
+	private static final String PARAMETER_FILE = """
+			populationSize 10 100
+			maxEvaluations 1000 10000
+			""";
 	
 	private AlgorithmFactoryTestWrapper algorithmFactory;
 	
@@ -65,7 +74,7 @@ public class IntegrationTest {
 	@Test
 	public void test() throws Exception {
 		//create the sample file
-		File parameterDescriptionFile = TestUtils.createTempFile("populationSize 10 100\r\nmaxEvaluations 1000 10000");
+		File parameterDescriptionFile = TestUtils.createTempFile(PARAMETER_FILE);
 		File parameterFile = TestUtils.createTempFile();
 		
 		SampleGenerator.main(new String[] { 
@@ -86,16 +95,14 @@ public class IntegrationTest {
 				"-i", parameterFile.getPath(),
 				"-o", resultFile1.getPath(),
 				"-a", "NSGAII",
-				"-b", "DTLZ2_2",
-				"-x", "maxEvaluations=10000"});
+				"-b", "DTLZ2_2"});
 		
 		Evaluator.main(new String[] { 
 				"-p", parameterDescriptionFile.getPath(),
 				"-i", parameterFile.getPath(),
 				"-o", resultFile2.getPath(),
 				"-a", "eMOEA",
-				"-b", "DTLZ2_2",
-				"-x", "maxEvaluations=10000"});
+				"-b", "DTLZ2_2"});
 
 		Assert.assertTrue(TestUtils.lineCount(resultFile1) > 0);
 		Assert.assertTrue(TestUtils.lineCount(resultFile2) > 0);
@@ -206,7 +213,7 @@ public class IntegrationTest {
 	@Test
 	public void testSensitivity() throws Exception {
 		//create the sample file
-		File parameterDescriptionFile = TestUtils.createTempFile("populationSize 10 100\r\nmaxEvaluations 1000 10000");
+		File parameterDescriptionFile = TestUtils.createTempFile(PARAMETER_FILE);
 		File parameterFile = TestUtils.createTempFile();
 		
 		SampleGenerator.main(new String[] { 
@@ -285,7 +292,7 @@ public class IntegrationTest {
 	@Test
 	public void testClosedAndTerminated() throws Exception {
 		//create the sample file
-		File parameterDescriptionFile = TestUtils.createTempFile("populationSize 10 100\r\nmaxEvaluations 1000 10000");
+		File parameterDescriptionFile = TestUtils.createTempFile(PARAMETER_FILE);
 		File parameterFile = TestUtils.createTempFile();
 		
 		SampleGenerator.main(new String[] { 
@@ -302,8 +309,7 @@ public class IntegrationTest {
 				"-i", parameterFile.getPath(),
 				"-o", resultFile.getPath(),
 				"-a", "NSGAII",
-				"-b", "DTLZ2_2",
-				"-x", "maxEvaluations=10000"});
+				"-b", "DTLZ2_2"});
 
 		//count the number of entries in the result files
 		File resultInfoFile = TestUtils.createTempFile();
@@ -368,6 +374,37 @@ public class IntegrationTest {
 		
 		TestUtils.assertLinePattern(arffFile, "^([@%].*)|(" +
 				TestUtils.getCommaSeparatedNumericPattern(13) + ")$");
+	}
+	
+	@Test
+	public void testRuntimeEvaluator() throws Exception {
+		File parameterDescriptionFile = TestUtils.createTempFile(PARAMETER_FILE);
+		File parameterFile = TestUtils.createTempFile();
+		
+		SampleGenerator.main(new String[] { 
+				"-n", "10", 
+				"-p", parameterDescriptionFile.getPath(),
+				"-m", "la",
+				"-o", parameterFile.getPath()});
+		
+		File resultFolder = Files.createTempDirectory("results").toFile();
+		FileUtils.mkdir(resultFolder);
+		
+		RuntimeEvaluator.main(new String[] { 
+				"-p", parameterDescriptionFile.getPath(),
+				"-i", parameterFile.getPath(),
+				"-o", Paths.get(resultFolder.getPath(), "resultFile_%d.dat").toString(),
+				"-a", "NSGAII",
+				"-b", "DTLZ2_2",
+				"-f", "100"});
+		
+		Assert.assertEquals(10, resultFolder.listFiles().length);
+		
+		for (File file : resultFolder.listFiles()) {
+			FileUtils.delete(file);
+		}
+		
+		FileUtils.delete(resultFolder);
 	}
 	
 }

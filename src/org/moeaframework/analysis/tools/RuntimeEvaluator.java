@@ -52,11 +52,6 @@ import org.moeaframework.util.TypedProperties;
 public class RuntimeEvaluator extends CommandLineUtility {
 
 	/**
-	 * The output writer where end-of-run results are stored.
-	 */
-	protected OutputWriter output;
-
-	/**
 	 * Constructs the command line utility for evaluating an algorithm using many parameterizations.
 	 */
 	public RuntimeEvaluator() {
@@ -173,7 +168,7 @@ public class RuntimeEvaluator extends CommandLineUtility {
 					TypedProperties properties = input.next();
 					properties.addAll(defaultProperties);
 	
-					process(commandLine.getOptionValue("algorithm"), properties, problem, frequency);
+					process(commandLine.getOptionValue("algorithm"), properties, problem, frequency, output);
 						
 					System.out.println("done.");
 				}
@@ -185,8 +180,8 @@ public class RuntimeEvaluator extends CommandLineUtility {
 		System.out.println("Finished!");
 	}
 
-	private void process(String algorithmName, TypedProperties properties, Problem problem, int frequency)
-			throws IOException {
+	private void process(String algorithmName, TypedProperties properties, Problem problem, int frequency,
+			ResultFileWriter output) throws IOException {
 		int maxEvaluations = properties.getTruncatedInt("maxEvaluations");
 		
 		Validate.greaterThanOrEqualToZero("maxEvaluations", maxEvaluations);
