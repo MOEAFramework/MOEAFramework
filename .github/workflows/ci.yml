@@ -131,10 +131,11 @@ jobs:
         make -C examples
 
         # Compile all Java examples
-        find examples/ -type f -name '*.java' | xargs -rt -I "{}" javac -classpath "lib/*:examples" "{}"
+        CLASSPATH="lib/*${{ runner.os == 'Linux' && ':' || ';' }}examples"
+        find examples/ -type f -name '*.java' | xargs -rt -I "{}" javac -classpath "${CLASSPATH}" "{}"
 
         # Run all examples, excluding files requiring a GUI
-        find examples/ -type f -name '*.java' | xargs -r grep -l 'public static void main(' | xargs -r grep -iL 'plot\|gui\|tsp' | sed 's~/~.~g; s/.java$//; s/examples.//' | xargs -rt -I "{}" java -classpath "lib/*:examples" "{}"
+        find examples/ -type f -name '*.java' | xargs -r grep -l 'public static void main(' | xargs -r grep -iL 'plot\|gui\|tsp' | sed 's~/~.~g; s/.java$//; s/examples.//' | xargs -rt -I "{}" java -classpath "${CLASSPATH}" "{}"
     - name: Test solve.sh
       shell: bash
       #if: runner.os == 'Linux'
