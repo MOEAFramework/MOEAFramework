@@ -105,8 +105,12 @@ jobs:
           echo "::warning title=Checkstyle failed::Checkstyle identified one ore more violations, see logs for details!"
         fi
 
-  package-tests:
-    runs-on: ubuntu-latest
+  example-tests:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v4
     - name: Set up JDK 17
@@ -127,9 +131,23 @@ jobs:
         # Run all examples, excluding files requiring a GUI
         find examples/ -type f -name '*.java' | xargs -r grep -l 'public static void main(' | xargs -r grep -iL 'plot\|gui\|tsp' | sed 's~/~.~g; s/.java$//; s/examples.//' | xargs -rt -I "{}" java -classpath "lib/*:examples" "{}"
     - name: Test solve.sh
+      if: runner.os == 'Linux'
       run: examples/org/moeaframework/examples/experiment/solve.sh
     - name: Test sensitivity.sh
+      if: runner.os == 'Linux'
       run: examples/org/moeaframework/examples/experiment/sensitivity.sh
+
+  package-tests:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: 17
+        distribution: temurin
+    - name: Package binary
+      run: ant -f build.xml package-binary
     - name: Package source
       run: ant -f build.xml package-source
     - name: Package demo
