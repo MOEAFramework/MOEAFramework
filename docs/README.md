@@ -10,16 +10,16 @@
   * [Writing Problems in Java](extending.md)
   * [Connecting to Programs using Standard I/O](external.md)
   * [Natively-Compiled Functions](native.md)
-* [Visualizations](visualizations.md)
+* Visualizations
   * [Simple Plots](visualizations.md#simple-plots)
   * [The Diagnostic Tool](visualizations.md#diagnostic-tool)
   * [J3 - Java 3D Visualization Tool](visualizations.md#j3---java-3d-visualization-tool)
-* [Parallelization](parallelization.md)
+* Parallelization
   * [Distributing Function Evaluations](parallelization.md#distributing-function-evaluations)
   * [Distributing on Remote Machines](parallelization.md#distributing-on-remote-machines)
   * [Island-Model Parallelization](parallelization.md#island-model-parallelization)
 * [Single-Objective Optimization](single.md)
-* [Other Topics](misc.md)
+* Other Topics
   * [Checkpoints](misc.md#checkpoints)
   * [Saving and Formatting Results](misc.md#saving-and-formatting-results)
   * [Injecting Initial Solutions](misc.md#injecting-initial-solutions)
