@@ -60,7 +60,7 @@ void evaluate(double* vars, double* objs) {
 ```
 
 Lastly, we create the main method to initialize the connection with the MOEA Framework and begin a loop processing each
-line of input.  Observe how the loop read the decision variables, calls our function defined above, and writes the
+line of input.  Observe how the loop reads the decision variables, calls our function defined above, and writes the
 objectives to the output.  The second argument to `MOEA_Write` is `NULL` since there are no constraints.
 
 <!-- c:examples/dtlz2.c [57-76] -->
@@ -96,7 +96,7 @@ See `examples/dtlz2.c` for the full code sample.  Once this file is written, we 
 gcc -o dtlz2_stdio.exe dtlz2.c moeaframework.c -lm
 ```
 
-This will produce the executable `dtlz2_stdio.exe`.  Then, we can switch over to the MOEA Framework and create an
+This will produce the executable `dtlz2_stdio.exe`.  Then, we can switch over to the Java and create an
 external problem referencing this executable:
 
 <!-- java:examples/org/moeaframework/examples/external/ExternalProblemWithStdio.java [61:98] -->
@@ -153,9 +153,10 @@ example, we have included a Python example at `examples/dtlz2.py`.
 
 ## Troubleshooting
 
-On Windows, if you see an error message about the `msys.dll` missing, make sure you use the MingGW compiler.  Be sure
-to open the MinGW64 shell.  To verify the correct version is installed, run `which gcc`.  This should display
+On Windows, if you see an error message about the `msys.dll` missing, make sure you use the MingGW compiler.  To
+verify what version you have, open the MinGW64 terminal and run `which gcc`.  This should display
 `/mingw64/bin/gcc`.
 
-For extra debugging output, set `org.moeaframework.problem.external_problem_debugging = true` in
-`moeaframework.properties`.
+The program can hang if the number of decision variables sent to the program do not match the expected number, as it
+will wait for further input.  To assit in debugging, set
+`org.moeaframework.problem.external_problem_debugging = true` in `moeaframework.properties`.
