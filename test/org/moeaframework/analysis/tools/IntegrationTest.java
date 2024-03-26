@@ -19,7 +19,6 @@ package org.moeaframework.analysis.tools;
 
 import java.io.File;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import org.junit.After;
@@ -81,7 +80,7 @@ public class IntegrationTest {
 				"-n", "10", 
 				"-p", parameterDescriptionFile.getPath(),
 				"-m", "la",
-				"-o", parameterFile.getPath()});
+				"-o", parameterFile.getPath() });
 		
 		Assert.assertEquals(10, TestUtils.lineCount(parameterFile));
 		TestUtils.assertLinePattern(parameterFile, TestUtils.getSpaceSeparatedNumericPattern(2));
@@ -95,14 +94,14 @@ public class IntegrationTest {
 				"-i", parameterFile.getPath(),
 				"-o", resultFile1.getPath(),
 				"-a", "NSGAII",
-				"-b", "DTLZ2_2"});
+				"-b", "DTLZ2_2" });
 		
 		Evaluator.main(new String[] { 
 				"-p", parameterDescriptionFile.getPath(),
 				"-i", parameterFile.getPath(),
 				"-o", resultFile2.getPath(),
 				"-a", "eMOEA",
-				"-b", "DTLZ2_2"});
+				"-b", "DTLZ2_2" });
 
 		Assert.assertTrue(TestUtils.lineCount(resultFile1) > 0);
 		Assert.assertTrue(TestUtils.lineCount(resultFile2) > 0);
@@ -114,8 +113,8 @@ public class IntegrationTest {
 				"-b", "DTLZ2_2",
 				"-o", resultInfoFile.getPath(),
 				resultFile1.getPath(),
-				resultFile2.getPath()});
-		
+				resultFile2.getPath() });
+				
 		TestUtils.assertLinePattern(resultInfoFile, "^.* 10$");
 		
 		//combine their results into a combined reference set
@@ -125,7 +124,7 @@ public class IntegrationTest {
 				"-b", "DTLZ2_2",
 				"-o", combinedFile.getPath(),
 				resultFile1.getPath(),
-				resultFile2.getPath()});
+				resultFile2.getPath() });
 		
 		Assert.assertTrue(TestUtils.lineCount(combinedFile) > 0);
 		
@@ -144,7 +143,7 @@ public class IntegrationTest {
 				"-b", "DTLZ2_2",
 				"-o", seedMerger.getPath(),
 				resultFile1.getPath(),
-				resultFile2.getPath()});
+				resultFile2.getPath() });
 		
 		Assert.assertTrue(TestUtils.lineCount(seedMerger) > 0);
 		
@@ -156,13 +155,13 @@ public class IntegrationTest {
 				"-b", "DTLZ2_2",
 				"-i", resultFile1.getPath(),
 				"-o", metricFile1.getPath(),
-				"-r", combinedFile.getPath()});
+				"-r", combinedFile.getPath() });
 		
 		ResultFileEvaluator.main(new String[] {
 				"-d", "2",
 				"-i", resultFile2.getPath(),
 				"-o", metricFile2.getPath(),
-				"-r", combinedFile.getPath()});
+				"-r", combinedFile.getPath() });
 		
 		Assert.assertEquals(11, TestUtils.lineCount(metricFile1));
 		Assert.assertEquals(11, TestUtils.lineCount(metricFile2));
@@ -178,7 +177,7 @@ public class IntegrationTest {
 				"-m", "av",
 				"-o", averageMetrics.getPath(),
 				metricFile1.getPath(),
-				metricFile2.getPath()});
+				metricFile2.getPath() });
 		
 		Assert.assertEquals(10, TestUtils.lineCount(averageMetrics));
 		TestUtils.assertLinePattern(averageMetrics, TestUtils.getSpaceSeparatedNumericPattern(
@@ -192,7 +191,7 @@ public class IntegrationTest {
 				"-i", parameterFile.getPath(),
 				"-m", "1",
 				"-o", analysisFile.getPath(),
-				averageMetrics.getPath()});
+				averageMetrics.getPath() });
 		
 		Assert.assertEquals(3, TestUtils.lineCount(analysisFile));
 		
@@ -202,7 +201,7 @@ public class IntegrationTest {
 				"-c", "-e",
 				"-m", "1",
 				"-o", analysisFile.getPath(),
-				averageMetrics.getPath()});
+				averageMetrics.getPath() });
 		
 		Assert.assertEquals(5, TestUtils.lineCount(analysisFile));
 	}
@@ -220,7 +219,7 @@ public class IntegrationTest {
 				"-n", "10", 
 				"-p", parameterDescriptionFile.getPath(),
 				"-m", "sa",
-				"-o", parameterFile.getPath()});
+				"-o", parameterFile.getPath() });
 		
 		Assert.assertEquals(60, TestUtils.lineCount(parameterFile));
 		TestUtils.assertLinePattern(parameterFile, TestUtils.getSpaceSeparatedNumericPattern(2));
@@ -234,7 +233,7 @@ public class IntegrationTest {
 				"-o", metricFile.getPath(),
 				"-a", "NSGAII",
 				"-b", "DTLZ2_2",
-				"-m"});
+				"-m" });
 		
 		Assert.assertEquals(61, TestUtils.lineCount(metricFile));
 		TestUtils.assertLinePattern(metricFile, TestUtils.getSpaceSeparatedNumericPattern(
@@ -248,14 +247,14 @@ public class IntegrationTest {
 				"-p", parameterDescriptionFile.getPath(),
 				"-m", "0",
 				"-i", metricFile.getPath(),
-				"-o", analysisFile1.getPath()});
+				"-o", analysisFile1.getPath() });
 		
 		SobolAnalysis.main(new String[] {
 				"-p", parameterDescriptionFile.getPath(),
 				"-m", "0",
 				"-i", metricFile.getPath(),
 				"-o", analysisFile2.getPath(),
-				"-s"});
+				"-s" });
 		
 		Assert.assertEquals(9, TestUtils.lineCount(analysisFile1));
 		Assert.assertEquals(4, TestUtils.lineCount(analysisFile2));
@@ -299,7 +298,7 @@ public class IntegrationTest {
 				"-n", "10", 
 				"-p", parameterDescriptionFile.getPath(),
 				"-m", "la",
-				"-o", parameterFile.getPath()});
+				"-o", parameterFile.getPath() });
 
 		//evaluate MOEA
 		File resultFile = TestUtils.createTempFile();
@@ -309,7 +308,7 @@ public class IntegrationTest {
 				"-i", parameterFile.getPath(),
 				"-o", resultFile.getPath(),
 				"-a", "NSGAII",
-				"-b", "DTLZ2_2"});
+				"-b", "DTLZ2_2" });
 
 		//count the number of entries in the result files
 		File resultInfoFile = TestUtils.createTempFile();
@@ -378,14 +377,14 @@ public class IntegrationTest {
 	
 	@Test
 	public void testRuntimeEvaluator() throws Exception {
-		File parameterDescriptionFile = TestUtils.createTempFile(PARAMETER_FILE);
+		File parameterDescriptionFile = TestUtils.createTempFile("sbx.rate 0.0 1.0");
 		File parameterFile = TestUtils.createTempFile();
 		
 		SampleGenerator.main(new String[] { 
 				"-n", "10", 
 				"-p", parameterDescriptionFile.getPath(),
 				"-m", "la",
-				"-o", parameterFile.getPath()});
+				"-o", parameterFile.getPath() });
 		
 		File resultFolder = Files.createTempDirectory("results").toFile();
 		FileUtils.mkdir(resultFolder);
@@ -396,11 +395,21 @@ public class IntegrationTest {
 				"-o", Paths.get(resultFolder.getPath(), "resultFile_%d.dat").toString(),
 				"-a", "NSGAII",
 				"-b", "DTLZ2_2",
-				"-f", "100"});
+				"-f", "100",
+				"-x", "maxEvaluations=10000" });
 		
 		Assert.assertEquals(10, resultFolder.listFiles().length);
 		
 		for (File file : resultFolder.listFiles()) {
+			File resultInfoFile = TestUtils.createTempFile();
+			
+			ResultFileInfo.main(new String[] {
+					"-b", "DTLZ2_2",
+					"-o", resultInfoFile.getPath(),
+					file.getPath() });
+			
+			TestUtils.assertLinePattern(resultInfoFile, "^.* 100$");
+			
 			FileUtils.delete(file);
 		}
 		
