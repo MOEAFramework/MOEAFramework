@@ -150,6 +150,13 @@ have also provided a Python example at `examples/dtlz2.py`.
 One note: always flush the output after writing.  This ensures the output is written immediately instead of being
 buffered by the OS.
 
+## Native Programs
+
+While the process above is the most straightforward, communication using standard I/O adds overhead.  For the best
+performance, consider compiling the problem to a native library (DLL or Shared Object).
+
+https://github.com/MOEAFramework/JNAExample provides an example using the Java Native Access (JNA) library.
+
 ## Troubleshooting
 
 On Windows, if you see an error message about the `msys.dll` missing, make sure you use the MingGW compiler.  Be sure
