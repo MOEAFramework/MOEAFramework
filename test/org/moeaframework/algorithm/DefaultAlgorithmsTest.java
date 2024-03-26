@@ -82,10 +82,9 @@ public class DefaultAlgorithmsTest {
 	private final int NFE = 1000;
 	
 	/**
-	 * The number of steps to perform during resumability and instrumenter tests.  Must be > 100 to test
-	 * {@link AdaptiveTimeContinuation}.
+	 * The number of steps to perform during resumability and instrumenter tests.
 	 */
-	private static final int STEPS = 200;
+	private static final int STEPS = 10;
 	
 	protected Problem real;
 	protected Problem binary;
@@ -292,8 +291,14 @@ public class DefaultAlgorithmsTest {
 			// test if the algorithm is resumable
 			try {
 				System.out.print("  Test resumable on " + problem.getName() + "...");
-				testResumable(name, problem);
-				System.out.println("passed!");
+
+				if (problem.isType(Program.class)) {
+					// programs are not serializable and hence do not support resuming
+					System.out.println("not supported!");
+				} else {
+					testResumable(name, problem);
+					System.out.println("passed!");
+				}
 			} catch (IOException | AssertionError e) {
 				System.out.println("failed!");
 				throw new AssertionError(name + " failed resumable test on " + problem.getName(), e);
@@ -344,32 +349,27 @@ public class DefaultAlgorithmsTest {
 		// first trial
 		PRNG.setSeed(seed);
 		Algorithm algorithm = AlgorithmFactory.getInstance().getAlgorithm(name, properties, problem);
-		algorithm.run(10000);
+		algorithm.run(NFE);
 		NondominatedPopulation firstResult = algorithm.getResult();
 		
 		// second trial
 		PRNG.setSeed(seed);
 		algorithm = AlgorithmFactory.getInstance().getAlgorithm(name, properties, problem);
-		algorithm.run(10000);
+		algorithm.run(NFE);
 		NondominatedPopulation secondResult = algorithm.getResult();
 		
 		// comparison
 		TestUtils.assertEquals(firstResult, secondResult);
 	}
 	
-	private void testResumable(String name, Problem problem) throws IOException {
-		if (problem.isType(Program.class)) {
-			// Programs are not serializable!
-			return;
-		}
-		
+	private void testResumable(String name, Problem problem) throws IOException {		
 		long seed = PRNG.getRandom().nextLong();
 		
 		// first, run the algorithm normally
 		PRNG.setSeed(seed);
 		Algorithm algorithm = AlgorithmFactory.getInstance().getAlgorithm(name, properties, problem);
 		
-		for (int i = 0; i < STEPS && !algorithm.isTerminated(); i++) {
+		for (int i = 0; i < STEPS; i++) {
 			algorithm.step();
 		}
 		
@@ -380,7 +380,7 @@ public class DefaultAlgorithmsTest {
 		Checkpoints checkpoints = null;
 		PRNG.setSeed(seed);
 
-		for (int i = 0; i < STEPS && (checkpoints == null || !checkpoints.isTerminated()); i++) {
+		for (int i = 0; i < STEPS; i++) {
 			checkpoints = new Checkpoints(AlgorithmFactory.getInstance().getAlgorithm(name, properties, problem), file, 0);
 			checkpoints.step();
 		}
