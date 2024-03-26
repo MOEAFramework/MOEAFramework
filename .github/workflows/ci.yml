@@ -120,7 +120,12 @@ jobs:
         distribution: temurin
     - name: Package binary
       run: ant -f build.xml package-binary
+    - name: Compiler info
+      run: |
+        which gcc
+        gcc --version
     - name: Test examples in binary package
+      shell: bash
       run: |
         cd build/MOEAFramework-*
         make -C examples
@@ -131,10 +136,12 @@ jobs:
         # Run all examples, excluding files requiring a GUI
         find examples/ -type f -name '*.java' | xargs -r grep -l 'public static void main(' | xargs -r grep -iL 'plot\|gui\|tsp' | sed 's~/~.~g; s/.java$//; s/examples.//' | xargs -rt -I "{}" java -classpath "lib/*:examples" "{}"
     - name: Test solve.sh
-      if: runner.os == 'Linux'
+      shell: bash
+      #if: runner.os == 'Linux'
       run: examples/org/moeaframework/examples/experiment/solve.sh
     - name: Test sensitivity.sh
-      if: runner.os == 'Linux'
+      shell: bash
+      #if: runner.os == 'Linux'
       run: examples/org/moeaframework/examples/experiment/sensitivity.sh
 
   package-tests:
