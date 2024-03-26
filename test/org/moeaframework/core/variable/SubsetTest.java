@@ -22,9 +22,13 @@ import java.util.Arrays;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.moeaframework.CIRunner;
+import org.moeaframework.Retryable;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.core.FrameworkException;
 
+@RunWith(CIRunner.class)
 public class SubsetTest {
 	
 	@Test
@@ -236,6 +240,7 @@ public class SubsetTest {
 	}
 	
 	@Test
+	@Retryable
 	public void testRandomize() {
 		Subset subset = new Subset(2, 10);
 		DescriptiveStatistics[] valueStats = new DescriptiveStatistics[subset.getN()];

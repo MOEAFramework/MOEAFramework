@@ -22,9 +22,13 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.moeaframework.CIRunner;
+import org.moeaframework.Retryable;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.TestUtils;
 
+@RunWith(CIRunner.class)
 public class GrammarTest {
 
 	private Grammar grammar;
@@ -244,6 +248,7 @@ public class GrammarTest {
 	}
 	
 	@Test
+	@Retryable
 	public void testRandomize() {
 		grammar.setMaximumValue(5);
 		DescriptiveStatistics[] valueStats = new DescriptiveStatistics[grammar.size()];

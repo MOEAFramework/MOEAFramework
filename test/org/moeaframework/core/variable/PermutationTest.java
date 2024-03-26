@@ -24,9 +24,13 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.moeaframework.CIRunner;
+import org.moeaframework.Retryable;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.TestUtils;
 
+@RunWith(CIRunner.class)
 public class PermutationTest {
 
 	private Permutation permutation;
@@ -187,6 +191,7 @@ public class PermutationTest {
 	}
 	
 	@Test
+	@Retryable
 	public void testRandomize() {
 		DescriptiveStatistics[] positionStats = new DescriptiveStatistics[permutation.size()];
 		
