@@ -18,7 +18,7 @@ the header:
 
 <!-- c:examples/dtlz2.c [20:20] -->
 
-```
+```c
 #include "moeaframework.h"
 ```
 
@@ -26,7 +26,7 @@ Next, we define a function for our multiobjective problem.  Here, we are definin
 
 <!-- c:examples/dtlz2.c [24:51] -->
 
-```
+```c
 int nvars = 11;
 int nobjs = 2;
 
@@ -61,7 +61,7 @@ objectives to the output.  The second argument to `MOEA_Write` is `NULL` since t
 
 <!-- c:examples/dtlz2.c [57-76] -->
 
-```
+```c
 int main(int argc, char* argv[]) {
     double vars[nvars];
     double objs[nobjs];

@@ -881,7 +881,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		 * @return the name of the "brush"
 		 */
 		public String getBrush(Language language) {
-			final Set<String> markdownBrush = new HashSet<String>(Arrays.asList("java", "bash", "text"));
+			final Set<String> markdownBrush = new HashSet<String>(Arrays.asList("java", "c", "bash", "text"));
 			final Set<String> htmlBrush = new HashSet<String>(Arrays.asList("java"));
 			
 			String brushName = language.name().toLowerCase();
