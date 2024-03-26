@@ -58,7 +58,7 @@ public static class Srinivas extends AbstractProblem {
 }
 ```
 
-Next, we can solve this problem by passing it directly to the constructor of an optimization algorithm, such as NSGA-II:
+We can solve this problem by passing it directly to the constructor of an optimization algorithm, such as NSGA-II:
 
 <!-- java:examples/Example6.java [80:85] -->
 

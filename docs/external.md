@@ -1,5 +1,10 @@
 # Connecting to Problems with Standard I/O
 
+In this example, we will write a C/C++ program for the 2-objective DTLZ2 problem, compile it into an executable, and
+optimize it using the MOEA Framework.  This uses the `ExternalProblem` class, which uses standard input/output to
+talk with the external program.  This interface is simple, but can be used to connect with problems defined in
+practically any programming language.
+
 ## Prerequisites
 
 To run this example, you will need:
@@ -14,10 +19,7 @@ To run this example, you will need:
 
 ## Example
 
-In this example, we will write a C/C++ program for the 2-objective DTLZ2 problem, compile it into an executable, and
-optimize it using the MOEA Framework.  This uses the `ExternalProblem` class, which uses standard input/output to
-talk with the external program.  This interface is simple, but can be used to connect with problems defined in
-practically any programming language.
+We start with the C/C++ program.  First, we need to include the MOEA Framework C interface:
 
 <!-- c:examples/dtlz2.c [20:20] -->
 
@@ -60,7 +62,6 @@ void evaluate(double* vars, double* objs) {
 Lastly, we create the main method to initialize the connection with the MOEA Framework and begin a loop processing each
 line of input.  Observe how the loop read the decision variables, calls our function defined above, and writes the
 objectives to the output.  The second argument to `MOEA_Write` is `NULL` since there are no constraints.
-
 
 <!-- c:examples/dtlz2.c [57-76] -->
 

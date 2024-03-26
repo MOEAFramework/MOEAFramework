@@ -1,5 +1,9 @@
 # Natively-Compiled Functions
 
+In this example, we will create a natively-compiled function for the 2-objective DTLZ2 problem and connect to it
+directly using the Java Native Access (JNA) library.  This takes a bit more work to setup than the other methods,
+but offers the highest performance.
+
 ## Prerequisites
 
 To run this example, you will need:
@@ -14,8 +18,6 @@ To run this example, you will need:
    and place the JAR file on the classpath, typically by extracting it into the `lib/` folder.
 
 ## Example
-
-In this example, we will create a shared library (DLL on Windows) for the 2-objective DTLZ2 problem.
 
 First, create the C file `dtlz2.c` and define the function that evaluates the DTLZ2 problem.  In this example, the
 function takes two double arrays (`double*` in C), the first for passing in the decision variables, and the second
