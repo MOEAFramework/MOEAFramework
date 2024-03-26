@@ -634,6 +634,11 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		Java,
 		
 		/**
+		 * C/C++ source code.
+		 */
+		C,
+		
+		/**
 		 * Plain text.
 		 */
 		Text,
@@ -698,7 +703,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		 */
 		public String stripComments(String content) {
 			return switch (this) {
-				case Java -> {
+				case Java, C -> {
 					// Remove C-style // comments
 					content = content.replaceAll("//[^\\n]*", "");                              
 					

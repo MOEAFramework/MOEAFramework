@@ -21,8 +21,8 @@
 
 #define PI 3.14159265358979323846
 
-int nvars;
-int nobjs;
+int nvars = 11;
+int nobjs = 2;
 
 /**
  * Function for evaluating the DTLZ2 problem.
@@ -55,17 +55,6 @@ void evaluate(double* vars, double* objs) {
  * problem and printing the objectives.
  */
 int main(int argc, char* argv[]) {
-	if (argc <= 1) {
-		nobjs = 2;
-		nvars = 11;
-	} else if (argc == 2) {
-		nobjs = atoi(argv[1]);
-		nvars = nobjs + 9;
-	} else if (argc >= 3) {
-		nobjs = atoi(argv[2]);
-		nvars = atoi(argv[1]);
-	} 
-
 	double vars[nvars];
 	double objs[nobjs];
 

@@ -29,6 +29,7 @@
 * [List of Algorithms](algorithms.md)
 * [List of Variation Operators](operators.md)
 * [List of Test Problems](problems.md)
+* [External Problems](external.md)
 * [Command Line Tools](tools.md)
 * [Extensions (JMetal-Plugin, Generalized Decomposition, Hypervolume)](extensions.md)
 

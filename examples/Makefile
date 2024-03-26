@@ -6,24 +6,15 @@
 #
 # Run 'make' to build all files
 
-CC = gcc
-FLAGS = -Wall -O3
-UNAME := $(shell uname -s)
-
 main: dtlz2_stdio.exe dtlz2_socket.exe
 
 clean:
-	rm -f moeaframework.o libmoea.a dtlz2_stdio.exe dtlz2_socket.exe
+	rm -f dtlz2_stdio.exe dtlz2_socket.exe
 
-libmoea.a: moeaframework.c moeaframework.h
-	$(CC) $(FLAGS) -o moeaframework.o -c moeaframework.c
-	ar rcs libmoea.a moeaframework.o
-	rm -f moeaframework.o
+dtlz2_stdio.exe: dtlz2.c
+	gcc -o dtlz2_stdio.exe dtlz2.c moeaframework.c -lm
 
-dtlz2_stdio.exe: libmoea.a dtlz2.c
-	${CC} ${FLAGS} -o dtlz2_stdio.exe dtlz2.c -L. -lmoea -lm
-
-dtlz2_socket.exe: libmoea.a dtlz2.c
-ifeq ($(UNAME),Linux)
-	${CC} ${FLAGS} -DUSE_SOCKET -o dtlz2_socket.exe dtlz2.c -L. -lmoea -lm
+dtlz2_socket.exe: dtlz2.c
+ifneq ($(OS),Windows_NT)
+	gcc -DUSE_SOCKET -o dtlz2_stdio.exe dtlz2.c moeaframework.c -lm
 endif

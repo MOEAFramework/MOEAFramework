@@ -5,12 +5,6 @@
 #
 # Run 'make' to build all files
 
-CC = gcc
-FLAGS = -Wall -O3
-UNAME := $(shell uname -s)
-
-# Search file tree for examples/ folder - the relative path can change based on the
-# execution environment (Ant vs Maven)
 EXAMPLES := $(shell dir=$$(pwd); \
 	while [ "$$dir" != "/" ] && [ ! -d "$$dir/examples" ]; \
     	do dir=$$(dirname "$$dir"); \
@@ -23,9 +17,9 @@ clean:
 	rm -f test_stdio.exe test_socket.exe
 
 test_stdio.exe: test.c $(EXAMPLES)/moeaframework.c
-	$(CC) $(FLAGS) -o test_stdio.exe -I $(EXAMPLES) test.c $(EXAMPLES)/moeaframework.c
+	gcc -o test_stdio.exe -I $(EXAMPLES) test.c $(EXAMPLES)/moeaframework.c
 	
 test_socket.exe: test.c $(EXAMPLES)/moeaframework.c
-ifeq ($(UNAME),Linux)
-	${CC} ${FLAGS} -DUSE_SOCKET -o test_socket.exe -I $(EXAMPLES) test.c $(EXAMPLES)/moeaframework.c
+ifneq ($(OS),Windows_NT)
+	gcc -DUSE_SOCKET -o test_socket.exe -I $(EXAMPLES) test.c $(EXAMPLES)/moeaframework.c
 endif

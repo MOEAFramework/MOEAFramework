@@ -119,7 +119,7 @@ public class SolveTest {
 	}
 	
 	@Test
-	public void testExternalProblem1() throws Exception {
+	public void testExternalProblemWithLowerAndUpperBounds() throws Exception {
 		Assume.assumeTrue(new File("./examples/dtlz2_stdio.exe").exists());
 		File outputFile = TestUtils.createTempFile();
 		
@@ -136,7 +136,7 @@ public class SolveTest {
 	}
 	
 	@Test
-	public void testExternalProblem2() throws Exception {
+	public void testExternalProblemWithVariables() throws Exception {
 		Assume.assumeTrue(new File("./examples/dtlz2_stdio.exe").exists());
 		File outputFile = TestUtils.createTempFile();
 		
