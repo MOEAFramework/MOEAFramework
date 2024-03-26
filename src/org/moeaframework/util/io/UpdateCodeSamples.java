@@ -23,6 +23,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -39,6 +41,7 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.SystemUtils;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Settings;
@@ -223,22 +226,22 @@ public class UpdateCodeSamples extends CommandLineUtility {
 				
 				if (matcher.matches()) {
 					Language language = Language.fromString(matcher.group(1));
-					String filename = matcher.group(2);
+					String path = matcher.group(2);
 
 					FormattingOptions options = new FormattingOptions(language);
 					options.parseLineNumbers(matcher.group(3));
 					options.parseFlags(matcher.group(4));
 					
 					String content = "";
-					System.out.println("    > Updating " + language + " block: " + filename + " " + options);
+					System.out.println("    > Updating " + language + " block: " + path + " " + options);
 					
 					switch (language) {
 						case Output -> {
-							compile(filename);
-							content = execute(filename, options);
+							compile(path);
+							content = execute(path, options);
 						}
 						default -> {
-							content = FileUtils.readUTF8(new File(filename));
+							content = loadContent(path);
 						}
 					}
 					
@@ -262,6 +265,30 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		}
 		
 		return fileChanged;
+	}
+	
+	/**
+	 * Loads content from a file or URL (restricted to GitHub).
+	 * 
+	 * @param path the path to load
+	 * @return the content
+	 * @throws IOException if an error occurred loading the file or URL
+	 */
+	private String loadContent(String path) throws IOException {
+		URI uri = URI.create(path);
+		
+		if (uri.getScheme() == null || uri.getScheme().equalsIgnoreCase("file")) {
+			return FileUtils.readUTF8(new File(path));
+		} else if (uri.getScheme().equalsIgnoreCase("http") || uri.getScheme().equalsIgnoreCase("https")) {
+			if (!uri.getHost().equalsIgnoreCase("raw.githubusercontent.com") ||
+					!uri.getPath().startsWith("/MOEAFramework/")) {
+				throw new IOException("Invalid path '" + path + "', unsupport host or path");
+			}
+			
+			return IOUtils.toString(uri.toURL(), StandardCharsets.UTF_8);
+		} else {
+			throw new IOException("Invalid path '" + path + "', unsupported scheme");
+		}
 	}
 	
 	/**

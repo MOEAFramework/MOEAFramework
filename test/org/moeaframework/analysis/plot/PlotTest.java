@@ -17,6 +17,7 @@
  */
 package org.moeaframework.analysis.plot;
 
+import java.awt.Color;
 import java.awt.GraphicsEnvironment;
 import java.io.File;
 import java.io.IOException;
@@ -79,7 +80,7 @@ public class PlotTest {
 				.withProperty("populationSize", 20)
 				.run();
 		
-		runTest(new Plot().add("NSGAII", result));
+		runTest(new Plot().add("NSGAII", result).withSize(5.0f).withPaint(Color.BLACK));
 	}
 	
 	@Test

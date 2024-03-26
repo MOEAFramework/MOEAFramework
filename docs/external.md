@@ -1,20 +1,23 @@
-# Connecting to External Problems
+# Connecting to Problems with Standard I/O
 
 ## Prerequisites
 
-In order to compile these examples, you will need a C/C++ compiler and Make.  These tools should be available on
-most Linux and Mac platforms.  For Windows, we recommend https://www.msys2.org/.  After installing MSYS2, open the
-MSYS2 MinGW64 terminal and run:
+To run this example, you will need:
 
-```
-pacman -S make mingw-w64-x86_64-gcc
-```
+1. A C/C++ compiler and Make.  For Windows, we recommend using [MSYS2](https://www.msys2.org/) with MinGW.  After
+   installing MSYS2, open the MinGW64 terminal and run:
+   ```
+   pacman -S make mingw-w64-x86_64-gcc
+   ```
+   
+2. The MOEA Framework C interface, `moeaframework.c` and `moeaframework.h`, found in the `examples/` folder.
 
-## C/C++ Example
+## Example
 
-To assist in building C/C++ programs that can talk with the MOEA Framework, we have provided the `moeaframework.c`
-and `moeaframework.h` files, which can be found in the `examples/` folder.  To use this library, first include
-the header:
+In this example, we will write a C/C++ program for the 2-objective DTLZ2 problem, compile it into an executable, and
+optimize it using the MOEA Framework.  This uses the `ExternalProblem` class, which uses standard input/output to
+talk with the external program.  This interface is simple, but can be used to connect with problems defined in
+practically any programming language.
 
 <!-- c:examples/dtlz2.c [20:20] -->
 
@@ -143,19 +146,9 @@ structure of the problem.  We can now use this problem like any other within the
 
 ## Other Languages
 
-We can use the same approach to connect to problems written in practically any programming language.  Simply read the
-decision variables from the input, and write the objective (and constraint) values to the output.  As an example, we
-have also provided a Python example at `examples/dtlz2.py`.
-
-One note: always flush the output after writing.  This ensures the output is written immediately instead of being
-buffered by the OS.
-
-## Native Programs
-
-While the process above is the most straightforward, communication using standard I/O adds overhead.  For the best
-performance, consider compiling the problem to a native library (DLL or Shared Object).
-
-https://github.com/MOEAFramework/JNAExample provides an example using the Java Native Access (JNA) library.
+We can use the same approach to connect to problems written in other programming languages.  Simply construct a loop
+to read the decision variables from the input and write the objective (and constraint) values to the output.  As an
+example, we have included a Python example at `examples/dtlz2.py`.
 
 ## Troubleshooting
 

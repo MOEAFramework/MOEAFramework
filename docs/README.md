@@ -6,8 +6,10 @@
 * [Setup](setup.md)
 * [An Example](example.md)
 * [Running Experiments](experiment.md)
-* [Defining New Problems and Algorithms](extending.md)
-* [Connecting to External Problems (C/C++)](external.md)
+* Adding Problems
+  * [Writing Problems in Java](extending.md)
+  * [Connecting to Programs using Standard I/O](external.md)
+  * [Natively-Compiled Functions](native.md)
 * [Visualizations](visualizations.md)
   * [Simple Plots](visualizations.md#simple-plots)
   * [The Diagnostic Tool](visualizations.md#diagnostic-tool)
