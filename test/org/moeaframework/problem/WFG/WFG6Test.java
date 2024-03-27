@@ -20,13 +20,12 @@ package org.moeaframework.problem.WFG;
 import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.core.Problem;
-import org.moeaframework.core.spi.ProblemFactory;
 
 public class WFG6Test extends WFGTest {
 	
 	@Test
 	public void test() {
-		Problem problem = ProblemFactory.getInstance().getProblem("WFG6");
+		Problem problem = new WFG6(2);
 		
 		Assert.assertArrayEquals(new double[] { 0.181818, 4.181818 }, 
 				evaluateAtLowerBounds(problem).getObjectives(),

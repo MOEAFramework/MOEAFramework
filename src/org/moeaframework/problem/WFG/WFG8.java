@@ -24,6 +24,15 @@ import org.moeaframework.core.variable.EncodingUtils;
  * The WFG8 test problem.
  */
 public class WFG8 extends WFG {
+	
+	/**
+	 * Constructs a WFG8 problem instance with the specified number of objectives.
+	 * 
+	 * @param M the number of objectives for this problem
+	 */
+	public WFG8(int M) {
+		this(M - 1, 10, M);
+	}
 
 	/**
 	 * Constructs a WFG8 problem instance with the specified number of position-related and distance-related variables

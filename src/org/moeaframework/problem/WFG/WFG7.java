@@ -24,6 +24,15 @@ import org.moeaframework.core.variable.EncodingUtils;
  * The WFG7 test problem.
  */
 public class WFG7 extends WFG {
+	
+	/**
+	 * Constructs a WFG7 problem instance with the specified number of objectives.
+	 * 
+	 * @param M the number of objectives for this problem
+	 */
+	public WFG7(int M) {
+		this(M - 1, 10, M);
+	}
 
 	/**
 	 * Constructs a WFG7 problem instance with the specified number of position-related and distance-related variables

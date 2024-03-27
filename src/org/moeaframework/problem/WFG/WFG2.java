@@ -24,6 +24,15 @@ import org.moeaframework.core.variable.EncodingUtils;
  * The WFG2 test problem.
  */
 public class WFG2 extends WFG {
+	
+	/**
+	 * Constructs a WFG2 problem instance with the specified number of objectives.
+	 * 
+	 * @param M the number of objectives for this problem
+	 */
+	public WFG2(int M) {
+		this(M - 1, 10, M);
+	}
 
 	/**
 	 * Constructs a WFG2 problem instance with the specified number of position-related and distance-related variables
