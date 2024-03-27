@@ -19,9 +19,13 @@ package org.moeaframework.core;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.SerializationUtils;
+import org.moeaframework.util.format.Column;
+import org.moeaframework.util.format.Formattable;
+import org.moeaframework.util.format.TabularData;
 
 /**
  * A solution to an optimization problem, storing the decision variables, objectives, constraints and attributes.
@@ -31,7 +35,7 @@ import org.apache.commons.lang3.SerializationUtils;
  * Solutions should only be constructed in {@link Problem#newSolution()} or cloned from an existing solution with
  * {@link #copy()}.  This ensures the solutions and configured correctly for the given optimization problem.
  */
-public class Solution implements Serializable {
+public class Solution implements Formattable<Solution>, Serializable {
 
 	private static final long serialVersionUID = -1192586435663892479L;
 
@@ -402,6 +406,28 @@ public class Solution implements Serializable {
 		}
 
 		return Math.sqrt(distance);
+	}
+	
+	@Override
+	public TabularData<Solution> asTabularData() {
+		TabularData<Solution> data = new TabularData<Solution>(List.of(this));
+
+		for (int i = 0; i < getNumberOfVariables(); i++) {
+			final int index = i;
+			data.addColumn(new Column<Solution, Variable>("Var" + (index+1), s -> s.getVariable(index)));
+		}
+			
+		for (int i = 0; i < getNumberOfObjectives(); i++) {
+			final int index = i;
+			data.addColumn(new Column<Solution, Double>("Obj" + (index+1), s -> s.getObjective(index)));
+		}
+			
+		for (int i = 0; i < getNumberOfConstraints(); i++) {
+			final int index = i;
+			data.addColumn(new Column<Solution, Double>("Constr" + (index+1), s -> s.getConstraint(index)));
+		}
+		
+		return data;
 	}
 
 }

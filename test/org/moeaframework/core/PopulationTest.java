@@ -17,8 +17,10 @@
  */
 package org.moeaframework.core;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.util.Comparator;
 import java.util.ConcurrentModificationException;
 import java.util.List;
@@ -28,6 +30,11 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.TestUtils;
+import org.moeaframework.core.variable.BinaryIntegerVariable;
+import org.moeaframework.core.variable.BinaryVariable;
+import org.moeaframework.core.variable.Permutation;
+import org.moeaframework.core.variable.RealVariable;
+import org.moeaframework.core.variable.Subset;
 import org.moeaframework.mock.MockSolution;
 import org.moeaframework.util.format.TabularData;
 
@@ -167,6 +174,28 @@ public class PopulationTest {
 		
 		data.saveCSV(tempFile);
 		Assert.assertEquals(population.size() + 1, TestUtils.lineCount(tempFile));
+	}
+	
+	@Test
+	public void testDisplay() throws IOException {
+		Solution solution = MockSolution.of()
+				.withVariables(new RealVariable(0.0, 1.0), new BinaryIntegerVariable(5, 10), new BinaryVariable(5),
+						new Permutation(5), new Subset(5, 10))
+				.withObjectives(1.0, 0.0)
+				.withConstraints(0.0)
+				.build();
+		
+		Population population = new Population(List.of(solution));
+		
+		try (ByteArrayOutputStream output1 = new ByteArrayOutputStream();
+				ByteArrayOutputStream output2 = new ByteArrayOutputStream();
+				PrintStream ps1 = new PrintStream(output1);
+				PrintStream ps2 = new PrintStream(output2)) {
+			solution.display(ps1);
+			population.display(ps2);
+			
+			Assert.assertEquals(output1.toString(), output2.toString());
+		}
 	}
 
 }
