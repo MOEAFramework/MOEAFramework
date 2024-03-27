@@ -27,6 +27,7 @@ import org.junit.Assert;
 import org.moeaframework.TestUtils;
 import org.moeaframework.core.Constraint;
 import org.moeaframework.core.Problem;
+import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variable;
 import org.moeaframework.core.variable.BinaryIntegerVariable;
@@ -35,6 +36,7 @@ import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.Permutation;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.core.variable.Subset;
+import org.moeaframework.util.format.NumberFormatter;
 
 /**
  * Utility for mocking or building solutions for tests.  This can be used as a drop-in replacement for {@link Solution}
@@ -243,15 +245,18 @@ public class MockSolution extends Solution {
 	}
 
 	public MockSolution evaluate() {
-
-
+		throwIfProblemNotSet();
 		return evaluate(problem.get());
 	}
 
 	public MockSolution evaluate(Problem problem) {
 		throwIfReadOnly();
-		throwIfProblemNotSet();
 		problem.evaluate(this);
+		
+		if (Settings.isVerbose()) {
+			System.out.println(NumberFormatter.getDefault().format(this.getObjectives()));
+		}
+		
 		return this;
 	}
 
