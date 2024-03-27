@@ -6,26 +6,18 @@ This page documents notable changes introduced in each chronological release of 
 
   * Bumps minimum supported Java version to 17.  This is a long-term support (LTS) release with an end-of-life of
     Sept 2029.
-
-  * Adds the `Indicators` class to simplify calculating performance indicators, which will eventually
-    replace the older `QualityIndicator` class.  See `Example2.java` for a demo.
     
-  * Adds ability to scope properties within a try-with-resources block.
-  
-  * `org.moeaframework.core.suppress_truncation_warning` now defaults to `true`
-  
-  * Adds `DTLZ5` and `DTLZ6` test problems.  These were excluded previously as they are known to produce additional
-    Pareto optimal solutions outside the expected Pareto front for M > 3.  Will display a warning for these cases.
-  
-  * Breaking changes:
-  
-    - Removes deprecated classes and methods.
-  
-    - Moves initialization and selection classes into their own packages.
-      
-    - Moves all command line tools into the `org.moeaframework.analysis.tools` package.  Removes
-      the `sensitivity` package.
+  * As this is a major update, a number of breaking changes have been introduced, including removing deprecated
+    methods and reorganizing classes.  Upgrading to this version will likely require reaction work!
 
+  * Other notable changes include:
+  
+    * Adds the `Indicators` class to simplify calculating performance indicators.
+    
+    * Parameter truncation warnings (rounding double to int) are now suppressed by default.
+    
+    * Moves all documentation online, replacing the Beginner's Guide PDF.
+    
 
 ## Version 3.11 (04 Mar 2024)
 
