@@ -162,6 +162,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 					<exclude name="org/moeaframework/algorithm/single/AbstractSingleObjectiveAlgorithmTest.class" />
 					<exclude name="org/moeaframework/analysis/collector/AbstractCollectorTest.class" />
 					<exclude name="org/moeaframework/problem/ProblemTest.class" />
+					<exclude name="org/moeaframework/problem/WFG/WFGTest.class" />
 					<exclude name="org/moeaframework/core/indicator/AbstractHypervolumeTest.class" />
 					<exclude name="org/moeaframework/core/indicator/AbstractIndicatorTest.class" />
 					<exclude name="org/moeaframework/core/operator/AbstractBinaryOperatorTest.class" />

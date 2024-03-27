@@ -19,115 +19,15 @@ package org.moeaframework.problem.WFG;
 
 import org.junit.Assert;
 import org.junit.Assume;
-import org.junit.Test;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.NondominatedPopulation.DuplicateMode;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.problem.ProblemTest;
 
-public class WFGTest extends ProblemTest {
-
-	@Test
-	public void testWFG1_2D() {
-		test("WFG1", 2);
-	}
-
-	@Test
-	public void testWFG1_3D() {
-		test("WFG1", 3);
-	}
-
-	@Test
-	public void testWFG2_2D() {
-		test("WFG2", 2);
-	}
-
-	@Test
-	public void testWFG2_3D() {
-		test("WFG2", 3);
-	}
-
-	@Test
-	public void testWFG3_2D() {
-		test("WFG3", 2);
-	}
-
-	@Test
-	public void testWFG3_3D() {
-		test("WFG3", 3);
-	}
-
-	@Test
-	public void testWFG4_2D() {
-		test("WFG4", 2);
-	}
-
-	@Test
-	public void testWFG4_3D() {
-		test("WFG4", 3);
-	}
-
-	@Test
-	public void testWFG5_2D() {
-		test("WFG5", 2);
-	}
-
-	@Test
-	public void testWFG5_3D() {
-		test("WFG5", 3);
-	}
-
-	@Test
-	public void testWFG6_2D() {
-		test("WFG6", 2);
-	}
-
-	@Test
-	public void testWFG6_3D() {
-		test("WFG6", 3);
-	}
-
-	@Test
-	public void testWFG7_2D() {
-		test("WFG7", 2);
-	}
-
-	@Test
-	public void testWFG7_3D() {
-		test("WFG7", 3);
-	}
-
-	@Test
-	public void testWFG8_2D() {
-		test("WFG8", 2);
-	}
-
-	@Test
-	public void testWFG8_3D() {
-		test("WFG8", 3);
-	}
-
-	@Test
-	public void testWFG9_2D() {
-		test("WFG9", 2);
-	}
-
-	@Test
-	public void testWFG9_3D() {
-		test("WFG9", 3);
-	}
-
-	private void test(String problem, int M) {
-		String problemName = problem + "_" + M;
-		
-		assertProblemDefined(problemName, M);
-		testAgainstJMetal(problemName);
-		
-		testGenerate(problemName);
-	}
+public abstract class WFGTest extends ProblemTest {
 	
-	private void testGenerate(String problemName) {
+	protected void testGenerate(String problemName) {
 		WFG problem = (WFG)ProblemFactory.getInstance().getProblem(problemName);
 		NondominatedPopulation result = new NondominatedPopulation(DuplicateMode.ALLOW_DUPLICATES);
 		
