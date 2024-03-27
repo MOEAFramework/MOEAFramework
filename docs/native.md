@@ -149,4 +149,14 @@ public class NativeDTLZ2 extends AbstractProblem {
 }
 ```
 
+We can then solve this problem like any other:
+
+<!-- java:https://raw.githubusercontent.com/MOEAFramework/JNAExample/main/src/main/java/Example.java [23:25] -->
+
+```java
+NSGAII algorithm = new NSGAII(new NativeDTLZ2());
+algorithm.run(10000);
+algorithm.getResult().display();
+```
+
 For a complete, working version of this example, please visit https://github.com/MOEAFramework/JNAExample.

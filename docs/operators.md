@@ -66,7 +66,7 @@ generates offspring closer to the parents.
 
 Parameter              | Default Value     | Description
 :--------------------- | :---------------- | :----------
-`pm.rate               | `1/N`             | The probability that the PM operator is applied to a decision variable
+`pm.rate`              | `1/N`             | The probability that the PM operator is applied to a decision variable
 `pm.distributionIndex` | `20.0`            | The shape of the offspring distribution (larger values produce offspring closer to the parent)
 
 ### Differential Evolution (DE)
