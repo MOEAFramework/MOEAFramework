@@ -198,17 +198,15 @@ public class WilcoxonSignedRanksTest extends OrdinalStatisticalTest {
 	/**
 	 * Table of critical T values for alpha=0.05.  Entries of -1 indicate an insufficient sampling size.
 	 */
-	private static final int[] TABLE_5 = new int[] { 0, 2, 3, 5, 8, 10, 13, 17,
-			21, 25, 29, 34, 40, 46, 52, 58, 65, 73, 81, 89, 98, 107, 116, 126,
-			137, 147, 159, 170, 182, 195, 208, 221, 235, 249, 264, 279, 294,
-			310, 327, 343, 361, 378, 396, 415, 434 };
+	private static final int[] TABLE_5 = new int[] { 0, 2, 3, 5, 8, 10, 13, 17, 21, 25, 29, 34, 40, 46, 52, 58, 65, 73,
+			81, 89, 98, 107, 116, 126, 137, 147, 159, 170, 182, 195, 208, 221, 235, 249, 264, 279, 294, 310, 327, 343,
+			361, 378, 396, 415, 434 };
 
 	/**
 	 * Table of critical T values for alpha=0.01.  Entries of -1 indicate an insufficient sampling size.
 	 */
-	private static final int[] TABLE_1 = new int[] { -1, -1, 0, 1, 3, 5, 7, 9,
-			12, 15, 19, 23, 27, 32, 37, 42, 48, 54, 61, 68, 75, 83, 91, 100,
-			109, 118, 128, 138, 148, 159, 171, 182, 194, 207, 220, 233, 247,
-			261, 276, 291, 307, 322, 339, 355, 373 };
+	private static final int[] TABLE_1 = new int[] { -1, -1, 0, 1, 3, 5, 7, 9, 12, 15, 19, 23, 27, 32, 37, 42, 48, 54,
+			61, 68, 75, 83, 91, 100, 109, 118, 128, 138, 148, 159, 171, 182, 194, 207, 220, 233, 247, 261, 276, 291,
+			307, 322, 339, 355, 373 };
 
 }
