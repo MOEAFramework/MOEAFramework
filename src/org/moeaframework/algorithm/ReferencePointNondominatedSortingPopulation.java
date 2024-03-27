@@ -95,7 +95,7 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 	 * @param numberOfObjectives the number of objectives
 	 * @param divisions the number of divisions
 	 */
-	public ReferencePointNondominatedSortingPopulation(int numberOfObjectives,NormalBoundaryDivisions divisions) {
+	public ReferencePointNondominatedSortingPopulation(int numberOfObjectives, NormalBoundaryDivisions divisions) {
 		super();
 		this.numberOfObjectives = numberOfObjectives;
 		this.divisions = divisions;
