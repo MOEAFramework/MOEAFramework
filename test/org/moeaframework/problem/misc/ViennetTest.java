@@ -19,26 +19,26 @@ package org.moeaframework.problem.misc;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.moeaframework.TestUtils;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
+import org.moeaframework.problem.ProblemTest;
 
-public class ViennetTest {
+public class ViennetTest extends ProblemTest {
 	
 	@Test
 	public void test() {
 		Problem problem = new Viennet();
 		
 		Assert.assertArrayEquals(new double[] { 1.0, 2.0, 3.0 }, 
-				TestUtils.evaluateAt(problem, 0.0, 0.0).getObjectives(),
+				evaluateAt(problem, 0.0, 0.0).getObjectives(),
 				Settings.EPS);
 		
 		Assert.assertArrayEquals(new double[] { 13.0, 6.0, 15.0 }, 
-				TestUtils.evaluateAt(problem, -2.0, -2.0).getObjectives(),
+				evaluateAt(problem, -2.0, -2.0).getObjectives(),
 				Settings.EPS);
 		
 		Assert.assertArrayEquals(new double[] { 5.0, 14.0, 7.0 }, 
-				TestUtils.evaluateAt(problem, 2.0, 2.0).getObjectives(),
+				evaluateAt(problem, 2.0, 2.0).getObjectives(),
 				Settings.EPS);
 	}
 

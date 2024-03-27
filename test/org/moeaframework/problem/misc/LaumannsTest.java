@@ -19,26 +19,26 @@ package org.moeaframework.problem.misc;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.moeaframework.TestUtils;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
+import org.moeaframework.problem.ProblemTest;
 
-public class LaumannsTest {
+public class LaumannsTest extends ProblemTest {
 	
 	@Test
 	public void test() {
 		Problem problem = new Laumanns();
 		
 		Assert.assertArrayEquals(new double[] { 0.0, 4.0 }, 
-				TestUtils.evaluateAt(problem, 0.0, 0.0).getObjectives(),
+				evaluateAt(problem, 0.0, 0.0).getObjectives(),
 				Settings.EPS);
 		
 		Assert.assertArrayEquals(new double[] { 5000.0, 4804.0 }, 
-				TestUtils.evaluateAt(problem, -50.0, -50.0).getObjectives(),
+				evaluateAt(problem, -50.0, -50.0).getObjectives(),
 				Settings.EPS);
 		
 		Assert.assertArrayEquals(new double[] { 5000.0, 5204.0 }, 
-				TestUtils.evaluateAt(problem, 50.0, 50.0).getObjectives(),
+				evaluateAt(problem, 50.0, 50.0).getObjectives(),
 				Settings.EPS);
 	}
 

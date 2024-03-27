@@ -29,6 +29,7 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.core.spi.ProviderNotFoundException;
+import org.moeaframework.mock.MockSolution;
 
 /**
  * Utilities for testing problems.  While these are not strict requirements, these tests should cover:
@@ -110,6 +111,55 @@ public abstract class ProblemTest {
 		
 		for (Solution solution : referenceSet) {
 			assertion.accept(solution);
+		}
+	}
+	
+	/**
+	 * Returns the solution resulting from evaluating the problem with the specified decision variables.
+	 * 
+	 * @param problem the problem
+	 * @param variables the decision variable values
+	 * @return the solution resulting from evaluating the problem with the specified decision variables
+	 */
+	public static Solution evaluateAt(Problem problem, double... variables) {
+		return MockSolution.of(problem).at(variables).evaluate();
+	}
+	
+	/**
+	 * Returns the solution resulting from evaluating the problem at its lower bounds.
+	 * 
+	 * @param problem the problem
+	 * @return the solution evaluated at the lower bounds
+	 */
+	public static Solution evaluateAtLowerBounds(Problem problem) {
+		return MockSolution.of(problem).atLowerBounds().evaluate();
+	}
+	
+	/**
+	 * Returns the solution resulting from evaluating the problem at its upper bounds.
+	 * 
+	 * @param problem the problem
+	 * @return the solution evaluated at the upper bounds
+	 */
+	public static Solution evaluateAtUpperBounds(Problem problem) {
+		return MockSolution.of(problem).atUpperBounds().evaluate();
+	}
+	
+	/**
+	 * Asserts that all solutions returned by the `generate()` method are feasible and non-dominated.
+	 * 
+	 * @param problem the analytical problem
+	 * @param count the number of solutions to generate
+	 */
+	public static void assertGeneratedSolutionsAreNondominated(AnalyticalProblem problem, int count) {
+		NondominatedPopulation population = new NondominatedPopulation();
+		
+		for (int i = 0; i < count; i++) {
+			Solution solution = problem.generate();
+			problem.evaluate(solution);
+			
+			Assert.assertFalse(solution.violatesConstraints());
+			Assert.assertTrue(population.add(solution));
 		}
 	}
 	

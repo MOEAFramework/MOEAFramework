@@ -19,22 +19,22 @@ package org.moeaframework.problem.misc;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.moeaframework.TestUtils;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
+import org.moeaframework.problem.ProblemTest;
 
-public class MurataTest {
+public class MurataTest extends ProblemTest {
 	
 	@Test
 	public void test() {
 		Problem problem = new Murata();
 
 		Assert.assertArrayEquals(new double[] { 2.0, 5.0 }, 
-				TestUtils.evaluateAt(problem, 1.0, 1.0).getObjectives(),
+				evaluateAt(problem, 1.0, 1.0).getObjectives(),
 				Settings.EPS);
 		
 		Assert.assertArrayEquals(new double[] { 4.0, 1.0 }, 
-				TestUtils.evaluateAt(problem, 4.0, 2.0).getObjectives(),
+				evaluateAt(problem, 4.0, 2.0).getObjectives(),
 				Settings.EPS);
 	}
 

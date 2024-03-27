@@ -51,10 +51,10 @@ public class FitnessBasedArchiveTest {
 		
 		FitnessBasedArchive archive = new FitnessBasedArchive(mockEvaluator, 1);
 		
-		Solution solution1 = MockSolution.of(mockProblem).withReals(0.25).withObjectives(0.5, 0.5);
-		Solution solution2 = MockSolution.of(mockProblem).withReals(0.75).withObjectives(0.0, 1.0);
-		Solution solution3 = MockSolution.of(mockProblem).withReals(0.5).withObjectives(1.0, 0.0);
-		Solution solution4 = MockSolution.of(mockProblem).withReals(1.0).withObjectives(2.0, 2.0);
+		Solution solution1 = MockSolution.of(mockProblem).at(0.25).withObjectives(0.5, 0.5);
+		Solution solution2 = MockSolution.of(mockProblem).at(0.75).withObjectives(0.0, 1.0);
+		Solution solution3 = MockSolution.of(mockProblem).at(0.5).withObjectives(1.0, 0.0);
+		Solution solution4 = MockSolution.of(mockProblem).at(1.0).withObjectives(2.0, 2.0);
 		
 		Assert.assertTrue(archive.add(solution1));
 		Assert.assertTrue(archive.add(solution2)); // non-dominated and better fitness

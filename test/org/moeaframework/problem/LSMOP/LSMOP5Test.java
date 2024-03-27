@@ -19,7 +19,6 @@ package org.moeaframework.problem.LSMOP;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.moeaframework.TestUtils;
 import org.moeaframework.core.Problem;
 import org.moeaframework.problem.ProblemTest;
 import org.moeaframework.util.Vector;
@@ -27,53 +26,53 @@ import org.moeaframework.util.Vector;
 public class LSMOP5Test extends ProblemTest {
 	
 	@Test
-	public void test2() {
+	public void test2D() {
 		Problem problem = new LSMOP5(2);
 		
 		Assert.assertArrayEquals(new double[] { 1.0, 0.0 }, 
-				TestUtils.evaluateAtLowerBounds(problem).getObjectives(),
+				evaluateAtLowerBounds(problem).getObjectives(),
 				0.0001);
 		
 		Assert.assertArrayEquals(new double[] { 0.0, 32.5957 }, 
-				TestUtils.evaluateAtUpperBounds(problem).getObjectives(),
+				evaluateAtUpperBounds(problem).getObjectives(),
 				0.0001);
 		
 		Assert.assertArrayEquals(new double[] { 24.9239, 13.5047 }, 
-				TestUtils.evaluateAt(problem, Vector.of(problem.getNumberOfVariables(), 0.5)).getObjectives(),
+				evaluateAt(problem, Vector.of(problem.getNumberOfVariables(), 0.5)).getObjectives(),
 				0.0001);
 	}
 	
 	@Test
-	public void test3() {
+	public void test3D() {
 		Problem problem = new LSMOP5(3);
 		
 		Assert.assertArrayEquals(new double[] { 1.0, 0.0, 0.0 }, 
-				TestUtils.evaluateAtLowerBounds(problem).getObjectives(),
+				evaluateAtLowerBounds(problem).getObjectives(),
 				0.0001);
 		
 		Assert.assertArrayEquals(new double[] { 0.0, 0.0, 6.9666 }, 
-				TestUtils.evaluateAtUpperBounds(problem).getObjectives(),
+				evaluateAtUpperBounds(problem).getObjectives(),
 				0.0001);
 		
 		Assert.assertArrayEquals(new double[] { 17.1180, 18.7333, 14.3634 }, 
-				TestUtils.evaluateAt(problem, Vector.of(problem.getNumberOfVariables(), 0.5)).getObjectives(),
+				evaluateAt(problem, Vector.of(problem.getNumberOfVariables(), 0.5)).getObjectives(),
 				0.0001);
 	}
 	
 	@Test
-	public void test4() {
+	public void test4D() {
 		Problem problem = new LSMOP5(4);
 		
 		Assert.assertArrayEquals(new double[] { 1.0, 0.0, 0.0, 0.0 }, 
-				TestUtils.evaluateAtLowerBounds(problem).getObjectives(),
+				evaluateAtLowerBounds(problem).getObjectives(),
 				0.0001);
 		
 		Assert.assertArrayEquals(new double[] { 0.0, 0.0, 0.0, 10.4444 }, 
-				TestUtils.evaluateAtUpperBounds(problem).getObjectives(),
+				evaluateAtUpperBounds(problem).getObjectives(),
 				0.0001);
 		
 		Assert.assertArrayEquals(new double[] { 11.8544, 12.3688, 18.7809, 14.1931 }, 
-				TestUtils.evaluateAt(problem, Vector.of(problem.getNumberOfVariables(), 0.5)).getObjectives(),
+				evaluateAt(problem, Vector.of(problem.getNumberOfVariables(), 0.5)).getObjectives(),
 				0.0001);
 	}
 	

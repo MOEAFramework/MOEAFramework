@@ -17,7 +17,9 @@
  */
 package org.moeaframework.problem.misc;
 
+import org.junit.Assert;
 import org.junit.Test;
+import org.moeaframework.core.Problem;
 import org.moeaframework.problem.ProblemTest;
 
 public class KursaweTest extends ProblemTest {
@@ -25,6 +27,19 @@ public class KursaweTest extends ProblemTest {
 	@Test
 	public void testJMetal() {
 		testAgainstJMetal("Kursawe");
+	}
+	
+	@Test
+	public void test() {
+		Problem problem = new Kursawe();
+		
+		Assert.assertArrayEquals(new double[] { -4.862334, 20.112302 }, 
+				evaluateAtLowerBounds(problem).getObjectives(),
+				0.000001);
+		
+		Assert.assertArrayEquals(new double[] { -4.862334, 1.631088 }, 
+				evaluateAtUpperBounds(problem).getObjectives(),
+				0.000001);
 	}
 
 }

@@ -19,34 +19,26 @@ package org.moeaframework.problem.misc;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.moeaframework.TestUtils;
 import org.moeaframework.core.Problem;
 import org.moeaframework.problem.ProblemTest;
 
 public class PoloniTest extends ProblemTest {
 
-	// The Poloni problem was removed from JMetal starting with version 5.  This test is no
-	// longer supported.
-	//@Test
-	//public void testJMetal() {
-	//	test("Poloni");
-	//}
-	
 	@Test
 	public void test() {
 		Problem problem = new Poloni();
 		
 		// since this is a maximization problem, these values are negated
 		Assert.assertArrayEquals(new double[] { 38.1791, 10.0 }, 
-				TestUtils.evaluateAt(problem, 0.0, 0.0).getObjectives(),
+				evaluateAt(problem, 0.0, 0.0).getObjectives(),
 				0.0001);
 		
 		Assert.assertArrayEquals(new double[] { 9.4566, 54.8719 }, 
-				TestUtils.evaluateAt(problem, Math.PI, Math.PI).getObjectives(),
+				evaluateAt(problem, Math.PI, Math.PI).getObjectives(),
 				0.0001);
 		
 		Assert.assertArrayEquals(new double[] { 9.4566, 4.6064 }, 
-				TestUtils.evaluateAt(problem, -Math.PI, -Math.PI).getObjectives(),
+				evaluateAt(problem, -Math.PI, -Math.PI).getObjectives(),
 				0.0001);
 	}
 

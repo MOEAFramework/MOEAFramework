@@ -19,25 +19,25 @@ package org.moeaframework.problem.misc;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.moeaframework.TestUtils;
 import org.moeaframework.core.Problem;
+import org.moeaframework.problem.ProblemTest;
 
-public class QuagliarellaTest {
+public class QuagliarellaTest extends ProblemTest {
 	
 	@Test
 	public void test() {
 		Problem problem = new Quagliarella(1);
 		
 		Assert.assertArrayEquals(new double[] { 0.0, 4.716 }, 
-				TestUtils.evaluateAt(problem, 0.0).getObjectives(),
+				evaluateAt(problem, 0.0).getObjectives(),
 				0.001);
 		
 		Assert.assertArrayEquals(new double[] { 5.378, 7.817 }, 
-				TestUtils.evaluateAt(problem, -5.12).getObjectives(),
+				evaluateAt(problem, -5.12).getObjectives(),
 				0.001);
 		
 		Assert.assertArrayEquals(new double[] { 5.378, 5.513 }, 
-				TestUtils.evaluateAt(problem, 5.12).getObjectives(),
+				evaluateAt(problem, 5.12).getObjectives(),
 				0.001);
 	}
 

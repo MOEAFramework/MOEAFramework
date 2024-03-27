@@ -19,30 +19,30 @@ package org.moeaframework.problem.misc;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.moeaframework.TestUtils;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
+import org.moeaframework.problem.ProblemTest;
 
-public class KitaTest {
+public class KitaTest extends ProblemTest {
 	
 	@Test
 	public void test() {
 		Problem problem = new Kita();
 		
 		Assert.assertArrayEquals(new double[] { 0.0, -1.0 }, 
-				TestUtils.evaluateAt(problem, 0.0, 0.0).getObjectives(),
+				evaluateAtLowerBounds(problem).getObjectives(),
 				Settings.EPS);
 		
 		Assert.assertArrayEquals(new double[] { 0.0, 0.0, 0.0 }, 
-				TestUtils.evaluateAt(problem, 0.0, 0.0).getConstraints(),
+				evaluateAtLowerBounds(problem).getConstraints(),
 				Settings.EPS);
 		
 		Assert.assertArrayEquals(new double[] { 42.0, -11.5 }, 
-				TestUtils.evaluateAt(problem, 7.0, 7.0).getObjectives(),
+				evaluateAtUpperBounds(problem).getObjectives(),
 				Settings.EPS);
 		
 		Assert.assertArrayEquals(new double[] { 5.0/3.0, 3.0, 12.0 }, 
-				TestUtils.evaluateAt(problem, 7.0, 7.0).getConstraints(),
+				evaluateAtUpperBounds(problem).getConstraints(),
 				Settings.EPS);
 	}
 

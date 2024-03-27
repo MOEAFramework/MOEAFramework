@@ -19,26 +19,26 @@ package org.moeaframework.problem.misc;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.moeaframework.TestUtils;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
+import org.moeaframework.problem.ProblemTest;
 
-public class RendonTest {
+public class RendonTest extends ProblemTest {
 	
 	@Test
 	public void test() {
 		Problem problem = new Rendon();
 		
 		Assert.assertArrayEquals(new double[] { 1.0, 1.0 }, 
-				TestUtils.evaluateAt(problem, 0.0, 0.0).getObjectives(),
+				evaluateAt(problem, 0.0, 0.0).getObjectives(),
 				Settings.EPS);
 		
 		Assert.assertArrayEquals(new double[] { 1.0/19.0, 37.0 }, 
-				TestUtils.evaluateAt(problem, -3.0, -3.0).getObjectives(),
+				evaluateAt(problem, -3.0, -3.0).getObjectives(),
 				Settings.EPS);
 		
 		Assert.assertArrayEquals(new double[] { 1.0/19.0, 37.0 }, 
-				TestUtils.evaluateAt(problem, 3.0, 3.0).getObjectives(),
+				evaluateAt(problem, 3.0, 3.0).getObjectives(),
 				Settings.EPS);
 	}
 

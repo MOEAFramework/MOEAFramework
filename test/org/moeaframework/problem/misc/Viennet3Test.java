@@ -19,7 +19,6 @@ package org.moeaframework.problem.misc;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.moeaframework.TestUtils;
 import org.moeaframework.core.Problem;
 import org.moeaframework.problem.ProblemTest;
 
@@ -35,15 +34,15 @@ public class Viennet3Test extends ProblemTest {
 		Problem problem = new Viennet3();
 		
 		Assert.assertArrayEquals(new double[] { 0.0, 460.0 / 27.0, -0.1 }, 
-				TestUtils.evaluateAt(problem, 0.0, 0.0).getObjectives(),
+				evaluateAt(problem, 0.0, 0.0).getObjectives(),
 				0.00001);
 		
 		Assert.assertArrayEquals(new double[] { 8.24901, 3275.0 / 216.0, 0.05263 }, 
-				TestUtils.evaluateAt(problem, -3.0, -3.0).getObjectives(),
+				evaluateAt(problem, -3.0, -3.0).getObjectives(),
 				0.00001);
 		
 		Assert.assertArrayEquals(new double[] { 8.24901, 4571.0 / 216.0, 0.05263 }, 
-				TestUtils.evaluateAt(problem, 3.0, 3.0).getObjectives(),
+				evaluateAt(problem, 3.0, 3.0).getObjectives(),
 				0.00001);
 	}
 

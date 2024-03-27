@@ -19,33 +19,25 @@ package org.moeaframework.problem.misc;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.moeaframework.TestUtils;
 import org.moeaframework.core.Problem;
 import org.moeaframework.problem.ProblemTest;
 
 public class OKA1Test extends ProblemTest {
 
-	// The OKA1 problem was removed from JMetal starting with version 5.  This test is no
-	// longer supported.
-	//@Test
-	//public void testJMetal() {
-	//	test("OKA1");
-	//}
-	
 	@Test
 	public void test() {
 		Problem problem = new OKA1();
 		
 		Assert.assertArrayEquals(new double[] { 2.221441469079183, 3.7889583370899755 }, 
-				TestUtils.evaluateAt(problem, Math.PI, Math.PI).getObjectives(),
+				evaluateAt(problem, Math.PI, Math.PI).getObjectives(),
 				0.0001);
 		
 		Assert.assertArrayEquals(new double[] { 1.9208936072384664, 4.049324370013574 }, 
-				TestUtils.evaluateAtLowerBounds(problem).getObjectives(),
+				evaluateAtLowerBounds(problem).getObjectives(),
 				0.0001);
 		
 		Assert.assertArrayEquals(new double[] { 5.86229169994112, 2.532902255226027 }, 
-				TestUtils.evaluateAtUpperBounds(problem).getObjectives(),
+				evaluateAtUpperBounds(problem).getObjectives(),
 				0.0001);
 	}
 

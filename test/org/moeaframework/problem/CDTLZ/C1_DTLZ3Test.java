@@ -19,7 +19,6 @@ package org.moeaframework.problem.CDTLZ;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.moeaframework.TestUtils;
 import org.moeaframework.core.Problem;
 import org.moeaframework.problem.ProblemTest;
 
@@ -36,19 +35,19 @@ public class C1_DTLZ3Test extends ProblemTest {
 		Problem problem = new C1_DTLZ3(12, 3);
 		
 		Assert.assertArrayEquals(new double[] { 251.0, 0.0, 0.0 }, 
-				TestUtils.evaluateAtLowerBounds(problem).getObjectives(),
+				evaluateAtLowerBounds(problem).getObjectives(),
 				0.000001);
 		
 		Assert.assertArrayEquals(new double[] { 0.0 }, 
-				TestUtils.evaluateAtLowerBounds(problem).getConstraints(),
+				evaluateAtLowerBounds(problem).getConstraints(),
 				0.000001);
 		
-		Assert.assertArrayEquals(new double[] { 9.41099264e-31, 1.53693173e-14, 2.51000000e+02 }, 
-				TestUtils.evaluateAtUpperBounds(problem).getObjectives(),
+		Assert.assertArrayEquals(new double[] { 0.0, 0.0, 251.0 }, 
+				evaluateAtUpperBounds(problem).getObjectives(),
 				0.000001);
 		
 		Assert.assertArrayEquals(new double[] { 0.0 }, 
-				TestUtils.evaluateAtUpperBounds(problem).getConstraints(),
+				evaluateAtUpperBounds(problem).getConstraints(),
 				0.000001);
 	}
 	

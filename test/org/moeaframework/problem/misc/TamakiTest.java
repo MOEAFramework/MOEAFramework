@@ -19,30 +19,30 @@ package org.moeaframework.problem.misc;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.moeaframework.TestUtils;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
+import org.moeaframework.problem.ProblemTest;
 
-public class TamakiTest {
+public class TamakiTest extends ProblemTest {
 	
 	@Test
 	public void test() {
 		Problem problem = new Tamaki();
 		
 		Assert.assertArrayEquals(new double[] { 0.0, 0.0, 0.0 }, 
-				TestUtils.evaluateAt(problem, 0.0, 0.0, 0.0).getObjectives(),
+				evaluateAt(problem, 0.0, 0.0, 0.0).getObjectives(),
 				Settings.EPS);
 		
 		Assert.assertArrayEquals(new double[] { 0.0 }, 
-				TestUtils.evaluateAt(problem, 0.0, 0.0, 0.0).getConstraints(),
+				evaluateAt(problem, 0.0, 0.0, 0.0).getConstraints(),
 				Settings.EPS);
 		
 		Assert.assertArrayEquals(new double[] { -1.0, -1.0, -1.0 }, 
-				TestUtils.evaluateAt(problem, 1.0, 1.0, 1.0).getObjectives(),
+				evaluateAt(problem, 1.0, 1.0, 1.0).getObjectives(),
 				Settings.EPS);
 		
 		Assert.assertArrayEquals(new double[] { 2.0 }, 
-				TestUtils.evaluateAt(problem, 1.0, 1.0, 1.0).getConstraints(),
+				evaluateAt(problem, 1.0, 1.0, 1.0).getConstraints(),
 				Settings.EPS);
 	}
 

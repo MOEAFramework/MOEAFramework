@@ -19,26 +19,26 @@ package org.moeaframework.problem.misc;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.moeaframework.TestUtils;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
+import org.moeaframework.problem.ProblemTest;
 
-public class FonsecaTest {
+public class FonsecaTest extends ProblemTest {
 	
 	@Test
 	public void test() {
 		Problem problem = new Fonseca();
 		
 		Assert.assertArrayEquals(new double[] { 1-Math.exp(-2), 1-Math.exp(-2) }, 
-				TestUtils.evaluateAt(problem, 0.0, 0.0).getObjectives(),
+				evaluateAt(problem, 0.0, 0.0).getObjectives(),
 				Settings.EPS);
 		
 		Assert.assertArrayEquals(new double[] { 1.0, 1.0 }, 
-				TestUtils.evaluateAt(problem, -4.0, -4.0).getObjectives(),
+				evaluateAt(problem, -4.0, -4.0).getObjectives(),
 				Settings.EPS);
 	
 		Assert.assertArrayEquals(new double[] { 1.0, 1.0  }, 
-				TestUtils.evaluateAt(problem, 4.0, 4.0).getObjectives(),
+				evaluateAt(problem, 4.0, 4.0).getObjectives(),
 				Settings.EPS);
 	}
 

@@ -19,7 +19,6 @@ package org.moeaframework.problem.ZDT;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.moeaframework.TestUtils;
 import org.moeaframework.core.Problem;
 import org.moeaframework.problem.ProblemTest;
 
@@ -30,15 +29,15 @@ public class ZDT4Test extends ProblemTest {
 		Problem problem = new ZDT4();
 		
 		Assert.assertArrayEquals(new double[] { 0.0, 226.0 }, 
-				TestUtils.evaluateAtLowerBounds(problem).getObjectives(),
+				evaluateAtLowerBounds(problem).getObjectives(),
 				0.000001);
 		
 		Assert.assertArrayEquals(new double[] { 1.0, 210.96670362 }, 
-				TestUtils.evaluateAtUpperBounds(problem).getObjectives(),
+				evaluateAtUpperBounds(problem).getObjectives(),
 				0.000001);
 		
 		Assert.assertArrayEquals(new double[] { 0.5, 0.29289322 }, 
-				TestUtils.evaluateAt(problem, new double[] { 0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 }).getObjectives(),
+				evaluateAt(problem, new double[] { 0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 }).getObjectives(),
 				0.000001);
 	}
 

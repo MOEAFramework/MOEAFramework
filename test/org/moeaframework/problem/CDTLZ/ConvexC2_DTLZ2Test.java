@@ -17,7 +17,9 @@
  */
 package org.moeaframework.problem.CDTLZ;
 
+import org.junit.Assert;
 import org.junit.Test;
+import org.moeaframework.core.Problem;
 import org.moeaframework.problem.ProblemTest;
 
 public class ConvexC2_DTLZ2Test extends ProblemTest {
@@ -26,6 +28,27 @@ public class ConvexC2_DTLZ2Test extends ProblemTest {
 	public void testProvider() {
 		assertProblemDefined("CONVEX_C2_DTLZ2_2", 2, false);
 		assertProblemDefined("CONVEX_C2_DTLZ2_3", 3, false);
+	}
+	
+	@Test
+	public void test() {
+		Problem problem = new ConvexC2_DTLZ2(12, 3);
+		
+		Assert.assertArrayEquals(new double[] { 150.0625, 0.0, 0.0 }, 
+				evaluateAtLowerBounds(problem).getObjectives(),
+				0.000001);
+		
+		Assert.assertArrayEquals(new double[] { 0.0 }, 
+				evaluateAtLowerBounds(problem).getConstraints(),
+				0.000001);
+		
+		Assert.assertArrayEquals(new double[] { 0.0, 0.0, 12.25 }, 
+				evaluateAtUpperBounds(problem).getObjectives(),
+				0.000001);
+		
+		Assert.assertArrayEquals(new double[] { 0.0 }, 
+				evaluateAtUpperBounds(problem).getConstraints(),
+				0.000001);
 	}
 	
 }
