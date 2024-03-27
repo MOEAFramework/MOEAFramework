@@ -35,27 +35,29 @@ public class RedirectStreamTest {
 	@Test
 	public void testRedirection() throws IOException, InterruptedException {
 		byte[] bytes = generateRandomData();
-		ByteArrayInputStream is = new ByteArrayInputStream(bytes);
-		ByteArrayOutputStream os = new ByteArrayOutputStream();
-
-		RedirectStream.redirect(is, os).join();
-
-		Assert.assertArrayEquals(bytes, os.toByteArray());
-		Assert.assertEquals(-1, is.read()); // ensure all data is read
-
-		assertRedirectStreamTerminated();
+		
+		try (ByteArrayInputStream is = new ByteArrayInputStream(bytes);
+				ByteArrayOutputStream os = new ByteArrayOutputStream()) {
+			RedirectStream.redirect(is, os).join();
+	
+			Assert.assertArrayEquals(bytes, os.toByteArray());
+			Assert.assertEquals(-1, is.read()); // ensure all data is read
+	
+			assertRedirectStreamTerminated();
+		}
 	}
 
 	@Test
 	public void testNullRedirection() throws IOException, InterruptedException {
 		byte[] bytes = generateRandomData();
-		ByteArrayInputStream is = new ByteArrayInputStream(bytes);
-
-		RedirectStream.redirect(is).join();
-
-		Assert.assertEquals(-1, is.read()); // ensure all data is read
-
-		assertRedirectStreamTerminated();
+		
+		try (ByteArrayInputStream is = new ByteArrayInputStream(bytes)) {
+			RedirectStream.redirect(is).join();
+	
+			Assert.assertEquals(-1, is.read()); // ensure all data is read
+	
+			assertRedirectStreamTerminated();
+		}
 	}
 	
 	@Test

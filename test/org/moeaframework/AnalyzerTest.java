@@ -92,10 +92,11 @@ public class AnalyzerTest {
 				.includeAllMetrics()
 				.showAll();
 		
-		ByteArrayOutputStream result = new ByteArrayOutputStream();
-		analyzer.printAnalysis(new PrintStream(result));
-		
-		Assert.assertEquals(0, result.size());
+		try (ByteArrayOutputStream result = new ByteArrayOutputStream();
+				PrintStream ps = new PrintStream(result)) {
+			analyzer.printAnalysis(ps);
+			Assert.assertEquals(0, result.size());
+		}
 	}
 	
 	@Test
@@ -103,20 +104,21 @@ public class AnalyzerTest {
 		Analyzer analyzer = generate();
 		File tempFile = TestUtils.createTempFile();
 		
-		ByteArrayOutputStream expected = new ByteArrayOutputStream();
-		analyzer.printAnalysis(new PrintStream(expected));
-
-		analyzer.saveData(tempFile.getParentFile(), tempFile.getName(), ".dat");
-		analyzer.clear();
-		analyzer.loadData(tempFile.getParentFile(), tempFile.getName(), ".dat");
-		
-		File actualFile = TestUtils.createTempFile();
-		analyzer.saveAnalysis(actualFile);
-		
-		//20 closes from generate(), 2 from saveData, 2 from loadData, 1 from printAnalysis, 1 from saveAnalysis
-		Assert.assertEquals(26, problemFactory.getCloseCount());
-		
-		Assert.assertArrayEquals(expected.toByteArray(), TestUtils.loadBytes(actualFile));
+		try (ByteArrayOutputStream expected = new ByteArrayOutputStream();
+				PrintStream ps = new PrintStream(expected)) {
+			analyzer.printAnalysis(ps);
+	
+			analyzer.saveData(tempFile.getParentFile(), tempFile.getName(), ".dat");
+			analyzer.clear();
+			analyzer.loadData(tempFile.getParentFile(), tempFile.getName(), ".dat");
+			
+			File actualFile = TestUtils.createTempFile();
+			analyzer.saveAnalysis(actualFile);
+			
+			//20 closes from generate(), 2 from saveData, 2 from loadData, 1 from printAnalysis, 1 from saveAnalysis
+			Assert.assertEquals(26, problemFactory.getCloseCount());
+			Assert.assertArrayEquals(expected.toByteArray(), TestUtils.loadBytes(actualFile));
+		}
 	}
 	
 	private Analyzer generate() {

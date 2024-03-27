@@ -466,12 +466,16 @@ public class Controller {
 				}
 			}
 			
-			ByteArrayOutputStream stream = new ByteArrayOutputStream();
-			analyzer.printAnalysis(new PrintStream(stream));
-			
-			StatisticalResultsViewer viewer = new StatisticalResultsViewer(this, stream.toString());
-			viewer.setLocationRelativeTo(frame);
-			viewer.setVisible(true);
+			try (ByteArrayOutputStream output = new ByteArrayOutputStream();
+					PrintStream ps = new PrintStream(output)) {
+				analyzer.printAnalysis(ps);
+				
+				StatisticalResultsViewer viewer = new StatisticalResultsViewer(this, output.toString());
+				viewer.setLocationRelativeTo(frame);
+				viewer.setVisible(true);
+			} catch (IOException e) {
+				handleException(e);
+			}
 		}
 	}
 	
