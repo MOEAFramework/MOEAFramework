@@ -275,9 +275,15 @@ public class UpdateCodeSamples extends CommandLineUtility {
 	 * @throws IOException if an error occurred loading the file or URL
 	 */
 	private String loadContent(String path) throws IOException {
-		URI uri = URI.create(path);
+		URI uri = null;
 		
-		if (uri.getScheme() == null || uri.getScheme().equalsIgnoreCase("file")) {
+		try {
+			uri = URI.create(path);
+		} catch (IllegalArgumentException e) {
+			uri = null;
+		}
+		
+		if (uri == null || uri.getScheme() == null || uri.getScheme().equalsIgnoreCase("file")) {
 			return FileUtils.readUTF8(new File(path));
 		} else if (uri.getScheme().equalsIgnoreCase("http") || uri.getScheme().equalsIgnoreCase("https")) {
 			if (!uri.getHost().equalsIgnoreCase("raw.githubusercontent.com") ||
