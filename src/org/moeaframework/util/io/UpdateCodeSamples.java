@@ -30,8 +30,10 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -75,17 +77,6 @@ import org.moeaframework.util.CommandLineUtility;
  */
 public class UpdateCodeSamples extends CommandLineUtility {
 	
-	// TODO: Ideas for improvements:
-	//
-	//   1. Support multiple line number ranges, such as [1:5,10:15], and optionally insert "..." between these slices.
-	//
-	//   2. Line numbers often need to be updated if the file changes.  Could specify a tag name and locate the code
-	//      by searching for that tag.  For example, [foo] would select the content of:
-	//
-	//           // start:foo
-	//           ... code that is copied ...
-	//           // end:foo
-	
 	private static final long DEFAULT_SEED = 123456;
 
 	private static final String[] DEFAULT_CLASSPATH = new String[] { "lib/*", "build", "examples" };
@@ -110,10 +101,16 @@ public class UpdateCodeSamples extends CommandLineUtility {
 	private long seed;
 	
 	/**
+	 * Caches the content of the files / resources that are accessed by this tool.
+	 */
+	private final Map<String, String> cache;
+	
+	/**
 	 * Creates a new instance of the command line utility to update code examples.
 	 */
 	public UpdateCodeSamples() {
 		super();
+		cache = new HashMap<String, String>();
 	}
 	
 	@Override
@@ -232,17 +229,25 @@ public class UpdateCodeSamples extends CommandLineUtility {
 					options.parseLineNumbers(matcher.group(3));
 					options.parseFlags(matcher.group(4));
 					
+					String cacheKey = getCacheKey(language, path);
 					String content = "";
 					System.out.println("    > Updating " + language + " block: " + path + " " + options);
 					
-					switch (language) {
-						case Output -> {
-							compile(path);
-							content = execute(path, options);
+					if (cache.containsKey(cacheKey)) {
+						System.out.println("    > Loading " + cacheKey + " from cache");
+						content = cache.get(cacheKey);
+					} else {
+						switch (language) {
+							case Help, Output -> {
+								compile(path);
+								content = execute(path, options);
+							}
+							default -> {
+								content = loadContent(path);
+							}
 						}
-						default -> {
-							content = loadContent(path);
-						}
+						
+						cache.put(cacheKey, content);
 					}
 					
 					// compare old and new content
@@ -392,6 +397,17 @@ public class UpdateCodeSamples extends CommandLineUtility {
 	}
 	
 	/**
+	 * Returns the cache key for the given path and options.
+	 * 
+	 * @param path the resource path
+	 * @param options the formatting options
+	 * @return the cache key
+	 */
+	private String getCacheKey(Language language, String path) {
+		return language.name() + ":" + path;
+	}
+	
+	/**
 	 * Invokes the Java compiler in a separate process.
 	 * 
 	 * @param filename the Java file to compile
@@ -430,13 +446,13 @@ public class UpdateCodeSamples extends CommandLineUtility {
 			command.add(getClassPath(classpath));
 			command.add("-D" + Settings.KEY_PRNG_SEED + "=" + seed);
 			
-			if (options.displayHelp()) {
+			if (options.language.equals(Language.Help)) {
 				command.add("-D" + Settings.KEY_HELP_WIDTH + "=120");
 			}
 			
 			command.add(getClassName(filename));
 			
-			if (options.displayHelp()) {
+			if (options.language.equals(Language.Help)) {
 				command.add("--help");
 			}
 			
@@ -627,15 +643,6 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		public boolean replaceTabsWithSpaces() {
 			return !formatFlags.contains(FormatFlag.KeepTabs);
 		}
-		
-		/**
-		 * Returns {@code true} if displaying help output.
-		 * 
-		 * @return {@code true} if displaying help output
-		 */
-		public boolean displayHelp() {
-			return formatFlags.contains(FormatFlag.Help);
-		}
 
 		@Override
 		public String toString() {
@@ -680,6 +687,11 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		 * Bash or terminal commands.
 		 */
 		Bash,
+		
+		/**
+		 * Special mode, similar to Output, but passes in `--help`.
+		 */
+		Help,
 		
 		/**
 		 * Special mode where the output of the program is captured and displayed in the code block.
@@ -747,7 +759,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 					content = content.replaceAll("(?:\\s*\\r?\\n){2,}", System.lineSeparator() + System.lineSeparator());
 					yield content;
 				}
-				case Text, Bash, Output -> content;
+				case Text, Bash, Help, Output -> content;
 			};
 		}
 		
@@ -772,12 +784,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		/**
 		 * Keeps tabs.  By default, the formatter replaces tabs with spaces.
 		 */
-		KeepTabs,
-		
-		/**
-		 * Displays help message.  Only available for {@link Language#Output}.
-		 */
-		Help;
+		KeepTabs;
 		
 		/**
 		 * Determine the format flag from its string representation using case-insensitive matching.

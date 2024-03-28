@@ -158,13 +158,14 @@ public class NativeHypervolume extends NormalizedIndicator {
 		try {
 			String command = Settings.getHypervolume();
 			
-			//compute the nadir point for minimization or maximization scenario
+			//compute the nadir point for minimization or maximization scenario (note that any hypervolume delta is
+			//applied during normalization)
 			double nadirPoint;
 			
 			if (isInverted) {
-				nadirPoint = 0.0; // - Settings.getHypervolumeDelta();
+				nadirPoint = 0.0;
 			} else {
-				nadirPoint = 1.0; // + Settings.getHypervolumeDelta();
+				nadirPoint = 1.0;
 			}
 			
 			//generate approximation set file

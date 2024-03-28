@@ -14,7 +14,7 @@ followed by any required and optional arguments.  Use the `-h` / `--help` flag t
 The `Solve` tool is used to execute a single run of an algorithm on a problem.  This can use any built-in problem
 or an externally-defined problem.
 
-<!-- output:src/org/moeaframework/analysis/tools/Solve.java [:-2] {help} -->
+<!-- help:src/org/moeaframework/analysis/tools/Solve.java [:-2] -->
 
 ```
 usage: java -classpath "lib/*" org.moeaframework.analysis.tools.Solve -a <name> [-b <name>] [-c <value>] [-D <value>]
@@ -93,7 +93,7 @@ file contains the parameters for a single execution.  Also note that the choice 
 the type of analyses that can be performed.  For example, to compute the first, second, and total-order effects of the
 parameters using Sobol sensitivity analysis, use the `saltelli` method. 
 
-<!-- output:src/org/moeaframework/analysis/tools/SampleGenerator.java [:-2] {help} -->
+<!-- help:src/org/moeaframework/analysis/tools/SampleGenerator.java [:-2] -->
 
 ```
 usage: java -classpath "lib/*" org.moeaframework.analysis.tools.SampleGenerator [-h] -m <name> -n <value> [-o <file>] -p
@@ -114,7 +114,7 @@ Generates parameter samples for running the Evaluator.  The following options ar
 Next, we evaluate the algorithm against each of the parameter samples.  This produces a "result file" that contains
 the Pareto approximation sets produced by each parameterization.
 
-<!-- output:src/org/moeaframework/analysis/tools/Evaluator.java [:-2] {help} -->
+<!-- help:src/org/moeaframework/analysis/tools/Evaluator.java [:-2] -->
 
 ```
 usage: java -classpath "lib/*" org.moeaframework.analysis.tools.Evaluator -a <name> [-b <name>] [-e <e1,e2,...>] [-f]
@@ -142,7 +142,7 @@ Evaluates an optimization algorithm on the specified problem.  The following opt
 We typically evaluate the performance of an algorithm using one of the performance indicators (e.g., hypervolume).
 Here, we take the result file produced in the previous step and compute the metrics.
 
-<!-- output:src/org/moeaframework/analysis/tools/ResultFileEvaluator.java [:-2] {help} -->
+<!-- help:src/org/moeaframework/analysis/tools/ResultFileEvaluator.java [:-2] -->
 
 ```
 usage: java -classpath "lib/*" org.moeaframework.analysis.tools.ResultFileEvaluator -b <name> | -d <number>  [-e
@@ -167,7 +167,7 @@ error performance indicators.  The following options are available:
 In our original sensitivity analysis study, we compared algorithms based on their attainment, efficiency, and
 controllability.  These values are computed using the `Analysis` tool.
 
-<!-- output:src/org/moeaframework/analysis/tools/Analysis.java [:-2] {help} -->
+<!-- help:src/org/moeaframework/analysis/tools/Analysis.java [:-2] -->
 
 ```
 usage: java -classpath "lib/*" org.moeaframework.analysis.tools.Analysis [-b <width>] [-c] [-e] [-h] -i <file> -m
@@ -192,7 +192,7 @@ If using the `saltelli` sampling method, we can also compute the first-, second-
 parameters.  This measures how much influence each parameter, or pair, contributes to the performance of the
 algorithm.
 
-<!-- output:src/org/moeaframework/analysis/tools/SobolAnalysis.java [:-2] {help} -->
+<!-- help:src/org/moeaframework/analysis/tools/SobolAnalysis.java [:-2] -->
 
 ```
 usage: java -classpath "lib/*" org.moeaframework.analysis.tools.SobolAnalysis [-h] -i <file> -m <value> [-o <file>] -p
@@ -215,7 +215,7 @@ Whereas the `Evaluator` only outputs end-of-run results, the `RuntimeEvaluator` 
 some sampling frequency.  Also note that this tool creates a separate file for each parameterization.  The output
 file name should include `%d` which is replaced by the run id, such as `-o "result_%d.dat"`.
 
-<!-- output:src/org/moeaframework/analysis/tools/RuntimeEvaluator.java [:-2] {help} -->
+<!-- help:src/org/moeaframework/analysis/tools/RuntimeEvaluator.java [:-2] -->
 
 ```
 usage: java -classpath "lib/*" org.moeaframework.analysis.tools.RuntimeEvaluator -a <name> [-b <name>] [-e <e1,e2,...>]
@@ -246,7 +246,7 @@ processing these result files.
 
 Counts the number of valid entries in a result file.  This is useful to validate that all runs are complete.
 
-<!-- output:src/org/moeaframework/analysis/tools/ResultFileInfo.java [:-2] {help} -->
+<!-- help:src/org/moeaframework/analysis/tools/ResultFileInfo.java [:-2] -->
 
 ```
 usage: java -classpath "lib/*" org.moeaframework.analysis.tools.ResultFileInfo -b <name> | -d <number>  [-h] [-o <file>]
@@ -264,7 +264,7 @@ Outputs the number of approximation sets stored in a result file.  The following
 If a true reference set is not available for a problem, we can produce a reference set by combining all approximation
 sets across all algorithms and runs.
 
-<!-- output:src/org/moeaframework/analysis/tools/ResultFileMerger.java [:-2] {help} -->
+<!-- help:src/org/moeaframework/analysis/tools/ResultFileMerger.java [:-2] -->
 
 ```
 usage: java -classpath "lib/*" org.moeaframework.analysis.tools.ResultFileMerger -b <name> | -d <number>  [-e
@@ -286,7 +286,7 @@ following options are available:
 If running multiple repetitions with different random-number seeds, we can merge the approximation sets for each
 parameterization.
 
-<!-- output:src/org/moeaframework/analysis/tools/ResultFileSeedMerger.java [:-2] {help} -->
+<!-- help:src/org/moeaframework/analysis/tools/ResultFileSeedMerger.java [:-2] -->
 
 ```
 usage: java -classpath "lib/*" org.moeaframework.analysis.tools.ResultFileSeedMerger -b <name> | -d <number>  [-e
@@ -310,7 +310,7 @@ Extracts any metadata or evaluates performance metrics for the entries in the re
 to extract are given as additional arguments.  To evaluate performance metrics, simply specify the name of the
 indicator, such as `Hypervolume` or `GenerationalDistance`.
 
-<!-- output:src/org/moeaframework/analysis/tools/ExtractData.java [:-2] {help} -->
+<!-- help:src/org/moeaframework/analysis/tools/ExtractData.java [:-2] -->
 
 ```
 usage: java -classpath "lib/*" org.moeaframework.analysis.tools.ExtractData -b <name> | -d <number>  [-e <e1,e2,...>]
@@ -334,7 +334,7 @@ following options are available:
 
 Converts the last record in a result file into the ARFF format, which is a common format used in data mining.
 
-<!-- output:src/org/moeaframework/analysis/tools/ARFFConverter.java [:-2] {help} -->
+<!-- help:src/org/moeaframework/analysis/tools/ARFFConverter.java [:-2] -->
 
 ```
 usage: java -classpath "lib/*" org.moeaframework.analysis.tools.ARFFConverter -b <name> | -d <number>  [-h] -i <file>
