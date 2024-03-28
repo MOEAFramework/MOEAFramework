@@ -15,26 +15,22 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.algorithm;
+package org.moeaframework.algorithm.continuation;
+
+import java.util.EventListener;
+import org.moeaframework.core.Algorithm;
 
 /**
- * Enumeration of different restart types during adaptive time continuation.
+ * The listener interface for receiving time continuation (restart) events. The {@link #restarted} method is called
+ * immediately after the restart has occurred, prior to the {@link Algorithm#step()} method returning.
  */
-public enum RestartType {
+public interface RestartListener extends EventListener {
 
 	/**
-	 * Indicates that no restart occurred.
+	 * Invoked when a restart event has occurred.
+	 * 
+	 * @param event the object storing details about the restart event
 	 */
-	NONE,
-
-	/**
-	 * Indicates a restart in which the population was cleared prior to injecting new solutions.
-	 */
-	HARD,
-
-	/**
-	 * Indicates a restart in which the new solutions were injected into an existing population.
-	 */
-	SOFT
+	public void restarted(RestartEvent event);
 
 }

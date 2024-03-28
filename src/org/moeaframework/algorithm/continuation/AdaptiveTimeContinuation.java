@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.algorithm;
+package org.moeaframework.algorithm.continuation;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -23,6 +23,7 @@ import java.io.ObjectOutputStream;
 import org.apache.commons.lang3.event.EventListenerSupport;
 import org.moeaframework.core.EvolutionaryAlgorithm;
 import org.moeaframework.core.NondominatedPopulation;
+import org.moeaframework.core.PeriodicAction;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Selection;
 import org.moeaframework.core.Solution;
@@ -318,7 +319,7 @@ public class AdaptiveTimeContinuation extends PeriodicAction implements Evolutio
 	}
 	
 	@Override
-	EvolutionaryAlgorithm getAlgorithm() {
+	protected EvolutionaryAlgorithm getAlgorithm() {
 		return (EvolutionaryAlgorithm)super.getAlgorithm();
 	}
 

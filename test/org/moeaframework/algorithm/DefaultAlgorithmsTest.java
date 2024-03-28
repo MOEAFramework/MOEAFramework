@@ -26,6 +26,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.TestUtils;
+import org.moeaframework.algorithm.continuation.EpsilonProgressContinuation;
 import org.moeaframework.algorithm.sa.AMOSA;
 import org.moeaframework.analysis.EpsilonHelper;
 import org.moeaframework.analysis.collector.IndicatorCollector;

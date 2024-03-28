@@ -23,8 +23,8 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.moeaframework.algorithm.PeriodicAction;
 import org.moeaframework.core.Algorithm;
+import org.moeaframework.core.PeriodicAction;
 
 /**
  * Decorates an algorithm to periodically collect information about its runtime behavior.  The {@code NFE} field is

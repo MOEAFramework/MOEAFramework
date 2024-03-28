@@ -18,7 +18,7 @@
 package org.moeaframework.analysis.collector;
 
 import org.junit.Assert;
-import org.moeaframework.algorithm.AdaptiveTimeContinuation;
+import org.moeaframework.algorithm.continuation.AdaptiveTimeContinuation;
 import org.moeaframework.core.Algorithm;
 
 public class AdaptiveTimeContinuationCollectorTest extends AbstractCollectorTest<AdaptiveTimeContinuationCollector> {

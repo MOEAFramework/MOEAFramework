@@ -27,6 +27,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import org.moeaframework.core.Algorithm;
+import org.moeaframework.core.PeriodicAction;
 import org.moeaframework.util.io.FileUtils;
 
 /**

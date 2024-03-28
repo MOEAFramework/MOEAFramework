@@ -17,6 +17,7 @@
  */
 package org.moeaframework.algorithm;
 
+import org.moeaframework.algorithm.continuation.AdaptiveTimeContinuation;
 import org.moeaframework.analysis.EpsilonHelper;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.Initialization;
@@ -95,7 +96,7 @@ public class EpsilonNSGAII extends AdaptiveTimeContinuation implements Configura
 	}
 	
 	@Override
-	NSGAII getAlgorithm() {
+	protected NSGAII getAlgorithm() {
 		return (NSGAII)super.getAlgorithm();
 	}
 

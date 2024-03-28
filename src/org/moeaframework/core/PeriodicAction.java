@@ -15,15 +15,11 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.algorithm;
+package org.moeaframework.core;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import org.moeaframework.core.Algorithm;
-import org.moeaframework.core.NondominatedPopulation;
-import org.moeaframework.core.Problem;
-import org.moeaframework.core.Solution;
 
 /**
  * Decorates an algorithm to perform some action periodically throughout the execution of the algorithm.  Note that
@@ -97,7 +93,7 @@ public abstract class PeriodicAction implements Algorithm {
 	 * 
 	 * @return the inner algorithm
 	 */
-	Algorithm getAlgorithm() {
+	protected Algorithm getAlgorithm() {
 		return algorithm;
 	}
 

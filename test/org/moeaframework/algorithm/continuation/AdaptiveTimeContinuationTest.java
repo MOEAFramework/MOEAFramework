@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.algorithm;
+package org.moeaframework.algorithm.continuation;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -28,7 +28,6 @@ import org.junit.Test;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.EpsilonBoxEvolutionaryAlgorithm;
 import org.moeaframework.core.NondominatedPopulation;
-import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
@@ -36,19 +35,21 @@ import org.moeaframework.core.operator.real.UM;
 import org.moeaframework.core.selection.UniformSelection;
 import org.moeaframework.mock.MockSolution;
 
-public class EpsilonProgressContinuationTest {
-	
+public class AdaptiveTimeContinuationTest {
+
 	protected Population population;
 	
 	protected EpsilonBoxDominanceArchive archive;
 	
 	protected MockAlgorithm algorithm;
 	
-	protected EpsilonProgressContinuation adaptiveTimeContinuation;
+	protected AdaptiveTimeContinuation adaptiveTimeContinuation;
 	
 	protected int numberOfRestarts;
 	
 	private class MockAlgorithm implements EpsilonBoxEvolutionaryAlgorithm {
+		
+		private int numberOfIterations;
 
 		@Override
 		public Population getPopulation() {
@@ -67,7 +68,7 @@ public class EpsilonProgressContinuationTest {
 
 		@Override
 		public void step() {
-			//do nothing
+			numberOfIterations++;
 		}
 
 		@Override
@@ -95,6 +96,10 @@ public class EpsilonProgressContinuationTest {
 			return archive;
 		}
 
+		public int getNumberOfIterations() {
+			return numberOfIterations;
+		}
+
 		@Override
 		public void saveState(ObjectOutputStream stream) throws IOException {
 			throw new UnsupportedOperationException();
@@ -110,14 +115,14 @@ public class EpsilonProgressContinuationTest {
 	@Before
 	public void setUp() {
 		population = new Population();
-		archive = new EpsilonBoxDominanceArchive(0.5);
+		archive = new EpsilonBoxDominanceArchive(0.01);
 		algorithm = new MockAlgorithm();
-		adaptiveTimeContinuation = new EpsilonProgressContinuation(
+		adaptiveTimeContinuation = new AdaptiveTimeContinuation(
 				algorithm,
 				10,
 				100,
-				4.0,
-				1,
+				0.25,
+				4,
 				20,
 				new UniformSelection(),
 				new UM(1.0));
@@ -141,61 +146,127 @@ public class EpsilonProgressContinuationTest {
 		algorithm = null;
 		adaptiveTimeContinuation = null;
 	}
-
+	
 	@Test
-	public void testNoProgress() {
+	public void testMaxWindow() {
 		population.add(MockSolution.of().withObjectives(0.0, 1.0));
 		population.add(MockSolution.of().withObjectives(0.5, 0.5));
 		population.add(MockSolution.of().withObjectives(1.0, 0.0));
 		population.add(MockSolution.of().withObjectives(0.0, 1.0));
 		population.add(MockSolution.of().withObjectives(0.5, 0.5));
 		population.add(MockSolution.of().withObjectives(1.0, 0.0));
-		archive.add(MockSolution.of().withObjectives(0.75, 0.25));
-		archive.add(MockSolution.of().withObjectives(0.25, 0.75));
+		archive.add(MockSolution.of().withObjectives(1.0, 0.0));
+		archive.add(MockSolution.of().withObjectives(0.0, 1.0));
 		
-		for (int i=0; i<100; i++) {
-			if (i % 2 == 0) {
-				archive.add(MockSolution.of().withObjectives(PRNG.nextDouble(0.51, 0.99), PRNG.nextDouble(0.01, 0.49)));
-			} else {
-				archive.add(MockSolution.of().withObjectives(PRNG.nextDouble(0.01, 0.49), PRNG.nextDouble(0.51, 0.99)));
-			}
-			
+		for (int i=0; i<1000; i++) {
 			adaptiveTimeContinuation.step();
 		}
 		
-		//note that the first two solutions count towards eps-progress
-		Assert.assertEquals(9, numberOfRestarts);
+		Assert.assertEquals(1000, algorithm.getNumberOfIterations());
+		Assert.assertEquals(10, numberOfRestarts);
 	}
 	
 	@Test
-	public void testProgress() {
+	public void testPopulationRatio() {
+		//population=6, archive=2, ratio within 25%
 		population.add(MockSolution.of().withObjectives(0.0, 1.0));
 		population.add(MockSolution.of().withObjectives(0.5, 0.5));
 		population.add(MockSolution.of().withObjectives(1.0, 0.0));
 		population.add(MockSolution.of().withObjectives(0.0, 1.0));
 		population.add(MockSolution.of().withObjectives(0.5, 0.5));
 		population.add(MockSolution.of().withObjectives(1.0, 0.0));
-		archive.add(MockSolution.of().withObjectives(0.75, 0.25));
-		archive.add(MockSolution.of().withObjectives(0.25, 0.75));
+		archive.add(MockSolution.of().withObjectives(0.0, 1.0));
+		archive.add(MockSolution.of().withObjectives(1.0, 0.0));
 		
-		for (int i=0; i<100; i++) {
-			if (i == 55) {
-				archive.add(MockSolution.of().withObjectives(0.1, 0.1));
-				
-				//shrink population to avoid population ratio restart
-				while (population.size() > 5) {
-					population.remove(0);
-				}
-			} else if (i % 2 == 0) {
-				archive.add(MockSolution.of().withObjectives(PRNG.nextDouble(0.51, 0.99), PRNG.nextDouble(0.01, 0.49)));
-			} else {
-				archive.add(MockSolution.of().withObjectives(PRNG.nextDouble(0.01, 0.49), PRNG.nextDouble(0.51, 0.99)));
-			}
-			
+		for (int i=0; i<10; i++) {
 			adaptiveTimeContinuation.step();
 		}
 		
-		Assert.assertEquals(8, numberOfRestarts);
+		Assert.assertEquals(0, numberOfRestarts);
+		
+		//population=5, archive=2, population too small but not yet checked
+		population.remove(0);
+		
+		for (int i=0; i<9; i++) {
+			adaptiveTimeContinuation.step();
+		}
+		
+		Assert.assertEquals(0, numberOfRestarts);
+		
+		//checked on 10th step
+		adaptiveTimeContinuation.step();
+		Assert.assertEquals(1, numberOfRestarts);
+		Assert.assertEquals(8, population.size());
+		
+		//no other restarts should occur up to maxWindowSize
+		for (int i=0; i<99; i++) {
+			adaptiveTimeContinuation.step();
+		}
+		
+		Assert.assertEquals(1, numberOfRestarts);
+	}
+	
+	@Test
+	public void testMaxPopulationSize() {
+		archive.add(MockSolution.of().withObjectives(1.0, 0.0));
+		archive.add(MockSolution.of().withObjectives(0.75, 0.25));
+		archive.add(MockSolution.of().withObjectives(0.5, 0.5));
+		archive.add(MockSolution.of().withObjectives(0.25, 0.75));
+		archive.add(MockSolution.of().withObjectives(0.0, 1.0));
+		
+		for (int i=0; i<100; i++) {
+			adaptiveTimeContinuation.step();
+		}
+		
+		Assert.assertEquals(1, numberOfRestarts);
+		Assert.assertEquals(20, population.size());
+	}
+	
+	@Test
+	public void testMinPopulationSize() {
+		population.add(MockSolution.of().withObjectives(0.0, 1.0));
+		population.add(MockSolution.of().withObjectives(0.5, 0.5));
+		population.add(MockSolution.of().withObjectives(1.0, 0.0));
+		archive.add(MockSolution.of().withObjectives(0.0, 1.0));
+		
+		for (int i=0; i<100; i++) {
+			adaptiveTimeContinuation.step();
+		}
+		
+		Assert.assertEquals(1, numberOfRestarts);
+		Assert.assertEquals(4, population.size());
+	}
+	
+	/**
+	 * Ensures an empty archive results in an error rather than an infinite loop.
+	 */
+	@Test(expected=IllegalArgumentException.class)
+	public void testEmptyArchive() {
+		for (int i=0; i<100; i++) {
+			adaptiveTimeContinuation.step();
+		}
+	}
+	
+	/**
+	 * Ensures that if the population ratio would result in a population size exceeding the maximum population size, a
+	 * sequence of back-to-back restarts would not occur due to the population ratio being violated.
+	 */
+	@Test
+	public void testPopulationRatioConflictWithMaxPopulationSize() {
+		archive.add(MockSolution.of().withObjectives(1.0, 0.0));
+		archive.add(MockSolution.of().withObjectives(0.9, 0.1));
+		archive.add(MockSolution.of().withObjectives(0.75, 0.25));
+		archive.add(MockSolution.of().withObjectives(0.5, 0.5));
+		archive.add(MockSolution.of().withObjectives(0.25, 0.75));
+		archive.add(MockSolution.of().withObjectives(0.1, 0.9));
+		archive.add(MockSolution.of().withObjectives(0.0, 1.0));
+		
+		for (int i=0; i<1000; i++) {
+			adaptiveTimeContinuation.step();
+		}
+		
+		Assert.assertEquals(10, numberOfRestarts);
+		Assert.assertEquals(20, population.size());
 	}
 	
 }

@@ -28,7 +28,6 @@ import java.util.Set;
 import java.util.Stack;
 
 import org.apache.commons.lang3.StringUtils;
-import org.moeaframework.algorithm.PeriodicAction.FrequencyType;
 import org.moeaframework.analysis.collector.AdaptiveMultimethodVariationCollector;
 import org.moeaframework.analysis.collector.AdaptiveTimeContinuationCollector;
 import org.moeaframework.analysis.collector.ApproximationSetCollector;
@@ -46,6 +45,7 @@ import org.moeaframework.core.Epsilons;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.PeriodicAction.FrequencyType;
 import org.moeaframework.core.indicator.AdditiveEpsilonIndicator;
 import org.moeaframework.core.indicator.Contribution;
 import org.moeaframework.core.indicator.GenerationalDistance;

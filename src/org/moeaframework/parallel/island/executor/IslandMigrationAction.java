@@ -18,7 +18,8 @@
 package org.moeaframework.parallel.island.executor;
 
 import java.util.List;
-import org.moeaframework.algorithm.PeriodicAction;
+
+import org.moeaframework.core.PeriodicAction;
 import org.moeaframework.parallel.island.Island;
 import org.moeaframework.parallel.island.IslandModel;
 
