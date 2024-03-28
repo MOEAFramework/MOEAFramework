@@ -13,6 +13,7 @@
   * [Writing Problems in Java](writingJavaProblem.md)
   * [Connecting to Programs using Standard I/O](writingExternalProblem.md)
   * [Natively-Compiled Functions](writingNativeProblem.md)
+* [Adding New Algorithms](addingAlgorithms.md)
 * Miscellaneous Topics
   * [Checkpoints](miscellaneousTopics.md#checkpoints)
   * [Saving and Formatting Results](miscellaneousTopics.md#saving-and-formatting-results)
@@ -21,16 +22,15 @@
   * [Termination Conditions](miscellaneousTopics.md#termination-conditions)
   * [Generating Reference Sets](miscellaneousTopics.md#generating-reference-sets)
 
-## Advanced
+## References
 * [List of Decision Variables](listOfDecisionVariables.md)
 * [List of Algorithms](listOfAlgorithms.md)
 * [List of Variation Operators](listOfOperators.md)
 * [List of Test Problems](listOfProblems.md)
 * [Command Line Tools](commandLineTools.md)
-* [Adding New Algorithms](addingAlgorithms.md)
 * [Extensions (JMetal-Plugin, Generalized Decomposition, Hypervolume)](listOfExtensions.md)
 
-## For Developers
+## Developers
 
 * [API Specification (Javadoc)](http://moeaframework.org/javadoc/index.html)
 * [Developers Guide](developersGuide.md)
