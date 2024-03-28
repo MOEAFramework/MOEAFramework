@@ -24,7 +24,6 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.moeaframework.core.Epsilons;
 import org.moeaframework.core.NondominatedPopulation;
-import org.moeaframework.core.PopulationIO;
 import org.moeaframework.core.indicator.Contribution;
 import org.moeaframework.util.CommandLineUtility;
 import org.moeaframework.util.format.NumberFormatter;
@@ -68,8 +67,8 @@ public class SetContribution extends CommandLineUtility {
 	@Override
 	public void run(CommandLine commandLine) throws Exception {
 		NumberFormatter formatter = NumberFormatter.getDefault();
-		NondominatedPopulation referenceSet = new NondominatedPopulation(
-				PopulationIO.readObjectives(new File(commandLine.getOptionValue("reference"))));
+		NondominatedPopulation referenceSet = NondominatedPopulation.loadReferenceSet(
+				new File(commandLine.getOptionValue("reference")));
 		Epsilons epsilons = OptionUtils.getEpsilons(commandLine);
 		Contribution contribution = null;
 
@@ -81,8 +80,7 @@ public class SetContribution extends CommandLineUtility {
 
 		try (OutputLogger output = new OutputLogger(commandLine.getOptionValue("output"))) {
 			for (String filename : commandLine.getArgs()) {
-				NondominatedPopulation approximationSet = new NondominatedPopulation(
-						PopulationIO.readObjectives(new File(filename)));
+				NondominatedPopulation approximationSet = NondominatedPopulation.loadReferenceSet(new File(filename));
 	
 				System.out.print(filename);
 				System.out.print(' ');

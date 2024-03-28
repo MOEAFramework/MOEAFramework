@@ -142,7 +142,7 @@ We provide default reference sets for many problems under the `./pf/` folder.  A
 `AnalyticalProblem` interface can generate points from the Pareto front.  Below we generate a new reference set
 for the 3-objective DTLZ2 problem.
 
-<!-- java:examples/org/moeaframework/examples/misc/GenerateReferenceSetExample.java [37:45] -->
+<!-- java:examples/org/moeaframework/examples/misc/GenerateReferenceSetExample.java [36:44] -->
 
 ```java
 try (AnalyticalProblem problem = new DTLZ2(3)) {
@@ -152,6 +152,6 @@ try (AnalyticalProblem problem = new DTLZ2(3)) {
         archive.add(problem.generate());
     }
 
-    PopulationIO.writeObjectives(new File("DTLZ2_3_RefSet.txt"), archive);
+    archive.saveObjectives(new File("DTLZ2_3_RefSet.txt"));
 }
 ```

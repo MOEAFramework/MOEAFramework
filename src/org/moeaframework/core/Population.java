@@ -17,6 +17,14 @@
  */
 package org.moeaframework.core;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -32,6 +40,7 @@ import java.util.NoSuchElementException;
 import org.moeaframework.util.format.Column;
 import org.moeaframework.util.format.Formattable;
 import org.moeaframework.util.format.TabularData;
+import org.moeaframework.util.io.CommentedLineReader;
 
 /**
  * A collection of solutions and common methods for manipulating the collection.
@@ -346,27 +355,117 @@ public class Population implements Iterable<Solution>, Formattable<Solution>, St
 		
 		return data;
 	}
+	
+	/**
+	 * Saves the objective vectors of all solutions to the specified file.  Files created using this method should
+	 * only be loaded using the {@link #loadObjectives(File)} method.
+	 * 
+	 * @param file the file to which the objective vectors are written
+	 * @throws IOException if an I/O exception occurred
+	 */
+	public void saveObjectives(File file) throws IOException {
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+			for (Solution solution : this) {
+				writer.write(Double.toString(solution.getObjective(0)));
+
+				for (int i = 1; i < solution.getNumberOfObjectives(); i++) {
+					writer.write(" ");
+					writer.write(Double.toString(solution.getObjective(i)));
+				}
+
+				writer.newLine();
+			}
+		}
+	}
+	
+	/**
+	 * Saves this population to the specified file.  This saves a complete copy of the solutions, including the
+	 * decision variables, objectives, constraints, and attributes.  Files written using this method can only be read
+	 * using the {@link #load} method.
+	 * 
+	 * @param file the file to which the solutions are written
+	 * @throws IOException if an I/O exception occurred
+	 */
+	public void save(File file) throws IOException {
+		try (ObjectOutputStream oos = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(file)))) {
+			saveState(oos);
+		}
+	}
+	
+	/**
+	 * Loads the objective vectors contained in the specified reader, returning the resulting population.  This
+	 * method does not close the reader.
+	 * 
+	 * @param reader the reader containing the objective vectors
+	 * @return a population containing all objective vectors read
+	 * @throws IOException if an I/O error occurred
+	 */
+	protected static Population loadObjectives(CommentedLineReader reader) throws IOException {
+		Population population = new Population();
+		String line = null;
+		
+		while ((line = reader.readLine()) != null) {
+			String[] tokens = line.trim().split("\\s+");
+			double[] values = new double[tokens.length];
+
+			for (int i = 0; i < tokens.length; i++) {
+				values[i] = Double.parseDouble(tokens[i]);
+			}
+
+			population.add(new Solution(values));
+		}
+		
+		return population;
+	}
+	
+
+	/**
+	 * Loads a set of objective vectors from the specified file.  Files read using this method should only have been
+	 * created using the {@link #saveObjectives(File)} method.
+	 * 
+	 * @param file the file containing the objective vectors
+	 * @return a population containing all objective vectors in the specified file
+	 * @throws IOException if an I/O exception occurred
+	 */
+	public static Population loadObjectives(File file) throws IOException {
+		try (CommentedLineReader reader = new CommentedLineReader(new FileReader(file))) {
+			return loadObjectives(reader);
+		}
+	}
+	
+	/**
+	 * Loads a population from the specified file.  Files read using this method should only have been created using
+	 * the {@link #save} method.
+	 * 
+	 * @param file the file containing the population
+	 * @return a population containing all solutions in the specified file
+	 * @throws IOException if an I/O exception occurred
+	 */
+	public static Population load(File file) throws IOException {
+		try (ObjectInputStream ois = new ObjectInputStream(new BufferedInputStream(new FileInputStream(file)))) {
+			Population population = new Population();
+			population.loadState(ois);
+			return population;
+		} catch (ClassNotFoundException e) {
+			throw new IOException(e);
+		}
+	}
 
 	/*
-	 * The following code is based on the Apache Commons Collections library.
-	 * This is to provide a similar iterator behavior to other collection
-	 * classes without requiring the Population to implement all collection
-	 * methods.  The license terms are provided below.
+	 * The following code is based on the Apache Commons Collections library.  This is to provide a similar iterator
+	 * behavior to other collection classes without requiring the Population to implement all collection methods.  The
+	 * license terms are provided below.
 	 * 
-	 * Licensed to the Apache Software Foundation (ASF) under one or more
-	 * contributor license agreements.  See the NOTICE file distributed with
-	 * this work for additional information regarding copyright ownership.
-	 * The ASF licenses this file to You under the Apache License, Version 2.0
-	 * (the "License"); you may not use this file except in compliance with
-	 * the License.  You may obtain a copy of the License at
+	 * Licensed to the Apache Software Foundation (ASF) under one or more contributor license agreements.  See the
+	 * NOTICE file distributed with this work for additional information regarding copyright ownership.  The ASF
+	 * licenses this file to You under the Apache License, Version 2.0 (the "License"); you may not use this file
+	 * except in compliance with the License.  You may obtain a copy of the License at
 	 *
 	 *     http://www.apache.org/licenses/LICENSE-2.0
 	 *
-	 * Unless required by applicable law or agreed to in writing, software
-	 * distributed under the License is distributed on an "AS IS" BASIS,
-	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-	 * See the License for the specific language governing permissions and
-	 * limitations under the License.
+	 * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed
+	 * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the License
+	 * for the specific language governing permissions and limitations under the License.
 	 */
 	
 	/**

@@ -28,7 +28,6 @@ import org.junit.Test;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Population;
-import org.moeaframework.core.PopulationIO;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.indicator.InvertedGenerationalDistance;
@@ -72,29 +71,29 @@ public class NSGAIIITest {
 	@Test
 	@Ignore("Must download reference sets from http://web.ntnu.edu.tw/~tcchiang/publications/nsga3cpp/nsga3cpp.htm")
 	public void test() throws IOException {
-		evaluate(new DTLZ1(3), 400, new NondominatedPopulation(PopulationIO.readObjectives(new File("DTLZ1(3)-PF.txt"))));
-		evaluate(new DTLZ1(5), 600, new NondominatedPopulation(PopulationIO.readObjectives(new File("DTLZ1(5)-PF.txt"))));
-		evaluate(new DTLZ1(8), 750, new NondominatedPopulation(PopulationIO.readObjectives(new File("DTLZ1(8)-PF.txt"))));
-		evaluate(new DTLZ1(10), 1000, new NondominatedPopulation(PopulationIO.readObjectives(new File("DTLZ1(10)-PF.txt"))));
-		evaluate(new DTLZ1(15), 1500, new NondominatedPopulation(PopulationIO.readObjectives(new File("DTLZ1(15)-PF.txt"))));
+		evaluate(new DTLZ1(3), 400, NondominatedPopulation.loadReferenceSet(new File("DTLZ1(3)-PF.txt")));
+		evaluate(new DTLZ1(5), 600, NondominatedPopulation.loadReferenceSet(new File("DTLZ1(5)-PF.txt")));
+		evaluate(new DTLZ1(8), 750, NondominatedPopulation.loadReferenceSet(new File("DTLZ1(8)-PF.txt")));
+		evaluate(new DTLZ1(10), 1000, NondominatedPopulation.loadReferenceSet(new File("DTLZ1(10)-PF.txt")));
+		evaluate(new DTLZ1(15), 1500, NondominatedPopulation.loadReferenceSet(new File("DTLZ1(15)-PF.txt")));
 
-		evaluate(new DTLZ2(3), 250, new NondominatedPopulation(PopulationIO.readObjectives(new File("DTLZ2(3)-PF.txt"))));
-		evaluate(new DTLZ2(5), 350, new NondominatedPopulation(PopulationIO.readObjectives(new File("DTLZ2(5)-PF.txt"))));
-		evaluate(new DTLZ2(8), 500, new NondominatedPopulation(PopulationIO.readObjectives(new File("DTLZ2(8)-PF.txt"))));
-		evaluate(new DTLZ2(10), 750, new NondominatedPopulation(PopulationIO.readObjectives(new File("DTLZ2(10)-PF.txt"))));
-		evaluate(new DTLZ2(15), 1000, new NondominatedPopulation(PopulationIO.readObjectives(new File("DTLZ2(15)-PF.txt"))));
+		evaluate(new DTLZ2(3), 250, NondominatedPopulation.loadReferenceSet(new File("DTLZ2(3)-PF.txt")));
+		evaluate(new DTLZ2(5), 350, NondominatedPopulation.loadReferenceSet(new File("DTLZ2(5)-PF.txt")));
+		evaluate(new DTLZ2(8), 500, NondominatedPopulation.loadReferenceSet(new File("DTLZ2(8)-PF.txt")));
+		evaluate(new DTLZ2(10), 750, NondominatedPopulation.loadReferenceSet(new File("DTLZ2(10)-PF.txt")));
+		evaluate(new DTLZ2(15), 1000, NondominatedPopulation.loadReferenceSet(new File("DTLZ2(15)-PF.txt")));
 		
-		evaluate(new DTLZ3(3), 1000, new NondominatedPopulation(PopulationIO.readObjectives(new File("DTLZ3(3)-PF.txt"))));
-		evaluate(new DTLZ3(5), 1000, new NondominatedPopulation(PopulationIO.readObjectives(new File("DTLZ3(5)-PF.txt"))));
-		evaluate(new DTLZ3(8), 1000, new NondominatedPopulation(PopulationIO.readObjectives(new File("DTLZ3(8)-PF.txt"))));
-		evaluate(new DTLZ3(10), 1500, new NondominatedPopulation(PopulationIO.readObjectives(new File("DTLZ3(10)-PF.txt"))));
-		evaluate(new DTLZ3(15), 2000, new NondominatedPopulation(PopulationIO.readObjectives(new File("DTLZ3(15)-PF.txt"))));
+		evaluate(new DTLZ3(3), 1000, NondominatedPopulation.loadReferenceSet(new File("DTLZ3(3)-PF.txt")));
+		evaluate(new DTLZ3(5), 1000, NondominatedPopulation.loadReferenceSet(new File("DTLZ3(5)-PF.txt")));
+		evaluate(new DTLZ3(8), 1000, NondominatedPopulation.loadReferenceSet(new File("DTLZ3(8)-PF.txt")));
+		evaluate(new DTLZ3(10), 1500, NondominatedPopulation.loadReferenceSet(new File("DTLZ3(10)-PF.txt")));
+		evaluate(new DTLZ3(15), 2000, NondominatedPopulation.loadReferenceSet(new File("DTLZ3(15)-PF.txt")));
 		
-		evaluate(new DTLZ4(3), 600, new NondominatedPopulation(PopulationIO.readObjectives(new File("DTLZ4(3)-PF.txt"))));
-		evaluate(new DTLZ4(5), 1000, new NondominatedPopulation(PopulationIO.readObjectives(new File("DTLZ4(5)-PF.txt"))));
-		evaluate(new DTLZ4(8), 1250, new NondominatedPopulation(PopulationIO.readObjectives(new File("DTLZ4(8)-PF.txt"))));
-		evaluate(new DTLZ4(10), 2000, new NondominatedPopulation(PopulationIO.readObjectives(new File("DTLZ4(10)-PF.txt"))));
-		evaluate(new DTLZ4(15), 3000, new NondominatedPopulation(PopulationIO.readObjectives(new File("DTLZ4(15)-PF.txt"))));
+		evaluate(new DTLZ4(3), 600, NondominatedPopulation.loadReferenceSet(new File("DTLZ4(3)-PF.txt")));
+		evaluate(new DTLZ4(5), 1000, NondominatedPopulation.loadReferenceSet(new File("DTLZ4(5)-PF.txt")));
+		evaluate(new DTLZ4(8), 1250, NondominatedPopulation.loadReferenceSet(new File("DTLZ4(8)-PF.txt")));
+		evaluate(new DTLZ4(10), 2000, NondominatedPopulation.loadReferenceSet(new File("DTLZ4(10)-PF.txt")));
+		evaluate(new DTLZ4(15), 3000, NondominatedPopulation.loadReferenceSet(new File("DTLZ4(15)-PF.txt")));
 		
 		new ScaledProblem(new DTLZ1(3), 10).scaleReferenceSet(new File("DTLZ1(3)-PF.txt"), new File("DTLZ1(3)-PFscaled.txt"));
 		new ScaledProblem(new DTLZ1(5), 10).scaleReferenceSet(new File("DTLZ1(5)-PF.txt"), new File("DTLZ1(5)-PFscaled.txt"));
@@ -107,17 +106,17 @@ public class NSGAIIITest {
 		new ScaledProblem(new DTLZ2(10), 3).scaleReferenceSet(new File("DTLZ2(10)-PF.txt"), new File("DTLZ2(10)-PFscaled.txt"));
 		new ScaledProblem(new DTLZ2(15), 2).scaleReferenceSet(new File("DTLZ2(15)-PF.txt"), new File("DTLZ2(15)-PFscaled.txt"));
 		
-		evaluate(new ScaledProblem(new DTLZ1(3), 10), 400, new NondominatedPopulation(PopulationIO.readObjectives(new File("DTLZ1(3)-PFscaled.txt"))));
-		evaluate(new ScaledProblem(new DTLZ1(5), 10), 600, new NondominatedPopulation(PopulationIO.readObjectives(new File("DTLZ1(5)-PFscaled.txt"))));
-		evaluate(new ScaledProblem(new DTLZ1(8), 3), 750, new NondominatedPopulation(PopulationIO.readObjectives(new File("DTLZ1(8)-PFscaled.txt"))));
-		evaluate(new ScaledProblem(new DTLZ1(10), 2), 1000, new NondominatedPopulation(PopulationIO.readObjectives(new File("DTLZ1(10)-PFscaled.txt"))));
-		evaluate(new ScaledProblem(new DTLZ1(15), 1.2), 1500, new NondominatedPopulation(PopulationIO.readObjectives(new File("DTLZ1(15)-PFscaled.txt"))));
+		evaluate(new ScaledProblem(new DTLZ1(3), 10), 400, NondominatedPopulation.loadReferenceSet(new File("DTLZ1(3)-PFscaled.txt")));
+		evaluate(new ScaledProblem(new DTLZ1(5), 10), 600, NondominatedPopulation.loadReferenceSet(new File("DTLZ1(5)-PFscaled.txt")));
+		evaluate(new ScaledProblem(new DTLZ1(8), 3), 750, NondominatedPopulation.loadReferenceSet(new File("DTLZ1(8)-PFscaled.txt")));
+		evaluate(new ScaledProblem(new DTLZ1(10), 2), 1000, NondominatedPopulation.loadReferenceSet(new File("DTLZ1(10)-PFscaled.txt")));
+		evaluate(new ScaledProblem(new DTLZ1(15), 1.2), 1500, NondominatedPopulation.loadReferenceSet(new File("DTLZ1(15)-PFscaled.txt")));
 
-		evaluate(new ScaledProblem(new DTLZ2(3), 10), 250, new NondominatedPopulation(PopulationIO.readObjectives(new File("DTLZ2(3)-PFscaled.txt"))));
-		evaluate(new ScaledProblem(new DTLZ2(5), 10), 350, new NondominatedPopulation(PopulationIO.readObjectives(new File("DTLZ2(5)-PFscaled.txt"))));
-		evaluate(new ScaledProblem(new DTLZ2(8), 3), 500, new NondominatedPopulation(PopulationIO.readObjectives(new File("DTLZ2(8)-PFscaled.txt"))));
-		evaluate(new ScaledProblem(new DTLZ2(10), 3), 750, new NondominatedPopulation(PopulationIO.readObjectives(new File("DTLZ2(10)-PFscaled.txt"))));
-		evaluate(new ScaledProblem(new DTLZ2(15), 2), 1000, new NondominatedPopulation(PopulationIO.readObjectives(new File("DTLZ2(15)-PFscaled.txt"))));
+		evaluate(new ScaledProblem(new DTLZ2(3), 10), 250, NondominatedPopulation.loadReferenceSet(new File("DTLZ2(3)-PFscaled.txt")));
+		evaluate(new ScaledProblem(new DTLZ2(5), 10), 350, NondominatedPopulation.loadReferenceSet(new File("DTLZ2(5)-PFscaled.txt")));
+		evaluate(new ScaledProblem(new DTLZ2(8), 3), 500, NondominatedPopulation.loadReferenceSet(new File("DTLZ2(8)-PFscaled.txt")));
+		evaluate(new ScaledProblem(new DTLZ2(10), 3), 750, NondominatedPopulation.loadReferenceSet(new File("DTLZ2(10)-PFscaled.txt")));
+		evaluate(new ScaledProblem(new DTLZ2(15), 2), 1000, NondominatedPopulation.loadReferenceSet(new File("DTLZ2(15)-PFscaled.txt")));
 	}
 	
 	private void evaluate(Problem problem, int maxGen, NondominatedPopulation referenceSet) {
@@ -207,7 +206,7 @@ public class NSGAIIITest {
 		}
 		
 		public void scaleReferenceSet(File file, File scaledFile) throws IOException {
-			Population population = PopulationIO.readObjectives(file);
+			Population population = Population.loadObjectives(file);
 			
 			for (Solution solution : population) {
 				for (int i = 0; i < solution.getNumberOfObjectives(); i++) {
@@ -215,7 +214,7 @@ public class NSGAIIITest {
 				}
 			}
 			
-			PopulationIO.writeObjectives(scaledFile, population);
+			population.saveObjectives(scaledFile);
 		}
 
 	}

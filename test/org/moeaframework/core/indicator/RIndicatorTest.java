@@ -23,7 +23,6 @@ import java.io.IOException;
 import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.core.NondominatedPopulation;
-import org.moeaframework.core.PopulationIO;
 import org.moeaframework.mock.MockRealProblem;
 
 /**
@@ -42,7 +41,7 @@ public class RIndicatorTest {
 	}
 	
 	public void testUtility(String file, RIndicator.UtilityFunction utilityFunction, double expectedUtility) throws IOException {
-		NondominatedPopulation referenceSet = new NondominatedPopulation(PopulationIO.readObjectives(new File(file)));
+		NondominatedPopulation referenceSet = NondominatedPopulation.loadReferenceSet(new File(file));
 		
 		RIndicator indicator = new RIndicator(new MockRealProblem(2), 500, referenceSet, utilityFunction) {
 

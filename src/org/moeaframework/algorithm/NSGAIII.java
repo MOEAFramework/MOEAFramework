@@ -181,6 +181,15 @@ public class NSGAIII extends NSGAII {
 		return (ReferencePointNondominatedSortingPopulation)super.getPopulation();
 	}
 
+	/**
+	 * Sets the population used by this algorithm.  This value can not be set after initialization.
+	 * 
+	 * @param population the population
+	 */
+	public void setPopulation(ReferencePointNondominatedSortingPopulation population) {
+		super.setPopulation(population);
+	}
+	
 	@Override
 	public void applyConfiguration(TypedProperties properties) {
 		NormalBoundaryDivisions divisions = NormalBoundaryDivisions.tryFromProperties(properties);

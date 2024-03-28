@@ -30,7 +30,6 @@ import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.Epsilons;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Population;
-import org.moeaframework.core.PopulationIO;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.util.CommandLineUtility;
@@ -180,18 +179,18 @@ public class ReferenceSetMerger extends CommandLineUtility {
 
 		//read the population files
 		for (String filename : commandLine.getArgs()) {
-			add(filename, PopulationIO.readObjectives(new File(filename)));
+			add(filename, Population.loadObjectives(new File(filename)));
 		}
 
 		//write combined set to the output file
 		if (commandLine.hasOption("output")) {
-			PopulationIO.writeObjectives(new File(commandLine.getOptionValue("output")), getCombinedPopulation());
+			getCombinedPopulation().saveObjectives(new File(commandLine.getOptionValue("output")));
 		}
 
 		//write diff files
 		if (commandLine.hasOption("diff")) {
 			for (String filename : commandLine.getArgs()) {
-				PopulationIO.writeObjectives(new File(filename + ".diff"), getContributionFrom(filename));
+				getContributionFrom(filename).saveObjectives(new File(filename + ".diff"));
 			}
 		}
 

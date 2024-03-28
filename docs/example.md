@@ -33,7 +33,7 @@ We can also measure the quality of the resulting Pareto non-dominated solutions 
 indicators, such as Hypervolume.  The `Indicators` class is a convenient way to calculate and display the
 performance indicator values.  We can select specific indicators or enable all.
 
-<!-- java:examples/Example2.java [37:48] -->
+<!-- java:examples/Example2.java [36:47] -->
 
 ```java
 Problem problem = new DTLZ2(2);
@@ -43,7 +43,7 @@ algorithm.run(10000);
 
 NondominatedPopulation approximationSet = algorithm.getResult();
 
-NondominatedPopulation referenceSet = PopulationIO.readReferenceSet("pf/DTLZ2.2D.pf");
+NondominatedPopulation referenceSet = NondominatedPopulation.loadReferenceSet("pf/DTLZ2.2D.pf");
 
 Indicators indicators = Indicators.all(problem, referenceSet);
 indicators.apply(approximationSet).display();

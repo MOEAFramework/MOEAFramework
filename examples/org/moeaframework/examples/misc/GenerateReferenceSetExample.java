@@ -23,7 +23,6 @@ import java.io.IOException;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.Epsilons;
 import org.moeaframework.core.NondominatedPopulation;
-import org.moeaframework.core.PopulationIO;
 import org.moeaframework.problem.AnalyticalProblem;
 import org.moeaframework.problem.DTLZ.DTLZ2;
 
@@ -41,7 +40,7 @@ public class GenerateReferenceSetExample {
 				archive.add(problem.generate());
 			}
 			
-			PopulationIO.writeObjectives(new File("DTLZ2_3_RefSet.txt"), archive);
+			archive.saveObjectives(new File("DTLZ2_3_RefSet.txt"));
 		}
 	}
 

@@ -26,7 +26,6 @@ import org.apache.commons.cli.Options;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PRNG;
-import org.moeaframework.core.PopulationIO;
 import org.moeaframework.core.Problem;
 import org.moeaframework.problem.AnalyticalProblem;
 import org.moeaframework.util.CommandLineUtility;
@@ -96,7 +95,7 @@ public class SetGenerator extends CommandLineUtility {
 		}
 		
 		//output set
-		PopulationIO.writeObjectives(new File(commandLine.getOptionValue("output")), set);
+		set.saveObjectives(new File(commandLine.getOptionValue("output")));
 	}
 	
 	/**

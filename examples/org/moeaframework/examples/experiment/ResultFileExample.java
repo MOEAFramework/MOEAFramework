@@ -23,7 +23,7 @@ import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.analysis.io.ResultEntry;
 import org.moeaframework.analysis.io.ResultFileReader;
 import org.moeaframework.analysis.io.ResultFileWriter;
-import org.moeaframework.core.PopulationIO;
+import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.indicator.Hypervolume;
 import org.moeaframework.problem.CEC2009.UF1;
@@ -67,7 +67,7 @@ public class ResultFileExample {
 		
 		// Then, we can process the file to compute the Hypervolume metric.
 		try (ResultFileReader reader = ResultFileReader.open(problem, resultFile)) {
-			Hypervolume hypervolume = new Hypervolume(problem, PopulationIO.readReferenceSet("./pf/UF1.dat"));
+			Hypervolume hypervolume = new Hypervolume(problem, NondominatedPopulation.loadReferenceSet("./pf/UF1.dat"));
 			
 			while (reader.hasNext()) {
 				ResultEntry entry = reader.next();

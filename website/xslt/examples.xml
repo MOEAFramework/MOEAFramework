@@ -163,17 +163,17 @@ Var1     Var2     Var3     Var4     Var5     Var6     Var7     Var8     Var9    
 <!-- java:examples/Example2.java [37:48] -->
 <pre class="brush: java; toolbar: false;">
 <![CDATA[
-Problem problem = new DTLZ2(2);
 
-NSGAII algorithm = new NSGAII(problem);
-algorithm.run(10000);
+    NSGAII algorithm = new NSGAII(problem);
+    algorithm.run(10000);
 
-NondominatedPopulation approximationSet = algorithm.getResult();
+    NondominatedPopulation approximationSet = algorithm.getResult();
 
-NondominatedPopulation referenceSet = PopulationIO.readReferenceSet("pf/DTLZ2.2D.pf");
+    NondominatedPopulation referenceSet = NondominatedPopulation.loadReferenceSet("pf/DTLZ2.2D.pf");
 
-Indicators indicators = Indicators.all(problem, referenceSet);
-indicators.apply(approximationSet).display();
+    Indicators indicators = Indicators.all(problem, referenceSet);
+    indicators.apply(approximationSet).display();
+}
 ]]>
 </pre>
 </div>

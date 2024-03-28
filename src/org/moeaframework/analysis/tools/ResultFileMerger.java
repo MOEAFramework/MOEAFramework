@@ -26,7 +26,6 @@ import org.moeaframework.analysis.io.ResultEntry;
 import org.moeaframework.analysis.io.ResultFileReader;
 import org.moeaframework.analysis.io.ResultFileWriter;
 import org.moeaframework.core.NondominatedPopulation;
-import org.moeaframework.core.PopulationIO;
 import org.moeaframework.core.Problem;
 import org.moeaframework.util.CommandLineUtility;
 
@@ -85,7 +84,7 @@ public class ResultFileMerger extends CommandLineUtility {
 					writer.append(new ResultEntry(mergedSet));
 				}
 			} else {
-				PopulationIO.writeObjectives(output, mergedSet);
+				mergedSet.saveObjectives(output);
 			}
 
 		}

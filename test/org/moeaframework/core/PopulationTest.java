@@ -29,9 +29,11 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.moeaframework.TestThresholds;
 import org.moeaframework.TestUtils;
 import org.moeaframework.core.variable.BinaryIntegerVariable;
 import org.moeaframework.core.variable.BinaryVariable;
+import org.moeaframework.core.variable.Grammar;
 import org.moeaframework.core.variable.Permutation;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.core.variable.Subset;
@@ -196,6 +198,50 @@ public class PopulationTest {
 			
 			Assert.assertEquals(output1.toString(), output2.toString());
 		}
+	}
+
+	@Test
+	public void testSaveLoadObjectives() throws IOException {
+		File file = TestUtils.createTempFile();
+
+		population.saveObjectives(file);
+		Population population2 = Population.loadObjectives(file);
+
+		Assert.assertEquals(population.size(), population2.size());
+
+		for (int i = 0; i < population.size(); i++) {
+			Assert.assertArrayEquals(population.get(i).getObjectives(), population2.get(i).getObjectives(),
+					TestThresholds.SOLUTION_EPS);
+		}
+	}
+
+	@Test
+	public void testSaveLoad() throws IOException {		
+		Solution s1 = MockSolution.of()
+				.withVariables(new BinaryVariable(10), new Grammar(5), new Permutation(5), new RealVariable(0.0, 1.0))
+				.withObjectives(1.0, 0.0)
+				.withConstraints(1.0)
+				.build();
+
+		Solution s2 = MockSolution.of().withObjectives(1.0, -1.0).build();
+
+		population.clear();
+		population.addAll(List.of(s1, s2));
+
+		File file = TestUtils.createTempFile();
+		population.save(file);
+		
+		Population population2 = Population.load(file);
+		TestUtils.assertEquals(population, population2);
+	}
+	
+	@Test
+	public void testReadWhitespace() throws IOException {
+		File file = TestUtils.createTempFile("0   1 \t 2\n\t   3 4 5 \t\n");
+		Population population = Population.loadObjectives(file);
+		
+		Assert.assertArrayEquals(new double[] {0.0, 1.0, 2.0}, population.get(0).getObjectives(), Settings.EPS);
+		Assert.assertArrayEquals(new double[] {3.0, 4.0, 5.0}, population.get(1).getObjectives(), Settings.EPS);
 	}
 
 }

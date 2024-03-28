@@ -19,7 +19,6 @@ import java.io.IOException;
 
 import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.core.NondominatedPopulation;
-import org.moeaframework.core.PopulationIO;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.indicator.Indicators;
 import org.moeaframework.problem.DTLZ.DTLZ2;
@@ -42,7 +41,7 @@ public class Example2 {
 		NondominatedPopulation approximationSet = algorithm.getResult();
 		
 		// load the reference set and evaluate the quality indicators
-		NondominatedPopulation referenceSet = PopulationIO.readReferenceSet("pf/DTLZ2.2D.pf");
+		NondominatedPopulation referenceSet = NondominatedPopulation.loadReferenceSet("pf/DTLZ2.2D.pf");
 		
 		Indicators indicators = Indicators.all(problem, referenceSet);
 		indicators.apply(approximationSet).display();

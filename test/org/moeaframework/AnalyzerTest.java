@@ -29,7 +29,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.NondominatedPopulation;
-import org.moeaframework.core.PopulationIO;
+import org.moeaframework.core.Population;
 import org.moeaframework.core.spi.AlgorithmFactoryTestWrapper;
 import org.moeaframework.core.spi.ProblemFactoryTestWrapper;
 
@@ -153,8 +153,8 @@ public class AnalyzerTest {
 	public void testReferenceSetFromProblemFactory() throws IOException {
 		NondominatedPopulation actual = generate().getReferenceSet();
 		
-		NondominatedPopulation expected = new EpsilonBoxDominanceArchive(0.01,
-				PopulationIO.readObjectives(new File("./pf/DTLZ2.2D.pf")));
+		NondominatedPopulation expected = new EpsilonBoxDominanceArchive(0.01, Population.loadObjectives(
+				new File("./pf/DTLZ2.2D.pf")));
 		
 		TestUtils.assertEquals(expected, actual);
 	}
@@ -165,8 +165,8 @@ public class AnalyzerTest {
 				.withReferenceSet(new File("./pf/DTLZ1.2D.pf"))
 				.getReferenceSet();
 		
-		NondominatedPopulation expected = new EpsilonBoxDominanceArchive(0.01,
-				PopulationIO.readObjectives(new File("./pf/DTLZ1.2D.pf")));
+		NondominatedPopulation expected = new EpsilonBoxDominanceArchive(0.01, Population.loadObjectives(
+				new File("./pf/DTLZ1.2D.pf")));
 		
 		TestUtils.assertEquals(expected, actual);
 	}

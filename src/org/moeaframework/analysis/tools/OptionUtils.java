@@ -28,7 +28,6 @@ import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.Epsilons;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.NondominatedPopulation;
-import org.moeaframework.core.PopulationIO;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.problem.ProblemStub;
@@ -131,8 +130,7 @@ class OptionUtils {
 		NondominatedPopulation referenceSet = null;
 		
 		if (commandLine.hasOption("reference")) {
-			referenceSet = new NondominatedPopulation(PopulationIO.readObjectives(
-					new File(commandLine.getOptionValue("reference"))));
+			referenceSet = NondominatedPopulation.loadReferenceSet(new File(commandLine.getOptionValue("reference")));
 		} else {
 			referenceSet = ProblemFactory.getInstance().getReferenceSet(commandLine.getOptionValue("problem"));
 		}

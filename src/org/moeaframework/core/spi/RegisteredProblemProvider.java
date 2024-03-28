@@ -26,7 +26,6 @@ import java.util.TreeSet;
 import java.util.function.Supplier;
 
 import org.moeaframework.core.NondominatedPopulation;
-import org.moeaframework.core.PopulationIO;
 import org.moeaframework.core.Problem;
 
 /**
@@ -127,7 +126,7 @@ public class RegisteredProblemProvider extends ProblemProvider {
 		
 		if (referenceSet != null) {
 			try {
-				return PopulationIO.readReferenceSet(referenceSet);
+				return NondominatedPopulation.loadReferenceSet(referenceSet);
 			} catch (IOException e) {
 				return null;
 			}

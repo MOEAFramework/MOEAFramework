@@ -21,7 +21,7 @@ import java.util.stream.IntStream;
 
 import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.analysis.plot.Plot;
-import org.moeaframework.core.PopulationIO;
+import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.indicator.Hypervolume;
 import org.moeaframework.problem.DTLZ.DTLZ2;
@@ -34,7 +34,7 @@ public class PlotControlMap {
 	
 	public static void main(String[] args) throws Exception {
 		Problem problem = new DTLZ2(2);
-		Hypervolume hypervolume = new Hypervolume(problem, PopulationIO.readReferenceSet("./pf/DTLZ2.2D.pf"));
+		Hypervolume hypervolume = new Hypervolume(problem, NondominatedPopulation.loadReferenceSet("./pf/DTLZ2.2D.pf"));
 		
 		double[] x = IntStream.range(0, 50).mapToDouble(i -> 100 * (i+1)).toArray(); // maxEvaluations from 100 to 5000
 		double[] y = IntStream.range(0, 50).mapToDouble(i -> 4 * (i+1)).toArray();   // populationSize from 2 to 100

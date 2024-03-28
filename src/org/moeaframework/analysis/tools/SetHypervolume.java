@@ -25,7 +25,6 @@ import org.apache.commons.cli.Options;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.Epsilons;
 import org.moeaframework.core.NondominatedPopulation;
-import org.moeaframework.core.PopulationIO;
 import org.moeaframework.core.indicator.Hypervolume;
 import org.moeaframework.problem.ProblemStub;
 import org.moeaframework.util.CommandLineUtility;
@@ -72,15 +71,15 @@ public class SetHypervolume extends CommandLineUtility {
 		Hypervolume hypervolume = null;
 		
 		if (commandLine.hasOption("reference")) {
-			NondominatedPopulation referenceSet = new NondominatedPopulation(
-					PopulationIO.readObjectives(new File(commandLine.getOptionValue("reference"))));
+			NondominatedPopulation referenceSet = NondominatedPopulation.loadReferenceSet(
+					new File(commandLine.getOptionValue("reference")));
 			
 			hypervolume = new Hypervolume(new ProblemStub(referenceSet.get(0).getNumberOfObjectives()), referenceSet);
 		}
 		
 		try (OutputLogger output = new OutputLogger(commandLine.getOptionValue("output"))) {
 			for (String filename : commandLine.getArgs()) {
-				NondominatedPopulation set = new NondominatedPopulation(PopulationIO.readObjectives(new File(filename)));
+				NondominatedPopulation set = NondominatedPopulation.loadReferenceSet(new File(filename));
 				
 				if (epsilons != null) {
 					set = new EpsilonBoxDominanceArchive(epsilons, set);

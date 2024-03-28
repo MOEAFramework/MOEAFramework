@@ -21,7 +21,6 @@ import java.io.File;
 import java.io.IOException;
 
 import org.moeaframework.core.NondominatedPopulation;
-import org.moeaframework.core.PopulationIO;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.spi.ProblemProvider;
@@ -74,7 +73,7 @@ public class PropertiesProblems extends ProblemProvider {
 			
 			if (fileName != null) {
 				try {
-					return new NondominatedPopulation(PopulationIO.readObjectives(new File(fileName)));
+					return NondominatedPopulation.loadReferenceSet(new File(fileName));
 				} catch (IOException e) {
 					return null;
 				}

@@ -38,7 +38,6 @@ import org.moeaframework.analysis.io.ResultFileWriter;
 import org.moeaframework.core.Epsilons;
 import org.moeaframework.core.Indicator;
 import org.moeaframework.core.NondominatedPopulation;
-import org.moeaframework.core.PopulationIO;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.indicator.AdditiveEpsilonIndicator;
 import org.moeaframework.core.indicator.Contribution;
@@ -608,7 +607,7 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 	 * @throws IOException if an I/O error occurred
 	 */
 	public Analyzer saveReferenceSet(File file) throws IOException {
-		PopulationIO.writeObjectives(file, getReferenceSet());
+		getReferenceSet().saveObjectives(file);
 		return this;
 	}
 	

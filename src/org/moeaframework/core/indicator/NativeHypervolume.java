@@ -22,14 +22,11 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.commons.text.StringTokenizer;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Population;
-import org.moeaframework.core.PopulationIO;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
@@ -127,7 +124,7 @@ public class NativeHypervolume extends NormalizedIndicator {
 		
 		boolean isInverted = Settings.isHypervolumeInverted();
 
-		List<Solution> solutions = new ArrayList<Solution>();
+		Population modifiedSet = new Population();
 
 		outer: for (Solution solution : approximationSet) {
 			//prune any solutions which exceed the Nadir point
@@ -143,21 +140,21 @@ public class NativeHypervolume extends NormalizedIndicator {
 				invert(problem, clone);
 			}
 					
-			solutions.add(clone);
+			modifiedSet.add(clone);
 		}
 
-		return invokeNativeHypervolume(problem, solutions, isInverted);
+		return invokeNativeHypervolume(problem, modifiedSet, isInverted);
 	}
 
 	/**
 	 * Generates the input files and calls the executable to calculate hypervolume.
 	 * 
 	 * @param problem the problem
-	 * @param solutions the normalized and possibly inverted solutions
+	 * @param population the normalized and possibly inverted solutions
 	 * @param isInverted {@code true} if the solutions are inverted; {@code false} otherwise
 	 * @return the hypervolume value
 	 */
-	protected static double invokeNativeHypervolume(Problem problem, List<Solution> solutions, boolean isInverted) {
+	protected static double invokeNativeHypervolume(Problem problem, Population population, boolean isInverted) {
 		try {
 			String command = Settings.getHypervolume();
 			
@@ -173,8 +170,8 @@ public class NativeHypervolume extends NormalizedIndicator {
 			//generate approximation set file
 			File approximationSetFile = File.createTempFile("approximationSet", null);
 			approximationSetFile.deleteOnExit();
-				
-			PopulationIO.writeObjectives(approximationSetFile, solutions);
+			
+			population.saveObjectives(approximationSetFile);
 			
 			//conditionally generate reference point file
 			File referencePointFile = null;
@@ -189,7 +186,7 @@ public class NativeHypervolume extends NormalizedIndicator {
 					referencePoint.setObjective(i, nadirPoint);
 				}
 
-				PopulationIO.writeObjectives(referencePointFile, new Population(new Solution[] { referencePoint }));
+				new Population(new Solution[] { referencePoint }).saveObjectives(referencePointFile);
 			}
 			
 			//conditionally generate reference point argument
@@ -210,7 +207,7 @@ public class NativeHypervolume extends NormalizedIndicator {
 			// construct the command for invoking the native process
 			Object[] arguments = new Object[] {
 					(Integer)problem.getNumberOfObjectives(),
-					(Integer)solutions.size(),
+					(Integer)population.size(),
 					approximationSetFile.getCanonicalPath(),
 					referencePointFile == null ? "" : referencePointFile.getCanonicalPath(),
 					referencePointString == null ? "" : referencePointString.toString()};

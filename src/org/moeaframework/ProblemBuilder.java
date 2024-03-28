@@ -26,7 +26,6 @@ import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.Epsilons;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.NondominatedPopulation;
-import org.moeaframework.core.PopulationIO;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
 import org.moeaframework.core.spi.ProblemFactory;
@@ -211,7 +210,7 @@ class ProblemBuilder {
 	 */
 	ProblemBuilder withReferenceSet(File referenceSetFile) {
 		try {
-			return withReferenceSet(new NondominatedPopulation(PopulationIO.readObjectives(referenceSetFile)));
+			return withReferenceSet(NondominatedPopulation.loadReferenceSet(referenceSetFile));
 		} catch (IOException e) {
 			throw new IllegalArgumentException("unable to load reference set", e);
 		}
