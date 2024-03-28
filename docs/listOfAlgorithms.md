@@ -13,7 +13,8 @@ Below lists the optimization algorithms provided by the MOEA Framework organized
   * Other - [AMOSA](#amosa), [CMA-ES](#cma-es), [MSOPS](#msops), [RSO](#rso), [Random](#random)
 * Single-objective - [GA](#ga), [ES](#es), [DE](#de), [SA](#sa), [CMA-ES](#cma-es)
 
-In addition, the MOEA Framework provides [JMetal and PISA extensions](extensions.md) to enable additional algorithms.
+In addition, the MOEA Framework provides [JMetal and PISA extensions](listOfEtensions.md) to enable additional
+algorithms.
 
 ## Instantiating an Algorithm
 
@@ -49,7 +50,7 @@ NondominatedPopulation results = new Executor()
 
 Many of these algorithms support any decision variable type, and thus the selected mutation and/or crossover operators
 will depend on the problem type.  A default operators is used unless explicitly overridden by the `operator`
-parameter, where supported.  See the [List of Operators](operators.md) for specifics.
+parameter, where supported.  See the [List of Operators](listOfOperators.md) for specifics.
 
 ## Multiobjective Optimizers
 

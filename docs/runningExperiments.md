@@ -1,12 +1,12 @@
 # Running Experiments
 
-This library also supports running experiments where we analyze the performance of one or more algorithms.  This capability
-is split into three classes: the `Executor`, `Analyzer`, and `Instrumenter`.
+This library also supports running experiments where we analyze the performance of one or more algorithms.  This
+capability is split into three classes: the `Executor`, `Analyzer`, and `Instrumenter`.
 
 ## Executor
 
-The `Executor`'s sole responsibility is to configure and execute an optimization algorithm on a problem.  For example, here we run
-NSGA-II on the UF1 test problem for 10,000 function evaluations.
+The `Executor`'s sole responsibility is to configure and execute an optimization algorithm on a problem.
+For example, here we run NSGA-II on the UF1 test problem for 10,000 function evaluations.
 
 <!-- java:test/org/moeaframework/snippet/ExperimentSnippet.java [39:43] -->
 
@@ -30,8 +30,8 @@ NondominatedPopulation result = new Executor()
         .run();
 ```
 
-Each algorithm can be customized by setting properties.  The available properties are detailed in the [List of Algorithms](algorithms.md)
-and [List of Operators](operators.md).
+Each algorithm can be customized by setting properties.  The available properties are detailed in the
+[List of Algorithms](listOfAlgorithms.md) and [List of Operators](listOfOperators.md).
 
 <!-- java:test/org/moeaframework/snippet/ExperimentSnippet.java [57:63] -->
 
@@ -47,8 +47,9 @@ NondominatedPopulation result = new Executor()
 
 ## Analyzer
 
-The `Analyzer` takes the output from an `Executor`, namely the Pareto sets produced by an optimization algorithm, and perform some analysis.
-Typically this is evaluating the quality of a Pareto set, using hypervolume, generational distance, or another quality indicator.  For example:
+The `Analyzer` takes the output from an `Executor`, namely the Pareto sets produced by an optimization algorithm,
+and perform some analysis.  Typically this is evaluating the quality of a Pareto set, using hypervolume, generational
+distance, or another quality indicator.  For example:
 
 <!-- java:examples/org/moeaframework/examples/experiment/MultipleSeedsExample.java [30:41] -->
 

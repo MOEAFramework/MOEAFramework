@@ -3,8 +3,8 @@
 ## Overview
 
 This page details mutation and crossover operators built into the MOEA Framework.  For problems with a single decision
-variable type, a default operator is automatically selected.  See [Mixed Types](misc.md#mixed-types) for instructions
-on configuring operators when combining two or more decision variable types.
+variable type, a default operator is automatically selected.  See [Mixed Types](miscellaneousTopics.md#mixed-types) for
+instructions on configuring operators when combining two or more decision variable types.
 
 There are two ways to change the operator or the operator parameters.  First, we can create the variation operator
 directly, in which case we pass the parameters to the constructor:
@@ -59,7 +59,7 @@ Parameter               | Default Value     | Description
 PM attempts to simulate the offspring distribution of binary-encoded bit-flip mutation on real-valued decision
 variables [^deb96]. Similar to SBX, PM favors offspring nearer to the parent.  It is recommended each decision
 variable is mutated with a probability of $1 / N$, where $N$ is the number of decision variables. This results in
-one mutation per offspring on average. 
+one mutation per offspring on averagme. 
 
 The distribution index controls the shape of the offspring distribution. Larger values for the distribution index
 generates offspring closer to the parents.
