@@ -1,6 +1,6 @@
-## Defining New Algorithms
+# Defining New Algorithms
 
-Similary, we can develop new optimization algorithms by implementing the `Algorithm` interface.  Instead of
+We can introduce new optimization algorithms by implementing the `Algorithm` interface.  Instead of
 implementing this interface directly, there are several abstract classes that provide common functionality, including
 `AbstractAlgorithm` and `AbstractEvolutionaryAlgorithm`.
 

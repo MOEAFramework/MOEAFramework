@@ -6,13 +6,13 @@
 * [Setup](setup.md)
 * [An Example](example.md)
 * [Running Experiments](runningExperiments.md)
-* Adding Problems
-  * [Writing Problems in Java](writingJavaProblem.md)
-  * [Connecting to Programs using Standard I/O](writingExternalProblem.md)
-  * [Natively-Compiled Functions](writingNativeProblem.md)
 * [Plotting and Visualizations](visualizations.md)
 * [Parallelization and Island Model](parallelizationStrategies.md)
 * [Single-Objective Optimization](singleObjectiveOptimization.md)
+* Adding New Problems
+  * [Writing Problems in Java](writingJavaProblem.md)
+  * [Connecting to Programs using Standard I/O](writingExternalProblem.md)
+  * [Natively-Compiled Functions](writingNativeProblem.md)
 * Miscellaneous Topics
   * [Checkpoints](miscellaneousTopics.md#checkpoints)
   * [Saving and Formatting Results](miscellaneousTopics.md#saving-and-formatting-results)
@@ -27,6 +27,7 @@
 * [List of Variation Operators](listOfOperators.md)
 * [List of Test Problems](listOfProblems.md)
 * [Command Line Tools](commandLineTools.md)
+* [Adding New Algorithms](addingAlgorithms.md)
 * [Extensions (JMetal-Plugin, Generalized Decomposition, Hypervolume)](listOfExtensions.md)
 
 ## For Developers
