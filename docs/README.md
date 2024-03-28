@@ -2,46 +2,39 @@
 
 ## General
 
-* [Release Notes](news.md)
+* [Release Notes](releaseNotes.md)
 * [Setup](setup.md)
 * [An Example](example.md)
-* [Running Experiments](experiment.md)
+* [Running Experiments](runningExperiments.md)
 * Adding Problems
-  * [Writing Problems in Java](extending.md)
-  * [Connecting to Programs using Standard I/O](external.md)
-  * [Natively-Compiled Functions](native.md)
-* Visualizations
-  * [Simple Plots](visualizations.md#simple-plots)
-  * [The Diagnostic Tool](visualizations.md#diagnostic-tool)
-  * [J3 - Java 3D Visualization Tool](visualizations.md#j3---java-3d-visualization-tool)
-* Parallelization
-  * [Distributing Function Evaluations](parallelization.md#distributing-function-evaluations)
-  * [Distributing on Remote Machines](parallelization.md#distributing-on-remote-machines)
-  * [Island-Model Parallelization](parallelization.md#island-model-parallelization)
-* [Single-Objective Optimization](single.md)
-* Other Topics
-  * [Checkpoints](misc.md#checkpoints)
-  * [Saving and Formatting Results](misc.md#saving-and-formatting-results)
-  * [Injecting Initial Solutions](misc.md#injecting-initial-solutions)
-  * [Mixed Types](misc.md#mixed-types)
-  * [Termination Conditions](misc.md#termination-conditions)
-  * [Generating Reference Sets](misc.md#generating-reference-sets)
+  * [Writing Problems in Java](writingJavaProblem.md)
+  * [Connecting to Programs using Standard I/O](writingExternalProblem.md)
+  * [Natively-Compiled Functions](writingNativeProblem.md)
+* [Plotting and Visualizations](visualizations.md)
+* [Parallelization and Island Model](parallelizationStrategies.md)
+* [Single-Objective Optimization](singleObjectiveOptimization.md)
+* Miscellaneous Topics
+  * [Checkpoints](miscellaneousTopics.md#checkpoints)
+  * [Saving and Formatting Results](miscellaneousTopics.md#saving-and-formatting-results)
+  * [Injecting Initial Solutions](miscellaneousTopics.md#injecting-initial-solutions)
+  * [Mixed Types](miscellaneousTopics.md#mixed-types)
+  * [Termination Conditions](miscellaneousTopics.md#termination-conditions)
+  * [Generating Reference Sets](miscellaneousTopics.md#generating-reference-sets)
 
 ## Advanced
-* [List of Decision Variables](variables.md)
-* [List of Algorithms](algorithms.md)
-* [List of Variation Operators](operators.md)
-* [List of Test Problems](problems.md)
-* [Command Line Tools](tools.md)
-* [Extensions (JMetal-Plugin, Generalized Decomposition, Hypervolume)](extensions.md)
+* [List of Decision Variables](listOfDecisionVariables.md)
+* [List of Algorithms](listOfAlgorithms.md)
+* [List of Variation Operators](listOfOperators.md)
+* [List of Test Problems](listOfProblems.md)
+* [Command Line Tools](commandLineTools.md)
+* [Extensions (JMetal-Plugin, Generalized Decomposition, Hypervolume)](listOfExtensions.md)
 
 ## For Developers
 
 * [API Specification (Javadoc)](http://moeaframework.org/javadoc/index.html)
-* [Developers Guide](developers.md)
+* [Developers Guide](developersGuide.md)
 
 ## Appendix
 
-* [Online Resources (moeaframework.org)](http://moeaframework.org)
-* [Known Error and Warning Messages](errors.md)
+* [Known Error and Warning Messages](listOfErrorsAndWarnings.md)
 * [Credits](credits.md)
