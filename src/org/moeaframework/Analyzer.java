@@ -245,7 +245,6 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 	 */
 	public Analyzer includeHypervolume() {
 		includeHypervolume = true;
-		
 		return this;
 	}
 	
@@ -256,7 +255,6 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 	 */
 	public Analyzer includeGenerationalDistance() {
 		includeGenerationalDistance = true;
-		
 		return this;
 	}
 	
@@ -267,7 +265,6 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 	 */
 	public Analyzer includeInvertedGenerationalDistance() {
 		includeInvertedGenerationalDistance = true;
-		
 		return this;
 	}
 	
@@ -278,7 +275,6 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 	 */
 	public Analyzer includeAdditiveEpsilonIndicator() {
 		includeAdditiveEpsilonIndicator = true;
-		
 		return this;
 	}
 
@@ -289,7 +285,6 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 	 */
 	public Analyzer includeMaximumParetoFrontError() {
 		includeMaximumParetoFrontError = true;
-		
 		return this;
 	}
 	
@@ -300,7 +295,6 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 	 */
 	public Analyzer includeSpacing() {
 		includeSpacing = true;
-		
 		return this;
 	}
 	
@@ -311,7 +305,6 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 	 */
 	public Analyzer includeContribution() {
 		includeContribution = true;
-		
 		return this;
 	}
 	
@@ -322,7 +315,6 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 	 */
 	public Analyzer includeR1() {
 		includeR1 = true;
-		
 		return this;
 	}
 	
@@ -333,7 +325,6 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 	 */
 	public Analyzer includeR2() {
 		includeR2 = true;
-		
 		return this;
 	}
 	
@@ -344,7 +335,6 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 	 */
 	public Analyzer includeR3() {
 		includeR3 = true;
-		
 		return this;
 	}
 	
@@ -388,7 +378,6 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 	 */
 	public Analyzer showIndividualValues() {
 		showIndividualValues = true;
-		
 		return this;
 	}
 	
@@ -400,7 +389,6 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 	 */
 	public Analyzer showAggregate() {
 		showAggregate = true;
-		
 		return this;
 	}
 	
@@ -412,7 +400,6 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 	 */
 	public Analyzer showStatisticalSignificance() {
 		showStatisticalSignificance = true;
-		
 		return this;
 	}
 	
@@ -425,7 +412,6 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 	 */
 	public Analyzer showStatistic(UnivariateStatistic statistic) {
 		statistics.add(statistic);
-		
 		return this;
 	}
 	
@@ -438,7 +424,6 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 	 */
 	public Analyzer withSignifianceLevel(double significanceLevel) {
 		this.significanceLevel = significanceLevel;
-		
 		return this;
 	}
 	
@@ -450,7 +435,6 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 	 */
 	public Analyzer withIdealPoint(double... idealPoint) {
 		this.idealPoint = idealPoint;
-		
 		return this;
 	}
 
@@ -462,7 +446,6 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 	 */
 	public Analyzer withReferencePoint(double... referencePoint) {
 		this.referencePoint = referencePoint;
-		
 		return this;
 	}
 

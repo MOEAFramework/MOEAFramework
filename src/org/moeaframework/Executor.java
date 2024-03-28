@@ -227,16 +227,14 @@ public class Executor extends ProblemBuilder {
 	}
 	
 	@Override
-	public Executor withProblemClass(Class<?> problemClass, 
-			Object... problemArguments) {
+	public Executor withProblemClass(Class<?> problemClass, Object... problemArguments) {
 		return (Executor)super.withProblemClass(problemClass, problemArguments);
 	}
 
 	@Override
-	public Executor withProblemClass(String problemClassName, 
-			Object... problemArguments) throws ClassNotFoundException {
-		return (Executor)super.withProblemClass(problemClassName,
-				problemArguments);
+	public Executor withProblemClass(String problemClassName, Object... problemArguments)
+			throws ClassNotFoundException {
+		return (Executor)super.withProblemClass(problemClassName, problemArguments);
 	}
 	
 	/**
@@ -248,7 +246,6 @@ public class Executor extends ProblemBuilder {
 	 */
 	public Executor withTerminationCondition(TerminationCondition condition) {
 		terminationConditions.add(condition);
-		
 		return this;
 	}
 	
@@ -260,7 +257,6 @@ public class Executor extends ProblemBuilder {
 	 */
 	public Executor withAlgorithm(String algorithmName) {
 		this.algorithmName = algorithmName;
-		
 		return this;
 	}
 	
@@ -273,7 +269,6 @@ public class Executor extends ProblemBuilder {
 	 */
 	public Executor distributeWith(ExecutorService executorService) {
 		this.executorService = executorService;
-		
 		return this;
 	}
 	
@@ -290,7 +285,6 @@ public class Executor extends ProblemBuilder {
 		}
 		
 		this.numberOfThreads = numberOfThreads;
-		
 		return this;
 	}
 	
@@ -312,7 +306,6 @@ public class Executor extends ProblemBuilder {
 	 */
 	public Executor withCheckpointFile(File checkpointFile) {
 		this.checkpointFile = checkpointFile;
-		
 		return this;
 	}
 	
@@ -324,7 +317,6 @@ public class Executor extends ProblemBuilder {
 	 */
 	public Executor withCheckpointFrequency(int checkpointFrequency) {
 		this.checkpointFrequency = checkpointFrequency;
-		
 		return this;
 	}
 	
@@ -378,7 +370,6 @@ public class Executor extends ProblemBuilder {
 	 */
 	public Executor withMaxEvaluations(int maxEvaluations) {
 		withProperty("maxEvaluations", maxEvaluations);
-		
 		return this;
 	}
 	
@@ -390,7 +381,6 @@ public class Executor extends ProblemBuilder {
 	 */
 	public Executor withMaxTime(long maxTime) {
 		withProperty("maxTime", maxTime);
-		
 		return this;
 	}
 	
@@ -402,7 +392,6 @@ public class Executor extends ProblemBuilder {
 	 */
 	public Executor removeProperty(String key) {
 		properties.remove(key);
-		
 		return this;
 	}
 	
@@ -415,7 +404,6 @@ public class Executor extends ProblemBuilder {
 	 */
 	public Executor withProperty(String key, String value) {
 		properties.setString(key, value);
-		
 		return this;
 	}
 	
@@ -428,7 +416,6 @@ public class Executor extends ProblemBuilder {
 	 */
 	public Executor withProperty(String key, float value) {
 		properties.setFloat(key, value);
-		
 		return this;
 	}
 	
@@ -441,7 +428,6 @@ public class Executor extends ProblemBuilder {
 	 */
 	public Executor withProperty(String key, double value) {
 		properties.setDouble(key, value);
-		
 		return this;
 	}
 	
@@ -454,7 +440,6 @@ public class Executor extends ProblemBuilder {
 	 */
 	public Executor withProperty(String key, byte value) {
 		properties.setByte(key, value);
-		
 		return this;
 	}
 	
@@ -467,7 +452,6 @@ public class Executor extends ProblemBuilder {
 	 */
 	public Executor withProperty(String key, short value) {
 		properties.setShort(key, value);
-		
 		return this;
 	}
 	
@@ -480,7 +464,6 @@ public class Executor extends ProblemBuilder {
 	 */
 	public Executor withProperty(String key, int value) {
 		properties.setInt(key, value);
-		
 		return this;
 	}
 	
@@ -493,7 +476,6 @@ public class Executor extends ProblemBuilder {
 	 */
 	public Executor withProperty(String key, long value) {
 		properties.setLong(key, value);
-		
 		return this;
 	}
 	
@@ -506,7 +488,6 @@ public class Executor extends ProblemBuilder {
 	 */
 	public Executor withProperty(String key, boolean value) {
 		properties.setBoolean(key, value);
-		
 		return this;
 	}
 	
@@ -519,7 +500,6 @@ public class Executor extends ProblemBuilder {
 	 */
 	public Executor withProperty(String key, String[] values) {
 		properties.setStringArray(key, values);
-		
 		return this;
 	}
 	
@@ -532,7 +512,6 @@ public class Executor extends ProblemBuilder {
 	 */
 	public Executor withProperty(String key, float[] values) {
 		properties.setFloatArray(key, values);
-		
 		return this;
 	}
 	
@@ -545,7 +524,6 @@ public class Executor extends ProblemBuilder {
 	 */
 	public Executor withProperty(String key, double[] values) {
 		properties.setDoubleArray(key, values);
-		
 		return this;
 	}
 	
@@ -558,7 +536,6 @@ public class Executor extends ProblemBuilder {
 	 */
 	public Executor withProperty(String key, byte[] values) {
 		properties.setByteArray(key, values);
-		
 		return this;
 	}
 	
@@ -571,7 +548,6 @@ public class Executor extends ProblemBuilder {
 	 */
 	public Executor withProperty(String key, short[] values) {
 		properties.setShortArray(key, values);
-		
 		return this;
 	}
 	
@@ -584,7 +560,6 @@ public class Executor extends ProblemBuilder {
 	 */
 	public Executor withProperty(String key, int[] values) {
 		properties.setIntArray(key, values);
-		
 		return this;
 	}
 	
@@ -597,7 +572,6 @@ public class Executor extends ProblemBuilder {
 	 */
 	public Executor withProperty(String key, long[] values) {
 		properties.setLongArray(key, values);
-		
 		return this;
 	}
 	
@@ -608,7 +582,6 @@ public class Executor extends ProblemBuilder {
 	 */
 	public Executor clearProperties() {
 		properties.clear();
-		
 		return this;
 	}
 	
@@ -622,7 +595,6 @@ public class Executor extends ProblemBuilder {
 	public Executor withProperties(TypedProperties properties) {
 		this.properties.clear();
 		this.properties.addAll(properties);
-		
 		return this;
 	}
 	
@@ -634,7 +606,6 @@ public class Executor extends ProblemBuilder {
 	 */
 	public Executor withProgressListener(ProgressListener listener) {
 		progress.addProgressListener(listener);
-		
 		return this;
 	}
 	
