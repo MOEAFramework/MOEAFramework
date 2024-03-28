@@ -13,7 +13,7 @@ Below lists the optimization algorithms provided by the MOEA Framework organized
   * Other - [AMOSA](#amosa), [CMA-ES](#cma-es), [MSOPS](#msops), [RSO](#rso), [Random](#random)
 * Single-objective - [GA](#ga), [ES](#es), [DE](#de), [SA](#sa), [CMA-ES](#cma-es)
 
-In addition, the MOEA Framework provides [JMetal and PISA extensions](listOfEtensions.md) to enable additional
+In addition, the MOEA Framework provides [JMetal and PISA extensions](listOfExtensions.md) to enable additional
 algorithms.
 
 ## Instantiating an Algorithm
@@ -35,7 +35,7 @@ NondominatedPopulation result = algorithm.getResult();
 ```
 
 Alternatively, we can use the `Executor` class and configure algorithms by setting the properties.  See
-[Running Experiments](experiment.md) for more details on using the `Executor`.
+[Running Experiments](runningExperiments.md) for more details on using the `Executor`.
 
 <!-- java:test/org/moeaframework/snippet/AlgorithmSnippet.java [43:48] -->
 
