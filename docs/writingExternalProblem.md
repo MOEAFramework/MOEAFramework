@@ -142,14 +142,31 @@ public static class MyDTLZ2 extends ExternalProblem {
 }
 ```
 
-Note we create an instance of the `ExternalProblem` class, provide the path to this executable, and specify the
-structure of the problem.  We can now use this problem like any other within the MOEA Framework.
+Note in the above example that
+
+1. We extend from the `ExternalProblem` class.
+2. We provide the path to the executable in the constructor.
+3. There are five methods we must implement, which describe the structure of the problem.
+
+Finally, we can solve this problem.  Since the `ExternalProblem` spins up the program in the background, it's
+important that the problem is closed after use.  As demonstrated below, we can use a try-with-resources block, allowing
+Java to automatically close the problem.
+
+<!-- java:examples/org/moeaframework/examples/external/ExternalProblemWithStdio.java [110:114] -->
+
+```java
+try (Problem problem = new MyDTLZ2()) {
+    Algorithm algorithm = new NSGAII(problem);
+    algorithm.run(10000);
+    algorithm.getResult().display();
+}
+```
 
 ## Other Languages
 
 We can use the same approach to connect to problems written in other programming languages.  Simply construct a loop
 to read the decision variables from the input and write the objective (and constraint) values to the output.  As an
-example, we have included a Python example at `examples/dtlz2.py`.
+example, we have included a Python example at [`examples/dtlz2.py`](../examples/dtlz2.py).
 
 ## Troubleshooting
 
@@ -158,5 +175,5 @@ verify what version you have, open the MinGW64 terminal and run `which gcc`.  Th
 `/mingw64/bin/gcc`.
 
 The program can hang if the number of decision variables sent to the program do not match the expected number, as it
-will wait for further input.  To assit in debugging, set
+will wait for further input.  To assist in debugging, set
 `org.moeaframework.problem.external_problem_debugging = true` in `moeaframework.properties`.
