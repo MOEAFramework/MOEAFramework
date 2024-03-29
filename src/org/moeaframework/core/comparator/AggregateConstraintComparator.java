@@ -34,28 +34,10 @@ public class AggregateConstraintComparator implements DominanceComparator, Compa
 		super();
 	}
 
-	/**
-	 * Returns the sum of the absolute value of the constraints for the specified solution. This allows supporting
-	 * constraints expressed as both positive and negative magnitudes. Larger magnitudes correspond to larger
-	 * constraint violations.
-	 * 
-	 * @param solution the solution
-	 * @return the sum of the absolute value of the constraints for the specified solution
-	 */
-	public static double getConstraints(Solution solution) {
-		double constraints = 0.0;
-
-		for (int i = 0; i < solution.getNumberOfConstraints(); i++) {
-			constraints += Math.abs(solution.getConstraint(i));
-		}
-
-		return constraints;
-	}
-
 	@Override
 	public int compare(Solution solution1, Solution solution2) {
-		double constraints1 = getConstraints(solution1);
-		double constraints2 = getConstraints(solution2);
+		double constraints1 = solution1.getSumOfConstraintViolations();
+		double constraints2 = solution2.getSumOfConstraintViolations();
 		
 		return Double.compare(constraints1, constraints2);
 	}

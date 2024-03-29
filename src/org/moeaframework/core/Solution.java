@@ -242,13 +242,29 @@ public class Solution implements Formattable<Solution>, Serializable {
 	 * @return {@code true} if any of the constraints are violated; {@code false} otherwise
 	 */
 	public boolean violatesConstraints() {
-		for (int i = 0; i < constraints.length; i++) {
-			if (constraints[i] != Constraint.SATISFIED) {
+		for (int i = 0; i < getNumberOfConstraints(); i++) {
+			if (getConstraint(i) != Constraint.SATISFIED) {
 				return true;
 			}
 		}
 
 		return false;
+	}
+	
+	/**
+	 * Returns the sum of constraint violations, taking the absolute value of each constraint.  Consequently, larger
+	 * values reflect larger constraint violations.
+	 * 
+	 * @return the sum of constraint violations
+	 */
+	public double getSumOfConstraintViolations() {
+		double sum = 0.0;
+		
+		for (int i = 0; i < getNumberOfConstraints(); i++) {
+			sum += Math.abs(getConstraint(i));
+		}
+		
+		return sum;
 	}
 
 	/**

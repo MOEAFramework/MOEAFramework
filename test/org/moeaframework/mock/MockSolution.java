@@ -25,7 +25,6 @@ import java.util.stream.IntStream;
 import org.apache.commons.lang3.reflect.TypeUtils;
 import org.junit.Assert;
 import org.moeaframework.TestUtils;
-import org.moeaframework.core.Constraint;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
@@ -340,23 +339,6 @@ public class MockSolution extends Solution {
 		throwIfReadOnly();
 		throwIfConstraintsNotSet();
 		constraints.get()[index] = constraint;
-	}
-
-	@Override
-	public boolean violatesConstraints() {
-		if (this.constraints.isEmpty()) {
-			return false;
-		}
-
-		double[] constraints = this.constraints.get();
-
-		for (int i = 0; i < constraints.length; i++) {
-			if (constraints[i] != Constraint.SATISFIED) {
-				return true;
-			}
-		}
-
-		return false;
 	}
 
 	@Override

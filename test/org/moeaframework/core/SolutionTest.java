@@ -317,6 +317,20 @@ public class SolutionTest {
 	}
 	
 	@Test
+	public void testSumOfConstraintViolations() {
+		Assert.assertEquals(1.0, solution.getSumOfConstraintViolations(), Settings.EPS);
+		
+		solution.setConstraint(0, -1.0);
+		Assert.assertEquals(2.0, solution.getSumOfConstraintViolations(), Settings.EPS);
+
+		solution.setConstraints(new double[] { 0.0, 0.0 });
+		Assert.assertEquals(0.0, solution.getSumOfConstraintViolations(), Settings.EPS);
+
+		// solution with no constraints
+		Assert.assertEquals(0.0, new Solution(0, 0, 0).getSumOfConstraintViolations(), Settings.EPS);
+	}
+	
+	@Test
 	public void testEuclideanDistance() {
 		Solution s1 = MockSolution.of().withObjectives(0.0, 1.0, 0.0);
 		Solution s2 = MockSolution.of().withObjectives(0.0, 0.0, -1.0);

@@ -30,7 +30,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
-import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.mock.MockRealProblem;
@@ -128,12 +127,6 @@ public class DBEATest {
 		Solution result = algorithm.largestObjectiveValue(0, population);
 		
 		Assert.assertSame(solution3, result);
-	}
-	
-	@Test
-	public void testSumOfConstraintValues() {
-		Solution solution = MockSolution.of().withConstraints(-1.0, 1.0, 0.0);	
-		Assert.assertEquals(2.0, algorithm.sumOfConstraintViolations(solution), Settings.EPS);
 	}
 	
 	@Test

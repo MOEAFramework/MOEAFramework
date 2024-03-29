@@ -17,7 +17,7 @@
  */
 package org.moeaframework.algorithm;
 
-import static org.moeaframework.core.FastNondominatedSorting.RANK_ATTRIBUTE;
+import static org.moeaframework.core.NondominatedSorting.RANK_ATTRIBUTE;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -33,7 +33,6 @@ import org.moeaframework.algorithm.single.VectorAngleDistanceScalingComparator;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.comparator.AggregateConstraintComparator;
 import org.moeaframework.core.comparator.RankComparator;
 
 /**
@@ -291,7 +290,7 @@ public class MSOPSRankedPopulation extends Population {
 			
 			if (solution.violatesConstraints()) {
 				for (int j = 0; j < T; j++) {
-					scores[i][j] = scores[i][j] + maxScore + AggregateConstraintComparator.getConstraints(solution);
+					scores[i][j] += maxScore + solution.getSumOfConstraintViolations();
 				}
 			}
 		}

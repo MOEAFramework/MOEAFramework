@@ -455,22 +455,6 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 	}
 	
 	/**
-	 * Return the sum of absolute constraint violations for the given solution.
-	 * 
-	 * @param solution the solution
-	 * @return the constraint violation
-	 */
-	double sumOfConstraintViolations(Solution solution) {
-		double result = 0.0;
-		
-		for (int i = 0; i < solution.getNumberOfConstraints(); i++) {
-			result += Math.abs(solution.getConstraint(i));
-		}
-		
-		return result;
-	}
-	
-	/**
 	 * Returns the allowed constraint violation.
 	 * 
 	 * @param population the population
@@ -482,7 +466,7 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 		
 		for (int i = 0; i < population.size(); i++) {
 			if (population.get(i).violatesConstraints()) {
-				violation = violation + sumOfConstraintViolations(population.get(i));
+				violation += population.get(i).getSumOfConstraintViolations();
 			} else {
 				feasible++;
 			}
@@ -527,8 +511,8 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 			double d1_child = distanceD1(f2, weight);
 			double d2_parent = distanceD2(f1, d1_parent);
 			double d2_child = distanceD2(f2, d1_child);
-			double cv_parent = sumOfConstraintViolations(population.get(j));
-			double cv_child = sumOfConstraintViolations(child);
+			double cv_parent = population.get(j).getSumOfConstraintViolations();
+			double cv_child = child.getSumOfConstraintViolations();
 			
 			if(cv_child < eps_con && cv_parent < eps_con || (cv_child == cv_parent)) {
 				if (compareSolution(d1_child, d2_child, d1_parent, d2_parent, eps)) {

@@ -587,16 +587,6 @@ public class MOEAD extends AbstractAlgorithm implements Configurable {
 
 		return max;
 	}
-	
-	private double sumOfConstraintViolations(Solution solution) {
-		double sum = 0.0;
-		
-		for (int i = 0; i < solution.getNumberOfConstraints(); i++) {
-			sum += Math.abs(solution.getConstraint(i));
-		}
-		
-		return sum;
-	}
 
 	/**
 	 * Updates the population with the specified solution. Only the specified population indices are considered for
@@ -614,8 +604,8 @@ public class MOEAD extends AbstractAlgorithm implements Configurable {
 			boolean canReplace = false;
 			
 			if (solution.violatesConstraints() && individual.getSolution().violatesConstraints()) {
-				double cv1 = sumOfConstraintViolations(solution);
-				double cv2 = sumOfConstraintViolations(individual.getSolution());
+				double cv1 = solution.getSumOfConstraintViolations();
+				double cv2 = individual.getSolution().getSumOfConstraintViolations();
 				
 				if (cv1 < cv2) {
 					canReplace = true;

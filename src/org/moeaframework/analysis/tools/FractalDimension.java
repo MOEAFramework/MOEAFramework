@@ -82,8 +82,7 @@ class FractalDimension {
 	 * method removes the first and last i points from consideration.  Computes the correlation coefficient of the
 	 * remaining points to determine how well those points approximate a line.
 	 */
-	private static int getCorrelationDimensionBounds(List<Double> X, 
-			List<Double> Y) {
+	private static int getCorrelationDimensionBounds(List<Double> X, List<Double> Y) {
 		int n = X.size();
 		
 		for (int i=0; i<(n - 4)/2; i++) {

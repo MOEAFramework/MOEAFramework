@@ -74,8 +74,7 @@ public class PopulationCollector implements Collector {
 	 */
 	@SuppressWarnings("unchecked")
 	public static Population getPopulation(Observation observation) {
-		Iterable<Solution> solutions = (Iterable<Solution>)observation.get("Population");
-		return new Population(solutions);
+		return new Population((Iterable<Solution>)observation.get("Population"));
 	}
 
 }

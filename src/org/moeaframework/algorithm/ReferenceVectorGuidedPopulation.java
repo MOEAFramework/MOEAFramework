@@ -388,14 +388,10 @@ public class ReferenceVectorGuidedPopulation extends Population {
 		if (minSolution == null) {
 			// all solutions were infeasible, find one with smallest constraint violation
 			for (Solution solution : solutions) {
-				double tempDistance = 0.0;
-				
-				for (int i = 0; i < solution.getNumberOfConstraints(); i++) {
-					tempDistance += Math.abs(solution.getConstraint(i));
-				}
+				double tempDistance = solution.getSumOfConstraintViolations();
 				
 				if (tempDistance < minDistance) {
-					minDistance= tempDistance;
+					minDistance = tempDistance;
 					minSolution = solution;
 				}
 			}
