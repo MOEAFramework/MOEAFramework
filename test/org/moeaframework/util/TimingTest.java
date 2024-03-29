@@ -60,24 +60,31 @@ public class TimingTest {
 	}
 	
 	@Test
-	public void testClear() throws IOException {
+	public void testDisplay() throws IOException {
 		Timing.clear();
-		Assert.assertEquals(0, TestUtils.lineCount(saveStatistics()));
-		Assert.assertEquals(0, TestUtils.lineCount(saveMagnitudes()));
+		Assert.assertEquals(2, TestUtils.lineCount(saveDisplayToFile()));
 		
 		Timing.startTimer("timer1");
 		Timing.stopTimer("timer1");
 		Timing.startTimer("timer2");
 		Timing.stopTimer("timer2");
 		
-		Assert.assertEquals(2, TestUtils.lineCount(saveStatistics()));
-		Assert.assertEquals(2, TestUtils.lineCount(saveMagnitudes()));
+		Assert.assertEquals(4, TestUtils.lineCount(saveDisplayToFile()));
+	}
+	
+	@Test
+	public void testClear() {
+		Timing.clear();
+		
+		Timing.startTimer("timer1");
+		Timing.stopTimer("timer1");
+		Timing.startTimer("timer2");
+		Timing.stopTimer("timer2");
+		
 		Assert.assertNotNull(Timing.getStatistics("timer1"));
 		Assert.assertNotNull(Timing.getStatistics("timer2"));
 		
 		Timing.clear();
-		Assert.assertEquals(0, TestUtils.lineCount(saveStatistics()));
-		Assert.assertEquals(0, TestUtils.lineCount(saveMagnitudes()));
 		Assert.assertNull(Timing.getStatistics("timer1"));
 		Assert.assertNull(Timing.getStatistics("timer2"));
 	}
@@ -93,21 +100,11 @@ public class TimingTest {
 		Assert.assertEquals(1, Timing.getStatistics("timer1").getN());
 	}
 	
-	private File saveStatistics() throws IOException {
+	private File saveDisplayToFile() throws IOException {
 		File file = TestUtils.createTempFile();
 		
 		try (PrintStream ps = new PrintStream(new FileOutputStream(file))) {	
-			Timing.printStatistics(ps);
-		}
-		
-		return file;
-	}
-	
-	private File saveMagnitudes() throws IOException {
-		File file = TestUtils.createTempFile();
-		
-		try (PrintStream ps = new PrintStream(new FileOutputStream(file))) {
-			Timing.printMagnitudes(ps);
+			Timing.display(ps);
 		}
 		
 		return file;
