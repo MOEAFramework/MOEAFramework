@@ -75,7 +75,7 @@ public class InvertedGenerationalDistance extends NormalizedIndicator {
 		double sum = 0.0;
 
 		for (int i = 0; i < referenceSet.size(); i++) {
-			sum += Math.pow(IndicatorUtils.distanceToNearestSolution(problem, referenceSet.get(i), approximationSet), d);
+			sum += Math.pow(referenceSet.get(i).distanceToNearestSolution(approximationSet), d);
 		}
 
 		return Math.pow(sum, 1.0 / d) / referenceSet.size();

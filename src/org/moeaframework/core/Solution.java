@@ -387,14 +387,37 @@ public class Solution implements Formattable<Solution>, Serializable {
 	}
 	
 	/**
-	 * Computes the Euclidean distance between two solutions in objective space.  The order here doesn't matter.
-	 * {@code s1.distanceTo(s2) == s2.distanceTo(s1)}.
+	 * Computes the Euclidean distance between two solutions in objective space.  
 	 * 
 	 * @param otherSolution the other solution
-	 * @return the Euclidean distance
+	 * @return the Euclidean distance in objective space
 	 * @throws IllegalArgumentException if the solutions have differing numbers of objectives
 	 */
-	public double distanceTo(Solution otherSolution) {
+	public double euclideanDistance(Solution otherSolution) {
+		return distanceTo(otherSolution, 2.0);
+	}
+	
+	/**
+	 * Computes the Manhattan distance between two solutions in objective space.
+	 * 
+	 * @param otherSolution the other solution
+	 * @return the Manhattan distance in objective space
+	 * @throws IllegalArgumentException if the solutions have differing numbers of objectives
+	 */
+	public double manhattanDistance(Solution otherSolution) {
+		return distanceTo(otherSolution, 1.0);
+	}
+
+	/**
+	 * Calculates the distance, in objective space, between this solution and another.  This calculation is
+	 * commutative, meaning {@code s1.distanceTo(s2) == s2.distanceTo(s1)}.
+	 * 
+	 * @param otherSolution the other solution
+	 * @param power the power ({@code 1.0} for Manhattan distance, {@code 2.0} for Euclidean distance)
+	 * @return the distance, in objective space, between the two solutions
+	 * @throws IllegalArgumentException if the solutions have differing numbers of objectives
+	 */
+	private double distanceTo(Solution otherSolution, double power) {
 		if (getNumberOfObjectives() != otherSolution.getNumberOfObjectives()) {
 			throw new IllegalArgumentException("solutions have different number of objectives");
 		}
@@ -402,10 +425,27 @@ public class Solution implements Formattable<Solution>, Serializable {
 		double distance = 0.0;
 
 		for (int i = 0; i < getNumberOfObjectives(); i++) {
-			distance += Math.pow(getObjective(i) - otherSolution.getObjective(i), 2.0);
+			distance += Math.pow(Math.abs(getObjective(i) - otherSolution.getObjective(i)), power);
 		}
 
-		return Math.sqrt(distance);
+		return Math.pow(distance, 1.0 / power);
+	}
+	
+	/**
+	 * Returns the Euclidean distance, in objective space, from this solution to the nearest solution in the
+	 * population.
+	 * 
+	 * @param population the population
+	 * @return the Euclidean distance
+	 */
+	public double distanceToNearestSolution(Population population) {
+		double minimum = Double.POSITIVE_INFINITY;
+
+		for (Solution otherSolution : population) {
+			minimum = Math.min(minimum, euclideanDistance(otherSolution));
+		}
+
+		return minimum;
 	}
 	
 	@Override

@@ -202,14 +202,14 @@ public class FutureSolutionTest {
 	}
 	
 	@Test
-	public void testDistanceTo() {
+	public void testEuclideanDistance() {
 		TestableFutureSolution solution = new TestableFutureSolution(unevaluatedSolution);
 		
 		// Expect non-zero result since the unevaluated solution has an objective value of 0
-		Assert.assertNotEquals(0.0, solution.distanceTo(evaluatedSolution), Settings.EPS);
+		Assert.assertNotEquals(0.0, solution.euclideanDistance(evaluatedSolution), Settings.EPS);
 		
 		solution.setFuture(futureSolution);
-		Assert.assertEquals(0.0, solution.distanceTo(evaluatedSolution), Settings.EPS);
+		Assert.assertEquals(0.0, solution.euclideanDistance(evaluatedSolution), Settings.EPS);
 	}
 
 }

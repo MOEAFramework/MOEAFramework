@@ -60,7 +60,7 @@ public class MaximumParetoFrontError extends NormalizedIndicator {
 		double max = 0.0;
 
 		for (int i = 0; i < approximationSet.size(); i++) {
-			max = Math.max(max, IndicatorUtils.distanceToNearestSolution(problem, approximationSet.get(i), referenceSet));
+			max = Math.max(max, approximationSet.get(i).distanceToNearestSolution(referenceSet));
 		}
 
 		return max;

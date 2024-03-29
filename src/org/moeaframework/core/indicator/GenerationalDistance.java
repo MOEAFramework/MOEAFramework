@@ -80,7 +80,7 @@ public class GenerationalDistance extends NormalizedIndicator {
 		}
 
 		for (int i = 0; i < approximationSet.size(); i++) {
-			sum += Math.pow(IndicatorUtils.distanceToNearestSolution(problem, approximationSet.get(i), referenceSet), d);
+			sum += Math.pow(approximationSet.get(i).distanceToNearestSolution(referenceSet), d);
 		}
 		
 		return Math.pow(sum, 1.0 / d) / approximationSet.size();

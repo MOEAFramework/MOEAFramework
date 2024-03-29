@@ -22,6 +22,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.core.variable.RealVariable;
+import org.moeaframework.mock.MockSolution;
 
 /**
  * Due to the central role of this class, many obvious properties are tested to ensure complete correctness.
@@ -318,21 +319,71 @@ public class SolutionTest {
 	}
 	
 	@Test
-	public void testDistanceTo() {
+	public void testEuclideanDistance() {
 		Solution s1 = new Solution(new double[] { 0.0, 1.0, 0.0 });
 		Solution s2 = new Solution(new double[] { 0.0, 0.0, -1.0 });
 
-		Assert.assertEquals(Math.sqrt(2.0), s1.distanceTo(s2), Settings.EPS);
-		Assert.assertEquals(Math.sqrt(2.0), s2.distanceTo(s1), Settings.EPS);
-		Assert.assertEquals(0.0, s1.distanceTo(s1), Settings.EPS);
-		Assert.assertEquals(0.0, s2.distanceTo(s2), Settings.EPS);
+		Assert.assertEquals(Math.sqrt(2.0), s1.euclideanDistance(s2), Settings.EPS);
+		Assert.assertEquals(Math.sqrt(2.0), s2.euclideanDistance(s1), Settings.EPS);
+		Assert.assertEquals(0.0, s1.euclideanDistance(s1), Settings.EPS);
+		Assert.assertEquals(0.0, s2.euclideanDistance(s2), Settings.EPS);
+	}
+	
+	@Test
+	public void testManhattanDistance() {
+		Solution s1 = new Solution(new double[] { 0.0, 1.0, 0.0 });
+		Solution s2 = new Solution(new double[] { 0.0, 0.0, -1.0 });
+
+		Assert.assertEquals(2.0, s1.manhattanDistance(s2), Settings.EPS);
+		Assert.assertEquals(2.0, s2.manhattanDistance(s1), Settings.EPS);
+		Assert.assertEquals(0.0, s1.manhattanDistance(s1), Settings.EPS);
+		Assert.assertEquals(0.0, s2.manhattanDistance(s2), Settings.EPS);
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
-	public void testDistanceToThrows() {
+	public void testEuclideanDistanceThrowsIfLengthDiffers() {
 		Solution s1 = new Solution(new double[] { 0.0, 1.0, 0.0 });
 		Solution s2 = new Solution(new double[] { 0.0, -1.0 });
-		s1.distanceTo(s2);
+		s1.euclideanDistance(s2);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testManhattanDistanceThrowsIfLengthDiffers() {
+		Solution s1 = new Solution(new double[] { 0.0, 1.0, 0.0 });
+		Solution s2 = new Solution(new double[] { 0.0, -1.0 });
+		s1.manhattanDistance(s2);
+	}
+	
+	@Test
+	public void testDistanceToNearestSolution() {
+		NondominatedPopulation population = new NondominatedPopulation();
+		population.add(MockSolution.of().withObjectives(0.0, 1.0));
+		population.add(MockSolution.of().withObjectives(1.0, 0.0));
+		
+		Assert.assertEquals(0.0,
+				MockSolution.of().withObjectives(0.0, 1.0).distanceToNearestSolution(population),
+				Settings.EPS);
+		
+		Assert.assertEquals(0.0,
+				MockSolution.of().withObjectives(1.0, 0.0).distanceToNearestSolution(population),
+				Settings.EPS);
+		
+		Assert.assertEquals(Math.sqrt(0.5), 
+				MockSolution.of().withObjectives(0.5, 0.5).distanceToNearestSolution(population),
+				Settings.EPS);
+		
+		Assert.assertEquals(Math.sqrt(0.125), 
+				MockSolution.of().withObjectives(0.25, 0.75).distanceToNearestSolution(population),
+				Settings.EPS);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testDistanceToNearestSolutionThrowsIfLengthDiffers() {
+		NondominatedPopulation population = new NondominatedPopulation();
+		population.add(MockSolution.of().withObjectives(0.0, 1.0));
+		population.add(MockSolution.of().withObjectives(1.0, 0.0));
+		
+		MockSolution.of().withObjectives(0.0, 1.0, 0.5).distanceToNearestSolution(population);
 	}
 
 }

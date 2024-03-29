@@ -377,7 +377,7 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 			for (int j = 0; j < i; j++) {
 				Solution solution2 = population.get(j);
 				
-				if (solution1 == solution2 || solution1.distanceTo(solution2) < Settings.EPS) {
+				if (solution1 == solution2 || solution1.euclideanDistance(solution2) < Settings.EPS) {
 					continue outer;
 				}
 			}

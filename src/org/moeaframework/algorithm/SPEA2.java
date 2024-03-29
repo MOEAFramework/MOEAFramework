@@ -40,7 +40,6 @@ import org.moeaframework.core.comparator.ParetoDominanceComparator;
 import org.moeaframework.core.configuration.Configurable;
 import org.moeaframework.core.configuration.Property;
 import org.moeaframework.core.configuration.Validate;
-import org.moeaframework.core.indicator.IndicatorUtils;
 import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.core.selection.TournamentSelection;
 import org.moeaframework.core.spi.OperatorFactory;
@@ -256,8 +255,7 @@ public class SPEA2 extends AbstractEvolutionaryAlgorithm {
 			distances[i][i] = 0.0;
 			
 			for (int j = i+1; j < population.size(); j++) {
-				distances[i][j] = distances[j][i] = IndicatorUtils.euclideanDistance(
-						problem, population.get(i), population.get(j));
+				distances[i][j] = distances[j][i] =  population.get(i).euclideanDistance(population.get(j));
 			}
 		}
 		

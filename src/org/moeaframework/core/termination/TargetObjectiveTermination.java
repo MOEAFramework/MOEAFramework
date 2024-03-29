@@ -91,9 +91,7 @@ public class TargetObjectiveTermination implements TerminationCondition {
 		NondominatedPopulation result = algorithm.getResult();
 		
 		for (Solution solution : result) {
-			double distance = solution.distanceTo(target);
-			
-			if (distance <= epsilon) {
+			if (solution.euclideanDistance(target) <= epsilon) {
 				return true;
 			}
 		}

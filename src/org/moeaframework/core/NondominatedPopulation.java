@@ -188,7 +188,7 @@ public class NondominatedPopulation extends Population {
 	 */
 	protected boolean isDuplicate(Solution s1, Solution s2) {
 		return switch (duplicateMode) {
-			case NO_DUPLICATE_OBJECTIVES -> s1.distanceTo(s2) < Settings.EPS;
+			case NO_DUPLICATE_OBJECTIVES -> s1.euclideanDistance(s2) < Settings.EPS;
 			case ALLOW_DUPLICATE_OBJECTIVES -> {
 				if (s1.getNumberOfVariables() != s2.getNumberOfVariables()) {
 					yield false;

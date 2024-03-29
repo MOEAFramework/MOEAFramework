@@ -78,7 +78,7 @@ public class Spacing implements Indicator {
 						continue;
 					}
 					
-					min = Math.min(min, IndicatorUtils.manhattanDistance(problem, solutionI, solutionJ));
+					min = Math.min(min, solutionI.manhattanDistance(solutionJ));
 				}
 			}
 

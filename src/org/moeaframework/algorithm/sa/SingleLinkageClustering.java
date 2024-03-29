@@ -96,8 +96,7 @@ class SingleLinkageClustering {
 		}
 		
 		/**		
-		 * @param reference
-		 *            the reference cluster
+		 * @param reference the reference cluster
 		 * @return the distance between the clusters by selecting closest solutions in both clusters
 		 */
 		public double distance(Cluster reference) {
@@ -105,7 +104,7 @@ class SingleLinkageClustering {
 			
 			for (Solution solution : this.elements) {
 				for (Solution referenceSolution : reference.elements) {
-					double distance = solution.distanceTo(referenceSolution);
+					double distance = solution.euclideanDistance(referenceSolution);
 					
 					if (distance < minDistance) {
 						minDistance=distance;
@@ -131,7 +130,7 @@ class SingleLinkageClustering {
 						continue;
 					}
 					
-					distance += elements.get(i).distanceTo(elements.get(j));
+					distance += elements.get(i).euclideanDistance(elements.get(j));
 				}
 				
 				if (distance < minDistance) {
