@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -52,7 +53,6 @@ import org.moeaframework.core.indicator.Spacing;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.util.format.Displayable;
 import org.moeaframework.util.format.NumberFormatter;
-import org.moeaframework.util.io.FileUtils;
 import org.moeaframework.util.statistics.KruskalWallisTest;
 import org.moeaframework.util.statistics.MannWhitneyUTest;
 
@@ -496,7 +496,7 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 	 * @throws IOException if an I/O error occurred
 	 */
 	public Analyzer saveData(File directory, String prefix, String suffix) throws IOException {
-		FileUtils.mkdir(directory);
+		Files.createDirectories(directory.toPath());
 
 		for (String algorithm : data.keySet()) {
 			saveAs(algorithm, new File(directory, prefix + algorithm + suffix));

@@ -18,11 +18,12 @@
 package org.moeaframework.analysis.tools;
 
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 
 import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.TestUtils;
-import org.moeaframework.util.io.FileUtils;
 
 public class NegaterTest {
     
@@ -45,7 +46,8 @@ public class NegaterTest {
     public void testDoubleNegation() throws Exception {
         File file = TestUtils.createTempFile("0.0 0.1 -0.1 -0.1\n#foo bar\n5.12e-10 -5.12e10 0.5 0.000001");
         File copy = TestUtils.createTempFile();
-        FileUtils.copy(file, copy);
+        
+        Files.copy(file.toPath(), copy.toPath(), StandardCopyOption.REPLACE_EXISTING);
         
         Negater.main(new String[] {
                "-d", "1,1,0,1",
@@ -64,7 +66,8 @@ public class NegaterTest {
     public void testNoOverwriteOnError1() throws Exception {
         File file = TestUtils.createTempFile("0.0 0.1 -0.1 -0.1\n#foo bar\n5.12e-10 -5.12e10 0.5");
         File copy = TestUtils.createTempFile();
-        FileUtils.copy(file, copy);
+        
+        Files.copy(file.toPath(), copy.toPath(), StandardCopyOption.REPLACE_EXISTING);
 
         Negater.main(new String[] {
                "-d", "1,1,0,1",
@@ -78,7 +81,8 @@ public class NegaterTest {
     public void testNoOverwriteOnError2() throws Exception {
         File file = TestUtils.createTempFile("0.0 0.1 -0.1 -0.1\n#foo bar\n5.12e-10 0,1,2 0.5 0.000001");
         File copy = TestUtils.createTempFile();
-        FileUtils.copy(file, copy);
+        
+        Files.copy(file.toPath(), copy.toPath(), StandardCopyOption.REPLACE_EXISTING);
 
         Negater.main(new String[] {
                "-d", "1,1,0,1",

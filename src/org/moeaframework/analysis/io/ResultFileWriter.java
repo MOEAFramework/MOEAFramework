@@ -34,7 +34,6 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variable;
 import org.moeaframework.util.TypedProperties;
 import org.moeaframework.util.io.CommentedLineReader;
-import org.moeaframework.util.io.FileUtils;
 
 /**
  * Writes result files. A result file contains one or more entries consisting of a non-dominated population and
@@ -121,11 +120,7 @@ public class ResultFileWriter implements OutputWriter {
 			}
 
 			// next, replace the original only if any changes were made
-			if (FileUtils.areIdentical(tempFile, file)) {
-				FileUtils.delete(tempFile);
-			} else {
-				FileUtils.move(tempFile, file);
-			}
+			OutputWriter.replace(tempFile, file);
 
 			// lastly, open the file in append mode
 			writer = new PrintWriter(new BufferedWriter(new FileWriter(file, true)), true);

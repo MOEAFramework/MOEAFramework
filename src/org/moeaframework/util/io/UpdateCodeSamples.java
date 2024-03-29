@@ -25,8 +25,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumSet;
@@ -264,9 +266,9 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		}
 		
 		if (update) {
-			FileUtils.move(tempFile, file);
+			Files.move(tempFile.toPath(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
 		} else {
-			FileUtils.delete(tempFile);
+			Files.deleteIfExists(tempFile.toPath());
 		}
 		
 		return fileChanged;
@@ -289,7 +291,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		}
 		
 		if (uri == null || uri.getScheme() == null || uri.getScheme().equalsIgnoreCase("file")) {
-			return FileUtils.readUTF8(new File(path));
+			return Files.readString(Path.of(path), StandardCharsets.UTF_8);
 		} else if (uri.getScheme().equalsIgnoreCase("http") || uri.getScheme().equalsIgnoreCase("https")) {
 			if (!uri.getHost().equalsIgnoreCase("raw.githubusercontent.com") ||
 					!uri.getPath().startsWith("/MOEAFramework/")) {

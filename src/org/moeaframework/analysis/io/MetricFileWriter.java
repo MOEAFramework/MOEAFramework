@@ -27,7 +27,6 @@ import java.util.Optional;
 import org.moeaframework.core.configuration.Validate;
 import org.moeaframework.core.indicator.Indicators;
 import org.moeaframework.core.indicator.Indicators.IndicatorValues;
-import org.moeaframework.util.io.FileUtils;
 
 /**
  * Writes metric files. A metric file is the output of {@code Evaluator} and contains on each line one or more
@@ -106,17 +105,12 @@ public class MetricFileWriter implements OutputWriter {
 					}
 
 					writer.println();
-
 					numberOfEntries++;
 				}
 			}
 
 			// next, replace the original only if any changes were made
-			if (FileUtils.areIdentical(tempFile, file)) {
-				FileUtils.delete(tempFile);
-			} else {
-				FileUtils.move(tempFile, file);
-			}
+			OutputWriter.replace(tempFile, file);
 
 			// lastly, open the file in append mode
 			writer = new PrintWriter(new BufferedWriter(new FileWriter(file, true)), true);

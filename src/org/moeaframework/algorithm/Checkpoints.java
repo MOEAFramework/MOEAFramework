@@ -25,10 +25,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.PeriodicAction;
-import org.moeaframework.util.io.FileUtils;
 
 /**
  * Decorates an {@link Algorithm} to periodically save checkpoint files from which the algorithm can resume itself if
@@ -86,7 +87,7 @@ public class Checkpoints extends PeriodicAction {
 			algorithm.saveState(oos);
 		}
 		
-		FileUtils.move(tempFile, stateFile);
+		Files.move(tempFile.toPath(), stateFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
 	}
 
 	/**

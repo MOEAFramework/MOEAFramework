@@ -18,17 +18,15 @@
 package org.moeaframework;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
-import java.io.StringWriter;
 import java.lang.reflect.Method;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.BitSet;
@@ -339,17 +337,7 @@ public class TestUtils {
 	 * @throws IOException if an I/O error occurred
 	 */
 	public static byte[] loadBytes(File file) throws IOException {
-		int length = 0;
-		byte[] buffer = new byte[Settings.BUFFER_SIZE];
-		
-		try (FileInputStream fis = new FileInputStream(file);
-			 ByteArrayOutputStream bytes = new ByteArrayOutputStream()) {
-			while ((length = fis.read(buffer)) != -1) {
-				bytes.write(buffer, 0, length);
-			}
-			
-			return bytes.toByteArray();
-		}
+		return Files.readAllBytes(file.toPath());
 	}
 	
 	/**
@@ -360,17 +348,7 @@ public class TestUtils {
 	 * @throws IOException if an I/O error occurred
 	 */
 	public static String loadText(File file) throws IOException {
-		int length = 0;
-		char[] buffer = new char[Settings.BUFFER_SIZE];
-		
-		try (FileReader in = new FileReader(file);
-			 StringWriter out = new StringWriter()) {
-			while ((length = in.read(buffer)) != -1) {
-				out.write(buffer, 0, length);
-			}
-			
-			return out.toString();
-		}
+		return Files.readString(file.toPath(), StandardCharsets.UTF_8);
 	}
 	
 	/**

@@ -31,7 +31,6 @@ import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.core.spi.AlgorithmFactoryTestWrapper;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.core.spi.ProblemFactoryTestWrapper;
-import org.moeaframework.util.io.FileUtils;
 
 /**
  * Integration tests for the command line utilities.  These tests only automate checks to ensure the command line
@@ -387,7 +386,6 @@ public class IntegrationTest {
 				"-o", parameterFile.getPath() });
 		
 		File resultFolder = Files.createTempDirectory("results").toFile();
-		FileUtils.mkdir(resultFolder);
 		
 		RuntimeEvaluator.main(new String[] { 
 				"-p", parameterDescriptionFile.getPath(),
@@ -410,10 +408,10 @@ public class IntegrationTest {
 			
 			TestUtils.assertLinePattern(resultInfoFile, "^.* 100$");
 			
-			FileUtils.delete(file);
+			Files.deleteIfExists(file.toPath());
 		}
 		
-		FileUtils.delete(resultFolder);
+		Files.deleteIfExists(resultFolder.toPath());
 	}
 	
 }

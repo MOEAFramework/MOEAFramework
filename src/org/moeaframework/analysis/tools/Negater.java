@@ -21,13 +21,15 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.PrintStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.moeaframework.util.CommandLineUtility;
 import org.moeaframework.util.TypedProperties;
-import org.moeaframework.util.io.FileUtils;
 
 /**
  * Command line utility for negating objective values in result files.  As the MOEA Framework only operates on
@@ -64,6 +66,7 @@ public class Negater extends CommandLineUtility {
 
         outer: for (String arg : commandLine.getArgs()) {
         	File tempFile = File.createTempFile("temp", null);
+        	tempFile.deleteOnExit();
         	
         	try (BufferedReader reader = new BufferedReader(new FileReader(arg));
         			PrintStream writer = new PrintStream(tempFile)) {
@@ -101,7 +104,7 @@ public class Negater extends CommandLineUtility {
                 continue outer;
             }
         	
-        	FileUtils.move(tempFile, new File(arg));
+        	Files.move(tempFile.toPath(), Path.of(arg), StandardCopyOption.REPLACE_EXISTING);
         }
     }
     

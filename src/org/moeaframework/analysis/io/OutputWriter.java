@@ -18,7 +18,11 @@
 package org.moeaframework.analysis.io;
 
 import java.io.Closeable;
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.Optional;
 
 import org.moeaframework.analysis.tools.Evaluator;
@@ -46,6 +50,28 @@ public interface OutputWriter extends Closeable {
 	 */
 	public void append(ResultEntry entry) throws IOException;
 	
+	/**
+	 * Replaces the destination file with the source file, but only if content is different.  This avoids changing the
+	 * modification timestamp on the file if the files are identical.
+	 * 
+	 * @param source the source file, which is required to exist
+	 * @param destination the destination file, which might not exist
+	 * @return {@code true} if the destination was updated; {@code false} otherwise
+	 * @throws IOException if an I/O error occurred
+	 */
+	public static boolean replace(File source, File destination) throws IOException {
+		Path sourcePath = source.toPath();
+		Path destinationPath = destination.toPath();
+		
+		if (!destination.exists() || Files.mismatch(sourcePath, destinationPath) >= 0) {
+			Files.move(sourcePath, destinationPath,  StandardCopyOption.REPLACE_EXISTING);
+			return true;
+		} else {
+			Files.deleteIfExists(sourcePath);
+			return false;
+		}
+	}
+		
 	/**
 	 * Common settings when creating an output writer.
 	 */

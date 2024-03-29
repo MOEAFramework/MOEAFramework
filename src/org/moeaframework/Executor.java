@@ -19,6 +19,7 @@ package org.moeaframework;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -37,7 +38,6 @@ import org.moeaframework.core.termination.MaxElapsedTime;
 import org.moeaframework.core.termination.MaxFunctionEvaluations;
 import org.moeaframework.util.TypedProperties;
 import org.moeaframework.util.distributed.DistributedProblem;
-import org.moeaframework.util.io.FileUtils;
 import org.moeaframework.util.progress.ProgressHelper;
 import org.moeaframework.util.progress.ProgressListener;
 
@@ -337,7 +337,7 @@ public class Executor extends ProblemBuilder {
 	 */
 	public Executor resetCheckpointFile() throws IOException {
 		if (checkpointFile != null) {
-			FileUtils.delete(checkpointFile);
+			Files.deleteIfExists(checkpointFile.toPath());
 		}
 		
 		return this;
