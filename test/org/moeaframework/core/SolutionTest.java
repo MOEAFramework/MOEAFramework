@@ -17,6 +17,8 @@
  */
 package org.moeaframework.core;
 
+import java.util.Map;
+
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -173,6 +175,20 @@ public class SolutionTest {
 		Assert.assertFalse(solution.hasAttribute("foo"));
 		Assert.assertNull(solution.getAttribute("foo"));
 	}
+	
+	@Test
+	public void testRemoveAttribute() {
+		solution.setAttribute("foo", "other");
+		solution.removeAttribute("foo");
+		Assert.assertFalse(solution.hasAttribute("foo"));
+		Assert.assertNull(solution.getAttribute("foo"));
+	}
+	
+	@Test
+	public void testAddAttributes() {
+		solution.addAttributes(Map.of("foo", "other"));
+		Assert.assertEquals("other", solution.getAttribute("foo"));
+	}
 
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testSetVariableBoundsChecking1() {
@@ -243,24 +259,6 @@ public class SolutionTest {
 	public void testSetConstraintsBoundsChecking() {
 		solution.setConstraints(new double[] { 0.0, 1.0, 2.0 });
 	}
-
-	@Test
-	public void testObjectiveConstructor() {
-		double[] objectives = new double[] { 1.0, 2.0 };
-		Solution solution = new Solution(objectives);
-
-		// correct internal state
-		Assert.assertEquals(0, solution.getNumberOfVariables());
-		Assert.assertEquals(2, solution.getNumberOfObjectives());
-		Assert.assertEquals(0, solution.getNumberOfConstraints());
-		Assert.assertEquals(0, solution.getAttributes().size());
-		Assert.assertEquals(1.0, solution.getObjective(0), Settings.EPS);
-		Assert.assertEquals(2.0, solution.getObjective(1), Settings.EPS);
-
-		// check if objectives were defensively copied
-		objectives[0] = 0.0;
-		Assert.assertEquals(1.0, solution.getObjective(0), Settings.EPS);
-	}
 	
 	@Test
 	public void testDeepCopy() {
@@ -320,8 +318,8 @@ public class SolutionTest {
 	
 	@Test
 	public void testEuclideanDistance() {
-		Solution s1 = new Solution(new double[] { 0.0, 1.0, 0.0 });
-		Solution s2 = new Solution(new double[] { 0.0, 0.0, -1.0 });
+		Solution s1 = MockSolution.of().withObjectives(0.0, 1.0, 0.0);
+		Solution s2 = MockSolution.of().withObjectives(0.0, 0.0, -1.0);
 
 		Assert.assertEquals(Math.sqrt(2.0), s1.euclideanDistance(s2), Settings.EPS);
 		Assert.assertEquals(Math.sqrt(2.0), s2.euclideanDistance(s1), Settings.EPS);
@@ -331,8 +329,8 @@ public class SolutionTest {
 	
 	@Test
 	public void testManhattanDistance() {
-		Solution s1 = new Solution(new double[] { 0.0, 1.0, 0.0 });
-		Solution s2 = new Solution(new double[] { 0.0, 0.0, -1.0 });
+		Solution s1 = MockSolution.of().withObjectives(0.0, 1.0, 0.0);
+		Solution s2 = MockSolution.of().withObjectives(0.0, 0.0, -1.0);
 
 		Assert.assertEquals(2.0, s1.manhattanDistance(s2), Settings.EPS);
 		Assert.assertEquals(2.0, s2.manhattanDistance(s1), Settings.EPS);
@@ -342,15 +340,15 @@ public class SolutionTest {
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void testEuclideanDistanceThrowsIfLengthDiffers() {
-		Solution s1 = new Solution(new double[] { 0.0, 1.0, 0.0 });
-		Solution s2 = new Solution(new double[] { 0.0, -1.0 });
+		Solution s1 = MockSolution.of().withObjectives(0.0, 1.0, 0.0);
+		Solution s2 = MockSolution.of().withObjectives(0.0, -1.0);
 		s1.euclideanDistance(s2);
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void testManhattanDistanceThrowsIfLengthDiffers() {
-		Solution s1 = new Solution(new double[] { 0.0, 1.0, 0.0 });
-		Solution s2 = new Solution(new double[] { 0.0, -1.0 });
+		Solution s1 = MockSolution.of().withObjectives(0.0, 1.0, 0.0);
+		Solution s2 = MockSolution.of().withObjectives(0.0, -1.0);
 		s1.manhattanDistance(s2);
 	}
 	

@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.MessageFormat;
+import java.util.List;
 
 import org.apache.commons.text.StringTokenizer;
 import org.moeaframework.core.FrameworkException;
@@ -181,13 +182,13 @@ public class NativeHypervolume extends NormalizedIndicator {
 				referencePointFile = File.createTempFile("referencePoint", null);
 				referencePointFile.deleteOnExit();
 
-				Solution referencePoint = new Solution(new double[problem.getNumberOfObjectives()]);
+				Solution referencePoint = new Solution(0, problem.getNumberOfObjectives());
 
 				for (int i = 0; i < problem.getNumberOfObjectives(); i++) {
 					referencePoint.setObjective(i, nadirPoint);
 				}
 
-				new Population(new Solution[] { referencePoint }).saveObjectives(referencePointFile);
+				new Population(List.of(referencePoint)).saveObjectives(referencePointFile);
 			}
 			
 			//conditionally generate reference point argument

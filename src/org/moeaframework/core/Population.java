@@ -366,10 +366,11 @@ public class Population implements Iterable<Solution>, Formattable<Solution>, St
 	public void saveObjectives(File file) throws IOException {
 		try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
 			for (Solution solution : this) {
-				writer.write(Double.toString(solution.getObjective(0)));
-
-				for (int i = 1; i < solution.getNumberOfObjectives(); i++) {
-					writer.write(" ");
+				for (int i = 0; i < solution.getNumberOfObjectives(); i++) {
+					if (i > 0) {
+						writer.write(" ");
+					}
+					
 					writer.write(Double.toString(solution.getObjective(i)));
 				}
 
@@ -406,13 +407,13 @@ public class Population implements Iterable<Solution>, Formattable<Solution>, St
 		
 		while ((line = reader.readLine()) != null) {
 			String[] tokens = line.trim().split("\\s+");
-			double[] values = new double[tokens.length];
+			Solution solution = new Solution(0, tokens.length);
 
 			for (int i = 0; i < tokens.length; i++) {
-				values[i] = Double.parseDouble(tokens[i]);
+				solution.setObjective(i, Double.parseDouble(tokens[i]));
 			}
 
-			population.add(new Solution(values));
+			population.add(solution);
 		}
 		
 		return population;

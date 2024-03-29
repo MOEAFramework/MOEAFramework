@@ -55,9 +55,7 @@ public class TargetObjectiveTermination implements TerminationCondition {
 	 * @param epsilon the allowed error
 	 */
 	public TargetObjectiveTermination(double[] target, double epsilon) {
-		super();
-		this.target = new Solution(target);
-		this.epsilon = epsilon;
+		this(toSolution(target), epsilon);
 	}
 	
 	/**
@@ -97,6 +95,12 @@ public class TargetObjectiveTermination implements TerminationCondition {
 		}
 		
 		return false;
+	}
+	
+	private static final Solution toSolution(double[] objectives) {
+		Solution solution = new Solution(0, objectives.length);
+		solution.setObjectives(objectives);
+		return solution;
 	}
 
 }

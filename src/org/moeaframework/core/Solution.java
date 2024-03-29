@@ -77,24 +77,11 @@ public class Solution implements Formattable<Solution>, Serializable {
 	 * @param numberOfConstraints the number of constraints defined by this solution
 	 */
 	public Solution(int numberOfVariables, int numberOfObjectives, int numberOfConstraints) {
+		super();
 		variables = new Variable[numberOfVariables];
 		objectives = new double[numberOfObjectives];
 		constraints = new double[numberOfConstraints];
 		attributes = new HashMap<String, Serializable>();
-	}
-
-	/**
-	 * Constructs a solution with no variables and the specified objectives.  This is intended for creating reference
-	 * set solutions.
-	 * 
-	 * @param objectives the objectives to be stored in this solution
-	 */
-	public Solution(double[] objectives) {
-		this(0, objectives.length, 0);
-
-		for (int i = 0; i < objectives.length; i++) {
-			setObjective(i, objectives[i]);
-		}
 	}
 
 	/**
