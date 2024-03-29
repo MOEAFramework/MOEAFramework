@@ -118,8 +118,7 @@ public class RandomGenerator implements WeightGenerator {
 			weights.add(weight);
 		}
 
-		// fill in remaining weights with the weight vector with the largest
-		// distance from the assigned weights
+		// fill in remaining weights with the weight vector with the largest distance from the assigned weights
 		while (weights.size() < numberOfPoints) {
 			double[] weight = null;
 			double distance = Double.NEGATIVE_INFINITY;

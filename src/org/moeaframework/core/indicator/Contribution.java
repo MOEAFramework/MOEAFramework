@@ -17,7 +17,6 @@
  */
 package org.moeaframework.core.indicator;
 
-import org.apache.commons.math3.util.MathArrays;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.Epsilons;
 import org.moeaframework.core.Indicator;
@@ -110,7 +109,7 @@ public class Contribution implements Indicator {
 			
 			for (Solution solution2 : approximationSet) {
 				if (comparator == null) {
-					double distance = MathArrays.distance(solution1.getObjectives(), solution2.getObjectives());
+					double distance = solution1.euclideanDistance(solution2);
 					
 					if (distance < Settings.EPS) {
 						match = true;

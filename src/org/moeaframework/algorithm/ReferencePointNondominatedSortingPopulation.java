@@ -59,7 +59,8 @@ import org.moeaframework.util.weights.NormalBoundaryDivisions;
  *       Evolutionary Computation, 18(4):577-601, 2014.
  *   <li>Deb, K. and Jain, H.  "Handling Many-Objective Problems Using an Improved NSGA-II Procedure.  WCCI 2012 IEEE
  *       World Contress on Computational Intelligence, Brisbane, Australia, June 10-15, 2012.
- *   <li><a href="http://web.ntnu.edu.tw/~tcchiang/publications/nsga3cpp/nsga3cpp.htm">C++ Implementation by Tsung-Che Chiang</a>
+ *   <li><a href="http://web.ntnu.edu.tw/~tcchiang/publications/nsga3cpp/nsga3cpp.htm">C++ Implementation by Tsung-Che
+ *       Chiang</a>
  * </ol>
  */
 public class ReferencePointNondominatedSortingPopulation extends NondominatedSortingPopulation {
@@ -104,7 +105,8 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 	}
 
 	/**
-	 * Constructs a new population with the specified solutions that maintains the {@code rank} attribute for its solutions.
+	 * Constructs a new population with the specified solutions that maintains the {@code rank} attribute for its
+	 * solutions.
 	 * 
 	 * @param numberOfObjectives the number of objectives
 	 * @param divisions the number of divisions
@@ -420,8 +422,7 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 	 * @return the minimum distance
 	 */
 	protected static double pointLineDistance(double[] line, double[] point) {
-		return Vector.magnitude(Vector.subtract(Vector.multiply(
-				Vector.dot(line, point) / Vector.dot(line, line),
+		return Vector.magnitude(Vector.subtract(Vector.multiply(Vector.dot(line, point) / Vector.dot(line, line),
 				line), point));
 	}
 
@@ -558,7 +559,8 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 					if (potentialMembers.get(minIndex).isEmpty()) {
 						excluded.add(minIndex);
 					} else {
-						Solution minSolution = findSolutionWithMinimumDistance(potentialMembers.get(minIndex), weights.get(minIndex));
+						Solution minSolution = findSolutionWithMinimumDistance(potentialMembers.get(minIndex),
+								weights.get(minIndex));
 						add(minSolution);
 						members.get(minIndex).add(minSolution);
 						potentialMembers.get(minIndex).remove(minSolution);
