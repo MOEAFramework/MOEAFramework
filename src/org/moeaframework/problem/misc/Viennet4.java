@@ -62,9 +62,9 @@ public class Viennet4 extends AbstractProblem {
 		double c2 = x + 1.0 - Double.MIN_VALUE;
 		double c3 = y - x + 2.0 - Double.MIN_VALUE;
 		
-		solution.setObjective(0, f1);
-		solution.setObjective(1, f2);
-		solution.setObjective(2, f3);
+		solution.setObjectiveValue(0, f1);
+		solution.setObjectiveValue(1, f2);
+		solution.setObjectiveValue(2, f3);
 		solution.setConstraint(0, Constraint.greaterThanOrEqual(c1, 0.0));
 		solution.setConstraint(1, Constraint.greaterThanOrEqual(c2, 0.0));
 		solution.setConstraint(2, Constraint.greaterThanOrEqual(c3, 0.0));

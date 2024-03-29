@@ -161,8 +161,8 @@ public class NondominatedSorting {
 			for (int i = 0; i < numberOfObjectives; i++) {
 				front.sort(new ObjectiveComparator(i));
 
-				double minObjective = front.get(0).getObjective(i);
-				double maxObjective = front.get(n - 1).getObjective(i);
+				double minObjective = front.get(0).getObjective(i).getValue();
+				double maxObjective = front.get(n - 1).getObjective(i).getValue();
 				
 				if (maxObjective - minObjective >= Settings.EPS) {
 					setCrowding(front.get(0), Double.POSITIVE_INFINITY);
@@ -170,7 +170,7 @@ public class NondominatedSorting {
 
 					for (int j = 1; j < n - 1; j++) {
 						double distance = getCrowding(front.get(j));
-						distance += (front.get(j + 1).getObjective(i) - front.get(j - 1).getObjective(i))
+						distance += (front.get(j + 1).getObjective(i).getValue() - front.get(j - 1).getObjective(i).getValue())
 								/ (maxObjective - minObjective);
 						setCrowding(front.get(j), distance);
 					}

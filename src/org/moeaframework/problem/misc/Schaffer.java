@@ -56,8 +56,8 @@ public class Schaffer extends AbstractProblem implements AnalyticalProblem {
 	public void evaluate(Solution solution) {
 		double x = EncodingUtils.getReal(solution.getVariable(0));
 		
-		solution.setObjective(0, Math.pow(x, 2.0));
-		solution.setObjective(1, Math.pow(x - 2.0, 2.0));
+		solution.setObjectiveValue(0, Math.pow(x, 2.0));
+		solution.setObjectiveValue(1, Math.pow(x - 2.0, 2.0));
 	}
 
 	@Override

@@ -104,8 +104,8 @@ public class SolutionTest {
 	}
 	
 	@Test
-	public void testGetConstraints() {
-		double[] constraints = solution.getConstraints();
+	public void testGetConstraintValues() {
+		double[] constraints = solution.getConstraintValues();
 
 		// returned array contains correct data
 		Assert.assertEquals(2, constraints.length);
@@ -118,9 +118,9 @@ public class SolutionTest {
 	}
 
 	@Test
-	public void testSetObjectives() {
+	public void testSetObjectiveValues() {
 		double[] objectives = new double[] { 3.0, 4.0 };
-		solution.setObjectives(objectives);
+		solution.setObjectiveValues(objectives);
 
 		// stored array contains correct data
 		Assert.assertEquals(2, solution.getNumberOfObjectives());

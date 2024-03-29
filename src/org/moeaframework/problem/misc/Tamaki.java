@@ -55,9 +55,9 @@ public class Tamaki extends AbstractProblem {
 		double z = ((RealVariable)solution.getVariable(2)).getValue();
 		double c = Math.pow(x, 2.0) + Math.pow(y, 2.0) + Math.pow(z, 2.0) - 1.0;
 		
-		solution.setObjective(0, -x);
-		solution.setObjective(1, -y);
-		solution.setObjective(2, -z);
+		solution.setObjectiveValue(0, -x);
+		solution.setObjectiveValue(1, -y);
+		solution.setObjectiveValue(2, -z);
 		solution.setConstraint(0, Constraint.lessThanOrEqual(c, 0.0));
 	}
 

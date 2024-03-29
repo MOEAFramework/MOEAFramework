@@ -58,8 +58,8 @@ public class Laumanns extends AbstractProblem implements AnalyticalProblem {
 		double f1 = Math.pow(x, 2.0) + Math.pow(y, 2.0);
 		double f2 = Math.pow(x+2.0, 2.0) + Math.pow(y, 2.0);
 		
-		solution.setObjective(0, f1);
-		solution.setObjective(1, f2);
+		solution.setObjectiveValue(0, f1);
+		solution.setObjectiveValue(1, f2);
 	}
 
 	@Override

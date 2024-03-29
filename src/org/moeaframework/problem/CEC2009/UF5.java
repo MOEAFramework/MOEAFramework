@@ -50,7 +50,7 @@ public class UF5 extends AbstractProblem {
 
 		CEC2009.UF5(x, f, numberOfVariables);
 
-		solution.setObjectives(f);
+		solution.setObjectiveValues(f);
 	}
 
 	@Override

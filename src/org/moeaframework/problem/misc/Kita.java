@@ -60,8 +60,8 @@ public class Kita extends AbstractProblem {
 		double c2 = 0.5*x + y - 15.0/2.0;
 		double c3 = 5.0*x + y - 30.0;
 		
-		solution.setObjective(0, -f1);
-		solution.setObjective(1, -f2);
+		solution.setObjectiveValue(0, -f1);
+		solution.setObjectiveValue(1, -f2);
 		solution.setConstraint(0, Constraint.lessThanOrEqual(c1, 0.0));
 		solution.setConstraint(1, Constraint.lessThanOrEqual(c2, 0.0));
 		solution.setConstraint(2, Constraint.lessThanOrEqual(c3, 0.0));

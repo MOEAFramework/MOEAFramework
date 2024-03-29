@@ -56,8 +56,8 @@ public class Rendon2 extends AbstractProblem implements AnalyticalProblem {
 		double f1 = x + y + 1.0;
 		double f2 = Math.pow(x,  2.0) + 2.0*y - 1.0;
 		
-		solution.setObjective(0, f1);
-		solution.setObjective(1, f2);
+		solution.setObjectiveValue(0, f1);
+		solution.setObjectiveValue(1, f2);
 	}
 
 	@Override

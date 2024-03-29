@@ -89,7 +89,7 @@ public class DTLZ5 extends DTLZ {
 			}
 		}
 
-		solution.setObjectives(f);
+		solution.setObjectiveValues(f);
 	}
 
 	@Override

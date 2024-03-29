@@ -99,7 +99,7 @@ public class TargetObjectiveTermination implements TerminationCondition {
 	
 	private static final Solution toSolution(double[] objectives) {
 		Solution solution = new Solution(0, objectives.length);
-		solution.setObjectives(objectives);
+		solution.setObjectiveValues(objectives);
 		return solution;
 	}
 

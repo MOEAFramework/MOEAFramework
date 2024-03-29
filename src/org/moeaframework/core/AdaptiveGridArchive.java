@@ -298,8 +298,8 @@ public class AdaptiveGridArchive extends NondominatedPopulation {
 
 		for (Solution solution : this) {
 			for (int i = 0; i < problem.getNumberOfObjectives(); i++) {
-				minimum[i] = Math.min(minimum[i], solution.getObjective(i));
-				maximum[i] = Math.max(maximum[i], solution.getObjective(i));
+				minimum[i] = Math.min(minimum[i], solution.getObjective(i).getValue());
+				maximum[i] = Math.max(maximum[i], solution.getObjective(i).getValue());
 			}
 		}
 
@@ -320,7 +320,7 @@ public class AdaptiveGridArchive extends NondominatedPopulation {
 		int index = 0;
 
 		for (int i = 0; i < problem.getNumberOfObjectives(); i++) {
-			double value = solution.getObjective(i);
+			double value = solution.getObjective(i).getValue();
 
 			if ((value < minimum[i]) || (value > maximum[i])) {
 				return -1;

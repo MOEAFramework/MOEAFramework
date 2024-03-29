@@ -344,12 +344,12 @@ public class Population implements Iterable<Solution>, Formattable<Solution>, St
 			
 			for (int i = 0; i < solution.getNumberOfObjectives(); i++) {
 				final int index = i;
-				data.addColumn(new Column<Solution, Double>("Obj" + (index+1), s -> s.getObjective(index)));
+				data.addColumn(new Column<Solution, Double>("Obj" + (index+1), s -> s.getObjective(index).getValue()));
 			}
 			
 			for (int i = 0; i < solution.getNumberOfConstraints(); i++) {
 				final int index = i;
-				data.addColumn(new Column<Solution, Double>("Constr" + (index+1), s -> s.getConstraint(index)));
+				data.addColumn(new Column<Solution, Double>("Constr" + (index+1), s -> s.getConstraint(index).getValue()));
 			}
 		}
 		
@@ -371,7 +371,7 @@ public class Population implements Iterable<Solution>, Formattable<Solution>, St
 						writer.write(" ");
 					}
 					
-					writer.write(Double.toString(solution.getObjective(i)));
+					writer.write(Double.toString(solution.getObjective(i).getValue()));
 				}
 
 				writer.newLine();
@@ -410,7 +410,7 @@ public class Population implements Iterable<Solution>, Formattable<Solution>, St
 			Solution solution = new Solution(0, tokens.length);
 
 			for (int i = 0; i < tokens.length; i++) {
-				solution.setObjective(i, Double.parseDouble(tokens[i]));
+				solution.getObjective(i).setValue(Double.parseDouble(tokens[i]));
 			}
 
 			population.add(solution);

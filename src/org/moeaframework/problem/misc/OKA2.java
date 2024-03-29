@@ -45,8 +45,8 @@ public class OKA2 extends AbstractProblem {
 	public void evaluate(Solution solution) {
 		double[] x = EncodingUtils.getReal(solution);
 
-		solution.setObjective(0, x[0]);
-		solution.setObjective(1, 1.0 -
+		solution.setObjectiveValue(0, x[0]);
+		solution.setObjectiveValue(1, 1.0 -
 				1.0 / (4.0 * Math.pow(Math.PI, 2.0)) * Math.pow(x[0] + Math.PI, 2.0) +
 				Math.pow(Math.abs(x[1] - 5.0 * Math.cos(x[0])), 1.0 / 3.0) +
 				Math.pow(Math.abs(x[2] - 5.0 * Math.sin(x[0])), 1.0 / 3.0));

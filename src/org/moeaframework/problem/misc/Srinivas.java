@@ -58,8 +58,8 @@ public class Srinivas extends AbstractProblem {
 		double c1 = Math.pow(x, 2.0) + Math.pow(y, 2.0) - 225.0;
 		double c2 = x - 3.0*y + 10.0;
 		
-		solution.setObjective(0, f1);
-		solution.setObjective(1, f2);
+		solution.setObjectiveValue(0, f1);
+		solution.setObjectiveValue(1, f2);
 		solution.setConstraint(0, Constraint.lessThanOrEqual(c1, 0.0));
 		solution.setConstraint(1, Constraint.lessThanOrEqual(c2, 0.0));
 	}

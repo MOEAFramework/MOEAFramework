@@ -17,9 +17,10 @@
  */
 package org.moeaframework.problem.misc;
 
-import org.moeaframework.core.Constraint;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.constraint.LessThanOrEqual;
+import org.moeaframework.core.objective.Maximize;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.problem.AbstractProblem;
 import org.moeaframework.problem.AnalyticalProblem;
@@ -32,7 +33,7 @@ import org.moeaframework.problem.AnalyticalProblem;
  *   <li>Connected and symmetric Pareto set
  *   <li>Convex Pareto front
  *   <li>Constrained
- *   <li>Maximization (objectives are negated)
+ *   <li>Maximization
  * </ul>
  * <p>
  * References:
@@ -59,9 +60,9 @@ public class Obayashi extends AbstractProblem implements AnalyticalProblem {
 		double y = EncodingUtils.getReal(solution.getVariable(1));
 		double c = Math.pow(x, 2.0) + Math.pow(y, 2.0) - 1.0;
 		
-		solution.setObjective(0, -x);
-		solution.setObjective(1, -y);
-		solution.setConstraint(0, Constraint.lessThanOrEqual(c, 0.0));
+		solution.setObjectiveValue(0, x);
+		solution.setObjectiveValue(1, y);
+		solution.setConstraintValue(0, c);
 	}
 
 	@Override
@@ -70,6 +71,11 @@ public class Obayashi extends AbstractProblem implements AnalyticalProblem {
 		
 		solution.setVariable(0, EncodingUtils.newReal(0.0, 1.0));
 		solution.setVariable(1, EncodingUtils.newReal(0.0, 1.0));
+		
+		solution.setObjective(0, new Maximize());
+		solution.setObjective(1, new Maximize());
+		
+		solution.setConstraint(0, LessThanOrEqual.to(0.0));
 		
 		return solution;
 	}

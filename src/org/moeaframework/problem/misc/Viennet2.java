@@ -55,9 +55,9 @@ public class Viennet2 extends AbstractProblem {
 		double f2 = Math.pow(x + y - 3.0, 2.0) / 36.0 + Math.pow(-x + y + 2.0, 2.0) / 8.0 - 17.0;
 		double f3 = Math.pow(x + 2.0*y - 1.0, 2.0) / 175.0 + Math.pow(2.0*y - x, 2.0) / 17.0 - 13.0;
 		
-		solution.setObjective(0, f1);
-		solution.setObjective(1, f2);
-		solution.setObjective(2, f3);
+		solution.setObjectiveValue(0, f1);
+		solution.setObjectiveValue(1, f2);
+		solution.setObjectiveValue(2, f3);
 	}
 
 	@Override

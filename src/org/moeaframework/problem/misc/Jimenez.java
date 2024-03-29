@@ -63,8 +63,8 @@ public class Jimenez extends AbstractProblem implements AnalyticalProblem {
 		double c3 = 200.0 - 5.0*x - 3.0*y;
 		double c4 = 75.0 - 2.0*x - 8.0*y;
 		
-		solution.setObjective(0, -f1);
-		solution.setObjective(1, -f2);
+		solution.setObjectiveValue(0, -f1);
+		solution.setObjectiveValue(1, -f2);
 		solution.setConstraint(0, Constraint.lessThanOrEqual(c1, 0.0));
 		solution.setConstraint(1, Constraint.lessThanOrEqual(c2, 0.0));
 		solution.setConstraint(2, Constraint.lessThanOrEqual(c3, 0.0));

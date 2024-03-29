@@ -58,16 +58,16 @@ public class Schaffer2 extends AbstractProblem implements AnalyticalProblem {
 		double x = EncodingUtils.getReal(solution.getVariable(0));
 		
 		if (x <= 1.0) {
-			solution.setObjective(0, -x);
+			solution.setObjectiveValue(0, -x);
 		} else if (x <= 3.0) {
-			solution.setObjective(0, -2.0 + x);
+			solution.setObjectiveValue(0, -2.0 + x);
 		} else if (x <= 4.0) {
-			solution.setObjective(0, 4.0 - x);
+			solution.setObjectiveValue(0, 4.0 - x);
 		} else {
-			solution.setObjective(0, -4.0 + x);
+			solution.setObjectiveValue(0, -4.0 + x);
 		}
 		
-		solution.setObjective(1, Math.pow(x - 5.0, 2.0));
+		solution.setObjectiveValue(1, Math.pow(x - 5.0, 2.0));
 	}
 
 	@Override

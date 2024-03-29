@@ -58,8 +58,8 @@ public class Osyczka extends AbstractProblem {
 		double c1 = 12.0 - x - y;
 		double c2 = Math.pow(x, 2.0) + 10.0*x - Math.pow(y, 2.0) + 16.0*y - 80.0;
 		
-		solution.setObjective(0, f1);
-		solution.setObjective(1, f2);
+		solution.setObjectiveValue(0, f1);
+		solution.setObjectiveValue(1, f2);
 		solution.setConstraint(0, Constraint.greaterThanOrEqual(c1, 0.0));
 		solution.setConstraint(1, Constraint.greaterThanOrEqual(c2, 0.0));
 	}
