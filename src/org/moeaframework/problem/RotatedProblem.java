@@ -26,7 +26,7 @@ import org.moeaframework.util.RotationMatrixBuilder;
 import org.moeaframework.util.Vector;
 
 /**
- * Decorator to create rotated instances of test problems.  The rotation is defined by a rotation matrix, which should
+ * Decorator to create rotated variants of test problems.  The rotation is defined by a rotation matrix, which should
  * be orthogonal and have a determinant of 1.  See {@link RotationMatrixBuilder} for a utility to quickly construct
  * rotation matrices.
  * <p>

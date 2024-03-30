@@ -19,6 +19,7 @@ package org.moeaframework.algorithm;
 
 import java.io.File;
 import java.io.IOException;
+
 import org.apache.commons.math3.stat.descriptive.rank.Max;
 import org.apache.commons.math3.stat.descriptive.rank.Median;
 import org.apache.commons.math3.stat.descriptive.rank.Min;
@@ -27,13 +28,11 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.NondominatedPopulation;
-import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
-import org.moeaframework.core.Solution;
 import org.moeaframework.core.indicator.InvertedGenerationalDistance;
 import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.mock.MockRealProblem;
-import org.moeaframework.problem.ProblemWrapper;
+import org.moeaframework.problem.ScaledProblem;
 import org.moeaframework.problem.DTLZ.DTLZ1;
 import org.moeaframework.problem.DTLZ.DTLZ2;
 import org.moeaframework.problem.DTLZ.DTLZ3;
@@ -95,16 +94,16 @@ public class NSGAIIITest {
 		evaluate(new DTLZ4(10), 2000, NondominatedPopulation.loadReferenceSet(new File("DTLZ4(10)-PF.txt")));
 		evaluate(new DTLZ4(15), 3000, NondominatedPopulation.loadReferenceSet(new File("DTLZ4(15)-PF.txt")));
 		
-		new ScaledProblem(new DTLZ1(3), 10).scaleReferenceSet(new File("DTLZ1(3)-PF.txt"), new File("DTLZ1(3)-PFscaled.txt"));
-		new ScaledProblem(new DTLZ1(5), 10).scaleReferenceSet(new File("DTLZ1(5)-PF.txt"), new File("DTLZ1(5)-PFscaled.txt"));
-		new ScaledProblem(new DTLZ1(8), 3).scaleReferenceSet(new File("DTLZ1(8)-PF.txt"), new File("DTLZ1(8)-PFscaled.txt"));
-		new ScaledProblem(new DTLZ1(10), 2).scaleReferenceSet(new File("DTLZ1(10)-PF.txt"), new File("DTLZ1(10)-PFscaled.txt"));
-		new ScaledProblem(new DTLZ1(15), 1.2).scaleReferenceSet(new File("DTLZ1(15)-PF.txt"), new File("DTLZ1(15)-PFscaled.txt"));
-		new ScaledProblem(new DTLZ2(3), 10).scaleReferenceSet(new File("DTLZ2(3)-PF.txt"), new File("DTLZ2(3)-PFscaled.txt"));
-		new ScaledProblem(new DTLZ2(5), 10).scaleReferenceSet(new File("DTLZ2(5)-PF.txt"), new File("DTLZ2(5)-PFscaled.txt"));
-		new ScaledProblem(new DTLZ2(8), 3).scaleReferenceSet(new File("DTLZ2(8)-PF.txt"), new File("DTLZ2(8)-PFscaled.txt"));
-		new ScaledProblem(new DTLZ2(10), 3).scaleReferenceSet(new File("DTLZ2(10)-PF.txt"), new File("DTLZ2(10)-PFscaled.txt"));
-		new ScaledProblem(new DTLZ2(15), 2).scaleReferenceSet(new File("DTLZ2(15)-PF.txt"), new File("DTLZ2(15)-PFscaled.txt"));
+		new ScaledProblem(new DTLZ1(3), 10).createScaledReferenceSet(new File("DTLZ1(3)-PF.txt"), new File("DTLZ1(3)-PFscaled.txt"));
+		new ScaledProblem(new DTLZ1(5), 10).createScaledReferenceSet(new File("DTLZ1(5)-PF.txt"), new File("DTLZ1(5)-PFscaled.txt"));
+		new ScaledProblem(new DTLZ1(8), 3).createScaledReferenceSet(new File("DTLZ1(8)-PF.txt"), new File("DTLZ1(8)-PFscaled.txt"));
+		new ScaledProblem(new DTLZ1(10), 2).createScaledReferenceSet(new File("DTLZ1(10)-PF.txt"), new File("DTLZ1(10)-PFscaled.txt"));
+		new ScaledProblem(new DTLZ1(15), 1.2).createScaledReferenceSet(new File("DTLZ1(15)-PF.txt"), new File("DTLZ1(15)-PFscaled.txt"));
+		new ScaledProblem(new DTLZ2(3), 10).createScaledReferenceSet(new File("DTLZ2(3)-PF.txt"), new File("DTLZ2(3)-PFscaled.txt"));
+		new ScaledProblem(new DTLZ2(5), 10).createScaledReferenceSet(new File("DTLZ2(5)-PF.txt"), new File("DTLZ2(5)-PFscaled.txt"));
+		new ScaledProblem(new DTLZ2(8), 3).createScaledReferenceSet(new File("DTLZ2(8)-PF.txt"), new File("DTLZ2(8)-PFscaled.txt"));
+		new ScaledProblem(new DTLZ2(10), 3).createScaledReferenceSet(new File("DTLZ2(10)-PF.txt"), new File("DTLZ2(10)-PFscaled.txt"));
+		new ScaledProblem(new DTLZ2(15), 2).createScaledReferenceSet(new File("DTLZ2(15)-PF.txt"), new File("DTLZ2(15)-PFscaled.txt"));
 		
 		evaluate(new ScaledProblem(new DTLZ1(3), 10), 400, NondominatedPopulation.loadReferenceSet(new File("DTLZ1(3)-PFscaled.txt")));
 		evaluate(new ScaledProblem(new DTLZ1(5), 10), 600, NondominatedPopulation.loadReferenceSet(new File("DTLZ1(5)-PFscaled.txt")));
@@ -175,48 +174,6 @@ public class NSGAIIITest {
 		System.out.println("  Min: " + new Min().evaluate(igdValues));
 		System.out.println("  Med: " + new Median().evaluate(igdValues));
 		System.out.println("  Max: " + new Max().evaluate(igdValues));
-	}
-
-	private class ScaledProblem extends ProblemWrapper {
-		
-		private final double[] factors;
-		
-		public ScaledProblem(Problem problem, double base) {
-			super(problem);
-			
-			factors = new double[problem.getNumberOfObjectives()];
-			
-			for (int i = 0; i < problem.getNumberOfObjectives(); i++) {
-				factors[i] = Math.pow(base, i);
-			}
-		}
-
-		@Override
-		public String getName() {
-			return "Scaled " + super.getName();
-		}
-
-		@Override
-		public void evaluate(Solution solution) {
-			super.evaluate(solution);
-			
-			for (int i = 0; i < super.getNumberOfObjectives(); i++) {
-				solution.setObjective(i, solution.getObjective(i) * factors[i]);
-			}
-		}
-		
-		public void scaleReferenceSet(File file, File scaledFile) throws IOException {
-			Population population = Population.loadObjectives(file);
-			
-			for (Solution solution : population) {
-				for (int i = 0; i < solution.getNumberOfObjectives(); i++) {
-					solution.setObjective(i, solution.getObjective(i) * factors[i]);
-				}
-			}
-			
-			population.saveObjectives(scaledFile);
-		}
-
 	}
 	
 }

@@ -22,8 +22,14 @@ import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.problem.AbstractProblem;
 import org.moeaframework.problem.AnalyticalProblem;
 
+/**
+ * The single-objective Rosenbrock problem with an optimum at {@code x = (1, 1)} with {@code f(x) = 1}.
+ */
 public class Rosenbrock extends AbstractProblem implements AnalyticalProblem {
 	
+	/**
+	 * Constructs a new instance of the Rosenbrock problem.
+	 */
 	public Rosenbrock() {
 		super(2, 1);
 	}
