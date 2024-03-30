@@ -15,26 +15,22 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.examples.single;
+package org.moeaframework.problem.single;
 
-import java.io.IOException;
+import org.junit.Assert;
+import org.junit.Test;
+import org.moeaframework.core.Settings;
+import org.moeaframework.core.Solution;
+import org.moeaframework.problem.ProblemTest;
 
-import org.moeaframework.algorithm.single.GeneticAlgorithm;
-import org.moeaframework.core.Problem;
-import org.moeaframework.problem.single.Rosenbrock;
-
-/**
- * Demonstrates solving a single-objective problem using a genetic algorithm.
- */
-public class SingleObjectiveExample {
+public class RosenbrockTest extends ProblemTest {
 	
-	public static void main(String[] args) throws IOException {
-		Problem problem = new Rosenbrock();
-		
-		GeneticAlgorithm algorithm = new GeneticAlgorithm(problem);
-		algorithm.run(100000);
-		
-		algorithm.getResult().display();
+	@SuppressWarnings("resource")
+	@Test
+	public void test() {		
+		Rosenbrock problem = new Rosenbrock();
+		Solution idealSolution = problem.generate();
+		Assert.assertEquals(0.0, idealSolution.getObjective(0), Settings.EPS);
 	}
 
 }

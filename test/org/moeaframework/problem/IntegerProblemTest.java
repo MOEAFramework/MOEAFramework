@@ -23,6 +23,7 @@ import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
+import org.moeaframework.problem.single.Rosenbrock;
 
 /**
  * Tests a problem using integer-valued decision variables.
@@ -32,10 +33,10 @@ public class IntegerProblemTest {
 	/**
 	 * The Rosenbrock problem defined using integers instead of floating-point values.
 	 */
-	public static class StepRosenbrockProblem extends AbstractProblem {
+	public static class StepRosenbrockProblem extends Rosenbrock {
 		
 		public StepRosenbrockProblem() {
-			super(2, 1);
+			super();
 		}
 
 		@Override

@@ -28,7 +28,7 @@ import org.moeaframework.core.configuration.Configurable;
 import org.moeaframework.core.configuration.ConfigurationException;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.mock.MockRealProblem;
-import org.moeaframework.problem.RosenbrockTestProblem;
+import org.moeaframework.problem.single.Rosenbrock;
 import org.moeaframework.util.TypedProperties;
 
 public abstract class AbstractSingleObjectiveAlgorithmTest<T extends Algorithm & Configurable> extends AlgorithmTest {
@@ -64,7 +64,7 @@ public abstract class AbstractSingleObjectiveAlgorithmTest<T extends Algorithm &
 	
 	@Test
 	public void testRosenbrock() {
-		RosenbrockTestProblem problem = new RosenbrockTestProblem();
+		Rosenbrock problem = new Rosenbrock();
 		T algorithm = createInstance(problem);
 		algorithm.run(100000);
 		
@@ -72,8 +72,8 @@ public abstract class AbstractSingleObjectiveAlgorithmTest<T extends Algorithm &
 		
 		Solution solution = algorithm.getResult().get(0);
 		
-		Assert.assertArrayEquals(problem.getIdealVariables(), EncodingUtils.getReal(solution), 0.1);
-		Assert.assertEquals(problem.getIdealObjectiveValue(), solution.getObjective(0), 0.1);
+		Assert.assertArrayEquals(EncodingUtils.getReal(problem.generate()), EncodingUtils.getReal(solution), 0.1);
+		Assert.assertArrayEquals(problem.generate().getObjectives(), solution.getObjectives(), 0.1);
 	}
 
 }

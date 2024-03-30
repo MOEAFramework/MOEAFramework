@@ -15,14 +15,16 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.problem;
+package org.moeaframework.problem.single;
 
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
+import org.moeaframework.problem.AbstractProblem;
+import org.moeaframework.problem.AnalyticalProblem;
 
-public class RosenbrockTestProblem extends AbstractProblem {
+public class Rosenbrock extends AbstractProblem implements AnalyticalProblem {
 	
-	public RosenbrockTestProblem() {
+	public Rosenbrock() {
 		super(2, 1);
 	}
 
@@ -41,13 +43,13 @@ public class RosenbrockTestProblem extends AbstractProblem {
 		solution.setVariable(1, EncodingUtils.newReal(-10, 10));
 		return solution;
 	}
-	
-	public double getIdealObjectiveValue() {
-		return 0.0;
-	}
-	
-	public double[] getIdealVariables() {
-		return new double[] { 1.0, 1.0 };
+
+	@Override
+	public Solution generate() {
+		Solution solution = newSolution();
+		EncodingUtils.setReal(solution, new double[] { 1.0, 1.0 });
+		evaluate(solution);
+		return solution;
 	}
 
 }

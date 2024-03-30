@@ -31,7 +31,7 @@ import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.mock.MockRealProblem;
-import org.moeaframework.problem.RosenbrockTestProblem;
+import org.moeaframework.problem.single.Rosenbrock;
 import org.moeaframework.util.TypedProperties;
 
 @RunWith(CIRunner.class)
@@ -39,7 +39,7 @@ public class CMAESTest extends AlgorithmTest {
 	
 	@Test
 	public void testSingleObjective() {
-		RosenbrockTestProblem problem = new RosenbrockTestProblem();
+		Rosenbrock problem = new Rosenbrock();
 		
 		CMAES algorithm = new CMAES(problem);
 
@@ -51,8 +51,8 @@ public class CMAESTest extends AlgorithmTest {
 		
 		Solution solution = algorithm.getResult().get(0);
 		
-		Assert.assertArrayEquals(problem.getIdealVariables(), EncodingUtils.getReal(solution), 0.001);
-		Assert.assertEquals(problem.getIdealObjectiveValue(), solution.getObjective(0), 0.001);
+		Assert.assertArrayEquals(EncodingUtils.getReal(problem.generate()), EncodingUtils.getReal(solution), 0.001);
+		Assert.assertArrayEquals(problem.generate().getObjectives(), solution.getObjectives(), 0.001);
 	}
 
 	@Test
