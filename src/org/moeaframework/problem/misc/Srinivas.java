@@ -17,8 +17,8 @@
  */
 package org.moeaframework.problem.misc;
 
-import org.moeaframework.core.Constraint;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.constraint.LessThanOrEqual;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.AbstractProblem;
 
@@ -60,8 +60,8 @@ public class Srinivas extends AbstractProblem {
 		
 		solution.setObjectiveValue(0, f1);
 		solution.setObjectiveValue(1, f2);
-		solution.setConstraint(0, Constraint.lessThanOrEqual(c1, 0.0));
-		solution.setConstraint(1, Constraint.lessThanOrEqual(c2, 0.0));
+		solution.setConstraintValue(0, c1);
+		solution.setConstraintValue(1, c2);
 	}
 
 	@Override
@@ -70,6 +70,9 @@ public class Srinivas extends AbstractProblem {
 		
 		solution.setVariable(0, new RealVariable(-20.0, 20.0));
 		solution.setVariable(1, new RealVariable(-20.0, 20.0));
+		
+		solution.setConstraint(0, LessThanOrEqual.to(0.0));
+		solution.setConstraint(1, LessThanOrEqual.to(0.0));
 		
 		return solution;
 	}

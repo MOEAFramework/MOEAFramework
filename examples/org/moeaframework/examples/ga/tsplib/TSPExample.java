@@ -127,7 +127,7 @@ public class TSPExample {
 			heuristic.apply(tour);
 			fromTour(solution, tour);
 
-			solution.setObjective(0, tour.distance(instance));
+			solution.setObjectiveValue(0, tour.distance(instance));
 		}
 
 		@Override

@@ -201,7 +201,7 @@ public class NSGAIIITest {
 			super.evaluate(solution);
 			
 			for (int i = 0; i < super.getNumberOfObjectives(); i++) {
-				solution.setObjective(i, solution.getObjective(i) * factors[i]);
+				solution.setObjectiveValue(i, solution.getObjectiveValue(i) * factors[i]);
 			}
 		}
 		
@@ -210,7 +210,7 @@ public class NSGAIIITest {
 			
 			for (Solution solution : population) {
 				for (int i = 0; i < solution.getNumberOfObjectives(); i++) {
-					solution.setObjective(i, solution.getObjective(i) * factors[i]);
+					solution.setObjectiveValue(i, solution.getObjectiveValue(i) * factors[i]);
 				}
 			}
 			

@@ -49,7 +49,7 @@ public class NativeHypervolumeTest {
 		
 		NativeHypervolume.invert(problem, solution);
 		
-		Assert.assertArrayEquals(new double[] { 1.0, 0.0, 0.5 }, solution.getObjectives(), Settings.EPS);
+		Assert.assertArrayEquals(new double[] { 1.0, 0.0, 0.5 }, solution.getObjectiveValues(), Settings.EPS);
 	}
 	
 	@Test

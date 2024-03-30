@@ -30,19 +30,19 @@ public class TamakiTest extends ProblemTest {
 		Problem problem = new Tamaki();
 		
 		Assert.assertArrayEquals(new double[] { 0.0, 0.0, 0.0 }, 
-				evaluateAt(problem, 0.0, 0.0, 0.0).getObjectives(),
+				evaluateAt(problem, 0.0, 0.0, 0.0).getObjectiveValues(),
 				Settings.EPS);
 		
 		Assert.assertArrayEquals(new double[] { 0.0 }, 
-				evaluateAt(problem, 0.0, 0.0, 0.0).getConstraints(),
+				evaluateAt(problem, 0.0, 0.0, 0.0).getConstraintValues(),
 				Settings.EPS);
 		
 		Assert.assertArrayEquals(new double[] { -1.0, -1.0, -1.0 }, 
-				evaluateAt(problem, 1.0, 1.0, 1.0).getObjectives(),
+				evaluateAt(problem, 1.0, 1.0, 1.0).getObjectiveValues(),
 				Settings.EPS);
 		
 		Assert.assertArrayEquals(new double[] { 2.0 }, 
-				evaluateAt(problem, 1.0, 1.0, 1.0).getConstraints(),
+				evaluateAt(problem, 1.0, 1.0, 1.0).getConstraintValues(),
 				Settings.EPS);
 	}
 

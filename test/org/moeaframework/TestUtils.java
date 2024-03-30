@@ -167,13 +167,13 @@ public class TestUtils {
 		}
 
 		for (int i = 0; i < s1.getNumberOfObjectives(); i++) {
-			if (Math.abs(s1.getObjective(i) - s2.getObjective(i)) >= TestThresholds.SOLUTION_EPS) {
+			if (Math.abs(s1.getObjectiveValue(i) - s2.getObjectiveValue(i)) >= TestThresholds.SOLUTION_EPS) {
 				return false;
 			}
 		}
 
 		for (int i = 0; i < s1.getNumberOfConstraints(); i++) {
-			if (Math.abs(s1.getConstraint(i) - s2.getConstraint(i)) >= TestThresholds.SOLUTION_EPS) {
+			if (Math.abs(s1.getConstraintValue(i) - s2.getConstraintValue(i)) >= TestThresholds.SOLUTION_EPS) {
 				return false;
 			}
 		}

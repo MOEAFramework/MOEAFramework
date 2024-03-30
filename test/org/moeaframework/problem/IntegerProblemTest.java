@@ -43,7 +43,7 @@ public class IntegerProblemTest {
 			int x = EncodingUtils.getInt(solution.getVariable(0));
 			int y = EncodingUtils.getInt(solution.getVariable(1));
 			
-			solution.setObjective(0, 100*(y - x*x)*(y - x*x) + (1 - x)*(1 - x));
+			solution.setObjectiveValue(0, 100*(y - x*x)*(y - x*x) + (1 - x)*(1 - x));
 		}
 
 		@Override
@@ -63,7 +63,7 @@ public class IntegerProblemTest {
 		
 		Solution solution = algorithm.getResult().get(0);
 		Assert.assertArrayEquals(new int[] { 1, 1 }, EncodingUtils.getInt(solution));
-		Assert.assertEquals(0, solution.getObjective(0), Settings.EPS);
+		Assert.assertEquals(0, solution.getObjectiveValue(0), Settings.EPS);
 	}
 
 }

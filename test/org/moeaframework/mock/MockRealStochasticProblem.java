@@ -45,7 +45,7 @@ public class MockRealStochasticProblem extends MockProblem {
 		MersenneTwister rng = new MersenneTwister(randSeed);
 		
 		double x = EncodingUtils.getReal(solution.getVariable(0));
-		solution.setObjective(0, x + rng.nextDouble());
+		solution.setObjectiveValue(0, x + rng.nextDouble());
 	}
 
 	@Override

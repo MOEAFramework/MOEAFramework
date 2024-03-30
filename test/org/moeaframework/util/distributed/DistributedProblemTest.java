@@ -70,7 +70,7 @@ public class DistributedProblemTest {
 		}
 		
 		for (int i = 0; i < 10; i++) {
-			population.get(i).getObjectives();
+			population.get(i).getObjectiveValues();
 		}
 		
 		executor.shutdown();
@@ -170,7 +170,7 @@ public class DistributedProblemTest {
 		GeneticAlgorithm algorithm = new GeneticAlgorithm(problem);
 		algorithm.run(1000);
 		
-		return algorithm.getResult().get(0).getObjective(0); // one optimum for a single objective problem
+		return algorithm.getResult().get(0).getObjective(0).getValue(); // one optimum for a single objective problem
 	}
 
 }

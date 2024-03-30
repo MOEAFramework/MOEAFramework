@@ -34,11 +34,11 @@ public class ZDT5Test extends ProblemTest {
 		Problem problem = new ZDT5();
 		
 		Assert.assertArrayEquals(new double[] { 1.0, 20.0 },
-				evaluateWith(problem, (bv, i) -> bv.clear()).getObjectives(),
+				evaluateWith(problem, (bv, i) -> bv.clear()).getObjectiveValues(),
 				0.000001);
 		
 		Assert.assertArrayEquals(new double[] { 31.0, 10.0/31.0 }, 
-				evaluateWith(problem, (bv, i) -> IntStream.range(0, bv.getNumberOfBits()).forEach(j -> bv.set(j, true))).getObjectives(),
+				evaluateWith(problem, (bv, i) -> IntStream.range(0, bv.getNumberOfBits()).forEach(j -> bv.set(j, true))).getObjectiveValues(),
 				0.000001);
 	}
 	

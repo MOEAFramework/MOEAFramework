@@ -38,10 +38,10 @@ public class CocoProblemWrapper extends AbstractProblem {
 	@Override
 	public void evaluate(Solution solution) {
 		double[] x = EncodingUtils.getReal(solution);
-		solution.setObjectives(problem.evaluateFunction(x));
+		solution.setObjectiveValues(problem.evaluateFunction(x));
 		
 		if (numberOfConstraints > 0) {
-			solution.setConstraints(problem.evaluateConstraint(x));
+			solution.setConstraintValues(problem.evaluateConstraint(x));
 		}
 	}
 

@@ -25,10 +25,6 @@ public abstract class Objective implements Comparable<Objective>, Serializable {
 		return value;
 	}
 	
-	public int getEpsilonBoxIndex(double epsilon) {
-		
-	}
-	
 	public abstract Objective copy();
 	
 }

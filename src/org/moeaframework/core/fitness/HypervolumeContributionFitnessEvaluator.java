@@ -107,8 +107,8 @@ public class HypervolumeContributionFitnessEvaluator implements FitnessEvaluator
 		
 		for (Solution solution : population) {
 			for (int i = 0; i < problem.getNumberOfObjectives(); i++) {
-				min[i] = Math.min(min[i], solution.getObjective(i));
-				max[i] = Math.max(max[i], solution.getObjective(i));
+				min[i] = Math.min(min[i], solution.getObjectiveValue(i));
+				max[i] = Math.max(max[i], solution.getObjectiveValue(i));
 			}
 		}
 		
@@ -116,7 +116,7 @@ public class HypervolumeContributionFitnessEvaluator implements FitnessEvaluator
 			Solution newSolution = solution.copy();
 			
 			for (int i = 0; i < problem.getNumberOfObjectives(); i++) {
-				newSolution.setObjective(i, (max[i] - (newSolution.getObjective(i) - min[i]) + offset) /
+				newSolution.setObjectiveValue(i, (max[i] - (newSolution.getObjectiveValue(i) - min[i]) + offset) /
 						(max[i] - min[i]));
 			}
 

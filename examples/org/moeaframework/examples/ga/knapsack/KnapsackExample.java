@@ -57,7 +57,7 @@ public class KnapsackExample {
 		// print the results
 		for (int i = 0; i < result.size(); i++) {
 			Solution solution = result.get(i);
-			double[] objectives = solution.getObjectives();
+			double[] objectives = solution.getObjectiveValues();
 					
 			// negate objectives to return them to their maximized form
 			objectives = Vector.negate(objectives);

@@ -39,19 +39,19 @@ public class C2_DTLZ2Test extends ProblemTest {
 		Problem problem = new C2_DTLZ2(12, 3);
 		
 		Assert.assertArrayEquals(new double[] { 3.5, 0.0, 0.0 }, 
-				evaluateAtLowerBounds(problem).getObjectives(),
+				evaluateAtLowerBounds(problem).getObjectiveValues(),
 				0.000001);
 		
 		Assert.assertArrayEquals(new double[] { 6.09 }, 
-				evaluateAtLowerBounds(problem).getConstraints(),
+				evaluateAtLowerBounds(problem).getConstraintValues(),
 				0.000001);
 		
 		Assert.assertArrayEquals(new double[] { 1.31228981e-32, 2.14313190e-16, 3.5 }, 
-				evaluateAtUpperBounds(problem).getObjectives(),
+				evaluateAtUpperBounds(problem).getObjectiveValues(),
 				0.000001);
 		
 		Assert.assertArrayEquals(new double[] { 6.09 }, 
-				evaluateAtUpperBounds(problem).getConstraints(),
+				evaluateAtUpperBounds(problem).getConstraintValues(),
 				0.000001);
 	}
 	
@@ -87,11 +87,11 @@ public class C2_DTLZ2Test extends ProblemTest {
 				double minDistance = Double.POSITIVE_INFINITY;
 				
 				for (int j = 0; j < numberOfObjectives; j++) {
-					double distance = Math.pow(solution.getObjective(j)-1.0, 2.0);
+					double distance = Math.pow(solution.getObjectiveValue(j)-1.0, 2.0);
 					
 					for (int k = 0; k < numberOfObjectives; k++) {
 						if (k != j) {
-							distance += Math.pow(solution.getObjective(k), 2.0);
+							distance += Math.pow(solution.getObjectiveValue(k), 2.0);
 						}
 					}
 					
@@ -101,7 +101,7 @@ public class C2_DTLZ2Test extends ProblemTest {
 				double distance = 0.0;
 	
 				for (int j = 0; j < numberOfObjectives; j++) {
-					distance += Math.pow(solution.getObjective(j) - 1 / Math.sqrt(numberOfObjectives), 2.0);
+					distance += Math.pow(solution.getObjectiveValue(j) - 1 / Math.sqrt(numberOfObjectives), 2.0);
 				}
 	
 				minDistance = Math.min(minDistance, distance);

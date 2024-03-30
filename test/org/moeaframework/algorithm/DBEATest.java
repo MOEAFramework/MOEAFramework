@@ -241,7 +241,7 @@ public class DBEATest {
 				
 				for (int i = 0; i < problem.getNumberOfObjectives(); i++) {
 					double expected = Double.parseDouble(tokens[i]);
-					double actual = dbea.getPopulation().get(index).getObjective(i);
+					double actual = dbea.getPopulation().get(index).getObjectiveValue(i);
 					
 					if (Math.abs(expected - actual) > 0.0001) {
 						Assert.fail("Objective values do not match");
@@ -267,7 +267,7 @@ public class DBEATest {
 				
 				for (int i = 0; i < problem.getNumberOfObjectives(); i++) {
 					double expected = Double.parseDouble(tokens[i]);
-					double actual = dbea.corner.get(index).getObjective(i);
+					double actual = dbea.corner.get(index).getObjectiveValue(i);
 					
 					if (Math.abs(expected - actual) > 0.0001) {
 						Assert.fail("Corners do not match");
@@ -395,7 +395,7 @@ public class DBEATest {
 						
 						for (int i = 0; i < problem.getNumberOfObjectives(); i++) {
 							double expected = Double.parseDouble(tokens[i]);
-							double actual = dbea.getPopulation().get(index).getObjective(i);
+							double actual = dbea.getPopulation().get(index).getObjectiveValue(i);
 							
 							if (Math.abs(expected - actual) > 0.0001) {
 								Assert.fail("Updated populations do not match");
@@ -418,7 +418,7 @@ public class DBEATest {
 
 						for (int i = 0; i < problem.getNumberOfObjectives(); i++) {
 							double expected = Double.parseDouble(tokens[i]);
-							double actual = dbea.corner.get(index).getObjective(i);
+							double actual = dbea.corner.get(index).getObjectiveValue(i);
 							
 							if (Math.abs(expected - actual) > 0.0001) {
 								Assert.fail("Updated corners do not match");

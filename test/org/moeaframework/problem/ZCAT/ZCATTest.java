@@ -51,7 +51,7 @@ public class ZCATTest extends ProblemTest {
 		Problem problem = createTestInstance(3, 1, false, false, true);
 		
 		Assert.assertArrayEquals(new double[] { 0.833701, 3.205340, 5.337009 }, 
-				evaluateAt(problem, Vector.of(problem.getNumberOfVariables(), 0.0)).getObjectives(),
+				evaluateAt(problem, Vector.of(problem.getNumberOfVariables(), 0.0)).getObjectiveValues(),
 				0.000001);
 	}
 		
@@ -60,7 +60,7 @@ public class ZCATTest extends ProblemTest {
 		Problem problem = createTestInstance(3, 2, false, false, true);
 		
 		Assert.assertArrayEquals(new double[] { 3.000000, 11.749279, 25.136039 }, 
-				evaluateAt(problem, Vector.of(problem.getNumberOfVariables(), 0.0)).getObjectives(),
+				evaluateAt(problem, Vector.of(problem.getNumberOfVariables(), 0.0)).getObjectiveValues(),
 				0.000001);
 	}
 		
@@ -69,7 +69,7 @@ public class ZCATTest extends ProblemTest {
 		Problem problem = createTestInstance(3, 3, false, false, true);
 		
 		Assert.assertArrayEquals(new double[] { 2.787357, 11.639522, 26.351971 }, 
-				evaluateAt(problem, Vector.of(problem.getNumberOfVariables(), 0.0)).getObjectives(),
+				evaluateAt(problem, Vector.of(problem.getNumberOfVariables(), 0.0)).getObjectiveValues(),
 				0.000001);
 	}
 		
@@ -78,7 +78,7 @@ public class ZCATTest extends ProblemTest {
 		Problem problem = createTestInstance(3, 4, false, false, true);
 		
 		Assert.assertArrayEquals(new double[] { 4.590581, 18.693609, 42.143607 }, 
-				evaluateAt(problem, Vector.of(problem.getNumberOfVariables(), 0.0)).getObjectives(),
+				evaluateAt(problem, Vector.of(problem.getNumberOfVariables(), 0.0)).getObjectiveValues(),
 				0.000001);
 	}
 		
@@ -87,7 +87,7 @@ public class ZCATTest extends ProblemTest {
 		Problem problem = createTestInstance(3, 5, false, false, true);
 		
 		Assert.assertArrayEquals(new double[] { 7.866591, 30.676823, 75.678593 }, 
-				evaluateAt(problem, Vector.of(problem.getNumberOfVariables(), 0.0)).getObjectives(),
+				evaluateAt(problem, Vector.of(problem.getNumberOfVariables(), 0.0)).getObjectiveValues(),
 				0.000001);
 	}
 		
@@ -96,7 +96,7 @@ public class ZCATTest extends ProblemTest {
 		Problem problem = createTestInstance(3, 6, false, false, true);
 		
 		Assert.assertArrayEquals(new double[] { 7.600428, 30.164975, 64.648922 }, 
-				evaluateAt(problem, Vector.of(problem.getNumberOfVariables(), 0.0)).getObjectives(),
+				evaluateAt(problem, Vector.of(problem.getNumberOfVariables(), 0.0)).getObjectiveValues(),
 				0.000001);
 	}
 	
@@ -105,7 +105,7 @@ public class ZCATTest extends ProblemTest {
 		Problem problem = createTestInstance(3, 1, true, false, true);
 		
 		Assert.assertArrayEquals(new double[] { 8.028801, 31.592222, 76.557626 }, 
-				evaluateAt(problem, Vector.of(problem.getNumberOfVariables(), 0.0)).getObjectives(),
+				evaluateAt(problem, Vector.of(problem.getNumberOfVariables(), 0.0)).getObjectiveValues(),
 				0.000001);
 	}
 	
@@ -114,7 +114,7 @@ public class ZCATTest extends ProblemTest {
 		Problem problem = createTestInstance(3, 1, false, true, true);
 		
 		Assert.assertArrayEquals(new double[] { 0.833701, 18.693609, 5.337009 }, 
-				evaluateAt(problem, Vector.of(problem.getNumberOfVariables(), 0.0)).getObjectives(),
+				evaluateAt(problem, Vector.of(problem.getNumberOfVariables(), 0.0)).getObjectiveValues(),
 				0.000001);
 	}
 	
@@ -123,7 +123,7 @@ public class ZCATTest extends ProblemTest {
 		Problem problem = createTestInstance(3, 6, true, true, true);
 		
 		Assert.assertArrayEquals(new double[] { 8.028801, 25.583731, 76.557626 }, 
-				evaluateAt(problem, Vector.of(problem.getNumberOfVariables(), 0.0)).getObjectives(),
+				evaluateAt(problem, Vector.of(problem.getNumberOfVariables(), 0.0)).getObjectiveValues(),
 				0.000001);
 	}
 	
@@ -132,7 +132,7 @@ public class ZCATTest extends ProblemTest {
 		Problem problem = createTestInstance(3, 1, false, false, false);
 		
 		Assert.assertArrayEquals(new double[] { 1.278410, 5.113640, 9.641729 }, 
-				evaluateAt(problem, Vector.of(problem.getNumberOfVariables(), 0.0)).getObjectives(),
+				evaluateAt(problem, Vector.of(problem.getNumberOfVariables(), 0.0)).getObjectiveValues(),
 				0.000001);
 	}
 	
@@ -141,7 +141,7 @@ public class ZCATTest extends ProblemTest {
 		Problem problem = createTestInstance(2, 1, false, false, true);
 		
 		Assert.assertArrayEquals(new double[] { 1.035232, 2.352128 }, 
-				evaluateAt(problem, Vector.of(problem.getNumberOfVariables(), 0.0)).getObjectives(),
+				evaluateAt(problem, Vector.of(problem.getNumberOfVariables(), 0.0)).getObjectiveValues(),
 				0.000001);
 	}
 	

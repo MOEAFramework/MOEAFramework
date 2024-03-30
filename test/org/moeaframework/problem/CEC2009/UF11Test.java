@@ -40,7 +40,7 @@ public class UF11Test extends ProblemTest {
 			
 			problem.evaluate(solution);
 			
-			Assert.assertArrayEquals(f, solution.getObjectives(), TestThresholds.SOLUTION_EPS);
+			Assert.assertArrayEquals(f, solution.getObjectiveValues(), TestThresholds.SOLUTION_EPS);
 		}
 	}
 	

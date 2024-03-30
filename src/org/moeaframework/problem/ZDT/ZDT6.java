@@ -55,8 +55,8 @@ public class ZDT6 extends ZDT {
 
 		double h = 1.0 - Math.pow(f / g, 2.0);
 
-		solution.setObjective(0, f);
-		solution.setObjective(1, g * h);
+		solution.setObjectiveValue(0, f);
+		solution.setObjectiveValue(1, g * h);
 	}
 
 }

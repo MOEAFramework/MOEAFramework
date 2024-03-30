@@ -172,8 +172,8 @@ public class Normalizer {
 			}
 			
 			for (int j = 0; j < problem.getNumberOfObjectives(); j++) {
-				minimum[j] = Math.min(minimum[j], solution.getObjective(j));
-				maximum[j] = Math.max(maximum[j], solution.getObjective(j));
+				minimum[j] = Math.min(minimum[j], solution.getObjectiveValue(j));
+				maximum[j] = Math.max(maximum[j], solution.getObjectiveValue(j));
 			}
 		}
 		
@@ -256,7 +256,7 @@ public class Normalizer {
 			Solution clone = solution.copy();
 	
 			for (int j = 0; j < problem.getNumberOfObjectives(); j++) {
-				clone.setObjective(j, (clone.getObjective(j) - minimum[j]) / (maximum[j] - minimum[j]));
+				clone.setObjective(j, (clone.getObjectiveValue(j) - minimum[j]) / (maximum[j] - minimum[j]));
 			}
 	
 			normalizedSet.add(clone);

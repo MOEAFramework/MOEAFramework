@@ -286,8 +286,8 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 		if (!feasibleSolutions.isEmpty()) {
 			for (int i = 0; i < feasibleSolutions.size(); i++) {
 				for (int j = 0; j < problem.getNumberOfObjectives(); j++) {
-					idealPoint[j] = Math.min(idealPoint[j], feasibleSolutions.get(i).getObjective(j));
-					intercepts[j] = Math.max(intercepts[j], feasibleSolutions.get(i).getObjective(j));
+					idealPoint[j] = Math.min(idealPoint[j], feasibleSolutions.get(i).getObjectiveValue(j));
+					intercepts[j] = Math.max(intercepts[j], feasibleSolutions.get(i).getObjectiveValue(j));
 				}
 			}
 		}
@@ -305,9 +305,9 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 		double value = Double.NEGATIVE_INFINITY;
 		
 		for (Solution solution : population) {
-			if (solution.getObjective(objective) > value) {
+			if (solution.getObjectiveValue(objective) > value) {
 				largest = solution;
-				value = solution.getObjective(objective);
+				value = solution.getObjectiveValue(objective);
 			}
 		}
 		
@@ -348,8 +348,8 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 				
 				for (int i = 0; i < problem.getNumberOfObjectives(); i++) {
 					if (i != objective) {
-						sum1 += Math.pow(s1.getObjective(i), 2.0);
-						sum2 += Math.pow(s2.getObjective(i), 2.0);
+						sum1 += Math.pow(s1.getObjectiveValue(i), 2.0);
+						sum2 += Math.pow(s2.getObjectiveValue(i), 2.0);
 					}
 				}
 				
@@ -397,8 +397,8 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 		if (!solution.violatesConstraints()) {
 			// update the ideal point
 			for (int j = 0; j < problem.getNumberOfObjectives(); j++) {
-				idealPoint[j] = Math.min(idealPoint[j], solution.getObjective(j));
-				intercepts[j] = Math.max(intercepts[j], solution.getObjective(j));
+				idealPoint[j] = Math.min(idealPoint[j], solution.getObjectiveValue(j));
+				intercepts[j] = Math.max(intercepts[j], solution.getObjectiveValue(j));
 			}
 
 			// compute the axis intercepts
@@ -417,7 +417,7 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 				
 				if (numberOfUniqueSolutions(extremePoints) < problem.getNumberOfObjectives()) {
 					for (int i = 0; i < problem.getNumberOfObjectives(); i++) {
-						intercepts[i] = extremePoints.get(i).getObjective(i);
+						intercepts[i] = extremePoints.get(i).getObjectiveValue(i);
 					}
 				} else {
 					try {
@@ -429,7 +429,7 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 							b.setEntry(i, 0, 1.0);
 	
 							for (int j = 0; j < problem.getNumberOfObjectives(); j++) {
-								A.setEntry(i, j, extremePoints.get(i).getObjective(j));
+								A.setEntry(i, j, extremePoints.get(i).getObjectiveValue(j));
 							}
 						}
 	
@@ -441,12 +441,12 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 							intercepts[i] = numerator / normal.getEntry(i, 0);
 							
 							if (intercepts[i] <= 0 || Double.isNaN(intercepts[i]) || Double.isInfinite(intercepts[i])) {
-								intercepts[i] = extremePoints.get(i).getObjective(i);
+								intercepts[i] = extremePoints.get(i).getObjectiveValue(i);
 							}
 						}
 					} catch (RuntimeException e) {
 						for (int i = 0; i < problem.getNumberOfObjectives(); i++) {
-							intercepts[i] = extremePoints.get(i).getObjective(i);
+							intercepts[i] = extremePoints.get(i).getObjectiveValue(i);
 						}
 					}
 				}
@@ -551,7 +551,7 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 				boolean isDuplicate = false;
 				
 				for (int j = 0; j < unique.size(); j++) {
-					if (Arrays.equals(unique.get(j).getObjectives(), population.get(i).getObjectives())) {
+					if (Arrays.equals(unique.get(j).getObjectiveValues(), population.get(i).getObjectiveValues())) {
 						duplicates.add(population.get(i));
 						isDuplicate = true;
 						break;
@@ -631,7 +631,7 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 			int count = 0;
 			
 			for (int i = 0; i < problem.getNumberOfObjectives(); i++) {
-				if (otherSolution.getObjective(i) < solution.getObjective(i)) {
+				if (otherSolution.getObjectiveValue(i) < solution.getObjectiveValue(i)) {
 					count++;
 				}
 			}
@@ -738,7 +738,7 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 		double[] objectiveValues = new double[problem.getNumberOfObjectives()];
 		
 		for (int j = 0; j < problem.getNumberOfObjectives(); j++) {
-			objectiveValues[j] = (solution.getObjective(j) - idealPoint[j]) / (intercepts[j] - idealPoint[j]);
+			objectiveValues[j] = (solution.getObjectiveValue(j) - idealPoint[j]) / (intercepts[j] - idealPoint[j]);
 		}
 		
 		return objectiveValues;

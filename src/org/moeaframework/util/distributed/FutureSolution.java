@@ -102,8 +102,8 @@ public class FutureSolution extends Solution {
 				Solution solution = future.get();
 				future = null;
 				
-				setObjectives(solution.getObjectives());
-				setConstraints(solution.getConstraints());
+				setObjectiveValues(solution.getObjectiveValues());
+				setConstraintValues(solution.getConstraintValues());
 				
 				for (Map.Entry<String, Serializable> entry : solution.getAttributes().entrySet()) {
 					setAttribute(entry.getKey(), entry.getValue());
@@ -121,27 +121,27 @@ public class FutureSolution extends Solution {
 	}
 
 	@Override
-	public double[] getObjectives() {
+	public double[] getObjectiveValues() {
 		update();
-		return super.getObjectives();
+		return super.getObjectiveValues();
 	}
 
 	@Override
-	public double[] getConstraints() {
+	public double[] getConstraintValues() {
 		update();
-		return super.getConstraints();
+		return super.getConstraintValues();
 	}
 
 	@Override
-	public double getObjective(int index) {
+	public double getObjectiveValue(int index) {
 		update();
-		return super.getObjective(index);
+		return super.getObjectiveValue(index);
 	}
 	
 	@Override
-	public double getConstraint(int index) {
+	public double getConstraintValue(int index) {
 		update();
-		return super.getConstraint(index);
+		return super.getConstraintValue(index);
 	}
 	
 	@Override

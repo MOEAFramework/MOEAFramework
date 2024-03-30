@@ -30,15 +30,15 @@ public class ZDT6Test extends ProblemTest {
 		Problem problem = new ZDT6();
 		
 		Assert.assertArrayEquals(new double[] { 1.0, 0.0 }, 
-				evaluateAtLowerBounds(problem).getObjectives(),
+				evaluateAtLowerBounds(problem).getObjectiveValues(),
 				0.000001);
 		
 		Assert.assertArrayEquals(new double[] { 1.0, 9.9 }, 
-				evaluateAtUpperBounds(problem).getObjectives(),
+				evaluateAtUpperBounds(problem).getObjectiveValues(),
 				0.000001);
 		
 		Assert.assertArrayEquals(new double[] { 1.0, 8.45135531 }, 
-				evaluateAt(problem, Vector.of(problem.getNumberOfVariables(), 0.5)).getObjectives(),
+				evaluateAt(problem, Vector.of(problem.getNumberOfVariables(), 0.5)).getObjectiveValues(),
 				0.000001);
 	}
 

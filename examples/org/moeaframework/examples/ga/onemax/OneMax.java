@@ -18,6 +18,7 @@
 package org.moeaframework.examples.ga.onemax;
 
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.objective.Maximize;
 import org.moeaframework.core.variable.BinaryVariable;
 import org.moeaframework.problem.AbstractProblem;
 
@@ -46,13 +47,14 @@ public class OneMax extends AbstractProblem {
 	@Override
 	public void evaluate(Solution solution) {
 		BinaryVariable binary = (BinaryVariable)solution.getVariable(0);
-		solution.setObjective(0, numberOfBits - binary.cardinality());
+		solution.setObjectiveValue(0, binary.cardinality());
 	}
 
 	@Override
 	public Solution newSolution() {
 		Solution solution = new Solution(1, 1);
 		solution.setVariable(0, new BinaryVariable(numberOfBits));
+		solution.setObjective(0, new Maximize());
 		return solution;
 	}
 

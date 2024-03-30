@@ -36,7 +36,7 @@ public class RosenbrockProblem extends AbstractProblem {
 		double x = EncodingUtils.getReal(solution.getVariable(0));
 		double y = EncodingUtils.getReal(solution.getVariable(1));
 		
-		solution.setObjective(0, 100*(y - x*x)*(y - x*x) + (1 - x)*(1 - x));
+		solution.setObjectiveValue(0, 100*(y - x*x)*(y - x*x) + (1 - x)*(1 - x));
 	}
 
 	@Override

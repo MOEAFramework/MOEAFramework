@@ -42,7 +42,7 @@ public class MNKExample {
 		// print the bit string and the objective values
 		for (Solution solution : result) {
 			System.out.println(solution.getVariable(0) + " " + 
-					-solution.getObjective(0));
+					solution.getObjectiveValue(0));
 		}
 	}
 

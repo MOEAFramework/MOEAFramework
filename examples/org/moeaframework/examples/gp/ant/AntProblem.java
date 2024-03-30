@@ -122,7 +122,7 @@ public class AntProblem extends AbstractProblem {
 			program.evaluate(environment);
 		}
 		
-		solution.setObjective(0, world.getRemainingFood() + 
+		solution.setObjectiveValue(0, world.getRemainingFood() + 
 				(world.getNumberOfMoves() / (world.getMaxMoves() + 1.0)));
 	}
 	

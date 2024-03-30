@@ -34,19 +34,19 @@ public class Fonseca2Test extends ProblemTest {
 		Problem problem = new Fonseca2(2);
 		
 		Assert.assertArrayEquals(new double[] { 0.63212, 0.63212 }, // 1 - 1/e 
-				evaluateAt(problem, 0.0, 0.0).getObjectives(),
+				evaluateAt(problem, 0.0, 0.0).getObjectiveValues(),
 				0.00001);
 		
 		Assert.assertArrayEquals(new double[] { 1.0, 1.0 }, 
-				evaluateAt(problem, -4.0, -4.0).getObjectives(),
+				evaluateAt(problem, -4.0, -4.0).getObjectiveValues(),
 				0.00001);
 		
 		Assert.assertArrayEquals(new double[] { 1.0, 1.0 }, 
-				evaluateAt(problem, 4.0, 4.0).getObjectives(),
+				evaluateAt(problem, 4.0, 4.0).getObjectiveValues(),
 				0.00001);
 		
 		Assert.assertArrayEquals(new double[] { 0.0, 0.98168 }, 
-				evaluateAt(problem, 1.0 / Math.sqrt(2.0), 1.0 / Math.sqrt(2.0)).getObjectives(),
+				evaluateAt(problem, 1.0 / Math.sqrt(2.0), 1.0 / Math.sqrt(2.0)).getObjectiveValues(),
 				0.00001);
 	}
 	
@@ -55,19 +55,19 @@ public class Fonseca2Test extends ProblemTest {
 		Problem problem = new Fonseca2(3);
 		
 		Assert.assertArrayEquals(new double[] { 0.63212, 0.63212 }, 
-				evaluateAt(problem, 0.0, 0.0, 0.0).getObjectives(),
+				evaluateAt(problem, 0.0, 0.0, 0.0).getObjectiveValues(),
 				0.00001);
 		
 		Assert.assertArrayEquals(new double[] { 1.0, 1.0 }, 
-				evaluateAt(problem, -4.0, -4.0, -4.0).getObjectives(),
+				evaluateAt(problem, -4.0, -4.0, -4.0).getObjectiveValues(),
 				0.00001);
 		
 		Assert.assertArrayEquals(new double[] { 1.0, 1.0 }, 
-				evaluateAt(problem, 4.0, 4.0, 4.0).getObjectives(),
+				evaluateAt(problem, 4.0, 4.0, 4.0).getObjectiveValues(),
 				0.00001);
 		
 		Assert.assertArrayEquals(new double[] { 0.0, 0.98168 }, 
-				evaluateAt(problem, 1.0 / Math.sqrt(3.0), 1.0 / Math.sqrt(3.0), 1.0 / Math.sqrt(3.0)).getObjectives(),
+				evaluateAt(problem, 1.0 / Math.sqrt(3.0), 1.0 / Math.sqrt(3.0), 1.0 / Math.sqrt(3.0)).getObjectiveValues(),
 				0.00001);
 	}
 

@@ -29,11 +29,11 @@ public class UF9Test extends ProblemTest {
 		Problem problem = new UF9();
 		
 		Assert.assertArrayEquals(new double[] { 8.0, 8.0, 9.0 }, 
-				evaluateAtLowerBounds(problem).getObjectives(),
+				evaluateAtLowerBounds(problem).getObjectiveValues(),
 				0.000001);
 		
 		Assert.assertArrayEquals(new double[] { 2.271774, 1.426854, 1.897998 }, 
-				evaluateAtUpperBounds(problem).getObjectives(),
+				evaluateAtUpperBounds(problem).getObjectiveValues(),
 				0.000001);
 	}
 

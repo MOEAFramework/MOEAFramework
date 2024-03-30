@@ -28,6 +28,7 @@ import java.util.Arrays;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.objective.Maximize;
 import org.moeaframework.core.variable.EncodingUtils;
 
 /* The following code is derived from derived from the ANSI C code developed
@@ -148,7 +149,7 @@ public class MNKProblem implements Problem {
 				result += function[i][j][index];
 			}
 			
-			solution.setObjective(i, -result);
+			solution.setObjectiveValue(i, result);
 		}
 	}
 
@@ -156,6 +157,7 @@ public class MNKProblem implements Problem {
 	public Solution newSolution() {
 		Solution solution = new Solution(1, M, 0);
 		solution.setVariable(0, EncodingUtils.newBinary(N));
+		solution.setObjective(0, new Maximize());
 		return solution;
 	}
 	

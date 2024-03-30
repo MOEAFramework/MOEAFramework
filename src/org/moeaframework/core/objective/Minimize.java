@@ -14,12 +14,7 @@ public class Minimize extends Objective {
 
 	@Override
 	public int compareTo(Objective other) {
-		if (other instanceof Minimize) {
-			return Double.compare(getValue(), other.getValue());
-		} else {
-			throw new IllegalArgumentException(getClass().getSimpleName() + " and " + other.getClass().getSimpleName() +
-					" are not comparable");
-		}
+		return Double.compare(getValue(), other.getValue());
 	}
 
 	@Override

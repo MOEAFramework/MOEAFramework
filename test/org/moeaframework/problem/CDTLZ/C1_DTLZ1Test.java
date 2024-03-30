@@ -35,19 +35,19 @@ public class C1_DTLZ1Test extends ProblemTest {
 		Problem problem = new C1_DTLZ1(12, 3);
 		
 		Assert.assertArrayEquals(new double[] { 0.0, 0.0, 125.5 }, 
-				evaluateAtLowerBounds(problem).getObjectives(),
+				evaluateAtLowerBounds(problem).getObjectiveValues(),
 				0.000001);
 		
 		Assert.assertArrayEquals(new double[] { -208.16666667 }, 
-				evaluateAtLowerBounds(problem).getConstraints(),
+				evaluateAtLowerBounds(problem).getConstraintValues(),
 				0.000001);
 		
 		Assert.assertArrayEquals(new double[] { 125.5, 0.0, 0.0 }, 
-				evaluateAtUpperBounds(problem).getObjectives(),
+				evaluateAtUpperBounds(problem).getObjectiveValues(),
 				0.000001);
 		
 		Assert.assertArrayEquals(new double[] { -250.0 }, 
-				evaluateAtUpperBounds(problem).getConstraints(),
+				evaluateAtUpperBounds(problem).getConstraintValues(),
 				0.000001);
 	}
 	

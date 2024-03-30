@@ -52,7 +52,7 @@ public class CMAESTest extends AlgorithmTest {
 		Solution solution = algorithm.getResult().get(0);
 		
 		Assert.assertArrayEquals(problem.getIdealVariables(), EncodingUtils.getReal(solution), 0.001);
-		Assert.assertEquals(problem.getIdealObjectiveValue(), solution.getObjective(0), 0.001);
+		Assert.assertEquals(problem.getIdealObjectiveValue(), solution.getObjectiveValue(0), 0.001);
 	}
 
 	@Test

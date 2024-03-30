@@ -234,13 +234,13 @@ public class ResultFileReaderTest {
 		((RealVariable)solution1.getVariable(0)).setValue(0.0);
 		((BinaryVariable)solution1.getVariable(1)).set(2, true);
 		((Permutation)solution1.getVariable(2)).swap(0, 2);
-		solution1.setObjectives(new double[] { 0.0, 1.0 });
+		solution1.setObjectiveValues(new double[] { 0.0, 1.0 });
 		
 		Solution solution2 = problem.newSolution();
 		((RealVariable)solution2.getVariable(0)).setValue(1.0);
 		((BinaryVariable)solution2.getVariable(1)).set(1, true);
 		((Permutation)solution2.getVariable(2)).swap(0, 1);
-		solution2.setObjectives(new double[] { 1.0, 0.0 });
+		solution2.setObjectiveValues(new double[] { 1.0, 0.0 });
 		
 		population = new Population();
 		population.add(solution1);

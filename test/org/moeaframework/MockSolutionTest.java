@@ -43,8 +43,8 @@ public class MockSolutionTest {
 		Assert.assertEquals(0, mockSolution.getNumberOfVariables());
 		Assert.assertEquals(2, mockSolution.getNumberOfObjectives());
 		Assert.assertEquals(1, mockSolution.getNumberOfConstraints());
-		Assert.assertArrayEquals(new double[] { 0.0, 1.0 }, mockSolution.getObjectives(), Settings.EPS);
-		Assert.assertArrayEquals(new double[] { 1.0 }, mockSolution.getConstraints(), Settings.EPS);
+		Assert.assertArrayEquals(new double[] { 0.0, 1.0 }, mockSolution.getObjectiveValues(), Settings.EPS);
+		Assert.assertArrayEquals(new double[] { 1.0 }, mockSolution.getConstraintValues(), Settings.EPS);
 		
 		TestUtils.assertEquals(mockSolution, mockSolution.build());
 		TestUtils.assertEquals(mockSolution, mockSolution.copy());
@@ -59,12 +59,12 @@ public class MockSolutionTest {
 				.withConstraints(0.0);
 		
 		EncodingUtils.setReal(mockSolution, new double[] { 0.5 });
-		mockSolution.setObjective(0, 1.0);
-		mockSolution.setConstraint(0, 1.0);
+		mockSolution.setObjectiveValue(0, 1.0);
+		mockSolution.setConstraintValue(0, 1.0);
 		
 		Assert.assertEquals(0.5, EncodingUtils.getReal(mockSolution.getVariable(0)), Settings.EPS);
-		Assert.assertEquals(1.0, mockSolution.getObjective(0), Settings.EPS);
-		Assert.assertEquals(1.0, mockSolution.getConstraint(0), Settings.EPS);
+		Assert.assertEquals(1.0, mockSolution.getObjectiveValue(0), Settings.EPS);
+		Assert.assertEquals(1.0, mockSolution.getConstraintValue(0), Settings.EPS);
 	}
 	
 	@Test
@@ -90,7 +90,7 @@ public class MockSolutionTest {
 		Assert.assertEquals(2, mockSolution.getNumberOfObjectives());
 		Assert.assertEquals(0, mockSolution.getNumberOfConstraints());
 		
-		Assert.assertArrayEquals(new double[] { 1.0, 0.0 }, mockSolution.getObjectives(), Settings.EPS);
+		Assert.assertArrayEquals(new double[] { 1.0, 0.0 }, mockSolution.getObjectiveValues(), Settings.EPS);
 	}
 	
 	@Test(expected = AssertionError.class)

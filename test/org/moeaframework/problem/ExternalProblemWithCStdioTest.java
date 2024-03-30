@@ -129,8 +129,8 @@ public class ExternalProblemWithCStdioTest {
 			problem.evaluate(solution);
 			
 			//check objectives and constraints
-			Assert.assertArrayEquals(new double[] { i+1, 1e-10/(i+1) }, solution.getObjectives(), Settings.EPS);
-			Assert.assertArrayEquals(new double[] { 1e10*(i+1) }, solution.getConstraints(), Settings.EPS);
+			Assert.assertArrayEquals(new double[] { i+1, 1e-10/(i+1) }, solution.getObjectiveValues(), Settings.EPS);
+			Assert.assertArrayEquals(new double[] { 1e10*(i+1) }, solution.getConstraintValues(), Settings.EPS);
 			
 			//check the debug stream
 			String debugLine = debugReader.readLine();

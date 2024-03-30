@@ -38,10 +38,10 @@ public class SolutionTest {
 		solution = new Solution(1, 2, 2);
 
 		solution.setVariable(0, new RealVariable(0.5, 0.0, 1.0));
-		solution.setObjective(0, 1.0);
-		solution.setObjective(1, 2.0);
-		solution.setConstraint(0, 0.0);
-		solution.setConstraint(1, 1.0);
+		solution.setObjectiveValue(0, 1.0);
+		solution.setObjectiveValue(1, 2.0);
+		solution.setConstraintValue(0, 0.0);
+		solution.setConstraintValue(1, 1.0);
 
 		solution.setAttribute("foo", "bar");
 	}
@@ -60,15 +60,15 @@ public class SolutionTest {
 	@Test
 	public void testGetObjective() {
 		Assert.assertEquals(2, solution.getNumberOfObjectives());
-		Assert.assertEquals(1.0, solution.getObjective(0), Settings.EPS);
-		Assert.assertEquals(2.0, solution.getObjective(1), Settings.EPS);
+		Assert.assertEquals(1.0, solution.getObjectiveValue(0), Settings.EPS);
+		Assert.assertEquals(2.0, solution.getObjectiveValue(1), Settings.EPS);
 	}
 
 	@Test
 	public void testGetConstraint() {
 		Assert.assertEquals(2, solution.getNumberOfConstraints());
-		Assert.assertEquals(0.0, solution.getConstraint(0), Settings.EPS);
-		Assert.assertEquals(1.0, solution.getConstraint(1), Settings.EPS);
+		Assert.assertEquals(0.0, solution.getConstraintValue(0), Settings.EPS);
+		Assert.assertEquals(1.0, solution.getConstraintValue(1), Settings.EPS);
 	}
 
 	@Test
@@ -79,19 +79,19 @@ public class SolutionTest {
 
 	@Test
 	public void testSetObjective() {
-		solution.setObjective(1, 1.5);
-		Assert.assertEquals(1.5, solution.getObjective(1), Settings.EPS);
+		solution.setObjectiveValue(1, 1.5);
+		Assert.assertEquals(1.5, solution.getObjectiveValue(1), Settings.EPS);
 	}
 
 	@Test
 	public void testSetConstraint() {
-		solution.setConstraint(1, 2.0);
-		Assert.assertEquals(2.0, solution.getConstraint(1), Settings.EPS);
+		solution.setConstraintValue(1, 2.0);
+		Assert.assertEquals(2.0, solution.getConstraintValue(1), Settings.EPS);
 	}
 
 	@Test
 	public void testGetObjectives() {
-		double[] objectives = solution.getObjectives();
+		double[] objectives = solution.getObjectiveValues();
 
 		// returned array contains correct data
 		Assert.assertEquals(2, objectives.length);
@@ -100,7 +100,7 @@ public class SolutionTest {
 
 		// returned array is independent from internal state
 		objectives[0] = 0.0;
-		Assert.assertEquals(1.0, solution.getObjective(0), Settings.EPS);
+		Assert.assertEquals(1.0, solution.getObjectiveValue(0), Settings.EPS);
 	}
 	
 	@Test
@@ -114,7 +114,7 @@ public class SolutionTest {
 
 		// returned array is independent from internal state
 		constraints[0] = 1.0;
-		Assert.assertEquals(0.0, solution.getConstraint(0), Settings.EPS);
+		Assert.assertEquals(0.0, solution.getConstraintValue(0), Settings.EPS);
 	}
 
 	@Test
@@ -124,27 +124,27 @@ public class SolutionTest {
 
 		// stored array contains correct data
 		Assert.assertEquals(2, solution.getNumberOfObjectives());
-		Assert.assertEquals(3.0, solution.getObjective(0), Settings.EPS);
-		Assert.assertEquals(4.0, solution.getObjective(1), Settings.EPS);
+		Assert.assertEquals(3.0, solution.getObjectiveValue(0), Settings.EPS);
+		Assert.assertEquals(4.0, solution.getObjectiveValue(1), Settings.EPS);
 
 		// stored array is independent from external state
 		objectives[0] = 0.0;
-		Assert.assertEquals(3.0, solution.getObjective(0), Settings.EPS);
+		Assert.assertEquals(3.0, solution.getObjectiveValue(0), Settings.EPS);
 	}
 
 	@Test
 	public void testSetConstraints() {
 		double[] constraints = new double[] { 3.0, 4.0 };
-		solution.setConstraints(constraints);
+		solution.setConstraintValues(constraints);
 
 		// stored array contains correct data
 		Assert.assertEquals(2, solution.getNumberOfConstraints());
-		Assert.assertEquals(3.0, solution.getConstraint(0), Settings.EPS);
-		Assert.assertEquals(4.0, solution.getConstraint(1), Settings.EPS);
+		Assert.assertEquals(3.0, solution.getConstraintValue(0), Settings.EPS);
+		Assert.assertEquals(4.0, solution.getConstraintValue(1), Settings.EPS);
 
 		// stored array is independent from external state
 		constraints[0] = 0.0;
-		Assert.assertEquals(3.0, solution.getConstraint(0), Settings.EPS);
+		Assert.assertEquals(3.0, solution.getConstraintValue(0), Settings.EPS);
 	}
 
 	@Test
@@ -212,52 +212,52 @@ public class SolutionTest {
 
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testSetObjectiveBoundsChecking1() {
-		solution.setObjective(2, 1.0);
+		solution.setObjectiveValue(2, 1.0);
 	}
 
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testSetObjectiveBoundsChecking2() {
-		solution.setObjective(-1, 1.0);
+		solution.setObjectiveValue(-1, 1.0);
 	}
 
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testGetObjectiveBoundsChecking1() {
-		solution.getObjective(2);
+		solution.getObjectiveValue(2);
 	}
 
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testGetObjectiveBoundsChecking2() {
-		solution.getObjective(-1);
+		solution.getObjectiveValue(-1);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testSetObjectivesBoundsChecking() {
-		solution.setObjectives(new double[] { 0.0, 1.0, 2.0 });
+		solution.setObjectiveValues(new double[] { 0.0, 1.0, 2.0 });
 	}
 
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testSetConstraintBoundsChecking1() {
-		solution.setConstraint(2, 1.0);
+		solution.setConstraintValue(2, 1.0);
 	}
 
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testSetConstraintBoundsChecking2() {
-		solution.setConstraint(-1, 1.0);
+		solution.setConstraintValue(-1, 1.0);
 	}
 
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testGetConstraintBoundsChecking1() {
-		solution.getConstraint(2);
+		solution.getConstraintValue(2);
 	}
 
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testGetConstraintBoundsChecking2() {
-		solution.getConstraint(-1);
+		solution.getConstraintValue(-1);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testSetConstraintsBoundsChecking() {
-		solution.setConstraints(new double[] { 0.0, 1.0, 2.0 });
+		solution.setConstraintValues(new double[] { 0.0, 1.0, 2.0 });
 	}
 	
 	@Test
@@ -287,13 +287,13 @@ public class SolutionTest {
 		// copy has the same objectives
 		Assert.assertEquals(solution.getNumberOfObjectives(), copy.getNumberOfObjectives());
 		for (int i = 0; i < copy.getNumberOfObjectives(); i++) {
-			Assert.assertEquals(solution.getObjective(i), copy.getObjective(i), Settings.EPS);
+			Assert.assertEquals(solution.getObjectiveValue(i), copy.getObjectiveValue(i), Settings.EPS);
 		}
 
 		// copy has the same constraints
 		Assert.assertEquals(solution.getNumberOfConstraints(), copy.getNumberOfConstraints());
 		for (int i = 0; i < copy.getNumberOfConstraints(); i++) {
-			Assert.assertEquals(solution.getConstraint(i), copy.getConstraint(i), Settings.EPS);
+			Assert.assertEquals(solution.getConstraintValue(i), copy.getConstraintValue(i), Settings.EPS);
 		}
 
 		// the copy's variables are independent from the original
@@ -309,7 +309,7 @@ public class SolutionTest {
 	public void testViolatesConstraints() {
 		Assert.assertTrue(solution.violatesConstraints());
 
-		solution.setConstraint(1, 0.0);
+		solution.setConstraintValue(1, 0.0);
 		Assert.assertFalse(solution.violatesConstraints());
 
 		// solution with no constraints
@@ -320,10 +320,10 @@ public class SolutionTest {
 	public void testSumOfConstraintViolations() {
 		Assert.assertEquals(1.0, solution.getSumOfConstraintViolations(), Settings.EPS);
 		
-		solution.setConstraint(0, -1.0);
+		solution.setConstraintValue(0, -1.0);
 		Assert.assertEquals(2.0, solution.getSumOfConstraintViolations(), Settings.EPS);
 
-		solution.setConstraints(new double[] { 0.0, 0.0 });
+		solution.setConstraintValues(new double[] { 0.0, 0.0 });
 		Assert.assertEquals(0.0, solution.getSumOfConstraintViolations(), Settings.EPS);
 
 		// solution with no constraints

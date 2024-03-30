@@ -28,8 +28,8 @@ import java.util.regex.Pattern;
 
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.objective.Maximize;
 import org.moeaframework.core.variable.EncodingUtils;
-import org.moeaframework.util.Vector;
 import org.moeaframework.util.io.CommentedLineReader;
 
 /**
@@ -194,9 +194,8 @@ public class Knapsack implements Problem {
 			}
 		}
 
-		// negate the objectives since Knapsack is maximization
-		solution.setObjectives(Vector.negate(f));
-		solution.setConstraints(g);
+		solution.setObjectiveValues(f);
+		solution.setConstraintValues(g);
 	}
 
 	@Override
@@ -223,6 +222,11 @@ public class Knapsack implements Problem {
 	public Solution newSolution() {
 		Solution solution = new Solution(1, nsacks, nsacks);
 		solution.setVariable(0, EncodingUtils.newBinary(nitems));
+		
+		for (int i = 0; i < nsacks; i++) {
+			solution.setObjective(i, new Maximize());
+		}
+		
 		return solution;
 	}
 

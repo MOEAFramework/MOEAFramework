@@ -52,8 +52,8 @@ public class ZDT5 extends ZDT {
 
 		double h = 1.0 / f;
 
-		solution.setObjective(0, f);
-		solution.setObjective(1, g * h);
+		solution.setObjectiveValue(0, f);
+		solution.setObjectiveValue(1, g * h);
 	}
 
 	private double v(int cardinality) {

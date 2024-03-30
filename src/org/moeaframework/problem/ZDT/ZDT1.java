@@ -53,8 +53,8 @@ public class ZDT1 extends ZDT {
 
 		double h = 1.0 - Math.sqrt(x[0] / g);
 
-		solution.setObjective(0, x[0]);
-		solution.setObjective(1, g * h);
+		solution.setObjectiveValue(0, x[0]);
+		solution.setObjectiveValue(1, g * h);
 	}
 
 }
