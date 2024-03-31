@@ -45,6 +45,16 @@ import org.moeaframework.util.CommandLineUtility;
  * Command line tool for creating new natively-compiled problems.  This tool will create a folder containing all the
  * files needed to write and compile the problem, package everything into a JAR, and display instructions for using
  * the generated files.
+ * <p>
+ * To define a new language:
+ * <ol>
+ *   <li>Create a nested package with the name of the language.
+ *   <li>Create a Manifest file with lines formatted as <sourceFile> -> <destinationFile>.  This controls how the files
+ *       are extracted into the destination folder.
+ *   <li>Create the individual files, typically with the extension .template to prevent compilation errors.  These
+ *       files can use ${key} string substitutions.
+ *   <li>Add the name of the language to {@link #LANGUAGES}.
+ * </ol>
  */
 public class CreateNativeProblem extends CommandLineUtility {
 	
@@ -157,10 +167,10 @@ public class CreateNativeProblem extends CommandLineUtility {
 		
 		System.out.println(problemName + " created in " + directory + ".  To use:");
 		System.out.println("  1. Go to this directory, edit the source files and implement your problem");
-		System.out.println("  2. Run 'make' from this directory");
-		System.out.println("  3. Copy '" + problemName + ".jar' into the MOEA Framework lib/ directory");
-		System.out.println("  4. Add '" + problemName + ".jar to the Java classpath");
-		System.out.println("  5. Write a program using this problem, for example:");
+		System.out.println("  2. Run 'make' to compile and package the files");
+		System.out.println("  3. Run 'make run' to test the problem");
+		System.out.println("  4. Copy / add '" + problemName + ".jar to the Java classpath, typically in the lib/ folder");
+		System.out.println("  5. Use this problem with the MOEA Framework:");
 		System.out.println();
 		System.out.println("         Problem problem = new " + problemName + "();");
 		System.out.println();

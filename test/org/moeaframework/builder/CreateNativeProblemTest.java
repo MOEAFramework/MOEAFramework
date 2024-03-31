@@ -41,13 +41,13 @@ public class CreateNativeProblemTest {
 				"--numberOfObjectives", "2",
 				"--directory", directory.toString()
 		});
-
+		
 		ProcessBuilder processBuilder = new ProcessBuilder("make");
-		processBuilder.directory(directory.toFile());
+		processBuilder.directory(directory.resolve("Test").toFile());
 		RedirectStream.invoke(processBuilder);
 		
 		processBuilder = new ProcessBuilder("make", "run");
-		processBuilder.directory(directory.toFile());
+		processBuilder.directory(directory.resolve("Test").toFile());
 		String output = RedirectStream.capture(processBuilder);
 		
 		List<String> lines = output.lines().toList();
