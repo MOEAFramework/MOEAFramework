@@ -1,0 +1,29 @@
+# Edit the following to configure the compiler and required libraries
+CC = gcc
+LIBS =
+JAVA_HOME = ${java.home}
+
+# Detect the OS and configure the correct shared library name
+ifeq ($(OS),Windows_NT)
+    LIBNAME = ${problemName}.dll
+    SEPARATOR = ;
+else
+    UNAME := $(shell uname -s)
+    SEPARATOR = :
+    
+    ifeq ($(UNAME),Linux)
+        LIBNAME = lib${problemName}.dll
+    else ifeq ($(UNAME),Darwin)
+        LIBNAME = ${problemName}.dylib
+    endif
+endif
+
+# Compile the shared library
+main:
+	$(CC) -c -fPIC ${problemName}.c $(LIBS)
+	$(CC) -shared -o $(LIBNAME) ${problemName}.o
+	"$(JAVA_HOME)\bin\javac" -classpath "../../lib/*$(SEPARATOR)../../bin$(SEPARATOR)../../dist" ${problemName}.java ${problemName}Provider.java
+	"$(JAVA_HOME)\bin\jar" cf ${problemName}.jar *.class *.dll META-INF
+
+clean:
+	rm -f $(LIBNAME) ${problemName}.o

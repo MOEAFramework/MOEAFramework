@@ -104,6 +104,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		    			<available file="lib/commons-math3-${commons-math3.version}.jar" />
 		    			<available file="lib/jcommon-${jcommon.version}.jar" />
 		    			<available file="lib/jfreechart-${jfreechart.version}.jar" />
+		    			<available file="lib/jna-${jna.version}.jar" />
 		    			<available file="lib/rsyntaxtextarea-${rsyntaxtextarea.version}.jar" />
 		    		</and>
 		    	</not>
@@ -159,6 +160,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		<secure-get src="${commons-text.url}" dest="lib/commons-text-${commons-text.version}.jar" sha1="${commons-text.sha1}" />
 		<secure-get src="${jcommon.url}" dest="lib/jcommon-${jcommon.version}.jar" sha1="${jcommon.sha1}" />
 		<secure-get src="${jfreechart.url}" dest="lib/jfreechart-${jfreechart.version}.jar" sha1="${jfreechart.sha1}" />
+		<secure-get src="${jna.url}" dest="lib/jna-${jna.version}.jar" sha1="${jna.sha1}" />
 		<secure-get src="${rsyntaxtextarea.url}" dest="lib/rsyntaxtextarea-${rsyntaxtextarea.version}.jar" sha1="${rsyntaxtextarea.sha1}" />
 		
 		<replaceregexp file=".classpath" match="lib/([a-zA-Z0-9]+(-[a-zA-Z0-9]+)?)-[0-9]+\.[0-9]+\.([0-9]+)?\.jar"
@@ -336,12 +338,15 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		
 		<unjar dest="${build}" src="lib/jcommon-${jcommon.version}.jar" />
 		<unjar dest="${build}" src="lib/jfreechart-${jfreechart.version}.jar" />
+		<unjar dest="${build}" src="lib/jna-${jna.version}.jar" />
 		<unjar dest="${build}" src="lib/rsyntaxtextarea-${rsyntaxtextarea.version}.jar" />
 
 		<delete dir="${build}/META-INF/maven" />
 		<delete dir="${build}/META-INF/versions" />
 		<delete file="${build}/META-INF/LICENSE" />
 		<delete file="${build}/META-INF/LICENSE.txt" />
+		<delete file="${build}/META-INF/LGPL2.1" />
+		<delete file="${build}/META-INF/AL2.0" />
 		<delete file="${build}/META-INF/MANIFEST.mf" />
 		<delete dir="${build}/templates" />
 		

@@ -4,6 +4,7 @@
 /test-results/
 /javadoc/
 /maven/
+/native/
 /.settings/
 /*.txt
 /*.csv

@@ -37,85 +37,85 @@ import org.moeaframework.util.TypedProperties;
  * either apply or revert any negation.
  */
 public class Negater extends CommandLineUtility {
-    
-    /**
-     * Constructs the command line utility for negating the objectives in result files.
-     */
-    public Negater() {
-        super();
-    }
 
-    @Override
-    public Options getOptions() {
-        Options options = super.getOptions();
+	/**
+	 * Constructs the command line utility for negating the objectives in result files.
+	 */
+	public Negater() {
+		super();
+	}
 
-        options.addOption(Option.builder("d")
-        		.longOpt("direction")
-        		.hasArg()
-                .argName("d1,d2,...")
-                .required()
-                .build());
+	@Override
+	public Options getOptions() {
+		Options options = super.getOptions();
 
-        return options;
-    }
+		options.addOption(Option.builder("d")
+				.longOpt("direction")
+				.hasArg()
+				.argName("d1,d2,...")
+				.required()
+				.build());
 
-    @Override
-    public void run(CommandLine commandLine) throws Exception {
-        TypedProperties properties = TypedProperties.withProperty("direction", commandLine.getOptionValue("direction"));
-        int[] directions = properties.getIntArray("direction");
+		return options;
+	}
 
-        outer: for (String arg : commandLine.getArgs()) {
-        	File tempFile = File.createTempFile("temp", null);
-        	tempFile.deleteOnExit();
-        	
-        	try (BufferedReader reader = new BufferedReader(new FileReader(arg));
-        			PrintStream writer = new PrintStream(tempFile)) {
-        		String line = null;
-        		
-        		while ((line = reader.readLine()) != null) {
-                    if (line.startsWith("#") || line.startsWith("//")) {
-                        writer.println(line);
-                    } else {
-                        String[] tokens = line.split("\\s+");
-                        
-                        if (tokens.length != directions.length) {
-                            System.err.println("unable to negate values in " + arg + ", incorrect number of values in a row");
-                            continue outer;
-                        }
+	@Override
+	public void run(CommandLine commandLine) throws Exception {
+		TypedProperties properties = TypedProperties.withProperty("direction", commandLine.getOptionValue("direction"));
+		int[] directions = properties.getIntArray("direction");
 
-                        for (int j = 0; j < tokens.length; j++) {
-                            if (j > 0) {
-                                writer.print(' ');
-                            }
+		outer: for (String arg : commandLine.getArgs()) {
+			File tempFile = File.createTempFile("temp", null);
+			tempFile.deleteOnExit();
 
-                            if (directions[j] == 0) {
-                                writer.print(tokens[j]);
-                            } else {
-                                double value = Double.parseDouble(tokens[j]);
-                                writer.print(-value);
-                            }
-                        }
+			try (BufferedReader reader = new BufferedReader(new FileReader(arg));
+					PrintStream writer = new PrintStream(tempFile)) {
+				String line = null;
 
-                        writer.println();
-                    }
-                }
-        	} catch (NumberFormatException e) {
-                System.err.println("unable to negate values in " + arg + ", unable to parse number");
-                continue outer;
-            }
-        	
-        	Files.move(tempFile.toPath(), Path.of(arg), StandardCopyOption.REPLACE_EXISTING);
-        }
-    }
-    
-    /**
-     * Starts the command line utility for negating the objectives in result files.
-     * 
-     * @param args the command line arguments
+				while ((line = reader.readLine()) != null) {
+					if (line.startsWith("#") || line.startsWith("//")) {
+						writer.println(line);
+					} else {
+						String[] tokens = line.split("\\s+");
+
+						if (tokens.length != directions.length) {
+							System.err.println("unable to negate values in " + arg + ", incorrect number of values in a row");
+							continue outer;
+						}
+
+						for (int j = 0; j < tokens.length; j++) {
+							if (j > 0) {
+								writer.print(' ');
+							}
+
+							if (directions[j] == 0) {
+								writer.print(tokens[j]);
+							} else {
+								double value = Double.parseDouble(tokens[j]);
+								writer.print(-value);
+							}
+						}
+
+						writer.println();
+					}
+				}
+			} catch (NumberFormatException e) {
+				System.err.println("unable to negate values in " + arg + ", unable to parse number");
+				continue outer;
+			}
+
+			Files.move(tempFile.toPath(), Path.of(arg), StandardCopyOption.REPLACE_EXISTING);
+		}
+	}
+
+	/**
+	 * Starts the command line utility for negating the objectives in result files.
+	 * 
+	 * @param args the command line arguments
 	 * @throws Exception if an error occurred
-     */
-    public static void main(String[] args) throws Exception {
-        new Negater().start(args);
-    }
+	 */
+	public static void main(String[] args) throws Exception {
+		new Negater().start(args);
+	}
 
 }

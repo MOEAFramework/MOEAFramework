@@ -1,0 +1,7 @@
+int nvars = ${numberOfVariables};
+int nobjs = ${numberOfObjectives};
+int nconstrs = ${numberOfConstraints};
+
+void ${functionName}(double* vars, double* objs, double* constrs) {
+	// TODO: Fill in with your function definition
+}

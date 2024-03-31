@@ -1,0 +1,11 @@
+import org.moeaframework.core.spi.RegisteredProblemProvider;
+
+public class ${problemName}Provider extends RegisteredProblemProvider {
+
+	public ${problemName}Provider() {
+		super();
+		
+		register("${problemName}", () -> new ${problemName}(), null);
+		registerDiagnosticToolProblems(getRegisteredProblems());
+	}
+}

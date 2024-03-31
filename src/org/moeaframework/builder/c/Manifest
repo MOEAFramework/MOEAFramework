@@ -1,0 +1,5 @@
+Makefile.template -> Makefile
+NativeC.template -> ${problemName}.c
+Problem.template -> ${problemName}.java
+ProblemProvider.template -> ${problemName}Provider.java
+Service.template -> META-INF/services/org.moeaframework.problem.ProblemProvider
