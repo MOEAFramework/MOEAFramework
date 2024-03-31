@@ -91,12 +91,15 @@ public class BuildProblemTest {
 			processBuilder = new ProcessBuilder("make", "run");
 			processBuilder.directory(directory.resolve("Test").toFile());
 			String output = RedirectStream.capture(processBuilder);
-	
+			
+			System.out.println(output);
+			
 			List<String> lines = output.lines().toList();
-			Assert.assertEquals(3, lines.size());
-			Assert.assertTrue(lines.get(0).startsWith("Var1"));
-			Assert.assertTrue(lines.get(1).startsWith("---"));
-			Assert.assertTrue(lines.get(2).startsWith("0.") || lines.get(2).startsWith("1."));
+			Assert.assertEquals(4, lines.size());
+			Assert.assertTrue(lines.get(0).matches("(\\bVar[0-9]+\\b\\s*){10}(\\bObj[0-9]+\\b\\s*){2}"));
+			Assert.assertTrue(lines.get(1).matches("([\\-]+\\s*){12}"));
+			Assert.assertTrue(lines.get(2).matches("(\\-?[0-9]+\\.[0-9]+\\b\\s*){12}"));
+			Assert.assertTrue(lines.get(3).isBlank());
 		} finally {
 			BuildProblem.deleteDirectory(directory);
 		}
