@@ -236,7 +236,6 @@ public class UpdateCodeSamples extends CommandLineUtility {
 					System.out.println("    > Updating " + language + " block: " + path + " " + options);
 					
 					if (cache.containsKey(cacheKey)) {
-						System.out.println("    > Loading " + cacheKey + " from cache");
 						content = cache.get(cacheKey);
 					} else {
 						switch (language) {

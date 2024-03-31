@@ -144,17 +144,15 @@ public abstract class CommandLineUtility {
 	}
 	
 	/**
-	 * Format and display the help information that details the available command line options.  This method performs
-	 * any available localization using {@link Localization}.
+	 * Returns the options with their descriptions loaded using {@link Localization}.
 	 * 
-	 * @param options the available command line options
+	 * @return the available command line options
 	 */
-	private void showHelp() {
+	protected Options getLocalizedOptions() {
 		Options options = getOptions();
 		
 		//update the options with their descriptions
-		for (Object object : options.getOptions()) {
-			Option option = (Option)object;
+		for (Option option : options.getOptions()) {
 			String key = "option." + option.getLongOpt();
 			Class<?> type = getClass();
 			
@@ -168,7 +166,15 @@ public abstract class CommandLineUtility {
 			}
 		}
 		
-		//format and display the help message
+		return options;
+	}
+	
+	/**
+	 * Format and display the help information that details the available command line options.
+	 */
+	protected void showHelp() {
+		Options options = getLocalizedOptions();
+		
 		HelpFormatter helpFormatter = new HelpFormatter();
 		helpFormatter.setWidth(Settings.PROPERTIES.getInt(Settings.KEY_HELP_WIDTH, HelpFormatter.DEFAULT_WIDTH));
 		helpFormatter.printHelp(
@@ -185,7 +191,7 @@ public abstract class CommandLineUtility {
 	 * 
 	 * @return the command string used to invoke this command line utility
 	 */
-	public String getCommandString() {
+	protected String getCommandString() {
 		if (commandString == null) {
 			return "java -classpath \"lib/*\" " + getClass().getName();
 		} else {
@@ -199,7 +205,7 @@ public abstract class CommandLineUtility {
 	 * @param commandString the command string used to invoke this command line utility; or {@code null} to use the
 	 *        default Java command line string
 	 */
-	public void setCommandString(String commandString) {
+	protected void setCommandString(String commandString) {
 		this.commandString = commandString;
 	}
 
