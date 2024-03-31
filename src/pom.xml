@@ -73,6 +73,11 @@
 			<version>%jfreechart.version%</version>
 		</dependency>
 		<dependency>
+			<groupId>net.java.dev.jna</groupId>
+			<artifactId>jna</artifactId>
+			<version>%jna.version%</version>
+		</dependency>
+		<dependency>
 			<groupId>com.fifesoft</groupId>
 			<artifactId>rsyntaxtextarea</artifactId>
 			<version>%rsyntaxtextarea.version%</version>
