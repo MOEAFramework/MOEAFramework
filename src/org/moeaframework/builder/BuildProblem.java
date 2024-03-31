@@ -140,6 +140,11 @@ public class BuildProblem extends CommandLineUtility {
 				.build());
 		
 		options.addOption(Option.builder()
+				.longOpt("classpath")
+				.hasArg()
+				.build());
+		
+		options.addOption(Option.builder()
 				.longOpt("overwrite")
 				.build());
 
@@ -197,7 +202,7 @@ public class BuildProblem extends CommandLineUtility {
 		mappings.put("upperBound", Double.parseDouble(commandLine.getOptionValue("upperBound", "1.0")));
 		mappings.put("relativePath", tryRelativize(directory, Path.of(".")).toString());
 		mappings.put("java.home", System.getProperty("java.home"));
-		mappings.put("java.class.path", String.join(PATH_SEPARATOR, classpath));
+		mappings.put("java.class.path", commandLine.getOptionValue("classpath", String.join(PATH_SEPARATOR, classpath)));
 
 		StringSubstitutor substitutor = new StringSubstitutor(mappings);
 		substitutor.setEnableSubstitutionInVariables(true);

@@ -76,7 +76,8 @@ public class BuildProblemTest {
 				"--language", language,
 				"--numberOfVariables", "10",
 				"--numberOfObjectives", "2",
-				"--directory", directory.toString()
+				"--directory", directory.toString(),
+				"--classpath", System.getProperty("java.class.path")
 		});
 
 		try {
