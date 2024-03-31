@@ -228,6 +228,25 @@ public class TestUtils {
 	}
 	
 	/**
+	 * Asserts that the given line is blank, that is, it is empty or contains only whitespace.
+	 * 
+	 * @param line the line to test
+	 */
+	public static void assertLineBlank(String line) {
+		Assert.assertTrue("Line is not blank: '" + line + "'", line.isBlank());
+	}
+	
+	/**
+	 * Asserts that the given line matches a regular expression pattern.
+	 * 
+	 * @param line the line to test
+	 * @param regex the regular expression pattern
+	 */
+	public static void assertLineMatches(String line, String regex) {
+		Assert.assertTrue("Line does not match regex: '" + line + "'", line.matches(regex));
+	}
+	
+	/**
 	 * Asserts that every line on the file matches the specified regular expression pattern.  This method automatically
 	 * ignores commented lines.
 	 * 

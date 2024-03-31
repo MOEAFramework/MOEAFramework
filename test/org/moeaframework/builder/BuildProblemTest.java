@@ -96,10 +96,10 @@ public class BuildProblemTest {
 			
 			List<String> lines = output.lines().toList();
 			Assert.assertEquals(4, lines.size());
-			Assert.assertTrue(lines.get(0).matches("(\\bVar[0-9]+\\b\\s*){10}(\\bObj[0-9]+\\b\\s*){2}"));
-			Assert.assertTrue(lines.get(1).matches("([\\-]+\\s*){12}"));
-			Assert.assertTrue(lines.get(2).matches("(\\-?[0-9]+\\.[0-9]+\\b\\s*){12}"));
-			Assert.assertTrue(lines.get(3).isBlank());
+			TestUtils.assertLineMatches(lines.get(0), "(\\bVar[0-9]+\\b\\s*){10}(\\bObj[0-9]+\\b\\s*){2}");
+			TestUtils.assertLineMatches(lines.get(1), "([\\-]+\\s*){12}");
+			TestUtils.assertLineMatches(lines.get(2), "(\\-?[0-9]+\\.[0-9]+\\b\\s*){12}");
+			TestUtils.assertLineBlank(lines.get(3));
 		} finally {
 			BuildProblem.deleteDirectory(directory);
 		}
