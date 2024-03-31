@@ -1,6 +1,5 @@
 # Edit the following to configure the compiler and required libraries
-CC = gcc
-LIBS =
+FORTRAN = gfortran
 
 # Detect the OS and configure the correct shared library name
 ifeq ($(OS),Windows_NT)
@@ -22,13 +21,12 @@ CLASSPATH = ${java.class.path}
 
 # Compile the shared library
 build:
-	$(CC) -c -fPIC ${problemName}.c $(LIBS)
-	$(CC) -shared -o $(LIBNAME) ${problemName}.o
+	$(FORTRAN) -shared -fPIC -o $(LIBNAME) ${problemName}.f90
 	javac -classpath "$(CLASSPATH)" ${problemName}.java ${problemName}Provider.java
-	jar cf ${problemName}.jar *.class *.dll META-INF
+	jar cf ${problemName}.jar *.class $(LIBNAME) META-INF
 
 clean:
-	rm -f $(LIBNAME) ${problemName}.o
+	rm -f $(LIBNAME) *.o *.class *.jar
 	
 run:
 	java -classpath "$(CLASSPATH)" Example.java

@@ -26,17 +26,31 @@ import org.junit.Test;
 import org.moeaframework.TestUtils;
 import org.moeaframework.util.io.RedirectStream;
 
-public class CreateNativeProblemTest {
+public class BuildProblemTest {
 
 	@Test
-	public void test() throws Exception {
+	public void testC() throws Exception {
+		test("c");
+	}
+	
+	@Test
+	public void testCPP() throws Exception {
+		test("cpp");
+	}
+	
+	@Test
+	public void testFortran() throws Exception {
+		test("fortran");
+	}
+	
+	private void test(String language) throws Exception {
 		TestUtils.assumeMakeExists();
 		
 		Path directory = Files.createTempDirectory("test");
 		
-		CreateNativeProblem.main(new String[] {
+		BuildProblem.main(new String[] {
 				"--problemName", "Test",
-				"--language", "C",
+				"--language", language,
 				"--numberOfVariables", "10",
 				"--numberOfObjectives", "2",
 				"--directory", directory.toString()

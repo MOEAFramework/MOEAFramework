@@ -27,9 +27,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 import javax.lang.model.SourceVersion;
@@ -56,19 +55,32 @@ import org.moeaframework.util.CommandLineUtility;
  *   <li>Add the name of the language to {@link #LANGUAGES}.
  * </ol>
  */
-public class CreateNativeProblem extends CommandLineUtility {
+public class BuildProblem extends CommandLineUtility {
 	
 	// TODO: Take an optional package argument and structure the Java files correctly
 	
 	/**
 	 * The supported language options.
 	 */
-	public static final List<String> LANGUAGES = List.of("c");
+	public static final Map<String, String> LANGUAGES;
+	
+	/**
+	 * The variable used in Makefiles specifying the platform-specific classpath separator.
+	 */
+	public static final String PATH_SEPARATOR = "$(SEPARATOR)";
+	
+	static {
+		LANGUAGES = new TreeMap<String, String>(String.CASE_INSENSITIVE_ORDER);
+		LANGUAGES.put("c", "c");
+		LANGUAGES.put("cpp", "cpp");
+		LANGUAGES.put("c++", "cpp");
+		LANGUAGES.put("fortran", "fortran");
+	}
 	
 	/**
 	 * Creates a new instance of this command line tool.
 	 */
-	public CreateNativeProblem() {
+	public BuildProblem() {
 		super();
 	}
 
@@ -125,7 +137,7 @@ public class CreateNativeProblem extends CommandLineUtility {
 	@Override
 	public void run(CommandLine commandLine) throws Exception {
 		String problemName = commandLine.getOptionValue("problemName");
-		String language = commandLine.getOptionValue("language").toLowerCase();
+		String language = commandLine.getOptionValue("language");
 		String functionName = commandLine.getOptionValue("functionName", "evaluate");
 
 		if (!SourceVersion.isIdentifier(problemName)) {
@@ -136,23 +148,12 @@ public class CreateNativeProblem extends CommandLineUtility {
 			throw new FrameworkException("'" + functionName + "' is not a valid function name");
 		}
 		
-		if (!LANGUAGES.contains(language)) {
+		if (LANGUAGES.containsKey(language)) {
+			language = LANGUAGES.get(language);
+		} else {
 			throw new FrameworkException("'" + language + "' is not a supported language");
 		}
-
-		Map<String, Object> mappings = new HashMap<>();
-		mappings.put("problemName", problemName);
-		mappings.put("functionName", functionName);
-		mappings.put("language", language);
-		mappings.put("numberOfVariables", Integer.parseInt(commandLine.getOptionValue("numberOfVariables")));
-		mappings.put("numberOfObjectives", Integer.parseInt(commandLine.getOptionValue("numberOfObjectives")));
-		mappings.put("numberOfConstraints", Integer.parseInt(commandLine.getOptionValue("numberOfConstraints", "0")));
-		mappings.put("java.home", System.getProperty("java.home"));
-		mappings.put("classpath", getCrossPlatformClasspath());
-
-		StringSubstitutor substitutor = new StringSubstitutor(mappings);
-		substitutor.setEnableSubstitutionInVariables(true);
-
+		
 		Path directory = Path.of(commandLine.getOptionValue("directory", "native"), problemName);
 		
 		if (directory.toFile().exists()) {
@@ -163,21 +164,34 @@ public class CreateNativeProblem extends CommandLineUtility {
 			}
 		}
 		
+		String[] classpath = new String[] {
+				directory.relativize(Path.of(".")).resolve("lib").toString() + File.separator + "*",
+				directory.relativize(Path.of(".").resolve("bin")).toString(),
+				"."
+		};
+				
+
+		Map<String, Object> mappings = new HashMap<>();
+		mappings.put("problemName", problemName);
+		mappings.put("functionName", functionName);
+		mappings.put("language", language);
+		mappings.put("numberOfVariables", Integer.parseInt(commandLine.getOptionValue("numberOfVariables")));
+		mappings.put("numberOfObjectives", Integer.parseInt(commandLine.getOptionValue("numberOfObjectives")));
+		mappings.put("numberOfConstraints", Integer.parseInt(commandLine.getOptionValue("numberOfConstraints", "0")));
+		mappings.put("relativePath", directory.relativize(Path.of(".")).toString());
+		mappings.put("java.home", System.getProperty("java.home"));
+		mappings.put("java.class.path", String.join(PATH_SEPARATOR, classpath));
+
+		StringSubstitutor substitutor = new StringSubstitutor(mappings);
+		substitutor.setEnableSubstitutionInVariables(true);
+		
 		processManifest(Path.of("org", "moeaframework", "builder", language), directory, substitutor);
 		
 		System.out.println(problemName + " created in " + directory + ".  To use:");
 		System.out.println("  1. Go to this directory, edit the source files and implement your problem");
 		System.out.println("  2. Run 'make' to compile and package the files");
-		System.out.println("  3. Run 'make run' to test the problem");
-		System.out.println("  4. Copy / add '" + problemName + ".jar to the Java classpath, typically in the lib/ folder");
-		System.out.println("  5. Use this problem with the MOEA Framework:");
-		System.out.println();
-		System.out.println("         Problem problem = new " + problemName + "();");
-		System.out.println();
-		System.out.println("         NSGAII algorithm = new NSGAII(problem);");
-		System.out.println("         algorithm.run(10000);");
-		System.out.println();
-		System.out.println("         algorithm.getResult().display();");
+		System.out.println("  3. Run 'make run' to run the example");
+		System.out.println("  4. Add '" + problemName + ".jar to the Java classpath, typically by placing the JAR in the lib/ folder");
 	}
 
 	private void processManifest(Path root, Path targetDirectory, StringSubstitutor substitutor) throws IOException {
@@ -214,11 +228,6 @@ public class CreateNativeProblem extends CommandLineUtility {
 	        }
 	    }
 	}
-	
-	private String getCrossPlatformClasspath() {
-		String classpath = System.getProperty("java.class.path");
-		return classpath.replaceAll(Matcher.quoteReplacement(File.pathSeparator), "\\$(SEPARATOR)");
-	}
 
 	/**
 	 * Starts this command line utility.
@@ -227,7 +236,7 @@ public class CreateNativeProblem extends CommandLineUtility {
 	 * @throws Exception if an error occurred
 	 */
 	public static void main(String[] args) throws Exception {
-		new CreateNativeProblem().start(args);
+		new BuildProblem().start(args);
 	}
 
 }

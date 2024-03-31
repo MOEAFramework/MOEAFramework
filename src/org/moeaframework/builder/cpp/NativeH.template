@@ -1,0 +1,12 @@
+#ifndef ${problemName}_H
+#define ${problemName}_H
+
+extern "C" {
+void __declspec(dllexport) ${functionName}(double* vars, double* objs, double* constrs); 
+}
+
+int nvars = ${numberOfVariables};
+int nobjs = ${numberOfObjectives};
+int nconstrs = ${numberOfConstraints};
+
+#endif

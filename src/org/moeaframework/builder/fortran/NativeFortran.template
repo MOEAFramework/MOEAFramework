@@ -1,0 +1,13 @@
+module ${problemName}
+    implicit none
+contains
+    subroutine ${functionName}(vars, objs, constrs) bind(C)
+        !DEC$ ATTRIBUTES DLLEXPORT :: ${functionName}
+        use, intrinsic :: iso_fortran_env, only: DP => real64
+        real(DP), dimension(${numberOfVariables}), intent(in) :: vars
+        real(DP), dimension(${numberOfObjectives}), intent(out) :: objs
+        real(DP), dimension(${numberOfConstraints}), intent(out) :: constrs
+
+        ! TODO: Fill in with your problem definition
+    end subroutine
+end module

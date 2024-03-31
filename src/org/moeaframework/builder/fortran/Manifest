@@ -1,0 +1,6 @@
+Makefile.template -> Makefile
+NativeFortran.template -> ${problemName}.f90
+../c/Problem.template -> ${problemName}.java
+../c/ProblemProvider.template -> ${problemName}Provider.java
+../c/Service.template -> META-INF/services/org.moeaframework.problem.ProblemProvider
+../c/Example.template -> Example.java
