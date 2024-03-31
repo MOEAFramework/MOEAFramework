@@ -32,22 +32,30 @@ public class BuildProblemTest {
 	public void testC() throws Exception {
 		test("c");
 	}
-	
+
 	@Test
 	public void testCPP() throws Exception {
 		test("cpp");
 	}
-	
+
 	@Test
 	public void testFortran() throws Exception {
 		test("fortran");
 	}
 	
-	private void test(String language) throws Exception {
-		TestUtils.assumeMakeExists();
-		
+	@Test
+	public void testJava() throws Exception {
+		test("java");
+	}
+
+	@Test
+	public void testExternal() throws Exception {
+		test("external");
+	}
+
+	private void test(String language) throws Exception {		
 		Path directory = Files.createTempDirectory("test");
-		
+
 		BuildProblem.main(new String[] {
 				"--problemName", "Test",
 				"--language", language,
@@ -55,20 +63,26 @@ public class BuildProblemTest {
 				"--numberOfObjectives", "2",
 				"--directory", directory.toString()
 		});
-		
-		ProcessBuilder processBuilder = new ProcessBuilder("make");
-		processBuilder.directory(directory.resolve("Test").toFile());
-		RedirectStream.invoke(processBuilder);
-		
-		processBuilder = new ProcessBuilder("make", "run");
-		processBuilder.directory(directory.resolve("Test").toFile());
-		String output = RedirectStream.capture(processBuilder);
-		
-		List<String> lines = output.lines().toList();
-		Assert.assertEquals(3, lines.size());
-		Assert.assertTrue(lines.get(0).startsWith("Var1"));
-		Assert.assertTrue(lines.get(1).startsWith("---"));
-		Assert.assertTrue(lines.get(2).startsWith("0.") || lines.get(2).startsWith("1."));
+
+		try {
+			TestUtils.assumeMakeExists();
+	
+			ProcessBuilder processBuilder = new ProcessBuilder("make");
+			processBuilder.directory(directory.resolve("Test").toFile());
+			RedirectStream.invoke(processBuilder);
+	
+			processBuilder = new ProcessBuilder("make", "run");
+			processBuilder.directory(directory.resolve("Test").toFile());
+			String output = RedirectStream.capture(processBuilder);
+	
+			List<String> lines = output.lines().toList();
+			Assert.assertEquals(3, lines.size());
+			Assert.assertTrue(lines.get(0).startsWith("Var1"));
+			Assert.assertTrue(lines.get(1).startsWith("---"));
+			Assert.assertTrue(lines.get(2).startsWith("0.") || lines.get(2).startsWith("1."));
+		} finally {
+			BuildProblem.deleteDirectory(directory);
+		}
 	}
 
 }

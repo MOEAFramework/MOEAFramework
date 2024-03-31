@@ -25,10 +25,10 @@ build:
 	$(CC) -c -fPIC ${problemName}.c $(LIBS)
 	$(CC) -shared -o $(LIBNAME) ${problemName}.o
 	javac -classpath "$(CLASSPATH)" ${problemName}.java ${problemName}Provider.java
-	jar cf ${problemName}.jar *.class *.dll META-INF
+	jar cf ${problemName}.jar *.class $(LIBNAME) META-INF
 
 clean:
-	rm -f $(LIBNAME) ${problemName}.o
+	rm -f $(LIBNAME) *.o *.class *.jar
 	
 run:
 	java -classpath "$(CLASSPATH)" Example.java

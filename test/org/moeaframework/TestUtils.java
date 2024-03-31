@@ -527,12 +527,22 @@ public class TestUtils {
 	 * Assume make exists, if not skip the test.
 	 */
 	public static void assumeMakeExists() {
+		Assume.assumeTrue("unable to run make, skipping test", verifyMakeExists());
+	}
+	
+	/**
+	 * Returns {@code true} if the 'make' command exists on the system.
+	 * 
+	 * @return {@code true} if the 'make' command exists; {@code false} otherwise
+	 */
+	public static boolean verifyMakeExists() {
 		try {
 			ProcessBuilder processBuilder = new ProcessBuilder("make", "--version");			
 			RedirectStream.invoke(processBuilder);
+			return true;
 		} catch (InterruptedException | IOException e) {
 			System.err.println(e);
-			Assume.assumeTrue("unable to run make, skipping test", false);
+			return false;
 		}
 	}
 	

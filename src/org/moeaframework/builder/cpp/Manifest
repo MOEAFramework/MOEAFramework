@@ -2,6 +2,6 @@ Makefile.template -> Makefile
 NativeCPP.template -> ${problemName}.cpp
 NativeH.template -> ${problemName}.h
 ../c/Problem.template -> ${problemName}.java
-../c/ProblemProvider.template -> ${problemName}Provider.java
-../c/Service.template -> META-INF/services/org.moeaframework.problem.ProblemProvider
-../c/Example.template -> Example.java
+../shared/ProblemProvider.template -> ${problemName}Provider.java
+../shared/Service.template -> META-INF/services/org.moeaframework.problem.ProblemProvider
+../shared/Example.template -> Example.java

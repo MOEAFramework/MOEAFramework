@@ -1,0 +1,25 @@
+# Edit the following to configure the compiler and required libraries
+CC = gcc
+LIBS =
+
+# Detect the OS and configure the build settings
+ifeq ($(OS),Windows_NT)
+    SEPARATOR = ;
+else
+    SEPARATOR = :
+endif
+
+# Configure the Java classpath
+CLASSPATH = ${java.class.path}
+
+# Compile the external program
+build:
+	$(CC) -o ${problemName}.exe ${problemName}.c moeaframework.c $(LIBS)
+	javac -classpath "$(CLASSPATH)" ${problemName}.java ${problemName}Provider.java
+	jar cf ${problemName}.jar *.class META-INF
+
+clean:
+	rm -f $(LIBNAME) ${problemName}.o
+	
+run:
+	java -classpath "$(CLASSPATH)" Example.java

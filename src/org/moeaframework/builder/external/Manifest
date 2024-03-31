@@ -1,0 +1,8 @@
+Makefile.template -> Makefile
+CProgram.template -> ${problemName}.c
+ExternalProblem.template -> ${problemName}.java
+../shared/ProblemProvider.template -> ${problemName}Provider.java
+../shared/Service.template -> META-INF/services/org.moeaframework.problem.ProblemProvider
+../shared/Example.template -> Example.java
+!examples/moeaframework.c -> moeaframework.c
+!examples/moeaframework.h -> moeaframework.h

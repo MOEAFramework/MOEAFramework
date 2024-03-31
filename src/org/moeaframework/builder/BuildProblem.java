@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -39,6 +40,7 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.text.StringSubstitutor;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.util.CommandLineUtility;
+import org.moeaframework.util.io.CommentedLineReader;
 
 /**
  * Command line tool for creating new natively-compiled problems.  This tool will create a folder containing all the
@@ -57,8 +59,6 @@ import org.moeaframework.util.CommandLineUtility;
  */
 public class BuildProblem extends CommandLineUtility {
 	
-	// TODO: Take an optional package argument and structure the Java files correctly
-	
 	/**
 	 * The supported language options.
 	 */
@@ -75,6 +75,8 @@ public class BuildProblem extends CommandLineUtility {
 		LANGUAGES.put("cpp", "cpp");
 		LANGUAGES.put("c++", "cpp");
 		LANGUAGES.put("fortran", "fortran");
+		LANGUAGES.put("java", "java");
+		LANGUAGES.put("external", "external");
 	}
 	
 	/**
@@ -158,18 +160,17 @@ public class BuildProblem extends CommandLineUtility {
 		
 		if (directory.toFile().exists()) {
 			if (commandLine.hasOption("overwrite")) {
-				Files.walk(directory).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
+				deleteDirectory(directory);
 			} else {
 				throw new FrameworkException(directory + " already exists, delete this folder or choose a different name");
 			}
 		}
 		
 		String[] classpath = new String[] {
-				directory.relativize(Path.of(".")).resolve("lib").toString() + File.separator + "*",
-				directory.relativize(Path.of(".").resolve("bin")).toString(),
+				tryRelativize(directory, Path.of(".")).resolve("lib").toString() + File.separator + "*",
+				tryRelativize(directory, Path.of(".")).resolve("bin").toString(),
 				"."
-		};
-				
+		};		
 
 		Map<String, Object> mappings = new HashMap<>();
 		mappings.put("problemName", problemName);
@@ -178,7 +179,7 @@ public class BuildProblem extends CommandLineUtility {
 		mappings.put("numberOfVariables", Integer.parseInt(commandLine.getOptionValue("numberOfVariables")));
 		mappings.put("numberOfObjectives", Integer.parseInt(commandLine.getOptionValue("numberOfObjectives")));
 		mappings.put("numberOfConstraints", Integer.parseInt(commandLine.getOptionValue("numberOfConstraints", "0")));
-		mappings.put("relativePath", directory.relativize(Path.of(".")).toString());
+		mappings.put("relativePath", tryRelativize(directory, Path.of(".")).toString());
 		mappings.put("java.home", System.getProperty("java.home"));
 		mappings.put("java.class.path", String.join(PATH_SEPARATOR, classpath));
 
@@ -195,38 +196,60 @@ public class BuildProblem extends CommandLineUtility {
 	}
 
 	private void processManifest(Path root, Path targetDirectory, StringSubstitutor substitutor) throws IOException {
-		String manifest = loadResourceAsString(root.resolve("Manifest").toString());
+		String manifest = loadResourceAsString(root, "Manifest");
 		manifest = substitutor.replace(manifest);
 
-		for (String line : manifest.lines().toList()) {
-			String[] tokens = line.split("\\s*\\->\\s*");
-			Path source = root.resolve(tokens[0]);
-			Path target = targetDirectory.resolve(tokens[1]);
-
-			Files.createDirectories(target.getParent());
-
-			extractFile(source, target, substitutor);
+		try (CommentedLineReader reader = new CommentedLineReader(new StringReader(manifest))) {
+			String line = null;
+			
+			while ((line = reader.readLine()) != null) {
+				String[] tokens = line.split("\\s*\\->\\s*");
+				String source = tokens[0];
+				Path target = targetDirectory.resolve(tokens[1]);
+	
+				Files.createDirectories(target.getParent());
+	
+				extractFile(root, source, target, substitutor);
+			}
 		}
 	}
 
-	private void extractFile(Path path, Path targetFile, StringSubstitutor substitutor) throws IOException {
-		String content = loadResourceAsString(path.toString());
+	private void extractFile(Path root, String resource, Path targetFile, StringSubstitutor substitutor) throws IOException {
+		String content = loadResourceAsString(root, resource);
 		content = substitutor.replace(content);
 		Files.writeString(targetFile, content, StandardCharsets.UTF_8);
 	}
+	
+	private Path tryRelativize(Path first, Path second) {
+		try {
+			return first.relativize(second);
+		} catch (IllegalArgumentException e) {
+			return second.toAbsolutePath();
+		}
+	}
+	
+	static void deleteDirectory(Path directory) throws IOException {
+		Files.walk(directory).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
+	}
 
-	private String loadResourceAsString(String path) throws IOException {
-		ClassLoader classLoader = getClass().getClassLoader();
-		
-	    try (InputStream input = classLoader.getResourceAsStream(path.replaceAll("\\\\", "/"))) {
-	        if (input == null) {
-	        	throw new IOException("Unable to find resource " + path);
-	        }
-	        
-	        try (BufferedReader reader = new BufferedReader(new InputStreamReader(input))) {
-	            return reader.lines().collect(Collectors.joining(System.lineSeparator()));
-	        }
-	    }
+	private String loadResourceAsString(Path root, String resource) throws IOException {
+		if (resource.startsWith("!")) {
+			// references a file relative to the MOEA Framework root folder
+			return Files.readString(new File(resource.substring(1)).toPath(), StandardCharsets.UTF_8);
+		} else {
+			ClassLoader classLoader = getClass().getClassLoader();
+			String path = root.resolve(resource).toString().replaceAll("\\\\", "/");
+			
+		    try (InputStream input = classLoader.getResourceAsStream(path)) {
+		        if (input == null) {
+		        	throw new IOException("Unable to find file or resource " + path);
+		        }
+		        
+		        try (BufferedReader reader = new BufferedReader(new InputStreamReader(input))) {
+		            return reader.lines().collect(Collectors.joining(System.lineSeparator()));
+		        }
+		    }
+		}
 	}
 
 	/**

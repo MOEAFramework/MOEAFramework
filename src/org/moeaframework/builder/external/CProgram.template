@@ -1,0 +1,33 @@
+#include <stdlib.h>
+#include "moeaframework.h"
+
+int nvars = ${numberOfVariables};
+int nobjs = ${numberOfObjectives};
+int nconstrs = ${numberOfConstraints};
+
+void ${functionName}(double* vars, double* objs, double* constrs) {
+	// TODO: Fill in with your problem definition
+}
+
+int main(int argc, char* argv[]) {
+	double vars[nvars];
+	double objs[nobjs];
+	double constrs[nconstrs];
+
+#ifdef USE_SOCKET
+	MOEA_Init_socket(nobjs, nconstrs, NULL);
+#else
+	MOEA_Init(nobjs, nconstrs);
+#endif
+
+	while (MOEA_Next_solution() == MOEA_SUCCESS) {
+		MOEA_Read_doubles(nvars, vars);
+		${functionName}(vars, objs, constrs);
+		MOEA_Write(objs, constrs);
+	}
+	
+	MOEA_Terminate();
+
+	return EXIT_SUCCESS;
+}
+
