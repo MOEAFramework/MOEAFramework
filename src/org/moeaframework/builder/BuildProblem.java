@@ -50,10 +50,10 @@ import org.moeaframework.util.io.CommentedLineReader;
  * To define a new language:
  * <ol>
  *   <li>Create a nested package with the name of the language.
- *   <li>Create a Manifest file with lines formatted as <sourceFile> -> <destinationFile>.  This controls how the files
- *       are extracted into the destination folder.
- *   <li>Create the individual files, typically with the extension .template to prevent compilation errors.  These
- *       files can use ${key} string substitutions.
+ *   <li>Create a Manifest file with lines formatted as {@code <sourceFile> -> <destinationFile>}.  This controls how
+ *       the files are extracted into the destination folder.
+ *   <li>Create the individual files, typically with the extension {@code .template} to prevent compilation errors.
+ *       These files can use {@code ${key}} string substitutions.
  *   <li>Add the name of the language to {@link #LANGUAGES}.
  * </ol>
  */
@@ -254,7 +254,7 @@ public class BuildProblem extends CommandLineUtility {
 			return Files.readString(new File(resource.substring(1)).toPath(), StandardCharsets.UTF_8);
 		} else {
 			ClassLoader classLoader = getClass().getClassLoader();
-			String path = root.resolve(resource).toString().replaceAll("\\\\", "/");
+			String path = root.resolve(resource).normalize().toString().replaceAll("\\\\", "/");
 			
 		    try (InputStream input = classLoader.getResourceAsStream(path)) {
 		        if (input == null) {
