@@ -94,12 +94,11 @@ public class BuildProblemTest {
 			
 			System.out.println(output);
 			
-			List<String> lines = output.lines().toList();
-			Assert.assertEquals(4, lines.size());
+			List<String> lines = output.lines().skip(1).toList(); // first line the the java command
+			Assert.assertEquals(3, lines.size());
 			TestUtils.assertLineMatches(lines.get(0), "(\\bVar[0-9]+\\b\\s*){10}(\\bObj[0-9]+\\b\\s*){2}");
 			TestUtils.assertLineMatches(lines.get(1), "([\\-]+\\s*){12}");
 			TestUtils.assertLineMatches(lines.get(2), "(\\-?[0-9]+\\.[0-9]+\\b\\s*){12}");
-			TestUtils.assertLineBlank(lines.get(3));
 		} finally {
 			BuildProblem.deleteDirectory(directory);
 		}
