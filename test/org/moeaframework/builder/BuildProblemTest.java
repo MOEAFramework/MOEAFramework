@@ -17,6 +17,7 @@
  */
 package org.moeaframework.builder;
 
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
@@ -77,7 +78,7 @@ public class BuildProblemTest {
 				"--numberOfVariables", "10",
 				"--numberOfObjectives", "2",
 				"--directory", directory.toString(),
-				"--classpath", System.getProperty("java.class.path")
+				"--classpath", System.getProperty("java.class.path") + File.pathSeparator + "."
 		});
 
 		try {
