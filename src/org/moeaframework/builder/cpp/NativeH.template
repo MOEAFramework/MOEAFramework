@@ -2,7 +2,11 @@
 #define ${problemName}_H
 
 extern "C" {
-void __declspec(dllexport) ${functionName}(double* vars, double* objs, double* constrs); 
+#ifdef WIN32
+void __declspec(dllexport) ${functionName}(double* vars, double* objs, double* constrs);
+#else
+void ${functionName}(double* vars, double* objs, double* constrs);
+#endif
 }
 
 int nvars = ${numberOfVariables};

@@ -181,8 +181,8 @@ public class BuildProblem extends CommandLineUtility {
 		}
 		
 		String[] classpath = new String[] {
-				tryRelativize(directory, Path.of(".")).resolve("lib").toString() + File.separator + "*",
-				tryRelativize(directory, Path.of(".")).resolve("bin").toString(),
+				tryRelativize(directory, Path.of(".")).resolve("lib").normalize().toString() + File.separator + "*",
+				tryRelativize(directory, Path.of(".")).resolve("bin").normalize().toString(),
 				"."
 		};		
 

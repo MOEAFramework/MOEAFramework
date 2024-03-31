@@ -538,7 +538,7 @@ public class TestUtils {
 	public static boolean verifyMakeExists() {
 		try {
 			ProcessBuilder processBuilder = new ProcessBuilder("make", "--version");			
-			RedirectStream.invoke(processBuilder);
+			RedirectStream.pipe(processBuilder, null, null);
 			return true;
 		} catch (InterruptedException | IOException e) {
 			System.err.println(e);

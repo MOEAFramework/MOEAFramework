@@ -6,9 +6,11 @@ LIBS =
 ifeq ($(OS),Windows_NT)
     LIBNAME = ${problemName}.dll
     SEPARATOR = ;
+    CFLAGS = -DWIN32
 else
     UNAME := $(shell uname -s)
     SEPARATOR = :
+    CFLAGS = 
     
     ifeq ($(UNAME),Linux)
         LIBNAME = lib${problemName}.so
@@ -22,7 +24,7 @@ CLASSPATH = ${java.class.path}
 
 # Compile the shared library
 build:
-	$(CC) -c -fPIC ${problemName}.cpp $(LIBS)
+	$(CC) $(CFLAGS) -c -fPIC ${problemName}.cpp $(LIBS)
 	$(CC) -shared -o $(LIBNAME) ${problemName}.o
 	javac -classpath "$(CLASSPATH)" ${problemName}.java ${problemName}Provider.java
 	jar cf ${problemName}.jar *.class $(LIBNAME) META-INF
