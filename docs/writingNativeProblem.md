@@ -1,162 +1,80 @@
 # Natively-Compiled Functions
 
-In this example, we will create a natively-compiled function for the 2-objective DTLZ2 problem and connect to it
-directly using the Java Native Access (JNA) library.  This takes a bit more work to setup than the other methods,
-but offers the highest performance.
+In this example, we will create a natively-compiled function in C, compile it, and connect to it directly using the
+Java Native Access (JNA) library.  This example also demonstrates our tool, `BuildProblem`, that generates the
+scaffolding for the problem.  This tool supports a number of native languages, like `C`, `C++`, and `Fortran`.
 
 ## Prerequisites
 
-To run this example, you will need:
-
-1. A C/C++ compiler and Make.  For Windows, we recommend using [MSYS2](https://www.msys2.org/) with MinGW.  After
-   installing MSYS2, open the MinGW64 terminal and run:
-   ```
-   pacman -S make mingw-w64-x86_64-gcc
-   ```
-   
-2. The Java Native Access (JNA) library.  Download the latest release from https://github.com/java-native-access/jna
-   and place the JAR file on the classpath, typically by extracting it into the `lib/` folder.
-
-## Example
-
-First, create the C file `dtlz2.c` and define the function that evaluates the DTLZ2 problem.  In this example, the
-function takes two double arrays (`double*` in C), the first for passing in the decision variables, and the second
-for returning the objective values.  If your problem also has constraints, you will need a third array.
-
-<!-- c:https://raw.githubusercontent.com/MOEAFramework/JNAExample/main/dtlz2.c [18:46] -->
-
-```c
-#include <math.h>
-
-#define PI 3.14159265358979323846
-
-int nvars = 11;
-int nobjs = 2;
-
-void evaluate(double* vars, double* objs) {
-    int i;
-    int j;
-    int k = nvars - nobjs + 1;
-    double g = 0.0;
-
-    for (i=nvars-k; i<nvars; i++) {
-        g += pow(vars[i] - 0.5, 2.0);
-    }
-
-    for (i=0; i<nobjs; i++) {
-        objs[i] = 1.0 + g;
-
-        for (j=0; j<nobjs-i-1; j++) {
-            objs[i] *= cos(0.5*PI*vars[j]);
-        }
-
-        if (i != 0) {
-            objs[i] *= sin(0.5*PI*vars[nobjs-i-1]);
-        }
-    }
-}
-```
-
-We can then compile this into the shared library with:
+To run this example, you will need a C/C++ compiler and Make.  For Windows, we recommend using
+[MSYS2](https://www.msys2.org/) with MinGW.  After installing MSYS2, open the MinGW64 terminal and run:
 
 ```bash
-gcc -c -fPIC dtlz2.c -lm
-gcc -shared -o dtlz2.dll dtlz2.o
+pacman -S make mingw-w64-x86_64-gcc
 ```
 
-Next, moving to Java, we first create a JNA interface that maps to the C function we created above.  Note how the
-name of the function and the arguments are identical, except we use `double[]` for the arrays.
+## Generating the Problem Scaffolding
 
-<!-- java:https://raw.githubusercontent.com/MOEAFramework/JNAExample/main/src/main/java/NativeDTLZ2.java [31:33] -->
+Running the following program will generate the scaffolding for the problem.  This includes the C file to implement
+the function, the Java files that integrate with the MOEA Framework, and a Makefile to compile everything.
 
-```java
-public interface NativeDTLZ2Impl extends Library {
-    void evaluate(double[] vars, double[] objs);
+```bash
+java -classpath "lib/*" org.moeaframework.builder.BuildProblem --problemName TestProblem --language c \
+	--numberOfVariables 1 --numberOfObjectives 2 --lowerBound -10.0 --upperBound 10.0
+```
+
+By default, the generated files will appear under the `native/` folder, such as `native/TestProblem` in this
+example.
+
+## Updating the C Code
+
+Navigate to the `native/TestProblem` folder and open `TestProblem.c` in an editor of your choice.  The contents
+of this file will appear similar to:
+
+```c
+int nvars = 1;
+int nobjs = 2;
+int nconstrs = 0;
+
+void evaluate(double* vars, double* objs, double* constrs) {
+	// TODO: Fill in with your function definition
 }
 ```
 
-Then, we can load the shared library into Java with:
+For the purposes of this example, we will implement the Schaffer problem which is defined as $f(x) = (x^2, (x-2)^2)$.
 
-<!-- java:https://raw.githubusercontent.com/MOEAFramework/JNAExample/main/src/main/java/NativeDTLZ2.java [35:35] -->
+```c
+int nvars = 1;
+int nobjs = 2;
+int nconstrs = 0;
 
-```java
-private final NativeDTLZ2Impl INSTANCE = (NativeDTLZ2Impl)Native.load("dtlz2", NativeDTLZ2Impl.class);
-```
-
-We provide the library name `"dtlz2"`, which JNA locates by looking for the appropriate file on the classpath.
-For instance, this would map to `dtlz2.dll` on Windows or `libdtlz2.so` on Linux.
-
-Lastly, just like any other problem in the MOEA Framework, we create a `Problem` class describing the problem.
-However, the `evaluate` method now must call into this native code.
-
-<!-- java:https://raw.githubusercontent.com/MOEAFramework/JNAExample/main/src/main/java/NativeDTLZ2.java [41:48] -->
-
-```java
-public void evaluate(Solution solution) {
-    double[] vars = EncodingUtils.getReal(solution);
-    double[] objs = new double[numberOfObjectives];
-
-    INSTANCE.evaluate(vars, objs);
-
-    solution.setObjectives(objs);
+void evaluate(double* vars, double* objs, double* constrs) {
+	objs[0] = vars[0] * vars[0];
+	objs[1] = (vars[0] - 2.0) * (vars[0] - 2.0);
 }
 ```
 
-Putting all this together, we end up with the following class defining our problem:
+We have already configured the lower and upper bounds of the decision variables to be `[-10, 10]`.  For more control
+over these bounds, you can edit `TestProblem.java`.
 
-<!-- java:https://raw.githubusercontent.com/MOEAFramework/JNAExample/main/src/main/java/NativeDTLZ2.java [18:] -->
+## Compiling and Testing
 
-```java
-import org.moeaframework.core.Solution;
-import org.moeaframework.core.variable.EncodingUtils;
-import org.moeaframework.core.variable.RealVariable;
-import org.moeaframework.problem.AbstractProblem;
+After saving the changes, we can use the provided Makefile to compile the example by running:
 
-import com.sun.jna.Library;
-import com.sun.jna.Native;
-
-public class NativeDTLZ2 extends AbstractProblem {
-
-    public interface NativeDTLZ2Impl extends Library {
-        void evaluate(double[] vars, double[] objs);
-    }
-
-    private final NativeDTLZ2Impl INSTANCE = (NativeDTLZ2Impl)Native.load("dtlz2", NativeDTLZ2Impl.class);
-
-    public NativeDTLZ2() {
-        super(11, 2);
-    }
-
-    public void evaluate(Solution solution) {
-        double[] vars = EncodingUtils.getReal(solution);
-        double[] objs = new double[numberOfObjectives];
-
-        INSTANCE.evaluate(vars, objs);
-
-        solution.setObjectives(objs);
-    }
-
-    public Solution newSolution() {
-        Solution solution = new Solution(numberOfVariables, numberOfObjectives);
-
-        for (int i = 0; i < numberOfVariables; i++) {
-            solution.setVariable(i, new RealVariable(0.0, 1.0));
-        }
-
-        return solution;
-    }
-
-}
+```bash
+make
 ```
 
-We can then solve this problem like any other:
+You will note this creates a shared library (a `.dll` on Windows or a `.so` on Linux) along with a `.jar` file.
+We can test this example by running:
 
-<!-- java:https://raw.githubusercontent.com/MOEAFramework/JNAExample/main/src/main/java/Example.java [23:25] -->
-
-```java
-NSGAII algorithm = new NSGAII(new NativeDTLZ2());
-algorithm.run(10000);
-algorithm.getResult().display();
+```bash
+make run
 ```
 
-For a complete, working version of this example, please visit https://github.com/MOEAFramework/JNAExample.
+If everything is configured correctly, you should see the Pareto front displayed.
+
+## Using the JAR
+
+Now that we tested the example, we can incorporate this problem into your MOEA Framework installation by copying the
+`.jar` file into the `lib/` directory.  If using Eclipse, you will also need to add this JAR to the build path.

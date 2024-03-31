@@ -52,6 +52,21 @@ public class BuildProblemTest {
 	public void testExternal() throws Exception {
 		test("external");
 	}
+	
+	@Test(expected = Exception.class)
+	public void testDisallowExample() throws Exception {
+		Path directory = Files.createTempDirectory("test");
+
+		BuildProblem.main(new String[] {
+				"--problemName", "Example",
+				"--language", "c",
+				"--numberOfVariables", "10",
+				"--numberOfObjectives", "2",
+				"--directory", directory.toString()
+		});
+		
+		BuildProblem.deleteDirectory(directory);
+	}
 
 	private void test(String language) throws Exception {		
 		Path directory = Files.createTempDirectory("test");

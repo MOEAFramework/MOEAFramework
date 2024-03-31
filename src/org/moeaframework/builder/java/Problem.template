@@ -26,9 +26,8 @@ public class ${problemName} extends AbstractProblem {
 	public Solution newSolution() {
 		Solution solution = new Solution(numberOfVariables, numberOfObjectives, numberOfConstraints);
 
-		// TODO: Edit the following the set the lower and upper bounds of your decision variables
 		for (int i = 0; i < numberOfVariables; i++) {
-			solution.setVariable(i, new RealVariable(0.0, 1.0));
+			solution.setVariable(i, new RealVariable(${lowerBound}, ${upperBound}));
 		}
 
 		return solution;

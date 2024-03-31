@@ -119,6 +119,16 @@ public class BuildProblem extends CommandLineUtility {
 				.hasArg()
 				.build());
 		
+		options.addOption(Option.builder("l")
+				.longOpt("lowerBound")
+				.hasArg()
+				.build());
+		
+		options.addOption(Option.builder("u")
+				.longOpt("upperBound")
+				.hasArg()
+				.build());
+		
 		options.addOption(Option.builder("f")
 				.longOpt("functionName")
 				.hasArg()
@@ -144,6 +154,10 @@ public class BuildProblem extends CommandLineUtility {
 
 		if (!SourceVersion.isIdentifier(problemName)) {
 			throw new FrameworkException("'" + problemName + "' is not a valid Java class name");
+		}
+		
+		if (problemName.equalsIgnoreCase("Example")) {
+			throw new FrameworkException("'" + problemName +"' is reserved and can not be used as a problem name");
 		}
 
 		if (!SourceVersion.isIdentifier(problemName)) {
@@ -179,6 +193,8 @@ public class BuildProblem extends CommandLineUtility {
 		mappings.put("numberOfVariables", Integer.parseInt(commandLine.getOptionValue("numberOfVariables")));
 		mappings.put("numberOfObjectives", Integer.parseInt(commandLine.getOptionValue("numberOfObjectives")));
 		mappings.put("numberOfConstraints", Integer.parseInt(commandLine.getOptionValue("numberOfConstraints", "0")));
+		mappings.put("lowerBound", Double.parseDouble(commandLine.getOptionValue("lowerBound", "0.0")));
+		mappings.put("upperBound", Double.parseDouble(commandLine.getOptionValue("upperBound", "1.0")));
 		mappings.put("relativePath", tryRelativize(directory, Path.of(".")).toString());
 		mappings.put("java.home", System.getProperty("java.home"));
 		mappings.put("java.class.path", String.join(PATH_SEPARATOR, classpath));
