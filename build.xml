@@ -227,7 +227,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		</copy>
 		
 		<copy todir="${base}/examples">
-			<fileset dir="examples" excludes="*.exe,*.o,*.a" />
+			<fileset dir="examples" excludes="*.exe,*.o,*.a,*.class" />
 		</copy>
 
 		<tar destfile="${dist}/${shortname}-${version}.tar.gz" basedir="${build}" compression="gzip" longfile="gnu" />

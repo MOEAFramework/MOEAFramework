@@ -17,14 +17,18 @@
  */
 package org.moeaframework.builder;
 
-import java.io.File;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
 import javax.lang.model.SourceVersion;
 
 import org.apache.commons.cli.CommandLine;
@@ -36,8 +40,8 @@ import org.moeaframework.util.CommandLineUtility;
 
 /**
  * Command line tool for creating new natively-compiled problems.  This tool will create a folder containing all the
- * files needed to write and compile the problem, and package them in a JAR file that can be used within the MOEA
- * Framework.
+ * files needed to write and compile the problem, package everything into a JAR, and display instructions for using
+ * the generated files.
  */
 public class CreateProblem extends CommandLineUtility {
 	
@@ -171,11 +175,17 @@ public class CreateProblem extends CommandLineUtility {
 	}
 
 	private String loadResourceAsString(String path) throws IOException {
-		path = path.replaceAll("\\\\", "/");
-
 		ClassLoader classLoader = getClass().getClassLoader();
-		File file = new File(classLoader.getResource(path).getFile());
-		return Files.readString(file.toPath(), StandardCharsets.UTF_8);
+		
+	    try (InputStream input = classLoader.getResourceAsStream(path.replaceAll("\\\\", "/"))) {
+	        if (input == null) {
+	        	throw new IOException("Unable to find resource " + path);
+	        }
+	        
+	        try (BufferedReader reader = new BufferedReader(new InputStreamReader(input))) {
+	            return reader.lines().collect(Collectors.joining(System.lineSeparator()));
+	        }
+	    }
 	}
 
 	/**
