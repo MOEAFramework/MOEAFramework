@@ -36,6 +36,7 @@ public class ExternalProblemWithCSocketTest extends ExternalProblemWithCStdioTes
 	public void setUp() throws IOException {
 		//skip this test if the machine is not POSIX compliant
 		TestUtils.assumePOSIX();
+		TestUtils.assumeMakeExists();
 		
 		if (new File("src/test/resources").exists()) {
 			file = new File("src/test/resources/org/moeaframework/problem/test_socket.exe");

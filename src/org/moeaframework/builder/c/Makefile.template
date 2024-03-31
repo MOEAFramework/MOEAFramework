@@ -19,11 +19,14 @@ else
 endif
 
 # Compile the shared library
-main:
+build:
 	$(CC) -c -fPIC ${problemName}.c $(LIBS)
 	$(CC) -shared -o $(LIBNAME) ${problemName}.o
-	"$(JAVA_HOME)\bin\javac" -classpath "../../lib/*$(SEPARATOR)../../bin$(SEPARATOR)../../dist" ${problemName}.java ${problemName}Provider.java
+	"$(JAVA_HOME)\bin\javac" -classpath "${classpath}" ${problemName}.java ${problemName}Provider.java
 	"$(JAVA_HOME)\bin\jar" cf ${problemName}.jar *.class *.dll META-INF
 
 clean:
 	rm -f $(LIBNAME) ${problemName}.o
+	
+run:
+	"$(JAVA_HOME)\bin\java" -classpath "${classpath}$(SEPARATOR)." Example.java

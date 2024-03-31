@@ -3,3 +3,4 @@ NativeC.template -> ${problemName}.c
 Problem.template -> ${problemName}.java
 ProblemProvider.template -> ${problemName}Provider.java
 Service.template -> META-INF/services/org.moeaframework.problem.ProblemProvider
+Example.template -> Example.java

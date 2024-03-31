@@ -49,6 +49,8 @@ public class ExternalProblemWithCStdioTest {
 	
 	@Before
 	public void setUp() throws IOException {
+		TestUtils.assumeMakeExists();
+		
 		if (new File("src/test/resources").exists()) {
 			file = new File("src/test/resources/org/moeaframework/problem/test_stdio.exe");
 		} else {

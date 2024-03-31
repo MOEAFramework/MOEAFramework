@@ -18,15 +18,18 @@
 package org.moeaframework.builder;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
 import java.util.stream.Collectors;
 
 import javax.lang.model.SourceVersion;
@@ -43,7 +46,7 @@ import org.moeaframework.util.CommandLineUtility;
  * files needed to write and compile the problem, package everything into a JAR, and display instructions for using
  * the generated files.
  */
-public class CreateProblem extends CommandLineUtility {
+public class CreateNativeProblem extends CommandLineUtility {
 	
 	// TODO: Take an optional package argument and structure the Java files correctly
 	
@@ -55,7 +58,7 @@ public class CreateProblem extends CommandLineUtility {
 	/**
 	 * Creates a new instance of this command line tool.
 	 */
-	public CreateProblem() {
+	public CreateNativeProblem() {
 		super();
 	}
 
@@ -96,6 +99,15 @@ public class CreateProblem extends CommandLineUtility {
 				.longOpt("functionName")
 				.hasArg()
 				.build());
+		
+		options.addOption(Option.builder("d")
+				.longOpt("directory")
+				.hasArg()
+				.build());
+		
+		options.addOption(Option.builder()
+				.longOpt("overwrite")
+				.build());
 
 		return options;
 	}
@@ -126,14 +138,19 @@ public class CreateProblem extends CommandLineUtility {
 		mappings.put("numberOfObjectives", Integer.parseInt(commandLine.getOptionValue("numberOfObjectives")));
 		mappings.put("numberOfConstraints", Integer.parseInt(commandLine.getOptionValue("numberOfConstraints", "0")));
 		mappings.put("java.home", System.getProperty("java.home"));
+		mappings.put("classpath", getCrossPlatformClasspath());
 
 		StringSubstitutor substitutor = new StringSubstitutor(mappings);
 		substitutor.setEnableSubstitutionInVariables(true);
 
-		Path directory = Path.of("native", problemName);
+		Path directory = Path.of(commandLine.getOptionValue("directory", "native"), problemName);
 		
 		if (directory.toFile().exists()) {
-			throw new FrameworkException(directory + " already exists, delete this folder or choose a different name");
+			if (commandLine.hasOption("overwrite")) {
+				Files.walk(directory).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
+			} else {
+				throw new FrameworkException(directory + " already exists, delete this folder or choose a different name");
+			}
 		}
 		
 		processManifest(Path.of("org", "moeaframework", "builder", language), directory, substitutor);
@@ -187,6 +204,11 @@ public class CreateProblem extends CommandLineUtility {
 	        }
 	    }
 	}
+	
+	private String getCrossPlatformClasspath() {
+		String classpath = System.getProperty("java.class.path");
+		return classpath.replaceAll(Matcher.quoteReplacement(File.pathSeparator), "\\$(SEPARATOR)");
+	}
 
 	/**
 	 * Starts this command line utility.
@@ -195,7 +217,7 @@ public class CreateProblem extends CommandLineUtility {
 	 * @throws Exception if an error occurred
 	 */
 	public static void main(String[] args) throws Exception {
-		new CreateProblem().start(args);
+		new CreateNativeProblem().start(args);
 	}
 
 }

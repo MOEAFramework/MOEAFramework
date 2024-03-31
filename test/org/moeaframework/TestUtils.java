@@ -506,17 +506,29 @@ public class TestUtils {
 	}
 	
 	/**
-	 * Attempts to run make in the given folder.  If make is not successful, the test is skipped.
+	 * Run make in the given folder.
 	 * 
 	 * @param folder the folder in which make is executed
 	 */
-	public static void runMake(File folder) {
+	public static void runMake(File folder) throws IOException {
 		System.out.println("Running make to build test executables");
 		
 		try {
 			ProcessBuilder processBuilder = new ProcessBuilder("make");
 			processBuilder.directory(folder);
 			
+			RedirectStream.invoke(processBuilder);
+		} catch (InterruptedException e) {
+			throw new IOException(e);
+		}
+	}
+	
+	/**
+	 * Assume make exists, if not skip the test.
+	 */
+	public static void assumeMakeExists() {
+		try {
+			ProcessBuilder processBuilder = new ProcessBuilder("make", "--version");			
 			RedirectStream.invoke(processBuilder);
 		} catch (InterruptedException | IOException e) {
 			System.err.println(e);
