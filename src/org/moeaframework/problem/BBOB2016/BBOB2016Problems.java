@@ -114,6 +114,7 @@ public class BBOB2016Problems extends ProblemProvider {
 	 * @param instance the function instance
 	 * @return the BBOB test function
 	 */
+	@SuppressWarnings("resource")
 	public static BBOBFunction createInstance(int function, int dimension, int instance) {
 		int rseed = function + 10000 * instance;
 

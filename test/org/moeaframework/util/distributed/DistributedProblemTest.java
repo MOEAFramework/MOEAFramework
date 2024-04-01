@@ -26,6 +26,7 @@ import org.moeaframework.algorithm.single.GeneticAlgorithm;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
+import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.mock.MockRealProblem;
 import org.moeaframework.mock.MockRealStochasticProblem;
@@ -158,8 +159,8 @@ public class DistributedProblemTest {
 		double bestSingle = getResultFromStochasticRun(1);
 		double bestQuad = getResultFromStochasticRun(4);
 		double bestSixteen = getResultFromStochasticRun(16);
-		Assert.assertEquals(bestSingle, bestQuad, 0.000000000001);
-		Assert.assertEquals(bestQuad, bestSixteen, 0.000000000001);
+		Assert.assertEquals(bestSingle, bestQuad, Settings.EPS);
+		Assert.assertEquals(bestQuad, bestSixteen, Settings.EPS);
 	}
 	
 	private double getResultFromStochasticRun(int numThreads) {

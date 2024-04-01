@@ -25,7 +25,6 @@ import org.moeaframework.problem.ProblemTest;
 
 public class RosenbrockTest extends ProblemTest {
 	
-	@SuppressWarnings("resource")
 	@Test
 	public void test() {		
 		Rosenbrock problem = new Rosenbrock();

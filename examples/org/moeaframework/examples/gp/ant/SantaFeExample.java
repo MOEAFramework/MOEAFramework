@@ -38,8 +38,7 @@ public class SantaFeExample {
 	 * @throws FileNotFoundException if the ant trail file could not be found
 	 * @throws IOException if an I/O error occurred
 	 */
-	public static void main(String[] args) throws FileNotFoundException,
-	IOException {
+	public static void main(String[] args) throws FileNotFoundException, IOException {
 		int maxMoves = 500;
 		
 		// solve the ant trail instance
