@@ -1,8 +1,9 @@
 # Natively-Compiled Functions
 
-In this example, we will create a natively-compiled function in C, compile it, and connect to it directly using the
-Java Native Access (JNA) library.  This example also demonstrates our tool, `BuildProblem`, that generates the
-scaffolding for the problem.  This tool supports a number of native languages, like `C`, `C++`, and `Fortran`.
+This example demonstrates how to construct native problems, where we write the function in a language like C, C++,
+or Fortran.  The code is then compiled into a natively shared library (`.dll` or `.so`) or an executable, which is
+then called from the MOEA Framework.  While there is a small amount of additional overhead, writing complex functions
+in a native language will typically outperform their Java equivalent.
 
 ## Prerequisites
 
@@ -15,21 +16,32 @@ pacman -S make mingw-w64-x86_64-gcc
 
 ## Generating the Problem Scaffolding
 
-Running the following program will generate the scaffolding for the problem.  This includes the C file to implement
-the function, the Java files that integrate with the MOEA Framework, and a Makefile to compile everything.
+We provide a tool, `BuildProblem`, that creates a folder with the scaffolding for writing a native problem.  This
+tool supports a variety of programming languages, including `C`, `C++`, `Fortran`, and `Java`.  As an example,
+here we create `TestProblem` with a single real-valued decision variable and two objectives.  The lower and uppper
+bounds of the variables is also specified:
 
 ```bash
 java -classpath "lib/*" org.moeaframework.builder.BuildProblem --problemName TestProblem --language c \
 	--numberOfVariables 1 --numberOfObjectives 2 --lowerBound -10.0 --upperBound 10.0
 ```
 
-By default, the generated files will appear under the `native/` folder, such as `native/TestProblem` in this
-example.
+The generated files will appear under the `native/` folder, such as `native/TestProblem` in this example.  If we
+open this folder, we will see the following files:
 
-## Updating the C Code
+1. `TestProblem.c`, which contains the function used to implement the problem;
+2. `TestProblem.java`, which is the MOEA Framework problem definition that calls the native function; this file also
+   specifies the structure of the problem, including the bounds of each decision variable; and
+3. `Makefile`, which is used to compile and test the function using the tool `make`.
 
-Navigate to the `native/TestProblem` folder and open `TestProblem.c` in an editor of your choice.  The contents
-of this file will appear similar to:
+The folder also will contain a problem provider, such as `TestProblemProvider.java`, and the `META-INF/`folder.
+These files are responsible for registering and integrating the problem with the MOEA Framework.  *Typically, you will
+not need to modify these files!*
+
+## Writing the Function
+
+Open the file `TestProblem.c` under `native/TestProblem` using an editor of your choice.  The contents of this
+file will appear similar to:
 
 ```c
 int nvars = 1;
@@ -44,29 +56,27 @@ void evaluate(double* vars, double* objs, double* constrs) {
 For the purposes of this example, we will implement the Schaffer problem which is defined as $f(x) = (x^2, (x-2)^2)$.
 
 ```c
-int nvars = 1;
-int nobjs = 2;
-int nconstrs = 0;
-
 void evaluate(double* vars, double* objs, double* constrs) {
-	objs[0] = vars[0] * vars[0];
-	objs[1] = (vars[0] - 2.0) * (vars[0] - 2.0);
+	double x = vars[0];
+	
+	objs[0] = x * x;
+	objs[1] = (x - 2.0) * (x - 2.0);
 }
 ```
 
-We have already configured the lower and upper bounds of the decision variables to be `[-10, 10]`.  For more control
-over these bounds, you can edit `TestProblem.java`.
+We already specified the lower and upper bounds of the decision variables when calling `BuildProblem`.  However,
+if you do need more control over the bounds, edit `TestProblem.java`.
 
 ## Compiling and Testing
 
-After saving the changes, we can use the provided Makefile to compile the example by running:
+After saving these changes, we can use the provided Makefile to compile the code by running:
 
 ```bash
 make
 ```
 
-You will note this creates a shared library (a `.dll` on Windows or a `.so` on Linux) along with a `.jar` file.
-We can test this example by running:
+Note this creates a shared library (a `.dll` on Windows or a `.so` on Linux) along with a `.jar` file.  Furthermore,
+we can test the code using the provided example in `Example.java` by running:
 
 ```bash
 make run
@@ -74,7 +84,42 @@ make run
 
 If everything is configured correctly, you should see the Pareto front displayed.
 
-## Using the JAR
+```
+Var1     Obj1     Obj2
+-------- -------- --------
+1.999997 3.999986 0.000000
+0.000000 0.000000 3.999999
+0.285445 0.081479 2.939697
+1.551488 2.407114 0.201163
+1.491630 2.224960 0.258440
+0.871998 0.760380 1.272389
+...
+```
 
-Now that we tested the example, we can incorporate this problem into your MOEA Framework installation by copying the
-`.jar` file into the `lib/` directory.  If using Eclipse, you will also need to add this JAR to the build path.
+## Integrating Problem with the MOEA Framework
+
+The build script also generates a Java `.jar` file containing all the required files to integrate the problem with
+the MOEA Framework.  Simply copy the `.jar` file and place it into the `lib/` folder used by the MOEA Framework.
+If using an IDE like Eclipse, you likely also need to add this `.jar` to the build path.
+
+At this point, the problem is now discoverable by the MOEA Framework and can be used as follows:
+
+```java
+try (Problem problem = new TestProblem()) {
+	NSGAII algorithm = new NSGAII(problem);
+	algorithm.run(10000);
+	algorithm.getResult().display();
+}
+```
+
+## Supported Languages
+
+The following table lists the available languages:
+
+Language | Default Compiler | Notes
+-------- | ---------------- | -----
+C        | `gcc`            | C function
+CPP      | `g++`            | C++ function.  Output includes `.c` and `.h` file
+Fortran  | `gfortran`      | Fortran90 function
+Java     | `javac`         | Java problem definition (see [Writing Java Problem](writingJavaProblem.md))
+External |                  | External problem using Standard I/O (see [Writing External Problems](writingExternalProblem.md))
