@@ -22,21 +22,14 @@ import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.problem.AbstractProblem;
 
 /**
- * The single-objective Rosenbrock problem with an optimum at {@code x = (1, 1)} with {@code f(x) = 1}.  While this
- * implements the two variable version, there does exist a generalized version to {@code N} variables.
- * <p>
- * References:
- * <ol>
- *   <li>Rosenbrock, H.H. (1960). "An Automatic Method for Finding the Greatest or Least Value of a Function". The
- *       Computer Journal. 3 (3): 175–184. doi:10.1093/comjnl/3.3.175. ISSN 0010-4620.
- * </ol>
+ * The single-objective Beale problem with an optimum at {@code x = (3.0, 0.5)} with {@code f(x) = 0}.
  */
-public class Rosenbrock extends AbstractProblem {
+public class Beale extends AbstractProblem {
 	
 	/**
-	 * Constructs a new instance of the Rosenbrock problem.
+	 * Constructs a new instance of the Beale problem.
 	 */
-	public Rosenbrock() {
+	public Beale() {
 		super(2, 1);
 	}
 
@@ -45,14 +38,15 @@ public class Rosenbrock extends AbstractProblem {
 		double x = EncodingUtils.getReal(solution.getVariable(0));
 		double y = EncodingUtils.getReal(solution.getVariable(1));
 		
-		solution.setObjective(0, 100*(y - x*x)*(y - x*x) + (1 - x)*(1 - x));
+		solution.setObjective(0, Math.pow(1.5 - x + x*y, 2.0) + Math.pow(2.25 - x + x*y*y, 2.0)
+				+ Math.pow(2.625 - x + x*y*y*y, 2.0));
 	}
 
 	@Override
 	public Solution newSolution() {
 		Solution solution = new Solution(2, 1);
-		solution.setVariable(0, EncodingUtils.newReal(-10, 10));
-		solution.setVariable(1, EncodingUtils.newReal(-10, 10));
+		solution.setVariable(0, EncodingUtils.newReal(-4.5, 4.5));
+		solution.setVariable(1, EncodingUtils.newReal(-4.5, 4.5));
 		return solution;
 	}
 

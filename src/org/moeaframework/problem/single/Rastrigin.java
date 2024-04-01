@@ -22,37 +22,52 @@ import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.problem.AbstractProblem;
 
 /**
- * The single-objective Rosenbrock problem with an optimum at {@code x = (1, 1)} with {@code f(x) = 1}.  While this
- * implements the two variable version, there does exist a generalized version to {@code N} variables.
+ * The single-objective Rastrigin problem with an optimum at {@code x = (0, ..., 0)} with {@code f(x) = 0}.
  * <p>
  * References:
  * <ol>
- *   <li>Rosenbrock, H.H. (1960). "An Automatic Method for Finding the Greatest or Least Value of a Function". The
- *       Computer Journal. 3 (3): 175–184. doi:10.1093/comjnl/3.3.175. ISSN 0010-4620.
+ *   <li>Rastrigin, L. A. "Systems of Extremal Control." Mir, Moscow (1974).
  * </ol>
  */
-public class Rosenbrock extends AbstractProblem {
+public class Rastrigin extends AbstractProblem {
 	
 	/**
-	 * Constructs a new instance of the Rosenbrock problem.
+	 * Constructs a new instance of the Rastrigin problem with two decision variables.
 	 */
-	public Rosenbrock() {
-		super(2, 1);
+	public Rastrigin() {
+		this(2);
+	}
+	
+	/**
+	 * Constructs a new instance of the Rastrigin problem.
+	 * 
+	 * @param numberOfVariables the number of decision variables
+	 */
+	public Rastrigin(int numberOfVariables) {
+		super(numberOfVariables, 1);
 	}
 
 	@Override
 	public void evaluate(Solution solution) {
-		double x = EncodingUtils.getReal(solution.getVariable(0));
-		double y = EncodingUtils.getReal(solution.getVariable(1));
+		double[] x = EncodingUtils.getReal(solution);
+		final double A = 10.0;
+		double sum = 0.0;
 		
-		solution.setObjective(0, 100*(y - x*x)*(y - x*x) + (1 - x)*(1 - x));
+		for (int i = 0; i < numberOfVariables; i++) {
+			sum += Math.pow(x[i], 2.0) - A * Math.cos(2.0 * Math.PI * x[i]);
+		}
+		
+		solution.setObjective(0, A * numberOfVariables + sum);
 	}
 
 	@Override
 	public Solution newSolution() {
-		Solution solution = new Solution(2, 1);
-		solution.setVariable(0, EncodingUtils.newReal(-10, 10));
-		solution.setVariable(1, EncodingUtils.newReal(-10, 10));
+		Solution solution = new Solution(numberOfVariables, 1);
+		
+		for (int i = 0; i < numberOfVariables; i++) {
+			solution.setVariable(i, EncodingUtils.newReal(-5.12, 5.12));
+		}
+
 		return solution;
 	}
 
