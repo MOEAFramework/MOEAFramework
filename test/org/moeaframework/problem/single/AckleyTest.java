@@ -23,16 +23,15 @@ import org.moeaframework.core.Settings;
 import org.moeaframework.mock.MockSolution;
 import org.moeaframework.problem.ProblemTest;
 
-public class RosenbrockTest extends ProblemTest {
+public class AckleyTest extends ProblemTest {
 	
-	@SuppressWarnings("resource")
 	@Test
 	public void test() {		
-		Rosenbrock problem = new Rosenbrock();
+		Ackley problem = new Ackley();
 		
-		Assert.assertEquals(0.0, MockSolution.of(problem).at(1.0, 1.0).evaluate().getObjective(0), Settings.EPS);
-		Assert.assertTrue(MockSolution.of(problem).at(1.1, 1.1).evaluate().getObjective(0) > 0.0);
-		Assert.assertTrue(MockSolution.of(problem).at(0.9, 0.9).evaluate().getObjective(0) > 0.0);
+		Assert.assertEquals(0.0, MockSolution.of(problem).at(0.0, 0.0).evaluate().getObjective(0), Settings.EPS);
+		Assert.assertTrue(MockSolution.of(problem).at(0.1, 0.1).evaluate().getObjective(0) > 0.0);
+		Assert.assertTrue(MockSolution.of(problem).at(-0.1, -0.1).evaluate().getObjective(0) > 0.0);
 	}
 
 }
