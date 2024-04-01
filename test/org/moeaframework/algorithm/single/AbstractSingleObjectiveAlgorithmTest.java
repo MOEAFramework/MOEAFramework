@@ -65,15 +65,16 @@ public abstract class AbstractSingleObjectiveAlgorithmTest<T extends Algorithm &
 	@Test
 	public void testRosenbrock() {
 		Rosenbrock problem = new Rosenbrock();
-		T algorithm = createInstance(problem);
+		
+		Algorithm algorithm = createInstance(problem);
 		algorithm.run(100000);
 		
 		Assert.assertEquals(1, algorithm.getResult().size());
 		
 		Solution solution = algorithm.getResult().get(0);
 		
-		Assert.assertArrayEquals(EncodingUtils.getReal(problem.generate()), EncodingUtils.getReal(solution), 0.1);
-		Assert.assertArrayEquals(problem.generate().getObjectives(), solution.getObjectives(), 0.1);
+		Assert.assertArrayEquals(new double[] { 1.0, 1.0 }, EncodingUtils.getReal(solution), 0.1);
+		Assert.assertArrayEquals(new double[] { 0.0 }, solution.getObjectives(), 0.1);
 	}
 
 }

@@ -10,10 +10,10 @@ one objective.  Here, we create a class for the Rosenbrock problem:
 
 $$ \text{Minimize } f(x,y) = 100(y-x^2)^2 + (1-x)^2 $$
 
-<!-- java:src/org/moeaframework/problem/single/Rosenbrock.java [28:61] -->
+<!-- java:src/org/moeaframework/problem/single/Rosenbrock.java [27:52] -->
 
 ```java
-public class Rosenbrock extends AbstractProblem implements AnalyticalProblem {
+public class Rosenbrock extends AbstractProblem {
 
     public Rosenbrock() {
         super(2, 1);
@@ -32,14 +32,6 @@ public class Rosenbrock extends AbstractProblem implements AnalyticalProblem {
         Solution solution = new Solution(2, 1);
         solution.setVariable(0, EncodingUtils.newReal(-10, 10));
         solution.setVariable(1, EncodingUtils.newReal(-10, 10));
-        return solution;
-    }
-
-    @Override
-    public Solution generate() {
-        Solution solution = newSolution();
-        EncodingUtils.setReal(solution, new double[] { 1.0, 1.0 });
-        evaluate(solution);
         return solution;
     }
 

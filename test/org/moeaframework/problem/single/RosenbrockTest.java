@@ -21,6 +21,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
+import org.moeaframework.mock.MockSolution;
 import org.moeaframework.problem.ProblemTest;
 
 public class RosenbrockTest extends ProblemTest {
@@ -29,8 +30,8 @@ public class RosenbrockTest extends ProblemTest {
 	@Test
 	public void test() {		
 		Rosenbrock problem = new Rosenbrock();
-		Solution idealSolution = problem.generate();
-		Assert.assertEquals(0.0, idealSolution.getObjective(0), Settings.EPS);
+		Solution solution = MockSolution.of(problem).at(1.0, 1.0);
+		Assert.assertEquals(0.0, solution.getObjective(0), Settings.EPS);
 	}
 
 }

@@ -20,12 +20,11 @@ package org.moeaframework.problem.single;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.problem.AbstractProblem;
-import org.moeaframework.problem.AnalyticalProblem;
 
 /**
  * The single-objective Rosenbrock problem with an optimum at {@code x = (1, 1)} with {@code f(x) = 1}.
  */
-public class Rosenbrock extends AbstractProblem implements AnalyticalProblem {
+public class Rosenbrock extends AbstractProblem {
 	
 	/**
 	 * Constructs a new instance of the Rosenbrock problem.
@@ -47,14 +46,6 @@ public class Rosenbrock extends AbstractProblem implements AnalyticalProblem {
 		Solution solution = new Solution(2, 1);
 		solution.setVariable(0, EncodingUtils.newReal(-10, 10));
 		solution.setVariable(1, EncodingUtils.newReal(-10, 10));
-		return solution;
-	}
-
-	@Override
-	public Solution generate() {
-		Solution solution = newSolution();
-		EncodingUtils.setReal(solution, new double[] { 1.0, 1.0 });
-		evaluate(solution);
 		return solution;
 	}
 

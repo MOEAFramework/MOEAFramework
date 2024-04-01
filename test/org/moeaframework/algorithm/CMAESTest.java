@@ -40,7 +40,6 @@ public class CMAESTest extends AlgorithmTest {
 	@Test
 	public void testSingleObjective() {
 		Rosenbrock problem = new Rosenbrock();
-		
 		CMAES algorithm = new CMAES(problem);
 
 		for (int i = 0; i < 100; i++) {
@@ -51,8 +50,8 @@ public class CMAESTest extends AlgorithmTest {
 		
 		Solution solution = algorithm.getResult().get(0);
 		
-		Assert.assertArrayEquals(EncodingUtils.getReal(problem.generate()), EncodingUtils.getReal(solution), 0.001);
-		Assert.assertArrayEquals(problem.generate().getObjectives(), solution.getObjectives(), 0.001);
+		Assert.assertArrayEquals(new double[] { 1.0, 1.0 }, EncodingUtils.getReal(solution), 0.001);
+		Assert.assertArrayEquals(new double[] { 0.0 }, solution.getObjectives(), 0.001);
 	}
 
 	@Test
