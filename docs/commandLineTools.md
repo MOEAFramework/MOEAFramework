@@ -340,7 +340,7 @@ Converts the last record in a result file into the ARFF format, which is a commo
 usage: java -classpath "lib/*" org.moeaframework.analysis.tools.ARFFConverter -b <name> | -d <number>  [-h] -i <file>
        [-n <arg>] -o <file> [-r]
 
-Converts a result file into an ARFF file.
+Converts a result file into an ARFF file.  The following options are available:
 
  -b,--problem <name>       Problem name
  -d,--dimension <number>   Number of objectives

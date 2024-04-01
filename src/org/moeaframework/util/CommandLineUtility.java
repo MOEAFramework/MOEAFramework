@@ -175,12 +175,19 @@ public abstract class CommandLineUtility {
 	protected void showHelp() {
 		Options options = getLocalizedOptions();
 		
+		StringBuilder description = new StringBuilder();
+		description.append(System.lineSeparator());
+		description.append(Localization.getString(getClass(), "description"));
+		description.append("  ");
+		description.append(Localization.getString(CommandLineUtility.class, "description"));
+		description.append(System.lineSeparator());
+		description.append(System.lineSeparator());
+		
 		HelpFormatter helpFormatter = new HelpFormatter();
 		helpFormatter.setWidth(Settings.PROPERTIES.getInt(Settings.KEY_HELP_WIDTH, HelpFormatter.DEFAULT_WIDTH));
 		helpFormatter.printHelp(
 				getCommandString(),
-				System.lineSeparator() + Localization.getString(getClass(), "description") +
-					System.lineSeparator() + System.lineSeparator(),
+				description.toString(),
 				options, 
 				Localization.getString(CommandLineUtility.class, "footer"),
 				true);

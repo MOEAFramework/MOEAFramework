@@ -36,6 +36,11 @@ class FractalDimension {
 	private static final double R_MIN = 0.0005;
 	
 	/**
+	 * The threshold used to determine if the correlation coefficient indicates a nearly linear relationship.
+	 */
+	private static final double CORRELATION_THRESHOLD = 0.99;
+	
+	/**
 	 * Private constructor to prevent instantiation.
 	 */
 	private FractalDimension() {
@@ -104,7 +109,7 @@ class FractalDimension {
 			double correlationCoefficient =  (k*sumXY - sumX*sumY) /
 					(Math.sqrt(k*sumXX - sumX*sumX)*Math.sqrt(k*sumYY - sumY*sumY));
 			
-			if (correlationCoefficient >= 0.99) {
+			if (correlationCoefficient >= CORRELATION_THRESHOLD) {
 				return i;
 			}
 		}
@@ -126,7 +131,7 @@ class FractalDimension {
 		List<Double> X = new ArrayList<Double>();
 		List<Double> Y = new ArrayList<Double>();
 
-		for (double r=R_MAX; r>= R_MIN; r-= R_MIN) {
+		for (double r = R_MAX; r >= R_MIN; r-= R_MIN) {
 			double lr = Math.log(r);
 			double lc = Math.log(computeCorrelationSum(parameters, r));
 			
