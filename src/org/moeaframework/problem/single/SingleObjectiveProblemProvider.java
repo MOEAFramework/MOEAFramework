@@ -33,6 +33,7 @@ public class SingleObjectiveProblemProvider extends RegisteredProblemProvider {
 		register("Ackley", Ackley::new, null);
 		register("Beale", Beale::new, null);
 		register("Griewank", Griewank::new, null);
+		register("Himmelblau", Himmelblau::new, null);
 		register("Rastrigin", Rastrigin::new, null);
 		register("Rosenbrock", Rosenbrock::new, null);
 		register("Schwefel", Schwefel::new, null);
