@@ -98,6 +98,7 @@ public class ResultFileWriter implements OutputWriter {
 	 * @param settings the settings to use when writing the result file
 	 * @throws IOException if an I/O error occurred
 	 */
+	@SuppressWarnings("resource")
 	public ResultFileWriter(Problem problem, File file, ResultFileWriterSettings settings) throws IOException {
 		super();
 		this.settings = settings;

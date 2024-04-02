@@ -17,7 +17,6 @@
  */
 package org.moeaframework.util.distributed;
 
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import org.junit.Assert;
@@ -28,53 +27,30 @@ import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
+import org.moeaframework.mock.MockConstraintProblem;
 import org.moeaframework.mock.MockRealProblem;
 import org.moeaframework.mock.MockRealStochasticProblem;
-import org.moeaframework.problem.AbstractProblem;
 
 public class DistributedProblemTest {
 	
 	@Test
 	public void testSerialExecution() {
-		ExecutorService executor = Executors.newFixedThreadPool(10);
-		Problem problem = new DistributedProblem(new MockRealProblem() {
+		try (Problem problem = new DistributedProblem(new MockSynchronizedProblem(),
+				Executors.newFixedThreadPool(10))) {
+			Population population = new Population();
 			
-			private boolean isInvoked;
-
-			@Override
-			public synchronized void evaluate(Solution solution) {
-				Assert.assertFalse(isInvoked);
-				
-				isInvoked = true;
-				
-				super.evaluate(solution);
-				
-				try {
-					Thread.sleep(100);
-				} catch (InterruptedException e) {
-					// do nothing
-				}
-				
-				isInvoked = false;
+			for (int i = 0; i < 10; i++) {
+				population.add(problem.newSolution());
 			}
 			
-		}, executor);
-		
-		Population population = new Population();
-		
-		for (int i = 0; i < 10; i++) {
-			population.add(problem.newSolution());
+			for (int i = 0; i < 10; i++) {
+				problem.evaluate(population.get(i));
+			}
+			
+			for (int i = 0; i < 10; i++) {
+				population.get(i).getObjectives();
+			}
 		}
-		
-		for (int i = 0; i < 10; i++) {
-			problem.evaluate(population.get(i));
-		}
-		
-		for (int i = 0; i < 10; i++) {
-			population.get(i).getObjectives();
-		}
-		
-		executor.shutdown();
 	}
 
 	@Test
@@ -110,48 +86,33 @@ public class DistributedProblemTest {
 	 * @param P the number of processing threads
 	 */
 	public void testRun(int N, int P) {
-		DistributedProblem problem = new DistributedProblem(new AbstractProblem(0, 0) {
-
-			@Override
-			public void evaluate(Solution solution) {
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					throw new RuntimeException(e);
-				}
+		try (DistributedProblem problem = new DistributedProblem(new MockExpensiveProblem(),
+				Executors.newFixedThreadPool(P))) {
+			Population population = new Population();
+	
+			for (int i = 0; i < N; i++) {
+				population.add(problem.newSolution());
 			}
-
-			@Override
-			public Solution newSolution() {
-				return new Solution(0, 1, 1);
+	
+			long startTime = System.currentTimeMillis();
+	
+			// submit the tasks to start processing
+			for (int i = 0; i < N; i++) {
+				problem.evaluate(population.get(i));
 			}
-
-		}, Executors.newFixedThreadPool(P));
-
-		Population population = new Population();
-
-		for (int i = 0; i < N; i++) {
-			population.add(problem.newSolution());
+	
+			// these should block
+			for (int i = 0; i < N; i++) {
+				population.get(i).getObjective(0);
+			}
+	
+			// these should not block
+			for (int i = 0; i < N; i++) {
+				population.get(i).getConstraint(0);
+			}
+	
+			Assert.assertTrue(Math.abs(1000 * N / (double)P - (System.currentTimeMillis() - startTime)) < 1000);
 		}
-
-		long startTime = System.currentTimeMillis();
-
-		// submit the tasks to start processing
-		for (int i = 0; i < N; i++) {
-			problem.evaluate(population.get(i));
-		}
-
-		// these should block
-		for (int i = 0; i < N; i++) {
-			population.get(i).getObjective(0);
-		}
-
-		// these should not block
-		for (int i = 0; i < N; i++) {
-			population.get(i).getConstraint(0);
-		}
-
-		Assert.assertTrue(Math.abs(1000 * N / (double)P - (System.currentTimeMillis() - startTime)) < 1000);
 	}
 	
 	@Test
@@ -172,6 +133,43 @@ public class DistributedProblemTest {
 		algorithm.run(1000);
 		
 		return algorithm.getResult().get(0).getObjective(0); // one optimum for a single objective problem
+	}
+	
+	private static class MockExpensiveProblem extends MockConstraintProblem {
+
+		@Override
+		public void evaluate(Solution solution) {
+			try {
+				super.evaluate(solution);
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				throw new RuntimeException(e);
+			}
+		}
+
+	}
+	
+	private static class MockSynchronizedProblem extends MockRealProblem {
+		
+		private boolean isInvoked;
+
+		@Override
+		public synchronized void evaluate(Solution solution) {
+			Assert.assertFalse(isInvoked);
+			
+			isInvoked = true;
+			
+			super.evaluate(solution);
+			
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				// do nothing
+			}
+			
+			isInvoked = false;
+		}
+		
 	}
 
 }

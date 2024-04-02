@@ -50,9 +50,10 @@ public class SantaFeExample {
 				.run();
 		
 		// display the result
-		AntProblem problem = new AntProblem(openDataFile(), maxMoves);
-		problem.evaluate(results.get(0));
-		problem.displayLastEvaluation();
+		try (AntProblem problem = new AntProblem(openDataFile(), maxMoves)) {
+			problem.evaluate(results.get(0));
+			problem.displayLastEvaluation();
+		}
 	}
 	
 	/**

@@ -28,6 +28,7 @@ import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.problem.DTLZ.DTLZ2;
 
+@SuppressWarnings("resource")
 public class ScaledProblemTest {
 	
 	@Test
@@ -40,7 +41,6 @@ public class ScaledProblemTest {
 		Assert.assertEquals(original.size(), scaled.size());
 	}
 	
-	@SuppressWarnings("resource")
 	@Test
 	public void testBase1LeavesSolutionUnchanged() {
 		Problem problem = new DTLZ2(2);
