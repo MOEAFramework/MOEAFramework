@@ -17,23 +17,33 @@
  */
 package org.moeaframework.examples.single;
 
-import java.io.IOException;
-
-import org.moeaframework.algorithm.single.GeneticAlgorithm;
-import org.moeaframework.core.Problem;
+import org.moeaframework.core.Solution;
+import org.moeaframework.core.variable.EncodingUtils;
+import org.moeaframework.problem.AbstractProblem;
 
 /**
- * Demonstrates solving a single-objective problem using a genetic algorithm.
+ * The single-objective Rosenbrock problem with an optimum at {@code x = (1, 1)} with {@code f(x) = 0}.
  */
-public class SingleObjectiveExample {
+public class Rosenbrock extends AbstractProblem {
 	
-	public static void main(String[] args) throws IOException {
-		Problem problem = new Rosenbrock();
+	public Rosenbrock() {
+		super(2, 1);
+	}
+
+	@Override
+	public void evaluate(Solution solution) {
+		double x = EncodingUtils.getReal(solution.getVariable(0));
+		double y = EncodingUtils.getReal(solution.getVariable(1));
 		
-		GeneticAlgorithm algorithm = new GeneticAlgorithm(problem);
-		algorithm.run(100000);
-		
-		algorithm.getResult().display();
+		solution.setObjective(0, 100*(y - x*x)*(y - x*x) + (1 - x)*(1 - x));
+	}
+
+	@Override
+	public Solution newSolution() {
+		Solution solution = new Solution(2, 1);
+		solution.setVariable(0, EncodingUtils.newReal(-10, 10));
+		solution.setVariable(1, EncodingUtils.newReal(-10, 10));
+		return solution;
 	}
 
 }

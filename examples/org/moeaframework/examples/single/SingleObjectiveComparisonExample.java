@@ -24,7 +24,6 @@ import org.moeaframework.algorithm.single.EvolutionStrategy;
 import org.moeaframework.algorithm.single.GeneticAlgorithm;
 import org.moeaframework.algorithm.single.SimulatedAnnealing;
 import org.moeaframework.core.Problem;
-import org.moeaframework.problem.single.Rosenbrock;
 
 /**
  * Compares the final solutions found using the different single-objective optimizers.

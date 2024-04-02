@@ -17,9 +17,9 @@
  */
 package org.moeaframework.problem.single;
 
+import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
-import org.moeaframework.problem.AbstractProblem;
 
 /**
  * The single-objective Ackley problem with an optimum at {@code x = (0, 0)} with {@code f(x) = 0}.
@@ -29,13 +29,13 @@ import org.moeaframework.problem.AbstractProblem;
  *   <li>Ackley, D. H. (1987) "A Connectionist Machine for Genetic Hillclimbing", Kluwer Academic Publishers, Boston MA.
  * </ol>
  */
-public class Ackley extends AbstractProblem {
+public class Ackley extends AbstractSingleObjectiveProblem {
 	
 	/**
 	 * Constructs a new instance of the Ackley problem.
 	 */
 	public Ackley() {
-		super(2, 1);
+		super(2);
 	}
 
 	@Override
@@ -54,6 +54,19 @@ public class Ackley extends AbstractProblem {
 		solution.setVariable(0, EncodingUtils.newReal(-10, 10));
 		solution.setVariable(1, EncodingUtils.newReal(-10, 10));
 		return solution;
+	}
+	
+	@Override
+	public NondominatedPopulation getReferenceSet() {
+		NondominatedPopulation result = new NondominatedPopulation();
+		
+		Solution idealPoint = newSolution();
+		EncodingUtils.setReal(idealPoint, new double[] { 0.0, 0.0 });
+		
+		evaluate(idealPoint);
+		
+		result.add(idealPoint);
+		return result;
 	}
 
 }

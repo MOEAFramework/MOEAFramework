@@ -20,6 +20,7 @@ package org.moeaframework.problem.single;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.TestThresholds;
+import org.moeaframework.core.Solution;
 import org.moeaframework.mock.MockSolution;
 import org.moeaframework.problem.ProblemTest;
 
@@ -27,21 +28,20 @@ public class HimmelblauTest extends ProblemTest {
 	
 	@Test
 	public void test() {		
-		Himmelblau problem = new Himmelblau();
-		
-		// local minima
-		Assert.assertEquals(0.0, MockSolution.of(problem).at(3.0, 2.0).evaluate().getObjective(0), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(0.0, MockSolution.of(problem).at(-2.805118, 3.131312).evaluate().getObjective(0), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(0.0, MockSolution.of(problem).at(-3.779310, -3.283186).evaluate().getObjective(0), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(0.0, MockSolution.of(problem).at(3.584428, -1.848126).evaluate().getObjective(0), TestThresholds.HIGH_PRECISION);
-		
-		// local maximum
-		Assert.assertEquals(181.617, MockSolution.of(problem).at(-0.270845, -0.923039).evaluate().getObjective(0), 0.001);
+		try (AbstractSingleObjectiveProblem problem = new Himmelblau()) {
+			for (Solution solution : problem.getReferenceSet()) {
+				Assert.assertEquals(0.0, solution.getObjective(0), TestThresholds.HIGH_PRECISION);
+				Assert.assertGreaterThan(MockSolution.of(solution).addNoise(0.1).evaluate(problem).getObjective(0), 0.0);
+			}
+			
+			// local maximum
+			Assert.assertEquals(181.617, MockSolution.of(problem).at(-0.270845, -0.923039).evaluate().getObjective(0), 0.001);
+		}
 	}
 	
 	@Test
 	public void testProblemProvider() {
-		assertProblemDefined("Himmelblau", 1, false);
+		assertProblemDefined("Himmelblau", 1);
 	}
 
 }

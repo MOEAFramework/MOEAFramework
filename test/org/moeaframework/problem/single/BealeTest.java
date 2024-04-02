@@ -20,6 +20,7 @@ package org.moeaframework.problem.single;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.TestThresholds;
+import org.moeaframework.core.Solution;
 import org.moeaframework.mock.MockSolution;
 import org.moeaframework.problem.ProblemTest;
 
@@ -27,16 +28,17 @@ public class BealeTest extends ProblemTest {
 	
 	@Test
 	public void test() {		
-		Beale problem = new Beale();
-		
-		Assert.assertEquals(0.0, MockSolution.of(problem).at(3.0, 0.5).evaluate().getObjective(0), TestThresholds.HIGH_PRECISION);
-		Assert.assertGreaterThan(MockSolution.of(problem).at(3.1, 0.6).evaluate().getObjective(0), 0.0);
-		Assert.assertGreaterThan(MockSolution.of(problem).at(2.9, 0.4).evaluate().getObjective(0), 0.0);
+		try (AbstractSingleObjectiveProblem problem = new Beale()) {
+			for (Solution solution : problem.getReferenceSet()) {
+				Assert.assertEquals(0.0, solution.getObjective(0), TestThresholds.HIGH_PRECISION);
+				Assert.assertGreaterThan(MockSolution.of(solution).addNoise(0.1).evaluate(problem).getObjective(0), 0.0);
+			}
+		}
 	}
 	
 	@Test
 	public void testProblemProvider() {
-		assertProblemDefined("Beale", 1, false);
+		assertProblemDefined("Beale", 1);
 	}
 
 }

@@ -17,6 +17,8 @@
  */
 package org.moeaframework.problem.single;
 
+import org.moeaframework.core.NondominatedPopulation;
+import org.moeaframework.core.Problem;
 import org.moeaframework.core.spi.RegisteredProblemProvider;
 
 /**
@@ -38,7 +40,16 @@ public class SingleObjectiveProblemProvider extends RegisteredProblemProvider {
 		register("Rosenbrock", Rosenbrock::new, null);
 		register("Schwefel", Schwefel::new, null);
 		register("Sphere", Sphere::new, null);
+	}
+	
+	@Override
+	public NondominatedPopulation getReferenceSet(String name) {
+		Problem problem = getProblem(name);
 		
-		//registerDiagnosticToolProblems(getRegisteredProblems());
+		if (problem instanceof AbstractSingleObjectiveProblem singleObjectiveProblem) {
+			return singleObjectiveProblem.getReferenceSet();
+		}
+		
+		return null;
 	}
 }

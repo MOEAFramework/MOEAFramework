@@ -17,9 +17,10 @@
  */
 package org.moeaframework.problem.single;
 
+import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
-import org.moeaframework.problem.AbstractProblem;
+import org.moeaframework.util.Vector;
 
 /**
  * The single-objective Griewank problem with an optimum at {@code x = (0, ..., 0)} with {@code f(x) = 0}.
@@ -29,7 +30,7 @@ import org.moeaframework.problem.AbstractProblem;
  *   <li>Molga, M., & Smutnicki, C. Test Functions for Optimization Needs."  (2005).
  * </ol>
  */
-public class Griewank extends AbstractProblem {
+public class Griewank extends AbstractSingleObjectiveProblem {
 	
 	/**
 	 * Constructs a new instance of the Griewank problem with two decision variables.
@@ -44,7 +45,7 @@ public class Griewank extends AbstractProblem {
 	 * @param numberOfVariables the number of decision variables
 	 */
 	public Griewank(int numberOfVariables) {
-		super(numberOfVariables, 1);
+		super(numberOfVariables);
 	}
 
 	@Override
@@ -70,6 +71,19 @@ public class Griewank extends AbstractProblem {
 		}
 
 		return solution;
+	}
+	
+	@Override
+	public NondominatedPopulation getReferenceSet() {
+		NondominatedPopulation result = new NondominatedPopulation();
+		
+		Solution idealPoint = newSolution();
+		EncodingUtils.setReal(idealPoint, Vector.of(numberOfVariables, 0.0));
+		
+		evaluate(idealPoint);
+		
+		result.add(idealPoint);
+		return result;
 	}
 
 }

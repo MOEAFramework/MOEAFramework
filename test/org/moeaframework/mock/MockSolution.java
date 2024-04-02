@@ -24,6 +24,7 @@ import java.util.stream.IntStream;
 
 import org.apache.commons.lang3.reflect.TypeUtils;
 import org.moeaframework.Assert;
+import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
@@ -117,6 +118,18 @@ public class MockSolution extends Solution {
 
 		for (int i = 0; i < solution.get().getNumberOfVariables(); i++) {
 			EncodingUtils.setReal(variables.get()[i], value);
+		}
+
+		return this;
+	}
+	
+	public MockSolution addNoise(double stdev) {
+		throwIfReadOnly();
+		throwIfNoSolutionOrVariables();
+		
+		for (int i = 0; i < solution.get().getNumberOfVariables(); i++) {
+			Variable variable = variables.get()[i];
+			EncodingUtils.setReal(variable, EncodingUtils.getReal(variable) + PRNG.nextGaussian(0.0, stdev));
 		}
 
 		return this;

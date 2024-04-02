@@ -17,12 +17,13 @@
  */
 package org.moeaframework.problem.single;
 
+import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
-import org.moeaframework.problem.AbstractProblem;
+import org.moeaframework.util.Vector;
 
 /**
- * The single-objective Rosenbrock problem with an optimum at {@code x = (1, 1)} with {@code f(x) = 1}.  While this
+ * The single-objective Rosenbrock problem with an optimum at {@code x = (1, 1)} with {@code f(x) = 0}.  While this
  * implements the two variable version, there does exist a generalized version to {@code N} variables.
  * <p>
  * References:
@@ -31,29 +32,58 @@ import org.moeaframework.problem.AbstractProblem;
  *       Computer Journal. 3 (3): 175–184. doi:10.1093/comjnl/3.3.175. ISSN 0010-4620.
  * </ol>
  */
-public class Rosenbrock extends AbstractProblem {
+public class Rosenbrock extends AbstractSingleObjectiveProblem {
+	
+	/**
+	 * Constructs a new instance of the Rosenbrock problem with two decision variables.
+	 */
+	public Rosenbrock() {
+		this(2);
+	}
 	
 	/**
 	 * Constructs a new instance of the Rosenbrock problem.
+	 * 
+	 * @param numberOfVariables the number of decision variables
 	 */
-	public Rosenbrock() {
-		super(2, 1);
+	public Rosenbrock(int numberOfVariables) {
+		super(numberOfVariables);
 	}
 
 	@Override
 	public void evaluate(Solution solution) {
-		double x = EncodingUtils.getReal(solution.getVariable(0));
-		double y = EncodingUtils.getReal(solution.getVariable(1));
+		double[] x = EncodingUtils.getReal(solution);
+		double sum = 0.0;
 		
-		solution.setObjective(0, 100*(y - x*x)*(y - x*x) + (1 - x)*(1 - x));
+		for (int i = 0; i < numberOfVariables - 1; i++) {
+			sum += 100*Math.pow(x[i+1] - x[i]*x[i], 2.0) + Math.pow(1 - x[i], 2.0);
+		}
+		
+		solution.setObjective(0, sum);
 	}
 
 	@Override
 	public Solution newSolution() {
-		Solution solution = new Solution(2, 1);
-		solution.setVariable(0, EncodingUtils.newReal(-10, 10));
-		solution.setVariable(1, EncodingUtils.newReal(-10, 10));
+		Solution solution = new Solution(numberOfVariables, 1);
+		
+		for (int i = 0; i < numberOfVariables; i++) {
+			solution.setVariable(i, EncodingUtils.newReal(-10, 10));
+		}
+
 		return solution;
+	}
+	
+	@Override
+	public NondominatedPopulation getReferenceSet() {
+		NondominatedPopulation result = new NondominatedPopulation();
+		
+		Solution idealPoint = newSolution();
+		EncodingUtils.setReal(idealPoint, Vector.of(numberOfVariables, 1.0));
+		
+		evaluate(idealPoint);
+		
+		result.add(idealPoint);
+		return result;
 	}
 
 }

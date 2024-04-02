@@ -26,9 +26,9 @@ in Eclipse.  If you choose to use a different IDE, you might need to install the
 After making and testing your changes locally, the next step is to submit the code for review.  The checklist below
 outlines this process:
 
-- [ ] Acknowledge that your contributions will included in the MOEA Framework and licensed under the GNU Lesser General
-      Public License, version 3 or later.  This also applies to any third-party code or libraries included in your
-      change.
+- [ ] Acknowledge that your contributions will be included in the MOEA Framework and licensed under the GNU Lesser
+      General Public License, version 3 or later.  This also applies to any third-party code or libraries included in
+      your change.
 - [ ] Add any necessary tests to validate your changes.
 - [ ] Include any references or citations in the Javadoc comments.
 - [ ] Include the MOEA Framework copyright header at the beginning of every file.  You may include your or your

@@ -20,6 +20,7 @@ package org.moeaframework.problem.single;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.TestThresholds;
+import org.moeaframework.core.Solution;
 import org.moeaframework.mock.MockSolution;
 import org.moeaframework.problem.ProblemTest;
 
@@ -27,16 +28,17 @@ public class RosenbrockTest extends ProblemTest {
 	
 	@Test
 	public void test() {		
-		Rosenbrock problem = new Rosenbrock();
-		
-		Assert.assertEquals(0.0, MockSolution.of(problem).at(1.0, 1.0).evaluate().getObjective(0), TestThresholds.HIGH_PRECISION);
-		Assert.assertGreaterThan(MockSolution.of(problem).at(1.1, 1.1).evaluate().getObjective(0), 0.0);
-		Assert.assertGreaterThan(MockSolution.of(problem).at(0.9, 0.9).evaluate().getObjective(0), 0.0);
+		try (AbstractSingleObjectiveProblem problem = new Rosenbrock()) {
+			for (Solution solution : problem.getReferenceSet()) {
+				Assert.assertEquals(0.0, solution.getObjective(0), TestThresholds.HIGH_PRECISION);
+				Assert.assertGreaterThan(MockSolution.of(solution).addNoise(0.1).evaluate(problem).getObjective(0), 0.0);
+			}
+		}
 	}
 	
 	@Test
 	public void testProblemProvider() {
-		assertProblemDefined("Rosenbrock", 1, false);
+		assertProblemDefined("Rosenbrock", 1);
 	}
 
 }

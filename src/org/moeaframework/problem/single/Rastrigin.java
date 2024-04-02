@@ -17,9 +17,10 @@
  */
 package org.moeaframework.problem.single;
 
+import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
-import org.moeaframework.problem.AbstractProblem;
+import org.moeaframework.util.Vector;
 
 /**
  * The single-objective Rastrigin problem with an optimum at {@code x = (0, ..., 0)} with {@code f(x) = 0}.
@@ -29,7 +30,7 @@ import org.moeaframework.problem.AbstractProblem;
  *   <li>Rastrigin, L. A. "Systems of Extremal Control." Mir, Moscow (1974).
  * </ol>
  */
-public class Rastrigin extends AbstractProblem {
+public class Rastrigin extends AbstractSingleObjectiveProblem {
 	
 	/**
 	 * Constructs a new instance of the Rastrigin problem with two decision variables.
@@ -44,7 +45,7 @@ public class Rastrigin extends AbstractProblem {
 	 * @param numberOfVariables the number of decision variables
 	 */
 	public Rastrigin(int numberOfVariables) {
-		super(numberOfVariables, 1);
+		super(numberOfVariables);
 	}
 
 	@Override
@@ -69,6 +70,19 @@ public class Rastrigin extends AbstractProblem {
 		}
 
 		return solution;
+	}
+	
+	@Override
+	public NondominatedPopulation getReferenceSet() {
+		NondominatedPopulation result = new NondominatedPopulation();
+		
+		Solution idealPoint = newSolution();
+		EncodingUtils.setReal(idealPoint, Vector.of(numberOfVariables, 0.0));
+		
+		evaluate(idealPoint);
+		
+		result.add(idealPoint);
+		return result;
 	}
 
 }

@@ -10,7 +10,7 @@ one objective.  Here, we create a class for the Rosenbrock problem:
 
 $$ \text{Minimize } f(x,y) = 100(y-x^2)^2 + (1-x)^2 $$
 
-<!-- java:src/org/moeaframework/problem/single/Rosenbrock.java [34:59] -->
+<!-- java:examples/org/moeaframework/examples/single/Rosenbrock.java [27:49] -->
 
 ```java
 public class Rosenbrock extends AbstractProblem {
@@ -42,7 +42,7 @@ public class Rosenbrock extends AbstractProblem {
 
 Next, we can solve the Rosenbrock problem using a genetic algorithm:
 
-<!-- java:examples/org/moeaframework/examples/single/SingleObjectiveExample.java [32:37] -->
+<!-- java:examples/org/moeaframework/examples/single/SingleObjectiveExample.java [31:36] -->
 
 ```java
 Problem problem = new Rosenbrock();

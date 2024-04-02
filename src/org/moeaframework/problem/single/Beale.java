@@ -17,20 +17,20 @@
  */
 package org.moeaframework.problem.single;
 
+import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
-import org.moeaframework.problem.AbstractProblem;
 
 /**
  * The single-objective Beale problem with an optimum at {@code x = (3.0, 0.5)} with {@code f(x) = 0}.
  */
-public class Beale extends AbstractProblem {
+public class Beale extends AbstractSingleObjectiveProblem {
 	
 	/**
 	 * Constructs a new instance of the Beale problem.
 	 */
 	public Beale() {
-		super(2, 1);
+		super(2);
 	}
 
 	@Override
@@ -48,6 +48,19 @@ public class Beale extends AbstractProblem {
 		solution.setVariable(0, EncodingUtils.newReal(-4.5, 4.5));
 		solution.setVariable(1, EncodingUtils.newReal(-4.5, 4.5));
 		return solution;
+	}
+	
+	@Override
+	public NondominatedPopulation getReferenceSet() {
+		NondominatedPopulation result = new NondominatedPopulation();
+		
+		Solution idealPoint = newSolution();
+		EncodingUtils.setReal(idealPoint, new double[] { 3.0, 0.5 });
+		
+		evaluate(idealPoint);
+		
+		result.add(idealPoint);
+		return result;
 	}
 
 }
