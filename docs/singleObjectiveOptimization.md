@@ -10,7 +10,7 @@ one objective.  Here, we create a class for the Rosenbrock problem:
 
 $$ \text{Minimize } f(x,y) = 100(y-x^2)^2 + (1-x)^2 $$
 
-<!-- java:src/org/moeaframework/problem/single/Rosenbrock.java [27:52] -->
+<!-- java:src/org/moeaframework/problem/single/Rosenbrock.java [34:59] -->
 
 ```java
 public class Rosenbrock extends AbstractProblem {
