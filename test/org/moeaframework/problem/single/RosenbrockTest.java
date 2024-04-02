@@ -33,5 +33,10 @@ public class RosenbrockTest extends ProblemTest {
 		Assert.assertTrue(MockSolution.of(problem).at(1.1, 1.1).evaluate().getObjective(0) > 0.0);
 		Assert.assertTrue(MockSolution.of(problem).at(0.9, 0.9).evaluate().getObjective(0) > 0.0);
 	}
+	
+	@Test
+	public void testProblemProvider() {
+		assertProblemDefined("Rosenbrock", 1, false);
+	}
 
 }

@@ -33,5 +33,10 @@ public class RastriginTest extends ProblemTest {
 		Assert.assertTrue(MockSolution.of(problem).at(0.1, 0.1).evaluate().getObjective(0) > 0.0);
 		Assert.assertTrue(MockSolution.of(problem).at(-0.1, -0.1).evaluate().getObjective(0) > 0.0);
 	}
+	
+	@Test
+	public void testProblemProvider() {
+		assertProblemDefined("Rastrigin", 1, false);
+	}
 
 }

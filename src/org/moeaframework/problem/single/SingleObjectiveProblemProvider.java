@@ -17,26 +17,27 @@
  */
 package org.moeaframework.problem.single;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.moeaframework.core.Settings;
-import org.moeaframework.mock.MockSolution;
-import org.moeaframework.problem.ProblemTest;
+import org.moeaframework.core.spi.RegisteredProblemProvider;
 
-public class AckleyTest extends ProblemTest {
-	
-	@Test
-	public void test() {		
-		Ackley problem = new Ackley();
+/**
+ * Problem provider for the single objective test problems.
+ */
+public class SingleObjectiveProblemProvider extends RegisteredProblemProvider {
+
+	/**
+	 * Constructs and registers the single objective problems.
+	 */
+	public SingleObjectiveProblemProvider() {
+		super();
 		
-		Assert.assertEquals(0.0, MockSolution.of(problem).at(0.0, 0.0).evaluate().getObjective(0), Settings.EPS);
-		Assert.assertTrue(MockSolution.of(problem).at(0.1, 0.1).evaluate().getObjective(0) > 0.0);
-		Assert.assertTrue(MockSolution.of(problem).at(-0.1, -0.1).evaluate().getObjective(0) > 0.0);
+		register("Ackley", Ackley::new, null);
+		register("Beale", Beale::new, null);
+		register("Griewank", Griewank::new, null);
+		register("Rastrigin", Rastrigin::new, null);
+		register("Rosenbrock", Rosenbrock::new, null);
+		register("Schwefel", Schwefel::new, null);
+		register("Sphere", Sphere::new, null);
+		
+		//registerDiagnosticToolProblems(getRegisteredProblems());
 	}
-	
-	@Test
-	public void testProblemProvider() {
-		assertProblemDefined("Ackley", 1, false);
-	}
-
 }

@@ -35,5 +35,10 @@ public class SphereTest extends ProblemTest {
 		Assert.assertEquals(8.0, MockSolution.of(problem).at(2.0, 2.0).evaluate().getObjective(0), Settings.EPS);
 		Assert.assertEquals(8.0, MockSolution.of(problem).at(-2.0, -2.0).evaluate().getObjective(0), Settings.EPS);
 	}
+	
+	@Test
+	public void testProblemProvider() {
+		assertProblemDefined("Sphere", 1, false);
+	}
 
 }

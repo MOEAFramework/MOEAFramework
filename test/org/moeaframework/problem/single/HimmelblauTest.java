@@ -38,5 +38,10 @@ public class HimmelblauTest extends ProblemTest {
 		// local maximum
 		Assert.assertEquals(181.617, MockSolution.of(problem).at(-0.270845, -0.923039).evaluate().getObjective(0), 0.001);
 	}
+	
+	@Test
+	public void testProblemProvider() {
+		assertProblemDefined("Himmelblau", 1, false);
+	}
 
 }

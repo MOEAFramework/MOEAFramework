@@ -32,5 +32,10 @@ public class SchwefelTest extends ProblemTest {
 		Assert.assertTrue(MockSolution.of(problem).fill(420.97).evaluate().getObjective(0) > 0.0);
 		Assert.assertTrue(MockSolution.of(problem).fill(420.96).evaluate().getObjective(0) > 0.0);
 	}
+	
+	@Test
+	public void testProblemProvider() {
+		assertProblemDefined("Schwefel", 1, false);
+	}
 
 }

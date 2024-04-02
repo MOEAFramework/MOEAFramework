@@ -33,5 +33,10 @@ public class BealeTest extends ProblemTest {
 		Assert.assertTrue(MockSolution.of(problem).at(3.1, 0.6).evaluate().getObjective(0) > 0.0);
 		Assert.assertTrue(MockSolution.of(problem).at(2.9, 0.4).evaluate().getObjective(0) > 0.0);
 	}
+	
+	@Test
+	public void testProblemProvider() {
+		assertProblemDefined("Beale", 1, false);
+	}
 
 }
