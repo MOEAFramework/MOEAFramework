@@ -20,6 +20,8 @@ package org.moeaframework.analysis.tools;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.math3.util.MathArrays;
+
 /**
  * Computes the fractal dimension for a set of points.  
  */
@@ -60,26 +62,13 @@ class FractalDimension {
 		
 		for (int i=0; i<=n-2; i++) {
 			for (int j=i+1; j<=n-1; j++) {
-				if ((r - distance(points[i], points[j])) >= 0) {
+				if ((r - MathArrays.distance(points[i], points[j])) >= 0) {
 					sum += 1.0;
 				}
 			}
 		}
 		
 		return sum / (n*(n-1)/2.0);
-	}
-	
-	/**
-	 * Returns the Euclidean distance between two points.
-	 */
-	private static double distance(double[] p1, double[] p2) {
-		double sum = 0.0;
-		
-		for (int i=0; i<p1.length; i++) {
-			sum += Math.pow(p2[i] - p1[i], 2.0);
-		}
-		
-		return Math.sqrt(sum);
 	}
 	
 	/**

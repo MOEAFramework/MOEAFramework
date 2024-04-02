@@ -17,14 +17,10 @@
  */
 package org.moeaframework.problem.ZDT;
 
-import java.util.function.BiConsumer;
-import java.util.stream.IntStream;
-
 import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.core.Problem;
-import org.moeaframework.core.Solution;
-import org.moeaframework.core.variable.BinaryVariable;
+import org.moeaframework.mock.MockSolution;
 import org.moeaframework.problem.ProblemTest;
 
 public class ZDT5Test extends ProblemTest {
@@ -34,25 +30,12 @@ public class ZDT5Test extends ProblemTest {
 		Problem problem = new ZDT5();
 		
 		Assert.assertArrayEquals(new double[] { 1.0, 20.0 },
-				evaluateWith(problem, (bv, i) -> bv.clear()).getObjectives(),
+				MockSolution.of(problem).atLowerBounds().evaluate().getObjectives(),
 				0.000001);
 		
-		Assert.assertArrayEquals(new double[] { 31.0, 10.0/31.0 }, 
-				evaluateWith(problem, (bv, i) -> IntStream.range(0, bv.getNumberOfBits()).forEach(j -> bv.set(j, true))).getObjectives(),
+		Assert.assertArrayEquals(new double[] { 31.0, 10.0/31.0 },
+				MockSolution.of(problem).atUpperBounds().evaluate().getObjectives(),
 				0.000001);
-	}
-	
-	private Solution evaluateWith(Problem problem, BiConsumer<BinaryVariable, Integer> setup) {
-		Solution solution = problem.newSolution();
-		
-		for (int i = 0; i < solution.getNumberOfVariables(); i++) {
-			BinaryVariable bv = (BinaryVariable)solution.getVariable(i);
-			setup.accept(bv, i);
-		}
-		
-		problem.evaluate(solution);
-		
-		return solution;
 	}
 
 	@Test

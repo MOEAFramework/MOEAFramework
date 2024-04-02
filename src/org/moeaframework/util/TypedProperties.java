@@ -339,7 +339,7 @@ public class TypedProperties implements Displayable {
 	//
 	//   1. If no truncation is required, the number is parsed as-is.
 	//   2. If the truncation alters the value more than the defined machine precision, Settings.EPS,
-	//      then a warning is displayed.
+	//      then a warning is optionally displayed
 	//   3. If the truncation would alter the value more than 1.0, an exception is thrown. This includes
 	//      trying to parse a value that exceeds the maximum or minimum value that fits within a type.
 	
@@ -446,8 +446,7 @@ public class TypedProperties implements Displayable {
 		
 		if (diff > Settings.EPS && !Settings.isSuppressTruncationWarning()) {
 			System.err.println(key + " given as real-valued number but expected an integer, converting " +
-					originalValue + " to " + truncatedValue + ". Set " + Settings.KEY_SUPPRESS_TRUNCATION_WARNING +
-					" to suppress this message.");
+					originalValue + " to " + truncatedValue);
 		}
 		
 		return truncatedValue;
@@ -487,8 +486,7 @@ public class TypedProperties implements Displayable {
 		
 		if (diff > Settings.EPS && !Settings.isSuppressTruncationWarning()) {
 			System.err.println(key + " given as real-valued number but expected a long, converting " +
-					originalValue + " to " + truncatedValue + ". Set " + Settings.KEY_SUPPRESS_TRUNCATION_WARNING +
-					" to suppress this message.");
+					originalValue + " to " + truncatedValue);
 		}
 		
 		return truncatedValue;
